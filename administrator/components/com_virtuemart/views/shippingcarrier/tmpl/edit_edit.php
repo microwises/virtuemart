@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
             <tr>
                 <td width="110" class="key">
                     <label for="title">
-<?php echo JText::_('COM_VIRTUEMART_CARRIER_FORM_NAME'); ?>:
+<?php echo JText::_('COM_VIRTUEMART_CARRIER_FORM_NAME'); ?>
                     </label>
                 </td>
                 <td>
@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
             <tr>
                 <td width="110" class="key">
                     <label for="title">
-<?php echo JText::_('COM_VIRTUEMART_LIST_ORDER'); ?>:
+<?php echo JText::_('COM_VIRTUEMART_LIST_ORDER'); ?>
                     </label>
                 </td>
                 <td>
@@ -66,7 +66,7 @@ defined('_JEXEC') or die('Restricted access');
                 </td>
             </tr>
             <tr>
-                <td class="key"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?>?:</td>
+                <td class="key"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?>?</td>
                 <td><fieldset class="radio"><?php echo JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $this->carrier->published); ?></fieldset></td>
             </tr>
         </table>

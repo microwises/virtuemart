@@ -32,7 +32,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_COUNTRY_NAME'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_COUNTRY_NAME'); ?>
 				</label>
 			</td>
 			<td>
@@ -42,7 +42,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 				</label>
 			</td>
 			<td><fieldset class="radio">
@@ -62,7 +62,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_COUNTRY_3_CODE'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_COUNTRY_3_CODE'); ?>
 				</label>
 			</td>
 			<td>
@@ -72,7 +72,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_COUNTRY_2_CODE'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_COUNTRY_2_CODE'); ?>
 				</label>
 			</td>
 			<td>

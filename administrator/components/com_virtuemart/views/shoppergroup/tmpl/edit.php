@@ -31,7 +31,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shopper_group_name">
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME'); ?>
 				</label>
 			</td>
 			<td>
@@ -41,7 +41,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="virtuemart_vendor_id">
-					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
 				</label>
 			</td>
 			<td>
@@ -55,7 +55,7 @@ AdminMenuHelper::startAdminArea();
 				<td width="110" class="key">
 					<label for="default">
 						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT_TIP'); ?>">
-					  <?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'); ?>:
+					  <?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'); ?>
 						</span>
 					</label>
 				</td>
@@ -68,7 +68,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="shopper_group_desc">
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DESCRIPTION'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DESCRIPTION'); ?>
 				</label>
 			</td>
 			<td>

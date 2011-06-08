@@ -32,7 +32,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_NAME');; ?>
+					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_NAME'); ?>
 				</label>
 			</td>
 			<td>
@@ -94,7 +94,7 @@ AdminMenuHelper::startAdminArea();
 <?php /*		<tr>
 		<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_START_DATE'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_START_DATE'); ?>
 				</label>
 			</td>
 			<td>
@@ -107,7 +107,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_END_DATE'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_END_DATE'); ?>
 				</label>
 			</td>
 			<td>

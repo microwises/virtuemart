@@ -99,7 +99,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 			<tr class="row1">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_PAGE') ?>:</div>
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_PAGE') ?></div>
 				</td>
 				<td width="79%">
 					<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'text', 'text', $this->product->layout); ?>
@@ -114,7 +114,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<table class="adminform">
 			<tr class="row0">
 				<td width="29%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PARENT') ?>:</div>
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PARENT') ?></div>
 				</td>
 				<td width="71%" > <?php
                                 if ($this->product->product_parent_id) {
@@ -126,7 +126,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 			<tr class="row1">
 				<td width="21%" valign="top"><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILD') ?>:</div>
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILD') ?></div>
 				</td>
 				<td width="79%"><?php
                                 if ($this->product_child) {
@@ -155,7 +155,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<div style="text-align:right;font-weight:bold;">
                 
                                         <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP'); ?>">
-					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST') ?>:
+					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST') ?>
 				      </span>
                                       </div>
 				</td>
@@ -170,7 +170,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
                                     <div style="text-align:right;font-weight:bold;">
 
                                         <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE_TIP'); ?>">
-					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE') ?>:
+					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE') ?>
 				      </span>
                                       </div>
 
@@ -184,7 +184,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<td width="29%">
                                         <div style="text-align:right;font-weight:bold;">
                                         <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP'); ?>">
-					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL') ?>:
+					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL') ?>
 				      </span>
                                      </div>
 				</td>
@@ -201,7 +201,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<table class="adminform">
 			<tr class="row0">
 				<td width="29%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_RATE_FORM_VAT_ID') ?>:</div>
+					<?php echo JText::_('COM_VIRTUEMART_RATE_FORM_VAT_ID') ?></div>
 				</td>
 				<td width="71%" >
 					<?php echo $this->lists['taxrates']; ?><br />
@@ -210,7 +210,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 			<tr class="row1">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_TYPE') ?>:</div>
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_TYPE') ?></div>
 				</td>
 				<td width="79%">
 					<?php echo $this->lists['discounts']; ?>
@@ -240,7 +240,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<td width="21%" >
 					<div style="text-align:right;font-weight:bold;">
                                             <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE_TIP'); ?>">
-					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE') ?>:
+					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE') ?>
 				      </span>
                                         </div>
 				</td>
@@ -259,7 +259,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
                 <tr class="row1">
                             <td width="21%" >
                                     <div style="text-align:right;font-weight:bold;">
-                                    <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?>:</div>
+                                    <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?></div>
                             </td>
                             <td width="79%" >
                                     <?php
@@ -272,7 +272,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<table class="adminform">
 			<tr>
 				<td width="29%" valign="top">
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_INTNOTES'); ?>:</div>
+					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_INTNOTES'); ?></div>
 				</td>
 				<td width="71%" valign="top">
 					<textarea class="inputbox" name="intnotes" id="intnotes" cols="35" rows="6" ><?php echo $this->product->intnotes; ?></textarea>

@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<tr class="row0">
 					<td width="21%">
 						<div style="text-align:right;font-weight:bold;">
-						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK') ?>:</div>
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK') ?></div>
 					</td>
 					<td width="79%">
 						<input type="text" class="inputbox"  name="product_in_stock" value="<?php echo $this->product->product_in_stock; ?>" size="10" />
@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<tr class="row1">
 					<td width="21%">
 						<div style="text-align:right;font-weight:bold;">
-							<?php echo JText::_('COM_VIRTUEMART_LOW_STOCK_NOTIFICATION'); ?>:
+							<?php echo JText::_('COM_VIRTUEMART_LOW_STOCK_NOTIFICATION'); ?>
 						</div>
 					</td>
 					<td width="79%">
@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<tr class="row0"> 
 					<td width="21%">
 						<div style="text-align:right;font-weight:bold;">
-							<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_MIN_ORDER') ?>:
+							<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_MIN_ORDER') ?>
 						</div>
 					</td>
 					<td width="79%">
@@ -56,7 +56,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<tr class="row1"> 
 					<td width="21%">
 						<div style="text-align:right;font-weight:bold;">
-							<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_MAX_ORDER') ?>:
+							<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_MAX_ORDER') ?>
 						</div>
 					</td>
 					<td width="79%">
@@ -66,7 +66,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<tr class="row0"> 
 					<td width="21%" >
 						<div style="text-align:right;font-weight:bold;">
-							<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABLE_DATE') ?>:
+							<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABLE_DATE') ?>
 						</div>
 					</td>
 					<td width="79%" >
@@ -76,7 +76,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<tr>
 					<td valign="top" width="21%" >
 						<div style="text-align:right;font-weight:bold;">
-							<?php echo JText::_('COM_VIRTUEMART_AVAILABILITY') ?>:
+							<?php echo JText::_('COM_VIRTUEMART_AVAILABILITY') ?>
 						</div>
 					</td>
 					<td width="79%" >

@@ -32,7 +32,7 @@ AdminMenuHelper::startAdminArea();
 			<td width="110" class="key">
                               <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_TOOLTIP'); ?>">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_COUPON'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_COUPON'); ?>
 				</label>
                               </span>
 			</td>
@@ -44,7 +44,7 @@ AdminMenuHelper::startAdminArea();
 			<td width="110" class="key">
                             <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_PERCTOT_TOOLTIP'); ?>">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_COUPON_PERCENT_TOTAL'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_COUPON_PERCENT_TOTAL'); ?>
 				</label>
                             </pan>
 			</td>
@@ -64,7 +64,7 @@ AdminMenuHelper::startAdminArea();
 			<td width="110" class="key">
                               <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_TYPE_TOOLTIP'); ?>">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_COUPON_TYPE'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_COUPON_TYPE'); ?>
 				</label>
                               </span>
 			</td>
@@ -83,7 +83,7 @@ AdminMenuHelper::startAdminArea();
 			<td width="110" class="key">
                               <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_TOOLTIP'); ?>">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_VALUE'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_VALUE'); ?>
 				</label>
                               </span>
 			</td>
@@ -95,7 +95,7 @@ AdminMenuHelper::startAdminArea();
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_VALID_AT'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_VALID_AT'); ?>
 				</label>
 			</td>
 			<td>
@@ -106,7 +106,7 @@ AdminMenuHelper::startAdminArea();
 			<td width="110" class="key">
                              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_START_TIP'); ?>">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_COUPON_START'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_COUPON_START'); ?>
 				</label>
                              </span>
 			</td>
@@ -121,7 +121,7 @@ AdminMenuHelper::startAdminArea();
 			<td width="110" class="key">
                               <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_EXPIRY_TIP'); ?>">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_COUPON_EXPIRY'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_COUPON_EXPIRY'); ?>
 				</label>
                               </span>
 			</td>

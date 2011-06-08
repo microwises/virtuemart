@@ -45,25 +45,25 @@ JPluginHelper::importPlugin('vmshipper');
 				<td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL') ?></td>
 			</tr>
 			<tr>
-				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?>:</strong></td>
+				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></strong></td>
 				<td><?php printf("%08d", $this->orderbt->virtuemart_order_id);?></td>
 			</tr>
 			<tr>
-				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?>:</strong></td>
+				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?></strong></td>
 				<td><?php echo $this->orderbt->created_on ; ?></td>
 			</tr>
 			<tr>
-				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?>:</strong></td>
+				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?></strong></td>
 				<td><?php echo $this->orderbt->order_status_name; ?></td>
 			</tr>
 			<tr>
-				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_IPADDRESS') ?>:</strong></td>
+				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_IPADDRESS') ?></strong></td>
 				<td><?php echo $this->orderbt->ip_address; ?></td>
 			</tr>
 			<?php
 			if (VmConfig::get('enable_coupons') == '1') { ?>
 			<tr>
-				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_CODE') ?>:</strong></td>
+				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_CODE') ?></strong></td>
 				<td><?php echo $this->orderbt->coupon_code; ?></td>
 			</tr>
 			<?php } ?>
@@ -395,7 +395,7 @@ JPluginHelper::importPlugin('vmshipper');
 				if ($this->orderbt->coupon_discount > 0 || $this->orderbt->coupon_discount < 0) {
 					?>
 			<tr>
-				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT') ?>:</strong></td>
+				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT') ?></strong></td>
 				<td width="5%" align="right" style="padding-right: 5px;"><?php
 				echo "- ".$this->orderbt->coupon_discount; ?></td>
 			</tr>
