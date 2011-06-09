@@ -1,5 +1,5 @@
 /** 
-* Main CSS file for the "default" theme for VirtueMart
+* Main CSS file for the "default (left to right)" theme for VirtueMart
 * @copyright 2006-2008 soeren
 * @license GNU/GPL
 *
@@ -725,6 +725,19 @@ span.addtocart-button input.notify-button:hover {background-position: 0px -200px
 .browse-view .row .product .spacer span {font-size: 11px;color: #666;}
 .browse-view .row .product .spacer img {max-width: 90%;height: auto;}
 
+/* Order list & container */
+.orderby-displaynumber {margin: 10px 0px 10px 0px;border-bottom: solid #E9E8E8 1px;border-top: solid #E9E8E8 1px;padding:10px 0px;}
+.orderlistcontainer {font-size: 12px;display: inline-block;text-decoration: none;margin: 0px 15px 0px 0px;}
+.orderlistcontainer div.activeOrder {padding:2px 24px 1px 12px; background: #FFF top right no-repeat url(../images/vmgeneral/arrow_down.png);cursor: pointer;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;}
+.orderlistcontainer a {text-decoration:none;display:block;}
+.orderlistcontainer a :hover{text-decoration:none;display:block;color: #EEE;background: #777;}
+.orderlistcontainer div.orderlist {display:none;position:absolute;border: solid #CAC9C9 1px;background: #FFF;cursor: pointer;}
+.orderlistcontainer div.orderlist div {padding: 2px 12px 1px 12px; }
+.orderlistcontainer div.orderlist div:hover {color: #EEE;background: #CAC9C9; }
+
+/* Display # Products Input box */
+.display-number {text-align: right;}
+
 /*////////////////////////////////////
 ////// Related Products View ////////
 ////////////////////////////////////*/
@@ -801,9 +814,6 @@ span.stock-level {font-size: 10px;color: #7d7b7b;}
 .invalid {border-color: #f00;background-color: #ffd;color: #000;}
 label.invalid {color: #f00;}
 
-/* Display # Products Input box */
-display-number {text-align: right;}
-
 /* Page Resutls */
 .page-results {margin-top: 25px;text-align: right;}
 
@@ -815,15 +825,6 @@ display-number {text-align: right;}
 button.save-button {margin-right: 12px;}
 button.save-button, button.cancel-button {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 2px 12px 1px 12px;border: solid #ccc 1px;border-radius: 12px;-webkit-border-radius: 12px;-moz-border-radius: 12px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: left;text-decoration: none;cursor: pointer;}
 button.save-button:hover, button.cancel-button:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;}
-
-/* Order list & container */
-.orderlistcontainer{background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 2px 12px 1px 12px;border: solid #ccc 1px;border-radius: 12px;-webkit-border-radius: 12px;-moz-border-radius: 12px;font-size: 12px;font-weight: bold;background-position: 0px 0px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: left;text-decoration: none;}
-.orderlistcontainer div.activeOrder {padding:0px 24px 0px 12px; background: #FFF top right no-repeat url(../images/vmgeneral/arrow_down.png);border: solid #ccc 1px;cursor: pointer; }
-.orderlistcontainer a {text-decoration:none;display:block;}
-.orderlistcontainer a :hover{text-decoration:none;display:block;color: #EEE;background: #777;}
-.orderlistcontainer div.orderlist {display:none;position:absolute ;border: solid #ccc 1px;background: #FFF;cursor: pointer; }
-.orderlistcontainer div.orderlist div {padding: 2px 12px 1px 12px; }
-.orderlistcontainer div.orderlist div:hover {color: #EEE;background: #777; }
 
 /* Input Details */
 table.user-details {}

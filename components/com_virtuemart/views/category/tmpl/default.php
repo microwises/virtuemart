@@ -35,7 +35,6 @@ jQuery(document).ready(function () {
 ";
 $document = JFactory::getDocument();
 $document->addScriptDeclaration($js);
-
 /* Show child categories */
 
 if ( VmConfig::get('showCategory',1) ) {
@@ -132,7 +131,7 @@ $iBrowseCol = 1;
 $iBrowseProduct = 1;
 
 // Calculating Products Per Row
-$BrowseProducts_per_row = (empty($this->category->products_per_row)) ?  VmConfig::get('products_per_row',3) : $this->category->products_per_row;
+$BrowseProducts_per_row = (empty($this->category->products_per_row)) ?  VmConfig::get('products_per_row',2) : $this->category->products_per_row;
 $Browsecellwidth = ' width'.floor ( 100 / $BrowseProducts_per_row );
 
 // Separator
@@ -143,7 +142,7 @@ $verticalseparator = " vertical-separator";
 
 	<h1><?php echo $this->category->category_name; ?></h1>
 
-	<div>
+	<div class="orderby-displaynumber">
 		<div class="width70 floatleft">
 			<?php echo $this->orderByList; ?>
 		</div>
