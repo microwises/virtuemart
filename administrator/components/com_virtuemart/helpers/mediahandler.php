@@ -622,15 +622,18 @@ class VmMediaHandler {
 
 		$html='';
 		$result = $this->getImagesList($type);
-		$html .= '<div class="detachselectimage icon-16-trash">Detach image</div>';
-		$html .= '<div id="addnewselectimage" class="icon-16-media">Attach New image</div><br/ > ';
+		$html .= '<div class="detachselectimage icon-16-trash">'.JText::_('COM_VIRTUEMART_IMAGE_DETACH').'</div>';
+		$html .= '<div id="addnewselectimage" class="icon-16-media">'.JText::_('COM_VIRTUEMART_IMAGE_ATTACH_NEW').'</div><br/ >';
 		VmConfig::JimageSelectlist();
 
-		$options[] = JHTML::_('select.option', '0' , '--Attach Existing image--', 'virtuemart_media_id' );
+		$options[] = JHTML::_('select.option', '0' , 'COM_VIRTUEMART_IMAGE_ATTACH_EXISTING', 'virtuemart_media_id' );
 		foreach($result as $file){
 			$options[] = JHTML::_('select.option', $file->virtuemart_media_id, $file->file_title, 'virtuemart_media_id' );
 		}
-		if(empty($fileIds)) return  JText::_('COM_VIRTUEMART_NO_MEDIA_FILES').'<br />'.$html;
+		if(empty($fileIds)) {
+			$html .= '<br/ >'.JHTML::_('select.genericlist', $options,'virtuemart_media_id[]',null,'virtuemart_media_id','text',0).'<br />';
+			return  $html;
+		}
 		$text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE_PRIMARY';
 		foreach($fileIds as $k=>$id){
 			$html .= JText::sprintf($text).'<br/ >'.JHTML::_('select.genericlist', $options,'virtuemart_media_id[]',null,'virtuemart_media_id','text',$id).'<br />';

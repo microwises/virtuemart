@@ -95,7 +95,7 @@ class VirtueMartModelOrders extends VmModel {
 		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `virtuemart_order_id`'.$arrow.$order_id;
 		$q.= ' ORDER BY `virtuemart_order_id` '.$dir ;
 		$db->setQuery($q);
-		dump($dir);
+
 		if ($oderId = $db->loadResult()) { 
 			return $oderId ;
 		} 

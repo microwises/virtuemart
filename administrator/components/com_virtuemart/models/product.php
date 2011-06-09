@@ -171,10 +171,13 @@ class VirtueMartModelProduct extends VmModel {
 			$product->categories = $this->getProductCategories($virtuemart_product_id);
 			$product->virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0);
 			if  ($product->virtuemart_category_id >0) {
-				$q = 'SELECT `ordering` FROM `#__virtuemart_product_categories` 
+				$q = 'SELECT `ordering`,`id` FROM `#__virtuemart_product_categories` 
 					WHERE `virtuemart_product_id` = "'.$virtuemart_product_id.'" and virtuemart_category_id='.$product->virtuemart_category_id;
 				$this->_db->setQuery($q);
-    			$product->ordering = $this->_db->loadResult();
+				// change for faster ordering 
+				$ordering = $this->_db->loadObject();
+				$product->ordering = $ordering->ordering;
+				$product->id = $ordering->id; 
 			}
 			if (empty($product->virtuemart_category_id) && isset($product->categories[0])) $product->virtuemart_category_id = $product->categories[0];
 
@@ -320,8 +323,6 @@ class VirtueMartModelProduct extends VmModel {
 	*/
 	private function getProductCategories($virtuemart_product_id=0) {
 
-		if(!empty($this->_db))$this->_db = JFactory::getDBO();
-
 		$categories = array();
 		if ($virtuemart_product_id > 0) {
 			$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `virtuemart_product_id` = "'.$virtuemart_product_id.'"';
@@ -350,44 +351,6 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 		return $products;
-	}
-
-	/**
-	* Load any related products
-	*
-	* @author RolandD
-	* @todo Do we need to give this link a category ID?
-	* @param int $virtuemart_product_id The ID of the product
-	* @return array containing all the files and their data
-	*/
-	public function getRelatedProducts($virtuemart_product_id) {
-		$this->_db = JFactory::getDBO();
-		$q = "SELECT `p`.`virtuemart_product_id`, `product_sku`, `product_name`, related_products
-			FROM `#__virtuemart_products` p, `#__virtuemart_product_relations` `r`
-			WHERE `r`.`virtuemart_product_id` = ".$virtuemart_product_id."
-			AND `p`.published = 1
-			AND FIND_IN_SET(`p`.`virtuemart_product_id`, REPLACE(`r`.`related_products`, '|', ',' )) LIMIT 0, 4";
-		$this->_db->setQuery($q);
-		$related_products = $this->_db->loadObjectList();
-
-		/* Get the price also */
-		if (VmConfig::get('show_prices') == '1') {
-			/* Loads the product price details */
-			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-			$calculator = calculationHelper::getInstance();
-			if(!empty($related_products)){
-				foreach ($related_products as $rkey => $related) {
-					$related_products[$rkey]->price = $calculator->getProductPrices($related->virtuemart_product_id);
-					$cats = $this->getProductCategories($related->virtuemart_product_id);
-					if(!empty($cats))$related->virtuemart_category_id = $cats[0]; //else $related->virtuemart_category_id = 0;
-					/* Add the product link  */
-					$related_products[$rkey]->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$related->virtuemart_product_id.'&virtuemart_category_id='.$related->virtuemart_category_id);
-				}
-			}
-
-		}
-
-		return $related_products;
 	}
 
 
@@ -627,7 +590,7 @@ class VirtueMartModelProduct extends VmModel {
      	/* Pagination */
      	$this->getPagination();
 
-		$cat_xref_table = (JRequest::getInt('virtuemart_category_id', 0) > 0)? ', `#__virtuemart_product_categories` ':'';
+		$cat_xref_table = (JRequest::getInt('virtuemart_category_id', 0) > 0)? ', `#__virtuemart_product_categories` as c ':'';
      	$q = 'SELECT `#__virtuemart_products`.`virtuemart_product_id` FROM `#__virtuemart_products`'.$cat_xref_table.' '.$this->getProductListFilter();
 
      	$this->_db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
@@ -692,8 +655,8 @@ class VirtueMartModelProduct extends VmModel {
      	else // $filters[] = '#__virtuemart_products.`product_parent_id` = 0';
      	/* Category ID */
      	if ( $virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0)) {
-     		$filters[] = '`#__virtuemart_product_categories`.`virtuemart_category_id` = '.$virtuemart_category_id;
-     		$filters[] = '`#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_categories`.`virtuemart_product_id`';
+     		$filters[] = ' c.`virtuemart_category_id` = '.$virtuemart_category_id;
+     		$filters[] = '`#__virtuemart_products`.`virtuemart_product_id` = c.`virtuemart_product_id`';
      	}
      	/* Product name */
      	if (JRequest::getVar('filter_product', false)) $filters[] = '#__virtuemart_products.`product_name` LIKE '.$this->_db->Quote('%'.JRequest::getVar('filter_product').'%');
@@ -735,157 +698,6 @@ class VirtueMartModelProduct extends VmModel {
      	else if ($this->_db->loadResult() == 'N') return false;
     }
 
-    /**
-	 * Retrieve a list of featured products from the database.
-	 *
-	 * @param string $group Specifies what kind of products need to be loaded (featured or latest)
-	 * @param int $categoryId Id of the category to lookup, null for all categories
-	 * @param int $nbrReturnProducts Number of products to return
-	 * @return object List of  products
-	 */
-
-
-    /**
-     * Saves products according to their order
-     * @author RolandD
-     */
-    public function getSaveOrder() {
-//    	$this->_db = JFactory::getDBO();
-    	$mainframe = Jfactory::getApplication('site');
-    	$order = JRequest::getVar('order');
-    	$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
-
-    	/* Check if all the entries are numbers */
-		foreach( $order as $list_id ) {
-			if( !is_numeric( $list_id ) ) {
-				$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_SORT_ERR_NUMBERS_ONLY'), 'error');
-				return false;
-			}
-		}
-
-		/* Get the list of product IDs */
-		$q = "SELECT virtuemart_product_id
-			FROM #__virtuemart_product_categories
-			WHERE virtuemart_category_id = ".$virtuemart_category_id;
-		$this->_db->setQuery($q);
-		$virtuemart_product_ids = $this->_db->loadResultArray();
-
-		foreach( $order as $key => $list_id ) {
-			$q = "UPDATE #__virtuemart_product_categories ";
-			$q .= "SET ordering = ".$list_id;
-			$q .= " WHERE virtuemart_category_id ='".$virtuemart_category_id."' ";
-			$q .= " AND virtuemart_product_id ='".$virtuemart_product_ids[$key]."' ";
-			$this->_db->setQuery($q);
-			$this->_db->query();
-		}
-	}
-
-	/**
-     * Saves products according to their order
-     * @author RolandD
-     */
-    public function getOrderUp() {
-//    	$this->_db = JFactory::getDBO();
-    	$cids = JRequest::getVar('cid');
-    	$cid = (int)$cids[0];
-    	$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
-
-    	$q = "SELECT virtuemart_product_id, ordering
-    		FROM #__virtuemart_product_categories
-    		WHERE virtuemart_category_id = ".$virtuemart_category_id."
-    		ORDER BY ordering";
-    	$this->_db->setQuery($q);
-    	$products = $this->_db->loadAssocList('virtuemart_product_id');
-    	$keys = array_keys($products);
-    	while (current($keys) !== $cid) next($keys);
-
-    	/* Get the previous ID */
-    	$prev_id = prev($keys);
-
-    	/* Check if a previous ordering exists */
-    	if (is_null($products[$prev_id]['ordering'])) {
-    		$products[$prev_id]['ordering'] = $prev_id;
-    	}
-
-    	/* Check if the orderingings are the same */
-    	if ($products[$prev_id]['ordering'] == $products[$cid]['ordering']) {
-    		$products[$cid]['ordering']++;
-    	}
-
-    	/* Update the current product */
-		$q = "UPDATE #__virtuemart_product_categories
-			SET ordering = ".$products[$prev_id]['ordering']."
-			WHERE virtuemart_category_id = ".$virtuemart_category_id."
-			AND virtuemart_product_id = ".$products[$cid]['virtuemart_product_id'];
-		$this->_db->setQuery($q);
-		$this->_db->query();
-
-		/* Check if a next ordering exists */
-    	if (is_null($products[$cid]['ordering'])) {
-    		$products[$cid]['ordering'] = $prev_id+1;
-    	}
-		/* Update the previous product */
-		$q = "UPDATE #__virtuemart_product_categories
-			SET ordering = ".$products[$cid]['ordering']."
-			WHERE virtuemart_category_id = ".$virtuemart_category_id."
-			AND virtuemart_product_id = ".$products[$prev_id]['virtuemart_product_id'];
-		$this->_db->setQuery($q);
-		$this->_db->query();
-	}
-
-	/**
-     * Saves products according to their order
-     * @author RolandD
-     */
-    public function getOrderDown() {
-//    	$this->_db = JFactory::getDBO();
-    	$cids = JRequest::getVar('cid');
-    	$cid = (int)$cids[0];
-    	$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
-
-    	$q = "SELECT virtuemart_product_id, ordering
-    		FROM #__virtuemart_product_categories
-    		WHERE virtuemart_category_id = ".$virtuemart_category_id."
-    		ORDER BY ordering";
-    	$this->_db->setQuery($q);
-    	$products = $this->_db->loadAssocList('virtuemart_product_id');
-    	$keys = array_keys($products);
-    	while (current($keys) !== $cid) next($keys);
-
-    	/* Get the next ID */
-    	$next_id = next($keys);
-
-    	/* Check if a previous ordering exists */
-    	if (is_null($products[$next_id]['ordering'])) {
-    		$products[$next_id]['ordering'] = $next_id;
-    	}
-
-    	/* Check if the orderingings are the same */
-    	if ($products[$next_id]['ordering'] == $products[$cid]['ordering']) {
-    		$products[$cid]['ordering']--;
-    	}
-
-    	/* Update the current product */
-		$q = "UPDATE #__virtuemart_product_categories
-			SET ordering = ".$products[$next_id]['ordering']."
-			WHERE virtuemart_category_id = ".$virtuemart_category_id."
-			AND virtuemart_product_id = ".$products[$cid]['virtuemart_product_id'];
-		$this->_db->setQuery($q);
-		$this->_db->query();
-
-		/* Check if a next ordering exists */
-    	if (is_null($products[$cid]['ordering'])) {
-    		$products[$cid]['ordering'] = $next_id-1;
-    	}
-		/* Update the next product */
-		$q = "UPDATE #__virtuemart_product_categories
-			SET ordering = ".$products[$cid]['ordering']."
-			WHERE virtuemart_category_id = ".$virtuemart_category_id."
-			AND virtuemart_product_id = ".$products[$next_id]['virtuemart_product_id'];
-		$this->_db->setQuery($q);
-		$this->_db->query();
-	}
-
 	//TODO merge getRelatedProducts functions
 	/**
 	 * Get the related products
@@ -908,6 +720,60 @@ class VirtueMartModelProduct extends VmModel {
 //			else return false;
 //		 }
 //	 }
+
+	/* reorder product in one category */
+	 function saveorder($cid , $orders) {
+
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		global $mainframe;
+
+		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0);
+
+		$q = 'SELECT `id`,`ordering` FROM `#__virtuemart_product_categories`
+			WHERE virtuemart_category_id='.$virtuemart_category_id.'
+			ORDER BY `ordering` ASC';
+		$this->_db->setQuery($q);
+		$pkey_orders = $this->_db->loadObjectList();
+
+		$tableOrdering = array();
+		foreach ($pkey_orders as $order) $tableOrdering[$order->id] = $order->ordering;
+		// set and save new ordering
+		foreach  ($orders as $key => $order) $tableOrdering[$key] = $order;
+		asort($tableOrdering);
+		$i = 1 ; $ordered = 0 ; 
+		foreach  ($tableOrdering as $key => $order) {
+			if ($order != $i) {
+				$this->_db->setQuery('UPDATE `#__virtuemart_product_categories` 
+					SET `ordering` = '. $i.'
+					WHERE `id` = ' . (int)$key . ' ');
+				if (! $this->_db->query()){
+					$this->setError($this->_db->getErrorMsg());
+					return false;
+				}
+				$ordered ++ ;  
+			}
+			$i++ ;
+		}
+		if ($ordered) $msg = JText::sprintf('COM_VIRTUEMART_ITEMS_MOVED', $ordered);
+		else $msg = JText::_('COM_VIRTUEMART_ITEMS_NOT_MOVED');
+		$mainframe->redirect('index.php?option=com_virtuemart&view=product&virtuemart_category_id='.$virtuemart_category_id, $msg);
+
+	}
+
+	/**
+	* Moves the order of a record
+	* @param integer The increment to reorder by
+	*/
+	function move($direction) {
+
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+		global $mainframe;
+		// Check for request forgeries
+		$table = $this->getTable('product_categories');
+		$table->move($direction);
+
+		$mainframe->redirect('index.php?option=com_virtuemart&view=product&virtuemart_category_id='.JRequest::getInt('virtuemart_category_id', 0));
+	}
 
 	/**
 	* Store a product
@@ -995,20 +861,6 @@ class VirtueMartModelProduct extends VmModel {
 				$this->_db->setQuery($q);
 				$this->_db->query();
 			}
-		}
-
-		/* Update related products */
-		if (array_key_exists('related_products', $data)) {
-			/* Insert Pipe separated Related Product IDs */
-			$q = "REPLACE INTO #__virtuemart_product_relations (virtuemart_product_id, related_products)";
-			$q .= " VALUES( '".$product_data->virtuemart_product_id."', '".implode('|', $data['related_products'])."') ";
-			$this->_db->setQuery($q);
-			$this->_db->query();
-		}
-		else {
-			$q = "DELETE FROM #__virtuemart_product_relations WHERE virtuemart_product_id='".$product_data->virtuemart_product_id."'";
-			$this->_db->setQuery($q);
-			$this->_db->query();
 		}
 
 		if(!empty($data['virtuemart_media_id']) && !empty($data['virtuemart_media_id'][0]) && !empty($data['active_media_id'] ) ){
@@ -1238,104 +1090,6 @@ class VirtueMartModelProduct extends VmModel {
 	}
 
 
-//    /**
-//    * Add a product to the recent products list
-//    * @author RolandD
-//    */
-//    public function addRecentProduct($virtuemart_product_id, $virtuemart_category_id, $maxviewed) {
-//    	$session = JFactory::getSession();
-//		$recentproducts = $session->get("recentproducts", null);
-//		if (empty($recentproducts)) $recentproducts['idx'] = 0;
-//
-//    	//Check to see if we alread have recent
-//    	if ($recentproducts['idx'] !=0) {
-//    		for($i=0; $i < $recentproducts['idx']; $i++){
-//    			//Check if it already exists and remove and reorder array
-//    			if ($recentproducts[$i]['virtuemart_product_id'] == $virtuemart_product_id) {
-//    				for($k=$i; $k < $recentproducts['idx']-1; $k++){
-//    					$recentproducts[$k] = $recentproducts[$k+1];
-//    				}
-//    				array_pop($recentproducts);
-//    				$recentproducts['idx']--;
-//    			}
-//    		}
-//    	}
-//    	// add product to recently viewed
-//    	$recentproducts[$recentproducts['idx']]['virtuemart_product_id'] = $virtuemart_product_id;
-//    	$recentproducts[$recentproducts['idx']]['virtuemart_category_id'] = $virtuemart_category_id;
-//    	$recentproducts['idx']++;
-//    	//Check to see if we have reached are limit and remove first item
-//    	if($recentproducts['idx'] > $maxviewed+1) {
-//    		for($k=0; $k < $recentproducts['idx']-1;$k++){
-//    			$recentproducts[$k] = $recentproducts[$k+1];
-//    		}
-//    		array_pop($recentproducts);
-//    		$recentproducts['idx']--;
-//    	}
-//    	$session->set("recentproducts", $recentproducts);
-//    }
-//
-//    /**
-//    * Load a list of recent products
-//    * @author RolandD
-//    * @todo Should we setup a session initiator and include the recent products?
-//    *
-//    * @param  int $virtuemart_product_id the ID of the product currently being viewed, don't want it in the list
-//    * @param  int $maxitems the number of items to retrieve
-//	* @return boolean true if there are recent products, false if there are no recent products
-//    */
-//    public function getRecentProducts($virtuemart_product_id=null, $maxitems=5) {
-//    	if ($maxitems == 0) return;
-//
-////    	$this->_db = JFactory::getDBO();
-//    	$session = JFactory::getSession();
-//		$recentproducts = $session->get("recentproducts", null);
-//		if (empty($recentproducts)) $recentproducts['idx'] = 0;
-//
-//		$k=0;
-//		$recent = array();
-//		// Iterate through loop backwards (newest to oldest)
-//		for($i = $recentproducts['idx']-1; $i >= 0; $i--) {
-//			//Check if on current product and don't display
-//			if($recentproducts[$i]['virtuemart_product_id'] == $virtuemart_product_id){
-//				continue;
-//			}
-//			// If we have not reached max products add the next product
-//			if ($k < $maxitems) {
-//				$prod_id = $recentproducts[$i]['virtuemart_product_id'];
-//				$virtuemart_category_id = $recentproducts[$i]['virtuemart_category_id'];
-//				$q = "SELECT product_name, category_name, c.category_flypage,product_s_desc ";
-//				$q .= "FROM #__virtuemart_products as p,#__virtuemart_categories as c,#__virtuemart_product_categories as cx ";
-//				$q .= "WHERE p.virtuemart_product_id = '".$prod_id."' ";
-//				$q .= "AND c.virtuemart_category_id = '".$virtuemart_category_id."' ";
-//				$q .= "AND p.virtuemart_product_id = cx.virtuemart_product_id ";
-//				$q .= "AND c.virtuemart_category_id=cx.virtuemart_category_id ";
-//				$q .= "AND p.published='1' ";
-//				$q .= "AND c.published='1' ";
-//				$q .= "LIMIT 0,1";
-//				$this->_db->setQuery($q);
-//				$product = $this->_db->loadObject();
-//
-//				if ($this->_db->getAffectedRows() > 0) {
-//					$recent[$k]['product_s_desc'] = $product->product_s_desc;
-//					$flypage = $product->category_flypage;
-//					if (empty($flypage)) $flypage = VmConfig::get('flypage');
-//
-//					$recent[$k]['product_url'] = JRoute::_('index.php?option=com_virtuemart&view=product&virtuemart_product_id='.$prod_id.'&virtuemart_category_id='.$virtuemart_category_id.'&flypage='.$flypage);
-//					$recent[$k]['category_url'] = JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$virtuemart_category_id);
-//					$recent[$k]['product_name'] = JFilterInput::clean($product->product_name);
-//					$recent[$k]['category_name'] = $product->category_name;
-////					$recent[$k]['virtuemart_media_id'] = $product->virtuemart_media_id;
-//				}
-//				$k++;
-//			}
-//		}
-//
-//		$session->set("recentproducts", $recent);
-//
-//		if($k == 0) return false;
-//		else return true;
-//    }
 
    	/**
 	* Function Description

@@ -231,9 +231,8 @@ class VmController extends JController{
 		JArrayHelper::toInteger($order);
 
 		$model = $this->getModel($this->_cname);
-		$model->saveorder($cid, $order);
-
-		$msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVE_ORDER_SUCCESS',$this->mainLangKey);
+		if (!$model->saveorder($cid, $order)) $msg = 'error';
+		else $msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVE_ORDER_SUCCESS',$this->mainLangKey);
 		$this->setRedirect( $this->redirectPath, $msg);
 	}
 

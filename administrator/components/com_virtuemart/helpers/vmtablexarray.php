@@ -45,6 +45,46 @@ class VmTableXarray extends VmTable {
 
     }
 
+	/**
+	* swap the ordering of a record in the Xref tables
+	* @param  $direction , 1/-1 The increment to reorder by
+	*/
+	function move($direction) {
+
+    	if(empty($this->_skey) ) {
+    		$this->setError( 'No secondary keys defined in VmTableXarray '.$this->_tbl );
+    		return false;
+    	}
+		$skeyId = JRequest::getInt($this->_skey, 0);
+		// Initialize variables
+		$db		= & JFactory::getDBO();
+		$cid	= JRequest::getVar( $this->_pkey , array(), 'post', 'array' );
+		$order	= JRequest::getVar( 'order', array(), 'post', 'array' );
+
+		$query = 'SELECT `id` WHERE $this->_pkey = '.(int)$cid[0].' AND `virtuemart_category_id` = '.$skeyId ;
+		$this->_db->setQuery( $query );
+		$id = $this->_db->loadResult();
+		$keys = array_keys($order);
+
+		if ($direction >0) $idToSwap = $order[$keys[array_search($id, $keys)]+1]; 
+		else $idToSwap =  $order[$keys[array_search($id, $keys)]-1]; 
+
+		if (isset( $cid[0] )) {
+
+			$query = 'UPDATE `'.$this->_tbl.'` '
+			. ' SET `'.$this->_orderingKey.'` = `'.$this->_orderingKey.'` + '. $direction
+			. ' WHERE `'.$this->_pkey.'` = ' . (int)$cid[0]. 
+			' AND `'.$this->_skey.'`  = ' . $skeyId 
+			;
+			$this->_db->setQuery( $query );
+
+			if (!$this->_db->query())
+			{
+				$err = $this->_db->getErrorMsg();
+				JError::raiseError( 500, $err );
+			}
+		}
+	}
     /**
      * Records in this table are arrays. Therefore we need to overload the load() function.
      *

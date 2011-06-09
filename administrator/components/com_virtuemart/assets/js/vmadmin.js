@@ -11,9 +11,19 @@
 
  jQuery.noConflict();
 
- jQuery(document).ready(function(){
-	 VM.buildMenu();
-	 VM.handleShowElements('click');
+	 jQuery(document).ready(function(){
+		 VM.buildMenu();
+		 VM.handleShowElements('click');
+
+	jQuery('a.orderDown').click( function() {
+		orderingUpDown( 1,jQuery(this));
+	});
+
+	jQuery('a.orderUp').click( function() {
+		orderingUpDown(-1,jQuery(this));
+	});
+
+
  });
 
 
@@ -249,3 +259,12 @@
 	});
 
 })(jQuery);
+
+function orderingUpDown($dir,button) {
+	var ordering = button.closest('td').find('.ordering:first'),
+	id = jQuery('.ordering').index(ordering);
+	orderval = jQuery('.ordering').eq(id).val();
+	orderval2 = jQuery('.ordering').eq(id+$dir).val();
+	jQuery('.ordering').eq(id).val(orderval2);
+	jQuery('.ordering').eq(id+$dir).val(orderval);	
+}

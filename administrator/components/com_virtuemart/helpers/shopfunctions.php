@@ -991,7 +991,66 @@ class ShopFunctions {
 
 		return($str);
 	}
+	/**
+	 * Return the icon to move an item UP
+	 *
+	 * @access	public
+	 * @param	int		$i The row index
+	 * @param	boolean	$condition True to show the icon
+	 * @param	string	$task The task to fire
+	 * @param	string	$alt The image alternate text string
+	 * @return	string	Either the icon to move an item up or a space
+	 * @since	1.0
+	 */
+	function orderUpIcon($i, $condition = true, $task = 'orderup', $alt = 'Move Up', $enabled = true)
+	{
+		$alt = JText::_($alt);
 
+		$html = '&nbsp;';
+		if ($i > 0 )
+		{
+			if($enabled) {
+				$html	= '<a href="#reorder"  class="orderUp" title="'.$alt.'">';
+				$html	.= '   <img src="images/uparrow.png" width="16" height="16" border="0" alt="'.$alt.'" />';
+				$html	.= '</a>';
+			} else {
+				$html	= '<img src="images/uparrow0.png" width="16" height="16" border="0" alt="'.$alt.'" />';
+			}
+		}
+
+		return $html;
+	}
+
+	/**
+	 * Return the icon to move an item DOWN
+	 *
+	 * @access	public
+	 * @param	int		$i The row index
+	 * @param	int		$n The number of items in the list
+	 * @param	boolean	$condition True to show the icon
+	 * @param	string	$task The task to fire
+	 * @param	string	$alt The image alternate text string
+	 * @return	string	Either the icon to move an item down or a space
+	 * @since	1.0
+	 */
+	function orderDownIcon($i, $n, $condition = true, $task = 'orderdown', $alt = 'Move Down', $enabled = true)
+	{
+		$alt = JText::_($alt);
+
+		$html = '&nbsp;';
+		if ($i < $n -1 )
+		{
+			if($enabled) {
+				$html	= '<a href="#reorder" class="orderDown" title="'.$alt.'">';
+				$html	.= '  <img src="images/downarrow.png" width="16" height="16" border="0" alt="'.$alt.'" />';
+				$html	.= '</a>';
+			} else {
+				$html	= '<img src="images/downarrow0.png" width="16" height="16" border="0" alt="'.$alt.'" />';
+			}
+		}
+
+		return $html;
+	}
 
 }
 

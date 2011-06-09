@@ -62,14 +62,13 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 <br clear="all" />
 <div style="text-align: left;">
 <?php
-$productlist = $this->productlist;
-$pagination = $this->pagination;
+$this->productlist
 
 ?>
 	<table class="adminlist">
 	<thead>
 	<tr>
-		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productlist); ?>')" /></th>
+		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->productlist); ?>')" /></th>
 		<th><?php echo JHTML::_('grid.sort', $col_product_name, 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<?php if (!$product_parent_id ) { ?>
                 <th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILDREN_OF'); ?></th>
@@ -84,8 +83,8 @@ $pagination = $this->pagination;
 		$num_rows = 0;
 		if( $virtuemart_category_id ) { ?>
 			<th>
-				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_REORDER'); ?>
-				<?php echo JHTML::_('grid.order', $productlist); //vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_FIELDMANAGER_REORDER', 'c.ordering', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
+				<?php echo JHTML::_('grid.order', $this->productlist); //vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?>
 			</th>
 		<?php } ?>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_MANUFACTURER_S', 'mf_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
@@ -97,11 +96,11 @@ $pagination = $this->pagination;
 	</thead>
 	<tbody>
 	<?php
-	if (count($productlist) > 0) {
+	if ($total = count($this->productlist) ) {
 		$i = 0;
 		$k = 0;
 		$keyword = JRequest::getVar('keyword');
-		foreach ($productlist as $key => $product) {
+		foreach ($this->productlist as $key => $product) {
 			$checked = JHTML::_('grid.id', $i , $product->virtuemart_product_id,null,'virtuemart_product_id');
 			$published = JHTML::_('grid.published', $product, $i );
 			?>
@@ -149,10 +148,10 @@ $pagination = $this->pagination;
 				?></td>
 				<!-- Reorder only when category ID is present -->
 				<?php if( $virtuemart_category_id ) { ?>
-					<td align="center" class="order">
-						<span><?php echo $pagination->orderUpIcon( $i, $i > 0);?></span>
-						<span><?php echo $pagination->orderDownIcon( $i, $pagination->total, $i-1 <= count($productlist));?></span>
-						<input type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $product->ordering; ?>" style="text-align: center" />
+					<td class="order">
+						<span><?php echo ShopFunctions::orderUpIcon( $i, true, 'orderup', 'Move Up' ); ?></span>
+						<span><?php echo ShopFunctions::orderDownIcon( $i, $total, true, 'orderdown', 'Move Down' ); ?></span>
+						<input class="ordering" type="text" name="order[<?php echo $product->id?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $product->ordering; ?>" style="text-align: center" />
 						<?php // echo vmCommonHTML::getOrderingField( $product->ordering ); ?>
 					</td>
 				<?php } ?>
@@ -176,7 +175,7 @@ $pagination = $this->pagination;
 	<tfoot>
 		<tr>
 		<td colspan="16">
-			<?php echo $pagination->getListFooter(); ?>
+			<?php echo $this->pagination->getListFooter(); ?>
 		</td>
 		</tr>
 	</tfoot>
@@ -193,4 +192,5 @@ $pagination = $this->pagination;
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
+
 <?php AdminMenuHelper::endAdminArea(); ?>

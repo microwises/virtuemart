@@ -119,7 +119,7 @@ if( $this->pagination->limit < $nrows ){
 				<td align="center" class="order">
 					<span><?php echo $this->pagination->orderUpIcon( $i, ($row->category_parent_id == 0 || $row->category_parent_id == @$this->categories[$this->rowList[$i - 1]]->category_parent_id), 'orderUp', 'Move Up'); ?></span>
 					<span><?php echo $this->pagination->orderDownIcon( $i, $nrows, ($row->category_parent_id == 0 || $row->category_parent_id == @$this->categories[$this->rowList[$i + 1]]->category_parent_id), 'orderDown', 'Move Down'); ?></span>
-					<input type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $row->ordering; ?>" style="text-align: center" />
+					<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $row->ordering; ?>" style="text-align: center" />
 				</td>
 			</tr>
 		<?php

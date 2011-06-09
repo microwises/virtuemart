@@ -155,9 +155,9 @@ class VirtuemartViewProduct extends JView {
 				}
 
 				/* Get the related products */
-				$related_products = $product_model->getRelatedProducts($product->virtuemart_product_id);
-				if (!$related_products) $related_products = array();
-				$lists['related_products'] = JHTML::_('select.genericlist', $related_products, 'related_products[]', 'autocomplete="off" multiple="multiple" size="10" ondblclick="removeSelectedOptions(\'related_products\')"', 'id', 'text', $related_products);
+				// $related_products = $product_model->getRelatedProducts($product->virtuemart_product_id);
+				// if (!$related_products) $related_products = array();
+				// $lists['related_products'] = JHTML::_('select.genericlist', $related_products, 'related_products[]', 'autocomplete="off" multiple="multiple" size="10" ondblclick="removeSelectedOptions(\'related_products\')"', 'id', 'text', $related_products);
 
 				/* Load waiting list */
 				if ($product->virtuemart_product_id) {
@@ -314,7 +314,7 @@ class VirtuemartViewProduct extends JView {
 				JToolBarHelper::custom('createchild', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_CHILD'), true);
 				JToolBarHelper::custom('cloneproduct', 'copy', 'copy', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
 				JToolBarHelper::custom('addrating', 'default', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);
-				ShopFunctions::addStandardDefaultViewCommands(false);
+				ShopFunctions::addStandardDefaultViewCommands();
 				$lists = array_merge($lists , ShopFunctions::addStandardDefaultViewLists($model));
 
 
