@@ -292,6 +292,54 @@ class VirtueMartModelUserfields extends VmModel {
 		return true;
 	}
 
+	public function getUserFieldsFor($layoutName, $type,$userId = -1){
+		
+		//Here we define the fields to skip
+		if($layoutName=='edit'){
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
+						, 'address_type', 'bank', 'email');
+		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $userId === 0){
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed');
+
+		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1)){
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed');
+
+		} else if ($layoutName=='cart'){	
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2', 'address_type', 'bank');			
+
+		} else {
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
+						, 'address_type', 'bank');
+		}
+
+		//Here we get the fields
+		if ($type == 'BT') {
+			$userFields = $this->getUserFields(
+					 'account'
+					,	array() // Default toggles
+					,	$skips// Skips
+			);
+		} else {
+			$userFields = $this->getUserFields(
+				 'shipping'
+				, array() // Default toggles
+				, $skips
+			);
+		}
+
+		//Small ugly hack to make registering optional
+		if($layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $userId === 0){
+			foreach($userFields as $field){
+				if($field->name == 'name' || $field->name == 'username' || $field->name == 'password' || $field->name == 'password2'){
+					$field->required = 0;
+					$field->value = '';
+					$field->default = '';
+				} 
+			}
+		}
+		
+		return $userFields;
+	}
 	/**
 	 * Retrieve an array with userfield objects
 	 *
@@ -570,7 +618,6 @@ class VirtueMartModelUserfields extends VmModel {
 					break;
 
 				case 'virtuemart_state_id':
-					dump($_fld,'my fld');
 					
 					// The table data can contain the virtuemart_state_id or the state name
 					if (!isset($_userData->{$_fld->name}) && isset($_userData->state)) {
@@ -583,7 +630,7 @@ class VirtueMartModelUserfields extends VmModel {
 													false, 
 													$_prefix
 													);
-					dump($_return['fields'][$_fld->name]['formcode'],'my formcode');
+
 					// Translate the value from ID to name
 					$_return['fields'][$_fld->name]['value'] = shopFunctions::getStateByID($_return['fields'][$_fld->name]['value']);
 					break;

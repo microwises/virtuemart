@@ -888,8 +888,19 @@ class VirtueMartCart  {
 		return $this->cartData ;
 	}
 	
+	function getCartAdressData($type){
+		
+		$userAddressData = new stdClass();
+		if(!empty($this->$type)){
+			$data = $this->$type;
+			foreach ($data as $k => $v) {
+				$userAddressData->{$k} = $v;
+			}
+		}
+		return $userAddressData;
+	}
 	
-	function getAddress ($model, $fields, $type){
+/*	function getAddress ($model, $fields, $type){
 	
 		$address = new stdClass();
 		if(!empty($this->$type)){
@@ -901,7 +912,7 @@ class VirtueMartCart  {
 		
 		$data = $model->getUserFieldsByUser($fields, $address);
 		return $data;
-	}
+	}*/
 
 	function saveAddressInCart($data, $type) {
 	

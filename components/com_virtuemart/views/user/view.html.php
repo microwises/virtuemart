@@ -148,53 +148,11 @@ class VirtuemartViewUser extends JView {
 	 */
 	function setUserFieldsForView($layoutName){
 
-//		$type = JRequest::getVar('addrtype', 'BT');		
-//		$userFields = $this->_model->getUserDataInFields($this->_userDetails,$type);		
-//		dump($userFields,'Userfields');
-
 		$type = JRequest::getVar('addrtype', 'BT');
 		$this->assignRef('address_type', $type);
-
-		//Here we define the fields to skip
-		if($layoutName=='edit'){
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
-						, 'address_type', 'bank', 'email');
-		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $this->userDetails->JUser->id === 0){
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed');
-
-		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1)){
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed');
-		} else {
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
-						, 'address_type', 'bank');
-		}
-
-		//Here we get the fields
-		if ($type == 'BT') {
-			$_userFields = $this->_userFieldsModel->getUserFields(
-					 'account'
-					, array() // Default toggles
-					,  $skips// Skips
-			);
-		} else {
-			$_userFields = $this->_userFieldsModel->getUserFields(
-				 'shipping'
-				, array() // Default toggles
-				, $skips
-			);
-		}
-
-		//Small ugly hack to make registering optional
-		if($layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $this->userDetails->JUser->id === 0){
-			foreach($_userFields as $field){
-				if($field->name == 'name' || $field->name == 'username' || $field->name == 'password' || $field->name == 'password2'){
-					$field->required = 0;
-					$field->value = '';
-					$field->default = '';
-				} 
-			}
-		}
-				 
+		
+		$userFields = $this->_userFieldsModel->getUserFieldsFor($layoutName,$type,$this->userDetails->JUser->id);
+			
 		 //for register
 		if(empty($this->_userDetailsList)){
 			$this->_userDetailsList=0;
@@ -202,40 +160,34 @@ class VirtuemartViewUser extends JView {
 
 		$preFix='';
 		//Here we set the data to fill the fields
-		if($type=='BT'){
-			self::getUserData($type);
-			$virtuemart_userinfo_id = JRequest::getVar('virtuemart_userinfo_id', 0);
-			$userAddressData = $this->_userDetailsList;
-		} else {
-			$preFix='shipto_';
-			$userInfoID = JRequest::getVar('virtuemart_userinfo_id', 0);
-			if(!empty($userInfoID)) {
-				$userAddressData = $this->_userDetails->userInfo[$userInfoID];
+		if(!empty($this->_cuid)){
+			if($type=='BT'){
+				self::getUserData($type);
+				$virtuemart_userinfo_id = JRequest::getVar('virtuemart_userinfo_id', 0);
+				$userAddressData = $this->_userDetailsList;
 			} else {
-				$userAddressData = null; // New address being added
+				$preFix='shipto_';
+				$userInfoID = JRequest::getVar('virtuemart_userinfo_id', 0);
+				if(!empty($userInfoID)) {
+					$userAddressData = $this->_userDetails->userInfo[$userInfoID];
+				} else {
+					$userAddressData = null; // New address being added
+				}
+				$this->assignRef('userInfoID', $userInfoID);
 			}
-			$this->assignRef('userInfoID', $userInfoID);
+
+		} else {
+			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+			$cart = VirtueMartCart::getCart(false);
+			$userAddressData = $cart->getCartAdressData($type);
+
 		}
 
-		//TODO attention, this is the function which actually loads the data into the field.
-		// The values are saved in $this->_userDetailsList
-		if(!empty($this->_cuid)){
-			$userFields = $this->_userFieldsModel->getUserFieldsByUser(
-							 $_userFields
+		$userFields = $this->_userFieldsModel->getUserFieldsByUser(
+							 $userFields
 							,$userAddressData
 							,$preFix
 							);
-		} else { //the anonymous case
-
-			//We may move this to the helper of course, but for developing I just wanna get it working
-			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-			$cart = VirtueMartCart::getCart(false);
-			$userFields = $cart->getAddress(
-				 $this->_userFieldsModel
-				,$_userFields
-				,$type
-			);
-		}
 
 		$this->assignRef('userFields', $userFields);
 		return $userFields;

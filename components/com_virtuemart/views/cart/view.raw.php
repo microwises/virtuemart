@@ -110,7 +110,33 @@ class VirtueMartViewCart extends JView {
 
 	private function prepareAddressDataInCart(){
 
-		$userFieldsModel = $this->getModel('userfields');
+		$userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
+
+		$BTaddress['fields']= array();
+		if(!empty($this->_cart->BT)){
+			$userFieldsBT = $userFieldsModel->getUserFieldsFor('cart','BT');
+			$userAddressData = $this->_cart->getCartAdressData('BT');
+			$BTaddress = $userFieldsModel->getUserFieldsByUser(
+							 $userFieldsBT
+							,$userAddressData
+							);
+			
+		}
+		$this->assignRef('BTaddress',$BTaddress['fields']);
+
+		$STaddress['fields']= array();
+		if(!empty($this->_cart->ST)){
+			$userFieldsST = $userFieldsModel->getUserFieldsFor('cart','ST');
+			$userAddressData = $this->_cart->getCartAdressData('ST');
+			$STaddress = $userFieldsModel->getUserFieldsByUser(
+							 $userFieldsST
+							,$userAddressData
+							);
+			
+		}
+		$this->assignRef('STaddress',$STaddress['fields']);
+		
+/*		$userFieldsModel = $this->getModel('userfields');
 
 		//Here we define the fields to skip
 		$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
@@ -154,7 +180,7 @@ class VirtueMartViewCart extends JView {
 
 		}
 
-		$this->assignRef('STaddress',$STaddress['fields']);
+		$this->assignRef('STaddress',$STaddress['fields']);*/
 	}
 
 	private function prepareVendor(){

@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
             <tr>
                 <td width="110" class="key">
                     <label for="title">
-                       <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SHIPPING_CARRIER_CLASS_NAME_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_CARRIER_CLASS_NAME'); ?></span>:
+                       <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SHIPPING_CARRIER_CLASS_NAME_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_CARRIER_CLASS_NAME'); ?></span>
                     </label>
                 </td>
                 <td>
@@ -58,7 +58,7 @@ defined('_JEXEC') or die('Restricted access');
             <tr>
                 <td width="110" class="key">
                     <label for="title">
-<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>:
+<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
                     </label>
                 </td>
                 <td>
@@ -66,7 +66,7 @@ defined('_JEXEC') or die('Restricted access');
                 </td>
             </tr>
             <tr>
-                <td class="key"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?>?</td>
+                <td class="key"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?></td>
                 <td><fieldset class="radio"><?php echo JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $this->carrier->published); ?></fieldset></td>
             </tr>
         </table>

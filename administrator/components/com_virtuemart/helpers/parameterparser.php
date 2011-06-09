@@ -248,7 +248,6 @@ class vmParameters extends JParameter {
             //$result[0] = $description;
         }
 
-       // dump($this->_methods, '_form_' . $type);
         if (in_array('_form_' . $type, $this->_methods)) {
 
             $value = $this->get($name);

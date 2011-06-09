@@ -151,17 +151,5 @@ class VirtueMartModelState extends VmModel {
 		}
 	}
 
-	/**
-	 * Retireve a full list of countries from the database.
-	 *
-     * @author jseros
-	 * @return object List of state objects
-	 */
-	public function getFullStates($countryId)
-	{
-		$this->setState('limitstart', 0);
-		$this->setState('limit', 5000);
-		return $this->getStates($countryId);
-	}
 }
 // pure php no closing tag

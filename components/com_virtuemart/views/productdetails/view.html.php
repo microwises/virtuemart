@@ -96,7 +96,7 @@ class VirtueMartViewProductdetails extends JView {
 		$product->neighbours = $product_model->getNeighborProducts($product);
 //		if(!empty($product->neighbours) && is_array($product->neighbours) && !empty($product->neighbours[0]))$product_model->addImages($product->neighbours);
 
-		$product->related = $product_model->getRelatedProducts($virtuemart_product_id);
+//		$product->related = $product_model->getRelatedProducts($virtuemart_product_id);
 //		if(!empty($product->related) && is_array($product->related) && !empty($product->related[0]))$product_model->addImages($product->related);
 
 		/* Load the category */

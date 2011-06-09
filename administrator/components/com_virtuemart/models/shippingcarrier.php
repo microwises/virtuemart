@@ -188,7 +188,7 @@ class VirtueMartModelShippingCarrier extends VmModel {
     public function store()
 	{
 		$data = JRequest::get('post');
-		//dump();
+
 		if(isset($data['params'])){
 			$params = new JParameter('');
 			$params->bind($data['params']);

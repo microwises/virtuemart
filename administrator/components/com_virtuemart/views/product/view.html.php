@@ -124,7 +124,6 @@ class VirtuemartViewProduct extends JView {
 				$currency_model = $this->getModel('currency');
 
 				$vendor_model->setId(1);
-				dump($vendor_model,'vendormodel with id = 1');
 				$vendor = $vendor_model->getVendor();
 				if(empty($product->product_currency)){
 					$product->product_currency = $vendor->vendor_currency;

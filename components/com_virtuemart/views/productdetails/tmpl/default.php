@@ -294,7 +294,7 @@ if (empty ( $this->product )) {
 	?>
 
 	<?php // Related Products
-	if ($this->product->related && !empty($this->product->related)) {
+/*	if ($this->product->related && !empty($this->product->related)) {
 		$iRelatedCol = 1;
 		$iRelatedProduct = 1;
 		$RelatedProducts_per_row = 4 ;
@@ -334,7 +334,7 @@ if (empty ( $this->product )) {
 								echo JHTML::link($related->link, $related->images[0]->displayMediaThumb('title="'.$related->product_name.'"')); ?>
 
 								<div class="product-price">
-								<?php /** @todo Format pricing */ ?>
+								<?php /** @todo Format pricing  ?>
 								<?php if (is_array($related->price)) echo $related->price['salesPrice']; ?>
 								</div>
 
@@ -365,7 +365,7 @@ if (empty ( $this->product )) {
 			</div>
 		<?php } ?>
 		</div>
-	<?php } ?>
+	<?php } */ ?>
 
 
 

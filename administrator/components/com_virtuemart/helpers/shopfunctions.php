@@ -263,7 +263,7 @@ class ShopFunctions {
 		VmConfig::JcountryStateList() ;
 		$attrs['class'] = 'dependent['. $dependentField .']';
 
-		$listHTML = JHTML::_('select.genericlist', $states, $idA,  $attrs, $id, $name, $stateId, $id);
+	//	$listHTML = JHTML::_('select.genericlist', $states, $idA,  $attrs, $id, $name, $stateId, $id);
 		
 		return $listHTML;
 	}
