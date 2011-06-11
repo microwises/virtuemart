@@ -167,8 +167,8 @@ class vmParameters extends JParameter {
      * @author Sören, Max Milbers
      * @return string HTML
      */
-
-    function xxrender($name='params') {
+/* removed it and using the joomla one .. so we can use Jelements
+    function render($name='params') {
 
         if (is_object($this->_xml[$this->_group])) {
 
@@ -212,7 +212,7 @@ class vmParameters extends JParameter {
             return '<textarea name="$name" cols="40" rows="10" class="text_area">' . $this->_raw . '</textarea>';
         }
     }
-
+*/
     /**
      *
      * @author Sören, Max Milbers

@@ -455,21 +455,6 @@ class ShopFunctions {
 		return $_r->fld;
 	}
 
-	public function getShippingRateDetails($_id)
-	{
-		$_db = JFactory::getDBO();
-
-		$_q = 'SELECT c.shipping_carrier_name AS carrier '
-			. ', s.shipping_rate_name AS name '
-			. 'FROM `#__virtuemart_shippingrates` AS s '
-			. ', `#__virtuemart_shippingcarriers` AS c '
-			. 'WHERE s.virtuemart_shippingrate_id = ' . $_id . ' '
-			. 'AND s.shipping_rate_carrier_id = c.virtuemart_shippingcarrier_id '
-		;
-		$_db->setQuery($_q);
-		return $_db->loadObject();
-	}
-
 	/**
 	 * Print a select-list with enumerated categories
 	 *

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install version="1.5" type="plugin" group="vmshipper" >
+    <name>VMSHIPPER_WEIGHT_COUNTRIES_PLUGIN</name>
+    <author>Valérie Isaksen</author>
+    <creationdate>2011</creationdate>
+    <copyright>2011 alatak.net</copyright>
+    <license>GNU/GPL</license>
+    <authoremail></authoremail>
+    <authorUrl>http://www.alatak.net</authorUrl>
+    <version>1.0</version>
+    <description>VMSHIPPER_WEIGHT_COUNTRIES_PLUGIN_DESC</description>
+    <element>standard</element>
+    <files>
+        <filename plugin="weight_countries">weight_countries.php</filename>
+    </files>
+
+    <files>
+        <filename plugin="weight_countries">weight_countries.php</filename>
+
+    </files>
+    <params addpath="/administrator/components/com_virtuemart/elements">
+        <param type="vmjpluginwarning" />
+        <param type="spacer" default="VMSHIPPER_WEIGHT_COUNTRIES" level="level1" />
+        <param name="shipping_name" type="text" size="50" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_NAME" description="VMSHIPPER_WEIGHT_COUNTRIES_NAME_DESC"/>
+        <param name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_COUNTRIES" description="VMSHIPPER_WEIGHT_COUNTRIES_COUNTRIES_DESC"/>
+        <param name="zip_start" type="text" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_ZIP_START" description="VMSHIPPER_WEIGHT_COUNTRIES_ZIP_START_DESC"/>
+        <param name="zip_stop" type="text" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_ZIP_STOP" description="VMSHIPPER_WEIGHT_COUNTRIES_ZIP_STOP_DESC"/>
+        <param name="weight_start" type="text" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_START" description="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_START_DESC"/>
+        <param name="weight_stop" type="text" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_STOP" description="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_STOP_DESC"/>
+        <param name="rate_value" type="text"   label="VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE" description="VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE_DESC" />
+        <param name="package_fee" type="text"   label="VMSHIPPER_WEIGHT_COUNTRIES_PACKAGE_FEE" description="VMSHIPPER_WEIGHT_COUNTRIES_PACKAGE_FEE_DESC" />
+        <param name="currency" type="vmcurrencies" scope="com_virtuemart" default="978" label="VMSHIPPER_WEIGHT_COUNTRIES_CURRENCY" description="VMSHIPPER_WEIGHT_COUNTRIES_CURRENCY_DESC" />
+        <param name="tax" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPPER_WEIGHT_COUNTRIES_TAX" description="VMSHIPPER_WEIGHT_COUNTRIES_TAX_DESC" />
+    </params>
+</install>

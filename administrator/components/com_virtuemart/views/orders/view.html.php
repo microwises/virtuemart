@@ -127,7 +127,9 @@ class VirtuemartViewOrders extends JView {
 					}
 				}
 			}
-			$_shippingInfo = ShopFunctions::getShippingRateDetails($orderbt->ship_method_id);
+			
+                       // $_shippingInfo = ShopFunctions::getShippingRateDetails($orderbt->ship_method_id);
+
 			/* Assign the data */
 			$this->assignRef('order', $order);
 			$this->assignRef('orderID', $_orderID);

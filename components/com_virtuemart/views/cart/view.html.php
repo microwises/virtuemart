@@ -293,7 +293,7 @@ class VirtueMartViewCart extends JView {
 	}
 
 	private function lSelectShipper(){
-		$_selectedShipper = (empty($this->_cart->shipper_id) ? 0 : $this->_cart->shipper_id);
+		$_selectedShipper = (empty($this->_cart->virtuemart_shippingcarrier_id) ? 0 : $this->_cart->virtuemart_shippingcarrier_id);
 		$this->assignRef('selectedShipper',$_selectedShipper);
 	}
 

@@ -973,36 +973,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarriers` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shipping Carriers created from the shipper plugins' AUTO_INCREMENT=1 ;
 
 
--- --------------------------------------------------------
---
--- Table structure for table `#__virtuemart_shippingrates`
---
 
-CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingrates` (
-  `virtuemart_shippingrate_id` SERIAL,
-  `virtuemart_vendor_id` int(11) DEFAULT NULL,
-  `shipping_rate_name` varchar(255) NOT NULL DEFAULT '',
-  `shipping_rate_carrier_id` int(11) NOT NULL DEFAULT '0',
-  `shipping_rate_country` text NOT NULL,
-  `shipping_rate_zip_start` varchar(32) NOT NULL DEFAULT '',
-  `shipping_rate_zip_end` varchar(32) NOT NULL DEFAULT '',
-  `shipping_rate_weight_start` decimal(10,3) NOT NULL DEFAULT '0.000',
-  `shipping_rate_weight_end` decimal(10,3) NOT NULL DEFAULT '0.000',
-  `shipping_rate_value` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `shipping_rate_package_fee` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `shipping_rate_virtuemart_currency_id` int(11) NOT NULL DEFAULT '0',
-  `shipping_rate_vat_id` int(11) NOT NULL DEFAULT '0',
-  `ordering` int(2) NOT NULL DEFAULT '0',
-  `shared` tinyint(1) NOT NULL,
-  `published` tinyint(1) NOT NULL DEFAULT '1',
-  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created_by` int(11) NOT NULL DEFAULT 0,
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) NOT NULL DEFAULT 0,
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_shippingrate_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shipping Rates for each carrier' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

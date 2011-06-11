@@ -19,12 +19,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); 
 
-		if($this->paym->paym_element){
+    if($this->paym->paym_element){
 	        //$parameters = new vmParameters($this->paym->paym_params, JPATH_PLUGINS.DS.'vmpayment'.DS.basename($this->paym->paym_element).'.xml', 'plugin' );
                 $parameters = new vmParameters($this->paym->paym_params,  $this->paym->paym_element , 'plugin' ,'vmpayment');
                
 	        echo $rendered = $parameters->render();
-        }
+
+        } else {
+             echo JText::_('COM_VIRTUEMART_SELECT_PAYMENT_METHOD' );
+           }
         echo '<br />
                 <span class="hasTip" title="'.JText::_('COM_VIRTUEMART_PAYMENT_EXTRAINFO_TIP').'">
                 <strong>'.JText::_('COM_VIRTUEMART_PAYMENT_EXTRAINFO').':</strong></span>';

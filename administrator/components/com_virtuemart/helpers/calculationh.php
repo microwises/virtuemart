@@ -338,8 +338,7 @@ class calculationHelper {
 	public function getCheckoutPrices($cart){
 
 		$this->_cart = $cart;
-//		echo '<br />cart: <pre>'.print_r($cart).'</pre><br />';
-//		echo '<br />virtuemart_shippingrate_id '.$cart->virtuemart_shippingrate_id.'<br />';
+
 		$pricesPerId = array();
 		$this->_cartPrices = array();
 		$this->_cartData = array();
@@ -412,9 +411,11 @@ class calculationHelper {
 		$this->_cartData['dBTaxRulesBill'] = $dBTaxRules= $this->gatherEffectingRulesForBill('DBTaxBill');
 //		$cBRules = $this->gatherEffectingRulesForCoupon($couponId);
 
-		$shippingRateId = empty($cart->virtuemart_shippingrate_id) ? 0 : $cart->virtuemart_shippingrate_id;
+                //
+                $shippercarrier_id = empty($cart->virtuemart_shippingcarrier_id) ? 0 : $cart->virtuemart_shippingcarrier_id;
 
-		$this->calculateShipmentPrice($shippingRateId);
+		//$this->calculateShipmentPrice($cart, $shippingRateId);
+                $this->calculateShipmentPrice($cart, $shippercarrier_id);
 
 //		$pBRules = $this->gatherEffectingRulesForPayment($paymId);
 		$this->_cartData['taxRulesBill'] = $taxRules  = $this->gatherEffectingRulesForBill('TaxBill');
@@ -732,7 +733,7 @@ class calculationHelper {
 	 * @param 	$code 	The Id of the coupon
 	 * @return 	$rules 	ids of the coupons
 	 */
-	function calculateShipmentPrice($ship_id){
+	function calculateShipmentPrice($cart, $ship_id){
 
 		$this->_cartData['shippingName'] = JText::_('COM_VIRTUEMART_CART_NO_SHIPMENT_SELECTED');
 		$this->_cartPrices['shippingValue'] = 0; //could be automatically set to a default set in the globalconfig
@@ -740,23 +741,26 @@ class calculationHelper {
 		$this->_cartPrices['shippingTotal'] = 0;
 		$this->_cartPrices['salesPriceShipping'] = 0;
 		if (empty($ship_id)) return ;
+                
+// Handling shipping plugins
+                if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+		JPluginHelper::importPlugin('vmshipper');
+ 		$_dispatcher = JDispatcher::getInstance();
+ 		$_retValues = $_dispatcher->trigger('plgVmOnShipperSelectedCalculatePrice',
+ 			array('cart'=> $cart, 
+                            '_selectedRate' => $ship_id,
+                            &$shipping ));
 
-//		$_dispatcher = JDispatcher::getInstance();
-//		$_retValues = $_dispatcher->trigger('plgVmOnShipperSelected',
-//			array('_selectedRate' => $ship_id));
 
-		if (!class_exists('VirtueMartModelShippingRate')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shippingrate.php');
-		$_sRate = new VirtueMartModelShippingRate();
-		$shipping = $_sRate->getShippingRatePrices($ship_id, true);
+		$this->_cartPrices['shippingValue'] =  $this->_currencyDisplay->convertCurrencyTo($shipping->shipping_currency_id,$shipping->shipping_value );
+		$this->_cartData['shippingName'] = $shipping->shipping_name;
 
-		$this->_cartPrices['shipping_rate_value'] = $this->_currencyDisplay->convertCurrencyTo($shipping['shipping_rate_virtuemart_currency_id'],$shipping['shipping_rate_value']); //could be automatically set to a default set in the globalconfig
-		$this->_cartPrices['shipping_rate_package_fee'] = $this->_currencyDisplay->convertCurrencyTo($shipping['shipping_rate_virtuemart_currency_id'],$shipping['shipping_rate_package_fee']);
-		$this->_cartPrices['shippingValue'] =  $this->_currencyDisplay->convertCurrencyTo($shipping['shipping_rate_virtuemart_currency_id'],$shipping['shipping_rate_value'] + $shipping['shipping_rate_package_fee']);
-		$this->_cartData['shippingName'] = $shipping['shipping_carrier_name'].': '. $shipping['shipping_rate_name'];
+
+
 
 		$taxrules = array();
-		if(!empty($shipping['shipping_rate_vat_id'])){
-			$q= 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="'.$shipping['shipping_rate_vat_id'].'" ' ;
+		if(!empty($shipping->shipping_rate_vat_id)){
+			$q= 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="'.$shipping->shipping_rate_vat_id.'" ' ;
 			$this->_db->setQuery($q);
 			$taxrules = $this->_db->loadAssocList();
 		}

@@ -55,10 +55,10 @@ class VirtuemartViewCategory extends JView {
 
 		$categoryModel = $this->getModel('category');
 		$productModel = $this->getModel('product');
-	    $categoryId = JRequest::getInt('virtuemart_category_id', 0);
-	    $vendorId = 1;
+                $categoryId = JRequest::getInt('virtuemart_category_id', 0);
+                $vendorId = 1;
 
-	    $category = $categoryModel->getCategory($categoryId);
+                $category = $categoryModel->getCategory($categoryId);
 		$search = JRequest::getVar('search') ;
 		if(empty($category->virtuemart_vendor_id) && $search == null ) {
 

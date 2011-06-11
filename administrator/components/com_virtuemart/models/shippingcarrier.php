@@ -99,30 +99,6 @@ class VirtueMartModelShippingCarrier extends VmModel {
     }
 
 
-    /**
-     * Delete all rate records for a given shipping carrier id.
-     *
-     * @author RickG
-     * @return boolean True is the remove was successful, false otherwise.
-     */
-    function deleteShippingCarrierRates($carrierId = '') {
-	if ($carrierId) {
-	    $db = JFactory::getDBO();
-
-	    $query = 'DELETE FROM `#__virtuemart_shippingrates`  WHERE `shipping_rate_carrier_id` = "' . $carrierId . '"';
-	    $db->setQuery($query);
-	    if ($db->query()) {
-		return true;
-	    }
-	    else {
-		return false;
-	    }
-	}
-	else {
-	    return false;
-	}
-    }
-
 
     /**
      * Retireve a list of shipping carriers from the database.
@@ -131,54 +107,26 @@ class VirtueMartModelShippingCarrier extends VmModel {
      * @return object List of shipping carrier objects
      */
     public function getShippingCarriers() {
-	$query = 'SELECT * FROM `#__virtuemart_shippingcarriers` ';
+        if (VmConfig::isJ15()) {
+			$table = '#__plugins';
+			$enable = 'published';
+			$ext_id = 'id';
+		}
+		else {
+			$table = '#__extensions';
+			$enable = 'enabled';
+			$ext_id = 'extension_id';
+		}
+	$query = 'SELECT `#__virtuemart_shippingcarriers`.* ,  `'.$table.'`.`name` as shipping_method_name FROM `#__virtuemart_shippingcarriers` ';
+        $query .= 'JOIN `'.$table.'`   ON  `'.$table.'`.`id` = `#__virtuemart_shippingcarriers`.`shipping_carrier_jplugin_id` ';
 	$query .= 'ORDER BY `#__virtuemart_shippingcarriers`.`virtuemart_shippingcarrier_id`';
 	$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+
 	return $this->_data;
     }
 
 
-    /**
-     * @deprecated Use the plugins instead
-     * @author Max Milbers
-     * @return a associative List
-     */
-	public function getShippingCarrierRates($weight=0, $country=0, $zip=0) {
 
-		$query = 'SELECT * FROM `#__virtuemart_shippingcarriers` ';
-		$query .= 'ORDER BY `#__virtuemart_shippingcarriers`.`ordering`';
-		$carrierList = $this->_getList($query);
-
-		$db = JFactory::getDBO();
-		$list;
-		$i=(int)0;
-
-		foreach ($carrierList as $key=>$value) {
-			$query = 'SELECT * FROM `#__virtuemart_shippingrates` WHERE `shipping_rate_carrier_id`="'.$value->virtuemart_shippingcarrier_id.'" ';
-			if(!empty($weight)){
-				$query .= 'AND `shipping_rate_weight_start` <="'.$weight.'" AND `shipping_rate_weight_end` > "'.$weight.'"';
-			}
-			if(!empty($zip)){
-				$query .= 'AND `shipping_rate_zip_start` <="'.$zip.'" AND `shipping_rate_zip_end` > "'.$zip.'"';
-			}
-
-			//todo country and dimension
-//			if(!empty($country)){
-//				$countries = explode(';', $this->_data->shipping_rate_country);
-//				$query .= 'AND (`shipping_rate_country` ="'.$country.'" OR `shipping_rate_country` ="" )';
-//			}
-
-			$db->setQuery($query);
-			if ($db->query()) {
-				echo '<br /><br />';
-
-				$list[$value->shipping_carrier_name]=$db->loadAssocList();
-				echo '<br />';
-//				return true;
-	    	}
-		}
-		return $list;
-    }
     	/**
 	 * Bind the post data to the paymentmethod tables and save it
      *
