@@ -107,7 +107,7 @@ defined('_JEXEC') or die('Restricted access');
 	    </td>
 	</tr>
 
-<?php if (0) { ?>
+<?php if (1) { ?>
 <!-- Outcommented to revert rev. 2916 -->
 	<tr>
 		<td class="key">

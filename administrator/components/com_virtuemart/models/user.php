@@ -960,15 +960,17 @@ class VirtueMartModelUser extends VmModel {
 			$table = '#__usergroups';
 			$and = '';
 	 	}
-
+		//Ugly thing, produces Select_full_join
 	 	$query = 'SELECT `node`.`' . $name . $as . ', CONCAT(REPEAT("&nbsp;&nbsp;&nbsp;", (COUNT(`parent`.`' . $name . '`) - 1)), `node`.`' . $name . '`) AS `text` ';
 	 	$query .= 'FROM `' . $table . '` AS node, `' . $table . '` AS parent ';
 	 	$query .= 'WHERE `node`.`lft` BETWEEN `parent`.`lft` AND `parent`.`rgt` ';
 	 	$query .= $and;
 	 	$query .= 'GROUP BY `node`.`' . $name . '` ';
 	 	$query .= 'ORDER BY `node`.`lft`';
-
-	 	$this->_db->setQuery($query);
+		
+	 	//$this->_db->setQuery($query);
+		//$app = JFactory::getApplication();
+		$app -> enqueueMessage($this->_db->getQuery());
 	 	return $this->_db->loadObjectList();
 	 }
 }

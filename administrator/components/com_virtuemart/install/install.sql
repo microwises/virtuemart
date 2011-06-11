@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_adminmenuentries` (
   `tooltip` text NOT NULL,
   `view` varchar(255) DEFAULT NULL,
   `task` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `module_id` (`module_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Administration Menu Items' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -995,7 +996,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shoppergroups` (
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,  PRIMARY KEY (`virtuemart_shoppergroup_id`),
+  `locked_by` int(11) NOT NULL DEFAULT 0,  
+  PRIMARY KEY (`virtuemart_shoppergroup_id`),
   KEY `idx_shopper_group_virtuemart_vendor_id` (`virtuemart_vendor_id`),
   KEY `idx_shopper_group_name` (`shopper_group_name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shopper Groups that users can be assigned to' AUTO_INCREMENT=1 ;
@@ -1043,7 +1045,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vmusers` (
   `customer_number` varchar(32) DEFAULT NULL,
   `perms` varchar(40) NOT NULL DEFAULT 'shopper',
   `virtuemart_paymentmethod_id` int NOT NULL DEFAULT '0',
-  `virtuemart_shippingrate_id` int NOT NULL DEFAULT '0',
+  `virtuemart_shippingcarrier_id` int NOT NULL DEFAULT '0',
   `agreed` tinyint(1) NOT NULL DEFAULT '0',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT 0,
@@ -1052,6 +1054,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vmusers` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_user_id`),
+  KEY `virtuemart_vendor_id` (virtuemart_vendor_id),
   UNIQUE KEY `i_virtuemart_user_id` (`virtuemart_user_id`,`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds the unique user data' ;
 

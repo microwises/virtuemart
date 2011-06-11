@@ -84,14 +84,14 @@ class VirtuemartViewConfig extends JView {
 		$this->assignRef('currConverterList', $currConverterList);
 		$moduleList = $model->getModuleList();
 		$this->assignRef('moduleList', $moduleList);
-		$contentLinks = $model->getContentLinks();
-		$this->assignRef('contentLinks', $contentLinks);
+		//$contentLinks = $model->getContentLinks();
+		//$this->assignRef('contentLinks', $contentLinks);
 		$orderByFields = $model->getOrderByFields( $config->get('browse_orderby_fields') );
 		$this->assignRef('orderByFields', $orderByFields);
 		$searchFields = $model->getSearchFields( $config->get('browse_search_fields') );
 		$this->assignRef('searchFields', $searchFields);
-		$titlesFields = $model->getTitlesFields( $config->get('titles') );
-		$this->assignRef('titlesFields', $titlesFields);
+		//$titlesFields = $model->getTitlesFields( $config->get('titles') );
+		//$this->assignRef('titlesFields', $titlesFields);
 		$aclGroups = $usermodel->getAclGroupIndentedTree();
 		$this->assignRef('aclGroups', $aclGroups);
 
