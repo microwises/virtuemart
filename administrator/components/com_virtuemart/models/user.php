@@ -537,9 +537,18 @@ class VirtueMartModelUser extends VmModel {
 			echo 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones';
 		}
 
+		JPluginHelper::importPlugin('vmuser');
+		$dispatcher = JDispatcher::getInstance();
+  		$plg_datas = $dispatcher->trigger('plgVmOnUserStore',$data);
+		foreach($plg_datas as $plg_data){
+			$data = array_merge($plg_data);
+		}
+		
 		if(empty($data['customer_number'])){
-			//TODO here add plugin hoook for creating customer numbers.
-			$data['customer_number'] = md5($data['username']);
+			//if(!class_exists('vmUserPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmuserplugin.php');
+  			///if(!$returnValues){
+				$data['customer_number'] = md5($data['username']);
+			//}	
 		} else {
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			if(!Permissions::getInstance()->check("admin,storeadmin")) {
@@ -575,6 +584,10 @@ class VirtueMartModelUser extends VmModel {
 			$this->setError($error);
 		}
 		
+  		$plg_datas = $dispatcher->trigger('plgVmAfterUserStore',$data);
+		foreach($plg_datas as $plg_data){
+			$data = array_merge($plg_data);
+		}
 		return $data;
 	}
 
@@ -588,8 +601,9 @@ class VirtueMartModelUser extends VmModel {
 
 			//TODO Attention this is set now to virtuemart_vendor_id=1, because using a vendor with different id then 1 is not completly supported and can lead to bugs
 			//So we disable the possibility to store vendors not with virtuemart_vendor_id = 1
-			//$vendorModel->setId($data['virtuemart_vendor_id']);
-			$vendorModel->setId(1);
+			$data['virtuemart_vendor_id'] = 1;
+			$vendorModel->setId($data['virtuemart_vendor_id']);
+
 			if (!$vendorModel->store($data)) {
 				$this->setError($vendorModel->getError());
 
@@ -598,16 +612,17 @@ class VirtueMartModelUser extends VmModel {
 			else{
 				//Update xref Table
 				$virtuemart_vendor_id = $vendorModel->getId();
-
-				//update user table
-				$usertable = $this->getTable('vmusers');
-				$vendorsUserData =$usertable->load($this->_id);
-				$vendorsUserData->virtuemart_vendor_id = $virtuemart_vendor_id;
-				//$vmusersData = array('virtuemart_user_id'=>$data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$data['customer_number'],'perms'=>$data['perms']);
-
-				if (!$usertable->bindChecknStore($vendorsUserData)){
-					$this->setError($usertable->getError());
-					return false;
+				if($virtuemart_vendor_id!=$data['virtuemart_vendor_id']){
+					//update user table
+					$usertable = $this->getTable('vmusers');
+					$vendorsUserData =$usertable->load($this->_id);
+					$vendorsUserData->virtuemart_vendor_id = $virtuemart_vendor_id;
+					//$vmusersData = array('virtuemart_user_id'=>$data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$data['customer_number'],'perms'=>$data['perms']);
+	
+					if (!$usertable->bindChecknStore($vendorsUserData)){
+						$this->setError($usertable->getError());
+						return false;
+					}
 				}
 			}
 		}

@@ -292,7 +292,6 @@ class calculationHelper {
 
 		$prices['variantModification']=$variant;
 
-
 		return $prices;
 	}
 
@@ -383,12 +382,12 @@ class calculationHelper {
 			$this->_cartPrices['salesPrice'] = $this->_cartPrices['salesPrice'] + $product->prices['salesPrice']*$product->quantity;
 			$this->_cartPrices['taxAmount'] = $this->_cartPrices['taxAmount'] + $product->prices['taxAmount']*$product->quantity;
 			$this->_cartPrices['salesPriceWithDiscount'] = $this->_cartPrices['salesPriceWithDiscount'] + $product->prices['salesPriceWithDiscount']*$product->quantity;
-			$this->_cartPrices['discountAmount'] = $this->_cartPrices['discountAmount'] + $product->prices['discountAmount']*$product->quantity;
+			$this->_cartPrices['discountAmount'] = $this->_cartPrices['discountAmount'] - $product->prices['discountAmount']*$product->quantity;
 			$this->_cartPrices['priceWithoutTax'] = $this->_cartPrices['priceWithoutTax'] + $product->prices['priceWithoutTax']*$product->quantity;
 
 			$this->_cartPrices[$cartproductkey]['subtotal'] = $product->prices['basePrice'] * $product->quantity;
 			$this->_cartPrices[$cartproductkey]['subtotal_tax_amount'] = $product->prices['taxAmount'] * $product->quantity;
-			$this->_cartPrices[$cartproductkey]['subtotal_discount'] = $product->prices['discountAmount'] * $product->quantity;
+			$this->_cartPrices[$cartproductkey]['subtotal_discount'] = - $product->prices['discountAmount'] * $product->quantity;
 			$this->_cartPrices[$cartproductkey]['subtotal_with_tax'] = $product->prices['salesPrice'] * $product->quantity;
 
 //			if(empty($this->_cartPrices['priceWithoutTax'])){ //before tax
@@ -446,7 +445,7 @@ class calculationHelper {
 		$this->_cartPrices['billSub']  = $this->_cartPrices['basePrice'] + $this->_cartPrices['shippingValue'] + $this->_cartPrices['paymentValue'];
 //		$this->_cartPrices['billSub']  = $sub + $this->_cartPrices['shippingValue'] + $this->_cartPrices['paymentValue'];
 		$this->_cartPrices['billDiscountAmount'] = $this->_cartPrices['discountAmount'] + $this->_cartPrices['paymentDiscount'];
-		$this->_cartPrices['billTaxAmount'] = $this->_cartPrices['taxAmount'] + $this->_cartPrices['withTax'] - $toTax;
+		$this->_cartPrices['billTaxAmount'] = $this->_cartPrices['taxAmount'] + $this->_cartPrices['withTax'] - $toTax + $this->_cartPrices['shippingTax'] + $this->_cartPrices['paymentTax'];
 		$this->_cartPrices['billTotal'] = $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'];
 
 		// Last step is handling a coupon, if given

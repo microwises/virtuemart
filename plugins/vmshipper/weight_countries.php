@@ -149,7 +149,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
                 $cond .= ' OR  (' . $params->get('zip_start', 0) . ' <= ' . $address['zip'] . ' )) ';
             }
 
-            if (in_array($address['virtuemart_country_id'], $countries)) {
+            if (in_array($address['virtuemart_country_id'], $countries) || count($countries)==0 ) {
                 if ($cond) {
                     $cost = $params->get('rate_value', 0) + $params->get('package_fee', 0);
 

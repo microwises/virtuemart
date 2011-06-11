@@ -262,6 +262,7 @@ class CurrencyDisplay {
     	} else {
     		$format = $this->_negativePos;
     		$sign = '-';
+			$nb = abs($nb);
     	}
 
     	$res = $this->formatNumber($nb, $nbDecimal, $this->_thousands, $this->_decimal);

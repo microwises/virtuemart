@@ -139,11 +139,18 @@ class VirtueMartModelVendor extends VmModel {
 	 */
     function store($data){
 
+	JPluginHelper::importPlugin('vmvendor');
+	$dispatcher = JDispatcher::getInstance();
+	$plg_datas = $dispatcher->trigger('plgVmOnVendorStore',$data);
+	foreach($plg_datas as $plg_data){
+		$data = array_merge($plg_data);
+	}
+	
 	$table = $this->getTable('vendors');
 
 	if(!$table->checkDataContainsTableFields($data)){
 		$app = JFactory::getApplication();
-    	$app->enqueueMessage('Data contains no Info for vendor, storing not needed');
+    	//$app->enqueueMessage('Data contains no Info for vendor, storing not needed');
 		return $this->_id;
 	}
 
@@ -175,6 +182,12 @@ class VirtueMartModelVendor extends VmModel {
 	foreach($errors as $error){
 		$this->setError($error);
 	}
+	
+	$plg_datas = $dispatcher->trigger('plgVmAfterVendorStore',$data);
+	foreach($plg_datas as $plg_data){
+		$data = array_merge($plg_data);
+	}
+
 	return $this->_id;
 
 	}
