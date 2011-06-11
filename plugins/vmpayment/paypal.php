@@ -2,9 +2,9 @@
 if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not allowed.' ) ;
 /**
- * @version $Id: ps_cashondelpay.php,v 1.4 2005/05/27 19:33:57 ei
+ * @version $Id: ps_paypal.php,v 1.4 2005/05/27 19:33:57 ei
  *
- * a special type of 'cash on delivey':
+ * a special type of 'paypal ':
  * its fee depend on total sum
  * @author Max Milbers
  * @version $Id$
@@ -87,7 +87,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	public function plgVmOnSelectPayment($cart, $checkedPaymId=0)
 	{
 
-		if (!$this->setVmParams($cart->vendorId)) {
+		if (!$this->setVmPaymentParams($cart->vendorId)) {
 			return;
 		}
 
@@ -96,9 +96,21 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		} else {
 			$checked = '';
 		}
+            $logos= $this->params->get('payment_logos');
 
-		$html  = '<fieldset>Hi i\'m PAYPAL SELECT TEST';
-		$html .= '<input type="radio" name="virtuemart_paymentmethod_id" value="'.$this->paymentMethod->virtuemart_paymentmethod_id.'" '.$checked.'>'.$this->paymentMethod->paym_name.' ';
+            $img="";
+            /* TODO: chercher chemin dynamique */
+            $path=JURI::base()."images".DS."stories".DS."virtuemart".DS."payment".DS;
+            $img="";
+            if (is_array($logos)) {
+                foreach ($logos AS $logo) {
+                    $img.='<img src="'.$path.$logo.'.gif"  alt="'.$logo.'" > ';
+                }
+            } elseif (!(empty($logos))) {
+                   $img.='<img src="'.$path.$logos.'.gif"  alt="'.$logos.'" > ';
+            }
+		$html  = '<fieldset>';
+		$html .= '<input type="radio" name="virtuemart_paymentmethod_id" value="'.$this->paymentMethod->virtuemart_paymentmethod_id.'" '.$checked.'>'.$this->paymentMethod->paym_name.' '.$img;
 		$html .= '</fieldset> ';
 
 		return $html;
@@ -109,7 +121,9 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnConfirmedOrderStorePaymentData()
 	 * @author Oscar van Eijk
 	 */
-	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData)
+
+
+	function plgVmOnConfirmedOrderStorePaymentData ($_orderNr, $_orderData, $_priceData)
 	{
 		if (!$this->selectedThisMethod($this->_pelement, $_orderData->virtuemart_paymentmethod_id)) {
 			return null; // Another method was selected, do nothing
@@ -150,7 +164,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			'upload' => '1' ,
 			'business' => $this->params->get('PAYPAL_EMAIL') ,
 			'receiver_email' => $this->params->get('PAYPAL_EMAIL') ,
-			'item_name' => JText::_( 'VM_ORDER_PRINT_PO_NUMBER' ) . ': ' . $_orderNr ,
+			'item_name' => JText::_( 'COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER' ) . ': ' . $_orderNr ,
 			'order_number' => VirtueMartModelOrders::getOrderNumber($_orderNr),
 			"virtuemart_order_id" => $_orderNr,
 			"invoice" => $_orderNr ,
@@ -164,13 +178,16 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			"address2" => $_usrBT[ 'address_2' ] ,
 			"zip" => $_usrBT[ 'zip' ] ,
 			"city" => $_usrBT[ 'city' ] ,
-			"state" => $_usrBT[ 'state' ] ,
+			"state" =>  ShopFunctions::getCountryByID($_usrBT[ 'viruemart_state_id' ] ),
 			"country" => ShopFunctions::getCountryByID($_usrST['virtuemart_country_id'],'country_3_code') ,
 			"email" => $_usrBT[ 'email' ] ,
 			"night_phone_b" => $_usrBT[ 'phone_1' ] ,
-			"return" =>  JROUTE::_(JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&virtuemart_order_id=' . $_orderNr ), // TO VERIFY
-			"notify_url" => JROUTE::_(JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&virtuemart_order_id=' . $_orderNr ), // TO VERIFY send the bank payment statut
-			"cancel_return" => JROUTE::_(JURI::root().'index.php?option=com_virtuemart') , // TO VERIFY
+			//"return" =>  JROUTE::_(JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&virtuemart_order_id=' . $_orderNr ), // TO VERIFY
+                        "return" =>  JROUTE::_(JURI::root().'index.php?option=com_virtuemart&view=cart&task=paymentResponse&virtuemart_order_id=' . $_orderNr ), // TO VERIFY
+
+                        // "notify_url" => JROUTE::_(JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&virtuemart_order_id=' . $_orderNr ), // TO VERIFY send the bank payment statut
+                         "notify_url" => JROUTE::_(JURI::root().'index.php?option=com_virtuemart&view=cart&task=paymentNotification&virtuemart_order_id=' . $_orderNr ), // TO VERIFY send the bank payment statut
+                        "cancel_return" => JROUTE::_(JURI::root().'index.php?option=com_virtuemart') , // TO VERIFY
 			"undefined_quantity" => "0" ,
 
 			"test_ipn" => $this->params->get('DEBUG') ,
@@ -187,7 +204,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 		// Prepare data that should be stored in the database
 		$_dbValues['virtuemart_order_id'] = $_orderNr;
-		$_dbValues['payment_method_id'] = $this->_virtuemart_paymentmethod_id;
+		$_dbValues['payment_method_id'] = $_orderData->virtuemart_paymentmethod_id;
 		// TODO wait for PAYPAL return ???
 //		$this->writePaymentData($_dbValues, '#__virtuemart_order_payment_' . $this->_pelement);
 		// Send to PAYPAL TODO Sandbox choice ???
@@ -208,7 +225,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			$_dbValues['order_payment_status'] = $_response[0];
 
 			if ($_response[0] == '1') { // Succeeded
-				$_dbValues['order_payment_log'] = JText::_('VM_PAYMENT_TRANSACTION_SUCCESS').': '
+				$_dbValues['order_payment_log'] = JText::_('VMPAYMENT_TRANSACTION_SUCCESS').': '
 					. $_response[3]; // Transaction log
 				$_dbValues['order_payment_trans_id'] = $_response[6]; // Transaction ID
 			} else { // 2 (Declined) or 3 (Transaction error)
@@ -235,6 +252,11 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		return 'P'; // Set order status to Pending.  TODO Must be a plugin parameter
 	}
 
+       
+           function plgVmOnPaymentResponseReceived( ) {
+               return null;
+
+           }
 	/**
 	 * Display stored payment data for an order
 	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()

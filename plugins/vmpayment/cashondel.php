@@ -101,7 +101,11 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 		$this->writePaymentData($_dbValues, '#__virtuemart_order_payment_' . $this->_pelement);
 		return 'P'; // Set order status to Pending.  TODO Must be a plugin parameter
 	}
-	
+        /*
+        function plgVmOnPaymentResponseReceived( )  {
+           return null;
+       }
+*/
 	/**
 	 * Display stored payment data for an order
 	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()

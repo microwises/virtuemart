@@ -129,8 +129,8 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 * @author Max Milbers
 	 */
 	function plgVmOnSelectPayment($cart,$checkedPaymId=0){
-		if(!$this -> setVmParams($cart->vendorId)) return ;
-
+		//if(!$this -> setVmParams($cart->vendorId)) return ;
+            if(!$this -> setVmPaymentParams($cart->vendorId)) return ;
 		if($checkedPaymId==$this->paymentMethod->virtuemart_paymentmethod_id) $checked = '"checked"'; else $checked = '';
 
 		$html = '<fieldset>';
@@ -242,7 +242,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 			}
 			return ($cart);
 		}
-		return false;
+		//return false;
 	}
 
 	/**
@@ -464,7 +464,11 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		$this->writePaymentData($_dbValues, '#__virtuemart_order_payment_' . $this->_pelement);
 		return $_returnValue;
 	}
-
+/*
+       function plgVmOnPaymentResponseReceived( )  {
+           return null;
+       }
+*/
 	/**
 	 * Reimplementation of vmPaymentPlugin::plgVmOnShipOrderPayment()
 	 *
@@ -495,7 +499,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 		$port = 443;
 		$path = "/gateway/transact.dll";
 		*/
-		if( empty($d['order_number'])) {
+		if( empty($_orderID)) {
 			$vmLogger->err("Error: No Order Number provided.");
 			return false;
 		}
