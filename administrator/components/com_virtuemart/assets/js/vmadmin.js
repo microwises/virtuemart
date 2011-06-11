@@ -37,7 +37,7 @@
 	 * @author jseros
 	 */
 	VM.add({
-
+		
 		/**
 		 * Create admin accordion menu
 		 *
@@ -46,15 +46,27 @@
 		 * @author jseros
 		 */
 		buildMenu: function(){
-			var that = this,
-			speed = VMConfig.get('menuAdminSpeed'),
-			actualItemNode = jQuery('#menu-toggler-'+ (actualItem || 1)); //shortcut. Performance issue!
 			
-			if (isJ15) {
-				var actualItem = VMCache.set('activeMenuAdminItem ', parseInt( Cookie.get( VMConfig.get('menuActiveItemCookie') ) ) ); // Current selected item				
+			if(isJ15){
+				var cMAITC = parseInt( Cookie.get( VMConfig.get('menuActiveItemCookie') ) );
 			} else {
-				var actualItem = VMCache.set('activeMenuAdminItem ', parseInt( Cookie.read( VMConfig.get('menuActiveItemCookie') ) ) ); // Current selected item
+				var cMAITC = parseInt( Cookie.read( VMConfig.get('menuActiveItemCookie') ) );
 			}
+			
+			var that = this,
+			actualItem = VMCache.set('activeMenuAdminItem ',cMAITC) , // Current selected item
+			speed = VMConfig.get('menuAdminSpeed'),
+			actualItemNode = $('#menu-toggler-'+ (actualItem || 1)); //shortcut. Performance issue!
+	
+			//set current state when document loads
+	
+		//	if (isJ15) {
+		//		var actualItem = VMCache.set('activeMenuAdminItem ', parseInt( Cookie.get( VMConfig.get('menuActiveItemCookie') ) ) ); // Current selected item				
+		//	} else {
+		//		var actualItem = VMCache.set('activeMenuAdminItem ', parseInt( Cookie.read( VMConfig.get('menuActiveItemCookie') ) ) ); // Current selected item
+		//	}
+
+		//	actualItemNode = jQuery('#menu-toggler-'+ (actualItem || 1)); //shortcut. Performance issue!
 
 			//set current state when document loads
 			if (isJ15) {
