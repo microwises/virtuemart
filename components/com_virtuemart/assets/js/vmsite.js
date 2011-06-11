@@ -184,7 +184,7 @@ var VM = (function($){
 				statesCombo.$countries = countries;
 				statesC.append( states2add ).removeAttr('disabled');
 			};
-						
+			
 			$( VMConfig.get('dependentSelector') ).each(function(){
 						
 				var params = VMConfig.get('dependentExpr').exec( this.className ), //parse parent id

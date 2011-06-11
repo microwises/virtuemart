@@ -34,9 +34,10 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_('COM_VIRTUEMART_CALC_NAME'); ?>
 				</label>
 			</td>
-			<td>
+			<td width="110">
 				<input class="inputbox" type="text" name="calc_name" id="calc_name" size="50" value="<?php echo $this->calc->calc_name; ?>" />
 			</td>
+			<td width="110"></td>
 		</tr>
 		<tr>
 			<td width="110" class="key">
@@ -44,19 +45,19 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 				</label>
 			</td>
-			<td>
-				<fieldset class="radio">
+			<td width="110"  >
+				<fieldset class="radio" >
 				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->calc->published); ?>
 				</fieldset>
 			</td>
 		</tr>
 		<tr>
-			<td width="110" class="key">
+			<td width="110" class="key" >
 				<label for="title">
 				<?php echo JText::_('COM_VIRTUEMART_ORDERING'); ?>
 				</label>
 			</td>
-			<td>
+			<td colspan="2">
 				<input class="inputbox" type="text" name="ordering" id="ordering" size="4" value="<?php echo $this->calc->ordering; ?>" />
 			</td>
 		</tr>
@@ -66,7 +67,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
 				</label>
 			</td>
-			<td>
+			<td colspan="3" >
 				<input class="inputbox" type="text" name="calc_descr" id="calc_descr" size="200" value="<?php echo $this->calc->calc_descr; ?>" />
 			</td>
 		</tr>
@@ -76,7 +77,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_('COM_VIRTUEMART_CALC_KIND'); ?>
 				</label>
 			</td>
-			<td>
+			<td colspan="3">
 				<?php echo $this->entryPointsList; ?>
 			</td>
 		</tr>
@@ -86,7 +87,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_('COM_VIRTUEMART_CALC_VALUE_MATHOP'); ?>
 				</label>
 			</td>
-			<td>
+			<td colspan="3">
 				<?php echo $this->mathOpList; ?>
 			</td>
 		</tr>
@@ -96,7 +97,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_('COM_VIRTUEMART_VALUE'); ?>
 				</label>
 			</td>
-			<td>
+			<td colspan="3">
 				<input class="inputbox" type="text" name="calc_value" id="calc_value" size="4" value="<?php echo $this->calc->calc_value; ?>" />
 			</td>
 		</tr>
@@ -106,7 +107,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_('COM_VIRTUEMART_CURRENCY'); ?>
 				</label>
 			</td>
-			<td>
+			<td colspan="3">
 			<?php echo JHTML::_('Select.genericlist', $this->currencies, 'calc_currency', '', 'virtuemart_currency_id', 'currency_name', $this->calc->calc_currency); ?>
 
 			</td>
@@ -117,7 +118,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_('COM_VIRTUEMART_CATEGORY'); ?>
 				</label>
 			</td>
-			<td>
+			<td colspan="3">
 				<select class="inputbox" id="calc_categories" name="calc_categories[]" multiple="multiple" size="10">
 					<?php echo $this->categoryTree; ?>
 				</select>
@@ -129,33 +130,33 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_IDS'); ?>
 				</label>
 			</td>
-			<td>
+			<td colspan="3">
 				<?php echo $this->shopperGroupList ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="key">
+			<td width="110" class="key">
 				<?php echo JText::_('COM_VIRTUEMART_COUNTRY'); ?>
 			</td>
 			<td>
 				<?php echo $this->countriesList?>
 			</td>
-		</tr>
-		<tr>
-			<td class="key">
+		
+		
+			<td width="110" class="key">
 		    	<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_STATE'); ?>
 			</td>
 			<td>
 		    	<?php echo $this->statesList?>
 			</td>
-		</tr>
+
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
 					<?php echo JText::_('COM_VIRTUEMART_VISIBLE_FOR_SHOPPER'); ?>
 				</label>
 			</td>
-			<td>
+			<td colspan="3">
 				<fieldset class="radio">
 				<?php echo JHTML::_('select.booleanlist',  'calc_shopper_published', 'class="inputbox"', $this->calc->calc_shopper_published); ?>
 				</fieldset>
@@ -167,7 +168,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_('COM_VIRTUEMART_VISIBLE_FOR_VENDOR'); ?>
 				</label>
 			</td>
-			<td>
+			<td colspan="3">
 				<fieldset class="radio">
 				<?php echo JHTML::_('select.booleanlist',  'calc_vendor_published', 'class="inputbox"', $this->calc->calc_vendor_published); ?>
 				</fieldset>
@@ -179,7 +180,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_('COM_VIRTUEMART_START_DATE'); ?>
 				</label>
 			</td>
-			<td>
+			<td colspan="3">
 				<?php
 					$startDate = JFactory::getDate($this->calc->publish_up,$this->tzoffset);
 					echo JHTML::_('calendar', $startDate->toFormat($this->dateformat), "publish_up", "publish_up", $this->dateformat);
@@ -192,7 +193,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_('COM_VIRTUEMART_END_DATE'); ?>
 				</label>
 			</td>
-			<td>
+			<td colspan="3">
 				<?php $endDate;
 				if (empty($this->calc->publish_down) || !strcmp($this->calc->publish_down,'0000-00-00 00:00:00')  ) {
 					$endDate = JText::_('COM_VIRTUEMART_NEVER');
@@ -209,7 +210,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_COND'); ?>
 				</label>
 			</td>
-			<td>
+			<td colspan="3">
 				<input class="inputbox" type="text" name="calc_amount_cond" id="calc_amount_cond" size="4" value="<?php echo $this->calc->calc_amount_cond; ?>" />
 			</td>
 		</tr>
@@ -219,7 +220,7 @@ AdminMenuHelper::startAdminArea();
 				<?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_DIMUNIT'); ?>
 				</label>
 			</td>
-			<td>
+			<td colspan="3">
 				<input class="inputbox" type="text" name="calc_amount_cond" id="calc_amount_cond" size="4" value="<?php echo $this->calc->calc_amount_dimunit; ?>" />
 			</td>
 		</tr>
@@ -230,7 +231,7 @@ AdminMenuHelper::startAdminArea();
 				<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
 				</label>
 			</td>
-     		<td width="69%" ><?php
+     		<td width="69%" colspan="3"><?php
 				echo $this->vendorList ?>
       		</td>
 		</tr>
@@ -240,9 +241,6 @@ AdminMenuHelper::startAdminArea();
 </div>
 
 	<input type="hidden" name="option" value="com_virtuemart" />
-	<?php foreach($this->calc->virtuemart_state_ids as $state){
-		echo '<input type="hidden" name="prs_virtuemart_state_id[]" value="'.$state.'" />' ;
-	} ?>
 	<input type="hidden" name="virtuemart_calc_id" value="<?php echo $this->calc->virtuemart_calc_id; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />

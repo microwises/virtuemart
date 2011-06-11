@@ -216,6 +216,7 @@ class ShopFunctions {
 
 		if($multiple){
 			$attrs['multiple'] = 'multiple';
+			$attrs['size'] = '12';
 			$idA .= '[]';
 		} else {
 			$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
@@ -247,7 +248,7 @@ class ShopFunctions {
 		$document = JFactory::getDocument();
 		$stateModel = self::getModel('state');
 		// Must be done here also (despite the AJAX selector) to make the current dbselection visible
-		$states = $stateModel->getStates($countryId,true);
+		//$states = $stateModel->getStates($countryId,true);dump($countryId,'$countryId');
 		$attrs = array();
 		$name = 'state_name';
 		$idA = $id = $_prefix.'virtuemart_state_id';
@@ -255,16 +256,24 @@ class ShopFunctions {
 		if($multiple){
 			$attrs['multiple'] = 'multiple';
 			$idA .= '[]';
+			$attrs['size'] = '12';
 		} else {
-			$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
-			array_unshift($states, $emptyOption);
+			$attrs['size'] = 1;
+	//		$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+	//		array_unshift($states, $emptyOption);
 		}
 
 		VmConfig::JcountryStateList() ;
 		$attrs['class'] = 'dependent['. $dependentField .']';
 
-	//	$listHTML = JHTML::_('select.genericlist', $states, $idA,  $attrs, $id, $name, $stateId, $id);
-		
+		$emptyOption = array(JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name));
+		$listHTML = JHTML::_('select.genericlist', $emptyOption, $idA,  $attrs, $id, $name, $stateId, $id);
+
+		if(!is_array($stateId)) $stateId = array($stateId);
+		foreach($stateId as $state){
+			$listHTML .= '<input type="hidden" name="prs_virtuemart_state_id[]" value="'.$state.'" />' ;
+		}
+		dump($listHTML,'dump');
 		return $listHTML;
 	}
 
