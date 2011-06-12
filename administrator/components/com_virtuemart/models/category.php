@@ -130,8 +130,8 @@ class VirtueMartModelCategory extends VmModel {
 		$vendorId = 1;
 
 		$query = 'SELECT c.`virtuemart_category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared`
-				  FROM `#__virtuemart_categories` c
-				  LEFT JOIN `#__virtuemart_category_categories` cx
+				  FROM `#__virtuemart_categories` AS c
+				  LEFT JOIN `#__virtuemart_category_categories` AS cx
 				  ON c.`virtuemart_category_id` = cx.`category_child_id`
 				  WHERE 1 ';
 

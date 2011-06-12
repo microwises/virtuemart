@@ -35,6 +35,7 @@ class plgVmShipperProducts_countries extends vmShipperPlugin {
         $this->_selement = basename(__FILE__, '.php');
         $this->_createTable();
         parent::__construct($subject, $config);
+        JPlugin::loadLanguage('plg_vmshipper_products_countries', JPATH_ADMINISTRATOR);
     }
 
     /**
@@ -42,9 +43,10 @@ class plgVmShipperProducts_countries extends vmShipperPlugin {
      * @author Oscar van Eijk
      */
     protected function _createTable() {
-        $_scheme = DbScheme::get_instance();
-        $_scheme->create_scheme('#__vm_order_shipper_' . $this->_selement);
-        $_schemeCols = array(
+
+        $scheme = DbScheme::get_instance();
+        $scheme->create_scheme('#__virtuemart_order_shipper_' . $this->_selement);
+        $schemeCols = array(
             'id' => array(
                 'type' => 'int'
                 , 'length' => 11
@@ -57,7 +59,13 @@ class plgVmShipperProducts_countries extends vmShipperPlugin {
                 , 'null' => false
             )
             , 'shipper_id' => array(
+                'type' => 'int'
+                , 'length' => 11
+                , 'null' => false
+            )
+            , 'shipper_name' => array(
                 'type' => 'text'
+                , 'length' => 11
                 , 'null' => false
             )
             , 'nb_products' => array(
@@ -65,36 +73,46 @@ class plgVmShipperProducts_countries extends vmShipperPlugin {
                 , 'length' => 11
                 , 'null' => false
             )
-            , 'cost' => array(
+            , 'cost_first_product' => array(
                 'type' => 'int'
                 , 'length' => 11
                 , 'null' => false
             )
-            , 'currency_id' => array(
+            , 'cost_next_product' => array(
                 'type' => 'int'
                 , 'length' => 11
                 , 'null' => false
             )
-            , 'tax_id' => array(
+            , 'cost_limit' => array(
+                'type' => 'int'
+                , 'length' => 11
+                , 'null' => false
+            )
+            , 'currency' => array(
+                'type' => 'int'
+                , 'length' => 11
+                , 'null' => false
+            )
+            , 'tax' => array(
                 'type' => 'int'
                 , 'length' => 11
                 , 'null' => false
             )
         );
-        $_schemeIdx = array(
-            'idx_order_shipping' => array(
+        $schemeIdx = array(
+            'idx_order_shipper' => array(
                 'columns' => array('virtuemart_order_id')
                 , 'primary' => false
                 , 'unique' => false
                 , 'type' => null
             )
         );
-        $_scheme->define_scheme($_schemeCols);
-        $_scheme->define_index($_schemeIdx);
-        if (!$_scheme->scheme(true)) {
-            JError::raiseWarning(500, $_scheme->get_db_error());
+        $scheme->define_scheme($schemeCols);
+        $scheme->define_index($schemeIdx);
+        if (!$scheme->scheme(true)) {
+            JError::raiseWarning(500, $scheme->get_db_error());
         }
-        $_scheme->reset();
+        $scheme->reset();
     }
 
     /**
@@ -114,6 +132,10 @@ class plgVmShipperProducts_countries extends vmShipperPlugin {
         if (( $this->getShippers($cart->vendorId)) === false) {
             return false;
         }
+        if (!class_exists('CurrencyDisplay'))
+            require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+        $currency = CurrencyDisplay::getInstance();
+
         $html = '';
         $i = 1;
         $nbProducts = $this->_getNbProducts($cart);
@@ -136,41 +158,27 @@ class plgVmShipperProducts_countries extends vmShipperPlugin {
                 $countries = array();
                 $countries = $countries_list;
             }
-            if (in_array($address['virtuemart_country_id'], $countries)) {
-                $cost = $params->get('cost_first_product') +
-                        (($nbProducts > 1 ) ? ($nbProducts - 1) * $params->get('cost_next_products') : 0);
+            if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
+                $cost = $this->_getShippingCost($nbProducts, $params); // converted in vendor currency
+                $costWithTax = $this->_getShippingCostWithTax($cost, $params->get('tax'));
+                $costWithTaxCurrentCurrency = $currency->convertCurrencyTo($params->get('currency'), $cost);
 
                 if (!class_exists('CurrencyDisplay'))
                     require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
                 $currency = CurrencyDisplay::getInstance();
-                $cost = $currency->convertCurrencyTo($params->get('currency'), $cost);
-                $shipping_rate_vat_id = $params->get('tax');
-                $shippingCost = $cost;
-                if (!empty($shipping_rate_vat_id)) {
-                    $taxrules = array();
-                    if (!class_exists('calculationHelper'))
-                        require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-                    $calculator = calculationHelper::getInstance();
-                    $db = &JFactory::getDBO();
-                    $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $shipping_rate_vat_id . '" ';
-                    $db->setQuery($q);
-                    $taxrules = $db->loadAssocList();
-                    if (count($taxrules) > 0) {
-                        $shippingCost = $calculator->roundDisplay($calculator->executeCalculation($taxrules, $cost));
-                    }
-                }
-                $shippingCostDisplay = $currency->priceDisplay($shippingCost);
+                $shippingCostDisplay = $currency->priceDisplay($costWithTaxCurrentCurrency);
 
                 //$rateID = $this->selectShippingRate($cart, $id);
                 //$price = $this->getShippingRate($_rateID);
 
                 $html .= '<input type="radio" name="shipper_id" id="shipper_id_' . $shipper_id . '" value="' . $shipper_id . '" ' . $checked . '>'
-                        . '<label for="shipper_id_' . $shipper_id . '">' . $params->get('shipping_name') . " ($shippingCostDisplay)</label><br/>\n";
+                        . '<label for="shipper_id_' . $shipper_id . '">' . $shipper_name . " ($shippingCostDisplay)</label><br/>\n";
             }
         }
         return $html;
     }
- /**
+
+    /**
      * This event is fired after the shipping method has been selected. It can be used to store
      * additional shipper info in the cart.
      *
@@ -180,13 +188,14 @@ class plgVmShipperProducts_countries extends vmShipperPlugin {
      * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
      * @author Valérie Isaksen
      */
-      public function plgVmOnShipperSelected($cart, $selectedShipper = 0 ) {
-          if (!$this->selectedThisShipper($this->_selement, $selectedShipper)) {
+    public function plgVmOnShipperSelected($cart, $selectedShipper = 0) {
+        if (!$this->selectedThisShipper($this->_selement, $selectedShipper)) {
             return null; // Another shipper was selected, do nothing
         } else {
             return true;
         }
-      }
+    }
+
     /**
      * This event is fired after the shipping method has been selected. It can be used to store
      * additional shipper info in the cart.
@@ -206,19 +215,103 @@ class plgVmShipperProducts_countries extends vmShipperPlugin {
         $shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $selectedShipper);
         $params = new JParameter($shipping_carrier_params);
 
-        $cost = $params->get('cost_first_product') +
-                (($nbProducts > 1 ) ? ($nbProducts - 1) * $params->get('cost_next_products') : 0);
-        /*
-          $shipping['shipping_currency_id'] = $params->get('currency');
-          $shipping['shipping_name'] = $params->get('name');
-          $shipping['shipping_rate_vat_id'] = $params->get('tax');
-          $shipping['shipping_value'] = $cost;
-         */
+        $shipping->shipping_name = $this->getThisShipperName($selectedShipper);
         $shipping->shipping_currency_id = $params->get('currency');
-        $shipping->shipping_name = $params->get('shipping_name');
         $shipping->shipping_rate_vat_id = $params->get('tax');
-        $shipping->shipping_value = $cost;
+        $shipping->shipping_value = $this->_getShippingCostFromNbPRoducts($nbProducts, $params);
         return true;
+    }
+
+    /**
+     * This event is fired after the order has been stored; it stores the shipping method-
+     * specific data.
+     *
+     * @param int $orderNr The ordernumber being processed
+     * @param object $orderData Data from the cart
+     * @param array $priceData Price information for this order
+     * @return mixed Null when this method was not selected, otherwise the new order status
+     * @author Valerie Isaksen
+     */
+    function plgVmOnConfirmedOrderStoreShipperData($order_id, $cart, $priceData) {
+        if (!($this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id))) {
+            return null;
+        }
+        $nbProducts = $this->_getNbProducts($cart);
+        $shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $cart->virtuemart_shippingcarrier_id);
+        $params = new JParameter($shipping_carrier_params);
+
+        $values['virtuemart_order_id'] = $order_id;
+        $values['shipper_id'] = $cart->virtuemart_shippingcarrier_id;
+        $values['shipper_name'] = $this->getThisShipperName($cart->virtuemart_shippingcarrier_id);
+        $values['nb_products'] = $nbProducts;
+        $values['cost_first_product'] = $params->get('cost_first_product');
+        $values['cost_next_products'] = $params->get('cost_next_products');
+        $values['cost_limit'] = $params->get('cost_limit');
+        $values['currency'] = $params->get('currency');
+        $values['tax'] = $params->get('tax');
+        $this->writeShipperData($values, '#__virtuemart_order_shipper_' . $this->_selement);
+    }
+/**
+     * This method is fired when showing the order details in the backend.
+     * It displays the shipper-specific data.
+     * NOTE, this plugin should NOT be used to display form fields, since it's called outside
+     * a form! Use plgVmOnUpdateOrderBE() instead!
+     *
+     * @param integer $_orderId The order ID
+     * @param integer $_vendorId Vendor ID
+     * @param object $_shipInfo Object with the properties 'carrier' and 'name'
+     * @return mixed Null for shippers that aren't active, text (HTML) otherwise
+     * @author Valerie Isaksen
+     */
+    public function plgVmOnShowOrderShipperBE($virtuemart_order_id, $vendorId, $ship_method_id) {
+        if (!($this->selectedThisShipper($this->_selement, $ship_method_id))) {
+            return null;
+        }
+        $db = JFactory::getDBO();
+        $q = 'SELECT * FROM `#__virtuemart_order_shipper_' . $this->_selement . '` '
+                . 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
+        $db->setQuery($q);
+        if (!($shipinfo = $db->loadObject())) {
+            JError::raiseWarning(500, $q . " " . $db->getErrorMsg());
+            return '';
+        }
+        if (!class_exists('CurrencyDisplay')
+            )require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+        $currency = CurrencyDisplay::getInstance();  //Todo, set currency of shopper or user?
+//		$_currency = VirtueMartModelVendor::getCurrencyDisplay($_vendorId);
+        $html = '<table class="admintable">' . "\n"
+                . '	<thead>' . "\n"
+                . '		<tr>' . "\n"
+                . '			<td class="key" style="text-align: center;" colspan="2">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_LBL') . '</td>' . "\n"
+                . '		</tr>' . "\n"
+                . '	</thead>' . "\n"
+                . '	<tr>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_PRODUCTS_COUNTRIES_NB_PRODUCTS') . ': </td>' . "\n"
+                . '		<td>' . $shipInfo->nb_products . '</td>' . "\n"
+                . '	</tr>' . "\n"
+                . '	<tr>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_PRODUCTS_COUNTRIES_COST_FIRST_PRODUCT') . ': </td>' . "\n"
+                . '		<td>' . $shipInfo->cost_first_product . '</td>' . "\n"
+                . '	</tr>' . "\n"
+                . '	<tr>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_PRODUCTS_COUNTRIES_COST_NEXT_PRODUCTS') . ': </td>' . "\n"
+                . '		<td>' . $shipInfo->cost_next_products . '</td>' . "\n"
+                . '	</tr>' . "\n"
+                . '	<tr>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_PRODUCTS_COUNTRIES_COST_LIMIT') . ': </td>' . "\n"
+                . '		<td>' . $shipInfo->cost_limit . '</td>' . "\n"
+                . '	</tr>' . "\n"
+                . '	<tr>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_PRODUCTS_COUNTRIES_TAX_ID') . ': </td>' . "\n"
+                . '		<td>' . $shipInfo->tax . '</td>' . "\n"
+                . '	</tr>' . "\n"
+                . '	<tr>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_PRODUCTS_COUNTRIES_CURRENCY_ID') . ': </td>' . "\n"
+                . '		<td>' . $shipInfo->currency . '</td>' . "\n"
+                . '	</tr>' . "\n"
+                . '</table>' . "\n"
+        ;
+        return $html;
     }
 
     /**
@@ -239,45 +332,43 @@ class plgVmShipperProducts_countries extends vmShipperPlugin {
         return $nbProducts;
     }
 
-    /**
-     * Fill the array with all carriers found with this plugin for the current vendor
-     * @return virtuemart_shippingcarrier_id
-     * @author Valerie Isaksen
+  
+    /*
+     * Get Cost With tax, Currency Converted
      */
-    function getShippingCarrierId($vendorId) {
-        $db = &JFactory::getDBO();
-        if (VmConfig::isJ15()) {
-            $q = 'SELECT v.`virtuemart_shippingcarrier_id`   AS id '
-                    . ',      v.`shipping_carrier_name` AS name '
-                    . 'FROM   #__virtuemart_shippingcarriers v '
-                    . ',      #__plugins             j '
-                    . 'WHERE j.`element` = "' . $this->_selement . '" '
-                    . 'AND   v.`shipping_carrier_jplugin_id` = j.`id` '
-                    . 'AND  (v.`virtuemart_vendor_id` = "' . $vendorId . '" '
-                    . ' OR   v.`virtuemart_vendor_id` = "0") '
-            ;
-        } else {
-            $q = 'SELECT v.`virtuemart_shippingcarrier_id`   AS id '
-                    . ',      v.`shipping_carrier_name` AS name '
-                    . 'FROM   #__virtuemart_shippingcarriers AS v '
-                    . ',      #__extensions    AS      j '
-                    . 'WHERE j.`folder` = "vmshipper" '
-                    . 'AND j.`element` = "' . $this->_selement . '" '
-                    . 'AND   v.`shipping_carrier_jplugin_id` = j.`extension_id` '
-                    . 'AND  (v.`virtuemart_vendor_id` = "' . $vendorId . '" '
-                    . ' OR   v.`virtuemart_vendor_id` = "0") '
-            ;
+
+    function _getShippingCostWithTax($shippingCost, $shipping_rate_vat_id) {
+
+        if (!class_exists('CurrencyDisplay'))
+            require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+
+        if (!empty($shipping_rate_vat_id)) {
+            $taxrules = array();
+            if (!class_exists('calculationHelper'))
+                require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+            $calculator = calculationHelper::getInstance();
+            $db = &JFactory::getDBO();
+            $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $shipping_rate_vat_id . '" ';
+            $db->setQuery($q);
+            $taxrules = $db->loadAssocList();
+            if (count($taxrules) > 0) {
+                $shippingCost = $calculator->roundDisplay($calculator->executeCalculation($taxrules, $cost));
+            }
         }
 
+        return $shippingCost;
+    }
 
-        $db->setQuery($q);
-        if (!$result = $db->loadResult()) {
-//			$app = JFactory::getApplication();
-//			$app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_CARRIER'));
-            return false;
+    /*
+     * Get shipping cost from $nb products, $params
+     */
+
+    function _getShippingCost($nbProducts, $params) {
+        $shippingCost = $params->get('cost_first_product') + ($nbProducts - 1) * $params->get('cost_next_products');
+        if ($params->get('cost_limit', 0)) {
+            $shippingCost = min($shippingCost, $params->get('cost_limit'));
         }
-
-        return $result;
+        return $shippingCost;
     }
 
 }

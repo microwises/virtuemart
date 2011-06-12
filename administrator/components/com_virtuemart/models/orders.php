@@ -436,28 +436,29 @@ class VirtueMartModelOrders extends VmModel {
 	 * @param object $_cart The cart data
 	 * @return mixed The new ordernumber, false on errors
 	 */
-	public function createOrderFromCart($_cart)
+	public function createOrderFromCart($cart)
 	{
-		if ($_cart === null) {
+		if ($cart === null) {
 			$this->setError('createOrderFromCart() called without a cart - that\'s a programming bug');
 			return false;
 		}
 
-		$_usr = JFactory::getUser();
-		$_prices = $_cart->getCartPrices();
-		if (($_orderID = $this->_createOrder($_cart, $_usr, $_prices)) == 0) {
+		$usr = JFactory::getUser();
+		$prices = $cart->getCartPrices();
+		if (($orderID = $this->_createOrder($cart, $usr, $prices)) == 0) {
 			return false;
 		}
-		if (!$this->_createOrderLines($_orderID, $_cart)) {
+		if (!$this->_createOrderLines($orderID, $cart)) {
 			return false;
 		}
-		$this->_updateOrderHist($_orderID);
-		if (!$this->_writeUserInfo($_orderID, $_usr, $_cart)) {
+		$this->_updateOrderHist($orderID);
+		if (!$this->_writeUserInfo($orderID, $usr, $cart)) {
 			return false;
 		}
-		 $this->_handlePayment($_orderID, $_cart, $_prices);
+		$this->_handlePayment($orderID, $cart, $prices);
+                $this->_handleShipping($orderID, $cart, $prices);
 
-		return $_orderID;
+		return $orderID;
 	}
 
 	/**
@@ -640,6 +641,27 @@ class VirtueMartModelOrders extends VmModel {
 			}
 			// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
 		}
+	}
+        /**
+	 * Handle the selected payment method. If triggered to do so, this method will also
+	 * take care of the stock updates.
+	 *
+	 * @author Valérie Isaksen
+	 * @param int $_orderID Order ID
+	 * @param object $_cart Cart object
+	 * @param array $_prices Price data
+	 */
+	private function _handleShipping($orderID, $cart, $prices)
+	{
+		JPluginHelper::importPlugin('vmshipping');
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreShipperData',array(
+					 $orderID
+					,$cart
+					,$prices
+		));
+
+		
 	}
 	/**
 	 * Create the ordered item records

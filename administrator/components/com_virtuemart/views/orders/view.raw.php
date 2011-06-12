@@ -114,7 +114,7 @@ class VirtuemartViewOrders extends JView {
 		$this->assignRef('orderstatuslist', $_orderStatusList);
 		$this->assignRef('orderbt', $orderbt);
 		$this->assignRef('orderst', $orderst);
-		$this->assignRef('shippingInfo', $_shippingInfo);
+		$this->assignRef('ship_method_id', $orderbt->ship_method_id);
 
 		error_reporting(0);
 		parent::display($tpl);

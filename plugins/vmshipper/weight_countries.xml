@@ -21,7 +21,6 @@
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />
         <param type="spacer" default="VMSHIPPER_WEIGHT_COUNTRIES" level="level1" />
-        <param name="shipping_name" type="text" size="50" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_NAME" description="VMSHIPPER_WEIGHT_COUNTRIES_NAME_DESC"/>
         <param name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_COUNTRIES" description="VMSHIPPER_WEIGHT_COUNTRIES_COUNTRIES_DESC"/>
         <param name="zip_start" type="text" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_ZIP_START" description="VMSHIPPER_WEIGHT_COUNTRIES_ZIP_START_DESC"/>
         <param name="zip_stop" type="text" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_ZIP_STOP" description="VMSHIPPER_WEIGHT_COUNTRIES_ZIP_STOP_DESC"/>

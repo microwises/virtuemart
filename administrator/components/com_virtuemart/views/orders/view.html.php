@@ -140,7 +140,7 @@ class VirtuemartViewOrders extends JView {
 			$this->assignRef('itemattributesupdatefields', $_itemAttributesUpdateFields);
 			$this->assignRef('orderbt', $orderbt);
 			$this->assignRef('orderst', $orderst);
-			$this->assignRef('shippingInfo', $_shippingInfo);
+			$this->assignRef('ship_method_id', $orderbt->ship_method_id);
 
 			/* Data for the Edit Status form popup */
 			$_currentOrderStat = $order['details']['BT']->order_status;

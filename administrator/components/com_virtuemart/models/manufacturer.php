@@ -154,7 +154,7 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		$where = (count($where) ? ' WHERE '.implode(' AND ', $where) : '');
 
-		$query = 'SELECT M.*,MC.`mf_category_name`   FROM `#__virtuemart_manufacturers` as M LEFT JOIN `#__virtuemart_manufacturercategories` as MC on M.`virtuemart_manufacturercategories_id`= MC.`virtuemart_manufacturercategories_id`'
+		$query = 'SELECT M.*,MC.`mf_category_name`   FROM `#__virtuemart_manufacturers` AS M LEFT JOIN `#__virtuemart_manufacturercategories` AS MC on M.`virtuemart_manufacturercategories_id`= MC.`virtuemart_manufacturercategories_id`'
 				. $where;
 		$query .= ' ORDER BY M.`mf_name`';
 

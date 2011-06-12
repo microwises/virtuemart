@@ -467,7 +467,7 @@ JPluginHelper::importPlugin('vmshipper');
 		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderShipperBE',array(
 			 $this->orderID
 			,$this->orderbt->virtuemart_vendor_id
-			,$this->shippingInfo
+			,$this->ship_method_id
 		));
 		foreach ($_returnValues as $_returnValue) {
 			if ($_returnValue !== null) {

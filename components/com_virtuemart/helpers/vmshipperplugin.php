@@ -338,8 +338,8 @@ abstract class vmShipperPlugin extends JPlugin {
      * @return integer The shipping rate ID
      * @author Oscar van Eijk
      */
-    public function plgVmOnConfirmShipper(VirtueMartCart $_cart) {
-        return $this->selectShippingRate($_cart);
+    public function plgVmOnConfirmShipper(VirtueMartCart $cart) {
+        return $this->selectShippingRate($cart);
     }
 
     /**
@@ -354,11 +354,12 @@ abstract class vmShipperPlugin extends JPlugin {
      * @return mixed Null for shippers that aren't active, text (HTML) otherwise
      * @author Oscar van Eijk
      */
+
     public function plgVmOnShowOrderShipperBE($_orderId, $_vendorId, $_shipInfo) {
         if (!($this->selectedThisShipper($this->_selement, $this->getShipperIDForOrder($_orderId)))) {
             return null;
         }
-
+/*
         if (!class_exists('CurrencyDisplay')
 
             )require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
@@ -384,6 +385,9 @@ abstract class vmShipperPlugin extends JPlugin {
                 . '	</tr>' . "\n"
                 . '</table>' . "\n"
         ;
+ *
+ * 
+ */
         return $_html;
     }
 
@@ -433,10 +437,11 @@ abstract class vmShipperPlugin extends JPlugin {
      * @author Oscar van Eijk
      */
     public function plgVmOnShowOrderShipperFE($_orderId) {
+        /*
         if (!($this->selectedThisShipper($this->_selement, $this->getShipperIDForOrder($_orderId)))) {
             return null;
         }
-
+*/
 
     }
 
@@ -520,8 +525,8 @@ abstract class vmShipperPlugin extends JPlugin {
      * @param int $_id The order ID
      * @return int The shipper ID, or -1 when not found
      */
-    protected function getShipperIDForOrder($_id) {
-        /*
+    protected function getShipperIDForOrder($order_id) {
+/*
         $_db = &JFactory::getDBO();
         $_q = 'SELECT s.`shipping_rate_carrier_id` AS shipper_id '
                 . 'FROM #__virtuemart_orders        AS o '
@@ -533,7 +538,9 @@ abstract class vmShipperPlugin extends JPlugin {
             return -1;
         }
         return $_r['shipper_id'];
-         * */
+ * */
+
+
          
     }
 
@@ -586,17 +593,17 @@ abstract class vmShipperPlugin extends JPlugin {
     /**
      * Get the name of the shipper
      * @param int $_sid The Shipper ID
-     * @author Oscar van Eijk
+     * @author Valérie Isaksen
      * @return string Shipper name
      */
-    final protected function getThisShipperName($_sid) {
-        $_db = &JFactory::getDBO();
-        $_q = 'SELECT `shipping_carrier_name` '
+    final protected function getThisShipperName($id) {
+        $db = &JFactory::getDBO();
+        $q = 'SELECT `shipping_carrier_name` '
                 . 'FROM #__virtuemart_shippingcarriers '
-                . "WHERE virtuemart_shippingcarrier_id ='$_pid' ";
-        $_db->setQuery($_q);
-        $_r = $_db->loadAssoc(); // TODO Error check
-        return $_r['shipping_carrier_name'];
+                . "WHERE virtuemart_shippingcarrier_id ='$id' ";
+        $db->setQuery($q);
+        return $db->loadResult(); // TODO Error check
+
     }
 
     /**
