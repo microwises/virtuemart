@@ -626,7 +626,7 @@ class VmMediaHandler {
 		$html .= '<div id="addnewselectimage" class="icon-16-media">'.JText::_('COM_VIRTUEMART_IMAGE_ATTACH_NEW').'</div><br/ >';
 		VmConfig::JimageSelectlist();
 
-		$options[] = JHTML::_('select.option', '0' , 'COM_VIRTUEMART_IMAGE_ATTACH_EXISTING', 'virtuemart_media_id' );
+		$options[] = JHTML::_('select.option', '0' , JText::_('COM_VIRTUEMART_IMAGE_ATTACH_EXISTING'), 'virtuemart_media_id' );
 		foreach($result as $file){
 			$options[] = JHTML::_('select.option', $file->virtuemart_media_id, $file->file_title, 'virtuemart_media_id' );
 		}

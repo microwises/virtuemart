@@ -14,7 +14,7 @@
  * other free or open source software licenses.
  * @version $Id: $
  */
-class JElementVmpaymentlogos extends JElement {
+class JElementVMFiles extends JElement {
 
     /**
      * Element name
@@ -22,7 +22,7 @@ class JElementVmpaymentlogos extends JElement {
      * @access	protected
      * @var		string
      */
-    var $_name = 'SipsLogos';
+    var $_name = 'Files';
 
 
     function fetchElement($name, $value, &$node, $control_name) {

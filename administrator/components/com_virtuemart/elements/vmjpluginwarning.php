@@ -24,12 +24,13 @@ class JElementVmjpluginwarning extends JElement {
     var $_name = 'jpluginwarning';
 
     function fetchElement($name, $value, &$node, $control_name) {
+        JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
 
         $option = JRequest::getWord('option');
         if ($option == 'com_virtuemart')
             return null;
         else
-            return "<strong>Please configure VirtueMart Shipping or Payment Plugins inside VirtueMart component</strong>";
+            return JTExt::_('COM_VIRTUEMART_PLUGIN_WARNING');
     }
 
 }

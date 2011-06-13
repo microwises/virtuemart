@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install version="1.5" type="plugin" group="vmshipper" >
+    <name>VMSHIPPER_NBPRODUCTS_COUNTRIES_PLUGIN</name>
+    <author>Valérie Isaksen</author>
+    <creationdate>2011</creationdate>
+    <copyright>2011 alatak.net</copyright>
+    <license>GNU/GPL</license>
+    <authoremail></authoremail>
+    <authorUrl>http://www.alatak.net</authorUrl>
+    <version>1.0</version>
+    <description>VMSHIPPER_NBPRODUCTS_COUNTRIES_PLUGIN_DESC</description>
+    <element>standard</element>
+    <files>
+        <filename plugin="products_countries">products_countries.php</filename>
+    </files>
+
+
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_vmshipper_products_countries.ini</language>
+        <language tag="fr-FR">fr-FR/fr-FR.plg_vmshipper_products_countries.ini</language>
+    </languages>
+    <params addpath="/administrator/components/com_virtuemart/elements">
+        <param type="vmjpluginwarning" />
+        <param	name="shipper_logo" type="vmfiles" label="VMSHIPPER_NBPRODUCTS_COUNTRIES_LOGOS"
+             	description="VMSHIPPER_NBPRODUCTS_COUNTRIES_LOGOS_DESC"
+             	directory="/images/stories/virtuemart/shipper"
+             	default="default" hide_default="1" hide_none="1"
+             	stripext="0"   exclude="^_" />
+        <param name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMSHIPPER_NBPRODUCTS_COUNTRIES_COUNTRIES" description="VMSHIPPER_NBPRODUCTS_COUNTRIES_COUNTRIES_DESC"/>
+        <param name="cost_first_product" type="text" size="10" default="" label="VMSHIPPER_NBPRODUCTS_COUNTRIES_COST_FIRST_PRODUCT" description="VMSHIPPER_NBPRODUCTS_COUNTRIES_COST_FIRST_PRODUCT_DESC"/>
+        <param name="cost_next_products" type="text" size="10" default="" label="VMSHIPPER_NBPRODUCTS_COUNTRIES_COST_NEXT_PRODUCTS" description="VMSHIPPER_NBPRODUCTS_COUNTRIES_COST_NEXT_PRODUCTS_DESC"/>
+        <param name="cost_limit" type="text" size="10" default="" label="VMSHIPPER_NBPRODUCTS_COUNTRIES_COST_LIMIT" description="VMSHIPPER_NBPRODUCTS_COUNTRIES_COST_LIMIT_DESC"/>
+        <param name="currency" type="vmcurrencies" scope="com_virtuemart" default="" label="VMSHIPPER_NBPRODUCTS_COUNTRIES_CURRENCY" description="VMSHIPPER_NBPRODUCTS_COUNTRIES_CURRENCY_DESC" />
+        <param name="tax" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPPER_NBPRODUCTS_COUNTRIES_TAX" description="VMSHIPPER_NBPRODUCTS_COUNTRIES_TAX_DESC" />
+    </params>
+

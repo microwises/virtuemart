@@ -4,7 +4,7 @@ if (!defined('_JEXEC'))
     die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 /**
- * Shipper plugin for products_countries shippers, like regular postal services
+ * Shipper plugin for nbproducts_countries shippers, like regular postal services
  *
  * @version $Id:  3220 2011-05-12 20:09:14Z Milbo $
  * @package VirtueMart
@@ -19,7 +19,7 @@ if (!defined('_JEXEC'))
  *
  * http://virtuemart.net
  */
-class plgVmShipperProducts_countries extends vmShipperPlugin {
+class plgVmShipperNbProducts_countries extends vmShipperPlugin {
 
     /**
      * Constructor
@@ -31,11 +31,11 @@ class plgVmShipperProducts_countries extends vmShipperPlugin {
      * @param object $subject The object to observe
      * @param array  $config  An array that holds the plugin configuration
      */
-    function plgVmShipperProducts_countries(&$subject, $config) {
+    function plgVmShipperNbProducts_countries(&$subject, $config) {
         $this->_selement = basename(__FILE__, '.php');
         $this->_createTable();
         parent::__construct($subject, $config);
-        JPlugin::loadLanguage('plg_vmshipper_products_countries', JPATH_ADMINISTRATOR);
+        JPlugin::loadLanguage('plg_vmshipper_nbproducts_countries', JPATH_ADMINISTRATOR);
     }
 
     /**
@@ -132,47 +132,26 @@ class plgVmShipperProducts_countries extends vmShipperPlugin {
         if (( $this->getShippers($cart->vendorId)) === false) {
             return false;
         }
-        if (!class_exists('CurrencyDisplay'))
-            require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-        $currency = CurrencyDisplay::getInstance();
-
+      
         $html = '';
-        $i = 1;
         $nbProducts = $this->_getNbProducts($cart);
         $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
         foreach ($this->shippers as $shipper_id => $shipper_name) {
-            if ($selectedShipper == $shipper_id) {
-                $checked = '"checked"';
-            } else {
-                $checked = '';
-            }
-            $i = 1;
             $cost = 0;
             $found = false;
             $shipping_params = $this->getVmShipperParams($cart->vendorId, $shipper_id);
             $params = new JParameter($shipping_params);
-            $countries_list = $params->get('countries');
-            if (!is_array($countries_list)) {
-                $countries[0] = $countries_list;
-            } else {
-                $countries = array();
-                $countries = $countries_list;
+              $country_list = $params->get('countries');
+            if (!empty($country_list)) {
+                if (!is_array($country_list)) {
+                    $countries[0] = $country_list;
+                } else {
+                    $countries = $country_list;
+                }
             }
             if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
                 $cost = $this->_getShippingCost($nbProducts, $params); // converted in vendor currency
-                $costWithTax = $this->_getShippingCostWithTax($cost, $params->get('tax'));
-                $costWithTaxCurrentCurrency = $currency->convertCurrencyTo($params->get('currency'), $cost);
-
-                if (!class_exists('CurrencyDisplay'))
-                    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-                $currency = CurrencyDisplay::getInstance();
-                $shippingCostDisplay = $currency->priceDisplay($costWithTaxCurrentCurrency);
-
-                //$rateID = $this->selectShippingRate($cart, $id);
-                //$price = $this->getShippingRate($_rateID);
-
-                $html .= '<input type="radio" name="shipper_id" id="shipper_id_' . $shipper_id . '" value="' . $shipper_id . '" ' . $checked . '>'
-                        . '<label for="shipper_id_' . $shipper_id . '">' . $shipper_name . " ($shippingCostDisplay)</label><br/>\n";
+                $html = $this->getShippingHtml($shipper_name, $shipper_id, $selectedShipper, $params->get('shipper_logo'), $cost, $params->get('tax'), $params->get('currency'));
             }
         }
         return $html;
@@ -251,7 +230,8 @@ class plgVmShipperProducts_countries extends vmShipperPlugin {
         $values['tax'] = $params->get('tax');
         $this->writeShipperData($values, '#__virtuemart_order_shipper_' . $this->_selement);
     }
-/**
+
+    /**
      * This method is fired when showing the order details in the backend.
      * It displays the shipper-specific data.
      * NOTE, this plugin should NOT be used to display form fields, since it's called outside
@@ -276,6 +256,7 @@ class plgVmShipperProducts_countries extends vmShipperPlugin {
             return '';
         }
         if (!class_exists('CurrencyDisplay')
+
             )require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
         $currency = CurrencyDisplay::getInstance();  //Todo, set currency of shopper or user?
 //		$_currency = VirtueMartModelVendor::getCurrencyDisplay($_vendorId);
@@ -286,27 +267,27 @@ class plgVmShipperProducts_countries extends vmShipperPlugin {
                 . '		</tr>' . "\n"
                 . '	</thead>' . "\n"
                 . '	<tr>' . "\n"
-                . '		<td class="key">' . JText::_('VMSHIPPER_PRODUCTS_COUNTRIES_NB_PRODUCTS') . ': </td>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_NBPRODUCTS_COUNTRIES_NB_PRODUCTS') . ': </td>' . "\n"
                 . '		<td>' . $shipInfo->nb_products . '</td>' . "\n"
                 . '	</tr>' . "\n"
                 . '	<tr>' . "\n"
-                . '		<td class="key">' . JText::_('VMSHIPPER_PRODUCTS_COUNTRIES_COST_FIRST_PRODUCT') . ': </td>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_NBPRODUCTS_COUNTRIES_COST_FIRST_PRODUCT') . ': </td>' . "\n"
                 . '		<td>' . $shipInfo->cost_first_product . '</td>' . "\n"
                 . '	</tr>' . "\n"
                 . '	<tr>' . "\n"
-                . '		<td class="key">' . JText::_('VMSHIPPER_PRODUCTS_COUNTRIES_COST_NEXT_PRODUCTS') . ': </td>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_NBPRODUCTS_COUNTRIES_COST_NEXT_PRODUCTS') . ': </td>' . "\n"
                 . '		<td>' . $shipInfo->cost_next_products . '</td>' . "\n"
                 . '	</tr>' . "\n"
                 . '	<tr>' . "\n"
-                . '		<td class="key">' . JText::_('VMSHIPPER_PRODUCTS_COUNTRIES_COST_LIMIT') . ': </td>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_NBPRODUCTS_COUNTRIES_COST_LIMIT') . ': </td>' . "\n"
                 . '		<td>' . $shipInfo->cost_limit . '</td>' . "\n"
                 . '	</tr>' . "\n"
                 . '	<tr>' . "\n"
-                . '		<td class="key">' . JText::_('VMSHIPPER_PRODUCTS_COUNTRIES_TAX_ID') . ': </td>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_NBPRODUCTS_COUNTRIES_TAX_ID') . ': </td>' . "\n"
                 . '		<td>' . $shipInfo->tax . '</td>' . "\n"
                 . '	</tr>' . "\n"
                 . '	<tr>' . "\n"
-                . '		<td class="key">' . JText::_('VMSHIPPER_PRODUCTS_COUNTRIES_CURRENCY_ID') . ': </td>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_NBPRODUCTS_COUNTRIES_CURRENCY_ID') . ': </td>' . "\n"
                 . '		<td>' . $shipInfo->currency . '</td>' . "\n"
                 . '	</tr>' . "\n"
                 . '</table>' . "\n"
@@ -332,7 +313,6 @@ class plgVmShipperProducts_countries extends vmShipperPlugin {
         return $nbProducts;
     }
 
-  
     /*
      * Get Cost With tax, Currency Converted
      */

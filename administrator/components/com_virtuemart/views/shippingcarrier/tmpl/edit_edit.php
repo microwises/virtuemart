@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
             <tr>
                 <td width="110" class="key">
                     <label for="title">
-<?php echo JText::_('COM_VIRTUEMART_CARRIER_FORM_NAME'); ?>
+<?php echo JText::_('COM_VIRTUEMART_SHIPPING_FORM_NAME'); ?>
                     </label>
                 </td>
                 <td>
@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
             <tr>
                 <td width="110" class="key">
                     <label for="title">
-                       <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SHIPPING_CARRIER_CLASS_NAME_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_CARRIER_CLASS_NAME'); ?></span>
+                       <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SHIPPING_CLASS_NAME_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_SHIPPING_CLASS_NAME'); ?></span>
                     </label>
                 </td>
                 <td>

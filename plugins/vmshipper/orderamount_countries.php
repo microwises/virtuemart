@@ -6,7 +6,7 @@ if (!defined('_JEXEC'))
 /**
  * Shipper plugin for standard shippers, like regular postal services
  *
- * @version $Id: standard.php 3220 2011-05-12 20:09:14Z Milbo $
+ * @version $Id: orderamount_countries.php 3220 2011-05-12 20:09:14Z Milbo $
  * @package VirtueMart
  * @subpackage Plugins - shippper
  * @copyright Copyright (C) 2004-2011 VirtueMart Team - All rights reserved.
@@ -19,7 +19,7 @@ if (!defined('_JEXEC'))
  *
  * http://virtuemart.org
  */
-class plgVmShipperWeight_countries extends vmShipperPlugin {
+class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
 
     /**
      * Constructor
@@ -31,11 +31,11 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      * @param object $subject The object to observe
      * @param array  $config  An array that holds the plugin configuration
      */
-    function plgVmShipperWeight_countries(&$subject, $config) {
+    function plgVmShipperOrderAmount_countries(&$subject, $config) {
         $this->_selement = basename(__FILE__, '.php');
         $this->_createTable();
         parent::__construct($subject, $config);
-        JPlugin::loadLanguage('plg_vmshipper_weight_countries', JPATH_ADMINISTRATOR);
+        JPlugin::loadLanguage('plg_vmshipper_orderamount_countries', JPATH_ADMINISTRATOR);
     }
 
     /**
@@ -66,7 +66,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
                 'type' => 'text'
                 , 'null' => false
             )
-            , 'order_weight' => array(
+            , 'order_amount' => array(
                 'type' => 'int'
                 , 'length' => 11
                 , 'null' => false
@@ -103,25 +103,25 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
     }
 
     /**
-     * Get the total weight for the order, based on which the proper shipping rate
+     * Get the total amount for the order, based on which the proper shipping rate
      * can be selected.
      * @param object $cart Cart object
-     * @return float Total weight for the order
-     * @author Oscar van Eijk
+     * @return float Total amount for the order
+     * @author Valerie isakesn
      */
-    protected function getOrderWeight(VirtueMartCart $cart) {
-        $weight = 0;
-        foreach ($cart->products as $prod) {
-            $weight += ( $prod->product_weight * $prod->quantity);
+    protected function getOrderAmount(VirtueMartCart $cart) {
+// THIS IS WRONG
+        foreach ($cart->products as $product) {
+            $orderAmount += ( $prod->product_price * $prod->quantity);
         }
-        return $weight;
+        return $orderAmount;
     }
 
     /**
      * This event is fired during the checkout process. It allows the shopper to select
      * one of the available shippers.
      * It should display a radio button (name: shipper_id) to select the shipper. In the description,
-     * the shipping cost can also be displayed, based on the total order weight and the shipto
+     * the shipping cost can also be displayed, based on the total order amount and the shipto
      * country (this wil be calculated again during order confirmation)
      *
      * @param object $cart the cart object
@@ -141,13 +141,13 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
             }
         }
         $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
-        $orderWeight = $this->getOrderWeight($cart);
+        $orderAmount = $this->getOrderAmount($cart);
         $html = "";
+        $countries = array();
         foreach ($this->shippers as $shipper_id => $shipper_name) {
             $shipping_params = $this->getVmShipperParams($cart->vendorId, $shipper_id);
             $params = new JParameter($shipping_params);
-            $countries_list = $params->get('countries');
-              $country_list = $params->get('countries');
+            $country_list = $params->get('countries');
             if (!empty($country_list)) {
                 if (!is_array($country_list)) {
                     $countries[0] = $country_list;
@@ -155,21 +155,13 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
                     $countries = $country_list;
                 }
             }
-            $cond = "";
-            if (!empty($orderWeight)) {
-                $cond .= ' ((' . $orderWeight . " > " . $params->get('weight_start', 0) . " AND " . $orderWeight . " < " . $params->get('weight_end', 0) . ")";
-                $cond .= ' OR  (' . $params->get('weight_start', 0) . " <= " . $orderWeight . '  ))';
-            }
-            if (!empty($address['zip'])) {
-                if ($cond)
-                    $cond .= ' AND';
-                $cond .= ' ((' . $address['zip'] . '> ' . $params->get('zip_start', 0) . ' AND ' . $address['zip'] . '< ' . $params->get('zip_end', 0) . ")";
-                $cond .= ' OR  (' . $params->get('zip_start', 0) . ' <= ' . $address['zip'] . ' )) ';
-            }
 
-            if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
+            $cond = ' ((' . $orderAmount . " > " . $params->get('orderamount_start', 0) . " AND " . $orderAmount . " < " . $params->get('orderamount_end', 0) . ")";
+            $cond .= ' OR  (' . $params->get('orderamount_start', 0) . " <= " . $orderAmount . '  ))';
+
+              if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
                 if ($cond) {
-                    $cost = $this->_getShippingCost($params);
+                    $cost = $params->get('shipping_value');
                     $html = $this->getShippingHtml($shipper_name, $shipper_id, $selectedShipper, $params->get('shipper_logo'), $cost, $params->get('tax'), $params->get('currency'));
                 }
             }
@@ -211,7 +203,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
             return null; // Another shipper was selected, do nothing
         }
 
-        $orderWeight = $this->getOrderWeight($cart);
+
         $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
         $shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $selectedShipper);
@@ -220,7 +212,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
         $shipping->shipping_currency_id = $params->get('currency');
         $shipping->shipping_name = $this->getThisShipperName($selectedShipper);
         $shipping->shipping_rate_vat_id = $params->get('tax');
-        $shipping->shipping_value = $this->_getShippingCost($params);
+        $shipping->shipping_value =  $params->get('shipping_value');
         return true;
     }
 
@@ -240,14 +232,14 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 
     /**
      * Select the shipping rate ID, based on the selected shipper in combination with the
-     * shipto address (country and zipcode) and the total order weight.
+     * shipto address (country and zipcode) and the total order amount.
      * @param object $cart Cart object
      * @param int $shipperID Shipper ID, by default taken from the cart
      * @return int Shipping rate ID, -1 when no match is found. Only 1 selected ID will be returned;
      * if more ID's match, the cheapest will be selected.
      */
     protected function selectShippingRate(VirtueMartCart $cart, $selectedShipper = 0) {
-        $orderWeight = $this->getOrderWeight($cart);
+ 
         if ($selectedShipper == 0) {
             $selectedShipper = $cart->shipper_id;
         }
@@ -259,7 +251,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
         $shipping->shipping_currency_id = $params->get('currency');
         $shipping->shipping_name = $params->get('shipping_name');
         $shipping->shipping_rate_vat_id = $params->get('tax');
-        $shipping->shipping_value = $cost = $this->_getShippingCost($params);
+        $shipping->shipping_value =  $params->get('shipping_value');
         return true;
     }
 
@@ -281,7 +273,6 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
         $values['virtuemart_order_id'] = $order_id;
         $values['shipper_id'] = $cart->virtuemart_shippingcarrier_id;
         $values['shipper_name'] = $this->getThisShipperName($cart->virtuemart_shippingcarrier_id);
-        $values['order_weight'] = $this->getOrderWeight($cart);
         $values['shipper_cost'] = $params->get('shipper_cost');
         $values['currency'] = $params->get('currency');
         $values['tax'] = $params->get('tax');
@@ -331,10 +322,6 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
                 . '	</tr>' . "\n"
                 . '	<tr>' . "\n"
                 . '		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_MODE_LBL') . ': </td>' . "\n"
-                . '		<td>' . $shipInfo->order_weight . '</td>' . "\n"
-                . '	</tr>' . "\n"
-                . '	<tr>' . "\n"
-                . '		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_MODE_LBL') . ': </td>' . "\n"
                 . '		<td>' . $shipInfo->shipper_cost . '</td>' . "\n"
                 . '	</tr>' . "\n"
                 . '	<tr>' . "\n"
@@ -349,10 +336,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
         ;
         return $html;
     }
-
-    function _getShippingCost($params) {
-        return $params->get('rate_value', 0) + $params->get('package_fee', 0);
-    }
+ 
 
 }
 

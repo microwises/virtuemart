@@ -14,6 +14,8 @@
  * other free or open source software licenses.
  * @version $Id: $
  */
+if (!class_exists('VmConfig'))
+    require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
 class JElementVmCurrencies extends JElement {
 
     /**
@@ -39,8 +41,8 @@ class JElementVmCurrencies extends JElement {
         if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
          $vendor_id = VirtueMartModelVendor::getLoggedVendor();
         if (empty($value)) {
-            $currency=VirtueMartModelVendor::getVendorCurrency ($vendorId);
-            $value= $currency->currency_id;
+            $currency=VirtueMartModelVendor::getVendorCurrency ($vendor_id);
+            $value= $currency->virtuemart_currency_id;
         }
         return JHTML::_('select.genericlist', $currencies, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
     }

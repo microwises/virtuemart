@@ -128,7 +128,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 		$_html = '<table class="adminlist">'."\n";
 		$_html .= '	<thead>'."\n";
 		$_html .= '		<tr>'."\n";
-		$_html .= '			<th>'.JText::_('VM_ORDER_PRINT_PAYMENT_LBL').'</th>'."\n";
+		$_html .= '			<th>'.JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL').'</th>'."\n";
 //		$_html .= '			<th width="40%">'.JText::_('VM_ORDER_PRINT_ACCOUNT_NAME').'</th>'."\n";
 //		$_html .= '			<th width="30%">'.JText::_('VM_ORDER_PRINT_ACCOUNT_NUMBER').'</th>'."\n";
 //		$_html .= '			<th width="17%">'.JText::_('VM_ORDER_PRINT_EXPIRE_DATE').'</th>'."\n";

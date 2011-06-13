@@ -89,7 +89,7 @@ INSERT INTO `#__virtuemart_countries` (`virtuemart_country_id`, `virtuemart_worl
 (71, 1, 'Fiji', 'FJI', 'FJ'),
 (72, 1, 'Finland', 'FIN', 'FI'),
 (73, 1, 'France', 'FRA', 'FR'),
-(74, 1, 'France, Metropolitan', 'FXX', 'FX'),
+
 (75, 1, 'French Guiana', 'GUF', 'GF'),
 (76, 1, 'French Polynesia', 'PYF', 'PF'),
 (77, 1, 'French Southern Territories', 'ATF', 'TF'),
