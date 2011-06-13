@@ -83,16 +83,11 @@ class VirtueMartModelShippingCarrier extends VmModel {
 	$table = $this->getTable('shippingcarriers');
 
 	foreach($shippingCarrierIds as $shippingCarrierId) {
-	    if ($this->deleteShippingCarrierRates($shippingCarrierId)) {
+	 
 		if (!$table->delete($shippingCarrierId)) {
 		    $this->setError($table->getError());
 		    return false;
 		}
-	    }
-	    else {
-		$this->setError('Could not remove shipping carrier rates!');
-		return false;
-	    }
 	}
 
 	return true;
