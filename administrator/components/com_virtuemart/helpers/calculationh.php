@@ -740,8 +740,8 @@ class calculationHelper {
 		$this->_cartPrices['shippingTotal'] = 0;
 		$this->_cartPrices['salesPriceShipping'] = 0;
 		if (empty($ship_id)) return ;
-                
-		 if(!class_exists('Shippingcarriers')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'shippingcarriers.php');
+
+		 if(!class_exists('TableShippingcarriers')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'shippingcarriers.php');
 		 
 		$shipping = new TableShippingcarriers($this->_db);
 		$shipping->load($ship_id);

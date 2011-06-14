@@ -17,4 +17,4 @@
 */
 ?>
 
-Your order has been processed.
+<?php echo JText::_('COM_VIRTUEMART_ORDER_PROCESSED'); ?> 

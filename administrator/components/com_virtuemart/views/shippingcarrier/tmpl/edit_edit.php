@@ -35,6 +35,27 @@ defined('_JEXEC') or die('Restricted access');
                     <input class="inputbox" type="text" name="shipping_carrier_name" id="shipping_carrier_name" size="50" value="<?php echo $this->carrier->shipping_carrier_name; ?>" />
                 </td>
             </tr>
+             <tr>
+                <td width="110" class="key">
+                    <label for="title">
+<?php echo JText::_('COM_VIRTUEMART_SHIPPING_FORM_DESCRIPTION'); ?>
+                    </label>
+                </td>
+                <td>
+                    <input class="inputbox" type="text" name="shipping_carrier_desc" id="shipping_carrier_desc" size="80" value="<?php echo $this->carrier->shipping_carrier_desc; ?>" />
+                </td>
+            </tr>
+             <tr>
+                <td width="110" class="key">
+                    <label for="title">
+                       <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SHIPPING_CLASS_NAME_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_SHIPPING_CLASS_NAME'); ?></span>
+                    </label>
+                </td>
+                <td>
+<?php echo $this->pluginList; ?>
+                </td>
+            </tr>
+            
             <tr>
                 <td width="110" class="key">
                     <label for="title">
@@ -45,16 +66,7 @@ defined('_JEXEC') or die('Restricted access');
                     <input class="inputbox" type="text" name="ordering" id="ordering" size="3" value="<?php echo $this->carrier->ordering; ?>" />
                 </td>
             </tr>
-            <tr>
-                <td width="110" class="key">
-                    <label for="title">
-                       <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SHIPPING_CLASS_NAME_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_SHIPPING_CLASS_NAME'); ?></span>
-                    </label>
-                </td>
-                <td>
-<?php echo $this->pluginList; ?>
-                </td>
-            </tr>
+           
             <tr>
                 <td width="110" class="key">
                     <label for="title">

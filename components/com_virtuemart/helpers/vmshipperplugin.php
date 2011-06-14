@@ -102,24 +102,7 @@ abstract class vmShipperPlugin extends JPlugin {
         if (!$vendorId)
             $vendorId = 1;
         $db = JFactory::getDBO();
-        if (false) {
-            if (!$jplugin_id) {
-                if (VmConfig::isJ15()) {
-                    $q = 'SELECT `id` FROM #__plugins WHERE `element` = "' . $this->_selement . '"';
-                } else {
-                    $q = 'SELECT `extension_id` FROM #__extensions  WHERE `element` = "' . $this->_selement . '"';
-                }
-                $db->setQuery($q);
-                $this->_jplugin_id = $db->loadResult();
-                if (!$this->_jplugin_id) {
-                    $mainframe = &JFactory::getApplication();
-                    $mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_NO_SHIPPER_PLUGIN'));
-                    return false;
-                }
-            } else {
-                $this->_jplugin_id = $jplugin_id;
-            }
-        }
+        
         $q = 'SELECT   `shipping_carrier_params` FROM #__virtuemart_shippingcarriers WHERE `virtuemart_shippingcarrier_id` = "' . $shipper_id . '" AND `virtuemart_vendor_id` = "' . $vendorId . '" AND `published`="1" ';
         $db->setQuery($q);
         return $db->loadResult();
@@ -146,9 +129,9 @@ abstract class vmShipperPlugin extends JPlugin {
      * @author Oscar van Eijk
      */
     protected function getShippers($_vendorId) {
-        $_db = JFactory::getDBO();
+        $db = JFactory::getDBO();
         if (VmConfig::isJ15()) {
-            $_q = 'SELECT v.`virtuemart_shippingcarrier_id`   AS id '
+            $q = 'SELECT v.`virtuemart_shippingcarrier_id`   AS id '
                     . ',      v.`shipping_carrier_name` AS name '
                     . 'FROM   #__virtuemart_shippingcarriers AS v '
                     . ',      #__plugins             j '
@@ -159,7 +142,7 @@ abstract class vmShipperPlugin extends JPlugin {
                     . ' OR   v.`virtuemart_vendor_id` = "0") '
             ;
         } else {
-            $_q = 'SELECT v.`virtuemart_shippingcarrier_id`   AS id '
+            $q = 'SELECT v.`virtuemart_shippingcarrier_id`   AS id '
                     . ',      v.`shipping_carrier_name` AS name '
                     . 'FROM   #__virtuemart_shippingcarriers AS v '
                     . ',      #__extensions    AS      j '
@@ -173,8 +156,8 @@ abstract class vmShipperPlugin extends JPlugin {
         }
 
 
-        $_db->setQuery($_q);
-        if (!$_res = $_db->loadAssocList()) {
+        $db->setQuery($q);
+        if (!$_res = $db->loadAssocList()) {
 //			$app = JFactory::getApplication();
 //			$app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_CARRIER'));
             return false;
@@ -658,22 +641,27 @@ abstract class vmShipperPlugin extends JPlugin {
         return  $salesPriceShipping;
     }
 
-    protected function getShippingHtml($rate_name, $shipper_id, $selectedShipper, $shipper_logo, $cost, $tax_id, $currency_id) {
+    protected function getShippingHtml($shipper_name, $shipper_id, $selectedShipper, $shipper_logo, $cost, $tax_id ) {
         if ($selectedShipper == $shipper_id) {
             $checked = '"checked"';
         } else {
             $checked = '';
         }
+
+         if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+                         $vendor_id = 1;
+                         $vendor_currency=VirtueMartModelVendor::getVendorCurrency ($vendor_id);
+
         if (!class_exists('CurrencyDisplay'))
             require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
         $currency = CurrencyDisplay::getInstance();
-        $salesPriceShipping = $this->calculateSalesPriceShipping($cost, $tax_id, $currency_id);
+        $salesPriceShipping = $this->calculateSalesPriceShipping($cost, $tax_id, $vendor_currency->virtuemart_currency_id);
 
         $shippingCostDisplay = $currency->priceDisplay($salesPriceShipping);
         $logo = $this->getShipperLogo($shipper_logo, $shipper_name);
 
         $html = '<input type="radio" name="shipper_id" id="shipper_id_' . $shipper_id . '" value="' . $shipper_id . '" ' . $checked . '>'
-                . '<label for="shipper_id_' . $shipper_id . '">' . $logo . $rate_name . " (" . $shippingCostDisplay . ")</label><br/>\n";
+                . '<label for="shipper_id_' . $shipper_id . '">' . $logo . $shipper_name . " (" . $shippingCostDisplay . ")</label><br/>\n";
         return $html;
     }
 

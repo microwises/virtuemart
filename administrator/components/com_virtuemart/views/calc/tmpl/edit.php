@@ -68,7 +68,7 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td colspan="3" >
-				<input class="inputbox" type="text" name="calc_descr" id="calc_descr" size="200" value="<?php echo $this->calc->calc_descr; ?>" />
+				<input class="inputbox" type="text" name="calc_descr" id="calc_descr" size="80" value="<?php echo $this->calc->calc_descr; ?>" />
 			</td>
 		</tr>
 		<tr>

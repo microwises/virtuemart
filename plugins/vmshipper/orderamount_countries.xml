@@ -31,7 +31,6 @@
         <param name="order_amount_start" type="text" size="10" default="" label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_AMOUNT_START" description="VMSHIPPER_ORDERAMOUNT_COUNTRIES_AMOUNT_START_DESC"/>
         <param name="order_amount_stop" type="text" size="10" default="" label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_AMOUNT_STOP" description="VMSHIPPER_ORDERAMOUNT_COUNTRIES_AMOUNT_STOP_DESC"/>
         <param name="shipping_value" type="text"   label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_RATE_VALUE" description="VMSHIPPER_ORDERAMOUNT_COUNTRIES_RATE_VALUE_DESC" />
-        <param name="currency_id" type="vmcurrencies" scope="com_virtuemart" default="" label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_CURRENCY" description="VMSHIPPER_ORDERAMOUNT_COUNTRIES_CURRENCY_DESC" />
         <param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_TAX" description="VMSHIPPER_ORDERAMOUNT_COUNTRIES_TAX_DESC" />
     </params>
 </install>

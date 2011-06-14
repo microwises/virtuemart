@@ -49,14 +49,20 @@ class VirtuemartViewShippingCarrier extends JView {
 
 		$layoutName = JRequest::getVar('layout', 'default');
 		if ($layoutName == 'edit') {
-                     $this->loadHelper('image');
+                        $this->loadHelper('image');
 			$this->loadHelper('html');
 			$this->loadHelper('parameterparser');
 			jimport('joomla.html.pane');
+                         if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+                         $vendor_id = 1;
+                         $currency=VirtueMartModelVendor::getVendorCurrency ($vendor_id);
+                         $this->assignRef('vendor_currency', $currency->currency_symbol);
+
 			$vendorList= ShopFunctions::renderVendorList($shippingCarrier->virtuemart_vendor_id);
 			$this->assignRef('vendorList', $vendorList);
 			$this->assignRef('pluginList', self::renderInstalledShipperPlugins($shippingCarrier->shipping_carrier_jplugin_id));
 			$this->assignRef('carrier',	$shippingCarrier);
+                        //$this->assignRef('taxes',	self::renderTaxList($shippingCarrier->shipping_carrier_vat_id));
 
 			ShopFunctions::addStandardEditViewCommands();
 
@@ -95,6 +101,24 @@ class VirtuemartViewShippingCarrier extends JView {
 
 		return JHtml::_('select.genericlist', $result, 'shipping_carrier_jplugin_id', null, $ext_id, 'name', $selected);
 	}
+         function renderTaxList($selected) {
+         $db = JFactory::getDBO();
+        $nullDate = $db->getNullDate();
+        $now = JFactory::getDate()->toMySQL();
+        $q = 'SELECT   `virtuemart_calc_id`  , `calc_name` AS text FROM `#__virtuemart_calcs` WHERE    ';
+        $q .= ' `calc_kind`="TAX" OR `calc_kind`="TaxBill" ';
+        $q .= ' AND `virtuemart_vendor_id` = 1  ';
+        $q .= ' AND ( publish_up = ' . $db->Quote($nullDate) . ' OR publish_up <= ' . $db->Quote($now) . ' )';
+        $q .= ' AND ( publish_down = ' . $db->Quote($nullDate) . ' OR publish_down >= ' . $db->Quote($now) . ' ) ';
+
+        $db->setQuery($q);
+        $taxrates = $db->loadObjectList();
+        $class = "";
+        // $class = 'multiple="true" size="10"';
+ 
+        return JHTML::_('Select.genericlist', $taxrates, 'virtuemart_calc_id', $class, 'virtuemart_calc_id', 'text', $selected );
+
+    }
 
 }
 // pure php no closing tag

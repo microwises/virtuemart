@@ -87,12 +87,7 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
                 'type' => 'int'
                 , 'length' => 11
                 , 'null' => false
-            )
-            , 'currency_id' => array(
-                'type' => 'int'
-                , 'length' => 11
-                , 'null' => false
-            )
+            )          
             , 'tax_id' => array(
                 'type' => 'int'
                 , 'length' => 11
@@ -191,8 +186,9 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
 		if (!parent::plgVmOnShipperSelectedCalculatePrice($cart, $shipping) ){
                     return null;
                 }
+                $nbProducts = $this->_getNbProducts($cart);
 		$params = new JParameter($shipping->shipping_carrier_params);
-		$shipping->shipping_value = $this->_getShippingCostFromNbProducts($nbProducts, $params);
+		$shipping->shipping_value = $this->_getShippingCost($nbProducts, $params);
 		return true;
 
     }
@@ -222,7 +218,6 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
         $values['cost_first_product'] = $params->get('cost_first_product');
         $values['cost_next_products'] = $params->get('cost_next_products');
         $values['cost_limit'] = $params->get('cost_limit');
-        $values['currency_id'] = $params->get('currency_id');
         $values['tax_id'] = $params->get('tax_id');
         $this->writeShipperData($values, '#__virtuemart_order_shipper_' . $this->_selement);
     }
@@ -280,12 +275,8 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
                 . '	</tr>' . "\n"
                 . '	<tr>' . "\n"
                 . '		<td class="key">' . JText::_('VMSHIPPER_NBPRODUCTS_COUNTRIES_TAX_ID') . ': </td>' . "\n"
-                . '		<td>' . $shipInfo->tax . '</td>' . "\n"
-                . '	</tr>' . "\n"
-                . '	<tr>' . "\n"
-                . '		<td class="key">' . JText::_('VMSHIPPER_NBPRODUCTS_COUNTRIES_CURRENCY_ID') . ': </td>' . "\n"
-                . '		<td>' . $shipInfo->currency . '</td>' . "\n"
-                . '	</tr>' . "\n"
+                . '		<td>' . $shipInfo->tax_id . '</td>' . "\n"
+                . '	</tr>' . "\n"	
                 . '</table>' . "\n"
         ;
         return $html;

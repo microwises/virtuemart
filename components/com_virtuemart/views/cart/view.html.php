@@ -401,7 +401,7 @@ class VirtueMartViewCart extends JView {
 		$this->assignRef('STaddress',$STaddress['fields']);*/
 		
 	}
-
+      
 }
 
 //no closing tag

@@ -14,8 +14,13 @@
  * other free or open source software licenses.
  * @version $Id: $
  */
+
 if (!class_exists('VmConfig'))
     require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+
+if (!class_exists('ShopFunctions'))
+    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+
 class JElementVmTaxes extends JElement {
 
     /**
@@ -27,20 +32,11 @@ class JElementVmTaxes extends JElement {
 
     function fetchElement($name, $value, &$node, $control_name) {
 
-        $db =  JFactory::getDBO();
-        $nullDate = $db->getNullDate();
-        $now = JFactory::getDate()->toMySQL();
-        $q = 'SELECT   `virtuemart_calc_id` AS value, `calc_name` AS text FROM `#__virtuemart_calcs` WHERE    ';
-        $q .= ' `calc_kind`="TAX" OR `calc_kind`="TaxBill" ';
-        $q .= ' AND `virtuemart_vendor_id` = 1  ';
-        $q .= ' AND ( publish_up = ' . $db->Quote($nullDate) . ' OR publish_up <= ' . $db->Quote($now) . ' )' ;
-        $q .= ' AND ( publish_down = ' . $db->Quote($nullDate) . ' OR publish_down >= ' . $db->Quote($now) . ' ) ';
 
-        $db->setQuery($q);
-        $taxrates = $db->loadObjectList();
+    return ShopFunctions::renderTaxList($control_name . $name, $control_name . '[' . $name . '][]');
 
-       // $class = 'multiple="true" size="10"';
-        return JHTML::_('select.genericlist', $taxrates, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
+        // $class = 'multiple="true" size="10"';
+       // return JHTML::_('select.genericlist', $taxrates, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
     }
 
 }

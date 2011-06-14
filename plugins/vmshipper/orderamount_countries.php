@@ -111,8 +111,9 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
      */
     protected function getOrderAmount(VirtueMartCart $cart) {
 // THIS IS WRONG
+         $orderAmount=0;
         foreach ($cart->products as $product) {
-            $orderAmount += ( $prod->product_price * $prod->quantity);
+            $orderAmount += ( $product->product_price * $product->quantity);
         }
         return $orderAmount;
     }
@@ -162,7 +163,7 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
               if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
                 if ($cond) {
                     $cost = $params->get('shipping_value');
-                    $html = $this->getShippingHtml($params->get('rate_name'), $shipper_id, $selectedShipper, $params->get('shipper_logo'), $cost, $params->get('tax_id'), $params->get('currency_id'));
+                    $html = $this->getShippingHtml($shipper_name, $shipper_id, $selectedShipper, $params->get('shipper_logo'), $cost, $params->get('tax_id'), $params->get('currency_id'));
                 }
             }
         }
@@ -242,14 +243,13 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
     protected function selectShippingRate(VirtueMartCart $cart, $selectedShipper = 0) {
  
         if ($selectedShipper == 0) {
-            $selectedShipper = $cart->shipper_id;
+            $selectedShipper = $cart->virtuemart_shippingcarrier_id;
         }
         $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
         $shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $selectedShipper);
         $params = new JParameter($shipping_carrier_params);
 
-        $shipping->shipping_currency_id = $params->get('currency_id');
         $shipping->shipping_name = $params->get('shipping_name');
         $shipping->shipping_rate_vat_id = $params->get('tax_id');
         $shipping->shipping_value =  $params->get('shipping_value');
@@ -275,7 +275,6 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
         $values['shipper_id'] = $cart->virtuemart_shippingcarrier_id;
         $values['shipper_name'] = $this->getThisShipperName($cart->virtuemart_shippingcarrier_id);
         $values['shipper_cost'] = $params->get('shipper_cost');
-        $values['currency_id'] = $params->get('currency_id');
         $values['tax_id'] = $params->get('tax_id');
 
         $this->writeShipperData($values, '#__virtuemart_order_shipper_' . $this->_selement);

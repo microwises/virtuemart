@@ -21,7 +21,6 @@
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />
         <param type="spacer" default="VMSHIPPER_WEIGHT_COUNTRIES" level="level1" />
-        <param name="rate_name" type="text"   size="50" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_FE_SHIPPING_NAME" description="VMSHIPPER_WEIGHT_COUNTRIES_FE_SHIPPING_NAME_DESC"/>
          <param	name="shipper_logo" type="vmfiles" label="VMSHIPPER_WEIGHT_COUNTRIES_LOGOS"
              	description="VMSHIPPER_WEIGHT_COUNTRIES_LOGOS_DESC"
              	directory="/images/stories/virtuemart/shipper"
@@ -34,7 +33,6 @@
         <param name="weight_stop" type="text" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_STOP" description="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_STOP_DESC"/>
         <param name="rate_value" type="text"   label="VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE" description="VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE_DESC" />
         <param name="package_fee" type="text"   label="VMSHIPPER_WEIGHT_COUNTRIES_PACKAGE_FEE" description="VMSHIPPER_WEIGHT_COUNTRIES_PACKAGE_FEE_DESC" />
-        <param name="currency_id" type="vmcurrencies" scope="com_virtuemart" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_CURRENCY" description="VMSHIPPER_WEIGHT_COUNTRIES_CURRENCY_DESC" />
         <param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPPER_WEIGHT_COUNTRIES_TAX" description="VMSHIPPER_WEIGHT_COUNTRIES_TAX_DESC" />
     </params>
 </install>

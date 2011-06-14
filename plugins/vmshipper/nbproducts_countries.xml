@@ -3,7 +3,7 @@
     <name>VMSHIPPER_NBPRODUCTS_COUNTRIES_PLUGIN</name>
     <author>Valérie Isaksen</author>
     <creationdate>2011</creationdate>
-    <copyright>2011 alatak.net</copyright>
+    <copyright>VirtueMart Team</copyright>
     <license>GNU/GPL</license>
     <authoremail></authoremail>
     <authorUrl>http://www.alatak.net</authorUrl>
@@ -21,8 +21,6 @@
     </languages>
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />
-                <param name="rate_name" type="text" size="10" default="" label="VMSHIPPER_NBPRODUCTS_COUNTRIES_FE_SHIPPING_NAME" description="VMSHIPPER_NBPRODUCTS_COUNTRIES_FE_SHIPPING_NAME_DESC"/>
-
         <param	name="shipper_logo" type="vmfiles" label="VMSHIPPER_NBPRODUCTS_COUNTRIES_LOGOS"
              	description="VMSHIPPER_NBPRODUCTS_COUNTRIES_LOGOS_DESC"
              	directory="/images/stories/virtuemart/shipper"
@@ -32,7 +30,6 @@
         <param name="cost_first_product" type="text" size="10" default="" label="VMSHIPPER_NBPRODUCTS_COUNTRIES_COST_FIRST_PRODUCT" description="VMSHIPPER_NBPRODUCTS_COUNTRIES_COST_FIRST_PRODUCT_DESC"/>
         <param name="cost_next_products" type="text" size="10" default="" label="VMSHIPPER_NBPRODUCTS_COUNTRIES_COST_NEXT_PRODUCTS" description="VMSHIPPER_NBPRODUCTS_COUNTRIES_COST_NEXT_PRODUCTS_DESC"/>
         <param name="cost_limit" type="text" size="10" default="" label="VMSHIPPER_NBPRODUCTS_COUNTRIES_COST_LIMIT" description="VMSHIPPER_NBPRODUCTS_COUNTRIES_COST_LIMIT_DESC"/>
-        <param name="currency_id" type="vmcurrencies" scope="com_virtuemart" default="" label="VMSHIPPER_NBPRODUCTS_COUNTRIES_CURRENCY" description="VMSHIPPER_NBPRODUCTS_COUNTRIES_CURRENCY_DESC" />
         <param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPPER_NBPRODUCTS_COUNTRIES_TAX" description="VMSHIPPER_NBPRODUCTS_COUNTRIES_TAX_DESC" />
     </params>
 
