@@ -130,20 +130,20 @@ class VirtueMartModelCalc extends VmModel {
 			$this->_data = $this->_getList($this->_query, $this->getState('limitstart'), $this->getState('limit'));
 		}
 		$this->_total = $this->_getListCount($this->_query) ;
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+		if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		foreach ($this->_data as $data){
 
 			/* Write the first 5 categories in the list */
-			$data->calcCategoriesList = modelfunctions::buildGuiList('virtuemart_category_id','#__virtuemart_calc_categories','virtuemart_calc_id',$data->virtuemart_calc_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category');
+			$data->calcCategoriesList = shopfunctions::renderGuiList('virtuemart_category_id','#__virtuemart_calc_categories','virtuemart_calc_id',$data->virtuemart_calc_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category');
 
 			/* Write the first 5 shoppergroups in the list */
-			$data->calcShoppersList = modelfunctions::buildGuiList('virtuemart_shoppergroup_id','#__virtuemart_calc_shoppergroups','virtuemart_calc_id',$data->virtuemart_calc_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','shoppergroup');
+			$data->calcShoppersList = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_calc_shoppergroups','virtuemart_calc_id',$data->virtuemart_calc_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','shoppergroup');
 
 			/* Write the first 5 countries in the list */
-			$data->calcCountriesList = modelfunctions::buildGuiList('virtuemart_country_id','#__virtuemart_calc_countries','virtuemart_calc_id',$data->virtuemart_calc_id,'country_name','#__virtuemart_countries','virtuemart_country_id','country');
+			$data->calcCountriesList = shopfunctions::renderGuiList('virtuemart_country_id','#__virtuemart_calc_countries','virtuemart_calc_id',$data->virtuemart_calc_id,'country_name','#__virtuemart_countries','virtuemart_country_id','country');
 
 			/* Write the first 5 states in the list */
-			$data->calcStatesList = modelfunctions::buildGuiList('virtuemart_state_id','#__virtuemart_calc_states','virtuemart_calc_id',$data->virtuemart_calc_id,'state_name','#__virtuemart_states','virtuemart_state_id','state');
+			$data->calcStatesList = shopfunctions::renderGuiList('virtuemart_state_id','#__virtuemart_calc_states','virtuemart_calc_id',$data->virtuemart_calc_id,'state_name','#__virtuemart_states','virtuemart_state_id','state');
 
 			$query = 'SELECT `currency_name` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` = "'.$data->calc_currency.'" ';
 			$this->_db->setQuery($query);
@@ -183,8 +183,6 @@ class VirtueMartModelCalc extends VmModel {
 			$this->setError($table->getError());
 			return false;
 		}
-
-		//if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
 
     	$xrefTable = $this->getTable('calc_categories');
     	if (!$xrefTable->bindChecknStore($data)) {

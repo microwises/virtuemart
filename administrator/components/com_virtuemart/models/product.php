@@ -832,8 +832,11 @@ class VirtueMartModelProduct extends VmModel {
 
 		/* Update manufacturer link */
 		if(!empty($data['virtuemart_manufacturer_id'])){
-			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-			modelfunctions::storeArrayData('#__virtuemart_product_manufacturers','virtuemart_product_id','virtuemart_manufacturer_id',$product_data->virtuemart_product_id,$data['virtuemart_manufacturer_id']);
+			
+			$xrefTable = $this->getTable('product_manufacturers');
+	    	if (!$xrefTable->bindChecknStore($data)) {
+				$this->setError($xrefTable->getError());
+			}
 		}
 
 		/* Update waiting list  */

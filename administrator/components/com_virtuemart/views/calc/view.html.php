@@ -156,9 +156,6 @@ class VirtuemartViewCalc extends JView {
 
 	function renderEntryPointsList($selected){
 
-		//Entrypoints array
-		$this->loadHelper('modelfunctions');
-		$selected = modelfunctions::prepareTreeSelection($selected);
 		//MathOp array
 		$entryPoints = array(
 		'0' => array('calc_kind' => 'Tax', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_TAX')),
@@ -186,8 +183,7 @@ class VirtuemartViewCalc extends JView {
 	 */
 
 	function renderMathOpList($selected){
-		$this->loadHelper('modelfunctions');
-		$selected = modelfunctions::prepareTreeSelection($selected);
+
 		//MathOp array
 		$mathOps = array(
 		'0' => array('calc_value_mathop' => '+', 'calc_value_mathop_name' => '+'),

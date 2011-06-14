@@ -265,12 +265,10 @@ class VirtuemartViewProduct extends JView {
 
 				if(!class_exists('VirtueMartModelRatings')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'ratings.php');
 				$productreviews = new VirtueMartModelRatings();
-//				$currencydisplay = CurrencyDisplay::getInstance();
 
 				/* Load the product price */
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 
-//				$calculator = calculationHelper::getInstance();
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 				$vendor_model = new VirtueMartModelVendor();
 
@@ -286,8 +284,8 @@ class VirtuemartViewProduct extends JView {
 					$product->product_price_display = $currencyDisplay->priceDisplay($product->product_price,(int)$product->product_currency,true);
 
 					/* Write the first 5 categories in the list */
-					if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-					$product->categoriesList = modelfunctions::buildGuiList('virtuemart_category_id','#__virtuemart_product_categories','virtuemart_product_id',$product->virtuemart_product_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category');
+					if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+					$product->categoriesList = shopfunctions::renderGuiList('virtuemart_category_id','#__virtuemart_product_categories','virtuemart_product_id',$product->virtuemart_product_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category');
 
 				}
 
@@ -334,26 +332,6 @@ class VirtuemartViewProduct extends JView {
 		parent::display();
 	}
 
-	/**
-	 * Renders the list for the tax rules
-	 *
-	 * @author Max Milbers
-	 */
-/*	function renderTaxList($selected){
-		$this->loadHelper('modelfunctions');
-//		$selected = modelfunctions::prepareTreeSelection($selected);
-
-		if(!class_exists('VirtueMartModelCalc')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'calc.php');
-		$taxes = VirtueMartModelCalc::getTaxes();
-
-		$taxrates = array();
-		$taxrates[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_PRODUCT_TAX_NO_SPECIAL'), 'product_tax_id' );
-		foreach($taxes as $tax){
-			$taxrates[] = JHTML::_('select.option', $tax->virtuemart_calc_id, $tax->calc_name, 'product_tax_id');
-		}
-		$listHTML = JHTML::_('Select.genericlist', $taxrates, 'product_tax_id', 'multiple', 'product_tax_id', 'text', $selected );
-		return $listHTML;
-	}*/
 
 	/**
 	 * Renders the list for the discount rules
@@ -361,9 +339,8 @@ class VirtuemartViewProduct extends JView {
 	 * @author Max Milbers
 	 */
 	function renderDiscountList($selected,$before=false){
-		$this->loadHelper('modelfunctions');
-//		$selected = modelfunctions::prepareTreeSelection($selected);
 
+		if(!class_exists('VirtueMartModelCalc')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'calc.php');
 		$discounts = VirtueMartModelCalc::getDiscounts();
 //		if($before){
 //			$discounts = VirtueMartModelCalc::getDBDiscounts();
@@ -381,6 +358,7 @@ class VirtuemartViewProduct extends JView {
 		return $listHTML;
 
 	}
+	
 	function displayLinkToChildList($product_id, $product_name) {
 		
 		$db = JFactory::getDBO();
@@ -390,6 +368,7 @@ class VirtuemartViewProduct extends JView {
 		echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_id.'&option=com_virtuemart'), $result, array('title' => JText::sprintf('COM_VIRTUEMART_PRODUCT_LIST_X_CHILDREN',$product_name) ));
 		}
 	}
+	
 	function displayLinkToParent($product_parent_id) {
 		
 		$db = JFactory::getDBO();

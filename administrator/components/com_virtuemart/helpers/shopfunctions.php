@@ -95,6 +95,46 @@ class ShopFunctions {
 
     }
 	
+			/**
+	 * Builds an enlist for information (not chooseable)
+	 * @author Max Milbers
+	 *
+	 * @param $fieldnameXref datafield for the xreftable, where the name is stored
+	 * @param $tableXref xref table
+	 * @param $fieldIdXref datafield for the xreftable, where the id is stored
+	 * @param $idXref The id to query in the xref table
+	 * @param $fieldname the name of the datafield in the main table
+	 * @param $table main table
+	 * @param $fieldId the name of the field where the id is stored
+	 * @param $quantity The number of items in the list
+	 * @return List as String
+	 */
+
+	function renderGuiList ($fieldnameXref,$tableXref,$fieldIdXref,$idXref,$fieldname,$table,$fieldId,$view,$quantity=4){
+
+		$db = JFactory::getDBO();
+		$q = 'SELECT '.$fieldnameXref.' FROM '.$tableXref.' WHERE '.$fieldIdXref.' = "'.$idXref.'"';
+		$db->setQuery($q);
+		$tempArray = $db->loadResultArray();
+		if(isset($tempArray)){
+			$list='';
+			$i=0;
+			foreach ($tempArray as $value) {
+				$q = 'SELECT '.$fieldname.' FROM '.$table.' WHERE '.$fieldId.' = "'.$value.'"';
+				$db->setQuery($q);
+				$tmp = $db->loadResult();
+				$list .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view='.$view.'&task=edit&cid[]='.$value), $tmp). ', ';
+//				$list .= $tmp. ', ';
+				$i++;
+				if($i==$quantity) break;
+			}
+			return substr($list,0,-2);
+		}else{
+			return '';
+		}
+
+	}
+	
 	/**
 	 * Creates a Drop Down list of available Creditcards
 	 *
@@ -665,6 +705,7 @@ class ShopFunctions {
 			$cellsHtml = self::checkboxListArr( $arr, $tag_name, $tag_attribs,  $key, $text,$selected, $required );
 			return self::list2Table( $cellsHtml, $cols, $rows, $size );
 	}
+	
 	// private methods:
 	private function list2Table( $cellsHtml, $cols, $rows, $size ) {
 		$cells = count($cellsHtml);
@@ -868,7 +909,7 @@ class ShopFunctions {
 	}
 
 	/**
-	* Validates an EU-vat number, What is this?
+	* 
 	* @author RolandD
 	* @param string $euvat EU-vat number to validate
 	* @return boolean The result of the validation
@@ -1053,8 +1094,6 @@ class ShopFunctions {
 	 * @author Max Milbers
 	 */
 	function renderTaxList($selected, $name='product_tax_id'){
-//		$this->loadHelper('modelfunctions');
-//		$selected = modelfunctions::prepareTreeSelection($selected);
 
 		if(!class_exists('VirtueMartModelCalc')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'calc.php');
 		$taxes = VirtueMartModelCalc::getTaxes();

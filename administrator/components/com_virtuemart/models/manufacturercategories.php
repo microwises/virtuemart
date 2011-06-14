@@ -116,20 +116,6 @@ class VirtuemartModelManufacturercategories extends VmModel {
 
 
 	/**
-	 * Publish/Unpublish all the ids selected
-     *
-     * @param boolean $publishId True is the ids should be published, false otherwise.
-     * @return boolean True is the remove was successful, false otherwise.
-     */
-	function publish($publishId = false){
-
-		if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','manufacturercategories',$publishId);
-
-	}
-
-
-	/**
 	 * Retireve a list of countries from the database.
 	 *
      * @param string $onlyPuiblished True to only retreive the published categories, false otherwise

@@ -98,8 +98,7 @@ class VirtuemartViewPaymentMethod extends JView {
 	 */
 
 	function renderPaymentTypesList($selected){
-		$this->loadHelper('modelfunctions');
-		$selected = modelfunctions::prepareTreeSelection($selected);
+
 		$list = array(
 		'0' => array('paym_type' => 'C', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_CREDIT')),
 		'1' => array('paym_type' => 'Y', 'paym_type_name' => JText::_('COM_VIRTUEMART_PAYMENT_FORM_USE_PP')),

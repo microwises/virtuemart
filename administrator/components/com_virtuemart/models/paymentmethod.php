@@ -125,7 +125,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 
 		if(isset($this->_data)){
 
-			if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
+			if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 			foreach ($this->_data as $data){
 				/* Add the paymentmethod shoppergroups */
 				$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_paymentmethod_shoppergroups WHERE `virtuemart_paymentmethod_id` = "'.$data->virtuemart_paymentmethod_id.'"';
@@ -138,10 +138,10 @@ class VirtueMartModelPaymentmethod extends VmModel{
 				$data->paym_creditcards = $this->_db->loadResultArray();
 
 				/* Write the first 5 shoppergroups in the list */
-				$data->paymShoppersList = modelfunctions::buildGuiList('virtuemart_shoppergroup_id','#__virtuemart_paymentmethod_shoppergroups','virtuemart_paymentmethod_id',$data->virtuemart_paymentmethod_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','shoppergroup');
+				$data->paymShoppersList = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_paymentmethod_shoppergroups','virtuemart_paymentmethod_id',$data->virtuemart_paymentmethod_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','shoppergroup');
 
 				/* Write the first 5 accepted creditcards in the list */
-				$data->paymCreditCardList = modelfunctions::buildGuiList('virtuemart_creditcard_id','#__virtuemart_paymentmethod_creditcards','virtuemart_paymentmethod_id',$data->virtuemart_paymentmethod_id,'creditcard_name','#__virtuemart_creditcards','virtuemart_creditcard_id','creditcart');
+				$data->paymCreditCardList = shopfunctions::renderGuiList('virtuemart_creditcard_id','#__virtuemart_paymentmethod_creditcards','virtuemart_paymentmethod_id',$data->virtuemart_paymentmethod_id,'creditcard_name','#__virtuemart_creditcards','virtuemart_creditcard_id','creditcart');
 
 				/* Add published from table plugins obsolete */
 //				$q = 'SELECT `id` FROM #__plugins WHERE `element` = "'.$data->paym_element.'"';
@@ -252,24 +252,6 @@ class VirtueMartModelPaymentmethod extends VmModel{
     	}
 
     	return true;
-	}
-
-
-	/**
-	 * Publish/Unpublish all the ids selected.
-	 * Important !
-	 * This function does change the table plugin and NOT the table paymentmethod!
-     *
-     * @author Max Milbers
-     * @param boolean $publish True is the ids should be published, false otherwise.
-     * @param the ids to alter
-     * @return boolean True is the remove was successful, false otherwise.
-     */
-	public function publish($publish=false) {
-
-    	if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
-		return modelfunctions::publish('cid','paymentmethods',$publish);
-
 	}
 
 
