@@ -21,7 +21,8 @@
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />
         <param type="spacer" default="VMSHIPPER_ORDERAMOUNT_COUNTRIES" level="level1" />
-    <param	name="shipper_logo" type="vmfiles" label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_LOGOS"
+        <param name="rate_name" type="text"   size="50"  label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_FE_SHIPPING_NAME" description="VMSHIPPER_ORDERAMOUNT_COUNTRIES_FE_SHIPPING_NAME_DESC"/>
+        <param	name="shipper_logo" type="vmfiles" label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_LOGOS"
              	description="VMSHIPPER_WEIGHT_COUNTRIES_LOGOS_DESC"
              	directory="/images/stories/virtuemart/shipper"
              	default="default" hide_default="1" hide_none="1"
@@ -30,7 +31,7 @@
         <param name="order_amount_start" type="text" size="10" default="" label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_AMOUNT_START" description="VMSHIPPER_ORDERAMOUNT_COUNTRIES_AMOUNT_START_DESC"/>
         <param name="order_amount_stop" type="text" size="10" default="" label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_AMOUNT_STOP" description="VMSHIPPER_ORDERAMOUNT_COUNTRIES_AMOUNT_STOP_DESC"/>
         <param name="shipping_value" type="text"   label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_RATE_VALUE" description="VMSHIPPER_ORDERAMOUNT_COUNTRIES_RATE_VALUE_DESC" />
-        <param name="currency" type="vmcurrencies" scope="com_virtuemart" default="" label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_CURRENCY" description="VMSHIPPER_ORDERAMOUNT_COUNTRIES_CURRENCY_DESC" />
-        <param name="tax" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_TAX" description="VMSHIPPER_ORDERAMOUNT_COUNTRIES_TAX_DESC" />
+        <param name="currency_id" type="vmcurrencies" scope="com_virtuemart" default="" label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_CURRENCY" description="VMSHIPPER_ORDERAMOUNT_COUNTRIES_CURRENCY_DESC" />
+        <param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_TAX" description="VMSHIPPER_ORDERAMOUNT_COUNTRIES_TAX_DESC" />
     </params>
 </install>

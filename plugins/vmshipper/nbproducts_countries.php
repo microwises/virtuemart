@@ -88,12 +88,12 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
                 , 'length' => 11
                 , 'null' => false
             )
-            , 'currency' => array(
+            , 'currency_id' => array(
                 'type' => 'int'
                 , 'length' => 11
                 , 'null' => false
             )
-            , 'tax' => array(
+            , 'tax_id' => array(
                 'type' => 'int'
                 , 'length' => 11
                 , 'null' => false
@@ -136,6 +136,7 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
         $html = '';
         $nbProducts = $this->_getNbProducts($cart);
         $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
+         $countries=array();
         foreach ($this->shippers as $shipper_id => $shipper_name) {
             $cost = 0;
             $found = false;
@@ -151,7 +152,7 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
             }
             if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
                 $cost = $this->_getShippingCost($nbProducts, $params); // converted in vendor currency
-                $html = $this->getShippingHtml($shipper_name, $shipper_id, $selectedShipper, $params->get('shipper_logo'), $cost, $params->get('tax'), $params->get('currency'));
+                $html = $this->getShippingHtml($params->get('rate_name'), $shipper_id, $selectedShipper, $params->get('shipper_logo'), $cost, $params->get('tax_id'), $params->get('currency_id'));
             }
         }
         return $html;
@@ -195,8 +196,8 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
         $params = new JParameter($shipping_carrier_params);
 
         $shipping->shipping_name = $this->getThisShipperName($selectedShipper);
-        $shipping->shipping_currency_id = $params->get('currency');
-        $shipping->shipping_rate_vat_id = $params->get('tax');
+        $shipping->shipping_currency_id = $params->get('currency_id');
+        $shipping->shipping_rate_vat_id = $params->get('tax_id');
         $shipping->shipping_value = $this->_getShippingCostFromNbPRoducts($nbProducts, $params);
         return true;
     }
@@ -226,8 +227,8 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
         $values['cost_first_product'] = $params->get('cost_first_product');
         $values['cost_next_products'] = $params->get('cost_next_products');
         $values['cost_limit'] = $params->get('cost_limit');
-        $values['currency'] = $params->get('currency');
-        $values['tax'] = $params->get('tax');
+        $values['currency_id'] = $params->get('currency_id');
+        $values['tax_id'] = $params->get('tax_id');
         $this->writeShipperData($values, '#__virtuemart_order_shipper_' . $this->_selement);
     }
 

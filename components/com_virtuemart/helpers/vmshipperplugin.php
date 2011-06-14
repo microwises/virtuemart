@@ -525,11 +525,11 @@ abstract class vmShipperPlugin extends JPlugin {
 
     /**
      * Select the shipping rate ID, based on the selected shipper in combination with the
-     * shipto address (country and zipcode) and the total order weight.
+     * shipto address (country and zipcode)  .
      * @param object $_cart Cart object
      * @param int $_shipperID Shipper ID, by default taken from the cart
      * @return int Shipping rate ID, -1 when no match is found. Only 1 selected ID will be returned;
-     * if more ID's match, the cheapest will be selected.
+     * if more ID's match, the cheapest will be selected. ????
      */
     protected function selectShippingRate(VirtueMartCart $_cart, $_shipperId = 0) {
 
@@ -616,7 +616,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * This method returns the logo image form the shipper
      */
 
-    function getShipperLogo($shipper_logo, $alt_text) {
+    protected function getShipperLogo($shipper_logo, $alt_text) {
 
 
         $img = "";
@@ -629,7 +629,7 @@ abstract class vmShipperPlugin extends JPlugin {
         return $img;
     }
 
-    function calculateShipmentPrice($shipping_value, $tax_id, $currency_id) {
+    protected function calculateSalesPriceShipping($shipping_value, $tax_id, $currency_id) {
 
         if (!class_exists('calculationHelper'))
             require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
@@ -640,7 +640,7 @@ abstract class vmShipperPlugin extends JPlugin {
         $calculator = calculationHelper::getInstance();
         $currency = CurrencyDisplay::getInstance();
 
-        $shipping['shippingValue'] = $currency->convertCurrencyTo($currency_id, $shipping_value);
+        $shipping_value= $currency->convertCurrencyTo($currency_id, $shipping_value);
 
         $taxrules = array();
         if (!empty($tax_id)) {
@@ -650,17 +650,15 @@ abstract class vmShipperPlugin extends JPlugin {
         }
 
         if (count($taxrules) > 0) {
-            $shipping['salesPriceShipping'] = $calculator->roundDisplay($calculator->executeCalculation($taxrules, $shipping_value));
-            $shipping['shippingTax'] = $calculator->roundDisplay($shipping['salesPriceShipping']) - $shipping_value;
+            $salesPriceShipping = $calculator->roundDisplay($calculator->executeCalculation($taxrules, $shipping_value));         
         } else {
-            $shipping['salesPriceShipping'] = $shipping['shippingValue'];
-            $shipping['shippingTax'] = 0;
+            $salesPriceShipping = $shipping_value;
         }
 
-        return $shipping;
+        return  $salesPriceShipping;
     }
 
-    function getShippingHtml($shipper_name, $shipper_id, $selectedShipper, $shipper_logo, $cost, $tax, $currency) {
+    protected function getShippingHtml($rate_name, $shipper_id, $selectedShipper, $shipper_logo, $cost, $tax_id, $currency_id) {
         if ($selectedShipper == $shipper_id) {
             $checked = '"checked"';
         } else {
@@ -669,13 +667,13 @@ abstract class vmShipperPlugin extends JPlugin {
         if (!class_exists('CurrencyDisplay'))
             require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
         $currency = CurrencyDisplay::getInstance();
-        $shipping = $this->calculateShipmentPrice($cost, $tax, $currency);
+        $salesPriceShipping = $this->calculateSalesPriceShipping($cost, $tax_id, $currency_id);
 
-        $shippingCostDisplay = $currency->priceDisplay($shipping['salesPriceShipping']);
+        $shippingCostDisplay = $currency->priceDisplay($salesPriceShipping);
         $logo = $this->getShipperLogo($shipper_logo, $shipper_name);
 
         $html = '<input type="radio" name="shipper_id" id="shipper_id_' . $shipper_id . '" value="' . $shipper_id . '" ' . $checked . '>'
-                . '<label for="shipper_id_' . $shipper_id . '">' . $logo . $shipper_name . " (" . $shippingCostDisplay . ")</label><br/>\n";
+                . '<label for="shipper_id_' . $shipper_id . '">' . $logo . $rate_name . " (" . $shippingCostDisplay . ")</label><br/>\n";
         return $html;
     }
 
