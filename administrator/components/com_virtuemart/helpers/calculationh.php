@@ -1026,7 +1026,7 @@ class calculationHelper {
 					$query .=' and is_cart_attribute = 1 and field.`virtuemart_customfield_id`='.$selected ;
 					$this->_db->setQuery($query);
 					$productCustomsPrice = $this->_db->loadObject();
-					$app = JFactory::getApplication();
+					//$app = JFactory::getApplication();
 					if(!empty($productCustomsPrice->custom_price)){
 						//TODO adding % and more We should use here $this->interpreteMathOp
 						$modificatorSum = $modificatorSum + $productCustomsPrice->custom_price;

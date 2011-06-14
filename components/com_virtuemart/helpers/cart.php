@@ -697,15 +697,14 @@ class VirtueMartCart  {
 	 */
 	 private function validateUserData($type='BT', $obj = null){
 
-//		$this->addModelPath( JPATH_VM_ADMINISTRATOR .DS.'models' );
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
 		$userFieldsModel = new VirtueMartModelUserfields();
-//		$userFieldsModel = $this->getModel( 'userfields', 'VirtuemartModel' );
+
 		if($type=='BT') $fieldtype = 'account'; else $fieldtype = 'shipping';
 		$neededFields = $userFieldsModel->getUserFields(
 									 $fieldtype  
 									, array('required'=>true,'delimiters'=>true,'captcha'=>true,'system'=>false)
-				, array('delimiter_userinfo', 'username', 'password', 'password2', 'address_type_name','address_type','user_is_vendor'));
+				, array('delimiter_userinfo', 'username', 'password', 'password2', 'address_type_name','address_type','user_is_vendor','agreed'));
 
 		$redirectMsg=0;
 		foreach($neededFields as $field){

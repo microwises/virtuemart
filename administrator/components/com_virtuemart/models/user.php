@@ -672,12 +672,12 @@ class VirtueMartModelUser extends VmModel {
 		return true;
 	}
 
-	function _prepareUserFields($data, $_type)
+	function _prepareUserFields($data, $type)
 	{
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = new VirtueMartModelUserfields();
 		
-		if ($_type == 'ST') {
+		if ($type == 'ST') {
 			$prepareUserFields = $userFieldsModel->getUserFields(
 									 'shipping'
 									, array() // Default toggles
@@ -983,9 +983,9 @@ class VirtueMartModelUser extends VmModel {
 	 	$query .= 'GROUP BY `node`.`' . $name . '` ';
 	 	$query .= 'ORDER BY `node`.`lft`';
 		
-	 	//$this->_db->setQuery($query);
+	 	$this->_db->setQuery($query);
 		//$app = JFactory::getApplication();
-		$app -> enqueueMessage($this->_db->getQuery());
+		//$app -> enqueueMessage($this->_db->getQuery());
 	 	return $this->_db->loadObjectList();
 	 }
 }

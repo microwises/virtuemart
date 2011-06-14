@@ -292,6 +292,10 @@ class VirtueMartModelUserfields extends VmModel {
 		return true;
 	}
 
+	/**
+	 * 
+	 * @author Max Milbers
+	 */
 	public function getUserFieldsFor($layoutName, $type,$userId = -1){
 		
 		//Here we define the fields to skip
@@ -299,13 +303,13 @@ class VirtueMartModelUserfields extends VmModel {
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
 						, 'address_type', 'bank', 'email');
 		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $userId === 0){
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed');
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed','user_is_vendor');
 
 		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1)){
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed');
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed','user_is_vendor');
 
 		} else if ($layoutName=='cart'){	
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2', 'address_type', 'bank');			
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2', 'address_type', 'bank','user_is_vendor');			
 
 		} else {
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'

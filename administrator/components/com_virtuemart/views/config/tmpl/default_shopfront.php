@@ -176,7 +176,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 				 $showReviewFor = array(0 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_NONE'),
 				 						1 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_BOUGHT_PRODUCT'),
 				 						2 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_REGISTERED'),
-				 						3 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_ALL')
+				 					//	3 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_ALL')
 										); //showReviewFor
 				echo VmHTML::radioList('reviewMode', $this->config->get('reviewMode',2),$showReviewFor); ?>
 	    	</fieldset></td>
@@ -208,7 +208,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 				 $showReviewFor = array(0 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_NONE'),
 				 						1 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_BOUGHT_PRODUCT'),
 										2 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_REGISTERED'),
-										3 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_ALL')
+									//	3 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_ALL')	//TODO write system for all users (cookies)
 										); //showReviewFor
 				echo VmHTML::radioList('ratingMode', $this->config->get('ratingMode',2),$showReviewFor); ?>
 	    	</fieldset></td>
