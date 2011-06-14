@@ -208,7 +208,9 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      */
     public function plgVmOnShipperSelectedCalculatePrice($cart, $shipping) {
     	
-		parent::plgVmOnShipperSelectedCalculatePrice($cart, $shipping);
+		if (!parent::plgVmOnShipperSelectedCalculatePrice($cart, $shipping) ){
+                    return null;
+                }
 		
 		$params = new JParameter($shipping->shipping_carrier_params);
 		$shipping->shipping_value = $this->_getShippingCost($params);

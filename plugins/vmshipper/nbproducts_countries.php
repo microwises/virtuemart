@@ -188,24 +188,13 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
      */
     public function plgVmOnShipperSelectedCalculatePrice($cart, $shipping) {
     	
-		parent::plgVmOnShipperSelectedCalculatePrice($cart, $shipping);
+		if (!parent::plgVmOnShipperSelectedCalculatePrice($cart, $shipping) ){
+                    return null;
+                }
 		$params = new JParameter($shipping->shipping_carrier_params);
-		$shipping->shipping_value = $this->_getShippingCostFromNbPRoducts($nbProducts, $params);
+		$shipping->shipping_value = $this->_getShippingCostFromNbProducts($nbProducts, $params);
 		return true;
-		
- /*       if (!$this->selectedThisShipper($this->_selement, $shipping->virtuemart_shippingcarrier_id)) {
-            return null; // Another shipper was selected, do nothing
-        }
 
-        $nbProducts = $this->_getNbProducts($cart);
-        $shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $shipping->virtuemart_shippingcarrier_id);
-        $params = new JParameter($shipping_carrier_params);
-
-        $shipping->shipping_name = $this->getThisShipperName($shipping->virtuemart_shippingcarrier_id);
-        $shipping->shipping_currency_id = $params->get('currency_id');
-        $shipping->shipping_rate_vat_id = $params->get('tax_id');
-        $shipping->shipping_value = $this->_getShippingCostFromNbPRoducts($nbProducts, $params);
-        return true;*/
     }
 
     /**

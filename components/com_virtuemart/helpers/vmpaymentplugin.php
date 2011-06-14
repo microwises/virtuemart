@@ -98,7 +98,7 @@ abstract class vmPaymentPlugin extends JPlugin
     protected function setVmPaymentParams($vendorId=0, $jplugin_id=0) {
 
         if (!$vendorId)   $vendorId = 1;
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         if (!$jplugin_id) {
             if (VmConfig::isJ15()) {
                 $q = 'SELECT `id` FROM #__plugins WHERE `element` = "' . $this->_pelement . '"';
@@ -270,7 +270,7 @@ abstract class vmPaymentPlugin extends JPlugin
      * @return int The payment method ID, or -1 when not found
      */
     protected function getPaymentMethodForOrder($_id) {
-        $_db = &JFactory::getDBO();
+        $_db = JFactory::getDBO();
         $_q = 'SELECT `payment_method_id` '
                 . 'FROM #__virtuemart_orders '
                 . "WHERE virtuemart_order_id = $_id";
@@ -288,7 +288,7 @@ abstract class vmPaymentPlugin extends JPlugin
      * @return mixed
      */
     function get_passkey() {
-        $_db = &JFactory::getDBO();
+        $_db = JFactory::getDBO();
         $_q = 'SELECT ' . VM_DECRYPT_FUNCTION . "(secret_key, '" . ENCODE_KEY . "') as passkey "
                 . 'FROM #__virtuemart_paymentmethods '
                 . "WHERE virtuemart_paymentmethod_id='" . $this->_virtuemart_paymentmethod_id . "'";
@@ -305,7 +305,7 @@ abstract class vmPaymentPlugin extends JPlugin
      * @return True if the calling plugin has the given payment ID
      */
     final protected function selectedThisMethod($_pelement, $_pid) {
-        $_db = &JFactory::getDBO();
+        $_db = JFactory::getDBO();
 
         if (VmConfig::isJ15()) {
             $_q = 'SELECT COUNT(*) AS c '
@@ -336,7 +336,7 @@ abstract class vmPaymentPlugin extends JPlugin
      * @return string Paymenent method name
      */
     final protected function getThisMethodName($_pid) {
-        $_db = &JFactory::getDBO();
+        $_db = JFactory::getDBO();
 
 
         $_q = 'SELECT `paym_name` '

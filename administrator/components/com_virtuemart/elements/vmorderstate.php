@@ -25,7 +25,7 @@ class JElementVmOrderState extends JElement {
 
     function fetchElement($name, $value, &$node, $control_name) {
 
-        $db = & JFactory::getDBO();
+        $db =   JFactory::getDBO();
 
         $query = 'SELECT `order_status_code` AS value, `order_status_name` AS text'
                 . ' FROM `#__virtuemart_orderstates` '

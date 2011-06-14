@@ -101,7 +101,7 @@ abstract class vmShipperPlugin extends JPlugin {
 
         if (!$vendorId)
             $vendorId = 1;
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         if (false) {
             if (!$jplugin_id) {
                 if (VmConfig::isJ15()) {
@@ -146,7 +146,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * @author Oscar van Eijk
      */
     protected function getShippers($_vendorId) {
-        $_db = &JFactory::getDBO();
+        $_db = JFactory::getDBO();
         if (VmConfig::isJ15()) {
             $_q = 'SELECT v.`virtuemart_shippingcarrier_id`   AS id '
                     . ',      v.`shipping_carrier_name` AS name '
@@ -197,7 +197,7 @@ abstract class vmShipperPlugin extends JPlugin {
             $_vendorId = 1;
         }
 
-        $_db = &JFactory::getDBO();
+        $_db = JFactory::getDBO();
 
         if (VmConfig::isJ15()) {
             $_q = 'SELECT 1 '
@@ -463,7 +463,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * @return int The shipping rate ID, or -1 when not found
      */
     protected function getShippingRateIDForOrder($_id) {
-        $_db = &JFactory::getDBO();
+        $_db = JFactory::getDBO();
         $_q = 'SELECT `ship_method_id` '
                 . 'FROM #__virtuemart_orders '
                 . "WHERE virtuemart_order_id = $_id";
@@ -543,7 +543,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * @return True if the calling plugin has the given payment ID
      */
     final protected function selectedThisShipper($selement, $sid) {
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         if (VmConfig::isJ15()) {
             $q = 'SELECT COUNT(*) AS c '
@@ -574,7 +574,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * @return string Shipper name
      */
     final protected function getThisShipperName($id) {
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $q = 'SELECT `shipping_carrier_name` '
                 . 'FROM #__virtuemart_shippingcarriers '
                 . "WHERE virtuemart_shippingcarrier_id ='$id' ";
@@ -636,7 +636,7 @@ abstract class vmShipperPlugin extends JPlugin {
         if (!class_exists('CurrencyDisplay'))
             require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $calculator = calculationHelper::getInstance();
         $currency = CurrencyDisplay::getInstance();
 
@@ -677,22 +677,20 @@ abstract class vmShipperPlugin extends JPlugin {
         return $html;
     }
 
-	public function plgVmOnShipperSelectedCalculatePrice($cart, $shipping){
+    public function plgVmOnShipperSelectedCalculatePrice($cart, $shipping){
 		
         if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
             return null; // Another shipper was selected, do nothing
         }
-		
-		$shipping->shipping_name = $this->getThisShipperName($cart->virtuemart_shippingcarrier_id);
-		
-        //$shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $cart->virtuemart_shippingcarrier_id);
+
+        $shipping->shipping_name = $this->getThisShipperName($cart->virtuemart_shippingcarrier_id);      
         $params = new JParameter($shipping->shipping_carrier_params);
 
         $shipping->shipping_currency_id = $params->get('currency_id');
         $shipping->shipping_rate_vat_id = $params->get('tax_id');
         $shipping->shipping_value =  $params->get('shipping_value');
 
-		return true ;
+        return true ;
 	}
 	
 }

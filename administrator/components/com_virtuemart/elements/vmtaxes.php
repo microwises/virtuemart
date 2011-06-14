@@ -27,13 +27,14 @@ class JElementVmTaxes extends JElement {
 
     function fetchElement($name, $value, &$node, $control_name) {
 
-        $db = & JFactory::getDBO();
+        $db =  JFactory::getDBO();
         $nullDate = $db->getNullDate();
         $now = JFactory::getDate()->toMySQL();
-        $q = 'SELECT   `virtuemart_calc_id` AS value, `calc_name` AS text
-              FROM `#__virtuemart_calcs` WHERE  `virtuemart_vendor_id` = 1  ';
-        $q .= '  AND ( publish_up = ' . $db->Quote($nullDate) . ' OR publish_up <= ' . $db->Quote($now) . ' )' .
-                ' AND ( publish_down = ' . $db->Quote($nullDate) . ' OR publish_down >= ' . $db->Quote($now) . ' ) ';
+        $q = 'SELECT   `virtuemart_calc_id` AS value, `calc_name` AS text FROM `#__virtuemart_calcs` WHERE    ';
+        $q .= ' `calc_kind`="TAX" OR `calc_kind`="TaxBill" ';
+        $q .= ' AND `virtuemart_vendor_id` = 1  ';
+        $q .= ' AND ( publish_up = ' . $db->Quote($nullDate) . ' OR publish_up <= ' . $db->Quote($now) . ' )' ;
+        $q .= ' AND ( publish_down = ' . $db->Quote($nullDate) . ' OR publish_down >= ' . $db->Quote($now) . ' ) ';
 
         $db->setQuery($q);
         $taxrates = $db->loadObjectList();

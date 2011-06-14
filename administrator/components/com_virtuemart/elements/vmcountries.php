@@ -25,7 +25,7 @@ class JElementVmCountries extends JElement {
 
     function fetchElement($name, $value, &$node, $control_name) {
 
-        $db = & JFactory::getDBO();
+        $db =  JFactory::getDBO();
 
         $query = 'SELECT `virtuemart_country_id` AS value, `country_name` AS text'
                 . ' FROM `#__virtuemart_countries` '
