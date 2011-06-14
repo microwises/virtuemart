@@ -159,7 +159,7 @@ class CurrencyDisplay {
 		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipping)
 
 		if(empty($currencyId)){
-			$currencyId = $this->_app->getUserStateFromRequest( 'virtuemart_currency_id', 'virtuemart_currency_id',$this->_vendorCurrency );
+			$currencyId = (int)$this->_app->getUserStateFromRequest( 'virtuemart_currency_id', 'virtuemart_currency_id',$this->_vendorCurrency );
 			if(empty($currencyId)){
 				$currencyId = $this->_vendorCurrency;
 			}
@@ -208,6 +208,8 @@ class CurrencyDisplay {
 					$exchangeRate = FALSE;
 				}
 			} else {
+				
+				dumpTrace();
 				$exchangeRate = $currency->_vendorCurrency;
 			}
 		}

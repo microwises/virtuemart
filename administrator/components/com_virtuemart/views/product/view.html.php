@@ -97,7 +97,7 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('override', $calculator->override);
 				$this->assignRef('product_override_price', $calculator->product_override_price);
 
-				$lists['taxrates'] = $this -> renderTaxList($product->product_tax_id);
+				$lists['taxrates'] = ShopFunctions::renderTaxList($product->product_tax_id,'product_tax_id');
 				$lists['discounts'] = $this -> renderDiscountList($product->product_discount_id);
 
 				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'config.php');
@@ -283,7 +283,7 @@ class VirtuemartViewProduct extends JView {
 
 					$currencyDisplay = CurrencyDisplay::getInstance($vendor->vendor_currency,$vendor->virtuemart_vendor_id);
 
-					$product->product_price_display = $currencyDisplay->priceDisplay($product->product_price,$product->product_currency,true);
+					$product->product_price_display = $currencyDisplay->priceDisplay($product->product_price,(int)$product->product_currency,true);
 
 					/* Write the first 5 categories in the list */
 					if(!class_exists('modelfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'modelfunctions.php');
@@ -339,7 +339,7 @@ class VirtuemartViewProduct extends JView {
 	 *
 	 * @author Max Milbers
 	 */
-	function renderTaxList($selected){
+/*	function renderTaxList($selected){
 		$this->loadHelper('modelfunctions');
 //		$selected = modelfunctions::prepareTreeSelection($selected);
 
@@ -353,7 +353,7 @@ class VirtuemartViewProduct extends JView {
 		}
 		$listHTML = JHTML::_('Select.genericlist', $taxrates, 'product_tax_id', 'multiple', 'product_tax_id', 'text', $selected );
 		return $listHTML;
-	}
+	}*/
 
 	/**
 	 * Renders the list for the discount rules

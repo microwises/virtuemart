@@ -1046,6 +1046,28 @@ class ShopFunctions {
 		return $html;
 	}
 
+
+		/**
+	 * Renders the list for the tax rules
+	 *
+	 * @author Max Milbers
+	 */
+	function renderTaxList($selected, $name='product_tax_id'){
+//		$this->loadHelper('modelfunctions');
+//		$selected = modelfunctions::prepareTreeSelection($selected);
+
+		if(!class_exists('VirtueMartModelCalc')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'calc.php');
+		$taxes = VirtueMartModelCalc::getTaxes();
+
+		$taxrates = array();
+		$taxrates[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_PRODUCT_TAX_NO_SPECIAL'), $name );
+		foreach($taxes as $tax){
+			$taxrates[] = JHTML::_('select.option', $tax->virtuemart_calc_id, $tax->calc_name, $name);
+		}
+		$listHTML = JHTML::_('Select.genericlist', $taxrates, $name, 'multiple', $name, 'text', $selected );
+		return $listHTML;
+	}
+
 }
 
 //pure php no tag

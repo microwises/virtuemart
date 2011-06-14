@@ -43,7 +43,7 @@ class TableVendors extends VmTableData {
     var $vendor_store_desc   		= '';
 
     /** @var varchar Currency */
-    var $vendor_currency	  		= '';
+    var $vendor_currency	  		= 0;
     /** @var varchar Path to vendor images */
     var $vendor_image_path   		= '';
     /** @var text Vendor terms of service */

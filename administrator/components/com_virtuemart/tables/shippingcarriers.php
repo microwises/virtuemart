@@ -38,9 +38,9 @@ class TableShippingcarriers extends VmTable {
 	var $shipping_carrier_jplugin_id	= 0;	
 	/** @var string Shipping Carrier name*/
 	var $shipping_carrier_name	= '';
-        /** @var string Element of shippermethod */
-        var $shipping_carrier_element = '';
-        /** @var string parameter of the shippingmethod*/
+	/** @var string Element of shippermethod */
+	var $shipping_carrier_element = '';
+	/** @var string parameter of the shippingmethod*/
 	var $shipping_carrier_params				= 0;
         var $ordering						= 0;
         var $shared						= 0;
