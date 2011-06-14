@@ -273,7 +273,7 @@ class ShopFunctions {
 		foreach($stateId as $state){
 			$listHTML .= '<input type="hidden" name="prs_virtuemart_state_id[]" value="'.$state.'" />' ;
 		}
-		dump($listHTML,'dump');
+
 		return $listHTML;
 	}
 

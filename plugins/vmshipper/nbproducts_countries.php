@@ -186,20 +186,26 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
      * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
      * @author Valérie Isaksen
      */
-    public function plgVmOnShipperSelectedCalculatePrice($cart, $selectedShipper = 0, &$shipping) {
-        if (!$this->selectedThisShipper($this->_selement, $selectedShipper)) {
+    public function plgVmOnShipperSelectedCalculatePrice($cart, $shipping) {
+    	
+		parent::plgVmOnShipperSelectedCalculatePrice($cart, $shipping);
+		$params = new JParameter($shipping->shipping_carrier_params);
+		$shipping->shipping_value = $this->_getShippingCostFromNbPRoducts($nbProducts, $params);
+		return true;
+		
+ /*       if (!$this->selectedThisShipper($this->_selement, $shipping->virtuemart_shippingcarrier_id)) {
             return null; // Another shipper was selected, do nothing
         }
 
         $nbProducts = $this->_getNbProducts($cart);
-        $shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $selectedShipper);
+        $shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $shipping->virtuemart_shippingcarrier_id);
         $params = new JParameter($shipping_carrier_params);
 
-        $shipping->shipping_name = $this->getThisShipperName($selectedShipper);
+        $shipping->shipping_name = $this->getThisShipperName($shipping->virtuemart_shippingcarrier_id);
         $shipping->shipping_currency_id = $params->get('currency_id');
         $shipping->shipping_rate_vat_id = $params->get('tax_id');
         $shipping->shipping_value = $this->_getShippingCostFromNbPRoducts($nbProducts, $params);
-        return true;
+        return true;*/
     }
 
     /**
@@ -328,7 +334,7 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
             if (!class_exists('calculationHelper'))
                 require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
             $calculator = calculationHelper::getInstance();
-            $db = &JFactory::getDBO();
+            $db = JFactory::getDBO();
             $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $shipping_rate_vat_id . '" ';
             $db->setQuery($q);
             $taxrules = $db->loadAssocList();

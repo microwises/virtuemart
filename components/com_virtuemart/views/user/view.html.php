@@ -152,7 +152,7 @@ class VirtuemartViewUser extends JView {
 		$this->assignRef('address_type', $type);
 		
 		$userFields = $this->_userFieldsModel->getUserFieldsFor($layoutName,$type,$this->userDetails->JUser->id);
-		dump($userFields);
+
 		 //for register
 		if(empty($this->_userDetailsList)){
 			$this->_userDetailsList=0;

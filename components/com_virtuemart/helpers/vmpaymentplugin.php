@@ -403,7 +403,7 @@ abstract class vmPaymentPlugin extends JPlugin
                 . implode(',', $fields)
                 . ' WHERE `' . $where_key . '` =' . $where_value
         ;
-        dump($q);
+
         $db->setQuery($q);
         if (!$db->query()) {
             JError::raiseWarning(500, $db->getErrorMsg());

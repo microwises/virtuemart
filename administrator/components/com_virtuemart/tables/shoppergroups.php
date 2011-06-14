@@ -81,35 +81,8 @@ class TableShoppergroups extends VmTable
 		}
 */
 
-//
-//		if (($this->country_name) && ($this->virtuemart_shoppergroup_id == 0)) {
-//
-//			$db = JFactory::getDBO();
-//			$query = 'SELECT count(*) FROM '
-//			  . $db->nameQuote('#__virtuemart_shoppergroups')
-//			  . ' WHERE '
-//			  . $db->nameQuote('shopper_group_name')
-//			  . ' = '
-//			  . $db->Quote($this->shopper_group_name)
-//			  . ' AND '
-//			  . $db->nameQuote('virtuemart_vendor_id')
-//			  . ' = ' . $this->virtuemart_vendor_id;
-//
-//			$db->setQuery($query);
-//		  $rowCount = $db->loadResult();
-//
-//			if ($rowCount > 0) {
-//				$this->setError(JText::_('COM_VIRTUEMART_SHOPPER_GROUP_NAME_ALREADY_EXISTS_FOR_GIVEN_VENDOR'));
-//				return false;
-//			}
-//
-//			// TODO-MOE:
-//			//  * Add check for "default" - so that only one shopper group can have the "default" flag set
-//			//    per vendor id.
-//		}
-//
+
 		return parent::check();
-//	}
 
 }
 }

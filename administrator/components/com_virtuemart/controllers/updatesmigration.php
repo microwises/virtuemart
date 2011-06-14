@@ -274,7 +274,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 	function setDangerousToolsOff(){
 
 		$model = $this->getModel('config');
-		//$model->setDangerousToolsOff();
+		$model->setDangerousToolsOff();
 
 	}
 

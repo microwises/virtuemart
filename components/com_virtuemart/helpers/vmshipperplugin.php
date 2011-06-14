@@ -677,4 +677,22 @@ abstract class vmShipperPlugin extends JPlugin {
         return $html;
     }
 
+	public function plgVmOnShipperSelectedCalculatePrice($cart, $shipping){
+		
+        if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
+            return null; // Another shipper was selected, do nothing
+        }
+		
+		$shipping->shipping_name = $this->getThisShipperName($cart->virtuemart_shippingcarrier_id);
+		
+        //$shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $cart->virtuemart_shippingcarrier_id);
+        $params = new JParameter($shipping->shipping_carrier_params);
+
+        $shipping->shipping_currency_id = $params->get('currency_id');
+        $shipping->shipping_rate_vat_id = $params->get('tax_id');
+        $shipping->shipping_value =  $params->get('shipping_value');
+
+		return true ;
+	}
+	
 }

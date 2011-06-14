@@ -62,46 +62,5 @@ class TableStates extends VmTable {
 		$this->setLoggable();
 	}
 
-
-	/**
-	 * Validates the state record fields.
-	 *
-	 * @author RickG
-	 * @return boolean True if the table buffer is contains valid data, false otherwise.
-	 */
-//	function check()
-//	{
-//        if (!$this->state_name) {
-//			$this->setError(JText::_('COM_VIRTUEMART_STATE_RECORDS_MUST_CONTAIN_STATE_NAME'));
-//			return false;
-//		}
-//		if (!$this->state_2_code) {
-//			$this->setError(JText::_('COM_VIRTUEMART_STATE_RECORDS_MUST_CONTAIN_2_SYMBOL_CODE'));
-//			return false;
-//		}
-//		if (!$this->state_3_code) {
-//			$this->setError(JText::_('COM_VIRTUEMART_STATE_RECORDS_MUST_CONTAIN_3_SYMBOL_CODE'));
-//			return false;
-//		}
-//
-//		if (($this->state_name) && ($this->virtuemart_state_id == 0)) {
-//		    $db = JFactory::getDBO();
-//
-//			$q = 'SELECT count(*) FROM `#__virtuemart_states` ';
-//			$q .= 'WHERE `state_name`="' .  $this->state_name . '"';
-//            $db->setQuery($q);
-//		    $rowCount = $db->loadResult();
-//			if ($rowCount > 0) {
-//				$this->setError(JText::_('COM_VIRTUEMART_STATE_NAME_ALREADY_EXISTS'));
-//				return false;
-//			}
-//		}
-//
-//		return true;
-//	}
-
-
-
-
 }
 // pure php no closing tag

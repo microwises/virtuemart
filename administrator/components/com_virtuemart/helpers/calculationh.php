@@ -239,7 +239,7 @@ class calculationHelper {
 		$this->rules['dATax'] = $this->gatherEffectingRulesForProductPrice('DATax',$this->product_discount_id);
 		
 		$prices['costPrice']  = $costPrice;
-		$basePriceShopCurrency = $this->roundDisplay($this->_currencyDisplay->convertCurrencyTo($this->productCurrency, $costPrice));
+		$basePriceShopCurrency = $this->roundDisplay($this->_currencyDisplay->convertCurrencyTo((int)$this->productCurrency, $costPrice));
 		$prices['basePrice']=$basePriceShopCurrency;
 
 		if(!empty($variant)){
@@ -741,20 +741,22 @@ class calculationHelper {
 		$this->_cartPrices['salesPriceShipping'] = 0;
 		if (empty($ship_id)) return ;
                 
+		 if(!class_exists('Shippingcarriers')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'shippingcarriers.php');
+		 
+		$shipping = new TableShippingcarriers($this->_db);
+		$shipping->load($ship_id);
+
 // Handling shipping plugins
                 if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
  		$_dispatcher = JDispatcher::getInstance();
  		$_retValues = $_dispatcher->trigger('plgVmOnShipperSelectedCalculatePrice',
  			array('cart'=> $cart, 
-                            '_selectedRate' => $ship_id,
-                            &$shipping ));
+                  'shipping' => $shipping ));
 
-
-		$this->_cartPrices['shippingValue'] =  $this->_currencyDisplay->convertCurrencyTo($shipping->shipping_currency_id,$shipping->shipping_value );
+		$this->_cartPrices['shippingValue'] = $shipping->shipping_value;
+		//$this->_cartPrices['shippingValue'] =  $this->_currencyDisplay->convertCurrencyTo($shipping->shipping_currency_id,$shipping->shipping_value );
 		$this->_cartData['shippingName'] = $shipping->shipping_name;
-
-
 
 
 		$taxrules = array();

@@ -198,11 +198,10 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
      * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
      * @author Valérie Isaksen
      */
-    public function plgVmOnShipperSelectedCalculatePrice($cart, $selectedShipper = 0, &$shipping) {
-        if (!$this->selectedThisShipper($this->_selement, $selectedShipper)) {
+/*    public function plgVmOnShipperSelectedCalculatePrice($cart, $shipping) {
+ /*       if (!$this->selectedThisShipper($this->_selement, $selectedShipper)) {
             return null; // Another shipper was selected, do nothing
         }
-
 
         $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
@@ -214,7 +213,9 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
         $shipping->shipping_rate_vat_id = $params->get('tax_id');
         $shipping->shipping_value =  $params->get('shipping_value');
         return true;
-    }
+       	
+    } 
+    */
 
     /**
      * This method is fired when showing the order details in the frontend.

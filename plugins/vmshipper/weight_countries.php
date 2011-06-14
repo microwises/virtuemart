@@ -206,8 +206,15 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
      * @author Valérie Isaksen
      */
-    public function plgVmOnShipperSelectedCalculatePrice($cart, $selectedShipper = 0, &$shipping) {
-        if (!$this->selectedThisShipper($this->_selement, $selectedShipper)) {
+    public function plgVmOnShipperSelectedCalculatePrice($cart, $shipping) {
+    	
+		parent::plgVmOnShipperSelectedCalculatePrice($cart, $shipping);
+		
+		$params = new JParameter($shipping->shipping_carrier_params);
+		$shipping->shipping_value = $this->_getShippingCost($params);
+		return true;
+		
+/*        if (!$this->selectedThisShipper($this->_selement, $selectedShipper)) {
             return null; // Another shipper was selected, do nothing
         }
 
@@ -221,7 +228,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
         $shipping->shipping_name = $this->getThisShipperName($selectedShipper);
         $shipping->shipping_rate_vat_id = $params->get('tax_id');
         $shipping->shipping_value = $this->_getShippingCost($params);
-        return true;
+        return true;*/
     }
 
     /**

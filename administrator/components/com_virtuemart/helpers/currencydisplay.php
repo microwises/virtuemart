@@ -197,7 +197,7 @@ class CurrencyDisplay {
 		}
 
 		if(empty($exchangeRate)){
-//			if(is_Int($currency)){
+			if(is_Int($currency)){
 //				$this->_db = JFactory::getDBO();
 				$q = 'SELECT `currency_exchange_rate`
 				FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.$currency.'" ';
@@ -207,8 +207,9 @@ class CurrencyDisplay {
 				} else {
 					$exchangeRate = FALSE;
 				}
-
-//			}
+			} else {
+				$exchangeRate = $currency->_vendorCurrency;
+			}
 		}
 
 		if(!empty($exchangeRate) && $exchangeRate!=FALSE){

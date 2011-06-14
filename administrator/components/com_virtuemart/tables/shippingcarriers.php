@@ -62,37 +62,5 @@ class TableShippingcarriers extends VmTable {
 
     }
 
-
-//    /**
-//     * Validates the shipping carrier record fields.
-//     *
-//     * @author RickG
-//     * @return boolean True if the table buffer is contains valid data, false otherwise.
-//     */
-//    function check() {
-//	if (!$this->shipping_carrier_name) {
-//	    $this->setError(JText::_('COM_VIRTUEMART_SHIPPING_CARRIER_RECORDS_MUST_CONTAIN_CARRIER_NAME'));
-//	    return false;
-//	}
-//
-//	if (($this->shipping_carrier_name) && ($this->virtuemart_shippingcarrier_id == 0)) {
-//	    $db = JFactory::getDBO();
-//
-//	    $q = 'SELECT count(*) FROM `#__virtuemart_shippingcarriers` ';
-//	    $q .= 'WHERE `shipping_carrier_name`="' .  $this->shipping_carrier_name . '"';
-//	    $db->setQuery($q);
-//	    $rowCount = $db->loadResult();
-//	    if ($rowCount > 0) {
-//		$this->setError(JText::_('COM_VIRTUEMART_SHIPPING_CARRIER_NAME_ALREADY_EXISTS'));
-//		return false;
-//	    }
-//	}
-//
-//	return true;
-//    }
-
-
-
-
 }
 // pure php no closing tag

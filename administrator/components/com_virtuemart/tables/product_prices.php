@@ -46,7 +46,7 @@ class TableProduct_prices extends VmTableData {
     var $product_discount_id = 0;
 
     /** @var string Product currency */
-    var $product_currency = null;
+    var $product_currency = 0;
 
     var $product_price_vdate = null;
     var $product_price_edate = null;
