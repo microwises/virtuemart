@@ -548,6 +548,7 @@ class calculationHelper {
 	 */
 	function gatherEffectingRulesForProductPrice($entrypoint,$id){
 
+		if($id ===-1) return null;
 		//virtuemart_calc_id 	virtuemart_vendor_id	calc_shopper_published	calc_vendor_published	published 	shared calc_amount_cond
 		$countries = '';
 		$states = '';
@@ -639,6 +640,7 @@ class calculationHelper {
 	 */
 	function gatherEffectingRulesForBill($entrypoint, $cartVendorId=1){
 
+		
 //		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper',true);
 //		$countries = $this -> writeRulePartEffectingQuery($this->_countries,'virtuemart_country_id',true);
 //		$states = $this -> writeRulePartEffectingQuery($this->_states,'virtuemart_state_id',true);

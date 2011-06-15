@@ -117,17 +117,19 @@ class VirtueMartModelMedia extends VmModel {
     	$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',0);
 
     	if(!empty($virtuemart_product_id)){
-    		$query = 'SELECT `virtuemart_media_id` as virtuemart_media_id FROM `#__virtuemart_product_medias` ';
+    		$query = 'SELECT `#__virtuemart_medias`.`virtuemart_media_id` as virtuemart_media_id FROM `#__virtuemart_product_medias` 
+    		LEFT JOIN `#__virtuemart_medias` ON `#__virtuemart_medias`.`virtuemart_media_id`=`#__virtuemart_product_medias`.`virtuemart_media_id` ';
     		$whereItems[] = '`virtuemart_product_id` = "'.$virtuemart_product_id.'"';
-    		$oderby = '`#__virtuemart_medias`.`modified_on`';
+    		//$oderby = '`#__virtuemart_medias`.`modified_on`';
     		$type = 'product';
     	}
 
     	$cat_id = JRequest::getVar('virtuemart_category_id',0);
     	if(empty($query) && !empty($cat_id)){
-    		$query = 'SELECT `virtuemart_media_id` as virtuemart_media_id FROM `#__virtuemart_category_medias` ';
+    		$query = 'SELECT `#__virtuemart_medias`.`virtuemart_media_id` as virtuemart_media_id FROM `#__virtuemart_category_medias` 
+    		LEFT JOIN `#__virtuemart_medias` ON `#__virtuemart_medias`.`virtuemart_media_id`=`#__virtuemart_category_medias`.`virtuemart_media_id` ';
     		$whereItems[] = '`virtuemart_category_id` = "'.$cat_id.'"';
-    		$oderby = '`#__virtuemart_medias`.`modified_on`';
+    		//$oderby = '`#__virtuemart_medias`.`modified_on`';
     		$type = 'category';
     	}
 

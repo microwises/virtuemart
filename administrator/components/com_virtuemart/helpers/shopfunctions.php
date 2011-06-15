@@ -339,6 +339,7 @@ class ShopFunctions {
 		$taxes = VirtueMartModelCalc::getTaxes();
 
 		$taxrates = array();
+		$taxrates[] = JHTML::_('select.option', '-1', JText::_('COM_VIRTUEMART_PRODUCT_TAX_NONE'), $name );
 		$taxrates[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_PRODUCT_TAX_NO_SPECIAL'), $name );
 		foreach($taxes as $tax){
 			$taxrates[] = JHTML::_('select.option', $tax->virtuemart_calc_id, $tax->calc_name, $name);
