@@ -56,7 +56,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_calc_id`)
+  PRIMARY KEY (`virtuemart_calc_id`),
+  KEY (`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -282,7 +283,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_creditcards` (
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_creditcard_id`)
+  PRIMARY KEY (`virtuemart_creditcard_id`),
+  KEY (`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store credit card types' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -315,6 +317,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_currencies` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_currency_id`),
+  KEY (`virtuemart_vendor_id`),
   KEY `idx_currency_code_3` (`currency_code_3`),
   KEY `idx_currency_numeric_code` (`currency_numeric_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store currencies';
@@ -459,7 +462,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_media_id`)
+  PRIMARY KEY (`virtuemart_media_id`),
+  KEY (`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Additional Images and Files which are assigned to products' AUTO_INCREMENT=1 ;
 
 
@@ -974,7 +978,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarriers` (
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_shippingcarrier_id`)
+  PRIMARY KEY (`virtuemart_shippingcarrier_id`),
+  KEY (`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shipping Carriers created from the shipper plugins' AUTO_INCREMENT=1 ;
 
 
@@ -1031,6 +1036,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_states` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_state_id`),
+  KEY (`virtuemart_vendor_id`),
   UNIQUE KEY `state_3_code` (`virtuemart_country_id`,`state_3_code`),
   UNIQUE KEY `state_2_code` (`virtuemart_country_id`,`state_2_code`),
   KEY `idx_virtuemart_country_id` (`virtuemart_country_id`)
@@ -1093,7 +1099,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_permgroups` (
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_permgroup_id`)
+  PRIMARY KEY (`virtuemart_permgroup_id`),
+  KEY (`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds all the user groups' AUTO_INCREMENT=1 ;
 
 
@@ -1132,7 +1139,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userfields` (
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_userfield_id`)
+  PRIMARY KEY (`virtuemart_userfield_id`),
+  KEY (`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Holds the fields for the user information' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -1294,6 +1302,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_worldzones` (
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_worldzone_id`)
+  PRIMARY KEY (`virtuemart_worldzone_id`),
+  KEY (`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The Zones managed by the Zone Shipping Module' AUTO_INCREMENT=1 ;
 

@@ -133,14 +133,6 @@ class VirtueMartModelRatings extends VmModel {
      	/* Pagination */
      	$this->getPagination();
 
-//       	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`,CONCAT_WS(" ",`u`.`title`,u.`last_name`,`u`.`first_name`) AS customer FROM `#__virtuemart_rating_reviews` AS `pr`
-//		LEFT JOIN `#__virtuemart_userinfos` AS `u`
-//     	ON `pr`.`virtuemart_user_id` = `u`.`virtuemart_user_id`
-//		LEFT JOIN `#__virtuemart_products` AS `p`
-//     	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` and `pr`.`virtuemart_product_id` ='.$virtuemart_product_id.'
-//		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`virtuemart_user_id`=`u`.`virtuemart_user_id`
-//		ORDER BY `pr`.`modified_on` ';
-
        	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`, `u`.`name` AS customer FROM `#__virtuemart_rating_reviews` AS `pr`
 		LEFT JOIN `#__users` AS `u`	ON `pr`.`created_by` = `u`.`id`
 		LEFT JOIN `#__virtuemart_products` AS `p` ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`
@@ -381,6 +373,10 @@ class VirtueMartModelRatings extends VmModel {
 		return $this->show($product_id, VmConfig::get('reviewMode',2));
 	}
 
+	/**
+	 * Decides if the rating/review should be shown on the FE 
+	 * @author Max Milbers
+	 */
 	private function show($product_id, $show){
 
 		//dont show

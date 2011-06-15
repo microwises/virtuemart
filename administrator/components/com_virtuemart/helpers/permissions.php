@@ -142,69 +142,42 @@ class Permissions extends JObject{
 	function doAuthentication ($user_id=null) {
 		$this->_db = JFactory::getDBO();
 		$session = JFactory::getSession();
-		$vmUser = JFactory::getUser($user_id);
+		$user = JFactory::getUser($user_id);
 
+		//dump($session,'my session');
 		// Check token
-//		JRequest::checkToken() or jexit( 'Invalid Token' );
-
+		//JRequest::checkToken() or jexit( 'Invalid Token doAuthentication' );
 
 		if (VmConfig::get('vm_price_access_level') != '') {
 			/* Is the user allowed to see the prices? */
-			$this->_show_prices  = $vmUser->authorize( 'virtuemart', 'prices' );
+			$this->_show_prices  = $user->authorize( 'virtuemart', 'prices' );
 		}
 		else {
 			$this->_show_prices = 1;
 		}
 
-		/* Load the shoppr group values, commented because shoppergroups does not posses rights atm */
-//		require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shoppergroup.php');
-//		$shopper_group =  shopperGroup::getShoppergroupById($vmUser->id);
-
-		/* User has already logged in */
-		if (!empty($vmUser->id) || !empty( $this->_virtuemart_user_id)) {
-			if( $vmUser->id > 0 ) {
-				$this->_virtuemart_user_id   = $vmUser->id;
-//				$auth["username"] = $vmUser->username;
-			}
-			else if(!empty($this->_virtuemart_user_id)
-					&& VmConfig::get('vm_registration_type') != 'NO_REGISTRATION'
-					&& VmConfig::get('vm_registration_type') != 'OPTIONAL_REGISTRATION')
-			{
-				$this->_virtuemart_user_id = 0;
-//				$auth["username"] = "demo";
-			}
-
-			if (self::isRegisteredCustomer($this->_virtuemart_user_id)) {
-				$q = 'SELECT `perms`
-					FROM #__virtuemart_vmusers
+		if(!empty($user->id)){
+			$this->_virtuemart_user_id   = $user->id;
+			$q = 'SELECT `perms` FROM #__virtuemart_vmusers
 					WHERE virtuemart_user_id="'.$this->_virtuemart_user_id.'"';
-				$this->_db->setQuery($q);
-				$this->_perms = $this->_db->loadResult();
+			$this->_db->setQuery($q);
+			$this->_perms = $this->_db->loadResult();
 
-				/* We must prevent that Administrators or Managers are 'just' shoppers */
-				if ($this->_perms == "shopper") {
-					if (stristr($vmUser->usertype,"Administrator")) {
-						$this->_perms  = "admin";
-					}
-					elseif (stristr($vmUser->usertype,"Manager")) {
-						$this->_perms  = "storeadmin";
-					}
+			//We must prevent that Administrators or Managers are 'just' shoppers
+			//TODO rewrite it working correctly with jooomla ACL
+			if ($this->_perms == "shopper") {
+				if (stristr($user->usertype,"Administrator")) {
+					$this->_perms  = "admin";
 				}
-				$this->_is_registered_customer = true;
+				elseif (stristr($user->usertype,"Manager")) {
+					$this->_perms  = "storeadmin";
+				}
 			}
-			/* User is no registered customer */
-			else {
-				if (stristr($vmUser->usertype,"Administrator")) $this->_perms  = "admin";
-				elseif (stristr($vmUser->usertype,"Manager")) $this->_perms  = "storeadmin";
-				/* Default */
-				else $this->_perms  = "shopper";
-				$this->_is_registered_customer = false;
-			}
-		} // user is not logged in
-		elseif (empty($this->_virtuemart_user_id)) {
+			$this->_is_registered_customer = true;
+		} else {
+			
 			$this->_virtuemart_user_id = 0;
-//			$auth["username"] = "demo";
-			$this->_perms  = "";
+			$this->_perms  = "shopper";
 			$this->_is_registered_customer = false;
 		}
 
