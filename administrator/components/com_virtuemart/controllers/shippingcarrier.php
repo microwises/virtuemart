@@ -53,5 +53,14 @@ class VirtuemartControllerShippingCarrier extends VmController {
 		}
 	}
 
+	function save(){
+		$data = JRequest::get('post');
+
+		$data['shipping_carrier_name'] = JRequest::getVar('shipping_carrier_name','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['shipping_carrier_desc'] = JRequest::getVar('shipping_carrier_desc','','post','STRING',JREQUEST_ALLOWHTML);
+
+		parent::save($data);
+	}
+	
 }
 // pure php no closing tag

@@ -332,9 +332,9 @@ class VirtuemartViewUser extends JView {
 		$this->loadHelper('shopfunctions');
 
 		// Shopper info
-		if (!class_exists('ShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shoppergroup.php');
-
-		$_shoppergroup = ShopperGroup::getShoppergroupById ($this->_model->getId());
+		if (!class_exists('VirtueMartModelShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shoppergroup.php');
+		
+		$_shoppergroup = VirtueMartModelShopperGroup::getShoppergroupById ($this->_model->getId());
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 //		require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');

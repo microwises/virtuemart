@@ -117,18 +117,29 @@ class ShopFunctions {
 		$db->setQuery($q);
 		$tempArray = $db->loadResultArray();
 		if(isset($tempArray)){
-			$list='';
+			$links='';
+			$ttip='';
 			$i=0;
 			foreach ($tempArray as $value) {
 				$q = 'SELECT '.$fieldname.' FROM '.$table.' WHERE '.$fieldId.' = "'.$value.'"';
 				$db->setQuery($q);
 				$tmp = $db->loadResult();
-				$list .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view='.$view.'&task=edit&cid[]='.$value), $tmp). ', ';
+				if($i<$quantity){
+					$links .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view='.$view.'&task=edit&cid[]='.$value), $tmp). ', ';
+				}
+				//$ttip .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view='.$view.'&task=edit&cid[]='.$value), $tmp). ', ';	
+				$ttip .= $tmp.', ';
+				
 //				$list .= $tmp. ', ';
 				$i++;
-				if($i==$quantity) break;
+				//if($i==$quantity) break;
 			}
-			return substr($list,0,-2);
+			$links = substr($links,0,-2);
+			$ttip = substr($ttip,0,-2);
+			
+			$list = '<span class="hasTip" title="'.$ttip.'" >'.$links.'</span>';
+			
+			return $list;
 		}else{
 			return '';
 		}
@@ -314,6 +325,25 @@ class ShopFunctions {
 			$listHTML .= '<input type="hidden" name="prs_virtuemart_state_id[]" value="'.$state.'" />' ;
 		}
 
+		return $listHTML;
+	}
+
+	/**
+	 * Renders the list for the tax rules
+	 *
+	 * @author Max Milbers
+	 */
+	function renderTaxList($selected, $name='product_tax_id'){
+
+		if(!class_exists('VirtueMartModelCalc')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'calc.php');
+		$taxes = VirtueMartModelCalc::getTaxes();
+
+		$taxrates = array();
+		$taxrates[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_PRODUCT_TAX_NO_SPECIAL'), $name );
+		foreach($taxes as $tax){
+			$taxrates[] = JHTML::_('select.option', $tax->virtuemart_calc_id, $tax->calc_name, $name);
+		}
+		$listHTML = JHTML::_('Select.genericlist', $taxrates, $name, 'multiple', $name, 'text', $selected );
 		return $listHTML;
 	}
 
@@ -1087,25 +1117,6 @@ class ShopFunctions {
 		return $html;
 	}
 
-
-		/**
-	 * Renders the list for the tax rules
-	 *
-	 * @author Max Milbers
-	 */
-	function renderTaxList($selected, $name='product_tax_id'){
-
-		if(!class_exists('VirtueMartModelCalc')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'calc.php');
-		$taxes = VirtueMartModelCalc::getTaxes();
-
-		$taxrates = array();
-		$taxrates[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_PRODUCT_TAX_NO_SPECIAL'), $name );
-		foreach($taxes as $tax){
-			$taxrates[] = JHTML::_('select.option', $tax->virtuemart_calc_id, $tax->calc_name, $name);
-		}
-		$listHTML = JHTML::_('Select.genericlist', $taxrates, $name, 'multiple', $name, 'text', $selected );
-		return $listHTML;
-	}
 
 }
 

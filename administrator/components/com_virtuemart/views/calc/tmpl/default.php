@@ -62,11 +62,11 @@ $j15 = VmConfig::isJ15();
 			<th width="20"><?php echo JText::_('COM_VIRTUEMART_CATEGORY_S'); ?></th>
 			<th width="20"><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_SHOPPERGROUP_IDS', 'calc_currency', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 			<th width="10"><?php echo JText::_('COM_VIRTUEMART_CALC_VIS_SHOPPER'); ?></th>
-			<th width="10"><?php echo JText::_('COM_VIRTUEMART_CALC_VIS_VENDOR'); ?></th>
+<?php /*	<th width="10"><?php echo JText::_('COM_VIRTUEMART_CALC_VIS_VENDOR'); ?></th> */  ?>
 			<th width="20"><?php echo JText::_('COM_VIRTUEMART_START_DATE'); ?></th>
 			<th width="20"><?php echo JText::_('COM_VIRTUEMART_END_DATE'); ?></th>
-			<th width="20"><?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_COND'); ?></th>
-			<th width="10"><?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_DIMUNIT'); ?></th>
+<?php /*	<th width="20"><?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_COND'); ?></th>
+			<th width="10"><?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_DIMUNIT'); ?></th> */  ?>
 			<th width="20"><?php echo JText::_('COM_VIRTUEMART_COUNTRY_S'); ?></th>
 			<th width="20"><?php echo JText::_('COM_VIRTUEMART_STATE_IDS'); ?></th>
 			<th width="10"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?></th>
@@ -129,11 +129,11 @@ $j15 = VmConfig::isJ15();
 						<?php echo JHtml::_('image.administrator', ($j15 ? '' : 'admin/') . ($row->calc_shopper_published ? 'tick.png' : 'publish_x.png')); ?>
 					</a>
 				</td>
-				<td align="center">
+<?php /*				<td align="center">
 					<a href="#" onclick="return listItemTask('cb<?php echo $i;?>', 'toggle.calc_vendor_published')" title="<?php echo ( $row->calc_vendor_published == '1' ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
 						<?php echo JHtml::_('image.administrator', ($j15 ? '' : 'admin/') . ($row->calc_vendor_published ? 'tick.png' : 'publish_x.png')); ?>
 					</a>
-				</td>
+				</td> */  ?>
 				<td>
 					<?php
 					$publish_up ='';
@@ -153,12 +153,12 @@ $j15 = VmConfig::isJ15();
 						}
 					echo $endDate?>
 				</td>
-				<td>
+<?php /*				<td>
 					<?php echo $row->calc_amount_cond; ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->calc_amount_dimunit); ?>
-				</td>
+					<?php echo JText::_($row->calc_amount_dimunit); ?> 
+				</td> */  ?>
 				<td>
 					<?php echo JText::_($row->calcCountriesList); ?>
 				</td>
