@@ -84,7 +84,7 @@ class VirtueMartModelCoupon extends VmModel {
 		$expireDate = JFactory::getDate($data['coupon_expiry_date']);
 		$data['coupon_expiry_date'] = $expireDate->toMySQL();
 
-		parent::store();
+		parent::store($data);
 	}
 
 

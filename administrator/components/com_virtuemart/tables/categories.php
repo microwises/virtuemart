@@ -106,7 +106,7 @@ class TableCategories extends VmTable {
 
 		$k = $this->_tbl_key;
 
-		$sql = "SELECT ".$this->_tbl_key.", ordering FROM ".$this->_tbl." c
+		$sql = "SELECT c.".$this->_tbl_key.", c.ordering FROM ".$this->_tbl." c
 				LEFT JOIN #__virtuemart_category_categories cx
 				ON c.virtuemart_category_id = cx.category_child_id";
 
