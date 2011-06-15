@@ -186,7 +186,11 @@ AdminMenuHelper::startAdminArea();
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="title" id="title" size="50" value="<?php echo $this->userField->title; ?>" />
+                            <?php 
+                            $lang = JFactory::getLanguage();
+                            $text = $lang->hasKey($this->userField->title) ? JText::_($this->userField->title) : $this->userField->title;
+                            ?>
+				<input class="inputbox" type="text" name="title" id="title" size="50" value="<?php echo $text; ?>" />
 			</td>
 		</tr>
 

@@ -154,7 +154,7 @@ class VirtueMartModelUserfields extends VmModel {
 	}
 
 	function getCoreFields(){
-		 return array( 'name','username', 'email', 'password', 'password2' );
+		 return array( 'name','username', 'email', 'password', 'password2' , 'agreed');
 	}
 	
 	/**

@@ -30,6 +30,8 @@ $jsVars  = ' jQuery(document).ready(function(){
 
 if (!class_exists( 'VmConfig' )) {
 	require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');}
+            
+
 VmConfig::jQuery();
 VmConfig::jPrice();
 VmConfig::cssSite();

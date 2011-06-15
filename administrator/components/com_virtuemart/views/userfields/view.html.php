@@ -39,7 +39,7 @@ class VirtuemartViewUserfields extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminMenu');
-        $this->loadHelper('shopFunctions');
+                $this->loadHelper('shopFunctions');
                 
 		$layoutName = JRequest::getVar('layout', 'default');
 		$model = $this->getModel();
