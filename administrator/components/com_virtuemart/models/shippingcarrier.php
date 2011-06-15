@@ -83,7 +83,7 @@ class VirtueMartModelShippingCarrier extends VmModel {
 	$table = $this->getTable('shippingcarriers');
 
 	foreach($shippingCarrierIds as $shippingCarrierId) {
-	 
+
 		if (!$table->delete($shippingCarrierId)) {
 		    $this->setError($table->getError());
 		    return false;
@@ -113,8 +113,9 @@ class VirtueMartModelShippingCarrier extends VmModel {
 			$ext_id = 'extension_id';
 		}
 	$query = 'SELECT `#__virtuemart_shippingcarriers`.* ,  `'.$table.'`.`name` as shipping_method_name FROM `#__virtuemart_shippingcarriers` ';
-        $query .= 'JOIN `'.$table.'`   ON  `'.$table.'`.`id` = `#__virtuemart_shippingcarriers`.`shipping_carrier_jplugin_id` ';
+        $query .= 'JOIN `'.$table.'`   ON  `'.$table.'`.`'.$ext_id.'` = `#__virtuemart_shippingcarriers`.`shipping_carrier_jplugin_id` ';
 	$query .= 'ORDER BY `#__virtuemart_shippingcarriers`.`virtuemart_shippingcarrier_id`';
+
 	$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 
 	return $this->_data;
