@@ -28,7 +28,7 @@ class ShopFunctions {
 
 	/*
 	* set all commands and options for BE default.php views
-	* return $list filter_order and 
+	* return $list filter_order and
 	*/
 	function addStandardDefaultViewCommands ($showNew=true,$showDelete=true){
 
@@ -44,7 +44,7 @@ class ShopFunctions {
 		}
 	}
 	/*
-	* set pagination and filters 
+	* set pagination and filters
 	* return Array() $list( filter_order and dir )
 	*/
 	function addStandardDefaultViewLists ($model,$default_order = 'ordering',$default_dir = 'ASC'){
@@ -79,7 +79,7 @@ class ShopFunctions {
         JToolBarHelper::apply();
 		JToolBarHelper::cancel();
 	}
-	 
+
     function SetViewTitle($cssIcon,$view=null,$msg ='') {
 
             if (!$view) $view = JRequest::getVar('view',JRequest::getVar('controller'));
@@ -88,13 +88,13 @@ class ShopFunctions {
              $text = strtoupper('COM_VIRTUEMART_'.$view );
             $viewName = JText::_($text);
 			if (!$task = JRequest::getVar('task')) $task='list';
-			
+
             $taskName = ' <small><small>[ '.JText::_('COM_VIRTUEMART_'.$task).' ]</small></small>';
             JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName).$msg , $cssIcon);
             return $viewName;
 
     }
-	
+
 			/**
 	 * Builds an enlist for information (not chooseable)
 	 * @author Max Milbers
@@ -145,7 +145,7 @@ class ShopFunctions {
 		}
 
 	}
-	
+
 	/**
 	 * Creates a Drop Down list of available Creditcards
 	 *
@@ -280,7 +280,7 @@ class ShopFunctions {
 			$_a = explode ('=', $_attrib, 2);
 			$attrs[$_a[0]] = $_a[1];
 		}
-		
+
 		return JHTML::_('select.genericlist', $countries, $idA, $attrs, $id, $name, $countryId );
 	}
 
@@ -303,7 +303,7 @@ class ShopFunctions {
 		$attrs = array();
 		$name = 'state_name';
 		$idA = $id = $_prefix.'virtuemart_state_id';
-		
+
 		if($multiple){
 			$attrs['multiple'] = 'multiple';
 			$idA .= '[]';
@@ -370,7 +370,9 @@ class ShopFunctions {
 			$defaulttemplate[0] -> value = 'default';
 		}
 
-		if (VmConfig::isJ15()) {
+		$isJ15 = VmConfig::isJ15();
+
+		if ($isJ15) {
 			if(!class_exists('TemplatesHelper')) require (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
 			$jtemplates = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
 		} else {
@@ -378,10 +380,18 @@ class ShopFunctions {
 			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'models'.DS.'templates.php');
 			$templatesModel = new TemplatesModelTemplates();
 			$jtemplates = $templatesModel->getItems();
-			//@TODO remove templates for admin panel.
 		}
-		foreach($jtemplates as $template){
+
+		foreach($jtemplates as $key => $template){
 			$template->value = $template->name;
+			if (!$isJ15) {
+				if ($template->client_id == '0') {
+					$template->directory = $template->element;
+				}
+				else {
+					unset($jtemplates[$key]);
+				}
+			}
 		}
 
 		return array_merge($defaulttemplate,$jtemplates);
@@ -625,7 +635,7 @@ class ShopFunctions {
 		$vmConfig = VmConfig::getInstance();
 		$titles = $vmConfig->get('titles');
 		$options = array();
-		foreach ($titles as $title) { 
+		foreach ($titles as $title) {
 			$option = JText::_($title);
 			$options[] = JHTML::_('select.option',$option ,$option);
 		}
@@ -735,7 +745,7 @@ class ShopFunctions {
 			$cellsHtml = self::checkboxListArr( $arr, $tag_name, $tag_attribs,  $key, $text,$selected, $required );
 			return self::list2Table( $cellsHtml, $cols, $rows, $size );
 	}
-	
+
 	// private methods:
 	private function list2Table( $cellsHtml, $cols, $rows, $size ) {
 		$cells = count($cellsHtml);
@@ -939,7 +949,7 @@ class ShopFunctions {
 	}
 
 	/**
-	* 
+	*
 	* @author RolandD
 	* @param string $euvat EU-vat number to validate
 	* @return boolean The result of the validation

@@ -40,7 +40,7 @@ class VmTable extends JTable {
 	protected $_slugAutoName = '';
 
 	protected $_loggable = false;
-	
+
     function setPrimaryKey($key,$keyForm=0){
 		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', JText::_('COM_VIRTUEMART_'.strtoupper($key)) );
     	$this->setObligatoryKeys('_pkey',$error);
@@ -123,11 +123,11 @@ class VmTable extends JTable {
 	function setLoggableFieldsForStore(){
 
 		if ($this->_loggable) {
-			
+
 			$date = JFactory::getDate();
 			$today = $date->toMySQL();
 			$user = JFactory::getUser();
-			
+
 			if(!$this->created_on){
 				$this->created_on = $today;
 				$this->created_by = $user->id;
@@ -143,12 +143,12 @@ class VmTable extends JTable {
 	}
 
 	public function store($data) {
-		
+
 		$this->setLoggableFieldsForStore();
-		
+
 		return parent::store($data);
 	}
-	
+
     /**
      * @author Max Milbers
      * @param
@@ -194,7 +194,7 @@ class VmTable extends JTable {
 						if($id!=$this->$tblKey) {
 							if(empty($error)){
 								$this->setError(JText::_($error));
-							} else {								
+							} else {
                                                                 $this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE',$this->_tbl, $obkeys)  );
 							}
 							return false;
@@ -607,5 +607,24 @@ class VmTable extends JTable {
 		$this->setError(get_class( $this ).'::Error publish ');
 		return true;
 	}
+
+	/**
+	 * toggle (0/1) a field
+	 * or invert by $val
+	 * @author impleri
+	 * @param string $field the field to toggle
+	 * @param boolean $val field value (0/1)
+	 * @todo could make this multi-id as well...
+	 */
+
+	function toggle($field, $val = NULL) {
+		if ($val === NULL) {
+			$this->$field = !$this->$field;
+		} else {
+			$this->$field = $val;
+		}
+
+		return (parent::store(true));
+    }
 
 }

@@ -110,12 +110,12 @@ class VmModel extends JModel {
 
 	/**
 	 * Gets the total number of countries
-	 *TODO filters and search ar not set 
+	 *TODO filters and search ar not set
      * @author Max Milbers
 	 * @return int Total number of entries in the database
 	 */
 	public function getTotal() {
-		
+
     	if (empty($this->_total)) {
 			$query = 'SELECT '.$this->_db->nameQuote($this->_idName).' FROM '.$this->_db->nameQuote($this->_maintable);
 			$this->_db->setQuery( $query );
@@ -219,14 +219,7 @@ class VmModel extends JModel {
 
 		foreach($ids as $id){
 			$table->load( $id );
-			if ($val === NULL) {
-				if ($table->$field ==0) $table->$field = 1 ;
-				else $table->$field = 0;
-			} else {
-				$table->$field = $val;
-			}
-
-			if (!$table->_db->updateObject($table->_tbl, $table, $table->_tbl_key, false)){
+			if (!$table->toggle($field, $val)) {
 //			if (!$table->store()) {
 				JError::raiseError(500, get_class( $this ).'::toggle '.$table->getError() );
 				$ok = false;
