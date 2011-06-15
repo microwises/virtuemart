@@ -632,6 +632,7 @@ class VirtueMartModelUser extends VmModel {
 	/**
 	 * Take a data array and save any address info found in the array.
 	 *
+	 * @author unknown, oscar, max milbers
 	 * @param array $data (Posted) user data
 	 * @param sting $_table Table name to write to, null (default) not to write to the database
 	 * @param boolean $_cart Attention, this was deleted, the address to cart is now done in the controller (True to write to the session (cart))
@@ -639,35 +640,26 @@ class VirtueMartModelUser extends VmModel {
 	 */
 	function storeAddress($data){
 
-		$userfielddata = self::_prepareUserFields($data, 'BT');
+		if(empty($data['address_type'])) return false;
+		
+		if($data['address_type']='ST'){
+			// Check for fields with the the 'shipto_' prefix; that means a (new) shipto address.
+			$_shipto = array();
+			$_pattern = '/^shipto_/';
+			foreach ($data as $_k => $_v) {
+				if (preg_match($_pattern, $_k)) {
+					$_new = preg_replace($_pattern, '', $_k);
+					$data[$_new] = $_v;
+				}
+			}
+		}
 
+
+		$userfielddata = self::_prepareUserFields($data, $data['address_type']);
+		dump($userfielddata,'storeAddress $userfielddata');
 		$userinfo   = $this->getTable('userinfos');
     	if (!$userinfo->bindChecknStore($userfielddata)) {
 			$this->setError($userinfo->getError());
-		}
-
-		// Check for fields with the the 'shipto_' prefix; that means a (new) shipto address.
-		$_shipto = array();
-		$_pattern = '/^shipto_/';
-		foreach ($data as $_k => $_v) {
-			if (preg_match($_pattern, $_k)) {
-				$_new = preg_replace($_pattern, '', $_k);
-				$_shipto[$_new] = $_v;
-			}
-		}
-		if (count($_shipto) > 0) {
-			$_shipto = self::_prepareUserFields($_shipto, 'ST');
-
-			// The user_is_vendor must be copied to make sure users won't be listed twice
-			$_shipto['user_is_vendor'] = $data['user_is_vendor'];
-			// Set the address type
-			$_shipto['address_type'] = 'ST';
-
-			$userinfo   = $this->getTable('userinfos');
-	    	if (!$userinfo->bindChecknStore($_shipto)) {
-				$this->setError($userinfo->getError());
-			}
-
 		}
 		return true;
 	}
