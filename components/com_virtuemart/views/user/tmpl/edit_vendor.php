@@ -140,8 +140,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<td class="key">
 				<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_ACCEPTED_CURRENCIES'); ?>
 			</td>
+<<<<<<< .mine
+			<td><br />
+				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', 'size=20 multiple', 'virtuemart_currency_id', 'currency_name', $this->vendor->vendor_accepted_currencies); ?>
+=======
 			<td><br />	<?php																					//'size=20 multiple = "multiple"'
 				 echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', array('size'=>'20', 'multiple' => 'multiple'), 'virtuemart_currency_id', 'currency_name', $this->vendor->vendor_accepted_currencies); ?>
+>>>>>>> .r3473
 			</td>
 		</tr>
 	</table>

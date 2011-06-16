@@ -788,19 +788,29 @@ span.addtocart-button input.notify-button:hover {background-position: 0px -200px
 ////////////////////////////////////*/
 
 a.product-details {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;}
-
 a.product-details:hover {background: #fff url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;}
 
 a.ask-a-question {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 12px 1px 12px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;display: inline-block;text-decoration: none;margin-bottom: 8px;}
 
 a.ask-a-question:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;text-decoration: none;}
 
-input.highlight-button {padding: 4px 8px 2px 8px;background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;background-position: 0px -160px;color: #fff;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;cursor: pointer;text-shadow: 1px 1px 1px #000;text-align: center;letter-spacing: 1px;text-shadow: 1px 1px 0px #028c02;display: inline-block;}
+
+/* Green Button */
+input.highlight-button {padding: 4px 8px 2px 8px;background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;background-position: 0px -160px;color: #fff;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;cursor: pointer;text-shadow: 1px 1px 1px #000;text-align: center;letter-spacing: 1px;text-shadow: 1px 1px 0px #028c02;display: inline-block;text-decoration: none;}
 input.highlight-button:hover {background-position: 0px -200px;color: #f2f2f2;}
 input.highlight-button:visited {color: #fff;}
 
+/* Default Link Button */
+a.details {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;}
+a.details:hover {background: #fff url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;text-decoration: none;}
 
+/* Default Input Button */
+button.default {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 5px 8px 4px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;cursor: pointer;}
+button.default:hover {background: #fff url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;text-decoration: none;}
 
+/* Highlight Link Button */
+a.highlight, a.highlight:visited {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 0px #028c02;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;background-position: 0px -160px;color: #fff;}
+a.highlight:hover {background-position: 0px -200px;color: #f2f2f2;}
 
 /*////////////////////////////////////
 /////////////// Other ////////////////
@@ -821,10 +831,8 @@ label.invalid {color: #f00;}
 ////// User Edit Details View ////////
 ////////////////////////////////////*/
 
-/* Save and Cancel Button */
-button.save-button {margin-right: 12px;}
-button.save-button, button.cancel-button {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 2px 12px 1px 12px;border: solid #ccc 1px;border-radius: 12px;-webkit-border-radius: 12px;-moz-border-radius: 12px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;box-shadow: 0 1px 2px #b9b9b9;-webkit-box-shadow: 0 1px 2px #b9b9b9;-moz-box-shadow: 0 1px 2px #b9b9b9;display: block;float: left;text-decoration: none;cursor: pointer;}
-button.save-button:hover, button.cancel-button:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;}
+.control-buttons {text-align: right;}
+.control-buttons button.default {margin-left: 8px;}
 
 /* Input Details */
 table.user-details {}
@@ -837,19 +845,49 @@ td.key {padding: 0px 6px;}
 //////////// Cart View ///////////////
 ////////////////////////////////////*/
 
-.customer-comment {}
+.cart-view {}
+.cart-view h1 {margin: 0px;padding: 0px 0px 10px 0px;font-size: 20px;}
+.cart-view h2 {margin: 0px;padding: 0px;font-size: 12px;}
 
-textarea.customer-comment {background: #f2f2f2;padding: 5px 5px 4px 5px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;margin-bottom: 2px;}
+/* Quick Checkout At Top */
+.checkout-button-top {text-align: right;border-top: solid #E9E8E8 1px;padding: 10px 0px 0px 0px;}
+.checkout-button-top input.terms-of-service {margin-right: 10px;display: inline-block;}
+span.tos {display: inline-block;margin-right: 15px;}
+
+/* Billing & Shipping Adress */
+.billto-shipto {margin: 10px 0px 0px 0px;padding: 10px 0px 25px 0px;border-top: solid #E9E8E8 1px;border-bottom: solid #E9E8E8 1px;}
+
+/* Title */
+span.billto, span.shipto, span.termsofservice {display: inline-block;padding: 6px 0px 3px 36px;font-weight: bold;font-size: 14px;}
+span.billto {background: url(../images/vmgeneral/billto-icon.png) left no-repeat;}
+span.shipto {background: url(../images/vmgeneral/shipto-icon.png) left no-repeat;}
+span.termsofservice {background: url(../images/vmgeneral/termsofservice-icon.png) left no-repeat;margin: 0px 0px 10px 0px;}
+
+/* Output The Address */
+.output-billto, .output-shipto {margin: 10px 0px;}
+.output-billto span.titles, .output-shipto span.titles {width: 150px;float: left;}
+.output-billto span.values, .output-shipto span.values {float: left;}
+
+/* Cart Summary */
+table.cart-summary {}
+table.cart-summary tr th {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 6px 0px 3px 0px;border-bottom: solid #E9E8E8 1px;}
+
+/* Leave A Comment Field */
+.customer-comment {text-align: center;margin: 10px 0px 0px 0px;padding: 10px 0px 0px 0px;border-top: solid #E9E8E8 1px;}
+textarea.customer-comment {background: #fff;padding: 5px 5px 4px 5px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;margin-bottom: 2px;text-align: left;}
 textarea.customer-comment:hover {color: #000;background: #e8e8e8;}
 
-a.continue_link {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 6px 12px 3px 12px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;display: block;float: right;text-decoration: none;margin-right: 16px;}
-a.continue_link:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;text-decoration: none;}
+/* Terms Of Service */
+.terms-of-service {margin: 10px 0px 0px 0px;padding: 10px 0px 15px 0px;border-top: solid #E9E8E8 1px;border-bottom: solid #E9E8E8 1px;}
+.terms-of-service h5 {background: #7C1E21;color: rgba(255, 255, 255, 0.9);padding: 15px;font-size: 14px;text-align: center;border-radius: 6px;-moz-border-radius: 6px;-webkit-border-radius: 6px;margin: 0px;font-weight: normal;text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);}
+.terms-of-service h5 a,.terms-of-service h5 a:visited {color: #fff;text-transform: uppercase;}
 
-a.checkout_link {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x; padding: 6px 12px 3px 12px;border: solid #ce0100 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #000;font-size: 12px;font-weight: bold;background-position: 0px -80px;display: block;float: right;text-decoration: none;color: #fff;}
-a.checkout_link span {background: url(../images/vmgeneral/checkout-icon.png) left no-repeat;padding-left: 20px;color: #fff;}
-a.checkout_link:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -120px;color: #ccc;text-decoration: none;}
+/* Continue Shopping Button */
+a.continue_link, a.continue_link:hover, a.continue_link:visited {font-size: 12px;font-weight: bold;display: inline-block;text-decoration: none;text-decoration: none;color: #777;}
 
-
+/* Check out Now button */
+a.checkout_link:link, a.checkout_link:visited {padding: 6px 12px 3px 12px;background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;background-position: 0px -160px;color: #fff;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;cursor: pointer;text-shadow: 1px 1px 1px #000;text-align: center;letter-spacing: 1px;text-shadow: 1px 1px 0px #028c02;display: inline-block;text-decoration: none;}
+a.checkout_link:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -200px;color: #f2f2f2;text-decoration: none;}
 
 .VmArrowdown{padding:0px 12px 0px 12px; background: top right no-repeat url(../images/vmgeneral/arrow_down.png);cursor: pointer;float: right;width: 16px;height: 16px; }
 ul.VMmenu ,.VMmenu ul, .VMmenu li{list-style-type: none !important;background-image: none !important;  padding: 2px;}

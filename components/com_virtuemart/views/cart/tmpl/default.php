@@ -20,77 +20,47 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.formvalidation');
-
-//This displays the pricelist MUST be done with tables, because it is also used for the emails
-include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'price_list.php');
-
+JHTML::_ ( 'behavior.modal' );
 ?>
-<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_( 'index.php?option=com_virtuemart' ); ?>">
 
-<fieldset>
-	<legend>
-		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?>
-	</legend>
+<div class="cart-view">
 
-	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT">
-		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL'); ?>
-	</a><br /><br />
-<?php 	foreach($this->BTaddress as $item){
-			if(!empty($item['value'])){
-				echo $item['title'].': '.$item['value'].'<br/>';
-			}
-		} ?>
-	<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>
-</fieldset>
-
-<fieldset>
-	<legend>
-		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
-	</legend>
-	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=0&cid[]=<?php echo $this->lists['current_id']; ?>">
-	<?php echo JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'); ?>
-	</a><br />
-	<?php echo $this->lists['shipTo'];
-		echo '<br /><br />';
-		foreach($this->STaddress as $item){
-			if(!empty($item['value'])){
-				echo $item['title'].': '.$item['value'].'<br/>';
-			}
-		} ?>
-</fieldset>
-
-<fieldset>
-	<div class="customer-comment marginbottom15">
-		<span class="bold"><?php echo JText::_('COM_VIRTUEMART_COMMENT'); ?></span><br />
-		<textarea class="customer-comment" name="customer_comment" cols="50" rows="4"><?php echo $this->cart->customer_comment; ?></textarea>
-	</div>
-</fieldset>
-<fieldset>
-
-	<div class="marginbottom15">
-	<span class="bold"><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?></span><br />
-	<?php echo '<span class="red">'.$this->vendor->vendor_terms_of_service.'</span><br />';
-//		if (VmConfig::get('agree_to_tos_onorder')) {
-			$checked = '';
-			if ($this->cart->tosAccepted) $checked = 'checked="checked"';
-			echo '<input type="checkbox" name="tosAccepted" value="1" ' . $checked . '/>'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED');
-//		}
+	<?php // This displays the pricelist MUST be done with tables, because it is also used for the emails
+	include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'price_list.php');
 	?>
-	</div>
-</fieldset>
-<?php
-	echo '<div class="paddingbottom20">';
-	echo $this->checkout_link_html;
+	
+	<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_( 'index.php?option=com_virtuemart' ); ?>">
 
-	if ($this->continue_link_html != '') {
-		echo $this->continue_link_html;
-	}
+		<?php // Leave A Comment Field ?>
+		<div class="customer-comment marginbottom15">
+			<span class="comment"><?php echo JText::_('COM_VIRTUEMART_COMMENT'); ?></span><br />
+			<textarea class="customer-comment" name="customer_comment" cols="50" rows="4"><?php echo $this->cart->customer_comment; ?></textarea>
+		</div>
+		<?php // Leave A Comment Field END ?>
+	
+		<?php // Terms Of Service ?>
+		<div class="terms-of-service">
+			<span class="termsofservice"><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?></span>
+			<div>
+			<?php echo $this->vendor->vendor_terms_of_service;?>
+			</div>
+		</div>
+		<?php // Terms Of Service END ?>
 
-	$text = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
-	echo '</div>';
-?>
+		<?php // Continue and Checkout Button ?>
+		<div class="checkout-button-top">
+			<?php // Terms Of Service Checkbox
+			$checked = '';
+			echo '<input class="terms-of-service" type="checkbox" name="tosAccepted" value="1" ' . $checked . '/><span class="tos">'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
+	
+			echo $this->checkout_link_html;
+			$text = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
+			?>
+		</div>
+		<?php // Continue and Checkout Button END ?>
 
-<input type='hidden' name='task' value='<?php echo $this->checkout_task; ?>'/>
-<input type='hidden' name='option' value='com_virtuemart'/>
-<input type='hidden' name='view' value='cart'/>
-</form>
+		<input type='hidden' name='task' value='<?php echo $this->checkout_task; ?>'/>
+		<input type='hidden' name='option' value='com_virtuemart'/>
+		<input type='hidden' name='view' value='cart'/>
+	</form>
+</div>

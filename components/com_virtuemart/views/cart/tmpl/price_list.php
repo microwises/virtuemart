@@ -17,14 +17,96 @@
 *
 */
 
-
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
+
+<div>
+	<div class="width50 floatleft">
+		<h1><?php echo JText::_('COM_VIRTUEMART_CART_TITLE'); ?></h1>
+	</div>
+	<div class="width50 floatleft right">
+		<?php // Continue Shopping Button
+		if ($this->continue_link_html != '') {
+			echo $this->continue_link_html;
+		} ?>
+	</div>
+<div class="clear"></div>
+</div>
+	
+<?php // Continue and Checkout Button ?>
+<div class="checkout-button-top">
+		
+	<?php // Terms Of Service Checkbox
+	$checked = '';
+	echo '<input class="terms-of-service" type="checkbox" name="tosAccepted" value="1" ' . $checked . '/><span class="tos">'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
+	?>
+
+	<?php // Checkout Button
+	echo $this->checkout_link_html;
+	$text = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
+	?>
+			
+</div>
+<?php // Continue and Checkout Button END ?>
+
+<div class="billto-shipto">
+	<div class="width50 floatleft">
+		
+		<span class="billto"><?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?></span>
+		<br />
+
+		<?php // Output Bill To Address ?>
+		<div class="output-billto">
+		<?php
+		foreach($this->BTaddress as $item){
+			if(!empty($item['value'])){ ?>
+				<span class="titles"><?php echo $item['title'] ?></span>
+				<span class="values"><?php echo $item['value'] ?></span>
+				<br class="clear" />
+			<?php
+			}
+		} ?>
+		<div class="clear"></div>
+		</div>
+
+		<a class="details" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT">
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL'); ?>
+		</a>
+	
+		<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>
+	</div>
+	
+	<div class="width50 floatleft">
+		
+		<span class="shipto"><?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?></span>
+		<br />
+
+		<?php // Output Bill To Address ?>
+		<div class="output-shipto">
+		<?php
+		foreach($this->STaddress as $item){
+			if(!empty($item['value'])){ ?>
+				<span class="titles"><?php echo $item['title'] ?></span>
+				<span class="values"><?php echo $item['value'] ?></span>
+				<br class="clear" />
+			<?php
+			}
+		} ?>
+		<div class="clear"></div>
+		</div>
+		
+		<a class="details" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=0&cid[]=<?php echo $this->lists['current_id']; ?>">
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'); ?>
+		</a>
+	</div>
+
+<div class="clear"></div>
+</div>
+
+
+
 <fieldset>
-	<legend>
-		<?php echo JText::_('COM_VIRTUEMART_CART_TITLE'); ?>
-	</legend>
 <?php
 
 		// Added for the zone shipping module
@@ -108,9 +190,9 @@ defined('_JEXEC') or die('Restricted access');
 
 
 		?>
-		<table width="100%" cellspacing="2" cellpadding="0" border="0">
-			<tr align="left" class="sectiontableheader">
-				<th><?php echo JText::_('COM_VIRTUEMART_CART_NAME') ?></th>
+		<table class="cart-summary" cellspacing="0" cellpadding="0" border="0" width="100%">
+			<tr>
+				<th align="left"><?php echo JText::_('COM_VIRTUEMART_CART_NAME') ?></th>
 				<th align="left" ><?php echo JText::_('COM_VIRTUEMART_CART_SKU') ?></th>
 				<th align="center" width="60px" ><?php echo JText::_('COM_VIRTUEMART_CART_PRICE') ?></th>
 				<th align="right" width="140px" ><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY') ?> / <?php echo JText::_('COM_VIRTUEMART_CART_ACTION') ?></th>
@@ -177,7 +259,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 		<?php } ?>
 		<tr class="sectiontableentry1">
-				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_shipping'), JText::_('COM_VIRTUEMART_CART_EDIT_SHIPPING')); else JText::_('COM_VIRTUEMART_CART_SHIPPING'); ?> </td>
+				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_shipping'), JText::_('COM_VIRTUEMART_CART_EDIT_SHIPPING'),'class="highlight"'); else JText::_('COM_VIRTUEMART_CART_SHIPPING'); ?> </td>
 		<?php	/*	<td colspan="2" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING'); ?> </td> */?>
 				<td colspan="2" align="left"><?php echo $this->cartData['shippingName']; ?> </td>
 				<td align="right"><?php echo $this->prices['shippingValue']; ?> </td>
@@ -187,7 +269,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 
 		<tr class="sectiontableentry1">
-				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment'), JText::_('COM_VIRTUEMART_CART_EDIT_PAYMENT')); else JText::_('COM_VIRTUEMART_CART_PAYMENT'); ?> </td>
+				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment'), JText::_('COM_VIRTUEMART_CART_EDIT_PAYMENT'),'class="highlight"'); else JText::_('COM_VIRTUEMART_CART_PAYMENT'); ?> </td>
 		<?php	/*	<td colspan="2" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL') ?> </td> */?>
 				<td colspan="2" align="left"><?php echo $this->cartData['paymentName']; ?> </td>
 				<td align="right"><?php echo $this->prices['paymentValue']; ?> </td>
@@ -238,9 +320,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td colspan="4" align="right"><?php echo $this->prices['taxAmount'] ?></td>
 		  </tr>
 		<?php } ?>
-		  <tr>
-			<td colspan="10"><hr /></td>
-		  </tr>
+		 
 
 	</table>
 </fieldset>
