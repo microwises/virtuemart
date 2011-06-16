@@ -15,6 +15,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 *
 * http://virtuemart.org
 */
+
+//This is for akeeba release system, it must be executed before any other task
+require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
+if(JRequest::getCmd('view','') == 'liveupdate') {
+    LiveUpdate::handleRequest();
+    return;
+}
+
 require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 $config= VmConfig::getInstance();
 $config->jQuery();

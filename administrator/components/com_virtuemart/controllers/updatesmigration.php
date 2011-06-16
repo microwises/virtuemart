@@ -57,6 +57,15 @@ class VirtuemartControllerUpdatesMigration extends VmController {
     }
 
 
+	/**
+	 * Akeeba release system tasks
+	 * Update
+	 */
+	function liveUpdate(){
+		
+		$this->setRedirect('index.php?option=com_virtuemart&view=liveupdate.', $msg);
+	}
+
     /**
      * Install sample data into the database
      *
