@@ -61,9 +61,9 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		foreach($this->BTaddress as $item){
 			if(!empty($item['value'])){ ?>
-				<span class="titles"><?php echo $item['title'] ?></span>
-				<span class="values"><?php echo $item['value'] ?></span>
-				<br class="clear" />
+				<!-- span class="titles"><?php echo $item['title'] ?></span -->
+				<span class="values <?php echo $item['name'] ?>" ><?php echo $item['value'] ?></span>
+				<!-- br class="clear" / -->
 			<?php
 			}
 		} ?>
