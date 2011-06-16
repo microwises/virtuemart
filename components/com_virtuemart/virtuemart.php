@@ -18,7 +18,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 */
 
 /* Require the config */
- 
+
 //Console::logSpeed('virtuemart start');
 
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
@@ -43,6 +43,12 @@ if(VmConfig::get('shop_is_offline',0)){
 		if (file_exists(JPATH_VM_SITE.DS.'controllers'.DS.$_controller.'.php')) {
 			// Only if the file exists, since it might be a Joomla view we're requesting...
 			require (JPATH_VM_SITE.DS.'controllers'.DS.$_controller.'.php');
+		}
+		else {
+			// try plugins
+			JPluginHelper::importPlugin('vmextended');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('onVmSiteController', $_controller);
 		}
 	}
 

@@ -60,12 +60,12 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$query = "SELECT * FROM `#__users`";
 		$db->setQuery($query);
 		$row = $db->loadObjectList();
-		
+
 		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
-		$usermodel = new VirtueMartModelUser();		
-		
+		$usermodel = new VirtueMartModelUser();
+
 		foreach ($row as $user) {
-			
+
 			$usermodel->setId($user->id);
 			$userdata = array(	'virtuemart_user_id' => $user->id,
 								'virtuemart_vendor_id' => 0,
@@ -73,7 +73,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 								'user_is_vendor' => 0,
 								'perms' => 'shopper'
 								);
-								
+
 			$usermodel->saveUserData($userdata);
 
 		}
@@ -239,7 +239,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 	$usermodel = new VirtueMartModelUser();
 	$usermodel->setId($userId);
-	
+
 	//$usermodel->store($fields);
 	//Save the VM user stuff
 	if(!$usermodel->saveUserData($fields)){
@@ -252,7 +252,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	}
 
 	$usermodel ->storeVendorData($fields);
-	
+
    	$errors = $usermodel->getErrors();
    	$msg ='';
 	if(empty($errors)) $msg = 'user id of the mainvendor is '.$sid;
@@ -280,6 +280,10 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
     function restoreSystemDefaults() {
 
+		JPluginHelper::importPlugin('vmextended');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onVmSqlRemove', $this);
+
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_essential_data.sql';
 		$this->execSQLFile($filename);
 
@@ -297,6 +301,9 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql';
 		$this->execSQLFile($filename);
 
+		JPluginHelper::importPlugin('vmextended');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onVmSqlRestore', $this);
     }
 
     function restoreSystemTablesCompletly() {
@@ -314,6 +321,9 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql';
 		$this->execSQLFile($filename);
 
+		JPluginHelper::importPlugin('vmextended');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onVmSqlRestore', $this);
     }
 
     /**
@@ -521,6 +531,10 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @return boolean True if successful, false otherwise.
      */
     function removeAllVMData() {
+		JPluginHelper::importPlugin('vmextended');
+		$dispatcher = JDispatcher::getInstance();
+		$dispatcher->trigger('onVmSqlRemove', $this);
+
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_data.sql';
 		$this->execSQLFile($filename);
 

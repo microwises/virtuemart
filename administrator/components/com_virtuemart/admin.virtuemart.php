@@ -33,10 +33,15 @@ if($_controller = JRequest::getVar('controller', JRequest::getVar('view', 'virtu
 		// Only if the file exists, since it might be a Joomla view we're requesting...
 		require (JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php');
 	} else {
-
-		$app = JFactory::getApplication();
-		$app->enqueueMessage('Fatal Error: Couldnt find file '.$_controller);
-		$app->redirect('index.php?option=com_virtuemart');
+		// try plugins
+		JPluginHelper::importPlugin('vmextended');
+		$dispatcher = JDispatcher::getInstance();
+		$results = $dispatcher->trigger('onVmAdminController', $_controller);
+		if (empty($results)) {
+			$app = JFactory::getApplication();
+			$app->enqueueMessage('Fatal Error: Couldnt find file '.$_controller);
+			$app->redirect('index.php?option=com_virtuemart');
+		}
 	}
 }
 
