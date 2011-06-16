@@ -62,9 +62,14 @@ defined('_JEXEC') or die('Restricted access');
 		foreach($this->BTaddress as $item){
 			if(!empty($item['value'])){ ?>
 				<!-- span class="titles"><?php echo $item['title'] ?></span -->
-				<span class="values <?php echo $item['name'] ?>" ><?php echo $item['value'] ?></span>
-				<!-- br class="clear" / -->
-			<?php
+				<?php 
+				if ($item['name'] == 'first_name' || $item['name'] == 'middle_name' || $item['name'] == 'zip') { ?>
+					<span class="values<?php echo '-'.$item['name'] ?>" ><?php echo $item['value'] ?></span>
+				<?php } else { ?>
+					<span class="values" ><?php echo $item['value'] ?></span>
+					<br class="clear" />
+				<?php 
+				} 
 			}
 		} ?>
 		<div class="clear"></div>
@@ -87,10 +92,15 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
 		foreach($this->STaddress as $item){
 			if(!empty($item['value'])){ ?>
-				<span class="titles"><?php echo $item['title'] ?></span>
-				<span class="values"><?php echo $item['value'] ?></span>
-				<br class="clear" />
-			<?php
+				<!-- <span class="titles"><?php echo $item['title'] ?></span> -->
+				<?php 
+				if ($item['name'] == 'first_name' || $item['name'] == 'middle_name' || $item['name'] == 'zip') { ?>
+					<span class="values<?php echo '-'.$item['name'] ?>" ><?php echo $item['value'] ?></span>
+				<?php } else { ?>
+					<span class="values" ><?php echo $item['value'] ?></span>
+					<br class="clear" />
+				<?php 
+				}
 			}
 		} ?>
 		<div class="clear"></div>

@@ -809,7 +809,7 @@ button.default {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top
 button.default:hover {background: #fff url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;text-decoration: none;}
 
 /* Highlight Link Button */
-a.highlight, a.highlight:visited {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 0px #028c02;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;background-position: 0px -160px;color: #fff;}
+a.highlight, a.highlight:visited {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 0px #028c02;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;background-position: 0px -160px;color: #fff;}
 a.highlight:hover {background-position: 0px -200px;color: #f2f2f2;}
 
 /*////////////////////////////////////
@@ -867,6 +867,7 @@ span.termsofservice {background: url(../images/vmgeneral/termsofservice-icon.png
 .output-billto, .output-shipto {margin: 10px 0px;}
 .output-billto span.titles, .output-shipto span.titles {width: 150px;float: left;}
 .output-billto span.values, .output-shipto span.values {float: left;}
+.output-billto span.values-first_name, .output-billto span.values-middle_name, .output-billto span.values-zip, .output-shipto span.values-first_name, .output-shipto span.values-middle_name, .output-shipto span.values-zip  {float: left;margin-right: 3px;}
 
 /* Cart Summary */
 table.cart-summary {}

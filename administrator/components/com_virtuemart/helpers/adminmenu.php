@@ -155,11 +155,12 @@ class AdminMenuHelper {
 		    </div>
 		    
 		    <div class="updates">
-				<?php //TODO The link should be done better
-				echo JHTML::_('link', 'index.php?option=com_virtuemart', 'Update available');
-				?>
+				<?php // Include ALU System
+		    	require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
+		    	echo LiveUpdate::getIcon(); ?>
 		    </div>
 		    
+		   
                 </div>
             </div>
         </div>

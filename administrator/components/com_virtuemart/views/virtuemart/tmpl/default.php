@@ -23,6 +23,9 @@ AdminMenuHelper::startAdminArea();
 
 JToolBarHelper::title(JText::_('COM_VIRTUEMART')." ".JText::_('COM_VIRTUEMART_CONTROL_PANEL'), 'vm_store_48');
 
+// Include ALU System
+require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
+
 $pane = JPane::getInstance('tabs', array('startOffset'=>0)); 
 echo $pane->startPane( 'pane' );
 echo $pane->startPanel(JText::_('COM_VIRTUEMART_CONTROL_PANEL'), 'control_panel');
@@ -37,6 +40,7 @@ echo $pane->startPanel(JText::_('COM_VIRTUEMART_CONTROL_PANEL'), 'control_panel'
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=config'), 'vm_shop_configuration_48.png', JText::_('COM_VIRTUEMART_CONFIG')); ?></div>
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=user&task=editshop'), 'vm_shop_mart_48.png', JText::_('COM_VIRTUEMART_STORE')); ?></div>
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('http://virtuemart.org/index.php?option=com_content&amp;task=view&amp;id=248&amp;Itemid=125'), 'vm_shop_help_48.png', JText::_('COM_VIRTUEMART_DOCUMENTATION')); ?></div>
+	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_(LiveUpdate::getIcon(array(),'url')), 'vm_config_48.png', JText::_('COM_VIRTUEMART_ADMIN_UPDATES')); ?></div>
 </div>
 <?php
 echo $pane->endPanel();
