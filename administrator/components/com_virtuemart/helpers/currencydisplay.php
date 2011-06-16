@@ -268,7 +268,8 @@ class CurrencyDisplay {
 			$nb = abs($nb);
     	}
 
-    	$res = $this->formatNumber($nb, $nbDecimal, $this->_thousands, $this->_decimal);
+    	//$res = $this->formatNumber($nb, $nbDecimal, $this->_thousands, $this->_decimal);
+		$res = number_format($nb,$nbDecimal,$this->_decimal,$this->_thousands);
     	$search = array('{sign}', '{number}', '{symbol}');
     	$replace = array($sign, $res, $this->_symbol);
     	$formattedRounded = str_replace ($search,$replace,$format);
@@ -285,10 +286,10 @@ class CurrencyDisplay {
      * @param string $thousand_separator
      * @param string $decimal_point
      */
-    function formatNumber($number, $decimals = 2, $thousand_separator = '&nbsp;', $decimal_point = '.'){
+    function formatNumber($number, $decimals = 2, $decimal_point = '.', $thousand_separator = '&nbsp;' ){
 
 //    	$tmp1 = round((float) $number, $decimals);
-
+		
     	return number_format($number,$decimals,$decimal_point,$thousand_separator);
 //		while (($tmp2 = preg_replace('/(\d+)(\d\d\d)/', '\1 \2', $tmp1)) != $tmp1){
 //			$tmp1 = $tmp2;

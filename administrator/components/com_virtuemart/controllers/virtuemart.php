@@ -18,9 +18,6 @@
 
 jimport('joomla.application.component.controller');
 
-//if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
-
-
 /**
  * VirtueMart default administrator controller
  *

@@ -347,8 +347,10 @@ class VirtueMartModelUser extends VmModel {
 		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save user' );
 		$mainframe = JFactory::getApplication() ;
 
-//			if(empty($data)) $data = JRequest::get('post');
-		//		$currentUser = JFactory::getUser();
+		if(empty($data)){
+			$mainframe->enqueueMessage('Developer notice, no data to store for user');
+			return false;
+		} 
 
 		//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
 		//The constructor sets automatically the right id.

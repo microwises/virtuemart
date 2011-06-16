@@ -67,17 +67,19 @@ if (!class_exists('vmShipperPlugin'))
     $_html = $_dispatcher->trigger('plgVmOnSelectShipper', $_tmp);
 // if only one Shipper , should be checked by default
     $found_shipping_method = false;
-    echo "<fieldset>\n";foreach($_html as $_item){
-            if ($_item) {
-		echo $_item;
-                  $found_shipping_method=true;
-            }
+    echo "<fieldset>\n";
+    foreach($_html as $_item){
+		if ($_item) {
+			echo $_item;
+			$found_shipping_method=true;
+		}
 	}
-        echo  "</fieldset>\n";
-        if (! $found_shipping_method ){
-              $app = JFactory::getApplication();
-                $app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD'));
-        }
+	echo  "</fieldset>\n";
+	
+    if (! $found_shipping_method ){
+          $app = JFactory::getApplication();
+            $app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD'));
+    }
 
 ?>
     <input type="hidden" name="option" value="com_virtuemart" />

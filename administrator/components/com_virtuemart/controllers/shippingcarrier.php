@@ -30,7 +30,7 @@ if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
  *
  * @package    VirtueMart
  * @subpackage ShippingCarrier
- * @author RickG
+ * @author RickG, Max Milbers
  */
 class VirtuemartControllerShippingCarrier extends VmController {
 
@@ -53,6 +53,11 @@ class VirtuemartControllerShippingCarrier extends VmController {
 		}
 	}
 
+	/**
+	 * We want to allow html in the descriptions.
+	 *
+	 * @author Max Milbers
+	 */
 	function save(){
 		$data = JRequest::get('post');
 

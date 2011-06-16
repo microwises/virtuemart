@@ -119,30 +119,5 @@ class TableProducts extends VmTable {
 		$this->setSlug('product_name');
 	}
 
-//	function check(){
-//
-//		if(empty($this->product_name) &&)
-//	}
-
-//    /**
-//     * @author Max Milbers
-//     * @param
-//     */
-//    function check() {
-//
-//        if (empty($this->virtuemart_vendor_id)) {
-//            $this->setError('Serious error cant save product without vendor id');
-//            return false;
-//        }
-//
-//       	$date = JFactory::getDate();
-//		$today = $date->toMySQL();
-//		if(empty($this->created_on)){
-//			$this->created_on = $today;
-//		}
-//     	$this->modified_on = $today;
-//
-//        return true;
-//    }
 }
 // pure php no closing tag

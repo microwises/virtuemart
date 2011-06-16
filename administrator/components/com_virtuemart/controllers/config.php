@@ -85,7 +85,6 @@ class VirtuemartControllerConfig extends VmController {
 		$redir = 'index.php?option=com_virtuemart';
 		if(JRequest::getCmd('task') == 'apply'){
 			$redir = $this->redirectPath;
-//			$redir .= '&task=edit&'.$this->_cidName.'[]='.$_id;
 		}
 
 		$this->setRedirect($redir, $msg);

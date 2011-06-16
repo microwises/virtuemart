@@ -788,7 +788,7 @@ class VirtueMartModelProduct extends VmModel {
 		if($product){
 			$data = (array)$product;
 		} else{
-			$data = JRequest::get('post', 0);	//TODO 4?
+			$data = JRequest::get('post');	//TODO 4?
 		}
 
 		/* Setup some place holders */

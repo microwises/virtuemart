@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage
-* @author RolandD
+* @author Max Milberes
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -29,7 +29,7 @@ if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
  * Review Controller
  *
  * @package    VirtueMart
- * @author RolandD
+ * @author Max Milbers
  */
 class VirtuemartControllerRatings extends VmController {
 
@@ -43,19 +43,6 @@ class VirtuemartControllerRatings extends VmController {
 
 	}
 
-	/**
-	 * Shows the product list screen
-	 */
-//	public function Ratings() {
-//		/* Create the view object */
-//		$view = $this->getView('ratings', 'html');
-//
-//		/* Default model */
-//		$view->setModel( $this->getModel( 'ratings', 'VirtueMartModel' ), true );
-//
-//		/* Now display the view. */
-//		$view->display();
-//	}
 	/**
 	 * Generic edit task
 	 *
@@ -82,6 +69,10 @@ class VirtuemartControllerRatings extends VmController {
 		parent::display();
 	}
 
+	/**
+	 * lits the reviews
+	 * @author Max Milbers
+	 */
 	public function listreviews(){
 
 		/* Create the view object */

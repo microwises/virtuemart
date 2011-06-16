@@ -32,6 +32,7 @@ if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
  * @author Max Milbers
  */
 class VirtuemartControllerCalc extends VmController {
+
 	/**
 	 * Method to display the view
 	 *
@@ -41,28 +42,6 @@ class VirtuemartControllerCalc extends VmController {
 		parent::__construct();
 
 	}
-
-	/**
-	 * Default view without task
-	 *
-	 * @author Max Milbers
-	 */
-//	public function Calc() {
-//
-//		$document = JFactory::getDocument();
-//		$viewType	= $document->getType();
-//		$view = $this->getView($this->_cname, $viewType);
-//
-//		// Pushing default model
-//		$model = $this->getModel();
-//		if (!JError::isError($model)) {
-//			$view->setModel($model, true);
-//		}
-//
-////		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
-//
-//		parent::display();
-//	}
 
 	/**
 	 * Handle the edit task

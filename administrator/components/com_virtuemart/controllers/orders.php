@@ -105,7 +105,7 @@ class VirtuemartControllerOrders extends VmController {
 
 	/**
 	 * NextOrder
-	 *
+	 * TODO rename, the name is ambigous notice by Max Milbers
 	 * @author Kohl Patrick
 	 */
 	public function next($dir = 'ASC'){
@@ -118,9 +118,11 @@ class VirtuemartControllerOrders extends VmController {
 			$msg ='';
 		}
 		$this->setRedirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$order_id ,$msg );
-	}	/**
+	}	
+	
+	/**
 	 * NextOrder
-	 *
+	 * TODO rename, the name is ambigous notice by Max Milbers
 	 * @author Kohl Patrick
 	 */
 	public function prev(){

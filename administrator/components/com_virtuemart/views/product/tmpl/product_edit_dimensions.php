@@ -64,14 +64,15 @@ defined('_JEXEC') or die('Restricted access');?>
         <input type="text" class="inputbox"  name="product_weight" size="15" maxlength="15" value="<?php echo $this->product->product_weight; ?>" />
       </td>
     </tr>
-    <tr class="row1">
+    
+<?php /* TODO to implement, has no effect yet   <tr class="row1">
       <td width="21%" valign="top" >
         <div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_WEIGHT_UOM') ?></div>
       </td>
-      <td width="79%" >
+     <td width="79%" >
         <input type="text" class="inputbox"  name="product_weight_uom" value="<?php echo $this->product->product_weight_uom; ?>" size="8" maxlength="32" />
       </td>
-    </tr>
+    </tr> */ ?>
     <!-- Changed Packaging - Begin -->
     <tr class="row0">
       <td width="21%" valign="top" >&nbsp;</td>

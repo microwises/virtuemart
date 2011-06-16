@@ -253,13 +253,13 @@ class VmTable extends JTable {
 
             $tblKey = $this->_tbl_key;
             if (is_object($data)){
-			$data->$tblKey = !empty($this->$tblKey)? $this->$tblKey:0;
+				$data->$tblKey = !empty($this->$tblKey)? $this->$tblKey:0;
             } else {
-                    $data[$this->_tbl_key] = !empty($this->$tblKey)?  $this->$tblKey:0;
+				$data[$tblKey] = !empty($this->$tblKey)?  $this->$tblKey:0;
             }
 
             if(!$ok){
-                    $this->setError(get_class( $this ).':: bindChecknStore made a mistake in '.$msg);
+				//$this->setError(get_class( $this ).':: bindChecknStore made a mistake in '.$msg);
 ////    		$this->setError(get_class( $this ).':: bindChecknStore db message '.$this->_db->getErrorMsg());
             }
 

@@ -79,50 +79,6 @@ class VirtuemartControllerUserfields extends VmController {
 		parent::edit();
 	}
 
-	// /**
-	 // * Move an item up in the grid.
-	 // */
-	// function orderup()
-	// {
-		// $model = $this->getModel('userfields');
-		// if (!$model->move(-1)) {
-			// $msg = JText::_($model->getError());
-		// } else {
-			// $msg = '';
-		// }
-		// $this->setRedirect('index.php?option=com_virtuemart&view=userfields', $msg);
-	// }
-
-	// /**
-	 // * Move an item down in the grid.
-	 // */
-	// function orderdown()
-	// {
-		// $model = $this->getModel('userfields');
-		// if (!$model->move(1)) {
-			// $msg = JText::_($model->getError());
-		// } else {
-			// $msg = '';
-		// }
-		// $this->setRedirect('index.php?option=com_virtuemart&view=userfields', $msg);
-	// }
-
-	// /**
-	 // * Save the given grid ordering.
-	 // */
-	// function saveorder()
-	// {
-		// $cid 	= JRequest::getVar( 'cid', array(), 'post', 'array' );
-		// $order 	= JRequest::getVar( 'order', array(), 'post', 'array' );
-		// JArrayHelper::toInteger($cid);
-		// JArrayHelper::toInteger($order);
-
-		// $model = $this->getModel('userfields');
-		// $model->saveorder($cid, $order);
-
-		// $msg = 'New ordering saved';
-		// $this->setRedirect('index.php?option=com_virtuemart&view=userfields', $msg);
-	// }
 }
 
 //No Closing tag

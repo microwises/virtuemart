@@ -95,20 +95,11 @@ class VirtuemartControllerMedia extends VmController {
 		$data['file_title'] = JRequest::getVar('file_title','','post','STRING',JREQUEST_ALLOWHTML);
 		$data['file_description'] = JRequest::getVar('file_description','','post','STRING',JREQUEST_ALLOWHTML);
 
-//		if(empty($table)){
-			if ($id = $fileModel->store($data)) {
-				$msg = JText::_('COM_VIRTUEMART_FILE_SAVED_SUCCESS');
-			} else {
-				$msg = $fileModel->getError();
-			}
-//		} else {
-//			if ($id = $fileModel->storeMedia($data,$table,$type)) {
-//			$msg = JText::_('COM_VIRTUEMART_FILE_SAVED_SUCCESS');
-//			} else {
-//				$msg = $fileModel->getError();
-//			}
-//		}
-
+		if ($id = $fileModel->store($data)) {
+			$msg = JText::_('COM_VIRTUEMART_FILE_SAVED_SUCCESS');
+		} else {
+			$msg = $fileModel->getError();
+		}
 
 		$cmd = JRequest::getCmd('task');
 		if($cmd == 'apply'){

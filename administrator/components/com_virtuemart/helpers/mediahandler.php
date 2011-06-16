@@ -434,7 +434,8 @@ class VmMediaHandler {
 	 * @param arraybyform $data
 	 */
 	function processAction($data){
-
+			
+		$data['published'] = 1;
 		if( $data['media_action'] == 'upload' ){
 
 			$this->virtuemart_media_id=0;
@@ -707,7 +708,17 @@ class VmMediaHandler {
 
 		$html .= ' <table class="adminform"> ';
 
-		if ($this->published) $checked =  "checked=\"checked\""; else $checked ='';
+		dump($this,'mediahandler'); 		
+		if ($this->published || $this->virtuemart_media_id === 0){
+			
+			//if($this->_id==0){
+			//	$media->media_published = 1;
+			//}
+			$checked =  "checked=\"checked\""; 
+		} else {
+			$checked ='';
+		}
+		
 		$html .= '<tr>
 	<td class="labelcell">
 		<label for="published">'. JText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>

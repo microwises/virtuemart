@@ -94,6 +94,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
      * Install sample data into the database
      *
      * @author RickG
+	 * @author Max Milbers
      */
     function userSync() {
 
@@ -129,6 +130,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
      * Install sample data into the database
      *
      * @author RickG
+	 * @author Max Milbers
      */
     function restoreSystemDefaults() {
 
@@ -155,6 +157,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
      * Remove all the Virtuemart tables from the database.
      *
      * @author RickG
+	 * @author Max Milbers
      */
     function deleteVmTables() {
 
@@ -175,7 +178,12 @@ class VirtuemartControllerUpdatesMigration extends VmController {
     	$this->setRedirect('index.php?option=com_installer',$msg);
     }
 
-
+	/**
+	 * Deletes all dynamical created data and leaves a "fresh" installation without sampeldata
+	 * OUTDATED
+	 * @author Max Milbers
+	 * 
+	 */
     function deleteVmData() {
 
     	$msg = JText::_('COM_VIRTUEMART_SYSTEM_VMDATA_DELETED');
@@ -269,7 +277,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 	 * This function resets the flag in the config that dangerous tools can't be executed anylonger
 	 * This is a security feature
 	 *
-	 * Enter description here ...
+	 * @author Max Milbers
 	 */
 	function setDangerousToolsOff(){
 
@@ -278,6 +286,11 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 	}
 
+	/**
+	 * Sends the message to the user that the tools are disabled.
+	 * 
+	 * @author Max Milbers
+	 */
     function _getMsgDangerousTools() {
             $uri = JFactory::getURI();
             $link = $uri->root().'administrator/index.php?option=com_virtuemart&view=config';

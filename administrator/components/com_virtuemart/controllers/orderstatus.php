@@ -75,42 +75,6 @@ class VirtuemartControllerOrderstatus extends VmController {
 		parent::edit();
 	}
 
-
-	// function orderup()
-	// {
-		// $model = $this->getModel('orderstatus');
-		// if (!$model->move(-1)) {
-			// $msg = JText::_($model->getError());
-		// } else {
-			// $msg = '';
-		// }
-		// $this->setRedirect('index.php?option=com_virtuemart&view=orderstatus', $msg);
-	// }
-
-	// function orderdown()
-	// {
-		// $model = $this->getModel('orderstatus');
-		// if (!$model->move(1)) {
-			// $msg = JText::_($model->getError());
-		// } else {
-			// $msg = '';
-		// }
-		// $this->setRedirect('index.php?option=com_virtuemart&view=orderstatus', $msg);
-	// }
-
-	// function saveorder()
-	// {
-		// $cid 	= JRequest::getVar( 'cid', array(), 'post', 'array' );
-		// $order 	= JRequest::getVar( 'order', array(), 'post', 'array' );
-		// JArrayHelper::toInteger($cid);
-		// JArrayHelper::toInteger($order);
-
-		// $model = $this->getModel('orderstatus');
-		// $model->saveorder($cid, $order);
-
-		// $msg = 'New ordering saved';
-		// $this->setRedirect('index.php?option=com_virtuemart&view=orderstatus', $msg);
-	// }
 }
 
 //No Closing tag
