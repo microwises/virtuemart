@@ -51,7 +51,7 @@ class VirtuemartViewPaymentMethod extends JView {
 		$viewName=ShopFunctions::SetViewTitle('vm_payment_48');
 		$this->assignRef('viewName',$viewName);
 
-		$layoutName = JRequest::getVar('layout', 'default');
+		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 
 		// Load the helper(s)

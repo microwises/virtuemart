@@ -384,6 +384,11 @@ class VmMediaHandler {
 		switch ($media['error']) {
 			case 0:
 				$path_folder = str_replace('/',DS,$urlfolder);
+				
+				//Sanitize name of media
+				jimport('joomla.filesystem.file');
+				$media['name'] = JFile::makeSafe( $media['name'] );
+				
 				move_uploaded_file( $media['tmp_name'], JPATH_ROOT.DS.$path_folder.$media['name']);
 				$this->file_mimetype = $media['type'];
 	      		$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_UPLOAD_OK',JPATH_ROOT.DS.$path_folder.$media['name']));

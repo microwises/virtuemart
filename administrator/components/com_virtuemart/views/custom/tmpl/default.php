@@ -30,7 +30,7 @@ jimport('joomla.filesystem.file');
 $option = JRequest::getWord('option');
 
 /* Load some variables */
-$keyword = JRequest::getVar('keyword', null);
+$keyword = JRequest::getWord('keyword', null);
 ?>
 <div id="header">
 	<div style="float: left;">
@@ -118,7 +118,7 @@ $pagination = $this->pagination;
 <!-- Hidden Fields -->
 <input type="hidden" name="task" value="" />
 <?php if (JRequest::getInt('virtuemart_product_id', false)) { ?>
-	<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id'); ?>" />
+	<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
 <?php } ?>
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="view" value="custom" />

@@ -32,7 +32,7 @@ class VirtuemartViewRatings extends JView {
 	function display($tpl = null) {
 
 		$mainframe = Jfactory::getApplication();
-		$option = JRequest::getVar('option');
+		$option = JRequest::getWord('option');
 
 		/* Load helpers */
 		$this->loadHelper('adminMenu');
@@ -48,11 +48,11 @@ class VirtuemartViewRatings extends JView {
 		$this->assignRef('viewName',$viewName);
 
 		/* Get the task */
-		$task = JRequest::getVar('task');
+		$task = JRequest::getWord('task');
 		switch ($task) {
 			case 'listreviews':
 				/* Get the data */
-				$virtuemart_product_id = JRequest::getInt('virtuemart_product_id');
+				$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
 				$reviewslist = $model->getReviews($virtuemart_product_id);
 
 				/* Get the pagination */

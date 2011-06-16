@@ -192,7 +192,7 @@ class VirtueMartCart  {
 		//Iterate through the prod_id's and perform an add to cart for each one
 		foreach ($virtuemart_product_ids as $p_key => $virtuemart_product_id) {
 
-			$product = $this->getProduct($virtuemart_product_id);
+			$product = $this->getProduct((int)$virtuemart_product_id);
 
 			/* Check if we have a product */
 			if ($product) {
@@ -250,7 +250,7 @@ class VirtueMartCart  {
 	*/
 	public function removeProductCart($prod_id=0) {
 		/* Check for cart IDs */
-		if (empty($prod_id)) $prod_id = JRequest::getVar('cart_virtuemart_product_id');
+		if (empty($prod_id)) $prod_id = JRequest::getInt('cart_virtuemart_product_id');
 //		$prod_id = JRequest::get();
 
 //		/* Check if the product ID is ok */
@@ -285,7 +285,7 @@ class VirtueMartCart  {
 	*/
 	public function updateProductCart($cart_virtuemart_product_id=0) {
 
-		if (empty($cart_virtuemart_product_id)) $cart_virtuemart_product_id = JRequest::getVar('cart_virtuemart_product_id');
+		if (empty($cart_virtuemart_product_id)) $cart_virtuemart_product_id = JRequest::getInt('cart_virtuemart_product_id');
 		if (empty($quantity)) $quantity = JRequest::getInt('quantity');
 
 //		foreach($cart_virtuemart_product_ids as $cart_virtuemart_product_id){
@@ -364,7 +364,7 @@ class VirtueMartCart  {
 	*/
 	public function getCategoryId() {
 		$db = JFactory::getDBO();
-		$virtuemart_product_id = JRequest::getInt('virtuemart_product_id');
+		$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
 		$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `virtuemart_product_id` = '.intval($virtuemart_product_id).' LIMIT 1';
 		$db->setQuery($q);
 		return $db->loadResult();
@@ -538,9 +538,10 @@ class VirtueMartCart  {
 
 		$this->_inCheckOut = true;
 //		$this->_dataValidated = true; //this is wrong, I am quite sure, the dataValidated is set at the end of the checkout process
-		$this->tosAccepted = JRequest::getVar('tosAccepted', $this->tosAccepted);
-		$this->customer_comment = JRequest::getVar('customer_comment', $this->customer_comment);
+		$this->tosAccepted = JRequest::getBool('tosAccepted', $this->tosAccepted);
+		$this->customer_comment = JRequest::getWord('customer_comment', $this->customer_comment);
 
+		dump($this->selected_shipto,'$this->selected_shipto');
 		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
 			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'models');
 			$userModel = JModel::getInstance('user', 'VirtueMartModel');

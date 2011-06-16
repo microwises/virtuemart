@@ -99,7 +99,7 @@ $this->productlist
 	if ($total = count($this->productlist) ) {
 		$i = 0;
 		$k = 0;
-		$keyword = JRequest::getVar('keyword');
+		$keyword = JRequest::getWord('keyword');
 		foreach ($this->productlist as $key => $product) {
 			$checked = JHTML::_('grid.id', $i , $product->virtuemart_product_id,null,'virtuemart_product_id');
 			$published = JHTML::_('grid.published', $product, $i );

@@ -615,6 +615,7 @@ class VirtueMartModelUser extends VmModel {
 				//Update xref Table
 				$virtuemart_vendor_id = $vendorModel->getId();
 				if($virtuemart_vendor_id!=$data['virtuemart_vendor_id']){
+					dump($virtuemart_vendor_id,'should not appear');
 					//update user table
 					$usertable = $this->getTable('vmusers');
 					$vendorsUserData =$usertable->load($this->_id);
@@ -644,7 +645,7 @@ class VirtueMartModelUser extends VmModel {
 
 		if(empty($data['address_type'])) return false;
 		
-		if($data['address_type']='ST'){
+		if($data['address_type']=='ST'){
 			// Check for fields with the the 'shipto_' prefix; that means a (new) shipto address.
 			$_shipto = array();
 			$_pattern = '/^shipto_/';
@@ -882,9 +883,9 @@ class VirtueMartModelUser extends VmModel {
 	  */
 	 function _getFilter()
 	 {
-	 	if (JRequest::getVar('search', false)) {
-	 		$_where = ' WHERE `name` LIKE ' .$this->_db->Quote('%'.JRequest::getVar('search').'%')
-	 		. ' OR `username` LIKE ' .$this->_db->Quote('%'.JRequest::getVar('search').'%');
+	 	if (JRequest::getWord('search', false)) {
+	 		$_where = ' WHERE `name` LIKE ' .$this->_db->Quote('%'.JRequest::getWord('search').'%')
+	 		. ' OR `username` LIKE ' .$this->_db->Quote('%'.JRequest::getWord('search').'%');
 	 		return ($_where);
 	 	}
 	 	return ('');

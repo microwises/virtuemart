@@ -46,7 +46,7 @@ class VirtuemartViewManufacturer extends JView {
 		$viewName=ShopFunctions::SetViewTitle('vm_manufacturer_48');
 		$this->assignRef('viewName',$viewName);
 
-		$layoutName = JRequest::getVar('layout', 'default');
+		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 
 			$manufacturer = $model->getManufacturer();

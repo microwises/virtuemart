@@ -44,7 +44,7 @@ class VirtuemartViewCountry extends JView {
 		$viewName=ShopFunctions::SetViewTitle('vm_countries_48');
 		$this->assignRef('viewName',$viewName);
 
-		$layoutName = JRequest::getVar('layout', 'default');
+		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 			$country = $model->getData();
 

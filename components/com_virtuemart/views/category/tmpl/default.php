@@ -148,7 +148,7 @@ $verticalseparator = " vertical-separator";
 		</div>
 		<div class="width30 floatright display-number">
 			<form  method="post" >
-				<input type="hidden" name="keyword" value="<?php echo JRequest::getVar('keyword') ?>" >
+				<input type="hidden" name="keyword" value="<?php echo JRequest::getWord('keyword') ?>" >
 				<?php echo $this->pagination->getListFooter(); ?>
 			</form>
 		</div>

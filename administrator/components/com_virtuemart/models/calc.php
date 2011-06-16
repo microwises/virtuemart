@@ -119,7 +119,7 @@ class VirtueMartModelCalc extends VmModel {
 		$this->_query = 'SELECT * FROM `#__virtuemart_calcs` ';
 		/* add filters */
 		if ($onlyPublished) $where[] = '`published` = 1';
-		if (JRequest::getVar('search', false)) $where[] = '`calc_name` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
+		if (JRequest::getWord('search', false)) $where[] = '`calc_name` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
 
 		if (count($where) > 0)$this->_query .= ' WHERE '.implode(' AND ', $where) ;
 		$this->_query .= $this->_getOrdering('calc_name');

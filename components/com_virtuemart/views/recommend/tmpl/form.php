@@ -83,9 +83,9 @@ if (empty ( $this->product )) {
 						</div>
 					</div>
 					
-					<input type="hidden" name="cid[]" value="<?php echo JRequest::getInt('virtuemart_product_id'); ?>" />
-					<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id'); ?>" />
-					<input type="hidden" name="option" value="<?php echo JRequest::getVar('option'); ?>" />
+					<input type="hidden" name="cid[]" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
+					<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
+					<input type="hidden" name="option" value="<?php echo JRequest::getWord('option'); ?>" />
 					<input type="hidden" name="virtuemart_category_id" value="<?php echo JRequest::getInt('virtuemart_category_id'); ?>" />
 					<input type="hidden" name="task" value="mailRecommend" />
 					<?php echo JHTML::_( 'form.token' ); ?>

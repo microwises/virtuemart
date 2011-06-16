@@ -14,7 +14,7 @@ class LiveUpdateConfig extends LiveUpdateAbstractConfig
 {
 	var $_extensionName			= 'com_virtuemart';
 	var $_extensionTitle		= 'Virtuemart 2';
-	var $_updateURL				= 'http://www.akeebabackup.com/index.php?option=com_ars&view=update&format=ini&id=9';
+	var $_updateURL				= 'http://www.virtuemart.net/index.php?option=com_ars&view=update&format=ini&id=9';
 	var $_requiresAuthorization	= false;
 	var $_versionStrategy		= 'different';
 }

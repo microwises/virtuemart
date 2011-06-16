@@ -134,7 +134,7 @@ class VmCustomHandler {
 
 		$customslist = VmCustomHandler::getCustomsList();
 		if (isset($this->virtuemart_custom_id)) $value = $this->virtuemart_custom_id ;
-		else $value = JRequest::getVar( 'custom_parent_id',0);
+		else $value = JRequest::getInt( 'custom_parent_id',0);
 		return  VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_PARENT',$customslist, 'custom_parent_id', $value);
 	}
 
@@ -152,7 +152,7 @@ class VmCustomHandler {
     	$q='SELECT virtuemart_custom_id as value ,custom_title as text FROM `#__virtuemart_customs` where custom_parent_id=0 
 			AND field_type <> "R" AND field_type <> "Z" ';
 		if ($publishedOnly) $q.='AND `published`=1';
-		if ($ID = JRequest::getVar( 'virtuemart_custom_id',false)) $q .=' and `virtuemart_custom_id`!='.$ID;
+		if ($ID = JRequest::getInt( 'virtuemart_custom_id',0)) $q .=' and `virtuemart_custom_id`!='.(int)$ID;
 		//if (isset($this->virtuemart_custom_id)) $q.=' and virtuemart_custom_id !='.$this->virtuemart_custom_id;
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 

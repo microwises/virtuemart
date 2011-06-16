@@ -40,7 +40,7 @@ class VirtuemartViewShopperGroup extends JView {
 
 		$model = $this->getModel();
 		
-		$layoutName = JRequest::getVar('layout', 'default');
+		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {                      
 			$shoppergroup = $model->getShopperGroup();
                         $viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','SHOPPERGROUP',$shoppergroup->shopper_group_name);

@@ -94,8 +94,8 @@ class VirtueMartModelCustom extends VmModel {
 
 		$this->_db = JFactory::getDBO();
 		$query='SELECT * FROM `#__virtuemart_customs` WHERE field_type <> "R" AND field_type <> "Z" ';
-		if ($custom_parent_id = JRequest::getVar('custom_parent_id') ) $query .= 'AND `custom_parent_id` ='.$custom_parent_id;
-		if ($keyword = JRequest::getVar('keyword') ) $query .= 'AND `custom_title` LIKE "%'.$keyword.'%"';
+		if ($custom_parent_id = JRequest::getInt('custom_parent_id') ) $query .= 'AND `custom_parent_id` ='.$custom_parent_id;
+		if ($keyword = JRequest::getWord('keyword') ) $query .= 'AND `custom_title` LIKE "%'.$keyword.'%"';
 		$this->_db->setQuery($query);
 		// set total for pagination
 		$this->_total = $this->_getListCount($query);

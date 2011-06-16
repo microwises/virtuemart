@@ -43,7 +43,7 @@ class VirtuemartViewManufacturercategories extends JView {
 		$viewName=ShopFunctions::SetViewTitle('vm_manufacturer_48', 'MANUFACTURER_CATEGORY');
 		$this->assignRef('viewName',$viewName);
 
-                $layoutName = JRequest::getVar('layout', 'default');
+                $layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 
 			ShopFunctions::addStandardEditViewCommands();

@@ -39,7 +39,7 @@ if(VmConfig::get('shop_is_offline',0)){
 	$config->cssSite();
 
 	/* Require specific controller if requested */
-	if($_controller = JRequest::getVar('controller', JRequest::getVar('view', 'virtuemart'))) {
+	if($_controller = JRequest::getWord('controller', JRequest::getWord('view', 'virtuemart'))) {
 		if (file_exists(JPATH_VM_SITE.DS.'controllers'.DS.$_controller.'.php')) {
 			// Only if the file exists, since it might be a Joomla view we're requesting...
 			require (JPATH_VM_SITE.DS.'controllers'.DS.$_controller.'.php');
@@ -59,7 +59,7 @@ $_class = 'VirtuemartController'.ucfirst($_controller);
 $controller = new $_class();
 
 /* Perform the Request task */
-$controller->execute(JRequest::getVar('task', JRequest::getVar('view', $_controller)));
+$controller->execute(JRequest::getWord('task', JRequest::getWord('view', $_controller)));
 //Console::logSpeed('virtuemart start');
 
 //shopFunctionsF::displayDumps();

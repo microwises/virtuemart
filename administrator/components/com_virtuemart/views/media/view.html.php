@@ -48,7 +48,7 @@ class VirtuemartViewMedia extends JView {
 		$model = $this->getModel('media');
 		$this->assignRef('perms', Permissions::getInstance());
 
-		$layoutName = JRequest::getVar('layout', 'default');
+		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 
 			$media = $model->getFile();

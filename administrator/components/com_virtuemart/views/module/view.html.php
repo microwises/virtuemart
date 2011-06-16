@@ -44,7 +44,7 @@ class VirtuemartViewModule extends JView {
 		$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48');
 		$this->assignRef('viewName',$viewName);
 
-		$layoutName = JRequest::getVar('layout', 'default');
+		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 
 			$this->assignRef('shoppergroup',	$module);

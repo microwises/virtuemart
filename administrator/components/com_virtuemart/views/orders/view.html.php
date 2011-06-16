@@ -49,7 +49,7 @@ class VirtuemartViewOrders extends JView {
 		$viewName=ShopFunctions::SetViewTitle('vm_orders_48', 'ORDER');
 		$this->assignRef('viewName',$viewName);
 
-		$curTask = JRequest::getVar('task');
+		$curTask = JRequest::getWord('task');
 		if ($curTask == 'edit') {
 
 			// Load addl models

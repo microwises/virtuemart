@@ -46,7 +46,7 @@ class VirtuemartViewUser extends JView {
 
 		$_currentUser = JFactory::getUser();
 
-		$task = JRequest::getVar('task', 'edit');
+		$task = JRequest::getWord('task', 'edit');
 		if($task == 'editshop'){
 			$model->setCurrent();
 			$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','STORE'  );
@@ -56,7 +56,7 @@ class VirtuemartViewUser extends JView {
 		
 		$this->assignRef('viewName',$viewName);
 
-		$layoutName = JRequest::getVar('layout', 'default');
+		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 			$editor = JFactory::getEditor();
 

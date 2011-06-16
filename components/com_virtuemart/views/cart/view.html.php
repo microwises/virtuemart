@@ -43,9 +43,9 @@ class VirtueMartViewCart extends JView {
 		$document = JFactory::getDocument();
 
 		$layoutName = $this->getLayout();
-		if(!$layoutName) $layoutName = JRequest::getVar('layout', 'default');
+		if(!$layoutName) $layoutName = JRequest::getWord('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);
-		$format = JRequest::getVar('format');
+		$format = JRequest::getWord('format');
 
 		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 		$this->_cart = VirtueMartCart::getCart(false);

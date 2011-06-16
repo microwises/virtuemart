@@ -108,9 +108,9 @@ class VirtueMartModelRatings extends VmModel {
 		if ($cids) $ratings_data->load($cids[0]);
 
 		/* Add some variables for a new rating */
-		if (JRequest::getVar('task') == 'add') {
+		if (JRequest::getWord('task') == 'add') {
 			/* Product ID */
-			$ratings_data->virtuemart_product_id = JRequest::getInt('virtuemart_product_id');
+			$ratings_data->virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
 
 			/* User ID */
 			$user = JFactory::getUser();

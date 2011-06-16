@@ -49,7 +49,7 @@ class VirtuemartViewCurrency extends JView {
 		$this->assignRef('dateformat',	$dateformat);
 
 
-		$layoutName = JRequest::getVar('layout', 'default');
+		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 			$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
 			JArrayHelper::toInteger($cid);

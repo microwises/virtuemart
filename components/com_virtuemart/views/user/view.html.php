@@ -64,9 +64,9 @@ class VirtuemartViewUser extends JView {
 
 		$layoutName = $this->getLayout();
 		if(empty($layoutName)){
-			$layoutName = JRequest::getVar('layout','default');
+			$layoutName = JRequest::getWord('layout','default');
 		}
-//		$layoutName = JRequest::getVar('layout', $this->getLayout());
+//		$layoutName = JRequest::getWord('layout', $this->getLayout());
 
 		$this->_model = $this->getModel('user', 'VirtuemartModel');
 //		$this->_model->setCurrent(); //without this, the administrator can edit users in the FE, permission is handled in the usermodel, but maybe unsecure?
@@ -148,7 +148,7 @@ class VirtuemartViewUser extends JView {
 	 */
 	function setUserFieldsForView($layoutName){
 
-		$type = JRequest::getVar('addrtype', 'BT');
+		$type = JRequest::getWord('addrtype', 'BT');
 		$this->assignRef('address_type', $type);
 		
 		$userFields = $this->_userFieldsModel->getUserFieldsFor($layoutName,$type,$this->userDetails->JUser->id);
@@ -163,11 +163,11 @@ class VirtuemartViewUser extends JView {
 		if(!empty($this->_cuid)){
 			if($type=='BT'){
 				self::getUserData($type);
-				$virtuemart_userinfo_id = JRequest::getVar('virtuemart_userinfo_id', 0);
+				$virtuemart_userinfo_id = JRequest::getInt('virtuemart_userinfo_id', 0);
 				$userAddressData = $this->_userDetailsList;
 			} else {
 				$preFix='shipto_';
-				$userInfoID = JRequest::getVar('virtuemart_userinfo_id', 0);
+				$userInfoID = JRequest::getInt('virtuemart_userinfo_id', 0);
 				if(!empty($userInfoID)) {
 					$userAddressData = $this->_userDetails->userInfo[$userInfoID];
 				} else {
@@ -286,8 +286,7 @@ class VirtuemartViewUser extends JView {
 	function lshipto(){
 
 		// The ShipTo address if selected
-		$_shipto_id = JRequest::getVar('virtuemart_userinfo_id', 0);
-//		$_shipto_id = JRequest::getVar('shipto', -1);
+		$_shipto_id = JRequest::getInt('virtuemart_userinfo_id', 0);
 
 		$_shiptoFields = $this->_userFieldsModel->getUserFields(
 			 'shipping'

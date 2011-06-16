@@ -893,8 +893,8 @@ class VirtueMartModelUserfields extends VmModel {
 	function _getFilter()
 	{
 		$db = JFactory::getDBO();
-		if (JRequest::getVar('search', false)) {
-			return (' WHERE `name` LIKE ' .$db->Quote('%'.JRequest::getVar('search').'%'));
+		if (JRequest::getWord('search', false)) {
+			return (' WHERE `name` LIKE ' .$db->Quote('%'.JRequest::getWord('search').'%'));
 		}
 		return ('');
 	}

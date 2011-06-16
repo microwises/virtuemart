@@ -113,7 +113,7 @@ class VirtueMartModelMedia extends VmModel {
     	$vendorId = 1; //TODO set to logged user or requested vendorId, not easy later
     	$query = '';
     	$whereItems = array();
-    	$virtuemart_product_id = JRequest::getVar('virtuemart_product_id',0);
+    	$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
 
     	if(!empty($virtuemart_product_id)){
     		$query = 'SELECT `#__virtuemart_medias`.`virtuemart_media_id` as virtuemart_media_id FROM `#__virtuemart_product_medias` 
@@ -146,7 +146,7 @@ class VirtueMartModelMedia extends VmModel {
 			//$oderby = '`#__virtuemart_medias`.`modified_on`';
     	}
 		
-		if (JRequest::getVar('search', false)) $where[] = '`file_title` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
+		if (JRequest::getWord('search', false)) $where[] = '`file_title` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
 
 
 		if (!empty($where)) $whereItems = array_merge($whereItems,$where);

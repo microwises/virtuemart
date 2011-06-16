@@ -34,7 +34,7 @@ class VirtuemartViewReport extends JView {
 	function display($tpl = null){
 
 		$config   = JFactory::getConfig();
-		$task = JRequest::getVar('task');
+		$task = JRequest::getWord('task');
 
 		$period = JRequest::getVar('period', '');
 		$from_period  = JRequest::getVar('from_period', '');

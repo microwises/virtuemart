@@ -41,7 +41,7 @@ class VirtuemartViewCategory extends JView {
 //		$this->loadHelper('image');
 
         $model = $this->getModel();
-        $layoutName = JRequest::getVar('layout', 'default');
+        $layoutName = JRequest::getWord('layout', 'default');
 
         if ($layoutName == 'edit') {
                 $viewName = ShopFunctions::SetViewTitle('vm_categories_48','COM_VIRTUEMART_CATEGORY');

@@ -42,7 +42,7 @@ class VmModel extends JModel {
 		// Get the pagination request variables
 		$mainframe = JFactory::getApplication() ;
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getVar('option').JRequest::getVar('view').'.limitstart', 'limitstart', 0, 'int');
+		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getWord('option').JRequest::getWord('view').'.limitstart', 'limitstart', 0, 'int');
 
 		// Set the state pagination variables
 		$this->setState('limit', $limit);
@@ -218,7 +218,7 @@ class VmModel extends JModel {
 		$ids = JRequest::getVar( $this->_cidName, JRequest::getVar('cid',array(0)), 'post', 'array' );
 
 		foreach($ids as $id){
-			$table->load( $id );
+			$table->load( (int)$id );
 			if (!$table->toggle($field, $val)) {
 //			if (!$table->store()) {
 				JError::raiseError(500, get_class( $this ).'::toggle '.$table->getError() );
@@ -301,7 +301,7 @@ class VmModel extends JModel {
 	function _getOrdering($defaut='ordering',$order_dir = 'asc') {
 		if ($defaut == '') return '';
 		$option = JRequest::getCmd( 'option');
-		$view = JRequest::getVar('view');
+		$view = JRequest::getWord('view');
 		$mainframe = JFactory::getApplication() ;
 
 		$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order_Dir', 'filter_order_Dir', $order_dir, 'word' );

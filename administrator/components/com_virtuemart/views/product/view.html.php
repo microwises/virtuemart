@@ -33,10 +33,10 @@ class VirtuemartViewProduct extends JView {
 	function display($tpl = null) {
                 $this->loadHelper('shopFunctions');
 		$mainframe = Jfactory::getApplication();
-		$option = JRequest::getVar('option');
+		$option = JRequest::getWord('option');
 
 		/* Get the task */
-		$task = JRequest::getVar('task');
+		$task = JRequest::getWord('task');
 
                
                 $this->assignRef('viewName', $viewName);
@@ -59,7 +59,7 @@ class VirtuemartViewProduct extends JView {
 				/* Load the product */
 				$product_model = $this->getModel('product');
 
-				$virtuemart_product_id = JRequest::getVar('virtuemart_product_id', array());
+				$virtuemart_product_id = JRequest::getInt('virtuemart_product_id', array());
 				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0) $virtuemart_product_id = $virtuemart_product_id[0];
 				$product = $product_model->getProductSingle($virtuemart_product_id,false,false,false);
 				$product_child = $product_model->getProductChilds($virtuemart_product_id);

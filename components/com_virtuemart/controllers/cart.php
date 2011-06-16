@@ -71,7 +71,7 @@ class VirtueMartControllerCart extends JController {
 		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );
 
 		/* Set the layout */
-		$layoutName = JRequest::getVar('layout', 'default');
+		$layoutName = JRequest::getWord('layout', 'default');
 		$view->setLayout($layoutName);
 
 		/* Display it all */
@@ -174,7 +174,7 @@ class VirtueMartControllerCart extends JController {
 		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );
 
 		/* Set the layout */
-		$layoutName = JRequest::getVar('layout', 'default');
+		$layoutName = JRequest::getWord('layout', 'default');
 		$view->setLayout($layoutName);
 
 		/* Display it all */
@@ -206,7 +206,7 @@ class VirtueMartControllerCart extends JController {
 	public function setcoupon(){
 		$mainframe = JFactory::getApplication();
 		/* Get the coupon_code of the cart */
-		$coupon_code= JRequest::getVar('coupon_code', '');
+		$coupon_code= JRequest::getInt('coupon_code', '');
 		if($coupon_code){
 			//Now set the shipping rate into the cart
 			$cart = VirtueMartCart::getCart();
@@ -255,7 +255,7 @@ class VirtueMartControllerCart extends JController {
 	public function setshipping(){
 
 		/* Get the shipper ID from the cart */
-		$shipper_id = JRequest::getVar('shipper_id', '0');
+		$shipper_id = JRequest::getInt('shipper_id', '0');
 		if($shipper_id){
 			//Now set the shipper ID into the cart
 			$cart = VirtueMartCart::getCart();
@@ -303,7 +303,7 @@ class VirtueMartControllerCart extends JController {
 			if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			//Some Paymentmethods needs extra Information like
-			$virtuemart_paymentmethod_id= JRequest::getVar('virtuemart_paymentmethod_id', '0');
+			$virtuemart_paymentmethod_id= JRequest::getInt('virtuemart_paymentmethod_id', '0');
 			$cart->setPaymentMethod( $virtuemart_paymentmethod_id );
 
 			//Add a hook here for other payment methods, checking the data of the choosed plugin

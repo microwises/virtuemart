@@ -42,7 +42,7 @@ class VirtueMartControllerVirtuemart extends JController
 
 	function Virtuemart() {
 
-		$view = $this->getView(JRequest::getVar('view', 'virtuemart'), 'html');
+		$view = $this->getView(JRequest::getWord('view', 'virtuemart'), 'html');
 
 		/* Load the backend models */
 		/* Push a model into the view */
@@ -57,7 +57,7 @@ class VirtueMartControllerVirtuemart extends JController
 		$view->setModel( $this->getModel( 'product', 'VirtuemartModel' ));
 
 		/* Set the layout */
-		$view->setLayout(JRequest::getVar('layout','default'));
+		$view->setLayout(JRequest::getWord('layout','default'));
 
 
 		/* Display it all */

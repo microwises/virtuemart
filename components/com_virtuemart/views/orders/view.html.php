@@ -35,7 +35,7 @@ class VirtuemartViewOrders extends JView {
 	{
 //		$mainframe = JFactory::getApplication();
 //		$pathway = $mainframe->getPathway();
-		$layoutName = JRequest::getVar('layout', $this->getLayout());
+		$layoutName = JRequest::getWord('layout', $this->getLayout());
 
 		$_currentUser = JFactory::getUser();
 		$orderModel = $this->getModel('orders');
@@ -54,7 +54,7 @@ class VirtuemartViewOrders extends JView {
 					}
 				}
 			} 
-			if (JRequest::getVar('order_pass',0)){
+			if (JRequest::getWord('order_pass',0)){
 				$oderId = $orderModel->getOrderIdByOrderPass();
 				if(empty($oderId)){
 					echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');

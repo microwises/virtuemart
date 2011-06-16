@@ -182,10 +182,10 @@ class shopFunctionsF {
 
 			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 			if( !$link ) {
-				//Todo this is old stuff and must be adjusted
-				$query_string = str_replace( 'only_page=1', 'only_page=0', JRequest::getVar('QUERY_STRING'));
+				//Todo this is old stuff and must be adjusted and looks dangerous
+/*				$query_string = str_replace( 'only_page=1', 'only_page=0', JRequest::getVar('QUERY_STRING'));
 				$link = (VmConfig::isJ15()) ? 'index2.php' : 'index.php';
-				$link .= '?tmpl=component&amp;'.$query_string.'&amp;pop=1';
+				$link .= '?tmpl=component&amp;'.$query_string.'&amp;pop=1';*/
 			}
 			// checks template image directory for image, if non found default are loaded
 			if ( $use_icon ) {
@@ -482,7 +482,7 @@ class shopFunctionsF {
 		shopFunctionsF::setTemplate($template);
 
 		//Lets get here the layout set in the shopconfig, if there is nothing set, get the joomla standard
-		if(JRequest::getVar('view')=='virtuemart'){
+		if(JRequest::getWord('view')=='virtuemart'){
 			$layout = VmConfig::get('vmlayout','default');
 			$view->setLayout(strtolower($layout));
 		} else {

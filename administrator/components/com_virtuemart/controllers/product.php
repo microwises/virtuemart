@@ -129,7 +129,7 @@ class VirtuemartControllerProduct extends VmController {
 		$model = $this->getModel('product');
 		
 		$cids = JRequest::getVar('cid');
-		if (!$cids) $cids = JRequest::getVar('virtuemart_product_id');
+		if (!$cids) $cids = JRequest::getInt('virtuemart_product_id',0);
 		if ($id=$model->createChild($cids[0])){
 			$msg = JText::_('COM_VIRTUEMART_PRODUCT_CHILD_CREATED_SUCCESSFULLY');
 			$redirect = 'index.php?option=com_virtuemart&view=product&task=edit&product_parent_id='.$cids[0].'&virtuemart_product_id='.$id;
@@ -155,7 +155,7 @@ class VirtuemartControllerProduct extends VmController {
 
 		$model = $this->getModel('product');
 		$msgtype = '';
-		$cids = JRequest::getVar('virtuemart_product_id');
+		$cids = JRequest::getInt('virtuemart_product_id',0);
 		if ($model->createClone($cids[0])) $msg = JText::_('COM_VIRTUEMART_PRODUCT_CLONED_SUCCESSFULLY');
 		else {
 			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_CLONED_SUCCESSFULLY');

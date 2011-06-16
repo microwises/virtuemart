@@ -44,7 +44,7 @@ class VirtuemartViewCreditcard extends JView {
 		$viewName=ShopFunctions::SetViewTitle('vm_credit_48');
 		$this->assignRef('viewName',$viewName);
  
-		$layoutName = JRequest::getVar('layout', 'default');
+		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 			$this->loadHelper('shopFunctions');
 			$vendorList= ShopFunctions::renderVendorList($creditcard->virtuemart_vendor_id);

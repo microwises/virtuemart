@@ -59,7 +59,7 @@ $option = JRequest::getWord('option');
 	if (count($this->ratingslist) > 0) {
 		$i = 0;
 		$k = 0;
-		$keyword = JRequest::getVar('keyword');
+		$keyword = JRequest::getWord('keyword');
 		foreach ($this->ratingslist as $key => $review) {
 			$checked = JHTML::_('grid.id', $i , $review->virtuemart_rating_id);
 			$published = JHTML::_('grid.published', $review, $i );

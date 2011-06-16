@@ -64,7 +64,7 @@ class VirtueMartViewAskquestion extends JView {
 //		$product = $this->get('product');
 		$product_model = $this->getModel('product');
 
-		$virtuemart_product_idArray = JRequest::getVar('virtuemart_product_id');
+		$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id',0);
 		if(is_array($virtuemart_product_idArray)){
 			$virtuemart_product_id=$virtuemart_product_idArray[0];
 		} else {

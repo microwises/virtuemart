@@ -43,7 +43,7 @@ class VirtuemartViewCustom extends JView {
                 
 		$this->assignRef('viewName',$viewName);
 
-		$layoutName = JRequest::getVar('layout', 'default');
+		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 
 			$this->loadHelper('customhandler');

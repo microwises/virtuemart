@@ -53,7 +53,7 @@ AdminMenuHelper::startAdminArea();
 	if (count($this->inventorylist) > 0) {
 		$i = 0;
 		$k = 0;
-		$keyword = JRequest::getVar('keyword');
+		$keyword = JRequest::getWord('keyword');
 		foreach ($this->inventorylist as $key => $product) {
 			$checked = JHTML::_('grid.id', $i , $product->virtuemart_product_id);
 			$published = JHTML::_('grid.published', $product, $i );

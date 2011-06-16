@@ -91,7 +91,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 		$data = JRequest::get('get');
 		JRequest::setVar($data['token'],'1','post');
-		JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getVar('task') );
+		JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getWord('task') );
 
 		$msg = $model->installSampleData();
 
@@ -109,7 +109,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
     	$data = JRequest::get('get');
 		JRequest::setVar($data['token'],'1','post');
-		JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getVar('task') );
+		JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getWord('task') );
 
 		$model = $this->getModel('updatesMigration');
 		$msg = $model->integrateJoomlaUsers();
@@ -126,7 +126,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 		$data = JRequest::get('get');
 		JRequest::setVar($data['token'],'1','post');
-		JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getVar('task') );
+		JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getWord('task') );
 
 		$model = $this->getModel('updatesMigration');
 		$msg = $model->setStoreOwner();
@@ -147,7 +147,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
  			$model = $this->getModel('updatesMigration');
  			$data = JRequest::get('get');
 			JRequest::setVar($data['token'],'1','post');
-			JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getVar('task') );
+			JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getWord('task') );
 
 			$model->restoreSystemDefaults();
 
@@ -175,7 +175,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
     		$model = $this->getModel('updatesMigration');
     		$data = JRequest::get('get');
 			JRequest::setVar($data['token'],'1','post');
-			JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getVar('task') );
+			JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getWord('task') );
 
 			if (!$model->removeAllVMTables()) {
 				$this->setDangerousToolsOff();
@@ -200,7 +200,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 			$model = $this->getModel('updatesMigration');
 			$data = JRequest::get('get');
 			JRequest::setVar($data['token'],'1','post');
-			JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getVar('task') );
+			JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getWord('task') );
 
 			if (!$model->removeAllVMData()) {
 				$this->setDangerousToolsOff();
@@ -221,7 +221,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
     	if(VmConfig::get('dangeroustools',false)){
     		$data = JRequest::get('get');
 			JRequest::setVar($data['token'],'1','post');
-			JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getVar('task') );
+			JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getWord('task') );
 
  			$this -> installer -> populateVmDatabase("delete_essential.sql");
 			$this -> installer -> populateVmDatabase("delete_data.sql");
@@ -254,7 +254,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 			$data = JRequest::get('get');
 			JRequest::setVar($data['token'],'1','post');
-			JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getVar('task') );
+			JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getWord('task') );
 
 			$model = $this->getModel('updatesMigration');
 

@@ -147,7 +147,7 @@ class VirtueMartControllerProductdetails extends JController {
 		if (JRequest::getCmd('task') == 'recommend' ) {
 			$user = JFactory::getUser();
 			if (empty($user->id)) {
-				$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.JRequest::getInt('virtuemart_product_id') ),JText::_('YOU MUST LOGIN FIRST'));
+				$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.JRequest::getInt('virtuemart_product_id',0) ),JText::_('YOU MUST LOGIN FIRST'));
 				return ;
 			}
 			$view = $this->getView('recommend', 'html');
@@ -224,7 +224,7 @@ class VirtueMartControllerProductdetails extends JController {
 		$post = JRequest::get('request');
 
 //		echo '<pre>'.print_r($post,1).'</pre>';
-		$virtuemart_product_idArray = JRequest::getVar('virtuemart_product_id',0);
+		$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id',0);
 		$virtuemart_product_id = $virtuemart_product_idArray[0];
 
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );

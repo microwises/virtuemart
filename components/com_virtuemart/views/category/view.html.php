@@ -59,7 +59,7 @@ class VirtuemartViewCategory extends JView {
                 $vendorId = 1;
 
                 $category = $categoryModel->getCategory($categoryId);
-		$search = JRequest::getVar('search') ;
+		$search = JRequest::getWord('search') ;
 		if(empty($category->virtuemart_vendor_id) && $search == null ) {
 
 	    	$mainframe -> enqueueMessage(JText::_('COM_VIRTUEMART_CATEGORY_NOT_FOUND'));
@@ -112,7 +112,7 @@ class VirtuemartViewCategory extends JView {
 	    /* Set the titles */
 		$document->setTitle($category->category_name);
 		/* set keyword */
-		if ($keyword = JRequest::getVar('keyword', '')) {
+		if ($keyword = JRequest::getWord('keyword', '')) {
 			$pathway->addItem($keyword);
 			$document->setTitle($category->category_name.' '.$keyword);
 			$this->assignRef('keyword', $keyword);

@@ -41,7 +41,7 @@ class VirtuemartViewUserfields extends JView {
 		$this->loadHelper('adminMenu');
                 $this->loadHelper('shopFunctions');
                 
-		$layoutName = JRequest::getVar('layout', 'default');
+		$layoutName = JRequest::getWord('layout', 'default');
 		$model = $this->getModel();
 
 		// The list of fields which can't be toggled

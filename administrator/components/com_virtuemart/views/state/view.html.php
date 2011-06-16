@@ -62,7 +62,7 @@ class VirtuemartViewState extends JView {
 		$this->assignRef('country_name', $country->getData()->country_name);
 
 
-		$layoutName = JRequest::getVar('layout', 'default');
+		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 
 

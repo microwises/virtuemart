@@ -389,7 +389,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$filter_order_Dir = JRequest::getVar('order', 'ASC');
 
-		$search = JRequest::getVar('search', false );
+		$search = JRequest::getWord('search', false );
 		$joinCategory = false ;
 		$joinMf = false ;
 		$joinPrice = false ;
@@ -397,7 +397,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		/* search fields filters set */
 		if ( $search == 'true') {
-			$keyword = trim( str_replace(' ', '%', JRequest::getVar('keyword', '') ) );
+			$keyword = trim( str_replace(' ', '%', JRequest::getWord('keyword', '') ) );
 			$searchFields = VmConfig::get('browse_search_fields');
 			foreach ($searchFields as $searchField) {
 				if (($searchField == 'category_name') || ($searchField == 'category_description')) $joinCategory = true ;
@@ -1220,8 +1220,8 @@ class VirtueMartModelProduct extends VmModel {
 
 	$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0 );
 	$fieldLink = '&virtuemart_category_id='.$virtuemart_category_id;
-	$search = JRequest::getVar('search', '' );
-	if ($search != '' ) $fieldLink .= '&search=true&keyword='.JRequest::getVar('keyword', '' );
+	$search = JRequest::getWord('search', '' );
+	if ($search != '' ) $fieldLink .= '&search=true&keyword='.JRequest::getWord('keyword', '' );
 
 
 	/* Collect the product IDS for manufacturer list */

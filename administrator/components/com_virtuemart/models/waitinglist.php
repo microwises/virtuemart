@@ -37,7 +37,7 @@ class VirtueMartModelWaitingList extends JModel {
 		$db = JFactory::getDBO();
 		$q = 'SELECT name, username, virtuemart_user_id, notify_email, notified, notify_date FROM `#__virtuemart_waitingusers`
 				LEFT JOIN `#__users` ON `virtuemart_user_id` = `id`
-				WHERE `virtuemart_product_id`=' . JRequest::getInt('virtuemart_product_id');
+				WHERE `virtuemart_product_id`=' . JRequest::getInt('virtuemart_product_id',0);
 		$db->setQuery($q);
 		return $db->loadObjectList();
 	}
