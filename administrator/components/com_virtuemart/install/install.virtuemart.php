@@ -46,7 +46,7 @@ function com_install(){
 		$model->execSQLFile($filename);
 
 	}
-
+	JTable::addIncludePath(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'tables');
 	$model->integrateJoomlaUsers();
 	$id = $model->determineStoreOwner();
 	$model->setStoreOwner($id);
@@ -60,7 +60,9 @@ function com_install(){
 
 	include(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install.virtuemart.html.php');
 
-	$model = $this->getModel('config');
+	//$model = $this->getModel('config');
+	JModel::addIncludePath(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'models');
+	$model = JModel::getInstance('config', 'VirtueMartModel');
 	$model->setDangerousToolsOff();
 	
 	return $installOk;
