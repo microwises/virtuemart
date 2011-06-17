@@ -237,7 +237,13 @@ class VirtueMartModelMedia extends VmModel {
 		$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
 		$virtuemart_media_ids = array_diff($virtuemart_media_ids,array('0',''));
 		$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
+		
 
+		//Important! sanitize array to int	
+		jimport( 'joomla.utilities.arrayhelper' );
+		JArrayHelper::toInteger($data['virtuemart_media_id']);
+
+		
 		$table = $this->getTable($type.'_medias');
 		// Bind the form fields to the country table
 		dump($data,'storeMedia media stored, store table');

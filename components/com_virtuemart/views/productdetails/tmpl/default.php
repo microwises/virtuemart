@@ -227,7 +227,7 @@ if (empty ( $this->product )) {
 					$text = $this->product->mf_name;
 
 					/* Avoid JavaScript on PDF Output */
-					if (strtolower(JRequest::getVar('output')) == "pdf"){
+					if (strtolower(JRequest::getWord('output')) == "pdf"){
 						echo JHTML::_('link', $link, $text);
 					} else { ?>
 						<span class="bold"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') ?></span><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a>

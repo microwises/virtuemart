@@ -368,10 +368,11 @@ class VirtueMartModelUser extends VmModel {
 			$email = $user->get('email');
 			if(!empty($email)){
 				$data['email'] = $email;
-			} else {
-				$data['email'] = JRequest::getVar('email', '', 'post', 'email');
-			}
+			} 
+		} else {
+			$data['email'] =  JRequest::getString('email', '', 'post', 'email');
 		}
+		//$data['email'] = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$data['email']);
 
 		//This is important, when a user changes his email address from the cart,
 		//that means using view user layout edit_address (which is called from the cart)
@@ -381,10 +382,11 @@ class VirtueMartModelUser extends VmModel {
 			$name = $user->get('name');
 			if(!empty($name)){
 				$data['name'] = $name;
-			} else {
-				$data['name'] = JRequest::getVar('name', '', 'post', 'name');
-			}
+			} 
+		} else {
+				$data['name'] = JRequest::getString('name', '', 'post', 'name');
 		}
+		//$data['name'] = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$data['name']);
 
 		if(empty ($data['username'])){
 			$username = $user->get('username');
@@ -396,23 +398,12 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		if(empty ($data['password'])){
-			//This is interesting, the passwords dont need this construction
-			//			$password = $user->get('password');
-			//			if(!empty($password)){
-			//				$data['password'] = $password;
-			//			} else {
 			$data['password'] = JRequest::getVar('password', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
-			//			}
+
 		}
 
 		if(empty ($data['password2'])){
-			//This is interesting, the passwords dont need this construction
-			//			$password2 = $user->get('password2');
-			//			if(!empty($password2)){
-			//				$data['password2'] = $password2;
-			//			} else {
 			$data['password2'] = JRequest::getVar('password2', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
-			//			}
 		}
 
 		// Bind Joomla userdata
@@ -471,9 +462,6 @@ class VirtueMartModelUser extends VmModel {
 
 		// Save the JUser object
 		if (!$user->save()) {
-			//This?
-			$this->setError('_user save '.$user->getError());
-			//or this?
 			JError::raiseWarning('', JText::_( $user->getError()));
 			return false;
 		}
@@ -558,9 +546,6 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
-
-		//update user table
-		//$vmusersData = array('virtuemart_user_id'=>$data['virtuemart_user_id'],'user_is_vendor'=>$data['user_is_vendor'],'virtuemart_vendor_id'=>$data['virtuemart_vendor_id'],'customer_number'=>$data['customer_number'],'perms'=>$data['perms']);
 		$usertable = $this->getTable('vmusers');
 		
 		$vmusersData = $usertable -> bindChecknStore($data);
@@ -615,7 +600,10 @@ class VirtueMartModelUser extends VmModel {
 				//Update xref Table
 				$virtuemart_vendor_id = $vendorModel->getId();
 				if($virtuemart_vendor_id!=$data['virtuemart_vendor_id']){
-					dump($virtuemart_vendor_id,'should not appear');
+					
+					$app = JFactory::getApplication();
+					$app ->enqueueMessage('Developer notice, tried to update vendor xref should not appear in singlestore');
+
 					//update user table
 					$usertable = $this->getTable('vmusers');
 					$vendorsUserData =$usertable->load($this->_id);

@@ -70,6 +70,7 @@ class VirtueMartCart  {
 	*/
 	public static function getCart($deleteValidation=true) {
 
+		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
 		$session = JFactory::getSession();
 		$cartTemp = $session->get('vmcart', 0, 'vm');
 		if(!empty($cartTemp) ){
