@@ -44,29 +44,6 @@ class VirtueMartModelWorldzones extends VmModel {
 		$this->setMainTable('worldzones');
 	}
 
-//    /**
-//     * Constructor for the shpping zone model.
-//     *
-//     * The zone id is read and detmimined if it is an array of ids or just one single id.
-//     *
-//     * @author RickG
-//     */
-//    function __construct()
-//    {
-//        parent::__construct();
-//
-//        $cid = JRequest::getVar('virtuemart_worldzone_id', false, 'DEFAULT', 'array');
-//        if ($cid) {
-//            $id = $cid[0];
-//        }
-//        else {
-//            $id = JRequest::getInt('virtuemart_worldzone_id', 1);
-//        }
-//
-//        $this->setId($id);
-//    }
-
-
     /**
      * Retrieve the detail record for the current $id if the data has not already been loaded.
      *

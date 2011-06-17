@@ -76,8 +76,10 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$user = JFactory::getUser();
 		if (empty($user->id)) {
-			$fromMail = JRequest::getVar('email');
-			$fromName = JRequest::getVar('name','');
+			$fromMail = JRequest::getVar('email');	//is sanitized then
+			$fromName = JRequest::getVar('name','');//is sanitized then
+			$fromMail = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$fromMail);
+			$fromName = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$fromName);
 		}
 		else {
 			$fromMail = $user->email;
@@ -120,8 +122,8 @@ class VirtueMartControllerProductdetails extends JController {
 			$fromName = $user->name;
 		$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
 
-		$TOMail = JRequest::getVar('email');
-
+		$TOMail = JRequest::getVar('email');	//is sanitized then
+		$TOMail = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$TOMail);
 		if (shopFunctionsF::renderMail('recommend', $TOMail, $vars)) {
 			$string = 'COM_VIRTUEMART_MAIL_SEND_SUCCESSFULLY';
 		}
@@ -221,48 +223,65 @@ class VirtueMartControllerProductdetails extends JController {
 	 */
 	public function recalculate(){
 
-		$post = JRequest::get('request');
+		//$post = JRequest::get('request');
 
 //		echo '<pre>'.print_r($post,1).'</pre>';
-		$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id',0);
+		jimport( 'joomla.utilities.arrayhelper' );
+		$virtuemart_product_idArray = JRequest::getVar('virtuemart_product_id',array());	//is sanitized then
+		JArrayHelper::toInteger($virtuemart_product_idArray);
 		$virtuemart_product_id = $virtuemart_product_idArray[0];
+
+		$customVariant = JRequest::getVar('customPrice',array());	//is sanitized then
+		foreach($customVariant as $priceVariant=>$selected){
+			//Important! sanitize array to int	
+			JArrayHelper::toInteger($priceVariant);
+		}
+				
+		jimport( 'joomla.utilities.arrayhelper' );
+		$quantityArray = JRequest::getVar('quantity',array());	//is sanitized then
+		JArrayHelper::toInteger($quantityArray);
+
+		$quantity = 1;
+		if(!empty($quantityArray[0])){
+			$quantity = $quantityArray[0];
+		}
+		//echo '<pre>'.print_r($quantityArray,1).' and $quantity '.$quantity.'</pre>';
 
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$product_model = $this->getModel('product');
-
-		$customVariant = JRequest::getVar('customPrice',array());
-		$prices = $product_model->getPrice($virtuemart_product_id,$customVariant);
+				
+		$prices = $product_model->getPrice($virtuemart_product_id,$customVariant,$quantity);
 
 		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
-//		$calculator = calculationHelper::getInstance();
-		foreach ($prices as &$value  ){
+		foreach ($prices as $value  ){
 			$value = $currency->priceDisplay($value);
 		}
-//		die;
+
 		// Get the document object.
 		$document = JFactory::getDocument();
 
 		// Set the MIME type for JSON output.
 		$document->setMimeEncoding( 'application/json' );
 
-
 		echo json_encode ($prices);
 		jexit();
 		die;
 
 	}
-	public function getData() {
+
+/*	public function getData() {
 	
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		/* Create the view object. */
-
-		/* Standard model */
-		//$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
-		$type = JRequest::getVar('type', false);
-		/* Now display the view. */
 		
-	}
+
+		// Standard model 
+		//$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
+		$type = JRequest::getWord('type', false);
+		// Now display the view. 
+
+	}*/
+
 	public function getJsonChild() {
 
 	$view = $this->getView('productdetails', 'json');

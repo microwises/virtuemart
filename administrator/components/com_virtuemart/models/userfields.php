@@ -835,9 +835,8 @@ class VirtueMartModelUserfields extends VmModel {
 	 *
 	 * @return boolean True is the remove was successful, false otherwise.
 	 */
-	function remove()
-	{
-		$fieldIds   = JRequest::getVar('cid',  0, '', 'array');
+	function remove($fieldIds){
+		
 		$field      = $this->getTable('userfields');
 		$value      = $this->getTable('userfield_values');
 		$userinfo   = $this->getTable('userinfos');

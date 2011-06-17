@@ -71,30 +71,6 @@ class VirtueMartModelShippingCarrier extends VmModel {
 		return $this->_data;
     }
 
-
-    /**
-     * Delete all record ids selected
-     *
-     * @author RickG
-     * @return boolean True is the remove was successful, false otherwise.
-     */
-    function remove() {
-	$shippingCarrierIds = JRequest::getVar('cid',  0, '', 'array');
-	$table = $this->getTable('shippingcarriers');
-
-	foreach($shippingCarrierIds as $shippingCarrierId) {
-
-		if (!$table->delete($shippingCarrierId)) {
-		    $this->setError($table->getError());
-		    return false;
-		}
-	}
-
-	return true;
-    }
-
-
-
     /**
      * Retireve a list of shipping carriers from the database.
      *

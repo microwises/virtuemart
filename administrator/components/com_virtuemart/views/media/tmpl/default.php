@@ -129,7 +129,6 @@ $productfileslist = $this->files;
 	<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
 <?php } ?>
 <input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="view" value="media" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />

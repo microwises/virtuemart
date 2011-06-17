@@ -102,7 +102,7 @@ class VirtueMartControllerCart extends JController {
 				$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_ADDED_SUCCESSFULLY');
 				$type = 'error';
 			}
-//			if (JRequest::getVar('format','') =='raw' ) {
+//			if (JRequest::getWord('format','') =='raw' ) {
 //				JRequest::setVar('layout','minicart','POST');
 //				$this->cart();
 //				//$view->display();

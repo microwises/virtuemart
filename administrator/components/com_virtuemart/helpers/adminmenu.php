@@ -129,7 +129,7 @@ class AdminMenuHelper {
 							    $url = strncmp($link['view'], 'http', 4 ) === 0 ? $link['view'] : $url;
 							}
 							else {
-//							    $url = 'index2.php?option=com_virtuemart&pshop_mode=admin&'.$link['link'];
+//							    $url = 'index2.php?option=com_virtuemart&'.$link['link'];
 							}
 						    }
 						    ?>

@@ -67,15 +67,10 @@ class VirtueMartModelManufacturer extends VmModel {
      * @author Max Milbers
      * @return boolean True is the save was successful, false otherwise.
 	 */
-	public function store() {
+	public function store($data) {
 
 		/* Setup some place holders */
 		$table = $this->getTable('manufacturers');
-
-		/* Load the data */
-		$data = JRequest::get('post');
-		/* add the mf desc as html code */
-		$data['mf_desc'] = JRequest::getVar('mf_desc', '', 'post', 'string', JREQUEST_ALLOWHTML );
 
 		$table->bindChecknStore($data);
 		$errors = $table->getErrors();
@@ -83,7 +78,7 @@ class VirtueMartModelManufacturer extends VmModel {
 			$this->setError($error);
 		}
 
-		// Process the images //		$fullImage = JRequest::getVar('virtuemart_media_id', null, 'files',array());
+		// Process the images //
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		$mediaModel = new VirtueMartModelMedia();
 		$mediaModel->storeMedia($data,'manufacturer');

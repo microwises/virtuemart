@@ -130,7 +130,7 @@ if ($perm->check("admin,storeadmin")
     ) { ?>
     <tr>
       <td colspan="2">
-      	<a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index2.php?page=store.index&pshop_mode=admin") ?>">
+      	<a class="<?php echo $class_mainlevel ?>" href="<?php $sess->purl(SECUREURL . "index2.php?page=store.index) ?>">
       	<?php echo JText::_('COM_VIRTUEMART_ADMIN_MOD'); ?>
       	</a>
       </td>

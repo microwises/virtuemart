@@ -68,7 +68,7 @@ class VirtueMartModelUser extends VmModel {
 			$this->setUserId(0);
 			//			echo($this->_id,'Recogniced anonymous case');
 		} else {
-//			$idArray = JRequest::getVar('cid',  null, '', 'array');
+
 			//not anonymous, but no cid means already registered user edit own data
 			if(empty($cid)){
 				$this->setUserId($user->id);
@@ -118,7 +118,7 @@ class VirtueMartModelUser extends VmModel {
 		return $data;
 	}
 
-	function getLoggedOnUser(){
+/*	function getLoggedOnUser(){
 		
 		$user = JFactory::getUser();
 		
@@ -372,7 +372,7 @@ class VirtueMartModelUser extends VmModel {
 		} else {
 			$data['email'] =  JRequest::getString('email', '', 'post', 'email');
 		}
-		//$data['email'] = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$data['email']);
+		$data['email'] = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$data['email']);
 
 		//This is important, when a user changes his email address from the cart,
 		//that means using view user layout edit_address (which is called from the cart)
@@ -386,7 +386,7 @@ class VirtueMartModelUser extends VmModel {
 		} else {
 				$data['name'] = JRequest::getString('name', '', 'post', 'name');
 		}
-		//$data['name'] = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$data['name']);
+		$data['name'] = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$data['name']);
 
 		if(empty ($data['username'])){
 			$username = $user->get('username');
@@ -743,12 +743,11 @@ class VirtueMartModelUser extends VmModel {
 	  *
 	  * @return boolean True is the remove was successful, false otherwise.
 	  */
-	 function remove()
+	 function remove($userIds)
 	 {
-	 	$userIds = JRequest::getVar('cid',  0, '', 'array');
 	 	$userInfo = $this->getTable('userinfos');
 	 	$vm_shoppergroup_xref = $this->getTable('user_shopper_group_xref');
-                $vmusers = $this->getTable('vmusers');
+		$vmusers = $this->getTable('vmusers');
 	 	$_status = true;
 	 	foreach($userIds as $userId) {
 	 		if ($this->getSuperAdminCount() <= 1) {

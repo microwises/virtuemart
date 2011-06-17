@@ -58,6 +58,12 @@ class VirtueMartControllerUser extends JController
 		$view->setLayout('edit');
 		$cid = JRequest::getVar('cid',null);
 		if(!isset($cid)) JRequest::setVar('cid', (int)0);
+		
+		//Important! sanitize array to int	
+		jimport( 'joomla.utilities.arrayhelper' );
+		JArrayHelper::toInteger($cid);
+		
+		
 
 //		$ftask ='saveuser';
 //		$view->assignRef('fTask', $ftask);

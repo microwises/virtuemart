@@ -523,7 +523,7 @@ class vmParameters extends JParameter {
     function _form_secret_key($name, $value, &$node, $control_name) {
 
         return '<a class="button" id="changekey" href="'
-        . JRoute::_($_SERVER['SCRIPT_NAME'] . "?page=store.payment_method_keychange&pshop_mode=admin&element=$name") . '" >'
+        . JRoute::_($_SERVER['SCRIPT_NAME'] . "?page=store.payment_method_keychange&element=$name") . '" >'
         . JText::_('COM_VIRTUEMART_CHANGE_TRANSACTION_KEY')
         . '<a/>';
     }

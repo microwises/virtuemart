@@ -42,7 +42,6 @@ class VirtuemartViewManufacturer extends JView {
 		$model = $this->getModel();
 		$categoryModel = $this->getModel('manufacturercategories');
 
-
 		$viewName=ShopFunctions::SetViewTitle('vm_manufacturer_48');
 		$this->assignRef('viewName',$viewName);
 
@@ -65,6 +64,12 @@ class VirtuemartViewManufacturer extends JView {
 			$this->assignRef('manufacturerCategories',	$manufacturerCategories);
 
 			ShopFunctions::addStandardEditViewCommands();
+			
+			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		    $virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
+			$this->assignRef('virtuemart_vendor_id', $virtuemart_vendor_id);
+			
+			
         }
         else {
 
@@ -81,7 +86,6 @@ class VirtuemartViewManufacturer extends JView {
 			$virtuemart_manufacturercategories_id	= $mainframe->getUserStateFromRequest( 'com_virtuemart.virtuemart_manufacturercategories_id', 'virtuemart_manufacturercategories_id', 0, 'int' );
 			$lists['virtuemart_manufacturercategories_id'] =  JHTML::_('select.genericlist',   $categoryFilter, 'virtuemart_manufacturercategories_id', 'class="inputbox" onchange="this.form.submit()"', 'value', 'text', $virtuemart_manufacturercategories_id );
 			$this->assignRef('lists', $lists);
-
 
 		}
 

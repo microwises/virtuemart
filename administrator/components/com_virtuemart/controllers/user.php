@@ -103,8 +103,11 @@ class VirtuemartControllerUser extends VmController {
 		else $this->setRedirect('index.php?option=com_virtuemart&view=user');
 	}
 
-		/**
+	/**
 	 * Handle the save task
+	 * Checks already in the controller the rights todo so and sets the data by filtering the post
+	 * 
+	 * @author Max Milbers
 	 */
 	function save(){
 		$document = JFactory::getDocument();

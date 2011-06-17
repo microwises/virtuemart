@@ -102,7 +102,6 @@ $option = JRequest::getWord('option');
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
 <input type="hidden" name="task" value="ratings" />
 <input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="view" value="ratings" />
 <input type="hidden" name="func" value="" />
 <input type="hidden" name="boxchecked" value="0" />

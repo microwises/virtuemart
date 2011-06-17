@@ -115,7 +115,9 @@ class VmController extends JController{
 		JRequest::checkToken() or jexit( 'Invalid Token remove' );
 
 		$ids = JRequest::getVar($this->_cidName,  array(), '', 'ARRAY');
-
+		jimport( 'joomla.utilities.arrayhelper' );
+		JArrayHelper::toInteger($ids);
+		
 		if(count($ids) < 1) {
 			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
 		} else {

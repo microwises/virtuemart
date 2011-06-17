@@ -38,7 +38,17 @@ class VirtuemartViewRatings extends JView {
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('shopFunctions');
 
-
+		/* Get the review IDs to retrieve (input variable may be cid, cid[] or virtuemart_rating_review_id */
+		$cids = JRequest::getVar('cid', array());		
+		if (empty($cids)) {
+			$cids= JRequest::getVar('virtuemart_rating_review_id',false);
+		}
+		if ($cids && !is_array($cids)) $cids = array($cids);
+		
+		
+		jimport( 'joomla.utilities.arrayhelper' );
+		JArrayHelper::toInteger($cids);
+		
 		// Figure out maximum rating scale (default is 5 stars)
 		$this->max_rating = VmConfig::get('vm_maximum_rating_scale',5);
 		$this->assignRef('max_rating', $this->max_rating);
@@ -69,8 +79,7 @@ class VirtuemartViewRatings extends JView {
 
 			case 'edit':
 				/* Get the data */
-				$rating = $model->getRating();
-
+				$rating = $model->getRating($cids);
 				ShopFunctions::addStandardEditViewCommands();
 
 				/* Assign the data */
@@ -80,9 +89,9 @@ class VirtuemartViewRatings extends JView {
 			case 'edit_review':
                             
 				/* Get the data */
-				$rating = $model->getReview();
-                                $viewName=ShopFunctions::SetViewTitle('vm_reviews_48','REVIEW_RATE',$rating->product_name." (". $rating->customer.")" );
-                                $this->assignRef('viewName',$viewName);
+				$rating = $model->getReview($cids);
+				$viewName=ShopFunctions::SetViewTitle('vm_reviews_48','REVIEW_RATE',$rating->product_name." (". $rating->customer.")" );
+				$this->assignRef('viewName',$viewName);
 				ShopFunctions::addStandardEditViewCommands();
 
 				/* Assign the data */

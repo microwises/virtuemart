@@ -984,20 +984,10 @@ class VirtueMartModelOrders extends VmModel {
 	 * @author Oscar van Eijk
 	 * @return boolean True of remove was successful, false otherwise
 	 */
-	function remove() {
-
-		$cids = JRequest::getVar('cid');
-			if (!is_array($cids)) $cids = array($cids);
-		//$orderIds = JRequest::getVar('cid',  0, '', 'array');
-		//$table = $this->getTable('orders');
+	function remove($cids) {
 
 		foreach($cids as $_id) {
 			$this->removeOrderItems ($_id);
-
-		/*	if (!$table->delete($_id)) {
-				$this->setError($table->getError());
-				return false;
-			}*/
 		}
 		
 		parent::remove($cids);

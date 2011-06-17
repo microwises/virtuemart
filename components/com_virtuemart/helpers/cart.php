@@ -70,21 +70,23 @@ class VirtueMartCart  {
 	*/
 	public static function getCart($deleteValidation=true) {
 
+		if(!class_exists('JTable'))require(JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table.php');
 		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
+		
 		$session = JFactory::getSession();
 		$cartTemp = $session->get('vmcart', 0, 'vm');
 		if(!empty($cartTemp) ){
 			$cart = unserialize($cartTemp);
 			if($deleteValidation){
 				$cart->setDataValidation();
-				$cart->setPreferred();
+				//$cart->setPreferred();
 			}
 			
 		} else {
 			$cart = new VirtueMartCart;
-			$cart->setPreferred();
+			
 		}
-		
+		$cart->setPreferred();
 		return $cart;
 	}
 
@@ -92,8 +94,26 @@ class VirtueMartCart  {
 		
 		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 		$usermodel = new VirtueMartModelUser();
-		$user = $usermodel->getLoggedOnUser();
+		$usermodel->setCurrent();
+		$user = $usermodel->getUser();
+		
+		if(!empty($this->BT)){
+			foreach($user->userInfo as $address){
+				if($address->address_type=='BT'){
+					$this->saveAddressInCart((array)$address,$address->address_type);
+				}
+			}	
+		}
 
+		if(!empty($this->ST)){
+			foreach($user->userInfo as $address){
+				if($address->address_type=='ST'){
+					$this->saveAddressInCart($address,$address->address_type);
+					break;
+				}
+			}	
+		}
+				
 		if(empty($this->virtuemart_shippingcarrier_id) && !empty($user->virtuemart_shippingcarrier_id)){
 			$this->virtuemart_shippingcarrier_id = $user->virtuemart_shippingcarrier_id;
 		}
@@ -107,6 +127,8 @@ class VirtueMartCart  {
 		} else {
 			$this->tosAccepted = $user->agreed;
 		}
+		
+		
 	}
 	
 	/**
@@ -181,7 +203,7 @@ class VirtueMartCart  {
 		$total_quantity = 0;
 		$total_updated = 0;
 		$total_deleted = 0;
-		$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id',array(),'default','array' ) ;
+		$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id',array(),'default','array' ) ;	//is sanitized then
 
 		if (empty($virtuemart_product_ids)) {
 			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_CART_ERROR_NO_PRODUCT_IDS',false) );
@@ -902,20 +924,6 @@ class VirtueMartCart  {
 		}
 		return $userAddressData;
 	}
-	
-/*	function getAddress ($model, $fields, $type){
-	
-		$address = new stdClass();
-		if(!empty($this->$type)){
-			$data = $this->$type;
-			foreach ($data as $k => $v) {
-				$address->{$k} = $v;
-			}
-		}
-		
-		$data = $model->getUserFieldsByUser($fields, $address);
-		return $data;
-	}*/
 
 	function saveAddressInCart($data, $type) {
 	

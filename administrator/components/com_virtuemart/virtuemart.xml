@@ -12,10 +12,10 @@
 	<description>Online-Shop / Complete E-Commerce system for Joomla 1.5</description>
 
 	<!-- Custom installer -->
-	<installfile>install.virtuemart.php</installfile>
+	<installfile>install/install.virtuemart.php</installfile>
 
 	<!-- Custom uninstaller -->
-	<uninstallfile>uninstall.virtuemart.php</uninstallfile>
+	<uninstallfile>install/uninstall.virtuemart.php</uninstallfile>
 
 	<!-- SQL queries -->
 	<install>

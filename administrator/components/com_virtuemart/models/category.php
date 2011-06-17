@@ -316,13 +316,10 @@ class VirtueMartModelCategory extends VmModel {
      * @param  array $cats categories to order
 	 * @return bool
 	 */
-	public function setOrder($cats){
+	public function setOrder($cats, $order){
 		$total		= count( $cats );
 		$groupings	= array();
 		$row = $this->getTable('categories');
-
-		$order		= JRequest::getVar('order', array(), 'post', 'array');
-		JArrayHelper::toInteger($order);
 
 		$query = 'SELECT `category_parent_id` FROM `#__virtuemart_categories`
 				  LEFT JOIN `#__virtuemart_category_categories` cx
@@ -498,7 +495,7 @@ class VirtueMartModelCategory extends VmModel {
 				}
 
 				//deleting relations
-				$query = "DELETE FROM `#__virtuemart_product_categories` WHERE `category_child_id` = ". $this->_db->Quote($cid);
+				$query = "DELETE FROM `#__virtuemart_product_categories` WHERE `category_child_id` = ". $this->_db->Quote((int)$cid);
 		    	$this->_db->setQuery($query);
 
 		    	if(!$this->_db->query()){

@@ -123,7 +123,7 @@ class VirtueMartModelMedia extends VmModel {
     		$type = 'product';
     	}
 
-    	$cat_id = JRequest::getVar('virtuemart_category_id',0);
+    	$cat_id = JRequest::getInt('virtuemart_category_id',0);
     	if(empty($query) && !empty($cat_id)){
     		$query = 'SELECT `#__virtuemart_medias`.`virtuemart_media_id` as virtuemart_media_id FROM `#__virtuemart_category_medias` 
     		LEFT JOIN `#__virtuemart_medias` ON `#__virtuemart_medias`.`virtuemart_media_id`=`#__virtuemart_category_medias`.`virtuemart_media_id` ';
@@ -295,11 +295,10 @@ class VirtueMartModelMedia extends VmModel {
 	 * @author unknown, maybe Roland Dalmulder
 	 * @author Max Milbers
 	 */
-	public function remove($cids) {
+/*	public function remove($cids) {
 		$mainframe = Jfactory::getApplication('site');
 //		$removed = 0;
 	 	$row = $this->getTable('medias');
-//	 	$cids = JRequest::getVar('cid');
 	 	if (is_array($cids)) {
 			foreach ($cids as $key => $cid) {
 				$row->load($cid);
@@ -314,13 +313,13 @@ class VirtueMartModelMedia extends VmModel {
 
 		//TODO update table belonging, category, product, venodor
 		//remove media from server
-		/* Redirect so the user cannot reload the remove action */
+		/* Redirect so the user cannot reload the remove action 
 //		$url = 'index.php?option=com_virtuemart&view=media';
 //		$productid = JRequest::getInt('virtuemart_product_id', false);
 //		if ($productid) $url .= '&virtuemart_product_id='.$productid;
 //		$mainframe->redirect($url);
 	}
-
+*/
 
 	public function attachImages($objects,$type,$mime=''){
 		if(!empty($objects)){

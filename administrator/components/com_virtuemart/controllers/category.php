@@ -185,12 +185,15 @@ class VirtuemartControllerCategory extends VmController {
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );	//is sanitized
 		JArrayHelper::toInteger($cid);
 
 		$model = $this->getModel('category');
-
-		if ($model->setOrder($cid)) {
+		
+		$order	= JRequest::getVar('order', array(), 'post', 'array');
+		JArrayHelper::toInteger($order);
+		
+		if ($model->setOrder($cid,$order)) {
 			$msg = JText::_('COM_VIRTUEMART_NEW_ORDERING_SAVED');
 		} else {
 			$msg = $model->getError();

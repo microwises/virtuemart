@@ -1115,28 +1115,12 @@ class VirtueMartModelProduct extends VmModel {
 		return $options;
 	}
 
-
-
 	/*
 	 * was productdetails
 	 */
-	public function getPrice($virtuemart_product_id=false,$customVariant=false){
+	public function getPrice($virtuemart_product_id,$customVariant,$quantity){
 
 		$this->_db = JFactory::getDBO();
-		if (!$virtuemart_product_id) $virtuemart_product_id = JRequest::getInt('virtuemart_product_id', 0);
-
-		//This is one of the dead sins of OOP and MUST NOT be done
-//		$q = "SELECT `p`.*, `x`.`virtuemart_category_id`, `x`.`ordering`, `m`.`virtuemart_manufacturer_id`, `m`.`mf_name`
-//			FROM `#__virtuemart_products` `p`
-//			LEFT JOIN `#__virtuemart_product_categories` x
-//			ON `x`.`virtuemart_product_id` = `p`.`virtuemart_product_id`
-//			LEFT JOIN `#__virtuemart_product_manufacturers` `mx`
-//			ON `mx`.`virtuemart_product_id` = `p`.`virtuemart_product_id`
-//			LEFT JOIN `#__virtuemart_manufacturers` `m`
-//			ON `m`.`virtuemart_manufacturer_id` = `mx`.`virtuemart_manufacturer_id`
-//			WHERE `p`.`virtuemart_product_id` = ".$virtuemart_product_id;
-//		$this->_db->setQuery($q);
-//		$product = $this->_db->loadObject();
 
 		$product = $this->getProduct($virtuemart_product_id);
 
@@ -1146,13 +1130,10 @@ class VirtueMartModelProduct extends VmModel {
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 
-		$quantityArray = JRequest::getVar('quantity',1,'post');
-
 		/* Calculate the modificator */
 		$variantPriceModification = $calculator->calculateModificators($product,$customVariant);
-		$quantityArray = JRequest::getVar('quantity',1,'post');
-
-		$prices = $calculator->getProductPrices($product->virtuemart_product_id,$product->categories,$variantPriceModification,$quantityArray[0]);
+		
+		$prices = $calculator->getProductPrices($product->virtuemart_product_id,$product->categories,$variantPriceModification,$quantity);
 
 		//Wrong place, this must not be done in a model, display is gui, therefore it must be done in the view!
 		// change display //

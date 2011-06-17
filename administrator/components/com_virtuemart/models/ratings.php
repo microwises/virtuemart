@@ -50,7 +50,6 @@ class VirtueMartModelRatings extends VmModel {
      */
     public function getRatings() {
 
-//     	$q = 'SELECT * FROM `#__virtuemart_ratings`  ORDER BY `modified_on`';
      	$q = 'SELECT p.*,pr.* FROM `#__virtuemart_ratings` AS `pr` JOIN `#__virtuemart_products` AS `p`
      			ON `pr`.`virtuemart_product_id` = `p`.`virtuemart_product_id` ORDER BY `pr`.`modified_on` ';
 	    $this->_data = $this->_getList($q, $this->getState('limitstart'), $this->getState('limit'));
@@ -92,15 +91,10 @@ class VirtueMartModelRatings extends VmModel {
     * Load a single rating
     * @author RolandD
     */
-    public function getRating() {
-		/* Get the review IDs to retrieve (input variable may be cid, cid[] or virtuemart_rating_review_id */
-		$cids = array();
-		$cids = JRequest::getVar('cid', false);
-		if (empty($cids)) {
-			$cids= JRequest::getVar('virtuemart_rating_review_id',false);
-		}
-		if ($cids && !is_array($cids)) $cids = array($cids);
-
+    public function getRating($cids) {
+		
+		if(empty($cids)) return;
+		
 		/* First copy the product in the product table */
 		$ratings_data = $this->getTable('ratings');
 
@@ -148,19 +142,19 @@ class VirtueMartModelRatings extends VmModel {
      	return $result;
     }
 
-	function getReview(){
-		$cids = array();
+	function getReview($cids){
+	/*	$cids = array();
 		$cids = JRequest::getVar('cid', false);
 		if (empty($cids)) {
 			$cids= JRequest::getVar('virtuemart_rating_review_id',false);
 		}
 		if ($cids && !is_array($cids)) $cids = array($cids);
-
+*/
        	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`,CONCAT_WS(" ",`u`.`title`,u.`last_name`,`u`.`first_name`) as customer FROM `#__virtuemart_rating_reviews` AS `pr`
 		LEFT JOIN `#__virtuemart_userinfos` AS `u`
      	ON `pr`.`created_by` = `u`.`virtuemart_user_id`
 		LEFT JOIN `#__virtuemart_products` AS `p`
-     	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` and  virtuemart_rating_review_id='.$cids[0].'
+     	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` and  virtuemart_rating_review_id='.(int)$cids[0].'
 		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`u`.`virtuemart_user_id`' ;
 		$this->_db->setQuery($q);
 
@@ -176,7 +170,7 @@ class VirtueMartModelRatings extends VmModel {
      */
 
     function getRatingByProduct($product_id){
-    	$q = 'SELECT * FROM `#__virtuemart_ratings` WHERE `virtuemart_product_id` = "'.$product_id.'" ';
+    	$q = 'SELECT * FROM `#__virtuemart_ratings` WHERE `virtuemart_product_id` = "'.(int)$product_id.'" ';
 		$this->_db->setQuery($q);
 		return $this->_db->loadObject();
 
@@ -194,7 +188,7 @@ class VirtueMartModelRatings extends VmModel {
 			$user = JFactory::getUser();
 			$userId = $user->id;
     	}
-		$q = 'SELECT * FROM `#__virtuemart_rating_reviews` WHERE `virtuemart_product_id` = "'.$product_id.'" AND `created_by` = "'.$userId.'" ';
+		$q = 'SELECT * FROM `#__virtuemart_rating_reviews` WHERE `virtuemart_product_id` = "'.(int)$product_id.'" AND `created_by` = "'.(int)$userId.'" ';
 		$this->_db->setQuery($q);
 		return $this->_db->loadObject();
     }
@@ -211,7 +205,7 @@ class VirtueMartModelRatings extends VmModel {
 			$user = JFactory::getUser();
 			$userId = $user->id;
     	}
-		$q = 'SELECT * FROM `#__virtuemart_rating_reviews` WHERE `virtuemart_product_id` = "'.$product_id.'" ';
+		$q = 'SELECT * FROM `#__virtuemart_rating_reviews` WHERE `virtuemart_product_id` = "'.(int)$product_id.'" ';
 		$this->_db->setQuery($q);
 		return $this->_db->loadObjectList();
     }
@@ -229,7 +223,7 @@ class VirtueMartModelRatings extends VmModel {
 			$user = JFactory::getUser();
 			$userId = $user->id;
     	}
-		$q = 'SELECT * FROM `#__virtuemart_rating_votes` WHERE `virtuemart_product_id` = "'.$product_id.'" AND `created_by` = "'.$userId.'" ';
+		$q = 'SELECT * FROM `#__virtuemart_rating_votes` WHERE `virtuemart_product_id` = "'.(int)$product_id.'" AND `created_by` = "'.(int)$userId.'" ';
 		$this->_db->setQuery($q);
 		return $this->_db->loadObject();
 

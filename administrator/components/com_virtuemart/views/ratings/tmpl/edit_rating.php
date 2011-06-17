@@ -18,7 +18,7 @@
 * @todo decide to allow or not a JEditor here instead of a textarea
 * @todo comment length check should also occur on the server side (model?)
 */
-
+/*
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -94,7 +94,6 @@ AdminMenuHelper::startAdminArea();
 <!-- Hidden Fields -->
 <input type="hidden" name="task" value="ratings" />
 <input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="pshop_mode" value="admin" />
 <input type="hidden" name="view" value="ratings" />
 <input type="hidden" name="virtuemart_rating_review_id" value="<?php echo $this->rating->virtuemart_rating_review_id; ?>" />
 <input type="hidden" name="virtuemart_product_id" value="<?php echo $this->rating->virtuemart_product_id; ?>" />

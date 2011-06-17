@@ -212,17 +212,12 @@ class VirtueMartViewCart extends JView {
 									.'&virtuemart_userinfo_id='.(empty($addressList[$_i]->virtuemart_userinfo_id)? 0 : $addressList[$_i]->virtuemart_userinfo_id)
 									. '">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
 			}
-//			$_selectedST = JRequest::getVar('shipto');
+
 			$_selectedAddress = (
 				empty($this->_cart->selected_shipto)
 					? $addressList[0]->virtuemart_userinfo_id // Defaults to 1st BillTo
 					: $this->_cart->selected_shipto
 				);
-//			$_selectedAddress = (
-//				empty($this->_cart->address_shipto_id)
-//					? $addressList[0]->virtuemart_userinfo_id // Defaults to 1st BillTo
-//					: $this->_cart->address_shipto_id
-//				);
 
 			$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'virtuemart_userinfo_id', 'address_type_name', $_selectedAddress);
 		} else {

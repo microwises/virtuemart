@@ -105,27 +105,6 @@ class VirtueMartModelCreditcard extends VmModel {
 
 
 	/**
-	 * Delete all record ids selected
-     *
-     * @author RickG
-     * @return boolean True is the remove was successful, false otherwise.
-     */
-	function remove()
-	{
-		$creditcardIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table = $this->getTable('creditcards');
-
-    	foreach($creditcardIds as $creditcardId) {
-        	if (!$table->delete($creditcardId)) {
-            	$this->setError($table->getError());
-            	return false;
-        	}
-    	}
-
-    	return true;
-	}
-
-	/**
 	 * Retireve a list of credit cards from the database.
 	 *
      * @author RickG, Max Milbers

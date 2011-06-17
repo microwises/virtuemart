@@ -227,34 +227,6 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		return $href;
 	}
 
-
-	/**
-	 * Delete all record ids selected
-     *
-     * @author Max Milbers
-     * @return boolean True is the remove was successful, false otherwise.
-     */
-	public function remove()
-	{
-		$calcIds = JRequest::getVar('cid',  0, '', 'array');
-    	$table = $this->getTable('paymentmethods');
-
-    	foreach($calcIds as $calcId) {
-
-    		if (!$table->delete($calcId)) {
-        		$this->setError($table->getError());
-        		return false;
-    		}
-        	else {
-        		//$this->setError('Could not remove country states!');
-        		return true;
-        	}
-    	}
-
-    	return true;
-	}
-
-
 	/**
 	 * Publish/Unpublish all the ids selected
      *

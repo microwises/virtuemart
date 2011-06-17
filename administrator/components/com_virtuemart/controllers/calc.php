@@ -161,7 +161,10 @@ class VirtuemartControllerCalc extends VmController {
 
 		$model = $this->getModel('calc');
 
-		if ($model->setOrder($cid)) {
+		$order	= JRequest::getVar('order', array(), 'post', 'array');
+		JArrayHelper::toInteger($order);
+		
+		if ($model->setOrder($cid,$order)) {
 			$msg = JText::_('COM_VIRTUEMART_NEW_ORDERING_SAVED');
 		} else {
 			$msg = $model->getError();

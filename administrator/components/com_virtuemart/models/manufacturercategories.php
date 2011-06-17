@@ -70,9 +70,8 @@ class VirtuemartModelManufacturercategories extends VmModel {
      *
      * @return boolean True is the remove was successful, false otherwise.
      */
-	function remove()
-	{
-		$categoryIds = JRequest::getVar('cid',  0, '', 'array');
+	function remove($categoryIds)
+	{		
     	$table = $this->getTable('manufacturercategories');
 
     	foreach($categoryIds as $categoryId) {

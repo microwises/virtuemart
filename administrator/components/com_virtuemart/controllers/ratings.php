@@ -44,6 +44,26 @@ class VirtuemartControllerRatings extends VmController {
 	}
 
 	/**
+	 * edit task ratings
+	 *
+	 * @author Max Milbers
+	 *
+	function edit(){
+		
+		// Get the review IDs to retrieve (input variable may be cid, cid[] or virtuemart_rating_review_id 
+		$cids = JRequest::getVar('cid', array());		
+		if (empty($cids)) {
+			$cids= JRequest::getVar('virtuemart_rating_review_id',false);
+		}
+		if ($cids && !is_array($cids)) $cids = array($cids);
+		
+		jimport( 'joomla.utilities.arrayhelper' );
+		JArrayHelper::toInteger($cids);
+		
+		parent::edit();
+	}*/
+	
+	/**
 	 * Generic edit task
 	 *
 	 * @author Max Milbers
@@ -65,7 +85,7 @@ class VirtuemartControllerRatings extends VmController {
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
-
+				
 		parent::display();
 	}
 
