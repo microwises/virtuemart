@@ -579,6 +579,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_items` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_order_item_id`),
+  KEY `virtuemart_product_id` (`virtuemart_product_id`),
   KEY `idx_order_item_virtuemart_order_id` (`virtuemart_order_id`),
   KEY `idx_order_item_virtuemart_userinfo_id` (`virtuemart_userinfo_id`),
   KEY `idx_order_item_virtuemart_vendor_id` (`virtuemart_vendor_id`)
@@ -816,7 +817,9 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_downloads` (
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`download_id`)
+  PRIMARY KEY (`download_id`),
+  KEY `virtuemart_user_id` (`virtuemart_user_id`),
+  KEY `virtuemart_order_id` (`virtuemart_order_id`),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Active downloads for selling downloadable goods';
 
 
@@ -979,6 +982,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarriers` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_shippingcarrier_id`),
+  KEY (`shipping_carrier_jplugin_id`),
   KEY (`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shipping Carriers created from the shipper plugins' AUTO_INCREMENT=1 ;
 
@@ -1039,7 +1043,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_states` (
   KEY (`virtuemart_vendor_id`),
   UNIQUE KEY `state_3_code` (`virtuemart_country_id`,`state_3_code`),
   UNIQUE KEY `state_2_code` (`virtuemart_country_id`,`state_2_code`),
-  KEY `idx_virtuemart_country_id` (`virtuemart_country_id`)
+  KEY `idx_virtuemart_country_id` (`virtuemart_country_id`),
+  KEY (`virtuemart_worldzone_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='States that are assigned to a country' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------

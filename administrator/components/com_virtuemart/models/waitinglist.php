@@ -33,11 +33,17 @@ class VirtueMartModelWaitingList extends JModel {
 	/**
 	* Load the customers on the waitinglist
 	*/
-	public function getWaitingusers() {
+	public function getWaitingusers($virtuemart_product_id) {
+		
+		if (!$virtuemart_product_id) { return false; }
+		
+		//Sanitize param
+		$virtuemart_product_id  = (int) $virtuemart_product_id;
+		
 		$db = JFactory::getDBO();
 		$q = 'SELECT name, username, virtuemart_user_id, notify_email, notified, notify_date FROM `#__virtuemart_waitingusers`
 				LEFT JOIN `#__users` ON `virtuemart_user_id` = `id`
-				WHERE `virtuemart_product_id`=' . JRequest::getInt('virtuemart_product_id',0);
+				WHERE `virtuemart_product_id`=' .$virtuemart_product_id ;
 		$db->setQuery($q);
 		return $db->loadObjectList();
 	}
@@ -51,11 +57,12 @@ class VirtueMartModelWaitingList extends JModel {
 	* @todo Update mail from
 	* @todo Get the from name/email from the vendor
 	*/
-	public function notifyList ($virtuemart_product_id=false) {
-		if (!$virtuemart_product_id) {
-			return false;
-		}
+	public function notifyList ($virtuemart_product_id) {
+		if (!$virtuemart_product_id) { return false; }
 
+		//sanitize id
+		$virtuemart_product_id = (int)$virtuemart_product_id;
+		
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$vars = array();
 

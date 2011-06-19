@@ -66,5 +66,45 @@ class TableCurrencies extends VmTable {
 		$this->setOrderable();
 	}
 
+	function check(){
+		
+		//$this->checkCurrencySymbol();
+		return parent::check();
+	}
+
+	/**
+	 * ATM Unused !
+	 * Checks a currency symbol wether it is a HTML entity.
+	 * When not and $convertToEntity is true, it converts the symbol
+	 * Seems not be used      ATTENTION   seems BROKEN, working only for euro, ...
+	 * 
+	 */
+	function checkCurrencySymbol($convertToEntity=true ) {
+
+		$symbol = str_replace('&amp;', '&', $this->currency_symbol );
+
+		if( substr( $symbol, 0, 1) == '&' && substr( $symbol, strlen($symbol)-1, 1 ) == ';') {
+			return $symbol;
+		}
+		else {
+			if( $convertToEntity ) {
+				$symbol = htmlentities( $symbol, ENT_QUOTES, 'utf-8' );
+
+				if( substr( $symbol, 0, 1) == '&' && substr( $symbol, strlen($symbol)-1, 1 ) == ';') {
+					return $symbol;
+				}
+				// Sometimes htmlentities() doesn't return a valid HTML Entity
+				switch( ord( $symbol ) ) {
+					case 128:
+					case 63:
+						$symbol = '&euro;';
+						break;
+				}
+
+			}
+		}
+
+		 $this->currency_symbol = $symbol;
+	}
 }
 // pure php no closing tag

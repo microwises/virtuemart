@@ -85,9 +85,7 @@ class VirtueMartModelState extends VmModel {
 				return false;
 		}
 
-		$query = 'SELECT *';
-		$query .= ' FROM `#__virtuemart_states`';
-		$query .= ' WHERE `' . $stateCodeFieldname . '` = ' . (int)$code;
+		$query = 'SELECT * FROM `#__virtuemart_states` WHERE `' . $stateCodeFieldname . '` = ' . (int)$code;
 		$db->setQuery($query);
 
         return $db->loadObject();
@@ -101,18 +99,17 @@ class VirtueMartModelState extends VmModel {
 	 */
 	public function getStates($countryId, $noLimit=false)
 	{
-		$query = 'SELECT * FROM `#__virtuemart_states`  WHERE `virtuemart_country_id`= "'.$countryId.'" ';
-		$query .= 'ORDER BY `#__virtuemart_states`.`state_name`';
+		$quer= 'SELECT * FROM `#__virtuemart_states`  WHERE `virtuemart_country_id`= "'.(int)$countryId.'" 
+				ORDER BY `#__virtuemart_states`.`state_name`';
 		
 		if ($noLimit) {
-		    $this->_data = $this->_getList($query);
+		    $this->_data = $this->_getList($quer);
 		}
 		else {
-		    $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+		    $this->_data = $this->_getList($quer, $this->getState('limitstart'), $this->getState('limit'));
 		}
 		
-		//$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-		$this->_total = $this->_getListCount($query);
+		$this->_total = $this->_getListCount($quer);
 		return $this->_data;
 	}
 
@@ -124,8 +121,10 @@ class VirtueMartModelState extends VmModel {
 	 */
 	public function testStateCountry($countryId,$stateId)
 	{
-		//Test if id is published
-
+		
+		$countryId = (int)$countryId;
+		$stateId = (int)$stateId;
+		
 		$db = JFactory::getDBO();
 		$q = 'SELECT * FROM `#__virtuemart_countries` WHERE `virtuemart_country_id`= "'.$countryId.'" AND `published`="1"';
 		$db->setQuery($q);

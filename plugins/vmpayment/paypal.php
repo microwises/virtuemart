@@ -165,7 +165,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			'business' => $this->params->get('PAYPAL_EMAIL') ,
 			'receiver_email' => $this->params->get('PAYPAL_EMAIL') ,
 			'item_name' => JText::_( 'COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER' ) . ': ' . $_orderNr ,
-			'order_number' => VirtueMartModelOrders::getOrderNumber($_orderNr),
+			'order_number' => VirtueMartModelOrders::getOrderNumber($_orderNr),		//This function is BROKEN
 			"virtuemart_order_id" => $_orderNr,
 			"invoice" => $_orderNr ,
 			"amount" => $_priceData['billTotal'] ,

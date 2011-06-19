@@ -76,10 +76,14 @@ class VirtueMartModelRatings extends VmModel {
     */
     private function getRatingsFilter() {
 
-
     	/* Check some filters */
      	$filters = array();
-     	if (JRequest::getVar('filter_ratings', false)) $filters[] = '(#__virtuemart_products.`product_name` LIKE '.$this->_db->Quote('%'.JRequest::getVar('filter_ratings').'%').' OR #__virtuemart_rating_reviews.comment LIKE '.$this->_db->Quote('%'.JRequest::getVar('filter_ratings').'%').')';
+     	if ($search = JRequest::getVar('filter_ratings', false)){
+ 			$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
+			$search = $this->_db->Quote($search, false);    		
+			
+     		$filters[] = '(#__virtuemart_products.`product_name` LIKE '.$search.' OR #__virtuemart_rating_reviews.comment LIKE '.$search.')';
+     	}
 
      	if (count($filters) > 0) $filter = ' WHERE '.implode(' AND ', $filters);
      	else $filter = '';
@@ -343,7 +347,7 @@ class VirtueMartModelRatings extends VmModel {
 		$db = JFactory::getDBO();
 		$q = "SELECT COUNT(*) AS total
 			FROM #__virtuemart_rating_reviews
-			WHERE virtuemart_product_id=".$pid;
+			WHERE virtuemart_product_id=".(int)$pid;
 		$db->setQuery($q);
 		$reviews = $db->loadResult();
 		return $reviews;

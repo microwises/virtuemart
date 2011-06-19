@@ -72,7 +72,9 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$this->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
 		$productModel = $this->getModel('product');
-		$vars['product'] = $productModel->getProductDetails();
+		
+		$cids = JRequest::getVar('cid');
+		$vars['product'] = $productModel->getProduct((int)$cids[0]);
 
 		$user = JFactory::getUser();
 		if (empty($user->id)) {
@@ -116,7 +118,10 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$this->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
 		$productModel = $this->getModel('product');
-		$vars['product'] = $productModel->getProductDetails();
+		
+		$cids = JRequest::getVar('cid');
+		$vars['product'] = $productModel->getProduct((int)$cids[0]);
+		
 		$user = JFactory::getUser();
 			$fromMail = $user->email;
 			$fromName = $user->name;

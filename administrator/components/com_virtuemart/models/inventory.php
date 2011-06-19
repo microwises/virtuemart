@@ -42,21 +42,6 @@ class VirtueMartModelInventory extends VmModel {
 		$this->setMainTable('products');
 	}
 
-
-	/**
-	 * Gets the total number of products
-	 */
-	// function getTotal() {
-    	// if (empty($this->_total)) {
-    		// $db = JFactory::getDBO();
-			// $q = "SELECT COUNT(*) ".$this->getInventoryListQuery().$this->getInventoryFilter();
-			// $db->setQuery($q);
-			// $this->_total = $db->loadResult();
-        // }
-
-        // return $this->_total;
-    // }
-
     /**
      * Select the products to list on the product list page
      */
@@ -92,13 +77,22 @@ class VirtueMartModelInventory extends VmModel {
     /**
     * Collect the filters for the query
     * @author RolandD
+	* @author Max Milbers
     */
     private function getInventoryFilter() {
     	/* Check some filters */
      	$filters = array();
-     	if (JRequest::getVar('filter_inventory', false)) $filters[] = '`#__virtuemart_products`.`product_name` LIKE '.$this->_db->Quote('%'.JRequest::getVar('filter_inventory').'%');
-     	if (JRequest::getInt('stockfilter', 0) == 1) $filters[] = '`#__virtuemart_products`.`product_in_stock` > 0';
-     	if (JRequest::getInt('virtuemart_category_id', 0) > 0) $filters[] = '`#__virtuemart_categories`.`virtuemart_category_id` = '.JRequest::getInt('virtuemart_category_id');
+     	if ($search = JRequest::getVar('filter_inventory', false)){
+     		$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
+			$search = $this->_db->Quote($search, false);
+     		$filters[] = '`#__virtuemart_products`.`product_name` LIKE '.$search;
+     	} 
+     	if (JRequest::getInt('stockfilter', 0) == 1){
+     		$filters[] = '`#__virtuemart_products`.`product_in_stock` > 0';
+     	} 
+     	if ($catId = JRequest::getInt('virtuemart_category_id', 0) > 0){
+     		$filters[] = '`#__virtuemart_categories`.`virtuemart_category_id` = '.$catId;
+     	} 
      	$filters[] = '(`#__virtuemart_shoppergroups`.`default` = 1 OR `#__virtuemart_shoppergroups`.`default` is NULL)';
 
      	return ' WHERE '.implode(' AND ', $filters).$this->_getOrdering('product_name');

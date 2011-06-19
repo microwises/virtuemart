@@ -198,7 +198,7 @@ class VirtuemartViewUser extends JView {
 					 	$_paneOffset = array();
 					 } else {
 					 	// Contains 0 for new, otherwise a virtuemart_userinfo_id
-					 	$_shipto = $model->getUserAddress($userDetails->JUser->get('id'), $_shipto_id, 'ST');
+					 	$_shipto = $model->getUserAddressList($userDetails->JUser->get('id'), 'ST', $_shipto_id);
 					 	$_paneOffset = array('startOffset' => 2);
 					 	$_shiptoFields = $userFieldsModel->getUserFields(
 					 'shipping'

@@ -78,22 +78,6 @@ class VirtueMartModelCalc extends VmModel {
 			$this->setError(get_class( $this ).' virtuemart_state_ids '.$xrefTable->getError());
 		}
 
-
-//		$xrefTable = $this->getTable('calc_shoppergroups');
-//		if (!$this->_data->virtuemart_shoppergroup_ids = $xrefTable->load($this->_id)) {
-//			$this->setError(get_class( $this ).' calc_shoppergroups '.$xrefTable->getError());
-//		}
-
-//		$xrefTable = $this->getTable('calc_countries');
-//		if (!$this->_data->calc_countries = $xrefTable->load($this->_id)) {
-//			$this->setError(get_class( $this ).' calc_countries '.$xrefTable->getError());
-//		}
-
-//		$xrefTable = $this->getTable('calc_states');
-//		if (!$this->_data->virtuemart_state_ids = $xrefTable->load($this->_id)) {
-//			$this->setError(get_class( $this ).' calc_states '.$xrefTable->getError());
-//		}
-
 		if($errs = $this->getErrors()){
 			$app = JFactory::getApplication();
 			foreach($errs as $err){
@@ -112,14 +96,18 @@ class VirtueMartModelCalc extends VmModel {
      * @param string $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of calculation rule objects
 	 */
-	public function getCalcs($onlyPublished=false, $noLimit=false){
+	public function getCalcs($onlyPublished=false, $noLimit=false, $search=false){
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
 		$where = array();
 		$this->_query = 'SELECT * FROM `#__virtuemart_calcs` ';
 		/* add filters */
 		if ($onlyPublished) $where[] = '`published` = 1';
-		if (JRequest::getWord('search', false)) $where[] = '`calc_name` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
+		//if (JRequest::getWord('search', false)) $where[] = '`calc_name` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
+		if($search){
+			$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
+			$where[] = '`calc_name` LIKE '.$this->_db->Quote($search, false);
+		} 
 
 		if (count($where) > 0)$this->_query .= ' WHERE '.implode(' AND ', $where) ;
 		$this->_query .= $this->_getOrdering('calc_name');
@@ -145,7 +133,7 @@ class VirtueMartModelCalc extends VmModel {
 			/* Write the first 5 states in the list */
 			$data->calcStatesList = shopfunctions::renderGuiList('virtuemart_state_id','#__virtuemart_calc_states','virtuemart_calc_id',$data->virtuemart_calc_id,'state_name','#__virtuemart_states','virtuemart_state_id','state');
 
-			$query = 'SELECT `currency_name` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` = "'.$data->calc_currency.'" ';
+			$query = 'SELECT `currency_name` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` = "'.(int)$data->calc_currency.'" ';
 			$this->_db->setQuery($query);
 			$data->currencyName = $this->_db->loadResult();
 
@@ -160,12 +148,11 @@ class VirtueMartModelCalc extends VmModel {
      * @author Max Milbers
      * @return boolean True is the save was successful, false otherwise.
 	 */
-    public function store() {
+    public function store($data) {
 
 		JRequest::checkToken() or jexit( 'Invalid Token, in store calc');
 
 		$table = $this->getTable('calcs');
-		$data = JRequest::get('post');
 
 		// Convert selected dates to MySQL format for storing.
 		$startDate = JFactory::getDate($data['publish_up']);
@@ -240,7 +227,7 @@ class VirtueMartModelCalc extends VmModel {
 
 		$q = 'SELECT * FROM `#__virtuemart_calcs` WHERE ';
 		foreach ($kind as $field){
-			$q .= '`calc_kind`="'.$field.'" OR ';
+			$q .= '`calc_kind`="'.$this->_db->Quote($field).'" OR ';
 		}
 		$q=substr($q,0,-3);
 

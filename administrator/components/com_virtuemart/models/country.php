@@ -88,7 +88,11 @@ class VirtueMartModelCountry extends VmModel {
 		/* add filters */
 		if ($onlyPublished) $where[] = '`published` = 1';
 		
-		if($filterCountry) $where[] = '`country_name` LIKE '.$this->_db->Quote('%'.$filterCountry.'%');
+		if($filterCountry){
+			$filterCountry = '%' . $this->_db->getEscaped( $filterCountry, true ) . '%' ;
+			$keyword = $this->_db->Quote($filterCountry, false);
+			$where[] = '`country_name` LIKE '.$keyword;
+		} 
 
 		if (count($where) > 0) $query .= ' WHERE '.implode(' AND ', $where) ;
 		

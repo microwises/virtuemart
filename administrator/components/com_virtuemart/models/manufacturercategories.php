@@ -99,7 +99,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
 		if ($categoryId) {
 			$db = JFactory::getDBO();
 
-			$query = 'DELETE FROM `#__virtuemart_manufacturercategories`  WHERE `virtuemart_manufacturercategories_id`= "'.$categoryId.'"';
+			$query = 'DELETE FROM `#__virtuemart_manufacturercategories`  WHERE `virtuemart_manufacturercategories_id`= "'.(int)$categoryId.'"';
 			$db->setQuery($query);
 			if ($db->query()) {
 				return true;

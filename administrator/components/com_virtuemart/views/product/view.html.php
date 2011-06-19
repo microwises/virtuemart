@@ -35,12 +35,12 @@ class VirtuemartViewProduct extends JView {
 		$mainframe = Jfactory::getApplication();
 		$option = JRequest::getWord('option');
 
-		/* Get the task */
+		// Get the task 
 		$task = JRequest::getWord('task');
 
                
-                $this->assignRef('viewName', $viewName);
-		/* Load helpers */
+        $this->assignRef('viewName', $viewName);
+		// Load helpers 
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('shopFunctions');
@@ -65,12 +65,12 @@ class VirtuemartViewProduct extends JView {
 				$product_child = $product_model->getProductChilds($virtuemart_product_id);
 				$product_parent= $product_model->getProductParent($product->product_parent_id);
 				
-				/* Get the category tree */
+				// Get the category tree 
 				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
 				else $category_tree = ShopFunctions::categoryListTree();
 				$this->assignRef('category_tree', $category_tree);
 
-				/* Load the product price */
+				// Load the product price 
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 				$product->prices = $calculator -> getProductPrices($product->virtuemart_product_id);
@@ -104,7 +104,7 @@ class VirtuemartViewProduct extends JView {
 				$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
 				$this->assignRef('productLayouts', $productLayouts);
 
-				/* Load Images */
+				// Load Images 
 				$product_model->addImages($product);
 
 				if(is_Dir(VmConfig::get('vmtemplate').DS.'images'.DS.'availability/')){
@@ -114,13 +114,13 @@ class VirtuemartViewProduct extends JView {
 				}
 				$this->assignRef('imagePath', $imagePath);
 
-				/* Load the vendors */
+				// Load the vendors 
 				$vendor_model = $this->getModel('vendor');
 
 				$vendors = $vendor_model->getVendors();
 				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $product->virtuemart_vendor_id);
 
-				/* Load the currencies */
+				// Load the currencies 
 				$currency_model = $this->getModel('currency');
 
 				$vendor_model->setId(1);
@@ -215,9 +215,9 @@ class VirtuemartViewProduct extends JView {
 				/* Toolbar */
                                 $text="";
 				if ($task == 'edit') {
-                                    if ($product->product_sku) $sku=' ('.$product->product_sku.')'; else $sku="";
-				  $text =  $product->product_name.$sku;
-                                }
+					if ($product->product_sku) $sku=' ('.$product->product_sku.')'; else $sku="";
+					$text =  $product->product_name.$sku;
+				}
 
 				ShopFunctions::SetViewTitle('vm_product_48','',$text ) ;
                                   $viewName = ShopFunctions::SetViewTitle('vm_product_48', 'PRODUCT',$text);
@@ -274,7 +274,7 @@ class VirtuemartViewProduct extends JView {
 
 				foreach ($productlist as $virtuemart_product_id => $product) {
 					$product->mediaitems = count($product->virtuemart_media_id);
-					$product->reviews = $productreviews->countReviewsForProduct($virtuemart_product_id);
+					$product->reviews = $productreviews->countReviewsForProduct($product->virtuemart_product_id);
 
 					$vendor_model->setId($product->virtuemart_vendor_id);
 					$vendor = $vendor_model->getVendor();
@@ -312,7 +312,7 @@ class VirtuemartViewProduct extends JView {
 				JToolBarHelper::custom('cloneproduct', 'copy', 'copy', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
 				JToolBarHelper::custom('addrating', 'default', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);
 				ShopFunctions::addStandardDefaultViewCommands();
-				$lists = array_merge($lists , ShopFunctions::addStandardDefaultViewLists($model));
+				$lists = array_merge($lists , ShopFunctions::addStandardDefaultViewLists($model,'product_name'));
 
 
 				/* Assign the data */

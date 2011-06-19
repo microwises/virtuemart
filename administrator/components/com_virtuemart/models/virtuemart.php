@@ -36,7 +36,7 @@ class VirtueMartModelVirtueMart extends JModel {
 	 * @param int $virtuemart_category_id
 	 * @return string The HTML code
 	 */
-	function GetVendorDetails($virtuemart_vendor_id)
+/*	function GetVendorDetails($virtuemart_vendor_id)
 	{
 		$db = JFactory::getDBO();
 
@@ -51,7 +51,7 @@ class VirtueMartModelVirtueMart extends JModel {
 
 		$childList = $this->_getList( $query );
 		return $childList;
-	}
+	}*/
 
 
 	/**

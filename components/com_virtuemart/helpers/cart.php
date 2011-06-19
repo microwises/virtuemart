@@ -568,7 +568,7 @@ class VirtueMartCart  {
 		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
 			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'models');
 			$userModel = JModel::getInstance('user', 'VirtueMartModel');
-			$stData = $userModel->getUserAddress(0, $this->selected_shipto, '');
+			$stData = $userModel->getUserAddressList(0, 'ST',$this->selected_shipto);
 			$this->validateUserData('ST', $stData[0]);
 		}
 

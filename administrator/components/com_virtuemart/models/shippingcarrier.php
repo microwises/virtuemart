@@ -105,20 +105,21 @@ class VirtueMartModelShippingCarrier extends VmModel {
      * @author Max Milbers
      * @return boolean True is the save was successful, false otherwise.
 	 */
-    public function store()
+    public function store($data)
 	{
-		$data = JRequest::get('post');
+		//$data = JRequest::get('post');
 
 		if(isset($data['params'])){
 			$params = new JParameter('');
 			$params->bind($data['params']);
 			$data['shipping_carrier_params'] = $params->toString();
 		}
-		if($data['virtuemart_vendor_id']) $data['virtuemart_vendor_id'] = $data['virtuemart_vendor_id'];
 
 	  	if(empty($data['virtuemart_vendor_id'])){
 	  	   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 	   		$data['virtuemart_vendor_id'] = VirtueMartModelVendor::getLoggedVendor();
+	  	} else {
+	  		$data['virtuemart_vendor_id'] = (int) $data['virtuemart_vendor_id'];
 	  	}
 		// missing string FIX, Bad way ?
 		if (VmConfig::isJ15()) {
@@ -133,7 +134,7 @@ class VirtueMartModelShippingCarrier extends VmModel {
 		$data['shipping_carrier_element'] = $this->_db->loadResult();
 
 		$table = $this->getTable('shippingcarriers');
-                if (!$table->bindChecknStore($data)) {
+		if (!$table->bindChecknStore($data)) {
 			$this->setError($table->getError());
 		}
 

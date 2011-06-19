@@ -92,17 +92,18 @@ class VirtueMartModelManufacturer extends VmModel {
     /**
      * Select the products to list on the product list page
      */
-    public function getManufacturerList() {
+/*    public function getManufacturerList() {
      	$db = JFactory::getDBO();
-     	/* Pagination */
+     	// Pagination 
      	$this->getPagination();
 
-     	/* Build the query */
+     	// Build the query 
      	$q = "SELECT
 			";
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
      	return $db->loadObjectList('virtuemart_product_id');
     }
+*/
 
     /**
      * Returns a dropdown menu with manufacturers
@@ -128,10 +129,10 @@ class VirtueMartModelManufacturer extends VmModel {
 	 * @return object List of manufacturer objects
 	 */
 	public function getManufacturers($onlyPublished=false, $noLimit=false) {
+		
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$option	= 'com_virtuemart';
-
 
 		$virtuemart_manufacturercategories_id	= $mainframe->getUserStateFromRequest( $option.'virtuemart_manufacturercategories_id', 'virtuemart_manufacturercategories_id', 0, 'int' );
 		$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string' );
@@ -141,7 +142,9 @@ class VirtueMartModelManufacturer extends VmModel {
 			$where[] .= 'M.`virtuemart_manufacturercategories_id` = '. $virtuemart_manufacturercategories_id;
 		}
 		if ( $search ) {
-			$where[] .= 'LOWER( M.`mf_name` ) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
+			$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
+			$search = $this->_db->Quote($search, false);
+			$where[] .= 'LOWER( M.`mf_name` ) LIKE '.$search;
 		}
 		if ($onlyPublished) {
 			$where[] .= '`#__virtuemart_manufacturers`.`published` = 1';

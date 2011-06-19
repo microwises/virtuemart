@@ -297,7 +297,7 @@ class VirtuemartViewUser extends JView {
 
 		if(!empty($_shipto_id)){
 			// Contains 0 for new, otherwise a virtuemart_userinfo_id
-			$_shipto = $this->_model->getUserAddress($this->_model->getId(), $_shipto_id, 'ST');
+			$_shipto = $this->_model->getUserAddressList($this->_model->getId(), 'ST', $_shipto_id);
 			$this->_openTab = 3;
 
 //			if ($_shipto_id === 0) {

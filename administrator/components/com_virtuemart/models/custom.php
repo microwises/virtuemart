@@ -73,7 +73,7 @@ class VirtueMartModelCustom extends VmModel {
 
 		$query='SELECT * FROM `#__virtuemart_customfields`
 		left join `#__virtuemart_product_customfields` on  `#__virtuemart_product_customfields`.`virtuemart_customfield_id` = `#__virtuemart_customfields`.`virtuemart_customfield_id`
-		and `virtuemart_product_id`='.$virtuemart_product_id;
+		and `virtuemart_product_id`='.(int)$virtuemart_product_id;
 		$this->_db->setQuery($query);
 		$this->_data->productCustoms = $this->_db->loadObjectList();
 		$this->_data->customFields = self::getCustoms() ;
@@ -90,12 +90,20 @@ class VirtueMartModelCustom extends VmModel {
 	 * @author Kohl Patrick
 	 * @return object List of custom objects
 	 */
-    function getCustoms(){
+    function getCustoms($custom_parent_id,$search = false){
 
 		$this->_db = JFactory::getDBO();
 		$query='SELECT * FROM `#__virtuemart_customs` WHERE field_type <> "R" AND field_type <> "Z" ';
-		if ($custom_parent_id = JRequest::getInt('custom_parent_id') ) $query .= 'AND `custom_parent_id` ='.$custom_parent_id;
-		if ($keyword = JRequest::getWord('keyword') ) $query .= 'AND `custom_title` LIKE "%'.$keyword.'%"';
+		if($custom_parent_id){
+			$query .= 'AND `custom_parent_id` ='.(int)$custom_parent_id;
+		}
+
+		if($search){
+			$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
+			$search = $this->_db->Quote($search, false);
+			$query .= 'AND `custom_title` LIKE '.$search;
+		}
+		
 		$this->_db->setQuery($query);
 		// set total for pagination
 		$this->_total = $this->_getListCount($query);
@@ -148,10 +156,18 @@ class VirtueMartModelCustom extends VmModel {
 	@int     $id		: The concerned id (eg. product_id)
 	*/
 	public function saveModelCustomfields($table,$datas, $id) {
+		
+		//Sanitize id
+		$id = (int)$id;
+		
+		//Table whitelist
+		$tableWhiteList = array('product','category','manufacturer');
+		if(!in_array($table,$tableWhiteList)) return false;
+		
 		// delete existings from modelXref and table customfields
-		$this->_db->setQuery( 'DELETE PC.*,C.* FROM `#__virtuemart_'.$table.'_customfields` as `PC`, `#__virtuemart_customfields` as `C` WHERE `PC`.`virtuemart_customfield_id` = `C`.`virtuemart_customfield_id` AND  virtuemart_'.$table.'_id =' . $id );
+		$this->_db->setQuery( 'DELETE PC.*,C.* FROM `#__virtuemart_'.$table.'_customfields` as `PC`, `#__virtuemart_customfields` as `C` WHERE `PC`.`virtuemart_customfield_id` = `C`.`virtuemart_customfield_id` AND  virtuemart_'.$table.'_id ='.$id );
 		if(!$this->_db->query()){
-			$this->setError('Error in saveModelCustomfields '.$this->_db->getQuery());
+			$this->setError('Error in saveModelCustomfields '); //.$this->_db->getQuery()); Dont give hackers too much info
 		}
 
 		$customfieldIds = array();

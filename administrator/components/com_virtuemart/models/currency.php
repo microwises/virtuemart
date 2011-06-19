@@ -66,16 +66,22 @@ class VirtueMartModelCurrency extends VmModel {
      * @author RickG, Max Milbers
      * @return object List of currency objects
      */
-    function getCurrenciesList($vendorId=1) {
+    function getCurrenciesList($search,$vendorId=1) {
 
 		$where = array();
 		$this->_query = 'SELECT * FROM `#__virtuemart_currencies` ';
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if( !Permissions::getInstance()->check('admin') ){
-			$where[]  = '(`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1")';
+			$where[]  = '(`virtuemart_vendor_id` = "'.(int)$vendorId.'" OR `shared`="1")';
 		}
 		/* add filters */
+		if($search){
+			$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
+			$search = $this->_db->Quote($search, false);
+			$where[] = '`currency_name` LIKE '.$search;			
+		}
+		
 		if (JRequest::getWord('search', false)) $where[] = '`currency_name` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
 
 		if (count($where) > 0) $this->_query .= ' WHERE '.implode(' AND ', $where) ;
@@ -94,7 +100,7 @@ class VirtueMartModelCurrency extends VmModel {
      */
     function getCurrencies($vendorId=1) {
 	$db = JFactory::getDBO();
-	$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE (`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `#__virtuemart_currencies`.`currency_name`';
+	$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE (`virtuemart_vendor_id` = "'.(int)$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `#__virtuemart_currencies`.`currency_name`';
 	$db->setQuery($q);
 	return $db->loadObjectList();
     }

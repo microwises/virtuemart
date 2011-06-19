@@ -57,6 +57,7 @@ class VirtuemartModelReport extends VmModel {
 		$this->start_date = $this->date_presets[$period]['from'];
 		$this->end_date = $this->date_presets[$period]['until'];
 	}
+	
    /**
      * Retrieve a list of report items from the database.
      *

@@ -25,7 +25,6 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
 
 class VirtueMartModelPaymentmethod extends VmModel{
 
-
 	/**
 	 * constructs a VmModel
 	 * setMainTable defines the maintable of the model
@@ -43,7 +42,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	 */
 	 public function getIdbyCodeAndVendorId($jpluginId,$vendorId=1){
 	 	if(!$jpluginId) return 0;
-	 	$q = 'SELECT `virtuemart_paymentmethod_id` FROM #__virtuemart_paymentmethods WHERE `paym_jplugin_id` = "'.$jpluginId.'" AND `virtuemart_vendor_id` = "'.$vendorId.'" ';
+	 	$q = 'SELECT `virtuemart_paymentmethod_id` FROM #__virtuemart_paymentmethods WHERE `paym_jplugin_id` = "'.(int)$jpluginId.'" AND `virtuemart_vendor_id` = "'.(int)$vendorId.'" ';
 		$this->_db->setQuery($q);
 		return $this->_db->loadResult();
 	 }
@@ -164,16 +163,15 @@ class VirtueMartModelPaymentmethod extends VmModel{
      * @author Max Milbers
      * @return boolean True is the save was successful, false otherwise.
 	 */
-    public function store()
+    public function store($data)
 	{
-		$data = JRequest::get('post');
+		//$data = JRequest::get('post');
 
 		if(isset($data['params'])){
 			$params = new JParameter('');
 			$params->bind($data['params']);
 			$data['paym_params'] = $params->toString();
 		}
-		if($data['virtuemart_vendor_id']) $data['virtuemart_vendor_id'] = $data['virtuemart_vendor_id'];
 
 	  	if(empty($data['virtuemart_vendor_id'])){
 	  	   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
@@ -187,7 +185,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			$tb = '#__extensions';
 			$ext_id = 'extension_id';
 		}
-		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['paym_jplugin_id'].'"';
+		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.(int)$data['paym_jplugin_id'].'"';
 		$this->_db->setQuery($q);
 		$data['paym_element'] = $this->_db->loadResult();
 
@@ -211,7 +209,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
      * @author Max Milbers
      *
      */
-	public function published( $row, $i, $variable = 'published' )
+/*	public function published( $row, $i, $variable = 'published' )
 	{
 		$imgY = 'tick.png';
 		$imgX = 'publish_x.png';
@@ -225,7 +223,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		<img src="images/'. $img .'" border="0" alt="'. $alt .'" /></a>'
 		;
 		return $href;
-	}
+	}*/
 
 	/**
 	 * Publish/Unpublish all the ids selected
@@ -241,7 +239,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 //			$quotedId = $this->_db->Quote($id);
 			$query = 'SELECT discount_is_percentage
 					  FROM #__virtuemart_paymentmethods
-					  WHERE virtuemart_paymentmethod_id = '. $quotedId;
+					  WHERE virtuemart_paymentmethod_id = '. (int)$quotedId;
 
 			$this->_db->setQuery($query);
 			$calc = $this->_db->loadObject();
@@ -250,7 +248,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 
 			$query = 'UPDATE #__virtuemart_paymentmethods
 					  SET discount_is_percentage = '.$publish.'
-					  WHERE virtuemart_paymentmethod_id = '.$quotedId;
+					  WHERE virtuemart_paymentmethod_id = '.(int)$quotedId;
 
 			$this->_db->setQuery($query);
 
@@ -356,7 +354,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	 */
 	function hasCreditCard($virtuemart_paymentmethod_id)
 	{
-		$query = 'SELECT COUNT(*) AS c FROM `#__virtuemart_paymentmethod_creditcards` WHERE `virtuemart_paymentmethod_id`="'.$virtuemart_paymentmethod_id.'"';
+		$query = 'SELECT COUNT(*) AS c FROM `#__virtuemart_paymentmethod_creditcards` WHERE `virtuemart_paymentmethod_id`="'.(int)$virtuemart_paymentmethod_id.'"';
 		if(empty($this->_db))  $this->_db = JFactory::getDBO();
 		$this->_db->setQuery($query);
 		$_r = $this->_db->loadAssoc();

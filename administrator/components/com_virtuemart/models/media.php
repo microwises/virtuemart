@@ -54,7 +54,7 @@ class VirtueMartModelMedia extends VmModel {
     	if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
    		$data = $this->getTable('medias');
-   		$data->load($this->_id);
+   		$data->load((int)$this->_id);
 
   		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
@@ -83,7 +83,7 @@ class VirtueMartModelMedia extends VmModel {
     		$data = $this->getTable('medias');
     	    foreach($virtuemart_media_id as $virtuemart_media_id){
 	    		$id = is_object($virtuemart_media_id)? $virtuemart_media_id->virtuemart_media_id:$virtuemart_media_id;
-	   			$data->load($id);
+	   			$data->load((int)$id);
 	   			$media = VmMediaHandler::createMedia($data,$data->file_type,$mime);
 	   			if(is_object($virtuemart_media_id) && !empty($virtuemart_media_id->product_name)) $media->product_name = $virtuemart_media_id->product_name;
 	  			$medias[] = $media;
@@ -113,8 +113,8 @@ class VirtueMartModelMedia extends VmModel {
     	$vendorId = 1; //TODO set to logged user or requested vendorId, not easy later
     	$query = '';
     	$whereItems = array();
+		
     	$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
-
     	if(!empty($virtuemart_product_id)){
     		$query = 'SELECT `#__virtuemart_medias`.`virtuemart_media_id` as virtuemart_media_id FROM `#__virtuemart_product_medias` 
     		LEFT JOIN `#__virtuemart_medias` ON `#__virtuemart_medias`.`virtuemart_media_id`=`#__virtuemart_product_medias`.`virtuemart_media_id` ';
@@ -136,7 +136,7 @@ class VirtueMartModelMedia extends VmModel {
     		$query='SELECT `virtuemart_media_id` FROM `#__virtuemart_medias` ';
     	    if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 	    	if(!Permissions::getInstance()->check('admin') ){
-				$whereItems[] = '(`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1")';
+				$whereItems[] = '(`virtuemart_vendor_id` = "'.(int)$vendorId.'" OR `shared`="1")';
 	    	}
 
 	    	if ($onlyPublished) {
@@ -146,7 +146,11 @@ class VirtueMartModelMedia extends VmModel {
 			//$oderby = '`#__virtuemart_medias`.`modified_on`';
     	}
 		
-		if (JRequest::getWord('search', false)) $where[] = '`file_title` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
+		if ($search = JRequest::getWord('search', false)){
+			$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
+			$search = $this->_db->Quote($search, false);
+			$where[] = '`file_title` LIKE '.$search;
+		} 
 
 
 		if (!empty($where)) $whereItems = array_merge($whereItems,$where);
@@ -224,12 +228,12 @@ class VirtueMartModelMedia extends VmModel {
 		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
 
 		if(empty($data['active_media_id'])  && empty($data['media_action'])) return ;
-		$oldIds = $data['virtuemart_media_id'];
+		$oldIds = (int)$data['virtuemart_media_id'];
 		$data['file_type'] = $type;
 		
 		if(in_array($data['active_media_id'], $data['virtuemart_media_id']) && empty($data['media_action']) ){
-			$this -> setId($data['active_media_id']);
-			$data['virtuemart_media_id'] = $data['active_media_id'];
+			$this -> setId((int)$data['active_media_id']);
+			$data['virtuemart_media_id'] = (int)$data['active_media_id'];
 		}
 		$virtuemart_media_id = $this->store($data,$type);
 
@@ -238,7 +242,6 @@ class VirtueMartModelMedia extends VmModel {
 		$virtuemart_media_ids = array_diff($virtuemart_media_ids,array('0',''));
 		$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
 		
-
 		//Important! sanitize array to int	
 		jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($data['virtuemart_media_id']);
@@ -285,41 +288,8 @@ class VirtueMartModelMedia extends VmModel {
 			}
 //		}
 
-
-
 		return $table->virtuemart_media_id;
 	}
-
-	/**
-	 * Delete an image file
-	 * @author unknown, maybe Roland Dalmulder
-	 * @author Max Milbers
-	 */
-/*	public function remove($cids) {
-		$mainframe = Jfactory::getApplication('site');
-//		$removed = 0;
-	 	$row = $this->getTable('medias');
-	 	if (is_array($cids)) {
-			foreach ($cids as $key => $cid) {
-				$row->load($cid);
-				if ($row->delete()) $removed++;
-			}
-		}
-		else {
-			$row->load($cids);
-			if ($row->delete()) $removed++;
-		}
-		$mainframe->enqueueMessage(JText::sprintf('COM_VIRTUEMART_DELETED_X_MEDIA_ITEMS',$removed));
-
-		//TODO update table belonging, category, product, venodor
-		//remove media from server
-		/* Redirect so the user cannot reload the remove action 
-//		$url = 'index.php?option=com_virtuemart&view=media';
-//		$productid = JRequest::getInt('virtuemart_product_id', false);
-//		if ($productid) $url .= '&virtuemart_product_id='.$productid;
-//		$mainframe->redirect($url);
-	}
-*/
 
 	public function attachImages($objects,$type,$mime=''){
 		if(!empty($objects)){

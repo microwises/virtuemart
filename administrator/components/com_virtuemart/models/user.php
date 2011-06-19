@@ -769,7 +769,7 @@ class VirtueMartModelUser extends VmModel {
 	 			$_status = false;
 	 			continue;
 	 		}
-                        if (!$vmusers->delete($userId)) {
+			if (!$vmusers->delete($userId)) {
 	 			$this->setError($vmusers->getError()); // Signal but continue
 	 			$_status = false;
 	 			continue;
@@ -798,18 +798,17 @@ class VirtueMartModelUser extends VmModel {
 
 	 /**
 	  * Retrieve a list of addresses for a user
-	  *
+	  * todo check, was broken
 	  *  @param $_uid int User ID
 	  *  @param $_type string, addess- type, ST (ShipTo, default) or BT (BillTo)
 	  */
-	 function getUserAddressList($_uid = 0, $_type = 'ST')
+/*	 function getUserAddressList($_uid = 0, $_type = 'ST')
 	 {
-	 	$_q = 'SELECT * '
-			. ' FROM #__virtuemart_userinfos '
-			. " WHERE virtuemart_user_id='" . (($_uid==0)?$this->_id:$_uid) . "' "
-			. " AND address_type='$_type'";
+	 	$_q = 'SELECT * FROM #__virtuemart_userinfos 
+				WHERE virtuemart_user_id="' . (($_uid==0)?$this->_id:(int)$_uid) .'" 
+				AND address_type="'.$_type.'"';
 			return ($this->_getList($_q));
-	 }
+	 }*/
 
 	 /**
 	  * Retrieve a single address for a user
@@ -818,16 +817,15 @@ class VirtueMartModelUser extends VmModel {
 	  *  @param $_virtuemart_userinfo_id string Optional User Info ID
 	  *  @param $_type string, addess- type, ST (ShipTo, default) or BT (BillTo). Empty string to ignore
 	  */
-	 function getUserAddress($_uid = 0, $_virtuemart_userinfo_id = -1, $_type = 'ST')
+	 function getUserAddressList($_uid = 0, $_type = 'ST',$_virtuemart_userinfo_id = -1)
 	 {
-	 	$_q = 'SELECT * '
-			. ' FROM #__virtuemart_userinfos '
-			. " WHERE virtuemart_user_id='" . (($_uid==0)?$this->_id:$_uid) . "' ";
+	 	$_q = 'SELECT * FROM #__virtuemart_userinfos '
+			. " WHERE virtuemart_user_id='" . (($_uid==0)?$this->_id:(int)$_uid) . "' ";
 			if ($_type !== '') {
-				$_q .= " AND address_type='$_type'";
+				$_q .= ' AND address_type="'.$_type.'"';
 			}
 			if ($_virtuemart_userinfo_id !== -1) {
-				$_q .= " AND virtuemart_userinfo_id='$_virtuemart_userinfo_id'";
+				$_q .= ' AND virtuemart_userinfo_id="'.$_virtuemart_userinfo_id.'"';
 			}
 			return ($this->_getList($_q));
 	 }
@@ -841,7 +839,7 @@ class VirtueMartModelUser extends VmModel {
 	 function getCustomerNumberById($_id = 0)
 	 {
 	 	$_q = "SELECT `customer_number` FROM `#__virtuemart_vmusers` "
-			."WHERE `virtuemart_user_id`='" . (($_id==0)?$this->_id:$_id) . "' ";
+			."WHERE `virtuemart_user_id`='" . (($_id==0)?$this->_id:(int)$_id) . "' ";
 			$_r = $this->_getList($_q);
 			if(!empty($_r[0])){
 				return $_r[0]->customer_number;
@@ -870,10 +868,12 @@ class VirtueMartModelUser extends VmModel {
 	  */
 	 function _getFilter()
 	 {
-	 	if (JRequest::getWord('search', false)) {
-	 		$_where = ' WHERE `name` LIKE ' .$this->_db->Quote('%'.JRequest::getWord('search').'%')
-	 		. ' OR `username` LIKE ' .$this->_db->Quote('%'.JRequest::getWord('search').'%');
-	 		return ($_where);
+	 	if ($search = JRequest::getWord('search', false)) {
+	 		$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
+			$search = $this->_db->Quote($search, false);
+			
+	 		$where = ' WHERE `name` LIKE '.$search.' OR `username` LIKE ' .$search;
+	 		return ($where);
 	 	}
 	 	return ('');
 	 }
@@ -916,6 +916,10 @@ class VirtueMartModelUser extends VmModel {
 	 	if (count($_ids) == 0) {
 	 		return array();
 	 	}
+		
+		jimport( 'joomla.utilities.arrayhelper' );
+		JArrayHelper::toInteger($_ids);
+		
 	 	$_missing = $this->_getList('SELECT j.username AS uname '
 			. ',      j.id       AS uid '
 			. 'FROM `#__users` j '

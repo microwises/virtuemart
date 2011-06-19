@@ -100,16 +100,17 @@ class VmModel extends JModel {
 	 *
 	 * @author Max Milbers
 	 */
-    public function &getPagination() {
+    public function getPagination($total=0) {
+    	if(empty($total)) $total = $this->getTotal();
 		if ($this->_pagination == null) {
 			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
+			$this->_pagination = new JPagination($total , $this->getState('limitstart'), $this->getState('limit') );
 		}
 		return $this->_pagination;
 	}
 
 	/**
-	 * Gets the total number of countries
+	 * Gets the total number of entries
 	 *TODO filters and search ar not set
      * @author Max Milbers
 	 * @return int Total number of entries in the database
@@ -125,7 +126,6 @@ class VmModel extends JModel {
 			} else {
 				$this->_total = $this->_db->getNumRows();
 			}
-
 //			$this->_total = $this->_getListCount($query);
         }
 
@@ -186,7 +186,7 @@ class VmModel extends JModel {
 		$table = $this->getTable($this->_maintablename);
 
 		foreach($ids as $id) {
-		    if (!$table->delete($id)) {
+		    if (!$table->delete((int)$id)) {
 				$this->setError(get_class( $this ).'::remove '.$table->getError());
 				return false;
 		    }
@@ -298,14 +298,14 @@ class VmModel extends JModel {
 	 *
 	 * @return string text to add to the SQL statement
 	 */
-	function _getOrdering($defaut='ordering',$order_dir = 'asc') {
-		if ($defaut == '') return '';
+	function _getOrdering($default='ordering',$order_dir = 'asc') {
+		if ($default == '') return '';
 		$option = JRequest::getCmd( 'option');
 		$view = JRequest::getWord('view');
 		$mainframe = JFactory::getApplication() ;
 
 		$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order_Dir', 'filter_order_Dir', $order_dir, 'word' );
-		$filter_order     = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', $defaut, 'cmd' );
+		$filter_order     = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', $default, 'cmd' );
 
 		return ' ORDER BY '.$filter_order.' '.$filter_order_Dir ;
 	}

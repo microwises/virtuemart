@@ -144,7 +144,7 @@ class VirtueMartModelUserfields extends VmModel {
 	{
 		$this->_data = $this->getTable('userfield_values');
 		if ($this->_id > 0) {
-			$query = 'SELECT * FROM `#__virtuemart_userfield_values` WHERE `virtuemart_userfield_id` = ' . $this->_id
+			$query = 'SELECT * FROM `#__virtuemart_userfield_values` WHERE `virtuemart_userfield_id` = ' . (int)$this->_id
 				. ' ORDER BY `ordering`';
 			$_userFieldValues = $this->_getList($query);
 			return $_userFieldValues;
@@ -893,7 +893,9 @@ class VirtueMartModelUserfields extends VmModel {
 	{
 		$db = JFactory::getDBO();
 		if (JRequest::getWord('search', false)) {
-			return (' WHERE `name` LIKE ' .$db->Quote('%'.JRequest::getWord('search').'%'));
+			$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
+			$search = $this->_db->Quote($search, false);
+			return (' WHERE `name` LIKE ' .$search);
 		}
 		return ('');
 	}

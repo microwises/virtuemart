@@ -162,7 +162,23 @@ class VmMediaHandler {
 
 	    	$this->file_name = JFile::stripExt($name);
 	    	$this->file_url_folder = substr($this->file_url,0,$lastIndexOfSlash+1);
-	    	$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
+	    	$this->file_path_folder = str_replace('/',DS,$this->file_url_folder).'../.....';
+			
+			while(strpos($this->file_path_folder,'..')!==false){
+				$this->file_path_folder  = str_replace('..', '', $this->file_path_folder);
+			};
+			
+			$this->file_path_folder  = preg_replace('#[/\\\\]+#', DS, $this->file_path_folder);
+			
+			
+		/*	$this->file_path_folder = JPath::clean( $this->file_path_folder );
+			$this->file_path_folder = $this->file_path_folder.'//../';
+			$this->file_path_folder = JPath::clean( $this->file_path_folder );
+			//if (strpos( $this->file_path_folder, JPath::clean( JPATH_ROOT ) ) !== 0) {
+			   $app = JFactory::getApplication();
+			   $app -> enqueueMessage('File path invalid '.$this->file_path_folder);
+			//}
+		  */
 	    	$this->file_extension = strtolower(JFile::getExt($name));
 
 			$this->file_url_folder_thumb = $this->file_url_folder.'resized/';

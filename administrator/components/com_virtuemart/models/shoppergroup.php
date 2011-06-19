@@ -6,6 +6,7 @@
 * @package	VirtueMart
 * @subpackage ShopperGroup
 * @author Markus Öhler
+* @author Max Milbers
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -90,7 +91,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 	function makeDefault($id) {
 		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = 0');
 		if (!$this->_db->query()) return ;
-		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = 1 WHERE virtuemart_shoppergroup_id='.$id);
+		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = 1 WHERE virtuemart_shoppergroup_id='.(int)$id);
 		if (!$this->_db->query()) return ;
 		return true;
 	}
@@ -108,7 +109,10 @@ class VirtueMartModelShopperGroup extends VmModel {
 	}
 	
 	function remove($ids){
-		
+
+		jimport( 'joomla.utilities.arrayhelper' );
+		JArrayHelper::toInteger($ids);
+				
 		$table = $this->getTable($this->_maintablename);
 		
 		$defaultId = $this->getDefault();
@@ -155,11 +159,11 @@ class VirtueMartModelShopperGroup extends VmModel {
     		
     	if (!empty($id) && !$default_group) {
       		$q .= ', `#__virtuemart_vmuser_shoppergroups`';
-      		$q .= ' WHERE `#__virtuemart_vmuser_shoppergroups`.`virtuemart_user_id`="'.$id.'" AND ';
+      		$q .= ' WHERE `#__virtuemart_vmuser_shoppergroups`.`virtuemart_user_id`="'.(int)$id.'" AND ';
       		$q .= '`#__virtuemart_shoppergroups`.`virtuemart_shoppergroup_id`=`#__virtuemart_vmuser_shoppergroups`.`virtuemart_shoppergroup_id`';
     	} 
     	else {
-    		$q .= ' WHERE `#__virtuemart_shoppergroups`.`virtuemart_vendor_id`="'.$virtuemart_vendor_id.'" AND `default`="1"';
+    		$q .= ' WHERE `#__virtuemart_shoppergroups`.`virtuemart_vendor_id`="'.(int)$virtuemart_vendor_id.'" AND `default`="1"';
     	}
     	$db->setQuery($q);
     	return $db->loadAssoc();

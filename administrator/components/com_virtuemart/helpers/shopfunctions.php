@@ -95,8 +95,10 @@ class ShopFunctions {
 
     }
 
-			/**
+	/**
 	 * Builds an enlist for information (not chooseable)
+	 * 
+	 * //TODO check for misuse by code injection
 	 * @author Max Milbers
 	 *
 	 * @param $fieldnameXref datafield for the xreftable, where the name is stored
@@ -111,6 +113,9 @@ class ShopFunctions {
 	 */
 
 	function renderGuiList ($fieldnameXref,$tableXref,$fieldIdXref,$idXref,$fieldname,$table,$fieldId,$view,$quantity=4){
+
+		//Sanitize input
+		$quantity = (int) $quantity;
 
 		$db = JFactory::getDBO();
 		$q = 'SELECT '.$fieldnameXref.' FROM '.$tableXref.' WHERE '.$fieldIdXref.' = "'.$idXref.'"';
@@ -190,7 +195,7 @@ class ShopFunctions {
 				//Dont delete this message, we need it later for multivendor
 				//JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the virtuemart_vendor_id to the logged Vendor');
 			}
-			$q = 'SELECT `vendor_name` FROM #__virtuemart_vendors WHERE `virtuemart_vendor_id` = "'.$vendorId.'" ';
+			$q = 'SELECT `vendor_name` FROM #__virtuemart_vendors WHERE `virtuemart_vendor_id` = "'.(int)$vendorId.'" ';
 			$db->setQuery($q);
 			$vendor = $db->loadResult();
 			$html = '<input type="text" size="14" name="vendor_name" class="inputbox" value="'.$vendor.'" readonly="">';
@@ -478,18 +483,16 @@ class ShopFunctions {
 	* @param char $_fld Field to return: country_name (default), country_2_code or country_3_code.
 	* @return string Country name or code
 	*/
-	public function getCountryByID ($_id, $_fld = 'country_name')
-	{
-		if (empty($_id) && $_id !== 0) { //It must not be empty and it must be not 0 ??
-//		if (empty($_id)){
-		return ""; // Nothing to do
-		}
-		$_db = JFactory::getDBO();
+	public function getCountryByID ($id, $fld = 'country_name'){
+		
+		if (empty($id)) return ''; 
+		
+		$id = (int) $id;
+		$db = JFactory::getDBO();
 
-		$_q = 'SELECT ' . $_fld . ' AS fld FROM `#__virtuemart_countries` WHERE virtuemart_country_id = ' . $_id;
-		$_db->setQuery($_q);
-		$_r = $_db->loadResult();
-		return $_r;
+		$q = 'SELECT ' . $fld . ' AS fld FROM `#__virtuemart_countries` WHERE virtuemart_country_id = ' . $id;
+		$db->setQuery($q);
+		return $_db->loadResult();
 	}
 
 	/**
@@ -500,9 +503,9 @@ class ShopFunctions {
 	* @param string $_name Country name
 	* @return int Country ID
 	*/
-	public function getCountryIDByName ($_name = '')
+	public function getCountryIDByName ($_name)
 	{
-		if ($_name == '') {
+		if (empty($_name)) {
 			return 0;
 		}
 		$_db = JFactory::getDBO();
@@ -522,18 +525,15 @@ class ShopFunctions {
 	* @param char $_fld Field to return: state_name (default), state_2_code or state_3_code.
 	* @return string state name or code
 	*/
-	public function getStateByID ($_id, $_fld = 'state_name')
-	{
-		if (empty($_id) && $_id !== 0) {
-//		if (empty($_id)){
-			return ""; // Nothing to do
-		}
-		$_db = JFactory::getDBO();
+	public function getStateByID ($id, $fld = 'state_name'){
+		
+		if (empty($id)) return ''; 
+		$db = JFactory::getDBO();
 
-		$_q = 'SELECT ' . $_fld . ' AS fld FROM `#__virtuemart_states` WHERE virtuemart_state_id = ' . $_id;
-		$_db->setQuery($_q);
-		$_r = $_db->loadObject();
-		return $_r->fld;
+		$q = 'SELECT ' . $fld . ' AS fld FROM `#__virtuemart_states` WHERE virtuemart_state_id = ' . (int)$id;
+		$db->setQuery($q);
+		$r = $db->loadObject();
+		return $r->fld;
 	}
 
 	/**
@@ -618,7 +618,7 @@ class ShopFunctions {
 		$_db = JFactory::getDBO();
 
 		$_q = 'SELECT order_status_name FROM `#__virtuemart_orderstates`'
-			. " WHERE order_status_code = '$_code' ";
+			. ' WHERE order_status_code = '.$_code;
 		$_db->setQuery($_q);
 		$_r = $_db->loadObject();
 		return $_r->order_status_name;
@@ -979,12 +979,13 @@ class ShopFunctions {
 	/**
 	 * Creates the Quantity Input Boxes/Radio Buttons/Lists for Products
 	 *
+	 * @deprecated
 	 * @param object $product The product details
 	 * @param string $child
 	 * @param string $use_parent
 	 * @return string
 	 */
-	function getQuantityBoxOptions($product, $child = false, $use_parent = 'N') {
+/*	function getQuantityBoxOptions($product, $child = false, $use_parent = 'N') {
 		$session = JFactory::getSession();
 		$cart = $session->get("cart", null);
 
@@ -1001,7 +1002,8 @@ class ShopFunctions {
 			$quantity = JRequest::getInt('quantity', 1);
 		}
 
-		// Detremine which style to use
+		// Determine which style to use
+		//TODO use_parent = Y? using of Y is not allowed, must  be replaced by 1
 		if ($use_parent == 'Y' && $product->parent_virtuemart_product_id !=0) $id = $product->parent_virtuemart_product_id;
 		else $id = $product->virtuemart_product_id ;
 
@@ -1037,7 +1039,7 @@ class ShopFunctions {
 		return $html ;
 
 	}
-
+*/
 	/**
 	* Return $str with all but $display_length at the end as asterisks.
 	* @author gday

@@ -70,40 +70,6 @@ class VirtueMartModelCreditcard extends VmModel {
   		return $this->_data;
 	}
 
-
-//	/**
-//	 * Bind the post data to the credit card table and save it
-//     *
-//     * @author RickG
-//     * @return boolean True is the save was successful, false otherwise.
-//	 */
-//    function store()
-//	{
-//		$table = $this->getTable('creditcards');
-//
-//		$data = JRequest::get( 'post' );
-//		// Bind the form fields to the credit card table
-//		if (!$table->bind($data)) {
-//			$this->setError($table->getError());
-//			return false;
-//		}
-//
-//		// Make sure the credit card record is valid
-//		if (!$table->check()) {
-//			$this->setError($table->getError());
-//			return false;
-//		}
-//
-//		// Save the credit card record to the database
-//		if (!$table->store()) {
-//			$this->setError($table->getError());
-//			return false;
-//		}
-//
-//		return $table->virtuemart_creditcard_id;
-//	}
-
-
 	/**
 	 * Retireve a list of credit cards from the database.
 	 *
@@ -113,7 +79,7 @@ class VirtueMartModelCreditcard extends VmModel {
 	function getCreditCards($published=1)
 	{
 		$query = 'SELECT * FROM `#__virtuemart_creditcards` ';
-		if($published) $query .= 'WHERE `published`= "'.$published.'" ';
+		if($published) $query .= 'WHERE `published`= "'.(int)$published.'" ';
 		$query .= 'ORDER BY `#__virtuemart_creditcards`.`virtuemart_creditcard_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		// set total for pagination

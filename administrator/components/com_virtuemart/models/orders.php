@@ -47,23 +47,20 @@ class VirtueMartModelOrders extends VmModel {
 	 * This function gets the orderId, for anonymous users
 	 *
 	 */
-	public function getOrderIdByOrderPass(){
-
-		$orderNumber = JRequest::getVar('order_number',0);
-//		if(empty($orderNumber)) return 0;
-		$orderPass = JRequest::getVar('order_pass',0);
-//		if(empty($orderPass)) return 0;
-
+	public function getOrderIdByOrderPass($orderNumber,$orderPass){
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_number`="'.$orderNumber.'" AND `order_pass`="'.$orderPass.'" ';
+		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_number`="'.$db->Quote($orderNumber).'" AND `order_pass`="'.$db->Quote($orderPass).'" ';
 		$db->setQuery($q);
 		$oderId = $db->loadResult();
 		return $oderId;
 
 	}
-	 /**
+
+	/**
+	 * This function seems completly broken, JRequests are not allowed in the model, sql not escaped
 	 * This function gets the secured order Number, to send with paiement
+	 * 
 	 */
 	public function getOrderNumber($_orderNr){
 
@@ -80,9 +77,14 @@ class VirtueMartModelOrders extends VmModel {
 		return $OrderNumber;
 
 	}
-	/*
-	* get next/previous order id
-	*/
+	
+	/**
+	 * Was also broken, actually used?
+	 * 
+	 * get next/previous order id
+	 * 
+	 */
+
 	public function GetOrderId($direction ='ASC', $order_id) {
 
 		if ($direction == 'ASC') {
@@ -92,8 +94,8 @@ class VirtueMartModelOrders extends VmModel {
 		}
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `virtuemart_order_id`'.$arrow.$order_id;
-		$q.= ' ORDER BY `virtuemart_order_id` '.$dir ;
+		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `virtuemart_order_id`'.$arrow.(int)$order_id;
+		$q.= ' ORDER BY `virtuemart_order_id` '.$direction ;
 		$db->setQuery($q);
 
 		if ($oderId = $db->loadResult()) { 
@@ -106,11 +108,13 @@ class VirtueMartModelOrders extends VmModel {
 	/**
 	 * Load a single order
 	 */
-	public function getOrder($virtuemart_order_id='')
-	{
+	public function getOrder($virtuemart_order_id){
+		
+		//sanitize id
+		$virtuemart_order_id = (int)$virtuemart_order_id;
 		$db = JFactory::getDBO();
 		$order = array();
-		if(empty($virtuemart_order_id))$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
+		//if(empty($virtuemart_order_id))$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
 
 		/* Get the order details */
 		$q = "SELECT  u.*,o.*,
@@ -150,18 +154,18 @@ class VirtueMartModelOrders extends VmModel {
 
 	/**
 	 * Select the products to list on the product list page
-	 * @param $_uid integer Optional user ID to get the orders of a single user
+	 * @param $uid integer Optional user ID to get the orders of a single user
 	 * @param $_ignorePagination boolean If true, ignore the Joomla pagination (for embedded use, default false)
 	 */
-	public function getOrdersList($_uid = 0, $_ignorePagination = false)
+	public function getOrdersList($uid = 0, $_ignorePagination = false)
 	{
 
 		$query = "SELECT o.*, CONCAT(u.first_name, ' ', IF(u.middle_name IS NULL, '', CONCAT(u.middle_name, ' ')), u.last_name) AS order_name "
 			.',m.paym_name AS payment_method '
 			.$this->getOrdersListQuery();
 		$_filter = array();
-		if ($_uid > 0) {
-			$_filter[] = ('u.virtuemart_user_id = ' . $_uid);
+		if ($uid > 0) {
+			$_filter[] = ('u.virtuemart_user_id = ' . (int)$uid);
 		}
 		$query .= $this->_getOrdering('virtuemart_order_id');
 		if ($_ignorePagination) {
@@ -760,13 +764,13 @@ class VirtueMartModelOrders extends VmModel {
 	 * the reason for this is unclear to me :-S
 	 *
 	 * @author Oscar van Eijk
-	 * @param integer $_uid The user ID. Defaults to 0 for guests
+	 * @param integer $uid The user ID. Defaults to 0 for guests
 	 * @return string A unique ordernumber
 	 */
-	private function generateOrderNumber($_uid = 0,$length=32)
+	private function generateOrderNumber($uid = 0,$length=32)
 	{
 		return substr(
-				 $_uid
+				 $uid
 					.'_'
 					.md5(
 						 session_id()
@@ -1028,9 +1032,13 @@ class VirtueMartModelOrders extends VmModel {
 
 
 	/**
-	 * Create a list of products for JSON return
+	 *  Create a list of products for JSON return
+	 * 
+	 * TODO sanitize variables Very unsecure
+	 * identical with function in orders?
+	 * disabled to unsecure written
 	 */
-	public function getProductListJson() {
+/*	public function getProductListJson() {
 		$db = JFactory::getDBO();
 		$filter = JRequest::getVar('q', false);
 		$q = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
@@ -1038,7 +1046,7 @@ class VirtueMartModelOrders extends VmModel {
 		if ($filter) $q .= " WHERE product_name LIKE '%".$filter."%'";
 		$db->setQuery($q);
 		return $db->loadObjectList();
-	}
+	}*/
 }
 
 

@@ -66,7 +66,7 @@ class VirtuemartViewCurrency extends JView {
 			$viewName=ShopFunctions::SetViewTitle('vm_currency_48');
 			ShopFunctions::addStandardDefaultViewCommands();
 
-			$currencies = $model->getCurrenciesList();
+			$currencies = $model->getCurrenciesList(JRequest::getWord('search', false));
 			$this->assignRef('currencies',	$currencies);
 
 			$lists = ShopFunctions::addStandardDefaultViewLists($model);
