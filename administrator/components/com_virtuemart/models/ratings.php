@@ -238,13 +238,15 @@ class VirtueMartModelRatings extends VmModel {
     * @author  Max Milbers
     */
     public function saveRating($data) {
-
+		dump($data,'saveRating data ');
 		//Check user_rating
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		if ( !empty($data['virtuemart_product_id']) && !empty($userId)){
-
+			
+			//sanitize input 
+			$data['virtuemart_product_id'] = (int)$data['virtuemart_product_id'];
 			//normalize the rating
 			if ($data['vote'] < 0 ) $data['vote'] = 0 ;
 			if ($data['vote'] > ($maxrating+1) ) $data['vote'] = $maxrating;
@@ -256,7 +258,7 @@ class VirtueMartModelRatings extends VmModel {
 			$vote = $this->getVoteByProduct($data['virtuemart_product_id'],$userId);
 
 			$data['virtuemart_rating_vote_id'] = empty($vote->virtuemart_rating_vote_id)? 0: $vote->virtuemart_rating_vote_id;
-
+			
 			if(isset($data['vote'])){
 				$votesTable = $this->getTable('rating_votes');
 		        $data = $votesTable->bindChecknStore($data);
@@ -265,7 +267,7 @@ class VirtueMartModelRatings extends VmModel {
 					$this->setError(get_class( $this ).'::Error store votes '.$error);
 				}
 			}
-
+			dump($votesTable,'saveRating $votesTable ');
 
 			if(!empty($rating->rates) && empty($vote) ){
 				$data['rates'] = $rating->rates + $data['vote'];
@@ -292,7 +294,7 @@ class VirtueMartModelRatings extends VmModel {
 			foreach($errors as $error){
 				$this->setError(get_class( $this ).'::Error store rating '.$error);
 			}
-
+			dump($votesTable,'saveRating $rating ');
 
 			if(!empty($data['comment'])){
 				$data['comment'] = substr($data['comment'], 0, VmConfig::get('vm_reviews_maximum_comment_length', 2000)) ;
@@ -327,6 +329,7 @@ class VirtueMartModelRatings extends VmModel {
 				foreach($errors as $error){
 					$this->setError(get_class( $this ).'::Error store review '.$error);
 				}
+				dump($reviewTable,'saveRating $reviewTable ');
 			}
 			return true;
 		} else{

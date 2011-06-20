@@ -237,7 +237,7 @@ class VirtueMartModelProduct extends VmModel {
 	    	$this->_db->setQuery($query, $this->_pagination->limitstart, $this->_pagination->limit);
 	     	$productIdList = $this->_db->loadResultArray();
 			
-	     	$app -> enqueueMessage('getProductList '.$this->_db->getQuery());
+	     	//$app -> enqueueMessage('getProductList '.$this->_db->getQuery());
 			
 			return $productIdList;
 		}

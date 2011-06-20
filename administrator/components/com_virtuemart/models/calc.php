@@ -227,7 +227,7 @@ class VirtueMartModelCalc extends VmModel {
 
 		$q = 'SELECT * FROM `#__virtuemart_calcs` WHERE ';
 		foreach ($kind as $field){
-			$q .= '`calc_kind`="'.$this->_db->Quote($field).'" OR ';
+			$q .= '`calc_kind`='.$this->_db->Quote($field).' OR ';
 		}
 		$q=substr($q,0,-3);
 

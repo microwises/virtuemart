@@ -870,6 +870,12 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_prices` (
   `product_price_edate` int(11) DEFAULT NULL,
   `price_quantity_start` int(11) unsigned NOT NULL DEFAULT '0',
   `price_quantity_end` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_product_price_id`),
   KEY `idx_product_price_product_id` (`virtuemart_product_id`),
   KEY `idx_product_price_virtuemart_shoppergroup_id` (`virtuemart_shoppergroup_id`)

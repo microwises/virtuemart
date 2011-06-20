@@ -92,8 +92,17 @@ class VirtuemartViewRatings extends JView {
 				$rating = $model->getReview($cids);
 				$viewName=ShopFunctions::SetViewTitle('vm_reviews_48','REVIEW_RATE',$rating->product_name." (". $rating->customer.")" );
 				$this->assignRef('viewName',$viewName);
-				ShopFunctions::addStandardEditViewCommands();
-
+				
+				//Standard does not work here, points to wrong layout
+				//ShopFunctions::addStandardEditViewCommands();
+				JToolBarHelper::divider();
+				JToolBarHelper::customX('saveReview', 'save', 'save',  JText::_('COM_VIRTUEMART_SAVE'), false);
+				JToolBarHelper::customX('applyReview', 'apply', 'apply',  JText::_('COM_VIRTUEMART_APPLY'), false);
+				JToolBarHelper::customX('cancelEditReview', 'cancel', 'cancel',  JText::_('COM_VIRTUEMART_CANCEL'), false);
+				//JToolBarHelper::save();
+		        //JToolBarHelper::apply();
+				//JToolBarHelper::cancel();
+		
 				/* Assign the data */
 				$this->assignRef('rating', $rating);
 

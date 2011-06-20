@@ -105,5 +105,62 @@ class VirtuemartControllerRatings extends VmController {
 		$view->display();
 	}
 
+	/**
+	 * Save task for review
+	 * 
+	 * @author Max Milbers
+	 */
+	function saveReview(){
+		
+		$this->storeReview(false);
+	}
+
+	/**
+	 * Save task for review
+	 * 
+	 * @author Max Milbers
+	 */
+	function applyReview(){
+		
+		$this->storeReview(true);
+	}
+
+	function storeReview($apply){
+		JRequest::checkToken() or jexit( 'Invalid Token save' );
+
+		if(empty($data))$data = JRequest::get('post');
+
+		$model = $this->getModel($this->_cname);
+		$id = $model->saveRating($data);
+
+		$errors = $model->getErrors();
+		if(empty($errors)) $msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
+		foreach($errors as $error){
+			$msg = ($error).'<br />';
+		}
+
+		$redir = $this->redirectPath;
+		if($apply){
+			$redir = 'index.php?option=com_virtuemart&view=ratings&task=edit_review&virtuemart_rating_review_id='.$id;
+		} else {
+			$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
+			$redir = 'index.php?option=com_virtuemart&view=ratings&task=listreviews&virtuemart_product_id='.$virtuemart_product_id;
+		}
+
+		$this->setRedirect($redir, $msg);			
+	}
+	/**
+	 * Save task for review
+	 * 
+	 * @author Max Milbers
+	 */
+	function cancelEditReview(){
+		$data = JRequest::getVar('post');
+		dump($data,'data cancelEditReview');
+		$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
+		$msg = JText::sprintf('COM_VIRTUEMART_STRING_CANCELLED',$this->mainLangKey); //'COM_VIRTUEMART_OPERATION_CANCELED'
+		$this->setRedirect('index.php?option=com_virtuemart&view=ratings&task=listreviews&virtuemart_product_id='.$virtuemart_product_id, $msg);	
+	}
+	
 }
 // pure php no closing tag

@@ -160,7 +160,11 @@ class VirtuemartViewProduct extends JView {
 
 				/* Load waiting list */
 				if ($product->virtuemart_product_id) {
-					$waitinglist = $this->get('waitingusers', 'waitinglist');
+					//$waitinglist = $this->get('waitingusers', 'waitinglist');
+					
+					if(!class_exists('VirtueMartModelWaitingList')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'waitinglist.php');
+					$waitinglistmodel = new VirtueMartModelWaitingList();
+					$waitinglist = $waitinglistmodel->getWaitingusers($product->virtuemart_product_id);
 					$this->assignRef('waitinglist', $waitinglist);
 				}
 

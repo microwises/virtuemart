@@ -37,7 +37,6 @@ class VmController extends JController{
 		$this->registerTask( 'add',  'edit' );
 		$this->registerTask('apply','save');
 
-
 		//VirtuemartController
 		$this->_cname = strtolower(substr(get_class( $this ), 20));
 		$this->mainLangKey = JText::_('COM_VIRTUEMART_'.strtoupper($this->_cname));
@@ -89,7 +88,7 @@ class VmController extends JController{
 		if(empty($data))$data = JRequest::get('post');
 
 		$model = $this->getModel($this->_cname);
-		$_id = $model->store($data);
+		$id = $model->store($data);
 
 		$errors = $model->getErrors();
 		if(empty($errors)) $msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
@@ -99,7 +98,7 @@ class VmController extends JController{
 
 		$redir = $this->redirectPath;
 		if(JRequest::getCmd('task') == 'apply'){
-			$redir .= '&task=edit&'.$this->_cidName.'='.$_id;
+			$redir .= '&task=edit&'.$this->_cidName.'='.$id;
 		}
 
 		$this->setRedirect($redir, $msg);
