@@ -61,7 +61,7 @@ class VirtuemartViewProduct extends JView {
 
 				$virtuemart_product_id = JRequest::getInt('virtuemart_product_id', array());
 				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0) $virtuemart_product_id = $virtuemart_product_id[0];
-				$product = $product_model->getProductSingle($virtuemart_product_id,false,false,false);
+				$product = $product_model->getProductSingle($virtuemart_product_id,false);
 				$product_child = $product_model->getProductChilds($virtuemart_product_id);
 				$product_parent= $product_model->getProductParent($product->product_parent_id);
 				
@@ -73,7 +73,7 @@ class VirtuemartViewProduct extends JView {
 				// Load the product price 
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
-				$product->prices = $calculator -> getProductPrices($product->virtuemart_product_id);
+				$product->prices = $calculator -> getProductPrices($product);
 
 				$dbTax = JText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
 				foreach($calculator->rules['dBTax'] as $rule){

@@ -372,7 +372,7 @@ class VirtueMartModelProduct extends VmModel {
 			
 			//There is someone who can explain me this?
 			$product->virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0);
-			if  ($product->virtuemart_category_id >0) {
+/*			if  ($product->virtuemart_category_id >0) {
 				$q = 'SELECT `ordering`,`id` FROM `#__virtuemart_product_categories` 
 					WHERE `virtuemart_product_id` = "'.$this->_id.'" and virtuemart_category_id='.$product->virtuemart_category_id;
 				$this->_db->setQuery($q);
@@ -380,7 +380,7 @@ class VirtueMartModelProduct extends VmModel {
 				$ordering = $this->_db->loadObject();
 				$product->ordering = $ordering->ordering;
 				$product->id = $ordering->id; 
-			}
+			}*/
 			if (empty($product->virtuemart_category_id) && isset($product->categories[0])) $product->virtuemart_category_id = $product->categories[0];
 
    			if(!$front && !empty($product->categories[0])){
@@ -395,24 +395,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			if($front){
 
-				/* Load the price */
-				$product->prices =  array();
-//				if (VmConfig::get('show_prices',1) == '1' && $withCalc) {
-/*				if ($withCalc) {
-
-					// Loads the product price details 
-					if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-					$calculator = calculationHelper::getInstance();
-
-					// Calculate the modificator 
-					$product->ProductcustomfieldsIds = $this->getProductcustomfieldsIds($product);
-					$quantityArray = JRequest::getVar('quantity',1,'post');
-					$prices = $calculator->getProductPrices((int)$product->virtuemart_product_id,$product->categories,0,$quantityArray[0]);
-				}*/
-
-				//$product->prices = $prices;
-
-				/* Add the product link  for canonical */
+				// Add the product link  for canonical 
 				$producCategory = empty($product->categories[0])? '':$product->categories[0];
 				$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->_id.'&virtuemart_category_id='.$producCategory);
 
@@ -420,7 +403,7 @@ class VirtueMartModelProduct extends VmModel {
 //				/* Load the neighbours */
 //				$product->neighbours = $this->getNeighborProducts($product);
 
-				/* Fix the product packaging */
+				// Fix the product packaging 
 				if ($product->product_packaging) {
 					$product->packaging = $product->product_packaging & 0xFFFF;
 					$product->box = ($product->product_packaging >> 16) & 0xFFFF;
@@ -430,35 +413,35 @@ class VirtueMartModelProduct extends VmModel {
 					$product->box = '';
 				}
 
-//				/* Load the related products */
+//				// Load the related products 
 //				$product->related = $this->getRelatedProducts($this->_id);
 
-				/* Load the vendor details */
+				// Load the vendor details 
 //				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 //				$product->vendor_name = VirtueMartModelVendor::getVendorName($product->virtuemart_vendor_id);
 
 
-//				/* Check for child products */ I think we dont need this, the product it self knows if it s a child
+//				// Check for child products  I think we dont need this, the product it self knows if it s a child
 //				$product->haschildren = $this->checkChildProducts($this->_id);
 
-				/* Load the custom variants */
+				// Load the custom variants 
 				$product->hasproductCustoms = $this->hasproductCustoms($this->_id);
-				/* Load the custom product fields */
+				// Load the custom product fields 
 				$product->customfields = $this->getProductCustomsField($product);
 
-				/*  custom product fields for add to cart */
+				//  custom product fields for add to cart 
 				$product->customfieldsCart = $this->getProductCustomsFieldCart($product);
 
-				/* Check the order levels */
+				// Check the order levels 
 				if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
 
-				/* Check the stock level */
+				// Check the stock level 
 				if (empty($product->product_in_stock)) $product->product_in_stock = 0;
 
-				/* Get stock indicator */
+				// Get stock indicator 
 //				$product->stock = $this->getStockIndicator($product);
 
-				/* TODO Get the votes */
+				// TODO Get the votes 
 //				$product->votes = $this->getVotes($this->_id);
 
 				}
@@ -1051,8 +1034,10 @@ class VirtueMartModelProduct extends VmModel {
 		return $options;
 	}
 
-	/*
-	 * was productdetails
+	/**
+	 * Gets the price for a variant
+	 * 
+	 * @author Max Milbers
 	 */
 	public function getPrice($virtuemart_product_id,$customVariant,$quantity){
 

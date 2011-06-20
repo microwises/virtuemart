@@ -179,8 +179,24 @@ class calculationHelper {
 		}
 		
 		$costPrice = 0;
-		//Use it as productId
-		if(is_Int($productId)){
+		
+		//We already have the productobject, no need for extra sql, this idea does not work, because the product object is not completed
+		if(is_object($productId)){
+			$costPrice = $productId->product_price;
+			$this->productCurrency = $productId->product_currency;
+			$this->override=$productId->override;
+			$this->product_override_price = $productId->product_override_price;
+			$this->product_tax_id = $productId->product_tax_id;
+			$this->product_discount_id = $productId->product_discount_id;
+
+			$this->productVendorId = $productId->virtuemart_vendor_id;
+			if(empty($this->productVendorId)){
+				$this->productVendorId=1;
+			}
+			$this->_cats = $productId->categories;
+
+		}	//Use it as productId	
+		 else {
 			$this->_db->setQuery( 'SELECT * FROM #__virtuemart_product_prices  WHERE `virtuemart_product_id`="'.$productId.'" ');
 			$row=$this->_db->loadAssoc();
 			if($row){
@@ -212,22 +228,7 @@ class calculationHelper {
 				$this->_cats=$catIds;
 			}
 		}
-		//We already have the productobject, no need for extra sql, this idea does not work, because the product object is not completed
-		else {
-			$costPrice = $productId->product_price;
-			$this->productCurrency = $productId->product_currency;
-			$this->override=$productId->override;
-			$this->product_override_price = $productId->product_override_price;
-			$this->product_tax_id = $productId->product_tax_id;
-			$this->product_discount_id = $productId->product_discount_id;
 
-			$this->productVendorId = $productId->virtuemart_vendor_id;
-			if(empty($this->productVendorId)){
-				$this->productVendorId=1;
-			}
-			$this->_cats = $productId->categories;
-
-		}
 
 		$this->_db->setQuery( 'SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `virtuemart_vendor_id`="'.$this->productVendorId.'" ');
 		$single = $this->_db->loadResult();

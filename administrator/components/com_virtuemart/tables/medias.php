@@ -164,7 +164,7 @@ class TableMedias extends VmTable {
 			if(strlen($this->file_url)>254){
 				$this->setError(JText::sprintf('COM_VIRTUEMART_URL_TOO_LONG',strlen($this->file_url) ) );
 			}
-			if(strpos($this->file_url,'..')){
+			if(strpos($this->file_url,'..')!==false){
 				$ok = false;
 				$this->setError(JText::sprintf('COM_VIRTUEMART_URL_NOT_VALID',strlen($this->file_url) ) );
 			}
