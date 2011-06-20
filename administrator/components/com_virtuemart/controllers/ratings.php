@@ -156,7 +156,7 @@ class VirtuemartControllerRatings extends VmController {
 	 */
 	function cancelEditReview(){
 		$data = JRequest::getVar('post');
-		dump($data,'data cancelEditReview');
+
 		$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
 		$msg = JText::sprintf('COM_VIRTUEMART_STRING_CANCELLED',$this->mainLangKey); //'COM_VIRTUEMART_OPERATION_CANCELED'
 		$this->setRedirect('index.php?option=com_virtuemart&view=ratings&task=listreviews&virtuemart_product_id='.$virtuemart_product_id, $msg);	

@@ -247,7 +247,7 @@ class VirtuemartControllerOrders extends VmController {
 		$mainframe = Jfactory::getApplication();
 		$model = $this->getModel('orders');
 		$_items = JRequest::getVar('cid',  0, '', 'array');
-		$_status = JRequest::getVar('order_status', '');
+		$_status = JRequest::getWord('order_status', '');
 		$_orderID = JRequest::getVar('virtuemart_order_id', '');
 		foreach ($_items as $_item) {
 			$model->updateSingleItemStatus($_item, $_status[$_orderID]);

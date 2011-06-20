@@ -138,11 +138,11 @@ class VirtueMartModelConfig extends JModel {
 
     /**
      * Retrieve a list of possible order statuses.
-     *
+     * Wrong place, use the function in model orderstatus instead.
      * @author RickG
      * @return object List of status objects
      */
-    function getOrderStatusList() {
+/*    function getOrderStatusList() {
 	$db = JFactory::getDBO();
 
 	$query = 'SELECT `order_status_code`, `order_status_name` FROM `#__virtuemart_orderstates` ';
@@ -150,7 +150,7 @@ class VirtueMartModelConfig extends JModel {
 	$db->setQuery($query);
 
 	return $db->loadObjectList();
-    }
+    }*/
 
 
     /**

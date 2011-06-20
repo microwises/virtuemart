@@ -209,7 +209,6 @@ class CurrencyDisplay {
 				}
 			} else {
 				
-				dumpTrace();
 				$exchangeRate = $currency->_vendorCurrency;
 			}
 		}

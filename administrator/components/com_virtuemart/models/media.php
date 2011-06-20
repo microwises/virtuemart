@@ -231,10 +231,16 @@ class VirtueMartModelMedia extends VmModel {
 		$oldIds = (int)$data['virtuemart_media_id'];
 		$data['file_type'] = $type;
 		
+		
 		if(in_array($data['active_media_id'], $data['virtuemart_media_id']) && empty($data['media_action']) ){
 			$this -> setId((int)$data['active_media_id']);
 			$data['virtuemart_media_id'] = (int)$data['active_media_id'];
 		}
+		
+//		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+//		if(!Permissions::getInstance()->check('admin') ){
+//			
+//		}
 		$virtuemart_media_id = $this->store($data,$type);
 
 		/* add the virtuemart_media_id & remove 0 and '' from $data */
@@ -249,7 +255,6 @@ class VirtueMartModelMedia extends VmModel {
 		
 		$table = $this->getTable($type.'_medias');
 		// Bind the form fields to the country table
-		dump($data,'storeMedia media stored, store table');
 		$data = $table->bindChecknStore($data);
 	    $errors = $table->getErrors();
 		foreach($errors as $error){
@@ -279,7 +284,6 @@ class VirtueMartModelMedia extends VmModel {
 				$data['published'] = $data['media_published'];
 			else
 				$data['published'] = 0;
-
 
 			$table->bindChecknStore($data);
 		    $errors = $table->getErrors();

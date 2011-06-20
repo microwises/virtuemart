@@ -78,8 +78,12 @@ class VirtuemartViewConfig extends JView {
 
 		$noimagelist = $model->getNoImageList();
 		$this->assignRef('noimagelist', $noimagelist);
-		$orderStatusList = $model->getOrderStatusList();
+		
+/*		if(!class_exists('VirtueMartModelOrderstatus'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
+		$oderstatusModel = new VirtueMartModelOrderstatus();
+		$orderStatusList = $oderstatusModel->getOrderStatusList();	
 		$this->assignRef('orderStatusList', $orderStatusList);
+*/		
 		$currConverterList = $model->getCurrencyConverterList();
 		$this->assignRef('currConverterList', $currConverterList);
 		$moduleList = $model->getModuleList();

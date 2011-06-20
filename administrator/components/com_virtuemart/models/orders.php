@@ -50,7 +50,7 @@ class VirtueMartModelOrders extends VmModel {
 	public function getOrderIdByOrderPass($orderNumber,$orderPass){
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_number`="'.$db->Quote($orderNumber).'" AND `order_pass`="'.$db->Quote($orderPass).'" ';
+		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_number`='.$db->Quote($orderNumber).' AND `order_pass`='.$db->Quote($orderPass).' ';
 		$db->setQuery($q);
 		$orderId = $db->loadResult();
 		return $orderId;
@@ -64,14 +64,8 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	public function getOrderNumber($virtuemart_order_id){
 
-		$orderNumber = JRequest::getVar('order_number',0);
-//		if(empty($orderNumber)) return 0;
-		$orderPass = JRequest::getVar('order_pass',0);
-//		if(empty($orderPass)) return 0;
-
-
 		$db = JFactory::getDBO();
-		$q = 'SELECT `order_number` FROM `#__virtuemart_orders` WHERE virtuemart_order_id="'.$virtuemart_order_id.'"  ';
+		$q = 'SELECT `order_number` FROM `#__virtuemart_orders` WHERE virtuemart_order_id="'.(int)$virtuemart_order_id.'"  ';
 		$db->setQuery($q);
 		$OrderNumber = $db->loadResult();
 		return $OrderNumber;
@@ -116,7 +110,7 @@ class VirtueMartModelOrders extends VmModel {
 		$order = array();
 		//if(empty($virtuemart_order_id))$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
 
-		/* Get the order details */
+		// Get the order details 
 		$q = "SELECT  u.*,o.*,
 				IF(isempty(coupon_code), '-', coupon_code) AS coupon_code,
 				s.order_status_name
@@ -129,7 +123,7 @@ class VirtueMartModelOrders extends VmModel {
 		$db->setQuery($q);
 		$order['details'] = $db->loadObjectList('address_type');
 
-		/* Get the order history */
+		// Get the order history 
 		$q = "SELECT *
 			FROM #__virtuemart_order_histories
 			WHERE virtuemart_order_id=".$virtuemart_order_id."
@@ -137,7 +131,7 @@ class VirtueMartModelOrders extends VmModel {
 		$db->setQuery($q);
 		$order['history'] = $db->loadObjectList();
 
-		/* Get the order items */
+		// Get the order items 
 		$q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				order_item_sku, i.virtuemart_product_id, product_item_price,
 				product_final_price, product_attribute, order_status,
@@ -192,103 +186,21 @@ class VirtueMartModelOrders extends VmModel {
 			ON o.payment_method_id = m.virtuemart_paymentmethod_id';
 	}
 
-
-	/**
-	 * Store an attribute
-	 *
-	 * @author RolandD
-	 *TODO do it work for Customs fields options pricable
-	 */
-	public function saveAttribute()
-	{
-		/* Load an attribute */
-		$row = $this->getTable('orders');
-		$row->load(JRequest::getInt('attribute_sku_id'));
-
-		/* Update the list order */
-		$new_list = JRequest::getInt('listorder', 0);
-		$db = JFactory::getDBO();
-//		if ($new_list == 0) {
-//			$q = "SELECT IF(MAX(attribute_list) IS NULL, 1, MAX(attribute_list)+1) AS newlist
-//				FROM #__virtuemart_products_attribute_sku";
-//			$db->setQuery($q);
-//			$new_list = $db->loadResult();
-//		} else {
-//			if ($new_list > $row->attribute_list) {
-//				/* First the lists below the new list order */
-//				$q = "UPDATE #__virtuemart_products_attribute_sku SET attribute_list = attribute_list-1
-//					 WHERE attribute_list <= ".$new_list;
-//				$db->setQuery($q);
-//				$db->query();
-//			} elseif ($new_list < $row->attribute_list) {
-//				/* Second the lists above the new list order */
-//				$q = "UPDATE #__virtuemart_products_attribute_sku SET attribute_list = attribute_list+1
-//					 WHERE attribute_list >= ".$new_list;
-//				$db->setQuery($q);
-//				$db->query();
-//			}
-//		}
-		$row->bind(JRequest::get('post'));
-//		$row->attribute_list = $new_list;
-		if ($row->store()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Remove an attribute
-	 * @author RolandD
-	 * @todo Add sanity checks
-	  TODO do it work for Customs fields options pricable
-	 */
-	public function removeAttribute()
-	{
-		/* Get the attribute IDs to remove */
-		$cids = JRequest::getVar('cid');
-		if (!is_array($cids)) $cids = array($cids);
-
-		/* Start removing */
-		foreach ($cids as $key => $attribute_id) {
-			/* First copy the product in the product table */
-			$row = $this->getTable('attributes');
-
-			/* Delete the attribute */
-			$row->delete($attribute_id);
-		}
-		return true;
-	}
-
-	/**
-	 * Get a list of order statuses
-	 * @author RolandD
-	 */
-	public function getOrderStatusList()
-	{
-		$db = JFactory::getDBO();
-		$q = "SELECT order_status_code AS value, order_status_name AS text
-			FROM #__virtuemart_orderstates
-			ORDER BY ordering";
-		$db->setQuery($q);
-		return $db->loadObjectList();
-	}
-
 	
-        /**
+    /**
 	 * Update an order status and send e-mail if needed
+	 * 
 	 * @author Valérie Isaksen
 	 *  
 	 */
-        public function updateOrderStatus($order_id, $order_status)
-	{
-                /* Update the order */
+	public function updateOrderStatus($order_id, $order_status){
+                // Update the order 
                 $order = $this->getTable('orders');
-                $order->load($order_id);
+                $order->load((int)$order_id);
                 $order->order_status = $order_status;
                 $order->store();
 
-                /* here should update stock level */
+                // here should update stock level 
 	}
 
 	/**
@@ -389,10 +301,9 @@ class VirtueMartModelOrders extends VmModel {
 					if ($_updateStock != 0) {
 						if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
 						$_productModel = new VirtueMartModelProduct();
-						$_q = 'SELECT virtuemart_product_id '
-							.', product_quantity '
-							.'FROM `#__virtuemart_order_items` '
-							."WHERE `virtuemart_order_id` = $virtuemart_order_id";
+						$_q = 'SELECT virtuemart_product_id, product_quantity 
+							FROM `#__virtuemart_order_items` 
+							WHERE `virtuemart_order_id` = "'.(int)$virtuemart_order_id.'" ';
 						$db->setQuery($_q);
 						if ($_products = $db->loadObjectList()) {
 							foreach ($_products as $_key => $_product) {
@@ -407,9 +318,9 @@ class VirtueMartModelOrders extends VmModel {
 
 					/* Update order item status */
 					if (@$update_lines[$virtuemart_order_id]) {
-						$q = "SELECT virtuemart_order_item_id
+						$q = 'SELECT virtuemart_order_item_id
 							FROM #__virtuemart_order_items
-							WHERE virtuemart_order_id=".$virtuemart_order_id;
+							WHERE virtuemart_order_id="'.$virtuemart_order_id.'"';
 						$db->setQuery($q);
 						$order_items = $db->loadObjectList();
 						if ($order_items) {
@@ -474,7 +385,7 @@ class VirtueMartModelOrders extends VmModel {
 	 * @param array $_prices Price data
 	 * @return integer The new ordernumber
 	 */
-	private function _createOrder($_cart, &$_usr, $_prices)
+	private function _createOrder($_cart, $_usr, $_prices)
 	{
 //		TODO We need tablefields for the new values:
 //		Shipping:
@@ -623,7 +534,7 @@ class VirtueMartModelOrders extends VmModel {
 	private function _handlePayment($orderID, $cart, $prices)
 	{
 
-                $orderNr = $this->getOrderNumber($orderID);
+		$orderNr = $this->getOrderNumber($orderID);
 
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
@@ -815,29 +726,18 @@ class VirtueMartModelOrders extends VmModel {
 		$_table = $this->getTable('order_items');
 		$_item = JRequest::getVar('virtuemart_order_item_id', '');
 		$_table->load($_item);
-		$_table->order_status = JRequest::getVar('order_status_'.$_item, '');
+		$_table->order_status = JRequest::getWord('order_status_'.$_item, '');
 		$_table->product_quantity = JRequest::getVar('product_quantity_'.$_item, '');
 		$_table->product_item_price = JRequest::getVar('product_item_price_'.$_item, '');
 		$_table->product_final_price = JRequest::getVar('product_final_price_'.$_item, '');
-//		$_attribs = JRequest::getVar('product_attribute_'.$_item,  0, '', 'array');
-//		if ($_attribs != 0) {
-//			$_attrib = array();
-//			foreach ($_attribs as $_k => $_v) {
-//				$_attrib[] = $_k . ': ' . $_v;
-//			}
-//			$_table->product_attribute = join("<br>\n", $_attrib);
-//		}
 
-		if (!$_table->check()) {
-			$this->setError($this->getError());
-			return false;
+		$data = $table->bindChecknStore($data);
+
+	    $errors = $table->getErrors();
+		foreach($errors as $error){
+			$this->setError( get_class( $this ).'::store '.$error);
 		}
 
-		// Save the record to the database
-		if (!$_table->store()) {
-			$this->setError($this->getError());
-			return false;
-		}
 	}
 
 	/**
@@ -852,7 +752,8 @@ class VirtueMartModelOrders extends VmModel {
 		$mainframe = JFactory::getApplication();
 		$vars = array('orderID' => $virtuemart_order_id);
 
-		$vars['url'] = VmConfig::get('url')."index.php?option=com_virtuemart&page=shop.downloads&Itemid=".$sess->getShopItemid();
+		//TODO, mail download  this url is old
+		//$vars['url'] = VmConfig::get('url')."index.php?option=com_virtuemart&page=shop.downloads&Itemid=".$sess->getShopItemid();
 
 		$db = JFactory::getDBO();
 		$db->setQuery('SELECT order_status FROM #__virtuemart_orders WHERE virtuemart_order_id='.$virtuemart_order_id);
@@ -946,7 +847,7 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	function getOrderLineDetails($orderId, $orderLineId) {
 		$table = $this->getTable('order_items');
-		if ($table->load($orderLineId)) {
+		if ($table->load((int)$orderLineId)) {
 			return $table;
 		}
 		else {
@@ -1005,7 +906,7 @@ class VirtueMartModelOrders extends VmModel {
 	*@var $virtuemart_order_id Order to clear
 	*/
 	function removeOrderItems ($virtuemart_order_id){
-		$q ='DELETE from `#__virtuemart_order_items` WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
+		$q ='DELETE from `#__virtuemart_order_items` WHERE `virtuemart_order_id` = ' .(int) $virtuemart_order_id;
 		 $this->_db->setQuery($q);
 
 		if ($this->_db->query() === false) {

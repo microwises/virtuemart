@@ -144,7 +144,6 @@ class Permissions extends JObject{
 		$session = JFactory::getSession();
 		$user = JFactory::getUser($user_id);
 
-		//dump($session,'my session');
 		// Check token
 		//JRequest::checkToken() or jexit( 'Invalid Token doAuthentication' );
 

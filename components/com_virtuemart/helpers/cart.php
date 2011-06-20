@@ -567,7 +567,6 @@ class VirtueMartCart  {
         $this->tosAccepted = JRequest::getBool('tosAccepted', $this->tosAccepted);
         $this->customer_comment = JRequest::getWord('customer_comment', $this->customer_comment);
 
-		dump($this->selected_shipto,'$this->selected_shipto');
         if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
 			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'models');
             $userModel = JModel::getInstance('user', 'VirtueMartModel');

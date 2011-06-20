@@ -238,7 +238,7 @@ class VirtueMartModelRatings extends VmModel {
     * @author  Max Milbers
     */
     public function saveRating($data) {
-		dump($data,'saveRating data ');
+		
 		//Check user_rating
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
 		$user = JFactory::getUser();
@@ -267,7 +267,6 @@ class VirtueMartModelRatings extends VmModel {
 					$this->setError(get_class( $this ).'::Error store votes '.$error);
 				}
 			}
-			dump($votesTable,'saveRating $votesTable ');
 
 			if(!empty($rating->rates) && empty($vote) ){
 				$data['rates'] = $rating->rates + $data['vote'];
@@ -294,7 +293,6 @@ class VirtueMartModelRatings extends VmModel {
 			foreach($errors as $error){
 				$this->setError(get_class( $this ).'::Error store rating '.$error);
 			}
-			dump($votesTable,'saveRating $rating ');
 
 			if(!empty($data['comment'])){
 				$data['comment'] = substr($data['comment'], 0, VmConfig::get('vm_reviews_maximum_comment_length', 2000)) ;
@@ -329,7 +327,6 @@ class VirtueMartModelRatings extends VmModel {
 				foreach($errors as $error){
 					$this->setError(get_class( $this ).'::Error store review '.$error);
 				}
-				dump($reviewTable,'saveRating $reviewTable ');
 			}
 			return true;
 		} else{

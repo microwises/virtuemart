@@ -304,7 +304,7 @@ class ShopFunctions {
 		$document = JFactory::getDocument();
 		$stateModel = self::getModel('state');
 		// Must be done here also (despite the AJAX selector) to make the current dbselection visible
-		//$states = $stateModel->getStates($countryId,true);dump($countryId,'$countryId');
+		//$states = $stateModel->getStates($countryId,true);
 		$attrs = array();
 		$name = 'state_name';
 		$idA = $id = $_prefix.'virtuemart_state_id';

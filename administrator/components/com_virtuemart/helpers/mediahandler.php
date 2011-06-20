@@ -728,8 +728,7 @@ class VmMediaHandler {
 //		$html .= '<form name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">';
 
 		$html .= ' <table class="adminform"> ';
-
-		dump($this,'mediahandler'); 		
+		
 		if ($this->published || $this->virtuemart_media_id === 0){
 			
 			//if($this->_id==0){
