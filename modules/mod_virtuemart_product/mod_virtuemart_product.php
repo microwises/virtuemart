@@ -35,7 +35,7 @@ $headerText = 		$params->get( 'headerText', '' ); // Display a Header Text
 $footerText = 		$params->get( 'footerText', ''); // Display a footerText
 $Product_group = 	$params->get( 'product_group', 'featured'); // Display a footerText
 if (!$filter_category ) $category_id = null;
-$products = 		$productModel->getGroupProducts($Product_group, $vendorId, $category_id, $max_items);
+$products = 		$productModel->getProductListing($Product_group, $max_items);
 $totalProd = 		count( $products);
 if(empty($products)) return false;
 /* load the template */

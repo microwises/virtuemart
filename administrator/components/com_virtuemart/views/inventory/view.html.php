@@ -40,7 +40,7 @@ class VirtuemartViewInventory extends JView {
 
 		/* Get the data */
 		$model = $this->getModel('product');
-		$inventorylist = $model->getProductList();
+		$inventorylist = $model->getProductListing(false,false);
 
 		/* Apply currency */
 		$currencydisplay = CurrencyDisplay::getInstance();;

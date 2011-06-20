@@ -77,6 +77,7 @@ class calculationHelper {
 	    $this->_currencyDisplay = CurrencyDisplay::getInstance($this->vendorCurrency);
 		$this->_debug           = false;
 		
+		$this->setShopperGroupIds();
 	}
 
 	public function getInstance(){
@@ -102,6 +103,28 @@ class calculationHelper {
 		return $this->_cartData;
 	}
 
+	private function setShopperGroupIds($shopperGroupIds=0,$vendorId=1){
+	
+		if(!empty($shopperGroupIds)){
+			$this->_shopperGroupId = $shopperGroupIds;
+		} else {
+			$user = JFactory::getUser();
+			if(!empty($user->id)){
+				$this->_db->setQuery( 'SELECT `usgr`.`virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups as `usgr`
+ 										JOIN `#__virtuemart_shoppergroups` as `sg` ON (`usgr`.`virtuemart_shoppergroup_id`=`sg`.`virtuemart_shoppergroup_id`) 
+ WHERE `usgr`.`virtuemart_user_id`="'.$user->id.'" AND `sg`.`virtuemart_vendor_id`="'.(int)$vendorId.'" ');
+				$this->_shopperGroupId=$this->_db->loadResultArray();  //todo load as array and test it
+			}
+			if(empty($this->_shopperGroupId)){
+				$this->_db->setQuery( 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
+				WHERE `default`="1" AND `virtuemart_vendor_id`="'.(int)$vendorId.'"');
+//				$this->_db->setQuery( 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups
+//				WHERE `default`="1" AND `virtuemart_vendor_id`="'.$this->productVendorId.'" ');
+				$this->_shopperGroupId = $this->_db->loadResultArray();
+			}			
+		}
+	}
+	
 	private function setCountryState($cart=0){
 		
 		if ($this->_app->isAdmin()) return;
@@ -157,7 +180,7 @@ class calculationHelper {
 		
 		$costPrice = 0;
 		//Use it as productId
-//		if(is_Int($productId)){
+		if(is_Int($productId)){
 			$this->_db->setQuery( 'SELECT * FROM #__virtuemart_product_prices  WHERE `virtuemart_product_id`="'.$productId.'" ');
 			$row=$this->_db->loadAssoc();
 			if($row){
@@ -188,50 +211,32 @@ class calculationHelper {
 			}else{
 				$this->_cats=$catIds;
 			}
-//		}
+		}
 		//We already have the productobject, no need for extra sql, this idea does not work, because the product object is not completed
-//		else {
-////			`product_price`,`product_currency`,`product_discount_id`,`product_tax_id`,`sales_price`,`override`
-//			$basePrice = $productId->product_price;
-//			$this->productCurrency = $productId->product_currency;
-//			$this->product_discount_id = $productId->product_discount_id;
-//			$this->product_tax_id = $productId->product_tax_id;
-//			$this->product_override_price = $productId->product_override_price;
-//			$this->override = $productId->override;
-//
-//			$this->productVendorId = $productId->virtuemart_vendor_id;
-//			if(empty($this->productVendorId)){
-//				$this->productVendorId=1;
-//			}
-//			$this->_cats = $productId->categories;
-//
-//		}
+		else {
+			$costPrice = $productId->product_price;
+			$this->productCurrency = $productId->product_currency;
+			$this->override=$productId->override;
+			$this->product_override_price = $productId->product_override_price;
+			$this->product_tax_id = $productId->product_tax_id;
+			$this->product_discount_id = $productId->product_discount_id;
+
+			$this->productVendorId = $productId->virtuemart_vendor_id;
+			if(empty($this->productVendorId)){
+				$this->productVendorId=1;
+			}
+			$this->_cats = $productId->categories;
+
+		}
 
 		$this->_db->setQuery( 'SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `virtuemart_vendor_id`="'.$this->productVendorId.'" ');
 		$single = $this->_db->loadResult();
 		$this->vendorCurrency = $single;
 
-		if(empty($this->_shopperGroupId)){
-			$user = JFactory::getUser();
-			if(!empty($user->id)){
-				$this->_db->setQuery( 'SELECT `usgr`.`virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups as `usgr`
- JOIN `#__virtuemart_shoppergroups` as `sg` ON (`usgr`.`virtuemart_shoppergroup_id`=`sg`.`virtuemart_shoppergroup_id`) WHERE `usgr`.`virtuemart_user_id`="'.$user->id.'" AND `sg`.`virtuemart_vendor_id`="'.$this->productVendorId.'" ');
-				$this->_shopperGroupId=$this->_db->loadResult();  //todo load as array and test it
-			}
-			if(empty($this->_shopperGroupId)){
-				$this->_db->setQuery( 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
-				WHERE `default`="1" AND `virtuemart_vendor_id`="'.$this->productVendorId.'"');
-//				$this->_db->setQuery( 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups
-//				WHERE `default`="1" AND `virtuemart_vendor_id`="'.$this->productVendorId.'" ');
-				$this->_shopperGroupId = $this->_db->loadResult();
-			}
-		}
-
 		if(!empty($amount)){
 //			$this->_amount = $amount;
 		}
 
-		
 		$this->setCountryState($this->_cart);
 		
 		$this->rules['Tax'] = $this->gatherEffectingRulesForProductPrice('Tax',$this->product_tax_id);
@@ -291,7 +296,7 @@ class calculationHelper {
 		$prices['priceWithoutTax'] = $salesPrice - $prices['taxAmount'];
 
 		$prices['variantModification']=$variant;
-
+		
 		return $prices;
 	}
 
@@ -360,7 +365,7 @@ class calculationHelper {
 		$cartpaymentTax = 0;
 
 		$this->setCountryState($cart);
-		
+				
 		foreach ($cart->products as $name=>$product){
 			$productId = $product->virtuemart_product_id;
 			if (empty($product->quantity) || empty( $product->virtuemart_product_id )){
@@ -395,16 +400,6 @@ class calculationHelper {
 //			} else {
 //				$this->_cartPrices['subTotalProducts'] += $product->prices['basePrice']*$product->quantity;
 //			}
-		}
-
-
-
-		if(empty($this->_shopperGroupId)){
-			$user = JFactory::getUser();
-			if(isset($user->id)){
-				$this->_db->setQuery( 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups  WHERE `virtuemart_user_id`="'.$user->id.'" ');
-				$this->_shopperGroupId=$this->_db->loadResultArray();
-			}
 		}
 
 		$this->_cartData['dBTaxRulesBill'] = $dBTaxRules= $this->gatherEffectingRulesForBill('DBTaxBill');

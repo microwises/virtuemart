@@ -51,9 +51,11 @@ class VirtueMartModelProduct extends VmModel {
 	}
 
 	/**
-	 * New function for sorting
+	 * New function for sorting, searching, filtering and pagination for product ids.
+	 * 
+	 * @author Max Milbers
 	 */
-	function sortSearchListQuery($onlyPublished=true,$group=false,$nbrReturnProducts=0){
+	function sortSearchListQuery($withCalc=true,$onlyPublished=true,$group=false,$nbrReturnProducts=false){
 		
 		$app = JFactory::getApplication() ;
 		
@@ -230,71 +232,24 @@ class VirtueMartModelProduct extends VmModel {
 		if(!$this->_db->query()){
 			$app->enqueueMessage('sortSearchOrder Error in query '.$query.'<br /><br />'.$this->_db->getErrorMsg().'<br />');
 		} else {
-			$count = $this->_db->getNumRows();
 			
-			$this->getPagination($count);
-			
-	    	$this->_db->setQuery($query, $this->_pagination->limitstart, $this->_pagination->limit);
+			if($nbrReturnProducts){
+				$this->_db->setQuery($query, 0, $nbrReturnProducts);
+			} else {
+				$count = $this->_db->getNumRows();
+				$this->getPagination($count);
+				$this->_db->setQuery($query, $this->_pagination->limitstart, $this->_pagination->limit);
+			}
+	    	
 	     	$productIdList = $this->_db->loadResultArray();
 			
-	     	//$app -> enqueueMessage('getProductList '.$this->_db->getQuery());
+	     	//$app -> enqueueMessage('sortSearchListQuery '.$this->_db->getQuery());
 			
 			return $productIdList;
 		}
 		
 		return $query ;
 	}
-
-    public function getGroupProducts($group, $vendorId='1', $categoryId='', $nbrReturnProducts=10) {
-
-		$ids = $this->sortSearchListQuery(true,$group);
-		
-		$result=array();
-		// Check if we have any products 
-		if($ids) {
-			if ($show_prices=VmConfig::get('show_prices',1) == '1'){
-				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-				$calculator = calculationHelper::getInstance();
-			}
-
-			// Add some extra info 
-			foreach ($ids as $id) {
-
-				$featured = $this->getProduct($id);
-				// Product price 
-				$price = "";
-				if ($show_prices) {
-					// Loads the product price details 
-					//Todo check if it is better just to use $featured, but needs redoing the sql above
-					$price = $calculator->getProductPrices((int)$featured->virtuemart_product_id);
-				}
-				$featured->prices = $price;
-
-				// Child products 
-//				$featured->haschildren = $this->checkChildProducts($featured->virtuemart_product_id);
-
-				$result[] = $featured;
-			}
-
-		}
-
-		return $result;
-    }
-
-    /**
-     * Select the products to list on the product list page
-     */
-    public function getProductList() {
-    
-     	$productIdList = $this->sortSearchListQuery(false);
-     	$products = array();
-     	if(!empty($productIdList)){
-     		foreach ($productIdList as $id){
-     			$products[] = $this->getProduct($id,false,false,false);
-     		}
-     	}
-     	return $products;
-    }
 
 	/**
 	 *  Create a list of products for JSON return
@@ -326,7 +281,7 @@ class VirtueMartModelProduct extends VmModel {
 			$virtuemart_product_id = $this->setId($virtuemart_product_id);
 		}
 
-    	$child = $this->getProductSingle($virtuemart_product_id,$front, $withCalc,$onlyPublished);
+    	$child = $this->getProductSingle($virtuemart_product_id,$front, false,$onlyPublished);
 
     	//store the original parent id
 		$pId = $child->virtuemart_product_id;
@@ -334,37 +289,49 @@ class VirtueMartModelProduct extends VmModel {
 		$published = $child->published;
 
 		$i = 0;
+		//dump($child,'child with $virtuemart_product_id '.$virtuemart_product_id);
 		//Check for all attributes to inherited by parent products
     	while(!empty($child->product_parent_id)){
-    		$parentProduct = $this->getProductSingle($child->product_parent_id,$front, $withCalc,$onlyPublished);
+    		
+    		$parentProduct = $this->getProductSingle($child->product_parent_id,$front, false,$onlyPublished);
     	    $attribs = get_object_vars($parentProduct);
-
+			//dump($parentProduct,'parent '.$child->product_parent_id);
 	    	foreach($attribs as $k=>$v){
-				if(!empty($child->$k) && is_array($child->$k)){
-					if(!is_array($v)) $v =array($v);
-//					$child->$k = array_merge($child->$k,$v);
+	    		
+				if(empty($child->$k)){
 					$child->$k = $v;
-				} else{
-					if(empty($child->$k)){
-						$child->$k = $v;
-					}
-				}
+				} 
 	    	}
+			
 			$child->product_parent_id = $parentProduct->product_parent_id;
+			
     	}
 		$child->published = $published;
 		$child->virtuemart_product_id = $pId;
 		$child->product_parent_id = $ppId;
 
+		if ($withCalc) {
+
+			// Loads the product price details 
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			$calculator = calculationHelper::getInstance();
+
+			// Calculate the modificator 
+			$child->ProductcustomfieldsIds = $this->getProductcustomfieldsIds($child);
+			$quantityArray = JRequest::getVar('quantity',1,'post');
+			//$child->prices = $calculator->getProductPrices((int)$child->virtuemart_product_id,$child->categories,0,$quantityArray[0]);
+			$child->prices = $calculator->getProductPrices($child,$child->categories,0,$quantityArray[0]);
+		}
+		
     	return $child;
     }
 
     public function getProductSingle($virtuemart_product_id = null,$front=true, $withCalc = true, $onlyPublished=true){
 
+		$this->fillVoidProduct($front);
        	if (!empty($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId($virtuemart_product_id);
 		}
-
 
 //		if(empty($this->_data)){
 			if (!empty($this->_id)) {
@@ -374,7 +341,7 @@ class VirtueMartModelProduct extends VmModel {
    			$product->load($this->_id);
    			if($onlyPublished){
    				if(empty($product->published)){
-   					return $this->fillVoidProduct($product,$front);
+   					return $this->data;
    				}
    			}
 
@@ -429,21 +396,21 @@ class VirtueMartModelProduct extends VmModel {
 			if($front){
 
 				/* Load the price */
-				$prices = "";
+				$product->prices =  array();
 //				if (VmConfig::get('show_prices',1) == '1' && $withCalc) {
-				if ($withCalc) {
+/*				if ($withCalc) {
 
-					/* Loads the product price details */
+					// Loads the product price details 
 					if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 					$calculator = calculationHelper::getInstance();
 
-					/* Calculate the modificator */
+					// Calculate the modificator 
 					$product->ProductcustomfieldsIds = $this->getProductcustomfieldsIds($product);
 					$quantityArray = JRequest::getVar('quantity',1,'post');
 					$prices = $calculator->getProductPrices((int)$product->virtuemart_product_id,$product->categories,0,$quantityArray[0]);
-				}
+				}*/
 
-				$product->prices = $prices;
+				//$product->prices = $prices;
 
 				/* Add the product link  for canonical */
 				$producCategory = empty($product->categories[0])? '':$product->categories[0];
@@ -501,7 +468,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			} else {
 				$product = new stdClass();
-				return $this->fillVoidProduct($product,$front);
+				return $this->fillVoidProduct($front);
 			}
 //		}
 //		$product = $this->fillVoidProduct($product,$front);
@@ -517,7 +484,7 @@ class VirtueMartModelProduct extends VmModel {
      * @param unknown_type $product
      * @param unknown_type $front
      */
-    private function fillVoidProduct($product,$front=true){
+    private function fillVoidProduct($front=true){
 
 		/* Load an empty product */
 	 	 $product = $this->getTable('products');
@@ -581,6 +548,37 @@ class VirtueMartModelProduct extends VmModel {
 		$ids = $this->sortSearchListQuery();
 		$this->products = $this->getProducts($ids);
 		return $this->products;
+	}
+
+    /**
+     * Loads different kind of product lists.
+	 * you can load them with calculation or only published onces, very intersting is the loading of groups
+	 * valid values are latest, topten, featured.
+	 * 
+	 * The function checks itself by the config if the user is allowed to see the price or published products
+	 * 
+	 * @author Max Milbers
+     */
+	public function getProductListing($group = false, $nbrReturnProducts = false, $withCalc = true, $onlyPublished = true){
+				
+		$app = JFactory::getApplication();
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if($app->isSite() ){
+			$front = true;
+			if(!Permissions::getInstance()->check('admin')){
+				$onlyPublished = true;
+				if ($show_prices=VmConfig::get('show_prices',1) == '0'){
+					$withCalc = false;
+				}
+			}
+		} else {
+			$front = true;
+		}
+
+		$ids = $this->sortSearchListQuery($withCalc,$onlyPublished,$group,$nbrReturnProducts);
+		
+		$products = $this->getProducts($ids, $front, $withCalc, $onlyPublished);
+		return $products;
 	}
 	
 	/**
@@ -1071,7 +1069,7 @@ class VirtueMartModelProduct extends VmModel {
 		// Calculate the modificator 
 		$variantPriceModification = $calculator->calculateModificators($product,$customVariant);
 		
-		$prices = $calculator->getProductPrices($product->virtuemart_product_id,$product->categories,$variantPriceModification,$quantity);
+		$prices = $calculator->getProductPrices($product,$product->categories,$variantPriceModification,$quantity);
 
 		//Wrong place, this must not be done in a model, display is gui, therefore it must be done in the view!
 		// change display //
