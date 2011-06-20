@@ -347,6 +347,7 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
     function checkShippingConditions(VirtueMartCart $cart, $shipper) {
         $nbProducts = $this->_getNbProducts($cart);
         $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
+         $countries = array();
         $params = new JParameter($shipper->shipping_carrier_params);
         $country_list = $params->get('countries');
         if (!empty($country_list)) {

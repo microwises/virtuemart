@@ -254,8 +254,8 @@ class VirtueMartViewCart extends JView {
 	}
 
 	private function prepareCartData(){
-                $this->CheckShippingIsValid($this->cart);
-                $automaticSelectedShipping =$this->CheckAutomaticSelectedShipping($this->cart);
+                $this->_cart->CheckShippingIsValid( );
+                $automaticSelectedShipping =$this->_cart->CheckAutomaticSelectedShipping( );
 		/* Get the products for the cart */
 		$prepareCartData = $this->_cart->prepareCartData();
                 $this->assignRef('automaticSelectedShipping', $automaticSelectedShipping);
@@ -397,40 +397,7 @@ class VirtueMartViewCart extends JView {
 		$this->assignRef('STaddress',$STaddress['fields']);*/
 		
 	}
-      private  function CheckAutomaticSelectedShipping($cart) {
-          $nbShipping=0;
-         if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
-		JPluginHelper::importPlugin('vmshipper');
- 		$dispatcher = JDispatcher::getInstance();
- 		$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipping', array('cart'=> $cart));
-                foreach ($returnValues as $returnValue) {
-                    $nbShipping += $returnValue;
-                    if ($returnValue) $virtuemart_shippingcarrier_id=$returnValue;
-                }
-                if ($nbShipping==1) {
-                    $cart->virtuemart_shippingcarrier_id=$virtuemart_shippingcarrier_id;
-                  return true;
-                }
-                else {
-                    return false;
-                }
-      }
-
-      function  CheckShippingIsValid($cart){
-          if (!$cart->virtuemart_shippingcarrier_id ) return;
-        $shippingValid=false;
-         if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
-		JPluginHelper::importPlugin('vmshipper');
- 		$dispatcher = JDispatcher::getInstance();
- 		$returnValues = $dispatcher->trigger('plgVmOnCheckShippingIsValid', array('cart'=> $cart));
-                foreach ($returnValues as $returnValue) {
-                    $shippingValid += $returnValue;
-                }
-                if (!$shippingValid) {
-                    $cart->virtuemart_shippingcarrier_id=0;
-                }
-
-      }
+       
 }
 
 //no closing tag
