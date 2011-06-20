@@ -29,7 +29,8 @@
 
 (function($){
 	// Quick and dirty way of testing if J1.5 or not
-	var isJ15 = (MooTools.version == 1.12) ? true : false;
+	var isJ15 = (MooTools.version.substr(0,3) == '1.1') ? true : false;
+	var isJ15Up = (MooTools.version.substr(0,3) == '1.2') ? true : false;
 
 	/**
 	 * Local variable and property attached to global object
@@ -37,7 +38,7 @@
 	 * @author jseros
 	 */
 	VM.add({
-		
+
 		/**
 		 * Create admin accordion menu
 		 *
@@ -46,22 +47,22 @@
 		 * @author jseros
 		 */
 		buildMenu: function(){
-			
+
 			if(isJ15){
 				var cMAITC = parseInt( Cookie.get( VMConfig.get('menuActiveItemCookie') ) );
 			} else {
 				var cMAITC = parseInt( Cookie.read( VMConfig.get('menuActiveItemCookie') ) );
 			}
-			
+
 			var that = this,
 			actualItem = VMCache.set('activeMenuAdminItem ',cMAITC) , // Current selected item
 			speed = VMConfig.get('menuAdminSpeed'),
 			actualItemNode = $('#menu-toggler-'+ (actualItem || 1)); //shortcut. Performance issue!
-	
+
 			//set current state when document loads
-	
+
 		//	if (isJ15) {
-		//		var actualItem = VMCache.set('activeMenuAdminItem ', parseInt( Cookie.get( VMConfig.get('menuActiveItemCookie') ) ) ); // Current selected item				
+		//		var actualItem = VMCache.set('activeMenuAdminItem ', parseInt( Cookie.get( VMConfig.get('menuActiveItemCookie') ) ) ); // Current selected item
 		//	} else {
 		//		var actualItem = VMCache.set('activeMenuAdminItem ', parseInt( Cookie.read( VMConfig.get('menuActiveItemCookie') ) ) ); // Current selected item
 		//	}
@@ -74,7 +75,7 @@
 			} else {
 				this.showMenu(false, Cookie.read( VMConfig.get('menuStateCookie') ));
 			}
-			
+
 
 			$( VMConfig.get('menuContentSelector') ).addClass( VMConfig.get('hiddenElementClass') );//Hidding Panels
 			actualItemNode.next().slideDown( speed );
@@ -194,7 +195,11 @@
 				}
 
 				$(closerSel).removeClass( VMConfig.get('menuHandlerClass') );
-				Cookie.remove( VMConfig.get('menuStateCookie') );
+				if (isJ15Up) {
+					Cookie.dispose( VMConfig.get('menuStateCookie') );
+				} else {
+					Cookie.remove( VMConfig.get('menuStateCookie') );
+				}
 			}
 
 			return this;
@@ -278,5 +283,5 @@ function orderingUpDown($dir,button) {
 	orderval = jQuery('.ordering').eq(id).val();
 	orderval2 = jQuery('.ordering').eq(id+$dir).val();
 	jQuery('.ordering').eq(id).val(orderval2);
-	jQuery('.ordering').eq(id+$dir).val(orderval);	
+	jQuery('.ordering').eq(id+$dir).val(orderval);
 }
