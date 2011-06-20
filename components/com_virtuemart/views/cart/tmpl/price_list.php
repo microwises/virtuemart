@@ -118,12 +118,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <fieldset>
 <?php
-
-		// Added for the zone shipping module
-		//$vars["zone_qty"] = 0;
-		$weight_total = 0;
-		$weight_subtotal = 0;
-
+		
 		//of course, some may argue that the $product_rows should be generated in the view.html.php, but
 		//
 		$product_rows = array();
@@ -161,10 +156,6 @@ defined('_JEXEC') or die('Restricted access');
 			}
 
 			$product_rows[$i]['product_sku'] = $product->product_sku;
-
-			/** @todo WEIGHT CALCULATION */
-			//$weight_subtotal = vmShippingMethod::get_weight($product["virtuemart_product_id"]) * $product->quantity'];
-			//$weight_total += $weight_subtotal;
 
 			/* Product PRICE */
 			$product_rows[$i]['prices'] = $this->prices[$priceKey]['salesPrice'];
@@ -269,9 +260,13 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 		<?php } ?>
 		<tr class="sectiontableentry1">
-				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_shipping'), JText::_('COM_VIRTUEMART_CART_EDIT_SHIPPING'),'class="highlight"'); else JText::_('COM_VIRTUEMART_CART_SHIPPING'); ?> </td>
+                    <?php if (!$this->automaticSelectedShipping) { ?>
+				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default' && !$this->automaticSelectedShipping  ) echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_shipping'), JText::_('COM_VIRTUEMART_CART_EDIT_SHIPPING'),'class="highlight"'); else JText::_('COM_VIRTUEMART_CART_SHIPPING'); ?> </td>
 		<?php	/*	<td colspan="2" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING'); ?> </td> */?>
 				<td colspan="2" align="left"><?php echo $this->cartData['shippingName']; ?> </td>
+                                <?php } else { ?>
+                                    <td colspan="4" align="left"><?php echo $this->cartData['shippingName']; ?> </td>
+                                 <?php } ?>
 				<td align="right"><?php echo $this->prices['shippingValue']; ?> </td>
 				<td align="right"><?php echo $this->prices['shippingTax']; ?> </td>
 				<td></td>

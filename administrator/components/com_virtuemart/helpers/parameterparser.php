@@ -151,7 +151,7 @@ class vmParameters extends JParameter {
      *
      * @access	protected
      * @param	string The raw parms text
-     * @param	string paym_element payment element name
+     * @param	string payment_element payment element name
      * @since	1.5
      */
     function __construct($data, $element = '', $type='component', $pluginfolder ) {

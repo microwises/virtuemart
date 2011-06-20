@@ -19,7 +19,6 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	var $_pelement;
-	var $_pcode = 'AN';
 
 	private $_cc_name = '';
 	private $_cc_number = '';
@@ -306,7 +305,7 @@ class plgVmPaymentAuthorize extends vmPaymentPlugin {
 	 */
 	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData)
 	{
-		if (!$this->selectedThisMethod($this->_pelement, $_orderData->virtuemart_paymentmethod_id)) {
+		if (!$this->selectedThisPayment($this->_pelement, $_orderData->virtuemart_paymentmethod_id)) {
 			return null; // Another method was selected, do nothing
 		}
 		$this->_virtuemart_paymentmethod_id = $_orderData->virtuemart_paymentmethod_id;

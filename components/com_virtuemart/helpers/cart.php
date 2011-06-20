@@ -788,11 +788,11 @@ class VirtueMartCart  {
 
 			$this->setCartIntoSession();
 
-            /* valerie */
-            $cart= $this->getCart();
-			$dispatcher = JDispatcher::getInstance();
-			$retValues = $dispatcher->trigger('plgVmAfterCheckoutDoPayment', array('cart'=>$cart));
-
+                        /* TODO valerie TO DO  -- not finished
+                        * $cart= $this->getCart();
+			* $dispatcher = JDispatcher::getInstance();
+			* $retValues = $dispatcher->trigger('plgVmAfterCheckoutDoPayment', array($orderID, 'cart'=>$cart));
+                           */
 
 			$mainframe = JFactory::getApplication();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&layout=order_done',JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));

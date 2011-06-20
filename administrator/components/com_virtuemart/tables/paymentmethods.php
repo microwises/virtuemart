@@ -33,13 +33,13 @@ class TablePaymentmethods extends VmTable
 	/** @var string VendorID of the payment_method creator */
 	var $virtuemart_vendor_id				= 0;
 	/** @var id for the used plugin */
-	var $paym_jplugin_id			= 0;
+	var $payment_jplugin_id			= 0;
 	/** @var string Paymentmethod name */
-	var $paym_name           		= '';
+	var $payment_name           		= '';
 	/** @var string Element of paymentmethod */
-	var $paym_element           	= '';
+	var $payment_element           	= '';
 	///** @var string Shoppergroups allowed to use payment_method */
-	//var $paym_shoppervirtuemart_shoppergroup_id         = '';	  // virtuemart_shoppergroup_id?
+	//var $payment_shoppervirtuemart_shoppergroup_id         = '';	  // virtuemart_shoppergroup_id?
 
 	/** @var string discount of the paymentmethod */
 	var $discount       		 	= '';
@@ -51,13 +51,13 @@ class TablePaymentmethods extends VmTable
 	var $discount_min_amount		='';
 
 //	/** @var string Type of the paymentmethod */
-//	var $paym_type       		 	= '';
+//	var $payment_type       		 	= '';
 /** @var string extra information to hold with the paymentmethod */
-	var $paym_extra_info			= '';
+	var $payment_extra_info			= '';
 /** @var blob secret key of the paymentmethod */
-	var $paym_secret_key			= '';
+	var $payment_secret_key			= '';
 	/** @var string parameter of the paymentmethod*/
-	var $paym_params				= 0;
+	var $payment_params				= 0;
 
 	/** @var string ordering */
 	var $ordering       	= '';
@@ -76,7 +76,7 @@ class TablePaymentmethods extends VmTable
 	{
 		parent::__construct('#__virtuemart_paymentmethods', 'virtuemart_paymentmethod_id', $db);
 
-		$this->setUniqueName('paym_name');
+		$this->setUniqueName('payment_name');
 
 		$this->setLoggable();
 
@@ -91,7 +91,7 @@ class TablePaymentmethods extends VmTable
 //	 */
 //	function check() {
 //
-//        if (!$this->paym_name) {
+//        if (!$this->payment_name) {
 //			$this->setError(JText::_('COM_VIRTUEMART_PAYMENTMETHODS_RECORDS_MUST_CONTAIN_NAME'));
 //			return false;
 //		}
@@ -101,11 +101,11 @@ class TablePaymentmethods extends VmTable
 //			return false;
 //		}
 //
-//		if (($this->paym_name)) {
+//		if (($this->payment_name)) {
 //		    $db = JFactory::getDBO();
 //
 //			$q = 'SELECT virtuemart_paymentmethod_id FROM `#__virtuemart_paymentmethods` ';
-//			$q .= 'WHERE `paym_name`="' .  $this->paym_name . '"';
+//			$q .= 'WHERE `payment_name`="' .  $this->payment_name . '"';
 //            $db->setQuery($q);
 //		    $virtuemart_paymentmethod_id = $db->loadResult();
 //		    if(!empty($virtuemart_paymentmethod_id) && $virtuemart_paymentmethod_id!=$this->virtuemart_paymentmethod_id){

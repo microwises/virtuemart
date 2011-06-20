@@ -1,4 +1,5 @@
 <?php
+
 /**
  * abstract class for payment plugins
  *
@@ -15,24 +16,26 @@
  * other free or open source software licenses.
  * @version $Id$
  */
-
 // Load the helper functions that are needed by all plugins
-if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-if(!class_exists('DbScheme')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'dbscheme.php');
+if (!class_exists('ShopFunctions'))
+    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+if (!class_exists('DbScheme'))
+    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'dbscheme.php');
 
 // Get the plugin library
 jimport('joomla.plugin.plugin');
 
-abstract class vmPaymentPlugin extends JPlugin
-{
-    private $_virtuemart_paymentmethod_id = 0;
-    private $_paym_name = '';
+abstract class vmPaymentPlugin extends JPlugin {
 
+    private $_virtuemart_paymentmethod_id = 0;
+    private $_payment_name = '';
     /** var Must be overriden in every plugin file by adding this code to the constructor: $this->_pelement = basename(__FILE, '.php'); */
     var $_pelement = '';
-
-    /** var Must be overriden in every plugin file */
-	var $_pcode = '' ;
+    /**
+     * @var array List with all carriers the have been implemented with the plugin in the format
+     * id => name
+     */
+    protected $payments;
 
     /**
      * Constructor
@@ -41,8 +44,7 @@ abstract class vmPaymentPlugin extends JPlugin
      * @param array  $config  An array that holds the plugin configuration
      * @since 1.5
      */
-	function __construct(& $subject, $config)
-	{
+    function __construct(& $subject, $config) {
         parent::__construct($subject, $config);
     }
 
@@ -96,45 +98,51 @@ abstract class vmPaymentPlugin extends JPlugin
      *
      */
     protected function setVmPaymentParams($vendorId=0, $jplugin_id=0) {
+        /*
+          if (!$vendorId)
+          $vendorId = 1;
+          $db = JFactory::getDBO();
+          if (!$jplugin_id) {
+          if (VmConfig::isJ15()) {
+          $q = 'SELECT `id` FROM #__plugins WHERE `element` = "' . $this->_pelement . '"';
+          } else {
+          $q = 'SELECT `extension_id` FROM #__extensions  WHERE `element` = "' . $this->_pelement . '"';
+          }
+          $db->setQuery($q);
+          $this->_jplugin_id = $db->loadResult();
+          if (!$this->_jplugin_id) {
+          $mainframe = &JFactory::getApplication();
+          $mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_NO_PAYMENT_PLUGIN'));
+          return false;
+          }
+          } else {
+          $this->_jplugin_id = $jplugin_id;
+          }
 
-        if (!$vendorId)   $vendorId = 1;
-        $db = JFactory::getDBO();
-        if (!$jplugin_id) {
-            if (VmConfig::isJ15()) {
-                $q = 'SELECT `id` FROM #__plugins WHERE `element` = "' . $this->_pelement . '"';
-            } else {
-                $q = 'SELECT `extension_id` FROM #__extensions  WHERE `element` = "' . $this->_pelement . '"';
-            }
-            $db->setQuery($q);
-            $this->_jplugin_id = $db->loadResult();
-            if (!$this->_jplugin_id) {
-                $mainframe = &JFactory::getApplication();
-                $mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_NO_PAYMENT_PLUGIN'));
-                return false;
-            }
-        } else {
-            $this->_jplugin_id = $jplugin_id;
-        }
+          $q = 'SELECT `virtuemart_paymentmethod_id`,`payment_name` FROM #__virtuemart_paymentmethods WHERE `payment_jplugin_id` = "' . $this->_jplugin_id . '" AND `virtuemart_vendor_id` = "' . $vendorId . '" AND `published`="1" ';
+          $db->setQuery($q);
+          $result = $db->loadAssoc();
 
-        $q = 'SELECT `virtuemart_paymentmethod_id`,`paym_name` FROM #__virtuemart_paymentmethods WHERE `paym_jplugin_id` = "' . $this->_jplugin_id . '" AND `virtuemart_vendor_id` = "' . $vendorId . '" AND `published`="1" ';
-        $db->setQuery($q);
-        $result = $db->loadAssoc();
+          if (!empty($result)) {
+          if (!class_exists('VirtueMartModelPaymentmethod'))
+          require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'paymentmethod.php');
 
-		if(!empty($result)){
-			if(!class_exists('VirtueMartModelPaymentmethod')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'paymentmethod.php');
-                       
-			if(!class_exists('vmParameters')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'parameterparser.php');
-            $this->paymentModel = new VirtueMartModelPaymentmethod();
-            $this->paymentModel->setId($result['virtuemart_paymentmethod_id']);
-            $this->paymentMethod = $this->paymentModel->getPaym();
-            $this->params->_raw=$this->paymentMethod->paym_params; // valerie */
-       
-            return true;
-        } else {
-            //			$mainframe = &JFactory::getApplication();
-            //			$mainframe->enqueueMessage( 'The Paymentmethod '.$this->_paym_name.' with element '.$this->_pelement.' didnt found used and published payment plugin by vendor','error' );
-            return false;
-        }
+          if (!class_exists('vmParameters'))
+          require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'parameterparser.php');
+          $this->paymentModel = new VirtueMartModelPaymentmethod();
+          $this->paymentModel->setId($result['virtuemart_paymentmethod_id']);
+          $this->paymentMethod = $this->paymentModel->getPaym();
+          $this->params->_raw = $this->paymentMethod->payment_params; // valerie
+
+          return true;
+          } else {
+          //			$mainframe = &JFactory::getApplication();
+          //			$mainframe->enqueueMessage( 'The Paymentmethod '.$this->_payment_name.' with element '.$this->_pelement.' didnt found used and published payment plugin by vendor','error' );
+          return false;
+          }
+         * *
+         *
+         */
     }
 
     /**
@@ -147,23 +155,9 @@ abstract class vmPaymentPlugin extends JPlugin
      * @param integer $checkedPaymId ID of an already selected payment method ID, if any
      * @author Max Milbers
      */
-    public function plgVmOnSelectPayment(VirtueMartCart $cart, $checkedPaymId=0) {
+    public function plgVmOnSelectPayment(VirtueMartCart $cart, $selectedPayment=0) {
 
-        if (!$this->setVmPaymentParams($cart->vendorId)) {
-            return;
-        }
-
-        if ($checkedPaymId == $this->paymentMethod->virtuemart_paymentmethod_id) {
-            $checked = '"checked"';
-        } else {
-            $checked = '';
-        }
-
-        $html = '<fieldset>';
-        $html .= '<input type="radio" name="virtuemart_paymentmethod_id" value="' . $this->paymentMethod->virtuemart_paymentmethod_id . '" ' . $checked . '>' . $this->paymentMethod->paym_name . ' ';
-        $html .= '</fieldset> ';
-
-        return $html;
+        //return parent::plgVmOnPaymentSelectedCalculatePrice;
     }
 
     /**
@@ -238,10 +232,11 @@ abstract class vmPaymentPlugin extends JPlugin
      * @param char $_newStat New order status
      */
     /*
-    function plgVmOnCancelPayment($_orderID, $_oldStat, $_newStat) {
-        return;
-    }
-*/
+      function plgVmOnCancelPayment($_orderID, $_oldStat, $_newStat) {
+      return;
+      }
+     */
+
     /**
      * This event is fired when the status of an order is changed to Shipped.
      * It can be used to confirm or capture payments
@@ -304,29 +299,68 @@ abstract class vmPaymentPlugin extends JPlugin
      * @author Oscar van Eijk
      * @return True if the calling plugin has the given payment ID
      */
-    final protected function selectedThisMethod($_pelement, $_pid) {
-        $_db = JFactory::getDBO();
+    final protected function selectedThisPayment($pelement, $pid) {
+        $db = JFactory::getDBO();
 
         if (VmConfig::isJ15()) {
-            $_q = 'SELECT COUNT(*) AS c '
+            $q = 'SELECT COUNT(*) AS c '
                     . 'FROM #__virtuemart_paymentmethods AS vm '
                     . ',    #__plugins AS j '
-                    . "WHERE vm.virtuemart_paymentmethod_id='$_pid' "
-                    . 'AND   vm.paym_jplugin_id = j.id '
-                    . "AND   j.element = '$_pelement'";
+                    . "WHERE vm.virtuemart_paymentmethod_id='$pid' "
+                    . 'AND   vm.payment_jplugin_id = j.id '
+                    . "AND   j.element = '$pelement'";
         } else {
-            $_q = 'SELECT COUNT(*) AS c '
+            $q = 'SELECT COUNT(*) AS c '
                     . 'FROM #__virtuemart_paymentmethods AS vm '
                     . ',    #__extensions AS j '
-                    . "WHERE vm.virtuemart_paymentmethod_id='$_pid' "
-                    . 'AND   vm.paym_jplugin_id = j.extension_id '
-                    . "AND   j.element = '$_pelement'";
+                    . "WHERE vm.virtuemart_paymentmethod_id='$pid' "
+                    . 'AND   vm.payment_jplugin_id = j.extension_id '
+                    . "AND   j.element = '$pelement'";
         }
 
-        $_db->setQuery($_q);
-        $_r = $_db->loadAssoc(); // TODO Error check
-        return ($_r['c'] == 1);
+        $db->setQuery($q);
+        return $db->loadResult(); // TODO Error check
+    }
 
+    /**
+     * Fill the array with all carriers found with this plugin for the current vendor
+     * @return True when carrier(s) was (were) found for this vendor, false otherwise
+     * @author Oscar van Eijk
+     */
+    protected function getPayments($vendorId) {
+        $db = JFactory::getDBO();
+        if (VmConfig::isJ15()) {
+            $q = 'SELECT v.* '
+                    . 'FROM   #__virtuemart_paymentmethods AS v '
+                    . ',      #__plugins             j '
+                    . 'WHERE j.`element` = "' . $this->_pelement . '" '
+                    . 'AND   v.`payment_jplugin_id` = j.`id` '
+                    . 'AND   v.`published` = "1" '
+                    . 'AND  (v.`virtuemart_vendor_id` = "' . $vendorId . '" '
+                    . ' OR   v.`virtuemart_vendor_id` = "0") '
+            ;
+        } else {
+            $q = 'SELECT v.`*`    '
+                    . 'FROM   #__virtuemart_paymentmethods AS v '
+                    . ',      #__extensions    AS      j '
+                    . 'WHERE j.`folder` = "vmshipper" '
+                    . 'AND j.`element` = "' . $this->_pelement . '" '
+                    . 'AND   v.`published` = "1" '
+                    . 'AND   v.`payment_jplugin_id` = j.`extension_id` '
+                    . 'AND  (v.`virtuemart_vendor_id` = "' . $vendorId . '" '
+                    . ' OR   v.`virtuemart_vendor_id` = "0") '
+            ;
+        }
+
+
+        $db->setQuery($q);
+        if (!$results = $db->loadObjectList()) {
+//			$app = JFactory::getApplication();
+//			$app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_CARRIER'));
+            return false;
+        }
+        $this->payments = $results;
+        return true;
     }
 
     /**
@@ -335,21 +369,41 @@ abstract class vmPaymentPlugin extends JPlugin
      * @author Oscar van Eijk
      * @return string Paymenent method name
      */
-    final protected function getThisMethodName($_pid) {
-        $_db = JFactory::getDBO();
+    final protected function getThisPaymentName($payment_id) {
+        $db = JFactory::getDBO();
 
 
-        $_q = 'SELECT `paym_name` '
+        $q = 'SELECT `payment_name` '
                 . 'FROM #__virtuemart_paymentmethods '
-                . "WHERE virtuemart_paymentmethod_id='$_pid' ";
+                . "WHERE `virtuemart_paymentmethod_id`='$payment_id' ";
 
-
-
-        $_db->setQuery($_q);
-        $_r = $_db->loadAssoc(); // TODO Error check
-        return $_r['paym_name'];
+        $db->setQuery($q);
+        return $db->loadResult(); // TODO Error check
     }
 
+    /**
+     * This functions gets the used and configured payment method
+     * pelement of this class determines the used jplugin.
+     * The right payment method is determined by the vendor and the jplugin id.
+     *
+     * This function sets the used payment plugin as variable of this class
+     * @author Max Milbers
+     *
+     */
+    protected function getVmPaymentParams($vendorId=0, $payment_id=0) {
+
+        if (!$vendorId)
+            $vendorId = 1;
+        $db = JFactory::getDBO();
+
+        $q = 'SELECT `payment_params` '
+                . 'FROM #__virtuemart_paymentmethods '
+                . "WHERE `virtuemart_paymentmethod_id`='$payment_id' ";
+        $db->setQuery($q);
+        return $db->loadResult();
+    }
+
+   
     /**
      * This method writes all payment plugin specific data to the plugin's table
      *
@@ -408,6 +462,31 @@ abstract class vmPaymentPlugin extends JPlugin
         if (!$db->query()) {
             JError::raiseWarning(500, $db->getErrorMsg());
         }
+    }
+
+    protected function getPaymentHtml($payment, $selectedPayment, $cart) {
+
+        if ($selectedPayment == $payment->virtuemart_paymentmethod_id) {
+            $checked = '"checked"';
+        } else {
+            $checked = '';
+        }
+
+        $params = new JParameter($payment->payment_params);
+
+        if (!class_exists('CurrencyDisplay'))
+            require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+        $currency = CurrencyDisplay::getInstance();
+        //$discount = $this->getPaymentDiscount($payment, $cart);
+        $discountDisplay = $currency->priceDisplay($discount);
+
+        $html = '<input type="radio" name="virtuemart_paymentmethod_id" value="' . $payment->virtuemart_paymentmethod_id . '" ' . $checked . '>' . $payment->payment_name;
+
+        if ($discount) {
+            $html .=" (" . $discountDisplay . ")";
+        }
+        $html .="</label><br/>\n";
+        return $html;
     }
 
 }

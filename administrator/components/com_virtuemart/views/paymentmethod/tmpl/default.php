@@ -36,32 +36,32 @@ AdminMenuHelper::startAdminArea();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->payms); ?>);" />
 			</th>
 			<th width="60">
-				<?php echo JText::_('COM_VIRTUEMART_PAYM_LIST_NAME'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_LIST_NAME'); ?>
 			</th>
 			<?php if($this->perms->check( 'admin' )){ ?>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_VENDOR');  ?>
 			</th><?php }?>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_PAYM_ELEMENT'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_ELEMENT'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_PAYM_SHOPPERGROUPS'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_SHOPPERGROUPS'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_PAYM_DISCOUNT'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_DISCOUNT'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_PAYM_IS_PERCENTAGE'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_IS_PERCENTAGE'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_PAYM_MIN_DISCOUNT'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_MIN_DISCOUNT'); ?>
 			</th>
 			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_PAYM_MAX_DISCOUNT'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_MAX_DISCOUNT'); ?>
 			</th>
 <?php /*			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_PAYM_TYPE'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_TYPE'); ?>
 			</th>  */?>
 			<th width="10">
 				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
@@ -89,7 +89,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo $checked; ?>
 				</td>
 				<td align="left">
-					<a href="<?php echo $editlink; ?>"><?php echo $row->paym_name; ?></a>
+					<a href="<?php echo $editlink; ?>"><?php echo $row->payment_name; ?></a>
 				</td>
 				<?php if($this->perms->check( 'admin' )){?>
 				<td align="left">
@@ -97,7 +97,7 @@ AdminMenuHelper::startAdminArea();
 				</td>
 				<?php } ?>
 				<td>
-					<?php echo $row->paym_element; ?>
+					<?php echo $row->payment_element; ?>
 				</td>
 				<td>
 					<?php echo $row->paymShoppersList; ?>
@@ -116,7 +116,7 @@ AdminMenuHelper::startAdminArea();
 				</td>
 <?php /*				<td>
 					<?php
-					switch($row->paym_type) {
+					switch($row->payment_type) {
 						case "Y":
 							$tmp_cell = JText::_('COM_VIRTUEMART_PAYMENT_FORM_USE_PP');
 							break;

@@ -492,7 +492,7 @@ class ShopFunctions {
 
 		$q = 'SELECT ' . $fld . ' AS fld FROM `#__virtuemart_countries` WHERE virtuemart_country_id = ' . $id;
 		$db->setQuery($q);
-		return $_db->loadResult();
+		return $db->loadResult();
 	}
 
 	/**

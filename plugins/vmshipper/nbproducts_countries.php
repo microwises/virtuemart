@@ -87,7 +87,7 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
                 'type' => 'int'
                 , 'length' => 11
                 , 'null' => false
-            )          
+            )
             , 'tax_id' => array(
                 'type' => 'int'
                 , 'length' => 11
@@ -122,32 +122,22 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
      * @return HTML code to display the form
      * @author Valérie Isaksen
      */
-    function plgVmOnSelectShipper($cart, $selectedShipper = 0) {
+    function plgVmOnSelectShipper(VirtueMartCart $cart, $selectedShipper = 0) {
 
         if (( $this->getShippers($cart->vendorId)) === false) {
             return false;
         }
-      
+        $nbShipper = $virtuemart_shippingcarrier_id = 0;
         $html = '';
         $nbProducts = $this->_getNbProducts($cart);
         $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
-         $countries=array();
-        foreach ($this->shippers as $shipper_id => $shipper_name) {
-            $cost = 0;
-            $found = false;
-            $shipping_params = $this->getVmShipperParams($cart->vendorId, $shipper_id);
-            $params = new JParameter($shipping_params);
-              $country_list = $params->get('countries');
-            if (!empty($country_list)) {
-                if (!is_array($country_list)) {
-                    $countries[0] = $country_list;
-                } else {
-                    $countries = $country_list;
-                }
-            }
-            if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
+        $countries = array();
+        foreach ($this->shippers as $shipper) {
+            if ($this->checkShippingConditions($cart, $shipper)) {
+                $params = new JParameter($shipper->shipping_carrier_params);
+                $logo = $this->_getShipperLogo($params->get('shipper_logo'), $shipper->shipping_carrier_name);
                 $cost = $this->_getShippingCost($nbProducts, $params); // converted in vendor currency
-                $html = $this->getShippingHtml($params->get('rate_name'), $shipper_id, $selectedShipper, $params->get('shipper_logo'), $cost, $params->get('tax_id'), $params->get('currency_id'));
+                $html .= $this->getShippingHtml($logo . " " . $shipper->shipping_carrier_name, $shipper->virtuemart_shippingcarrier_id, $selectedShipper, $cost, $params->get('tax_id'));
             }
         }
         return $html;
@@ -182,15 +172,14 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
      * @author Valérie Isaksen
      */
     public function plgVmOnShipperSelectedCalculatePrice($cart, $shipping) {
-    	
-		if (!parent::plgVmOnShipperSelectedCalculatePrice($cart, $shipping) ){
-                    return null;
-                }
-                $nbProducts = $this->_getNbProducts($cart);
-		$params = new JParameter($shipping->shipping_carrier_params);
-		$shipping->shipping_value = $this->_getShippingCost($nbProducts, $params);
-		return true;
 
+        if (!parent::plgVmOnShipperSelectedCalculatePrice($cart, $shipping)) {
+            return null;
+        }
+        $nbProducts = $this->_getNbProducts($cart);
+        $params = new JParameter($shipping->shipping_carrier_params);
+        $shipping->shipping_value = $this->_getShippingCost($nbProducts, $params);
+        return true;
     }
 
     /**
@@ -276,7 +265,7 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
                 . '	<tr>' . "\n"
                 . '		<td class="key">' . JText::_('VMSHIPPER_NBPRODUCTS_COUNTRIES_TAX_ID') . ': </td>' . "\n"
                 . '		<td>' . $shipInfo->tax_id . '</td>' . "\n"
-                . '	</tr>' . "\n"	
+                . '	</tr>' . "\n"
                 . '</table>' . "\n"
         ;
         return $html;
@@ -336,6 +325,43 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
             $shippingCost = min($shippingCost, $params->get('cost_limit'));
         }
         return $shippingCost;
+    }
+
+    /*
+     * This method returns the logo image form the shipper
+     */
+
+    function _getShipperLogo($shipper_logo, $alt_text) {
+
+
+        $img = "";
+        /* TODO: chercher chemin dynamique */
+        $path = JURI::base() . "images" . DS . "stories" . DS . "virtuemart" . DS . "shipper" . DS;
+        $img = "";
+        if (!(empty($shipper_logo))) {
+            $img = '<img align="middle" src="' . $path . $shipper_logo . '"  alt="' . $alt_text . '" > ';
+        }
+        return $img;
+    }
+
+    function checkShippingConditions(VirtueMartCart $cart, $shipper) {
+        $nbProducts = $this->_getNbProducts($cart);
+        $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
+        $params = new JParameter($shipper->shipping_carrier_params);
+        $country_list = $params->get('countries');
+        if (!empty($country_list)) {
+            if (!is_array($country_list)) {
+                $countries[0] = $country_list;
+            } else {
+                $countries = $country_list;
+            }
+        }
+
+        if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
+            return true;
+        }
+
+        return false;
     }
 
 }

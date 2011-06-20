@@ -661,16 +661,16 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_userinfos` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethods` (
   `virtuemart_paymentmethod_id` SERIAL,
   `virtuemart_vendor_id` int(11) NOT NULL DEFAULT '1',
-  `paym_jplugin_id` int(11) NOT NULL,
-  `paym_name` varchar(255) NOT NULL DEFAULT '',
-  `paym_element` varchar(50) NOT NULL DEFAULT '',
+  `payment_jplugin_id` int(11) NOT NULL,
+  `payment_name` varchar(255) NOT NULL DEFAULT '',
+  `payment_element` varchar(50) NOT NULL DEFAULT '',
   `discount` decimal(12,2) NOT NULL DEFAULT '0.00',
   `discount_is_percentage` tinyint(1) NOT NULL DEFAULT '0',
   `discount_max_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `discount_min_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `paym_extra_info` text NOT NULL,
-  `paym_secret_key` blob NOT NULL,
-  `paym_params` text NOT NULL,
+  `payment_extra_info` text NOT NULL,
+  `payment_secret_key` blob NOT NULL,
+  `payment_params` text NOT NULL,
   `shared` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'valide for all vendors?',
   `ordering` int(2) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
@@ -682,7 +682,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethods` (
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_paymentmethod_id`),
   KEY `idx_payment_method_virtuemart_vendor_id` (`virtuemart_vendor_id`),
-  KEY `idx_payment_method_name` (`paym_name`),
+  KEY `idx_payment_method_name` (`payment_name`),
   KEY `idx_payment_method_ordering` (`ordering`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The payment methods of your store' AUTO_INCREMENT=1 ;
 

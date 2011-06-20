@@ -28,13 +28,13 @@ defined('_JEXEC') or die('Restricted access');
     <tr  class="key">
       <td class="key"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_FORM_NAME') ?></td>
       <td width="69%" >
-        <input type="text" class="inputbox" name="paym_name" value="<?php echo $this->paym->paym_name; ?>" size="32" />
+        <input type="text" class="inputbox" name="payment_name" value="<?php echo $this->paym->payment_name; ?>" size="32" />
       </td>
     </tr>
 <?php /*    <tr class="row0">
       <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_ELEMENT'); ?></td>
       <td width="69%">
-      	<input type="text" class="inputbox" name="paym_element" value="<?php	echo $this->paym->paym_element;?>" size="4" />
+      	<input type="text" class="inputbox" name="payment_element" value="<?php	echo $this->paym->payment_element;?>" size="4" />
 		<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PAYMENTMETHOD_ELEMENT_TIP') ); ?>
       </td>
     </tr> */ ?>
@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
       <td class="key"><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PAYMENT_CLASS_NAME_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_CLASS_NAME'); ?></span></td>
       <td width="69%"><?php
       	echo $this->vmPPaymentList;
-      	//echo FileUtilities::list_available_classes( 'paym_element', $this->paym->paym_element ? $this->paym->paym_element : 'payment' );
+      	//echo FileUtilities::list_available_classes( 'payment_element', $this->paym->payment_element ? $this->paym->payment_element : 'payment' );
        ?>
       </td>
     </tr>

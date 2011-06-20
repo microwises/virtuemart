@@ -130,6 +130,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      * @author Valérie Isaksen
      */
     public function plgVmOnSelectShipper(VirtueMartCart $cart, $selectedShipper = 0) {
+
         if ($this->getShippers($cart->vendorId) === false) {
             if (empty($this->_name)) {
                 $app = JFactory::getApplication();
@@ -140,39 +141,16 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
                 return;
             }
         }
-        $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
-        $orderWeight = $this->getOrderWeight($cart);
-        $html = "";
-        $countries=array();
-        foreach ($this->shippers as $shipper_id => $shipper_name) {
-            $shipping_params = $this->getVmShipperParams($cart->vendorId, $shipper_id);
-            $params = new JParameter($shipping_params);
-            $countries_list = $params->get('countries');
-            if (!empty($country_list)) {
-                if (!is_array($country_list)) {
-                    $countries[0] = $country_list;
-                } else {
-                    $countries = $country_list;
-                }
-            }
-            $cond = "";
-            if (!empty($orderWeight)) {
-                $cond .= ' ((' . $orderWeight . " > " . $params->get('weight_start', 0) . " AND " . $orderWeight . " < " . $params->get('weight_end', 0) . ")";
-                $cond .= ' OR  (' . $params->get('weight_start', 0) . " <= " . $orderWeight . '  ))';
-            }
-            if (!empty($address['zip'])) {
-                if ($cond)
-                    $cond .= ' AND';
-                $cond .= ' ((' . $address['zip'] . '> ' . $params->get('zip_start', 0) . ' AND ' . $address['zip'] . '< ' . $params->get('zip_end', 0) . ")";
-                $cond .= ' OR  (' . $params->get('zip_start', 0) . ' <= ' . $address['zip'] . ' )) ';
-            }
 
-            if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
-                if ($cond) {
+        $html = "";
+        foreach ($this->shippers as $shipper) {
+            if ($this->checkShippingConditions($cart, $shipper) ) {
+                $params = new JParameter($shipper->shipping_carrier_params);
                     $cost = $this->_getShippingCost($params);
-                    $html .= $this->getShippingHtml( $shipper_name, $shipper_id, $selectedShipper, $params->get('shipper_logo'), $cost, $params->get('tax_id'), $params->get('currency_id'));
+                    $logo = $this->_getShipperLogo($params->get('shipper_logo'), $shipper->shipping_carrier_name);
+                    $html .= $this->getShippingHtml($logo . " " . $shipper->shipping_carrier_name, $shipper->virtuemart_shippingcarrier_id, $selectedShipper, $cost, $params->get('tax_id'));
                 }
-            }
+
         }
 
         return $html;
@@ -188,7 +166,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
      * @author Valérie Isaksen
      */
-    public function plgVmOnShipperSelected($cart, $selectedShipper = 0) {
+    public function plgVmOnShipperSelected(VirtueMartCart $cart, $selectedShipper = 0) {
         if (!$this->selectedThisShipper($this->_selement, $selectedShipper)) {
             return null; // Another shipper was selected, do nothing
         } else {
@@ -206,31 +184,13 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
      * @author Valérie Isaksen
      */
-    public function plgVmOnShipperSelectedCalculatePrice($cart, $shipping) {
-    	
-		if (!parent::plgVmOnShipperSelectedCalculatePrice($cart, $shipping) ){
-                    return null;
-                }
-		 
-		$params = new JParameter($shipping->shipping_carrier_params);
-		$shipping->shipping_value = $this->_getShippingCost($params);
-		return true;
-		
-/*        if (!$this->selectedThisShipper($this->_selement, $selectedShipper)) {
-            return null; // Another shipper was selected, do nothing
+    public function plgVmOnShipperSelectedCalculatePrice(VirtueMartCart $cart, TableShippingCarriers $shipping) {
+        if (!parent::plgVmOnShipperSelectedCalculatePrice($cart, $shipping)) {
+            return null;
         }
-
-        $orderWeight = $this->getOrderWeight($cart);
-        $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
-
-        $shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $selectedShipper);
-        $params = new JParameter($shipping_carrier_params);
-
-        $shipping->shipping_currency_id = $params->get('currency_id');
-        $shipping->shipping_name = $this->getThisShipperName($selectedShipper);
-        $shipping->shipping_rate_vat_id = $params->get('tax_id');
+        $params = new JParameter($shipping->shipping_carrier_params);
         $shipping->shipping_value = $this->_getShippingCost($params);
-        return true;*/
+        return true;
     }
 
     /**
@@ -267,7 +227,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 
         $shipping->shipping_name = $params->get('shipping_name');
         $shipping->shipping_rate_vat_id = $params->get('tax_id');
-        $shipping->shipping_value = $cost = $this->_getShippingCost($params);
+        $shipping->shipping_value = $this->_getShippingCost($params);
         return true;
     }
 
@@ -281,16 +241,16 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      * @return mixed Null when this method was not selected, otherwise true
      * @author Valerie Isaksen
      */
-    function plgVmOnConfirmedOrderStoreShipperData($order_id, $cart, $priceData) {
+    function plgVmOnConfirmedOrderStoreShipperData($order_id, VirtueMartCart $cart, $priceData) {
 
         if (!($this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id))) {
             return null;
         }
-         $shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $cart->virtuemart_shippingcarrier_id);
+        $shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $cart->virtuemart_shippingcarrier_id);
         $params = new JParameter($shipping_carrier_params);
         $values['virtuemart_order_id'] = $order_id;
         $values['shipper_id'] = $cart->virtuemart_shippingcarrier_id;
-        $values['shipper_name'] = $this->getThisShipperName($cart->virtuemart_shippingcarrier_id);
+        $values['shipper_name'] = $this->getThisShipperNameById($cart->virtuemart_shippingcarrier_id);
         $values['order_weight'] = $this->getOrderWeight($cart);
         $values['shipper_cost'] = $params->get('rate_value');
         $values['tax_id'] = $params->get('tax_id');
@@ -324,7 +284,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
             return '';
         }
         if (!class_exists('CurrencyDisplay')
-
+        
             )require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
         $currency = CurrencyDisplay::getInstance();  //Todo, set currency of shopper or user?
 //		$_currency = VirtueMartModelVendor::getCurrencyDisplay($_vendorId);
@@ -361,6 +321,94 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 
     function _getShippingCost($params) {
         return $params->get('rate_value', 0) + $params->get('package_fee', 0);
+    }
+
+    /*
+     * This method returns the logo image form the shipper
+     */
+
+    function _getShipperLogo($shipper_logo, $alt_text) {
+
+
+        $img = "";
+        /* TODO: chercher chemin dynamique */
+        $path = JURI::base() . "images" . DS . "stories" . DS . "virtuemart" . DS . "shipper" . DS;
+        $img = "";
+        if (!(empty($shipper_logo))) {
+            $img = '<img align="middle" src="' . $path . $shipper_logo . '"  alt="' . $alt_text . '" > ';
+        }
+        return $img;
+    }
+
+   
+
+    function checkShippingConditions($cart, $shipper) {
+
+        $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
+        $orderWeight = $this->getOrderWeight($cart);
+        $nbShipper = 0;
+        $countries = array();
+        $params = new JParameter($shipper->shipping_carrier_params);
+         $country_list = $params->get('countries');
+        if (!empty($country_list)) {
+            if (!is_array($country_list)) {
+                $countries[0] = $country_list;
+            } else {
+                $countries = $country_list;
+            }
+        }
+
+        $weight_cond = $this->_weightCond($orderWeight, $params);
+        $zip_cond = $this->_zipCond($address['zip'], $params);
+
+        if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
+            if ($weight_cond AND $zip_cond) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function _weightCond($orderWeight, $params) {
+        if ($orderWeight) {
+
+            $weight_cond = ($orderWeight >= $params->get('weight_start', 0) AND $orderWeight <= $params->get('weight_stop', 0)
+                    OR
+                    ($params->get('weight_start', 0) <= $orderWeight AND ($params->get('weight_stop', '') == '') ));
+        } else
+            $weight_cond= true;
+        return $weight_cond;
+    }
+
+    /**
+     * Check the conditions on Zip code
+     * @param int $zip : zip code
+     * @param $params paremters for this specific shiper
+     * @author Valérie Isaksen
+     * @return string Shipper name
+     */
+    function _zipCond($zip, $params) {
+        if (!empty($zip)) {
+            $zip_cond = (( $zip >= $params->get('zip_start', 0) AND $zip <= $params->get('zip_stop', 0) )
+                    OR
+                    ($params->get('zip_start', 0) <= $zip AND ($params->get('zip_stop', '') == '') ) );
+        } else {
+            $zip_cond = true;
+        }
+        return $zip_cond;
+    }
+
+    /**
+     * Get the name of the shipper
+     * @param int $shipping The Shipper ID
+     * @author Valérie Isaksen
+     * @return string Shipper name
+     */
+    function getThisShipperName(TableShippingCarriers $shipping) {
+        $params = new JParameter($shipping->shipping_carrier_params);
+        $logo = $this->_getShipperLogo($params->get('shipper_logo'), $shipping->shipping_carrier_name);
+        return $logo . " " . $shipping->shipping_carrier_name;
     }
 
 }

@@ -155,6 +155,8 @@ class VmConfig
 		static $jPrice;
 		// If exist exit
 		if ($jPrice) return;
+                        JPlugin::loadLanguage('com_virtuemart');
+
 		$closeimage = JURI::root(true) .'/components/com_virtuemart/assets/images/facebox/closelabel.png';
 		$jsVars  = "vmCartText = '". JText::_('COM_VIRTUEMART_MINICART_ADDED') ."' ;\n" ;
 		$jsVars .= "vmCartError = '". JText::_('COM_VIRTUEMART_MINICART_ERROR') ."' ;\n" ;

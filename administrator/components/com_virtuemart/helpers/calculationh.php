@@ -740,11 +740,11 @@ class calculationHelper {
 		$this->_cartPrices['shippingValue'] = 0; //could be automatically set to a default set in the globalconfig
 		$this->_cartPrices['shippingTax'] = 0;
 		$this->_cartPrices['shippingTotal'] = 0;
-		$this->_cartPrices['salesPriceShipping'] = 0;
+		$this->_cartPrices['salesPriceShipping'] = 0;                
 		if (empty($ship_id)) return ;
-
+                
 		 if(!class_exists('TableShippingcarriers')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'shippingcarriers.php');
-		 
+
 		$shipping = new TableShippingcarriers($this->_db);
 		$shipping->load($ship_id);
 
@@ -754,10 +754,15 @@ class calculationHelper {
  		$_dispatcher = JDispatcher::getInstance();
  		$_retValues = $_dispatcher->trigger('plgVmOnShipperSelectedCalculatePrice',
  			array('cart'=> $cart, 
-                  'shipping' => $shipping ));
+                              'shipping' => $shipping ));
+/*
+ * TODO
+ * Plugin return true if shipping rate is still valid
+ * false if not any more
+ */
+
 
 		$this->_cartPrices['shippingValue'] = $shipping->shipping_value;
-		//$this->_cartPrices['shippingValue'] =  $this->_currencyDisplay->convertCurrencyTo($shipping->shipping_currency_id,$shipping->shipping_value );
 		$this->_cartData['shippingName'] = $shipping->shipping_name;
 
 
@@ -801,7 +806,7 @@ class calculationHelper {
 		$model->setId($virtuemart_paymentmethod_id);
 		$paym = $model->getPaym();
 
-		$this->_cartData['paymentName'] = !empty ($paym->paym_name) ? $paym->paym_name : JText::_('COM_VIRTUEMART_CART_NO_PAYM_SELECTED');
+		$this->_cartData['paymentName'] = !empty ($paym->payment_name) ? $paym->payment_name : JText::_('COM_VIRTUEMART_CART_NO_PAYMENT_SELECTED');
 		$this->_cartPrices['paymentValue'] = 0;
 		$this->_cartPrices['paymentTax'] = 0;
 		$this->_cartPrices['paymentDiscount'] = 0;

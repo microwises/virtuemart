@@ -1163,8 +1163,8 @@ class VirtueMartModelProduct extends VmModel {
 		$query .= ' LEFT JOIN `#__virtuemart_product_manufacturers` ON `#__virtuemart_manufacturers`.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
 		$query .= ' WHERE `#__virtuemart_product_manufacturers`.`virtuemart_product_id` in ('.implode (',', $mf_virtuemart_product_ids ).') ';
 		$query .= ' ORDER BY `#__virtuemart_manufacturers`.`mf_name`';
-		$db->setQuery($query);
-		$manufacturers = $db->loadObjectList();
+		$this->_db->setQuery($query);
+		$manufacturers = $this->_db->loadObjectList();
 
 		$manufacturerLink='';
 		if (count($manufacturers)>0) {

@@ -62,7 +62,7 @@ class VirtueMartModelOrders extends VmModel {
 	 * This function gets the secured order Number, to send with paiement
 	 * 
 	 */
-	public function getOrderNumber($_orderNr){
+	public function getOrderNumber($virtuemart_order_id){
 
 		$orderNumber = JRequest::getVar('order_number',0);
 //		if(empty($orderNumber)) return 0;
@@ -71,7 +71,7 @@ class VirtueMartModelOrders extends VmModel {
 
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT `order_number` FROM `#__virtuemart_orders` WHERE ="'.$virtuemart_order_id.'"  ';
+		$q = 'SELECT `order_number` FROM `#__virtuemart_orders` WHERE virtuemart_order_id="'.$virtuemart_order_id.'"  ';
 		$db->setQuery($q);
 		$OrderNumber = $db->loadResult();
 		return $OrderNumber;
@@ -161,7 +161,7 @@ class VirtueMartModelOrders extends VmModel {
 	{
 
 		$query = "SELECT o.*, CONCAT(u.first_name, ' ', IF(u.middle_name IS NULL, '', CONCAT(u.middle_name, ' ')), u.last_name) AS order_name "
-			.',m.paym_name AS payment_method '
+			.',m.payment_name AS payment_method '
 			.$this->getOrdersListQuery();
 		$_filter = array();
 		if ($uid > 0) {
@@ -620,31 +620,35 @@ class VirtueMartModelOrders extends VmModel {
 	 * @param object $_cart Cart object
 	 * @param array $_prices Price data
 	 */
-	private function _handlePayment($_orderID, $_cart, $_prices)
+	private function _handlePayment($orderID, $cart, $prices)
 	{
+
+                $orderNr = $this->getOrderNumber($orderID);
+
 		JPluginHelper::importPlugin('vmpayment');
-		$_dispatcher = JDispatcher::getInstance();
-		$_returnValues = $_dispatcher->trigger('plgVmOnConfirmedOrderStorePaymentData',array(
-					 $_orderID
-					,$_cart
-					,$_prices
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStorePaymentData',array(
+					 $orderNb
+					,$cart
+					,$prices
 		));
 
-		foreach ($_returnValues as $_returnValue) {
-			if ($_returnValue !== null) {
+		foreach ($returnValues as $returnValue) {
+			if ($returnValue !== null) {
 				// We got a new order status; check if the stock should be updated
 				if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
-				if (VirtueMartModelOrderstatus::updateStockAfterStatusChange($_returnValue) < 0) {// >0 is not possible for new orders
+				if (VirtueMartModelOrderstatus::updateStockAfterStatusChange($returnValue) < 0) {// >0 is not possible for new orders
 					if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
-					$_productModel = new VirtueMartModelProduct();
-					foreach ($_cart->products as $_prod) {
-						$_productModel->decreaseStockAfterSales ($_prod->virtuemart_product_id, $_prod->quantity);
+					$productModel = new VirtueMartModelProduct();
+					foreach ($cart->products as $prod) {
+						$productModel->decreaseStockAfterSales ($prod->virtuemart_product_id, $prod->quantity);
 					}
 				}
 				break; // This was the active plugin, so there's nothing left to do here.
 			}
 			// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
-		}
+		 
+}
 	}
         /**
 	 * Handle the selected payment method. If triggered to do so, this method will also
@@ -767,7 +771,7 @@ class VirtueMartModelOrders extends VmModel {
 	 * @param integer $uid The user ID. Defaults to 0 for guests
 	 * @return string A unique ordernumber
 	 */
-	private function generateOrderNumber($uid = 0,$length=32)
+	private function generateOrderNumber($_uid = 0,$length=10)
 	{
 		return substr(
 				 $uid

@@ -36,7 +36,7 @@ if ($this->carrier->shipping_carrier_name) {
   if (document.getElementById('accepted_creditcards_store').innerHTML != '')
   document.getElementById('accepted_creditcards2').innerHTML ='<input type="text" name="accepted_creditcards" value="' + document.getElementById('accepted_creditcards_store').innerHTML + '" class="inputbox" />';
   else
-  document.getElementById('accepted_creditcards2').innerHTML = '<?php ps_creditcard::creditcard_checkboxes( $this->paym->paym_creditcards ); ?>';
+  document.getElementById('accepted_creditcards2').innerHTML = '<?php ps_creditcard::creditcard_checkboxes( $this->paym->payment_creditcards ); ?>';
   }
   else {
   try {

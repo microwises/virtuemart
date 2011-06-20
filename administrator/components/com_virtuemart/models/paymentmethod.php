@@ -42,7 +42,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	 */
 	 public function getIdbyCodeAndVendorId($jpluginId,$vendorId=1){
 	 	if(!$jpluginId) return 0;
-	 	$q = 'SELECT `virtuemart_paymentmethod_id` FROM #__virtuemart_paymentmethods WHERE `paym_jplugin_id` = "'.(int)$jpluginId.'" AND `virtuemart_vendor_id` = "'.(int)$vendorId.'" ';
+	 	$q = 'SELECT `virtuemart_paymentmethod_id` FROM #__virtuemart_paymentmethods WHERE `payment_jplugin_id` = "'.$jpluginId.'" AND `virtuemart_vendor_id` = "'.$vendorId.'" ';
 		$this->_db->setQuery($q);
 		return $this->_db->loadResult();
 	 }
@@ -73,7 +73,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			/* Add the accepted credit cards */
 			$q = 'SELECT `virtuemart_creditcard_id` FROM #__virtuemart_paymentmethod_creditcards WHERE `virtuemart_paymentmethod_id` = "'.$this->_id.'"';
 			$this->_db->setQuery($q);
-			$this->_data->paym_creditcards = $this->_db->loadResultArray();
+			$this->_data->payment_creditcards = $this->_db->loadResultArray();
 
 
 			if (VmConfig::isJ15()) {
@@ -83,12 +83,12 @@ class VirtueMartModelPaymentmethod extends VmModel{
 				$table = '#__extensions';
 				$ext_id = 'extension_id';
 			}
-			$q = 'SELECT `params` FROM `' . $table . '` WHERE `' . $ext_id . '` = "'.$this->_data->paym_jplugin_id.'"';
+			$q = 'SELECT `params` FROM `' . $table . '` WHERE `' . $ext_id . '` = "'.$this->_data->payment_jplugin_id.'"';
 			$this->_db->setQuery($q);
 			$this->_data->param = $this->_db->loadResult();
   		} else {
   			$this->_data->virtuemart_shoppergroup_ids = '';
-  			$this->_data->paym_creditcards = '';
+  			$this->_data->payment_creditcards = '';
   			$this->_data->param = '';
   		}
 
@@ -110,7 +110,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		if ($onlyPublished) {
 			$query .= 'WHERE `#__virtuemart_paymentmethods`.`published` = 1';
 		}
-		$query .= ' ORDER BY `#__virtuemart_paymentmethods`.`paym_name`';
+		$query .= ' ORDER BY `#__virtuemart_paymentmethods`.`payment_name`';
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
 		} else {
@@ -134,7 +134,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 				/* Add the accepted credit cards */
 				$q = 'SELECT `virtuemart_creditcard_id` FROM #__virtuemart_paymentmethod_creditcards WHERE `virtuemart_paymentmethod_id` = "'.$data->virtuemart_paymentmethod_id.'"';
 				$this->_db->setQuery($q);
-				$data->paym_creditcards = $this->_db->loadResultArray();
+				$data->payment_creditcards = $this->_db->loadResultArray();
 
 				/* Write the first 5 shoppergroups in the list */
 				$data->paymShoppersList = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_paymentmethod_shoppergroups','virtuemart_paymentmethod_id',$data->virtuemart_paymentmethod_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','shoppergroup');
@@ -143,11 +143,11 @@ class VirtueMartModelPaymentmethod extends VmModel{
 				$data->paymCreditCardList = shopfunctions::renderGuiList('virtuemart_creditcard_id','#__virtuemart_paymentmethod_creditcards','virtuemart_paymentmethod_id',$data->virtuemart_paymentmethod_id,'creditcard_name','#__virtuemart_creditcards','virtuemart_creditcard_id','creditcart');
 
 				/* Add published from table plugins obsolete */
-//				$q = 'SELECT `id` FROM #__plugins WHERE `element` = "'.$data->paym_element.'"';
+//				$q = 'SELECT `id` FROM #__plugins WHERE `element` = "'.$data->payment_element.'"';
 //				$this->_db->setQuery($q);
-//				$paym_jplugin_id = $this->_db->loadResult();
+//				$payment_jplugin_id = $this->_db->loadResult();
 //
-//				$q = 'SELECT `published` FROM #__plugins WHERE `id` = "'.$paym_jplugin_id.'"';
+//				$q = 'SELECT `published` FROM #__plugins WHERE `id` = "'.$payment_jplugin_id.'"';
 //				$this->_db->setQuery($q);
 //				$data->published = $this->_db->loadResult();
 			}
@@ -170,7 +170,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		if(isset($data['params'])){
 			$params = new JParameter('');
 			$params->bind($data['params']);
-			$data['paym_params'] = $params->toString();
+			$data['payment_params'] = $params->toString();
 		}
 
 	  	if(empty($data['virtuemart_vendor_id'])){
@@ -185,9 +185,9 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			$tb = '#__extensions';
 			$ext_id = 'extension_id';
 		}
-		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.(int)$data['paym_jplugin_id'].'"';
+		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['payment_jplugin_id'].'"';
 		$this->_db->setQuery($q);
-		$data['paym_element'] = $this->_db->loadResult();
+		$data['payment_element'] = $this->_db->loadResult();
 
 		$table = $this->getTable('paymentmethods');
     	if (!$table->bindChecknStore($data)) {
@@ -281,7 +281,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			if($item->virtuemart_paymentmethod_id==$selectedPaym){
 				$checked='"checked"';
 			}
-			$listHTML .= '<input type="radio" name="virtuemart_paymentmethod_id" value="'.$item->virtuemart_paymentmethod_id.'" '.$checked.'>'.$item->paym_name.' <br />';
+			$listHTML .= '<input type="radio" name="virtuemart_paymentmethod_id" value="'.$item->virtuemart_paymentmethod_id.'" '.$checked.'>'.$item->payment_name.' <br />';
 			$listHTML .= ' <br />';
 		}
 

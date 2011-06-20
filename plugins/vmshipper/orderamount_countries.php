@@ -103,22 +103,6 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
     }
 
     /**
-     * Get the total amount for the order, based on which the proper shipping rate
-     * can be selected.
-     * @param object $cart Cart object
-     * @return float Total amount for the order
-     * @author Valerie isakesn
-     */
-    protected function getOrderAmount(VirtueMartCart $cart) {
-// THIS IS WRONG
-         $orderAmount=0;
-        foreach ($cart->products as $product) {
-            $orderAmount += ( $product->product_price * $product->quantity);
-        }
-        return $orderAmount;
-    }
-
-    /**
      * This event is fired during the checkout process. It allows the shopper to select
      * one of the available shippers.
      * It should display a radio button (name: shipper_id) to select the shipper. In the description,
@@ -127,10 +111,11 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
      *
      * @param object $cart the cart object
      * @param integer $selected ID of the shipper currently selected
-     * @return HTML code to display the form
+     * @return HTML code to display the form for all the shipping methods available for this plugin
      * @author Valérie Isaksen
      */
     public function plgVmOnSelectShipper(VirtueMartCart $cart, $selectedShipper = 0) {
+
         if ($this->getShippers($cart->vendorId) === false) {
             if (empty($this->_name)) {
                 $app = JFactory::getApplication();
@@ -142,29 +127,14 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
             }
         }
         $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
-        $orderAmount = $this->getOrderAmount($cart);
+
         $html = "";
-        $countries = array();
-        foreach ($this->shippers as $shipper_id => $shipper_name) {
-            $shipping_params = $this->getVmShipperParams($cart->vendorId, $shipper_id);
-            $params = new JParameter($shipping_params);
-            $country_list = $params->get('countries');
-            if (!empty($country_list)) {
-                if (!is_array($country_list)) {
-                    $countries[0] = $country_list;
-                } else {
-                    $countries = $country_list;
-                }
-            }
-
-            $cond = ' ((' . $orderAmount . " > " . $params->get('orderamount_start', 0) . " AND " . $orderAmount . " < " . $params->get('orderamount_end', 0) . ")";
-            $cond .= ' OR  (' . $params->get('orderamount_start', 0) . " <= " . $orderAmount . '  ))';
-
-              if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
-                if ($cond) {
-                    $cost = $params->get('shipping_value');
-                    $html = $this->getShippingHtml($shipper_name, $shipper_id, $selectedShipper, $params->get('shipper_logo'), $cost, $params->get('tax_id'), $params->get('currency_id'));
-                }
+        foreach ($this->shippers as $shipper) {
+            if ($this->checkShippingConditions($cart, $shipper)) {
+                $params = new JParameter($shipper->shipping_carrier_params);
+                $cost = $params->get('shipping_value');
+                $shipper_name = $this->_getShipperLogo($params->get('shipper_logo'), $shipper->shipping_carrier_name);
+                $html .= $this->getShippingHtml($shipper_name, $shipper->virtuemart_shippingcarrier_id, $selectedShipper, $cost, $params->get('tax_id', 0));
             }
         }
 
@@ -181,42 +151,13 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
      * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
      * @author Valérie Isaksen
      */
-    public function plgVmOnShipperSelected($cart, $selectedShipper = 0) {
+    public function plgVmOnShipperSelected(VirtueMartCart $cart, $selectedShipper = 0) {
         if (!$this->selectedThisShipper($this->_selement, $selectedShipper)) {
             return null; // Another shipper was selected, do nothing
         } else {
             return true;
         }
     }
-
-    /**
-     * This event is fired after the shipping method has been selected. It can be used to store
-     * additional shipper info in the cart.
-     *
-     * @param object $cart Cart object
-     * @param integer $selected ID of the shipper selected
-     * @return boolean True on succes, false on failures, null when this plugin was not selected.
-     * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
-     * @author Valérie Isaksen
-     */
-/*    public function plgVmOnShipperSelectedCalculatePrice($cart, $shipping) {
- /*       if (!$this->selectedThisShipper($this->_selement, $selectedShipper)) {
-            return null; // Another shipper was selected, do nothing
-        }
-
-        $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
-
-        $shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $selectedShipper);
-        $params = new JParameter($shipping_carrier_params);
-
-        $shipping->shipping_currency_id = $params->get('currency_id');
-        $shipping->shipping_name = $this->getThisShipperName($selectedShipper);
-        $shipping->shipping_rate_vat_id = $params->get('tax_id');
-        $shipping->shipping_value =  $params->get('shipping_value');
-        return true;
-       	
-    } 
-    */
 
     /**
      * This method is fired when showing the order details in the frontend.
@@ -241,7 +182,9 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
      * if more ID's match, the cheapest will be selected.
      */
     protected function selectShippingRate(VirtueMartCart $cart, $selectedShipper = 0) {
- 
+        if (!($this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id))) {
+            return null;
+        }
         if ($selectedShipper == 0) {
             $selectedShipper = $cart->virtuemart_shippingcarrier_id;
         }
@@ -252,7 +195,7 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
 
         $shipping->shipping_name = $params->get('shipping_name');
         $shipping->shipping_rate_vat_id = $params->get('tax_id');
-        $shipping->shipping_value =  $params->get('shipping_value');
+        $shipping->shipping_value = $params->get('shipping_value');
         return true;
     }
 
@@ -309,6 +252,8 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
 
             )require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
         $currency = CurrencyDisplay::getInstance();  //Todo, set currency of shopper or user?
+        $taxRule=$this->displayTaxRule($shipInfo->tax_id);
+
 //		$_currency = VirtueMartModelVendor::getCurrencyDisplay($_vendorId);
         $html = '<table class="admintable">' . "\n"
                 . '	<thead>' . "\n"
@@ -322,21 +267,70 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
                 . '	</tr>' . "\n"
                 . '	<tr>' . "\n"
                 . '		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_MODE_LBL') . ': </td>' . "\n"
-                . '		<td>' . $shipInfo->shipper_cost . '</td>' . "\n"
+                . '		<td>' . $shipInfo->shipper_cost  . '</td>' . "\n"
                 . '	</tr>' . "\n"
                 . '	<tr>' . "\n"
                 . '		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_MODE_LBL') . ': </td>' . "\n"
-                . '		<td>' . $shipInfo->tax . '</td>' . "\n"
-                . '	</tr>' . "\n"
-                . '	<tr>' . "\n"
-                . '		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_MODE_LBL') . ': </td>' . "\n"
-                . '		<td>' . $shipInfo->currency . '</td>' . "\n"
+                . '		<td>' . $taxRule.'</td>' . "\n"
                 . '	</tr>' . "\n"
                 . '</table>' . "\n"
         ;
         return $html;
     }
- 
+
+// check if the shipping conditions are valid
+    function checkShippingConditions($cart, $shipper) {
+        $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
+        $html = "";
+        $countries = array();
+        $params = new JParameter($shipper->shipping_carrier_params);
+        $orderAmount = $this->getOrderAmount($cart);
+        $country_list = $params->get('countries');
+        if (!empty($country_list)) {
+            if (!is_array($country_list)) {
+                $countries[0] = $country_list;
+            } else {
+                $countries = $country_list;
+            }
+        }
+
+        $cond = (( $orderAmount > $params->get('order_amount_start', 0) AND $orderAmount < $params->get('order_amount_stop', 0) ) OR ($params->get('order_amount_start', 0) <= $orderAmount AND ($params->get('order_amount_stop', '') == '')));
+        if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
+            if ($cond) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get the total amount for the order, based on which the proper shipping rate
+     * can be selected.
+     * @param object $cart Cart object
+     * @return float Total amount for the order
+     * @author Valerie isakesn
+     */
+    function getOrderAmount(VirtueMartCart $cart) {
+        $prices = $cart->getCartPrices();
+        return $prices['salesPrice'];
+    }
+
+    /*
+     * This method returns the logo image form the shipper
+     */
+
+    function _getShipperLogo($shipper_logo, $alt_text) {
+
+        $img = "";
+        /* TODO: chercher chemin dynamique */
+        $path = JURI::base() . "images" . DS . "stories" . DS . "virtuemart" . DS . "shipper" . DS;
+        $img = "";
+        if (!(empty($shipper_logo))) {
+            $img = '<img align="middle" src="' . $path . $shipper_logo . '"  alt="' . $alt_text . '" > ';
+        }
+        return $img;
+    }
 
 }
 

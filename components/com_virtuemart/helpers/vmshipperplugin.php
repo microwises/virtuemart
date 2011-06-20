@@ -102,7 +102,7 @@ abstract class vmShipperPlugin extends JPlugin {
         if (!$vendorId)
             $vendorId = 1;
         $db = JFactory::getDBO();
-        
+
         $q = 'SELECT   `shipping_carrier_params` FROM #__virtuemart_shippingcarriers WHERE `virtuemart_shippingcarrier_id` = "' . $shipper_id . '" AND `virtuemart_vendor_id` = "' . $vendorId . '" AND `published`="1" ';
         $db->setQuery($q);
         return $db->loadResult();
@@ -131,8 +131,7 @@ abstract class vmShipperPlugin extends JPlugin {
     protected function getShippers($_vendorId) {
         $db = JFactory::getDBO();
         if (VmConfig::isJ15()) {
-            $q = 'SELECT v.`virtuemart_shippingcarrier_id`   AS id '
-                    . ',      v.`shipping_carrier_name` AS name '
+            $q = 'SELECT v.*  '
                     . 'FROM   #__virtuemart_shippingcarriers AS v '
                     . ',      #__plugins             j '
                     . 'WHERE j.`element` = "' . $this->_selement . '" '
@@ -142,8 +141,7 @@ abstract class vmShipperPlugin extends JPlugin {
                     . ' OR   v.`virtuemart_vendor_id` = "0") '
             ;
         } else {
-            $q = 'SELECT v.`virtuemart_shippingcarrier_id`   AS id '
-                    . ',      v.`shipping_carrier_name` AS name '
+            $q = 'SELECT v.* '
                     . 'FROM   #__virtuemart_shippingcarriers AS v '
                     . ',      #__extensions    AS      j '
                     . 'WHERE j.`folder` = "vmshipper" '
@@ -157,14 +155,12 @@ abstract class vmShipperPlugin extends JPlugin {
 
 
         $db->setQuery($q);
-        if (!$_res = $db->loadAssocList()) {
+        if (!$results = $db->loadObjectList()) {
 //			$app = JFactory::getApplication();
 //			$app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_CARRIER'));
             return false;
         }
-        foreach ($_res as $_r) {
-            $this->shippers[$_r['id']] = $_r['name'];
-        }
+        $this->shippers = $results;
         return true;
     }
 
@@ -293,15 +289,14 @@ abstract class vmShipperPlugin extends JPlugin {
      * @author Oscar van Eijk
      */
     public function plgVmOnShipperSelected($cart, $_selectedShipper = 0) {
-        /*
+
           if (!$this->selectedThisShipper($this->_selement, $_selectedShipper)) {
           return null; // Another shipper was selected, do nothing
           }
           // should return $shipping rates for this
           $cart->setShippingRate($this->selectShippingRate($cart));
           return true;
-         *
-         */
+          
     }
 
     /**
@@ -556,13 +551,39 @@ abstract class vmShipperPlugin extends JPlugin {
      * @author Valérie Isaksen
      * @return string Shipper name
      */
-    final protected function getThisShipperName($id) {
+    final protected function getThisShipperNameById($id) {
         $db = JFactory::getDBO();
         $q = 'SELECT `shipping_carrier_name` '
                 . 'FROM #__virtuemart_shippingcarriers '
                 . "WHERE virtuemart_shippingcarrier_id ='$id' ";
         $db->setQuery($q);
         return $db->loadResult(); // TODO Error check
+    }
+
+    /**
+     * Get the name of the shipper
+     * @param int $_sid The Shipper ID
+     * @author Valérie Isaksen
+     * @return string Shipper name
+     */
+    public function getThisShipperName(TableShippingCarriers $shipping) {
+        return $shipping->shipping_carrier_name;
+    }
+
+    /**
+     * Get Shipper Data for a go given Shipper ID
+     * @param int $_sid The Shipper ID
+     * @author Valérie Isaksen
+     * @return  Shipper data
+     */
+    final protected function getThisShipperData($virtuemart_shippingcarrier_id) {
+        $db = JFactory::getDBO();
+        $q = 'SELECT * '
+                . 'FROM #__virtuemart_shippingcarriers '
+                . "WHERE virtuemart_shippingcarrier_id ='" . $virtuemart_shippingcarrier_id . "' ";
+        $db->setQuery($q);
+        $result = $db->loadObject(); // TODO Error check
+        return $result;
     }
 
     /**
@@ -595,23 +616,6 @@ abstract class vmShipperPlugin extends JPlugin {
         }
     }
 
-    /*
-     * This method returns the logo image form the shipper
-     */
-
-    protected function getShipperLogo($shipper_logo, $alt_text) {
-
-
-        $img = "";
-        /* TODO: chercher chemin dynamique */
-        $path = JURI::base() . "images" . DS . "stories" . DS . "virtuemart" . DS . "shipper" . DS;
-        $img = "";
-        if (!(empty($shipper_logo))) {
-            $img = '<img align="middle" src="' . $path . $shipper_logo . '"  alt="' . $alt_text . '" > ';
-        }
-        return $img;
-    }
-
     protected function calculateSalesPriceShipping($shipping_value, $tax_id, $currency_id) {
 
         if (!class_exists('calculationHelper'))
@@ -623,7 +627,7 @@ abstract class vmShipperPlugin extends JPlugin {
         $calculator = calculationHelper::getInstance();
         $currency = CurrencyDisplay::getInstance();
 
-        $shipping_value= $currency->convertCurrencyTo($currency_id, $shipping_value);
+        $shipping_value = $currency->convertCurrencyTo($currency_id, $shipping_value);
 
         $taxrules = array();
         if (!empty($tax_id)) {
@@ -633,24 +637,25 @@ abstract class vmShipperPlugin extends JPlugin {
         }
 
         if (count($taxrules) > 0) {
-            $salesPriceShipping = $calculator->roundDisplay($calculator->executeCalculation($taxrules, $shipping_value));         
+            $salesPriceShipping = $calculator->roundDisplay($calculator->executeCalculation($taxrules, $shipping_value));
         } else {
             $salesPriceShipping = $shipping_value;
         }
 
-        return  $salesPriceShipping;
+        return $salesPriceShipping;
     }
 
-    protected function getShippingHtml($shipper_name, $shipper_id, $selectedShipper, $shipper_logo, $cost, $tax_id ) {
+    protected function getShippingHtml($shipper_name, $shipper_id, $selectedShipper, $cost, $tax_id) {
         if ($selectedShipper == $shipper_id) {
             $checked = '"checked"';
         } else {
             $checked = '';
         }
 
-         if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-                         $vendor_id = 1;
-                         $vendor_currency=VirtueMartModelVendor::getVendorCurrency ($vendor_id);
+        if (!class_exists('VirtueMartModelVendor'))
+            require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+        $vendor_id = 1;
+        $vendor_currency = VirtueMartModelVendor::getVendorCurrency($vendor_id);
 
         if (!class_exists('CurrencyDisplay'))
             require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
@@ -658,27 +663,74 @@ abstract class vmShipperPlugin extends JPlugin {
         $salesPriceShipping = $this->calculateSalesPriceShipping($cost, $tax_id, $vendor_currency->virtuemart_currency_id);
 
         $shippingCostDisplay = $currency->priceDisplay($salesPriceShipping);
-        $logo = $this->getShipperLogo($shipper_logo, $shipper_name);
 
         $html = '<input type="radio" name="shipper_id" id="shipper_id_' . $shipper_id . '" value="' . $shipper_id . '" ' . $checked . '>'
-                . '<label for="shipper_id_' . $shipper_id . '">' . $logo . $shipper_name . " (" . $shippingCostDisplay . ")</label><br/>\n";
+                . '<label for="shipper_id_' . $shipper_id . '">' . $shipper_name . " (" . $shippingCostDisplay . ")</label><br/>\n";
         return $html;
     }
 
-    public function plgVmOnShipperSelectedCalculatePrice($cart, $shipping){
-		
+    public function plgVmOnShipperSelectedCalculatePrice(VirtueMartCart $cart, TableShippingCarriers $shipping) {
+
         if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
             return null; // Another shipper was selected, do nothing
         }
 
-        $shipping->shipping_name = $this->getThisShipperName($cart->virtuemart_shippingcarrier_id);      
+        $shipping->shipping_name = $this->getThisShipperName($shipping);
         $params = new JParameter($shipping->shipping_carrier_params);
-
-        $shipping->shipping_currency_id = $params->get('currency_id');
         $shipping->shipping_rate_vat_id = $params->get('tax_id');
-        $shipping->shipping_value =  $params->get('shipping_value');
+        $shipping->shipping_value = $params->get('shipping_value');
 
-        return true ;
-	}
-	
+        return true;
+    }
+
+    function plgVmOnCheckAutomaticSelectedShipping(VirtueMartCart $cart) {
+        $nbShipper = 0;
+        $virtuemart_shippingcarrier_id = 0;
+        $nbShipper = $this->getSelectableShipping($cart, $virtuemart_shippingcarrier_id);
+        return ($nbShipper == 1) ? $virtuemart_shippingcarrier_id : false;
+    }
+
+    function plgVmOnCheckShippingIsValid(VirtueMartCart $cart) {
+        $shipper = $this->getThisShipperData($cart->virtuemart_shippingcarrier_id);
+        return $this->checkShippingConditions($cart, $shipper);
+    }
+
+    function getParamShippings($cart, &$nbShipper, &$virtuemart_shippingcarrier_id, $selectedShipper=0) {
+
+        return null;
+    }
+
+    /*
+     * This method returns the number of shipping methods valid
+     */
+
+    function getSelectableShipping(VirtueMartCart $cart, &$virtuemart_shippingcarrier_id) {
+        $nbShipper = 0;
+        if ($this->getShippers($cart->vendorId) === false) {
+            return false;
+        }
+
+        foreach ($this->shippers as $shipper) {
+            if ($this->checkShippingConditions($cart, $shipper)) {
+                $nbShipper++;
+                ;
+                $virtuemart_shippingcarrier_id = $shipper->virtuemart_shippingcarrier_id;
+            }
+        }
+        return $nbShipper;
+    }
+
+    function displayTaxRule($tax_id) {
+        $html = '';
+        $db = JFactory::getDBO();
+        if (!empty($tax_id)) {
+            $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $tax_id . '" ';
+            $db->setQuery($q);
+            $taxrule = $db->loadObject();
+
+            $html = $taxrule->calc_name . '(' . $taxrule->calc_kind . ':' . $taxrule->calc_value_mathop . $taxrule->calc_value . ')';
+        }
+        return $html;
+    }
+
 }

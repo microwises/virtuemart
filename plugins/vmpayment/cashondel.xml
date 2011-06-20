@@ -24,19 +24,19 @@
 	<params >
 		<param type="text" name="pType" label="VM_PAYMS_TYPE" default = "N" description="VM_PAYMS_TYPE" />
 		<param type="text" name="CASH_ON_DEL_5000" label="5000 =&gt;"
-             default="230" description="PHPSHOP_PAYMENT_METHOD_LIST_FEE" />
+             default="230" description="PHPSHOP_PAYMENTMETHOD_LIST_FEE" />
 		<param type="text" name="CASH_ON_DEL_10000" label="10000 =&gt;"
-             default="340" description="PHPSHOP_PAYMENT_METHOD_LIST_FEE" />
+             default="340" description="PHPSHOP_PAYMENTMETHOD_LIST_FEE" />
 		<param type="text" name="CASH_ON_DEL_20000" label="20000 =&gt;"
-             default="560" description="PHPSHOP_PAYMENT_METHOD_LIST_FEE" />
+             default="560" description="PHPSHOP_PAYMENTMETHOD_LIST_FEE" />
 		<param type="text" name="CASH_ON_DEL_30000" label="30000 =&gt;"
-             default="640" description="PHPSHOP_PAYMENT_METHOD_LIST_FEE" />
+             default="640" description="PHPSHOP_PAYMENTMETHOD_LIST_FEE" />
 		<param type="text" name="CASH_ON_DEL_40000" label="40000 =&gt;"
-             default="750" description="PHPSHOP_PAYMENT_METHOD_LIST_FEE" />
+             default="750" description="PHPSHOP_PAYMENTMETHOD_LIST_FEE" />
 		<param type="text" name="CASH_ON_DEL_50000" label="50000 =&gt;"
-             default="860" description="PHPSHOP_PAYMENT_METHOD_LIST_FEE" />
+             default="860" description="PHPSHOP_PAYMENTMETHOD_LIST_FEE" />
 		<param type="text" name="CASH_ON_DEL_100000" label="100000 =&gt;"
-             default="1130" description="PHPSHOP_PAYMENT_METHOD_LIST_FEE" />
+             default="1130" description="PHPSHOP_PAYMENTMETHOD_LIST_FEE" />
 	</params>
 	
 </install>

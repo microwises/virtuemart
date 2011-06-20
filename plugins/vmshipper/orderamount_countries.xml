@@ -21,7 +21,6 @@
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />
         <param type="spacer" default="VMSHIPPER_ORDERAMOUNT_COUNTRIES" level="level1" />
-        <param name="rate_name" type="text"   size="50"  label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_FE_SHIPPING_NAME" description="VMSHIPPER_ORDERAMOUNT_COUNTRIES_FE_SHIPPING_NAME_DESC"/>
         <param	name="shipper_logo" type="vmfiles" label="VMSHIPPER_ORDERAMOUNT_COUNTRIES_LOGOS"
              	description="VMSHIPPER_WEIGHT_COUNTRIES_LOGOS_DESC"
              	directory="/images/stories/virtuemart/shipper"

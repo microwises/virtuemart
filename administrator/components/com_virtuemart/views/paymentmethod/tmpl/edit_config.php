@@ -19,9 +19,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); 
 
-    if($this->paym->paym_element){
-	        //$parameters = new vmParameters($this->paym->paym_params, JPATH_PLUGINS.DS.'vmpayment'.DS.basename($this->paym->paym_element).'.xml', 'plugin' );
-                $parameters = new vmParameters($this->paym->paym_params,  $this->paym->paym_element , 'plugin' ,'vmpayment');
+    if($this->paym->payment_element){
+	        //$parameters = new vmParameters($this->paym->payment_params, JPATH_PLUGINS.DS.'vmpayment'.DS.basename($this->paym->payment_element).'.xml', 'plugin' );
+                $parameters = new vmParameters($this->paym->payment_params,  $this->paym->payment_element , 'plugin' ,'vmpayment');
                
 	        echo $rendered = $parameters->render();
 
@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	?>
 <br />
-<textarea class="inputbox" name="paym_extra_info" cols="120" rows="20"><?php echo htmlspecialchars( $this->paym->paym_extra_info ); ?></textarea>
+<textarea class="inputbox" name="payment_extra_info" cols="120" rows="20"><?php echo htmlspecialchars( $this->paym->payment_extra_info ); ?></textarea>
 <?php /*
 <script type="text/javascript">
 function check() {
@@ -43,7 +43,7 @@ function check() {
       if (document.getElementById('accepted_creditcards_store').innerHTML != '')
         document.getElementById('accepted_creditcards2').innerHTML ='<input type="text" name="accepted_creditcards" value="' + document.getElementById('accepted_creditcards_store').innerHTML + '" class="inputbox" />';
       else
-        document.getElementById('accepted_creditcards2').innerHTML = '<?php ps_creditcard::creditcard_checkboxes( $this->paym->paym_creditcards ); ?>';
+        document.getElementById('accepted_creditcards2').innerHTML = '<?php ps_creditcard::creditcard_checkboxes( $this->paym->payment_creditcards ); ?>';
    }
    else {
     try {
