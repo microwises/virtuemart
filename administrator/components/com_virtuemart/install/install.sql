@@ -819,7 +819,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_downloads` (
   `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`download_id`),
   KEY `virtuemart_user_id` (`virtuemart_user_id`),
-  KEY `virtuemart_order_id` (`virtuemart_order_id`),
+  KEY `virtuemart_order_id` (`virtuemart_order_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Active downloads for selling downloadable goods';
 
 
