@@ -157,7 +157,24 @@ abstract class vmPaymentPlugin extends JPlugin {
      */
     public function plgVmOnSelectPayment(VirtueMartCart $cart, $selectedPayment=0) {
 
-        //return parent::plgVmOnPaymentSelectedCalculatePrice;
+       if (  $this->getPayments($cart->vendorId) === false) {
+                if (empty($this->_name)) {
+                    $app = JFactory::getApplication();
+                    $app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_PAYMENT'));
+                    return;
+                } else {
+                    //return JText::sprintf('COM_VIRTUEMART_SHIPPER_NOT_VALID_FOR_THIS_VENDOR', $this->_name , $cart->vendorId );
+                    return;
+                }
+            }
+            $html="";
+            foreach ($this->payments as $payment) {
+                $payment->payment_name=$logos.$payment->payment_name;
+                $html .= $this->getPaymentHtml($payment, $selectedPayment,   $cart);
+              }
+
+            return $html;
+        
     }
 
     /**
