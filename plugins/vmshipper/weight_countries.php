@@ -336,9 +336,13 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
    
 
     function checkShippingConditions($cart, $shipper) {
+        /*
+    }
  if (!($this->selectedThisShipper($this->_selement, $ship_method_id))) {
             return false;
         }
+         * */
+         
         $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
         $orderWeight = $this->getOrderWeight($cart);
         $nbShipper = 0;

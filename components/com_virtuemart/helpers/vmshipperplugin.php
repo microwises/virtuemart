@@ -684,6 +684,7 @@ abstract class vmShipperPlugin extends JPlugin {
     }
 
     function plgVmOnCheckAutomaticSelectedShipping(VirtueMartCart $cart) {
+        return 0;
         $nbShipper = 0;
         $virtuemart_shippingcarrier_id = 0;
         $nbShipper = $this->getSelectableShipping($cart, $virtuemart_shippingcarrier_id);
