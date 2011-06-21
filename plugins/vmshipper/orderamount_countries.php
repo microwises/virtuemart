@@ -116,15 +116,8 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
      */
     public function plgVmOnSelectShipper(VirtueMartCart $cart, $selectedShipper = 0) {
 
-        if ($this->getShippers($cart->vendorId) === false) {
-            if (empty($this->_name)) {
-                $app = JFactory::getApplication();
-                $app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_CARRIER'));
-                return;
-            } else {
-                //return JText::sprintf('COM_VIRTUEMART_SHIPPER_NOT_VALID_FOR_THIS_VENDOR', $this->_name , $cart->vendorId );
-                return;
-            }
+        if (( $this->getShippers($cart->vendorId)) === false) {
+            return false;
         }
         $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
@@ -133,7 +126,7 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
             if ($this->checkShippingConditions($cart, $shipper)) {
                 $params = new JParameter($shipper->shipping_carrier_params);
                 $cost = $params->get('shipping_value');
-                $shipper_name = $this->_getShipperLogo($params->get('shipper_logo'), $shipper->shipping_carrier_name);
+                $shipper_name = $this->_getShipperLogo($params->get('shipper_logo'), $shipper->shipping_carrier_name). $shipper->shipping_carrier_name;
                 $html .= $this->getShippingHtml($shipper_name, $shipper->virtuemart_shippingcarrier_id, $selectedShipper, $cost, $params->get('tax_id', 0));
             }
         }
@@ -280,6 +273,12 @@ class plgVmShipperOrderAmount_countries extends vmShipperPlugin {
 
 // check if the shipping conditions are valid
     function checkShippingConditions($cart, $shipper) {
+        /*
+         if (!($this->selectedThisShipper($this->_selement, $shipper->shipping_carrier_element))) {
+            return false;
+        }
+         * */
+
         $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
         $html = "";
         $countries = array();

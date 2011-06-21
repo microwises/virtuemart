@@ -691,6 +691,9 @@ abstract class vmShipperPlugin extends JPlugin {
     }
 
     function plgVmOnCheckShippingIsValid(VirtueMartCart $cart) {
+         if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
+            return null; // Another shipper was selected, do nothing
+        }
         $shipper = $this->getThisShipperData($cart->virtuemart_shippingcarrier_id);
         return $this->checkShippingConditions($cart, $shipper);
     }
@@ -713,7 +716,6 @@ abstract class vmShipperPlugin extends JPlugin {
         foreach ($this->shippers as $shipper) {
             if ($this->checkShippingConditions($cart, $shipper)) {
                 $nbShipper++;
-                ;
                 $virtuemart_shippingcarrier_id = $shipper->virtuemart_shippingcarrier_id;
             }
         }

@@ -131,15 +131,8 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      */
     public function plgVmOnSelectShipper(VirtueMartCart $cart, $selectedShipper = 0) {
 
-        if ($this->getShippers($cart->vendorId) === false) {
-            if (empty($this->_name)) {
-                $app = JFactory::getApplication();
-                $app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_CARRIER'));
-                return;
-            } else {
-                //return JText::sprintf('COM_VIRTUEMART_SHIPPER_NOT_VALID_FOR_THIS_VENDOR', $this->_name , $cart->vendorId );
-                return;
-            }
+        if (( $this->getShippers($cart->vendorId)) === false) {
+            return false;
         }
 
         $html = "";
@@ -148,7 +141,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
                 $params = new JParameter($shipper->shipping_carrier_params);
                     $cost = $this->_getShippingCost($params);
                     $logo = $this->_getShipperLogo($params->get('shipper_logo'), $shipper->shipping_carrier_name);
-                    $html .= $this->getShippingHtml($logo . " " . $shipper->shipping_carrier_name, $shipper->virtuemart_shippingcarrier_id, $selectedShipper, $cost, $params->get('tax_id'));
+                    $html .= $this->getShippingHtml($logo .  $shipper->shipping_carrier_name, $shipper->virtuemart_shippingcarrier_id, $selectedShipper, $cost, $params->get('tax_id'));
                 }
 
         }
@@ -343,7 +336,9 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
    
 
     function checkShippingConditions($cart, $shipper) {
-
+ if (!($this->selectedThisShipper($this->_selement, $ship_method_id))) {
+            return false;
+        }
         $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
         $orderWeight = $this->getOrderWeight($cart);
         $nbShipper = 0;

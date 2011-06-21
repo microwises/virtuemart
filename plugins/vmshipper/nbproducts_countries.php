@@ -137,7 +137,7 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
                 $params = new JParameter($shipper->shipping_carrier_params);
                 $logo = $this->_getShipperLogo($params->get('shipper_logo'), $shipper->shipping_carrier_name);
                 $cost = $this->_getShippingCost($nbProducts, $params); // converted in vendor currency
-                $html .= $this->getShippingHtml($logo . " " . $shipper->shipping_carrier_name, $shipper->virtuemart_shippingcarrier_id, $selectedShipper, $cost, $params->get('tax_id'));
+                $html .= $this->getShippingHtml($logo . $shipper->shipping_carrier_name, $shipper->virtuemart_shippingcarrier_id, $selectedShipper, $cost, $params->get('tax_id'));
             }
         }
         return $html;
@@ -345,6 +345,12 @@ class plgVmShipperNbProducts_countries extends vmShipperPlugin {
     }
 
     function checkShippingConditions(VirtueMartCart $cart, $shipper) {
+        /*
+         if (!($this->selectedThisShipper($this->_selement, $ship_method_id))) {
+            return false;
+        }
+         * */
+          
         $nbProducts = $this->_getNbProducts($cart);
         $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
          $countries = array();
