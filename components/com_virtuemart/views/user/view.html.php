@@ -268,7 +268,6 @@ class VirtuemartViewUser extends JView {
 				$_shipTo[] = '<li>'.'<a href="index.php'
 				.'?option=com_virtuemart'
 				.'&view=user'
-//				.'&layout=edit'
 				.'&task=editAddressSt'
 				.'&addrtype=ST'
 				.'&cid[]='.$_addressList[$_i]->virtuemart_user_id
@@ -422,22 +421,12 @@ class VirtuemartViewUser extends JView {
 
 	function lVendor(){
 
-
 		// If the current user is a vendor, load the store data
-//		echo '<pre>'.print_r($this->_userDetails,1).'</pre>';
 		if ($this->_userDetails->user_is_vendor) {
-//			$this->loadHelper('currencydisplay');
+
 			if(!$this->_orderList){
 				$this->lOrderlist();
 			}
-//			if (count($this->_orderList) > 0) {
-			//Why is this here? should be set for vendors AND shoppers with orders
-//			if(empty($this->currency)){
-//				if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-//
-//				$this->currency = CurrencyDisplay::getCurrencyDisplay();;
-//				$this->assignRef('currency', $this->currency);
-//			}
 
 			$vendorModel = $this->getModel('vendor');
 			$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
@@ -445,20 +434,10 @@ class VirtuemartViewUser extends JView {
 			$vendorModel->addImages($vendor);
 			$this->assignRef('vendor', $vendor);
 
-//			$currencyModel = $this->getModel('currency');
-//			$_currencies = $currencyModel->getCurrencies();
-//			$this->assignRef('currencies', $_currencies);
-
 		}
 
-//		if(empty($this->currency)){
-//			if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-//
-////			$this->currency = CurrencyDisplay::getCurrencyDisplay();;
-////			$this->assignRef('currency', $this->currency);
-//		}
-
 	}
+
 
 	/**
 	 * Additional grid function for custom toggles

@@ -89,13 +89,14 @@ class VirtueMartModelUser extends VmModel {
 		}
 	}
 
-	private function setUserId($id){
+	public function setUserId($id){
 
 	    if($this->_id!=$id){
 			$this->_id = (int)$id;
 			$this->_data = null;
     	}
 	}
+	
 	/**
 	 * Set the ID to the current user
 	 */
@@ -118,65 +119,38 @@ class VirtueMartModelUser extends VmModel {
 		return $data;
 	}
 
-/*	function getLoggedOnUser(){
-		
-		$user = JFactory::getUser();
-		
-		$userId = 0;
-		if(!empty($user)){
-			$userId = $user->id;
-		}
-		$this->setUserId($userId);
-		return $this->getUser();
-	}
 	
-/*	function getUserDataInFields($data, $type){
+	/**
+	 * This should load the userdata in userfields so that they can easily displayed
+	 * 
+	 * @author Max Milbers
+	 */
+	
+	function getUserDataInFields( $type, $toggles, $skips){
 	
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = new VirtuemartModelUserfields();
 		
-		if ($type == 'ST') {
-			$prepareUserFields = $userFieldsModel->getUserFields(
-									 'shipping'
-									, array() // Default toggles
-			);
-		} else { // BT
-				// The user is not logged in (anonymous), so we need tome extra fields
-				$prepareUserFields = $userFieldsModel->getUserFields(
-										 'account'
-										, array() // Default toggles
-										, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
-				);
+		$prepareUserFields = $userFieldsModel->getUserFields(
+										$type,
+										$toggles, // Default toggles
+										$skips
+									);
 
-		}
-		
-		// Format the data
-		if(is_object($data)){
-			
-
-			$data = (array) $data;
-		} 
-		/**else {
-			foreach ($prepareUserFields as $_fld) {
-				if(empty($data->{$_fld->name})) $data->{$_fld->name} = '';
-				$data[$_fld->name] = $userFieldsModel->getUserFieldsByUser($prepareUserFields, $data);
-			}			
-		}
+		$userdata = $this->getUser();
 		foreach ($prepareUserFields as $_fld) {
-			if(empty($data[$_fld->name])) $data[$_fld->name] = '';
-			$datas[$_fld->name] = $userFieldsModel->getUserFieldsByUser($prepareUserFields, $data);
-		}		
+			if(empty($userdata->{$_fld->name})) $userdata->{$_fld->name} = '';
+			$data{$_fld->name} = $userFieldsModel->getUserFieldsByUser($prepareUserFields, $userdata);
+		}			
 
+		return $userdata;
+	}
 
-		return $datas;
-	}*/
 	
 	/**
 	 * Retrieve the detail record for the current $id if the data has not already been loaded.
 	 */
 	function getUser(){
-
-		$this->_data = new stdClass();
 
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
@@ -645,7 +619,6 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
-
 		$userfielddata = self::_prepareUserFields($data, $data['address_type']);
 		$userinfo   = $this->getTable('userinfos');
     	if (!$userinfo->bindChecknStore($userfielddata)) {
@@ -681,31 +654,38 @@ class VirtueMartModelUser extends VmModel {
 
 		return $data;
 	}
-	
-	
-/**	function getUserFields($_type){
-		// We need an instance here, since the getUserFields() method uses inherited objects and properties,
-		// VirtueMartModelUserfields::getUserFields() won't work
 
+	/**
+	 * This should store the userdata given in userfields 
+	 * 
+	 * @author Max Milbers
+	 */
+	function storeUserDataByFields($data,$type, $toggles, $skips){
+		
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
-		$_userFieldsModel = new VirtueMartModelUserfields();
-		if ($_type == 'ST') {
-			$_prepareUserFields = $_userFieldsModel->getUserFields(
-									 'shipping'
-									, array() // Default toggles
-			);
-		} else { // BT
-				// The user is not logged in (anonymous), so we need tome extra fields
-				$_prepareUserFields = $_userFieldsModel->getUserFields(
-										 'account'
-										, array() // Default toggles
-										, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
-				);
+        $userFieldsModel = new VirtueMartModelUserfields();
 
+		$prepareUserFields = $userFieldsModel->getUserFields(
+                            $type,
+                            $toggles,
+                            $skips
+            );
+
+        $address = array();
+
+		// Format the data
+		foreach ($prepareUserFields as $_fld) {
+			if(empty($data[$_fld->name])) $data[$_fld->name] = '';
+			$data[$_fld->name] = $userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $data[$_fld->name],$data);
 		}
-		return $_prepareUserFields;
-	}*/
 
+       	$userinfo   = $this->getTable('userinfos');
+    	if (!$userinfo->bindChecknStore($data)) {
+			$this->setError($userinfo->getError());
+		}
+		return true;	
+		
+	}	
 	 /**
 	  * This uses the shopfunctionsF::renderAndSendVmMail function, which uses a controller and task to render the content
 	  * and sents it then.
@@ -824,7 +804,7 @@ class VirtueMartModelUser extends VmModel {
 				$_q .= ' AND address_type="'.$_type.'"';
 			}
 			if ($_virtuemart_userinfo_id !== -1) {
-				$_q .= ' AND virtuemart_userinfo_id="'.$_virtuemart_userinfo_id.'"';
+				$_q .= ' AND virtuemart_userinfo_id="'.(int)$_virtuemart_userinfo_id.'"';
 			}
 			return ($this->_getList($_q));
 	 }

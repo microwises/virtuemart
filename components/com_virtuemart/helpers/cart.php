@@ -930,9 +930,6 @@ class VirtueMartCart  {
 
     function saveAddressInCart($data, $type) {
 
-//		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php' );
-//		$userModel = new VirtueMartModelUser();
-
         // VirtueMartModelUserfields::getUserFields() won't work
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
         $userFieldsModel = new VirtueMartModelUserfields();
