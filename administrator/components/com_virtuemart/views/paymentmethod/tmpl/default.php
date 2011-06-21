@@ -106,7 +106,7 @@ AdminMenuHelper::startAdminArea();
 					<?php echo $row->discount; ?>
 				</td>
 				<td>
-					<?php echo $row->discount_is_percentage; ?>
+					<?php echo ($row->discount_is_percentage?JText::_('COM_VIRTUEMART_TOTAL'):'%'); ?>
 				</td>
 				<td>
 					<?php echo $row->discount_min_amount; ?>

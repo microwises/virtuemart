@@ -301,7 +301,7 @@ class VirtueMartViewCart extends JView {
 		$selectedPaym = empty($this->_cart->virtuemart_paymentmethod_id) ? 0 : $this->_cart->virtuemart_paymentmethod_id;
 		$this->assignRef('selectedPaym',$selectedPaym);
 
-		$payments = $paymentModel->getPayms(false,true);
+		$payments = $paymentModel->getPayments(false,true);
 		if(empty($payments)){
 
 			$text ='';

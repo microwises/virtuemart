@@ -60,7 +60,7 @@ class VirtuemartViewPaymentMethod extends JView {
 			$this->loadHelper('parameterparser');
 			jimport('joomla.html.pane');
 
-			$paym = $model->getPaym();
+			$paym = $model->getPayment();
 			$this->assignRef('paym',	$paym);
 			$this->assignRef('vmPPaymentList', self::renderInstalledPaymentPlugins($paym->payment_jplugin_id));
 //			$this->assignRef('PaymentTypeList',self::renderPaymentRadioList($paym->payment_type));
@@ -76,7 +76,7 @@ class VirtuemartViewPaymentMethod extends JView {
 			ShopFunctions::addStandardEditViewCommands();
 		} else {
 
-			$payms = $model->getPayms();
+			$payms = $model->getPayments();
 			$this->assignRef('payms',	$payms);
 
 			ShopFunctions::addStandardDefaultViewCommands();

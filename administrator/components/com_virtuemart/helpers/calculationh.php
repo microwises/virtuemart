@@ -781,7 +781,7 @@ class calculationHelper {
 	}
 
 	/**
-	 * Calculates the effecting Shipment prices for the calculation
+	 * Calculates the effecting Payment prices for the calculation
 	 * @todo
 	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author Max Milbers
@@ -800,35 +800,35 @@ class calculationHelper {
 
 		$model = new VirtueMartModelPaymentmethod();
 		$model->setId($virtuemart_paymentmethod_id);
-		$paym = $model->getPaym();
+		$payment = $model->getPayment();
 
-		$this->_cartData['paymentName'] = !empty ($paym->payment_name) ? $paym->payment_name : JText::_('COM_VIRTUEMART_CART_NO_PAYMENT_SELECTED');
+		$this->_cartData['paymentName'] = !empty ($payment->payment_name) ? $payment->payment_name : JText::_('COM_VIRTUEMART_CART_NO_PAYMENT_SELECTED');
 		$this->_cartPrices['paymentValue'] = 0;
 		$this->_cartPrices['paymentTax'] = 0;
 		$this->_cartPrices['paymentDiscount'] = 0;
 //		$this->_cartPrices['paymentTotal'] = 0;
 
 //		echo '<pre>'.print_r($paym).'</pre>';
-		if(!empty($paym->discount)){
+		if(!empty($payment->discount)){
 
-			if($paym->discount>0){
+			if($payment->discount>0){
 				$toggle = 'paymentDiscount';
 			} else {
 				$toggle = 'paymentValue';
 			}
 
-			if($paym->discount_min_amount <= $value){
+			//if($payment->discount_min_amount <= $value){
 
-				if($paym->discount_max_amount == 0 || $value <=$paym->discount_max_amount){
+				if($payment->discount_max_amount == 0 || $value <=$payment->discount_max_amount){
 
 					//Attention the minus is due the strange logic by entering discount instead of a fee, maybe changed, but later
-					if($paym->discount_is_percentage){
-						$this->_cartPrices[$toggle] = - $value * ($paym->discount/100);
+					if($payment->discount_is_percentage){
+						$this->_cartPrices[$toggle] = - $value * ($payment->discount/100);
 					}else{
-						$this->_cartPrices[$toggle] = - $paym->discount;
+						$this->_cartPrices[$toggle] = - $payment->discount;
 					}
 				}
-			}
+			//}
 		} else {
 //			echo '<br />$paymFields->discount was EMPTY';
 			$toggle = 'paymentValue';

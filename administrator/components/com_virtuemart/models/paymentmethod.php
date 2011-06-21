@@ -52,7 +52,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
      *
      * @author Max Milbers
      */
-	public function getPaym(){
+	public function getPayment(){
 
   		if (empty($this->_data)) {
    			$this->_data = $this->getTable('paymentmethods');
@@ -105,7 +105,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
      * @param string $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of calculation rule objects
 	 */
-	public function getPayms($onlyPublished=false, $noLimit=false){
+	public function getPayments($onlyPublished=false, $noLimit=false){
 		$query = 'SELECT * FROM `#__virtuemart_paymentmethods` ';
 		if ($onlyPublished) {
 			$query .= 'WHERE `#__virtuemart_paymentmethods`.`published` = 1';
@@ -274,7 +274,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	 */
 	public function renderPaymentList($selectedPaym=0,$selecedCC=0){
 
-		$payms = self::getPayms(false,true);
+		$payms = self::getPayments(false,true);
 		$listHTML='';
 		foreach($payms as $item){
 			$checked='';

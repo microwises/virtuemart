@@ -86,7 +86,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	public function plgVmOnSelectPayment($cart, $selectedPayment=0)
 	{
 
-		   if (  $this->getPayments($cart->vendorId) === false) {
+		   if (  $this->getPaymentMethods($cart->vendorId) === false) {
                 if (empty($this->_name)) {
                     $app = JFactory::getApplication();
                     $app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_PAYMENT'));

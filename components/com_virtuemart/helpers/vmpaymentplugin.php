@@ -157,24 +157,26 @@ abstract class vmPaymentPlugin extends JPlugin {
      */
     public function plgVmOnSelectPayment(VirtueMartCart $cart, $selectedPayment=0) {
 
-       if (  $this->getPayments($cart->vendorId) === false) {
-                if (empty($this->_name)) {
-                    $app = JFactory::getApplication();
-                    $app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_PAYMENT'));
-                    return;
-                } else {
-                    //return JText::sprintf('COM_VIRTUEMART_SHIPPER_NOT_VALID_FOR_THIS_VENDOR', $this->_name , $cart->vendorId );
-                    return;
-                }
+        if ($this->getPaymentMethods($cart->vendorId) === false) {
+            if (empty($this->_name)) {
+                $app = JFactory::getApplication();
+                $app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_PAYMENT'));
+                return;
+            } else {
+                //return JText::sprintf('COM_VIRTUEMART_SHIPPER_NOT_VALID_FOR_THIS_VENDOR', $this->_name , $cart->vendorId );
+                return;
             }
-            $html="";
-            foreach ($this->payments as $payment) {
-                $payment->payment_name=$logos.$payment->payment_name;
-                $html .= $this->getPaymentHtml($payment, $selectedPayment,   $cart);
-              }
+        }
+        $html = "";
+        if (!class_exists('calculationHelper'))
+            require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 
-            return $html;
-        
+        foreach ($this->payments as $payment) {
+
+            $html .= $this->getPaymentHtml($payment, $selectedPayment, $cart);
+        }
+
+        return $html;
     }
 
     /**
@@ -344,7 +346,7 @@ abstract class vmPaymentPlugin extends JPlugin {
      * @return True when carrier(s) was (were) found for this vendor, false otherwise
      * @author Oscar van Eijk
      */
-    protected function getPayments($vendorId) {
+    protected function getPaymentMethods($vendorId) {
         $db = JFactory::getDBO();
         if (VmConfig::isJ15()) {
             $q = 'SELECT v.* '
@@ -420,7 +422,6 @@ abstract class vmPaymentPlugin extends JPlugin {
         return $db->loadResult();
     }
 
-   
     /**
      * This method writes all payment plugin specific data to the plugin's table
      *
@@ -490,17 +491,22 @@ abstract class vmPaymentPlugin extends JPlugin {
         }
 
         $params = new JParameter($payment->payment_params);
-
+/*
         if (!class_exists('CurrencyDisplay'))
             require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
         $currency = CurrencyDisplay::getInstance();
-        //$discount = $this->getPaymentDiscount($payment, $cart);
-        $discountDisplay = $currency->priceDisplay($discount);
+        $calculator = calculationHelper::getInstance();
+        $variantmods = $calculator->calculatePaymentPrice($payment->virtuemart_paymentmethod_id,0);
+        $payment_discount = $variantmods['salesPricePayment'] ? " (" . $variantmods['salesPricePayment'] . ")" : "";
+   $discountDisplay = $currency->priceDisplay($discount);
+ * */
+        $payment_name = $payment->payment_name . $payment_discount;
+       
 
-        $html = '<input type="radio" name="virtuemart_paymentmethod_id" value="' . $payment->virtuemart_paymentmethod_id . '" ' . $checked . '>' . $payment->payment_name;
+        $html = '<input type="radio" name="virtuemart_paymentmethod_id" value="' . $payment->virtuemart_paymentmethod_id . '" ' . $checked . '>' . $payment_name;
 
         if ($discount) {
-            $html .=" (" . $discountDisplay . ")";
+            $html .=" (" . "get discount amoutn??".$discountDisplay . ")";
         }
         $html .="</label><br/>\n";
         return $html;

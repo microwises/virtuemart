@@ -978,10 +978,10 @@ class VirtueMartCart  {
         $returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipping', array('cart' => $this));
         foreach ($returnValues as $returnValue) {
             $nbShipping += $returnValue;
-            if ($returnValue)
+            if ((int)$returnValue )
                 $virtuemart_shippingcarrier_id = $returnValue;
         }
-        if ($nbShipping == 1) {
+        if ($nbShipping) {
             $this->virtuemart_shippingcarrier_id = $virtuemart_shippingcarrier_id;
                $this->setCartIntoSession();
             return true;
