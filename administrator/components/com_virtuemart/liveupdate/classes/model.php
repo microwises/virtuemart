@@ -87,6 +87,7 @@ class LiveUpdateModel extends JModel
 		jimport('joomla.installer.installer');
 		jimport('joomla.installer.helper');
 		$installer =& JInstaller::getInstance();
+		$installer->setOverwrite(true);
 		$packageType = JInstallerHelper::detectType($tempdir);
 		
 		if(!$packageType) {
