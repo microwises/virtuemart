@@ -28,9 +28,8 @@
 
 
 (function($){
-	// Quick and dirty way of testing if J1.5 or not
-	var isJ15 = (MooTools.version.substr(0,3) == '1.1') ? true : false;
-	var isJ15Up = (MooTools.version.substr(0,3) == '1.2') ? true : false;
+	// Quick and dirty way of testing if MT1.3 (i.e. J1.6) or not
+	var isMT13 = (MooTools.version.substr(2,1) == '3') ? true : false;
 
 	/**
 	 * Local variable and property attached to global object
@@ -48,10 +47,10 @@
 		 */
 		buildMenu: function(){
 
-			if(isJ15){
-				var cMAITC = parseInt( Cookie.get( VMConfig.get('menuActiveItemCookie') ) );
-			} else {
+			if(isMT13){
 				var cMAITC = parseInt( Cookie.read( VMConfig.get('menuActiveItemCookie') ) );
+			} else {
+				var cMAITC = parseInt( Cookie.get( VMConfig.get('menuActiveItemCookie') ) );
 			}
 
 			var that = this,
@@ -60,22 +59,11 @@
 			actualItemNode = $('#menu-toggler-'+ (actualItem || 1)); //shortcut. Performance issue!
 
 			//set current state when document loads
-
-		//	if (isJ15) {
-		//		var actualItem = VMCache.set('activeMenuAdminItem ', parseInt( Cookie.get( VMConfig.get('menuActiveItemCookie') ) ) ); // Current selected item
-		//	} else {
-		//		var actualItem = VMCache.set('activeMenuAdminItem ', parseInt( Cookie.read( VMConfig.get('menuActiveItemCookie') ) ) ); // Current selected item
-		//	}
-
-		//	actualItemNode = jQuery('#menu-toggler-'+ (actualItem || 1)); //shortcut. Performance issue!
-
-			//set current state when document loads
-			if (isJ15) {
-				this.showMenu(false, Cookie.get( VMConfig.get('menuStateCookie') ));
-			} else {
+			if (isMT13) {
 				this.showMenu(false, Cookie.read( VMConfig.get('menuStateCookie') ));
+			} else {
+				this.showMenu(false, Cookie.get( VMConfig.get('menuStateCookie') ));
 			}
-
 
 			$( VMConfig.get('menuContentSelector') ).addClass( VMConfig.get('hiddenElementClass') );//Hidding Panels
 			actualItemNode.next().slideDown( speed );
@@ -111,10 +99,10 @@
 					$('#menu-toggler-'+ ai).removeClass( VMConfig.get('menuActiveClass') ).next().slideUp( speed );
 				}
 
-				if (isJ15) {
-					Cookie.set( VMConfig.get('menuActiveItemCookie'), voir);
-				} else {
+				if (isMT13) {
 					Cookie.write( VMConfig.get('menuActiveItemCookie'), voir);
+				} else {
+					Cookie.set( VMConfig.get('menuActiveItemCookie'), voir);
 				}
 				VMCache.set('activeMenuAdminItem', voir);
 			}
@@ -165,10 +153,10 @@
 				return true;
 			}
 
-			if (isJ15) {
-				var menuStateCookie = Cookie.get( VMConfig.get('menuStateCookie') );
-			} else {
+			if (isMT13) {
 				var menuStateCookie = Cookie.read( VMConfig.get('menuStateCookie') );
+			} else {
+				var menuStateCookie = Cookie.get( VMConfig.get('menuStateCookie') );
 			}
 
 			if( !menuStateCookie ){
@@ -180,10 +168,10 @@
 				}
 
 				$(closerSel).addClass( VMConfig.get('menuHandlerClass') );
-				if (isJ15) {
-					Cookie.set( VMConfig.get('menuStateCookie') , 1);
-				} else {
+				if (isMT13) {
 					Cookie.write( VMConfig.get('menuStateCookie') , 1);
+				} else {
+					Cookie.set( VMConfig.get('menuStateCookie') , 1);
 				}
 			}
 			else{
@@ -195,11 +183,7 @@
 				}
 
 				$(closerSel).removeClass( VMConfig.get('menuHandlerClass') );
-				if (isJ15Up) {
-					Cookie.dispose( VMConfig.get('menuStateCookie') );
-				} else {
-					Cookie.remove( VMConfig.get('menuStateCookie') );
-				}
+				Cookie.remove( VMConfig.get('menuStateCookie') );
 			}
 
 			return this;
