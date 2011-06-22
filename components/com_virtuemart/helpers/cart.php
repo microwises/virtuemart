@@ -988,7 +988,7 @@ class VirtueMartCart  {
     }
 
     function CheckAutomaticSelectedShipping() {
-return false;
+ 
         $nbShipping = 0;
         if (!class_exists('vmShipperPlugin'))
             require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');

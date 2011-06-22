@@ -43,6 +43,7 @@ $option = JRequest::getWord('option');
 	    <tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->orderslist); ?>')" /></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_ID', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+                <th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_NUMBER', 'order_number', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_NAME', 'order_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL', 'payment_method', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_PRINT_VIEW'); ?></th>
@@ -71,6 +72,8 @@ $option = JRequest::getWord('option');
 			?>
 		<td><?php echo JHTML::_('link', JRoute::_($link), $order->virtuemart_order_id, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$order->virtuemart_order_id)); ?></td>
 		<!-- Name -->
+		<td><?php echo $order->order_number; ?></td>
+                <!-- Name -->
 		<td><?php echo $order->order_name; ?></td>
 		<!-- Payment method -->
 		<td><?php echo $order->payment_method; ?></td>
@@ -89,7 +92,7 @@ $option = JRequest::getWord('option');
 		<!-- Status -->
 		<td>
 			    <?php
-			    echo JHTML::_('select.genericlist', $this->orderstatuses, 'order_status['.$order->virtuemart_order_id.']', '', 'value', 'text', $order->order_status, 'order_status'.$i);
+			    echo JHTML::_('select.genericlist', $this->orderstatuses, 'order_status['.$order->virtuemart_order_id.']', '', 'virtuemart_orderstate_id', 'order_status_name', $order->order_status, 'order_status'.$i);
 			    echo '<input type="hidden" name="current_order_status['.$order->virtuemart_order_id.']" value="'.$order->order_status.'" />';
 			    echo '<br />';
 			    echo JHTML::_('link', '#', JText::_('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_element[order_comment_'.$order->virtuemart_order_id.']'));

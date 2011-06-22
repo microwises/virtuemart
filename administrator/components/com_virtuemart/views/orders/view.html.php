@@ -45,6 +45,7 @@ class VirtuemartViewOrders extends JView {
 		if(!class_exists('vmOrderPlugin')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmorderplugin.php');
 		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+		if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
 
 		$viewName=ShopFunctions::SetViewTitle('vm_orders_48', 'ORDER');
 		$this->assignRef('viewName',$viewName);
@@ -159,8 +160,10 @@ class VirtuemartViewOrders extends JView {
 		else if ($curTask == 'editOrderItem') {
 			$this->loadHelper('calculationHelper');
 
-			/* Get order statuses */
-			$orderstatuses = $this->get('OrderStatusList');
+			/* Get order statuses */ 
+                        $orderStatusModel=$this->getModel('OrderStatus');
+			$orderstatuses = $orderStatusModel->get('OrderStatusList');
+                       
 			$this->assignRef('orderstatuses', $orderstatuses);
 
 			$model = $this->getModel();
@@ -179,7 +182,9 @@ class VirtuemartViewOrders extends JView {
 			$orderslist = $this->get('OrdersList');
 
 			/* Get order statuses */
-			$orderstatuses = $this->get('OrderStatusList');
+			$orderStatusModel=new VirtueMartModelOrderstatus();
+			$orderstatuses = $orderStatusModel->getOrderStatusList();
+
 			$this->assignRef('orderstatuses', $orderstatuses);
 
 			if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');

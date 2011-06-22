@@ -26,6 +26,7 @@
         <filename plugin="paypal">paypal.php</filename>
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements">
+        <param type="vmjpluginwarning" />
         <param   type="spacer" default="VMPAYMENT_PAYPAL_PARAMS" level="level1" />
         <param type="text" name="paypal_merchant_email"  size="50" label="VMPAYMENT_PAYPAL_EMAIL"
              default="username@email.com" description="VMPAYMENT_PAYPAL_EMAIL_EXPLAIN" />

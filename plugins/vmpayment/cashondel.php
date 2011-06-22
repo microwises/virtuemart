@@ -113,7 +113,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 	function plgVmOnShowOrderPaymentBE($_virtuemart_order_id, $_paymethod_id)
 	{
 		
-		if (!$this->selectedThisMethod($this->_pelement, $_paymethod_id)) {
+		if (!$this->selectedThisPayment($this->_pelement, $_paymethod_id)) {
 			return null; // Another method was selected, do nothing
 		}
 		$_db = JFactory::getDBO();

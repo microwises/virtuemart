@@ -80,7 +80,7 @@ class VirtueMartModelOrders extends VmModel {
 	 * 
 	 */
 
-	public function GetOrderId($direction ='ASC', $order_id) {
+	public function GetOrderId($direction ='DESC', $order_id) {
 
 		if ($direction == 'ASC') {
 			$arrow ='>';
@@ -161,7 +161,7 @@ class VirtueMartModelOrders extends VmModel {
 		if ($uid > 0) {
 			$_filter[] = ('u.virtuemart_user_id = ' . (int)$uid);
 		}
-		$query .= $this->_getOrdering('virtuemart_order_id');
+		$query .= $this->_getOrdering('virtuemart_order_id', 'DESC');
 		if ($_ignorePagination) {
 			$this->_data = $this->_getList($query);
 		} else {
@@ -682,7 +682,7 @@ class VirtueMartModelOrders extends VmModel {
 	 * @param integer $uid The user ID. Defaults to 0 for guests
 	 * @return string A unique ordernumber
 	 */
-	private function generateOrderNumber($_uid = 0,$length=10)
+	private function generateOrderNumber($uid = 0,$length=10)
 	{
 		return substr(
 				 $uid
