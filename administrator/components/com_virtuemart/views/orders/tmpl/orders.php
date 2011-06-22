@@ -121,7 +121,7 @@ $option = JRequest::getWord('option');
 	</tbody>
 	<tfoot>
 	    <tr>
-		<td colspan="10">
+		<td colspan="11">
 		    <?php echo $this->pagination->getListFooter(); ?>
 		</td>
 	    </tr>

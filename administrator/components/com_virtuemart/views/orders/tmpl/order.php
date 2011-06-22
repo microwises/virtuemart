@@ -28,6 +28,7 @@ AdminMenuHelper::startAdminArea();
 JPluginHelper::importPlugin('vmpayment');
 JPluginHelper::importPlugin('vmorderplugin');
 JPluginHelper::importPlugin('vmshipper');
+$tt=$this;
 ?>
 <form name='adminForm' >
 		<input type="hidden" name="task" value="" />
@@ -45,8 +46,12 @@ JPluginHelper::importPlugin('vmshipper');
 				<td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL') ?></td>
 			</tr>
 			<tr>
-				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></strong></td>
+				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_ID') ?></strong></td>
 				<td><?php printf("%08d", $this->orderbt->virtuemart_order_id);?></td>
+			</tr>
+                        <tr>
+				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></strong></td>
+				<td><?php echo  $this->orderbt->order_number;?></td>
 			</tr>
 			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?></strong></td>
@@ -464,14 +469,14 @@ JPluginHelper::importPlugin('vmshipper');
 	<tr>
 		<td valign="top"><?php
 		$_dispatcher = JDispatcher::getInstance();
-		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderShipperBE',array(
+		$returnValues = $_dispatcher->trigger('plgVmOnShowOrderShipperBE',array(
 			 $this->orderID
 			,$this->orderbt->virtuemart_vendor_id
 			,$this->ship_method_id
 		));
-		foreach ($_returnValues as $_returnValue) {
-			if ($_returnValue !== null) {
-				echo $_returnValue;
+		foreach ($returnValues as $returnValue) {
+			if ($returnValue !== null) {
+				echo $returnValue;
 			}
 		}
 		?>

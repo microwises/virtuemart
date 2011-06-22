@@ -562,7 +562,7 @@ class VirtueMartModelOrders extends VmModel {
 }
 	}
         /**
-	 * Handle the selected payment method. If triggered to do so, this method will also
+	 * Handle the selected shipping method. If triggered to do so, this method will also
 	 * take care of the stock updates.
 	 *
 	 * @author Valérie Isaksen

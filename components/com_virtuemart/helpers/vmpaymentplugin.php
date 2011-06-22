@@ -31,6 +31,7 @@ abstract class vmPaymentPlugin extends JPlugin {
     private $_payment_name = '';
     /** var Must be overriden in every plugin file by adding this code to the constructor: $this->_pelement = basename(__FILE, '.php'); */
     var $_pelement = '';
+     var $_tablename = '';
     /**
      * @var array List with all carriers the have been implemented with the plugin in the format
      * id => name
@@ -382,9 +383,9 @@ abstract class vmPaymentPlugin extends JPlugin {
      * Get the name of the payment method
      * @param int $_pid The payment method ID
      * @author Oscar van Eijk
-     * @return string Paymenent method name
+     * @return string Payment method name
      */
-    final protected function getThisPaymentName($payment_id) {
+    function getThisPaymentName($payment_id) {
         $db = JFactory::getDBO();
 
         $q = 'SELECT `payment_name` FROM #__virtuemart_paymentmethods WHERE `virtuemart_paymentmethod_id`="'.(int)$payment_id.'"';

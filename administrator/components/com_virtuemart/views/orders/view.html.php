@@ -89,16 +89,17 @@ class VirtuemartViewOrders extends JView {
 
 			// Create an array to allow orderlinestatuses to be translated
 			// We'll probably want to put this somewhere in ShopFunctions...
-			$_orderStats = $this->get('OrderStatusList');
+                       $orderStatusModel=new VirtueMartModelOrderstatus();
+			$orderStates = $orderStatusModel->getOrderStatusList();
 			$_orderStatusList = array();
-			foreach ($_orderStats as $_ordStat) {
-				$_orderStatusList[$_ordStat->value] = $_ordStat->text;
+			foreach ($orderStates as $orderState) {
+				$_orderStatusList[$orderState->virtuemart_orderstate_id] = $orderState->order_status_name;
 			}
 
 			$_itemStatusUpdateFields = array();
 			$_itemAttributesUpdateFields = array();
 			foreach($order['items'] as $_item) {
-				$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $_orderStats, 'order_status_'.$_item->virtuemart_order_item_id, '', 'value', 'text', $_item->order_status, 'order_item_status');
+				$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $orderStates, 'order_status_'.$_item->virtuemart_order_item_id, '', 'virtuemart_orderstate_id', 'order_status_name', $_item->order_status, 'order_item_status');
 				if (!empty($_item->product_attribute)) {
 					$_attribs = preg_split('/\s?<br\s*\/?>\s?/i', $_item->product_attribute);
 
@@ -147,7 +148,7 @@ class VirtuemartViewOrders extends JView {
 
 			/* Data for the Edit Status form popup */
 			$_currentOrderStat = $order['details']['BT']->order_status;
-			$_orderStatusSelect = JHTML::_('select.genericlist', $_orderStats, 'order_status['.$_orderID.']', '', 'value', 'text', $_currentOrderStat, 'order_status');
+			$_orderStatusSelect = JHTML::_('select.genericlist', $orderStates, 'order_status['.$_orderID.']', '', 'virtuemart_orderstate_id', 'order_status_name', $_currentOrderStat, 'order_status');
 			$this->assignRef('orderStatSelect', $_orderStatusSelect);
 			$this->assignRef('currentOrderStat', $_currentOrderStat);
 
@@ -162,7 +163,7 @@ class VirtuemartViewOrders extends JView {
 
 			/* Get order statuses */ 
                         $orderStatusModel=$this->getModel('OrderStatus');
-			$orderstatuses = $orderStatusModel->get('OrderStatusList');
+			$orderstatuses = $orderStatusModel->getOrderStatusList();
                        
 			$this->assignRef('orderstatuses', $orderstatuses);
 

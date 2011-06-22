@@ -39,6 +39,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
      */
     function plgVMPaymentPaypal(& $subject, $config) {
         $this->_pelement = basename(__FILE__, '.php');
+        $this->_tablename='#__virtuemart_order_payment_' . $this->_pelement;
         $this->_createTable();
         parent::__construct($subject, $config);
     }
@@ -49,7 +50,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
      */
     protected function _createTable() {
         $scheme = DbScheme::get_instance();
-        $scheme->create_scheme('#__virtuemart_order_payment_' . $this->_pelement);
+        $scheme->create_scheme( $this->_tablename);
         $schemeCols = array(
             'id' => array(
                 'type' => 'int'
@@ -63,6 +64,10 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
                 , 'null' => false
             )
             , 'payment_method_id' => array(
+                'type' => 'text'
+                , 'null' => false
+            )
+             , 'notification' => array(
                 'type' => 'text'
                 , 'null' => false
             )
@@ -114,6 +119,10 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
      * @author Oscar van Eijk
      */
     function plgVmOnConfirmedOrderStorePaymentData($orderNr, $orderData, $priceData) {
+        return false;
+    }
+        function plgVmAfterCheckoutDoPayment($orderNr, $orderData, $priceData) {
+
         if (!$this->selectedThisPayment($this->_pelement, $orderData->virtuemart_paymentmethod_id)) {
             return null; // Another method was selected, do nothing
         }
@@ -213,10 +222,25 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             return null;
         }
         $data = JRequest::get('post');
-        
+         foreach ($response as $key => $value) {
+
+            $post_msg .=  $key . "=".$value."<br />";
+        } // Notify string
+         $response_fields=array(
+                'notification' => $post_msg
+             );
+                $virtuemart_order_id=$data['invoice'];
+             $fp=fopen("paypal.text","a");
+
+fwrite($fp,  "plgVmOnPaymentResponseReceived" .$virtuemart_order_id ."\n");
+
+fclose($fp);
+
+           $this->updatePaymentData(  $response_fields,   $this->_tablename, 'virtuemart_order_id',$virtuemart_order_id );
         if (!$this->_processIPN($data)) {
             // send mail to admin??
         }
+
     }
 
     /**
@@ -229,7 +253,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             return null; // Another method was selected, do nothing
         }
         $db = JFactory::getDBO();
-        $q = 'SELECT * FROM `#__virtuemart_order_payment_' . $this->_pelement . '` '
+        $q = 'SELECT * FROM `' .$this->_tablename . '` '
                 . 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
         $db->setQuery($q);
         if (!($payment = $db->loadObject())) {
@@ -247,7 +271,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         $html .= '		</tr>' . "\n";
         $html .= '	</thead>' . "\n";
         $html .= '	<tr>' . "\n";
-        $html .= '		<td>' . $this->getThisMethodName($paymethod_id) . '</td>' . "\n";
+        $html .= '		<td>' . $this->getThisPaymentName($paymethod_id) . '</td>' . "\n";
 //		$html .= '		<td></td>'."\n";
 //		$html .= '		<td></td>'."\n";
 //		$html .= '		<td></td>'."\n";
@@ -315,7 +339,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         // post back to PayPal system to validate
         $header .= "POST /cgi-bin/webscr HTTP/1.0\r\n";
         $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-        $header .= "Content-Length: " . strlen($req) . "\r\n\r\n";
+        $header .= "Content-Length: " . strlen($post_msg) . "\r\n\r\n";
 
         if ($secure_post) {
             // If possible, securely post back to paypal using HTTPS

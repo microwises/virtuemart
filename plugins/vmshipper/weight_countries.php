@@ -33,6 +33,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      */
     function plgVmShipperWeight_countries(&$subject, $config) {
         $this->_selement = basename(__FILE__, '.php');
+        $this->_tablename = '#__virtuemart_order_shipper_' . $this->_selement;
         $this->_createTable();
         parent::__construct($subject, $config);
         JPlugin::loadLanguage('plg_vmshipper_weight_countries', JPATH_ADMINISTRATOR);
@@ -44,7 +45,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      */
     protected function _createTable() {
         $scheme = DbScheme::get_instance();
-        $scheme->create_scheme('#__virtuemart_order_shipping_' . $this->_selement);
+        $scheme->create_scheme($this->_tablename);
         $schemeCols = array(
             'id' => array(
                 'type' => 'int'
@@ -137,13 +138,12 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 
         $html = "";
         foreach ($this->shippers as $shipper) {
-            if ($this->checkShippingConditions($cart, $shipper) ) {
+            if ($this->checkShippingConditions($cart, $shipper)) {
                 $params = new JParameter($shipper->shipping_carrier_params);
-                    $cost = $this->_getShippingCost($params);
-                    $logo = $this->_getShipperLogo($params->get('shipper_logo'), $shipper->shipping_carrier_name);
-                    $html .= $this->getShippingHtml($logo .  $shipper->shipping_carrier_name, $shipper->virtuemart_shippingcarrier_id, $selectedShipper, $cost, $params->get('tax_id'));
-                }
-
+                $cost = $this->_getShippingCost($params);
+                $logo = $this->_getShipperLogo($params->get('shipper_logo'), $shipper->shipping_carrier_name);
+                $html .= $this->getShippingHtml($logo . $shipper->shipping_carrier_name, $shipper->virtuemart_shippingcarrier_id, $selectedShipper, $cost, $params->get('tax_id'));
+            }
         }
 
         return $html;
@@ -246,9 +246,10 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
         $values['shipper_name'] = $this->getThisShipperNameById($cart->virtuemart_shippingcarrier_id);
         $values['order_weight'] = $this->getOrderWeight($cart);
         $values['shipper_cost'] = $params->get('rate_value');
+        $values['shipper_package_fee'] = $params->get('package_fee');
         $values['tax_id'] = $params->get('tax_id');
 
-        $this->writeShipperData($values, '#__virtuemart_order_shipping_' . $this->_selement);
+        $this->writeShipperData($values, $this->_tablename);
         return true;
     }
 
@@ -269,7 +270,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
             return null;
         }
         $db = JFactory::getDBO();
-        $q = 'SELECT * FROM `#__virtuemart_order_shipper_' . $this->_selement . '` '
+        $q = 'SELECT * FROM `' . $this->_tablename . '` '
                 . 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
         $db->setQuery($q);
         if (!($shipinfo = $db->loadObject())) {
@@ -277,10 +278,9 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
             return '';
         }
         if (!class_exists('CurrencyDisplay')
-        
             )require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-        $currency = CurrencyDisplay::getInstance();  //Todo, set currency of shopper or user?
-//		$_currency = VirtueMartModelVendor::getCurrencyDisplay($_vendorId);
+        $currency = CurrencyDisplay::getInstance();
+
         $html = '<table class="admintable">' . "\n"
                 . '	<thead>' . "\n"
                 . '		<tr>' . "\n"
@@ -288,24 +288,24 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
                 . '		</tr>' . "\n"
                 . '	</thead>' . "\n"
                 . '	<tr>' . "\n"
-                . '		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_CARRIER_LBL') . ': </td>' . "\n"
-                . '		<td align="left">' . $shipInfo->shipper_name . '</td>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_WEIGHT_COUNTRIES_SHIPPING_NAME') . ': </td>' . "\n"
+                . '		<td align="left">' . $shipinfo->shipper_name . '</td>' . "\n"
                 . '	</tr>' . "\n"
                 . '	<tr>' . "\n"
-                . '		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_MODE_LBL') . ': </td>' . "\n"
-                . '		<td>' . $shipInfo->order_weight . '</td>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT') . ': </td>' . "\n"
+                . '		<td>' . $shipinfo->order_weight . '</td>' . "\n"
                 . '	</tr>' . "\n"
                 . '	<tr>' . "\n"
-                . '		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_MODE_LBL') . ': </td>' . "\n"
-                . '		<td>' . $shipInfo->shipper_cost . '</td>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE') . ': </td>' . "\n"
+                . '		<td>' . $currency->priceDisplay($shipinfo->shipper_cost, '', false) . '</td>' . "\n"
                 . '	</tr>' . "\n"
                 . '	<tr>' . "\n"
-                . '		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_MODE_LBL') . ': </td>' . "\n"
-                . '		<td>' . $shipInfo->tax . '</td>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_WEIGHT_COUNTRIES_PACKAGE_FEE') . ': </td>' . "\n"
+                . '		<td>' . $currency->priceDisplay($shipinfo->shipper_package_fee, '', false) . '</td>' . "\n"
                 . '	</tr>' . "\n"
                 . '	<tr>' . "\n"
-                . '		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_MODE_LBL') . ': </td>' . "\n"
-                . '		<td>' . $shipInfo->currency . '</td>' . "\n"
+                . '		<td class="key">' . JText::_('VMSHIPPER_WEIGHT_COUNTRIES_TAX') . ': </td>' . "\n"
+                . '		<td>' . $shipinfo->tax_id . '</td>' . "\n" // want a function from shopfunction
                 . '	</tr>' . "\n"
                 . '</table>' . "\n"
         ;
@@ -333,22 +333,20 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
         return $img;
     }
 
-   
-
     function checkShippingConditions($cart, $shipper) {
         /*
-    }
- if (!($this->selectedThisShipper($this->_selement, $ship_method_id))) {
-            return false;
-        }
+          }
+          if (!($this->selectedThisShipper($this->_selement, $ship_method_id))) {
+          return false;
+          }
          * */
-         
+
         $address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
         $orderWeight = $this->getOrderWeight($cart);
         $nbShipper = 0;
         $countries = array();
         $params = new JParameter($shipper->shipping_carrier_params);
-         $country_list = $params->get('countries');
+        $country_list = $params->get('countries');
         if (!empty($country_list)) {
             if (!is_array($country_list)) {
                 $countries[0] = $country_list;
