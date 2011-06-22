@@ -53,11 +53,13 @@ class VirtuemartViewOrders extends JView {
 		if ($curTask == 'edit') {
 
 			// Load addl models
+			$orderModel = $this->getModel('orders');
 			$userFieldsModel = $this->getModel('userfields');
 			$productModel = $this->getModel('product');
 
-			/* Get the data */
-			$order = $this->get('Order');
+			// Get the data 
+			$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
+			$order = $orderModel->getOrder($virtuemart_order_id);
 			$_orderID = $order['details']['BT']->virtuemart_order_id;
 			$orderbt = $order['details']['BT'];
 			$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
@@ -162,7 +164,7 @@ class VirtuemartViewOrders extends JView {
 			$this->assignRef('orderstatuses', $orderstatuses);
 
 			$model = $this->getModel();
-			$orderId = JRequest::getVar('orderId', '');
+			$orderId = JRequest::getString('orderId', '');
 			$orderLineItem = JRequest::getVar('orderLineId', '');
 			$this->assignRef('virtuemart_order_id', $orderId);
 			$this->assignRef('virtuemart_order_item_id', $orderLineItem);

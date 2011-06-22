@@ -50,9 +50,10 @@ class VirtueMartModelOrders extends VmModel {
 	public function getOrderIdByOrderPass($orderNumber,$orderPass){
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_number`='.$db->Quote($orderNumber).' AND `order_pass`='.$db->Quote($orderPass).' ';
+		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_pass`="'.$db->getEscaped($orderPass).'" AND `order_number`="'.$db->getEscaped($orderNumber).'"';
 		$db->setQuery($q);
 		$orderId = $db->loadResult();
+		dump($db,'$query $orderId '.$orderId);
 		return $orderId;
 
 	}
@@ -108,7 +109,6 @@ class VirtueMartModelOrders extends VmModel {
 		$virtuemart_order_id = (int)$virtuemart_order_id;
 		$db = JFactory::getDBO();
 		$order = array();
-		//if(empty($virtuemart_order_id))$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
 
 		// Get the order details 
 		$q = "SELECT  u.*,o.*,

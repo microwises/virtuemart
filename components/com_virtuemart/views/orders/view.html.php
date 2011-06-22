@@ -41,6 +41,7 @@ class VirtuemartViewOrders extends JView {
 		$orderModel = $this->getModel('orders');
 
 		if ($layoutName == 'details') {
+			
 			$cuid = $_currentUser->get('id');
 			if(!empty($cuid)){
 				$orderDetails = $orderModel->getOrder();
@@ -54,10 +55,10 @@ class VirtuemartViewOrders extends JView {
 					}
 				}
 			}
-			if ($orderPass = JRequest::getWord('order_pass',false)){
-				$orderNumber = JRequest::getWord('order_number',false);
+			if ($orderPass = JRequest::getString('order_pass',false)){
+				$orderNumber = JRequest::getString('order_number',false);
 				$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
-				if(empty($oderId)){
+				if(empty($orderId)){
 					echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
 					return;
 				}

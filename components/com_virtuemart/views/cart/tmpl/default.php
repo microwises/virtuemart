@@ -24,8 +24,53 @@ JHTML::_ ( 'behavior.modal' );
 ?>
 
 <div class="cart-view">
+	<div>
+	<div class="width50 floatleft">
+		<h1><?php echo JText::_('COM_VIRTUEMART_CART_TITLE'); ?></h1>
+	</div>
+	<div class="width50 floatleft right">
+		<?php // Continue Shopping Button
+		if ($this->continue_link_html != '') {
+			echo $this->continue_link_html;
+		} ?>
+	</div>
+<div class="clear"></div>
+</div>
+	
+<?php // Continue and Checkout Button 
+/* The problem here is that we use a form for the quantity boxes and so we cant let the form start here,
+ * because we would have then a form in a form.
+ * 
+ * But we cant make an extra form here, because then pressing the above checkout button would not send the
+ * user notices for exampel. The solution is to write a javascript which checks and unchecks both tos checkboxes simultan
+ * The upper checkout button should than just fire the form below.
+ * 
+<div class="checkout-button-top">
+		
+	<?php // Terms Of Service Checkbox
+	dump($this->cart,'my  caaart');
+	if(!class_exists('VmHtml'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
+	echo VmHtml::checkbox('tosAccepted',$this->cart->tosAccepted,1,0,'class="terms-of-service"');
+	$checked = '';
+	//echo '<input class="terms-of-service" type="checkbox" name="tosAccepted" value="1" ' . $this->cart->tosAccepted . '/>
+	
+	echo '<span class="tos">'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
+	?>
 
-	<?php // This displays the pricelist MUST be done with tables, because it is also used for the emails
+	<?php // Checkout Button
+	echo $this->checkout_link_html;
+	$text = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
+	?>
+			
+</div>
+	<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_( 'index.php?option=com_virtuemart' ); ?>">
+	
+	<input type='hidden' name='task' value='<?php echo $this->checkout_task; ?>'/>
+	<input type='hidden' name='option' value='com_virtuemart'/>
+	<input type='hidden' name='view' value='cart'/>
+*/ 	
+
+	// This displays the pricelist MUST be done with tables, because it is also used for the emails
 	include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'price_list.php');
 	?>
 	
@@ -49,10 +94,13 @@ JHTML::_ ( 'behavior.modal' );
 
 		<?php // Continue and Checkout Button ?>
 		<div class="checkout-button-top">
+			
 			<?php // Terms Of Service Checkbox
-/*			$checked = '';
-			echo '<input class="terms-of-service" type="checkbox" name="tosAccepted" value="1" ' . $checked . '/><span class="tos">'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
-			*/
+				if(!class_exists('VmHtml'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
+				echo VmHtml::checkbox('tosAccepted',$this->cart->tosAccepted,1,0,'class="terms-of-service"');
+			//$checked = '';
+			//echo '<input class="terms-of-service" type="checkbox" name="tosAccepted" value="1" ' . $checked . '/>
+			echo '<span class="tos">'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';	
 			echo $this->checkout_link_html;
 			$text = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
 			?>

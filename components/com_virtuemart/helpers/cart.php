@@ -126,7 +126,7 @@ class VirtueMartCart  {
 //		if(VmConfig::get('agree_to_tos_onorder') && $this->tosAccepted===null){
 //            $this->tosAccepted = 0;
 //        } else {
-		if(isset($user->agreed) && !VmConfig::get('agree_to_tos_onorder')){
+		if(isset($user->agreed) && !VmConfig::get('agree_to_tos_onorder') && $this->tosAccepted===null){
 			dump($user->agreed,'setPreferred $user->agreed');
             $this->tosAccepted = $user->agreed;
         }
@@ -534,15 +534,14 @@ class VirtueMartCart  {
      * @param integer $shipper_id Shipper ID taken from the form data
      * @author Oscar van Eijk
      */
-	public function setShipper($shipper_id)
-	{
+	public function setShipper($shipper_id){
 
 		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
         JPluginHelper::importPlugin('vmshipper');
 
         $dispatcher = JDispatcher::getInstance();
         $retValues = $dispatcher->trigger('plgVmOnShipperSelected',
-                                                   array('cart'=>$this, '_selectedShipper' => $shipper_id));
+                                           array('cart'=>$this, '_selectedShipper' => $shipper_id));
         foreach ($retValues as $retVal) {
             if ($retVal === true) {
 				$this->virtuemart_shippingcarrier_id=$shipper_id;
@@ -552,10 +551,7 @@ class VirtueMartCart  {
                 $mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=edit_shipping');
 //	Remove comments if newchecks need to be implemented.
 //	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
-//				} elseif ($retVal === null) {
-//					continue; // This plugin was skipped
-//				} else {
-//					continue; // Other values not yet implemented
+
             }
         }
 
@@ -572,7 +568,7 @@ class VirtueMartCart  {
 
         $this->_inCheckOut = true;
 
-        $this->tosAccepted = JRequest::getVar('tosAccepted', $this->tosAccepted);
+        $this->tosAccepted = JRequest::getInt('tosAccepted', $this->tosAccepted);
         $this->customer_comment = JRequest::getWord('customer_comment', $this->customer_comment);
 
         if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
@@ -634,11 +630,11 @@ class VirtueMartCart  {
             }
         }
 
-        //Test Shipment
-		if($this->virtuemart_shippingcarrier_id == 0){
+/*        //Test Shipment
+//		if($this->virtuemart_shippingcarrier_id == 0){
 //			$this->setCartIntoSession();
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=edit_shipping',$redirectMsg);
-        }
+//			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=edit_shipping',$redirectMsg);
+//        }
         // Ok, a shipper was selected, now make sure we can find a matching shipping rate for
         // the current order shipto and weight
 		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
@@ -646,6 +642,7 @@ class VirtueMartCart  {
         $dispatcher = JDispatcher::getInstance();
 		$retValues = $dispatcher->trigger('plgVmOnConfirmShipper', array('cart'=>$this));
         $this->virtuemart_shippingcarrier_id = -1;
+		//dump($retValues,'$retValues');
         foreach ($retValues as $retVal) {
             if ($retVal !== null) {
                 $this->virtuemart_shippingcarrier_id = $retVal;
@@ -656,11 +653,29 @@ class VirtueMartCart  {
             $this->virtuemart_shippingcarrier_id = 0;
             $this->setCartIntoSession();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=edit_shipping',$redirectMsg);
+        }*/
+       
+        //Test Shipment and show shipment plugin
+		if(empty($this->virtuemart_shippingcarrier_id)){
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=edit_shipping',$redirectMsg);
+        } else {
+			if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+            JPluginHelper::importPlugin('vmshipper');
+            //Add a hook here for other shipment methods, checking the data of the choosed plugin
+            $dispatcher = JDispatcher::getInstance();
+			$retValues = $dispatcher->trigger('plgVmOnConfirmShipper', array('cart'=>$this));
+            foreach ($retValues as $retVal) {
+                if ($retVal === true) {
+                    break; // Plugin completed succesful; nothing else to do
+                } elseif ($retVal === false) { // Missing data, ask for it (again)
+					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=edit_shipping',$redirectMsg);
+					// 	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
+                }
+            }
         }
-
+		//echo 'hier ';
         //Test Payment and show payment plugin
 		if(empty($this->virtuemart_paymentmethod_id)){
-
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment',$redirectMsg);
         } else {
 			if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
@@ -672,22 +687,18 @@ class VirtueMartCart  {
                 if ($retVal === true) {
                     break; // Plugin completed succesful; nothing else to do
                 } elseif ($retVal === false) { // Missing data, ask for it (again)
-
 					$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=editpayment',$redirectMsg);
-
-                    // Checks below outcommented since we're at the end of out loop anyway :-/
-// 	Remove comments if newchecks need to be implemented.
-// 	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
-//					} elseif ($retVal === null) {
-//						continue; // This plugin was skipped
-//					} else {
-//						continue; // Other values not yet implemented
+					// 	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
                 }
             }
         }
-		if(VmConfig::get('agree_to_tos_onorder') && !$this->tosAccepted) {
-			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS'));
-        }
+		
+		if($this->tosAccepted !== 1){
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS'));			
+		}
+/*		if(VmConfig::get('agree_to_tos_onorder') && !$this->tosAccepted) {
+        }*/
+
         //Show cart and checkout data overview
         $this->_inCheckOut = false;
         $this->_dataValidated = true;

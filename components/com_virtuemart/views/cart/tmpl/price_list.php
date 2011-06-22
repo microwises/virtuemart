@@ -21,33 +21,6 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<div>
-	<div class="width50 floatleft">
-		<h1><?php echo JText::_('COM_VIRTUEMART_CART_TITLE'); ?></h1>
-	</div>
-	<div class="width50 floatleft right">
-		<?php // Continue Shopping Button
-		if ($this->continue_link_html != '') {
-			echo $this->continue_link_html;
-		} ?>
-	</div>
-<div class="clear"></div>
-</div>
-	
-<?php // Continue and Checkout Button ?>
-<div class="checkout-button-top">
-		
-	<?php // Terms Of Service Checkbox
-	$checked = '';
-	echo '<input class="terms-of-service" type="checkbox" name="tosAccepted" value="1" ' . $checked . '/><span class="tos">'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
-	?>
-
-	<?php // Checkout Button
-	echo $this->checkout_link_html;
-	$text = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
-	?>
-			
-</div>
 <?php // Continue and Checkout Button END ?>
 
 <div class="billto-shipto">

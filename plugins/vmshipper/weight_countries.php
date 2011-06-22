@@ -221,7 +221,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
         $shipping->shipping_name = $params->get('shipping_name');
         $shipping->shipping_rate_vat_id = $params->get('tax_id');
         $shipping->shipping_value = $this->_getShippingCost($params);
-        return true;
+        return $selectedShipper;
     }
 
     /**
