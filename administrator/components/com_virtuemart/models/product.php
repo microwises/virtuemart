@@ -251,23 +251,6 @@ class VirtueMartModelProduct extends VmModel {
 		return $query ;
 	}
 
-	/**
-	 *  Create a list of products for JSON return
-	 * 
-	 * TODO sanitize variables Very unsecure
-	 * identical with function in orders?
-	 * disabled to unsecure written
-	 */
-/*	public function getProductListJson() {
-//		$this->_db = JFactory::getDBO();
-		$filter = JRequest::getVar('q', false);
-		$q = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
-			FROM #__virtuemart_products";
-		if ($filter) $q .= " WHERE product_name LIKE '%".$filter."%'";
-		$this->_db->setQuery($q);
-		return $this->_db->loadObjectList();
-	}*/
-
     /**
      * This function creates a product with the attributes of the parent.
      *
@@ -289,7 +272,6 @@ class VirtueMartModelProduct extends VmModel {
 		$published = $child->published;
 
 		$i = 0;
-		//dump($child,'child with $virtuemart_product_id '.$virtuemart_product_id);
 		//Check for all attributes to inherited by parent products
     	while(!empty($child->product_parent_id)){
     		
@@ -310,17 +292,8 @@ class VirtueMartModelProduct extends VmModel {
 		$child->virtuemart_product_id = $pId;
 		$child->product_parent_id = $ppId;
 
-		if ($withCalc) {
-
-			// Loads the product price details 
-			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-			$calculator = calculationHelper::getInstance();
-
-			// Calculate the modificator 
-			$child->ProductcustomfieldsIds = $this->getProductcustomfieldsIds($child);
-			$quantityArray = JRequest::getVar('quantity',1,'post');
-			//$child->prices = $calculator->getProductPrices((int)$child->virtuemart_product_id,$child->categories,0,$quantityArray[0]);
-			$child->prices = $calculator->getProductPrices($child,$child->categories,0,$quantityArray[0]);
+		if ($withCalc) {			
+			$child->prices = $this->getPrice($child,array(),1);
 		}
 		
     	return $child;
@@ -413,16 +386,10 @@ class VirtueMartModelProduct extends VmModel {
 					$product->box = '';
 				}
 
-//				// Load the related products 
-//				$product->related = $this->getRelatedProducts($this->_id);
-
 				// Load the vendor details 
 //				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 //				$product->vendor_name = VirtueMartModelVendor::getVendorName($product->virtuemart_vendor_id);
 
-
-//				// Check for child products  I think we dont need this, the product it self knows if it s a child
-//				$product->haschildren = $this->checkChildProducts($this->_id);
 
 				// Load the custom variants 
 				$product->hasproductCustoms = $this->hasproductCustoms($this->_id);
@@ -454,7 +421,7 @@ class VirtueMartModelProduct extends VmModel {
 				return $this->fillVoidProduct($front);
 			}
 //		}
-//		$product = $this->fillVoidProduct($product,$front);
+
 		$this->product = $product;
 		return $product;
     }
@@ -707,7 +674,7 @@ class VirtueMartModelProduct extends VmModel {
 		if($product){
 			$data = (array)$product;
 		} else{
-			$data = JRequest::get('post');	//TODO 4?
+			$data = JRequest::get('post');
 		}
 
 		/* Setup some place holders */
@@ -1039,14 +1006,14 @@ class VirtueMartModelProduct extends VmModel {
 	 * 
 	 * @author Max Milbers
 	 */
-	public function getPrice($virtuemart_product_id,$customVariant,$quantity){
+	public function getPrice($product,$customVariant,$quantity){
 
 		$this->_db = JFactory::getDBO();
 
-		$product = $this->getProduct($virtuemart_product_id);
-
-		// Load the Customs Field Cart Price 
-		$product->CustomsFieldCartPrice = $this->getProductCustomsFieldWithPrice($product);
+		if(!is_object($product)){
+			$product = $this->getProduct($product);
+		}
+		
 		// Loads the product price details 
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
@@ -1055,12 +1022,6 @@ class VirtueMartModelProduct extends VmModel {
 		$variantPriceModification = $calculator->calculateModificators($product,$customVariant);
 		
 		$prices = $calculator->getProductPrices($product,$product->categories,$variantPriceModification,$quantity);
-
-		//Wrong place, this must not be done in a model, display is gui, therefore it must be done in the view!
-		// change display //
-//		foreach ($prices as &$value  ){
-//			$value = $calculator->priceDisplay($value);
-//		}
 
 		return $prices;
 
@@ -1412,7 +1373,7 @@ class VirtueMartModelProduct extends VmModel {
 		$this->_db->setQuery($query);
 		$productCustoms = $this->_db->loadObjectList();
 		$row= 0 ;
-		foreach ($productCustoms as & $field ) {
+		foreach ($productCustoms as $field ) {
 			$field->display = $this->inputType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row,$field->is_cart_attribute);
 			$row++ ;
 		}
@@ -1420,7 +1381,8 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		return ;
      }
-  /**
+
+  	/**
      * AUthor Kohl Patrick
      * Load the t the custom fields for a product
      * return Object product type , parameters & value
@@ -1603,7 +1565,7 @@ class VirtueMartModelProduct extends VmModel {
 			$calculator = calculationHelper::getInstance();
 				
 			// render select list
-			foreach ($groups as & $group) {
+			foreach ($groups as $group) {
 
 //				$query='SELECT  field.`virtuemart_customfield_id` as value ,concat(field.`custom_value`," :bu ", field.`custom_price`) AS text
 				$query='SELECT  field.`virtuemart_customfield_id` as value ,field.`custom_value`, field.`custom_price`
@@ -1615,9 +1577,10 @@ class VirtueMartModelProduct extends VmModel {
 				$this->_db->setQuery($query);
 				$options = $this->_db->loadObjectList();
 				$group->options = array();
-				foreach ( $options as $option) $group->options[$option->value] = $option;
-
-				
+				foreach ( $options as $option){
+					$group->options[$option->value] = $option;
+				}
+				dump($group,'$group');
 				if ($group->field_type == 'V'){
 					foreach ($group->options as $productCustom) {
 						$productCustom->text =  $productCustom->custom_value.' : '.$currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
@@ -1627,7 +1590,7 @@ class VirtueMartModelProduct extends VmModel {
 					foreach ($group->options as $productCustom) {
 						$productCustom->text =  $productCustom->custom_value.' : '.$currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
 					}
-						$group->display .= '<label for="'.$productCustom->value.'">'.$this->displayType($product,$productCustom->custom_value,$group->field_type,0,'',$row).': '.$currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)).'</label>' ;
+					$group->display .= '<label for="'.$productCustom->value.'">'.$this->displayType($product,$productCustom->custom_value,$group->field_type,0,'',$row).': '.$currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)).'</label>' ;
 				} else {
 					$group->display ='';
 					foreach ($group->options as $productCustom) {
@@ -1636,59 +1599,13 @@ class VirtueMartModelProduct extends VmModel {
 				}
 				$row++ ;
 			}
-				return $groups;
 
-		}
-		return ;
-     }
-	/**
-	* GIve Product virtuemart_customfield_id pricable
-	**/
-	public function getProductcustomfieldsIds($product) {
-			$query='SELECT field.`virtuemart_customfield_id` FROM `#__virtuemart_customs` AS C
-				LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-				LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
-				Where is_cart_attribute = 1 and xref.`virtuemart_product_id` ='.(int)$product->virtuemart_product_id;
-		$this->_db->setQuery($query);
-		return ($this->_db->loadResult() > 0);
-
-	}
-	/**
-	* Product
-	*Get fields with price
-	* from custom fields
-	**/
-     public function getProductCustomsFieldWithPrice($product) {
-
-		if ($this->hasproductCustoms($product->virtuemart_product_id )) {
-
-			// group by virtuemart_custom_id
-			$query='SELECT C.`virtuemart_custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`virtuemart_customfield_id`,`is_hidden`
-				FROM `#__virtuemart_customs` AS C
-				LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-				LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
-				Where xref.`virtuemart_product_id` ='.(int)$product->virtuemart_product_id;
-			$query .=' and is_cart_attribute = 1 group by virtuemart_custom_id' ;
-
-			$this->_db->setQuery($query);
-			$groups = $this->_db->loadAssocList();
-
-			//product custom_field  with price grouped by virtuemart_custom_id
-			foreach ($groups as & $group) {
-				$query='SELECT  field.`virtuemart_customfield_id` ,field.`custom_value`,field.`custom_price`
-					FROM `#__virtuemart_customs` AS C
-					LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-					LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
-					Where xref.`virtuemart_product_id` ='.(int)$product->virtuemart_product_id;
-				$query .=' and is_cart_attribute = 1 and C.`virtuemart_custom_id`='.(int)$group['virtuemart_custom_id'] ;
-				$this->_db->setQuery($query);
-				$productCustomsCart = $this->_db->loadAssocList();
-				$group = array_merge($group, $productCustomsCart);
-			}
 			return $groups;
+
 		}
 		return ;
      }
+
 /**
   * Formating front display by roles
   *  for product only !

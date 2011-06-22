@@ -50,7 +50,7 @@ class VirtueMartViewCart extends JView {
 		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 		$this->_cart = VirtueMartCart::getCart(false);
 		$this->assignRef('cart', $this->_cart);
-
+		
 
 		if ($format == 'raw') {
 			$this->prepareCartData();
@@ -129,6 +129,7 @@ class VirtueMartViewCart extends JView {
 			$this->assignRef('checkout_link_html', $checkout_link_html);
 		}
 
+		dump($this->_cart,'cart in view.html.php');
 		$this->assignRef('lists', $this->lists);
 
 		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);

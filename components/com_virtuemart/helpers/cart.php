@@ -75,6 +75,7 @@ class VirtueMartCart  {
 
         $session = JFactory::getSession();
         $cartTemp = $session->get('vmcart', 0, 'vm');
+		//dump($cartTemp->cartData,'hmm');
 		if(!empty($cartTemp) ){
             $cart = unserialize($cartTemp);
 			if($deleteValidation){
@@ -122,12 +123,13 @@ class VirtueMartCart  {
             $this->virtuemart_paymentmethod_id = $user->virtuemart_paymentmethod_id;
         }
 
-		if(VmConfig::get('agree_to_tos_onorder') && $this->tosAccepted===null){
-            $this->tosAccepted = 0;
-        } else {
+//		if(VmConfig::get('agree_to_tos_onorder') && $this->tosAccepted===null){
+//            $this->tosAccepted = 0;
+//        } else {
+		if(isset($user->agreed) && !VmConfig::get('agree_to_tos_onorder')){
+			dump($user->agreed,'setPreferred $user->agreed');
             $this->tosAccepted = $user->agreed;
         }
-
 
     }
 
@@ -344,7 +346,13 @@ class VirtueMartCart  {
     public function getCartPrices() {
 //		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
         $calculator = calculationHelper::getInstance();
-        return $calculator->getCheckoutPrices($this);
+		$prices = $calculator->getCheckoutPrices($this);
+		$this->cartData->cartData = $calculator->getCartData();
+		$this->setCartIntoSession();
+//		dump($this->cartData,' getCartPrices hmm');
+//		dump($prices,' getCartPrices hmm');
+		
+        return $prices;
     }
 
     /**
@@ -563,8 +571,8 @@ class VirtueMartCart  {
 	private function checkoutData(){
 
         $this->_inCheckOut = true;
-//		$this->_dataValidated = true; //this is wrong, I am quite sure, the dataValidated is set at the end of the checkout process
-        $this->tosAccepted = JRequest::getBool('tosAccepted', $this->tosAccepted);
+
+        $this->tosAccepted = JRequest::getVar('tosAccepted', $this->tosAccepted);
         $this->customer_comment = JRequest::getWord('customer_comment', $this->customer_comment);
 
         if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
@@ -951,13 +959,15 @@ class VirtueMartCart  {
 
 		if(is_array($data)){
             foreach ($prepareUserFields as $fld) {
-                $name = $fld->name;
-                $address[$name] = $data[$name];
+                if(!empty($fld->name)){
+                	$name = $fld->name;
+					if(!empty($data[$name]))$address[$name] = $data[$name];
+                }
             }
 
         } else {
             foreach ($prepareUserFields as $fld) {
-                $name = $fld->name;
+                if(!empty($fld->name))$name = $fld->name; else  $name = '';
                 $address[$name] = $data->{$name};
             }
         }

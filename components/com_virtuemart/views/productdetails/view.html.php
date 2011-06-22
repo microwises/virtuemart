@@ -85,10 +85,12 @@ class VirtueMartViewProductdetails extends JView {
 			if($virtuemart_category_id){
 				$categoryLink='&virtuemart_category_id='.$virtuemart_category_id;
 			}
+			
 			$mainframe -> redirect( JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink));
 
 			return;
 		}
+		
 		$product_model->addImages($product);
 		$this->assignRef('product', $product);
 

@@ -50,9 +50,9 @@ JHTML::_ ( 'behavior.modal' );
 		<?php // Continue and Checkout Button ?>
 		<div class="checkout-button-top">
 			<?php // Terms Of Service Checkbox
-			$checked = '';
+/*			$checked = '';
 			echo '<input class="terms-of-service" type="checkbox" name="tosAccepted" value="1" ' . $checked . '/><span class="tos">'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
-	
+			*/
 			echo $this->checkout_link_html;
 			$text = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
 			?>

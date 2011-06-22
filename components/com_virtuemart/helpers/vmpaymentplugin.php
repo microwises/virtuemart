@@ -491,23 +491,24 @@ abstract class vmPaymentPlugin extends JPlugin {
         }
 
         $params = new JParameter($payment->payment_params);
-/*
-        if (!class_exists('CurrencyDisplay'))
-            require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-        $currency = CurrencyDisplay::getInstance();
+		
+/*		VirtueMartCart::getCart(false);
+		dump($cart,'cart');
+        if (!class_exists('calculationHelper'))
+            require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
         $calculator = calculationHelper::getInstance();
-        $variantmods = $calculator->calculatePaymentPrice($payment->virtuemart_paymentmethod_id,0);
+        $variantmods = $calculator->calculatePaymentPrice($payment->virtuemart_paymentmethod_id);
         $payment_discount = $variantmods['salesPricePayment'] ? " (" . $variantmods['salesPricePayment'] . ")" : "";
-   $discountDisplay = $currency->priceDisplay($discount);
- * */
-        $payment_name = $payment->payment_name . $payment_discount;
+   		//$discountDisplay = $currency->priceDisplay($discount);*/
+
+        $payment_name = $payment->payment_name ;//.$payment_discount;
        
 
         $html = '<input type="radio" name="virtuemart_paymentmethod_id" value="' . $payment->virtuemart_paymentmethod_id . '" ' . $checked . '>' . $payment_name;
 
-        if ($discount) {
+ /*       if ($discount) {
             $html .=" (" . "get discount amoutn??".$discountDisplay . ")";
-        }
+        }*/
         $html .="</label><br/>\n";
         return $html;
     }

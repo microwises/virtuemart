@@ -30,12 +30,14 @@ class JElementVMFiles extends JElement {
 		jimport( 'joomla.filesystem.file' );
         JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
 		// path to images directory
-		$path		= JPATH_ROOT.DS.$node->attributes('directory');
+		$folder = $node->attributes('directory');
+		$rel_path = str_replace('/',DS,$folder);
+		$path		= JPATH_ROOT.DS.$rel_path;
 		$filter		= $node->attributes('filter');
 		$exclude	= $node->attributes('exclude');
 		$stripExt	= $node->attributes('stripext');
                 if (!JFolder::exists($path)) {
-                    return  JTExt::sprintf('COM_VIRTUEMART_FOLDER_NOT_EXIST', $path);
+                    return  JTExt::sprintf('COM_VIRTUEMART_FOLDER_NOT_EXIST', $node->attributes('directory'));
                 }
 		$files		= JFolder::files($path, $filter);
 

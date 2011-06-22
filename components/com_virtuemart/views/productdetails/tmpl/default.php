@@ -145,7 +145,7 @@ if (empty ( $this->product )) {
 				<div class="addtocart-area">
 					<form method="post" class="product" action="index.php" id="addtocartproduct<?php echo $this->product->virtuemart_product_id ?>">
 	<?php // Product custom_fields
-	if (!empty($this->product->customfieldsCart)) {  ?>
+	if (!empty($this->product->customfieldsCart)) { dump($this->product->customfieldsCart,'my customfields cart'); ?>
 	<div class="product-fields">
 		<?php foreach ($this->product->customfieldsCart as $field)
 		{ ?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">

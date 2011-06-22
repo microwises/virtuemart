@@ -68,6 +68,8 @@ class calculationHelper {
         //Attention, this is set to the mainvendor atm.
         //This means also that atm for multivendor, every vendor must use the shopcurrency as default
         $this->vendorCurrency = 1;
+		$this->productVendorId = 1;
+		
         if (!class_exists('CurrencyDisplay')
             )require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
         $this->_currencyDisplay = CurrencyDisplay::getInstance($this->vendorCurrency);
@@ -492,8 +494,8 @@ class calculationHelper {
      */
     function executeCalculation($rules, $baseprice, $relateToBaseAmount=false) {
 
-        if (empty($rules)
-            )return 0;
+        if (empty($rules))return 0;
+		
         $rulesEffSorted = $this->record_sort($rules, 'ordering');
 
         $price = $baseprice;
@@ -568,7 +570,7 @@ class calculationHelper {
 
         $this->_db->setQuery($q);
         $rules = $this->_db->loadAssocList();
-
+		dump($this->_db,'gatherEffectingRulesForProductPrice');
 
         $testedRules = array();
         //Cant be done with Leftjoin afaik, because both conditions could be arrays.
@@ -850,8 +852,14 @@ class calculationHelper {
 
     function calculateCustomPriceWithTax($price, $override_id=0) {
 
-        $taxRules = $this->gatherEffectingRulesForProductPrice('Tax', $override_id);
-        return $this->roundDisplay($this->executeCalculation($taxRules, $price, true));
+        $taxRules = $this->gatherEffectingRulesForProductPrice('Tax', $override_id); dump($taxRules,'taxrules');
+		if(!empty($taxRules)){
+			$price = $this->executeCalculation($taxRules, $price, true);
+		}
+	
+		$price = $this->roundDisplay($price);
+
+        return $price;
     }
 
     /**
