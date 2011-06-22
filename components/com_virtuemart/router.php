@@ -428,13 +428,13 @@ class vmrouterHelper {
 	public function getCategoryNames($virtuemart_category_id,$catMenuId=0){
 
 		$strings = array();
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$parents_id = array_reverse(self::getCategoryRecurse($virtuemart_category_id,$catMenuId)) ;
 
 		foreach ($parents_id as $id ) {
 			$q = "SELECT `slug` as name
 					FROM  `#__virtuemart_categories`
-					WHERE  `virtuemart_category_id`=".$id;
+					WHERE  `virtuemart_category_id`=".(int)$id;
 
 			$db->setQuery($q);
 			// $category = $db->loadResult();
@@ -465,10 +465,10 @@ class vmrouterHelper {
 		static $idsArr = array();
 		if ($first==true) $idsArr = array();
 
-		$db			= & JFactory::getDBO();
+		$db			= JFactory::getDBO();
 		$q = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent`
 				FROM  #__virtuemart_category_categories AS `xref`
-				WHERE `xref`.`category_child_id`= ".$virtuemart_category_id;
+				WHERE `xref`.`category_child_id`= ".(int)$virtuemart_category_id;
 		$db->setQuery($q);
 		$ids = $db->loadObject();
 		if (isset ($ids->child)) {
@@ -485,15 +485,15 @@ class vmrouterHelper {
 	 */
 	public function getCategoryId($slugs,$virtuemart_category_id ){
 		if ($virtuemart_category_id == null) $virtuemart_category_id = 0 ;
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		foreach ($slugs as $slug) {
 			// $name = str_replace('-', '%', $name);
 			// $name = str_replace(':', '%', $name);
 			$q = "SELECT distinct `c`.`virtuemart_category_id`
 				FROM  `#__virtuemart_categories` AS `c` , `#__virtuemart_category_categories` as `xref`";
-			$q .=" WHERE `c`.`slug` LIKE '".$slug."' ";
+			$q .=" WHERE `c`.`slug` LIKE '".$db->getEscaped($slug)."' ";
 			$q .=" AND `xref`.`category_child_id`=`c`.`virtuemart_category_id`";
-			$q .=" AND `xref`.`category_parent_id` = ".$virtuemart_category_id;
+			$q .=" AND `xref`.`category_parent_id` = ".(int)$virtuemart_category_id;
 			$db->setQuery($q);
 			$virtuemart_category_id = $db->loadResult();
 		}
@@ -505,7 +505,7 @@ class vmrouterHelper {
 	/* Get URL safe Product name */
 	public function getProductName($id){
 
-		$db			= & JFactory::getDBO();
+		$db			= JFactory::getDBO();
 		$query = 'SELECT `slug` FROM `#__virtuemart_products`  ' .
 		' WHERE `virtuemart_product_id` = ' . (int) $id;
 
@@ -538,7 +538,7 @@ class vmrouterHelper {
 		$productName = array_pop($names);
 		$product = array();
 		$product['virtuemart_category_id'] = self::getCategoryId($names,$virtuemart_category_id ) ;
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$parentIds = array();
 		//$virtuemart_category_ids = null;
 		$productName = str_replace('-', '%', $productName);
@@ -546,8 +546,8 @@ class vmrouterHelper {
 		$q = "SELECT `p`.`virtuemart_product_id`
 			FROM `#__virtuemart_products` AS `p`
 			LEFT JOIN `#__virtuemart_product_categories` AS `xref` ON `p`.`virtuemart_product_id` = `xref`.`virtuemart_product_id`
-			WHERE `p`.`product_name` LIKE '".$productName."'
-			AND `xref`.`virtuemart_category_id` in (".$product['virtuemart_category_id'].") ";
+			WHERE `p`.`product_name` LIKE '".$db->getEscaped($productName)."'
+			AND `xref`.`virtuemart_category_id` in (".(int)$product['virtuemart_category_id'].") ";
 		$db->setQuery($q);
 		$product['virtuemart_product_id'] = $db->loadResult();
 		/* WARNING product name must be unique or you can't acces the product */
@@ -556,7 +556,7 @@ class vmrouterHelper {
 	/* Get URL safe Manufacturer name */
 	public function getManufacturerName($virtuemart_manufacturer_id ){
 	$db = JFactory::getDBO();
-	$query = 'SELECT `slug` FROM `#__virtuemart_manufacturers` WHERE virtuemart_manufacturer_id='.$virtuemart_manufacturer_id;
+	$query = 'SELECT `slug` FROM `#__virtuemart_manufacturers` WHERE virtuemart_manufacturer_id='.(int)$virtuemart_manufacturer_id;
 	$db->setQuery($query);
 	// $lang = JFactory::getLanguage();
 	// $mfName = $lang->transliterate($db->loadResult());

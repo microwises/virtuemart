@@ -308,13 +308,13 @@ abstract class vmShipperPlugin extends JPlugin {
      * 		return null;
      * 	}
      *
-     * Returing parent::plgVmOnConfirmShipper($_cart) is valid but will produce extra overhead!
+     * Returing parent::plgVmOnCheckoutCheckShipperData($_cart) is valid but will produce extra overhead!
      *
      * @param object $_cart Cart object
      * @return integer The shipping rate ID
      * @author Oscar van Eijk
      */
-    public function plgVmOnConfirmShipper(VirtueMartCart $cart) {
+    public function plgVmOnCheckoutCheckShipperData(VirtueMartCart $cart) {
         return $this->selectShippingRate($cart);
     }
 

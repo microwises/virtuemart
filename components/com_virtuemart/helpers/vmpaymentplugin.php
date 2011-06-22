@@ -285,9 +285,7 @@ abstract class vmPaymentPlugin extends JPlugin {
      */
     protected function getPaymentMethodForOrder($_id) {
         $_db = JFactory::getDBO();
-        $_q = 'SELECT `payment_method_id` '
-                . 'FROM #__virtuemart_orders '
-                . "WHERE virtuemart_order_id = $_id";
+        $_q = 'SELECT `payment_method_id` FROM #__virtuemart_orders WHERE virtuemart_order_id = '.(int)$_id;
         $_db->setQuery($_q);
         if (!($_r = $_db->loadAssoc())) {
             return -1;
@@ -305,7 +303,7 @@ abstract class vmPaymentPlugin extends JPlugin {
         $_db = JFactory::getDBO();
         $_q = 'SELECT ' . VM_DECRYPT_FUNCTION . "(secret_key, '" . ENCODE_KEY . "') as passkey "
                 . 'FROM #__virtuemart_paymentmethods '
-                . "WHERE virtuemart_paymentmethod_id='" . $this->_virtuemart_paymentmethod_id . "'";
+                . "WHERE virtuemart_paymentmethod_id='" . (int)$this->_virtuemart_paymentmethod_id . "'";
         $_db->setQuery($_q);
         $_r = $_db->loadAssoc(); // TODO Error check
         return $_r['passkey'];
@@ -322,19 +320,18 @@ abstract class vmPaymentPlugin extends JPlugin {
         $db = JFactory::getDBO();
 
         if (VmConfig::isJ15()) {
-            $q = 'SELECT COUNT(*) AS c '
-                    . 'FROM #__virtuemart_paymentmethods AS vm '
-                    . ',    #__plugins AS j '
-                    . "WHERE vm.virtuemart_paymentmethod_id='$pid' "
-                    . 'AND   vm.payment_jplugin_id = j.id '
-                    . "AND   j.element = '$pelement'";
+            $q = 'SELECT COUNT(*) AS c 
+            		FROM #__virtuemart_paymentmethods AS vm , #__plugins AS j 
+            		WHERE vm.virtuemart_paymentmethod_id="'.(int)$pid.'" 
+            		AND   vm.payment_jplugin_id = j.id 
+					AND   j.element = "'.$db->getEscaped($pelement).'"';
         } else {
-            $q = 'SELECT COUNT(*) AS c '
-                    . 'FROM #__virtuemart_paymentmethods AS vm '
-                    . ',    #__extensions AS j '
-                    . "WHERE vm.virtuemart_paymentmethod_id='$pid' "
-                    . 'AND   vm.payment_jplugin_id = j.extension_id '
-                    . "AND   j.element = '$pelement'";
+            $q = 'SELECT COUNT(*) AS c 
+            		FROM #__virtuemart_paymentmethods AS vm 
+            		, #__extensions AS j 
+            		WHERE vm.virtuemart_paymentmethod_id="'.(int)$pid.'" 
+            		AND   vm.payment_jplugin_id = j.extension_id 
+            		AND   j.element = "'.$db->getEscaped($pelement).'"';
         }
 
         $db->setQuery($q);
@@ -349,24 +346,23 @@ abstract class vmPaymentPlugin extends JPlugin {
     protected function getPaymentMethods($vendorId) {
         $db = JFactory::getDBO();
         if (VmConfig::isJ15()) {
-            $q = 'SELECT v.* '
-                    . 'FROM   #__virtuemart_paymentmethods AS v '
-                    . ',      #__plugins             j '
-                    . 'WHERE j.`element` = "' . $this->_pelement . '" '
-                    . 'AND   v.`payment_jplugin_id` = j.`id` '
-                    . 'AND   v.`published` = "1" '
-                    . 'AND  (v.`virtuemart_vendor_id` = "' . $vendorId . '" '
-                    . ' OR   v.`virtuemart_vendor_id` = "0") '
-            ;
+            $q = 'SELECT v.* FROM   #__virtuemart_paymentmethods AS v
+            		, #__plugins j 
+            		WHERE j.`element` = "' . $db->getEscaped($this->_pelement) . '" 
+                    AND   v.`payment_jplugin_id` = j.`id` 
+                    AND   v.`published` = "1"
+                    AND  (v.`virtuemart_vendor_id` = "' . (int)$vendorId . '" 
+                    OR   v.`virtuemart_vendor_id` = "0") ';
+            
         } else {
             $q = 'SELECT v.`*`    '
                     . 'FROM   #__virtuemart_paymentmethods AS v '
                     . ',      #__extensions    AS      j '
                     . 'WHERE j.`folder` = "vmshipper" '
-                    . 'AND j.`element` = "' . $this->_pelement . '" '
+                    . 'AND j.`element` = "' . $db->getEscaped($this->_pelement) . '" '
                     . 'AND   v.`published` = "1" '
                     . 'AND   v.`payment_jplugin_id` = j.`extension_id` '
-                    . 'AND  (v.`virtuemart_vendor_id` = "' . $vendorId . '" '
+                    . 'AND  (v.`virtuemart_vendor_id` = "' . (int)$vendorId . '" '
                     . ' OR   v.`virtuemart_vendor_id` = "0") '
             ;
         }
@@ -391,10 +387,7 @@ abstract class vmPaymentPlugin extends JPlugin {
     final protected function getThisPaymentName($payment_id) {
         $db = JFactory::getDBO();
 
-
-        $q = 'SELECT `payment_name` '
-                . 'FROM #__virtuemart_paymentmethods '
-                . "WHERE `virtuemart_paymentmethod_id`='$payment_id' ";
+        $q = 'SELECT `payment_name` FROM #__virtuemart_paymentmethods WHERE `virtuemart_paymentmethod_id`="'.(int)$payment_id.'"';
 
         $db->setQuery($q);
         return $db->loadResult(); // TODO Error check
@@ -415,9 +408,8 @@ abstract class vmPaymentPlugin extends JPlugin {
             $vendorId = 1;
         $db = JFactory::getDBO();
 
-        $q = 'SELECT `payment_params` '
-                . 'FROM #__virtuemart_paymentmethods '
-                . "WHERE `virtuemart_paymentmethod_id`='$payment_id' ";
+        $q = 'SELECT `payment_params` FROM #__virtuemart_paymentmethods 
+        		WHERE `virtuemart_paymentmethod_id`="'.$payment_id.'" ';
         $db->setQuery($q);
         return $db->loadResult();
     }
@@ -442,9 +434,9 @@ abstract class vmPaymentPlugin extends JPlugin {
         }
         $_db = JFactory::getDBO();
         $_q = 'INSERT INTO `' . $_table . '` ('
-                . implode(',', $_cols)
+                . implode(',', $_db->getEscaped($_cols))
                 . ') VALUES ('
-                . implode(',', $_vals)
+                . implode(',', $_db->getEscaped($_vals))
                 . ')';
         $_db->setQuery($_q);
         if (!$_db->query()) {
@@ -472,7 +464,7 @@ abstract class vmPaymentPlugin extends JPlugin {
         }
         $db = JFactory::getDBO();
         $q = 'UPDATE `' . $table . '` SET '
-                . implode(',', $fields)
+                . implode(',', $_db->getEscaped($fields))
                 . ' WHERE `' . $where_key . '` =' . $where_value
         ;
 

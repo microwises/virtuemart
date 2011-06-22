@@ -200,7 +200,7 @@ class VirtueMartCart  {
      */
     public function add() {
         $mainframe = JFactory::getApplication();
-        $db = JFactory::getDBO();
+
         $post = JRequest::get('default');
         $total_quantity = 0;
         $total_updated = 0;
@@ -221,8 +221,8 @@ class VirtueMartCart  {
 
             /* Check if we have a product */
             if ($product) {
-                $quantityPost = $post['quantity'][$p_key];
-                $virtuemart_category_idPost = $post['virtuemart_category_id'][$p_key];
+                $quantityPost = (int)$post['quantity'][$p_key];
+                $virtuemart_category_idPost = (int)$post['virtuemart_category_id'][$p_key];
 
                 $product->virtuemart_category_id = $virtuemart_category_idPost;
 				$productKey= $product->virtuemart_product_id;
@@ -396,7 +396,7 @@ class VirtueMartCart  {
     public function getCategoryId() {
         $db = JFactory::getDBO();
 		$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
-		$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `virtuemart_product_id` = '.intval($virtuemart_product_id).' LIMIT 1';
+		$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `virtuemart_product_id` = '.(int)$virtuemart_product_id.' LIMIT 1';
         $db->setQuery($q);
         return $db->loadResult();
 	}
@@ -412,7 +412,7 @@ class VirtueMartCart  {
 
     public function getCardCategoryId($virtuemart_product_id) {
         $db = JFactory::getDBO();
-        $q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `virtuemart_product_id` = ' . intval($virtuemart_product_id) . ' LIMIT 1';
+        $q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `virtuemart_product_id` = ' . (int)$virtuemart_product_id . ' LIMIT 1';
         $db->setQuery($q);
         return $db->loadResult();
     }
@@ -639,8 +639,8 @@ class VirtueMartCart  {
         // the current order shipto and weight
 		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
         JPluginHelper::importPlugin('vmshipper');
-        $dispatcher = JDispatcher::getInstance();
-		$retValues = $dispatcher->trigger('plgVmOnConfirmShipper', array('cart'=>$this));
+        $dispatcher = JDispatcher::getInstance();plgVmOnCheckoutCheckPaymentData
+		$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckShipperData', array('cart'=>$this));
         $this->virtuemart_shippingcarrier_id = -1;
 		//dump($retValues,'$retValues');
         foreach ($retValues as $retVal) {
@@ -663,7 +663,8 @@ class VirtueMartCart  {
             JPluginHelper::importPlugin('vmshipper');
             //Add a hook here for other shipment methods, checking the data of the choosed plugin
             $dispatcher = JDispatcher::getInstance();
-			$retValues = $dispatcher->trigger('plgVmOnConfirmShipper', array('cart'=>$this));
+			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckShipperData', array('cart'=>$this));
+
             foreach ($retValues as $retVal) {
                 if ($retVal === true) {
                     break; // Plugin completed succesful; nothing else to do
@@ -683,6 +684,7 @@ class VirtueMartCart  {
             //Add a hook here for other payment methods, checking the data of the choosed plugin
             $dispatcher = JDispatcher::getInstance();
 			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckPaymentData', array('cart'=>$this));
+
             foreach ($retValues as $retVal) {
                 if ($retVal === true) {
                     break; // Plugin completed succesful; nothing else to do
@@ -852,7 +854,7 @@ class VirtueMartCart  {
      * @todo Make sure this gets called when a user is logged in
      * @access public
      */
-    public function initCart() {
+/*    public function initCart() {
         $session = JFactory::getSession();
         $db = JFactory::getDBO();
         $user = JFactory::getUser();
@@ -894,7 +896,7 @@ class VirtueMartCart  {
         }
 
         $this->setCartIntoSession();
-    }
+    }*/
 
     /**
      * prepare display of cart

@@ -452,12 +452,11 @@ class shopFunctionsF {
 
 		//Lets get here the template set in the shopconfig, if there is nothing set, get the joomla standard
 		$template = VmConfig::get('vmtemplate','default');
-
+		$db = JFactory::getDBO();
 		//Set specific category template
 		if(!empty($catTpl) && empty($prodTpl)){
-			if(is_Int($catTpl)){
-				$db = JFactory::getDBO();
-				$q = 'SELECT `category_template` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.$catTpl.'" ';
+			if(is_Int($catTpl)){			
+				$q = 'SELECT `category_template` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.(int)$catTpl.'" ';
 				$db->setQuery($q);
 				$temp = $db->loadResult();
 				if ($temp) $template = $temp;
@@ -469,8 +468,7 @@ class shopFunctionsF {
 		//Set specific product template
 		if(!empty($prodTpl)){
 			if(is_Int($prodTpl)){
-				$db = JFactory::getDBO();
-				$q = 'SELECT `product_template` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` = "'.$prodTpl.'" ';
+				$q = 'SELECT `product_template` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` = "'.(int)$prodTpl.'" ';
 				$db->setQuery($q);
 				$temp = $db->loadResult();
 				if($temp) $template = $temp;
@@ -489,8 +487,7 @@ class shopFunctionsF {
 			//Set specific category layout
 			if(!empty($catLayout) && empty($prodLayout)){
 				if(is_Int($catLayout)){
-					$db = JFactory::getDBO();
-					$q = 'SELECT `layout` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.$catLayout.'" ';
+					$q = 'SELECT `layout` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.(int)$catLayout.'" ';
 					$db->setQuery($q);
 					$temp = $db->loadResult();
 					if ($temp) $layout = $temp;
@@ -502,8 +499,7 @@ class shopFunctionsF {
 			//Set specific product layout
 			if(!empty($prodLayout)){
 				if(is_Int($prodLayout)){
-					$db = JFactory::getDBO();
-					$q = 'SELECT `layout` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.$catLayout.'" ';
+					$q = 'SELECT `layout` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` = "'.(int)$prodLayout.'" ';
 					$db->setQuery($q);
 					$temp = $db->loadResult();
 					if ($temp) $layout = $temp;

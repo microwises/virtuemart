@@ -678,11 +678,9 @@ class VirtueMartModelUser extends VmModel {
 			if(empty($data[$_fld->name])) $data[$_fld->name] = '';
 			$data[$_fld->name] = $userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $data[$_fld->name],$data);
 		}
+		
+		$this->store($data);
 
-       	$userinfo   = $this->getTable('userinfos');
-    	if (!$userinfo->bindChecknStore($data)) {
-			$this->setError($userinfo->getError());
-		}
 		return true;	
 		
 	}	

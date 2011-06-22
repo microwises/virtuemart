@@ -307,6 +307,190 @@ class VirtuemartControllerUpdatesMigration extends VmController {
             return $msg;
 	}
 	
+	function migrateVmOneProducts(){
+
+		$data = JRequest::get('get');
+		JRequest::setVar($data['token'],'1','post');
+		JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getWord('task') );
+
+		if(!VmConfig::get('dangeroustools',true)){
+			$msg = $this->_getMsgDangerousTools();
+			$this->setRedirect($this->redirectPath,$msg);
+			return false;
+		}
+		
+		$this->_app = JFactory::getApplication(); dump($this->_app,'app');
+		$this->_db = JFactory::getDBO();
+		
+		$this->_test = true;
+		
+		//Object to hold old against new ids. We wanna port as when it setup fresh, so no importing of old ids!
+		$this->_oldToNew = new stdClass();
+		
+		$this->_portMedia();
+		
+		$this->_categoryPorter();
+
+		$this->_portManufacturer();
+		
+		//Now we have the new ids for the medias,categories,taxes,discounts and manufacturers now lets port the products
+		$this->_productPorter();
+		
+		dump($this->_oldToNew,'$this->_oldToNew');
+		$msg = 'Migration worked smoothed and finished';
+		$this->setRedirect($this->redirectPath,$msg);	
+	}
+	
+	private function _productPorter(){
+		
+		$ok= true;
+		
+		$q ='SELECT * FROM #__vm_product AS `p`
+		LEFT OUTER JOIN #__vm_product_price ON #__vm_product_price.product_id = `p`.product_id 
+		LEFT OUTER JOIN #__vm_product_category_xref ON #__vm_product_category_xref.product_id = `p`.product_id 
+		LEFT OUTER JOIN #__vm_product_mf_xref ON #__vm_product_mf_xref.product_id = `p`.product_id '; 
+		$this->_db->setQuery($q);
+		$oldProducts = $this->_db->loadAssocList();
+		if(empty($oldProducts)) $this->_app->enqueueMessage('_productPorter '.$this->_db->getErrorMsg() );
+		dump($oldProducts,'$oldProducts');
+		return $ok;
+	}
+	
+	private function _categoryPorter(){
+		
+		$ok = true;
+
+		$q ='SELECT * FROM #__vm_category';
+		$this->_db->setQuery($q);
+		$oldCategories = $this->_db->loadAssocList();
+		
+		$this->_app->enqueueMessage($this->_db->getQuery());
+		dump($oldCategories,'_categoryPorter $oldCategories');
+
+		$oldtonewCats = array();
+		
+		$category = array();
+		foreach($oldCategories as $oldcategory){
+				
+			//$category['virtuemart_category_id'] = $oldcategory['category_id'];
+			$category['virtuemart_vendor_id'] = $oldcategory['vendor_id'];
+			$category['category_name'] = $oldcategory['category_name'];
+			
+			$category['category_description'] = $oldcategory['category_description'];			
+			$category['published'] = $oldcategory['category_publish']=='Y'? 1:0;
+			$category['created_on'] = $oldcategory['cdate'];
+			$category['modified_on'] = $oldcategory['mdate'];
+			$category['category_layout'] = $oldcategory['category_browsepage'];
+			$category['category_product_layout'] = $oldcategory['category_flypage'];
+		//	$category[''] = $oldcategory['products_per_row']; //now done by the layout
+			$category['ordering'] = $oldcategory['list_order'];
+			
+			if(!class_exists('TableCategories')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'categories.php');
+			$table = JTable::getInstance('categories', 'Table', array() );
+
+			if(!$this->_test){
+				$category = $table->bindChecknStore($category);
+		    	$errors = $table->getErrors();
+				foreach($errors as $error){
+					$this->setError($error);
+					$ok = false;
+				}
+				$oldtonewCats[$oldcategory['category_id']] = $category['virtuemart_category_id'];
+			} else {
+				$oldtonewCats[$oldcategory['category_id']] = $oldcategory['category_id'];
+			}
+			
+		}
+
+		$this->_oldToNew->cats = $oldtonewCats;
+		
+		$q ='SELECT * FROM #__vm_category_xref ';
+		$this->_db->setQuery($q);
+		$oldCategoriesX = $this->_db->loadAssocList();
+		dump($oldCategoriesX,'_categoryPorter $oldCategoriesX');
+		
+		$category = array();
+		$new_id = 0;		
+		foreach($oldCategoriesX as $oldcategoryX){
+			$new_id = $this->_oldToNew->cats[$oldcategoryX['category_parent_id']];
+			$category['category_parent_id'] = $new_id;
+			
+			$new_id = $this->_oldToNew->cats[$oldcategoryX['category_child_id']];
+			$category['category_child_id'] = $new_id;
+			
+			if(!class_exists('TableCategory_categories')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'category_categories.php');
+			$table = JTable::getInstance('category_categories', 'Table', array() );
+			
+			//$table = $this->getTable('category_categories');
+
+			if(!$this->_test){
+				$xdata = $table->bindChecknStore($category);
+		    	$errors = $table->getErrors();
+				foreach($errors as $error){
+					$this->setError($error);
+					$ok = false;
+				}
+			} else {
+				
+			}
+
+		}
+		
+		
+		if($ok) $msg = 'Looks everything worked correct, migrated '.count($this->_oldToNew->cats).' categories ';
+		else $msg = 'Seems there was an error porting '.count($this->_oldToNew->cats).' categories ';
+		$this->_app -> enqueueMessage($msg);
+		
+		return $ok;
+	}
+	
+	private function _portManufacturer(){
+
+		$ok= true;
+
+		$q ='SELECT * FROM #__vm_manufacturer ';
+		$this->_db->setQuery($q);
+		$oldManus = $this->_db->loadAssocList();
+
+		$oldtonewManus = array();
+		
+		$manu = array();
+		foreach($oldManus as $oldmanu){
+			
+			$manu['mf_name'] = $oldmanu['mf_name'];
+			$manu['mf_email'] = $oldmanu['mf_email'];
+			$manu['mf_desc'] = $oldmanu['mf_desc'];
+			$manu['virtuemart_manufacturercategories_id'] = $oldmanu['mf_category_id'];
+			$manu['mf_url'] = $oldmanu['mf_url'];
+			$manu['published'] = 1;
+				
+			if(!class_exists('TableManufacturers')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'manufacturers.php');
+			$table = JTable::getInstance('manufacturers', 'Table', array() );
+			
+			//$table = $this->getTable('manufacturers');
+
+			if(!$this->_test){
+				$category = $table->bindChecknStore($category);
+		    	$errors = $table->getErrors();
+				foreach($errors as $error){
+					$this->setError($error);
+					$ok = false;
+				}
+				$oldtonewManus[$oldmanu['manufacturer_id']] = $category['virtuemart_manufacturer_id'];
+			} else {
+				$oldtonewManus[$oldmanu['manufacturer_id']] = $oldmanu['manufacturer_id'];
+			}					
+		}
+		
+		return $ok;
+	}
+	
+	private function _portMedia(){
+		
+		$ok = true;
+		
+		return $ok;
+	}
 	
 	function portCurrency(){
 
