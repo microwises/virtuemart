@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
   `calc_affected` int(11) NOT NULL DEFAULT '0' COMMENT 'affected productId''s',
   `calc_amount_cond` float NOT NULL COMMENT 'Number of affected products',
   `calc_amount_dimunit` text NOT NULL COMMENT 'The dimension, kg, m, €',
+  `for_override` tinyint(1) NOT NULL,
   `ordering` int(2) NOT NULL DEFAULT '0',
   `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',

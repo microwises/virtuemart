@@ -332,7 +332,7 @@ class VmMediaHandler {
 
 			//Here we need now to update the database field of $this->file_url_thumb to prevent dynamic thumbnailing in future
 			if(empty($this->_db)) $this->_db = JFactory::getDBO();
-			$query = 'UPDATE `#__virtuemart_medias` SET `file_url_thumb` = "'.$this->file_url_thumb.'" WHERE `#__virtuemart_medias`.`virtuemart_media_id` = "'.$this->virtuemart_media_id.'" ';
+			$query = 'UPDATE `#__virtuemart_medias` SET `file_url_thumb` = "'.$this->_db->getEscaped($this->file_url_thumb).'" WHERE `#__virtuemart_medias`.`virtuemart_media_id` = "'.(int)$this->virtuemart_media_id.'" ';
 			$this->_db->setQuery($query);
 			$this->_db->query();
 		}
@@ -678,7 +678,7 @@ class VmMediaHandler {
 
     	$vendorId=1;
     	$q='SELECT * FROM `#__virtuemart_medias` WHERE `published`=1
-    	AND (`virtuemart_vendor_id`= "'.$vendorId.'" OR `shared` = "1")';
+    	AND (`virtuemart_vendor_id`= "'.(int)$vendorId.'" OR `shared` = "1")';
     	if(!empty($type)){
     		$q .= ' AND `file_type` = "'.$type.'" ';
     	}

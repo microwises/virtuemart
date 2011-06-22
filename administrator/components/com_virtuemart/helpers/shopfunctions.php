@@ -118,7 +118,7 @@ class ShopFunctions {
 		$quantity = (int) $quantity;
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT '.$fieldnameXref.' FROM '.$tableXref.' WHERE '.$fieldIdXref.' = "'.$idXref.'"';
+		$q = 'SELECT '.$db->getEscaped($fieldnameXref).' FROM '.$db->getEscaped($tableXref).' WHERE '.$db->getEscaped($fieldIdXref).' = "'.(int)$idXref.'"';
 		$db->setQuery($q);
 		$tempArray = $db->loadResultArray();
 		if(isset($tempArray)){
@@ -126,7 +126,7 @@ class ShopFunctions {
 			$ttip='';
 			$i=0;
 			foreach ($tempArray as $value) {
-				$q = 'SELECT '.$fieldname.' FROM '.$table.' WHERE '.$fieldId.' = "'.$value.'"';
+				$q = 'SELECT '.$db->getEscaped($fieldname).' FROM '.$db->getEscaped($table).' WHERE '.$db->getEscaped($fieldId).' = "'.(int)$value.'"';
 				$db->setQuery($q);
 				$tmp = $db->loadResult();
 				if($i<$quantity){
@@ -490,7 +490,7 @@ class ShopFunctions {
 		$id = (int) $id;
 		$db = JFactory::getDBO();
 
-		$q = 'SELECT ' . $fld . ' AS fld FROM `#__virtuemart_countries` WHERE virtuemart_country_id = ' . $id;
+		$q = 'SELECT ' . $db->getEscaped($fld) . ' AS fld FROM `#__virtuemart_countries` WHERE virtuemart_country_id = ' . (int)$id;
 		$db->setQuery($q);
 		return $db->loadResult();
 	}
@@ -508,11 +508,11 @@ class ShopFunctions {
 		if (empty($_name)) {
 			return 0;
 		}
-		$_db = JFactory::getDBO();
+		$db = JFactory::getDBO();
 
-		$_q = "SELECT `virtuemart_country_id` FROM `#__virtuemart_countries` WHERE `country_name` = '$_name'";
-		$_db->setQuery($_q);
-		$_r = $_db->loadResult();
+		$_q = 'SELECT `virtuemart_country_id` FROM `#__virtuemart_countries` WHERE `country_name` = "'.$db->getEscaped($_name).'"';
+		$db->setQuery($_q);
+		$_r = $db->loadResult();
 		return $_r;
 	}
 
@@ -530,7 +530,7 @@ class ShopFunctions {
 		if (empty($id)) return ''; 
 		$db = JFactory::getDBO();
 
-		$q = 'SELECT ' . $fld . ' AS fld FROM `#__virtuemart_states` WHERE virtuemart_state_id = ' . (int)$id;
+		$q = 'SELECT ' . $db->getEscaped($fld) . ' AS fld FROM `#__virtuemart_states` WHERE virtuemart_state_id = "'.(int)$id.'"';
 		$db->setQuery($q);
 		$r = $db->loadObject();
 		return $r->fld;
@@ -615,12 +615,11 @@ class ShopFunctions {
 	*/
 	public function getOrderStatusName ($_code)
 	{
-		$_db = JFactory::getDBO();
+		$db = JFactory::getDBO();
 
-		$_q = 'SELECT order_status_name FROM `#__virtuemart_orderstates`'
-			. ' WHERE order_status_code = '.$_code;
-		$_db->setQuery($_q);
-		$_r = $_db->loadObject();
+		$_q = 'SELECT order_status_name FROM `#__virtuemart_orderstates` WHERE order_status_code = '.$db->getEscaped($_code);
+		$db->setQuery($_q);
+		$_r = $db->loadObject();
 		return $_r->order_status_name;
 	}
 
@@ -804,7 +803,7 @@ class ShopFunctions {
 	/**
 	* Validates an email address by using regular expressions
 	* Does not resolve the domain name!
-	*
+	* ATM NOT USED
 	* Joomla has it's own e-mail checker but is no good JMailHelper::isEmailAddress()
 	* maybe in the future it will be better
 	*
@@ -816,70 +815,6 @@ class ShopFunctions {
 		return $valid;
 	}
 
-	/**
-	 * Creates the Quantity Input Boxes/Radio Buttons/Lists for Products
-	 *
-	 * @deprecated
-	 * @param object $product The product details
-	 * @param string $child
-	 * @param string $use_parent
-	 * @return string
-	 */
-/*	function getQuantityBoxOptions($product, $child = false, $use_parent = 'N') {
-		$session = JFactory::getSession();
-		$cart = $session->get("cart", null);
-
-		if ($child == 'Y') {
-			//We have a child list so get the current quantity;
-			$quantity = 0 ;
-			foreach ($cart->products as $productCart){
-				if ($productCart["virtuemart_product_id"] == $product->virtuemart_product_id) {
-					$quantity = $productCart["quantity"];
-				}
-			}
-		}
-		else {
-			$quantity = JRequest::getInt('quantity', 1);
-		}
-
-		// Determine which style to use
-		//TODO use_parent = Y? using of Y is not allowed, must  be replaced by 1
-		if ($use_parent == 'Y' && $product->parent_virtuemart_product_id !=0) $id = $product->parent_virtuemart_product_id;
-		else $id = $product->virtuemart_product_id ;
-
-		//Get style to use
-		extract($product->quantity_options);
-
-		//Start output of quantity
-		//Check for incompatabilities and reset to normal
-		$display_type = null;
-		if (VmConfig::get('check_stock') == '1' && ! $product->product_in_stock ) {
-			$display_type = 'hide' ;
-		}
-		if (empty($display_type)
-			|| ($display_type == "hide" && $child == 'Y')
-			|| ($display_type == "radio" && $child == 'YM')
-			|| ($display_type == "radio" && !$child) ) {
-				$display_type = "none" ;
-		}
-
-		//todo what is this?
-		echo '<pre>'.print_r($quantity_options,1).'</pre>';
-		exit;
-
-		$tpl->set( 'prod_id', $prod_id ) ;
-		$tpl->set( 'quantity', $quantity ) ;
-		$tpl->set( 'display_type', $display_type ) ;
-		$tpl->set( 'child', $child ) ;
-		$tpl->set( 'quantity_options', $quantity_options ) ;
-
-		//Determine if label to be used
-		$html = $tpl->fetch( 'product_details/includes/quantity_box_general.tpl.php' ) ;
-
-		return $html ;
-
-	}
-*/
 	/**
 	* Return $str with all but $display_length at the end as asterisks.
 	* @author gday

@@ -31,6 +31,8 @@ class VmTableXarray extends VmTable {
 	protected $_autoOrdering = false;
 	protected $_orderable = false;
 
+	protected $_pvalue = '';
+	
 //    function setOrderable($key='ordering', $auto=true){
 //    	$this->_orderingKey = $key;
 //    	$this->_orderable = 1;
@@ -57,11 +59,11 @@ class VmTableXarray extends VmTable {
     	}
 		$skeyId = JRequest::getInt($this->_skey, 0);
 		// Initialize variables
-		$db		= & JFactory::getDBO();
+		$db		= JFactory::getDBO();
 		$cid	= JRequest::getVar( $this->_pkey , array(), 'post', 'array' );
 		$order	= JRequest::getVar( 'order', array(), 'post', 'array' );
 
-		$query = 'SELECT `id` WHERE $this->_pkey = '.(int)$cid[0].' AND `virtuemart_category_id` = '.$skeyId ;
+		$query = 'SELECT `id` WHERE $this->_pkey = '.(int)$cid[0].' AND `virtuemart_category_id` = '.(int)$skeyId ;
 		$this->_db->setQuery( $query );
 		$id = $this->_db->loadResult();
 		$keys = array_keys($order);
@@ -74,7 +76,7 @@ class VmTableXarray extends VmTable {
 			$query = 'UPDATE `'.$this->_tbl.'` '
 			. ' SET `'.$this->_orderingKey.'` = `'.$this->_orderingKey.'` + '. $direction
 			. ' WHERE `'.$this->_pkey.'` = ' . (int)$cid[0]. 
-			' AND `'.$this->_skey.'`  = ' . $skeyId 
+			' AND `'.$this->_skey.'`  = ' . (int)$skeyId 
 			;
 			$this->_db->setQuery( $query );
 
@@ -106,7 +108,7 @@ class VmTableXarray extends VmTable {
 			$orderby = '';
 		}
 
-		$q = 'SELECT `'.$this->_skey.'` FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'.$id.'" '.$orderby;
+		$q = 'SELECT `'.$this->_skey.'` FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'.(int)$id.'" '.$orderby;
 		$this->_db->setQuery($q);
 
 		$result = $this->_db->loadResultArray();

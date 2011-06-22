@@ -32,13 +32,17 @@ jimport( 'joomla.user.user' );
  */
 class VmTable extends JTable {
 
+	protected $_pkey	= '';
+	protected $_pkeyForm	= '';
+	
 	protected $_obkeys	= array();
 	protected $_unique	= false;
 	protected $_unique_name = array();
 
 	protected $_orderingKey = 'ordering';
 	protected $_slugAutoName = '';
-
+	protected $_slugName	= '';
+	
 	protected $_loggable = false;
 
     function setPrimaryKey($key,$keyForm=0){
@@ -183,8 +187,8 @@ class VmTable extends JTable {
 		    $this->_db = JFactory::getDBO();
 		    foreach($this->_unique_name as $obkeys => $error){
 
-		   		$q = 'SELECT `'.$this->_tbl_key.'`,`'.$obkeys.'` FROM `'.$this->_tbl.'` ';
-				$q .= 'WHERE `'.$obkeys.'`="' .  $this->$obkeys . '"';
+		   		$q = 'SELECT `'.$this->_tbl_key.'`,`'.$this->_db->getEscaped($obkeys).'` FROM `'.$this->_tbl.'` ';
+				$q .= 'WHERE `'.$this->_db->getEscaped($obkeys).'`="' .  $this->_db->getEscaped($this->$obkeys) . '"';
 	            $this->_db->setQuery($q);
 			    $unique_id = $this->_db->loadResultArray();
 
@@ -195,7 +199,7 @@ class VmTable extends JTable {
 							if(empty($error)){
 								$this->setError(JText::_($error));
 							} else {
-                                                                $this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE',$this->_tbl, $obkeys)  );
+								$this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE',$this->_tbl, $obkeys)  );
 							}
 							return false;
 						}

@@ -119,13 +119,13 @@ class Permissions extends JObject{
 			$q  = "SELECT COUNT(virtuemart_user_id) AS num_rows
 				FROM `#__virtuemart_userinfos`, `#__users`
 				WHERE `id`=`virtuemart_user_id`
-				AND #__virtuemart_userinfos.virtuemart_user_id='" . $virtuemart_user_id . "'
+				AND #__virtuemart_userinfos.virtuemart_user_id='" . (int)$virtuemart_user_id . "'
 				AND #__virtuemart_userinfos.address_type='BT'";
 		}
 		else {
 			$q  = "SELECT COUNT(virtuemart_user_id) AS num_rows
 				FROM `#__virtuemart_userinfos`
-				WHERE #__virtuemart_userinfos.virtuemart_user_id='" . $virtuemart_user_id . "'
+				WHERE #__virtuemart_userinfos.virtuemart_user_id='" . (int)$virtuemart_user_id . "'
 				AND #__virtuemart_userinfos.address_type='BT'";
 		}
 		$this->_db->setQuery($q);
@@ -158,7 +158,7 @@ class Permissions extends JObject{
 		if(!empty($user->id)){
 			$this->_virtuemart_user_id   = $user->id;
 			$q = 'SELECT `perms` FROM #__virtuemart_vmusers
-					WHERE virtuemart_user_id="'.$this->_virtuemart_user_id.'"';
+					WHERE virtuemart_user_id="'.(int)$this->_virtuemart_user_id.'"';
 			$this->_db->setQuery($q);
 			$this->_perms = $this->_db->loadResult();
 

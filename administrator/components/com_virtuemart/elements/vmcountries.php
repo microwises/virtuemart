@@ -27,10 +27,8 @@ class JElementVmCountries extends JElement {
 
         $db =  JFactory::getDBO();
 
-        $query = 'SELECT `virtuemart_country_id` AS value, `country_name` AS text'
-                . ' FROM `#__virtuemart_countries` '
-                . ' WHERE `published` = 1'
-                . ' ORDER BY `country_name` ASC '
+        $query = 'SELECT `virtuemart_country_id` AS value, `country_name` AS text FROM `#__virtuemart_countries` 
+               		WHERE `published` = 1 ORDER BY `country_name` ASC '
         ;
 
         $db->setQuery($query);

@@ -30,10 +30,9 @@ class JElementVmCurrencies extends JElement {
     function fetchElement($name, $value, &$node, $control_name) {
 
         $db =   JFactory::getDBO();
-        $query = 'SELECT `virtuemart_currency_id` AS value, `currency_name` AS text'
-                . ' FROM `#__virtuemart_currencies` '
-                . ' WHERE `virtuemart_vendor_id` = 1  AND `published` = 1 '
-                . ' ORDER BY `currency_name` ASC '
+        $query = 'SELECT `virtuemart_currency_id` AS value, `currency_name` AS text
+        		 FROM `#__virtuemart_currencies`
+        		 WHERE `virtuemart_vendor_id` = "1"  AND `published` = "1" ORDER BY `currency_name` ASC '
         ;
         // default value should be vendor currency
         $db->setQuery($query);

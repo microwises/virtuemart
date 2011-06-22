@@ -159,7 +159,7 @@ class VirtueMartModelCalc extends VmModel {
 		$data['publish_up'] = $startDate->toMySQL();
 //		if ($data['publish_down'] == '' or $data['publish_down']==0){
 		if (empty($data['publish_down']) || trim($data['publish_down']) == JText::_('COM_VIRTUEMART_NEVER')){
-			$this->_db = JFactory::getDBO();
+			if(empty($this->_db)) $this->_db = JFactory::getDBO();
 			$data['publish_down']	= $this->_db->getNullDate();
 		} else {
 			$expireDate = JFactory::getDate($data['publish_down']);
@@ -223,7 +223,6 @@ class VirtueMartModelCalc extends VmModel {
 
 		$nullDate		= $this->_db->getNullDate();
 		$now			= JFactory::getDate()->toMySQL();
-
 
 		$q = 'SELECT * FROM `#__virtuemart_calcs` WHERE ';
 		foreach ($kind as $field){

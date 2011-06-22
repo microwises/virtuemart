@@ -53,7 +53,7 @@ class CurrencyDisplay {
 		if(empty($vendorId)) $vendorId = 1;
 
 		$this->_db = JFactory::getDBO();
-		$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`="'.$vendorId.'"';
+		$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`="'.(int)$vendorId.'"';
 		$this->_db->setQuery($q);
 		$this->_vendorCurrency = $this->_db->loadResult();
 	}
@@ -98,7 +98,7 @@ class CurrencyDisplay {
 				$this->_currency_id = $currencyId;
 			}
 
-			$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$this->_currency_id.'"';
+			$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.(int)$this->_currency_id.'"';
 			self::$_instance->_db->setQuery($q);
 			$style = self::$_instance->_db->loadObject();
 
@@ -200,7 +200,7 @@ class CurrencyDisplay {
 			if(is_Int($currency)){
 //				$this->_db = JFactory::getDBO();
 				$q = 'SELECT `currency_exchange_rate`
-				FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.$currency.'" ';
+				FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.(int)$currency.'" ';
 				$this->_db->setQuery($q);
 				if(	$exch = $this->_db->loadResult()){
 					$exchangeRate = $this->_db->loadResult();
@@ -239,7 +239,7 @@ class CurrencyDisplay {
 
 		if(is_numeric($curr)){
 			$this->_db = JFactory::getDBO();
-			$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$curr.'"';
+			$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$this->_db->getEscaped($curr).'"';
 			$this->_db->setQuery($q);
 			$currInt = $this->_db->loadResult();
 			if(empty($currInt)){
