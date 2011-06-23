@@ -37,7 +37,7 @@ function com_install(){
 
 	if ($newInstall) {
 		// Install the configuration data
-		$model->installVMconfig();
+		//$model->installVMconfig();
 		// Install Essential Data
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_essential_data.sql';
 		$model->execSQLFile($filename);

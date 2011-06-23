@@ -117,7 +117,11 @@ class VirtueMartModelCalc extends VmModel {
 	 	else {
 			$this->_data = $this->_getList($this->_query, $this->getState('limitstart'), $this->getState('limit'));
 		}
-		$this->_total = $this->_getListCount($this->_query) ;
+		
+		if(count($this->_data) >0){
+			$this->_total = $this->_getListCount($this->_query);
+		}
+		//$this->_total = $this->_getListCount($this->_query) ;
 		if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		foreach ($this->_data as $data){
 

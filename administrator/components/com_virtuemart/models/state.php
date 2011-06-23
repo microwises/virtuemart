@@ -109,7 +109,10 @@ class VirtueMartModelState extends VmModel {
 		    $this->_data = $this->_getList($quer, $this->getState('limitstart'), $this->getState('limit'));
 		}
 		
-		$this->_total = $this->_getListCount($quer);
+		if(count($this->_data) >0){
+			$this->_total = $this->_getListCount($quer);
+		}
+		
 		return $this->_data;
 	}
 

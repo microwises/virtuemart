@@ -226,12 +226,38 @@ class VirtueMartModelMedia extends VmModel {
 
 		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
 
+		if(!empty($data['media_action'])){
+			
+			$oldIds = (int)$data['virtuemart_media_id'];
+			$data['file_type'] = $type;
+			
+			//We just update it, ensure data correctly set
+			$data['virtuemart_media_id'] = (int)$data['active_media_id'];
+			$this -> setId((int)$data['active_media_id']);
+			
+			$virtuemart_media_id = $this->store($data,$type);
+
+			/* add the virtuemart_media_id & remove 0 and '' from $data */
+			$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
+			$virtuemart_media_ids = array_diff($virtuemart_media_ids,array('0',''));
+			$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
+		}
+	
+		//Important! sanitize array to int	
+		jimport( 'joomla.utilities.arrayhelper' );
+		JArrayHelper::toInteger($data['virtuemart_media_id']);
+
 		
-		$oldIds = (int)$data['virtuemart_media_id'];
-		$data['file_type'] = $type;
+		$table = $this->getTable($type.'_medias');
+		// Bind the form fields to the country table
+		$data = $table->bindChecknStore($data);
+	    $errors = $table->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
+		}		
 		
-		
-		if(in_array($data['active_media_id'], $data['virtuemart_media_id']) && empty($data['media_action']) ){
+	
+/*		if(in_array($data['active_media_id'], $data['virtuemart_media_id']) && empty($data['media_action']) ){
 			$this -> setId((int)$data['active_media_id']);
 			$data['virtuemart_media_id'] = (int)$data['active_media_id'];
 		}
@@ -240,9 +266,10 @@ class VirtueMartModelMedia extends VmModel {
 //		if(!Permissions::getInstance()->check('admin') ){
 //			
 //		}
+		*/
 		$virtuemart_media_id = $this->store($data,$type);
 
-		/* add the virtuemart_media_id & remove 0 and '' from $data */
+		/* add the virtuemart_media_id & remove 0 and '' from $data 
 		$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
 		$virtuemart_media_ids = array_diff($virtuemart_media_ids,array('0',''));
 		$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
@@ -258,7 +285,7 @@ class VirtueMartModelMedia extends VmModel {
 	    $errors = $table->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);
-		}
+		}*/
 
 		return $this->_id;
 
@@ -272,7 +299,7 @@ class VirtueMartModelMedia extends VmModel {
 	 */
 	public function store($data,$type) {
 
-		if(empty($data['media_action'])) return $table->virtuemart_media_id;
+		//if(empty($data['media_action'])) return $table->virtuemart_media_id;
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
 		$table = $this->getTable('medias');

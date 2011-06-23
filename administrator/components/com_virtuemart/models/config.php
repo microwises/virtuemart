@@ -273,8 +273,8 @@ class VirtueMartModelConfig extends JModel {
 	 * @author Oscar van Eijk
 	 * @return object A JParameter of the configuration, null when not found
 	 */
-	function getConfig()
-	{
+	function getConfig(){
+		
 		$db = JFactory::getDBO();
 
 		$query = "SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = 1";
@@ -283,6 +283,10 @@ class VirtueMartModelConfig extends JModel {
 		if ($config) {
 			return new JParameter($config);
 		} else {
+			VmConfig::installVMconfig();
+			$config = $db->loadResult();
+			if($config) return $config;
+			
 			JError::raiseWarning(E_WARNING,'There is no configuration in the database yet. This messages should not appear again once you configured youir shop for the first time.');
 			// ... which is nonsense since is has been loaded during install (vm_config.dat), so probably there is in error...
 			return null;

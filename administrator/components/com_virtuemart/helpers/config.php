@@ -43,16 +43,20 @@ class VmConfig
 	 */
 	private function loadConfig() {
 		$db = JFactory::getDBO();
-		$query = "SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = '1'";
+		$query = 'SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1"';
 		$db->setQuery($query);
 		$config = $db->loadResult();
 
+		if(empty($config)){
+			$config = self::installVMconfig();
+			$config = $db->loadResult();
+		}
 		$session = JFactory::getSession();
 		$session->clear('vmconfig');
 		$session->set('vmconfig', $config,'vm');
 	}
 	
-	/* Get always the same VmConfig */
+	// Get always the same VmConfig 
 	public static function getInstance() {
 		if(is_null(self::$_instance)) {
 			self::$_instance = new VmConfig();
@@ -289,5 +293,80 @@ class VmConfig
 		$cssSite = true;
 		return;
 	}
+	
+	/**
+	 * Read the file vm_config.dat from the install directory, compose the SQL to write
+	 * the config record and store it to the dabase.
+	 *
+	 * @param $_section Section from the virtuemart_defaults.cfg file to be parsed. Currently, only 'config' is implemented
+	 * @return Boolean; true on success, false otherwise
+	 * @author Oscar van Eijk
+	 */
+	public function installVMconfig($_section = 'config')
+	{
+		$_datafile = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'virtuemart_defaults.cfg';
+		if (!file_exists($_datafile)) {
+			JError::raiseWarning(500, 'The data file with the default configuration could not be found. You must configure the shop manually.');
+			return false;
+		}
+		$_section = '['.strtoupper($_section).']';
+		$_data = fopen($_datafile, 'r');
+		$_configData = array();
+		$_switch = false;
+		while ($_line = fgets ($_data)) {
+			$_line = trim($_line);
+			if (strpos($_line, '#') === 0) {
+				continue; // Commentline
+			}
+			if ($_line == '') {
+				continue; // Empty line
+			}
+			if (strpos($_line, '[') === 0) {
+				// New section, check if it's what we want
+				if (strtoupper($_line) == $_section) {
+					$_switch = true; // Ok, right section
+				} else {
+					$_switch = false;
+				}
+				continue;
+			}
+			if (!$_switch) {
+				continue; // Outside a section or inside the wrong one.
+			}
+			if (preg_match_all('/\{(\w+?)\}/', $_line, $_matches)) {
+				foreach ($_matches[1] as $_match) {
+					if (defined($_match)) {
+						$_line = preg_replace("/\{$_match\}/", constant($_match), $_line);
+					}
+				}
+			}
+			if (strpos($_line, '=') === false) {
+				$_line .= '=';
+			}
+			$_configData[] = $_line;
+		}
+
+		fclose ($_data);
+
+		$_value = join('\n', $_configData);
+		if (!$_value) {
+			return false; // Nothing to do
+		}
+
+		if ($_section == '[CONFIG]') {
+			$_qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES (null, '$_value')";
+		}
+		// Other sections can be implemented here
+
+		// Write to the DB
+		$_db = JFactory::getDBO();
+		$_db->setQuery($_qry);
+		if (!$_db->query()) {
+			JError::raiseWarning(1, 'JInstaller::install: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(true));
+			return false;
+		}
+		return true;
+	}
+	
 }
 // pure php no closing tag

@@ -168,7 +168,10 @@ class VirtueMartModelOrders extends VmModel {
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
 		// set total for pagination
-		$this->_total = $this->_getListCount($query);
+		if(count($this->_data) >0){
+			$this->_total = $this->_getListCount($this->_query);
+		}
+		//$this->_total = $this->_getListCount($query);
 
 		return $this->_data ;
 	}
