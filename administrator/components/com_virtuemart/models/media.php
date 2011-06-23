@@ -226,7 +226,7 @@ class VirtueMartModelMedia extends VmModel {
 
 		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
 
-		if(empty($data['media_action'])) return ;
+		
 		$oldIds = (int)$data['virtuemart_media_id'];
 		$data['file_type'] = $type;
 		
@@ -272,6 +272,7 @@ class VirtueMartModelMedia extends VmModel {
 	 */
 	public function store($data,$type) {
 
+		if(empty($data['media_action'])) return $table->virtuemart_media_id;
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
 		$table = $this->getTable('medias');
