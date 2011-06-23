@@ -447,8 +447,8 @@ class VmTable extends JTable {
 				{
 					$orders[$i]->$orderingKey = $i+1;
 					$query = 'UPDATE '.$this->_tbl
-					. ' SET `'.$this->_orderingKey.'` = "'. $this->_db->Escaped($orders[$i]->$orderingKey).'"
-					 WHERE '. $k .' = "'. $this->_db->Escaped($orders[$i]->$k).'"'
+					. ' SET `'.$this->_orderingKey.'` = "'. $this->_db->getEscaped($orders[$i]->$orderingKey).'"
+					 WHERE '. $k .' = "'. $this->_db->getEscaped($orders[$i]->$k).'"'
 					;
 					$this->_db->setQuery( $query);
 					$this->_db->query();

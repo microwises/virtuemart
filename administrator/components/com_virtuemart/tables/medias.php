@@ -139,17 +139,17 @@ class TableMedias extends VmTable {
 				
 				$lastIndexOfSlash= strrpos($this->file_url,'/');
 				$name = substr($this->file_url,$lastIndexOfSlash+1);
-				$this->file_extension = strtolower(JFile::getExt($name));
-				if($this->file_extension === 'jpg' || $this->file_extension === 'jpeg'){
+				$file_extension = strtolower(JFile::getExt($name));
+				if($$file_extension === 'jpg' || $file_extension === 'jpeg'){
 					$this->file_mimetype = 'image/jpeg';
 				} 
-				elseif($this->file_extension === 'gif'){
+				elseif($file_extension === 'gif'){
 					$this->file_mimetype = 'image/gif';
 				} 
-				elseif($this->file_extension === 'png'){
+				elseif($file_extension === 'png'){
 					$this->file_mimetype = 'image/png';
 				} 
-				elseif($this->file_extension === 'bmp'){
+				elseif($file_extension === 'bmp'){
 					$this->setError(JText::_('COM_VIRTUEMART_MEDIA_SHOULD_NOT_BMP'));
 					$notice = true;					
 				}
