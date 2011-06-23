@@ -70,7 +70,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						</div>
 					</td>
 					<td width="79%" >
-						<?php echo JHTML::_('calendar', date('Y-m-d', $this->product->product_available_date), "product_available_date", "product_available_date"); ?>
+						<?php 
+						$startDate = JFactory::getDate($this->product->product_available_date,$this->tzoffset);
+						$this->dateformat = VmConfig::get('dateformat');
+						echo JHTML::_('calendar', $startDate->toFormat($this->dateformat), 'product_available_date', 'product_available_date',$this->dateformat); ?>
 					</td>
 				</tr>
 				<tr>

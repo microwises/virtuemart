@@ -221,8 +221,8 @@ class VirtueMartModelCalc extends VmModel {
 		if (!is_array($kind)) $kind = array($kind);
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
-		$nullDate		= $this->_db->getNullDate();
-		$now			= JFactory::getDate()->toMySQL();
+		$this->_nullDate		= $this->_db->getNullDate();
+		$this->_now			= JFactory::getDate()->toMySQL();
 
 		$q = 'SELECT * FROM `#__virtuemart_calcs` WHERE ';
 		foreach ($kind as $field){

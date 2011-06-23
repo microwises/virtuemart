@@ -79,9 +79,14 @@ class VirtueMartViewProductdetails extends JView {
 		$product = $product_model->getProduct($virtuemart_product_id);
 
 		if(empty($product->virtuemart_product_id)){
+			
+			//Todo this should be redesigned to fit better for SEO
 			$mainframe -> enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND'));
 			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
 			$categoryLink='';
+			if(!$virtuemart_category_id){
+				$virtuemart_category_id = JRequest::getInt('virtuemart_category_id',false);
+			}
 			if($virtuemart_category_id){
 				$categoryLink='&virtuemart_category_id='.$virtuemart_category_id;
 			}
