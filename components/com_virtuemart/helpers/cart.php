@@ -889,7 +889,7 @@ class VirtueMartCart  {
                 // Now check if all products are still published and existant
                 $products_in_cart = array();
 				for ($i=0; $i < $contents["idx"]; $i++) {
-                    $products_in_cart[$contents[$i]['virtuemart_product_id']] = intval($contents[$i]['virtuemart_product_id']);
+                    $products_in_cart[$contents[$i]['virtuemart_product_id']] = (int)($contents[$i]['virtuemart_product_id']);
                 }
                 if (!empty($products_in_cart)) {
                     $remove_products = array();
@@ -903,7 +903,7 @@ class VirtueMartCart  {
 
                 if (!empty($remove_products)) {
 					for ($i=0; $i < $contents["idx"]; $i++) {
-						if (in_array(intval($contents[$i]['virtuemart_product_id']), $remove_products)) self::removeProductCart(array($i));
+						if (in_array((int)($contents[$i]['virtuemart_product_id']), $remove_products)) self::removeProductCart(array($i));
                     }
                 }
             }

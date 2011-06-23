@@ -35,13 +35,14 @@ if (!empty($this->vendor->vendor_store_desc)) { ?>
 if ($this->categories) echo $this->loadTemplate('categories');
 
 /* Show Featured Products */
-if (VmConfig::get('show_featured', 1) && $this->featuredProducts) echo $this->loadTemplate('featuredproducts');
+if (VmConfig::get('show_featured', 1) && !empty($this->featuredProducts) ) echo $this->loadTemplate('featuredproducts');
 
 /* Recent products */
-if (VmConfig::get('show_recent', 1) && $this->recentProducts) echo $this->loadTemplate('recentproducts');
+if (VmConfig::get('show_recent', 1) && !empty($this->recentProducts) ) echo $this->loadTemplate('recentproducts');
+
 /* Topten products */
-if (VmConfig::get('show_topTen', 1) && $this->toptenProducts) echo $this->loadTemplate('toptenproducts');
+if (VmConfig::get('show_topTen', 1) && !empty($this->toptenProducts) ) echo $this->loadTemplate('toptenproducts');
 // load categories from front_categories if exist
-if (VmConfig::get('show_latest', 1) && $this->latestProducts) echo $this->loadTemplate('latestproducts');
+if (VmConfig::get('show_latest', 1) && !empty($this->latestProducts) ) echo $this->loadTemplate('latestproducts');
 
 ?>

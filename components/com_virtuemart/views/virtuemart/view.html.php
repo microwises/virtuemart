@@ -63,6 +63,7 @@ class VirtueMartViewVirtueMart extends JView {
 	        if (VmConfig::get('show_recent', 1)) {
 	        	$recentProductIds = shopFunctionsF::getRecentProductIds();
 				$recentProducts = $productModel->getProducts($recentProductIds);
+				dump($recentProducts,'hmmm recent Products');
 	        	$productModel->addImages($recentProducts);
 	        	$this->assignRef('recentProducts', $recentProducts);
 	        }
@@ -74,8 +75,10 @@ class VirtueMartViewVirtueMart extends JView {
 			}
 
 			if (VmConfig::get('show_latest', 1)) {
-				$latestProducts = $productModel->getProductListing('latest', 5);
+				$latestProducts = $productModel->getProductListing('latest', 5); dump($latestProducts,'hm');
+				//if(empty($latestProducts)) $latestProducts = 0;
 				$productModel->addImages($latestProducts);
+				//$latestProducts = array();
 				$this->assignRef('latestProducts', $latestProducts);
 			}
 

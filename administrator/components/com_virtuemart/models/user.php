@@ -846,8 +846,8 @@ class VirtueMartModelUser extends VmModel {
 	 function _getFilter()
 	 {
 	 	if ($search = JRequest::getWord('search', false)) {
-	 		$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
-			$search = $this->_db->Quote($search, false);
+	 		$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+			//$search = $this->_db->Quote($search, false);
 			
 	 		$where = ' WHERE `name` LIKE '.$search.' OR `username` LIKE ' .$search;
 	 		return ($where);

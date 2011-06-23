@@ -142,8 +142,8 @@ class VirtueMartModelManufacturer extends VmModel {
 			$where[] .= 'M.`virtuemart_manufacturercategories_id` = '. $virtuemart_manufacturercategories_id;
 		}
 		if ( $search ) {
-			$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
-			$search = $this->_db->Quote($search, false);
+			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+			//$search = $this->_db->Quote($search, false);
 			$where[] .= 'LOWER( M.`mf_name` ) LIKE '.$search;
 		}
 		if ($onlyPublished) {

@@ -147,8 +147,7 @@ class VirtueMartModelMedia extends VmModel {
     	}
 		
 		if ($search = JRequest::getWord('search', false)){
-			$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
-			$search = $this->_db->Quote($search, false);
+			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			$where[] = '`file_title` LIKE '.$search;
 		} 
 

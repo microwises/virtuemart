@@ -3,7 +3,7 @@
 	//Number of featured products to show per row
 	$product_per_row = 2;
 	//Set the cell width
-	$TopTen_cellwidth = intval( (100 / $product_per_row) - 2 );
+	$TopTen_cellwidth = (int)( (100 / $product_per_row) - 2 );
 
 	echo "<h3>".JText::_('COM_VIRTUEMART_LATEST_PRODUCT')."</h3>";
 	foreach ($this->latestProducts as $latestProduct ) {

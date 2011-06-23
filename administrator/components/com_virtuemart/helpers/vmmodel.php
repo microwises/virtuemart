@@ -118,7 +118,7 @@ class VmModel extends JModel {
 	public function getTotal() {
 
     	if (empty($this->_total)) {
-			$query = 'SELECT '.$this->_db->nameQuote($this->_idName).' FROM '.$this->_db->nameQuote($this->_maintable);
+			$query = 'SELECT `'.$this->_db->getEscaped($this->_idName).'` FROM `'.$this->_db->getEscaped($this->_maintable).'`';;
 			$this->_db->setQuery( $query );
 			if(!$this->_db->query()){
 				if(empty($this->_maintable)) $this->setError('Model '.get_class( $this ).' has no maintable set');

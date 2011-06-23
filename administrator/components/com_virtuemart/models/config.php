@@ -304,7 +304,7 @@ class VirtueMartModelConfig extends JModel {
 		    $curConfigParams->bind($data);
 
 		    $db = JFactory::getDBO();
-		    $query = 'UPDATE `#__virtuemart_configs` SET `config` = ' . $db->Quote($curConfigParams->toString()) .' WHERE virtuemart_config_id ="1"' ;
+		    $query = 'UPDATE `#__virtuemart_configs` SET `config` = "' . $db->getEscaped($curConfigParams->toString()) .'" WHERE virtuemart_config_id ="1"' ;
 		    $db->setQuery($query);
 		    if (!$db->query()) {
 				$this->setError($table->getError());
@@ -326,7 +326,7 @@ class VirtueMartModelConfig extends JModel {
     	$config -> set('dangeroustools',0);
 
 	    $db = JFactory::getDBO();
-	    $query = 'UPDATE `#__virtuemart_configs` SET `config` = ' . $db->Quote($config->toString()) .' WHERE virtuemart_config_id ="1"' ;
+	    $query = 'UPDATE `#__virtuemart_configs` SET `config` = "' . $db->getEscaped($config->toString()) .'" WHERE virtuemart_config_id ="1"' ;
 	    $db->setQuery($query);
 	    if (!$db->query()) {
 			$this->setError($table->getError());

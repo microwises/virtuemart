@@ -79,8 +79,8 @@ class VirtueMartModelRatings extends VmModel {
     	/* Check some filters */
      	$filters = array();
      	if ($search = JRequest::getVar('filter_ratings', false)){
- 			$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
-			$search = $this->_db->Quote($search, false);    		
+ 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+			//$search = $this->_db->Quote($search, false);    		
 			
      		$filters[] = '(#__virtuemart_products.`product_name` LIKE '.$search.' OR #__virtuemart_rating_reviews.comment LIKE '.$search.')';
      	}

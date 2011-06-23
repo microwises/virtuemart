@@ -99,8 +99,8 @@ class VirtueMartModelCustom extends VmModel {
 		}
 
 		if($search){
-			$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
-			$search = $this->_db->Quote($search, false);
+			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+			//$search = $this->_db->Quote($search, false);
 			$query .= 'AND `custom_title` LIKE '.$search;
 		}
 		

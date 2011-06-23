@@ -555,22 +555,21 @@ class calculationHelper {
         if (!empty($id)) {
             $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id` = "' . $id . '" AND `calc_kind`="' . $entrypoint . '" ';
         } else {
-            $q = 'SELECT * FROM #__virtuemart_calcs WHERE ' .
-                    '`calc_kind`="' . $entrypoint . '" ' .
-                    ' AND `published`="1" ' .
-                    ' AND (`virtuemart_vendor_id`="' . $this->productVendorId . '" OR `shared`="1" )' .
-                    ' AND ( publish_up = ' . $this->_db->Quote($this->_nullDate) . ' OR publish_up <= ' . $this->_db->Quote($this->_now) . ' )' .
-                    ' AND ( publish_down = ' . $this->_db->Quote($this->_nullDate) . ' OR publish_down >= ' . $this->_db->Quote($this->_now) . ' ) ';
+            $q = 'SELECT * FROM #__virtuemart_calcs WHERE 
+                    `calc_kind`="' . $entrypoint . '" 
+                     AND `published`="1" 
+                     AND (`virtuemart_vendor_id`="' . $this->productVendorId . '" OR `shared`="1" ) 
+                     AND ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
+                     AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" ) ';
 
             if (!empty($this->_amount)) {
-                $q .=' AND (`calc_amount_cond` <= "' . $this->_amount . '" OR calc_amount_cond="0" )';
+                $q .=' AND (`calc_amount_cond` <= "' . $this->_db->getEscaped($this->_amount) . '" OR calc_amount_cond="0" )';
             }
         }
-//		' AND ( calc_amount_cond = '.$this->_db->Quote($this ->_nullDate).' OR publish_down >= '.$this->_db->Quote($this ->_now).' ) ';
+//		' AND ( calc_amount_cond = "'.$this->_db->getEscaped($this ->_nullDate).'" OR publish_down >= "'.$this->_db->getEscaped($this ->_now).'" ) ';
 
         $this->_db->setQuery($q);
         $rules = $this->_db->loadAssocList();
-		dump($this->_db,'gatherEffectingRulesForProductPrice');
 
         $testedRules = array();
         //Cant be done with Leftjoin afaik, because both conditions could be arrays.
@@ -641,12 +640,12 @@ class calculationHelper {
 //		$states = $this -> writeRulePartEffectingQuery($this->_states,'virtuemart_state_id',true);
         //Test if calculation affects the current entry point
         //shared rules counting for every vendor seems to be not necessary
-        $q = 'SELECT * FROM #__virtuemart_calcs WHERE ' .
-                '`calc_kind`="' . $entrypoint . '" ' .
-                ' AND `published`="1" ' .
-                ' AND (`virtuemart_vendor_id`="' . $cartVendorId . '" OR `shared`="1" )' .
-                ' AND ( publish_up = ' . $this->_db->Quote($this->_nullDate) . ' OR publish_up <= ' . $this->_db->Quote($this->_now) . ' )' .
-                ' AND ( publish_down = ' . $this->_db->Quote($this->_nullDate) . ' OR publish_down >= ' . $this->_db->Quote($this->_now) . ' ) ';
+        $q = 'SELECT * FROM #__virtuemart_calcs WHERE 
+                `calc_kind`="' . $entrypoint . '" 
+                AND `published`="1" 
+                AND (`virtuemart_vendor_id`="' . $cartVendorId . '" OR `shared`="1" )
+				AND ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
+				AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" ) ';
 //			$shoppergrps .  $countries . $states ;
         $this->_db->setQuery($q);
         $rules = $this->_db->loadAssocList();

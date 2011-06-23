@@ -96,13 +96,12 @@ class VirtueMartModelProduct extends VmModel {
 		
 		$where = array();
 		if($onlyPublished){
-			$where[] = " `#__virtuemart_products`.`published`='1' ";
+			$where[] = ' `#__virtuemart_products`.`published`="1" ';
 		}
 
      	// Product name Backend?
      	if ($search = JRequest::getWord('filter_product', false)){
-			$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
-			$search = $this->_db->Quote($search, false);
+			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			$where[] = '#__virtuemart_products.`product_name` LIKE '.$search;
      	}
 
@@ -112,8 +111,7 @@ class VirtueMartModelProduct extends VmModel {
 			//Why keyword and search used? why not only keyword or search? notice by Max Milbers
 			//$keyword = trim( str_replace(' ', '%', JRequest::getWord('keyword', '') ) );
 			$keyword = JRequest::getWord('keyword', '');
-			$keyword = '%' . $this->_db->getEscaped( $keyword, true ) . '%' ;
-			$keyword = $this->_db->Quote($keyword, false);
+			$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;
 				
 			$searchFields = VmConfig::get('browse_search_fields');
 			foreach ($searchFields as $searchField) {
@@ -143,14 +141,14 @@ class VirtueMartModelProduct extends VmModel {
 
      	// Time filter 
      	if (JRequest::getVar('search_type', '') != '') {
-     		$search_order = JRequest::getVar('search_order') == 'bf' ? '<' : '>';
+     		$search_order = $this->_db->getEscaped(JRequest::getVar('search_order') == 'bf' ? '<' : '>');
      		switch (JRequest::getVar('search_type')) {
      			case 'product':
-     				$where[] = '#__virtuemart_products.`modified_on` '.$search_order.' '.strtotime(JRequest::getVar('search_date'));
+     				$where[] = '#__virtuemart_products.`modified_on` '.$search_order.' "'.$this->_db->getEscaped(JRequest::getVar('search_date')).'"';
      				break;
      			case 'price':
 					$joinPrice = true ;
-     				$where[] = '#__virtuemart_product_prices.`modified_on` '.$search_order.' '.strtotime(JRequest::getVar('search_date'));
+     				$where[] = '#__virtuemart_product_prices.`modified_on` '.$search_order.' "'.$this->_db->getEscaped(JRequest::getVar('search_date')).'"';
      				break;
      			case 'withoutprice':
      				$joinPrice = true ;
@@ -167,13 +165,15 @@ class VirtueMartModelProduct extends VmModel {
 					$where[] = '`#__virtuemart_products`.`product_special`="Y" ';
 					break;
 				case 'latest':
-					$where[] = '`#__virtuemart_products`.`modified_on` > '.(time()-(60*60*24*7)).' ';
+					$date = JFactory::getDate( time()-(60*60*24*7) ); //Set on a week, maybe make that configurable
+					$dateSql = $date->toMySQL();
+					$where[] = '`#__virtuemart_products`.`modified_on` > "'.$dateSql.'" ';
 					break;
 				case 'random':
-					$orderBy = 'ORDER BY RAND() ' ; //TODO set limit LIMIT 0, '.(int)$nbrReturnProducts;
+					$orderBy = 'ORDER BY RAND() LIMIT 0, '.(int)$nbrReturnProducts ; //TODO set limit LIMIT 0, '.(int)$nbrReturnProducts;
 					break;
 				case 'topten';
-					$orderBy = 'ORDER BY product_sales ';  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
+					$orderBy = 'ORDER BY product_sales LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
 					$filter_order_Dir = 'DESC';
 			}			
 		}
@@ -201,12 +201,12 @@ class VirtueMartModelProduct extends VmModel {
 				$joinPrice = true ;
 				break;
 			default ;
-				$orderBy = ' ORDER BY `#__virtuemart_products`.`'.$filter_order.'` ';
+				$orderBy = ' ORDER BY `#__virtuemart_products`.`'.$this->_db->getEscaped($filter_order).'` ';
 				break;
 		}
 				
 		//write the query, incldue the tables
-		$query = "SELECT * FROM `#__virtuemart_products` ";
+		$query = 'SELECT * FROM `#__virtuemart_products` ';
 		if ($joinCategory == true) {
 			$query .= ' LEFT JOIN `#__virtuemart_product_categories` ON `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_categories`.`virtuemart_product_id`
 			 LEFT JOIN `#__virtuemart_categories` ON `#__virtuemart_categories`.`virtuemart_category_id` = `#__virtuemart_product_categories`.`virtuemart_category_id`';
@@ -262,10 +262,12 @@ class VirtueMartModelProduct extends VmModel {
 
     	if (!empty($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId($virtuemart_product_id);
+		} else {
+			return false;	
 		}
 
     	$child = $this->getProductSingle($virtuemart_product_id,$front, false,$onlyPublished);
-
+		if(!$child->published && $onlyPublished) return false;
     	//store the original parent id
 		$pId = $child->virtuemart_product_id;
     	$ppId = $child->product_parent_id;
@@ -275,7 +277,7 @@ class VirtueMartModelProduct extends VmModel {
 		//Check for all attributes to inherited by parent products
     	while(!empty($child->product_parent_id)){
     		
-    		$parentProduct = $this->getProductSingle($child->product_parent_id,$front, false,$onlyPublished);
+    		$parentProduct = $this->getProductSingle($child->product_parent_id,$front, false,false);
     	    $attribs = get_object_vars($parentProduct);
 			//dump($parentProduct,'parent '.$child->product_parent_id);
 	    	foreach($attribs as $k=>$v){
@@ -301,7 +303,7 @@ class VirtueMartModelProduct extends VmModel {
 
     public function getProductSingle($virtuemart_product_id = null,$front=true, $withCalc = true, $onlyPublished=true){
 
-		$this->fillVoidProduct($front);
+		//$this->fillVoidProduct($front);
        	if (!empty($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId($virtuemart_product_id);
 		}
@@ -312,11 +314,12 @@ class VirtueMartModelProduct extends VmModel {
 
    			$product = $this->getTable('products');
    			$product->load($this->_id);
-   			if($onlyPublished){
+			//$product = $this->fillVoidProduct($product,$front);
+/*   			if($onlyPublished){
    				if(empty($product->published)){
-   					return $this->data;
+   					return false;
    				}
-   			}
+   			}*/
 
    			$xrefTable = $this->getTable('product_medias');
 			$product->virtuemart_media_id = $xrefTable->load((int)$this->_id);
@@ -434,18 +437,18 @@ class VirtueMartModelProduct extends VmModel {
      * @param unknown_type $product
      * @param unknown_type $front
      */
-    private function fillVoidProduct($front=true){
+    private function fillVoidProduct($product,$front=true){
 
 		/* Load an empty product */
-	 	 $product = $this->getTable('products');
-	 	 $product->load();
+	 	 //$product = $this->getTable('products');
+	 	// $product->load();
 
 	 	 /* Add optional fields */
 	 	 $product->virtuemart_manufacturer_id = null;
 	 	 $product->virtuemart_product_price_id = null;
 
 	 	 if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-	 	 $product->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
+	 	 //$product->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
 
 	 	 $product->product_price = null;
 	 	 $product->product_currency = null;
@@ -509,25 +512,25 @@ class VirtueMartModelProduct extends VmModel {
 	 * 
 	 * @author Max Milbers
      */
-	public function getProductListing($group = false, $nbrReturnProducts = false, $withCalc = true, $onlyPublished = true){
+	public function getProductListing($group = false, $nbrReturnProducts = false, $withCalc = true, $onlyPublished = true, $single = false){
 				
 		$app = JFactory::getApplication();
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if($app->isSite() ){
 			$front = true;
-			if(!Permissions::getInstance()->check('admin')){
+			if(!Permissions::getInstance()->check('admin','storeadmin')){
 				$onlyPublished = true;
 				if ($show_prices=VmConfig::get('show_prices',1) == '0'){
 					$withCalc = false;
 				}
 			}
 		} else {
-			$front = true;
+			$front = false;
 		}
 
 		$ids = $this->sortSearchListQuery($withCalc,$onlyPublished,$group,$nbrReturnProducts);
-		
-		$products = $this->getProducts($ids, $front, $withCalc, $onlyPublished);
+		dump($ids, 'for my group '.$group);
+		$products = $this->getProducts($ids, $front, $withCalc, $onlyPublished,$single);
 		return $products;
 	}
 	
@@ -540,14 +543,26 @@ class VirtueMartModelProduct extends VmModel {
 	 * @param unknown_type $withCalc
 	 * @param unknown_type $onlyPublished
 	 */
-	public function getProducts($productIds, $front=true, $withCalc = true, $onlyPublished = true){
+	public function getProducts($productIds, $front=true, $withCalc = true, $onlyPublished = true,$single=false){
 
 		$products=array();
-		foreach($productIds as $id){
-			if($product = $this->getProduct((int)$id,$front, $withCalc, $onlyPublished)){
-				$products[] = $product;
+		if($single){
+			foreach($productIds as $id){
+				if($product = $this->getProductSingle((int)$id,$front, $withCalc, $onlyPublished)){
+					if($onlyPublished && $product->published){
+						$products[] = $product;
+					}
+					if(!$onlyPublished) $products[] = $product;
+				}
 			}
+		} else {
+			foreach($productIds as $id){
+				if($product = $this->getProduct((int)$id,$front, $withCalc, $onlyPublished)){
+					$products[] = $product;
+				}
+			}			
 		}
+
 		return $products;
 	}
 
@@ -1658,6 +1673,7 @@ class VirtueMartModelProduct extends VmModel {
 					 WHERE p.`published`=1 AND  p.`virtuemart_product_id`= "'.(int)$value.'" ';
 					$this->_db->setQuery($q);
 					$related = $this->_db->loadObject();
+					if(empty ($related)) return '';
 					$thumb = '';
 					$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "'.(int)$value.'" ';
 					$this->_db->setQuery($q);

@@ -105,8 +105,8 @@ class VirtueMartModelCalc extends VmModel {
 		if ($onlyPublished) $where[] = '`published` = 1';
 		//if (JRequest::getWord('search', false)) $where[] = '`calc_name` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
 		if($search){
-			$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
-			$where[] = '`calc_name` LIKE '.$this->_db->Quote($search, false);
+			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+			$where[] = '`calc_name` LIKE '.$search;
 		} 
 
 		if (count($where) > 0)$this->_query .= ' WHERE '.implode(' AND ', $where) ;
@@ -230,8 +230,9 @@ class VirtueMartModelCalc extends VmModel {
 		}
 		$q=substr($q,0,-3);
 
-		$q .= ' AND ( publish_up = '.$this->_db->Quote($nullDate).' OR publish_up <= '.$this->_db->Quote($now).' )' .
-			' AND ( publish_down = '.$this->_db->Quote($nullDate).' OR publish_down >= '.$this->_db->Quote($now).' ) ';
+		$q .= 'AND ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
+				AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" ) ';
+
 
 		$this->_db->setQuery($q);
 		$data = $this->_db->loadObjectList();

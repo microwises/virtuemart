@@ -121,7 +121,7 @@ class VirtueMartModelVendor extends VmModel {
 		$db = JFactory::getDBO();
 		if (empty($vendorId)) return;
 		else {
-			$query = 'SELECT `virtuemart_user_id` FROM `#__virtuemart_vmusers` WHERE `virtuemart_vendor_id`=' . $this->_db->Quote((int)$vendorId)  ;
+			$query = 'SELECT `virtuemart_user_id` FROM `#__virtuemart_vmusers` WHERE `virtuemart_vendor_id`=' . (int)$vendorId  ;
 			$db->setQuery($query);
 			$result = $db->loadResult();
 			return (isset($result) ? $result : 0);

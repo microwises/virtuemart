@@ -141,19 +141,19 @@ class VirtueMartModelCategory extends VmModel {
 		}
 
 		if( !empty( $keyword ) ) {
-			$keyword = '%' . $this->_db->getEscaped( $keyword, true ) . '%' ;
-			$keyword = $this->_db->Quote($keyword, false);
+			$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;
+			//$keyword = $this->_db->Quote($keyword, false);
 			
 			$query .= 'AND ( c.`category_name` LIKE '.$keyword.'
 					   OR c.`category_description` LIKE '.$keyword.') ';
 		}
 
 		if( $withParentId ){
-			$query .= ' AND cx.`category_parent_id` = '. $this->_db->Quote((int)$parentId);
+			$query .= ' AND cx.`category_parent_id` = '. (int)$parentId;
 		}
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if( !Permissions::getInstance()->check('admin') ){
-			$query .= ' AND (c.`virtuemart_vendor_id` = '. $this->_db->Quote((int)$vendorId) . ' OR c.`shared` = "1") ';
+			$query .= ' AND (c.`virtuemart_vendor_id` = "'. (int)$vendorId. '" OR c.`shared` = "1") ';
 		}
 		// this are used in multiple views then we must test if the view are the category view
 		if ( JRequest::getCmd('view') == 'category') {
@@ -274,7 +274,7 @@ class VirtueMartModelCategory extends VmModel {
 			$q = 'SELECT count(#__virtuemart_products.virtuemart_product_id) AS total
 			FROM `#__virtuemart_products`, `#__virtuemart_product_categories`
 			WHERE `#__virtuemart_products`.`virtuemart_vendor_id` = "'.(int)$vendorId.'"
-			AND `#__virtuemart_product_categories`.`virtuemart_category_id` = '.$this->_db->Quote((int)$cat_id).'
+			AND `#__virtuemart_product_categories`.`virtuemart_category_id` = '.(int)$cat_id.'
 			AND `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_categories`.`virtuemart_product_id`
 			AND `#__virtuemart_products`.`published` = "1" ';
 			$this->_db->setQuery($q);
@@ -299,7 +299,7 @@ class VirtueMartModelCategory extends VmModel {
 		$row = $this->getTable('categories');
 		$row->load($id);
 
-		$query = 'SELECT `category_parent_id` FROM `#__virtuemart_category_categories` WHERE `category_child_id` = '. $this->_db->Quote( (int)$row->virtuemart_category_id );
+		$query = 'SELECT `category_parent_id` FROM `#__virtuemart_category_categories` WHERE `category_child_id` = '. (int)$row->virtuemart_category_id ;
 		$this->_db->setQuery($query);
 		$parent = $this->_db->loadObject();
 
@@ -333,7 +333,7 @@ class VirtueMartModelCategory extends VmModel {
 		for( $i=0; $i < $total; $i++ ) {
 
 			$row->load( $cats[$i] );
-			$this->_db->setQuery( sprintf($query, $this->_db->Quote( $cats[$i] )), 0 ,1 );
+			$this->_db->setQuery( sprintf($query,  (int)$cats[$i] ), 0 ,1 );
 			$parent = $this->_db->loadObject();
 
 			$groupings[] = $parent->category_parent_id;
@@ -458,7 +458,7 @@ class VirtueMartModelCategory extends VmModel {
 				}
 
 				//deleting relations
-				$query = "DELETE FROM `#__virtuemart_product_categories` WHERE `category_child_id` = ". $this->_db->Quote((int)$cid);
+				$query = "DELETE FROM `#__virtuemart_product_categories` WHERE `category_child_id` = ". (int)$cid;
 		    	$this->_db->setQuery($query);
 
 		    	if(!$this->_db->query()){
@@ -466,7 +466,7 @@ class VirtueMartModelCategory extends VmModel {
 		    	}
 
 		    	//updating parent relations
-				$query = "UPDATE `#__virtuemart_product_categories` SET `category_parent_id` = 0 WHERE `category_parent_id` = ". $this->_db->Quote((int)$cid);
+				$query = "UPDATE `#__virtuemart_product_categories` SET `category_parent_id` = 0 WHERE `category_parent_id` = ". (int)$cid;
 		    	$this->_db->setQuery($query);
 
 		    	if(!$this->_db->query()){
@@ -492,7 +492,7 @@ class VirtueMartModelCategory extends VmModel {
      */
     public function clearProducts($cid) {
 
-    	$query = "UPDATE `#__virtuemart_product_categories` SET `virtuemart_category_id` = 0 WHERE `virtuemart_category_id` =" . $this->_db->Quote((int)$cid);
+    	$query = "UPDATE `#__virtuemart_product_categories` SET `virtuemart_category_id` = 0 WHERE `virtuemart_category_id` =" . (int)$cid;
 		$this->_db->setQuery($query);
 
 		if( !$this->_db->query() ){
@@ -681,8 +681,8 @@ class VirtueMartModelCategory extends VmModel {
 			$query .= "`#__virtuemart_categories`.`virtuemart_category_id`=`#__virtuemart_category_categories`.`category_child_id` ";
 
 			if( !empty( $keyword ) ) {
-				$keyword = '%' . $this->_db->getEscaped( $keyword, true ) . '%' ;
-				$keyword = $this->_db->Quote($keyword, false);
+				$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;
+				//$keyword = $this->_db->Quote($keyword, false);
 				
 				$query .= 'AND ( `category_name` LIKE '.$keyword.'
 						   OR `category_description` LIKE '.$keyword.') ';

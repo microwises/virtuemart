@@ -77,12 +77,12 @@ class VirtueMartModelCurrency extends VmModel {
 		}
 		/* add filters */
 		if($search){
-			$search = '%' . $this->_db->getEscaped( $search, true ) . '%' ;
-			$search = $this->_db->Quote($search, false);
+			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+			//$search = $this->_db->Quote($search, false);
 			$where[] = '`currency_name` LIKE '.$search;			
 		}
 		
-		if (JRequest::getWord('search', false)) $where[] = '`currency_name` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
+		if (JRequest::getWord('search', false)) $where[] = '`currency_name` LIKE "%'.$this->_db->getEscaped(JRequest::getWord('search')).'%"';
 
 		if (count($where) > 0) $this->_query .= ' WHERE '.implode(' AND ', $where) ;
 		$this->_query .= $this->_getOrdering('currency_name');
