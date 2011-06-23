@@ -50,6 +50,8 @@ class VirtuemartViewUser extends JView {
 		if($task == 'editshop'){
 			$model->setCurrent();
 			$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','STORE'  );
+		} else if ($task == 'add'){
+			$model->setUserId(0);
 		} else {
 			$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','USER');
 		}

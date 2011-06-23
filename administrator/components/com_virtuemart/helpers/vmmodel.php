@@ -306,7 +306,7 @@ class VmModel extends JModel {
 
 		$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order_Dir', 'filter_order_Dir', $order_dir, 'word' );
 		$filter_order     = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', $default, 'cmd' );
-
+		dump($filter_order,'hu  '.$option.'.'.$view);
 		return ' ORDER BY '.$filter_order.' '.$filter_order_Dir ;
 	}
     /**

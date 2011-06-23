@@ -156,15 +156,16 @@ class VirtueMartModelUser extends VmModel {
 
 		$this->_data = $this->getTable('vmusers');
 		$this->_data->load((int)$this->_id);
-
-		/* Add the virtuemart_shoppergroup_ids */
+		dump($this->_data,'getUser');
+		
+		// Add the virtuemart_shoppergroup_ids 
 		$xrefTable = $this->getTable('vmuser_shoppergroups');
 		$this->_data->shopper_groups = $xrefTable->load($this->_id);
-
+		
 
 		$this->_data->JUser = JUser::getInstance($this->_id);
 
-		$_ui = $this->_getList('SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . $this->_id.'"');
+		$_ui = $this->_getList('SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"');
 
 		$this->_data->userInfo = array ();
 
@@ -187,7 +188,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 		
 		if($this->_data->user_is_vendor){
-
+			
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php' );
 			$vendorModel = new VirtueMartModelVendor();
 

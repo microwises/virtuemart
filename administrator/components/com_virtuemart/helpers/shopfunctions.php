@@ -264,7 +264,7 @@ class ShopFunctions {
 	*/
 	public function renderCountryList( $countryId = 0 , $multiple = false, $_attrib = array(), $_prefix = ''){
 		$countryModel = self::getModel('country');
-		$countries = $countryModel->getCountries(true, true);
+		$countries = $countryModel->getCountries(true, true,false);dump($countries,'my countries in render');
 		$attrs = array();
 		$name = 'country_name';
 		$id = 'virtuemart_country_id';

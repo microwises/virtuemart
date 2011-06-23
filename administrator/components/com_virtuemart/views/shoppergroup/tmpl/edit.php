@@ -38,6 +38,18 @@ AdminMenuHelper::startAdminArea();
 				<input class="inputbox" type="text" name="shopper_group_name" id="shopper_group_name" size="50" value="<?php echo $this->shoppergroup->shopper_group_name; ?>" />
 			</td>
 		</tr>
+			<tr>
+			<td width="110" class="key">
+				<label for="title">
+					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
+				</label>
+			</td>
+			<td width="110"  >
+				<fieldset class="radio" >
+				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->shoppergroup->published); ?>
+				</fieldset>
+			</td>
+		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="virtuemart_vendor_id">

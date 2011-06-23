@@ -82,7 +82,7 @@ class VirtueMartModelCountry extends VmModel {
      * @return object List of country objects
      */
     function getCountries($onlyPublished=true, $noLimit=false, $filterCountry = false) {
-		
+
 		$where = array();
 		$query = 'SELECT * FROM `#__virtuemart_countries` ';
 		/* add filters */
@@ -96,15 +96,19 @@ class VirtueMartModelCountry extends VmModel {
 
 		if (count($where) > 0) $query .= ' WHERE '.implode(' AND ', $where) ;
 		
-		$query .= $this->_getOrdering('country_name');
-
+		if($filterCountry){
+			$query .= $this->_getOrdering('country_name');
+		} else {
+			$query .= ' ORDER BY country_name';
+		}
+		
 		if ($noLimit) {
 		    $this->_data = $this->_getList($query);
 		}
 		else {
 		    $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
-
+		dump($this->_db,'hm');
 		// set total for pagination
 		$this->_total = $this->_getListCount($query) ;
 
