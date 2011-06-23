@@ -226,7 +226,7 @@ class VirtueMartModelMedia extends VmModel {
 
 		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
 
-		if(empty($data['active_media_id'])  && empty($data['media_action'])) return ;
+		if(empty($data['media_action'])) return ;
 		$oldIds = (int)$data['virtuemart_media_id'];
 		$data['file_type'] = $type;
 		

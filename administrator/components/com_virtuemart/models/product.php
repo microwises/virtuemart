@@ -263,6 +263,7 @@ class VirtueMartModelProduct extends VmModel {
     	if (!empty($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId($virtuemart_product_id);
 		} else {
+			
 			return false;	
 		}
 
@@ -309,7 +310,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 //		if(empty($this->_data)){
-			if (!empty($this->_id)) {
+		if (!empty($this->_id)) {
 
 
    			$product = $this->getTable('products');
@@ -437,11 +438,11 @@ class VirtueMartModelProduct extends VmModel {
      * @param unknown_type $product
      * @param unknown_type $front
      */
-    private function fillVoidProduct($product,$front=true){
+    private function fillVoidProduct($front=true){
 
 		/* Load an empty product */
-	 	 //$product = $this->getTable('products');
-	 	// $product->load();
+	 	 $product = $this->getTable('products');
+	 	 $product->load();
 
 	 	 /* Add optional fields */
 	 	 $product->virtuemart_manufacturer_id = null;
@@ -456,16 +457,19 @@ class VirtueMartModelProduct extends VmModel {
 	 	 $product->product_price_quantity_end = null;
 	 	 $product->product_tax_id = null;
 	 	 $product->product_discount_id = null;
+		 $product->product_override_price = null;
+		 $product->override = 0;
+		 $product->categories = array();
 	 	 if($front){
 	 	 	$product->link = '';
-	 	 	$product->categories = array();
+	 	 	
 	 	 	$product->prices = array();
 	 	 	$product->virtuemart_category_id = 0;
 	 	 	$product->mf_name = '';
 	 	 	$product->packaging = '';
 	 	 	$product->related = '';
 	 	 	$product->box = '';
-	 	 }
+	 	 } 
 
 	 	 return $product;
     }
