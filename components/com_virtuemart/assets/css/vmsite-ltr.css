@@ -606,14 +606,24 @@ span.title {font-weight: bold;display: block;border-bottom: solid #CAC9C9 1px;ma
 .customer-reviews {margin: 25px 0px 0px 0px;}
 .customer-reviews h4 {border-bottom: solid #CAC9C9 1px;margin: 0px 0px 10px 0px;padding: 0px 0px 6px 0px;font-size: 14px;}
 
+.write-reviews {text-align: center;margin: 20px 0px 0px 0px;}
+.write-reviews h4 {text-align: left;}
+.write-reviews h4 span {font-size: 12px;font-weight: normal;margin-left: 8px;}
+.write-reviews span.step {font-weight: bold;margin: 0px 0px 8px 0px;display: inline-block;}
+.write-reviews ul.rating {margin: 0px 0px 20px 0px;padding: 0px;text-align: center;}
+.write-reviews ul.rating li {display: inline-block;list-style: none;text-align: center;padding: 0px 5px;}
+.write-reviews ul.rating li span {padding-bottom: 5px;}
+.write-reviews textarea.virtuemart {margin-bottom: 6px;display: inline-block;}
+
 .list-reviews {}
 .list-reviews .normal {border: solid #CAC9C9 1px;margin-bottom: 8px;padding: 12px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;}
-.list-reviews .normal blockquote {margin-top: 12px;font-size: 12px;}
+.list-reviews .normal blockquote {margin-top: 12px;font-size: 12px;word-wrap: break-word;}
 .list-reviews .normal blockquote:before { content: open-quote; font-weight: bold;font-size: 24px;padding-right: 6px;}
 .list-reviews .normal blockquote:after { content: close-quote; font-weight: bold;font-size: 24px;padding-left: 6px;}
 
+/* Color Switch For Every Second Review */
 .list-reviews .highlight {background: #f7f6f6;border: solid #CAC9C9 1px;padding: 12px;margin-bottom: 8px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;}
-.list-reviews .highlight blockquote {margin-top: 12px;font-size: 12px;}
+.list-reviews .highlight blockquote {margin-top: 12px;font-size: 12px;word-wrap: break-word;}
 .list-reviews .highlight blockquote:before { content: open-quote; font-weight: bold;font-size: 24px;padding-right: 6px;}
 .list-reviews .highlight blockquote:after { content: close-quote; font-weight: bold;font-size: 24px;padding-left: 6px;}
 
@@ -794,6 +804,9 @@ a.ask-a-question {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) t
 
 a.ask-a-question:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;text-decoration: none;}
 
+/* Default Input Text Field */
+input.vm-default {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 5px 5px 4px 5px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;margin-bottom: 2px;}
+input.vm-default:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #000;}
 
 /* Green Button */
 input.highlight-button {padding: 4px 8px 2px 8px;background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;background-position: 0px -160px;color: #fff;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;cursor: pointer;text-shadow: 1px 1px 1px #000;text-align: center;letter-spacing: 1px;text-shadow: 1px 1px 0px #028c02;display: inline-block;text-decoration: none;}
@@ -811,6 +824,10 @@ button.default:hover {background: #fff url(../images/vmgeneral/backgrounds.png) 
 /* Highlight Link Button */
 a.highlight, a.highlight:visited {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 0px #028c02;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;background-position: 0px -160px;color: #fff;}
 a.highlight:hover {background-position: 0px -200px;color: #f2f2f2;}
+
+/* Text Area */
+textarea.virtuemart {background: #fff;padding: 5px 5px 4px 5px;border: solid #ccc 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #777;text-align: left;}
+textarea.virtuemart:hover {color: #000;background: #e8e8e8;}
 
 /*////////////////////////////////////
 /////////////// Other ////////////////
