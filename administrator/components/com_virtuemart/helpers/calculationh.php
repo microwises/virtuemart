@@ -851,7 +851,7 @@ class calculationHelper {
 
     function calculateCustomPriceWithTax($price, $override_id=0) {
 
-        $taxRules = $this->gatherEffectingRulesForProductPrice('Tax', $override_id); dump($taxRules,'taxrules');
+        $taxRules = $this->gatherEffectingRulesForProductPrice('Tax', $override_id);
 		if(!empty($taxRules)){
 			$price = $this->executeCalculation($taxRules, $price, true);
 		}

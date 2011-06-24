@@ -125,7 +125,7 @@ class VirtueMartCart  {
 //            $this->tosAccepted = 0;
 //        } else {
 		if(isset($user->agreed) && !VmConfig::get('agree_to_tos_onorder') && $this->tosAccepted===null){
-			dump($user->agreed,'setPreferred $user->agreed');
+			//dump($user->agreed,'setPreferred $user->agreed');
             $this->tosAccepted = $user->agreed;
         }
 

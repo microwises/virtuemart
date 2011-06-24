@@ -279,8 +279,8 @@ class VirtueMartModelConfig extends JModel {
 
 		//ATM we want to ensure that only one config is used
 		
-		$config = VmConfig::getInstance()->loadConfig();
-		$config->bind($data);dump($config,'$config');
+		$config = VmConfig::loadConfig();
+		$config->bind($data);
 
 		$confData = array();
 		$query = 'SELECT * FROM `#__virtuemart_configs`';
@@ -300,22 +300,7 @@ class VirtueMartModelConfig extends JModel {
     	if (!$confTable->bindChecknStore($confData)) {
 			$this->setError($confTable->getError());
 		}
-		
-/*		if ($data) {
-		    $curConfigParams = $this->getConfig();
-		    $curConfigParams->bind($data);
 
-		    $db = JFactory::getDBO();
-		    $query = 'UPDATE `#__virtuemart_configs` SET `config` = "' . $db->getEscaped($curConfigParams->toString()) .'" WHERE virtuemart_config_id ="1"' ;
-		    $db->setQuery($query);
-		    if (!$db->query()) {
-				$this->setError($table->getError());
-				return false;
-		    }
-		} else {
-		    $this->setError('No configuration parameters to save!');
-		    return false;
-		}*/
 		// Load the newly saved values into the session.
 		VmConfig::getInstance();
 
@@ -323,7 +308,7 @@ class VirtueMartModelConfig extends JModel {
     }
 
     function setDangerousToolsOff(){
-    	$config = VmConfig::getInstance()->loadConfig();
+    	$config = VmConfig::loadConfig();
 
     	$config -> set('dangeroustools',0);
 

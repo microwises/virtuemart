@@ -25,16 +25,32 @@ define( 'JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.
 
 require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 
-
+/**
+ * We use this Class STATIC not dynamically !
+ */
 class VmConfig{
 	
 	// instance of class 
 	private static $_instance = null;	
 
 	private function __construct() {
-		self::loadConfig();
+		//self::loadConfig();
 	}
 
+	// Get always the same VmConfig 
+	public static function getInstance() {
+		if(is_null(self::$_instance)) {
+			self::$_instance = new VmConfig();
+			
+		}
+		//Idea is to use only getInstance and not loadConfig statically,
+		//but rises the problem that the Config is then loaded to often.
+		//Idea is that the config is only loaded one time and then taken from the session
+		//so the function getInstance and loadConfig maybe merged later
+		//self::$_instance->loadConfig();
+		return self::$_instance;
+	}
+	
 	/**
 	 * Load the configuration values from the database into a session variable.
 	 * This step is done to prevent accessing the database for every configuration variable lookup.
@@ -74,13 +90,7 @@ class VmConfig{
 		return 'Was not able to create config';
 	}
 	
-	// Get always the same VmConfig 
-	public static function getInstance() {
-		if(is_null(self::$_instance)) {
-			self::$_instance = new VmConfig();
-		}
-		return self::$_instance;
-	}
+
 
 	
 	/**
@@ -98,13 +108,12 @@ class VmConfig{
 			$session = JFactory::getSession();
 			$params = $session->get('vmconfig', '','vm');
 			if (!$params) {
+				//Todo better to get instance first and then loadConfig?
 				VmConfig::loadConfig();
 				$params = $session->get('vmconfig', '','vm');
 			}
 
 			if ($params) {
-				//$params = new JParameter($config);
-				//$paramsObj = unserialize($params);
 				$value = $params->get($key);
 			}
 			else {

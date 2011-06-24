@@ -48,9 +48,8 @@ class VirtuemartViewConfig extends JView {
                  
 		shopFunctions::addStandardEditViewCommands();
 
-		$config = VmConfig::getInstance()->loadConfig();
-		dump($config,'my config'); if(empty($config))parent::display($tpl);
-		//$config = $model->getConfig();
+		$config = VmConfig::loadConfig();
+
 		$this->assignRef('config', $config);
 
 		$mainframe = JFactory::getApplication();

@@ -108,7 +108,7 @@ class VirtueMartModelCountry extends VmModel {
 		else {
 		    $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
-		dump($this->_db,'hm');
+
 		// set total for pagination
 		$this->_total = $this->_getListCount($query) ;
 

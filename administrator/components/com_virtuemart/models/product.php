@@ -533,7 +533,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		$ids = $this->sortSearchListQuery($withCalc,$onlyPublished,$group,$nbrReturnProducts);
-		dump($ids, 'for my group '.$group);
+
 		$products = $this->getProducts($ids, $front, $withCalc, $onlyPublished,$single);
 		return $products;
 	}

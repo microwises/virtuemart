@@ -63,7 +63,7 @@ class VirtueMartViewVirtueMart extends JView {
 	        if (VmConfig::get('show_recent', 1)) {
 	        	$recentProductIds = shopFunctionsF::getRecentProductIds();
 				$recentProducts = $productModel->getProducts($recentProductIds);
-				dump($recentProducts,'hmmm recent Products');
+
 	        	$productModel->addImages($recentProducts);
 	        	$this->assignRef('recentProducts', $recentProducts);
 	        }

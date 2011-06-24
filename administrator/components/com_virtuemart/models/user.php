@@ -156,7 +156,6 @@ class VirtueMartModelUser extends VmModel {
 
 		$this->_data = $this->getTable('vmusers');
 		$this->_data->load((int)$this->_id);
-		dump($this->_data,'getUser');
 		
 		// Add the virtuemart_shoppergroup_ids 
 		$xrefTable = $this->getTable('vmuser_shoppergroups');

@@ -53,7 +53,7 @@ class VirtueMartModelOrders extends VmModel {
 		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_pass`="'.$db->getEscaped($orderPass).'" AND `order_number`="'.$db->getEscaped($orderNumber).'"';
 		$db->setQuery($q);
 		$orderId = $db->loadResult();
-		dump($db,'$query $orderId '.$orderId);
+
 		return $orderId;
 
 	}
