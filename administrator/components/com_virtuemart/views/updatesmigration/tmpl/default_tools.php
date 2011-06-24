@@ -85,6 +85,15 @@ echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
 	    <br />
 	    Migrate VM1.1 products to VM2
 	</td>  
+
+ 	<td align="center">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=portMedia&token='.JUtility::getToken() ); ?>
+	    <span onclick="javascript:confirmation('<?php echo 'Start migrate Media?'; ?>', '<?php echo $link; ?>');">
+		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
+	    </span>
+	    <br />
+	    Migrate Media to VM2
+	</td>	
     </tr>
 </table>
 

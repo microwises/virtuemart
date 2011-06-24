@@ -455,6 +455,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
   `file_is_downloadable` tinyint(1) NOT NULL,
   `file_is_forSale` tinyint(1) NOT NULL,
   `file_params` text,
+  `ordering` int(11) DEFAULT NULL,
   `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',

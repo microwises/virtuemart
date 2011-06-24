@@ -328,10 +328,11 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		//Object to hold old against new ids. We wanna port as when it setup fresh, so no importing of old ids!
 		$this->_oldToNew = new stdClass();
 		
-		$this->_portMedia();
+		//$this->_portMedia();
 		
 		$this->_categoryPorter();
-                $this->_manufacturerCategoryPorter();
+		
+        $this->_manufacturerCategoryPorter();
 		$this->_portManufacturer();
 		
 		//Now we have the new ids for the medias,categories,taxes,discounts and manufacturers now lets port the products
@@ -339,7 +340,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		
 		//dump($this->_oldToNew,'$this->_oldToNew');
 		$msg = 'Migration worked smoothed and finished';
-		$this->setRedirect($this->redirectPath,$msg);	
+		$this->setRedirect($this->redirectPath,$msg);
 	}
 	
 	private function _productPorter(){
@@ -438,7 +439,6 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 		}
 		
-		
 		if($ok) $msg = 'Looks everything worked correct, migrated '.count($this->_oldToNew->cats).' categories ';
 		else {
                     $msg = 'Seems there was an error porting '.count($this->_oldToNew->cats).' categories ';
@@ -459,7 +459,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		
 		$this->_app->enqueueMessage($this->_db->getQuery());
 		//dump($oldCategories,'_categoryPorter $oldCategories');
-                if(!class_exists('TableManufacturercategories')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'manufacturercategories.php');
+		if(!class_exists('TableManufacturercategories')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'manufacturercategories.php');
 		$oldtonewMfCats = array();
 		
 		$mfcategory = array();
@@ -474,7 +474,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 			if(!$this->_test){
 				$mfcategory = $table->bindChecknStore($mfcategory);
-                                $errors = $table->getErrors();
+				$errors = $table->getErrors();
 				foreach($errors as $error){
 					$this->setError($error);
 					$ok = false;
@@ -489,19 +489,18 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 
 		$this->_oldToNew->mfcats = $oldtonewMfCats;
 		
-
-		
-		
 		if($ok) $msg = 'Looks everything worked correct, migrated '.count($this->_oldToNew->mfcats).' manufacturer categories ';
 		else {
-                    $msg = 'Seems there was an error porting '.count($this->_oldToNew->mfcats).' manufacturer categories ';
-                    $msg .= $this->getErrors();
-                }
+			$msg = 'Seems there was an error porting '.count($this->_oldToNew->mfcats).' manufacturer categories ';
+			$msg .= $this->getErrors();
+		}
+
 		$this->_app -> enqueueMessage($msg);
 		
 		return $ok;
 	}
-        private function _portManufacturer(){
+        
+	private function _portManufacturer(){
 
 		$ok= true;
 
@@ -551,11 +550,75 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		$this->_app -> enqueueMessage($msg);
 	}
 	
-	private function _portMedia(){
+	public function portMedia(){
 		
 		$ok = true;
 		
+		$imageExtensions = array('jpg','jpeg','gif','png');
+		//We do it per type
+		
+		$filesInDir = array();
+		//First lets port the product media
+		//First lets read which files are already stored
+		
+		if(!class_exists('TableManufacturers')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+		$this->mediaModel = new VirtueMartModelMedia();
+		$this->storedMedias = $this->mediaModel->getFiles(false,true,false);
+		
+		$this->portMediaByType(VmConfig::get('media_product_path'),'product');
+		$this->portMediaByType(VmConfig::get('media_category_path'),'category');
+		$this->portMediaByType(VmConfig::get('media_manufacturer_path'),'manufacturer');
+		//$this->portMediaByType(VmConfig::get('media_path'),'shop');
+		
+		$this->setRedirect($this->redirectPath,$msg);
 		return $ok;
+	}
+	
+	function portMediaByType($url,$type){
+		
+		$knownNames = array();
+		//create array of filenames for easier handling
+		foreach ($this->storedMedias as $media){
+			if($media->file_type==$type){
+				$lastIndexOfSlash= strrpos($media->file_url,'/');
+	    		$name = substr($media->file_url,$lastIndexOfSlash+1);
+				$knownNames[] = $name;				
+			}
+
+		}
+		dump($knownNames,'$knownNames ');
+		//$table = JTable::getInstance('media', 'Table', array() );	
+
+		$path = str_replace('/',DS,$url);
+		$dir = JPATH_ROOT.DS.$path;
+		if ($handle = opendir($dir)) {
+	    	while (false !== ($file = readdir($handle))) {
+				if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
+					$info = pathinfo($file); //dump($info,'pathinfo');
+					//We port all type of media, regardless the extension
+					if ((filetype($dir.DS.$file) == 'file') && !in_array($file,$knownNames)) {
+						$filesInDir[] = $file;
+				    }
+				   
+				}
+		    }
+		}
+		dump($filesInDir,'Filenames to add');
+		
+		foreach($filesInDir as $filename){
+			
+			$data = array(	'file_title'=>$filename,
+							'virtuemart_vendor_id'=>1,
+							'file_description'=>$filename,
+							'file_meta'=>$filename,
+							'file_url'=>$url.$filename,
+							//'file_url_thumb'=>$url.'resized/'.$filename,
+							'published'=>1
+							);
+			if($type=='product')$data['file_is_product_image'] = 1;
+			$this->mediaModel->store($data,$type);
+		}
+		
 	}
 	
 	function portCurrency(){
