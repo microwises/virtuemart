@@ -770,8 +770,8 @@ class VirtueMartModelProduct extends VmModel {
 				$this->_db->query();
 			}
 		}
-
-		if(!empty($data['virtuemart_media_id']) && !empty($data['virtuemart_media_id'][0]) && !empty($data['active_media_id'] ) ){
+ 
+		//if(!empty($data['virtuemart_media_id']) && !empty($data['virtuemart_media_id'][0])  ){
 			// Process the images
 			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 			$mediaModel = new VirtueMartModelMedia();
@@ -780,7 +780,7 @@ class VirtueMartModelProduct extends VmModel {
 			foreach($errors as $error){
 				$this->setError($error);
 			}
-		}
+		//}
 		/* Update product types
 		* 'product_type_tables' are all types tables in product edit view
 		TODO CAN BE CUSTOM FIELDS
@@ -1599,7 +1599,7 @@ class VirtueMartModelProduct extends VmModel {
 				foreach ( $options as $option){
 					$group->options[$option->value] = $option;
 				}
-				dump($group,'$group');
+				//dump($group,'$group');
 				if ($group->field_type == 'V'){
 					foreach ($group->options as $productCustom) {
 						$productCustom->text =  $productCustom->custom_value.' : '.$currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
