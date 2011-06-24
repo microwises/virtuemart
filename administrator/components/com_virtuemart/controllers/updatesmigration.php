@@ -322,7 +322,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		$this->_app = JFactory::getApplication(); dump($this->_app,'app');
 		$this->_db = JFactory::getDBO();
 		
-		$this->_test = true;
+		$this->_test = false;
 		
 		//Object to hold old against new ids. We wanna port as when it setup fresh, so no importing of old ids!
 		$this->_oldToNew = new stdClass();
@@ -396,6 +396,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 					$ok = false;
 				}
 				$oldtonewCats[$oldcategory['category_id']] = $category['virtuemart_category_id'];
+				unset($category['virtuemart_category_id']);
 			} else {
 				$oldtonewCats[$oldcategory['category_id']] = $oldcategory['category_id'];
 			}

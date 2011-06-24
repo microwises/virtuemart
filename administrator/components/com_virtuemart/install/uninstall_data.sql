@@ -17,7 +17,7 @@ DELETE FROM `#__virtuemart_order_userinfos`;
 DELETE FROM `#__virtuemart_products`;
 DELETE FROM `#__virtuemart_product_categories`;
 DELETE FROM `#__virtuemart_product_downloads`;
-DELETE FROM `#__virtuemart_products_files`;
+IF EXISTS DELETE FROM `#__virtuemart_products_files`;
 DELETE FROM `#__virtuemart_product_manufacturers`;
 DELETE FROM `#__virtuemart_product_prices`;
 DELETE FROM `#__virtuemart_product_producttypes`;
