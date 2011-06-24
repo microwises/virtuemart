@@ -26,13 +26,13 @@ define( 'JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.
 require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 
 
-class VmConfig
-{
-	/* instance of class */
+class VmConfig{
+	
+	// instance of class 
 	private static $_instance = null;	
 
 	private function __construct() {
-	self::loadConfig();
+		self::loadConfig();
 	}
 
 	/**
@@ -40,13 +40,15 @@ class VmConfig
 	 * This step is done to prevent accessing the database for every configuration variable lookup.
 	 *
 	 * @author RickG
+	 * @author Max Milbers
 	 */
 	public function loadConfig() {
+		$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$query = 'SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1"';
 		$db->setQuery($query);
 		$config = $db->loadResult();
-		dump($config,'loadConfig There must be something here ');
+
 		if(empty($config)){
 			$config = self::installVMconfig();
 			$db->setQuery($query);
@@ -54,8 +56,15 @@ class VmConfig
 			dump($config,'loadConfig config taken from the file ');
 		}
 		
+		//We did a db->getEscpaped for storing, but load it manually, so we have to exchange the \n against the controllsign
+		while(strpos($config,'\n')!==false){
+			$config = str_replace(array('\n'), array("\n"),$config);
+		}
+		
+		$app -> enqueueMessage('my config '.$config);
+		
 		if ($config) {
-			$jpConfig = new JParameter($config);dump($jpConfig,'loaded JParameter conf');
+			$jpConfig = new JParameter($config);dump($jpConfig->getParams(),'loaded JParameter conf');
 			$session = JFactory::getSession();
 			$session->clear('vmconfig');
 			$session->set('vmconfig', $jpConfig,'vm');
