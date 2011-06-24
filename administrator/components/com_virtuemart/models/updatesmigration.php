@@ -351,7 +351,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$db->setQuery($query);
 		if (!$db->query()) {
 		    JError::raiseWarning(1, 'JInstaller::install: '.JText::_('COM_VIRTUEMART_SQL_ERROR')." ".$db->stderr(true));
-		    return false;
+		    //return false;
 		}
 	    }
 	}

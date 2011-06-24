@@ -156,7 +156,7 @@ class VirtuemartViewOrders extends JView {
 			JToolBarHelper::custom( 'prev', 'edit','','COM_VIRTUEMART_ITEM_PREVIOUS',false);
 			JToolBarHelper::custom( 'next', 'edit','','COM_VIRTUEMART_ITEM_NEXT',false);
 			JToolBarHelper::divider();
-			JToolBarHelper::custom( 'cancel', 'back','back','back',false);
+			JToolBarHelper::custom( 'cancel', 'back','back','back',true,false);
 		}
 		else if ($curTask == 'editOrderItem') {
 			$this->loadHelper('calculationHelper');

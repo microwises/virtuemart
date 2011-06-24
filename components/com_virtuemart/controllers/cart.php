@@ -187,10 +187,10 @@ class VirtueMartControllerCart extends JController {
 	 *
 	 * @author Max Milbers
 	 */
-	public function editcoupon(){
+	public function edit_coupon(){
 		/* Create the view */
 		$view = $this->getView('cart', 'html');
-		$view->setLayout('editcoupon');
+		$view->setLayout('edit_coupon');
 
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$view->setModel($this->getModel('coupon', 'VirtuemartModel'), true);

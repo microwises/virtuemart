@@ -57,7 +57,19 @@ class VirtueMartModelOrders extends VmModel {
 		return $orderId;
 
 	}
+/**
+	 * This function gets the orderId, for payment response
+	 *
+	 */
+	public function getOrderIdByOrderNumber($orderNumber){
 
+		$db = JFactory::getDBO();
+		$q = 'SELECT `virtuemart_order_id` FROM `#__virtuemart_orders` WHERE `order_number`="'.$db->getEscaped($orderNumber).'"';
+		$db->setQuery($q);
+		$orderId = $db->loadResult();
+		return $orderId;
+
+	}
 	/**
 	 * This function seems completly broken, JRequests are not allowed in the model, sql not escaped
 	 * This function gets the secured order Number, to send with paiement
@@ -408,7 +420,7 @@ class VirtueMartModelOrders extends VmModel {
 		$_orderData->virtuemart_user_id = $_usr->get('id');
 		$_orderData->virtuemart_vendor_id = $_cart->vendorId;
 		$_orderData->order_number = $this->generateOrderNumber($_usr->get('id'));
-		$_orderData->order_pass = $this->generateOrderNumber($_usr->get('id'),8);
+		$_orderData->order_pass = $this->generateOrderNumber($_usr->get('id'), 8);
 		//Note as long we do not have an extra table only storing addresses, the virtuemart_userinfo_id is not needed.
 		//The virtuemart_userinfo_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.
 		//the saved order should be an snapshot with plain data written in it.
@@ -549,21 +561,27 @@ class VirtueMartModelOrders extends VmModel {
 
 		foreach ($returnValues as $returnValue) {
 			if ($returnValue !== null) {
+                            $this->handleStockAFterStatusChanged($returnValue);
+
+				break; // This was the active plugin, so there's nothing left to do here.
+			}
+			// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
+		 
+                }
+	}
+        function handleStockAFterStatusChanged($newStatus) {
+
 				// We got a new order status; check if the stock should be updated
 				if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
-				if (VirtueMartModelOrderstatus::updateStockAfterStatusChange($returnValue) < 0) {// >0 is not possible for new orders
+				if (VirtueMartModelOrderstatus::updateStockAfterStatusChange($newStatus) < 0) {// >0 is not possible for new orders
 					if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
 					$productModel = new VirtueMartModelProduct();
 					foreach ($cart->products as $prod) {
 						$productModel->decreaseStockAfterSales ($prod->virtuemart_product_id, $prod->quantity);
 					}
 				}
-				break; // This was the active plugin, so there's nothing left to do here.
-			}
-			// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
-		 
-}
-	}
+
+        }
         /**
 	 * Handle the selected shipping method. If triggered to do so, this method will also
 	 * take care of the stock updates.

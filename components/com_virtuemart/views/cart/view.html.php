@@ -267,12 +267,12 @@ class VirtueMartViewCart extends JView {
 	}
 
 	private function prepareVendor(){
-
-		$vendor = $this->getModel('vendor','VirtuemartModel');
-		//$vendor->setId($this->_cart->vendorId);
-		$_vendor = $vendor->getVendor();
-		$vendor->addImages($_vendor);
-		$this->assignRef('vendor',$_vendor);
+             if (!class_exists('VirtueMartModelVendor'))
+            require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+		  $vendorModel = new VirtueMartModelVendor();
+                 $vendor = $vendorModel->getVendor();
+		$vendorModel->addImages($vendor);
+		$this->assignRef('vendor',$vendor);
 	}
 
 	private function prepareMailData(){

@@ -4,11 +4,11 @@ if (!defined('_VALID_MOS') && !defined('_JEXEC'))
     die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 /**
- * @version $Id: ps_paypal.php,v 1.4 2005/05/27 19:33:57 ei
  *
  * a special type of 'paypal ':
  * its fee depend on total sum
  * @author Max Milbers
+ * @author Valérie Isaksen
  * @version $Id$
  * @package VirtueMart
  * @subpackage payment
@@ -39,7 +39,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
      */
     function plgVMPaymentPaypal(& $subject, $config) {
         $this->_pelement = basename(__FILE__, '.php');
-        $this->_tablename='#__virtuemart_order_payment_' . $this->_pelement;
+        $this->_tablename = '#__virtuemart_order_payment_' . $this->_pelement;
         $this->_createTable();
         parent::__construct($subject, $config);
     }
@@ -50,7 +50,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
      */
     protected function _createTable() {
         $scheme = DbScheme::get_instance();
-        $scheme->create_scheme( $this->_tablename);
+        $scheme->create_scheme($this->_tablename);
         $schemeCols = array(
             'id' => array(
                 'type' => 'int'
@@ -64,10 +64,16 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
                 , 'null' => false
             )
             , 'payment_method_id' => array(
-                'type' => 'text'
+                'type' => 'int'
+                , 'length' => 11
                 , 'null' => false
             )
-             , 'notification' => array(
+            , 'paypal_custom' => array(
+                'type' => 'int'
+                , 'length' => 11
+                , 'null' => false
+            )
+            , 'notification' => array(
                 'type' => 'text'
                 , 'null' => false
             )
@@ -118,10 +124,11 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
      * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnConfirmedOrderStorePaymentData()
      * @author Oscar van Eijk
      */
-    function plgVmOnConfirmedOrderStorePaymentData($orderNr, $orderData, $priceData) {
+    function plgVmOnConfirmedOrderStorePaymentData($virtuemart_order_id, $orderData, $priceData) {
         return false;
     }
-        function plgVmAfterCheckoutDoPayment($orderNr, $orderData, $priceData) {
+
+    function plgVmAfterCheckoutDoPayment($virtuemart_order_id, $orderData, $priceData) {
 
         if (!$this->selectedThisPayment($this->_pelement, $orderData->virtuemart_paymentmethod_id)) {
             return null; // Another method was selected, do nothing
@@ -145,10 +152,9 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         $vendorID = 1; //$orderData->virtuemart_vendor_id; TODO
         $vendorCurrency = VirtueMartModelVendor::getVendorCurrency($vendorID);
         $merchant_email = $this->_getMerchantEmail($params);
-
+        $orderNumber = VirtueMartModelOrders::getOrderNumber($virtuemart_order_id);
         $testReq = $params->get('DEBUG') == 1 ? 'YES' : 'NO';
-//		dump($orderData,'info commande');
-//		dump($priceData,'info prix');
+        $custom = mt_rand();
 
         $post_variables = Array(
             'cmd' => '_ext-enter',
@@ -157,12 +163,13 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             'business' => $merchant_email,
             'receiver_email' => $merchant_email,
             'item_name' => JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') . ': ' . $orderNr,
-            'order_number' => $orderNr,
-            "order_id" => $orderNr,
-            "invoice" => $orderNr,
+            'order_number' => $orderNumber,
+            "order_id" => $orderNumber,
+            "invoice" => $orderNumber,
+            'custom' => $custom,
             "amount" => $priceData['billTotal'],
             "shipping" => $priceData['order_shipping'],
-            "currency_code" => $vendorCurrency,
+            "currency_code" => $vendorCurrency->currency_code_3,
             "address_override" => "1",
             "first_name" => $usrBT['first_name'],
             "last_name" => $usrBT['last_name'],
@@ -174,15 +181,16 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             "country" => ShopFunctions::getCountryByID($usrST['virtuemart_country_id'], 'country_3_code'),
             "email" => $usrBT['email'],
             "night_phone_b" => $usrBT['phone_1'],
-            "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentResponse&task=paymentresponse&pelement=' . $this->pelement . '&order_number=' . $orderNr),
-            "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentResponse&task=paymentnotification&pelement=' . $this->pelement . '&order_number=' . $orderNr),
-            "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart'), // TO VERIFY
+        "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=raymentresponsereceived&pelement=' . $this->pelement),
+            "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentnotification&pelement=' . $this->pelement),
+            "cancel_return" => JROUTE::_(JURI::root() .'index.php?option=com_virtuemart&view=paymentresponse&task=paymentcsercancel&pelement=' . $this->pelement),
             "undefined_quantity" => "0",
-            "test_ipn" => $params->get('debug'),
+            "ipn_test" => $params->get('debug'),
             "pal" => "NRUBJXESJTY24",
+            "image_url" => $vendor_image_url,
             "no_shipping" => "1",
             "no_note" => "1");
-        //warning HTPPS 		"cpp_header_image" => $vendor_image_url ,
+
 
         $qstring = '';
         foreach ($post_variables AS $k => $v) {
@@ -191,8 +199,9 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         }
 
         // Prepare data that should be stored in the database
-        $dbValues['virtuemart_order_id'] = $orderNr;
+        $dbValues['virtuemart_order_id'] = $virtuemart_order_id;
         $dbValues['payment_method_id'] = $orderData->virtuemart_paymentmethod_id;
+        $dbValues['paypal_custom'] = $custom;
         // TODO wait for PAYPAL return ???
         $this->writePaymentData($dbValues, '#__virtuemart_order_payment_' . $this->_pelement);
         // Send to PAYPAL TODO Sandbox choice ???
@@ -205,7 +214,10 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
     }
 
     function plgVmOnPaymentResponseReceived() {
-        return null;
+        if ($this->_pelement != $pelement) {
+            return null;
+        }
+        return true;
     }
 
     /*
@@ -218,29 +230,60 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
      */
 
     function plgVmOnPaymentNotification($pelement) {
-         if ($this->_selement != $pelement) {
+        if ($this->_pelement != $pelement) {
             return null;
         }
-        $data = JRequest::get('post');
-         foreach ($response as $key => $value) {
+        if (!class_exists('VirtueMartModelOrders'))
+            require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+        $paypal_data = JRequest::get('post');
 
-            $post_msg .=  $key . "=".$value."<br />";
+        foreach ($paypal_data as $key => $value) {
+            $post_msg .= $key . "=" . $value . "<br />";
         } // Notify string
-         $response_fields=array(
-                'notification' => $post_msg
-             );
-                $virtuemart_order_id=$data['invoice'];
-             $fp=fopen("paypal.text","a");
-
-fwrite($fp,  "plgVmOnPaymentResponseReceived" .$virtuemart_order_id ."\n");
-
-fclose($fp);
-
-           $this->updatePaymentData(  $response_fields,   $this->_tablename, 'virtuemart_order_id',$virtuemart_order_id );
-        if (!$this->_processIPN($data)) {
-            // send mail to admin??
+        $response_fields = array(
+            'notification' => $post_msg
+        );
+        $virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($paypal_data['invoice']);
+        if (!$virtuemart_order_id) {
+            // send email admin
+            exit;
         }
+        //$fp = fopen("paypal.text", "a");
 
+        //fwrite($fp, "plgVmOnPaymentResponseReceived" . $virtuemart_order_id . "\n");
+        // fwrite($fp, "plgVmOnPaymentResponseReceived" . $post_msg  . "\n");
+
+
+        $paramstring = $this->getVmPaymentParams($vendorId = 0, $orderData->virtuemart_paymentmethod_id);
+        $params = new JParameter($paramstring);
+
+        $this->updatePaymentData($response_fields, $this->_tablename, 'virtuemart_order_id', $virtuemart_order_id);
+        if (!$this->_processIPN($paypal_data)) {
+  //fwrite($fp, "status_canceled" .   "\n");
+            $new_state = $params->get('status_canceled');
+        } else {
+  //fwrite($fp, "status_OK" .   "\n");
+            $query = 'SELECT ' . $this->_tablename . '.`virtuemart_payment_id` FROM ' . $this->_tablename
+                    . ' LEFT JOIN #__virtuemart_orders ON   ' . $ordrePaymentTableName . '.`virtuemart_order_id` = #__virtuemart_orders.`virtuemart_order_id`
+                    WHERE #__virtuemart_orders.`order_number`=' . $paypal_data['invoice']
+                    . ' AND #__virtuemart_orders.`order_total` = ' . $paypal_data['mc_gross']
+                    // . ' AND #__virtuemart_orders.`order_currency` = ' . $paypal_data['mc_currency']
+                    . ' AND ' . $this->_tablename . '.`paypal_custom` = ' . $paypal_data['custom']
+
+            ;
+            $db = JFactory::getDBO();
+            $db->setQuery($query);
+            $result = $db->loadResult();
+            if (!$result) {
+               fwrite($fp, "qiery" .  $query. "\n");
+            }
+            $paramstring = $this->getVmPaymentParams($vendorId = 0, $orderData->virtuemart_paymentmethod_id);
+            $params = new JParameter($paramstring);
+            $new_state = $params->get('status_success');
+
+        }
+        //fclose($fp);
+        return $new_state;
     }
 
     /**
@@ -253,7 +296,7 @@ fclose($fp);
             return null; // Another method was selected, do nothing
         }
         $db = JFactory::getDBO();
-        $q = 'SELECT * FROM `' .$this->_tablename . '` '
+        $q = 'SELECT * FROM `' . $this->_tablename . '` '
                 . 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
         $db->setQuery($q);
         if (!($payment = $db->loadObject())) {
@@ -310,14 +353,13 @@ fclose($fp);
      * @return string Empty string if data is valid and an error message otherwise
      * @access protected
      */
-    function _processIPN($data) {
+    function _processIPN($paypal_data) {
         $secure_post = $this->params->get('secure_post', '0');
-        $paypal_url = $this->_getPaypalURL();
+        $paypal_url = $this->_getPaypalURL($this->params);
         // read the post from PayPal system and add 'cmd'
         $post_msg = 'cmd=_notify-validate';
-        $response = $_POST;
 
-        foreach ($response as $ipnkey => $ipnval) {
+        foreach ($paypal_data as $ipnkey => $ipnval) {
             if (get_magic_quotes_gpc ())
             // Fix issue with magic quotes
                 $ipnval = stripslashes($ipnval);
@@ -335,7 +377,9 @@ fclose($fp);
             }
             $post_msg .= "key " . $i++ . ": $ipnkey, value: $ipnval<br />";
         } // Notify string
-// check IPs??? done in VM1.1
+
+        $this->checkPaypalIps($paypal_data['ipn_test']);
+
         // post back to PayPal system to validate
         $header .= "POST /cgi-bin/webscr HTTP/1.0\r\n";
         $header .= "Content-Type: application/x-www-form-urlencoded\r\n";
@@ -350,17 +394,13 @@ fclose($fp);
         }
 
         if (!$fp) {
-            return JText::sprintf('COM_VIRTUEMART_PAYPAL_ERROR_POSTING_IPN', $errstr, $errno);
+            return JText::sprintf('COM_VIRTUEMART_PAYPAL_ERROR_POSTING_IPN', $errstr, $errno); // send email
         } else {
             fputs($fp, $header . $post_msg);
             while (!feof($fp)) {
                 $res = fgets($fp, 1024);
                 if (strcmp($res, 'VERIFIED') == 0) {
-                    // check the payment_status is Completed
-// check that txn_id has not been previously processed
-// check that receiver_email is your Primary PayPal email
-// check that payment_amount/payment_currency are correct
-// process payment
+
                     return true;
                 } elseif (strcmp($res, 'INVALID') == 0) {
                     return JText::_('COM_VIRTUEMART_PAYPAL_ERROR_IPN_VALIDATION');
@@ -380,6 +420,69 @@ fclose($fp);
         $url = $params->get('sandbox') ? 'www.sandbox.paypal.com' : 'www.paypal.com';
         $url = $url . '/cgi-bin/webscr';
         return $url;
+    }
+
+    /*
+     * CheckPaypalIPs
+     * can only be done of not against Sandbox
+     * From VM1.1
+     */
+
+    function checkPaypalIps($test_ipn) {
+        return;
+        // Get the list of IP addresses for www.paypal.com and notify.paypal.com
+        $paypal_iplist = array();
+        $paypal_iplist = gethostbynamel('www.paypal.com');
+        $paypal_iplist2 = array();
+        $paypal_iplist2 = gethostbynamel('notify.paypal.com');
+        $paypal_iplist3 = array();
+        $paypal_iplist3 = array('216.113.188.202', '216.113.188.203', '216.113.188.204', '66.211.170.66');
+        $paypal_iplist = array_merge($paypal_iplist, $paypal_iplist2, $paypal_iplist3);
+
+        $paypal_sandbox_hostname = 'ipn.sandbox.paypal.com';
+        $remote_hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+
+        $valid_ip = false;
+
+        if ($paypal_sandbox_hostname == $remote_hostname) {
+            $valid_ip = true;
+            $hostname = 'www.sandbox.paypal.com';
+        } else {
+            $ips = "";
+            // Loop through all allowed IPs and test if the remote IP connected here
+            // is a valid IP address
+            if (in_array($_SERVER['REMOTE_ADDR'], $paypal_iplist)) {
+                $valid_ip = true;
+            }
+            $hostname = 'www.paypal.com';
+        }
+
+        if (!$valid_ip) {
+
+
+            $mailsubject = "PayPal IPN Transaction on your site: Possible fraud";
+            $mailbody = "Error code 506. Possible fraud. Error with REMOTE IP ADDRESS = " . $_SERVER['REMOTE_ADDR'] . ".
+                        The remote address of the script posting to this notify script does not match a valid PayPal ip address\n
+            These are the valid IP Addresses: $ips
+
+            The Order ID received was: $invoice";
+            //vmMail( $mosConfig_mailfrom, $mosConfig_fromname, $debug_email_address, $mailsubject, $mailbody );
+
+            exit();
+        }
+
+        if (!($hostname == "www.sandbox.paypal.com" && $test_ipn == 1 )) {
+            $res = "FAILED";
+
+            $mailsubject = "PayPal Sandbox Transaction without Debug-Mode";
+            $mailbody = "Hello,
+		A fatal error occured while processing a paypal transaction.
+		----------------------------------
+		Hostname: $hostname
+		URI: $uri
+		A Paypal transaction was made using the sandbox without your site in Paypal-Debug-Mode";
+            //vmMail($mosConfig_mailfrom, $mosConfig_fromname, $debug_email_address, $mailsubject, $mailbody );
+        }
     }
 
 }

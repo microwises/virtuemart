@@ -308,7 +308,8 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 	}
 	
 	function migrateVmOneProducts(){
-
+            $updatesMigrationModel = $this->getModel('updatesMigration');
+             $updatesMigrationModel->removeAllVMData();
 		$data = JRequest::get('get');
 		JRequest::setVar($data['token'],'1','post');
 		JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getWord('task') );
@@ -319,7 +320,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 			return false;
 		}
 		
-		$this->_app = JFactory::getApplication(); dump($this->_app,'app');
+		$this->_app = JFactory::getApplication();
 		$this->_db = JFactory::getDBO();
 		
 		$this->_test = false;
@@ -330,13 +331,13 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		$this->_portMedia();
 		
 		$this->_categoryPorter();
-
+                $this->_manufacturerCategoryPorter();
 		$this->_portManufacturer();
 		
 		//Now we have the new ids for the medias,categories,taxes,discounts and manufacturers now lets port the products
 		$this->_productPorter();
 		
-		dump($this->_oldToNew,'$this->_oldToNew');
+		//dump($this->_oldToNew,'$this->_oldToNew');
 		$msg = 'Migration worked smoothed and finished';
 		$this->setRedirect($this->redirectPath,$msg);	
 	}
@@ -352,7 +353,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		$this->_db->setQuery($q);
 		$oldProducts = $this->_db->loadAssocList();
 		if(empty($oldProducts)) $this->_app->enqueueMessage('_productPorter '.$this->_db->getErrorMsg() );
-		dump($oldProducts,'$oldProducts');
+		//dump($oldProducts,'$oldProducts');
 		return $ok;
 	}
 	
@@ -365,7 +366,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		$oldCategories = $this->_db->loadAssocList();
 		
 		$this->_app->enqueueMessage($this->_db->getQuery());
-		dump($oldCategories,'_categoryPorter $oldCategories');
+		//dump($oldCategories,'_categoryPorter $oldCategories');
 
 		$oldtonewCats = array();
 		
@@ -408,7 +409,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		$q ='SELECT * FROM #__vm_category_xref ';
 		$this->_db->setQuery($q);
 		$oldCategoriesX = $this->_db->loadAssocList();
-		dump($oldCategoriesX,'_categoryPorter $oldCategoriesX');
+		//dump($oldCategoriesX,'_categoryPorter $oldCategoriesX');
 		
 		$category = array();
 		$new_id = 0;		
@@ -439,13 +440,68 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		
 		
 		if($ok) $msg = 'Looks everything worked correct, migrated '.count($this->_oldToNew->cats).' categories ';
-		else $msg = 'Seems there was an error porting '.count($this->_oldToNew->cats).' categories ';
+		else {
+                    $msg = 'Seems there was an error porting '.count($this->_oldToNew->cats).' categories ';
+                    $msg .= $this->getErrors();
+                }
 		$this->_app -> enqueueMessage($msg);
 		
 		return $ok;
 	}
 	
-	private function _portManufacturer(){
+	private function _manufacturerCategoryPorter(){
+		
+		$ok = true;
+
+		$q ='SELECT * FROM #__vm_manufacturer_category';
+		$this->_db->setQuery($q);
+		$oldMfCategories = $this->_db->loadAssocList();
+		
+		$this->_app->enqueueMessage($this->_db->getQuery());
+		//dump($oldCategories,'_categoryPorter $oldCategories');
+                if(!class_exists('TableManufacturercategories')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'manufacturercategories.php');
+		$oldtonewMfCats = array();
+		
+		$mfcategory = array();
+		foreach($oldMfCategories as $oldmfcategory){
+				
+			//$category['virtuemart_category_id'] = $oldcategory['category_id'];
+			 
+			$mfcategory['mf_category_name'] = $oldmfcategory['mf_category_name'];
+			$mfcategory['mf_category_desc'] = $oldmfcategory['mf_category_desc'];
+		 
+			$table = JTable::getInstance('manufacturercategories', 'Table', array() );
+
+			if(!$this->_test){
+				$mfcategory = $table->bindChecknStore($mfcategory);
+                                $errors = $table->getErrors();
+				foreach($errors as $error){
+					$this->setError($error);
+					$ok = false;
+				}
+				$oldtonewMfCats[$oldmfcategory['mf_category_id']] = $mfcategory['virtuemart_manufacturercategories_id'];
+				unset($mfcategory['virtuemart_manufacturercategories_id']);
+			} else {
+				$oldtonewMfCats[$oldmfcategory['category_id']] = $oldmfcategory['category_id'];
+			}
+			
+		}
+
+		$this->_oldToNew->mfcats = $oldtonewMfCats;
+		
+
+		
+		
+		if($ok) $msg = 'Looks everything worked correct, migrated '.count($this->_oldToNew->mfcats).' manufacturer categories ';
+		else {
+                    $msg = 'Seems there was an error porting '.count($this->_oldToNew->mfcats).' manufacturer categories ';
+                    $msg .= $this->getErrors();
+                }
+		$this->_app -> enqueueMessage($msg);
+		
+		return $ok;
+	}
+        private function _portManufacturer(){
 
 		$ok= true;
 
@@ -461,7 +517,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 			$manu['mf_name'] = $oldmanu['mf_name'];
 			$manu['mf_email'] = $oldmanu['mf_email'];
 			$manu['mf_desc'] = $oldmanu['mf_desc'];
-			$manu['virtuemart_manufacturercategories_id'] = $oldmanu['mf_category_id'];
+			$manu['virtuemart_manufacturercategories_id'] = $this->_oldToNew->mfcats[$oldmanu['mf_category_id']];
 			$manu['mf_url'] = $oldmanu['mf_url'];
 			$manu['published'] = 1;
 				
@@ -471,19 +527,28 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 			//$table = $this->getTable('manufacturers');
 
 			if(!$this->_test){
-				$category = $table->bindChecknStore($category);
+				$manu = $table->bindChecknStore($manu);
 		    	$errors = $table->getErrors();
 				foreach($errors as $error){
 					$this->setError($error);
 					$ok = false;
 				}
-				$oldtonewManus[$oldmanu['manufacturer_id']] = $category['virtuemart_manufacturer_id'];
+				$oldtonewManus[$oldmanu['manufacturer_id']] = $manu['virtuemart_manufacturer_id'];
+                                unset($manu['virtuemart_manufacturer_id']);
 			} else {
 				$oldtonewManus[$oldmanu['manufacturer_id']] = $oldmanu['manufacturer_id'];
-			}					
+			}
+
+                        $this->_oldToNew->manus = $oldtonewManus;
 		}
 		
-		return $ok;
+
+		if($ok) $msg = 'Looks everything worked correct, migrated '.count($this->_oldToNew->manus).' manufacturers ';
+		else {
+                    $msg = 'Seems there was an error porting '.count($this->_oldToNew->manus).' manufacturers ';
+                    $msg .= $this->getErrors();
+                }
+		$this->_app -> enqueueMessage($msg);
 	}
 	
 	private function _portMedia(){

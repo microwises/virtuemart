@@ -22,17 +22,17 @@ else {
 }
 ?>
 
-Welcome to <?php echo $this->vendor->vendor_store_name . $li;
+<?php echo JText::_('COM_VIRTUEMART_WELCOME')." ".$this->vendor->vendor_store_name . $li;
 
-if(!empty($this->activationLink)) echo 'Please use this link to activate your account: '.JURI::root().$this->activationLink .$li; ?>
+if(!empty($this->activationLink)) echo  JText::_('COM_VIRTUEMART_LINK_ACTIVATE_ACCOUNT')." ".JURI::root().$this->activationLink .$li; ?>
 
 Your Registration data <?php echo $li ?>
 
-Your loginname: <?php echo $this->_models['user']->_data->JUser->username .$li; ?>
-your displayed name: <?php echo $this->_models['user']->_data->JUser->name .$li;  ?>
-your password: <?php echo $this->password .$li; ?>
+<?php echo  JText::_('COM_VIRTUEMART_YOUR_LOGINAME').": ".$this->_models['user']->_data->JUser->username .$li; ?>
+<?php echo  JText::_('COM_VIRTUEMART_YOUR_DISPLAYED_NAME').": ".$this->_models['user']->_data->JUser->name .$li;  ?>
+<?php echo  JText::_('COM_VIRTUEMART_YOUR_PASSWORD').": ".$this->password .$li; ?>
 
-Your entered adress <?php echo $li ?>
+<?php  echo JText::_('COM_VIRTUEMART_YOUR_ADDRESS').": ".  $li ?>
 <?php foreach($this->userFields['fields'] as $userField){
 	if(!empty($userField['value']) && $userField['name']!='user_is_vendor') echo $userField['title'].' '.$userField['value'].$li ;
 }

@@ -237,7 +237,7 @@ defined('_JEXEC') or die('Restricted access');
 		if (VmConfig::get('coupons_enable')) {
 		?>
 			<tr class="sectiontableentry2">
-				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editcoupon'), JText::_('COM_VIRTUEMART_CART_EDIT_COUPON')); ?> </td>
+				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_coupon'), JText::_('COM_VIRTUEMART_CART_EDIT_COUPON')); ?> </td>
 				<?php if (!empty($this->cartData['couponCode'])) { ?>
 					<td colspan="2" align="left"><?php
 						echo $this->cartData['couponCode'] . ' (' . $this->cartData['couponDescr'] . ')';

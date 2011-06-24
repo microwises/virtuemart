@@ -21,15 +21,15 @@ if(VmConfig::get('html_email',true)){
 }
 ?>
 
-A new shopper registered <?php echo $this->_models['user']->_data->JUser->name .$li; ?>
+  <?php echo JText::_('COM_VIRTUEMART_NEW_SHOPPER').' '  .$this->_models['user']->_data->JUser->name .$li; ?>
 
-The Registration data <?php echo $li; ?>
+ <?php   echo JText::_('COM_VIRTUEMART_REGISTRATION_DATA')." ".$li; ?>
 
-loginname: <?php echo $this->_models['user']->_data->JUser->username .$li; ?>
-displayed name: <?php echo $this->_models['user']->_data->JUser->name .$li; ?>
+<?php echo JText::_('COM_VIRTUEMART_LOGINNAME')." ".$this->_models['user']->_data->JUser->username .$li; ?>
+<?php echo JText::_('COM_VIRTUEMART_DISPLAYED_NAME')." ".$this->_models['user']->_data->JUser->name .$li; ?>
 
 
-Entered adress <?php echo $li ?>
+<?php echo JText::_('COM_VIRTUEMART_ENTERED_ADRESS')." ".  $li ?>
 <?php foreach($this->userFields['fields'] as $userField){
 	if(!empty($userField['value']) && $userField['name']!='user_is_vendor') echo $userField['title'].' '.$userField['value'].$li ;
 }

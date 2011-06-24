@@ -31,7 +31,7 @@ abstract class vmPaymentPlugin extends JPlugin {
     private $_payment_name = '';
     /** var Must be overriden in every plugin file by adding this code to the constructor: $this->_pelement = basename(__FILE, '.php'); */
     var $_pelement = '';
-     var $_tablename = '';
+    var $_tablename = '';
     /**
      * @var array List with all carriers the have been implemented with the plugin in the format
      * id => name
@@ -286,7 +286,7 @@ abstract class vmPaymentPlugin extends JPlugin {
      */
     protected function getPaymentMethodForOrder($_id) {
         $_db = JFactory::getDBO();
-        $_q = 'SELECT `payment_method_id` FROM #__virtuemart_orders WHERE virtuemart_order_id = '.(int)$_id;
+        $_q = 'SELECT `payment_method_id` FROM #__virtuemart_orders WHERE virtuemart_order_id = ' . (int) $_id;
         $_db->setQuery($_q);
         if (!($_r = $_db->loadAssoc())) {
             return -1;
@@ -304,7 +304,7 @@ abstract class vmPaymentPlugin extends JPlugin {
         $_db = JFactory::getDBO();
         $_q = 'SELECT ' . VM_DECRYPT_FUNCTION . "(secret_key, '" . ENCODE_KEY . "') as passkey "
                 . 'FROM #__virtuemart_paymentmethods '
-                . "WHERE virtuemart_paymentmethod_id='" . (int)$this->_virtuemart_paymentmethod_id . "'";
+                . "WHERE virtuemart_paymentmethod_id='" . (int) $this->_virtuemart_paymentmethod_id . "'";
         $_db->setQuery($_q);
         $_r = $_db->loadAssoc(); // TODO Error check
         return $_r['passkey'];
@@ -323,16 +323,16 @@ abstract class vmPaymentPlugin extends JPlugin {
         if (VmConfig::isJ15()) {
             $q = 'SELECT COUNT(*) AS c 
             		FROM #__virtuemart_paymentmethods AS vm , #__plugins AS j 
-            		WHERE vm.virtuemart_paymentmethod_id="'.(int)$pid.'" 
+            		WHERE vm.virtuemart_paymentmethod_id="' . (int) $pid . '"
             		AND   vm.payment_jplugin_id = j.id 
-					AND   j.element = "'.$db->getEscaped($pelement).'"';
+					AND   j.element = "' . $db->getEscaped($pelement) . '"';
         } else {
             $q = 'SELECT COUNT(*) AS c 
             		FROM #__virtuemart_paymentmethods AS vm 
             		, #__extensions AS j 
-            		WHERE vm.virtuemart_paymentmethod_id="'.(int)$pid.'" 
+            		WHERE vm.virtuemart_paymentmethod_id="' . (int) $pid . '"
             		AND   vm.payment_jplugin_id = j.extension_id 
-            		AND   j.element = "'.$db->getEscaped($pelement).'"';
+            		AND   j.element = "' . $db->getEscaped($pelement) . '"';
         }
 
         $db->setQuery($q);
@@ -352,9 +352,8 @@ abstract class vmPaymentPlugin extends JPlugin {
             		WHERE j.`element` = "' . $db->getEscaped($this->_pelement) . '" 
                     AND   v.`payment_jplugin_id` = j.`id` 
                     AND   v.`published` = "1"
-                    AND  (v.`virtuemart_vendor_id` = "' . (int)$vendorId . '" 
+                    AND  (v.`virtuemart_vendor_id` = "' . (int) $vendorId . '"
                     OR   v.`virtuemart_vendor_id` = "0") ';
-            
         } else {
             $q = 'SELECT v.`*`    '
                     . 'FROM   #__virtuemart_paymentmethods AS v '
@@ -363,7 +362,7 @@ abstract class vmPaymentPlugin extends JPlugin {
                     . 'AND j.`element` = "' . $db->getEscaped($this->_pelement) . '" '
                     . 'AND   v.`published` = "1" '
                     . 'AND   v.`payment_jplugin_id` = j.`extension_id` '
-                    . 'AND  (v.`virtuemart_vendor_id` = "' . (int)$vendorId . '" '
+                    . 'AND  (v.`virtuemart_vendor_id` = "' . (int) $vendorId . '" '
                     . ' OR   v.`virtuemart_vendor_id` = "0") '
             ;
         }
@@ -388,7 +387,7 @@ abstract class vmPaymentPlugin extends JPlugin {
     function getThisPaymentName($payment_id) {
         $db = JFactory::getDBO();
 
-        $q = 'SELECT `payment_name` FROM #__virtuemart_paymentmethods WHERE `virtuemart_paymentmethod_id`="'.(int)$payment_id.'"';
+        $q = 'SELECT `payment_name` FROM #__virtuemart_paymentmethods WHERE `virtuemart_paymentmethod_id`="' . (int) $payment_id . '"';
 
         $db->setQuery($q);
         return $db->loadResult(); // TODO Error check
@@ -410,7 +409,7 @@ abstract class vmPaymentPlugin extends JPlugin {
         $db = JFactory::getDBO();
 
         $q = 'SELECT `payment_params` FROM #__virtuemart_paymentmethods 
-        		WHERE `virtuemart_paymentmethod_id`="'.$payment_id.'" ';
+        		WHERE `virtuemart_paymentmethod_id`="' . $payment_id . '" ';
         $db->setQuery($q);
         return $db->loadResult();
     }
@@ -435,9 +434,9 @@ abstract class vmPaymentPlugin extends JPlugin {
         }
         $_db = JFactory::getDBO();
         $_q = 'INSERT INTO `' . $_table . '` ('
-                . implode(',', $_db->getEscaped($_cols))
+                . implode(',',  $_cols)
                 . ') VALUES ('
-                . implode(',', $_db->getEscaped($_vals))
+                . implode(',', $_vals)
                 . ')';
         $_db->setQuery($_q);
         if (!$_db->query()) {
@@ -464,10 +463,13 @@ abstract class vmPaymentPlugin extends JPlugin {
             $fields[] = "`$col`" . "=" . "'$val'";
         }
         $db = JFactory::getDBO();
-        $q = 'UPDATE `' . $table . '` SET '
-                . implode(',', $_db->getEscaped($fields))
-                . ' WHERE `' . $where_key . '` =' . $where_value
-        ;
+        $q = 'UPDATE `' . $table . '` SET ';
+        foreach ($values as $key => $value) {
+            $q .= $db->getEscaped($key) .'="' .  $value . '",';
+        }
+        $q = substr($q, 0, strlen($q) - 1);
+        $q .= ' WHERE `' . $where_key . '` =' . $where_value;
+
 
         $db->setQuery($q);
         if (!$db->query()) {
@@ -484,24 +486,16 @@ abstract class vmPaymentPlugin extends JPlugin {
         }
 
         $params = new JParameter($payment->payment_params);
-		
-/*		VirtueMartCart::getCart(false);
-		dump($cart,'cart');
-        if (!class_exists('calculationHelper'))
-            require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-        $calculator = calculationHelper::getInstance();
-        $variantmods = $calculator->calculatePaymentPrice($payment->virtuemart_paymentmethod_id);
-        $payment_discount = $variantmods['salesPricePayment'] ? " (" . $variantmods['salesPricePayment'] . ")" : "";
-   		//$discountDisplay = $currency->priceDisplay($discount);*/
 
-        $payment_name = $payment->payment_name ;//.$payment_discount;
-       
+         
+        $payment_name = $payment->payment_name; //.$payment_discount;
+
 
         $html = '<input type="radio" name="virtuemart_paymentmethod_id" value="' . $payment->virtuemart_paymentmethod_id . '" ' . $checked . '>' . $payment_name;
 
- /*       if ($discount) {
-            $html .=" (" . "get discount amoutn??".$discountDisplay . ")";
-        }*/
+        /*       if ($discount) {
+          $html .=" (" . "get discount amoutn??".$discountDisplay . ")";
+          } */
         $html .="</label><br/>\n";
         return $html;
     }
