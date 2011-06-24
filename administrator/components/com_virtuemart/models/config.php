@@ -297,7 +297,7 @@ class VirtueMartModelConfig extends JModel {
 //		$confData['config'] = $config->toString();
 		
 		$confTable = $this->getTable('configs');
-    	if (!$confTable->bindChecknStore($data)) {
+    	if (!$confTable->bindChecknStore($confData)) {
 			$this->setError($confTable->getError());
 		}
 		

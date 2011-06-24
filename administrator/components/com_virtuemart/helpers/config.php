@@ -43,7 +43,7 @@ class VmConfig{
 	 * @author Max Milbers
 	 */
 	public function loadConfig() {
-		$app = JFactory::getApplication();
+		//$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$query = 'SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1"';
 		$db->setQuery($query);
@@ -53,7 +53,6 @@ class VmConfig{
 			$config = self::installVMconfig();
 			$db->setQuery($query);
 			$config = $db->loadResult();
-			dump($config,'loadConfig config taken from the file ');
 		}
 		
 		//We did a db->getEscpaped for storing, but load it manually, so we have to exchange the \n against the controllsign
@@ -61,10 +60,10 @@ class VmConfig{
 			$config = str_replace(array('\n'), array("\n"),$config);
 		}
 		
-		$app -> enqueueMessage('my config '.$config);
+		//$app -> enqueueMessage('my config '.$config);
 		
 		if ($config) {
-			$jpConfig = new JParameter($config);dump($jpConfig->getParams(),'loaded JParameter conf');
+			$jpConfig = new JParameter($config);
 			$session = JFactory::getSession();
 			$session->clear('vmconfig');
 			$session->set('vmconfig', $jpConfig,'vm');
@@ -105,6 +104,7 @@ class VmConfig{
 
 			if ($params) {
 				//$params = new JParameter($config);
+				//$paramsObj = unserialize($params);
 				$value = $params->get($key);
 			}
 			else {

@@ -293,8 +293,6 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install.sql';
 		$this->execSQLFile($filename);
 
-		//$this->installVMconfig();
-
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_essential_data.sql';
 		$this->execSQLFile($filename);
 
@@ -312,8 +310,6 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install.sql';
 		$this->execSQLFile($filename);
-
-		//$this->installVMconfig();
 
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_essential_data.sql';
 		$this->execSQLFile($filename);

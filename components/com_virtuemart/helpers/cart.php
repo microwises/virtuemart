@@ -56,8 +56,6 @@ class VirtueMartCart  {
 
     private function __construct() {
 
-        self::setCartIntoSession();
-
     }
 
 
@@ -79,15 +77,15 @@ class VirtueMartCart  {
 		if(!empty($cartTemp) ){
             $cart = unserialize($cartTemp);
 			if($deleteValidation){
-                $cart->setDataValidation();
-                //$cart->setPreferred();
+				$cart->setDataValidation();
             }
 
         } else {
             $cart = new VirtueMartCart;
 
         }
-        $cart->setPreferred();
+		$cart->setPreferred();
+		$cart->setCartIntoSession();
         return $cart;
     }
 
