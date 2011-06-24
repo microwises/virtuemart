@@ -394,7 +394,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$db = JFactory::getDBO();
 		$config = JFactory::getConfig();
 
-	    $prefix = $config->getValue('config.dbprefix').'vm_%';
+/*	    $prefix = $config->getValue('config.dbprefix').'vm_%';
 		$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
 		if (!$tables = $db->loadResultArray()) {
 		    $this->setError = $db->getErrorMsg();
@@ -414,6 +414,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		    	$app->enqueueMessage('Error drop virtuemart table ' . $table);
 		    }
 		}
+*/
 
 		$prefix = $config->getValue('config.dbprefix').'virtuemart_%';
 		$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
