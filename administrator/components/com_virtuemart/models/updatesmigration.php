@@ -255,7 +255,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
    	$errors = $usermodel->getErrors();
    	$msg ='';
-	if(empty($errors)) $msg = 'user id of the mainvendor is '.$sid;
+	if(empty($errors)) $msg = 'user id of the mainvendor is '.$fields['virtuemart_vendor_id'];
 	foreach($errors as $error){
 //		$msg .= ($error).'<br />';
 		$this->setError($error);

@@ -41,19 +41,29 @@ class VmConfig
 	 *
 	 * @author RickG
 	 */
-	private function loadConfig() {
+	public function loadConfig() {
 		$db = JFactory::getDBO();
 		$query = 'SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1"';
 		$db->setQuery($query);
 		$config = $db->loadResult();
-
+		dump($config,'loadConfig There must be something here ');
 		if(empty($config)){
 			$config = self::installVMconfig();
+			$db->setQuery($query);
 			$config = $db->loadResult();
+			dump($config,'loadConfig config taken from the file ');
 		}
-		$session = JFactory::getSession();
-		$session->clear('vmconfig');
-		$session->set('vmconfig', $config,'vm');
+		
+		if ($config) {
+			$jpConfig = new JParameter($config);dump($jpConfig,'loaded JParameter conf');
+			$session = JFactory::getSession();
+			$session->clear('vmconfig');
+			$session->set('vmconfig', $jpConfig,'vm');
+			
+			return $jpConfig;
+		}
+		
+		return 'Was not able to create config';
 	}
 	
 	// Get always the same VmConfig 
@@ -64,7 +74,7 @@ class VmConfig
 		return self::$_instance;
 	}
 
-
+	
 	/**
 	 * Find the configuration value for a given key
 	 *
@@ -78,14 +88,14 @@ class VmConfig
 		if ($key) {
 			jimport('joomla.html.parameter');
 			$session = JFactory::getSession();
-			$config = $session->get('vmconfig', '','vm');
-			if (!$config) {
+			$params = $session->get('vmconfig', '','vm');
+			if (!$params) {
 				VmConfig::loadConfig();
-				$config = $session->get('vmconfig', '','vm');
+				$params = $session->get('vmconfig', '','vm');
 			}
 
-			if ($config) {
-				$params = new JParameter($config);
+			if ($params) {
+				//$params = new JParameter($config);
 				$value = $params->get($key);
 			}
 			else {
@@ -354,7 +364,7 @@ class VmConfig
 		}
 
 		if ($_section == '[CONFIG]') {
-			$_qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES (null, '$_value')";
+			$_qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES (1, '$_value')";
 		}
 		// Other sections can be implemented here
 

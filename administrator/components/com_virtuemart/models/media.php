@@ -247,7 +247,6 @@ class VirtueMartModelMedia extends VmModel {
 		jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($data['virtuemart_media_id']);
 
-		
 		$table = $this->getTable($type.'_medias');
 		// Bind the form fields to the country table
 		$data = $table->bindChecknStore($data);

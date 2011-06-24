@@ -266,33 +266,6 @@ class VirtueMartModelConfig extends JModel {
 	return $titles;
     }
 
-	/**
-	 * Retrieve the configuration record
-	 *
-	 * @author RickG
-	 * @author Oscar van Eijk
-	 * @return object A JParameter of the configuration, null when not found
-	 */
-	function getConfig(){
-		
-		$db = JFactory::getDBO();
-
-		$query = "SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = 1";
-		$db->setQuery($query);
-		$config = $db->loadResult();
-		if ($config) {
-			return new JParameter($config);
-		} else {
-			VmConfig::installVMconfig();
-			$config = $db->loadResult();
-			if($config) return $config;
-			
-			JError::raiseWarning(E_WARNING,'There is no configuration in the database yet. This messages should not appear again once you configured youir shop for the first time.');
-			// ... which is nonsense since is has been loaded during install (vm_config.dat), so probably there is in error...
-			return null;
-		}
-	}
-
 
     /**
      * Save the configuration record
@@ -303,7 +276,31 @@ class VirtueMartModelConfig extends JModel {
     function store($data) {
 
     	JRequest::checkToken() or jexit( 'Invalid Token, in store config');
-		if ($data) {
+
+		//ATM we want to ensure that only one config is used
+		
+		$config = VmConfig::getInstance()->loadConfig();
+		$config->bind($data);dump($config,'$config');
+
+		$confData = array();
+		$query = 'SELECT * FROM `#__virtuemart_configs`';
+		$this->_db->setQuery($query);
+		if($this->_db->loadResult()){
+			$confData['virtuemart_config_id'] = 1;
+		} else {
+			$confData['virtuemart_config_id'] = 0;
+		}
+		
+		//if($confData['virtuemart_config_id']>1)$confData['virtuemart_config_id'] = 1;
+		
+		$confData['config'] = $this->_db->getEscaped($config->toString());
+		
+		$confTable = $this->getTable('configs');
+    	if (!$confTable->bindChecknStore($data)) {
+			$this->setError($confTable->getError());
+		}
+		
+/*		if ($data) {
 		    $curConfigParams = $this->getConfig();
 		    $curConfigParams->bind($data);
 
@@ -317,7 +314,7 @@ class VirtueMartModelConfig extends JModel {
 		} else {
 		    $this->setError('No configuration parameters to save!');
 		    return false;
-		}
+		}*/
 		// Load the newly saved values into the session.
 		VmConfig::getInstance();
 
@@ -325,17 +322,18 @@ class VirtueMartModelConfig extends JModel {
     }
 
     function setDangerousToolsOff(){
+    	$config = VmConfig::getInstance()->loadConfig();
 
-    	$config = $this->getConfig();
     	$config -> set('dangeroustools',0);
 
-	    $db = JFactory::getDBO();
-	    $query = 'UPDATE `#__virtuemart_configs` SET `config` = "' . $db->getEscaped($config->toString()) .'" WHERE virtuemart_config_id ="1"' ;
-	    $db->setQuery($query);
-	    if (!$db->query()) {
-			$this->setError($table->getError());
-			return false;
-	    }
+		//ATM we want to ensure that only one config is used
+		$data['virtuemart_config_id'] = 1;
+		
+		$data['config'] = $this->_db->getEscaped($config->toString());
+		$confTable = $this->getTable('configs');
+    	if (!$confTable->bindChecknStore($data)) {
+			$this->setError($confTable->getError());
+		}
 
     }
 }
