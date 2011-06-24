@@ -131,8 +131,8 @@ defined('_JEXEC') or die('Restricted access');
 			$product_rows[$i]['product_sku'] = $product->product_sku;
 
 			/* Product PRICE */
-			$product_rows[$i]['prices'] = $this->prices[$priceKey]['salesPrice'];
-
+			$product_rows[$i]['salesPrice'] = $this->prices[$priceKey]['salesPrice'];
+                        $product_rows[$i]['basePriceWithTax'] = $this->prices[$priceKey]['basePriceWithTax'];
 			$product_rows[$i]['subtotal'] = $this->prices[$priceKey]['subtotal'];
 			$product_rows[$i]['subtotal_tax_amount'] = $this->prices[$priceKey]['subtotal_tax_amount'];
 			$product_rows[$i]['subtotal_discount'] = $this->prices[$priceKey]['subtotal_discount'];
@@ -168,37 +168,54 @@ defined('_JEXEC') or die('Restricted access');
 			<tr>
 				<th align="left"><?php echo JText::_('COM_VIRTUEMART_CART_NAME') ?></th>
 				<th align="left" ><?php echo JText::_('COM_VIRTUEMART_CART_SKU') ?></th>
-				<th align="center" width="60px" ><?php echo JText::_('COM_VIRTUEMART_CART_PRICE') ?></th>
+ 				<th align="center" width="60px" ><?php echo JText::_('COM_VIRTUEMART_CART_PRICE') ?></th>
 				<th align="right" width="140px" ><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY') ?> / <?php echo JText::_('COM_VIRTUEMART_CART_ACTION') ?></th>
-				<th align="right" width="70px"><?php echo JText::_('COM_VIRTUEMART_CART_SUBTOTAL') ?></th>
-				<th align="right" width="60px"><?php echo JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') ?></th>
-				<th align="right" width="60px"><?php echo JText::_('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></th>
+
+                                        <?php if ( VmConfig::get('show_tax')) { ?>
+                                <th align="right" width="60px"><?php  echo "<span  style='color:gray'>".JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') ?></th>
+				<?php } ?>
+                                <th align="right" width="60px"><?php echo "<span  style='color:gray'>".JText::_('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></th>
 				<th align="right" width="70px"><?php echo JText::_('COM_VIRTUEMART_CART_TOTAL') ?></th>
 			</tr>
 		<?php foreach( $product_rows as $prow ) { ?>
 			<tr valign="top" class="<?php echo $prow['row_color'] ?>">
 				<td align="left" ><?php echo $prow['product_name'].$prow['customfieldsCart']; ?></td>
 				<td align="left" ><?php echo $prow['product_sku'] ?></td>
-				<td align="center" ><?php echo $prow['prices'] ?></td>
+				<td align="center" >
+
+                                <?php if ($prow['basePriceWithTax'] != $prow['salesPrice'] ) {
+                                        echo '<span style="text-decoration:line-through">'.$prow['basePriceWithTax'] .'</span><br />' ;
+                                }  
+                                echo $prow['salesPrice'] ;
+
+                                    
+                                    ?>
+                                </td>
 				<td align="right" ><?php echo $prow['update_form'] ?>
 					<?php echo $prow['delete_form'] ?>
 				</td>
-				<td colspan="1" align="right"><?php echo $prow['subtotal'] ?></td>
-				<td align="right"><?php echo $prow['subtotal_tax_amount'] ?></td>
-				<td align="right"><?php echo $prow['subtotal_discount'] ?></td>
+
+                                <?php if ( VmConfig::get('show_tax')) { ?>
+				<td align="right"><?php echo "<span  style='color:gray'>".$prow['subtotal_tax_amount']."</span>" ?></td>
+                                <?php } ?>
+				<td align="right"><?php echo "<span  style='color:gray'>".$prow['subtotal_discount']."</span>" ?></td>
 				<td colspan="1" align="right"><?php echo $prow['subtotal_with_tax'] ?></td>
 			</tr>
 		<?php } ?>
 		<!--Begin of SubTotal, Tax, Shipping, Coupon Discount and Total listing -->
+                  <?php if ( VmConfig::get('show_tax')) { $colspan=3; } else { $colspan=2; } ?>
 		<tr>
 			<td colspan="4">&nbsp;</td>
-			<td colspan="4"><hr /></td>
+                       
+			<td colspan="<?php echo $colspan ?>"><hr /></td>
 		</tr>
 		  <tr class="sectiontableentry1">
 			<td colspan="4" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_PRICES_TOTAL'); ?></td>
-			<td align="right"><?php echo $this->prices['basePrice'] ?></td>
-			<td align="right"><?php echo $this->prices['taxAmount'] ?></td>
-			<td align="right"><?php echo $this->prices['discountAmount'] ?></td>
+
+                        <?php if ( VmConfig::get('show_tax')) { ?>
+			<td align="right"><?php echo "<span  style='color:gray'>".$this->prices['taxAmount']."</span>" ?></td>
+                        <?php } ?>
+			<td align="right"><?php echo "<span  style='color:gray'>".$this->prices['discountAmount']."</span>" ?></td>
 			<td align="right"><?php echo $this->prices['salesPrice'] ?></td>
 		  </tr>
 
@@ -206,8 +223,10 @@ defined('_JEXEC') or die('Restricted access');
 		foreach($this->cartData['dBTaxRulesBill'] as $rule){ ?>
 			<tr class="sectiontableentry<?php $i ?>">
 				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
-				<td> </td>
+
+                                   <?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"> </td>
+                                <?php } ?>
 				<td align="right"><?php echo -$this->prices[$rule['virtuemart_calc_id'].'Diff'];  ?> </td>
 				<td align="right"><?php echo $this->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
 			</tr>
@@ -223,8 +242,10 @@ defined('_JEXEC') or die('Restricted access');
 					<td colspan="2" align="left"><?php
 						echo $this->cartData['couponCode'] . ' (' . $this->cartData['couponDescr'] . ')';
 					?> </td>
-					<td align="right"><?php echo $this->prices['couponValue']; ?> </td>
+
+                                        <?php if ( VmConfig::get('show_tax')) { ?>
 					<td align="right"><?php echo $this->prices['couponTax']; ?> </td>
+                                        <?php } ?>
 					<td align="right">&nbsp;</td>
 					<td align="right"><?php echo $this->prices['salesPriceCoupon']; ?> </td>
 				<?php } else { ?>
@@ -240,8 +261,10 @@ defined('_JEXEC') or die('Restricted access');
                                 <?php } else { ?>
                                     <td colspan="4" align="left"><?php echo $this->cartData['shippingName']; ?> </td>
                                  <?php } ?>
-				<td align="right"><?php echo $this->prices['shippingValue']; ?> </td>
-				<td align="right"><?php echo $this->prices['shippingTax']; ?> </td>
+				 
+                                     <?php if ( VmConfig::get('show_tax')) { ?>
+				<td align="right"><?php echo "<span  style='color:gray'>".$this->prices['shippingTax']."</span>"; ?> </td>
+                                <?php } ?>
 				<td></td>
 				<td align="right"><?php echo $this->prices['salesPriceShipping']; ?> </td>
 		</tr>
@@ -250,9 +273,11 @@ defined('_JEXEC') or die('Restricted access');
 				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment'), JText::_('COM_VIRTUEMART_CART_EDIT_PAYMENT'),'class="highlight"'); else JText::_('COM_VIRTUEMART_CART_PAYMENT'); ?> </td>
 		<?php	/*	<td colspan="2" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL') ?> </td> */?>
 				<td colspan="2" align="left"><?php echo $this->cartData['paymentName']; ?> </td>
-				<td align="right"><?php //echo $this->prices['paymentValue']; ?> </td>
+
+                                     <?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"><?php //echo $this->prices['paymentTax']; ?> </td>
-				<td align="right"><?php echo $this->prices['paymentDiscount']; ?></td>
+                                <?php } ?>
+				<td align="right"><?php echo "<span  style='color:gray'>".$this->prices['paymentDiscount']."</span>"; ?></td>
 				<td align="right"><?php  echo $this->prices['salesPricePayment']; ?> </td>
 			</tr>
 		<?php
@@ -273,7 +298,9 @@ defined('_JEXEC') or die('Restricted access');
 			<tr class="sectiontableentry<?php $i ?>">
 				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
 				<td> </td>
+                                     <?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"><?php  ?> </td>
+                                <?php } ?>
 				<td align="right"><?php echo $this->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
 				<td align="right"><?php echo $this->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
 			</tr>
@@ -283,13 +310,15 @@ defined('_JEXEC') or die('Restricted access');
 
 		  <tr>
 			<td colspan="4">&nbsp;</td>
-			<td colspan="4"><hr /></td>
+			<td colspan="<?php echo $colspan ?>"><hr /></td>
 		  </tr>
 		  <tr class="sectiontableentry2">
 			<td colspan="4" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?>: </td>
-			<td align="right"> <?php echo $this->prices['billSub'] ?> </td>
-			<td align="right"> <?php echo $this->prices['billTaxAmount'] ?> </td>
-			<td align="right"> <?php echo $this->prices['billDiscountAmount'] ?> </td>
+
+                        <?php if ( VmConfig::get('show_tax')) { ?>
+			<td align="right"> <?php echo "<span  style='color:gray'>".$this->prices['billTaxAmount']."</span>" ?> </td>
+                        <?php } ?>
+			<td align="right"> <?php echo "<span  style='color:gray'>".$this->prices['billDiscountAmount']."</span>" ?> </td>
 			<td align="right"><strong><?php echo $this->prices['billTotal'] ?></strong></td>
 		  </tr>
 		<?php if ( VmConfig::get('show_tax')) { ?>
