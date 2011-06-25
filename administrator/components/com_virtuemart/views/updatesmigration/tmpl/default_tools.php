@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
+
 ?>
 <table cellpadding="10">
     <tr>
@@ -79,7 +79,7 @@ echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
 	</td>
     </tr>
     
-    <tr><td colspan="4"></td></tr>
+    <tr><td colspan="4"><?php echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING'); ?></td></tr>
     <tr>
 	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=restoreSystemDefaults&token='.JUtility::getToken()); ?>
