@@ -360,8 +360,10 @@ class VirtueMartModelUpdatesMigration extends JModel {
     }
 
 
-
-    function uploadAndInstallUpdate($packageName) {
+/**
+ * Done by akeeba release system now 
+ *
+/*    function uploadAndInstallUpdate($packageName) {
 		if (!$packageName) {
 		    $this->_error = 'No package name provided!';
 		    return false;
@@ -382,7 +384,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$jinstaller = JInstaller::getInstance();
 		die($destn);
 		$jinstaller->install($destn);
-    }
+    }*/
 
 
     /**

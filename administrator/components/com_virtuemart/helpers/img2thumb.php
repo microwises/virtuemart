@@ -100,7 +100,11 @@ class Img2Thumb	{
 */
 	private function NewImgCreate($filename,$newxsize,$newysize,$fileout)
 	{
-
+		if( !function_exists('imagecreatefromjpeg') ){
+			$app = JFactory::getApplication();
+			$app->enqueueMesssage('This server does NOT suppport auto generating Thumbnails by jpg');
+		}
+		
 		$type = $this->GetImgType($filename);
 
 		$pathinfo = pathinfo( $fileout );

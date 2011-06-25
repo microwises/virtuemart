@@ -349,8 +349,20 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		JRequest::setVar($data['token'],'1','post');
 		JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getWord('task') );
 		$this->checkPermissionForTools();
+
+		$model = $this->getModel('updatesMigration');
 		
-		//First we integrate the users
+		//Lets load all users from the joomla hmm or vm?
+		$ok= true;
+		
+		$q ='SELECT * FROM #__vm_users AS `p`
+		LEFT OUTER JOIN #__vm_product_price ON #__vm_product_price.product_id = `p`.product_id 
+		LEFT OUTER JOIN #__vm_product_category_xref ON #__vm_product_category_xref.product_id = `p`.product_id 
+		LEFT OUTER JOIN #__vm_product_mf_xref ON #__vm_product_mf_xref.product_id = `p`.product_id '; 
+		$this->_db->setQuery($q);
+		$oldProducts = $this->_db->loadAssocList();
+		if(empty($oldProducts)) $this->_app->enqueueMessage('_productPorter '.$this->_db->getErrorMsg() );
+		
 		
 		$this->setRedirect($this->redirectPath,$msg);
 	}
@@ -373,11 +385,9 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getWord('task') );
 		$this->checkPermissionForTools();
 			
-		$updatesMigrationModel = $this->getModel('updatesMigration');
-		$updatesMigrationModel->removeAllVMData();
-		$data = JRequest::get('get');
-		JRequest::setVar($data['token'],'1','post');
-		JRequest::checkToken() or jexit( 'Invalid Token, in '.JRequest::getWord('task') );
+		//Attention ! only for developing 
+		//$updatesMigrationModel = $this->getModel('updatesMigration');
+		//$updatesMigrationModel->removeAllVMData();
 
 		if(!VmConfig::get('dangeroustools',true)){
 			$msg = $this->_getMsgDangerousTools();
