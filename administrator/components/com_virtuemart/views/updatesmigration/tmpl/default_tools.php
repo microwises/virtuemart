@@ -34,15 +34,51 @@ echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
 	    <a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=userSync&token='.JUtility::getToken()); ?>">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_shoppers_48.png">
 	    </a>
-	    <br /><?php echo JText::_('COM_VIRTUEMART_SYNC_JOMMLA_USERS'); ?>
+	    <br /><?php echo JText::_('COM_VIRTUEMART_SYNC_JOOMLA_USERS'); ?>
 	</td>
-	<td align="center">
-	    &nbsp;
+ 	<td align="center">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=portMedia&token='.JUtility::getToken() ); ?>
+	    <span onclick="javascript:confirmation('<?php echo 'Start migrate Media?'; ?>', '<?php echo $link; ?>');">
+		<img src="components/com_virtuemart/assets/images/icon_48/vm_categories_48.png">
+	    </span>
+	    <br /><?php echo JText::_('COM_VIRTUEMART_SYNC_MEDIA_FILES'); ?>
 	</td>
-	<td align="center">
-	    &nbsp;
+	<td align="left">
+	    Install Sampledata: When you did not installed the sampeldata and you have a fresh shop you may use this.<br /><br />
+	    Synchronize joomla users: When you used your page already before maybe as forum, blog you can use this button 
+	    to synchronize them with the virtuemart tables. That means all joomla users get the default shopper and permission group.<br /><br />
+	    Synchronize media: Just upload your media to the paths described in the config settings and let them import to the virtuemart
+	    tables.
 	</td>
     </tr>
+    
+    <tr>
+ 	<td align="center">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateVmOneProducts&token='.JUtility::getToken() ); ?>
+	    <span onclick="javascript:confirmation('<?php echo 'Start migrate Products?'; ?>', '<?php echo $link; ?>');">
+		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
+	    </span>
+	    <br />
+	    Migrate VM1 products to VM2
+	</td>
+ 	<td align="center">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateVmOneUsers&token='.JUtility::getToken() ); ?>
+	    <span onclick="javascript:confirmation('<?php echo 'Start migrate Users?'; ?>', '<?php echo $link; ?>');">
+		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
+	    </span>
+	    <br />
+	    Migrate VM1.1 users to VM2
+	</td>
+ 	<td align="center">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateVmOneOrders&token='.JUtility::getToken() ); ?>
+	    <span onclick="javascript:confirmation('<?php echo 'Start migrate Orders?'; ?>', '<?php echo $link; ?>');">
+		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
+	    </span>
+	    <br />
+	    Migrate VM1.1 orders to VM2
+	</td>
+    </tr>
+    
     <tr><td colspan="4"></td></tr>
     <tr>
 	<td align="center">
@@ -76,24 +112,7 @@ echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING');
 	    <br />
             <?php echo Jtext::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH'); ?>
 	</td>
-
- 	<td align="center">
-		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateVmOneProducts&token='.JUtility::getToken() ); ?>
-	    <span onclick="javascript:confirmation('<?php echo 'Start migrate Products?'; ?>', '<?php echo $link; ?>');">
-		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
-	    </span>
-	    <br />
-	    Migrate VM1.1 products to VM2
-	</td>  
-
- 	<td align="center">
-		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=portMedia&token='.JUtility::getToken() ); ?>
-	    <span onclick="javascript:confirmation('<?php echo 'Start migrate Media?'; ?>', '<?php echo $link; ?>');">
-		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
-	    </span>
-	    <br />
-	    Migrate Media to VM2
-	</td>	
+	
     </tr>
 </table>
 

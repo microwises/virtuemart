@@ -46,8 +46,7 @@ function com_install(){
 	}
 	JTable::addIncludePath(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'tables');
 	$model->integrateJoomlaUsers();
-	$id = $model->determineStoreOwner();
-	$model->setStoreOwner($id);
+	$model->setStoreOwner();
 
 	if ($newInstall) {
 		// Get the uploaded file information
