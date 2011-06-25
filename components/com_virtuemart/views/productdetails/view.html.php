@@ -214,11 +214,15 @@ class VirtueMartViewProductdetails extends JView {
 		$this->assignRef('showBasePrice', $showBasePrice);
 
 	    if(empty($category->category_template)){
-	    	$catTpl = VmConfig::get('categorytemplate');
-	    }else {
-	    	$catTpl = $category->category_template;
+	    	$category->category_template = VmConfig::get('categorytemplate');
 	    }
-		shopFunctionsF::setVmTemplate($this,$catTpl,0,$category->category_layout,$product->layout);
+
+dump($product->layout,'was hier');		dump(VmConfig::get('productlayout'),'was hier conf' );	
+	    if(empty($product->layout)){
+	    	$product->layout = VmConfig::get('productlayout');
+	    }		
+		
+		shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout,$product->layout);
 
 		shopFunctionsF::addProductToRecent($virtuemart_product_id);
 

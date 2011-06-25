@@ -531,12 +531,11 @@ class shopFunctionsF {
 					$layout = $prodLayout;
 				}
 			}
-			if(!empty($layout)){
-				$view->setLayout(strtolower($layout));
-			}
-
 		}
-
+		dump($layout,'hu');
+		if(!empty($layout)){
+			$view->setLayout(strtolower($layout));
+		}
 
 
 	}

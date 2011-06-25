@@ -644,6 +644,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		$this->portMediaByType(VmConfig::get('media_manufacturer_path'),'manufacturer');
 		//$this->portMediaByType(VmConfig::get('media_path'),'shop');
 		
+		$msg = 'media port done';
 		$this->setRedirect($this->redirectPath,$msg);
 		return $ok;
 	}
@@ -660,7 +661,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 			}
 
 		}
-		dump($knownNames,'$knownNames ');
+		//dump($knownNames,'$knownNames ');
 		//$table = JTable::getInstance('media', 'Table', array() );	
 
 		$path = str_replace('/',DS,$url);
@@ -677,7 +678,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 				}
 		    }
 		}
-		dump($filesInDir,'Filenames to add');
+		//dump($filesInDir,'Filenames to add');
 		
 		foreach($filesInDir as $filename){
 			
@@ -687,9 +688,10 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 							'file_meta'=>$filename,
 							'file_url'=>$url.$filename,
 							//'file_url_thumb'=>$url.'resized/'.$filename,
-							'published'=>1
+							'media_published'=>1
 							);
 			if($type=='product')$data['file_is_product_image'] = 1;
+			$this->mediaModel-setId(0);
 			$this->mediaModel->store($data,$type);
 		}
 		
