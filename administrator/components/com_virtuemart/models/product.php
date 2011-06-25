@@ -718,7 +718,7 @@ class VirtueMartModelProduct extends VmModel {
 		if(empty($data['virtuemart_product_id'])){
 			$dbv = $product_data->getDBO();
 			//I dont like the solution to use three variables
-			$this->_id = $product_data->virtuemart_product_id = $data['virtuemart_product_id'] = $dbv->insertid();
+			$this->_id = $data['virtuemart_product_id'] = $product_data->virtuemart_product_id ;// = $dbv->insertid();
 		}
 
 		if (array_key_exists('field', $data)) {
@@ -771,16 +771,15 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
  
-		//if(!empty($data['virtuemart_media_id']) && !empty($data['virtuemart_media_id'][0])  ){
-			// Process the images
-			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-			$mediaModel = new VirtueMartModelMedia();
-			$mediaModel->storeMedia($data,'product');
-		    $errors = $mediaModel->getErrors();
-			foreach($errors as $error){
-				$this->setError($error);
-			}
-		//}
+		// Process the images
+		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+		$mediaModel = new VirtueMartModelMedia();
+		$mediaModel->storeMedia($data,'product');
+	    $errors = $mediaModel->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
+		}
+
 		/* Update product types
 		* 'product_type_tables' are all types tables in product edit view
 		TODO CAN BE CUSTOM FIELDS
