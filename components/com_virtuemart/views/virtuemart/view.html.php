@@ -106,7 +106,16 @@ class VirtueMartViewVirtueMart extends JView {
 
 		/* Set the titles */
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name));
+
+		//Todo this may not work everytime as expected, because the error must be set in the redirect links.
+	   	if(JRequest::getInt('error')){
+			$head = $document->getHeadData();
+			$head['title'] = JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');	
+			$document->setHeadData($head);
+		} else {
+			$document->setTitle(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND').JText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name));
+		}
+		
 
 
 		$template = VmConfig::get('vmtemplate','default');

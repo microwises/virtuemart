@@ -532,7 +532,7 @@ class shopFunctionsF {
 				}
 			}
 		}
-		dump($layout,'hu');
+
 		if(!empty($layout)){
 			$view->setLayout(strtolower($layout));
 		}

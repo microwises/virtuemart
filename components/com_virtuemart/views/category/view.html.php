@@ -34,6 +34,7 @@ class VirtuemartViewCategory extends JView {
 
 	public function display($tpl = null) {
 
+		
 		$show_prices  = VmConfig::get('show_prices',1);
 		if($show_prices == '1'){
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
@@ -110,7 +111,16 @@ class VirtuemartViewCategory extends JView {
 		$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$categoryId) , 'canonical', 'rel', '' );
 
 	    /* Set the titles */
-		$document->setTitle($category->category_name);
+	   	if(JRequest::getInt('error')){
+			$head = $document->getHeadData();
+			$head['title'] = JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
+			
+			$document->setHeadData($head);
+			dump($document->getHeadData(),'headd data');			
+		} else {
+			$document->setTitle($category->category_name);
+		}
+		
 		/* set keyword */
 		if ($keyword = JRequest::getWord('keyword', '')) {
 			$pathway->addItem($keyword);

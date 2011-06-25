@@ -49,6 +49,7 @@ class VirtueMartControllerCategory extends JController {
 	* @access public
 	*/
 	public function Category() {
+	
 		/* Create the view */
 		$view = $this->getView('category', 'html');
 
@@ -58,10 +59,10 @@ class VirtueMartControllerCategory extends JController {
 
 		/* Add the product model */
 		$view->setModel($this->getModel('product', 'VirtuemartModel'));
-
-//		/* Set the layout */
-//		$view->setLayout('category');
-
+		
+		$data = JRequest::getInt('error');
+		dump($data,'hmpf');
+		
 		/* Display it all */
 		$view->display();
 	}

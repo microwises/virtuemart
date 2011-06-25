@@ -78,7 +78,7 @@ class VirtueMartViewProductdetails extends JView {
 
 		$product = $product_model->getProduct($virtuemart_product_id);
 
-		if(empty($product->virtuemart_product_id)){
+		if(empty($product->slug)){
 			
 			//Todo this should be redesigned to fit better for SEO
 			$mainframe -> enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND'));
@@ -90,8 +90,8 @@ class VirtueMartViewProductdetails extends JView {
 			if($virtuemart_category_id){
 				$categoryLink='&virtuemart_category_id='.$virtuemart_category_id;
 			}
-			
-			$mainframe -> redirect( JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink));
+
+			$mainframe -> redirect( JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink.'&error=404'));
 
 			return;
 		}
