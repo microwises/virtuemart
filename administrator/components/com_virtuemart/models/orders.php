@@ -622,14 +622,9 @@ class VirtueMartModelOrders extends VmModel {
 				$calculator = calculationHelper::getInstance();
 				$variantmods = $calculator->parseModifier($priceKey);
 				$row=0 ;
-
-				foreach ($variantmods as $variantmod) {
-
-						foreach($variantmod as $variant=>$selected){
+				foreach($variantmods as $variant=>$selected){
 							$_prod->product_name .= '<br/ > <b>'.$_prod->customfieldsCart[$row]->custom_title.' : </b>
 								'.$_prod->customfieldsCart[$row]->options[$selected]->custom_value.' '.$_prod->customfieldsCart[$row]->custom_field_desc;
-
-						}
 						$row++;
 				}
 			}

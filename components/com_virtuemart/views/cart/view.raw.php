@@ -120,7 +120,7 @@ class VirtueMartViewCart extends JView {
 							 $userFieldsBT
 							,$userAddressData
 							);
-			
+
 		}
 		$this->assignRef('BTaddress',$BTaddress['fields']);
 
@@ -132,10 +132,10 @@ class VirtueMartViewCart extends JView {
 							 $userFieldsST
 							,$userAddressData
 							);
-			
+
 		}
 		$this->assignRef('STaddress',$STaddress['fields']);
-		
+
 /*		$userFieldsModel = $this->getModel('userfields');
 
 		//Here we define the fields to skip
@@ -226,13 +226,10 @@ class VirtueMartViewCart extends JView {
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 				$variantmods = $calculator->parseModifier($priceKey);
-
-				foreach ($variantmods as $variantmod) {
-						$row=0 ;
-						foreach($variantmod as $variant=>$selected){
+				$row = 0 ;
+				foreach ($variantmods as $variant=>$selected){
 							$this->data->products[$i]['customfieldsCart'] .= '<br/ ><b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$product->customfieldsCart[$row]->options[$selected]->custom_value;
 							$row++;
-						}
 				}
 			}
 			$this->data->products[$i]['product_name'] .= $this->data->products[$i]['customfieldsCart'] ;

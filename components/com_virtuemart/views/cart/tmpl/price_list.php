@@ -118,15 +118,12 @@ defined('_JEXEC') or die('Restricted access');
 				$variantmods = $calculator->parseModifier($priceKey);
 				$row=0 ;
 
-				dump($priceKey,'priceKey');
 				foreach($variantmods as $variant=>$selected){
 					$product_rows[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
 						'.$product->customfieldsCart[$row]->options[$selected]->custom_value.' '.$product->customfieldsCart[$row]->custom_field_desc;
-				dump($product->customfieldsCart[$row],'custom '.$selected);
 				$row++;
 				}
 
-				dump($variantmods,'$variantmods');
 
 
 			}
