@@ -1022,11 +1022,10 @@ class calculationHelper {
      * @param array $variantnames the value of the variant
      * @return array The adjusted price modificator
      */
-    public function calculateModificators($product, $dummy) {
+    public function calculateModificators($product, $variants) {
 
         $modificatorSum = 0.0;
 
-        foreach ($dummy as $variants) {
             foreach ($variants as $variant => $selected) {
                 if (!empty($selected)) {
                     $query = 'SELECT  field.`virtuemart_customfield_id` ,field.`custom_value`,field.`custom_price`
@@ -1044,7 +1043,6 @@ class calculationHelper {
                     }
                 }
             }
-        }
         return $modificatorSum;
     }
 
