@@ -47,8 +47,12 @@ defined('_JEXEC') or die('Restricted access');
 	    Install Sampledata: When you did not installed the sampeldata and you have a fresh shop you may use this.<br /><br />
 	    Synchronize joomla users: When you used your page already before maybe as forum, blog you can use this button 
 	    to synchronize them with the virtuemart tables. That means all joomla users get the default shopper and permission group.<br /><br />
-	    Synchronize media: Just upload your media to the paths described in the config settings and let them import to the virtuemart
-	    tables.
+	    Synchronize media: Just upload your media to the paths:<br />
+	    Media product url:<?php VmConfig::get('media_product_path'); ?><br />
+	    Media category url:<?php VmConfig::get('media_category_path'); ?><br />
+	    Media manufacturer url:<?php VmConfig::get('media_manufacturer_path'); ?><br />
+	    
+	    You can change these urls in the config settings.
 	</td>
     </tr>
     
@@ -76,6 +80,12 @@ defined('_JEXEC') or die('Restricted access');
 	    </span>
 	    <br />
 	    Migrate VM1.1 orders to VM2
+	</td>
+	<td align="left">
+		To import data from virtuemart1.1 you must have the tables of virtuemart1.1 in your database. That means the migrator 
+		is looking for tables with the format "joomla prefix" + "vm". When you followed the defaults than it should be 
+		jos_vm_.<br />
+		You should start with migrating medias, then users (not working yet), then products, then orders (not working yet).
 	</td>
     </tr>
     

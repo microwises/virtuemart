@@ -455,7 +455,8 @@ class VmMediaHandler {
 	 * @param arraybyform $data
 	 */
 	function processAction($data){
-			
+
+		if(empty($data['media_action'])) return $data;
 		$data['published'] = 1;
 		if( $data['media_action'] == 'upload' ){
 
@@ -509,6 +510,7 @@ class VmMediaHandler {
 	 */
 	function processAttributes($data){
 
+		if(empty($data['media_attributes'])) return $data;
 		if($data['media_attributes'] == 'file_is_product_image'){
 			$this->file_is_product_image = 1;
 			$this->file_is_downloadable = 0;

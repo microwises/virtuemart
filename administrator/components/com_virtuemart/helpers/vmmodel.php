@@ -324,7 +324,7 @@ class VmModel extends JModel {
 		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
 
 		$this->mediaModel->attachImages($obj,$this->_maintablename,'image');
-
+		
 	}
 
 }

@@ -55,6 +55,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 			$view->setModel($model, true);
 		}
 		
+		$this->_app = JFactory::getApplication();
     }
 
 	/**
@@ -395,7 +396,6 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 			return false;
 		}
 		
-		$this->_app = JFactory::getApplication();
 		$this->_db = JFactory::getDBO();
 		
 		$this->_test = false;
@@ -414,7 +414,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		$this->_productPorter();
 		
 		//dump($this->_oldToNew,'$this->_oldToNew');
-		$msg = 'Migration worked smoothed and finished';
+		$msg = 'Migration worked smoothly and finished';
 		$this->setRedirect($this->redirectPath,$msg);
 	}
 	
@@ -428,7 +428,139 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		LEFT OUTER JOIN #__vm_product_mf_xref ON #__vm_product_mf_xref.product_id = `p`.product_id '; 
 		$this->_db->setQuery($q);
 		$oldProducts = $this->_db->loadAssocList();
-		if(empty($oldProducts)) $this->_app->enqueueMessage('_productPorter '.$this->_db->getErrorMsg() );
+		if(empty($oldProducts)){
+			 $this->_app->enqueueMessage('_productPorter '.$this->_db->getErrorMsg() );
+			 return false;
+		}
+		
+		if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
+		$productModel = new VirtueMartModelProduct();
+		//$product = $productModel->getProduct(0);
+		
+/*		$productK = array();
+		$attribsImage = get_object_vars($product);dump($attribsImage,'$attribsImage');
+		foreach($attribsImage as $k=>$v){
+			$productK[] = $k;
+		}
+		
+		$oldproductK = array();
+		foreach($oldProducts[0] as $k => $v){
+			$oldproductK[] = $k;
+		}
+		dump($productK,'$productK');
+		dump($oldproductK,'$oldproductK');
+		$notSame = array_diff($productK,$oldproductK);
+		$names = '';
+		foreach($notSame as $name){
+			$names .= $name.' ';
+		}
+		$this->_app->enqueueMessage('_productPorter  array_intersect '.$names );
+
+		$notSame = array_diff($oldproductK,$productK);
+		$names = '';
+		foreach($notSame as $name){
+			$names .= $name.' ';
+		}
+		$this->_app->enqueueMessage('_productPorter  ViceVERSA array_intersect '.$names );*/
+
+/* Not in VM1
+slug low_stock_notification intnotes metadesc metakey metarobot metaauthor layout published 
+
+created_on created_by modified_on modified_by    
+product_override_price override link
+
+Not in VM2
+product_thumb_image product_full_image attribute 
+custom_attribute child_options quantity_options child_option_ids   
+shopper_group_id    product_list  
+ */		
+ 		$user = JFactory::getUser();
+		
+		
+ 		//There are so many names the same, so we use the loaded array and manipulate it
+ 		foreach($oldProducts as $product){
+ 			
+			$product['virtuemart_vendor_id'] = $product['vendor_id'];
+			$product['virtuemart_manufacturer_id'] =  $this->_oldToNew->manus[$product['manufacturer_id']] ;
+			
+			//product has category_id and categories?
+			$product['virtuemart_category_id'] = $this->_oldToNew->cats[$product['category_id']];
+			//This should be an array, or is it not in vm1? not cleared, may need extra foreach
+			$product['categories'] = $this->_oldToNew->cats[$product['category_id']];
+			
+			$product['published'] = $product['product_publish']=='Y'? 1:0;
+			 
+			$product['product_price_quantity_start'] = $product['price_quantity_start'];
+			$product['product_price_quantity_end'] = $product['price_quantity_end'];
+				
+			$product['created_on'] = $this->_changeToStamp($product['cdate']);
+			$product['modified_on'] = $this->_changeToStamp($product['mdate']); //we could remove this to set modified_on today
+			$product['product_available_date'] = $this->_changeToStamp($product['product_available_date']);
+			
+			$product['created_by'] = $this->_changeToStamp($product['cdate']);
+			$product['modified_by'] = $this->_changeToStamp($product['cdate']);
+			
+			$product['product_currency'] = $this->_ensureUsingCurrencyId($product['product_currency']);
+			//Unsolved Here we must look for the url product_full_image and check which media has the same 
+			// full_image
+			//$product['virtuemart_media_id'] =
+			
+			$productModel->store($product);
+
+/*			$data = null;
+			$data = array();
+			
+			//$data[''] = $product['product_id'];
+		$data['virtuemart_vendor_id'] = $product['vendor_id'];
+			$data['product_parent_id'] = $product['product_parent_id'];
+/*			$data[''] = $product['product_s_desc'];
+			$data[''] = $product['product_desc'];
+			
+			$data[''] = $product['product_thumb_image'];	//Write function to get id
+			$data[''] = $product['product_full_image'];
+			
+			$data[''] = $product['product_publish'];
+			$data[''] = $product['product_weight'];
+			$data[''] = $product['product_weight_uom'];
+			$data[''] = $product['product_length'];
+			$data[''] = $product['product_width'];
+			$data[''] = $product['product_height'];
+			$data[''] = $product['product_lwh_uom'];
+			$data[''] = $product['product_url'];
+			$data[''] = $product['product_in_stock'];
+			
+			$data[''] = $product['product_available_date'];	//Write function to change dateformat
+			
+			$data[''] = $product['product_availability'];
+			$data[''] = $product['product_special'];
+			$data[''] = $product['product_discount_id'];
+			$data[''] = $product['ship_code_id'];
+			$data[''] = $product['cdate'];
+			$data[''] = $product['mdate'];
+			$data[''] = $product['product_name'];
+			$data[''] = $product['product_sales'];
+			$data[''] = $product['attribute'];
+			$data[''] = $product['custom_attribute'];
+			$data[''] = $product['product_tax_id'];
+			$data[''] = $product['product_unit'];
+			$data[''] = $product['product_packaging'];
+			$data[''] = $product['child_options'];
+			$data[''] = $product['quantity_options'];
+			$data[''] = $product['child_option_ids'];
+			$data[''] = $product['product_order_levels'];
+			//$data[''] = $product['product_price_id'];
+			$data[''] = $product['product_price'];
+			$data[''] = $product['product_currency'];
+			$data[''] = $product['product_price_vdate'];
+			$data[''] = $product['product_price_edate'];
+			$data[''] = $product['shopper_group_id'];
+			$data[''] = $product['price_quantity_start'];
+			$data[''] = $product['price_quantity_end'];
+			$data[''] = $product['category_id'];
+			$data[''] = $product['product_list'];
+			$data[''] = $product['manufacturer_id'];*/
+		}
+
 		//dump($oldProducts,'$oldProducts');
 		return $ok;
 	}
@@ -488,40 +620,47 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		//dump($oldCategoriesX,'_categoryPorter $oldCategoriesX');
 		
 		$category = array();
-		$new_id = 0;		
-		foreach($oldCategoriesX as $oldcategoryX){
-			$new_id = $this->_oldToNew->cats[$oldcategoryX['category_parent_id']];
-			$category['category_parent_id'] = $new_id;
-			
-			$new_id = $this->_oldToNew->cats[$oldcategoryX['category_child_id']];
-			$category['category_child_id'] = $new_id;
-			
-			if(!class_exists('TableCategory_categories')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'category_categories.php');
-			$table = JTable::getInstance('category_categories', 'Table', array() );
-			
-			//$table = $this->getTable('category_categories');
-
-			if(!$this->_test){
-				$xdata = $table->bindChecknStore($category);
-		    	$errors = $table->getErrors();
-				foreach($errors as $error){
-					$this->setError($error);
-					$ok = false;
-				}
-			} else {
+		$new_id = 0;
+		if(!empty($oldCategoriesX)){
+			foreach($oldCategoriesX as $oldcategoryX){
+				$new_id = $this->_oldToNew->cats[$oldcategoryX['category_parent_id']];
+				$category['category_parent_id'] = $new_id;
 				
+				$new_id = $this->_oldToNew->cats[$oldcategoryX['category_child_id']];
+				$category['category_child_id'] = $new_id;
+				
+				if(!class_exists('TableCategory_categories')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'category_categories.php');
+				$table = JTable::getInstance('category_categories', 'Table', array() );
+				
+				//$table = $this->getTable('category_categories');
+	
+				if(!$this->_test){
+					$xdata = $table->bindChecknStore($category);
+			    	$errors = $table->getErrors();
+					foreach($errors as $error){
+						$this->setError($error);
+						$ok = false;
+					}
+				} else {
+					
+				}
 			}
-
+			
+			if($ok) $msg = 'Looks everything worked correct, migrated '.count($this->_oldToNew->cats).' categories ';
+			else {
+					$msg = 'Seems there was an error porting '.count($this->_oldToNew->cats).' categories ';
+					$msg .= $this->getErrors();
+			}
+			$this->_app -> enqueueMessage($msg);
+			
+			return $ok;
+			
+		} else {
+			$this->_app -> enqueueMessage('No categories to import');
+			return $ok;
 		}
 		
-		if($ok) $msg = 'Looks everything worked correct, migrated '.count($this->_oldToNew->cats).' categories ';
-		else {
-                    $msg = 'Seems there was an error porting '.count($this->_oldToNew->cats).' categories ';
-                    $msg .= $this->getErrors();
-                }
-		$this->_app -> enqueueMessage($msg);
-		
-		return $ok;
+
 	}
 	
 	private function _manufacturerCategoryPorter(){
@@ -630,22 +769,37 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		$ok = true;
 		
 		//$imageExtensions = array('jpg','jpeg','gif','png');
-		
-		$filesInDir = array();
 
 		if(!class_exists('TableManufacturers')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		$this->mediaModel = new VirtueMartModelMedia();
 		//First lets read which files are already stored
 		$this->storedMedias = $this->mediaModel->getFiles(false,true,false);
 		
+		$countTotal = 0;
 		//We do it per type
-		$this->portMediaByType(VmConfig::get('media_product_path'),'product');
-		$this->portMediaByType(VmConfig::get('media_category_path'),'category');
-		$this->portMediaByType(VmConfig::get('media_manufacturer_path'),'manufacturer');
+		$url = VmConfig::get('media_product_path');
+		$type = 'product';
+		$count = $this->portMediaByType(VmConfig::get('media_product_path'),'product');
+		$countTotal +=  $count;
+		$this->_app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_UPDATE_PORT_MEDIA_RESULT',$count, $type, $url));
+		
+		$url = VmConfig::get('media_category_path');
+		$count = $this->portMediaByType(VmConfig::get('media_category_path'),'category');
+		$countTotal += $count;
+		$this->_app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_UPDATE_PORT_MEDIA_RESULT',$count, $type, $url));
+		$type = 'category';
+		
+		$url = VmConfig::get('media_manufacturer_path');
+		$countTotal += $count;
+		$count = $this->portMediaByType(VmConfig::get('media_manufacturer_path'),'manufacturer');
+		$this->_app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_UPDATE_PORT_MEDIA_RESULT',$count, $type, $url));	
+		$type = 'manufacturer';
+		
 		//$this->portMediaByType(VmConfig::get('media_path'),'shop');
 		
-		$msg = 'media port done';
+		$msg = JText::sprintf('COM_VIRTUEMART_UPDATE_PORT_MEDIA_RESULT_FINISH',$countTotal);	
 		$this->setRedirect($this->redirectPath,$msg);
+		
 		return $ok;
 	}
 	
@@ -659,27 +813,40 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 	    		$name = substr($media->file_url,$lastIndexOfSlash+1);
 				$knownNames[] = $name;				
 			}
-
 		}
-		//dump($knownNames,'$knownNames ');
-		//$table = JTable::getInstance('media', 'Table', array() );	
 
-		$path = str_replace('/',DS,$url);
-		$dir = JPATH_ROOT.DS.$path;
-		if ($handle = opendir($dir)) {
-	    	while (false !== ($file = readdir($handle))) {
-				if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
-					$info = pathinfo($file); //dump($info,'pathinfo');
-					//We port all type of media, regardless the extension
-					if ((filetype($dir.DS.$file) == 'file') && !in_array($file,$knownNames)) {
-						$filesInDir[] = $file;
-				    }
-				   
-				}
-		    }
-		}
-		//dump($filesInDir,'Filenames to add');
+		$filesInDir = array();
+		$foldersInDir = array();
 		
+		$path = str_replace('/',DS,$url);
+		//$dir = JPATH_ROOT.DS.$path;
+		$foldersInDir = array(JPATH_ROOT.DS.$path);
+		while(!empty($foldersInDir)){
+			foreach($foldersInDir as $dir){
+				$subfoldersInDir = null;
+				$subfoldersInDir = array();
+				if ($handle = opendir($dir)) {
+			    	while (false !== ($file = readdir($handle))) {
+						if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
+							$info = pathinfo($file); //dump($info,'pathinfo');
+							//We port all type of media, regardless the extension
+							if ((filetype($dir.DS.$file) == 'file') && !in_array($file,$knownNames)) {
+								$filesInDir[] = $file;
+						    } else{
+						    	if(filetype($dir.DS.$file)== 'dir' && $file!='resized'){
+						    		$subfoldersInDir[] = $dir.DS.$file;
+								}	
+							}
+						}
+				    }
+				}
+			}
+			$foldersInDir = $subfoldersInDir;
+			dump($foldersInDir);
+		}
+
+		
+		$i=0;
 		foreach($filesInDir as $filename){
 			
 			$data = array(	'file_title'=>$filename,
@@ -691,12 +858,33 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 							'media_published'=>1
 							);
 			if($type=='product')$data['file_is_product_image'] = 1;
-			$this->mediaModel-setId(0);
-			$this->mediaModel->store($data,$type);
+			$this->mediaModel->setId(0);
+			$success = $this->mediaModel->store($data,$type);
+			if($success) $i++;
 		}
 		
+		return $i;
+
 	}
 	
+	private function _changeToStamp(){
+		
+		$date = JFactory::getDate($data['publish_up']);
+		return $date->toMySQL();
+	}
+	
+	private function _ensureUsingCurrencyId($curr){
+
+		$this->_db = JFactory::getDBO();
+		$q = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `currency_code_3`="'.$this->_db->getEscaped($curr).'"';
+		$this->_db->setQuery($q);
+		$currInt = $this->_db->loadResult();
+		if(empty($currInt)){
+			JError::raiseWarning(E_WARNING,'Attention, couldnt find currency id in the table for id = '.$curr);
+		}
+		return $currInt;
+	}
+
 	function portCurrency(){
 
 		$this->setRedirect($this->redirectPath);

@@ -260,7 +260,7 @@ class VirtueMartModelProduct extends VmModel {
      */
     public function getProduct($virtuemart_product_id = null,$front=true, $withCalc = true, $onlyPublished = true){
 
-    	if (!empty($virtuemart_product_id)) {
+    	if (isset($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId($virtuemart_product_id);
 		} else {
 			
