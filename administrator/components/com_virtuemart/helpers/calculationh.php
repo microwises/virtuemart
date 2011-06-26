@@ -69,7 +69,7 @@ class calculationHelper {
         //This means also that atm for multivendor, every vendor must use the shopcurrency as default
         $this->vendorCurrency = 1;
 		$this->productVendorId = 1;
-		
+
         if (!class_exists('CurrencyDisplay')
             )require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
         $this->_currencyDisplay = CurrencyDisplay::getInstance($this->vendorCurrency);
@@ -108,7 +108,7 @@ class calculationHelper {
             $user = JFactory::getUser();
             if (!empty($user->id)) {
                 $this->_db->setQuery('SELECT `usgr`.`virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups as `usgr`
- 										JOIN `#__virtuemart_shoppergroups` as `sg` ON (`usgr`.`virtuemart_shoppergroup_id`=`sg`.`virtuemart_shoppergroup_id`) 
+ 										JOIN `#__virtuemart_shoppergroups` as `sg` ON (`usgr`.`virtuemart_shoppergroup_id`=`sg`.`virtuemart_shoppergroup_id`)
  WHERE `usgr`.`virtuemart_user_id`="' . $user->id . '" AND `sg`.`virtuemart_vendor_id`="' . (int) $vendorId . '" ');
                 $this->_shopperGroupId = $this->_db->loadResultArray();  //todo load as array and test it
             }
@@ -495,7 +495,7 @@ class calculationHelper {
     function executeCalculation($rules, $baseprice, $relateToBaseAmount=false) {
 
         if (empty($rules))return 0;
-		
+
         $rulesEffSorted = $this->record_sort($rules, 'ordering');
 
         $price = $baseprice;
@@ -555,10 +555,10 @@ class calculationHelper {
         if (!empty($id)) {
             $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id` = "' . $id . '" AND `calc_kind`="' . $entrypoint . '" ';
         } else {
-            $q = 'SELECT * FROM #__virtuemart_calcs WHERE 
-                    `calc_kind`="' . $entrypoint . '" 
-                     AND `published`="1" 
-                     AND (`virtuemart_vendor_id`="' . $this->productVendorId . '" OR `shared`="1" ) 
+            $q = 'SELECT * FROM #__virtuemart_calcs WHERE
+                    `calc_kind`="' . $entrypoint . '"
+                     AND `published`="1"
+                     AND (`virtuemart_vendor_id`="' . $this->productVendorId . '" OR `shared`="1" )
                      AND ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
                      AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" ) ';
 
@@ -640,9 +640,9 @@ class calculationHelper {
 //		$states = $this -> writeRulePartEffectingQuery($this->_states,'virtuemart_state_id',true);
         //Test if calculation affects the current entry point
         //shared rules counting for every vendor seems to be not necessary
-        $q = 'SELECT * FROM #__virtuemart_calcs WHERE 
-                `calc_kind`="' . $entrypoint . '" 
-                AND `published`="1" 
+        $q = 'SELECT * FROM #__virtuemart_calcs WHERE
+                `calc_kind`="' . $entrypoint . '"
+                AND `published`="1"
                 AND (`virtuemart_vendor_id`="' . $cartVendorId . '" OR `shared`="1" )
 				AND ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
 				AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" ) ';
@@ -819,7 +819,7 @@ class calculationHelper {
             if ($payment->discount_min_amount <= $value) {
 
                 //if($payment->discount_max_amount == 0 || $value <=$payment->discount_max_amount){
-              
+
                     //Attention the minus is due the strange logic by entering discount instead of a fee, maybe changed, but later
                     if ($payment->discount_is_percentage) {
                         $this->_cartPrices[$toggle] = - $value * ($payment->discount / 100);
@@ -855,7 +855,7 @@ class calculationHelper {
 		if(!empty($taxRules)){
 			$price = $this->executeCalculation($taxRules, $price, true);
 		}
-	
+
 		$price = $this->roundDisplay($price);
 
         return $price;
@@ -1050,24 +1050,23 @@ class calculationHelper {
 
     public function parseModifier($name) {
 
-        $items = explode(';', $name);
-
-        $return = array();
         $variants = array();
-        foreach ($items as $item) {
-            if (!empty($item)) {
-                $index = strpos($item, '::');
-                $virtuemart_product_id = substr($item, 0, $index);
-                $item = substr($item, $index + 2);
+		if ($index = strpos($name, '::')) {
+			$virtuemart_product_id = substr($name, 0, $index);
+			$allItems = substr($name, $index + 2);
+	        $items = explode(';', $allItems);
 
-                $index2 = strpos($item, ':');
-                $variant = substr($item, 0, $index2);
-                $selected = substr($item, $index2 + 1);
-                $variants[$variant] = $selected;
-            }
-        }
-        $return[] = $variants;
-        return $return;
+	        foreach ($items as $item) {
+	            if (!empty($item)) {
+	                $index2 = strpos($item, ':');
+	                $variant = substr($item, 0, $index2);
+	                $selected = substr($item, $index2 + 1);
+	                $variants[$variant] = $selected;
+	                dump($variant,'num '.$selected);
+	            }
+	        }
+		}
+        return $variants;
     }
 
 }
