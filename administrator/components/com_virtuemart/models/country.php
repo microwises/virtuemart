@@ -87,21 +87,21 @@ class VirtueMartModelCountry extends VmModel {
 		$query = 'SELECT * FROM `#__virtuemart_countries` ';
 		/* add filters */
 		if ($onlyPublished) $where[] = '`published` = 1';
-		
+
 		if($filterCountry){
 			$filterCountry = '"%' . $this->_db->getEscaped( $filterCountry, true ) . '%"' ;
 			//$keyword = $this->_db->Quote($filterCountry, false);
-			$where[] = '`country_name` LIKE '.$keyword;
-		} 
+			$where[] = '`country_name` LIKE '.$filterCountry;
+		}
 
 		if (count($where) > 0) $query .= ' WHERE '.implode(' AND ', $where) ;
-		
+
 		if($filterCountry){
 			$query .= $this->_getOrdering('country_name');
 		} else {
 			$query .= ' ORDER BY country_name';
 		}
-		
+
 		if ($noLimit) {
 		    $this->_data = $this->_getList($query);
 		}

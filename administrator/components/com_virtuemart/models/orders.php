@@ -73,7 +73,7 @@ class VirtueMartModelOrders extends VmModel {
 	/**
 	 * This function seems completly broken, JRequests are not allowed in the model, sql not escaped
 	 * This function gets the secured order Number, to send with paiement
-	 * 
+	 *
 	 */
 	public function getOrderNumber($virtuemart_order_id){
 
@@ -84,12 +84,12 @@ class VirtueMartModelOrders extends VmModel {
 		return $OrderNumber;
 
 	}
-	
+
 	/**
 	 * Was also broken, actually used?
-	 * 
+	 *
 	 * get next/previous order id
-	 * 
+	 *
 	 */
 
 	public function GetOrderId($direction ='DESC', $order_id) {
@@ -105,24 +105,24 @@ class VirtueMartModelOrders extends VmModel {
 		$q.= ' ORDER BY `virtuemart_order_id` '.$direction ;
 		$db->setQuery($q);
 
-		if ($oderId = $db->loadResult()) { 
+		if ($oderId = $db->loadResult()) {
 			return $oderId ;
-		} 
+		}
 		return 0 ;
 	}
 
-	
+
 	/**
 	 * Load a single order
 	 */
 	public function getOrder($virtuemart_order_id){
-		
+
 		//sanitize id
 		$virtuemart_order_id = (int)$virtuemart_order_id;
 		$db = JFactory::getDBO();
 		$order = array();
 
-		// Get the order details 
+		// Get the order details
 		$q = "SELECT  u.*,o.*,
 				IF(isempty(coupon_code), '-', coupon_code) AS coupon_code,
 				s.order_status_name
@@ -135,7 +135,7 @@ class VirtueMartModelOrders extends VmModel {
 		$db->setQuery($q);
 		$order['details'] = $db->loadObjectList('address_type');
 
-		// Get the order history 
+		// Get the order history
 		$q = "SELECT *
 			FROM #__virtuemart_order_histories
 			WHERE virtuemart_order_id=".$virtuemart_order_id."
@@ -143,7 +143,7 @@ class VirtueMartModelOrders extends VmModel {
 		$db->setQuery($q);
 		$order['history'] = $db->loadObjectList();
 
-		// Get the order items 
+		// Get the order items
 		$q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				order_item_sku, i.virtuemart_product_id, product_item_price,
 				product_final_price, product_attribute, order_status,
@@ -201,21 +201,21 @@ class VirtueMartModelOrders extends VmModel {
 			ON o.payment_method_id = m.virtuemart_paymentmethod_id';
 	}
 
-	
+
     /**
 	 * Update an order status and send e-mail if needed
-	 * 
+	 *
 	 * @author Valérie Isaksen
-	 *  
+	 *
 	 */
 	public function updateOrderStatus($order_id, $order_status){
-                // Update the order 
+                // Update the order
                 $order = $this->getTable('orders');
                 $order->load((int)$order_id);
                 $order->order_status = $order_status;
                 $order->store();
 
-                // here should update stock level 
+                // here should update stock level
 	}
 
 	/**
@@ -316,8 +316,8 @@ class VirtueMartModelOrders extends VmModel {
 					if ($_updateStock != 0) {
 						if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
 						$_productModel = new VirtueMartModelProduct();
-						$_q = 'SELECT virtuemart_product_id, product_quantity 
-							FROM `#__virtuemart_order_items` 
+						$_q = 'SELECT virtuemart_product_id, product_quantity
+							FROM `#__virtuemart_order_items`
 							WHERE `virtuemart_order_id` = "'.(int)$virtuemart_order_id.'" ';
 						$db->setQuery($_q);
 						if ($_products = $db->loadObjectList()) {
@@ -554,7 +554,7 @@ class VirtueMartModelOrders extends VmModel {
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStorePaymentData',array(
-					 $orderNb
+					 $orderNr
 					,$cart
 					,$prices
 		));
@@ -566,7 +566,7 @@ class VirtueMartModelOrders extends VmModel {
 				break; // This was the active plugin, so there's nothing left to do here.
 			}
 			// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
-		 
+
                 }
 	}
         function handleStockAFterStatusChanged($newStatus) {
@@ -601,7 +601,7 @@ class VirtueMartModelOrders extends VmModel {
 					,$prices
 		));
 
-		
+
 	}
 	/**
 	 * Create the ordered item records
@@ -919,7 +919,7 @@ class VirtueMartModelOrders extends VmModel {
 		foreach($cids as $_id) {
 			$this->removeOrderItems ($_id);
 		}
-		
+
 		parent::remove($cids);
 	}
 	/*
@@ -959,7 +959,7 @@ class VirtueMartModelOrders extends VmModel {
 
 	/**
 	 *  Create a list of products for JSON return
-	 * 
+	 *
 	 * TODO sanitize variables Very unsecure
 	 * identical with function in orders?
 	 * disabled to unsecure written

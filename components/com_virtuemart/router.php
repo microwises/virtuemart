@@ -573,7 +573,7 @@ class vmrouterHelper {
 			$extension = 'com_virtuemart';
 			$base_dir = JPATH_SITE;
 			$lang->load($extension, $base_dir);
-			$this->lang['edit_shipping'] 	= $lang->_('COM_VIRTUEMART_SEF_EDITSHIPPING');
+			$this->lang['editshipping'] 	= $lang->_('COM_VIRTUEMART_SEF_EDITSHIPPING');
 			$this->lang['manufacturer'] 	= $lang->_('COM_VIRTUEMART_SEF_MANUFACTURER');
 			$this->lang['manufacturers'] 	= $lang->_('COM_VIRTUEMART_SEF_MANUFACTURERS');
 			$this->lang['askquestion']  	= $lang->_('COM_VIRTUEMART_SEF_ASKQUESTION');
@@ -622,7 +622,7 @@ class vmrouterHelper {
 
 		} else {
 			/* use default */
-			$this->lang['edit_shipping'] = 'edit_shipping';
+			$this->lang['editshipping'] = 'edit_shipping';
 			$this->lang['manufacturers'] = 'manufacturers';
 			$this->lang['manufacturer'] = 'manufacturer';
 			$this->lang['askquestion']  = 'askquestion';
@@ -678,7 +678,7 @@ class vmrouterHelper {
 		$component	= JComponentHelper::getComponent('com_virtuemart');
 		if ( VmConfig::isJ15() ) $items = $menus->getItems('componentid', $component->id);
 		else $items = $menus->getItems('component_id', $component->id);
-		
+
 		// Search  Virtuemart itemID in joomla menu
 		foreach ($items as $item)	{
 			if ( $item->query['view']=='category' && isset( $item->query['virtuemart_category_id'])) {

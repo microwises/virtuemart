@@ -107,7 +107,7 @@ class VirtueMartModelCalc extends VmModel {
 		if($search){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			$where[] = '`calc_name` LIKE '.$search;
-		} 
+		}
 
 		if (count($where) > 0)$this->_query .= ' WHERE '.implode(' AND ', $where) ;
 		$this->_query .= $this->_getOrdering('calc_name');
@@ -117,7 +117,7 @@ class VirtueMartModelCalc extends VmModel {
 	 	else {
 			$this->_data = $this->_getList($this->_query, $this->getState('limitstart'), $this->getState('limit'));
 		}
-		
+
 		if(count($this->_data) >0){
 			$this->_total = $this->_getListCount($this->_query);
 		}
@@ -201,7 +201,7 @@ class VirtueMartModelCalc extends VmModel {
 		if(!empty($errMsg)){
 
 			$errNum = $this->_db->getErrorNum();
-			$this->setError('SQL-Error: '.$errNum.' '.$errMsg.' <br /> used query '.$query);
+			$this->setError('SQL-Error: '.$errNum.' '.$errMsg.' <br /> used query '.$this->_db->getQuery());
 		}
 
 		if(!empty($errs)){

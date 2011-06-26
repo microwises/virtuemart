@@ -35,11 +35,10 @@ class VirtuemartViewProduct extends JView {
 		$mainframe = JFactory::getApplication();
 		$option = JRequest::getWord('option');
 
-		// Get the task 
+		// Get the task
 		$task = JRequest::getWord('task');
 
-        $this->assignRef('viewName', $viewName);
-		// Load helpers 
+		// Load helpers
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('adminMenu');
 		$this->loadHelper('shopFunctions');
@@ -63,13 +62,13 @@ class VirtuemartViewProduct extends JView {
 				$product = $product_model->getProductSingle($virtuemart_product_id,false);
 				$product_child = $product_model->getProductChilds($virtuemart_product_id);
 				$product_parent= $product_model->getProductParent($product->product_parent_id);
-				
-				// Get the category tree 
+
+				// Get the category tree
 				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
 				else $category_tree = ShopFunctions::categoryListTree();
 				$this->assignRef('category_tree', $category_tree);
 
-				// Load the product price 
+				// Load the product price
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 				$product->prices = $calculator -> getProductPrices($product);
@@ -103,7 +102,7 @@ class VirtuemartViewProduct extends JView {
 				$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
 				$this->assignRef('productLayouts', $productLayouts);
 
-				// Load Images 
+				// Load Images
 				$product_model->addImages($product);
 
 				if(is_Dir(VmConfig::get('vmtemplate').DS.'images'.DS.'availability/')){
@@ -113,13 +112,13 @@ class VirtuemartViewProduct extends JView {
 				}
 				$this->assignRef('imagePath', $imagePath);
 
-				// Load the vendors 
+				// Load the vendors
 				$vendor_model = $this->getModel('vendor');
 
 				$vendors = $vendor_model->getVendors();
 				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $product->virtuemart_vendor_id);
 
-				// Load the currencies 
+				// Load the currencies
 				$currency_model = $this->getModel('currency');
 
 				$vendor_model->setId(1);
@@ -160,7 +159,7 @@ class VirtuemartViewProduct extends JView {
 				/* Load waiting list */
 				if ($product->virtuemart_product_id) {
 					//$waitinglist = $this->get('waitingusers', 'waitinglist');
-					
+
 					if(!class_exists('VirtueMartModelWaitingList')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'waitinglist.php');
 					$waitinglistmodel = new VirtueMartModelWaitingList();
 					$waitinglist = $waitinglistmodel->getWaitingusers($product->virtuemart_product_id);
@@ -194,13 +193,13 @@ class VirtuemartViewProduct extends JView {
 					$images_label = JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_IMAGES_LBL');
 					$delete_message = JText::_('COM_VIRTUEMART_PRODUCT_FORM_DELETE_PRODUCT_MSG');
 				}
-				
-				
+
+
 				$config = JFactory::getConfig();
 				$tzoffset = $config->getValue('config.offset');
-				
+
 				$this->assignRef('tzoffset',	$tzoffset);
-				
+
 				// Assign the values
 				$this->assignRef('pane', $pane);
 				$this->assignRef('editor', $editor);
@@ -221,7 +220,7 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('images_label', $images_label);
 				$this->assignRef('delete_message', $delete_message);
 
-				// Toolbar 
+				// Toolbar
 				$text="";
 				if ($task == 'edit') {
 					if ($product->product_sku) $sku=' ('.$product->product_sku.')'; else $sku="";
@@ -247,7 +246,7 @@ class VirtuemartViewProduct extends JView {
 					$msg="";
 				}
 				$this->db = JFactory::getDBO();
-				
+
 				$viewName = ShopFunctions::SetViewTitle('vm_product_48',$title, $msg );
 				/* Start model */
 				$model = $this->getModel();
@@ -326,6 +325,7 @@ class VirtuemartViewProduct extends JView {
 
 
 				/* Assign the data */
+				$this->assignRef('viewName', $viewName);
 				$this->assignRef('productlist', $productlist);
 				$this->assignRef('lists', $lists);
 				break;
@@ -369,9 +369,9 @@ class VirtuemartViewProduct extends JView {
 		return $listHTML;
 
 	}
-	
+
 	function displayLinkToChildList($product_id, $product_name) {
-		
+
 		//$this->db = JFactory::getDBO();
 		$this->db->setQuery(' SELECT COUNT( * ) FROM `#__virtuemart_products` WHERE `product_parent_id` ='.$product_id);
 		if ($result = $this->db->loadResult()){
@@ -379,9 +379,9 @@ class VirtuemartViewProduct extends JView {
 		echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_id.'&option=com_virtuemart'), $result, array('title' => JText::sprintf('COM_VIRTUEMART_PRODUCT_LIST_X_CHILDREN',$product_name) ));
 		}
 	}
-	
+
 	function displayLinkToParent($product_parent_id) {
-		
+
 		//$this->db = JFactory::getDBO();
 		$this->db->setQuery(' SELECT * FROM `#__virtuemart_products` WHERE `virtuemart_product_id` = '.$product_parent_id);
 		if ($parent = $this->db->loadObject()){

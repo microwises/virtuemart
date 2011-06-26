@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <div class="billto-shipto">
 	<div class="width50 floatleft">
-		
+
 		<span class="billto"><?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?></span>
 		<br />
 
@@ -35,14 +35,14 @@ defined('_JEXEC') or die('Restricted access');
 		foreach($this->BTaddress as $item){
 			if(!empty($item['value'])){ ?>
 				<!-- span class="titles"><?php echo $item['title'] ?></span -->
-				<?php 
+				<?php
 				if ($item['name'] == 'first_name' || $item['name'] == 'middle_name' || $item['name'] == 'zip') { ?>
 					<span class="values<?php echo '-'.$item['name'] ?>" ><?php echo $item['value'] ?></span>
 				<?php } else { ?>
 					<span class="values" ><?php echo $item['value'] ?></span>
 					<br class="clear" />
-				<?php 
-				} 
+				<?php
+				}
 			}
 		} ?>
 		<div class="clear"></div>
@@ -51,12 +51,12 @@ defined('_JEXEC') or die('Restricted access');
 		<a class="details" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT">
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL'); ?>
 		</a>
-	
+
 		<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>
 	</div>
-	
+
 	<div class="width50 floatleft">
-		
+
 		<span class="shipto"><?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?></span>
 		<br />
 
@@ -66,19 +66,19 @@ defined('_JEXEC') or die('Restricted access');
 		foreach($this->STaddress as $item){
 			if(!empty($item['value'])){ ?>
 				<!-- <span class="titles"><?php echo $item['title'] ?></span> -->
-				<?php 
+				<?php
 				if ($item['name'] == 'first_name' || $item['name'] == 'middle_name' || $item['name'] == 'zip') { ?>
 					<span class="values<?php echo '-'.$item['name'] ?>" ><?php echo $item['value'] ?></span>
 				<?php } else { ?>
 					<span class="values" ><?php echo $item['value'] ?></span>
 					<br class="clear" />
-				<?php 
+				<?php
 				}
 			}
 		} ?>
 		<div class="clear"></div>
 		</div>
-		
+
 		<a class="details" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=0&cid[]=<?php echo $this->lists['current_id']; ?>">
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'); ?>
 		</a>
@@ -91,7 +91,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <fieldset>
 <?php
-		
+
 		//of course, some may argue that the $product_rows should be generated in the view.html.php, but
 		//
 		$product_rows = array();
@@ -124,6 +124,9 @@ defined('_JEXEC') or die('Restricted access');
 							$product_rows[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
 								'.$product->customfieldsCart[$row]->options[$selected]->custom_value.' '.$product->customfieldsCart[$row]->custom_field_desc;
 						}
+						dump($priceKey,'priceKey');
+						dump($variantmods,'$variantmods');
+						dump($product->customfieldsCart[$row],'custom '.$selected);
 						$row++;
 				}
 			}
@@ -185,10 +188,10 @@ defined('_JEXEC') or die('Restricted access');
 
                                 <?php if ($prow['basePriceWithTax'] != $prow['salesPrice'] ) {
                                         echo '<span style="text-decoration:line-through">'.$prow['basePriceWithTax'] .'</span><br />' ;
-                                }  
+                                }
                                 echo $prow['salesPrice'] ;
 
-                                    
+
                                     ?>
                                 </td>
 				<td align="right" ><?php echo $prow['update_form'] ?>
@@ -206,7 +209,7 @@ defined('_JEXEC') or die('Restricted access');
                   <?php if ( VmConfig::get('show_tax')) { $colspan=3; } else { $colspan=2; } ?>
 		<tr>
 			<td colspan="4">&nbsp;</td>
-                       
+
 			<td colspan="<?php echo $colspan ?>"><hr /></td>
 		</tr>
 		  <tr class="sectiontableentry1">
@@ -261,7 +264,7 @@ defined('_JEXEC') or die('Restricted access');
                                 <?php } else { ?>
                                     <td colspan="4" align="left"><?php echo $this->cartData['shippingName']; ?> </td>
                                  <?php } ?>
-				 
+
                                      <?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"><?php echo "<span  style='color:gray'>".$this->prices['shippingTax']."</span>"; ?> </td>
                                 <?php } ?>
@@ -327,7 +330,7 @@ defined('_JEXEC') or die('Restricted access');
 				<td colspan="4" align="right"><?php echo $this->prices['taxAmount'] ?></td>
 		  </tr>
 		<?php } ?>
-		 
+
 
 	</table>
 </fieldset>

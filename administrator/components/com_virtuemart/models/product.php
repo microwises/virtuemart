@@ -52,19 +52,19 @@ class VirtueMartModelProduct extends VmModel {
 
 	/**
 	 * New function for sorting, searching, filtering and pagination for product ids.
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	function sortSearchListQuery($withCalc=true,$onlyPublished=true,$group=false,$nbrReturnProducts=false){
-		
+
 		$app = JFactory::getApplication() ;
-		
+
 		$option = 'com_virtuemart';
 		$view = 'product';
 		$default_order = 'product_name';
 		$order_dir = '';
 		$groupBy = '';
-		
+
 		//First setup the variables for filtering
 		if($app->isSite()){
 			$filter_order = JRequest::getWord('orderby', VmConfig::get('browse_orderby_field','virtuemart_product_id'));
@@ -78,9 +78,9 @@ class VirtueMartModelProduct extends VmModel {
 			$filter_order_Dir 	= strtoupper(JRequest::getWord('order', 'ASC'));
 		} else {
 			$filter_order_Dir = strtoupper($app->getUserStateFromRequest( $option.'.'.$view.'.filter_order_Dir', 'filter_order_Dir', $order_dir, 'word' ));
-			$filter_order     = $app->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', $default_order, 'cmd' );	
+			$filter_order     = $app->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', $default_order, 'cmd' );
 		}
-		
+
 		//sanitize Direction
 		if($filter_order_Dir!='ASC' && $filter_order_Dir!='DESC'){
 			$filter_order_Dir ='';
@@ -88,12 +88,12 @@ class VirtueMartModelProduct extends VmModel {
 
 		$search 				= JRequest::getWord('search', false );
 		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0 );
-		
+
 		//administrative variables to organize the joining of tables
 		$joinCategory 	= false ;
 		$joinMf 		= false ;
 		$joinPrice 		= false ;
-		
+
 		$where = array();
 		if($onlyPublished){
 			$where[] = ' `#__virtuemart_products`.`published`="1" ';
@@ -107,18 +107,18 @@ class VirtueMartModelProduct extends VmModel {
 
 		// search fields filters set Frontend?
 		if ( $search == 'true') {
-			
+
 			//Why keyword and search used? why not only keyword or search? notice by Max Milbers
 			//$keyword = trim( str_replace(' ', '%', JRequest::getWord('keyword', '') ) );
 			$keyword = JRequest::getWord('keyword', '');
 			$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;
-				
+
 			$searchFields = VmConfig::get('browse_search_fields');
 			foreach ($searchFields as $searchField) {
 				if (($searchField == 'category_name') || ($searchField == 'category_description')) $joinCategory = true ;
 				if ($searchField == 'mf_name') $joinMf = true ;
 				if ($searchField == 'product_price') $joinPrice = true ;
-				
+
 				$filter_search[] = ' `'.$searchField.'` LIKE '.$keyword;
 			}
 			$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
@@ -128,18 +128,18 @@ class VirtueMartModelProduct extends VmModel {
 			$joinCategory = true ;
 			$where[] = ' `#__virtuemart_product_categories`.`virtuemart_category_id` = '.$virtuemart_category_id;
 		}
-		
+
 		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', false );
 		if ($virtuemart_manufacturer_id) {
 			$joinMf = true ;
 			$where[] = ' `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` = '.$virtuemart_manufacturer_id;
 		}
-		
+
 		if ($app->isSite() && VmConfig::get('check_stock') && Vmconfig::get('show_out_of_stock_products') != '1'){
 			$where[] = ' `product_in_stock` > 0 ';
 		}
 
-     	// Time filter 
+     	// Time filter
      	if (JRequest::getVar('search_type', '') != '') {
      		$search_order = $this->_db->getEscaped(JRequest::getVar('search_order') == 'bf' ? '<' : '>');
      		switch (JRequest::getVar('search_type')) {
@@ -175,9 +175,9 @@ class VirtueMartModelProduct extends VmModel {
 				case 'topten';
 					$orderBy = 'ORDER BY product_sales LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
 					$filter_order_Dir = 'DESC';
-			}			
+			}
 		}
-						
+
 		// special  orders case
 		switch ($filter_order) {
 			case 'product_special':
@@ -204,7 +204,7 @@ class VirtueMartModelProduct extends VmModel {
 				$orderBy = ' ORDER BY `#__virtuemart_products`.`'.$this->_db->getEscaped($filter_order).'` ';
 				break;
 		}
-				
+
 		//write the query, incldue the tables
 		$query = 'SELECT * FROM `#__virtuemart_products` ';
 		if ($joinCategory == true) {
@@ -218,21 +218,21 @@ class VirtueMartModelProduct extends VmModel {
 		if ($joinPrice == true) {
 			$query .= ' LEFT JOIN `#__virtuemart_product_prices` ON `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_prices`.`virtuemart_product_id` ';
 		}
-		
+
 		if(count($where)>0){
 			$whereString = ' WHERE ('.implode(' AND ', $where ).') ';
 		} else {
 			$whereString = '';
 		}
-		
+
 		//and the where conditions
 		$query .= $whereString .$groupBy .$orderBy .$filter_order_Dir ;
-  
+
  		$this->_db->setQuery($query);
 		if(!$this->_db->query()){
 			$app->enqueueMessage('sortSearchOrder Error in query '.$query.'<br /><br />'.$this->_db->getErrorMsg().'<br />');
 		} else {
-			
+
 			if($nbrReturnProducts){
 				$this->_db->setQuery($query, 0, $nbrReturnProducts);
 			} else {
@@ -240,14 +240,14 @@ class VirtueMartModelProduct extends VmModel {
 				$this->getPagination($count);
 				$this->_db->setQuery($query, $this->_pagination->limitstart, $this->_pagination->limit);
 			}
-	    	
+
 	     	$productIdList = $this->_db->loadResultArray();
-			
+
 	     	//$app -> enqueueMessage('sortSearchListQuery '.$this->_db->getQuery());
-			
+
 			return $productIdList;
 		}
-		
+
 		return $query ;
 	}
 
@@ -263,8 +263,8 @@ class VirtueMartModelProduct extends VmModel {
     	if (isset($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId($virtuemart_product_id);
 		} else {
-			
-			return false;	
+
+			return false;
 		}
 
     	$child = $this->getProductSingle($virtuemart_product_id,$front, false,$onlyPublished);
@@ -277,28 +277,28 @@ class VirtueMartModelProduct extends VmModel {
 		$i = 0;
 		//Check for all attributes to inherited by parent products
     	while(!empty($child->product_parent_id)){
-    		
+
     		$parentProduct = $this->getProductSingle($child->product_parent_id,$front, false,false);
     	    $attribs = get_object_vars($parentProduct);
 
 	    	foreach($attribs as $k=>$v){
-	    		
+
 				if(empty($child->$k)){
 					$child->$k = $v;
-				} 
+				}
 	    	}
-			
+
 			$child->product_parent_id = $parentProduct->product_parent_id;
-			
+
     	}
 		$child->published = $published;
 		$child->virtuemart_product_id = $pId;
 		$child->product_parent_id = $ppId;
 
-		if ($withCalc) {			
+		if ($withCalc) {
 			$child->prices = $this->getPrice($child,array(),1);
 		}
-		
+
     	return $child;
     }
 
@@ -346,17 +346,17 @@ class VirtueMartModelProduct extends VmModel {
 
 			/* Load the categories the product is in */
 			$product->categories = $this->getProductCategories($this->_id);
-			
+
 			//There is someone who can explain me this?
 			$product->virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0);
 /*			if  ($product->virtuemart_category_id >0) {
-				$q = 'SELECT `ordering`,`id` FROM `#__virtuemart_product_categories` 
+				$q = 'SELECT `ordering`,`id` FROM `#__virtuemart_product_categories`
 					WHERE `virtuemart_product_id` = "'.$this->_id.'" and virtuemart_category_id='.$product->virtuemart_category_id;
 				$this->_db->setQuery($q);
-				// change for faster ordering 
+				// change for faster ordering
 				$ordering = $this->_db->loadObject();
 				$product->ordering = $ordering->ordering;
-				$product->id = $ordering->id; 
+				$product->id = $ordering->id;
 			}*/
 			if (empty($product->virtuemart_category_id) && isset($product->categories[0])) $product->virtuemart_category_id = $product->categories[0];
 
@@ -365,14 +365,14 @@ class VirtueMartModelProduct extends VmModel {
    				$catTable->load($product->categories[0]);
 				$product->category_name = $catTable->category_name;
 
-				
+
    			} else {
    				$product->category_name ='';
    			}
 
 			if($front){
 
-				// Add the product link  for canonical 
+				// Add the product link  for canonical
 				$producCategory = empty($product->categories[0])? '':$product->categories[0];
 				$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->_id.'&virtuemart_category_id='.$producCategory);
 
@@ -380,7 +380,7 @@ class VirtueMartModelProduct extends VmModel {
 //				/* Load the neighbours */
 //				$product->neighbours = $this->getNeighborProducts($product);
 
-				// Fix the product packaging 
+				// Fix the product packaging
 				if ($product->product_packaging) {
 					$product->packaging = $product->product_packaging & 0xFFFF;
 					$product->box = ($product->product_packaging >> 16) & 0xFFFF;
@@ -390,29 +390,29 @@ class VirtueMartModelProduct extends VmModel {
 					$product->box = '';
 				}
 
-				// Load the vendor details 
+				// Load the vendor details
 //				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 //				$product->vendor_name = VirtueMartModelVendor::getVendorName($product->virtuemart_vendor_id);
 
 
-				// Load the custom variants 
+				// Load the custom variants
 				$product->hasproductCustoms = $this->hasproductCustoms($this->_id);
-				// Load the custom product fields 
+				// Load the custom product fields
 				$product->customfields = $this->getProductCustomsField($product);
 
-				//  custom product fields for add to cart 
+				//  custom product fields for add to cart
 				$product->customfieldsCart = $this->getProductCustomsFieldCart($product);
 
-				// Check the order levels 
+				// Check the order levels
 				if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
 
-				// Check the stock level 
+				// Check the stock level
 				if (empty($product->product_in_stock)) $product->product_in_stock = 0;
 
-				// Get stock indicator 
+				// Get stock indicator
 //				$product->stock = $this->getStockIndicator($product);
 
-				// TODO Get the votes 
+				// TODO Get the votes
 //				$product->votes = $this->getVotes($this->_id);
 
 				}
@@ -462,14 +462,14 @@ class VirtueMartModelProduct extends VmModel {
 		 $product->categories = array();
 	 	 if($front){
 	 	 	$product->link = '';
-	 	 	
+
 	 	 	$product->prices = array();
 	 	 	$product->virtuemart_category_id = 0;
 	 	 	$product->mf_name = '';
 	 	 	$product->packaging = '';
 	 	 	$product->related = '';
 	 	 	$product->box = '';
-	 	 } 
+	 	 }
 
 	 	 return $product;
     }
@@ -511,13 +511,13 @@ class VirtueMartModelProduct extends VmModel {
      * Loads different kind of product lists.
 	 * you can load them with calculation or only published onces, very intersting is the loading of groups
 	 * valid values are latest, topten, featured.
-	 * 
+	 *
 	 * The function checks itself by the config if the user is allowed to see the price or published products
-	 * 
+	 *
 	 * @author Max Milbers
      */
 	public function getProductListing($group = false, $nbrReturnProducts = false, $withCalc = true, $onlyPublished = true, $single = false){
-				
+
 		$app = JFactory::getApplication();
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if($app->isSite() ){
@@ -537,7 +537,7 @@ class VirtueMartModelProduct extends VmModel {
 		$products = $this->getProducts($ids, $front, $withCalc, $onlyPublished,$single);
 		return $products;
 	}
-	
+
 	/**
 	 * Returns products for given array of ids
 	 *
@@ -564,7 +564,7 @@ class VirtueMartModelProduct extends VmModel {
 				if($product = $this->getProduct((int)$id,$front, $withCalc, $onlyPublished)){
 					$products[] = $product;
 				}
-			}			
+			}
 		}
 
 		return $products;
@@ -645,17 +645,17 @@ class VirtueMartModelProduct extends VmModel {
 		// set and save new ordering
 		foreach  ($orders as $key => $order) $tableOrdering[$key] = $order;
 		asort($tableOrdering);
-		$i = 1 ; $ordered = 0 ; 
+		$i = 1 ; $ordered = 0 ;
 		foreach  ($tableOrdering as $key => $order) {
 			if ($order != $i) {
-				$this->_db->setQuery('UPDATE `#__virtuemart_product_categories` 
+				$this->_db->setQuery('UPDATE `#__virtuemart_product_categories`
 					SET `ordering` = '. $i.'
 					WHERE `id` = ' . (int)$key . ' ');
 				if (! $this->_db->query()){
 					$this->setError($this->_db->getErrorMsg());
 					return false;
 				}
-				$ordered ++ ;  
+				$ordered ++ ;
 			}
 			$i++ ;
 		}
@@ -737,7 +737,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		/* Update manufacturer link */
 		if(!empty($data['virtuemart_manufacturer_id'])){
-			
+
 			$xrefTable = $this->getTable('product_manufacturers');
 	    	if (!$xrefTable->bindChecknStore($data)) {
 				$this->setError($xrefTable->getError());
@@ -771,7 +771,7 @@ class VirtueMartModelProduct extends VmModel {
 				$this->_db->query();
 			}
 		}
- 
+
 		// Process the images
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		$mediaModel = new VirtueMartModelMedia();
@@ -1022,7 +1022,7 @@ class VirtueMartModelProduct extends VmModel {
 
 	/**
 	 * Gets the price for a variant
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	public function getPrice($product,$customVariant,$quantity){
@@ -1032,14 +1032,14 @@ class VirtueMartModelProduct extends VmModel {
 		if(!is_object($product)){
 			$product = $this->getProduct($product);
 		}
-		
-		// Loads the product price details 
+
+		// Loads the product price details
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 
-		// Calculate the modificator 
+		// Calculate the modificator
 		$variantPriceModification = $calculator->calculateModificators($product,$customVariant);
-		
+
 		$prices = $calculator->getProductPrices($product,$product->categories,$variantPriceModification,$quantity);
 
 		return $prices;
@@ -1111,9 +1111,9 @@ class VirtueMartModelProduct extends VmModel {
 	if (empty($this->_query)) $this->_query = $this->_buildQuery();
 	$db->setQuery($this->_query);
 	$mf_virtuemart_product_ids = $db->loadResultArray();*/
-	
+
 	$mf_virtuemart_product_ids = $this->sortSearchListQuery();
-	
+
 	//$mf_virtuemart_product_ids = array();
 	//foreach ($virtuemart_product_ids as $virtuemart_product_id) $mf_virtuemart_product_ids[] = $virtuemart_product_id->virtuemart_product_id ;
 
@@ -1259,7 +1259,7 @@ class VirtueMartModelProduct extends VmModel {
 		//sanitize fields
 		$_id = (int) $_id;
 		$_amount = (float) $_amount;
-		
+
 		$this->decreaseStock($_id, $_amount);
 		$this->_db->setQuery('UPDATE `#__virtuemart_products` '
 					. 'SET `product_sales` = `product_sales` + ' . $_amount . ' '
@@ -1278,11 +1278,11 @@ class VirtueMartModelProduct extends VmModel {
 	 * @access public
 	 */
 	public function increaseStockAfterCancel ($_id, $_amount){
-		
+
 		//sanitize fields
 		$_id = (int) $_id;
 		$_amount = (float) $_amount;
-		
+
 		$this->increaseStock($_id, $_amount);
 		$this->_db->setQuery('UPDATE `#__virtuemart_products` '
 					. 'SET `product_sales` = `product_sales` - ' . $_amount . ' '
@@ -1302,11 +1302,11 @@ class VirtueMartModelProduct extends VmModel {
 	 * @access public
 	 */
 	public function revertStockAfterCancellation ($_id, $_amount){
-		
+
 		//sanitize fields
 		$_id = (int) $_id;
 		$_amount = (float) $_amount;
-		
+
 		$this->increaseStock($_id, $_amount);
 		$this->_db->setQuery('UPDATE `#__virtuemart_products` '
 					. 'SET `product_sales` = `product_sales` - ' . $_amount . ' '
@@ -1352,7 +1352,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * @access private
 	 */
 	private function _updateStock($_id, $_amount, $_sign){
-		
+
 		//sanitize fields
 		$_id = (int) $_id;
 		$_amount = (float) $_amount;
@@ -1546,7 +1546,7 @@ class VirtueMartModelProduct extends VmModel {
 		$this->_db->setQuery($query);
 		$productCustoms = $this->_db->loadObjectList();
 		$row= 0 ;
-		
+
 		//if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		//$calculator = calculationHelper::getInstance();
 		foreach ($productCustoms as & $field ) {
@@ -1582,7 +1582,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 			$calculator = calculationHelper::getInstance();
-				
+
 			// render select list
 			foreach ($groups as $group) {
 
@@ -1630,26 +1630,26 @@ class VirtueMartModelProduct extends VmModel {
   *  for product only !
   */
 	function displayType($product,$value,$type,$is_list=0,$price = 0,$row){
-		
+
 		if ($is_list>0) {
 			$options = array();
 			$values = explode(';',$value);
 
-			foreach ($values as $key => $val){		
+			foreach ($values as $key => $val){
 				$options[] = array( 'value' => $val ,'text' =>$val);
 			}
-				
+
 			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]');
 		} else {
 			if ($price > 0){
 				$price = $currency->priceDisplay((float)$price);
-			} 
+			}
 			switch ($type) {
 
 				/* variants*/
 				case 'V':
 				if ($price == 0 ) $price = JText::_('COM_VIRTUEMART_CART_PRICE_FREE') ;
-				/* Loads the product price details */				
+				/* Loads the product price details */
 				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
 				break;
 				/*userfield variants*/
@@ -1683,7 +1683,7 @@ class VirtueMartModelProduct extends VmModel {
 					$this->_db->setQuery($q);
 					if ($media_id = $this->_db->loadResult()) {
 						$thumb = $this->displayCustomMedia($media_id);
-						return JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $value . '&virtuemart_category_id=' . $related->virtuemart_category_id ), $thumb.' '.$related->product_name, array ('title' => $related->product_name ) );		
+						return JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $value . '&virtuemart_category_id=' . $related->virtuemart_category_id ), $thumb.' '.$related->product_name, array ('title' => $related->product_name ) );
 					}
 				break;
 				/* image */
@@ -1743,7 +1743,7 @@ class VirtueMartModelProduct extends VmModel {
 		return $media->displayMediaThumb('',false);
 
 	}
-	
+
 	function getProductChilds($product_id ) {
 
 		$db = JFactory::getDBO();
@@ -1751,17 +1751,13 @@ class VirtueMartModelProduct extends VmModel {
 		return $db->loadObjectList();
 
 	}
-	
+
 	function getProductParent($product_parent_id) {
 
 		$product_parent_id = (int) $product_parent_id;
 		$db = JFactory::getDBO();
 		$db->setQuery(' SELECT * FROM `#__virtuemart_products` WHERE `virtuemart_product_id` ='.$product_parent_id);
                 return $db->loadObject();
-		if ($parent = $db->loadObject()){
-		$result = JText::sprintf('COM_VIRTUEMART_LIST_CHILDREN_FROM_PARENT', $parent->product_name);
-		echo JHTML::_('link', JRoute::_('index.php?view=product&product_parent_id='.$product_parent_id.'&option=com_virtuemart'), $parent->product_name, array('title' => $result));
-		}
 	}
 
 }
