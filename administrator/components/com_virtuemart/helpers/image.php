@@ -33,7 +33,8 @@ class VmImage extends VmMediaHandler {
 	}
 
 	function processAction($data){
-
+		
+		if(empty($data['media_action'])) return $data;
 		$data = parent::processAction($data);
 
 		if( $data['media_action'] == 'upload_create_thumb' ){

@@ -61,7 +61,6 @@ class VirtueMartControllerCategory extends JController {
 		$view->setModel($this->getModel('product', 'VirtuemartModel'));
 		
 		$data = JRequest::getInt('error');
-		dump($data,'hmpf');
 		
 		/* Display it all */
 		$view->display();

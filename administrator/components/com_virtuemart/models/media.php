@@ -99,7 +99,7 @@ class VirtueMartModelMedia extends VmModel {
 	  				$medias[] = $media;
 				}
 /*	    		//$id = is_object($virtuemart_media_id)? $virtuemart_media_id->virtuemart_media_id:$virtuemart_media_id;
-	   			$data->load((int)$id); dump($data,'my media data in createMediaByIds');
+	   			$data->load((int)$id);
 	   			$media = VmMediaHandler::createMedia($data,$data->file_type,$mime);
 	   			if(is_object($virtuemart_media_id) && !empty($virtuemart_media_id->product_name)) $media->product_name = $virtuemart_media_id->product_name;
 	  			$medias[] = $media;*/
@@ -310,8 +310,6 @@ class VirtueMartModelMedia extends VmModel {
 			foreach($objects as $object){
 				
 				if(empty($object->virtuemart_media_id)) $virtuemart_media_id = null; else $virtuemart_media_id = $object->virtuemart_media_id;
-				dump($virtuemart_media_id,'attachImages $virtuemart_media_id');
-				dump($type,'attachImages $type');
 				$object->images = $this->createMediaByIds($virtuemart_media_id,$type,$mime);
 
 			}

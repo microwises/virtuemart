@@ -217,7 +217,6 @@ class VirtueMartViewProductdetails extends JView {
 	    	$category->category_template = VmConfig::get('categorytemplate');
 	    }
 
-dump($product->layout,'was hier');		dump(VmConfig::get('productlayout'),'was hier conf' );	
 	    if(empty($product->layout)){
 	    	$product->layout = VmConfig::get('productlayout');
 	    }		

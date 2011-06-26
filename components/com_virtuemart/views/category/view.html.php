@@ -116,7 +116,7 @@ class VirtuemartViewCategory extends JView {
 			$head['title'] = JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
 			
 			$document->setHeadData($head);
-			dump($document->getHeadData(),'headd data');			
+			
 		} else {
 			$document->setTitle($category->category_name);
 		}

@@ -75,7 +75,7 @@ class VirtueMartViewVirtueMart extends JView {
 			}
 
 			if (VmConfig::get('show_latest', 1)) {
-				$latestProducts = $productModel->getProductListing('latest', 5); dump($latestProducts,'hm');
+				$latestProducts = $productModel->getProductListing('latest', 5); 
 				//if(empty($latestProducts)) $latestProducts = 0;
 				$productModel->addImages($latestProducts);
 				//$latestProducts = array();

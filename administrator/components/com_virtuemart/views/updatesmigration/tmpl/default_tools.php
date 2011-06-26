@@ -58,14 +58,14 @@ defined('_JEXEC') or die('Restricted access');
     
     <tr>
  	<td align="center">
-		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateVmOneProducts&token='.JUtility::getToken() ); ?>
-	    <span onclick="javascript:confirmation('<?php echo 'Start migrate Products?'; ?>', '<?php echo $link; ?>');">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateAllInOne&token='.JUtility::getToken() ); ?>
+	    <span onclick="javascript:confirmation('<?php echo 'Start to migrate?'; ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
 	    </span>
 	    <br />
-	    Migrate VM1 products to VM2
+	    Migrate everything we can from VM1 to VM2
 	</td>
- 	<td align="center">
+<?php /*	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateVmOneUsers&token='.JUtility::getToken() ); ?>
 	    <span onclick="javascript:confirmation('<?php echo 'Start migrate Users?'; ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
@@ -86,8 +86,8 @@ defined('_JEXEC') or die('Restricted access');
 		is looking for tables with the format "joomla prefix" + "vm". When you followed the defaults than it should be 
 		jos_vm_.<br />
 		You should start with migrating medias, then users (not working yet), then products, then orders (not working yet).
-	</td>
-    </tr>
+	</td>*/ ?>
+    </tr> 
     
     <tr><td colspan="4"><?php echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING'); ?></td></tr>
     <tr>

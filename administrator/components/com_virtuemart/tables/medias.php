@@ -133,6 +133,19 @@ class TableMedias extends VmTable {
 			$rel_path = str_replace('/',DS,$this->file_url);
 //    		return JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
 			if(function_exists('mime_content_type') ){
+				$ok = true;
+				/*set_error_handler(array(&$this, 'handleError'));
+				try{	
+					$this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);
+				} catch (ErrorException $e){
+					$ok = false;
+				}
+				restore_error_handler();
+				if(!$ok){
+					$app = JFactory::getApplication();
+					$app->enqueueMessage('Couldnt resolve mime type for '.$this->file_name);
+					//dump($this,'cant store it?');
+				}*/
 				$this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);
 			} else {
 				if(!class_exists('JFile')) require(JPATH_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
@@ -187,6 +200,21 @@ class TableMedias extends VmTable {
 
 	}
 
+	/**
+	 * We need a customised error handler to catch the errors maybe thrown by 
+	 * mime_content_type
+	 * 
+	 * @author Max Milbers derived from Philippe Gerber
+	 */
+	function handleError($errno, $errstr, $errfile, $errline, array $errcontext){
+		
+	    // error was suppressed with the @-operator
+	    if (0 === error_reporting()) {
+	        return false;
+	    }
+	
+	    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+	}
 
 }
 // pure php no closing tag

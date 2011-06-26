@@ -199,7 +199,7 @@ class VmTable extends JTable {
 							if(empty($error)){
 								$this->setError(JText::_($error));
 							} else {
-								$this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE',$this->_tbl, $obkeys)  );
+								$this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE',$this->_tbl, $obkeys.': '.$this->$obkeys)  );
 							}
 							return false;
 						}

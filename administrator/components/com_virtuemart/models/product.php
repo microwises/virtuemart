@@ -280,7 +280,7 @@ class VirtueMartModelProduct extends VmModel {
     		
     		$parentProduct = $this->getProductSingle($child->product_parent_id,$front, false,false);
     	    $attribs = get_object_vars($parentProduct);
-			//dump($parentProduct,'parent '.$child->product_parent_id);
+
 	    	foreach($attribs as $k=>$v){
 	    		
 				if(empty($child->$k)){
@@ -749,7 +749,7 @@ class VirtueMartModelProduct extends VmModel {
 			$waitinglist = new VirtueMartModelWaitingList();
 			$waitinglist->notifyList($data['virtuemart_product_id']);
 		}
-
+		dump($data['categories'],'cats in store');
 		//Should be replaced by xref table
 		if(!empty($data['categories']) && count($data['categories'])>0){
 			/* Delete old category links */
@@ -757,7 +757,8 @@ class VirtueMartModelProduct extends VmModel {
 			$q .= "WHERE `virtuemart_product_id` = '".(int)$product_data->virtuemart_product_id."' ";
 			$this->_db->setQuery($q);
 			$this->_db->Query();
-
+			if(!is_array($data['categories'])) $data['categories'] = array($data['categories']);
+			
 			/* Store the new categories */
 			foreach( $data["categories"] as $virtuemart_category_id ) {
 				$this->_db->setQuery('SELECT IF(ISNULL(`ordering`), 1, MAX(`ordering`) + 1) as ordering FROM `#__virtuemart_product_categories` WHERE `virtuemart_category_id`='.$virtuemart_category_id );
@@ -765,7 +766,7 @@ class VirtueMartModelProduct extends VmModel {
 
 				$q  = "INSERT INTO #__virtuemart_product_categories ";
 				$q .= "(virtuemart_category_id,virtuemart_product_id,ordering) ";
-				$q .= "VALUES ('".$virtuemart_category_id."','".(int) $product_data->virtuemart_product_id . "', ".(int)$list_order. ")";
+				$q .= "VALUES ('".(int)$virtuemart_category_id."','".(int) $product_data->virtuemart_product_id . "', ".(int)$list_order. ")";
 				$this->_db->setQuery($q);
 				$this->_db->query();
 			}
@@ -1598,7 +1599,7 @@ class VirtueMartModelProduct extends VmModel {
 				foreach ( $options as $option){
 					$group->options[$option->value] = $option;
 				}
-				//dump($group,'$group');
+
 				if ($group->field_type == 'V'){
 					foreach ($group->options as $productCustom) {
 						$productCustom->text =  $productCustom->custom_value.' : '.$currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
