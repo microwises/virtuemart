@@ -72,7 +72,7 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$this->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
 		$productModel = $this->getModel('product');
-		
+
 		$cids = JRequest::getVar('cid');
 		$vars['product'] = $productModel->getProduct((int)$cids[0]);
 
@@ -118,10 +118,10 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$this->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
 		$productModel = $this->getModel('product');
-		
+
 		$cids = JRequest::getVar('cid');
 		$vars['product'] = $productModel->getProduct((int)$cids[0]);
-		
+
 		$user = JFactory::getUser();
 			$fromMail = $user->email;
 			$fromName = $user->name;
@@ -235,13 +235,16 @@ class VirtueMartControllerProductdetails extends JController {
 		$virtuemart_product_idArray = JRequest::getVar('virtuemart_product_id',array());	//is sanitized then
 		JArrayHelper::toInteger($virtuemart_product_idArray);
 		$virtuemart_product_id = $virtuemart_product_idArray[0];
-
-		$customVariant = JRequest::getVar('customPrice',array());	//is sanitized then
-		foreach($customVariant as $priceVariant=>$selected){
-			//Important! sanitize array to int	
-			JArrayHelper::toInteger($priceVariant);
+		$customPrices = array();
+		$customVariants = JRequest::getVar('customPrice',array());	//is sanitized then
+		foreach($customVariants as $customVariant){
+			foreach($customVariant as $priceVariant=>$selected){
+				//Important! sanitize array to int
+				//JArrayHelper::toInteger($priceVariant);
+				$customPrices[$priceVariant]=$selected;
+			}
 		}
-				
+
 		jimport( 'joomla.utilities.arrayhelper' );
 		$quantityArray = JRequest::getVar('quantity',array());	//is sanitized then
 		JArrayHelper::toInteger($quantityArray);
@@ -254,8 +257,8 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$product_model = $this->getModel('product');
-				
-		$prices = $product_model->getPrice($virtuemart_product_id,$customVariant,$quantity);
+
+		$prices = $product_model->getPrice($virtuemart_product_id,$customPrices,$quantity);
 
 		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
@@ -276,14 +279,14 @@ class VirtueMartControllerProductdetails extends JController {
 	}
 
 /*	public function getData() {
-	
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		
 
-		// Standard model 
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+
+
+		// Standard model
 		//$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
 		$type = JRequest::getWord('type', false);
-		// Now display the view. 
+		// Now display the view.
 
 	}*/
 
