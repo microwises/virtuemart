@@ -57,30 +57,30 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 		
     }
 
-	/**
-	 * Call at begin of every task to check if the permission is high enough.
-	 * Atm the standard is at least vm admin
-	 * @author Max Milbers
-	 */
-	private function checkPermissionForTools(){
-		//Hardcore Block, we may do that better later
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		if(!Permissions::getInstance()->check('admin') ){
-			$msg = 'Forget IT';
-			$this->setRedirect('index.php?option=com_virtuemart', $msg);
-		}
-		return true;
-	}
+     /**
+      * Call at begin of every task to check if the permission is high enough.
+      * Atm the standard is at least vm admin
+      * @author Max Milbers
+      */
+     private function checkPermissionForTools(){
+	     //Hardcore Block, we may do that better later
+	     if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+	     if(!Permissions::getInstance()->check('admin') ){
+		     $msg = 'Forget IT';
+		     $this->setRedirect('index.php?option=com_virtuemart', $msg);
+	     }
+	     return true;
+     }
 	
-	/**
-	 * Akeeba release system tasks
-	 * Update
-	 * @author Max Milbers
-	 */
-	function liveUpdate(){
-		
-		$this->setRedirect('index.php?option=com_virtuemart&view=liveupdate.', $msg);
-	}
+     /**
+      * Akeeba release system tasks
+      * Update
+      * @author Max Milbers
+      */
+     function liveUpdate(){
+
+	     $this->setRedirect('index.php?option=com_virtuemart&view=liveupdate.', $msg);
+     }
 
     /**
      * Install sample data into the database
@@ -327,7 +327,7 @@ class VirtuemartControllerUpdatesMigration extends VmController {
 	function setDangerousToolsOff(){
 
 		$model = $this->getModel('config');
-		$model->setDangerousToolsOff();
+		//$model->setDangerousToolsOff();
 
 	}
 
@@ -402,11 +402,12 @@ class Migrator extends VmModel{
 		$result = $this->portShoppergroups();
 		$result = $this->portUsers();
 
-/*		$result = $this->portCategories();
+		$result = $this->portCategories();
 		$result = $this->portManufacturerCategories();
 		$result = $this->portManufacturers();
-		$result = $this->portProducts();*/
+		$result = $this->portProducts();
 		
+/*		//$result = $this->portOrders();  //*/
 	}
 
 	public function portMedia(){
@@ -449,6 +450,8 @@ class Migrator extends VmModel{
 	
 	private function _portMediaByType($url,$type){
 		
+	    
+	    
 		$knownNames = array();
 		//create array of filenames for easier handling
 		foreach ($this->storedMedias as $media){
@@ -469,41 +472,55 @@ class Migrator extends VmModel{
 			foreach($foldersInDir as $dir){
 				$subfoldersInDir = null;
 				$subfoldersInDir = array();
+				$relUrl = str_replace(DS,'/',substr($dir,strlen(JPATH_ROOT.DS)));
 				if ($handle = opendir($dir)) {
 			    	while (false !== ($file = readdir($handle))) {
-						if ($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html') {
-							$info = pathinfo($file); //dump($info,'pathinfo');
+						if ($file != "." && $file != ".." && $file != '.svn'  && $file != '.picasa.ini' && $file != 'index.html') {
+							//$info = pathinfo($file);
+							//dump($info,'pathinfo($file)');
+							//dump(filetype($dir.DS.$file),'filetype($dir.DS.$file');
+							$filetype = filetype($dir.DS.$file);
 							//We port all type of media, regardless the extension
-							if ((filetype($dir.DS.$file) == 'file') && !in_array($file,$knownNames)) {
-								$filesInDir[] = $file;
+							if ($filetype == 'file' ) {
+								if(!in_array($file,$knownNames)){
+									$filesInDir[] = array('filename'=>$file,'url'=>$relUrl);
+								}
 						    } else{
-						    	if(filetype($dir.DS.$file)== 'dir' && $file!='resized'){
-						    		$subfoldersInDir[] = $dir.DS.$file;
+						    	if($filetype == 'dir' && $file!='resized'){
+						    		//dump($file,'dir ($file)');
+						    		$subfoldersInDir[] = $dir.$file;
 								}	
-							}
+							} 
 						}
 				    }
 				}
 			}
 			$foldersInDir = $subfoldersInDir;
-		}
 
+		}
+		//echo '<pre>'.print_r($filesInDir,1).'</pre>';
 		
 		$i=0;
-		foreach($filesInDir as $filename){
-			
-			$data = array(	'file_title'=>$filename,
+		foreach($filesInDir as $file){
+			//dump($file,'my file');
+		//	$this->_app ->enqueueMessage('Migrator '.$file);
+			$data = null;
+			$data = array(	'file_title'=>$file['filename'],
 							'virtuemart_vendor_id'=>1,
-							'file_description'=>$filename,
-							'file_meta'=>$filename,
-							'file_url'=>$url.$filename,
+							'file_description'=>$file['filename'],
+							'file_meta'=>$file['filename'],
+							'file_url'=>$file['url'].'/'.$file['filename'],
 							//'file_url_thumb'=>$url.'resized/'.$filename,
 							'media_published'=>1
 							);
 			if($type=='product')$data['file_is_product_image'] = 1;
 			$this->mediaModel->setId(0);
 			$success = $this->mediaModel->store($data,$type);
-			if($success) $i++;
+			$errors = $this->mediaModel->getErrors();
+			foreach($errors as $error){
+				$this->_app ->enqueueMessage('Migrator '.$error);
+			}
+			if($success) $i++; 
 		}
 		
 		return $i;
@@ -517,7 +534,6 @@ class Migrator extends VmModel{
 		$q ='SELECT * FROM #__vm_shopper_group';
 		$this->_db->setQuery($q);
 		$oldShopperGroups = $this->_db->loadAssocList();
-		
 		$oldtoNewShoppergroups = array();
 		
 		$sGroups = array();
@@ -530,22 +546,22 @@ class Migrator extends VmModel{
 			$sGroups['shopper_group_desc'] = $oldgroup['shopper_group_desc'];			
 			$sGroups['published'] = 1;
 			$sGroups['default'] = $oldgroup['default'];
-			$sGroups['ordering'] = $oldgroup['list_order'];
+			//$sGroups['ordering'] = $oldgroup['list_order']; //There is no ordering in vm1
 			
 			//if(!class_exists('TableCategories')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'categories.php');
 			//$table = JTable::getInstance('shoppergroups', 'Table', array() );
 			$table =$this->getTable('shoppergroups');
 			if(!$this->_test){
-				$category = $table->bindChecknStore($category);
+				$sGroups = $table->bindChecknStore($sGroups);
 		    	$errors = $table->getErrors();
 				foreach($errors as $error){
 					$this->setError($error);
 					$ok = false;
 				}
-				$oldtoNewShoppergroups[$oldgroup['shopper_group_id']] = $sGroups['virtuemart_shopper_group_id'];
-				unset($category['virtuemart_shoppergroup_id']);
+				$oldtoNewShoppergroups[$oldgroup['shopper_group_id']] = $sGroups['virtuemart_shoppergroup_id'];
+				unset($sGroups['virtuemart_shoppergroup_id']);
 			} else {
-				$oldtoNewShoppergroups[$oldgroup['category_id']] = $oldgroup['category_id'];
+				$oldtoNewShoppergroups[$oldgroup['shopper_group_id']] = $oldgroup['shopper_group_id'];
 			}
 			
 		}
@@ -554,27 +570,91 @@ class Migrator extends VmModel{
 		
 	}
 	
-	private function portUsers(){
-		
+    private function portUsers(){
 
-		//$model = $this->getModel('updatesMigration');
+	//$model = $this->getModel('updatesMigration');
 		
-		//Lets load all users from the joomla hmm or vm?
-		$ok= true;
-		
-		$q ='SELECT * FROM #__users AS `p`
-		LEFT OUTER JOIN #__vm_user_info ON #__vm_user_info.user_id = `p`.id 
-		LEFT OUTER JOIN #__vm_shopper_vendor_xref ON #__vm_shopper_vendor_xref.user_id = `p`.id '; 
-		$this->_db->setQuery($q);
-		$oldUsers = $this->_db->loadAssocList();
-		if(empty($oldProducts)) $this->_app->enqueueMessage('_productPorter '.$this->_db->getErrorMsg() );
-		dump($oldUsers,'my VM1 Users');
-		dump($this->_db,'my VM1 Users');
-		
-		return $ok;
+	//Lets load all users from the joomla hmm or vm? VM1 users does NOT exist
+	$ok= true;
+
+	$q ='SELECT * FROM #__users AS `p`
+	LEFT OUTER JOIN #__vm_user_info ON #__vm_user_info.user_id = `p`.id 
+	LEFT OUTER JOIN #__vm_shopper_vendor_xref ON #__vm_shopper_vendor_xref.user_id = `p`.id 
+	LEFT OUTER JOIN #__vm_auth_user_group ON #__vm_auth_user_group.user_id = `p`.id
+	LEFT OUTER JOIN #__vm_auth_group ON #__vm_auth_group.group_id = #__vm_auth_user_group.group_id ';
+	$this->_db->setQuery($q);
+	$oldUsers = $this->_db->loadAssocList();
+	if(empty($oldUsers)) $this->_app->enqueueMessage('_productPorter '.$this->_db->getErrorMsg() );
+	dump($oldUsers,'my VM1 Users');
+
+	if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
+	$userModel = new VirtueMartModelUser();
+
+	foreach($oldUsers as $user){
+			
+	    $user['virtuemart_country_id'] = $this->getCountryIdByCode($user['country']);
+	    $user['virtuemart_state_id'] = $this->getCountryIdByCode($user['state']);
+	    $user['virtuemart_shoppergroups_id'] = $this->_oldToNew->shoppergroups[$user['shopper_group_id']];
+	
+//	    dump($user['virtuemart_shoppergroups_id'],'the vm1shoppergroupid '.$user['shopper_group_id'].' for vm2 ');
+
+		//Solution takes vm1 original values, but is not tested (does not set mainvendor)
+		//if(!empty($user['group_name'])){
+		//    $user['perms'] = $user['group_name'];
+		//    
+		//} else {
+	    if($user['gid']==25){
+		    $user['perms'] = 'admin';
+		    $user['user_is_vendor'] = 1;
+	    } elseif($user['gid']==24){
+		    $user['perms'] = 'storeadmin';
+	    } else {
+		    $user['perms'] = 'shopper';
+	    }
+		//}
+
+	    $user['virtuemart_user_id'] = $user['id'];	
+	    $userModel->setUserId($user['id']);
+		dump($user,'my VM1 User to save');
+	    //Save the VM user stuff
+	    if(!$userModel->saveUserData($user)){
+		$userModel->setError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA')  );
+		JError::raiseWarning('', JText::_('COM_VIRTUEMART_RAISEWARNING_NOT_ABLE_TO_SAVE_USER_DATA'));
+	    }
+
+	    if (!$userModel->storeAddress($user)) {
+		$userModel->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
+	    }
+
+	    $userModel ->storeVendorData($user);
+	    //dump($user,'my VM1 Users');
+	    $errors = $userModel->getErrors();
+	    foreach($errors as $error){
+		$this->_app->enqueueMessage($error);
+	    }
+
+	    dump($errors,'my VM1 Users $errors');
 	}
+
+	//adresses
+	$q = 'SELECT * FROM #__vm_user_info WHERE `address_type` = "ST" ';
+	$this->_db->setQuery($q);
+	$oldUsersAddresses = $this->_db->loadAssocList();
+	foreach($oldUsersAddresses as $oldUsersAddi){
+	    if (!$userModel->storeAddress($oldUsersAddi)) {
+		$userModel->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
+	    }
+	    $errors = $userModel->getErrors();
+	    foreach($errors as $error){
+		$this->_app->enqueueMessage('Migration: '.$error);
+	    }
+	}
+	dump($oldUsersAddresses,'my VM1 User addresses');
+
+	return $ok;
+    }
 		
-	private function portCategories(){
+    private function portCategories(){
 		
 		$ok = true;
 
@@ -687,7 +767,7 @@ class Migrator extends VmModel{
 		$this->_db->setQuery($q);
 		$oldMfCategories = $this->_db->loadAssocList();
 		
-		$this->_app->enqueueMessage($this->_db->getQuery());
+		//$this->_app->enqueueMessage($this->_db->getQuery());
 		//dump($oldCategories,'_categoryPorter $oldCategories');
 		if(!class_exists('TableManufacturercategories')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'manufacturercategories.php');
 		$oldtonewMfCats = array();
@@ -872,6 +952,63 @@ shopper_group_id    product_list
 		return $currInt;
 	}
 
+	/**
+	 * Gets the virtuemart_country_id by a country 2 or 3 code
+	 * 
+	 * @author Max Milbers
+	 * @param string $name Country 3 or Country 2 code (example US for United States)
+	 * return int virtuemart_country_id
+	 */
+	private function getCountryIdByCode ($name){
+		if (empty($name)) {
+			return 0;
+		}
+
+		if(strlen($name)==2){
+			$countryCode = 'country_2_code';
+		} else {
+			$countryCode = 'country_3_code';
+		}
+		
+		$q = 'SELECT `virtuemart_country_id` FROM `#__virtuemart_countries` 
+				WHERE `'.$countryCode.'` = "'.$this->_db->getEscaped($name).'" ';
+		$this->_db->setQuery($q);
+		
+		return $this->_db->loadResult();
+		
+	}
+	
+	/**
+	 * Gets the virtuemart_country_id by a country 2 or 3 code
+	 * 
+	 * @author Max Milbers
+	 * @param string $name Country 3 or Country 2 code (example US for United States)
+	 * return int virtuemart_country_id
+	 */
+	private function getStateIdByCode ($name){
+		if (empty($name)) {
+			return 0;
+		}
+
+		if(strlen($name)==2){
+			$code = 'country_2_code';
+		} else {
+			$code = 'country_3_code';
+		}
+		
+		$q = 'SELECT `virtuemart_state_id` FROM `#__virtuemart_states` 
+				WHERE `'.$code.'` = "'.$this->_db->getEscaped($name).'" ';
+		$this->_db->setQuery($q);
+		
+		return $this->_db->loadResult();
+
+	}
+
+	/**
+	 * Helper function, was used to determine the difference of an loaded array (from vm19
+	 * and a loaded object of vm2
+	 */
+	
 	private function showVmDiff(){
 		
 		//$product = $productModel->getProduct(0);

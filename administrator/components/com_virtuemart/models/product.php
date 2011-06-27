@@ -749,7 +749,7 @@ class VirtueMartModelProduct extends VmModel {
 			$waitinglist = new VirtueMartModelWaitingList();
 			$waitinglist->notifyList($data['virtuemart_product_id']);
 		}
-		dump($data['categories'],'cats in store');
+
 		//Should be replaced by xref table
 		if(!empty($data['categories']) && count($data['categories'])>0){
 			/* Delete old category links */

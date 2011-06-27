@@ -22,7 +22,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 //Console::logSpeed('virtuemart start');
 
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
-$config= VmConfig::getInstance();
+VmConfig::loadConfig();
 if(VmConfig::get('shop_is_offline',0)){
 	$_controller = 'virtuemart';
 	require (JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
@@ -34,9 +34,9 @@ if(VmConfig::get('shop_is_offline',0)){
 	require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
 
 	/* Loading jQuery and VM scripts. */
-	$config->jQuery();
-	$config->jSite();
-	$config->cssSite();
+	VmConfig::jQuery();
+	VmConfig::jSite();
+	VmConfig::cssSite();
 
 	/* Require specific controller if requested */
 	if($_controller = JRequest::getWord('controller', JRequest::getWord('view', 'virtuemart'))) {

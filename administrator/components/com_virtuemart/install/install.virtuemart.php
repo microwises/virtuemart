@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model');
 require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'models'.DS.'updatesmigration.php');
 require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
-VmConfig::getInstance();
+VmConfig::loadConfig();
 
 function com_install(){
 

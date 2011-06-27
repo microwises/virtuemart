@@ -632,7 +632,7 @@ class ShopFunctions {
 	 * @param string $_prefix Optional prefix for the formtag name attribute
 	 */
 /*	public function listUserTitle($t, $extra="", $_prefix = '') {
-		$vmConfig = VmConfig::getInstance();
+		$vmConfig = VmConfig::loadConfig();
 		$titles = $vmConfig->get('titles');
 		$options = array();
 		foreach ($titles as $title) {

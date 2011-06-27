@@ -146,6 +146,7 @@ class VmMediaHandler {
      */
     function setFileInfo($type=0){
 
+	if(empty($type)) dumpTrace();
     	if(empty($this->file_url)){
     		$this->file_url = $this->getMediaUrlByView($type);
      		$this->file_url_folder = $this->file_url;

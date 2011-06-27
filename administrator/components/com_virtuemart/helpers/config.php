@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * We need this extra paths to have always the correct path undependent by loaded application, module or plugin
  * Plugin, module developers must always include this config at start of their application
- *   $vmConfig = VmConfig::getInstance(); // load the config and create an instance
+ *   $vmConfig = VmConfig::loadConfig(); // load the config and create an instance
  *  $vmConfig -> jQuery(); // for use of jQuery
  *  Then always use the defined paths below to ensure future stability
  */
@@ -31,14 +31,14 @@ require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 class VmConfig{
 	
 	// instance of class 
-	private static $_instance = null;	
+	private static $_jpConfig = null;	
 
 	private function __construct() {
 		//self::loadConfig();
 	}
 
 	// Get always the same VmConfig 
-	public static function getInstance() {
+/*	public static function getInstance() {
 		if(is_null(self::$_instance)) {
 			self::$_instance = new VmConfig();
 			
@@ -49,7 +49,7 @@ class VmConfig{
 		//so the function getInstance and loadConfig maybe merged later
 		//self::$_instance->loadConfig();
 		return self::$_instance;
-	}
+	}*/
 	
 	/**
 	 * Load the configuration values from the database into a session variable.
@@ -58,7 +58,15 @@ class VmConfig{
 	 * @author RickG
 	 * @author Max Milbers
 	 */
-	public function loadConfig() {
+	public function loadConfig($force = false) {
+		
+		if(!$force){
+			//$session = JFactory::getSession();
+			//$this->_jpConfig = $session->get('vmconfig','','vm');
+			if(!empty($this->_jpConfig)){				
+				return $this->_jpConfig;
+			}
+		}
 		//$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$query = 'SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1"';
@@ -72,27 +80,25 @@ class VmConfig{
 		}
 		
 		//We did a db->getEscpaped for storing, but load it manually, so we have to exchange the \n against the controllsign
+		// For the people who want to understand what the nl2br does. Double quoted \n are parsed as <br>
 		while(strpos($config,'\n')!==false){
 			$config = str_replace(array('\n'), array("\n"),$config);
 		}
-		
-		//$app -> enqueueMessage('my config '.$config);
+		//$config = nl2br($config);
 		
 		if ($config) {
-			$jpConfig = new JParameter($config);
+			$this->_jpConfig = new JParameter($config);
 			$session = JFactory::getSession();
 			$session->clear('vmconfig');
-			$session->set('vmconfig', $jpConfig,'vm');
-			
-			return $jpConfig;
+			$session->set('vmconfig', $this->_jpConfig,'vm');
+			//dump($this->_jpConfig,'jparam conf');
+			return $this->_jpConfig;
 		}
 		
 		return 'Was not able to create config';
 	}
 	
 
-
-	
 	/**
 	 * Find the configuration value for a given key
 	 *
@@ -107,18 +113,22 @@ class VmConfig{
 			jimport('joomla.html.parameter');
 			$session = JFactory::getSession();
 			$params = $session->get('vmconfig', '','vm');
+			//dump($params,' in get config '.$key);
 			if (!$params) {
 				//Todo better to get instance first and then loadConfig?
 				VmConfig::loadConfig();
 				$params = $session->get('vmconfig', '','vm');
+				//dump($params,' in get config need to load it '.$key);
 			}
-
+			
 			if ($params) {
 				$value = $params->get($key);
 			}
 			else {
 			    $params = new JParameter('');
 			    $value = '';
+				$app = JFactory::getApplication();
+				$app -> enqueueMessage('There was no config value found for '.$key);
 			}
 
 			if ($value == '') {
@@ -126,7 +136,8 @@ class VmConfig{
 			    $value = $default;
 			}
 		}
-
+		
+		//dump($value,'return value for '.$key);
 		return $value;
 	}
 
@@ -382,6 +393,20 @@ class VmConfig{
 		}
 
 		if ($_section == '[CONFIG]') {
+			$_qry = "CREATE TABLE IF NOT EXISTS `#__virtuemart_configs` (
+  `virtuemart_config_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `config` text,
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`virtuemart_config_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Holds configuration settings' AUTO_INCREMENT=1 ;";
+			$_db = JFactory::getDBO();
+			$_db->setQuery($_qry);
+			$_db->query();
 			$_qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES (1, '$_value')";
 		}
 		// Other sections can be implemented here

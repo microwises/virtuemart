@@ -201,6 +201,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @params $userId User Id to add the userinfo and vendor sample data to
      */
     function installSampleData($userId = null) {
+    	
 	if ($userId == null) {
 	    $userId = $this->determineStoreOwner();
 	}
@@ -228,7 +229,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['vendor_phone'] =  '555-555-1212';
 	$fields['vendor_store_name'] =  "Washupito's Tiendita";
 	$fields['vendor_store_desc'] =  ' <p>We have the best tools for do-it-yourselfers.  Check us out! </p> <p>We were established in 1969 in a time when getting good tools was expensive, but the quality was good.  Now that only a select few of those authentic tools survive, we have dedicated this store to bringing the experience alive for collectors and master mechanics everywhere.</p> 		<p>You can easily find products selecting the category you would like to browse above.</p>	';
-	$fields['virtuemart_media_id'] =  1;
+	//$fields['virtuemart_media_id'] =  1;
 	$fields['vendor_currency'] =  47;
 	$fields['vendor_accepted_currencies'] = '52,26,47,144';
 	$fields['vendor_terms_of_service'] =  "<h5>You haven't configured any terms of service yet. Click <a href=administrator/index.php?option=com_virtuemart&view=user&task=editshop>here</a> to change this text.</h5>";
@@ -239,38 +240,18 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 	$usermodel = new VirtueMartModelUser();
 	$usermodel->setId($userId);
-
-	//$usermodel->store($fields);
+	
 	//Save the VM user stuff
-	if(!$usermodel->saveUserData($fields)){
+	if(!$usermodel->store($fields)){
 		$this->setError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA')  );
 		JError::raiseWarning('', JText::_('COM_VIRTUEMART_RAISEWARNING_NOT_ABLE_TO_SAVE_USER_DATA'));
 	}
 
-	if (!$usermodel->storeAddress($fields)) {
-		$this->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
-	}
-
-	$usermodel ->storeVendorData($fields);
-
-   	$errors = $usermodel->getErrors();
-   	$msg ='';
-	if(empty($errors)) $msg = 'user id of the mainvendor is '.$fields['virtuemart_vendor_id'];
-	foreach($errors as $error){
-//		$msg .= ($error).'<br />';
-		$this->setError($error);
-	}
-//		$this->setError($usermodel->getError());
-//	    JError::raiseNotice(1, 'Problems saving user and/or vendor data of the sample store '.$this->getError());
-//	}
-
 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';
 	if(!$this->execSQLFile($filename)){
-//		$msg .= JText::_('Problems execution of SQL File '.$filename);
 		$this->setError(JText::_('Problems execution of SQL File '.$filename));
 	} else {
 		$this->setError(JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED'));
-//		$msg .= JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED');
 	}
 
 	return true;
@@ -328,35 +309,37 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @author Max Milbers
      */
     function execSQLFile($sqlfile) {
-	// Check that sql files exists before reading. Otherwise raise error for rollback
-	if ( !file_exists($sqlfile) ) {
-	    $this->setError('No SQL file provided!');
-	    return false;
-	}
-
-	// Create an array of queries from the sql file
-	jimport('joomla.installer.helper');
-	$queries = JInstallerHelper::splitSql(file_get_contents($sqlfile));
-
-	if (count($queries) == 0) {
-	    $this->setError('SQL file has no queries!');
-	    return false;
-	}
-
-	$db = JFactory::getDBO();
-	// Process each query in the $queries array (split out of sql file).
-	foreach ($queries as $query) {
-	    $query = trim($query);
-	    if ($query != '' && $query{0} != '#') {
-		$db->setQuery($query);
-		if (!$db->query()) {
-		    JError::raiseWarning(1, 'JInstaller::install: '.JText::_('COM_VIRTUEMART_SQL_ERROR')." ".$db->stderr(true));
-		    //return false;
+    	
+		// Check that sql files exists before reading. Otherwise raise error for rollback
+		if ( !file_exists($sqlfile) ) {
+		    $this->setError('No SQL file provided!');
+		    return false;
 		}
-	    }
-	}
+	
+		// Create an array of queries from the sql file
+		jimport('joomla.installer.helper');
+		$queries = JInstallerHelper::splitSql(file_get_contents($sqlfile));
+	
+		if (count($queries) == 0) {
+		    $this->setError('SQL file has no queries!');
+		    return false;
+		}
+		$ok = true;
+		$db = JFactory::getDBO();
+		// Process each query in the $queries array (split out of sql file).
+		foreach ($queries as $query) {
+		    $query = trim($query);
+		    if ($query != '' && $query{0} != '#') {
+			$db->setQuery($query);
+				if (!$db->query()) {
+				    JError::raiseWarning(1, 'JInstaller::install: '.$sqlfile.' '.JText::_('COM_VIRTUEMART_SQL_ERROR')." ".$db->stderr(true));
+				    $ok = false;
+				    //return false;
+				}
+		    }
+		}
 
-	return true;
+		return $ok;
     }
 
 

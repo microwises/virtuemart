@@ -228,7 +228,35 @@ class VirtueMartModelMedia extends VmModel {
 		return $this->_data;
     }
 
+/*    function getFileNamesByType($type){
+	
+	$table = false;
+	if($type=='product'){
+	    $table = '#__virtuemart_product_medias';
+	} else if($type=='category'){
+	    $table = '#__virtuemart_category_medias';
+	} else if($type=='manufacturer'){
+	    $table = '#__virtuemart_manufacturer_medias';
+	}
+	dump($table,'$table');
+	dump($type,'$type');
+	
+	if($table){
+	    $query = 'SELECT `#__virtuemart_medias`.`filename` as virtuemart_media_id FROM `#__virtuemart_product_medias` 
+	    LEFT JOIN `#__virtuemart_medias` ON `#__virtuemart_medias`.`virtuemart_media_id`=`'.$table.'`.`virtuemart_media_id` ';
+	    
+	    $this->_db->setQuery($query); dump($this->_db,'hm');
+	    $res = $this->_db->loadResultArray();
+	    if(empty($res)){
+		return array();
+	    } else {
+		return $res;
+	    }
+	     
+	}
 
+    }
+    */
     /**
      * This function stores a media and updates then the refered table
      *
@@ -242,33 +270,35 @@ class VirtueMartModelMedia extends VmModel {
 
 		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
 		
-		//Important! sanitize array to int	
-		jimport( 'joomla.utilities.arrayhelper' );
-		JArrayHelper::toInteger($data['virtuemart_media_id']);
-		$data['virtuemart_media_id'] = array_diff($data['virtuemart_media_id'],array('0',''));
-		
-		$oldIds = $data['virtuemart_media_id'];
-		$data['file_type'] = $type;
-		
-		//We just update it, ensure data correctly set
-		$data['virtuemart_media_id'] = (int)$data['active_media_id'];
-		$this -> setId($data['virtuemart_media_id']);
-		
-		$virtuemart_media_id = $this->store($data,$type);
-
-		// add the virtuemart_media_id & remove 0 and '' from $data 
-		$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
-		
-		$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
-
-		$table = $this->getTable($type.'_medias');
-		// Bind the form fields to the country table
-		$data = $table->bindChecknStore($data);
-	    $errors = $table->getErrors();
-		foreach($errors as $error){
-			$this->setError($error);
-		}		
-
+//		if(empty($data['virtuemart_media_id']) && empty($data['file_title']) && empty($data['file_name']) && empty($data['active_media_id'])){
+			//Important! sanitize array to int	
+			jimport( 'joomla.utilities.arrayhelper' );
+			JArrayHelper::toInteger($data['virtuemart_media_id']);
+			$data['virtuemart_media_id'] = array_diff($data['virtuemart_media_id'],array('0',''));
+			
+			$oldIds = $data['virtuemart_media_id'];
+			$data['file_type'] = $type;
+			
+			//We just update it, ensure data correctly set
+			$data['virtuemart_media_id'] = (int)$data['active_media_id'];
+			$this -> setId($data['virtuemart_media_id']);
+			
+			$virtuemart_media_id = $this->store($data,$type);
+	
+			// add the virtuemart_media_id & remove 0 and '' from $data 
+			$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
+			
+			$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
+	
+			$table = $this->getTable($type.'_medias');
+			// Bind the form fields to the country table
+			$data = $table->bindChecknStore($data);
+		    $errors = $table->getErrors();
+			foreach($errors as $error){
+				$this->setError($error);
+			}
+			//dump($data,'Storing media');
+//		}
 		return $this->_id;
 
 	}
@@ -280,26 +310,29 @@ class VirtueMartModelMedia extends VmModel {
 	 * @author Max Milbers
 	 */
 	public function store($data,$type) {
-
+				
 		//if(empty($data['media_action'])) return $table->virtuemart_media_id;
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
 		$table = $this->getTable('medias');
 //		if($table->checkDataContainsTableFields($data,array('file_url','media_action','media_attributes','file_is_product_image','virtuemart_media_id','virtuemart_vendor_id'))){
-			$table->bind($data);
-			$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
-				// workarround for media published and product published two fields in one form.
-			if ($data['media_published'])
-				$data['published'] = $data['media_published'];
-			else
-				$data['published'] = 0;
+		$table->bind($data);
+		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
 
-			$table->bindChecknStore($data);
-		    $errors = $table->getErrors();
-			foreach($errors as $error){
-				$this->setError('store medias'.$error);
-			}
-//		}
+		// workarround for media published and product published two fields in one form.
+		if ($data['media_published'])
+			$data['published'] = $data['media_published'];
+		else
+			$data['published'] = 0;
+		//echo print_r($data);die;
+		//dump($data,'arhg');
+		//$app = JFactory::getApplication();
+		//$app -> enqueueMessage(print_r($data,1));
+		$table->bindChecknStore($data);
+		$errors = $table->getErrors();
+		foreach($errors as $error){
+			$this->setError('store medias'.$error);
+		}
 
 		return $table->virtuemart_media_id;
 	}

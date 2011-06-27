@@ -76,7 +76,7 @@ class VirtuemartControllerConfig extends VmController {
 		if ($model->store($data)) {
 			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
 			// Load the newly saved values into the session.
-			VmConfig::getInstance();
+			VmConfig::loadConfig();
 		}
 		else {
 			$msg = $model->getError();

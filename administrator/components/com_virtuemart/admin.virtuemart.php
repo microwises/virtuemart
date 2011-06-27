@@ -24,9 +24,9 @@ if(JRequest::getCmd('view','') == 'liveupdate') {
 }
 
 require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
-$config= VmConfig::getInstance();
-$config->jQuery();
-$config->jSite();
+VmConfig::loadConfig();
+VmConfig::jQuery();
+VmConfig::jSite();
 /* Require specific controller if requested */
 if($_controller = JRequest::getWord('controller', JRequest::getWord('view', 'virtuemart'))) {
 	if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php')) {

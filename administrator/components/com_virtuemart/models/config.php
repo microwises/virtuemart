@@ -302,7 +302,7 @@ class VirtueMartModelConfig extends JModel {
 		}
 
 		// Load the newly saved values into the session.
-		VmConfig::getInstance();
+		VmConfig::loadConfig();
 
 		return true;
     }
