@@ -498,10 +498,12 @@ class vmrouterHelper {
 			// $q .=" AND `xref`.`category_child_id`=`c`.`virtuemart_category_id`";
 			// $q .=" AND `xref`.`category_parent_id` = ".(int)$virtuemart_category_id;
 			$db->setQuery($q);
-			$virtuemart_category_id = $db->loadResult();
+			if (!$category_id = $db->loadResult()) {
+				$category_id = $virtuemart_category_id;
+			}
 
 		/* WARNING name in same category must be unique or you have more then 1 ID */
-		return $virtuemart_category_id ;
+		return $category_id ;
 	}
 
 	/* Get URL safe Product name */
@@ -554,7 +556,7 @@ class vmrouterHelper {
 		$db->setQuery($q);
 		$product['virtuemart_product_id'] = $db->loadResult();
 		/* WARNING product name must be unique or you can't acces the product */
-
+dump($product);
 		return $product ;
 	}
 	/* Get URL safe Manufacturer name */

@@ -107,6 +107,7 @@ class TableCustoms extends VmTable {
 			$this->setError($this->_db->getError());
 			return false;
 		}
+		return true;
 	}
 
 }
