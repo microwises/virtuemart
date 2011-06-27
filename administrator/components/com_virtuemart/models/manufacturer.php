@@ -94,10 +94,10 @@ class VirtueMartModelManufacturer extends VmModel {
      */
 /*    public function getManufacturerList() {
      	$db = JFactory::getDBO();
-     	// Pagination 
+     	// Pagination
      	$this->getPagination();
 
-     	// Build the query 
+     	// Build the query
      	$q = "SELECT
 			";
      	$db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
@@ -129,7 +129,7 @@ class VirtueMartModelManufacturer extends VmModel {
 	 * @return object List of manufacturer objects
 	 */
 	public function getManufacturers($onlyPublished=false, $noLimit=false) {
-		
+
 		$mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$option	= 'com_virtuemart';
@@ -147,7 +147,7 @@ class VirtueMartModelManufacturer extends VmModel {
 			$where[] .= 'LOWER( M.`mf_name` ) LIKE '.$search;
 		}
 		if ($onlyPublished) {
-			$where[] .= '`#__virtuemart_manufacturers`.`published` = 1';
+			$where[] .= '`M`.`published` = 1';
 		}
 
 		$where = (count($where) ? ' WHERE '.implode(' AND ', $where) : '');
@@ -164,7 +164,6 @@ class VirtueMartModelManufacturer extends VmModel {
 		}
 		// set total for pagination
 		$this->_total = $this->_getListCount($query);
-
 		return $this->_data;
 	}
 

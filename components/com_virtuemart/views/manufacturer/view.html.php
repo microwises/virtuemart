@@ -36,7 +36,6 @@ class VirtuemartViewManufacturer extends JView {
 		$document = JFactory::getDocument();
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
-
 		/* Set the helper */
 		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 		$this->loadHelper('image');
