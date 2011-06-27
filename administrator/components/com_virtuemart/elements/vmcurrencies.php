@@ -25,7 +25,7 @@ class JElementVmCurrencies extends JElement {
      * @var		string
      */
     var $_name = 'Currencies';
-   
+
 
     function fetchElement($name, $value, &$node, $control_name) {
 
@@ -43,7 +43,7 @@ class JElementVmCurrencies extends JElement {
             $currency=VirtueMartModelVendor::getVendorCurrency ($vendor_id);
             $value= $currency->virtuemart_currency_id;
         }
-        return JHTML::_('select.genericlist', $currencies, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
+        return JHTML::_('select.genericlist', $currencies, $control_name . '[' . $name . '][]', '', 'value', 'text', $value, $control_name . $name);
     }
 
 }

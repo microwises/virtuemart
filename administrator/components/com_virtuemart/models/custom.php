@@ -103,7 +103,7 @@ class VirtueMartModelCustom extends VmModel {
 			//$search = $this->_db->Quote($search, false);
 			$query .= 'AND `custom_title` LIKE '.$search;
 		}
-		
+
 		$this->_db->setQuery($query);
 		// set total for pagination
 		$this->_total = $this->_getListCount($query);
@@ -143,10 +143,10 @@ class VirtueMartModelCustom extends VmModel {
 		$row->virtuemart_custom_id = 0;
 		$row->custom_title = $row->custom_title.' Copy';
 
-		if (!$row->store()) {
+		if (!$clone = $row->store()) {
 			JError::raiseError(500, $row->getError() );
 		}
-		return $row->store($clone);
+		return $clone;
 	}
 
 	/* Save and delete from database
@@ -156,14 +156,14 @@ class VirtueMartModelCustom extends VmModel {
 	@int     $id		: The concerned id (eg. product_id)
 	*/
 	public function saveModelCustomfields($table,$datas, $id) {
-		
+
 		//Sanitize id
 		$id = (int)$id;
-		
+
 		//Table whitelist
 		$tableWhiteList = array('product','category','manufacturer');
 		if(!in_array($table,$tableWhiteList)) return false;
-		
+
 		// delete existings from modelXref and table customfields
 		$this->_db->setQuery( 'DELETE PC.*,C.* FROM `#__virtuemart_'.$table.'_customfields` as `PC`, `#__virtuemart_customfields` as `C` WHERE `PC`.`virtuemart_customfield_id` = `C`.`virtuemart_customfield_id` AND  virtuemart_'.$table.'_id ='.$id );
 		if(!$this->_db->query()){

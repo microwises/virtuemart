@@ -182,12 +182,10 @@ class VmModel extends JModel {
      */
 	public function remove($ids) {
 
-
 		$table = $this->getTable($this->_maintablename);
-
 		foreach($ids as $id) {
 		    if (!$table->delete((int)$id)) {
-				$this->setError(get_class( $this ).'::remove '.$table->getError());
+				$this->setError(get_class( $this ).'::remove '.$id.' '.$table->getError());
 				return false;
 		    }
 		}
@@ -324,7 +322,7 @@ class VmModel extends JModel {
 		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
 
 		$this->mediaModel->attachImages($obj,$this->_maintablename,'image');
-		
+
 	}
 
 }

@@ -175,6 +175,7 @@ function virtuemartBuildRoute(&$query) {
 function virtuemartParseRoute($segments) {
 
 	$vars = array();
+
 	$helper = vmrouterHelper::getInstance();
 	if ($helper->router_disabled) {
 		$total = count($segments);
@@ -184,9 +185,11 @@ function virtuemartParseRoute($segments) {
 		return $vars;
 	}
 	$lang = &$helper->lang ;
+	// revert '-' Joomla change - to : //
+	foreach  ($segments as &$value) {
+		$value = str_replace(':', '-', $value);
+	}
 
-	$segments[0]=str_replace(":", "-",$segments[0]);
-	//array_search('green', $array);
 	if ($segments[0] == $lang['page']) {
 		array_shift($segments);
 
@@ -300,11 +303,13 @@ function virtuemartParseRoute($segments) {
 	 * Product must begin with A-Z
 	 */
 	$ascii = ord ( $segments[$count] );
-
+		dump($segments,' route prod');
+		dump($ascii,' char prod');
 	if ($ascii >65 && $ascii<90  ){
 		$vars['view'] = 'productdetails';
-		if (!$helper->use_id && ($helper->activeMenu->view == 'category' || ($helper->activeMenu->view == 'virtuemart') ) ) {
-			$product = $helper->getProductId ($segments ,$helper->activeMenu->virtuemart_category_id);
+		if (!$helper->use_id ) {
+			$product = $helper->getProductId($segments ,$helper->activeMenu->virtuemart_category_id);
+			dump ($product,'prod');
 			$vars['virtuemart_product_id'] = $product['virtuemart_product_id'];
 			$vars['virtuemart_category_id'] = $product['virtuemart_category_id'];
 		}
@@ -318,7 +323,7 @@ function virtuemartParseRoute($segments) {
 		return $vars;
 
 	} elseif (!$helper->use_id && ($helper->activeMenu->view == 'category' || ($helper->activeMenu->view == 'virtuemart') ) ) {
-		$vars['virtuemart_category_id'] = $helper->getCategoryId ($segments ,$helper->activeMenu->virtuemart_category_id);
+		$vars['virtuemart_category_id'] = $helper->getCategoryId (end($segments) ,$helper->activeMenu->virtuemart_category_id);
 		$vars['view'] = 'category' ;
 		return $vars;
 
@@ -483,20 +488,17 @@ class vmrouterHelper {
 	 * $names are segments
 	 * $virtuemart_category_ids is joomla menu virtuemart_category_id
 	 */
-	public function getCategoryId($slugs,$virtuemart_category_id ){
+	public function getCategoryId($slug,$virtuemart_category_id ){
 		if ($virtuemart_category_id == null) $virtuemart_category_id = 0 ;
 		$db = JFactory::getDBO();
-		foreach ($slugs as $slug) {
-			// $name = str_replace('-', '%', $name);
-			// $name = str_replace(':', '%', $name);
+		dump($slug,'cname');
 			$q = "SELECT distinct `c`.`virtuemart_category_id`
 				FROM  `#__virtuemart_categories` AS `c` , `#__virtuemart_category_categories` as `xref`";
 			$q .=" WHERE `c`.`slug` LIKE '".$db->getEscaped($slug)."' ";
-			$q .=" AND `xref`.`category_child_id`=`c`.`virtuemart_category_id`";
-			$q .=" AND `xref`.`category_parent_id` = ".(int)$virtuemart_category_id;
+			// $q .=" AND `xref`.`category_child_id`=`c`.`virtuemart_category_id`";
+			// $q .=" AND `xref`.`category_parent_id` = ".(int)$virtuemart_category_id;
 			$db->setQuery($q);
 			$virtuemart_category_id = $db->loadResult();
-		}
 
 		/* WARNING name in same category must be unique or you have more then 1 ID */
 		return $virtuemart_category_id ;
@@ -531,26 +533,28 @@ class vmrouterHelper {
 
 			// }
 		// return ucfirst($string);
-		return $db->loadResult();
+		return ucfirst( $db->loadResult() );
 	}
 	/* get product and category ID */
 	public function getProductId($names,$virtuemart_category_id = NULL ){
 		$productName = array_pop($names);
 		$product = array();
-		$product['virtuemart_category_id'] = self::getCategoryId($names,$virtuemart_category_id ) ;
+		$categoryName = end($names);
+		dump ($categoryName,'categoryName');
+		$product['virtuemart_category_id'] = self::getCategoryId($categoryName,$virtuemart_category_id ) ;
 		$db = JFactory::getDBO();
-		$parentIds = array();
-		//$virtuemart_category_ids = null;
-		$productName = str_replace('-', '%', $productName);
-		$productName = str_replace(':', '%', $productName);
+		//$parentIds = array();
+		// $productName = str_replace('-', '%', $productName);
+		// $productName = str_replace(':', '%', $productName);
 		$q = "SELECT `p`.`virtuemart_product_id`
 			FROM `#__virtuemart_products` AS `p`
 			LEFT JOIN `#__virtuemart_product_categories` AS `xref` ON `p`.`virtuemart_product_id` = `xref`.`virtuemart_product_id`
-			WHERE `p`.`product_name` LIKE '".$db->getEscaped($productName)."'
-			AND `xref`.`virtuemart_category_id` in (".(int)$product['virtuemart_category_id'].") ";
+			WHERE `p`.`slug` LIKE '".$db->getEscaped($productName)."'
+			AND `xref`.`virtuemart_category_id` = ".(int)$product['virtuemart_category_id'];
 		$db->setQuery($q);
 		$product['virtuemart_product_id'] = $db->loadResult();
 		/* WARNING product name must be unique or you can't acces the product */
+
 		return $product ;
 	}
 	/* Get URL safe Manufacturer name */
