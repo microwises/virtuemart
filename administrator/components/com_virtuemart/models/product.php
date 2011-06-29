@@ -100,10 +100,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
      	// Product name Backend?
-     	if ($search = JRequest::getWord('filter_product', false)){
-			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
-			$where[] = '#__virtuemart_products.`product_name` LIKE '.$search;
-     	}
+
 
 		// search fields filters set Frontend?
 		if ( $search == 'true') {
@@ -122,7 +119,10 @@ class VirtueMartModelProduct extends VmModel {
 				$filter_search[] = ' `'.$searchField.'` LIKE '.$keyword;
 			}
 			$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
-		}
+		} elseif ($search = JRequest::getWord('filter_product', false)){
+			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+			$where[] = '#__virtuemart_products.`product_name` LIKE '.$search;
+     	}
 
 		if ($virtuemart_category_id>0){
 			$joinCategory = true ;
@@ -758,7 +758,7 @@ class VirtueMartModelProduct extends VmModel {
 			$this->_db->setQuery($q);
 			$this->_db->Query();
 			if(!is_array($data['categories'])) $data['categories'] = array($data['categories']);
-			
+
 			/* Store the new categories */
 			foreach( $data["categories"] as $virtuemart_category_id ) {
 				$this->_db->setQuery('SELECT IF(ISNULL(`ordering`), 1, MAX(`ordering`) + 1) as ordering FROM `#__virtuemart_product_categories` WHERE `virtuemart_category_id`='.$virtuemart_category_id );
