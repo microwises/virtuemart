@@ -29,19 +29,19 @@ require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
  * We use this Class STATIC not dynamically !
  */
 class VmConfig{
-	
-	// instance of class 
-	private static $_jpConfig = null;	
+
+	// instance of class
+	private static $_jpConfig = null;
 
 	private function __construct() {
 		//self::loadConfig();
 	}
 
-	// Get always the same VmConfig 
+	// Get always the same VmConfig
 /*	public static function getInstance() {
 		if(is_null(self::$_instance)) {
 			self::$_instance = new VmConfig();
-			
+
 		}
 		//Idea is to use only getInstance and not loadConfig statically,
 		//but rises the problem that the Config is then loaded to often.
@@ -50,7 +50,7 @@ class VmConfig{
 		//self::$_instance->loadConfig();
 		return self::$_instance;
 	}*/
-	
+
 	/**
 	 * Load the configuration values from the database into a session variable.
 	 * This step is done to prevent accessing the database for every configuration variable lookup.
@@ -59,12 +59,13 @@ class VmConfig{
 	 * @author Max Milbers
 	 */
 	public function loadConfig($force = false) {
-		
+
 		if(!$force){
 			//$session = JFactory::getSession();
 			//$this->_jpConfig = $session->get('vmconfig','','vm');
-			if(!empty($this->_jpConfig)){				
-				return $this->_jpConfig;
+			$test = empty(self::$_jpConfig);
+			if(!empty(self::$_jpConfig) ) {
+				return self::$_jpConfig;
 			}
 		}
 		//$app = JFactory::getApplication();
@@ -78,26 +79,25 @@ class VmConfig{
 			$db->setQuery($query);
 			$config = $db->loadResult();
 		}
-		
+
 		//We did a db->getEscpaped for storing, but load it manually, so we have to exchange the \n against the controllsign
 		// For the people who want to understand what the nl2br does. Double quoted \n are parsed as <br>
 		while(strpos($config,'\n')!==false){
 			$config = str_replace(array('\n'), array("\n"),$config);
 		}
 		//$config = nl2br($config);
-		
+
 		if ($config) {
-			$this->_jpConfig = new JParameter($config);
+			self::$_jpConfig = new JParameter($config);
 			$session = JFactory::getSession();
 			$session->clear('vmconfig');
-			$session->set('vmconfig', $this->_jpConfig,'vm');
-			//dump($this->_jpConfig,'jparam conf');
-			return $this->_jpConfig;
+			$session->set('vmconfig', self::$_jpConfig,'vm');
+			return self::$_jpConfig;
 		}
-		
+
 		return 'Was not able to create config';
 	}
-	
+
 
 	/**
 	 * Find the configuration value for a given key
@@ -118,9 +118,8 @@ class VmConfig{
 				//Todo better to get instance first and then loadConfig?
 				VmConfig::loadConfig();
 				$params = $session->get('vmconfig', '','vm');
-				//dump($params,' in get config need to load it '.$key);
 			}
-			
+
 			if ($params) {
 				$value = $params->get($key);
 			}
@@ -136,8 +135,7 @@ class VmConfig{
 			    $value = $default;
 			}
 		}
-		
-		//dump($value,'return value for '.$key);
+
 		return $value;
 	}
 
@@ -188,11 +186,11 @@ class VmConfig{
 		JHTML::script('jquery.js', 'components/com_virtuemart/assets/js/', false);
 		/*$document = JFactory::getDocument();
 		$document->addScriptDeclaration('jQuery.noConflict();');*/
-		
+
 		$jquery = true;
 		return;
 	}
-	// Virtuemart product and price script 
+	// Virtuemart product and price script
 	function jPrice()
 	{
 		static $jPrice;
@@ -244,19 +242,19 @@ class VmConfig{
 		if ($JimageSelectlist) return;
 			$js = "
 			jQuery(document).ready(function() {
-				
+
 				jQuery('#addnewselectimage').click(function() {
 					jQuery('.selectimage select:first').clone(true).insertAfter('.selectimage select:last');
 				});
 				jQuery('.detachselectimage').click(function() {
-					if (jQuery('.selectimage select:eq(1)').length) 
+					if (jQuery('.selectimage select:eq(1)').length)
 					jQuery('.selectimage select:last').remove();
 				});
 				jQuery('.selectimage select').change(function() {
 					var data = jQuery(this).val();
 
 					jQuery.getJSON('index.php?option=com_virtuemart&view=media&task=viewJson&format=json&virtuemart_media_id='+data ,
-					function(datas, textStatus) { 
+					function(datas, textStatus) {
 						if (datas.msg =='OK') {
 							jQuery('#vm_display_image').attr('src', datas.file_root+datas.file_url);
 							jQuery('#vm_display_image').attr('alt', datas.file_title);
@@ -271,7 +269,7 @@ class VmConfig{
 						else { jQuery('#vm_thumb_image').attr('src','');}
 						} else jQuery('#file_title').html(datas.msg);
 					});
-					//if (jQuery('.selectimage select:eq(1)').length) 
+					//if (jQuery('.selectimage select:eq(1)').length)
 					//jQuery('.selectimage select:last').remove();
 				});
 			});";
@@ -293,9 +291,9 @@ class VmConfig{
 		JHTML::script('jquery.validationEngine-'.$lang.'.js', 'components/com_virtuemart/assets/js/languages/', false);
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration( "
-			
+
 			jQuery(document).ready(function() {
-				jQuery('#adminform').validationEngine(); 
+				jQuery('#adminform').validationEngine();
 			});"  );
 		JHTML::stylesheet ( 'validationEngine.template.css', 'components/com_virtuemart/assets/css/', false );
 		JHTML::stylesheet ( 'validationEngine.jquery.css', 'components/com_virtuemart/assets/css/', false );
@@ -325,14 +323,14 @@ class VmConfig{
 		$document = & JFactory::getDocument ();
 		$direction = $document->getDirection ();
 		$cssFile = 'vmsite-' . $direction . '.css';
-		
+
 		// If exist exit
 
 		JHTML::stylesheet ( $cssFile, 'components/com_virtuemart/assets/css/', false );
 		$cssSite = true;
 		return;
 	}
-	
+
 	/**
 	 * Read the file vm_config.dat from the install directory, compose the SQL to write
 	 * the config record and store it to the dabase.
@@ -420,6 +418,6 @@ class VmConfig{
 		}
 		return true;
 	}
-	
+
 }
 // pure php no closing tag

@@ -5,7 +5,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  * @version $Id:connection.php 431 2006-10-17 21:55:46 +0200 (Di, 17 Okt 2006) soeren_nb $
  * @package VirtueMart
  * @subpackage classes
- * @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
+ * @copyright Copyright (C) 2004-2007 soeren, 2009-2011 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
  * to the GNU General Public License, and as distributed it includes or
@@ -72,7 +72,7 @@ class VmConnector {
 		 $urlParts['query'] = '?'.$urlParts['query'];
 		if( isset( $urlParts['path'] )) $urlParts['path'] = $urlParts['path'].$urlParts['query'];
 	}
-	
+
 	$vm_proxy_url = VmConfig::get('conf_VM_PROXY_URL','');
 	// Check proxy
 	if( trim( $vm_proxy_url ) != '') {
@@ -189,7 +189,7 @@ class VmConnector {
 			if( !empty( $proxyURL )) {
 			    fputs($fp, "POST ".$urlParts['host'].':'.$urlParts['port'].$urlParts['path']." HTTP/1.0\r\n");
 			    fputs($fp, "Host: ".$proxyURL['host']."\r\n");
-	
+
 			    if( trim( @VM_PROXY_USER )!= '') {
 				fputs($fp, "Proxy-Authorization: Basic " . base64_encode (VM_PROXY_USER.':'.VM_PROXY_PASS ) . "\r\n\r\n");
 			    }

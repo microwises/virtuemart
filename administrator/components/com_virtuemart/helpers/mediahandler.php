@@ -59,7 +59,7 @@ class VmMediaHandler {
 
 		if(empty($path)) {
 			$app = JFactory::getApplication();
-			$app->enqueueMessage('cant create media of unknown type, a programmers error, used type "'.$type.'" ' );
+			$app->enqueueMessage('Ignore this message, when it appears while the media synchronisation process, else report to http://forum.virtuemart.net/index.php?board=127.0 : cant create media of unknown type, a programmers error, used type "'.$type.'" ' );
 			$path = VmConfig::get('media_path');
 		}
 		return $path;
@@ -146,7 +146,7 @@ class VmMediaHandler {
      */
     function setFileInfo($type=0){
 
-	if(empty($type)) dumpTrace();
+	//if(empty($type)) dumpTrace();
     	if(empty($this->file_url)){
     		$this->file_url = $this->getMediaUrlByView($type);
      		$this->file_url_folder = $this->file_url;

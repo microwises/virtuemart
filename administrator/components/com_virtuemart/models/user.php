@@ -96,7 +96,7 @@ class VirtueMartModelUser extends VmModel {
 			$this->_data = null;
     	}
 	}
-	
+
 	/**
 	 * Set the ID to the current user
 	 */
@@ -119,18 +119,18 @@ class VirtueMartModelUser extends VmModel {
 		return $data;
 	}
 
-	
+
 	/**
 	 * This should load the userdata in userfields so that they can easily displayed
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
-	
+
 	function getUserDataInFields( $type, $toggles, $skips){
-	
+
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = new VirtuemartModelUserfields();
-		
+
 		$prepareUserFields = $userFieldsModel->getUserFields(
 										$type,
 										$toggles, // Default toggles
@@ -141,12 +141,12 @@ class VirtueMartModelUser extends VmModel {
 		foreach ($prepareUserFields as $_fld) {
 			if(empty($userdata->{$_fld->name})) $userdata->{$_fld->name} = '';
 			$data{$_fld->name} = $userFieldsModel->getUserFieldsByUser($prepareUserFields, $userdata);
-		}			
+		}
 
 		return $userdata;
 	}
 
-	
+
 	/**
 	 * Retrieve the detail record for the current $id if the data has not already been loaded.
 	 */
@@ -156,11 +156,11 @@ class VirtueMartModelUser extends VmModel {
 
 		$this->_data = $this->getTable('vmusers');
 		$this->_data->load((int)$this->_id);
-		
-		// Add the virtuemart_shoppergroup_ids 
+
+		// Add the virtuemart_shoppergroup_ids
 		$xrefTable = $this->getTable('vmuser_shoppergroups');
 		$this->_data->shopper_groups = $xrefTable->load($this->_id);
-		
+
 
 		$this->_data->JUser = JUser::getInstance($this->_id);
 
@@ -185,9 +185,9 @@ class VirtueMartModelUser extends VmModel {
 			// End hack
 			$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
 		}
-		
+
 		if($this->_data->user_is_vendor){
-			
+
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php' );
 			$vendorModel = new VirtueMartModelVendor();
 
@@ -197,17 +197,17 @@ class VirtueMartModelUser extends VmModel {
 
 		return $this->_data;
 	}
-	
+
 /**	function getUserDataInFields($view, $type){
-		
+
 		//Okey, first lets get Userdata
 		$user = $this->getUser();
-		
+
 		//then lets get the userfields
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = new VirtueMartModelUserfields();
-		
-		
+
+
 		if ($type == 'ST') {
 			$prepareUserFields = $userFieldsModel->getUserFields(
 									 'shipping'
@@ -221,19 +221,19 @@ class VirtueMartModelUser extends VmModel {
 										, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
 				);
 
-		}		
-		
+		}
+
 		//fill userfields
 		// Format the data
 		foreach ($prepareUserFields as $_fld) {
 			if(empty($data[$_fld->name])) $data[$_fld->name] = '';
 			$data[$_fld->name] = $_userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $data[$_fld->name],$data);
 		}
-		
+
 		return $data;
 	}*/
-	
-	
+
+
 	/**
 	 * Retrieve contact info for a user if any
 	 *
@@ -324,7 +324,7 @@ class VirtueMartModelUser extends VmModel {
 		if(empty($data)){
 			$mainframe->enqueueMessage('Developer notice, no data to store for user');
 			return false;
-		} 
+		}
 
 		//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
 		//The constructor sets automatically the right id.
@@ -342,7 +342,7 @@ class VirtueMartModelUser extends VmModel {
 			$email = $user->get('email');
 			if(!empty($email)){
 				$data['email'] = $email;
-			} 
+			}
 		} else {
 			$data['email'] =  JRequest::getString('email', '', 'post', 'email');
 		}
@@ -356,7 +356,7 @@ class VirtueMartModelUser extends VmModel {
 			$name = $user->get('name');
 			if(!empty($name)){
 				$data['name'] = $name;
-			} 
+			}
 		} else {
 				$data['name'] = JRequest::getString('name', '', 'post', 'name');
 		}
@@ -455,7 +455,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		$this ->storeVendorData($data);
-		
+
 		// Send registration confirmation mail
 		//		$password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
 		//		$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
@@ -507,12 +507,12 @@ class VirtueMartModelUser extends VmModel {
 		foreach($plg_datas as $plg_data){
 			$data = array_merge($plg_data);
 		}
-		
+
 		if(empty($data['customer_number'])){
 			//if(!class_exists('vmUserPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmuserplugin.php');
   			///if(!$returnValues){
 				$data['customer_number'] = md5($data['username']);
-			//}	
+			//}
 		} else {
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			if(!Permissions::getInstance()->check("admin,storeadmin")) {
@@ -521,13 +521,13 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		$usertable = $this->getTable('vmusers');
-		
+
 		$vmusersData = $usertable -> bindChecknStore($data);
 		$errors = $usertable->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);
 		}
-		
+
 		if(empty($data['virtuemart_shoppergroup_id'])){
 			if(!class_exists('VirtueMartModelShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shoppergroup.php');
 			$shoppergroupmodel = new VirtueMartModelShopperGroup();
@@ -544,7 +544,7 @@ class VirtueMartModelUser extends VmModel {
 		foreach($errors as $error){
 			$this->setError($error);
 		}
-		
+
   		$plg_datas = $dispatcher->trigger('plgVmAfterUserStore',$data);
 		foreach($plg_datas as $plg_data){
 			$data = array_merge($plg_data);
@@ -553,7 +553,7 @@ class VirtueMartModelUser extends VmModel {
 	}
 
 	public function storeVendorData($data){
-		
+
 		if($data['user_is_vendor']){
 
 			//	$data['virtuemart_vendor_id'] = $data['my_virtuemart_vendor_id'];
@@ -574,7 +574,7 @@ class VirtueMartModelUser extends VmModel {
 				//Update xref Table
 				$virtuemart_vendor_id = $vendorModel->getId();
 				if($virtuemart_vendor_id!=$data['virtuemart_vendor_id']){
-					
+
 					$app = JFactory::getApplication();
 					$app ->enqueueMessage('Developer notice, tried to update vendor xref should not appear in singlestore');
 
@@ -583,7 +583,7 @@ class VirtueMartModelUser extends VmModel {
 					$vendorsUserData =$usertable->load($this->_id);
 					$vendorsUserData->virtuemart_vendor_id = $virtuemart_vendor_id;
 					//$vmusersData = array('virtuemart_user_id'=>$data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$data['customer_number'],'perms'=>$data['perms']);
-	
+
 					if (!$usertable->bindChecknStore($vendorsUserData)){
 						$this->setError($usertable->getError());
 						return false;
@@ -593,7 +593,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Take a data array and save any address info found in the array.
 	 *
@@ -606,7 +606,7 @@ class VirtueMartModelUser extends VmModel {
 	function storeAddress($data){
 
 		if(empty($data['address_type'])) return false;
-		
+
 		if($data['address_type']=='ST'){
 			// Check for fields with the the 'shipto_' prefix; that means a (new) shipto address.
 			$_shipto = array();
@@ -624,14 +624,14 @@ class VirtueMartModelUser extends VmModel {
     	if (!$userinfo->bindChecknStore($userfielddata)) {
 			$this->setError($userinfo->getError());
 		}
-		return true;
+		return $userinfo->virtuemart_userinfo_id;
 	}
 
 	function _prepareUserFields($data, $type)
 	{
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = new VirtueMartModelUserfields();
-		
+
 		if ($type == 'ST') {
 			$prepareUserFields = $userFieldsModel->getUserFields(
 									 'shipping'
@@ -645,7 +645,7 @@ class VirtueMartModelUser extends VmModel {
 										, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
 				);
 
-		}		
+		}
 		// Format the data
 		foreach ($prepareUserFields as $_fld) {
 			if(empty($data[$_fld->name])) $data[$_fld->name] = '';
@@ -656,12 +656,12 @@ class VirtueMartModelUser extends VmModel {
 	}
 
 	/**
-	 * This should store the userdata given in userfields 
-	 * 
+	 * This should store the userdata given in userfields
+	 *
 	 * @author Max Milbers
 	 */
 	function storeUserDataByFields($data,$type, $toggles, $skips){
-		
+
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
         $userFieldsModel = new VirtueMartModelUserfields();
 
@@ -678,12 +678,12 @@ class VirtueMartModelUser extends VmModel {
 			if(empty($data[$_fld->name])) $data[$_fld->name] = '';
 			$data[$_fld->name] = $userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $data[$_fld->name],$data);
 		}
-		
+
 		$this->store($data);
 
-		return true;	
-		
-	}	
+		return true;
+
+	}
 	 /**
 	  * This uses the shopfunctionsF::renderAndSendVmMail function, which uses a controller and task to render the content
 	  * and sents it then.
@@ -781,8 +781,8 @@ class VirtueMartModelUser extends VmModel {
 	  */
 /*	 function getUserAddressList($_uid = 0, $_type = 'ST')
 	 {
-	 	$_q = 'SELECT * FROM #__virtuemart_userinfos 
-				WHERE virtuemart_user_id="' . (($_uid==0)?$this->_id:(int)$_uid) .'" 
+	 	$_q = 'SELECT * FROM #__virtuemart_userinfos
+				WHERE virtuemart_user_id="' . (($_uid==0)?$this->_id:(int)$_uid) .'"
 				AND address_type="'.$_type.'"';
 			return ($this->_getList($_q));
 	 }*/
@@ -848,7 +848,7 @@ class VirtueMartModelUser extends VmModel {
 	 	if ($search = JRequest::getWord('search', false)) {
 	 		$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			//$search = $this->_db->Quote($search, false);
-			
+
 	 		$where = ' WHERE `name` LIKE '.$search.' OR `username` LIKE ' .$search;
 	 		return ($where);
 	 	}
@@ -893,10 +893,10 @@ class VirtueMartModelUser extends VmModel {
 	 	if (count($_ids) == 0) {
 	 		return array();
 	 	}
-		
+
 		jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($_ids);
-		
+
 	 	$_missing = $this->_getList('SELECT j.username AS uname '
 			. ',      j.id       AS uid '
 			. 'FROM `#__users` j '
@@ -945,7 +945,7 @@ class VirtueMartModelUser extends VmModel {
 	 	$query .= $and;
 	 	$query .= 'GROUP BY `node`.`' . $name . '` ';
 	 	$query .= 'ORDER BY `node`.`lft`';
-		
+
 	 	$this->_db->setQuery($query);
 		//$app = JFactory::getApplication();
 		//$app -> enqueueMessage($this->_db->getQuery());

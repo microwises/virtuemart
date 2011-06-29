@@ -15,6 +15,7 @@ DELETE FROM `#__virtuemart_manufacturers`;
 DELETE FROM `#__virtuemart_manufacturercategories`;
 DELETE FROM `#__virtuemart_manufacturer_medias`;
 DELETE FROM `#__virtuemart_medias`;
+DELETE FROM `#__virtuemart_migration_oldtonew_ids`;
 DELETE FROM `#__virtuemart_orders`;
 DELETE FROM `#__virtuemart_order_histories`;
 DELETE FROM `#__virtuemart_order_items`;

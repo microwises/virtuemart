@@ -75,7 +75,7 @@ class VirtueMartModelMedia extends VmModel {
 	function createMediaByIds($virtuemart_media_ids,$type='',$mime=''){
 
     	if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
-		
+
 		$medias = array();
     	if(!empty($virtuemart_media_ids)){
     		if(!is_array($virtuemart_media_ids)) $virtuemart_media_ids = explode(',',$virtuemart_media_ids);
@@ -129,10 +129,10 @@ class VirtueMartModelMedia extends VmModel {
     	$vendorId = 1; //TODO set to logged user or requested vendorId, not easy later
     	$query = '';
     	$whereItems = array();
-		
+
     	$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
     	if(!empty($virtuemart_product_id)){
-    		$query = 'SELECT `#__virtuemart_medias`.`virtuemart_media_id` as virtuemart_media_id FROM `#__virtuemart_product_medias` 
+    		$query = 'SELECT `#__virtuemart_medias`.`virtuemart_media_id` as virtuemart_media_id FROM `#__virtuemart_product_medias`
     		LEFT JOIN `#__virtuemart_medias` ON `#__virtuemart_medias`.`virtuemart_media_id`=`#__virtuemart_product_medias`.`virtuemart_media_id` ';
     		$whereItems[] = '`virtuemart_product_id` = "'.$virtuemart_product_id.'"';
     		//$oderby = '`#__virtuemart_medias`.`modified_on`';
@@ -141,7 +141,7 @@ class VirtueMartModelMedia extends VmModel {
 
     	$cat_id = JRequest::getInt('virtuemart_category_id',0);
     	if(empty($query) && !empty($cat_id)){
-    		$query = 'SELECT `#__virtuemart_medias`.`virtuemart_media_id` as virtuemart_media_id FROM `#__virtuemart_category_medias` 
+    		$query = 'SELECT `#__virtuemart_medias`.`virtuemart_media_id` as virtuemart_media_id FROM `#__virtuemart_category_medias`
     		LEFT JOIN `#__virtuemart_medias` ON `#__virtuemart_medias`.`virtuemart_media_id`=`#__virtuemart_category_medias`.`virtuemart_media_id` ';
     		$whereItems[] = '`virtuemart_category_id` = "'.$cat_id.'"';
     		//$oderby = '`#__virtuemart_medias`.`modified_on`';
@@ -161,11 +161,11 @@ class VirtueMartModelMedia extends VmModel {
 //			if(empty($whereItems)) $whereItems[] = ' 1 ';
 			//$oderby = '`#__virtuemart_medias`.`modified_on`';
     	}
-		
+
 		if ($search = JRequest::getWord('search', false)){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			$where[] = '`file_title` LIKE '.$search;
-		} 
+		}
 
 
 		if (!empty($where)) $whereItems = array_merge($whereItems,$where);
@@ -228,35 +228,7 @@ class VirtueMartModelMedia extends VmModel {
 		return $this->_data;
     }
 
-/*    function getFileNamesByType($type){
-	
-	$table = false;
-	if($type=='product'){
-	    $table = '#__virtuemart_product_medias';
-	} else if($type=='category'){
-	    $table = '#__virtuemart_category_medias';
-	} else if($type=='manufacturer'){
-	    $table = '#__virtuemart_manufacturer_medias';
-	}
-	dump($table,'$table');
-	dump($type,'$type');
-	
-	if($table){
-	    $query = 'SELECT `#__virtuemart_medias`.`filename` as virtuemart_media_id FROM `#__virtuemart_product_medias` 
-	    LEFT JOIN `#__virtuemart_medias` ON `#__virtuemart_medias`.`virtuemart_media_id`=`'.$table.'`.`virtuemart_media_id` ';
-	    
-	    $this->_db->setQuery($query); dump($this->_db,'hm');
-	    $res = $this->_db->loadResultArray();
-	    if(empty($res)){
-		return array();
-	    } else {
-		return $res;
-	    }
-	     
-	}
 
-    }
-    */
     /**
      * This function stores a media and updates then the refered table
      *
@@ -269,27 +241,27 @@ class VirtueMartModelMedia extends VmModel {
 	function storeMedia($data,$type){
 
 		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
-		
-//		if(empty($data['virtuemart_media_id']) && empty($data['file_title']) && empty($data['file_name']) && empty($data['active_media_id'])){
-			//Important! sanitize array to int	
+
+		if( !(empty($data['virtuemart_media_id']) && empty($data['file_title']) && empty($data['file_name']) && empty($data['active_media_id'])) ){
+			//Important! sanitize array to int
 			jimport( 'joomla.utilities.arrayhelper' );
 			JArrayHelper::toInteger($data['virtuemart_media_id']);
 			$data['virtuemart_media_id'] = array_diff($data['virtuemart_media_id'],array('0',''));
-			
+
 			$oldIds = $data['virtuemart_media_id'];
 			$data['file_type'] = $type;
-			
+
 			//We just update it, ensure data correctly set
 			$data['virtuemart_media_id'] = (int)$data['active_media_id'];
 			$this -> setId($data['virtuemart_media_id']);
-			
+
 			$virtuemart_media_id = $this->store($data,$type);
-	
-			// add the virtuemart_media_id & remove 0 and '' from $data 
+
+			// add the virtuemart_media_id & remove 0 and '' from $data
 			$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
-			
+
 			$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
-	
+
 			$table = $this->getTable($type.'_medias');
 			// Bind the form fields to the country table
 			$data = $table->bindChecknStore($data);
@@ -297,8 +269,8 @@ class VirtueMartModelMedia extends VmModel {
 			foreach($errors as $error){
 				$this->setError($error);
 			}
-			//dump($data,'Storing media');
-//		}
+
+		}
 		return $this->_id;
 
 	}
@@ -310,7 +282,7 @@ class VirtueMartModelMedia extends VmModel {
 	 * @author Max Milbers
 	 */
 	public function store($data,$type) {
-				
+
 		//if(empty($data['media_action'])) return $table->virtuemart_media_id;
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
@@ -324,10 +296,7 @@ class VirtueMartModelMedia extends VmModel {
 			$data['published'] = $data['media_published'];
 		else
 			$data['published'] = 0;
-		//echo print_r($data);die;
-		//dump($data,'arhg');
-		//$app = JFactory::getApplication();
-		//$app -> enqueueMessage(print_r($data,1));
+
 		$table->bindChecknStore($data);
 		$errors = $table->getErrors();
 		foreach($errors as $error){
@@ -341,7 +310,7 @@ class VirtueMartModelMedia extends VmModel {
 		if(!empty($objects)){
 			if(!is_array($objects)) $objects = array($objects);
 			foreach($objects as $object){
-				
+
 				if(empty($object->virtuemart_media_id)) $virtuemart_media_id = null; else $virtuemart_media_id = $object->virtuemart_media_id;
 				$object->images = $this->createMediaByIds($virtuemart_media_id,$type,$mime);
 

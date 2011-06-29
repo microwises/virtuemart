@@ -127,7 +127,7 @@ class TableMedias extends VmTable {
 //    		return JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
 		     if(function_exists('mime_content_type') ){
 			     $ok = true;
-			     //$app = JFactory::getApplication();
+			     $app = JFactory::getApplication();
 				set_error_handler(array($this, 'handleError'));
 				try{	
 				     $this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);
@@ -136,9 +136,10 @@ class TableMedias extends VmTable {
 				     }
 				} catch (ErrorException $e){
 				    
-				    return false;
+				    
 					//$ok = false;
-				     //$app->enqueueMessage('Couldnt resolve mime type for '.$rel_path);
+				     $app->enqueueMessage('Couldnt resolve mime type for '.$rel_path);
+				    return false;
 				}
 				restore_error_handler();
 			     //$this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);
@@ -201,14 +202,15 @@ class TableMedias extends VmTable {
 	 * 
 	 * @author Max Milbers derived from Philippe Gerber
 	 */
-	function handleError($errno, $errstr, $errfile, $errline, array $errcontext){
+	function handleError($errno, $errstr){
 		
 	    // error was suppressed with the @-operator
 	    if (0 === error_reporting()) {
 	        return false;
 	    }
-	    echo 'I throw exception';
-	   // throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+	    throw new ErrorException($errstr, 0);
+	    //echo 'I throw exception';
+	   //throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 	}
 
 }

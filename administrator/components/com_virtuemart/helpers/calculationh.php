@@ -1060,7 +1060,6 @@ class calculationHelper {
 	                $variant = substr($item, 0, $index2);
 	                $selected = substr($item, $index2 + 1);
 	                $variants[$variant] = $selected;
-	                dump($variant,'num '.$selected);
 	            }
 	        }
 		}

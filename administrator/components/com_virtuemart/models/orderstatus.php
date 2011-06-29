@@ -66,7 +66,8 @@ class VirtueMartModelOrderstatus extends VmModel {
 
 	/**
 	 * Bind the post data to the order status table and save it
-	 *
+	 *   This function looks like not working in our patttern.
+	 * 
 	 * @return boolean True is the save was successful, false otherwise.
 	 */
 	function store()

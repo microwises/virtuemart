@@ -325,4 +325,8 @@ class VmModel extends JModel {
 
 	}
 
+	public function resetErrors(){
+	    
+	    $this->_errors = array();
+	}
 }

@@ -8,7 +8,7 @@
  * @package	VirtueMart
  * @subpackage Helpers
  * @author RickG
- * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
+ * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009-2011 VirtueMart Team. All rights reserved.
  */
 
 // Check to ensure this file is included in Joomla!
@@ -89,17 +89,17 @@ class AdminMenuHelper {
         <div id="content-pad">
             <div class="sidemenu-box">
                 <div class="sidemenu-pad">
-		    
+
 		    		<div class="sidemenu-top">
-		    		
+
 					<?php //TODO The link should be done better
 					echo JHTML::_('link', 'index.php?option=com_virtuemart', JHTML::_('image', JURI::base().'components/com_virtuemart/assets/images/vm_menulogo.png', 'Virtuemart'));
 					?>
-					
+
                    	<h2><?php echo JHTML::_('link', 'index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_ADMIN') ); ?></h2>
-					
+
 					</div>
-			
+
 		    <div class="sidemenu" id="masterdiv2">
 				<?php
 				$modCount = 1;
@@ -114,7 +114,7 @@ class AdminMenuHelper {
 					    foreach( $item['items'] as $link ) {
 						if( $link['name'] == '-' ) {
 						    ?>
-				
+
 						    <?php
 						}
 						else {
@@ -143,8 +143,8 @@ class AdminMenuHelper {
 				    <?php $modCount++;
 				} ?>
 		    </div>
-		    
-		    
+
+
 		    <div class="sidemenu-bottom">
 				<?php $release = VmConfig::getInstalledVersion(false); ?>
 				<a href="http://virtuemart.org/index2.php?option=com_versions&amp;catid=1&amp;myVersion=<?php echo $release ?>" onclick="javascript:void window.open(this.href, 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=580,directories=no,location=no'); return false;" title="<?php echo JText::_('COM_VIRTUEMART_VERSIONCHECK_TITLE') ?>" target="_blank">
@@ -153,14 +153,14 @@ class AdminMenuHelper {
 				    ?>
 				</a>
 		    </div>
-		    
+
 		    <div class="updates">
 				<?php // Include ALU System
 		    	require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 		    	echo LiveUpdate::getIcon(); ?>
 		    </div>
-		    
-		   
+
+
                 </div>
             </div>
         </div>

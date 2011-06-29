@@ -55,7 +55,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
      */
     function integrateJoomlaUsers() {
 
-	    $msg = JText::_('COM_VIRTUEMART_START_SYNCRONIZING');
+/*	    $msg = JText::_('COM_VIRTUEMART_START_SYNCRONIZING');
 		$db = JFactory::getDBO();
 		$query = "SELECT * FROM `#__users`";
 		$db->setQuery($query);
@@ -78,7 +78,8 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 		}
 		$msg = JText::_('COM_VIRTUEMART_USERS_SYNCRONIZED');
-		return $msg;
+		return $msg;*/
+    	return;
     }
 
 
@@ -201,7 +202,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @params $userId User Id to add the userinfo and vendor sample data to
      */
     function installSampleData($userId = null) {
-    	
+
 	if ($userId == null) {
 	    $userId = $this->determineStoreOwner();
 	}
@@ -240,7 +241,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 	$usermodel = new VirtueMartModelUser();
 	$usermodel->setId($userId);
-	
+
 	//Save the VM user stuff
 	if(!$usermodel->store($fields)){
 		$this->setError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA')  );
@@ -309,17 +310,17 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @author Max Milbers
      */
     function execSQLFile($sqlfile) {
-    	
+
 		// Check that sql files exists before reading. Otherwise raise error for rollback
 		if ( !file_exists($sqlfile) ) {
 		    $this->setError('No SQL file provided!');
 		    return false;
 		}
-	
+
 		// Create an array of queries from the sql file
 		jimport('joomla.installer.helper');
 		$queries = JInstallerHelper::splitSql(file_get_contents($sqlfile));
-	
+
 		if (count($queries) == 0) {
 		    $this->setError('SQL file has no queries!');
 		    return false;
@@ -344,7 +345,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 
 /**
- * Done by akeeba release system now 
+ * Done by akeeba release system now
  *
 /*    function uploadAndInstallUpdate($packageName) {
 		if (!$packageName) {
@@ -378,28 +379,6 @@ class VirtueMartModelUpdatesMigration extends JModel {
     function removeAllVMTables() {
 		$db = JFactory::getDBO();
 		$config = JFactory::getConfig();
-
-/*	    $prefix = $config->getValue('config.dbprefix').'vm_%';
-		$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
-		if (!$tables = $db->loadResultArray()) {
-		    $this->setError = $db->getErrorMsg();
-	//	    return false;
-		}
-
-		foreach ($tables as $table) {
-
-			//lets rename them instead drop
-//			$db->setQuery('RENAME TABLE '.$table.' TO old'.$table);
-
-		    $db->setQuery('DROP TABLE ' . $table);
-		    if($db->query()){
-		    	$droppedTables[] = substr($table,strlen($prefix)-1);
-		    } else {
-		    	$errorTables[] = $table;
-		    	$app->enqueueMessage('Error drop virtuemart table ' . $table);
-		    }
-		}
-*/
 
 		$prefix = $config->getValue('config.dbprefix').'virtuemart_%';
 		$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');

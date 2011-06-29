@@ -191,20 +191,20 @@ class VirtuemartControllerOrders extends VmController {
 	 *
 	 */
 	public function saveItemStatus() {
-		$mainframe = Jfactory::getApplication();
+	    $mainframe = Jfactory::getApplication();
 
-		/* Load the view object */
-		$view = $this->getView('orders', 'html');
+	    /* Load the view object */
+	    $view = $this->getView('orders', 'html');
 
-		/* Load the helper */
-		$view->loadHelper('shopFunctions');
-		$view->loadHelper('vendorHelper');
+	    /* Load the helper */
+	    $view->loadHelper('shopFunctions');
+	    $view->loadHelper('vendorHelper');
 
-		$data = JRequest::get('post');
-		$model = $this->getModel('orders');
-		$model->updateItemStatus(JArrayHelper::toObject($data), $data['new_status']);
+	    $data = JRequest::get('post');
+	    $model = $this->getModel('orders');
+	    $model->updateItemStatus(JArrayHelper::toObject($data), $data['new_status']);
 
-		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$data['virtuemart_order_id']);
+	    $mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$data['virtuemart_order_id']);
 	}
 
 
@@ -273,7 +273,7 @@ class VirtuemartControllerOrders extends VmController {
 	    $orderId = JRequest::getVar('virtuemart_order_id', '');
 	    $model = $this->getModel('orders');
 	    $msg = '';
-
+	    $data = JRequest::get('post');
 	    if (!$model->saveOrderLineItem()) {
 		$msg = $model->getError();
 	    }
@@ -301,3 +301,4 @@ class VirtuemartControllerOrders extends VmController {
 	}
 }
 // pure php no closing tag
+

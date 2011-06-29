@@ -75,7 +75,7 @@ class VirtueMartViewVirtueMart extends JView {
 			}
 
 			if (VmConfig::get('show_latest', 1)) {
-				$latestProducts = $productModel->getProductListing('latest', 5); 
+				$latestProducts = $productModel->getProductListing('latest', 5);
 				//if(empty($latestProducts)) $latestProducts = 0;
 				$productModel->addImages($latestProducts);
 				//$latestProducts = array();
@@ -108,13 +108,13 @@ class VirtueMartViewVirtueMart extends JView {
 		$document = JFactory::getDocument();
 
 		$error = JRequest::getInt('error',0);
-		dump($error,'warum?');
+
 		//Todo this may not work everytime as expected, because the error must be set in the redirect links.
 	   	if(!empty($error)){
 /*			$head = $document->getHeadData();
-			$head['title'] = JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');	
+			$head['title'] = JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
 			$document->setHeadData($head);*/
-			$document->setTitle(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND').JText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name));			
+			$document->setTitle(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND').JText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name));
 		} else {
 			$document->setTitle(JText::sprintf('COM_VIRTUEMART_HOME',$vendor->vendor_store_name));
 		}
