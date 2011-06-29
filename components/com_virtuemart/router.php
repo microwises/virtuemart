@@ -74,6 +74,7 @@ function virtuemartBuildRoute(&$query) {
 			if ( isset($query['virtuemart_manufacturer_id'])  ) {
 				$segments[] = $lang['manufacturer'].'/'.$helper->getManufacturerName($query['virtuemart_manufacturer_id']) ;
 				unset($query['virtuemart_manufacturer_id']);
+				unset($query['search']);
 			}
 			if ( isset($query['search'])  ) {
 				$segments[] = $lang['search'] ;
@@ -93,6 +94,7 @@ function virtuemartBuildRoute(&$query) {
 			} else {
 				if (isset ($helper->menu->no_virtuemart_category_id))$query['Itemid'] = $helper->menu->no_virtuemart_category_id;
 				elseif (isset ($helper->menu->virtuemart))$query['Itemid'] = $helper->menu->virtuemart[0]['itemId'] ;
+				else unset ($query['Itemid']) ;
 				unset($query['virtuemart_category_id']);
 			}
 
@@ -230,12 +232,10 @@ function virtuemartParseRoute($segments) {
 		array_shift($segments);
 		$vars['virtuemart_manufacturer_id'] =  $helper->getManufacturerId($segments[0]);
 		array_shift($segments);
-		$vars['view'] = 'manufacturer';
-		if ( isset($segments[0]) && $segments[0] == 'detail') {
-			$vars['tmpl'] = 'component';
-			array_shift($segments);
-		}
+		$vars['search'] = 'true';
 		if (empty($segments)) {
+			$vars['view'] = 'category';
+			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
 			return $vars;
 		}
 

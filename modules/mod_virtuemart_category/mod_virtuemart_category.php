@@ -22,8 +22,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 /* Load  VM fonction */
 require('helper.php');
-$config->jQuery();
-$config->cssSite();
+VmConfig::jQuery();
+VmConfig::cssSite();
 
 /* Setting */
 $categoryModel = new VirtueMartModelCategory();

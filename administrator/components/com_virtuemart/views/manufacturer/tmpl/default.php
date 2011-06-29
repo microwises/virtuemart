@@ -54,10 +54,10 @@ AdminMenuHelper::startAdminArea();
 				<?php  echo JText::_('COM_VIRTUEMART_MANUFACTURER_EMAIL'); ?>
 		    </th>
 		    <th>
-				<?php  echo JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY'); ?>
+				<?php  echo JText::_('COM_VIRTUEMART_MANUFACTURER_DESCRIPTION'); ?>
 		    </th>
 		    <th>
-				<?php  echo JText::_('COM_VIRTUEMART_MANUFACTURER_DESCRIPTION'); ?>
+				<?php  echo JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY'); ?>
 		    </th>
 		    <th>
 				<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_URL'); ?>

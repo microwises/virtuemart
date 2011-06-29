@@ -141,7 +141,7 @@ class VirtueMartModelManufacturer extends VmModel {
 		if ($virtuemart_manufacturercategories_id > 0) {
 			$where[] .= 'M.`virtuemart_manufacturercategories_id` = '. $virtuemart_manufacturercategories_id;
 		}
-		if ( $search ) {
+		if ( $search && $search != 'true') {
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			//$search = $this->_db->Quote($search, false);
 			$where[] .= 'LOWER( M.`mf_name` ) LIKE '.$search;
@@ -155,7 +155,6 @@ class VirtueMartModelManufacturer extends VmModel {
 		$query = 'SELECT M.*,MC.`mf_category_name`   FROM `#__virtuemart_manufacturers` AS M LEFT JOIN `#__virtuemart_manufacturercategories` AS MC on M.`virtuemart_manufacturercategories_id`= MC.`virtuemart_manufacturercategories_id`'
 				. $where;
 		$query .= ' ORDER BY M.`mf_name`';
-
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
 		}
