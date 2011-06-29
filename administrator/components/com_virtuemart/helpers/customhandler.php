@@ -149,7 +149,7 @@ class VmCustomHandler {
     function getCustomsList( $publishedOnly = FALSE ) {
     	$vendorId=1;
 		// get custom parents
-    	$q='SELECT virtuemart_custom_id as value ,custom_title as text FROM `#__virtuemart_customs` where custom_parent_id=0 
+    	$q='SELECT virtuemart_custom_id as value ,custom_title as text FROM `#__virtuemart_customs` where custom_parent_id=0
 			AND field_type <> "R" AND field_type <> "Z" ';
 		if ($publishedOnly) $q.='AND `published`=1';
 		if ($ID = JRequest::getInt( 'virtuemart_custom_id',0)) $q .=' and `virtuemart_custom_id`!='.(int)$ID;
@@ -243,6 +243,17 @@ class VmCustomHandler {
 		return $html;
 	}
 
+	function getProductChildCustomRelation() {
 
+		$this->_db->setQuery(' SELECT virtuemart_custom_id as value,custom_title as text FROM `#__virtuemart_customs` WHERE `field_type` ="C"' );
 
+		return $this->_db->loadObjectList();
+	}
+	function getProductChildCustom($product_id ) {
+		$db = JFactory::getDBO();
+		$db->setQuery(' SELECT `virtuemart_custom_id`,`custom_value` FROM `#__virtuemart_customfields` as CF
+				LEFT JOIN `#__virtuemart_product_customfields` as PC on PC.virtuemart_customfield_id  = CF.virtuemart_customfield_id
+				WHERE  PC.`virtuemart_product_id` ='.(int)$product_id);
+		return $db->loadObject();
+	}
 }

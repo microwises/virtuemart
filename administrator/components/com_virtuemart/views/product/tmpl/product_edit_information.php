@@ -129,11 +129,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILD') ?></div>
 				</td>
 				<td width="79%"><?php
-                                if ($this->product_child) {
-				foreach ($this->product_child as $child  ) {
-                                       echo JHTML::_('link', JRoute::_('index.php?view=product&task=edit&product_parent_id='.$this->product->virtuemart_product_id.'&virtuemart_product_id='.$child->virtuemart_product_id.'&option=com_virtuemart'), $child->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name))."<br />";
-                                }
-                                }
+                	if ($this->product_child) {
+						foreach ($this->product_child as $child  ) {
+							$ChildCustom = VmCustomHandler::getProductChildCustom($child->virtuemart_product_id);
+							echo JHTML::_('link', JRoute::_('index.php?view=product&task=edit&product_parent_id='.$this->product->virtuemart_product_id.'&virtuemart_product_id='.$child->virtuemart_product_id.'&option=com_virtuemart'), $child->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name)).' ';
+							echo JHTML::_('select.genericlist', $this->ChildCustomRelation,'ChildCustomRelation['.$child->virtuemart_product_id.'][virtuemart_custom_id]','','value','text',$ChildCustom->virtuemart_custom_id).' <input type="text" name="ChildCustomRelation['.$child->virtuemart_product_id.'][custom_value]" value="'.$ChildCustom->custom_value.'"><br />';
+						}
+					 }
                                  ?>
 				</td>
 			</tr>
@@ -153,7 +155,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<tr class="row0">
 				<td width="29%">
 					<div style="text-align:right;font-weight:bold;">
-                
+
                                         <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP'); ?>">
 					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST') ?>
 				      </span>
@@ -247,7 +249,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<td width="79%" >
 					<input type="text" size="10" name="product_override_price" value="<?php echo $this->product_override_price ?>"/>
 					<?php
-					 
+
 					$checked = '';
 					if ($this->override) $checked = 'checked="checked"' ?>
 					<input type="checkbox" name="override" value="1" <?php echo $checked; ?> />

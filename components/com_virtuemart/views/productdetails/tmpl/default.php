@@ -144,7 +144,7 @@ if (empty ( $this->product )) {
 				<?php // Add To Cart Button
 				if (!VmConfig::get('use_as_catalog',0)) { ?>
 				<div class="addtocart-area">
-					
+
 					<form method="post" class="product" action="index.php" id="addtocartproduct<?php echo $this->product->virtuemart_product_id ?>">
 	<?php // Product custom_fields
 	if (!empty($this->product->customfieldsCart)) {  ?>
@@ -252,19 +252,24 @@ if (empty ( $this->product )) {
 	<?php } // Product Description END ?>
 	<?php // Product custom_fields
 	if (!empty($this->product->customfields)) { ?>
-	<div class="product-fields">
-		<?php foreach ($this->product->customfields as $field)
-		{ ?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
-			<span class="product-fields-title" ><b><?php echo JText::_($field->custom_title); ?></b></span>
-			<?php echo JHTML::tooltip($field->custom_tip, $field->custom_title, 'tooltip.png'); ?>
+		<div class="product-fields">
+		<?php
+		$custom_title = null ;
+		foreach ($this->product->customfields as $field){
+			?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
+			<?php if ($field->custom_title != $custom_title) { ?>
+				<span class="product-fields-title" ><b><?php echo JText::_($field->custom_title); ?></b></span>
+				<?php echo JHTML::tooltip($field->custom_tip, $field->custom_title, 'tooltip.png');
+			} ?>
 			<span class="product-field-display"><?php echo $field->display ?></span>
 			<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?></span>
 			</div>
 			<?php
-		}
-		?>
-	</div>
-	<?php } // Product custom_fields END ?>
+			$custom_title = $field->custom_title;
+		} ?>
+		</div>
+		<?php
+	} // Product custom_fields END ?>
 
 	<?php // Product Packaging
 	$product_packaging = '';
@@ -444,10 +449,10 @@ if (empty ( $this->product )) {
 	<?php }
 	} ?>
 
-	
+
 
 	<?php // Customer Reviews
-	if($this->allowRating || $this->showReview) {  
+	if($this->allowRating || $this->showReview) {
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
 		$ratingsShow = VmConfig::get('vm_num_ratings_show',3); // TODO add  vm_num_ratings_show in vmConfig
 		$starsPath = JURI::root().VmConfig::get('assets_general_path').'images/stars/';
@@ -457,19 +462,19 @@ if (empty ( $this->product )) {
 			$title = (JText::_("VM_RATING_TITLE").' : '. $num . '/' . $maxrating) ;
 			$stars[] = JHTML::image($starsPath.$num.'.gif', JText::_($num.'_STARS'), array("title" => $title) );
 		} ?>
-	
+
 	<div class="customer-reviews">
 		<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id) ; ?>" name="reviewForm" id="reviewform">
 	<?php
 	}
 
-	if($this->showReview) { 
+	if($this->showReview) {
 		$alreadycommented = false;
 		?>
 		<h4><?php echo JText::_('COM_VIRTUEMART_REVIEWS') ?></h4>
-		
+
 		<div class="list-reviews">
-			<?php 
+			<?php
 			$i=0;
 			foreach($this->rating_reviews as $review ) {
 				if ($i % 2 == 0) {
@@ -482,7 +487,7 @@ if (empty ( $this->product )) {
 //				if ($review->virtuemart_userid == $this->user->id) {
 //					$alreadycommented = true;
 //				} ?>
-			
+
 				<?php // Loop through all reviews
 				if (!empty($this->rating_reviews)) { ?>
 				<div class="<?php echo $color ?>">
@@ -497,10 +502,10 @@ if (empty ( $this->product )) {
 				if ( $i == $ratingsShow && !$showall) break;
 			}
 
-			if (count($this->rating_reviews) < 1) { 
+			if (count($this->rating_reviews) < 1) {
 				// "There are no reviews for this product" ?>
-				<span class="step"><?php echo JText::_('COM_VIRTUEMART_NO_REVIEWS') ?></span> 
-			<?php 
+				<span class="step"><?php echo JText::_('COM_VIRTUEMART_NO_REVIEWS') ?></span>
+			<?php
 			} else {
 				/* Show all reviews */
 				if (!$showall && count($this->rating_reviews) >= $ratingsShow ) {
@@ -509,12 +514,12 @@ if (empty ( $this->product )) {
 				}
 			} ?>
 		<div class="clear"></div>
-		</div> 
-		
+		</div>
+
 		<?php // Writing A Review
-		if($this->allowReview && !$alreadycommented) { ?>		
+		if($this->allowReview && !$alreadycommented) { ?>
 		<div class="write-reviews">
-		
+
 			<?php // Show Review Length While Your Are Writing
 			$reviewJavascript = "
 			function check_reviewform() {
@@ -547,20 +552,20 @@ if (empty ( $this->product )) {
 				}";
 			$document = &JFactory::getDocument();
 			$document->addScriptDeclaration($reviewJavascript);
-			
-			if($this->showRating) { 
+
+			if($this->showRating) {
 				if($this->allowRating) { ?>
 					<h4><?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW')  ?><span><?php echo JText::_('COM_VIRTUEMART_WRITE_FIRST_REVIEW') ?></span></h4>
 					<span class="step"><?php echo JText::_('COM_VIRTUEMART_RATING_FIRST_RATE') ?></span>
 					<ul class="rating">
-					
+
 					<?php // Print The Rating Stars + Checkboxes
 					for ($num=0 ; $num<=$maxrating;  $num++ ) { ?>
 						<li id="<?php echo $num ?>_stars">
 							<span><?php echo $stars[ $num ]; ?></span>
 							<br />
-							<?php 
-							if ($num == 5) { 
+							<?php
+							if ($num == 5) {
 								$selected = ' checked="checked"';
 							} else {
 								$selected = '';
@@ -569,7 +574,7 @@ if (empty ( $this->product )) {
 						</li>
 					<?php } ?>
 					</ul>
-			
+
 					<?php
 					// if(!class_exists('VmHtml')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 					// $showReviewFor = array();
@@ -585,7 +590,7 @@ if (empty ( $this->product )) {
 					//}
 				}
 			} ?>
-							
+
 			<span class="step"><?php echo JText::sprintf('COM_VIRTUEMART_REVIEW_COMMENT', VmConfig::get('reviews_minimum_comment_length', 100), VmConfig::get('reviews_maximum_comment_length', 2000)); ?></span>
 			<br />
 			<textarea class="virtuemart" title="<?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW') ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeyup="refresh_counter();" name="comment" rows="5" cols="60"><?php if(!empty($this->review->comment))echo $this->review->comment; ?></textarea>
@@ -595,7 +600,7 @@ if (empty ( $this->product )) {
 			</span>
 			<br /><br />
 			<input class="highlight-button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo JText::_('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" />
-		</div>	
+		</div>
 		<?php
 		}
 	}
@@ -613,7 +618,7 @@ if (empty ( $this->product )) {
 			<input type="hidden" name="task" value="review" />
 		</form>
 	</div>
-	<?php 
+	<?php
 	}
 
 

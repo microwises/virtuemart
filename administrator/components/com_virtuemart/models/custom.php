@@ -165,7 +165,7 @@ class VirtueMartModelCustom extends VmModel {
 		if(!in_array($table,$tableWhiteList)) return false;
 
 		// delete existings from modelXref and table customfields
-		$this->_db->setQuery( 'DELETE PC.*,C.* FROM `#__virtuemart_'.$table.'_customfields` as `PC`, `#__virtuemart_customfields` as `C` WHERE `PC`.`virtuemart_customfield_id` = `C`.`virtuemart_customfield_id` AND  virtuemart_'.$table.'_id ='.$id );
+		$this->_db->setQuery( 'DELETE PC.*,C.* FROM `#__virtuemart_'.$table.'_customfields` as `PC`, `#__virtuemart_customfields` as `C` WHERE `PC`.`virtuemart_customfield_id` = `C`.`virtuemart_customfield_id` AND field_type!="C" AND  virtuemart_'.$table.'_id ='.$id );
 		if(!$this->_db->query()){
 			$this->setError('Error in saveModelCustomfields '); //.$this->_db->getQuery()); Dont give hackers too much info
 		}
@@ -191,6 +191,50 @@ class VirtueMartModelCustom extends VmModel {
 	    $errors = $xrefTable->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);
+		}
+
+	}
+
+	/* Save and delete from database	/* Save and delete from database
+	* all product custom_fields and xref
+	@ var   $table	: the xref table(eg. product,category ...)
+	@array $data	: array of customfields
+	@int     $id		: The concerned id (eg. product_id)
+	*/
+	public function saveChildCustomRelation($table,$datas) {
+
+		//Table whitelist
+		$tableWhiteList = array('product','category','manufacturer');
+		if(!in_array($table,$tableWhiteList)) return false;
+
+		$customfieldIds = array();
+		// delete existings from modelXref and table customfields
+		foreach ($datas as $child_id =>$fields) {
+			$fields['virtuemart_'.$table.'_id']=$child_id;
+			$this->_db->setQuery( 'DELETE PC,C FROM `#__virtuemart_'.$table.'_customfields` as `PC`, `#__virtuemart_customfields` as `C` WHERE `PC`.`virtuemart_customfield_id` = `C`.`virtuemart_customfield_id` AND field_type like "C" and virtuemart_'.$table.'_id ='.$child_id );
+			if(!$this->_db->query()){
+				$this->setError('Error in deleting child relation '); //.$this->_db->getQuery()); Dont give hackers too much info
+			}
+
+				$tableCustomfields = $this->getTable('customfields');
+				$data = $tableCustomfields->bindChecknStore($fields);
+	    		$errors = $tableCustomfields->getErrors();
+				foreach($errors as $error){
+					$this->setError($error);
+				}
+				$customfieldIds[0] = $data['virtuemart_customfield_id'];
+
+			$xrefData = array();
+			$xrefData['virtuemart_'.$table.'_id']= $child_id;
+			$xrefData['virtuemart_customfield_id']= $customfieldIds;
+
+			// save Xref calues in right table
+			$xrefTable = $this->getTable($table.'_customfields');
+			$xrefTable->bindChecknStore($xrefData);
+		    $errors = $xrefTable->getErrors();
+			foreach($errors as $error){
+				$this->setError($error);
+			}
 		}
 
 	}

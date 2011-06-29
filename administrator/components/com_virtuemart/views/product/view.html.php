@@ -174,6 +174,8 @@ class VirtuemartViewProduct extends JView {
 				$customsList = VmCustomHandler::getCustomsList();
 				$this->assignRef('customsList', JHTML::_('select.genericlist', $customsList,'customlist','size="5"'));
 
+				$ChildCustomRelation = VmCustomHandler::getProductChildCustomRelation();
+				$this->assignRef('ChildCustomRelation',$ChildCustomRelation);
 
 				/* Set up labels */
 				if ($product->product_parent_id > 0) {

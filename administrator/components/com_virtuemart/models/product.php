@@ -395,14 +395,14 @@ class VirtueMartModelProduct extends VmModel {
 //				$product->vendor_name = VirtueMartModelVendor::getVendorName($product->virtuemart_vendor_id);
 
 
-				// Load the custom variants
-				$product->hasproductCustoms = $this->hasproductCustoms($this->_id);
-				// Load the custom product fields
-				$product->customfields = $this->getProductCustomsField($product);
+				// set the custom variants
+				if ($this->hasproductCustoms($this->_id)) {
+					// Load the custom product fields
+					$product->customfields = $this->getProductCustomsField($product);
 
-				//  custom product fields for add to cart
-				$product->customfieldsCart = $this->getProductCustomsFieldCart($product);
-
+					//  custom product fields for add to cart
+					$product->customfieldsCart = $this->getProductCustomsFieldCart($product);
+				}
 				// Check the order levels
 				if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
 
@@ -724,6 +724,10 @@ class VirtueMartModelProduct extends VmModel {
 		if (array_key_exists('field', $data)) {
 			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
 			VirtueMartModelCustom::saveModelCustomfields('product',$data['field'],$product_data->virtuemart_product_id);
+		}
+		if (array_key_exists('ChildCustomRelation', $data)) {
+			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
+			VirtueMartModelCustom::saveChildCustomRelation('product',$data['ChildCustomRelation'],$product_data->virtuemart_product_id);
 		}
 
 		$product_price_table = $this->getTable('product_prices');
@@ -1422,9 +1426,10 @@ class VirtueMartModelProduct extends VmModel {
 	/* look if whe have a product type */
 	private function hasproductCustoms($virtuemart_product_id) {
 		$this->_db = JFactory::getDBO();
-		$q = "SELECT COUNT(`virtuemart_product_id`) FROM `#__virtuemart_product_customfields` WHERE `virtuemart_product_id` = ".$virtuemart_product_id;
+		$q = "SELECT `virtuemart_product_id` FROM `#__virtuemart_product_customfields` WHERE `virtuemart_product_id` = ".$virtuemart_product_id." limit 0,1";
 		$this->_db->setQuery($q);
-		return ($this->_db->loadResult() > 0);
+		$this->hasproductCustoms = $this->_db->loadResult();
+		return $this->hasproductCustoms;
 	}
 
 
@@ -1535,7 +1540,6 @@ class VirtueMartModelProduct extends VmModel {
 	}
      public function getProductCustomsField($product) {
 
-		if ($product->hasproductCustoms) {
 
 		$query='SELECT C.`virtuemart_custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`, field.`custom_price`
 			FROM `#__virtuemart_customs` AS C
@@ -1555,14 +1559,11 @@ class VirtueMartModelProduct extends VmModel {
 			$row++ ;
 		}
 		return $productCustoms;
-		}
-		return ;
      }
 
 	 // temp function TODO better one
      public function getProductCustomsFieldCart($product) {
 
-		if ($product->hasproductCustoms)  {
 
 			// group by virtuemart_custom_id
 			$query='SELECT C.`virtuemart_custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`virtuemart_customfield_id`,`is_hidden`
@@ -1621,8 +1622,6 @@ class VirtueMartModelProduct extends VmModel {
 
 			return $groups;
 
-		}
-		return ;
      }
 
 /**
@@ -1751,6 +1750,7 @@ class VirtueMartModelProduct extends VmModel {
 		return $db->loadObjectList();
 
 	}
+
 
 	function getProductParent($product_parent_id) {
 
