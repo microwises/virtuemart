@@ -161,7 +161,22 @@ if (empty ( $this->product )) {
 		}
 		?>
 	</div>
-	<?php } ?>
+	<?php }
+	 // Product custom Childs
+	if (!empty($this->product->customsChilds)) {  ?>
+		<div class="product-fields">
+			<?php foreach ($this->product->customsChilds as $field) { ?>
+				<div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field->field_type ?>">
+				<span class="product-fields-title" ><b><?php echo $field->field->custom_title ?></b></span>
+				<span class="product-field-desc"><?php echo $field->field->custom_value ?></span>
+				<span class="product-field-display"><?php echo $field->display ?></span>
+
+				</div><br/ >
+				<?php
+			} ?>
+		</div>
+	<?php }
+	dump($this->product ,'por'); ?>
 
 		<div class="addtocart-bar">
 
@@ -250,7 +265,7 @@ if (empty ( $this->product )) {
 		<?php echo $this->product->product_desc; ?>
 	</div>
 	<?php } // Product Description END ?>
-	<?php // Product custom_fields
+	<?php // Product custom_fields TODO relation to Childs
 	if (!empty($this->product->customfields)) { ?>
 		<div class="product-fields">
 		<?php

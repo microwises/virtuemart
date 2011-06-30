@@ -8,7 +8,6 @@ DROP TABLE
 `#__virtuemart_creditcards`,
 `#__virtuemart_currencies`,
 `#__virtuemart_customs`,
-`#__virtuemart_customfields`,
 `#__virtuemart_manufacturers`,
 `#__virtuemart_manufacturercategories`,
 `#__virtuemart_adminmenuentries`,

@@ -292,7 +292,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	    $id = $model->determineStoreOwner();
 	    $sid = $model->setStoreOwner($id);
 	    $model->setUserToPermissionGroup($id);
-	   // $model->installSampleData($id);
+	    $model->installSampleData($id);
 	    $errors = $model->getErrors();
 
 	    $msg = '';

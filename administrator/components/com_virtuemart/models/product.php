@@ -403,6 +403,8 @@ class VirtueMartModelProduct extends VmModel {
 					//  custom product fields for add to cart
 					$product->customfieldsCart = $this->getProductCustomsFieldCart($product);
 				}
+				$product->customsChilds = $this->getProductCustomsChilds($this->_id);
+
 				// Check the order levels
 				if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
 
@@ -982,11 +984,9 @@ class VirtueMartModelProduct extends VmModel {
 			$q  = "DELETE FROM #__virtuemart_product_producttypes WHERE virtuemart_product_id = ".$virtuemart_product_id;
 			$this->_db->setQuery($q); $this->_db->query();
 
-			/* remove Product custom fields and Xref */
-			$q = "DELETE `#__virtuemart_product_customfields`,`#__virtuemart_customfields`
-				FROM  `#__virtuemart_product_customfields`,`#__virtuemart_customfields`
-				WHERE `#__virtuemart_product_customfields`.`virtuemart_customfield_id` = `#__virtuemart_customfields`.`virtuemart_customfield_id`
-				AND `#__virtuemart_product_customfields`.`virtuemart_product_id` =".$virtuemart_product_id;
+			/* remove Product custom fields */
+			$q = "DELETE `#__virtuemart_product_customfields` FROM  `#__virtuemart_product_customfields`
+				WHERE `#__virtuemart_product_customfields`.`virtuemart_product_id` =".$virtuemart_product_id;
 			$this->_db->setQuery($q); $this->_db->query();
 
 
@@ -1390,9 +1390,8 @@ class VirtueMartModelProduct extends VmModel {
 
 		$query='SELECT C.`virtuemart_custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_cart_attribute` , `is_hidden` , C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`,field.`custom_price`
 			FROM `#__virtuemart_customs` AS C
-			LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-			LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
-			Where xref.`virtuemart_product_id` ='.$virtuemart_product_id;
+			LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+			Where `virtuemart_product_id` ='.$virtuemart_product_id;
 		$this->_db->setQuery($query);
 		$productCustoms = $this->_db->loadObjectList();
 		$row= 0 ;
@@ -1434,7 +1433,7 @@ class VirtueMartModelProduct extends VmModel {
 
 
 	// **************************************************
-	// Custom FIElDS
+	// Custom FIELDS
 	//
 
 /**
@@ -1543,9 +1542,8 @@ class VirtueMartModelProduct extends VmModel {
 
 		$query='SELECT C.`virtuemart_custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`, field.`custom_price`
 			FROM `#__virtuemart_customs` AS C
-			LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-			LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
-			Where xref.`virtuemart_product_id` ='.(int)$product->virtuemart_product_id;
+			LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+			Where `virtuemart_product_id` ='.(int)$product->virtuemart_product_id;
 		$query .=' and is_cart_attribute = 0 order by virtuemart_custom_id' ;
 		$this->_db->setQuery($query);
 		$productCustoms = $this->_db->loadObjectList();
@@ -1568,9 +1566,8 @@ class VirtueMartModelProduct extends VmModel {
 			// group by virtuemart_custom_id
 			$query='SELECT C.`virtuemart_custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`virtuemart_customfield_id`,`is_hidden`
 				FROM `#__virtuemart_customs` AS C
-				LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-				LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
-				Where xref.`virtuemart_product_id` ='.(int)$product->virtuemart_product_id;
+				LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+				Where `virtuemart_product_id` ='.(int)$product->virtuemart_product_id;
 			$query .=' and is_cart_attribute = 1 group by virtuemart_custom_id' ;
 
 			$this->_db->setQuery($query);
@@ -1590,9 +1587,8 @@ class VirtueMartModelProduct extends VmModel {
 //				$query='SELECT  field.`virtuemart_customfield_id` as value ,concat(field.`custom_value`," :bu ", field.`custom_price`) AS text
 				$query='SELECT  field.`virtuemart_customfield_id` as value ,field.`custom_value`, field.`custom_price`
 					FROM `#__virtuemart_customs` AS C
-					LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-					LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
-					Where xref.`virtuemart_product_id` ='.(int)$product->virtuemart_product_id;
+					LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+					Where `virtuemart_product_id` ='.(int)$product->virtuemart_product_id;
 				$query .=' and is_cart_attribute = 1 and C.`virtuemart_custom_id`='.(int)$group->virtuemart_custom_id ;
 				$this->_db->setQuery($query);
 				$options = $this->_db->loadObjectList();
@@ -1623,12 +1619,30 @@ class VirtueMartModelProduct extends VmModel {
 			return $groups;
 
      }
+     function getProductCustomsChilds($id){
+
+
+     	$childs = $this->getProductChilds($id);
+     	foreach ($childs as &$child) {
+     		$query='SELECT C.* , field.*
+				FROM `jos_virtuemart_product_customfields` AS field
+				LEFT JOIN `jos_virtuemart_customs` AS C ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+				AND field_type = "C"
+				WHERE `virtuemart_product_id` ='.(int)$child->virtuemart_product_id;
+			$query .=' and field_type = "C" ';
+
+			$this->_db->setQuery($query);
+			$child->field = $this->_db->loadObject();
+     		$child->display = $this->displayType($id,$child->virtuemart_product_id,'C');
+     	}
+		return $childs ;
+     }
 
 /**
   * Formating front display by roles
   *  for product only !
   */
-	function displayType($product,$value,$type,$is_list=0,$price = 0,$row){
+	function displayType($product,$value,$type,$is_list=0,$price = 0,$row=''){
 
 		if ($is_list>0) {
 			$options = array();

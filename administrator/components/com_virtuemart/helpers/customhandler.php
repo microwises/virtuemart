@@ -251,9 +251,12 @@ class VmCustomHandler {
 	}
 	function getProductChildCustom($product_id ) {
 		$db = JFactory::getDBO();
-		$db->setQuery(' SELECT `virtuemart_custom_id`,`custom_value` FROM `#__virtuemart_customfields` as CF
-				LEFT JOIN `#__virtuemart_product_customfields` as PC on PC.virtuemart_customfield_id  = CF.virtuemart_customfield_id
-				WHERE  PC.`virtuemart_product_id` ='.(int)$product_id);
-		return $db->loadObject();
+		$db->setQuery(' SELECT `virtuemart_custom_id`,`custom_value` FROM `#__virtuemart_product_customfields` WHERE  `virtuemart_product_id` ='.(int)$product_id);
+		if ($childcustom = $db->loadObject()) return $childcustom;
+		else {
+			$childcustom->virtuemart_custom_id = 0;
+			$childcustom->custom_value = '';
+			return $childcustom;
+		}
 	}
 }

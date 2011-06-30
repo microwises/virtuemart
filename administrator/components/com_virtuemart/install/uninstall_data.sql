@@ -9,7 +9,6 @@ DELETE FROM `#__virtuemart_categories`;
 DELETE FROM `#__virtuemart_category_categories`;
 DELETE FROM `#__virtuemart_category_medias`;
 DELETE FROM `#__virtuemart_coupons`;
-DELETE FROM `#__virtuemart_customfields`;
 DELETE FROM `#__virtuemart_customs`;
 DELETE FROM `#__virtuemart_manufacturers`;
 DELETE FROM `#__virtuemart_manufacturercategories`;

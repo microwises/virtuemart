@@ -352,28 +352,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   KEY `idx_custom_parent_id` (`custom_parent_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields definition' AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
 
---
--- Table structure `#__virtuemart_customfields`
---
-
-CREATE TABLE IF NOT EXISTS `#__virtuemart_customfields` (
-  `virtuemart_customfield_id` SERIAL COMMENT 'field id',
-  `virtuemart_custom_id` int(11) NOT NULL COMMENT 'custom group id',
-  `custom_value` char(255) DEFAULT NULL COMMENT 'field value',
-  `custom_price` char(255) DEFAULT NULL COMMENT 'price',
-  `published` tinyint(1) NOT NULL DEFAULT '1',
-  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created_by` int(11) NOT NULL DEFAULT 0,
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) NOT NULL DEFAULT 0,
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_customfield_id`),
-  KEY `idx_virtuemart_custom_id` (`virtuemart_custom_id`),
-  KEY `idx_custom_value` (`custom_value`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields' AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
@@ -448,7 +427,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
   `file_description` varchar(254) NOT NULL,
   `file_meta` varchar(254) NOT NULL,
   `file_mimetype` varchar(64) NOT NULL,
-  `file_type` varchar(32) NOT NULL,  
+  `file_type` varchar(32) NOT NULL,
   `file_url` varchar(254) NOT NULL,
   `file_url_thumb` varchar(254) NOT NULL,
   `file_is_product_image` tinyint(1) NOT NULL,
@@ -808,13 +787,24 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_categories` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
-  `id` SERIAL,
+  `virtuemart_customfield_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'field id',
   `virtuemart_product_id` int(11) NOT NULL,
-  `virtuemart_customfield_id` int(11) NOT NULL COMMENT 'field ref to product',
+  `virtuemart_custom_id` int(11) NOT NULL COMMENT 'custom group id',
+  `custom_value` char(255) DEFAULT NULL COMMENT 'field value',
+  `custom_price` char(255) DEFAULT NULL COMMENT 'price',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT '0',
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(11) NOT NULL DEFAULT '0',
   `ordering` int(2) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_customfield_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields Xref to product' AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`virtuemart_customfield_id`),
+  KEY `idx_virtuemart_product_id` (`virtuemart_product_id`),
+  KEY `idx_virtuemart_custom_id` (`virtuemart_custom_id`),
+  KEY `idx_custom_value` (`custom_value`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields' AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
@@ -1035,7 +1025,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shoppergroups` (
   `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,  
+  `locked_by` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`virtuemart_shoppergroup_id`),
   KEY `idx_shopper_group_virtuemart_vendor_id` (`virtuemart_vendor_id`),
   KEY `idx_shopper_group_name` (`shopper_group_name`)

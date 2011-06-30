@@ -1030,9 +1030,8 @@ class calculationHelper {
                 if (!empty($selected)) {
                     $query = 'SELECT  field.`virtuemart_customfield_id` ,field.`custom_value`,field.`custom_price`
 						FROM `#__virtuemart_customs` AS C
-						LEFT JOIN `#__virtuemart_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-						LEFT JOIN `#__virtuemart_product_customfields` AS xref ON xref.`virtuemart_customfield_id` = field.`virtuemart_customfield_id`
-						WHERE xref.`virtuemart_product_id` =' . $product->virtuemart_product_id;
+						LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+						WHERE `virtuemart_product_id` =' . $product->virtuemart_product_id;
                     $query .=' and is_cart_attribute = 1 and field.`virtuemart_customfield_id`=' . $selected;
                     $this->_db->setQuery($query);
                     $productCustomsPrice = $this->_db->loadObject();

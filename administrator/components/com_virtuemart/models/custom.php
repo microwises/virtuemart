@@ -71,9 +71,8 @@ class VirtueMartModelCustom extends VmModel {
      */
     function getProductCustoms($virtuemart_product_id){
 
-		$query='SELECT * FROM `#__virtuemart_customfields`
-		left join `#__virtuemart_product_customfields` on  `#__virtuemart_product_customfields`.`virtuemart_customfield_id` = `#__virtuemart_customfields`.`virtuemart_customfield_id`
-		and `virtuemart_product_id`='.(int)$virtuemart_product_id;
+		$query='SELECT * FROM `#__virtuemart_product_customfields`
+			WHERE `virtuemart_product_id`='.(int)$virtuemart_product_id;
 		$this->_db->setQuery($query);
 		$this->_data->productCustoms = $this->_db->loadObjectList();
 		$this->_data->customFields = self::getCustoms() ;
@@ -165,33 +164,35 @@ class VirtueMartModelCustom extends VmModel {
 		if(!in_array($table,$tableWhiteList)) return false;
 
 		// delete existings from modelXref and table customfields
-		$this->_db->setQuery( 'DELETE PC.*,C.* FROM `#__virtuemart_'.$table.'_customfields` as `PC`, `#__virtuemart_customfields` as `C` WHERE `PC`.`virtuemart_customfield_id` = `C`.`virtuemart_customfield_id` AND field_type!="C" AND  virtuemart_'.$table.'_id ='.$id );
+		$this->_db->setQuery( 'DELETE PC.* FROM `#__virtuemart_'.$table.'_customfields` as `PC` , `#__virtuemart_customs` as C WHERE `PC`.`virtuemart_custom_id` = `C`.`virtuemart_custom_id` and C.field_type!="C" AND  `PC`.virtuemart_'.$table.'_id ='.$id );
 		if(!$this->_db->query()){
 			$this->setError('Error in saveModelCustomfields '); //.$this->_db->getQuery()); Dont give hackers too much info
 		}
+					dump ($this->_db ,'DB');
 
 		$customfieldIds = array();
 		foreach($datas as $fields){
-			$tableCustomfields = $this->getTable('customfields');
+			$fields['virtuemart_'.$table.'_id'] =$id;
+			$tableCustomfields = $this->getTable($table.'_customfields');
 			$data = $tableCustomfields->bindChecknStore($fields);
     		$errors = $tableCustomfields->getErrors();
 			foreach($errors as $error){
 				$this->setError($error);
 			}
-			$customfieldIds[] = $data['virtuemart_customfield_id'];
+			//$customfieldIds[] = $data['virtuemart_customfield_id'];
 		}
 
-		$xrefData = array();
-		$xrefData['virtuemart_'.$table.'_id']= $id;
-		$xrefData['virtuemart_customfield_id']= $customfieldIds;
-
-		// save Xref calues in right table
-		$xrefTable = $this->getTable($table.'_customfields');
-		$xrefTable->bindChecknStore($xrefData);
-	    $errors = $xrefTable->getErrors();
-		foreach($errors as $error){
-			$this->setError($error);
-		}
+//		$xrefData = array();
+//		$xrefData['virtuemart_'.$table.'_id']= $id;
+//		$xrefData['virtuemart_customfield_id']= $customfieldIds;
+//
+//		// save Xref calues in right table
+//		$xrefTable = $this->getTable($table.'_customfields');
+//		$xrefTable->bindChecknStore($xrefData);
+//	    $errors = $xrefTable->getErrors();
+//		foreach($errors as $error){
+//			$this->setError($error);
+//		}
 
 	}
 
@@ -211,30 +212,31 @@ class VirtueMartModelCustom extends VmModel {
 		// delete existings from modelXref and table customfields
 		foreach ($datas as $child_id =>$fields) {
 			$fields['virtuemart_'.$table.'_id']=$child_id;
-			$this->_db->setQuery( 'DELETE PC,C FROM `#__virtuemart_'.$table.'_customfields` as `PC`, `#__virtuemart_customfields` as `C` WHERE `PC`.`virtuemart_customfield_id` = `C`.`virtuemart_customfield_id` AND field_type like "C" and virtuemart_'.$table.'_id ='.$child_id );
+			$this->_db->setQuery( 'DELETE PC FROM `#__virtuemart_'.$table.'_customfields` as `PC`, `#__virtuemart_customs` as `C` WHERE `PC`.`virtuemart_custom_id` = `C`.`virtuemart_custom_id` AND field_type="C" and virtuemart_'.$table.'_id ='.$child_id );
 			if(!$this->_db->query()){
 				$this->setError('Error in deleting child relation '); //.$this->_db->getQuery()); Dont give hackers too much info
 			}
 
-				$tableCustomfields = $this->getTable('customfields');
+
+				$tableCustomfields = $this->getTable($table.'_customfields');
 				$data = $tableCustomfields->bindChecknStore($fields);
 	    		$errors = $tableCustomfields->getErrors();
 				foreach($errors as $error){
 					$this->setError($error);
 				}
-				$customfieldIds[0] = $data['virtuemart_customfield_id'];
-
-			$xrefData = array();
-			$xrefData['virtuemart_'.$table.'_id']= $child_id;
-			$xrefData['virtuemart_customfield_id']= $customfieldIds;
-
-			// save Xref calues in right table
-			$xrefTable = $this->getTable($table.'_customfields');
-			$xrefTable->bindChecknStore($xrefData);
-		    $errors = $xrefTable->getErrors();
-			foreach($errors as $error){
-				$this->setError($error);
-			}
+//				$customfieldIds[0] = $data['virtuemart_customfield_id'];
+//
+//			$xrefData = array();
+//			$xrefData['virtuemart_'.$table.'_id']= $child_id;
+//			$xrefData['virtuemart_customfield_id']= $customfieldIds;
+//
+//			// save Xref calues in right table
+//			$xrefTable = $this->getTable($table.'_customfields');
+//			$xrefTable->bindChecknStore($xrefData);
+//		    $errors = $xrefTable->getErrors();
+//			foreach($errors as $error){
+//				$this->setError($error);
+//			}
 		}
 
 	}

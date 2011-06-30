@@ -18,7 +18,7 @@
 
 defined('_JEXEC') or die();
 
-if(!class_exists('VmTableXarray'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtablexarray.php');
+if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
 
 /**
  * Calculator table class
@@ -27,18 +27,35 @@ if(!class_exists('VmTableXarray'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TableProduct_customfields extends VmTableXarray {
+class TableProduct_customfields extends VmTable {
 
+	/** @var int Primary key */
+	var $virtuemart_customfield_id		= 0;
+
+	/** @var int Product id */
+	var $virtuemart_product_id		= 0;
+
+	/** @var int group key */
+	var $virtuemart_custom_id		= 0;
+
+    /** @var string custom value */
+	var $custom_value	= '';
+    /** @var string price  */
+	var $custom_price	= '';
+
+	/** @var int custom published or not */
+	var $published		= 0;
 
 	/**
 	 * @author Max Milbers
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__virtuemart_product_customfields', 'id', $db);
+		parent::__construct('#__virtuemart_product_customfields', 'virtuemart_customfield_id', $db);
 
-		$this->setPrimaryKey('virtuemart_product_id');
-		$this->setSecondaryKey('virtuemart_customfield_id');
+		//$this->setPrimaryKey('virtuemart_product_id');
+		//$this->setSecondaryKey('virtuemart_customfield_id');
+		$this->setLoggable();
 		$this->setOrderable();
 
 	}
