@@ -127,16 +127,21 @@ class VirtuemartControllerProduct extends VmController {
 		$view = $this->getView('product', 'html');
 
 		$model = $this->getModel('product');
-		
-		$cids = JRequest::getVar('cid');
-		if (!$cids) $cids = JRequest::getInt('virtuemart_product_id',0);
-		if ($id=$model->createChild($cids[0])){
-			$msg = JText::_('COM_VIRTUEMART_PRODUCT_CHILD_CREATED_SUCCESSFULLY');
-			$redirect = 'index.php?option=com_virtuemart&view=product&task=edit&product_parent_id='.$cids[0].'&virtuemart_product_id='.$id;
-		} else {
-			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NO_CHILD_CREATED_SUCCESSFULLY');
-			$msgtype = 'error';
-			$redirect = 'index.php?option=com_virtuemart&view=product';
+
+		//$cids = JRequest::getVar('cid');
+		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
+		jimport( 'joomla.utilities.arrayhelper' );
+		JArrayHelper::toInteger($ids);
+
+		foreach($cids as $cid){
+			if ($id=$model->createChild($cid)){
+				$msg = JText::_('COM_VIRTUEMART_PRODUCT_CHILD_CREATED_SUCCESSFULLY');
+				$redirect = 'index.php?option=com_virtuemart&view=product&task=edit&product_parent_id='.$cids[0].'&virtuemart_product_id='.$id;
+			} else {
+				$msg = JText::_('COM_VIRTUEMART_PRODUCT_NO_CHILD_CREATED_SUCCESSFULLY');
+				$msgtype = 'error';
+				$redirect = 'index.php?option=com_virtuemart&view=product';
+			}
 		}
 		$app->redirect($redirect, $msg, $msgtype);
 
@@ -155,12 +160,19 @@ class VirtuemartControllerProduct extends VmController {
 
 		$model = $this->getModel('product');
 		$msgtype = '';
-		$cids = JRequest::getInt('virtuemart_product_id',0);
-		if ($model->createClone($cids[0])) $msg = JText::_('COM_VIRTUEMART_PRODUCT_CLONED_SUCCESSFULLY');
-		else {
-			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_CLONED_SUCCESSFULLY');
-			$msgtype = 'error';
+		//$cids = JRequest::getInt('virtuemart_product_id',0);
+		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
+		jimport( 'joomla.utilities.arrayhelper' );
+		JArrayHelper::toInteger($ids);
+
+		foreach($cids as $cid){
+			if ($model->createClone($cid)) $msg = JText::_('COM_VIRTUEMART_PRODUCT_CLONED_SUCCESSFULLY');
+			else {
+				$msg = JText::_('COM_VIRTUEMART_PRODUCT_NOT_CLONED_SUCCESSFULLY');
+				$msgtype = 'error';
+			}
 		}
+
 		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'), $msg, $msgtype);
 	}
 

@@ -812,11 +812,11 @@ class VirtueMartModelProduct extends VmModel {
 		// created_on , modified_on
 		$db = JFactory::getDBO();
 		$vendorId = 1;
-		$db->setQuery('SELECT max( `virtuemart_product_id` ) FROM `#__virtuemart_product_categories`' );
-		$slug_id = 1+$db->loadResult();
-		$db->setQuery('SELECT `product_name` FROM `#__virtuemart_products` WHERE `virtuemart_product_id`='.$id );
+		//$db->setQuery('SELECT max( `virtuemart_product_id` ) FROM `#__virtuemart_product_categories`' );
+	//	$slug_id = 1+$db->loadResult();
+		$db->setQuery('SELECT `product_name`,`slug` FROM `#__virtuemart_products` WHERE `virtuemart_product_id`='.(int)$id );
 		$parent = $db->loadObject();
-		$q = 'INSERT INTO `#__virtuemart_products` ( `product_name`,`slug` ,`virtuemart_vendor_id`, `product_parent_id`) VALUES ( "'.$parent->product_name.'","P-'.$slug_id.'", '.$vendorId.', '.$id.' )';
+		$q = 'INSERT INTO `#__virtuemart_products` ( `product_name`,`slug` ,`virtuemart_vendor_id`, `product_parent_id`) VALUES ( "'.$parent->product_name.'","P-'.$parent->slug.'", '.(int)$vendorId.', '.(int)$id.' )';
 		$db->setQuery($q);
 		$db->query();
 		return $db->insertid();
@@ -829,11 +829,11 @@ class VirtueMartModelProduct extends VmModel {
 	 * @param int $virtuemart_product_id
 	 */
 
-	public function createClone($cids){
-		if (is_array($cids)) $cids = array($cids);
-		$product = $this->getProduct($cids[0]);
+	public function createClone($id){
+	//	if (is_array($cids)) $cids = array($cids);
+		$product = $this->getProduct($id);
 		$product->virtuemart_product_id = 0;
-		$product->slug = $product->slug.'-'.$cids[0];
+		$product->slug = $product->slug.'-'.$id;
 
 		$this->store($product);
 		return $this->_id;
