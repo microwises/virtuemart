@@ -163,6 +163,9 @@ class VirtueMartModelManufacturer extends VmModel {
 		}
 		// set total for pagination
 		$this->_total = $this->_getListCount($query);
+/*		$app = JFactory::getApplication();
+		$app -> enqueueMessage('manu'.$this->_db->getQuery());
+		$app -> enqueueMessage('manu'.$this->_db->getErrorMsg());*/
 		return $this->_data;
 	}
 

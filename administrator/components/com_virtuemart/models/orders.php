@@ -154,7 +154,7 @@ class VirtueMartModelOrders extends VmModel {
 			WHERE virtuemart_order_id=".$virtuemart_order_id;
 		$db->setQuery($q);
 		$order['items'] = $db->loadObjectList();
-
+		dump($order,'getOrder');
 		return $order;
 	}
 
@@ -181,7 +181,7 @@ class VirtueMartModelOrders extends VmModel {
 		}
 		// set total for pagination
 		if(count($this->_data) >0){
-			$this->_total = $this->_getListCount($this->_query);
+			$this->_total = $this->_getListCount($query);
 		}
 		//$this->_total = $this->_getListCount($query);
 
@@ -878,7 +878,7 @@ class VirtueMartModelOrders extends VmModel {
 		$table = $this->getTable('order_items');
 
 		//Done in the table already
-/*		
+/*
 		$curDate = JFactory::getDate();
 		$data['modified_on'] = $curDate->toMySql();*/
 

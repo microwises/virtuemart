@@ -462,6 +462,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_migration_oldtonew_ids` (
 	    `shoppergroups` blob ,
 	    `products` blob,
 	    `orderstates` blob,
+	    `orders` blob ,
 	    PRIMARY KEY (`id`)
 	) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='xref table for vm1 ids to vm2 ids' ;
 

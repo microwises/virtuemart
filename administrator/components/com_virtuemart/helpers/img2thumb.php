@@ -102,9 +102,9 @@ class Img2Thumb	{
 	{
 		if( !function_exists('imagecreatefromjpeg') ){
 			$app = JFactory::getApplication();
-			$app->enqueueMesssage('This server does NOT suppport auto generating Thumbnails by jpg');
+			$app->enqueueMessage('This server does NOT suppport auto generating Thumbnails by jpg');
 		}
-		
+
 		$type = $this->GetImgType($filename);
 
 		$pathinfo = pathinfo( $fileout );
@@ -119,23 +119,33 @@ class Img2Thumb	{
 				// unfortunately this function does not work on windows
 				// via the precompiled php installation :(
 				// it should work on all other systems however.
-				if( function_exists("imagecreatefromgif") )
-				{
+				if( function_exists("imagecreatefromgif") ) {
 					$orig_img = imagecreatefromgif($filename);
-					break;
-				}
-				else
-				{
-					echo 'Sorry, this server doesn\'t support <b>imagecreatefromgif()</b>';
+				} else {
+					$app = JFactory::getApplication();
+					$app->enqueueMessage('This server does NOT suppport auto generating Thumbnails by gif');
 					exit;
-					break;
 				}
+				break;
 			case "jpg":
-				$orig_img = imagecreatefromjpeg($filename);
+				if( function_exists("imagecreatefromjpeg") ) {
+					$orig_img = imagecreatefromjpeg($filename);
+				} else {
+					$app = JFactory::getApplication();
+					$app->enqueueMessage('This server does NOT suppport auto generating Thumbnails by jpg');
+					exit;
+				}
 				break;
 			case "png":
-				$orig_img = imagecreatefrompng($filename);
+				if( function_exists("imagecreatefrompng") ) {
+					$orig_img = imagecreatefrompng($filename);
+				} else {
+					$app = JFactory::getApplication();
+					$app->enqueueMessage('This server does NOT suppport auto generating Thumbnails by png');
+					exit;
+				}
 				break;
+
 		}
 
 		$new_img =$this->NewImgResize($orig_img,$newxsize,$newysize,$filename);

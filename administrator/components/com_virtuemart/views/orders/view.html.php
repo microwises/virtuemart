@@ -58,7 +58,7 @@ class VirtuemartViewOrders extends JView {
 			$userFieldsModel = $this->getModel('userfields');
 			$productModel = $this->getModel('product');
 
-			// Get the data 
+			// Get the data
 			$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
 			$order = $orderModel->getOrder($virtuemart_order_id);
 			$_orderID = $order['details']['BT']->virtuemart_order_id;
@@ -93,9 +93,12 @@ class VirtuemartViewOrders extends JView {
 			$orderStates = $orderStatusModel->getOrderStatusList();
 			$_orderStatusList = array();
 			foreach ($orderStates as $orderState) {
-				$_orderStatusList[$orderState->virtuemart_orderstate_id] = $orderState->order_status_name;
-			}
+				//$_orderStatusList[$orderState->virtuemart_orderstate_id] = $orderState->order_status_name;
+				//When I use update, I have to use this?
+				$_orderStatusList[$orderState->order_status_code] = $orderState->order_status_name;
 
+			}
+			dump($_orderStatusList,'my order status list');
 			$_itemStatusUpdateFields = array();
 			$_itemAttributesUpdateFields = array();
 			foreach($order['items'] as $_item) {
@@ -131,7 +134,7 @@ class VirtuemartViewOrders extends JView {
 					}
 				}
 			}
-			
+
                        // $_shippingInfo = ShopFunctions::getShippingRateDetails($orderbt->ship_method_id);
 
 			/* Assign the data */
@@ -161,10 +164,10 @@ class VirtuemartViewOrders extends JView {
 		else if ($curTask == 'editOrderItem') {
 			$this->loadHelper('calculationHelper');
 
-			/* Get order statuses */ 
+			/* Get order statuses */
                         $orderStatusModel=$this->getModel('OrderStatus');
 			$orderstatuses = $orderStatusModel->getOrderStatusList();
-                       
+
 			$this->assignRef('orderstatuses', $orderstatuses);
 
 			$model = $this->getModel();
