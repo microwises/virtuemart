@@ -35,6 +35,32 @@ jQuery(document).ready(function () {
 ";
 $document = JFactory::getDocument();
 $document->addScriptDeclaration($js);
+if ($this->search) { ?>
+<!--BEGIN Search Box -->
+<form action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=category&search=true&limitstart=0&virtuemart_category_id='.$this->category->virtuemart_category_id ); ?>" method="post">
+<div class="virtuemart_search">
+<?php
+$option  = array('virtuemart_custom_id' =>null, 'custom_title' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
+$options = array_merge(array($option), $this->searchcustom->selectList);
+echo JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE').' '.JHTML::_('select.genericlist', $options, 'custom_parent_id', 'class="inputbox"', 'virtuemart_custom_id', 'custom_title', $this->searchcustom->custom_parent_id); ?>
+<br />
+<?php if ($this->searchcustom->custom_parent_id) {
+	foreach ($this->searchcustom->selected as $key =>$custom){
+		$option  = array('custom_value' =>null, 'title' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
+		$options = array_merge(array($option), $custom->fields[$custom->virtuemart_custom_id]);
+		dump ($options);
+		echo JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE').' '.JHTML::_('select.genericlist', $options, 'customfields['.$custom->virtuemart_custom_id.']', 'class="inputbox"', 'custom_value', 'title', 0);
+	}
+} ?>
+<input style="height:16px;vertical-align :middle;" name="keyword" class="inputbox" type="text" size="20" value="<?php echo $this->keyword ?>" />
+<input type="submit" value="<?php echo JText::_('COM_VIRTUEMART_SEARCH') ?>" class="button" onclick="this.form.keyword.focus();"/>
+</div>
+		<input type="hidden" name="search" value="true" />
+		<input type="hidden" name="category" value="0" />
+	  </form>
+
+<!-- End Search Box -->
+<?php }
 /* Show child categories */
 
 if ( VmConfig::get('showCategory',1) ) {

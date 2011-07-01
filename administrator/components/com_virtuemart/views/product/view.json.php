@@ -31,13 +31,14 @@ jimport( 'joomla.application.component.view');
 class VirtuemartViewProduct extends JView {
 
 	function display($tpl = null) {
-		$product_model = $this->getModel('product');
-		
+
+		$this->loadHelper('customhandler');
+
 		$filter = JRequest::getVar('q', false);
 		$type = JRequest::getVar('type', false);
 		$id = JRequest::getInt('id', false);
 		$row = JRequest::getInt('row', false);
-		
+
 		$db = JFactory::getDBO();
 		/* Get the task */
 		if ($type=='relatedproducts') {
@@ -53,14 +54,14 @@ class VirtuemartViewProduct extends JView {
 			$db->setQuery($query);
 			$customs = $db->loadObject();
 
-			$query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value 
+			$query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
 				FROM #__virtuemart_products WHERE virtuemart_product_id =".$id;
 			$db->setQuery($query);
 
 			$field = $db->loadObject();
 			$html = array ();
-			$display = $product_model->inputType($field->id,'R',0,0,$row,0);
-			$cartIcone= 'icon-16-default-off.png'; 
+			$display = VmCustomHandler::inputType($field->id,'R',0,0,$row,0);
+			$cartIcone= 'icon-16-default-off.png';
 			$html[] = '<tr>
 				 <td>'.JText::_('COM_VIRTUEMART_RELATED_PRODUCTS').'</td>
 				 <td>'.$display.'
@@ -92,15 +93,15 @@ class VirtuemartViewProduct extends JView {
 			$customs = $db->loadObject();
 
 
-			$query = "SELECT virtuemart_category_id AS id, category_name AS value 
+			$query = "SELECT virtuemart_category_id AS id, category_name AS value
 				FROM #__virtuemart_categories WHERE virtuemart_category_id =".$id;
 			$db->setQuery($query);
 
 
 			$field = $db->loadObject();
 			$html = array ();
-			$display = $product_model->inputType($field->id,'Z',0,0,$row,0);
-			$cartIcone= 'icon-16-default-off.png'; 
+			$display = VmCustomHandler::inputType($field->id,'Z',0,0,$row,0);
+			$cartIcone= 'icon-16-default-off.png';
 			$html[] = '<tr>
 				 <td>'.JText::_('COM_VIRTUEMART_RELATED_CATEGORIES').'</td>
 				 <td>'.$display.'
@@ -124,7 +125,6 @@ class VirtuemartViewProduct extends JView {
 			$json['value'] = $db->loadObjectList();
 			$json['ok'] = 1 ;
 		} else if ($type=='customfield') {
-			$this->loadHelper('customhandler');
 			$fieldTypes= VmCustomHandler::getField_types() ;
 
 			$query = "SELECT * FROM #__virtuemart_customs
@@ -134,9 +134,9 @@ class VirtuemartViewProduct extends JView {
 			$rows = $db->loadObjectlist();
 			$html = array ();
 			foreach ($rows as $field) {
-			 $display = $product_model->inputType($field->custom_value,$field->field_type,$field->is_list,0,$row,$field->is_cart_attribute);
+			 $display = VmCustomHandler::inputType($field->custom_value,$field->field_type,$field->is_list,0,$row,$field->is_cart_attribute);
 			 if ($field->is_cart_attribute) $cartIcone=  'icon-16-default.png';
-			 else  $cartIcone= 'icon-16-default-off.png'; 
+			 else  $cartIcone= 'icon-16-default-off.png';
 			 $html[] = '<tr>
 				 <td>'.$field->custom_title.'</td>
 				 <td>'.$display.$field->custom_tip.'

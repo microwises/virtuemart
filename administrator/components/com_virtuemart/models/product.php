@@ -93,6 +93,7 @@ class VirtueMartModelProduct extends VmModel {
 		$joinCategory 	= false ;
 		$joinMf 		= false ;
 		$joinPrice 		= false ;
+		$joinCustom		= false ;
 
 		$where = array();
 		if($onlyPublished){
@@ -104,7 +105,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		// search fields filters set Frontend?
 		if ( $search == 'true') {
-
+			$groupBy = 'group by `#__virtuemart_products`.`virtuemart_product_id`';
 			//Why keyword and search used? why not only keyword or search? notice by Max Milbers
 			//$keyword = trim( str_replace(' ', '%', JRequest::getWord('keyword', '') ) );
 			$keyword = JRequest::getWord('keyword', '');
@@ -119,6 +120,14 @@ class VirtueMartModelProduct extends VmModel {
 				$filter_search[] = ' `'.$searchField.'` LIKE '.$keyword;
 			}
 			$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
+			if ($searchcustoms = JRequest::getVar('customfields', array(),	'default' ,'array')){
+				$joinCustom = true ;
+				foreach ($searchcustoms as $key => $searchcustom) {
+					$custom_search[] = '(`#__virtuemart_product_customfields`.`virtuemart_custom_id`="'.(int)$key.'" and `#__virtuemart_product_customfields`.`custom_value` like "%' . $this->_db->getEscaped( $searchcustom, true ) . '%")';
+				}
+			$where[] = " ( ".implode(' OR ', $custom_search )." ) ";
+			}
+
 		} elseif ($search = JRequest::getWord('filter_product', false)){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			$where[] = '#__virtuemart_products.`product_name` LIKE '.$search;
@@ -222,7 +231,9 @@ class VirtueMartModelProduct extends VmModel {
 		if ($joinPrice == true) {
 			$query .= ' LEFT JOIN `#__virtuemart_product_prices` ON `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_prices`.`virtuemart_product_id` ';
 		}
-
+		if ($joinCustom == true) {
+			$query .= ' LEFT JOIN `#__virtuemart_product_customfields` ON `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_customfields`.`virtuemart_product_id` ';
+		}
 		if(count($where)>0){
 			$whereString = ' WHERE ('.implode(' AND ', $where ).') ';
 		} else {
@@ -233,7 +244,7 @@ class VirtueMartModelProduct extends VmModel {
 		$query .= $whereString .$groupBy .$orderBy .$filter_order_Dir ;
 
  		$this->_db->setQuery($query);
-		if(!$this->_db->query()){
+ 		if(!$this->_db->query()){
 			$app->enqueueMessage('sortSearchOrder Error in query '.$query.'<br /><br />'.$this->_db->getErrorMsg().'<br />');
 		} else {
 

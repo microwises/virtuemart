@@ -34,7 +34,7 @@ class VirtuemartViewCategory extends JView {
 
 	public function display($tpl = null) {
 
-		
+
 		$show_prices  = VmConfig::get('show_prices',1);
 		if($show_prices == '1'){
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
@@ -114,25 +114,32 @@ class VirtuemartViewCategory extends JView {
 	   	if(JRequest::getInt('error')){
 			$head = $document->getHeadData();
 			$head['title'] = JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
-			
+
 			$document->setHeadData($head);
-			
+
 		} else {
 			$document->setTitle($category->category_name);
 		}
-		
-		/* set keyword */
-		if ($keyword = JRequest::getWord('keyword', '')) {
-			$pathway->addItem($keyword);
-			$document->setTitle($category->category_name.' '.$keyword);
-			$this->assignRef('keyword', $keyword);
+
+		/* set search and keyword */
+		if ($search = JRequest::getWord('search', 0)) {
+			if ($keyword = JRequest::getWord('keyword', '')) {
+				$pathway->addItem($keyword);
+				$document->setTitle($category->category_name.' '.$keyword);
+				$this->assignRef('keyword', $keyword);
+			}
+			if(!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
+			$searchcustom = VmCustomHandler::getSearchCustom();
+			$this->assignRef('searchcustom', $searchcustom);
 		}
+
+		$this->assignRef('search', $search);
 
 	    /* Load the products in the given category */
 	    $products = $productModel->getProductsInCategory($categoryId);
 	    $productModel->addImages($products);
 	    $this->assignRef('products', $products);
-		
+
 		foreach($products as $product){
 			$product->stock = $productModel->getStockIndicator($product);
 		}

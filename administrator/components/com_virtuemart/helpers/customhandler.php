@@ -556,13 +556,13 @@ class VmCustomHandler {
 					$this->_db->setQuery($q);
 					//echo $this->_db->_sql;
 					if ($child = $this->_db->loadObject() ) {
-						$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "'.$child->virtuemart_product_id.'" ';
+						$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias` WHERE `virtuemart_product_id`= "'.$child->virtuemart_product_id.'" ';
 						$this->_db->setQuery($q);
 						$thumb ='';
 						if ($media_id = $this->_db->loadResult()) {
 							$thumb = $this->displayCustomMedia($media_id);
 						} else {
-							$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "'.$child->product_parent_id.'" ';
+							$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias` WHERE `virtuemart_product_id`= "'.$child->product_parent_id.'" ';
 							$this->_db->setQuery($q);
 							if ($media_id = $this->_db->loadResult()) $thumb = $this->displayCustomMedia($media_id);
 						}
@@ -572,5 +572,22 @@ class VmCustomHandler {
 				break;
 			}
 		}
+	}
+	/*
+	 * generate custom fields list to display as search in FE
+	 */
+	public function getSearchCustom() {
+		if(empty($this->_db)) $this->_db = JFactory::getDBO();
+		$this->_db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE `field_type` ="P"');
+		$this->searchCustom->selectList = $this->_db->loadAssocList();
+		if ($this->searchCustom->custom_parent_id = JRequest::getInt('custom_parent_id', 0)) {
+			$this->_db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE custom_parent_id='.$this->searchCustom->custom_parent_id);
+			$this->searchCustom->selected = $this->_db->loadObjectList();
+			foreach ($this->searchCustom->selected as &$selected) {
+				$this->_db->setQuery('SELECT `custom_value`,`custom_value` as title FROM `#__virtuemart_product_customfields` WHERE virtuemart_custom_id='.$selected->virtuemart_custom_id);
+				$selected->fields[$selected->virtuemart_custom_id] = $this->_db->loadObjectList();
+			}
+		}
+		return $this->searchCustom;
 	}
 }
