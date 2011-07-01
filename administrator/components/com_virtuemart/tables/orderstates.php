@@ -33,9 +33,9 @@ class TableOrderstates extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_orderstate_id			= 0;
-        	/** @var int Vendor ID if the status is vendor specific */
-        var $virtuemart_vendor_id					= null;
-               /** @var boolean */
+	/** @var int Vendor ID if the status is vendor specific */
+	var $virtuemart_vendor_id					= null;
+	/** @var boolean */
 	/** @var char Order status Code */
 	var $order_status_code			= '';
 	/** @var string Order status name*/
@@ -51,11 +51,10 @@ class TableOrderstates extends VmTable {
 	/**
 	 * @param $db Class constructor; connect to the database
 	 */
-	function __construct(&$db)
-	{
+	function __construct(&$db){
+
 		parent::__construct('#__virtuemart_orderstates', 'virtuemart_orderstate_id', $db);
 
-//		$this->setUniqueName('calc_name');
 		$this->setObligatoryKeys('order_status_code');
 		$this->setObligatoryKeys('order_status_name');
 		$this->setLoggable();

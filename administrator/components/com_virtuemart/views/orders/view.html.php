@@ -93,10 +93,9 @@ class VirtuemartViewOrders extends JView {
 			$orderStates = $orderStatusModel->getOrderStatusList();
 			$_orderStatusList = array();
 			foreach ($orderStates as $orderState) {
-				//$_orderStatusList[$orderState->virtuemart_orderstate_id] = $orderState->order_status_name;
+				$_orderStatusList[$orderState->virtuemart_orderstate_id] = $orderState->order_status_name;
 				//When I use update, I have to use this?
-				$_orderStatusList[$orderState->order_status_code] = $orderState->order_status_name;
-
+				//$_orderStatusList[$orderState->order_status_code] = $orderState->order_status_name;
 			}
 			dump($_orderStatusList,'my order status list');
 			$_itemStatusUpdateFields = array();

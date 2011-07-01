@@ -45,18 +45,53 @@ defined('_JEXEC') or die('Restricted access');
 	</td>
 	<td align="left">
 	    Install Sampledata: When you did not installed the sampeldata and you have a fresh shop you may use this.<br /><br />
-	    Synchronize joomla users: When you used your page already before maybe as forum, blog you can use this button 
+	    Synchronize joomla users: When you used your page already before maybe as forum, blog you can use this button
 	    to synchronize them with the virtuemart tables. That means all joomla users get the default shopper and permission group.<br /><br />
 	    Synchronize media: Just upload your media to the paths:<br />
 	    Media product url: <?php echo VmConfig::get('media_product_path'); ?><br />
 	    Media category url: <?php echo VmConfig::get('media_category_path'); ?><br />
 	    Media manufacturer url: <?php echo VmConfig::get('media_manufacturer_path'); ?><br />
-	    
+
 	    You can change these urls in the config settings.
 	</td>
     </tr>
-    
+
     <tr>
+   <td align="center">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateUsersFromVmOne&token='.JUtility::getToken() ); ?>
+	    <span onclick="javascript:confirmation('<?php echo 'Start to migrate users?'; ?>', '<?php echo $link; ?>');">
+		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
+	    </span>
+	    <br />
+	    Migrate users we can from VM1 to VM2
+	</td>
+
+   <td align="center">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateGeneralFromVmOne&token='.JUtility::getToken() ); ?>
+	    <span onclick="javascript:confirmation('<?php echo 'Start to migrate general?'; ?>', '<?php echo $link; ?>');">
+		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
+	    </span>
+	    <br />
+	    Migrate general we can from VM1 to VM2
+	</td>
+
+	<td align="center">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateProductsFromVmOne&token='.JUtility::getToken() ); ?>
+	    <span onclick="javascript:confirmation('<?php echo 'Start to migrate products?'; ?>', '<?php echo $link; ?>');">
+		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
+	    </span>
+	    <br />
+	    Migrate products we can from VM1 to VM2
+	</td>
+		<td align="center">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateOrdersFromVmOne&token='.JUtility::getToken() ); ?>
+	    <span onclick="javascript:confirmation('<?php echo 'Start to migrate orders?'; ?>', '<?php echo $link; ?>');">
+		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
+	    </span>
+	    <br />
+	    Migrate orders we can from VM1 to VM2
+	</td>
+
  	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateAllInOne&token='.JUtility::getToken() ); ?>
 	    <span onclick="javascript:confirmation('<?php echo 'Start to migrate?'; ?>', '<?php echo $link; ?>');">
@@ -82,13 +117,13 @@ defined('_JEXEC') or die('Restricted access');
 	    Migrate VM1.1 orders to VM2
 	</td>
 	<td align="left">
-		To import data from virtuemart1.1 you must have the tables of virtuemart1.1 in your database. That means the migrator 
-		is looking for tables with the format "joomla prefix" + "vm". When you followed the defaults than it should be 
+		To import data from virtuemart1.1 you must have the tables of virtuemart1.1 in your database. That means the migrator
+		is looking for tables with the format "joomla prefix" + "vm". When you followed the defaults than it should be
 		jos_vm_.<br />
 		You should start with migrating medias, then users (not working yet), then products, then orders (not working yet).
 	</td>*/ ?>
-    </tr> 
-    
+    </tr>
+
     <tr><td colspan="4"><?php echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING'); ?></td></tr>
     <tr>
 	<td align="center">
@@ -122,7 +157,7 @@ defined('_JEXEC') or die('Restricted access');
 	    <br />
             <?php echo Jtext::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH'); ?>
 	</td>
-	
+
     </tr>
 </table>
 

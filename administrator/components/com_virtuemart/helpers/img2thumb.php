@@ -100,10 +100,10 @@ class Img2Thumb	{
 */
 	private function NewImgCreate($filename,$newxsize,$newysize,$fileout)
 	{
-		if( !function_exists('imagecreatefromjpeg') ){
-			$app = JFactory::getApplication();
-			$app->enqueueMessage('This server does NOT suppport auto generating Thumbnails by jpg');
-		}
+// 		if( !function_exists('imagecreatefromjpeg') ){
+// 			$app = JFactory::getApplication();
+// 			$app->enqueueMessage('This server does NOT suppport auto generating Thumbnails by jpg');
+// 		}
 
 		$type = $this->GetImgType($filename);
 
@@ -113,8 +113,8 @@ class Img2Thumb	{
 		}
 		$this->fileout = $fileout;
 
-		switch($type)
-		{
+		switch($type){
+
 			case "gif":
 				// unfortunately this function does not work on windows
 				// via the precompiled php installation :(

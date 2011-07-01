@@ -31,7 +31,6 @@ DROP TABLE
 `#__virtuemart_producttypes`,
 `#__virtuemart_producttype_customfields`,
 `#__virtuemart_shippingcarriers`,
-`#__virtuemart_shippingrates`,
 `#__virtuemart_shoppergroups`,
 `#__virtuemart_states`,
 `#__virtuemart_userfields`,

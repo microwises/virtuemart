@@ -327,44 +327,122 @@ class VirtuemartControllerUpdatesMigration extends VmController{
      *
      * @author Max Milbers
      */
-    function _getMsgDangerousTools(){
-	$uri = JFactory::getURI();
-	$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
-	$msg = JText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED', $link);
-	return $msg;
-    }
-
-    function portMedia(){
-	$data = JRequest::get('get');
-	JRequest::setVar($data['token'], '1', 'post');
-	JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
-	$this->checkPermissionForTools();
-
-	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
-	$migrator = new Migrator();
-	$result = $migrator->portMedia();
-
-	$this->setRedirect($this->redirectPath, $result);
-    }
-
-    function migrateAllInOne(){
-	$data = JRequest::get('get');
-	JRequest::setVar($data['token'], '1', 'post');
-	JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
-	$this->checkPermissionForTools();
-
-	if(!VmConfig::get('dangeroustools', true)){
-	    $msg = $this->_getMsgDangerousTools();
-	    $this->setRedirect($this->redirectPath, $msg);
-	    return false;
+	function _getMsgDangerousTools(){
+		$uri = JFactory::getURI();
+		$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
+		$msg = JText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED', $link);
+		return $msg;
 	}
 
-	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
-	$migrator = new Migrator();
-	$result = $migrator->migrateAllInOne();
-	$msg = 'Migration finished';
-	$this->setRedirect($this->redirectPath, $msg);
+	function portMedia(){
+		$data = JRequest::get('get');
+		JRequest::setVar($data['token'], '1', 'post');
+		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
+		$this->checkPermissionForTools();
+
+		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		$migrator = new Migrator();
+		$result = $migrator->portMedia();
+
+		$this->setRedirect($this->redirectPath, $result);
     }
+
+    function migrateGeneralFromVmOne(){
+    	$data = JRequest::get('get');
+    	JRequest::setVar($data['token'], '1', 'post');
+    	JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
+    	$this->checkPermissionForTools();
+
+    	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+    	$migrator = new Migrator();
+    	$result = $migrator->migrateGeneral();
+    	if($result){
+    		$msg = 'Migration general finished';
+    	} else {
+    		$msg = 'Migration general was interrupted by max_execution time, please restart';
+    	}
+    	$this->setRedirect($this->redirectPath, $result);
+
+    }
+
+   function migrateUsersFromVmOne(){
+   	$data = JRequest::get('get');
+   	JRequest::setVar($data['token'], '1', 'post');
+   	JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
+   	$this->checkPermissionForTools();
+
+   	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+   	$migrator = new Migrator();
+   	$result = $migrator->migrateUsers();
+		if($result){
+			$msg = 'Migration users finished';
+		} else {
+			$msg = 'Migration users was interrupted by max_execution time, please restart';
+		}
+   	$this->setRedirect($this->redirectPath, $result);
+
+   }
+
+   function migrateProductsFromVmOne(){
+   	$data = JRequest::get('get');
+   	JRequest::setVar($data['token'], '1', 'post');
+   	JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
+   	$this->checkPermissionForTools();
+
+   	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+   	$migrator = new Migrator();
+   	$result = $migrator->migrateProducts();
+   	if($result){
+   		$msg = 'Migration products finished';
+   	} else {
+   		$msg = 'Migration products was interrupted by max_execution time, please restart';
+   	}
+   	$this->setRedirect($this->redirectPath, $result);
+
+   }
+
+   function migrateOrdersFromVmOne(){
+   	$data = JRequest::get('get');
+   	JRequest::setVar($data['token'], '1', 'post');
+   	JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
+   	$this->checkPermissionForTools();
+
+   	require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+   	$migrator = new Migrator();
+   	$result = $migrator->migrateOrders();
+   	if($result){
+   		$msg = 'Migration orders finished';
+   	} else {
+   		$msg = 'Migration orders was interrupted by max_execution time, please restart';
+   	}
+   	$this->setRedirect($this->redirectPath, $result);
+
+   }
+
+   /**
+    * Is doing all migrator steps in one row
+    *
+    * @author Max Milbers
+    * @return boolean
+    */
+	function migrateAllInOne(){
+		$data = JRequest::get('get');
+		JRequest::setVar($data['token'], '1', 'post');
+		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
+		$this->checkPermissionForTools();
+
+		if(!VmConfig::get('dangeroustools', true)){
+		    $msg = $this->_getMsgDangerousTools();
+		    $this->setRedirect($this->redirectPath, $msg);
+		    return false;
+		}
+
+		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		$migrator = new Migrator();
+		$result = $migrator->migrateAllInOne();
+		$msg = 'Migration finished';
+		$this->setRedirect($this->redirectPath, $msg);
+	}
 
 }
 

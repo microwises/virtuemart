@@ -297,7 +297,7 @@ abstract class vmShipperPlugin extends JPlugin {
           // should return $shipping rates for this
           $cart->setShippingRate($this->selectShippingRate($cart));
           return true;
-          
+
     }
 
     /**
@@ -491,7 +491,7 @@ abstract class vmShipperPlugin extends JPlugin {
           $_db = &JFactory::getDBO();
           $_q = 'SELECT s.`shipping_rate_carrier_id` AS shipper_id '
           . 'FROM #__virtuemart_orders        AS o '
-          . ',    #__virtuemart_shippingrates AS s '
+
           . "WHERE o.`virtuemart_order_id` = $_id "
           . 'AND   o.`ship_method_id` = s.`virtuemart_shippingrate_id`';
           $_db->setQuery($_q);
@@ -685,7 +685,7 @@ abstract class vmShipperPlugin extends JPlugin {
     }
 
     function plgVmOnCheckAutomaticSelectedShipping(VirtueMartCart $cart) {
-     
+
         $nbShipper = 0;
         $virtuemart_shippingcarrier_id = 0;
         $nbShipper = $this->getSelectableShipping($cart, $virtuemart_shippingcarrier_id);

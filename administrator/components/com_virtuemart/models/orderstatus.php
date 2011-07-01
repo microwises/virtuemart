@@ -70,49 +70,50 @@ class VirtueMartModelOrderstatus extends VmModel {
 	 *
 	 * @return boolean True is the save was successful, false otherwise.
 	 */
-	function store($data){
+/*	function store($data){
 
 		$table = $this->getTable('orderstates');
 
-		$isNew = ($data['virtuemart_orderstate_id'] < 1) ? true : false;
-		if ($isNew) {
-			$reorderRequired = false;
-		} else {
-			$table->load($data['virtuemart_orderstate_id']);
 
-			if ($table->ordering == $data['ordering']) {
-				$reorderRequired = false;
-			} else {
-				$reorderRequired = true;
-			}
-		}
-		if (!$table->bind($data)) { // Bind data
-			$this->setError($table->getError());
-			return false;
-		}
+// 		$isNew = ($data['virtuemart_orderstate_id'] < 1) ? true : false;
+// 		if ($isNew) {
+// 			$reorderRequired = false;
+// 		} else {
+// 			$table->load($data['virtuemart_orderstate_id']);
 
-		if (!$table->check()) { // Perform data checks
-			$this->setError($table->getError());
-			return false;
-		}
+// 			if ($table->ordering == $data['ordering']) {
+// 				$reorderRequired = false;
+// 			} else {
+// 				$reorderRequired = true;
+// 			}
+// 		}
+// 		if (!$table->bind($data)) { // Bind data
+// 			$this->setError($table->getError());
+// 			return false;
+// 		}
 
-		// if new item, order last in appropriate group
-		if ($isNew) {
-			$table->ordering = $table->getNextOrder();
-		}
+// 		if (!$table->check()) { // Perform data checks
+// 			$this->setError($table->getError());
+// 			return false;
+// 		}
 
-		if (!$table->store()) { // Write data to the DB
-			$this->setError($table->getError());
-			return false;
-		}
+		if new item, order last in appropriate group
+// 		if ($isNew) {
+// 			$table->ordering = $table->getNextOrder();
+// 		}
 
-		if ($reorderRequired) {
-			$table->reorder();
-		}
+// 		if (!$table->store($data)) { // Write data to the DB
+// 			$this->setError($table->getError());
+// 			return false;
+// 		}
+
+// 		if ($reorderRequired) {
+// 			$table->reorder();
+// 		}
 
 		return $table->virtuemart_orderstate_id;
 	}
-
+*/
 	/**
 	 * Retrieve a list of order statuses from the database.
 	 *

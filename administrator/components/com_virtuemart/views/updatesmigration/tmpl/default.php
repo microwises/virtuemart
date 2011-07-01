@@ -15,7 +15,7 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 AdminMenuHelper::startAdminArea();
@@ -28,12 +28,12 @@ jimport('joomla.html.pane');
 $pane = JPane::getInstance('tabs', array('startOffset'=>0));
 echo $pane->startPane('pane');
 
-echo $pane->startPanel(JText::_('COM_VIRTUEMART_UPDATE_VERSION_TAB'), 'update_panel');
-echo $this->loadTemplate('update');
-echo $pane->endPanel();
-
 echo $pane->startPanel(JText::_('COM_VIRTUEMART_UPDATE_TOOLS_TAB'), 'update_panel');
 echo $this->loadTemplate('tools');
+echo $pane->endPanel();
+
+echo $pane->startPanel(JText::_('COM_VIRTUEMART_UPDATE_VERSION_TAB'), 'update_panel');
+echo $this->loadTemplate('update');
 echo $pane->endPanel();
 
 echo $pane->endPane();

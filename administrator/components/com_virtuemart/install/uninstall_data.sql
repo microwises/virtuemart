@@ -18,7 +18,6 @@ DELETE FROM `#__virtuemart_migration_oldtonew_ids`;
 DELETE FROM `#__virtuemart_orders`;
 DELETE FROM `#__virtuemart_order_histories`;
 DELETE FROM `#__virtuemart_order_items`;
-DELETE FROM `#__virtuemart_orderstates`;
 DELETE FROM `#__virtuemart_order_userinfos`;
 DELETE FROM `#__virtuemart_paymentmethods`;
 DELETE FROM `#__virtuemart_paymentmethod_creditcards`;

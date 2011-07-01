@@ -66,19 +66,5 @@ class TableOrder_items extends VmTable {
 		$this->setLoggable();
 	}
 
-	/**
-	 * For setting the time
-	 *
-	 * @author Max Milbers
-	 */
-
-//	function check(){
-//		$date = JFactory::getDate();
-//		$today = $date->toMySQL();
-//		if(empty($this->created_on)){
-//			$this->created_on = $today;
-//		}
-//     	$this->modified_on = $today;
-//	}
 }
 // pure php no closing tag
