@@ -208,7 +208,7 @@ class CurrencyDisplay {
 					$exchangeRate = FALSE;
 				}
 			} else {
-				
+
 				$exchangeRate = $currency->_vendorCurrency;
 			}
 		}
@@ -268,7 +268,7 @@ class CurrencyDisplay {
     	}
 
     	//$res = $this->formatNumber($nb, $nbDecimal, $this->_thousands, $this->_decimal);
-		$res = number_format($nb,$nbDecimal,$this->_decimal,$this->_thousands);
+		$res = number_format((float)$nb,$nbDecimal,$this->_decimal,$this->_thousands);
     	$search = array('{sign}', '{number}', '{symbol}');
     	$replace = array($sign, $res, $this->_symbol);
     	$formattedRounded = str_replace ($search,$replace,$format);
@@ -288,7 +288,7 @@ class CurrencyDisplay {
     function formatNumber($number, $decimals = 2, $decimal_point = '.', $thousand_separator = '&nbsp;' ){
 
 //    	$tmp1 = round((float) $number, $decimals);
-		
+
     	return number_format($number,$decimals,$decimal_point,$thousand_separator);
 //		while (($tmp2 = preg_replace('/(\d+)(\d\d\d)/', '\1 \2', $tmp1)) != $tmp1){
 //			$tmp1 = $tmp2;

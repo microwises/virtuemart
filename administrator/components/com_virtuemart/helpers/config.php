@@ -88,6 +88,7 @@ class VmConfig{
 		//$config = nl2br($config);
 
 		if ($config) {
+			jimport('joomla.html.parameter');
 			self::$_jpConfig = new JParameter($config);
 			$session = JFactory::getSession();
 			$session->clear('vmconfig');

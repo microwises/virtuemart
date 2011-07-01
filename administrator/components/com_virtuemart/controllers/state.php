@@ -61,6 +61,9 @@ class VirtuemartControllerState extends VmController {
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
+
+		$country = JRequest::getInt('virtuemart_country_id', 0);
+		$this->redirectPath .= ($country > 0) ? '&virtuemart_country_id=' . $country : '';
 	}
 
 

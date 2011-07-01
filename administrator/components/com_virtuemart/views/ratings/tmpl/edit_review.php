@@ -35,7 +35,7 @@ AdminMenuHelper::startAdminArea();
 		<td width="24%" align="left" valign="top">
 			<?php echo JText::_('COM_VIRTUEMART_RATING_TITLE'); ?>
 		</td>
-		<td valign="top">
+		<td valign="top"><fieldset class="radio">
 		<!-- Rating stars -->
 		<?php
 		$rating_options = array();
@@ -45,7 +45,7 @@ AdminMenuHelper::startAdminArea();
 		}
 		echo JHTML::_('select.radiolist', $rating_options, 'vote', 'id="vote" class="inputbox"', 'value', 'text', $this->rating->vote);
 		?>
-		</td>
+		</fieldset></td>
 	</tr>
 		<!-- Review comment -->
 	<tr>
@@ -84,9 +84,9 @@ AdminMenuHelper::startAdminArea();
 		<td>
 			<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 		</td>
-		<td>
+		<td><fieldset class="radio">
 			<?php echo JHTML::_('select.booleanlist', 'published', '', $this->rating->published); ?>
-		</td>
+		</fieldset></td>
 	</tr>
 </table>
 </fieldset>

@@ -549,12 +549,12 @@ class VirtueMartModelOrders extends VmModel {
 	private function _handlePayment($orderID, $cart, $prices)
 	{
 
-		$orderNr = $this->getOrderNumber($orderID);
+// 		$orderNr = $this->getOrderNumber($orderID);
 
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStorePaymentData',array(
-					 $orderNr
+					 $orderID
 					,$cart
 					,$prices
 		));

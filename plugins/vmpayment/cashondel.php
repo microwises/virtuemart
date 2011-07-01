@@ -22,7 +22,7 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
  */
 
 class plgVmPaymentCashondel extends vmPaymentPlugin {
-	
+
 	var $_pelement;
 	var $_pcode = 'PU' ;
 
@@ -112,7 +112,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 	 */
 	function plgVmOnShowOrderPaymentBE($_virtuemart_order_id, $_paymethod_id)
 	{
-		
+
 		if (!$this->selectedThisPayment($this->_pelement, $_paymethod_id)) {
 			return null; // Another method was selected, do nothing
 		}
@@ -124,7 +124,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 			JError::raiseWarning(500, $_db->getErrorMsg());
 			return '';
 		}
-		
+
 		$_html = '<table class="adminlist">'."\n";
 		$_html .= '	<thead>'."\n";
 		$_html .= '		<tr>'."\n";
@@ -135,7 +135,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 		$_html .= '		</tr>'."\n";
 		$_html .= '	</thead>'."\n";
 		$_html .= '	<tr>'."\n";
-		$_html .= '		<td>'.$this->getThisMethodName($_paymethod_id).'</td>'."\n";
+		$_html .= '		<td>'.$this->getThisPaymentName($_paymethod_id).'</td>'."\n";
 //		$_html .= '		<td></td>'."\n";
 //		$_html .= '		<td></td>'."\n";
 //		$_html .= '		<td></td>'."\n";
@@ -145,7 +145,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 	}
 
 /*	function get_payment_rate( $sum ) {
-		
+
 		if( $sum < 5000 )
 			return - ($this->params->get( 'CASH_ON_DEL_5000' )) ;
 		elseif( $sum < 10000 )
@@ -162,7 +162,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 			return - ($this->params->get( 'CASH_ON_DEL_100000' )) ;
 		else
 			return - ($this->params->get( 'CASH_ON_DEL_100000' )) ;
-		
+
 	//	return -($sum * 0.10);
 	}
 */

@@ -321,17 +321,17 @@ abstract class vmPaymentPlugin extends JPlugin {
         $db = JFactory::getDBO();
 
         if (VmConfig::isJ15()) {
-            $q = 'SELECT COUNT(*) AS c 
-            		FROM #__virtuemart_paymentmethods AS vm , #__plugins AS j 
+            $q = 'SELECT COUNT(*) AS c
+            		FROM #__virtuemart_paymentmethods AS vm , #__plugins AS j
             		WHERE vm.virtuemart_paymentmethod_id="' . (int) $pid . '"
-            		AND   vm.payment_jplugin_id = j.id 
+            		AND   vm.payment_jplugin_id = j.id
 					AND   j.element = "' . $db->getEscaped($pelement) . '"';
         } else {
-            $q = 'SELECT COUNT(*) AS c 
-            		FROM #__virtuemart_paymentmethods AS vm 
-            		, #__extensions AS j 
+            $q = 'SELECT COUNT(*) AS c
+            		FROM #__virtuemart_paymentmethods AS vm
+            		, #__extensions AS j
             		WHERE vm.virtuemart_paymentmethod_id="' . (int) $pid . '"
-            		AND   vm.payment_jplugin_id = j.extension_id 
+            		AND   vm.payment_jplugin_id = j.extension_id
             		AND   j.element = "' . $db->getEscaped($pelement) . '"';
         }
 
@@ -348,17 +348,17 @@ abstract class vmPaymentPlugin extends JPlugin {
         $db = JFactory::getDBO();
         if (VmConfig::isJ15()) {
             $q = 'SELECT v.* FROM   #__virtuemart_paymentmethods AS v
-            		, #__plugins j 
-            		WHERE j.`element` = "' . $db->getEscaped($this->_pelement) . '" 
-                    AND   v.`payment_jplugin_id` = j.`id` 
+            		, #__plugins j
+            		WHERE j.`element` = "' . $db->getEscaped($this->_pelement) . '"
+                    AND   v.`payment_jplugin_id` = j.`id`
                     AND   v.`published` = "1"
                     AND  (v.`virtuemart_vendor_id` = "' . (int) $vendorId . '"
                     OR   v.`virtuemart_vendor_id` = "0") ';
         } else {
-            $q = 'SELECT v.`*`    '
+            $q = 'SELECT v.*    '
                     . 'FROM   #__virtuemart_paymentmethods AS v '
                     . ',      #__extensions    AS      j '
-                    . 'WHERE j.`folder` = "vmshipper" '
+                    . 'WHERE j.`folder` = "vmpayment" '
                     . 'AND j.`element` = "' . $db->getEscaped($this->_pelement) . '" '
                     . 'AND   v.`published` = "1" '
                     . 'AND   v.`payment_jplugin_id` = j.`extension_id` '
@@ -408,7 +408,7 @@ abstract class vmPaymentPlugin extends JPlugin {
             $vendorId = 1;
         $db = JFactory::getDBO();
 
-        $q = 'SELECT `payment_params` FROM #__virtuemart_paymentmethods 
+        $q = 'SELECT `payment_params` FROM #__virtuemart_paymentmethods
         		WHERE `virtuemart_paymentmethod_id`="' . $payment_id . '" ';
         $db->setQuery($q);
         return $db->loadResult();
@@ -487,7 +487,7 @@ abstract class vmPaymentPlugin extends JPlugin {
 
         $params = new JParameter($payment->payment_params);
 
-         
+
         $payment_name = $payment->payment_name; //.$payment_discount;
 
 

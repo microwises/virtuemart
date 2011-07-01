@@ -41,10 +41,10 @@ class VirtuemartViewOrders extends JView {
 		$orderModel = $this->getModel('orders');
 
 		if ($layoutName == 'details') {
-			
+
 			$cuid = $_currentUser->get('id');
 			if(!empty($cuid)){
-				$orderDetails = $orderModel->getOrder();
+				$orderDetails = $orderModel->getOrder(JRequest::getInt('virtuemart_order_id'));
 				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 				if(!Permissions::getInstance()->check("admin")) {
 					if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
@@ -88,10 +88,11 @@ class VirtuemartViewOrders extends JView {
 		$this->assignRef('currency', $currency);
 
 		// Create a simple indexed array woth ordertatuses
-		$_orderstatuses = $this->get('OrderStatusList');
+		$orderStatusModel = $this->getModel('orderstatus');
+		$_orderstatuses = $orderStatusModel->getOrderStatusList();
 		$orderstatuses = array();
 		foreach ($_orderstatuses as $_ordstat) {
-			$orderstatuses[$_ordstat->value] = $_ordstat->text;
+			$orderstatuses[$_ordstat->order_status_code] = $_ordstat->order_status_name;
 		}
 		$this->assignRef('orderstatuses', $orderstatuses);
 
