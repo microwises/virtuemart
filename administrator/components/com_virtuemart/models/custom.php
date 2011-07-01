@@ -168,7 +168,6 @@ class VirtueMartModelCustom extends VmModel {
 		if(!$this->_db->query()){
 			$this->setError('Error in saveModelCustomfields '); //.$this->_db->getQuery()); Dont give hackers too much info
 		}
-					dump ($this->_db ,'DB');
 
 		$customfieldIds = array();
 		foreach($datas as $fields){
@@ -179,29 +178,16 @@ class VirtueMartModelCustom extends VmModel {
 			foreach($errors as $error){
 				$this->setError($error);
 			}
-			//$customfieldIds[] = $data['virtuemart_customfield_id'];
 		}
-
-//		$xrefData = array();
-//		$xrefData['virtuemart_'.$table.'_id']= $id;
-//		$xrefData['virtuemart_customfield_id']= $customfieldIds;
-//
-//		// save Xref calues in right table
-//		$xrefTable = $this->getTable($table.'_customfields');
-//		$xrefTable->bindChecknStore($xrefData);
-//	    $errors = $xrefTable->getErrors();
-//		foreach($errors as $error){
-//			$this->setError($error);
-//		}
 
 	}
 
-	/* Save and delete from database	/* Save and delete from database
-	* all product custom_fields and xref
-	@ var   $table	: the xref table(eg. product,category ...)
-	@array $data	: array of customfields
-	@int     $id		: The concerned id (eg. product_id)
-	*/
+	/* Save and delete from database
+	 *  all Child product custom_fields relation
+	 * 	@ var   $table	: the xref table(eg. product,category ...)
+	 * 	@array $data	: array of customfields
+	 * 	@int     $id		: The concerned id (eg. product_id)
+	 **/
 	public function saveChildCustomRelation($table,$datas) {
 
 		//Table whitelist
@@ -217,26 +203,12 @@ class VirtueMartModelCustom extends VmModel {
 				$this->setError('Error in deleting child relation '); //.$this->_db->getQuery()); Dont give hackers too much info
 			}
 
-
-				$tableCustomfields = $this->getTable($table.'_customfields');
-				$data = $tableCustomfields->bindChecknStore($fields);
-	    		$errors = $tableCustomfields->getErrors();
-				foreach($errors as $error){
-					$this->setError($error);
-				}
-//				$customfieldIds[0] = $data['virtuemart_customfield_id'];
-//
-//			$xrefData = array();
-//			$xrefData['virtuemart_'.$table.'_id']= $child_id;
-//			$xrefData['virtuemart_customfield_id']= $customfieldIds;
-//
-//			// save Xref calues in right table
-//			$xrefTable = $this->getTable($table.'_customfields');
-//			$xrefTable->bindChecknStore($xrefData);
-//		    $errors = $xrefTable->getErrors();
-//			foreach($errors as $error){
-//				$this->setError($error);
-//			}
+			$tableCustomfields = $this->getTable($table.'_customfields');
+			$data = $tableCustomfields->bindChecknStore($fields);
+    		$errors = $tableCustomfields->getErrors();
+			foreach($errors as $error){
+				$this->setError($error);
+			}
 		}
 
 	}

@@ -15,10 +15,10 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
-?> 
+defined('_JEXEC') or die('Restricted access');
+?>
 <br />
 <fieldset class="adminform">
     <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SYSTEM_SETTINGS') ?></legend>
@@ -232,18 +232,22 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<?php if (!defined('COM_VIRTUEMART_LOGFILE_LEVEL')) define('COM_VIRTUEMART_LOGFILE_LEVEL', 'PEAR_LOG_WARNING'); ?>
-                <select class="inputbox" name="logfile_level">
-		    <option value="PEAR_LOG_TIP" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_TIP') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_TIP') ?></option>
-		    <option value="PEAR_LOG_DEBUG" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_DEBUG') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_DEBUG') ?></option>
-		    <option value="PEAR_LOG_INFO" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_INFO') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_INFO') ?></option>
-		    <option value="PEAR_LOG_NOTICE" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_NOTICE') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_NOTICE') ?></option>
-		    <option value="PEAR_LOG_WARNING" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_WARNING') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_WARNING') ?></option>
-		    <option value="PEAR_LOG_ERR" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_ERR') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_ERR') ?></option>
-		    <option value="PEAR_LOG_CRIT" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_CRIT') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_CRIT') ?></option>
-		    <option value="PEAR_LOG_ALERT" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_ALERT') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_ALERT') ?></option>
-		    <option value="PEAR_LOG_EMERG" <?php if ($this->config->get('logfile_level') == 'PEAR_LOG_EMERG') echo "selected=\"selected\""; ?>><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_EMERG') ?></option>
-		</select>
+		<?php
+		// TODO This must go to the view.html.php.... but then... that goes for most of the config sruff I'ld say :-S
+		$_pearLogfileLevel = array(
+			 'PEAR_LOG_TIP' => JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_TIP')
+			,'PEAR_LOG_DEBUG' => JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_DEBUG')
+			,'PEAR_LOG_INFO' => JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_INFO')
+			,'PEAR_LOG_NOTICE' => JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_NOTICE')
+			,'PEAR_LOG_WARNING' => JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_WARNING')
+			,'PEAR_LOG_ERR' => JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_ERR')
+			,'PEAR_LOG_CRIT' => JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_CRIT')
+			,'PEAR_LOG_ALERT' => JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_ALERT')
+			,'PEAR_LOG_EMERG' => JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_LEVEL_EMERG')
+		);
+		echo VmHTML::selectList('logfile_level',$this->config->get('logfile_level', 'PEAR_LOG_WARNING'),$_defaultExpTime)
+		?>
+
 	    </td>
 	</tr>
         <tr>

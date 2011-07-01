@@ -18,14 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-/*$orderByFieldsArray = $this->config->get('browse_orderby_fields');
-$orderByFields = array();
-$orderByFields[] = JHTML::_('select.option', 'ordering', JText::_('COM_VIRTUEMART_DEFAULT'));
-$orderByFields[] = JHTML::_('select.option', 'product_name', JText::_('COM_VIRTUEMART_PRODUCT_NAME'));
-$orderByFields[] = JHTML::_('select.option', 'product_price', JText::_('COM_VIRTUEMART_PRODUCT_PRICE'));
-$orderByFields[] = JHTML::_('select.option', 'product_sku', JText::_('COM_VIRTUEMART_CART_SKU'));
-$orderByFields[] = JHTML::_('select.option', 'product_cdate', JText::_('COM_VIRTUEMART_LATEST'));
-$orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRTUEMART_SALES'));*/
+
 ?>
 <br />
 <table width="100%">
@@ -42,7 +35,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			<td>
 			    <input type="text" name="errorpage" class="inputbox" value="<?php echo $this->config->get('errorpage'); ?>" />
 			</td>
-		    </tr> */ ?> 
+		    </tr> */ ?>
 		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PDF_BUTTON_EXPLAIN'); ?>" >
@@ -110,7 +103,6 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 				</span>
 	    	</td>
 			<td>
-			<select name="coupons_default_expire" class="inputbox">
 				<?php
 					// TODO This must go to the view.html.php.... but then... that goes for most of the config sruff I'ld say :-S
 					$_defaultExpTime = array(
@@ -122,15 +114,8 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 						,'6,M' => '6 '.JText::_('COM_VIRTUEMART_MONTH_S')
 						,'1,Y' => '1 '.JText::_('COM_VIRTUEMART_YEAR')
 					);
-					foreach ($_defaultExpTime as $_v => $_t) {
-						echo '<option value="'.$_v.'"';
-						if ($this->config->get('coupons_default_expire') == $_v) {
-							echo ' selected="selected"';
-						}
-						echo ">$_t</option>\n";
-					}
+					echo VmHTML::selectList('coupons_default_expire',$this->config->get('coupons_default_expire'),$_defaultExpTime)
 				?>
-			</select>
 			</td>
 			</tr>
 <?php /*	    <tr>
@@ -263,7 +248,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			    ?>
 			</td>
 		    </tr>
-		     
+
 		    <tr>
 			<td class="key">
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN'); ?>">
@@ -351,7 +336,7 @@ $orderByFields[] = JHTML::_('select.option', 'product_sales', JText::_('COM_VIRT
 			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIN_LAYOUT_TIP'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIN_LAYOUT') ?>
 			    </span>
-			</td>                       
+			</td>
 			<td>
 			    <?php
 			    echo JHTML::_('Select.genericlist', $this->vmLayoutList, 'vmlayout', 'size=1', 'text', 'text', $this->config->get('vmlayout'));

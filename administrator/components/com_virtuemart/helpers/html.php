@@ -136,56 +136,56 @@ class VmHTML{
 	}
 
 
-	/**
-	 *
-	 */
-    function selectListParamParser( $arrIn, $tag_name, $tag_attribs, $key, $text, $selected, $required=0 ) {
-//    function selectListParamParser($tag_name ,$tag_attribs ,$arrIn , $key, $text, $selected, $required=0 ) {
-
-        echo '<br />$tag_name '.$tag_name;
-        echo '<br />$tag_attribs '.$tag_attribs;
-        echo '<br />$key '.$key;
-        echo '<br />$text '.$text;
-        echo '<br />$selected '.$selected;
-        if(empty($arrIn)){
-        	 return 'Error selectListParamParser no first argument given';
-        }
-        if(!is_array($arrIn)){
-        	 $arr=array($arrIn);
-        } else {
-        	 $arr=$arrIn;
-        }
-        reset( $arr );
-        $html = "\n<select name=\"$tag_name\" id=\"".str_replace('[]', '', $tag_name)."\" $tag_attribs>";
-        if(!$required) $html .= "\n\t<option value=\"\">".JText::_('COM_VIRTUEMART_SELECT')."</option>";
-        $n=count( $arr );
-        for ($i=0; $i < $n; $i++ ) {
-
-                $k = stripslashes($arr[$i]->$key);
-                $t = stripslashes($arr[$i]->$text);
-                $id = isset($arr[$i]->id) ? $arr[$i]->id : null;
-
-                $extra = '';
-                $extra .= $id ? " id=\"" . $arr[$i]->id . "\"" : '';
-                if (is_array( $selected )) {
-                        foreach ($selected as $obj) {
-                                $k2 = stripslashes($obj->$key);
-                                if ($k == $k2) {
-                                        $extra .= " selected=\"selected\"";
-                                        break;
-                                }
-                        }
-                } else {
-                        $extra .= ($k == stripslashes($selected) ? " selected=\"selected\"" : '');
-                }
-                $html .= "\n\t<option value=\"".$k."\"$extra>";
-				if( $t[0] == '_' ) $t = substr( $t, 1 );
-				$html .= JText::_($t);
-                $html .= "</option>";
-        }
-        $html .= "\n</select>\n";
-        return $html;
-	}
+//	/**
+//	 *
+//	 */
+//    function selectListParamParser( $arrIn, $tag_name, $tag_attribs, $key, $text, $selected, $required=0 ) {
+////    function selectListParamParser($tag_name ,$tag_attribs ,$arrIn , $key, $text, $selected, $required=0 ) {
+//
+//        echo '<br />$tag_name '.$tag_name;
+//        echo '<br />$tag_attribs '.$tag_attribs;
+//        echo '<br />$key '.$key;
+//        echo '<br />$text '.$text;
+//        echo '<br />$selected '.$selected;
+//        if(empty($arrIn)){
+//        	 return 'Error selectListParamParser no first argument given';
+//        }
+//        if(!is_array($arrIn)){
+//        	 $arr=array($arrIn);
+//        } else {
+//        	 $arr=$arrIn;
+//        }
+//        reset( $arr );
+//        $html = "\n<select name=\"$tag_name\" id=\"".str_replace('[]', '', $tag_name)."\" $tag_attribs>";
+//        if(!$required) $html .= "\n\t<option value=\"\">".JText::_('COM_VIRTUEMART_SELECT')."</option>";
+//        $n=count( $arr );
+//        for ($i=0; $i < $n; $i++ ) {
+//
+//                $k = stripslashes($arr[$i]->$key);
+//                $t = stripslashes($arr[$i]->$text);
+//                $id = isset($arr[$i]->id) ? $arr[$i]->id : null;
+//
+//                $extra = '';
+//                $extra .= $id ? " id=\"" . $arr[$i]->id . "\"" : '';
+//                if (is_array( $selected )) {
+//                        foreach ($selected as $obj) {
+//                                $k2 = stripslashes($obj->$key);
+//                                if ($k == $k2) {
+//                                        $extra .= " selected=\"selected\"";
+//                                        break;
+//                                }
+//                        }
+//                } else {
+//                        $extra .= ($k == stripslashes($selected) ? " selected=\"selected\"" : '');
+//                }
+//                $html .= "\n\t<option value=\"".$k."\"$extra>";
+//				if( $t[0] == '_' ) $t = substr( $t, 1 );
+//				$html .= JText::_($t);
+//                $html .= "</option>";
+//        }
+//        $html .= "\n</select>\n";
+//        return $html;
+//	}
 
 	/**
 	 * Creates a Radio Input List
