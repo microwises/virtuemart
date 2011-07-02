@@ -46,11 +46,15 @@ class VirtuemartViewOrders extends JView {
 		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 
 		// Load addl models
+		$orderModel = $this->getModel('orders');
 		$userFieldsModel = $this->getModel('userfields');
 		$productModel = $this->getModel('product');
 
 		/* Get the data */
-		$order = $this->get('Order');
+
+		$virtuemart_order_id = JRequest::getvar('virtuemart_order_id');
+		$order = $orderModel->getOrder($virtuemart_order_id);
+		//$order = $this->get('Order');
 		$_orderID = $order['details']['BT']->virtuemart_order_id;
 		$orderbt = $order['details']['BT'];
 		$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;

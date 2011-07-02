@@ -211,10 +211,6 @@
 				return true;
 			});
 
-			$(document).click(function(){
-				$('.vm-showable').hide();
-			});
-
 			return true;
 		}
 	});

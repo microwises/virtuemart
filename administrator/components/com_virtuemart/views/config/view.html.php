@@ -45,7 +45,7 @@ class VirtuemartViewConfig extends JView {
 		$usermodel = $this->getModel('user');
 
 		 JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' , JText::_('COM_VIRTUEMART_CONFIG') ,''), 'vm_config_48');
-                 
+
 		shopFunctions::addStandardEditViewCommands();
 
 		$config = VmConfig::loadConfig();
@@ -79,12 +79,12 @@ class VirtuemartViewConfig extends JView {
 
 		$noimagelist = $model->getNoImageList();
 		$this->assignRef('noimagelist', $noimagelist);
-		
+
 /*		if(!class_exists('VirtueMartModelOrderstatus'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
 		$oderstatusModel = new VirtueMartModelOrderstatus();
-		$orderStatusList = $oderstatusModel->getOrderStatusList();	
+		$orderStatusList = $oderstatusModel->getOrderStatusList();
 		$this->assignRef('orderStatusList', $orderStatusList);
-*/		
+*/
 		$currConverterList = $model->getCurrencyConverterList();
 		$this->assignRef('currConverterList', $currConverterList);
 		$moduleList = $model->getModuleList();

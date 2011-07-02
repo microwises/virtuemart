@@ -46,13 +46,17 @@ class VirtuemartViewOrders extends JView {
 		require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+		if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
 
 		// Load addl models
+		$orderModel = $this->getModel('orders');
 		$userFieldsModel = $this->getModel('userfields');
 		$productModel = $this->getModel('product');
 
 		/* Get the data */
-		$order = $this->get('Order');
+
+		$virtuemart_order_id = JRequest::getvar('virtuemart_order_id');
+		$order = $orderModel->getOrder($virtuemart_order_id);
 		$_orderID = $order['details']['BT']->virtuemart_order_id;
 		$orderbt = $order['details']['BT'];
 		$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
@@ -81,10 +85,12 @@ class VirtuemartViewOrders extends JView {
 
 		// Create an array to allow orderlinestatuses to be translated
 		// We'll probably want to put this somewhere in ShopFunctions...
-		$_orderStats = $this->get('OrderStatusList');
+        $orderStatusModel=new VirtueMartModelOrderstatus();
+		$_orderStats = $orderStatusModel->getOrderStatusList();
 		$_orderStatusList = array();
+
 		foreach ($_orderStats as $_ordStat) {
-			$_orderStatusList[$_ordStat->value] = $_ordStat->text;
+			$_orderStatusList[$_ordStat->order_status_code] = $_ordStat->order_status_name;
 		}
 
 		foreach($order['items'] as $_item) {

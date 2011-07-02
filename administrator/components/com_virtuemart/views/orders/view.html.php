@@ -46,6 +46,9 @@ class VirtuemartViewOrders extends JView {
 		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
+		$orderStatusModel=new VirtueMartModelOrderstatus();
+		$orderStates = $orderStatusModel->getOrderStatusList();
+		dump ($orderStates );
 
 		$viewName=ShopFunctions::SetViewTitle('vm_orders_48', 'ORDER');
 		$this->assignRef('viewName',$viewName);
@@ -89,19 +92,17 @@ class VirtuemartViewOrders extends JView {
 
 			// Create an array to allow orderlinestatuses to be translated
 			// We'll probably want to put this somewhere in ShopFunctions...
-                       $orderStatusModel=new VirtueMartModelOrderstatus();
-			$orderStates = $orderStatusModel->getOrderStatusList();
 			$_orderStatusList = array();
 			foreach ($orderStates as $orderState) {
-				$_orderStatusList[$orderState->virtuemart_orderstate_id] = $orderState->order_status_name;
+				//$_orderStatusList[$orderState->virtuemart_orderstate_id] = $orderState->order_status_name;
 				//When I use update, I have to use this?
-				//$_orderStatusList[$orderState->order_status_code] = $orderState->order_status_name;
+				$_orderStatusList[$orderState->order_status_code] = $orderState->order_status_name;
 			}
-			dump($_orderStatusList,'my order status list');
+			//dump($_orderStatusList,'my order status list');
 			$_itemStatusUpdateFields = array();
 			$_itemAttributesUpdateFields = array();
 			foreach($order['items'] as $_item) {
-				$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $orderStates, 'order_status_'.$_item->virtuemart_order_item_id, '', 'virtuemart_orderstate_id', 'order_status_name', $_item->order_status, 'order_item_status');
+				$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $orderStates, 'order_status_'.$_item->virtuemart_order_item_id, '', 'order_status_code', 'order_status_name', $_item->order_status, 'order_item_status');
 				if (!empty($_item->product_attribute)) {
 					$_attribs = preg_split('/\s?<br\s*\/?>\s?/i', $_item->product_attribute);
 
@@ -150,7 +151,7 @@ class VirtuemartViewOrders extends JView {
 
 			/* Data for the Edit Status form popup */
 			$_currentOrderStat = $order['details']['BT']->order_status;
-			$_orderStatusSelect = JHTML::_('select.genericlist', $orderStates, 'order_status['.$_orderID.']', '', 'virtuemart_orderstate_id', 'order_status_name', $_currentOrderStat, 'order_status');
+			$_orderStatusSelect = JHTML::_('select.genericlist', $orderStates, 'order_status['.$_orderID.']', '', 'order_status_code', 'order_status_name', $_currentOrderStat, 'order_status');
 			$this->assignRef('orderStatSelect', $_orderStatusSelect);
 			$this->assignRef('currentOrderStat', $_currentOrderStat);
 
@@ -163,11 +164,7 @@ class VirtuemartViewOrders extends JView {
 		else if ($curTask == 'editOrderItem') {
 			$this->loadHelper('calculationHelper');
 
-			/* Get order statuses */
-                        $orderStatusModel=$this->getModel('OrderStatus');
-			$orderstatuses = $orderStatusModel->getOrderStatusList();
-
-			$this->assignRef('orderstatuses', $orderstatuses);
+			$this->assignRef('orderstatuses', $orderStates);
 
 			$model = $this->getModel();
 			$orderId = JRequest::getString('orderId', '');
@@ -184,11 +181,8 @@ class VirtuemartViewOrders extends JView {
 			/* Get the data */
 			$orderslist = $this->get('OrdersList');
 
-			/* Get order statuses */
-			$orderStatusModel=new VirtueMartModelOrderstatus();
-			$orderstatuses = $orderStatusModel->getOrderStatusList();
 
-			$this->assignRef('orderstatuses', $orderstatuses);
+			$this->assignRef('orderstatuses', $orderStates);
 
 			if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 
