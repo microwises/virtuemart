@@ -772,9 +772,11 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		/* Update waiting list  */
-		if ($data['product_in_stock'] > 0 && $data['notify_users'] == '1' ) {
-			$waitinglist = new VirtueMartModelWaitingList();
-			$waitinglist->notifyList($data['virtuemart_product_id']);
+		if(!empty($data['notify_users'])){
+			if ($data['product_in_stock'] > 0 && $data['notify_users'] == '1' ) {
+				$waitinglist = new VirtueMartModelWaitingList();
+				$waitinglist->notifyList($data['virtuemart_product_id']);
+			}
 		}
 
 		//Should be replaced by xref table
@@ -822,7 +824,6 @@ class VirtueMartModelProduct extends VmModel {
 		/* Update product custom field
 		* 'product_type_tables' are all types tables in product edit view
 		*/
-
 		return $product_data->virtuemart_product_id;
 	}
 
@@ -1417,7 +1418,7 @@ class VirtueMartModelProduct extends VmModel {
 
      function getProductCustomsChilds($id){
 
-
+		$data = array();
      	if ($childs = $this->getProductChilds($id)) {
      		if(!class_exists('VmCustomHandler'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
 
@@ -1425,15 +1426,15 @@ class VirtueMartModelProduct extends VmModel {
 	     		$query='SELECT C.* , field.*
 					FROM `jos_virtuemart_product_customfields` AS field
 					LEFT JOIN `jos_virtuemart_customs` AS C ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-					AND field_type = "C"
 					WHERE `virtuemart_product_id` ='.(int)$child->virtuemart_product_id;
-				$query .=' and field_type = "C" ';
+				$query .=' and C.field_type = "C" ';
 
 				$this->_db->setQuery($query);
 				$child->field = $this->_db->loadObject();
 	     		$child->display = VmCustomHandler::displayType($id,$child->virtuemart_product_id,'C');
+	     		if ($child->field) $data[] = $child ;
 	     	}
-			return $childs ;
+			return $data ;
      	}
      }
 

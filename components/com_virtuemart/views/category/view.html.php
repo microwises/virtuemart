@@ -120,19 +120,18 @@ class VirtuemartViewCategory extends JView {
 		} else {
 			$document->setTitle($category->category_name);
 		}
-
+		$keyword = JRequest::getWord('keyword', '');
 		/* set search and keyword */
-		if ($search = JRequest::getWord('search', 0)) {
-			if ($keyword = JRequest::getWord('keyword', '')) {
+		if ($search = JRequest::getWord('search', '')) {
+			if ($keyword) {
 				$pathway->addItem($keyword);
 				$document->setTitle($category->category_name.' '.$keyword);
-				$this->assignRef('keyword', $keyword);
 			}
 			if(!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
 			$searchcustom = VmCustomHandler::getSearchCustom();
 			$this->assignRef('searchcustom', $searchcustom);
 		}
-
+		$this->assignRef('keyword', $keyword);
 		$this->assignRef('search', $search);
 
 	    /* Load the products in the given category */

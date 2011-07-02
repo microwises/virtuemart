@@ -88,7 +88,7 @@ class TableMedias extends VmTable {
 	 if(strlen($this->file_title)>126){
 	    $this->setError(JText::sprintf('COM_VIRTUEMART_TITLE_TOO_LONG',strlen($this->file_title) ) );
 	 }
-	 
+
 	 $q = 'SELECT * FROM `'.$this->_tbl.'` ';
 	 $q .= 'WHERE `file_title`="' .  $this->_db->getEscaped($this->file_title) . '" AND `file_type`="' . $this->_db->getEscaped( $this->file_type) . '"';
 	 $this->_db->setQuery($q);
@@ -97,12 +97,12 @@ class TableMedias extends VmTable {
 	 $tblKey = 'virtuemart_media_id';
 	 if (!empty($unique_id)){
 	    foreach($unique_id as $id){
-		if($id!=$this->virtuemart_media_id) {		    
+		if($id!=$this->virtuemart_media_id) {
 		  $this->file_title = count($unique_id).$this->file_title;
 	       }
 	    }
 	 }
-	 
+
       } else{
 		     $this->setError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_TITLE'));
 		     $ok = false;
@@ -129,14 +129,14 @@ class TableMedias extends VmTable {
 			     $ok = true;
 			     $app = JFactory::getApplication();
 				set_error_handler(array($this, 'handleError'));
-				try{	
+				try{
 				     $this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);
 				     if($this->file_mimetype == 'directory'){
 					     return false;
 				     }
 				} catch (ErrorException $e){
-				    
-				    
+
+
 					//$ok = false;
 				     $app->enqueueMessage('Couldnt resolve mime type for '.$rel_path);
 				    return false;
@@ -149,22 +149,25 @@ class TableMedias extends VmTable {
 			     $lastIndexOfSlash= strrpos($this->file_url,'/');
 			     $name = substr($this->file_url,$lastIndexOfSlash+1);
 			     $file_extension = strtolower(JFile::getExt($name));
-			     if($$file_extension === 'jpg' || $file_extension === 'jpeg'){
+			     if( empty($name) ){
+				     $this->setError(JText::_('COM_VIRTUEMART_NO_MEDIA'));
+			     }
+			     elseif($file_extension === 'jpg' || $file_extension === 'jpeg'){
 				     $this->file_mimetype = 'image/jpeg';
-			     } 
+			     }
 			     elseif($file_extension === 'gif'){
 				     $this->file_mimetype = 'image/gif';
-			     } 
+			     }
 			     elseif($file_extension === 'png'){
 				     $this->file_mimetype = 'image/png';
-			     } 
+			     }
 			     elseif($file_extension === 'bmp'){
 				     $this->setError(JText::_('COM_VIRTUEMART_MEDIA_SHOULD_NOT_BMP'));
-				     $notice = true;					
+				     $notice = true;
 			     }
 			     else{
 				     $this->setError(JText::_('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE'));
-				     $notice = true;					
+				     $notice = true;
 			     }
 		     }
 	     }
@@ -197,13 +200,13 @@ class TableMedias extends VmTable {
 	}
 
 	/**
-	 * We need a customised error handler to catch the errors maybe thrown by 
+	 * We need a customised error handler to catch the errors maybe thrown by
 	 * mime_content_type
-	 * 
+	 *
 	 * @author Max Milbers derived from Philippe Gerber
 	 */
 	function handleError($errno, $errstr){
-		
+
 	    // error was suppressed with the @-operator
 	    if (0 === error_reporting()) {
 	        return false;

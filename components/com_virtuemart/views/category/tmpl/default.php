@@ -48,7 +48,6 @@ echo JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE').' '.JHTML::_('select.genericlis
 	foreach ($this->searchcustom->selected as $key =>$custom){
 		$option  = array('custom_value' =>null, 'title' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
 		$options = array_merge(array($option), $custom->fields[$custom->virtuemart_custom_id]);
-		dump ($options);
 		echo JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE').' '.JHTML::_('select.genericlist', $options, 'customfields['.$custom->virtuemart_custom_id.']', 'class="inputbox"', 'custom_value', 'title', 0);
 	}
 } ?>

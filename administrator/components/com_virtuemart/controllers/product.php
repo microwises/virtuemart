@@ -131,7 +131,7 @@ class VirtuemartControllerProduct extends VmController {
 		//$cids = JRequest::getVar('cid');
 		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
 		jimport( 'joomla.utilities.arrayhelper' );
-		JArrayHelper::toInteger($ids);
+		JArrayHelper::toInteger($cids);
 
 		foreach($cids as $cid){
 			if ($id=$model->createChild($cid)){
@@ -163,7 +163,7 @@ class VirtuemartControllerProduct extends VmController {
 		//$cids = JRequest::getInt('virtuemart_product_id',0);
 		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
 		jimport( 'joomla.utilities.arrayhelper' );
-		JArrayHelper::toInteger($ids);
+		JArrayHelper::toInteger($cids);
 
 		foreach($cids as $cid){
 			if ($model->createClone($cid)) $msg = JText::_('COM_VIRTUEMART_PRODUCT_CLONED_SUCCESSFULLY');

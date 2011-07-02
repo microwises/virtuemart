@@ -128,7 +128,7 @@ class VirtuemartViewProduct extends JView {
 			$fieldTypes= VmCustomHandler::getField_types() ;
 
 			$query = "SELECT * FROM #__virtuemart_customs
-			WHERE virtuemart_custom_id=".$id." or custom_parent_id=".$id;
+			WHERE `field_type`!='C' AND (`virtuemart_custom_id`=".$id." or `custom_parent_id`=".$id.")";
 			$query .=" order by custom_parent_id asc";
 			$db->setQuery($query);
 			$rows = $db->loadObjectlist();

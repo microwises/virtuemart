@@ -71,7 +71,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
      * @return boolean True is the remove was successful, false otherwise.
      */
 	function remove($categoryIds)
-	{		
+	{
     	$table = $this->getTable('manufacturercategories');
 
     	foreach($categoryIds as $categoryId) {
@@ -82,6 +82,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
 	       		}
        		}
        		else {
+				$this->setError(get_class( $this ).'::remove '.$id.' '.$table->getError());
        			return false;
        		}
     	}

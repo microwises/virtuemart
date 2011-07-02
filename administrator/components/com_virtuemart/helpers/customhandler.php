@@ -232,8 +232,8 @@ class VmCustomHandler {
 	function getProductChildCustomRelation() {
 
 		$this->_db->setQuery(' SELECT virtuemart_custom_id as value,custom_title as text FROM `#__virtuemart_customs` WHERE `field_type` ="C"' );
-
-		return $this->_db->loadObjectList();
+		if ($results =$this->_db->loadObjectList()) return $results ;
+		else return array();
 	}
 	function getProductChildCustom($product_id ) {
 		$db = JFactory::getDBO();
@@ -245,6 +245,12 @@ class VmCustomHandler {
 			return $childcustom;
 		}
 	}
+	function getProductParentRelation($product_id ) {
+		$db = JFactory::getDBO();
+		$db->setQuery(' SELECT `custom_value` FROM `#__virtuemart_product_customfields` WHERE  `virtuemart_product_id` ='.(int)$product_id);
+		if ($childcustom = $db->loadResult()) return '('.$childcustom.')';
+		else return JText::_('COM_VIRTUEMART_CUSTOM_NO_PARENT_RELATION');
+	}
 	/**
      * AUthor Kohl Patrick
      * Load all custom fields for a Single product
@@ -255,7 +261,7 @@ class VmCustomHandler {
 		$query='SELECT C.`virtuemart_custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_cart_attribute` , `is_hidden` , C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`,field.`custom_price`
 			FROM `#__virtuemart_customs` AS C
 			LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-			Where `virtuemart_product_id` ='.$virtuemart_product_id;
+			Where `field_type`!="C" AND `virtuemart_product_id` ='.$virtuemart_product_id;
 		$this->_db->setQuery($query);
 		$productCustoms = $this->_db->loadObjectList();
 		$row= 0 ;
@@ -300,6 +306,7 @@ class VmCustomHandler {
 		} else {
 			if ($pricable)  $priceInput = JText::_('COM_VIRTUEMART_CART_PRICE').'<input type="text" value="'.$price.'" name="field['.$row.'][custom_price]" />';
 			else $priceInput = '';
+			if (empty($this->_db)) $this->_db = JFactory::getDBO();
 			switch ($type) {
 				/* variants*/
 				case 'V':
@@ -375,10 +382,12 @@ class VmCustomHandler {
 					} else {
 						$virtuemart_product_id = $product->virtuemart_product_id;
 					}
-					$q='SELECT `virtuemart_product_id` as value,concat(`product_sku`,":",`product_name`) as text FROM `#__virtuemart_products` WHERE `published`=1
-					AND `product_parent_id`= "'.$virtuemart_product_id.'"';
+					$q='SELECT concat(`product_sku`,":",`product_name`) as text FROM `#__virtuemart_products` WHERE `published`=1
+					AND `virtuemart_product_id`= "'.$virtuemart_product_id.'"';
 					$this->_db->setQuery($q);
-					if ($options = $this->_db->loadObjectList() ) return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]','','value' ,'text',$value);
+					if ($productParent = $this->_db->loadResult())
+//					return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" />';
+					return $productParent.' ('.$value.') ';
 					else return JText::_('COM_VIRTUEMART_CUSTOM_NO_CHILD_PRODUCT');
 				break;
 			}

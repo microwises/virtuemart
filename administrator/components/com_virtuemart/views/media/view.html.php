@@ -78,7 +78,6 @@ class VirtuemartViewMedia extends JView {
 			$this->assignRef('lists', $lists);
 
 		}
-
 		parent::display($tpl);
 	}
 

@@ -162,10 +162,14 @@ if (empty ( $this->product )) {
 		?>
 	</div>
 	<?php }
-	 // Product custom Childs
+	 /* Product custom Childs
+	  * to display a simple link use $field->virtuemart_product_id as link to child product_id
+	  * custom_value is relation value to child
+	  */
+
 	if (!empty($this->product->customsChilds)) {  ?>
 		<div class="product-fields">
-			<?php foreach ($this->product->customsChilds as $field) { ?>
+			<?php foreach ($this->product->customsChilds as $field) {  ?>
 				<div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field->field_type ?>">
 				<span class="product-fields-title" ><b><?php echo $field->field->custom_title ?></b></span>
 				<span class="product-field-desc"><?php echo $field->field->custom_value ?></span>
@@ -175,8 +179,7 @@ if (empty ( $this->product )) {
 				<?php
 			} ?>
 		</div>
-	<?php }
-	dump($this->product ,'por'); ?>
+	<?php } ?>
 
 		<div class="addtocart-bar">
 

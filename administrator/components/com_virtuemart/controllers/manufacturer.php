@@ -62,16 +62,16 @@ class VirtuemartControllerManufacturer extends VmController {
 	/**
 	 * Handle the save task
 	 * Checks already in the controller the rights todo so and sets the data by filtering the post
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	function save(){
-				
+
 		/* Load the data */
 		$data = JRequest::get('post');
 		/* add the mf desc as html code */
 		$data['mf_desc'] = JRequest::getVar('mf_desc', '', 'post', 'string', JREQUEST_ALLOWHTML );
-		
+
 		parent::save($data);
 	}
 }

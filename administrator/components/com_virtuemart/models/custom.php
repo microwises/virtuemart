@@ -121,7 +121,7 @@ class VirtueMartModelCustom extends VmModel {
 		else {
 			$data->custom_parent_title =  '-' ;
 		}
-  		$data->field_type_display = $datas->field_types[$data->field_type ];
+  		$data->field_type_display = JText::_( $datas->field_types[$data->field_type ] );
 		}
 		$datas->customsSelect=$customHandler->displayCustomSelection();
 
