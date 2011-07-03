@@ -164,17 +164,17 @@ class Permissions extends JObject{
 
 			//We must prevent that Administrators or Managers are 'just' shoppers
 			//TODO rewrite it working correctly with jooomla ACL
-			if ($this->_perms == "shopper") {
+			//if ($this->_perms == "shopper") {
 				if (stristr($user->usertype,"Administrator")) {
 					$this->_perms  = "admin";
 				}
 				elseif (stristr($user->usertype,"Manager")) {
 					$this->_perms  = "storeadmin";
 				}
-			}
+			//}
 			$this->_is_registered_customer = true;
 		} else {
-			
+
 			$this->_virtuemart_user_id = 0;
 			$this->_perms  = "shopper";
 			$this->_is_registered_customer = false;

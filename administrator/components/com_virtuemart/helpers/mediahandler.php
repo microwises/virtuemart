@@ -164,14 +164,14 @@ class VmMediaHandler {
 	    	$this->file_name = JFile::stripExt($name);
 	    	$this->file_url_folder = substr($this->file_url,0,$lastIndexOfSlash+1);
 	    	$this->file_path_folder = str_replace('/',DS,$this->file_url_folder).'../.....';
-			
+
 			while(strpos($this->file_path_folder,'..')!==false){
 				$this->file_path_folder  = str_replace('..', '', $this->file_path_folder);
 			};
-			
+
 			$this->file_path_folder  = preg_replace('#[/\\\\]+#', DS, $this->file_path_folder);
-			
-			
+
+
 		/*	$this->file_path_folder = JPath::clean( $this->file_path_folder );
 			$this->file_path_folder = $this->file_path_folder.'//../';
 			$this->file_path_folder = JPath::clean( $this->file_path_folder );
@@ -258,6 +258,7 @@ class VmMediaHandler {
 
 	}
 
+
 	/**
 	 * Add complete paths here to test/display if their are writable
 	 *
@@ -287,6 +288,32 @@ class VmMediaHandler {
 		}
 		$result .= '</div>';
 		return $result;
+	}
+
+	/**
+	* Shows the supported file types for the server
+	*
+	* @author enyo 06-Nov-2003 03:32 http://www.php.net/manual/en/function.imagetypes.php
+	* @return multitype:string
+	*/
+	function displaySupportedImageTypes() {
+		$aSupportedTypes = array();
+
+		$aPossibleImageTypeBits = array(
+		IMG_GIF=>'GIF',
+		IMG_JPG=>'JPG',
+		IMG_PNG=>'PNG',
+		IMG_WBMP=>'WBMP'
+		);
+
+		foreach ($aPossibleImageTypeBits as $iImageTypeBits => $sImageTypeString) {
+			if (imagetypes() & $iImageTypeBits) {
+				$aSupportedTypes[] = $sImageTypeString;
+			}
+		}
+
+		$supportedTypes = JText::_('COM_VIRTUEMART_FILES_FORM_IMAGETYPES_SUPPORTED'). implode($aSupportedTypes,', ');
+		return $supportedTypes;
 	}
 
 	/**
@@ -401,11 +428,11 @@ class VmMediaHandler {
 		switch ($media['error']) {
 			case 0:
 				$path_folder = str_replace('/',DS,$urlfolder);
-				
+
 				//Sanitize name of media
 				jimport('joomla.filesystem.file');
 				$media['name'] = JFile::makeSafe( $media['name'] );
-				
+
 				move_uploaded_file( $media['tmp_name'], JPATH_ROOT.DS.$path_folder.$media['name']);
 				$this->file_mimetype = $media['type'];
 	      		$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_UPLOAD_OK',JPATH_ROOT.DS.$path_folder.$media['name']));
@@ -722,26 +749,25 @@ class VmMediaHandler {
 
 		$this->addHiddenByType();
 
-		$html = $this->displayFoldersWriteAble();
 
-		$html .= '<div id="file_title">'.$this->file_title.'</div>';
+		$html = '<div id="file_title">'.$this->file_title.'</div>';
 		$html .= $this->displayMediaFull($imageArgs,false);
 
 		//This makes problems, when there is already a form, and there would be form in a form. breaks js in some browsers
 //		$html .= '<form name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">';
 
 		$html .= ' <table class="adminform"> ';
-		
+
 		if ($this->published || $this->virtuemart_media_id === 0){
-			
+
 			//if($this->_id==0){
 			//	$media->media_published = 1;
 			//}
-			$checked =  "checked=\"checked\""; 
+			$checked =  "checked=\"checked\"";
 		} else {
 			$checked ='';
 		}
-		
+
 		$html .= '<tr>
 	<td class="labelcell">
 		<label for="published">'. JText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>
@@ -782,7 +808,11 @@ $html .= '</tr>';
 
 		$html .= JText::_('COM_VIRTUEMART_FILE_UPLOAD').'<input type="file" name="upload" id="upload" size="50" class="inputbox" /><br />';
 
+		$html .= '<br />'.$this->displaySupportedImageTypes();
+		$html .= $this->displayFoldersWriteAble();
+
 		$html .= $this->displayHidden();
+
 //		$html .= '</form>';
 
 		return $html;

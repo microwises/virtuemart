@@ -483,6 +483,7 @@ class VirtueMartModelProduct extends VmModel {
 		 $product->product_override_price = null;
 		 $product->override = 0;
 		 $product->categories = array();
+
 	 	 if($front){
 	 	 	$product->link = '';
 
@@ -636,15 +637,18 @@ class VirtueMartModelProduct extends VmModel {
     * Check if the product has any children
     *
     * @author RolandD
+    * @author MaxMilbers
     * @param int $virtuemart_product_id Product ID
     * @return bool True if there are child products, false if there are no child products
     */
     public function checkChildProducts($virtuemart_product_id) {
-//     	$this->_db = JFactory::getDBO();
-     	$q  = "SELECT IF(COUNT(virtuemart_product_id) > 0, 'Y', 'N') FROM `#__virtuemart_products` WHERE `product_parent_id` = ".(int)$virtuemart_product_id;
+
+     	$q  = 'SELECT IF(COUNT(virtuemart_product_id) > 0, "0", "1") FROM `#__virtuemart_products` WHERE `product_parent_id` = "'.(int)$virtuemart_product_id.'"';
      	$this->_db->setQuery($q);
-     	if ($this->_db->loadResult() == 'Y') return true;
-     	else if ($this->_db->loadResult() == 'N') return false;
+
+     	return $this->_db->loadResult();
+//    	if ($this->_db->loadResult() == 'Y') return true;
+//     	else if ($this->_db->loadResult() == 'N') return false;
     }
 
 
@@ -883,6 +887,16 @@ class VirtueMartModelProduct extends VmModel {
 
 		$ok = true;
 		foreach($ids as $id) {
+
+			$isChild = $this->checkChildProducts($id);
+
+			if(!empty($isChild)){
+				$app = JFactory::getApplication();
+				$app -> enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_CANT_DELETE_CHILD'));
+				$ok = false;
+				continue;
+			}
+
 		    if (!$table->delete($id)) {
 				$this->setError($table->getError());
 				$ok = false;
@@ -937,11 +951,12 @@ class VirtueMartModelProduct extends VmModel {
 
 		/* Get the product IDs to remove */
 		$cids = array();
-		if (!$old_virtuemart_product_id) {
+// 		if (!$old_virtuemart_product_id) {
 			//$cids = JRequest::getVar('cid');
 			//if (!is_array($cids)) $cids = array($cids);
-		}
-		else $cids[] = $old_virtuemart_product_id;
+// 		}
+// 		else $cids[] = $old_virtuemart_product_id;
+		$cids[] = $old_virtuemart_product_id;
 
 		/* Start removing */
 		foreach ($cids as $key => $virtuemart_product_id) {

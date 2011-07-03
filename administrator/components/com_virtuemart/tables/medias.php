@@ -82,66 +82,94 @@ class TableMedias extends VmTable {
 
       $ok = true;
       $notice = true;
+
+      if(!empty($this->file_url)){
+      	if(strlen($this->file_url)>254){
+      		$this->setError(JText::sprintf('COM_VIRTUEMART_URL_TOO_LONG',strlen($this->file_url) ) );
+      	}
+      	if(strpos($this->file_url,'..')!==false){
+      		$ok = false;
+      		$this->setError(JText::sprintf('COM_VIRTUEMART_URL_NOT_VALID',strlen($this->file_url) ) );
+      	}
+      } else{
+      	$this->setError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_URL'));
+      	$ok = false;
+      }
+
       if(empty($this->file_title) && !empty($this->file_name)) $this->file_title = $this->file_name ;
 
       if(!empty($this->file_title)){
-	 if(strlen($this->file_title)>126){
-	    $this->setError(JText::sprintf('COM_VIRTUEMART_TITLE_TOO_LONG',strlen($this->file_title) ) );
-	 }
+			if(strlen($this->file_title)>126){
+				$this->setError(JText::sprintf('COM_VIRTUEMART_TITLE_TOO_LONG',strlen($this->file_title) ) );
+			}
 
-	 $q = 'SELECT * FROM `'.$this->_tbl.'` ';
-	 $q .= 'WHERE `file_title`="' .  $this->_db->getEscaped($this->file_title) . '" AND `file_type`="' . $this->_db->getEscaped( $this->file_type) . '"';
-	 $this->_db->setQuery($q);
-	 $unique_id = $this->_db->loadAssocList();
+			$q = 'SELECT * FROM `'.$this->_tbl.'` ';
+			$q .= 'WHERE `file_title`="' .  $this->_db->getEscaped($this->file_title) . '" AND `file_type`="' . $this->_db->getEscaped( $this->file_type) . '"';
+			$this->_db->setQuery($q);
+			$unique_id = $this->_db->loadAssocList();
 
-	 $tblKey = 'virtuemart_media_id';
-	 if (!empty($unique_id)){
-	    foreach($unique_id as $id){
-		if($id!=$this->virtuemart_media_id) {
-		  $this->file_title = count($unique_id).$this->file_title;
-	       }
-	    }
-	 }
-
-      } else{
-		     $this->setError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_TITLE'));
-		     $ok = false;
-	     }
-
-	     if(!empty($this->file_description)){
-		     if(strlen($this->file_description)>254){
-			     $this->setError(JText::sprintf('COM_VIRTUEMART_DESCRIPTION_TOO_LONG',strlen($this->file_description) ) );
-		     }
-	     } else{
-//			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_DESCRIPTION'));
-//			$ok = false;
-	     }
-
-	     if(!empty($this->file_mimetype)){
-
-//			if(strlen($this->file_title)>254){
-//				$this->setError('Url to long '.strlen($this->file_title).' for database field, allowed 254');
-//			}
-	     } else{
-		     $rel_path = str_replace('/',DS,$this->file_url);
-//    		return JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
-		     if(function_exists('mime_content_type') ){
-			     $ok = true;
-			     $app = JFactory::getApplication();
-				set_error_handler(array($this, 'handleError'));
-				try{
-				     $this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);
-				     if($this->file_mimetype == 'directory'){
-					     return false;
-				     }
-				} catch (ErrorException $e){
-
-
-					//$ok = false;
-				     $app->enqueueMessage('Couldnt resolve mime type for '.$rel_path);
-				    return false;
+			$tblKey = 'virtuemart_media_id';
+			if (!empty($unique_id)){
+				foreach($unique_id as $id){
+					if($id!=$this->virtuemart_media_id) {
+						$this->file_title = $this->file_title.rand();
+					}
 				}
-				restore_error_handler();
+			}
+      }else{
+				$this->setError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_TITLE'));
+				$ok = false;
+      }
+
+		if(!empty($this->file_description)){
+			if(strlen($this->file_description)>254){
+				$this->setError(JText::sprintf('COM_VIRTUEMART_DESCRIPTION_TOO_LONG',strlen($this->file_description) ) );
+			}
+		} else{
+			//$this->setError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_DESCRIPTION'));
+			//$ok = false;
+		}
+
+//		$app = JFactory::getApplication();
+
+ 	//$this->setError('Checking '.$this->file_url);
+
+
+		if(empty($this->file_mimetype)){
+
+			$rel_path = str_replace('/',DS,$this->file_url);
+//			return JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
+			if(function_exists('mime_content_type') ){
+				$ok = true;
+				$app = JFactory::getApplication();
+//				set_error_handler(array($this, 'handleError'));
+//				try{
+					$this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);dump($this->file_mimetype,'mime '.$this->file_name);
+					if(!empty($this->file_mimetype)){
+						if($this->file_mimetype == 'directory'){
+							$this->setError('cant store this media, is a directory '.$rel_path);
+							return false;
+						} else if(strpos($this->file_mimetype,'corrupt')!==false){
+							$this->setError('cant store this media, Document corrupt: Cannot read summary info '.$rel_path);
+							return false;
+						}
+						//$this->setError('file_mime '.$this->file_mimetype.' for '.$rel_path);
+					} else {
+						$this->setError('Couldnt resolve mime '.$rel_path);
+						return false;
+					}
+// 				     $this->setError('mime'.$this->file_mimetype);
+// 				     if($this->file_mimetype == 'directory'){
+// 				     		$this->setError('Couldnt resolve mime, because it is a '.$rel_path);
+// 					     return false;
+// 				     }
+// 				} catch (ErrorException $e){
+
+// 					$ok = false;
+// 				     $app->enqueueMessage('Couldnt resolve mime type for '.$rel_path);
+// 				    return false;
+// 				}
+//				restore_error_handler();
 			     //$this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);
 		     } else {
 			     if(!class_exists('JFile')) require(JPATH_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
@@ -169,28 +197,11 @@ class TableMedias extends VmTable {
 				     $this->setError(JText::_('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE'));
 				     $notice = true;
 			     }
+			     dump($this->file_mimetype,'mime without mime_content_type');
 		     }
 	     }
 
-	     if(!empty($this->file_url)){
-		     if(strlen($this->file_url)>254){
-			     $this->setError(JText::sprintf('COM_VIRTUEMART_URL_TOO_LONG',strlen($this->file_url) ) );
-		     }
-		     if(strpos($this->file_url,'..')!==false){
-			     $ok = false;
-			     $this->setError(JText::sprintf('COM_VIRTUEMART_URL_NOT_VALID',strlen($this->file_url) ) );
-		     }
-	     } else{
-		     $this->setError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_URL'));
-		     $ok = false;
-	     }
 
-//		$date = JFactory::getDate();
-//		$today = $date->toMySQL();
-//		if(empty($this->created_on)){
-//			$this->created_on = $today;
-//		}
-//     	$this->modified_on = $today;
 	     if($ok){
 		     return parent::check();
 	     } else {

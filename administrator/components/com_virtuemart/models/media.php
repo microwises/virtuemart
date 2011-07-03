@@ -300,7 +300,7 @@ class VirtueMartModelMedia extends VmModel {
 		$table->bindChecknStore($data);
 		$errors = $table->getErrors();
 		foreach($errors as $error){
-			$this->setError('store medias'.$error);
+			$this->setError('store medias '.$error);
 		}
 
 		return $table->virtuemart_media_id;
