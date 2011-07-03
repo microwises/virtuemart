@@ -15,10 +15,10 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');  
-?> 
+defined('_JEXEC') or die('Restricted access');
+?>
 <br />
 <fieldset class="adminform">
     <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DOWNLOAD_SETTINGS') ?></legend>
@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 		</td>
 	    <td>
-		<?php echo JHTML::_('Select.genericlist', $this->orderStatusList, 'enable_download_status', 'size=1', 'order_status_code', 'order_status_name', $this->config->get('enable_download_status')); ?>
+		<?php echo JHTML::_('Select.genericlist', $this->orderStatusList, 'enable_download_status', 'size=1', 'order_status_code', 'order_status_name', $this->config->get('enable_download_status'),false,true); ?>
 	    </td>
 	</tr>
         <tr>
@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<?php echo JHTML::_('Select.genericlist', $this->orderStatusList, 'disable_download_status', 'size=1', 'order_status_code', 'order_status_name', $this->config->get('disable_download_status')); ?>
+		<?php echo JHTML::_('Select.genericlist', $this->orderStatusList, 'disable_download_status', 'size=1', 'order_status_code', 'order_status_name', $this->config->get('disable_download_status'),false,true); ?>
 	    </td>
 	</tr>
 	<tr>

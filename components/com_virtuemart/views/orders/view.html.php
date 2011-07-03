@@ -92,7 +92,7 @@ class VirtuemartViewOrders extends JView {
 		$_orderstatuses = $orderStatusModel->getOrderStatusList();
 		$orderstatuses = array();
 		foreach ($_orderstatuses as $_ordstat) {
-			$orderstatuses[$_ordstat->order_status_code] = $_ordstat->order_status_name;
+			$orderstatuses[$_ordstat->order_status_code] = JText::_($_ordstat->order_status_name);
 		}
 		$this->assignRef('orderstatuses', $orderstatuses);
 

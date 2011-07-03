@@ -96,13 +96,13 @@ class VirtuemartViewOrders extends JView {
 			foreach ($orderStates as $orderState) {
 				//$_orderStatusList[$orderState->virtuemart_orderstate_id] = $orderState->order_status_name;
 				//When I use update, I have to use this?
-				$_orderStatusList[$orderState->order_status_code] = $orderState->order_status_name;
+				$_orderStatusList[$orderState->order_status_code] = JText::_($orderState->order_status_name);
 			}
 			//dump($_orderStatusList,'my order status list');
 			$_itemStatusUpdateFields = array();
 			$_itemAttributesUpdateFields = array();
 			foreach($order['items'] as $_item) {
-				$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $orderStates, 'order_status_'.$_item->virtuemart_order_item_id, '', 'order_status_code', 'order_status_name', $_item->order_status, 'order_item_status');
+				$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $orderStates, 'order_status_'.$_item->virtuemart_order_item_id, '', 'order_status_code', 'order_status_name', $_item->order_status, 'order_item_status',true);
 				if (!empty($_item->product_attribute)) {
 					$_attribs = preg_split('/\s?<br\s*\/?>\s?/i', $_item->product_attribute);
 
@@ -151,7 +151,7 @@ class VirtuemartViewOrders extends JView {
 
 			/* Data for the Edit Status form popup */
 			$_currentOrderStat = $order['details']['BT']->order_status;
-			$_orderStatusSelect = JHTML::_('select.genericlist', $orderStates, 'order_status['.$_orderID.']', '', 'order_status_code', 'order_status_name', $_currentOrderStat, 'order_status');
+			$_orderStatusSelect = JHTML::_('select.genericlist', $orderStates, 'order_status['.$_orderID.']', '', 'order_status_code', 'order_status_name', $_currentOrderStat, 'order_status',true);
 			$this->assignRef('orderStatSelect', $_orderStatusSelect);
 			$this->assignRef('currentOrderStat', $_currentOrderStat);
 

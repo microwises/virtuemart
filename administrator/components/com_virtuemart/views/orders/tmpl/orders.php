@@ -92,7 +92,7 @@ $option = JRequest::getWord('option');
 		<!-- Status -->
 		<td>
 			    <?php
-			    echo JHTML::_('select.genericlist', $this->orderstatuses, 'order_status['.$order->virtuemart_order_id.']', '', 'order_status_code', 'order_status_name', $order->order_status, 'order_status'.$i);
+			    echo JHTML::_('select.genericlist', $this->orderstatuses, 'order_status['.$order->virtuemart_order_id.']', '', 'order_status_code', 'order_status_name', $order->order_status, 'order_status'.$i,true);
 			    echo '<input type="hidden" name="current_order_status['.$order->virtuemart_order_id.']" value="'.$order->order_status.'" />';
 			    echo '<br />';
 			    echo JHTML::_('link', '#', JText::_('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_element[order_comment_'.$order->virtuemart_order_id.']'));

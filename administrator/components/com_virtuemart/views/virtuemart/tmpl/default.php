@@ -4,7 +4,7 @@
 * Description
 *
 * @package	VirtueMart
-* @subpackage 
+* @subpackage
 * @author
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -15,18 +15,18 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
 
-AdminMenuHelper::startAdminArea(); 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
+
+AdminMenuHelper::startAdminArea();
 
 JToolBarHelper::title(JText::_('COM_VIRTUEMART')." ".JText::_('COM_VIRTUEMART_CONTROL_PANEL'), 'vm_store_48');
 
 // Include ALU System
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 
-$pane = JPane::getInstance('tabs', array('startOffset'=>0)); 
+$pane = JPane::getInstance('tabs', array('startOffset'=>0));
 echo $pane->startPane( 'pane' );
 echo $pane->startPanel(JText::_('COM_VIRTUEMART_CONTROL_PANEL'), 'control_panel');
 ?>
@@ -51,15 +51,15 @@ echo $pane->startPanel(JText::_('COM_VIRTUEMART_STATISTIC_STATISTICS'), 'statist
 		<tr>
 			<th colspan="2" class="title"><?php echo JText::_('COM_VIRTUEMART_STATISTIC_STATISTICS') ?></th>
 		</tr>
-		<tr> 
+		<tr>
 		  	<td width="50%">
 		  		<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=user');?>">
 					<?php echo JText::_('COM_VIRTUEMART_STATISTIC_CUSTOMERS') ?>
 				</a>
-			</td>			
+			</td>
 		  	<td width="50%"> <?php echo $this->nbrCustomers ?></td>
 		</tr>
-		<tr> 
+		<tr>
 		  	<td width="50%">
 		  		<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=product');?>">
 					<?php echo JText::_('COM_VIRTUEMART_STATISTIC_ACTIVE_PRODUCTS') ?>
@@ -67,11 +67,11 @@ echo $pane->startPanel(JText::_('COM_VIRTUEMART_STATISTIC_STATISTICS'), 'statist
 			</td>
 		  <td width="50%"> <?php echo $this->nbrActiveProducts ?> </td>
 		</tr>
-		<tr> 
+		<tr>
 		  <td width="50%"><?php echo JText::_('COM_VIRTUEMART_STATISTIC_INACTIVE_PRODUCTS') ?>:</td>
 		  <td width="50%"> <?php  echo $this->nbrInActiveProducts ?></td>
 		</tr>
-		<tr> 
+		<tr>
 			<td width="50%">
 		  		<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&page=product.specialprod&filter=featured');?>">
 					<?php echo JText::_('COM_VIRTUEMART_SHOW_FEATURED') ?>
@@ -86,35 +86,35 @@ echo $pane->startPanel(JText::_('COM_VIRTUEMART_STATISTIC_STATISTICS'), 'statist
 				</a>
 			</th>
 		</tr>
-		<?php 
+		<?php
 		$sum = 0;
 		for ($i=0, $n=count( $this->ordersByStatus ); $i < $n; $i++) {
-			$row = $this->ordersByStatus[$i]; 
+			$row = $this->ordersByStatus[$i];
 			$link = JROUTE::_('index.php?option=com_virtuemart&view=orders&show='.$row->order_status_code);
 			?>
 			<tr>
 		  		<td width="50%">
-		  			<a href="<?php echo $link; ?>"><?php echo $row->order_status_name; ?></a>
+		  			<a href="<?php echo $link; ?>"><?php echo JText::_($row->order_status_name); ?></a>
 				</td>
 		  		<td width="50%">
 		  			<?php echo $row->order_count; ?>
 		  		</td>
 			</tr>
-		<?php 
+		<?php
 			$sum = $sum + $row->order_count;
 		} ?>
-		<tr> 
+		<tr>
 		  <td width="50%"><strong><?php echo JText::_('COM_VIRTUEMART_STATISTIC_SUM') ?>:</strong></td>
 		  <td width="50%"><strong><?php echo $sum ?></strong></td>
 		</tr>
 		<tr>
 			<th colspan="2" class="title"><?php echo JText::_('COM_VIRTUEMART_STATISTIC_NEW_ORDERS') ?></th>
 		</tr>
-		<?php 
+		<?php
 		for ($i=0, $n=count($this->recentOrders); $i < $n; $i++) {
 			$row = $this->recentOrders[$i];
 			$link = JROUTE::_('index.php?option=com_virtuemart&page=order.order_print&virtuemart_order_id='.$row->virtuemart_order_id);
-			?> 
+			?>
 		  	<tr>
 				<td width="50%">
 					<a href="<?php echo $link; ?>"><?php echo $row->virtuemart_order_id; ?></a>
@@ -123,12 +123,12 @@ echo $pane->startPanel(JText::_('COM_VIRTUEMART_STATISTIC_STATISTICS'), 'statist
 					(<?php echo 'Here was some strange total and vendor currency' ?>)
 				</td>
 			</tr>
-			<?php 
+			<?php
 		} ?>
-		<tr> 
+		<tr>
 		  <th colspan="2" class="title"><?php echo JText::_('COM_VIRTUEMART_STATISTIC_NEW_CUSTOMERS') ?></th>
 		</tr>
-		<?php 
+		<?php
 		for ($i=0, $n=count($this->recentCustomers); $i < $n; $i++) {
 			$row = $this->recentCustomers[$i];
 			$link = JROUTE::_('index.php?option=com_virtuemart&view=user&virtuemart_user_id='.$row->virtuemart_user_id);
@@ -140,8 +140,8 @@ echo $pane->startPanel(JText::_('COM_VIRTUEMART_STATISTIC_STATISTICS'), 'statist
 		  			</a>
 		  		</td>
 			</tr>
-		<?php 
-		}?>	
+		<?php
+		}?>
 	</table>
 <?php
 echo $pane->endPanel();

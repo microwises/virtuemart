@@ -28,7 +28,7 @@ class JElementVmOrderState extends JElement {
         $db =   JFactory::getDBO();
 
         $query = 'SELECT `order_status_code` AS value, `order_status_name` AS text
-        			FROM `#__virtuemart_orderstates` 
+        			FROM `#__virtuemart_orderstates`
         			WHERE `virtuemart_vendor_id` = "1" ORDER BY `ordering` ASC '
         ;
 
@@ -37,7 +37,7 @@ class JElementVmOrderState extends JElement {
         $class = '';
 
 
-        return JHTML::_('select.genericlist', $fields, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
+        return JHTML::_('select.genericlist', $fields, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name,true);
     }
 
 }

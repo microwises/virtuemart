@@ -40,7 +40,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 			</tr>
 			<tr>
 				<td><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?>:</strong></td>
-				<td><?php echo $this->orderbt->order_status_name; ?></td>
+				<td><?php echo JText::_($this->orderbt->order_status_name); ?></td>
 			</tr>
 			<?php if (VmConfig::get('enable_coupons') == '1') { ?>
 			<tr>
