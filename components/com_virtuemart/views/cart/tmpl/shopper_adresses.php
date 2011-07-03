@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 	</legend>
 <?php 	foreach($this->BTaddress as $item){
 			if(!empty($item['value'])){
-				echo $item['title'].': '.$item['value'].'<br/>';
+				echo $item['title'].': '.$this->escaped($item['value']).'<br/>';
 			}
 		} ?>
 
@@ -42,7 +42,7 @@ if(!empty($this->STaddress)){ ?>
 		</legend>
 	<?php 	foreach($this->STaddress as $item){
 				if(!empty($item['value'])){
-					echo $item['title'].': '.$item['value'].'<br/>';
+					echo $item['title'].': '.$this->escaped($item['value']).'<br/>';
 				}
 			} ?>
 	</fieldset>
