@@ -112,7 +112,7 @@ class TableMedias extends VmTable {
 			if (!empty($unique_id)){
 				foreach($unique_id as $id){
 					if($id!=$this->virtuemart_media_id) {
-						$this->file_title = $this->file_title.rand();
+						$this->file_title = $this->file_title.rand(3);
 					}
 				}
 			}
