@@ -69,6 +69,16 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo VmHTML::checkbox('price_show_packaging_pricelabel', $this->config->get('price_show_packaging_pricelabel')); ?>
 			</td>
 		    </tr>
+		    <tr>
+			<td class="key">
+			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_TAX_TIP'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_TAX'); ?>
+			    </span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('price_show_packaging_pricelabel', $this->config->get('show_tax')); ?>
+			</td>
+		    </tr>
 		</table>
 	    </fieldset>
 

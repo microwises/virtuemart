@@ -124,8 +124,6 @@ defined('_JEXEC') or die('Restricted access');
 				$row++;
 				}
 
-
-
 			}
 
 			$product_rows[$i]['product_sku'] = $product->product_sku;
@@ -182,20 +180,17 @@ defined('_JEXEC') or die('Restricted access');
 				<td align="left" ><?php echo $prow['product_name'].$prow['customfieldsCart']; ?></td>
 				<td align="left" ><?php echo $prow['product_sku'] ?></td>
 				<td align="center" >
-
-                                <?php if ($prow['basePriceWithTax'] != $prow['salesPrice'] ) {
-                                        echo '<span style="text-decoration:line-through">'.$prow['basePriceWithTax'] .'</span><br />' ;
-                                }
-                                echo $prow['salesPrice'] ;
-
-
-                                    ?>
-                                </td>
+					<?php if ($prow['basePriceWithTax'] != $prow['salesPrice'] ) {
+						echo '<span style="text-decoration:line-through">'.$prow['basePriceWithTax'] .'</span><br />' ;
+					}
+					echo $prow['salesPrice'] ;
+					?>
+				</td>
 				<td align="right" ><?php echo $prow['update_form'] ?>
 					<?php echo $prow['delete_form'] ?>
 				</td>
 
-                                <?php if ( VmConfig::get('show_tax')) { ?>
+				<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"><?php echo "<span  style='color:gray'>".$prow['subtotal_tax_amount']."</span>" ?></td>
                                 <?php } ?>
 				<td align="right"><?php echo "<span  style='color:gray'>".$prow['subtotal_discount']."</span>" ?></td>
