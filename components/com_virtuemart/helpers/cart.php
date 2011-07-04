@@ -21,7 +21,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the model framework
-//jimport( 'joomla.application.component.model');
+//jimport( 'joomla.application.component.view');
 
 /**
  * Model class for the cart
@@ -754,9 +754,11 @@ class VirtueMartCart {
             if ($obj !== null && is_array($this->{$type})) {
                 $this->{$type}[$field->name] = $obj->{$field->name};
             }
-            if (empty($this->{$type}[$field->name]) && $field->name != 'virtuemart_state_id') {
-                $redirectMsg = 'Enter for "' . $type . '" "' . $field->name . '" title: ' . JText::_($field->title) . ' and value: ' . $this->{$type}[$field->name] . ' but ' . $this->BT['first_name'];
-            } else {
+/*            if (empty($this->{$type}[$field->name]) && $field->name != 'virtuemart_state_id') {
+            	$app = JFactory::getApplication();
+            	$app->enqueueMessage('NOTICE: Enter for "' . $type . '" "' . $field->name . '" title: ' . JText::_($field->title) . ' and value: ' . $this->{$type}[$field->name] . ' but ' . $this->BT['first_name']);
+               //$redirectMsg = 'Enter for "' . $type . '" "' . $field->name . '" title: ' . JText::_($field->title) . ' and value: ' . $this->{$type}[$field->name] . ' but ' . $this->BT['first_name'];
+            } else {*/
                 //This is a special test for the virtuemart_state_id. There is the speciality that the virtuemart_state_id could be 0 but is valid.
                 if ($field->name == 'virtuemart_state_id') {
 
@@ -767,7 +769,7 @@ class VirtueMartCart {
                     }
                 }
                 //We may add here further Tests. Like if the email has the form a@b.xxx and so on
-            }
+//             }
         }
         return $redirectMsg;
     }
@@ -810,10 +812,11 @@ class VirtueMartCart {
             // TODO valerie TO DO  -- not finished
             $cart = $this->getCart();
             $dispatcher = JDispatcher::getInstance();
-            $returnValues = $dispatcher->trigger('plgVmAfterCheckoutDoPayment', array($orderID, 'cart' => $cart));
+//             $returnValues = $dispatcher->trigger('plgVmAfterCheckoutDoPayment', array($orderID, 'cart' => $cart));
+            $returnValues = $dispatcher->trigger('plgVmAfterCheckoutDoPayment', array($orderID, $cart));
             /*
              *  may be redirect is done by the payment plugin (eg: paypal) so we do not come back here
-             *  if payment plugin echos a form, false = nothing happen, true= echo form , 
+             *  if payment plugin echos a form, false = nothing happen, true= echo form ,
              */
 /*
                  $fp = fopen("paypal.text", "a");
@@ -822,7 +825,7 @@ class VirtueMartCart {
       }
           fclose($fp);
  * */
- 
+
             $activeplugin = false;
             foreach ($returnValues as $returnValue) {
                 if ($returnValue) {
@@ -836,10 +839,10 @@ class VirtueMartCart {
             if (!$activeplugin)   {
                 $mainframe = JFactory::getApplication();
                 $mainframe->redirect('index.php?option=com_virtuemart&view=cart&layout=order_done',JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));
-          }
+				}
         } else {
             $mainframe = JFactory::getApplication();
-	    $mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
+            $mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 
         }
 
@@ -1007,7 +1010,7 @@ class VirtueMartCart {
     }
 
     function CheckAutomaticSelectedShipping() {
- 
+
         $nbShipping = 0;
         if (!class_exists('vmShipperPlugin'))
             require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
@@ -1027,7 +1030,7 @@ class VirtueMartCart {
             return false;
         }
 
-        
+
     }
 
     function CheckShippingIsValid() {

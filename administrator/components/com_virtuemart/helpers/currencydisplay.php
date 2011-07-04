@@ -163,15 +163,15 @@ class CurrencyDisplay {
 
 		if(!empty($user->id)){
 
-			$q = 'SELECT `price_display` FROM `#__virtuemart_vmusers` as `u`
+			$q = 'SELECT `price_display`,`custom_price_display` FROM `#__virtuemart_vmusers` as `u`
 							LEFT OUTER JOIN `#__virtuemart_vmuser_shoppergroups` AS `vx` ON `u`.`virtuemart_user_id`  = `vx`.`virtuemart_user_id`
 							LEFT OUTER JOIN `#__virtuemart_shoppergroups` AS `sg` ON `vx`.`virtuemart_shoppergroup_id` = `sg`.`virtuemart_shoppergroup_id`
 							WHERE `u`.`virtuemart_user_id` = "'.$user->id.'" ';
 
 			$this->_db->setQuery($q);
-			$result = $this->_db->loadResult();
-			if($result){
-				$result = unserialize($result);
+			$result = $this->_db->loadRow();
+			if($result[0]){
+				$result[0] = unserialize($result[0]);
 			}
 			dump($result,'$result');
 			dump( $this->_db,'$ $this->_db');
@@ -187,12 +187,12 @@ class CurrencyDisplay {
 			$round = 0;
 			$text = 0;
 			//Here we check special settings of the shoppergroup
-			if(!empty($user->id) && $result){
+			if(!empty($user->id) && $result && $result[1] === '1'){
 				//$result = unserialize($result);
 				//Todo define what should happen with more than one shoppergroup, now assuming the first is the right
-				$show = (int)$result->get($name);
-				$round = (int)$result->get($name.'Rounding');
-				$text = $result->get($name.'Text');
+				$show = (int)$result[0]->get($name);
+				$round = (int)$result[0]->get($name.'Rounding');
+				$text = $result[0]->get($name.'Text');
 			} else {
 				if(VmConfig::get($name) =='1'){
 					$show = 1;

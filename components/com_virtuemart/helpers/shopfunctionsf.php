@@ -21,29 +21,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-class priceDisplayer{
-
-	private function __construct() {
-
-	}
-
-	public function getInstance(){
-
-	}
-
-	function setPricesToShowIntoSession(){
-
-	}
-
-	function shouldSeePrice(){
-
-	}
-
-	function createPriceDiv(){
-
-	}
-
-}
 
 class shopFunctionsF {
 

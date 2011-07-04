@@ -150,7 +150,7 @@ class VirtuemartViewUser extends JView {
 
 		$type = JRequest::getWord('addrtype', 'BT');
 		$this->assignRef('address_type', $type);
-		
+
 		$userFields = $this->_userFieldsModel->getUserFieldsFor($layoutName,$type,$this->userDetails->JUser->id);
 
 		 //for register
@@ -181,7 +181,8 @@ class VirtuemartViewUser extends JView {
 			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 			$cart = VirtueMartCart::getCart(false);
 			$userAddressData = $cart->getCartAdressData($type);
-
+			if(empty($userInfoID))$userInfoID = 0;
+			$this->assignRef('userInfoID', $userInfoID);
 		}
 
 		$userFields = $this->_userFieldsModel->getUserFieldsByUser(
@@ -331,7 +332,7 @@ class VirtuemartViewUser extends JView {
 
 		// Shopper info
 		if (!class_exists('VirtueMartModelShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shoppergroup.php');
-		
+
 		$_shoppergroup = VirtueMartModelShopperGroup::getShoppergroupById ($this->_model->getId());
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');

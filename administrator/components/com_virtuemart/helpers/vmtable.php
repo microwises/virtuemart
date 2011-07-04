@@ -143,12 +143,12 @@ class VmTable extends JTable{
 	}
     }
 
-    public function store($data){
+	public function store(){
 
-	$this->setLoggableFieldsForStore();
+		$this->setLoggableFieldsForStore();
 
-	return parent::store($data);
-    }
+		return parent::store();
+	}
 
     /**
      * @author Max Milbers
@@ -248,7 +248,7 @@ class VmTable extends JTable{
 	}
 
 	if($ok){
-	    if(!$this->store($data)){
+	    if(!$this->store()){
 		$ok = false;
 		$msg .= ' store';
 	    }

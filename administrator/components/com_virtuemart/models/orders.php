@@ -490,14 +490,17 @@ class VirtueMartModelOrders extends VmModel {
 		);
 		foreach ($_userFieldsBT as $_fld) {
 			$_name = $_fld->name;
-			if ($_name == 'virtuemart_country_id') {
-				$_userInfoData->country = $_cart->BT['virtuemart_country_id'];
-//				$_userInfoData->country = shopFunctions::getCountryByID($_cart->BT['virtuemart_country_id']);
-			} elseif ($_name == 'virtuemart_state_id') {
-				$_userInfoData->state = $_cart->BT['virtuemart_state_id'];
-//				$_userInfoData->state = shopFunctions::getStateByID($_cart->BT['virtuemart_state_id']);
-			} else {
-				$_userInfoData->$_name = $_cart->BT[$_name];
+			if(!empty( $_cart->BT[$_name])){
+				if ($_name == 'virtuemart_country_id') {
+					$_userInfoData->country = $_cart->BT['virtuemart_country_id'];
+	//				$_userInfoData->country = shopFunctions::getCountryByID($_cart->BT['virtuemart_country_id']);
+				} elseif ($_name == 'virtuemart_state_id') {
+					$_userInfoData->state = $_cart->BT['virtuemart_state_id'];
+	//				$_userInfoData->state = shopFunctions::getStateByID($_cart->BT['virtuemart_state_id']);
+				} else {
+
+					$_userInfoData->$_name = $_cart->BT[$_name];
+				}
 			}
 		}
 		$_userInfoData->virtuemart_order_id = $_id;

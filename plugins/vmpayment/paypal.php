@@ -128,7 +128,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         return false;
     }
 
-    function plgVmAfterCheckoutDoPayment($virtuemart_order_id, $orderData, $priceData) {
+    function plgVmAfterCheckoutDoPayment($virtuemart_order_id, $orderData) {
 
         if (!$this->selectedThisPayment($this->_pelement, $orderData->virtuemart_paymentmethod_id)) {
             return null; // Another method was selected, do nothing
@@ -167,8 +167,8 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             "order_id" => $orderNumber,
             "invoice" => $orderNumber,
             'custom' => $custom,
-            "amount" => $priceData['billTotal'],
-            "shipping" => $priceData['order_shipping'],
+            "amount" => $orderData->prices['billTotal'],
+            "shipping" =>  $orderData->prices['order_shipping'],
             "currency_code" => $vendorCurrency->currency_code_3,
             "address_override" => "1",
             "first_name" => $usrBT['first_name'],

@@ -18,7 +18,12 @@
 */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die('Restricted acces
+s');
+
+// jimport( 'joomla.application.component.view');
+// $viewEscape = new JView();
+// $viewEscape->setEscape('htmlspecialchars');
 ?>
 
 <?php // Continue and Checkout Button END ?>
@@ -37,9 +42,9 @@ defined('_JEXEC') or die('Restricted access');
 				<!-- span class="titles"><?php echo $item['title'] ?></span -->
 				<?php
 				if ($item['name'] == 'first_name' || $item['name'] == 'middle_name' || $item['name'] == 'zip') { ?>
-					<span class="values<?php echo '-'.$item['name'] ?>" ><?php echo $this->escaped($item['value']) ?></span>
+					<span class="values<?php echo '-'.$item['name'] ?>" ><?php echo $this->escape($item['value']) ?></span>
 				<?php } else { ?>
-					<span class="values" ><?php echo $this->escaped($item['value']) ?></span>
+					<span class="values" ><?php echo $this->escape($item['value']) ?></span>
 					<br class="clear" />
 				<?php
 				}
@@ -68,9 +73,9 @@ defined('_JEXEC') or die('Restricted access');
 				<!-- <span class="titles"><?php echo $item['title'] ?></span> -->
 				<?php
 				if ($item['name'] == 'first_name' || $item['name'] == 'middle_name' || $item['name'] == 'zip') { ?>
-					<span class="values<?php echo '-'.$item['name'] ?>" ><?php echo $this->escaped($item['value']) ?></span>
+					<span class="values<?php echo '-'.$item['name'] ?>" ><?php echo $this->escape($item['value']) ?></span>
 				<?php } else { ?>
-					<span class="values" ><?php echo $this->escaped($item['value']) ?></span>
+					<span class="values" ><?php echo $this->escape($item['value']) ?></span>
 					<br class="clear" />
 				<?php
 				}
