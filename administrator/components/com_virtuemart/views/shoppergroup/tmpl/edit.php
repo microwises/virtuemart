@@ -93,7 +93,7 @@ AdminMenuHelper::startAdminArea();
 	<fieldset class="adminform">
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES') ?></legend><?php
 		echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_ENABLE_PRICE_DISPLAY');
-		echo VmHTML::checkbox('custom_price_display', $this->shoppergroup->enable_specific_price_display)?>
+		echo VmHTML::checkbox('custom_price_display', $this->shoppergroup->custom_price_display)?>
 		<table class="admintable">
 			<tr>
 				<th></th>
