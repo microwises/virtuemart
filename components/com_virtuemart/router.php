@@ -136,8 +136,11 @@ function virtuemartBuildRoute(&$query) {
 			}
 		break;
 		case 'user';
-			if ( isset($jmenu['virtuemart_user']) ) $query[' '] = $jmenu['virtuemart_user'];
-			else $segments[] = $lang['user'] ;
+			if ( isset($jmenu['virtuemart_user']) ) $query['Itemid'] = $jmenu['virtuemart_user'];
+			else {
+				$segments[] = $lang['user'] ;
+				$query['Itemid'] = $jmenu['virtuemart'][0] ;
+			}
 			if (isset($query['task'])) {
 				if ($query['addrtype'] == 'BT' && $query['task']='editaddresscart') $segments[] = $lang['editaddresscartBT'] ;
 				elseif ($query['addrtype'] == 'ST' && $query['task']='editaddresscart') $segments[] = $lang['editaddresscartST'] ;
@@ -147,12 +150,11 @@ function virtuemartBuildRoute(&$query) {
 		break;
 		case 'cart';
 			if ( isset($jmenu['virtuemart_cart']) ) $query['Itemid'] = $jmenu['virtuemart_cart'];
-			else $segments[] = $lang['cart'] ;
-			if (isset($query['task'])) {
-				if ($query['task'] == 'edit_shipping') $segments[] = $lang['editshipping'] ;
-				elseif ($query['task'] == 'edit_payment') $segments[] = $lang['editpayment'];
-				unset($query['task']);
+			else {
+				$segments[] = $lang['cart'] ;
+				$query['Itemid'] = $jmenu['virtuemart'][0] ;
 			}
+
 		break;
 
 		// sef only view
@@ -161,12 +163,11 @@ function virtuemartBuildRoute(&$query) {
 
 
 	}
-	// sef the task
 	if (isset($query['task'])) {
-		if ($query['task'] == 'askquestion') $segments[] = $lang['askquestion'];
-		else $segments[] = $query['task'] ;
+		$segments[] = $lang[$query['task']] ;
 		unset($query['task']);
-	}	// sef the slimbox View
+	}
+	// sef the slimbox View
 	if (isset($query['tmpl'])) {
 		if ( $query['tmpl'] = 'component') $segments[] = 'detail' ;
 		unset($query['tmpl']);
@@ -259,6 +260,10 @@ function virtuemartParseRoute($segments) {
 		$vars['task'] = 'askquestion';
 		array_pop($segments);
 		$count--;
+	} elseif (end($segments) == $lang['recommend']) {
+		$vars['task'] = 'recommend';
+		array_pop($segments);
+		$count--;
 	}
 	if (isset($segments[0]) && $segments[0] == $lang['user'] || $helper->activeMenu->view == 'user') {
 		$vars['view'] = 'user';
@@ -348,7 +353,7 @@ function virtuemartParseRoute($segments) {
 		$vars['view'] = 'category';
 		return $vars;
 	}
-// find corresponding view if not whe are in category view
+// find corresponding category  if not segment 0 must be a view
 
 	if ($id = $helper->getCategoryId (end($segments) ,null )) {
 		$vars['virtuemart_category_id'] = $id;
@@ -589,11 +594,11 @@ class vmrouterHelper {
 			$base_dir = JPATH_SITE;
 			$lang->load($extension, $base_dir);
 			$this->lang = array(
-				'editshipping'		=> $lang->_('COM_VIRTUEMART_SEF_EDITSHIPPING'),
+				'edit_shipping'		=> $lang->_('COM_VIRTUEMART_SEF_EDITSHIPPING'),
 				'manufacturer'		=> $lang->_('COM_VIRTUEMART_SEF_MANUFACTURER'),
 				'manufacturers'		=> $lang->_('COM_VIRTUEMART_SEF_MANUFACTURERS'),
 				'askquestion'		=> $lang->_('COM_VIRTUEMART_SEF_ASKQUESTION'),
-				'edit_payment'		=> $lang->_('COM_VIRTUEMART_SEF_EDITPAYMENT'),
+				'editpayment '		=> $lang->_('COM_VIRTUEMART_SEF_EDITPAYMENT'),
 				'user'				=> $lang->_('COM_VIRTUEMART_SEF_USER'),
 				'cart'				=> $lang->_('COM_VIRTUEMART_SEF_CART'),
 				'editaddresscartBT'	=> $lang->_('COM_VIRTUEMART_SEF_EDITADRESSCART_BILL'),
@@ -633,18 +638,19 @@ class vmrouterHelper {
 				'metadesc'			=> $lang->_('COM_VIRTUEMART_SEF_BY_METADESC'),
 				'metakey'			=> $lang->_('COM_VIRTUEMART_SEF_BY_METAKEY'),
 				'metarobot'			=> $lang->_('COM_VIRTUEMART_SEF_BY_METAROBOT'),
-				'metaauthor'		=> $lang->_('COM_VIRTUEMART_SEF_BY_METAAUTHOR')
+				'metaauthor'		=> $lang->_('COM_VIRTUEMART_SEF_BY_METAAUTHOR'),
+				'recommend'			=> $lang->_('COM_VIRTUEMART_SEF_RECOMMEND')
 			);
 
 
 		} else {
 			/* use default */
 			$this->lang = array(
-				'editshipping' => 'edit_shipping',
+				'edit_shipping' => 'edit_shipping',
 				'manufacturers' => 'manufacturers',
 				'manufacturer' => 'manufacturer',
 				'askquestion' => 'askquestion',
-				'edit_payment' => 'edit_payment',
+				'editpayment' => 'edit_payment',
 				'user' => 'user',
 				'cart' => 'cart',
 				'editaddresscartBT' => 'edit_cart_bill_to',
@@ -684,7 +690,8 @@ class vmrouterHelper {
 				'metadesc' => 'metadesc',
 				'metakey' => 'metakey',
 				'metarobot' => 'metarobot',
-				'metaauthor' => 'metaauthor'
+				'metaauthor' => 'metaauthor',
+				'recommend' => 'recommend'
 			);
 		}
 	}
@@ -714,6 +721,7 @@ class vmrouterHelper {
 		if ( !isset( $this->menu['virtuemart_manufacturer']) ) {
 			$this->menu['virtuemart_manufacturer'] = $this->menu['virtuemart'][0] ;
 		}
+		dump ($this->menu,'menu');
 
 	}
 	/* Set $this->activeMenu to current Item ID from Joomla Menus */
