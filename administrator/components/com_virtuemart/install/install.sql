@@ -1017,6 +1017,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shoppergroups` (
   `virtuemart_vendor_id` int(11) DEFAULT NULL,
   `shopper_group_name` varchar(32) DEFAULT NULL,
   `shopper_group_desc` text,
+  `custom_price_display` tinyint(1) NOT NULL DEFAULT '0',
+  `price_display` blob,
   `default` tinyint(1) NOT NULL DEFAULT '0',
   `ordering` int(2) NOT NULL DEFAULT '0',
   `shared` tinyint(1) NOT NULL,

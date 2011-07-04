@@ -55,10 +55,15 @@ class VirtueMartModelShopperGroup extends VmModel {
 	    if (empty($_data)) {
 	      $this->_data = $this->getTable('shoppergroups');
 	      $this->_data->load((int) $this->_id);
-	    }
-
-	    return $this->_data;
-    }
+	      if(!empty($this->_data->price_display)){
+	      	$this->_data->price_display = unserialize($this->_data->price_display);
+	      } else{
+	      	$this->_data->price_display = new JParameter('');
+	      }
+	   }
+		dump($this->_data->price_display,'in load');
+		return $this->_data;
+	}
 
 
     /**
@@ -87,7 +92,25 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 	    return $this->_data;
     }
-	
+
+   function store($data){
+
+   	$myfields = array('basePrice','variantModification','basePriceVariant',
+   										'basePriceWithTax','basePriceWithTax','discountedPriceWithoutTax',
+   										'salesPriceWithDiscount','salesPrice','priceWithoutTax',
+   										'discountAmount','taxAmount');
+   	$param ='';
+   	foreach($myfields as $fields){
+   		$param .= $fields.'='.$data[$fields]."\n";		//attention there must be doublequotes
+   		$param .= $fields.'Text='.$data[$fields.'Text']."\n";
+   		$param .= $fields.'Rounding='.$data[$fields.'Rounding']."\n";
+   	}
+		$jparam = new JParameter($param); dump($jparam,'$jparam');
+   	$data['price_display'] = serialize(new JParameter($param));
+
+   	return parent::store($data);
+   }
+
 	function makeDefault($id) {
 		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = 0');
 		if (!$this->_db->query()) return ;
@@ -95,54 +118,54 @@ class VirtueMartModelShopperGroup extends VmModel {
 		if (!$this->_db->query()) return ;
 		return true;
 	}
-	
+
 	function getDefault(){
 		$this->_db->setQuery('SELECT * FROM `#__virtuemart_shoppergroups`  WHERE `default` = "1"');
-		
+
 		if(!$res = $this->_db->loadObject()){
 			$app = JFactory::getApplication();
 			$app->enqueueMessage('Attention no standard shopper group set '.$this->_db->getErrorMsg());
 		} else {
 			return $res;
 		}
-			
+
 	}
-	
+
 	function remove($ids){
 
 		jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($ids);
-				
+
 		$table = $this->getTable($this->_maintablename);
-		
+
 		$defaultId = $this->getDefault();
-		
+
 		foreach($ids as $id){
-			
+
 			//Test if shoppergroup is default
 			if($id === $defaultId->virtuemart_shoppergroup_id){
 				$this->_db->setQuery('SELECT shopper_group_name FROM `#__virtuemart_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
-				$name = $this->_db->loadResult();				
+				$name = $this->_db->loadResult();
 				$this->setError(JText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_DEFAULT',$name,$id));
 				continue;
 			}
-			
-			//Test if shoppergroup has members		
+
+			//Test if shoppergroup has members
 			$this->_db->setQuery('SELECT * FROM `#__virtuemart_vmuser_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
 			if($this->_db->loadResult()){
 				$this->_db->setQuery('SELECT shopper_group_name FROM `#__virtuemart_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
 				$name = $this->_db->loadResult();
-				$this->setError(JText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_WITH_MEMBERS',$name,$id));	
-				continue;				
+				$this->setError(JText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_WITH_MEMBERS',$name,$id));
+				continue;
 			}
-			
+
 			if (!$table->delete($id)) {
 				$this->setError(get_class( $this ).'::remove '.$table->getError());
 				return false;
 		    }
 		}
 	}
-	
+
 	/**
 	 * Retrieves the Shopper Group Info of the SG specified by $id
 	 *
@@ -154,20 +177,20 @@ class VirtueMartModelShopperGroup extends VmModel {
   	function getShoppergroupById($id, $default_group = false) {
     	$virtuemart_vendor_id = 1;
     	$db = JFactory::getDBO();
-    	
+
     	$q =  'SELECT `#__virtuemart_shoppergroups`.`virtuemart_shoppergroup_id`, `#__virtuemart_shoppergroups`.`shopper_group_name`, `default` AS default_shopper_group FROM `#__virtuemart_shoppergroups`';
-    		
+
     	if (!empty($id) && !$default_group) {
       		$q .= ', `#__virtuemart_vmuser_shoppergroups`';
       		$q .= ' WHERE `#__virtuemart_vmuser_shoppergroups`.`virtuemart_user_id`="'.(int)$id.'" AND ';
       		$q .= '`#__virtuemart_shoppergroups`.`virtuemart_shoppergroup_id`=`#__virtuemart_vmuser_shoppergroups`.`virtuemart_shoppergroup_id`';
-    	} 
+    	}
     	else {
     		$q .= ' WHERE `#__virtuemart_shoppergroups`.`virtuemart_vendor_id`="'.(int)$virtuemart_vendor_id.'" AND `default`="1"';
     	}
     	$db->setQuery($q);
     	return $db->loadAssoc();
   	}
-	
+
 }
 // pure php no closing tag

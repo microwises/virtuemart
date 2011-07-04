@@ -97,7 +97,7 @@ class ShopFunctions {
 
 	/**
 	 * Builds an enlist for information (not chooseable)
-	 * 
+	 *
 	 * //TODO check for misuse by code injection
 	 * @author Max Milbers
 	 *
@@ -132,18 +132,18 @@ class ShopFunctions {
 				if($i<$quantity){
 					$links .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view='.$view.'&task=edit&cid[]='.$value), $tmp). ', ';
 				}
-				//$ttip .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view='.$view.'&task=edit&cid[]='.$value), $tmp). ', ';	
+				//$ttip .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view='.$view.'&task=edit&cid[]='.$value), $tmp). ', ';
 				$ttip .= $tmp.', ';
-				
+
 //				$list .= $tmp. ', ';
 				$i++;
 				//if($i==$quantity) break;
 			}
 			$links = substr($links,0,-2);
 			$ttip = substr($ttip,0,-2);
-			
+
 			$list = '<span class="hasTip" title="'.$ttip.'" >'.$links.'</span>';
-			
+
 			return $list;
 		}else{
 			return '';
@@ -404,6 +404,39 @@ class ShopFunctions {
 	}
 
 	/**
+	 * Writes a line  for the price configuration
+	 *
+	 * @author Max Milberes
+	 * @param string $name
+	 * @param string $langkey
+	 */
+	function writePriceConfigLine($obj,$name,$langkey){
+
+		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
+		$html =
+			'<tr>
+				<td class="key">
+					<span class="editlinktip hasTip" title="'. JText::_($langkey.'_EXPLAIN').'">
+						<label for="conf_TAX_VIRTUAL">'.JText::_($langkey).
+						'</label>
+					</span>
+				</td>
+
+				<td>'.
+		VmHTML::checkbox($name, $obj->get($name)).'
+				</td>
+				<td align="center">'.
+		VmHTML::checkbox($name.'Text', $obj->get($name.'Text',1)).'
+				</td>
+				<td align="center">
+				<input type="text" value="'.$obj->get($name.'Rounding',2).'" class="inputbox" size="4" name="'.$name.'Rounding">
+				</td>
+			</tr>';
+		return $html;
+	}
+
+
+	/**
 	 * Creates structured option fields for all categories
 	 *
 	 * @todo: Connect to vendor data
@@ -484,9 +517,9 @@ class ShopFunctions {
 	* @return string Country name or code
 	*/
 	public function getCountryByID ($id, $fld = 'country_name'){
-		
-		if (empty($id)) return ''; 
-		
+
+		if (empty($id)) return '';
+
 		$id = (int) $id;
 		$db = JFactory::getDBO();
 
@@ -526,8 +559,8 @@ class ShopFunctions {
 	* @return string state name or code
 	*/
 	public function getStateByID ($id, $fld = 'state_name'){
-		
-		if (empty($id)) return ''; 
+
+		if (empty($id)) return '';
 		$db = JFactory::getDBO();
 
 		$q = 'SELECT ' . $db->getEscaped($fld) . ' AS fld FROM `#__virtuemart_states` WHERE virtuemart_state_id = "'.(int)$id.'"';

@@ -61,7 +61,7 @@ AdminMenuHelper::startAdminArea();
 			</td>
 		</tr>
 		<?php
-		if ($this->shoppergroup->default == 1) { 
+		if ($this->shoppergroup->default == 1) {
 			?>
 			<tr>
 				<td width="110" class="key">
@@ -88,6 +88,32 @@ AdminMenuHelper::startAdminArea();
 			</td>
 		</tr>
 	</table>
+	</fieldset>
+
+	<fieldset class="adminform">
+		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES') ?></legend><?php
+		echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_ENABLE_PRICE_DISPLAY');
+		echo VmHTML::checkbox('custom_price_display', $this->shoppergroup->enable_specific_price_display)?>
+		<table class="admintable">
+			<tr>
+				<th></th>
+				<th></th>
+				<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_TEXT'); ?></th>
+				<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_ROUNDING'); ?></th>
+			</tr>
+			<?php
+			echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display,'basePrice','COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE');
+			echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display,'variantModification','COM_VIRTUEMART_ADMIN_CFG_PRICE_VARMOD');
+			echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display,'basePriceVariant','COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_VAR');
+			echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display,'basePriceWithTax','COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_WTAX');
+			echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display,'discountedPriceWithoutTax','COM_VIRTUEMART_ADMIN_CFG_PRICE_DISCPRICE_WOTAX');
+			echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display,'salesPriceWithDiscount','COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WD');
+			echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display,'salesPrice','COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE');
+			echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display,'priceWithoutTax','COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WOTAX');
+			echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display,'discountAmount','COM_VIRTUEMART_ADMIN_CFG_PRICE_DISC_AMOUNT');
+			echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display,'taxAmount','COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT');
+			?>
+		</table>
 	</fieldset>
 </div>
 

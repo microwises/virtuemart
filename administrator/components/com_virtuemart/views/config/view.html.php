@@ -103,29 +103,7 @@ class VirtuemartViewConfig extends JView {
 		parent::display($tpl);
 	}
 
-	function writePriceConfigLine($name,$langkey){
 
-		$html =
-		'<tr>
-			<td class="key">
-				<span class="editlinktip hasTip" title="'. JText::_($langkey.'_EXPLAIN').'">
-					<label for="conf_TAX_VIRTUAL">'.JText::_($langkey).
-					'</label>
-				</span>
-			</td>
-
-			<td>'.
-				VmHTML::checkbox($name, $this->config->get($name)).'
-			</td>
-			<td align="center">'.
-				VmHTML::checkbox($name.'Text', $this->config->get($name.'Text',1)).'
-			</td>
-			<td align="center">
-			<input type="text" value="'.$this->config->get($name.'Rounding',2).'" class="inputbox" size="4" name="'.$name.'Rounding">
-			</td>
-		</tr>';
-		return $html;
-	}
 
 }
 // pure php no closing tag

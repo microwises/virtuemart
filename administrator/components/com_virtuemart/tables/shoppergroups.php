@@ -36,6 +36,8 @@ class TableShoppergroups extends VmTable
 	/** @var string Shopper group description */
 	var $shopper_group_desc  = '';
 
+	var $custom_price_display = 0;
+	var $price_display		= '';
     /** @var int default group that new customers are associated with. There can only be one
      * default group per vendor. */
 	var $default = 0;
@@ -73,7 +75,7 @@ class TableShoppergroups extends VmTable
 			$this->setError(JText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME_LESS_THAN_32_CHARACTERS'));
 			return false;
 		}
-/* commented by PATRICK This set always shoppergroup to 1 if you do a new shoppergroup 
+/* commented by PATRICK This set always shoppergroup to 1 if you do a new shoppergroup
 		if(empty($this->virtuemart_shoppergroup_id)){
 			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default`="1" AND `virtuemart_vendor_id`="1" ';
 			$this->_db->setQuery($q);

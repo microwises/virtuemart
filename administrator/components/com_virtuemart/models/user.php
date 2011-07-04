@@ -864,17 +864,17 @@ class VirtueMartModelUser extends VmModel {
 	 function _getListQuery (){
 
 	 	// Used tables #__virtuemart_vmusers, #__virtuemart_userinfos, #__vm_user_perm_groups, #__virtuemart_vmuser_shoppergroups, #__virtuemart_vendors
-	 	$query = 'SELECT DISTINCT ju.id AS id '
-			. ', ju.name AS name'
-			. ', ju.username AS username '
-			. ', vmu.user_is_vendor AS is_vendor'
-			. ', vmu.perms AS perms'
-			. ', ju.usertype AS usertype'
-			. ", IFNULL(sg.shopper_group_name, '') AS shopper_group_name "
-			. 'FROM #__users AS ju '
-			. 'LEFT JOIN #__virtuemart_vmusers AS vmu ON ju.id = vmu.virtuemart_user_id '
-			. 'LEFT JOIN #__virtuemart_vmuser_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id '
-			. 'LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.virtuemart_shoppergroup_id = sg.virtuemart_shoppergroup_id ';
+	 	$query = 'SELECT DISTINCT ju.id AS id
+			, ju.name AS name
+			, ju.username AS username
+			, vmu.user_is_vendor AS is_vendor
+			, vmu.perms AS perms
+			, ju.usertype AS usertype
+			, IFNULL(sg.shopper_group_name, "") AS shopper_group_name
+			FROM #__users AS ju
+			LEFT JOIN #__virtuemart_vmusers AS vmu ON ju.id = vmu.virtuemart_user_id
+			LEFT JOIN #__virtuemart_vmuser_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id
+			LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.virtuemart_shoppergroup_id = sg.virtuemart_shoppergroup_id ';
 		$query .= $this->_getFilter();
 		$query .= $this->_getOrdering('id') ;
 

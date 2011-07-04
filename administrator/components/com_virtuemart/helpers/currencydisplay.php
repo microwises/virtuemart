@@ -26,13 +26,14 @@ class CurrencyDisplay {
 	static $_instance;
 	private $_currencyConverter;
 
-    private $_currency_id   = '0';		// string ID related with the currency (ex : language)
-    private $_symbol    		= 'udef';	// Printable symbol
-    private $_nbDecimal 		= 2;	// Number of decimals past colon (or other)
-    private $_decimal   		= ',';	// Decimal symbol ('.', ',', ...)
-    private $_thousands 		= ' '; 	// Thousands separator ('', ' ', ',')
-    private $_positivePos	= '{number}{symbol}';	// Currency symbol position with Positive values :
-    private $_negativePos	= '{sign}{number}{symbol}';	// Currency symbol position with Negative values :
+   private $_currency_id   = '0';		// string ID related with the currency (ex : language)
+   private $_symbol    		= 'udef';	// Printable symbol
+   private $_nbDecimal 		= 2;	// Number of decimals past colon (or other)
+   private $_decimal   		= ',';	// Decimal symbol ('.', ',', ...)
+   private $_thousands 		= ' '; 	// Thousands separator ('', ' ', ',')
+   private $_positivePos	= '{number}{symbol}';	// Currency symbol position with Positive values :
+   private $_negativePos	= '{sign}{number}{symbol}';	// Currency symbol position with Negative values :
+	private $_priceConfig	= array();	//holds arrays of 0 and 1 first is if price should be shown, second is rounding
 
     private function __construct ($vendorId = 0){
 
@@ -56,6 +57,9 @@ class CurrencyDisplay {
 		$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`="'.(int)$vendorId.'"';
 		$this->_db->setQuery($q);
 		$this->_vendorCurrency = $this->_db->loadResult();
+// 		$this->_currency_id = $this->_vendorCurrency = $this->_db->loadResult();
+
+		$this->setPriceArray();
 	}
 
 	/**
@@ -81,7 +85,7 @@ class CurrencyDisplay {
 	*/
 	public function getInstance($currencyId=0,$vendorId=0){
 
-		if(empty(self::$_instance) || empty(self::$_instance->_currency_id) || $currencyId!=self::$_instance->_currency_id ){
+		if(empty(self::$_instance) || empty(self::$_instance->_currency_id) || ($currencyId!=self::$_instance->_currency_id && !empty($currencyId)) ){
 
 			self::$_instance = new CurrencyDisplay($vendorId);
 
@@ -147,6 +151,61 @@ class CurrencyDisplay {
 
     }
 
+    /**
+     * This function sets an array, which holds the information if
+     * a price is to be shown and the number of rounding digits
+     *
+     * @author Max Milbers
+     */
+	function setPriceArray(){
+
+		$user = JFactory::getUser();
+
+		if(!empty($user->id)){
+
+			$q = 'SELECT `price_display` FROM `#__virtuemart_vmusers` as `u`
+							LEFT OUTER JOIN `#__virtuemart_vmuser_shoppergroups` AS `vx` ON `u`.`virtuemart_user_id`  = `vx`.`virtuemart_user_id`
+							LEFT OUTER JOIN `#__virtuemart_shoppergroups` AS `sg` ON `vx`.`virtuemart_shoppergroup_id` = `sg`.`virtuemart_shoppergroup_id`
+							WHERE `u`.`virtuemart_user_id` = "'.$user->id.'" ';
+
+			$this->_db->setQuery($q);
+			$result = $this->_db->loadResult();
+			if($result){
+				$result = unserialize($result);
+			}
+			dump($result,'$result');
+			dump( $this->_db,'$ $this->_db');
+		}
+
+		$priceFields = array('basePrice','variantModification','basePriceVariant',
+									'basePriceWithTax','basePriceWithTax','discountedPriceWithoutTax',
+									'salesPriceWithDiscount','salesPrice','priceWithoutTax',
+									'discountAmount','taxAmount');
+
+		foreach($priceFields as $name){
+			$show = 0;
+			$round = 0;
+			$text = 0;
+			//Here we check special settings of the shoppergroup
+			if(!empty($user->id) && $result){
+				//$result = unserialize($result);
+				//Todo define what should happen with more than one shoppergroup, now assuming the first is the right
+				$show = (int)$result->get($name);
+				$round = (int)$result->get($name.'Rounding');
+				$text = $result->get($name.'Text');
+			} else {
+				if(VmConfig::get($name) =='1'){
+					$show = 1;
+					$round = (int) VmConfig::get($name.'Rounding');
+					$text = (int) VmConfig::get($name.'Text',true);
+				}
+			}
+
+			$this->_priceConfig[$name] = array($show,$round,$text);
+		}
+		dump($this->_priceConfig,'$this->_priceConfig');
+	}
+
 	/**
 	 * This function is for the gui only!
 	 * Use this only in a view, plugin or modul, never in a model
@@ -155,7 +214,7 @@ class CurrencyDisplay {
 	 * @param integer $currencyId
 	 * return string formatted price
 	 */
-	public function priceDisplay($price=0, $currencyId=0,$inToShopCurrency = false){
+	public function priceDisplay($price=0, $currencyId=0,$inToShopCurrency = false,$nb = 2){
 		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipping)
 
 		if(empty($currencyId)){
@@ -166,7 +225,7 @@ class CurrencyDisplay {
 		}
 
 		$price = $this->convertCurrencyTo($currencyId,$price,$inToShopCurrency);
-		return $this->getFormattedCurrency($price);
+		return $this->getFormattedCurrency($price,$nb);
 	}
 
 	/**
@@ -185,17 +244,19 @@ class CurrencyDisplay {
 
 
 		//This could be easily extended by product specific settings
-		if(VmConfig::get($name) =='1'){
+		//if(VmConfig::get($name) =='1'){
+		if($this->_priceConfig[$name][0]!==0){
 			if(!empty($product_price[$name])){
 				$vis = "block";
 				//if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 
-				$product_price[$name] = $this->priceDisplay($product_price[$name]);
+				$product_price[$name] = $this->priceDisplay($product_price[$name],0,false,$this->_priceConfig[$name][1]);
 			} else {
 				$vis = "none";
 			}
 			$descr = '';
-			if(VmConfig::get($name.'Text',true)) $descr = JText::_($description);
+			if($this->_priceConfig[$name][1]) $descr = JText::_($description);
+
 			//	 	if(!empty($product_price[$name])){
 			return '<div style="display : '.$vis.';" >'.$descr.'<span class="Price'.$name.'" >'.$product_price[$name].'</span></div>';
 			//	 	}
@@ -288,9 +349,9 @@ class CurrencyDisplay {
      * @author Max Milbers
      * @param val number
      */
-    private function getFormattedCurrency( $nb, $nbDecimal=0){
+    private function getFormattedCurrency( $nb, $nbDecimal=-1){
 
-    	if(empty($nbDecimal)) $nbDecimal = $this->_nbDecimal;
+    	if($nbDecimal===-1) $nbDecimal = $this->_nbDecimal;
     	if($nb>=0){
     		$format = $this->_positivePos;
     		$sign = '+';
