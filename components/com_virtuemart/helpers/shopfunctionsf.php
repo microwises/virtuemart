@@ -22,27 +22,27 @@
 defined('_JEXEC') or die('Restricted access');
 
 class priceDisplayer{
-	
+
 	private function __construct() {
-		
+
 	}
-	
+
 	public function getInstance(){
-		
+
 	}
-	
+
 	function setPricesToShowIntoSession(){
-		
+
 	}
-	
+
 	function shouldSeePrice(){
-		
+
 	}
-	
+
 	function createPriceDiv(){
-		
+
 	}
-	
+
 }
 
 class shopFunctionsF {
@@ -90,7 +90,7 @@ class shopFunctionsF {
 
 	/**
 	 * Gives ids the recently by the shopper visited products
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	public function getRecentProductIds(){
@@ -98,37 +98,7 @@ class shopFunctionsF {
 		return $session->get('vmlastvisitedproductids', array(), 'vm');
 	}
 
-	/**
-	 * function to create a div to show the prices, is necessary for JS
-	 *
-	 * @author Max Milbers
-	 * @author Patrick Kohl
-	 * @param string name of the price
-	 * @param String description key
-	 * @param array the prices of the product
-	 * return a div for prices which is visible according to config and have all ids and class set
-	 */
-	public function createPriceDiv($name,$description,$product_price){
 
-		if(empty($product_price)) return '';
-
-		//This could be easily extended by product specific settings
-		if(VmConfig::get($name) =='1'){
-	 		if(!empty($product_price[$name])){
-	 			$vis = "block";
-				if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-				$currency = CurrencyDisplay::getInstance( );
-		 		$product_price[$name] = $currency->priceDisplay($product_price[$name]);
-	 		} else {
-	 			$vis = "none";
-	 		}
-	 	$descr = '';
-	 	if(VmConfig::get($name.'Text',true)) $descr = JText::_($description);
-//	 	if(!empty($product_price[$name])){
-			return '<div style="display : '.$vis.';" >'.$descr.'<span class="Price'.$name.'" >'.$product_price[$name].'</span></div>';
-//	 	}
-		}
-	}
 
 	/**
 	* function to create a hyperlink
@@ -479,7 +449,7 @@ class shopFunctionsF {
 		$db = JFactory::getDBO();
 		//Set specific category template
 		if(!empty($catTpl) && empty($prodTpl)){
-			if(is_Int($catTpl)){			
+			if(is_Int($catTpl)){
 				$q = 'SELECT `category_template` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.(int)$catTpl.'" ';
 				$db->setQuery($q);
 				$temp = $db->loadResult();

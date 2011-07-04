@@ -1,4 +1,4 @@
-<?php 
+<?php
 if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /**
 *
@@ -18,7 +18,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 if( class_exists( 'vmVersion' ) ) {
 
 	$shortversion = vmVersion::$PRODUCT . " " . vmVersion::$RELEASE . " " . vmVersion::$DEV_STATUS. " ";
-	
+
 	$myVersion = $shortversion . " [".vmVersion::$CODENAME ."] <br />" . vmVersion::$RELDATE . " "
 	. vmVersion::$RELTIME . " " . vmVersion::$RELTZ;
 
@@ -37,24 +37,24 @@ class vmVersion {
 	/** @var string Codename */
 	static $CODENAME = 'BeJooKu';
 	/** @var string Date */
-	static $RELDATE = 'June 23, 2011';
+	static $RELDATE = 'July 4, 2011';
 	/** @var string Time */
 	static $RELTIME = '13:30';
 	/** @var string Timezone */
 	static $RELTZ = 'GMT';
 	/** @var string Revision */
-	static $REVISION = '$Revision: 3531 $';
+	static $REVISION = '$Revision: 3603 $';
 	/** @var string Copyright Text */
-	static $COPYRIGHT = 'Copyright (C) 2005-2011 VirtueMart Development Team - All rights reserved.'; 
+	static $COPYRIGHT = 'Copyright (C) 2005-2011 VirtueMart Development Team - All rights reserved.';
 	/** @var string URL */
 	static $URL = '<a href="http://virtuemart.net">VirtueMart</a> is a Free Component for Joomla! released under the GNU/GPL3 License.';
 }
 
 $shortversion = vmVersion::$PRODUCT . " " . vmVersion::$RELEASE . " " . vmVersion::$DEV_STATUS. " ";
-	
+
 $myVersion = $shortversion . " [".vmVersion::$CODENAME ."] <br />" . vmVersion::$RELDATE . " "
 	. vmVersion::$RELTIME . " " . vmVersion::$RELTZ;
-	
+
 }
 
 // pure php no closing tag

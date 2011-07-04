@@ -79,7 +79,7 @@ class VirtueMartViewProductdetails extends JView {
 		$product = $product_model->getProduct($virtuemart_product_id);
 
 		if(empty($product->slug)){
-			
+
 			//Todo this should be redesigned to fit better for SEO
 			$mainframe -> enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND'));
 			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
@@ -95,7 +95,7 @@ class VirtueMartViewProductdetails extends JView {
 
 			return;
 		}
-		
+
 		$product_model->addImages($product);
 		$this->assignRef('product', $product);
 
@@ -219,12 +219,14 @@ class VirtueMartViewProductdetails extends JView {
 
 	    if(empty($product->layout)){
 	    	$product->layout = VmConfig::get('productlayout');
-	    }		
-		
+	    }
+
 		shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout,$product->layout);
 
 		shopFunctionsF::addProductToRecent($virtuemart_product_id);
 
+		$currency = CurrencyDisplay::getInstance( );
+		$this->assignRef('currency', $currency);
 
 		//TODO add params, add event
 //		$params = new JParameter();

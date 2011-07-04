@@ -97,8 +97,8 @@ class VirtueMartViewVirtueMart extends JView {
 			$layout = VmConfig::get('vmlayout','default');
 			$this->setLayout($layout);
 
-//			if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-//		    $this->assignRef('currencyDisplay',CurrencyDisplay::getCurrencyDisplay());
+			$currency = CurrencyDisplay::getInstance( );
+			$this->assignRef('currency', $currency);
 
 		} else {
 			$this->setLayout('off_line');

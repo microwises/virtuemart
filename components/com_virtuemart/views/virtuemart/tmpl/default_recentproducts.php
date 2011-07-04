@@ -61,7 +61,7 @@ foreach ( $this->recentProducts as $featProduct ) {
 					<?php // Product Name
 					echo JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $featProduct->virtuemart_product_id . '&virtuemart_category_id=' . $featProduct->virtuemart_category_id ), $featProduct->product_name, array ('title' => $featProduct->product_name ) ); ?>
 					</h3>
-					
+
 					<div>
 					<?php // Product Image
 					if ($featProduct->images) {
@@ -78,17 +78,17 @@ foreach ( $this->recentProducts as $featProduct ) {
 					//					} else echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE'). ": </strong>";
 
 					if ($this->showBasePrice) {
-						echo shopFunctionsF::createPriceDiv ( 'basePrice', 'COM_VIRTUEMART_PRODUCT_BASEPRICE', $featProduct->prices );
-						echo shopFunctionsF::createPriceDiv ( 'basePriceVariant', 'COM_VIRTUEMART_PRODUCT_BASEPRICE_VARIANT', $featProduct->prices );
+						echo $this->currency->createPriceDiv ( 'basePrice', 'COM_VIRTUEMART_PRODUCT_BASEPRICE', $featProduct->prices );
+						echo $this->currency->createPriceDiv ( 'basePriceVariant', 'COM_VIRTUEMART_PRODUCT_BASEPRICE_VARIANT', $featProduct->prices );
 					}
-					echo shopFunctionsF::createPriceDiv ( 'variantModification', 'COM_VIRTUEMART_PRODUCT_VARIANT_MOD', $featProduct->prices );
-					echo shopFunctionsF::createPriceDiv ( 'basePriceWithTax', 'COM_VIRTUEMART_PRODUCT_BASEPRICE_WITHTAX', $featProduct->prices );
-					echo shopFunctionsF::createPriceDiv ( 'discountedPriceWithoutTax', 'COM_VIRTUEMART_PRODUCT_DISCOUNTED_PRICE', $featProduct->prices );
-					echo shopFunctionsF::createPriceDiv ( 'salesPriceWithDiscount', 'COM_VIRTUEMART_PRODUCT_SALESPRICE_WITH_DISCOUNT', $featProduct->prices );
-					echo shopFunctionsF::createPriceDiv ( 'salesPrice', 'COM_VIRTUEMART_PRODUCT_SALESPRICE', $featProduct->prices );
-					echo shopFunctionsF::createPriceDiv ( 'priceWithoutTax', 'COM_VIRTUEMART_PRODUCT_SALESPRICE_WITHOUT_TAX', $featProduct->prices );
-					echo shopFunctionsF::createPriceDiv ( 'discountAmount', 'COM_VIRTUEMART_PRODUCT_DISCOUNT_AMOUNT', $featProduct->prices );
-					echo shopFunctionsF::createPriceDiv ( 'taxAmount', 'COM_VIRTUEMART_PRODUCT_TAX_AMOUNT', $featProduct->prices );
+					echo $this->currency->createPriceDiv ( 'variantModification', 'COM_VIRTUEMART_PRODUCT_VARIANT_MOD', $featProduct->prices );
+					echo $this->currency->createPriceDiv ( 'basePriceWithTax', 'COM_VIRTUEMART_PRODUCT_BASEPRICE_WITHTAX', $featProduct->prices );
+					echo $this->currency->createPriceDiv ( 'discountedPriceWithoutTax', 'COM_VIRTUEMART_PRODUCT_DISCOUNTED_PRICE', $featProduct->prices );
+					echo $this->currency->createPriceDiv ( 'salesPriceWithDiscount', 'COM_VIRTUEMART_PRODUCT_SALESPRICE_WITH_DISCOUNT', $featProduct->prices );
+					echo $this->currency->createPriceDiv ( 'salesPrice', 'COM_VIRTUEMART_PRODUCT_SALESPRICE', $featProduct->prices );
+					echo $this->currency->createPriceDiv ( 'priceWithoutTax', 'COM_VIRTUEMART_PRODUCT_SALESPRICE_WITHOUT_TAX', $featProduct->prices );
+					echo $this->currency->createPriceDiv ( 'discountAmount', 'COM_VIRTUEMART_PRODUCT_DISCOUNT_AMOUNT', $featProduct->prices );
+					echo $this->currency->createPriceDiv ( 'taxAmount', 'COM_VIRTUEMART_PRODUCT_TAX_AMOUNT', $featProduct->prices );
 					} ?>
 					</div>
 

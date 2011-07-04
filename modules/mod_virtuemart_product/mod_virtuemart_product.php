@@ -17,7 +17,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 *
 * www.virtuemart.net
 */
-/* Load  VM fonction */ 
+/* Load  VM fonction */
 require('helper.php');
 
 /* Setting */
@@ -38,6 +38,8 @@ if (!$filter_category ) $category_id = null;
 $products = 		$productModel->getProductListing($Product_group, $max_items);
 $totalProd = 		count( $products);
 if(empty($products)) return false;
+$currency = CurrencyDisplay::getInstance( );
+
 /* load the template */
 require(JModuleHelper::getLayoutPath('mod_virtuemart_product'));
 ?>

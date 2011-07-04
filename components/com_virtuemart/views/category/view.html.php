@@ -56,10 +56,10 @@ class VirtuemartViewCategory extends JView {
 
 		$categoryModel = $this->getModel('category');
 		$productModel = $this->getModel('product');
-                $categoryId = JRequest::getInt('virtuemart_category_id', 0);
-                $vendorId = 1;
+		$categoryId = JRequest::getInt('virtuemart_category_id', 0);
+		$vendorId = 1;
 
-                $category = $categoryModel->getCategory($categoryId);
+		$category = $categoryModel->getCategory($categoryId);
 		$search = JRequest::getWord('search') ;
 		if(empty($category->virtuemart_vendor_id) && $search == null ) {
 
@@ -172,6 +172,9 @@ class VirtuemartViewCategory extends JView {
 		if ($mainframe->getCfg('MetaAuthor') == '1') {
 			$document->setMetaData('author', $category->metaauthor);
 		}
+
+		$currency = CurrencyDisplay::getInstance( );
+		$this->assignRef('currency', $currency);
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings

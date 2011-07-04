@@ -20,17 +20,17 @@
 
 					//todo add config settings
 					if( Permissions::getInstance()->check('admin')){
-						echo shopFunctionsF::createPriceDiv('basePrice','COM_VIRTUEMART_PRODUCT_BASEPRICE',$latestProduct->prices);
-						echo shopFunctionsF::createPriceDiv('basePriceVariant','COM_VIRTUEMART_PRODUCT_BASEPRICE_VARIANT',$latestProduct->prices);
+						echo $this->currency->createPriceDiv('basePrice','COM_VIRTUEMART_PRODUCT_BASEPRICE',$latestProduct->prices);
+						echo $this->currency->createPriceDiv('basePriceVariant','COM_VIRTUEMART_PRODUCT_BASEPRICE_VARIANT',$latestProduct->prices);
 					}
-					echo shopFunctionsF::createPriceDiv('variantModification','COM_VIRTUEMART_PRODUCT_VARIANT_MOD',$latestProduct->prices);
-					echo shopFunctionsF::createPriceDiv('basePriceWithTax','COM_VIRTUEMART_PRODUCT_BASEPRICE_WITHTAX',$latestProduct->prices);
-					echo shopFunctionsF::createPriceDiv('discountedPriceWithoutTax','COM_VIRTUEMART_PRODUCT_DISCOUNTED_PRICE',$latestProduct->prices);
-					echo shopFunctionsF::createPriceDiv('salesPriceWithDiscount','COM_VIRTUEMART_PRODUCT_SALESPRICE_WITH_DISCOUNT',$latestProduct->prices);
-					echo shopFunctionsF::createPriceDiv('salesPrice','COM_VIRTUEMART_PRODUCT_SALESPRICE',$latestProduct->prices);
-					echo shopFunctionsF::createPriceDiv('priceWithoutTax','COM_VIRTUEMART_PRODUCT_SALESPRICE_WITHOUT_TAX',$latestProduct->prices);
-					echo shopFunctionsF::createPriceDiv('discountAmount','COM_VIRTUEMART_PRODUCT_DISCOUNT_AMOUNT',$latestProduct->prices);
-					echo shopFunctionsF::createPriceDiv('taxAmount','COM_VIRTUEMART_PRODUCT_TAX_AMOUNT',$latestProduct->prices);
+					echo $this->currency->createPriceDiv('variantModification','COM_VIRTUEMART_PRODUCT_VARIANT_MOD',$latestProduct->prices);
+					echo $this->currency->createPriceDiv('basePriceWithTax','COM_VIRTUEMART_PRODUCT_BASEPRICE_WITHTAX',$latestProduct->prices);
+					echo $this->currency->createPriceDiv('discountedPriceWithoutTax','COM_VIRTUEMART_PRODUCT_DISCOUNTED_PRICE',$latestProduct->prices);
+					echo $this->currency->createPriceDiv('salesPriceWithDiscount','COM_VIRTUEMART_PRODUCT_SALESPRICE_WITH_DISCOUNT',$latestProduct->prices);
+					echo $this->currency->createPriceDiv('salesPrice','COM_VIRTUEMART_PRODUCT_SALESPRICE',$latestProduct->prices);
+					echo $this->currency->createPriceDiv('priceWithoutTax','COM_VIRTUEMART_PRODUCT_SALESPRICE_WITHOUT_TAX',$latestProduct->prices);
+					echo $this->currency->createPriceDiv('discountAmount','COM_VIRTUEMART_PRODUCT_DISCOUNT_AMOUNT',$latestProduct->prices);
+					echo $this->currency->createPriceDiv('taxAmount','COM_VIRTUEMART_PRODUCT_TAX_AMOUNT',$latestProduct->prices);
 			}
 				if ($latestProduct->virtuemart_media_id) {
 					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$latestProduct->virtuemart_product_id.'&virtuemart_category_id='.$latestProduct->virtuemart_category_id),
