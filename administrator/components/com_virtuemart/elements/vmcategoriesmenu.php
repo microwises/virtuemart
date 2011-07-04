@@ -39,11 +39,11 @@ class JElementVmCategoriesmenu extends JElement {
 
         $class = '';
         $html = '<select class="inputbox"   name="' . $control_name . '[' . $name . ']' . '" >';
-        $html .= '<option value="">' . JText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL') . '</option>';
+        $html .= '<option value="0">' . JText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL') . '</option>';
         $html .= $categorylist;
         $html .="</select>";
         return $html;
-      
+
         }
 
 }
