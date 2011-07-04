@@ -637,6 +637,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_userinfos` (
   `country` varchar(32) NOT NULL DEFAULT 'US',
   `zip` varchar(32) NOT NULL DEFAULT '',
   `email` varchar(255) DEFAULT NULL,
+  `agreed` tinyint(1) NOT NULL DEFAULT '0',
   `extra_field_1` varchar(255) DEFAULT NULL,
   `extra_field_2` varchar(255) DEFAULT NULL,
   `extra_field_3` varchar(255) DEFAULT NULL,
