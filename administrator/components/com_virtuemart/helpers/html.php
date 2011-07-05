@@ -323,7 +323,7 @@ class VmHTML{
 		$option  = array($key =>null, $text => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
 		$options = array_merge(array($option), $options);
 		}
-		return JHTML::_('select.genericlist', $options,$name,$attrib,$key,$text,$default);
+		return JHTML::_('select.genericlist', $options,$name,$attrib,$key,$text,$default,false,true);
 	}
 	/**
 	 * renders the hidden input

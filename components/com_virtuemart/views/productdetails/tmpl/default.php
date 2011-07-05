@@ -152,8 +152,8 @@ if (empty ( $this->product )) {
 	<div class="product-fields">
 		<?php foreach ($this->product->customfieldsCart as $field)
 		{ ?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
-			<span class="product-fields-title" ><b><?php echo $field->custom_title ?></b></span>
-			<?php echo JHTML::tooltip($field->custom_tip, $field->custom_title, 'tooltip.png'); ?>
+			<span class="product-fields-title" ><b><?php echo  JText::_($field->custom_title) ?></b></span>
+			<?php echo JHTML::tooltip($field->custom_tip,  JText::_($field->custom_title), 'tooltip.png'); ?>
 			<span class="product-field-display"><?php echo $field->display ?></span>
 
 			<span class="product-field-desc"><?php echo $field->custom_field_desc ?></span>
@@ -172,8 +172,8 @@ if (empty ( $this->product )) {
 		<div class="product-fields">
 			<?php foreach ($this->product->customsChilds as $field) {  ?>
 				<div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field->field_type ?>">
-				<span class="product-fields-title" ><b><?php echo $field->field->custom_title ?></b></span>
-				<span class="product-field-desc"><?php echo $field->field->custom_value ?></span>
+				<span class="product-fields-title" ><b><?php echo JText::_($field->field->custom_title) ?></b></span>
+				<span class="product-field-desc"><?php echo JText::_($field->field->custom_value) ?></span>
 				<span class="product-field-display"><?php echo $field->display ?></span>
 
 				</div><br/ >
@@ -269,7 +269,7 @@ if (empty ( $this->product )) {
 		<?php echo $this->product->product_desc; ?>
 	</div>
 	<?php } // Product Description END ?>
-	<?php // Product custom_fields TODO relation to Childs
+	<?php
 	if (!empty($this->product->customfields)) { ?>
 		<div class="product-fields">
 		<?php
@@ -278,7 +278,7 @@ if (empty ( $this->product )) {
 			?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
 			<?php if ($field->custom_title != $custom_title) { ?>
 				<span class="product-fields-title" ><b><?php echo JText::_($field->custom_title); ?></b></span>
-				<?php echo JHTML::tooltip($field->custom_tip, $field->custom_title, 'tooltip.png');
+				<?php echo JHTML::tooltip($field->custom_tip,  JText::_($field->custom_title), 'tooltip.png');
 			} ?>
 			<span class="product-field-display"><?php echo $field->display ?></span>
 			<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?></span>

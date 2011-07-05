@@ -490,7 +490,7 @@ class VmCustomHandler {
 				$options[] = array( 'value' => $val ,'text' =>$val);
 			}
 
-			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]');
+			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]',null,'value','text',false,true);
 		} else {
 			if ($price > 0){
 				$price = $currency->priceDisplay((float)$price);
@@ -501,25 +501,25 @@ class VmCustomHandler {
 				case 'V':
 				if ($price == 0 ) $price = JText::_('COM_VIRTUEMART_CART_PRICE_FREE') ;
 				/* Loads the product price details */
-				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
+				return '<input type="text" value="'.JText::_($value).'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
 				break;
 				/*userfield variants*/
 				case 'U':
-				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
+				return '<input type="text" value="'.JText::_($value).'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
 				break;
 				/* string or integer */
 				case 'S':
 				case 'I':
-					return $value;
+					return JText::_($value);
 				break;
 				/* bool */
 				case 'B':
 					if ($value == 0) return JText::_('COM_VIRTUEMART_NO') ;
-					return JText::_('COM_VIRTUEMART_ADMIN_CFG_YES') ;
+					return JText::_('COM_VIRTUEMART_YES') ;
 				break;
 				/* parent */
 				case 'P':
-					return '<span class="product_custom_parent">'.$value.'<span/>';
+					return '<span class="product_custom_parent">'.JText::_($value).'<span/>';
 				break;
 				/* related */
 				case 'R':

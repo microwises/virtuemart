@@ -39,11 +39,12 @@ if (empty ( $this->product )) {
 	<h1><?php echo $this->product->product_name ?></h1>
 	<?php // Product Title END ?>
 	<?php // Showing The Additional Images
-	if(!empty($this->product->images) && count($this->product->images)>0) { ?>
+	if(!empty($this->product->images) && count($this->product->images)>0) { 
+		echo $this->product->images[0]->displayMediaFull('class="product-image"',false); ?>
 		<div class="additional-images">
 		<?php // List all Images
 		foreach ($this->product->images as $image) {
-			echo $image->displayMediaFull('class="product-image"',false); //'class="modal"'
+			echo $image->displayMediaThumb('class="product-image"'); //'class="modal"'
 
 		} ?>
 		</div>
