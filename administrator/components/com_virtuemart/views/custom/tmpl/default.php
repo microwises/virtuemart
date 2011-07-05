@@ -44,7 +44,7 @@ $keyword = JRequest::getWord('keyword', null);
 			<input type="text" value="<?php echo $keyword; ?>" name="keyword" size="25" class="inputbox" />
 			<input type="hidden" name="option" value="<?php echo $option; ?>" />
 			<input type="hidden" name="view" value="custom" />
-			
+
 			<input class="button" type="submit" name="search" value="<?php echo JText::_('COM_VIRTUEMART_SEARCH_TITLE')?>" />
 	</div>
 </div>
@@ -74,20 +74,20 @@ $pagination = $this->pagination;
 		$k = 0;
 		foreach ($customs as $key => $custom) {
 
-			$checked = JHTML::_('grid.id', $i , $custom->virtuemart_custom_id);
+			$checked = JHTML::_('grid.id', $i , $custom->virtuemart_custom_id,false,'virtuemart_custom_id');
 			if (!is_null($custom->virtuemart_custom_id)) $published = JHTML::_('grid.published', $custom, $i );
 			else $published = '';
 			?>
 			<tr>
 				<!-- Checkbox -->
 				<td><?php echo $checked; echo $custom->virtuemart_custom_id; ?></td>
-				<?php 
+				<?php
 				$link = "index.php?view=custom&keyword=".urlencode($keyword)."&custom_parent_id=".$custom->custom_parent_id."&option=".$option;
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $custom->custom_parent_title, array('title' => JText::_('COM_VIRTUEMART_FILTER_BY').' '.$custom->custom_parent_title)); ?></td>
-				
+
 				<!-- Product name -->
-				<?php 
+				<?php
 				$link = "index.php?option=com_virtuemart&view=custom&task=edit&virtuemart_custom_id=".$custom->virtuemart_custom_id;
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $custom->custom_title, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$custom->custom_title)); ?></td>

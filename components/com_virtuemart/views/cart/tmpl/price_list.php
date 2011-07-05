@@ -41,10 +41,8 @@ defined('_JEXEC') or die('Restricted access');
 				<!-- span class="titles"><?php echo $item['title'] ?></span -->
 				<?php
 				if ($item['name'] == 'first_name' || $item['name'] == 'middle_name' || $item['name'] == 'zip') { ?>
-					<span class="values<?php echo '-'.$item['name'] ?>" ><?php echo $item['value'] ?></span>
 					<span class="values<?php echo '-'.$item['name'] ?>" ><?php echo $this->escape($item['value']) ?></span>
 				<?php } else { ?>
-					<span class="values" ><?php echo $item['value'] ?></span>
 					<span class="values" ><?php echo $this->escape($item['value']) ?></span>
 					<br class="clear" />
 				<?php
@@ -74,10 +72,8 @@ defined('_JEXEC') or die('Restricted access');
 				<!-- <span class="titles"><?php echo $item['title'] ?></span> -->
 				<?php
 				if ($item['name'] == 'first_name' || $item['name'] == 'middle_name' || $item['name'] == 'zip') { ?>
-					<span class="values<?php echo '-'.$item['name'] ?>" ><?php  echo $item['value'] ?></span>
 					<span class="values<?php echo '-'.$item['name'] ?>" ><?php echo $this->escape($item['value']) ?></span>
 				<?php } else { ?>
-					<span class="values" ><?php echo $item['value'] ?></span>
 					<span class="values" ><?php echo $this->escape($item['value']) ?></span>
 					<br class="clear" />
 				<?php
