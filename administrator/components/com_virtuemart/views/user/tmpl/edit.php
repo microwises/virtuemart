@@ -55,40 +55,45 @@ function myValidator(f, t)
 
 <form method="post" id="adminForm" name="adminForm" action="index.php" enctype="multipart/form-data" class="form-validate" onSubmit="return myValidator(this);">
 <?php
-	echo $this->pane->startPane("user-pane");
-
-        if (!empty($this->userDetails->user_is_vendor)) {
-		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_VENDOR'), 'edit_vendor' );
-		echo $this->loadTemplate('vendor');
-		echo $this->pane->endPanel();
-	}
-	
-
-	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_SHOPPER_FORM_LBL'), 'edit_shopper' );
-	echo $this->loadTemplate('shopper');
-	echo $this->pane->endPanel();
-        
-        echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO'), 'edit_user' );
-	echo $this->loadTemplate('user');
-	echo $this->pane->endPanel();
-	if ($this->shipto != 0) {
-		// Note:
-		// Of the order of the tabs change here, change the startOffset value for
-		// JPane::getInstance() as well in view.html.php!
-		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'), 'edit_shipto' );
-		echo $this->loadTemplate('shipto');
-		echo $this->pane->endPanel();
-	}
-
-	if (($_ordcnt = count($this->orderlist)) > 0) {
-		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_ORDER_LIST_LBL') . ' (' . $_ordcnt . ')', 'edit_orderlist' );
-		echo $this->loadTemplate('orderlist');
-		echo $this->pane->endPanel();
-	}
-
-	
-
-	echo $this->pane->endPane();
+AdminUIHelper::buildTabs ( array (	'vendor' 	=> 	'COM_VIRTUEMART_VENDOR',
+									'shopper' 	=> 	'COM_VIRTUEMART_SHOPPER_FORM_LBL',
+									'user' 		=> 	'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO',
+									'shipto'	=> 	'COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL',
+									'orderlist' => 	'COM_VIRTUEMART_ORDER_LIST_LBL' ) );
+//	echo $this->pane->startPane("user-pane");
+//
+//        if (!empty($this->userDetails->user_is_vendor)) {
+//		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_VENDOR'), 'edit_vendor' );
+//		echo $this->loadTemplate('vendor');
+//		echo $this->pane->endPanel();
+//	}
+//
+//
+//	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_SHOPPER_FORM_LBL'), 'edit_shopper' );
+//	echo $this->loadTemplate('shopper');
+//	echo $this->pane->endPanel();
+//
+//        echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO'), 'edit_user' );
+//	echo $this->loadTemplate('user');
+//	echo $this->pane->endPanel();
+//	if ($this->shipto != 0) {
+//		// Note:
+//		// Of the order of the tabs change here, change the startOffset value for
+//		// JPane::getInstance() as well in view.html.php!
+//		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'), 'edit_shipto' );
+//		echo $this->loadTemplate('shipto');
+//		echo $this->pane->endPanel();
+//	}
+//
+//	if (($_ordcnt = count($this->orderlist)) > 0) {
+//		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_ORDER_LIST_LBL') . ' (' . $_ordcnt . ')', 'edit_orderlist' );
+//		echo $this->loadTemplate('orderlist');
+//		echo $this->pane->endPanel();
+//	}
+//
+//
+//
+//	echo $this->pane->endPane();
 ?>
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="task" value="" />
