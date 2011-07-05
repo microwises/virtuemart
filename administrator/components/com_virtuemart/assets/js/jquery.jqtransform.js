@@ -257,12 +257,12 @@
 				.addClass('jqTransformHidden')
 				.wrap('<div class="jqTransformSelectWrapper"></div>')
 				.parent()
-				.css({zIndex: 10-index})
+				.css({zIndex: 10-index,width: '200px'})
 			;
 			
 			/* Now add the html for the select */
 			jQuerywrapper.prepend('<div><span></span><a href="#" class="jqTransformSelectOpen"></a></div><ul></ul>');
-			var jQueryul = jQuery('ul', jQuerywrapper).css('width',jQueryselect.width()).hide();
+			var jQueryul = jQuery('ul', jQuerywrapper).css({width: '200px'}).hide();
 			/* Now we add the options */
 			jQuery('option', this).each(function(i){
 				var oLi = jQuery('<li><a href="#" index="'+ i +'">'+ jQuery(this).html() +'</a></li>');
