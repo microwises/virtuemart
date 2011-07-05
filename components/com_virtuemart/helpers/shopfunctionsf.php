@@ -112,7 +112,7 @@ class shopFunctionsF {
 		if (VmConfig::get('pdf_button_enable', 1) == '1' && !JRequest::getVar('pop')) {
 
 			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
-			$link .= '&amp;pop=1';
+			//$link .= '&amp;pop=1';
 			if ( $use_icon ) {
 				$text = JHtml::_('image.site', 'pdf_button.png', $folder, null, null, JText::_('COM_VIRTUEMART_PDF'));
 			} else {

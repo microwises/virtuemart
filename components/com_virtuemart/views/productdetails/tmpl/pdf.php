@@ -15,7 +15,7 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id$
+ * @version $Id: default.php 3605 2011-07-04 10:23:23Z Milbo $
  */
 
 // Check to ensure this file is included in Joomla!
@@ -56,22 +56,6 @@ if (empty ( $this->product )) {
 	<h1><?php echo $this->product->product_name ?></h1>
 	<?php // Product Title END ?>
 
-	<?php // Product Edit Link
-	echo $this->edit_link;
-	// Product Edit Link END ?>
-
-	<?php // PDF - Print - Email Icon
-	if (VmConfig::get('pdf_button_enable', 1) == '1' || VmConfig::get('show_emailfriend', 1) == '1' || VmConfig::get('show_printicon', 1) == '1') { ?>
-	<div class="icons">
-		<?php $link = (VmConfig::isJ15()) ? 'index2.php' : 'index.php';
-		$link .= '?tmpl=component&option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id;
-		$pdflink= JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&format=pdf');
-		echo shopFunctionsF::PdfIcon($pdflink );
-		echo shopFunctionsF::PrintIcon($link.'&print=1');
-		echo shopFunctionsF::EmailIcon($this->product->virtuemart_product_id); ?>
-	<div class="clear"></div>
-	</div>
-	<?php } // PDF - Print - Email Icon END ?>
 
 	<?php // Product Short Description
 	if (!empty($this->product->product_s_desc)) { ?>
@@ -82,26 +66,7 @@ if (empty ( $this->product )) {
 	<?php } // Product Short Description END ?>
 
 	<div>
-		<div class="width50 floatleft">
 
-		<?php // Product Main Image
-		if (!empty($this->product->images[0])) { ?>
-			<div class="main-image">
-			<?php echo $this->product->images[0]->displayMediaFull('class="product-image"'); ?>
-			</div>
-		<?php } // Product Main Image END ?>
-
-		<?php // Showing The Additional Images
-		if(!empty($this->product->images) && count($this->product->images)>1) { ?>
-			<div class="additional-images">
-			<?php // List all Images
-			foreach ($this->product->images as $image) {
-				echo $image->displayMediaThumb('class="product-image"'); //'class="modal"'
-			} ?>
-			</div>
-		<?php } // Showing The Additional Images END ?>
-
-		</div>
 
 		<div class="width50 floatright">
 			<div class="spacer-buy-area">
@@ -278,7 +243,7 @@ if (empty ( $this->product )) {
 			?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
 			<?php if ($field->custom_title != $custom_title) { ?>
 				<span class="product-fields-title" ><b><?php echo JText::_($field->custom_title); ?></b></span>
-				<?php echo JHTML::tooltip($field->custom_tip, $field->custom_title, 'tooltip.png');
+				<?php //echo JHTML::tooltip($field->custom_tip, $field->custom_title, 'tooltip.png');
 			} ?>
 			<span class="product-field-display"><?php echo $field->display ?></span>
 			<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?></span>
@@ -539,40 +504,7 @@ if (empty ( $this->product )) {
 		if($this->allowReview && !$alreadycommented) { ?>
 		<div class="write-reviews">
 
-			<?php // Show Review Length While Your Are Writing
-			$reviewJavascript = "
-			function check_reviewform() {
-				var form = document.getElementById('reviewform');
-
-				var ausgewaehlt = false;
-				for (var i=0; i<form.user_rating.length; i++)
-					if (form.user_rating[i].checked)
-						ausgewaehlt = true;
-					if (!ausgewaehlt)  {
-						alert('".JText::_('COM_VIRTUEMART_REVIEW_ERR_RATE',false)."');
-						return false;
-					}
-					else if (form.comment.value.length < ". VmConfig::get('reviews_minimum_comment_length', 100).") {
-						alert('". JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT1', VmConfig::get('reviews_minimum_comment_length', 100))."');
-						return false;
-					}
-					else if (form.comment.value.length > ". VmConfig::get('reviews_maximum_comment_length', 2000).") {
-						alert('". JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT2', VmConfig::get('reviews_maximum_comment_length', 2000))."');
-						return false;
-					}
-					else {
-						return true;
-					}
-				}
-
-				function refresh_counter() {
-					var form = document.getElementById('reviewform');
-					form.counter.value= form.comment.value.length;
-				}";
-			$document = &JFactory::getDocument();
-			$document->addScriptDeclaration($reviewJavascript);
-
-			if($this->showRating) {
+		<?php	if($this->showRating) {
 				if($this->allowRating) { ?>
 					<h4><?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW')  ?><span><?php echo JText::_('COM_VIRTUEMART_WRITE_FIRST_REVIEW') ?></span></h4>
 					<span class="step"><?php echo JText::_('COM_VIRTUEMART_RATING_FIRST_RATE') ?></span>

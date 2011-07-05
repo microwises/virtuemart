@@ -44,8 +44,10 @@ class VirtueMartControllerProductdetails extends JController {
 //			$controller= new VirtueMartControllerCart();
 //			$controller->add();
 //		}else{
+			$format = JRequest::getWord('format',html);
 			/* Create the view */
-			$view = $this->getView('productdetails', 'html');
+			$view = $this->getView('productdetails', $format);
+			if  ($format = 'pdf') $view->setLayout('pdf');
 
 			$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
 			/* Add the default model */
