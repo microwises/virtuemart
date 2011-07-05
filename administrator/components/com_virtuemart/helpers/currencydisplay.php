@@ -157,7 +157,7 @@ class CurrencyDisplay {
      *
      * @author Max Milbers
      */
-	function setPriceArray(){
+    function setPriceArray(){
 
 		$user = JFactory::getUser();
 
@@ -201,7 +201,7 @@ class CurrencyDisplay {
 
 			$this->_priceConfig[$name] = array($show,$round,$text);
 		}
-		dump($this->_priceConfig,'$this->_priceConfig ');
+
 	}
 
 	/**

@@ -50,7 +50,7 @@ class VirtueMartViewCart extends JView {
 		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 		$this->_cart = VirtueMartCart::getCart(false);
 		$this->assignRef('cart', $this->_cart);
-		
+
 
 		if ($format == 'raw') {
 			$this->prepareCartData();
@@ -213,13 +213,19 @@ class VirtueMartViewCart extends JView {
 									. '">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
 			}
 
-			$_selectedAddress = (
-				empty($this->_cart->selected_shipto)
+			if(!empty($addressList[0]->virtuemart_userinfo_id)){
+				$_selectedAddress = (
+					empty($this->_cart->selected_shipto)
 					? $addressList[0]->virtuemart_userinfo_id // Defaults to 1st BillTo
 					: $this->_cart->selected_shipto
 				);
+				$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'virtuemart_userinfo_id', 'address_type_name', $_selectedAddress);
+			}else{
+				$_selectedAddress = 0;
+				$this->lists['shipTo'] = '';
+			}
 
-			$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'virtuemart_userinfo_id', 'address_type_name', $_selectedAddress);
+
 		} else {
 			$_selectedAddress = 0;
 			$this->lists['shipTo'] = '';
@@ -340,7 +346,7 @@ class VirtueMartViewCart extends JView {
 							 $userFieldsBT
 							,$userAddressData
 							);
-			
+
 		}
 		$this->assignRef('BTaddress',$BTaddress['fields']);
 
@@ -352,10 +358,10 @@ class VirtueMartViewCart extends JView {
 							 $userFieldsST
 							,$userAddressData
 							);
-			
+
 		}
 		$this->assignRef('STaddress',$STaddress['fields']);
-		
+
 /*		$BTaddress['fields']= array();
 		if(!empty($this->_cart->BT)){
 
@@ -395,9 +401,9 @@ class VirtueMartViewCart extends JView {
 		}
 
 		$this->assignRef('STaddress',$STaddress['fields']);*/
-		
+
 	}
-       
+
 }
 
 //no closing tag

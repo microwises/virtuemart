@@ -713,18 +713,18 @@ class VirtueMartModelOrders extends VmModel {
 	 * Update an order item status
 	 * @author Oscar van Eijk
 	 */
-	public function updateSingleItemStatus($_item, $_status)
+	public function updateSingleItemStatus($item, $_status)
 	{
-		$_table = $this->getTable('order_items');
-		$_table->load($_item);
+		$table = $this->getTable('order_items');
+		$table->load($item);
 
-		if (!$_table->check()) {
+		if (!$table->check()) {
 			$this->setError($this->getError());
 			return false;
 		}
 
 		// Save the record to the database
-		if (!$_table->store()) {
+		if (!$table->store()) {
 			$this->setError($this->getError());
 			return false;
 		}
@@ -736,17 +736,17 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	public function updateSingleItem()
 	{
-		$_table = $this->getTable('order_items');
-		$_item = JRequest::getVar('virtuemart_order_item_id', '');
-		$_table->load($_item);
-		$_table->order_status = JRequest::getWord('order_status_'.$_item, '');
-		$_table->product_quantity = JRequest::getVar('product_quantity_'.$_item, '');
-		$_table->product_item_price = JRequest::getVar('product_item_price_'.$_item, '');
-		$_table->product_final_price = JRequest::getVar('product_final_price_'.$_item, '');
+		$table = $this->getTable('order_items');
+		$item = JRequest::getVar('virtuemart_order_item_id', '');
+		$table->load($item);
+		$table->order_status = JRequest::getWord('order_status_'.$item, '');
+		$table->product_quantity = JRequest::getVar('product_quantity_'.$item, '');
+		$table->product_item_price = JRequest::getVar('product_item_price_'.$item, '');
+		$table->product_final_price = JRequest::getVar('product_final_price_'.$item, '');
 
 		$data = $table->bindChecknStore($data);
 
-	    $errors = $table->getErrors();
+	   $errors = $table->getErrors();
 		foreach($errors as $error){
 			$this->setError( get_class( $this ).'::store '.$error);
 		}
