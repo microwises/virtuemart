@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -184,4 +184,4 @@ AdminMenuHelper::startAdminArea();
 </form>
 
 
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>

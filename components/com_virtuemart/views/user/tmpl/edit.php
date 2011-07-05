@@ -61,17 +61,10 @@ function myValidator(f, t)
 	&nbsp;
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 </div>
-<?php
-
-	echo $this->pane->startPane("user-pane");
-
-	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO'), 'edit_user' );
-	echo $this->loadTemplate('user');
-	echo $this->pane->endPanel();
-
-	echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_SHOPPER_FORM_LBL'), 'edit_shopper' );
-	echo $this->loadTemplate('shopper');
-	echo $this->pane->endPanel();
+<?php // Loading Templates in Tabs
+shopFunctionsF::buildTabs ( array (	'user' 		=> 	'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO',
+									'shopper' 	=> 	'COM_VIRTUEMART_SHOPPER_FORM_LBL'
+									 ) );
 
 /*
  * TODO this Stuff should be converted in a payment module. But the idea to show already saved payment information to the user is a good one

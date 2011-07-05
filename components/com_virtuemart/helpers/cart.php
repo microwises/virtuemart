@@ -794,14 +794,14 @@ class VirtueMartCart {
             $this->virtuemart_order_id = $orderID;
             $this->sentOrderConfirmedEmail($order->getOrder($orderID));
 
-            //We delete the old stuff
+           //We delete the old stuff
             $this->products = array();
             $this->_inCheckOut = false;
             $this->_dataValidated = false;
             $this->_confirmDone = false;
             $this->customer_comment = '';
             $this->couponCode = '';
-            $this->tosAccepted = false;
+            $this->tosAccepted = false; 
 
             $this->setCartIntoSession();
 

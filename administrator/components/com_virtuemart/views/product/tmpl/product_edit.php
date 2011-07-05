@@ -18,7 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 
 /* Load some behaviour */
 jimport('joomla.html.pane');
@@ -34,35 +34,17 @@ $this->editor = JFactory::getEditor();
 
 ?>
 <form method="post" name="adminForm" action="index.php" enctype="multipart/form-data" ID="adminform">
-<?php
-	echo $pane->startPane("product-pane");
-	echo $pane->startPanel( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_INFO_LBL'), 'product_information' );
-		echo $this->loadTemplate('information');
-	echo $pane->endPanel();
-	echo $pane->startPanel( JText::_('COM_VIRTUEMART_PRODUCT_FORM_DESCRIPTION'), 'product_description' );
-		echo $this->loadTemplate('description');
-	echo $pane->endPanel();
-	echo $pane->startPanel( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_STATUS_LBL'), 'product_status' );
-		echo $this->loadTemplate('status');
-	echo $pane->endPanel();
-	echo $pane->startPanel( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL'), 'product_dimensions' );
-		echo $this->loadTemplate('dimensions');
-	echo $pane->endPanel();
-	echo $pane->startPanel( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_IMAGES_LBL'), 'product_images' );
-		echo $this->loadTemplate('images');
-	echo $pane->endPanel();
-	if (isset($this->waitinglist) && count($this->waitinglist) > 0) {
-		echo $pane->startPanel( JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_TAB'), 'product_waitinglist' );
-		echo $this->loadTemplate('waitinglist');
-		echo $pane->endPanel();
-	}
-	//echo $pane->startPanel( JText::_('COM_VIRTUEMART_META_INFORMATION'), 'product_metadata' );
-		//echo $this->loadTemplate('metadata');
-	echo $pane->endPanel();
-	echo $pane->startPanel( JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_CUSTOM_TAB'), 'product_custom' );
-		echo $this->loadTemplate('custom');
-	echo $pane->endPanel();
-	echo $pane->endPane();
+
+<?php // Loading Templates in Tabs
+AdminUIHelper::buildTabs ( array (	'information' 			=> 	'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_INFO_LBL',
+									'description' 	=> 	'COM_VIRTUEMART_PRODUCT_FORM_DESCRIPTION',
+									'status'	=> 	'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_STATUS_LBL',
+									'dimensions' 		=> 	'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL',
+									'images' 		=> 	'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_IMAGES_LBL',
+									'custom' 			=> 	'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_CUSTOM_TAB',
+									'waitinglist' 			=> 	'COM_VIRTUEMART_PRODUCT_WAITING_LIST_TAB'
+ 									) );
+
 
 ?>
 <!-- Hidden Fields -->
@@ -75,4 +57,4 @@ $this->editor = JFactory::getEditor();
 <input type="hidden" name="product_parent_id" value="<?php echo JRequest::getInt('product_parent_id', $this->product->product_parent_id); ?>" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>

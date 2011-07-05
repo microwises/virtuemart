@@ -40,7 +40,7 @@ class VirtuemartViewProduct extends JView {
 
 		// Load helpers
 		$this->loadHelper('currencydisplay');
-		$this->loadHelper('adminMenu');
+		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');
 		JView::loadHelper('image');

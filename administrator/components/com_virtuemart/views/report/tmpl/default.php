@@ -17,7 +17,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * http://virtuemart.org
 */
 
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 /* Load some variables */
 $search_date = JRequest::getVar('search_date', null); // Changed search by date
 $now = getdate();
@@ -38,7 +38,7 @@ if( $this->pagination->limit < $rows ){
 <form action="index.php" method="post" name="adminForm" id="adminForm">
     <div id="header">
         <h2><?php echo JText::sprintf('COM_VIRTUEMART_REPORT_TITLE', JHTML::_('date', $this->from_period, $format) , JHTML::_('date', $this->until_period, $format)); ?></h2>
-        <div id="filterbox" style="float: left">
+        <div id="filterbox">
 
             <table>
                 <tr>
@@ -52,14 +52,13 @@ if( $this->pagination->limit < $rows ){
                 </tr>
             </table>
         </div>
-        <div id="resultscounter" style="float: right;">
+        <div id="resultscounter">
             <?php echo $this->pagination->getResultsCounter();?>
         </div>
     </div>
-    <br clear="all" />
 
     <div id="editcell">
-        <table class="adminlist">
+        <table class="admin-table" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
                     <th>
@@ -123,4 +122,4 @@ if( $this->pagination->limit < $rows ){
     <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>

@@ -60,7 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 		<td valign="top" width="%100">
 			<fieldset style="background-color:#F9F9F9;">
 					<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM');?></legend>
-			<table id="customfields" class="adminlist" width="%100">
+			<table id="customfields" class="admin-table" cellspacing="0" cellpadding="0">
 				<thead>
 				<tr class="row1">
 					<th><?php echo JText::_('COM_VIRTUEMART_TITLE');?></th>
@@ -93,7 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 							<td>
 							 <img src="components/com_virtuemart/assets/images/icon_16/'.$cartIcone.'" width="16" height="16" border="0" />
 							</td>
-							<td><div style="float:left;" class="remove vmicon-16-trash">'.JText::_('DELETE').'</div></td>
+							<td><div class="remove vmicon-16-trash">'.JText::_('DELETE').'</div></td>
 						 </tr>';
 
 						$i++;

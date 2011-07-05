@@ -37,7 +37,7 @@ class VirtuemartViewOrderstatus extends JView {
 		$mainframe = JFactory::getApplication() ;
 
 		// Load the helper(s)
-		$this->loadHelper('adminMenu');
+		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();

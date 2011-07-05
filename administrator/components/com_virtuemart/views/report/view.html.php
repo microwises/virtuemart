@@ -43,7 +43,7 @@ class VirtuemartViewReport extends JView {
 		JToolbarHelper::title( JText::_('COM_VIRTUEMART_REPORT'), 'vm_report_48');
 
 		// Load the helper(s)
-		$this->loadHelper('adminMenu');
+		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('reportFunctions');

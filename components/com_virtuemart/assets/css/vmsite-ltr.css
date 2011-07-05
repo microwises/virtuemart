@@ -910,7 +910,20 @@ a.checkout_link:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.p
 .VmArrowdown{padding:0px 12px 0px 12px; background: top right no-repeat url(../images/vmgeneral/arrow_down.png);cursor: pointer;float: right;width: 16px;height: 16px; }
 ul.VMmenu ,.VMmenu ul, .VMmenu li{list-style-type: none !important;background-image: none !important;  padding: 2px;}
 
+/*////////////////////////////////////
+/////////////// Tabs /////////////////
+////////////////////////////////////*/
 
+/* The Navigation Area */
+#ui-tabs ul#tabs {list-style-type:none;overflow:hidden;margin: 0px;padding: 20px 20px 0px 20px;}
+#ui-tabs ul#tabs li {padding:10px 20px 7px 20px;display: inline-block;cursor:pointer;background: #f2f2f2;}
+#ui-tabs ul#tabs li.current {display: inline-block;background: #ccc;color: #444444;}
+
+/* The Content Area */
+#ui-tabs .tabs {padding: 20px;}
+
+/* do not change the line below !!! */
+#ui-tabs .dyn-tabs {overflow:auto;display:none;}
 
 /*////////////////////////////////////
 ////////////// Basics ////////////////

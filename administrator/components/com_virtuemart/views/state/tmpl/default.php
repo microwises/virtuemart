@@ -19,14 +19,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 
 ?>
 
 <form action="index.php" method="post" name="adminForm">
     <div id="editcell">
     <div><?php echo JHTML::_('link','index.php?option=com_virtuemart&view=country&virtuemart_country_id='.$this->virtuemart_country_id,JText::sprintf('COM_VIRTUEMART_STATES_COUNTRY',$this->country_name)); ?></div>
-	<table class="adminlist">
+	<table class="admin-table" cellspacing="0" cellpadding="0">
 	    <thead>
 		<tr>
 		    <th width="10">
@@ -105,4 +105,4 @@ AdminMenuHelper::startAdminArea();
 
 
 
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>

@@ -36,7 +36,7 @@ class VirtuemartViewConfig extends JView {
 	function display($tpl = null) {
 
 		// Load the helper(s)
-		$this->loadHelper('adminMenu');
+		$this->loadHelper('adminui');
 		$this->loadHelper('image');
 		$this->loadHelper('html');
 		$this->loadHelper('shopFunctions');

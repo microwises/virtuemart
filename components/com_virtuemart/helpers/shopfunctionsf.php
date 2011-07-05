@@ -534,6 +534,29 @@ class shopFunctionsF {
 		}
 
 	}
+	
+	/**
+	 * Admin UI Tabs
+	 * Gives A Tab Based Navigation Back And Loads The Templates With A Nice Design
+	 * @param $load_template = a key => value array. key = template name, value = Language File contraction
+	 * @example 'shop' => 'COM_VIRTUEMART_ADMIN_CFG_SHOPTAB'
+	 */
+	function buildTabs($load_template = array()) {
+		$document = JFactory::getDocument ();
+		$document->addScript ( JURI::base () . 'components/com_virtuemart/assets/js/tabs.js' );
+		
+		$html = '<div id="ui-tabs">';
+		$i = 1;
+		foreach ( $load_template as $tab_content => $tab_title ) {
+			$html .= '<div id="tab-' . $i . '" class="tabs" title="' . JText::_ ( $tab_title ) . '">';
+			$html .= $this->loadTemplate ( $tab_content );
+			$html .= '<div class="clear"></div></div>';
+			$i ++;
+		}
+		$html .= '</div>';
+		echo $html;
+	}
+	
 }
 
 // pure php no closing tag

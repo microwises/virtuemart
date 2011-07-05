@@ -39,7 +39,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 
 ?>
 
@@ -121,4 +121,4 @@ AdminMenuHelper::startAdminArea();
 
 
 
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>

@@ -19,14 +19,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 
 $j15 = VmConfig::isJ15();
 
 ?>
+
 <form action="<?php echo JRoute::_( 'index.php' );?>" method="post" name="adminForm">
 	<div id="header">
-	<div id="filterbox" style="float: left">
+	<div id="filterbox">
 		<table>
 			<tr>
 				<td width="100%">
@@ -38,9 +39,10 @@ $j15 = VmConfig::isJ15();
 			</tr>
 		</table>
 	</div>
-	<div id="resultscounter" style="float: right;"><?php echo $this->pagination->getResultsCounter();?></div>
+	<div id="resultscounter"><?php echo $this->pagination->getResultsCounter();?></div>
+	
 	</div>
-	<br clear="all"/>
+	
 	<div id="editcell">
 		<table class="adminlist jgrid">
 		<thead>
@@ -174,4 +176,4 @@ $j15 = VmConfig::isJ15();
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>

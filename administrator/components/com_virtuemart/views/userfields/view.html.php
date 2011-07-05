@@ -38,8 +38,8 @@ class VirtuemartViewUserfields extends JView {
 		$mainframe = JFactory::getApplication() ;
 
 		// Load the helper(s)
-		$this->loadHelper('adminMenu');
-                $this->loadHelper('shopFunctions');
+		$this->loadHelper('adminui');
+      	$this->loadHelper('shopFunctions');
                 
 		$layoutName = JRequest::getWord('layout', 'default');
 		$model = $this->getModel();

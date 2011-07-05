@@ -34,7 +34,7 @@ class VirtuemartViewCurrency extends JView {
 	function display($tpl = null) {
 
 		// Load the helper(s)
-		$this->loadHelper('adminMenu');
+		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();

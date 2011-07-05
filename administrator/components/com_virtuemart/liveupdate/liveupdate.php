@@ -117,7 +117,13 @@ class LiveUpdate
 		
 		// Backup The Image String
 		// echo '<img src="'.$img.'" width="32" height="32" border="0" align="middle" style="float: none" />';
-		
+		if ($return_type == 'notice') {
+			if ($updateInfo->hasUpdates) {
+				return '<div class="update-notice"><a href="'.$url.'">'.'<span class="'.$class.'">'.$lbl.'</span></a></div>';
+			} else {
+				return '';
+			}
+		}
 		if ($return_type == 'url') {
 			return $url;
 		}

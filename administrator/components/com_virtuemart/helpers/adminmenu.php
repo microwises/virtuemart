@@ -32,19 +32,32 @@ class AdminMenuHelper {
     function startAdminArea() {
 	$document = JFactory::getDocument();
 //	$mainframe = JFactory::getApplication();
-
+	
+	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_ui.css');
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_menu.css');
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin.styles.css');
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/toolbar_images.css');
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/menu_images.css');
-	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/engage.itoggle.css');
+	// $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/engage.itoggle.css');
+	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/iphone.css');
+	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jqtransform.css');
 
 	//loading from public site
 	//$document->addScript('../components/com_virtuemart/assets/js/jquery.js');
 	//$document->addScript('../components/com_virtuemart/assets/js/vm.js');
 	// used $config->jQuery(); $config->jVm(); to load it
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmadmin.js');
-	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/engage.itoggle.js');
+	// $document->addScript(JURI::base().'components/com_virtuemart/assets/js/engage.itoggle.js');
+	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/akkordeon.js');
+	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.cookie.js');
+	
+	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/iphone-style-checkboxes.js');
+	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.jqtransform.js');
+
+	
+	
+	
+	
 	?>
         <div class="vm-block vm-main-container">
          <a href="#" class="vm-replace-content" id="vm-close-menu" title="<?php echo JText::_('COM_VIRTUEMART_CLOSE')?>"><?php echo JText::_('COM_VIRTUEMART_CLOSE')?></a>

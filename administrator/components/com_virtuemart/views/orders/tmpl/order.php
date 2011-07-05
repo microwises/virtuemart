@@ -22,7 +22,7 @@ $mainframe = JFactory::getApplication('site');
 $document->addScript(JURI::root().'components/com_virtuemart/assets/js/jquery.js');
 //$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.alerts.js');
 
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 
 // Get the plugins
 JPluginHelper::importPlugin('vmpayment');
@@ -38,10 +38,10 @@ $tt=$this;
 		<input type="hidden" name="virtuemart_order_item_id" value="0" />
 		<?php echo JHTML::_( 'form.token' ); ?>
 		</form> 
-<table class="adminlist" style="table-layout: fixed;">
+<table class="admin-table" style="table-layout: fixed;">
 	<tr>
 		<td valign="top">
-		<table class="admintable" width="100%">
+		<table class="admin-table" cellspacing="0" cellpadding="0">
 			<tr>
 				<td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL') ?></td>
 			</tr>
@@ -75,7 +75,7 @@ $tt=$this;
 		</table>
 		</td>
 		<td valign="top">
-		<table class="adminlist">
+		<table class="admin-table" cellspacing="0" cellpadding="0">
 			<thead>
 				<tr>
 					<th><?php echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_DATE_ADDED') ?></th>
@@ -190,7 +190,7 @@ $tt=$this;
 	<tr>
 		<td colspan="2">
 		<form action="index.php" method="post" name="orderItemForm" id="orderItemForm"><!-- Update linestatus form -->
-		<table class="adminlist">
+		<table class="admin-table" cellspacing="0" cellpadding="0">
 			<thead>
 				<tr>
 					<th class="title" width="5%" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_EDIT_ACTIONS') ?></th>
@@ -369,7 +369,7 @@ $tt=$this;
 		<input type="hidden" name="virtuemart_order_item_id" value="0" />
 		<?php echo JHTML::_( 'form.token' ); ?>
 		</form> <!-- Update linestatus form -->
-		<table class="adminlist">
+		<table class="admin-table" cellspacing="0" cellpadding="0">
 			<tr>
 				<td align="left" colspan="6"><?php $editLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->virtuemart_order_id.'&orderLineId=0&tmpl=component&task=editOrderItem'); ?>
 				<!-- <a href="<?php echo $editLineLink; ?>" class="modal"> <?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-editadd.png', "New Item"); ?>
@@ -497,7 +497,7 @@ $tt=$this;
 	<tr>
 		<!-- Customer Note -->
 		<td valign="top" width="30%" colspan="2">
-		<table class="adminlist">
+		<table class="admin-table" cellspacing="0" cellpadding="0">
 			<thead>
 				<tr>
 					<th><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_CUSTOMER_NOTE') ?></th>
@@ -511,7 +511,7 @@ $tt=$this;
 	</tr>
 </table>
 
-		<?php AdminMenuHelper::endAdminArea(); ?>
+		<?php AdminUIHelper::endAdminArea(); ?>
 
 <script type="text/javascript">
 <!--

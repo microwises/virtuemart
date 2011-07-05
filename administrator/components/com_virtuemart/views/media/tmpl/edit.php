@@ -18,7 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
  
 echo'<form name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">';
 echo '<fieldset class="adminform">';
@@ -119,4 +119,4 @@ function checkThumbnailing() {
 }
 checkThumbnailing();
 </script>
-<?php */ AdminMenuHelper::endAdminArea(); ?>
+<?php */ AdminUIHelper::endAdminArea(); ?>

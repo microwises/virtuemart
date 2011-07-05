@@ -34,7 +34,7 @@ class VirtuemartViewState extends JView {
 	function display($tpl = null) {
 
 		// Load the helper(s)
-		$this->loadHelper('adminMenu');
+		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
 
 		$viewName=ShopFunctions::SetViewTitle('vm_states_48');

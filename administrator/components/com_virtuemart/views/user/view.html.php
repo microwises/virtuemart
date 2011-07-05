@@ -38,7 +38,7 @@ class VirtuemartViewUser extends JView {
 		$mainframe = JFactory::getApplication() ;
 
 		// Load the helper(s)
-		$this->loadHelper('adminMenu');
+		$this->loadHelper('adminui');
 		$this->loadHelper('shopfunctions');
 		
 

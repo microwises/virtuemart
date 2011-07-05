@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 VmConfig::JvalideForm();
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 ?>
 
 <form id="adminform" action="index.php" method="post" name="adminForm">
@@ -317,7 +317,7 @@ AdminMenuHelper::startAdminArea();
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>
 
 <?php $duration = 500;
 $db = JFactory::getDBO();

@@ -33,7 +33,7 @@ class VirtuemartViewUsergroups extends JView {
 
 	function display( $tpl = null ){
 
-		$this->loadHelper('adminMenu');
+		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
 		$model = $this->getModel();
 		// TODO icon for this view

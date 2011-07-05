@@ -19,7 +19,7 @@
 /**
  * @todo Edit link like: http://csvi/administrator/index3.php?page=product.file_form&virtuemart_product_id=1&virtuemart_media_id=7&option=com_virtuemart&no_menu=1
  */
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 
 /* Load some behaviors we need */
 JHTML::_('behavior.modal');
@@ -32,7 +32,7 @@ $option = JRequest::getWord('option');
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<div id="header">
-		<div id="filterbox" style="float: left;">
+		<div id="filterbox">
 		<table>
 		  <tr>
 			 <td align="left" width="100%">
@@ -41,14 +41,13 @@ $option = JRequest::getWord('option');
 		  </tr>
 		</table>
 		</div>
-		<div id="resultscounter" style="float: right;"><?php echo $this->pagination->getResultsCounter();?></div>
+		<div id="resultscounter"><?php echo $this->pagination->getResultsCounter();?></div>
 	</div>
-	<br clear="all" />
 <?php
 $productfileslist = $this->files;
 //$roles = $this->productfilesroles;
 ?>
-	<table class="adminlist">
+	<table class="admin-table" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productfileslist ); ?>')" /></th>
@@ -135,4 +134,4 @@ $productfileslist = $this->files;
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>

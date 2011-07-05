@@ -19,13 +19,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 
 ?>
 
 <form action="index.php" method="post" name="adminForm">
 	<div id="editcell">
-		<table class="adminlist">
+		<table class="admin-table" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
 			<th width="10">
@@ -97,4 +97,4 @@ AdminMenuHelper::startAdminArea();
 </form>
 
 
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>

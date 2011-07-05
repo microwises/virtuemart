@@ -27,7 +27,7 @@
 #cpanel div.icon   { 
 	margin: 3px; 
 }
-#vmPage #cpanel div.icon a { 
+.admin-content div.icon a { 
 	display: block; 
 	height: 93px !important;
 	height: 95px; 

@@ -18,25 +18,24 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<div id="header">
-		<div id="filterbox" style="float: left;">
+		<div id="filterbox">
 		<table>
 		  <tr>
-			 <td align="left" width="100%">
+			 <td align="left">
 				<?php echo ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_PRODUCT_NAME','filter_product') ?>
 			 </td>
 		  </tr>
 		</table>
 		</div>
-		<div id="resultscounter" style="float: right;"><?php echo $this->pagination->getResultsCounter();?></div>
+		<div id="resultscounter"><?php echo $this->pagination->getResultsCounter();?></div>
 	</div>
-	<br clear="all" />
 
 	<div style="text-align: left;">
-	<table class="adminlist">
+	<table class="admin-table" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->inventorylist); ?>')" /></th>
@@ -102,4 +101,4 @@ AdminMenuHelper::startAdminArea();
 <input type="hidden" name="boxchecked" value="0" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>

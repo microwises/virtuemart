@@ -18,7 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 
 $j15 = VmConfig::isJ15();
 /* Get the component name */
@@ -26,7 +26,7 @@ $option = JRequest::getWord('option');
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
     <div id="header">
-	<div id="filterbox" style="float: left;">
+	<div id="filterbox" >
 	    <table>
 		<tr>
 		    <td align="left" width="100%">
@@ -35,10 +35,10 @@ $option = JRequest::getWord('option');
 		</tr>
 	    </table>
 	</div>
-	<div id="resultscounter" style="float: right;"><?php echo $this->pagination->getResultsCounter();?></div>
+	<div id="resultscounter"><?php echo $this->pagination->getResultsCounter();?></div>
     </div>
-    <br clear="all" />
-    <table class="adminlist">
+    <br />
+    <table class="admin-table" cellspacing="0" cellpadding="0">
 	<thead>
 	    <tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->orderslist); ?>')" /></th>
@@ -136,4 +136,4 @@ $option = JRequest::getWord('option');
     <input type="hidden" name="boxchecked" value="0" />
     <?php echo JHTML::_( 'form.token' ); ?>
 </form>
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>

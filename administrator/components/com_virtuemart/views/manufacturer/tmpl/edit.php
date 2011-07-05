@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 $pane = JPane::getInstance('tabs', array('startOffset' => 0));
 $editor = JFactory::getEditor();
 ?>
@@ -163,4 +163,4 @@ function toggleFullURL() {
 	toggleDisable( document.adminForm.manufacturer_full_image_action[1], document.adminForm.manufacturer_thumb_image, true );
 }
 </script>
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>

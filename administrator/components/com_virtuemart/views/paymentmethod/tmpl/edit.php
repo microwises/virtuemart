@@ -18,7 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 JHTML::_('behavior.tooltip');
 ?>
 <form action="index.php" method="post" name="adminForm">
@@ -44,7 +44,7 @@ echo $pane->endPane();
 <input type="hidden" name="virtuemart_paymentmethod_id" value="<?php echo $this->paym->virtuemart_paymentmethod_id; ?>" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>
 
 <script language="javascript">
 

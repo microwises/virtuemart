@@ -18,29 +18,23 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 JHTML::_('behavior.tooltip');
 jimport('joomla.html.pane');
 ?>
 <form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" >
 <input type="hidden" name="task" value="" />
-<?php
-$pane = JPane::getInstance('tabs', array('startOffset'=>0));
-echo $pane->startPane('pane');
 
-echo $pane->startPanel(JText::_('COM_VIRTUEMART_UPDATE_TOOLS_TAB'), 'update_panel');
-echo $this->loadTemplate('tools');
-echo $pane->endPanel();
 
-echo $pane->startPanel(JText::_('COM_VIRTUEMART_UPDATE_VERSION_TAB'), 'update_panel');
-echo $this->loadTemplate('update');
-echo $pane->endPanel();
+<?php // Loading Templates in Tabs
+AdminUIHelper::buildTabs ( array (	'update' 	=> 	'COM_VIRTUEMART_UPDATE_VERSION_TAB',
+									'tools' 	=> 	'COM_VIRTUEMART_UPDATE_TOOLS_TAB'
+									 ) );
 
-echo $pane->endPane();
 ?>
 
 <!-- Hidden Fields -->
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="view" value="updatesMigration" />
 </form>
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>

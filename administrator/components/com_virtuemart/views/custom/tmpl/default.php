@@ -19,7 +19,7 @@
 /**
  * @todo Edit link like: http://csvi/administrator/index3.php?page=product.file_form&virtuemart_product_id=1&virtuemart_media_id=7&option=com_virtuemart&no_menu=1
  */
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 
 /* Load some behaviors we need */
 JHTML::_('behavior.modal');
@@ -33,12 +33,12 @@ $option = JRequest::getWord('option');
 $keyword = JRequest::getWord('keyword', null);
 ?>
 <div id="header">
-	<div style="float: left;">
+	<div>
 	<?php
 	if (JRequest::getInt('virtuemart_product_id', false)) echo JHTML::_('link', JRoute::_('index.php?view=custom&option='.$option), JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
 	?>
 	</div>
-	<div style="float: left;">
+	<div>
 		<form action="index.php" method="post" name="adminForm" id="adminForm"><?php echo $this->customs->customsSelect ?>
 		<?php echo JText::_('COM_VIRTUEMART_SEARCH_LBL') .' '.JText::_('COM_VIRTUEMART_TITLE') ?>&nbsp;
 			<input type="text" value="<?php echo $keyword; ?>" name="keyword" size="25" class="inputbox" />
@@ -53,7 +53,7 @@ $customs = $this->customs->items;
 //$roles = $this->customlistsroles;
 $pagination = $this->pagination;
 ?>
-	<table class="adminlist">
+	<table class="admin-table" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($customs); ?>')" /></th>
@@ -109,7 +109,7 @@ $pagination = $this->pagination;
 	</tbody>
 	<tfoot>
 	<tr>
-	<td colspan="15">
+	<td colspan="16">
 		<?php echo $this->pagination->getListFooter(); ?>
 	</td>
 	</tr>
@@ -128,4 +128,4 @@ $pagination = $this->pagination;
 
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>

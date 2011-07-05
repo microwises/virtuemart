@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea(); 
+AdminUIHelper::startAdminArea(); 
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -36,7 +36,7 @@ AdminMenuHelper::startAdminArea();
 		<li><?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_DATE') ?>: <?php echo $packageContents['releasedate'] ?></li>
 	</ul>
 </div>
-<table class="adminlist">
+<table class="admin-table" cellspacing="0" cellpadding="0">
 	<thead>
 	  <tr>
 	    <th class="title"><?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_FILESTOUPDATE') ?></th>
@@ -84,7 +84,7 @@ foreach( $packageContents['fileArr'] as $fileentry ) {
 
 <?php
 if( !empty($packageContents['queryArr'])) {
-	echo '<table class="adminlist"><thead><tr><th class="title">' . JText::_('COM_VIRTUEMART_UPDATE_PATCH_QUERYTOEXEC') . ':</th></tr></thead>';
+	echo '<table class="admin-table" cellspacing="0" cellpadding="0"><thead><tr><th class="title">' . JText::_('COM_VIRTUEMART_UPDATE_PATCH_QUERYTOEXEC') . ':</th></tr></thead>';
 	echo '<tbody>';
 	foreach($packageContents['queryArr'] as $query) {
 		echo '<tr><td><pre>'.$query. "</pre></td></tr>";
@@ -115,4 +115,4 @@ $formObj->finishForm('applypatchpackage', 'admin.update_result');
  </script>
 </form>
 
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminUIHelper::endAdminArea(); ?> 

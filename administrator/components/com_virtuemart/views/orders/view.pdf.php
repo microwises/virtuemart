@@ -38,7 +38,7 @@ class VirtuemartViewOrders extends JView {
 		$lists = array();
 
 		/* Load helpers */
-		$this->loadHelper('adminMenu');
+		$this->loadHelper('adminui');
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');

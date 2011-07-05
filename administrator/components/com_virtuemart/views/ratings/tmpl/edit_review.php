@@ -22,7 +22,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -102,7 +102,7 @@ AdminMenuHelper::startAdminArea();
 <input type="hidden" name="boxchecked" value="0" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>
 <script type="text/javascript">
 function refresh_counter() {
     var form = document.adminForm;

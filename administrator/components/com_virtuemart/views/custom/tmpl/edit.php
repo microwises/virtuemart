@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 VmConfig::JvalideForm();
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 ?>
 <form name="adminForm" id="adminform" method="post" action="">
 <fieldset class="adminform">
@@ -35,7 +35,7 @@ echo $this->custom->displayCustomFields('',$this->field_types);
 
 echo '</fieldset>';
 echo '</form>';
- AdminMenuHelper::endAdminArea(); ?>
+ AdminUIHelper::endAdminArea(); ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) {
 	if (pressbutton=='cancel') submitform(pressbutton);

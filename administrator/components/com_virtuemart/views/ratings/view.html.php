@@ -35,7 +35,7 @@ class VirtuemartViewRatings extends JView {
 		$option = JRequest::getWord('option');
 
 		/* Load helpers */
-		$this->loadHelper('adminMenu');
+		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
 
 		/* Get the review IDs to retrieve (input variable may be cid, cid[] or virtuemart_rating_review_id */

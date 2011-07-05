@@ -18,7 +18,7 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); 
-AdminMenuHelper::startAdminArea(); 
+AdminUIHelper::startAdminArea(); 
 ?>
 <form method="post" name="adminForm" action="index.php" enctype="multipart/form-data">
 <table class="adminform">
@@ -39,4 +39,4 @@ AdminMenuHelper::startAdminArea();
 <input type="hidden" name="product_parent_id" value="<?php echo JRequest::getInt('product_parent_id', $this->product->product_parent_id); ?>" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
-<?php AdminMenuHelper::endAdminArea(); ?> 
+<?php AdminUIHelper::endAdminArea(); ?> 

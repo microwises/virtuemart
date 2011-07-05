@@ -18,7 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-AdminMenuHelper::startAdminArea();
+AdminUIHelper::startAdminArea();
 JHTML::_('behavior.tooltip');
 /* Get the component name */
 $option = JRequest::getWord('option');
@@ -35,10 +35,10 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="header">
-<div id="filterbox" style="float: left">
-	<table>
+<div id="filterbox">
+	<table class="">
 		<tr>
-			<td align="left" width="100%">
+			<td align="left">
 			<?php echo JText::_('COM_VIRTUEMART_FILTER') ?>:
 				<select class="inputbox" id="virtuemart_category_id" name="virtuemart_category_id" onchange="document.adminForm.submit(); return false;">
 					<option value=""><?php echo JText::sprintf( 'COM_VIRTUEMART_SELECT' ,  JText::_('COM_VIRTUEMART_CATEGORY')) ; ?></option>
@@ -57,15 +57,16 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 		</tr>
 	</table>
 	</div>
-	<div id="resultscounter" style="float: right;"><?php echo $this->pagination->getResultsCounter();?></div>
+	<div id="resultscounter""><?php echo $this->pagination->getResultsCounter();?></div>
+
 </div>
-<br clear="all" />
+
 <div style="text-align: left;">
 <?php
 $this->productlist
 
 ?>
-	<table class="adminlist">
+	<table class="admin-table" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->productlist); ?>')" /></th>
@@ -193,4 +194,4 @@ $this->productlist
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
-<?php AdminMenuHelper::endAdminArea(); ?>
+<?php AdminUIHelper::endAdminArea(); ?>
