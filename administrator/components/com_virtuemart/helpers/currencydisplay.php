@@ -176,7 +176,7 @@ class CurrencyDisplay {
 		}
 
 		$priceFields = array('basePrice','variantModification','basePriceVariant',
-									'basePriceWithTax','basePriceWithTax','discountedPriceWithoutTax',
+									'basePriceWithTax','discountedPriceWithoutTax',
 									'salesPriceWithDiscount','salesPrice','priceWithoutTax',
 									'discountAmount','taxAmount');
 
@@ -194,14 +194,14 @@ class CurrencyDisplay {
 			} else {
 				if(VmConfig::get($name) =='1'){
 					$show = 1;
-					$round = (int) VmConfig::get($name.'Rounding');
+					$round = (int) VmConfig::get($name.'Rounding',2);
 					$text = (int) VmConfig::get($name.'Text',true);
 				}
 			}
 
 			$this->_priceConfig[$name] = array($show,$round,$text);
 		}
-
+		dump($this->_priceConfig,'$this->_priceConfig ');
 	}
 
 	/**
