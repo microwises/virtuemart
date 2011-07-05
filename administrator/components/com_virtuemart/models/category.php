@@ -143,7 +143,7 @@ class VirtueMartModelCategory extends VmModel {
 		if( !empty( $keyword ) ) {
 			$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;
 			//$keyword = $this->_db->Quote($keyword, false);
-			
+
 			$query .= 'AND ( c.`category_name` LIKE '.$keyword.'
 					   OR c.`category_description` LIKE '.$keyword.') ';
 		}
@@ -324,7 +324,7 @@ class VirtueMartModelCategory extends VmModel {
 		$groupings	= array();
 		$row = $this->getTable('categories');
 
-		$query = 'SELECT `category_parent_id` FROM `#__virtuemart_categories`
+		$query = 'SELECT `category_parent_id` FROM `#__virtuemart_categories` c
 				  LEFT JOIN `#__virtuemart_category_categories` cx
 				  ON c.`virtuemart_category_id` = cx.`category_child_id`
 			      WHERE c.`virtuemart_category_id` = %s';
@@ -458,7 +458,7 @@ class VirtueMartModelCategory extends VmModel {
 				}
 
 				//deleting relations
-				$query = "DELETE FROM `#__virtuemart_product_categories` WHERE `category_child_id` = ". (int)$cid;
+				$query = "DELETE FROM `#__virtuemart_product_categories` WHERE `virtuemart_category_id` = ". (int)$cid;
 		    	$this->_db->setQuery($query);
 
 		    	if(!$this->_db->query()){
@@ -466,7 +466,7 @@ class VirtueMartModelCategory extends VmModel {
 		    	}
 
 		    	//updating parent relations
-				$query = "UPDATE `#__virtuemart_product_categories` SET `category_parent_id` = 0 WHERE `category_parent_id` = ". (int)$cid;
+				$query = "UPDATE `#__virtuemart_product_categories` SET `virtuemart_category_id` = 0 WHERE `virtuemart_category_id` = ". (int)$cid;
 		    	$this->_db->setQuery($query);
 
 		    	if(!$this->_db->query()){
@@ -661,7 +661,7 @@ class VirtueMartModelCategory extends VmModel {
 		return $this->container ;
 	}
 
-	
+
 	/**
 	* This function is repsonsible for returning an array containing category information
 	* @param boolean Show only published products?
@@ -683,12 +683,12 @@ class VirtueMartModelCategory extends VmModel {
 			if( !empty( $keyword ) ) {
 				$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;
 				//$keyword = $this->_db->Quote($keyword, false);
-				
+
 				$query .= 'AND ( `category_name` LIKE '.$keyword.'
 						   OR `category_description` LIKE '.$keyword.') ';
 			}
 /*			if( !empty( $keyword )) {
-				
+
 				$query .= "AND ( `category_name` LIKE '%$keyword%' ";
 				$query .= "OR `category_description` LIKE '%$keyword%' ";
 				$query .= ") ";

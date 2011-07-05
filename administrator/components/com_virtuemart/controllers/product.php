@@ -205,9 +205,11 @@ class VirtuemartControllerProduct extends VmController {
 		$mainframe = Jfactory::getApplication();
 
 		/* Get the product ID */
-		$cids = array();
-		$cids = JRequest::getVar('cid');
-		if (!is_array($cids)) $cids = array($cids);
+// 		$cids = array();
+		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
+		jimport( 'joomla.utilities.arrayhelper' );
+		JArrayHelper::toInteger($cids);
+// 		if (!is_array($cids)) $cids = array($cids);
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=ratings&task=add&virtuemart_product_id='.$cids[0]);
 	}

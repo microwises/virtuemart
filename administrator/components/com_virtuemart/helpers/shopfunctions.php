@@ -650,7 +650,7 @@ class ShopFunctions {
 	{
 		$db = JFactory::getDBO();
 
-		$_q = 'SELECT order_status_name FROM `#__virtuemart_orderstates` WHERE order_status_code = '.$db->getEscaped($_code);
+		$_q = 'SELECT `order_status_name` FROM `#__virtuemart_orderstates` WHERE `order_status_code` = "'.$db->getEscaped($_code) . '"';
 		$db->setQuery($_q);
 		$_r = $db->loadObject();
 		return $_r->order_status_name;

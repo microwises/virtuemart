@@ -40,7 +40,7 @@ class VirtuemartViewUser extends JView {
 		// Load the helper(s)
 		$this->loadHelper('adminui');
 		$this->loadHelper('shopfunctions');
-		
+
 
 		$model = $this->getModel();
 
@@ -55,7 +55,7 @@ class VirtuemartViewUser extends JView {
 		} else {
 			$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','USER');
 		}
-		
+
 		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getWord('layout', 'default');
@@ -84,11 +84,11 @@ class VirtuemartViewUser extends JView {
 
 			$_new = ($userDetails->JUser->get('id') < 1);
 			// In order for the Form validator to work, we're creating our own buttons here.
-			$_saveButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'save\');" href="#">'
-			. '<span title="' . JText::_('COM_VIRTUEMART_SAVE') . '" class="icon-32-save"></span>' . JText::_('COM_VIRTUEMART_SAVE') . '</a>';
-			$_applyButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'apply\');" href="#">'
-			. '<span title="' . JText::_('COM_VIRTUEMART_APPLY') . '" class="icon-32-apply"></span>' . JText::_('COM_VIRTUEMART_APPLY') . '</a>';
-			$_toolBar = JToolBar::getInstance('toolbar');
+// 			$_saveButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'save\');" href="#">'
+// 			. '<span title="' . JText::_('COM_VIRTUEMART_SAVE') . '" class="icon-32-save"></span>' . JText::_('COM_VIRTUEMART_SAVE') . '</a>';
+// 			$_applyButton = '<a class="toolbar" class="button validate" type="submit" onclick="javascript:return myValidator(adminForm, \'apply\');" href="#">'
+// 			. '<span title="' . JText::_('COM_VIRTUEMART_APPLY') . '" class="icon-32-apply"></span>' . JText::_('COM_VIRTUEMART_APPLY') . '</a>';
+// 			$_toolBar = JToolBar::getInstance('toolbar');
 
 			// if ($_new) { // Insert new user
 				// if($task=='editshop'){
@@ -104,10 +104,11 @@ class VirtuemartViewUser extends JView {
 				// }
 			// }
 
-			JToolBarHelper::divider();
-			$_toolBar->appendButton('Custom', $_applyButton);
-			$_toolBar->appendButton('Custom', $_saveButton);
-			JToolBarHelper::cancel();
+// 			JToolBarHelper::divider();
+// 			$_toolBar->appendButton('Custom', $_applyButton);
+// 			$_toolBar->appendButton('Custom', $_saveButton);
+// 			JToolBarHelper::cancel();
+			ShopFunctions::addStandardEditViewCommands();
 
 			// User details
 			$_contactDetails = $model->getContactDetails();

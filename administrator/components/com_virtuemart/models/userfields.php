@@ -156,7 +156,7 @@ class VirtueMartModelUserfields extends VmModel {
 	function getCoreFields(){
 		 return array( 'name','username', 'email', 'password', 'password2' , 'agreed');
 	}
-	
+
 	/**
 	 * Bind the post data to the userfields table and save it
 	 *
@@ -172,7 +172,7 @@ class VirtueMartModelUserfields extends VmModel {
 		$data = JRequest::get('post');
 
 		$isNew = ($data['virtuemart_userfield_id'] < 1) ? true : false;
-		
+
 		$coreFields = $this->getCoreFields();
 		if(in_array($data['name'],$coreFields)){
 			//$this->setError('Cant store/update core field. They belong to joomla');
@@ -184,15 +184,15 @@ class VirtueMartModelUserfields extends VmModel {
 			} else {
 				$field->load($data['virtuemart_userfield_id']);
 				$_action = 'CHANGE';
-	
+
 				if ($field->ordering == $data['ordering']) {
 					$reorderRequired = false;
 				} else {
 					$reorderRequired = true;
 				}
-			}			
+			}
 		}
-		
+
 		// Put the parameters, if any, in the correct format
 		if (array_key_exists($data['type'], $this->reqParam)) {
 			$this->_params->set($this->reqParam[$data['type']], $data[$this->reqParam[$data['type']]]);
@@ -293,11 +293,11 @@ class VirtueMartModelUserfields extends VmModel {
 	}
 
 	/**
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	public function getUserFieldsFor($layoutName, $type,$userId = -1){
-		
+
 		//Here we define the fields to skip
 		if($layoutName=='edit'){
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
@@ -308,8 +308,8 @@ class VirtueMartModelUserfields extends VmModel {
 		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1)){
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed','user_is_vendor');
 
-		} else if ($layoutName=='cart'){	
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2', 'address_type', 'bank','user_is_vendor');			
+		} else if ($layoutName=='cart'){
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2', 'address_type', 'bank','user_is_vendor');
 
 		} else {
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
@@ -338,10 +338,10 @@ class VirtueMartModelUserfields extends VmModel {
 					$field->required = 0;
 					$field->value = '';
 					$field->default = '';
-				} 
+				}
 			}
 		}
-		
+
 		return $userFields;
 	}
 	/**
@@ -622,17 +622,17 @@ class VirtueMartModelUserfields extends VmModel {
 					break;
 
 				case 'virtuemart_state_id':
-					
+
 					// The table data can contain the virtuemart_state_id or the state name
 					if (!isset($_userData->{$_fld->name}) && isset($_userData->state)) {
 						$_return['fields'][$_fld->name]['value'] = $_userData->state;
 					}
-					
-					$_return['fields'][$_fld->name]['formcode'] = 
+
+					$_return['fields'][$_fld->name]['formcode'] =
 					shopFunctions::renderStateList(	$_return['fields'][$_fld->name]['value'],
 													ShopFunctions::getCountryIDByName($_return['fields']['virtuemart_country_id']['value']),
-													$_prefix.'virtuemart_country_id', 
-													false, 
+													$_prefix.'virtuemart_country_id',
+													false,
 													$_prefix
 													);
 					break;
@@ -763,7 +763,7 @@ class VirtueMartModelUserfields extends VmModel {
 										$_return['fields'][$_fld->name]['formcode'] .= '<input type="checkbox" name="'
 											. $_prefix.$_fld->name . '[]" id="' . $_prefix.$_fld->name . '_field' . $_idx . '" value="'. $_val->fieldvalue . '" '
 											. (in_array($_val->fieldvalue, $_selected) ? 'checked="checked"' : '') .'/> ' . JText::_($_val->fieldtitle) . $br;
-										
+
 										$_idx++;
 									}
 									break;
@@ -822,8 +822,8 @@ class VirtueMartModelUserfields extends VmModel {
 	 */
 	function getNameByID($_id)
 	{
-		$_sql = 'SELECT `name` 
-				FROM `#__virtuemart_userfields` 
+		$_sql = 'SELECT `name`
+				FROM `#__virtuemart_userfields`
 				WHERE virtuemart_userfield_id = "'.$_id.'" ';
 
 		$_v = $this->_getList($_sql);
@@ -836,7 +836,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 * @return boolean True is the remove was successful, false otherwise.
 	 */
 	function remove($fieldIds){
-		
+
 		$field      = $this->getTable('userfields');
 		$value      = $this->getTable('userfield_values');
 		$userinfo   = $this->getTable('userinfos');
@@ -844,17 +844,20 @@ class VirtueMartModelUserfields extends VmModel {
 
 		foreach($fieldIds as $fieldId) {
 			$_fieldName = $this->getNameByID($fieldId);
+			$field->load($fieldId);
 
-			// Alter the user_info table
-			if (!$userinfo->_modifyColumn ('DROP', $_fieldName)) {
-				$this->setError($userinfo->getError());
-				return false;
-			}
+			if ($field->type != 'delimiter') {
+				// Alter the user_info table
+				if (!$userinfo->_modifyColumn ('DROP', $_fieldName)) {
+					$this->setError($userinfo->getError());
+					return false;
+				}
 
-			// Alter the order_userinfo table
-			if (!$orderinfo->_modifyColumn ('DROP', $_fieldName)) {
-				$this->setError($orderinfo->getError());
-				return false;
+				// Alter the order_userinfo table
+				if (!$orderinfo->_modifyColumn ('DROP', $_fieldName)) {
+					$this->setError($orderinfo->getError());
+					return false;
+				}
 			}
 
 			if (!$field->delete($fieldId)) {

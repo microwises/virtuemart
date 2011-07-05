@@ -43,8 +43,7 @@ class VmController extends JController{
 		$this->redirectPath = 'index.php?option=com_virtuemart&view='.$this->_cname;
 		$task = explode ('.',JRequest::getCmd( 'task'));
 		if ($task[0] == 'toggle') {
-			if (isset($task[2])) $val = $task[2] ;
-			else $val = NULL ;
+			$val = (isset($task[2])) ? $task[2] : NULL;
 			$this->toggle($task[1],$val);
 		}
 	}

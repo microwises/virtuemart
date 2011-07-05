@@ -291,7 +291,7 @@ class VmTable extends JTable{
 
 	$orderingKey = $this->_orderingKey;
 
-	$sql = "SELECT $this->_tbl_key, `'.$this->_orderingKey.'` FROM $this->_tbl";
+	$sql = 'SELECT `' . $this->_tbl_key . '`, `' . $this->_orderingKey . '` FROM ' . $this->_tbl;
 
 	if($dirn < 0){
 	    $sql .= ' WHERE `' . $this->_orderingKey . '` < ' . (int)$this->$orderingKey;

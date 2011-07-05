@@ -860,7 +860,7 @@ class VirtueMartModelProduct extends VmModel {
 	public function createClone($id){
 	//	if (is_array($cids)) $cids = array($cids);
 		$product = $this->getProduct($id);
-		$product->virtuemart_product_id = 0;
+		$product->virtuemart_product_id = $product->virtuemart_product_price_id = 0;
 		$product->slug = $product->slug.'-'.$id;
 
 		$this->store($product);
@@ -888,11 +888,8 @@ class VirtueMartModelProduct extends VmModel {
 		$ok = true;
 		foreach($ids as $id) {
 
-			$isChild = $this->checkChildProducts($id);
-
-			if(!empty($isChild)){
-				$app = JFactory::getApplication();
-				$app -> enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_CANT_DELETE_CHILD'));
+			if(!$this->checkChildProducts($id)){
+				$this->setError(JText::_('COM_VIRTUEMART_PRODUCT_CANT_DELETE_CHILD'));
 				$ok = false;
 				continue;
 			}
