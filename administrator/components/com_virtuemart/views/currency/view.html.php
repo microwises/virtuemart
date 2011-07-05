@@ -52,8 +52,16 @@ class VirtuemartViewCurrency extends JView {
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 			$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
-			JArrayHelper::toInteger($cid);
-			$currency = $model->getCurrency($cid);
+
+			$task = JRequest::getWord('task', 'add');
+			//JArrayHelper::toInteger($cid);
+			if($task!='add' && !empty($cid) && !empty($cid[0])){
+				$cid = (int)$cid[0];
+			} else {
+				$cid = 0;
+			}
+			$model->setId($cid);
+			$currency = $model->getCurrency();
 			$this->assignRef('dateformat',	$dateformat);
 			$viewName=ShopFunctions::SetViewTitle('vm_currency_48','',$currency->currency_name);
 			$this->assignRef('currency',	$currency);

@@ -194,6 +194,7 @@ class calculationHelper {
             $this->_cats = $productId->categories;
         } //Use it as productId
         else {
+        	dump($productId,'getProductPrices use ID');dumpTrace();
             $this->_db->setQuery('SELECT * FROM #__virtuemart_product_prices  WHERE `virtuemart_product_id`="' . $productId . '" ');
             $row = $this->_db->loadAssoc();
             if ($row) {
@@ -373,7 +374,9 @@ class calculationHelper {
 
         $this->setCountryState($cart);
 
+
         foreach ($cart->products as $name => $product) {
+        		//$product = $productModel->getProduct($product->virtuemart_product_id,false,false,true);
             $productId = $product->virtuemart_product_id;
             if (empty($product->quantity) || empty($product->virtuemart_product_id)) {
                 JError::raiseWarning(710, 'Error the quantity of the product for calculation is 0, please notify the shopowner, the product id ' . $product->virtuemart_product_id);
@@ -384,7 +387,7 @@ class calculationHelper {
             $variantmod = $this->calculateModificators($product, $variantmods);
 
             $cartproductkey = $name; //$product->virtuemart_product_id.$variantmod;
-            $product->prices = $pricesPerId[$cartproductkey] = $this->getProductPrices($product->virtuemart_product_id, 0, $variantmod, $product->quantity, true, false);
+            $product->prices = $pricesPerId[$cartproductkey] = $this->getProductPrices($product, 0, $variantmod, $product->quantity, true, false);
             $this->_cartPrices[$cartproductkey] = $product->prices;
 
             $this->_cartPrices['basePrice'] += $product->prices['basePrice'] * $product->quantity;

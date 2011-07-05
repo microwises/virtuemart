@@ -1068,7 +1068,7 @@ class VirtueMartModelProduct extends VmModel {
 		$this->_db = JFactory::getDBO();
 
 		if(!is_object($product)){
-			$product = $this->getProduct($product);
+			$product = $this->getProduct($product,true,false,false);
 		}
 
 		// Loads the product price details
