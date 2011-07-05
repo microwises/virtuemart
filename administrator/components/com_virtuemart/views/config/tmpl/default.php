@@ -26,7 +26,7 @@ JHTML::_ ( 'behavior.tooltip' );
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 echo LiveUpdate::getIcon(array(),'notice');
 ?>
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 
 <?php // Loading Templates in Tabs
 AdminUIHelper::buildTabs ( array (	'shop' 			=> 	'COM_VIRTUEMART_ADMIN_CFG_SHOPTAB',
@@ -36,7 +36,7 @@ AdminUIHelper::buildTabs ( array (	'shop' 			=> 	'COM_VIRTUEMART_ADMIN_CFG_SHOPT
 									'checkout' 		=> 	'COM_VIRTUEMART_ADMIN_CFG_CHECKOUTTAB',
 									'sef' 			=> 	'COM_VIRTUEMART_ADMIN_CFG_SEF' ) );
 
-/* 
+/*
 $pane = JPane::getInstance('tabs', array('startOffset'=>0));
 echo $pane->startPane('pane');
 
@@ -64,7 +64,7 @@ echo $this->loadTemplate('downloads');
 echo $pane->endPanel();
 echo $pane->startPanel(JText::_('COM_VIRTUEMART_ADMIN_CFG_FEEDTAB'), 'feed_panel');
 echo $this->loadTemplate('feeds');
-echo $pane->endPanel(); 
+echo $pane->endPanel();
 echo $pane->startPanel(JText::_('COM_VIRTUEMART_ADMIN_CFG_SEF'), 'sef_panel');
 echo $this->loadTemplate('sef');
 echo $pane->endPanel();
@@ -80,4 +80,12 @@ echo JHTML::_ ( 'form.token' );
 </form>
 <?php
 AdminUIHelper::endAdminArea ();
+
+	$document = JFactory::getDocument ();
+	$document->addScriptDeclaration ( '
+jQuery(document).ready(function() {
+
+	tabs(jQuery("#admin-ui-tabs .tabs"));
+
+});');
 ?>

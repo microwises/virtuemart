@@ -50,7 +50,7 @@ class AdminUIHelper {
 	jQuery(document).ready(function(){
 		
 		jQuery(function(){
-			jQuery('#admin-content').jqTransform();
+			jQuery('.adminform').jqTransform();
 		});
 		
 		var adminmenu = jQuery('.menu-wrapper');

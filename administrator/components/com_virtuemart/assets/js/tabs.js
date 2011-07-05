@@ -46,8 +46,4 @@ function tabs(pages) {
 
 }
 
-jQuery(document).ready(function() {
 
-	tabs(jQuery("#admin-ui-tabs .tabs"));
-
-});
