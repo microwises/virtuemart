@@ -91,7 +91,7 @@ function virtuemartBuildRoute(&$query) {
 					if ($categoryRoute->itemId) $query['Itemid'] = $categoryRoute->itemId;
 					else $query['Itemid'] = $jmenu['virtuemart'][0] ;
 				}
-				unset($query['virtuemart_category_id']); 
+				unset($query['virtuemart_category_id']);
 			} else { $query['Itemid'] = $jmenu['virtuemart'][0] ;
 			}
 
@@ -117,7 +117,7 @@ function virtuemartBuildRoute(&$query) {
 					if ($categoryRoute->route) $segments[] = $categoryRoute->route;
 					if ($categoryRoute->itemId) $query['Itemid'] = $categoryRoute->itemId;
 					unset($query['virtuemart_category_id']);
-				} else { 
+				} else {
 					$query['Itemid'] = $jmenu['virtuemart'][0] ;
 					unset($query['virtuemart_category_id']);
 				}
@@ -709,7 +709,7 @@ class vmrouterHelper {
 		foreach ($items as $item)	{
 			$view = $item->query['view'] ;
 			if ($view=='virtuemart') $this->menu['virtuemart'][] = $item->id;
-			
+
 			if ( isset($item->query['virtuemart_'.$view.'_id']) )
 			$this->menu['virtuemart_'.$view.'_id'][ $item->query['virtuemart_'.$view.'_id'] ] = $item->id;
 			else $this->menu['virtuemart_'.$view]= $item->id ;
@@ -721,7 +721,7 @@ class vmrouterHelper {
 		if ( !isset( $this->menu['virtuemart_manufacturer']) ) {
 			$this->menu['virtuemart_manufacturer'] = $this->menu['virtuemart'][0] ;
 		}
-		dump ($this->menu,'menu');
+// 		dump ($this->menu,'menu');
 
 	}
 	/* Set $this->activeMenu to current Item ID from Joomla Menus */

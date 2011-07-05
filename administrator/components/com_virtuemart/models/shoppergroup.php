@@ -61,7 +61,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 	      	$this->_data->price_display = new JParameter('');
 	      }
 	   }
-		dump($this->_data->price_display,'in load');
+
 		return $this->_data;
 	}
 
@@ -105,7 +105,7 @@ class VirtueMartModelShopperGroup extends VmModel {
    		$param .= $fields.'Text='.$data[$fields.'Text']."\n";
    		$param .= $fields.'Rounding='.$data[$fields.'Rounding']."\n";
    	}
-		$jparam = new JParameter($param); dump($jparam,'$jparam');
+		$jparam = new JParameter($param);
    	$data['price_display'] = serialize(new JParameter($param));
 
    	return parent::store($data);

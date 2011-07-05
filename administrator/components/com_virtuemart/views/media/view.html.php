@@ -73,7 +73,8 @@ class VirtuemartViewMedia extends JView {
 			$files = $model->getFiles();
 			$this->assignRef('files',	$files);
 
-			ShopFunctions::addStandardDefaultViewCommands();
+			JToolBarHelper::customX('synchronizeMedia', 'new', 'new', JText::_('COM_VIRTUEMART_SYNC_MEDIA_FILES'),false);
+			ShopFunctions::addStandardDefaultViewCommands(false);
 			$lists = ShopFunctions::addStandardDefaultViewLists($model);
 			$this->assignRef('lists', $lists);
 

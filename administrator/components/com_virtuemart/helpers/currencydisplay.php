@@ -173,8 +173,6 @@ class CurrencyDisplay {
 			if($result[0]){
 				$result[0] = unserialize($result[0]);
 			}
-			dump($result,'$result');
-			dump( $this->_db,'$ $this->_db');
 		}
 
 		$priceFields = array('basePrice','variantModification','basePriceVariant',
@@ -203,7 +201,7 @@ class CurrencyDisplay {
 
 			$this->_priceConfig[$name] = array($show,$round,$text);
 		}
-		dump($this->_priceConfig,'$this->_priceConfig');
+
 	}
 
 	/**

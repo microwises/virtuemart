@@ -61,15 +61,16 @@ class VirtuemartControllerUpdatesMigration extends VmController{
      * Atm the standard is at least vm admin
      * @author Max Milbers
      */
-    private function checkPermissionForTools(){
-	//Hardcore Block, we may do that better later
-	if(!class_exists('Permissions'))
-	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-	if(!Permissions::getInstance()->check('admin')){
-	    $msg = 'Forget IT';
-	    $this->setRedirect('index.php?option=com_virtuemart', $msg);
-	}
-	return true;
+	private function checkPermissionForTools(){
+		//Hardcore Block, we may do that better later
+		if(!class_exists('Permissions'))
+		    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+		if(!Permissions::getInstance()->check('admin')){
+		    $msg = 'Forget IT';
+		    $this->setRedirect('index.php?option=com_virtuemart', $msg);
+		}
+
+		return true;
     }
 
     /**

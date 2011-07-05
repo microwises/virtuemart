@@ -144,7 +144,7 @@ class TableMedias extends VmTable {
 				$app = JFactory::getApplication();
 //				set_error_handler(array($this, 'handleError'));
 //				try{
-					$this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);dump($this->file_mimetype,'mime '.$this->file_name);
+					$this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);
 					if(!empty($this->file_mimetype)){
 						if($this->file_mimetype == 'directory'){
 							$this->setError('cant store this media, is a directory '.$rel_path);
@@ -197,7 +197,6 @@ class TableMedias extends VmTable {
 				     $this->setError(JText::_('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE'));
 				     $notice = true;
 			     }
-			     dump($this->file_mimetype,'mime without mime_content_type');
 		     }
 	     }
 

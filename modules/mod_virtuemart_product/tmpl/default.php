@@ -45,7 +45,6 @@ endforeach; ?>
 <?php foreach ($products as $product) : ?>
 <li>
 	<?php
-		dump ($product->prices,'prices');
 	$productModel->addImages($product);
 	echo $product->images[0]->displayMediaThumb('class="browseProductImage" border="0"');
 		//displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal'") ;//echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id),VmImage::getImageByProduct($product)->displayImage('class="featuredProductImage" border="0"',$product->product_name));

@@ -154,7 +154,7 @@ class VirtueMartModelOrders extends VmModel {
 			WHERE virtuemart_order_id=".$virtuemart_order_id;
 		$db->setQuery($q);
 		$order['items'] = $db->loadObjectList();
-		dump($order,'getOrder');
+
 		return $order;
 	}
 

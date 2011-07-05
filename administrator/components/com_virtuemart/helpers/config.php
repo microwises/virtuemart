@@ -114,7 +114,7 @@ class VmConfig{
 			jimport('joomla.html.parameter');
 			$session = JFactory::getSession();
 			$params = $session->get('vmconfig', '','vm');
-			//dump($params,' in get config '.$key);
+
 			if (!$params) {
 				//Todo better to get instance first and then loadConfig?
 				VmConfig::loadConfig();

@@ -111,5 +111,21 @@ class VirtuemartControllerMedia extends VmController {
 		$this->setRedirect($redirection, $msg);
 	}
 
+	function synchronizeMedia(){
+
+		if(!class_exists('Permissions'))
+	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+		if(!Permissions::getInstance()->check('admin')){
+		    $msg = 'Forget IT';
+		    $this->setRedirect('index.php?option=com_virtuemart', $msg);
+		}
+
+		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		$migrator = new Migrator();
+		$result = $migrator->portMedia();
+
+		$this->setRedirect($this->redirectPath, $result);
+	}
+
 }
 // pure php no closing tag

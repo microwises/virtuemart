@@ -48,7 +48,6 @@ class VirtuemartViewOrders extends JView {
 		if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
 		$orderStatusModel=new VirtueMartModelOrderstatus();
 		$orderStates = $orderStatusModel->getOrderStatusList();
-		dump ($orderStates );
 
 		$viewName=ShopFunctions::SetViewTitle('vm_orders_48', 'ORDER');
 		$this->assignRef('viewName',$viewName);
@@ -98,7 +97,7 @@ class VirtuemartViewOrders extends JView {
 				//When I use update, I have to use this?
 				$_orderStatusList[$orderState->order_status_code] = JText::_($orderState->order_status_name);
 			}
-			//dump($_orderStatusList,'my order status list');
+
 			$_itemStatusUpdateFields = array();
 			$_itemAttributesUpdateFields = array();
 			foreach($order['items'] as $_item) {

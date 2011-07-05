@@ -65,7 +65,6 @@ class Migrator extends VmModel{
 				if(!$result){
 					$result = array();
 				}
-				//dump($result,'getMigrationProgress of '.$group);
 			}
 
 			return $result;
@@ -698,7 +697,6 @@ class Migrator extends VmModel{
 		$manu = array();
 		$i =0 ;
 		foreach($oldManus as $oldmanu){
-			dump($oldmanu,'old manu');
 			if(!array_key_exists($oldmanu['manufacturer_id'],$alreadyKnownIds)){
 				$manu['mf_name'] = $oldmanu['mf_name'];
 				$manu['mf_email'] = $oldmanu['mf_email'];
@@ -868,7 +866,6 @@ class Migrator extends VmModel{
 		$this->_db->setQuery($q);
 		$oldOrders = $this->_db->loadAssocList();
 
-		//dump($oldOrders[0],'$oldOrders');
 		//$this->_app->enqueueMessage('$oldOrders query '.$this->_db->getQuery());
 		//$this->_app->enqueueMessage('$oldOrders errors? '.$this->_db->getErrorMsg());
 
@@ -883,7 +880,6 @@ class Migrator extends VmModel{
 		$newproductIds = $this->getMigrationProgress('products');
 		$orderCodeToId = $this->createOrderStatusAssoc();
 
-		//dump($alreadyKnownIds,'order ids known');
 /*		$q = 'SELECT `order_status_code`, `order_status_id` FROM #__virtuemart_orderstates WHERE `published` = "1" '
 		$this->_db->setQuery($q);
 		$orderStates = $this->_db->loadAssocList();
@@ -1012,7 +1008,6 @@ class Migrator extends VmModel{
 			}
 		}
 
-		//dump($oldtonewOrders,'to store $oldtonewOrders');
 		$this->storeMigrationProgress('orders',$oldtonewOrders);
 		$this->_app->enqueueMessage('Migration: '.$i.' orders processed ');
 	}
@@ -1023,12 +1018,12 @@ class Migrator extends VmModel{
 
 		$this->_db->setQuery($q);
 		$oldOrderStatus = $this->_db->loadAssocList();
-		dump($oldOrderStatus,'$$oldOrderStatus');
+
 		if(!class_exists('VirtueMartModelOrderstatus'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orderstatus.php');
 		$orderstatusModel = new VirtueMartModelOrderstatus();
 		$oldtonewOrderstates = array();
-		//$alreadyKnownIds = $this->getMigrationProgress('orderstates');dump($alreadyKnownIds,'$alreadyKnownIds');
+		//$alreadyKnownIds = $this->getMigrationProgress('orderstates');
 		$i = 0;
 		foreach($oldOrderStatus as $status){
 			if(!array_key_exists($status['order_status_id'],$alreadyKnownIds)){
@@ -1056,11 +1051,10 @@ class Migrator extends VmModel{
 				break;
 			}
 		}
-		dump($alreadyKnownIds,'$alreadyKnownIds');
+
 		$oldtonewOrderstates = array_merge($oldtonewOrderstates,$alreadyKnownIds);
 		$oldtonewOrderstates = array_unique($oldtonewOrderstates);
-		dump($alreadyKnownIds,'$alreadyKnownIds');
-// 		$this->storeMigrationProgress('orderstates',$oldtonewOrderstates);
+
 		$this->_app->enqueueMessage('Migration: '.$i.' orderstates processed ');
 		return;
 	}
@@ -1145,10 +1139,10 @@ class Migrator extends VmModel{
 		$orderstats = $this->_db->loadAssocList();
 		$xref = array();
 		foreach($orderstats as $status){
-			dump($status,'$status');
+
 			$xref[$status['order_status_code']] = $status['virtuemart_orderstate_id'];
 		}
-		dump($xref,'createOrderStatusAssoc');
+
 		return $xref;
 	}
 
