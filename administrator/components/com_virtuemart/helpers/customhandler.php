@@ -141,7 +141,7 @@ class VmCustomHandler {
 		if ($ID = JRequest::getInt( 'virtuemart_custom_id',0)) $q .=' and `virtuemart_custom_id`!='.(int)$ID;
 		//if (isset($this->virtuemart_custom_id)) $q.=' and virtuemart_custom_id !='.$this->virtuemart_custom_id;
 		if(empty($db)) $db = JFactory::getDBO();
-
+		$db = JFactory::getDBO();
 		$db->setQuery($q);
 //		$result = $db->loadAssocList();
 		$result = $db->loadObjectList();
@@ -230,7 +230,7 @@ class VmCustomHandler {
 	}
 
 	function getProductChildCustomRelation() {
-
+		$db = JFactory::getDBO();
 		$db->setQuery(' SELECT virtuemart_custom_id as value,custom_title as text FROM `#__virtuemart_customs` WHERE `field_type` ="C"' );
 		if ($results =$db->loadObjectList()) return $results ;
 		else return array();

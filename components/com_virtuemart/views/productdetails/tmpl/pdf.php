@@ -35,27 +35,19 @@ if (empty ( $this->product )) {
 
 <div class="productdetails-view">
 
-	<?php // Product Navigation
-	if (VmConfig::get ( 'product_navigation', 1 )) { ?>
-		<div class="product-neighbours">
-		<?php
-		if (! empty ( $this->product->neighbours ['previous'] )) {
-			$prev_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['previous'] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id );
-			echo JHTML::_ ( 'link', $prev_link, $this->product->neighbours ['previous'] ['product_name'], array ('class' => 'previous-page' ) );
-		}
-		if (! empty ( $this->product->neighbours ['next'] )) {
-			$next_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['next'] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id );
-			echo JHTML::_ ( 'link', $next_link, $this->product->neighbours ['next'] ['product_name'], array ('class' => 'next-page' ) );
-		}
-		?>
-		<div class="clear"></div>
-		</div>
-	<?php } // Product Navigation END ?>
-
 	<?php // Product Title ?>
 	<h1><?php echo $this->product->product_name ?></h1>
 	<?php // Product Title END ?>
+	<?php // Showing The Additional Images
+	if(!empty($this->product->images) && count($this->product->images)>0) { ?>
+		<div class="additional-images">
+		<?php // List all Images
+		foreach ($this->product->images as $image) {
+			echo $image->displayMediaFull('class="product-image"',false); //'class="modal"'
 
+		} ?>
+		</div>
+	<?php } // Showing The Additional Images END ?>
 
 	<?php // Product Short Description
 	if (!empty($this->product->product_s_desc)) { ?>
@@ -111,7 +103,6 @@ if (empty ( $this->product )) {
 				if (!VmConfig::get('use_as_catalog',0)) { ?>
 				<div class="addtocart-area">
 
-					<form method="post" class="product" action="index.php" id="addtocartproduct<?php echo $this->product->virtuemart_product_id ?>">
 	<?php // Product custom_fields
 	if (!empty($this->product->customfieldsCart)) {  ?>
 	<div class="product-fields">
@@ -146,46 +137,6 @@ if (empty ( $this->product )) {
 			} ?>
 		</div>
 	<?php } ?>
-
-		<div class="addtocart-bar">
-
-			<?php // Display the quantity box ?>
-			<!-- <label for="quantity<?php echo $this->product->virtuemart_product_id;?>" class="quantity_box"><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY'); ?>: </label> -->
-			<span class="quantity-box">
-				<input type="text" class="quantity-input" name="quantity[]" value="1" />
-			</span>
-			<span class="quantity-controls">
-				<input type="button" class="quantity-controls quantity-plus" />
-				<input type="button" class="quantity-controls quantity-minus" />
-			</span>
-			<?php // Display the quantity box END ?>
-
-			<?php // Add the button
-			$button_lbl = JText::_('COM_VIRTUEMART_CART_ADD_TO');
-			$button_cls = ''; //$button_cls = 'addtocart_button';
-			if (VmConfig::get('check_stock') == '1' && !$this->product->product_in_stock) {
-				$button_lbl = JText::_('COM_VIRTUEMART_CART_NOTIFY');
-				$button_cls = 'notify-button';
-			} ?>
-
-			<?php // Display the add to cart button ?>
-			<span class="addtocart-button">
-				<input type="submit" name="addtocart"  class="addtocart-button" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
-			</span>
-
-		<div class="clear"></div>
-		</div>
-
-		<?php // Display the add to cart button END ?>
-		<input type="hidden" class="pname" value="<?php echo $this->product->product_name ?>">
-		<input type="hidden" name="option" value="com_virtuemart" />
-		<input type="hidden" name="view" value="cart" />
-		<noscript><input type="hidden" name="task" value="add" /></noscript>
-		<input type="hidden" name="virtuemart_product_id[]" value="<?php echo $this->product->virtuemart_product_id ?>" />
-		<?php /** @todo Handle the manufacturer view */ ?>
-		<input type="hidden" name="virtuemart_manufacturer_id" value="<?php echo $this->product->virtuemart_manufacturer_id ?>" />
-		<input type="hidden" name="virtuemart_category_id[]" value="<?php echo $this->product->virtuemart_category_id ?>" />
-	</form>
 
 				<div class="clear"></div>
 				</div>
@@ -358,83 +309,6 @@ if (empty ( $this->product )) {
 		</div>
 	<?php } */ ?>
 
-
-
-
-	<?php // Show child categories
-	if ( VmConfig::get('showCategory',1) ) {
-		if ($this->category->haschildren) {
-			$iCol = 1;
-			$iCategory = 1;
-			$categories_per_row = VmConfig::get ( 'categories_per_row', 3 );
-			$category_cellwidth = ' width'.floor ( 100 / $categories_per_row );
-			$verticalseparator = " vertical-separator"; ?>
-
-		<div class="category-view">
-
-			<?php // Start the Output
-			if(!empty($this->category->children)){
-			foreach ( $this->category->children as $category ) {
-
-			// Show the horizontal seperator
-			if ($iCol == 1 && $iCategory > $categories_per_row) { ?>
-				<div class="horizontal-separator"></div>
-			<?php }
-
-			// this is an indicator wether a row needs to be opened or not
-			if ($iCol == 1) { ?>
-			<div class="row">
-			<?php }
-
-			// Show the vertical seperator
-			if ($iCategory == $categories_per_row or $iCategory % $categories_per_row == 0) {
-				$show_vertical_separator = ' ';
-			} else {
-				$show_vertical_separator = $verticalseparator;
-			}
-
-			// Category Link
-			$caturl = JRoute::_ ( 'index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id );
-
-				// Show Category ?>
-				<div class="category floatleft<?php echo $category_cellwidth . $show_vertical_separator ?>">
-					<div class="spacer">
-						<h2>
-							<a href="<?php echo $caturl ?>" title="<?php echo $category->category_name ?>">
-							<?php echo $category->category_name ?>
-							<br />
-							<?php // if ($category->ids) {
-								echo $category->images[0]->displayMediaThumb(0,false);
-							//} ?>
-							</a>
-						</h2>
-					</div>
-				</div>
-			<?php
-			$iCategory ++;
-
-			// Do we need to close the current row now?
-			if ($iCol == $categories_per_row) { ?>
-			<div class="clear"></div>
-			</div>
-			<?php
-			$iCol = 1;
-			} else {
-				$iCol ++;
-			}
-		}
-		}
-		// Do we need a final closing row tag?
-		if ($iCol != 1) { ?>
-			<div class="clear"></div>
-			</div>
-		<?php } ?>
-		</div>
-	<?php }
-	} ?>
-
-
-
 	<?php // Customer Reviews
 	if($this->allowRating || $this->showReview) {
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
@@ -448,7 +322,6 @@ if (empty ( $this->product )) {
 		} ?>
 
 	<div class="customer-reviews">
-		<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id) ; ?>" name="reviewForm" id="reviewform">
 	<?php
 	}
 
@@ -500,60 +373,7 @@ if (empty ( $this->product )) {
 		<div class="clear"></div>
 		</div>
 
-		<?php // Writing A Review
-		if($this->allowReview && !$alreadycommented) { ?>
-		<div class="write-reviews">
-
-		<?php	if($this->showRating) {
-				if($this->allowRating) { ?>
-					<h4><?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW')  ?><span><?php echo JText::_('COM_VIRTUEMART_WRITE_FIRST_REVIEW') ?></span></h4>
-					<span class="step"><?php echo JText::_('COM_VIRTUEMART_RATING_FIRST_RATE') ?></span>
-					<ul class="rating">
-
-					<?php // Print The Rating Stars + Checkboxes
-					for ($num=0 ; $num<=$maxrating;  $num++ ) { ?>
-						<li id="<?php echo $num ?>_stars">
-							<span><?php echo $stars[ $num ]; ?></span>
-							<br />
-							<?php
-							if ($num == 5) {
-								$selected = ' checked="checked"';
-							} else {
-								$selected = '';
-							} ?>
-							<input<?php echo $selected ?> id="vote<?php echo $num ?>" type="radio" value="<?php echo $num ?>" name="vote">
-						</li>
-					<?php } ?>
-					</ul>
-
-					<?php
-					// if(!class_exists('VmHtml')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
-					// $showReviewFor = array();
-					// for ($num=0 ; $num<=$maxrating;  $num++ ) {
-					// $showReviewFor[$num] = $num;
-					// }
-					// if($this->vote->vote!==null){
-					//
-					// }
-					// $vote = !empty($this->vote)? $this->vote->vote:$maxrating;
-					// echo VmHTML::radioList('vote', $vote,$showReviewFor);
-					// for ($num=0 ; $num<=$maxrating;  $num++ ) {
-					//}
-				}
-			} ?>
-
-			<span class="step"><?php echo JText::sprintf('COM_VIRTUEMART_REVIEW_COMMENT', VmConfig::get('reviews_minimum_comment_length', 100), VmConfig::get('reviews_maximum_comment_length', 2000)); ?></span>
-			<br />
-			<textarea class="virtuemart" title="<?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW') ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeyup="refresh_counter();" name="comment" rows="5" cols="60"><?php if(!empty($this->review->comment))echo $this->review->comment; ?></textarea>
-			<br />
-			<span><?php echo JText::_('COM_VIRTUEMART_REVIEW_COUNT') ?>
-			<input type="text" value="0" size="4" class="vm-default" name="counter" maxlength="4" readonly="readonly" />
-			</span>
-			<br /><br />
-			<input class="highlight-button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo JText::_('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" />
-		</div>
-		<?php
-		}
+<?php
 	}
 //					} else {
 //						echo '<strong>'.JText::_('COM_VIRTUEMART_DEAR').$this->user->name.',</strong><br />' ;
@@ -562,12 +382,6 @@ if (empty ( $this->product )) {
 
 	if($this->allowRating || $this->showReview) {
 	?>
-			<input type="hidden" name="virtuemart_product_id" value="<?php echo $this->product->virtuemart_product_id; ?>" />
-			<input type="hidden" name="option" value="com_virtuemart" />
-			<input type="hidden" name="virtuemart_category_id" value="<?php echo JRequest::getInt('virtuemart_category_id'); ?>" />
-			<input type="hidden" name="virtuemart_rating_review_id" value="0" />
-			<input type="hidden" name="task" value="review" />
-		</form>
 	</div>
 	<?php
 	}

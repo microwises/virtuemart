@@ -87,7 +87,7 @@ if (empty ( $this->product )) {
 		<?php // Product Main Image
 		if (!empty($this->product->images[0])) { ?>
 			<div class="main-image">
-			<?php echo $this->product->images[0]->displayMediaFull('class="product-image"'); ?>
+			<?php echo $this->product->images[0]->displayMediaFull('class="product-image"',false); ?>
 			</div>
 		<?php } // Product Main Image END ?>
 
