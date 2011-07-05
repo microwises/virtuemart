@@ -172,9 +172,10 @@ class VirtuemartViewCategory extends JView {
 		if ($mainframe->getCfg('MetaAuthor') == '1') {
 			$document->setMetaData('author', $category->metaauthor);
 		}
-
+		if ($products) {
 		$currency = CurrencyDisplay::getInstance( );
 		$this->assignRef('currency', $currency);
+		}
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
