@@ -244,7 +244,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->jTemplateList, 'vmtemplate', 'size=1', 'value', 'name', $this->config->get('vmtemplate'));
+			    echo JHTML::_('Select.genericlist', $this->jTemplateList, 'vmtemplate', 'size=1 width=200', 'value', 'name', $this->config->get('vmtemplate'));
 			    ?>
 			</td>
 		    </tr>

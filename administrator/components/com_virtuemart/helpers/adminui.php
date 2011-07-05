@@ -50,7 +50,7 @@ class AdminUIHelper {
 	jQuery(document).ready(function(){
 		
 		jQuery(function(){
-			jQuery('.adminform').jqTransform();
+			jQuery('#admin-content').jqTransform();
 		});
 		
 		var adminmenu = jQuery('.menu-wrapper');
@@ -104,6 +104,11 @@ class AdminUIHelper {
     	<div class="clear"></div>
 		</div>
 	<?php
+		$document = JFactory::getDocument ();
+		$document->addScriptDeclaration ( '
+		jQuery(document).ready(function() {
+		tabs(jQuery("#admin-ui-tabs .tabs"));
+		});');
    	 	}
     
 	/**

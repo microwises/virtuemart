@@ -81,11 +81,5 @@ echo JHTML::_ ( 'form.token' );
 <?php
 AdminUIHelper::endAdminArea ();
 
-	$document = JFactory::getDocument ();
-	$document->addScriptDeclaration ( '
-jQuery(document).ready(function() {
 
-	tabs(jQuery("#admin-ui-tabs .tabs"));
-
-});');
 ?>

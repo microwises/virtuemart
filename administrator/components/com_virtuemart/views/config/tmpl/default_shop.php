@@ -66,7 +66,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 		</td>
 	    <td>
-		<select name="order_mail_html" class="inputbox">
+		<select name="order_mail_html" id="order_mail_html">
 		    <option value="0" <?php if ($this->config->get('order_mail_html') == '0') echo 'selected="selected"'; ?>>
 			<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_TEXT') ?>
 		    </option>
