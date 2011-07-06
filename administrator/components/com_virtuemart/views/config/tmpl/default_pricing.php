@@ -89,7 +89,7 @@ defined('_JEXEC') or die('Restricted access');
 		<table class="admintable">
 			<tr>
 				<th></th>
-				<th></th>
+				<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_LABEL'); ?></th>
 				<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_TEXT'); ?></th>
 				<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_ROUNDING'); ?></th>
 			</tr>

@@ -29,16 +29,17 @@
         <param type="vmjpluginwarning" />
         <param   type="spacer" default="VMPAYMENT_PAYPAL_PARAMS" level="level1" />
         <param type="text" name="paypal_merchant_email"  size="50" label="VMPAYMENT_PAYPAL_EMAIL"
-             default="username@email.com" description="VMPAYMENT_PAYPAL_EMAIL_EXPLAIN" />
+             default="username@email.com" description="VMPAYMENT_PAYPAL_EMAIL_DESC" />
       
-        <param name="currency" type="radio" default="1" label="VMPAYMENT_PAYPAL_CURRENCY" description="VMPAYMENT_PAYPAL_SANDBOX_DESC">
+        <!-- BY DEFAULT paypal currency= vendor currency
+        param name="currency" type="radio" default="1" label="VMPAYMENT_PAYPAL_CURRENCY" description="VMPAYMENT_PAYPAL_SANDBOX_DESC">
             <option value="AUD">Australian Dollar </option>
             <option value="CAD">Canadian Dollar </option>
             <option value="EUR">Euro</option>
             <option value="GBP">Pound sterling</option>
             <option value="JPY">Yen japonais</option>
             <option value="USD">US Dollar</option>
-        </param>
+        </param -->
 
         <param name="PAYPAL_VERIFIED_ONLY" type="radio" default="0" label="VMPAYMENT_PAYPAL_ONLYVERIFIED" description="VMPAYMENT_PAYPAL_ONLYVERIFIED_EXPLAIN">
             <option value="0">NO</option>
@@ -66,7 +67,7 @@
         <option value="0">NO</option>
         <option value="1">YES</option>
     </param>
-    <param name="sandbox_merchant_email" type="text" size="50" default="" label="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT" description="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT" />
+    <param name="sandbox_merchant_email" type="text" size="50" default="" label="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT" description="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT_DESC" />
      
 
 </params>

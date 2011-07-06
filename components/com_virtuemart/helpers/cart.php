@@ -814,13 +814,6 @@ class VirtueMartCart {
              *  may be redirect is done by the payment plugin (eg: paypal) so we do not come back here
              *  if payment plugin echos a form, false = nothing happen, true= echo form ,
              */
-/*
-                 $fp = fopen("paypal.text", "a");
-      foreach ($returnValues as $returnValue) {
-        fwrite($fp, "Retourn plgVmAfterCheckoutDoPayment" .   $returnValue. "\n");
-      }
-          fclose($fp);
- * */
 
             $activeplugin = false;
             foreach ($returnValues as $returnValue) {

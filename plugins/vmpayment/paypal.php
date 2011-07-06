@@ -104,7 +104,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
                 $app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_PAYMENT'));
                 return;
             } else {
-                //return JText::sprintf('COM_VIRTUEMART_SHIPPER_NOT_VALID_FOR_THIS_VENDOR', $this->_name , $cart->vendorId );
+                //return JText::sprintf('COM_VIRTUEMART_PAYMENT_NOT_VALID_FOR_THIS_VENDOR', $this->_name , $cart->vendorId );
                 return;
             }
         }
@@ -135,12 +135,13 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         }
         $paramstring = $this->getVmPaymentParams($vendorId = 0, $orderData->virtuemart_paymentmethod_id);
         $params = new JParameter($paramstring);
-        $returnValue = 'P'; // TODO Read the status from the parameters
+
         // Load the required helpers
         //if(!class_exists('VmConnector')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
 
         if (!class_exists('VirtueMartModelOrders'))
             require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+ 	if(!class_exists('VirtueMartModelCurrency'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'currency.php');
 
         $usr = & JFactory::getUser();
 
@@ -149,8 +150,15 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
         $database = JFactory::getDBO();
 
-        $vendorID = 1; //$orderData->virtuemart_vendor_id; TODO
-        $vendorCurrency = VirtueMartModelVendor::getVendorCurrency($vendorID);
+
+        $vendorModel = new VirtueMartModelVendor();
+        $vendorModel->setId(1);
+        $vendor = $vendorModel->getVendor();
+ 
+        $currencyModel = new VirtueMartModelCurrency(); 
+        $currency = $currencyModel->getCurrency($orderData->cartData->calculator->vendorCurrency);
+
+
         $merchant_email = $this->_getMerchantEmail($params);
         $orderNumber = VirtueMartModelOrders::getOrderNumber($virtuemart_order_id);
         $testReq = $params->get('DEBUG') == 1 ? 'YES' : 'NO';
@@ -162,14 +170,14 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             'upload' => '1',
             'business' => $merchant_email,
             'receiver_email' => $merchant_email,
-            'item_name' => JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') . ': ' . $orderNr,
+            'item_name' => JText::_('VMPAYMENT_PAYPAL_ORDER_NUMBER') . ': ' . $orderNumber,
             'order_number' => $orderNumber,
             "order_id" => $orderNumber,
             "invoice" => $orderNumber,
             'custom' => $custom,
-            "amount" => $orderData->prices['billTotal'],
-            "shipping" =>  $orderData->prices['order_shipping'],
-            "currency_code" => $vendorCurrency->currency_code_3,
+            "amount" => $orderData->cartData->pricesUnformatted['billTotal'],
+            // "shipping" =>  $orderData->prices['order_shipping'],
+            "currency_code" => $currency->currency_code_3, // TODO
             "address_override" => "1",
             "first_name" => $usrBT['first_name'],
             "last_name" => $usrBT['last_name'],
@@ -181,18 +189,18 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             "country" => ShopFunctions::getCountryByID($usrST['virtuemart_country_id'], 'country_3_code'),
             "email" => $usrBT['email'],
             "night_phone_b" => $usrBT['phone_1'],
-        "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=raymentresponsereceived&pelement=' . $this->pelement),
+            "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentresponsereceived&pelement=' . $this->pelement),
             "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentnotification&pelement=' . $this->pelement),
-            "cancel_return" => JROUTE::_(JURI::root() .'index.php?option=com_virtuemart&view=paymentresponse&task=paymentcsercancel&pelement=' . $this->pelement),
+            "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentusercancel&pelement=' . $this->pelement),
             "undefined_quantity" => "0",
             "ipn_test" => $params->get('debug'),
             "pal" => "NRUBJXESJTY24",
-            "image_url" => $vendor_image_url,
+            "image_url" => $vendor_image_url, // TO DO
             "no_shipping" => "1",
             "no_note" => "1");
 
 
-        $qstring = '';
+        $qstring = '?';
         foreach ($post_variables AS $k => $v) {
             $qstring .= ( empty($qstring) ? '' : '&')
                     . urlencode($k) . '=' . urlencode($v);
@@ -204,13 +212,22 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         $dbValues['paypal_custom'] = $custom;
         // TODO wait for PAYPAL return ???
         $this->writePaymentData($dbValues, '#__virtuemart_order_payment_' . $this->_pelement);
-        // Send to PAYPAL TODO Sandbox choice ???
+
         $url = $this->_getPaypalUrl($params);
+        /*
+          echo '<form action="'."https://" .$url.'" method="post" target="_blank">';
+          echo '<input type="image" name="submit" src="https://www.paypal.com/en_US/i/btn/x-click-but6.gif" alt="Click to pay with PayPal - it is fast, free and secure!" />';
+
+          foreach( $post_variables as $name => $value ) {
+          echo '<input type="hidden" name="'.$name.'" value="'.htmlspecialchars($value).'" />';
+          }
+          echo '</form>';
+         */
         $mainframe = JFactory::getApplication();
-        $mainframe->redirect("https://" . $url, $qstring);
+        $mainframe->redirect("https://" . $url . $qstring);
 
 
-        return 'P'; // Does not return anyway... Set order status to Pending.  TODO Must be a plugin parameter
+        return 'P'; // Does not return anyway... Set order status to Pending.  
     }
 
     function plgVmOnPaymentResponseReceived() {
@@ -249,7 +266,6 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             exit;
         }
         //$fp = fopen("paypal.text", "a");
-
         //fwrite($fp, "plgVmOnPaymentResponseReceived" . $virtuemart_order_id . "\n");
         // fwrite($fp, "plgVmOnPaymentResponseReceived" . $post_msg  . "\n");
 
@@ -259,10 +275,10 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
         $this->updatePaymentData($response_fields, $this->_tablename, 'virtuemart_order_id', $virtuemart_order_id);
         if (!$this->_processIPN($paypal_data)) {
-  //fwrite($fp, "status_canceled" .   "\n");
+
             $new_state = $params->get('status_canceled');
         } else {
-  //fwrite($fp, "status_OK" .   "\n");
+
             $query = 'SELECT ' . $this->_tablename . '.`virtuemart_payment_id` FROM ' . $this->_tablename
                     . ' LEFT JOIN #__virtuemart_orders ON   ' . $ordrePaymentTableName . '.`virtuemart_order_id` = #__virtuemart_orders.`virtuemart_order_id`
                     WHERE #__virtuemart_orders.`order_number`=' . $paypal_data['invoice']
@@ -275,12 +291,11 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             $db->setQuery($query);
             $result = $db->loadResult();
             if (!$result) {
-               fwrite($fp, "qiery" .  $query. "\n");
+                fwrite($fp, "qiery" . $query . "\n");
             }
             $paramstring = $this->getVmPaymentParams($vendorId = 0, $orderData->virtuemart_paymentmethod_id);
             $params = new JParameter($paramstring);
             $new_state = $params->get('status_success');
-
         }
         //fclose($fp);
         return $new_state;
@@ -327,7 +342,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
      * This method returns the logo image form the shipper
      */
 
-    protected function _getPaymentLogos($logo_list) {
+    function _getPaymentLogos($logo_list) {
         $logos = array();
         if (!empty($logo_list)) {
             if (!is_array($logo_list)) {
@@ -337,7 +352,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             }
         }
         $img = "";
-        /* TODO: chercher chemin dynamique */
+
         $path = JURI::base() . "images" . DS . "stories" . DS . "virtuemart" . DS . "payment" . DS;
         $img = "";
         foreach ($logos as $logo) {
@@ -413,10 +428,11 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
     }
 
     function _getMerchantEmail($params) {
-        return $params->get('sandox') ? $params->get('email_sandbox_merchant') : $params->get('email_merchant');
+        return $params->get('sandbox') ? $params->get('sandbox_merchant_email') : $params->get('paypal_merchant_email');
     }
 
     function _getPaypalUrl($params) {
+
         $url = $params->get('sandbox') ? 'www.sandbox.paypal.com' : 'www.paypal.com';
         $url = $url . '/cgi-bin/webscr';
         return $url;
