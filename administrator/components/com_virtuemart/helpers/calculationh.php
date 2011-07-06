@@ -42,7 +42,7 @@ class calculationHelper {
     public $productCurrency;
     public $product_tax_id = 0;
     public $product_discount_id = 0;
-    private $vendorCurrency = 0;
+    public $vendorCurrency = 0;
     private $exchangeRateVendor = 0;
     private $exchangeRateShopper = 0;
     static $_instance;
@@ -67,12 +67,12 @@ class calculationHelper {
 
         //Attention, this is set to the mainvendor atm.
         //This means also that atm for multivendor, every vendor must use the shopcurrency as default
-        $this->vendorCurrency = 1;
+//         $this->vendorCurrency = 1;
 		$this->productVendorId = 1;
 
         if (!class_exists('CurrencyDisplay')
             )require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-        $this->_currencyDisplay = CurrencyDisplay::getInstance($this->vendorCurrency);
+        $this->_currencyDisplay = CurrencyDisplay::getInstance();
         $this->_debug = false;
 
         $this->setShopperGroupIds();

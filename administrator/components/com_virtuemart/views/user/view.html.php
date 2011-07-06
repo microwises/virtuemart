@@ -129,10 +129,10 @@ class VirtuemartViewUser extends JView {
 			}
 
 			$_userFields = $userFieldsModel->getUserFields(
-					 'account'
-			, array() // Default toggles
-			, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'address_type') // Skips
-			);
+					 				'account'
+									, array() // Default toggles
+									, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'address_type') // Skips
+									);
 
 			if (($_addressCount = count($userDetails->userInfo)) == 0) {
 				$_userInfoID = null;
@@ -152,9 +152,9 @@ class VirtuemartViewUser extends JView {
 				}
 			}
 			$userFields = $userFieldsModel->getUserFieldsByUser(
-			$_userFields
-			,$_userDetailsList
-			);
+										$_userFields
+										,$_userDetailsList
+										);
 
 			//			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $_userDetailsList->perms);
 			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $userDetails->perms);
@@ -172,8 +172,9 @@ class VirtuemartViewUser extends JView {
 				}
 			}
 
+
 			// The ShipTo address if selected
-			$_shipto_id = JRequest::getVar('shipto', -1);
+			$_shipto_id = JRequest::getVar('shipto', -1); dump($_shipto_id,'$$_shipto_id');
 			if ($_shipto_id == -1) {
 				$_shipto = 0;
 				$_paneOffset = array();

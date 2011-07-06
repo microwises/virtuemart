@@ -78,10 +78,13 @@ class VirtuemartViewUser extends JView {
 
 		$this->_userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
 
-		$this->_userDetails = $this->_model->getUser();
+
+//		$this->_userDetails = $this->_model->getUser();
 		$this->assignRef('userDetails', $this->_userDetails);
 
+
 		$userFields = $this->setUserFieldsForView($layoutName);
+		$hm  = $this->_model->getUserDataInFields();
 
 		if($layoutName=='edit'){
 			if($this->_model->getId()==0 && $this->_cuid==0){
@@ -89,15 +92,13 @@ class VirtuemartViewUser extends JView {
 			} else {
 				$button_lbl = JText::_('COM_VIRTUEMART_SAVE');
 			}
-			$currencymodel = $this->getModel('currency', 'VirtuemartModel');
-			$currencies = $currencymodel->getCurrencies();
-			$this->assignRef('currencies', $currencies);
 
 			$this->assignRef('button_lbl', $button_lbl);
 			$this->lUser();
 			$this->shopper($userFields);
 		}
-		$this->generateStAddressList();
+
+		$this->_lists['shipTo'] = ShopFunctions::generateStAddressList($this->_model);
 
 		$this->lshipto();
 
@@ -123,7 +124,6 @@ class VirtuemartViewUser extends JView {
 		$pane = JPane::getInstance((__VM_USER_USE_SLIDERS?'Sliders':'Tabs'), $_paneOffset);
 
 		$this->assignRef('lists', $this->_lists);
-
 
 		$this->assignRef('editor', $editor);
 		$this->assignRef('pane', $pane);
@@ -228,57 +228,7 @@ class VirtuemartViewUser extends JView {
 		$this->assignRef('userDetailsList', $userDetailsList);
 	}
 
-	function lOrderlist(){
-		// Check for existing orders for this user
-		$orders = $this->getModel('orders');
 
-		if ($this->_model->getId() == 0) {
-			// getOrdersList() returns all orders when no userID is set (admin function),
-			// so explicetly define an empty array when not logged in.
-			$this->_orderList = array();
-		} else {
-			$this->_orderList = $orders->getOrdersList($this->_model->getId(), true);
-
-			if(empty($this->currency)){
-				if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-
-				$currency = CurrencyDisplay::getInstance();
-				$this->assignRef('currency', $currency);
-			}
-		}
-		$this->assignRef('orderlist', $this->_orderList);
-	}
-
-	function payment(){
-
-	}
-
-	/**
-	 * This generates the list when the user have different ST addresses saved
-	 * @author Oscar van Eijk
-	 */
-	function generateStAddressList (){
-
-		// Shipping address(es)
-		$_addressList = $this->_model->getUserAddressList($this->_model->getId() , 'ST');
-		if (($_c = count($_addressList)) == 0) {
-			$this->_lists['shipTo'] = JText::_('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
-		} else {
-			$_shipTo = array();
-			for ($_i = 0; $_i < $_c; $_i++) {
-				$_shipTo[] = '<li>'.'<a href="index.php'
-				.'?option=com_virtuemart'
-				.'&view=user'
-				.'&task=editAddressSt'
-				.'&addrtype=ST'
-				.'&cid[]='.$_addressList[$_i]->virtuemart_user_id
-				.'&virtuemart_userinfo_id='.$_addressList[$_i]->virtuemart_userinfo_id
-				. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
-
-			}
-			$this->_lists['shipTo'] = '<ul>' . join('', $_shipTo) . '</ul>';
-		}
-	}
 	/**
 	 * For the edit_shipto layout
 	 *
@@ -324,6 +274,32 @@ class VirtuemartViewUser extends JView {
 		$this->assignRef('shipToID', $_shipto_id);
 	}
 
+
+	function payment(){
+
+	}
+
+	function lOrderlist(){
+		// Check for existing orders for this user
+		$orders = $this->getModel('orders');
+
+		if ($this->_model->getId() == 0) {
+			// getOrdersList() returns all orders when no userID is set (admin function),
+			// so explicetly define an empty array when not logged in.
+			$this->_orderList = array();
+		} else {
+			$this->_orderList = $orders->getOrdersList($this->_model->getId(), true);
+
+			if(empty($this->currency)){
+				if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+
+				$currency = CurrencyDisplay::getInstance();
+				$this->assignRef('currency', $currency);
+			}
+		}
+		$this->assignRef('orderlist', $this->_orderList);
+	}
+
 	function shopper($userFields){
 
 		$this->loadHelper('permissions');
@@ -353,12 +329,6 @@ class VirtuemartViewUser extends JView {
 			}
 
 			if(empty($this->_lists['vendors'])){
-// Outcommented to revert rev. 2916
-//				$_setVendor = '<input type="hidden" name="virtuemart_vendor_id" id="virtuemart_vendor_id" value = "'
-//					.(empty($this->_userDetails->virtuemart_vendor_id)
-//						?VmConfig::get('default_virtuemart_vendor_id')
-//						: $this->_userDetails->virtuemart_vendor_id
-//					 ).'"/>';
 				$this->_lists['vendors'] = JText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR');// . $_setVendor;
 			}
 		}
@@ -425,6 +395,10 @@ class VirtuemartViewUser extends JView {
 		// If the current user is a vendor, load the store data
 		if ($this->_userDetails->user_is_vendor) {
 
+			$currencymodel = $this->getModel('currency', 'VirtuemartModel');
+			$currencies = $currencymodel->getCurrencies();
+			$this->assignRef('currencies', $currencies);
+
 			if(!$this->_orderList){
 				$this->lOrderlist();
 			}
@@ -445,7 +419,7 @@ class VirtuemartViewUser extends JView {
 	 *
 	 * @return string HTML code to write the toggle button
 	 */
-	function toggle( $field, $i, $toggle, $imgY = 'tick.png', $imgX = 'publish_x.png', $prefix='' )
+/*	function toggle( $field, $i, $toggle, $imgY = 'tick.png', $imgX = 'publish_x.png', $prefix='' )
 	{
 
 		$img 	= $field ? $imgY : $imgX;
@@ -461,7 +435,7 @@ class VirtuemartViewUser extends JView {
 
 		return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
 		.'<img src="images/'. $img .'" border="0" alt="'. $alt .'" /></a>');
-	}
+	}*/
 
 
 }

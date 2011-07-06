@@ -55,11 +55,23 @@ function myValidator(f, t)
 
 <form method="post" id="adminForm" name="adminForm" action="index.php" enctype="multipart/form-data" class="form-validate" onSubmit="return myValidator(this);">
 <?php
-AdminUIHelper::buildTabs ( array (	'vendor' 	=> 	'COM_VIRTUEMART_VENDOR',
-									'shopper' 	=> 	'COM_VIRTUEMART_SHOPPER_FORM_LBL',
-									'user' 		=> 	'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO',
-									'shipto'	=> 	'COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL',
-									'orderlist' => 	'COM_VIRTUEMART_ORDER_LIST_LBL' ) );
+
+$tabarray = array();
+if($this->userDetails->user_is_vendor){
+	$tabarray['vendor'] = 'COM_VIRTUEMART_VENDOR';
+}
+$tabarray['shopper'] = 'COM_VIRTUEMART_SHOPPER_FORM_LBL';
+$tabarray['user'] = 'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO';
+if ($this->shipto != 0) {
+	$tabarray['shipto'] = 'COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL';
+}
+if (($_ordcnt = count($this->orderlist)) > 0) {
+	$tabarray['orderlist'] = 'COM_VIRTUEMART_ORDER_LIST_LBL';
+}
+
+
+AdminUIHelper::buildTabs ( $tabarray );
+
 //	echo $this->pane->startPane("user-pane");
 //
 //        if (!empty($this->userDetails->user_is_vendor)) {

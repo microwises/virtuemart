@@ -435,6 +435,32 @@ class ShopFunctions {
 		return $html;
 	}
 
+	/**
+	* This generates the list when the user have different ST addresses saved
+	* @author Oscar van Eijk
+	*/
+	function generateStAddressList ($userModel){
+
+		// Shipping address(es)
+		$_addressList = $userModel->getUserAddressList($userModel->getId() , 'ST');
+		if (($_c = count($_addressList)) == 0) {
+			return JText::_('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
+		} else {
+			$_shipTo = array();
+			for ($_i = 0; $_i < $_c; $_i++) {
+				$_shipTo[] = '<li>'.'<a href="index.php'
+				.'?option=com_virtuemart'
+				.'&view=user'
+				.'&task=editAddressSt'
+				.'&addrtype=ST'
+				.'&cid[]='.$_addressList[$_i]->virtuemart_user_id
+				.'&virtuemart_userinfo_id='.$_addressList[$_i]->virtuemart_userinfo_id
+				. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
+
+			}
+			return '<ul>' . join('', $_shipTo) . '</ul>';
+		}
+	}
 
 	/**
 	 * Creates structured option fields for all categories

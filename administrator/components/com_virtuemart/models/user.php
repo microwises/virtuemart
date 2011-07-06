@@ -106,19 +106,6 @@ class VirtueMartModelUser extends VmModel {
 		$this->setId($user->get('id'));
 	}
 
-	/**
-	 * Load a single user_info record
-	 *
-	 * @param $_ui_id string Record id
-	 * @return object Database object
-	 */
-	function _loadUserInfo($_ui_id)
-	{
-		$data = $this->getTable('userinfos');
-		$data->load($_ui_id);
-		return $data;
-	}
-
 
 	/**
 	 * This should load the userdata in userfields so that they can easily displayed
@@ -126,16 +113,26 @@ class VirtueMartModelUser extends VmModel {
 	 * @author Max Milbers
 	 */
 
-	function getUserDataInFields( $type, $toggles, $skips){
+	function getUserDataInFields($layoutName, $type, $toggles=0, $skips=0){
 
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = new VirtuemartModelUserfields();
 
-		$prepareUserFields = $userFieldsModel->getUserFields(
-										$type,
-										$toggles, // Default toggles
-										$skips
-									);
+		if(empty($layoutName)){
+			$prepareUserFields = $userFieldsModel->getUserFields(
+			$type,
+			$toggles, // Default toggles
+			$skips
+			);
+		} else {
+			$prepareUserFields = $userFieldsModel->getUserFieldsFor(
+			$layoutName,
+			$type,
+			$this->userDetails->JUser->id);
+		}
+
+
+
 
 		$userdata = $this->getUser();
 		foreach ($prepareUserFields as $_fld) {
@@ -161,16 +158,18 @@ class VirtueMartModelUser extends VmModel {
 		$xrefTable = $this->getTable('vmuser_shoppergroups');
 		$this->_data->shopper_groups = $xrefTable->load($this->_id);
 
-
 		$this->_data->JUser = JUser::getInstance($this->_id);
 
 		$_ui = $this->_getList('SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"');
 
 		$this->_data->userInfo = array ();
 
+		$userinfo = $this->getTable('userinfos');
 		for ($i = 0, $n = count($_ui); $i < $n; $i++) {
+
 			$_ui_id = $_ui[$i]->virtuemart_userinfo_id;
-			$this->_data->userInfo[$_ui_id] = $this->_loadUserInfo($_ui_id);
+			$this->_data->userInfo[$_ui_id] = $data->load($_ui_id);
+
 			/*
 			 * Hack by Oscar for Ticket #296 (redmine); user_is_vendor gets reset when a BT address is saved
 			 * from the cart. I don't know is this is the only location, but it can be fixed by
@@ -178,12 +177,12 @@ class VirtueMartModelUser extends VmModel {
 			 * I make this hack here, since I'm not sure if it causes problems on more locations.
 			 * @TODO Find out is there's a more decvent solution. Maybe when the user_info table gets reorganised?
 			 */
-			if ($this->_data->userInfo[$_ui_id]->address_type == 'BT') {
+/*			if ($this->_data->userInfo[$_ui_id]->address_type == 'BT') {
 				$this->_data->userInfo[$_ui_id]->user_is_vendor = $this->_data->user_is_vendor;
 				$this->_data->userInfo[$_ui_id]->name = $this->_data->JUser->name;
 			}
 			// End hack
-			$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
+			$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;*/
 		}
 
 		if($this->_data->user_is_vendor){
@@ -195,43 +194,9 @@ class VirtueMartModelUser extends VmModel {
 			$this->_data->vendor = $vendorModel->getVendor();
 		}
 
+		dump($this->_data,'my user data');dumpTrace();
 		return $this->_data;
 	}
-
-/**	function getUserDataInFields($view, $type){
-
-		//Okey, first lets get Userdata
-		$user = $this->getUser();
-
-		//then lets get the userfields
-		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
-		$userFieldsModel = new VirtueMartModelUserfields();
-
-
-		if ($type == 'ST') {
-			$prepareUserFields = $userFieldsModel->getUserFields(
-									 'shipping'
-									, array() // Default toggles
-			);
-		} else { // BT
-				// The user is not logged in (anonymous), so we need tome extra fields
-				$prepareUserFields = $userFieldsModel->getUserFields(
-										 'account'
-										, array() // Default toggles
-										, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
-				);
-
-		}
-
-		//fill userfields
-		// Format the data
-		foreach ($prepareUserFields as $_fld) {
-			if(empty($data[$_fld->name])) $data[$_fld->name] = '';
-			$data[$_fld->name] = $_userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $data[$_fld->name],$data);
-		}
-
-		return $data;
-	}*/
 
 
 	/**
@@ -773,19 +738,6 @@ class VirtueMartModelUser extends VmModel {
 			return $this->_data;
 	 }
 
-	 /**
-	  * Retrieve a list of addresses for a user
-	  * todo check, was broken
-	  *  @param $_uid int User ID
-	  *  @param $_type string, addess- type, ST (ShipTo, default) or BT (BillTo)
-	  */
-/*	 function getUserAddressList($_uid = 0, $_type = 'ST')
-	 {
-	 	$_q = 'SELECT * FROM #__virtuemart_userinfos
-				WHERE virtuemart_user_id="' . (($_uid==0)?$this->_id:(int)$_uid) .'"
-				AND address_type="'.$_type.'"';
-			return ($this->_getList($_q));
-	 }*/
 
 	 /**
 	  * Retrieve a single address for a user
@@ -881,14 +833,16 @@ class VirtueMartModelUser extends VmModel {
 		return ($query);
 	 }
 
+
 	 /**
 	  * Take a list of userIds and check if they all have a record in #__virtuemart_userinfos
 	  *
+	  * TODO place this to the tools
 	  * @author Oscar van Eijk
 	  * @param $_ids Array with userIds to check (uId, uId, ...)
 	  * @return array with invalid users (userId => userName, ...)
 	  */
-	 function validateUsers ($_ids = array())
+/*	 function validateUsers ($_ids = array())
 	 {
 	 	if (count($_ids) == 0) {
 	 		return array();
@@ -912,6 +866,7 @@ class VirtueMartModelUser extends VmModel {
 			}
 			return $_missingUsers;
 	 }
+*/
 
 	 /**
 	  * Return a list of Joomla ACL groups.
