@@ -66,7 +66,8 @@ class VirtuemartViewUser extends JView {
 		if(empty($layoutName)){
 			$layoutName = JRequest::getWord('layout','default');
 		}
-//		$layoutName = JRequest::getWord('layout', $this->getLayout());
+
+		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
 		$this->_model = $this->getModel('user', 'VirtuemartModel');
 //		$this->_model->setCurrent(); //without this, the administrator can edit users in the FE, permission is handled in the usermodel, but maybe unsecure?
@@ -79,14 +80,22 @@ class VirtuemartViewUser extends JView {
 		$this->_userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
 
 
-//		$this->_userDetails = $this->_model->getUser();
+		$this->_userDetails = $this->_model->getUser();
 		$this->assignRef('userDetails', $this->_userDetails);
 
 
-		$userFields = $this->setUserFieldsForView($layoutName);
-		$hm  = $this->_model->getUserDataInFields();
-		dump($hm,'$hm');
-		dump($userFields,'$$userFields');
+// 		$userFields = $this->setUserFieldsForView($layoutName);
+// 		dump($userFields,'$$userFields');
+
+		$type = JRequest::getWord('addrtype', 'BT');
+		$this->assignRef('address_type', $type);
+
+		$userFields  = $this->_model->getUserDataInFields($layoutName,$type,$this->userDetails->JUser->id);
+		$this->assignRef('userFields', $userFields[0]);
+// 		$this->assignRef('userInfoID',  JRequest::getInt('virtuemart_userinfo_id', 0));
+		//$this->assignRef('userInfoID',  $userFields[0]->virtuemart_userinfo_id);
+		dump($userFields,'$userFields in VirtuemartViewUser ');
+
 
 		if($layoutName=='edit'){
 			if($this->_model->getId()==0 && $this->_cuid==0){
@@ -97,7 +106,7 @@ class VirtuemartViewUser extends JView {
 
 			$this->assignRef('button_lbl', $button_lbl);
 			$this->lUser();
-			$this->shopper($userFields);
+			$this->shopper($userFields[0]);
 		}
 
 		$this->_lists['shipTo'] = ShopFunctions::generateStAddressList($this->_model);
@@ -148,7 +157,7 @@ class VirtuemartViewUser extends JView {
 	 *
 	 * @author Oscar van Eijk
 	 */
-	function setUserFieldsForView($layoutName){
+/*	function setUserFieldsForView($layoutName){
 
 		$type = JRequest::getWord('addrtype', 'BT');
 		$this->assignRef('address_type', $type);
@@ -200,7 +209,7 @@ class VirtuemartViewUser extends JView {
 	/** Gets the userInfoId and the userDetailsList
 	 * TODO there is a problem with the userDetailsList, it is used in different places, sorry do not see through it
 	 */
-	function getUserData($type='BT'){
+/*	function getUserData($type='BT'){
 
 		$userDetailsList = 0;
 		$userInfoID = 0;
@@ -229,7 +238,7 @@ class VirtuemartViewUser extends JView {
 
 		$this->assignRef('userDetailsList', $userDetailsList);
 	}
-
+*/
 
 	/**
 	 * For the edit_shipto layout
@@ -306,7 +315,6 @@ class VirtuemartViewUser extends JView {
 
 		$this->loadHelper('permissions');
 		$this->loadHelper('shoppergroup');
-		$this->loadHelper('shopfunctions');
 
 		// Shopper info
 		if (!class_exists('VirtueMartModelShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shoppergroup.php');
@@ -314,7 +322,7 @@ class VirtuemartViewUser extends JView {
 		$_shoppergroup = VirtueMartModelShopperGroup::getShoppergroupById ($this->_model->getId());
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-//		require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+
 		if(Permissions::getInstance()->check('admin,storeadmin')){
 			$this->_lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($_shoppergroup['virtuemart_shoppergroup_id']);
 			$this->_lists['vendors'] = ShopFunctions::renderVendorList($this->_userDetails->virtuemart_vendor_id);

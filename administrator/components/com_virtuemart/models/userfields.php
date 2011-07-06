@@ -215,7 +215,7 @@ class VirtueMartModelUserfields extends VmModel {
 		// Get the fieldtype for the database
 		$_fieldType = $field->formatFieldType($data);
 
-		$coreFields= array( 'username', 'email', 'password', 'password2' );
+		$coreFields= $this->getCoreFields();
 		if(!in_array($data['name'],$coreFields) && $field->type != 'delimiter'){
 
 			// Alter the user_info table
@@ -302,8 +302,8 @@ class VirtueMartModelUserfields extends VmModel {
 		if($layoutName=='edit'){
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
 						, 'address_type', 'bank', 'email');
-		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $userId === 0){
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed','user_is_vendor');
+// 		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $userId === 0){
+// 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed','user_is_vendor');
 
 		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1)){
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed','user_is_vendor');
@@ -331,10 +331,12 @@ class VirtueMartModelUserfields extends VmModel {
 			);
 		}
 
-		//Small ugly hack to make registering optional
+		//Small ugly hack to make registering optional //do we still need that?
 		if($layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $userId === 0){
+			$corefields = $this->getCoreFields();
 			foreach($userFields as $field){
-				if($field->name == 'name' || $field->name == 'username' || $field->name == 'password' || $field->name == 'password2'){
+				if(in_array($field->name,$corefields)){
+// 				if($field->name == 'name' || $field->name == 'username' || $field->name == 'password' || $field->name == 'password2'){
 					$field->required = 0;
 					$field->value = '';
 					$field->default = '';

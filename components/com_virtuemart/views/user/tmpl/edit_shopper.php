@@ -95,7 +95,7 @@ defined('_JEXEC') or die('Restricted access');
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_FORM_LBL'); ?>
 	</legend>
-<?php 
+<?php
 	$_k = 0;
 	$_set = false;
 	$_table = false;
@@ -143,7 +143,7 @@ defined('_JEXEC') or die('Restricted access');
 		}
 
 		if (!$_table) {
-			// A table hasn't been opened as well. We need one here, 
+			// A table hasn't been opened as well. We need one here,
 			echo '	<table class="adminform">'."\n";
 			$_table = true;
 		}
@@ -168,6 +168,6 @@ defined('_JEXEC') or die('Restricted access');
 	echo $_hiddenFields;
 ?>
 </fieldset>
-<input type="hidden" name="virtuemart_userinfo_id" value="<?php echo $this->userInfoID; ?>" />
+<input type="hidden" name="virtuemart_userinfo_id" value="<?php echo$this->userFields['virtuemart_userinfo_id']; ?>" />
 <input type="hidden" name="address_type" value="BT" />
 

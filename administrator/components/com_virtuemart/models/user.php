@@ -113,31 +113,55 @@ class VirtueMartModelUser extends VmModel {
 	 * @author Max Milbers
 	 */
 
-	function getUserDataInFields($layoutName, $type, $toggles=0, $skips=0){
+	function getUserDataInFields($layoutName, $type, $id, $toggles=0, $skips=0){
 
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = new VirtuemartModelUserfields();
 
-		if(empty($layoutName)){
-			$prepareUserFields = $userFieldsModel->getUserFields(
-			$type,
-			$toggles, // Default toggles
-			$skips
-			);
+		$prepareUserFields = $userFieldsModel->getUserFieldsFor(
+										$layoutName,
+										$type,
+										$id
+									);
+
+		if($type=='ST'){
+			$preFix = 'shipto_';
 		} else {
-			$prepareUserFields = $userFieldsModel->getUserFieldsFor(
-			$layoutName,
-			$type,
-			$this->userDetails->JUser->id);
+			$preFix = '';
 		}
-
+		$userFields = array();
 		$userdata = $this->getUser();
-		foreach ($prepareUserFields as $_fld) {
-			if(empty($userdata->{$_fld->name})) $userdata->{$_fld->name} = '';
-			$data{$_fld->name} = $userFieldsModel->getUserFieldsByUser($prepareUserFields, $userdata);
+
+		if(!empty($userdata)) {
+
+			$currentUserData = current($userdata->userInfo);
+			for ($_i = 0; $_i < count($userdata->userInfo); $_i++) {
+				dump($currentUserData,'getUserDataInFields');
+				if($currentUserData->address_type==$type){
+					$fields = $userFieldsModel->getUserFieldsByUser(
+											$prepareUserFields
+											,$currentUserData
+											,$preFix
+										);
+					$fields['virtuemart_userinfo_id'] = key($userdata->userInfo);
+					$userFields[] = $fields;
+				}
+				$currentUserData = next($userdata->userInfo);
+
+			}
 		}
 
-		return $userdata;
+		if(empty($userFields)){
+			$fields = $userFieldsModel->getUserFieldsByUser(
+								$prepareUserFields
+								,null
+								,$preFix
+							);
+			$fields['virtuemart_userinfo_id'] = 0;
+			$userFields[] = $fields;
+		}
+
+		return $userFields;
 	}
 
 
@@ -161,12 +185,14 @@ class VirtueMartModelUser extends VmModel {
 
 		$this->_data->userInfo = array ();
 
-		$userinfo = $this->getTable('userinfos');
+		//$userinfo = $this->getTable('userinfos');
 		for ($i = 0, $n = count($_ui); $i < $n; $i++) {
 
 			$_ui_id = $_ui[$i]->virtuemart_userinfo_id;
-			$this->_data->userInfo[$_ui_id] = $userinfo->load($_ui_id);
 
+			$this->_data->userInfo[$_ui_id] = $this->getTable('userinfos');
+			$this->_data->userInfo[$_ui_id]->load($_ui_id);
+// 			dump($this->_data->userInfo[$_ui_id],'$_ui_id ggggg');
 			/*
 			 * Hack by Oscar for Ticket #296 (redmine); user_is_vendor gets reset when a BT address is saved
 			 * from the cart. I don't know is this is the only location, but it can be fixed by
@@ -174,12 +200,18 @@ class VirtueMartModelUser extends VmModel {
 			 * I make this hack here, since I'm not sure if it causes problems on more locations.
 			 * @TODO Find out is there's a more decvent solution. Maybe when the user_info table gets reorganised?
 			 */
-/*			if ($this->_data->userInfo[$_ui_id]->address_type == 'BT') {
-				$this->_data->userInfo[$_ui_id]->user_is_vendor = $this->_data->user_is_vendor;
+			if ($this->_data->userInfo[$_ui_id]->address_type == 'BT') {
+
 				$this->_data->userInfo[$_ui_id]->name = $this->_data->JUser->name;
+				$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
+				$this->_data->userInfo[$_ui_id]->username = $this->_data->JUser->username;
+
+
+// 				$this->_data->userInfo[$_ui_id]->user_is_vendor = $this->_data->user_is_vendor;
+// 				$this->_data->userInfo[$_ui_id]->name = $this->_data->JUser->name;
 			}
 			// End hack
-			$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;*/
+			$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
 		}
 
 		if($this->_data->user_is_vendor){
@@ -189,9 +221,10 @@ class VirtueMartModelUser extends VmModel {
 
 			$vendorModel->setId($this->_data->virtuemart_vendor_id);
 			$this->_data->vendor = $vendorModel->getVendor();
+			dump($this->_data->vendor,'my user is vendor');
 		}
 
-		dump($this->_data,'my user data');dumpTrace();
+		dump($this->_data,'my user data');
 		return $this->_data;
 	}
 
@@ -278,8 +311,9 @@ class VirtueMartModelUser extends VmModel {
 	 * @author Oscar van Eijk
 	 * @return boolean True is the save was successful, false otherwise.
 	 */
-	function store($data=0)
-	{
+	function store($data=0){
+
+		dump('called store user');
 		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save user' );
 		$mainframe = JFactory::getApplication() ;
 
@@ -288,18 +322,17 @@ class VirtueMartModelUser extends VmModel {
 			return false;
 		}
 
-		//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
+/*		//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
 		//The constructor sets automatically the right id.
 		$new = ($this->_id < 1);
 		$user = JFactory::getUser($this->_id);
 		$gid = $user->get('gid'); // Save original gid
 
-		/*
-		 * Before I used this "if($cart && !$new)"
-		 * This construction is necessary, because this function is used to register a new JUser, so we need all the JUser data in $data.
-		 * On the other hand this function is also used just for updating JUser data, like the email for the BT address. In this case the
-		 * name, username, password and so on is already stored in the JUser and dont need to be entered again.
-		 */
+		// Before I used this "if($cart && !$new)"
+		// This construction is necessary, because this function is used to register a new JUser, so we need all the JUser data in $data.
+		// On the other hand this function is also used just for updating JUser data, like the email for the BT address. In this case the
+		// name, username, password and so on is already stored in the JUser and dont need to be entered again.
+
 		if(empty ($data['email'])){
 			$email = $user->get('email');
 			if(!empty($email)){
@@ -341,7 +374,7 @@ class VirtueMartModelUser extends VmModel {
 		if(empty ($data['password2'])){
 			$data['password2'] = JRequest::getVar('password2', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
 		}
-
+		dump('before bind j user');
 		// Bind Joomla userdata
 		if (!$user->bind($data)) {
 			//develop
@@ -399,9 +432,10 @@ class VirtueMartModelUser extends VmModel {
 		// Save the JUser object
 		if (!$user->save()) {
 			JError::raiseWarning('', JText::_( $user->getError()));
+			dump('Was not able to store user');
 			return false;
 		}
-
+		dump('stored j user');
 		$newId = $user->get('id');
 		$data['virtuemart_user_id'] = $newId;	//We need this in that case, because data is bound to table later
 		$this->setUserId($newId);
@@ -423,7 +457,7 @@ class VirtueMartModelUser extends VmModel {
 		//		$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
 
 		//		self::doRegisterEmail($user, $password);
-
+*/
 		// Everything went fine, set relevant message depending upon user activation state and display message
 		if ($new) {
 			if ( $useractivation == 1 ) {
@@ -484,6 +518,11 @@ class VirtueMartModelUser extends VmModel {
 
 		$usertable = $this->getTable('vmusers');
 
+		$app = JFactory::getApplication();
+		if($app->isSite()){
+			unset($data['user_is_vendor']);
+			unset($data['virtuemart_vendor_id']);
+		}
 		$vmusersData = $usertable -> bindChecknStore($data);
 		$errors = $usertable->getErrors();
 		foreach($errors as $error){

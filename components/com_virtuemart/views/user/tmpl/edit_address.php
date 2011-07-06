@@ -39,7 +39,7 @@ function myValidator(f, t)
 
 function callValidatorForRegister(f){
 
-	
+
 	var elem = jQuery('#username_field');
 	//if(elem.val().length<3){
 		//return false;
@@ -47,7 +47,7 @@ function callValidatorForRegister(f){
 		elem.attr('class', "required");
 	//}
 	//alert('my elem '+elem);
-	
+
 	var elem = jQuery('#password_field');
 	elem.attr('class', "required");
 
@@ -76,7 +76,7 @@ function callValidatorForRegister(f){
 		if($this->fTask === 'savecartuser'){ $rtask = 'registercartuser'; }else{ $rtask = 'registercheckoutuser'; }
 		?>
 		<button class="default" type="submit" onclick="javascript:return callValidatorForRegister(userForm);" ><?php echo JText::_('COM_VIRTUEMART_REGISTER'); ?></button>
-		
+
 	<?php } ?>
 	<button class="default" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
 	<button class="default" type="reset" onclick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
@@ -177,6 +177,6 @@ if ($this->userDetails->JUser->get('id') ) { ?>
 <input type="hidden" name="controller" value="user" />
 <input type="hidden" name="task" value="<?php echo $this->fTask; // I remember, we removed that, but why? ?>" />
 <input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>" />
-<input type="hidden" name="virtuemart_userinfo_id" value="<?php echo $this->userInfoID; ?>" />
+<input type="hidden" name="virtuemart_userinfo_id" value="<?php echo $this->userFields['virtuemart_userinfo_id']; ?>" />
 <?php  echo JHTML::_( 'form.token' ); ?>
 </form>

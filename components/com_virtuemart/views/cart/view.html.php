@@ -354,6 +354,7 @@ $this->_cart->setCartIntoSession();
 							);
 
 		}
+
 		$this->assignRef('BTaddress',$BTaddress['fields']);
 
 		$STaddress['fields']= array();
@@ -367,46 +368,6 @@ $this->_cart->setCartIntoSession();
 
 		}
 		$this->assignRef('STaddress',$STaddress['fields']);
-
-/*		$BTaddress['fields']= array();
-		if(!empty($this->_cart->BT)){
-
-			//Here we get the fields
-			$userFieldsBT = $userFieldsModel->getUserFields(
-				 'account'
-				, array() // Default toggles
-				,  $skips// Skips
-			);
-			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-			$cart = VirtueMartCart::getCart(false);
-			$BTaddress = $cart->getAddress(
-				 $userFieldsModel
-				,$userFieldsBT
-				,'BT'
-			);
-		}
-
-		$this->assignRef('BTaddress',$BTaddress['fields']);
-
-		$STaddress['fields']= array();
-		if(!empty($this->_cart->ST)){
-
-			$userFieldsST = $userFieldsModel->getUserFields(
-				'shipping'
-				, array() // Default toggles
-				, $skips
-			);
-			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-			$cart = VirtueMartCart::getCart(false);
-			$STaddress = $cart->getAddress(
-				 $userFieldsModel
-				,$userFieldsST
-				,'ST'
-			);
-
-		}
-
-		$this->assignRef('STaddress',$STaddress['fields']);*/
 
 	}
 

@@ -62,9 +62,22 @@ function myValidator(f, t)
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 </div>
 <?php // Loading Templates in Tabs
-shopFunctionsF::buildTabs ( array (	'user' 		=> 	'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO',
-									'shopper' 	=> 	'COM_VIRTUEMART_SHOPPER_FORM_LBL'
-									 ) );
+
+$tabarray = array();
+if($this->userDetails->user_is_vendor){
+	$tabarray['vendor'] = 'COM_VIRTUEMART_VENDOR';
+}
+$tabarray['shopper'] = 'COM_VIRTUEMART_SHOPPER_FORM_LBL';
+$tabarray['user'] = 'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO';
+//if ($this->shipto != 0) {
+//	$tabarray['shipto'] = 'COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL';
+//}
+if (($_ordcnt = count($this->orderlist)) > 0) {
+	$tabarray['orderlist'] = 'COM_VIRTUEMART_ORDER_LIST_LBL';
+}
+
+
+shopFunctionsF::buildTabs ($tabarray);
 
 /*
  * TODO this Stuff should be converted in a payment module. But the idea to show already saved payment information to the user is a good one
@@ -87,19 +100,19 @@ shopFunctionsF::buildTabs ( array (	'user' 		=> 	'COM_VIRTUEMART_USER_FORM_TAB_G
 //		echo $this->pane->endPanel();
 //	}
 
-	if (($_ordcnt = count($this->orderlist)) > 0) {
-		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_ORDER_LIST_LBL') . ' (' . $_ordcnt . ')', 'edit_orderlist' );
-		echo $this->loadTemplate('orderlist');
-		echo $this->pane->endPanel();
-	}
+// 	if (($_ordcnt = count($this->orderlist)) > 0) {
+// 		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_ORDER_LIST_LBL') . ' (' . $_ordcnt . ')', 'edit_orderlist' );
+// 		echo $this->loadTemplate('orderlist');
+// 		echo $this->pane->endPanel();
+// 	}
 
-	if (!empty($this->userDetails->user_is_vendor)) {
-		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_VENDOR_MOD'), 'edit_vendor' );
-		echo $this->loadTemplate('vendor');
-		echo $this->pane->endPanel();
-	}
+// 	if (!empty($this->userDetails->user_is_vendor)) {
+// 		echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_VENDOR_MOD'), 'edit_vendor' );
+// 		echo $this->loadTemplate('vendor');
+// 		echo $this->pane->endPanel();
+// 	}
 
-	echo $this->pane->endPane();
+// 	echo $this->pane->endPane();
 ?>
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="controller" value="user" />
