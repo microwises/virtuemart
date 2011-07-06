@@ -131,9 +131,6 @@ class VirtueMartModelUser extends VmModel {
 			$this->userDetails->JUser->id);
 		}
 
-
-
-
 		$userdata = $this->getUser();
 		foreach ($prepareUserFields as $_fld) {
 			if(empty($userdata->{$_fld->name})) $userdata->{$_fld->name} = '';
@@ -168,7 +165,7 @@ class VirtueMartModelUser extends VmModel {
 		for ($i = 0, $n = count($_ui); $i < $n; $i++) {
 
 			$_ui_id = $_ui[$i]->virtuemart_userinfo_id;
-			$this->_data->userInfo[$_ui_id] = $data->load($_ui_id);
+			$this->_data->userInfo[$_ui_id] = $userinfo->load($_ui_id);
 
 			/*
 			 * Hack by Oscar for Ticket #296 (redmine); user_is_vendor gets reset when a BT address is saved

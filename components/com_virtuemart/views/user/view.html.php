@@ -85,6 +85,8 @@ class VirtuemartViewUser extends JView {
 
 		$userFields = $this->setUserFieldsForView($layoutName);
 		$hm  = $this->_model->getUserDataInFields();
+		dump($hm,'$hm');
+		dump($userFields,'$$userFields');
 
 		if($layoutName=='edit'){
 			if($this->_model->getId()==0 && $this->_cuid==0){
