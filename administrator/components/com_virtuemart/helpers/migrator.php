@@ -987,6 +987,8 @@ class Migrator extends VmModel{
 				//$this->_app->enqueueMessage('Migration orderhistories: ' . $newId);
 				foreach($oldItems as $item){
 					$item['virtuemart_order_id'] = $newId;
+					$item['virtuemart_country_id'] = ShopFunctions::getCountryIDByName($item['country']);
+					$item['virtuemart_state_id'] = ShopFunctions::getStateIDByName($item['state']);
 					$orderUserinfoTable = $this->getTable('order_userinfos');
 					$orderUserinfoTable->bindChecknStore($item);
 					$errors = $orderUserinfoTable->getErrors();

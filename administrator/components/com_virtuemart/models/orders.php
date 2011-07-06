@@ -744,7 +744,7 @@ class VirtueMartModelOrders extends VmModel {
 		$table->product_item_price = JRequest::getVar('product_item_price_'.$item, '');
 		$table->product_final_price = JRequest::getVar('product_final_price_'.$item, '');
 
-		$data = $table->bindChecknStore($data);
+		$data = $table->bindChecknStore($table);
 
 	   $errors = $table->getErrors();
 		foreach($errors as $error){

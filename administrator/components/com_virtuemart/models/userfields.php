@@ -334,6 +334,7 @@ class VirtueMartModelUserfields extends VmModel {
 		//Small ugly hack to make registering optional //do we still need that?
 		if($layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $userId === 0){
 			$corefields = $this->getCoreFields();
+			unset($corefields[2]);dump($corefields);
 			foreach($userFields as $field){
 				if(in_array($field->name,$corefields)){
 // 				if($field->name == 'name' || $field->name == 'username' || $field->name == 'password' || $field->name == 'password2'){
@@ -615,20 +616,21 @@ class VirtueMartModelUserfields extends VmModel {
 				case 'virtuemart_country_id':
 					$_return['fields'][$_fld->name]['formcode'] = ShopFunctions::renderCountryList(
 						$_return['fields'][$_fld->name]['value'], false, array(), $_prefix);
-						// The table data can contain the virtuemart_country_id or the country name
-					if (!isset($_userData->{$_fld->name}) && isset($_userData->country)) {
-						$_return['fields'][$_fld->name]['value'] = $_userData->country;
-					}
+// 						The table data can contain the virtuemart_country_id or the country name
+// 					if (!isset($_userData->{$_fld->name}) && isset($_userData->country)) {
+// 						$_return['fields'][$_fld->name]['value'] = $_userData->country;
+
+// 					}
 					// Translate the value from ID to name
 					$_return['fields'][$_fld->name]['value'] = shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']);
 					break;
 
 				case 'virtuemart_state_id':
 
-					// The table data can contain the virtuemart_state_id or the state name
-					if (!isset($_userData->{$_fld->name}) && isset($_userData->state)) {
-						$_return['fields'][$_fld->name]['value'] = $_userData->state;
-					}
+// 					The table data can contain the virtuemart_state_id or the state name
+// 					if (!isset($_userData->{$_fld->name}) && isset($_userData->state)) {
+// 						$_return['fields'][$_fld->name]['value'] = $_userData->state;
+// 					}
 
 					$_return['fields'][$_fld->name]['formcode'] =
 					shopFunctions::renderStateList(	$_return['fields'][$_fld->name]['value'],
@@ -637,6 +639,7 @@ class VirtueMartModelUserfields extends VmModel {
 													false,
 													$_prefix
 													);
+					$_return['fields'][$_fld->name]['value'] = shopFunctions::getStateByID($_return['fields'][$_fld->name]['value']);
 					break;
 				//case 'agreed':
 				//	$_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" id="'.$_prefix.'agreed_field" name="'.$_prefix.'agreed" value="1" '

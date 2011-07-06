@@ -596,6 +596,27 @@ class ShopFunctions {
 	}
 
 	/**
+	* Return the stateID of a given state name
+	*
+	* @author Max Milberse
+	* @access public
+	* @param string $_name Country name
+	* @return int Country ID
+	*/
+	public function getStateIDByName ($_name)
+	{
+		if (empty($_name)) {
+			return 0;
+		}
+		$db = JFactory::getDBO();
+
+		$_q = 'SELECT `virtuemart_state_id` FROM `#__virtuemart_states` WHERE `state_name` = "'.$db->getEscaped($_name).'"';
+		$db->setQuery($_q);
+		$_r = $db->loadResult();
+		return $_r;
+	}
+
+	/**
 	 * Print a select-list with enumerated categories
 	 *
      * @author jseros

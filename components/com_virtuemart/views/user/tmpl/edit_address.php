@@ -41,12 +41,10 @@ function callValidatorForRegister(f){
 
 
 	var elem = jQuery('#username_field');
-	//if(elem.val().length<3){
-		//return false;
-	//} else {
-		elem.attr('class', "required");
-	//}
-	//alert('my elem '+elem);
+	elem.attr('class', "required");
+
+	var elem = jQuery('#name_field');
+	elem.attr('class', "required");
 
 	var elem = jQuery('#password_field');
 	elem.attr('class', "required");
