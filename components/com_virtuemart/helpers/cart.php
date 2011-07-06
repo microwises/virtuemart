@@ -337,8 +337,8 @@ class VirtueMartCart {
 //		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
         $calculator = calculationHelper::getInstance();
         $prices = $calculator->getCheckoutPrices($this);
-        $this->cartData->cartData = $calculator->getCartData();
-        $this->setCartIntoSession();
+        //$this->cartData->cartData = $calculator->getCartData();
+       // $this->setCartIntoSession();
 //		dump($this->cartData,' getCartPrices hmm');
 //		dump($prices,' getCartPrices hmm');
 
@@ -801,7 +801,7 @@ class VirtueMartCart {
             $this->_confirmDone = false;
             $this->customer_comment = '';
             $this->couponCode = '';
-            $this->tosAccepted = false; 
+            $this->tosAccepted = false;
 
             $this->setCartIntoSession();
 
@@ -899,8 +899,8 @@ class VirtueMartCart {
 						FROM #__virtuemart_products
 						WHERE `virtuemart_product_id` IN ('.implode(',', $products_in_cart ).')
 						AND published = 0';
-                    $db->setQuery($q);
-                    $remove_products = $db->loadResultArray();
+						$db->setQuery($q);
+						$remove_products = $db->loadResultArray();
                 }
 
                 if (!empty($remove_products)) {
@@ -923,20 +923,19 @@ class VirtueMartCart {
      */
 	public function prepareCartData(){
 
-        /* Get the products for the cart */
-        $prices = array();
-        $product_prices = $this->getCartPrices();
+		/* Get the products for the cart */
+		$prices = array();
+		$product_prices = $this->getCartPrices();
 
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
         $currency = CurrencyDisplay::getInstance();
 
 		foreach($product_prices as $k=>$price){
-//			if(is_int($k)){
+
 				if(is_array($price)){
 					foreach($price as $sk=>$sprice){
                     $prices[$k][$sk] = $currency->priceDisplay($sprice);
                 }
-//				}
 
             } else {
                 $prices[$k] = $currency->priceDisplay($price);
@@ -944,12 +943,14 @@ class VirtueMartCart {
         }
 
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-        $calculator = calculationHelper::getInstance();
+		$calculator = calculationHelper::getInstance();
 
-        $this->cartData->prices = $prices;
-        $this->cartData->cartData = $calculator->getCartData();
-        $this->cartData->calculator = $calculator;
+		$this->cartData->pricesUnformatted = $product_prices;
+		$this->cartData->prices = $prices;
+		$this->cartData->cartData = $calculator->getCartData();
+		$this->cartData->calculator = $calculator;
 
+		$this->setCartIntoSession();
 		return $this->cartData ;
     }
 

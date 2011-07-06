@@ -459,7 +459,7 @@ class calculationHelper {
 
         //		echo '<br />The prices:<br />';
 //		echo '<pre>'.print_r($this->_cartPrices).'</pre>';
-
+			//dump($this->_cartPrices,'$this->_cartPrices');
         return $this->_cartPrices;
     }
 

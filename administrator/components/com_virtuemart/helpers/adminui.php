@@ -15,7 +15,7 @@
 defined ( '_JEXEC' ) or die ();
 
 class AdminUIHelper {
-	
+
    /**
      * Start the administrator area table
      *
@@ -26,7 +26,7 @@ class AdminUIHelper {
     function startAdminArea() {
 	$document = JFactory::getDocument();
 //	$mainframe = JFactory::getApplication();
-	
+
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_ui.css');
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_menu.css');
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin.styles.css');
@@ -43,24 +43,24 @@ class AdminUIHelper {
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmadmin.js');
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/akkordeon.js');
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.cookie.js');
-	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.jqtransform.js');
+//	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.jqtransform.js');
 
 	$document = JFactory::getDocument ();
 	$document->addScriptDeclaration ( "
 	jQuery(document).ready(function(){
-		
+
 		jQuery(function(){
 			jQuery('#admin-content').jqTransform();
 		});
-		
+
 		var adminmenu = jQuery('.menu-wrapper');
 		var admincontent = jQuery('#admin-content-wrapper');
 		adminmenu.css({'min-height': '500px',});
 		admincontent.css({'min-height': '500px',});
-		
+
 		if(adminmenu.height() < admincontent.height()) {
 			adminmenu.css({'height': admincontent.height()+'px',});
-		} 
+		}
 		if(adminmenu.height() > admincontent.height()) {
 			admincontent.css({'height': adminmenu.height()+'px',});
 		}
@@ -68,19 +68,19 @@ class AdminUIHelper {
 });
 " );
 
-    
-	
-	
+
+
+
 	?>
 
-	
-	
+
+
         <div class="virtuemart-admin-area">
          	<div class="menu-wrapper">
 		<?php  AdminUIHelper::showAdminMenu(); ?>
         	</div>
-        	
-        
+
+
         	<div id="admin-content-wrapper">
         		<div id="admin-content" class="admin-content">
 		<?php
@@ -100,7 +100,7 @@ class AdminUIHelper {
 			<div class="clear"></div>
     		</div>
     		</div>
-    	
+
     	<div class="clear"></div>
 		</div>
 	<?php
@@ -110,7 +110,7 @@ class AdminUIHelper {
 		tabs(jQuery("#admin-ui-tabs .tabs"));
 		});');
    	 	}
-    
+
 	/**
 	 * Admin UI Tabs
 	 * Gives A Tab Based Navigation Back And Loads The Templates With A Nice Design
@@ -121,7 +121,7 @@ class AdminUIHelper {
 		$document = JFactory::getDocument ();
 		$document->addStyleSheet ( JURI::base () . 'components/com_virtuemart/assets/css/tabs.css' );
 		$document->addScript ( JURI::base () . 'components/com_virtuemart/assets/js/tabs.js' );
-		
+
 		$html = '<div id="admin-ui-tabs">';
 		$i = 1;
 		foreach ( $load_template as $tab_content => $tab_title ) {
@@ -133,7 +133,7 @@ class AdminUIHelper {
 		$html .= '</div>';
 		echo $html;
 	}
-	
+
 	/**
 	 * Build an array containing all the menu items.
 	 *
@@ -142,14 +142,14 @@ class AdminUIHelper {
 	function _getAdminMenu($moduleId = 0) {
 		$db = JFactory::getDBO ();
 		$menuArr = array ();
-		
+
 		$filter [] = "jmmod.published='1'";
 		$filter [] = "item.published='1'";
 		$filter [] = "jmmod.is_admin='1'";
 		if (! empty ( $moduleId )) {
 			$filter [] = 'vmmod.module_id=' . ( int ) $moduleId;
 		}
-		
+
 		$query = 'SELECT `jmmod`.`module_id`, `module_name`, `module_perms`, `id`, `name`, `link`, `depends`, `icon_class`, `view`, `task`';
 		$query .= 'FROM `#__virtuemart_modules` AS jmmod ';
 		$query .= 'LEFT JOIN `#__virtuemart_adminmenuentries` AS item ON `jmmod`.`module_id`=`item`.`module_id` ';
@@ -165,7 +165,7 @@ class AdminUIHelper {
 		}
 		return $menuArr;
 	}
-	
+
 	/**
 	 * Display the administrative ribbon menu.
 	 * @todo The link should be done better
@@ -173,16 +173,16 @@ class AdminUIHelper {
 	function showAdminMenu() {
 		$document = JFactory::getDocument ();
 		$moduleId = JRequest::getInt ( 'module_id', 0 );
-		
+
 		$menuItems = AdminUIHelper::_getAdminMenu ( $moduleId );
 		?>
-		
+
 		<div id="admin-ui-menu" class="admin-ui-menu">
-		
+
 		<?php
 		$modCount = 1;
 		foreach ( $menuItems as $item ) { ?>
-			
+
 			<h3 id="admin-menu-tab-<?php echo $modCount ?>" class="menu-title" title="<?php echo JText::_ ( $item ['title'] ); ?> admin">
 				<?php echo JText::_ ( $item ['title'] )?>
 			</h3>
@@ -216,7 +216,7 @@ class AdminUIHelper {
 				?>
 			    </ul>
 			</div>
-			
+
 			<?php
 			$modCount ++;
 		}
