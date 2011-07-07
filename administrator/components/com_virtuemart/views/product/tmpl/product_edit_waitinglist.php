@@ -17,9 +17,8 @@
 */
  
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die('Restricted access'); ?>
 
-if (isset($this->waitinglist) && count($this->waitinglist) > 0) { ?>
 <h2><?php echo JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_USERLIST');?>:</h2>
 <input type="hidden" value="<?php echo $this->product->product_in_stock; ?>" name="product_in_stock_old" />
 <input type="checkbox" value="1" checked="checked" id="notify_users" name="notify_users" /> 
@@ -53,4 +52,3 @@ if (isset($this->waitinglist) && count($this->waitinglist) > 0) { ?>
 	?>
 	</tbody>
 </table>
-<?php } ?>

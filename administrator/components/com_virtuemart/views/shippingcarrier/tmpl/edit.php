@@ -21,19 +21,14 @@ AdminUIHelper::startAdminArea();
 JHTML::_('behavior.tooltip');
 ?>
 <form action="index.php" method="post" name="adminForm">
-<?php
-$pane = JPane::getInstance('tabs', array('startOffset' => 0));
-echo $pane->startPane('pane');
 
-echo $pane->startPanel(JText::_('COM_VIRTUEMART_ADMIN_SHIPPER_FORM'), 'shipper_edit');
-echo $this->loadTemplate('edit');
-echo $pane->endPanel();
-echo $pane->startPanel(JText::_('COM_VIRTUEMART_ADMIN_SHIPPER_CONFIGURATION'), 'shipper_config');
-echo $this->loadTemplate('config');
-echo $pane->endPanel();
+<?php // Loading Templates in Tabs
+$tabarray = array();
+$tabarray['edit'] = 'COM_VIRTUEMART_ADMIN_SHIPPER_FORM';
+$tabarray['config'] = 'COM_VIRTUEMART_ADMIN_SHIPPER_CONFIGURATION';
 
-echo $pane->endPane();
-?>
+AdminUIHelper::buildTabs ( $tabarray );
+// Loading Templates in Tabs END ?>
 
     <!-- Hidden Fields -->
 

@@ -36,17 +36,23 @@ $this->editor = JFactory::getEditor();
 <form method="post" name="adminForm" action="index.php" enctype="multipart/form-data" ID="adminform">
 
 <?php // Loading Templates in Tabs
-AdminUIHelper::buildTabs ( array (	'information' 			=> 	'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_INFO_LBL',
-									'description' 	=> 	'COM_VIRTUEMART_PRODUCT_FORM_DESCRIPTION',
-									'status'	=> 	'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_STATUS_LBL',
-									'dimensions' 		=> 	'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL',
-									'images' 		=> 	'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_IMAGES_LBL',
-									'custom' 			=> 	'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_CUSTOM_TAB',
-									'waitinglist' 			=> 	'COM_VIRTUEMART_PRODUCT_WAITING_LIST_TAB'
- 									) );
+$tabarray = array();
+$tabarray['information'] = 'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_INFO_LBL';
+$tabarray['description'] = 'COM_VIRTUEMART_PRODUCT_FORM_DESCRIPTION';
+$tabarray['status'] = 'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_STATUS_LBL';
+$tabarray['dimensions'] = 'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_DIM_WEIGHT_LBL';
+$tabarray['images'] = 'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_IMAGES_LBL';
+$tabarray['custom'] = 'COM_VIRTUEMART_PRODUCT_FORM_PRODUCT_CUSTOM_TAB';
 
 
-?>
+if (isset($this->waitinglist) && count($this->waitinglist) > 0) { 
+	$tabarray['waitinglist'] = 'COM_VIRTUEMART_PRODUCT_WAITING_LIST_TAB';
+}
+
+AdminUIHelper::buildTabs ( $tabarray );
+// Loading Templates in Tabs END ?>
+
+
 <!-- Hidden Fields -->
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
