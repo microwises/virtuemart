@@ -53,14 +53,16 @@ class VirtueMartModelCustom extends VmModel {
     function getCustom(){
 
     	//if(empty($this->_db)) $this->_db = JFactory::getDBO();
-
-   		$data = $this->getTable('customs');
+		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
+   		$data =& $this->getTable('customs');
    		$data->load($this->_id);
-		if (!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
-
-  		$custom = VmCustomHandler::createCustom($data);
-
-  		return $custom;
+//		if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+//
+//  		$custom = VmCustomHandler::createCustom($data);
+		if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+		$customfields = new VirtueMartModelCustomfields();
+		$data->field_types = $customfields->getField_types() ;
+  		return $data;
 
     }
     /**

@@ -161,9 +161,9 @@ class VirtueMartModelCustomfields extends VmModel {
 	 * @author Max Milbers
 	 * OBSELTE ?
 	 */
-	private function addHiddenByType(){
+	private function addHiddenByType($datas){
 
-		$this->addHidden('virtuemart_custom_id',$this->virtuemart_custom_id);
+		$this->addHidden('virtuemart_custom_id',$datas->virtuemart_custom_id);
 		$this->addHidden('option','com_virtuemart');
 
 	}
@@ -239,32 +239,32 @@ class VirtueMartModelCustomfields extends VmModel {
 	 *
 	 * @param string $html atttributes, Just for displaying the fullsized image
 	 */
-	public function displayCustomFields($imageArgs='',$field_types){
+	public function displayCustomFields($imageArgs='',$datas){
 
 		$identify = ''; // ':'.$this->virtuemart_custom_id;
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
-		if ($this->field_type) $this->addHidden('field_type',$this->field_type);
-		$this->addHiddenByType();
+		if ($datas->field_type) $this->addHidden('field_type',$datas->field_type);
+		$this->addHiddenByType($datas);
 
-		$html = '<div id="custom_title">'.$this->custom_title.'</div>';
+		$html = '<div id="custom_title">'.$datas->custom_title.'</div>';
 		$html .= ' <table class="adminform"> ';
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!Permissions::getInstance()->check('admin') ) $readonly='readonly'; else $readonly ='';
-		$html .= VmHTML::inputRow('COM_VIRTUEMART_TITLE','custom_title',$this->custom_title,VmHTML::validate('S'));
-		$html .= VmHTML::inputRow('COM_VIRTUEMART_DESCRIPTION','custom_field_desc',$this->custom_field_desc);
+		$html .= VmHTML::inputRow('COM_VIRTUEMART_TITLE','custom_title',$datas->custom_title,VmHTML::validate('S'));
+		$html .= VmHTML::inputRow('COM_VIRTUEMART_DESCRIPTION','custom_field_desc',$datas->custom_field_desc);
 		// change input by type
-		$html .= VmHTML::inputRow('COM_VIRTUEMART_DEFAULT','custom_value',$this->custom_value);
-		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_TIP','custom_tip',$this->custom_tip);
-		$html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_PARENT',$this->getCustomsList(), 'custom_parent_id', $this->custom_parent_id,'');
-		$html .= VmHTML::booleanRow('COM_VIRTUEMART_PUBLISHED','published',$this->published);
-		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_ADMIN_ONLY','admin_only',$this->admin_only);
-		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_LIST','is_list',$this->is_list);
-		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_HIDDEN','is_hidden',$this->is_hidden);
-		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE','is_cart_attribute',$this->is_cart_attribute);
+		$html .= VmHTML::inputRow('COM_VIRTUEMART_DEFAULT','custom_value',$datas->custom_value);
+		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_TIP','custom_tip',$datas->custom_tip);
+		$html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_PARENT',$this->getCustomsList(), 'custom_parent_id', $datas->custom_parent_id,'');
+		$html .= VmHTML::booleanRow('COM_VIRTUEMART_PUBLISHED','published',$datas->published);
+		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_ADMIN_ONLY','admin_only',$datas->admin_only);
+		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_LIST','is_list',$datas->is_list);
+		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_HIDDEN','is_hidden',$datas->is_hidden);
+		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE','is_cart_attribute',$datas->is_cart_attribute);
 		// only input when not set else display
-		if ($this->field_type) $html .= VmHTML::Row('COM_VIRTUEMART_CUSTOM_FIELD_TYPE', $field_types[$this->field_type] ) ;
-		else $html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_FIELD_TYPE',$this->getOptions($field_types),'field_type', $this->field_type,VmHTML::validate('R')) ;
+		if ($datas->field_type) $html .= VmHTML::Row('COM_VIRTUEMART_CUSTOM_FIELD_TYPE', $datas->field_types[$datas->field_type] ) ;
+		else $html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_FIELD_TYPE',$this->getOptions($datas->field_types),'field_type', $datas->field_type,VmHTML::validate('R')) ;
 		$html .= '</table>';
 		$html .= VmHTML::inputHidden($this->_hidden);
 

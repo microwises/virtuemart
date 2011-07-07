@@ -24,14 +24,15 @@ AdminUIHelper::startAdminArea();
 <form name="adminForm" id="adminform" method="post" action="">
 <fieldset class="adminform">
 <legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD'); ?></legend>
-<?php 
-$this->custom->addHidden('view','custom');
-$this->custom->addHidden('task','');
-$this->custom->addHidden(JUtility::getToken(),1);
-if ($this->custom->custom_parent_id) $this->custom->addHidden('custom_parent_id',$this->custom->custom_parent_id);
+<?php
+$this->customfields->addHidden('view','custom');
+$this->customfields->addHidden('task','');
+$this->customfields->addHidden(JUtility::getToken(),1);
+if ($this->custom->custom_parent_id) $this->customfields->addHidden('custom_parent_id',$this->custom->custom_parent_id);
 $attribute_id = JRequest::getVar('attribute_id', '');
-if(!empty($attribute_id)) $this->custom->addHidden('attribute_id',$attribute_id);
-echo $this->custom->displayCustomFields('',$this->field_types);
+if(!empty($attribute_id)) $this->customfields->addHidden('attribute_id',$attribute_id);
+dump ($this->customfields);
+echo $this->customfields->displayCustomFields('',$this->custom);
 
 echo '</fieldset>';
 echo '</form>';
