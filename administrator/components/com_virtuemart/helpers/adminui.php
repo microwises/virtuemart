@@ -82,13 +82,8 @@ class AdminUIHelper {
 
     	<div class="clear"></div>
 		</div>
-	<?php
-		$document = JFactory::getDocument ();
-		$document->addScriptDeclaration ( '
-		jQuery(document).ready(function() {
-		tabs(jQuery("#admin-ui-tabs .tabs"));
-		});');
-   	 	}
+	<?php 
+	    }
 
 	/**
 	 * Admin UI Tabs
@@ -96,9 +91,13 @@ class AdminUIHelper {
 	 * @param $load_template = a key => value array. key = template name, value = Language File contraction
 	 * @example 'shop' => 'COM_VIRTUEMART_ADMIN_CFG_SHOPTAB'
 	 */
-	function buildTabs($load_template = array()) {
+	function buildTabs($load_template = array(),$cookieName='') {
 		$document = JFactory::getDocument ();
 		$document->addScript ( JURI::base () . 'components/com_virtuemart/assets/js/tabs.js' );
+		$document->addScriptDeclaration ( '
+			jQuery(document).ready(function() {
+				tabs(jQuery("#admin-ui-tabs .tabs"),"'.$cookieName.'");
+			});');
 
 		$html = '<div id="admin-ui-tabs">';
 		$i = 1;

@@ -34,7 +34,7 @@ AdminUIHelper::buildTabs ( array (	'shop' 			=> 	'COM_VIRTUEMART_ADMIN_CFG_SHOPT
 									'product_order'	=> 	'COM_VIRTUEMART_ADMIN_CFG_PRODUCTORDERTAB',
 									'pricing' 		=> 	'COM_VIRTUEMART_ADMIN_CFG_PRICINGTAB',
 									'checkout' 		=> 	'COM_VIRTUEMART_ADMIN_CFG_CHECKOUTTAB',
-									'sef' 			=> 	'COM_VIRTUEMART_ADMIN_CFG_SEF' ) );
+									'sef' 			=> 	'COM_VIRTUEMART_ADMIN_CFG_SEF' ),'vm-config' );
 
 /*
 $pane = JPane::getInstance('tabs', array('startOffset'=>0));

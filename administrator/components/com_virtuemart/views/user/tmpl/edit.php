@@ -69,7 +69,7 @@ if (($_ordcnt = count($this->orderlist)) > 0) {
 }
 
 
-AdminUIHelper::buildTabs ( $tabarray );
+AdminUIHelper::buildTabs ( $tabarray,'vm-user' );
 
 //	echo $this->pane->startPane("user-pane");
 //
