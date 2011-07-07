@@ -706,7 +706,7 @@ class VirtueMartCart {
 			$neededFields = $userFieldsModel->getUserFields(
 			$fieldtype
 			, array('required' => true, 'delimiters' => true, 'captcha' => true, 'system' => false)
-			, array('delimiter_userinfo', 'username', 'password', 'password2', 'address_type_name', 'address_type', 'user_is_vendor', 'agreed'));
+			, array('delimiter_userinfo', 'name','username', 'password', 'password2', 'address_type_name', 'address_type', 'user_is_vendor', 'agreed'));
 
 			$redirectMsg = false;
 
