@@ -36,13 +36,12 @@ label.invalid {
 }
 </style>
 <script language="javascript">
-function myValidator(f, t)
+function myValidator(f)
 {
 	if (f.task.value=='cancel') {
 		return true;
 	}
 	if (document.formvalidator.isValid(f)) {
-		f.task.value=t;
 		f.submit();
 		return true;
 	} else {

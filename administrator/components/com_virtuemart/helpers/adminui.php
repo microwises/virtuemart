@@ -55,7 +55,7 @@ class AdminUIHelper {
 		// });
 	// " );
 	?>
-	
+
         <div class="virtuemart-admin-area">
          	<div class="menu-wrapper">
 		<?php  AdminUIHelper::showAdminMenu(); ?>
