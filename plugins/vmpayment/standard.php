@@ -2,7 +2,7 @@
 if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not allowed.' ) ;
 /**
- * @version $Id: ps_cashondelpay.php,v 1.4 2005/05/27 19:33:57 ei
+ * @version $Id: standard.php,v 1.4 2005/05/27 19:33:57 ei
  *
  * a special type of 'cash on delivey':
  * its fee depend on total sum
@@ -21,10 +21,10 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
  * http://virtuemart.org
  */
 
-class plgVmPaymentCashondel extends vmPaymentPlugin {
+class plgVmPaymentStandard extends vmPaymentPlugin {
 
 	var $_pelement;
-	var $_pcode = 'PU' ;
+
 
 	/**
 	 * Constructor
@@ -37,7 +37,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 	 * @param array  $config  An array that holds the plugin configuration
 	 * @since 1.5
 	 */
-	function plgVmPaymentCashondel(& $subject, $config) {
+	function plgVmPaymentStandard(& $subject, $config) {
 		$this->_pelement = basename(__FILE__, '.php');
 		$this->_createTable();
 		parent::__construct($subject, $config);
@@ -90,13 +90,38 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnConfirmedOrderStorePaymentData()
 	 * @author Oscar van Eijk
 	 */
-	function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData)
-	{
-		if (!$this->selectedThisPayment($this->_pelement, $_orderData->virtuemart_paymentmethod_id)) {
+	   function plgVmOnConfirmedOrderStorePaymentData($virtuemart_order_id, $orderData, $priceData) {
+        return false;
+    }
+
+    function plgVmAfterCheckoutDoPayment($virtuemart_order_id, $orderData) {
+
+		if (!$this->selectedThisPayment($this->_pelement, $orderData->virtuemart_paymentmethod_id)) {
 			return null; // Another method was selected, do nothing
 		}
-		$this->_virtuemart_paymentmethod_id = $_orderData->virtuemart_paymentmethod_id;
-		$_dbValues['virtuemart_order_id'] = $_orderNr;
+
+            $paramstring = $this->getVmPaymentParams($vendorId = 0, $orderData->virtuemart_paymentmethod_id);
+                $params = new JParameter($paramstring);
+                $payment_info = $params->get('payment_info');
+	    /**
+	     * CODE from VM1
+	     */
+
+
+	    // Here's the place where the Payment Extra Form Code is included
+	    // Thanks to Steve for this solution (why make it complicated...?)
+	    if( eval('?>' . $payment_info . '<?php ') === false ) {
+                 JError::raiseWarning(500, 'Error: The code of the payment method contains a Parse Error!<br />Please correct that first');
+
+	    }
+
+	    // END printing out HTML Form code (Payment Extra Info)
+
+
+
+
+		$this->_virtuemart_paymentmethod_id = $orderData->virtuemart_paymentmethod_id;
+		$_dbValues['virtuemart_order_id'] = $orderNr;
 		$_dbValues['payment_method_id'] = $this->_virtuemart_paymentmethod_id;
 		$this->writePaymentData($_dbValues, '#__virtuemart_order_payment_' . $this->_pelement);
 		return 'P'; // Set order status to Pending.  TODO Must be a plugin parameter
@@ -144,28 +169,7 @@ class plgVmPaymentCashondel extends vmPaymentPlugin {
 		return $_html;
 	}
 
-/*	function get_payment_rate( $sum ) {
-
-		if( $sum < 5000 )
-			return - ($this->params->get( 'CASH_ON_DEL_5000' )) ;
-		elseif( $sum < 10000 )
-			return - ($this->params->get( 'CASH_ON_DEL_10000' )) ;
-		elseif( $sum < 20000 )
-			return - ($this->params->get( 'CASH_ON_DEL_20000' )) ;
-		elseif( $sum < 30000 )
-			return - ($this->params->get( 'CASH_ON_DEL_30000' )) ;
-		elseif( $sum < 40000 )
-			return - ($this->params->get( 'CASH_ON_DEL_40000' )) ;
-		elseif( $sum < 50000 )
-			return - ($this->params->get( 'CASH_ON_DEL_50000' )) ;
-		elseif( $sum < 100000 )
-			return - ($this->params->get( 'CASH_ON_DEL_100000' )) ;
-		else
-			return - ($this->params->get( 'CASH_ON_DEL_100000' )) ;
-
-	//	return -($sum * 0.10);
-	}
-*/
+ 
 }
 
 // No closing tag

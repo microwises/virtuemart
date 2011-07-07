@@ -80,7 +80,6 @@ class VirtuemartControllerPaymentmethod extends VmController {
 
 		$data['paym_name'] = JRequest::getVar('paym_name','','post','STRING',JREQUEST_ALLOWHTML);
 		$data['shipping_carrier_desc'] = JRequest::getVar('shipping_carrier_desc','','post','STRING',JREQUEST_ALLOWHTML);
-		$data['payment_extra_info'] = JRequest::getVar('payment_extra_info','','post','STRING',JREQUEST_ALLOWHTML);
 
 		parent::save($data);
 	}

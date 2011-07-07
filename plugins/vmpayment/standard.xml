@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment" >	
-	<name>VMPayment - Standard</name>
-	<author><![CDATA[Sören Eberhardt-Biermann]]></author>
-	<creationdate>2007</creationdate>
-	<copyright><![CDATA[Sören Eberhardt-Biermann]]></copyright>
-	<license>GNU/GPL</license>
-	<authoremail></authoremail>
-	<authorurl>http://joomlacode.org/gf/project/jmart/</authorurl>
-	<version>1.0</version>
-	<description>Standard payment plugin</description>
+    <name>VMPayment - Standard</name>
+    <author><![CDATA[Sören Eberhardt-Biermann]]>
+    </author>
+    <creationdate>2007</creationdate>
+    <copyright><![CDATA[Sören Eberhardt-Biermann]]>
+    </copyright>
+    <license>GNU/GPL</license>
+    <authoremail></authoremail>
+    <authorurl>http://joomlacode.org/gf/project/jmart/</authorurl>
+    <version>1.0</version>
+    <description>Standard payment plugin</description>
 
-	<element>standard</element>
-	<files>
-		<filename plugin="standard">standard</filename>
-	</files>
-
+    <element>standard</element>
+    <files>
+        <filename plugin="standard">standard</filename>
+    </files>
+    <params>
+        <param name="payment_info" type="textarea" cols="60" rows="30" default="" label="VMPAYMENT_STANDARD_PAYMENTINFO" description="VMPAYMENT_STANDARD_PAYMENTINFO_DESC" />
+    </params>
 </install>

@@ -142,13 +142,13 @@ class VirtuemartControllerUser extends VmController {
 				$msg = JText::_($model->getError());
 			}
 		}
-		$cmd = JRequest::getCmd('task');dump($cmd,'command user save');
-		$lastTask = JRequest::getCmd('last_task');
+		$cmd = JRequest::getCmd('task');
+		$lastTask = JRequest::getWord('last_task');
 		if($cmd == 'apply'){
-			if ($lastTask == 'edit_shop') $redirection = 'index.php?option=com_virtuemart&view=user&task=editshop';
+			if ($lastTask == 'editshop') $redirection = 'index.php?option=com_virtuemart&view=user&task=editshop';
 			else $redirection = 'index.php?option=com_virtuemart&view=user&task=edit&cid[]='.$ret['newId'];
 		} else {
-			if ($lastTask == 'edit_shop') $redirection = 'index.php?option=com_virtuemart';
+			if ($lastTask == 'editshop') $redirection = 'index.php?option=com_virtuemart';
 			else $redirection = 'index.php?option=com_virtuemart&view=user';
 		}
 		$this->setRedirect($redirection, $msg);

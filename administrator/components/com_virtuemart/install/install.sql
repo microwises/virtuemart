@@ -670,8 +670,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethods` (
   `discount_is_percentage` tinyint(1) NOT NULL DEFAULT '0',
   `discount_max_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `discount_min_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `payment_extra_info` text NOT NULL,
-  `payment_secret_key` blob NOT NULL,
   `payment_params` text NOT NULL,
   `shared` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'valide for all vendors?',
   `ordering` int(2) NOT NULL DEFAULT '0',

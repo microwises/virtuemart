@@ -434,7 +434,7 @@ abstract class vmPaymentPlugin extends JPlugin {
         }
         $_db = JFactory::getDBO();
         $_q = 'INSERT INTO `' . $_table . '` ('
-                . implode(',',  $_cols)
+                . implode(',', $_cols)
                 . ') VALUES ('
                 . implode(',', $_vals)
                 . ')';
@@ -465,7 +465,7 @@ abstract class vmPaymentPlugin extends JPlugin {
         $db = JFactory::getDBO();
         $q = 'UPDATE `' . $table . '` SET ';
         foreach ($values as $key => $value) {
-            $q .= $db->getEscaped($key) .'="' .  $value . '",';
+            $q .= $db->getEscaped($key) . '="' . $value . '",';
         }
         $q = substr($q, 0, strlen($q) - 1);
         $q .= ' WHERE `' . $where_key . '` =' . $where_value;
@@ -498,6 +498,29 @@ abstract class vmPaymentPlugin extends JPlugin {
           } */
         $html .="</label><br/>\n";
         return $html;
+    }
+
+    function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart) {
+
+        $nbPayment = 0;
+        $virtuemart_paymentmethod_id = 0;
+        $nbPayment = $this->getSelectablePayment($cart, $virtuemart_paymentmethod_id);
+        return ($nbPayment == 1) ? $virtuemart_paymentmethod_id : 0;
+    }
+
+    /*
+     * This method returns the number of payment methods valid
+     */
+
+    function getSelectablePayment(VirtueMartCart $cart, &$virtuemart_paymentmethod_id) {
+
+        if ($this->getPaymentMethods($cart->vendorId) === false) {
+            return false;
+        }
+        if ($nbPayments = count($this->payments) == 1) {
+            $virtuemart_paymentmethod_id = $this->payments[0]->virtuemart_paymentmethod_id;
+        }
+        return $nbPayments;
     }
 
 }

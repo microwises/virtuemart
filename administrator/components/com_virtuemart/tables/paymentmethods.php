@@ -53,9 +53,6 @@ class TablePaymentmethods extends VmTable
 //	/** @var string Type of the paymentmethod */
 //	var $payment_type       		 	= '';
 /** @var string extra information to hold with the paymentmethod */
-	var $payment_extra_info			= '';
-/** @var blob secret key of the paymentmethod */
-	var $payment_secret_key			= '';
 	/** @var string parameter of the paymentmethod*/
 	var $payment_params				= 0;
 

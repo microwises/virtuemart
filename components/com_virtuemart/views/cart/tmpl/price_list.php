@@ -269,10 +269,13 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 
 		<tr class="sectiontableentry1">
+                          <?php if (!$this->automaticSelectedPayment) { ?>
 				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment'), JText::_('COM_VIRTUEMART_CART_EDIT_PAYMENT'),'class="highlight"'); else JText::_('COM_VIRTUEMART_CART_PAYMENT'); ?> </td>
 		<?php	/*	<td colspan="2" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL') ?> </td> */?>
 				<td colspan="2" align="left"><?php echo $this->cartData['paymentName']; ?> </td>
-
+                         <?php } else { ?>
+                                    <td colspan="4" align="left"><?php echo $this->cartData['paymentName']; ?> </td>
+                                 <?php } ?>
                                      <?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"><?php //echo $this->prices['paymentTax']; ?> </td>
                                 <?php } ?>

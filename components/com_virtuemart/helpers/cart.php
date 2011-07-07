@@ -943,7 +943,29 @@ class VirtueMartCart {
 
 
 	}
+        function CheckAutomaticSelectedPayment() {
 
+		$nbPayment = 0;
+		if (!class_exists('vmPaymentPlugin'))
+		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
+		JPluginHelper::importPlugin('vmpayment');
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedPayment', array('cart' => $this));
+		foreach ($returnValues as $returnValue) {
+			$nbPayment += $returnValue;
+			if ((int)$returnValue )
+			$virtuemart_paymentmethod_id = $returnValue;
+		}
+		if ($nbPayment) {
+			$this->virtuemart_paymentmethod_id = $virtuemart_paymentmethod_id;
+			$this->setCartIntoSession();
+			return true;
+		} else {
+			return false;
+		}
+
+
+	}
 	function CheckShippingIsValid() {
 		if ($this->virtuemart_shippingcarrier_id===0)
 		return;

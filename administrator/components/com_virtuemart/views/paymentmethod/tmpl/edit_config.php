@@ -28,14 +28,11 @@ defined('_JEXEC') or die('Restricted access');
         } else {
              echo JText::_('COM_VIRTUEMART_SELECT_PAYMENT_METHOD' );
            }
-        echo '<br />
-                <span class="hasTip" title="'.JText::_('COM_VIRTUEMART_PAYMENT_EXTRAINFO_TIP').'">
-                <strong>'.JText::_('COM_VIRTUEMART_PAYMENT_EXTRAINFO').':</strong></span>';
+
 
 	?>
-<br />
-<textarea class="inputbox" name="payment_extra_info" cols="120" rows="20"><?php echo htmlspecialchars( $this->paym->payment_extra_info ); ?></textarea>
-<?php /*
+
+ <?php /*
 <script type="text/javascript">
 function check() {
    if (document.adminForm.type[0].checked == true || document.adminForm.type[1].checked == true) {
