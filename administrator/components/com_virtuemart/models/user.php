@@ -132,11 +132,12 @@ class VirtueMartModelUser extends VmModel {
 		$userFields = array();
 		$userdata = $this->getUser();
 
-		if(!empty($userdata)) {
+		if(!empty($userdata->userInfo) && count($userdata->userInfo)>0) {
 
 			$currentUserData = current($userdata->userInfo);
 			for ($_i = 0; $_i < count($userdata->userInfo); $_i++) {
 				dump($currentUserData,'getUserDataInFields');
+
 				if($currentUserData->address_type==$type){
 					$fields = $userFieldsModel->getUserFieldsByUser(
 											$prepareUserFields
@@ -185,6 +186,7 @@ class VirtueMartModelUser extends VmModel {
 
 		$this->_data->userInfo = array ();
 
+		$BTuid = 0;
 		//$userinfo = $this->getTable('userinfos');
 		for ($i = 0, $n = count($_ui); $i < $n; $i++) {
 
@@ -201,18 +203,23 @@ class VirtueMartModelUser extends VmModel {
 			 * @TODO Find out is there's a more decvent solution. Maybe when the user_info table gets reorganised?
 			 */
 			if ($this->_data->userInfo[$_ui_id]->address_type == 'BT') {
-
-				$this->_data->userInfo[$_ui_id]->name = $this->_data->JUser->name;
-				$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
-				$this->_data->userInfo[$_ui_id]->username = $this->_data->JUser->username;
-
+				$BTuid = $_ui_id;
 
 // 				$this->_data->userInfo[$_ui_id]->user_is_vendor = $this->_data->user_is_vendor;
 // 				$this->_data->userInfo[$_ui_id]->name = $this->_data->JUser->name;
 			}
 			// End hack
-			$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
+			//$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
 		}
+
+// 		if(!empty($this->_data->userInfo[$BTuid])){
+			dump('fill BT');
+			$this->_data->userInfo[$BTuid]->name = $this->_data->JUser->name;
+			$this->_data->userInfo[$BTuid]->email = $this->_data->JUser->email;
+			$this->_data->userInfo[$BTuid]->username = $this->_data->JUser->username;
+			$this->_data->userInfo[$BTuid]->address_type = 'BT';
+//
+//		}
 
 		if($this->_data->user_is_vendor){
 
