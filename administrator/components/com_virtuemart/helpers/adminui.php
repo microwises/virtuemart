@@ -48,7 +48,7 @@ class AdminUIHelper {
 		jQuery(document).ready(function(){
 		
 			// Remove the System Message after 5 Seconds
-			jQuery('dl#system-message').hide().slideDown(400).delay(5000).slideUp('slow');
+			jQuery('dl#system-message').hide().slideDown(400);
 
 			// jQuery(function(){
 				// jQuery('#admin-content').jqTransform();
