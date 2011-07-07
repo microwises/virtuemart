@@ -717,6 +717,7 @@ class VirtueMartCart {
 					if($field->required && empty($this->{$type}[$field->name])){
 						$redirectMsg = 'Missing value for '.$field->name;
 						$i++;
+						//more than two fields missing, this is not a normal error (should be catche by js anyway, so show the address again.
 						if($i>2 && $type=='BT'){
 							$redirectMsg = JText::_('COM_VIRTUEMART_CHECKOUT_PLEASE_ENTER_ADDRESS');
 						}
@@ -728,11 +729,13 @@ class VirtueMartCart {
 
 					//This is a special test for the virtuemart_state_id. There is the speciality that the virtuemart_state_id could be 0 but is valid.
 					if ($field->name == 'virtuemart_state_id') {
-						if (!class_exists('VirtueMartModelState'))
-						require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'state.php');
-						if (!$msg = VirtueMartModelState::testStateCountry($this->{$type}['virtuemart_country_id'], $this->{$type}['virtuemart_state_id'])) {
-							$redirectMsg = $msg;
+						if (!class_exists('VirtueMartModelState')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'state.php');
+						if(!empty($this->{$type}['virtuemart_country_id']) && !empty($this->{$type}['virtuemart_state_id']) ){
+							if (!$msg = VirtueMartModelState::testStateCountry($this->{$type}['virtuemart_country_id'], $this->{$type}['virtuemart_state_id'])) {
+								$redirectMsg = $msg;
+							}
 						}
+
 					}
 
 				}
