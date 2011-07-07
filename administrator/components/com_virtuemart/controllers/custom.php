@@ -66,20 +66,7 @@ class VirtuemartControllerCustom extends VmController {
 
 		parent::display();
 	}
-//	function edit() {
-//
-//		$document = JFactory::getDocument();
-//		$viewType	= $document->getType();
-//		$view = $this->getView('custom', $viewType);
-//
-//
-//		// Push a model into the view
-//		$model = $this->getModel('custom');
-//		if (!JError::isError($model)) {
-//			$view->display();
-//		}
-//
-//	}
+
 	function viewJson() {
 
 		/* Create the view object. */
