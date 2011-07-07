@@ -817,7 +817,7 @@ class VirtueMartCart {
 				// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
 			}
 
-			if (!$activeplugin)   {
+			if ($activeplugin)   {
 				$mainframe = JFactory::getApplication();
 				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&layout=order_done',JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));
 			}

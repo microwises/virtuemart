@@ -107,13 +107,14 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 	     * CODE from VM1
 	     */
 
-
-	    // Here's the place where the Payment Extra Form Code is included
+        if (!empty($payment_info) ){
+// // Here's the place where the Payment Extra Form Code is included
 	    // Thanks to Steve for this solution (why make it complicated...?)
 	    if( eval('?>' . $payment_info . '<?php ') === false ) {
                  JError::raiseWarning(500, 'Error: The code of the payment method contains a Parse Error!<br />Please correct that first');
 
 	    }
+        }
 
 	    // END printing out HTML Form code (Payment Extra Info)
 
