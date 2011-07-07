@@ -714,10 +714,10 @@ class VirtueMartCart {
 
 				foreach ($neededFields as $field) {
 
-					if($field->required && empty($this->{$type}[$field->name])){
+					if($field->required && empty($this->{$type}[$field->name]) && $field->name != 'virtuemart_state_id'){
 						$redirectMsg = 'Missing value for '.$field->name;
 						$i++;
-						//more than two fields missing, this is not a normal error (should be catche by js anyway, so show the address again.
+						//more than four fields missing, this is not a normal error (should be catche by js anyway, so show the address again.
 						if($i>2 && $type=='BT'){
 							$redirectMsg = JText::_('COM_VIRTUEMART_CHECKOUT_PLEASE_ENTER_ADDRESS');
 						}
