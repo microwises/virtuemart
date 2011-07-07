@@ -38,7 +38,7 @@ class AdminUIHelper {
 
 	//loading from public site
 	//$document->addScript('../components/com_virtuemart/assets/js/jquery.js');
-	$document->addScript('../components/com_virtuemart/assets/js/vm.js');
+	//$document->addScript('../components/com_virtuemart/assets/js/vm.js');
 	// used $config->jQuery(); $config->jVm(); to load it
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmadmin.js');
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/akkordeon.js');
@@ -53,7 +53,7 @@ class AdminUIHelper {
 				// jQuery('#admin-content').jqTransform();
 			// });
 		// });
-	// " );
+	//" );
 	?>
 
         <div class="virtuemart-admin-area">
