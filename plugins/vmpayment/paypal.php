@@ -42,6 +42,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         $this->_tablename = '#__virtuemart_order_payment_' . $this->_pelement;
         $this->_createTable();
         parent::__construct($subject, $config);
+           JPlugin::loadLanguage( 'plg_vmpayment_paypal', JPATH_ADMINISTRATOR );
     }
 
     /**
@@ -189,9 +190,9 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             "country" => ShopFunctions::getCountryByID($usrST['virtuemart_country_id'], 'country_3_code'),
             "email" => $usrBT['email'],
             "night_phone_b" => $usrBT['phone_1'],
-            "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentresponsereceived&pelement=' . $this->pelement),
-            "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentnotification&pelement=' . $this->pelement),
-            "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentusercancel&pelement=' . $this->pelement),
+            "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentresponsereceived&pelement=' . $this->_pelement),
+            "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentnotification&pelement=' . $this->_pelement),
+            "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentusercancel&pelement=' . $this->_pelement),
             "undefined_quantity" => "0",
             "ipn_test" => $params->get('debug'),
             "pal" => "NRUBJXESJTY24",

@@ -121,7 +121,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 
 
 		$this->_virtuemart_paymentmethod_id = $orderData->virtuemart_paymentmethod_id;
-		$_dbValues['virtuemart_order_id'] = $orderNr;
+		$_dbValues['virtuemart_order_id'] = $virtuemart_order_id;
 		$_dbValues['payment_method_id'] = $this->_virtuemart_paymentmethod_id;
 		$this->writePaymentData($_dbValues, '#__virtuemart_order_payment_' . $this->_pelement);
 		return 'P'; // Set order status to Pending.  TODO Must be a plugin parameter
