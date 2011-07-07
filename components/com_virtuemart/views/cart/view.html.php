@@ -129,11 +129,6 @@ class VirtueMartViewCart extends JView {
 			$this->assignRef('checkout_link_html', $checkout_link_html);
 		}
 
-		dump($this->_cart,'my cart in view');
-
-		//This should be solved later within the cart, but for now quickndirty
-//		$this->_cart->setCartIntoSession();
-
 		$this->assignRef('lists', $this->lists);
                 // @max: quicknirty
 $this->_cart->setCartIntoSession();

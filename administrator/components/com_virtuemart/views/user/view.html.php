@@ -75,7 +75,7 @@ class VirtuemartViewUser extends JView {
 			//			$orderModel = $this->getModel('orders');
 
 			$userDetails = $model->getUser();
-			dump($userDetails,'$userDetails');
+
 			if($task == 'editshop' && $userDetails->user_is_vendor){
 				$model->setCurrent();
 				if(!empty($userDetails->vendor->vendor_store_name)){
@@ -179,7 +179,7 @@ class VirtuemartViewUser extends JView {
 
 
 			// The ShipTo address if selected
-			$_shipto_id = JRequest::getVar('shipto', -1); dump($_shipto_id,'$$_shipto_id');
+			$_shipto_id = JRequest::getVar('shipto', -1);
 			if ($_shipto_id == -1) {
 				$_shipto = 0;
 				$_paneOffset = array();
@@ -214,7 +214,7 @@ class VirtuemartViewUser extends JView {
 				,$_userDetailsList
 				,'shipto_'
 				);
-				dump($shipToFields,'$shipToFields');
+
 				if(empty($shipToFields)) $shipToFields = array();
 				$this->assignRef('shipToFields', $shipToFields);
 				$this->assignRef('shipToID', $_shipto_id);

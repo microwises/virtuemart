@@ -136,7 +136,6 @@ class VirtueMartModelUser extends VmModel {
 
 			$currentUserData = current($userdata->userInfo);
 			for ($_i = 0; $_i < count($userdata->userInfo); $_i++) {
-				dump($currentUserData,'getUserDataInFields');
 
 				if($currentUserData->address_type==$type){
 					$fields = $userFieldsModel->getUserFieldsByUser(
@@ -213,7 +212,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 // 		if(!empty($this->_data->userInfo[$BTuid])){
-			dump('fill BT');
+
 			$this->_data->userInfo[$BTuid]->name = $this->_data->JUser->name;
 			$this->_data->userInfo[$BTuid]->email = $this->_data->JUser->email;
 			$this->_data->userInfo[$BTuid]->username = $this->_data->JUser->username;
@@ -228,10 +227,8 @@ class VirtueMartModelUser extends VmModel {
 
 			$vendorModel->setId($this->_data->virtuemart_vendor_id);
 			$this->_data->vendor = $vendorModel->getVendor();
-			dump($this->_data->vendor,'my user is vendor');
 		}
 
-		dump($this->_data,'my user data');
 		return $this->_data;
 	}
 
@@ -320,7 +317,6 @@ class VirtueMartModelUser extends VmModel {
 	 */
 	function store($data=0){
 
-		dump('called store user');
 		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save user' );
 		$mainframe = JFactory::getApplication() ;
 
@@ -381,7 +377,7 @@ class VirtueMartModelUser extends VmModel {
 		if(empty ($data['password2'])){
 			$data['password2'] = JRequest::getVar('password2', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
 		}
-		dump('before bind j user');
+
 		// Bind Joomla userdata
 		if (!$user->bind($data)) {
 			//develop
@@ -439,10 +435,9 @@ class VirtueMartModelUser extends VmModel {
 		// Save the JUser object
 		if (!$user->save()) {
 			JError::raiseWarning('', JText::_( $user->getError()));
-			dump('Was not able to store user');
 			return false;
 		}
-		dump('stored j user');
+
 		$newId = $user->get('id');
 		$data['virtuemart_user_id'] = $newId;	//We need this in that case, because data is bound to table later
 		$this->setUserId($newId);

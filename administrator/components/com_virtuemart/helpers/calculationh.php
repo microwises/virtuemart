@@ -194,7 +194,7 @@ class calculationHelper {
             $this->_cats = $productId->categories;
         } //Use it as productId
         else {
-        	dump($productId,'getProductPrices use ID');dumpTrace();
+
             $this->_db->setQuery('SELECT * FROM #__virtuemart_product_prices  WHERE `virtuemart_product_id`="' . $productId . '" ');
             $row = $this->_db->loadAssoc();
             if ($row) {

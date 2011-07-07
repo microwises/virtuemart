@@ -83,19 +83,11 @@ class VirtuemartViewUser extends JView {
 		$this->_userDetails = $this->_model->getUser();
 		$this->assignRef('userDetails', $this->_userDetails);
 
-
-// 		$userFields = $this->setUserFieldsForView($layoutName);
-// 		dump($userFields,'$$userFields');
-
 		$type = JRequest::getWord('addrtype', 'BT');
 		$this->assignRef('address_type', $type);
 
 		$userFields  = $this->_model->getUserDataInFields($layoutName,$type,$this->userDetails->JUser->id);
 		$this->assignRef('userFields', $userFields[0]);
-// 		$this->assignRef('userInfoID',  JRequest::getInt('virtuemart_userinfo_id', 0));
-		//$this->assignRef('userInfoID',  $userFields[0]->virtuemart_userinfo_id);
-		dump($userFields,'$userFields in VirtuemartViewUser ');
-
 
 		if($layoutName=='edit'){
 			if($this->_model->getId()==0 && $this->_cuid==0){
