@@ -32,8 +32,6 @@ class AdminUIHelper {
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin.styles.css');
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/toolbar_images.css');
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/menu_images.css');
-	// $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/engage.itoggle.css');
-	// $document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/iphone.css');
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jqtransform.css');
 
 	//loading from public site
@@ -100,7 +98,6 @@ class AdminUIHelper {
 	 */
 	function buildTabs($load_template = array()) {
 		$document = JFactory::getDocument ();
-		$document->addStyleSheet ( JURI::base () . 'components/com_virtuemart/assets/css/tabs.css' );
 		$document->addScript ( JURI::base () . 'components/com_virtuemart/assets/js/tabs.js' );
 
 		$html = '<div id="admin-ui-tabs">';
