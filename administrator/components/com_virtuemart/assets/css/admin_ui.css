@@ -54,9 +54,9 @@ dl#system-message dd.message ul li {background: url(../images/admin_ui/saved_ico
 ////////////////////////////////////*/
 form {overflow: hidden;}
 table.admin-table {table-layout: auto;border-collapse: collapse;width: 100%;overflow: hidden;}
-table.admin-table th {background: #7c7d7f url(../images/admin_ui/admin_table_th_header_background.png) bottom repeat-x;padding: 20px 5px 5px 5px;color: #fff;font-size: 12px;text-shadow: 0px -1px 1px #000;letter-spacing: 1px;font-weight: normal;vertical-align: top;}
+table.admin-table th {background: #7c7d7f url(../images/admin_ui/admin_table_th_header_background.png) bottom repeat-x;padding: 20px 5px 5px 5px;color: #fff;font-size: 12px;text-shadow: 0px -1px 1px #000;letter-spacing: 0px;font-weight: normal;vertical-align: top;}
 table.admin-table th a {color: #fff;font-size: 13px;text-shadow: 0px -1px 1px #000;cursor:pointer;letter-spacing: 1px;font-weight: normal;}
-table.admin-table tr td {padding: 6px 5px 6px 5px;letter-spacing: 1px;cursor: pointer;font-size: 11px;}
+table.admin-table tr td {padding: 6px 5px 6px 5px;letter-spacing: 0px;cursor: pointer;font-size: 11px;}
 table.admin-table tr.row0:hover, table.admin-table tr.row1:hover {background: #8297ba url(../images/admin_ui/admin_table_tr_hover_background.png) top repeat-x;color: #fff;}
 table.admin-table tr.row0:hover a, table.admin-table tr.row1:hover a {color: #fff;text-shadow: 0px -1px 1px #5a74a6;}
 table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}
