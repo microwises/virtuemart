@@ -92,6 +92,7 @@ class AdminUIHelper {
 	 * Admin UI Tabs
 	 * Gives A Tab Based Navigation Back And Loads The Templates With A Nice Design
 	 * @param $load_template = a key => value array. key = template name, value = Language File contraction
+	 * @params $cookieName = choose a cookiename or leave empty if you dont want cookie tabs in this place
 	 * @example 'shop' => 'COM_VIRTUEMART_ADMIN_CFG_SHOPTAB'
 	 */
 	function buildTabs($load_template = array(),$cookieName='') {
