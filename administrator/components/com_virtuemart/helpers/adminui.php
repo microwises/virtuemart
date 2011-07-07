@@ -32,7 +32,7 @@ class AdminUIHelper {
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin.styles.css');
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/toolbar_images.css');
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/menu_images.css');
-	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jqtransform.css');
+	//$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jqtransform.css');
 
 	//loading from public site
 	//$document->addScript('../components/com_virtuemart/assets/js/jquery.js');
@@ -59,7 +59,7 @@ class AdminUIHelper {
 
         <div class="virtuemart-admin-area">
          	<div class="menu-wrapper">
-		<?php  AdminUIHelper::showAdminMenu(); ?>
+		<?php AdminUIHelper::showAdminMenu(); ?>
         	</div>
 
 
@@ -79,8 +79,8 @@ class AdminUIHelper {
 //		    include(JPATH_VM_ADMINISTRATOR.'debug.php');
 			}
 		?>
-			<div class="clear"></div>
-    		</div>
+				<div class="clear"></div>
+    			</div>
     		</div>
 
     	<div class="clear"></div>
