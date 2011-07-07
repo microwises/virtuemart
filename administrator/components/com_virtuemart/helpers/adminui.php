@@ -45,7 +45,7 @@ class AdminUIHelper {
 
 	$document = JFactory::getDocument ();
 	 $document->addScriptDeclaration ( "
-	 	 jQuery.noConflict();
+	 	jQuery.noConflict();
 		jQuery(document).ready(function(){
 		
 			// Remove the System Message after 5 Seconds
