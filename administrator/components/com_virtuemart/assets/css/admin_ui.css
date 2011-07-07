@@ -2,16 +2,11 @@
 /////// VirtueMart Admin Area ////////
 ////////////////////////////////////*/
 
-.virtuemart-admin-area {border: solid #b4b4b4 1px;
-
--moz-border-radius-bottomleft: 6px;
--moz-border-radius-bottomright: 6px;
--webkit-border-bottom-left-radius: -radius: 6px;
--webkit-border-bottom-right-radius: -radius: 6px;
-
-}
-.virtuemart-admin-area .menu-wrapper {width: 200px;float: left;background: #dee4ea;border-right: solid #b4b4b4 1px;}
-
+.virtuemart-admin-area {border: solid #b4b4b4 1px;-moz-border-radius-bottomleft: 6px;-moz-border-radius-bottomright: 6px;-webkit-border-bottom-left-radius: -radius: 6px;-webkit-border-bottom-right-radius: 6px;overflow: hidden;}
+* html .virtuemart-admin-area { /*IE6 only*/overflow: visible;height: 1px;}
+.virtuemart-admin-area .menu-wrapper {width:200px;float: left;background: #dee4ea;border-right: solid #b4b4b4 1px;}
+.virtuemart-admin-area #admin-content-wrapper {}
+.virtuemart-admin-area .menu-wrapper, .virtuemart-admin-area #admin-content-wrapper {padding-bottom: 16000px;margin-bottom: -16000px;}
 .virtuemart-admin-area #admin-content-wrapper .admin-content {padding: 0px;}
 
 /*////////////////////////////////////
