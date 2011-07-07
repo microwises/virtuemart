@@ -44,14 +44,17 @@ class AdminUIHelper {
 	//$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.jqtransform.js');
 
 	$document = JFactory::getDocument ();
-	// $document->addScriptDeclaration ( "
-		// jQuery(document).ready(function(){
+	 $document->addScriptDeclaration ( "
+		jQuery(document).ready(function(){
+		
+			// Remove the System Message after 5 Seconds
+			jQuery('dl#system-message').delay(5000).slideUp('slow');
 
 			// jQuery(function(){
 				// jQuery('#admin-content').jqTransform();
 			// });
-		// });
-	//" );
+		 });
+	" );
 	?>
 
         <div class="virtuemart-admin-area">
