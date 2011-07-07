@@ -111,6 +111,12 @@ class AdminUIHelper {
 		echo $html;
 	}
 	
+	/**
+	 * Admin UI Tabs Imtation
+	 * Gives A Tab Based Navigation Back And Loads The Templates With A Nice Design
+	 * @param $return = return the start tag or the closing tag - choose 'start' or 'end'
+	 * @params $language = pass the language string
+	 */
 	function imitateTabs($return,$language = '') {
 		if ($return == 'start') {
 			$html = 	'<div id="admin-ui-tabs">
