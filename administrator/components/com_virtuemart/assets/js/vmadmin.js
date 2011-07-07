@@ -9,24 +9,24 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 
- jQuery.noConflict();
 
+/*
 	 jQuery(document).ready(function(){
-		 VM.buildMenu();
-		 VM.handleShowElements('click');
+		// VM.buildMenu();
+		// VM.handleShowElements('click');
 
-	jQuery('a.orderDown').click( function() {
+	/* jQuery('a.orderDown').click( function() {
 		orderingUpDown( 1,jQuery(this));
 	});
 
 	jQuery('a.orderUp').click( function() {
 		orderingUpDown(-1,jQuery(this));
-	});
+	});*/
 
 
  });
 
-
+/*
 (function($){
 	// Quick and dirty way of testing if MT1.3 (i.e. J1.6) or not
 	var isMT13 = (MooTools.version.substr(2,1) == '3') ? true : false;
@@ -35,7 +35,7 @@
 	 * Local variable and property attached to global object
 	 *
 	 * @author jseros
-	 */
+	 
 	VM.add({
 
 		/**
@@ -44,7 +44,7 @@
 		 * TODO: Standalone cookie storage
 		 *
 		 * @author jseros
-		 */
+		 
 		buildMenu: function(){
 
 			if(isMT13){
@@ -86,7 +86,7 @@
 		 * @author jseros
 		 *
 		 * @param HTMLElement Toggler node
-		 */
+		 
 		activeMenuItem: function( toggler ){
 			var ai = parseInt( VMCache.get('activeMenuAdminItem')), //shortcut. Performance issue!
 			voir = parseInt( $( toggler ).addClass( VMConfig.get('menuActiveClass') ).attr('rel') ), //this Item
@@ -117,7 +117,7 @@
 		 * @author jseros
 		 *
 		 * @param bool with animation?
-		 */
+		 
 		setMenuClose: function(){
 			var closerSel = VMConfig.get('menuCloserSelector'),
 			that = this;
@@ -139,7 +139,7 @@
 		 *
 		 * @param bool with animation?
 		 * @param bool only hide it
-		 */
+		 
 		showMenu: function(animation, hide){
 			var leftPanel = $( VMConfig.get('layoutLeftSelector') ),
 			rightPanel = $( VMConfig.get('layoutRightSelector') ),
@@ -264,4 +264,4 @@ function orderingUpDown($dir,button) {
 	orderval2 = jQuery('.ordering').eq(id+$dir).val();
 	jQuery('.ordering').eq(id).val(orderval2);
 	jQuery('.ordering').eq(id+$dir).val(orderval);
-}
+} */

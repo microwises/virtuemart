@@ -38,13 +38,14 @@ class AdminUIHelper {
 	//$document->addScript('../components/com_virtuemart/assets/js/jquery.js');
 	//$document->addScript('../components/com_virtuemart/assets/js/vm.js');
 	// used $config->jQuery(); $config->jVm(); to load it
-	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmadmin.js');
+	// $document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmadmin.js');
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/akkordeon.js');
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.cookie.js');
 	//$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.jqtransform.js');
 
 	$document = JFactory::getDocument ();
 	 $document->addScriptDeclaration ( "
+	 	 jQuery.noConflict();
 		jQuery(document).ready(function(){
 		
 			// Remove the System Message after 5 Seconds
