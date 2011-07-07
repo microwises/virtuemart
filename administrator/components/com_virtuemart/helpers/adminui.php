@@ -111,6 +111,22 @@ class AdminUIHelper {
 		$html .= '</div>';
 		echo $html;
 	}
+	
+	function imitateTabs($return,$language = '') {
+		if ($return == 'start') {
+			$html = 	'<div id="admin-ui-tabs">
+							<ul id="tabs">
+								<li class="current">'.JText::_($language).'</li>
+							</ul>
+							<div class="tabs">';
+			echo $html;
+		}
+		if ($return == 'end') {
+			$html = '		</div>
+						</div>';
+			echo $html;
+		}
+	}
 
 	/**
 	 * Build an array containing all the menu items.

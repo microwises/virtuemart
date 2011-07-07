@@ -19,6 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea();
+AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_PRODUCT_MEDIA');
  
 echo'<form name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">';
 echo '<fieldset class="adminform">';
@@ -119,4 +120,6 @@ function checkThumbnailing() {
 }
 checkThumbnailing();
 </script>
-<?php */ AdminUIHelper::endAdminArea(); ?>
+<?php */ 
+AdminUIHelper::imitateTabs('end');
+AdminUIHelper::endAdminArea(); ?>

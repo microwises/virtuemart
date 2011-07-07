@@ -20,112 +20,19 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea();
-$pane = JPane::getInstance('tabs', array('startOffset' => 0));
-$editor = JFactory::getEditor();
+
 ?>
 
 <form enctype="multipart/form-data" action="index.php" method="post" name="adminForm">
-<?php
-	echo $pane->startPane( 'pane' );
-	echo $pane->startPanel(JText::_('COM_VIRTUEMART_DESCRIPTION'), 'desc_tab');
-?>
-<div class="col50">
-	<fieldset class="adminform">
-	<legend><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_DETAILS'); ?></legend>
-	<table class="admintable">
-		<tr>
-			<td width="110" class="key">
-				<label for="title">
-					<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_NAME'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="mf_name" id="mf_name" size="60" value="<?php echo $this->manufacturer->mf_name; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-				<label for="slug">
-					<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_SLUG'); ?>
-				</label>
-			</td>
-			<td>
-				<input type="text" name="slug" id="slug" size="60" value="<?php echo $this->manufacturer->slug; ?>" class="inputbox" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="title">
-					<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY'); ?>
-				</label>
-			</td>
-			<td>
-				<?php
-				echo JHTML::_('Select.genericlist', $this->manufacturerCategories, 'virtuemart_manufacturercategories_id', '', 'virtuemart_manufacturercategories_id', 'mf_category_name', $this->manufacturer->virtuemart_manufacturercategories_id); ?>
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="title">
-					<?php echo   JText::_('COM_VIRTUEMART_MANUFACTURER_URL'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="mf_url" id="mf_url" size="60" value="<?php echo $this->manufacturer->mf_url; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>
-				</label>
-			</td>
-			<td>
-				<fieldset class="radio">
-				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->manufacturer->published); ?>
-				</fieldset>
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="title">
-					<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_EMAIL'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="mf_email" id="mf_email" size="60" value="<?php echo $this->manufacturer->mf_email; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="title">
-					<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_DESCRIPTION'); ?>
-				</label>
-			</td>
-			<td>
-				<?php echo $editor->display('mf_desc', $this->manufacturer->mf_desc, '100%', '300', '50', '8', array('pagebreak', 'readmore'));?>
-			</td>
-		</tr>
 
-	</table>
-	</fieldset>
-</div>
-<?php
-	echo $pane->endPanel();
-	echo $pane->startPanel(JText::_('COM_VIRTUEMART_IMAGE_S'), 'images_tab');
-?>
-<div class="col50">
-	<div class="selectimage">
-		<?php 
-		$this->manufacturer->images[0]->addHidden('virtuemart_vendor_id',$this->virtuemart_vendor_id);
+<?php // Loading Templates in Tabs
+$tabarray = array();
+$tabarray['description'] = 'COM_VIRTUEMART_DESCRIPTION';
+$tabarray['images'] = 'COM_VIRTUEMART_IMAGE_S';
 
-		echo $this->manufacturer->images[0]->displayFilesHandler($this->manufacturer->virtuemart_media_id,'manufacturer'); ?>
-	</div>
-</div>
-<?php
-	echo $pane->endPanel();
-	echo $pane->endPane();
-?>
+AdminUIHelper::buildTabs ( $tabarray );
+// Loading Templates in Tabs END ?>
+
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="virtuemart_manufacturer_id" value="<?php echo $this->manufacturer->virtuemart_manufacturer_id; ?>" />
 	<input type="hidden" name="task" value="" />

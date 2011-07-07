@@ -23,15 +23,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea();
+AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_REVIEW_DETAILS');
 ?>
 
-<div id="admin-ui-tabs">
-	<ul id="tabs">
-		<li class="current"><?php echo JText::_('COM_VIRTUEMART_REVIEW_DETAILS'); ?></li>
-	</ul>
-
-
-<div class="tabs">
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
 <div class="col50">
@@ -109,9 +103,10 @@ AdminUIHelper::startAdminArea();
 <input type="hidden" name="boxchecked" value="0" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
-</div>
-</div>
-<?php AdminUIHelper::endAdminArea(); ?>
+
+<?php 
+AdminUIHelper::imitateTabs('end');
+AdminUIHelper::endAdminArea(); ?>
 <script type="text/javascript">
 function refresh_counter() {
     var form = document.adminForm;

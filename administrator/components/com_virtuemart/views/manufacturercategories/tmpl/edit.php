@@ -20,6 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea();
+AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_MANUFACTURER_CATEGORY_DETAILS');
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -78,4 +79,6 @@ AdminUIHelper::startAdminArea();
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
-<?php AdminUIHelper::endAdminArea(); ?>
+<?php 
+AdminUIHelper::imitateTabs('end');
+AdminUIHelper::endAdminArea(); ?>

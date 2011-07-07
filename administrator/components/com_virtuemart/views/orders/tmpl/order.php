@@ -23,6 +23,7 @@ $document->addScript(JURI::root().'components/com_virtuemart/assets/js/jquery.js
 //$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.alerts.js');
 
 AdminUIHelper::startAdminArea();
+AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDER_PRINT_PO_LBL');
 
 // Get the plugins
 JPluginHelper::importPlugin('vmpayment');
@@ -30,15 +31,6 @@ JPluginHelper::importPlugin('vmorderplugin');
 JPluginHelper::importPlugin('vmshipper');
 $tt=$this;
 ?>
-
-<div id="admin-ui-tabs">
-	<ul id="tabs">
-		<li class="current"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL'); ?></li>
-	</ul>
-
-
-<div class="tabs">
-
 
 <form name='adminForm' >
 		<input type="hidden" name="task" value="" />
@@ -521,10 +513,11 @@ $tt=$this;
 	</tr>
 </table>
 
-</div>
-</div>
 
-		<?php AdminUIHelper::endAdminArea(); ?>
+
+<?php 
+AdminUIHelper::imitateTabs('end');
+AdminUIHelper::endAdminArea(); ?>
 
 <script type="text/javascript">
 <!--

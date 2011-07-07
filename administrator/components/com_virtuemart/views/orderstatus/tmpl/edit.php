@@ -20,6 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
 AdminUIHelper::startAdminArea();
+AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDERSTATUS_DETAILS');
 ?>
 
 <form action="index.php" method="post" name="adminForm">
@@ -97,4 +98,6 @@ AdminUIHelper::startAdminArea();
 </form>
 
 
-<?php AdminUIHelper::endAdminArea(); ?>
+<?php 
+AdminUIHelper::imitateTabs('end');
+AdminUIHelper::endAdminArea(); ?>

@@ -21,6 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 VmConfig::JvalideForm();
 AdminUIHelper::startAdminArea();
+AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 ?>
 
 <form id="adminform" action="index.php" method="post" name="adminForm">
@@ -317,7 +318,9 @@ AdminUIHelper::startAdminArea();
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
-<?php AdminUIHelper::endAdminArea(); ?>
+<?php 
+AdminUIHelper::imitateTabs('end');
+AdminUIHelper::endAdminArea(); ?>
 
 <?php $duration = 500;
 $db = JFactory::getDBO();
