@@ -106,4 +106,11 @@ abstract class VmExtendedPlugin extends JPlugin {
 /*		example:
 		$filename = $this->_path.DS.'install'.DS.'install_required_data.sql';
 		$updater->execSQLFile($filename);*/
+
+	public function plgVmOnUserStore($data){ return $data; }
+
+	public function plgVmAfterUserStore($data){
+		return $data;
+	}
+
 }

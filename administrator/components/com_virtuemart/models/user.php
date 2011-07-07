@@ -497,7 +497,7 @@ class VirtueMartModelUser extends VmModel {
 			echo 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones';
 		}
 
-		JPluginHelper::importPlugin('vmuser');
+		JPluginHelper::importPlugin('vmextended');
 		$dispatcher = JDispatcher::getInstance();
   		$plg_datas = $dispatcher->trigger('plgVmOnUserStore',$data);
 		foreach($plg_datas as $plg_data){
