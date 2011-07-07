@@ -75,19 +75,24 @@ class VirtuemartViewOrders extends JView {
 					, array('captcha' => true, 'delimiters' => true) // Ignore these types
 					, array('delimiter_userinfo','user_is_vendor' ,'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
 			);
+			dump($orderbt,'$orderbt');
 			$userfields = $userFieldsModel->getUserFieldsByUser(
 					 $_userFields
 					,$orderbt
 			);
+			dump($userfields,'$$userfields');
+
 			$_userFields = $userFieldsModel->getUserFields(
 					 'shipping'
 					, array() // Default switches
 					, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
 			);
+			dump($orderst,'$$orderst');
 			$shippingfields = $userFieldsModel->getUserFieldsByUser(
 					 $_userFields
 					,$orderst
 			);
+			dump($shippingfields,'$$shippingfields');
 
 			// Create an array to allow orderlinestatuses to be translated
 			// We'll probably want to put this somewhere in ShopFunctions...

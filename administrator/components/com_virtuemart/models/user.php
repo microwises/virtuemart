@@ -322,7 +322,7 @@ class VirtueMartModelUser extends VmModel {
 			return false;
 		}
 
-/*		//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
+		//To find out, if we have to register a new user, we take a look on the id of the usermodel object.
 		//The constructor sets automatically the right id.
 		$new = ($this->_id < 1);
 		$user = JFactory::getUser($this->_id);
@@ -457,7 +457,7 @@ class VirtueMartModelUser extends VmModel {
 		//		$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
 
 		//		self::doRegisterEmail($user, $password);
-*/
+
 		// Everything went fine, set relevant message depending upon user activation state and display message
 		if ($new) {
 			if ( $useractivation == 1 ) {

@@ -334,10 +334,9 @@ class VirtueMartModelUserfields extends VmModel {
 		//Small ugly hack to make registering optional //do we still need that?
 		if($layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $userId === 0){
 			$corefields = $this->getCoreFields();
-			unset($corefields[2]);dump($corefields);
+			unset($corefields[2]); //the 2 is for the email field, it is necessary in almost anycase.
 			foreach($userFields as $field){
 				if(in_array($field->name,$corefields)){
-// 				if($field->name == 'name' || $field->name == 'username' || $field->name == 'password' || $field->name == 'password2'){
 					$field->required = 0;
 					$field->value = '';
 					$field->default = '';
