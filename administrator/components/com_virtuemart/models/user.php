@@ -522,7 +522,13 @@ class VirtueMartModelUser extends VmModel {
 		if($app->isSite()){
 			unset($data['user_is_vendor']);
 			unset($data['virtuemart_vendor_id']);
+
+			$alreadyStoredUserData = $usertable->load($this->_id);
+			$data['user_is_vendor'] = $alreadyStoredUserData->user_is_vendor;
+			$data['virtuemart_vendor_id'] = $alreadyStoredUserData->virtuemart_vendor_id;
+
 		}
+
 		$vmusersData = $usertable -> bindChecknStore($data);
 		$errors = $usertable->getErrors();
 		foreach($errors as $error){

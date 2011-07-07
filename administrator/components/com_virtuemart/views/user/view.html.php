@@ -75,10 +75,15 @@ class VirtuemartViewUser extends JView {
 			//			$orderModel = $this->getModel('orders');
 
 			$userDetails = $model->getUser();
-
-			if($task == 'editshop'){
+			dump($userDetails,'$userDetails');
+			if($task == 'editshop' && $userDetails->user_is_vendor){
 				$model->setCurrent();
-				$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','STORE',$userDetails->vendor->vendor_store_name );
+				if(!empty($userDetails->vendor->vendor_store_name)){
+					$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','STORE',$userDetails->vendor->vendor_store_name );
+				} else {
+					$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','STORE',JText::_('COM_VIRTUEMART_NEW_VENDOR') );
+				}
+
 			} else {
 				$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','USER',$userDetails->JUser->get('name'));
 			}
@@ -131,7 +136,7 @@ class VirtuemartViewUser extends JView {
 			$_userFields = $userFieldsModel->getUserFields(
 					 				'account'
 									, array() // Default toggles
-									, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'address_type') // Skips
+									, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'address_type','user_is_vendor') // Skips
 									);
 
 			if (($_addressCount = count($userDetails->userInfo)) == 0) {
