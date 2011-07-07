@@ -29,9 +29,7 @@ jimport('joomla.html.pane');
 <?php // Loading Templates in Tabs
 AdminUIHelper::buildTabs ( array (	'tools' 	=> 	'COM_VIRTUEMART_UPDATE_TOOLS_TAB',
 									'update' 	=> 	'COM_VIRTUEMART_UPDATE_VERSION_TAB'
-									
 									 ) );
-
 ?>
 
 <!-- Hidden Fields -->

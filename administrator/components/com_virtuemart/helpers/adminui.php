@@ -38,43 +38,24 @@ class AdminUIHelper {
 
 	//loading from public site
 	//$document->addScript('../components/com_virtuemart/assets/js/jquery.js');
-	//$document->addScript('../components/com_virtuemart/assets/js/vm.js');
+	$document->addScript('../components/com_virtuemart/assets/js/vm.js');
 	// used $config->jQuery(); $config->jVm(); to load it
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmadmin.js');
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/akkordeon.js');
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.cookie.js');
-//	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.jqtransform.js');
+	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.jqtransform.js');
 
 	$document = JFactory::getDocument ();
 	$document->addScriptDeclaration ( "
-	jQuery(document).ready(function(){
+		jQuery(document).ready(function(){
 
-		jQuery(function(){
-			jQuery('#admin-content').jqTransform();
+			jQuery(function(){
+				jQuery('#admin-content').jqTransform();
+			});
 		});
-
-		var adminmenu = jQuery('.menu-wrapper');
-		var admincontent = jQuery('#admin-content-wrapper');
-		adminmenu.css({'min-height': '500px',});
-		admincontent.css({'min-height': '500px',});
-
-		if(adminmenu.height() < admincontent.height()) {
-			adminmenu.css({'height': admincontent.height()+'px',});
-		}
-		if(adminmenu.height() > admincontent.height()) {
-			admincontent.css({'height': adminmenu.height()+'px',});
-		}
-
-});
-" );
-
-
-
-
+	" );
 	?>
-
-
-
+	
         <div class="virtuemart-admin-area">
          	<div class="menu-wrapper">
 		<?php  AdminUIHelper::showAdminMenu(); ?>

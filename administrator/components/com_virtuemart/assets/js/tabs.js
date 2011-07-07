@@ -1,4 +1,3 @@
-
 function tabs(pages) {
 
 	pages.addClass("dyn-tabs");
@@ -16,34 +15,11 @@ function tabs(pages) {
 
 	var items = tabNavigation.find("li");
 	items.first().addClass("current");
-
-	
-	var adminmenu = jQuery('.menu-wrapper');
-	var admincontent = jQuery('#admin-content-wrapper');
-	//adminmenu.css({'min-height': '500px',});
-	//admincontent.css({'min-height': '500px',});
-	
-	if(adminmenu.height() < admincontent.height()) {
-		adminmenu.css({'height': admincontent.height()+'px',});
-	} else {
-		admincontent.css({'height': adminmenu.height()+'px',});
-	}
 	
 	items.click(function() {
-		adminmenu.css({'height': '0px',});
-		//admincontent.css({'height': '0px',});
-		
 		items.removeClass("current");
 		jQuery(this).addClass("current");
 		pages.hide();
 		pages.eq(jQuery(this).index()).fadeIn(200);
-
-		if(adminmenu.height() < admincontent.height()) {
-			adminmenu.css({'height': admincontent.height()+'px',});
-		}
-
 	});
-
 }
-
-
