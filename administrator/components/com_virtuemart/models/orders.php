@@ -488,7 +488,7 @@ class VirtueMartModelOrders extends VmModel {
 			, array('delimiters'=>true, 'captcha'=>true)
 			, array('username', 'password', 'password2', 'user_is_vendor')
 		);
-		foreach ($_userFieldsBT as $_fld) {
+/*		foreach ($_userFieldsBT as $_fld) {
 			$_name = $_fld->name;
 			if(!empty( $_cart->BT[$_name])){
 				if ($_name == 'virtuemart_country_id') {
@@ -500,9 +500,11 @@ class VirtueMartModelOrders extends VmModel {
 				} else {
 
 					$_userInfoData->$_name = $_cart->BT[$_name];
-				}
+			//	}
 			}
-		}
+		}*/
+		$_userInfoData = $_cart->BT;
+
 		$_userInfoData->virtuemart_order_id = $_id;
 		$_userInfoData->virtuemart_user_id = $_usr->get('id');
 		if (!$_userInfoData->store()){
