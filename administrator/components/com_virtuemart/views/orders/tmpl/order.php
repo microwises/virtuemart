@@ -30,6 +30,16 @@ JPluginHelper::importPlugin('vmorderplugin');
 JPluginHelper::importPlugin('vmshipper');
 $tt=$this;
 ?>
+
+<div id="admin-ui-tabs">
+	<ul id="tabs">
+		<li class="current"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL'); ?></li>
+	</ul>
+
+
+<div class="tabs">
+
+
 <form name='adminForm' >
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="option" value="com_virtuemart" />
@@ -510,6 +520,9 @@ $tt=$this;
 		</td>
 	</tr>
 </table>
+
+</div>
+</div>
 
 		<?php AdminUIHelper::endAdminArea(); ?>
 

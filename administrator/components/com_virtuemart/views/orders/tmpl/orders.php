@@ -24,6 +24,8 @@ $j15 = VmConfig::isJ15();
 /* Get the component name */
 $option = JRequest::getWord('option');
 ?>
+
+
 <form action="index.php" method="post" name="adminForm" id="adminForm">
     <div id="header">
 	<div id="filterbox" >
