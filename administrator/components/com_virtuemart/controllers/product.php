@@ -93,7 +93,8 @@ class VirtuemartControllerProduct extends VmController {
 		$view->setModel( $this->getModel( 'waitinglist', 'VirtueMartModel' ));
 		/* custom functions */
 		$view->setModel( $this->getModel( 'custom', 'VirtueMartModel' ));
-
+		/* custom functions */
+		$view->setModel( $this->getModel( 'customfields', 'VirtueMartModel' ));
 		/* Set the layout */
 		$view->setLayout('product_edit');
 
@@ -178,8 +179,10 @@ class VirtuemartControllerProduct extends VmController {
 
 
 	/**
-	* Get a list of related products
+	* Get a list of related products, categories
+	* or customfields
 	* @author RolandD
+	* Kohl Patrick
 	*/
 	public function getData() {
 
@@ -191,7 +194,7 @@ class VirtuemartControllerProduct extends VmController {
 		$type = JRequest::getVar('type', false);
 		if ($type = 'customfield') {
 			$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
-			$view->setModel( $this->getModel( 'custom', 'VirtueMartModel' ));
+			$view->setModel( $this->getModel( 'customfields', 'VirtueMartModel' ));
 		} else $view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
 		/* Now display the view. */
 		$view->display(null);

@@ -109,21 +109,22 @@ class VirtueMartModelCustom extends VmModel {
 
 		$datas->items = $this->_db->loadObjectList();
 
-		$data = $this->getTable('customs');
-//   		$data->load($this->virtuemart_custom_id);
-		if (!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
-		$customHandler = VmCustomHandler::createCustom($data);
+//		$data = $this->getTable('customs');
+//   	$data->load($this->virtuemart_custom_id);
+		if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+		$customfields = new VirtueMartModelCustomfields();
+//		$customHandler = VmCustomHandler::createCustom($data);
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
-		$datas->field_types = $customHandler->getField_types() ;
+		$datas->field_types = $customfields->getField_types() ;
 
 		foreach ($datas->items as $key => & $data) {
-  		if (!empty($data->custom_parent_id)) $data->custom_parent_title = $customHandler->getCustomParentTitle($data->custom_parent_id);
+  		if (!empty($data->custom_parent_id)) $data->custom_parent_title = $customfields->getCustomParentTitle($data->custom_parent_id);
 		else {
 			$data->custom_parent_title =  '-' ;
 		}
   		$data->field_type_display = JText::_( $datas->field_types[$data->field_type ] );
 		}
-		$datas->customsSelect=$customHandler->displayCustomSelection();
+		$datas->customsSelect=$customfields->displayCustomSelection();
 
 		return $datas;
     }

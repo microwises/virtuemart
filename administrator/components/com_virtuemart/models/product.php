@@ -413,15 +413,16 @@ class VirtueMartModelProduct extends VmModel {
 
 				// set the custom variants
 				if ($this->hasproductCustoms) {
-					if(!class_exists('VmCustomHandler'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
-
+					if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+					$customfields = new VirtueMartModelCustomfields();
 					// Load the custom product fields
-					$product->customfields = VmCustomHandler::getProductCustomsField($product);
+					$product->customfields = $customfields->getProductCustomsField($product);
 
 					//  custom product fields for add to cart
-					$product->customfieldsCart = VmCustomHandler::getProductCustomsFieldCart($product);
+					$product->customfieldsCart = $customfields->getProductCustomsFieldCart($product);
+					if ($child = $this->getProductChilds($this->_id)) $product->customsChilds = $customfields->getProductCustomsChilds($child , $this->_id);
 				}
-				$product->customsChilds = $this->getProductCustomsChilds($this->_id);
+
 
 				// Check the order levels
 				if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
@@ -438,8 +439,9 @@ class VirtueMartModelProduct extends VmModel {
 				}
 				else {
 					if ($this->hasproductCustoms) {
-						if(!class_exists('VmCustomHandler'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
-						$product->customfields = VmCustomHandler::getproductCustomslist($this->_id);
+						if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+						$customfields = new VirtueMartModelCustomfields();
+						$product->customfields = $customfields->getproductCustomslist($this->_id,'product');
 					}
 				}
 
@@ -1423,45 +1425,6 @@ class VirtueMartModelProduct extends VmModel {
 		return $this->hasproductCustoms;
 	}
 
-
-	// **************************************************
-	// Custom FIELDS
-	//
-
-     function getProductCustomsChilds($id){
-
-		$data = array();
-     	if ($childs = $this->getProductChilds($id)) {
-     		if(!class_exists('VmCustomHandler'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
-
-	     	foreach ($childs as &$child) {
-	     		$query='SELECT C.* , field.*
-					FROM `jos_virtuemart_product_customfields` AS field
-					LEFT JOIN `jos_virtuemart_customs` AS C ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-					WHERE `virtuemart_product_id` ='.(int)$child->virtuemart_product_id;
-				$query .=' and C.field_type = "C" ';
-
-				$this->_db->setQuery($query);
-				$child->field = $this->_db->loadObject();
-	     		$child->display = VmCustomHandler::displayType($id,$child->virtuemart_product_id,'C');
-	     		if ($child->field) $data[] = $child ;
-	     	}
-			return $data ;
-     	}
-     }
-
-
-
-	function displayCustomMedia($media_id,$table='product'){
-
-  		$data = $this->getTable('medias');
-   		$data->load((int)$media_id);
-
-  		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
-  		$media = VmMediaHandler::createMedia($data,$table);
-		return $media->displayMediaThumb('',false);
-
-	}
 
 	function getProductChilds($product_id ) {
 

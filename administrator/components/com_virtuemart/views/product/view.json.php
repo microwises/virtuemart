@@ -32,13 +32,14 @@ class VirtuemartViewProduct extends JView {
 
 	function display($tpl = null) {
 
-		$this->loadHelper('customhandler');
+		//$this->loadHelper('customhandler');
 
 		$filter = JRequest::getVar('q', false);
 		$type = JRequest::getVar('type', false);
 		$id = JRequest::getInt('id', false);
 		$row = JRequest::getInt('row', false);
-
+		$model = $this->getModel('customfields');
+		//$customfield = $model->getcustomfield();
 		$db = JFactory::getDBO();
 		/* Get the task */
 		if ($type=='relatedproducts') {
@@ -60,7 +61,7 @@ class VirtuemartViewProduct extends JView {
 
 			$field = $db->loadObject();
 			$html = array ();
-			$display = VmCustomHandler::inputType($field->id,'R',0,0,$row,0);
+			$display = $model->inputType($field->id,'R',0,0,$row,0);
 			$cartIcone= 'icon-16-default-off.png';
 			$html[] = '<tr>
 				 <td>'.JText::_('COM_VIRTUEMART_RELATED_PRODUCTS').'</td>
@@ -100,7 +101,7 @@ class VirtuemartViewProduct extends JView {
 
 			$field = $db->loadObject();
 			$html = array ();
-			$display = VmCustomHandler::inputType($field->id,'Z',0,0,$row,0);
+			$display = $model->inputType($field->id,'Z',0,0,$row,0);
 			$cartIcone= 'icon-16-default-off.png';
 			$html[] = '<tr>
 				 <td>'.JText::_('COM_VIRTUEMART_RELATED_CATEGORIES').'</td>
@@ -125,7 +126,7 @@ class VirtuemartViewProduct extends JView {
 			$json['value'] = $db->loadObjectList();
 			$json['ok'] = 1 ;
 		} else if ($type=='customfield') {
-			$fieldTypes= VmCustomHandler::getField_types() ;
+			$fieldTypes= $model->getField_types() ;
 
 			$query = "SELECT * FROM #__virtuemart_customs
 			WHERE `field_type`!='C' AND (`virtuemart_custom_id`=".$id." or `custom_parent_id`=".$id.")";
@@ -134,7 +135,7 @@ class VirtuemartViewProduct extends JView {
 			$rows = $db->loadObjectlist();
 			$html = array ();
 			foreach ($rows as $field) {
-			 $display = VmCustomHandler::inputType($field->custom_value,$field->field_type,$field->is_list,0,$row,$field->is_cart_attribute);
+			 $display = $model->inputType($field->custom_value,$field->field_type,$field->is_list,0,$row,$field->is_cart_attribute);
 			 if ($field->is_cart_attribute) $cartIcone=  'icon-16-default.png';
 			 else  $cartIcone= 'icon-16-default-off.png';
 			 $html[] = '<tr>

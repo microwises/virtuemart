@@ -165,16 +165,15 @@ class VirtuemartViewProduct extends JView {
 					$waitinglist = $waitinglistmodel->getWaitingusers($product->virtuemart_product_id);
 					$this->assignRef('waitinglist', $waitinglist);
 				}
-
-				$this->loadHelper('customhandler');
-				$fieldTypes = VmCustomHandler::getField_types();
+				$field_model = $this->getModel('customfields');
+				$fieldTypes = $field_model->getField_types();
 				$this->assignRef('fieldTypes', $fieldTypes);
 
 				/* Load product types lists */
-				$customsList = VmCustomHandler::getCustomsList();
+				$customsList = $field_model->getCustomsList();
 				$this->assignRef('customsList', JHTML::_('select.genericlist', $customsList,'customlist','size="5"'));
 
-				$ChildCustomRelation = VmCustomHandler::getProductChildCustomRelation();
+				$ChildCustomRelation = $field_model->getProductChildCustomRelation();
 				$this->assignRef('ChildCustomRelation',$ChildCustomRelation);
 
 				/* Set up labels */
