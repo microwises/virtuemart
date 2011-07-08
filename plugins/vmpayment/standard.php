@@ -128,7 +128,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 		return 'P'; // Set order status to Pending.  TODO Must be a plugin parameter
 	}
         /*
-        function plgVmOnPaymentResponseReceived( )  {
+        function plgVmOnPaymentResponseReceived( $pelement)  {
            return null;
        }
 */

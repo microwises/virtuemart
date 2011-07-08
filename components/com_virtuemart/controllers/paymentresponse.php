@@ -30,7 +30,7 @@ jimport('joomla.application.component.controller');
  * @author Valérie Isaksen
  *
  */
-class VirtueMartControllerPaymentResponse extends JController {
+class VirtueMartControllerPaymentresponse extends JController {
 
     /**
      * Construct the cart
@@ -42,13 +42,13 @@ class VirtueMartControllerPaymentResponse extends JController {
     }
 
     function PaymentResponseReceived() {
-
+        JPlugin::loadLanguage('plg_vmpayment_paypal', JPATH_ADMINISTRATOR);
         if (!class_exists('vmPaymentPlugin'))
             require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
         JPluginHelper::importPlugin('vmpayment');
 
         $dispatcher = JDispatcher::getInstance();
-        $returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived');
+        $returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived', array('pelement' => $pelement));
         foreach ($returnValues as $returnValue) {
             if ($returnValue !== null) {
                 JRequest::setVar('paymentResponse', $returnValue);
@@ -60,6 +60,7 @@ class VirtueMartControllerPaymentResponse extends JController {
             }
             // Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
         }
+        JRequest::setVar('paymentResponse', Jtext::_('VMPAYMENT_PAYPAL_USER_CANCEL'));
         $view = $this->getView('paymentresponse', 'html');
         $layoutName = JRequest::getVar('layout', 'default');
         $view->setLayout($layoutName);
@@ -69,13 +70,15 @@ class VirtueMartControllerPaymentResponse extends JController {
     }
 
     function PaymentUserCancel() {
-
+        JPlugin::loadLanguage('plg_vmpayment_paypal', JPATH_ADMINISTRATOR);
         if (!class_exists('vmPaymentPlugin'))
             require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
-
+        if (!class_exists('VirtueMartCart'))
+            require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
         $view = $this->getView('paymentresponse', 'html');
-        $layoutName = JRequest::getVar('layout', 'default');
+        $layoutName = JRequest::getVar('paymentResponse', 'default');
         $view->setLayout($layoutName);
+        JRequest::setVar('paymentResponse', Jtext::_('VMPAYMENT_PAYPAL_USER_CANCEL'));
         $cart = VirtueMartCart::getCart();
         $cart->removeCartFromSession();
         /* Display it all */
@@ -83,8 +86,8 @@ class VirtueMartControllerPaymentResponse extends JController {
     }
 
     function paymentNotification() {
-          $data = JRequest::get('post');
-                 if (!class_exists('vmPaymentPlugin'))
+        $data = JRequest::get('post');
+        if (!class_exists('vmPaymentPlugin'))
             require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
         JPluginHelper::importPlugin('vmpayment');
         $pelement = JRequest::getVar('pelement');

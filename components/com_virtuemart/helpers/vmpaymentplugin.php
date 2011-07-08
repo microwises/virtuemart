@@ -201,7 +201,7 @@ abstract class vmPaymentPlugin extends JPlugin {
         return null;
     }
 
-    //abstract function plgVmOnPaymentResponseReceived();
+    //abstract function plgVmOnPaymentResponseReceived($pelement);
 
     /**
      * This event is fired after the payment has been processed; it stores the payment method-
