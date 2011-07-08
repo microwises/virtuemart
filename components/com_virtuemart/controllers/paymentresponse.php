@@ -46,7 +46,7 @@ class VirtueMartControllerPaymentresponse extends JController {
         if (!class_exists('vmPaymentPlugin'))
             require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
         JPluginHelper::importPlugin('vmpayment');
-
+        $pelement = JRequest::getVar('pelement');
         $dispatcher = JDispatcher::getInstance();
         $returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived', array('pelement' => $pelement));
         foreach ($returnValues as $returnValue) {
