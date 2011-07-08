@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<link rel="stylesheet" href="components/com_virtuemart/assets/css/install.css" type="text/css" /> 
+<link rel="stylesheet" href="components/com_virtuemart/assets/css/install.css" type="text/css" />
 
 <div align="center">
 	<table width="100%" border="0">
@@ -14,11 +14,11 @@ defined('_JEXEC') or die('Restricted access');
 			<br /><br />
 			<h1><?php echo JText::_('COM_VIRTUEMART_WELCOME'); ?></h1>
 		</td>
-		<td>	
+		<td>
 			<h1><?php echo JText::_('COM_VIRTUEMART_INSTALLATION_STEP_ONE'); ?></h1>
 			<br /><br />
-			
-			<table width="50%">				
+
+			<table width="50%">
 			<tr>
 				<td align="center" colspan="2" ><?php echo JText::_('COM_VIRTUEMART_INSTALLATION_FINISH'); ?></td>
 			</tr>
@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 					</a>
 					<br />
 					<?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
-				</td>				
+				</td>
 				<td width="50%" align="center">
 					<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart'); ?>">
 						<img src="components/com_virtuemart/assets/images/icon_48/vm_frontpage_48.png">
@@ -43,21 +43,10 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 				<td align="center">
-					<?php echo JText::_('COM_VIRTUEMART_INSTALL_FURTHER_HELP'); ?>
+					<?php //echo JText::_('COM_VIRTUEMART_INSTALL_FURTHER_HELP'); ?>
 				</td>
 				<td align="center">
-					<?php echo JText::_('COM_VIRTUEMART_INSTALL_DONATION'); ?><br /><br />
-					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-						<input type="hidden" name="cmd" value="_xclick" />
-						<input type="hidden" name="business" value="" />
-						<input type="hidden" name="item_name" value="VirtueMart Donation" />
-						<input type="hidden" name="item_number" value="" />
-						<input type="hidden" name="currency_code" value="EUR" />
-						<input type="hidden" name="tax" value="0" />
-						<input type="hidden" name="no_note" value="0" />
-						<input type="hidden" name="amount" value="" />
-						<input type="image" src="components/com_virtuemart/assets/images/donate.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" />
-					</form>
+
 				</td>
 			</tr>
 			</table>
