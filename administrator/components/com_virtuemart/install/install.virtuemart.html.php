@@ -1,5 +1,8 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
+$lang = JFactory::getLanguage();
+$lang->load('com_virtuemart.sys',JPATH_ADMINISTRATOR);
+$lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
 ?>
 
 <link rel="stylesheet" href="components/com_virtuemart/assets/css/install.css" type="text/css" />

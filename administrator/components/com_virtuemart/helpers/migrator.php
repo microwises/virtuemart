@@ -1221,5 +1221,52 @@ class Migrator extends VmModel{
 		$this->setRedirect($this->redirectPath);
 	}
 
+	/**
+	 * Method to restore all virtuemart tables in a database with a given prefix
+	 *
+	 * @access	public
+	 * @param	string	Old table prefix
+	 * @return	boolean	True on success.
+	 */
+	function restoreDatabase($prefix='bak_vm_') {
+		// Initialise variables.
+		$return = true;
+
+		$this->_db = JFactory::getDBO();
+
+		// Get the tables in the database.
+		if ($tables = $this->_db->getTableList()) {
+			foreach ($tables as $table) {
+				// If the table uses the given prefix, back it up.
+				if (strpos($table, $prefix) === 0) {
+					// restore table name.
+					$restoreTable = str_replace($prefix, '#__vm_', $table);
+
+					// Drop the current active table.
+					$this->_db->setQuery('DROP TABLE IF EXISTS '.$this->_db->nameQuote($restoreTable));
+					$this->_db->query();
+
+					// Check for errors.
+					if ($this->_db->getErrorNum()) {
+						$this->setError($this->_db->getErrorMsg());
+						$return = false;
+					}
+
+					// Rename the current table to the backup table.
+					$this->_db->setQuery('RENAME TABLE '.$this->_db->nameQuote($table).' TO '.$this->_db->nameQuote($restoreTable));
+					$this->_db->query();
+
+					// Check for errors.
+					if ($this->_db->getErrorNum()) {
+						$this->setError($this->_db->getErrorMsg());
+						$return = false;
+					}
+				}
+			}
+		}
+
+		return $return;
+	}
+
 }
 

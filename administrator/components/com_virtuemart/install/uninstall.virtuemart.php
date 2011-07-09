@@ -12,8 +12,6 @@ require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'mo
 
 function com_uninstall() {
 	include(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall.virtuemart.html.php');
-	
+
 	return true;
 }
-
-?>
