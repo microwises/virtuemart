@@ -370,8 +370,6 @@ abstract class vmPaymentPlugin extends JPlugin {
 
         $db->setQuery($q);
         if (!$results = $db->loadObjectList()) {
-//			$app = JFactory::getApplication();
-//			$app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_CARRIER'));
             return false;
         }
         $this->payments = $results;
@@ -513,12 +511,12 @@ abstract class vmPaymentPlugin extends JPlugin {
      */
 
     function getSelectablePayment(VirtueMartCart $cart, &$virtuemart_paymentmethod_id) {
-
+        $nbPayments=0;
         if ($this->getPaymentMethods($cart->vendorId) === false) {
             return false;
         }
-        if ($nbPayments = count($this->payments) == 1) {
-            $virtuemart_paymentmethod_id = $this->payments[0]->virtuemart_paymentmethod_id;
+        if (($nbPayments = count($this->payments)) == 1) {
+            $virtuemart_paymentmethod_id = (int)$this->payments[0]->virtuemart_paymentmethod_id;
         }
         return $nbPayments;
     }

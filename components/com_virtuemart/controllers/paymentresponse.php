@@ -42,7 +42,7 @@ class VirtueMartControllerPaymentresponse extends JController {
     }
 
     function PaymentResponseReceived() {
-        JPlugin::loadLanguage('plg_vmpayment_paypal', JPATH_ADMINISTRATOR);
+
         if (!class_exists('vmPaymentPlugin'))
             require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
         JPluginHelper::importPlugin('vmpayment');
@@ -60,7 +60,7 @@ class VirtueMartControllerPaymentresponse extends JController {
             }
             // Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
         }
-        JRequest::setVar('paymentResponse', Jtext::_('VMPAYMENT_PAYPAL_USER_CANCEL'));
+        JRequest::setVar('paymentResponse', Jtext::_('COM_VIRTUEMART_CART_THANKYOU'));
         $view = $this->getView('paymentresponse', 'html');
         $layoutName = JRequest::getVar('layout', 'default');
         $view->setLayout($layoutName);
@@ -70,7 +70,7 @@ class VirtueMartControllerPaymentresponse extends JController {
     }
 
     function PaymentUserCancel() {
-        JPlugin::loadLanguage('plg_vmpayment_paypal', JPATH_ADMINISTRATOR);
+
         if (!class_exists('vmPaymentPlugin'))
             require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
         if (!class_exists('VirtueMartCart'))
@@ -78,7 +78,7 @@ class VirtueMartControllerPaymentresponse extends JController {
         $view = $this->getView('paymentresponse', 'html');
         $layoutName = JRequest::getVar('paymentResponse', 'default');
         $view->setLayout($layoutName);
-        JRequest::setVar('paymentResponse', Jtext::_('VMPAYMENT_PAYPAL_USER_CANCEL'));
+        JRequest::setVar('paymentResponse', Jtext::_('COM_VIRTUEMART_PAYMENT_USER_CANCEL'));
         $cart = VirtueMartCart::getCart();
         $cart->removeCartFromSession();
         /* Display it all */

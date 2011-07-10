@@ -323,12 +323,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td align="right"> <?php echo "<span  style='color:gray'>".$this->prices['billDiscountAmount']."</span>" ?> </td>
 			<td align="right"><strong><?php echo $this->prices['billTotal'] ?></strong></td>
 		  </tr>
-		<?php if ( VmConfig::get('show_tax')) { ?>
-		  <tr class="sectiontableentry1">
-				<td colspan="4" align="right" valign="top"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL_TAX') ?>: </td>
-				<td colspan="4" align="right"><?php echo $this->prices['taxAmount'] ?></td>
-		  </tr>
-		<?php } ?>
+		 
 
 
 	</table>

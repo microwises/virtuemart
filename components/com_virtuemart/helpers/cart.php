@@ -799,14 +799,7 @@ class VirtueMartCart {
 			 *  may be redirect is done by the payment plugin (eg: paypal) so we do not come back here
 			*  if payment plugin echos a form, false = nothing happen, true= echo form ,
 			*/
-			/*
-			 $fp = fopen("paypal.text", "a");
-			foreach ($returnValues as $returnValue) {
-			fwrite($fp, "Retourn plgVmAfterCheckoutDoPayment" .   $returnValue. "\n");
-			}
-			fclose($fp);
-			* */
-
+			 
 			$activeplugin = false;
 			foreach ($returnValues as $returnValue) {
 				if ($returnValue) {
@@ -950,9 +943,11 @@ class VirtueMartCart {
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipping', array('cart' => $this));
 		foreach ($returnValues as $returnValue) {
-			$nbShipping += $returnValue;
-			if ((int)$returnValue )
+			
+			if ((int)$returnValue ) {
+                            $nbShipping ++;
 			$virtuemart_shippingcarrier_id = $returnValue;
+                        }
 		}
 		if ($nbShipping) {
 			$this->virtuemart_shippingcarrier_id = $virtuemart_shippingcarrier_id;
@@ -973,11 +968,12 @@ class VirtueMartCart {
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedPayment', array('cart' => $this));
 		foreach ($returnValues as $returnValue) {
-			$nbPayment += $returnValue;
-			if ((int)$returnValue )
+			if ((int)$returnValue ) {
+                            $nbPayment ++;
 			$virtuemart_paymentmethod_id = $returnValue;
+                        }
 		}
-		if ($nbPayment) {
+		if ($nbPayment==1) {
 			$this->virtuemart_paymentmethod_id = $virtuemart_paymentmethod_id;
 			$this->setCartIntoSession();
 			return true;
