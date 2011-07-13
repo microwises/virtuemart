@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/component-install.dtd">
-<install method="upgrade" type="component" version="1.5.0">
-	<name>VirtueMart</name>
+<!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/component-install.dtd">
+
+<install method="upgrade" type="component" version="1.5.0">
+
+	<name>VirtueMart</name>
+
 	<creationDate>June 2011</creationDate>
 	<author>The VirtueMart Development Team</author>
 	<authorEmail>max|at|virtuemart.net</authorEmail>
 	<authorUrl>http://www.virtuemart.net</authorUrl>
-	<copyright>	Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
+	<copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
 	<version status="rc">1.9.8</version>
 	<description>COM_VIRTUEMART_DESCRIPTION</description>

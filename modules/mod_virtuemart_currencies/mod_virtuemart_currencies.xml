@@ -1,41 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/module-install.dtd">
 <install type="module" version="1.5.0">
-	<name>MOD_VIRTUEMART_CURRENCIES</name>
-	<creationDate>February 2010</creationDate>
-	<author>Kohl Patrick</author>
-	<authorEmail>soeren|at|virtuemart.net</authorEmail>
-	<authorUrl>http://www.virtuemart.net</authorUrl>
-	<copyright>
-		Copyright (C) 2010 Soeren Eberhardt-Biermann. All rights reserved.
-	</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<version>1.1.0</version>
-	<description>MOD_VIRTUEMART_CURRENCIES_DESC</description>
-	<files>
-		<filename module="mod_virtuemart_currencies">mod_virtuemart_currencies.php</filename>
-		<filename module="mod_virtuemart_currencies">index.html</filename>
-		<filename module="mod_virtuemart_currencies">tmpl/default.php</filename>
-		<filename module="mod_virtuemart_currencies">tmpl/index.html</filename>
-	</files>
-	<params>
-		<param name="text_before" type="textarea" cols="40" rows="3"
+    <name>MOD_VIRTUEMART_CURRENCIES</name>
+    <creationDate>February 2011</creationDate>
+    <author>The VirtueMart Development Team</author>
+    <authorUrl>http://www.virtuemart.net</authorUrl>
+    <copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
+    <version>1.9.8</version>
+    <description>MOD_VIRTUEMART_CURRENCIES_DESC</description>
+    <files>
+        <filename module="mod_virtuemart_currencies">mod_virtuemart_currencies.php</filename>
+        <filename module="mod_virtuemart_currencies">index.html</filename>
+        <filename module="mod_virtuemart_currencies">tmpl/default.php</filename>
+        <filename module="mod_virtuemart_currencies">tmpl/index.html</filename>
+    </files>
+    <params>
+        <param name="text_before" type="textarea" cols="40" rows="3"
 			default="" label="MOD_VIRTUEMART_CURRENCIES_PRE_TEXT"
 			description="MOD_VIRTUEMART_CURRENCIES_PRE_TEXT_DESC" />
-		<param name="product_currency" type="text" default=""
+        <param name="product_currency" type="text" default=""
 			label="MOD_VIRTUEMART_CURRENCIES_DISPLAY"
 			description="MOD_VIRTUEMART_CURRENCIES_DISPLAY_DESC" />
-		<param name="cache" type="radio" default="0"
+        <param name="cache" type="radio" default="0"
 			label="Enable Cache"
 			description="Select whether to cache the content of this module">
-			<option value="0">no</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="moduleclass_sfx" type="text" default=""
+            <option value="0">no</option>
+            <option value="1">Yes</option>
+        </param>
+        <param name="moduleclass_sfx" type="text" default=""
 			label="Module Class Suffix"
 			description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
-		<param name="class_sfx" type="text" default=""
+        <param name="class_sfx" type="text" default=""
 			label="Menu Class Suffix"
 			description="A suffix to be applied to the css class of the menu items" />
-	</params>
+    </params>
 </install>

@@ -1,30 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment" >	
     <name>VMPayment - PayPal</name>
-    <author><![CDATA[JMart Project]]>
-    </author>
-    <creationdate>2010</creationdate>
-    <copyright><![CDATA[2005 JMart Project]]>
-    </copyright>
-    <license>GNU/GPL</license>
-    <authoremail></authoremail>
-    <authorurl>http://paypal.com</authorurl>
-    <version>1.0</version>
+    <creationDate>June 2011</creationDate>
+    <author>The VirtueMart Development Team</author>
+    <authorUrl>http://www.virtuemart.net</authorUrl>
+    <copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
+    <version>1.9.8</version>
     <description><![CDATA[<a href="http://paypal.com" target="_blank">PayPal</a> is a popular
 	payment provider and available in many countries. ]]>
     </description>
 
-	<!-- Payment Method Type Codes:
-	N: no processing (=manual processing like "purchase order" or "Cash on Delivery")
-	P: PayPal-like (Shows HTML Code to the customer - you may use a <form> to redirect the customer to the Payment Gateway (used for PayPal, Worldpay, 2Checkout etc))
-	C: Credit Card (only collect the CC data, manual processing)
-	Y: Automatic Credit Card Processor (authorize.net, eWay)
-	-->
-
-    <element>paypal</element>
     <files>
         <filename plugin="paypal">paypal.php</filename>
     </files>
+    <languages>
+        <language tag="en-GB">en-GB.plg_vmpayment_paypal.ini</language>
+        <language tag="fr-FR">fr-FR.plg_vmpayment_paypal.ini</language>
+    </languages>
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />
         <param   type="spacer" default="VMPAYMENT_PAYPAL_PARAMS" level="level1" />
