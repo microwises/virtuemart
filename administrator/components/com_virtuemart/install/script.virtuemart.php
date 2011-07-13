@@ -37,7 +37,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$db->setQuery($query);
 			$result = $db->loadObject();
 
-			if ($result->idCount > 0) {
+			if (!empty($result) && $result->idCount > 0) {
 				// return true so com_install wrapper will know what to do in j1.5
 				if ($parent == null) {
 					return true;
