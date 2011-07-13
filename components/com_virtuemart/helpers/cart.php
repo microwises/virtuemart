@@ -20,8 +20,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Load the model framework
-//jimport( 'joomla.application.component.view');
 
 /**
  * Model class for the cart
@@ -799,7 +797,7 @@ class VirtueMartCart {
 			 *  may be redirect is done by the payment plugin (eg: paypal) so we do not come back here
 			*  if payment plugin echos a form, false = nothing happen, true= echo form ,
 			*/
-			 
+
 			$activeplugin = false;
 			foreach ($returnValues as $returnValue) {
 				if ($returnValue) {
@@ -943,7 +941,7 @@ class VirtueMartCart {
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipping', array('cart' => $this));
 		foreach ($returnValues as $returnValue) {
-			
+
 			if ((int)$returnValue ) {
                             $nbShipping ++;
 			$virtuemart_shippingcarrier_id = $returnValue;

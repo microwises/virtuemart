@@ -193,7 +193,7 @@ class VirtueMartModelUser extends VmModel {
 
 			$this->_data->userInfo[$_ui_id] = $this->getTable('userinfos');
 			$this->_data->userInfo[$_ui_id]->load($_ui_id);
-// 			dump($this->_data->userInfo[$_ui_id],'$_ui_id ggggg');
+
 			/*
 			 * Hack by Oscar for Ticket #296 (redmine); user_is_vendor gets reset when a BT address is saved
 			 * from the cart. I don't know is this is the only location, but it can be fixed by

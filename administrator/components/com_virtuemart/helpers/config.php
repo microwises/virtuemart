@@ -33,66 +33,67 @@ class VmConfig{
 	// instance of class
 	private static $_jpConfig = null;
 
+	var $_params = array();
+	var $_raw = array();
+
 	private function __construct() {
-		//self::loadConfig();
+
 	}
-
-	// Get always the same VmConfig
-/*	public static function getInstance() {
-		if(is_null(self::$_instance)) {
-			self::$_instance = new VmConfig();
-
-		}
-		//Idea is to use only getInstance and not loadConfig statically,
-		//but rises the problem that the Config is then loaded to often.
-		//Idea is that the config is only loaded one time and then taken from the session
-		//so the function getInstance and loadConfig maybe merged later
-		//self::$_instance->loadConfig();
-		return self::$_instance;
-	}*/
 
 	/**
 	 * Load the configuration values from the database into a session variable.
 	 * This step is done to prevent accessing the database for every configuration variable lookup.
 	 *
-	 * @author RickG
 	 * @author Max Milbers
 	 */
 	public function loadConfig($force = false) {
 
 		if(!$force){
-			//$session = JFactory::getSession();
-			//$this->_jpConfig = $session->get('vmconfig','','vm');
-			$test = empty(self::$_jpConfig);
-			if(!empty(self::$_jpConfig) ) {
+			if(!empty(self::$_jpConfig) && !empty(self::$_jpConfig->_params)){
 				return self::$_jpConfig;
+			} else {
+				$session = JFactory::getSession();
+				$test = unserialize($session->get('vmconfig','','vm'));
+				if(!empty($test) && !empty($test->_params)) {
+					self::$_jpConfig = $test;
+					return self::$_jpConfig;
+				}
 			}
 		}
-		//$app = JFactory::getApplication();
-		$db = JFactory::getDBO();
-		$query = 'SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1"';
-		$db->setQuery($query);
-		$config = $db->loadResult();
 
-		if(empty($config)){
-			$config = self::installVMconfig();
+		self::$_jpConfig = new VmConfig();
+
+		if(empty(self::$_jpConfig->_raw)){
+
+			$db = JFactory::getDBO();
+			$query = 'SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1"';
 			$db->setQuery($query);
-			$config = $db->loadResult();
+			self::$_jpConfig->_raw = $db->loadResult();
+
+			if(empty(self::$_jpConfig->_raw)){
+				self::$_jpConfig->_raw = self::installVMconfig();
+				$db->setQuery($query);
+				self::$_jpConfig->_raw = $db->loadResult();
+			}
 		}
 
-		//We did a db->getEscpaped for storing, but load it manually, so we have to exchange the \n against the controllsign
-		// For the people who want to understand what the nl2br does. Double quoted \n are parsed as <br>
-		while(strpos($config,'\n')!==false){
-			$config = str_replace(array('\n'), array("\n"),$config);
-		}
-		//$config = nl2br($config);
+		$pair = array();
+		if (self::$_jpConfig->_raw) {
+			$config = explode('|', self::$_jpConfig->_raw);
+			foreach($config as $item){
+				$item = explode('=',$item);
+				if(array_key_exists(1,$item)){
+					$pair[$item[0]] = $item[1];
+				} else {
+					$pair[$item[0]] ='';
+				}
 
-		if ($config) {
-			jimport('joomla.html.parameter');
-			self::$_jpConfig = new JParameter($config);
+			}
+			self::$_jpConfig->_params = $pair;
 			$session = JFactory::getSession();
 			$session->clear('vmconfig');
-			$session->set('vmconfig', self::$_jpConfig,'vm');
+			$session->set('vmconfig', serialize(self::$_jpConfig),'vm');
+
 			return self::$_jpConfig;
 		}
 
@@ -103,43 +104,59 @@ class VmConfig{
 	/**
 	 * Find the configuration value for a given key
 	 *
-	 * @author RickG
+	 * @author Max Milbers
 	 * @param string $key Key name to lookup
 	 * @return Value for the given key name
 	 */
-	function get($key = '', $default='')
+	function get($key, $default='')
 	{
+
 		$value = '';
 		if ($key) {
-			jimport('joomla.html.parameter');
-			$session = JFactory::getSession();
-			$params = $session->get('vmconfig', '','vm');
 
-			if (!$params) {
-				//Todo better to get instance first and then loadConfig?
-				VmConfig::loadConfig();
-				$params = $session->get('vmconfig', '','vm');
+			if (empty(self::$_jpConfig->_params)) {
+				self::loadConfig();
 			}
 
-			if ($params) {
-				$value = $params->get($key);
-			}
-			else {
-			    $params = new JParameter('');
-			    $value = '';
-				$app = JFactory::getApplication();
-				$app -> enqueueMessage('There was no config value found for '.$key);
+			if (!empty(self::$_jpConfig->_params)) {
+
+				if(array_key_exists($key,self::$_jpConfig->_params)){
+					$value =self::$_jpConfig->_params[$key];
+				} else {
+					$value = $default;
+				}
+
 			}
 
-			if ($value == '') {
-			    $params->set($key, $default);
-			    $value = $default;
-			}
+		} else {
+			$app = JFactory::getApplication();
+			$app -> enqueueMessage('VmConfig get, empty key given');
 		}
 
 		return $value;
 	}
 
+
+	/**
+	 * For setting params, needs assoc array
+	 * @author Max Milbers
+	 */
+	function setParams($params){
+		self::$_jpConfig->_params = array_merge($this->_params,$params);
+	}
+
+	/**
+	 *
+	 * @author Max Milbers
+	 */
+	function toString(){
+		$raw = '';
+		foreach(self::$_jpConfig->_params as $paramkey => $value){
+			$raw .= $paramkey.'='.$value.'|';
+		}
+		self::$_jpConfig->_raw = substr($raw,0,-1);
+		return self::$_jpConfig->_raw;
+	}
 
 	/**
 	 * Find the currenlty installed version
@@ -386,7 +403,7 @@ class VmConfig{
 
 		fclose ($_data);
 
-		$_value = join('\n', $_configData);
+		$_value = join('|', $_configData);
 		if (!$_value) {
 			return false; // Nothing to do
 		}

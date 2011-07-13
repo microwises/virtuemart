@@ -278,9 +278,9 @@ class VirtueMartModelConfig extends JModel {
     	JRequest::checkToken() or jexit( 'Invalid Token, in store config');
 
 		//ATM we want to ensure that only one config is used
-		
+
 		$config = VmConfig::loadConfig();
-		$config->bind($data);
+		$config->setParams($data);
 
 		$confData = array();
 		$query = 'SELECT * FROM `#__virtuemart_configs`';
@@ -290,19 +290,19 @@ class VirtueMartModelConfig extends JModel {
 		} else {
 			$confData['virtuemart_config_id'] = 0;
 		}
-		
+
 		//if($confData['virtuemart_config_id']>1)$confData['virtuemart_config_id'] = 1;
-		
+
 		$confData['config'] = $this->_db->getEscaped($config->toString());
 //		$confData['config'] = $config->toString();
-		
+
 		$confTable = $this->getTable('configs');
     	if (!$confTable->bindChecknStore($confData)) {
 			$this->setError($confTable->getError());
 		}
 
 		// Load the newly saved values into the session.
-		VmConfig::loadConfig();
+		VmConfig::loadConfig(true);
 
 		return true;
     }
@@ -314,7 +314,7 @@ class VirtueMartModelConfig extends JModel {
 
 		//ATM we want to ensure that only one config is used
 		$data['virtuemart_config_id'] = 1;
-		
+
 		$data['config'] = $this->_db->getEscaped($config->toString());
 		$confTable = $this->getTable('configs');
     	if (!$confTable->bindChecknStore($data)) {

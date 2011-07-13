@@ -10,6 +10,15 @@
  * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
  */
 
+
+function vmdump($descr,$values){
+
+	$app = JFactory::getApplication();
+
+	$string = $descr.'<pre>'.print_r($values,1).'</pre>';
+	$app ->enqueueMessage($string);
+}
+
 class ShopFunctions {
 
 	/**
