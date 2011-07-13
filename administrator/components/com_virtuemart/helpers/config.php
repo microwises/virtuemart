@@ -120,8 +120,8 @@ class VmConfig{
 
 			if (!empty(self::$_jpConfig->_params)) {
 
-				if(array_key_exists($key,self::$_jpConfig->_params)){
-					$value =self::$_jpConfig->_params[$key];
+				if(array_key_exists($key,self::$_jpConfig->_params) && isset(self::$_jpConfig->_params[$key])){
+					$value = self::$_jpConfig->_params[$key];
 				} else {
 					$value = $default;
 				}
@@ -136,6 +136,16 @@ class VmConfig{
 		return $value;
 	}
 
+	function set($key, $value){
+
+		if (empty(self::$_jpConfig->_params)) {
+			self::loadConfig();
+		}
+
+		if (!empty(self::$_jpConfig->_params)) {
+			self::$_jpConfig->_params[$key] = $value;
+		}
+	}
 
 	/**
 	 * For setting params, needs assoc array

@@ -73,6 +73,10 @@ class VirtuemartControllerConfig extends VmController {
 		$data = JRequest::get('post');
 		$data['offline_message'] = JRequest::getVar('offline_message','','post','STRING',JREQUEST_ALLOWHTML);
 
+		if(strpos($data['offline_message'],'|')!==false){
+			$data['offline_message'] = str_replace('|','',$data['offline_message']);
+		}
+
 		if ($model->store($data)) {
 			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
 			// Load the newly saved values into the session.
