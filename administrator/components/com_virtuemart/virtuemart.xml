@@ -54,7 +54,7 @@
 
 	<administration>
 		<!-- Administration Menu Section -->
-		<menu img="../components/com_virtuemart/assets/images/vmgeneral/menu_icon.png">COM_VIRTUEMART</menu>
+		<menu img="../components/com_virtuemart/assets/images/vmgeneral/menu_icon.png">VirtueMart</menu>
 		<!-- Administration Main File Copy Section -->
 		<files folder="administrator/components/com_virtuemart">
 			<filename>admin.virtuemart.php</filename>
