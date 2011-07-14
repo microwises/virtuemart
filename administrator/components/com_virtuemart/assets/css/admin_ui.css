@@ -2,7 +2,7 @@
 /////// VirtueMart Admin Area ////////
 ////////////////////////////////////*/
 
-.virtuemart-admin-area {border: solid #b4b4b4 1px;-moz-border-radius-bottomleft: 6px;-moz-border-radius-bottomright: 6px;-webkit-border-bottom-left-radius: -radius: 6px;-webkit-border-bottom-right-radius: 6px;overflow: hidden;}
+.virtuemart-admin-area {border: solid #b4b4b4 1px;-moz-border-radius-bottomleft: 6px;-moz-border-radius-bottomright: 6px;-webkit-border-bottom-left-radius: 6px;-webkit-border-bottom-right-radius: 6px;overflow: hidden;background: #fff;}
 * html .virtuemart-admin-area { /*IE6 only*/overflow: visible;height: 1px;}
 .virtuemart-admin-area .menu-wrapper {width:200px;float: left;background: #dee4ea;border-right: solid #b4b4b4 1px;}
 .virtuemart-admin-area #admin-content-wrapper {}
@@ -15,7 +15,7 @@
 
 /* Toolbar */
 #element-box .t, #element-box .b {display: none;}
-#content-box #element-box .m {border: none;padding: 0px;}
+#content-box #element-box .m, #content-box .m {border: none;padding: 0px;background: none;}
 #content-box #toolbar-box {border-top: solid #b4b4b4 1px;border-left: solid #b4b4b4 1px;border-right: solid #b4b4b4 1px;margin: 0px;-moz-border-radius-topleft: 6px;
 -moz-border-radius-topright: 6px;
 -webkit-border-top-left-radius:6px;
@@ -37,6 +37,10 @@ dl#system-message dd.message ul li {background: url(../images/admin_ui/saved_ico
 /* Fieldset */
 .virtuemart-admin-area fieldset {border-radius: 6px;-moz-border-radius: 6px;-webkit-border-radius: 6px;padding: 10px 20px;}
 .virtuemart-admin-area fieldset legend {padding: 0px 10px;}
+
+/* Radio Box */
+.virtuemart-admin-area fieldset input {float: none;clear: none;display: inline-block;}
+.virtuemart-admin-area fieldset label, .virtuemart-admin-area fieldset.adminform label, .virtuemart-admin-area fieldset.adminform span.faux-label {float: none;clear: none;display: inline-block;min-width: 0px;}
 
 /*////////////////////////////////////
 /////////////// Tabs /////////////////
