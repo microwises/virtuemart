@@ -90,9 +90,8 @@ class VmConfig{
 
 			}
 			self::$_jpConfig->_params = $pair;
-			$session = JFactory::getSession();
-			$session->clear('vmconfig');
-			$session->set('vmconfig', serialize(self::$_jpConfig),'vm');
+
+			self::$_jpConfig->setSession();
 
 			return self::$_jpConfig;
 		}
@@ -100,6 +99,12 @@ class VmConfig{
 		return 'Was not able to create config';
 	}
 
+	function setSession(){
+		$session = JFactory::getSession();
+		$session->clear('vmconfig');
+		$session->set('vmconfig', serialize(self::$_jpConfig),'vm');
+
+	}
 
 	/**
 	 * Find the configuration value for a given key
@@ -144,6 +149,7 @@ class VmConfig{
 
 		if (!empty(self::$_jpConfig->_params)) {
 			self::$_jpConfig->_params[$key] = $value;
+			self::$_jpConfig->setSession();
 		}
 	}
 
