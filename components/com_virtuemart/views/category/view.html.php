@@ -127,8 +127,9 @@ class VirtuemartViewCategory extends JView {
 				$pathway->addItem($keyword);
 				$document->setTitle($category->category_name.' '.$keyword);
 			}
-			if(!class_exists('VmCustomHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'customhandler.php');
-			$searchcustom = VmCustomHandler::getSearchCustom();
+			if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+			$modelCustomfields = new VirtueMartModelCustomfields();
+			$searchcustom = $modelCustomfields->getSearchCustom();
 			$this->assignRef('searchcustom', $searchcustom);
 		}
 		$this->assignRef('keyword', $keyword);

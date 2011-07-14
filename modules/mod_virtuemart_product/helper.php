@@ -14,7 +14,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * www.virtuemart.net
 */
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
-$config= VmConfig::loadConfig();
+VmConfig::loadConfig();
 if (!class_exists( 'calculationHelper' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'calculationh.php');
 if (!class_exists( 'CurrencyDisplay' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'currencydisplay.php');
 if (!class_exists( 'VirtueMartModelVendor' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'models'.DS.'vendor.php');
@@ -28,7 +28,7 @@ if (!class_exists( 'mod_virtuemart_product' )) {
 
 class mod_virtuemart_product {
 	function addtocart($product) {
-	if (!$config->get('use_as_catalog',0)) { ?>
+	if (!VmConfig::get('use_as_catalog',0)) { ?>
 				<div class="addtocart-area">
 					<form method="post" class="product" action="index.php" id="addtocartproduct<?php echo $product->virtuemart_product_id ?>">
 	<?php // Product custom_fields
@@ -64,7 +64,7 @@ class mod_virtuemart_product {
 			<?php // Add the button
 			$button_lbl = JText::_('COM_VIRTUEMART_CART_ADD_TO');
 			$button_cls = ''; //$button_cls = 'addtocart_button';
-                        if ($config->get('check_stock') == '1' && !$product->product_in_stock) {
+			if (VmConfig::get('check_stock') == '1' && !$product->product_in_stock) {
 				$button_lbl = JText::_('COM_VIRTUEMART_CART_NOTIFY');
 				$button_cls = 'notify-button';
 			} ?>

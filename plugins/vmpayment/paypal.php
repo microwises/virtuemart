@@ -156,8 +156,8 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         $vendorModel = new VirtueMartModelVendor();
         $vendorModel->setId(1);
         $vendor = $vendorModel->getVendor();
- 
-        $currencyModel = new VirtueMartModelCurrency(); 
+
+        $currencyModel = new VirtueMartModelCurrency();
         $currency = $currencyModel->getCurrency($orderData->cartData->calculator->vendorCurrency);
 
 
@@ -229,7 +229,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         $mainframe->redirect("https://" . $url . $qstring);
 
 
-        return 'P'; // Does not return anyway... Set order status to Pending.  
+        return 'P'; // Does not return anyway... Set order status to Pending.
     }
 
     function plgVmOnPaymentResponseReceived($pelement) {
@@ -293,7 +293,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             $db->setQuery($query);
             $result = $db->loadResult();
             if (!$result) {
-                fwrite($fp, "qiery" . $query . "\n");
+                fwrite($fp, "query" . $query . "\n");
             }
             $paramstring = $this->getVmPaymentParams($vendorId = 0, $orderData->virtuemart_paymentmethod_id);
             $params = new JParameter($paramstring);
