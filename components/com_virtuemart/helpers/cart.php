@@ -184,14 +184,16 @@ class VirtueMartCart {
 	 * @author Max Milbers
 	 * @access public
 	 */
-	public function add() {
+	public function add($virtuemart_product_ids=null) {
 		$mainframe = JFactory::getApplication();
 
 		$post = JRequest::get('default');
 		$total_quantity = 0;
 		$total_updated = 0;
 		$total_deleted = 0;
-		$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array'); //is sanitized then
+		if(empty($virtuemart_product_ids)){
+			$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array'); //is sanitized then
+		}
 
 		if (empty($virtuemart_product_ids)) {
 			$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_ERROR_NO_PRODUCT_IDS', false));
