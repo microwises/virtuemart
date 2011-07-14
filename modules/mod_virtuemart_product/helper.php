@@ -64,7 +64,7 @@ class mod_virtuemart_product {
 			<?php // Add the button
 			$button_lbl = JText::_('COM_VIRTUEMART_CART_ADD_TO');
 			$button_cls = ''; //$button_cls = 'addtocart_button';
-			if ($config->('check_stock') == '1' && !$product->product_in_stock) {
+                        if ($config->get('check_stock') == '1' && !$product->product_in_stock) {
 				$button_lbl = JText::_('COM_VIRTUEMART_CART_NOTIFY');
 				$button_cls = 'notify-button';
 			} ?>
