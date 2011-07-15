@@ -82,18 +82,13 @@ table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}
 #admin-ui-menu .menu-list ul li {list-style: none;}
 #admin-ui-menu .menu-list ul li a {padding: 0px 15px 0px 24px;display: inline-block;color: #000;font-size: 12px;margin: 6px 0px;text-decoration: none;text-shadow: 0px -1px 1px #fff;}
 
-
-
-
-
 /*////////////////////////////////////
 ////////// Update Notices ////////////
 ////////////////////////////////////*/
 
 .update-notice {background: #59c418 url(../images/admin_ui/update_notice_background.png) top repeat-x;font-size: 13px;border-bottom: solid #66676b 1px;}
-.update-notice a:link, .update-notice a:visited {display: inline-block;padding: 9px 20px;color: #fff;text-shadow: 0px -1px 1px #307606;letter-spacing: 1px;text-decoration: none;}
-.update-notice a:link span, .update-notice a:visited span {background: url(../images/admin_ui/icon_info.png) left top no-repeat;padding: 0px 0px 0px 24px;}
-
+.update-notice a:link, .update-notice a:visited {display: block;padding: 9px 20px;color: #fff;text-shadow: 0px -1px 1px #307606;letter-spacing: 1px;text-decoration: none;}
+.update-notice a:link span, .update-notice a:visited span {background: url(../images/admin_ui/icon_info.png) left top no-repeat;padding: 0px 0px 0px 32px;}
 
 /*////////////////////////////////////
 ////////////// Basics ////////////////

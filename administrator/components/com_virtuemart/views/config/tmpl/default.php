@@ -21,10 +21,6 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 AdminUIHelper::startAdminArea ();
 
 JHTML::_ ( 'behavior.tooltip' );
-
-// Include ALU System
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
-echo LiveUpdate::getIcon(array(),'notice');
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
