@@ -478,7 +478,7 @@ if (empty ( $this->product )) {
 		$stars = array();
 		$showall = JRequest::getBool('showall', false);
 		for ($num=0 ; $num <= $maxrating; $num++  ) {
-			$title = (JText::_("VM_RATING_TITLE").' : '. $num . '/' . $maxrating) ;
+			$title = (JText::_("COM_VIRTUEMART_RATING_TITLE").' : '. $num . '/' . $maxrating) ;
 			$stars[] = JHTML::image($starsPath.$num.'.gif', JText::_($num.'_STARS'), array("title" => $title) );
 		} ?>
 
