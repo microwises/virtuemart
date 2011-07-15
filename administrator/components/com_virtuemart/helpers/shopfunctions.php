@@ -11,14 +11,6 @@
  */
 
 
-function vmdump($descr,$values){
-
-	$app = JFactory::getApplication();
-
-	$string = $descr.'<pre>'.print_r($values,1).'</pre>';
-	$app ->enqueueMessage($string);
-}
-
 class ShopFunctions {
 
 	/**

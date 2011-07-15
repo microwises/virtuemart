@@ -25,6 +25,50 @@ define( 'JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.
 
 require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 
+
+/**
+ *
+ * Enter description here ...
+ */
+function vmError($descr,$publicdescr=''){
+
+	$acl = JFactory::getACL();
+	$user = JFactory::getUser();
+
+	//I think we must change  edit later using j1.6 ACL, but should work for now
+	$acl->addACL( 'com_virtuemart', 'edit', 'users', 'manager');
+	$acl->addACL( 'com_virtuemart', 'edit', 'users', 'administrator');
+	$acl->addACL( 'com_virtuemart', 'edit', 'users', 'super administrator');
+
+	if ($user->authorize( 'com_virtuemart', 'edit' )) {
+		$app = JFactory::getApplication();
+		$app ->enqueueMessage($string,'error');
+	} else {
+		if(!empty($publicdescr)){
+			$app = JFactory::getApplication();
+			$app ->enqueueMessage($publicdescr,'error');
+		}
+	}
+
+}
+
+/**
+ * A debug dumper for VM, it is only shown to backend users. The dumper takes an array of data
+ *
+ * @author Max Milbers
+ * @param unknown_type $descr
+ * @param unknown_type $values
+ */
+function vmdump($debugdescr,$debugvalues){
+
+	if(VMConfig::showDebug()){
+		$string = $debugdescr.'<pre>'.print_r($debugvalues,1).'</pre>';
+		$app = JFactory::getApplication();
+		$app ->enqueueMessage($string);
+	}
+
+}
+
 /**
  * We use this Class STATIC not dynamically !
  */
@@ -32,12 +76,41 @@ class VmConfig{
 
 	// instance of class
 	private static $_jpConfig = null;
-
+	private static $_debug = null;
 	var $_params = array();
 	var $_raw = array();
 
 	private function __construct() {
 
+	}
+
+
+	function showDebug(){
+
+		if(self::$_debug===null){
+
+			$debug = VmConfig::get('debug_enabled',true);
+			if($debug){
+				$acl = JFactory::getACL();
+				$user = JFactory::getUser();
+
+				//I think we must change  edit later using j1.6 ACL, but should work for now
+				$acl->addACL( 'com_virtuemart', 'edit', 'users', 'manager');
+				$acl->addACL( 'com_virtuemart', 'edit', 'users', 'administrator');
+				$acl->addACL( 'com_virtuemart', 'edit', 'users', 'super administrator');
+
+				if ($user->authorize( 'com_virtuemart', 'edit' )) {
+					self::$_debug = true;
+				} else {
+					self::$_debug = false;
+				}
+			} else {
+				self::$_debug = false;
+			}
+
+		}
+
+		return self::$_debug;
 	}
 
 	/**

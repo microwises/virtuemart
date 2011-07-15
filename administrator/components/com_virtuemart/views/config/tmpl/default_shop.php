@@ -95,6 +95,15 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo VmHTML::checkbox('dangeroustools', $this->config->get('dangeroustools')); ?>
 		</td>
 	</tr>
+	<td class="key">
+		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_EXPLAIN'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG') ?>
+		</span>
+		</td>
+		<td>
+		<?php echo VmHTML::checkbox('debug_enable', $this->config->get('debug_enable')); ?>
+		</td>
+	</tr>
     </table>
 </fieldset>
 <?php /*

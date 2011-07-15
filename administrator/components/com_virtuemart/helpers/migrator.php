@@ -964,7 +964,7 @@ class Migrator extends VmModel{
 				$q = 'SELECT * FROM `#__vm_order_history` WHERE `order_id` = "'.$order['order_id'].'" ';
 				$this->_db->setQuery($q);
 				$oldItems = $this->_db->loadAssocList();
-				//$this->_app->enqueueMessage('Migration orderhistories: ' . count($oldItems));
+
 				foreach($oldItems as $item){
 					$item['virtuemart_order_id'] = $newId;
 					$item['order_status_code'] = $orderCodeToId[$item['order_status_code']];
@@ -984,7 +984,9 @@ class Migrator extends VmModel{
 				$q = 'SELECT * FROM `#__vm_order_user_info` WHERE `order_id` = "'.$order['order_id'].'" ';
 				$this->_db->setQuery($q);
 				$oldItems = $this->_db->loadAssocList();
-				//$this->_app->enqueueMessage('Migration orderhistories: ' . $newId);
+
+				if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+
 				foreach($oldItems as $item){
 					$item['virtuemart_order_id'] = $newId;
 					$item['virtuemart_country_id'] = ShopFunctions::getCountryIDByName($item['country']);
@@ -1061,9 +1063,9 @@ class Migrator extends VmModel{
 		return;
 	}
 
-	private function _changeToStamp(){
+	private function _changeToStamp($dateIn){
 
-		$date = JFactory::getDate($data['publish_up']);
+		$date = JFactory::getDate($dateIn);
 		return $date->toMySQL();
 	}
 
