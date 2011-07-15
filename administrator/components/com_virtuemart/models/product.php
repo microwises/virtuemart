@@ -216,6 +216,8 @@ class VirtueMartModelProduct extends VmModel {
 			default ;
 				if(!empty($filter_order)){
 					$orderBy = ' ORDER BY `#__virtuemart_products`.`'.$this->_db->getEscaped($filter_order).'` ';
+				} else {
+					$filter_order_Dir = 'DESC';
 				}
 				break;
 		}
