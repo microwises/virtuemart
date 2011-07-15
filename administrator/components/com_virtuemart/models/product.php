@@ -214,7 +214,9 @@ class VirtueMartModelProduct extends VmModel {
 				$joinPrice = true ;
 				break;
 			default ;
-				$orderBy = ' ORDER BY `#__virtuemart_products`.`'.$this->_db->getEscaped($filter_order).'` ';
+				if(!empty($filter_order)){
+					$orderBy = ' ORDER BY `#__virtuemart_products`.`'.$this->_db->getEscaped($filter_order).'` ';
+				}
 				break;
 		}
 
