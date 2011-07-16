@@ -108,24 +108,25 @@ class VirtueMartModelProduct extends VmModel {
 			$groupBy = 'group by `#__virtuemart_products`.`virtuemart_product_id`';
 			//Why keyword and search used? why not only keyword or search? notice by Max Milbers
 			//$keyword = trim( str_replace(' ', '%', JRequest::getWord('keyword', '') ) );
-			$keyword = JRequest::getWord('keyword', '');
-			$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;
+			if ($keyword = JRequest::getWord('keyword', false)) {
 
-			$searchFields = VmConfig::get('browse_search_fields');
-			foreach ($searchFields as $searchField) {
-				if (($searchField == 'category_name') || ($searchField == 'category_description')) $joinCategory = true ;
-				if ($searchField == 'mf_name') $joinMf = true ;
-				if ($searchField == 'product_price') $joinPrice = true ;
+				$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;
+				$searchFields = VmConfig::get('browse_search_fields');
+				foreach ($searchFields as $searchField) {
+					if (($searchField == 'category_name') || ($searchField == 'category_description')) $joinCategory = true ;
+					if ($searchField == 'mf_name') $joinMf = true ;
+					if ($searchField == 'product_price') $joinPrice = true ;
 
-				$filter_search[] = ' `'.$searchField.'` LIKE '.$keyword;
-			}
-			$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
-			if ($searchcustoms = JRequest::getVar('customfields', array(),	'default' ,'array')){
-				$joinCustom = true ;
-				foreach ($searchcustoms as $key => $searchcustom) {
-					$custom_search[] = '(`#__virtuemart_product_customfields`.`virtuemart_custom_id`="'.(int)$key.'" and `#__virtuemart_product_customfields`.`custom_value` like "%' . $this->_db->getEscaped( $searchcustom, true ) . '%")';
+					$filter_search[] = ' `'.$searchField.'` LIKE '.$keyword;
 				}
-			$where[] = " ( ".implode(' OR ', $custom_search )." ) ";
+				$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
+				if ($searchcustoms = JRequest::getVar('customfields', array(),	'default' ,'array')){
+					$joinCustom = true ;
+					foreach ($searchcustoms as $key => $searchcustom) {
+						$custom_search[] = '(`#__virtuemart_product_customfields`.`virtuemart_custom_id`="'.(int)$key.'" and `#__virtuemart_product_customfields`.`custom_value` like "%' . $this->_db->getEscaped( $searchcustom, true ) . '%")';
+					}
+					$where[] = " ( ".implode(' OR ', $custom_search )." ) ";
+				}
 			}
 
 		} elseif ($search = JRequest::getWord('filter_product', false)){
@@ -218,6 +219,7 @@ class VirtueMartModelProduct extends VmModel {
 					$orderBy = ' ORDER BY `#__virtuemart_products`.`'.$this->_db->getEscaped($filter_order).'` ';
 				} else {
 					$filter_order_Dir = '';
+					$orderBy='';
 				}
 				break;
 		}
