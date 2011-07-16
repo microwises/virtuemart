@@ -156,7 +156,7 @@ class VmConfig{
 			foreach($config as $item){
 				$item = explode('=',$item);
 				if(array_key_exists(1,$item)){
-					//vmdump('$item',$item,true);
+					dump($item,'loadconfig');
 					$pair[$item[0]] = unserialize($item[1]);
 				} else {
 					$pair[$item[0]] ='';
@@ -242,8 +242,15 @@ class VmConfig{
 	function toString(){
 		$raw = '';
 		$db = JFactory::getDBO();
+
+		jimport( 'joomla.utilities.arrayhelper' );
 		foreach(self::$_jpConfig->_params as $paramkey => $value){
-			//$value = $db->getEscaped($value);
+// 			if(is_array($value)){
+// 				JArrayHelper::toInteger($value);
+// 			} else {
+// 				$value = $db->getEscaped($value);
+// 			}
+
 			$raw .= $paramkey.'='.serialize($value).'|';
 		}
 		self::$_jpConfig->_raw = substr($raw,0,-1);
