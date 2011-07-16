@@ -258,8 +258,4 @@ jQuery('input#relatedCategorySearch').autocomplete('index.php?option=com_virtuem
 	nextCustom++;
 
 	});
-/*
-function removeSelectedOptions(from) {
-	jQuery('select#'+from+' :selected').remove()
-}*/
 </script>

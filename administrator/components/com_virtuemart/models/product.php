@@ -756,10 +756,9 @@ class VirtueMartModelProduct extends VmModel {
 			$this->_id = $data['virtuemart_product_id'] = $product_data->virtuemart_product_id ;// = $dbv->insertid();
 		}
 
-		if (array_key_exists('field', $data)) {
-			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
-			VirtueMartModelCustom::saveModelCustomfields('product',$data['field'],$product_data->virtuemart_product_id);
-		}
+		if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
+			VirtueMartModelCustom::saveModelCustomfields('product',$data,$product_data->virtuemart_product_id);
+
 		if (array_key_exists('ChildCustomRelation', $data)) {
 			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
 			VirtueMartModelCustom::saveChildCustomRelation('product',$data['ChildCustomRelation'],$product_data->virtuemart_product_id);

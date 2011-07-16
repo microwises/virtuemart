@@ -171,15 +171,16 @@ class VirtueMartModelCustom extends VmModel {
 		if(!$this->_db->query()){
 			$this->setError('Error in saveModelCustomfields '); //.$this->_db->getQuery()); Dont give hackers too much info
 		}
-
-		$customfieldIds = array();
-		foreach($datas as $fields){
-			$fields['virtuemart_'.$table.'_id'] =$id;
-			$tableCustomfields = $this->getTable($table.'_customfields');
-			$data = $tableCustomfields->bindChecknStore($fields);
-    		$errors = $tableCustomfields->getErrors();
-			foreach($errors as $error){
-				$this->setError($error);
+		if (array_key_exists('field', $datas)) {
+			$customfieldIds = array();
+			foreach($datas['field'] as $fields){
+				$fields['virtuemart_'.$table.'_id'] =$id;
+				$tableCustomfields = $this->getTable($table.'_customfields');
+				$data = $tableCustomfields->bindChecknStore($fields);
+				$errors = $tableCustomfields->getErrors();
+				foreach($errors as $error){
+					$this->setError($error);
+				}
 			}
 		}
 
