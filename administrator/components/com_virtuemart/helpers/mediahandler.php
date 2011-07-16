@@ -37,32 +37,45 @@ class VmMediaHandler {
 
 		//the problem is here, that we use for autocreatoin the name of the model, here products
 		//But for storing we use the product to build automatically the table out of it (product_medias)
+		$choosed = false;
 		if($type == 'product' || $type == 'products'){
-			$path = VmConfig::get('media_product_path');
+			$relUrl = VmConfig::get('media_product_path');
+			$choosed = true;
 		}
 		else if($type == 'category' || $type == 'categories'){
-			$path = VmConfig::get('media_category_path');
+			$relUrl = VmConfig::get('media_category_path');
+			$choosed = true;
 		}
 		else if($type == 'shop'){
-			$path = VmConfig::get('media_path');
+			$relUrl = VmConfig::get('media_path');
+			$choosed = true;
 		}
 		else if($type == 'vendor' || $type == 'vendors'){
-			$path = 'components/com_virtuemart/assets/images/vendors/';
+			$relUrl = 'components/com_virtuemart/assets/images/vendors/';
+			$choosed = true;
 		}
 		else if($type == 'manufacturer' || $type == 'manufacturers'){
-			$path = VmConfig::get('media_manufacturer_path');
+			$relUrl = VmConfig::get('media_manufacturer_path');
+			$choosed = true;
 		}
 		else if($type == 'forSale'){
 			//todo add this path to config
-			$path = VmConfig::get('forSale_path');
+			$relUrl = VmConfig::get('forSale_path');
+			$choosed = true;
 		}
 
-		if(empty($path)) {
-			$app = JFactory::getApplication();
-			$app->enqueueMessage('Ignore this message, when it appears while the media synchronisation process, else report to http://forum.virtuemart.net/index.php?board=127.0 : cant create media of unknown type, a programmers error, used type "'.$type.'" ' );
-			$path = VmConfig::get('media_path');
+		if($choosed && empty($relUrl)){
+			vmInfo('COM_VIRTUEMART_MEDIA_NO_PATH_TYPE',$type);
+			//Todo add general media_path to config
+			//$relUrl = VmConfig::get('media_path');
+			$relUrl = 'images/stories/virtuemart/';
+		} else if(!$choosed && empty($relUrl)){
+			vmError('Ignore this message, when it appears while the media synchronisation process, else report to http://forum.virtuemart.net/index.php?board=127.0 : cant create media of unknown type, a programmers error, used type ',$type);
+			//$relUrl = VmConfig::get('media_path');
+			$relUrl = 'images/stories/virtuemart/';
 		}
-		return $path;
+
+		return $relUrl;
 	}
 
 	/**

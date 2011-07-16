@@ -11,7 +11,7 @@
 	<authorUrl>http://www.virtuemart.net</authorUrl>
 	<copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-	<version status="rc">1.9.8a</version>
+	<version status="rc">1.9.8b</version>
 	<description>COM_VIRTUEMART_DESCRIPTION</description>
 
    <!-- Custom un/installer for 1.6 -->

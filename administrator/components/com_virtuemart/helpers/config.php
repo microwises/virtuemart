@@ -26,9 +26,15 @@ define( 'JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.
 require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 
 
+function vmInfo($publicdescr){
+
+	$app = JFactory::getApplication();
+	$app ->enqueueMessage(JText::_($publicdescr),'info');
+}
+
 /**
- *
- * Enter description here ...
+ * Shows an error message, sensible information should be only in the first one, the second one is for non BE users
+ * @author Max Milbers
  */
 function vmError($descr,$publicdescr=''){
 
