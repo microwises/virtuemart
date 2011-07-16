@@ -519,22 +519,7 @@ class shopFunctionsF {
 		}
 	}
 
-	function dumpIt($var,$desc){
-		global $dumper;
-		$dumper[] = $desc.':<br /> <pre>'.print_r($var,true).'</pre>';
-//		<small><pre>'.print_r(debug_backtrace(),true).' </pre> </small>';
-	}
 
-	function displayDumps(){
-		global $dumper;
-		if(is_array($dumper)){
-			foreach($dumper as $dump){
-				echo $dump.'<br />';
-			}
-		}
-
-	}
-	
 	/**
 	 * Admin UI Tabs
 	 * Gives A Tab Based Navigation Back And Loads The Templates With A Nice Design
@@ -544,7 +529,7 @@ class shopFunctionsF {
 	function buildTabs($load_template = array()) {
 		$document = JFactory::getDocument ();
 		$document->addScript ( JURI::base () . 'components/com_virtuemart/assets/js/tabs.js' );
-		
+
 		$html = '<div id="ui-tabs">';
 		$i = 1;
 		foreach ( $load_template as $tab_content => $tab_title ) {
@@ -556,7 +541,7 @@ class shopFunctionsF {
 		$html .= '</div>';
 		echo $html;
 	}
-	
+
 }
 
 // pure php no closing tag

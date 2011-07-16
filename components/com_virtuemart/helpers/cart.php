@@ -339,8 +339,6 @@ class VirtueMartCart {
 			$prices = $calculator->getCheckoutPrices($this);
 			//$this->cartData->cartData = $calculator->getCartData();
 			// $this->setCartIntoSession();
-			//		dump($this->cartData,' getCartPrices hmm');
-			//		dump($prices,' getCartPrices hmm');
 
 			return $prices;
 		}

@@ -1433,7 +1433,7 @@ class VirtueMartModelProduct extends VmModel {
 
 
 	function getProductChilds($product_id ) {
-
+		if(empty($product_id)) return array();
 		$db = JFactory::getDBO();
 		$db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products` WHERE `product_parent_id` ='.(int)$product_id);
 		return $db->loadObjectList();
@@ -1442,11 +1442,11 @@ class VirtueMartModelProduct extends VmModel {
 
 
 	function getProductParent($product_parent_id) {
-
+		if(empty($product_parent_id)) return array();
 		$product_parent_id = (int) $product_parent_id;
 		$db = JFactory::getDBO();
 		$db->setQuery(' SELECT * FROM `#__virtuemart_products` WHERE `virtuemart_product_id` ='.$product_parent_id);
-                return $db->loadObject();
+		return $db->loadObject();
 	}
 
 }

@@ -721,7 +721,6 @@ class vmrouterHelper {
 		if ( !isset( $this->menu['virtuemart_manufacturer']) ) {
 			$this->menu['virtuemart_manufacturer'] = $this->menu['virtuemart'][0] ;
 		}
-// 		dump ($this->menu,'menu');
 
 	}
 	/* Set $this->activeMenu to current Item ID from Joomla Menus */

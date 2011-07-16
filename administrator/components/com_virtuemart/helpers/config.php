@@ -156,7 +156,6 @@ class VmConfig{
 			foreach($config as $item){
 				$item = explode('=',$item);
 				if(array_key_exists(1,$item)){
-					dump($item,'loadconfig');
 					$pair[$item[0]] = unserialize($item[1]);
 				} else {
 					$pair[$item[0]] ='';
@@ -198,7 +197,6 @@ class VmConfig{
 			}
 
 			if (!empty(self::$_jpConfig->_params)) {
-
 				if(array_key_exists($key,self::$_jpConfig->_params) && isset(self::$_jpConfig->_params[$key])){
 					$value = self::$_jpConfig->_params[$key];
 				} else {
