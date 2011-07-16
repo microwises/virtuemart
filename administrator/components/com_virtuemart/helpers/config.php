@@ -59,9 +59,9 @@ function vmError($descr,$publicdescr=''){
  * @param unknown_type $descr
  * @param unknown_type $values
  */
-function vmdump($debugdescr,$debugvalues){
+function vmdump($debugdescr,$debugvalues,$force=false){
 
-	if(VMConfig::showDebug()){
+	if(!$force && VMConfig::showDebug()){
 		$string = $debugdescr.'<pre>'.print_r($debugvalues,1).'</pre>';
 		$app = JFactory::getApplication();
 		$app ->enqueueMessage($string);
@@ -156,7 +156,8 @@ class VmConfig{
 			foreach($config as $item){
 				$item = explode('=',$item);
 				if(array_key_exists(1,$item)){
-					$pair[$item[0]] = $item[1];
+					//vmdump('$item',$item,true);
+					$pair[$item[0]] = unserialize($item[1]);
 				} else {
 					$pair[$item[0]] ='';
 				}
@@ -235,13 +236,15 @@ class VmConfig{
 	}
 
 	/**
-	 *
+	 * Writes the params as string and escape them before
 	 * @author Max Milbers
 	 */
 	function toString(){
 		$raw = '';
+		$db = JFactory::getDBO();
 		foreach(self::$_jpConfig->_params as $paramkey => $value){
-			$raw .= $paramkey.'='.$value.'|';
+			//$value = $db->getEscaped($value);
+			$raw .= $paramkey.'='.serialize($value).'|';
 		}
 		self::$_jpConfig->_raw = substr($raw,0,-1);
 		return self::$_jpConfig->_raw;
@@ -486,6 +489,9 @@ class VmConfig{
 			}
 			if (strpos($_line, '=') === false) {
 				$_line .= '=';
+			} else{
+				$pair = explode('=',$_line);
+				$_line = $pair[0].'='.serialize($pair[1]);
 			}
 			$_configData[] = $_line;
 		}
@@ -512,7 +518,7 @@ class VmConfig{
 			$_db = JFactory::getDBO();
 			$_db->setQuery($_qry);
 			$_db->query();
-			$_qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES (1, '$_value')";
+			$_qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES ('1', '$_value')";
 		}
 		// Other sections can be implemented here
 

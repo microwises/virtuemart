@@ -62,8 +62,6 @@ $controller = new $_class();
 $controller->execute(JRequest::getWord('task', JRequest::getWord('view', $_controller)));
 //Console::logSpeed('virtuemart start');
 
-vmdump('My Controller',$controller,'There is nothing to see');
-
 /* Redirect if set by the controller */
 $controller->redirect();
 

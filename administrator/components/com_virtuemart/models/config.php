@@ -293,8 +293,8 @@ class VirtueMartModelConfig extends JModel {
 
 		//if($confData['virtuemart_config_id']>1)$confData['virtuemart_config_id'] = 1;
 
-		$confData['config'] = $this->_db->getEscaped($config->toString());
-//		$confData['config'] = $config->toString();
+// 		$confData['config'] = $this->_db->getEscaped($config->toString());
+		$confData['config'] = $config->toString();
 
 		$confTable = $this->getTable('configs');
     	if (!$confTable->bindChecknStore($confData)) {
