@@ -65,7 +65,9 @@ class VmMediaHandler {
 		}
 
 		if($choosed && empty($relUrl)){
-			vmInfo('COM_VIRTUEMART_MEDIA_NO_PATH_TYPE',$type);
+			$uri = JFactory::getURI();
+			$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
+			vmInfo('COM_VIRTUEMART_MEDIA_NO_PATH_TYPE',$type,$link );
 			//Todo add general media_path to config
 			//$relUrl = VmConfig::get('media_path');
 			$relUrl = 'images/stories/virtuemart/';

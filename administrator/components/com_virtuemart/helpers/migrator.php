@@ -36,8 +36,12 @@ class Migrator extends VmModel{
 		$this->_db = JFactory::getDBO();
 		$this->_oldToNew = new stdClass();
 		$this->starttime = microtime(true);
-		$this->maxScriptTime = ini_get('max_execution_time')*0.95-1;	//Lets use 5% of the execution time as reserver to store the progress
+		$this->maxScriptTime = ini_get('max_execution_time')*0.95-1;	//Lets use 5% of the execution time as reserve to store the progress
+// 		$this->maxScriptTime = 20;
+		$this->maxMemoryLimit = $this -> return_bytes(ini_get('memory_limit')) * 0.8;
+// 		$this->maxMemoryLimit = $this -> return_bytes('20M');
 
+		// 		ini_set('memory_limit','35M');
 		$q = 'SELECT `id` FROM `#__virtuemart_migration_oldtonew_ids` ';
 		$this->_db->setQuery($q);
 		$res = $this->_db->loadResult();
@@ -45,29 +49,45 @@ class Migrator extends VmModel{
 			$q = 'INSERT INTO `#__virtuemart_migration_oldtonew_ids` (`id`) VALUES ("1")';
 			$this->_db->setQuery($q);
 			$this->_db->query();
-			$this->_app->enqueueMessage('Start with a new migration process and setup log');
+			$this->_app->enqueueMessage('Start with a new migration process and setup log maxScriptTime '.$this->maxScriptTime.' maxMemoryLimit '.$this->maxMemoryLimit/(1024*1024));
 		} else {
-			$this->_app->enqueueMessage('Found prior migration process, resume migration');
+			$this->_app->enqueueMessage('Found prior migration process, resume migration maxScriptTime '.$this->maxScriptTime.' maxMemoryLimit '.$this->maxMemoryLimit/(1024*1024));
 		}
 
+	}
+
+	private function return_bytes($val) {
+		$val = trim($val);
+		$last = strtolower($val[strlen($val)-1]);
+		switch($last) {
+			// The 'G' modifier is available since PHP 5.1.0
+			case 'g':
+				$val *= 1024;
+			case 'm':
+				$val *= 1024;
+			case 'k':
+				$val *= 1024;
+		}
+
+		return $val;
 	}
 
 	function getMigrationProgress($group){
 
 		$q = 'SELECT `'.$group.'` FROM `#__virtuemart_migration_oldtonew_ids` WHERE `id` = "1" ';
 
-			$this->_db->setQuery($q);
-			$result = $this->_db->loadResult();
-			if(empty($result)){
+		$this->_db->setQuery($q);
+		$result = $this->_db->loadResult();
+		if(empty($result)){
+			$result = array();
+		} else {
+			$result = unserialize($result);
+			if(!$result){
 				$result = array();
-			} else {
-				$result = unserialize($result);
-				if(!$result){
-					$result = array();
-				}
 			}
+		}
 
-			return $result;
+		return $result;
 
 	}
 
@@ -92,10 +112,11 @@ class Migrator extends VmModel{
 		$result = $this->portCategories();
 		$result = $this->portManufacturerCategories();
 		$result = $this->portManufacturers();
-// 		$result = $this->portOrderStatus();
+		// 		$result = $this->portOrderStatus();
 
 		$time = microtime(true) - $this->starttime;
-		$this->_app->enqueueMessage('Worked on general migration for '.$time.' seconds');
+		vmInfo('Worked on general migration for '.$time.' seconds');
+		vmRamPeak('Migrate general vm1 info ended ');
 		return $result;
 	}
 
@@ -105,7 +126,8 @@ class Migrator extends VmModel{
 		$result = $this->portUsers();
 
 		$time = microtime(true) - $this->starttime;
-		$this->_app->enqueueMessage('Worked on user migration for '.$time.' seconds');
+		vmInfo('Worked on user migration for '.$time.' seconds');
+		vmRamPeak('Migrate shoppers ended ');
 		return $result;
 	}
 
@@ -129,10 +151,10 @@ class Migrator extends VmModel{
 		$result = $this->portManufacturers();
 		$result = $this->portProducts();
 
-// 		$result = $this->portOrderStatus();
+		// 		$result = $this->portOrderStatus();
 		$result = $this->portOrders();
 		$time = microtime(true) - $this->starttime;
-		$this->_app->enqueueMessage('Worked on migration for '.$time.' seconds');
+		vmInfo('Worked on migration for '.$time.' seconds');
 
 		return $result;
 	}
@@ -154,6 +176,7 @@ class Migrator extends VmModel{
 		$time = microtime(true) - $this->starttime;
 		$this->_app->enqueueMessage('Worked on migration for '.$time.' seconds');
 
+		vmRamPeak('Migrate all ended ');
 		return $result;
 	}
 
@@ -347,118 +370,140 @@ class Migrator extends VmModel{
 		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 			return;
 		}
-		//$model = $this->getModel('updatesMigration');
-		//Lets load all users from the joomla hmm or vm? VM1 users does NOT exist
-		$ok = true;
-
-		$q = 'SELECT * FROM #__users AS `p`
-				LEFT OUTER JOIN #__vm_user_info ON #__vm_user_info.user_id = `p`.id
-				LEFT OUTER JOIN #__vm_shopper_vendor_xref ON #__vm_shopper_vendor_xref.user_id = `p`.id
-				LEFT OUTER JOIN #__vm_auth_user_group ON #__vm_auth_user_group.user_id = `p`.id
-				LEFT OUTER JOIN #__vm_auth_group ON #__vm_auth_group.group_id = #__vm_auth_user_group.group_id
-				LEFT OUTER JOIN #__virtuemart_vmusers ON #__virtuemart_vmusers.virtuemart_user_id = `p`.id
-				WHERE ISNULL (#__virtuemart_vmusers.virtuemart_user_id) ';
-
-		$this->_db->setQuery($q);
-		$oldUsers = $this->_db->loadAssocList();
-		if(empty($oldUsers)){
-			$this->_app->enqueueMessage('portUsers ' . $this->_db->getErrorMsg());
-		} else {
-			$this->_app->enqueueMessage('portUsers found '.count($oldUsers).' vm1 users for migration');
-		}
 
 		$oldToNewShoppergroups = $this->getMigrationProgress('shoppergroups');
 		if(empty($oldToNewShoppergroups)){
-			$this->_app->enqueueMessage('portUsers ' . $this->_db->getErrorMsg());
+			vmInfo('portUsers getMigrationProgress shoppergroups ' . $this->_db->getErrorMsg());
 			return false;
-		} else {
-			//$this->_app->enqueueMessage('portUsers found '.count($oldUsers).' vm1 users for migration');
 		}
 
 		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
 		$userModel = new VirtueMartModelUser();
 
-		$starttime = microtime(true);
+		$ok = true;
+		$continue = true;
+
+		//approximatly 110 users take a 1 MB
+		$freeRam =  ($this->maxMemoryLimit - memory_get_usage(true))/(1024 * 1024) ;
+		$maxItems = (int)$freeRam * 100;
+		vmdump('free ram left '.$freeRam.' so limit chunk to '.$maxItems);
+
+// 		$maxItems = 10;
 		$i=0;
-		foreach($oldUsers as $user){
+		$startLimit = 0;
+		while($continue){
 
-			$user['virtuemart_country_id'] = $this->getCountryIdByCode($user['country']);
-			$user['virtuemart_state_id'] = $this->getCountryIdByCode($user['state']);
+			//Lets load all users from the joomla hmm or vm? VM1 users does NOT exist
+			$q = 'SELECT `p`.*,`ui`.*,`svx`.*,`aug`.*,`ag`.*,`vmu`.virtuemart_user_id FROM #__users AS `p`
+								LEFT OUTER JOIN #__vm_user_info AS `ui` ON `ui`.user_id = `p`.id
+								LEFT OUTER JOIN #__vm_shopper_vendor_xref AS `svx` ON `svx`.user_id = `p`.id
+								LEFT OUTER JOIN #__vm_auth_user_group AS `aug` ON `aug`.user_id = `p`.id
+								LEFT OUTER JOIN #__vm_auth_group AS `ag` ON `ag`.group_id = `aug`.group_id
+								LEFT OUTER JOIN #__virtuemart_vmusers AS `vmu` ON `vmu`.virtuemart_user_id = `p`.id
+								WHERE ISNULL (`vmu`.virtuemart_user_id)  LIMIT '.$startLimit.','.$maxItems ;
 
-			$user['virtuemart_shoppergroups_id'] = $oldToNewShoppergroups[$user['shopper_group_id']];
+			$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port shoppers');
+			$oldUsers = $res[0];
+			$startLimit = $res[1];
+			$continue = $res[2];
 
-			//Solution takes vm1 original values, but is not tested (does not set mainvendor)
-			//if(!empty($user['group_name'])){
-			//    $user['perms'] = $user['group_name'];
-			//
-			//} else {
-			if($user['gid'] == 25){
-				$user['perms'] = 'admin';
-				$user['user_is_vendor'] = 1;
-			}elseif($user['gid'] == 24){
-				$user['perms'] = 'storeadmin';
-			}else {
-				$user['perms'] = 'shopper';
-			}
-			//}
+			$starttime = microtime(true);
 
-			$user['virtuemart_user_id'] = $user['id'];
-			$userModel->setUserId($user['id']);
+			foreach($oldUsers as $user){
 
-			//Save the VM user stuff
-			if(!$userModel->saveUserData($user)){
-				$userModel->setError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA'));
-				JError::raiseWarning('', JText::_('COM_VIRTUEMART_RAISEWARNING_NOT_ABLE_TO_SAVE_USER_DATA'));
-			}
+				$user['virtuemart_country_id'] = $this->getCountryIdByCode($user['country']);
+				$user['virtuemart_state_id'] = $this->getCountryIdByCode($user['state']);
 
-			$userinfo   = $this->getTable('userinfos');
-			if (!$userinfo->bindChecknStore($user)) {
-				$this->setError($userinfo->getError());
-			}
-/*			if(!$userModel->storeAddress($user)){
-				$this->_app->enqueueMessage (Jtext::_('The joomla user has no address, id '.$user['id'].' and '.$user['name']));
-			}*/
-
-			if($user['user_is_vendor']){
-				$userModel->storeVendorData($user);
-			}
-
-			$errors = $userModel->getErrors();
-			if(!empty($errors)){
-				foreach($errors as $error){
-					$this->_app->enqueueMessage($error);
+				if(!empty($user['shopper_group_id'])){
+					$user['virtuemart_shoppergroups_id'] = $oldToNewShoppergroups[$user['shopper_group_id']];
 				}
-				$userModel->resetErrors();
-				break;
-			}
 
-			$i++;
-			// if($i>400)break;
-			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
-				break;
+				//Solution takes vm1 original values, but is not tested (does not set mainvendor)
+				//if(!empty($user['group_name'])){
+				//    $user['perms'] = $user['group_name'];
+				//
+				//} else {
+				$user['user_is_vendor'] = 0;
+				if($user['gid'] == 25){
+					$user['perms'] = 'admin';
+					$user['user_is_vendor'] = 1;
+				}elseif($user['gid'] == 24){
+					$user['perms'] = 'storeadmin';
+				}else {
+					$user['perms'] = 'shopper';
+				}
+				//}
+
+				$user['virtuemart_user_id'] = $user['id'];
+				$userModel->setUserId($user['id']);
+
+				//Save the VM user stuff
+				if(!$user=$userModel->saveUserData($user)){
+					vmError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA'));
+				}
+
+				$userinfo   = $this->getTable('userinfos');
+				if (!$userinfo->bindChecknStore($user)) {
+					vmError($userinfo->getError());
+				}
+
+				if(!empty($user['user_is_vendor']) && $user['user_is_vendor'] === 1){
+					if (!$userModel->storeVendorData($user)){
+						vmError($userModel->getError());
+					}
+				}
+
+				$i++;
+			/*	if($i>24){
+					$continue = false;
+					break;
+				}*/
+				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+					$continue = false;
+					break;
+				}
+
+				$errors = $userModel->getErrors();
+				if(!empty($errors)){
+					foreach($errors as $error){
+						vmError($error);
+					}
+					$userModel->resetErrors();
+					$continue = false;
+					//break;
+				}
 			}
 		}
-
 		$time = microtime(true) - $starttime;
-		$this->_app->enqueueMessage('Processed '.$i.' vm1 users time: '.$time);
+		vmInfo('Processed '.$i.' vm1 users time: '.$time);
 
 		//adresses
 		$starttime = microtime(true);
-		$q = 'SELECT * FROM #__vm_user_info as `ui`
-				LEFT OUTER JOIN #__virtuemart_userinfo_id ON #__virtuemart_userinfo_id.virtuemart_userinfo_id = `ui`.user_info_id
-				WHERE `address_type` = "ST" AND  ISNULL (#__virtuemart_userinfo_id.virtuemart_userinfo_id)';
-		$this->_db->setQuery($q);
-		$oldUsersAddresses = $this->_db->loadAssocList();
-
-		if(empty($oldUsersAddresses)) return $ok;
-		//$alreadyKnownIds = $this->getMigrationProgress('staddress');
-		$oldtonewST = array();
+		$continue = true;
+		$startLimit = 0;
 		$i = 0;
-		foreach($oldUsersAddresses as $oldUsersAddi){
+		while($continue){
 
-// 			if(!array_key_exists($oldcategory['virtuemart_userinfo_id'],$alreadyKnownIds)){
+			$q = 'SELECT `ui`.* FROM #__vm_user_info as `ui`
+					LEFT OUTER JOIN #__virtuemart_userinfos as `vui` ON `vui`.`virtuemart_user_id` = `ui`.`user_id`
+					WHERE `ui`.`address_type` = "ST" AND  ISNULL (`vui`.`virtuemart_user_id`) LIMIT '.$startLimit.','.$maxItems;
 
+			$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port ST addresses');
+			$oldUsersAddresses = $res[0];
+			$startLimit = $res[1];
+			$continue = $res[2];
+
+
+			if(empty($oldUsersAddresses)) return $ok;
+
+			//$alreadyKnownIds = $this->getMigrationProgress('staddress');
+			$oldtonewST = array();
+
+			foreach($oldUsersAddresses as $oldUsersAddi){
+
+				// 			if(!array_key_exists($oldcategory['virtuemart_userinfo_id'],$alreadyKnownIds)){
 				$oldUsersAddi['virtuemart_user_id'] = $oldUsersAddi['user_id'];
+
 				$oldUsersAddi['virtuemart_country_id'] = $this->getCountryIdByCode($oldUsersAddi['country']);
 				$oldUsersAddi['virtuemart_state_id'] = $this->getCountryIdByCode($oldUsersAddi['state']);
 
@@ -474,12 +519,17 @@ class Migrator extends VmModel{
 					$userModel->resetErrors();
 					break;
 				}
-
 				$i++;
+				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+					$continue = false;
+					break;
+				}
 
+			}
 		}
+
 		$time = microtime(true) - $starttime;
-		$this->_app->enqueueMessage('Processed '.$i.' vm1 users ST adresses time: '.$time);
+		vmInfo('Processed '.$i.' vm1 users ST adresses time: '.$time);
 		return $ok;
 	}
 
@@ -733,7 +783,7 @@ class Migrator extends VmModel{
 		$this->storeMigrationProgress('manus',$oldtonewManus);
 
 		if($ok)
-			$msg = 'Looks everything worked correct, migrated ' .$i . ' manufacturers ';
+		$msg = 'Looks everything worked correct, migrated ' .$i . ' manufacturers ';
 		else {
 			$msg = 'Seems there was an error porting ' . $i . ' manufacturers ';
 			$msg .= $this->getErrors();
@@ -748,105 +798,126 @@ class Migrator extends VmModel{
 		}
 		$ok = true;
 
-		$q = 'SELECT * FROM #__vm_product AS `p`
-		LEFT OUTER JOIN #__vm_product_price ON #__vm_product_price.product_id = `p`.product_id
-		LEFT OUTER JOIN #__vm_product_category_xref ON #__vm_product_category_xref.product_id = `p`.product_id
-		LEFT OUTER JOIN #__vm_product_mf_xref ON #__vm_product_mf_xref.product_id = `p`.product_id ';
-		$this->_db->setQuery($q);
-		$oldProducts = $this->_db->loadAssocList();
-		if(empty($oldProducts)){
-			$this->_app->enqueueMessage('_productPorter ' . $this->_db->getErrorMsg());
-			return false;
-		} else {
+		//approximatly 100 products take a 1 MB
+		$freeRam =  ($this->maxMemoryLimit - memory_get_usage(true))/(1024 * 1024) ;
+		$maxItems = (int) ($freeRam * 100);
+		vmdump('free ram left '.$freeRam.' so limit chunk to '.$maxItems);
 
-			$this->_app->enqueueMessage('Found '.count($oldProducts).' vm1 products to import' );
-		}
-
-		if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
-
-		$productModel = new VirtueMartModelProduct();
-
-
-		/* Not in VM1
-	  slug low_stock_notification intnotes metadesc metakey metarobot metaauthor layout published
-
-		created_on created_by modified_on modified_by
-		product_override_price override link
-
-		Not in VM2
-		product_thumb_image product_full_image attribute
-		custom_attribute child_options quantity_options child_option_ids
-		shopper_group_id    product_list
-	 */
-
-
-		$alreadyKnownIds = $this->getMigrationProgress('products');
-		$oldToNewCats = $this->getMigrationProgress('cats');
-		$user = JFactory::getUser();
-
-		$oldtonewProducts = array();
-		$oldtonewManus = $this->getMigrationProgress('manus');
-
-		//There are so many names the same, so we use the loaded array and manipulate it
+		$startLimit = 0;
 		$i=0;
-		foreach($oldProducts as $product){
+		$continue = true;
+		while($continue){
 
-			if(!array_key_exists($product['product_id'],$alreadyKnownIds)){
-
-				$product['virtuemart_vendor_id'] = $product['vendor_id'];
-				$product['virtuemart_manufacturer_id'] = $oldtonewManus[$product['manufacturer_id']];
-
-				//product has category_id and categories?
-				if(!empty($oldToNewCats[$product['category_id']])){
-
-					$product['virtuemart_category_id'] = $oldToNewCats[$product['category_id']];
-					//This should be an array, or is it not in vm1? not cleared, may need extra foreach
-					$product['categories'] = $oldToNewCats[$product['category_id']];
+			$q = 'SELECT * FROM #__vm_product AS `p`
+					LEFT OUTER JOIN #__vm_product_price ON #__vm_product_price.product_id = `p`.product_id
+					LEFT OUTER JOIN #__vm_product_category_xref ON #__vm_product_category_xref.product_id = `p`.product_id
+					LEFT OUTER JOIN #__vm_product_mf_xref ON #__vm_product_mf_xref.product_id = `p`.product_id LIMIT '.$startLimit.','.$maxItems;
+			$this->_db->setQuery($q);
+			$oldProducts = $this->_db->loadAssocList();
+			if(empty($oldProducts)){
+				$this->_app->enqueueMessage('_productPorter ' . $this->_db->getErrorMsg());
+				$continue = false;
+				return false;
+			} else {
+				$this->_app->enqueueMessage('Found '.count($oldProducts).' vm1 products to import' );
+				$startLimit += $maxItems;
+				if(count($oldProducts)<$maxItems){
+					$continue = false;
 				}
+			}
 
-				$product['published'] = $product['product_publish'] == 'Y' ? 1 : 0;
+			//vmdump('in product migrate $oldProducts ',$oldProducts);
 
-				$product['product_price_quantity_start'] = $product['price_quantity_start'];
-				$product['product_price_quantity_end'] = $product['price_quantity_end'];
+			if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
 
-				$product['created_on'] = $this->_changeToStamp($product['cdate']);
-				$product['modified_on'] = $this->_changeToStamp($product['mdate']); //we could remove this to set modified_on today
-				$product['product_available_date'] = $this->_changeToStamp($product['product_available_date']);
+			$productModel = new VirtueMartModelProduct();
 
-				//$product['created_by'] = $user->id;
-				//$product['modified_by'] = $user->id;
 
-				$product['product_currency'] = $this->_ensureUsingCurrencyId($product['product_currency']);
+			/* Not in VM1
+			 slug low_stock_notification intnotes metadesc metakey metarobot metaauthor layout published
 
-				//Unsolved Here we must look for the url product_full_image and check which media has the same
-				// full_image url
-				//$product['virtuemart_media_id'] =
+			created_on created_by modified_on modified_by
+			product_override_price override link
 
-				$productModel->store($product);
+			Not in VM2
+			product_thumb_image product_full_image attribute
+			custom_attribute child_options quantity_options child_option_ids
+			shopper_group_id    product_list
+			*/
 
-				$errors = $productModel->getErrors();
-				if(!empty($errors)){
-					foreach($errors as $error){
-						$this->_app->enqueueMessage('Migration: '.$i.' ' . $error);
+
+			$alreadyKnownIds = $this->getMigrationProgress('products');
+			$oldToNewCats = $this->getMigrationProgress('cats');
+			$user = JFactory::getUser();
+
+			$oldtonewProducts = array();
+			$oldtonewManus = $this->getMigrationProgress('manus');
+
+			//There are so many names the same, so we use the loaded array and manipulate it
+
+			foreach($oldProducts as $product){
+
+				if(!array_key_exists($product['product_id'],$alreadyKnownIds)){
+
+					$product['virtuemart_vendor_id'] = $product['vendor_id'];
+					$product['virtuemart_manufacturer_id'] = $oldtonewManus[$product['manufacturer_id']];
+
+					//product has category_id and categories?
+					if(!empty($oldToNewCats[$product['category_id']])){
+
+						$product['virtuemart_category_id'] = $oldToNewCats[$product['category_id']];
+						//This should be an array, or is it not in vm1? not cleared, may need extra foreach
+						$product['categories'] = $oldToNewCats[$product['category_id']];
 					}
-					$productModel->resetErrors();
+
+					$product['published'] = $product['product_publish'] == 'Y' ? 1 : 0;
+
+					$product['product_price_quantity_start'] = $product['price_quantity_start'];
+					$product['product_price_quantity_end'] = $product['price_quantity_end'];
+
+					$product['created_on'] = $this->_changeToStamp($product['cdate']);
+					$product['modified_on'] = $this->_changeToStamp($product['mdate']); //we could remove this to set modified_on today
+					$product['product_available_date'] = $this->_changeToStamp($product['product_available_date']);
+
+					//$product['created_by'] = $user->id;
+					//$product['modified_by'] = $user->id;
+
+					$product['product_currency'] = $this->_ensureUsingCurrencyId($product['product_currency']);
+
+					//Unsolved Here we must look for the url product_full_image and check which media has the same
+					// full_image url
+					//$product['virtuemart_media_id'] =
+
+					$product['virtuemart_product_id'] = $productModel->store($product);
+
+					$errors = $productModel->getErrors();
+					if(!empty($errors)){
+						foreach($errors as $error){
+							vmError('Migration: '.$i.' ' . $error);
+						}
+						vmdump('Product add error',$product);
+						$productModel->resetErrors();
+						$continue = false;
+						break;
+					}
+					$i++;
+
+					$oldtonewProducts[$product['product_id']] = $product['virtuemart_product_id'];
+
+				} else {
+					$oldtonewProducts[$product['product_id']] = $alreadyKnownIds[$product['product_id']];
+				}
+				unset($product['virtuemart_product_id']);
+				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+
+					$continue = false;
 					break;
 				}
-				$i++;
-
-				$oldtonewProducts[$product['product_id']] = $product['virtuemart_product_id'];
-
-			} else {
-				$oldtonewProducts[$product['product_id']] = $alreadyKnownIds[$product['product_id']];
-			}
-			unset($product['virtuemart_product_id']);
-			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
-				break;
 			}
 		}
 
 		$this->storeMigrationProgress('products',$oldtonewProducts);
-		$this->_app->enqueueMessage('Migration: '.$i.' products processed ');
+		vmInfo('Migration: '.$i.' products processed ');
 
 		return $ok;
 	}
@@ -857,163 +928,176 @@ class Migrator extends VmModel{
 			return;
 		}
 
+		//approximatly 100 products take a 1 MB
+		$freeRam =  ($this->maxMemoryLimit - memory_get_usage(true))/(1024 * 1024) ;
+		$maxItems = (int) ($freeRam * 100);
+		vmdump('free ram left '.$freeRam.' so limit chunk to '.$maxItems);
 
-		$q = 'SELECT `o`.*, `op`.*, `o`.`order_number` as `vm1_order_number`, `o2`.`order_number` as `nr2` FROM `#__vm_orders` as `o`
+		$startLimit = 0;
+		$i = 0;
+		$continue=true;
+		while($continue){
+
+			$q = 'SELECT `o`.*, `op`.*, `o`.`order_number` as `vm1_order_number`, `o2`.`order_number` as `nr2` FROM `#__vm_orders` as `o`
 				LEFT OUTER JOIN `#__vm_order_payment` as `op` ON `op`.`order_id` = `o`.`order_id`
 				LEFT JOIN `#__virtuemart_orders` as `o2` ON `o2`.`order_number` = `o`.`order_number`
-				WHERE ISNULL (o2.order_number)
-		';
-		$this->_db->setQuery($q);
-		$oldOrders = $this->_db->loadAssocList();
+				WHERE ISNULL (o2.order_number) LIMIT '.$startLimit.','.$maxItems;
 
-		//$this->_app->enqueueMessage('$oldOrders query '.$this->_db->getQuery());
-		//$this->_app->enqueueMessage('$oldOrders errors? '.$this->_db->getErrorMsg());
+			$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port Orders');
+			$oldOrders = $res[0];
+			$startLimit = $res[1];
+			$continue = $res[2];
 
-		if(!class_exists('VirtueMartModelOrderstatus'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orderstatus.php');
+			if(!class_exists('VirtueMartModelOrderstatus'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orderstatus.php');
 
-		$oldtonewOrders = array();
+			$oldtonewOrders = array();
 
-		//Looks like there is a problem, when the data gets tooo big,
-		//solved now with query directly ignoring already ported orders.
-		$alreadyKnownIds = $this->getMigrationProgress('orders');
-		$newproductIds = $this->getMigrationProgress('products');
-		$orderCodeToId = $this->createOrderStatusAssoc();
+			//Looks like there is a problem, when the data gets tooo big,
+			//solved now with query directly ignoring already ported orders.
+			$alreadyKnownIds = $this->getMigrationProgress('orders');
+			$newproductIds = $this->getMigrationProgress('products');
+			$orderCodeToId = $this->createOrderStatusAssoc();
 
-/*		$q = 'SELECT `order_status_code`, `order_status_id` FROM #__virtuemart_orderstates WHERE `published` = "1" '
-		$this->_db->setQuery($q);
-		$orderStates = $this->_db->loadAssocList();
-		$oldToNewOrderstates = array();*/
+			foreach($oldOrders as $order){
 
-		$i = 0;
-		foreach($oldOrders as $order){
+				if(!array_key_exists($order['order_id'],$alreadyKnownIds)){
+					$orderData = new stdClass();
 
-			if(!array_key_exists($order['order_id'],$alreadyKnownIds)){
-				$orderData = new stdClass();
-
-				$orderData->virtuemart_order_id = null;
-				$orderData->virtuemart_user_id = $order['user_id'];
-				$orderData->virtuemart_vendor_id = $order['vendor_id'];
-				$orderData->order_number = $order['vm1_order_number'];
-				$orderData->order_pass = 'p' . substr(md5((string)time() . $order['order_number']), 0, 5);
-				//Note as long we do not have an extra table only storing addresses, the virtuemart_userinfo_id is not needed.
-				//The virtuemart_userinfo_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.
-				//the saved order should be an snapshot with plain data written in it.
-				//		$orderData->virtuemart_userinfo_id = 'TODO'; // $_cart['BT']['virtuemart_userinfo_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
-				$orderData->order_total = $order['order_total'];
-				$orderData->order_subtotal = $order['order_subtotal'];
-				$orderData->order_tax = $order['order_tax'];
-				$orderData->order_tax_details = null; // TODO What's this?? Which data needs to be serialized?  I dont know also
-				$orderData->order_shipping = $order['order_shipping'];
-				$orderData->order_shipping_tax = $order['order_shipping_tax'];
-				if(!empty($_cart->couponCode)){
-					$orderData->coupon_code = $order['coupon_code'];
-					$orderData->coupon_discount = $order['coupon_discount'];
-				}
-				$orderData->order_discount = $order['order_discount'];
-				//$orderData->order_currency = null; // TODO; Max: the currency should be in the cart somewhere!
-				$orderData->order_status = $orderCodeToId[$order['order_status']];
-				if(isset($_cart->virtuemart_currency_id)){
-					$orderData->user_currency_id = $order['order_currency'];
-					//$orderData->user_currency_rate = $order['order_status'];
-				}
-				$orderData->payment_method_id = $order['payment_method_id'];
-				$orderData->ship_method_id = $order['ship_method_id'];
-				//$orderData->order_status_id = $oldToNewOrderstates[$order['order_status']]
-				$_filter = JFilterInput::getInstance(array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
-				$orderData->customer_note = $_filter->clean($order['customer_note']);
-				$orderData->ip_address = $order['ip_address'];
-
-				$orderData->created_on = $this->_changeToStamp($order['cdate']);
-				$orderData->modified_on = $this->_changeToStamp($order['mdate']); //we could remove this to set modified_on today
-
-				$orderTable = $this->getTable('orders');
-				$newId = $orderTable->bindChecknStore($orderData);
-				$errors = $orderTable->getErrors();
-				if(!empty($errors)){
-					foreach($errors as $error){
-						$this->_app->enqueueMessage('Migration orders: ' . $error);
+					$orderData->virtuemart_order_id = null;
+					$orderData->virtuemart_user_id = $order['user_id'];
+					$orderData->virtuemart_vendor_id = $order['vendor_id'];
+					$orderData->order_number = $order['vm1_order_number'];
+					$orderData->order_pass = 'p' . substr(md5((string)time() . $order['order_number']), 0, 5);
+					//Note as long we do not have an extra table only storing addresses, the virtuemart_userinfo_id is not needed.
+					//The virtuemart_userinfo_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.
+					//the saved order should be an snapshot with plain data written in it.
+					//		$orderData->virtuemart_userinfo_id = 'TODO'; // $_cart['BT']['virtuemart_userinfo_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
+					$orderData->order_total = $order['order_total'];
+					$orderData->order_subtotal = $order['order_subtotal'];
+					$orderData->order_tax = $order['order_tax'];
+					$orderData->order_tax_details = null; // TODO What's this?? Which data needs to be serialized?  I dont know also
+					$orderData->order_shipping = $order['order_shipping'];
+					$orderData->order_shipping_tax = $order['order_shipping_tax'];
+					if(!empty($_cart->couponCode)){
+						$orderData->coupon_code = $order['coupon_code'];
+						$orderData->coupon_discount = $order['coupon_discount'];
 					}
+					$orderData->order_discount = $order['order_discount'];
+					//$orderData->order_currency = null; // TODO; Max: the currency should be in the cart somewhere!
+					//$orderData->order_status = $orderCodeToId[$order['order_status']];
+					$orderData->order_status = $order['order_status'];
+
+
+					if(isset($_cart->virtuemart_currency_id)){
+						$orderData->user_currency_id = $order['order_currency'];
+						//$orderData->user_currency_rate = $order['order_status'];
+					}
+					$orderData->payment_method_id = $order['payment_method_id'];
+					$orderData->ship_method_id = $order['ship_method_id'];
+					//$orderData->order_status_id = $oldToNewOrderstates[$order['order_status']]
+
+
+					$_filter = JFilterInput::getInstance(array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
+					$orderData->customer_note = $_filter->clean($order['customer_note']);
+					$orderData->ip_address = $order['ip_address'];
+
+					$orderData->created_on = $this->_changeToStamp($order['cdate']);
+					$orderData->modified_on = $this->_changeToStamp($order['mdate']); //we could remove this to set modified_on today
+
+					$orderTable = $this->getTable('orders');
+					$newId = $orderTable->bindChecknStore($orderData);
+					$errors = $orderTable->getErrors();
+					if(!empty($errors)){
+						foreach($errors as $error){
+							$this->_app->enqueueMessage('Migration orders: ' . $error);
+						}
+						$continue = false;
+						break;
+					}
+					$i++;
+					$newId = $oldtonewOrders[$order['order_id']] = $orderTable->virtuemart_order_id;
+
+					$q = 'SELECT * FROM `#__vm_order_item` WHERE `order_id` = "'.$order['order_id'].'" ';
+					$this->_db->setQuery($q);
+					$oldItems = $this->_db->loadAssocList();
+					//$this->_app->enqueueMessage('Migration orderhistories: ' . $newId);
+					foreach($oldItems as $item){
+						$item['virtuemart_order_id'] = $newId;
+						$item['product_id'] = $newproductIds[$item['product_id']];
+						//$item['order_status'] = $orderCodeToId[$item['order_status']];
+						$product['created_on'] = $this->_changeToStamp($item['cdate']);
+						$product['modified_on'] = $this->_changeToStamp($item['mdate']); //we could remove this to set modified_on today
+
+						$orderItemsTable = $this->getTable('order_items');
+						$orderItemsTable->bindChecknStore($item);
+						$errors = $orderItemsTable->getErrors();
+						if(!empty($errors)){
+							foreach($errors as $error){
+								$this->_app->enqueueMessage('Migration orderitems: ' . $error);
+							}
+							$continue = false;
+							break;
+						}
+					}
+
+					$q = 'SELECT * FROM `#__vm_order_history` WHERE `order_id` = "'.$order['order_id'].'" ';
+					$this->_db->setQuery($q);
+					$oldItems = $this->_db->loadAssocList();
+
+					foreach($oldItems as $item){
+						$item['virtuemart_order_id'] = $newId;
+						//$item['order_status_code'] = $orderCodeToId[$item['order_status_code']];
+
+
+						$orderHistoriesTable = $this->getTable('order_histories');
+						$orderHistoriesTable->bindChecknStore($item);
+						$errors = $orderHistoriesTable->getErrors();
+						if(!empty($errors)){
+							foreach($errors as $error){
+								$this->_app->enqueueMessage('Migration orderhistories: ' . $error);
+							}
+							$continue = false;
+							break;
+						}
+					}
+
+					$q = 'SELECT * FROM `#__vm_order_user_info` WHERE `order_id` = "'.$order['order_id'].'" ';
+					$this->_db->setQuery($q);
+					$oldItems = $this->_db->loadAssocList();
+
+					if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+
+					foreach($oldItems as $item){
+						$item['virtuemart_order_id'] = $newId;
+						$item['virtuemart_country_id'] = ShopFunctions::getCountryIDByName($item['country']);
+						$item['virtuemart_state_id'] = ShopFunctions::getStateIDByName($item['state']);
+						$orderUserinfoTable = $this->getTable('order_userinfos');
+						$orderUserinfoTable->bindChecknStore($item);
+						$errors = $orderUserinfoTable->getErrors();
+						if(!empty($errors)){
+							foreach($errors as $error){
+								$this->_app->enqueueMessage('Migration orderuserinfo: ' . $error);
+							}
+							$continue = false;
+							break;
+						}
+					}
+
+					//$this->_app->enqueueMessage('Migration: '.$i.' order processed new id '.$newId);
+				} else {
+					$oldtonewOrders[$order['order_id']] = $alreadyKnownIds[$order['order_id']];
+				}
+
+				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+					$continue = false;
+
 					break;
 				}
-				$i++;
-				$newId = $oldtonewOrders[$order['order_id']] = $orderTable->virtuemart_order_id;
-
-				$q = 'SELECT * FROM `#__vm_order_item` WHERE `order_id` = "'.$order['order_id'].'" ';
-				$this->_db->setQuery($q);
-				$oldItems = $this->_db->loadAssocList();
-				//$this->_app->enqueueMessage('Migration orderhistories: ' . $newId);
-				foreach($oldItems as $item){
-					$item['virtuemart_order_id'] = $newId;
-					$item['product_id'] = $newproductIds[$item['product_id']];
-					$item['order_status'] = $orderCodeToId[$item['order_status']];
-					$product['created_on'] = $this->_changeToStamp($item['cdate']);
-					$product['modified_on'] = $this->_changeToStamp($item['mdate']); //we could remove this to set modified_on today
-
-					$orderItemsTable = $this->getTable('order_items');
-					$orderItemsTable->bindChecknStore($item);
-					$errors = $orderItemsTable->getErrors();
-					if(!empty($errors)){
-						foreach($errors as $error){
-							$this->_app->enqueueMessage('Migration orderitems: ' . $error);
-						}
-						break;
-					}
-				}
-
-				$q = 'SELECT * FROM `#__vm_order_history` WHERE `order_id` = "'.$order['order_id'].'" ';
-				$this->_db->setQuery($q);
-				$oldItems = $this->_db->loadAssocList();
-
-				foreach($oldItems as $item){
-					$item['virtuemart_order_id'] = $newId;
-					$item['order_status_code'] = $orderCodeToId[$item['order_status_code']];
-
-
-					$orderHistoriesTable = $this->getTable('order_histories');
-					$orderHistoriesTable->bindChecknStore($item);
-					$errors = $orderHistoriesTable->getErrors();
-					if(!empty($errors)){
-						foreach($errors as $error){
-							$this->_app->enqueueMessage('Migration orderhistories: ' . $error);
-						}
-						break;
-					}
-				}
-
-				$q = 'SELECT * FROM `#__vm_order_user_info` WHERE `order_id` = "'.$order['order_id'].'" ';
-				$this->_db->setQuery($q);
-				$oldItems = $this->_db->loadAssocList();
-
-				if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
-
-				foreach($oldItems as $item){
-					$item['virtuemart_order_id'] = $newId;
-					$item['virtuemart_country_id'] = ShopFunctions::getCountryIDByName($item['country']);
-					$item['virtuemart_state_id'] = ShopFunctions::getStateIDByName($item['state']);
-					$orderUserinfoTable = $this->getTable('order_userinfos');
-					$orderUserinfoTable->bindChecknStore($item);
-					$errors = $orderUserinfoTable->getErrors();
-					if(!empty($errors)){
-						foreach($errors as $error){
-							$this->_app->enqueueMessage('Migration orderuserinfo: ' . $error);
-						}
-						break;
-					}
-				}
-
-				//$this->_app->enqueueMessage('Migration: '.$i.' order processed new id '.$newId);
- 			} else {
- 				$oldtonewOrders[$order['order_id']] = $alreadyKnownIds[$order['order_id']];
- 			}
-
-			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
-				break;
 			}
 		}
-
 		$this->storeMigrationProgress('orders',$oldtonewOrders);
-		$this->_app->enqueueMessage('Migration: '.$i.' orders processed ');
+		vmInfo('Migration: '.$i.' orders processed ');
 	}
 
 	function portOrderStatus(){
@@ -1059,7 +1143,7 @@ class Migrator extends VmModel{
 		$oldtonewOrderstates = array_merge($oldtonewOrderstates,$alreadyKnownIds);
 		$oldtonewOrderstates = array_unique($oldtonewOrderstates);
 
-		$this->_app->enqueueMessage('Migration: '.$i.' orderstates processed ');
+		vmInfo('Migration: '.$i.' orderstates processed ');
 		return;
 	}
 
@@ -1183,6 +1267,28 @@ class Migrator extends VmModel{
 			$names .= $name . ' ';
 		}
 		$this->_app->enqueueMessage('_productPorter  ViceVERSA array_intersect ' . $names);
+	}
+
+	function loadCountListContinue($q,$startLimit,$maxItems,$msg){
+
+		$continue = true;
+		$this->_db->setQuery($q);
+		if(!$this->_db->query()){
+			vmError($msg.' db error '. $this->_db->getErrorMsg());
+			vmError($msg.' db error '. $this->_db->getQuery());
+			$entries = array();
+			$continue = false;
+		} else {
+			$entries = $this->_db->loadAssocList();
+			$count = count($entries);
+			vmInfo($msg. ' found '.$count.' vm1 entries for migration ');
+			$startLimit += $maxItems;
+			if($count<$maxItems){
+				$continue = false;
+			}
+		}
+
+		return array($entries,$startLimit,$continue);
 	}
 
 	function portCurrency(){

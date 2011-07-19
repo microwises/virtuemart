@@ -36,17 +36,13 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 		jimport('joomla.html.parameter');
 		jimport('joomla.application.component.helper');
 		$component =& JComponentHelper::getComponent(self::$component);
-		$params = new JParameter($component->params);
-		$data = $params->getValue(self::$key, '');
-		
-		if(!empty($data)) {
-			if(function_exists('json_decode') && function_exists('json_encode')) {
-				$data = json_decode($data);
-			} elseif(function_exists('base64_encode') && function_exists('base64_decode')) {
-				$data = unserialize(base64_decode($data));
-			}
+		if(!($component->params instanceof JRegistry)) {
+			$params = new JParameter($component->params);
+		} else {
+			$params = $component->params;
 		}
-		
+		$data = $params->getValue(self::$key, '');
+				
 		jimport('joomla.registry.registry');
 		self::$registry = new JRegistry('update');
 		
@@ -57,19 +53,36 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 	{
 		$data = self::$registry->toString('INI');
 		
-		if(function_exists('json_decode') && function_exists('json_encode')) {
-			$data = json_decode($data);
-		} elseif(function_exists('base64_encode') && function_exists('base64_decode')) {
-			$data = base64_decode(serialize($data));
-		}
+		$db =& JFactory::getDBO();
 		
+		// An interesting discovery: if your component is manually updating its
+		// component parameters before Live Update is called, then calling Live
+		// Update will reset the modified component parameters because
+		// JComponentHelper::getComponent() returns the old, cached version of
+		// them. So, we have to forget the following code and shoot ourselves in
+		// the feet. Dammit!!!
+		/*
 		jimport('joomla.html.parameter');
 		jimport('joomla.application.component.helper');
 		$component =& JComponentHelper::getComponent(self::$component);
 		$params = new JParameter($component->params);
 		$params->setValue(self::$key, $data);
+		*/
 
-		$db =& JFactory::getDBO();
+		if( version_compare(JVERSION,'1.6.0','ge') ) {
+			$sql = 'SELECT '.$db->nameQuote('params').' FROM '.$db->nameQuote('#__extensions').
+				' WHERE '.$db->nameQuote('type').' = '.$db->Quote('component').' AND '.
+				$db->nameQuote('element').' = '.$db->Quote(self::$component);
+			$db->setQuery($sql);
+		} else {
+			$sql = 'SELECT '.$db->nameQuote('params').' FROM '.$db->nameQuote('#__components').
+				' WHERE '.$db->nameQuote('option').' = '.$db->Quote(self::$component).
+				" AND `parent` = 0 AND `menuid` = 0";
+			$db->setQuery($sql);
+		}
+		$rawparams = $db->loadResult();
+		$params = new JParameter($rawparams);
+		$params->setValue(self::$key, $data);
 		
 		if( version_compare(JVERSION,'1.6.0','ge') )
 		{

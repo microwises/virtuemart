@@ -39,7 +39,7 @@ $tt=$this;
 		<input type="hidden" name="virtuemart_order_id" value="<?php echo $this->orderID; ?>" />
 		<input type="hidden" name="virtuemart_order_item_id" value="0" />
 		<?php echo JHTML::_( 'form.token' ); ?>
-		</form> 
+		</form>
 <table class="admin-table" style="table-layout: fixed;">
 	<tr>
 		<td valign="top">
@@ -515,7 +515,7 @@ $tt=$this;
 
 
 
-<?php 
+<?php
 AdminUIHelper::imitateTabs('end');
 AdminUIHelper::endAdminArea(); ?>
 

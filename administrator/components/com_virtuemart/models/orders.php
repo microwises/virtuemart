@@ -169,10 +169,13 @@ class VirtueMartModelOrders extends VmModel {
 		$query = "SELECT o.*, CONCAT(u.first_name, ' ', IF(u.middle_name IS NULL, '', CONCAT(u.middle_name, ' ')), u.last_name) AS order_name "
 			.',m.payment_name AS payment_method '
 			.$this->getOrdersListQuery();
-		$_filter = array();
+/*		$_filter = array();
 		if ($uid > 0) {
 			$_filter[] = ('u.virtuemart_user_id = ' . (int)$uid);
-		}
+		}*/
+
+		$query .= 'WHERE u.virtuemart_user_id = ' . (int)$uid.' AND o.virtuemart_vendor_id = "1" ';
+
 		$query .= $this->_getOrdering('virtuemart_order_id', 'DESC');
 		if ($_ignorePagination) {
 			$this->_data = $this->_getList($query);
@@ -183,7 +186,6 @@ class VirtueMartModelOrders extends VmModel {
 		if(count($this->_data) >0){
 			$this->_total = $this->_getListCount($query);
 		}
-		//$this->_total = $this->_getListCount($query);
 
 		return $this->_data ;
 	}
@@ -194,11 +196,11 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	private function getOrdersListQuery()
 	{
-		return 'FROM #__virtuemart_orders o
+		return ' FROM #__virtuemart_orders o
 			LEFT JOIN #__virtuemart_order_userinfos u
 			ON u.virtuemart_order_id = o.virtuemart_order_id
 			LEFT JOIN #__virtuemart_paymentmethods m
-			ON o.payment_method_id = m.virtuemart_paymentmethod_id';
+			ON o.payment_method_id = m.virtuemart_paymentmethod_id ';
 	}
 
 

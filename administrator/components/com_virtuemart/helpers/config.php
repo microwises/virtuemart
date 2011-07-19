@@ -26,10 +26,33 @@ define( 'JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.
 require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 
 
-function vmInfo($publicdescr){
+/**
+ * This function shows an info message, the messages gets translated with JText::,
+ * you can overload the function, so that automatically sprintf is taken, when needed.
+ * So this works vmInfo('COM_VIRTUEMART_MEDIA_NO_PATH_TYPE',$type,$link )
+ * and also vmInfo('COM_VIRTUEMART_MEDIA_NO_PATH_TYPE');
+ *
+ * @author Max Milbers
+ * @param unknown_type $publicdescr
+ * @param unknown_type $value
+ */
+
+function vmInfo($publicdescr,$value=null){
 
 	$app = JFactory::getApplication();
-	$app ->enqueueMessage(JText::_($publicdescr),'info');
+
+	if($value!==null){
+		$lang = JFactory::getLanguage();
+		$args = func_get_args();
+		if (count($args) > 0) {
+			$args[0] = $lang->_($args[0]);
+			//return call_user_func_array('sprintf', $args);
+			$app ->enqueueMessage(call_user_func_array('sprintf', $args));
+		}
+	}	else {
+		$app ->enqueueMessage(JText::_($publicdescr));
+	}
+
 }
 
 /**
@@ -48,7 +71,7 @@ function vmError($descr,$publicdescr=''){
 
 	if ($user->authorize( 'com_virtuemart', 'edit' )) {
 		$app = JFactory::getApplication();
-		$app ->enqueueMessage($string,'error');
+		$app ->enqueueMessage($descr,'error');
 	} else {
 		if(!empty($publicdescr)){
 			$app = JFactory::getApplication();
@@ -59,21 +82,44 @@ function vmError($descr,$publicdescr=''){
 }
 
 /**
- * A debug dumper for VM, it is only shown to backend users. The dumper takes an array of data
+ * A debug dumper for VM, it is only shown to backend users.
  *
  * @author Max Milbers
  * @param unknown_type $descr
  * @param unknown_type $values
  */
-function vmdump($debugdescr,$debugvalues,$force=false){
+function vmdump($debugdescr,$debugvalue=null,$force=false){
 
-	if(!$force && VMConfig::showDebug()){
-		$string = $debugdescr.'<pre>'.print_r($debugvalues,1).'</pre>';
+	if($force || (!$force && VMConfig::showDebug() ) ){
+
+		if(isset($debugvalue)){
+			$debugdescr .=' <pre>'.print_r($debugvalue,1).'<br />'.print_r(get_class_methods($debugvalue),1).'</pre>';
+		}
+
 		$app = JFactory::getApplication();
-		$app ->enqueueMessage($string);
+		$app ->enqueueMessage($debugdescr);
 	}
 
 }
+
+function vmTrace($notice,$force=false){
+
+	if($force || (!$force && VMConfig::showDebug() ) ){
+		//$app = JFactory::getApplication();
+		//$app ->enqueueMessage($notice.' '.debug_print_backtrace());
+		debug_print_backtrace();
+	}
+
+}
+
+function vmRam($notice,$value=null){
+	vmdump($notice.' used Ram '.round(memory_get_usage(true)/(1024*1024),2).'M ',$value);
+}
+
+function vmRamPeak($notice,$value=null){
+	vmdump($notice.' memory peak '.round(memory_get_peak_usage(true)/(1024*1024),2).'M ',$value);
+}
+
 
 /**
  * We use this Class STATIC not dynamically !
@@ -161,7 +207,7 @@ class VmConfig{
 			$config = explode('|', self::$_jpConfig->_raw);
 			foreach($config as $item){
 				$item = explode('=',$item);
-				if(array_key_exists(1,$item)){
+				if(!empty($item[1])){
 					$pair[$item[0]] = unserialize($item[1]);
 				} else {
 					$pair[$item[0]] ='';

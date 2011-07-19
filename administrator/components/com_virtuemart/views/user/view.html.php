@@ -149,9 +149,11 @@ class VirtuemartViewUser extends JView {
 				$_userDetailsList = current($userDetails->userInfo);
 				for ($_i = 0; $_i < $_addressCount; $_i++) {
 					if ($_userDetailsList->address_type == 'BT') {
-						$_userInfoID = $_userDetailsList->virtuemart_userinfo_id;
-						reset($userDetails->userInfo);
-						break;
+						if(!empty($_userDetailsList->virtuemart_userinfo_id)){
+							$_userInfoID = $_userDetailsList->virtuemart_userinfo_id;
+							reset($userDetails->userInfo);
+							break;
+						}
 					}
 					$_userDetailsList = next($userDetails->userInfo);
 				}

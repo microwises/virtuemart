@@ -37,13 +37,13 @@ class vmVersion {
 	/** @var string Codename */
 	static $CODENAME = 'BeJooKu';
 	/** @var string Date */
-	static $RELDATE = 'July 7, 2011';
+	static $RELDATE = 'July 19, 2011';
 	/** @var string Time */
-	static $RELTIME = '23:30';
+	static $RELTIME = '14:30';
 	/** @var string Timezone */
 	static $RELTZ = 'GMT';
 	/** @var string Revision */
-	static $REVISION = '$Revision: 3678 $';
+	static $REVISION = '$Revision: 3733 $';
 	/** @var string Copyright Text */
 	static $COPYRIGHT = 'Copyright (C) 2005-2011 VirtueMart Development Team - All rights reserved.';
 	/** @var string URL */

@@ -734,8 +734,13 @@ class VirtueMartModelProduct extends VmModel {
 		/* Setup some place holders */
 		$product_data = $this->getTable('products');
 
-		/* Load the old product details first */
-		$product_data->load((int)$data['virtuemart_product_id']);
+		// Load the old product details first  hmm for what exactly do we need it?
+//		if(!empty($data['virtuemart_product_id'])){
+			$product_data->load((int)$data['virtuemart_product_id']);
+			$product_data->resetErrors();
+	//		$errors = $product_data->getErrors();
+//			vmdump('Error loading product table products ',$errors);
+//		}
 
 
         /* Set the product packaging */
@@ -747,6 +752,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$errors = $product_data->getErrors();
 		foreach($errors as $error){
+			vmdump('Error storing product table products ',$errors);
 			$this->setError($error);
 		}
 
@@ -770,6 +776,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$errors = $product_price_table->getErrors();
 		foreach($errors as $error){
+			vmdump('Error storing product table product_prices ',$errors);
 			$this->setError($error);
 		}
 
@@ -778,6 +785,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			$xrefTable = $this->getTable('product_manufacturers');
 	    	if (!$xrefTable->bindChecknStore($data)) {
+	    		vmdump('Error storing product table product_manufacturers ',$errors);
 				$this->setError($xrefTable->getError());
 			}
 		}
@@ -835,6 +843,7 @@ class VirtueMartModelProduct extends VmModel {
 		/* Update product custom field
 		* 'product_type_tables' are all types tables in product edit view
 		*/
+		//$product['virtuemart_product_id'] = $product_data->virtuemart_product_id;
 		return $product_data->virtuemart_product_id;
 	}
 

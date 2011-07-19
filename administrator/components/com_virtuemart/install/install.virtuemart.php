@@ -25,7 +25,8 @@ function com_install(){
 	$db = JFactory::getDBO();
 	$model = new VirtueMartModelUpdatesMigration();
 
-	$query = "SELECT count(id) AS idCount FROM `#__virtuemart_adminmenuentries`";
+	//$query = "SELECT count(id) AS idCount FROM `#__virtuemart_adminmenuentries`";
+	$query = 'SHOW TABLES LIKE #__virtuemart_adminmenuentries';
 	$db->setQuery($query);
 	$result = $db->loadObject();
 	if ($result->idCount > 0) {
@@ -45,7 +46,7 @@ function com_install(){
 
 	}
 	JTable::addIncludePath(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'tables');
-	$model->integrateJoomlaUsers();
+	//$model->integrateJoomlaUsers();
 	$model->setStoreOwner();
 
 	if ($newInstall) {
@@ -53,15 +54,24 @@ function com_install(){
 //		$userfile = JRequest::getVar('install_package', null, 'files', 'array' );
 	}
 
+
+	//Is there an old virtuemart around? then delete the old toolbar
+	jimport('joomla.filesystem.file');
+	$dspath = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'toolbar.virtuemart.php';
+	if(JFile::exists($dspath)){
+		JFile::delete($dspath);
+	}
+
 	$installOk = true;
 
+	JRequest::setVar('newInstall', $newInstall);
 	include(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install.virtuemart.html.php');
 
 	//$model = $this->getModel('config');
 	JModel::addIncludePath(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'models');
 	$model = JModel::getInstance('config', 'VirtueMartModel');
 	$model->setDangerousToolsOff();
-	
+
 	return $installOk;
 }
 

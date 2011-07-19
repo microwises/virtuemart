@@ -77,7 +77,7 @@ class LiveUpdate
 		return $info;
 	}
 	
-	public static function getIcon($config=array(),$return_type='')
+	public static function getIcon($config=array())
 	{
 		// Load language strings
 		self::loadLanguage();
@@ -115,22 +115,8 @@ class LiveUpdate
 			$lbl = JText::_('LIVEUPDATE_ICON_CURRENT');
 		}
 		
-		// Backup The Image String
-		// echo '<img src="'.$img.'" width="32" height="32" border="0" align="middle" style="float: none" />';
-		if ($return_type == 'notice') {
-			if ($updateInfo->hasUpdates) {
-				return '<div class="update-notice"><a href="'.$url.'">'.'<span class="'.$class.'">'.$lbl.'</span></a></div>';
-			} else {
-				return '';
-			}
-		}
-		if ($return_type == 'url') {
-			return $url;
-		}
-		if ($return_type == 'admin_menu') {
-			return '<div class="updates"><a href="'.$url.'">'.'<span class="'.$class.'">'.$lbl.'</span></a></div>';
-		} else {
-			return '<div class="updates"><a href="'.$url.'">'.'<span class="'.$class.'">'.$lbl.'</span></a></div>';
-		}
+		return '<div class="icon"><a href="'.$url.'">'.
+			'<div><img src="'.$img.'" width="32" height="32" border="0" align="middle" style="float: none" /></div>'.
+			'<span class="'.$class.'">'.$lbl.'</span></a></div>';
 	}
 }

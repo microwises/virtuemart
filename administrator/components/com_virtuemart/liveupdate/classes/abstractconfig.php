@@ -56,6 +56,12 @@ abstract class LiveUpdateAbstractConfig extends JObject
 	/** @var string The Download ID to authorize a download on your site; use it instead of the username/password pair */
 	protected $_downloadID = '';
 	
+	/** @var string The path to a local copy of cacert.pem, required if you plan on using HTTPS URLs to fetch live udpate information or download files from */
+	protected $_cacerts = null;
+	
+	/** @var string The minimum stability level to report as available update. One of alpha, beta, rc and stable. */
+	protected $_minStability = 'alpha';
+	
 	/**
 	 * Singleton implementation
 	 * @return LiveUpdateConfig An instance of the Live Update configuration class
@@ -170,8 +176,8 @@ abstract class LiveUpdateAbstractConfig extends JObject
 		require_once dirname(__FILE__).'/xmlslurp.php';
 		$xmlslurp = new LiveUpdateXMLSlurp();
 		$data = $xmlslurp->getInfo($this->_extensionName, $this->_xmlFilename);
-		$this->_currentVersion = $data['version'];
-		$this->_currentReleaseDate = $data['date'];
+		if(empty($this->_currentVersion)) $this->_currentVersion = $data['version'];
+		if(empty($this->_currentReleaseDate)) $this->_currentReleaseDate = $data['date'];
 	}
 	
 	/**
@@ -191,5 +197,19 @@ abstract class LiveUpdateAbstractConfig extends JObject
 		$this->_username	= $params->getValue('username','');
 		$this->_password	= $params->getValue('password','');
 		$this->_downloadID	= $params->getValue('downloadid','');
+	}
+	
+	public function applyCACert(&$ch)
+	{
+		if(!empty($this->_cacerts)) {
+			if(file_exists($this->_cacerts)) {
+				@curl_setopt($ch, CURLOPT_CAINFO, $this->_cacerts);
+			}
+		}
+	}
+	
+	public function getMinimumStability()
+	{
+		return $this->_minStability;
 	}
 }

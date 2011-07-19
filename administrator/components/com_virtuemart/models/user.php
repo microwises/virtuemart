@@ -535,6 +535,7 @@ class VirtueMartModelUser extends VmModel {
 		$errors = $usertable->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);
+			vmError($error);
 		}
 
 		if(empty($data['virtuemart_shoppergroup_id'])){
@@ -552,6 +553,7 @@ class VirtueMartModelUser extends VmModel {
 		$errors = $user_shoppergroups_table->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);
+			vmError($error);
 		}
 
   		$plg_datas = $dispatcher->trigger('plgVmAfterUserStore',$data);

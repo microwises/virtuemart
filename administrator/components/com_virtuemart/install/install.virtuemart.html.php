@@ -26,13 +26,17 @@ $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
 				<td align="center" colspan="2" ><?php echo JText::_('COM_VIRTUEMART_INSTALLATION_FINISH'); ?></td>
 			</tr>
 			<tr>
-				<td width="50%" align="center">
-					<a onclick="alert('Please don\'t interrupt the next Step! \n It is essential for running VirtueMart.');" href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JUtility::getToken()); ?>">
+				<?php
+					if(JRequest::getVar('newInstall')){
+					?>	<td width="50%" align="center">
+						<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JUtility::getToken()); ?>">
 						<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
-					</a>
-					<br />
-					<?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
-				</td>
+						</a>
+						<br />
+						<?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
+						</td>
+				<?php	} ?>
+
 				<td width="50%" align="center">
 					<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart'); ?>">
 						<img src="components/com_virtuemart/assets/images/icon_48/vm_frontpage_48.png">
