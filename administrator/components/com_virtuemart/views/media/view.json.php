@@ -35,20 +35,27 @@ class VirtuemartViewMedia extends JView {
 
 	function display($tpl = null) {
 
-		$virtuemart_media_id = JRequest::getVar('virtuemart_media_id');
-		$db = JFactory::getDBO();
-		$query='SELECT * FROM `#__virtuemart_medias` where `virtuemart_media_id`='.$virtuemart_media_id;
-		$db->setQuery( $query );
-		$json = $db->loadObject();
-		if (isset($json->file_url)) {
-			$json->file_root = JURI::root(true).'/';
-			$json->msg =  'OK';
-			echo json_encode($json);
-		} else {
-			$json->msg =  '<b>'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b>';
-			echo json_encode($json);
+		if ($virtuemart_media_id = JRequest::getInt('virtuemart_media_id')) {
+			$db = JFactory::getDBO();
+			$query='SELECT * FROM `#__virtuemart_medias` where `virtuemart_media_id`='.$virtuemart_media_id;
+			$db->setQuery( $query );
+			$json = $db->loadObject();
+			if (isset($json->file_url)) {
+				$json->file_root = JURI::root(true).'/';
+				$json->msg =  'OK';
+				echo json_encode($json);
+			} else {
+				$json->msg =  '<b>'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b>';
+				echo json_encode($json);
+			}
+		}
+		else {
+			$this->loadHelper('mediahandler');
+			$start = JRequest::getInt('start',0);
+			echo VmMediaHandler::displayImages('',$start );
 		}
 	}
+
 
 }
 // pure php no closing tag

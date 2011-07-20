@@ -138,7 +138,76 @@ font-size: 12px;
     margin: 5px;
     padding: 5px 5px 5px 16px;
 }
+.vm_thumb_image {
+    text-align: center;
+    background: url("../images/admin_ui/toolbar_background.png") repeat-x scroll center bottom;
+    border: 1px solid #B4B4B4;
+    border-radius: 6px;
+    display: block;
+    float: left;
+    height: 120px;
+    margin: 2px;
+    overflow: hidden;
+    padding: 10px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    width: 120px;
+}
+.trash{
+    background-image: url("../images/trash-24.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: 1px solid;
+    border-radius: 4px;
+    display: inline;
+    height: 24px;
+    left: 0;
+    margin: 2px 0 0 2px;
+    position: absolute;
+    top: 0;
+    width: 24px;
+	cursor: pointer;
+}
+.next{
+    background-image: url("../images/trash-24.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: 1px solid;
+    border-radius: 4px;
+    display: inline;
+    height: 24px;
+    left: 0;
+    margin: 2px 0 0 2px;
+    position: absolute;
+    top: 0;
+    width: 24px;
+	cursor: pointer;
+}
+#fancybox-left-ico {
+ left: 20px;
+}
 
+#fancybox-right-ico {
+ right: 20px;
+ left: auto;
+}
+
+.edit-24-grey{
+    background-image: url("../images/edit-24-grey.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: 1px solid;
+    border-radius: 4px;
+    display: inline;
+    height: 24px;
+    right: 0;
+    margin: 2px 0 0 2px;
+    position: absolute;
+    bottom: 0;
+    width: 24px;
+	cursor: pointer;
+}
 
 div.threecols ul li {
     background: none repeat scroll 0 0 transparent;
