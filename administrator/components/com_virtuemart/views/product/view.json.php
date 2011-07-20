@@ -42,7 +42,7 @@ class VirtuemartViewProduct extends JView {
 		//$customfield = $model->getcustomfield();
 		$db = JFactory::getDBO();
 		/* Get the task */
-		if ($type=='relatedproducts') {
+		if ($type=='relatedproduct') {
 			$query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
 				FROM #__virtuemart_products";
 			if ($filter) $query .= " WHERE product_name LIKE '%".$filter."%' limit 0,50";
@@ -78,7 +78,7 @@ class VirtuemartViewProduct extends JView {
 				</tr>';
 			$json['value'] = $html;
 			$json['ok'] = $field->id ;
-		}else if ($type=='relatedcategories') {
+		}else if ($type=='relatedcategory') {
 			$query = "SELECT virtuemart_category_id AS id, CONCAT(category_name, '::', virtuemart_category_id) AS value
 				FROM #__virtuemart_categories ";
 			if ($filter) $query .= " WHERE category_name LIKE '%".$filter."%' limit 0,50";
@@ -142,7 +142,7 @@ class VirtuemartViewProduct extends JView {
 				 <td>'.$field->custom_title.'</td>
 				 <td>'.$display.$field->custom_tip.'
 				 </td>
-				 <td>'.$fieldTypes[$field->field_type].'
+				 <td>'.JText::_($fieldTypes[$field->field_type]).'
 					<input type="hidden" value="'.$field->field_type .'" name="field['.$row.'][field_type]" />
 					<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
 					<input type="hidden" value="'.$field->admin_only.'" name="field['.$row.'][admin_only]" />

@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 						<legend><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS');?></legend>
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_RELATED_SEARCH'); ?>
 						<div class="jsonSuggestResults" style="width: 322px;">
-						<input type="text" size="40" name="search" id="relatedProductSearch" value="" />
+						<input type="text" size="40" name="search" id="relatedproductSearch" value="" />
 						</div>
 					</fieldset>
 					</td>
@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 						<legend><?php echo JText::_('COM_VIRTUEMART_RELATED_CATEGORIES');?></legend>
 						<?php echo JText::_('COM_VIRTUEMART_CATEGORIES_RELATED_SEARCH'); ?>
 						<div class="jsonSuggestResults" style="width: 322px;">
-						<input type="text" size="40" name="search" id="relatedCategorySearch" value="" />
+						<input type="text" size="40" name="search" id="relatedcategorySearch" value="" />
 						</div>
 					</fieldset>
 					</td>
@@ -122,37 +122,7 @@ jQuery('div.remove').click( function() {
 	jQuery(this).closest('tr').remove();
 });
 
-jQuery('input#ProductCustomSearch').autocomplete('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=custom', {
-		mustMatch: false,
-		max : 50,
-		dataType: "json",
-		minChars:2,
-		parse: function(data) {
-			return jQuery.map(data, function(row) {
-				return {
-					data: row,
-					value: row.value,
-					result: row.value
-				}
-			});
-		},
-		formatItem: function(item) {
-			return item.value;
-		}
-	}).result(function(e, item) {
-		/* Check if the item is already there */
-		var items = [];
-		jQuery('customfields input').children().each(function() {
-			items[items.length++] = jQuery(this).val();
-		})
-		if (jQuery.inArray(item.id, items) >= 0) {
-			return;
-		}
-		var custom = item.value.split('::');
-		var Attributes = item.id.split('|');
-		
-		jQuery("#customfieldslist").append('<div>'+custom[0]+'<input type="text" value="'+Attributes[1]+'" name="custom['+Attributes[0]+']"  size="120">'+custom[1]+'</div><div>Type : '+Attributes[2]+'</div>');
-	});
+
 jQuery('select#customlist').click(function() {
 	selected = jQuery(this).find( 'option:selected').val() ;
 	jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=customfield&id='+selected+'&row='+nextCustom+'&virtuemart_product_id=<?php echo $this->product->virtuemart_product_id; ?>',
@@ -160,7 +130,6 @@ jQuery('select#customlist').click(function() {
 		var trash = jQuery("div.customDelete").clone().css('display', 'block').removeClass('customDelete');
 		jQuery.each(data.value, function(index, value){
 			jQuery("table#customfields").append(value);
-//			jQuery("table#customfields td:last").append(trash);
 		});
 		jQuery("table#customfields tr").find("td:empty").append(trash).click( function() {
 			jQuery(this).closest('tr').remove();
@@ -172,90 +141,43 @@ jQuery('select#customlist').click(function() {
 function removeSelectedOptions(from) {
 	jQuery('select#'+from+' :selected').remove()
 }
-</script>
-<script type="text/javascript">
-jQuery('input#relatedProductSearch').autocomplete('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts', {
-		mustMatch: false,
-		max : 50,
-		dataType: "json",
-		minChars:2,
-		parse: function(data) {
-			return jQuery.map(data, function(row) {
-				return {
-					data: row,
-					value: row.value,
-					result: row.value
-				}
-			});
-		},
-		formatItem: function(item) {
-			return item.value;
-		}
-	}).result(function(e, item) {
-		/* Check if the item is already there */
-		var items = [];
-		jQuery('select#related_products').children().each(function() {
-			items[items.length++] = jQuery(this).val();
-		})
-	
-		if (jQuery.inArray(item.id, items) >= 0) {
-			return;
-		}
-		
-		jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=product&id='+item.id+'&row='+nextCustom+'&virtuemart_product_id=<?php echo $this->product->virtuemart_product_id; ?>',
-	function(data) {
-		var trash = jQuery("div.customDelete").clone().css('display', 'block').removeClass('customDelete');
-		jQuery.each(data.value, function(index, value){
-			jQuery("table#customfields").append(value);
-//			jQuery("table#customfields td:last").append(trash);
-		});
-		jQuery("table#customfields tr").find("td:empty").append(trash).click( function() {
-			jQuery(this).closest('tr').remove();
-		});
-	});
-	nextCustom++;
 
-	});
-jQuery('input#relatedCategorySearch').autocomplete('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories', {
-		mustMatch: false,
-		max : 50,
-		dataType: "json",
-		minChars:2,
-		parse: function(data) {
-			return jQuery.map(data, function(row) {
-				return {
-					data: row,
-					value: row.value,
-					result: row.value
-				}
-			});
-		},
-		formatItem: function(item) {
-			return item.value;
-		}
-	}).result(function(e, item) {
-		/* Check if the item is already there */
-		var items = [];
-		jQuery('select#related_products').children().each(function() {
-			items[items.length++] = jQuery(this).val();
-		})
-	
-		if (jQuery.inArray(item.id, items) >= 0) {
-			return;
-		}
-		
-		jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=category&id='+item.id+'&row='+nextCustom+'&virtuemart_category_id=<?php echo $this->product->virtuemart_category_id; ?>',
-	function(data) {
-		var trash = jQuery("div.customDelete").clone().css('display', 'block').removeClass('customDelete');
-		jQuery.each(data.value, function(index, value){
-			jQuery("table#customfields").append(value);
-//			jQuery("table#customfields td:last").append(trash);
-		});
-		jQuery("table#customfields tr").find("td:empty").append(trash).click( function() {
-			jQuery(this).closest('tr').remove();
-		});
-	});
-	nextCustom++;
+	function customautocomplete( $type ,$id) {
+		console.log($type);
+		jQuery('input#related'+$type+'Search').autocomplete('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=related'+$type, {
+			mustMatch: false,
+			max : 50,
+			dataType: "json",
+			minChars:2,
+			cacheLength:20,
+			parse: function(data) {
+				return jQuery.map(data, function(row) {
+					return {
+						data: row,
+						value: row.value,
+						result: row.value
+					}
+				});
+			},
+			formatItem: function(item) {
+				return item.value;
+			}
+		}).result(function(e, item) {
+			jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type='+$type+'&id='+item.id+'&row='+nextCustom+'&virtuemart_'+$type+'_id='+$id,
+				function(data) {
+					var trash = jQuery("div.customDelete").clone().css('display', 'block').removeClass('customDelete');
+					jQuery.each(data.value, function(index, value){
+						jQuery("table#customfields").append(value);
+					});
+					jQuery("table#customfields tr").find("td:empty").append(trash).click( function() {
+						jQuery(this).closest('tr').remove();
+					});
+				});
+			nextCustom++;
 
-	});
+		});
+
+	}
+	customautocomplete( 'product' ,<?php echo (int)$this->product->virtuemart_product_id; ?>) 
+	customautocomplete( 'category' ,<?php echo (int)$this->product->virtuemart_category_id; ?>) 
 </script>
