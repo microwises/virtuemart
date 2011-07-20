@@ -33,8 +33,8 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=user'), 'vm_shop_users_48.png', JText::_('COM_VIRTUEMART_USER_S')); ?></div>
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=config'), 'vm_shop_configuration_48.png', JText::_('COM_VIRTUEMART_CONFIG')); ?></div>
 	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('index.php?option=com_virtuemart&view=user&task=editshop'), 'vm_shop_mart_48.png', JText::_('COM_VIRTUEMART_STORE')); ?></div>
-	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_('http://virtuemart.org/index.php?option=com_content&amp;task=view&amp;id=248&amp;Itemid=125'), 'vm_shop_help_48.png', JText::_('COM_VIRTUEMART_DOCUMENTATION')); ?></div>
-	<div class="icon"><?php VmImage::displayImageButton(JROUTE::_(LiveUpdate::getIcon(array(),'url')), 'vm_config_48.png', JText::_('COM_VIRTUEMART_ADMIN_UPDATES')); ?></div>
+	<div class="icon"><?php VmImage::displayImageButton('http://virtuemart.org/index.php?option=com_content&amp;task=view&amp;id=248&amp;Itemid=125', 'vm_shop_help_48.png', JText::_('COM_VIRTUEMART_DOCUMENTATION')); ?></div>
+	<div class="icon"><?php echo LiveUpdate::getIcon(array(),'url'); ?></div>
 
 <div class="clear"></div>
 </div>

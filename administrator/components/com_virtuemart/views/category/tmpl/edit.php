@@ -34,7 +34,7 @@ $mainframe = JFactory::getApplication();
 <?php // Loading Templates in Tabs
 AdminUIHelper::buildTabs ( array (	'categoryform' 	=> 	'COM_VIRTUEMART_CATEGORY_FORM_LBL',
 									'images' 	=> 	'COM_VIRTUEMART_IMAGE_S'
-									 ),'vm-category-'.$this->_models['category']->_id );
+									 ),$this->_models['category']->_id );
 ?>
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="virtuemart_category_id" value="<?php echo $this->category->virtuemart_category_id; ?>" />

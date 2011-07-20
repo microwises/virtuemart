@@ -30,7 +30,7 @@ $tabarray = array();
 $tabarray['description'] = 'COM_VIRTUEMART_DESCRIPTION';
 $tabarray['images'] = 'COM_VIRTUEMART_IMAGE_S';
 
-AdminUIHelper::buildTabs ( $tabarray );
+AdminUIHelper::buildTabs ( $tabarray ,$this->manufacturer->virtuemart_manufacturer_id);
 // Loading Templates in Tabs END ?>
 
 	<input type="hidden" name="option" value="com_virtuemart" />

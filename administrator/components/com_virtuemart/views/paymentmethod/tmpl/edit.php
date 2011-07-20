@@ -28,7 +28,7 @@ $tabarray = array();
 $tabarray['edit'] = 'COM_VIRTUEMART_ADMIN_PAYMENT_FORM';
 $tabarray['config'] = 'COM_VIRTUEMART_ADMIN_PAYMENT_CONFIGURATION';
 
-AdminUIHelper::buildTabs ( $tabarray );
+AdminUIHelper::buildTabs ( $tabarray,$this->paym->virtuemart_paymentmethod_id );
 // Loading Templates in Tabs END ?>
 
 <!-- Hidden Fields -->

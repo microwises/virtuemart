@@ -38,8 +38,7 @@ class AdminUIHelper {
 	//$document->addScript('../components/com_virtuemart/assets/js/jquery.js');
 	//$document->addScript('../components/com_virtuemart/assets/js/vm.js');
 	// used $config->jQuery(); $config->jVm(); to load it
-	// $document->addScript(JURI::base().'components/com_virtuemart/assets/js/vmadmin.js');
-	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/akkordeon.js');
+	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vm2admin.js');
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.cookie.js');
 	//$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.jqtransform.js');
 
@@ -102,20 +101,20 @@ echo LiveUpdate::getIcon(array(),'notice');
 	 * @example 'shop' => 'COM_VIRTUEMART_ADMIN_CFG_SHOPTAB'
 	 */
 	function buildTabs($load_template = array(),$cookieName='') {
+		$cookieName = JRequest::getVar('view','').$cookieName;
 		$document = JFactory::getDocument ();
-		$document->addScript ( JURI::base () . 'components/com_virtuemart/assets/js/tabs.js' );
+		//$document->addScript ( JURI::base () . 'components/com_virtuemart/assets/js/tabs.js' );
 		$document->addScriptDeclaration ( '
 			jQuery(document).ready(function() {
-				tabs(jQuery("#admin-ui-tabs .tabs"),"'.$cookieName.'");
+				jQuery("#admin-ui-tabs").vm2admin("tabs","'.$cookieName.'");
 			});');
 
 		$html = '<div id="admin-ui-tabs">';
-		$i = 1;
+
 		foreach ( $load_template as $tab_content => $tab_title ) {
-			$html .= '<div id="tab-' . $i . '" class="tabs" title="' . JText::_ ( $tab_title ) . '">';
+			$html .= '<div class="tabs" title="' . JText::_ ( $tab_title ) . '">';
 			$html .= $this->loadTemplate ( $tab_content );
 			$html .= '<div class="clear"></div></div>';
-			$i ++;
 		}
 		$html .= '</div>';
 		echo $html;
