@@ -20,13 +20,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea();
-$pane = JPane::getInstance('tabs', array('startOffset' => 0));
 $editor = JFactory::getEditor();
 
-$mainframe = JFactory::getApplication();
-
-//making images URL
-//$imagesURL = $mainframe->getSiteURL().VmConfig::get('media_category_path');
 ?>
 
 <form action="index.php" method="post" id="adminForm" name="adminForm" enctype="multipart/form-data">

@@ -167,6 +167,7 @@
 	jQuery('#admin-ui-menu').vm2admin('accordeon');
 	jQuery('dl#system-message').hide().slideDown(400);
 	jQuery('.hasTip').tipTip();
+	jQuery('.modal').fancybox();
 	// jQuery('#admin-content').jqTransform();
 
 });

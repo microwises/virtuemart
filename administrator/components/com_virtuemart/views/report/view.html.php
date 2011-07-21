@@ -47,8 +47,6 @@ class VirtuemartViewReport extends JView {
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('reportFunctions');
-
-		JHTML::_('behavior.tooltip');
 		JHTML::_('behavior.calendar');
 
 		$model = $this->getModel();

@@ -24,22 +24,32 @@ class AdminUIHelper {
      * displayes the admin menu in the left column.
      */
     function startAdminArea() {
+
+	$front = JURI::root(true).'/components/com_virtuemart/assets/';
+	$admin = JURI::base().'components/com_virtuemart/assets/';
 	$document = JFactory::getDocument();
 //	$mainframe = JFactory::getApplication();
 	//loading defaut admin CSS
-	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_ui.css');
-	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_menu.css');
-	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin.styles.css');
-	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/toolbar_images.css');
-	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/menu_images.css');
-	$document->addStyleSheet(JURI::root(true).'/components/com_virtuemart/assets/css/tipTip.css');
-	//$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jqtransform.css');
+	$document->addStyleSheet($admin.'css/admin_ui.css');
+	$document->addStyleSheet($admin.'css/admin_menu.css');
+	$document->addStyleSheet($admin.'css/admin.styles.css');
+	$document->addStyleSheet($admin.'css/toolbar_images.css');
+	$document->addStyleSheet($admin.'css/menu_images.css');
+	$document->addStyleSheet($front.'css/tipTip.css');
+	$document->addStyleSheet($front.'js/fancybox/jquery.fancybox-1.3.4.css');
+	//$document->addStyleSheet($admin.'css/jqtransform.css');
 
 	//loading defaut admin script
-	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vm2admin.js');
-	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.cookie.js');
-	$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.tipTip.js');
-	//$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.jqtransform.js');
+
+
+	//loading from public site
+	$document->addScript($front.'js/fancybox/jquery.mousewheel-3.0.4.pack.js');
+	$document->addScript($front.'js/fancybox/jquery.easing-1.3.pack.js');
+	$document->addScript($front.'js/fancybox/jquery.fancybox-1.3.4.pack.js');
+	$document->addScript($admin.'js/vm2admin.js');
+	$document->addScript($admin.'js/jquery.cookie.js');
+	$document->addScript($front.'js/jquery.tipTip.js');
+	//$document->addScript($admin.'js/jquery.jqtransform.js');
 
 	?>
 

@@ -251,10 +251,7 @@ class VirtuemartViewUser extends JView {
 
 			}
 
-			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
-			// In tmpl/edit.php, this is the 3th tab (0-based, so set to 2 above)
-			jimport('joomla.html.pane');
-			$pane = JPane::getInstance('Tabs', $_paneOffset);
+
 
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userDetails', $userDetails);
@@ -265,7 +262,7 @@ class VirtuemartViewUser extends JView {
 			$this->assignRef('orderlist', $orderList);
 			$this->assignRef('contactDetails', $_contactDetails);
 			$this->assignRef('editor', $editor);
-			$this->assignRef('pane', $pane);
+
 		} else {
 
 			JToolBarHelper::divider();

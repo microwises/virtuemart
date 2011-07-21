@@ -19,9 +19,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea();
-JHTML::_('behavior.tooltip');
-/* Get the component name */
-$option = JRequest::getWord('option');
 
 /* Load some variables */
 $search_date = JRequest::getVar('search_date', null); // Changed search by date
@@ -110,7 +107,7 @@ $this->productlist
 				<td><?php echo $checked; ?></td>
 				<!-- Product name -->
 				<?php
-				$link = 'index.php?option='.$option.'&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id.'&product_parent_id='.$product->product_parent_id;
+				$link = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id.'&product_parent_id='.$product->product_parent_id;
                                 /* Product list should be ordered */
 				$parent_id = JRequest::getVar('product_parent_id');
 
@@ -135,7 +132,7 @@ $this->productlist
 				<!-- Media -->
 				<?php
 					/* Create URL */
-					$link = JRoute::_('index.php?view=media&virtuemart_product_id='.$product->virtuemart_product_id.'&option='.$option);
+					$link = JRoute::_('index.php?view=media&virtuemart_product_id='.$product->virtuemart_product_id.'&option=com_virtuemart');
 				?>
 				<td><?php echo JHTML::_('link', $link, JHTML::_('image', JURI::root().'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-media.png', JTEXT::_('COM_VIRTUEMART_MEDIA_MANAGER')).'<br />('.$product->mediaitems.')');
 				 ?></td>
@@ -144,7 +141,7 @@ $this->productlist
 				<!-- Product price -->
 				<td><?php echo $product->product_price_display; ?></td>
 				<!-- Category name -->
-				<td><?php //echo JHTML::_('link', JRoute::_('index.php?view=category&task=edit&virtuemart_category_id='.$product->virtuemart_category_id.'&option='.$option), $product->category_name);
+				<td><?php //echo JHTML::_('link', JRoute::_('index.php?view=category&task=edit&virtuemart_category_id='.$product->virtuemart_category_id.'&option=com_virtuemart'), $product->category_name);
 					echo $product->categoriesList;
 				?></td>
 				<!-- Reorder only when category ID is present -->
@@ -157,9 +154,9 @@ $this->productlist
 					</td>
 				<?php } ?>
 				<!-- Manufacturer name -->
-				<td><?php echo JHTML::_('link', JRoute::_('index.php?view=manufacturer&task=edit&virtuemart_manufacturer_id[]='.$product->virtuemart_manufacturer_id.'&option='.$option), $product->mf_name); ?></td>
+				<td><?php echo JHTML::_('link', JRoute::_('index.php?view=manufacturer&task=edit&virtuemart_manufacturer_id[]='.$product->virtuemart_manufacturer_id.'&option=com_virtuemart'), $product->mf_name); ?></td>
 				<!-- Reviews -->
-				<?php $link = 'index.php?option='.$option.'&view=ratings&task=listreviews&virtuemart_product_id='.$product->virtuemart_product_id; ?>
+				<?php $link = 'index.php?option=com_virtuemart&view=ratings&task=listreviews&virtuemart_product_id='.$product->virtuemart_product_id; ?>
 				<td><?php echo JHTML::_('link', $link, $product->reviews.' ['.JText::_('COM_VIRTUEMART_REVIEW_FORM_LBL').']'); ?></td>
 				<!-- published -->
 				<td><?php echo $published; ?></td>

@@ -21,9 +21,6 @@ defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea();
 
 /* Load some behaviour */
-jimport('joomla.html.pane');
-$pane = JPane::getInstance();
-//JHTML::_('behavior.tooltip');
 JHTML::_('behavior.calendar');
 
 $document = JFactory::getDocument();

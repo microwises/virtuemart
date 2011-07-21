@@ -335,7 +335,7 @@ class VmMediaHandler {
 	 * @param boolean $lightbox alternative display method
 	 * @param string $effect alternative lightbox display
 	 */
-	function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal'"){
+	function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal' rel='group'"){
 
 		if(empty($this->file_name)){
 			$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
@@ -349,7 +349,7 @@ class VmMediaHandler {
 		}
 
 		$media_path = JPATH_ROOT.DS.str_replace('/',DS,$this->file_url_thumb);
-		$file_alt = $this->file_description;
+		$file_alt = $this->file_description ? $this->file_description : $this->file_name;
 
 		if ((empty($this->file_url_thumb) || !file_exists($media_path)) && is_a($this,'VmImage')) {
 			$this->file_url_thumb = $this->createThumb();

@@ -21,9 +21,6 @@
  */
 AdminUIHelper::startAdminArea();
 
-/* Load some behaviors we need */
-JHTML::_('behavior.modal');
-JHTML::_('behavior.tooltip');
 jimport('joomla.filesystem.file');
 
 /* Get the component name */
