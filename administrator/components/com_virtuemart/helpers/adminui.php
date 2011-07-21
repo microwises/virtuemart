@@ -32,6 +32,7 @@ class AdminUIHelper {
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin.styles.css');
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/toolbar_images.css');
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/menu_images.css');
+	$document->addStyleSheet(JURI::root(true).'/components/com_virtuemart/assets/css/tipTip.css');
 	//$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jqtransform.css');
 
 	//loading from public site
@@ -40,6 +41,7 @@ class AdminUIHelper {
 	// used $config->jQuery(); $config->jVm(); to load it
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vm2admin.js');
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.cookie.js');
+	$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.tipTip.js');
 	//$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.jqtransform.js');
 
 	$document = JFactory::getDocument ();
@@ -49,6 +51,7 @@ class AdminUIHelper {
 		
 			// Remove the System Message after 5 Seconds
 			jQuery('dl#system-message').hide().slideDown(400);
+			jQuery('.hasTip').tipTip();
 
 			// jQuery(function(){
 				// jQuery('#admin-content').jqTransform();

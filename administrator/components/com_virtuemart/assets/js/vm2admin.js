@@ -11,6 +11,7 @@
 		this.find('div.tabs').each(
 			function(i) { 
 				list += '<li style="display:inline;">'+ $(this).attr('title')+'</li>' ;
+				$(this).removeAttr('title');
 			}
 		);
 		this.prepend(list+'</ul>');
