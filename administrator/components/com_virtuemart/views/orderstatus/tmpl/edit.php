@@ -32,7 +32,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDERSTATUS_DETAILS');
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="order_status_name">
 					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_NAME'); ?>:
 				</label>
 			</td>
@@ -42,8 +42,8 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDERSTATUS_DETAILS');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
-                                     <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_TIP'); ?>">
+				<label for="order_status_code">
+                                     <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_TIP'); ?>">
 					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE'); ?>:
                                      </span>
 				</label>
@@ -55,7 +55,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDERSTATUS_DETAILS');
 
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="order_status_description">
 					<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>:
 				</label>
 			</td>
@@ -66,7 +66,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDERSTATUS_DETAILS');
 
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="vendor">
 					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>:
 				</label>
 			</td>
@@ -77,9 +77,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDERSTATUS_DETAILS');
 
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
 					<?php echo JText::_('COM_VIRTUEMART_ORDERING'); ?>:
-				</label>
 			</td>
 			<td>
 				<?php echo $this->ordering; ?>

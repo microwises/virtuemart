@@ -31,7 +31,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CREDITCARD_NAME');
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="creditcard_name">
 					<?php echo JText::_('COM_VIRTUEMART_CREDITCARD_NAME'); ?>
 				</label>
 			</td>
@@ -41,7 +41,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CREDITCARD_NAME');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="published">
 					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 				</label>
 			</td>
@@ -53,7 +53,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CREDITCARD_NAME');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="vendor">
 					<?php echo JText::_('COM_VIRTUEMART_VIRTUEMART_VENDOR_ID'); ?>
 				</label>
 			</td>
@@ -63,7 +63,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CREDITCARD_NAME');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="creditcard_code">
 					<?php echo JText::_('COM_VIRTUEMART_CREDITCARD_CODE'); ?>
 				</label>
 			</td>

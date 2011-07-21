@@ -103,7 +103,7 @@ $j15 = VmConfig::isJ15();
 			$image = ($j15) ? 'checked_out.png' : 'admin/checked_out.png';
 			$image = JHtml::_('image.administrator', $image, '/images/', null, null, JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'));
 			$checked = ($coreField) ?
-				'<span class="editlinktip hasTip" title="'. JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>' :
+				'<span class="hasTip" title="'. JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>' :
 				JHTML::_('grid.id', $i, $row->virtuemart_userfield_id);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=userfields&task=edit&virtuemart_userfield_id=' . $row->virtuemart_userfield_id);
 			$required = $this->toggle($row->required, $i, 'toggle.required', $coreField);

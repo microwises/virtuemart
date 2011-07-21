@@ -157,7 +157,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<td width="29%">
 					<div style="text-align:right;font-weight:bold;">
 
-                                        <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP'); ?>">
+                                        <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP'); ?>">
 					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST') ?>
 				      </span>
                                       </div>
@@ -172,7 +172,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<td width="29%">
                                     <div style="text-align:right;font-weight:bold;">
 
-                                        <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE_TIP'); ?>">
+                                        <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE_TIP'); ?>">
 					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE') ?>
 				      </span>
                                       </div>
@@ -186,7 +186,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<tr class="row1">
 				<td width="29%">
                                         <div style="text-align:right;font-weight:bold;">
-                                        <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP'); ?>">
+                                        <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP'); ?>">
 					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL') ?>
 				      </span>
                                      </div>
@@ -242,7 +242,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<tr class="row0">
 				<td width="21%" >
 					<div style="text-align:right;font-weight:bold;">
-                                            <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE_TIP'); ?>">
+                                            <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE_TIP'); ?>">
 					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE') ?>
 				      </span>
                                         </div>

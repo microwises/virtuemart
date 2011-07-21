@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
     <table class="admintable">
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DOWNLOADS_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DOWNLOADS') ?>
 		</span>
 	    </td>
@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ORDER_ENABLE_DOWNLOADS') ?>
 		</span>
 		</td>
@@ -45,7 +45,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
         <tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ORDER_DISABLE_DOWNLOADS') ?>
 		</span>
 	    </td>
@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DOWNLOADROOT_EXPLAIN'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DOWNLOADROOT_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DOWNLOADROOT') ?>
 		</span>
 		</td>
@@ -65,7 +65,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DOWNLOAD_MAX_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DOWNLOAD_MAX') ?>
 		</span>
 	    </td>
@@ -75,7 +75,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DOWNLOAD_EXPIRE_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DOWNLOAD_EXPIRE') ?>
 		</span>
 		</td>
@@ -85,7 +85,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL_TIP'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL_TIP'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DOWNLOAD_KEEP_STOCKLEVEL') ?>
 		</span>
 	    </td>

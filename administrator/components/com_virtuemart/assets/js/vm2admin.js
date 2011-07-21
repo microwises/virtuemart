@@ -5,7 +5,6 @@
 		if ($.cookie(cookie) == null) var idx=0;
 		else var idx = $.cookie(cookie);
 		if (idx == null) idx=0;
-		console.log(cookie+' index defaut:'+idx);
 		var options = { path: '/', expires: 2},
 			list = '<ul id="tabs">';
 		this.find('div.tabs').each(
@@ -27,7 +26,6 @@
 				if ($(this).not("current")){
 					var idx = li.index(this);
 					if (cookie !== "" ) $.cookie(cookie, idx, options);
-					console.log(cookie+' index:'+idx);
 					oldIndex = $(this).addClass("current").siblings('li.current').removeClass("current").index();
 					div.eq(idx).slideDown();
 					div.eq( oldIndex ).slideUp();
@@ -163,9 +161,12 @@
 })(jQuery);
 
 
-
+// load defaut scripts 
  jQuery(document).ready( function() {
 
 	jQuery('#admin-ui-menu').vm2admin('accordeon');
+	jQuery('dl#system-message').hide().slideDown(400);
+	jQuery('.hasTip').tipTip();
+	// jQuery('#admin-content').jqTransform();
 
 });

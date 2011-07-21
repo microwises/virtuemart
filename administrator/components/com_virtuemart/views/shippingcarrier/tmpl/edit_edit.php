@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
         <table class="admintable">
             <tr>
                 <td width="110" class="key">
-                    <label for="title">
+                    <label for="shipping_carrier_name">
 <?php echo JText::_('COM_VIRTUEMART_SHIPPING_FORM_NAME'); ?>
                     </label>
                 </td>
@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
             </tr>
              <tr>
                 <td width="110" class="key">
-                    <label for="title">
+                    <label for="shipping_carrier_desc">
 <?php echo JText::_('COM_VIRTUEMART_SHIPPING_FORM_DESCRIPTION'); ?>
                     </label>
                 </td>
@@ -47,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
             </tr>
              <tr>
                 <td width="110" class="key">
-                    <label for="title">
+                    <label for="shipping">
                        <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SHIPPING_CLASS_NAME_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_SHIPPING_CLASS_NAME'); ?></span>
                     </label>
                 </td>
@@ -58,7 +58,7 @@ defined('_JEXEC') or die('Restricted access');
             
             <tr>
                 <td width="110" class="key">
-                    <label for="title">
+                    <label for="ordering">
 <?php echo JText::_('COM_VIRTUEMART_LIST_ORDER'); ?>
                     </label>
                 </td>
@@ -69,7 +69,7 @@ defined('_JEXEC') or die('Restricted access');
            
             <tr>
                 <td width="110" class="key">
-                    <label for="title">
+                    <label for="virtuemart_vendor_id">
 <?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
                     </label>
                 </td>

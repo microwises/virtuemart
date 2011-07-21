@@ -59,7 +59,7 @@ AdminUIHelper::startAdminArea();
 
 			<td width="110" class="key">
 
-				<label for="title">
+				<label for="group_name">
 
 					<?php echo JText::_('COM_VIRTUEMART_USERGROUPS_LIST_NAME'); ?>:
 
@@ -79,7 +79,7 @@ AdminUIHelper::startAdminArea();
 
 			<td width="110" class="key">
 
-				<label for="title">
+				<label for="group_level">
 
 					<?php echo JText::_('COM_VIRTUEMART_USERGROUPS_LEVEL'); ?>:
 

@@ -168,7 +168,7 @@ $mainframe = JFactory::getApplication();
 									</tr>
 									<tr>
 										<td class="key">
-											<label for="category_browsepage">
+											<label for="category_template">
 												<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_TEMPLATE'); ?>
 											</label>
 										</td>
@@ -178,7 +178,7 @@ $mainframe = JFactory::getApplication();
 									</tr>
 									<tr>
 										<td class="key">
-											<label for="category_browsepage">
+											<label for="category_layout">
 												<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_BROWSE_LAYOUT'); ?>
 											</label>
 										</td>
@@ -188,7 +188,7 @@ $mainframe = JFactory::getApplication();
 									</tr>
 									<tr>
 										<td class="key">
-											<label for="category_flypage">
+											<label for="category_product_layout">
 												<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_FLYPAGE'); ?>
 											</label>
 										</td>

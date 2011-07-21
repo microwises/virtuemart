@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 		<table class="admintable">
 		<?php /*    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ERRORPAGE_EXPLAIN'); ?>">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ERRORPAGE_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ERRORPAGE') ?>
 			</span>
 			</td>
@@ -38,8 +38,8 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr> */ ?>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PDF_BUTTON_EXPLAIN'); ?>" >
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PDF_BUTTON') ?>
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PDF_BUTTON_EXPLAIN'); ?>" >
+			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PDF_BUTTON') ?></label>
 			</span>
 			</td>
 			<td>
@@ -48,8 +48,8 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_EMAILFRIEND_TIP'); ?>">
-			    <label for="conf_VM_SHOW_EMAILFRIEND"><?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_EMAILFRIEND') ?></label>
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_EMAILFRIEND_TIP'); ?>">
+			    <label for="show_emailfriend"><?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_EMAILFRIEND') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -58,8 +58,8 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_PRINTICON_TIP'); ?>" >
-			    <label for="conf_VM_SHOW_PRINTICON"><?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_PRINTICON') ?></label>
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_PRINTICON_TIP'); ?>" >
+			    <label for="show_printicon"><?php echo JText::_('COM_VIRTUEMART_ADMIN_SHOW_PRINTICON') ?></label>
 			    </span>
 			    </td>
 			<td>
@@ -68,8 +68,8 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 <?php /*			<tr>
 	    	<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_CONTENT_PLUGINS_ENABLE_TIP'); ?>">
-				<label for="conf_VM_CONTENT_PLUGINS_ENABLE"><?php echo JText::_('COM_VIRTUEMART_CFG_CONTENT_PLUGINS_ENABLE') ?></label>
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_CONTENT_PLUGINS_ENABLE_TIP'); ?>">
+				<label for="content_plugins_enable"><?php echo JText::_('COM_VIRTUEMART_CFG_CONTENT_PLUGINS_ENABLE') ?></label>
 				</span>
 	    	</td>
 	    	<td>
@@ -78,8 +78,8 @@ defined('_JEXEC') or die('Restricted access');
 			</tr> */ ?>
 			<tr>
 	    	<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN'); ?>">
-				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS') ?>
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN'); ?>">
+				<label for="show_out_of_stock_products"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS') ?></label>
 				</span>
 	    	</td>
 	    	<td valign="top">
@@ -88,7 +88,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 	    	<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_ENABLE_EXPLAIN'); ?>">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_ENABLE_EXPLAIN'); ?>">
 				<label for="coupons_enable"><?php echo JText::_('COM_VIRTUEMART_COUPONS_ENABLE') ?></label>
 				</span>
 	   	 	</td>
@@ -98,7 +98,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 	    	<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_EXPIRE_EXPLAIN'); ?>">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_EXPIRE_EXPLAIN'); ?>">
 				<label for="coupons_default_expire"><?php echo JText::_('COM_VIRTUEMART_COUPONS_EXPIRE') ?></label>
 				</span>
 	    	</td>
@@ -120,7 +120,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 <?php /*	    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION') ?>
 			    </span>
 			</td>
@@ -136,7 +136,7 @@ defined('_JEXEC') or die('Restricted access');
 		<table class="admintable">
 			<tr>
 		    	<td class="key">
-					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_EXPLAIN'); ?>">
+					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_EXPLAIN'); ?>">
 					<label ><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW') ?></label>
 					</span>
 		    	</td>
@@ -152,7 +152,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 	    	<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
 				<label ><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW') ?></label>
 				</span>
 	    	</td>
@@ -168,7 +168,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 		    	<td class="key">
-					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_EXPLAIN'); ?>">
+					<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_EXPLAIN'); ?>">
 					<label><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW') ?></label>
 					</span>
 		    	</td>
@@ -184,8 +184,8 @@ defined('_JEXEC') or die('Restricted access');
 				</tr>
 			<tr>
 	    	<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_EXPLAIN'); ?>">
-				<label ><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING') ?></label>
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_EXPLAIN'); ?>">
+				<label><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING') ?></label>
 				</span>
 	    	</td>
 	    	<td><fieldset class="checkboxes">
@@ -200,8 +200,8 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 	    	<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH_TIP'); ?>">
-				<label for="conf_VM_REVIEWS_AUTOPUBLISH"><?php echo JText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH') ?></label>
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH_TIP'); ?>">
+				<label for="reviews_autopublish" ><?php echo JText::_('COM_VIRTUEMART_REVIEWS_AUTOPUBLISH') ?></label>
 			</span>
 	    	</td>
 	    	<td>
@@ -210,8 +210,8 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 	    	<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP'); ?>">
-				<label for="conf_VM_REVIEWS_MINIMUM_COMMENT_LENGTH"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH') ?></label>
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH_TIP'); ?>">
+				<label for="reviews_minimum_comment_length"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MINIMUM_COMMENT_LENGTH') ?></label>
 				</span>
 	    	</td>
 	    	<td>
@@ -220,8 +220,8 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 	    	<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP'); ?>" >
-				<label for="conf_VM_REVIEWS_MAXIMUM_COMMENT_LENGTH"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH'); ?></label>
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH_TIP'); ?>" >
+				<label><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MAXIMUM_COMMENT_LENGTH'); ?></label>
 				</span>
 	   	 	</td>
 	    	<td>
@@ -238,7 +238,7 @@ defined('_JEXEC') or die('Restricted access');
 		<table class="admintable">
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SELECT_DEFAULT_SHOP_TEMPLATE_TIP'); ?>">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SELECT_DEFAULT_SHOP_TEMPLATE_TIP'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_SELECT_DEFAULT_SHOP_TEMPLATE') ?>
 			    </span>
 			</td>
@@ -251,7 +251,7 @@ defined('_JEXEC') or die('Restricted access');
 
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN'); ?>">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORY_TEMPLATE_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORY_TEMPLATE') ?>
 			    </span>
 			</td>
@@ -264,8 +264,8 @@ defined('_JEXEC') or die('Restricted access');
 
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY_EXPLAIN'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY') ?>
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY_EXPLAIN'); ?>">
+			    <label for="showCategory"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_CATEGORY') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -274,7 +274,7 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORY_LAYOUT_EXPLAIN'); ?>">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORY_LAYOUT_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORY_LAYOUT') ?>
 			    </span>
 			</td>
@@ -286,7 +286,7 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORIES_PER_ROW_EXPLAIN'); ?>">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORIES_PER_ROW_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORIES_PER_ROW') ?>
 			    </span>
 			</td>
@@ -296,7 +296,7 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCT_LAYOUT_EXPLAIN'); ?>">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCT_LAYOUT_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCT_LAYOUT') ?>
 			    </span>
 			</td>
@@ -308,7 +308,7 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRODUCTS_PER_ROW') ?>
 			    </span>
 			</td>
@@ -318,7 +318,7 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NAV_AT_TOP_TIP'); ?>" >
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NAV_AT_TOP_TIP'); ?>" >
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NAV_AT_TOP') ?>
 			    </span>
 			</td>
@@ -333,7 +333,7 @@ defined('_JEXEC') or die('Restricted access');
                     <table class="admintable">
                            <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIN_LAYOUT_TIP'); ?>">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIN_LAYOUT_TIP'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIN_LAYOUT') ?>
 			    </span>
 			</td>
@@ -345,8 +345,8 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED_TIP'); ?>" >
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED') ?>
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED_TIP'); ?>" >
+			    <label for="show_featured"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_FEATURED') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -355,7 +355,7 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEATURED_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEATURED_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEATURED_PRODUCTS_PER_ROW') ?>
 			    </span>
 			</td>
@@ -365,8 +365,8 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 			<tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN_TIP'); ?>" >
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN') ?>
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN_TIP'); ?>" >
+			    <label for="show_topTen"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_TOPTEN') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -375,7 +375,7 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		     <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TOPTEN_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TOPTEN_PRODUCTS_PER_ROW_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TOPTEN_PRODUCTS_PER_ROW') ?>
 			    </span>
 			</td>
@@ -385,8 +385,8 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 			<tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT_TIP'); ?>" >
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT') ?>
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT_TIP'); ?>" >
+			    <label for="show_recent"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_RECENT') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -396,8 +396,8 @@ defined('_JEXEC') or die('Restricted access');
 
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST_TIP'); ?>" >
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST') ?>
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST_TIP'); ?>" >
+			    <label for="show_latest"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_LATEST') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -416,7 +416,7 @@ defined('_JEXEC') or die('Restricted access');
 		<table class="admintable">
 	    	<tr>
 				<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ASSETS_GENERAL_PATH_EXPLAIN'); ?>">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ASSETS_GENERAL_PATH_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ASSETS_GENERAL_PATH') ?>
 			    </span>
 				</td>
@@ -426,7 +426,7 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 				<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_CATEGORY_PATH_EXPLAIN'); ?>">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_CATEGORY_PATH_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_CATEGORY_PATH') ?>
 			    </span>
 				</td>
@@ -436,7 +436,7 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 				<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_PRODUCT_PATH_EXPLAIN'); ?>">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_PRODUCT_PATH_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_PRODUCT_PATH') ?>
 			    </span>
 				</td>
@@ -446,7 +446,7 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 				<td class="key">
-				<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_MANUFACTURER_PATH_EXPLAIN'); ?>">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_MANUFACTURER_PATH_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_MANUFACTURER_PATH') ?>
 			    </span>
 				</td>
@@ -459,8 +459,8 @@ defined('_JEXEC') or die('Restricted access');
 			?>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP'); ?>">
-			    <label ><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING') ?></label>
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP'); ?>">
+			    <label for="img_resize_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -469,7 +469,7 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_WIDTH_TIP'); ?>">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_WIDTH_TIP'); ?>">
 				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_WIDTH') ?>
 				</span>
 			</td>
@@ -479,7 +479,7 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
 				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_HEIGHT') ?>
 				</span>
 			</td>
@@ -499,7 +499,7 @@ defined('_JEXEC') or die('Restricted access');
 		    ?>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN'); ?>">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEPAGE') ?>
 			    </span>
 			</td>
@@ -511,7 +511,7 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 			<td class="key">
-			    <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND_EXPLAIN'); ?>">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND') ?>
 			    </span>
 			</td>

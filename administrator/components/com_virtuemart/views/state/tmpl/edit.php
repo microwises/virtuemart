@@ -31,7 +31,7 @@ AdminUIHelper::startAdminArea();
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="state_name">
 					<?php echo JText::_('COM_VIRTUEMART_STATE_NAME'); ?>
 				</label>
 			</td>
@@ -41,7 +41,7 @@ AdminUIHelper::startAdminArea();
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="published">
 					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 				</label>
 			</td>
@@ -53,7 +53,7 @@ AdminUIHelper::startAdminArea();
 		</tr>
 		<tr>
 		<td width="110" class="key">
-				<label for="title">
+				<label for="virtuemart_worldzone_id">
 					<?php echo JText::_('COM_VIRTUEMART_WORLDZONE'); ?>
 				</label>
 			</td>
@@ -63,7 +63,7 @@ AdminUIHelper::startAdminArea();
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="state_3_code">
 					<?php echo JText::_('COM_VIRTUEMART_STATE_3_CODE'); ?>
 				</label>
 			</td>
@@ -73,7 +73,7 @@ AdminUIHelper::startAdminArea();
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="state_2_code">
 					<?php echo JText::_('COM_VIRTUEMART_STATE_2_CODE'); ?>
 				</label>
 			</td>

@@ -32,7 +32,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_MANUFACTURER_CATEGORY_DETAILS
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="mf_category_name">
 					<?php echo   JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME'); ?>
 				</label>
 			</td>
@@ -42,7 +42,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_MANUFACTURER_CATEGORY_DETAILS
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="mf_category_desc">
 									<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_DESCRIPTION'); ?>
 				</label>
 			</td>
@@ -55,7 +55,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_MANUFACTURER_CATEGORY_DETAILS
 
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="published">
 					<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>
 				</label>
 			</td>

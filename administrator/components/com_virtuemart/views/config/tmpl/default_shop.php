@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
     <table class="admintable">
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE_TIP'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE_TIP'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE',false); ?>
 		</span>
 	    </td>
@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_USE_ONLY_AS_CATALOGUE_EXPLAIN'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_USE_ONLY_AS_CATALOGUE_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_USE_ONLY_AS_CATALOGUE') ?>
 		</span>
 	    </td>
@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_CURRENCY_MODULE_TIP'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_CURRENCY_MODULE_TIP'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_CFG_CURRENCY_MODULE') ?>
 		</span>
 	    </td>
@@ -61,7 +61,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_EXPLAIN'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MAIL_FORMAT') ?>
 		</span>
 		</td>
@@ -78,7 +78,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT_EXPLAIN'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT') ?>
 		</span>
 		</td>
@@ -87,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');
 	</td>
 	</tr>
 	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS_EXPLAIN'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS') ?>
 		</span>
 		</td>
@@ -96,7 +96,7 @@ defined('_JEXEC') or die('Restricted access');
 		</td>
 	</tr>
 	<td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_EXPLAIN'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG') ?>
 		</span>
 		</td>
@@ -112,7 +112,7 @@ defined('_JEXEC') or die('Restricted access');
     <table class="admintable">
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_MODULES_FORCE_HTTPS_TIP'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_MODULES_FORCE_HTTPS_TIP'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_MODULES_FORCE_HTTPS') ?>
 		</span>
 	    </td>
@@ -125,7 +125,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_GENERALLY_PREVENT_HTTPS_TIP'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_GENERALLY_PREVENT_HTTPS_TIP'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_GENERALLY_PREVENT_HTTPS') ?>
 		</span>
 	    </td>
@@ -137,7 +137,7 @@ defined('_JEXEC') or die('Restricted access');
 	//if( version_compare( $database->getVersion(), '4.0.2', '>=') ) { ?>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ENCRYPTION_FUNCTION_TIP'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ENCRYPTION_FUNCTION_TIP'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_ENCRYPTION_FUNCTION') ?>&nbsp;&nbsp;
 		</span>
 	    </td>
@@ -155,7 +155,7 @@ defined('_JEXEC') or die('Restricted access');
 	?>
 	<tr>
 	    <td class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ENCRYPTION_KEY_TIP'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ENCRYPTION_KEY_TIP'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_ENCRYPTION_KEY') ?>&nbsp;&nbsp;
 		</span>
 		</td>
@@ -175,7 +175,7 @@ defined('_JEXEC') or die('Restricted access');
 	if (stristr(JFactory::getUser()->usertype, "admin")) { ?>
 	<tr>
 	    <td  class="key">
-		<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN'); ?>">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONTENDAMDIN_EXPLAIN'); ?>">
 		    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONTENDAMDIN') ?>
 		</span>
 	    </td>

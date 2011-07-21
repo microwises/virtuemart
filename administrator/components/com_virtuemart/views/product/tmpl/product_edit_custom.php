@@ -143,7 +143,6 @@ function removeSelectedOptions(from) {
 }
 
 	function customautocomplete( $type ,$id) {
-		console.log($type);
 		jQuery('input#related'+$type+'Search').autocomplete('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=related'+$type, {
 			mustMatch: false,
 			max : 50,

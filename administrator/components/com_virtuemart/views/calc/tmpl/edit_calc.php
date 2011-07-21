@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="calc_name">
 					<?php echo JText::_('COM_VIRTUEMART_CALC_NAME'); ?>
 				</label>
 			</td>
@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="published">
 					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 				</label>
 			</td>
@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td width="110" class="key" >
-				<label for="title">
+				<label for="ordering">
 				<?php echo JText::_('COM_VIRTUEMART_ORDERING'); ?>
 				</label>
 			</td>
@@ -60,7 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="calc_descr">
 					<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
 				</label>
 			</td>
@@ -70,7 +70,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="entrypoint">
 					<?php echo JText::_('COM_VIRTUEMART_CALC_KIND'); ?>
 				</label>
 			</td>
@@ -80,7 +80,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="mathops">
 					<?php echo JText::_('COM_VIRTUEMART_CALC_VALUE_MATHOP'); ?>
 				</label>
 			</td>
@@ -90,7 +90,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="calc_value">
 					<?php echo JText::_('COM_VIRTUEMART_VALUE'); ?>
 				</label>
 			</td>
@@ -100,7 +100,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="calc_currency">
 					<?php echo JText::_('COM_VIRTUEMART_CURRENCY'); ?>
 				</label>
 			</td>
@@ -111,7 +111,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="calc_categories">
 					<?php echo JText::_('COM_VIRTUEMART_CATEGORY'); ?>
 				</label>
 			</td>
@@ -123,7 +123,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="shoppergroup">
 					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_IDS'); ?>
 				</label>
 			</td>
@@ -133,7 +133,9 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td width="110" class="key">
+				<label for="coutry">
 				<?php echo JText::_('COM_VIRTUEMART_COUNTRY'); ?>
+				</label>
 			</td>
 			<td>
 				<?php echo $this->countriesList?>
@@ -149,7 +151,7 @@ defined('_JEXEC') or die('Restricted access');
 
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="calc_shopper_published">
 					<?php echo JText::_('COM_VIRTUEMART_VISIBLE_FOR_SHOPPER'); ?>
 				</label>
 			</td>
@@ -161,7 +163,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="calc_vendor_published">
 					<?php echo JText::_('COM_VIRTUEMART_VISIBLE_FOR_VENDOR'); ?>
 				</label>
 			</td>
@@ -173,7 +175,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="publish_up">
 					<?php echo JText::_('COM_VIRTUEMART_START_DATE'); ?>
 				</label>
 			</td>
@@ -186,7 +188,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="publish_down">
 					<?php echo JText::_('COM_VIRTUEMART_END_DATE'); ?>
 				</label>
 			</td>
@@ -203,7 +205,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="calc_amount_cond">
 					<?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_COND'); ?>
 				</label>
 			</td>
@@ -213,18 +215,18 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="calc_amount_dimunit">
 				<?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_DIMUNIT'); ?>
 				</label>
 			</td>
 			<td colspan="3">
-				<input class="inputbox" type="text" name="calc_amount_cond" id="calc_amount_cond" size="4" value="<?php echo $this->calc->calc_amount_dimunit; ?>" />
+				<input class="inputbox" type="text" name="calc_amount_dimunit" id="calc_amount_cond" size="4" value="<?php echo $this->calc->calc_amount_dimunit; ?>" />
 			</td>
 		</tr>
 		<?php if($this->perms->check('admin')){?>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="vendor">
 				<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
 				</label>
 			</td>

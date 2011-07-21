@@ -32,7 +32,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUNTRY_DETAILS');
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="country_name">
 					<?php echo JText::_('COM_VIRTUEMART_COUNTRY_NAME'); ?>
 				</label>
 			</td>
@@ -42,7 +42,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUNTRY_DETAILS');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="published">
 					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 				</label>
 			</td>
@@ -62,7 +62,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUNTRY_DETAILS');
 		</tr>*/ ?>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="country_3_code">
 					<?php echo JText::_('COM_VIRTUEMART_COUNTRY_3_CODE'); ?>
 				</label>
 			</td>
@@ -72,7 +72,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUNTRY_DETAILS');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="country_2_code">
 					<?php echo JText::_('COM_VIRTUEMART_COUNTRY_2_CODE'); ?>
 				</label>
 			</td>

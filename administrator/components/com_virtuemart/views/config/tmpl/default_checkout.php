@@ -24,8 +24,8 @@ defined('_JEXEC') or die('Restricted access');
 				<table class="admintable">
 					<tr>
 						<td class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECK_STOCK_EXPLAIN'); ?>">
-								<label for="coupons_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECK_STOCK') ?></label>
+							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECK_STOCK_EXPLAIN'); ?>">
+								<label for="check_stock"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECK_STOCK') ?></label>
 							</span>
 						</td>
 						<td>
@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 
 					<tr>
 						<td class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN'); ?>">
+							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN'); ?>">
 								<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER') ?>
 							</span>
 						</td>
@@ -46,8 +46,8 @@ defined('_JEXEC') or die('Restricted access');
 
 					<tr>
 						<td class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP'); ?>">
-								<label for="conf_COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO') ?></label>
+							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO_TIP'); ?>">
+								<label for="oncheckout_show_legal_info"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_LEGALINFO') ?></label>
 							</span>
 						</td>
 						<td>
@@ -56,8 +56,8 @@ defined('_JEXEC') or die('Restricted access');
 					</tr>
 					<tr>
 						<td class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER_TIP'); ?>">
-								<label for="conf_COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER') ?></label>
+							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER_TIP'); ?>">
+								<label for="oncheckout_show_register"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER') ?></label>
 							</span>
 						</td>
 						<td>
@@ -66,8 +66,8 @@ defined('_JEXEC') or die('Restricted access');
 					</tr>
 					<tr>
 						<td class="key">
-							<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER_TEXT_TIP'); ?>">
-								<label for="conf_COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_TEXT_REGISTER"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_TEXT_REGISTER') ?></label>
+							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER_TEXT_TIP'); ?>">
+								<label for="oncheckout_show_register_text"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_TEXT_REGISTER') ?></label>
 							</span>
 						</td>
 						<td>
@@ -84,7 +84,7 @@ defined('_JEXEC') or die('Restricted access');
 				<table class="admintable">
 					<tr>
 					<td class="key">
-						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES_LBL_TIP'); ?>">
+						<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES_LBL_TIP'); ?>">
 						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES_LBL') ?>
 						</span>
 					</td>

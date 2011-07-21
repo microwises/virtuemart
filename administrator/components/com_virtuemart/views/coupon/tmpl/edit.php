@@ -31,7 +31,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUPON_DETAILS');
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
-                              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_TOOLTIP'); ?>">
+                              <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_TOOLTIP'); ?>">
 				<label for="title">
 					<?php echo JText::_('COM_VIRTUEMART_COUPON'); ?>
 				</label>
@@ -43,7 +43,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUPON_DETAILS');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-                            <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_PERCTOT_TOOLTIP'); ?>">
+                            <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_PERCTOT_TOOLTIP'); ?>">
 				<label for="title">
 					<?php echo JText::_('COM_VIRTUEMART_COUPON_PERCENT_TOTAL'); ?>
 				</label>
@@ -63,7 +63,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUPON_DETAILS');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-                              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_TYPE_TOOLTIP'); ?>">
+                              <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_TYPE_TOOLTIP'); ?>">
 				<label for="title">
 					<?php echo JText::_('COM_VIRTUEMART_COUPON_TYPE'); ?>
 				</label>
@@ -82,7 +82,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUPON_DETAILS');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-                              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_TOOLTIP'); ?>">
+                              <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_TOOLTIP'); ?>">
 				<label for="title">
 					<?php echo JText::_('COM_VIRTUEMART_VALUE'); ?>
 				</label>
@@ -105,7 +105,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUPON_DETAILS');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-                             <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_START_TIP'); ?>">
+                             <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_START_TIP'); ?>">
 				<label for="title">
 					<?php echo JText::_('COM_VIRTUEMART_COUPON_START'); ?>
 				</label>
@@ -120,7 +120,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUPON_DETAILS');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-                              <span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_EXPIRY_TIP'); ?>">
+                              <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_EXPIRY_TIP'); ?>">
 				<label for="title">
 					<?php echo JText::_('COM_VIRTUEMART_COUPON_EXPIRY'); ?>
 				</label>

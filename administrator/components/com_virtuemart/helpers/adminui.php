@@ -26,7 +26,7 @@ class AdminUIHelper {
     function startAdminArea() {
 	$document = JFactory::getDocument();
 //	$mainframe = JFactory::getApplication();
-
+	//loading defaut admin CSS
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_ui.css');
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin_menu.css');
 	$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/admin.styles.css');
@@ -35,29 +35,12 @@ class AdminUIHelper {
 	$document->addStyleSheet(JURI::root(true).'/components/com_virtuemart/assets/css/tipTip.css');
 	//$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jqtransform.css');
 
-	//loading from public site
-	//$document->addScript('../components/com_virtuemart/assets/js/jquery.js');
-	//$document->addScript('../components/com_virtuemart/assets/js/vm.js');
-	// used $config->jQuery(); $config->jVm(); to load it
+	//loading defaut admin script
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/vm2admin.js');
 	$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.cookie.js');
 	$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.tipTip.js');
 	//$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.jqtransform.js');
 
-	$document = JFactory::getDocument ();
-	 $document->addScriptDeclaration ( "
-	 	jQuery.noConflict();
-		jQuery(document).ready(function(){
-		
-			// Remove the System Message after 5 Seconds
-			jQuery('dl#system-message').hide().slideDown(400);
-			jQuery('.hasTip').tipTip();
-
-			// jQuery(function(){
-				// jQuery('#admin-content').jqTransform();
-			// });
-		 });
-	" );
 	?>
 
         <div class="virtuemart-admin-area">
@@ -194,11 +177,11 @@ echo LiveUpdate::getIcon(array(),'notice');
 		$modCount = 1;
 		foreach ( $menuItems as $item ) { ?>
 
-			<h3 id="admin-menu-tab-<?php echo $modCount ?>" class="menu-title" title="<?php echo JText::_ ( $item ['title'] ); ?> admin">
+			<h3 class="menu-title">
 				<?php echo JText::_ ( $item ['title'] )?>
 			</h3>
 
-			<div id="admin-menu-tab-<?php echo $modCount ?>" class="menu-list">
+			<div class="menu-list">
 				<ul>
 				<?php
 				foreach ( $item ['items'] as $link ) {

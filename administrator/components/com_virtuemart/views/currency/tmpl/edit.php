@@ -32,7 +32,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CURRENCY_DETAILS');
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="currency_name">
 					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_NAME'); ?>
 				</label>
 			</td>
@@ -42,7 +42,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CURRENCY_DETAILS');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="published">
 					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 				</label>
 			</td>
@@ -54,7 +54,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CURRENCY_DETAILS');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="currency_exchange_rate">
 					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_EXCHANGE_RATE'); ?>
 				</label>
 			</td>
@@ -64,7 +64,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CURRENCY_DETAILS');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="currency_code_2">
 					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_CODE_2'); ?>
 				</label>
 			</td>
@@ -74,7 +74,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CURRENCY_DETAILS');
 		</tr>
 		<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="currency_code_3">
 					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_CODE_3'); ?>
 				</label>
 			</td>
@@ -84,7 +84,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CURRENCY_DETAILS');
 		</tr>
                 <tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="currency_numeric_code">
 					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_NUMERIC_CODE'); ?>
 				</label>
 			</td>

@@ -42,7 +42,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_SHOPPERGROUP_NAME');
 		</tr>
 			<tr>
 			<td width="110" class="key">
-				<label for="title">
+				<label for="published">
 					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 				</label>
 			</td>
@@ -68,7 +68,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_SHOPPERGROUP_NAME');
 			<tr>
 				<td width="110" class="key">
 					<label for="default">
-						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT_TIP'); ?>">
+						<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT_TIP'); ?>">
 					  <?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'); ?>
 						</span>
 					</label>
