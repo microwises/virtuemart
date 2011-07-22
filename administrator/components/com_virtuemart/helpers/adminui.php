@@ -46,9 +46,9 @@ class AdminUIHelper {
 	$document->addScript($front.'js/fancybox/jquery.mousewheel-3.0.4.pack.js');
 	$document->addScript($front.'js/fancybox/jquery.easing-1.3.pack.js');
 	$document->addScript($front.'js/fancybox/jquery.fancybox-1.3.4.pack.js');
-	$document->addScript($admin.'js/vm2admin.js');
 	$document->addScript($admin.'js/jquery.cookie.js');
 	$document->addScript($front.'js/jquery.tipTip.js');
+	$document->addScript($admin.'js/vm2admin.js');
 	//$document->addScript($admin.'js/jquery.jqtransform.js');
 
 	?>
@@ -99,7 +99,6 @@ echo LiveUpdate::getIcon(array(),'notice');
 	function buildTabs($load_template = array(),$cookieName='') {
 		$cookieName = JRequest::getVar('view','').$cookieName;
 		$document = JFactory::getDocument ();
-		//$document->addScript ( JURI::base () . 'components/com_virtuemart/assets/js/tabs.js' );
 		$document->addScriptDeclaration ( '
 			jQuery(document).ready(function() {
 				jQuery("#admin-ui-tabs").vm2admin("tabs","'.$cookieName.'");

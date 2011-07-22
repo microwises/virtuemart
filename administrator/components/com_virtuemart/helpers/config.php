@@ -373,12 +373,9 @@ class VmConfig{
 		$jsVars .= "faceboxHtml = \"<div id='facebox' style='display:none;'><div class='popup'><div class='content'></div> <a href='#' class='close'><img src='".$closeimage."' title='close' class='close_image' /></a></div></div>\" ;\n";
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($jsVars);
-		$colorbox='colorbox5.css';
 		JHTML::script('facebox.js', 'components/com_virtuemart/assets/js/', false);
-		JHTML::script('jquery.colorbox.js', 'components/com_virtuemart/assets/js/', false);
 		JHTML::script('vmprices.js', 'components/com_virtuemart/assets/js/', false);
 		JHTML::stylesheet('facebox.css', 'components/com_virtuemart/assets/css/', false);
-		JHTML::stylesheet($colorbox, 'components/com_virtuemart/assets/css/', false);
 		$jPrice = true;
 		return;
 	}
@@ -393,6 +390,35 @@ class VmConfig{
 		$jSite = true;
 		return;
 	}
+	// Virtuemart Site Js script VmConfig::jDate();
+	function jDate($value='',$name="date",$class='class="datepicker"')
+	{
+		static $jDate;
+		// If exist exit
+		$display= '<input '.$class.' type="date" name="'.$name.'" value="'.$value.'" />';
+		if ($jDate) return $display;
+		$front = JURI::root(true).'/components/com_virtuemart/assets/';
+		$document = JFactory::getDocument();
+		$document->addScript($front.'js/jquery.ui.core.min.js');
+		$document->addScript($front.'js/jquery.ui.datepicker.min.js');
+		$document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
+				$lg = &JFactory::getLanguage();
+		$lang = substr($lg->getTag(), 0, 2);
+		$existingLang = array("af","ar","ar-DZ","az","bg","bs","ca","cs","da","de","el","en-AU","en-GB","en-NZ","eo","es","et","eu","fa","fi","fo","fr","fr-CH","gl","he","hr","hu","hy","id","is","it","ja","ko","kz","lt","lv","ml","ms","nl","no","pl","pt","pt-BR","rm","ro","ru","sk","sl","sq","sr","sr-SR","sv","ta","th","tj","tr","uk","vi","zh-CN","zh-HK","zh-TW");
+		if (!in_array($lang, $existingLang)) $lang ="en-GB";
+		$document->addScript($front.'js/i18n/jquery.ui.datepicker-'.$lang.'.js');
+		$document->addScriptDeclaration('
+		jQuery(document).ready( function() {
+			jQuery( ".datepicker" ).datepicker({
+			changeMonth: true,
+			changeYear: true
+			});
+		
+		});
+		');
+		$jDate = true;
+		return $display;
+	}
 
 	function JcountryStateList() {
 		static $JcountryStateList;
@@ -404,7 +430,7 @@ class VmConfig{
 		return;
 	}
 
-	function JimageSelectlist() {
+/* 	function JimageSelectlist() {
 		static $JimageSelectlist;
 		if ($JimageSelectlist) return;
 			$js = "
@@ -444,7 +470,7 @@ class VmConfig{
 			$document->addScriptDeclaration($js);
 		$JimageSelectlist = true;
 		return;
-	}
+	} */
 	function JvalideForm()
 	{
 		static $jvalideForm;

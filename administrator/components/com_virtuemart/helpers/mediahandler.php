@@ -663,16 +663,23 @@ class VmMediaHandler {
 		$html .= '<div style="display:none"><div id="dialog" >'.$this->displayImages('').'</div></div>';//$type);
 		//VmConfig::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
 		$document = JFactory::getDocument ();
-		$root = JURI::root(true).'/components/com_virtuemart/assets/js/fancybox/';
+		$document->addScriptDeclaration ( "
+		jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media') });
+		function submitbutton(pressbutton) {
+			jQuery( '#dialog' ).remove();
+			submitform(pressbutton);
+		}
+		" );
+/* 		$root = JURI::root(true).'/components/com_virtuemart/assets/js/fancybox/';
 		$document->addStyleSheet($root.'jquery.fancybox-1.3.4.css');
 
 		//loading from public site
 		$document->addScript($root.'jquery.mousewheel-3.0.4.pack.js');
 		$document->addScript($root.'jquery.easing-1.3.pack.js');
-		$document->addScript($root.'jquery.fancybox-1.3.4.pack.js');
+		$document->addScript($root.'jquery.fancybox-1.3.4.pack.js'); */
 
 
-		$document->addScriptDeclaration ( '
+/* 		$document->addScriptDeclaration ( '
 		
 		var page=0,max=20;
 		jQuery(document).ready(function(){
@@ -778,7 +785,7 @@ class VmMediaHandler {
 			);
 			
 		} 
-	  ');
+	  '); */
 		
 		return $html;
 	}
@@ -794,12 +801,6 @@ class VmMediaHandler {
 		$html='';
 		$result = $this->getImagesList($type);
 		$html .= '<a id="addnewselectimage2" href="#dialog">'.JText::_('COM_VIRTUEMART_IMAGE_ATTACH_NEW').'</a><div id="ImagesContainer">';
-		VmConfig::JimageSelectlist();
-
-		// if(empty($fileIds)) {
-			// return  $html;
-		// }
-		// $text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE_PRIMARY';
 		
 		foreach($fileIds as $k=>$id){
 			$html .= $this->displayImage($id );

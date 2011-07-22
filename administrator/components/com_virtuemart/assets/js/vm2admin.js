@@ -57,7 +57,7 @@
 	media :  function () {
 		var page=0,
 			max=20,
-			container = jQuery("#ImagesContainer");
+			container = jQuery(this);
 
 			var formatTitle = function(title, currentArray, currentIndex, currentOpts) {
 				return '<a id="fancybox-left" href="javascript:;" onclick="display(0);" style="display: inline;"><span id="fancybox-left-ico" class="fancy-ico"></span></a><a id="fancybox-right" href="javascript:;" onclick="display(1);" style="display: inline;"><span id="fancybox-right-ico" class="fancy-ico"></span></a><div id="tip7-title">' + (title && title.length ? '<b>' + title + '</b>' : '' ) + ' - <span class="page">Page ' + (page + 1) + '</span></div>';
@@ -116,12 +116,6 @@
 			});
 		}); 
 
-		function submitbutton(pressbutton) {
-			jQuery( "#dialog" ).remove();
-			submitform(pressbutton);
-		
-		} 
-
 		var display = function(num) {
 			if ( typeof display.page == "undefined" ) {
 				display.page = 0;
@@ -168,6 +162,13 @@
 	jQuery('dl#system-message').hide().slideDown(400);
 	jQuery('.hasTip').tipTip();
 	jQuery('.modal').fancybox();
-	// jQuery('#admin-content').jqTransform();
+	jQuery('.modal-button').fancybox({
+		'width' : '75%',
+		'height' : '75%',
+		'autoScale' : false,
+		'transitionIn' : 'none',
+		'transitionOut' : 'none',
+		'type' : 'iframe'
+	});
 
 });

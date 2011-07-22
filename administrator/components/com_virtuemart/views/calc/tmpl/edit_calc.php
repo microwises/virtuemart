@@ -18,6 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+VmConfig::jDate();
 ?>
 <form action="index.php" method="post" name="adminForm">
 
@@ -182,7 +183,8 @@ defined('_JEXEC') or die('Restricted access');
 			<td colspan="3">
 				<?php
 					$startDate = JFactory::getDate($this->calc->publish_up,$this->tzoffset);
-					echo JHTML::_('calendar', $startDate->toFormat($this->dateformat), "publish_up", "publish_up", $this->dateformat);
+					//echo JHTML::_('calendar', $startDate->toFormat($this->dateformat), "publish_up", "publish_up", $this->dateformat);
+					echo VmConfig::jDate($startDate->toFormat($this->dateformat), 'publish_up'); 
  				?>
 			</td>
 		</tr>
@@ -195,12 +197,14 @@ defined('_JEXEC') or die('Restricted access');
 			<td colspan="3">
 				<?php $endDate;
 				if (empty($this->calc->publish_down) || !strcmp($this->calc->publish_down,'0000-00-00 00:00:00')  ) {
-					$endDate = JText::_('COM_VIRTUEMART_NEVER');
+					$endDate = '';//JText::_('COM_VIRTUEMART_NEVER');
 				} else {
 					$date = JFactory::getDate($this->calc->publish_down,$this->tzoffset);
 					$endDate = $date->toFormat($this->dateformat);
 				}
-				echo JHTML::_('calendar', $endDate, "publish_down", "publish_down", $this->dateformat,array('class'=>'inputbox', 'size'=>'25',  'maxlength'=>'19')); ?>
+				echo VmConfig::jDate($endDate, 'publish_down'); 
+				//echo JHTML::_('calendar', $endDate, "publish_down", "publish_down", $this->dateformat,array('class'=>'inputbox', 'size'=>'25',  'maxlength'=>'19')); ?>
+
 			</td>
 		</tr>
 		<tr>
