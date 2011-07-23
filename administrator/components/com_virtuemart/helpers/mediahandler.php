@@ -37,32 +37,47 @@ class VmMediaHandler {
 
 		//the problem is here, that we use for autocreatoin the name of the model, here products
 		//But for storing we use the product to build automatically the table out of it (product_medias)
+		$choosed = false;
 		if($type == 'product' || $type == 'products'){
-			$path = VmConfig::get('media_product_path');
+			$relUrl = VmConfig::get('media_product_path');
+			$choosed = true;
 		}
 		else if($type == 'category' || $type == 'categories'){
-			$path = VmConfig::get('media_category_path');
+			$relUrl = VmConfig::get('media_category_path');
+			$choosed = true;
 		}
 		else if($type == 'shop'){
-			$path = VmConfig::get('media_path');
+			$relUrl = VmConfig::get('media_path');
+			$choosed = true;
 		}
 		else if($type == 'vendor' || $type == 'vendors'){
-			$path = 'components/com_virtuemart/assets/images/vendors/';
+			$relUrl = 'components/com_virtuemart/assets/images/vendors/';
+			$choosed = true;
 		}
 		else if($type == 'manufacturer' || $type == 'manufacturers'){
-			$path = VmConfig::get('media_manufacturer_path');
+			$relUrl = VmConfig::get('media_manufacturer_path');
+			$choosed = true;
 		}
 		else if($type == 'forSale'){
 			//todo add this path to config
-			$path = VmConfig::get('forSale_path');
+			$relUrl = VmConfig::get('forSale_path');
+			$choosed = true;
 		}
 
-		if(empty($path)) {
-			$app = JFactory::getApplication();
-			$app->enqueueMessage('Ignore this message, when it appears while the media synchronisation process, else report to http://forum.virtuemart.net/index.php?board=127.0 : cant create media of unknown type, a programmers error, used type "'.$type.'" ' );
-			$path = VmConfig::get('media_path');
+		if($choosed && empty($relUrl)){
+			$uri = JFactory::getURI();
+			$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
+			vmInfo('COM_VIRTUEMART_MEDIA_NO_PATH_TYPE',$type,$link );
+			//Todo add general media_path to config
+			//$relUrl = VmConfig::get('media_path');
+			$relUrl = 'images/stories/virtuemart/';
+		} else if(!$choosed && empty($relUrl)){
+			vmError('Ignore this message, when it appears while the media synchronisation process, else report to http://forum.virtuemart.net/index.php?board=127.0 : cant create media of unknown type, a programmers error, used type ',$type);
+			//$relUrl = VmConfig::get('media_path');
+			$relUrl = 'images/stories/virtuemart/';
 		}
-		return $path;
+
+		return $relUrl;
 	}
 
 	/**
@@ -335,7 +350,7 @@ class VmMediaHandler {
 	 * @param boolean $lightbox alternative display method
 	 * @param string $effect alternative lightbox display
 	 */
-	function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal' rel='group'"){
+	function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal'"){
 
 		if(empty($this->file_name)){
 			$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
@@ -349,7 +364,7 @@ class VmMediaHandler {
 		}
 
 		$media_path = JPATH_ROOT.DS.str_replace('/',DS,$this->file_url_thumb);
-		$file_alt = $this->file_description ? $this->file_description : $this->file_name;
+		$file_alt = $this->file_description;
 
 		if ((empty($this->file_url_thumb) || !file_exists($media_path)) && is_a($this,'VmImage')) {
 			$this->file_url_thumb = $this->createThumb();
@@ -663,23 +678,16 @@ class VmMediaHandler {
 		$html .= '<div style="display:none"><div id="dialog" >'.$this->displayImages('').'</div></div>';//$type);
 		//VmConfig::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
 		$document = JFactory::getDocument ();
-		$document->addScriptDeclaration ( "
-		jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media') });
-		function submitbutton(pressbutton) {
-			jQuery( '#dialog' ).remove();
-			submitform(pressbutton);
-		}
-		" );
-/* 		$root = JURI::root(true).'/components/com_virtuemart/assets/js/fancybox/';
+		$root = JURI::root(true).'/components/com_virtuemart/assets/js/fancybox/';
 		$document->addStyleSheet($root.'jquery.fancybox-1.3.4.css');
 
 		//loading from public site
 		$document->addScript($root.'jquery.mousewheel-3.0.4.pack.js');
 		$document->addScript($root.'jquery.easing-1.3.pack.js');
-		$document->addScript($root.'jquery.fancybox-1.3.4.pack.js'); */
+		$document->addScript($root.'jquery.fancybox-1.3.4.pack.js');
 
 
-/* 		$document->addScriptDeclaration ( '
+		$document->addScriptDeclaration ( '
 		
 		var page=0,max=20;
 		jQuery(document).ready(function(){
@@ -785,7 +793,7 @@ class VmMediaHandler {
 			);
 			
 		} 
-	  '); */
+	  ');
 		
 		return $html;
 	}
@@ -801,6 +809,12 @@ class VmMediaHandler {
 		$html='';
 		$result = $this->getImagesList($type);
 		$html .= '<a id="addnewselectimage2" href="#dialog">'.JText::_('COM_VIRTUEMART_IMAGE_ATTACH_NEW').'</a><div id="ImagesContainer">';
+		VmConfig::JimageSelectlist();
+
+		// if(empty($fileIds)) {
+			// return  $html;
+		// }
+		// $text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE_PRIMARY';
 		
 		foreach($fileIds as $k=>$id){
 			$html .= $this->displayImage($id );
