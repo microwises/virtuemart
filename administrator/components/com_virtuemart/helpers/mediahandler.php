@@ -350,7 +350,7 @@ class VmMediaHandler {
 	 * @param boolean $lightbox alternative display method
 	 * @param string $effect alternative lightbox display
 	 */
-	function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal'"){
+	function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal' rel='group'"){
 
 		if(empty($this->file_name)){
 			$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
@@ -364,7 +364,7 @@ class VmMediaHandler {
 		}
 
 		$media_path = JPATH_ROOT.DS.str_replace('/',DS,$this->file_url_thumb);
-		$file_alt = $this->file_description;
+		$file_alt = $this->file_description ? $this->file_description : $this->file_name;
 
 		if ((empty($this->file_url_thumb) || !file_exists($media_path)) && is_a($this,'VmImage')) {
 			$this->file_url_thumb = $this->createThumb();
@@ -678,16 +678,22 @@ class VmMediaHandler {
 		$html .= '<div style="display:none"><div id="dialog" >'.$this->displayImages('').'</div></div>';//$type);
 		//VmConfig::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
 		$document = JFactory::getDocument ();
-		$root = JURI::root(true).'/components/com_virtuemart/assets/js/fancybox/';
-		$document->addStyleSheet($root.'jquery.fancybox-1.3.4.css');
+		$document->addScriptDeclaration ( "
+		jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media') });
+		function submitbutton(pressbutton) {
+			jQuery( '#dialog' ).remove();
+			submitform(pressbutton);
+		}
+		" );
+/*		$document->addStyleSheet($root.'jquery.fancybox-1.3.4.css');
 
 		//loading from public site
 		$document->addScript($root.'jquery.mousewheel-3.0.4.pack.js');
 		$document->addScript($root.'jquery.easing-1.3.pack.js');
-		$document->addScript($root.'jquery.fancybox-1.3.4.pack.js');
+		$document->addScript($root.'jquery.fancybox-1.3.4.pack.js');*/
 
 
-		$document->addScriptDeclaration ( '
+/*		$document->addScriptDeclaration ( '
 		
 		var page=0,max=20;
 		jQuery(document).ready(function(){
@@ -793,7 +799,7 @@ class VmMediaHandler {
 			);
 			
 		} 
-	  ');
+	  '); */
 		
 		return $html;
 	}
@@ -809,7 +815,7 @@ class VmMediaHandler {
 		$html='';
 		$result = $this->getImagesList($type);
 		$html .= '<a id="addnewselectimage2" href="#dialog">'.JText::_('COM_VIRTUEMART_IMAGE_ATTACH_NEW').'</a><div id="ImagesContainer">';
-		VmConfig::JimageSelectlist();
+/*		VmConfig::JimageSelectlist();*/
 
 		// if(empty($fileIds)) {
 			// return  $html;

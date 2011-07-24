@@ -350,7 +350,10 @@ class VmConfig{
 		static $jquery;
 		// If exist exit
 		if ($jquery) return;
-		JHTML::script('jquery.js', 'components/com_virtuemart/assets/js/', false);
+		$document = JFactory::getDocument();
+		$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js');
+		$document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js');
+		//JHTML::script('jquery.min.js', '//ajax.googleapis.com/ajax/libs/jquery/1.6.1/', false);
 		/*$document = JFactory::getDocument();
 		$document->addScriptDeclaration('jQuery.noConflict();');*/
 
@@ -399,8 +402,8 @@ class VmConfig{
 		if ($jDate) return $display;
 		$front = JURI::root(true).'/components/com_virtuemart/assets/';
 		$document = JFactory::getDocument();
-		$document->addScript($front.'js/jquery.ui.core.min.js');
-		$document->addScript($front.'js/jquery.ui.datepicker.min.js');
+		//$document->addScript($front.'js/jquery.ui.core.min.js');
+		//$document->addScript($front.'js/jquery.ui.datepicker.min.js');
 		$document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
 				$lg = &JFactory::getLanguage();
 		$lang = substr($lg->getTag(), 0, 2);

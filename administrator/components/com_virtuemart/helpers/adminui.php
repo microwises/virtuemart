@@ -97,11 +97,12 @@ echo LiveUpdate::getIcon(array(),'notice');
 	 * @example 'shop' => 'COM_VIRTUEMART_ADMIN_CFG_SHOPTAB'
 	 */
 	function buildTabs($load_template = array(),$cookieName='') {
-		$cookieName = JRequest::getVar('view','').$cookieName;
+		$cookieName = JRequest::getWord('view','').$cookieName;
 		$document = JFactory::getDocument ();
 		$document->addScriptDeclaration ( '
-			jQuery(document).ready(function() {
-				jQuery("#admin-ui-tabs").vm2admin("tabs","'.$cookieName.'");
+		var $j=jQuery.noConflict();
+			$j(document).ready(function() {
+				$j("#admin-ui-tabs").vm2admin("tabs","'.$cookieName.'");
 			});');
 
 		$html = '<div id="admin-ui-tabs">';

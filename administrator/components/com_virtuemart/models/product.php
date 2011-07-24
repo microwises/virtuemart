@@ -209,6 +209,10 @@ class VirtueMartModelProduct extends VmModel {
 				$orderBy = ' ORDER BY `mf_name` ';
 				$joinMf = true ;
 				break;
+			case 'ordering':
+				$orderBy = ' ORDER BY `#__virtuemart_product_categories`.`ordering` ';
+				$joinCategory = true ;
+				break;
 			case 'product_price':
 				//$filters[] = '`#__virtuemart_products`.`virtuemart_product_id` = p.`virtuemart_product_id`';
 				$orderBy = ' ORDER BY `product_price` ';
@@ -369,8 +373,9 @@ class VirtueMartModelProduct extends VmModel {
 			$product->categories = $this->getProductCategories($this->_id);
 
 			//There is someone who can explain me this?
+			//Note by Patrick  Used for ordering product in category
 			$product->virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0);
-/*			if  ($product->virtuemart_category_id >0) {
+			if  ($product->virtuemart_category_id >0) {
 				$q = 'SELECT `ordering`,`id` FROM `#__virtuemart_product_categories`
 					WHERE `virtuemart_product_id` = "'.$this->_id.'" and virtuemart_category_id='.$product->virtuemart_category_id;
 				$this->_db->setQuery($q);
@@ -378,7 +383,7 @@ class VirtueMartModelProduct extends VmModel {
 				$ordering = $this->_db->loadObject();
 				$product->ordering = $ordering->ordering;
 				$product->id = $ordering->id;
-			}*/
+			}
 			if (empty($product->virtuemart_category_id) && isset($product->categories[0])) $product->virtuemart_category_id = $product->categories[0];
 
    			if(!$front && !empty($product->categories[0])){
@@ -661,7 +666,9 @@ class VirtueMartModelProduct extends VmModel {
 
 
 
-	/* reorder product in one category */
+	/* reorder product in one category
+	* TODO this not work perfect ! (Note by Patrick Kohl)
+	*/
 	 function saveorder($cid , $orders) {
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );

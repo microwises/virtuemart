@@ -82,7 +82,7 @@ $this->productlist
 		$num_rows = 0;
 		if( $virtuemart_category_id ) { ?>
 			<th>
-				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_FIELDMANAGER_REORDER', 'c.ordering', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_FIELDMANAGER_REORDER', 'ordering', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 				<?php echo JHTML::_('grid.order', $this->productlist); //vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?>
 			</th>
 		<?php } ?>
@@ -148,8 +148,8 @@ $this->productlist
 				<!-- Reorder only when category ID is present -->
 				<?php if( $virtuemart_category_id ) { ?>
 					<td class="order">
-						<span><?php echo ShopFunctions::orderUpIcon( $i, true, 'orderup', 'Move Up' ); ?></span>
-						<span><?php echo ShopFunctions::orderDownIcon( $i, $total, true, 'orderdown', 'Move Down' ); ?></span>
+						<span><?php echo $this->pagination->orderUpIcon( $i, true, 'orderup', 'Move Up', $product->ordering ); ?></span>
+						<span><?php echo $this->pagination->orderDownIcon( $i, $total , true, 'orderdown', 'Move Down', $product->ordering ); ?></span>
 						<input class="ordering" type="text" name="order[<?php echo $product->id?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $product->ordering; ?>" style="text-align: center" />
 						<?php // echo vmCommonHTML::getOrderingField( $product->ordering ); ?>
 					</td>

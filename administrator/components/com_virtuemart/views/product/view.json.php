@@ -35,7 +35,7 @@ class VirtuemartViewProduct extends JView {
 		//$this->loadHelper('customhandler');
 
 		$filter = JRequest::getVar('q', false);
-		$type = JRequest::getVar('type', false);
+		$type = JRequest::getWord('type', false);
 		$id = JRequest::getInt('id', false);
 		$row = JRequest::getInt('row', false);
 		$model = $this->getModel('customfields');

@@ -160,15 +160,16 @@
 
 	jQuery('#admin-ui-menu').vm2admin('accordeon');
 	jQuery('dl#system-message').hide().slideDown(400);
-	jQuery('.hasTip').tipTip();
+	//jQuery('.hasTip').tipTip();
+	jQuery('#content-box [title]').tipTip();
 	jQuery('.modal').fancybox();
-	jQuery('.modal-button').fancybox({
-		'width' : '75%',
-		'height' : '75%',
-		'autoScale' : false,
-		'transitionIn' : 'none',
-		'transitionOut' : 'none',
-		'type' : 'iframe'
-	});
+	// jQuery('.modal-button').fancybox({
+		// 'width' : '75%',
+		// 'height' : '75%',
+		// 'autoScale' : false,
+		// 'transitionIn' : 'none',
+		// 'transitionOut' : 'none',
+		// 'type' : 'iframe'
+	// });
 
 });
