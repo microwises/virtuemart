@@ -55,7 +55,7 @@ class VirtuemartViewOrders extends JView {
 
 		/* Get the data */
 
-		$virtuemart_order_id = JRequest::getvar('virtuemart_order_id');
+		$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
 		$order = $orderModel->getOrder($virtuemart_order_id);
 		$_orderID = $order['details']['BT']->virtuemart_order_id;
 		$orderbt = $order['details']['BT'];

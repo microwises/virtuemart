@@ -63,7 +63,7 @@ class VirtuemartControllerCategory extends VmController {
 
 		$data = JRequest::get('post');
 
-		$data['category_name'] = JRequest::getVar('category_name','','post','STRING',JREQUEST_ALLOWHTML);
+		//$data['category_name'] = JRequest::getVar('category_name','','post','STRING',JREQUEST_ALLOWHTML);
 		$data['category_description'] = JRequest::getVar('category_description','','post','STRING',JREQUEST_ALLOWHTML);
 
 		//$data['virtuemart_vendor_id'] = 1;

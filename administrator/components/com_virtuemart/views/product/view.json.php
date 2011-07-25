@@ -45,7 +45,7 @@ class VirtuemartViewProduct extends JView {
 		if ($type=='relatedproduct') {
 			$query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
 				FROM #__virtuemart_products";
-			if ($filter) $query .= " WHERE product_name LIKE '%".$filter."%' limit 0,50";
+			if ($filter) $query .= " WHERE product_name LIKE '%". $db->getEscaped( $filter, true ) ."%' limit 0,50";
 				$db->setQuery($query);
 				echo json_encode($db->loadObjectList());
 				return;
@@ -81,7 +81,7 @@ class VirtuemartViewProduct extends JView {
 		}else if ($type=='relatedcategory') {
 			$query = "SELECT virtuemart_category_id AS id, CONCAT(category_name, '::', virtuemart_category_id) AS value
 				FROM #__virtuemart_categories ";
-			if ($filter) $query .= " WHERE category_name LIKE '%".$filter."%' limit 0,50";
+			if ($filter) $query .= " WHERE category_name LIKE '%". $db->getEscaped( $filter, true ) ."%' limit 0,50";
 			$db->setQuery($query);
 			if ($result = $db->loadObjectList() ) echo json_encode($result);
 			else echo $db->_sql;

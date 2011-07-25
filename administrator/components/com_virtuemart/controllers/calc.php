@@ -71,7 +71,7 @@ class VirtuemartControllerCalc extends VmController {
 
 		$data = JRequest::get('post');
 
-		$data['calc_name'] = JRequest::getVar('calc_name','','post','STRING',JREQUEST_ALLOWHTML);
+		//$data['calc_name'] = JRequest::getVar('calc_name','','post','STRING',JREQUEST_ALLOWHTML);
 		$data['calc_descr'] = JRequest::getVar('calc_descr','','post','STRING',JREQUEST_ALLOWHTML);
 
 		parent::save($data);

@@ -234,9 +234,11 @@ class VirtueMartModelOrders extends VmModel {
 		$update = array_diff_assoc(JRequest::getVar('order_status', array()), JRequest::getVar('current_order_status', array()));
 
 		/* Get the list of orders to notify */
+		// TODO as getInt ???
 		$notify = JRequest::getVar('notify_customer', array());
 
 		/* See where the lines should be updated too */
+		// TODO as getInt ???
 		$update_lines = JRequest::getVar('update_lines', array());
 
 		/* Get the list of comments */
@@ -736,7 +738,7 @@ class VirtueMartModelOrders extends VmModel {
 	public function updateSingleItem()
 	{
 		$table = $this->getTable('order_items');
-		$item = JRequest::getVar('virtuemart_order_item_id', '');
+		$item = JRequest::getInt('virtuemart_order_item_id', '');
 		$table->load($item);
 		$table->order_status = JRequest::getWord('order_status_'.$item, '');
 		$table->product_quantity = JRequest::getVar('product_quantity_'.$item, '');

@@ -131,7 +131,7 @@ class VirtuemartControllerProduct extends VmController {
 
 		//$cids = JRequest::getVar('cid');
 		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
-		jimport( 'joomla.utilities.arrayhelper' );
+		//jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($cids);
 
 		foreach($cids as $cid){
@@ -163,7 +163,7 @@ class VirtuemartControllerProduct extends VmController {
 		$msgtype = '';
 		//$cids = JRequest::getInt('virtuemart_product_id',0);
 		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
-		jimport( 'joomla.utilities.arrayhelper' );
+		//jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($cids);
 
 		foreach($cids as $cid){
@@ -191,7 +191,7 @@ class VirtuemartControllerProduct extends VmController {
 
 		/* Standard model */
 		//$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
-		$type = JRequest::getVar('type', false);
+		$type = JRequest::getWord('type', false);
 		if ($type = 'customfield') {
 			$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
 			$view->setModel( $this->getModel( 'customfields', 'VirtueMartModel' ));

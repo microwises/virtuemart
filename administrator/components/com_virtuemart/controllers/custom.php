@@ -93,7 +93,7 @@ class VirtuemartControllerCustom extends VmController {
 		$model = $this->getModel('custom');
 		$msgtype = '';
 		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
-		jimport( 'joomla.utilities.arrayhelper' );
+		//jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($cids);
 		foreach ($cids as $custom_id) {
 			if ($model->createClone($custom_id)) $msg = JText::_('COM_VIRTUEMART_CUSTOM_CLONED_SUCCESSFULLY');

@@ -27,7 +27,7 @@ $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
 			</tr>
 			<tr>
 				<?php
-					if(JRequest::getVar('newInstall')){
+					if(JRequest::getWord('newInstall')){
 					?>	<td width="50%" align="center">
 						<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JUtility::getToken()); ?>">
 						<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">

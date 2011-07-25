@@ -236,7 +236,7 @@ class VirtuemartViewProduct extends JView {
 
 			default:
 				$model = $this->getModel();
-				if ($product_parent_id=JRequest::getVar('product_parent_id',false) ) {
+				if ($product_parent_id=JRequest::getInt('product_parent_id',false) ) {
 					$product_parent= $model->getProduct($product_parent_id);
 					$title='PRODUCT_CHILDREN_LIST' ;
 					$link_to_parent =  JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$product_parent->virtuemart_product_id.'&option=com_virtuemart'), $product_parent->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT_PARENT').' '.$product_parent->product_name));

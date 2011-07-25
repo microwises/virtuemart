@@ -155,7 +155,7 @@ class VirtueMartModelProduct extends VmModel {
 
      	// Time filter
      	if (JRequest::getVar('search_type', '') != '') {
-     		$search_order = $this->_db->getEscaped(JRequest::getVar('search_order') == 'bf' ? '<' : '>');
+     		$search_order = $this->_db->getEscaped(JRequest::getWord('search_order') == 'bf' ? '<' : '>');
      		switch (JRequest::getVar('search_type')) {
      			case 'product':
      				$where[] = '#__virtuemart_products.`modified_on` '.$search_order.' "'.$this->_db->getEscaped(JRequest::getVar('search_date')).'"';
@@ -1153,7 +1153,7 @@ class VirtueMartModelProduct extends VmModel {
 
 	$orderTxt ='';
 
-	$order = JRequest::getVar('order', 'ASC');
+	$order = JRequest::getWord('order', 'ASC');
 	if ($order == 'DESC' ) $orderTxt .= '&order='.$order;
 
 	$orderbyTxt ='';

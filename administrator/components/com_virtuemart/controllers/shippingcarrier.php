@@ -60,7 +60,7 @@ class VirtuemartControllerShippingCarrier extends VmController {
 	 */
 	function save(){
 		$data = JRequest::get('post');
-
+		// TODO disallow shipping_carrier_name as HTML
 		$data['shipping_carrier_name'] = JRequest::getVar('shipping_carrier_name','','post','STRING',JREQUEST_ALLOWHTML);
 		$data['shipping_carrier_desc'] = JRequest::getVar('shipping_carrier_desc','','post','STRING',JREQUEST_ALLOWHTML);
 

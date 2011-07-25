@@ -67,7 +67,7 @@ class VmTableXarray extends VmTable {
 		$this->_db->setQuery( $query );
 		$id = $this->_db->loadResult();
 		$keys = array_keys($order);
-
+		// TODO next 2 lines not used ????
 		if ($direction >0) $idToSwap = $order[$keys[array_search($id, $keys)]+1]; 
 		else $idToSwap =  $order[$keys[array_search($id, $keys)]-1]; 
 

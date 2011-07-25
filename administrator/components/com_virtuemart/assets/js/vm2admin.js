@@ -137,6 +137,32 @@
 			);
 			
 		}
+	},
+	tips : function(image) {    
+		var xOffset = -20; // x distance from mouse
+		var yOffset = 10; // y distance from mouse       
+		tip = this ;
+		tip.unbind().hover(    
+			function(e) {
+				tip.t = this.title;
+				this.title = ''; 
+				tip.top = (e.pageY + yOffset); tip.left = (e.pageX + xOffset);
+				$('body').append( '<p id="vtip"><img id="vtipArrow" /><B>'+$(this).html()+'</B><br/ >' + tip.t + '</p>' );
+				$('#vtip #vtipArrow').attr("src", image);
+				$('#vtip').css("top", tip.top+"px").css("left", tip.left+"px").fadeIn("slow");
+			},
+			function() {
+				this.title = tip.t;
+				$("#vtip").fadeOut("slow").remove();
+			}
+		).mousemove(
+			function(e) {
+				tip.top = (e.pageY + yOffset);
+				tip.left = (e.pageX + xOffset);
+				$("#vtip").css("top", tip.top+"px").css("left", tip.left+"px");
+			}
+		);
+		
 	}
   };
 
@@ -156,12 +182,17 @@
 
 
 // load defaut scripts 
+jQuery.noConflict();
  jQuery(document).ready( function() {
 
-	jQuery('#admin-ui-menu').vm2admin('accordeon');
 	jQuery('dl#system-message').hide().slideDown(400);
+	jQuery('#admin-ui-menu').vm2admin('accordeon');
+	if ( typeof (virtuemartcookie) !== 'undefined' ) {
+		jQuery("#admin-ui-tabs").vm2admin("tabs",virtuemartcookie);
+	}
+
 	//jQuery('.hasTip').tipTip();
-	jQuery('#content-box [title]').tipTip();
+	jQuery('#content-box [title]').vm2admin('tips',tip_image);
 	jQuery('.modal').fancybox();
 	// jQuery('.modal-button').fancybox({
 		// 'width' : '75%',
