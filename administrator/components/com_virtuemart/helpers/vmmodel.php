@@ -161,7 +161,7 @@ class VmModel extends JModel {
 
 		$data = $table->bindChecknStore($data);
 
-	    $errors = $table->getErrors();
+	   $errors = $table->getErrors();
 		foreach($errors as $error){
 			$this->setError( get_class( $this ).'::store '.$error);
 		}
@@ -326,7 +326,7 @@ class VmModel extends JModel {
 	}
 
 	public function resetErrors(){
-	    
+
 	    $this->_errors = array();
 	}
 }

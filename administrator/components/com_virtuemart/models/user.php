@@ -734,7 +734,7 @@ class VirtueMartModelUser extends VmModel {
 	 function remove($userIds)
 	 {
 	 	$userInfo = $this->getTable('userinfos');
-	 	$vm_shoppergroup_xref = $this->getTable('user_shoppergroups');
+	 	$vm_shoppergroup_xref = $this->getTable('vmuser_shoppergroups');
 		$vmusers = $this->getTable('vmusers');
 	 	$_status = true;
 	 	foreach($userIds as $userId) {
