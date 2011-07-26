@@ -52,7 +52,9 @@ class VirtuemartViewMedia extends JView {
 		else {
 			$this->loadHelper('mediahandler');
 			$start = JRequest::getInt('start',0);
-			echo VmMediaHandler::displayImages('',$start );
+			$type = JRequest::getWord('mediatype',0);
+			
+			echo VmMediaHandler::displayImages($type,$start );
 		}
 	}
 

@@ -35,6 +35,7 @@ class AdminUIHelper {
 	$document->addStyleSheet($admin.'css/admin.styles.css');
 	$document->addStyleSheet($admin.'css/toolbar_images.css');
 	$document->addStyleSheet($admin.'css/menu_images.css');
+	$document->addStyleSheet($front.'css/chosen.css');
 	$document->addStyleSheet($front.'css/vtip.css');
 	$document->addStyleSheet($front.'js/fancybox/jquery.fancybox-1.3.4.css');
 	//$document->addStyleSheet($admin.'css/jqtransform.css');
@@ -47,7 +48,7 @@ class AdminUIHelper {
 	$document->addScript($front.'js/fancybox/jquery.easing-1.3.pack.js');
 	$document->addScript($front.'js/fancybox/jquery.fancybox-1.3.4.pack.js');
 	$document->addScript($admin.'js/jquery.cookie.js');
-	//$document->addScript($front.'js/jquery.miniTip.js');
+	$document->addScript($front.'js/chosen.jquery.min.js');
 	$document->addScript($admin.'js/vm2admin.js');
 	//$document->addScript($admin.'js/jquery.jqtransform.js');
 	$document->addScriptDeclaration ( '

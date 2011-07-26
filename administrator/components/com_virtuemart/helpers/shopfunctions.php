@@ -350,7 +350,7 @@ class ShopFunctions {
 		foreach($taxes as $tax){
 			$taxrates[] = JHTML::_('select.option', $tax->virtuemart_calc_id, $tax->calc_name, $name);
 		}
-		$listHTML = JHTML::_('Select.genericlist', $taxrates, $name, 'multiple', $name, 'text', $selected );
+		$listHTML = JHTML::_('Select.genericlist', $taxrates, $name, 'multiple="multiple"', $name, 'text', $selected );
 		return $listHTML;
 	}
 

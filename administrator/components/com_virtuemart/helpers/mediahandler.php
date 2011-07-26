@@ -675,11 +675,11 @@ class VmMediaHandler {
 
 		$html = $this->displayFileSelection($fileIds,$type);
 		$html .= $this->displayFileHandler('id="vm_display_image"');
-		$html .= '<div style="display:none"><div id="dialog" >'.$this->displayImages('').'</div></div>';//$type);
+		$html .= '<div style="display:none"><div id="dialog" >'.$this->displayImages($type).'</div></div>';//$type);
 		//VmConfig::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
 		$document = JFactory::getDocument ();
 		$document->addScriptDeclaration ( "
-		jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media') });
+		jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."') });
 		function submitbutton(pressbutton) {
 			jQuery( '#dialog' ).remove();
 			submitform(pressbutton);

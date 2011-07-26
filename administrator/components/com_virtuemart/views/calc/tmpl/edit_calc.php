@@ -117,7 +117,7 @@ VmConfig::jDate();
 				</label>
 			</td>
 			<td colspan="3">
-				<select class="inputbox" id="calc_categories" name="calc_categories[]" multiple="multiple" size="10">
+				<select class="inputbox multiple" id="calc_categories" name="calc_categories[]" multiple="multiple" size="10">
 					<?php echo $this->categoryTree; ?>
 				</select>
 			</td>

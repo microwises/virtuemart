@@ -54,7 +54,7 @@
 			}
 		);
 	} ,
-	media :  function () {
+	media :  function (mediatype) {
 		var page=0,
 			max=20,
 			container = jQuery(this);
@@ -123,7 +123,7 @@
 			if (num === 0 && display.page > 0 ) {
 				--display.page 
 			} else if (num>0) { ++ display.page}
-			jQuery.get("index.php?option=com_virtuemart&view=media&task=viewJson&format=json&start="+display.page ,
+			jQuery.get("index.php?option=com_virtuemart&view=media&task=viewJson&format=json&start="+display.page+"&mediatype="+mediatype ,
 				function(data) {
 					if (data != "ERROR") {
 						jQuery("#dialog").html(data);
@@ -183,17 +183,19 @@
 
 // load defaut scripts 
 jQuery.noConflict();
- jQuery(document).ready( function() {
+ jQuery(document).ready( function($) {
 
-	jQuery('dl#system-message').hide().slideDown(400);
-	jQuery('#admin-ui-menu').vm2admin('accordeon');
+	$('dl#system-message').hide().slideDown(400);
+	$('#admin-ui-menu').vm2admin('accordeon');
 	if ( typeof (virtuemartcookie) !== 'undefined' ) {
-		jQuery("#admin-ui-tabs").vm2admin("tabs",virtuemartcookie);
+		$("#admin-ui-tabs").vm2admin("tabs",virtuemartcookie);
+		$('select').chosen(); 
 	}
 
 	//jQuery('.hasTip').tipTip();
-	jQuery('#content-box [title]').vm2admin('tips',tip_image);
-	jQuery('.modal').fancybox();
+	$('#content-box [title]').vm2admin('tips',tip_image);
+	$('.modal').fancybox();
+	
 	// jQuery('.modal-button').fancybox({
 		// 'width' : '75%',
 		// 'height' : '75%',
