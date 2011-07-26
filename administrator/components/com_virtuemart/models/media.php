@@ -270,7 +270,11 @@ class VirtueMartModelMedia extends VmModel {
 				$this->setError($error);
 			}
 
+		} else if(empty($data['upload']) && empty($data['virtuemart_media_id']) && empty($data['active_media_id']) ){
+			$table = $this->getTable($type.'_medias');
+			$table ->deleteRelation();
 		}
+
 		return $this->_id;
 
 	}

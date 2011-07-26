@@ -694,14 +694,14 @@ class VmMediaHandler {
 
 
 /*		$document->addScriptDeclaration ( '
-		
+
 		var page=0,max=20;
 		jQuery(document).ready(function(){
-		
+
 			function formatTitle(title, currentArray, currentIndex, currentOpts) {
 				return \'<a id="fancybox-left" href="javascript:;" onclick="display(0);" style="display: inline;"><span id="fancybox-left-ico" class="fancy-ico"></span></a><a id="fancybox-right" href="javascript:;" onclick="display(1);" style="display: inline;"><span id="fancybox-right-ico" class="fancy-ico"></span></a><div id="tip7-title">\' + (title && title.length ? \'<b>\' + title + \'</b>\' : \'\' ) + \' - <span class="page">Page \' + (page + 1) + \'</span></div>\';
 			}
-			
+
 			jQuery("#ImagesContainer" ).delegate("a.vm_thumb", "click",function(event) {
 				jQuery.fancybox({
 					"type"		: "image",
@@ -713,19 +713,19 @@ class VmMediaHandler {
 			jQuery("#dialog" ).delegate(".vm_thumb_image", "click",function(event) {
 				event.preventDefault();
 				that = jQuery(this);
-				
+
 				jQuery(this).clone().appendTo(jQuery("#ImagesContainer" )).unbind("click").append(\'<div class="trash"></div><div class="edit-24-grey"><div>\');
 				that.hide().fadeIn();
 				// jQuery.fancybox({
 					// "type"		: "image",
 					// "title"		: this.title,
 					// "href"		: this.href});
-				
+
 			});
 
 			// jQuery( "#dialog .vm_thumb_image" ).bind(
 				// "click",
-				// function() { 
+				// function() {
 					// jQuery(this).clone().appendTo(jQuery("#ImagesContainer" )).unbind("click").append(\'<div class="trash"></div><div class="edit-24-grey"><div>\');
 				// }
 			// );
@@ -751,7 +751,7 @@ class VmMediaHandler {
 
 			var data = jQuery(this).parent().find("input").val();
 			jQuery.getJSON("index.php?option=com_virtuemart&view=media&task=viewJson&format=json&virtuemart_media_id="+data ,
-			function(datas, textStatus) { 
+			function(datas, textStatus) {
 				if (datas.msg =="OK") {
 					jQuery("#vm_display_image").attr("src", datas.file_root+datas.file_url);
 					jQuery("#vm_display_image").attr("alt", datas.file_title);
@@ -768,7 +768,7 @@ class VmMediaHandler {
 			});
 			//if (jQuery(".selectimage select:eq(1)").length)
 			//jQuery(".selectimage select:last").remove();
-		}); 
+		});
 
 		});
 
@@ -777,13 +777,13 @@ class VmMediaHandler {
 		function submitbutton(pressbutton) {
 			jQuery( "#dialog" ).remove();
 			submitform(pressbutton);
-		} 
+		}
 		function display(num) {
 			if ( typeof display.page == "undefined" ) {
 				display.page = 0;
 			}
 			if (num === 0 && display.page > 0 ) {
-				--display.page 
+				--display.page
 			} else if (num>0) { ++ display.page}
 			jQuery.get("index.php?option=com_virtuemart&view=media&task=viewJson&format=json&start="+display.page ,
 				function(data) {
@@ -797,10 +797,10 @@ class VmMediaHandler {
 					page = display.page;
 				}
 			);
-			
-		} 
+
+		}
 	  '); */
-		
+
 		return $html;
 	}
 
@@ -821,7 +821,7 @@ class VmMediaHandler {
 			// return  $html;
 		// }
 		// $text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE_PRIMARY';
-		
+
 		foreach($fileIds as $k=>$id){
 			$html .= $this->displayImage($id );
 		}
@@ -842,9 +842,10 @@ class VmMediaHandler {
 			'.JHTML::image($image->file_url_thumb, $image->file_title, '').'
 			</a><div class="trash"></div><div class="edit-24-grey"></div></div>';
 		} else {
-			return  '<div  class="vm_thumb_image"><b>'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b><br />'.$image->file_title.'</div>';
+			$fileTitle = empty($image->file_title)? 'no  title':$image->file_title;
+			return  '<div  class="vm_thumb_image"><b>'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b><br />'.$fileTitle.'</div>';
 		}
-		
+
 	}
 	function displayImages($types ='',$page=0 ) {
 
@@ -852,7 +853,7 @@ class VmMediaHandler {
 		$imagesList = VmMediaHandler::getImagesList($types,$page);
 		//dump ($imagesList,'imagesList');
 		if (empty($imagesList)) return 'ERROR';
-		
+
 		foreach ($imagesList as $image) {
 			if ($image->file_url_thumb > "0" ) {
 				// $imagesList->file_root = JURI::root(true).'/';

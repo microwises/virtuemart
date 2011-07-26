@@ -83,4 +83,14 @@
 		</languages>
 	</administration>
 
+	<access component="com_virtuemart">
+		<section name="component">
+			<action name="shop.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
+			<action name="shop.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+		</section>
+		<section name="message">
+			<action name="shop.admin" title="JACTION_DELETE" description="COM_MONCOMPOSANT_ACCESS_ADMIN_DESC" />
+			<action name="shop.manage" title="JACTION_EDIT" description="COM_MONCOMPOSANt_ACCESS_MANAGE_DESC" />
+		</section>
+	</access>
 </install>

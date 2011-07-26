@@ -317,6 +317,7 @@ class Migrator extends VmModel{
 		$q = 'SELECT * FROM #__vm_shopper_group';
 		$this->_db->setQuery($q);
 		$oldShopperGroups = $this->_db->loadAssocList();
+		if(empty($oldShopperGroups)) $oldShopperGroups = array();
 
 		$oldtoNewShoppergroups = array();
 		$alreadyKnownIds = $this->getMigrationProgress('shoppergroups');

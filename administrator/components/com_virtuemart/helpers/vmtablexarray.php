@@ -32,7 +32,7 @@ class VmTableXarray extends VmTable {
 	protected $_orderable = false;
 
 	protected $_pvalue = '';
-	
+
 //    function setOrderable($key='ordering', $auto=true){
 //    	$this->_orderingKey = $key;
 //    	$this->_orderable = 1;
@@ -46,6 +46,8 @@ class VmTableXarray extends VmTable {
 		$this->_skeyForm	= empty($keyForm)? $key:$keyForm;
 
     }
+
+
 
 	/**
 	* swap the ordering of a record in the Xref tables
@@ -68,15 +70,15 @@ class VmTableXarray extends VmTable {
 		$id = $this->_db->loadResult();
 		$keys = array_keys($order);
 		// TODO next 2 lines not used ????
-		if ($direction >0) $idToSwap = $order[$keys[array_search($id, $keys)]+1]; 
-		else $idToSwap =  $order[$keys[array_search($id, $keys)]-1]; 
+		if ($direction >0) $idToSwap = $order[$keys[array_search($id, $keys)]+1];
+		else $idToSwap =  $order[$keys[array_search($id, $keys)]-1];
 
 		if (isset( $cid[0] )) {
 
 			$query = 'UPDATE `'.$this->_tbl.'` '
 			. ' SET `'.$this->_orderingKey.'` = `'.$this->_orderingKey.'` + '. $direction
-			. ' WHERE `'.$this->_pkey.'` = ' . (int)$cid[0]. 
-			' AND `'.$this->_skey.'`  = ' . (int)$skeyId 
+			. ' WHERE `'.$this->_pkey.'` = ' . (int)$cid[0].
+			' AND `'.$this->_skey.'`  = ' . (int)$skeyId
 			;
 			$this->_db->setQuery( $query );
 
@@ -237,6 +239,14 @@ class VmTableXarray extends VmTable {
 
 		return $returnCode;
 
+    }
+
+    function deleteRelation(){
+    	$q  = 'DELETE FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'. $this->_pvalue.'" ';
+    	$db->setQuery($q);
+    	if(!$db->Query()){
+    		$this->setError(get_class( $this ).':: store'.$this->_db->getErrorMsg());
+    	}
     }
 
 }

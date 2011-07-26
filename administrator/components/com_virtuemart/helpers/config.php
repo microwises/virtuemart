@@ -65,10 +65,11 @@ function vmError($descr,$publicdescr=''){
 	$user = JFactory::getUser();
 
 	//I think we must change  edit later using j1.6 ACL, but should work for now
-	$acl->addACL( 'com_virtuemart', 'edit', 'users', 'manager');
-	$acl->addACL( 'com_virtuemart', 'edit', 'users', 'administrator');
-	$acl->addACL( 'com_virtuemart', 'edit', 'users', 'super administrator');
+// 	$acl->addACL( 'com_virtuemart', 'edit', 'users', 'manager');
+// 	$acl->addACL( 'com_virtuemart', 'edit', 'users', 'administrator');
+// 	$acl->addACL( 'com_virtuemart', 'edit', 'users', 'super administrator');
 
+	//if ($user->authorise('core.manage', 'com_helloworld'))
 	if ($user->authorize( 'com_virtuemart', 'edit' )) {
 		$app = JFactory::getApplication();
 		$app ->enqueueMessage($descr,'error');
@@ -416,7 +417,7 @@ class VmConfig{
 			changeMonth: true,
 			changeYear: true
 			});
-		
+
 		});
 		');
 		$jDate = true;
