@@ -175,8 +175,8 @@ class VmTableXarray extends VmTable {
 //		$q = substr($q,0,-1).') ON DUPLICATE KEY UPDATE '.$this->_skey.'=VALUES('.$this->_skey.')';
 
 		$q  = 'DELETE FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'. $this->_pvalue.'" ';
-		$db->setQuery($q);
-		if(!$db->Query()){
+		$this->_db->setQuery($q);
+		if(!$this->_db->Query()){
 			$this->setError(get_class( $this ).':: store'.$this->_db->getErrorMsg());
 		}
 
@@ -243,8 +243,8 @@ class VmTableXarray extends VmTable {
 
     function deleteRelation(){
     	$q  = 'DELETE FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'. $this->_pvalue.'" ';
-    	$db->setQuery($q);
-    	if(!$db->Query()){
+    	$this->_db->setQuery($q);
+    	if(!$this->_db->Query()){
     		$this->setError(get_class( $this ).':: store'.$this->_db->getErrorMsg());
     	}
     }

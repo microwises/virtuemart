@@ -446,8 +446,8 @@ class VmMediaHandler {
 				//Sanitize name of media
 				jimport('joomla.filesystem.file');
 				$media['name'] = JFile::makeSafe( $media['name'] );
-
-				move_uploaded_file( $media['tmp_name'], JPATH_ROOT.DS.$path_folder.$media['name']);
+				JFile::upload($media['tmp_name'],JPATH_ROOT.DS.$path_folder.$media['name']);
+			//	move_uploaded_file( $media['tmp_name'], JPATH_ROOT.DS.$path_folder.$media['name']);
 				$this->file_mimetype = $media['type'];
 	      		$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_UPLOAD_OK',JPATH_ROOT.DS.$path_folder.$media['name']));
 	      		return $media['name'];
@@ -671,7 +671,7 @@ class VmMediaHandler {
 	 * @author Max Milbers
 	 * @param array $fileIds
 	 */
-	public function displayFilesHandler($fileIds=array(0),$type=0){
+	public function displayFilesHandler($fileIds,$type){
 
 		$html = $this->displayFileSelection($fileIds,$type);
 		$html .= $this->displayFileHandler('id="vm_display_image"');
@@ -810,7 +810,7 @@ class VmMediaHandler {
 	 * @author Max Milbers
 	 * @param array $fileIds
 	 */
-	public function displayFileSelection($fileIds=array(),$type = 0){
+	public function displayFileSelection($fileIds,$type = 0){
 
 		$html='';
 		$result = $this->getImagesList($type);
@@ -821,10 +821,12 @@ class VmMediaHandler {
 			// return  $html;
 		// }
 		// $text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE_PRIMARY';
-
-		foreach($fileIds as $k=>$id){
-			$html .= $this->displayImage($id );
+		if(!empty($fileIds)) {
+			foreach($fileIds as $k=>$id){
+				$html .= $this->displayImage($id );
+			}
 		}
+
 
 		return $html.'</div><div class="clear"></div>';
 	}

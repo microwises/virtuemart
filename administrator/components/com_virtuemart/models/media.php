@@ -242,11 +242,26 @@ class VirtueMartModelMedia extends VmModel {
 
 		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
 
-		if( !(empty($data['virtuemart_media_id']) && empty($data['file_title']) && empty($data['file_name']) && empty($data['active_media_id'])) ){
-			//Important! sanitize array to int
-			jimport( 'joomla.utilities.arrayhelper' );
-			JArrayHelper::toInteger($data['virtuemart_media_id']);
-			$data['virtuemart_media_id'] = array_diff($data['virtuemart_media_id'],array('0',''));
+
+		//update Media =>active_media_id !=0,  virtuemart_media_id !=0  media_action=0
+// 		if(!empty($data['active_media_id']) && empty($data['media_action'] ){
+// 			update Media
+
+// 		}
+
+		//upload media active_media_id!=0,  virtuemart_media_id = 0 && !=0
+
+
+		//store related media virtuemart_media_id!=0
+
+// 		if( !(empty($data['virtuemart_media_id']) && empty($data['file_title']) && empty($data['file_name']) && empty($data['active_media_id'])) ){
+		if(empty($data['virtuemart_media_id']) && empty($data['active_media_id']) && empty($data['media_action']) ){
+
+			$table = $this->getTable($type.'_medias');
+			$table ->deleteRelation();
+		}
+		else if( !(empty($data['virtuemart_media_id']) && empty($data['file_title']) && empty($data['file_name']) && empty($data['active_media_id'])) ){
+// 		else if(empty($data['upload']) && empty($data['virtuemart_media_id']) && empty($data['active_media_id']) ){
 
 			$oldIds = $data['virtuemart_media_id'];
 			$data['file_type'] = $type;
@@ -265,14 +280,10 @@ class VirtueMartModelMedia extends VmModel {
 			$table = $this->getTable($type.'_medias');
 			// Bind the form fields to the country table
 			$data = $table->bindChecknStore($data);
-		    $errors = $table->getErrors();
+			$errors = $table->getErrors();
 			foreach($errors as $error){
 				$this->setError($error);
 			}
-
-		} else if(empty($data['upload']) && empty($data['virtuemart_media_id']) && empty($data['active_media_id']) ){
-			$table = $this->getTable($type.'_medias');
-			$table ->deleteRelation();
 		}
 
 		return $this->_id;

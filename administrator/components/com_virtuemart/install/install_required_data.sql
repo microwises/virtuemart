@@ -89,7 +89,6 @@ INSERT INTO `#__virtuemart_countries` (`virtuemart_country_id`, `virtuemart_worl
 (71, 1, 'Fiji', 'FJI', 'FJ'),
 (72, 1, 'Finland', 'FIN', 'FI'),
 (73, 1, 'France', 'FRA', 'FR'),
-
 (75, 1, 'French Guiana', 'GUF', 'GF'),
 (76, 1, 'French Polynesia', 'PYF', 'PF'),
 (77, 1, 'French Southern Territories', 'ATF', 'TF'),
@@ -251,7 +250,6 @@ INSERT INTO `#__virtuemart_countries` (`virtuemart_country_id`, `virtuemart_worl
 (233, 1, 'Wallis and Futuna Islands', 'WLF', 'WF'),
 (234, 1, 'Western Sahara', 'ESH', 'EH'),
 (235, 1, 'Yemen', 'YEM', 'YE'),
-(236, 1, 'Yugoslavia', 'YUG', 'YU'),
 (237, 1, 'The Democratic Republic of Congo', 'DRC', 'DC'),
 (238, 1, 'Zambia', 'ZMB', 'ZM'),
 (239, 1, 'Zimbabwe', 'ZWE', 'ZW'),
@@ -259,8 +257,8 @@ INSERT INTO `#__virtuemart_countries` (`virtuemart_country_id`, `virtuemart_worl
 (241, 1, 'Jersey', 'XJE', 'XJ'),
 (242, 1, 'St. Barthelemy', 'XSB', 'XB'),
 (243, 1, 'St. Eustatius', 'XSE', 'XU'),
-(244, 1, 'Canary Islands', 'XCA', 'XC');
-
+(244, 1, 'Canary Islands', 'XCA', 'XC'),
+(245, 1, 'Serbia', 'SRB', 'RS');
 
 --
 -- Dumping data for table `#__virtuemart_creditcards`
