@@ -387,7 +387,7 @@ class Migrator extends VmModel{
 		//approximatly 110 users take a 1 MB
 		$freeRam =  ($this->maxMemoryLimit - memory_get_usage(true))/(1024 * 1024) ;
 		$maxItems = (int)$freeRam * 100;
-		vmdump('free ram left '.$freeRam.' so limit chunk to '.$maxItems);
+		vmdebug('free ram left '.$freeRam.' so limit chunk to '.$maxItems);
 
 // 		$maxItems = 10;
 		$i=0;
@@ -802,7 +802,7 @@ class Migrator extends VmModel{
 		//approximatly 100 products take a 1 MB
 		$freeRam =  ($this->maxMemoryLimit - memory_get_usage(true))/(1024 * 1024) ;
 		$maxItems = (int) ($freeRam * 100);
-		vmdump('free ram left '.$freeRam.' so limit chunk to '.$maxItems);
+		vmdebug('free ram left '.$freeRam.' so limit chunk to '.$maxItems);
 
 		$startLimit = 0;
 		$i=0;
@@ -827,7 +827,7 @@ class Migrator extends VmModel{
 				}
 			}
 
-			//vmdump('in product migrate $oldProducts ',$oldProducts);
+			//vmdebug('in product migrate $oldProducts ',$oldProducts);
 
 			if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
 
@@ -885,6 +885,9 @@ class Migrator extends VmModel{
 
 					$product['product_currency'] = $this->_ensureUsingCurrencyId($product['product_currency']);
 
+					if(empty($product['product_name'] ){
+						$product['product_name'] =  $product['product_sku'].':'.$product['product_id'].':'.$product['product_s_desc'];
+					}
 					//Unsolved Here we must look for the url product_full_image and check which media has the same
 					// full_image url
 					//$product['virtuemart_media_id'] =
@@ -896,7 +899,7 @@ class Migrator extends VmModel{
 						foreach($errors as $error){
 							vmError('Migration: '.$i.' ' . $error);
 						}
-						vmdump('Product add error',$product);
+						vmdebug('Product add error',$product);
 						$productModel->resetErrors();
 						$continue = false;
 						break;
@@ -932,7 +935,7 @@ class Migrator extends VmModel{
 		//approximatly 100 products take a 1 MB
 		$freeRam =  ($this->maxMemoryLimit - memory_get_usage(true))/(1024 * 1024) ;
 		$maxItems = (int) ($freeRam * 100);
-		vmdump('free ram left '.$freeRam.' so limit chunk to '.$maxItems);
+		vmdebug('free ram left '.$freeRam.' so limit chunk to '.$maxItems);
 
 		$startLimit = 0;
 		$i = 0;

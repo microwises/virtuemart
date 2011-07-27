@@ -746,7 +746,7 @@ class VirtueMartModelProduct extends VmModel {
 			$product_data->load((int)$data['virtuemart_product_id']);
 			$product_data->resetErrors();
 	//		$errors = $product_data->getErrors();
-//			vmdump('Error loading product table products ',$errors);
+//			vmdebug('Error loading product table products ',$errors);
 //		}
 
 
@@ -759,7 +759,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$errors = $product_data->getErrors();
 		foreach($errors as $error){
-			vmdump('Error storing product table products ',$errors);
+			vmdebug('Error storing product table products ',$errors);
 			$this->setError($error);
 		}
 
@@ -783,7 +783,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$errors = $product_price_table->getErrors();
 		foreach($errors as $error){
-			vmdump('Error storing product table product_prices ',$errors);
+			vmdebug('Error storing product table product_prices ',$errors);
 			$this->setError($error);
 		}
 
@@ -792,7 +792,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			$xrefTable = $this->getTable('product_manufacturers');
 	    	if (!$xrefTable->bindChecknStore($data)) {
-	    		vmdump('Error storing product table product_manufacturers ',$errors);
+	    		vmdebug('Error storing product table product_manufacturers ',$errors);
 				$this->setError($xrefTable->getError());
 			}
 		}

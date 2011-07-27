@@ -170,7 +170,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 			<tr class="row1">
 				<td width="29%">
-                                    <div style="text-align:right;font-weight:bold;">
+                    <div style="text-align:right;font-weight:bold;">
 
                                         <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE_TIP'); ?>">
 					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE') ?>

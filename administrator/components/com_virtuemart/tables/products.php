@@ -119,5 +119,6 @@ class TableProducts extends VmTable {
 		$this->setSlug('product_name');
 	}
 
+
 }
 // pure php no closing tag

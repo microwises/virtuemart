@@ -61,16 +61,8 @@ function vmInfo($publicdescr,$value=null){
  */
 function vmError($descr,$publicdescr=''){
 
-	$acl = JFactory::getACL();
-	$user = JFactory::getUser();
-
-	//I think we must change  edit later using j1.6 ACL, but should work for now
-// 	$acl->addACL( 'com_virtuemart', 'edit', 'users', 'manager');
-// 	$acl->addACL( 'com_virtuemart', 'edit', 'users', 'administrator');
-// 	$acl->addACL( 'com_virtuemart', 'edit', 'users', 'super administrator');
-
-	//if ($user->authorise('core.manage', 'com_helloworld'))
-	if ($user->authorize( 'com_virtuemart', 'edit' )) {
+	if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+	if(Permissions::getInstance()->check('admin')){
 		$app = JFactory::getApplication();
 		$app ->enqueueMessage($descr,'error');
 	} else {
@@ -89,7 +81,7 @@ function vmError($descr,$publicdescr=''){
  * @param unknown_type $descr
  * @param unknown_type $values
  */
-function vmdump($debugdescr,$debugvalue=null,$force=false){
+function vmdebug($debugdescr,$debugvalue=null,$force=false){
 
 	if($force || (!$force && VMConfig::showDebug() ) ){
 
@@ -114,11 +106,11 @@ function vmTrace($notice,$force=false){
 }
 
 function vmRam($notice,$value=null){
-	vmdump($notice.' used Ram '.round(memory_get_usage(true)/(1024*1024),2).'M ',$value);
+	vmdebug($notice.' used Ram '.round(memory_get_usage(true)/(1024*1024),2).'M ',$value);
 }
 
 function vmRamPeak($notice,$value=null){
-	vmdump($notice.' memory peak '.round(memory_get_peak_usage(true)/(1024*1024),2).'M ',$value);
+	vmdebug($notice.' memory peak '.round(memory_get_peak_usage(true)/(1024*1024),2).'M ',$value);
 }
 
 
@@ -144,15 +136,8 @@ class VmConfig{
 
 			$debug = VmConfig::get('debug_enabled',true);
 			if($debug){
-				$acl = JFactory::getACL();
-				$user = JFactory::getUser();
-
-				//I think we must change  edit later using j1.6 ACL, but should work for now
-				$acl->addACL( 'com_virtuemart', 'edit', 'users', 'manager');
-				$acl->addACL( 'com_virtuemart', 'edit', 'users', 'administrator');
-				$acl->addACL( 'com_virtuemart', 'edit', 'users', 'super administrator');
-
-				if ($user->authorize( 'com_virtuemart', 'edit' )) {
+				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+				if(Permissions::getInstance()->check('admin')){
 					self::$_debug = true;
 				} else {
 					self::$_debug = false;
