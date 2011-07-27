@@ -60,7 +60,7 @@
 			container = jQuery(this);
 
 			var formatTitle = function(title, currentArray, currentIndex, currentOpts) {
-				return '<a id="fancybox-left" href="javascript:;" onclick="display(0);" style="display: inline;"><span id="fancybox-left-ico" class="fancy-ico"></span></a><a id="fancybox-right" href="javascript:;" onclick="display(1);" style="display: inline;"><span id="fancybox-right-ico" class="fancy-ico"></span></a><div id="tip7-title">' + (title && title.length ? '<b>' + title + '</b>' : '' ) + ' - <span class="page">Page ' + (page + 1) + '</span></div>';
+				return '<a id="fancybox-left" href="javascript:;" onclick="jQuery.display(0);" style="display: inline;"><span id="fancybox-left-ico" class="fancy-ico"></span></a><a id="fancybox-right" href="javascript:;" onclick="jQuery.display(1);" style="display: inline;"><span id="fancybox-right-ico" class="fancy-ico"></span></a><div id="tip7-title">' + (title && title.length ? '<b>' + title + '</b>' : '' ) + ' - <span class="page">Page ' + (page + 1) + '</span></div>';
 			}
 			
 			container.delegate("a.vm_thumb", "click",function(event) {
@@ -177,6 +177,28 @@
 		}    
 	  
 	};
+	$.display = function(num) {
+			var that = $.display
+			if ( typeof that.page == "undefined" ) {
+				that.page = 0;
+			}
+			if (num === 0 && that.page > 0 ) {
+				--that.page 
+			} else if (num>0) { ++ that.page}
+			jQuery.get("index.php?option=com_virtuemart&view=media&task=viewJson&format=json&start="+that.page ,
+				function(data) {
+					if (data != "ERROR") {
+						jQuery("#dialog").html(data);
+						jQuery(".page").text( "Page(s) "+ (that.page+1)) ;
+					} else  {
+						--that.page ;
+						jQuery(".page").text( "No  more results : Page(s) "+ (that.page+1)) ;
+					}
+					page = that.page;
+				}
+			);
+			
+		} 
 
 })(jQuery);
 
