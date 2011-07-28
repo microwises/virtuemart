@@ -183,6 +183,7 @@ var VM = (function($){
 				
 				statesCombo.$countries = countries;
 				statesC.append( states2add ).removeAttr('disabled');
+				statesC.trigger("liszt:updated");
 			};
 			
 			$( VMConfig.get('dependentSelector') ).each(function(){

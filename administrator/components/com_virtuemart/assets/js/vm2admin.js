@@ -214,7 +214,7 @@ jQuery.noConflict();
 		$('select').chosen(); 
 	}
 
-	//jQuery('.hasTip').tipTip();
+	//jQuery('.hasTip').tipTip(); 
 	$('#content-box [title]').vm2admin('tips',tip_image);
 	$('.modal').fancybox();
 	

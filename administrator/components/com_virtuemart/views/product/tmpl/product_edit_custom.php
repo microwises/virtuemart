@@ -122,8 +122,15 @@ jQuery('div.remove').click( function() {
 	jQuery(this).closest('tr').remove();
 });
 
+		    // $("select##customlist").chosen().change(function() {
+			          // var str = "";
+          // $(this).find("option:selected").each(function () {
+                // str += $(this).text() + " ";
+              // });
 
-jQuery('select#customlist').click(function() {
+         // console.log(str);//$("#someInput").first().focus();
+     // });
+jQuery('select#customlist').chosen().change(function() {
 	selected = jQuery(this).find( 'option:selected').val() ;
 	jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=customfield&id='+selected+'&row='+nextCustom+'&virtuemart_product_id=<?php echo $this->product->virtuemart_product_id; ?>',
 	function(data) {
