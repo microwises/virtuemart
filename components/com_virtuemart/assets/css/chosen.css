@@ -2,7 +2,7 @@ div.chzn-container {
   font-size: 13px;
   position: relative;
 }
-select { width:300px;}
+.tabs select{ width:300px;}
 div.chzn-container input {
   background: #fff;
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee));
