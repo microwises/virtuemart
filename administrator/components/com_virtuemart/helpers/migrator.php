@@ -885,7 +885,7 @@ class Migrator extends VmModel{
 
 					$product['product_currency'] = $this->_ensureUsingCurrencyId($product['product_currency']);
 
-					if(empty($product['product_name'] ){
+					if(empty($product['product_name'] )){
 						$product['product_name'] =  $product['product_sku'].':'.$product['product_id'].':'.$product['product_s_desc'];
 					}
 					//Unsolved Here we must look for the url product_full_image and check which media has the same
