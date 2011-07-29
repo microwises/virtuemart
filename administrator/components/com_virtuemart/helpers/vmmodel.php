@@ -101,6 +101,11 @@ class VmModel extends JModel {
 	 * @author Max Milbers
 	 */
     public function getPagination($total=0) {
+		$mainframe =& JFactory::getApplication();
+		$this->setState('limit', $mainframe->getUserStateFromRequest('global.list.limit', 'limit',  VmConfig::get('list_limit',10), 'int'));
+		$this->setState('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
+		// In case limit has been changed, adjust limitstart accordingly
+		$this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
     	if(empty($total)) $total = $this->getTotal();
 		if ($this->_pagination == null) {
 			jimport('joomla.html.pagination');

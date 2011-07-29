@@ -118,6 +118,16 @@ defined('_JEXEC') or die('Restricted access');
 				?>
 			</td>
 			</tr>
+			<tr>
+			<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_LIST_LIMIT_EXPLAIN'); ?>">
+				<label for="list_limit"><?php echo JText::_('COM_VIRTUEMART_LIST_LIMIT') ?></label>
+				</span>
+			</td>
+			<td>
+				<input type="text" value="<?php echo $this->config->get('list_limit',10); ?>" class="inputbox" size="4" name="list_limit">
+			</td>
+			</tr>
 <?php /*	    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
