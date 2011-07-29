@@ -155,7 +155,7 @@ class VmModel extends JModel {
     }
 
 
-    public function store($data){
+    public function store(&$data){
 
 		$table = $this->getTable($this->_maintablename);
 

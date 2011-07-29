@@ -386,16 +386,15 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			if (empty($product->virtuemart_category_id) && isset($product->categories[0])) $product->virtuemart_category_id = $product->categories[0];
 
-   			if(!$front && !empty($product->categories[0])){
+			if(!empty($product->categories[0])){
 				$catTable = $this->getTable('categories');
-   				$catTable->load($product->categories[0]);
+				$catTable->load($product->categories[0]);
 				$product->category_name = $catTable->category_name;
+			} else {
+				$product->category_name ='';
+			}
 
-
-   			} else {
-   				$product->category_name ='';
-   			}
-   			$this->productHasCustoms($this->_id);
+   		$this->productHasCustoms($this->_id);
 
 			if($front){
 
@@ -420,7 +419,6 @@ class VirtueMartModelProduct extends VmModel {
 				// Load the vendor details
 //				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 //				$product->vendor_name = VirtueMartModelVendor::getVendorName($product->virtuemart_vendor_id);
-
 
 				// set the custom variants
 				if ($this->hasproductCustoms) {
