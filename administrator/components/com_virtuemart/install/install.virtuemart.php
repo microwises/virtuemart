@@ -44,6 +44,17 @@ function com_install(){
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql';
 		$model->execSQLFile($filename);
 
+	} else {
+
+		$query = 'SHOW COLUMNS FROM `#__virtuemart_products` ';
+		$db->setQuery($query);
+		$columns = $db->loadRow();
+		if(!in_contains('product_ordered',$columns)){
+			$query = 'ALTER TABLE `#__virtuemart_products` ADD product_ordered int(11)';
+		}
+		$db->setQuery($query);
+		$db->query();
+
 	}
 	JTable::addIncludePath(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'tables');
 	//$model->integrateJoomlaUsers();

@@ -735,6 +735,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `product_lwh_uom` varchar(32) DEFAULT 'inches',
   `product_url` varchar(255) DEFAULT NULL,
   `product_in_stock` int(11) NOT NULL DEFAULT '0',
+  `product_ordered` int(11) NOT NULL DEFAULT '0',
   `low_stock_notification` int(11) NOT NULL DEFAULT '0',
   `product_available_date` datetime NOT NULL default '0000-00-00 00:00:00',
   `product_availability` varchar(56) NOT NULL DEFAULT '',
