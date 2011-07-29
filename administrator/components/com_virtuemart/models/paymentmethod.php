@@ -168,6 +168,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		//$data = JRequest::get('post');
 
 		if(isset($data['params'])){
+			if(!class_exists('JParameter')) require(JPATH_LIBRARIES.DS.'joomla'.'html'.DS.'parameter.php' );
 			$params = new JParameter('');
 			$params->bind($data['params']);
 			$data['payment_params'] = $params->toString();
@@ -198,7 +199,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
     	if (!$xrefTable->bindChecknStore($data)) {
 			$this->setError($xrefTable->getError());
 		}
-		
+
 		return $table->virtuemart_paymentmethod_id;
 	}
 

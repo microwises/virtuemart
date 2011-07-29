@@ -58,6 +58,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 	      if(!empty($this->_data->price_display)){
 	      	$this->_data->price_display = unserialize($this->_data->price_display);
 	      } else{
+	      	if(!class_exists('JParameter')) require(JPATH_LIBRARIES.DS.'joomla'.'html'.DS.'parameter.php' );
 	      	$this->_data->price_display = new JParameter('');
 	      }
 	   }
@@ -105,6 +106,8 @@ class VirtueMartModelShopperGroup extends VmModel {
    		$param .= $fields.'Text='.$data[$fields.'Text']."\n";
    		$param .= $fields.'Rounding='.$data[$fields.'Rounding']."\n";
    	}
+
+   	if(!class_exists('JParameter')) require(JPATH_LIBRARIES.DS.'joomla'.'html'.DS.'parameter.php' );
 		$jparam = new JParameter($param);
    	$data['price_display'] = serialize(new JParameter($param));
 

@@ -483,6 +483,7 @@ abstract class vmPaymentPlugin extends JPlugin {
             $checked = '';
         }
 
+        if(!class_exists('JParameter')) require(JPATH_LIBRARIES.DS.'joomla'.'html'.DS.'parameter.php' );
         $params = new JParameter($payment->payment_params);
 
 

@@ -138,6 +138,8 @@ class FileUtilities {
 
 }
 
+if(!class_exists('JParameter')) require(JPATH_LIBRARIES.DS.'joomla'.'html'.DS.'parameter.php' );
+
 class vmParameters extends JParameter {
 
 //	/** @var string Path to the xml setup file */
