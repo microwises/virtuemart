@@ -76,6 +76,10 @@ class calculationHelper {
         $this->_debug = false;
 
         $this->setShopperGroupIds();
+
+        $this->rules['Tax'] 	= array();
+        $this->rules['dBTax'] = array();
+        $this->rules['dATax'] = array();
     }
 
     public function getInstance() {
@@ -544,8 +548,7 @@ class calculationHelper {
      */
     function gatherEffectingRulesForProductPrice($entrypoint, $id) {
 
-        if ($id === -1)
-            return null;
+        if ($id === -1) return ;
         //virtuemart_calc_id 	virtuemart_vendor_id	calc_shopper_published	calc_vendor_published	published 	shared calc_amount_cond
         $countries = '';
         $states = '';

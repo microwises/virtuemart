@@ -217,14 +217,14 @@ class VmTable extends JTable{
 		}
 
 		/**
-		 * As shortcat
+		 * As shortcat, Important the & MUST be there, even in php5.3
 		 *
 		 * @author Max Milbers
 		 * @param array/obj $data input data as assoc array or obj
 		 * @param unknown_type $obligatory
 		 * @return array/obj $data the updated data
 		 */
-		public function bindChecknStore($data, $obligatory=false){
+		public function bindChecknStore(&$data, $obligatory=false){
 
 			$ok = true;
 			$msg = '';

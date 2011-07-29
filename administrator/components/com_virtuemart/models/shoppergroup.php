@@ -164,6 +164,8 @@ class VirtueMartModelShopperGroup extends VmModel {
 				return false;
 		    }
 		}
+
+		return true;
 	}
 
 	/**

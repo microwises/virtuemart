@@ -46,7 +46,7 @@ class VirtuemartViewCalc extends JView {
 		$this->assignRef('vendorId', $vendorId);
 
 		$db = JFactory::getDBO();
-		
+
 		$config = JFactory::getConfig();
 		$tzoffset = $config->getValue('config.offset');
 		$this->assignRef('tzoffset',	$tzoffset);
@@ -60,6 +60,8 @@ class VirtuemartViewCalc extends JView {
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 
+// 			$calcId = JRequest::getInt('cid[]');
+// 			$model->setId($calcId);
 			$calc = $model->getCalc();
 			$this->assignRef('calc',	$calc);
 

@@ -50,33 +50,34 @@ class VirtueMartModelCalc extends VmModel {
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
   		if (empty($this->_data)) {
-   			$this->_data = $this->getTable('calcs');
-   			$this->_data->load((int)$this->_id);
+   		$this->_data = $this->getTable('calcs');
+   		$this->_data->load((int)$this->_id);
+
+			$xrefTable = $this->getTable('calc_categories');
+			$this->_data->calc_categories = $xrefTable->load($this->_id);
+			if ( $xrefTable->getError() ) {
+				$this->setError(get_class( $this ).' calc_categories '.$xrefTable->getError());
+			}
+
+			$xrefTable = $this->getTable('calc_shoppergroups');
+			$this->_data->virtuemart_shoppergroup_ids = $xrefTable->load($this->_id);
+			if ( $xrefTable->getError() ) {
+				$this->setError(get_class( $this ).' calc_shoppergroups '.$xrefTable->getError());
+			}
+
+			$xrefTable = $this->getTable('calc_countries');
+			$this->_data->calc_countries = $xrefTable->load($this->_id);
+			if ( $xrefTable->getError() ) {
+				$this->setError(get_class( $this ).' calc_countries '.$xrefTable->getError());
+			}
+
+			$xrefTable = $this->getTable('calc_states');
+			$this->_data->virtuemart_state_ids = $xrefTable->load($this->_id);
+			if ( $xrefTable->getError() ) {
+				$this->setError(get_class( $this ).' virtuemart_state_ids '.$xrefTable->getError());
+			}
+
   		}
-
-		$xrefTable = $this->getTable('calc_categories');
-		$this->_data->calc_categories = $xrefTable->load($this->_id);
-		if ( $xrefTable->getError() ) {
-			$this->setError(get_class( $this ).' calc_categories '.$xrefTable->getError());
-		}
-
-		$xrefTable = $this->getTable('calc_shoppergroups');
-		$this->_data->virtuemart_shoppergroup_ids = $xrefTable->load($this->_id);
-		if ( $xrefTable->getError() ) {
-			$this->setError(get_class( $this ).' calc_shoppergroups '.$xrefTable->getError());
-		}
-
-		$xrefTable = $this->getTable('calc_countries');
-		$this->_data->calc_countries = $xrefTable->load($this->_id);
-		if ( $xrefTable->getError() ) {
-			$this->setError(get_class( $this ).' calc_countries '.$xrefTable->getError());
-		}
-
-		$xrefTable = $this->getTable('calc_states');
-		$this->_data->virtuemart_state_ids = $xrefTable->load($this->_id);
-		if ( $xrefTable->getError() ) {
-			$this->setError(get_class( $this ).' virtuemart_state_ids '.$xrefTable->getError());
-		}
 
 		if($errs = $this->getErrors()){
 			$app = JFactory::getApplication();
@@ -169,11 +170,14 @@ class VirtueMartModelCalc extends VmModel {
 			$expireDate = JFactory::getDate($data['publish_down']);
 			$data['publish_down']	= $expireDate->toMySQL();
 		}
-
+		vmdebug('calc store before',$data);
 		if (!$table->bindChecknStore($data)) {
 			$this->setError($table->getError());
+			vmError('calculation rule store error ');
+			vmdebug('calculation rule store error ', $table);
 			return false;
 		}
+		vmdebug('calc store data',$data);
 
     	$xrefTable = $this->getTable('calc_categories');
     	if (!$xrefTable->bindChecknStore($data)) {
