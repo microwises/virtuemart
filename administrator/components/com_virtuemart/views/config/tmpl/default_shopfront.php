@@ -456,46 +456,48 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <?php
 		    if( function_exists('imagecreatefromjpeg') ) {
-			?>
-		    <tr>
-			<td class="key">
-			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP'); ?>">
-			    <label for="img_resize_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING') ?></label>
-			    </span>
-			</td>
-			<td>
-				<?php echo VmHTML::checkbox('img_resize_enable', $this->config->get('img_resize_enable')); ?>
-			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
-			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_WIDTH_TIP'); ?>">
-				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_WIDTH') ?>
-				</span>
-			</td>
-			<td>
-			    <input type="text" name="img_width" class="inputbox" value="<?php echo $this->config->get('img_width') ?>" />
-			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
-			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
-				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_HEIGHT') ?>
-				</span>
-			</td>
-			<td>
-			    <input type="text" name="img_height" class="inputbox" value="<?php echo $this->config->get('img_height') ?>" />
-			</td>
-		    </tr>
-			<?php
-		    }
-		    else {
-			echo '<tr>
-        <td colspan="2"><strong>'.JText::_('COM_VIRTUEMART_ADMIN_CFG_GD_MISSING') .'</strong>';
-			echo '<input type="hidden" name="img_resize_enable" value="0" />';
-			echo '<input type="hidden" name="img_width" value="'. $this->config->get('img_width',90) .'" />';
-			echo '<input type="hidden" name="img_height" value="'. $this->config->get('img_height',90) .'" /></td></tr>';
-		    }
+				?>
+				<tr>
+					<td class="key">
+						<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP'); ?>">
+						<label for="img_resize_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING') ?></label>
+						</span>
+					</td>
+					<td>
+						<?php echo VmHTML::checkbox('img_resize_enable', $this->config->get('img_resize_enable')); ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="key">
+						<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_WIDTH_TIP'); ?>">
+						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_WIDTH') ?>
+						</span>
+					</td>
+					<td>
+						<input type="text" name="img_width" class="inputbox" value="<?php echo $this->config->get('img_width') ?>" />
+					</td>
+				</tr>
+				<tr>
+					<td class="key">
+						<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
+						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_HEIGHT') ?>
+						</span>
+					</td>
+					<td>
+						<input type="text" name="img_height" class="inputbox" value="<?php echo $this->config->get('img_height') ?>" />
+					</td>
+				</tr>
+				<?php
+			}
+			else { ?>
+				<tr>
+					<td colspan="2"><strong><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_GD_MISSING') ?></strong>
+						<input type="hidden" name="img_resize_enable" value="0" />
+						<input type="hidden" name="img_width" value="<?php echo  $this->config->get('img_width',90) ?>" />
+						<input type="hidden" name="img_height" value="<?php echo  $this->config->get('img_height',90) ?>" />
+					</td>
+				</tr>
+			<?php }
 		    ?>
 		    <tr>
 			<td class="key">

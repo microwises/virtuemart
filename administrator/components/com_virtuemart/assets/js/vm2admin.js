@@ -86,13 +86,9 @@
 			jQuery("#addnewselectimage2").fancybox({
 				"hideOnContentClick": false,
 				"autoDimensions"	: true,
-				//"width": 800,
 				"titlePosition"		: "inside",
 				"title"		: "Media list",
-				"titleFormat"	: formatTitle,
-				"onComplete": function() {
-					//jQuery("#dialog").css("display","block");
-				}
+				"titleFormat"	: formatTitle
 			});
 
 		container.delegate(".edit-24-grey", "click",function() {
@@ -205,7 +201,7 @@
 
 // load defaut scripts 
 jQuery.noConflict();
- jQuery(document).ready( function($) {
+ jQuery( function($) {
 
 	$('dl#system-message').hide().slideDown(400);
 	$('#admin-ui-menu').vm2admin('accordeon');
@@ -214,7 +210,6 @@ jQuery.noConflict();
 		$('select').chosen(); 
 	}
 
-	//jQuery('.hasTip').tipTip(); 
 	$('#content-box [title]').vm2admin('tips',tip_image);
 	$('.modal').fancybox();
 	

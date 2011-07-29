@@ -322,14 +322,15 @@ class ShopFunctions {
 
 		VmConfig::JcountryStateList() ;
 		$attrs['class'] = 'dependent['. $dependentField .']';
+		$attrs['data-stateid'] = implode(",", $stateId);
 
 		$emptyOption = array(JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name));
 		$listHTML = JHTML::_('select.genericlist', $emptyOption, $idA,  $attrs, $id, $name, $stateId, $id);
 
-		if(!is_array($stateId)) $stateId = array($stateId);
-		foreach($stateId as $state){
-			$listHTML .= '<input type="hidden" name="prs_virtuemart_state_id[]" value="'.$state.'" />' ;
-		}
+		// if(!is_array($stateId)) $stateId = array($stateId);
+		// foreach($stateId as $state){
+			// $listHTML .= '<input type="hidden" name="prs_virtuemart_state_id" value="'.$state.'" />' ;
+		// }
 
 		return $listHTML;
 	}

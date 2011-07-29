@@ -68,13 +68,12 @@ class VirtuemartViewReport extends JView {
 					if (empty($from_period) && empty($until_period)) {
 						$from_period  = $date_presets['today']['from'];
 						$until_period = $date_presets['today']['until'];
-						$from         = JFactory::getDate($from_period, $tzoffset);
-						$until        = JFactory::getDate($until_period, $tzoffset);
-					} else {
-						$from         = JFactory::getDate($from_period, $tzoffset);
-						$until        = JFactory::getDate($until_period, $tzoffset);
 					}
-					$model->setPeriod($from->_date, $until->_date);
+					$from         = JFactory::getDate($from_period, $tzoffset);
+					$until        = JFactory::getDate($until_period, $tzoffset);
+					$from = (strtotime($from) == -1) ? false : strtotime($from);
+					$until = (strtotime($until) == -1) ? false : strtotime($until);
+					$model->setPeriod($from, $until);
 				} else {
 					$model->setPeriodByPreset($period);
 					$from_period  = $model->start_date ;

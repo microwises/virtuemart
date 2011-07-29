@@ -89,29 +89,21 @@ var VM = (function($){
 					
 					if(index !== undefined){
 						if(!slots[name][index]){
-							return slots[name][index] = VM.merge({}, values);
+							return slots[name][index] = $.merge([], values);
 						}
 						else{
-							return slots[name][index] = VM.merge(slots[name][index], values);
+							return slots[name][index] = $.merge(slots[name][index], values);
 						}
 					}
 				}
 				
-				return this.set(name, VM.merge({}, values));
+				return this.set(name, $.merge([], values));
 			}
 		}
 		
 	})();
 	
 	return {		
-		
-		merge: function(destin, source){		
-			for(var i in source){
-				destin[i] = source[i];
-			}
-			
-			return destin;
-		},
 		
 		inArray: function(obj, item){
 			for(var i = 0, n = obj.length; i < n; i++){
@@ -147,19 +139,11 @@ var VM = (function($){
 						}
 					}
 				}
-				
-				
-				var selectedChar = 'selected="selected"';
-
-				var statesColl = document.getElementsByName('prs_virtuemart_state_id[]');
-				var states = [];
-				for(var i = 0, n = statesColl.length; i < n; i++){
-					if(statesColl[i].value!='' && statesColl[i].value!=0){
-						states[i] = statesColl[i].value;
-						//alert('states['+i+']: '+states[i]+'  statesColl['+i+']: '+statesColl[i].val);
-					}
-						
-					
+				// set init values one time
+				if ( typeof populateStates.stateid == 'undefined' ) {
+				populateStates.selectedChar = 'selected="selected"';
+				populateStates.stateid = $('#virtuemart_state_id').data('stateid');
+				populateStates.states =  populateStates.stateid.length ? populateStates.stateid.toString().split(',') : [] ;
 				}
 
 				for(var i = 0, n = countries.length; i < n; i++){
@@ -171,8 +155,8 @@ var VM = (function($){
 							if(statesGroup[j].virtuemart_state_id){
 								
 								var selected ='';
-								if(VM.inArray(states,statesGroup[j].virtuemart_state_id)  !== undefined){
-									selected = selectedChar;
+								if(VM.inArray(populateStates.states,statesGroup[j].virtuemart_state_id)  !== undefined){
+									selected = populateStates.selectedChar; 
 								}
 								
 								states2add += '<option value="'+ statesGroup[j].virtuemart_state_id +'" '+selected+'>'+ statesGroup[j].state_name +'</option>';
@@ -180,7 +164,7 @@ var VM = (function($){
 						}
 					}
 				}
-				
+
 				statesCombo.$countries = countries;
 				statesC.append( states2add ).removeAttr('disabled');
 				statesC.trigger("liszt:updated");
