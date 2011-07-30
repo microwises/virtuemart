@@ -74,7 +74,11 @@ class VirtuemartViewCategory extends JView {
 				$pathway->addItem($c->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id));
 			}
 		}
-		if($category->children)	$categoryModel->addImages($category->children);
+		//if($category->children)	$categoryModel->addImages($category->children);
+
+		$category->children = $categoryModel->getChildCategoryList($vendorId, $categoryId);
+		$categoryModel->addImages($category->children);
+
 /*
 		JHTML::script('jquery.droppy.js', 'components/com_virtuemart/assets/js/', false);
 		JHTML::stylesheet ('droppy.css', 'components/com_virtuemart/assets/css/', false );

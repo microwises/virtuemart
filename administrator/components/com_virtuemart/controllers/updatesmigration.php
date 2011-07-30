@@ -464,5 +464,19 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->setRedirect($this->redirectPath, $msg);
 	}
 
+	function updateTable(){
+
+		$db = JFactory::getDBO();
+		$query = 'SHOW COLUMNS FROM `#__virtuemart_products` ';
+		$db->setQuery($query);
+		$columns = $db->loadResultArray(0);
+
+		if(!in_array('product_ordered',$columns)){
+			echo 'is in array';
+			$query = 'ALTER TABLE `#__virtuemart_products` ADD product_ordered int(11)';
+			$db->setQuery($query);
+			$db->query();
+		}
+	}
 }
 
