@@ -18,13 +18,16 @@ $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
 			<h1><?php echo JText::_('COM_VIRTUEMART_WELCOME'); ?></h1>
 		</td>
 		<td>
-			<h1><?php echo JText::_('COM_VIRTUEMART_INSTALLATION_STEP_ONE'); ?></h1>
+			<h1><?php
+			if(JRequest::getWord('newInstall',false)){
+				echo JText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
+			} else {
+				echo JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
+			}
+			 ?></h1>
 			<br /><br />
 
 			<table width="50%">
-			<tr>
-				<td align="center" colspan="2" ><?php echo JText::_('COM_VIRTUEMART_INSTALLATION_FINISH'); ?></td>
-			</tr>
 			<tr>
 				<?php
 					if(JRequest::getWord('newInstall')){

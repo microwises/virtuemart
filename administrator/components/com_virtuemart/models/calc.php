@@ -170,14 +170,12 @@ class VirtueMartModelCalc extends VmModel {
 			$expireDate = JFactory::getDate($data['publish_down']);
 			$data['publish_down']	= $expireDate->toMySQL();
 		}
-		vmdebug('calc store before',$data);
+
 		if (!$table->bindChecknStore($data)) {
 			$this->setError($table->getError());
-			vmError('calculation rule store error ');
-			vmdebug('calculation rule store error ', $table);
+			vmError('calculation rule store error ','calculation rule store error ');
 			return false;
 		}
-		vmdebug('calc store data',$data);
 
     	$xrefTable = $this->getTable('calc_categories');
     	if (!$xrefTable->bindChecknStore($data)) {

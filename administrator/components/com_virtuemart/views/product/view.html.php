@@ -74,7 +74,6 @@ class VirtuemartViewProduct extends JView {
 
 				$dbTax = JText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
 				foreach($calculator->rules['dBTax'] as $rule){
-
 					$dbTax .= $rule['calc_name']. '<br />';
 				}
 				$this->assignRef('dbTaxRules', $dbTax);

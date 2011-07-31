@@ -18,7 +18,8 @@ VmConfig::loadConfig();
 
 function com_install(){
 
-	//Maybe it is possible to set this within the xml file note by Max Milbers
+	echo 'called old script';
+/*	//Maybe it is possible to set this within the xml file note by Max Milbers
 	@ini_set( 'memory_limit', '32M' );
 	@ini_set( 'max_execution_time', '120' );
 
@@ -86,7 +87,7 @@ function com_install(){
 	$model = JModel::getInstance('config', 'VirtueMartModel');
 	$model->setDangerousToolsOff();
 
-	return $installOk;
+	return $installOk;*/
 }
 
 // pure php no tag

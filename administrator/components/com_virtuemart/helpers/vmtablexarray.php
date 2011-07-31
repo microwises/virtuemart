@@ -245,8 +245,11 @@ class VmTableXarray extends VmTable {
     	$q  = 'DELETE FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'. $this->_pvalue.'" ';
     	$this->_db->setQuery($q);
     	if(!$this->_db->Query()){
-    		$this->setError(get_class( $this ).':: store'.$this->_db->getErrorMsg());
+    		vmError(get_class( $this ).':: store'.$this->_db->getErrorMsg(),'Couldnt delete relations');
+    		return false;
     	}
+    	vmdebug('deleteRelation');
+    	return true;
     }
 
 }
