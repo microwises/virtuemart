@@ -36,6 +36,8 @@ $footerText = 		$params->get( 'footerText', ''); // Display a footerText
 $Product_group = 	$params->get( 'product_group', 'featured'); // Display a footerText
 if (!$filter_category ) $category_id = null;
 $products = 		$productModel->getProductListing($Product_group, $max_items);
+$productModel->addImages($products);
+
 $totalProd = 		count( $products);
 if(empty($products)) return false;
 $currency = CurrencyDisplay::getInstance( );
