@@ -633,11 +633,12 @@ class VirtueMartModelUserfields extends VmModel {
 
 					$_return['fields'][$_fld->name]['formcode'] =
 					shopFunctions::renderStateList(	$_return['fields'][$_fld->name]['value'],
-													ShopFunctions::getCountryIDByName($_return['fields']['virtuemart_country_id']['value']),
-													$_prefix.'virtuemart_country_id',
-													false,
-													$_prefix
+													// ShopFunctions::getCountryIDByName($_return['fields']['virtuemart_country_id']['value']),
+													// $_prefix.'virtuemart_country_id',
+													false
+													// $_prefix
 													);
+
 					$_return['fields'][$_fld->name]['value'] = shopFunctions::getStateByID($_return['fields'][$_fld->name]['value']);
 					break;
 				//case 'agreed':

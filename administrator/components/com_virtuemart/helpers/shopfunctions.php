@@ -301,36 +301,21 @@ class ShopFunctions {
 	* @param string $_prefix Optional prefix for the formtag name attribute
 	* @return string HTML containing the <select />
 	*/
-	public function renderStateList( $stateId = 0, $countryId = 0, $dependentField = '', $multiple = false, $_prefix = ''){
-		$document = JFactory::getDocument();
-		$stateModel = self::getModel('state');
-		// Must be done here also (despite the AJAX selector) to make the current dbselection visible
-		//$states = $stateModel->getStates($countryId,true);
-		$attrs = array();
-		$name = 'state_name';
-		$idA = $id = $_prefix.'virtuemart_state_id';
+	public function renderStateList( $stateId = '0', $multiple = false){
 
+		if (is_array($stateId)) $stateId = implode(",", $stateId);
+		VmConfig::JcountryStateList($stateId) ;
+		$attrs = array();
 		if($multiple){
-			$attrs['multiple'] = 'multiple';
-			$idA .= '[]';
-			$attrs['size'] = '12';
+			$attrs ='multiple="multiple" size="12"';
 		} else {
-			$attrs['size'] = 1;
-	//		$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
-	//		array_unshift($states, $emptyOption);
+			$attrs='size="1"';
 		}
 
-		VmConfig::JcountryStateList() ;
-		$attrs['class'] = 'dependent['. $dependentField .']';
-		$attrs['data-stateid'] = implode(",", $stateId);
-
-		$emptyOption = array(JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name));
-		$listHTML = JHTML::_('select.genericlist', $emptyOption, $idA,  $attrs, $id, $name, $stateId, $id);
-
-		// if(!is_array($stateId)) $stateId = array($stateId);
-		// foreach($stateId as $state){
-			// $listHTML .= '<input type="hidden" name="prs_virtuemart_state_id" value="'.$state.'" />' ;
-		// }
+		
+		$listHTML ='<select class="inputbox multiple" id="virtuemart_state_id" name="virtuemart_state_id[]" '.$attrs.'>
+					<OPTION >'.JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION').'</OPTION>
+				</select>';
 
 		return $listHTML;
 	}

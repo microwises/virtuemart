@@ -409,12 +409,15 @@ class VmConfig{
 		return $display;
 	}
 
-	function JcountryStateList() {
+	function JcountryStateList($stateIds) {
 		static $JcountryStateList;
 		// If exist exit
 		if ($JcountryStateList) return;
 		$document = JFactory::getDocument();
-		$document->addScriptDeclaration('jQuery(function(){VM.countryStateList();});');
+		$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/vmsite.js');
+		$document->addScriptDeclaration(' jQuery( function($) { 
+			$("#virtuemart_country_id").vm2front("list",{dest : "#virtuemart_state_id",ids : "'.$stateIds.'"});
+		});');
 		$JcountryStateList = true;
 		return;
 	}

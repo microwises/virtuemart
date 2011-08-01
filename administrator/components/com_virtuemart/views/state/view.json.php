@@ -36,13 +36,17 @@ class VirtuemartViewState extends JView {
 
 		$stateModel = $this->getModel('state');
 		$states = array();
-		
+		$db = JFactory::getDBO();
 		//retrieving countries id
-		$countries = JRequest::getString('virtuemart_country_id');
-		$countries = explode(',', $countries);
+		$country_ids = JRequest::getString('virtuemart_country_id');
+		$country_ids = explode(',', $country_ids);
 		
-		foreach($countries as $country){
-			$states[$country] = $stateModel->getStates( JFilterInput::clean($country, 'INTEGER'), true );
+		foreach($country_ids as $country_id){
+			$q= 'SELECT `virtuemart_state_id`, `state_name` FROM `#__virtuemart_states`  WHERE `virtuemart_country_id`= "'.(int)$country_id.'" 
+				ORDER BY `#__virtuemart_states`.`state_name`';
+			$db->setQuery($q);
+			
+			$states[$country_id] = $db->loadAssocList();
 		}
 		
 		echo json_encode($states);

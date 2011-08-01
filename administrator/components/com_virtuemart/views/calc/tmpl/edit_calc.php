@@ -147,7 +147,7 @@ VmConfig::jDate();
 		    	<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_STATE'); ?>
 			</td>
 			<td>
-		    	<?php echo $this->statesList?>
+				<?php echo $this->statesList; ?>
 			</td>
 
 		<tr>
