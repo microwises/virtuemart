@@ -271,7 +271,9 @@ class VirtuemartViewUser extends JView {
 			JToolBarHelper::divider();
 			JToolBarHelper::deleteList();
 			JToolBarHelper::editListX();
-			JToolBarHelper::addNewX();
+
+			//This is intentionally, creating new user via BE is buggy and can be done by joomla
+			//JToolBarHelper::addNewX();
 			$userList = $model->getUserList();
 			$this->assignRef('userList', $userList);
 

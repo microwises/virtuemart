@@ -268,10 +268,11 @@ class VirtueMartModelMedia extends VmModel {
 			$data['file_type'] = $type;
 
 			//We just update it, ensure data correctly set
-			$data['virtuemart_media_id'] = (int)$data['active_media_id'];
-			$this -> setId($data['virtuemart_media_id']);
-
-			$virtuemart_media_id = $this->store($data,$type);
+			if(!empty($data['media_action']) && !empty($data['active_media_id']) ){
+				$data['virtuemart_media_id'] = (int)$data['active_media_id'];
+				$this -> setId($data['virtuemart_media_id']);
+				$virtuemart_media_id = $this->store($data,$type);
+			}
 
 			// add the virtuemart_media_id & remove 0 and '' from $data
 			$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);

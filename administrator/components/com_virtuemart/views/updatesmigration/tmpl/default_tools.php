@@ -19,11 +19,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+if(!VmConfig::get('dangeroustools', false)){
+	$uri = JFactory::getURI();
+	$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
+	?>
+
+	<div class="vmquote" style="text-align:left;margin-left:20px;">
+	<span style="font-weight:bold;color:green;"> <?php echo JText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_ENABLED',$link) ?></span>
+	</div>
+
+	<?php
+}
 
 ?>
 <table cellpadding="10">
     <tr>
-	<td align="center">
+<?php /*	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JUtility::getToken()); ?>
 	    <span onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_UPDATE_INSTALLSAMPLE_CONFIRM'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
@@ -35,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_shoppers_48.png">
 	    </a>
 	    <br /><?php echo JText::_('COM_VIRTUEMART_SYNC_JOOMLA_USERS'); ?>
-	</td>
+	</td>*/ ?>
  	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=portMedia&token='.JUtility::getToken() ); ?>
 	    <span onclick="javascript:confirmation('<?php echo 'Start migrate Media?'; ?>', '<?php echo $link; ?>');">
@@ -43,16 +54,22 @@ defined('_JEXEC') or die('Restricted access');
 	    </span>
 	    <br /><?php echo JText::_('COM_VIRTUEMART_SYNC_MEDIA_FILES'); ?>
 	</td>
-	<td align="left">
-	    Install Sampledata: When you did not installed the sampeldata and you have a fresh shop you may use this.<br /><br />
-	    Synchronize joomla users: When you used your page already before maybe as forum, blog you can use this button
-	    to synchronize them with the virtuemart tables. That means all joomla users get the default shopper and permission group.<br /><br />
+	<td align="center">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=renewConfig&token='.JUtility::getToken() ); ?>
+	    <span onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_TOOLS_RENEW_CONFIG_CONFIRM'); ?>', '<?php echo $link; ?>');">
+		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
+	    </span>
+	    <br />
+            <?php echo Jtext::_('COM_VIRTUEMART_TOOLS_RENEW_CONFIG'); ?>
+	</td>
+	<td align="left" colspan="3" >
 	    Synchronize media: Just upload your media to the paths:<br />
 	    Media product url: <?php echo VmConfig::get('media_product_path'); ?><br />
 	    Media category url: <?php echo VmConfig::get('media_category_path'); ?><br />
 	    Media manufacturer url: <?php echo VmConfig::get('media_manufacturer_path'); ?><br />
-
-	    You can change these urls in the config settings.
+<br />
+	    You can change these urls in the config settings.<br /><br />
+	    Renew config by file means that the config settings are reset by the values from the file /administrator/components/com_virtuemart/install/virtuemart_defaults.cfg
 	</td>
     </tr>
 
@@ -149,15 +166,6 @@ defined('_JEXEC') or die('Restricted access');
             <?php echo Jtext::_('COM_VIRTUEMART_UPDATE_REMOVETABLES'); ?>
 	</td>
 
-	<td align="center">
-		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=renewConfig&token='.JUtility::getToken() ); ?>
-	    <span onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_TOOLS_RENEW_CONFIG_CONFIRM'); ?>', '<?php echo $link; ?>');">
-		<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
-	    </span>
-	    <br />
-            <?php echo Jtext::_('COM_VIRTUEMART_TOOLS_RENEW_CONFIG'); ?>
-	</td>
-
     <td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=refreshCompleteInstall&token='.JUtility::getToken() ); ?>
 	    <span onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH_CONFIRM'); ?>', '<?php echo $link; ?>');">
@@ -167,14 +175,14 @@ defined('_JEXEC') or die('Restricted access');
             <?php echo Jtext::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH'); ?>
 	</td>
 
-    <td align="center">
+<?php /*   <td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=updateTable&token='.JUtility::getToken() ); ?>
 	    <span onclick="javascript:confirmation('<?php echo JText::_('UPDATE table'); ?>', '<?php echo $link; ?>');">
 		<img src="components/com_virtuemart/assets/images/icon_48/vm_trash_48.png">
 	    </span>
 	    <br />
             <?php echo Jtext::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH'); ?>
-	</td>
+	</td> */ ?>
     </tr>
 </table>
 

@@ -293,7 +293,7 @@ class ShopFunctions {
 
 	/**
 	* Render a simple state list
-	* @author jseros
+	* @author jseros, Patrick Kohl
 	*
 	* @param int $stateID Selected state id
 	* @param int $countryID Selected country id
@@ -312,10 +312,9 @@ class ShopFunctions {
 			$attrs='size="1"';
 		}
 
-		
 		$listHTML ='<select class="inputbox multiple" id="virtuemart_state_id" name="virtuemart_state_id[]" '.$attrs.'>
-					<OPTION >'.JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION').'</OPTION>
-				</select>';
+						<OPTION >'.JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION').'</OPTION>
+						</select>';
 
 		return $listHTML;
 	}

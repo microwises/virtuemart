@@ -377,12 +377,15 @@ class VirtueMartModelProduct extends VmModel {
 			$product->virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0);
 			if  ($product->virtuemart_category_id >0) {
 				$q = 'SELECT `ordering`,`id` FROM `#__virtuemart_product_categories`
-					WHERE `virtuemart_product_id` = "'.$this->_id.'" and virtuemart_category_id='.$product->virtuemart_category_id;
+					WHERE `virtuemart_product_id` = "'.$this->_id.'" and `virtuemart_category_id`= "'.$product->virtuemart_category_id.'" ';
 				$this->_db->setQuery($q);
 				// change for faster ordering
 				$ordering = $this->_db->loadObject();
-				$product->ordering = $ordering->ordering;
-				$product->id = $ordering->id;
+				if(!empty($ordering)){
+					$product->ordering = $ordering->ordering;
+					$product->id = $ordering->id;
+				}
+
 			}
 			if (empty($product->virtuemart_category_id) && isset($product->categories[0])) $product->virtuemart_category_id = $product->categories[0];
 
@@ -828,7 +831,7 @@ class VirtueMartModelProduct extends VmModel {
 		// Process the images
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		$mediaModel = new VirtueMartModelMedia();
-		vmdebug('my data in product store ',$data);
+// 		vmdebug('my data in product store ',$data);
 		$mediaModel->storeMedia($data,'product');
 		$errors = $mediaModel->getErrors();
 		foreach($errors as $error){
