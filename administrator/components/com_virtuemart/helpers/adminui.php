@@ -61,10 +61,12 @@ class AdminUIHelper {
         <?php 
         // Include ALU System
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
-echo LiveUpdate::getIcon(array(),'notice');
+
 ?>
          	<div class="menu-wrapper">
-		<?php AdminUIHelper::showAdminMenu(); ?>
+		<?php AdminUIHelper::showAdminMenu(); 
+		echo LiveUpdate::getIcon(array(),'notice');
+		?>
         	</div>
 
 

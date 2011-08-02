@@ -251,7 +251,7 @@ if (empty ( $this->product )) {
 					if (strtolower(JRequest::getWord('output')) == "pdf"){
 						echo JHTML::_('link', $link, $text);
 					} else { ?>
-						<span class="bold"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') ?></span><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a>
+						<span class="bold"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL') ?></span><a class="modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $link ?>"><?php echo $text ?></a>
 				<?PHP } ?>
 				</div>
 				<?php } ?>
