@@ -48,7 +48,7 @@ foreach ( $this->categories as $category ) {
 					<?php echo $category->category_name ?>
 					<br />
 					<?php // if ($category->ids) {
-						echo $category->images[0]->displayMediaThumb(0,false);
+						echo $category->images[0]->displayMediaThumb("",false);
 					//} ?>
 					</a>
 				</h2>

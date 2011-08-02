@@ -111,7 +111,7 @@ if ( VmConfig::get('showCategory',1) ) {
 							<?php echo $category->category_name ?>
 							<br />
 							<?php // if ($category->ids) {
-								echo $category->images[0]->displayMediaThumb(0,false);
+								echo $category->images[0]->displayMediaThumb("",false);
 							//} ?>
 							</a>
 						</h2>

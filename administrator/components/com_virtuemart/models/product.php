@@ -395,7 +395,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
    		$this->productHasCustoms($this->_id);
-
+		$child = $this->getProductChilds($this->_id);
 			if($front){
 
 				// Add the product link  for canonical
@@ -421,7 +421,7 @@ class VirtueMartModelProduct extends VmModel {
 //				$product->vendor_name = VirtueMartModelVendor::getVendorName($product->virtuemart_vendor_id);
 
 				// set the custom variants
-				if ($this->hasproductCustoms) {
+				if ($this->hasproductCustoms or $child) {
 					if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 					$customfields = new VirtueMartModelCustomfields();
 					// Load the custom product fields
@@ -429,7 +429,7 @@ class VirtueMartModelProduct extends VmModel {
 
 					//  custom product fields for add to cart
 					$product->customfieldsCart = $customfields->getProductCustomsFieldCart($product);
-					if ($child = $this->getProductChilds($this->_id)) $product->customsChilds = $customfields->getProductCustomsChilds($child , $this->_id);
+					$product->customsChilds = $customfields->getProductCustomsChilds($child , $this->_id);
 				}
 
 

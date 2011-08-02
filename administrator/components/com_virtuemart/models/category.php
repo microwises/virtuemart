@@ -541,7 +541,7 @@ class VirtueMartModelCategory extends VmModel {
 		$db = JFactory::getDBO();
 		$childs = array();
 
-		$q = "SELECT `virtuemart_category_id`, `category_child_id`, `category_name`
+		$q = "SELECT `#__virtuemart_categories`.*, `category_child_id`
 			FROM `#__virtuemart_categories`, `#__virtuemart_category_categories`
 			WHERE `#__virtuemart_category_categories`.`category_parent_id` = ".(int)$virtuemart_category_id."
 			AND `#__virtuemart_categories`.`virtuemart_category_id`=`#__virtuemart_category_categories`.`category_child_id`
