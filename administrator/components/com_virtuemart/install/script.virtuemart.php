@@ -38,7 +38,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			require_once($this->path.DS.'helpers'.DS.'config.php');
 			JTable::addIncludePath($this->path.DS.'tables');
 			JModel::addIncludePath($this->path.DS.'models');
-			VmConfig::loadConfig();
+
 		}
 
 		/**
@@ -50,19 +50,23 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 */
 		public function preflight ($type, $parent=null) {
 
-			$db = JFactory::getDBO();
-			$query = 'SHOW TABLES LIKE "%virtuemart_adminmenuentries"';
-
-			$db->setQuery($query);
-			$result = $db->loadResult();
-
 			$update = false;
 
-			if (!empty($result) ) {
+			$db = JFactory::getDBO();
+			
+			$q = "SELECT count(id) AS idCount FROM `#__virtuemart_adminmenuentries`";
+			$db->setQuery($q);
+			$result = $db->loadResult();
+			echo 'Result <pre>'.print_r($result,1).'</pre>';
+			if (empty($result)) {
+				$update = false;
+			} else {
 				$update = true;
 			}
-
-			JRequest::setVar('newInstall', $update);
+			
+			echo 'Update? <pre>'.print_r($update,1).'</pre>';
+			
+			JRequest::setVar('update', $update);
 			// return true so com_install wrapper will know what to do in j1.5
 			if ($parent == null) {
 				return $update;
@@ -81,7 +85,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * @return boolean True on success
 		 */
 		public function install ($parent=null) {
-
+			echo 'execute install';
 			$this->loadVm();
 			// install essential and required data
 			// should this be covered in install.sql (or 1.6's JInstaller::parseSchemaUpdates)?
@@ -107,7 +111,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * @return boolean True on success
 		 */
 		public function update ($parent=null) {
-
+			echo 'execute update';
 			$this->loadVm();
 			$db = JFactory::getDBO();
 			$query = 'SHOW COLUMNS FROM `#__virtuemart_products` ';

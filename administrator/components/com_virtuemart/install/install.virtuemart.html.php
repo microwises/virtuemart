@@ -19,10 +19,11 @@ $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
 		</td>
 		<td>
 			<h1><?php
-			if(JRequest::getWord('newInstall',false)){
-				echo JText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
-			} else {
+
+			if(JRequest::getWord('update',false)){
 				echo JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
+			} else {
+				echo JText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
 			}
 			 ?></h1>
 			<br /><br />
@@ -30,7 +31,7 @@ $lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
 			<table width="50%">
 			<tr>
 				<?php
-					if(JRequest::getWord('newInstall')){
+					if(!JRequest::getWord('update',false)){
 					?>	<td width="50%" align="center">
 						<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JUtility::getToken()); ?>">
 						<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
