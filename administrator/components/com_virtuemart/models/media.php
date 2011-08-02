@@ -242,31 +242,6 @@ class VirtueMartModelMedia extends VmModel {
 
 		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
 
-
-		//update Media =>active_media_id !=0,  virtuemart_media_id !=0  media_action=0
-// 		if(!empty($data['active_media_id']) && empty($data['media_action'] ){
-// 			update Media
-
-// 		}
-
-		//upload media active_media_id!=0,  virtuemart_media_id = 0 && !=0
-
-
-		//store related media virtuemart_media_id!=0
-
-// 		if( !(empty($data['virtuemart_media_id']) && empty($data['file_title']) && empty($data['file_name']) && empty($data['active_media_id'])) ){
-		//All ids are empty, no upload action. => means delete all relations
-		if(empty($data['virtuemart_media_id']) && empty($data['active_media_id']) && empty($data['media_action']) ){
-
-			$table = $this->getTable($type.'_medias');
-			$table ->deleteRelation();
-			$errors = $table->getErrors();
-			foreach($errors as $error){
-				$this->setError($error);
-			}
-			return 0;
-		}
-
 		//the active media id is not empty, so there should be something done with it
 		if(!empty($data['active_media_id'])){
 			$oldIds = $data['virtuemart_media_id'];
@@ -281,15 +256,14 @@ class VirtueMartModelMedia extends VmModel {
 		}
 
 		//set the relations
-		if(!empty($data['virtuemart_media_id'])){
-			$table = $this->getTable($type.'_medias');
-			// Bind the form fields to the country table
-			$data = $table->bindChecknStore($data);
-			$errors = $table->getErrors();
-			foreach($errors as $error){
-				$this->setError($error);
-			}
+		$table = $this->getTable($type.'_medias');
+		// Bind the form fields to the country table
+		$data = $table->bindChecknStore($data);
+		$errors = $table->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
 		}
+
 
 
 		return $this->_id;
