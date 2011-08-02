@@ -255,30 +255,33 @@ class VirtueMartModelMedia extends VmModel {
 		//store related media virtuemart_media_id!=0
 
 // 		if( !(empty($data['virtuemart_media_id']) && empty($data['file_title']) && empty($data['file_name']) && empty($data['active_media_id'])) ){
+		//All ids are empty, no upload action. => means delete all relations
 		if(empty($data['virtuemart_media_id']) && empty($data['active_media_id']) && empty($data['media_action']) ){
 
 			$table = $this->getTable($type.'_medias');
 			$table ->deleteRelation();
-
+			$errors = $table->getErrors();
+			foreach($errors as $error){
+				$this->setError($error);
+			}
+			return 0;
 		}
-		else if( !(empty($data['virtuemart_media_id']) && empty($data['file_title']) && empty($data['file_name']) && empty($data['active_media_id'])) ){
-// 		else if(empty($data['upload']) && empty($data['virtuemart_media_id']) && empty($data['active_media_id']) ){
 
+		//the active media id is not empty, so there should be something done with it
+		if(!empty($data['active_media_id'])){
 			$oldIds = $data['virtuemart_media_id'];
 			$data['file_type'] = $type;
-
-			//We just update it, ensure data correctly set
-			if(!empty($data['media_action']) && !empty($data['active_media_id']) ){
-				$data['virtuemart_media_id'] = (int)$data['active_media_id'];
-				$this -> setId($data['virtuemart_media_id']);
-				$virtuemart_media_id = $this->store($data,$type);
-			}
-
-			// add the virtuemart_media_id & remove 0 and '' from $data
+			$data['virtuemart_media_id'] = (int)$data['active_media_id'];
+			$this -> setId($data['virtuemart_media_id']);
+			$virtuemart_media_id = $this->store($data,$type);
 			$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
 
 			$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
 
+		}
+
+		//set the relations
+		if(!empty($data['virtuemart_media_id'])){
 			$table = $this->getTable($type.'_medias');
 			// Bind the form fields to the country table
 			$data = $table->bindChecknStore($data);
@@ -287,6 +290,7 @@ class VirtueMartModelMedia extends VmModel {
 				$this->setError($error);
 			}
 		}
+
 
 		return $this->_id;
 
