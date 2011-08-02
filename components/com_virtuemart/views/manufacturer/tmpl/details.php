@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 	<div class="spacer">
 
 		<?php // Manufacturer Image
-		echo $this->manufacturer->images[0]->displayMediaThumb('','',0,0);?>
+		echo $this->manufacturer->images[0]->displayMediaThumb('',false);?>
 
 		<h1><?php echo $this->manufacturer->mf_name; ?></h1>
 

@@ -34,7 +34,7 @@
 			}
 				if ($latestProduct->virtuemart_media_id) {
 					echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$latestProduct->virtuemart_product_id.'&virtuemart_category_id='.$latestProduct->virtuemart_category_id),
-						$latestProduct->images[0]->displayMediaThumb('class="browseProductImage" border="0"'));
+						$latestProduct->images[0]->displayMediaThumb('class="browseProductImage" border="0"',true,'class="modal"'));
 				?>
 				<br /><br/>
 				<?php } ?>

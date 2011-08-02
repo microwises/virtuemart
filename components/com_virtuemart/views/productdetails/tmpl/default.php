@@ -96,7 +96,7 @@ if (empty ( $this->product )) {
 			<div class="additional-images">
 			<?php // List all Images
 			foreach ($this->product->images as $image) {
-				echo $image->displayMediaThumb('class="product-image"'); //'class="modal"'
+				echo $image->displayMediaThumb('class="product-image"',true,'class="modal"'); //'class="modal"'
 			} ?>
 			</div>
 		<?php } // Showing The Additional Images END ?>

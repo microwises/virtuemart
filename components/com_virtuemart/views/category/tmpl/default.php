@@ -205,7 +205,7 @@ foreach ( $this->products as $product ) {
 			<div class="spacer">
 				<div class="width30 floatleft center">
 					<?php /** @todo make image popup */
-							echo $product->images[0]->displayMediaThumb('class="browseProductImage" border="0" title="'.$product->product_name.'" ');
+							echo $product->images[0]->displayMediaThumb('class="browseProductImage" border="0" title="'.$product->product_name.'" ',true,'class="modal"');
 						?>
 
 

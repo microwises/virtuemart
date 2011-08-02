@@ -47,7 +47,7 @@ class VirtuemartViewCategories extends JView {
 		$categoryModel = $this->getModel('category');
 	    $categoryId = JRequest::getInt('virtuemart_category_id', 0);
 	    $vendorId = 1; //Todo change that for multivendor
-
+		$this->assignRef('categoryModel', $categoryModel);
 //		$categoryId = 0;	//The idea is that you can choose a parent catgory, this value should come from the joomla view parameter stuff
 		$category = $categoryModel->getCategory($categoryId);
 		//if($category->children)	$categoryModel->addImages($category->children);
@@ -86,9 +86,9 @@ class VirtuemartViewCategories extends JView {
 	    }else {
 	    	$catTpl = $category->category_template;
 	    }
-
+		$this->setLayout('child');
 		//Do we need that here? It should show the general category template or the shop template
-	    shopFunctionsF::setVmTemplate($this,$catTpl,0,$category->category_layout);
+	    //shopFunctionsF::setVmTemplate($this,$catTpl,0,$category->category_layout);
 
 		parent::display($tpl);
 	}

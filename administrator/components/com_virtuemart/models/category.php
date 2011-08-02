@@ -95,7 +95,7 @@ class VirtueMartModelCategory extends VmModel {
 	 */
 	public function getChildCategoryList($vendorId, $virtuemart_category_id) {
 
-		$query = 'SELECT `#__virtuemart_categories`.`virtuemart_category_id`,`#__virtuemart_categories`.`category_name` ';
+		$query = 'SELECT `#__virtuemart_categories`.* ';
 		$query .= 'FROM `#__virtuemart_categories`, `#__virtuemart_category_categories` ';
 		$query .= 'WHERE `#__virtuemart_category_categories`.`category_parent_id` = ' . (int)$virtuemart_category_id . ' ';
 		$query .= 'AND `#__virtuemart_categories`.`virtuemart_category_id` = `#__virtuemart_category_categories`.`category_child_id` ';

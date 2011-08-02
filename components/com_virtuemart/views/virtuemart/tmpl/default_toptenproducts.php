@@ -67,7 +67,7 @@ foreach ( $this->toptenProducts as $topProduct ) {
 					<div>
 					<?php // Product Image
 					if ($topProduct->images) {
-						echo JHTML::_ ( 'link', JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $topProduct->virtuemart_product_id . '&virtuemart_category_id=' . $topProduct->virtuemart_category_id ), $topProduct->images[0]->displayMediaThumb( 'class="featuredProductImage" border="0"' ) );
+						echo JHTML::_ ( 'link', JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $topProduct->virtuemart_product_id . '&virtuemart_category_id=' . $topProduct->virtuemart_category_id ), $topProduct->images[0]->displayMediaThumb( 'class="featuredProductImage" border="0"',true,'class="modal"' ) );
 					}
 					?>
 					</div>
