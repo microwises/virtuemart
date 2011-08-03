@@ -41,14 +41,11 @@
 		function sendtocart(form){
 
 			var datas = form.serialize();
-		//	$.post('index.php?option=com_virtuemart&view=cart&task=addJS&format=raw', datas, 
-//			$.post('index.php?option=com_virtuemart&view=cart&task=addJS', datas, 
 			$.getJSON('index.php?option=com_virtuemart&view=cart&task=addJS&format=json',encodeURIComponent(datas),
 				function(datas, textStatus) {
 					if(datas.stat !=0){
 						var value = form.find('.quantity-input').val() ;
 						var txt = value+" "+form.find(".pname").val()+' '+vmCartText;
-//						$("#productCartModule").html(datas+"<div>"+txt+"</div>"); This is for module . not implemented @ Patrick Kohl
 						$.facebox({ text: datas.msg +"<H4>"+txt+"</H4>",
 							closeImage : closeImage,
 							loadingImage : loadingImage,
@@ -62,8 +59,8 @@
 						}, 'my-groovy-style');
 					}
 					if ($(".vmCartModule")[0]) {
-						jQuery.ajaxSetup({ cache: false })
-						$().productUpdate();
+						$.ajaxSetup({ cache: false })
+						$($(".vmCartModule")).productUpdate();
 					}
 				});
 			return false;
@@ -102,47 +99,32 @@
 	}
 	
 	$.fn.productUpdate = function() {
-	jQuery.getJSON("index.php?option=com_virtuemart&view=cart&task=viewJS&format=json",
+	mod = $(this);
+	$.getJSON("index.php?option=com_virtuemart&view=cart&task=viewJS&format=json",
 		function(datas, textStatus) {
 						
 			if (datas.totalProduct >0) {
-				product = productDisplay (datas.products) ;
-				// jQuery(".vmCartModule .products").html(product);
-				
-				jQuery(".vmCartModule .total").html(datas.billTotal);
-				jQuery(".vmCartModule .show_cart").html(datas.cart_show);
-				//jQuery(".vmCartModule .ajax_msg").html(datas.ajax_msg+" "+cart_add_to);
+				product = productDisplay (mod , datas.products) ;
+				mod.find(".total").html(datas.billTotal);
+				mod.find(".show_cart").html(datas.cart_show);
 			}
-			jQuery(".vmCartModule .total_products").html(datas.totalProductTxt);
-			/*if (datas.view == 0 ) { 
-				jQuery.facebox({ text: "<H4>"+datas.ajax_msg+" "+cart_add_to+"</H4><div class=\'showcart\' >"+show_cart+"<div>",
-					closeImage : closeImage,
-					loadingImage : loadingImage ,
-					faceboxHtml : faceboxHtml
-				}, "my-groovy-style");
-			} else {
-				 jQuery.facebox({ text: "<H4>"+product+"</H4><div class=\'showcart\' >"+show_cart+"<div>",
-					closeImage : closeImage,
-					loadingImage : loadingImage ,
-					faceboxHtml : faceboxHtml
-				}, "my-groovy-style");
-			}*/
-			jQuery.ajaxSetup({ cache: true });
+			mod.find(".total_products").html(datas.totalProductTxt);
+			$.ajaxSetup({ cache: true });
 		});
 
-		function productDisplay (products) {
+		function productDisplay (mod ,products) {
 			
 			var items = "";
-			$(".vmCartModule .vm_cart_products").html("");
+			mod.find(".vm_cart_products").html("");
 			$.each(products, function(key, val) {
 				$("#hiddencontainer .container").clone().appendTo(".vmCartModule .vm_cart_products");
 				$.each(val, function(key, val) {
 				if ($("#hiddencontainer .container ."+key))
-					$(".vmCartModule .vm_cart_products ."+key+":last").html(val) ;
+					mod.find(".vm_cart_products ."+key+":last").html(val) ;
 					
 				});
 			});
-			return $(".vmCartModule .vm_cart_products").html();
+			return mod.find(".vm_cart_products").html();
 		}
 	}
 

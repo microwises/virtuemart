@@ -24,7 +24,7 @@ require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'help
 VmConfig::jPrice();
 VmConfig::cssSite();*/
 $jsVars  = ' jQuery(document).ready(function(){
-	jQuery().productUpdate();
+	jQuery($(".vmCartModule")).productUpdate();
 
 });' ;
 

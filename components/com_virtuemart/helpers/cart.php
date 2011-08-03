@@ -263,7 +263,7 @@ class VirtueMartCart {
 	public function removeProductCart($prod_id=0) {
 		/* Check for cart IDs */
 		if (empty($prod_id))
-		$prod_id = JRequest::getInt('cart_virtuemart_product_id');
+		$prod_id = JRequest::getVar('cart_virtuemart_product_id');
 		//		$prod_id = JRequest::get();
 		//		/* Check if the product ID is ok */
 		//		if (!$prod_ids || !is_array($prod_ids) || empty($prod_ids)) return;
