@@ -54,7 +54,6 @@ class VirtueMartViewVirtueMart extends JView {
 
 			$categoryId = JRequest::getInt('catid', 0);
 			$categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
-			dump ($categoryChildren);
 			$categoryModel->addImages($categoryChildren);
 
 			$this->assignRef('categories',	$categoryChildren);
