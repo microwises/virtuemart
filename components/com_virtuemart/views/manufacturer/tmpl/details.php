@@ -45,6 +45,6 @@ defined('_JEXEC') or die('Restricted access');
 		}
 		$ProductCategorylink = JROUTE::_('index.php?option=com_virtuemart&view=category&search=true&virtuemart_manufacturer_id=' . $this->manufacturer->virtuemart_manufacturer_id);
 		?>
-				<a href="<?php echo $ProductCategorylink; ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FROM_MF').$this->manufacturer->mf_name; ?></a>
+				<a href="<?php echo $ProductCategorylink; ?>"><?php echo JText::printf('COM_VIRTUEMART_PRODUCT_FROM_MF',$this->manufacturer->mf_name); ?></a>
 	</div>
 </div>
