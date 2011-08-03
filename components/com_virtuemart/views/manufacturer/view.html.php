@@ -41,7 +41,7 @@ class VirtuemartViewManufacturer extends JView {
 		$this->loadHelper('image');
 
 		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', 0);
-		$mf_categorie_id = JRequest::getInt('mf_categorie_id', 0);
+		$mf_category_id = JRequest::getInt('mf_category_id', 0);
 		// get necessary models
 		$model = & $this->getModel('manufacturer');
 		if ($virtuemart_manufacturer_id ) {
@@ -55,10 +55,10 @@ class VirtuemartViewManufacturer extends JView {
 			$pathway->addItem($manufacturer->mf_name);
 
 		} else {
-		$document->setTitle(JText::_('COM_VIRTUEMART_MANUFACTURER_PAGE')) ;
-		$manufacturers = $model->getManufacturers(true, true);
-		$model->addImages($manufacturers);
-		$this->assignRef('manufacturers',	$manufacturers);
+			$document->setTitle(JText::_('COM_VIRTUEMART_MANUFACTURER_PAGE')) ;
+			$manufacturers = $model->getManufacturers(true, true);
+			$model->addImages($manufacturers);
+			$this->assignRef('manufacturers',	$manufacturers);
 		}
 
 

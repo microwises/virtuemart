@@ -119,8 +119,8 @@ class VirtueMartModelMedia extends VmModel {
 	 * Retireve a list of files from the database. This is meant only for backend use
 	 *
      * @author Max Milbers
-     * @param string $onlyPuiblished True to only retreive the published files, false otherwise
-     * @param string $noLimit True if no record count limit is used, false otherwise
+     * @param boolean $onlyPublished True to only retreive the published files, false otherwise
+     * @param boolean $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of media objects
 	 */
     function getFiles($onlyPublished=false, $noLimit=false,  $count=false, $where=array()){
@@ -234,24 +234,31 @@ class VirtueMartModelMedia extends VmModel {
      *
      * @author Max Milbers
      * @author Patrick Kohl
-     * @param unknown_type $data
-     * @param unknown_type $table
-     * @param unknown_type $type
+     * @param array $data Data from a from
+     * @param string $type type of the media  category,product,manufacturer,shop, ...
      */
 	function storeMedia($data,$type){
 
 		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save media' );
 
 		//the active media id is not empty, so there should be something done with it
-		if(!empty($data['active_media_id'])){
+		if( (!empty($data['active_media_id']) && !empty($data['virtuemart_media_id']) ) || $data['media_action']=='upload'){
+
 			$oldIds = $data['virtuemart_media_id'];
 			$data['file_type'] = $type;
 			$data['virtuemart_media_id'] = (int)$data['active_media_id'];
-			$this -> setId($data['virtuemart_media_id']);
-			$virtuemart_media_id = $this->store($data,$type);
-			$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
 
-			$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
+			$this -> setId($data['virtuemart_media_id']);
+
+			$virtuemart_media_id = $this->store($data,$type);
+
+			if(!empty($oldIds)){
+				if(!is_array($oldIds)) $oldIds = array($oldIds);
+				$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
+				$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
+			} else {
+				$data['virtuemart_media_id'] = $virtuemart_media_id;
+			}
 
 		}
 
@@ -263,8 +270,6 @@ class VirtueMartModelMedia extends VmModel {
 		foreach($errors as $error){
 			$this->setError($error);
 		}
-
-
 
 		return $this->_id;
 

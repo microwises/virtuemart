@@ -248,7 +248,7 @@ class VmTableXarray extends VmTable {
     		vmError(get_class( $this ).':: store'.$this->_db->getErrorMsg(),'Couldnt delete relations');
     		return false;
     	}
-    	vmdebug('deleteRelation');
+
     	return true;
     }
 
