@@ -24,7 +24,7 @@ require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'help
 VmConfig::jPrice();
 VmConfig::cssSite();*/
 $jsVars  = ' jQuery(document).ready(function(){
-	jQuery($(".vmCartModule")).productUpdate();
+	jQuery(".vmCartModule").productUpdate();
 
 });' ;
 
@@ -39,38 +39,6 @@ $document = JFactory::getDocument();
 $document->addScriptDeclaration($jsVars);
 $show_price = (bool)$params->get( 'show_price', 1 ); // Display the Product Price?
 $show_product_list = (bool)$params->get( 'show_product_list', 1 ); // Display the Product Price?
+/* Laod tmpl default */
+require(JModuleHelper::getLayoutPath('mod_virtuemart_cart'));
  ?>
-<div class="vmCartModule">
-<?php
-if ($show_product_list) {
-	?>
-	<div id="hiddencontainer" style=" display: none; ">
-		<div class="container">
-			<?php if ($show_price) { ?>
-			  <div class="prices" style="float: right;"></div>
-			<?php } ?>
-			<div class="product_row">
-				<span class="quantity"></span>&nbsp;x&nbsp;<span class="product_name"></span>
-			</div>
-
-			<div class="product_attributes"></div>
-		</div>
-	</div>
-
-<div class="vm_cart_products">
-
-<?php
-// ALL THE DISPLAY IS Done by Ajax in hiddencontainer
-?>
-</div>
-<?php
-}
-?>
-<div class="total" style="float: right;"></div>
-<div class="total_products"><img src="components/com_virtuemart/assets/images/vmgeneral/cart-loading.gif"><img src="components/com_virtuemart/assets/images/vmgeneral/cart-loading.gif"></div>
-<div class="show_cart"></div>
-<noscript>
-<?php echo JText::_('MOD_VIRTUEMART_CART_AJAX_CART_PLZ_JAVASCRIPT') ?>
-</noscript>
-</div>
-

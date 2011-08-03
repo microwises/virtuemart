@@ -11,6 +11,9 @@
 	<description>MOD_VIRTUEMART_CART_DESC</description>
 	<files>
 		<filename module="mod_virtuemart_cart">mod_virtuemart_cart.php</filename>
+		<filename>index.html</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>tmpl/index.html</filename>
 	</files>
 	<params>
 		<param name="moduleclass_sfx" type="text" default=""

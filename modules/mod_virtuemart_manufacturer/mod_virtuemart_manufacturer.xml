@@ -11,10 +11,10 @@
     <description>MOD_VIRTUEMART_MANUFACTURER_DESC</description>
     <files>
         <filename module="mod_virtuemart_manufacturer">mod_virtuemart_manufacturer.php</filename>
-        <filename module="mod_virtuemart_manufacturer">index.html</filename>
-        <filename module="mod_virtuemart_manufacturer">helper.php</filename>
-        <filename module="mod_virtuemart_manufacturer">tmpl/default.php</filename>
-        <filename module="mod_virtuemart_manufacturer">tmpl/index.html</filename>
+        <filename>index.html</filename>
+        <filename>helper.php</filename>
+        <filename>tmpl/default.php</filename>
+        <filename>tmpl/index.html</filename>
     </files>
     <params>
         <param name="show" type="list" default="all"

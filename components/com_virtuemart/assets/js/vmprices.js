@@ -11,23 +11,21 @@
 			radio = cart.find('input:radio'),
 			virtuemart_product_id = cart.find('input[name="virtuemart_product_id[]"]').val(),
 			quantity = cart.find('.quantity-input');
-			//console.log(virtuemart_product_id);
-			
-			addtocart.bind('click',function(e) { 
-				e.preventDefault();
+
+			addtocart.click(function(e) { 
 				sendtocart(cart);
+				return false;
 			});
 			plus.click(function() {
-				currentVal = parseInt(quantity.val());
-				if (currentVal != NaN) {
-					quantity.val(currentVal + 1);
+				var Qtt = parseInt(quantity.val());
+				if (Qtt != NaN) {
+					quantity.val(Qtt + 1);
 				}
 			});
-
 			minus.click(function() {
-				currentVal = parseInt(quantity.val());
-				if (currentVal != NaN && currentVal>0) {
-					quantity.val(currentVal - 1);
+				var Qtt = parseInt(quantity.val());
+				if (Qtt != NaN && Qtt>0) {
+					quantity.val(Qtt - 1);
 				}
 			});
 			select.change(function() {
@@ -60,10 +58,9 @@
 					}
 					if ($(".vmCartModule")[0]) {
 						$.ajaxSetup({ cache: false })
-						$($(".vmCartModule")).productUpdate();
+						$(".vmCartModule").productUpdate();
 					}
 				});
-			return false;
 		};
 
 		function setproducttype(form,id){
@@ -72,60 +69,38 @@
 			prices = $("#productPrice"+id);
 			prices.fadeTo("slow", 0.33);
 			$.getJSON('index.php?option=com_virtuemart&view=productdetails&task=recalculate&format=json',encodeURIComponent(datas),
-			
 				function(datas, textStatus) {
-					var pid= '';
 					prices.fadeTo("slow", 1);
-		//	toggle the div Prices
+					// refresh price
 					for(key in datas) {
 						var value = datas[key];
-						pid= prices.find(".Price"+key);
-						togglePriceVisibility(value,pid);
+						if (value!=0) prices.find(".Price"+key).show().html(value);
+						else prices.find(".Price"+key).html(0).hide();
 					}
 				});
-			return false; // prevent to reload the page
+			return false; // prevent reload
 		};
-
-		function togglePriceVisibility(newPrice,span){
-			
-			if(newPrice!=0){
-				span.show();
-				span.html(newPrice);
-			} else {
-				span.html(0);
-				span.hide();
-			}
-		}
 	}
 	
 	$.fn.productUpdate = function() {
 	mod = $(this);
-	$.getJSON("index.php?option=com_virtuemart&view=cart&task=viewJS&format=json",
-		function(datas, textStatus) {
-						
-			if (datas.totalProduct >0) {
-				product = productDisplay (mod , datas.products) ;
-				mod.find(".total").html(datas.billTotal);
-				mod.find(".show_cart").html(datas.cart_show);
+		$.getJSON("index.php?option=com_virtuemart&view=cart&task=viewJS&format=json",
+			function(datas, textStatus) {
+				if (datas.totalProduct >0) {
+					mod.find(".vm_cart_products").html("");
+					$.each(datas.products, function(key, val) {
+						$("#hiddencontainer .container").clone().appendTo(".vmCartModule .vm_cart_products");
+						$.each(val, function(key, val) {
+							if ($("#hiddencontainer .container ."+key)) mod.find(".vm_cart_products ."+key+":last").html(val) ;
+						});
+					});
+					mod.find(".total").html(datas.billTotal);
+					mod.find(".show_cart").html(datas.cart_show);
+				}
+				mod.find(".total_products").html(datas.totalProductTxt);
+				$.ajaxSetup({ cache: true });
 			}
-			mod.find(".total_products").html(datas.totalProductTxt);
-			$.ajaxSetup({ cache: true });
-		});
-
-		function productDisplay (mod ,products) {
-			
-			var items = "";
-			mod.find(".vm_cart_products").html("");
-			$.each(products, function(key, val) {
-				$("#hiddencontainer .container").clone().appendTo(".vmCartModule .vm_cart_products");
-				$.each(val, function(key, val) {
-				if ($("#hiddencontainer .container ."+key))
-					mod.find(".vm_cart_products ."+key+":last").html(val) ;
-					
-				});
-			});
-			return mod.find(".vm_cart_products").html();
-		}
+		);
 	}
 
 })(jQuery);

@@ -11,12 +11,12 @@
     <description>MOD_VIRTUEMART_CATEGORY_DESC</description>
     <files>
         <filename module="mod_virtuemart_category">mod_virtuemart_category.php</filename>
-        <filename module="mod_virtuemart_category">helper.php</filename>
-        <filename module="mod_virtuemart_category">index.html</filename>
-        <filename module="mod_virtuemart_category">tmpl/all.php</filename>
-        <filename module="mod_virtuemart_category">tmpl/current.php</filename>
-        <filename module="mod_virtuemart_category">tmpl/default.php</filename>
-        <filename module="mod_virtuemart_category">tmpl/index.html</filename>
+        <filename>helper.php</filename>
+        <filename>index.html</filename>
+        <filename>tmpl/all.php</filename>
+        <filename>tmpl/current.php</filename>
+        <filename>tmpl/default.php</filename>
+        <filename>tmpl/index.html</filename>
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param name="Parent_Category_id" type="vmcategories"  value_field="category_name" label="MOD_VIRTUEMART_CATEGORY_PARENT_CATEGORY_ID" description="MOD_VIRTUEMART_CATEGORY_CHOOSE." />

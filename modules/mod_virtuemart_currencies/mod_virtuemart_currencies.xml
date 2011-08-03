@@ -11,9 +11,9 @@
     <description>MOD_VIRTUEMART_CURRENCIES_DESC</description>
     <files>
         <filename module="mod_virtuemart_currencies">mod_virtuemart_currencies.php</filename>
-        <filename module="mod_virtuemart_currencies">index.html</filename>
-        <filename module="mod_virtuemart_currencies">tmpl/default.php</filename>
-        <filename module="mod_virtuemart_currencies">tmpl/index.html</filename>
+        <filename>index.html</filename>
+        <filename>tmpl/default.php</filename>
+        <filename>tmpl/index.html</filename>
     </files>
     <params>
         <param name="text_before" type="textarea" cols="40" rows="3"
