@@ -25,7 +25,7 @@ $j15 = VmConfig::isJ15();
 
 ?>
 
-<form action="<?php echo JRoute::_( 'index.php' );?>" method="post" name="adminForm">
+<form action="<?php echo JRoute::_( 'index.php' );?>" method="post" name="adminForm" id="adminForm">
 	<div id="header">
 	<div id="filterbox">
 		<table>

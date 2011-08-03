@@ -23,7 +23,7 @@ AdminUIHelper::startAdminArea();
 AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUNTRY_DETAILS');
 ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 
 
 <div class="col50">

@@ -32,7 +32,7 @@ JPluginHelper::importPlugin('vmshipper');
 $tt=$this;
 ?>
 
-<form name='adminForm' >
+<form name='adminForm' id="adminForm">
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="option" value="com_virtuemart" />
 		<input type="hidden" name="view" value="orders" />

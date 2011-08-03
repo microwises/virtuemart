@@ -24,7 +24,7 @@ AdminUIHelper::startAdminArea();
 AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 ?>
 
-<form id="adminform" action="index.php" method="post" name="adminForm">
+<form id="adminform" action="index.php" method="post" name="adminForm" id="adminForm">
 
 
 <div class="col50">

@@ -23,7 +23,7 @@ AdminUIHelper::startAdminArea();
 
 ?>
 
-<form enctype="multipart/form-data" action="index.php" method="post" name="adminForm">
+<form enctype="multipart/form-data" action="index.php" method="post" name="adminForm" id="adminForm">
 
 <?php // Loading Templates in Tabs
 $tabarray = array();

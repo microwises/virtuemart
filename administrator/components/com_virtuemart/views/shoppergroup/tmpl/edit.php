@@ -23,7 +23,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_SHOPPERGROUP_NAME');
 ?>
 
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 
 <div class="col50">
 	<fieldset class="adminform">

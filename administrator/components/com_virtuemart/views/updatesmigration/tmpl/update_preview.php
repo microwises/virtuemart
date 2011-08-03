@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea(); 
 ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 
 <a name="warning"></a>
 <div class="shop_warning">

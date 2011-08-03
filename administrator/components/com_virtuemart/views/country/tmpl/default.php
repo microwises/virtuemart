@@ -23,7 +23,7 @@ AdminUIHelper::startAdminArea();
 
 ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 	<div id="header">
 	<div id="filterbox">
 		<table>

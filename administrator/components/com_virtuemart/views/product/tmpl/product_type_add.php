@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 AdminUIHelper::startAdminArea(); 
 ?>
-<form method="post" name="adminForm" action="index.php" enctype="multipart/form-data">
+<form method="post" name="adminForm" id="adminForm" action="index.php" enctype="multipart/form-data">
 <table class="adminform">
 	<tr> 
 		<td width="23%" height="20" valign="middle" > 
