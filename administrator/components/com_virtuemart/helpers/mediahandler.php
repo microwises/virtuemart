@@ -17,7 +17,7 @@ class VmMediaHandler {
 
 	var $media_attributes = 0;
 
-	private function __construct($id=0){
+	function __construct($id=0){
 
 		$this->virtuemart_media_id = $id;
 

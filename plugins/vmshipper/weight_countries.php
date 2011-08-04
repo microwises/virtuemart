@@ -98,7 +98,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 		$scheme->define_scheme($schemeCols);
 		$scheme->define_index($schemeIdx);
 		if (!$scheme->scheme(true)) {
-			JError::raiseWarning(500, $scheme->get_db_error());
+			JError::raiseWarning(500, 'DbScheme _createTable'.$scheme->get_db_error());
 		}
 		$scheme->reset();
 	}

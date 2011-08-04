@@ -156,7 +156,7 @@ class VirtuemartViewPaymentMethod extends JView {
 		}
 		$listHTML='<select id="payment_jplugin_id" name="payment_jplugin_id">';
 
-		if(!class_exists('JParameter')) require(JPATH_LIBRARIES.DS.'joomla'.'html'.DS.'parameter.php' );
+		if(!class_exists('JParameter')) require(JPATH_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 		foreach($result as $paym){
 			$params = new JParameter($paym['params']);
 			if($paym[$ext_id]==$selected) $checked='selected="selected"'; else $checked='';
