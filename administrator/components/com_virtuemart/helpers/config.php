@@ -206,7 +206,8 @@ class VmConfig{
 
 			return self::$_jpConfig;
 		}
-
+		$app = JFactory::getApplication();
+		$app ->enqueueMessage('Attention config is empty');
 		return 'Was not able to create config';
 	}
 
@@ -415,7 +416,7 @@ class VmConfig{
 		if ($JcountryStateList) return;
 		$document = JFactory::getDocument();
 		$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/vmsite.js');
-		$document->addScriptDeclaration(' jQuery( function($) { 
+		$document->addScriptDeclaration(' jQuery( function($) {
 			$("#virtuemart_country_id").vm2front("list",{dest : "#virtuemart_state_id",ids : "'.$stateIds.'"});
 		});');
 		$JcountryStateList = true;
