@@ -96,7 +96,7 @@ class VmMediaHandler {
 //			$isImage = self::isImage($file_mimetypee);
 //		}
 //		else if(!empty($table)){
-			if(!class_exists('JFile')) require(JPATH_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 //			$extension = $this->file_extension = strtolower(JFile::getExt($table->file_url));
 			$extension = strtolower(JFile::getExt($table->file_url));
 			$isImage = self::isImage($extension);
@@ -169,7 +169,7 @@ class VmMediaHandler {
     		$this->file_name = '';
     		$this->file_extension = '';
     	} else {
-	     	if(!class_exists('JFile')) require(JPATH_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+	     	if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 
 	    	$lastIndexOfSlash= strrpos($this->file_url,'/');
 

@@ -87,7 +87,7 @@ abstract class vmShipperPlugin extends JPlugin {
     function __construct(& $subject, $config) {
         parent::__construct($subject, $config);
         $this->carrier = array();
-        if(!class_exists('JParameter')) require(JPATH_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
+        if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
     }
 
     /**
@@ -679,7 +679,7 @@ abstract class vmShipperPlugin extends JPlugin {
 
         $shipping->shipping_name = $this->getThisShipperName($shipping);
 
-        if(!class_exists('JParameter')) require(JPATH_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
+        if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
         $params = new JParameter($shipping->shipping_carrier_params);
         $shipping->shipping_rate_vat_id = $params->get('tax_id');
         $shipping->shipping_value = $params->get('shipping_value');

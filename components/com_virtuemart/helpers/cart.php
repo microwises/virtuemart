@@ -64,7 +64,7 @@ class VirtueMartCart {
 	public static function getCart($deleteValidation=true) {
 
 		if (!class_exists('JTable')
-		)require(JPATH_LIBRARIES . DS . 'joomla' . DS . 'database' . DS . 'table.php');
+		)require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'database' . DS . 'table.php');
 		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
 
 		$session = JFactory::getSession();

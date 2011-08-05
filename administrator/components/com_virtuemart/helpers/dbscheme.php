@@ -24,7 +24,7 @@
  * and define_index() methods.
  * Next, the scheme() method will create or modify the table if necessary.
  * Do not forget to cleanup this singleton object afterwards using reset()
- * 
+ *
  * @author Oscar van Eijk
  * @example
  * 	$_scheme = DbScheme::get_instance();	// Get an instance
@@ -284,7 +284,7 @@ class DbScheme
 					}
 				}
 			}
-			
+
 		}
 		if (!array_key_exists('indexes', $this->scheme) || count($this->scheme['indexes']) == 0) {
 			// No indexes exist - should we warn about that?
@@ -402,7 +402,7 @@ class DbScheme
 				$this->db->setQuery('ALTER TABLE ' . $this->table . ' DROP ' . $_fld);
 				if (!$this->db->query()) {
 					return false;
-				} 
+				}
 			}
 		}
 		if (array_key_exists('mod', $_diffs) && count($_diffs['mod']['columns']) > 0) {
@@ -413,7 +413,7 @@ class DbScheme
 				$this->db->setQuery($_qry);
 				if (!$this->db->query()) {
 					return false;
-				} 
+				}
 			}
 		}
 		if (array_key_exists('add', $_diffs) && count($_diffs['add']['columns']) > 0) {
@@ -424,7 +424,7 @@ class DbScheme
 				$this->db->setQuery($_qry);
 				if (!$this->db->query()) {
 					return false;
-				} 
+				}
 			}
 		}
 		return true;
@@ -478,26 +478,31 @@ class DbScheme
 		$this->db->setQuery('SHOW FULL COLUMNS FROM ' . $_tablename);
 		$_data = $this->db->loadObjectList();
 
-		foreach ($_data as $_key => $_record) {
-			if (preg_match("/(.+)\((\d+,?\d*)\)\s?(unsigned)?\s?(zerofill)?/i", $_record->Type, $_matches)) {
-				$_descr[$_record->Field]['type'] = $_matches[1];
-				$_descr[$_record->Field]['length'] = $_matches[2];
-				$_descr[$_record->Field]['unsigned'] = (@$_matches[3] == 'unsigned');
-				$_descr[$_record->Field]['zerofill'] = (@$_matches[4] == 'zerofill');
-			} else {
-				$_descr[$_record->Field]['type'] = $_record->Type;
-			}
-			$_descr[$_record->Field]['null']     = ($_record->Null == 'YES');
-			$_descr[$_record->Field]['auto_inc'] = (preg_match("/auto_inc/i", $_record->Extra));
+		if(empty($_data)){
+			vmError(get_class( $this ).' failed to load columns for table '.$_tablename,get_class( $this ).' failed to load columns for table');
+			//vmdebug(get_class( $this ).' failed to load columns for table '.$_tablename,$this,1);
+		} else {
+			foreach ($_data as $_key => $_record) {
+				if (preg_match("/(.+)\((\d+,?\d*)\)\s?(unsigned)?\s?(zerofill)?/i", $_record->Type, $_matches)) {
+					$_descr[$_record->Field]['type'] = $_matches[1];
+					$_descr[$_record->Field]['length'] = $_matches[2];
+					$_descr[$_record->Field]['unsigned'] = (@$_matches[3] == 'unsigned');
+					$_descr[$_record->Field]['zerofill'] = (@$_matches[4] == 'zerofill');
+				} else {
+					$_descr[$_record->Field]['type'] = $_record->Type;
+				}
+				$_descr[$_record->Field]['null']     = ($_record->Null == 'YES');
+				$_descr[$_record->Field]['auto_inc'] = (preg_match("/auto_inc/i", $_record->Extra));
 
-			if (preg_match("/(enum|set)\((.+),?\)/i", $_record->Type, $_matches)) {
-				// Value list for ENUM and SET type
-				$_descr[$_record->Field]['type'] = $_matches[1];
-				$_descr[$_record->Field]['options']  = explode(',', $_matches[2]);
-			}
+				if (preg_match("/(enum|set)\((.+),?\)/i", $_record->Type, $_matches)) {
+					// Value list for ENUM and SET type
+					$_descr[$_record->Field]['type'] = $_matches[1];
+					$_descr[$_record->Field]['options']  = explode(',', $_matches[2]);
+				}
 
-			$_descr[$_record->Field]['default'] = ($_record->Default == 'NULL') ? '' : $_record->Default;
-			$_descr[$_record->Field]['comment'] = $_record->Comment;
+				$_descr[$_record->Field]['default'] = ($_record->Default == 'NULL') ? '' : $_record->Default;
+				$_descr[$_record->Field]['comment'] = $_record->Comment;
+			}
 		}
 		return $_descr;
 	}
@@ -513,7 +518,7 @@ class DbScheme
 		$_descr = array ();
 		$this->db->setQuery('SHOW INDEXES FROM ' . $_tablename);
 		$_data = $this->db->loadObjectList();
-		
+
 		foreach ($_data as $key => $_record) {
 			$_index[$_record->Key_name]['columns'][$_record->Seq_in_index] = $_record->Column_name;
 			$_index[$_record->Key_name]['unique'] = (!$_record->Non_unique);
@@ -531,10 +536,15 @@ class DbScheme
 	 */
 	private function _table_exists($tablename)
 	{
-		// No idea why I have to call replacePrefix() myself.... but without it, this doesn; work.
-		// Probably because the tablename is quoted here.
-		$_qry = "SHOW TABLES LIKE '".$this->db->replacePrefix($tablename)."'";
-		$this->db->setQuery($_qry);
+
+		if(VmConfig::isJ15()){
+			$qry = "SHOW TABLES LIKE '".$this->db->replacePrefix($tablename)."'";
+		} else {
+			$realTableName = str_replace('#__', $this->db->getPrefix(),$tablename);
+			$qry = "SHOW TABLES LIKE '".$realTableName."'";
+		}
+
+		$this->db->setQuery($qry);
 		return ($this->db->loadResult() != null);
 	}
 

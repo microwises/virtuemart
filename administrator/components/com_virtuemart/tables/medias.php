@@ -172,7 +172,7 @@ class TableMedias extends VmTable {
 //				restore_error_handler();
 			     //$this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);
 		     } else {
-			     if(!class_exists('JFile')) require(JPATH_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+			     if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 
 			     $lastIndexOfSlash= strrpos($this->file_url,'/');
 			     $name = substr($this->file_url,$lastIndexOfSlash+1);
