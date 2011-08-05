@@ -53,20 +53,17 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$update = false;
 
 			$db = JFactory::getDBO();
-			
+
 			$q = "SELECT count(id) AS idCount FROM `#__virtuemart_adminmenuentries`";
 			$db->setQuery($q);
 			$result = $db->loadResult();
-			echo 'Result <pre>'.print_r($result,1).'</pre>';
+
 			if (empty($result)) {
 				$update = false;
 			} else {
 				$update = true;
 			}
-			
-			echo 'Update? <pre>'.print_r($update,1).'</pre>';
-			
-			JRequest::setVar('update', $update);
+
 			// return true so com_install wrapper will know what to do in j1.5
 			if ($parent == null) {
 				return $update;
@@ -85,7 +82,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * @return boolean True on success
 		 */
 		public function install ($parent=null) {
-			echo 'execute install';
+
 			$this->loadVm();
 			// install essential and required data
 			// should this be covered in install.sql (or 1.6's JInstaller::parseSchemaUpdates)?
@@ -95,7 +92,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$model->setStoreOwner();
 
-			include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
+			$this->displayFinished(false);
+			//include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
 
 			// perhaps a redirect to updatesMigration here rather than the html file?
 //			$parent->getParent()->setRedirectURL('index.php?option=com_virtuemart&view=updatesMigration');
@@ -111,7 +109,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * @return boolean True on success
 		 */
 		public function update ($parent=null) {
-			echo 'execute update';
+
 			$this->loadVm();
 			$db = JFactory::getDBO();
 			$query = 'SHOW COLUMNS FROM `#__virtuemart_products` ';
@@ -125,8 +123,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$db->query();
 			}
 
+			$this->displayFinished(true);
 			// probably should just go to updatesMigration rather than the install success screen
-			include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
+// 			include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
 	//		$parent->getParent()->setRedirectURL('index.php?option=com_virtuemart&view=updatesMigration');
 
 			return true;
@@ -156,19 +155,68 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		public function postflight ($type, $parent=null) {
 			if ($type != 'uninstall') {
 
-				// is this going to be used?
-				// Get the uploaded file information
-	//			$userfile = JRequest::getVar('install_package', null, 'files', 'array' );
-
-// 				$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
-// 				$model->integrateJoomlaUsers();
-// 				$model->setStoreOwner();
 				$this->loadVm();
 				$config = JModel::getInstance('config', 'VirtueMartModel');
 				$config->setDangerousToolsOff();
 			}
 			return true;
 		}
+
+		public function displayFinished($update){
+
+			$lang = JFactory::getLanguage();
+			$lang->load('com_virtuemart.sys',JPATH_ADMINISTRATOR);
+			$lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
+
+			$html ='<link rel="stylesheet" href="components/com_virtuemart/assets/css/install.css" type="text/css" />
+
+			<div align="center">
+				<table width="100%" border="0">
+				<tr>
+					<td valign="top" align="center">
+						<a href="http://virtuemart.net" target="_blank">
+							<img border="0" align="center" src="components/com_virtuemart/assets/images/vm_menulogo.png" alt="Cart" />
+						</a>
+						<br /><br />
+						<h1>'.JText::_('COM_VIRTUEMART_WELCOME').'</h1>
+					</td>
+					<td>
+						<h1>';
+
+						if($update){
+							$html .= JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
+						} else {
+							$html .= JText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
+						}
+						$html .= '</h1>
+						<br /><br />
+
+						<table width="50%">
+						<tr>';
+
+						if(!$update){
+							$html .= '<td width="50%" align="center">
+									<a href="'.JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JUtility::getToken()).'">
+									<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
+									</a>
+									<br />'.JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA').'</td>';
+							}
+
+							$html .= '<td width="50%" align="center">
+								<a href="'.JROUTE::_('index.php?option=com_virtuemart').'">
+									<img src="components/com_virtuemart/assets/images/icon_48/vm_frontpage_48.png">
+								</a>
+								<br />'.JText::_('COM_VIRTUEMART_INSTALL_GO_SHOP').'
+							</td>
+						</tr>
+						</table>
+					</td>
+				</tr>
+				</table>
+			</div>';
+			echo $html;
+		}
+
 	}
 
 	/**
