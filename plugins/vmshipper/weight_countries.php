@@ -367,7 +367,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 			$zip_cond = true;
 		}
 
-
+		if(!isset($address['virtuemart_country_id'])) $address['virtuemart_country_id'] = 0;
 		if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
 			if ($weight_cond AND $zip_cond) {
 				return true;

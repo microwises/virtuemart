@@ -174,7 +174,13 @@ class VirtueMartModelOrders extends VmModel {
 			$_filter[] = ('u.virtuemart_user_id = ' . (int)$uid);
 		}*/
 
-		$query .= 'WHERE u.virtuemart_user_id = ' . (int)$uid.' AND o.virtuemart_vendor_id = "1" ';
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if(!Permissions::getInstance()->check('admin')){
+			$query .= 'WHERE u.virtuemart_user_id = ' . (int)$uid.' AND o.virtuemart_vendor_id = "1" ';
+		} else {
+			$query .= 'WHERE o.virtuemart_vendor_id = "1" ';
+		}
+
 
 		$query .= $this->_getOrdering('virtuemart_order_id', 'DESC');
 		if ($_ignorePagination) {
@@ -373,25 +379,28 @@ class VirtueMartModelOrders extends VmModel {
 	public function createOrderFromCart($cart)
 	{
 		if ($cart === null) {
-			$this->setError('createOrderFromCart() called without a cart - that\'s a programming bug');
+			vmError('createOrderFromCart() called without a cart - that\'s a programming bug','Can\'t create order, sorry.');
 			return false;
 		}
 
 		$usr = JFactory::getUser();
 		$prices = $cart->getCartPrices();
 		if (($orderID = $this->_createOrder($cart, $usr, $prices)) == 0) {
+			vmError('Couldn\'t create order','Couldn\'t create order');
 			return false;
 		}
 		if (!$this->_createOrderLines($orderID, $cart)) {
+			vmError('Couldn\'t create order items','Couldn\'t create order items');
 			return false;
 		}
 		$this->_updateOrderHist($orderID);
 		if (!$this->_writeUserInfo($orderID, $usr, $cart)) {
+			vmError('Couldn\'t create order history','Couldn\'t create order history');
 			return false;
 		}
 		$this->_handlePayment($orderID, $cart, $prices);
-                $this->_handleShipping($orderID, $cart, $prices);
-
+      $this->_handleShipping($orderID, $cart, $prices);
+		vmdebug('my order id',$orderID,1);
 		return $orderID;
 	}
 
@@ -424,7 +433,7 @@ class VirtueMartModelOrders extends VmModel {
 		$_orderData->virtuemart_user_id = $_usr->get('id');
 		$_orderData->virtuemart_vendor_id = $_cart->vendorId;
 		$_orderData->order_number = $this->generateOrderNumber($_usr->get('id'),8);
-		$_orderData->order_pass = 'p'.$this->generateOrderNumber($_orderData->order_number, 6);
+		$_orderData->order_pass = 'p_'.$this->generateOrderNumber($_orderData->order_number, 6);
 		//Note as long we do not have an extra table only storing addresses, the virtuemart_userinfo_id is not needed.
 		//The virtuemart_userinfo_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.
 		//the saved order should be an snapshot with plain data written in it.
@@ -704,7 +713,7 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	private function generateOrderNumber($uid = 0,$length=10)
 	{
-		return substr( $uid.'_'.md5( session_id().(string)time() )
+		return substr( md5( session_id().(string)time().(string)$uid )
 				,0
 				,$length
 		);
