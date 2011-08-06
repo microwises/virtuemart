@@ -252,7 +252,13 @@ Read more: http://www.nitinh.com/2010/03/sexy-tooltip-using-css3/#ixzz1SjDMxhqs 
 	filter:  progid:DXImageTransform.Microsoft.dropshadow(OffX=0px, OffY=0px, Color='#000'); /* IE6,IE7 */
 	-ms-filter: "progid:DXImageTransform.Microsoft.dropshadow(OffX=0px, OffY=0px, Color='#000')"; /* IE8 */
 }
- 
+.media-pagination span{padding:6px; margin-left: 2px;
+	border:solid 1px #075698;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	}
+.media-pagination span:hover, .media-pagination span.media-page-selected{background:  #CAC9C9;cursor: pointer;}
 /* creates triangle */
 /* .hasTip:before{
 	z-index:13;

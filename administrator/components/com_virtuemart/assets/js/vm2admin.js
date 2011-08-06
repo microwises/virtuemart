@@ -54,21 +54,37 @@
 			}
 		);
 	} ,
-	media :  function (mediatype) {
+	media :  function (mediatype,total) {
 		var page=0,
-			max=20,
+			max=24,
 			container = jQuery(this);
+		var pagetotal = total/max ;
+		var cache = new Array();
 
 			var formatTitle = function(title, currentArray, currentIndex, currentOpts) {
-				return '<a id="fancybox-left" href="javascript:;" onclick="jQuery.display(0);" style="display: inline;"><span id="fancybox-left-ico" class="fancy-ico"></span></a><a id="fancybox-right" href="javascript:;" onclick="jQuery.display(1);" style="display: inline;"><span id="fancybox-right-ico" class="fancy-ico"></span></a><div id="tip7-title">' + (title && title.length ? '<b>' + title + '</b>' : '' ) + ' - <span class="page">Page ' + (page + 1) + '</span></div>';
+				var pagination='' ,pagetotal = total/max ;
+			if (pagetotal >0) {
+				pagination='<span><<</span><span><</span>';
+				for (i=0; i<pagetotal; i++) {
+					pagination+='<span>'+(i+1)+'</span>';
+				}
+				pagination+='<span>></span><span>>></span>';
+			}
+				return '<div class="media-pagination">' + (title && title.length ? '<b>' + title + '</b>' : '' ) + ' '+pagination+'</div>';
 			}
 			
+			jQuery("#fancybox-title" ).delegate(".media-pagination span", "click",function(event) {
+				var newPage = $(this).text();
+				display(newPage);
+				event.preventDefault();
+			});			
 			container.delegate("a.vm_thumb", "click",function(event) {
 				jQuery.fancybox({
 					"type"		: "image",
 					"titlePosition"	: "inside",
 					"title"		: this.title,
-					"href"		: this.href});
+					"href"		: this.href
+					});
 				event.preventDefault();
 			});
 			jQuery("#dialog" ).delegate(".vm_thumb_image", "click",function(event) {
@@ -88,7 +104,10 @@
 				"autoDimensions"	: true,
 				"titlePosition"		: "inside",
 				"title"		: "Media list",
-				"titleFormat"	: formatTitle
+				"titleFormat"	: formatTitle,
+				"onComplete": function() {
+					$('.media-pagination').children().eq(page+3).addClass('media-page-selected');
+				}
 			});
 
 		container.delegate(".edit-24-grey", "click",function() {
@@ -113,26 +132,52 @@
 		}); 
 
 		var display = function(num) {
-			if ( typeof display.page == "undefined" ) {
-				display.page = 0;
+			if ( typeof this.page == "undefined" ) {
+				this.oldPage =this.page = 0;
 			}
-			if (num === 0 && display.page > 0 ) {
-				--display.page 
-			} else if (num>0) { ++ display.page}
-			jQuery.get("index.php?option=com_virtuemart&view=media&task=viewJson&format=json&start="+display.page+"&mediatype="+mediatype ,
-				function(data) {
-					if (data != "ERROR") {
-						jQuery("#dialog").html(data);
-						jQuery(".page").text( "Page(s) "+ (display.page+1)) ;
-					} else  {
-						--display.page ;
-						jQuery(".page").text( "No  more results : Page(s) "+ (display.page+1)) ;
-					}
-					page = display.page;
+			switch (num) {
+				 case '<':
+				if (this.page > 0 ) --this.page ;
+				else return ;
+				 break;
+				 case '>':
+				if (this.page < total ) ++this.page ;
+				else return ;
+				 break;
+				 case '<<':
+				 this.page = 0;
+				 break;
+				 case '>>':
+				 this.page = pagetotal-1;
+				 break;
+				 default :
+				 this.page = num-1 ;
+				 break;
 				}
-			);
+			if (this.oldPage != this.page) {
+				//var cache = this.cache ;
+				var start = this.page ;
+				if (typeof cache[start] == "undefined") {
+					jQuery.get("index.php?option=com_virtuemart&view=media&task=viewJson&format=json&mediatype="+mediatype ,
+						{ start: start },
+						function(data) {
+							if (data != "ERROR") {
+								cache[start] = data ;
+								jQuery("#dialog").html(cache[start]);
+								jQuery(".page").text( "Page(s) "+ (start+1)) ;
+							} else  {
+								jQuery(".page").text( "No  more results : Page(s) "+ (start+1)) ;
+							}
+						}
+					);
+				} else jQuery("#dialog").html(cache[start]);
+				page = this.oldPage = this.page;
+				$('.media-pagination').children().removeClass('media-page-selected');
+				$('.media-pagination').children().eq(start+3).addClass('media-page-selected');
+			}
 			
 		}
+
 	},
 	tips : function(image) {    
 		var xOffset = -20; // x distance from mouse
@@ -173,29 +218,6 @@
 		}    
 	  
 	};
-	$.display = function(num) {
-			var that = $.display
-			if ( typeof that.page == "undefined" ) {
-				that.page = 0;
-			}
-			if (num === 0 && that.page > 0 ) {
-				--that.page 
-			} else if (num>0) { ++ that.page}
-			jQuery.get("index.php?option=com_virtuemart&view=media&task=viewJson&format=json&start="+that.page ,
-				function(data) {
-					if (data != "ERROR") {
-						jQuery("#dialog").html(data);
-						jQuery(".page").text( "Page(s) "+ (that.page+1)) ;
-					} else  {
-						--that.page ;
-						jQuery(".page").text( "No  more results : Page(s) "+ (that.page+1)) ;
-					}
-					page = that.page;
-				}
-			);
-			
-		} 
-
 })(jQuery);
 
 

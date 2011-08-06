@@ -676,18 +676,20 @@ class VmMediaHandler {
 		$html = $this->displayFileSelection($fileIds,$type);
 		$html .= $this->displayFileHandler('id="vm_display_image"');
 		$html .= '<div style="display:none"><div id="dialog" >'.$this->displayImages($type).'</div></div>';//$type);
+		$this->_db->setQuery('SELECT FOUND_ROWS()');
+		$imagetotal = $this->_db->loadResult();
 		//VmConfig::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
 		$isJ15 = VmConfig::isJ15();
 		if ($isJ15) {
 			$j = "
-			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."') });
+			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$imagetotal."') });
 			function submitbutton(pressbutton) {
 				jQuery( '#dialog' ).remove();
 				submitform(pressbutton);
 			}" ;
 		}
 		else $j = "
-			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."') });
+			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$imagetotal."') });
 			Joomla.submitbutton=function(a){
 				jQuery( '#dialog' ).remove();
 				Joomla.submitform(a);
@@ -746,6 +748,7 @@ class VmMediaHandler {
 
 		$htmlImages ='';
 		$imagesList = VmMediaHandler::getImagesList($types,$page);
+
 		//dump ($imagesList,'imagesList');
 		if (empty($imagesList)) return 'ERROR';
 
@@ -761,6 +764,7 @@ class VmMediaHandler {
 			}
 			$htmlImages .= '<input type="hidden" value="'.$image->virtuemart_media_id.'" name="virtuemart_media_id[]"><div class="add-image"></div></div>';
 		}
+		
 		return $htmlImages;
 	}
     /**
@@ -771,10 +775,10 @@ class VmMediaHandler {
      * @param name of the view
      * @return object List of flypage objects
      */
-    function getImagesList($type = '',$page=0,$max=25) {
+    function getImagesList($type = '',$page=0,$max=24) {
 
     	$vendorId=1;
-    	$q='SELECT * FROM `#__virtuemart_medias` WHERE `published`=1
+    	$q='SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_medias` WHERE `published`=1
     	AND (`virtuemart_vendor_id`= "'.(int)$vendorId.'" OR `shared` = "1")';
     	if(!empty($type)){
     		$q .= ' AND `file_type` = "'.$type.'" ';
