@@ -423,7 +423,7 @@ class VmConfig{
 		$document = JFactory::getDocument();
 		$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/vmsite.js');
 		$document->addScriptDeclaration(' jQuery( function($) {
-			$("#virtuemart_country_id").vm2front("list",{dest : "#virtuemart_state_id",ids : "'.$stateIds.'"});
+			$(".virtuemart_country_id").vm2front("list",{dest : "#virtuemart_state_id",ids : "'.$stateIds.'"});
 		});');
 		$JcountryStateList = true;
 		return;

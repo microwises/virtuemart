@@ -526,7 +526,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				} else {
 					$group->display ='';
 					foreach ($group->options as $productCustom) {
-						$group->display .= '<input id="'.$productCustom->value.'" type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($product,$productCustom->custom_value,$group->field_type,0,'',$row).': '.$currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)).'</label>' ;
+						$group->display .= '<input id="'.$productCustom->value.'" type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($productCustom->custom_value,$group->field_type,0,'',$row).': '.$currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)).'</label>' ;
 					}
 				}
 				$row++ ;
@@ -540,7 +540,6 @@ class VirtueMartModelCustomfields extends VmModel {
   *  for product only !
   */
 	public function displayType($value,$type,$is_list=0,$price = 0,$row=''){
-
 		if ($is_list>0) {
 			$options = array();
 			$values = explode(';',$value);
@@ -659,12 +658,12 @@ class VirtueMartModelCustomfields extends VmModel {
 		return $this->searchCustom;
 	}
 	function displayCustomMedia($media_id,$table='product'){
-
-  		$data = $this->getTable('medias');
+		$data = $this->getTable('medias');
    		$data->load((int)$media_id);
 
   		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
   		$media = VmMediaHandler::createMedia($data,$table);
+
 		return $media->displayMediaThumb('',false);
 
 	}

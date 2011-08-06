@@ -270,6 +270,7 @@ class ShopFunctions {
 		$name = 'country_name';
 		$id = 'virtuemart_country_id';
 		$idA = $_prefix . 'virtuemart_country_id';
+		$attrs['class'] = 'virtuemart_country_id';
 
 		if($multiple){
 			$attrs['multiple'] = 'multiple';
