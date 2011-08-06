@@ -58,7 +58,7 @@
 		var page=0,
 			max=24,
 			container = jQuery(this);
-		var pagetotal = total/max ;
+		var pagetotal = Math.round(total/max) ;
 		var cache = new Array();
 
 			var formatTitle = function(title, currentArray, currentIndex, currentOpts) {
@@ -89,10 +89,17 @@
 			});
 			jQuery("#dialog" ).delegate(".vm_thumb_image", "click",function(event) {
 				event.preventDefault();
-				that = jQuery(this);
+				var id = $(this).find('input').val(),ok = 0;
+				var inputArray = new Array();
+				$('#ImagesContainer input:hidden').each (
+					function() { inputArray.push($(this).val()) }
+				);
+				if ($.inArray(id,inputArray) == -1){
+					that = jQuery(this);
+					jQuery(this).clone().appendTo(container).unbind("click").append('<div class="trash"></div><div class="edit-24-grey"><div>');
+					that.hide().fadeIn();
+				}
 				
-				jQuery(this).clone().appendTo(container).unbind("click").append('<div class="trash"></div><div class="edit-24-grey"><div>');
-				that.hide().fadeIn();
 			});
 
 			container.delegate(".trash", "click",function() { 

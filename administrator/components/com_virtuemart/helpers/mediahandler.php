@@ -748,8 +748,6 @@ class VmMediaHandler {
 
 		$htmlImages ='';
 		$imagesList = VmMediaHandler::getImagesList($types,$page);
-
-		//dump ($imagesList,'imagesList');
 		if (empty($imagesList)) return 'ERROR';
 
 		foreach ($imagesList as $image) {
