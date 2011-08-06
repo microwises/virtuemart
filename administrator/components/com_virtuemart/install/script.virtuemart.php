@@ -156,6 +156,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if ($type != 'uninstall') {
 
 				$this->loadVm();
+				VmConfig::loadConfig(true);
 				$config = JModel::getInstance('config', 'VirtueMartModel');
 				$config->setDangerousToolsOff();
 			}

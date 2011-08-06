@@ -325,7 +325,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 		if(VmConfig::get('dangeroustools', true)){
 			$model = $this->getModel('config');
-			$model -> deleteConfig();;
+			$model -> deleteConfig();
 		}
 		$this->setRedirect($this->redirectPath, 'Configuration is now restored by file');
 	}
