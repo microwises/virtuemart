@@ -1,0 +1,1429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.virtuemart.net/VM_Users/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="VM_Users"
+	targetNamespace="http://www.virtuemart.net/VM_Users/" >
+	
+	<wsdl:types>
+	
+		<xsd:schema targetNamespace="http://www.virtuemart.net/VM_Users/">
+
+			<xsd:element name="GetUsersRequest" type="tns:GetUsersInput" />
+			<xsd:element name="GetUsersResponse" type="tns:UsersArray" />
+
+			<xsd:element name="authRequest" type="tns:loginInfo" />
+			<xsd:element name="authResponse" type="tns:commonReturn" />
+
+			<xsd:element name="addUserRequest" type="tns:AddUserInput" />
+			<xsd:element name="addUserResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="updateUserRequest" type="tns:AddUserInput" />
+			<xsd:element name="updateUserResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="deleteUserRequest" type="tns:DeleteUserInput" />
+			<xsd:element name="deleteUserResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="sendMailRequest" type="tns:SendMailInput" />
+			<xsd:element name="sendMailResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="getUserFromEmailOrUsernameRequest" type="tns:getUserFromEmailOrUsernameInput" />
+			<xsd:element name="getUserFromEmailOrUsernameResponse" type="tns:UsersArray" />
+			
+			<xsd:element name="getAllCountryCodeRequest" type="tns:loginInfo" />
+			<xsd:element name="getAllCountryCodeResponse" type="tns:CountryArray" />
+			
+			<xsd:element name="getAuthGroupRequest" type="tns:loginInfo" />
+			<xsd:element name="getAuthGroupResponse" type="tns:AuthGroupArray" />
+			
+			<xsd:element name="addAuthGroupRequest" type="tns:AddAuthGroupInput" />
+			<xsd:element name="addAuthGroupResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="deleteAuthGroupRequest" type="tns:DelAuthGroupInput" />
+			<xsd:element name="deleteAuthGroupResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="getAllStatesRequest" type="tns:GetStatesInput" />
+			<xsd:element name="getAllStatesResponse" type="tns:StateArray" />
+			
+			<xsd:element name="addStatesRequest" type="tns:AddStatesInput" />
+			<xsd:element name="addStatesResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="deleteStatesRequest" type="tns:DelInput" />
+			<xsd:element name="deleteStatesResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="getShopperGroupRequest" type="tns:loginInfo" />
+			<xsd:element name="getShopperGroupResponse" type="tns:ShopperGroupArray" />
+			
+			<xsd:element name="addShopperGroupRequest" type="tns:AddShopperGroupsInput" />
+			<xsd:element name="addShopperGroupResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="updateShopperGroupRequest" type="tns:AddShopperGroupsInput" />
+			<xsd:element name="updateShopperGroupResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="deleteShopperGroupRequest" type="tns:DelInput" />
+			<xsd:element name="deleteShopperGroupResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="getAllVendorRequest" type="tns:loginInfo" />
+			<xsd:element name="getAllVendorResponse" type="tns:VendorArray" />
+			
+			<xsd:element name="addVendorRequest" type="tns:AddVendorInput" />
+			<xsd:element name="addVendorResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="updateVendorRequest" type="tns:AddVendorInput" />
+			<xsd:element name="updateVendorResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="deleteVendorRequest" type="tns:DelInput" />
+			<xsd:element name="deleteVendorResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="getAllVendorCategoryRequest" type="tns:loginInfo" />
+			<xsd:element name="getAllVendorCategoryResponse" type="tns:VendorCategoryArray" />
+			
+			<xsd:element name="addVendorCategoryRequest" type="tns:AddVendorCatInput" />
+			<xsd:element name="addVendorCategoryResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="updateVendorCategoryRequest" type="tns:AddVendorCatInput" />
+			<xsd:element name="updateVendorCategoryResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="deleteVendorCategoryRequest" type="tns:DelInput" />
+			<xsd:element name="deleteVendorCategoryResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="getAllManufacturerRequest" type="tns:loginInfo" />
+			<xsd:element name="getAllManufacturerResponse" type="tns:ManufacturerArray" />
+			
+			<xsd:element name="addManufacturerRequest" type="tns:AddManufacturerInput" />
+			<xsd:element name="addManufacturerResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="updateManufacturerRequest" type="tns:AddManufacturerInput" />
+			<xsd:element name="updateManufacturerResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="deleteManufacturerRequest" type="tns:DelInput" />
+			<xsd:element name="deleteManufacturerResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="getAllManufacturerCatRequest" type="tns:loginInfo" />
+			<xsd:element name="getAllManufacturerCatResponse" type="tns:ManufacturerCatArray" />
+			
+			<xsd:element name="addManufacturerCatRequest" type="tns:AddManufacturerCatInput" />
+			<xsd:element name="addManufacturerCatResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="updateManufacturerCatRequest" type="tns:AddManufacturerCatInput" />
+			<xsd:element name="updateManufacturerCatResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="deleteManufacturerCatRequest" type="tns:DelInput" />
+			<xsd:element name="deleteManufacturerCatResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="GetAvailableImagesResponse" type="tns:AvalaibleImageArray"></xsd:element>
+			<xsd:element name="GetAvailableImagesRequest" type="tns:loginInfo"></xsd:element>
+			
+			<xsd:element name="GetVersionsResponse" type="tns:Version"></xsd:element>
+			<xsd:element name="GetVersionsRequest" type="tns:loginInfo"></xsd:element>
+			
+			<xsd:element name="GetAdditionalUserInfoResponse" type="tns:UsersArray"></xsd:element>
+			<xsd:element name="GetAdditionalUserInfoRequest" type="tns:GetAdditionalUserInfoInput"></xsd:element>
+			
+			<xsd:element name="GetSessionsRequest" type="tns:GetSessionsInput" />
+			<xsd:element name="GetSessionsResponse" type="tns:Sessions" />
+			
+			<xsd:element name="GetWaitingListRequest" type="tns:GetWaitingListInput" />
+			<xsd:element name="GetWaitingListResponse" type="tns:WaitingLists" />
+			
+			<xsd:element name="NotifyWaitingListRequest" type="tns:NotifyWaitingListInput" />
+			<xsd:element name="NotifyWaitingListResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="GetUserInfoFromOrderIDResponse" type="tns:UsersArray"></xsd:element>
+			<xsd:element name="GetUserInfoFromOrderIDRequest" type="tns:GetUserInfoFromOrderIDInput"></xsd:element>
+			
+			<xsd:complexType name="loginInfo">
+				<xsd:all>
+					<xsd:element name="login" type="xsd:string" />
+					<xsd:element name="password" type="xsd:string" />
+					<xsd:element name="lang" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="commonReturn">
+				<xsd:all>
+					<xsd:element name="returnCode" type="xsd:string" />
+					<xsd:element name="message" type="xsd:string" />
+					<xsd:element name="returnData" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="ids">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="id" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="DelInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="ids" type="tns:ids" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="GetUsersInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="limite_start" type="xsd:string" />
+					<xsd:element name="limite_end" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="NotifyWaitingListInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="ids" type="tns:ids" />
+				</xsd:all>
+			</xsd:complexType>
+
+			<xsd:complexType name="GetWaitingListInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="waiting_list_id" type="xsd:string" />
+					<xsd:element name="product_id" type="xsd:string" />
+					<xsd:element name="user_id" type="xsd:string" />
+					<xsd:element name="notify_email" type="xsd:string" />
+					<xsd:element name="notified" type="xsd:string" />
+					<xsd:element name="notify_date" type="xsd:string" />
+					<xsd:element name="limite_start" type="xsd:string" />
+					<xsd:element name="limite_end" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="WaitingLists">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="WaitingList" type="tns:WaitingList" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="WaitingList">
+				<xsd:all>
+					<xsd:element name="waiting_list_id" type="xsd:string" />
+					<xsd:element name="product_id" type="xsd:string" />
+					<xsd:element name="user_id" type="xsd:string" />
+					<xsd:element name="notify_email" type="xsd:string" />
+					<xsd:element name="notified" type="xsd:string" />
+					<xsd:element name="notify_date" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="GetSessionsInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="with_data" type="xsd:string" />
+					<xsd:element name="guest" type="xsd:string" />
+					<xsd:element name="usertype" type="xsd:string" />
+					<xsd:element name="gid" type="xsd:string" />
+					<xsd:element name="client_id" type="xsd:string" />
+					<xsd:element name="limite_start" type="xsd:string" />
+					<xsd:element name="limite_end" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Sessions">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="Session" type="tns:Session" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Session">
+				<xsd:all>
+				
+					<xsd:element name="username" type="xsd:string" />
+					<xsd:element name="time" type="xsd:string" />
+					<xsd:element name="session_id" type="xsd:string" />
+					<xsd:element name="guest" type="xsd:string" />
+					<xsd:element name="userid" type="xsd:string" />
+					<xsd:element name="usertype" type="xsd:string" />
+					<xsd:element name="gid" type="xsd:string" />
+					<xsd:element name="client_id" type="xsd:string" />
+					<xsd:element name="data" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="GetUserInfoFromOrderIDInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="order_id" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="GetAdditionalUserInfoInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="user_id" type="xsd:string" />
+					<xsd:element name="login" type="xsd:string" />
+					<xsd:element name="email" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="User">
+				<xsd:all>
+					<xsd:element name="user_id" type="xsd:string" />
+					<xsd:element name="email" type="xsd:string" />
+					<xsd:element name="username" type="xsd:string" />
+					<xsd:element name="password" type="xsd:string" />
+					<xsd:element name="userinfo_id" type="xsd:string" />
+					<xsd:element name="address_type" type="xsd:string" />
+					<xsd:element name="address_type_name" type="xsd:string" />
+					<xsd:element name="name" type="xsd:string" />
+					<xsd:element name="company" type="xsd:string" />
+					<xsd:element name="title" type="xsd:string" />
+					<xsd:element name="last_name" type="xsd:string" />
+					<xsd:element name="first_name" type="xsd:string" />
+					<xsd:element name="middle_name" type="xsd:string" />
+					<xsd:element name="phone_1" type="xsd:string" />
+					<xsd:element name="phone_2" type="xsd:string" />
+					<xsd:element name="fax" type="xsd:string" />
+					<xsd:element name="address_1" type="xsd:string" />
+					<xsd:element name="address_2" type="xsd:string" />
+					<xsd:element name="city" type="xsd:string" />
+					<xsd:element name="virtuemart_state_id" type="xsd:string" />
+					<xsd:element name="virtuemart_country_id" type="xsd:string" />
+					<xsd:element name="zip" type="xsd:string" />
+					<xsd:element name="extra_field_1" type="xsd:string" />
+					<xsd:element name="extra_field_2" type="xsd:string" />
+					<xsd:element name="extra_field_3" type="xsd:string" />
+					<xsd:element name="extra_field_4" type="xsd:string" />
+					<xsd:element name="extra_field_5" type="xsd:string" />
+					<xsd:element name="created_on" type="xsd:string" />
+					<xsd:element name="modified_on" type="xsd:string" />
+					<xsd:element name="user_is_vendor" type="xsd:string" />
+					<xsd:element name="customer_number" type="xsd:string" />
+					<xsd:element name="perms" type="xsd:string" />
+					<xsd:element name="virtuemart_paymentmethod_id" type="xsd:string" />
+					<xsd:element name="virtuemart_shippingcarrier_id" type="xsd:string" />
+					<xsd:element name="agreed" type="xsd:string" />
+					<xsd:element name="shoppergroup_id" type="xsd:string" />
+					 	
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="EmailParams">
+				<xsd:all>
+					<xsd:element name="from_mail" type="xsd:string" />
+					<xsd:element name="from_name" type="xsd:string" />
+					<xsd:element name="recipient" type="xsd:string" />
+					<xsd:element name="subject" type="xsd:string" />
+					<xsd:element name="body" type="xsd:string" />
+					<xsd:element name="altbody" type="xsd:string" />	
+					<xsd:element name="mode" type="xsd:string" />	
+					<xsd:element name="cc" type="xsd:string" />	
+					<xsd:element name="bcc" type="xsd:string" />	
+					<xsd:element name="images" type="tns:Images" />	
+					<xsd:element name="attachment" type="xsd:string" />	
+					<xsd:element name="replyto" type="xsd:string" />	
+					<xsd:element name="removeAttachmentOnFinish" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Images">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="Image" type="tns:Image" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Image">
+				<xsd:all>
+					<xsd:element name="path" type="xsd:string" />
+					<xsd:element name="name" type="xsd:string" />
+					<xsd:element name="filename" type="xsd:string" />
+					<xsd:element name="encoding" type="xsd:string" />
+					<xsd:element name="mimetype" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="SendMailInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="EmailParams" type="tns:EmailParams" />
+				</xsd:all>
+			</xsd:complexType>
+						
+			<xsd:complexType name="UsersArray">
+				<xsd:sequence>
+					<xsd:element name="User" type="tns:User" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddUserInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="User" type="tns:User" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="DeleteUserInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="user_id" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="user_ids">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="user_id" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="getUserFromEmailOrUsernameInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="email" type="xsd:string" />
+					<xsd:element name="username" type="xsd:string" />
+					<xsd:element name="user_ids" type="tns:user_ids" />
+					<xsd:element name="searchtype" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Country">
+				<xsd:all>
+					<xsd:element name="country_id" type="xsd:string" />
+					<xsd:element name="virtuemart_worldzone_id" type="xsd:string" />
+					<xsd:element name="country_name" type="xsd:string" />
+					<xsd:element name="country_3_code" type="xsd:string" />
+					<xsd:element name="country_2_code" type="xsd:string" />		
+					<xsd:element name="published" type="xsd:string" />	
+				</xsd:all>
+			</xsd:complexType>
+						
+			<xsd:complexType name="CountryArray">
+				<xsd:sequence>
+					<xsd:element name="Country" type="tns:Country" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AuthGroup"><!-- PERMS group in VM2-->
+				<xsd:all>
+					<xsd:element name="group_id" type="xsd:string" />
+					<xsd:element name="vendor_id" type="xsd:string" />
+					<xsd:element name="group_name" type="xsd:string" />	
+					<xsd:element name="group_level" type="xsd:string" />	
+					<xsd:element name="ordering" type="xsd:string" />	
+					<xsd:element name="shared" type="xsd:string" />	
+					<xsd:element name="published" type="xsd:string" />						
+				</xsd:all>
+			</xsd:complexType>
+						
+			<xsd:complexType name="AuthGroupArray">
+				<xsd:sequence>
+					<xsd:element name="AuthGroup" type="tns:AuthGroup" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddAuthGroupInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="AuthGroup" type="tns:AuthGroup" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="DelAuthGroupInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="group_id" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="State">
+				<xsd:all>
+					<xsd:element name="state_id" type="xsd:string" />
+					<xsd:element name="virtuemart_vendor_id" type="xsd:string" />
+					<xsd:element name="virtuemart_country_id" type="xsd:string" />
+					<xsd:element name="virtuemart_worldzone_id" type="xsd:string" />
+					<xsd:element name="state_name" type="xsd:string" />	
+					<xsd:element name="state_3_code" type="xsd:string" />
+					<xsd:element name="state_2_code" type="xsd:string" />
+					<xsd:element name="published" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+						
+			<xsd:complexType name="StateArray">
+				<xsd:sequence>
+					<xsd:element name="State" type="tns:State" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="GetStatesInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="country_id" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="States">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="State" type="tns:State" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddStatesInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="States" type="tns:States" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="ShopperGroup">
+				<xsd:all>
+					<xsd:element name="shopper_group_id" type="xsd:string" />
+					<xsd:element name="vendor_id" type="xsd:string" />
+					<xsd:element name="shopper_group_name" type="xsd:string" />
+					<xsd:element name="shopper_group_desc" type="xsd:string" />
+					<xsd:element name="custom_price_display" type="xsd:string" />
+					<xsd:element name="price_display" type="xsd:string" />			
+					<xsd:element name="default" type="xsd:string" />
+					<xsd:element name="ordering" type="xsd:string" />
+					<xsd:element name="shared" type="xsd:string" />
+					<xsd:element name="published" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+						
+			<xsd:complexType name="ShopperGroupArray">
+				<xsd:sequence>
+					<xsd:element name="ShopperGroup" type="tns:ShopperGroup" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="ShopperGroups">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="shoppergroup" type="tns:ShopperGroup" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddShopperGroupsInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="shoppergroups" type="tns:ShopperGroups" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Vendor">
+				<xsd:all>
+					<xsd:element name="vendor_id" type="xsd:string" />
+					<xsd:element name="vendor_name" type="xsd:string" />
+					<xsd:element name="vendor_phone" type="xsd:string" />
+					<xsd:element name="vendor_store_name" type="xsd:string" />
+					<xsd:element name="vendor_store_desc" type="xsd:string" />
+					<xsd:element name="vendor_currency" type="xsd:string" />
+					<xsd:element name="vendor_image_path" type="xsd:string" />
+					<xsd:element name="vendor_terms_of_service" type="xsd:string" />
+					<xsd:element name="vendor_url" type="xsd:string" />
+					<xsd:element name="vendor_min_pov" type="xsd:string" />
+					<xsd:element name="vendor_freeshipping" type="xsd:string" />
+					<xsd:element name="vendor_accepted_currencies" type="xsd:string" />
+					<xsd:element name="vendor_address_format" type="xsd:string" />
+					<xsd:element name="vendor_date_format" type="xsd:string" />
+					<xsd:element name="config" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+					
+			<xsd:complexType name="VendorArray">
+				<xsd:sequence>
+					<xsd:element name="Vendor" type="tns:Vendor" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddVendorInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="Vendor" type="tns:Vendor" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="VendorCategory">
+				<xsd:all>
+					<xsd:element name="vendor_category_id" type="xsd:string" />
+					<xsd:element name="vendor_category_name" type="xsd:string" />
+					<xsd:element name="vendor_category_desc" type="xsd:string" />						
+				</xsd:all>
+			</xsd:complexType>
+						
+			<xsd:complexType name="VendorCategoryArray">
+				<xsd:sequence>
+					<xsd:element name="VendorCategory" type="tns:VendorCategory" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddVendorCatInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="VendorCategory" type="tns:VendorCategory" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Manufacturer">
+				<xsd:all>
+					<xsd:element name="manufacturer_id" type="xsd:string" />
+					<xsd:element name="mf_name" type="xsd:string" />
+					<xsd:element name="slug" type="xsd:string" />
+					<xsd:element name="mf_email" type="xsd:string" />		
+					<xsd:element name="mf_desc" type="xsd:string" />
+					<xsd:element name="mf_category_id" type="xsd:string" />
+					<xsd:element name="mf_url" type="xsd:string" />	
+					<xsd:element name="hits" type="xsd:string" />	
+					<xsd:element name="published" type="xsd:string" />	
+				</xsd:all>
+			</xsd:complexType>
+						
+			<xsd:complexType name="ManufacturerArray">
+				<xsd:sequence>
+					<xsd:element name="Manufacturer" type="tns:Manufacturer" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddManufacturerInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="Manufacturer" type="tns:Manufacturer" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="ManufacturerCat">
+				<xsd:all>
+					<xsd:element name="mf_category_id" type="xsd:string" />
+					<xsd:element name="mf_category_name" type="xsd:string" />
+					<xsd:element name="mf_category_desc" type="xsd:string" />	
+					<xsd:element name="published" type="xsd:string" />					
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="ManufacturerCatArray">
+				<xsd:sequence>
+					<xsd:element name="ManufacturerCat" type="tns:ManufacturerCat" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddManufacturerCatInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="ManufacturerCat" type="tns:ManufacturerCat" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AvalaibleImage">
+				<xsd:all>
+					<xsd:element name="image_name" type="xsd:string" />
+					<xsd:element name="image_url" type="xsd:string" />
+					<xsd:element name="realpath" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+						
+			<xsd:complexType name="AvalaibleImageArray">
+				<xsd:sequence>
+					<xsd:element name="AvalaibleImage" type="tns:AvalaibleImage" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Version">
+				<xsd:all>
+					<xsd:element name="SOA_For_Virtuemart_Version" type="xsd:string" />
+					<xsd:element name="Joomla_Version" type="xsd:string" />
+					<xsd:element name="Virtuemart_Version" type="xsd:string" />
+					<xsd:element name="Database_Version" type="xsd:string" />
+					<xsd:element name="PHP_Version" type="xsd:string" />
+					<xsd:element name="Author" type="xsd:string" />	
+					<xsd:element name="URL" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+
+		</xsd:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="GetUsersRequest">
+		<wsdl:part element="tns:GetUsersRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetUsersResponse">
+		<wsdl:part element="tns:GetUsersResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="authRequest">
+		<wsdl:part name="parameters" element="tns:authRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="authResponse">
+		<wsdl:part name="parameters" element="tns:authResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addUserRequest">
+		<wsdl:part name="parameters" element="tns:addUserRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addUserResponse">
+		<wsdl:part name="parameters" element="tns:addUserResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteUserRequest">
+		<wsdl:part name="parameters" element="tns:deleteUserRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteUserResponse">
+		<wsdl:part name="parameters" element="tns:deleteUserResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="sendMailRequest">
+		<wsdl:part name="parameters" element="tns:sendMailRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="sendMailResponse">
+		<wsdl:part name="parameters" element="tns:sendMailResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getUserFromEmailOrUsernameRequest">
+		<wsdl:part name="parameters" element="tns:getUserFromEmailOrUsernameRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getUserFromEmailOrUsernameResponse">
+		<wsdl:part name="parameters" element="tns:getUserFromEmailOrUsernameResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAllCountryCodeRequest">
+		<wsdl:part name="parameters" element="tns:getAllCountryCodeRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAllCountryCodeResponse">
+		<wsdl:part name="parameters" element="tns:getAllCountryCodeResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAuthGroupRequest">
+		<wsdl:part name="parameters" element="tns:getAuthGroupRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAuthGroupResponse">
+		<wsdl:part name="parameters" element="tns:getAuthGroupResponse"></wsdl:part>
+	</wsdl:message>
+		<wsdl:message name="addAuthGroupRequest">
+		<wsdl:part name="parameters" element="tns:addAuthGroupRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addAuthGroupResponse">
+		<wsdl:part name="parameters" element="tns:addAuthGroupResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteAuthGroupRequest">
+		<wsdl:part name="parameters" element="tns:deleteAuthGroupRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteAuthGroupResponse">
+		<wsdl:part name="parameters" element="tns:deleteAuthGroupResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAllStatesRequest">
+		<wsdl:part name="parameters" element="tns:getAllStatesRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAllStatesResponse">
+		<wsdl:part name="parameters" element="tns:getAllStatesResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addStatesRequest">
+		<wsdl:part name="parameters" element="tns:addStatesRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addStatesResponse">
+		<wsdl:part name="parameters" element="tns:addStatesResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteStatesRequest">
+		<wsdl:part name="parameters" element="tns:deleteStatesRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteStatesResponse">
+		<wsdl:part name="parameters" element="tns:deleteStatesResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getShopperGroupRequest">
+		<wsdl:part name="parameters" element="tns:getShopperGroupRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getShopperGroupResponse">
+		<wsdl:part name="parameters" element="tns:getShopperGroupResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addShopperGroupRequest">
+		<wsdl:part name="parameters" element="tns:addShopperGroupRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addShopperGroupResponse">
+		<wsdl:part name="parameters" element="tns:addShopperGroupResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="updateShopperGroupRequest">
+		<wsdl:part name="parameters" element="tns:updateShopperGroupRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="updateShopperGroupResponse">
+		<wsdl:part name="parameters" element="tns:updateShopperGroupResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteShopperGroupRequest">
+		<wsdl:part name="parameters" element="tns:deleteShopperGroupRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteShopperGroupResponse">
+		<wsdl:part name="parameters" element="tns:deleteShopperGroupResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="updateUserRequest">
+		<wsdl:part name="parameters" element="tns:updateUserRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="updateUserResponse">
+		<wsdl:part name="parameters" element="tns:updateUserResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAllVendorRequest">
+		<wsdl:part name="parameters" element="tns:getAllVendorRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAllVendorResponse">
+		<wsdl:part name="parameters" element="tns:getAllVendorResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addVendorRequest">
+		<wsdl:part name="parameters" element="tns:addVendorRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addVendorResponse">
+		<wsdl:part name="parameters" element="tns:addVendorResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="updateVendorRequest">
+		<wsdl:part name="parameters" element="tns:updateVendorRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="updateVendorResponse">
+		<wsdl:part name="parameters" element="tns:updateVendorResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteVendorRequest">
+		<wsdl:part name="parameters" element="tns:deleteVendorRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteVendorResponse">
+		<wsdl:part name="parameters" element="tns:deleteVendorResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAllVendorCategoryRequest">
+		<wsdl:part name="parameters" element="tns:getAllVendorCategoryRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAllVendorCategoryResponse">
+		<wsdl:part name="parameters" element="tns:getAllVendorCategoryResponse"></wsdl:part>
+	</wsdl:message>
+		<wsdl:message name="addVendorCategoryRequest">
+		<wsdl:part name="parameters" element="tns:addVendorCategoryRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addVendorCategoryResponse">
+		<wsdl:part name="parameters" element="tns:addVendorCategoryResponse"></wsdl:part>
+	</wsdl:message>
+		<wsdl:message name="updateVendorCategoryRequest">
+		<wsdl:part name="parameters" element="tns:updateVendorCategoryRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="updateVendorCategoryResponse">
+		<wsdl:part name="parameters" element="tns:updateVendorCategoryResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteVendorCategoryRequest">
+		<wsdl:part name="parameters" element="tns:deleteVendorCategoryRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteVendorCategoryResponse">
+		<wsdl:part name="parameters" element="tns:deleteVendorCategoryResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAllManufacturerRequest">
+		<wsdl:part name="parameters" element="tns:getAllManufacturerRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAllManufacturerResponse">
+		<wsdl:part name="parameters" element="tns:getAllManufacturerResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addManufacturerRequest">
+		<wsdl:part name="parameters" element="tns:addManufacturerRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addManufacturerResponse">
+		<wsdl:part name="parameters" element="tns:addManufacturerResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="updateManufacturerRequest">
+		<wsdl:part name="parameters" element="tns:updateManufacturerRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="updateManufacturerResponse">
+		<wsdl:part name="parameters" element="tns:updateManufacturerResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteManufacturerRequest">
+		<wsdl:part name="parameters" element="tns:deleteManufacturerRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteManufacturerResponse">
+		<wsdl:part name="parameters" element="tns:deleteManufacturerResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAllManufacturerCatRequest">
+		<wsdl:part name="parameters" element="tns:getAllManufacturerCatRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getAllManufacturerCatResponse">
+		<wsdl:part name="parameters" element="tns:getAllManufacturerCatResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addManufacturerCatRequest">
+		<wsdl:part name="parameters" element="tns:addManufacturerCatRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="addManufacturerCatResponse">
+		<wsdl:part name="parameters" element="tns:addManufacturerCatResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="updateManufacturerCatRequest">
+		<wsdl:part name="parameters" element="tns:updateManufacturerCatRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="updateManufacturerCatResponse">
+		<wsdl:part name="parameters" element="tns:updateManufacturerCatResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteManufacturerCatRequest">
+		<wsdl:part name="parameters" element="tns:deleteManufacturerCatRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="deleteManufacturerCatResponse">
+		<wsdl:part name="parameters" element="tns:deleteManufacturerCatResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="GetAvailableImagesRequest">
+		<wsdl:part element="tns:GetAvailableImagesRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetAvailableImagesResponse">
+		<wsdl:part element="tns:GetAvailableImagesResponse" name="parameters" />
+	</wsdl:message>	
+	<wsdl:message name="GetVersionsRequest">
+		<wsdl:part element="tns:GetVersionsRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetVersionsResponse">
+		<wsdl:part element="tns:GetVersionsResponse" name="parameters" />
+	</wsdl:message>	
+	<wsdl:message name="GetAdditionalUserInfoRequest">
+		<wsdl:part element="tns:GetAdditionalUserInfoRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetAdditionalUserInfoResponse">
+		<wsdl:part element="tns:GetAdditionalUserInfoResponse" name="parameters" />
+	</wsdl:message>	
+	<wsdl:message name="GetSessionsRequest">
+		<wsdl:part element="tns:GetSessionsRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetSessionsResponse">
+		<wsdl:part element="tns:GetSessionsResponse" name="parameters" />
+	</wsdl:message>	
+	<wsdl:message name="GetWaitingListRequest">
+		<wsdl:part element="tns:GetWaitingListRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetWaitingListResponse">
+		<wsdl:part element="tns:GetWaitingListResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="NotifyWaitingListRequest">
+		<wsdl:part element="tns:NotifyWaitingListRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="NotifyWaitingListResponse">
+		<wsdl:part element="tns:NotifyWaitingListResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetUserInfoFromOrderIDRequest">
+		<wsdl:part element="tns:GetUserInfoFromOrderIDRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetUserInfoFromOrderIDResponse">
+		<wsdl:part element="tns:GetUserInfoFromOrderIDResponse" name="parameters" />
+	</wsdl:message>
+	
+	
+	<wsdl:portType name="VM_Users">
+		<wsdl:operation name="GetUsers">
+			<wsdl:input message="tns:GetUsersRequest" />
+			<wsdl:output message="tns:GetUsersResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="Authentification">
+			<wsdl:input message="tns:authRequest"></wsdl:input>
+			<wsdl:output message="tns:authResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AddUser">
+			<wsdl:input message="tns:addUserRequest"></wsdl:input>
+			<wsdl:output message="tns:addUserResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteUser">
+			<wsdl:input message="tns:deleteUserRequest"></wsdl:input>
+			<wsdl:output message="tns:deleteUserResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SendMail">
+			<wsdl:input message="tns:sendMailRequest"></wsdl:input>
+			<wsdl:output message="tns:sendMailResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetUserFromEmailOrUsername">
+			<wsdl:input message="tns:getUserFromEmailOrUsernameRequest"></wsdl:input>
+			<wsdl:output message="tns:getUserFromEmailOrUsernameResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetAllCountryCode">
+			<wsdl:input message="tns:getAllCountryCodeRequest"></wsdl:input>
+			<wsdl:output message="tns:getAllCountryCodeResponse"></wsdl:output>
+		</wsdl:operation>
+				<wsdl:operation name="GetAuthGroup">
+			<wsdl:input message="tns:getAuthGroupRequest"></wsdl:input>
+			<wsdl:output message="tns:getAuthGroupResponse"></wsdl:output>
+		</wsdl:operation>
+				<wsdl:operation name="AddAuthGroup">
+			<wsdl:input message="tns:addAuthGroupRequest"></wsdl:input>
+			<wsdl:output message="tns:addAuthGroupResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteAuthGroup">
+			<wsdl:input message="tns:deleteAuthGroupRequest"></wsdl:input>
+			<wsdl:output message="tns:deleteAuthGroupResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetAllStates">
+			<wsdl:input message="tns:getAllStatesRequest"></wsdl:input>
+			<wsdl:output message="tns:getAllStatesResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AddStates">
+			<wsdl:input message="tns:addStatesRequest"></wsdl:input>
+			<wsdl:output message="tns:addStatesResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteStates">
+			<wsdl:input message="tns:deleteStatesRequest"></wsdl:input>
+			<wsdl:output message="tns:deleteStatesResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetShopperGroup">
+			<wsdl:input message="tns:getShopperGroupRequest"></wsdl:input>
+			<wsdl:output message="tns:getShopperGroupResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AddShopperGroup">
+			<wsdl:input message="tns:addShopperGroupRequest"></wsdl:input>
+			<wsdl:output message="tns:addShopperGroupResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateShopperGroup">
+			<wsdl:input message="tns:updateShopperGroupRequest"></wsdl:input>
+			<wsdl:output message="tns:updateShopperGroupResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteShopperGroup">
+			<wsdl:input message="tns:deleteShopperGroupRequest"></wsdl:input>
+			<wsdl:output message="tns:deleteShopperGroupResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateUser">
+			<wsdl:input message="tns:updateUserRequest"></wsdl:input>
+			<wsdl:output message="tns:updateUserResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AddVendor">
+			<wsdl:input message="tns:addVendorRequest"></wsdl:input>
+			<wsdl:output message="tns:addVendorResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetAllVendor">
+			<wsdl:input message="tns:getAllVendorRequest"></wsdl:input>
+			<wsdl:output message="tns:getAllVendorResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateVendor">
+			<wsdl:input message="tns:updateVendorRequest"></wsdl:input>
+			<wsdl:output message="tns:updateVendorResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteVendor">
+			<wsdl:input message="tns:deleteVendorRequest"></wsdl:input>
+			<wsdl:output message="tns:deleteVendorResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetAllVendorCategory">
+			<wsdl:input message="tns:getAllVendorCategoryRequest"></wsdl:input>
+			<wsdl:output message="tns:getAllVendorCategoryResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateVendorCategory">
+			<wsdl:input message="tns:updateVendorCategoryRequest"></wsdl:input>
+			<wsdl:output message="tns:updateVendorCategoryResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AddVendorCategory">
+			<wsdl:input message="tns:addVendorCategoryRequest"></wsdl:input>
+			<wsdl:output message="tns:addVendorCategoryResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteVendorCategory">
+			<wsdl:input message="tns:deleteVendorCategoryRequest"></wsdl:input>
+			<wsdl:output message="tns:deleteVendorCategoryResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetAllManufacturer">
+			<wsdl:input message="tns:getAllManufacturerRequest"></wsdl:input>
+			<wsdl:output message="tns:getAllManufacturerResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AddManufacturer">
+			<wsdl:input message="tns:addManufacturerRequest"></wsdl:input>
+			<wsdl:output message="tns:addManufacturerResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateManufacturer">
+			<wsdl:input message="tns:updateManufacturerRequest"></wsdl:input>
+			<wsdl:output message="tns:updateManufacturerResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteManufacturer">
+			<wsdl:input message="tns:deleteManufacturerRequest"></wsdl:input>
+			<wsdl:output message="tns:deleteManufacturerResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetAllManufacturerCat">
+			<wsdl:input message="tns:getAllManufacturerCatRequest"></wsdl:input>
+			<wsdl:output message="tns:getAllManufacturerCatResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AddManufacturerCat">
+			<wsdl:input message="tns:addManufacturerCatRequest"></wsdl:input>
+			<wsdl:output message="tns:addManufacturerCatResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateManufacturerCat">
+			<wsdl:input message="tns:updateManufacturerCatRequest"></wsdl:input>
+			<wsdl:output message="tns:updateManufacturerCatResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteManufacturerCat">
+			<wsdl:input message="tns:deleteManufacturerCatRequest"></wsdl:input>
+			<wsdl:output message="tns:deleteManufacturerCatResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetAvailableVendorImages">
+			<wsdl:input message="tns:GetAvailableImagesRequest" />
+			<wsdl:output message="tns:GetAvailableImagesResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="GetVersions">
+			<wsdl:input message="tns:GetVersionsRequest" />
+			<wsdl:output message="tns:GetVersionsResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="GetAdditionalUserInfo">
+			<wsdl:input message="tns:GetAdditionalUserInfoRequest" />
+			<wsdl:output message="tns:GetAdditionalUserInfoResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="GetSessions">
+			<wsdl:input message="tns:GetSessionsRequest" />
+			<wsdl:output message="tns:GetSessionsResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="GetWaitingList">
+			<wsdl:input message="tns:GetWaitingListRequest" />
+			<wsdl:output message="tns:GetWaitingListResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="NotifyWaitingList">
+			<wsdl:input message="tns:NotifyWaitingListRequest" />
+			<wsdl:output message="tns:NotifyWaitingListResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="GetUserInfoFromOrderID">
+			<wsdl:input message="tns:GetUserInfoFromOrderIDRequest" />
+			<wsdl:output message="tns:GetUserInfoFromOrderIDResponse" />
+		</wsdl:operation>
+		
+	</wsdl:portType>
+	
+	<wsdl:binding name="VM_UsersSOAP" type="tns:VM_Users">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="GetUsers">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/GetUsers" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Authentification">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/Authentification" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AddUser">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/AddUser" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteUser">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/DeleteUser" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="SendMail">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/SendMail" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetUserFromEmailOrUsername">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/GetUserFromEmailOrUsername" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetAllCountryCode">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/GetAllCountryCode" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetAuthGroup">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/GetAuthGroup" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AddAuthGroup">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/AddAuthGroup" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteAuthGroup">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/DeleteAuthGroup" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+				<wsdl:operation name="GetAllStates">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/GetAllStates" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+				<wsdl:operation name="AddStates">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/AddStates" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteStates">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/DeleteStates" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetShopperGroup">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/GetShopperGroup" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AddShopperGroup">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/AddShopperGroup" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateShopperGroup">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/UpdateShopperGroup" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteShopperGroup">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/DeleteShopperGroup" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateUser">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/UpdateUser" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetAllVendor">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/GetAllVendor" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AddVendor">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/AddVendor" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateVendor">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/UpdateVendor" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteVendor">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/DeleteVendor" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetAllVendorCategory">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/GetAllVendorCategory" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AddVendorCategory">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/AddVendorCategory" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateVendorCategory">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/UpdateVendorCategory" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteVendorCategory">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/DeleteVendorCategory" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>		
+		<wsdl:operation name="GetAllManufacturer">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/GetAllManufacturer" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AddManufacturer">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/AddManufacturer" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateManufacturer">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/UpdateManufacturer" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteManufacturer">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/DeleteManufacturer" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetAllManufacturerCat">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/GetAllManufacturerCat" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AddManufacturerCat">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/AddManufacturerCat" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateManufacturerCat">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/UpdateManufacturerCat" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteManufacturerCat">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/DeleteManufacturerCat" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetAvailableVendorImages">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/GetAvailableVendorImages" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetVersions">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/GetVersions" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetAdditionalUserInfo">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/GetAdditionalUserInfo" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetSessions">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/GetSessions" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetWaitingList">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/GetWaitingList" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="NotifyWaitingList">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/NotifyWaitingList" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetUserInfoFromOrderID">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Users/GetUserInfoFromOrderID" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	
+	</wsdl:binding>
+	<wsdl:service name="VM_Users">
+		<wsdl:port binding="tns:VM_UsersSOAP" name="VM_UsersSOAP">
+			<soap:address
+				location="http://___HOST___/___BASE___/administrator/components/com_vm_soa/services/___SERVICE___" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

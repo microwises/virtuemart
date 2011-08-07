@@ -1,0 +1,1191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.virtuemart.net/VM_Order/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	name="VM_Order"
+	targetNamespace="http://www.virtuemart.net/VM_Order/" >
+	
+	<wsdl:types>
+	
+		<xsd:schema targetNamespace="http://www.virtuemart.net/VM_Order/">
+			
+			<xsd:element name="getOrderRequest" type="tns:OrderRequest" />
+			<xsd:element name="getOrderResponse" type="tns:Order" />
+
+			<xsd:element name="getAllOrdersRequest" type="tns:AllOrderRequest" />
+			<xsd:element name="getAllOrdersResponse" type="tns:OrderArray" />
+
+			<xsd:element name="getOrdersFromStatusRequest" type="tns:OrderRequestWithStatus" />
+			<xsd:element name="getOrdersFromStatusResponse" type="tns:OrderArray" />
+
+			<xsd:element name="getOrderStatusRequest" type="tns:loginInfo" />
+			<xsd:element name="getOrderStatusResponse" type="tns:StatusArray" />
+			
+			<xsd:element name="UpdateOrderStatusRequest" type="tns:UpdateOrderStatusInput" />
+			<xsd:element name="UpdateOrderStatusResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="DeleteOrderRequest" type="tns:DeleteOrderInput" />
+			<xsd:element name="DeleteOrderResponse" type="tns:commonReturn" />
+		
+			<xsd:element name="CreateOrderRequest" type="tns:CreateOrderInput" />
+			<xsd:element name="CreateOrderResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="GetAllCouponCodeRequest" type="tns:loginInfo" />
+			<xsd:element name="GetAllCouponCodeResponse" type="tns:CouponArray" />
+			
+			<xsd:element name="AddCouponCodeRequest" type="tns:AddCouponInput" />
+			<xsd:element name="AddCouponCodeResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="DeleteCouponCodeRequest" type="tns:DelInput" />
+			<xsd:element name="DeleteCouponCodeResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="GetAllShippingRateRequest" type="tns:loginInfo" />
+			<xsd:element name="GetAllShippingRateResponse" type="tns:ShippingRateArray" />
+			
+			<xsd:element name="AddShippingRateRequest" type="tns:AddShippingRatesInput" />
+			<xsd:element name="AddShippingRateResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="UpdateShippingRateRequest" type="tns:AddShippingRatesInput" />
+			<xsd:element name="UpdateShippingRateResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="DeleteShippingRateRequest" type="tns:DelInput" />
+			<xsd:element name="DeleteShippingRateResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="GetAllShippingCarrierRequest" type="tns:loginInfo" />
+			<xsd:element name="GetAllShippingCarrierResponse" type="tns:ShippingCarrierArray" />
+			
+			<xsd:element name="AddShippingCarrierRequest" type="tns:AddShippingCarriersInput" />
+			<xsd:element name="AddShippingCarrierResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="UpdateShippingCarrierRequest" type="tns:AddShippingCarriersInput" />
+			<xsd:element name="UpdateShippingCarrierResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="DeleteShippingCarrierRequest" type="tns:DelInput" />
+			<xsd:element name="DeleteShippingCarrierResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="GetAllPaymentMethodRequest" type="tns:GetPaymentMethodInput" />
+			<xsd:element name="GetAllPaymentMethodResponse" type="tns:PaymentMethodArray" />
+			
+			<xsd:element name="AddPaymentMethodRequest" type="tns:AddPaymentMethodInput" />
+			<xsd:element name="AddPaymentMethodResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="UpdatePaymentMethodRequest" type="tns:AddPaymentMethodInput" />
+			<xsd:element name="UpdatePaymentMethodResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="DeletePaymentMethodRequest" type="tns:DelInput" />
+			<xsd:element name="DeletePaymentMethodResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="GetOrderFromDateRequest" type="tns:GetOrderFromDateInput" />
+			<xsd:element name="GetOrderFromDateResponse" type="tns:OrderArray" />
+			
+			<xsd:element name="GetAllCreditCardRequest" type="tns:loginInfo" />
+			<xsd:element name="GetAllCreditCardResponse" type="tns:CreditcardArray" />
+			
+			<xsd:element name="AddCreditCardRequest" type="tns:AddCreditCardInput" />
+			<xsd:element name="AddCreditCardResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="UpdateCreditCardRequest" type="tns:AddCreditCardInput" />
+			<xsd:element name="UpdateCreditCardResponse" type="tns:commonReturn" />
+
+			<xsd:element name="DeleteCreditCardRequest" type="tns:DelCreditCardInput" />
+			<xsd:element name="DeleteCreditCardResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="AddOrderStatusCodeRequest" type="tns:AddStatusInput" />
+			<xsd:element name="AddOrderStatusCodeResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="UpdateOrderStatusCodeRequest" type="tns:AddStatusInput" />
+			<xsd:element name="UpdateOrderStatusCodeResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="DeleteOrderStatusCodeRequest" type="tns:DeleteStatusInput" />
+			<xsd:element name="DeleteOrderStatusCodeResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="GetOrderPaymentInfoRequest" type="tns:GetOrderPaymentInfoInput" />
+			<xsd:element name="GetOrderPaymentInfoResponse" type="tns:PaymentMethod" />
+			
+						
+			<xsd:complexType name="commonReturn">
+				<xsd:all>
+					<xsd:element name="returnCode" type="xsd:string" />
+					<xsd:element name="message" type="xsd:string" />
+					<xsd:element name="returnData" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="loginInfo">
+				<xsd:all>
+					<xsd:element name="login" type="xsd:string" />
+					<xsd:element name="password" type="xsd:string" />
+					<xsd:element name="lang" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="GetOrderPaymentInfoInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="order_id" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+
+			<xsd:complexType name="Order">
+				<xsd:all>
+					<xsd:element name="id" type="xsd:string" />
+					<xsd:element name="user_id" type="xsd:string" />
+					<xsd:element name="vendor_id" type="xsd:string" />
+					<xsd:element name="order_number" type="xsd:string" />
+					<xsd:element name="order_pass" type="xsd:string" />
+					<xsd:element name="user_info_id" type="xsd:string" />
+					<xsd:element name="order_total" type="xsd:string" />
+					<xsd:element name="order_subtotal" type="xsd:string" />
+					<xsd:element name="order_tax" type="xsd:string" />
+					<xsd:element name="order_tax_details" type="xsd:string" />
+					<xsd:element name="order_shipping" type="xsd:string" />
+					<xsd:element name="order_shipping_tax" type="xsd:string" />
+					<xsd:element name="coupon_discount" type="xsd:string" />
+					<xsd:element name="coupon_code" type="xsd:string" />
+					<xsd:element name="order_discount" type="xsd:string" />
+					<xsd:element name="order_currency" type="xsd:string" />
+					<xsd:element name="order_status" type="xsd:string" />
+					<xsd:element name="user_currency_id" type="xsd:string" />
+					<xsd:element name="user_currency_rate" type="xsd:string" />
+					<xsd:element name="payment_method_id" type="xsd:string" />
+					<xsd:element name="ship_method_id" type="xsd:string" />
+					<xsd:element name="customer_note" type="xsd:string" />
+					<xsd:element name="ip_address" type="xsd:string" />
+					<xsd:element name="created_on" type="xsd:string" />
+					<xsd:element name="modified_on" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+
+			<xsd:complexType name="OrderArray">
+				<xsd:sequence>
+					<xsd:element name="Order" type="tns:Order" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="OrderStatus">
+				<xsd:all>
+					<xsd:element name="order_status_id" type="xsd:string" />
+					<xsd:element name="order_status_code" type="xsd:string" />
+					<xsd:element name="order_status_name" type="xsd:string" />
+					<xsd:element name="order_status_description" type="xsd:string" />
+					<xsd:element name="ordering" type="xsd:string" />
+					<xsd:element name="vendor_id" type="xsd:string" />
+					<xsd:element name="published" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+
+			<xsd:complexType name="StatusArray">
+				<xsd:sequence>
+					<xsd:element name="OrderStatus" type="tns:OrderStatus" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddStatusInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="OrderStatus" type="tns:OrderStatus" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="UpdateOrderStatusParam">
+				<xsd:all>
+					<xsd:element name="order_id" type="xsd:string" />
+					<xsd:element name="status" type="xsd:string" />
+					<xsd:element name="notify" type="xsd:string" />
+					<xsd:element name="comment" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="UpdateOrderStatusParams">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="UpdateOrderStatusParam" type="tns:UpdateOrderStatusParam" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="UpdateOrderStatusInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="UpdateOrderStatusParams" type="tns:UpdateOrderStatusParams" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="DeleteStatusInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="order_status_id" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+
+			<xsd:complexType name="OrderRequest">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="order_id" type="xsd:string" />
+					<xsd:element name="limite_start" type="xsd:string" />
+					<xsd:element name="limite_end" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AllOrderRequest">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="limite_start" type="xsd:string" />
+					<xsd:element name="limite_end" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+
+			<xsd:complexType name="OrderRequestWithStatus">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="limite_start" type="xsd:string" />
+					<xsd:element name="limite_end" type="xsd:string" />
+					<xsd:element name="status" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="DeleteOrderInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="order_id" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="CreateOrderInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="user_id" type="xsd:string" />
+					<xsd:element name="shipping_method_id" type="xsd:string" />
+					<xsd:element name="virtuemart_currency_id" type="xsd:string" />
+					<xsd:element name="customer_note" type="xsd:string" />
+					<xsd:element name="payment_method_id" type="xsd:string" />
+					<xsd:element name="coupon_code" type="xsd:string" />
+					<xsd:element name="products" type="tns:products" />
+					<xsd:element name="vendor_id" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="product">
+				<xsd:all>
+					<xsd:element name="product_id" type="xsd:string" />
+					<xsd:element name="description" type="xsd:string" />
+					<xsd:element name="quantity" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="products">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="product" type="tns:product" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Coupon">
+				<xsd:all>
+					<xsd:element name="coupon_id" type="xsd:string" />
+					<xsd:element name="coupon_code" type="xsd:string" />
+					<xsd:element name="percent_or_total" type="xsd:string" />
+					<xsd:element name="coupon_type" type="xsd:string" />
+					<xsd:element name="coupon_value" type="xsd:string" />
+					<xsd:element name="coupon_start_date" type="xsd:string" />
+					<xsd:element name="coupon_expiry_date" type="xsd:string" />
+					<xsd:element name="coupon_value_valid" type="xsd:string" />
+					<xsd:element name="published" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+						
+			<xsd:complexType name="CouponArray">
+				<xsd:sequence>
+					<xsd:element name="Coupon" type="tns:Coupon" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="coupons">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="coupon" type="tns:Coupon" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddCouponInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="coupons" type="tns:coupons" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="ids">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="id" type="xsd:string" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="DelInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="ids" type="tns:ids" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="ShippingRate">
+				<xsd:all>
+					<xsd:element name="shipping_rate_id" type="xsd:string" />
+					<xsd:element name="shipping_rate_name" type="xsd:string" />
+					<xsd:element name="shipping_rate_carrier_id" type="xsd:string" />
+					<xsd:element name="shipping_rate_country" type="xsd:string" />
+					<xsd:element name="shipping_rate_zip_start" type="xsd:string" />
+					<xsd:element name="shipping_rate_zip_end" type="xsd:string" />
+					<xsd:element name="shipping_rate_weight_start" type="xsd:string" />
+					<xsd:element name="shipping_rate_weight_end" type="xsd:string" />
+					<xsd:element name="shipping_rate_value" type="xsd:string" />
+					<xsd:element name="shipping_rate_package_fee" type="xsd:string" />
+					<xsd:element name="shipping_rate_currency_id" type="xsd:string" />
+					<xsd:element name="shipping_rate_vat_id" type="xsd:string" />
+					<xsd:element name="shipping_rate_list_order" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+						
+			<xsd:complexType name="ShippingRateArray">
+				<xsd:sequence>
+					<xsd:element name="ShippingRate" type="tns:ShippingRate" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="shipping_rates">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="shippingrate" type="tns:ShippingRate" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddShippingRatesInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="shipping_rates" type="tns:shipping_rates" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="ShippingCarrier">
+				<xsd:all>
+					<xsd:element name="shipping_carrier_id" type="xsd:string" />
+					<xsd:element name="virtuemart_vendor_id" type="xsd:string" />
+					<xsd:element name="shipping_carrier_jplugin_id" type="xsd:string" />
+					<xsd:element name="shipping_carrier_name" type="xsd:string" />
+					<xsd:element name="shipping_carrier_desc" type="xsd:string" />
+					<xsd:element name="shipping_carrier_element" type="xsd:string" />
+					<xsd:element name="shipping_carrier_params" type="xsd:string" />
+					<xsd:element name="shipping_carrier_value" type="xsd:string" />
+					<xsd:element name="shipping_carrier_package_fee" type="xsd:string" />
+					<xsd:element name="shipping_carrier_vat_id" type="xsd:string" />
+					<xsd:element name="ordering" type="xsd:string" />
+					<xsd:element name="shared" type="xsd:string" />
+					<xsd:element name="published" type="xsd:string" />
+					
+				</xsd:all>
+			</xsd:complexType>
+						
+			<xsd:complexType name="ShippingCarrierArray">
+				<xsd:sequence>
+					<xsd:element name="ShippingCarrier" type="tns:ShippingCarrier" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="shipping_carriers">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="shipping_carrier" type="tns:ShippingCarrier" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddShippingCarriersInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="shipping_carriers" type="tns:shipping_carriers" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="PaymentMethod">
+				<xsd:all>
+					<xsd:element name="payment_method_id" type="xsd:string" />
+					<xsd:element name="virtuemart_vendor_id" type="xsd:string" />
+					<xsd:element name="payment_jplugin_id" type="xsd:string" />
+					<xsd:element name="payment_name" type="xsd:string" />
+					<xsd:element name="payment_element" type="xsd:string" />
+					<xsd:element name="discount" type="xsd:string" />
+					<xsd:element name="discount_is_percentage" type="xsd:string" />
+					<xsd:element name="discount_max_amount" type="xsd:string" />
+					<xsd:element name="discount_min_amount" type="xsd:string" />
+					<xsd:element name="payment_params" type="xsd:string" />
+					<xsd:element name="shared" type="xsd:string" />
+					<xsd:element name="ordering" type="xsd:string" />
+					<xsd:element name="published" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="PaymentMethodArray">
+				<xsd:sequence>
+					<xsd:element name="PaymentMethod" type="tns:PaymentMethod" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="GetPaymentMethodInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="payment_enabled" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddPaymentMethodInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="payment_method" type="tns:PaymentMethod" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="GetOrderFromDateInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="order_status" type="xsd:string" />
+					<xsd:element name="date_start" type="xsd:string" />
+					<xsd:element name="date_end" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Creditcard">
+				<xsd:all>
+					<xsd:element name="creditcard_id" type="xsd:string" />
+					<xsd:element name="vendor_id" type="xsd:string" />
+					<xsd:element name="creditcard_name" type="xsd:string" />
+					<xsd:element name="creditcard_code" type="xsd:string" />
+					<xsd:element name="shared" type="xsd:string" />
+					<xsd:element name="published" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+						
+			<xsd:complexType name="CreditcardArray">
+				<xsd:sequence>
+					<xsd:element name="Creditcard" type="tns:Creditcard" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="GetALlCreditCardInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="payment_method" type="tns:PaymentMethod" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddCreditCardInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="Creditcard" type="tns:Creditcard" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="DelCreditCardInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="creditcard_id" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+		</xsd:schema>
+	</wsdl:types>
+
+	<wsdl:message name="getAllOrdersRequest">
+		<wsdl:part element="tns:getAllOrdersRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="getAllOrdersResponse">
+		<wsdl:part element="tns:getAllOrdersResponse" name="parameters" />
+	</wsdl:message>
+
+	<wsdl:message name="getOrderRequest">
+		<wsdl:part element="tns:getOrderRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="getOrderResponse">
+		<wsdl:part element="tns:getOrderResponse" name="parameters" />
+	</wsdl:message>
+
+	<wsdl:message name="getOrdersFromStatusRequest">
+		<wsdl:part element="tns:getOrdersFromStatusRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="getOrdersFromStatusResponse">
+		<wsdl:part element="tns:getOrdersFromStatusResponse" name="parameters" />
+	</wsdl:message>
+
+	<wsdl:message name="getOrderStatusRequest">
+		<wsdl:part element="tns:getOrderStatusRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="getOrderStatusResponse">
+		<wsdl:part element="tns:getOrderStatusResponse" name="parameters" />
+	</wsdl:message>
+
+	<wsdl:message name="UpdateOrderStatusRequest">
+		<wsdl:part element="tns:UpdateOrderStatusRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="UpdateOrderStatusResponse">
+		<wsdl:part element="tns:UpdateOrderStatusResponse" name="parameters" />
+	</wsdl:message>	
+
+	<wsdl:message name="DeleteOrderRequest">
+		<wsdl:part element="tns:DeleteOrderRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="DeleteOrderResponse">
+		<wsdl:part element="tns:DeleteOrderResponse" name="parameters" />
+	</wsdl:message>	
+	
+	<wsdl:message name="CreateOrderRequest">
+		<wsdl:part element="tns:CreateOrderRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="CreateOrderResponse">
+		<wsdl:part element="tns:CreateOrderResponse" name="parameters" />
+	</wsdl:message>	
+	
+	<wsdl:message name="GetAllCouponCodeRequest">
+		<wsdl:part element="tns:GetAllCouponCodeRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetAllCouponCodeResponse">
+		<wsdl:part element="tns:GetAllCouponCodeResponse" name="parameters" />
+	</wsdl:message>	
+	
+	<wsdl:message name="AddCouponCodeRequest">
+		<wsdl:part element="tns:AddCouponCodeRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="AddCouponCodeResponse">
+		<wsdl:part element="tns:AddCouponCodeResponse" name="parameters" />
+	</wsdl:message>	
+	
+	<wsdl:message name="DeleteCouponCodeRequest">
+		<wsdl:part element="tns:DeleteCouponCodeRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="DeleteCouponCodeResponse">
+		<wsdl:part element="tns:DeleteCouponCodeResponse" name="parameters" />
+	</wsdl:message>	
+	
+	<wsdl:message name="GetAllShippingRateRequest">
+		<wsdl:part element="tns:GetAllShippingRateRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetAllShippingRateResponse">
+		<wsdl:part element="tns:GetAllShippingRateResponse" name="parameters" />
+	</wsdl:message>	
+	
+	<wsdl:message name="GetAllShippingCarrierRequest">
+		<wsdl:part element="tns:GetAllShippingCarrierRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetAllShippingCarrierResponse">
+		<wsdl:part element="tns:GetAllShippingCarrierResponse" name="parameters" />
+	</wsdl:message>	
+	
+	<wsdl:message name="AddShippingRateRequest">
+		<wsdl:part element="tns:AddShippingRateRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="AddShippingRateResponse">
+		<wsdl:part element="tns:AddShippingRateResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="AddShippingCarrierRequest">
+		<wsdl:part element="tns:AddShippingCarrierRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="AddShippingCarrierResponse">
+		<wsdl:part element="tns:AddShippingCarrierResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="DeleteShippingRateRequest">
+		<wsdl:part element="tns:DeleteShippingRateRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="DeleteShippingRateResponse">
+		<wsdl:part element="tns:DeleteShippingRateResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="DeleteShippingCarrierRequest">
+		<wsdl:part element="tns:DeleteShippingCarrierRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="DeleteShippingCarrierResponse">
+		<wsdl:part element="tns:DeleteShippingCarrierResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="GetAllPaymentMethodRequest">
+		<wsdl:part element="tns:GetAllPaymentMethodRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetAllPaymentMethodResponse">
+		<wsdl:part element="tns:GetAllPaymentMethodResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="AddPaymentMethodRequest">
+		<wsdl:part element="tns:AddPaymentMethodRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="AddPaymentMethodResponse">
+		<wsdl:part element="tns:AddPaymentMethodResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="UpdatePaymentMethodRequest">
+		<wsdl:part element="tns:UpdatePaymentMethodRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="UpdatePaymentMethodResponse">
+		<wsdl:part element="tns:UpdatePaymentMethodResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="DeletePaymentMethodRequest">
+		<wsdl:part element="tns:DeletePaymentMethodRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="DeletePaymentMethodResponse">
+		<wsdl:part element="tns:DeletePaymentMethodResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="GetOrderFromDateRequest">
+		<wsdl:part element="tns:GetOrderFromDateRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetOrderFromDateResponse">
+		<wsdl:part element="tns:GetOrderFromDateResponse" name="parameters" />
+	</wsdl:message>
+
+	<wsdl:message name="GetAllCreditCardRequest">
+		<wsdl:part element="tns:GetAllCreditCardRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetAllCreditCardResponse">
+		<wsdl:part element="tns:GetAllCreditCardResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="AddCreditCardRequest">
+		<wsdl:part element="tns:AddCreditCardRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="AddCreditCardResponse">
+		<wsdl:part element="tns:AddCreditCardResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="UpdateCreditCardRequest">
+		<wsdl:part element="tns:UpdateCreditCardRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="UpdateCreditCardResponse">
+		<wsdl:part element="tns:UpdateCreditCardResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="DeleteCreditCardRequest">
+		<wsdl:part element="tns:DeleteCreditCardRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="DeleteCreditCardResponse">
+		<wsdl:part element="tns:DeleteCreditCardResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="AddOrderStatusCodeRequest">
+		<wsdl:part element="tns:AddOrderStatusCodeRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="AddOrderStatusCodeResponse">
+		<wsdl:part element="tns:AddOrderStatusCodeResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="UpdateOrderStatusCodeRequest">
+		<wsdl:part element="tns:UpdateOrderStatusCodeRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="UpdateOrderStatusCodeResponse">
+		<wsdl:part element="tns:UpdateOrderStatusCodeResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="DeleteOrderStatusCodeRequest">
+		<wsdl:part element="tns:DeleteOrderStatusCodeRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="DeleteOrderStatusCodeResponse">
+		<wsdl:part element="tns:DeleteOrderStatusCodeResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="UpdateShippingCarrierRequest">
+		<wsdl:part element="tns:UpdateShippingCarrierRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="UpdateShippingCarrierResponse">
+		<wsdl:part element="tns:UpdateShippingCarrierResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="UpdateShippingRateRequest">
+		<wsdl:part element="tns:UpdateShippingRateRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="UpdateShippingRateResponse">
+		<wsdl:part element="tns:UpdateShippingRateResponse" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="GetOrderPaymentInfoRequest">
+		<wsdl:part element="tns:GetOrderPaymentInfoRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetOrderPaymentInfoResponse">
+		<wsdl:part element="tns:GetOrderPaymentInfoResponse" name="parameters" />
+	</wsdl:message>
+	
+	
+	<wsdl:portType name="VM_Order">
+
+		<wsdl:operation name="getAllOrders">
+			<wsdl:input message="tns:getAllOrdersRequest" />
+			<wsdl:output message="tns:getAllOrdersResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="getOrder">
+			<wsdl:input message="tns:getOrderRequest" />
+			<wsdl:output message="tns:getOrderResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="getOrdersFromStatus">
+			<wsdl:input message="tns:getOrdersFromStatusRequest" />
+			<wsdl:output message="tns:getOrdersFromStatusResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="getOrderStatus">
+			<wsdl:input message="tns:getOrderStatusRequest" />
+			<wsdl:output message="tns:getOrderStatusResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="UpdateOrderStatus">
+			<wsdl:input message="tns:UpdateOrderStatusRequest" />
+			<wsdl:output message="tns:UpdateOrderStatusResponse" />
+		</wsdl:operation>		
+
+		<wsdl:operation name="DeleteOrder">
+			<wsdl:input message="tns:DeleteOrderRequest" />
+			<wsdl:output message="tns:DeleteOrderResponse" />
+		</wsdl:operation>	
+		
+		<wsdl:operation name="CreateOrder">
+			<wsdl:input message="tns:CreateOrderRequest" />
+			<wsdl:output message="tns:CreateOrderResponse" />
+		</wsdl:operation>	
+
+		<wsdl:operation name="GetAllCouponCode">
+			<wsdl:input message="tns:GetAllCouponCodeRequest" />
+			<wsdl:output message="tns:GetAllCouponCodeResponse" />
+		</wsdl:operation>	
+
+		<wsdl:operation name="AddCouponCode">
+			<wsdl:input message="tns:AddCouponCodeRequest" />
+			<wsdl:output message="tns:AddCouponCodeResponse" />
+		</wsdl:operation>	
+		
+		<wsdl:operation name="DeleteCouponCode">
+			<wsdl:input message="tns:DeleteCouponCodeRequest" />
+			<wsdl:output message="tns:DeleteCouponCodeResponse" />
+		</wsdl:operation>	
+
+		<wsdl:operation name="GetAllShippingRate">
+			<wsdl:input message="tns:GetAllShippingRateRequest" />
+			<wsdl:output message="tns:GetAllShippingRateResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetAllShippingCarrier">
+			<wsdl:input message="tns:GetAllShippingCarrierRequest" />
+			<wsdl:output message="tns:GetAllShippingCarrierResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="AddShippingRate">
+			<wsdl:input message="tns:AddShippingRateRequest" />
+			<wsdl:output message="tns:AddShippingRateResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="AddShippingCarrier">
+			<wsdl:input message="tns:AddShippingCarrierRequest" />
+			<wsdl:output message="tns:AddShippingCarrierResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="DeleteShippingRate">
+			<wsdl:input message="tns:DeleteShippingRateRequest" />
+			<wsdl:output message="tns:DeleteShippingRateResponse" />
+		</wsdl:operation>
+
+		<wsdl:operation name="DeleteShippingCarrier">
+			<wsdl:input message="tns:DeleteShippingCarrierRequest" />
+			<wsdl:output message="tns:DeleteShippingCarrierResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetAllPaymentMethod">
+			<wsdl:input message="tns:GetAllPaymentMethodRequest" />
+			<wsdl:output message="tns:GetAllPaymentMethodResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="AddPaymentMethod">
+			<wsdl:input message="tns:AddPaymentMethodRequest" />
+			<wsdl:output message="tns:AddPaymentMethodResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="UpdatePaymentMethod">
+			<wsdl:input message="tns:UpdatePaymentMethodRequest" />
+			<wsdl:output message="tns:UpdatePaymentMethodResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="DeletePaymentMethod">
+			<wsdl:input message="tns:DeletePaymentMethodRequest" />
+			<wsdl:output message="tns:DeletePaymentMethodResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetOrderFromDate">
+			<wsdl:input message="tns:GetOrderFromDateRequest" />
+			<wsdl:output message="tns:GetOrderFromDateResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetAllCreditCard">
+			<wsdl:input message="tns:GetAllCreditCardRequest" />
+			<wsdl:output message="tns:GetAllCreditCardResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="AddCreditCard">
+			<wsdl:input message="tns:AddCreditCardRequest" />
+			<wsdl:output message="tns:AddCreditCardResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="UpdateCreditCard">
+			<wsdl:input message="tns:UpdateCreditCardRequest" />
+			<wsdl:output message="tns:UpdateCreditCardResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="DeleteCreditCard">
+			<wsdl:input message="tns:DeleteCreditCardRequest" />
+			<wsdl:output message="tns:DeleteCreditCardResponse" />
+		</wsdl:operation>
+	
+		<wsdl:operation name="AddOrderStatusCode">
+			<wsdl:input message="tns:AddOrderStatusCodeRequest" />
+			<wsdl:output message="tns:AddOrderStatusCodeResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="UpdateOrderStatusCode">
+			<wsdl:input message="tns:UpdateOrderStatusCodeRequest" />
+			<wsdl:output message="tns:UpdateOrderStatusCodeResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="DeleteOrderStatusCode">
+			<wsdl:input message="tns:DeleteOrderStatusCodeRequest" />
+			<wsdl:output message="tns:DeleteOrderStatusCodeResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="UpdateShippingCarrier">
+			<wsdl:input message="tns:UpdateShippingCarrierRequest" />
+			<wsdl:output message="tns:UpdateShippingCarrierResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="UpdateShippingRate">
+			<wsdl:input message="tns:UpdateShippingRateRequest" />
+			<wsdl:output message="tns:UpdateShippingRateResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetOrderPaymentInfo">
+			<wsdl:input message="tns:GetOrderPaymentInfoRequest" />
+			<wsdl:output message="tns:GetOrderPaymentInfoResponse" />
+		</wsdl:operation>
+		
+		
+		
+	</wsdl:portType>
+	<wsdl:binding name="VM_OrderSOAP" type="tns:VM_Order">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="getOrder">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/getOrder" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="getOrdersFromStatus">
+			<soap:operation
+				soapAction="http://www.virtuemart.net/VM_Order/getOrdersFromStatus" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="getOrderStatus">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/getOrderStatus" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="getAllOrders">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/getAllOrders" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="UpdateOrderStatus">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/UpdateOrderStatus" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="DeleteOrder">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/DeleteOrder" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="CreateOrder">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/CreateOrder" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetAllCouponCode">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/GetAllCouponCode" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="AddCouponCode">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/AddCouponCode" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="DeleteCouponCode">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/DeleteCouponCode" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetAllShippingRate">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/GetAllShippingRate" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+		<wsdl:operation name="GetAllShippingCarrier">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/GetAllShippingCarrier" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="AddShippingRate">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/AddShippingRate" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="AddShippingCarrier">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/AddShippingRate" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="DeleteShippingRate">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/DeleteShippingRate" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="DeleteShippingCarrier">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/DeleteShippingCarrier" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetAllPaymentMethod">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/GetAllPaymentMethod" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="AddPaymentMethod">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/AddPaymentMethod" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="UpdatePaymentMethod">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/UpdatePaymentMethod" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="DeletePaymentMethod">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/DeletePaymentMethod" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetOrderFromDate">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/GetOrderFromDate" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetAllCreditCard">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/GetAllCreditCard" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="AddCreditCard">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/AddCreditCard" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="UpdateCreditCard">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/UpdateCreditCard" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="DeleteCreditCard">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/DeleteCreditCard" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="AddOrderStatusCode">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/AddOrderStatusCode" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="UpdateOrderStatusCode">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/UpdateOrderStatusCode" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="DeleteOrderStatusCode">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/DeleteOrderStatusCode" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="UpdateShippingCarrier">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/UpdateShippingCarrier" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="UpdateShippingRate">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/UpdateShippingRate" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetOrderPaymentInfo">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Order/GetOrderPaymentInfo" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		
+		
+	</wsdl:binding>
+	<wsdl:service name="VM_Order">
+		<wsdl:port binding="tns:VM_OrderSOAP" name="VM_OrderSOAP">
+			<soap:address location="http://___HOST___/___BASE___/administrator/components/com_vm_soa/services/___SERVICE___" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

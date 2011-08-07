@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.virtuemart.net/VM_Categories/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="VM_Categories"
+	targetNamespace="http://www.virtuemart.net/VM_Categories/">
+	
+	<wsdl:types>
+	
+		<xsd:schema targetNamespace="http://www.virtuemart.net/VM_Categories/">
+			
+			<xsd:element name="GetAllCategoriesRequest" type="tns:GetAllCategoriesInput" />
+			<xsd:element name="GetAllCategoriesResponse" type="tns:CategorieArray" />
+
+			<xsd:element name="GetChildsCategoriesRequest" type="tns:GetChildsCategoriesRequestInput" />
+			<xsd:element name="GetChildsCategoriesResponse" type="tns:CategorieArray" />
+			
+			<xsd:element name="AddCategoryRequest" type="tns:AddCategoryInput" />
+			<xsd:element name="AddCategoryResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="DeleteCategoryRequest" type="tns:DeleteCategoryInput" />
+			<xsd:element name="DeleteCategoryResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="GetAvailableImagesResponse" type="tns:AvalaibleImageArray"></xsd:element>
+			<xsd:element name="GetAvailableImagesRequest" type="tns:GetAvalaibleImageInput"></xsd:element>
+			
+			<xsd:element name="UpdateCategoryRequest" type="tns:AddCategoryInput" />
+			<xsd:element name="UpdateCategoryResponse" type="tns:commonReturn" />
+			
+			<xsd:element name="GetMediaCategoryRequest" type="tns:GetMediaCategoriesInput" />
+			<xsd:element name="GetMediaCategoryResponse" type="tns:Medias" />
+			
+			<xsd:element name="AddMediaCategoryRequest" type="tns:AddMediaCategoryInput" />
+			<xsd:element name="AddMediaCategoryResponse" type="tns:commonReturn" />
+			
+			<xsd:complexType name="loginInfo">
+				<xsd:all>
+					<xsd:element name="login" type="xsd:string" />
+					<xsd:element name="password" type="xsd:string" />
+					<xsd:element name="lang" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="commonReturn">
+				<xsd:all>
+					<xsd:element name="returnCode" type="xsd:string" />
+					<xsd:element name="message" type="xsd:string" />
+					<xsd:element name="returnData" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="GetChildsCategoriesRequestInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="categoryId" type="xsd:string" />
+					<xsd:element name="category_publish" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="GetAllCategoriesInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="category_publish" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="GetMediaCategoriesInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="category_id" type="xsd:string" />
+					<xsd:element name="published" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddMediaCategoryInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="category_id" type="xsd:string" />
+					<xsd:element name="media" type="tns:Media" />
+					<xsd:element name="filePath" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			
+			
+			<xsd:complexType name="Categorie">
+				<xsd:all>
+					<xsd:element name="id" type="xsd:string" />
+					<xsd:element name="vendor_id" type="xsd:string" /><!-- new in VM2-->
+					<xsd:element name="name" type="xsd:string" />
+					<xsd:element name="slug" type="xsd:string" /><!-- new in VM2-->
+					<xsd:element name="description" type="xsd:string" />
+					<xsd:element name="category_parent_id" type="xsd:string" />
+					<xsd:element name="category_template" type="xsd:string" /><!-- new in VM2-->
+					<xsd:element name="category_layout" type="xsd:string" /><!-- new in VM2-->
+					<xsd:element name="category_product_layout" type="xsd:string" /><!-- new in VM2-->
+					<xsd:element name="products_per_row" type="xsd:string" />
+					<xsd:element name="limit_list_start" type="xsd:string" /><!-- new in VM2-->
+					<xsd:element name="limit_list_step" type="xsd:string" /><!-- new in VM2-->
+					<xsd:element name="limit_list_max" type="xsd:string" /><!-- new in VM2-->
+					<xsd:element name="limit_list_initial" type="xsd:string" /><!-- new in VM2-->
+					<xsd:element name="hits" type="xsd:string" /><!-- new in VM2-->	
+					<xsd:element name="published" type="xsd:string" /><!-- new in VM2-->	
+					<xsd:element name="numberofproducts" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+
+			<xsd:complexType name="CategorieArray">
+				<xsd:sequence>
+					<xsd:element name="Categorie" type="tns:Categorie" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Media"><!-- new in VM2-->
+				<xsd:all>
+					<xsd:element name="virtuemart_media_id" type="xsd:string" />
+					<xsd:element name="virtuemart_vendor_id" type="xsd:string" />
+					<xsd:element name="file_title" type="xsd:string" />
+					<xsd:element name="file_description" type="xsd:string" />
+					<xsd:element name="file_meta" type="xsd:string" />
+					<xsd:element name="file_mimetype" type="xsd:string" />
+					<xsd:element name="file_type" type="xsd:string" />
+					<xsd:element name="file_url" type="xsd:string" />
+					<xsd:element name="file_url_thumb" type="xsd:string" />
+					<xsd:element name="file_is_product_image" type="xsd:string" />
+					<xsd:element name="file_is_downloadable" type="xsd:string" />
+					<xsd:element name="file_is_forSale" type="xsd:string" />
+					<xsd:element name="file_params" type="xsd:string" />
+					<xsd:element name="ordering" type="xsd:string" />
+					<xsd:element name="shared" type="xsd:string" />
+					<xsd:element name="published" type="xsd:string" />
+					<xsd:element name="attachValue" type="xsd:base64Binary" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			
+			<xsd:complexType name="Medias">
+				<xsd:sequence>
+					<xsd:element name="Media" type="tns:Media" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AddCategoryInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="category" type="tns:Categorie" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="DeleteCategoryInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="category_id" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="GetAvalaibleImageInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="img_type" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="AvalaibleImage">
+				<xsd:all>
+					<xsd:element name="image_name" type="xsd:string" />
+					<xsd:element name="image_url" type="xsd:string" />
+					<xsd:element name="realpath" type="xsd:string" />
+					<xsd:element name="image_dir" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			
+			<xsd:complexType name="AvalaibleImageArray">
+				<xsd:sequence>
+					<xsd:element name="AvalaibleImage" type="tns:AvalaibleImage" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			
+		</xsd:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="GetAllCategoriesRequest">
+		<wsdl:part element="tns:GetAllCategoriesRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetAllCategoriesResponse">
+		<wsdl:part element="tns:GetAllCategoriesResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetChildsCategoriesRequest">
+		<wsdl:part element="tns:GetChildsCategoriesRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetChildsCategoriesResponse">
+		<wsdl:part element="tns:GetChildsCategoriesResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="AddCategoryRequest">
+		<wsdl:part element="tns:AddCategoryRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="AddCategoryResponse">
+		<wsdl:part element="tns:AddCategoryResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="DeleteCategoryRequest">
+		<wsdl:part element="tns:DeleteCategoryRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="DeleteCategoryResponse">
+		<wsdl:part element="tns:DeleteCategoryResponse" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetAvailableImagesRequest">
+		<wsdl:part element="tns:GetAvailableImagesRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetAvailableImagesResponse">
+		<wsdl:part element="tns:GetAvailableImagesResponse" name="parameters" />
+	</wsdl:message>	
+	<wsdl:message name="UpdateCategoryRequest">
+		<wsdl:part element="tns:UpdateCategoryRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="UpdateCategoryResponse">
+		<wsdl:part element="tns:UpdateCategoryResponse" name="parameters" />
+	</wsdl:message>	
+	<wsdl:message name="GetMediaCategoryRequest">
+		<wsdl:part element="tns:GetMediaCategoryRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetMediaCategoryResponse">
+		<wsdl:part element="tns:GetMediaCategoryResponse" name="parameters" />
+	</wsdl:message>	
+	<wsdl:message name="AddMediaCategoryRequest">
+		<wsdl:part element="tns:AddMediaCategoryRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="AddMediaCategoryResponse">
+		<wsdl:part element="tns:AddMediaCategoryResponse" name="parameters" />
+	</wsdl:message>	
+	
+
+	<wsdl:portType name="VM_Categories">
+		<wsdl:operation name="GetAllCategories">
+			<wsdl:input message="tns:GetAllCategoriesRequest" />
+			<wsdl:output message="tns:GetAllCategoriesResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="GetChildsCategories">
+			<wsdl:input message="tns:GetChildsCategoriesRequest" />
+			<wsdl:output message="tns:GetChildsCategoriesResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="AddCategory">
+			<wsdl:input message="tns:AddCategoryRequest" />
+			<wsdl:output message="tns:AddCategoryResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="DeleteCategory">
+			<wsdl:input message="tns:DeleteCategoryRequest" />
+			<wsdl:output message="tns:DeleteCategoryResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="GetAvailableImages">
+			<wsdl:input message="tns:GetAvailableImagesRequest" />
+			<wsdl:output message="tns:GetAvailableImagesResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="UpdateCategory">
+			<wsdl:input message="tns:UpdateCategoryRequest" />
+			<wsdl:output message="tns:UpdateCategoryResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="GetMediaCategory">
+			<wsdl:input message="tns:GetMediaCategoryRequest" />
+			<wsdl:output message="tns:GetMediaCategoryResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="AddMediaCategory">
+			<wsdl:input message="tns:AddMediaCategoryRequest" />
+			<wsdl:output message="tns:AddMediaCategoryResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	
+	<wsdl:binding name="VM_CategoriesSOAP" type="tns:VM_Categories">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="GetAllCategories">
+			<soap:operation
+				soapAction="http://www.virtuemart.net/VM_Categories/GetAllCategories" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetChildsCategories">
+			<soap:operation
+				soapAction="http://www.virtuemart.net/VM_Categories/GetChildsCategories" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AddCategory">
+			<soap:operation
+				soapAction="http://www.virtuemart.net/VM_Categories/AddCategory" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteCategory">
+			<soap:operation
+				soapAction="http://www.virtuemart.net/VM_Categories/DeleteCategory" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetAvailableImages">
+			<soap:operation
+				soapAction="http://www.virtuemart.net/VM_Categories/GetAvailableImages" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="UpdateCategory">
+			<soap:operation
+				soapAction="http://www.virtuemart.net/VM_Categories/UpdateCategory" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetMediaCategory">
+			<soap:operation
+				soapAction="http://www.virtuemart.net/VM_Categories/GetMediaCategory" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="AddMediaCategory">
+			<soap:operation
+				soapAction="http://www.virtuemart.net/VM_Categories/AddMediaCategory" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+	</wsdl:binding>
+	<wsdl:service name="VM_Categories">
+		<wsdl:port binding="tns:VM_CategoriesSOAP" name="VM_CategoriesSOAP">
+				<soap:address location="http://___HOST___/___BASE___/administrator/components/com_vm_soa/services/___SERVICE___" />
+	</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
