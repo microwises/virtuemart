@@ -101,8 +101,9 @@ class VirtueMartViewCart extends JView {
 		/* Get the products for the cart */
 		$prepareCartData = $this->_cart->prepareCartData();
 
-		$this->assignRef('automaticSelectedShipping', false);
-		$this->assignRef('automaticSelectedPayment', false);
+		$no = false;
+		$this->assignRef('automaticSelectedShipping', $no);
+		$this->assignRef('automaticSelectedPayment', $no);
 
 		$this->assignRef('prices', $prepareCartData->prices);
 
