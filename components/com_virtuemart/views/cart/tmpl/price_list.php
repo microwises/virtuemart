@@ -116,27 +116,30 @@ defined('_JEXEC') or die('Restricted access');
 
 			$product_rows[$i]['customfieldsCart'] ='';
 //			/* Add the variants */
-			if (!is_int($priceKey)) {
-				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-				$calculator = calculationHelper::getInstance();
-				$variantmods = $calculator->parseModifier($priceKey);
-				$row=0 ;
 
-				foreach($variantmods as $variant=>$selected){
-					$custom_value = $product->customfieldsCart[$row]->options[$selected]->custom_value;
-					if( $product->customfieldsCart[$row]->field_type == "M") {
-						$db = JFactory::getDBO();
-						$q = 'SELECT * FROM `#__virtuemart_medias` WHERE `virtuemart_media_id` = ' . (int) $custom_value . ' LIMIT 1';
-						$db->setQuery($q);
-						$image = $db->loadObject();
-						$custom_value = JHTML::_('image', $image->file_url_thumb, $image->file_title,'WIDTH = "48"'); 
-					}
-					$product_rows[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
-						'.$custom_value.' '.$product->customfieldsCart[$row]->custom_field_desc;
-				$row++;
-				}
+			$product_rows[$i]['customfieldsCart'] = $this->customFieldCartImageDisplay($priceKey,$product->customfieldsCart);
 
-			}
+// 			if (!is_int($priceKey)) {
+// 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+// 				$calculator = calculationHelper::getInstance();
+// 				$variantmods = $calculator->parseModifier($priceKey);
+// 				$row=0 ;
+
+// 				foreach($variantmods as $variant=>$selected){
+// 					$custom_value = $product->customfieldsCart[$row]->options[$selected]->custom_value;
+// 					if( $product->customfieldsCart[$row]->field_type == "M") {
+// 						$db = JFactory::getDBO();
+// 						$q = 'SELECT * FROM `#__virtuemart_medias` WHERE `virtuemart_media_id` = ' . (int) $custom_value . ' LIMIT 1';
+// 						$db->setQuery($q);
+// 						$image = $db->loadObject();
+// 						$custom_value = JHTML::_('image', $image->file_url_thumb, $image->file_title,'WIDTH = "48"');
+// 					}
+// 					$product_rows[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
+// 						'.$custom_value.' '.$product->customfieldsCart[$row]->custom_field_desc;
+// 				$row++;
+// 				}
+
+// 			}
 
 			$product_rows[$i]['product_sku'] = $product->product_sku;
 
@@ -331,7 +334,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td align="right"> <?php echo "<span  style='color:gray'>".$this->prices['billDiscountAmount']."</span>" ?> </td>
 			<td align="right"><strong><?php echo $this->prices['billTotal'] ?></strong></td>
 		  </tr>
-		 
+
 
 
 	</table>
