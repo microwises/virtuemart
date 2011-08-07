@@ -140,15 +140,23 @@ class VmConfig{
 
 		if(self::$_debug===null){
 
-			$debug = VmConfig::get('debug_enabled',true);
-			if($debug){
+			$debug = VmConfig::get('debug_enabled',2);
+
+			// 1 show debug only to admins
+			if($debug === 1 ){
 				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 				if(Permissions::getInstance()->check('admin')){
 					self::$_debug = true;
 				} else {
 					self::$_debug = false;
 				}
-			} else {
+			}
+			// 2 show debug to anyone
+			else if($debug === 2 ){
+				self::$_debug = true;
+			}
+			// else dont show debug
+			else {
 				self::$_debug = false;
 			}
 
@@ -533,7 +541,7 @@ class VmConfig{
 	 */
 	public function installVMconfig($_section = 'config')
 	{
-		$_datafile = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'virtuemart_defaults.cfg';
+		$_datafile = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart_defaults.cfg';
 		if (!file_exists($_datafile)) {
 			JError::raiseWarning(500, 'The data file with the default configuration could not be found. You must configure the shop manually.');
 			return false;

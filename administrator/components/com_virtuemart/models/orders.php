@@ -400,7 +400,7 @@ class VirtueMartModelOrders extends VmModel {
 		}
 		$this->_handlePayment($orderID, $cart, $prices);
       $this->_handleShipping($orderID, $cart, $prices);
-		vmdebug('my order id',$orderID,1);
+
 		return $orderID;
 	}
 

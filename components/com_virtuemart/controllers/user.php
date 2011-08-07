@@ -58,12 +58,12 @@ class VirtueMartControllerUser extends JController
 		$view->setLayout('edit');
 		$cid = JRequest::getVar('cid',null);
 		if(!isset($cid)) JRequest::setVar('cid', (int)0);
-		
-		//Important! sanitize array to int	
+
+		//Important! sanitize array to int
 		jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($cid);
-		
-		
+
+
 
 //		$ftask ='saveuser';
 //		$view->assignRef('fTask', $ftask);
@@ -188,7 +188,7 @@ class VirtueMartControllerUser extends JController
 	 * @author Max Milbers
 	 */
 	function saveCheckoutUser(){
-		
+
 		$msg = $this->saveData(true);
 		$this->saveToCart();
 
@@ -199,9 +199,9 @@ class VirtueMartControllerUser extends JController
 	function registerCheckoutUser(){
 		$msg = $this->saveData(true,true);
 		$this->saveToCart();
-		$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=cart&task=checkout' ),$msg);		
+		$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=cart&task=checkout' ),$msg);
 	}
-	
+
 	/**
 	 * This function is called from the layout edit_adress and just sets the right redirect back to the cart.
 	 * We use here the saveData(true) function, because within the cart shouldnt be done any registration.
@@ -209,17 +209,19 @@ class VirtueMartControllerUser extends JController
 	 * @author Max Milbers
 	 */
 	function saveCartUser(){
+
 		$msg = $this->saveData(true);
 		$this->saveToCart();
 		$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=cart' ),$msg);
 	}
 
 	function registerCartuser(){
+
 		$msg = $this->saveData(true,true);
 		$this->saveToCart();
-		$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=cart' ),$msg);		
+		$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=cart' ),$msg);
 	}
-	
+
 
 	/**
 	 * Editing a user address was cancelled during chaeckout; return to the cart
@@ -242,7 +244,7 @@ class VirtueMartControllerUser extends JController
 		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 		$cart = VirtueMartCart::getCart();
 		$cart->saveAddressInCart($data, $data['address_type']);
-		
+
 	}
 
 	/**

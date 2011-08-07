@@ -69,7 +69,7 @@ if(!VmConfig::get('dangeroustools', false)){
 	    Media manufacturer url: <?php echo VmConfig::get('media_manufacturer_path'); ?><br />
 <br />
 	    You can change these urls in the config settings.<br /><br />
-	    Renew config by file means that the config settings are reset by the values from the file /administrator/components/com_virtuemart/install/virtuemart_defaults.cfg
+	    Renew config by file means that the config settings are reset by the values from the file /administrator/components/com_virtuemart/virtuemart_defaults.cfg
 	</td>
     </tr>
 

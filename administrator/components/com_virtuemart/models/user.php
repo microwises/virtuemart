@@ -321,7 +321,7 @@ class VirtueMartModelUser extends VmModel {
 		$mainframe = JFactory::getApplication() ;
 
 		if(empty($data)){
-			$mainframe->enqueueMessage('Developer notice, no data to store for user');
+			vmError('Developer notice, no data to store for user');
 			return false;
 		}
 
@@ -371,17 +371,24 @@ class VirtueMartModelUser extends VmModel {
 
 		if(empty ($data['password'])){
 			$data['password'] = JRequest::getVar('password', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
-
 		}
 
 		if(empty ($data['password2'])){
 			$data['password2'] = JRequest::getVar('password2', '', 'post', 'string' ,JREQUEST_ALLOWRAW);
 		}
 
+		if(!$new && !empty($data['password']) && empty($data['password2'])){
+			unset($data['password']);
+			unset($data['password2']);
+		}
+
 		// Bind Joomla userdata
 		if (!$user->bind($data)) {
-			//develop
-			$this->setError('user bind '.$user->getError());
+
+			foreach($user->getErrors() as $error) {
+// 				$this->setError('user bind '.$error);
+				vmError('user bind '.$error,'Couldnt store user '.$error);
+			}
 			return false;
 		}
 
@@ -434,7 +441,7 @@ class VirtueMartModelUser extends VmModel {
 
 		// Save the JUser object
 		if (!$user->save()) {
-			JError::raiseWarning('', JText::_( $user->getError()));
+			vmError(JText::_( $user->getError()) , JText::_( $user->getError()));
 			return false;
 		}
 
@@ -497,7 +504,10 @@ class VirtueMartModelUser extends VmModel {
 
 		if(empty($this->_id)){
 			echo 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones';
+			vmError( 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones');
 		}
+
+		vmdebug('saveUserData',$data,1);
 
 		JPluginHelper::importPlugin('vmextended');
 		$dispatcher = JDispatcher::getInstance();

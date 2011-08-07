@@ -86,6 +86,7 @@ defined('_JEXEC') or die('Restricted access');
 		<input type="text" name="dateformat" class="inputbox" value="<?php echo $this->config->get('dateformat') ?>" />
 	</td>
 	</tr>
+	<tr>
 	<td class="key">
 		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS') ?>
@@ -95,14 +96,23 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo VmHTML::checkbox('dangeroustools', $this->config->get('dangeroustools')); ?>
 		</td>
 	</tr>
+
+	<tr>
 	<td class="key">
 		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG') ?>
 		</span>
 		</td>
 		<td>
-		<?php echo VmHTML::checkbox('debug_enable', $this->config->get('debug_enable')); ?>
-		</td>
+		<?php
+			$options = array(
+				0	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_NONE'),
+				1	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ADMIN'),
+				2	=> JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
+			);
+			echo VmHTML::radioList('debug_enable', $this->config->get('debug_enable'),$options);
+		?>
+	</td>
 	</tr>
     </table>
 </fieldset>
