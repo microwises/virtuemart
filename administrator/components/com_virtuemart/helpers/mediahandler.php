@@ -672,24 +672,24 @@ class VmMediaHandler {
 	 * @param array $fileIds
 	 */
 	public function displayFilesHandler($fileIds,$type){
-
+		$list = $this->displayImages($type);
 		$html = $this->displayFileSelection($fileIds,$type);
 		$html .= $this->displayFileHandler('id="vm_display_image"');
-		$html .= '<div style="display:none"><div id="dialog" >'.$this->displayImages($type).'</div></div>';//$type);
+		$html .= '<div style="display:none"><div id="dialog" >'.$list['htmlImages'].'</div></div>';//$type);
 		$this->_db->setQuery('SELECT FOUND_ROWS()');
 		$imagetotal = $this->_db->loadResult();
 		//VmConfig::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
 		$isJ15 = VmConfig::isJ15();
 		if ($isJ15) {
 			$j = "
-			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$imagetotal."') });
+			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$list['total']."') });
 			function submitbutton(pressbutton) {
 				jQuery( '#dialog' ).remove();
 				submitform(pressbutton);
 			}" ;
 		}
 		else $j = "
-			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$imagetotal."') });
+			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$list['total']."') });
 			Joomla.submitbutton=function(a){
 				jQuery( '#dialog' ).remove();
 				Joomla.submitform(a);
@@ -747,10 +747,10 @@ class VmMediaHandler {
 	function displayImages($types ='',$page=0 ) {
 
 		$htmlImages ='';
-		$imagesList = VmMediaHandler::getImagesList($types,$page);
-		if (empty($imagesList)) return 'ERROR';
+		$list = VmMediaHandler::getImagesList($types,$page);
+		if (empty($list['images'])) return 'ERROR';
 
-		foreach ($imagesList as $image) {
+		foreach ($list['images'] as $image) {
 			if ($image->file_url_thumb > "0" ) {
 				// $imagesList->file_root = JURI::root(true).'/';
 				// $imagesList->msg =  'OK';
@@ -762,8 +762,8 @@ class VmMediaHandler {
 			}
 			$htmlImages .= '<input type="hidden" value="'.$image->virtuemart_media_id.'" name="virtuemart_media_id[]"><div class="add-image"></div></div>';
 		}
-		
-		return $htmlImages;
+		$list['htmlImages'] = $htmlImages;
+		return $list;
 	}
     /**
      * Retrieve a list of layouts from the default and choosen templates directory.
@@ -774,7 +774,7 @@ class VmMediaHandler {
      * @return object List of flypage objects
      */
     function getImagesList($type = '',$page=0,$max=24) {
-
+		$list = array();
     	$vendorId=1;
     	$q='SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_medias` WHERE `published`=1
     	AND (`virtuemart_vendor_id`= "'.(int)$vendorId.'" OR `shared` = "1")';
@@ -787,10 +787,12 @@ class VmMediaHandler {
 
 		$this->_db->setQuery($q);
 //		$result = $this->_db->loadAssocList();
-		$result = $this->_db->loadObjectList();
+		$list['images'] = $this->_db->loadObjectList();
 
     	$errMsg = $this->_db->getErrorMsg();
 		$errs = $this->_db->getErrors();
+		$this->_db->setQuery('SELECT FOUND_ROWS()');
+		$list['total'] = $this->_db->loadResult();
 
 		if(!empty($errMsg)){
 			$app = JFactory::getApplication();
@@ -805,7 +807,7 @@ class VmMediaHandler {
 			}
 		}
 
-		return $result;
+		return $list;
     }
 	/**
 	 * This displays a media handler. It displays the full and the thumb (icon) of the media.

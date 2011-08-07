@@ -58,7 +58,8 @@
 		var page=0,
 			max=24,
 			container = jQuery(this);
-		var pagetotal = Math.round(total/max) ;
+		var pagetotal = Math.ceil(total/max) ;
+		console.log (pagetotal+' '+total+' '+max);
 		var cache = new Array();
 
 			var formatTitle = function(title, currentArray, currentIndex, currentOpts) {
@@ -148,7 +149,7 @@
 				else return ;
 				 break;
 				 case '>':
-				if (this.page < total ) ++this.page ;
+				if (this.page < pagetotal-1 ) ++this.page ;
 				else return ;
 				 break;
 				 case '<<':

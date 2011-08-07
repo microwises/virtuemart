@@ -892,16 +892,18 @@ class VirtueMartCart {
 	}
 
 	function saveAddressInCart($data, $type) {
-
+		
 		// VirtueMartModelUserfields::getUserFields() won't work
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = new VirtueMartModelUserfields();
-		if ($type == 'ST') {
+		$prefix = '';
+		if ($type == 'ST') { $prefix = 'shipto_';
 			$prepareUserFields = $userFieldsModel->getUserFields(
                             'shipping'
 			, array()
 			, array( 'user_is_vendor') // Default toggles
 			);
+			
 		} else { // BT
 			// The user is not logged in (anonymous), so we need tome extra fields
 			$prepareUserFields = $userFieldsModel->getUserFields(
@@ -909,19 +911,19 @@ class VirtueMartCart {
 			, array() // Default toggles
 			, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
 			);
-
+			
 		}
 		$address = array();
-
-		if(is_array($data)){
+		
+		if(is_array($data)){ 
 			foreach ($prepareUserFields as $fld) {
 				if(!empty($fld->name)){
 					$name = $fld->name;
-					if(!empty($data[$name]))$address[$name] = $data[$name];
+					if(!empty($data[$prefix.$name]))$address[$name] = $data[$prefix.$name];
 				}
 			}
 
-		} else {
+		} else { 
 			foreach ($prepareUserFields as $fld) {
 				if(!empty($fld->name))$name = $fld->name; else  $name = '';
 				$address[$name] = $data->{$name};
