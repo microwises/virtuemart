@@ -790,9 +790,7 @@ include_once('VM_Commons.php');
 	
 	
 	/* SOAP SETTINGS */
-	if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
-	$vmConfig = VmConfig::loadConfig();
-	
+		
 	if ($vmConfig->get('soap_ws_cat_on')==1){
 		
 		/* SOAP SETTINGS */

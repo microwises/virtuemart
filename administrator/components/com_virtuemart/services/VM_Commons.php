@@ -42,7 +42,7 @@ $app = JFactory::getApplication('site');
 $app->initialise();
 
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
-VmConfig::loadConfig();
+$vmConfig = VmConfig::loadConfig();
 
 JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'tables');
 

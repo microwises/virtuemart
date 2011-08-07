@@ -18,16 +18,8 @@ define( '_JEXEC', 1 );
  /** loading framework **/
 include_once('VM_Commons.php');
 
-if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
-$vmConfig = VmConfig::loadConfig();
-
-//end of loading conf
-
 $filename = $conf['wsdl_cat'];
-
 $string = file_get_contents('VM_Categories.wsdl',"r");
-// G�n�re : <body text='black'>
-//$wsdlReplace = str_replace("___HOST___", $conf['URL'], $string);
 $wsdlReplace = $string;
 
 //Get URL + BASE From Joomla conf
