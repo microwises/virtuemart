@@ -971,6 +971,40 @@ class ShopFunctions {
 	}
 
 
+	/**
+	 * Write description here Patrick, please
+	 *
+	 * @author Patrick Kohl
+	 * @param unknown_type $priceKey
+	 * @param unknown_type $customFields
+	 */
+	function customFieldCartImageDisplay ($priceKey,$customFields){
+
+		$html ='';
+		if (!is_int($priceKey)) {
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			$calculator = calculationHelper::getInstance();
+			$variantmods = $calculator->parseModifier($priceKey);
+			$row=0 ;
+
+			foreach($variantmods as $variant=>$selected){
+				$custom_value = $customFields[$row]->options[$selected]->custom_value;
+				if( $product->customfieldsCart[$row]->field_type == "M") {
+					$db = JFactory::getDBO();
+					$q = 'SELECT * FROM `#__virtuemart_medias` WHERE `virtuemart_media_id` = ' . (int) $custom_value . ' LIMIT 1';
+					$db->setQuery($q);
+					$image = $db->loadObject();
+					$custom_value = JHTML::_('image', $image->file_url_thumb, $image->file_title,'WIDTH = "48"');
+				}
+				$html .= '<br/ > <b>'.$customFields[$row]->custom_title.' : </b>
+									'.$custom_value.' '.$customFields[$row]->custom_field_desc;
+				$row++;
+			}
+
+		}
+		return $html;
+	}
+
 }
 
 //pure php no tag

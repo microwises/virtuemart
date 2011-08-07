@@ -117,7 +117,7 @@ defined('_JEXEC') or die('Restricted access');
 			$product_rows[$i]['customfieldsCart'] ='';
 //			/* Add the variants */
 
-			$product_rows[$i]['customfieldsCart'] = $this->customFieldCartImageDisplay($priceKey,$product->customfieldsCart);
+			$product_rows[$i]['customfieldsCart'] = ShopFunctions::customFieldCartImageDisplay($priceKey,$product->customfieldsCart);
 
 // 			if (!is_int($priceKey)) {
 // 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
