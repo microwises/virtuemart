@@ -262,15 +262,17 @@ $this->_cart->setCartIntoSession();
 	}
 
 	private function prepareCartData(){
-                $this->_cart->CheckShippingIsValid( );
-                $automaticSelectedShipping =$this->_cart->CheckAutomaticSelectedShipping( );
-                 $automaticSelectedPayment =  false;//$this->_cart->CheckAutomaticSelectedPayment( );
+
+		$this->_cart->CheckShippingIsValid( );
+		$automaticSelectedShipping =$this->_cart->CheckAutomaticSelectedShipping( );
+		$automaticSelectedPayment =  false;//$this->_cart->CheckAutomaticSelectedPayment( );
 		/* Get the products for the cart */
 		$prepareCartData = $this->_cart->prepareCartData();
-                $this->assignRef('automaticSelectedShipping', $automaticSelectedShipping);
-                 $this->assignRef('automaticSelectedPayment', $automaticSelectedPayment);
-		$this->assignRef('prices', $prepareCartData->prices);
 
+		$this->assignRef('automaticSelectedShipping', $automaticSelectedShipping);
+		$this->assignRef('automaticSelectedPayment', $automaticSelectedPayment);
+
+		$this->assignRef('prices', $prepareCartData->prices);
 		$this->assignRef('cartData',$prepareCartData->cartData);
 		$this->assignRef('calculator',$prepareCartData->calculator);
 
