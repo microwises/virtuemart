@@ -106,11 +106,12 @@ defined('_JEXEC') or die('Restricted access');
 		<td>
 		<?php
 			$options = array(
-				0	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_NONE'),
-				1	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ADMIN'),
-				2	=> JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
+				'none'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_NONE'),
+				'admin'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ADMIN'),
+				'all'	=> JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
 			);
-			echo VmHTML::radioList('debug_enable', $this->config->get('debug_enable'),$options);
+
+			echo VmHTML::radioList('debug_enable', $this->config->get('debug_enable',0),$options);
 		?>
 	</td>
 	</tr>

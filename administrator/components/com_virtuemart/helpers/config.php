@@ -87,12 +87,21 @@ function vmError($descr,$publicdescr=''){
  * @param unknown_type $descr
  * @param unknown_type $values
  */
-function vmdebug($debugdescr,$debugvalue=null,$force=false){
+function vmdebug($debugdescr,$debugvalues=null){
 
-	if($force || (!$force && VMConfig::showDebug() ) ){
+	if(VMConfig::showDebug()  ){
 
-		if(isset($debugvalue)){
-			$debugdescr .=' <pre>'.print_r($debugvalue,1).'<br />'.print_r(get_class_methods($debugvalue),1).'</pre>';
+		if($debugvalues!==null){
+
+			$args = func_get_args();
+			if (count($args) > 0) {
+				foreach($args as $debugvalue){
+					if(isset($debugvalue)){
+						$debugdescr .=' <pre>'.print_r($debugvalue,1).'<br />'.print_r(get_class_methods($debugvalue),1).'</pre>';
+					}
+				}
+
+			}
 		}
 
 		$app = JFactory::getApplication();
@@ -140,10 +149,12 @@ class VmConfig{
 
 		if(self::$_debug===null){
 
-			$debug = VmConfig::get('debug_enabled',2);
+			$debug = VmConfig::get('debug_enable','none');
+			$app = JFactory::getApplication();
+			$app ->enqueueMessage($debug);
 
 			// 1 show debug only to admins
-			if($debug === 1 ){
+			if($debug === 'admin' ){
 				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 				if(Permissions::getInstance()->check('admin')){
 					self::$_debug = true;
@@ -152,7 +163,7 @@ class VmConfig{
 				}
 			}
 			// 2 show debug to anyone
-			else if($debug === 2 ){
+			else if($debug === 'all' ){
 				self::$_debug = true;
 			}
 			// else dont show debug
@@ -188,7 +199,7 @@ class VmConfig{
 
 		self::$_jpConfig = new VmConfig();
 
-		if(empty(self::$_jpConfig->_raw)){
+// 		if(empty(self::$_jpConfig->_raw)){
 
 			$db = JFactory::getDBO();
 			$query = 'SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1"';
@@ -200,7 +211,7 @@ class VmConfig{
 				$db->setQuery($query);
 				self::$_jpConfig->_raw = $db->loadResult();
 			}
-		}
+// 		}
 
 		$pair = array();
 		if (self::$_jpConfig->_raw) {
@@ -541,6 +552,9 @@ class VmConfig{
 	 */
 	public function installVMconfig($_section = 'config')
 	{
+		$app = JFactory::getApplication();
+		$app ->enqueueMessage('Taking config from file');
+
 		$_datafile = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart_defaults.cfg';
 		if (!file_exists($_datafile)) {
 			JError::raiseWarning(500, 'The data file with the default configuration could not be found. You must configure the shop manually.');

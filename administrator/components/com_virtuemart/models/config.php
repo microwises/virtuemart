@@ -278,7 +278,6 @@ class VirtueMartModelConfig extends JModel {
 		JRequest::checkToken() or jexit( 'Invalid Token, in store config');
 
 		//ATM we want to ensure that only one config is used
-		vmdebug('Config form',$data);
 		$config = VmConfig::loadConfig();
 		$config->setParams($data);
 
