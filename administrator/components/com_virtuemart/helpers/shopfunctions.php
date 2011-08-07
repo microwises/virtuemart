@@ -302,19 +302,19 @@ class ShopFunctions {
 	* @param string $_prefix Optional prefix for the formtag name attribute
 	* @return string HTML containing the <select />
 	*/
-	public function renderStateList( $stateId = '0', $multiple = false){
+	public function renderStateList( $stateId = '0', $_prefix = '', $multiple = false){
 
 		if (is_array($stateId)) $stateId = implode(",", $stateId);
 		VmConfig::JcountryStateList($stateId) ;
 		$attrs = array();
 		if($multiple){
-			$attrs ='multiple="multiple" size="12"';
+			$attrs ='multiple="multiple" size="12" name="'.$_prefix.'virtuemart_state_id[]" ' ;
 		} else {
-			$attrs='size="1"';
+			$attrs='size="1"  name="'.$_prefix.'virtuemart_state_id" ';
 		}
 
-		$listHTML ='<select class="inputbox multiple" id="virtuemart_state_id" name="virtuemart_state_id[]" '.$attrs.'>
-						<OPTION >'.JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION').'</OPTION>
+		$listHTML ='<select class="inputbox multiple" id="virtuemart_state_id" '.$attrs.'>
+						<OPTION value="">'.JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION').'</OPTION>
 						</select>';
 
 		return $listHTML;
@@ -572,10 +572,8 @@ class ShopFunctions {
 	* @return string state name or code
 	*/
 	public function getStateByID ($id, $fld = 'state_name'){
-
 		if (empty($id)) return '';
 		$db = JFactory::getDBO();
-
 		$q = 'SELECT ' . $db->getEscaped($fld) . ' AS fld FROM `#__virtuemart_states` WHERE virtuemart_state_id = "'.(int)$id.'"';
 		$db->setQuery($q);
 		$r = $db->loadObject();

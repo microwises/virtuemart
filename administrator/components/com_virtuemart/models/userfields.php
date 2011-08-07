@@ -618,10 +618,10 @@ class VirtueMartModelUserfields extends VmModel {
 // 						The table data can contain the virtuemart_country_id or the country name
 // 					if (!isset($_userData->{$_fld->name}) && isset($_userData->country)) {
 // 						$_return['fields'][$_fld->name]['value'] = $_userData->country;
+//					}
 
-// 					}
 					// Translate the value from ID to name
-					$_return['fields'][$_fld->name]['name'] = shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']);
+					$_return['fields'][$_fld->name]['value'] = shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']);
 					break;
 
 				case 'virtuemart_state_id':
@@ -629,17 +629,17 @@ class VirtueMartModelUserfields extends VmModel {
 // 					The table data can contain the virtuemart_state_id or the state name
 // 					if (!isset($_userData->{$_fld->name}) && isset($_userData->state)) {
 // 						$_return['fields'][$_fld->name]['value'] = $_userData->state;
-// 					}
+//					}
 
 					$_return['fields'][$_fld->name]['formcode'] =
 					shopFunctions::renderStateList(	$_return['fields'][$_fld->name]['value'],
 													// ShopFunctions::getCountryIDByName($_return['fields']['virtuemart_country_id']['value']),
-													// $_prefix.'virtuemart_country_id',
+													$_prefix,
 													false
 													// $_prefix
 													);
 
-					$_return['fields'][$_fld->name]['name'] = shopFunctions::getStateByID($_return['fields'][$_fld->name]['value']);
+					$_return['fields'][$_fld->name]['value'] = shopFunctions::getStateByID($_return['fields'][$_fld->name]['value']);
 					break;
 				//case 'agreed':
 				//	$_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" id="'.$_prefix.'agreed_field" name="'.$_prefix.'agreed" value="1" '

@@ -123,6 +123,10 @@ defined('_JEXEC') or die('Restricted access');
 				$row=0 ;
 
 				foreach($variantmods as $variant=>$selected){
+
+					if( $product->customfieldsCart[$row]->field_type == "M") {
+					//
+					}
 					$product_rows[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
 						'.$product->customfieldsCart[$row]->options[$selected]->custom_value.' '.$product->customfieldsCart[$row]->custom_field_desc;
 				$row++;
