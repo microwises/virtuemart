@@ -459,7 +459,7 @@ include_once('VM_Commons.php');
 		
 	/* SOAP SETTINGS */
 	
-	if ($conf['querie_actif']=="on"){
+	if ($vmConfig->get('soap_ws_sql_on')==1){
 
 		/* SOAP SETTINGS */
 		$cache = "0";
@@ -476,9 +476,9 @@ include_once('VM_Commons.php');
 			//$server = new SoapServer($URL_BASE.'administrator/components/com_vm_soa/services/VM_SQLQueriesWSDL.php');
 			$server = new SoapServer(JURI::root(false).'/VM_SQLQueriesWSDL.php');
 		}else if (!empty($conf['BASESITE'])){
-			$server = new SoapServer('http://'.$conf['URL'].'/'.$conf['BASESITE'].'/administrator/components/com_vm_soa/services/VM_SQLQueriesWSDL.php');
+			$server = new SoapServer('http://'.$conf['URL'].'/'.$conf['BASESITE'].'/administrator/components/com_virtuemart/services/VM_SQLQueriesWSDL.php');
 		}else {
-			$server = new SoapServer('http://'.$conf['URL'].'/administrator/components/com_vm_soa/services/VM_SQLQueriesWSDL.php');
+			$server = new SoapServer('http://'.$conf['URL'].'/administrator/components/com_virtuemart/services/VM_SQLQueriesWSDL.php');
 		}
 		
 		//$server = new SoapServer($mosConfig_live_site.'/VM_SQLQueriesWSDL.php');

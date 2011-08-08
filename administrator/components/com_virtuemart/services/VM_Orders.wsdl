@@ -31,7 +31,7 @@
 			<xsd:element name="CreateOrderRequest" type="tns:CreateOrderInput" />
 			<xsd:element name="CreateOrderResponse" type="tns:commonReturn" />
 			
-			<xsd:element name="GetAllCouponCodeRequest" type="tns:loginInfo" />
+			<xsd:element name="GetAllCouponCodeRequest" type="tns:GetAllCouponCodeInput" />
 			<xsd:element name="GetAllCouponCodeResponse" type="tns:CouponArray" />
 			
 			<xsd:element name="AddCouponCodeRequest" type="tns:AddCouponInput" />
@@ -127,7 +127,13 @@
 				</xsd:all>
 			</xsd:complexType>
 			
-
+			<xsd:complexType name="GetAllCouponCodeInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="coupon" type="tns:Coupon" />
+				</xsd:all>
+			</xsd:complexType>
+			
 			<xsd:complexType name="Order">
 				<xsd:all>
 					<xsd:element name="id" type="xsd:string" />
@@ -268,7 +274,6 @@
 			<xsd:complexType name="product">
 				<xsd:all>
 					<xsd:element name="product_id" type="xsd:string" />
-					<xsd:element name="description" type="xsd:string" />
 					<xsd:element name="quantity" type="xsd:string" />
 				</xsd:all>
 			</xsd:complexType>
@@ -1185,7 +1190,7 @@
 	</wsdl:binding>
 	<wsdl:service name="VM_Order">
 		<wsdl:port binding="tns:VM_OrderSOAP" name="VM_OrderSOAP">
-			<soap:address location="http://___HOST___/___BASE___/administrator/components/com_vm_soa/services/___SERVICE___" />
+			<soap:address location="http://___HOST___/___BASE___/administrator/components/com_virtuemart/services/___SERVICE___" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>

@@ -60,6 +60,7 @@
 				<xsd:all>
 					<xsd:element name="loginInfo" type="tns:loginInfo" />
 					<xsd:element name="category_publish" type="xsd:string" />
+					<xsd:element name="category_id" type="xsd:string" />
 				</xsd:all>
 			</xsd:complexType>
 			
@@ -351,7 +352,7 @@
 	</wsdl:binding>
 	<wsdl:service name="VM_Categories">
 		<wsdl:port binding="tns:VM_CategoriesSOAP" name="VM_CategoriesSOAP">
-				<soap:address location="http://___HOST___/___BASE___/administrator/components/com_vm_soa/services/___SERVICE___" />
+				<soap:address location="http://___HOST___/___BASE___/administrator/components/com_virtuemart/services/___SERVICE___" />
 	</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>

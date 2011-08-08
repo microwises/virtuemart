@@ -1423,7 +1423,7 @@
 	<wsdl:service name="VM_Users">
 		<wsdl:port binding="tns:VM_UsersSOAP" name="VM_UsersSOAP">
 			<soap:address
-				location="http://___HOST___/___BASE___/administrator/components/com_vm_soa/services/___SERVICE___" />
+				location="http://___HOST___/___BASE___/administrator/components/com_virtuemart/services/___SERVICE___" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>

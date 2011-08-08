@@ -135,12 +135,11 @@ include_once('VM_Commons.php');
 		public $ordering="";
 		public $shared="";
 		public $published="";
+		public $attachValue="";//only used in input
 		
-		
-				
 		//constructeur
 		function __construct($virtuemart_media_id, $virtuemart_vendor_id, $file_title, $file_description, $file_meta, $file_mimetype, $file_type, $file_url, $file_url_thumb,
-								$file_is_product_image,$file_is_downloadable,$file_is_forSale,$file_params,$ordering,$shared,$published) {
+								$file_is_product_image,$file_is_downloadable,$file_is_forSale,$file_params,$ordering,$shared,$published,$attachValue) {
 								
 			$this->virtuemart_media_id = $virtuemart_media_id;
 			$this->virtuemart_vendor_id = $virtuemart_vendor_id;
@@ -158,6 +157,7 @@ include_once('VM_Commons.php');
 			$this->ordering = $ordering;
 			$this->shared = $shared;
 			$this->published = $published;
+			$this->attachValue = $attachValue;
 			
 			
 		}
@@ -298,15 +298,19 @@ include_once('VM_Commons.php');
 			$VirtueMartModelCategory = new VirtueMartModelCategory;
 						
 			$db = JFactory::getDBO();
-			$query = "SELECT * FROM `#__virtuemart_categories` ";
+			$query = "SELECT * FROM `#__virtuemart_categories` WHERE 1 ";
 			if (!empty($params->category_publish)){
 				if ($params->category_publish == "Y"){
-					$query .= "WHERE published = 1 ";
+					$query .= "AND published = 1 ";
 				} else {
-					$query .= "WHERE published = 0 ";
+					$query .= "AND published = 0 ";
 				}
-				
 			}
+			
+			if (!empty($params->category_id)){
+				$query .= "AND virtuemart_category_id = '$params->category_id' ";
+			}
+			
 			$db->setQuery($query);
 
 			$rows = $db->loadObjectList();
@@ -438,12 +442,15 @@ include_once('VM_Commons.php');
 		
 		//Auth OK
 		if ($result == "true"){
-		
+			
 			setToken();
 			
 			include('../vm_soa_conf.php');
-			$category_id = array($params->category_id);
 			
+			if (empty($params->category->id)){
+				return new SoapFault("VMUpdateCategoryFault", "category->id must be set");
+			}
+					
 			if (!class_exists( 'VirtueMartModelCategory' )) require (JPATH_VM_ADMINISTRATOR.DS.'models\category.php');
 			$VirtueMartModelCategory = new VirtueMartModelCategory;
 			
@@ -483,6 +490,13 @@ include_once('VM_Commons.php');
 				$commonReturn = new CommonReturn(OK,"Category updated : ".$params->category->name,$params->category->id);
 				return $commonReturn;
 			}
+		
+		}else if ($result== "false"){
+			return new SoapFault("JoomlaServerAuthFault", "Authentication KO for : ".$params->login);
+		}else if ($result == "no_admin"){
+			return new SoapFault("JoomlaServerAuthFault", "User is not a Super Administrator : ".$params->login);
+		}else{
+			return new SoapFault("JoomlaServerAuthFault", "User does not exist : ".$params->login);
 		}
 	}
 	
@@ -508,6 +522,11 @@ include_once('VM_Commons.php');
 			setToken();
 			
 			include('../vm_soa_conf.php');
+			
+			if (empty($params->category_id)){
+				return new SoapFault("VMCategoryDeleteFault", "params->category_id must be set");
+			}
+			
 			$category_id = array($params->category_id);
 			
 			if (!class_exists( 'VirtueMartModelCategory' )) require (JPATH_VM_ADMINISTRATOR.DS.'models\category.php');
@@ -722,9 +741,12 @@ include_once('VM_Commons.php');
 			$vmConfig = VmConfig::loadConfig();
 			
 			$media_category_path = $vmConfig->get('media_category_path');
+			if (empty($media_category_path)){
+				return new SoapFault("GetAvailableImagesFault","media_category_path is not set, please check your virtuemart settings");
+			}
 			
 			$uri = JURI::base();
-			$uri = str_replace('administrator/components/com_vm_soa/services/', "", $uri);
+			$uri = str_replace('administrator/components/com_virtuemart/services/', "", $uri);
 			
 			$INSTALLURL = '';
 			if (empty($conf['BASESITE']) && empty($conf['URL'])){
@@ -737,7 +759,8 @@ include_once('VM_Commons.php');
 			
 			if ($params->img_type == "full" || $params->img_type == "all" || $params->img_type == ""){
 			
-				$dir = JPATH.DS.$media_category_path.'';		
+				$dir = JPATH.DS.$media_category_path.'';	
+
 				// Ouvre un dossier bien connu, et liste tous les fichiers
 				if (is_dir($dir)) {
 					if ($dh = opendir($dir)) {
@@ -804,15 +827,15 @@ include_once('VM_Commons.php');
 			$options = array('soap_version' => SOAP_1_2);
 		}
 
-		//$server = new SoapServer($mosConfig_live_site.'/VM_CategoriesWSDL.php');
+		/** SOAP SERVER **/
 		if (empty($conf['BASESITE']) && empty($conf['URL'])){
-			//$server = new SoapServer($URL_BASE.'administrator/components/com_vm_soa/services/VM_CategoriesWSDL.php');
 			$server = new SoapServer(JURI::root(false).'/VM_CategoriesWSDL.php');
 		}else if (!empty($conf['BASESITE'])){
-			$server = new SoapServer('http://'.$conf['URL'].'/'.$conf['BASESITE'].'/administrator/components/com_vm_soa/services/VM_CategoriesWSDL.php');
+			$server = new SoapServer('http://'.$conf['URL'].'/'.$conf['BASESITE'].'/administrator/components/com_virtuemart/services/VM_CategoriesWSDL.php');
 		}else {
-			$server = new SoapServer('http://'.$conf['URL'].'/administrator/components/com_vm_soa/services/VM_CategoriesWSDL.php');
+			$server = new SoapServer('http://'.$conf['URL'].'/administrator/components/com_virtuemart/services/VM_CategoriesWSDL.php');
 		}
+		
 		/* Add Functions */
 		$server->addFunction("GetAllCategories");
 		$server->addFunction("GetChildsCategories");

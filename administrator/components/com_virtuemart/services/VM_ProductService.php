@@ -4208,7 +4208,7 @@ include_once('VM_Commons.php');
 	
 	/* SOAP SETTINGS */
 	
-	if ($conf['product_actif']=="on"){
+	if ($vmConfig->get('soap_ws_prod_on')==1){
 	
 		/* SOAP SETTINGS */
 		$cache = "0";
@@ -4220,24 +4220,16 @@ include_once('VM_Commons.php');
 		}else {
 			$options = array('soap_version' => SOAP_1_2);
 		}
-		$hostname = $_SERVER['SERVER_NAME'];
-
+		
+		/** SOAP SERVER **/
 		if (empty($conf['BASESITE']) && empty($conf['URL'])){
-			//$server = new SoapServer($URL_BASE.'administrator/components/com_vm_soa/services/VM_ProductWSDL.php');
 			$server = new SoapServer(JURI::root(false).'/VM_ProductWSDL.php');
 		}else if (!empty($conf['BASESITE'])){
-			$server = new SoapServer('http://'.$conf['URL'].'/'.$conf['BASESITE'].'/administrator/components/com_vm_soa/services/VM_ProductWSDL.php');
+			$server = new SoapServer('http://'.$conf['URL'].'/'.$conf['BASESITE'].'/administrator/components/com_virtuemart/services/VM_ProductWSDL.php');
 		}else {
-			$server = new SoapServer('http://'.$conf['URL'].'/administrator/components/com_vm_soa/services/VM_ProductWSDL.php');
+			$server = new SoapServer('http://'.$conf['URL'].'/administrator/components/com_virtuemart/services/VM_ProductWSDL.php');
 		}
 		
-		//$server = new SoapServer($mosConfig_live_site.'/VM_ProductWSDL.php');
-		/*if (!empty($conf['BASESITE'])){
-			$server = new SoapServer('http://'.$conf['URL'].'/'.$conf['BASESITE'].'/administrator/components/com_vm_soa/services/VM_ProductWSDL.php');
-		}else {
-			$server = new SoapServer('http://'.$conf['URL'].'/administrator/components/com_vm_soa/services/VM_ProductWSDL.php');
-		}*/
-
 		/* Add Functions */
 		$server->addFunction("GetProductsFromCategory");
 		$server->addFunction("GetChildsProduct");

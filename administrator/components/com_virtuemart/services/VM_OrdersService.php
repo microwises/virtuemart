@@ -1026,7 +1026,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->login, $params->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
 		if ($conf['auth_order_getcoupon']=="off"){
 			$result = "true";
 		}	
@@ -1036,7 +1036,37 @@ include_once('VM_Commons.php');
 		
 			$db = JFactory::getDBO();	
 			
-			$query  = "SELECT * FROM #__virtuemart_coupons WHERE 1";
+			$query  = "SELECT * FROM #__virtuemart_coupons WHERE 1 ";
+			
+			if (!empty($params->coupon->coupon_id)){
+				$query  .= "AND virtuemart_coupon_id = '".$params->coupon->coupon_id."' ";
+			}
+			if (!empty($params->coupon->coupon_code)){
+				$query  .= "AND coupon_code = '".$params->coupon->coupon_code."' ";
+			}
+			if (!empty($params->coupon->percent_or_total)){
+				$query  .= "AND percent_or_total = '".$params->coupon->percent_or_total."' ";
+			}
+			if (!empty($params->coupon->coupon_type)){
+				$query  .= "AND coupon_type = '".$params->coupon->coupon_type."' ";
+			}
+			if (!empty($params->coupon->coupon_value)){
+				$query  .= "AND coupon_value = '".$params->coupon->coupon_value."' ";
+			}
+			if (!empty($params->coupon->coupon_start_date)){
+				$query  .= "AND coupon_start_date > '".$params->coupon->coupon_start_date."' ";
+			}
+			if (!empty($params->coupon->coupon_expiry_date)){
+				$query  .= "AND coupon_expiry_date < '".$params->coupon->coupon_expiry_date."' ";
+			}
+			if (!empty($params->coupon->coupon_value_valid)){
+				$query  .= "AND coupon_value_valid = '$params->coupon->coupon_value_valid' ";
+			}
+			if (!empty($params->coupon->published)){
+				$query  .= "AND published = '$params->coupon->published' ";
+			}
+			
+			
 			$db->setQuery($query);
 			
 			$rows = $db->loadObjectList();
@@ -1057,18 +1087,6 @@ include_once('VM_Commons.php');
 			}
 			return $arrayCoupon;
 			
-			/*$db = new ps_DB;
-
-			$list  = "SELECT * FROM #__{vm}_coupons WHERE 1";
-			$db->query($list);
-			
-			while ($db->next_record()) {
-			
-				$Coupon = new Coupon($db->f("coupon_id"),$db->f("coupon_code"),$db->f("percent_or_total"), $db->f("coupon_type"), $db->f("coupon_value"));
-				$arrayCoupon[]=$Coupon;
-			
-			}
-			return $arrayCoupon;*/
 			
 		}else if ($result == "false"){
 			return new SoapFault("JoomlaServerAuthFault", "Authentication KO for : ".$params->login);
@@ -1142,19 +1160,18 @@ include_once('VM_Commons.php');
 				//add coupon
 				$ret = $modelCoupon->store();
 				
-				
+				//there is bug : $ret allways false even coupon is stored
 				if ($ret == false){
-					return new SoapFault("AddCouponFault", getWSMsg("Coupon",ADDKO)." : ".$_POST['coupon_code']);
+					return new SoapFault("AddCouponFault", getWSMsg("Coupon",ADDKO)." : ".$_POST['coupon_code'],$modelCoupon->getError());
 					
 				} else {
-					$commonReturn = new CommonReturn(OK,getWSMsg("Coupon",ADD)." : ".$_POST['coupon_code']." id : ".$ret['virtuemart_coupon_id'],$ret['virtuemart_coupon_id']);
-					return $commonReturn;
+					return new CommonReturn(OK,getWSMsg("Coupon",ADD)." : ".$_POST['coupon_code']." id : ".$ret['virtuemart_coupon_id'],$ret['virtuemart_coupon_id']);
+					
 				}
 			}
 			
 			if ($allOk){
-				$commonReturn = new CommonReturn(OK,getWSMsg("Coupon",ALLOK)." :",$couponCodesStr);
-				return $commonReturn;
+				return new CommonReturn(OK,getWSMsg("Coupon",ALLOK)." :",$couponCodesStr);
 			} else {
 				return new SoapFault("AddCouponsFault", getWSMsg("Coupon",NOTALLOK)." : ".$couponCodesStr);
 			}
@@ -2604,13 +2621,10 @@ include_once('VM_Commons.php');
 	
 	
 	
-	
-	
 	/* SOAP SETTINGS */
 	
-	if ($conf['order_actif']=="on"){	
-	
-		
+	if ($vmConfig->get('soap_ws_order_on')==1){
+			
 		$cache = "0";
 		if ($conf['order_cache'] == "on")$cache = "1";
 		ini_set("soap.wsdl_cache_enabled", $cache); // wsdl cache settings
@@ -2621,22 +2635,15 @@ include_once('VM_Commons.php');
 			$options = array('soap_version' => SOAP_1_2);
 		}
 
+		/** SOAP SERVER **/
 		if (empty($conf['BASESITE']) && empty($conf['URL'])){
-			//$server = new SoapServer($URL_BASE.'administrator/components/com_vm_soa/services/VM_OrderWSDL.php');
 			$server = new SoapServer(JURI::root(false).'/VM_OrderWSDL.php');
 		}else if (!empty($conf['BASESITE'])){
-			$server = new SoapServer('http://'.$conf['URL'].'/'.$conf['BASESITE'].'/administrator/components/com_vm_soa/services/VM_OrderWSDL.php');
+			$server = new SoapServer('http://'.$conf['URL'].'/'.$conf['BASESITE'].'/administrator/components/com_virtuemart/services/VM_OrderWSDL.php');
 		}else {
-			$server = new SoapServer('http://'.$conf['URL'].'/administrator/components/com_vm_soa/services/VM_OrderWSDL.php');
+			$server = new SoapServer('http://'.$conf['URL'].'/administrator/components/com_virtuemart/services/VM_OrderWSDL.php');
 		}
 		
-		//$server = new SoapServer($mosConfig_live_site.'/VM_OrderWSDL.php');
-		/*if (!empty($conf['BASESITE'])){
-			$server = new SoapServer('http://'.$conf['URL'].'/'.$conf['BASESITE'].'/administrator/components/com_vm_soa/services/VM_OrderWSDL.php');
-		}else {
-			$server = new SoapServer('http://'.$conf['URL'].'/administrator/components/com_vm_soa/services/VM_OrderWSDL.php');
-		}*/
-
 		/* Add Functions */
 		$server->addFunction("getOrdersFromStatus");
 		$server->addFunction("getOrder");

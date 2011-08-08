@@ -24,8 +24,7 @@ $wsdlReplace = $string;
 
 //Get URL + BASE From Joomla conf
 if (empty($conf['BASESITE']) && empty($conf['URL']) ){
-	//$wsdlReplace = str_replace('http://___HOST___/___BASE___/', $URL_BASE, $wsdlReplace);
-	$wsdlReplace = str_replace('http://___HOST___/___BASE___/administrator/components/com_vm_soa/services/', JURI::root(false), $wsdlReplace);
+	$wsdlReplace = str_replace('http://___HOST___/___BASE___/administrator/components/com_virtuemart/services/', JURI::root(false), $wsdlReplace);
 }
 // Else Get URL + BASE form SOA For VM Conf
 else if (empty($conf['BASESITE']) && !empty($conf['URL'])){
@@ -37,7 +36,7 @@ else if (empty($conf['BASESITE']) && !empty($conf['URL'])){
 }
 $wsdlReplace = str_replace("___SERVICE___", $conf['EP_cat'], $wsdlReplace);
 
-
+/** echo WSDL **/
 if ($vmConfig->get('soap_ws_cat_on')==1){
 	header('Content-type: text/xml; charset=UTF-8'); 
 	header("Content-Length: ".strlen($wsdlReplace));

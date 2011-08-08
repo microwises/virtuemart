@@ -3190,7 +3190,7 @@ include_once('VM_Commons.php');
 	
 	
 	/* SOAP SETTINGS */
-	if ($conf['users_actif']=="on"){	
+	if ($vmConfig->get('soap_ws_user_on')==1){
 
 		/* SOAP SETTINGS */
 		$cache = "0";
@@ -3203,24 +3203,15 @@ include_once('VM_Commons.php');
 			$options = array('soap_version' => SOAP_1_2);
 		}
 		
-		
+		/** SOAP SERVER **/
 		if (empty($conf['BASESITE']) && empty($conf['URL'])){
-			//$server = new SoapServer($URL_BASE.'administrator/components/com_vm_soa/services/VM_UsersWSDL.php');
 			$server = new SoapServer(JURI::root(false).'/VM_UsersWSDL.php');
 		}else if (!empty($conf['BASESITE'])){
-			$server = new SoapServer('http://'.$conf['URL'].'/'.$conf['BASESITE'].'/administrator/components/com_vm_soa/services/VM_UsersWSDL.php');
+			$server = new SoapServer('http://'.$conf['URL'].'/'.$conf['BASESITE'].'/administrator/components/com_virtuemart/services/VM_UsersWSDL.php');
 		}else {
-			$server = new SoapServer('http://'.$conf['URL'].'/administrator/components/com_vm_soa/services/VM_UsersWSDL.php');
+			$server = new SoapServer('http://'.$conf['URL'].'/administrator/components/com_virtuemart/services/VM_UsersWSDL.php');
 		}
-		
-		/*if (!empty($conf['BASESITE'])){
-			$server = new SoapServer('http://'.$conf['URL'].'/'.$conf['BASESITE'].'/administrator/components/com_vm_soa/services/VM_UsersWSDL.php');
-		}else {
-			$server = new SoapServer('http://'.$conf['URL'].'/administrator/components/com_vm_soa/services/VM_UsersWSDL.php');
-		}*/
-		
-		//$server = new SoapServer($mosConfig_live_site.'/VM_UsersWSDL.php');
-		
+				
 		/* Add Functions */
 		$server->addFunction("GetUsers");
 		$server->addFunction("Authentification");
@@ -3264,8 +3255,8 @@ include_once('VM_Commons.php');
 		$server->addFunction("NotifyWaitingList");
 		$server->addFunction("GetUserInfoFromOrderID");
 		
-
 		$server->handle();
+		
 	}else{
 		echo "This Web Service (Users) is disabled";
 	}

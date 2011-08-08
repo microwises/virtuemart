@@ -14,49 +14,9 @@ define( '_JEXEC', 1 );
  * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @version    $Id:$
  */
-define('DS', DIRECTORY_SEPARATOR);
 
-$soa_dir 	= dirname(__FILE__);
-$jpath 		= realpath( dirname(__FILE__).DS.'..'.DS.'..'.DS.'..'.DS.'..'.DS.'' );
-$jadminpath = realpath( dirname(__FILE__).DS.'..'.DS.'..'.DS.'..'.DS.'' );
-
-define('JPATH_BASE',$jadminpath );
-
-if (file_exists(JPATH_BASE . '/includes/defines.php')) {
-	include_once JPATH_BASE . '/includes/defines.php';
-}
-require_once JPATH_BASE.'/includes/framework.php';
-require_once JPATH_BASE.'/includes/helper.php';
-require_once JPATH_BASE.'/includes/toolbar.php';
-
-// Mark afterLoad in the profiler.
-JDEBUG ? $_PROFILER->mark('afterLoad') : null;
-
-// Instantiate the application.
-$app = JFactory::getApplication('site');
-
-// Initialise the application.
-$app->initialise();
-
-if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
-VmConfig::loadConfig();
-
-JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'tables');
-
-global $mosConfig_live_site;
-
-
-$mosConfig_live_site = JURI::root(false);
-$URL_BASE;
-if( $mosConfig_live_site[strlen( $mosConfig_live_site)-1] == '/' ) {
-	$URL_BASE = $mosConfig_live_site;
-}
-else {
-	$URL_BASE = $mosConfig_live_site.'/';
-}
-
-include('../vm_soa_conf.php');
-//end of loading conf
+ /** loading framework **/
+include_once('VM_Commons.php');
 
 $filename = $conf['wsdl_users'];
 
@@ -66,7 +26,7 @@ $wsdlReplace = $string;
 
 //Get URL + BASE From Joomla conf
 if (empty($conf['BASESITE']) && empty($conf['URL']) ){
-	$wsdlReplace = str_replace('http://___HOST___/___BASE___/administrator/components/com_vm_soa/services/', $URL_BASE, $wsdlReplace);
+	$wsdlReplace = str_replace('http://___HOST___/___BASE___/administrator/components/com_virtuemart/services/',  JURI::root(false), $wsdlReplace);
 }
 // Else Get URL + BASE form SOA For VM Conf
 else if (empty($conf['BASESITE']) && !empty($conf['URL'])){
@@ -79,12 +39,12 @@ else if (empty($conf['BASESITE']) && !empty($conf['URL'])){
 $wsdlReplace = str_replace("___SERVICE___", $conf['EP_users'], $wsdlReplace);
 
 
-//$taille = filesize($filename);
-//$file = readfile($filename);
-header('Content-type: text/xml; charset=UTF-8'); 
-header("Content-Length: ".(strlen($wsdlReplace)+1));
 
-if ($conf['users_actif']=="on"){
+
+
+if ($vmConfig->get('soap_ws_user_on')==1){
+	header('Content-type: text/xml; charset=UTF-8'); 
+	header("Content-Length: ".(strlen($wsdlReplace)));
 	echo $wsdlReplace;
 }
 else{

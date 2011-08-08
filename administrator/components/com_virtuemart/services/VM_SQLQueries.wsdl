@@ -199,7 +199,7 @@
 	</wsdl:binding>
 	<wsdl:service name="VM_SQLQueries">
 		<wsdl:port binding="tns:VM_SQLQueriesSOAP" name="VM_SQLQueriesSOAP">
-			<soap:address location="http://___HOST___/___BASE___/administrator/components/com_vm_soa/services/___SERVICE___" />
+			<soap:address location="http://___HOST___/___BASE___/administrator/components/com_virtuemart/services/___SERVICE___" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>

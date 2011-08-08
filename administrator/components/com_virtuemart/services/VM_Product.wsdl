@@ -1506,7 +1506,7 @@
 	<wsdl:service name="VM_Product">
 		<wsdl:port binding="tns:VM_ProductSOAP" name="VM_ProductSOAP">
 			<soap:address
-				location="http://___HOST___/___BASE___/administrator/components/com_vm_soa/services/___SERVICE___" />
+				location="http://___HOST___/___BASE___/administrator/components/com_virtuemart/services/___SERVICE___" />
 		</wsdl:port>
 	</wsdl:service>
 </wsdl:definitions>
