@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.virtuemart.net/VM_Custom/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="VM_Custom"
+	targetNamespace="http://www.virtuemart.net/VM_Custom/" >
+	
+	<wsdl:types>
+	
+		<xsd:schema targetNamespace="http://www.virtuemart.net/VM_Custom/">
+
+			<xsd:element name="Method1Request" type="tns:Method1Input" />
+			<xsd:element name="Method1Response" type="tns:commonReturn" />
+
+			<xsd:element name="Method2Request" type="tns:Method2Input" />
+			<xsd:element name="Method2Response" type="tns:commonReturn" />
+			
+			<xsd:complexType name="Method1Input">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="params1" type="xsd:string" />
+					<xsd:element name="params2" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Method2Input">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="params1" type="xsd:string" />
+					<xsd:element name="params2" type="xsd:string" />
+					<xsd:element name="params3" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="loginInfo">
+				<xsd:all>
+					<xsd:element name="login" type="xsd:string" />
+					<xsd:element name="password" type="xsd:string" />
+					<xsd:element name="lang" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="commonReturn">
+				<xsd:all>
+					<xsd:element name="returnCode" type="xsd:string" />
+					<xsd:element name="message" type="xsd:string" />
+					<xsd:element name="returnData" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+	
+		</xsd:schema>
+	</wsdl:types>
+	
+	<wsdl:message name="Method1Request">
+		<wsdl:part element="tns:Method1Request" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="Method1Response">
+		<wsdl:part element="tns:Method1Response" name="parameters" />
+	</wsdl:message>
+	
+	<wsdl:message name="Method2Request">
+		<wsdl:part element="tns:Method2Request" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="Method2Response">
+		<wsdl:part element="tns:Method2Response" name="parameters" />
+	</wsdl:message>
+
+	
+	
+	<wsdl:portType name="VM_Custom">
+	
+		<wsdl:operation name="Method1">
+			<wsdl:input message="tns:Method1Request" />
+			<wsdl:output message="tns:Method1Response" />
+		</wsdl:operation>
+		<wsdl:operation name="Method2">
+			<wsdl:input message="tns:Method2Request"></wsdl:input>
+			<wsdl:output message="tns:Method2Response"></wsdl:output>
+		</wsdl:operation>
+		
+	</wsdl:portType>
+	
+	<wsdl:binding name="VM_CustomSOAP" type="tns:VM_Custom">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="Method1">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Custom/Method1" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="Method2">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Custom/Method2" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	
+	</wsdl:binding>
+	<wsdl:service name="VM_Custom">
+		<wsdl:port binding="tns:VM_CustomSOAP" name="VM_CustomSOAP">
+			<soap:address
+				location="http://___HOST___/___BASE___/administrator/components/com_virtuemart/services/___SERVICE___" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
