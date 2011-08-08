@@ -15,6 +15,12 @@ $conf['version']='2.0.0';
 $conf['author']='Mickael Cabanas';
 $conf['URL']='';
 $conf['BASESITE']='';
+
+$conf['wsdl_custom']='VM_Customized.wsdl';
+$conf['EP_custom']='VM_CustomizedService.php';
+$conf['custom_actif']= $vmConfig->get('soap_ws_prod_on')== 1 ? 'on' :'off';
+$conf['custom_cache']= $vmConfig->get('soap_ws_prod_cache_on')== 1 ? 'on' :'off';
+
 $conf['wsdl_product']='VM_Product.wsdl';
 $conf['EP_product']='VM_ProductService.php';
 $conf['product_actif']= $vmConfig->get('soap_ws_prod_on')== 1 ? 'on' :'off';
@@ -23,7 +29,7 @@ $conf['wsdl_cat']='VM_Categories.wsdl';
 $conf['EP_cat']='VM_CategoriesService.php';
 $conf['cat_actif']= $vmConfig->get('soap_ws_cat_on')== 1 ? 'on' :'off';
 $conf['cat_cache']= $vmConfig->get('soap_ws_cat_cache_on')== 1 ? 'on' :'off';
-$conf['wsdl_order']='VM_Order.wsdl';
+$conf['wsdl_order']='VM_Orders.wsdl';
 $conf['EP_order']='VM_OrdersService.php';
 $conf['order_actif']= $vmConfig->get('soap_ws_order_on')== 1 ? 'on' :'off';
 $conf['order_cache']= $vmConfig->get('soap_ws_order_cache_on')== 1 ? 'on' :'off';
