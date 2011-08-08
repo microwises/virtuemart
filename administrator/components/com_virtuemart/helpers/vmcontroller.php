@@ -46,6 +46,7 @@ class VmController extends JController{
 			$val = (isset($task[2])) ? $task[2] : NULL;
 			$this->toggle($task[1],$val);
 		}
+
 	}
 
 	/**

@@ -24,9 +24,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 	 */
 	class com_virtuemartInstallerScript {
 
-// 		public function __construct() {
-
-// 		}
 
 		/**
 		 * method must be called after preflight
@@ -166,8 +163,13 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		public function displayFinished($update){
 
 			$lang = JFactory::getLanguage();
-			$lang->load('com_virtuemart.sys',JPATH_ADMINISTRATOR);
-			$lang->load('com_virtuemart',JPATH_ADMINISTRATOR);
+			//Load first english files
+			$lang->load('com_virtuemart.sys',JPATH_ADMINISTRATOR,'en_GB',true);
+			$lang->load('com_virtuemart',JPATH_ADMINISTRATOR,'en_GB',true);
+
+			//load specific language
+			$lang->load('com_virtuemart.sys',JPATH_ADMINISTRATOR,null,true);
+			$lang->load('com_virtuemart',JPATH_ADMINISTRATOR,null,true);
 
 			$html ='<link rel="stylesheet" href="components/com_virtuemart/assets/css/install.css" type="text/css" />
 
