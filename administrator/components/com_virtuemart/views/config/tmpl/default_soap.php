@@ -527,7 +527,7 @@ defined('_JEXEC') or die('Restricted access');
 
 
 
-<?php /* ----------------Last blok ---------------------- */ ?>
+<?php /* ----------------SQL blok ---------------------- */ ?>
 <table width="100%">
     <tr><td valign="top">
 		<fieldset class="adminform">
@@ -609,6 +609,67 @@ defined('_JEXEC') or die('Restricted access');
 
 
 
+<?php /* ----------------Custom service ---------------------- */ ?>
+<table width="100%">
+    <tr><td valign="top">
+		<fieldset class="adminform">
+		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_CUSTOM_SETTINGS') ?></legend>
+		<table class="admintable">
+	    	
+	    	
+	    	<tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_CUSTOM_SETTINGS_TIP'); ?>" >
+			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS') ?></label>
+			</span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('soap_ws_custom_on', $this->config->get('soap_ws_custom_on')); ?>
+			</td>
+		    </tr>
+		    
+		    <tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE_TIP'); ?>" >
+			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE') ?></label>
+			</span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('soap_ws_custom_cache_on', $this->config->get('soap_ws_custom_cache_on')); ?>
+			</td>
+		    </tr>
+		    
+		    <tr>
+			<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_CUSTOM_WSDL_TIP'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_CUSTOM_WSDL') ?>
+				</span>
+				</td>
+				<td>
+				<input type="text" name="wsdl_custom" class="inputbox" value="<?php echo $this->config->get('wsdl_custom') ?>" />
+			</td>
+			</tr>
+			
+			<tr>
+			<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_CUSTOM_ENDPOINT_TIP'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_CUSTOM_ENDPOINT') ?>
+				</span>
+				</td>
+				<td>
+				<input type="text" name="EP_custom" class="inputbox" width="300" value="<?php echo $this->config->get('EP_custom') ?>" />
+			</td>
+			</tr>
+		    
+	
+
+	    </table>
+	    </fieldset>
+	</td></tr>
+</table>
+
+
+
 <?php /* ----------------WSDL BLOK ---------------------- */ ?>
 <table width="100%">
     <tr><td valign="top">
@@ -623,6 +684,8 @@ defined('_JEXEC') or die('Restricted access');
 			 echo "<li><a href=./components/com_virtuemart/services/VM_OrderWSDL.php > View Orders WSDL definition</a></li>";
 			 echo "<li><a href=./components/com_virtuemart/services/VM_UsersWSDL.php > View Customers WSDL definition</a></li>";
 			 echo "<li><a href=./components/com_virtuemart/services/VM_SQLQueriesWSDL.php > View SQL WSDL definition</a></li>";
+			 echo "<li><a href=./components/com_virtuemart/services/VM_CustomizedWSDL.php > View Customized WSDL definition</a></li>";
+			
 			 echo "</ul>";
 			
 			?>
