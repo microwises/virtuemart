@@ -21,7 +21,8 @@ include_once('VM_Commons.php');
 
 $filename = $conf['wsdl_sql'];
 
-$string = file_get_contents('VM_SQLQueries.wsdl',"r");
+//$string = file_get_contents('VM_SQLQueries.wsdl',"r");
+$string = file_get_contents($filename,"r");
 $wsdlReplace = $string;
 
 //Get URL + BASE From Joomla conf

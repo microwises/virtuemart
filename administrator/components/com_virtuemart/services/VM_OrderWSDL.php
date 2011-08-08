@@ -19,8 +19,8 @@ define( '_JEXEC', 1 );
 include_once('VM_Commons.php');
 
 $filename = $conf['wsdl_order'];
-
-$string = file_get_contents('VM_Orders.wsdl',"r");
+//$string = file_get_contents('VM_Orders.wsdl',"r");
+$string = file_get_contents($filename,"r");
 $wsdlReplace = $string;
 
 //Get URL + BASE From Joomla conf
