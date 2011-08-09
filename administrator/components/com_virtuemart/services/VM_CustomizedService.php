@@ -11,7 +11,7 @@ define( '_JEXEC', 1 );
  * @package    com_vm_soa
  * @subpackage modules
  * @author     Mickael cabanas (cabanas.mickael|at|gmail.com)
- * @copyright  2010 Mickael Cabanas
+ * @copyright  2011 Mickael Cabanas
  * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @version    $Id:$
  */
@@ -35,25 +35,25 @@ include_once('VM_Commons.php');
 		//Auth OK
 		if ($result == "true"){
 		
-			$commonReturn['returnCode'] = "Your";//$conf['version'];
+			$commonReturn['returnCode'] = "Your";
 			$commonReturn['message'] = "Customized";
 			$commonReturn['returnData'] = "Service";
 				
 			return $commonReturn;
 
 		}else if ($result == "false"){
-			return new SoapFault("JoomlaServerAuthFault", "Autification KO for : ".$params->login);
+			return new SoapFault("JoomlaServerAuthFault", "Autification KO for : ".$params->loginInfo->login);
 		}else if ($result == "no_admin"){
-			return new SoapFault("JoomlaServerAuthFault", "User is not a Super Administrator : ".$params->login);
+			return new SoapFault("JoomlaServerAuthFault", "User is not a Super Administrator : ".$params->loginInfo->login);
 		}else{
-			return new SoapFault("JoomlaServerAuthFault", "User does not exist : ".$params->login);
+			return new SoapFault("JoomlaServerAuthFault", "User does not exist : ".$params->loginInfo->login);
 		}		
 	}
 	
 	/**
     * This function Method2
 	* (expose as WS)
-    * @param string
+    * @param
     * @return 
    */
 	function Method2($params) {
@@ -66,7 +66,7 @@ include_once('VM_Commons.php');
 		//Auth OK
 		if ($result == "true"){
 		
-			$commonReturn['returnCode'] = "Your";//$conf['version'];
+			$commonReturn['returnCode'] = "Your";
 			$commonReturn['message'] = "Customized";
 			$commonReturn['returnData'] = "Service 2";
 				
@@ -74,11 +74,11 @@ include_once('VM_Commons.php');
 
 			
 		}else if ($result == "false"){
-			return new SoapFault("JoomlaServerAuthFault", "Autification KO for : ".$params->login);
+			return new SoapFault("JoomlaServerAuthFault", "Autification KO for : ".$params->loginInfo->login);
 		}else if ($result == "no_admin"){
-			return new SoapFault("JoomlaServerAuthFault", "User is not a Super Administrator : ".$params->login);
+			return new SoapFault("JoomlaServerAuthFault", "User is not a Super Administrator : ".$params->loginInfo->login);
 		}else{
-			return new SoapFault("JoomlaServerAuthFault", "User does not exist : ".$params->login);
+			return new SoapFault("JoomlaServerAuthFault", "User does not exist : ".$params->loginInfo->login);
 		}		
 	}
 

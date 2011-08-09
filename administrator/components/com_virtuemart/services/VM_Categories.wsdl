@@ -32,6 +32,9 @@
 			<xsd:element name="AddMediaCategoryRequest" type="tns:AddMediaCategoryInput" />
 			<xsd:element name="AddMediaCategoryResponse" type="tns:commonReturn" />
 			
+			<xsd:element name="DeleteMediaCategoryRequest" type="tns:delMediaInput" />
+			<xsd:element name="DeleteMediaCategoryResponse" type="tns:commonReturn" />
+			
 			<xsd:complexType name="loginInfo">
 				<xsd:all>
 					<xsd:element name="login" type="xsd:string" />
@@ -61,6 +64,14 @@
 					<xsd:element name="loginInfo" type="tns:loginInfo" />
 					<xsd:element name="category_publish" type="xsd:string" />
 					<xsd:element name="category_id" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="delMediaInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="category_id" type="xsd:string" />
+					<xsd:element name="media_id" type="xsd:string" />
 				</xsd:all>
 			</xsd:complexType>
 			
@@ -228,6 +239,12 @@
 	<wsdl:message name="AddMediaCategoryResponse">
 		<wsdl:part element="tns:AddMediaCategoryResponse" name="parameters" />
 	</wsdl:message>	
+	<wsdl:message name="DeleteMediaCategoryRequest">
+		<wsdl:part element="tns:DeleteMediaCategoryRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="DeleteMediaCategoryResponse">
+		<wsdl:part element="tns:DeleteMediaCategoryResponse" name="parameters" />
+	</wsdl:message>	
 	
 
 	<wsdl:portType name="VM_Categories">
@@ -262,6 +279,10 @@
 		<wsdl:operation name="AddMediaCategory">
 			<wsdl:input message="tns:AddMediaCategoryRequest" />
 			<wsdl:output message="tns:AddMediaCategoryResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="DeleteMediaCategory">
+			<wsdl:input message="tns:DeleteMediaCategoryRequest" />
+			<wsdl:output message="tns:DeleteMediaCategoryResponse" />
 		</wsdl:operation>
 	</wsdl:portType>
 	
@@ -341,6 +362,16 @@
 		<wsdl:operation name="AddMediaCategory">
 			<soap:operation
 				soapAction="http://www.virtuemart.net/VM_Categories/AddMediaCategory" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="DeleteMediaCategory">
+			<soap:operation
+				soapAction="http://www.virtuemart.net/VM_Categories/DeleteMediaCategory" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>

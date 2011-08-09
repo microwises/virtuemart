@@ -20,7 +20,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
+
 <br />
+
 <table width="100%">
     <tr><td valign="top" width="50%">
     
@@ -646,7 +648,7 @@ defined('_JEXEC') or die('Restricted access');
 				</span>
 				</td>
 				<td>
-				<input type="text" name="wsdl_custom" class="inputbox" value="<?php echo $this->config->get('wsdl_custom') ?>" />
+				<input type="text" name="soap_wsdl_custom" class="inputbox" value="<?php echo $this->config->get('soap_wsdl_custom') ?>" />
 			</td>
 			</tr>
 			
@@ -657,7 +659,7 @@ defined('_JEXEC') or die('Restricted access');
 				</span>
 				</td>
 				<td>
-				<input type="text" name="EP_custom" class="inputbox" width="300" value="<?php echo $this->config->get('EP_custom') ?>" />
+				<input type="text" name="soap_EP_custom" class="inputbox" width="300" value="<?php echo $this->config->get('soap_EP_custom') ?>" />
 			</td>
 			</tr>
 		    
@@ -676,16 +678,15 @@ defined('_JEXEC') or die('Restricted access');
 		<fieldset class="adminform">
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_WSDL_VIEW') ?></legend>
 		<table class="admintable">
-	    	
+	
 	    	<?php 
 			 echo "<ul>";
-			 echo "<li><a href=./components/com_virtuemart/services/VM_CategoriesWSDL.php > View Categories WSDL definition </a></li>";
-			 echo "<li><a href=./components/com_virtuemart/services/VM_ProductWSDL.php > View Product WSDL definition</a></li>";
-			 echo "<li><a href=./components/com_virtuemart/services/VM_OrderWSDL.php > View Orders WSDL definition</a></li>";
-			 echo "<li><a href=./components/com_virtuemart/services/VM_UsersWSDL.php > View Customers WSDL definition</a></li>";
-			 echo "<li><a href=./components/com_virtuemart/services/VM_SQLQueriesWSDL.php > View SQL WSDL definition</a></li>";
-			 echo "<li><a href=./components/com_virtuemart/services/VM_CustomizedWSDL.php > View Customized WSDL definition</a></li>";
-			
+			 echo "<li><a href=./components/com_virtuemart/services/VM_CategoriesWSDL.php >". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_CAT')." </a></li>";
+			 echo "<li><a href=./components/com_virtuemart/services/VM_ProductWSDL.php >". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_PROD')." </a></li>";
+			 echo "<li><a href=./components/com_virtuemart/services/VM_OrderWSDL.php > ". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_ORDER')."</a></li>";
+			 echo "<li><a href=./components/com_virtuemart/services/VM_UsersWSDL.php > ". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_USER')." </a></li>";
+			 echo "<li><a href=./components/com_virtuemart/services/VM_SQLQueriesWSDL.php > ". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_SQL')." </a></li>";
+			 echo "<li><a href=./components/com_virtuemart/services/VM_CustomizedWSDL.php > ". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_CUSTOM')." </a></li>";
 			 echo "</ul>";
 			
 			?>
@@ -697,4 +698,4 @@ defined('_JEXEC') or die('Restricted access');
 	</td></tr>
 </table>
 
-
+<em><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_INFOMSG') ?></em>

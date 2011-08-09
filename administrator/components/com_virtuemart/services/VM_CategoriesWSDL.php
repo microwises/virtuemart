@@ -1,7 +1,7 @@
 <?php 
 define( '_VALID_MOS', 1 );
 define( '_JEXEC', 1 );
-//if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
+
 /**
  * Virtuemart Categorie SOA Connector
  *

@@ -130,7 +130,6 @@ $conf['auth_order_delcreditcard']= $vmConfig->get('soap_auth_order_otherdelete')
 $conf['auth_order_addstatus']= $vmConfig->get('soap_auth_order_otheradd')== 1 ? 'on' :'off';
 $conf['auth_order_upstatus']= $vmConfig->get('soap_auth_order_otherupdate')== 1 ? 'on' :'off';
 $conf['auth_order_delstatus']= $vmConfig->get('soap_auth_order_otherdelete')== 1 ? 'on' :'off';
-
 $conf['auth_sql_sqlrqst']= $vmConfig->get('soap_auth_execsql')== 1 ? 'on' :'off';
 $conf['auth_sql_select']= $vmConfig->get('soap_auth_execsql_select')== 1 ? 'on' :'off';
 $conf['auth_sql_insert']= $vmConfig->get('soap_auth_execsql_insert')== 1 ? 'on' :'off';

@@ -395,16 +395,14 @@ define ("ALLOK" , 9);
    */
 	function onAdminAuthenticate($login,$passwd){
 	
+		jimport('joomla.user.helper');
+		
 		$credentials['password']=$passwd;
 		$credentials['username']=$login;
-		//////////////////////////////////////////////////////////
-		jimport('joomla.user.helper');
+		
 
-		//$response->type = 'Joomla';
 		// Joomla does not like blank passwords
 		if (empty($credentials['password'])) {
-			//$response->status = JAUTHENTICATE_STATUS_FAILURE;
-			//$response->error_message = JText::_('JGLOBAL_AUTH_EMPTY_PASS_NOT_ALLOWED');
 			return false;
 		}
 
@@ -430,8 +428,6 @@ define ("ALLOK" , 9);
 
 			if ($crypt == $testcrypt) {
 				$user = JUser::getInstance($result->id); // Bring this in line with the rest of the system
-				//$response->email = $user->email;
-				//$response->fullname = $user->name;
 				$autorGroups =$user->getAuthorisedGroups();
 				
 				if ($autorGroups['1'] == '8'){ // /  8 	is 	Super Users //to ameliorate in future
@@ -450,7 +446,10 @@ define ("ALLOK" , 9);
 		return $ret;
 	}
 	
-	
+	/**
+	 * 
+	 * 404
+	 */
 	function exit404() {
 		global $_SERVER;
 		header ("HTTP/1.1 404 Not Found");

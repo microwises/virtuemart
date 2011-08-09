@@ -412,7 +412,7 @@ include_once('VM_Commons.php');
 	/**
     * This is generic function to get order details 
 	* (NOT expose as WS)
-    * @param string The id of the order
+    * @param Object
     * @return order details
     */
 	function getOrderGeneric($params) {
@@ -523,24 +523,6 @@ include_once('VM_Commons.php');
 			
 			return $Order;*/
 			
-			/*$db = new ps_DB;
-
-			$list  = "SELECT * FROM #__{vm}_orders WHERE ";
-			$list .= "order_id = '$id' ";
-			$list .= $q . " LIMIT 0,100 "; 
-			
-			$db = new ps_DB;
-			$db->query($list);
-			
-			while ($db->next_record()) {
-			
-				$Order = new Order($db->f("order_id"),$db->f("user_id"),$db->f("vendor_id"), $db->f("order_number"), $db->f("user_info_id"), $db->f("order_total"), $db->f("order_subtotal"),
-				$db->f("order_tax"), $db->f("order_tax_details"), $db->f("order_shipping"), $db->f("order_shipping_tax"), $db->f("coupon_discount"), $db->f("coupon_code"), $db->f("order_discount"), $db->f("order_currency"),
-				$db->f("order_status"), $db->f("cdate"), $db->f("mdate"), $db->f("ship_method_id"), $db->f("customer_note"), $db->f("ip_address"));
-				
-			
-			}
-			return $Order;*/
 			
 		}else if ($result == "false"){
 			return new SoapFault("JoomlaServerAuthFault", "Authentication KO for : ".$params->loginInfo->login);
@@ -577,51 +559,6 @@ include_once('VM_Commons.php');
 			}
 			
 			return getOrderGeneric($params);
-			/*$db = JFactory::getDBO();	
-			$query  = "SELECT * FROM `#__vm_orders` WHERE ";
-			$query .= "order_status = '$params->status' ";
-			$query .= "order by order_id desc ";
-			$query .= " LIMIT $params->limite_start, $params->limite_end "; 
-			$db->setQuery($query);
-			
-			$rows = $db->loadObjectList();
-			foreach ($rows as $row){
-			
-				$Order = new Order($row->order_id,$row->user_id, $row->vendor_id, $row->order_number, $row->user_info_id, $row->order_total, $row->order_subtotal,
-				$row->order_tax, $row->order_tax_details, $row->order_shipping, $row->order_shipping_tax, $row->coupon_discount, $row->coupon_code, $row->order_discount, $row->order_currency,
-				$row->order_status,$row->cdate, $row->mdate , $row->ship_method_id, $row->customer_note, $row->ip_address);
-				$orderArray[]=$Order;
-			
-			}
-			
-			return $orderArray;*/
-			
-			/////////////
-			/*$db = new ps_DB;
-
-			if (empty($params->limite_start)){
-				$params->limite_start="0";
-			}
-			if (empty($params->limite_end)){
-				$params->limite_end="100";
-			}
-			$list  = "SELECT * FROM #__{vm}_orders WHERE ";
-			$list .= "order_status = '$params->status' ";
-			$list .= "order by order_id desc ";
-			$list .= $q . " LIMIT $params->limite_start, $params->limite_end "; 
-			
-			$db = new ps_DB;
-			$db->query($list);
-			
-			while ($db->next_record()) {
-			
-				$Order = new Order($db->f("order_id"),$db->f("user_id"), $db->f("vendor_id"), $db->f("order_number"), $db->f("user_info_id"), $db->f("order_total"), $db->f("order_subtotal"),
-				$db->f("order_tax"), $db->f("order_tax_details"), $db->f("order_shipping"), $db->f("order_shipping_tax"), $db->f("coupon_discount"), $db->f("coupon_code"), $db->f("order_discount"), $db->f("order_currency"),
-				$db->f("order_status"),$db->f("cdate"), $db->f("mdate") , $db->f("ship_method_id"), $db->f("customer_note"), $db->f("ip_address"));
-				$orderArray[]=$Order;
-			
-			}
-			return $orderArray;*/
 			
 		}else if ($result == "false"){
 			return new SoapFault("JoomlaServerAuthFault", "Authentication KO for : ".$params->loginInfo->login);
@@ -660,41 +597,6 @@ include_once('VM_Commons.php');
 			
 			return getOrderGeneric($params);
 			
-			/*$db = JFactory::getDBO();	
-			$query  = "SELECT * FROM `#__virtuemart_orders`  ";
-			$query .= "order by virtuemart_order_id desc ";
-			$query .= " LIMIT $params->limite_start, $params->limite_end "; 
-			$db->setQuery($query);
-			
-			$rows = $db->loadObjectList();
-			foreach ($rows as $row){
-			
-				$Order = new Order($row->virtuemart_order_id,$row->virtuemart_user_id, $row->virtuemart_vendor_id, $row->order_number, $row->virtuemart_userinfo_id, $row->order_total, $row->order_subtotal,
-				$row->order_tax, $row->order_tax_details, $row->order_shipping, $row->order_shipping_tax, $row->coupon_discount, $row->coupon_code, $row->order_discount, $row->order_currency,
-				$row->order_status,$row->cdate, $row->mdate , $row->ship_method_id, $row->customer_note, $row->ip_address);
-				$orderArray[]=$Order;
-			
-			}
-			
-			return $orderArray;*/
-			
-			/*$db = new ps_DB;
-
-			$list  = "SELECT * FROM #__{vm}_orders ";
-			$list .= $q . " LIMIT $params->limite_start, $params->limite_end "; 
-			
-			$db = new ps_DB;
-			$db->query($list);*/
-			
-			/*while ($db->next_record()) {
-			
-				$Order = new Order($db->f("order_id"),$db->f("user_id"), $db->f("vendor_id"), $db->f("order_number"), $db->f("user_info_id"), $db->f("order_total"), $db->f("order_subtotal"),
-				$db->f("order_tax"), $db->f("order_tax_details"), $db->f("order_shipping"), $db->f("order_shipping_tax"), $db->f("coupon_discount"), $db->f("coupon_code"), $db->f("order_discount"), $db->f("order_currency"),
-				$db->f("order_status"), $db->f("cdate"), $db->f("mdate") , $db->f("ship_method_id"), $db->f("customer_note"), $db->f("ip_address"));
-				$orderArray[]=$Order;
-			
-			}
-			return $orderArray;*/
 			
 		}else if ($result == "false"){
 			return new SoapFault("JoomlaServerAuthFault", "Authentication KO for : ".$params->loginInfo->login);

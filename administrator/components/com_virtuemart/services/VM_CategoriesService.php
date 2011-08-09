@@ -14,7 +14,7 @@ define( '_JEXEC', 1 );
  * @author     Mickael cabanas (cabanas.mickael|at|gmail.com)
  * @copyright  2011 Mickael Cabanas
  * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @version    $Id:$
+ * @version    $Id: VM_CategoriesService.php 3821 2011-08-09 10:08:04Z mike75 $
  */
  
 /** loading framework **/
@@ -110,8 +110,7 @@ include_once('VM_Commons.php');
 /**
  * Class Media
  *
- * Class "Media" with attribute : id, name, description,  image, fulliamage , parent category
- * attributes, parent produit, child id)
+ * Class "Media" with attribute : $virtuemart_media_id, $file_title, $file_description ...
  *
  * @author     Mickael cabanas (cabanas.mickael|at|gmail.com)
  * @copyright  Mickael cabanas
@@ -167,7 +166,7 @@ include_once('VM_Commons.php');
 /**
  * Class CommonReturn
  *
- * Class "CommonReturn" with attribute : returnCode, message, code, 
+ * Class "CommonReturn" with attribute : returnCode, message, $returnData, 
  *
  * @author     Mickael cabanas (cabanas.mickael|at|gmail.com)
  * @copyright  Mickael cabanas
@@ -181,7 +180,6 @@ include_once('VM_Commons.php');
 
 		//constructeur
 		/**
-		 * Enter description here...
 		 *
 		 * @param String $returnCode
 		 * @param String $message
@@ -197,7 +195,7 @@ include_once('VM_Commons.php');
 	/**
     * This function get Childs of a category for a category ID
 	* (expose as WS)
-    * @param string The id of the category
+    * @param Object
     * @return array of Categories
    */
 	function GetChildsCategories($params) {
@@ -278,7 +276,7 @@ include_once('VM_Commons.php');
 	/**
     * This function get All the categories
 	* (expose as WS)
-    * @param string The id of the category
+    * @param Object
     * @return array of Categories
    */
 	function GetAllCategories($params) {
@@ -354,8 +352,8 @@ include_once('VM_Commons.php');
 	/**
     * This function add category
 	* (expose as WS)
-    * @param string The id of the category
-    * @return result
+    * @param Object
+    * @return CommonReturn
    */
 	function AddCategory($params) {
 		
@@ -427,8 +425,8 @@ include_once('VM_Commons.php');
 	/**
     * This function Update Category
 	* (expose as WS)
-    * @param string The id of the category
-    * @return result
+    * @param Object
+    * @return CommonReturn
    */
 	function UpdateCategory($params) {
 		
@@ -503,8 +501,8 @@ include_once('VM_Commons.php');
 	/**
     * This function DeleteCategory
 	* (expose as WS)
-    * @param string result
-    * @return result
+    * @param Object
+    * @return CommonReturn
    */
 	function DeleteCategory($params) {
 		
@@ -554,7 +552,7 @@ include_once('VM_Commons.php');
 	/**
     * This function get All medias for category
 	* (expose as WS)
-    * @param string The id of the category
+    * @param Object
     * @return array of Media
    */
 	function GetMediaCategory($params) {
@@ -576,10 +574,8 @@ include_once('VM_Commons.php');
 			$_REQUEST['virtuemart_category_id'] = $params->category_id;
 			$files = $mediaModel->getFiles();
 			
-			
 			foreach ($files as $file){
 				
-	
 				$media = new Media($file->virtuemart_media_id,
 											$file->virtuemart_vendor_id,
 											$file->file_title,
@@ -614,7 +610,7 @@ include_once('VM_Commons.php');
 	/**
     * This function ADD medias for category
 	* (expose as WS)
-    * @param string The media
+    * @param Object
     * @return commonReturn
    */
 	function AddMediaCategory($params) {
@@ -623,7 +619,7 @@ include_once('VM_Commons.php');
 		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
-		if ($conf['auth_cat_getall']=="off"){
+		if ($conf['auth_cat_addcat']=="off"){
 			$result = "true";
 		}
 		
@@ -632,8 +628,9 @@ include_once('VM_Commons.php');
 			
 			setToken();
 			
-			//if data to attach -> write file
-			if (isset($params->media->attachValue)){
+			//if data to attach -> write file (attachValue is data base64Binary encoded)
+			if (!empty($params->media->attachValue)){
+				
 				$dataFile = $params->media->attachValue;//base64Binary 
 				$ext = mimeTypeToExtention($params->media->file_mimetype);
 				$filename = $params->media->file_title."".$ext;
@@ -643,7 +640,8 @@ include_once('VM_Commons.php');
 					$params->media->file_url_thumb=  $ret[1];
 				}
 			}
-		
+			$data['media_action']='upload';
+			
 			/// this function add media in media table/remove old category media link and add this new
 			/// todo Add media and dont remove old media
 			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
@@ -659,17 +657,12 @@ include_once('VM_Commons.php');
 				$media_ids[] = $media->virtuemart_media_id;
 			}
 			
-			
-			//$data['virtuemart_media_id'] = $file->virtuemart_media_id,
 			if (!empty($params->virtuemart_media_id)){
 				$media_ids[] = $params->virtuemart_media_id;
+				
 			}
 			$data['virtuemart_media_id']=$media_ids;
 			
-			//$data['virtuemart_media_id'] = $file->virtuemart_media_id,
-			
-			
-			//$data['virtuemart_media_id'] 	= $params->media->virtuemart_media_id;
 			$data['virtuemart_category_id'] = $params->category_id;
 			$data['virtuemart_vendor_id'] 	= isset($params->media->virtuemart_vendor_id) ? $params->media->virtuemart_vendor_id : 1;
 			$data['file_title'] 			= $params->media->file_title;
@@ -690,15 +683,14 @@ include_once('VM_Commons.php');
 				$data['media_published'] 			= 1;
 			}
 			
-			
 			$file_id = $mediaModel->storeMedia($data,'category');
 			$errors = $mediaModel->getErrors();
-			
+
 			foreach($errors as $error){
 				$error .= '\n'.$error;
 			}
-			if (!empty($errors)){
-				return new SoapFault("AddMediaCategoryFault", "Cannot add media category ".$error);
+			if ($file_id==false){
+				return new SoapFault("AddMediaCategoryFault", "Cannot add media category ",$error);
 			}else{
 				$commonReturn = new CommonReturn(OK,"Media Added for category : ".$params->category_id,$file_id);
 				return $commonReturn;
@@ -714,19 +706,89 @@ include_once('VM_Commons.php');
 		}
 	}	
 	
-	
-	
-
 	/**
-    * This function get Get Available Images on server (dir components/com_virtuemart/shop_image/category)
+    * This function DeleteMediaCategory
+    * we don't delete media directly, media is maybe related to other category
+    * we just delete ref to cat
 	* (expose as WS)
-    * @param string
-    * @return array of products
+    * @param Object
+    * @return CommonReturn
+    */
+	function DeleteMediaCategory($params) {
+		
+		include('../vm_soa_conf.php');
+		
+		/* Authenticate*/
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		if ($conf['auth_cat_delcat']=="off"){
+			$result = "true";
+		}
+		
+		//Auth OK
+		if ($result == "true"){
+			
+			setToken();
+			
+			// we don't remove media directly media is maybe related to other category
+			
+			/*if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
+			$mediaModel = new VirtueMartModelMedia();
+			$data['virtuemart_media_id'] = $params->media_id;
+			$ret = $mediaModel->remove($data);//this don't remove relation
+			*/
+			
+			// del Media just only delete relation
+			
+			$db = JFactory::getDBO();	
+			$query  = "SELECT id FROM #__virtuemart_category_medias ";
+			$query .= "WHERE virtuemart_category_id = '$params->category_id' ";
+			$query .= "AND virtuemart_media_id = '$params->media_id' ";
+			
+			$db->setQuery($query);
+			
+			$rows = $db->loadObjectList();
+			
+			$cat_media_id;
+			foreach ($rows as $row){
+					$cat_media_id = $row->id;
+			}
+			if (empty($cat_media_id)){
+				return new SoapFault("MediaCategoryDeleteFault", "Cannot delete media category (No relation found)",$params->category_id);
+			}
+			
+			if (!class_exists( 'TableCategory_medias' )) require (JPATH_VM_ADMINISTRATOR.DS.'tables\category_medias.php');
+			$tableCategory_medias = new TableCategory_medias($db);
+			$tableCategory_medias->id = $cat_media_id;
+			$ret = $tableCategory_medias->delete();
+			
+		
+			if ($ret == false ){
+				return new SoapFault("MediaCategoryDeleteFault", "Cannot delete media category ".$params->id);
+			}else{
+				$commonReturn = new CommonReturn(OK,"Media Category deleted : ".$params->category_id,$params->category_id);
+				return $commonReturn;
+			}
+
+		//Auth KO
+		}else if ($result == "false"){
+			return new SoapFault("JoomlaServerAuthFault", "Authentication KO for : ".$params->loginInfo->login);
+		}else if ($result == "no_admin"){
+			return new SoapFault("JoomlaServerAuthFault", "User is not a Super Administrator : ".$params->loginInfo->login);
+		}else{
+			return new SoapFault("JoomlaServerAuthFault", "User does not exist : ".$params->loginInfo->login);
+		}
+	}
+	
+	/**
+    * This function get Get Available Images on server 
+    * (dir images/stories/virtuemart/category/)
+	* (expose as WS)
+    * @param Object
+    * @return Array
    */
 	function GetAvailableImages($params) {
 	
 		include('../vm_soa_conf.php');
-		
 		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
@@ -809,9 +871,7 @@ include_once('VM_Commons.php');
 		}		
 	}
 	
-	
-	
-	
+
 	/* SOAP SETTINGS */
 		
 	if ($vmConfig->get('soap_ws_cat_on')==1){
@@ -845,8 +905,10 @@ include_once('VM_Commons.php');
 		$server->addFunction("UpdateCategory");
 		$server->addFunction("GetMediaCategory");
 		$server->addFunction("AddMediaCategory");
+		$server->addFunction("DeleteMediaCategory");
 		
 		$server->handle();
+		
 	}else{
 		echo "This Web Service (Categories) is disabled";
 	}

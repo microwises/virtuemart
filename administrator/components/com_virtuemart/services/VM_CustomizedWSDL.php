@@ -18,9 +18,9 @@ define( '_JEXEC', 1 );
  /** loading framework **/
 include_once('VM_Commons.php');
 
-$filename = $vmConfig->get('wsdl_custom');
+$wsdlname = $vmConfig->get('soap_wsdl_custom');
+$filename = !empty($wsdlname) ? $wsdlname : 'VM_Customized.wsdl';
 
-//$string = file_get_contents('VM_Users.wsdl',"r");
 $string = file_get_contents($filename,"r");
 
 $wsdlReplace = $string;
@@ -37,12 +37,12 @@ else if (empty($conf['BASESITE']) && !empty($conf['URL'])){
 	$wsdlReplace = str_replace("___HOST___", $conf['URL'], $string);
 	$wsdlReplace = str_replace("___BASE___", $conf['BASESITE'], $wsdlReplace);
 }
-$wsdlReplace = str_replace("___SERVICE___", $vmConfig->get('EP_custom'), $wsdlReplace);
+$epconf = $vmConfig->get('soap_EP_custom');
+$ep = !empty($epconf) ? $epconf : 'VM_CustomizedService.php';
+$wsdlReplace = str_replace("___SERVICE___", $ep, $wsdlReplace);
 
 
-
-
-
+/** echo WSDL **/
 if ($vmConfig->get('soap_ws_custom_on')==1){
 	header('Content-type: text/xml; charset=UTF-8'); 
 	header("Content-Length: ".(strlen($wsdlReplace)));
