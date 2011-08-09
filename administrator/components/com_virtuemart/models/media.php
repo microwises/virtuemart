@@ -251,7 +251,8 @@ class VirtueMartModelMedia extends VmModel {
 			$this -> setId($data['virtuemart_media_id']);
 
 			$virtuemart_media_id = $this->store($data,$type);
-
+			$this->setId($virtuemart_media_id);
+			
 			if(!empty($oldIds)){
 				if(!is_array($oldIds)) $oldIds = array($oldIds);
 				$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
