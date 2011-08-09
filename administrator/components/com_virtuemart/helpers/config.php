@@ -94,10 +94,11 @@ function vmdebug($debugdescr,$debugvalues=null){
 		if($debugvalues!==null){
 
 			$args = func_get_args();
-			if (count($args) > 0) {
-				foreach($args as $debugvalue){
-					if(isset($debugvalue)){
-						$debugdescr .=' <pre>'.print_r($debugvalue,1).'<br />'.print_r(get_class_methods($debugvalue),1).'</pre>';
+			if (count($args) > 1) {
+// 				foreach($args as $debugvalue){
+				for($i=1;$i<count($args);$i++){
+					if(isset($args[$i])){
+						$debugdescr .=' <pre>'.print_r($args[$i],1).'<br />'.print_r(get_class_methods($args[$i]),1).'</pre>';
 					}
 				}
 
@@ -112,7 +113,7 @@ function vmdebug($debugdescr,$debugvalues=null){
 
 function vmTrace($notice,$force=false){
 
-	if($force || (!$force && VMConfig::showDebug() ) ){
+	if($force || (VMConfig::showDebug() ) ){
 		//$app = JFactory::getApplication();
 		//$app ->enqueueMessage($notice.' '.debug_print_backtrace());
 		debug_print_backtrace();
@@ -147,6 +148,7 @@ class VmConfig{
 
 	function showDebug(){
 
+		//return self::$_debug = true;	//this is only needed, when you want to debug THIS file
 		if(self::$_debug===null){
 
 			$debug = VmConfig::get('debug_enable','none');
@@ -199,22 +201,20 @@ class VmConfig{
 
 		self::$_jpConfig = new VmConfig();
 
-// 		if(empty(self::$_jpConfig->_raw)){
+		$db = JFactory::getDBO();
+		$query = 'SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1"';
+		$db->setQuery($query);
+		self::$_jpConfig->_raw = $db->loadResult();
 
-			$db = JFactory::getDBO();
-			$query = 'SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1"';
+		if(empty(self::$_jpConfig->_raw)){
+			self::$_jpConfig->_raw = self::installVMconfig();
 			$db->setQuery($query);
 			self::$_jpConfig->_raw = $db->loadResult();
+		}
 
-			if(empty(self::$_jpConfig->_raw)){
-				self::$_jpConfig->_raw = self::installVMconfig();
-				$db->setQuery($query);
-				self::$_jpConfig->_raw = $db->loadResult();
-			}
-// 		}
 
 		$pair = array();
-		if (self::$_jpConfig->_raw) {
+		if (!empty(self::$_jpConfig->_raw)) {
 			$config = explode('|', self::$_jpConfig->_raw);
 			foreach($config as $item){
 				$item = explode('=',$item);
@@ -250,13 +250,13 @@ class VmConfig{
 	 * @param string $key Key name to lookup
 	 * @return Value for the given key name
 	 */
-	function get($key, $default='')
+	function get($key, $default='',$allow_load=true)
 	{
 
 		$value = '';
 		if ($key) {
 
-			if (empty(self::$_jpConfig->_params)) {
+			if (empty(self::$_jpConfig->_params) && $allow_load) {
 				self::loadConfig();
 			}
 
@@ -267,6 +267,8 @@ class VmConfig{
 					$value = $default;
 				}
 
+			} else {
+				$value = $default;
 			}
 
 		} else {
@@ -552,20 +554,22 @@ class VmConfig{
 	 */
 	public function installVMconfig($_section = 'config')
 	{
-		$app = JFactory::getApplication();
-		$app ->enqueueMessage('Taking config from file');
 
 		$_datafile = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart_defaults.cfg';
 		if (!file_exists($_datafile)) {
 			JError::raiseWarning(500, 'The data file with the default configuration could not be found. You must configure the shop manually.');
 			return false;
+		} else {
+			vmInfo('Taking config from file');
 		}
+
 		$_section = '['.strtoupper($_section).']';
 		$_data = fopen($_datafile, 'r');
 		$_configData = array();
 		$_switch = false;
 		while ($_line = fgets ($_data)) {
 			$_line = trim($_line);
+
 			if (strpos($_line, '#') === 0) {
 				continue; // Commentline
 			}
@@ -584,13 +588,16 @@ class VmConfig{
 			if (!$_switch) {
 				continue; // Outside a section or inside the wrong one.
 			}
+
+			//the variable $_matches is not defined, so I removed this
+/*			vmdebug('read file',$_line,$_matches);
 			if (preg_match_all('/\{(\w+?)\}/', $_line, $_matches)) {
 				foreach ($_matches[1] as $_match) {
 					if (defined($_match)) {
 						$_line = preg_replace("/\{$_match\}/", constant($_match), $_line);
 					}
 				}
-			}
+			}*/
 			if (strpos($_line, '=') === false) {
 				$_line .= '=';
 			} else{
@@ -623,14 +630,16 @@ class VmConfig{
 			$_db->setQuery($_qry);
 			$_db->query();
 			$_qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES ('1', '$_value')";
+
 		}
+
 		// Other sections can be implemented here
 
 		// Write to the DB
 		$_db = JFactory::getDBO();
 		$_db->setQuery($_qry);
 		if (!$_db->query()) {
-			JError::raiseWarning(1, 'JInstaller::install: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(true));
+			JError::raiseWarning(1, 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(true));
 			return false;
 		}
 		return true;

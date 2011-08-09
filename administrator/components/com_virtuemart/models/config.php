@@ -333,10 +333,9 @@ class VirtueMartModelConfig extends JModel {
 		$table = $this->getTable('configs');
 
 		if (!$table->delete(1)) {
-			$this->setError(get_class( $this ).'::remove '.$id.' '.$table->getError());
+			vmError(get_class( $this ).'::remove '.$id.' '.$table->getError(),'Cannot delete config');
 			return false;
 		}
-
 
 		return true;
 	}
@@ -348,11 +347,15 @@ class VirtueMartModelConfig extends JModel {
 	 */
 	function deleteConfig(){
 
-		$this->remove();
+		if($this->remove()){
+			return VmConfig::loadConfig(true);
+		} else {
+			return false;
+		}
 
-		VmConfig::loadConfig(true);
 
-		return ;
+
+
 	}
 
 }

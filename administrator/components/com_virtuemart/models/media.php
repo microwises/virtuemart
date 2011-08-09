@@ -251,8 +251,10 @@ class VirtueMartModelMedia extends VmModel {
 			$this -> setId($data['virtuemart_media_id']);
 
 			$virtuemart_media_id = $this->store($data,$type);
+
+			//added by Mike,   Mike why did you add this? This function storeMedia is extremely nasty
 			$this->setId($virtuemart_media_id);
-			
+
 			if(!empty($oldIds)){
 				if(!is_array($oldIds)) $oldIds = array($oldIds);
 				$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);

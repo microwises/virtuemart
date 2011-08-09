@@ -323,10 +323,10 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
 		$this->checkPermissionForTools();
 
-		if(VmConfig::get('dangeroustools', true)){
+		//if(VmConfig::get('dangeroustools', true)){
 			$model = $this->getModel('config');
 			$model -> deleteConfig();
-		}
+	//	}
 		$this->setRedirect($this->redirectPath, 'Configuration is now restored by file');
 	}
 
