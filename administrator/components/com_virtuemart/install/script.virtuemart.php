@@ -38,6 +38,24 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 		}
 
+		public function checkIfUpdate(){
+
+			$update = false;
+
+			$db = JFactory::getDBO();
+
+			$q = "SELECT count(id) AS idCount FROM `#__virtuemart_adminmenuentries`";
+			$db->setQuery($q);
+			$result = $db->loadResult();
+
+			if (empty($result)) {
+				$update = false;
+			} else {
+				$update = true;
+			}
+			return $update;
+		}
+
 		/**
 		 * Pre-process method (e.g. install/upgrade) and any header HTML
 		 *
@@ -45,7 +63,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * @param object JInstallerComponent parent
 		 * @return boolean True if VM exists, null otherwise
 		 */
-		public function preflight ($type, $parent=null) {
+/*		public function preflight ($type, $parent=null) {
 
 			$update = false;
 
@@ -61,14 +79,15 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$update = true;
 			}
 
+
 			// return true so com_install wrapper will know what to do in j1.5
 			if ($parent == null) {
 				return $update;
 			}
 
-			$parent->getParent()->setUpgrade($update);
+			//$parent->getParent()->setUpgrade($update);
 
-		}
+		}*/
 
 
 		/**
@@ -81,6 +100,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		public function install ($parent=null) {
 
 			$this->loadVm();
+
+			if($this->checkIfUpdate()){
+				return $this->update();
+			}
+
 			// install essential and required data
 			// should this be covered in install.sql (or 1.6's JInstaller::parseSchemaUpdates)?
 			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
@@ -108,6 +132,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		public function update ($parent=null) {
 
 			$this->loadVm();
+
+			if(!$this->checkIfUpdate()){
+				return $this->install();
+			}
+
 			$db = JFactory::getDBO();
 			$query = 'SHOW COLUMNS FROM `#__virtuemart_products` ';
 			$db->setQuery($query);
@@ -230,7 +259,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 	 */
 	function com_install() {
 		$vmInstall = new com_virtuemartInstallerScript();
-		$upgrade = $vmInstall->preflight('install');
+		$upgrade = $vmInstall->checkIfUpdate();
 
 		if(version_compare(JVERSION,'1.6.0','ge')) {
 			// Joomla! 1.6 code here
@@ -258,7 +287,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 	 */
 	function com_uninstall() {
 		$vmInstall = new com_virtuemartInstallerScript();
-		$vmInstall->preflight('uninstall');
+// 		$vmInstall->preflight('uninstall');
 
 		if(version_compare(JVERSION,'1.6.0','ge')) {
 			// Joomla! 1.6 code here
