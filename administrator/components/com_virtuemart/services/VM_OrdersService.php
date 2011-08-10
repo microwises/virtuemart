@@ -373,7 +373,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->login, $params->password);
+		$result = onAdminAuthenticate($params->login, $params->password, $params->isEncrypted);
 		if ($conf['auth_order_getstatus']=="off"){
 			$result = "true";
 		}	
@@ -497,7 +497,7 @@ include_once('VM_Commons.php');
 		$order_id=$params->order_id;
 			
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_getorder']=="off"){
 			$result = "true";
 		}	
@@ -544,7 +544,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		/* Authenticate*/
 		
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_getfromstatus']=="off"){
 			$result = "true";
 		}
@@ -580,7 +580,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_getall']=="off"){
 			$result = "true";
 		}
@@ -618,7 +618,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_updatestatus']=="off"){
 			$result = "true";
 		}
@@ -762,7 +762,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_deleteorder']=="off"){
 			$result = "true";
 		}
@@ -840,7 +840,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_createorder']=="off"){
 			$result = "true";
 		}	
@@ -928,7 +928,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_getcoupon']=="off"){
 			$result = "true";
 		}	
@@ -1010,7 +1010,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_addcoupon']=="off"){
 			$result = "true";
 		}	
@@ -1098,7 +1098,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_delcoupon']=="off"){
 			$result = "true";
 		}	
@@ -1242,7 +1242,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_addshiprate']=="off"){
 			$result = "true";
 		}	
@@ -1340,7 +1340,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_upshiprate']=="off"){
 			$result = "true";
 		}	
@@ -1438,7 +1438,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_delshiprate']=="off"){
 			$result = "true";
 		}	
@@ -1572,7 +1572,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_addshipcarrier']=="off"){
 			$result = "true";
 		}	
@@ -1644,7 +1644,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_upshipcarrier']=="off"){
 			$result = "true";
 		}	
@@ -1711,7 +1711,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_delshipcarrier']=="off"){
 			$result = "true";
 		}	
@@ -1776,7 +1776,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_getpayment']=="off"){
 			$result = "true";
 		}	
@@ -1843,7 +1843,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_getpayment']=="off"){
 			$result = "true";
 		}	
@@ -1909,7 +1909,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_addpayment']=="off"){
 			$result = "true";
 		}	
@@ -1963,7 +1963,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_updatepayment']=="off"){
 			$result = "true";
 		}	
@@ -2017,7 +2017,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_delapyment']=="off"){
 			$result = "true";
 		}	
@@ -2078,7 +2078,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		/* Authenticate*/
 		
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_getorderfromdate']=="off"){
 			$result = "true";
 		}
@@ -2237,7 +2237,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_addcreditcard']=="off"){
 			$result = "true";
 		}	
@@ -2291,7 +2291,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_upcreditcard']=="off"){
 			$result = "true";
 		}	
@@ -2340,7 +2340,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_delcreditcard']=="off"){
 			$result = "true";
 		}	
@@ -2382,7 +2382,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_addstatus']=="off"){
 			$result = "true";
 		}	
@@ -2434,7 +2434,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_upstatus']=="off"){
 			$result = "true";
 		}	
@@ -2487,7 +2487,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_order_delstatus']=="off"){
 			$result = "true";
 		}	

@@ -393,13 +393,18 @@ define ("ALLOK" , 9);
     * @param login/pass
     * @return true/false
    */
-	function onAdminAuthenticate($login,$passwd){
+	function onAdminAuthenticate($login,$passwd,$isEncrypted=false){
 	
 		jimport('joomla.user.helper');
 		
 		$credentials['password']=$passwd;
 		$credentials['username']=$login;
 		
+		if ($isEncrypted == "true" || $isEncrypted == "Y" || $isEncrypted == "1"  ){
+			$isEncrypted = true;
+		}else {
+			$isEncrypted = false;
+		}
 
 		// Joomla does not like blank passwords
 		if (empty($credentials['password'])) {
@@ -424,7 +429,13 @@ define ("ALLOK" , 9);
 			$parts	= explode(':', $result->password);
 			$crypt	= $parts[0];
 			$salt	= @$parts[1];
-			$testcrypt = JUserHelper::getCryptedPassword($credentials['password'], $salt);
+			
+			if ($isEncrypted){
+				$testcrypt = $credentials['password'];
+			}else {
+				$testcrypt = JUserHelper::getCryptedPassword($credentials['password'], $salt);
+			}
+			
 
 			if ($crypt == $testcrypt) {
 				$user = JUser::getInstance($result->id); // Bring this in line with the rest of the system

@@ -103,7 +103,7 @@ include_once('VM_Commons.php');
 	
 		$SQLSelectRequest= $params;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		
 		if ($conf['auth_sql_select']=="off"){
 			$result = "true";
@@ -226,7 +226,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		
 		if ($conf['auth_sql_sqlrqst']=="off"){
 			$result = "true";
@@ -298,7 +298,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		
 		if ($conf['auth_sql_insert']=="off"){
 			$result = "true";
@@ -385,7 +385,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 	
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		
 		if ($conf['auth_sql_update']=="off"){
 			$result = "true";

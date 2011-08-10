@@ -200,7 +200,7 @@ include_once('VM_Commons.php');
    */
 	function GetChildsCategories($params) {
 	
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		
 		
 		if ($conf['auth_cat_getall']=="off"){
@@ -284,7 +284,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_cat_getall']=="off"){
 			$result = "true";
 		}
@@ -360,7 +360,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_cat_addcat']=="off"){
 			$result = "true";
 		}
@@ -433,7 +433,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_cat_updatecat']=="off"){
 			$result = "true";
 		}
@@ -509,7 +509,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_cat_delcat']=="off"){
 			$result = "true";
 		}
@@ -560,7 +560,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_cat_getall']=="off"){
 			$result = "true";
 		}
@@ -618,7 +618,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_cat_addcat']=="off"){
 			$result = "true";
 		}
@@ -719,7 +719,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_cat_delcat']=="off"){
 			$result = "true";
 		}
@@ -791,7 +791,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_cat_getimg']=="off"){
 			$result = "true";
 		}

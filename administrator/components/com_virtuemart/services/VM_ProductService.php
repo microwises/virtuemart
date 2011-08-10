@@ -842,7 +842,7 @@ include_once('VM_Commons.php');
 		
 		$product_id = $params->product_id;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_getfromid']=="off"){
 			$result = "true";
 		}
@@ -955,7 +955,7 @@ include_once('VM_Commons.php');
 		
 		$product_sku = $params->product_sku;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_getfromid']=="off"){
 			$result = "true";
 		}
@@ -963,6 +963,9 @@ include_once('VM_Commons.php');
 		if ($result == "true"){
 		
 			$product_id = GetProductIDFromSKU($product_sku);
+			if (empty($product_id)){
+				return new SoapFault("GetProductFromSKUFault","No SKU found");
+			}
 			$params->product_id=$product_id;
 			
 			return GetProductFromId($params);
@@ -991,7 +994,7 @@ include_once('VM_Commons.php');
 		//return new SoapFault("JoomlaServerAuthFault", "params->product_id ".$params->product_id);
 		$product_id = $params->product_id;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_getchild']=="off"){
 			$result = "true";
 		}
@@ -1038,7 +1041,7 @@ include_once('VM_Commons.php');
 		
 		$categorie_id = $params->catgory_id;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_getfromcat']=="off"){
 			$result = "true";
 		}
@@ -1134,7 +1137,7 @@ include_once('VM_Commons.php');
 		
 		$categorie_id = $params->catgory_id;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_getfromcat']=="off"){
 			$result = "true";
 		}
@@ -1264,7 +1267,7 @@ include_once('VM_Commons.php');
 		
 		$categorie_id = $params->catgory_id;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_getfromcat']=="off"){
 			$result = "true";
 		}
@@ -1332,7 +1335,7 @@ include_once('VM_Commons.php');
 		
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_getfromcat']=="off"){
 			$result = "true";
 		}
@@ -1658,7 +1661,7 @@ include_once('VM_Commons.php');
 		
 		$product = $params->product;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_updateprod']=="off"){
 			$result = "true";
 		}
@@ -1778,7 +1781,7 @@ include_once('VM_Commons.php');
 		
 		$product = $params->product;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_addprod']=="off"){
 			$result = "true";
 		}
@@ -1864,7 +1867,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_delprod']=="off"){
 			$result = "true";
 		}
@@ -1909,7 +1912,7 @@ include_once('VM_Commons.php');
 		
 		$order_id = $params->order_id;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_getfromoderid']=="off"){
 			$result = "true";
 		}
@@ -1970,7 +1973,7 @@ include_once('VM_Commons.php');
 		
 		$product_id = $params->product_id;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_getcurrency']=="off"){
 			$result = "true";
 		}
@@ -2042,7 +2045,7 @@ include_once('VM_Commons.php');
 		
 		$product_id = $params->product_id;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_getcurrency']=="off"){
 			$result = "true";
 		}
@@ -2117,7 +2120,7 @@ include_once('VM_Commons.php');
 		
 		$product_id = $params->product_id;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_getcurrency']=="off"){
 			$result = "true";
 		}
@@ -2190,7 +2193,7 @@ include_once('VM_Commons.php');
 		
 		$product_id = $params->product_id;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_addprod']=="off"){
 			$result = "true";
 		}
@@ -2277,7 +2280,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_gettax']=="off"){
 			$result = "true";
 		}
@@ -2354,7 +2357,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_addprod']=="off"){
 			$result = "true";
 		}
@@ -2463,7 +2466,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_updateprod']=="off"){
 			$result = "true";
 		}
@@ -2600,7 +2603,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_delprod']=="off"){
 			$result = "true";
 		}
@@ -2664,7 +2667,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_updateprod']=="off"){
 			$result = "true";
 		}
@@ -2733,7 +2736,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_gettax']=="off"){
 			$result = "true";
 		}
@@ -2823,7 +2826,7 @@ include_once('VM_Commons.php');
 		
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_addprod']=="off"){
 			$result = "true";
 		}
@@ -3005,7 +3008,7 @@ include_once('VM_Commons.php');
 		
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_updateprod']=="off"){
 			$result = "true";
 		}
@@ -3147,7 +3150,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_delprod']=="off"){
 			$result = "true";
 		}
@@ -3212,7 +3215,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_gettax']=="off"){
 			$result = "true";
 		}
@@ -3321,7 +3324,7 @@ include_once('VM_Commons.php');
 		
 		$product_id = $params->product_id;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_addprod']=="off"){
 			$result = "true";
 		}
@@ -3429,7 +3432,7 @@ include_once('VM_Commons.php');
 		
 		$product_id = $params->product_id;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_updateprod']=="off"){
 			$result = "true";
 		}
@@ -3537,7 +3540,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_delprod']=="off"){
 			$result = "true";
 		}
@@ -3645,7 +3648,7 @@ include_once('VM_Commons.php');
 		
 		$product_id = $params->product_id;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_addtax']=="off"){
 			$result = "true";
 		}
@@ -3677,7 +3680,7 @@ include_once('VM_Commons.php');
 		
 		$product_id = $params->product_id;
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_updatetax']=="off"){
 			$result = "true";
 		}
@@ -3707,7 +3710,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_deltax']=="off"){
 			$result = "true";
 		}
@@ -3737,7 +3740,7 @@ include_once('VM_Commons.php');
 		
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_getallprod']=="off"){
 			$result = "true";
 		}
@@ -3848,7 +3851,7 @@ include_once('VM_Commons.php');
 		
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_prod_getimg']=="off"){
 			$result = "true";
 		}
@@ -3990,7 +3993,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_cat_getall']=="off"){
 			$result = "true";
 		}
@@ -4050,7 +4053,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_cat_getall']=="off"){
 			$result = "true";
 		}

@@ -548,7 +548,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 			
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_getall']=="off"){
 			$result = "true";
 		}
@@ -622,7 +622,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 			
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_getall']=="off"){
 			$result = "true";
 		}
@@ -700,7 +700,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 			
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_getall']=="off"){
 			$result = "true";
 		}
@@ -841,7 +841,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 			
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_getall']=="off"){
 			$result = "true";
 		}
@@ -879,7 +879,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_adduser']=="off"){
 			$result = "true";
 		}
@@ -962,7 +962,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_upuser']=="off"){
 			$result = "true";
 		}
@@ -1061,7 +1061,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 			
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_deluser']=="off"){
 			$result = "true";
 		}
@@ -1104,7 +1104,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_sendmail']=="off"){
 			$result = "true";
 		}
@@ -1175,7 +1175,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_search']=="off"){
 			$result = "true";
 		}
@@ -1207,7 +1207,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_search']=="off"){
 			$result = "true";
 		}
@@ -1313,7 +1313,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_search']=="off"){
 			$result = "true";
 		}
@@ -1491,7 +1491,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_addautgrp']=="off"){
 			$result = "true";
 		}	
@@ -1540,7 +1540,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_delauthgrp']=="off"){
 			$result = "true";
 		}	
@@ -1586,7 +1586,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_getstate']=="off"){
 			$result = "true";
 		}	
@@ -1641,7 +1641,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_addstate']=="off"){
 			$result = "true";
 		}	
@@ -1736,7 +1736,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_delstate']=="off"){
 			$result = "true";
 		}	
@@ -1868,7 +1868,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_addshopgrp']=="off"){
 			$result = "true";
 		}	
@@ -1984,7 +1984,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_upshopgrp']=="off"){
 			$result = "true";
 		}	
@@ -2097,7 +2097,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_delshopgroup']=="off"){
 			$result = "true";
 		}	
@@ -2222,7 +2222,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_addvendor']=="off"){
 			$result = "true";
 		}	
@@ -2281,7 +2281,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_upvendor']=="off"){
 			$result = "true";
 		}	
@@ -2342,7 +2342,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_delvendor']=="off"){
 			$result = "true";
 		}	
@@ -2454,7 +2454,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_addvendorcat']=="off"){
 			$result = "true";
 		}	
@@ -2497,7 +2497,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_upvendorcat']=="off"){
 			$result = "true";
 		}	
@@ -2539,7 +2539,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_delvendorcat']=="off"){
 			$result = "true";
 		}	
@@ -2646,7 +2646,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_addmanufacturer']=="off"){
 			$result = "true";
 		}	
@@ -2696,7 +2696,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_upmanufacturer']=="off"){
 			$result = "true";
 		}	
@@ -2747,7 +2747,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_delmanufacturer']=="off"){
 			$result = "true";
 		}	
@@ -2864,7 +2864,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_addmanufacturercat']=="off"){
 			$result = "true";
 		}	
@@ -2918,7 +2918,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_upmanufacturercat']=="off"){
 			$result = "true";
 		}	
@@ -2974,7 +2974,7 @@ include_once('VM_Commons.php');
 		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
-		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password);
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		if ($conf['auth_users_delmanufacturercat']=="off"){
 			$result = "true";
 		}	
