@@ -14,20 +14,42 @@
  * other free or open source software licenses.
  * @version $Id: $
  */
-class JElementVmCountries extends JElement {
+if (!class_exists('VmConfig'))
+    require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+if (!class_exists('ShopFunctions'))
+    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+if (!class_exists('TableCategories'))
+    require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'categories.php');
 
-    /**
-     * Element name
-     * @access	protected
-     * @var		string
-     */
+if (!class_exists('VmElements'))
+    require(JPATH_VM_ADMINISTRATOR . DS . 'elements' . DS . 'vmelements.php');
+
+class VmElementVmCountries extends VmElements {
+
     var $_name = 'countries';
 
+    // This line is required to keep Joomla! 1.6/1.7 from complaining
+    function getInput() {
+        $key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
+        $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
+
+        $db = JFactory::getDBO();
+
+        $query = 'SELECT `virtuemart_country_id` AS value, `country_name` AS text FROM `#__virtuemart_countries`
+               		WHERE `published` = 1 ORDER BY `country_name` ASC '
+        ;
+
+        $db->setQuery($query);
+        $fields = $db->loadObjectList();
+        $class = '';
+
+        return JHTML::_('select.genericlist', $fields, $this->name, 'class="inputbox" multiple="true" size="10"', $key, $val, $this->value, $this->id);
+    }
+
     function fetchElement($name, $value, &$node, $control_name) {
+        $db = JFactory::getDBO();
 
-        $db =  JFactory::getDBO();
-
-        $query = 'SELECT `virtuemart_country_id` AS value, `country_name` AS text FROM `#__virtuemart_countries` 
+        $query = 'SELECT `virtuemart_country_id` AS value, `country_name` AS text FROM `#__virtuemart_countries`
                		WHERE `published` = 1 ORDER BY `country_name` ASC '
         ;
 
@@ -40,3 +62,19 @@ class JElementVmCountries extends JElement {
     }
 
 }
+
+if (version_compare(JVERSION, '1.6.0', 'ge')) {
+
+    class JFormFieldVmCountries extends VmElementVmCountries {
+
+    }
+
+} else {
+
+    class JElementVmCountries extends VmElementVmCountries {
+
+    }
+
+}
+
+

@@ -14,26 +14,26 @@
  * other free or open source software licenses.
  * @version $Id: $
  */
-
 /*
-* This trick allows us to extend the correct class, based on whether it's Joomla! 1.5 or 1.6
-*/
+ * This trick allows us to extend the correct class, based on whether it's Joomla! 1.5 or 1.6
+ */
 // if(!class_exists('JFakeElementBase')) {
 
-if(version_compare(JVERSION,'1.6.0','ge')) {
+if (version_compare(JVERSION, '1.6.0', 'ge')) {
 
-	class VmElements extends JFormField {
-		// This line is required to keep Joomla! 1.6/1.7 from complaining
-		public function getInput() {
+    class VmElements extends JFormField {
 
-		}
+        // This line is required to keep Joomla! 1.6/1.7 from complaining
+        public function getInput() {
+            
+        }
 
-	}
+    }
 
 } else {
 
-	class VmElements extends JElement {
+    class VmElements extends JElement {
 
-	}
+    }
 
 }
