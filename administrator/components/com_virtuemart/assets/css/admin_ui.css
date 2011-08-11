@@ -25,9 +25,10 @@
 -webkit-border-top-left-radius:6px;
 -webkit-border-top-right-radius: 6px;text-shadow: 0px -1px 1px #fff;}
 #content-box #toolbar-box a.toolbar {border: none;}
-#content-box #toolbar-box .m .header {color: #444444;font-weight: normal;padding: 0px 0px 0px 60px;margin: 3px 0px 0px 0px;}
+#content-box #toolbar-box .m .header {color: #444444;font-weight: normal;padding: 0px 0px 0px 60px;margin: 3px 0px 0px 0px;background-position: left center;
+    background-repeat: no-repeat;}
 #content-box #toolbar-box .t, #content-box #toolbar-box .b {display: none;}
-
+.bartext { display: block;font-size: 12px;font-weight: bold;line-height: 32px;vertical-align: inherit;white-space: nowrap;width: auto !important;}
 /* System Messages */
 dl#system-message {margin: 0px;padding: 4px 10px;background: #4592ba url(../images/admin_ui/saved_background.png) top repeat-x;border: solid #387dad 1px;}
 dl#system-message dd {text-indent: 0px;}

@@ -40,7 +40,7 @@ class VirtuemartViewManufacturercategories extends JView {
 		// get necessary model
 		$model = $this->getModel();
 
-		$viewName=ShopFunctions::SetViewTitle('vm_manufacturer_48', 'MANUFACTURER_CATEGORY');
+		$viewName=ShopFunctions::SetViewTitle('MANUFACTURER_CATEGORY');
 		$this->assignRef('viewName',$viewName);
 
                 $layoutName = JRequest::getWord('layout', 'default');

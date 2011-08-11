@@ -44,7 +44,7 @@ class VirtuemartViewShippingCarrier extends JView {
 		$shippingCarrier = $model->getShippingCarrier();
 
 		$layoutName = JRequest::getWord('layout', 'default');
-		$viewName=ShopFunctions::SetViewTitle('vm_ups_48');
+		$viewName=ShopFunctions::SetViewTitle();
 		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getWord('layout', 'default');

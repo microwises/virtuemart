@@ -64,7 +64,7 @@ class VirtuemartViewCurrency extends JView {
 			$model->setId($cid);
 			$currency = $model->getCurrency();
 			$this->assignRef('dateformat',	$dateformat);
-			$viewName=ShopFunctions::SetViewTitle('vm_currency_48','',$currency->currency_name);
+			$viewName=ShopFunctions::SetViewTitle('',$currency->currency_name);
 			$this->assignRef('currency',	$currency);
 
 			ShopFunctions::addStandardEditViewCommands();
@@ -72,7 +72,7 @@ class VirtuemartViewCurrency extends JView {
 		} else {
 			$this->assignRef('dateformat',	$dateformat);
 
-			$viewName=ShopFunctions::SetViewTitle('vm_currency_48');
+			$viewName=ShopFunctions::SetViewTitle();
 			ShopFunctions::addStandardDefaultViewCommands();
 
 			$currencies = $model->getCurrenciesList(JRequest::getWord('search', false));

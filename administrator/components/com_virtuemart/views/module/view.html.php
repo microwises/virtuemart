@@ -41,7 +41,7 @@ class VirtuemartViewModule extends JView {
 
 		$module = $model->getModule();
 
-		$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48');
+		$viewName=ShopFunctions::SetViewTitle();
 		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getWord('layout', 'default');

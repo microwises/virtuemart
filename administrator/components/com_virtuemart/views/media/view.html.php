@@ -42,7 +42,7 @@ class VirtuemartViewMedia extends JView {
 		$this->assignRef('vendorId', $vendorId);
 
 		// TODO add icon for media view
-		$viewName=ShopFunctions::SetViewTitle('vm_countries_48');
+		$viewName=ShopFunctions::SetViewTitle();
 		$this->assignRef('viewName',$viewName);
 
 		$model = $this->getModel('media');

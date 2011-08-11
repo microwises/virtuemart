@@ -52,7 +52,7 @@ class VirtuemartViewProduct extends JView {
 			case 'add':
 			case 'edit':
 
-				$viewName = ShopFunctions::SetViewTitle('vm_product_48' );
+				$viewName = ShopFunctions::SetViewTitle();
 				/* Load the product */
 				$product_model = $this->getModel('product');
 
@@ -225,10 +225,8 @@ class VirtuemartViewProduct extends JView {
 					if ($product->product_sku) $sku=' ('.$product->product_sku.')'; else $sku="";
 					$text =  $product->product_name.$sku;
 				}
-
-				ShopFunctions::SetViewTitle('vm_product_48','',$text ) ;
-                                  $viewName = ShopFunctions::SetViewTitle('vm_product_48', 'PRODUCT',$text);
-                                $this->assignRef('viewName', $viewName);
+				$viewName = ShopFunctions::SetViewTitle('PRODUCT',$text);
+				$this->assignRef('viewName', $viewName);
 				ShopFunctions::addStandardEditViewCommands ();
 
 				break;
@@ -246,7 +244,7 @@ class VirtuemartViewProduct extends JView {
 				}
 				$this->db = JFactory::getDBO();
 
-				$viewName = ShopFunctions::SetViewTitle('vm_product_48',$title, $msg );
+				$viewName = ShopFunctions::SetViewTitle($title, $msg );
 				/* Start model */
 				$model = $this->getModel();
 

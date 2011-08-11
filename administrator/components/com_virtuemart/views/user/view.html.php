@@ -49,11 +49,11 @@ class VirtuemartViewUser extends JView {
 		$task = JRequest::getWord('task', 'edit');
 		if($task == 'editshop'){
 			$model->setCurrent();
-			$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','STORE'  );
+			$viewName=ShopFunctions::SetViewTitle('STORE'  );
 		} else if ($task == 'add'){
 			$model->setUserId(0);
 		} else {
-			$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','USER');
+			$viewName=ShopFunctions::SetViewTitle('USER');
 		}
 
 
@@ -79,13 +79,13 @@ class VirtuemartViewUser extends JView {
 			if($task == 'editshop' && $userDetails->user_is_vendor){
 				$model->setCurrent();
 				if(!empty($userDetails->vendor->vendor_store_name)){
-					$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','STORE',$userDetails->vendor->vendor_store_name );
+					$viewName=ShopFunctions::SetViewTitle('STORE',$userDetails->vendor->vendor_store_name );
 				} else {
-					$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','STORE',JText::_('COM_VIRTUEMART_NEW_VENDOR') );
+					$viewName=ShopFunctions::SetViewTitle('STORE',JText::_('COM_VIRTUEMART_NEW_VENDOR') );
 				}
 
 			} else {
-				$viewName=ShopFunctions::SetViewTitle('vm_shop_users_48','USER',$userDetails->JUser->get('name'));
+				$viewName=ShopFunctions::SetViewTitle('USER',$userDetails->JUser->get('name'));
 			}
 
 

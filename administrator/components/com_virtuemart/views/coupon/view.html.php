@@ -40,7 +40,7 @@ class VirtuemartViewCoupon extends JView {
 		$model = $this->getModel();
 
 		$coupon = $model->getCoupon();
-		$viewName=ShopFunctions::SetViewTitle('vm_coupon_48','', $coupon->coupon_code);
+		$viewName=ShopFunctions::SetViewTitle('', $coupon->coupon_code);
 		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getWord('layout', 'default');

@@ -54,7 +54,7 @@ class VirtuemartViewRatings extends JView {
 		$this->assignRef('max_rating', $this->max_rating);
 
 		$model = $this->getModel();
-		$viewName=ShopFunctions::SetViewTitle('vm_reviews_48','REVIEW_RATE' );
+		$viewName=ShopFunctions::SetViewTitle('REVIEW_RATE' );
 		$this->assignRef('viewName',$viewName);
 
 		/* Get the task */
@@ -90,7 +90,7 @@ class VirtuemartViewRatings extends JView {
                             
 				/* Get the data */
 				$rating = $model->getReview($cids);
-				$viewName=ShopFunctions::SetViewTitle('vm_reviews_48','REVIEW_RATE',$rating->product_name." (". $rating->customer.")" );
+				$viewName=ShopFunctions::SetViewTitle('REVIEW_RATE',$rating->product_name." (". $rating->customer.")" );
 				$this->assignRef('viewName',$viewName);
 				
 				//Standard does not work here, points to wrong layout

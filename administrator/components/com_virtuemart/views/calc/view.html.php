@@ -54,7 +54,7 @@ class VirtuemartViewCalc extends JView {
 		$dateformat = VmConfig::get('dateformat');
 		$this->assignRef('dateformat',	$dateformat);
 
-		$viewName=ShopFunctions::SetViewTitle('vm_countries_48');
+		$viewName=ShopFunctions::SetViewTitle();
 		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getWord('layout', 'default');

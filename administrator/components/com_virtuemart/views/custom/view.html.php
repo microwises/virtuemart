@@ -39,7 +39,7 @@ class VirtuemartViewCustom extends JView {
 		$model = $this->getModel('custom');
 		$this->loadHelper('permissions');
 		// TODO Make an Icon for custom
-		$viewName=ShopFunctions::SetViewTitle('vm_countries_48', 'PRODUCT_CUSTOM_FIELD');
+		$viewName=ShopFunctions::SetViewTitle('PRODUCT_CUSTOM_FIELD');
 
 		$this->assignRef('viewName',$viewName);
 

@@ -52,7 +52,7 @@ class VirtuemartViewUserfields extends JView {
 			$editor = JFactory::getEditor();
 
 			$userField = $model->getUserfield();
-                        $viewName=ShopFunctions::SetViewTitle('vm_orderstatus_48','USERFIELD',$userField->name );
+                        $viewName=ShopFunctions::SetViewTitle('USERFIELD',$userField->name );
                                 $this->assignRef('viewName',$viewName);
 			if ($userField->virtuemart_userfield_id < 1) { // Insert new userfield
 
@@ -147,6 +147,11 @@ class VirtuemartViewUserfields extends JView {
 			JToolBarHelper::publishList();
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::divider();
+			$barText = JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_HIDE');
+			
+			$bar=& JToolBar::getInstance( 'toolbar' );
+			$bar->appendButton( 'Separator', '"><span class="bartext">'.$barText.'</span><hr style="display: none;' );
+//$bar->appendButton( 'publish', 'upload', $alt, '', 550, 400 );
 			JToolBarHelper::custom('toggle.registration.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_REGISTRATION');
 			JToolBarHelper::custom('toggle.registration.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_REGISTRATION');
 			JToolBarHelper::custom('toggle.shipping.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_SHIPPING');

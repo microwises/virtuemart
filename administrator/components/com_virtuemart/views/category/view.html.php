@@ -44,10 +44,13 @@ class VirtuemartViewCategory extends JView {
         $layoutName = JRequest::getWord('layout', 'default');
 
         if ($layoutName == 'edit') {
-                $viewName = ShopFunctions::SetViewTitle('vm_categories_48','COM_VIRTUEMART_CATEGORY');
-                 $this->assignRef('viewName', $viewName);
+			if (isset($category->category_name)) $name = $category->category_name; else $name ='';
+			$viewName=ShopFunctions::SetViewTitle('CATEGORY',$name);
+			$this->assignRef('viewName', $viewName);
 	        $category = $model->getCategory('',false);
-
+		
+		
+		$this->assignRef('viewName',$viewName);
 	       	$model->addImages($category);
 
 			if ( $category->virtuemart_category_id > 1 ) {
@@ -78,7 +81,7 @@ class VirtuemartViewCategory extends JView {
             ShopFunctions::addStandardEditViewCommands();
         }
         else {
-            $viewName = ShopFunctions::SetViewTitle('vm_categories_48','COM_VIRTUEMART_CATEGORY_S');
+            $viewName = ShopFunctions::SetViewTitle('CATEGORY_S');
             $this->assignRef('viewName', $viewName);
 
             /**
@@ -100,9 +103,7 @@ class VirtuemartViewCategory extends JView {
 			$lists = ShopFunctions::addStandardDefaultViewLists($model);
             $this->assignRef('lists', $lists);
         }
-		if (isset($category->category_name)) $name = $category->category_name; else $name ='';
-		$viewName=ShopFunctions::SetViewTitle('vm_categories_48','',$name);
-		$this->assignRef('viewName',$viewName);
+
         parent::display($tpl);
     }
 

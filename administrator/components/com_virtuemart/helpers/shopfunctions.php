@@ -81,18 +81,17 @@ class ShopFunctions {
 		JToolBarHelper::cancel();
 	}
 
-    function SetViewTitle($cssIcon,$view=null,$msg ='') {
-
-            if (!$view) $view = JRequest::getWord('view',JRequest::getWord('controller'));
-            //if ($msg) { $msg = ' <span style="color: #666666;float: right;font-size: large;">'.$msg.'</span>';}
-             if ($msg) { $msg = ' <span style="color: #666666; font-size: large;">'.$msg.'</span>';}
-             $text = strtoupper('COM_VIRTUEMART_'.$view );
-            $viewName = JText::_($text);
+    function SetViewTitle($name ='',$msg ='') {
+			$view = JRequest::getWord('view',JRequest::getWord('controller'));
+            if ( $name=='' ) $name = $view ;
+            if ($msg) { $msg = ' <span style="color: #666666; font-size: large;">'.$msg.'</span>';}
+            //$text = strtoupper('COM_VIRTUEMART_'.$name );
+            $viewText = JText::_('COM_VIRTUEMART_'.$name );
 			if (!$task = JRequest::getWord('task')) $task='list';
 
             $taskName = ' <small><small>[ '.JText::_('COM_VIRTUEMART_'.$task).' ]</small></small>';
-            JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' ,$viewName, $taskName).$msg , $cssIcon);
-            return $viewName;
+            JToolBarHelper::title( $viewText.' '.$taskName.$msg ,'vm_'.$view.'_48');
+            return $viewText;
 
     }
 

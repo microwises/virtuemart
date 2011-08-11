@@ -49,7 +49,7 @@ class VirtuemartViewOrders extends JView {
 		$orderStatusModel=new VirtueMartModelOrderstatus();
 		$orderStates = $orderStatusModel->getOrderStatusList();
 
-		$viewName=ShopFunctions::SetViewTitle('vm_orders_48', 'ORDER');
+		$viewName=ShopFunctions::SetViewTitle( 'ORDER');
 		$this->assignRef('viewName',$viewName);
 
 		$curTask = JRequest::getWord('task');
