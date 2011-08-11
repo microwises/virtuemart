@@ -87,7 +87,7 @@ table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}
 //////////// Admin Menu //////////////
 ////////////////////////////////////*/
 #admin-ui-menu {}
-#admin-ui-menu h3.menu-title {cursor:pointer;margin: 0px;padding: 6px 10px 6px 10px;color: #fff;font-size: 13px;font-weight: normal;color: #333;text-shadow: 0px -1px 1px #fff;}
+#admin-ui-menu h3.menu-title {background: #b0bfd9 url(../images/admin_ui/admin_menu_current_background.png) bottom repeat-x;cursor:pointer;margin: 0px;padding: 6px 10px 6px 10px;color: #fff;font-size: 13px;font-weight: normal;color: #333;text-shadow: 0px -1px 1px #fff;}
 
 #admin-ui-menu h3.current {background: #b0bfd9 url(../images/admin_ui/admin_menu_current_background.png) bottom repeat-x;border-top: solid #a2b0cb 1px;text-shadow: 0px -1px 1px #5a74a6;color: #fff;}
 
