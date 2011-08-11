@@ -1,10 +1,101 @@
-.vmicon-16-config { background: url(../images/icon_16/icon-16-config.png) no-repeat left; }
-.vmicon-16-user { background: url(../images/icon_16/icon-16-user.png) no-repeat left; }
-.vmicon-16-content { background: url(../images/icon_16/icon-16-content.png) no-repeat left; }
-.vmicon-16-info { background: url(../images/icon_16/icon-16-info.png) no-repeat left; }
-.vmicon-16-editadd { background: url(../images/icon_16/icon-16-editadd.png) no-repeat left; }
-.vmicon-16-import { background: url(../images/icon_16/icon-16-import.png) no-repeat left; }
-.vmicon-16-install { background: url(../images/icon_16/icon-16-install.png) no-repeat left; }
-.vmicon-16-help { background: url(../images/icon_16/icon-16-help.png) no-repeat left; }
-.vmicon-16-language { background: url(../images/icon_16/icon-16-language.png) no-repeat left; }
-.vmicon-16-trash { background: url(../images/icon_16/icon-16-trash.png) no-repeat left; padding-left : 16px;}
+.vmicon{ background: url(../images/icone16.png) no-repeat top left; float: left;margin-right: 4px; }
+.vmicon-16-adduser{ background-position: 0 0; width: 16px;  height: 16px; } 
+.vmicon-16-adduser{ background-position: 0 -16px; width: 16px;  height: 16px; } 
+
+.vmicon-16-apply{ background-position: 0 -82px; width: 16px;  height: 16px; } 
+.vmicon-16-apply{ background-position: 0 -98px; width: 16px;  height: 16px; } 
+
+.vmicon-16-archive{ background-position: 0 -164px; width: 16px; height: 16px; } 
+.vmicon-16-article{ background-position: 0 -230px; width: 16px; height: 16px; } 
+.vmicon-16-back{ background-position: 0 -296px; width: 16px;  height: 16px; } 
+.vmicon-16-back-off{ background-position: 0 -212px; width: 16px;  height: 16px; } 
+
+.vmicon-16-bug{ background-position: 0 -378px; width: 16px; height: 16px; } 
+.vmicon-16-cancel{ background-position: 0 -444px; width: 16px;  height: 16px; } 
+.vmicon-16-cancel-off{ background-position: 0 -460px; width: 16px;  height: 16px; } 
+
+.vmicon-16-category{ background-position: 0 -526px; width: 16px; height: 16px; } 
+.vmicon-16-checkin{ background-position: 0 -592px; width: 16px; height: 16px; } 
+.vmicon-16-component{ background-position: 0 -658px; width: 16px; height: 16px; } 
+.vmicon-16-config{ background-position: 0 -724px; width: 16px; height: 16px; } 
+.vmicon-16-content{ background-position: 0 -790px; width: 16px; height: 16px; } 
+.vmicon-16-copy{ background-position: 0 -856px; width: 16px;  height: 16px; } 
+.vmicon-16-copy-off{ background-position: 0 -872px; width: 16px;  height: 16px; } 
+
+.vmicon-16-cpanel{ background-position: 0 -938px; width: 16px; height: 16px; } 
+.vmicon-16-css{ background-position: 0 -1004px; width: 16px;  height: 16px; } 
+.vmicon-16-css-off{ background-position: 0 -1004px; width: 16px;  height: 16px; } 
+ 
+.vmicon-16-default-off{ background-position: 0 -1086px; width: 16px; height: 16px; } 
+.vmicon-16-default{ background-position: 0 -1152px; width: 16px; height: 16px; } 
+.vmicon-16-download{ background-position: 0 -1218px; width: 16px;  height: 16px; } 
+.vmicon-16-download-off{ background-position: 0 -1234px; width: 16px;  height: 16px; } 
+
+.vmicon-16-edit{ background-position: 0 -1300px; width: 16px;  height: 16px; } 
+.vmicon-16-edit-off{ background-position: 0 -1316px; width: 16px;  height: 16px; } 
+
+.vmicon-16-editadd{ background-position: 0 -1382px; width: 16px; height: 16px; } 
+.vmicon-16-export{ background-position: 0 -1448px; width: 16px;  height: 16px; } 
+.vmicon-16-export-off{ background-position: 0 -1464px; width: 16px;  height: 16px; } 
+
+.vmicon-16-forward{ background-position: 0 -1530px; width: 16px;  height: 16px; } 
+.vmicon-16-forward-off{ background-position: 0 -1546px; width: 16px;  height: 16px; } 
+
+.vmicon-16-frontpage{ background-position: 0 -1612px; width: 16px; height: 16px; } 
+.vmicon-16-google2{ background-position: 0 -1678px; width: 16px; height: 16px; } 
+.vmicon-16-help{ background-position: 0 -1744px; width: 16px; height: 16px; } 
+.vmicon-16-html{ background-position: 0 -1810px; width: 16px;  height: 16px; } 
+.vmicon-16-html-off{ background-position: 0 -1826px; width: 16px;  height: 16px; } 
+
+.vmicon-16-import{ background-position: 0 -1892px; width: 16px; height: 16px; } 
+.vmicon-16-info{ background-position: -66px 0; width: 16px; height: 16px; } 
+.vmicon-16-install{ background-position: -66px -66px; width: 16px; height: 16px; } 
+.vmicon-16-language{ background-position: -66px -132px; width: 16px; height: 16px; } 
+.vmicon-16-logout{ background-position: -66px -198px; width: 16px; height: 16px; } 
+.vmicon-16-media{ background-position: -66px -264px; width: 16px; height: 16px; } 
+.vmicon-16-menu{ background-position: -66px -330px; width: 16px; height: 16px; } 
+.vmicon-16-menumgr{ background-position: -66px -396px; width: 16px; height: 16px; } 
+.vmicon-16-messages{ background-position: -66px -462px; width: 16px; height: 16px; } 
+.vmicon-16-module{ background-position: -66px -528px; width: 16px; height: 16px; } 
+.vmicon-16-move{ background-position: -66px -594px; width: 16px;  height: 16px; } 
+.vmicon-16-move-off{ background-position: -66px -610px; width: 16px;  height: 16px; } 
+
+.vmicon-16-new{ background-position: -66px -676px; width: 16px;  height: 16px; } 
+.vmicon-16-new-off{ background-position: -66px -692px; width: 16px;  height: 16px; } 
+
+.vmicon-16-orderstatus{ background-position: -66px -758px; width: 16px; height: 16px; } 
+.vmicon-16-plugin{ background-position: -66px -824px; width: 16px; height: 16px; } 
+.vmicon-16-preview{ background-position: -66px -890px; width: 16px;  height: 16px; } 
+.vmicon-16-preview-off{ background-position: -66px -906px; width: 16px;  height: 16px; } 
+
+.vmicon-16-publish{ background-position: -66px -972px; width: 16px;  height: 16px; } 
+.vmicon-16-publish-off{ background-position: -66px -988px; width: 16px;  height: 16px; } 
+
+.vmicon-16-refresh{ background-position: -66px -1054px; width: 16px;  height: 16px; } 
+.vmicon-16-refresh-off{ background-position: -66px -1070px; width: 16px;  height: 16px; } 
+
+.vmicon-16-reload{ background-position: -66px -1136px; width: 16px; height: 16px; } 
+.vmicon-16-remove{ background-position: -66px -1202px; width: 16px; height: 16px; } 
+.vmicon-16-revert{ background-position: -66px -1268px; width: 16px;  height: 16px; } 
+.vmicon-16-revert-off{ background-position: -66px -1284px; width: 16px;  height: 16px; } 
+
+.vmicon-16-save{ background-position: -66px -1350px; width: 16px; height: 16px; } 
+.vmicon-16-search{ background-position: -66px -1416px; width: 16px;  height: 16px; } 
+.vmicon-16-search-off{ background-position: -66px -1432px; width: 16px;  height: 16px; } 
+
+.vmicon-16-section{ background-position: -66px -1498px; width: 16px; height: 16px; } 
+.vmicon-16-send{ background-position: -66px -1564px; width: 16px;  height: 16px; } 
+.vmicon-16-send-off{ background-position: -66px -1576px; width: 16px;  height: 16px; } 
+
+.vmicon-16-static{ background-position: -66px -1646px; width: 16px; height: 16px; } 
+.vmicon-16-stats{ background-position: -66px -1712px; width: 16px; height: 16px; } 
+.vmicon-16-themes{ background-position: -66px -1778px; width: 16px; height: 16px; } 
+.vmicon-16-trash{ background-position: -66px -1844px; width: 16px; height: 16px; } 
+.vmicon-16-unpublish{ background-position: -66px -1910px; width: 16px;  height: 16px; } 
+.vmicon-16-unpublish-off{ background-position: -66px -1926px; width: 16px;  height: 16px; } 
+
+.vmicon-16-upload{ background-position: -132px 0; width: 16px;  height: 16px; } 
+.vmicon-16-upload-off{ background-position: -132px 16px; width: 16px;  height: 16px; } 
+
+.vmicon-16-user{ background-position: -132px -82px; width: 16px; height: 16px; } 
+.vmicon-16-xml{ background-position: -132px -148px; width: 16px; height: 16px; } 

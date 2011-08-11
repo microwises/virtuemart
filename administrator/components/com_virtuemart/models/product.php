@@ -59,6 +59,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$app = JFactory::getApplication() ;
 
+		if ($group==false) $group = JRequest::getWord('group', false );
 		$option = 'com_virtuemart';
 		$view = 'product';
 		$default_order = 'product_name';
@@ -170,7 +171,7 @@ class VirtueMartModelProduct extends VmModel {
      				break;
      		}
      	}
-
+		
 		//Group case
 		if($group){
 			$groupBy = 'group by `#__virtuemart_products`.`virtuemart_product_id`';

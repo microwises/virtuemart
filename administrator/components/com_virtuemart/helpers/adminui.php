@@ -216,7 +216,7 @@ require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 						}
 						?>
 					<li>
-						<a class="<?php echo $link ['icon_class'] ?>" href="<?php echo $url; ?>"><?php echo JText::_ ( $link ['name'] )?></a>
+						<a href="<?php echo $url; ?>"><span class="<?php echo $link ['icon_class'] ?>"></span><?php echo JText::_ ( $link ['name'] )?></a>
 					</li>
 					<?php
 					}

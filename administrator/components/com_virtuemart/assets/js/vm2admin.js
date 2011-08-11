@@ -7,9 +7,11 @@
 		if (idx == null) idx=0;
 		var options = { path: '/', expires: 2},
 			list = '<ul id="tabs">';
+		var tabscount = this.find('div.tabs').length;
+		var tabswidth = 100/tabscount;
 		this.find('div.tabs').each(
-			function(i) { 
-				list += '<li style="display:inline;">'+ $(this).attr('title')+'</li>' ;
+			function(i) {
+				list += '<li style="width:'+tabswidth+'%"><span>'+ $(this).attr('title')+'<span></li>' ;
 				$(this).removeAttr('title');
 			}
 		);

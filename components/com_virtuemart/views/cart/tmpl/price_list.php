@@ -117,7 +117,7 @@ defined('_JEXEC') or die('Restricted access');
 			$product_rows[$i]['customfieldsCart'] ='';
 
 			// Add the variants
-			$product_rows[$i]['customfieldsCart'] = ShopFunctions::customFieldCartImageDisplay($priceKey,$product->customfieldsCart);
+			$product_rows[$i]['customfieldsCart'] = ShopFunctions::customFieldInCartDisplay($priceKey,$product->customfieldsCart);
 
 
 			$product_rows[$i]['product_sku'] = $product->product_sku;

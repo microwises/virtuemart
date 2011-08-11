@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 		<tr> 
 			<td width="50%">
-		  		<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&page=product.specialprod&filter=featured');?>">
+		  		<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=product&group=featured');?>">
 					<?php echo JText::_('COM_VIRTUEMART_SHOW_FEATURED') ?>
 				</a>
 			</td>

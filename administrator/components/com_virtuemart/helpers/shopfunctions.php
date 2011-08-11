@@ -972,13 +972,13 @@ class ShopFunctions {
 
 
 	/**
-	 * Write description here Patrick, please
+	 * modify the display in cart/order by ID variant
 	 *
 	 * @author Patrick Kohl
 	 * @param unknown_type $priceKey
 	 * @param unknown_type $customFields
 	 */
-	function customFieldCartImageDisplay ($priceKey,$customFields){
+	function customFieldInCartDisplay ($priceKey,$customFields){
 
 		$html ='';
 		if (!is_int($priceKey)) {
@@ -989,7 +989,7 @@ class ShopFunctions {
 
 			foreach($variantmods as $variant=>$selected){
 				$custom_value = $customFields[$row]->options[$selected]->custom_value;
-				if( $product->customfieldsCart[$row]->field_type == "M") {
+				if( $customFields[$row]->field_type == "M") {
 					$db = JFactory::getDBO();
 					$q = 'SELECT * FROM `#__virtuemart_medias` WHERE `virtuemart_media_id` = ' . (int) $custom_value . ' LIMIT 1';
 					$db->setQuery($q);

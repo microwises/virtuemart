@@ -66,7 +66,7 @@ class VirtuemartViewConfig extends JView {
 		$this->assignRef('vmLayoutList', $vmLayoutList);
 
 // Outcommented to revert rev. 2916
-//		$vendorList = ShopFunctions::renderVendorList($config->get('default_virtuemart_vendor_id'));
+//		$vendorList = ShopFunctions::renderVendorList(VmConfig::get('default_virtuemart_vendor_id'));
 //		// We must replace the fieldname and ID 'virtuemart_vendor_id' to 'default_vendor'
 //		$vendorList = preg_replace('/"virtuemart_vendor_id"/', '"default_virtuemart_vendor_id"', $vendorList);
 //		$this->assignRef('vendorList', $vendorList);
@@ -91,11 +91,11 @@ class VirtuemartViewConfig extends JView {
 		$this->assignRef('moduleList', $moduleList);
 		//$contentLinks = $model->getContentLinks();
 		//$this->assignRef('contentLinks', $contentLinks);
-		$orderByFields = $model->getOrderByFields( $config->get('browse_orderby_fields') );
+		$orderByFields = $model->getOrderByFields( VmConfig::get('browse_orderby_fields') );
 		$this->assignRef('orderByFields', $orderByFields);
-		$searchFields = $model->getSearchFields( $config->get('browse_search_fields') );
+		$searchFields = $model->getSearchFields( VmConfig::get('browse_search_fields') );
 		$this->assignRef('searchFields', $searchFields);
-		//$titlesFields = $model->getTitlesFields( $config->get('titles') );
+		//$titlesFields = $model->getTitlesFields( VmConfig::get('titles') );
 		//$this->assignRef('titlesFields', $titlesFields);
 		$aclGroups = $usermodel->getAclGroupIndentedTree();
 		$this->assignRef('aclGroups', $aclGroups);
