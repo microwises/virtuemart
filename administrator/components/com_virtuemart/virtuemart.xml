@@ -64,7 +64,6 @@
 			<filename>pear.php</filename>
 			<filename>version.php</filename>
 			<filename>virtuemart_defaults.cfg</filename>
-			<filename>vm_soa_conf.php</filename>
 			<folder>assets</folder>
 			<folder>controllers</folder>
 			<folder>elements</folder>
