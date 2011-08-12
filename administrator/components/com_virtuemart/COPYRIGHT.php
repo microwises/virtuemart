@@ -29,7 +29,7 @@ Public License or other free or open source software licenses, including
 works copyrighted by any or all of the following, from 2009 - 2011,
 Max Milbers, Rick Glunt, Roland Dalmulder, Oscar van Eijk, Patrick Kohl, Valérie Isaksen, Urs Brülhart, Devendra Kumar Shukla,
 Christopher Roussel, Eugen Stranz, John Acosta, Zbigniew Mazur, John Wicks, Markus Öhler, Stephanie Schmidt, Vu Hoang Viet, Simon Hodgkiss,
-Fred Bidon, Alexander Kludt
+Fred Bidon, Alexander Kludt, Mickaël Cabanas
 
 If you have contributed a vital part of VirtueMart that is not mentioned and/or missing here,
 and you feel that your copyright note should be mentioned here,
