@@ -73,23 +73,7 @@ include_once('VM_Commons.php');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @version    Release:
  */
-	/*class SQLSelectRequest {
-		public $table="";
-		public $columns;
-		public $whereClause="";
-
-		//constructeur
-		function __construct($table,$columns,$whereClause) {
-			$this->table = $table;
-			
-			$count = count($columns->column);
-			for ($i = 0; $i < $count; $i++) {
-				$this->columns[] = $columns->column[$i];	
-			}
-			
-			$this->whereClause = $whereClause;
-		}
-	}*/
+	
  
 	/**
     * This function get Childs of a category for a category ID
@@ -99,15 +83,14 @@ include_once('VM_Commons.php');
    */
 	function ExecuteSQLSelectQuery($params) {
 	
-		include('../vm_soa_conf.php');
-	
 		$SQLSelectRequest= $params;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		
-		if ($conf['auth_sql_select']=="off"){
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_execsql_select')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -171,30 +154,6 @@ include_once('VM_Commons.php');
 			
 			}
 			
-			/*while( $db->next_record() ) {
-				$strResult=null;
-				$arrayCol;
-				$strResult;
-				
-				if ($count == 1){
-					$columnAndValue = new columnAndValue(0,$params->columns->column,$db->f($params->columns->column));
-					$columnAndValueArray[] = $columnAndValue;
-				
-				} else {
-					for ($i = 0; $i < $count; $i++) {
-						$columnAndValue = new columnAndValue($i,$params->columns->column[$i],$db->f($params->columns->column[$i]));
-						$columnAndValueArray[] = $columnAndValue;
-						/*$arrayCol=  array( $params->columns->column[$i] =>$db->f($params->columns->column[$i]));
-						$strResult .=  $params->columns->column[$i]." : ".$db->f($params->columns->column[$i])." | ";*/
-				/*	}
-				}
-				$SQLResult= new SQLResult($columnAndValueArray);
-				$resultArray[] = $SQLResult;
-				$columnAndValueArray=null;
-			}*/
-			//$SQLResult2= new SQLResult($q);
-			//$resultArray[]=$SQLResult2;
-			
 			$errMsg=  $db->getErrorMsg();
 			
 			if ($errMsg==null){
@@ -223,12 +182,12 @@ include_once('VM_Commons.php');
    */
 	function ExecuteSQLQuery($params) {
 	
-		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		
-		if ($conf['auth_sql_sqlrqst']=="off"){
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_execsql')==0){
 			$result = "true";
 		}	
 		
@@ -295,12 +254,11 @@ include_once('VM_Commons.php');
    */
 	function ExecuteSQLInsertQuery($params) {
 	
-		include('../vm_soa_conf.php');
-
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		
-		if ($conf['auth_sql_insert']=="off"){
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_execsql_insert')==0){
 			$result = "true";
 		}	
 		
@@ -382,12 +340,11 @@ include_once('VM_Commons.php');
     */
 	function ExecuteSQLUpdateQuery($params) {
 	
-		include('../vm_soa_conf.php');
-	
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		
-		if ($conf['auth_sql_update']=="off"){
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_execsql_update')==0){
 			$result = "true";
 		}	
 		
@@ -428,12 +385,6 @@ include_once('VM_Commons.php');
 			$errMsg=  $db->getErrorMsg();
 			
 			
-			
-			/*$db = new ps_DB;
-			$db->buildQuery($type,$params->table,$values,$params->whereClause);
-			$result = $db->query();
-			$errMsg=  $db->getErrorMsg();*/
-			
 			if ($errMsg==null){
 				$columnAndValue = new columnAndValue($insert_id,"OK","UPDATE OK in table : ".$params->table);
 				$columnAndValueArray[] = $columnAndValue;
@@ -462,18 +413,11 @@ include_once('VM_Commons.php');
 	if ($vmConfig->get('soap_ws_sql_on')==1){
 
 		/* SOAP SETTINGS */
-		$cache = "0";
-		if ($conf['querie_cache'] == "on")$cache = "1";
-		ini_set("soap.wsdl_cache_enabled", $cache); // wsdl cache settings
+		ini_set("soap.wsdl_cache_enabled", $vmConfig->get('soap_ws_sql_cache_on')); // wsdl cache settings
+		$options = array('soap_version' => SOAP_1_2);
 		
-		if ($conf['soap_version'] == "SOAP_1_1"){
-			$options = array('soap_version' => SOAP_1_1);
-		}else {
-			$options = array('soap_version' => SOAP_1_2);
-		}
 		
 		if (empty($conf['BASESITE']) && empty($conf['URL'])){
-			//$server = new SoapServer($URL_BASE.'administrator/components/com_vm_soa/services/VM_SQLQueriesWSDL.php');
 			$server = new SoapServer(JURI::root(false).'/VM_SQLQueriesWSDL.php');
 		}else if (!empty($conf['BASESITE'])){
 			$server = new SoapServer('http://'.$conf['URL'].'/'.$conf['BASESITE'].'/administrator/components/com_virtuemart/services/VM_SQLQueriesWSDL.php');
@@ -481,12 +425,6 @@ include_once('VM_Commons.php');
 			$server = new SoapServer('http://'.$conf['URL'].'/administrator/components/com_virtuemart/services/VM_SQLQueriesWSDL.php');
 		}
 		
-		//$server = new SoapServer($mosConfig_live_site.'/VM_SQLQueriesWSDL.php');
-		/*if (!empty($conf['BASESITE'])){
-			$server = new SoapServer('http://'.$conf['URL'].'/'.$conf['BASESITE'].'/administrator/components/com_vm_soa/services/VM_SQLQueriesWSDL.php');
-		}else {
-			$server = new SoapServer('http://'.$conf['URL'].'/administrator/components/com_vm_soa/services/VM_SQLQueriesWSDL.php');
-		}*/
 
 		/* Add Functions */
 		$server->addFunction("ExecuteSQLQuery");
@@ -495,6 +433,6 @@ include_once('VM_Commons.php');
 		$server->addFunction("ExecuteSQLUpdateQuery");
 		$server->handle();
 	}else{
-		echo "This Web Service (SQL Queries) is desactived";
+		echoXmlMessageWSDisabled('SQL queries');
 	}
 ?> 

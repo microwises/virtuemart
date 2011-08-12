@@ -15,12 +15,15 @@ define( '_JEXEC', 1 );
  * @version    $Id:$
  */
 
+ob_start();//to prevent some bad users change codes 
+
  /** loading framework **/
 include_once('VM_Commons.php');
 
-$filename = $conf['wsdl_order'];
-//$string = file_get_contents('VM_Orders.wsdl',"r");
-$string = file_get_contents($filename,"r");
+/** WSDL file name to load**/
+$wsdlFilename = $vmConfig->get('soap_wsdl_order')!= "" ? $vmConfig->get('soap_wsdl_order') : WSDL_ORDER;
+
+$string = file_get_contents($wsdlFilename,"r");
 $wsdlReplace = $string;
 
 //Get URL + BASE From Joomla conf
@@ -35,7 +38,11 @@ else if (empty($conf['BASESITE']) && !empty($conf['URL'])){
 	$wsdlReplace = str_replace("___HOST___", $conf['URL'], $string);
 	$wsdlReplace = str_replace("___BASE___", $conf['BASESITE'], $wsdlReplace);
 }
-$wsdlReplace = str_replace("___SERVICE___", $conf['EP_order'], $wsdlReplace);
+
+$serviceFilename = $vmConfig->get('soap_EP_order')!= "" ? $vmConfig->get('soap_EP_order') : SERVICE_ORDER;
+$wsdlReplace = str_replace("___SERVICE___", $serviceFilename, $wsdlReplace);
+
+ob_end_clean();//to prevent some bad users change code 
 
 /** echo WSDL **/
 if ($vmConfig->get('soap_ws_order_on')==1){
@@ -44,6 +51,6 @@ if ($vmConfig->get('soap_ws_order_on')==1){
 	echo $wsdlReplace;
 }
 else{
-	echo "This Web Service (Order) is disabled";
+	echoXmlMessageWSDisabled('Order');
 }
 ?>

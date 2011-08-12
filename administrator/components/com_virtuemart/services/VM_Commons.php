@@ -7,6 +7,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * Virtuemart Product SOA Connector : File for upload file into components/com_virtuemart/shop_image/product,
  * components/com_virtuemart/shop_image/category, components/com_virtuemart/shop_image/vendor
+ * and other commons method , constants
  *
  * @package    com_vm_soa
  * @subpackage component
@@ -15,6 +16,8 @@ defined('_JEXEC') or die('Restricted access');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @version    $Id:$
  */
+
+ob_start();//to prevent some bad users change codes 
 
 define('DS', DIRECTORY_SEPARATOR);
 
@@ -42,11 +45,25 @@ $app = JFactory::getApplication('site');
 $app->initialise();
 
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
-$vmConfig = VmConfig::loadConfig();
+$vmConfig = VmConfig::loadConfig(true);
 
 JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'tables');
 
-include('../vm_soa_conf.php');
+//include('../vm_soa_conf.php');
+
+//default services files name
+define ("WSDL_CAT" 			, 'VM_Categories.wsdl');
+define ("SERVICE_CAT" 		, 'VM_CategoriesService.php');
+define ("WSDL_CUSTOM" 		, 'VM_Customized.wsdl');
+define ("SERVICE_CUSTOM" 	, 'VM_CustomizedService.php');
+define ("WSDL_ORDER" 		, 'VM_Orders.wsdl');
+define ("SERVICE_ORDER" 	, 'VM_OrdersService.php');
+define ("WSDL_PROD" 		, 'VM_Product.wsdl');
+define ("SERVICE_PROD" 		, 'VM_ProductService.php');
+define ("WSDL_SQL" 			, 'VM_SQLQueries.wsdl');
+define ("SERVICE_SQL" 		, 'VM_SQLQueriesService.php');
+define ("WSDL_USER" 		, 'VM_Users.wsdl');
+define ("SERVICE_USER" 		, 'VM_UsersService.php');
 
 define ("OK" , "0");
 define ("KO" , "1");
@@ -58,6 +75,9 @@ define ("ADDKO" , 6);
 define ("UPKO" , 7);
 define ("DELKO" , 8);
 define ("ALLOK" , 9);
+
+$conf['URL']='';
+$conf['BASESITE']='';//let empty for now
 
 	/**
     * This function return string message for WS
@@ -389,6 +409,7 @@ define ("ALLOK" , 9);
 
 	/**
     *  function onAuthenticate
+    *  $isEncrypted for MD5 passwd
 	* (not expose as WS)
     * @param login/pass
     * @return true/false
@@ -466,6 +487,40 @@ define ("ALLOK" , 9);
 		header ("HTTP/1.1 404 Not Found");
 		exit();
 	}
+	
+	/**
+	 * Echo xml message when WS is disabled
+	 * @param service name
+	 * @return xml
+	 */
+	function echoXmlMessageWSDisabled($servicename) {
+		
+		$xml 	 = '<?xml version="1.0" encoding="UTF-8"?>';
+		$xml 	.= '<response>';
+		$xml 	.= '<fault>';
+		$xml 	.= 'This webservice ('.$servicename.') is disabled';
+		$xml 	.= '</fault>';
+		$xml 	.= '</response>';
+		
+		header('Content-type: text/xml; charset=UTF-8'); 
+		header("Content-Length: ".strlen($xml));
+		
+		echo $xml;
+		exit();
+	}
+	
+	/**
+	 * crazy i must call this
+	 * @param force
+	 * @return conf
+	 */
+	function getVMconfig($force=false) {
+		
+		if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+		$vmConfig = VmConfig::loadConfig($force);
+		return $vmConfig;
+	}
 
+	ob_end_clean();//to prevent some bad users change code 
 
 ?>

@@ -15,14 +15,15 @@ define( '_JEXEC', 1 );
  * @version    $Id:$
  */
 
+ob_start();//to prevent some bad users change codes 
 
  /** loading framework **/
 include_once('VM_Commons.php');
 
-$filename = $conf['wsdl_sql'];
+/** WSDL file name to load**/
+$wsdlFilename = $vmConfig->get('soap_wsdl_sql')!= "" ? $vmConfig->get('soap_wsdl_sql') : WSDL_SQL;
 
-//$string = file_get_contents('VM_SQLQueries.wsdl',"r");
-$string = file_get_contents($filename,"r");
+$string = file_get_contents($wsdlFilename,"r");
 $wsdlReplace = $string;
 
 //Get URL + BASE From Joomla conf
@@ -38,12 +39,11 @@ else if (empty($conf['BASESITE']) && !empty($conf['URL'])){
 	$wsdlReplace = str_replace("___HOST___", $conf['URL'], $string);
 	$wsdlReplace = str_replace("___BASE___", $conf['BASESITE'], $wsdlReplace);
 }
-$wsdlReplace = str_replace("___SERVICE___", $conf['EP_sql'], $wsdlReplace);
 
+$serviceFilename = $vmConfig->get('soap_EP_sql')!= "" ? $vmConfig->get('soap_EP_sql') : SERVICE_SQL;
+$wsdlReplace = str_replace("___SERVICE___", $serviceFilename, $wsdlReplace);
 
-//$taille = filesize($filename);
-//$file = readfile($filename);
-
+ob_end_clean();//to prevent some bad users change code 
 
 if ($vmConfig->get('soap_ws_sql_on')==1){
 	header('Content-type: text/xml; charset=UTF-8'); 
@@ -51,6 +51,7 @@ if ($vmConfig->get('soap_ws_sql_on')==1){
 	echo $wsdlReplace;
 }
 else{
-	echo "This Web Service (SQLQueries) is disabled";
+	echoXmlMessageWSDisabled('SQL Queries');
+	
 }
 ?>

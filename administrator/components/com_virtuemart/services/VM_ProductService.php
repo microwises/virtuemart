@@ -696,20 +696,6 @@ include_once('VM_Commons.php');
 		}
 	}		
 
-	/**
-    * This function Set Post var with token
-	* (NOT expose as WS)
-    * @param 
-    * @return 
-    */
-	/*function setToken() {
-	
-		$token  = JUtility::getToken();
-		$_REQUEST[$token] = $token;
-		$_POST[$token] = $token;
-	
-	}*/
-	
 	
 	/**
     * This function get Attributes for a product ID
@@ -813,7 +799,7 @@ include_once('VM_Commons.php');
 		$db = JFactory::getDBO();	
 				
 		$query  = "SELECT * FROM `#__virtuemart_product_prices` pr ";
-		$query  = "JOIN `#__virtuemart_currencies` cur ON cur.virtuemart_currency_id = pr.virtuemart_currency_id";
+		$query .= "JOIN `#__virtuemart_currencies` cur ON cur.virtuemart_currency_id = pr.virtuemart_currency_id";
 		$query .= "WHERE `virtuemart_product_id` = '" . $product_id . "' ";
 		$query .= " LIMIT 0,500 "; 
 		
@@ -838,17 +824,19 @@ include_once('VM_Commons.php');
    */
 	function GetProductFromId($params) {
 	
-		include('../vm_soa_conf.php');
-		
-		$product_id = $params->product_id;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_getfromid']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getprod')==0){
 			$result = "true";
 		}
+				
 		//Auth OK
 		if ($result == "true"){
-		
+			
+			$product_id = $params->product_id;
+			
 			if (!class_exists( 'VirtueMartModelProduct' )) require (JPATH_VM_ADMINISTRATOR.DS.'models\product.php');
 			$VirtueMartModelProduct = new VirtueMartModelProduct;
 			
@@ -861,7 +849,9 @@ include_once('VM_Commons.php');
 				$params->product_id = $ProductDetails->virtuemart_product_id;
 				$prod_prices = GetProductPrices($params);
 			}
-			
+			if ($ProductDetails->virtuemart_product_id==0){
+				return new SoapFault("GetProductFromIdFault", "No result found");
+			}
 			$Product = new Product($ProductDetails->virtuemart_product_id ,
 									$ProductDetails->virtuemart_vendor_id,
 									$ProductDetails->product_parent_id,
@@ -951,16 +941,18 @@ include_once('VM_Commons.php');
    */
 	function GetProductFromSKU($params) {
 	
-		include('../vm_soa_conf.php');
-		
-		$product_sku = $params->product_sku;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_getfromid']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getprod')==0){
 			$result = "true";
 		}
+		
 		//Auth OK
 		if ($result == "true"){
+			
+			$product_sku = $params->product_sku;
 		
 			$product_id = GetProductIDFromSKU($product_sku);
 			if (empty($product_id)){
@@ -990,18 +982,18 @@ include_once('VM_Commons.php');
    */
 	function GetChildsProduct($params) {
 	
-		include('../vm_soa_conf.php');
-		//return new SoapFault("JoomlaServerAuthFault", "params->product_id ".$params->product_id);
-		$product_id = $params->product_id;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_getchild']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getprod')==0){
 			$result = "true";
 		}
+		
 		//Auth OK
 		if ($result == "true"){
 			
-			
+			$product_id = $params->product_id;
 			
 			$db = JFactory::getDBO();	
 			$query  = "SELECT virtuemart_product_id FROM #__virtuemart_products WHERE product_parent_id = '$product_id' ";
@@ -1037,18 +1029,19 @@ include_once('VM_Commons.php');
    */
 	function GetProductsFromCategory($params) {
 	
-		include('../vm_soa_conf.php');
-		
-		$categorie_id = $params->catgory_id;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_getfromcat']=="off"){
+
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getprod')==0){
 			$result = "true";
 		}
 		
 		//Auth OK
 		if ($result == "true"){
-		
+			
+			$categorie_id = $params->catgory_id;
+			
 			if (!class_exists( 'VirtueMartModelProduct' )) require (JPATH_VM_ADMINISTRATOR.DS.'models\product.php');
 			$VirtueMartModelProduct = new VirtueMartModelProduct;
 			
@@ -1132,19 +1125,18 @@ include_once('VM_Commons.php');
     * @return array of attribute and value
    */
 	function GetRelatedProducts($params) {
-	
-		include('../vm_soa_conf.php');
-		
-		$categorie_id = $params->catgory_id;
+
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_getfromcat']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getprod')==0){
 			$result = "true";
 		}
 		
 		//Auth OK
 		if ($result == "true"){
-	
+			$categorie_id = $params->catgory_id;
 			return new SoapFault("GetRelatedProducts", "GetRelatedProducts : NOT IMPLEMENTED YET");
 			/*if (!class_exists( 'VirtueMartModelProduct' )) require (JPATH_VM_ADMINISTRATOR.DS.'models\product.php');
 			$VirtueMartModelProduct = new VirtueMartModelProduct;
@@ -1214,37 +1206,6 @@ include_once('VM_Commons.php');
 			}
 			return $ProductArray;
 			
-			
-			////////////////////////////////			
-			/*$list  = "SELECT * FROM #__{vm}_product_relations WHERE product_id = '$params->product_id' ";
-			$list .= " LIMIT 0,100 "; 
-
-			$db = new ps_DB;
-			$db->query($list);
-
-
-			 while ($db->next_record()) {
-
-				$prod_ids = explode('|', $db->f("related_products") );
-				
-				if (is_array($prod_ids)){
-					
-					$count = count($prod_ids);
-					for ($i = 0; $i < $count; $i++) {
-						$prod_id = $prod_ids[$i];
-						$params->product_id=$prod_id;
-						$Produit = GetProductFromId($params);
-						$ProduitArray[] = $Produit;
-					}
-				} else {
-					$prod_id = $prod_ids;
-					$params->product_id=$prod_id;
-					$Produit = GetProductFromId($params);
-					$ProduitArray[] = $Produit;
-				}
-			}
-
-		  return $ProduitArray;*/
 		
 		}else if ($result == "false"){
 			return new SoapFault("JoomlaServerAuthFault", "Authentication KO for : ".$params->loginInfo->login);
@@ -1262,13 +1223,13 @@ include_once('VM_Commons.php');
     * @return array of attribute and value
    */
 	function SetRelatedProducts($params) {
-	
-		include('../vm_soa_conf.php');
-		
+			
 		$categorie_id = $params->catgory_id;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_getfromcat']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otheradd')==0){
 			$result = "true";
 		}
 		
@@ -1331,12 +1292,11 @@ include_once('VM_Commons.php');
    */
 	function SearchProducts($params) {
 	
-		include('../vm_soa_conf.php');
-		
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_getfromcat']=="off"){
+	
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getprod')==0){
 			$result = "true";
 		}
 		
@@ -1657,18 +1617,20 @@ include_once('VM_Commons.php');
    //TODO
 	function UpdateProduct($params) {
 	
-		include('../vm_soa_conf.php');
-		
-		$product = $params->product;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_updateprod']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_upprod')==0){
 			$result = "true";
 		}
+		
 		//Auth OK
 		if ($result == "true"){
 			
 			setToken();
+			
+			$product = $params->product;
 			
 			if (!class_exists( 'VirtueMartModelProduct' )) require (JPATH_VM_ADMINISTRATOR.DS.'models\product.php');
 			$modelProduct = new VirtueMartModelProduct;
@@ -1777,18 +1739,19 @@ include_once('VM_Commons.php');
    */
 	function AddProduct($params) {
 	
-		include('../vm_soa_conf.php');
-		
-		$product = $params->product;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_addprod']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_addprod')==0){
 			$result = "true";
 		}
 		
 		//Auth OK
 		if ($result == "true"){
-		
+			
+			$product = $params->product;
+			
 			setToken();
 			if (!class_exists( 'VirtueMartModelProduct' )) require (JPATH_VM_ADMINISTRATOR.DS.'models\product.php');
 			$modelProduct = new VirtueMartModelProduct;
@@ -1864,11 +1827,11 @@ include_once('VM_Commons.php');
    //TODO
 	function DeleteProduct($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_delprod']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_delprod')==0){
 			$result = "true";
 		}
 		
@@ -1908,16 +1871,17 @@ include_once('VM_Commons.php');
    */
 	function GetProductsFromOrderId($params) {
 	
-		include('../vm_soa_conf.php');
-		
-		$order_id = $params->order_id;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_getfromoderid']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getprod')==0){
 			$result = "true";
 		}
 		//Auth OK
 		if ($result == "true"){
+			
+			$order_id = $params->order_id;
 					
 			$db = JFactory::getDBO();	
 			$query  = "SELECT *  FROM #__virtuemart_order_items WHERE virtuemart_order_id = '$order_id'  ";
@@ -1969,18 +1933,18 @@ include_once('VM_Commons.php');
    */
 	function GetAllCurrency($params) {
 	
-		include('../vm_soa_conf.php');
-		
-		$product_id = $params->product_id;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_getcurrency']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherget')==0){
 			$result = "true";
 		}
+		
 		//Auth OK
 		if ($result == "true"){
 		
-					
+			$product_id = $params->product_id;		
 			
 			if (!class_exists( 'VirtueMartModelCurrency' )) require (JPATH_VM_ADMINISTRATOR.DS.'models\currency.php');
 			$VirtueMartModelCurrency = new VirtueMartModelCurrency;
@@ -2009,18 +1973,6 @@ include_once('VM_Commons.php');
 			}
 			return $CurrencyArray;
 			
-			/*
-			/////////////////////////////
-			/*$list  = "SELECT * FROM #__{vm}_currency WHERE 1";
-			
-			$db = new ps_DB;
-			$db->query($list);
-			while ($db->next_record()) {
-				$Currency = new Currency($db->f("currency_id"),$db->f("currency_name"),$db->f("currency_code"));
-				$CurrencyArray[] = $Currency;
-			}
-
-			return $CurrencyArray;*/
 			
 		}else if ($result == "false"){
 			return new SoapFault("JoomlaServerAuthFault", "Authentication KO for : ".$params->loginInfo->login);
@@ -2040,15 +1992,16 @@ include_once('VM_Commons.php');
     * @return array of currency
    */
 	function GetProductVote($params) {
-	
-		include('../vm_soa_conf.php');
-		
+			
 		$product_id = $params->product_id;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_getcurrency']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherget')==0){
 			$result = "true";
 		}
+		
 		//Auth OK
 		if ($result == "true"){
 		
@@ -2115,15 +2068,16 @@ include_once('VM_Commons.php');
     * @return array of currency
    */
 	function GetProductReviews($params) {
-	
-		include('../vm_soa_conf.php');
-		
+			
 		$product_id = $params->product_id;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_getcurrency']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherget')==0){
 			$result = "true";
 		}
+		
 		//Auth OK
 		if ($result == "true"){
 		
@@ -2189,8 +2143,6 @@ include_once('VM_Commons.php');
    */
 	function PublishReviews($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		$product_id = $params->product_id;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
@@ -2276,14 +2228,15 @@ include_once('VM_Commons.php');
     * @return result
    */
 	function GetProductFile($params) {
-	
-		include('../vm_soa_conf.php');
-		
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_gettax']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherget')==0){
 			$result = "true";
 		}
+		
 		//Auth OK
 		if ($result == "true"){
 		
@@ -2354,11 +2307,11 @@ include_once('VM_Commons.php');
 	
 	function AddProductFile($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_addprod']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otheradd')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -2463,11 +2416,12 @@ include_once('VM_Commons.php');
 	
 	function UpdateProductFile($params) {
 	
-		include('../vm_soa_conf.php');
-		
+
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_updateprod']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherupdate')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -2600,11 +2554,11 @@ include_once('VM_Commons.php');
 	
 	function DeleteProductFile($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_delprod']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherdelete')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -2664,11 +2618,12 @@ include_once('VM_Commons.php');
     * @return result
    */
 	function UpdateProductDiscount($params) {
-		include('../vm_soa_conf.php');
-		
+
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_updateprod']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherupdate')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -2733,13 +2688,14 @@ include_once('VM_Commons.php');
    */
 	function GetDiscount($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_gettax']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherget')==0){
 			$result = "true";
 		}
+		
 		//Auth OK
 		if ($result == "true"){
 			
@@ -2822,12 +2778,11 @@ include_once('VM_Commons.php');
    */
 	function AddDiscount($params) {
 	
-		include('../vm_soa_conf.php');
-		
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_addprod']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otheradd')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -3004,12 +2959,11 @@ include_once('VM_Commons.php');
    */
 	function UpdateDiscount($params) {
 	
-		include('../vm_soa_conf.php');
-		
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_updateprod']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherupdate')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -3146,12 +3100,12 @@ include_once('VM_Commons.php');
     * @return result
    */
 	function DeleteDiscount($params) {
-	
-		include('../vm_soa_conf.php');
 		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_delprod']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherdelete')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -3211,12 +3165,12 @@ include_once('VM_Commons.php');
     * @return result
    */
 	function GetProductPrices($params) {
-	
-		include('../vm_soa_conf.php');
-		
+
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_gettax']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherget')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -3320,12 +3274,12 @@ include_once('VM_Commons.php');
    */
 	function AddProductPrices($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		$product_id = $params->product_id;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_addprod']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otheradd')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -3428,12 +3382,12 @@ include_once('VM_Commons.php');
    */
 	function UpdateProductPrices($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		$product_id = $params->product_id;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_updateprod']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherupdate')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -3537,11 +3491,11 @@ include_once('VM_Commons.php');
    */
 	function DeleteProductPrices($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_delprod']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherdelete')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -3604,13 +3558,14 @@ include_once('VM_Commons.php');
    */
 	function GetAllTax($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->login, $params->password);
-		if ($conf['auth_prod_gettax']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherget')==0){
 			$result = "true";
 		}
+		
 		//Auth OK
 		if ($result == "true"){
 		
@@ -3643,13 +3598,13 @@ include_once('VM_Commons.php');
     * @return result
    */
 	function AddTax($params) {
-	
-		include('../vm_soa_conf.php');
-		
+
 		$product_id = $params->product_id;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_addtax']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otheradd')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -3675,13 +3630,13 @@ include_once('VM_Commons.php');
     * @return result
    */
 	function UpdateTax($params) {
-	
-		include('../vm_soa_conf.php');
-		
+
 		$product_id = $params->product_id;
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_updatetax']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherupdate')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -3707,11 +3662,11 @@ include_once('VM_Commons.php');
    */
 	function DeleteTax($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_deltax']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherdelete')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -3736,12 +3691,11 @@ include_once('VM_Commons.php');
    */
 	function GetAllProducts($params) {
 	
-		include('../vm_soa_conf.php');
-		
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_getallprod']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getprod')==0){
 			$result = "true";
 		}
 		
@@ -3847,12 +3801,11 @@ include_once('VM_Commons.php');
    */
 	function GetAvailableImages($params) {
 	
-		include('../vm_soa_conf.php');
-		
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_prod_getimg']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherget')==0){
 			$result = "true";
 		}
 		
@@ -3935,12 +3888,11 @@ include_once('VM_Commons.php');
    */
 	function GetAvailableFiles($params) {
 	
-		include('../vm_soa_conf.php');
-		
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->login, $params->password);
-		if ($conf['auth_prod_getimg']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherget')==0){
 			$result = "true";
 		}
 		
@@ -3990,11 +3942,11 @@ include_once('VM_Commons.php');
    */
 	function GetMediaProduct($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_cat_getall']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherget')==0){
 			$result = "true";
 		}
 		
@@ -4050,11 +4002,11 @@ include_once('VM_Commons.php');
    */
 	function AddMediaProduct($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_cat_getall']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otheradd')==0){
 			$result = "true";
 		}
 		
@@ -4145,84 +4097,16 @@ include_once('VM_Commons.php');
 	}	
 	
 	
-		/**
-    *  function onAuthenticate
-	* (not expose as WS)
-    * @param login/pass
-    * @return true/false
-   */
-	/*function onAdminAuthenticate($login,$passwd){
-	
-		$credentials['password']=$passwd;
-		$credentials['username']=$login;
-		//////////////////////////////////////////////////////////
-		jimport('joomla.user.helper');
-
-		//$response->type = 'Joomla';
-		// Joomla does not like blank passwords
-		if (empty($credentials['password'])) {
-			//$response->status = JAUTHENTICATE_STATUS_FAILURE;
-			//$response->error_message = JText::_('JGLOBAL_AUTH_EMPTY_PASS_NOT_ALLOWED');
-			return false;
-		}
-
-		// Initialise variables.
-		$conditions = '';
-
-		// Get a database object
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
-
-		$query->select('id, password');
-		$query->from('#__users');
-		$query->where('username=' . $db->Quote($credentials['username']));
-
-		$db->setQuery($query);
-		$result = $db->loadObject();
-
-		if ($result) {
-			$parts	= explode(':', $result->password);
-			$crypt	= $parts[0];
-			$salt	= @$parts[1];
-			$testcrypt = JUserHelper::getCryptedPassword($credentials['password'], $salt);
-
-			if ($crypt == $testcrypt) {
-				$user = JUser::getInstance($result->id); // Bring this in line with the rest of the system
-				//$response->email = $user->email;
-				//$response->fullname = $user->name;
-				$autorGroups =$user->getAuthorisedGroups();
-				
-				if ($autorGroups['1'] == '8'){ // / is 8 	is 	Super Users //to ameliorate in future
-					return "true";
-				} else {
-					return "no_admin";
-				}
-				
-			} else {
-				$ret= "false";
-				
-			}
-		} else {
-			$ret= "false";
-		}
-		return $ret;
-	}*/
-	
 	
 	/* SOAP SETTINGS */
 	
 	if ($vmConfig->get('soap_ws_prod_on')==1){
 	
 		/* SOAP SETTINGS */
-		$cache = "0";
-		if ($conf['product_cache'] == "on")$cache = "1";
-		ini_set("soap.wsdl_cache_enabled", $cache); // wsdl cache settings
+		ini_set("soap.wsdl_cache_enabled", $vmConfig->get('soap_ws_prod_cache_on')); // wsdl cache settings
 		
-		if ($conf['soap_version'] == "SOAP_1_1"){
-			$options = array('soap_version' => SOAP_1_1);
-		}else {
-			$options = array('soap_version' => SOAP_1_2);
-		}
+		$options = array('soap_version' => SOAP_1_2);
+
 		
 		/** SOAP SERVER **/
 		if (empty($conf['BASESITE']) && empty($conf['URL'])){
@@ -4271,12 +4155,11 @@ include_once('VM_Commons.php');
 		$server->addFunction("SetRelatedProducts");
 		$server->addFunction("AddMediaProduct");
 		$server->addFunction("GetMediaProduct");
-		
-		
+			
 		$server->handle();
-		//ini_set("soap.wsdl_cache_enabled", "0"); // disabling WSDL cache
+
 	}else{
-		echo "This Web Service (Product) is desactived";
+		echoXmlMessageWSDisabled('Product');
 	}
 	
 ?> 

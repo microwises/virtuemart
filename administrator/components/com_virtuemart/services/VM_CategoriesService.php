@@ -200,18 +200,17 @@ include_once('VM_Commons.php');
    */
 	function GetChildsCategories($params) {
 	
+		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		
-		
-		if ($conf['auth_cat_getall']=="off"){
+	
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getcat')==0){
 			$result = "true";
 		}
 
 		//Auth OK
 		if ($result == "true"){
 		
-			include('../vm_soa_conf.php');
-			
 			if (!class_exists( 'VirtueMartModelCategory' )) require (JPATH_VM_ADMINISTRATOR.DS.'models\category.php');
 			$VirtueMartModelCategory = new VirtueMartModelCategory;
 			
@@ -280,12 +279,12 @@ include_once('VM_Commons.php');
     * @return array of Categories
    */
 	function GetAllCategories($params) {
-	
-		include('../vm_soa_conf.php');
-		
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_cat_getall']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getcat')==0){
 			$result = "true";
 		}
 		
@@ -357,11 +356,11 @@ include_once('VM_Commons.php');
    */
 	function AddCategory($params) {
 		
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_cat_addcat']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_addcat')==0){
 			$result = "true";
 		}
 		
@@ -370,7 +369,7 @@ include_once('VM_Commons.php');
 		
 			setToken();
 			
-			include('../vm_soa_conf.php');
+			
 			$category_id = array($params->category_id);
 			
 			if (!class_exists( 'VirtueMartModelCategory' )) require (JPATH_VM_ADMINISTRATOR.DS.'models\category.php');
@@ -430,11 +429,11 @@ include_once('VM_Commons.php');
    */
 	function UpdateCategory($params) {
 		
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_cat_updatecat']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_upcat')==0){
 			$result = "true";
 		}
 		
@@ -442,8 +441,6 @@ include_once('VM_Commons.php');
 		if ($result == "true"){
 			
 			setToken();
-			
-			include('../vm_soa_conf.php');
 			
 			if (empty($params->category->id)){
 				return new SoapFault("VMUpdateCategoryFault", "category->id must be set");
@@ -506,11 +503,11 @@ include_once('VM_Commons.php');
    */
 	function DeleteCategory($params) {
 		
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_cat_delcat']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_delcat')==0){
 			$result = "true";
 		}
 		
@@ -518,9 +515,7 @@ include_once('VM_Commons.php');
 		if ($result == "true"){
 			
 			setToken();
-			
-			include('../vm_soa_conf.php');
-			
+						
 			if (empty($params->category_id)){
 				return new SoapFault("VMCategoryDeleteFault", "params->category_id must be set");
 			}
@@ -557,11 +552,11 @@ include_once('VM_Commons.php');
    */
 	function GetMediaCategory($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_cat_getall']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_cat_otherget')==0){
 			$result = "true";
 		}
 		
@@ -614,12 +609,12 @@ include_once('VM_Commons.php');
     * @return commonReturn
    */
 	function AddMediaCategory($params) {
-	
-		include('../vm_soa_conf.php');
-		
+
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_cat_addcat']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_cat_otheradd')==0){
 			$result = "true";
 		}
 		
@@ -716,11 +711,11 @@ include_once('VM_Commons.php');
     */
 	function DeleteMediaCategory($params) {
 		
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_cat_delcat']=="off"){
+
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_cat_otherdelete')==0){
 			$result = "true";
 		}
 		
@@ -787,21 +782,18 @@ include_once('VM_Commons.php');
     * @return Array
    */
 	function GetAvailableImages($params) {
-	
-		include('../vm_soa_conf.php');
-		
+
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_cat_getimg']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_cat_otherget')==0){
 			$result = "true";
 		}
 		
 		//Auth OK
 		if ($result == "true"){
-		
-			if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
-			$vmConfig = VmConfig::loadConfig();
-			
+					
 			$media_category_path = $vmConfig->get('media_category_path');
 			if (empty($media_category_path)){
 				return new SoapFault("GetAvailableImagesFault","media_category_path is not set, please check your virtuemart settings");
@@ -872,21 +864,15 @@ include_once('VM_Commons.php');
 	}
 	
 
-	/* SOAP SETTINGS */
+	/** SOAP SETTINGS **/
 		
 	if ($vmConfig->get('soap_ws_cat_on')==1){
 		
 		/* SOAP SETTINGS */
-		$cache = "0";
-		if ($conf['cat_cache'] == "on")$cache = "1";
-		ini_set("soap.wsdl_cache_enabled", $cache); // wsdl cache settings
 		
-		if ($conf['soap_version'] == "SOAP_1_1"){
-			$options = array('soap_version' => SOAP_1_1);
-		}else {
-			$options = array('soap_version' => SOAP_1_2);
-		}
-
+		ini_set("soap.wsdl_cache_enabled", $vmConfig->get('soap_ws_cat_cache_on')); // wsdl cache settings
+		$options = array('soap_version' => SOAP_1_2);
+		
 		/** SOAP SERVER **/
 		if (empty($conf['BASESITE']) && empty($conf['URL'])){
 			$server = new SoapServer(JURI::root(false).'/VM_CategoriesWSDL.php');
@@ -910,6 +896,6 @@ include_once('VM_Commons.php');
 		$server->handle();
 		
 	}else{
-		echo "This Web Service (Categories) is disabled";
+		echoXmlMessageWSDisabled('Categories');
 	}
 ?> 

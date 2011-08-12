@@ -16,6 +16,9 @@ define( '_JEXEC', 1 );
  * @version    $Id:$
  */
 
+exit404();//dont use it now, not ready
+
+
 global $mosConfig_absolute_path, $sess;
 global $jscook_type, $jscookMenu_style, $jscookTree_style;
 

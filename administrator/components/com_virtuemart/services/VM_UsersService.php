@@ -545,11 +545,11 @@ include_once('VM_Commons.php');
 	*/
 	function GetSessions($params) {
 	
-		include('../vm_soa_conf.php');
-			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_getall']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherget')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -619,13 +619,14 @@ include_once('VM_Commons.php');
 	*/
 	function GetWaitingList($params) {
 	
-		include('../vm_soa_conf.php');
-			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_getall']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherget')==0){
 			$result = "true";
 		}
+		
 		//Auth OK
 		if ($result == "true"){
 			
@@ -697,13 +698,14 @@ include_once('VM_Commons.php');
 	*/
 	function NotifyWaitingList($params) {
 	
-		include('../vm_soa_conf.php');
-			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_getall']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherupdate')==0){
 			$result = "true";
 		}
+		
 		//Auth OK
 		if ($result == "true"){
 			$mosConfig_lang = $params->loginInfo->lang;
@@ -838,13 +840,14 @@ include_once('VM_Commons.php');
 	*/
 	function GetUsers($params) {
 	
-		include('../vm_soa_conf.php');
-			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_getall']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getuser')==0){
 			$result = "true";
 		}
+		
 		//Auth OK
 		if ($result == "true"){
 			
@@ -875,12 +878,12 @@ include_once('VM_Commons.php');
     * @return array of Users
 	*/
 	function AddUser($params) {
-	
-		include('../vm_soa_conf.php');
-		
+
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_adduser']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_adduser')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -959,11 +962,11 @@ include_once('VM_Commons.php');
 	*/
 	function UpdateUser($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_upuser']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_upuser')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -1058,11 +1061,11 @@ include_once('VM_Commons.php');
 	*/
 	function DeleteUser($params) {
 	
-		include('../vm_soa_conf.php');
-			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_deluser']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_deluser')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -1101,13 +1104,15 @@ include_once('VM_Commons.php');
 	*/
 	function SendMail($params) {
 	
-		include('../vm_soa_conf.php');
-		
+
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_sendmail']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otheradd')==0){
 			$result = "true";
 		}
+		
 		//Auth OK
 		if ($result == "true"){
 		
@@ -1171,12 +1176,12 @@ include_once('VM_Commons.php');
     * @return result
 	*/
 	function GetUserFromEmailOrUsername($params) {
-	
-		include('../vm_soa_conf.php');
-		
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_search']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getuser')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -1204,11 +1209,11 @@ include_once('VM_Commons.php');
 	*/
 	function GetAdditionalUserInfo($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_search']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getuser')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -1310,11 +1315,11 @@ include_once('VM_Commons.php');
 	*/
 	function GetUserInfoFromOrderID($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_search']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getuser')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -1395,13 +1400,14 @@ include_once('VM_Commons.php');
 	*/
 	function GetAllCountryCode($params2) {
 	
-		include('../vm_soa_conf.php');
-			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params2->login, $params2->password);
-		if ($conf['auth_users_getcountry']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherget')==0){
 			$result = "true";
 		}
+		
 		//Auth OK
 		if ($result == "true"){
 								
@@ -1438,14 +1444,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function GetAuthGroup($params) {
-	
-		include('../vm_soa_conf.php');
-				
+		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->login, $params->password);
-		if ($conf['auth_users_getauthgrp']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherget')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1487,14 +1493,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function AddAuthGroup($params) {
-	
-		include('../vm_soa_conf.php');
-				
+		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_addautgrp']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otheradd')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1536,14 +1542,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function DeleteAuthGroup($params) {
-	
-		include('../vm_soa_conf.php');
-				
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_delauthgrp']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherdelete')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1582,14 +1588,15 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function GetAllStates($params) {
-	
-		include('../vm_soa_conf.php');
-				
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_getstate']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherget')==0){
 			$result = "true";
-		}	
+		}
+		
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1637,14 +1644,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function AddStates($params) {
-	
-		include('../vm_soa_conf.php');
-				
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_addstate']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otheradd')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1732,14 +1739,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function DeleteStates($params) {
-	
-		include('../vm_soa_conf.php');
-				
+		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_delstate']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherdelete')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1807,14 +1814,15 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function GetShopperGroup($params) {
-	
-		include('../vm_soa_conf.php');
-				
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->login, $params->password);
-		if ($conf['auth_users_getshopgrp']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherget')==0){
 			$result = "true";
-		}	
+		}
+		
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1865,13 +1873,13 @@ include_once('VM_Commons.php');
     */
 	function AddShopperGroup($params) {
 	
-		include('../vm_soa_conf.php');
-				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_addshopgrp']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otheradd')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1981,13 +1989,13 @@ include_once('VM_Commons.php');
     */
 	function UpdateShopperGroup($params) {
 	
-		include('../vm_soa_conf.php');
-				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_upshopgrp']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherupdate')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2094,13 +2102,13 @@ include_once('VM_Commons.php');
     */
 	function DeleteShopperGroup($params) {
 	
-		include('../vm_soa_conf.php');
-				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_delshopgroup']=="off"){
+
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherdelete')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2163,14 +2171,15 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function GetAllVendor($params) {
-	
-		include('../vm_soa_conf.php');
-				
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->login, $params->password);
-		if ($conf['auth_users_getvendor']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherget')==0){
 			$result = "true";
-		}	
+		}
+		
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2218,14 +2227,13 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function AddVendor($params) {
-	
-		include('../vm_soa_conf.php');
-				
+		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_addvendor']=="off"){
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otheradd')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2277,14 +2285,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function UpdateVendor($params) {
-	
-		include('../vm_soa_conf.php');
-				
+		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_upvendor']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherupdate')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2338,14 +2346,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function DeleteVendor($params) {
-	
-		include('../vm_soa_conf.php');
-				
+		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_delvendor']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherdelete')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2408,14 +2416,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function GetAllVendorCategory($params) {
-	
-		include('../vm_soa_conf.php');
-				
+		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->login, $params->password);
-		if ($conf['auth_users_getvendorcat']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherget')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2451,13 +2459,13 @@ include_once('VM_Commons.php');
     */
 	function AddVendorCategory($params) {
 	
-		include('../vm_soa_conf.php');
-				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_addvendorcat']=="off"){
+
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otheradd')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2493,12 +2501,12 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function UpdateVendorCategory($params) {
-	
-		include('../vm_soa_conf.php');
-				
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_upvendorcat']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherupdate')==0){
 			$result = "true";
 		}	
 		
@@ -2535,14 +2543,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function DeleteVendorCategory($params) {
-	
-		include('../vm_soa_conf.php');
-				
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_delvendorcat']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherdelete')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2595,14 +2603,15 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function GetAllManufacturer($params) {
-	
-		include('../vm_soa_conf.php');
-				
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->login, $params->password);
-		if ($conf['auth_users_getmanufacturer']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherget')==0){
 			$result = "true";
-		}	
+		}
+		
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2642,14 +2651,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function AddManufacturer($params) {
-	
-		include('../vm_soa_conf.php');
-				
+		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_addmanufacturer']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otheradd')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2692,14 +2701,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function UpdateManufacturer($params) {
-	
-		include('../vm_soa_conf.php');
-				
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_upmanufacturer']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherupdate')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2743,14 +2752,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function DeleteManufacturer($params) {
-	
-		include('../vm_soa_conf.php');
-				
+		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_delmanufacturer']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherdelete')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2812,14 +2821,15 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function GetAllManufacturerCat($params) {
-	
-		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->login, $params->password);
-		if ($conf['auth_users_getmanufacturercat']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherget')==0){
 			$result = "true";
-		}	
+		}
+			
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2861,13 +2871,13 @@ include_once('VM_Commons.php');
     */
 	function AddManufacturerCat($params) {
 	
-		include('../vm_soa_conf.php');
-				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_addmanufacturercat']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otheradd')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2914,14 +2924,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function UpdateManufacturerCat($params) {
-	
-		include('../vm_soa_conf.php');
-				
+		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_upmanufacturercat']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherupdate')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2970,14 +2980,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function DeleteManufacturerCat($params) {
-	
-		include('../vm_soa_conf.php');
-				
+					
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_users_delmanufacturercat']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherdelete')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -3037,15 +3047,15 @@ include_once('VM_Commons.php');
     * @return array of products
    */
 	function GetAvailableVendorImages($params) {
-	
-		include('../vm_soa_conf.php');
-		
-		
+		/////TODO ////
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->login, $params->password);
-		if ($conf['auth_users_getvendorimg']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_user_otherget')==0){
 			$result = "true";
 		}
+		
 		
 		//Auth OK
 		if ($result == "true"){
@@ -3116,20 +3126,10 @@ include_once('VM_Commons.php');
    */
 	function GetVersions($params) {
 	
-		include('../vm_soa_conf.php');
-		/*$mosConfig_absolute_path= realpath( dirname(__FILE__).'/../../../..' );
-		include($mosConfig_absolute_path.'/administrator/components/com_virtuemart/version.php');*/
-		
 		if (!class_exists( 'vmVersion' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'version.php');
 		//$VMVersion = vmVersion::RELEASE;
 		
-		
-		/* Authenticate*/
-		$result = onAdminAuthenticate($params->login, $params->password);
-		if ($conf['auth_users_getversion']=="off"){
-			$result = "true";
-		}
-		
+		$result = "true"; //allways allow to make test
 		//Auth OK
 		if ($result == "true"){
 		
@@ -3138,11 +3138,11 @@ include_once('VM_Commons.php');
 			//global $database;
 			$db = JFactory::getDBO();
 			
-			$version['SOA_For_Virtuemart_Version'] = "2.0.0-Beta1";//$conf['version'];
+			$version['SOA_For_Virtuemart_Version'] = "2.0.0-Beta1";
 			$version['Joomla_Version'] = $_VERSION->RELEASE;
 			$version['Virtuemart_Version'] = vmVersion::$RELEASE;
-			$version['Database_Version'] = $db->getVersion();//$database->getVersion();
-			$version['Author'] = $conf['author'];
+			$version['Database_Version'] = $db->getVersion();
+			$version['Author'] = 'Mickaël Cabanas';
 			$version['PHP_Version'] = phpversion();
 			$version['URL'] = "http://www.virtuemart-datamanager.com";
 					
@@ -3193,15 +3193,9 @@ include_once('VM_Commons.php');
 	if ($vmConfig->get('soap_ws_user_on')==1){
 
 		/* SOAP SETTINGS */
-		$cache = "0";
-		if ($conf['users_cache'] == "on")$cache = "1";
-		ini_set("soap.wsdl_cache_enabled", $cache); // wsdl cache settings
+		ini_set("soap.wsdl_cache_enabled", $vmConfig->get('soap_ws_user_cache_on')); // wsdl cache settings
 		
-		if ($conf['soap_version'] == "SOAP_1_1"){
-			$options = array('soap_version' => SOAP_1_1);
-		}else {
-			$options = array('soap_version' => SOAP_1_2);
-		}
+		$options = array('soap_version' => SOAP_1_2);
 		
 		/** SOAP SERVER **/
 		if (empty($conf['BASESITE']) && empty($conf['URL'])){
@@ -3258,6 +3252,6 @@ include_once('VM_Commons.php');
 		$server->handle();
 		
 	}else{
-		echo "This Web Service (Users) is disabled";
+		echoXmlMessageWSDisabled('User');
 	}
 ?> 

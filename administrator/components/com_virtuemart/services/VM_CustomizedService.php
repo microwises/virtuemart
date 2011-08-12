@@ -27,8 +27,6 @@ include_once('VM_Commons.php');
    */
 	function Method1($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		
@@ -57,9 +55,7 @@ include_once('VM_Commons.php');
     * @return 
    */
 	function Method2($params) {
-	
-		include('../vm_soa_conf.php');
-		
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		
@@ -90,16 +86,8 @@ include_once('VM_Commons.php');
 	/* SOAP SETTINGS */
 	if ($vmConfig->get('soap_ws_custom_on')==1){
 
-		/* SOAP SETTINGS */
-		$cache = "0";
-		if ($conf['users_cache'] == "on")$cache = "1";
-		ini_set("soap.wsdl_cache_enabled", $cache); // wsdl cache settings
-		
-		if ($conf['soap_version'] == "SOAP_1_1"){
-			$options = array('soap_version' => SOAP_1_1);
-		}else {
-			$options = array('soap_version' => SOAP_1_2);
-		}
+		ini_set("soap.wsdl_cache_enabled", $vmConfig->get('soap_ws_custom_cache_on')); // wsdl cache settings
+		$options = array('soap_version' => SOAP_1_2);
 		
 		/** SOAP SERVER **/
 		if (empty($conf['BASESITE']) && empty($conf['URL'])){
@@ -117,6 +105,6 @@ include_once('VM_Commons.php');
 		$server->handle();
 		
 	}else{
-		echo "This Web Service (Custom) is disabled";
+		echoXmlMessageWSDisabled('Custom');
 	}
 ?> 

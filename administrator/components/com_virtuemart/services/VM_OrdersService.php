@@ -369,12 +369,12 @@ include_once('VM_Commons.php');
     * @return array of Status
     */
 	function getOrderStatus($params) {
-		
-		include('../vm_soa_conf.php');
-		
+				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->login, $params->password, $params->isEncrypted);
-		if ($conf['auth_order_getstatus']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherget')==0){
 			$result = "true";
 		}	
 		
@@ -492,13 +492,13 @@ include_once('VM_Commons.php');
     */
 	function getOrder($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		$order_id=$params->order_id;
 			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_getorder']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getorder')==0){
 			$result = "true";
 		}	
 		
@@ -541,13 +541,14 @@ include_once('VM_Commons.php');
     */
 	function getOrdersFromStatus($params) {
 	
-		include('../vm_soa_conf.php');
 		/* Authenticate*/
 		
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_getfromstatus']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getorder')==0){
 			$result = "true";
-		}
+		}	
 		//Auth OK
 		if ($result == "true"){
 		
@@ -576,14 +577,14 @@ include_once('VM_Commons.php');
     * @return array of Categories
     */
 	function getAllOrders($params) {
-	
-		include('../vm_soa_conf.php');
-		
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_getall']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getorder')==0){
 			$result = "true";
-		}
+		}	
 		//Auth OK
 		if ($result == "true"){
 		
@@ -615,15 +616,13 @@ include_once('VM_Commons.php');
     */
 	function UpdateOrderStatus($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_updatestatus']=="off"){
-			$result = "true";
-		}
 		
-		$mosConfig_absolute_path= realpath( dirname(__FILE__).'/../../../..' );
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherupdate')==0){
+			$result = "true";
+		}	
 		
 		//Auth OK
 		if ($result == "true"){
@@ -759,11 +758,11 @@ include_once('VM_Commons.php');
     */
 	function DeleteOrder($params) {
 	
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_deleteorder']=="off"){
+
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_delorder')==0){
 			$result = "true";
 		}
 		//Auth OK
@@ -837,11 +836,11 @@ include_once('VM_Commons.php');
     */
 	function CreateOrder($params) {
 		
-		include('../vm_soa_conf.php');
-		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_createorder']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_addorder')==0){
 			$result = "true";
 		}	
 		
@@ -925,11 +924,11 @@ include_once('VM_Commons.php');
     */
 	function GetAllCouponCode($params) {
 	
-		include('../vm_soa_conf.php');
-				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_getcoupon']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherget')==0){
 			$result = "true";
 		}	
 		
@@ -1007,13 +1006,13 @@ include_once('VM_Commons.php');
     */
 	function AddCouponCode($params) {
 	
-		include('../vm_soa_conf.php');
-				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_addcoupon']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otheradd')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1094,15 +1093,14 @@ include_once('VM_Commons.php');
     * @return Coupon details
     */
 	function DeleteCouponCode($params) {
-	
-		include('../vm_soa_conf.php');
-				
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_delcoupon']=="off"){
-			$result = "true";
-		}	
 		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherdelete')==0){
+			$result = "true";
+		}
 		//Auth OK
 		if ($result == "true"){
 		
@@ -1169,12 +1167,12 @@ include_once('VM_Commons.php');
     * @return shipping rate
     */
 	function GetAllShippingRate($params) {
-	
-		include('../vm_soa_conf.php');
-				
+					
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->login, $params->password);
-		if ($conf['auth_order_getshiprate']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherget')==0){
 			$result = "true";
 		}	
 		
@@ -1239,11 +1237,11 @@ include_once('VM_Commons.php');
     */
 	function AddShippingRate($params) {
 	
-		include('../vm_soa_conf.php');
-				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_addshiprate']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otheradd')==0){
 			$result = "true";
 		}	
 		
@@ -1337,13 +1335,13 @@ include_once('VM_Commons.php');
     */
 	function UpdateShippingRate($params) {
 	
-		include('../vm_soa_conf.php');
-				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_upshiprate']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherupdate')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1434,14 +1432,14 @@ include_once('VM_Commons.php');
     * @return Coupon details
     */
 	function DeleteShippingRate($params) {
-	
-		include('../vm_soa_conf.php');
-				
+
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_delshiprate']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherdelete')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1502,13 +1500,13 @@ include_once('VM_Commons.php');
     */
 	function GetAllShippingCarrier($params) {
 	
-		include('../vm_soa_conf.php');
-				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->login, $params->password);
-		if ($conf['auth_order_getshipcarrier']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherget')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1568,14 +1566,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function AddShippingCarrier($params) {
-	
-		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_addshipcarrier']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otheradd')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1641,13 +1639,13 @@ include_once('VM_Commons.php');
     */
 	function UpdateShippingCarrier($params) {
 	
-		include('../vm_soa_conf.php');
-				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_upshipcarrier']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherupdate')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1707,14 +1705,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function DeleteShippingCarrier($params) {
-	
-		include('../vm_soa_conf.php');
 				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_delshipcarrier']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherdelete')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1772,12 +1770,12 @@ include_once('VM_Commons.php');
     * @return shipping rate
     */
 	function GetAllPaymentMethod($params) {
-	
-		include('../vm_soa_conf.php');
-				
+					
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_getpayment']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherget')==0){
 			$result = "true";
 		}	
 		
@@ -1839,14 +1837,14 @@ include_once('VM_Commons.php');
     * @return shipping rate
     */
 	function GetOrderPaymentInfo($params) {
-	
-		include('../vm_soa_conf.php');
-				
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_getpayment']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherget')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1906,13 +1904,13 @@ include_once('VM_Commons.php');
     */
 	function AddPaymentMethod($params) {
 	
-		include('../vm_soa_conf.php');
-				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_addpayment']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otheradd')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -1960,11 +1958,11 @@ include_once('VM_Commons.php');
     */
 	function UpdatePaymentMethod($params) {
 	
-		include('../vm_soa_conf.php');
-				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_updatepayment']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherupdate')==0){
 			$result = "true";
 		}	
 		
@@ -2013,14 +2011,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function DeletePaymentMethod($params) {
-	
-		include('../vm_soa_conf.php');
-				
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_delapyment']=="off"){
+
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherdelete')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2075,13 +2073,14 @@ include_once('VM_Commons.php');
     */
 	function GetOrderFromDate($params) {
 	
-		include('../vm_soa_conf.php');
 		/* Authenticate*/
 		
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_getorderfromdate']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_getorder')==0){
 			$result = "true";
-		}
+		}	
 		//Auth OK
 		if ($result == "true"){
 			
@@ -2181,12 +2180,12 @@ include_once('VM_Commons.php');
     * @return AllCreditCard
     */
 	function GetAllCreditCard($params) {
-	
-		include('../vm_soa_conf.php');
-				
+		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->login, $params->password);
-		if ($conf['auth_order_getcreditcard']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherget')==0){
 			$result = "true";
 		}	
 		
@@ -2233,14 +2232,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function AddCreditCard($params) {
-	
-		include('../vm_soa_conf.php');
-				
+		
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_addcreditcard']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otheradd')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2287,14 +2286,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function UpdateCreditCard($params) {
-	
-		include('../vm_soa_conf.php');
-				
+
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_upcreditcard']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherupdate')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2337,13 +2336,13 @@ include_once('VM_Commons.php');
     */
 	function DeleteCreditCard($params) {
 	
-		include('../vm_soa_conf.php');
-				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_delcreditcard']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherdelete')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2379,13 +2378,13 @@ include_once('VM_Commons.php');
     */
 	function AddOrderStatusCode($params) {
 	
-		include('../vm_soa_conf.php');
-				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_addstatus']=="off"){
+
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otheradd')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2431,13 +2430,13 @@ include_once('VM_Commons.php');
     */
 	function UpdateOrderStatusCode($params) {
 	
-		include('../vm_soa_conf.php');
-				
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_upstatus']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherupdate')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2483,14 +2482,14 @@ include_once('VM_Commons.php');
     * @return result
     */
 	function DeleteOrderStatusCode($params) {
-	
-		include('../vm_soa_conf.php');
-				
+			
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
-		if ($conf['auth_order_delstatus']=="off"){
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_order_otherdelete')==0){
 			$result = "true";
-		}	
+		}
 		
 		//Auth OK
 		if ($result == "true"){
@@ -2527,15 +2526,8 @@ include_once('VM_Commons.php');
 	
 	if ($vmConfig->get('soap_ws_order_on')==1){
 			
-		$cache = "0";
-		if ($conf['order_cache'] == "on")$cache = "1";
-		ini_set("soap.wsdl_cache_enabled", $cache); // wsdl cache settings
-		
-		if ($conf['soap_version'] == "SOAP_1_1"){
-			$options = array('soap_version' => SOAP_1_1);
-		}else {
-			$options = array('soap_version' => SOAP_1_2);
-		}
+		ini_set("soap.wsdl_cache_enabled", $vmConfig->get('soap_ws_order_cache_on')); // wsdl cache settings
+		$options = array('soap_version' => SOAP_1_2);
 
 		/** SOAP SERVER **/
 		if (empty($conf['BASESITE']) && empty($conf['URL'])){
@@ -2582,6 +2574,6 @@ include_once('VM_Commons.php');
 		$server->handle();
 		
 	}else{
-		echo "This Web Service (Order) is desactived";
+		echoXmlMessageWSDisabled('Order');
 	}
 ?> 
