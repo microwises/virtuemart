@@ -64,6 +64,7 @@
 			<filename>pear.php</filename>
 			<filename>version.php</filename>
 			<filename>virtuemart_defaults.cfg</filename>
+			<filename>vm_soa_conf.php</filename>
 			<folder>assets</folder>
 			<folder>controllers</folder>
 			<folder>elements</folder>
@@ -73,8 +74,9 @@
 			<folder>liveupdate</folder>
 			<folder>models</folder>
 			<folder>plugins</folder>
+			<folder>services</folder>
 			<folder>tables</folder>
-   			<folder>views</folder>
+			<folder>views</folder>
 		</files>
 
 		<!-- Language files -->

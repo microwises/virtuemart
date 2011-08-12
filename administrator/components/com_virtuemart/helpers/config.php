@@ -52,7 +52,6 @@ function vmInfo($publicdescr,$value=null){
 		$args = func_get_args();
 		if (count($args) > 0) {
 			$args[0] = $lang->_($args[0]);
-			//return call_user_func_array('sprintf', $args);
 			$app ->enqueueMessage(call_user_func_array('sprintf', $args));
 		}
 	}	else {
@@ -191,11 +190,15 @@ class VmConfig{
 				return self::$_jpConfig;
 			} else {
 				$session = JFactory::getSession();
-				$test = unserialize($session->get('vmconfig','','vm'));
-				if(!empty($test) && !empty($test->_params)) {
-					self::$_jpConfig = $test;
-					return self::$_jpConfig;
+				$vmConfig = $session->get('vmconfig','','vm');
+				if(!empty($vmConfig)){
+					$test = unserialize($vmConfig);
+					if(!empty($test) && !empty($test->_params)) {
+						self::$_jpConfig = $test;
+						return self::$_jpConfig;
+					}
 				}
+
 			}
 		}
 
@@ -212,18 +215,23 @@ class VmConfig{
 			self::$_jpConfig->_raw = $db->loadResult();
 		}
 
-
+		$i = 0;
 		$pair = array();
 		if (!empty(self::$_jpConfig->_raw)) {
 			$config = explode('|', self::$_jpConfig->_raw);
 			foreach($config as $item){
 				$item = explode('=',$item);
 				if(!empty($item[1])){
-					$pair[$item[0]] = unserialize($item[1]);
+// 					$pair[$item[0]] = unserialize($item[1]);
+					$pair[$item[0]] = $item[1];
+					$i++;
 				} else {
 					$pair[$item[0]] ='';
 				}
 
+			}
+			if($i<10){
+				vmInfo('Looks like your config data in the database is broken');
 			}
 			self::$_jpConfig->_params = $pair;
 
@@ -315,7 +323,8 @@ class VmConfig{
 // 				$value = $db->getEscaped($value);
 // 			}
 
-			$raw .= $paramkey.'='.serialize($value).'|';
+// 			$raw .= $paramkey.'='.serialize($value).'|';
+			$raw .= $paramkey.'='.$value.'|';
 		}
 		self::$_jpConfig->_raw = substr($raw,0,-1);
 		return self::$_jpConfig->_raw;
@@ -602,7 +611,8 @@ class VmConfig{
 				$_line .= '=';
 			} else{
 				$pair = explode('=',$_line);
-				$_line = $pair[0].'='.serialize($pair[1]);
+// 				$_line = $pair[0].'='.serialize($pair[1]);
+				$_line = $pair[0].'='.$pair[1];
 			}
 			$_configData[] = $_line;
 		}
