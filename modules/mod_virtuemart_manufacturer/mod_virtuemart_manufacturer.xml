@@ -56,7 +56,9 @@
 			description="A suffix to be applied to the css class of the menu items" />
     </params>
 
-    <fieldset>
+<config>
+<fields name = "params">
+    		<fieldset name="basic">
         <field name="show" type="list" default="all"
 			label="MOD_VIRTUEMART_MANUFACTURER_SHOW"
 			description="MOD_VIRTUEMART_MANUFACTURER_SHOW_DESC">
@@ -95,5 +97,6 @@
 			label="Menu Class Suffix"
 			description="A suffix to be applied to the css class of the menu items" />
     </fieldset>
-    
+</fields>
+</config>
 </install>

@@ -44,7 +44,9 @@
         <param name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
     </params>
     
-    <fieldset>
+<config>
+<fields name = "params">
+    		<fieldset name="basic">
         <field name="width" type="text" default="20" label="MOD_VIRTUEMART_SEARCH_BOX_WIDTH" description="MOD_VIRTUEMART_SEARCH_BOX_WIDTH_DESC" />
         <field name="text" type="text" default="" label="MOD_VIRTUEMART_SEARCH_TEXT" description="MOD_VIRTUEMART_SEARCH_TEXT_DESC" />
         <field name="@spacer" type="spacer" default="" label="" description="" />
@@ -72,4 +74,6 @@
         </field>
         <field name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
     </fieldset>
+</fields>
+</config>
 </install>
