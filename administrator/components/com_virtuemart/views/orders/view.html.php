@@ -105,36 +105,7 @@ class VirtuemartViewOrders extends JView {
 			$_itemAttributesUpdateFields = array();
 			foreach($order['items'] as $_item) {
 				$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $orderStates, 'order_status_'.$_item->virtuemart_order_item_id, '', 'order_status_code', 'order_status_name', $_item->order_status, 'order_item_status',true);
-				if (!empty($_item->product_attribute)) {
-					$_attribs = preg_split('/\s?<br\s*\/?>\s?/i', $_item->product_attribute);
 
-					$product = $productModel->getProduct($_item->virtuemart_product_id);
-					$_productAttributes = array();
-					$_prodAttribs = explode(';', $product->attribute);
-					foreach ($_prodAttribs as $_pAttr) {
-						$_list = explode(',', $_pAttr);
-						$_name = array_shift($_list);
-						$_productAttributes[$_item->virtuemart_order_item_id][$_name] = array();
-						foreach ($_list as $_opt) {
-							$_optObj = new stdClass();
-							$_optObj->option = $_opt;
-							$_productAttributes[$_item->virtuemart_order_item_id][$_name][] = $_optObj;
-						}
-					}
-					foreach ($_attribs as $_attrib) {
-						$_attr = preg_split('/:\s*/', $_attrib);
-						$_itemAttributesUpdateFields[$_item->virtuemart_order_item_id][] = array(
-							 'lbl' => $_attr[0]
-							,'fld' => JHTML::_('select.genericlist'
-									, $_productAttributes[$_item->virtuemart_order_item_id][$_attr[0]]
-									, 'product_attribute_'.$_item->virtuemart_order_item_id.'['.$_attr[0].']'
-									, null
-									, 'option'
-									, 'option'
-									, $_attr[1])
-						);
-					}
-				}
 			}
 
                        // $_shippingInfo = ShopFunctions::getShippingRateDetails($orderbt->ship_method_id);
@@ -183,7 +154,7 @@ class VirtuemartViewOrders extends JView {
 			/* Get the data */
 			$orderslist = $this->get('OrdersList');
 
-
+dump ($orderStates,'state');
 			$this->assignRef('orderstatuses', $orderStates);
 
 			if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');

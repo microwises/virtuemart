@@ -17,10 +17,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-$document = JFactory::getDocument();
-$mainframe = JFactory::getApplication('site');
-$document->addScript(JURI::root().'components/com_virtuemart/assets/js/jquery.js');
-//$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.alerts.js');
 
 AdminUIHelper::startAdminArea();
 AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDER_PRINT_PO_LBL');
@@ -103,7 +99,7 @@ $tt=$this;
 			?>
 			<tr>
 				<td colspan="4"><?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-editadd.png', "Update Status"); ?>
-				<a href="#" class="show_element[updateOrderStatus]"> Update Status </a>
+				<a href="#" class="show_element"> Update Status </a>
 				<div style="display: none; background: white;"
 					class="element-hidden vm-absolute"
 					id="updateOrderStatus"><?php echo $this->loadTemplate('editstatus'); ?>
@@ -228,12 +224,7 @@ $tt=$this;
 					<?php
 						echo $item->order_item_name;
 						if (!empty($item->product_attribute)) {
-							echo '<table border="0" celspacing="0" celpadding="0">'
-								. '<tr>'
-								. '<td width="8px"></td>' // Indent
-								. '<td>'.$item->product_attribute.'</td>'
-								. '</tr>'
-								. '</table>';
+							echo '<div>'.$item->product_attribute.'</div>';
 						}
 						$_dispatcher = JDispatcher::getInstance();
 						$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderLineShipperBE',array(
@@ -521,6 +512,11 @@ AdminUIHelper::endAdminArea(); ?>
 
 <script type="text/javascript">
 <!--
+
+jQuery('.show_element').click(function() {
+  jQuery('.element-hidden').toggle();
+  return false
+});
 function confirmation(destnUrl) {
 	var answer = confirm("<?php echo JText::_('COM_VIRTUEMART_ORDER_DELETE_ITEM_MSG'); ?>");
 	if (answer) {

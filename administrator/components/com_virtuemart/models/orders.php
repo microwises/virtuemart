@@ -166,7 +166,7 @@ class VirtueMartModelOrders extends VmModel {
 	public function getOrdersList($uid = 0, $_ignorePagination = false)
 	{
 
-		$query = "SELECT o.*, CONCAT(u.first_name, ' ', IF(u.middle_name IS NULL, '', CONCAT(u.middle_name, ' ')), u.last_name) AS order_name "
+		$query = "SELECT o.*, CONCAT_WS(' ',u.first_name,u.middle_name,u.last_name) AS order_name "
 			.',m.payment_name AS payment_method '
 			.$this->getOrdersListQuery();
 /*		$_filter = array();
@@ -635,8 +635,9 @@ class VirtueMartModelOrders extends VmModel {
 				$calculator = calculationHelper::getInstance();
 				$variantmods = $calculator->parseModifier($priceKey);
 				$row=0 ;
+				$_prod->product_attribute = '';
 				foreach($variantmods as $variant=>$selected){
-							$_prod->product_name .= '<br/ > <b>'.$_prod->customfieldsCart[$row]->custom_title.' : </b>
+							$_prod->product_attribute .= '<br/ > <b>'.$_prod->customfieldsCart[$row]->custom_title.' : </b>
 								'.$_prod->customfieldsCart[$row]->options[$selected]->custom_value.' '.$_prod->customfieldsCart[$row]->custom_field_desc;
 						$row++;
 				}
@@ -666,7 +667,7 @@ class VirtueMartModelOrders extends VmModel {
 			$_orderItems->product_final_price = $_prod->prices['salesPrice'];
 //			$_orderItems->order_item_currency = $_prices[$_lineCount]['']; // TODO Currency
 			$_orderItems->order_status = 'P';
-			$_orderItems->product_attribute = '';
+			$_orderItems->product_attribute = $_prod->product_attribute;
 
 			if (!$_orderItems->check()) {
 				$this->setError($this->getError());

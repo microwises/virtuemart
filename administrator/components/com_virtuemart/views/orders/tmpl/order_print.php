@@ -101,12 +101,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 				<td><?php
 				echo $item->order_item_name;
 				if (!empty($item->product_attribute)) {
-					echo '<table border="0" celspacing="0" celpadding="0">'
-					. '<tr>'
-					. '<td width="8px"></td>' // Indent
-					. '<td>'.$item->product_attribute.'</td>'
-					. '</tr>'
-					. '</table>';
+					echo '<div>'.$item->product_attribute.'</div>';
 				}
 				?></td>
 				<td><?php echo $item->order_item_sku; ?></td>
