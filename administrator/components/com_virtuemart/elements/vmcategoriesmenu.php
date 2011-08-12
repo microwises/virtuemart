@@ -14,6 +14,7 @@
  * other free or open source software licenses.
  * @version $Id: $
  */
+
 if (!class_exists('VmConfig'))
     require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
 if (!class_exists('ShopFunctions'))
@@ -23,7 +24,10 @@ if (!class_exists('TableCategories'))
 
 if (!class_exists('VmElements'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'elements' . DS . 'vmelements.php');
-
+/*
+ * This element is used by the menu manager
+ * Should be that way
+ */
 class VmElementVmCategoriesmenu extends VmElements {
 
     var $_name = 'categoriesmenu';

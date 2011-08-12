@@ -14,6 +14,13 @@
  * other free or open source software licenses.
  * @version $Id: $
  */
+
+/*
+ * This class is used by VirtueMart Payment or Shipping Plugins
+ * which uses JParameter
+ * So It should be an extension of JElement
+ * Those plugins cannot be configured througth the Plugin Manager anyway.
+ */
 class JElementVmjpluginwarning extends JElement {
 
     /**

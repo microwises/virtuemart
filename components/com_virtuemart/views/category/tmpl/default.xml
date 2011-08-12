@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="COM_VIRTUEMART_CATEGORY_LAYOUT_MENU">
-            <message><![CDATA[COM_VIRTUEMART_CATEGORY_LAYOUT_DESC]]></message>
-	</layout>
-	<state>
-		<name>COM_VIRTUEMART_CATEGORY_LAYOUT_MENU</name>
-		<description><![CDATA[COM_VIRTUEMART_CATEGORY_LAYOUT_DESC]]></description>
-              <url addpath="/administrator/components/com_virtuemart/elements">
-		   <param name="virtuemart_category_id" section="com_virtuemart" type="vmcategoriesmenu"  value_field="category_name" label="COM_VIRTUEMART_CATEGORY" description="COM_VIRTUEMART_CHOOSE_CATEGORY" />
-                </url>
-	</state>
+    <layout title="COM_VIRTUEMART_CATEGORY_LAYOUT_MENU">
+        <message><![CDATA[COM_VIRTUEMART_CATEGORY_LAYOUT_DESC]]>
+        </message>
+    </layout>
+    <state>
+        <name>COM_VIRTUEMART_CATEGORY_LAYOUT_MENU</name>
+        <description><![CDATA[COM_VIRTUEMART_CATEGORY_LAYOUT_DESC]]>
+        </description>
+        <url addpath="/administrator/components/com_virtuemart/elements">
+            <param name="virtuemart_category_id" section="com_virtuemart" type="vmcategoriesmenu"  value_field="category_name" label="COM_VIRTUEMART_CATEGORY" description="COM_VIRTUEMART_CHOOSE_CATEGORY" />
+        </url>
+    </state>
+    <fields name="params" addfieldpath="/administrator/components/com_virtuemart/elements">
+        <fieldset name="basic">
+            <field name="virtuemart_category_id" section="com_virtuemart" type="vmcategoriesmenu"  value_field="category_name" label="COM_VIRTUEMART_CATEGORY" description="COM_VIRTUEMART_CHOOSE_CATEGORY" />
+
+        </fieldset>
+    </fields>
 </metadata>
 

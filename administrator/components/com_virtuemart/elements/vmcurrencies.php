@@ -16,6 +16,13 @@
  */
 if (!class_exists('VmConfig'))
     require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
+/*
+ * This class is used by VirtueMart Payment or Shipping Plugins
+ * which uses JParameter
+ * So It should be an extension of JElement
+ * Those plugins cannot be configured througth the Plugin Manager anyway.
+ */
+
 class JElementVmCurrencies extends JElement {
 
     /**
@@ -43,7 +50,7 @@ class JElementVmCurrencies extends JElement {
             $currency=VirtueMartModelVendor::getVendorCurrency ($vendor_id);
             $value= $currency->virtuemart_currency_id;
         }
-        return JHTML::_('select.genericlist', $currencies, $control_name . '[' . $name . '][]', '', 'value', 'text', $value, $control_name . $name);
+        return JHTML::_('select.genericlist', $currencies, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
     }
 
 }

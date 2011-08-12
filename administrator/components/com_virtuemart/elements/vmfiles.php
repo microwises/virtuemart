@@ -14,6 +14,12 @@
  * other free or open source software licenses.
  * @version $Id: $
  */
+/*
+ * This class is used by VirtueMart Payment or Shipping Plugins
+ * which uses JParameter
+ * So It should be an extension of JElement
+ * Those plugins cannot be configured througth the Plugin Manager anyway.
+ */
 class JElementVMFiles extends JElement {
 
     /**
@@ -28,17 +34,12 @@ class JElementVMFiles extends JElement {
     function fetchElement($name, $value, &$node, $control_name) {
                 jimport( 'joomla.filesystem.folder' );
 		jimport( 'joomla.filesystem.file' );
-        JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
+
 		// path to images directory
-		$folder = $node->attributes('directory');
-		$rel_path = str_replace('/',DS,$folder);
-		$path		= JPATH_ROOT.DS.$rel_path;
+		$path		= JPATH_ROOT.DS.$node->attributes('directory');
 		$filter		= $node->attributes('filter');
 		$exclude	= $node->attributes('exclude');
 		$stripExt	= $node->attributes('stripext');
-                if (!JFolder::exists($path)) {
-                    return  JTExt::sprintf('COM_VIRTUEMART_FOLDER_NOT_EXIST', $node->attributes('directory'));
-                }
 		$files		= JFolder::files($path, $filter);
 
 		$options = array ();

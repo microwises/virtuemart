@@ -18,7 +18,7 @@
  * This trick allows us to extend the correct class, based on whether it's Joomla! 1.5 or 1.6
  */
 // if(!class_exists('JFakeElementBase')) {
-
+jimport('joomla.form.formfield');
 if (version_compare(JVERSION, '1.6.0', 'ge')) {
 
     class VmElements extends JFormField {

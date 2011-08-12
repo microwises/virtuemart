@@ -5,7 +5,6 @@
  * @package	VirtueMart
  * @subpackage Plugins  - Elements
  * @author Valérie Isaksen
- * @author Max Milbers
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2011 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -23,11 +22,8 @@ if (!class_exists('ShopFunctions'))
 if (!class_exists('TableCategories'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'categories.php');
 
-if (!class_exists('TableCategories'))
-require(JPATH_VM_ADMINISTRATOR . DS . 'elements' . DS . 'vmelements.php');
 
-
-class VmElementCategories extends VmElements {
+class JElementVmCategories extends JElement {
 
     /**
      * Element name
@@ -46,29 +42,6 @@ class VmElementCategories extends VmElements {
         $html .= $categorylist;
         $html .="</select>";
         return $html;
-    }
-
-
-	function getInput() {
-
-		JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
-		$categorylist = ShopFunctions::categoryListTree(array($value));
-
-		$class = '';
-		$html = '<select class="inputbox"   name="' . $control_name . '[' . $name . '][]' . '" >';
-		$html .= '<option value="">' . JText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL') . '</option>';
-		$html .= $categorylist;
-		$html .="</select>";
-		return $html;
-
-	}
+        }
 
 }
-
-if(version_compare(JVERSION,'1.6.0','ge')) {
-	class JFormFieldVmCategories extends VmElementCategories {}
-} else {
-	class JElementVmCategories extends VmElementCategories {}
-}
-
-
