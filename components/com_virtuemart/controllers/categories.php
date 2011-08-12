@@ -60,5 +60,21 @@ class VirtueMartControllerCategories extends JController {
 		/* Display it all */
 		$view->display();
 	}
+		public function json(){
+
+		/* Create the view */
+		$view = $this->getView('categories', 'json');
+		/* Add the default model */
+		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+		$view->setModel($this->getModel('category', 'VirtuemartModel'), true);
+
+		/* Set the layout */
+		$layoutName = JRequest::getWord('layout', 'default');
+		$view->setLayout($layoutName);
+
+		/* Display it all */
+		$view->display();
+
+	}
 }
 // pure php no closing tag
