@@ -26,7 +26,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_SHOPPERGROUP_NAME');
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
 <div class="col50">
-	<fieldset class="adminform">
+	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DETAILS'); ?></legend>
 	<table class="admintable">
 		<tr>
@@ -91,7 +91,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_SHOPPERGROUP_NAME');
 	</table>
 	</fieldset>
 
-	<fieldset class="adminform">
+	<fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES') ?></legend><?php
 		echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_ENABLE_PRICE_DISPLAY');
 		echo VmHTML::checkbox('custom_price_display', $this->shoppergroup->custom_price_display)?>

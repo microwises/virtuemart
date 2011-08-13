@@ -22,7 +22,7 @@ AdminUIHelper::startAdminArea();
 AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_PRODUCT_MEDIA');
  
 echo'<form name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">';
-echo '<fieldset class="adminform">';
+echo '<fieldset>';
 
 
 

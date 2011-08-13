@@ -30,7 +30,7 @@ function gotocontact(id) {
 </script>
 
 
-<fieldset class="adminform">
+<fieldset>
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_LEGEND_USERDETAILS'); ?>
 	</legend>
@@ -151,7 +151,7 @@ function gotocontact(id) {
 	</table>
 </fieldset>
 
-<fieldset class="adminform">
+<fieldset>
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_LEGEND_PARAMETERS'); ?>
 		</legend>
@@ -168,7 +168,7 @@ function gotocontact(id) {
 	</table>
 </fieldset>
 
-<fieldset class="adminform">
+<fieldset>
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_LEGEND_CONTACTINFO'); ?>
 	</legend>

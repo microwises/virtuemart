@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 <table>
     <tr><td valign="top">
 
-	    <fieldset class="adminform">
+	    <fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_CONFIGURATION') ?></legend>
 		<table class="admintable">
 		    <tr>
@@ -84,7 +84,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	</td><td valign="top">
 
-	    <fieldset class="adminform">
+	    <fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES') ?></legend>
 		<table class="admintable">
 			<tr>

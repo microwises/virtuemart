@@ -29,7 +29,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_REVIEW_DETAILS');
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
 <div class="col50">
-<fieldset class="adminform">
+<fieldset>
 <legend><?php echo JText::_('COM_VIRTUEMART_REVIEW_DETAILS'); ?></legend>
 <table class="admintable" summary="<?php echo JText::_('COM_VIRTUEMART_RATING_EDIT_TITLE');?>">
 	<tr>

@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <table>
     <tr><td valign="top">
-		<fieldset class="adminform">
+		<fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_BROWSE_ORDERBY_DEFAULT_FIELD_TITLE') ?></legend>
 		<table class="admintable">
 			<tr>

@@ -25,7 +25,7 @@ AdminUIHelper::startAdminArea();
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
 <div class="col50">
-	<fieldset class="adminform">
+	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DETAILS'); ?></legend>
 	<table class="admintable">			
 		<tr>

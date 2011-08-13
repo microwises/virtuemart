@@ -172,7 +172,7 @@ function plgSearchVirtuemart($text, $phrase='', $ordering='', $areas=null) {
 	$user = & JFactory::getUser();
 
 	if (is_array($areas)) {
-		if (!array_intersect($areas, array_keys($this->plgSearchVirtuemartAreas()))) {
+		if (!array_intersect($areas, array_keys(plgSearchVirtuemartAreas()))) {
 			return array();
 		}
 	}

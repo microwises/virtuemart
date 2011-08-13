@@ -19,7 +19,7 @@ defined('_JEXEC') or die('Restricted access');
 <table width="100%">
 	<tr>
 		<td valign="top" width="50%"> */ ?> 
-			<fieldset class="adminform">
+			<fieldset>
 				<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECKOUT_SETTINGS') ?></legend>
 				<table class="admintable">
 					<tr>
@@ -79,7 +79,7 @@ defined('_JEXEC') or die('Restricted access');
 		</td>
 <?php /*		<td valign="top">
 
-			<fieldset class="adminform">
+			<fieldset>
 			<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_TITLES') ?></legend>
 				<table class="admintable">
 					<tr>

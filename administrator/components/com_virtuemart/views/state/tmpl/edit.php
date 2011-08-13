@@ -25,7 +25,7 @@ AdminUIHelper::startAdminArea();
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
 <div class="col50">
-	<fieldset class="adminform">
+	<fieldset>
 <?php /*	<legend><?php echo JText::_('COM_VIRTUEMART_STATE_DETAILS'); ?></legend> */?>
 	<legend><?php echo JHTML::_('link','index.php?option=com_virtuemart&view=state&virtuemart_country_id='.$this->virtuemart_country_id,JText::sprintf('COM_VIRTUEMART_STATE_COUNTRY',$this->country_name).' '. JText::_('COM_VIRTUEMART_DETAILS') ); ?></legend>
 	<table class="admintable">

@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
     
     	<?php /* ----------------1st blok CAT SETTINGS---------------------- */ ?>
     	
-	    <fieldset class="adminform">
+	    <fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_CAT_WS_SETTINGS') ?></legend>
 		<table class="admintable">
 
@@ -159,7 +159,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php /* ----------------2nd blok USER SETTINGS ---------------------- */ ?>
 		
 		
-	    <fieldset class="adminform">
+	    <fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_USER_WS_SETTINGS') ?></legend>
 		<table class="admintable">
 			
@@ -282,7 +282,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php /* ----------------3rd blok ---------------------- */ ?>
 		
 		
-	    <fieldset class="adminform">
+	    <fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_PROD_WS_SETTINGS') ?></legend>
 		<table class="admintable">
 		    
@@ -405,7 +405,7 @@ defined('_JEXEC') or die('Restricted access');
         <?php /* ----------------4nd blok ORDERS---------------------- */ ?>
         
         
-		<fieldset class="adminform">
+		<fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ORDER_WS_SETTINGS') ?></legend>
         <table class="admintable">
           
@@ -532,7 +532,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php /* ----------------SQL blok ---------------------- */ ?>
 <table width="100%">
     <tr><td valign="top">
-		<fieldset class="adminform">
+		<fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SQL_WS_SETTINGS') ?></legend>
 		<table class="admintable">
 	    	
@@ -614,7 +614,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php /* ----------------Custom service ---------------------- */ ?>
 <table width="100%">
     <tr><td valign="top">
-		<fieldset class="adminform">
+		<fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_CUSTOM_SETTINGS') ?></legend>
 		<table class="admintable">
 	    	
@@ -675,7 +675,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php /* ----------------WSDL BLOK ---------------------- */ ?>
 <table width="100%">
     <tr><td valign="top">
-		<fieldset class="adminform">
+		<fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_WSDL_VIEW') ?></legend>
 		<table class="admintable">
 	

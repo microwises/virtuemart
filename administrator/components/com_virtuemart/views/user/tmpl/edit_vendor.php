@@ -23,11 +23,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<table class="admintable">
 		<tr>
 			<td valign="top">
-				<fieldset class="adminform">
+				<fieldset>
 					<legend>
 						<?php echo JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL') ?>
 					</legend>
 					<table class="admintable">
+						<tr>
 							<td class="key">
 								<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_STORE_NAME'); ?>:
 							</td>
@@ -72,7 +73,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</td>
 
 			<td valign="top">
-				<fieldset class="adminform">
+				<fieldset>
 					<legend>
 						<?php echo JText::_('COM_VIRTUEMART_STORE_CURRENCY_DISPLAY') ?>
 					</legend>
@@ -99,7 +100,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 		<tr>
 		<td colspan="2">
-		<fieldset class="adminform">
+		<fieldset>
 			<legend>
 				<?php echo JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL') ?>
 			</legend>

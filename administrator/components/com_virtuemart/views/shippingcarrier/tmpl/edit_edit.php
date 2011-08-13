@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 
 <div class="col50">
-    <fieldset class="adminform">
+    <fieldset>
         <legend><?php echo JText::_('COM_VIRTUEMART_SHIPPINGCARRIER'); ?></legend>
         <table class="admintable">
             <tr>

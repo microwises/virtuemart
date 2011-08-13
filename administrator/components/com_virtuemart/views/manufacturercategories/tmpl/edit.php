@@ -27,7 +27,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_MANUFACTURER_CATEGORY_DETAILS
 
 
 <div class="col50">
-	<fieldset class="adminform">
+	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_DETAILS'); ?></legend>
 	<table class="admintable">
 		<tr>

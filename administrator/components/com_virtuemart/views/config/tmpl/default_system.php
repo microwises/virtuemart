@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <br />
-<fieldset class="adminform">
+<fieldset>
     <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SYSTEM_SETTINGS') ?></legend>
     <table class="admintable">
 	<tr>
@@ -76,7 +76,7 @@ defined('_JEXEC') or die('Restricted access');
     </table>
 </fieldset>
 
-<fieldset class="adminform">
+<fieldset>
     <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_USER_REGISTRATION_SETTINGS') ?></legend>
     <table class="admintable">
 	<tr>
@@ -155,7 +155,7 @@ defined('_JEXEC') or die('Restricted access');
     </table>
 </fieldset>
 
-<fieldset class="adminform">
+<fieldset>
     <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PROXY_SETTINGS') ?></legend>
     <table class="admintable">
 	<tr>
@@ -202,7 +202,7 @@ defined('_JEXEC') or die('Restricted access');
     </table>
 </fieldset>
 
-<fieldset class="adminform">
+<fieldset>
     <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_LOGFILE_HEADER') ?></legend>
     <table class="admintable">
         <tr>

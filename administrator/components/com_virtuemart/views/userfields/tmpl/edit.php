@@ -28,7 +28,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 
 
 <div class="col50">
-	<fieldset class="adminform">
+	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_USERFIELD_DETAILS'); ?></legend>
 	<table class="admintable">
 
@@ -47,7 +47,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 		<tr>
 			<td colspan="2" style="text-align:left;height: 0px;overflow: auto;">
 				<div id="divText">
-					<fieldset class="adminform">
+					<fieldset>
 					<legend><?php echo JText::_('COM_VIRTUEMART_TEXTFIELD_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
 							<tr>
@@ -65,7 +65,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 				</div>
 
 				<div id="divColsRows">
-					<fieldset class="adminform">
+					<fieldset>
 					<legend><?php echo JText::_('COM_VIRTUEMART_TEXTAREA_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
 							<tr>
@@ -93,7 +93,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 				</div>
 
 				<div id="divShopperGroups">
-					<fieldset class="adminform">
+					<fieldset>
 					<legend><?php echo JText::_('COM_VIRTUEMART_FIELDS_EUVATID_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
 							<tr>
@@ -111,7 +111,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 				</div>
 
 				<div id="divAgeVerification">
-					<fieldset class="adminform">
+					<fieldset>
 					<legend><?php echo JText::_('COM_VIRTUEMART_FIELDS_AGEVERIFICATION_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
 							<tr>
@@ -129,7 +129,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 				</div>
 
 				<div id="divWeb">
-					<fieldset class="adminform">
+					<fieldset>
 					<legend><?php echo JText::_('COM_VIRTUEMART_FIELDS_WEBADDRESS'); ?></legend>
 						<table class="admintable">
 							<tr>
@@ -147,7 +147,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 				</div>
 
 				<div id="divValues" style="text-align:left;height: 200px;overflow: auto;">
-					<fieldset class="adminform">
+					<fieldset>
 					<legend><?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ADDVALUES_TIP'); ?></legend>
 						<input type="button" class="button" onclick="insertRow();" value="<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ADDVALUE') ?>" />
 						<table align=left id="divFieldValues" cellpadding="4" cellspacing="1" border="0" width="100%" class="admintable">

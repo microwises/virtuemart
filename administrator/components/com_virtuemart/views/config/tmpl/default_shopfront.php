@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 <br />
 <table width="100%">
     <tr><td valign="top" width="50%">
-	    <fieldset class="adminform">
+	    <fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MORE_CORE_SETTINGS') ?></legend>
 		<table class="admintable">
 		<?php /*    <tr>
@@ -141,7 +141,7 @@ defined('_JEXEC') or die('Restricted access');
 		</table>
 	    </fieldset>
 
-	    <fieldset class="adminform">
+	    <fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_TITLE') ?></legend>
 		<table class="admintable">
 			<tr>
@@ -243,7 +243,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	</td><td valign="top" width="50%">
 
-	    <fieldset class="adminform">
+	    <fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOPFRONT_SETTINGS') ?></legend>
 		<table class="admintable">
 		    <tr>
@@ -338,7 +338,7 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
                 </table>
                     </fieldset>
-                     <fieldset class="adminform">
+                     <fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_HOMEPAGE_SETTINGS') ?></legend>
                     <table class="admintable">
                            <tr>
@@ -421,7 +421,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <table width="100%">
     <tr><td valign="top">
-		<fieldset class="adminform">
+		<fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_TITLE') ?></legend>
 		<table class="admintable">
 	    	<tr>

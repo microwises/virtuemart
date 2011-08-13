@@ -64,6 +64,14 @@ class VirtuemartModelReport extends VmModel {
      * @author Wicksj
      * @param string $noLimit True if no record count limit is used, false otherwise
      * @return object List of order objects
+	 TODO Add this for grouping by date and orders
+	 SELECT DATEADD(dd,DATEDIFF(dd,0,created_on),0) AS date,
+	SUM(number_of_orders) AS number_of_orders
+	FROM Table
+	GROUP BY DATEADD(dd,DATEDIFF(dd,0,created_on),0)
+	ORDER BY date DESC
+	 
+	 
      */
     function getRevenue( $noLimit = false){
     	//$db = JFactory::getDBO();

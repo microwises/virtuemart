@@ -22,7 +22,7 @@ VmConfig::JvalideForm();
 AdminUIHelper::startAdminArea();
 ?>
 <form name="adminForm" id="adminform" method="post" action="">
-<fieldset class="adminform">
+<fieldset>
 <legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD'); ?></legend>
 <?php
 $this->customfields->addHidden('view','custom');

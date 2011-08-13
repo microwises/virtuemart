@@ -49,7 +49,7 @@ AdminUIHelper::startAdminArea();
 
 <div class="col50">
 
-	<fieldset class="adminform">
+	<fieldset>
 
 	<legend><?php echo JText::_('COM_VIRTUEMART_USERGROUP_DETAILS'); ?></legend>
 

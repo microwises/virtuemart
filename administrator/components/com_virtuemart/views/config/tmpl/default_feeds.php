@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <br />
-<fieldset class="adminform">
+<fieldset>
     <legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FEED_SETTINGS') ?></legend>
     <table class="admintable">
 	<tr>

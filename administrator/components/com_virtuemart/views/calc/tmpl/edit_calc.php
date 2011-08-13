@@ -23,7 +23,7 @@ VmConfig::jDate();
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
 <div class="col50">
-	<fieldset class="adminform">
+	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_CALC_DETAILS'); ?></legend>
 	<table class="admintable">
 		<tr>
