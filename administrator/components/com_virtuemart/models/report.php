@@ -73,7 +73,12 @@ class VirtuemartModelReport extends VmModel {
 			SUM(order_subtotal) as revenue 
 			FROM `#__virtuemart_orders` 
 			WHERE `created_on` BETWEEN '{$this->start_date} 00:00:00' AND '{$this->end_date} 23:59:59' 
-			GROUP BY order_date ORDER BY order_date ASC ";
+			GROUP BY order_date ";
+			$mainframe = JFactory::getApplication() ;
+			$filter_order     = $mainframe->getUserStateFromRequest( 'com_virtuemart.report.filter_order', 'filter_order', 'order_date', 'cmd' );
+			if ($filter_order == 'order_date' or $filter_order == 'virtuemart_order_id') {
+				$query .= $this->_getOrdering('order_date', 'DESC');
+			}
 
 		if($noLimit){
 			$this->_data = $this->_getList($query);
