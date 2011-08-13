@@ -437,7 +437,8 @@ class VmConfig{
 		jQuery(document).ready( function() {
 			jQuery( ".datepicker" ).datepicker({
 			changeMonth: true,
-			changeYear: true
+			changeYear: true,
+			dateFormat:"yy-mm-dd"
 			});
 
 		});
