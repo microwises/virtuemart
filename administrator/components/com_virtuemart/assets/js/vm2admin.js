@@ -214,6 +214,28 @@
 			}
 		);
 		
+	},
+	toggle : function() {
+		var options = { path: '/', expires: 2};
+		if ($.cookie('vmmenu') ) { 
+			var status = $.cookie('vmmenu');
+			if (status == 'hide' ) {
+				this.removeClass('vmicon-show').addClass('vmicon-hide');
+				$('.menu-wrapper').toggle('slide');
+			}
+		}
+		
+		this.click(function () {
+			if (this.hasClass('vmicon-show')) {
+				this.removeClass('vmicon-show').addClass('vmicon-hide');
+				$('.menu-wrapper').toggle('slide');
+				$.cookie('vmmenu', 'hide', options);
+			} else {
+				this.removeClass('vmicon-hide').addClass('vmicon-show');
+				$('.menu-wrapper').toggle('slide');
+				$.cookie('vmmenu', 'show', options);
+			}
+		});
 	}
   };
 
@@ -236,16 +258,7 @@ jQuery.noConflict();
  jQuery( function($) {
 
 	$('dl#system-message').hide().slideDown(400);
-	$('.virtuemart-admin-area .toggler').click(function () {
-		var that = $(this) ;
-		if (that.hasClass('vmicon-show')) {
-			that.removeClass('vmicon-show').addClass('vmicon-hide');
-			$('.menu-wrapper').toggle('slide');
-		} else {
-			that.removeClass('vmicon-hide').addClass('vmicon-show');
-			$('.menu-wrapper').toggle('slide');
-		}
-	});
+	$('.virtuemart-admin-area .toggler').vm2admin('toggle');
 	$('#admin-ui-menu').vm2admin('accordeon');
 	if ( typeof (virtuemartcookie) !== 'undefined' ) {
 		$("#admin-ui-tabs").vm2admin("tabs",virtuemartcookie);
@@ -254,14 +267,6 @@ jQuery.noConflict();
 
 	$('#content-box [title]').vm2admin('tips',tip_image);
 	$('.modal').fancybox();
-	
-	// jQuery('.modal-button').fancybox({
-		// 'width' : '75%',
-		// 'height' : '75%',
-		// 'autoScale' : false,
-		// 'transitionIn' : 'none',
-		// 'transitionOut' : 'none',
-		// 'type' : 'iframe'
-	// });
+
 
 });
