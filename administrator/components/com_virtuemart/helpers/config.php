@@ -194,7 +194,7 @@ class VmConfig{
 				$session = JFactory::getSession();
 				$vmConfig = $session->get('vmconfig','','vm');
 				if(!empty($vmConfig)){
-					$test = unserialize($vmConfig);
+					$test = unserialize(base64_decode($vmConfig));
 					if(!empty($test) && !empty($test->_params)) {
 						self::$_jpConfig = $test;
 // 						$app = JFactory::getApplication();
@@ -227,17 +227,19 @@ class VmConfig{
 			foreach($config as $item){
 				$item = explode('=',$item);
 				if(!empty($item[1])){
-// 					$pair[$item[0]] = unserialize($item[1]);
-					$pair[$item[0]] = $item[1];
-					$i++;
+					$pair[$item[0]] = unserialize(base64_decode($item[1]) );
+// 					$pair[$item[0]] = $item[1];
+// 					$i++;
+// 					if($i<10){
+// 						vmInfo('Looks like your config data in the database is broken please use Renew config by file. value not readable '.unserialize(base64_decode($item[1]));
+// 						break;
+// 					}
 				} else {
 					$pair[$item[0]] ='';
 				}
 
 			}
-			if($i<10){
-				vmInfo('Looks like your config data in the database is broken');
-			}
+
 			self::$_jpConfig->_params = $pair;
 
 			self::$_jpConfig->setSession();
@@ -254,7 +256,7 @@ class VmConfig{
 		$session->clear('vmconfig');
 // 		$app = JFactory::getApplication();
 // 		$app ->enqueueMessage('setSession session cache <pre>'.print_r(self::$_jpConfig->_params,1).'</pre>');
-		$session->set('vmconfig', serialize(self::$_jpConfig),'vm');
+		$session->set('vmconfig', base64_encode(serialize(self::$_jpConfig)),'vm');
 
 	}
 
@@ -330,8 +332,8 @@ class VmConfig{
 // 				$value = $db->getEscaped($value);
 // 			}
 
-// 			$raw .= $paramkey.'='.serialize($value).'|';
-			$raw .= $paramkey.'='.$value.'|';
+			$raw .= $paramkey.'='.base64_encode(serialize($value)).'|';
+// 			$raw .= $paramkey.'='.$value.'|';
 		}
 		self::$_jpConfig->_raw = substr($raw,0,-1);
 		return self::$_jpConfig->_raw;
@@ -619,8 +621,13 @@ class VmConfig{
 				$_line .= '=';
 			} else{
 				$pair = explode('=',$_line);
-// 				$_line = $pair[0].'='.serialize($pair[1]);
-				$_line = $pair[0].'='.$pair[1];
+				if(!empty($pair[1])){
+					$_line = $pair[0].'='.base64_encode(serialize($pair[1]));
+				} else {
+					$_line = $pair[0].'=';
+				}
+
+// 				$_line = $pair[0].'='.$pair[1];
 			}
 			$_configData[] = $_line;
 		}
@@ -659,8 +666,12 @@ class VmConfig{
 		if (!$_db->query()) {
 			JError::raiseWarning(1, 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(true));
 			return false;
+		}else {
+			$app = JFactory::getApplication();
+			$app->enqueueMessage('Config installed file, store values '.$_value);
+			return true;
 		}
-		return true;
+
 	}
 
 }

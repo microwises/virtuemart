@@ -120,7 +120,10 @@ class VirtueMartModelProduct extends VmModel {
 
 					$filter_search[] = ' `'.$searchField.'` LIKE '.$keyword;
 				}
-				$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
+				if(!empty($filter_search)){
+					$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
+				}
+
 				if ($searchcustoms = JRequest::getVar('customfields', array(),	'default' ,'array')){
 					$joinCustom = true ;
 					foreach ($searchcustoms as $key => $searchcustom) {
@@ -171,7 +174,7 @@ class VirtueMartModelProduct extends VmModel {
      				break;
      		}
      	}
-		
+
 		//Group case
 		if($group){
 			$groupBy = 'group by `#__virtuemart_products`.`virtuemart_product_id`';
@@ -230,6 +233,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		//write the query, incldue the tables
+// 		$query = 'SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_products` ';
 		$query = 'SELECT * FROM `#__virtuemart_products` ';
 		if ($joinCategory == true) {
 			$query .= ' LEFT JOIN `#__virtuemart_product_categories` ON `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_categories`.`virtuemart_product_id`
