@@ -55,7 +55,7 @@ function vmInfo($publicdescr,$value=null){
 			$app ->enqueueMessage(call_user_func_array('sprintf', $args));
 		}
 	}	else {
-		$app ->enqueueMessage(JText::_($publicdescr));
+		$app ->enqueueMessage('Info: '.JText::_($publicdescr));
 	}
 
 }
@@ -91,13 +91,14 @@ function vmdebug($debugdescr,$debugvalues=null){
 	if(VMConfig::showDebug()  ){
 
 		if($debugvalues!==null){
+// 			$debugdescr .=' <pre>'.print_r($debugvalues,1).'<br />'.print_r(get_class_methods($debugvalues),1).'</pre>';
 
 			$args = func_get_args();
 			if (count($args) > 1) {
 // 				foreach($args as $debugvalue){
 				for($i=1;$i<count($args);$i++){
 					if(isset($args[$i])){
-						$debugdescr .=' <pre>'.print_r($args[$i],1).'<br />'.print_r(get_class_methods($args[$i]),1).'</pre>';
+						$debugdescr .=' Var'.$i.': <pre>'.print_r($args[$i],1).'<br />'.print_r(get_class_methods($args[$i]),1).'</pre>';
 					}
 				}
 
@@ -105,7 +106,7 @@ function vmdebug($debugdescr,$debugvalues=null){
 		}
 
 		$app = JFactory::getApplication();
-		$app ->enqueueMessage($debugdescr);
+		$app ->enqueueMessage('vmdebug '.$debugdescr);
 	}
 
 }

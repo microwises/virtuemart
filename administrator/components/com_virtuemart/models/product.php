@@ -113,6 +113,7 @@ class VirtueMartModelProduct extends VmModel {
 
 				$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;
 				$searchFields = VmConfig::get('browse_search_fields');
+
 				foreach ($searchFields as $searchField) {
 					if (($searchField == 'category_name') || ($searchField == 'category_description')) $joinCategory = true ;
 					if ($searchField == 'mf_name') $joinMf = true ;
@@ -233,21 +234,24 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		//write the query, incldue the tables
-// 		$query = 'SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_products` ';
-		$query = 'SELECT * FROM `#__virtuemart_products` ';
+// 		$selectFindRows = 'SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_products` ';
+		$selectFindRows = 'SELECT COUNT(*) FROM `#__virtuemart_products` ';
+		$select = 'SELECT * FROM `#__virtuemart_products` ';
+
+		$joinedTables = '';
 		if ($joinCategory == true) {
-			$query .= ' LEFT JOIN `#__virtuemart_product_categories` ON `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_categories`.`virtuemart_product_id`
+			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_categories` ON `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_categories`.`virtuemart_product_id`
 			 LEFT JOIN `#__virtuemart_categories` ON `#__virtuemart_categories`.`virtuemart_category_id` = `#__virtuemart_product_categories`.`virtuemart_category_id`';
 		}
 		if ($joinMf == true) {
-			$query .= ' LEFT JOIN `#__virtuemart_product_manufacturers` ON `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_manufacturers`.`virtuemart_product_id`
+			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_manufacturers` ON `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_manufacturers`.`virtuemart_product_id`
 			 LEFT JOIN `#__virtuemart_manufacturers` ON `#__virtuemart_manufacturers`.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
 		}
 		if ($joinPrice == true) {
-			$query .= ' LEFT JOIN `#__virtuemart_product_prices` ON `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_prices`.`virtuemart_product_id` ';
+			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_prices` ON `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_prices`.`virtuemart_product_id` ';
 		}
 		if ($joinCustom == true) {
-			$query .= ' LEFT JOIN `#__virtuemart_product_customfields` ON `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_customfields`.`virtuemart_product_id` ';
+			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_customfields` ON `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_customfields`.`virtuemart_product_id` ';
 		}
 		if(count($where)>0){
 			$whereString = ' WHERE ('.implode(' AND ', $where ).') ';
@@ -255,28 +259,7 @@ class VirtueMartModelProduct extends VmModel {
 			$whereString = '';
 		}
 
-		//and the where conditions
-		$query .= $whereString .$groupBy .$orderBy .$filter_order_Dir ;
-
- 		$this->_db->setQuery($query);
- 		if(!$this->_db->query()){
-			$app->enqueueMessage('sortSearchOrder Error in query '.$query.'<br /><br />'.$this->_db->getErrorMsg().'<br />');
-		} else {
-
-			if($nbrReturnProducts){
-				$this->_db->setQuery($query, 0, $nbrReturnProducts);
-			} else {
-				$count = $this->_db->getNumRows();
-				$this->getPagination($count);
-				$this->_db->setQuery($query, $this->_pagination->limitstart, $this->_pagination->limit);
-			}
-
-	     	$productIdList = $this->_db->loadResultArray();
-
-	     	//$app -> enqueueMessage('sortSearchListQuery '.$this->_db->getQuery());
-
-			return $productIdList;
-		}
+		return $this->exeSortSearchListQuery($selectFindRows, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
 
 		return $query ;
 	}

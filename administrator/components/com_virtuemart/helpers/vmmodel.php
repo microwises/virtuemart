@@ -139,6 +139,54 @@ class VmModel extends JModel {
 
     /**
      *
+     * exeSortSearchListQuery
+     *
+     * @author Max Milbers
+     * @param unknown_type $selectFindRows
+     * @param unknown_type $whereString
+     * @param unknown_type $groupBy
+     * @param unknown_type $orderBy
+     * @param unknown_type $filter_order_Dir
+     */
+    public function exeSortSearchListQuery($selectFindRows, $select, $joinedTables, $whereString = '', $groupBy = '', $orderBy = '', $filter_order_Dir = '', $nbrReturnProducts = false){
+
+    	//and the where conditions
+    	$joinedTables .= $whereString .$groupBy .$orderBy .$filter_order_Dir ;
+
+    	$this->_db->setQuery($selectFindRows.$joinedTables);
+//     	if(!$this->_db->query()){
+    	$count = $this->_db->loadResult();
+    	if($count == false ){
+//     			$app = JFactory::getApplication();
+//     			$app->enqueueMessage('sortSearchOrder Error in query '.$this->_db->getQuery().'<br /><br />'.$this->_db->getErrorMsg().'<br />');
+    	} else if($count > 0){
+
+    		if($nbrReturnProducts){
+    			$limitStart = 0;
+    			$limit = $nbrReturnProducts;
+    		} else {
+//     			$count =  $this->_db->loadResult();
+    			$this->getPagination($count);
+    			$limitStart = $this->_pagination->limitstart;
+    			$limit = $this->_pagination->limit;
+    		}
+
+    		$this->_db->setQuery($select.$joinedTables, $limitStart, $limit);
+
+    		$list = $this->_db->loadResultArray();
+
+//     		vmdebug('exeSortSearchListQuery ',$this->_db);
+
+    		return $list;
+    	} else {
+    		return array();
+    	}
+
+    }
+
+
+    /**
+     *
      * @author Max Milberes
      *
      */

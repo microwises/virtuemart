@@ -71,9 +71,9 @@ class VirtuemartViewReport extends JView {
 			$until_period = $model->end_date ;
 		}
 
-		
+
 		$lists['select_date'] = $model->renderDateSelectList($date_presets, $from_period, $until_period);
-		
+
 
 		$myCurrencyDisplay = CurrencyDisplay::getInstance();
 
@@ -89,7 +89,7 @@ class VirtuemartViewReport extends JView {
 		$itemsSold = $model->getItemsSold();
 		$this->assignRef('itemsSold', $itemsSold);
 
-		$productList = $model->getProductList();
+		$productList = $model->getOrderItems();
 		$this->assignRef('productList', $productList);
 
 		$lists = array_merge ($lists ,ShopFunctions::addStandardDefaultViewLists($model));

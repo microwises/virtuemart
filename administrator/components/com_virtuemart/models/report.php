@@ -36,6 +36,7 @@ class VirtuemartModelReport extends VmModel {
 	var $start_date ='';
 	var $end_date ='';
 	var $date_presets = null;
+
 	function __construct(){
 		parent::__construct();
 		$this->setMainTable('orders');
@@ -50,14 +51,150 @@ class VirtuemartModelReport extends VmModel {
 		$this->start_date = $start_date->toFormat('%Y-%m-%d');
 		$end_date = JFactory::getDate($end_date);
 		$this->end_date = $end_date->toFormat('%Y-%m-%d');
-	}	/*
+	}
+
+	/*
 	* Set Start & end Date
 	*/
 	function  setPeriodByPreset($period){
 		$this->start_date = $this->date_presets[$period]['from'];
 		$this->end_date = $this->date_presets[$period]['until'];
 	}
-	
+
+
+	function getRevenueSortListOrderQuery($sold=false,$items= false){
+
+		$selectFields = array();
+		$mainTable = '';
+		$joinTables = array();
+		$joinedTables = '';
+
+		//getRevenue
+		if(!$sold && !$items){
+
+			$selectFields[] = 'o.`created_on` ';
+			$selectFields[] = 'COUNT(virtuemart_order_id) as number_of_orders';
+			$selectFields[] = 'SUM(order_subtotal) as revenue';
+
+			$mainTable = '`#__virtuemart_orders` as o';
+
+			$countOn = 'virtuemart_order_id';
+		} //getItemsSold
+		else if($sold){
+
+			$selectFields[] = 'i.`created_on` ';
+			$selectFields[] = 'SUM(product_quantity) as items_sold';
+
+			$mainTable = '`#__virtuemart_order_items` as i';
+
+		} //getOrderItems
+		else {
+
+			$selectFields[] = 'i.`created_on` ';
+			$selectFields[] = 'SUM(product_quantity) as items_sold';
+			$selectFields[] = 'product_name';
+			$selectFields[] = 'product_sku';
+
+			$mainTable = '`#__virtuemart_order_items` as i';
+
+			$joinTables['orders'] = ' LEFT JOIN #__virtuemart_orders as o ON o.virtuemart_order_id=i.virtuemart_order_id ';
+			$joinTables['products'] = ' LEFT JOIN #__virtuemart_products as o ON i.virtuemart_product_id=p.virtuemart_product_id ';
+
+		}
+
+		if(count($selectFields)>0){
+
+			$select = 'SELECT '.implode(', ', $selectFields ).' FROM '.$mainTable;
+			$selectFindRows = 'SELECT COUNT(*) FROM '.$mainTable;
+			if(count($joinTables)>0){
+				foreach($joinTables as $table){
+					$joinedTables .= $table;
+				}
+			}
+
+		} else {
+			$vmError('No select fields given in getRevenueSortListOrderQuery','No select fields given');
+			return false;
+		}
+
+// 		$selectFindRows
+
+// 		if(count($where)>0){
+// 			$whereString = ' WHERE ('.implode(' AND ', $where ).') ';
+// 		} else {
+// 			$whereString = '';
+// 		}
+
+/*		$select = 'SELECT `created_on` as order_date,
+			COUNT(virtuemart_order_id) as number_of_orders,
+			SUM(order_subtotal) as revenue
+			FROM `#__virtuemart_orders` ';
+
+		//getItemsSold
+		$select = 'SELECT `created_on` as order_date, SUM(product_quantity) as items_sold FROM `#__virtuemart_order_items` as i ';
+
+		//getOrderItems
+		$select = 'SELECT `product_name`, `product_sku`, i.created_on as order_date, SUM(product_quantity) as items_sold
+						FROM #__virtuemart_order_items i, #__virtuemart_orders o, #__virtuemart_products p " ';
+
+		//getRevenue
+		$where[] = ' `#__virtuemart_orders`.`created_on` BETWEEN "'.$this->start_date.' 00:00:00" AND "'.$this->end_date.' 23:59:59" ';
+
+		//getItemsSold
+		$where[] = ' `#__virtuemart_order_items`.`created_on` BETWEEN "'.$this->start_date.' 00:00:00" AND "'.$this->end_date.' 23:59:59" ';
+
+		//getOrderItems
+		$where[] = ' i.`created_on` BETWEEN "'.$this->start_date.' 00:00:00" AND "'.$this->end_date.' 23:59:59" ';
+		$where[] = ' o.virtuemart_order_id=i.virtuemart_order_id ';
+  		$where[] = ' i.virtuemart_product_id=p.virtuemart_product_id ';*/
+
+
+
+		if(!$sold && !$items){
+
+			$where[] = ' `o`.`created_on` BETWEEN "'.$this->start_date.' 00:00:00" AND "'.$this->end_date.' 23:59:59" ';
+
+		} else if($sold){
+
+			$where[] = ' `i`.`created_on` BETWEEN "'.$this->start_date.' 00:00:00" AND "'.$this->end_date.' 23:59:59" ';
+
+		} else {
+
+			$where[] = ' `i`.`created_on` BETWEEN "'.$this->start_date.' 00:00:00" AND "'.$this->end_date.' 23:59:59" ';
+
+		}
+
+		if(count($where)>0){
+			$whereString = ' WHERE ('.implode(' AND ', $where ).') ';
+		} else {
+			$whereString = '';
+		}
+
+		if(!$sold && !$items){
+			$groupBy = 'GROUP BY `o`.`created_on` ';
+			$orderBy = 'ORDER BY `o`.`created_on` ';
+
+		} else if($sold){
+			$groupBy = 'GROUP BY `i`.`created_on` ';
+			$orderBy = 'ORDER BY `i`.`created_on` ';
+		} else {
+			//getOrderItems
+			$groupBy = 'GROUP BY product_sku, product_name, created_on ';
+			$orderBy = 'ORDER BY created_on, product_name ';
+		}
+
+		$filter_order_Dir = 'ASC';
+// 		$mainframe = JFactory::getApplication() ;
+// 		$filter_order     = $mainframe->getUserStateFromRequest( 'com_virtuemart.report.filter_order', 'filter_order', 'order_date', 'cmd' );
+// 		if ($filter_order == 'order_date' or $filter_order == 'virtuemart_order_id') {
+// 			$query .= $this->_getOrdering('order_date', 'DESC');
+// 			$filter_order_Dir = $filter_order;
+// 		}
+
+		return $this->exeSortSearchListQuery($selectFindRows, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir);
+
+	}
+
    /**
      * Retrieve a list of report items from the database.
      *
@@ -70,17 +207,17 @@ class VirtuemartModelReport extends VmModel {
 	FROM Table
 	GROUP BY DATEADD(dd,DATEDIFF(dd,0,created_on),0)
 	ORDER BY date DESC
-	 
-	 
+
+
      */
     function getRevenue( $noLimit = false){
     	//$db = JFactory::getDBO();
 
-		$query = "SELECT `created_on` as order_date, 
-			COUNT(virtuemart_order_id) as number_of_orders, 
-			SUM(order_subtotal) as revenue 
-			FROM `#__virtuemart_orders` 
-			WHERE `created_on` BETWEEN '{$this->start_date} 00:00:00' AND '{$this->end_date} 23:59:59' 
+/*		$query = "SELECT `created_on` as order_date,
+			COUNT(virtuemart_order_id) as number_of_orders,
+			SUM(order_subtotal) as revenue
+			FROM `#__virtuemart_orders`
+			WHERE `created_on` BETWEEN '{$this->start_date} 00:00:00' AND '{$this->end_date} 23:59:59'
 			GROUP BY order_date ";
 			$mainframe = JFactory::getApplication() ;
 			$filter_order     = $mainframe->getUserStateFromRequest( 'com_virtuemart.report.filter_order', 'filter_order', 'order_date', 'cmd' );
@@ -94,9 +231,9 @@ class VirtuemartModelReport extends VmModel {
 		else{
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
-		if (!$this->_total) $this->_total = $this->_getListCount($query);
+		if (!$this->_total) $this->_total = $this->_getListCount($query);*/
 
-		return $this->_data;
+		return $this->_data = $this->getRevenueSortListOrderQuery();;
     }
 
   /**
@@ -133,7 +270,7 @@ class VirtuemartModelReport extends VmModel {
      * @param string $noLimit True if no record count limit is used, false otherwise
      * @return object List of order objects
      */
-    function getProductList($noLimit = false){
+    function getOrderItems($noLimit = false){
     	// $db = JFactory::getDBO();
 
 		$query = "SELECT `product_name`, `product_sku`, ";
@@ -156,6 +293,10 @@ class VirtuemartModelReport extends VmModel {
 
 		return $this->_data;
     }
+
+
+
+
 	public function getDatePresets(){
 		if ($this->date_presets) return $this->date_presets;
 		// set date presets

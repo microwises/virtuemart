@@ -62,7 +62,7 @@ if( $this->pagination->limit < $rows ){
             <thead>
                 <tr>
                     <th>
-                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_DATE','order_date',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
+                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_DATE','created_on',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
                     </th>
                     <th>
                         <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_ORDERS','virtuemart_order_id',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
@@ -93,7 +93,7 @@ if( $this->pagination->limit < $rows ){
                 <tr class="row"
                     <?php echo $i;?>">
                     <td align="center">
-                        <?php echo $r->order_date;?>
+                        <?php echo $r->created_on;?>
                     </td>
                     <td align="center">
                         <?php echo $r->number_of_orders;?>
