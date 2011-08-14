@@ -61,11 +61,10 @@
 			max=24,
 			container = jQuery(this);
 		var pagetotal = Math.ceil(total/max) ;
-		console.log (pagetotal+' '+total+' '+max);
 		var cache = new Array();
 
-			var formatTitle = function(title, currentArray, currentIndex, currentOpts) {
-				var pagination='' ,pagetotal = total/max ;
+		var formatTitle = function(title, currentArray, currentIndex, currentOpts) {
+			var pagination='' ,pagetotal = total/max ;
 			if (pagetotal >0) {
 				pagination='<span><<</span><span><</span>';
 				for (i=0; i<pagetotal; i++) {
@@ -73,52 +72,52 @@
 				}
 				pagination+='<span>></span><span>>></span>';
 			}
-				return '<div class="media-pagination">' + (title && title.length ? '<b>' + title + '</b>' : '' ) + ' '+pagination+'</div>';
+			return '<div class="media-pagination">' + (title && title.length ? '<b>' + title + '</b>' : '' ) + ' '+pagination+'</div>';
+		}
+			
+		jQuery("#fancybox-title" ).delegate(".media-pagination span", "click",function(event) {
+			var newPage = $(this).text();
+			display(newPage);
+			event.preventDefault();
+		});			
+		container.delegate("a.vm_thumb", "click",function(event) {
+			jQuery.fancybox({
+				"type"		: "image",
+				"titlePosition"	: "inside",
+				"title"		: this.title,
+				"href"		: this.href
+				});
+			event.preventDefault();
+		});
+		jQuery("#dialog" ).delegate(".vm_thumb_image", "click",function(event) {
+			event.preventDefault();
+			var id = $(this).find('input').val(),ok = 0;
+			var inputArray = new Array();
+			$('#ImagesContainer input:hidden').each (
+				function() { inputArray.push($(this).val()) }
+			);
+			if ($.inArray(id,inputArray) == -1){
+				that = jQuery(this);
+				jQuery(this).clone().appendTo(container).unbind("click").append('<div class="trash"></div><div class="edit-24-grey"><div>');
+				that.hide().fadeIn();
 			}
 			
-			jQuery("#fancybox-title" ).delegate(".media-pagination span", "click",function(event) {
-				var newPage = $(this).text();
-				display(newPage);
-				event.preventDefault();
-			});			
-			container.delegate("a.vm_thumb", "click",function(event) {
-				jQuery.fancybox({
-					"type"		: "image",
-					"titlePosition"	: "inside",
-					"title"		: this.title,
-					"href"		: this.href
-					});
-				event.preventDefault();
-			});
-			jQuery("#dialog" ).delegate(".vm_thumb_image", "click",function(event) {
-				event.preventDefault();
-				var id = $(this).find('input').val(),ok = 0;
-				var inputArray = new Array();
-				$('#ImagesContainer input:hidden').each (
-					function() { inputArray.push($(this).val()) }
-				);
-				if ($.inArray(id,inputArray) == -1){
-					that = jQuery(this);
-					jQuery(this).clone().appendTo(container).unbind("click").append('<div class="trash"></div><div class="edit-24-grey"><div>');
-					that.hide().fadeIn();
-				}
-				
-			});
+		});
 
-			container.delegate(".trash", "click",function() { 
-				jQuery(this).closest(".vm_thumb_image").fadeOut("500",function() {jQuery(this).remove()});
-			});
+		container.delegate(".trash", "click",function() { 
+			jQuery(this).closest(".vm_thumb_image").fadeOut("500",function() {jQuery(this).remove()});
+		});
 
-			jQuery("#addnewselectimage2").fancybox({
-				"hideOnContentClick": false,
-				"autoDimensions"	: true,
-				"titlePosition"		: "inside",
-				"title"		: "Media list",
-				"titleFormat"	: formatTitle,
-				"onComplete": function() {
-					$('.media-pagination').children().eq(page+3).addClass('media-page-selected');
-				}
-			});
+		jQuery("#addnewselectimage2").fancybox({
+			"hideOnContentClick": false,
+			"autoDimensions"	: true,
+			"titlePosition"		: "inside",
+			"title"		: "Media list",
+			"titleFormat"	: formatTitle,
+			"onComplete": function() {
+				$('.media-pagination').children().eq(page+3).addClass('media-page-selected');
+			}
+		});
 
 		container.delegate(".edit-24-grey", "click",function() {
 
