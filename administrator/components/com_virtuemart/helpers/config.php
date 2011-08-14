@@ -55,7 +55,9 @@ function vmInfo($publicdescr,$value=null){
 			$app ->enqueueMessage(call_user_func_array('sprintf', $args));
 		}
 	}	else {
-		$app ->enqueueMessage('Info: '.JText::_($publicdescr));
+// 		$app ->enqueueMessage('Info: '.JText::_($publicdescr));
+		$app ->enqueueMessage('Info: '.$publicdescr);
+// 		debug_print_backtrace();
 	}
 
 }
@@ -130,6 +132,28 @@ function vmRamPeak($notice,$value=null){
 }
 
 
+function vmSetStartTime($name='current'){
+
+	VmConfig::setStartTime($name, microtime(true));
+}
+
+function vmTime($descr,$name='current'){
+
+	$starttime = VmConfig::$_starttime ;
+	if(empty($starttime[$name])){
+		vmInfo('vmTime: starting at general runtime '.microtime(true));
+		VmConfig::$_starttime[$name] = microtime(true);
+	} else if($name=='current'){
+		vmInfo('vmTime: time consumed '.microtime(true) - $starttime[$name]);
+		VmConfig::$_starttime[$name] = microtime(true);
+	} else {
+		if(empty($descr)) $descr = $name;
+		$tmp = 'vmTime: '.$descr.': '.(microtime(true) - $starttime[$name]);
+		vmInfo($tmp);
+	}
+
+}
+
 /**
  * We use this Class STATIC not dynamically !
  */
@@ -138,6 +162,9 @@ class VmConfig{
 	// instance of class
 	private static $_jpConfig = null;
 	private static $_debug = null;
+	public static $_starttime = array();
+	public static $loaded = false;
+
 	var $_params = array();
 	var $_raw = array();
 
@@ -145,6 +172,13 @@ class VmConfig{
 
 	}
 
+	function getStartTime(){
+		return self::$_starttime;
+	}
+
+	function setStartTime($name,$value){
+		self::$_starttime[$name] = $value;
+	}
 
 	function showDebug(){
 
@@ -152,8 +186,8 @@ class VmConfig{
 		if(self::$_debug===null){
 
 			$debug = VmConfig::get('debug_enable','none');
-			$app = JFactory::getApplication();
-			$app ->enqueueMessage($debug);
+// 			$app = JFactory::getApplication();
+// 			$app ->enqueueMessage($debug);
 
 			// 1 show debug only to admins
 			if($debug === 'admin' ){
@@ -179,17 +213,37 @@ class VmConfig{
 	}
 
 	/**
+	 * Loads the configuration and works as singleton therefore called static. The call using the program cache
+	 * is 10 times faster then taking from the session. The session is still approx. 30 times faster then using the file.
+	 * The db is 10 times slower then the session.
+	 *
+	 * Performance:
+	 *
+	 * Fastest is
+	 * Program Cache: 1.5974044799805E-5
+	 * Session Cache: 0.00016094612121582
+	 *
+	 * First config db load: 0.00052118301391602
+	 * Parsed and in session: 0.001554012298584
+	 *
+	 * After install from file: 0.0040450096130371
+	 * Parsed and in session: 0.0051419734954834
+	 *
+	 *
+	 * Functions tests if alread loaded in program cache, session cache, database and at last the file.
+	 *
 	 * Load the configuration values from the database into a session variable.
 	 * This step is done to prevent accessing the database for every configuration variable lookup.
 	 *
 	 * @author Max Milbers
+	 * @param $force boolean Forces the function to load the config from the db
 	 */
 	public function loadConfig($force = false) {
 
-		if(!$force){
+		vmSetStartTime('loadConfig');
+		if(!$force && self::$loaded){
 			if(!empty(self::$_jpConfig) && !empty(self::$_jpConfig->_params)){
-// 				$app = JFactory::getApplication();
-// 				$app ->enqueueMessage('loadConfig program cache');
+// 				vmTime('Program Cache','loadConfig');
 				return self::$_jpConfig;
 			} else {
 				$session = JFactory::getSession();
@@ -200,6 +254,7 @@ class VmConfig{
 						self::$_jpConfig = $test;
 // 						$app = JFactory::getApplication();
 // 						$app ->enqueueMessage('loadConfig session cache');
+// 						vmTime('Session Cache','loadConfig');
 						return self::$_jpConfig;
 					}
 				}
@@ -213,12 +268,13 @@ class VmConfig{
 		$query = 'SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1"';
 		$db->setQuery($query);
 		self::$_jpConfig->_raw = $db->loadResult();
-
+// 		vmTime('First config db load','loadConfig');
 		if(empty(self::$_jpConfig->_raw)){
 			self::$_jpConfig->_raw = self::installVMconfig();
 			$db->setQuery($query);
 			self::$_jpConfig->_raw = $db->loadResult();
-			$test->_params = null;
+			$this->_params = null;
+// 			vmTime('After install from file','loadConfig');
 		}
 
 		$i = 0;
@@ -229,12 +285,6 @@ class VmConfig{
 				$item = explode('=',$item);
 				if(!empty($item[1])){
 					$pair[$item[0]] = unserialize(base64_decode($item[1]) );
-// 					$pair[$item[0]] = $item[1];
-// 					$i++;
-// 					if($i<10){
-// 						vmInfo('Looks like your config data in the database is broken please use Renew config by file. value not readable '.unserialize(base64_decode($item[1]));
-// 						break;
-// 					}
 				} else {
 					$pair[$item[0]] ='';
 				}
@@ -244,7 +294,7 @@ class VmConfig{
 			self::$_jpConfig->_params = $pair;
 
 			self::$_jpConfig->setSession();
-
+// 			vmTime('Parsed and in session','loadConfig');
 			return self::$_jpConfig;
 		}
 		$app = JFactory::getApplication();
@@ -258,7 +308,7 @@ class VmConfig{
 // 		$app = JFactory::getApplication();
 // 		$app ->enqueueMessage('setSession session cache <pre>'.print_r(self::$_jpConfig->_params,1).'</pre>');
 		$session->set('vmconfig', base64_encode(serialize(self::$_jpConfig)),'vm');
-
+		self::$loaded = true;
 	}
 
 	/**
@@ -609,28 +659,22 @@ class VmConfig{
 				continue; // Outside a section or inside the wrong one.
 			}
 
-			//the variable $_matches is not defined, so I removed this
-/*			vmdebug('read file',$_line,$_matches);
-			if (preg_match_all('/\{(\w+?)\}/', $_line, $_matches)) {
-				foreach ($_matches[1] as $_match) {
-					if (defined($_match)) {
-						$_line = preg_replace("/\{$_match\}/", constant($_match), $_line);
-					}
-				}
-			}*/
-			if (strpos($_line, '=') === false) {
-				$_line .= '=';
-			} else{
+			if (strpos($_line, '=') !== false) {
+
 				$pair = explode('=',$_line);
 				if(!empty($pair[1])){
+					if(strpos($pair[1], 'array:') !== false){
+						$pair[1] = substr($pair[1],6);
+						$pair[1] = explode('|',$pair[1]);
+					}
 					$_line = $pair[0].'='.base64_encode(serialize($pair[1]));
 				} else {
 					$_line = $pair[0].'=';
 				}
+				$_configData[] = $_line;
 
-// 				$_line = $pair[0].'='.$pair[1];
 			}
-			$_configData[] = $_line;
+
 		}
 
 		fclose ($_data);
@@ -668,8 +712,8 @@ class VmConfig{
 			JError::raiseWarning(1, 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(true));
 			return false;
 		}else {
-			$app = JFactory::getApplication();
-			$app->enqueueMessage('Config installed file, store values '.$_value);
+
+// 			vmdebug('Config installed file, store values '.$_value);
 			return true;
 		}
 

@@ -575,6 +575,11 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	public function getProducts($productIds, $front=true, $withCalc = true, $onlyPublished = true,$single=false){
 
+		if(empty($productIds)){
+			vmdebug('getProducts has no $productIds','No ids given to get products');
+			return array();
+		}
+
 		$products=array();
 		if($single){
 			foreach($productIds as $id){

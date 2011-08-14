@@ -39,16 +39,16 @@ class VirtuemartViewRatings extends JView {
 		$this->loadHelper('shopFunctions');
 
 		/* Get the review IDs to retrieve (input variable may be cid, cid[] or virtuemart_rating_review_id */
-		$cids = JRequest::getVar('cid', array());		
+		$cids = JRequest::getVar('cid', array());
 		if (empty($cids)) {
 			$cids= JRequest::getVar('virtuemart_rating_review_id',false);
 		}
 		if ($cids && !is_array($cids)) $cids = array($cids);
-		
-		
+
+
 		jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($cids);
-		
+
 		// Figure out maximum rating scale (default is 5 stars)
 		$this->max_rating = VmConfig::get('vm_maximum_rating_scale',5);
 		$this->assignRef('max_rating', $this->max_rating);
@@ -87,12 +87,12 @@ class VirtuemartViewRatings extends JView {
 
 				break;
 			case 'edit_review':
-                            
+
 				/* Get the data */
 				$rating = $model->getReview($cids);
 				$viewName=ShopFunctions::SetViewTitle('REVIEW_RATE',$rating->product_name." (". $rating->customer.")" );
 				$this->assignRef('viewName',$viewName);
-				
+
 				//Standard does not work here, points to wrong layout
 				//ShopFunctions::addStandardEditViewCommands();
 				JToolBarHelper::divider();
@@ -102,7 +102,7 @@ class VirtuemartViewRatings extends JView {
 				//JToolBarHelper::save();
 		        //JToolBarHelper::apply();
 				//JToolBarHelper::cancel();
-		
+
 				/* Assign the data */
 				$this->assignRef('rating', $rating);
 
@@ -110,6 +110,7 @@ class VirtuemartViewRatings extends JView {
 			default:
 				/* Get the data */
 				$ratingslist = $model->getRatings();
+
 				/* Assign the data */
 //				$this->preprocess($ratingslist);
 				$this->assignRef('ratingslist', $ratingslist);
@@ -117,7 +118,7 @@ class VirtuemartViewRatings extends JView {
 				ShopFunctions::addStandardDefaultViewCommands(false, true);
 				$lists = ShopFunctions::addStandardDefaultViewLists($model);
 				$this->assignRef('lists', $lists);
-				
+
 				break;
 		}
 		parent::display($tpl);

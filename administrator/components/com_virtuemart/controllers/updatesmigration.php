@@ -195,7 +195,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
 		$this->checkPermissionForTools();
 
-		$msg = JText::_('COM_VIRTUEMART_SYSTEM_VMTABlES_DELETED');
+		$msg = JText::_('COM_VIRTUEMART_SYSTEM_VMTABLES_DELETED');
 		if(VmConfig::get('dangeroustools', false)){
 			$model = $this->getModel('updatesMigration');
 

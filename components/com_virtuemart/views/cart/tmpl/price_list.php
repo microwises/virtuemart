@@ -114,10 +114,14 @@ defined('_JEXEC') or die('Restricted access');
 			/** @todo Add variants */
 			$product_rows[$i]['product_name'] = JHTML::link($url, $product->product_name);
 
-			$product_rows[$i]['customfieldsCart'] ='';
+
 
 			// Add the variants
-			$product_rows[$i]['customfieldsCart'] = ShopFunctions::customFieldInCartDisplay($priceKey,$product->customfieldsCart);
+			if(!empty($product->customfieldsCart)){
+				$product_rows[$i]['customfieldsCart'] = ShopFunctions::customFieldInCartDisplay($priceKey,$product->customfieldsCart);
+			} else {
+				$product_rows[$i]['customfieldsCart'] ='';
+			}
 
 
 			$product_rows[$i]['product_sku'] = $product->product_sku;

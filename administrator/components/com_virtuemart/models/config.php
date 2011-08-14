@@ -193,9 +193,9 @@ class VirtueMartModelConfig extends JModel {
 	 * @return array of order list
 	 */
 	function getOrderByFields( $orderByChecked ) {
-
-		if (empty ($orderByChecked)) $orderByChecked = array('product_sku','category_name','mf_name','product_name');
-		else if (!is_array($orderByChecked)) $orderByChecked = array($orderByChecked);
+// 		vmdebug('$orderByChecked',$orderByChecked);
+// 		if (empty ($orderByChecked)) $orderByChecked = array('product_sku','category_name','mf_name','product_name');
+// 		else if (!is_array($orderByChecked)) $orderByChecked = array($orderByChecked);
 		$orderByFields = new stdClass();
 		$orderByFields->checkbox ='<div  class="threecols"><ul>';
 

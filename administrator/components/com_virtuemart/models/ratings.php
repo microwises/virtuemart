@@ -55,6 +55,9 @@ class VirtueMartModelRatings extends VmModel {
 	    $this->_data = $this->_getList($q, $this->getState('limitstart'), $this->getState('limit'));
 		// set total for pagination
 		$this->_total = $this->_getListCount($q) ;
+		if(empty($this->_data)) $this->_data = array();
+		if(!isset($this->_total)) $this->_total = 0;
+
      	return $this->_data;
     }
 
