@@ -60,6 +60,7 @@
                 <field name="class_sfx" type="text" default=""
 			label="Menu Class Suffix"
 			description="A suffix to be applied to the css class of the menu items" />
+							</fieldset>
             </fields>
         </config>
     </install>

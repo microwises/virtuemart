@@ -217,6 +217,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 						if($update){
 							$html .= JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
+							$html .= JText::_('Please use "renew config from file" in Tools => Updates/Migration');
 						} else {
 							$html .= JText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
 						}

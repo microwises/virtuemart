@@ -80,8 +80,8 @@ class VirtueMartModelRatings extends VmModel {
      	$filters = array();
      	if ($search = JRequest::getVar('filter_ratings', false)){
  			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
-			//$search = $this->_db->Quote($search, false);    		
-			
+			//$search = $this->_db->Quote($search, false);
+
      		$filters[] = '(#__virtuemart_products.`product_name` LIKE '.$search.' OR #__virtuemart_rating_reviews.comment LIKE '.$search.')';
      	}
 
@@ -96,9 +96,9 @@ class VirtueMartModelRatings extends VmModel {
     * @author RolandD
     */
     public function getRating($cids) {
-		
+
 		if(empty($cids)) return;
-		
+
 		/* First copy the product in the product table */
 		$ratings_data = $this->getTable('ratings');
 
@@ -238,14 +238,14 @@ class VirtueMartModelRatings extends VmModel {
     * @author  Max Milbers
     */
     public function saveRating($data) {
-		
+
 		//Check user_rating
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		if ( !empty($data['virtuemart_product_id']) && !empty($userId)){
-			
-			//sanitize input 
+
+			//sanitize input
 			$data['virtuemart_product_id'] = (int)$data['virtuemart_product_id'];
 			//normalize the rating
 			if ($data['vote'] < 0 ) $data['vote'] = 0 ;
@@ -258,7 +258,7 @@ class VirtueMartModelRatings extends VmModel {
 			$vote = $this->getVoteByProduct($data['virtuemart_product_id'],$userId);
 
 			$data['virtuemart_rating_vote_id'] = empty($vote->virtuemart_rating_vote_id)? 0: $vote->virtuemart_rating_vote_id;
-			
+
 			if(isset($data['vote'])){
 				$votesTable = $this->getTable('rating_votes');
 		        $data = $votesTable->bindChecknStore($data);
@@ -355,43 +355,43 @@ class VirtueMartModelRatings extends VmModel {
 
 	public function showReview($product_id){
 
-		return $this->show($product_id, VmConfig::get('showReviewFor',2));
+		return $this->show($product_id, VmConfig::get('showReviewFor','all'));
 	}
 
 	public function showRating($product_id){
 
-		return $this->show($product_id, VmConfig::get('showRatingFor',2));
+		return $this->show($product_id, VmConfig::get('showRatingFor','all'));
 	}
 
 	public function allowReview($product_id){
-		return $this->show($product_id, VmConfig::get('reviewMode',2));
+		return $this->show($product_id, VmConfig::get('reviewMode','registered'));
 	}
 
 	public function allowRating($product_id){
-		return $this->show($product_id, VmConfig::get('reviewMode',2));
+		return $this->show($product_id, VmConfig::get('reviewMode','registered'));
 	}
 
 	/**
-	 * Decides if the rating/review should be shown on the FE 
+	 * Decides if the rating/review should be shown on the FE
 	 * @author Max Milbers
 	 */
 	private function show($product_id, $show){
 
 		//dont show
-		if($show == 0){
+		if($show == 'none'){
 			return false;
 		}
 		//show all
-		else if ($show == 3){
+		else if ($show == 'all'){
 			return true;
 		}
 		//show only registered
-		else if ($show == 2){
+		else if ($show == 'registered'){
 			$user = JFactory::getUser();
 			return !empty($user->id);
 		}
 		//show only registered && who bought the product
-		else if ($show == 1){
+		else if ($show == 'bought'){
 			if(!empty($this->_productBought)) return true;
 
 			$user = JFactory::getUser();

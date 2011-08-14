@@ -113,8 +113,10 @@ if (empty ( $this->product )) {
 				*/ ?>
 
 				<?php
-				$rating = empty($this->rating)? JText::_('COM_VIRTUEMART_UNRATED'):$this->rating->rating;
-				echo JText::_('COM_VIRTUEMART_RATING') . $rating;
+				if($this->showRating){
+					$rating = empty($this->rating)? JText::_('COM_VIRTUEMART_UNRATED'):$this->rating->rating;
+					echo JText::_('COM_VIRTUEMART_RATING') . $rating;
+				}
 
 				// Product Price
 				if ($this->show_prices) { ?>
@@ -595,18 +597,7 @@ if (empty ( $this->product )) {
 					</ul>
 
 					<?php
-					// if(!class_exists('VmHtml')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
-					// $showReviewFor = array();
-					// for ($num=0 ; $num<=$maxrating;  $num++ ) {
-					// $showReviewFor[$num] = $num;
-					// }
-					// if($this->vote->vote!==null){
-					//
-					// }
-					// $vote = !empty($this->vote)? $this->vote->vote:$maxrating;
-					// echo VmHTML::radioList('vote', $vote,$showReviewFor);
-					// for ($num=0 ; $num<=$maxrating;  $num++ ) {
-					//}
+
 				}
 			} ?>
 

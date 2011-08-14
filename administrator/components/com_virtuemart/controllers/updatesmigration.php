@@ -289,11 +289,15 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 			$model->restoreSystemTablesCompletly();
 
-			$model->integrateJoomlaUsers();
+			//$model->integrateJoomlaUsers();
 			$id = $model->determineStoreOwner();
 			$sid = $model->setStoreOwner($id);
 			$model->setUserToPermissionGroup($id);
 			$model->installSampleData($id);
+
+			$model = $this->getModel('config');
+			$model -> deleteConfig();
+
 			$errors = $model->getErrors();
 
 			$msg = '';

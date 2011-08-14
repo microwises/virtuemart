@@ -143,19 +143,14 @@ class VirtueMartViewProductdetails extends JView {
 		$pathway->addItem($product->product_name);
 
 		$ratingModel = $this->getModel('ratings');
+
+		$allowReview = $ratingModel->allowReview($product->virtuemart_product_id);
+		$this->assignRef('allowReview', $allowReview);
+
 		$showReview = $ratingModel->showReview($product->virtuemart_product_id);
 		$this->assignRef('showReview', $showReview);
 
-		$showReview = $ratingModel->allowReview($product->virtuemart_product_id);
-		$this->assignRef('allowReview', $showReview);
-
-		$rating = $ratingModel->getRatingByProduct($product->virtuemart_product_id);
-		$this->assignRef('rating', $rating);
-
 		if($showReview){
-
-			$vote = $ratingModel->getVoteByProduct($product->virtuemart_product_id);
-			$this->assignRef('vote', $vote);
 
 			$review = $ratingModel->getReviewByProduct($product->virtuemart_product_id);
 			$this->assignRef('review', $review);
@@ -168,8 +163,17 @@ class VirtueMartViewProductdetails extends JView {
 		$showRating = $ratingModel->showRating($product->virtuemart_product_id);
 		$this->assignRef('showRating', $showRating);
 
-		$showRating = $ratingModel->allowRating($product->virtuemart_product_id);
-		$this->assignRef('allowRating', $showRating);
+		if($showRating){
+			$vote = $ratingModel->getVoteByProduct($product->virtuemart_product_id);
+			$this->assignRef('vote', $vote);
+
+			$rating = $ratingModel->getRatingByProduct($product->virtuemart_product_id);
+			$this->assignRef('rating', $rating);
+
+		}
+
+		$allowRating = $ratingModel->allowRating($product->virtuemart_product_id);
+		$this->assignRef('allowRating', $allowRating);
 
 		/* Check for editing access */
 		/** @todo build edit page */

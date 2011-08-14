@@ -152,9 +152,9 @@ defined('_JEXEC') or die('Restricted access');
 		    	</td>
 		    	<td><fieldset class="checkboxes">
 		    	<?php
-		    		$showReviewFor = array(	0 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_NONE'),
-											1 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_REGISTERED'),
-											2 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_ALL')
+		    		$showReviewFor = array(	'none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_NONE'),
+											'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_REGISTERED'),
+											'all' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_SHOW_ALL')
 											); //showReviewFor
 					echo VmHTML::radioList('showReviewFor', $this->config->get('showReviewFor',2),$showReviewFor); ?>
 
@@ -168,11 +168,11 @@ defined('_JEXEC') or die('Restricted access');
 	    	</td>
 	    	<td><fieldset class="checkboxes">
 				<?php
-				 $showReviewFor = array(0 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_NONE'),
-				 						1 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_BOUGHT_PRODUCT'),
-				 						2 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_REGISTERED'),
+				 $showReviewFor = array('none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_NONE'),
+				 						'bought' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_BOUGHT_PRODUCT'),
+				 						'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_REGISTERED'),
 				 					//	3 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_ALL')
-										); //showReviewFor
+										);
 				echo VmHTML::radioList('reviewMode', $this->config->get('reviewMode',2),$showReviewFor); ?>
 	    	</fieldset></td>
 			</tr>
@@ -184,10 +184,10 @@ defined('_JEXEC') or die('Restricted access');
 		    	</td>
 		    	<td><fieldset class="checkboxes">
 		    	<?php
-		    		$showReviewFor = array(	0 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_NONE'),
-		    								1 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_REGISTERED'),
-											2 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_ALL')
-											); //showReviewFor
+		    		$showReviewFor = array(	'none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_NONE'),
+		    								'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_REGISTERED'),
+											'all' => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW_ALL')
+											);
 					echo VmHTML::radioList('showRatingFor', $this->config->get('showRatingFor',2),$showReviewFor); ?>
 
 		    	</fieldset></td>
@@ -200,11 +200,11 @@ defined('_JEXEC') or die('Restricted access');
 	    	</td>
 	    	<td><fieldset class="checkboxes">
 				<?php
-				 $showReviewFor = array(0 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_NONE'),
-				 						1 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_BOUGHT_PRODUCT'),
-										2 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_REGISTERED'),
+				 $showReviewFor = array('none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_NONE'),
+				 						'bought' => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_BOUGHT_PRODUCT'),
+										'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_REGISTERED'),
 									//	3 => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_ALL')	//TODO write system for all users (cookies)
-										); //showReviewFor
+										);
 				echo VmHTML::radioList('ratingMode', $this->config->get('ratingMode',2),$showReviewFor); ?>
 	    	</fieldset></td>
 			</tr>

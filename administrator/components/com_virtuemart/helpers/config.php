@@ -187,6 +187,8 @@ class VmConfig{
 
 		if(!$force){
 			if(!empty(self::$_jpConfig) && !empty(self::$_jpConfig->_params)){
+// 				$app = JFactory::getApplication();
+// 				$app ->enqueueMessage('loadConfig program cache');
 				return self::$_jpConfig;
 			} else {
 				$session = JFactory::getSession();
@@ -195,6 +197,8 @@ class VmConfig{
 					$test = unserialize($vmConfig);
 					if(!empty($test) && !empty($test->_params)) {
 						self::$_jpConfig = $test;
+// 						$app = JFactory::getApplication();
+// 						$app ->enqueueMessage('loadConfig session cache');
 						return self::$_jpConfig;
 					}
 				}
@@ -213,6 +217,7 @@ class VmConfig{
 			self::$_jpConfig->_raw = self::installVMconfig();
 			$db->setQuery($query);
 			self::$_jpConfig->_raw = $db->loadResult();
+			$test->_params = null;
 		}
 
 		$i = 0;
@@ -247,6 +252,8 @@ class VmConfig{
 	function setSession(){
 		$session = JFactory::getSession();
 		$session->clear('vmconfig');
+// 		$app = JFactory::getApplication();
+// 		$app ->enqueueMessage('setSession session cache <pre>'.print_r(self::$_jpConfig->_params,1).'</pre>');
 		$session->set('vmconfig', serialize(self::$_jpConfig),'vm');
 
 	}
