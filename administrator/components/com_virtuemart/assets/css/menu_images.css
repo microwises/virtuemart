@@ -99,3 +99,7 @@
 
 .vmicon-16-user{ background-position: -132px -82px; width: 16px; height: 16px; } 
 .vmicon-16-xml{ background-position: -132px -148px; width: 16px; height: 16px; } 
+/*menu wrapper toggler */
+.virtuemart-admin-area .toggler {	position: absolute; outline: 0;}
+.vmicon-show{ background: url(../images/show.gif) no-repeat;width: 7px; height: 25px; }
+.vmicon-hide{background: url(../images/hide.gif) no-repeat;width: 7px; height: 25px; }

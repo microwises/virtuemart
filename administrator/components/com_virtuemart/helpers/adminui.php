@@ -25,72 +25,72 @@ class AdminUIHelper {
      */
     function startAdminArea() {
 
-	$front = JURI::root(true).'/components/com_virtuemart/assets/';
-	$admin = JURI::base().'components/com_virtuemart/assets/';
-	$document = JFactory::getDocument();
-//	$mainframe = JFactory::getApplication();
-	//loading defaut admin CSS
-	$document->addStyleSheet($admin.'css/admin_ui.css');
-	$document->addStyleSheet($admin.'css/admin_menu.css');
-	$document->addStyleSheet($admin.'css/admin.styles.css');
-	$document->addStyleSheet($admin.'css/toolbar_images.css');
-	$document->addStyleSheet($admin.'css/menu_images.css');
-	$document->addStyleSheet($front.'css/chosen.css');
-	$document->addStyleSheet($front.'css/vtip.css');
-	$document->addStyleSheet($front.'js/fancybox/jquery.fancybox-1.3.4.css');
-	//$document->addStyleSheet($admin.'css/jqtransform.css');
+		$front = JURI::root(true).'/components/com_virtuemart/assets/';
+		$admin = JURI::base().'components/com_virtuemart/assets/';
+		$document = JFactory::getDocument();
 
-	//loading defaut admin script
+		//loading defaut admin CSS
+		$document->addStyleSheet($admin.'css/admin_ui.css');
+		$document->addStyleSheet($admin.'css/admin_menu.css');
+		$document->addStyleSheet($admin.'css/admin.styles.css');
+		$document->addStyleSheet($admin.'css/toolbar_images.css');
+		$document->addStyleSheet($admin.'css/menu_images.css');
+		$document->addStyleSheet($front.'css/chosen.css');
+		$document->addStyleSheet($front.'css/vtip.css');
+		$document->addStyleSheet($front.'js/fancybox/jquery.fancybox-1.3.4.css');
+		//$document->addStyleSheet($admin.'css/jqtransform.css');
 
+		//loading defaut script
 
-	//loading from public site
-	$document->addScript($front.'js/fancybox/jquery.mousewheel-3.0.4.pack.js');
-	$document->addScript($front.'js/fancybox/jquery.easing-1.3.pack.js');
-	$document->addScript($front.'js/fancybox/jquery.fancybox-1.3.4.pack.js');
-	$document->addScript($admin.'js/jquery.cookie.js');
-	$document->addScript($front.'js/chosen.jquery.min.js');
-	$document->addScript($admin.'js/vm2admin.js');
-	//$document->addScript($admin.'js/jquery.jqtransform.js');
-	$document->addScriptDeclaration ( '
-	var tip_image="'.JURI::root(true).'/components/com_virtuemart/assets/js/images/vtip_arrow.png";
-	');
-
-	?>
-
-        <div class="virtuemart-admin-area">
-        <?php 
-        // Include ALU System
-require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
-
-?>
-         	<div class="menu-wrapper">
-		<?php AdminUIHelper::showAdminMenu(); 
-		echo LiveUpdate::getIcon(array(),'notice');
+		$document->addScript($front.'js/fancybox/jquery.mousewheel-3.0.4.pack.js');
+		$document->addScript($front.'js/fancybox/jquery.easing-1.3.pack.js');
+		$document->addScript($front.'js/fancybox/jquery.fancybox-1.3.4.pack.js');
+		$document->addScript($admin.'js/jquery.cookie.js');
+		$document->addScript($front.'js/chosen.jquery.min.js');
+		$document->addScript($admin.'js/vm2admin.js');
+		//$document->addScript($admin.'js/jquery.jqtransform.js');
+		$document->addScriptDeclaration ( '
+		var tip_image="'.JURI::root(true).'/components/com_virtuemart/assets/js/images/vtip_arrow.png";
+		');
 		?>
-        	</div>
 
-
-        	<div id="admin-content-wrapper">
-        		<div id="admin-content" class="admin-content">
+		<div class="virtuemart-admin-area">
+		<?php 
+		// Include ALU System
+		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
+		?>
+			
+			<div class="menu-wrapper">
+				<div class="menu-vmtitle">Virtuemart 2</div>
+				<?php AdminUIHelper::showAdminMenu(); 
+				?>
+				<div style=' background: #AAA;'>
+				<?php 
+				echo LiveUpdate::getIcon(array(),'notice');
+				?>
+				</div>
+			</div>
+			
+			<div id="admin-content-wrapper">
+			<div class="toggler vmicon-show"></div>
+				<div id="admin-content" class="admin-content">
 		<?php
-	    }
+	}
 
-
-	    /**
-	     * Close out the adminstrator area table.
-	     * @author RickG, Max Milbers
-	     */
-	    function endAdminArea() {
-			if (VmConfig::get('debug') == '1') {
-			//TODO maybe add debuggin again here
-//		    include(JPATH_VM_ADMINISTRATOR.'debug.php');
-			}
+	/**
+	 * Close out the adminstrator area table.
+	 * @author RickG, Max Milbers
+	 */
+	function endAdminArea() {
+		if (VmConfig::get('debug') == '1') {
+		//TODO maybe add debuggin again here
+//		include(JPATH_VM_ADMINISTRATOR.'debug.php');
+		}
 		?>
-				<div class="clear"></div>
-    			</div>
-    		</div>
-
-    	<div class="clear"></div>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<div class="clear"></div>
 		</div>
 	<?php 
 	    }

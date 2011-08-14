@@ -236,6 +236,16 @@ jQuery.noConflict();
  jQuery( function($) {
 
 	$('dl#system-message').hide().slideDown(400);
+	$('.virtuemart-admin-area .toggler').click(function () {
+		var that = $(this) ;
+		if (that.hasClass('vmicon-show')) {
+			that.removeClass('vmicon-show').addClass('vmicon-hide');
+			$('.menu-wrapper').toggle('slide');
+		} else {
+			that.removeClass('vmicon-hide').addClass('vmicon-show');
+			$('.menu-wrapper').toggle('slide');
+		}
+	});
 	$('#admin-ui-menu').vm2admin('accordeon');
 	if ( typeof (virtuemartcookie) !== 'undefined' ) {
 		$("#admin-ui-tabs").vm2admin("tabs",virtuemartcookie);

@@ -2,12 +2,13 @@
 /////// VirtueMart Admin Area ////////
 ////////////////////////////////////*/
 
-.virtuemart-admin-area {border: solid #b4b4b4 1px;-moz-border-radius-bottomleft: 6px;-moz-border-radius-bottomright: 6px;-webkit-border-bottom-left-radius: 6px;-webkit-border-bottom-right-radius: 6px;overflow: hidden;background: #fff;}
+.virtuemart-admin-area {border: solid #b4b4b4 1px;-moz-border-radius-bottomleft: 6px;-moz-border-radius-bottomright: 6px;-webkit-border-bottom-left-radius: 6px;-webkit-border-bottom-right-radius: 6px;overflow: hidden;    background: none repeat scroll 0 0 #eee ;}
+
 * html .virtuemart-admin-area { /*IE6 only*/overflow: visible;height: 1px;}
-.virtuemart-admin-area .menu-wrapper {width:200px;float: left;background: #dee4ea;border-right: solid #b4b4b4 1px;}
-.virtuemart-admin-area #admin-content-wrapper {}
-.virtuemart-admin-area .menu-wrapper, .virtuemart-admin-area #admin-content-wrapper {padding-bottom: 16000px;margin-bottom: -16000px;}
-.virtuemart-admin-area #admin-content-wrapper .admin-content {padding: 0px;}
+.virtuemart-admin-area .menu-wrapper {width:200px ;float: left;background: none repeat scroll 0 0 #eee;}
+.virtuemart-admin-area #admin-content-wrapper {margin-left: auto;background: #999}
+/*.virtuemart-admin-area .menu-wrapper, .virtuemart-admin-area #admin-content-wrapper {padding-bottom: 16000px;margin-bottom: -16000px;}*/
+.virtuemart-admin-area #admin-content-wrapper .admin-content {margin: 0;overflow: auto; padding: 0;background: #fff;border-left: solid #b4b4b4 1px;}
 
 /*////////////////////////////////////
 / Overwriting Joomla Admin Template //
@@ -49,7 +50,7 @@ dl#system-message dd.message ul li {background: url(../images/admin_ui/saved_ico
 ////////////////////////////////////*/
 
 /* The Navigation Area */
-#admin-ui-tabs ul#tabs {list-style-type:none;overflow:hidden;margin: 0px;padding: 0px ;background: #7c7d7f url(../images/admin_ui/tabs-ul-background.png) bottom repeat-x;}
+#admin-ui-tabs ul#tabs {list-style-type:none;overflow:auto;margin: 0px;padding: 0px ;background: #7c7d7f url(../images/admin_ui/tabs-ul-background.png) bottom repeat-x;}
 #admin-ui-tabs ul#tabs li {vertical-align: top;color: #FFFFFF;
     cursor: pointer;
     display: inline-block;
@@ -75,8 +76,8 @@ dl#system-message dd.message ul li {background: url(../images/admin_ui/saved_ico
 /*////////////////////////////////////
 ////////////// Table /////////////////
 ////////////////////////////////////*/
-form {overflow: hidden;}
-table.admin-table {table-layout: auto;border-collapse: collapse;width: 100%;overflow: hidden;}
+form {overflow: auto;}
+table.admin-table {table-layout: auto;border-collapse: collapse;width: 100%;overflow: auto;}
 table.admin-table th {background: #7c7d7f url(../images/admin_ui/admin_table_th_header_background.png) bottom repeat-x;padding: 20px 5px 5px 5px;color: #fff;font-size: 12px;text-shadow: 0px -1px 1px #000;letter-spacing: 0px;font-weight: normal;vertical-align: top;}
 table.admin-table th a {color: #fff;font-size: 13px;text-shadow: 0px -1px 1px #000;cursor:pointer;letter-spacing: 1px;font-weight: normal;}
 table.admin-table tr td {padding: 6px 5px 6px 5px;letter-spacing: 0px;cursor: pointer;font-size: 11px;}
@@ -87,13 +88,25 @@ table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}
 /*////////////////////////////////////
 //////////// Admin Menu //////////////
 ////////////////////////////////////*/
-#admin-ui-menu {}
-#admin-ui-menu h3.menu-title {background: #b0bfd9 url(../images/admin_ui/admin_menu_current_background.png) bottom repeat-x;cursor:pointer;margin: 0px;padding: 6px 10px 6px 10px;color: #fff;font-size: 13px;font-weight: normal;color: #333;text-shadow: 0px -1px 1px #fff;}
+#admin-ui-menu {border-bottom:1px solid #999;}
+#admin-ui-menu h3.menu-title {background: #aaa bottom repeat-x;cursor:pointer;border-top: 1px solid #999;margin: 0px;padding: 6px 20px;color: #fff;font-size: 13px;font-weight: normal;color: #333;text-shadow: 0px -1px 1px #fff;}
+.menu-vmtitle {
+    background: url("../images/vm2Shop4.png") no-repeat scroll 40px bottom #999999;
+    border-top: 1px solid #444444;
+    color: #333333;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: normal;
+    height: 19px;
+    margin: 0;
+    padding: 6px 5px 11px 109px;
+    text-shadow: 0 -1px 1px #FFFFFF;
+}
 
-#admin-ui-menu h3.current {background: #b0bfd9 url(../images/admin_ui/admin_menu_current_background.png) bottom repeat-x;border-top: solid #a2b0cb 1px;text-shadow: 0px -1px 1px #5a74a6;color: #fff;}
+#admin-ui-menu h3.current {background: #aaa bottom repeat-x;border-top: 1px solid #CCC;text-shadow: 0px -1px 1px #5a74a6;color: #fff;}
 
 #admin-ui-menu .menu-list {}
-#admin-ui-menu .menu-list ul {margin: 0px;padding: 4px 10px;}
+#admin-ui-menu .menu-list ul {margin: 0px;padding: 4px 10px;background:none repeat scroll 0 0 #CCCCCC;border-bottom: 1px solid #888888;}
 #admin-ui-menu .menu-list ul li {list-style: none;}
 #admin-ui-menu .menu-list ul li a {color: #000000;display: block;font-size: 12px;margin: 12px 0;padding: 0 15px 0 4px;text-decoration: none;text-shadow: 0 -1px 1px #fff;}
 
@@ -109,10 +122,10 @@ table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}
 ////////////// Basics ////////////////
 ////////////////////////////////////*/
 
-.clear, br.clear {clear: both;}
-.floatleft, span.floatleft {float: left;}
-.floatright, span.floatright {float: right;}
-.center, span.center {text-align: center}
+.clear {clear: both;}
+.floatleft {float: left;}
+.floatright{float: right;}
+.center{text-align: center}
 .right {text-align: right;}
 
 /*////////////////////////////////////

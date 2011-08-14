@@ -249,7 +249,7 @@ div.chzn-container ul.chzn-results li {
   margin: 0;
   list-style-type: none;
 }
-div.chzn-container ul.chzn-results li.active-result {
+div.chzn-container ul.chzn-results li.chnz-active-result {
   cursor: pointer;
 }
 div.chzn-container ul.chzn-results li em {
