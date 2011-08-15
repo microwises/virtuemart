@@ -61,10 +61,10 @@ class AdminUIHelper {
 		?>
 			
 			<div class="menu-wrapper">
-				<div class="menu-vmtitle">Virtuemart 2</div>
+				<div class="menu-vmlogo"></div>
 				<?php AdminUIHelper::showAdminMenu(); 
 				?>
-				<div style=' background: #AAA;'>
+				<div class="menu-notice">
 				<?php 
 				echo LiveUpdate::getIcon(array(),'notice');
 				?>
