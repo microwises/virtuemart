@@ -63,6 +63,7 @@ class VirtueMartCart {
 	 */
 	public static function getCart($deleteValidation=true) {
 
+		//What does this here? for json stuff?
 		if (!class_exists('JTable')
 		)require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'database' . DS . 'table.php');
 		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
@@ -91,7 +92,7 @@ class VirtueMartCart {
 		$usermodel->setCurrent();
 		$user = $usermodel->getUser();
 
-		if (empty($this->BT)) {
+		if (empty($this->BT) || (!empty($this->BT) && count($this->BT) <=1) ) {
 			foreach ($user->userInfo as $address) {
 				if ($address->address_type == 'BT') {
 					$this->saveAddressInCart((array) $address, $address->address_type);
@@ -99,7 +100,7 @@ class VirtueMartCart {
 			}
 		}
 
-		if (empty($this->ST)) {
+		if (empty($this->ST) || (!empty($this->ST) && count($this->ST) == 0) ) {
 			foreach ($user->userInfo as $address) {
 				if ($address->address_type == 'ST') {
 					$this->saveAddressInCart($address, $address->address_type);
@@ -892,7 +893,7 @@ class VirtueMartCart {
 	}
 
 	function saveAddressInCart($data, $type) {
-		
+
 		// VirtueMartModelUserfields::getUserFields() won't work
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = new VirtueMartModelUserfields();
@@ -903,7 +904,7 @@ class VirtueMartCart {
 			, array()
 			, array( 'user_is_vendor') // Default toggles
 			);
-			
+
 		} else { // BT
 			// The user is not logged in (anonymous), so we need tome extra fields
 			$prepareUserFields = $userFieldsModel->getUserFields(
@@ -911,11 +912,11 @@ class VirtueMartCart {
 			, array() // Default toggles
 			, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
 			);
-			
+
 		}
 		$address = array();
-		
-		if(is_array($data)){ 
+
+		if(is_array($data)){
 			foreach ($prepareUserFields as $fld) {
 				if(!empty($fld->name)){
 					$name = $fld->name;
@@ -923,7 +924,7 @@ class VirtueMartCart {
 				}
 			}
 
-		} else { 
+		} else {
 			foreach ($prepareUserFields as $fld) {
 				if(!empty($fld->name))$name = $fld->name; else  $name = '';
 				$address[$name] = $data->{$name};
