@@ -14,7 +14,6 @@
  * other free or open source software licenses.
  * @version $Id: $
  */
-
 if (!class_exists('VmConfig'))
     require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
 if (!class_exists('ShopFunctions'))
@@ -28,8 +27,10 @@ if (!class_exists('VmElements'))
  * This element is used by the menu manager
  * Should be that way
  */
+
 class VmElementVmCategoriesmenu extends VmElements {
 
+    var $type = 'categoriesmenu';
     var $_name = 'categoriesmenu';
 
     // This line is required to keep Joomla! 1.6/1.7 from complaining
@@ -60,7 +61,7 @@ class VmElementVmCategoriesmenu extends VmElements {
 
 }
 
-if (version_compare(JVERSION, '1.6.0', 'ge') ) {
+if (version_compare(JVERSION, '1.6.0', 'ge')) {
 
     class JFormFieldVmCategoriesmenu extends VmElementVmCategoriesmenu {
 
