@@ -29,11 +29,18 @@ $option = JRequest::getWord('option');
 /* Load some variables */
 $keyword = JRequest::getWord('keyword', null);
 ?>
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="header">
 	<div>
-	<?php
-	if (JRequest::getInt('virtuemart_product_id', false)) echo JHTML::_('link', JRoute::_('index.php?view=custom&option='.$option), JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
-	?>
+		<?php
+			if (JRequest::getInt('virtuemart_product_id', false)) echo JHTML::_('link', JRoute::_('index.php?view=custom&option='.$option), JText::_('COM_VIRTUEMART_PRODUCT_FILES_LIST_RETURN'));
+		echo $this->customs->customsSelect ;
+		echo JText::_('COM_VIRTUEMART_SEARCH_LBL') .' '.JText::_('COM_VIRTUEMART_TITLE') ?>&nbsp;
+		<input type="text" value="<?php echo $keyword; ?>" name="keyword" size="25" class="inputbox" />
+		<input type="hidden" name="option" value="<?php echo $option; ?>" />
+		<input type="hidden" name="view" value="custom" />
+
+		<input class="button" type="submit" name="search" value="<?php echo JText::_('COM_VIRTUEMART_SEARCH_TITLE')?>" />
 	</div>
 </div>
 <?php
@@ -41,15 +48,10 @@ $customs = $this->customs->items;
 //$roles = $this->customlistsroles;
 $pagination = $this->pagination;
 ?>
-<form action="index.php" method="post" name="adminForm" id="adminForm"><?php echo $this->customs->customsSelect ?>
-		<?php echo JText::_('COM_VIRTUEMART_SEARCH_LBL') .' '.JText::_('COM_VIRTUEMART_TITLE') ?>&nbsp;
-			<input type="text" value="<?php echo $keyword; ?>" name="keyword" size="25" class="inputbox" />
-			<input type="hidden" name="option" value="<?php echo $option; ?>" />
-			<input type="hidden" name="view" value="custom" />
 
-			<input class="button" type="submit" name="search" value="<?php echo JText::_('COM_VIRTUEMART_SEARCH_TITLE')?>" />
+
 			
-<table class="admin-table" cellspacing="0" cellpadding="0">
+<table class="adminlist" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($customs); ?>')" /></th>
@@ -74,7 +76,7 @@ $pagination = $this->pagination;
 			if (!is_null($custom->virtuemart_custom_id)) $published = JHTML::_('grid.published', $custom, $i );
 			else $published = '';
 			?>
-			<tr>
+			<tr class="<?php echo "row$k"; ?>">
 				<!-- Checkbox -->
 				<td><?php echo $checked; echo $custom->virtuemart_custom_id; ?></td>
 				<?php

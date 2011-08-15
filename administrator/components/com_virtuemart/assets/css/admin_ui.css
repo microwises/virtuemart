@@ -6,35 +6,45 @@
 
 * html .virtuemart-admin-area { /*IE6 only*/overflow: visible;height: 1px;}
 .virtuemart-admin-area .menu-wrapper {width:200px ;float: left;}
-.virtuemart-admin-area #admin-content-wrapper {margin-left: auto;}
+.virtuemart-admin-area #admin-content-wrapper {margin-left: auto;padding-right: 3px;background: url(../images/admin_ui/content_wraper_bg_grey.png) right repeat-y;}
 /*.virtuemart-admin-area .menu-wrapper, .virtuemart-admin-area #admin-content-wrapper {padding-bottom: 16000px;margin-bottom: -16000px;}*/
-.virtuemart-admin-area #admin-content-wrapper .admin-content {margin: 0;padding: 0;padding-left:10px;overflow: auto; background: url(../images/admin_ui/content_bg_grey.png) left repeat-y #fff;border-left: solid #b4b4b4 1px;}
+.virtuemart-admin-area #admin-content-wrapper .admin-content {margin: 0;padding: 0;padding-left:10px;overflow: auto; background: url(../images/admin_ui/content_bg_grey.png) left repeat-y #fff;border-left: solid #b4b4b4 1px;height:540px;}
+.virtuemart-admin-area #admin-content-wrapper .admin-content {height:auto;min-height: 540px;}
+#header {     background: url(../images/admin_ui/header_bg.png) repeat-x scroll 0 0 #F0F0F0;
+    padding:3px;
+	padding-left: 10px;
+	padding-right: 10 px;
+	
+	
 
+}
 /*////////////////////////////////////
 / Overwriting Joomla Admin Template //
 ////////////////////////////////////*/
 
 /* Toolbar */
+#element-box, #toolbar-box, #submenu-box {
+    padding: 0 !important;
+}
 #element-box .t, #element-box .b {display: none;}
 #content-box #element-box .m, #content-box .m {border: none;padding: 0px;background: none;}
-#content-box #toolbar-box {border-top: solid #b4b4b4 1px;border-left: solid #b4b4b4 1px;border-right: solid #b4b4b4 1px;margin: 0px;-moz-border-radius-topleft: 6px;
--moz-border-radius-topright: 6px;
+#content-box #toolbar-box {border-top: solid #b4b4b4 1px;border-left: solid #b4b4b4 1px;border-right: solid #b4b4b4 1px;margin: 0px;padding:0;-moz-border-radius: 6px 6px 0 0;
+-webkit-border-radius:6px 6px 0 0;
+	background: #fff url(../images/admin_ui/head_bg.png) center center repeat-x;}
+#content-box #toolbar-box .m {border: solid #fff 1px;padding: 7px 10px 4px 10px;background: none repeat scroll 0 0 transparent;
+-moz-border-radius: 6px 6px 0 0;
 -webkit-border-top-left-radius:6px;
--webkit-border-top-right-radius: 6px;background: #fff url(../images/admin_ui/head_bg.png) center center repeat-x;}
-#content-box #toolbar-box .m {border: solid #fff 1px;padding: 7px 10px 4px 10px;-moz-border-radius-topleft: 6px;
--moz-border-radius-topright: 6px;
--webkit-border-top-left-radius:6px;
--webkit-border-top-right-radius: 6px;text-shadow: 0px -1px 1px #fff;}
+-webkit-border-radius:6px 6px 0 0;text-shadow: 0px -1px 1px #fff;}
 #content-box #toolbar-box a.toolbar {border: none;}
 #content-box #toolbar-box .m .header {color: #444444;font-weight: normal;padding: 0px 0px 0px 60px;margin: 3px 0px 0px 0px;background-position: left center;
     background-repeat: no-repeat;}
 #content-box #toolbar-box .t, #content-box #toolbar-box .b {display: none;}
 .bartext { display: block;font-size: 12px;font-weight: bold;line-height: 32px;vertical-align: inherit;white-space: nowrap;width: auto !important;}
 /* System Messages */
-dl#system-message {margin: 0px;padding: 4px 10px;background: #4592ba url(../images/admin_ui/saved_background.png) top repeat-x;border: solid #387dad 1px;}
+dl#system-message {margin: 0px;padding: 4px 10px;background: #cd3737 url(../images/admin_ui/save_bg.png) top repeat-x;border: solid #387dad 1px;}
 dl#system-message dd {text-indent: 0px;}
 dl#system-message dd.message { overflow: auto; }
-dl#system-message dd.message ul {margin: 0px;color: #fff;text-shadow: 0px -1px 1px #12517d;font-weight: normal;font-size: 12px;padding: 0px;background: none;border: none;}
+dl#system-message dd.message ul {margin: 0px;color: gold;text-shadow: 0px -1px 1px #12517d;font-weight: normal;font-size: 12px;padding: 0px;background: none;border: none;}
 dl#system-message dd.message ul li {background: url(../images/admin_ui/saved_icon_background.png) top left no-repeat;display: block;padding: 8px 10px 6px 40px;letter-spacing: 1px;}
 
 /* Fieldset */
@@ -68,7 +78,7 @@ dl#system-message dd.message ul li {background: url(../images/admin_ui/saved_ico
 #admin-ui-tabs ul#tabs li.current {background: #fff url(../images/admin_ui/tabs-li-background.png) top repeat-x;color: #444444;text-shadow: 0px -1px 1px #fff;-moz-border-radius-topleft: 6px;-moz-border-radius-topright: 6px;-webkit-border-top-left-radius: 6px;-webkit-border-top-right-radius: 6px;-moz-box-shadow: 0px -1px 2px #3f3f40;cursor: default;}
 
 /* The Content Area */
-#admin-ui-tabs .tabs {padding: 20px 20px 200px 20px;overflow:auto;}
+#admin-ui-tabs .tabs {padding: 20px 20px 202px 20px;overflow:auto;}
 
 /* do not change the line below !!! */
 #admin-ui-tabs .dyn-tabs {overflow:auto;display:none;}
@@ -76,19 +86,19 @@ dl#system-message dd.message ul li {background: url(../images/admin_ui/saved_ico
 /*////////////////////////////////////
 ////////////// Table /////////////////
 ////////////////////////////////////*/
-form {overflow: auto;}
+/*form {overflow: auto;}
 table.admin-table {table-layout: auto;border-collapse: collapse;width: 100%;overflow: auto;}
 table.admin-table th {background: #7c7d7f url(../images/admin_ui/admin_table_th_header_background.png) bottom repeat-x;padding: 20px 5px 5px 5px;color: #fff;font-size: 12px;text-shadow: 0px -1px 1px #000;letter-spacing: 0px;font-weight: normal;vertical-align: top;}
 table.admin-table th a {color: #fff;font-size: 13px;text-shadow: 0px -1px 1px #000;cursor:pointer;letter-spacing: 1px;font-weight: normal;}
 table.admin-table tr td {padding: 6px 5px 6px 5px;letter-spacing: 0px;cursor: pointer;font-size: 11px;}
 table.admin-table tr.row0:hover, table.admin-table tr.row1:hover {background: #8297ba url(../images/admin_ui/admin_table_tr_hover_background.png) top repeat-x;color: #fff;}
 table.admin-table tr.row0:hover a, table.admin-table tr.row1:hover a {color: #fff;text-shadow: 0px -1px 1px #5a74a6;}
-table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}
+table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}*/
 
 /*////////////////////////////////////
 //////////// Admin Menu //////////////
 ////////////////////////////////////*/
-#admin-ui-menu {border-bottom:1px solid #244f8b;}
+#admin-ui-menu {border-bottom:1px solid #94B1CF;}
 #admin-ui-menu h3.menu-title {background: url("../images/admin_ui/page_bg_blue.png") repeat-x scroll center top #888;cursor:pointer;border-top: 1px solid #94B1CF;margin: 0px;padding: 6px 20px;color: #fff;font-size: 13px;font-weight: normal;color: #333;}
 .menu-vmlogo {
 	background: url("../images/vm_logo.png") no-repeat scroll center bottom #707174;
@@ -108,12 +118,13 @@ table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}
     text-align: center;
     width: 120px;}
 .menu-notice a:link ,.menu-notice a span {color :#000 ;}
-#admin-ui-menu h3.current { background: url("../images/admin_ui/page_bg_blue.png") repeat-x scroll center top #888; color :#efefef ; }
+#admin-ui-menu h3.current,#admin-ui-menu h3.menu-title:hover { background: url("../images/admin_ui/page_bg_blue.png") repeat-x scroll center top #888; color :#efefef ; }
 
 #admin-ui-menu .menu-list {border-top: 1px solid #94B1CF;}
 #admin-ui-menu .menu-list ul {margin: 0px;padding: 4px 10px;background:none repeat scroll 0 0 #F7F7F7;border-bottom: 1px solid #888888;}
 #admin-ui-menu .menu-list ul li {list-style: none;}
 #admin-ui-menu .menu-list ul li a {color: #000000;display: block;font-size: 12px;margin: 12px 0;padding: 0 15px 0 4px;text-decoration: none;}
+#admin-ui-menu .menu-list ul li a:hover {color: #888;}
 
 /*////////////////////////////////////
 ////////// Update Notices ////////////

@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 ?> 
 
-<table class="admin-table" cellspacing="0" cellpadding="0">
+<table class="adminlist" cellspacing="0" cellpadding="0">
 		<tr>
 			<th colspan="2" class="title"><?php echo JText::_('COM_VIRTUEMART_STATISTIC_STATISTICS') ?></th>
 		</tr>

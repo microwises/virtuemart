@@ -36,7 +36,7 @@ AdminUIHelper::startAdminArea();
 		<li><?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_DATE') ?>: <?php echo $packageContents['releasedate'] ?></li>
 	</ul>
 </div>
-<table class="admin-table" cellspacing="0" cellpadding="0">
+<table class="adminlist" cellspacing="0" cellpadding="0">
 	<thead>
 	  <tr>
 	    <th class="title"><?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_FILESTOUPDATE') ?></th>
@@ -84,7 +84,7 @@ foreach( $packageContents['fileArr'] as $fileentry ) {
 
 <?php
 if( !empty($packageContents['queryArr'])) {
-	echo '<table class="admin-table" cellspacing="0" cellpadding="0"><thead><tr><th class="title">' . JText::_('COM_VIRTUEMART_UPDATE_PATCH_QUERYTOEXEC') . ':</th></tr></thead>';
+	echo '<table class="adminlist" cellspacing="0" cellpadding="0"><thead><tr><th class="title">' . JText::_('COM_VIRTUEMART_UPDATE_PATCH_QUERYTOEXEC') . ':</th></tr></thead>';
 	echo '<tbody>';
 	foreach($packageContents['queryArr'] as $query) {
 		echo '<tr><td><pre>'.$query. "</pre></td></tr>";

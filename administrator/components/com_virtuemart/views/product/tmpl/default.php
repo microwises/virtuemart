@@ -64,7 +64,7 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 $this->productlist
 
 ?>
-	<table class="admin-table" cellspacing="0" cellpadding="0">
+	<table class="adminlist" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->productlist); ?>')" /></th>

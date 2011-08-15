@@ -40,7 +40,7 @@ $option = JRequest::getWord('option');
 	<div id="resultscounter"><?php echo $this->pagination->getResultsCounter();?></div>
     </div>
     <br />
-    <table class="admin-table" cellspacing="0" cellpadding="0">
+    <table class="adminlist" cellspacing="0" cellpadding="0">
 	<thead>
 	    <tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->orderslist); ?>')" /></th>

@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <input type="checkbox" value="1" checked="checked" id="notify_users" name="notify_users" /> 
 <label for="notify_users"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_WAITING_LIST_NOTIFYUSERS');?></label>
 <br /><br />
-<table class="admin-table" cellspacing="0" cellpadding="0">
+<table class="adminlist" cellspacing="0" cellpadding="0">
 	<thead>
 		<tr>
 			<th class="title"><?php echo JText::_('COM_VIRTUEMART_NAME');?></th>

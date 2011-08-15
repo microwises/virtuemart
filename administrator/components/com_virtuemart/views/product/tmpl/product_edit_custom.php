@@ -60,7 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 		<td valign="top" width="%100">
 			<fieldset style="background-color:#F9F9F9;">
 					<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM');?></legend>
-			<table id="customfields" class="admin-table" cellspacing="0" cellpadding="0">
+			<table id="customfields" class="adminlist" cellspacing="0" cellpadding="0">
 				<thead>
 				<tr class="row1">
 					<th><?php echo JText::_('COM_VIRTUEMART_TITLE');?></th>

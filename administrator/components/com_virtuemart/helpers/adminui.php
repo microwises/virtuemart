@@ -61,7 +61,7 @@ class AdminUIHelper {
 		?>
 			
 			<div class="menu-wrapper">
-				<div class="menu-vmlogo"></div>
+				<a href="http://virtuemart.net"><div class="menu-vmlogo"></div></a>
 				<?php AdminUIHelper::showAdminMenu(); 
 				?>
 				<div class="menu-notice">

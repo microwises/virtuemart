@@ -35,7 +35,7 @@ AdminUIHelper::startAdminArea();
 	</div>
 
 	<div style="text-align: left;">
-	<table class="admin-table" cellspacing="0" cellpadding="0">
+	<table class="adminlist" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->inventorylist); ?>')" /></th>

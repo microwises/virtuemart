@@ -32,7 +32,7 @@ if( $this->pagination->limit < $nrows ){
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<div id="editcell">
-		<table class="admin-table" cellspacing="0" cellpadding="0">
+		<table class="adminlist" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
 			<th width="20">

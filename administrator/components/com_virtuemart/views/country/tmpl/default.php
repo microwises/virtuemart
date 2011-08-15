@@ -39,7 +39,7 @@ AdminUIHelper::startAdminArea();
 		<div id="resultscounter"><?php echo $this->pagination->getResultsCounter();?></div>
 	</div>
     <div id="editcell">
-	<table class="admin-table" cellspacing="0" cellpadding="0">
+	<table class="adminlist" cellspacing="0" cellpadding="0">
 	    <thead>
 		<tr>
 			<th width="10">

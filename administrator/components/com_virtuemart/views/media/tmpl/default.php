@@ -44,7 +44,7 @@ $option = JRequest::getWord('option');
 $productfileslist = $this->files;
 //$roles = $this->productfilesroles;
 ?>
-	<table class="admin-table" cellspacing="0" cellpadding="0">
+	<table class="adminlist" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productfileslist ); ?>')" /></th>
@@ -68,7 +68,7 @@ $productfileslist = $this->files;
 			if (!is_null($productfile->virtuemart_media_id)) $published = JHTML::_('grid.published', $productfile, $i );
 			else $published = '';
 			?>
-			<tr>
+			<tr class="<?php echo "row$k"; ?>">
 				<!-- Checkbox -->
 				<td><?php echo $checked; echo $productfile->virtuemart_media_id; ?></td>
 				<!-- Product name -->
