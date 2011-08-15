@@ -240,7 +240,8 @@ class VmConfig{
 	 */
 	public function loadConfig($force = false) {
 
-		vmSetStartTime('loadConfig');
+
+// 		vmSetStartTime('loadConfig');
 		if(!$force && self::$loaded){
 			if(!empty(self::$_jpConfig) && !empty(self::$_jpConfig->_params)){
 // 				vmTime('Program Cache','loadConfig');
@@ -293,7 +294,9 @@ class VmConfig{
 
 			self::$_jpConfig->_params = $pair;
 
+
 			self::$_jpConfig->setSession();
+
 // 			vmTime('Parsed and in session','loadConfig');
 			return self::$_jpConfig;
 		}

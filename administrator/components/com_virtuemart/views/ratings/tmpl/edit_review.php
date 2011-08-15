@@ -98,13 +98,13 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_REVIEW_DETAILS');
 <input type="hidden" name="view" value="ratings" />
 <input type="hidden" name="virtuemart_rating_review_id" value="<?php echo $this->rating->virtuemart_rating_review_id; ?>" />
 <input type="hidden" name="virtuemart_product_id" value="<?php echo $this->rating->virtuemart_product_id; ?>" />
-<input type="hidden" name="virtuemart_user_id" value="<?php echo $this->rating->virtuemart_user_id; ?>" />
-<input type="hidden" name="created_on" value="<?php echo $this->rating->created_on; ?>" />
+<input type="hidden" name="created_by" value="<?php echo $this->rating->created_by; ?>" />
+
 <input type="hidden" name="boxchecked" value="0" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
-<?php 
+<?php
 AdminUIHelper::imitateTabs('end');
 AdminUIHelper::endAdminArea(); ?>
 <script type="text/javascript">

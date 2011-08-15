@@ -513,7 +513,7 @@ if (empty ( $this->product )) {
 				if (!empty($this->rating_reviews)) { ?>
 				<div class="<?php echo $color ?>">
 					<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>
-					<?php //echo $stars[ $review->review_rating ] ?>
+					<?php //echo $stars[ $review->review_rating ] //Attention the review rating is the rating of the review itself, rating for the product is the vote ! ?>
 					<blockquote><?php echo $review->comment; ?></blockquote>
 					<span class="bold"><?php echo $review->customer ?></span>
 				</div>

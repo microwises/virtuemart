@@ -39,7 +39,7 @@ if (empty ( $this->product )) {
 	<h1><?php echo $this->product->product_name ?></h1>
 	<?php // Product Title END ?>
 	<?php // Showing The Additional Images
-	if(!empty($this->product->images) && count($this->product->images)>0) { 
+	if(!empty($this->product->images) && count($this->product->images)>0) {
 		echo $this->product->images[0]->displayMediaFull('class="product-image"',false); ?>
 		<div class="additional-images">
 		<?php // List all Images
@@ -350,7 +350,7 @@ if (empty ( $this->product )) {
 				if (!empty($this->rating_reviews)) { ?>
 				<div class="<?php echo $color ?>">
 					<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>
-					<?php //echo $stars[ $review->review_rating ] ?>
+					<?php //echo $stars[ $review->review_rating ] //Attention the review rating is the rating of the review itself, rating for the product is the vote !?>
 					<blockquote><?php echo $review->comment; ?></blockquote>
 					<span class="bold"><?php echo $review->customer ?></span>
 				</div>

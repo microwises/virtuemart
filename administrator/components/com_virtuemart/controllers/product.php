@@ -111,7 +111,10 @@ class VirtuemartControllerProduct extends VmController {
 
 		$data = JRequest::get('post');
 
-		$data['product_desc'] = JRequest::getVar('product_desc','','post','STRING',JREQUEST_ALLOWHTML);
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if(!Permissions::getInstance()->check('admin')){
+			$data['product_desc'] = JRequest::getVar('product_desc','','post','STRING',JREQUEST_ALLOWHTML);
+		}
 
 		parent::save($data);
 	}

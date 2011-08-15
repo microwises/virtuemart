@@ -117,38 +117,6 @@ class VirtuemartModelReport extends VmModel {
 			return false;
 		}
 
-// 		$selectFindRows
-
-// 		if(count($where)>0){
-// 			$whereString = ' WHERE ('.implode(' AND ', $where ).') ';
-// 		} else {
-// 			$whereString = '';
-// 		}
-
-/*		$select = 'SELECT `created_on` as order_date,
-			COUNT(virtuemart_order_id) as number_of_orders,
-			SUM(order_subtotal) as revenue
-			FROM `#__virtuemart_orders` ';
-
-		//getItemsSold
-		$select = 'SELECT `created_on` as order_date, SUM(product_quantity) as items_sold FROM `#__virtuemart_order_items` as i ';
-
-		//getOrderItems
-		$select = 'SELECT `product_name`, `product_sku`, i.created_on as order_date, SUM(product_quantity) as items_sold
-						FROM #__virtuemart_order_items i, #__virtuemart_orders o, #__virtuemart_products p " ';
-
-		//getRevenue
-		$where[] = ' `#__virtuemart_orders`.`created_on` BETWEEN "'.$this->start_date.' 00:00:00" AND "'.$this->end_date.' 23:59:59" ';
-
-		//getItemsSold
-		$where[] = ' `#__virtuemart_order_items`.`created_on` BETWEEN "'.$this->start_date.' 00:00:00" AND "'.$this->end_date.' 23:59:59" ';
-
-		//getOrderItems
-		$where[] = ' i.`created_on` BETWEEN "'.$this->start_date.' 00:00:00" AND "'.$this->end_date.' 23:59:59" ';
-		$where[] = ' o.virtuemart_order_id=i.virtuemart_order_id ';
-  		$where[] = ' i.virtuemart_product_id=p.virtuemart_product_id ';*/
-
-
 
 		if(!$sold && !$items){
 
@@ -233,7 +201,7 @@ class VirtuemartModelReport extends VmModel {
 		}
 		if (!$this->_total) $this->_total = $this->_getListCount($query);*/
 
-		return $this->_data = $this->getRevenueSortListOrderQuery();;
+		return $this->_data = $this->getRevenueSortListOrderQuery();
     }
 
   /**
@@ -246,7 +214,7 @@ class VirtuemartModelReport extends VmModel {
     function getItemsSold($noLimit = false){
     	// $db = JFactory::getDBO();
 
-		$query = "SELECT `created_on` as order_date, ";
+/*		$query = "SELECT `created_on` as order_date, ";
 		$query .= "SUM(product_quantity) as items_sold ";
 		$query .= "FROM `#__virtuemart_order_items` ";
 		$query .= "WHERE `created_on` BETWEEN '{$this->start_date} 00:00:00' AND '{$this->end_date} 23:59:59' ";
@@ -260,7 +228,8 @@ class VirtuemartModelReport extends VmModel {
 		}
 		if (!$this->_total) $this->_total = $this->_getListCount($query);
 
-		return $this->_data;
+		return $this->_data;*/
+    	return $this->_data = $this->getRevenueSortListOrderQuery(true);
     }
 
    /**
@@ -273,7 +242,7 @@ class VirtuemartModelReport extends VmModel {
     function getOrderItems($noLimit = false){
     	// $db = JFactory::getDBO();
 
-		$query = "SELECT `product_name`, `product_sku`, ";
+/*		$query = "SELECT `product_name`, `product_sku`, ";
 		$query .= "i.created_on as order_date, ";
 		$query .= "SUM(product_quantity) as items_sold ";
   		$query .= "FROM #__virtuemart_order_items i, #__virtuemart_orders o, #__virtuemart_products p ";
@@ -291,7 +260,8 @@ class VirtuemartModelReport extends VmModel {
 		}
 		if (!$this->_total) $this->_total = $this->_getListCount($query);
 
-		return $this->_data;
+		return $this->_data;*/
+    	return $this->_data = $this->getRevenueSortListOrderQuery(false,true);
     }
 
 

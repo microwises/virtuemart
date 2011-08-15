@@ -150,21 +150,16 @@ class VirtueMartModelRatings extends VmModel {
     }
 
 	function getReview($cids){
-	/*	$cids = array();
-		$cids = JRequest::getVar('cid', false);
-		if (empty($cids)) {
-			$cids= JRequest::getVar('virtuemart_rating_review_id',false);
-		}
-		if ($cids && !is_array($cids)) $cids = array($cids);
-*/
+
        	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`,CONCAT_WS(" ",`u`.`title`,u.`last_name`,`u`.`first_name`) as customer FROM `#__virtuemart_rating_reviews` AS `pr`
 		LEFT JOIN `#__virtuemart_userinfos` AS `u`
      	ON `pr`.`created_by` = `u`.`virtuemart_user_id`
 		LEFT JOIN `#__virtuemart_products` AS `p`
-     	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id` and  virtuemart_rating_review_id='.(int)$cids[0].'
-		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`u`.`virtuemart_user_id`' ;
+     	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`
+		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`pr`.`created_by`
+      WHERE virtuemart_rating_review_id="'.(int)$cids[0].'" ' ;
 		$this->_db->setQuery($q);
-
+		vmdebug('getReview',$this->_db->getQuery());
 		return $this->_db->loadObject();
     }
 
@@ -244,8 +239,17 @@ class VirtueMartModelRatings extends VmModel {
 
 		//Check user_rating
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
-		$user = JFactory::getUser();
-		$userId = $user->id;
+
+// 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+// 		if(!Permissions::getInstance()->check('admin')){
+		$app = JFactory::getApplication();
+		if( $app->isSite() ){
+			$user = JFactory::getUser();
+			$userId = $user->id;
+		} else {
+			$userId = $data['created_by'];
+		}
+
 		if ( !empty($data['virtuemart_product_id']) && !empty($userId)){
 
 			//sanitize input
@@ -257,14 +261,15 @@ class VirtueMartModelRatings extends VmModel {
 			$data['lastip'] = $_SERVER['REMOTE_ADDR'];
 
 			$rating = $this->getRatingByProduct($data['virtuemart_product_id']);
-
+			vmdebug('$rating',$rating);
 			$vote = $this->getVoteByProduct($data['virtuemart_product_id'],$userId);
+			vmdebug('$vote',$vote);
 
 			$data['virtuemart_rating_vote_id'] = empty($vote->virtuemart_rating_vote_id)? 0: $vote->virtuemart_rating_vote_id;
 
 			if(isset($data['vote'])){
 				$votesTable = $this->getTable('rating_votes');
-		        $data = $votesTable->bindChecknStore($data);
+		      $data = $votesTable->bindChecknStore($data,true);
 		    	$errors = $votesTable->getErrors();
 				foreach($errors as $error){
 					$this->setError(get_class( $this ).'::Error store votes '.$error);
@@ -289,9 +294,9 @@ class VirtueMartModelRatings extends VmModel {
 			}
 
 			$data['virtuemart_rating_id'] = empty($rating->virtuemart_rating_id)? 0: $rating->virtuemart_rating_id;
-
+			vmdebug('$$data',$data);
 			$rating = $this->getTable('ratings');
-			$data = $rating->bindChecknStore($data);
+			$data = $rating->bindChecknStore($data,true);
 	    	$errors = $rating->getErrors();
 			foreach($errors as $error){
 				$this->setError(get_class( $this ).'::Error store rating '.$error);
@@ -303,15 +308,23 @@ class VirtueMartModelRatings extends VmModel {
 				$data['review_ok'] = 0;
 				$data['review_rating'] = 0;
 
-				/* Check if ratings are auto-published (set to 0 prevent injected by user)*/
-				if (VmConfig::get('reviews_autopublish',1)) $data['published'] = 1;
+				// Check if ratings are auto-published (set to 0 prevent injected by user)
+				//
+				$app = JFactory::getApplication();
+				if( $app->isSite() ){
+					if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+					if(!Permissions::getInstance()->check('admin')){
+						if (VmConfig::get('reviews_autopublish',1)) $data['published'] = 1;
+					}
+
+				}
 
 				$review = $this->getReviewByProduct($data['virtuemart_product_id'],$userId);
 
 				if(!empty($review->review_rates)){
 					$data['review_rates'] = $review->review_rates + $data['review_rate'];
 				} else {
-					$data['review_rates'] = $data['vote'];
+					$data['review_rates'] = $data['review_vote'];
 				}
 
 				if(!empty($review->review_ratingcount)){
@@ -325,19 +338,41 @@ class VirtueMartModelRatings extends VmModel {
 				$data['virtuemart_rating_review_id'] = empty($review->virtuemart_rating_review_id)? 0: $review->virtuemart_rating_review_id;
 
 				$reviewTable = $this->getTable('rating_reviews');
-		        $data = $reviewTable->bindChecknStore($data);
+		      $data = $reviewTable->bindChecknStore($data,true);
 				$errors = $reviewTable->getErrors();
 				foreach($errors as $error){
 					$this->setError(get_class( $this ).'::Error store review '.$error);
 				}
 			}
-			return true;
+			return $data['virtuemart_rating_review_id'];
 		} else{
 			$this->setError('Cant save rating/review/vote without vote/product_id');
 			return false;
 		}
 
     }
+
+ /*   function saveRating($data){
+
+    	//Check user_rating
+    	$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
+    	$user = JFactory::getUser();
+    	$userId = $user->id;
+    	if ( !empty($data['virtuemart_product_id']) && !empty($userId)){
+
+    		//sanitize input
+    		$data['virtuemart_product_id'] = (int)$data['virtuemart_product_id'];
+    		//normalize the rating
+    		if ($data['vote'] < 0 ) $data['vote'] = 0 ;
+    		if ($data['vote'] > ($maxrating+1) ) $data['vote'] = $maxrating;
+
+    		$data['lastip'] = $_SERVER['REMOTE_ADDR'];
+
+
+
+    	}
+    }*/
+
 
     /**
 	* Returns the number of reviews assigned to a product
