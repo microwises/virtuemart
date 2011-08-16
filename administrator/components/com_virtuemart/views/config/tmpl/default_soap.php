@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS') ?></label>
+			    <label for="soap_ws_cat_on"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS') ?></label>
 			</span>
 			</td>
 			<td>
@@ -47,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE') ?></label>
+			    <label for="soap_ws_cat_cache_on"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE') ?></label>
 			</span>
 			</td>
 			<td>
@@ -58,7 +58,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_GETCAT') ?></label>
+			    <label for="soap_auth_getcat"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_GETCAT') ?></label>
 			</span>
 			</td>
 			<td>
@@ -70,7 +70,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ADDCAT') ?></label>
+			    <label for="soap_auth_addcat"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ADDCAT') ?></label>
 			</span>
 			</td>
 			<td>
@@ -81,7 +81,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_UPDATECAT') ?></label>
+			    <label for="soap_auth_upcat"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_UPDATECAT') ?></label>
 			</span>
 			</td>
 			<td>
@@ -92,7 +92,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_DELCAT') ?></label>
+			    <label for="soap_auth_delcat"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_DELCAT') ?></label>
 			</span>
 			</td>
 			<td>
@@ -103,7 +103,7 @@ defined('_JEXEC') or die('Restricted access');
 		         <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_GET') ?></label>
+			    <label for="soap_auth_cat_otherget"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_GET') ?></label>
 			</span>
 			</td>
 			<td>
@@ -114,7 +114,7 @@ defined('_JEXEC') or die('Restricted access');
 		     <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_ADD') ?></label>
+			    <label for="soap_auth_cat_otheradd"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_ADD') ?></label>
 			</span>
 			</td>
 			<td>
@@ -125,7 +125,7 @@ defined('_JEXEC') or die('Restricted access');
 		     <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_UPDATE') ?></label>
+			    <label for="soap_auth_cat_otherupdate"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_UPDATE') ?></label>
 			</span>
 			</td>
 			<td>
@@ -136,7 +136,7 @@ defined('_JEXEC') or die('Restricted access');
 		     <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_DELETE') ?></label>
+			    <label for="soap_auth_cat_otherdelete"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_DELETE') ?></label>
 			</span>
 			</td>
 			<td>
@@ -166,7 +166,7 @@ defined('_JEXEC') or die('Restricted access');
 			<tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS') ?></label>
+			    <label for="soap_ws_user_on"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS') ?></label>
 			</span>
 			</td>
 			<td>
@@ -177,7 +177,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE') ?></label>
+			    <label for="soap_ws_user_cache_on"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE') ?></label>
 			</span>
 			</td>
 			<td>
@@ -188,7 +188,7 @@ defined('_JEXEC') or die('Restricted access');
 		         <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_GETUSER') ?></label>
+			    <label for="soap_auth_getuser"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_GETUSER') ?></label>
 			</span>
 			</td>
 			<td>
@@ -199,7 +199,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ADDUSER') ?></label>
+			    <label for="soap_auth_adduser"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ADDUSER') ?></label>
 			</span>
 			</td>
 			<td>
@@ -210,7 +210,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_UPDATEUSER') ?></label>
+			    <label for="soap_auth_upuser"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_UPDATEUSER') ?></label>
 			</span>
 			</td>
 			<td>
@@ -221,7 +221,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_DELUSER') ?></label>
+			    <label for="soap_auth_deluser"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_DELUSER') ?></label>
 			</span>
 			</td>
 			<td>
@@ -232,7 +232,7 @@ defined('_JEXEC') or die('Restricted access');
 		     <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_GET') ?></label>
+			    <label for="soap_auth_user_otherget"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_GET') ?></label>
 			</span>
 			</td>
 			<td>
@@ -243,7 +243,7 @@ defined('_JEXEC') or die('Restricted access');
 		     <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_ADD') ?></label>
+			    <label for="soap_auth_user_otheradd"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_ADD') ?></label>
 			</span>
 			</td>
 			<td>
@@ -254,7 +254,7 @@ defined('_JEXEC') or die('Restricted access');
 		     <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_UPDATE') ?></label>
+			    <label for="soap_auth_user_otherupdate"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_UPDATE') ?></label>
 			</span>
 			</td>
 			<td>
@@ -265,7 +265,7 @@ defined('_JEXEC') or die('Restricted access');
 		     <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_DELETE') ?></label>
+			    <label for="soap_auth_user_otherdelete"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_DELETE') ?></label>
 			</span>
 			</td>
 			<td>
@@ -289,7 +289,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS') ?></label>
+			    <label for="soap_ws_prod_on"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS') ?></label>
 			</span>
 			</td>
 			<td>
@@ -300,7 +300,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE') ?></label>
+			    <label for="soap_ws_prod_cache_on"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE') ?></label>
 			</span>
 			</td>
 			<td>
@@ -311,7 +311,7 @@ defined('_JEXEC') or die('Restricted access');
 		       <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_GETPROD') ?></label>
+			    <label for="soap_auth_getprod"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_GETPROD') ?></label>
 			</span>
 			</td>
 			<td>
@@ -322,7 +322,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ADDPROD') ?></label>
+			    <label for="soap_auth_addprod"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ADDPROD') ?></label>
 			</span>
 			</td>
 			<td>
@@ -333,7 +333,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_UPDATEPROD') ?></label>
+			    <label for="soap_auth_upprod"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_UPDATEPROD') ?></label>
 			</span>
 			</td>
 			<td>
@@ -344,7 +344,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_DELPROD') ?></label>
+			    <label for="soap_auth_delprod"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_DELPROD') ?></label>
 			</span>
 			</td>
 			<td>
@@ -355,7 +355,7 @@ defined('_JEXEC') or die('Restricted access');
 		     <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_GET') ?></label>
+			    <label for="soap_auth_prod_otherget"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_GET') ?></label>
 			</span>
 			</td>
 			<td>
@@ -366,7 +366,7 @@ defined('_JEXEC') or die('Restricted access');
 		     <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_ADD') ?></label>
+			    <label for="soap_auth_prod_otheradd"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_ADD') ?></label>
 			</span>
 			</td>
 			<td>
@@ -377,7 +377,7 @@ defined('_JEXEC') or die('Restricted access');
 		     <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_UPDATE') ?></label>
+			    <label for="soap_auth_prod_otherupdate"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_UPDATE') ?></label>
 			</span>
 			</td>
 			<td>
@@ -388,7 +388,7 @@ defined('_JEXEC') or die('Restricted access');
 		     <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_DELETE') ?></label>
+			    <label for="soap_auth_prod_otherdelete"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_DELETE') ?></label>
 			</span>
 			</td>
 			<td>
@@ -412,7 +412,7 @@ defined('_JEXEC') or die('Restricted access');
           	<tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS') ?></label>
+			    <label for="soap_ws_order_on"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS') ?></label>
 			</span>
 			</td>
 			<td>
@@ -423,7 +423,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE') ?></label>
+			    <label for="soap_ws_order_cache_on"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE') ?></label>
 			</span>
 			</td>
 			<td>
@@ -434,7 +434,7 @@ defined('_JEXEC') or die('Restricted access');
 		             <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_GETORDER') ?></label>
+			    <label for="soap_auth_getorder"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_GETORDER') ?></label>
 			</span>
 			</td>
 			<td>
@@ -445,7 +445,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ADDORDER') ?></label>
+			    <label for="soap_auth_addorder"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ADDORDER') ?></label>
 			</span>
 			</td>
 			<td>
@@ -456,7 +456,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_UPDATEORDER') ?></label>
+			    <label for="soap_auth_uporder"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_UPDATEORDER') ?></label>
 			</span>
 			</td>
 			<td>
@@ -467,7 +467,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_DELORDER') ?></label>
+			    <label for="soap_auth_delorder"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_DELORDER') ?></label>
 			</span>
 			</td>
 			<td>
@@ -478,7 +478,7 @@ defined('_JEXEC') or die('Restricted access');
 		     <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_GET') ?></label>
+			    <label for="soap_auth_order_otherget"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_GET') ?></label>
 			</span>
 			</td>
 			<td>
@@ -489,7 +489,7 @@ defined('_JEXEC') or die('Restricted access');
 		     <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_ADD') ?></label>
+			    <label for="soap_auth_order_otheradd"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_ADD') ?></label>
 			</span>
 			</td>
 			<td>
@@ -500,7 +500,7 @@ defined('_JEXEC') or die('Restricted access');
 		     <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_UPDATE') ?></label>
+			    <label for="soap_auth_order_otherupdate"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_UPDATE') ?></label>
 			</span>
 			</td>
 			<td>
@@ -511,7 +511,7 @@ defined('_JEXEC') or die('Restricted access');
 		     <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_DELETE') ?></label>
+			    <label for="soap_auth_order_otherdelete"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_ALLOTHER_PROD_DELETE') ?></label>
 			</span>
 			</td>
 			<td>
@@ -540,7 +540,7 @@ defined('_JEXEC') or die('Restricted access');
 	    	<tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS') ?></label>
+			    <label for="soap_ws_sql_on"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS') ?></label>
 			</span>
 			</td>
 			<td>
@@ -551,7 +551,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE') ?></label>
+			    <label for="soap_ws_sql_cache_on"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE') ?></label>
 			</span>
 			</td>
 			<td>
@@ -562,7 +562,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_EXECSQL') ?></label>
+			    <label for="soap_auth_execsql"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_EXECSQL') ?></label>
 			</span>
 			</td>
 			<td>
@@ -573,7 +573,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_EXECSELECT') ?></label>
+			    <label for="soap_auth_execsql_select"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_EXECSELECT') ?></label>
 			</span>
 			</td>
 			<td>
@@ -584,7 +584,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_EXECINSERT') ?></label>
+			    <label for="soap_auth_execsql_insert"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_EXECINSERT') ?></label>
 			</span>
 			</td>
 			<td>
@@ -595,7 +595,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ONOFFAUTH_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_EXECUPDATE') ?></label>
+			    <label for="soap_auth_execsql_update"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_AUTH_EXECUPDATE') ?></label>
 			</span>
 			</td>
 			<td>
@@ -622,7 +622,7 @@ defined('_JEXEC') or die('Restricted access');
 	    	<tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_CUSTOM_SETTINGS_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS') ?></label>
+			    <label for="soap_ws_custom_on"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS') ?></label>
 			</span>
 			</td>
 			<td>
@@ -633,7 +633,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE_TIP'); ?>" >
-			    <label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE') ?></label>
+			    <label for="soap_ws_custom_cache_on"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_ENABLE_WS_CACHE') ?></label>
 			</span>
 			</td>
 			<td>
