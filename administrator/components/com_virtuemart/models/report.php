@@ -176,7 +176,7 @@ class VirtuemartModelReport extends VmModel {
 		$orderBy = $this->_getOrdering('intervals','asc');
 		// TODO $nbrReturnProducts ?
 
-		return $this->exeSortSearchListQuery(true, $selectFindRows, $select, $joinedTables, $whereString, $groupBy, $orderBy );
+		return $this->exeSortSearchListQuery(true, $select, $joinedTables, $whereString, $groupBy, $orderBy );
 
 	}
 

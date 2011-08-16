@@ -46,20 +46,39 @@ require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 function vmInfo($publicdescr,$value=null){
 
 	$app = JFactory::getApplication();
-
+	$lang = JFactory::getLanguage();
 	if($value!==null){
-		$lang = JFactory::getLanguage();
+
 		$args = func_get_args();
 		if (count($args) > 0) {
 			$args[0] = $lang->_($args[0]);
-			$app ->enqueueMessage(call_user_func_array('sprintf', $args));
+			$app ->enqueueMessage(call_user_func_array('sprintf', $args),'info');
 		}
 	}	else {
 // 		$app ->enqueueMessage('Info: '.JText::_($publicdescr));
-		$app ->enqueueMessage('Info: '.$publicdescr);
+		$publicdescr = $lang->_($publicdescr);
+		$app ->enqueueMessage('Info: '.JText::_($publicdescr),'info');
 // 		debug_print_backtrace();
 	}
+}
 
+function vmWarn($publicdescr,$value=null){
+
+	$app = JFactory::getApplication();
+	$lang = JFactory::getLanguage();
+	if($value!==null){
+
+		$args = func_get_args();
+		if (count($args) > 0) {
+			$args[0] = $lang->_($args[0]);
+			$app ->enqueueMessage(call_user_func_array('sprintf', $args),'warning');
+		}
+	}	else {
+		// 		$app ->enqueueMessage('Info: '.JText::_($publicdescr));
+		$publicdescr = $lang->_($publicdescr);
+		$app ->enqueueMessage('Info: '.$publicdescr,'warning');
+		// 		debug_print_backtrace();
+	}
 }
 
 /**
@@ -67,14 +86,17 @@ function vmInfo($publicdescr,$value=null){
  * @author Max Milbers
  */
 function vmError($descr,$publicdescr=''){
-
+	$lang = JFactory::getLanguage();
 	if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 	if(Permissions::getInstance()->check('admin')){
 		$app = JFactory::getApplication();
+		$descr = $lang->_($descr);
 		$app ->enqueueMessage($descr,'error');
 	} else {
 		if(!empty($publicdescr)){
 			$app = JFactory::getApplication();
+
+			$publicdescr = $lang->_($publicdescr);
 			$app ->enqueueMessage($publicdescr,'error');
 		}
 	}
@@ -141,15 +163,15 @@ function vmTime($descr,$name='current'){
 
 	$starttime = VmConfig::$_starttime ;
 	if(empty($starttime[$name])){
-		vmInfo('vmTime: starting at general runtime '.microtime(true));
+		vmdebug('vmTime: starting at general runtime '.microtime(true));
 		VmConfig::$_starttime[$name] = microtime(true);
 	} else if($name=='current'){
-		vmInfo('vmTime: time consumed '.microtime(true) - $starttime[$name]);
+		vmdebug('vmTime: time consumed '.microtime(true) - $starttime[$name]);
 		VmConfig::$_starttime[$name] = microtime(true);
 	} else {
 		if(empty($descr)) $descr = $name;
 		$tmp = 'vmTime: '.$descr.': '.(microtime(true) - $starttime[$name]);
-		vmInfo($tmp);
+		vmdebug($tmp);
 	}
 
 }

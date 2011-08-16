@@ -19,6 +19,7 @@
 
 defined('_JEXEC') or die();
 
+define('USE_SQL_CALC_FOUND_ROWS' , true);
 
 class VmModel extends JModel {
 
@@ -33,6 +34,7 @@ class VmModel extends JModel {
 	var $_idName		= '';
 	var $_cidName		= 'cid';
 	var $_togglesName	= null;
+	private $_withCount = true;
 
 	public function __construct($cidName='cid'){
 		parent::__construct();
@@ -100,16 +102,20 @@ class VmModel extends JModel {
 	 *
 	 * @author Max Milbers
 	 */
-	public function getPagination($total=0) {
-		$mainframe =& JFactory::getApplication();
-		$this->setState('limit', $mainframe->getUserStateFromRequest('global.list.limit', 'limit',  VmConfig::get('list_limit',10), 'int'));
-		$this->setState('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
-		// In case limit has been changed, adjust limitstart accordingly
-		$this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
+	public function getPagination($total=0,$limitStart=0,$limit=0) {
+
+		if(empty($limit) ){
+			$limits = $this->setPaginationLimits();
+		} else {
+			$limits[0] = $limitStart;
+			$limits[1] = $limit;
+		}
+
 		// TODO, this give result when result = 0 >>> if(empty($total)) $total = $this->getTotal();
 		if ($this->_pagination == null) {
 			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($total , $this->getState('limitstart'), $this->getState('limit') );
+// 			$this->_pagination = new JPagination($total , $this->getState('limitstart'), $this->getState('limit') );
+			$this->_pagination = new JPagination($total , $limits[0], $limits[1] );
 		}
 		return $this->_pagination;
 	}
@@ -188,37 +194,53 @@ class VmModel extends JModel {
 
 	}
 
-	public function exeSortSearchListQuery($object, $selectFindRows, $select, $joinedTables, $whereString = '', $groupBy = '', $orderBy = '', $filter_order_Dir = '', $nbrReturnProducts = false){
+	public function setPaginationLimits(){
 
-		//and the where conditions
-		$joinedTables .= $whereString .$groupBy .$orderBy .$filter_order_Dir ;
+		$mainframe = JFactory::getApplication();
 
-		vmTime('exeSortSearchListQuery count','count');
-		$this->_db->setQuery($selectFindRows.$joinedTables);
+		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit',  VmConfig::get('list_limit',10), 'int');
+		$this->setState('limit', $limit);
 
-		$count = $this->_db->loadResult();
-		vmTime('exeSortSearchListQuery count','count');
+// 		$this->setState('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
+		// In case limit has been changed, adjust limitstart accordingly
+// 		$this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
+		$limitstart = ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0);
+		$this->setState('limitstart', $limitstart);
 
-		if($count == false || $count == 0){
-			    			$app = JFactory::getApplication();
-			    			$app->enqueueMessage('sortSearchOrder Error in query '.$this->_db->getQuery().'<br /><br />'.$this->_db->getErrorMsg().'<br />');
-			$this->_total = 0;;
-			return array();
-		}
-		else if($count > 0){
+		return array($limitstart,$limit);
+	}
+
+	public function setGetCount($withCount){
+
+		$this->_withCount = $withCount;
+	}
+
+	public function exeSortSearchListQuery($object, $select, $joinedTables, $whereString = '', $groupBy = '', $orderBy = '', $filter_order_Dir = '', $nbrReturnProducts = false){
+
+// 		vmSetStartTime('exe');
+// 		if(USE_SQL_CALC_FOUND_ROWS){
+
+			//and the where conditions
+			$joinedTables .= $whereString .$groupBy .$orderBy .$filter_order_Dir ;
+// 			$joinedTables .= $whereString .$groupBy .$orderBy;
 
 			if($nbrReturnProducts){
 				$limitStart = 0;
 				$limit = $nbrReturnProducts;
+				$this->_withCount = false;
 			} else {
-				//     			$count =  $this->_db->loadResult();
-				$this->getPagination($count);
-				$limitStart = $this->_pagination->limitstart;
-				$limit = $this->_pagination->limit;
+				$limits = $this->setPaginationLimits();
+				$limitStart = $limits[0];
+				$limit = $limits[1];
 			}
 
-			vmTime('exeSortSearchListQuery load array','array');
-			$this->_db->setQuery($select.$joinedTables, $limitStart, $limit);
+			if($this->_withCount){
+				$q = 'SELECT SQL_CALC_FOUND_ROWS '.$select.$joinedTables;
+			} else {
+				$q = 'SELECT '.$select.$joinedTables;
+			}
+
+			$this->_db->setQuery($q,$limitStart,$limit);
 
 			if($object){
 				$list = $this->_db->loadObjectList();
@@ -226,11 +248,65 @@ class VmModel extends JModel {
 				$list = $this->_db->loadResultArray();
 			}
 
-			vmTime('exeSortSearchListQuery load array','array');
+			if($this->_withCount){
+				$this->_db->setQuery('SELECT FOUND_ROWS()');
+				$count = $this->_db->loadResult();
 
+				if($count == false){
+					$count = 0;
+				}
+				$this->_total = $count;
+				$this->getPagination($count,$limitStart,$limit);
+			} else {
+				$this->_withCount = true;
+			}
+// 			vmTime('exeSortSearchListQuery SQL_CALC_FOUND_ROWS','exe');
 			return $list;
-		}
 
+/*		} else {
+
+			//and the where conditions
+			$joinedTables .= $whereString .$groupBy .$orderBy .$filter_order_Dir ;
+
+// 			vmTime('exeSortSearchListQuery count','count');
+			$this->_db->setQuery($selectFindRows.$joinedTables);
+
+			$count = $this->_db->loadResult();
+// 			vmTime('exeSortSearchListQuery count','count');
+
+			if($count == false || $count == 0){
+				$app = JFactory::getApplication();
+				$app->enqueueMessage('sortSearchOrder Error in query '.$this->_db->getQuery().'<br /><br />'.$this->_db->getErrorMsg().'<br />');
+				$this->_total = 0;;
+				return array();
+			}
+			else if($count > 0){
+
+				if($nbrReturnProducts){
+					$limitStart = 0;
+					$limit = $nbrReturnProducts;
+				} else {
+					//     			$count =  $this->_db->loadResult();
+					$this->getPagination($count);
+					$limitStart = $this->_pagination->limitstart;
+					$limit = $this->_pagination->limit;
+				}
+
+// 				vmTime('exeSortSearchListQuery load array','array');
+				$this->_db->setQuery('SELECT '.$select.$joinedTables, $limitStart, $limit);
+
+				if($object){
+					$list = $this->_db->loadObjectList();
+				} else {
+					$list = $this->_db->loadResultArray();
+				}
+// 				vmdebug('my db query ding COUNT ',$list);
+// 				vmTime('exeSortSearchListQuery load array','array');
+				vmTime('exeSortSearchListQuery COUNT','exe');
+				return $list;
+			}
+		}
+*/
 	}
 
 	/**

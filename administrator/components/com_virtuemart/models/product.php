@@ -235,8 +235,8 @@ class VirtueMartModelProduct extends VmModel {
 
 		//write the query, incldue the tables
 // 		$selectFindRows = 'SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_products` ';
-		$selectFindRows = 'SELECT COUNT(*) FROM `#__virtuemart_products` ';
-		$select = 'SELECT * FROM `#__virtuemart_products` ';
+// 		$selectFindRows = 'SELECT COUNT(*) FROM `#__virtuemart_products` ';
+		$select = ' * FROM `#__virtuemart_products` ';
 
 		$joinedTables = '';
 		if ($joinCategory == true) {
@@ -259,7 +259,7 @@ class VirtueMartModelProduct extends VmModel {
 			$whereString = '';
 		}
 
-		return $this->exeSortSearchListQuery(false,$selectFindRows, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
+		return $this->exeSortSearchListQuery(false, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
 
 	}
 
