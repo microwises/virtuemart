@@ -801,25 +801,25 @@ class VirtueMartCart {
 			// TODO valerie TO DO  -- not finished
 			$cart = $this->getCart();
 			$dispatcher = JDispatcher::getInstance();
-			// $returnValues = $dispatcher->trigger('plgVmAfterCheckoutDoPayment', array($orderID, 'cart' => $cart));
+
 			$returnValues = $dispatcher->trigger('plgVmAfterCheckoutDoPayment', array($orderID, $cart));
 			// may be redirect is done by the payment plugin (eg: paypal) so we do not come back here
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
 
-			$activeplugin = false;
-			foreach ($returnValues as $returnValue) {
-				if ($returnValue) {
-					$order->handleStockAfterStatusChanged($returnValue);
-					$activeplugin = true;
-					break;
-				}
-				// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
-			}
+// 			$activeplugin = false;
+// 			foreach ($returnValues as $returnValue) {
+// 				if ($returnValue == 'P' || ) {
+// 					$order->handleStockAfterStatusChanged($returnValue);
+// 					$activeplugin = true;
+// 					break;
+// 				}
+// 				Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
+// 			}
 
-			if ($activeplugin)   {
+// 			if ($activeplugin)   {
 				$mainframe = JFactory::getApplication();
 				$mainframe->redirect('index.php?option=com_virtuemart&view=cart&layout=order_done',JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));
-			}
+// 			}
 		} else {
 			$mainframe = JFactory::getApplication();
 			$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));

@@ -1444,28 +1444,31 @@ class VirtueMartModelProduct extends VmModel {
 			return false;
 		}
 
-		$q = 'UPDATE `#__virtuemart_products` ';
-		if($signInStoc!='='){
-			$q .= 'SET `product_in_stock` = `product_in_stock` ' . $signInStoc . $amount ;
-		}
-		if($signOrderedStock!='='){
-			$q .= 'SET `product_ordered` = `product_ordered` ' . $signOrderedStock . $amount ;
-		}
-		$q .= ' WHERE `virtuemart_product_id` = ' . $id;
+		if($signInStoc != '=' || $signOrderedStock != '='){
+			$q = 'UPDATE `#__virtuemart_products` ';
+			if($signInStoc!='='){
+				$q .= 'SET `product_in_stock` = `product_in_stock` ' . $signInStoc . $amount ;
+			}
+			if($signOrderedStock!='='){
+				$q .= 'SET `product_ordered` = `product_ordered` ' . $signOrderedStock . $amount ;
+			}
+			$q .= ' WHERE `virtuemart_product_id` = ' . $id;
 
-		$this->_db->setQuery($q);
-		$this->_db->query();
+			$this->_db->setQuery($q);
+			$this->_db->query();
 
-		if ($signInStoc == '-') {
-			$this->_db->setQuery('SELECT `product_in_stock` < `low_stock_notification` '
-			. 'FROM `#__virtuemart_products` '
-			. 'WHERE `virtuemart_product_id` = ' . $id
-			);
-			if ($this->_db->loadResult() == 1) {
+			if ($signInStoc == '-') {
+				$this->_db->setQuery('SELECT `product_in_stock` < `low_stock_notification` '
+				. 'FROM `#__virtuemart_products` '
+				. 'WHERE `virtuemart_product_id` = ' . $id
+				);
+				if ($this->_db->loadResult() == 1) {
 
-				// TODO Generate low stock warning
+					// TODO Generate low stock warning
+				}
 			}
 		}
+
 
 	}
 

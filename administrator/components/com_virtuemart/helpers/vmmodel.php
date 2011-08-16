@@ -193,11 +193,13 @@ class VmModel extends JModel {
 		//and the where conditions
 		$joinedTables .= $whereString .$groupBy .$orderBy .$filter_order_Dir ;
 
+		vmTime('exeSortSearchListQuery count','count');
 		$this->_db->setQuery($selectFindRows.$joinedTables);
 		//     	if(!$this->_db->query()){
-		// 		vmTime('exeSortSearchListQuery count','count');
+
 		$count = $this->_db->loadResult();
-		// 		vmTime('exeSortSearchListQuery count','count');
+		vmTime('exeSortSearchListQuery count','count');
+
 		if($count == false ){
 			//     			$app = JFactory::getApplication();
 			//     			$app->enqueueMessage('sortSearchOrder Error in query '.$this->_db->getQuery().'<br /><br />'.$this->_db->getErrorMsg().'<br />');
@@ -212,11 +214,12 @@ class VmModel extends JModel {
 				$limitStart = $this->_pagination->limitstart;
 				$limit = $this->_pagination->limit;
 			}
-			// 			vmTime('exeSortSearchListQuery load array','array');
-			$this->_db->setQuery($select.$joinedTables, $limitStart, $limit);
-			// 			vmTime('exeSortSearchListQuery load array','array');
-			$list = $this->_db->loadResultArray();
 
+			vmTime('exeSortSearchListQuery load array','array');
+			$this->_db->setQuery($select.$joinedTables, $limitStart, $limit);
+
+			$list = $this->_db->loadResultArray();
+			vmTime('exeSortSearchListQuery load array','array');
 			//     		vmdebug('exeSortSearchListQuery ',$this->_db);
 
 			return $list;

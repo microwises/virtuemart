@@ -85,6 +85,12 @@ class VirtueMartControllerPaymentresponse extends JController {
         $view->display();
     }
 
+    /**
+     * Atttention this is the function which processs the response of the payment plugin
+     *
+     * @author Valerie Isaaksen
+     * @return success of update
+     */
     function paymentNotification() {
         $data = JRequest::get('post');
         if (!class_exists('vmPaymentPlugin'))
@@ -93,6 +99,12 @@ class VirtueMartControllerPaymentresponse extends JController {
         $pelement = JRequest::getVar('pelement');
         $dispatcher = JDispatcher::getInstance();
         $retValues = $dispatcher->trigger('plgVmOnPaymentNotification', array('pelement' => $pelement));
+
+        if (!class_exists('VirtueMartModelOrders'))
+				require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+
+        return $order->handleStockAfterStatusChanged($retValues);
+
     }
 
 }

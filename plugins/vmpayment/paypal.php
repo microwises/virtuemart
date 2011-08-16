@@ -225,6 +225,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
           }
           echo '</form>';
          */
+
         $mainframe = JFactory::getApplication();
         $mainframe->redirect("https://" . $url . $qstring);
 
@@ -279,6 +280,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         if (!$this->_processIPN($paypal_data)) {
 
             $new_state = $params->get('status_canceled');
+
         } else {
 
             $query = 'SELECT ' . $this->_tablename . '.`virtuemart_payment_id` FROM ' . $this->_tablename
@@ -298,6 +300,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             $paramstring = $this->getVmPaymentParams($vendorId = 0, $orderData->virtuemart_paymentmethod_id);
             $params = new JParameter($paramstring);
             $new_state = $params->get('status_success');
+
         }
         //fclose($fp);
         return $new_state;
