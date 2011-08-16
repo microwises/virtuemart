@@ -229,6 +229,7 @@
 				<xsd:all>
 					<xsd:element name="loginInfo" type="tns:loginInfo" />
 					<xsd:element name="order_id" type="xsd:string" />
+					<xsd:element name="order_number" type="xsd:string" />
 					<xsd:element name="limite_start" type="xsd:string" />
 					<xsd:element name="limite_end" type="xsd:string" />
 				</xsd:all>
