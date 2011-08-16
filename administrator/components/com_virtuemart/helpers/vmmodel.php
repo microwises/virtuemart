@@ -34,10 +34,10 @@ class VmModel extends JModel {
 	var $_cidName		= 'cid';
 	var $_togglesName	= null;
 
-	public function __construct($cidName='cid'){
-		parent::__construct();
+    public function __construct($cidName='cid'){
+        parent::__construct();
 
-		$this->_cidName = $cidName;
+        $this->_cidName = $cidName;
 
 		// Get the pagination request variables
 		$mainframe = JFactory::getApplication() ;
@@ -48,65 +48,65 @@ class VmModel extends JModel {
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 
-		// Get the id or array of ids.
+        // Get the id or array of ids.
 		$idArray = JRequest::getVar($this->_cidName,  0, '', 'array');
-		$this->setId((int)$idArray[0]);
+    	$this->setId((int)$idArray[0]);
 
-	}
+    }
 
-	public function setMainTable($maintablename,$maintable=0){
+    public function setMainTable($maintablename,$maintable=0){
 
-		$this->_maintablename = $maintablename;
-		if(empty($maintable)){
-			$this->_maintable = '#__virtuemart_'.$maintablename;
-		} else {
-			$this->_maintable = $maintable;
-		}
+    	$this->_maintablename = $maintablename;
+    	if(empty($maintable)){
+    		$this->_maintable = '#__virtuemart_'.$maintablename;
+    	} else {
+    		$this->_maintable = $maintable;
+    	}
 		$defaultTable = $this->getTable($this->_maintablename);
 		$this->_idName = $defaultTable->getKeyName();
-	}
+    }
 
-	public function setIdName($idName){
-		$this->_idName = $idName;
-	}
+    public function setIdName($idName){
+    	$this->_idName = $idName;
+    }
 
-	public function getIdName(){
-		return $this->_idName;
-	}
+    public function getIdName(){
+    	return $this->_idName;
+    }
 
-	public function getId(){
-		return $this->_id;
-	}
+   	public function getId(){
+    	return $this->_id;
+   	}
 
-	/**
-	 * Resets the id and data
-	 *
-	 * @author Max Milbers
-	 */
-	function setId($id){
+	 /**
+     * Resets the id and data
+     *
+     * @author Max Milbers
+     */
+    function setId($id){
 
-		if(is_array($id) && count($id)!==0) $id = $id[0];
-		if($this->_id!=$id){
+    	if(is_array($id) && count($id)!==0) $id = $id[0];
+    	if($this->_id!=$id){
 			$this->_id = (int)$id;
-			//			$idName = $this->_idName;
-			//			$this->$idName = $this->_id;
+//			$idName = $this->_idName;
+//			$this->$idName = $this->_id;
 			$this->_data = null;
-		}
-		return $this->_id;
-	}
+    	}
+    	return $this->_id;
+    }
 
 	/**
 	 * Loads the pagination
 	 *
 	 * @author Max Milbers
 	 */
-	public function getPagination($total=0) {
-		$mainframe = JFactory::getApplication();
+    public function getPagination($total=0) {
+		$mainframe =& JFactory::getApplication();
 		$this->setState('limit', $mainframe->getUserStateFromRequest('global.list.limit', 'limit',  VmConfig::get('list_limit',10), 'int'));
 		$this->setState('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
-		if(empty($total)) $total = $this->getTotal();
+    	// TODO, this give result when result = 0 >>> if(empty($total)) $total = $this->getTotal();
 		if ($this->_pagination == null) {
 			jimport('joomla.html.pagination');
 			$this->_pagination = new JPagination($total , $this->getState('limitstart'), $this->getState('limit') );
@@ -117,12 +117,12 @@ class VmModel extends JModel {
 	/**
 	 * Gets the total number of entries
 	 *TODO filters and search ar not set
-	 * @author Max Milbers
+     * @author Max Milbers
 	 * @return int Total number of entries in the database
 	 */
 	public function getTotal() {
 
-		if (empty($this->_total)) {
+    	if (empty($this->_total)) {
 			$query = 'SELECT `'.$this->_db->getEscaped($this->_idName).'` FROM `'.$this->_db->getEscaped($this->_maintable).'`';;
 			$this->_db->setQuery( $query );
 			if(!$this->_db->query()){
@@ -131,118 +131,118 @@ class VmModel extends JModel {
 			} else {
 				$this->_total = $this->_db->getNumRows();
 			}
-			//			$this->_total = $this->_getListCount($query);
-		}
+//			$this->_total = $this->_getListCount($query);
+        }
 
-		return $this->_total;
-	}
+        return $this->_total;
+    }
 
-	/**
-	 *
-	 * exeSortSearchListQuery
-	 *
-	 * @author Max Milbers
-	 * @param unknown_type $selectFindRows
-	 * @param unknown_type $whereString
-	 * @param unknown_type $groupBy
-	 * @param unknown_type $orderBy
-	 * @param unknown_type $filter_order_Dir
-	 */
-	public function exeSortSearchListQuery($selectFindRows, $select, $joinedTables, $whereString = '', $groupBy = '', $orderBy = '', $filter_order_Dir = '', $nbrReturnProducts = false){
+    /**
+     *
+     * exeSortSearchListQuery
+     *
+     * @author Max Milbers
+     * @param unknown_type $selectFindRows
+     * @param unknown_type $whereString
+     * @param unknown_type $groupBy
+     * @param unknown_type $orderBy
+     * @param unknown_type $filter_order_Dir
+     */
+    public function exeSortSearchListQuery($select, $joinedTables, $whereString = '', $groupBy = '', $orderBy = '', $nbrReturnProducts = false){
 
-		//and the where conditions
-		$joinedTables .= $whereString .$groupBy .$orderBy .$filter_order_Dir ;
+    	//and the where conditions
+    	$joinedTables .= $whereString .$groupBy .$orderBy ;
+    	$this->_db->setQuery('select SQL_CALC_FOUND_ROWS '.$select.$joinedTables);
+		$list = $this->_db->loadObjectList();echo $this->_db->_sql ;
+		/* Get total */
+		$this->_db->setQuery('SELECT FOUND_ROWS()');
+    	$count = $this->_db->loadResult();
+		echo $count;
+    	if($count == false ){
+//     			$app = JFactory::getApplication();
+//     			$app->enqueueMessage('sortSearchOrder Error in query '.$this->_db->getQuery().'<br /><br />'.$this->_db->getErrorMsg().'<br />');
+    	} else if($count > 0){
 
-		$this->_db->setQuery($selectFindRows.$joinedTables);
-		//     	if(!$this->_db->query()){
-// 		vmTime('exeSortSearchListQuery count','count');
-		$count = $this->_db->loadResult();
-// 		vmTime('exeSortSearchListQuery count','count');
-		if($count == false ){
-			//     			$app = JFactory::getApplication();
-			//     			$app->enqueueMessage('sortSearchOrder Error in query '.$this->_db->getQuery().'<br /><br />'.$this->_db->getErrorMsg().'<br />');
-		} else if($count > 0){
+    		if($nbrReturnProducts){
+    			$limitStart = 0;
+    			$limit = $nbrReturnProducts;
+    		} else {
+//     			$count =  $this->_db->loadResult();
+    			$this->getPagination($count);
+    			$limitStart = $this->_pagination->limitstart;
+    			$limit = $this->_pagination->limit;
+    		}
 
-			if($nbrReturnProducts){
-				$limitStart = 0;
-				$limit = $nbrReturnProducts;
-			} else {
-				//     			$count =  $this->_db->loadResult();
-				$this->getPagination($count);
-				$limitStart = $this->_pagination->limitstart;
-				$limit = $this->_pagination->limit;
-			}
-// 			vmTime('exeSortSearchListQuery load array','array');
-			$this->_db->setQuery($select.$joinedTables, $limitStart, $limit);
-// 			vmTime('exeSortSearchListQuery load array','array');
-			$list = $this->_db->loadResultArray();
+    		//$this->_db->setQuery($select.$joinedTables, $limitStart, $limit);
 
-			//     		vmdebug('exeSortSearchListQuery ',$this->_db);
+    		
 
-			return $list;
-		} else {
-			return array();
-		}
+//     		vmdebug('exeSortSearchListQuery ',$this->_db);
 
-	}
+    		return $list;
+    	} else {
+    		return array();
+    	}
+
+    }
 
 
-	/**
-	 *
-	 * @author Max Milberes
-	 *
-	 */
+    /**
+     *
+     * @author Max Milberes
+     *
+     */
 
-	public function getData(){
+    public function getData(){
 
-		if (empty($this->_data)) {
-			$this->_data = $this->getTable($this->_maintablename);
+    	if (empty($this->_data)) {
+		    $this->_data = $this->getTable($this->_maintablename);
 			$this->_data->load($this->_id);
 
 			//just an idea
-			if(isset($this->_data->virtuemart_vendor_id) && empty($this->_data->virtuemart_vendor_id)){
-				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-				$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();;
-			}
+    		if(isset($this->_data->virtuemart_vendor_id) && empty($this->_data->virtuemart_vendor_id)){
+		    	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+		    	$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();;
+		    }
 		}
 
 		return $this->_data;
-	}
+    }
 
 
-	public function store(&$data){
+    public function store(&$data){
 
 		$table = $this->getTable($this->_maintablename);
 
 		$data = $table->bindChecknStore($data);
 
-		$errors = $table->getErrors();
+	   $errors = $table->getErrors();
 		foreach($errors as $error){
 			$this->setError( get_class( $this ).'::store '.$error);
 		}
 		if(is_object($data)){
 			$_idName = $this->_idName;
 			return $data->$_idName;
-		} else {
-			return $data[$this->_idName];
-		}
+    	} else {
+    		return $data[$this->_idName];
+    	}
 
 	}
 
 	/**
 	 * Delete all record ids selected
-	 *
-	 * @author Max Milbers
-	 * @return boolean True is the delete was successful, false otherwise.
-	 */
+     *
+     * @author Max Milbers
+     * @return boolean True is the delete was successful, false otherwise.
+     */
 	public function remove($ids) {
 
 		$table = $this->getTable($this->_maintablename);
 		foreach($ids as $id) {
-			if (!$table->delete((int)$id)) {
+		    if (!$table->delete((int)$id)) {
 				$this->setError(get_class( $this ).'::remove '.$id.' '.$table->getError());
 				return false;
-			}
+		    }
 		}
 
 		return true;
@@ -266,14 +266,14 @@ class VmModel extends JModel {
 			return false ;
 		}
 		$table = $this->getTable($this->_maintablename);
-		//		if(empty($cidName)) $cidName = $this->_cidName;
+//		if(empty($cidName)) $cidName = $this->_cidName;
 
 		$ids = JRequest::getVar( $this->_cidName, JRequest::getVar('cid',array(0)), 'post', 'array' );
 
 		foreach($ids as $id){
 			$table->load( (int)$id );
 			if (!$table->toggle($field, $val)) {
-				//			if (!$table->store()) {
+//			if (!$table->store()) {
 				JError::raiseError(500, get_class( $this ).'::toggle '.$table->getError() );
 				$ok = false;
 			}
@@ -281,7 +281,7 @@ class VmModel extends JModel {
 
 		return $ok;
 
-	}
+    }
 	/**
 	 * Original From Joomla Method to move a weblink
 	 * @ Author Kohl Patrick
@@ -362,7 +362,7 @@ class VmModel extends JModel {
 
 		return ' ORDER BY '.$filter_order.' '.$filter_order_Dir ;
 	}
-	/**
+    /**
 	 * Since an object like product, category dont need always an image, we can attach them to the object with this function
 	 * The parameter takes a single product or arrays of products, look for BE/views/product/view.html.php
 	 * for an exampel using it
@@ -382,6 +382,6 @@ class VmModel extends JModel {
 
 	public function resetErrors(){
 
-		$this->_errors = array();
+	    $this->_errors = array();
 	}
 }

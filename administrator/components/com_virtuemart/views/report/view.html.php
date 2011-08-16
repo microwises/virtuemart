@@ -44,6 +44,7 @@ class VirtuemartViewReport extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminui');
+		$this->loadHelper('html');
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('reportFunctions');
@@ -73,7 +74,8 @@ class VirtuemartViewReport extends JView {
 
 
 		$lists['select_date'] = $model->renderDateSelectList($date_presets, $from_period, $until_period);
-
+		$lists['state_list'] = $model->renderOrderstatesList();
+		$lists['intervals'] = $model->renderIntervalsList();
 
 		$myCurrencyDisplay = CurrencyDisplay::getInstance();
 
@@ -81,12 +83,13 @@ class VirtuemartViewReport extends JView {
 		if(is_array($revenueBasic)){
 			foreach($revenueBasic as $i => $j){
 				$j->revenue = $myCurrencyDisplay->priceDisplay($j->revenue,'',false);
+				$j->itemsSold = $model->getItemsByRevenue($j);
 			}
 			unset($i);
 		}
 		$this->assignRef('report', $revenueBasic);
 
-		$itemsSold = $model->getItemsSold();
+		$itemsSold = $model->getItemsSold($revenueBasic);
 		$this->assignRef('itemsSold', $itemsSold);
 
 		$productList = $model->getOrderItems();
