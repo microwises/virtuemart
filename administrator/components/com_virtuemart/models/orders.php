@@ -57,7 +57,7 @@ class VirtueMartModelOrders extends VmModel {
 		return $orderId;
 
 	}
-/**
+	/**
 	 * This function gets the orderId, for payment response
 	 *
 	 */
@@ -167,11 +167,11 @@ class VirtueMartModelOrders extends VmModel {
 	{
 
 		$query = "SELECT o.*, CONCAT_WS(' ',u.first_name,u.middle_name,u.last_name) AS order_name "
-			.',m.payment_name AS payment_method '
-			.$this->getOrdersListQuery();
-/*		$_filter = array();
-		if ($uid > 0) {
-			$_filter[] = ('u.virtuemart_user_id = ' . (int)$uid);
+		.',m.payment_name AS payment_method '
+		.$this->getOrdersListQuery();
+		/*		$_filter = array();
+		 if ($uid > 0) {
+		$_filter[] = ('u.virtuemart_user_id = ' . (int)$uid);
 		}*/
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
@@ -210,20 +210,20 @@ class VirtueMartModelOrders extends VmModel {
 	}
 
 
-    /**
+	/**
 	 * Update an order status and send e-mail if needed
 	 *
 	 * @author Valérie Isaksen
 	 *
 	 */
 	public function updateOrderStatus($order_id, $order_status){
-                // Update the order
-                $order = $this->getTable('orders');
-                $order->load((int)$order_id);
-                $order->order_status = $order_status;
-                $order->store();
+		// Update the order
+		$order = $this->getTable('orders');
+		$order->load((int)$order_id);
+		$order->order_status = $order_status;
+		$order->store();
 
-                // here should update stock level
+		// here should update stock level
 	}
 
 	/**
@@ -288,9 +288,9 @@ class VirtueMartModelOrders extends VmModel {
 					JPluginHelper::importPlugin('vmpayment');
 					$_dispatcher = JDispatcher::getInstance();
 					$_returnValues = $_dispatcher->trigger('plgVmOnShipOrderPayment',array(
-									 $virtuemart_order_id
-								)
-						);
+					$virtuemart_order_id
+					)
+					);
 					foreach ($_returnValues as $_returnValue) {
 						if ($_returnValue === true) {
 							break; // Plugin was successfull
@@ -309,10 +309,10 @@ class VirtueMartModelOrders extends VmModel {
 					JPluginHelper::importPlugin('vmpayment');
 					$_dispatcher = JDispatcher::getInstance();
 					$_dispatcher->trigger('plgVmOnCancelPayment',array(
-									 $virtuemart_order_id
-									,$order_status_code
-									,$new_status
-							)
+					$virtuemart_order_id
+					,$order_status_code
+					,$new_status
+					)
 					);
 				}
 
@@ -332,7 +332,8 @@ class VirtueMartModelOrders extends VmModel {
 						$db->setQuery($_q);
 						if ($_products = $db->loadObjectList()) {
 							foreach ($_products as $_key => $_product) {
-								if ($_updateStock > 0) { // Increase
+								if ($_updateStock > 0) {
+									// Increase
 									$_productModel->increaseStockAfterCancel ($_product->virtuemart_product_id, $_product->product_quantity);
 								} else { // Decrease
 									$_productModel->decreaseStockAfterSales ($_product->virtuemart_product_id, $_product->product_quantity);
@@ -399,7 +400,7 @@ class VirtueMartModelOrders extends VmModel {
 			return false;
 		}
 		$this->_handlePayment($orderID, $cart, $prices);
-      $this->_handleShipping($orderID, $cart, $prices);
+		$this->_handleShipping($orderID, $cart, $prices);
 
 		return $orderID;
 	}
@@ -415,17 +416,17 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	private function _createOrder($_cart, $_usr, $_prices)
 	{
-//		TODO We need tablefields for the new values:
-//		Shipping:
-//		$_prices['shippingValue']		w/out tax
-//		$_prices['shippingTax']			Tax
-//		$_prices['salesPriceShipping']	Total
-//
-//		Payment:
-//		$_prices['paymentValue']		w/out tax
-//		$_prices['paymentTax']			Tax
-//		$_prices['paymentDiscount']		Discount
-//		$_prices['salesPricePayment']	Total
+		//		TODO We need tablefields for the new values:
+		//		Shipping:
+		//		$_prices['shippingValue']		w/out tax
+		//		$_prices['shippingTax']			Tax
+		//		$_prices['salesPriceShipping']	Total
+		//
+		//		Payment:
+		//		$_prices['paymentValue']		w/out tax
+		//		$_prices['paymentTax']			Tax
+		//		$_prices['paymentDiscount']		Discount
+		//		$_prices['salesPricePayment']	Total
 
 		$_orderData = new stdClass();
 
@@ -437,7 +438,7 @@ class VirtueMartModelOrders extends VmModel {
 		//Note as long we do not have an extra table only storing addresses, the virtuemart_userinfo_id is not needed.
 		//The virtuemart_userinfo_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.
 		//the saved order should be an snapshot with plain data written in it.
-//		$_orderData->virtuemart_userinfo_id = 'TODO'; // $_cart['BT']['virtuemart_userinfo_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
+		//		$_orderData->virtuemart_userinfo_id = 'TODO'; // $_cart['BT']['virtuemart_userinfo_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
 		$_orderData->order_total = $_prices['billTotal'];
 		$_orderData->order_subtotal = $_prices['priceWithoutTax'];
 		$_orderData->order_tax = $_prices['taxAmount'];
@@ -498,23 +499,23 @@ class VirtueMartModelOrders extends VmModel {
 
 		$_userFieldsModel = new VirtueMartModelUserfields();
 		$_userFieldsBT = $_userFieldsModel->getUserFields('account'
-			, array('delimiters'=>true, 'captcha'=>true)
-			, array('username', 'password', 'password2', 'user_is_vendor')
+		, array('delimiters'=>true, 'captcha'=>true)
+		, array('username', 'password', 'password2', 'user_is_vendor')
 		);
 
 		foreach ($_userFieldsBT as $_fld) {
 			$_name = $_fld->name;
 			if(!empty( $_cart->BT[$_name])){
-/*				if ($_name == 'virtuemart_country_id') {
+				/*				if ($_name == 'virtuemart_country_id') {
 					$_userInfoData->country = $_cart->BT['virtuemart_country_id'];
-	//				$_userInfoData->country = shopFunctions::getCountryByID($_cart->BT['virtuemart_country_id']);
+				//				$_userInfoData->country = shopFunctions::getCountryByID($_cart->BT['virtuemart_country_id']);
 				} elseif ($_name == 'virtuemart_state_id') {
-					$_userInfoData->state = $_cart->BT['virtuemart_state_id'];
-	//				$_userInfoData->state = shopFunctions::getStateByID($_cart->BT['virtuemart_state_id']);
+				$_userInfoData->state = $_cart->BT['virtuemart_state_id'];
+				//				$_userInfoData->state = shopFunctions::getStateByID($_cart->BT['virtuemart_state_id']);
 				} else {*/
 
-					$_userInfoData->$_name = $_cart->BT[$_name];
-			//	}
+				$_userInfoData->$_name = $_cart->BT[$_name];
+				//	}
 			}
 		}
 
@@ -529,8 +530,8 @@ class VirtueMartModelOrders extends VmModel {
 		if ($_cart->ST) {
 			$_userInfoData->virtuemart_order_userinfo_id = null; // Reset key to make sure it doesn't get overwritten by ST
 			$_userFieldsST = $_userFieldsModel->getUserFields('shipping'
-				, array('delimiters'=>true, 'captcha'=>true)
-				, array('username', 'password', 'password2', 'user_is_vendor')
+			, array('delimiters'=>true, 'captcha'=>true)
+			, array('username', 'password', 'password2', 'user_is_vendor')
 			);
 			foreach ($_userFieldsST as $_fld) {
 				$_name = $_fld->name;
@@ -562,40 +563,126 @@ class VirtueMartModelOrders extends VmModel {
 	private function _handlePayment($orderID, $cart, $prices)
 	{
 
-// 		$orderNr = $this->getOrderNumber($orderID);
+		// 		$orderNr = $this->getOrderNumber($orderID);
 
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStorePaymentData',array(
-					 $orderID
-					,$cart
-					,$prices
+		$orderID
+		,$cart
+		,$prices
 		));
 
 		foreach ($returnValues as $returnValue) {
 			if ($returnValue !== null) {
-                            $this->handleStockAFterStatusChanged($returnValue);
+				$this->handleStockAfterStatusChanged($returnValue);
 
 				break; // This was the active plugin, so there's nothing left to do here.
 			}
 			// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
 
-                }
+		}
 	}
-        function handleStockAFterStatusChanged($newStatus) {
 
-				// We got a new order status; check if the stock should be updated
-				if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
-				if (VirtueMartModelOrderstatus::updateStockAfterStatusChange($newStatus) < 0) {// >0 is not possible for new orders
-					if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
-					$productModel = new VirtueMartModelProduct();
-					foreach ($cart->products as $prod) {
-						$productModel->decreaseStockAfterSales ($prod->virtuemart_product_id, $prod->quantity);
-					}
+	function handleStockAfterStatusChanged($newState,$products,$oldState = 'P') {
+
+			if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
+			$productModel = new VirtueMartModelProduct();
+
+			// P means ordered, but payment not confirmed, => real stock stays the same => product_in_stock = and product_ordered =
+			if($newState=='P'){
+				//for a new order
+				if($oldState=='P'){
+					$product_in_stock = '=';
+					$product_ordered = '=';
 				}
 
-        }
-        /**
+				else if($oldState=='C'){
+					$product_in_stock = '=';
+					$product_ordered = '-';
+				}
+
+				else if($oldState=='S'){
+					$product_in_stock = '+';
+					$product_ordered = '=';
+
+				}
+
+				else if($oldState=='X'){
+
+				}
+
+			}
+			//  => product_in_stock = and product_ordered =
+			else if($newState=='C'){
+				if($oldState=='P'){
+					$product_in_stock = '=';
+					$product_ordered = '+';
+				}
+
+				else if($oldState=='S'){
+					$product_in_stock = '+';
+					$product_ordered = '+';
+				}
+
+				else if($oldState=='X'){
+
+				}
+			}
+			// S means shipped => means real stock decreased an virtual stock => product_in_stock -  and product_ordered -
+			else if($newState=='S'){
+// 				$action = 'decreaseStockAfterSales';
+				if($oldState=='P'){
+					$product_in_stock = '-';
+					$product_ordered = '=';
+				}
+
+				else if($oldState=='C'){
+					$product_in_stock = '-';
+					$product_ordered = '-';
+				}
+
+				else if($oldState=='X'){
+
+				}
+
+			}
+			//X Cancelled, we should revert the old stocks, so we different options here,
+			// we have different things todo depending on the state set before
+			else if($newState=='X'){
+				if($oldState=='P'){
+					$product_in_stock = '=';
+					$product_ordered = '=';
+				}
+				else if($oldState=='C'){
+					$product_in_stock = '=';
+					$product_ordered = '-';
+
+				}
+				else if($oldState=='S'){
+					$product_in_stock = '+';
+					$product_ordered = '=';
+
+				}
+
+			}
+			else{
+				vmError('The workflow for '.$newState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Cant process workflow, contact the shopowner');
+// 				$action
+			}
+
+
+
+			foreach ($products as $prod) {
+
+				$productModel->updateStock ($prod->virtuemart_product_id, $prod->quantity,$product_in_stock,$product_ordered);
+
+			}
+
+// 		}
+
+	}
+	/**
 	 * Handle the selected shipping method. If triggered to do so, this method will also
 	 * take care of the stock updates.
 	 *
@@ -609,9 +696,9 @@ class VirtueMartModelOrders extends VmModel {
 		JPluginHelper::importPlugin('vmshipping');
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreShipperData',array(
-					 $orderID
-					,$cart
-					,$prices
+		$orderID
+		,$cart
+		,$prices
 		));
 
 
@@ -628,7 +715,7 @@ class VirtueMartModelOrders extends VmModel {
 	private function _createOrderLines($_id, $_cart)
 	{
 		$_orderItems = $this->getTable('order_items');
-//		$_lineCount = 0;
+		//		$_lineCount = 0;
 		foreach ($_cart->products as $priceKey=>$_prod) {
 			if (!is_int($priceKey)) {
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
@@ -637,24 +724,24 @@ class VirtueMartModelOrders extends VmModel {
 				$row=0 ;
 				$_prod->product_attribute = '';
 				foreach($variantmods as $variant=>$selected){
-							$_prod->product_attribute .= '<br/ > <b>'.$_prod->customfieldsCart[$row]->custom_title.' : </b>
+					$_prod->product_attribute .= '<br/ > <b>'.$_prod->customfieldsCart[$row]->custom_title.' : </b>
 								'.$_prod->customfieldsCart[$row]->options[$selected]->custom_value.' '.$_prod->customfieldsCart[$row]->custom_field_desc;
-						$row++;
+					$row++;
 				}
 			}
-		// TODO: add fields for the following data:
-//    * [double] basePrice = 38.48
-//    * [double] basePriceVariant = 38.48
-//    * [double] basePriceWithTax = 42.04
-//    * [double] discountedPriceWithoutTax = 36.48
-//    * [double] priceBeforeTax = 36.48
-//    * [double] salesPrice = 39.85
-//    * [double] salesPriceTemp = 39.85
-//    * [double] taxAmount = 3.37
-//    * [double] salesPriceWithDiscount = 0
-//    * [double] discountAmount = 2.19
-//    * [double] priceWithoutTax = 36.48
-//    * [double] variantModification = 0
+			// TODO: add fields for the following data:
+			//    * [double] basePrice = 38.48
+			//    * [double] basePriceVariant = 38.48
+			//    * [double] basePriceWithTax = 42.04
+			//    * [double] discountedPriceWithoutTax = 36.48
+			//    * [double] priceBeforeTax = 36.48
+			//    * [double] salesPrice = 39.85
+			//    * [double] salesPriceTemp = 39.85
+			//    * [double] taxAmount = 3.37
+			//    * [double] salesPriceWithDiscount = 0
+			//    * [double] discountAmount = 2.19
+			//    * [double] priceWithoutTax = 36.48
+			//    * [double] variantModification = 0
 			$_orderItems->virtuemart_order_item_id = null;
 			$_orderItems->virtuemart_order_id = $_id;
 			$_orderItems->virtuemart_userinfo_id = 'TODO'; //$_cart['BT']['virtuemart_userinfo_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
@@ -665,7 +752,7 @@ class VirtueMartModelOrders extends VmModel {
 			$_orderItems->product_quantity = $_prod->quantity;
 			$_orderItems->product_item_price = $_prod->prices['basePrice'];
 			$_orderItems->product_final_price = $_prod->prices['salesPrice'];
-//			$_orderItems->order_item_currency = $_prices[$_lineCount]['']; // TODO Currency
+			//			$_orderItems->order_item_currency = $_prices[$_lineCount]['']; // TODO Currency
 			$_orderItems->order_status = 'P';
 			$_orderItems->product_attribute = $_prod->product_attribute;
 
@@ -715,8 +802,8 @@ class VirtueMartModelOrders extends VmModel {
 	private function generateOrderNumber($uid = 0,$length=10)
 	{
 		return substr( md5( session_id().(string)time().(string)$uid )
-				,0
-				,$length
+		,0
+		,$length
 		);
 	}
 
@@ -757,7 +844,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		$data = $table->bindChecknStore($table);
 
-	   $errors = $table->getErrors();
+		$errors = $table->getErrors();
 		foreach($errors as $error){
 			$this->setError( get_class( $this ).'::store '.$error);
 		}
@@ -892,7 +979,7 @@ class VirtueMartModelOrders extends VmModel {
 		$table = $this->getTable('order_items');
 
 		//Done in the table already
-/*
+		/*
 		$curDate = JFactory::getDate();
 		$data['modified_on'] = $curDate->toMySql();*/
 
@@ -909,7 +996,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		return $table->bindChecknStore($data);
 
-//		return true;
+		//		return true;
 	}
 
 	/**
@@ -927,18 +1014,18 @@ class VirtueMartModelOrders extends VmModel {
 		parent::remove($cids);
 	}
 	/*
-	*remove product from order item table
+	 *remove product from order item table
 	*@var $virtuemart_order_id Order to clear
 	*/
 	function removeOrderItems ($virtuemart_order_id){
 		$q ='DELETE from `#__virtuemart_order_items` WHERE `virtuemart_order_id` = ' .(int) $virtuemart_order_id;
-		 $this->_db->setQuery($q);
+		$this->_db->setQuery($q);
 
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());
 			return false;
 		}
-	return true;
+		return true;
 	}
 	/**
 	 * Remove an order line item.
@@ -968,14 +1055,14 @@ class VirtueMartModelOrders extends VmModel {
 	 * identical with function in orders?
 	 * disabled to unsecure written
 	 */
-/*	public function getProductListJson() {
+	/*	public function getProductListJson() {
 		$db = JFactory::getDBO();
-		$filter = JRequest::getVar('q', false);
-		$q = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
-			FROM #__virtuemart_products";
-		if ($filter) $q .= " WHERE product_name LIKE '%".$filter."%'";
-		$db->setQuery($q);
-		return $db->loadObjectList();
+	$filter = JRequest::getVar('q', false);
+	$q = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
+	FROM #__virtuemart_products";
+	if ($filter) $q .= " WHERE product_name LIKE '%".$filter."%'";
+	$db->setQuery($q);
+	return $db->loadObjectList();
 	}*/
 }
 

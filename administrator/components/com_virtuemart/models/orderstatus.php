@@ -121,8 +121,8 @@ class VirtueMartModelOrderstatus extends VmModel {
 	 */
 	function getOrderStatusList()
 	{
-		$query = 'SELECT * FROM `#__virtuemart_orderstates` '; 
-		
+		$query = 'SELECT * FROM `#__virtuemart_orderstates` ';
+
 		if (JRequest::getWord('view') !== 'orderstatus') $query .= ' order by `ordering` ';
 		else $query .= $this->_getOrdering();
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
@@ -156,6 +156,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 	 * Check if stock should be updated when an order status changes/
 	 * TODO This must be implemented in an orderstatus flow in a future release
 	 *
+	 * @deprecated
 	 * @author Oscar van Eijk, null if the order is new (default)
 	 * @param char $_newStat New order status
 	 * @param char $_oldStat Old order status, null if the order is new (default)

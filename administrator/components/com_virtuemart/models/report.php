@@ -92,7 +92,7 @@ class VirtuemartModelReport extends VmModel {
 				$this->intervals= 'YEAR( `o`.`created_on` )';
 				break;
 			default:
-				// invidual grouping 
+				// invidual grouping
 				$this->intervals= '`o`.`created_on`';
 				break;
 		}
@@ -160,7 +160,7 @@ class VirtuemartModelReport extends VmModel {
 		$this->whereItem;
 		$whereString =$this->whereItem.$this->dates ;
 		// if(!$sold && !$items){
-			
+
 			// $orderBy = 'ORDER BY intervals ';
 
 		// } else if($sold){
@@ -174,7 +174,7 @@ class VirtuemartModelReport extends VmModel {
 		$orderBy = $this->_getOrdering('intervals','asc');
 		// TODO $nbrReturnProducts ?
 
-		return $this->exeSortSearchListQuery( $select, $joinedTables, $whereString, $groupBy, $orderBy );
+		return $this->exeSortSearchListQueryPatrick( $select, $joinedTables, $whereString, $groupBy, $orderBy );
 
 	}
 
@@ -338,7 +338,7 @@ class VirtuemartModelReport extends VmModel {
 	public function renderOrderstatesList() {
 		$orderstates = JRequest::getWord('order_status_code','');
 		$query = 'SELECT `order_status_code` as value, `order_status_name` as text
-			FROM `#__virtuemart_orderstates` 
+			FROM `#__virtuemart_orderstates`
 			WHERE published=1 ' ;
 		$this->_db->setQuery($query);
 		$list = $this->_db->loadObjectList();

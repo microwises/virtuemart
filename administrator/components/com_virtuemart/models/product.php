@@ -259,7 +259,7 @@ class VirtueMartModelProduct extends VmModel {
 			$whereString = '';
 		}
 
-		return $this->exeSortSearchListQuery($selectFindRows, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
+		return $this->exeSortSearchListQueryMax($selectFindRows, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
 
 		return $query ;
 	}
@@ -1430,6 +1430,44 @@ class VirtueMartModelProduct extends VmModel {
 		}
 	}
 
+	public function updateStock($id, $amount, $signInStoc, $signOrderedStock){
+
+		//sanitize fields
+		$id = (int) $id;
+		$amount = (float) $amount;
+
+		$validFields = array('=','+','-');
+		if(!in_array($signInStoc,$validFields)){
+			return false;
+		}
+		if(!in_array($signOrderedStock,$validFields)){
+			return false;
+		}
+
+		$q = 'UPDATE `#__virtuemart_products` ';
+		if($signInStoc!='='){
+			$q .= 'SET `product_in_stock` = `product_in_stock` ' . $signInStoc . $amount ;
+		}
+		if($signOrderedStock!='='){
+			$q .= 'SET `product_ordered` = `product_ordered` ' . $signOrderedStock . $amount ;
+		}
+		$q .= ' WHERE `virtuemart_product_id` = ' . $id;
+
+		$this->_db->setQuery($q);
+		$this->_db->query();
+
+		if ($signInStoc == '-') {
+			$this->_db->setQuery('SELECT `product_in_stock` < `low_stock_notification` '
+			. 'FROM `#__virtuemart_products` '
+			. 'WHERE `virtuemart_product_id` = ' . $id
+			);
+			if ($this->_db->loadResult() == 1) {
+
+				// TODO Generate low stock warning
+			}
+		}
+
+	}
 
  	/* look if whe have a product type */
 	private function productHasCustoms($virtuemart_product_id) {

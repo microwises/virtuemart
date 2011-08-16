@@ -432,28 +432,37 @@ class VirtueMartCart {
 				return false;
 			}
 
-			$ci = 0;
-			$request_stock = array();
+// 			$ci = 0;
+
 
 			/* Check to see if checking stock quantity */
 			if (VmConfig::get('check_stock', false)) {
-				if ($quantity > $product->product_in_stock) {
-					/* Create an array for out of stock items and continue to next item */
+				$request_stock = array();
+				if ($quantity > ($product->product_in_stock - $product->product_ordered) ){
+
+					$error = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
+					$this->setError($error); // Private error retrieved with getError is used only by addJS, so only the latest is fine
+					vmInfo($error,$product->product_name);
+					return false;
+				}
+/*					// Create an array for out of stock items and continue to next item
 					$request_stock[$ci]['virtuemart_product_id'] = $product->virtuemart_product_id;
 					$request_stock[$ci]['quantity'] = $quantity;
-					$ci++;
+// 					$ci++;
 					//				$this->_error[] = 'Quantity reached stock limit '.$product->virtuemart_product_id;
 					continue;
 				}
+
+				if (count($request_stock) != 0) {
+					foreach ($request_stock as $rstock) {
+						$error = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
+						$this->setError($error); // Private error retrieved with getError is used only by addJS, so only the latest is fine
+						$mainframe->enqueueMessage($error, 'error');
+					}
+					return false;
+				}*/
 			}
-			if (count($request_stock) != 0) {
-				foreach ($request_stock as $rstock) {
-					$error = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
-					$this->setError($error); // Private error retrieved with getError is used only by addJS, so only the latest is fine
-					$mainframe->enqueueMessage($error, 'error');
-				}
-				return false;
-			}
+
 			return true;
 		}
 
@@ -792,17 +801,15 @@ class VirtueMartCart {
 			// TODO valerie TO DO  -- not finished
 			$cart = $this->getCart();
 			$dispatcher = JDispatcher::getInstance();
-			//             $returnValues = $dispatcher->trigger('plgVmAfterCheckoutDoPayment', array($orderID, 'cart' => $cart));
+			// $returnValues = $dispatcher->trigger('plgVmAfterCheckoutDoPayment', array($orderID, 'cart' => $cart));
 			$returnValues = $dispatcher->trigger('plgVmAfterCheckoutDoPayment', array($orderID, $cart));
-			/*
-			 *  may be redirect is done by the payment plugin (eg: paypal) so we do not come back here
-			*  if payment plugin echos a form, false = nothing happen, true= echo form ,
-			*/
+			// may be redirect is done by the payment plugin (eg: paypal) so we do not come back here
+			// if payment plugin echos a form, false = nothing happen, true= echo form ,
 
 			$activeplugin = false;
 			foreach ($returnValues as $returnValue) {
 				if ($returnValue) {
-					$order->handleStockAFterStatusChanged($returnValue);
+					$order->handleStockAfterStatusChanged($returnValue);
 					$activeplugin = true;
 					break;
 				}

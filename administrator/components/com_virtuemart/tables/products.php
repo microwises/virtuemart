@@ -62,6 +62,7 @@ class TableProducts extends VmTable {
 	var $product_url	= '';
 	/** @var int File thumbnail image width */
 	var $product_in_stock	= 0;
+	var $product_ordered		= 0;
 	/** @var int File thumbnail image width */
 	var $low_stock_notification	= 0;
 	/** @var int File thumbnail image width */
