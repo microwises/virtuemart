@@ -259,9 +259,8 @@ class VirtueMartModelProduct extends VmModel {
 			$whereString = '';
 		}
 
-		return $this->exeSortSearchListQueryMax($selectFindRows, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
+		return $this->exeSortSearchListQuery(false,$selectFindRows, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
 
-		return $query ;
 	}
 
     /**

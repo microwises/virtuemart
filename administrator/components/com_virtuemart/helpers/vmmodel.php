@@ -188,22 +188,24 @@ class VmModel extends JModel {
 
 	}
 
-	public function exeSortSearchListQueryMax($selectFindRows, $select, $joinedTables, $whereString = '', $groupBy = '', $orderBy = '', $filter_order_Dir = '', $nbrReturnProducts = false){
+	public function exeSortSearchListQuery($object, $selectFindRows, $select, $joinedTables, $whereString = '', $groupBy = '', $orderBy = '', $filter_order_Dir = '', $nbrReturnProducts = false){
 
 		//and the where conditions
 		$joinedTables .= $whereString .$groupBy .$orderBy .$filter_order_Dir ;
 
 		vmTime('exeSortSearchListQuery count','count');
 		$this->_db->setQuery($selectFindRows.$joinedTables);
-		//     	if(!$this->_db->query()){
 
 		$count = $this->_db->loadResult();
 		vmTime('exeSortSearchListQuery count','count');
 
-		if($count == false ){
-			//     			$app = JFactory::getApplication();
-			//     			$app->enqueueMessage('sortSearchOrder Error in query '.$this->_db->getQuery().'<br /><br />'.$this->_db->getErrorMsg().'<br />');
-		} else if($count > 0){
+		if($count == false || $count == 0){
+			    			$app = JFactory::getApplication();
+			    			$app->enqueueMessage('sortSearchOrder Error in query '.$this->_db->getQuery().'<br /><br />'.$this->_db->getErrorMsg().'<br />');
+			$this->_total = 0;;
+			return array();
+		}
+		else if($count > 0){
 
 			if($nbrReturnProducts){
 				$limitStart = 0;
@@ -218,13 +220,15 @@ class VmModel extends JModel {
 			vmTime('exeSortSearchListQuery load array','array');
 			$this->_db->setQuery($select.$joinedTables, $limitStart, $limit);
 
-			$list = $this->_db->loadResultArray();
+			if($object){
+				$list = $this->_db->loadObjectList();
+			} else {
+				$list = $this->_db->loadResultArray();
+			}
+
 			vmTime('exeSortSearchListQuery load array','array');
-			//     		vmdebug('exeSortSearchListQuery ',$this->_db);
 
 			return $list;
-		} else {
-			return array();
 		}
 
 	}

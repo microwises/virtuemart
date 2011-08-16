@@ -171,10 +171,12 @@ class VirtuemartModelReport extends VmModel {
 			// $groupBy = 'GROUP BY product_sku, product_name, created_on ';
 			// $orderBy = 'ORDER BY created_on, product_name ';
 		// }
+
+		$selectFindRows = 'SELECT COUNT(*) FROM'.$mainTable ;
 		$orderBy = $this->_getOrdering('intervals','asc');
 		// TODO $nbrReturnProducts ?
 
-		return $this->exeSortSearchListQueryPatrick( $select, $joinedTables, $whereString, $groupBy, $orderBy );
+		return $this->exeSortSearchListQuery(true, $selectFindRows, $select, $joinedTables, $whereString, $groupBy, $orderBy );
 
 	}
 
