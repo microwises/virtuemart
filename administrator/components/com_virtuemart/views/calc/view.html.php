@@ -117,7 +117,7 @@ class VirtuemartViewCalc extends JView {
 			$countriesList = ShopFunctions::renderCountryList($calc->calc_countries,True);
 			$this->assignRef('countriesList', $countriesList);
 
-			$statesList = ShopFunctions::renderStateList($calc->virtuemart_state_ids, True);
+			$statesList = ShopFunctions::renderStateList($calc->virtuemart_state_ids,'', True);
 			$this->assignRef('statesList', $statesList);
 
 			//Todo forbid to see this list, when not the admin or mainvendor is looking on it
