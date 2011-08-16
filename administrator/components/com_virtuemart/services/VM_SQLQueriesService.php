@@ -186,10 +186,11 @@ include_once('VM_Commons.php');
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
 		
-		$vmConfig = getVMconfig();
+		//VERY DANGEROUS // always need auth
+		/*$vmConfig = getVMconfig();
 		if ($vmConfig->get('soap_auth_execsql')==0){
 			$result = "true";
-		}	
+		}*/
 		
 		//Auth OK
 		if ($result == "true"){	

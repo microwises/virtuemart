@@ -489,18 +489,25 @@ $conf['BASESITE']='';//let empty for now
 	}
 	
 	/**
-	 * Echo xml message when WS is disabled
+	 * Echo SOAP/xml message when WS is disabled
 	 * @param service name
 	 * @return xml
 	 */
 	function echoXmlMessageWSDisabled($servicename) {
 		
 		$xml 	 = '<?xml version="1.0" encoding="UTF-8"?>';
-		$xml 	.= '<response>';
-		$xml 	.= '<fault>';
-		$xml 	.= 'This webservice ('.$servicename.') is disabled';
-		$xml 	.= '</fault>';
-		$xml 	.= '</response>';
+		$xml 	.= '<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">';
+		$xml 	.= '<SOAP-ENV:Body>';
+		$xml 	.= '<SOAP-ENV:Fault>';
+		$xml 	.= '<faultcode>';
+		$xml 	.= 'SOAP-ENV:Server';
+		$xml 	.= '</faultcode>';
+		$xml 	.= '<faultstring>';
+		$xml 	.= 'Virtuemart webservice ('.$servicename.') is disabled';
+		$xml 	.= '</faultstring>';
+		$xml 	.= '</SOAP-ENV:Fault>';
+		$xml 	.= '</SOAP-ENV:Body>';
+		$xml 	.= '</SOAP-ENV:Envelope>';
 		
 		header('Content-type: text/xml; charset=UTF-8'); 
 		header("Content-Length: ".strlen($xml));

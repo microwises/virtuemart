@@ -19,6 +19,35 @@ define( '_JEXEC', 1 );
  /** loading framework **/
 include_once('VM_Commons.php');
 
+
+/**
+ * Class CommonReturn
+ *
+ * Class "CommonReturn" with attribute : returnCode, message, $returnData, 
+ *
+ * @author     Mickael cabanas (cabanas.mickael|at|gmail.com)
+ * @copyright  Mickael cabanas
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @version    Release:
+ */
+	class CommonReturn {
+		public $returnCode="";
+		public $message="";
+		public $returnData="";
+
+		//constructeur
+		/**
+		 *
+		 * @param String $returnCode
+		 * @param String $message
+		 */
+		function __construct($returnCode, $message, $returnData) {
+			$this->returnCode = $returnCode;
+			$this->message = $message;	
+			$this->returnData = $returnData;				
+		}
+	}	
+
 	/**
     * This function Method1
 	* (expose as WS)
@@ -33,10 +62,9 @@ include_once('VM_Commons.php');
 		//Auth OK
 		if ($result == "true"){
 		
-			$commonReturn['returnCode'] = "Your";
-			$commonReturn['message'] = "Customized";
-			$commonReturn['returnData'] = "Service";
-				
+			$commonReturn = new CommonReturn('your customized',
+											 'service',
+											 'Hello '.$params->loginInfo->login);				
 			return $commonReturn;
 
 		}else if ($result == "false"){
@@ -62,12 +90,8 @@ include_once('VM_Commons.php');
 		//Auth OK
 		if ($result == "true"){
 		
-			$commonReturn['returnCode'] = "Your";
-			$commonReturn['message'] = "Customized";
-			$commonReturn['returnData'] = "Service 2";
-				
+			$commonReturn = new CommonReturn('your', 'customized','service2');				
 			return $commonReturn;
-
 			
 		}else if ($result == "false"){
 			return new SoapFault("JoomlaServerAuthFault", "Autification KO for : ".$params->loginInfo->login);
