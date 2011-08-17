@@ -1918,7 +1918,7 @@ include_once('VM_Commons.php');
 			if (!class_exists( 'VirtueMartModelPaymentmethod' )) require (JPATH_VM_ADMINISTRATOR.DS.'models\paymentmethod.php');
 			$modelPaymentmethod = new VirtueMartModelPaymentmethod;
 			 
-			$data['virtuemart_vendor_id'] = isset($params->payment_method->vendor_id) ? $params->payment_method->vendor_id : 1;
+			$data['virtuemart_vendor_id'] = !empty($params->payment_method->vendor_id) ? $params->payment_method->vendor_id : 1;
 			$data['payment_jplugin_id'] = $params->payment_method->payment_jplugin_id;
 			$data['payment_name'] = $params->payment_method->payment_name;
 			$data['payment_element'] = $params->payment_method->payment_element;
@@ -1973,7 +1973,7 @@ include_once('VM_Commons.php');
 			$modelPaymentmethod = new VirtueMartModelPaymentmethod;
 			 
 			$data['virtuemart_paymentmethod_id'] = $params->payment_method->payment_method_id;
-			$data['virtuemart_vendor_id'] = isset($params->payment_method->vendor_id) ? $params->payment_method->vendor_id : 1;
+			$data['virtuemart_vendor_id'] = !empty($params->payment_method->vendor_id) ? $params->payment_method->vendor_id : 1;
 			$data['payment_jplugin_id'] = $params->payment_method->payment_jplugin_id;
 			$data['payment_name'] = $params->payment_method->payment_name;
 			$data['payment_element'] = $params->payment_method->payment_element;
@@ -2252,9 +2252,9 @@ include_once('VM_Commons.php');
 			
 			$data['creditcard_name'] = $params->Creditcard->creditcard_name;
 			$data['creditcard_code'] = $params->Creditcard->creditcard_code;
-			$data['virtuemart_vendor_id'] = isset($params->Creditcard->vendor_id) ? $params->Creditcard->vendor_id : 1;
-			$data['shared'] = isset($params->Creditcard->shared) ? $params->Creditcard->shared : 1;
-			$data['published'] = isset($params->Creditcard->published) ? $params->Creditcard->published : 1;
+			$data['virtuemart_vendor_id'] = !empty($params->Creditcard->vendor_id) ? $params->Creditcard->vendor_id : 1;
+			$data['shared'] = !empty($params->Creditcard->shared) ? $params->Creditcard->shared : 1;
+			$data['published'] = !empty($params->Creditcard->published) ? $params->Creditcard->published : 1;
 			
 			$res = $modelCreditcard->store($data);
 			
@@ -2304,9 +2304,9 @@ include_once('VM_Commons.php');
 			$data['virtuemart_creditcard_id'] = $params->Creditcard->creditcard_id;
 			$data['creditcard_name'] = $params->Creditcard->creditcard_name;
 			$data['creditcard_code'] = $params->Creditcard->creditcard_code;
-			$data['virtuemart_vendor_id'] = isset($params->Creditcard->vendor_id) ? $params->Creditcard->vendor_id : 1;
-			$data['shared'] = isset($params->Creditcard->shared) ? $params->Creditcard->shared : 1;
-			$data['published'] = isset($params->Creditcard->published) ? $params->Creditcard->published : 1;
+			$data['virtuemart_vendor_id'] = !empty($params->Creditcard->vendor_id) ? $params->Creditcard->vendor_id : 1;
+			$data['shared'] = !empty($params->Creditcard->shared) ? $params->Creditcard->shared : 1;
+			$data['published'] = !empty($params->Creditcard->published) ? $params->Creditcard->published : 1;
 			
 			$res = $modelCreditcard->store($data);
 			
@@ -2394,12 +2394,12 @@ include_once('VM_Commons.php');
 			
 			
 			$modelOrderstatus = new VirtueMartModelOrderstatus;
-			$data['virtuemart_vendor_id'] = isset($params->OrderStatus->vendor_id) ? $params->OrderStatus->vendor_id : 1;
+			$data['virtuemart_vendor_id'] = !empty($params->OrderStatus->vendor_id) ? $params->OrderStatus->vendor_id : 1;
 			$data['order_status_code'] = $params->OrderStatus->order_status_code;
 			$data['order_status_name'] = $params->OrderStatus->order_status_name;
 			$data['order_status_description'] = $params->OrderStatus->order_status_description;
 			$data['ordering'] = $params->OrderStatus->ordering;
-			$data['published'] = isset($params->OrderStatus->published) ? $params->OrderStatus->published : 1;
+			$data['published'] = !empty($params->OrderStatus->published) ? $params->OrderStatus->published : 1;
 			
 			$res = $modelOrderstatus->store($data);
 			$errMsg = $modelOrderstatus->getError();
@@ -2447,12 +2447,12 @@ include_once('VM_Commons.php');
 			
 			$modelOrderstatus = new VirtueMartModelOrderstatus;
 			$data['virtuemart_orderstate_id'] = $params->OrderStatus->order_status_id;
-			$data['virtuemart_vendor_id'] = isset($params->OrderStatus->vendor_id) ? $params->OrderStatus->vendor_id : 1;
+			$data['virtuemart_vendor_id'] = !empty($params->OrderStatus->vendor_id) ? $params->OrderStatus->vendor_id : 1;
 			$data['order_status_code'] = $params->OrderStatus->order_status_code;
 			$data['order_status_name'] = $params->OrderStatus->order_status_name;
 			$data['order_status_description'] = $params->OrderStatus->order_status_description;
 			$data['ordering'] = $params->OrderStatus->ordering;
-			$data['published'] = isset($params->OrderStatus->published) ? $params->OrderStatus->published : 1;
+			$data['published'] = !empty($params->OrderStatus->published) ? $params->OrderStatus->published : 1;
 			
 			$res = $modelOrderstatus->store($data);
 			$errMsg = $modelOrderstatus->getError();

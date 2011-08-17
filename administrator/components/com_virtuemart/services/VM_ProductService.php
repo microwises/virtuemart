@@ -544,13 +544,14 @@ include_once('VM_Commons.php');
 	 * @version    Release:
 	 */
 	class ProductVote {
+		public $rating_id="";
 		public $product_id="";
 		public $product_name="";
 		public $product_sku="";
-		public $votes="";
-		public $allvotes="";
+		public $rates="";
+		public $ratingcount="";
 		public $rating="";
-		public $lastip="";
+		public $published="";
 
 		//constructeur
 		/**
@@ -559,14 +560,14 @@ include_once('VM_Commons.php');
 		 * @param String $product_id
 		 * @param String $product_name
 		 */
-		function __construct($product_id, $product_name, $product_sku,$votes, $allvotes, $rating, $lastip) {
-			$this->product_id = $product_id;
+		function __construct($rating_id, $product_id, $product_name, $product_sku,$rates, $ratingcount, $rating, $published) {
+			$this->rating_id = $rating_id;
 			$this->product_name = $product_name;
 			$this->product_sku = $product_sku;
-			$this->votes = $votes;
-			$this->allvotes = $allvotes;
+			$this->rates = $rates;
+			$this->ratingcount = $ratingcount;
 			$this->rating = $rating;
-			$this->lastip = $lastip;			
+			$this->published = $published;			
 		}
 	}	
 	
@@ -584,11 +585,11 @@ include_once('VM_Commons.php');
 		public $review_id="";
 		public $product_id="";
 		public $comment="";
-		public $userid="";
-		public $time="";
-		public $user_rating="";
 		public $review_ok="";
-		public $review_votes="";
+		public $review_rates="";
+		public $review_ratingcount="";
+		public $review_rating="";
+		public $lastip="";
 		public $published="";
 
 		//constructeur
@@ -598,15 +599,15 @@ include_once('VM_Commons.php');
 		 * @param String $review_id
 		 * @param String $product_id
 		 */
-		function __construct($review_id, $product_id, $comment,$userid, $time, $user_rating, $review_ok, $review_votes, $published) {
+		function __construct($review_id, $product_id, $comment,$review_ok, $review_rates, $review_ratingcount, $review_rating, $lastip, $published) {
 			$this->review_id = $review_id;
 			$this->product_id = $product_id;
 			$this->comment = $comment;
-			$this->userid = $userid;
-			$this->time = $time;
-			$this->user_rating = $user_rating;
-			$this->review_ok = $review_ok;	
-			$this->review_votes = $review_votes;
+			$this->review_ok = $review_ok;
+			$this->review_rates = $review_rates;
+			$this->review_ratingcount = $review_ratingcount;
+			$this->review_rating = $review_rating;	
+			$this->lastip = $lastip;
 			$this->published = $published;			
 		}
 	}	
@@ -667,6 +668,98 @@ include_once('VM_Commons.php');
 			
 		}
 	}
+	
+	
+	/**
+	 * Class Custom
+	 *
+	 * Class "Custom" with attribute : id, custom_parent_id, admin_only, ...
+	 *
+	 * @author     Mickael cabanas (cabanas.mickael|at|gmail.com)
+	 * @copyright  Mickael cabanas
+	 * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
+	 * @version    Release:
+	 */
+	class Custom {
+		public $virtuemart_custom_id="";
+		public $custom_parent_id="";
+		public $admin_only="";
+		public $custom_title="";
+		public $custom_tip="";
+		public $custom_value="";
+		public $custom_field_desc="";
+		public $field_type="";
+		public $is_list="";
+		public $is_hidden="";
+		public $is_cart_attribute="";
+		public $published="";
+
+		//constructeur
+		/**
+		 * Enter description here...
+		 *
+		 * @param String virtuemart_custom_id
+		 * @param String custom_parent_id
+		 */
+		function __construct($virtuemart_custom_id, $custom_parent_id, $admin_only,$custom_title, $custom_tip, $custom_value, $custom_field_desc, $field_type, $is_list, $is_hidden, $is_cart_attribute, $published) {
+			
+			$this->virtuemart_custom_id = $virtuemart_custom_id;
+			$this->custom_parent_id = $custom_parent_id;
+			$this->admin_only = $admin_only;
+			$this->custom_title = $custom_title;
+			$this->custom_tip = $custom_tip;
+			$this->custom_value = $custom_value;
+			$this->custom_field_desc = $custom_field_desc;	
+			$this->field_type = $field_type;
+			$this->is_list = $is_list;	
+			$this->is_hidden = $is_hidden;
+			$this->is_cart_attribute = $is_cart_attribute;
+			$this->published = $published;		
+		}
+	}	
+	
+	
+		
+	/**
+	 * Class CustomField
+	 *
+	 * Class "CustomField" with attribute : id, custom_parent_id, admin_only, ...
+	 *
+	 * @author     Mickael cabanas (cabanas.mickael|at|gmail.com)
+	 * @copyright  Mickael cabanas
+	 * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
+	 * @version    Release:
+	 */
+	class CustomField {
+		public $virtuemart_customfield_id="";
+		public $virtuemart_product_id="";
+		public $virtuemart_custom_id="";
+		
+		public $custom_value="";
+		public $custom_price="";
+		public $published="";
+		
+
+		//constructeur
+		/**
+		 * Enter description here...
+		 *
+		 * @param String virtuemart_customfield_id
+		 * @param String virtuemart_product_id
+		 */
+		function __construct($virtuemart_customfield_id, $virtuemart_product_id,$virtuemart_custom_id, $custom_value,$custom_price, $published) {
+			
+			$this->virtuemart_customfield_id = $virtuemart_customfield_id;
+			$this->virtuemart_product_id = $virtuemart_product_id;
+			$this->virtuemart_custom_id = $virtuemart_custom_id;
+			$this->custom_value = $custom_value;
+			$this->custom_price = $custom_price;
+			$this->published = $published;
+			
+		}
+	}	
+	
+	
 /**
  * Class CommonReturn
  *
@@ -1554,7 +1647,7 @@ include_once('VM_Commons.php');
     * @return array of attribute and value
    */
 	 function set_child_options( $str, &$d ) {
-	 
+	 	//NOT FOR VM2
 		$opts = explode(',', $str);
 			
 			if (is_array($opts)){
@@ -1594,7 +1687,7 @@ include_once('VM_Commons.php');
     * @return array of attribute and value
    */
 	 function set_quantity_options(  $str , &$d) {
-	 
+	 		//NOT FOR VM2
 			$opts = explode(',', $str);
 			
 			if (is_array($opts)){
@@ -1674,8 +1767,8 @@ include_once('VM_Commons.php');
 			
 			
 			$data['virtuemart_product_id']= $params->product->product_id;
-			$data['virtuemart_vendor_id']= isset($params->product->virtuemart_vendor_id) ? $params->product->virtuemart_vendor_id : 1;
-			$data['product_parent_id']= isset($params->product->product_parent_id) ? $params->product->product_parent_id : 0;
+			$data['virtuemart_vendor_id']= !empty($params->product->virtuemart_vendor_id) ? $params->product->virtuemart_vendor_id : 1;
+			$data['product_parent_id']= !empty($params->product->product_parent_id) ? $params->product->product_parent_id : 0;
 			$data['product_sku']= $params->product->product_sku;
 			$data['product_name']= $params->product->product_name;
 			$data['slug']= $params->product->slug;
@@ -1708,7 +1801,7 @@ include_once('VM_Commons.php');
 			$data['published']= $params->product->published;
 			$data["categories"] = explode ('|',$params->product->product_categories);
 			//$data['product_categories']= $params->product->product_categories;
-			$data['manufacturer_id']= isset($params->product->manufacturer_id) ? $params->product->manufacturer_id : 1;
+			$data['manufacturer_id']= !empty($params->product->manufacturer_id) ? $params->product->manufacturer_id : 1;
 			
 			$res = $modelProduct->store($data);
 			
@@ -1757,8 +1850,8 @@ include_once('VM_Commons.php');
 			$modelProduct = new VirtueMartModelProduct;
 			
 			
-			$data['virtuemart_vendor_id']= isset($params->product->virtuemart_vendor_id) ? $params->product->virtuemart_vendor_id : 1;
-			$data['product_parent_id']= isset($params->product->product_parent_id) ? $params->product->product_parent_id : 0;
+			$data['virtuemart_vendor_id']= !empty($params->product->virtuemart_vendor_id) ? $params->product->virtuemart_vendor_id : 1;
+			$data['product_parent_id']= !empty($params->product->product_parent_id) ? $params->product->product_parent_id : 0;
 			$data['product_sku']= $params->product->product_sku;
 			$data['product_name']= $params->product->product_name;
 			$data['slug']= $params->product->slug;
@@ -1791,7 +1884,7 @@ include_once('VM_Commons.php');
 			$data['published']= $params->product->published;
 			$data["categories"] = explode ('|',$params->product->product_categories);
 			//$data['product_categories']= $params->product->product_categories;
-			$data['manufacturer_id']= isset($params->product->manufacturer_id) ? $params->product->manufacturer_id : 1;
+			$data['manufacturer_id']= !empty($params->product->manufacturer_id) ? $params->product->manufacturer_id : 1;
 			
 			$res = $modelProduct->store($data);
 			
@@ -2001,7 +2094,7 @@ include_once('VM_Commons.php');
 		if ($vmConfig->get('soap_auth_prod_otherget')==0){
 			$result = "true";
 		}
-		
+	
 		//Auth OK
 		if ($result == "true"){
 		
@@ -2018,28 +2111,45 @@ include_once('VM_Commons.php');
 				}
 			}
 		
-			$list  = "SELECT pv.product_id as product_id , product_name, product_sku, votes, allvotes, rating, lastip FROM #__{vm}_product_votes pv join #__{vm}_product p on p.product_id=pv.product_id ";
-			$list .= "WHERE 1 ";
+			$query  = "SELECT rat.virtuemart_rating_id, rat.virtuemart_product_id, rat.rates, rat.ratingcount,rat.rating, rat.published, p.product_sku, p.product_name ";
+			$query .= "FROM #__virtuemart_ratings rat  ";
+			$query .= "JOIN #__virtuemart_products p ON p.virtuemart_product_id = rat.virtuemart_product_id ";
+			$query .= "WHERE 1 ";
 			
 			if (!empty($params->product_id)){
-				$list .= " AND pv.product_id = '$params->product_id' ";
+				$query .= " AND rat.virtuemart_product_id  = ".(int)$product_id." ";
 			}
-			if (!empty($params->votes)){
-				$list .= " AND votes $eq '$params->votes' ";
+			if (!empty($params->rates)){
+				$query .= " AND rat.rates $eq '$params->rates' ";
 			}
-			if (!empty($params->allvotes)){
-				$list .= " AND allvotes $eq '$params->allvotes' ";
+			if (!empty($params->ratingcount)){
+				$query .= " AND rat.ratingcount $eq '$params->ratingcount' ";
 			}
 			if (!empty($params->rating)){
-				$list .= " AND rating $eq '$params->rating' ";
+				$query .= " AND rat.rating $eq '$params->rating' ";
 			}
 			
-			$db = new ps_DB;
-			$db->query($list);
-			while ($db->next_record()) {
-				$ProductVote = new ProductVote($db->f("product_id"),$db->f("product_name"),$db->f("product_sku"),$db->f("votes"),$db->f("allvotes"),$db->f("rating"),$db->f("lastip"));
+			$db = JFactory::getDBO();
+			$db->setQuery($query);
+			
+			$rows = $db->loadObjectList();
+			
+			foreach ($rows as $row){
+				
+				$ProductVote = new ProductVote($row->virtuemart_rating_id,
+												$row->virtuemart_product_id,
+												$row->product_name,
+												$row->product_sku,
+												$row->rates,
+												$row->ratingcount,
+												$row->rating,
+												$row->published
+												);
 				$ProductVoteArray[] = $ProductVote;
+				
+				
 			}
+			
 			
 			$errMsg=  $db->getErrorMsg();
 			
@@ -2094,28 +2204,40 @@ include_once('VM_Commons.php');
 				}
 			}
 		
-			$list  = "SELECT * FROM #__{vm}_product_reviews ";
-			$list .= "WHERE 1 ";
+			$query  = "SELECT * FROM #__virtuemart_rating_reviews ";
+			$query .= "WHERE 1 ";
 			
 			if (!empty($params->review_id)){
-				$list .= " AND review_id = '$params->review_id' ";
+				$query .= " AND virtuemart_rating_review_id = '$params->review_id' ";
 			}
 			if (!empty($params->product_id)){
-				$list .= " AND product_id $eq '$params->product_id' ";
-			}
-			if (!empty($params->userid)){
-				$list .= " AND userid $eq '$params->userid' ";
+				$query .= " AND virtuemart_product_id $eq '$params->product_id' ";
 			}
 			if (!empty($params->published)){
-				$list .= " AND published = '$params->published' ";
+				$query .= " AND published = '$params->published' ";
 			}
 			
-			$db = new ps_DB;
-			$db->query($list);
-			while ($db->next_record()) {
-				$ProductReview = new ProductReview($db->f("review_id"),$db->f("product_id"),$db->f("comment"),$db->f("userid"),$db->f("time"),$db->f("user_rating"),$db->f("review_ok"),$db->f("review_votes"),$db->f("published"));
+			$db = JFactory::getDBO();
+			$db->setQuery($query);
+			
+			$rows = $db->loadObjectList();
+			
+			foreach ($rows as $row){
+				
+				$ProductReview = new ProductReview($row->virtuemart_rating_review_id,
+									$row->virtuemart_product_id,
+									$row->comment,
+									$row->review_ok,
+									$row->review_rates,
+									$row->review_ratingcount,
+									$row->review_rating,
+									$row->lastip,
+									$row->published
+									);
 				$ProductReviewArray[] = $ProductReview;
+				
 			}
+
 			
 			$errMsg=  $db->getErrorMsg();
 			
@@ -2123,6 +2245,164 @@ include_once('VM_Commons.php');
 				return $ProductReviewArray;
 			} else {
 				return new SoapFault("GetProductReviewsFault", "cannot GetProductReviews  "." | ERRLOG : ".$errMsg);				
+			}
+			
+		}else if ($result == "false"){
+			return new SoapFault("JoomlaServerAuthFault", "Authentication KO for : ".$params->loginInfo->login);
+		}else if ($result == "no_admin"){
+			return new SoapFault("JoomlaServerAuthFault", "User is not a Super Administrator : ".$params->loginInfo->login);
+		}else{
+			return new SoapFault("JoomlaServerAuthFault", "User does not exist : ".$params->loginInfo->login);
+		}
+		
+	}
+	
+	
+	/**
+    * This function Get Customs List
+	* (expose as WS)
+    * @param string 
+    * @return array of custom
+   */
+	function GetCustomsList($params) {
+			
+		$product_id = $params->product_id;
+		/* Authenticate*/
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherget')==0){
+			$result = "true";
+		}
+		
+		//Auth OK
+		if ($result == "true"){
+		
+					
+			$query  = "SELECT * FROM #__virtuemart_customs ";
+			$query .= "WHERE 1 ";
+			
+			if (!empty($params->virtuemart_custom_id)){
+				$query .= " AND virtuemart_custom_id = '$params->virtuemart_custom_id' ";
+			}
+			if (!empty($params->custom_parent_id)){
+				$query .= " AND custom_parent_id = '$params->custom_parent_id' ";
+			}
+			if (!empty($params->field_type)){
+				$query .= " AND field_type = '$params->field_type' ";
+			}
+			if (!empty($params->published)){
+				$query .= " AND published = '$params->published' ";
+			}
+			
+			$db = JFactory::getDBO();
+			$db->setQuery($query);
+			
+			$rows = $db->loadObjectList();
+			
+			foreach ($rows as $row){
+				
+				$custom = new Custom($row->virtuemart_custom_id,
+									$row->custom_parent_id,
+									$row->admin_only,
+									$row->custom_title,
+									$row->custom_tip,
+									$row->custom_value,
+									$row->custom_field_desc,
+									$row->field_type,
+									$row->is_list,
+									$row->is_hidden,
+									$row->is_cart_attribute,
+									$row->published
+					
+									);
+				$customArray[] = $custom;
+				
+			}
+
+			
+			$errMsg=  $db->getErrorMsg();
+			
+			if ($errMsg==null){
+				return $customArray;
+			} else {
+				return new SoapFault("GetCustomsListFault", "cannot Get custom List  "." | ERRLOG : ".$errMsg);				
+			}
+			
+		}else if ($result == "false"){
+			return new SoapFault("JoomlaServerAuthFault", "Authentication KO for : ".$params->loginInfo->login);
+		}else if ($result == "no_admin"){
+			return new SoapFault("JoomlaServerAuthFault", "User is not a Super Administrator : ".$params->loginInfo->login);
+		}else{
+			return new SoapFault("JoomlaServerAuthFault", "User does not exist : ".$params->loginInfo->login);
+		}
+		
+	}
+	
+	
+	
+	/**
+    * This function Get Customs Fields for a product
+	* (expose as WS)
+    * @param string 
+    * @return array of custom fields
+   */
+	function GetCustomsFields($params) {
+			
+		$product_id = $params->product_id;
+		/* Authenticate*/
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherget')==0){
+			$result = "true";
+		}
+		
+		//Auth OK
+		if ($result == "true"){
+		
+					
+			$query  = "SELECT * FROM #__virtuemart_product_customfields ";
+			$query .= "WHERE 1 ";
+			
+			if (!empty($params->virtuemart_customfield_id)){
+				$query .= " AND virtuemart_customfield_id = '$params->virtuemart_customfield_id' ";
+			}
+			if (!empty($params->virtuemart_product_id)){
+				$query .= " AND virtuemart_product_id = '$params->virtuemart_product_id' ";
+			}
+			if (!empty($params->virtuemart_custom_id)){
+				$query .= " AND virtuemart_custom_id = '$params->virtuemart_custom_id' ";
+			}
+			if (!empty($params->published)){
+				$query .= " AND published = '$params->published' ";
+			}
+			
+			$db = JFactory::getDBO();
+			$db->setQuery($query);
+			
+			$rows = $db->loadObjectList();
+			
+			foreach ($rows as $row){
+				
+				$customfield = new CustomField($row->virtuemart_customfield_id,
+									$row->virtuemart_product_id,
+									$row->virtuemart_custom_id,
+									$row->custom_value,
+									$row->custom_price,
+									$row->published
+									);
+				$customfieldArray[] = $customfield;
+				
+			}
+
+			
+			$errMsg=  $db->getErrorMsg();
+			
+			if ($errMsg==null){
+				return $customfieldArray;
+			} else {
+				return new SoapFault("GetCustomsFieldsFault", "cannot Get custom Fields  "." | ERRLOG : ".$errMsg);				
 			}
 			
 		}else if ($result == "false"){
@@ -2824,7 +3104,7 @@ include_once('VM_Commons.php');
 						
 						
 						//$data['discount_id'] = $params->Discounts->Discount[$i]->discount_id;
-						$data['virtuemart_vendor_id'] = isset($params->Discounts->Discount[$i]->vendor_id) ? $params->Discounts->Discount[$i]->vendor_id : 1;
+						$data['virtuemart_vendor_id'] = !empty($params->Discounts->Discount[$i]->vendor_id) ? $params->Discounts->Discount[$i]->vendor_id : 1;
 						$data['calc_name'] = $params->Discounts->Discount[$i]->calc_name;
 						$data['calc_descr'] = $params->Discounts->Discount[$i]->calc_descr;
 						$data['calc_kind'] = $params->Discounts->Discount[$i]->calc_kind;
@@ -2877,7 +3157,7 @@ include_once('VM_Commons.php');
 					}
 				} else {
 						
-						$data['virtuemart_vendor_id'] = isset($params->Discounts->Discount->vendor_id) ? $params->Discounts->Discount->vendor_id : 1;
+						$data['virtuemart_vendor_id'] = !empty($params->Discounts->Discount->vendor_id) ? $params->Discounts->Discount->vendor_id : 1;
 						$data['calc_name'] = $params->Discounts->Discount->calc_name;
 						$data['calc_descr'] = $params->Discounts->Discount->calc_descr;
 						$data['calc_kind'] = $params->Discounts->Discount->calc_kind;
@@ -2980,7 +3260,7 @@ include_once('VM_Commons.php');
 					for ($i = 0; $i < $count; $i++) {
 						
 						
-						$data['virtuemart_vendor_id'] = isset($params->Discounts->Discount[$i]->vendor_id) ? $params->Discounts->Discount[$i]->vendor_id : 1;
+						$data['virtuemart_vendor_id'] = !empty($params->Discounts->Discount[$i]->vendor_id) ? $params->Discounts->Discount[$i]->vendor_id : 1;
 						$data['calc_name'] = $params->Discounts->Discount[$i]->calc_name;
 						$data['calc_descr'] = $params->Discounts->Discount[$i]->calc_descr;
 						$data['calc_kind'] = $params->Discounts->Discount[$i]->calc_kind;
@@ -3026,7 +3306,7 @@ include_once('VM_Commons.php');
 					}
 				} else {
 				
-						$data['virtuemart_vendor_id'] = isset($params->Discounts->Discount->vendor_id) ? $params->Discounts->Discount->vendor_id : 1;
+						$data['virtuemart_vendor_id'] = !empty($params->Discounts->Discount->vendor_id) ? $params->Discounts->Discount->vendor_id : 1;
 						$data['calc_name'] = $params->Discounts->Discount->calc_name;
 						$data['calc_descr'] = $params->Discounts->Discount->calc_descr;
 						$data['calc_kind'] = $params->Discounts->Discount->calc_kind;
@@ -3299,7 +3579,7 @@ include_once('VM_Commons.php');
 					for ($i = 0; $i < $count; $i++) {
 					
 						$tableProduct_prices->virtuemart_product_id = $params->ProductPrices->ProductPrice[$i]->product_id;
-						$tableProduct_prices->virtuemart_shoppergroup_id = $params->ProductPrices->ProductPrice[$i]->shopper_group_id;
+						$tableProduct_prices->virtuemart_shoppergroup_id = !empty($params->ProductPrices->ProductPrice[$i]->shopper_group_id) ? $params->ProductPrices->ProductPrice[$i]->shopper_group_id : '5';
 						$tableProduct_prices->product_price = $params->ProductPrices->ProductPrice[$i]->product_price;
 						$tableProduct_prices->override = $params->ProductPrices->ProductPrice[$i]->override;
 						$tableProduct_prices->product_override_price = $params->ProductPrices->ProductPrice[$i]->product_override_price;
@@ -3326,9 +3606,9 @@ include_once('VM_Commons.php');
 						}
 					}
 				} else {
-				
+					$prod_id = $params->ProductPrices->ProductPrice->product_id;
 					$tableProduct_prices->virtuemart_product_id = $params->ProductPrices->ProductPrice->product_id;
-					$tableProduct_prices->virtuemart_shoppergroup_id = $params->ProductPrices->ProductPrice->shopper_group_id;
+					$tableProduct_prices->virtuemart_shoppergroup_id = !empty($params->ProductPrices->ProductPrice->shopper_group_id) ? $params->ProductPrices->ProductPrice->shopper_group_id : '5';
 					$tableProduct_prices->product_price = $params->ProductPrices->ProductPrice->product_price;
 					$tableProduct_prices->override = $params->ProductPrices->ProductPrice->override;
 					$tableProduct_prices->product_override_price = $params->ProductPrices->ProductPrice->product_override_price;
@@ -3350,19 +3630,19 @@ include_once('VM_Commons.php');
 					
 						
 					if ($res){
-						$CommonReturn = new CommonReturn(OK,"ProductPrices sucessfully added for product id : ".$d['product_id'],$_REQUEST['product_price_id']);
+						$CommonReturn = new CommonReturn(OK,getWSMsg('Product Price', ADD),$prod_id);
 						return $CommonReturn;
 					
 					}else {
-						return new SoapFault("AddProductPricesFault", "Cannot Add Product Prices for product id  : ".$d['product_id']);
+						return new SoapFault("AddProductPricesFault", getWSMsg('Product Price', ADDKO)." : ".$prod_id);
 					}
 				}
 				if ($allOk){
-					$commonReturn = new CommonReturn(OK,"All Product Prices successfully added : ",$cpnIdsStr);
+					$commonReturn = new CommonReturn(OK,getWSMsg('Product Price', ALLOK)." : ",$cpnIdsStr);
 					return $commonReturn;
 					
 				} else {
-					return new SoapFault("AddProductPricesFault", "Not all Product Prices added, only ProductPrices id : ".$cpnIdsStr);
+					return new SoapFault("AddProductPricesFault", getWSMsg('Product Price', NOTALLOK)."".$cpnIdsStr);
 				}			
 				
 		}else if ($result == "false"){
@@ -3374,7 +3654,8 @@ include_once('VM_Commons.php');
 		}
 		
 	}
-		/**
+	
+	/**
     * This function AddProductPrices
 	* (expose as WS)
     * @param string 
@@ -3406,7 +3687,7 @@ include_once('VM_Commons.php');
 					
 						$tableProduct_prices->virtuemart_product_price_id = $params->ProductPrices->ProductPrice[$i]->product_price_id;
 						$tableProduct_prices->virtuemart_product_id = $params->ProductPrices->ProductPrice[$i]->product_id;
-						$tableProduct_prices->virtuemart_shoppergroup_id = $params->ProductPrices->ProductPrice[$i]->shopper_group_id;
+						$tableProduct_prices->virtuemart_shoppergroup_id = !empty($params->ProductPrices->ProductPrice[$i]->shopper_group_id) ? $params->ProductPrices->ProductPrice[$i]->shopper_group_id : '5';
 						$tableProduct_prices->product_price = $params->ProductPrices->ProductPrice[$i]->product_price;
 						$tableProduct_prices->override = $params->ProductPrices->ProductPrice[$i]->override;
 						$tableProduct_prices->product_override_price = $params->ProductPrices->ProductPrice[$i]->product_override_price;
@@ -3436,7 +3717,7 @@ include_once('VM_Commons.php');
 				
 					$tableProduct_prices->virtuemart_product_price_id = $params->ProductPrices->ProductPrice->product_price_id;
 					$tableProduct_prices->virtuemart_product_id = $params->ProductPrices->ProductPrice->product_id;
-					$tableProduct_prices->virtuemart_shoppergroup_id = $params->ProductPrices->ProductPrice->shopper_group_id;
+					$tableProduct_prices->virtuemart_shoppergroup_id = !empty($params->ProductPrices->ProductPrice->shopper_group_id) ? $params->ProductPrices->ProductPrice->shopper_group_id : '5';
 					$tableProduct_prices->product_price = $params->ProductPrices->ProductPrice->product_price;
 					$tableProduct_prices->override = $params->ProductPrices->ProductPrice->override;
 					$tableProduct_prices->product_override_price = $params->ProductPrices->ProductPrice->product_override_price;
@@ -4016,7 +4297,7 @@ include_once('VM_Commons.php');
 			setToken();
 			
 			//if data to attach -> write file
-			if (isset($params->media->attachValue)){
+			if (!empty($params->media->attachValue)){
 				$dataFile = $params->media->attachValue;//base64Binary 
 				$ext = mimeTypeToExtention($params->media->file_mimetype);
 				$filename = $params->media->file_title."".$ext;
@@ -4053,12 +4334,12 @@ include_once('VM_Commons.php');
 			
 			//$data['virtuemart_media_id'] 	= $params->media->virtuemart_media_id;
 			$data['virtuemart_product_id'] = $params->product_id;
-			$data['virtuemart_vendor_id'] 	= isset($params->media->virtuemart_vendor_id) ? $params->media->virtuemart_vendor_id : 1;
+			$data['virtuemart_vendor_id'] 	= !empty($params->media->virtuemart_vendor_id) ? $params->media->virtuemart_vendor_id : 1;
 			$data['file_title'] 			= $params->media->file_title;
 			$data['file_description'] 		= $params->media->file_description;
 			$data['file_meta'] 				= $params->media->file_meta;
 			$data['file_mimetype'] 			= $params->media->file_mimetype;
-			$data['file_type'] 				= isset($params->media->file_type) ? $params->media->file_type : 'product';
+			$data['file_type'] 				= !empty($params->media->file_type) ? $params->media->file_type : 'product';
 			$data['file_url'] 				= $params->media->file_url;
 			$data['file_url_thumb'] 		= $params->media->file_url_thumb;
 			$data['file_is_product_image'] 	= $params->media->file_is_product_image;
@@ -4155,6 +4436,10 @@ include_once('VM_Commons.php');
 		$server->addFunction("SetRelatedProducts");
 		$server->addFunction("AddMediaProduct");
 		$server->addFunction("GetMediaProduct");
+		$server->addFunction("GetCustomsList");
+		$server->addFunction("GetCustomsFields");
+		
+		
 			
 		$server->handle();
 

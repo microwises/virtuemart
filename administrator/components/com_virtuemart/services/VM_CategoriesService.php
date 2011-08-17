@@ -214,7 +214,7 @@ include_once('VM_Commons.php');
 			if (!class_exists( 'VirtueMartModelCategory' )) require (JPATH_VM_ADMINISTRATOR.DS.'models\category.php');
 			$VirtueMartModelCategory = new VirtueMartModelCategory;
 			
-			$p_category_id = isset($params->categoryId) ? $params->categoryId : "0";
+			$p_category_id = !empty($params->categoryId) ? $params->categoryId : "0";
 			
 			$db = JFactory::getDBO();
 			
@@ -243,7 +243,7 @@ include_once('VM_Commons.php');
 											$row->category_name,
 											$row->slug,
 											$row->category_description,
-											isset($parent_cat->virtuemart_category_id) ? $parent_cat->virtuemart_category_id : 0,
+											!empty($parent_cat->virtuemart_category_id) ? $parent_cat->virtuemart_category_id : 0,
 											$row->category_template,
 											$row->category_layout,
 											$row->category_product_layout,
@@ -321,7 +321,7 @@ include_once('VM_Commons.php');
 											$row->category_name,
 											$row->slug,
 											$row->category_description,
-											isset($parent_cat->virtuemart_category_id) ? $parent_cat->virtuemart_category_id : 0,
+											!empty($parent_cat->virtuemart_category_id) ? $parent_cat->virtuemart_category_id : 0,
 											$row->category_template,
 											$row->category_layout,
 											$row->category_product_layout,
@@ -659,12 +659,12 @@ include_once('VM_Commons.php');
 			$data['virtuemart_media_id']=$media_ids;
 			
 			$data['virtuemart_category_id'] = $params->category_id;
-			$data['virtuemart_vendor_id'] 	= isset($params->media->virtuemart_vendor_id) ? $params->media->virtuemart_vendor_id : 1;
+			$data['virtuemart_vendor_id'] 	= !empty($params->media->virtuemart_vendor_id) ? $params->media->virtuemart_vendor_id : 1;
 			$data['file_title'] 			= $params->media->file_title;
 			$data['file_description'] 		= $params->media->file_description;
 			$data['file_meta'] 				= $params->media->file_meta;
 			$data['file_mimetype'] 			= $params->media->file_mimetype;
-			$data['file_type'] 				= isset($params->media->file_type) ? $params->media->file_type : 'category';
+			$data['file_type'] 				= !empty($params->media->file_type) ? $params->media->file_type : 'category';
 			$data['file_url'] 				= $params->media->file_url;
 			$data['file_url_thumb'] 		= $params->media->file_url_thumb;
 			$data['file_is_product_image'] 	= $params->media->file_is_product_image;

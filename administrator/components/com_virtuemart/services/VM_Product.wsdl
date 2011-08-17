@@ -119,6 +119,12 @@
 			<xsd:element name="AddMediaProductRequest" type="tns:AddMediaProductInput" />
 			<xsd:element name="AddMediaProductResponse" type="tns:commonReturn" />
 			
+			<xsd:element name="GetCustomsListRequest" type="tns:GetCustomsListInput" />
+			<xsd:element name="GetCustomsListResponse" type="tns:CustomArray" />
+			
+			<xsd:element name="GetCustomsFieldsRequest" type="tns:GetCustomsFieldsInput" />
+			<xsd:element name="GetCustomsFieldsResponse" type="tns:CustomFieldsArray" />
+			
 
 			<xsd:complexType name="loginInfo">
 				<xsd:all>
@@ -147,6 +153,66 @@
 				<xsd:all>
 					<xsd:element name="loginInfo" type="tns:loginInfo" />
 					<xsd:element name="ids" type="tns:ids" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="GetCustomsFieldsInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="virtuemart_customfield_id" type="xsd:string" />
+					<xsd:element name="virtuemart_product_id" type="xsd:string" />
+					<xsd:element name="virtuemart_custom_id" type="xsd:string" />
+					<xsd:element name="published" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="CustomFieldsArray">
+				<xsd:sequence>
+					<xsd:element name="CustomField" type="tns:CustomField" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="CustomField">
+				<xsd:all>
+					<xsd:element name="virtuemart_customfield_id" type="xsd:string" />
+					<xsd:element name="virtuemart_product_id" type="xsd:string" />
+					<xsd:element name="virtuemart_custom_id" type="xsd:string" />
+					<xsd:element name="custom_value" type="xsd:string" />
+					<xsd:element name="custom_price" type="xsd:string" />
+					<xsd:element name="published" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="GetCustomsListInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="virtuemart_custom_id" type="xsd:string" />
+					<xsd:element name="custom_parent_id" type="xsd:string" />
+					<xsd:element name="field_type" type="xsd:string" />
+					<xsd:element name="published" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
+			<xsd:complexType name="CustomArray">
+				<xsd:sequence>
+					<xsd:element name="Custom" type="tns:Custom" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:complexType>
+			
+			<xsd:complexType name="Custom">
+				<xsd:all>
+					<xsd:element name="virtuemart_custom_id" type="xsd:string" />
+					<xsd:element name="custom_parent_id" type="xsd:string" />
+					<xsd:element name="admin_only" type="xsd:string" />
+					<xsd:element name="custom_title" type="xsd:string" />
+					<xsd:element name="custom_tip" type="xsd:string" />
+					<xsd:element name="custom_value" type="xsd:string" />
+					<xsd:element name="custom_field_desc" type="xsd:string" />
+					<xsd:element name="field_type" type="xsd:string" />
+					<xsd:element name="is_list" type="xsd:string" />
+					<xsd:element name="is_hidden" type="xsd:string" />
+					<xsd:element name="is_cart_attribute" type="xsd:string" />
+					<xsd:element name="published" type="xsd:string" />
 				</xsd:all>
 			</xsd:complexType>
 			
@@ -238,7 +304,6 @@
 					<xsd:element name="loginInfo" type="tns:loginInfo" />
 					<xsd:element name="review_id" type="xsd:string" />
 					<xsd:element name="product_id" type="xsd:string" />
-					<xsd:element name="userid" type="xsd:string" />
 					<xsd:element name="published" type="xsd:string" />	
 				</xsd:all>
 			</xsd:complexType>
@@ -248,11 +313,11 @@
 					<xsd:element name="review_id" type="xsd:string" />
 					<xsd:element name="product_id" type="xsd:string" />
 					<xsd:element name="comment" type="xsd:string" />
-					<xsd:element name="userid" type="xsd:string" />
-					<xsd:element name="time" type="xsd:string" />
-					<xsd:element name="user_rating" type="xsd:string" />
 					<xsd:element name="review_ok" type="xsd:string" />
-					<xsd:element name="review_votes" type="xsd:string" />
+					<xsd:element name="review_rates" type="xsd:string" />
+					<xsd:element name="review_ratingcount" type="xsd:string" />
+					<xsd:element name="review_rating" type="xsd:string" />
+					<xsd:element name="lastip" type="xsd:string" />
 					<xsd:element name="published" type="xsd:string" />
 				</xsd:all>
 			</xsd:complexType>
@@ -267,8 +332,8 @@
 				<xsd:all>
 					<xsd:element name="loginInfo" type="tns:loginInfo" />
 					<xsd:element name="product_id" type="xsd:string" />
-					<xsd:element name="votes" type="xsd:string" />
-					<xsd:element name="allvotes" type="xsd:string" />
+					<xsd:element name="rates" type="xsd:string" />
+					<xsd:element name="ratingcount" type="xsd:string" />
 					<xsd:element name="rating" type="xsd:string" />
 					<xsd:element name="moreless" type="xsd:string" />
 				</xsd:all>
@@ -276,13 +341,14 @@
 			
 			<xsd:complexType name="ProductVote">
 				<xsd:all>
+					<xsd:element name="rating_id" type="xsd:string" />
 					<xsd:element name="product_id" type="xsd:string" />
 					<xsd:element name="product_name" type="xsd:string" />
 					<xsd:element name="product_sku" type="xsd:string" />
-					<xsd:element name="votes" type="xsd:string" />
-					<xsd:element name="allvotes" type="xsd:string" />
+					<xsd:element name="rates" type="xsd:string" />
+					<xsd:element name="ratingcount" type="xsd:string" />
 					<xsd:element name="rating" type="xsd:string" />
-					<xsd:element name="lastip" type="xsd:string" />
+					<xsd:element name="published" type="xsd:string" />
 				</xsd:all>
 			</xsd:complexType>
 			
@@ -962,6 +1028,20 @@
 		<wsdl:part element="tns:AddMediaProductResponse" name="parameters" />
 	</wsdl:message>	
 	
+	<wsdl:message name="GetCustomsListRequest">
+		<wsdl:part element="tns:GetCustomsListRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetCustomsListResponse">
+		<wsdl:part element="tns:GetCustomsListResponse" name="parameters" />
+	</wsdl:message>	
+	
+	<wsdl:message name="GetCustomsFieldsRequest">
+		<wsdl:part element="tns:GetCustomsFieldsRequest" name="parameters" />
+	</wsdl:message>
+	<wsdl:message name="GetCustomsFieldsResponse">
+		<wsdl:part element="tns:GetCustomsFieldsResponse" name="parameters" />
+	</wsdl:message>	
+	
 	
 
 	<wsdl:portType name="VM_Product">
@@ -1145,6 +1225,16 @@
 		<wsdl:operation name="AddMediaProduct">
 			<wsdl:input message="tns:AddMediaProductRequest" />
 			<wsdl:output message="tns:AddMediaProductResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetCustomsList">
+			<wsdl:input message="tns:GetCustomsListRequest" />
+			<wsdl:output message="tns:GetCustomsListResponse" />
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetCustomsFields">
+			<wsdl:input message="tns:GetCustomsFieldsRequest" />
+			<wsdl:output message="tns:GetCustomsFieldsResponse" />
 		</wsdl:operation>
 		
 	</wsdl:portType>
@@ -1494,6 +1584,26 @@
 		
 		<wsdl:operation name="AddMediaProduct">
 			<soap:operation soapAction="http://www.virtuemart.net/VM_Product/AddMediaProduct" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetCustomsList">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Product/GetCustomsList" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		
+		<wsdl:operation name="GetCustomsFields">
+			<soap:operation soapAction="http://www.virtuemart.net/VM_Product/GetCustomsFields" />
 			<wsdl:input>
 				<soap:body use="literal" />
 			</wsdl:input>

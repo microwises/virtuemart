@@ -751,8 +751,8 @@ include_once('VM_Commons.php');
 	*/
 	function GetUsersGeneric($params) {
 	
-			$limite_start = isset($params->limite_start) ? $params->limite_start : 0;
-			$limite_end = isset($params->limite_end) ? $params->limite_end : 50;
+			$limite_start = !empty($params->limite_start) ? $params->limite_start : 0;
+			$limite_end = !empty($params->limite_end) ? $params->limite_end : 50;
 			
 
 			$db = JFactory::getDBO();	
@@ -904,7 +904,7 @@ include_once('VM_Commons.php');
 			$data['username'] 				= $params->User->username;
 			$data['password'] 				= $params->User->password;
 			$data['userinfo_id'] 			= $params->User->userinfo_id;
-			$data['address_type'] 			= isset($params->User->address_type) ? $params->User->address_type : "BT";
+			$data['address_type'] 			= !empty($params->User->address_type) ? $params->User->address_type : "BT";
 			$data['address_type_name'] 		= $params->User->address_type_name;
 			$data['name'] 					= $params->User->name;
 			$data['company'] 				= $params->User->company;
@@ -929,7 +929,7 @@ include_once('VM_Commons.php');
 			$data['extra_field_1'] 			= $params->User->extra_field_1;
 			$data['user_is_vendor'] 		= $params->User->user_is_vendor;
 			$data['customer_number'] 		= $params->User->customer_number;
-			$data['perms'] 					= isset($params->User->perms) ? $params->User->perms : "shopper";
+			$data['perms'] 					= !empty($params->User->perms) ? $params->User->perms : "shopper";
 			$data['virtuemart_paymentmethod_id'] = $params->User->virtuemart_paymentmethod_id;
 			$data['virtuemart_shippingcarrier_id'] = $params->User->virtuemart_shippingcarrier_id;
 			$data['agreed'] 				= $params->User->agreed;
@@ -999,7 +999,7 @@ include_once('VM_Commons.php');
 			//$data['username'] 				= $params->User->username;
 			$data['password'] 				= $params->User->password;
 			$data['userinfo_id'] 			= $params->User->userinfo_id;
-			$data['address_type'] 			= isset($params->User->address_type) ? $params->User->address_type : "BT";
+			$data['address_type'] 			= !empty($params->User->address_type) ? $params->User->address_type : "BT";
 			$data['address_type_name'] 		= $params->User->address_type_name;
 			$data['name'] 					= $params->User->name;
 			$data['company'] 				= $params->User->company;
@@ -1024,7 +1024,7 @@ include_once('VM_Commons.php');
 			$data['extra_field_1'] 			= $params->User->extra_field_1;
 			$data['user_is_vendor'] 		= $params->User->user_is_vendor;
 			$data['customer_number'] 		= $params->User->customer_number;
-			$data['perms'] 					= isset($params->User->perms) ? $params->User->perms : "shopper";
+			$data['perms'] 					= !empty($params->User->perms) ? $params->User->perms : "shopper";
 			$data['virtuemart_paymentmethod_id'] = $params->User->virtuemart_paymentmethod_id;
 			$data['virtuemart_shippingcarrier_id'] = $params->User->virtuemart_shippingcarrier_id;
 			$data['agreed'] 				= $params->User->agreed;
@@ -1511,7 +1511,7 @@ include_once('VM_Commons.php');
 			//$data['virtuemart_manufacturercategories_id'] = $params->ManufacturerCat->mf_category_id;
 			$data['group_name'] = $params->AuthGroup->group_name;
 			$data['group_level'] = $params->AuthGroup->group_level;
-			$data['published'] = isset($params->AuthGroup->published) ? $params->AuthGroup->published : 1;
+			$data['published'] = !empty($params->AuthGroup->published) ? $params->AuthGroup->published : 1;
 			
 			$res = $modelUsergroups->store($data);
 			$errMsg = $modelUsergroups->getError();
@@ -1671,13 +1671,13 @@ include_once('VM_Commons.php');
 				$count = count($params->States->State);
 				for ($i = 0; $i < $count; $i++) {
 								
-					$data['virtuemart_vendor_id'] = isset($params->States->State[$i]->virtuemart_vendor_id) ? $params->States->State[$i]->virtuemart_vendor_id : 1;
+					$data['virtuemart_vendor_id'] = !empty($params->States->State[$i]->virtuemart_vendor_id) ? $params->States->State[$i]->virtuemart_vendor_id : 1;
 					$data['virtuemart_country_id'] = $params->States->State[$i]->virtuemart_country_id;
 					$data['virtuemart_worldzone_id'] = $params->States->State[$i]->virtuemart_worldzone_id;
 					$data['state_name'] = $params->States->State[$i]->state_name;
 					$data['state_3_code'] = $params->States->State[$i]->state_3_code;
 					$data['state_2_code'] = $params->States->State[$i]->state_2_code;
-					$data['published'] = isset($params->States->State[$i]->virtuemart_vendor_id) ? $params->States->State[$i]->virtuemart_vendor_id : 1;
+					$data['published'] = !empty($params->States->State[$i]->virtuemart_vendor_id) ? $params->States->State[$i]->virtuemart_vendor_id : 1;
 					
 					$res = $modelState->store($data);
 					$errMsg = $modelState->getError();
@@ -1693,13 +1693,13 @@ include_once('VM_Commons.php');
 			
 			} else {
 				
-				$data['virtuemart_vendor_id'] = isset($params->States->State->virtuemart_vendor_id) ? $params->States->State->virtuemart_vendor_id : 1;
+				$data['virtuemart_vendor_id'] = !empty($params->States->State->virtuemart_vendor_id) ? $params->States->State->virtuemart_vendor_id : 1;
 				$data['virtuemart_country_id'] = $params->States->State->virtuemart_country_id;
 				$data['virtuemart_worldzone_id'] = $params->States->State->virtuemart_worldzone_id;
 				$data['state_name'] = $params->States->State->state_name;
 				$data['state_3_code'] = $params->States->State->state_3_code;
 				$data['state_2_code'] = $params->States->State->state_2_code;
-				$data['published'] = isset($params->States->State->virtuemart_vendor_id) ? $params->States->State->virtuemart_vendor_id : 1;
+				$data['published'] = !empty($params->States->State->virtuemart_vendor_id) ? $params->States->State->virtuemart_vendor_id : 1;
 					
 				$res = $modelState->store($data);
 				$errMsg = $modelState->getError();	
@@ -2674,7 +2674,7 @@ include_once('VM_Commons.php');
 			$data['mf_desc']= $params->Manufacturer->mf_desc;
 			$data['mf_category_id']= $params->Manufacturer->mf_category_id;
 			$data['hits']= $params->Manufacturer->hits;
-			$data['published']= isset($params->Manufacturer->published) ? $params->Manufacturer->published : 1;
+			$data['published']= !empty($params->Manufacturer->published) ? $params->Manufacturer->published : 1;
 						
 			$res = $modelManufacturer->store($data);
 			
@@ -2725,7 +2725,7 @@ include_once('VM_Commons.php');
 			$data['mf_desc']= $params->Manufacturer->mf_desc;
 			$data['mf_category_id']= $params->Manufacturer->mf_category_id;
 			$data['hits']= $params->Manufacturer->hits;
-			$data['published']= isset($params->Manufacturer->published) ? $params->Manufacturer->published : 1;
+			$data['published']= !empty($params->Manufacturer->published) ? $params->Manufacturer->published : 1;
 						
 			$res = $modelManufacturer->store($data);
 
@@ -2897,7 +2897,7 @@ include_once('VM_Commons.php');
 			
 			$data['mf_category_name'] = $params->ManufacturerCat->mf_category_name;
 			$data['mf_category_desc'] = $params->ManufacturerCat->mf_category_desc;
-			$data['published'] = isset($params->ManufacturerCat->published) ? $params->ManufacturerCat->published : 1;
+			$data['published'] = !empty($params->ManufacturerCat->published) ? $params->ManufacturerCat->published : 1;
 			
 			$res = $modelManufacturercategories->store($data);
 
@@ -2953,7 +2953,7 @@ include_once('VM_Commons.php');
 			$data['virtuemart_manufacturercategories_id'] = $params->ManufacturerCat->mf_category_id;
 			$data['mf_category_name'] = $params->ManufacturerCat->mf_category_name;
 			$data['mf_category_desc'] = $params->ManufacturerCat->mf_category_desc;
-			$data['published'] = isset($params->ManufacturerCat->published) ? $params->ManufacturerCat->published : 1;
+			$data['published'] = !empty($params->ManufacturerCat->published) ? $params->ManufacturerCat->published : 1;
 			
 			$res = $modelManufacturercategories->store($data);
 		
