@@ -130,7 +130,7 @@ function vmdebug($debugdescr,$debugvalues=null){
 		}
 
 		$app = JFactory::getApplication();
-		$app ->enqueueMessage('vmdebug '.$debugdescr);
+		$app ->enqueueMessage('<span class="vmdebug" >vmdebug '.$debugdescr.'</span>');
 	}
 
 }

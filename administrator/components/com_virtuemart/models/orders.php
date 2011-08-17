@@ -649,7 +649,7 @@ class VirtueMartModelOrders extends VmModel {
 			}
 			//X Cancelled, we should revert the old stocks, so we different options here,
 			// we have different things todo depending on the state set before
-			else if($newState=='X'){
+			else if($newState=='X' || $newState=='R'){
 				if($oldState=='P'){
 					$product_in_stock = '=';
 					$product_ordered = '=';
