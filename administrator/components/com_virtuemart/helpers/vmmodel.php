@@ -243,7 +243,7 @@ class VmModel extends JModel {
 			$this->_db->setQuery($q,$limitStart,$limit);
 
 			if($object){
-				$list = $this->_db->loadObjectList();
+				$list = $this->_db->loadAssocList();
 			} else {
 				$list = $this->_db->loadResultArray();
 			}

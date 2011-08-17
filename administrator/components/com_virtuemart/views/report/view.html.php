@@ -59,18 +59,30 @@ class VirtuemartViewReport extends JView {
 		$myCurrencyDisplay = CurrencyDisplay::getInstance();
 
 		$revenueBasic = $model->getRevenue();
-		
-		if(is_array($revenueBasic)){
+
+		if($revenueBasic){
 			$totalReport['revenueTotal']= $totalReport['number_of_ordersTotal'] = $totalReport['itemsSoldTotal'] = 0 ;
-			foreach($revenueBasic as $i => $j){
-				$totalReport['revenueTotal'] += $j->revenue;
-				$totalReport['number_of_ordersTotal'] += $j->number_of_orders;
-				$j->revenue = $myCurrencyDisplay->priceDisplay($j->revenue,'',false);
-				$j->itemsSold = $model->getItemsByRevenue($j);
-				$totalReport['itemsSoldTotal'] +=$j->itemsSold;
+			foreach($revenueBasic as &$j){
+				$totalReport['revenueTotal'] += $j['revenue'];
+				$totalReport['number_of_ordersTotal'] += $j['number_of_orders'];
+				$j['revenue'] = $myCurrencyDisplay->priceDisplay($j['revenue'],'',false);
+				$j['itemsSold'] = $model->getItemsByRevenue($j);
+				$totalReport['itemsSoldTotal'] +=$j['itemsSold'];
 			}
 			$totalReport['revenueTotal'] = $myCurrencyDisplay->priceDisplay($totalReport['revenueTotal'],'',false);
-			unset($i);
+
+			if ( 'product_quantity'==JRequest::getWord('filter_order')) {
+				foreach ($revenueBasic as $key => $row) {
+					$created_on[] =$row['created_on'];
+					$intervals[] =$row['intervals'];
+					$itemsSold[] =$row['itemsSold'];
+					$number_of_orders[] =$row['number_of_orders'];
+					$revenue[] =$row['revenue'];
+
+				}
+				if (JRequest::getWord('filter_order_Dir') == 'desc') array_multisort($itemsSold, SORT_DESC,$revenueBasic);
+				else array_multisort($itemsSold, SORT_ASC,$revenueBasic);
+			}
 		}
 		$this->assignRef('report', $revenueBasic);
 		$this->assignRef('totalReport', $totalReport);

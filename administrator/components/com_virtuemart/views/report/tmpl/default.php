@@ -99,16 +99,16 @@ if( $this->pagination->limit < $rows ){
                 <tr class="row"
                     <?php echo $i;?>">
                     <td align="center">
-                        <?php echo $r->intervals;?>
+                        <?php echo $r['intervals'];?>
                     </td>
                     <td align="center">
-                        <?php echo $r->number_of_orders;?>
+                        <?php echo $r['number_of_orders'];?>
                     </td>
                     <td align="center">
-                        <?php echo $r->itemsSold;?>
+                        <?php echo $r['itemsSold'];?>
                     </td>
                     <td align="right">
-                        <?php echo $r->revenue;?>
+                        <?php echo $r['revenue'];?>
                     </td>
                 </tr>
                 <?php
@@ -118,7 +118,7 @@ if( $this->pagination->limit < $rows ){
             </tbody>
            <thead>
                 <tr>
-                    <th  class="right"><?php echo JText::_('COM_VIRTUEMART_TOTAL') ?></th>
+                    <th  class="right"><?php echo JText::_('COM_VIRTUEMART_TOTAL').' : '; ?></th>
                     <th><?php echo $this->totalReport['number_of_ordersTotal']?></th>
                     <th><?php echo $this->totalReport['itemsSoldTotal'];?></th>
                     <th class="right"><?php echo $this->totalReport['revenueTotal'];?></th>

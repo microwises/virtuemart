@@ -78,7 +78,7 @@ class VirtuemartModelReport extends VmModel {
 	}
 
 	function  getItemsByRevenue($revenue){
-		$q = 'select SUM(`product_quantity`) as total from `#__virtuemart_order_items` as i LEFT JOIN #__virtuemart_orders as o ON o.virtuemart_order_id=i.virtuemart_order_id '.$this->whereItem.' '. $this->intervals.'="'.$revenue->intervals.'" ';
+		$q = 'select SUM(`product_quantity`) as total from `#__virtuemart_order_items` as i LEFT JOIN #__virtuemart_orders as o ON o.virtuemart_order_id=i.virtuemart_order_id '.$this->whereItem.' '. $this->intervals.'="'.$revenue['intervals'].'" ';
 		$this->_db->setQuery( $q );
 		//echo $this->_db->_sql;
 		return $this->_db->loadResult();
@@ -191,7 +191,9 @@ class VirtuemartModelReport extends VmModel {
 		// }
 
 		$orderBy = $this->_getOrdering($this->intervals,'asc');
-
+		if ( 'product_quantity'==JRequest::getWord('filter_order')) {
+			$orderBy = '';
+		}
 
 		// TODO $nbrReturnProducts ?
 
@@ -237,7 +239,7 @@ class VirtuemartModelReport extends VmModel {
 		}
 		if (!$this->_total) $this->_total = $this->_getListCount($query);*/
 
-		return $this->_data = $this->getRevenueSortListOrderQuery();
+		return $this->getRevenueSortListOrderQuery();
     }
 
   /**
