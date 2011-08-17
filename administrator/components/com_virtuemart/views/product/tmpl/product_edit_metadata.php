@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');?>
 <fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_META_INFORMATION') ?></legend>		
-	<table valign="top">
+	<table valign="top" width="100%">
 		<tr>
 			<td valign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_METADESC'); ?>: </div></td>
 			<td valign="top">

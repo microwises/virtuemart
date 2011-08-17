@@ -24,39 +24,39 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 		<td valign="top">
 
-			<table>
-				<tr class="row0">
-					<td style="vertical-align:top;">
+			<table width="%100">
+				<tr>
+					<td style="width: 280px;" >
 					<fieldset style="background-color:#F9F9F9;">
 						<legend><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS');?></legend>
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_RELATED_SEARCH'); ?>
-						<div class="jsonSuggestResults" style="width: 322px;">
+						<div class="jsonSuggestResults" style="width: auto;">
 						<input type="text" size="40" name="search" id="relatedproductSearch" value="" />
 						</div>
 					</fieldset>
 					</td>
-				</tr>	<tr class="row0">
-					<td style="vertical-align:top;">
+				
+					<td style="width: 280px;" >
 					<fieldset style="background-color:#F9F9F9;">
 						<legend><?php echo JText::_('COM_VIRTUEMART_RELATED_CATEGORIES');?></legend>
 						<?php echo JText::_('COM_VIRTUEMART_CATEGORIES_RELATED_SEARCH'); ?>
-						<div class="jsonSuggestResults" style="width: 322px;">
+						<div class="jsonSuggestResults" style="width: auto;">
 						<input type="text" size="40" name="search" id="relatedcategorySearch" value="" />
 						</div>
 					</fieldset>
 					</td>
-				</tr>
-				<tr class="row0">
-					<td style="vertical-align:top;">
+					<td style="width: auto;">
 					<fieldset style="background-color:#F9F9F9;">
 						<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM_FIELD_TYPE');?></legend>
-						<div><?php echo JText::_('COM_VIRTUEMART_SELECT').' '.$this->customsList; ?></div>
+						<div><?php echo JText::_('COM_VIRTUEMART_SELECT').'<div class="inline">'.$this->customsList; ?><div></div>
 					</fieldset>
 					</td>
 				</tr>
 			</table>
 
 		</td>
+	</tr>
+	<tr>
 		<td valign="top" width="%100">
 			<fieldset style="background-color:#F9F9F9;">
 					<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM');?></legend>

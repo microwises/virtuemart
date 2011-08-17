@@ -41,11 +41,39 @@
 #content-box #toolbar-box .t, #content-box #toolbar-box .b {display: none;}
 .bartext { display: block;font-size: 12px;font-weight: bold;line-height: 32px;vertical-align: inherit;white-space: nowrap;width: auto !important;}
 /* System Messages */
-dl#system-message {margin: 0px;padding: 4px 10px;background: #cd3737 url(../images/admin_ui/save_bg.png) top repeat-x;border: solid #387dad 1px;}
-dl#system-message dd {text-indent: 0px;}
-dl#system-message dd.message { overflow: auto; }
+dl#system-message {margin: 0px;}
+dl#system-message dd.message ul {margin: 0px;    border-bottom: 1px solid #84A7DB;   border-top: 0px;}
+dl#system-message dd.error ul {margin: 0px;    border-bottom: 1px solid #84A7DB;   border-top: 0px;}
+#system-message dd.notice ul {margin: 0px;    border-bottom: 1px solid #84A7DB;   border-top: 0px;}
+dt.save,dt.remove {display: none;}
+#system-message dd.remove {background: #7c7d7f url(../images/admin_ui/tabs-ul-background.png) bottom repeat-x !important;}
+#system-message dd.remove ul {color: #F4F6F8;
+    background: url("../images/icon_32/bin.png") no-repeat scroll 8px center transparent !important;
+}
+#system-message dd.save {background: #4693BB url(../images/admin_ui/saved_background.png) top repeat-x !important;}
+#system-message dd.save ul {color: #F4F6F8;
+    background: url("../images/icon_32/disk.png") no-repeat scroll 8px center transparent !important;
+}
+/* original joomla msg icon
+#system-message dd.message ul {
+    background: url("../images/notice-info.png") no-repeat scroll 4px center #C3D2E5;
+}
+#system-message dd.error ul {
+    background: url("../images/notice-alert.png") no-repeat scroll 4px top #E6C0C0;
+    border-bottom: 3px solid #DE7A7B;
+    border-top: 3px solid #DE7A7B;
+    color: #CC0000;
+}
+#system-message dd.notice ul {
+    background: url("../images/notice-note.png") no-repeat scroll 4px top #EFE7B8;
+    border-bottom: 3px solid #F0DC7E;
+    border-top: 3px solid #F0DC7E;
+    color: #CC0000;
+} */ 
+/* dl#system-message dd {text-indent: 0px;}
+dl#system-message dd.message { overflow: auto; 4px 10px;background: #cd3737 url(../images/admin_ui/save_bg.png) top repeat-x; }
 dl#system-message dd.message ul {margin: 0px;color: gold;text-shadow: 0px -1px 1px #12517d;font-weight: normal;font-size: 12px;padding: 0px;background: none;border: none;}
-dl#system-message dd.message ul li {background: url(../images/admin_ui/saved_icon_background.png) top left no-repeat;display: block;padding: 8px 10px 6px 40px;letter-spacing: 1px;}
+dl#system-message dd.message ul li {background: url(../images/admin_ui/saved_icon_background.png) top left no-repeat;display: block;padding: 8px 10px 6px 40px;letter-spacing: 1px;}*/
 dl#system-message dd .vmdebug  { font-size:10px; }
 /* Fieldset */
 .virtuemart-admin-area fieldset {border-radius: 6px;-moz-border-radius: 6px;-webkit-border-radius: 6px;padding: 10px 20px;}
@@ -54,7 +82,8 @@ dl#system-message dd .vmdebug  { font-size:10px; }
 /* Radio Box */
 .virtuemart-admin-area fieldset input {float: none;clear: none;display: inline-block;}
 .virtuemart-admin-area fieldset label, .virtuemart-admin-area fieldset.adminform label, .virtuemart-admin-area fieldset.adminform span.faux-label {float: none;clear: none;display: inline-block;min-width: 0px;}
-
+/* Text Area*/
+textarea {width: 100%;}
 /*////////////////////////////////////
 /////////////// Tabs /////////////////
 ////////////////////////////////////*/
@@ -78,7 +107,7 @@ dl#system-message dd .vmdebug  { font-size:10px; }
 #admin-ui-tabs ul#tabs li.current {background: #fff url(../images/admin_ui/tabs-li-background.png) top repeat-x;color: #444444;text-shadow: 0px -1px 1px #fff;-moz-border-radius-topleft: 6px;-moz-border-radius-topright: 6px;-webkit-border-top-left-radius: 6px;-webkit-border-top-right-radius: 6px;-moz-box-shadow: 0px -1px 2px #3f3f40;cursor: default;}
 
 /* The Content Area */
-#admin-ui-tabs .tabs {padding: 20px 20px 202px 20px;overflow:auto;}
+#admin-ui-tabs .tabs {padding: 20px 3px 202px;;overflow:auto;}
 
 /* do not change the line below !!! */
 #admin-ui-tabs .dyn-tabs {overflow:auto;display:none;}
@@ -119,7 +148,7 @@ table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}*
     text-align: center;
     width: 120px;}
 .menu-notice a:link ,.menu-notice a span {color :#000 ;}
-#admin-ui-menu h3.current,#admin-ui-menu h3.menu-title:hover { background: url("../images/admin_ui/page_bg_blue.png") repeat-x scroll center top #888; color :#efefef ; }
+#admin-ui-menu h3.current,#admin-ui-menu h3.menu-title:hover { background:url("../images/admin_ui/tabs-ul-background.png") repeat-x scroll center bottom #7C7D7F; color :#efefef ; }
 
 #admin-ui-menu .menu-list {border-top: 1px solid #94B1CF;}
 #admin-ui-menu .menu-list ul {margin: 0px;padding: 4px 10px;background:none repeat scroll 0 0 #F7F7F7;border-bottom: 1px solid #888888;}
@@ -138,7 +167,7 @@ table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}*
 /*////////////////////////////////////
 ////////////// Basics ////////////////
 ////////////////////////////////////*/
-
+.inline {display: inline-block;vertical-align: middle;}
 .clear {clear: both;}
 .floatleft {float: left;}
 .floatright{float: right;}

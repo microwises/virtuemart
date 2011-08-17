@@ -588,7 +588,20 @@ class VirtueMartModelOrders extends VmModel {
 
 			if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
 			$productModel = new VirtueMartModelProduct();
+				// P 	Pending
+				// C 	Confirmed
+				// X 	Cancelled
+				// R 	Refunded
+				// S 	Shipped
+			$stockOut = array('S');
+			$isOrdered =  array('P','C','S');
 
+			if ((in_array($newState, $stockOut)) && (!in_array($oldState, $stockOut)) )     $product_in_stock = '-';
+			else if ((in_array($oldState, $stockOut)) && (!in_array($newState, $stockOut)) ) $product_in_stock = '+';
+			else $product_in_stock = '=';
+			if ((in_array($newState, $isOrdered)) && (!in_array($oldState, $isOrdered)) )     $product_ordered = '-';
+			else if ((in_array($oldState, $isOrdered)) && (!in_array($newState, $isOrdered)) ) $product_ordered = '+';
+			else $product_ordered = '=';
 			// P means ordered, but payment not confirmed, => real stock stays the same => product_in_stock = and product_ordered =
 			if($newState=='P'){
 				//for a new order

@@ -84,7 +84,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo $this->lists['manufacturers'];?>
 				</td>
 			</tr>
-			<?php //if (!$this->product->product_parent_id) { ?>
 			<tr class="row0">
 				<td width="29%" valign="top">
 					<div style="text-align:right;font-weight:bold;">
@@ -105,9 +104,21 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'text', 'text', $this->product->layout); ?>
 				</td>
 			</tr>
-			<?php // } ?>
+			<tr class="row0">
+				<td width="21%" >
+
+				</td>
+				<td width="79%" >
+					<span style="font-weight:bold;">
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?></span>
+					<?php
+					$checked = '';
+					if (strtoupper($this->product->product_special) == "Y") $checked = 'checked="checked"' ?>
+					<input type="checkbox" name="product_special" value="Y" <?php echo $checked; ?> />
+				</td>
+			</tr>
 		</table>
-                    </fieldset>
+			</fieldset>
 
 		<fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CHILD_PARENT'); ?></legend>
@@ -147,7 +158,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 
 	</td>
-	<td>
+	<td valign="top">
 		<!-- Product pricing -->
 		<fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICES'); ?></legend>
@@ -258,34 +269,20 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</tr>
 		</table>
 		</fieldset>
-                <table class="adminform">
-                <tr class="row1">
-                            <td width="21%" >
-                                    <div style="text-align:right;font-weight:bold;">
-                                    <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?></div>
-                            </td>
-                            <td width="79%" >
-                                    <?php
-                                            $checked = '';
-                                            if (strtoupper($this->product->product_special) == "Y") $checked = 'checked="checked"' ?>
-                                            <input type="checkbox" name="product_special" value="Y" <?php echo $checked; ?> />
-                            </td>
-                    </tr>
-                </table>
-		<table class="adminform">
-			<tr>
-				<td width="29%" valign="top">
-					<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_INTNOTES'); ?></div>
-				</td>
-				<td width="71%" valign="top">
-					<textarea class="inputbox" name="intnotes" id="intnotes" cols="35" rows="6" ><?php echo $this->product->intnotes; ?></textarea>
-				</td>
-			</tr>
 
-		</table>
 	</td>
 	</tr>
+	<tr>
+		<td width="100%" valign="top" colspan="2">
+			<fieldset>
+				<legend><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_INTNOTES'); ?></legend>
+				<textarea style="width:100%;" class="inputbox" name="intnotes" id="intnotes" cols="35" rows="6" ><?php echo $this->product->intnotes; ?></textarea>
+			</fieldset>
+		</td>
+	</tr>
 </table>
+
+
 <script type="text/javascript">
 var tax_rates = new Array();
 <?php

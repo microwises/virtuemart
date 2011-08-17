@@ -91,7 +91,11 @@ class VmController extends JController{
 		$id = $model->store($data);
 
 		$errors = $model->getErrors();
-		if(empty($errors)) $msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
+		if(empty($errors)) {
+			$msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
+			$type = 'save';
+		}
+		else $type = 'error';
 		foreach($errors as $error){
 			$msg = ($error).'<br />';
 		}
@@ -101,7 +105,7 @@ class VmController extends JController{
 			$redir .= '&task=edit&'.$this->_cidName.'='.$id;
 		}
 
-		$this->setRedirect($redir, $msg);
+		$this->setRedirect($redir, $msg,$type);
 	}
 
 	/**
@@ -119,18 +123,23 @@ class VmController extends JController{
 
 		if(count($ids) < 1) {
 			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
+			$type = 'notice';
 		} else {
 			$model = $this->getModel($this->_cname);
 			$model->remove($ids);
 			$errors = $model->getErrors();
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_DELETED',$this->mainLangKey);
-			if(!empty($errors)) $msg = JText::sprintf('COM_VIRTUEMART_STRING_COULD_NOT_BE_DELETED',$this->mainLangKey);
+			if(!empty($errors)) {
+				$msg = JText::sprintf('COM_VIRTUEMART_STRING_COULD_NOT_BE_DELETED',$this->mainLangKey);
+						$type = 'error';
+			}
+			else $type = 'remove';
 			foreach($errors as $error){
 				$msg .= '<br />'.($error);
 			}
 		}
 
-		$this->setRedirect($this->redirectPath, $msg);
+		$this->setRedirect($this->redirectPath, $msg,$type);
 
 	}
 

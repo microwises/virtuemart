@@ -29,6 +29,9 @@ $format = JText::_('DATE_FORMAT_LC');
 $rows = count( $this->report );
 $intervalTitle = JRequest::getVar('intervals', 'REPORT_BASIC_DATE');
 if ($intervalTitle =='N') { $intervalTitle = 'REPORT_BASIC_DATE';}
+$dateinfo ='';
+if ( ($intervalTitle =='week') or ($intervalTitle =='month') ) $addDateInfo = true ;
+else $addDateInfo = false;
 
 if( $this->pagination->limit < $rows ){
 	if( ($this->pagination->limitstart + $this->pagination->limit) < $rows ) {
@@ -92,14 +95,16 @@ if( $this->pagination->limit < $rows ){
 	    $i = 0;
 	    for ($j =0; $j < $rows; ++$j ){
 	    	$r = $this->report[$j];
-
+			
 	    	//$is = $this->itemsSold[$j];
 	    	$s = 0;
 	    	?>
                 <tr class="row"
                     <?php echo $i;?>">
                     <td align="center">
-                        <?php echo $r['intervals'];?>
+                        <?php echo $r['intervals'] ;
+						if ( $addDateInfo ) echo ' ('.JHTML::_('date', $r['created_on'], '%Y').')';
+						;?>
                     </td>
                     <td align="center">
                         <?php echo $r['number_of_orders'];?>
