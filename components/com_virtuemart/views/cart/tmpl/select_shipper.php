@@ -78,7 +78,7 @@ if (!class_exists('vmShipperPlugin'))
 	
     if (! $found_shipping_method ){
           $app = JFactory::getApplication();
-            $app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD'));
+          vmError(JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD'), JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'));
     }
 
 ?>

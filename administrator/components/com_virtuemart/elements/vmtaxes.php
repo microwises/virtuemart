@@ -40,7 +40,7 @@ class JElementVmTaxes extends JElement {
     function fetchElement($name, $value, &$node, $control_name) {
 
 
-    return ShopFunctions::renderTaxList($control_name . $name, $control_name . '[' . $name . '][]');
+    return ShopFunctions::renderTaxList($value,  $control_name . '[' . $name . ']', '');
 
         // $class = 'multiple="true" size="10"';
        // return JHTML::_('select.genericlist', $taxrates, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);

@@ -4,9 +4,9 @@ if (!defined('_JEXEC'))
 die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 /**
- * Shipper plugin for standard shippers, like regular postal services
+ * Shipper plugin for weight_countries shippers, like regular postal services
  *
- * @version $Id: standard.php 3220 2011-05-12 20:09:14Z Milbo $
+ * @version $Id: weight_countries.php 3220 2011-05-12 20:09:14Z Milbo $
  * @package VirtueMart
  * @subpackage Plugins - shippper
  * @copyright Copyright (C) 2004-2011 VirtueMart Team - All rights reserved.

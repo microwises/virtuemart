@@ -324,7 +324,7 @@ class ShopFunctions {
 	 *
 	 * @author Max Milbers
 	 */
-	function renderTaxList($selected, $name='product_tax_id'){
+	function renderTaxList($selected, $name='product_tax_id', $class='multiple="multiple"'){
 
 		if(!class_exists('VirtueMartModelCalc')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'calc.php');
 		$taxes = VirtueMartModelCalc::getTaxes();
@@ -335,7 +335,7 @@ class ShopFunctions {
 		foreach($taxes as $tax){
 			$taxrates[] = JHTML::_('select.option', $tax->virtuemart_calc_id, $tax->calc_name, $name);
 		}
-		$listHTML = JHTML::_('Select.genericlist', $taxrates, $name, 'multiple="multiple"', $name, 'text', $selected );
+		$listHTML = JHTML::_('Select.genericlist', $taxrates, $name, $class, $name, 'text', $selected );
 		return $listHTML;
 	}
 
