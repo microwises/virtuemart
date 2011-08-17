@@ -135,6 +135,10 @@ class VirtuemartViewProduct extends JView {
 				$manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
 
 				$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
+                                $config = VmConfig::loadConfig();
+                               $lists['product_weight_uom'] = ShopFunctions::renderWeightUnitList('product_weight_uom',$task=='add'? $config->get('weight_unit_default'): $product->product_weight_uom);
+                               $lists['product_lwh_uom'] = ShopFunctions::renderLWHUnitList('product_lwh_uom', $task=='add'?$config->get('lwh_unit_default') : $product->product_lwh_uom);
+
 
 				if( empty( $product->product_available_date )) {
 					$product->product_available_date = time();

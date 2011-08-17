@@ -388,7 +388,39 @@ class ShopFunctions {
 
 		return array_merge($defaulttemplate,$jtemplates);
 	}
+        /**
+	 * Renders the list for the Weight Unit
+	 *
+	 * @author Valérie Isaksen
+	 */
+	function renderWeightUnitList( $nam , $selected){
 
+		$weigth_unit_default = array(
+						 'KG' =>  JText::_('COM_VIRTUEMART_WEIGHT_UNIT_KG')
+						,'GR' =>  JText::_('COM_VIRTUEMART_WEIGHT_UNIT_GR')
+						,'LB' =>  JText::_('COM_VIRTUEMART_WEIGHT_UNIT_LB')
+						,'OZ' =>  JText::_('COM_VIRTUEMART_WEIGHT_UNIT_ONCE')
+					);
+		return VmHTML::selectList($name,$selected, $weigth_unit_default);
+
+	}
+        /**
+	 * Renders the list for the Lenght, Width, Height Unit
+	 *
+	 * @author Valérie Isaksen
+	 */
+	function renderLWHUnitList( $name , $selected){
+
+		$lwh_unit_default = array(
+						 'M' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_M')
+						,'CM' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_CM')
+						,'YARD' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_YARD')
+						,'FOOT' =>  JText::_('COM_VIRTUEMART_WEIGHT_UNIT_FOOT')
+                                                ,   'INCH' =>  JText::_('COM_VIRTUEMART_WEIGHT_UNIT_INCH')
+					);
+		return VmHTML::selectList($name,$selected, $lwh_unit_default);
+
+	}
 	/**
 	 * Writes a line  for the price configuration
 	 *

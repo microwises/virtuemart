@@ -48,8 +48,8 @@ defined('_JEXEC') or die('Restricted access');?>
       <td width="21%" valign="top" >
         <div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_DIMENSION_UOM') ?></div>
       </td>
-      <td width="79%" >
-        <input type="text" class="inputbox"  name="product_lwh_uom" value="<?php echo $this->product->product_lwh_uom; ?>" size="8" maxlength="32" />
+      <td width="79%" >       
+          <?php echo " ".$this->lists['product_lwh_uom'];?>
       </td>
     </tr>
     <tr class="row1">
@@ -62,6 +62,7 @@ defined('_JEXEC') or die('Restricted access');?>
       </td>
       <td width="79%" >
         <input type="text" class="inputbox"  name="product_weight" size="15" maxlength="15" value="<?php echo $this->product->product_weight; ?>" />
+        <?php echo " ".$this->lists['product_weight_uom'];?>
       </td>
     </tr>
     

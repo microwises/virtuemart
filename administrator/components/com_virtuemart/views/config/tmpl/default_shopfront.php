@@ -118,6 +118,32 @@ defined('_JEXEC') or die('Restricted access');
 				?>
 			</td>
 			</tr>
+
+                        <tr>
+	    	<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_WEIGHT_UNIT_DEFAULT_EXPLAIN'); ?>">
+				<label for="weight_unit_default"><?php echo JText::_('COM_VIRTUEMART_WEIGHT_UNIT_DEFAULT') ?></label>
+				</span>
+	    	</td>
+			<td>
+				<?php
+                                     echo ShopFunctions::renderWeightUnitList('weight_unit_default', $this->config->get('weight_unit_default') );
+				?>
+			</td>
+			</tr>
+			<tr>
+                              <tr>
+	    	<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_LWH_UNIT_DEFAULT_EXPLAIN'); ?>">
+				<label for="weight_unit_default"><?php echo JText::_('COM_VIRTUEMART_LWH_UNIT_DEFAULT') ?></label>
+				</span>
+	    	</td>
+			<td>
+				<?php
+                                     echo ShopFunctions::renderLWHUnitList('lwh_unit_default', $this->config->get('lwh_unit_default') );
+				?>
+			</td>
+			</tr>
 			<tr>
 			<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_LIST_LIMIT_EXPLAIN'); ?>">

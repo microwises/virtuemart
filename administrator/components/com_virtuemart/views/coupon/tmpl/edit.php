@@ -47,7 +47,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUPON_DETAILS');
 				<label for="title">
 					<?php echo JText::_('COM_VIRTUEMART_COUPON_PERCENT_TOTAL'); ?>
 				</label>
-                            </pan>
+                            </span>
 			</td>
 			<td>
 

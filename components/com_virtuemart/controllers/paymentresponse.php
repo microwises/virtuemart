@@ -88,7 +88,7 @@ class VirtueMartControllerPaymentresponse extends JController {
     /**
      * Atttention this is the function which processs the response of the payment plugin
      *
-     * @author Valerie Isaaksen
+     * @author Valerie Isaksen
      * @return success of update
      */
     function paymentNotification() {
