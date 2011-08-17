@@ -206,13 +206,13 @@ $tt=$this;
 			<!-- Display the order item -->
 			<tr valign="top" id="showItem_<?php echo $item->virtuemart_order_item_id; ?>">
 				<td>
-					<?php $removeLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->virtuemart_order_id.'&orderLineId='.$item->virtuemart_order_item_id.'&task=removeOrderItem'); ?>
+					<!--<?php $removeLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->virtuemart_order_id.'&orderLineId='.$item->virtuemart_order_item_id.'&task=removeOrderItem'); ?>
 					<span onclick="javascript:confirmation('<?php echo $removeLineLink; ?>');">
 						<?php
 							echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-bug.png', "Remove", NULL, "Remove");
 						?>
 					</span>
-					<a href="javascript:enableItemEdit(<?php echo $item->virtuemart_order_item_id; ?>)"> <?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-category.png', "Edit", NULL, "Edit"); ?></a>
+					<a href="javascript:enableItemEdit(<?php echo $item->virtuemart_order_item_id; ?>)"> <?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-category.png', "Edit", NULL, "Edit"); ?></a> -->
 				</td>
 				<td>
 					<input type="checkbox" name="cid[]" value="<?php echo $item->virtuemart_order_item_id; ?>" />
