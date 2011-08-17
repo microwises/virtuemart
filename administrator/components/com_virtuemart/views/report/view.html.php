@@ -33,73 +33,60 @@ class VirtuemartViewReport extends JView {
 	 */
 	function display($tpl = null){
 
-		$config   = JFactory::getConfig();
-		$task = JRequest::getWord('task');
-
-		$period = JRequest::getVar('period', '');
-		$from_period  = JRequest::getVar('from_period', '');
-		$until_period = JRequest::getVar('until_period', '');
-
-		JToolbarHelper::title( JText::_('COM_VIRTUEMART_REPORT'), 'vm_report_48');
-
 		// Load the helper(s)
 		$this->loadHelper('adminui');
 		$this->loadHelper('html');
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('reportFunctions');
-		//JHTML::_('behavior.calendar');
 
-		$model = $this->getModel();
-
+		$model		= $this->getModel();
+		// $config		= JFactory::getConfig();
+		// $tzoffset	= $config->getValue('config.offset');
+		$task		= JRequest::getWord('task');
 		// set period
-		$date_presets = $model->getDatePresets();
-		$tzoffset     = $config->getValue('config.offset');
-		// check period - set to defaults if no value is set or dates cannot be parsed
-		if (empty($period)) {
-			if (empty($from_period) && empty($until_period)) {
-				$from_period  = $date_presets['today']['from'];
-				$until_period = $date_presets['today']['until'];
-			}
-			$from         = JFactory::getDate($from_period, $tzoffset);
-			$until        = JFactory::getDate($until_period, $tzoffset);
-			// $from = (strtotime($from->_date) == -1) ? false : strtotime($from->_date);
-			// $until = (strtotime($until->_date) == -1) ? false : strtotime($until->_date);
-			$model->setPeriod($from->_date, $until->_date);
-		} else {
-			$model->setPeriodByPreset($period);
-			$from_period  = $model->start_date ;
-			$until_period = $model->end_date ;
-		}
+		//$date_presets = $model->getDatePresets();
 
 
-		$lists['select_date'] = $model->renderDateSelectList($date_presets, $from_period, $until_period);
+
+		$viewName = ShopFunctions::SetViewTitle('REPORT');
+		$this->assignRef('viewName', $viewName);
+
+		$lists['select_date'] = $model->renderDateSelectList();
 		$lists['state_list'] = $model->renderOrderstatesList();
 		$lists['intervals'] = $model->renderIntervalsList();
 
 		$myCurrencyDisplay = CurrencyDisplay::getInstance();
 
 		$revenueBasic = $model->getRevenue();
+		
 		if(is_array($revenueBasic)){
+			$totalReport['revenueTotal']= $totalReport['number_of_ordersTotal'] = $totalReport['itemsSoldTotal'] = 0 ;
 			foreach($revenueBasic as $i => $j){
+				$totalReport['revenueTotal'] += $j->revenue;
+				$totalReport['number_of_ordersTotal'] += $j->number_of_orders;
 				$j->revenue = $myCurrencyDisplay->priceDisplay($j->revenue,'',false);
 				$j->itemsSold = $model->getItemsByRevenue($j);
+				$totalReport['itemsSoldTotal'] +=$j->itemsSold;
 			}
+			$totalReport['revenueTotal'] = $myCurrencyDisplay->priceDisplay($totalReport['revenueTotal'],'',false);
 			unset($i);
 		}
 		$this->assignRef('report', $revenueBasic);
+		$this->assignRef('totalReport', $totalReport);
 
-		$itemsSold = $model->getItemsSold($revenueBasic);
-		$this->assignRef('itemsSold', $itemsSold);
-
-		$productList = $model->getOrderItems();
-		$this->assignRef('productList', $productList);
+		//$itemsSold = $model->getItemsSold($revenueBasic);
+		//$this->assignRef('itemsSold', $itemsSold);
+		// I tihnk is to use in a different layout such as product solds
+		// PATRICK K.
+		// $productList = $model->getOrderItems();
+		// $this->assignRef('productList', $productList);
 
 		$lists = array_merge ($lists ,ShopFunctions::addStandardDefaultViewLists($model));
 		$this->assignRef('lists', $lists);
 
-		$this->assignRef('from_period', $from_period);
-		$this->assignRef('until_period', $until_period);
+		$this->assignRef('from_period', $model->from_period);
+		$this->assignRef('until_period', $model->until_period);
 
 		parent::display($tpl);
 	}

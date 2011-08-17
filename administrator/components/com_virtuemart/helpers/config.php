@@ -477,7 +477,8 @@ class VmConfig{
                         JPlugin::loadLanguage('com_virtuemart');
 
 		$closeimage = JURI::root(true) .'/components/com_virtuemart/assets/images/facebox/closelabel.png';
-		$jsVars  = "vmCartText = '". JText::_('COM_VIRTUEMART_MINICART_ADDED') ."' ;\n" ;
+		$jsVars  = "siteurl = '". JURI::root(true) .'/' ."' ;\n" ;
+		$jsVars .= "vmCartText = '". JText::_('COM_VIRTUEMART_MINICART_ADDED') ."' ;\n" ;
 		$jsVars .= "vmCartError = '". JText::_('COM_VIRTUEMART_MINICART_ERROR') ."' ;\n" ;
 		$jsVars .= "loadingImage = '".JURI::root(true) ."/components/com_virtuemart/assets/images/facebox/loading.gif'  ;\n" ;
 		$jsVars .= "closeImage = '".$closeimage."' ; \n";

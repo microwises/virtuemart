@@ -33,38 +33,54 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
 
 class VirtuemartModelReport extends VmModel {
 
-	var $start_date ='';
-	var $end_date ='';
-	var $date_presets = null;
+	var $from_period ='';
+	var $until_period ='';
+	private $date_presets = null;
+	private $tzoffset = null;
+	private $period = null;
 
 	function __construct(){
 		parent::__construct();
 		$this->setMainTable('orders');
+
+		// set default values always used
+		$config = JFactory::getConfig();
+		$this->tzoffset = $config->getValue('config.offset');
+		$this->setDatePresets();
+		if ( $this->period = JRequest::getVar('period', '') ) {
+			$this->setPeriodByPreset();
+		} else {
+			$this->setPeriod();
+		}
+
 	}
 
 	/*
 	* Set Start & end Date
 	*/
-	function  setPeriod($start_date, $end_date){
-
-		$start_date = JFactory::getDate($start_date);
-		$this->start_date = $start_date->toFormat('%Y-%m-%d');
-		$end_date = JFactory::getDate($end_date);
-		$this->end_date = $end_date->toFormat('%Y-%m-%d');
+	function  setPeriod(){
+		$this->from_period  = JRequest::getVar('from_period', $this->date_presets['today']['from']);
+		$this->until_period = JRequest::getVar('until_period', $this->date_presets['today']['until']);
+		$from   = JFactory::getDate($this->from_period, $this->tzoffset);
+		$until  = JFactory::getDate($this->until_period, $this->tzoffset);
+		$start_date = JFactory::getDate($from->_date);
+		$this->from_period = $start_date->toFormat('%Y-%m-%d');
+		$end_date = JFactory::getDate($until->_date);
+		$this->until_period = $end_date->toFormat('%Y-%m-%d');
 	}
 
 	/*
-	* Set Start & end Date
+	* Set Start & end Date if Var peroid
 	*/
-	function  setPeriodByPreset($period){
-		$this->start_date = $this->date_presets[$period]['from'];
-		$this->end_date = $this->date_presets[$period]['until'];
+	function  setPeriodByPreset(){
+		$this->from_period = $this->date_presets[$this->period]['from'];
+		$this->until_period = $this->date_presets[$this->period]['until'];
 	}
 
 	function  getItemsByRevenue($revenue){
 		$q = 'select SUM(`product_quantity`) as total from `#__virtuemart_order_items` as i LEFT JOIN #__virtuemart_orders as o ON o.virtuemart_order_id=i.virtuemart_order_id '.$this->whereItem.' '. $this->intervals.'="'.$revenue->intervals.'" ';
 		$this->_db->setQuery( $q );
-		echo $this->_db->_sql;
+		//echo $this->_db->_sql;
 		return $this->_db->loadResult();
 
 	}
@@ -75,20 +91,20 @@ class VirtuemartModelReport extends VmModel {
 		$joinTables = array();
 		$joinedTables = '';
 		$where= array();
-		/* group always by intervals (day,week,year, ...)*/
+		/* group always by intervals (day,week, ... or ID) and set grouping and defaut ordering */
 
-		$intervals = JRequest::getWord('intervals','daily');
+		$intervals = JRequest::getWord('intervals','day');
 		switch ($intervals) {
-			case 'daily':
+			case 'day':
 				$this->intervals= 'DATE( `o`.`created_on` )';
 				break;
-			case 'weekly':
+			case 'week':
 				$this->intervals= 'WEEK( `o`.`created_on` )';
 				break;
-			case 'monthly':
+			case 'month':
 				$this->intervals= 'MONTH( `o`.`created_on` )';
 				break;
-			case 'yearly':
+			case 'year':
 				$this->intervals= 'YEAR( `o`.`created_on` )';
 				break;
 			default:
@@ -101,7 +117,7 @@ class VirtuemartModelReport extends VmModel {
 
 		$selectFields[] = 'COUNT(virtuemart_order_id) as number_of_orders';
 		$selectFields[] = 'SUM(order_subtotal) as revenue';
-		$this->dates = ' DATE( `o`.`created_on` ) BETWEEN "'.$this->start_date.'" AND "'.$this->end_date.'" ';
+		$this->dates = ' DATE( `o`.`created_on` ) BETWEEN "'.$this->from_period.'" AND "'.$this->until_period.'" ';
 
 		/* Filter by statut */
 		if ($orderstates = JRequest::getWord('order_status_code','')) $where[] = 'o.order_status ="'.$orderstates.'"';
@@ -157,7 +173,9 @@ class VirtuemartModelReport extends VmModel {
 		} else {
 			$this->whereItem = ' WHERE ';
 		}
+		
 		$this->whereItem;
+		/* WHERE differences with orders and items from orders are only date periods and ordering */
 		$whereString =$this->whereItem.$this->dates ;
 		// if(!$sold && !$items){
 
@@ -172,8 +190,9 @@ class VirtuemartModelReport extends VmModel {
 			// $orderBy = 'ORDER BY created_on, product_name ';
 		// }
 
-		$selectFindRows = 'SELECT COUNT(*) FROM'.$mainTable ;
-		$orderBy = $this->_getOrdering('intervals','asc');
+		$orderBy = $this->_getOrdering($this->intervals,'asc');
+
+
 		// TODO $nbrReturnProducts ?
 
 		return $this->exeSortSearchListQuery(true, $select, $joinedTables, $whereString, $groupBy, $orderBy );
@@ -202,7 +221,7 @@ class VirtuemartModelReport extends VmModel {
 			COUNT(virtuemart_order_id) as number_of_orders,
 			SUM(order_subtotal) as revenue
 			FROM `#__virtuemart_orders`
-			WHERE `created_on` BETWEEN '{$this->start_date} 00:00:00' AND '{$this->end_date} 23:59:59'
+			WHERE `created_on` BETWEEN '{$this->start_date} 00:00:00' AND '{$this->until_period} 23:59:59'
 			GROUP BY order_date ";
 			$mainframe = JFactory::getApplication() ;
 			$filter_order     = $mainframe->getUserStateFromRequest( 'com_virtuemart.report.filter_order', 'filter_order', 'order_date', 'cmd' );
@@ -228,29 +247,29 @@ class VirtuemartModelReport extends VmModel {
      * @param string $noLimit True if no record count limit is used, false otherwise
      * @return object List of order objects
      */
-    function getItemsSold($noLimit = false){
+    //function getItemsSold($noLimit = false){
     	// $db = JFactory::getDBO();
 
-		$query = "SELECT `created_on` as order_date, ";
-		$query .= "SUM(product_quantity) as items_sold ";
-		$query .= "FROM `#__virtuemart_order_items` ";
-		$query .= "WHERE `created_on` BETWEEN '{$this->start_date} 00:00:00' AND '{$this->end_date} 23:59:59' ";
-		$query .= "GROUP BY order_date ";
-		$query .= "ORDER BY order_date ASC ";
-		if($noLimit){
-			$this->_data = $this->_getList($query);
-		}
-		else{
-			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-		}
-		if (!$this->_total) $this->_total = $this->_getListCount($query);
+		// $query = "SELECT `created_on` as order_date, ";
+		// $query .= "SUM(product_quantity) as items_sold ";
+		// $query .= "FROM `#__virtuemart_order_items` ";
+		// $query .= "WHERE `created_on` BETWEEN '{$this->start_date} 00:00:00' AND '{$this->until_period} 23:59:59' ";
+		// $query .= "GROUP BY order_date ";
+		// $query .= "ORDER BY order_date ASC ";
+		// if($noLimit){
+			// $this->_data = $this->_getList($query);
+		// }
+		// else{
+			// $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+		// }
+		// if (!$this->_total) $this->_total = $this->_getListCount($query);
 
-		return $this->_data;
-    }
+		// return $this->_data;
+    // }
 
    /**
      * Retrieve a list of report items from the database.
-     *
+     * DONT know why this ???? Patrick Kohl
      * @author Wicksj
      * @param string $noLimit True if no record count limit is used, false otherwise
      * @return object List of order objects
@@ -262,7 +281,7 @@ class VirtuemartModelReport extends VmModel {
 		$query .= "i.created_on as order_date, ";
 		$query .= "SUM(product_quantity) as items_sold ";
   		$query .= "FROM #__virtuemart_order_items i, #__virtuemart_orders o, #__virtuemart_products p ";
-		$query .= "WHERE i.created_on BETWEEN '{$this->start_date} 00:00:00' AND '{$this->end_date} 23:59:59' ";
+		$query .= "WHERE i.created_on BETWEEN '{$this->start_date} 00:00:00' AND '{$this->until_period} 23:59:59' ";
 		$query .= "AND o.virtuemart_order_id=i.virtuemart_order_id ";
   		$query .= "AND i.virtuemart_product_id=p.virtuemart_product_id ";
   		$query .= "GROUP BY product_sku, product_name, order_date ";
@@ -282,7 +301,7 @@ class VirtuemartModelReport extends VmModel {
 
 
 
-	public function getDatePresets(){
+	public function setDatePresets(){
 		if ($this->date_presets) return $this->date_presets;
 		// set date presets
 		$curDate   = JFactory::getDate();
@@ -318,18 +337,15 @@ class VirtuemartModelReport extends VmModel {
 			'from'  => date('Y-m-d', mktime(0, 0, 0, 1, 1, date('Y', $curDate))),
 			'until' => date('Y-m-d', mktime(0, 0, 0, 12, 31, date('Y', $curDate))));
 
-			return $this->date_presets;
-
 	}
 
-	public function renderDateSelectList( $from_period, $until_period){
+	public function renderDateSelectList(){
 		// simpledate select
-		$date_presets =  $this->getDatePresets() ;
 		$select  = '';
 		$options = array(JHTML::_('select.option', '', '- '.JText::_('COM_VIRTUEMART_REPORT_SET_PERIOD').' -', 'text', 'value'));
-		foreach ($date_presets as $name => $value) {
+		foreach ($this->date_presets as $name => $value) {
 			$options[] = JHTML::_('select.option', $name, JText::_($value['name']), 'text', 'value');
-			if ($value['from'] == $from_period && $value['until'] == $until_period) {
+			if ($value['from'] == $this->from_period && $value['until'] == $this->until_period) {
 				$select = $name;
 			}
 		}
@@ -347,13 +363,13 @@ class VirtuemartModelReport extends VmModel {
 		return VmHTML::select($list, 'order_status_code', $orderstates,'class="inputbox" onchange="this.form.submit();"');
     }
 	public function renderIntervalsList() {
-		$intervals = JRequest::getWord('intervals','');
+		$intervals = JRequest::getWord('intervals','day');
 		$options = array();
-		$options[] = JHTML::_('select.option' , JText::_('COM_VIRTUEMART_NONE') , null ) ;
-		$options[] = JHTML::_('select.option' , JText::_('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_DAILY') , 'daily') ;
-		$options[] = JHTML::_('select.option' , JText::_('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_WEEKLY') , 'weekly') ;
-		$options[] = JHTML::_('select.option' , JText::_('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_MONTHLY') , 'monthly' ) ;
-		$options[] = JHTML::_('select.option' , JText::_('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_YEARLY') , 'yearly' ) ;
+		$options[] = JHTML::_('select.option' , JText::_('COM_VIRTUEMART_NONE') , '' ) ;
+		$options[] = JHTML::_('select.option' , JText::_('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_DAILY') , 'day') ;
+		$options[] = JHTML::_('select.option' , JText::_('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_WEEKLY') , 'week') ;
+		$options[] = JHTML::_('select.option' , JText::_('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_MONTHLY') , 'month' ) ;
+		$options[] = JHTML::_('select.option' , JText::_('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_YEARLY') , 'year' ) ;
 		$listHTML = JHTML::_('select.genericlist', $options, 'intervals', 'class="inputbox" onchange="this.form.submit();" size="1"', 'text', 'value', $intervals);
 		return $listHTML;
     }

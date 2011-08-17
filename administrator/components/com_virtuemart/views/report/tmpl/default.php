@@ -27,6 +27,8 @@ $search_type = JRequest::getVar('search_type', 'product');
 $virtuemart_order_id = JRequest::getInt('virtuemart_order_id', false);
 $format = JText::_('DATE_FORMAT_LC');
 $rows = count( $this->report );
+$intervalTitle = JRequest::getVar('intervals', 'REPORT_BASIC_DATE');
+if ($intervalTitle =='N') { $intervalTitle = 'REPORT_BASIC_DATE';}
 
 if( $this->pagination->limit < $rows ){
 	if( ($this->pagination->limitstart + $this->pagination->limit) < $rows ) {
@@ -65,7 +67,7 @@ if( $this->pagination->limit < $rows ){
             <thead>
                 <tr>
                     <th>
-                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_DATE','created_on',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
+                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_'.$intervalTitle,'created_on',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
                     </th>
                     <th>
                         <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_ORDERS','virtuemart_order_id',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
@@ -91,7 +93,7 @@ if( $this->pagination->limit < $rows ){
 	    for ($j =0; $j < $rows; ++$j ){
 	    	$r = $this->report[$j];
 
-	    	$is = $this->itemsSold[$j];
+	    	//$is = $this->itemsSold[$j];
 	    	$s = 0;
 	    	?>
                 <tr class="row"
@@ -114,6 +116,14 @@ if( $this->pagination->limit < $rows ){
 	    }
 	    ?>
             </tbody>
+           <thead>
+                <tr>
+                    <th  class="right"><?php echo JText::_('COM_VIRTUEMART_TOTAL') ?></th>
+                    <th><?php echo $this->totalReport['number_of_ordersTotal']?></th>
+                    <th><?php echo $this->totalReport['itemsSoldTotal'];?></th>
+                    <th class="right"><?php echo $this->totalReport['revenueTotal'];?></th>
+				</tr>
+            </thead>
         </table>
     </div>
 
