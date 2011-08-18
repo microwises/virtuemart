@@ -118,8 +118,8 @@ class VirtuemartControllerOrders extends VmController {
 			$msg ='';
 		}
 		$this->setRedirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$order_id ,$msg );
-	}	
-	
+	}
+
 	/**
 	 * NextOrder
 	 * TODO rename, the name is ambigous notice by Max Milbers
@@ -175,7 +175,7 @@ class VirtuemartControllerOrders extends VmController {
 		    $msg = str_replace('{X}', $result['updated'], JText::_('COM_VIRTUEMART_ORDER_UPDATED_SUCCESSFULLY'));
 		if ($result['error'] > 0)
 		    $msg .= str_replace('{X}', $result['error'], JText::_('COM_VIRTUEMART_ORDER_NOT_UPDATED_SUCCESSFULLY'));
-		
+
 		if ('updatestatus'== JRequest::getWord('last_task')) {
 			$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
 			$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$virtuemart_order_id , $msg);
@@ -244,6 +244,7 @@ class VirtuemartControllerOrders extends VmController {
 	 */
 	public function updateOrderItemStatus()
 	{
+		vmdebug('updateOrderItemStatus');
 		$mainframe = Jfactory::getApplication();
 		$model = $this->getModel('orders');
 		$_items = JRequest::getVar('cid',  0, '', 'array');
@@ -261,6 +262,7 @@ class VirtuemartControllerOrders extends VmController {
 	 */
 	public function updateOrderItem()
 	{
+		vmdebug('updateOrderItem');
 		$mainframe = Jfactory::getApplication();
 		$model = $this->getModel('orders');
 		$model->updateSingleItem();

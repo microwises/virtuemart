@@ -211,6 +211,41 @@ class VirtueMartModelOrders extends VmModel {
 
 
 	/**
+	 * Update an order item status
+	 * @author Max Milbers
+	 */
+	public function updateSingleItem($virtuemart_order_item_id, $order_status)
+	{
+
+		/*		$item = JRequest::getInt('virtuemart_order_item_id', '');
+		 $table->load($item);
+		$table->order_status = JRequest::getWord('order_status_'.$item, '');
+		$table->product_quantity = JRequest::getVar('product_quantity_'.$item, '');
+		$table->product_item_price = JRequest::getVar('product_item_price_'.$item, '');
+		$table->product_final_price = JRequest::getVar('product_final_price_'.$item, '');*/
+
+
+		$table = $this->getTable('order_items');
+		$table->load($virtuemart_order_item_id);
+
+		$oldOrderStatus = $data->order_status;
+
+		$data->order_status = $order_status;
+
+		$data = $table->bindChecknStore($data,true);
+
+		$errors = $table->getErrors();
+		foreach($errors as $error){
+			$this->setError( get_class( $this ).'::store '.$error);
+		}
+
+		// 		$this->handleStockAfterStatusChanged($order_status,array($product),$table->order_status);
+		$this->handleStockAfterStatusChangedPerProduct($order_status, $oldOrderStatus, $data->virtuemart_product_id,$data->product_quantity);
+
+	}
+
+
+	/**
 	 * Update an order status and send e-mail if needed
 	 *
 	 * @author Valérie Isaksen
@@ -219,13 +254,171 @@ class VirtueMartModelOrders extends VmModel {
 	public function updateOrderStatus($order_id, $order_status){
 
 		vmdebug('updateOrderStatus');
-		// Update the order
-		$order = $this->getTable('orders');
+
+		$this->updateOrderStatussee($order_id, $order_status);
+		/*		// Update the order
+		 $order = $this->getTable('orders');
 		$order->load((int)$order_id);
 		$order->order_status = $order_status;
 		$order->store();
 
-		// here should update stock level
+		// here should update stock level*/
+	}
+
+	/**
+	 * Strange name is just temporarly
+	 *
+	 * @param unknown_type $order_id
+	 * @param unknown_type $order_status
+	 */
+	public function updateOrderStatussee($order_id=0, $order_status=0){
+
+		vmdebug('updateOrderStatussee');
+		//General change of orderstatus
+		if(empty($order_id)){
+			// Get a list of orders to update
+			$order_ids = array_diff_assoc(JRequest::getVar('order_status', array()), JRequest::getVar('current_order_status', array()));
+
+			/* Get the list of orders to notify */
+			// TODO as getInt ???
+			$notify = JRequest::getVar('notify_customer', array());
+
+			/* See where the lines should be updated too */
+			// TODO as getInt ???
+			$update_lines = JRequest::getVar('update_lines', array());
+
+			/* Get the list of comments */
+			$comments = JRequest::getVar('order_comment', array());
+
+			// TODO This is not the most logical place for these plugins (or better; the method updateStatus() must be renamed....)
+			if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+			if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
+			JPluginHelper::importPlugin('vmshipper');
+			$_dispatcher = JDispatcher::getInstance();
+			$_returnValues = $_dispatcher->trigger('plgVmOnSaveOrderShipperBE',array(JRequest::get('post')));
+			foreach ($_returnValues as $_retVal) {
+				if ($_retVal === false) {
+					// Stop as soon as the first active plugin returned a failure status
+					return;
+				}
+			}
+
+		}
+		//update single item or some items
+		else {
+			if(!is_array($order_id)){
+				$order_ids = array($order_id);
+			} else {
+				$order_ids = $order_id;
+			}
+		}
+
+		/* Process the orders to update */
+		$updated = 0;
+		$error = 0;
+		if ($order_ids) {
+			foreach ($order_ids as $virtuemart_order_id => $new_status) {
+
+				/* Get customer notification */
+				$customer_notified = (@$notify[$virtuemart_order_id] == 1) ? 1 : 0;
+
+				/* Get the comments */
+				$comment = (array_key_exists($virtuemart_order_id, $comments)) ? $comments[$virtuemart_order_id] : '';
+
+				/* Update the order */
+				$order = $this->getTable('orders');
+				$order->load($virtuemart_order_id);
+				$order_status_code = $order->order_status;
+
+				// Order updates can be ignored if we're updating only lines
+				$order->order_status = $new_status;
+
+				/* When the order is set to "shipped", we can capture the payment */
+				if( ($order_status_code == "P" || $order_status_code == "C") && $new_status == "S") {
+					JPluginHelper::importPlugin('vmpayment');
+					$_dispatcher = JDispatcher::getInstance();
+					$_returnValues = $_dispatcher->trigger('plgVmOnShipOrderPayment',array(
+					$virtuemart_order_id
+					)
+					);
+					foreach ($_returnValues as $_returnValue) {
+						if ($_returnValue === true) {
+							break; // Plugin was successfull
+						} elseif ($_returnValue === false) {
+							return false; // Plugin failed
+						}
+						// Ignore null status and look for the next returnValue
+					}
+				}
+
+				/**
+				 * If an order gets cancelled, fire a plugin event, perhaps
+				 * some authorization needs to be voided
+				 */
+				if ($new_status == "X") {
+					JPluginHelper::importPlugin('vmpayment');
+					$_dispatcher = JDispatcher::getInstance();
+					$_dispatcher->trigger('plgVmOnCancelPayment',array(
+					$virtuemart_order_id
+					,$order_status_code
+					,$new_status
+					)
+					);
+				}
+
+				if ($order->store()) {
+					/* Update the order history */
+					$this->_updateOrderHist($virtuemart_order_id, $new_status, $customer_notified, $comment);
+
+					/* Update stock level */
+/*					if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
+					$_updateStock = VirtueMartModelOrderstatus::updateStockAfterStatusChange($new_status, $order_status_code);
+					if ($_updateStock != 0) {
+						if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
+						$_productModel = new VirtueMartModelProduct();
+						$_q = 'SELECT virtuemart_product_id, product_quantity
+											FROM `#__virtuemart_order_items`
+											WHERE `virtuemart_order_id` = "'.(int)$virtuemart_order_id.'" ';
+						$db->setQuery($_q);
+						if ($_products = $db->loadObjectList()) {
+							foreach ($_products as $_key => $_product) {
+								if ($_updateStock > 0) {
+									// Increase
+									$_productModel->increaseStockAfterCancel ($_product->virtuemart_product_id, $_product->product_quantity);
+								} else { // Decrease
+									$_productModel->decreaseStockAfterSales ($_product->virtuemart_product_id, $_product->product_quantity);
+								}
+							}
+						}
+					}*/
+
+					// Update order item status
+					if (@$update_lines[$virtuemart_order_id]) {
+						$q = 'SELECT virtuemart_order_item_id
+											FROM #__virtuemart_order_items
+											WHERE virtuemart_order_id="'.$virtuemart_order_id.'"';
+						$db = JFactory::getDBO();
+						$db->setQuery($q);
+						$order_items = $db->loadObjectList();
+						if ($order_items) {
+							foreach ($order_items as $key => $order_item) {
+								$this->updateSingleItem($order_item->virtuemart_order_item_id, $new_status);
+							}
+						}
+					}
+
+					/* Send a download ID */
+					//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($virtuemart_order_id);
+
+					/* Check if the customer needs to be informed */
+					if (@$notify[$virtuemart_order_id]) $this->notifyCustomer($order, $comments);
+					$updated++;
+				} else {
+					$error++;
+				}
+			}
+		}
+
 	}
 
 	/**
@@ -235,7 +428,9 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	public function updateStatus()
 	{
-		vmdebug('updateStatus');
+		$this -> updateOrderStatussee();
+		return;
+
 		$db = JFactory::getDBO();
 		$mainframe = JFactory::getApplication();
 
@@ -587,127 +782,139 @@ class VirtueMartModelOrders extends VmModel {
 		}
 	}
 
-	function handleStockAfterStatusChanged($newState,$products,$oldState = 'P') {
+	function handleStockAfterStatusChanged($newState,$products,$oldState = 'P'){
 
-			if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
-			$productModel = new VirtueMartModelProduct();
-				// P 	Pending
-				// C 	Confirmed
-				// X 	Cancelled
-				// R 	Refunded
-				// S 	Shipped
-			   $stockOut = array('S');
-   $isOrdered =  array('P','C','S');
+		foreach ($products as $prod) {
+			$this->handleStockAfterStatusChangedPerProduct($newState,$oldState,$prod->virtuemart_product_id,$prod->quantity);
+		}
+	}
+
+	function handleStockAfterStatusChangedPerProduct($newState, $oldState,$productId, $quantity) {
+
+		if($newState == $oldState) return;
+
+		// P 	Pending
+		// C 	Confirmed
+		// X 	Cancelled
+		// R 	Refunded
+		// S 	Shipped
+		/*			   $stockOut = array('S');
+		$isOrdered =  array('P','C','S');
 		// Stock change ?
 		$newStock = in_array($newState, $stockOut);
 		$oldStock = in_array($oldState, $stockOut);
 
 		if (newStock  > oldStock  )     $product_in_stock = '-';
-		 else if (newStock  < oldStock  ) $product_in_stock = '+';
-		  else $product_in_stock = '=';
+		else if (newStock  < oldStock  ) $product_in_stock = '+';
+		else $product_in_stock = '=';
 
-		  // Product is ordered ?  
+		// Product is ordered ?
 		$oldOrdered = in_array($newState, $isOrdered);
 		$newOrdered = in_array($oldState, $isOrdered);
 
 		if ($oldOrdered > $newOrdered )     $product_ordered = '+';
-		 else if ($oldOrdered < $newOrdered ) $product_ordered = '-';
-		  else $product_ordered = '=';
+		else if ($oldOrdered < $newOrdered ) $product_ordered = '-';
+		else $product_ordered = '=';*/
 
-   echo 'ordered '.$product_ordered.' stock '.$product_in_stock  ;
-			// P means ordered, but payment not confirmed, => real stock stays the same => product_in_stock = and product_ordered =
-			if($newState=='P'){
-				//for a new order
-				if($oldState=='P'){
-					$product_in_stock = '=';
-					$product_ordered = '=';
-				}
 
-				else if($oldState=='C'){
-					$product_in_stock = '=';
-					$product_ordered = '-';
-				}
-
-				else if($oldState=='S'){
-					$product_in_stock = '+';
-					$product_ordered = '=';
-
-				}
-
-				else if($oldState=='X'){
-
-				}
-
-			}
-			//  => product_in_stock = and product_ordered =
-			else if($newState=='C'){
-				if($oldState=='P'){
-					$product_in_stock = '=';
-					$product_ordered = '+';
-				}
-
-				else if($oldState=='S'){
-					$product_in_stock = '+';
-					$product_ordered = '+';
-				}
-
-				else if($oldState=='X'){
-
-				}
-			}
-			// S means shipped => means real stock decreased an virtual stock => product_in_stock -  and product_ordered -
-			else if($newState=='S'){
-// 				$action = 'decreaseStockAfterSales';
-				if($oldState=='P'){
-					$product_in_stock = '-';
-					$product_ordered = '=';
-				}
-
-				else if($oldState=='C'){
-					$product_in_stock = '-';
-					$product_ordered = '-';
-				}
-
-				else if($oldState=='X'){
-
-				}
-
-			}
-			//X Cancelled, we should revert the old stocks, so we different options here,
-			// we have different things todo depending on the state set before
-			else if($newState=='X' || $newState=='R'){
-				if($oldState=='P'){
-					$product_in_stock = '=';
-					$product_ordered = '=';
-				}
-				else if($oldState=='C'){
-					$product_in_stock = '=';
-					$product_ordered = '-';
-
-				}
-				else if($oldState=='S'){
-					$product_in_stock = '+';
-					$product_ordered = '=';
-
-				}
-
-			}
-			else{
-				vmError('The workflow for '.$newState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Cant process workflow, contact the shopowner');
-// 				$action
+// 		echo 'ordered '.$product_ordered.' stock '.$product_in_stock  ;
+		// P means ordered, but payment not confirmed, => real stock stays the same => product_in_stock = and product_ordered =
+		if($newState=='P'){
+			//for a new order
+			if($oldState=='P'){
+				$product_in_stock = '=';
+				$product_ordered = '=';
 			}
 
-   echo 'ordered '.$product_ordered.' stock '.$product_in_stock  ;
+			else if($oldState=='C'){
+				$product_in_stock = '=';
+				$product_ordered = '-';
+			}
 
-			foreach ($products as $prod) {
-
-				$productModel->updateStock ($prod->virtuemart_product_id, $prod->quantity,$product_in_stock,$product_ordered);
+			else if($oldState=='S'){
+				$product_in_stock = '+';
+				$product_ordered = '=';
 
 			}
+
+			else if($oldState=='X'){
+
+			}
+
+		}
+		//  => product_in_stock = and product_ordered =
+		else if($newState=='C'){
+			if($oldState=='P'){
+				$product_in_stock = '=';
+				$product_ordered = '+';
+			}
+
+			else if($oldState=='S'){
+				$product_in_stock = '+';
+				$product_ordered = '+';
+			}
+
+			else if($oldState=='X'){
+
+			}
+		}
+		// S means shipped => means real stock decreased an virtual stock => product_in_stock -  and product_ordered -
+		else if($newState=='S'){
+			// 				$action = 'decreaseStockAfterSales';
+			if($oldState=='P'){
+				$product_in_stock = '-';
+				$product_ordered = '=';
+			}
+
+			else if($oldState=='C'){
+				$product_in_stock = '-';
+				$product_ordered = '-';
+			}
+
+			else if($oldState=='X'){
+
+			}
+
+		}
+		//X Cancelled, we should revert the old stocks, so we different options here,
+		// we have different things todo depending on the state set before
+		else if($newState=='X' || $newState=='R'){
+			if($oldState=='P'){
+				$product_in_stock = '=';
+				$product_ordered = '=';
+			}
+			else if($oldState=='C'){
+				$product_in_stock = '=';
+				$product_ordered = '-';
+
+			}
+			else if($oldState=='S'){
+				$product_in_stock = '+';
+				$product_ordered = '=';
+
+			}
+
+		}
+		else{
+			vmError('The workflow for '.$newState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Cant process workflow, contact the shopowner status '.$newState);
+			// 				$action
+		}
+
+// 		echo 'ordered '.$product_ordered.' stock '.$product_in_stock  ;
+
+// 		foreach ($products as $prod) {
+
+		if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
+		$productModel = new VirtueMartModelProduct();
+
+			$productModel->updateStock ($productId, $quantity,$product_in_stock,$product_ordered);
 
 // 		}
 
+		// 		}
+
 	}
+
 	/**
 	 * Handle the selected shipping method. If triggered to do so, this method will also
 	 * take care of the stock updates.
@@ -858,24 +1065,24 @@ class VirtueMartModelOrders extends VmModel {
 	 * Update an order item status
 	 * @author Oscar van Eijk
 	 */
-	public function updateSingleItem()
-	{
-		$table = $this->getTable('order_items');
-		$item = JRequest::getInt('virtuemart_order_item_id', '');
-		$table->load($item);
-		$table->order_status = JRequest::getWord('order_status_'.$item, '');
-		$table->product_quantity = JRequest::getVar('product_quantity_'.$item, '');
-		$table->product_item_price = JRequest::getVar('product_item_price_'.$item, '');
-		$table->product_final_price = JRequest::getVar('product_final_price_'.$item, '');
+	/*	public function updateSingleItem()
+	 {
+	$table = $this->getTable('order_items');
+	$item = JRequest::getInt('virtuemart_order_item_id', '');
+	$table->load($item);
+	$table->order_status = JRequest::getWord('order_status_'.$item, '');
+	$table->product_quantity = JRequest::getVar('product_quantity_'.$item, '');
+	$table->product_item_price = JRequest::getVar('product_item_price_'.$item, '');
+	$table->product_final_price = JRequest::getVar('product_final_price_'.$item, '');
 
-		$data = $table->bindChecknStore($table);
+	$data = $table->bindChecknStore($table);
 
-		$errors = $table->getErrors();
-		foreach($errors as $error){
-			$this->setError( get_class( $this ).'::store '.$error);
-		}
-
+	$errors = $table->getErrors();
+	foreach($errors as $error){
+	$this->setError( get_class( $this ).'::store '.$error);
 	}
+
+	}*/
 
 	/**
 	 * E-mails the Download-ID to the customer
