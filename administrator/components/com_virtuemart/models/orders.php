@@ -217,6 +217,8 @@ class VirtueMartModelOrders extends VmModel {
 	 *
 	 */
 	public function updateOrderStatus($order_id, $order_status){
+
+		vmdebug('updateOrderStatus');
 		// Update the order
 		$order = $this->getTable('orders');
 		$order->load((int)$order_id);
@@ -233,6 +235,7 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	public function updateStatus()
 	{
+		vmdebug('updateStatus');
 		$db = JFactory::getDBO();
 		$mainframe = JFactory::getApplication();
 

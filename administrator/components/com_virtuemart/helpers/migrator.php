@@ -880,6 +880,13 @@ class Migrator extends VmModel{
 					$product['modified_on'] = $this->_changeToStamp($product['mdate']); //we could remove this to set modified_on today
 					$product['product_available_date'] = $this->_changeToStamp($product['product_available_date']);
 
+					if(!empty($product['product_weight_uom'])){
+						$product['product_weight_uom'] = $this->parseWeightUom($product['product_weight_uom']);
+					}
+
+					if(!empty($product['product_lwh_uom'])){
+						$product['product_lwh_uom'] = $this->parseLengthUom($product['product_lwh_uom']);
+					}
 					//$product['created_by'] = $user->id;
 					//$product['modified_by'] = $user->id;
 
@@ -1237,6 +1244,43 @@ class Migrator extends VmModel{
 
 		return $xref;
 	}
+
+	/**
+	 * parse the entered string to a standard unit
+	 * @author Max Milbers
+	 * @author Valerie Isaksen
+	 *
+	 */
+	private function parseWeightUom($weightUnit){
+
+		$weightUnit = strtolower($weightUnit);
+		if(strpos($weightUnit,'kg')!==false){
+			return 'KG';
+		}
+		else if(strpos($weightUnit,'kilos')!==false){
+			return 'KG';
+		}
+
+
+	}
+
+	/**
+	* parse the entered string to a standard unit
+	* @author Max Milbers
+	* @author Valerie Isaksen
+	*
+	*/
+	private function parseLengthUom($lengthUnit){
+
+		$lengthUnit = strtolower($lengthUnit);
+		if(strpos($lengthUnit,'mm')!==false){
+			return 'MM';
+		}
+		else if(strpos($lengthUnit,'cm')!==false){
+			return 'CM';
+		}
+	}
+
 
 	/**
 	 * Helper function, was used to determine the difference of an loaded array (from vm19
