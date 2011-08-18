@@ -244,15 +244,17 @@ class VirtuemartControllerOrders extends VmController {
 	 */
 	public function updateOrderItemStatus()
 	{
-		vmdebug('updateOrderItemStatus');
+		$test = array('shotter'=>1,'shotter2'=>'doof');
 		$mainframe = Jfactory::getApplication();
 		$model = $this->getModel('orders');
 		$_items = JRequest::getVar('cid',  0, '', 'array');
-		$_status = JRequest::getWord('order_status', '');
-		JArrayHelper::toInteger($_items);
+		//JArrayHelper::toInteger($_items);
+
 		$_orderID = JRequest::getInt('virtuemart_order_id', '');
-		foreach ($_items as $_item) {
-			$model->updateSingleItemStatus($_item, $_status[$_orderID]);
+
+		foreach ($_items as $key=>$value) {
+
+			$model->updateSingleItem($key, $value["'order_statuslist'"]);
 		}
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$_orderID);
 	}

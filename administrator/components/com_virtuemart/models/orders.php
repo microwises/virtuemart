@@ -224,6 +224,7 @@ class VirtueMartModelOrders extends VmModel {
 		$table->product_item_price = JRequest::getVar('product_item_price_'.$item, '');
 		$table->product_final_price = JRequest::getVar('product_final_price_'.$item, '');*/
 
+		vmdebug('updateSingleItem',$virtuemart_order_item_id,$order_status);
 
 		$table = $this->getTable('order_items');
 		$table->load($virtuemart_order_item_id);
@@ -273,7 +274,8 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	public function updateOrderStatussee($order_id=0, $order_status=0){
 
-		vmdebug('updateOrderStatussee');
+
+		vmdebug('updateOrderStatussee',$order_id,$order_status);
 		//General change of orderstatus
 		if(empty($order_id)){
 			// Get a list of orders to update
@@ -1046,7 +1048,8 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	public function updateSingleItemStatus($item, $_status)
 	{
-		$table = $this->getTable('order_items');
+		$this->updateOrderStatussee($item, $_status);
+/*/		$table = $this->getTable('order_items');
 		$table->load($item);
 
 		if (!$table->check()) {
@@ -1058,7 +1061,7 @@ class VirtueMartModelOrders extends VmModel {
 		if (!$table->store()) {
 			$this->setError($this->getError());
 			return false;
-		}
+		}*/
 	}
 
 	/**
