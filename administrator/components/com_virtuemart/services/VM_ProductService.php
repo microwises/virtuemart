@@ -641,12 +641,13 @@ include_once('VM_Commons.php');
 		public $ordering="";
 		public $shared="";
 		public $published="";
+		public $attachValue="";
 		
 		
 				
 		//constructeur
 		function __construct($virtuemart_media_id, $virtuemart_vendor_id, $file_title, $file_description, $file_meta, $file_mimetype, $file_type, $file_url, $file_url_thumb,
-								$file_is_product_image,$file_is_downloadable,$file_is_forSale,$file_params,$ordering,$shared,$published) {
+								$file_is_product_image,$file_is_downloadable,$file_is_forSale,$file_params,$ordering,$shared,$published,$attachValue) {
 								
 			$this->virtuemart_media_id = $virtuemart_media_id;
 			$this->virtuemart_vendor_id = $virtuemart_vendor_id;
@@ -664,7 +665,7 @@ include_once('VM_Commons.php');
 			$this->ordering = $ordering;
 			$this->shared = $shared;
 			$this->published = $published;
-			
+			$this->attachValue = $attachValue;
 			
 		}
 	}
@@ -2519,6 +2520,8 @@ include_once('VM_Commons.php');
 		
 		//Auth OK
 		if ($result == "true"){
+			
+			return new SoapFault("GetProductFileFault", "Not available in VM2, use GetMedia ");
 		
 			/*if (!empty($params->product_id)){
 				$product_id = $params->product_id;
@@ -2597,6 +2600,8 @@ include_once('VM_Commons.php');
 		//Auth OK
 		if ($result == "true"){
 		
+			return new SoapFault("GetProductFileFault", "Not available in VM2, use AddMedia ");
+			
 			$allOk=true;
 			if (is_array($params->ProductFiles->ProductFile)){
 				
@@ -2706,6 +2711,8 @@ include_once('VM_Commons.php');
 		}
 		//Auth OK
 		if ($result == "true"){
+			
+			return new SoapFault("GetProductFileFault", "Not available in VM2, use UpdateMedia ");
 		
 			$allOk=true;
 			if (is_array($params->ProductFiles->ProductFile)){
@@ -2843,6 +2850,9 @@ include_once('VM_Commons.php');
 		}
 		//Auth OK
 		if ($result == "true"){
+			
+			return new SoapFault("GetProductFileFault", "Not available in VM2, use DelMedia ");
+			
 			$allOk=true;
 			if (is_array($params->ids->id)){
 				$count = count($params->ids->id);
@@ -4099,7 +4109,7 @@ include_once('VM_Commons.php');
 			$media_category_path = $vmConfig->get('media_product_path');
 			
 			$uri = JURI::base();
-			$uri = str_replace('administrator/components/com_vm_soa/services/', "", $uri);
+			$uri = str_replace('administrator/components/com_virtuemart/services/', "", $uri);
 			
 			$INSTALLURL = '';
 			if (empty($conf['BASESITE']) && empty($conf['URL'])){
@@ -4180,7 +4190,26 @@ include_once('VM_Commons.php');
 		//Auth OK
 		if ($result == "true"){
 		
-		
+			return new SoapFault("JoomlaServerAuthFault", "Not available in VM2, use Media");
+			
+			if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+			$vmConfig = VmConfig::loadConfig();
+			
+			$media_category_path = $vmConfig->get('media_product_path');
+			
+			$uri = JURI::base();
+			$uri = str_replace('administrator/components/com_virtuemart/services/', "", $uri);
+			
+			$INSTALLURL = '';
+			if (empty($conf['BASESITE']) && empty($conf['URL'])){
+				$INSTALLURL = $uri;
+			} else if (!empty($conf['BASESITE'])){
+				$INSTALLURL = 'http://'.$conf['URL'].'/'.$conf['BASESITE'].'/';
+			} else {
+				$INSTALLURL = 'http://'.$conf['URL'].'/';
+			}
+			
+			
 			$dir = realpath( dirname(__FILE__).'/../../../../media' );
 			$dirname = $dir;
 			//$dir = "/tmp/php5";

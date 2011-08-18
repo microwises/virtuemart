@@ -111,7 +111,7 @@
 			<xsd:element name="deleteManufacturerCatResponse" type="tns:commonReturn" />
 			
 			<xsd:element name="GetAvailableImagesResponse" type="tns:AvalaibleImageArray"></xsd:element>
-			<xsd:element name="GetAvailableImagesRequest" type="tns:loginInfo"></xsd:element>
+			<xsd:element name="GetAvailableImagesRequest" type="tns:GetAvalaibleImageInput"></xsd:element>
 			
 			<xsd:element name="GetVersionsResponse" type="tns:Version"></xsd:element>
 			<xsd:element name="GetVersionsRequest" type="tns:loginInfo"></xsd:element>
@@ -601,11 +601,19 @@
 				</xsd:all>
 			</xsd:complexType>
 			
+			<xsd:complexType name="GetAvalaibleImageInput">
+				<xsd:all>
+					<xsd:element name="loginInfo" type="tns:loginInfo" />
+					<xsd:element name="img_type" type="xsd:string" />
+				</xsd:all>
+			</xsd:complexType>
+			
 			<xsd:complexType name="AvalaibleImage">
 				<xsd:all>
 					<xsd:element name="image_name" type="xsd:string" />
 					<xsd:element name="image_url" type="xsd:string" />
 					<xsd:element name="realpath" type="xsd:string" />
+					<xsd:element name="image_dir" type="xsd:string" />
 				</xsd:all>
 			</xsd:complexType>
 						

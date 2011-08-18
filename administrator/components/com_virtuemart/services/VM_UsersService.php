@@ -407,7 +407,7 @@ include_once('VM_Commons.php');
 		}
 	}
 	
-	/**
+/**
  * Class AvalaibleImage
  *
  * Class "AvalaibleImage" with attribute : id, name, code, 
@@ -421,6 +421,7 @@ include_once('VM_Commons.php');
 		public $image_name="";
 		public $image_url="";
 		public $realpath="";
+		public $image_dir="";
 
 		//constructeur
 		/**
@@ -429,10 +430,11 @@ include_once('VM_Commons.php');
 		 * @param String $image_name
 		 * @param String $image_url
 		 */
-		function __construct($image_name, $image_url, $realpath) {
+		function __construct($image_name, $image_url, $realpath,$image_dir) {
 			$this->image_name = $image_name;
 			$this->image_url = $image_url;	
-			$this->realpath = $realpath;				
+			$this->realpath = $realpath;	
+			$this->image_dir = $image_dir;			
 		}
 	}	
 	
@@ -938,7 +940,8 @@ include_once('VM_Commons.php');
 			$res = $modelUser->store($data);
 			
 			if ($res  == false){
-				return new SoapFault("JoomlaAddUserFault", getWSMsg('User '.$data['username'], ADDKO));
+				$errMsg = $modelUser->getError();
+				return new SoapFault("JoomlaAddUserFault", getWSMsg('User '.$data['username'], ADDKO),$errMsg);
 			} else {
 				$commonReturn = new CommonReturn(OK,getWSMsg('User '.$data['username'], ADD),$res['newId']);
 				return $commonReturn;
@@ -997,7 +1000,7 @@ include_once('VM_Commons.php');
 			$data['virtuemart_user_id'] 	= $params->User->user_id;
 			//$data['email'] 					= $params->User->email;
 			//$data['username'] 				= $params->User->username;
-			$data['password'] 				= $params->User->password;
+			$data['password'] 				= !empty($params->User->password) ? $params->User->password : null;
 			$data['userinfo_id'] 			= $params->User->userinfo_id;
 			$data['address_type'] 			= !empty($params->User->address_type) ? $params->User->address_type : "BT";
 			$data['address_type_name'] 		= $params->User->address_type_name;
@@ -1036,7 +1039,8 @@ include_once('VM_Commons.php');
 			}
 			//return new SoapFault("UpdateUserFault", $res);
 			if ($res  == false){
-				return new SoapFault("UpdateUserFault",  getWSMsg('User '.$data['username'], UPKO));
+				$errMsg = $modelUser->getError();
+				return new SoapFault("UpdateUserFault",  getWSMsg('User '.$data['username'], UPKO),$errMsg);
 			} else {
 				$commonReturn = new CommonReturn(OK, getWSMsg('User '.$data['username'], UP),$params->User->user_id);
 				return $commonReturn;
@@ -1960,7 +1964,8 @@ include_once('VM_Commons.php');
 					return $commonReturn;
 					
 				}else {
-					return new SoapFault("AddShopperGroupFault", getWSMsg('ShopperGroup', ADDKO)." :".$data['shopper_group_name'] );
+					$errMsg = $modelShopperGroup->getError();
+					return new SoapFault("AddShopperGroupFault", getWSMsg('ShopperGroup', ADDKO)." :".$data['shopper_group_name'],$errMsg );
 				}
 			}
 
@@ -1969,7 +1974,8 @@ include_once('VM_Commons.php');
 				return $commonReturn;
 			
 			} else {
-				return new SoapFault("ShopperGroupFault", getWSMsg('ShopperGroup', NOTALLOK).", only ShopperGroup  : ".$cpnIdsStr);
+				$errMsg = $modelShopperGroup->getError();
+				return new SoapFault("ShopperGroupFault", getWSMsg('ShopperGroup', NOTALLOK).", only ShopperGroup  : ".$cpnIdsStr,$errMsg);
 			}		
 				
 		}else if ($result == "false"){
@@ -2672,7 +2678,7 @@ include_once('VM_Commons.php');
 			$data['slug']= $params->Manufacturer->slug;
 			$data['mf_email']= $params->Manufacturer->mf_email;
 			$data['mf_desc']= $params->Manufacturer->mf_desc;
-			$data['mf_category_id']= $params->Manufacturer->mf_category_id;
+			$data['virtuemart_manufacturercategories_id']= $params->Manufacturer->mf_category_id;
 			$data['hits']= $params->Manufacturer->hits;
 			$data['published']= !empty($params->Manufacturer->published) ? $params->Manufacturer->published : 1;
 						
@@ -2682,7 +2688,8 @@ include_once('VM_Commons.php');
 				$commonReturn = new CommonReturn(OK,getWSMsg('Manufacturer', ADD)." : ".$params->Manufacturer->mf_name,$params->Manufacturer->mf_name);
 				return $commonReturn;
 			} else {
-				return new SoapFault("AddManufacturerFault", getWSMsg('Manufacturer', ADDKO)."  : ".$params->Manufacturer->mf_name);
+				$errMsg = $modelManufacturer->getError();
+				return new SoapFault("AddManufacturerFault", getWSMsg('Manufacturer', ADDKO)."  : ".$params->Manufacturer->mf_name,$errMsg);
 			}		
 				
 		}else if ($result == "false"){
@@ -2728,12 +2735,13 @@ include_once('VM_Commons.php');
 			$data['published']= !empty($params->Manufacturer->published) ? $params->Manufacturer->published : 1;
 						
 			$res = $modelManufacturer->store($data);
-
+		
 			if ($res){
 				$commonReturn = new CommonReturn(OK,getWSMsg('Manufacturer', UP)." : ".$data['mf_name'],$data['mf_name']);
 				return $commonReturn;
 			} else {
-				return new SoapFault("ManufacturerFault", getWSMsg('Manufacturer', UPKO)." : ".$d['mf_name']);
+				$errMsg = $modelManufacturer->getError();
+				return new SoapFault("ManufacturerFault", getWSMsg('Manufacturer', UPKO)." : ".$d['mf_name'],$errMsg);
 			}		
 			
 		}else if ($result == "false"){
@@ -3046,7 +3054,7 @@ include_once('VM_Commons.php');
     * @param string
     * @return array of products
    */
-	function GetAvailableVendorImages($params) {
+	function GetAvailableVendorImagesold($params) {
 		/////TODO ////
 		/* Authenticate*/
 		$result = onAdminAuthenticate($params->login, $params->password);
@@ -3119,6 +3127,95 @@ include_once('VM_Commons.php');
 	}
 	
 		/**
+    * This function get Get Available Images on server (dir components/com_virtuemart/shop_image/product)
+	* (expose as WS)
+    * @param string
+    * @return array of products
+   */
+	function GetAvailableVendorImages($params) {
+	
+		/* Authenticate*/
+		$result = onAdminAuthenticate($params->loginInfo->login, $params->loginInfo->password,$params->loginInfo->isEncrypted);
+		
+		$vmConfig = getVMconfig();
+		if ($vmConfig->get('soap_auth_prod_otherget')==0){
+			$result = "true";
+		}
+		
+		//Auth OK
+		if ($result == "true"){
+		
+			if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+			$vmConfig = VmConfig::loadConfig();
+			
+			$media_category_path = $vmConfig->get('assets_general_path');
+			
+			$media_category_path .= 'images/vendors/';
+			
+			$uri = JURI::base();
+			$uri = str_replace('administrator/components/com_virtuemart/services/', "", $uri);
+			
+			$INSTALLURL = '';
+			if (empty($conf['BASESITE']) && empty($conf['URL'])){
+				$INSTALLURL = $uri;
+			} else if (!empty($conf['BASESITE'])){
+				$INSTALLURL = 'http://'.$conf['URL'].'/'.$conf['BASESITE'].'/';
+			} else {
+				$INSTALLURL = 'http://'.$conf['URL'].'/';
+			}
+			
+			if ($params->img_type == "full" || $params->img_type == "all" || $params->img_type == ""){
+			
+				$dir = JPATH.DS.$media_category_path.'';		
+				// Ouvre un dossier bien connu, et liste tous les fichiers
+				if (is_dir($dir)) {
+					if ($dh = opendir($dir)) {
+						while (($file = readdir($dh)) !== false) {
+							//echo "fichier : $file : type : " . filetype($dir . $file) . "\n";
+							if ($file =="." || $file ==".." || $file =="index.html"){
+								
+							} else {
+								$AvalaibleImage = new AvalaibleImage($file,$INSTALLURL.$media_category_path.$file,$dir,$media_category_path.$file);
+								$AvalaibleImageArray[] = $AvalaibleImage;
+							}
+						}
+						closedir($dh);
+					}
+				}
+			}
+			if ($params->img_type == "thumb" || $params->img_type == "all" || $params->img_type == ""){
+				
+				$dir = JPATH.DS.$media_category_path.'resized';
+				
+				// Ouvre un dossier bien connu, et liste tous les fichiers
+				if (is_dir($dir)) {
+					if ($dh = opendir($dir)) {
+						while (($file = readdir($dh)) !== false) {
+							
+							if ($file =="." || $file ==".." || $file =="index.html"){
+								
+							} else {
+							$AvalaibleImage = new AvalaibleImage($file,$INSTALLURL.$media_category_path.'resized/'.$file,$dir,$media_category_path.'resized/'.$file);
+							$AvalaibleImageArray[] = $AvalaibleImage;
+							}
+						}
+						closedir($dh);
+					}
+				}
+			}
+			return $AvalaibleImageArray;
+
+			
+		}else if ($result == "false"){
+			return new SoapFault("JoomlaServerAuthFault", "Authentication KO for : ".$params->login);
+		}else if ($result == "no_admin"){
+			return new SoapFault("JoomlaServerAuthFault", "User is not a Super Administrator : ".$params->login);
+		}else{
+			return new SoapFault("JoomlaServerAuthFault", "User does not exist : ".$params->login);
+		}		
+	}
+	
+	/**
     * This function Get Versions
 	* (expose as WS)
     * @param string

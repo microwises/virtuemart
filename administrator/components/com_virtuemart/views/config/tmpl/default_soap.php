@@ -692,6 +692,56 @@ defined('_JEXEC') or die('Restricted access');
 			?>
 	    
 	
+		<SCRIPT language='javascript' src='./components/com_virtuemart/assets/js/soapclient.js'></SCRIPT>
+		<SCRIPT language=javascript>
+
+			var url = "./components/com_virtuemart/services/VM_UsersWSDL.php";
+			
+			function GetVersions()
+			{
+				//get form
+				//var login = document.getElementById("button_login").value;
+				//var password = document.getElementById("button_pass").value;
+				var method = "GetVersions"; // Method name to Call
+				
+				//alert('Call GetVersions ...');
+				document.getElementById('loadDiv').innerHTML = "Loading ...";
+				
+				//Webservice CALL
+				var pl = new SOAPClientParameters();
+				//pl.add("login", login);
+				//pl.add("password", password);
+				SOAPClient.invoke(url, method, pl, true, GetVersions_callBack);
+			}
+			
+			/* WebService CallBack*/
+			function GetVersions_callBack(r,soapResponse)
+			{
+				document.getElementById('loadDiv').innerHTML = "Done";
+				if(soapResponse.xml)    // IE
+				alert(soapResponse.xml);
+				else    // MOZ
+				alert((new XMLSerializer()).serializeToString(soapResponse)); //print SOAP Response
+				
+				//print Object result
+				if (r == null){
+					alert('Error : Please verify login/pass or component configuration')
+				}else {
+					alert("Joomla version : "+r.Joomla_Version+"\nPHP Version : "+r.PHP_Version+"\nVirtuemart_Version : "+r.Virtuemart_Version+"\nDatabase_Version : "+r.Database_Version);
+				}
+			} 
+
+			
+		</script>
+		<br>
+		
+		<input type="button" value="Call getVersions service" name="button"  onClick="GetVersions();">
+		<br>
+		<div id="loadDiv">
+		</div>
+
+
+
 
 	    </table>
 	    </fieldset>
