@@ -593,15 +593,25 @@ class VirtueMartModelOrders extends VmModel {
 				// X 	Cancelled
 				// R 	Refunded
 				// S 	Shipped
-			$stockOut = array('S');
-			$isOrdered =  array('P','C','S');
+			   $stockOut = array('S');
+   $isOrdered =  array('P','C','S');
+		// Stock change ?
+		$newStock = in_array($newState, $stockOut);
+		$oldStock = in_array($oldState, $stockOut);
 
-			if ((in_array($newState, $stockOut)) && (!in_array($oldState, $stockOut)) )     $product_in_stock = '-';
-			else if ((in_array($oldState, $stockOut)) && (!in_array($newState, $stockOut)) ) $product_in_stock = '+';
-			else $product_in_stock = '=';
-			if ((in_array($newState, $isOrdered)) && (!in_array($oldState, $isOrdered)) )     $product_ordered = '-';
-			else if ((in_array($oldState, $isOrdered)) && (!in_array($newState, $isOrdered)) ) $product_ordered = '+';
-			else $product_ordered = '=';
+		if (newStock  > oldStock  )     $product_in_stock = '-';
+		 else if (newStock  < oldStock  ) $product_in_stock = '+';
+		  else $product_in_stock = '=';
+
+		  // Product is ordered ?  
+		$oldOrdered = in_array($newState, $isOrdered);
+		$newOrdered = in_array($oldState, $isOrdered);
+
+		if ($oldOrdered > $newOrdered )     $product_ordered = '+';
+		 else if ($oldOrdered < $newOrdered ) $product_ordered = '-';
+		  else $product_ordered = '=';
+
+   echo 'ordered '.$product_ordered.' stock '.$product_in_stock  ;
 			// P means ordered, but payment not confirmed, => real stock stays the same => product_in_stock = and product_ordered =
 			if($newState=='P'){
 				//for a new order
@@ -684,7 +694,7 @@ class VirtueMartModelOrders extends VmModel {
 // 				$action
 			}
 
-
+   echo 'ordered '.$product_ordered.' stock '.$product_in_stock  ;
 
 			foreach ($products as $prod) {
 

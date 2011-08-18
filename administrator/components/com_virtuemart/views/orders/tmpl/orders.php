@@ -39,7 +39,6 @@ $option = JRequest::getWord('option');
 	</div>
 	<div id="resultscounter"><?php echo $this->pagination->getResultsCounter();?></div>
     </div>
-    <br />
     <table class="adminlist" cellspacing="0" cellpadding="0">
 	<thead>
 	    <tr>
@@ -83,8 +82,8 @@ $option = JRequest::getWord('option');
 			<?php
 			/* Print view URL */
 			$details_url = JURI::base()."?option=".$option."&view=orders&task=orderPrint&format=raw&virtuemart_order_id=".$order->virtuemart_order_id;
-			$details_link = "&nbsp;<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">";
-			$details_link .= JHTML::_('image.site', 'printButton.png', ($j15 ? '/images/M_images/' : '/images/system/'), null, null, JText::_('COM_VIRTUEMART_PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
+			$details_link = "<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\"  >";
+			$details_link .= '<span class="hasTip print_32" title="'.JText::_('COM_VIRTUEMART_PRINT').'">&nbsp;</span></a>';
 			?>
 		<td><?php echo $details_link; ?></td>
 		<!-- Order date -->

@@ -132,7 +132,7 @@ class VirtuemartViewOrders extends JView {
 			JToolBarHelper::custom( 'prev', 'edit','','COM_VIRTUEMART_ITEM_PREVIOUS',false);
 			JToolBarHelper::custom( 'next', 'edit','','COM_VIRTUEMART_ITEM_NEXT',false);
 			JToolBarHelper::divider();
-			JToolBarHelper::custom( 'cancel', 'back','back','back',true,false);
+			JToolBarHelper::custom( 'cancel', 'back','back','back',false,false);
 		}
 		else if ($curTask == 'editOrderItem') {
 			$this->loadHelper('calculationHelper');
@@ -154,7 +154,6 @@ class VirtuemartViewOrders extends JView {
 			/* Get the data */
 			$orderslist = $this->get('OrdersList');
 
-dump ($orderStates,'state');
 			$this->assignRef('orderstatuses', $orderStates);
 
 			if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
