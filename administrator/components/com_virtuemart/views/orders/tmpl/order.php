@@ -33,7 +33,6 @@ $tt=$this;
 		<input type="hidden" name="option" value="com_virtuemart" />
 		<input type="hidden" name="view" value="orders" />
 		<input type="hidden" name="virtuemart_order_id" value="<?php echo $this->orderID; ?>" />
-		<input type="hidden" name="virtuemart_order_item_id" value="0" />
 		<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
 <table class="adminlist" style="table-layout: fixed;">
@@ -191,7 +190,7 @@ $tt=$this;
 		<table class="adminlist" cellspacing="0" cellpadding="0">
 			<thead>
 				<tr>
-					<th class="title" width="5%" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_EDIT_ACTIONS') ?></th>
+					<!--<th class="title" width="5%" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_EDIT_ACTIONS') ?></th> -->
 					<th class="title" width="3" align="left">&nbsp;</th>
 					<th class="title" width="47" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QUANTITY') ?></th>
 					<th class="title" width="*" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_NAME') ?></th>
@@ -204,18 +203,18 @@ $tt=$this;
 			</thead>
 		<?php foreach ($this->order['items'] as $item) { ?>
 			<!-- Display the order item -->
-			<tr valign="top" id="showItem_<?php echo $item->virtuemart_order_item_id; ?>">
-				<td>
-					<!--<?php $removeLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->virtuemart_order_id.'&orderLineId='.$item->virtuemart_order_item_id.'&task=removeOrderItem'); ?>
+			<tr valign="top" id="showItem_<?php echo $item->virtuemart_order_item_id; ?>" data-itemid="<?php echo $item->virtuemart_order_item_id; ?>">
+				<!--<td>
+					<?php $removeLineLink=JRoute::_('index.php?option=com_virtuemart&view=orders&orderId='.$this->orderbt->virtuemart_order_id.'&orderLineId='.$item->virtuemart_order_item_id.'&task=removeOrderItem'); ?>
 					<span onclick="javascript:confirmation('<?php echo $removeLineLink; ?>');">
 						<?php
 							echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-bug.png', "Remove", NULL, "Remove");
 						?>
 					</span>
-					<a href="javascript:enableItemEdit(<?php echo $item->virtuemart_order_item_id; ?>)"> <?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-category.png', "Edit", NULL, "Edit"); ?></a> -->
-				</td>
+					<a href="javascript:enableItemEdit(<?php echo $item->virtuemart_order_item_id; ?>)"> <?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-category.png', "Edit", NULL, "Edit"); ?></a>
+				</td> -->
 				<td>
-					<input type="checkbox" name="cid[]" value="<?php echo $item->virtuemart_order_item_id; ?>" />
+					
 				</td>
 				<td>
 					<?php echo $item->product_quantity; ?>
@@ -252,6 +251,7 @@ $tt=$this;
 				</td>
 				<td align="center">
 					<?php echo $this->orderstatuslist[$item->order_status]; ?>
+					
 				</td>
 				<td>
 					<?php echo $this->currency->priceDisplay($item->product_item_price,'',false); ?>
@@ -263,54 +263,18 @@ $tt=$this;
 					<?php echo $this->currency->priceDisplay($item->product_quantity * $item->product_final_price,'',false); ?>
 				</td>
 			</tr>
-
-			<!-- Same order item, but now in an editable format -->
-			<tr valign="top" style="display: none; width: 100%" id="editItem_<?php echo $item->virtuemart_order_item_id; ?>">
+			<tr>
 				<td>
-					<a href="#" onClick="javascript:resetForm(<?php echo $item->virtuemart_order_item_id; ?>);"><?php
-						echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-remove.png', JText::_('COM_VIRTUEMART_CANCEL'));
-					?></a>
-					<a href="#" onClick="javascript:submitForm('updateOrderItem');">
-						<?php
-							echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('COM_VIRTUEMART_SAVE'));
-					?></a>
+					<input type="checkbox" name="cid[<?php echo $item->virtuemart_order_item_id; ?>]" value="<?php echo $item->virtuemart_order_item_id; ?>" />
 				</td>
 				<td>
-					<input type="checkbox" name="cid[]" value="<?php echo $item->virtuemart_order_item_id; ?>" />
-				</td>
-				<td>
-					<input type="text" size="3" name="product_quantity_<?php echo $item->virtuemart_order_item_id; ?>" value="<?php echo $item->product_quantity; ?>"/>
+					<input type="text" size="3" name="cid[<?php echo $item->virtuemart_order_item_id; ?>]['product_quantity']" value="<?php echo $item->product_quantity; ?>"/>
 				</td>
 				<td>
 					<?php
 						echo $item->order_item_name;
 						if (!empty($item->product_attribute)) {
-							echo '<table border="0" celspacing="0" celpadding="0">';
-							foreach ($this->itemattributesupdatefields[$item->virtuemart_order_item_id] as $_attrib) {
-								echo '<tr>'
-									. '<td>'.$_attrib['lbl'].'</td>'
-									. '<td>'.$_attrib['fld'].'</td>'
-									. '</tr>';
-							}
-							echo '</table>';
-						}
-						$_returnValues = $_dispatcher->trigger('plgVmOnEditOrderLineShipperBE',array(
-							 $this->orderID
-							,$item->virtuemart_order_item_id
-						));
-						$_plg = '';
-						foreach ($_returnValues as $_returnValue) {
-							if ($_returnValue !== null) {
-								$_plg .= $_returnValue;
-							}
-						}
-						if ($_plg !== '') {
-							echo '<table border="0" celspacing="0" celpadding="0">'
-								. '<tr>'
-								. '<td width="8px"></td>' // Indent
-								. '<td>'.$_plg.'</td>'
-								. '</tr>'
-								. '</table>';
+							echo '<div>'.$item->product_attribute.'</div>';
 						}
 					?>
 				</td>
@@ -319,29 +283,29 @@ $tt=$this;
 				</td>
 				<td align="center">
 					<?php echo $this->itemstatusupdatefields[$item->virtuemart_order_item_id]; ?>
+					
 				</td>
 				<td>
-					<input type="text" size="8" name="product_item_price_<?php echo $item->virtuemart_order_item_id; ?>" value="<?php echo $item->product_item_price; ?>"/>
+					<input type="text" size="8" name="cid[<?php echo $item->virtuemart_order_item_id; ?>]['product_item_price']" value="<?php echo $item->product_item_price; ?>"/>
 				</td>
 				<td>
-					<input type="text" size="8" name="product_final_price_<?php echo $item->virtuemart_order_item_id; ?>" value="<?php echo $item->product_final_price; ?>"/>
+					<input type="text" size="8" name="cid[<?php echo $item->virtuemart_order_item_id; ?>]['product_final_price']" value="<?php echo $item->product_final_price; ?>"/>
 				</td>
 				<td>
 					<?php echo $this->currency->priceDisplay($item->product_quantity * $item->product_final_price,'',false); ?>
 				</td>
 			</tr>
-
-
 		<?php } ?>
 			<tr id="updateOrderItemStatus">
-					<td>&nbsp;</td>
+					
 					<td align="center">
 						&nbsp;<?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/vm_witharrow.png', 'With selected'); ?>
 					</td>
-					<td colspan="7">
+
+					<td colspan="8">
 						<?php echo $this->orderStatSelect; ?>
 						&nbsp;&nbsp;&nbsp;
-						<a href="#" onClick="javascript:submitForm('updateOrderItemStatus');">
+						<a class="updateOrderItemStatus" href="#">
 						<?php
 							echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('COM_VIRTUEMART_SAVE'))
 								. '&nbsp;'
@@ -359,7 +323,6 @@ $tt=$this;
 		<input type="hidden" name="option" value="com_virtuemart" />
 		<input type="hidden" name="view" value="orders" />
 		<input type="hidden" name="virtuemart_order_id" value="<?php echo $this->orderID; ?>" />
-		<input type="hidden" name="virtuemart_order_item_id" value="0" />
 		<?php echo JHTML::_( 'form.token' ); ?>
 		</form> <!-- Update linestatus form -->
 		<table class="adminlist" cellspacing="0" cellpadding="0">
@@ -517,6 +480,11 @@ jQuery('.show_element').click(function() {
   jQuery('.element-hidden').toggle();
   return false
 });
+jQuery('.updateOrderItemStatus').click(function() {
+	document.orderItemForm.task.value = 'updateOrderItemStatus';
+	document.orderItemForm.submit();
+	return false
+});
 function confirmation(destnUrl) {
 	var answer = confirm("<?php echo JText::_('COM_VIRTUEMART_ORDER_DELETE_ITEM_MSG'); ?>");
 	if (answer) {
@@ -525,10 +493,10 @@ function confirmation(destnUrl) {
 }
 var editingItem = 0;
 
-function submitForm(formTask) {
-	document.orderItemForm.task.value = formTask;
-	document.orderItemForm.submit();
-}
+// function submitForm(formTask) {
+	// document.orderItemForm.task.value = formTask;
+	// document.orderItemForm.submit();
+// }
 
 function resetForm(id) {
 	document.orderItemForm.reset();
