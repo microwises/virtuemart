@@ -137,8 +137,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				return $this->install();
 			}
 
-			$db = JFactory::getDBO();
-			$query = 'SHOW COLUMNS FROM `#__virtuemart_products` ';
+			$this->db = JFactory::getDBO();
+/*			$query = 'SHOW COLUMNS FROM `#__virtuemart_products` ';
 			$db->setQuery($query);
 			$columns = $db->loadResultArray(0);
 
@@ -147,7 +147,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$query = 'ALTER TABLE `#__virtuemart_products` ADD product_ordered int(11)';
 				$db->setQuery($query);
 				$db->query();
-			}
+			}*/
+
+			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','ADD product_ordered int(11)');
+
+
 
 			$this->displayFinished(true);
 			// probably should just go to updatesMigration rather than the install success screen
@@ -155,6 +159,35 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 	//		$parent->getParent()->setRedirectURL('index.php?option=com_virtuemart&view=updatesMigration');
 
 			return true;
+		}
+
+		/**
+		 *
+		 * @author Max Milbers
+		 * @param unknown_type $table
+		 * @param unknown_type $field
+		 * @param unknown_type $action
+		 * @return boolean This gives true back, WHEN it altered the table, you may use this information to decide for extra post actions
+		 */
+		private function checkAddFieldToTable($table,$field,$fieldType){
+
+			$query = 'SHOW COLUMNS FROM `'.$table.'` ';
+			$this->db->setQuery($query);
+			$columns = $db->loadResultArray(0);
+
+			if(!in_array($field,$columns)){
+
+				$query = 'ALTER TABLE `'.$table.'` ADD '.$field.' '.$fieldType;
+				$this->db->setQuery($query);
+				if(!$this->db->query()){
+					$app->getApplication();
+					$app->enqueueMessage('Install checkAddFieldToTable '.$this->db->getErrorMsg() );
+					return false;
+				} else {
+					return true;
+				}
+			}
+			return false;
 		}
 
 		/**
