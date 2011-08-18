@@ -40,11 +40,12 @@
     background-repeat: no-repeat;}
 #content-box #toolbar-box .t, #content-box #toolbar-box .b {display: none;}
 .bartext { display: block;font-size: 12px;font-weight: bold;line-height: 32px;vertical-align: inherit;white-space: nowrap;width: auto !important;}
+
 /* System Messages overide */
 #system-message {margin: 0px !important;overflow: auto;}
-#system-message dd.message {background: #4693BB url(../images/admin_ui/saved_background.png) top repeat-x ;}
+#system-message dd.message {background: #4693BB url(../images/admin_ui/saved_background.png) top repeat-x ; max-height: 400px; overflow: auto;}
 #system-message dd.message ul {color: #F4F6F8; background: url("../images/icon_32/information.png") no-repeat 8px center transparent;}
-#system-message dd.message ul ,#system-message dd.error ul,#system-message dd.notice ul{margin: 0px;    border-bottom: 1px solid #84A7DB;   border-top: 0px;}
+#system-message dd.message ul ,#system-message dd.error ul,#system-message dd.notice ul{margin: 0px;    border-bottom: 1px solid #84A7DB !important;   border-top: 0px !important;;}
 
 /* System Messages VM2 */
 #system-message dt.save,#system-message dt.remove,#system-message dt.cancel {display: none;}
@@ -52,8 +53,11 @@
 #system-message dd.remove,#system-message dd.save,#system-message dd.cancel {color: #F4F6F8; background: #7c7d7f url(../images/admin_ui/tabs-ul-background.png) top repeat-x !important;}
 /* message in RED */
 dl#system-message dd.error,l#system-message dd ul .vmdebug { background: #cd3737 url(../images/admin_ui/save_bg.png) top repeat !important;}
+/* message in RED */
+dl#system-message dd.notice { background: #eee url(../images/admin_ui/header_bg.png) top repeat-x !important;}
 /* message icons */
 #system-message dd.message ul {background: url("../images/icon_32/information.png") no-repeat scroll 8px center transparent !important;}
+#system-message dd.notice ul {background: url("../images/icon_32/notice.png") no-repeat scroll 8px center transparent !important;}
 #system-message dd.remove ul {background: url("../images/icon_32/bin.png") no-repeat scroll 8px center transparent !important;}
 #system-message dd.save ul {background: url("../images/icon_32/disk.png") no-repeat scroll 8px center transparent !important;}
 #system-message dd.cancel ul {background: url("../images/icon_32/cancel.png") no-repeat scroll 8px center transparent !important;}
