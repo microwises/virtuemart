@@ -40,36 +40,31 @@
     background-repeat: no-repeat;}
 #content-box #toolbar-box .t, #content-box #toolbar-box .b {display: none;}
 .bartext { display: block;font-size: 12px;font-weight: bold;line-height: 32px;vertical-align: inherit;white-space: nowrap;width: auto !important;}
-/* System Messages */
-dl#system-message {margin: 0px;}
-dl#system-message dd.message ul {margin: 0px;    border-bottom: 1px solid #84A7DB;   border-top: 0px;}
-dl#system-message dd.error ul {margin: 0px;    border-bottom: 1px solid #84A7DB;   border-top: 0px;}
-#system-message dd.notice ul {margin: 0px;    border-bottom: 1px solid #84A7DB;   border-top: 0px;}
-dt.save,dt.remove {display: none;}
-#system-message dd.remove {background: #7c7d7f url(../images/admin_ui/tabs-ul-background.png) bottom repeat-x !important;}
-#system-message dd.remove ul {color: #F4F6F8;
-    background: url("../images/icon_32/bin.png") no-repeat scroll 8px center transparent !important;
+/* System Messages overide */
+#system-message {margin: 0px !important;overflow: auto;}
+#system-message dd.message {background: #4693BB url(../images/admin_ui/saved_background.png) top repeat-x ;}
+#system-message dd.message ul {color: #F4F6F8; background: url("../images/icon_32/information.png") no-repeat 8px center transparent;}
+#system-message dd.message ul ,#system-message dd.error ul,#system-message dd.notice ul{margin: 0px;    border-bottom: 1px solid #84A7DB;   border-top: 0px;}
+
+/* System Messages VM2 */
+#system-message dt.save,#system-message dt.remove,#system-message dt.cancel {display: none;}
+/* info message in dark grey */
+#system-message dd.remove,#system-message dd.save,#system-message dd.cancel {color: #F4F6F8; background: #7c7d7f url(../images/admin_ui/tabs-ul-background.png) top repeat-x !important;}
+/* message in RED */
+dl#system-message dd.error,l#system-message dd ul .vmdebug { background: #cd3737 url(../images/admin_ui/save_bg.png) top repeat !important;}
+/* message icons */
+#system-message dd.message ul {background: url("../images/icon_32/information.png") no-repeat scroll 8px center transparent !important;}
+#system-message dd.remove ul {background: url("../images/icon_32/bin.png") no-repeat scroll 8px center transparent !important;}
+#system-message dd.save ul {background: url("../images/icon_32/disk.png") no-repeat scroll 8px center transparent !important;}
+#system-message dd.cancel ul {background: url("../images/icon_32/cancel.png") no-repeat scroll 8px center transparent !important;}
+#system-message dd ul  .vmdebug{    background: url("../images/icon_32/elements.png") no-repeat scroll 8px top transparent !important;
+    display: block;}
+#system-message dd.error ul {background: url("../images/icon_32/exclamation.png") no-repeat scroll 8px center transparent !important;}
+
+/* vmdebug */
+.vmdebug pre{
+    padding-left: 32px;
 }
-#system-message dd.save {background: #4693BB url(../images/admin_ui/saved_background.png) top repeat-x !important;}
-#system-message dd.save ul {color: #F4F6F8;
-    background: url("../images/icon_32/disk.png") no-repeat scroll 8px center transparent !important;
-}
-/* original joomla msg icon
-#system-message dd.message ul {
-    background: url("../images/notice-info.png") no-repeat scroll 4px center #C3D2E5;
-}
-#system-message dd.error ul {
-    background: url("../images/notice-alert.png") no-repeat scroll 4px top #E6C0C0;
-    border-bottom: 3px solid #DE7A7B;
-    border-top: 3px solid #DE7A7B;
-    color: #CC0000;
-}
-#system-message dd.notice ul {
-    background: url("../images/notice-note.png") no-repeat scroll 4px top #EFE7B8;
-    border-bottom: 3px solid #F0DC7E;
-    border-top: 3px solid #F0DC7E;
-    color: #CC0000;
-} */ 
 /* dl#system-message dd {text-indent: 0px;}
 dl#system-message dd.message { overflow: auto; 4px 10px;background: #cd3737 url(../images/admin_ui/save_bg.png) top repeat-x; }
 dl#system-message dd.message ul {margin: 0px;color: gold;text-shadow: 0px -1px 1px #12517d;font-weight: normal;font-size: 12px;padding: 0px;background: none;border: none;}

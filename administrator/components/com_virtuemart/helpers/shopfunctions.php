@@ -393,7 +393,7 @@ class ShopFunctions {
 	 *
 	 * @author Valérie Isaksen
 	 */
-	function renderWeightUnitList( $nam , $selected){
+	function renderWeightUnitList( $name , $selected){
 
 		$weigth_unit_default = array(
 						 'KG' =>  JText::_('COM_VIRTUEMART_WEIGHT_UNIT_KG')
