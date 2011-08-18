@@ -1,4 +1,5 @@
 <?php
+
 /**
  * General helper class
  *
@@ -9,410 +10,451 @@
  * @author RolandD
  * @copyright Copyright (c) 2004-2008 Soeren Eberhardt-Biermann, 2009 VirtueMart Team. All rights reserved.
  */
-
-
 class ShopFunctions {
 
-	/**
-	 * @var global database object
-	 */
-	private $_db = null;
+    /**
+     * @var global database object
+     */
+    private $_db = null;
 
+    /**
+     * Contructor
+     */
+    public function __construct() {
 
-	/**
-	 * Contructor
-	 */
-	public function __construct(){
-
-		$this->_db = JFactory::getDBO();
-	}
-
-	/*
-	* set all commands and options for BE default.php views
-	* return $list filter_order and
-	*/
-	function addStandardDefaultViewCommands ($showNew=true,$showDelete=true){
-
-		JToolBarHelper::divider();
-		JToolBarHelper::publishList();
-		JToolBarHelper::unpublishList();
-		JToolBarHelper::editListX();
-		if($showNew){
-			JToolBarHelper::addNewX();
-		}
-		if($showDelete){
-			JToolBarHelper::deleteList();
-		}
-	}
-	/*
-	* set pagination and filters
-	* return Array() $list( filter_order and dir )
-	*/
-	function addStandardDefaultViewLists ($model,$default_order = 'ordering',$default_dir = 'ASC'){
-
-		$pagination = $model->getPagination();
-		$this->assignRef('pagination',	$pagination);
-		/* set list filters*/
-		$option = JRequest::getCmd( 'option');
-		$view = JRequest::getCmd( 'view',JRequest::getCmd( 'controller'));
-		$mainframe = JFactory::getApplication() ;
-		$lists['search'] = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.search', 'search', '', 'string' );
-		$lists['filter_order']     = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', $default_order, 'cmd' );
-		$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order_Dir', 'filter_order_Dir', $default_dir, 'word' );
-		return $lists ;
-	}
-	/*
-	* Add simple search to form
-	* @param $searchLabel text to display before searchbox
-	* @param $name 		 lists and id name
-	*/
-	function displayDefaultViewSearch ($searchLabel = 'COM_VIRTUEMART_NAME',$name ='search') {
-		return JText::_('COM_VIRTUEMART_FILTER').' '.JText::_($searchLabel).':
-		<input type="text" name="'.$name.'" id="'.$name.'" value="'.$this->lists[$name].'" class="text_area" onchange="document.adminForm.submit();" />
-		<button onclick="this.form.submit();">'.JText::_('COM_VIRTUEMART_GO').'</button>
-		<button onclick="document.getElementById(\''.$name.'\').value=\'\';this.form.submit();">'.JText::_('COM_VIRTUEMART_RESET').'</button>' ;
-	}
-
-	function addStandardEditViewCommands (){
-
-		JToolBarHelper::divider();
-		JToolBarHelper::save();
-        JToolBarHelper::apply();
-		JToolBarHelper::cancel();
-	}
-
-    function SetViewTitle($name ='',$msg ='') {
-			$view = JRequest::getWord('view',JRequest::getWord('controller'));
-            if ( $name=='' ) $name = $view ;
-            if ($msg) { $msg = ' <span style="color: #666666; font-size: large;">'.$msg.'</span>';}
-            //$text = strtoupper('COM_VIRTUEMART_'.$name );
-            $viewText = JText::_('COM_VIRTUEMART_'.$name );
-			if (!$task = JRequest::getWord('task')) $task='list';
-
-            $taskName = ' <small><small>[ '.JText::_('COM_VIRTUEMART_'.$task).' ]</small></small>';
-            JToolBarHelper::title( $viewText.' '.$taskName.$msg ,'vm_'.$view.'_48');
-            return $viewText;
-
+        $this->_db = JFactory::getDBO();
     }
 
-	/**
-	 * Builds an enlist for information (not chooseable)
-	 *
-	 * //TODO check for misuse by code injection
-	 * @author Max Milbers
-	 *
-	 * @param $fieldnameXref datafield for the xreftable, where the name is stored
-	 * @param $tableXref xref table
-	 * @param $fieldIdXref datafield for the xreftable, where the id is stored
-	 * @param $idXref The id to query in the xref table
-	 * @param $fieldname the name of the datafield in the main table
-	 * @param $table main table
-	 * @param $fieldId the name of the field where the id is stored
-	 * @param $quantity The number of items in the list
-	 * @return List as String
-	 */
+    /*
+     * set all commands and options for BE default.php views
+     * return $list filter_order and
+     */
 
-	function renderGuiList ($fieldnameXref,$tableXref,$fieldIdXref,$idXref,$fieldname,$table,$fieldId,$view,$quantity=4){
+    function addStandardDefaultViewCommands($showNew=true, $showDelete=true) {
 
-		//Sanitize input
-		$quantity = (int) $quantity;
+        JToolBarHelper::divider();
+        JToolBarHelper::publishList();
+        JToolBarHelper::unpublishList();
+        JToolBarHelper::editListX();
+        if ($showNew) {
+            JToolBarHelper::addNewX();
+        }
+        if ($showDelete) {
+            JToolBarHelper::deleteList();
+        }
+    }
 
-		$db = JFactory::getDBO();
-		$q = 'SELECT '.$db->getEscaped($fieldnameXref).' FROM '.$db->getEscaped($tableXref).' WHERE '.$db->getEscaped($fieldIdXref).' = "'.(int)$idXref.'"';
-		$db->setQuery($q);
-		$tempArray = $db->loadResultArray();
-		if(isset($tempArray)){
-			$links='';
-			$ttip='';
-			$i=0;
-			foreach ($tempArray as $value) {
-				$q = 'SELECT '.$db->getEscaped($fieldname).' FROM '.$db->getEscaped($table).' WHERE '.$db->getEscaped($fieldId).' = "'.(int)$value.'"';
-				$db->setQuery($q);
-				$tmp = $db->loadResult();
-				if($i<$quantity){
-					$links .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view='.$view.'&task=edit&cid[]='.$value), $tmp). ', ';
-				}
-				//$ttip .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view='.$view.'&task=edit&cid[]='.$value), $tmp). ', ';
-				$ttip .= $tmp.', ';
+    /*
+     * set pagination and filters
+     * return Array() $list( filter_order and dir )
+     */
+
+    function addStandardDefaultViewLists($model, $default_order = 'ordering', $default_dir = 'ASC') {
+
+        $pagination = $model->getPagination();
+        $this->assignRef('pagination', $pagination);
+        /* set list filters */
+        $option = JRequest::getCmd('option');
+        $view = JRequest::getCmd('view', JRequest::getCmd('controller'));
+        $mainframe = JFactory::getApplication();
+        $lists['search'] = $mainframe->getUserStateFromRequest($option . '.' . $view . '.search', 'search', '', 'string');
+        $lists['filter_order'] = $mainframe->getUserStateFromRequest($option . '.' . $view . '.filter_order', 'filter_order', $default_order, 'cmd');
+        $lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option . '.' . $view . '.filter_order_Dir', 'filter_order_Dir', $default_dir, 'word');
+        return $lists;
+    }
+
+    /*
+     * Add simple search to form
+     * @param $searchLabel text to display before searchbox
+     * @param $name 		 lists and id name
+     */
+
+    function displayDefaultViewSearch($searchLabel = 'COM_VIRTUEMART_NAME', $name ='search') {
+        return JText::_('COM_VIRTUEMART_FILTER') . ' ' . JText::_($searchLabel) . ':
+		<input type="text" name="' . $name . '" id="' . $name . '" value="' . $this->lists[$name] . '" class="text_area" onchange="document.adminForm.submit();" />
+		<button onclick="this.form.submit();">' . JText::_('COM_VIRTUEMART_GO') . '</button>
+		<button onclick="document.getElementById(\'' . $name . '\').value=\'\';this.form.submit();">' . JText::_('COM_VIRTUEMART_RESET') . '</button>';
+    }
+
+    function addStandardEditViewCommands() {
+
+        JToolBarHelper::divider();
+        JToolBarHelper::save();
+        JToolBarHelper::apply();
+        JToolBarHelper::cancel();
+    }
+
+    function SetViewTitle($name ='', $msg ='') {
+        $view = JRequest::getWord('view', JRequest::getWord('controller'));
+        if ($name == '')
+            $name = $view;
+        if ($msg) {
+            $msg = ' <span style="color: #666666; font-size: large;">' . $msg . '</span>';
+        }
+        //$text = strtoupper('COM_VIRTUEMART_'.$name );
+        $viewText = JText::_('COM_VIRTUEMART_' . $name);
+        if (!$task = JRequest::getWord('task'))
+            $task = 'list';
+
+        $taskName = ' <small><small>[ ' . JText::_('COM_VIRTUEMART_' . $task) . ' ]</small></small>';
+        JToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'vm_' . $view . '_48');
+        return $viewText;
+    }
+
+    /**
+     * Builds an enlist for information (not chooseable)
+     *
+     * //TODO check for misuse by code injection
+     * @author Max Milbers
+     *
+     * @param $fieldnameXref datafield for the xreftable, where the name is stored
+     * @param $tableXref xref table
+     * @param $fieldIdXref datafield for the xreftable, where the id is stored
+     * @param $idXref The id to query in the xref table
+     * @param $fieldname the name of the datafield in the main table
+     * @param $table main table
+     * @param $fieldId the name of the field where the id is stored
+     * @param $quantity The number of items in the list
+     * @return List as String
+     */
+    function renderGuiList($fieldnameXref, $tableXref, $fieldIdXref, $idXref, $fieldname, $table, $fieldId, $view, $quantity=4) {
+
+        //Sanitize input
+        $quantity = (int) $quantity;
+
+        $db = JFactory::getDBO();
+        $q = 'SELECT ' . $db->getEscaped($fieldnameXref) . ' FROM ' . $db->getEscaped($tableXref) . ' WHERE ' . $db->getEscaped($fieldIdXref) . ' = "' . (int) $idXref . '"';
+        $db->setQuery($q);
+        $tempArray = $db->loadResultArray();
+        if (isset($tempArray)) {
+            $links = '';
+            $ttip = '';
+            $i = 0;
+            foreach ($tempArray as $value) {
+                $q = 'SELECT ' . $db->getEscaped($fieldname) . ' FROM ' . $db->getEscaped($table) . ' WHERE ' . $db->getEscaped($fieldId) . ' = "' . (int) $value . '"';
+                $db->setQuery($q);
+                $tmp = $db->loadResult();
+                if ($i < $quantity) {
+                    $links .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=' . $view . '&task=edit&cid[]=' . $value), $tmp) . ', ';
+                }
+                //$ttip .= JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view='.$view.'&task=edit&cid[]='.$value), $tmp). ', ';
+                $ttip .= $tmp . ', ';
 
 //				$list .= $tmp. ', ';
-				$i++;
-				//if($i==$quantity) break;
-			}
-			$links = substr($links,0,-2);
-			$ttip = substr($ttip,0,-2);
+                $i++;
+                //if($i==$quantity) break;
+            }
+            $links = substr($links, 0, -2);
+            $ttip = substr($ttip, 0, -2);
 
-			$list = '<span class="hasTip" title="'.$ttip.'" >'.$links.'</span>';
+            $list = '<span class="hasTip" title="' . $ttip . '" >' . $links . '</span>';
 
-			return $list;
-		}else{
-			return '';
-		}
+            return $list;
+        } else {
+            return '';
+        }
+    }
 
-	}
+    /**
+     * Creates a Drop Down list of available Creditcards
+     *
+     * @author Max Milbers
+     */
+    public function renderCreditCardList($ccId, $multiple = false) {
 
-	/**
-	 * Creates a Drop Down list of available Creditcards
-	 *
-	 * @author Max Milbers
-	 */
-	public function renderCreditCardList($ccId, $multiple = false) {
+        $model = self::getModel('creditcard');
+        $creditcards = $model->getCreditCards();
 
-		$model = self::getModel('creditcard');
-		$creditcards = $model->getCreditCards();
+        $attrs = '';
+        $name = 'creditcard_name';
+        $idA = $id = 'virtuemart_creditcard_id';
 
-		$attrs = '';
-		$name = 'creditcard_name';
-		$idA = $id = 'virtuemart_creditcard_id';
+        if ($multiple) {
+            $attrs = 'multiple="multiple"';
+            $idA .= '[]';
+        } else {
+            $emptyOption = JHTML::_('select.option', '', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+            array_unshift($creditcards, $emptyOption);
+        }
+        $listHTML = JHTML::_('select.genericlist', $creditcards, $idA, $attrs, $id, $name, $ccId);
+        return $listHTML;
+    }
 
-		if ($multiple){
-			$attrs = 'multiple="multiple"';
-			$idA .= '[]';
-		} else {
-			$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
-			array_unshift($creditcards, $emptyOption);
-		}
-		$listHTML = JHTML::_('select.genericlist', $creditcards, $idA, $attrs, $id, $name, $ccId );
-		return $listHTML;
-	}
+    /**
+     * Creates a Drop Down list of available Vendors
+     *
+     * @author Max Milbers, RolandD
+     * @access public
+     * @param int $virtuemart_shoppergroup_id the shopper group to pre-select
+     * @param bool $multiple if the select list should allow multiple selections
+     * @return string HTML select option list
+     */
+    public function renderVendorList($vendorId, $multiple = false) {
 
-	/**
-	* Creates a Drop Down list of available Vendors
-	*
-	* @author Max Milbers, RolandD
-	* @access public
-	* @param int $virtuemart_shoppergroup_id the shopper group to pre-select
-	* @param bool $multiple if the select list should allow multiple selections
-	* @return string HTML select option list
-	*/
-	public function renderVendorList($vendorId, $multiple = false) {
-
-		$db = JFactory::getDBO();
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		if( !Permissions::getInstance()->check('admin') ){
-			if(empty($vendorId)){
-				$vendorId = 1;
-				//Dont delete this message, we need it later for multivendor
-				//JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the virtuemart_vendor_id to the logged Vendor');
-			}
-			$q = 'SELECT `vendor_name` FROM #__virtuemart_vendors WHERE `virtuemart_vendor_id` = "'.(int)$vendorId.'" ';
-			$db->setQuery($q);
-			$vendor = $db->loadResult();
-			$html = '<input type="text" size="14" name="vendor_name" class="inputbox" value="'.$vendor.'" readonly="">';
+        $db = JFactory::getDBO();
+        if (!class_exists('Permissions'))
+            require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+        if (!Permissions::getInstance()->check('admin')) {
+            if (empty($vendorId)) {
+                $vendorId = 1;
+                //Dont delete this message, we need it later for multivendor
+                //JError::raiseWarning(1,'renderVendorList $vendorId is empty, please correct your used model to automatically set the virtuemart_vendor_id to the logged Vendor');
+            }
+            $q = 'SELECT `vendor_name` FROM #__virtuemart_vendors WHERE `virtuemart_vendor_id` = "' . (int) $vendorId . '" ';
+            $db->setQuery($q);
+            $vendor = $db->loadResult();
+            $html = '<input type="text" size="14" name="vendor_name" class="inputbox" value="' . $vendor . '" readonly="">';
 //			$html .='<input type="hidden" value="'.$vendorId.'" name="virtuemart_vendor_id">';
-			return $html;
-		} else {
+            return $html;
+        } else {
 
-			$q = 'SELECT `virtuemart_vendor_id`,`vendor_name` FROM #__virtuemart_vendors';
-			$db->setQuery($q);
-			$vendors = $db->loadAssocList();
+            $q = 'SELECT `virtuemart_vendor_id`,`vendor_name` FROM #__virtuemart_vendors';
+            $db->setQuery($q);
+            $vendors = $db->loadAssocList();
 
-			$attrs = '';
-			$name = 'vendor_name';
-			$idA = $id = 'virtuemart_vendor_id';
-
-
-			if ($multiple){
-				$attrs = 'multiple="multiple"';
-				$idA .= '[]';
-			} else {
-				$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
-				array_unshift($vendors, $emptyOption);
-			}
-			$listHTML = JHTML::_('select.genericlist', $vendors, $idA, $attrs, $id, $name, $vendorId );
-			return $listHTML;
-		}
-	}
-
-	/**
-	* Creates a Drop Down list of available Shopper Groups
-	*
-	* @author Max Milbers, RolandD
-	* @access public
-	* @param int $virtuemart_shoppergroup_id the shopper group to pre-select
-	* @param bool $multiple if the select list should allow multiple selections
-	* @return string HTML select option list
-	*/
-	public function renderShopperGroupList($shopperGroupId=0, $multiple = false) {
-		$shopperModel = self::getModel('shoppergroup');
-		$shoppergrps = $shopperModel->getShopperGroups(false,true);
-		$attrs = '';
-		$name = 'shopper_group_name';
-		$idA = $id = 'virtuemart_shoppergroup_id';
-
-		if ($multiple){
-			$attrs = 'multiple="multiple"';
-			$idA .= '[]';
-		} else {
-			$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
-			array_unshift($shoppergrps, $emptyOption);
-		}
-		$listHTML = JHTML::_('select.genericlist', $shoppergrps, $idA, $attrs, $id, $name, $shopperGroupId );
-		return $listHTML;
-	}
-
-	/**
-	* Render a simple country list
-	* @author jseros, Max Milbers
-	*
-	* @param int $countryId Selected country id
-	* @param boolean $multiple True if multiple selecions are allowed (default: false)
-	* @param mixed $_attrib string or array with additional attibutes,
-	* e.g. 'onchange=somefunction()' or array('onchange'=>'somefunction()')
-	* @param string $_prefix Optional prefix for the formtag name attribute
-	* @return string HTML containing the <select />
-	*/
-	public function renderCountryList( $countryId = 0 , $multiple = false, $_attrib = array(), $_prefix = ''){
-		$countryModel = self::getModel('country');
-		$countries = $countryModel->getCountries(true, true,false);
-		$attrs = array();
-		$name = 'country_name';
-		$id = 'virtuemart_country_id';
-		$idA = $_prefix . 'virtuemart_country_id';
-		$attrs['class'] = 'virtuemart_country_id';
-
-		if($multiple){
-			$attrs['multiple'] = 'multiple';
-			$attrs['size'] = '12';
-			$idA .= '[]';
-		} else {
-			$emptyOption = JHTML::_('select.option','', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
-			array_unshift($countries, $emptyOption);
-		}
-
-		if (is_array($_attrib)) {
-			$attrs = array_merge ($attrs, $_attrib);
-		} else {
-			$_a = explode ('=', $_attrib, 2);
-			$attrs[$_a[0]] = $_a[1];
-		}
-
-		return JHTML::_('select.genericlist', $countries, $idA, $attrs, $id, $name, $countryId );
-	}
+            $attrs = '';
+            $name = 'vendor_name';
+            $idA = $id = 'virtuemart_vendor_id';
 
 
-	/**
-	* Render a simple state list
-	* @author jseros, Patrick Kohl
-	*
-	* @param int $stateID Selected state id
-	* @param int $countryID Selected country id
-	* @param string $dependentField Parent <select /> ID attribute
-	* @param string $_prefix Optional prefix for the formtag name attribute
-	* @return string HTML containing the <select />
-	*/
-	public function renderStateList( $stateId = '0', $_prefix = '', $multiple = false){
+            if ($multiple) {
+                $attrs = 'multiple="multiple"';
+                $idA .= '[]';
+            } else {
+                $emptyOption = JHTML::_('select.option', '', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+                array_unshift($vendors, $emptyOption);
+            }
+            $listHTML = JHTML::_('select.genericlist', $vendors, $idA, $attrs, $id, $name, $vendorId);
+            return $listHTML;
+        }
+    }
 
-		if (is_array($stateId)) $stateId = implode(",", $stateId);
-		VmConfig::JcountryStateList($stateId) ;
-		$attrs = array();
-		if($multiple){
-			$attrs ='multiple="multiple" size="12" name="'.$_prefix.'virtuemart_state_id[]" ' ;
-		} else {
-			$attrs='size="1"  name="'.$_prefix.'virtuemart_state_id" ';
-		}
+    /**
+     * Creates a Drop Down list of available Shopper Groups
+     *
+     * @author Max Milbers, RolandD
+     * @access public
+     * @param int $virtuemart_shoppergroup_id the shopper group to pre-select
+     * @param bool $multiple if the select list should allow multiple selections
+     * @return string HTML select option list
+     */
+    public function renderShopperGroupList($shopperGroupId=0, $multiple = false) {
+        $shopperModel = self::getModel('shoppergroup');
+        $shoppergrps = $shopperModel->getShopperGroups(false, true);
+        $attrs = '';
+        $name = 'shopper_group_name';
+        $idA = $id = 'virtuemart_shoppergroup_id';
 
-		$listHTML ='<select class="inputbox multiple" id="virtuemart_state_id" '.$attrs.'>
-						<OPTION value="">'.JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION').'</OPTION>
+        if ($multiple) {
+            $attrs = 'multiple="multiple"';
+            $idA .= '[]';
+        } else {
+            $emptyOption = JHTML::_('select.option', '', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+            array_unshift($shoppergrps, $emptyOption);
+        }
+        $listHTML = JHTML::_('select.genericlist', $shoppergrps, $idA, $attrs, $id, $name, $shopperGroupId);
+        return $listHTML;
+    }
+
+    /**
+     * Render a simple country list
+     * @author jseros, Max Milbers
+     *
+     * @param int $countryId Selected country id
+     * @param boolean $multiple True if multiple selecions are allowed (default: false)
+     * @param mixed $_attrib string or array with additional attibutes,
+     * e.g. 'onchange=somefunction()' or array('onchange'=>'somefunction()')
+     * @param string $_prefix Optional prefix for the formtag name attribute
+     * @return string HTML containing the <select />
+     */
+    public function renderCountryList($countryId = 0, $multiple = false, $_attrib = array(), $_prefix = '') {
+        $countryModel = self::getModel('country');
+        $countries = $countryModel->getCountries(true, true, false);
+        $attrs = array();
+        $name = 'country_name';
+        $id = 'virtuemart_country_id';
+        $idA = $_prefix . 'virtuemart_country_id';
+        $attrs['class'] = 'virtuemart_country_id';
+
+        if ($multiple) {
+            $attrs['multiple'] = 'multiple';
+            $attrs['size'] = '12';
+            $idA .= '[]';
+        } else {
+            $emptyOption = JHTML::_('select.option', '', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
+            array_unshift($countries, $emptyOption);
+        }
+
+        if (is_array($_attrib)) {
+            $attrs = array_merge($attrs, $_attrib);
+        } else {
+            $_a = explode('=', $_attrib, 2);
+            $attrs[$_a[0]] = $_a[1];
+        }
+
+        return JHTML::_('select.genericlist', $countries, $idA, $attrs, $id, $name, $countryId);
+    }
+
+    /**
+     * Render a simple state list
+     * @author jseros, Patrick Kohl
+     *
+     * @param int $stateID Selected state id
+     * @param int $countryID Selected country id
+     * @param string $dependentField Parent <select /> ID attribute
+     * @param string $_prefix Optional prefix for the formtag name attribute
+     * @return string HTML containing the <select />
+     */
+    public function renderStateList($stateId = '0', $_prefix = '', $multiple = false) {
+
+        if (is_array($stateId))
+            $stateId = implode(",", $stateId);
+        VmConfig::JcountryStateList($stateId);
+        $attrs = array();
+        if ($multiple) {
+            $attrs = 'multiple="multiple" size="12" name="' . $_prefix . 'virtuemart_state_id[]" ';
+        } else {
+            $attrs = 'size="1"  name="' . $_prefix . 'virtuemart_state_id" ';
+        }
+
+        $listHTML = '<select class="inputbox multiple" id="virtuemart_state_id" ' . $attrs . '>
+						<OPTION value="">' . JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION') . '</OPTION>
 						</select>';
 
-		return $listHTML;
-	}
+        return $listHTML;
+    }
 
-	/**
-	 * Renders the list for the tax rules
-	 *
-	 * @author Max Milbers
-	 */
-	function renderTaxList($selected, $name='product_tax_id', $class='multiple="multiple"'){
+    /**
+     * Renders the list for the tax rules
+     *
+     * @author Max Milbers
+     */
+    function renderTaxList($selected, $name='product_tax_id', $class='multiple="multiple"') {
 
-		if(!class_exists('VirtueMartModelCalc')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'calc.php');
-		$taxes = VirtueMartModelCalc::getTaxes();
+        if (!class_exists('VirtueMartModelCalc'))
+            require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'calc.php');
+        $taxes = VirtueMartModelCalc::getTaxes();
 
-		$taxrates = array();
-		$taxrates[] = JHTML::_('select.option', '-1', JText::_('COM_VIRTUEMART_PRODUCT_TAX_NONE'), $name );
-		$taxrates[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_PRODUCT_TAX_NO_SPECIAL'), $name );
-		foreach($taxes as $tax){
-			$taxrates[] = JHTML::_('select.option', $tax->virtuemart_calc_id, $tax->calc_name, $name);
-		}
-		$listHTML = JHTML::_('Select.genericlist', $taxrates, $name, $class, $name, 'text', $selected );
-		return $listHTML;
-	}
+        $taxrates = array();
+        $taxrates[] = JHTML::_('select.option', '-1', JText::_('COM_VIRTUEMART_PRODUCT_TAX_NONE'), $name);
+        $taxrates[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_PRODUCT_TAX_NO_SPECIAL'), $name);
+        foreach ($taxes as $tax) {
+            $taxrates[] = JHTML::_('select.option', $tax->virtuemart_calc_id, $tax->calc_name, $name);
+        }
+        $listHTML = JHTML::_('Select.genericlist', $taxrates, $name, $class, $name, 'text', $selected);
+        return $listHTML;
+    }
 
-	/**
-	 * Creates the chooseable template list
-	 *
-	 * @author Max Milbers, impleri
-	 *
-	 * @param string defaultText Text for the empty option
-	 * @param boolean defaultOption you can supress the empty otion setting this to false
-	 * return array of Template objects
-	 */
-	public function renderTemplateList($defaultText = 0,$defaultOption=true){
+    /**
+     * Creates the chooseable template list
+     *
+     * @author Max Milbers, impleri
+     *
+     * @param string defaultText Text for the empty option
+     * @param boolean defaultOption you can supress the empty otion setting this to false
+     * return array of Template objects
+     */
+    public function renderTemplateList($defaultText = 0, $defaultOption=true) {
 
-		if(empty($defaultText)) $defaultText = JText::_('COM_VIRTUEMART_TEMPLATE_DEFAULT');
+        if (empty($defaultText))
+            $defaultText = JText::_('COM_VIRTUEMART_TEMPLATE_DEFAULT');
 
-		$templateList = array();
+        $templateList = array();
 
-		$defaulttemplate = array();
-		if($defaultOption){
-			$defaulttemplate[0] = new stdClass;
-			$defaulttemplate[0] -> name = $defaultText;
-			$defaulttemplate[0] -> directory = 0;
-			$defaulttemplate[0] -> value = 'default';
-		}
+        $defaulttemplate = array();
+        if ($defaultOption) {
+            $defaulttemplate[0] = new stdClass;
+            $defaulttemplate[0]->name = $defaultText;
+            $defaulttemplate[0]->directory = 0;
+            $defaulttemplate[0]->value = 'default';
+        }
 
-		$isJ15 = VmConfig::isJ15();
+        $isJ15 = VmConfig::isJ15();
 
-		if ($isJ15) {
-			if(!class_exists('TemplatesHelper')) require (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'template.php');
-			$jtemplates = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE.DS.'templates');
-		} else {
-			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'helpers'.DS.'templates.php');
-			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_templates'.DS.'models'.DS.'templates.php');
-			$templatesModel = new TemplatesModelTemplates();
-			$jtemplates = $templatesModel->getItems();
-		}
+        if ($isJ15) {
+            if (!class_exists('TemplatesHelper'))
+                require (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_templates' . DS . 'helpers' . DS . 'template.php');
+            $jtemplates = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE . DS . 'templates');
+        } else {
+            require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_templates' . DS . 'helpers' . DS . 'templates.php');
+            require_once (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_templates' . DS . 'models' . DS . 'templates.php');
+            $templatesModel = new TemplatesModelTemplates();
+            $jtemplates = $templatesModel->getItems();
+        }
 
-		foreach($jtemplates as $key => $template){
-			$template->value = $template->name;
-			if (!$isJ15) {
-				if ($template->client_id == '0') {
-					$template->directory = $template->element;
-				}
-				else {
-					unset($jtemplates[$key]);
-				}
-			}
-		}
+        foreach ($jtemplates as $key => $template) {
+            $template->value = $template->name;
+            if (!$isJ15) {
+                if ($template->client_id == '0') {
+                    $template->directory = $template->element;
+                } else {
+                    unset($jtemplates[$key]);
+                }
+            }
+        }
 
-		return array_merge($defaulttemplate,$jtemplates);
-	}
-        /**
-	 * Renders the list for the Weight Unit
-	 *
-	 * @author Valérie Isaksen
-	 */
-	function renderWeightUnitList( $name , $selected){
+        return array_merge($defaulttemplate, $jtemplates);
+    }
 
-		$weigth_unit_default = array(
-						 'KG' =>  JText::_('COM_VIRTUEMART_WEIGHT_UNIT_KG')
-						,'GR' =>  JText::_('COM_VIRTUEMART_WEIGHT_UNIT_GR')
-						,'LB' =>  JText::_('COM_VIRTUEMART_WEIGHT_UNIT_LB')
-						,'OZ' =>  JText::_('COM_VIRTUEMART_WEIGHT_UNIT_ONCE')
-					);
-		return VmHTML::selectList($name,$selected, $weigth_unit_default);
+    /**
+     * Renders the list for the Weight Unit
+     *
+     * @author Valérie Isaksen
+     */
+    function renderWeightUnitList($name, $selected) {
 
-	}
-        /**
-	 * Renders the list for the Lenght, Width, Height Unit
-	 *
-	 * @author Valérie Isaksen
-	 */
-	function renderLWHUnitList( $name , $selected){
+        $weigth_unit_default = array(
+            'KG' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_KG')
+            , 'GR' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_GR')
+            , 'LB' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_LB')
+            , 'OZ' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_ONCE')
+        );
+        return VmHTML::selectList($name, $selected, $weigth_unit_default);
+    }
 
-		$lwh_unit_default = array(
-						 'M' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_M')
+    /**
+     * Convert Weigth Unit
+     *
+     * @author Valérie Isaksen
+     */
+    function convertWeigthUnit($value, $from, $to) {
+
+        $value = str_replace(',', '.', $value);
+
+        switch ($from) {
+            case 'KG': $g = 1000 * $value;
+                break;
+            case 'GR': $g = $value;
+                break;
+            case 'LB': $g = 453.59237 * $value;
+                break;
+            case 'OZ': $g = 28.3495 * $value;
+                break;
+        }
+        switch ($to) {
+            case 'KG' :
+                $value = round($g / 1000, 2);
+                break;
+            case 'GR' :
+                $value = round($g, 2);
+                break;
+            case 'LB' :
+                $value = round($g / 453.59237, 2);
+                break;
+            case 'OZ' :
+                $value = round($g / 28.3495, 2);
+                break;
+        }
+        return $value;
+    }
+
+    /**
+     * Renders the list for the Lenght, Width, Height Unit
+     *
+     * @author Valérie Isaksen
+     */
+    function renderLWHUnitList($name, $selected) {
+        $lwh_unit_default = array(   'M' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_M')
 						,'CM' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_CM')
 						,'YARD' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_YARD')
 						,'FOOT' =>  JText::_('COM_VIRTUEMART_WEIGHT_UNIT_FOOT')
@@ -421,6 +463,10 @@ class ShopFunctions {
 		return VmHTML::selectList($name,$selected, $lwh_unit_default);
 
 	}
+
+
+       
+
 	/**
 	 * Writes a line  for the price configuration
 	 *
