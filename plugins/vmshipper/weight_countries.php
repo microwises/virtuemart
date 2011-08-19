@@ -88,7 +88,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 		)
 		);
 		$schemeIdx = array(
-            'idx_order_shipper' => array(
+                'idx_order_shipper' => array(
                 'columns' => array('virtuemart_order_id')
 		, 'primary' => false
 		, 'unique' => false

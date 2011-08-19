@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="COM_VIRTUEMART_PRODUCT_DETAILS_LAYOUT_MENU">
-            <message><![CDATA[COM_VIRTUEMART_PRODUCT_DETAILS_LAYOUT_DESC]]></message>
-	</layout>
-	<state>
-		<name>COM_VIRTUEMART_PRODUCT_DETAILS_LAYOUT_MENU</name>
-		<description><![CDATA[COM_VIRTUEMART_PRODUCT_DETAILS_LAYOUT_DESC]]></description>
-		<url>
-			<param name="virtuemart_product_id" type="sql" query="SELECT virtuemart_product_id, product_name FROM #__virtuemart_products" key_field="virtuemart_product_id" value_field="product_name" label="COM_VIRTUEMART_PRODUCT" description="COM_VIRTUEMART_CHOOSE_PRODUCT" />
-		</url>
-	</state>
+    <layout title="COM_VIRTUEMART_PRODUCT_DETAILS_LAYOUT_MENU">
+        <message><![CDATA[COM_VIRTUEMART_PRODUCT_DETAILS_LAYOUT_DESC]]>
+        </message>
+    </layout>
+    <state>
+       <name>COM_VIRTUEMART_PRODUCT_DETAILS_LAYOUT_MENU</name>
+        <description><![CDATA[COM_VIRTUEMART_PRODUCT_DETAILS_LAYOUT_DESC]]>
+        </description>
+        <url addpath="/administrator/components/com_virtuemart/elements">
+            <param name="virtuemart_product_id" section="com_virtuemart" type="vmproductsmenu"  value_field="product_name" label="COM_VIRTUEMART_PRODUCT" description="COM_VIRTUEMART_CHOOSE_PRODUCT" />
+        </url>
+    </state>
+    <fields name="params" addfieldpath="/administrator/components/com_virtuemart/elements">
+        <fieldset name="basic">
+            <field name="virtuemart_product_id" section="com_virtuemart" type="vmproductsmenu"  value_field="product_name" label="COM_VIRTUEMART_PRODUCT" description="COM_VIRTUEMART_CHOOSE_PRODUCT" />
+        </fieldset>
+    </fields>
 </metadata>
