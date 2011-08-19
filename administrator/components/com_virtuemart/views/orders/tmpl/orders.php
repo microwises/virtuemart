@@ -21,8 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea();
 
 $j15 = VmConfig::isJ15();
-/* Get the component name */
-$option = JRequest::getWord('option');
+
 ?>
 
 
@@ -69,7 +68,7 @@ $option = JRequest::getWord('option');
 		    <td><?php echo $checked; ?></td>
 		    <!-- Order id -->
 			<?php
-			$link = 'index.php?option='.$option.'&view=orders&task=edit&virtuemart_order_id='.$order->virtuemart_order_id;
+			$link = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$order->virtuemart_order_id;
 			?>
 		<td><?php echo JHTML::_('link', JRoute::_($link), $order->virtuemart_order_id, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$order->virtuemart_order_id)); ?></td>
 		<!-- Name -->
@@ -81,7 +80,7 @@ $option = JRequest::getWord('option');
 		<!-- Print view -->
 			<?php
 			/* Print view URL */
-			$details_url = JURI::base()."?option=".$option."&view=orders&task=orderPrint&format=raw&virtuemart_order_id=".$order->virtuemart_order_id;
+			$details_url = JURI::base()."?option=com_virtuemart&view=orders&task=orderPrint&format=raw&virtuemart_order_id=".$order->virtuemart_order_id;
 			$details_link = "<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\"  >";
 			$details_link .= '<span class="hasTip print_32" title="'.JText::_('COM_VIRTUEMART_PRINT').'">&nbsp;</span></a>';
 			?>
@@ -92,23 +91,19 @@ $option = JRequest::getWord('option');
 		<td><?php echo $order->modified_on //date('d-M-y H:i', $order->modified_on); ?></td>
 		<!-- Status -->
 		<td>
-			    <?php
-			    echo JHTML::_('select.genericlist', $this->orderstatuses, 'order_status['.$order->virtuemart_order_id.']', '', 'order_status_code', 'order_status_name', $order->order_status, 'order_status'.$i,true);
-			    echo '<input type="hidden" name="current_order_status['.$order->virtuemart_order_id.']" value="'.$order->order_status.'" />';
-			    echo '<br />';
-			    echo JHTML::_('link', '#', JText::_('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_element[order_comment_'.$order->virtuemart_order_id.']'));
-			    echo '<textarea class="element-hidden vm-absolute vm-showable" id="order_comment_'.$order->virtuemart_order_id.'" name="order_comment['.$order->virtuemart_order_id.']" value="" cols="40" rows="10"/></textarea>';
-			    ?>
+				<?php echo JHTML::_('select.genericlist', $this->orderstatuses, 'order_status['.$order->virtuemart_order_id.']', '', 'order_status_code', 'order_status_name', $order->order_status, 'order_status'.$i,true); ?>
+				<input type="hidden" name="current_order_status['<?php echo $order->virtuemart_order_id; ?>']" value="<?php echo $order->order_status; ?>" />
+				<br />
+				<textarea class="element-hidden vm-order_comment vm-showable" name="order_comment['<?php echo $order->virtuemart_order_id; ?>']" value="" cols="40" rows="5"/></textarea>
+				<?php echo JHTML::_('link', '#', JText::_('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_comment')); ?>
 		</td>
 		<!-- Update -->
 		<td>
-			    <?php
-			    echo '<input type="checkbox" class="inputbox" name="notify_customer['.$order->virtuemart_order_id.']" />'.JText::_('COM_VIRTUEMART_ORDER_LIST_NOTIFY');
-			    echo '<br />';
-			    echo '&nbsp;&nbsp;&nbsp;<input type="checkbox" class="inputbox" name="include_comment['.$order->virtuemart_order_id.']" />'.JText::_('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT');
-			    echo '<br />';
-			    echo '<input type="checkbox" class="inputbox" name="update_lines['.$order->virtuemart_order_id.']"  checked="checked" />'.JText::_('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS');
-			    ?>
+			<input type="checkbox" class="inputbox" name="notify_customer['<?php echo $order->virtuemart_order_id; ?>']" /><?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?>
+			<br />
+			&nbsp;&nbsp;&nbsp;<input type="checkbox" class="inputbox" name="include_comment['<?php echo $order->virtuemart_order_id; ?>']" /><?php echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT'); ?>
+			<br />
+			<input type="checkbox" class="inputbox" name="update_lines['.$order->virtuemart_order_id.']"  checked="checked" /><?php echo JText::_('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS'); ?>
 		</td>
 		<!-- Total -->
 		<td><?php echo $order->order_total; ?></td>
@@ -138,3 +133,19 @@ $option = JRequest::getWord('option');
     <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 <?php AdminUIHelper::endAdminArea(); ?>
+<script type="text/javascript">
+<!--
+
+jQuery('.show_comment').click(function() {
+  jQuery(this).prev('.element-hidden').show();
+  return false
+});
+
+jQuery('.element-hidden').mouseleave(function() {
+  jQuery(this).hide();
+});
+jQuery('.element-hidden').mouseout(function() {
+  jQuery(this).hide();
+});
+-->
+</script>

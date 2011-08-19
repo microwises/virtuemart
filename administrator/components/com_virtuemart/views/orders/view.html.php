@@ -104,7 +104,7 @@ class VirtuemartViewOrders extends JView {
 			$_itemStatusUpdateFields = array();
 			$_itemAttributesUpdateFields = array();
 			foreach($order['items'] as $_item) {
-				$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $orderStates, "cid[".$_item->virtuemart_order_item_id."]['order_statuslist']", 'class=""', 'order_status_code', 'order_status_name', $_item->order_status, 'order_item_status'.$_item->virtuemart_order_item_id,true);
+				$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $orderStates, "cid[".$_item->virtuemart_order_item_id."]['order_statuslist']", 'class="selectItemStatusCode"', 'order_status_code', 'order_status_name', $_item->order_status, 'order_item_status'.$_item->virtuemart_order_item_id,true);
 
 			}
 

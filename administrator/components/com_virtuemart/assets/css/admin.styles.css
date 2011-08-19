@@ -83,10 +83,6 @@ font-size: 12px;
 	text-align: center;
 }
 
-.element-hidden{
-	display: none;
-}
-
 /*Avoid content collapse*/
 .vm-block{
 	overflow: hidden;
@@ -183,6 +179,11 @@ font-size: 12px;
     top: 0;
     width: 24px;
 	cursor: pointer;
+}
+.vm-order_comment{
+    display: block;
+    left: -30px;
+    position: relative;
 }
 #fancybox-left-ico {
  left: 20px;
@@ -289,4 +290,6 @@ Read more: http://www.nitinh.com/2010/03/sexy-tooltip-using-css3/#ixzz1SjDMxhqs 
 	display:block;
 	margin:25px 0 0 10px;
 } */
-
+.element-hidden{
+	display: none;
+}

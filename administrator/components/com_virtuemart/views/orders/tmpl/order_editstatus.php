@@ -56,7 +56,7 @@
 	</tr>
 	<tr>
 		<td colspan="2" align="center" class="key">
-		<a href="#" onClick="javascript:document.orderStatForm.submit();"><?php
+		<a href="#" class="orderStatFormSubmit"><?php
 			echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('COM_VIRTUEMART_SAVE'))
 				. '&nbsp;'
 				. JText::_('COM_VIRTUEMART_SAVE');

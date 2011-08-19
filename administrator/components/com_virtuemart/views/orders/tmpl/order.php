@@ -475,10 +475,15 @@ AdminUIHelper::endAdminArea(); ?>
 
 <script type="text/javascript">
 <!--
-
 jQuery('.show_element').click(function() {
   jQuery('.element-hidden').toggle();
   return false
+});
+jQuery('select#order_items_status').change(function() {
+	//selectItemStatusCode
+	var statusCode = this.value;
+	jQuery('.selectItemStatusCode').val(statusCode);
+	return false
 });
 jQuery('.updateOrderItemStatus').click(function() {
 	document.orderItemForm.task.value = 'updateOrderItemStatus';
@@ -491,6 +496,15 @@ function confirmation(destnUrl) {
 		window.location = destnUrl;
 	}
 }
+/* JS for editstatus */
+
+jQuery('.orderStatFormSubmit').click(function() {
+	document.orderStatForm.task.value = 'updateOrderItemStatus';
+	document.orderStatForm.submit();
+
+	return false
+});
+
 var editingItem = 0;
 
 // function submitForm(formTask) {
@@ -498,47 +512,47 @@ var editingItem = 0;
 	// document.orderItemForm.submit();
 // }
 
-function resetForm(id) {
-	document.orderItemForm.reset();
-	if (id > 0) { // Resetting the Edit Item form
-		document.getElementById('updateOrderItemStatus').style['display'] = '';
-		document.getElementById('showItem_'+id).style['display'] = '';
-		document.getElementById('editItem_'+id).style['display'] = 'none';
-		checkCkeckBoxes(id, false);
-		editingItem = 0;
-		document.orderItemForm.virtuemart_order_item_id.value = 0;
-	}
-}
+// function resetForm(id) {
+	// document.orderItemForm.reset();
+	// if (id > 0) { // Resetting the Edit Item form
+		// document.getElementById('updateOrderItemStatus').style['display'] = '';
+		// document.getElementById('showItem_'+id).style['display'] = '';
+		// document.getElementById('editItem_'+id).style['display'] = 'none';
+		// checkCkeckBoxes(id, false);
+		// editingItem = 0;
+		// document.orderItemForm.virtuemart_order_item_id.value = 0;
+	// }
+// }
 
-function enableItemEdit(id) {
-	if (editingItem > 0) {
-		return; // Editing another item already
-	}
-	document.getElementById('updateOrderItemStatus').style['display'] = 'none';
-	document.getElementById('showItem_'+id).style['display'] = 'none';
-	document.getElementById('editItem_'+id).style['display'] = '';
-	checkCkeckBoxes(id, true);
-	editingItem = id;
-	document.orderItemForm.virtuemart_order_item_id.value = id;
-}
+// function enableItemEdit(id) {
+	// if (editingItem > 0) {
+		// return; // Editing another item already
+	// }
+	// document.getElementById('updateOrderItemStatus').style['display'] = 'none';
+	// document.getElementById('showItem_'+id).style['display'] = 'none';
+	// document.getElementById('editItem_'+id).style['display'] = '';
+	// checkCkeckBoxes(id, true);
+	// editingItem = id;
+	// document.orderItemForm.virtuemart_order_item_id.value = id;
+// }
 
-function checkCkeckBoxes(id, chk) {
-	var inputElements = document.orderItemForm.elements;
-	for (var Idx = 0; Idx < inputElements.length; Idx++) {
-		if (inputElements[Idx].type == 'checkbox') {
-			if (chk) {
-				if (inputElements[Idx].value == id) {
-					inputElements[Idx].checked = true;
-				} else {
-					inputElements[Idx].checked = false;
-				}
-				inputElements[Idx].disabled = true;
-			} else {
-				inputElements[Idx].checked = false;
-				inputElements[Idx].disabled = false;
-			}
-		}
-	}
-}
+// function checkCkeckBoxes(id, chk) {
+	// var inputElements = document.orderItemForm.elements;
+	// for (var Idx = 0; Idx < inputElements.length; Idx++) {
+		// if (inputElements[Idx].type == 'checkbox') {
+			// if (chk) {
+				// if (inputElements[Idx].value == id) {
+					// inputElements[Idx].checked = true;
+				// } else {
+					// inputElements[Idx].checked = false;
+				// }
+				// inputElements[Idx].disabled = true;
+			// } else {
+				// inputElements[Idx].checked = false;
+				// inputElements[Idx].disabled = false;
+			// }
+		// }
+	// }
+// }
 //-->
 </script>
