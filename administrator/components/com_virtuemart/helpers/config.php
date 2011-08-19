@@ -91,7 +91,7 @@ function vmError($descr,$publicdescr=''){
 	if(Permissions::getInstance()->check('admin')){
 		$app = JFactory::getApplication();
 		$descr = $lang->_($descr);
-		$app ->enqueueMessage($descr,'error');
+		$app ->enqueueMessage('vmError'.$descr,'error');
 	} else {
 		if(!empty($publicdescr)){
 			$app = JFactory::getApplication();

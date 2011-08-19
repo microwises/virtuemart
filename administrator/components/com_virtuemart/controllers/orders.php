@@ -140,8 +140,10 @@ class VirtuemartControllerOrders extends VmController {
 	}
 	/**
 	* Shows the order details
+	* @deprecated
 	*/
 	public function editOrderStatus() {
+		vmdebug('editOrderStatus');
 		/* Create the view object */
 		$view = $this->getView('orders', 'html');
 
@@ -158,6 +160,7 @@ class VirtuemartControllerOrders extends VmController {
 	* @author RolandD
 	*/
 	public function updatestatus() {
+		vmdebug('updatestatus');
 		$mainframe = Jfactory::getApplication();
 
 		/* Load the view object */
@@ -191,6 +194,7 @@ class VirtuemartControllerOrders extends VmController {
 	 *
 	 */
 	public function saveItemStatus() {
+		vmdebug('saveItemStatus');
 	    $mainframe = Jfactory::getApplication();
 
 	    /* Load the view object */
@@ -212,6 +216,7 @@ class VirtuemartControllerOrders extends VmController {
 	 * Display the order item details for editing
 	 */
 	public function editOrderItem() {
+		vmdebug('editOrderItem');
 	    JRequest::setVar('layout', 'orders_editorderitem');
 	    JRequest::setVar('hidemenu', 1);
 
@@ -244,7 +249,7 @@ class VirtuemartControllerOrders extends VmController {
 	 */
 	public function updateOrderItemStatus()
 	{
-		$test = array('shotter'=>1,'shotter2'=>'doof');
+		vmdebug('updateOrderItemStatus');
 		$mainframe = Jfactory::getApplication();
 		$model = $this->getModel('orders');
 		$_items = JRequest::getVar('cid',  0, '', 'array');
@@ -253,9 +258,10 @@ class VirtuemartControllerOrders extends VmController {
 		$_orderID = JRequest::getInt('virtuemart_order_id', '');
 
 		foreach ($_items as $key=>$value) {
-
-			$model->updateSingleItem($key, $value["'order_statuslist'"]);
+			vmdebug('updateOrderItemStatus $value',$value);
+			$model->updateSingleItem($key, $value["'order_statuslist'"],$value["'order_comment'"],$_orderID);
 		}
+
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$_orderID);
 	}
 
@@ -275,6 +281,7 @@ class VirtuemartControllerOrders extends VmController {
 	* Save the given order item
 	*/
 	public function saveOrderItem() {
+		vmdebug('saveOrderItem');
 	    $orderId = JRequest::getInt('virtuemart_order_id', '');
 	    $model = $this->getModel('orders');
 	    $msg = '';
@@ -292,6 +299,7 @@ class VirtuemartControllerOrders extends VmController {
 	* Removes the given order item
 	*/
 	public function removeOrderItem() {
+		vmdebug('removeOrderItem');
 	    $model = $this->getModel('orders');
 	    $msg = '';
 	    $orderId = JRequest::getInt('orderId', '');

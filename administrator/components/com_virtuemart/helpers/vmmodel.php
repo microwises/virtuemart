@@ -143,56 +143,6 @@ class VmModel extends JModel {
 		return $this->_total;
 	}
 
-	/**
-	 *
-	 * exeSortSearchListQuery
-	 *
-	 * @author Max Milbers
-	 * @param unknown_type $selectFindRows
-	 * @param unknown_type $whereString
-	 * @param unknown_type $groupBy
-	 * @param unknown_type $orderBy
-	 * @param unknown_type $filter_order_Dir
-	 */
-	public function exeSortSearchListQueryPatrick($select, $joinedTables, $whereString = '', $groupBy = '', $orderBy = '', $nbrReturnProducts = false){
-
-		//and the where conditions
-		$joinedTables .= $whereString .$groupBy .$orderBy ;
-		$this->_db->setQuery('select SQL_CALC_FOUND_ROWS '.$select.$joinedTables);
-		$list = $this->_db->loadObjectList();
-
-		// 		echo $this->_db->_sql ;
-		/* Get total */
-		$this->_db->setQuery('SELECT FOUND_ROWS()');
-		$count = $this->_db->loadResult();
-		// 		echo $count;
-		if($count == false ){
-			//     			$app = JFactory::getApplication();
-			//     			$app->enqueueMessage('sortSearchOrder Error in query '.$this->_db->getQuery().'<br /><br />'.$this->_db->getErrorMsg().'<br />');
-		} else if($count > 0){
-
-			if($nbrReturnProducts){
-				$limitStart = 0;
-				$limit = $nbrReturnProducts;
-			} else {
-				//     			$count =  $this->_db->loadResult();
-				$this->getPagination($count);
-				$limitStart = $this->_pagination->limitstart;
-				$limit = $this->_pagination->limit;
-			}
-
-			//$this->_db->setQuery($select.$joinedTables, $limitStart, $limit);
-
-
-
-			//     		vmdebug('exeSortSearchListQuery ',$this->_db);
-
-			return $list;
-		} else {
-			return array();
-		}
-
-	}
 
 	public function setPaginationLimits(){
 
@@ -214,6 +164,21 @@ class VmModel extends JModel {
 
 		$this->_withCount = $withCount;
 	}
+
+	/**
+	*
+	* exeSortSearchListQuery
+	*
+	* @author Max Milbers
+	* @author Patrick Kohl
+	* @param boolean $object use object or array as return value
+	* @param string $select the fields to select
+	* @param string $joinedTables the string of the joined tables or the table
+	* @param string $whereString for the where condition
+	* @param string $groupBy
+	* @param string $orderBy
+	* @param string $filter_order_Dir
+	*/
 
 	public function exeSortSearchListQuery($object, $select, $joinedTables, $whereString = '', $groupBy = '', $orderBy = '', $filter_order_Dir = '', $nbrReturnProducts = false){
 
@@ -263,6 +228,9 @@ class VmModel extends JModel {
 // 			vmTime('exeSortSearchListQuery SQL_CALC_FOUND_ROWS','exe');
 			return $list;
 
+			/**
+			 * For testing purposes, donte delete, notice by Max
+			 */
 /*		} else {
 
 			//and the where conditions
