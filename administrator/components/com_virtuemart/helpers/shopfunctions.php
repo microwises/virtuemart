@@ -404,10 +404,11 @@ class ShopFunctions {
     function renderWeightUnitList($name, $selected) {
 
         $weigth_unit_default = array(
-            'KG' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_KG')
-            , 'GR' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_GR')
-            , 'LB' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_LB')
-            , 'OZ' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_ONCE')
+            'KG' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_KG')
+            , 'GR' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_GR')
+            , 'MG' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_MG')
+            , 'LB' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_LB')
+            , 'OZ' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_ONCE')
         );
         return VmHTML::selectList($name, $selected, $weigth_unit_default);
     }
@@ -426,6 +427,8 @@ class ShopFunctions {
                 break;
             case 'GR': $g = $value;
                 break;
+            case 'MG': $g = $value/1000;
+                break;
             case 'LB': $g = 453.59237 * $value;
                 break;
             case 'OZ': $g = 28.3495 * $value;
@@ -437,6 +440,9 @@ class ShopFunctions {
                 break;
             case 'GR' :
                 $value = round($g, 2);
+                break;
+            case 'MG' :
+                $value = round(1000 * $g, 2);
                 break;
             case 'LB' :
                 $value = round($g / 453.59237, 2);
@@ -454,11 +460,12 @@ class ShopFunctions {
      * @author Valérie Isaksen
      */
     function renderLWHUnitList($name, $selected) {
-        $lwh_unit_default = array(   'M' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_M')
-						,'CM' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_CM')
-						,'YARD' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_YARD')
-						,'FOOT' =>  JText::_('COM_VIRTUEMART_WEIGHT_UNIT_FOOT')
-                                                ,   'INCH' =>  JText::_('COM_VIRTUEMART_WEIGHT_UNIT_INCH')
+        $lwh_unit_default = array(   'M' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_NAME_M')
+						,'CM' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_NAME_CM')
+                                                ,'MM' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_NAME_MM')
+						,'YD' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_NAME_YARD')
+						,'FT' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_NAME_FOOT')
+                                                ,   'IN' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_NAME_INCH')
 					);
 		return VmHTML::selectList($name,$selected, $lwh_unit_default);
 

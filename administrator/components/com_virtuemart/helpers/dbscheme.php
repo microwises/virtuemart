@@ -354,6 +354,7 @@ class DbScheme
 	/**
 	 * Create the defined table
 	 * @author Oscar van Eijk
+         * @author Valérie Cartan Isaksen
 	 */
 	private function create_table()
 	{
@@ -384,6 +385,7 @@ class DbScheme
 			$_qry .= ('(' . implode(',',$_desc['columns']) . ')');
 		}
 		$_qry .= ')';
+                $_qry .= ' ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;';
 		$this->db->setQuery($_qry);
 		return ($this->db->query());
 	}

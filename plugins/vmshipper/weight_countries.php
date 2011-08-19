@@ -110,10 +110,10 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 	 * @return float Total weight for the order
 	 * @author Oscar van Eijk
 	 */
-	protected function getOrderWeight(VirtueMartCart $cart) {
+	protected function getOrderWeight(VirtueMartCart $cart, $to_weight_unit) {
 		$weight = 0;
 		foreach ($cart->products as $prod) {
-			$weight += ( $prod->product_weight * $prod->quantity);
+			$weight += ( ShopFunctions::convertWeigthUnit($prod->product_weight, $prod->product_weight_uom,$to_weight_unit) * $prod->quantity);
 		}
 		return $weight;
 	}
@@ -209,14 +209,14 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 	 * if more ID's match, the cheapest will be selected.
 	 */
 	protected function selectShippingRate(VirtueMartCart $cart, $selectedShipper = 0) {
-		$orderWeight = $this->getOrderWeight($cart);
+            $params = new JParameter($shipping_carrier_params);
+
 		if ($selectedShipper == 0) {
 			$selectedShipper = $cart->virtuemart_shippingcarrier_id;
 		}
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
 		$shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $selectedShipper);
-		$params = new JParameter($shipping_carrier_params);
 
 		$shipping->shipping_name = $params->get('shipping_name');
 		$shipping->shipping_rate_vat_id = $params->get('tax_id');
@@ -245,7 +245,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 		$values['virtuemart_order_id'] = $order_id;
 		$values['shipper_id'] = $cart->virtuemart_shippingcarrier_id;
 		$values['shipper_name'] = $this->getThisShipperNameById($cart->virtuemart_shippingcarrier_id);
-		$values['order_weight'] = $this->getOrderWeight($cart);
+		$values['order_weight'] = $this->getOrderWeight($cart, $params->get('weight_unit'));
 		$values['shipper_cost'] = $params->get('rate_value');
 		$values['shipper_package_fee'] = $params->get('package_fee');
 		$values['tax_id'] = $params->get('tax_id');
@@ -341,9 +341,10 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 		return false;
 		}
 		* */
-
+                $params = new JParameter($shipping_carrier_params);
+		$orderWeight = $this->getOrderWeight($cart, $params->get('weight_unit'));
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
-		$orderWeight = $this->getOrderWeight($cart);
+
 		$nbShipper = 0;
 		$countries = array();
 		if(!class_exists('JParameter')) require(JPATH_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );

@@ -117,13 +117,13 @@ abstract class vmShipperPlugin extends JPlugin {
      * @return float Total weight for the order
      * @author Oscar van Eijk
      */
-    protected function getOrderWeight(VirtueMartCart $_cart) {
-        $_weight = 0;
-        foreach ($_cart->products as $_prod) {
-            $_weight += ( $_prod->product_weight * $_prod->quantity);
-        }
-        return $_weight;
-    }
+   protected function getOrderWeight(VirtueMartCart $cart, $to_weight_unit) {
+		$weight = 0;
+		foreach ($cart->products as $prod) {
+			$weight += ( ShopFunctions::convertWeigthUnit($prod->product_weight, $prod->product_weight_unit,$to_weight_unit) * $prod->quantity);
+		}
+		return $weight;
+	}
 
     /**
      * Fill the array with all carriers found with this plugin for the current vendor

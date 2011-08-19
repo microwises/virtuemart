@@ -797,6 +797,8 @@ class Migrator extends VmModel{
 		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 			return;
 		}
+ 
+
 		$ok = true;
 
 		//approximatly 100 products take a 1 MB
@@ -885,7 +887,7 @@ class Migrator extends VmModel{
 					}
 
 					if(!empty($product['product_lwh_uom'])){
-						$product['product_lwh_uom'] = $this->parseLengthUom($product['product_lwh_uom']);
+						$product['product_lwh_uom'] = $this->parseDimensionUom($product['product_lwh_uom']);
 					}
 					//$product['created_by'] = $user->id;
 					//$product['modified_by'] = $user->id;
@@ -1254,33 +1256,78 @@ class Migrator extends VmModel{
 	private function parseWeightUom($weightUnit){
 
 		$weightUnit = strtolower($weightUnit);
-		if(strpos($weightUnit,'kg')!==false){
-			return 'KG';
-		}
-		else if(strpos($weightUnit,'kilos')!==false){
-			return 'KG';
-		}
-
+		$weightUnitMigrateValues = $this->getWeightUnitMigrateValues();
+                return $this->parseUom($weightUnit,$weightUnitMigrateValues );
 
 	}
 
 	/**
+         * 
 	* parse the entered string to a standard unit
 	* @author Max Milbers
 	* @author Valerie Isaksen
 	*
 	*/
-	private function parseLengthUom($lengthUnit){
+	private function parseDimensionUom($dimensionUnit){
 
-		$lengthUnit = strtolower($lengthUnit);
-		if(strpos($lengthUnit,'mm')!==false){
-			return 'MM';
-		}
-		else if(strpos($lengthUnit,'cm')!==false){
-			return 'CM';
-		}
+            $dimensionUnitMigrateValues = $this->getDimensionUnitMigrateValues();
+            $dimensionUnit = strtolower($dimensionUnit);
+            return $this->parseUom($dimensionUnit,$dimensionUnitMigrateValues );
+
 	}
+        /**
+         *
+	* parse the entered string to a standard unit
+	* @author Max Milbers
+	* @author Valerie Isaksen
+	*
+	*/
+	private function parseUom($unit, $migrateValues){
+            $new="";
+            $unit = strtolower($unit);
+            foreach ($migrateValues as $old => $new) {
+                if (strpos($unit, $old) !== false) {
+                    return $new;
+                }
+            }
+	}
+        /**
+         *
+	* get new Length Standard Unit
+	* @author Valerie Isaksen
+	*
+	*/
+        function getDimensionUnitMigrateValues() {
 
+            $dimensionUnitMigrate=array (
+                  'mm' => 'MM'
+                 , 'cm' => 'CM'
+                 , 'm' => 'M'
+                 , 'yd' => 'YD'
+                 , 'foot' => 'FT'
+                 , 'ft' => 'FT'
+                 , 'inch' => 'IN'
+            );
+            return $dimensionUnitMigrate;
+        }
+        /**
+         *
+	* get new Weight Standard Unit
+	* @author Valerie Isaksen
+	*
+	*/
+        function getWeightUnitMigrateValues() {
+            $weightUnitMigrate=array (
+                  'kg' => 'KG'
+                 , 'kilos' => 'KG'
+                 , 'gr' => 'GR'
+                 , 'pound' => 'LB'
+                 , 'livre' => 'LB'
+                 , 'once' => 'OZ'
+                 , 'ounce' => 'OZ'
+            );
+            return $weightUnitMigrate;
+        }
 
 	/**
 	 * Helper function, was used to determine the difference of an loaded array (from vm19

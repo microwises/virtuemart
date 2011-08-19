@@ -13,7 +13,7 @@
 class VmEUVatCheck {
 
 	/** @var string the URL to the VIES */
-	var $viesurl = 'http://ec.europa.eu/taxation_customs/vies/api/checkVatPort?wsdl';
+	var $viesurl = 'http://ec.europa.eu/taxation_customs/vies/api/checkVatPort.wsdl';
 
 	/** @var array contains the data to pass to the VIES */
 	var $param = array('countryCode' => '', 'vatNumber' => '');

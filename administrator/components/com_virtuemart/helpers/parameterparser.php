@@ -164,57 +164,70 @@ class vmParameters extends JParameter {
         $this->_raw = $data;
     }
 
-    /**
-     * @param string The name of the control, or the default text area if a setup file is not found
-     * @author Sören, Max Milbers
-     * @return string HTML
-     */
-/* removed it and using the joomla one .. so we can use Jelements
-    function render($name='params') {
+      /**
+	 * render  
+	 *
+	 * @access	public
+	 * @param	string	The name of the control, or the default text area if a setup file is not found
+	 * @return	string	HTML
+	 * @author      Valérie Cartan Isaksen
+	 */
+        function render($name = 'params', $group = '_default') {
 
-        if (is_object($this->_xml[$this->_group])) {
-
-            $params = $this->getParams($name);
-            $html = array();
-            $html[] = '<table width="100%" class="paramlist admintable" cellspacing="1">';
-
-            $element = $this->_xml[$this->_group];
-
-            if ($description = @$element->attributes('description')) {
-                // add the params description to the display
-                $html[] = '<tr><td class="paramlist_description" colspan="2">' . $description . '</td></tr>';
+            if (version_compare(JVERSION, '1.6.0', 'ge')) {
+                $parameters = $this->vmRender($name, $group);
+            } else {
+                $parameters = parent::render($name, $group);
             }
 
-            $this->_methods = get_class_methods(get_class($this));
-
-
-            $i = 0;
-            foreach ($element->_children as $param) {
-                $result = $this->renderParam($param, $name);
-                $html[] = '<tr>';
-                if ($result[2]) {
-                    $html[] = '<td width="40%" class="paramlist_key">' . $result[2] . '</td>';
-                } else {
-                    $html[] = '<td width="40%" class="paramlist_key">' . JText::_($result[0]) . '</td>';
-                }
-                if (isset($result[1])) {
-                    $html[] = '<td>' . $result[1] . '</td>';
-                } else {
-                    $html[] = '<td></td>';
-                }
-                $html[] = '</tr>';
-            }
-            $html[] = '</table>';
-
-            if (count($element->_children) < 1) {
-                $html[] = "<tr><td colspan=\"2\"><i>" . _NO_PARAMS . "</i></td></tr>";
-            }
-            return implode("\n", $html);
-        } else {
-            return '<textarea name="$name" cols="40" rows="10" class="text_area">' . $this->_raw . '</textarea>';
+            return $parameters;
         }
-    }
-*/
+        /**
+	 * vmRender copied from Joomla 1.5
+	 *
+	 * @access	public
+	 * @param	string	The name of the control, or the default text area if a setup file is not found
+	 * @return	string	HTML
+	 * @author	Joomla 1.5
+	 */
+	function vmRender($name = 'params', $group = '_default')
+	{
+		if (!isset($this->_xml[$group])) {
+			return false;
+		}
+
+		$params = $this->getParams($name, $group);
+		$html = array ();
+		$html[] = '<table width="100%" class="paramlist admintable" cellspacing="1">';
+
+		if ($description = $this->_xml[$group]->attributes('description')) {
+			// add the params description to the display
+			$desc	= JText::_($description);
+			$html[]	= '<tr><td class="paramlist_description" colspan="2">'.$desc.'</td></tr>';
+		}
+
+		foreach ($params as $param)
+		{
+			$html[] = '<tr>';
+
+			if ($param[0]) {
+				$html[] = '<td width="40%" class="paramlist_key"><span class="editlinktip">'.$param[0].'</span></td>';
+				$html[] = '<td class="paramlist_value">'.$param[1].'</td>';
+			} else {
+				$html[] = '<td class="paramlist_value" colspan="2">'.$param[1].'</td>';
+			}
+
+			$html[] = '</tr>';
+		}
+
+		if (count($params) < 1) {
+			$html[] = "<tr><td colspan=\"2\"><i>".JText::_('There are no Parameters for this item')."</i></td></tr>";
+		}
+
+		$html[] = '</table>';
+
+		return implode("\n", $html);
+	}
     /**
      *
      * @author Sören, Max Milbers

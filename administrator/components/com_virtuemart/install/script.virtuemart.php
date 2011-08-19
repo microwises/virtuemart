@@ -151,8 +151,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','ADD product_ordered int(11)');
 
-
-
+                        $this->updateWeightUnit();
+                        $this->updateDimensionUnit();
+                        
 			$this->displayFinished(true);
 			// probably should just go to updatesMigration rather than the install success screen
 // 			include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
@@ -190,6 +191,65 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			return false;
 		}
 
+                /**
+		 *
+		 * @author Valérie Isaksen	
+		 * @return boolean This gives true back, WHEN it altered the table, you may use this information to decide for extra post actions
+		 */
+                private function updateWeightUnit(  ) {
+                      require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+                    $migrator = new Migrator();
+                    $weightUnitMigrateValues = $migrator->getWeightUnitMigrateValues();
+                    return $this->updateUnit(  'product_weight_uom', $weightUnitMigrateValues) ;
+                }
+
+                /**
+		 *
+		 * @author Valérie Isaksen
+		 * @return boolean This gives true back, WHEN it altered the table, you may use this information to decide for extra post actions
+		 */
+                private function updateDimensionUnit(   ) {
+                    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+                    $migrator = new Migrator();
+                    $dimensionUnitMigrateValues = $migrator->getDimensionUnitMigrateValues();
+                    return $this->updateUnit(  'product_lwh_uom', $dimensionUnitMigrateValues) ;
+                }
+                /**
+		 *
+		 * @author Valérie Isaksen
+		 * @param unknown_type $field
+		 * @param array $UnitMigrateValues
+		 * @return boolean This gives true back, WHEN it altered the table, you may use this information to decide for extra post actions
+		 */
+                private function updateUnit(  $field, $UnitMigrateValues) {
+
+                    $ok=true;
+                    foreach ($UnitMigrateValues as $old => $new) {
+                        $query = 'UPDATE  `#__virtuemart_products` SET `'.$field.'` = ' . $new . ' WHERE  `'.$field.'` =' . $old;
+                        $this->db->setQuery($query);
+                        if (!$this->db->query()) {
+                            $app->getApplication();
+                            $app->enqueueMessage('Install updateUnit '. $field.' '. $this->db->getErrorMsg());
+                            $ok=false;
+                        }
+                    }
+                    if (!$ok) return false;
+                    $query = 'SHOW COLUMNS FROM `'.$table.'` ';
+                    $this->db->setQuery($query);
+                    $columns = $db->loadResultArray(0);
+                    if(!in_array($field,$columns)){
+                            $query = "ALTER TABLE  `#__virtuemart_products` CHANGE  `".$field."`  `".$field."` VARCHAR( 3 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT  'Kg'";
+                            $this->db->setQuery($query);
+                            if(!$this->db->query()){
+                                    $app->getApplication();
+                                    $app->enqueueMessage('Install updateUnit '.$field.' '.$this->db->getErrorMsg() );
+                                    return false;
+                            } else {
+                                    return true;
+                            }
+                    }
+                    return false;
+		}
 		/**
 		 * Uninstall script
 		 * Triggers before database processing

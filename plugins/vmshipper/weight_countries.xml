@@ -28,6 +28,7 @@
         <param name="zip_stop" type="text" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_ZIP_STOP" description="VMSHIPPER_WEIGHT_COUNTRIES_ZIP_STOP_DESC"/>
         <param name="weight_start" type="text" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_START" description="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_START_DESC"/>
         <param name="weight_stop" type="text" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_STOP" description="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_STOP_DESC"/>
+        <param name="weight_unit" type="vmweightunit" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_UNIT" description="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_UNIT_DESC"/>
         <param name="rate_value" type="text"   label="VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE" description="VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE_DESC" />
         <param name="package_fee" type="text"   label="VMSHIPPER_WEIGHT_COUNTRIES_PACKAGE_FEE" description="VMSHIPPER_WEIGHT_COUNTRIES_PACKAGE_FEE_DESC" />
         <param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPPER_WEIGHT_COUNTRIES_TAX" description="VMSHIPPER_WEIGHT_COUNTRIES_TAX_DESC" />
