@@ -176,7 +176,7 @@ class VirtuemartControllerOrders extends VmController {
 		$model = $this->getModel('orders');
 		
 		if ($lastTask == 'updatestatus') {
-			// single order is in post
+			// single order is in POST but we need an array
 			$order = array(JRequest::get('post'));
 			vmdebug(  'order',$order);
 			$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');

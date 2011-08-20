@@ -25,12 +25,14 @@
 
 		li.click(
 			function () {
-				if ($(this).not("current")){
+				if ($(this).not(".current")){
 					var idx = li.index(this);
-					if (cookie !== "" ) $.cookie(cookie, idx, options);
 					oldIndex = $(this).addClass("current").siblings('li.current').removeClass("current").index();
-					div.eq(idx).slideDown();
-					div.eq( oldIndex ).slideUp();
+					if (oldIndex !== -1){
+						if (cookie !== "" ) $.cookie(cookie, idx, options);
+						div.eq(idx).slideDown();
+						div.eq( oldIndex ).slideUp();
+					}
 				}
 			}
 		);
@@ -48,7 +50,7 @@
 		h3.click(
 			function () {
 				var menu = $(this) ;
-				if (menu.not("current")){
+				if (menu.not(".current")){
 					menu.siblings('h3.current').removeClass("current").next().slideUp(200);
 					menu.addClass("current").next().slideDown(200);
 					$.cookie('accordeon', h3.index(this), options);

@@ -821,7 +821,7 @@ class VirtueMartModelOrders extends VmModel {
 	}
 
 	function handleStockAfterStatusChanged($newState,$products,$oldState = 'P'){
-
+// after cart
 		foreach ($products as $prod) {
 			$this->handleStockAfterStatusChangedPerProduct($newState,$oldState,$prod->virtuemart_product_id,$prod->quantity);
 		}
@@ -836,23 +836,40 @@ vmdebug( 'updatestock qt :' , $quantity.' id :'.$productId);
 		// X 	Cancelled
 		// R 	Refunded
 		// S 	Shipped
-			   $stockOut = array('S');
-		$isOrdered =  array('P','C','S');
+		// N 	New or comming from cart
+		//  TO have no product setted as ordered when adde to cart simply add 'N' to aray Reserved
+		// what is the condition decreasing stock
+			$stockOut = array('S');
+		// what is the condition increasing reserved stock(virtual Stock = product_in_stock - product_ordered)
+			$Reserved =  array('P','C');
 		// Stock change ?
-		$newStock = in_array($newState, $stockOut);
-		$oldStock = in_array($oldState, $stockOut);
+		$isOut = in_array($newState, $stockOut);
+		$wasOut= in_array($oldState, $stockOut);
+		$isReserved = in_array($newState, $Reserved);
+		$wasReserved = in_array($oldState, $Reserved);
 
-		if ($newStock && !$oldStock  )     $product_in_stock = '-';
-		else if (!$newStock && $oldStock  ) $product_in_stock = '+';
+		if ($isOut && !$wasOut)     $product_in_stock = '-';
+		else if ($wasOut && !$isOut ) $product_in_stock = '+';
 		else $product_in_stock = '=';
-
-		// Product is ordered ?
-		$newOrdered = in_array($newState, $isOrdered);
-		$oldOrdered = in_array($oldState, $isOrdered);
-
-		if ($oldOrdered && !$newOrdered )     $product_ordered = '-';
-		else if (!$oldOrdered && $newOrdered ) $product_ordered = '+';
+// reserved stock must be change(all ordered product)
+		if ($isReserved && !$wasReserved )     $product_ordered = '+'; 
+		else if (!$isReserved && $wasReserved ) $product_ordered = '-';
 		else $product_ordered = '=';
+		// Product is ordered or better said paiement is OK
+		// Patrick kohl note , this is not a real situation if you will permit paiement on delivery or paiment in 3X
+		// if you don't delivery all products whats happen ?
+		// stock must be Always handel here , but not paiement !?
+		// i find a bool in DB for paiement where better, in a checkbox on orders view list/edit,setted to paiement OK on status change P,C,S on same time but can be unchecked by vendor)
+		// in case of reimbursement of the product, you need to cancel a part of the payment or make a credit on the amount
+		// situation is using paiement plugin if this can handel it or coupons generated on "Refunded" on vendor demand(checkbox)
+		//  to do this , we have to use class plgVmOnCancelPayment in paiement plugins, but how to handel it in case of partial refund ?
+
+		// $newOrdered = in_array($newState, $isOrdered);
+		// $oldOrdered = in_array($oldState, $isOrdered);
+
+		// if ($oldOrdered && !$newOrdered )     $product_ordered = '-'; 
+		// else if (!$oldOrdered && $newOrdered ) $product_ordered = '+';
+		// else $product_ordered = '=';
 
 
  		vmdebug( 'updatestock me' , $oldState.' new '.$newState.' ordered '.$product_ordered.' '.$oldState.' new '.$newState.' stock '.$product_in_stock  );
@@ -935,9 +952,9 @@ vmdebug( 'updatestock qt :' , $quantity.' id :'.$productId);
 		else{
 			vmError('The workflow for '.$newState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Cant process workflow, contact the shopowner status '.$newState);
 			// 				$action
-		} */
+		} 
 
-vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_stock  );
+vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_stock  );*/
 
 // 		foreach ($products as $prod) {
 
@@ -1036,6 +1053,7 @@ vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_s
 				$this->setError($this->getError());
 				return false;
 			}
+			$this->handleStockAfterStatusChangedPerProduct( $_orderItems->order_status,'N',$_orderItems->virtuemart_product_id,$_orderItems->product_quantity);
 
 		}
 		return true;

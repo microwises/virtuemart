@@ -1431,10 +1431,6 @@ class VirtueMartModelProduct extends VmModel {
 
 	public function updateStock($id, $amount, $signInStoc, $signOrderedStock){
 
-		//sanitize fields
-		$id = (int) $id;
-		$amount = (float) $amount;
-
 		$validFields = array('=','+','-');
 		if(!in_array($signInStoc,$validFields)){
 			return false;
@@ -1442,16 +1438,20 @@ class VirtueMartModelProduct extends VmModel {
 		if(!in_array($signOrderedStock,$validFields)){
 			return false;
 		}
+		//sanitize fields
+		$id = (int) $id;
+		$amount = (float) $amount;
+		$update = array();
 
 		if($signInStoc != '=' || $signOrderedStock != '='){
-			$q = 'UPDATE `#__virtuemart_products` ';
+			
 			if($signInStoc!='='){
-				$q .= 'SET `product_in_stock` = `product_in_stock` ' . $signInStoc . $amount ;
+				$update[] = '`product_in_stock` = `product_in_stock` ' . $signInStoc . $amount ;
 			}
 			if($signOrderedStock!='='){
-				$q .= 'SET `product_ordered` = `product_ordered` ' . $signOrderedStock . $amount ;
+				$update[] = '`product_ordered` = `product_ordered` ' . $signOrderedStock . $amount ;
 			}
-			$q .= ' WHERE `virtuemart_product_id` = ' . $id;
+			$q = 'UPDATE `#__virtuemart_products` SET '. implode(", ", $update  ) . ' WHERE `virtuemart_product_id` = ' . $id;
 
 			$this->_db->setQuery($q);
 			$this->_db->query();
