@@ -271,7 +271,7 @@ class VirtueMartModelOrders extends VmModel {
 			}
 
 			// 		$this->handleStockAfterStatusChanged($order_status,array($product),$table->order_status);
-			$this->handleStockAfterStatusChangedPerProduct($order_status, $oldOrderStatus, $data->virtuemart_product_id,$data->product_quantity);
+			$this->handleStockAfterStatusChangedPerProduct($order_status, $oldOrderStatus, $table->virtuemart_product_id,$table->product_quantity);
 
 		}
 
@@ -830,7 +830,7 @@ class VirtueMartModelOrders extends VmModel {
 	function handleStockAfterStatusChangedPerProduct($newState, $oldState,$productId, $quantity) {
 
 		if($newState == $oldState) return;
-
+vmdebug( 'updatestock qt :' , $quantity.' id :'.$productId);
 		// P 	Pending
 		// C 	Confirmed
 		// X 	Cancelled
@@ -857,7 +857,7 @@ class VirtueMartModelOrders extends VmModel {
 
  		vmdebug( 'updatestock me' , $oldState.' new '.$newState.' ordered '.$product_ordered.' '.$oldState.' new '.$newState.' stock '.$product_in_stock  );
 		// P means ordered, but payment not confirmed, => real stock stays the same => product_in_stock = and product_ordered =
-		if($newState=='P'){
+		/* if($newState=='P'){
 			//for a new order
 			if($oldState=='P'){
 				$product_in_stock = '=';
@@ -880,7 +880,6 @@ class VirtueMartModelOrders extends VmModel {
 			}
 
 		}
-		//  => product_in_stock = and product_ordered =
 		else if($newState=='C'){
 			if($oldState=='P'){
 				$product_in_stock = '=';
@@ -936,7 +935,7 @@ class VirtueMartModelOrders extends VmModel {
 		else{
 			vmError('The workflow for '.$newState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Cant process workflow, contact the shopowner status '.$newState);
 			// 				$action
-		}
+		} */
 
 vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_stock  );
 
