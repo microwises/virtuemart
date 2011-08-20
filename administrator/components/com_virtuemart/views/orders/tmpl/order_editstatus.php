@@ -31,27 +31,24 @@
 	</tr>
 	<tr>
 		<td class="key"><?php echo JText::_('COM_VIRTUEMART_COMMENT') ?></td>
-		<td><textarea rows="6" cols="35"
-			name="<?php
-				echo 'order_comment['.$this->orderID.']';
-			?>"></textarea>
+		<td><textarea rows="6" cols="35" name="comments"></textarea>
 		</td>
 	</tr>
 	<tr>
 		<td class="key"><?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_NOTIFY') ?></td>
-		<td><?php echo VmHTML::checkbox('notify_customer['.$this->orderID.']', true); ?>
+		<td><?php echo VmHTML::checkbox('customer_notified', true); ?>
 		</td>
 	</tr>
 	<tr>
 		<td class="key"><?php echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT') ?></td>
 		<td><br />
-		<?php echo VmHTML::checkbox('include_comment['.$this->orderID.']', true); ?>
+		<?php echo VmHTML::checkbox('include_comment', true); ?>
 		</td>
 	</tr>
 	<tr>
 		<td class="key"><?php echo JText::_('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS') ?></td>
 		<td><br />
-		<?php echo VmHTML::checkbox('update_lines['.$this->orderID.']', true); ?>
+		<?php echo VmHTML::checkbox('update_lines', true); ?>
 		</td>
 	</tr>
 	<tr>
@@ -82,7 +79,7 @@
 <input type="hidden" name="last_task" value="updatestatus" />
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="view" value="orders" />
-<input type="hidden" name="current_order_status['<?php echo $this->orderID; ?>']" value="<?php echo $this->currentOrderStat; ?>" />
+<input type="hidden" name="current_order_status" value="<?php echo $this->currentOrderStat; ?>" />
 <input type="hidden" name="virtuemart_order_id" value="<?php echo $this->orderID; ?>" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>

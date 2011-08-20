@@ -60,6 +60,7 @@ $j15 = VmConfig::isJ15();
 		$i = 0;
 		$k = 0;
 		$keyword = JRequest::getWord('keyword');
+		
 		foreach ($this->orderslist as $key => $order) {
 		    $checked = JHTML::_('grid.id', $i , $order->virtuemart_order_id);
 		    ?>
@@ -90,20 +91,20 @@ $j15 = VmConfig::isJ15();
 		<!-- Last modified -->
 		<td><?php echo $order->modified_on //date('d-M-y H:i', $order->modified_on); ?></td>
 		<!-- Status -->
-		<td>
-				<?php echo JHTML::_('select.genericlist', $this->orderstatuses, 'order_status['.$order->virtuemart_order_id.']', '', 'order_status_code', 'order_status_name', $order->order_status, 'order_status'.$i,true); ?>
-				<input type="hidden" name="current_order_status['<?php echo $order->virtuemart_order_id; ?>']" value="<?php echo $order->order_status; ?>" />
+		<td style="position:relative;">
+				<?php echo JHTML::_('select.genericlist', $this->orderstatuses, "orders[". $order->virtuemart_order_id."][order_status]", '', 'order_status_code', 'order_status_name', $order->order_status, 'order_status'.$i,true); ?>
+				<input type="hidden" name="current_order_status[<?php echo $order->virtuemart_order_id; ?>]" value="<?php echo $order->order_status; ?>" />
 				<br />
-				<textarea class="element-hidden vm-order_comment vm-showable" name="order_comment['<?php echo $order->virtuemart_order_id; ?>']" value="" cols="40" rows="5"/></textarea>
+				<textarea class="element-hidden vm-order_comment vm-showable" name="orders[<?php echo $order->virtuemart_order_id; ?>][comments]" value="" cols="5" rows="5"/></textarea>
 				<?php echo JHTML::_('link', '#', JText::_('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_comment')); ?>
 		</td>
 		<!-- Update -->
 		<td>
-			<input type="checkbox" class="inputbox" name="notify_customer['<?php echo $order->virtuemart_order_id; ?>']" /><?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?>
+			<input type="checkbox" value=1 class="inputbox" name="orders[<?php echo $order->virtuemart_order_id; ?>][customer_notified]" /><?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?>
 			<br />
-			&nbsp;&nbsp;&nbsp;<input type="checkbox" class="inputbox" name="include_comment['<?php echo $order->virtuemart_order_id; ?>']" /><?php echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT'); ?>
+			&nbsp;&nbsp;&nbsp;<input type="checkbox" class="inputbox" name="orders[<?php echo $order->virtuemart_order_id; ?>][customer_send_comment]" /><?php echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT'); ?>
 			<br />
-			<input type="checkbox" class="inputbox" name="update_lines['.$order->virtuemart_order_id.']"  checked="checked" /><?php echo JText::_('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS'); ?>
+			<input type="checkbox" class="inputbox" name="orders[<?php echo $order->virtuemart_order_id; ?>][update_lines]"  checked="checked" /><?php echo JText::_('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS'); ?>
 		</td>
 		<!-- Total -->
 		<td><?php echo $order->order_total; ?></td>

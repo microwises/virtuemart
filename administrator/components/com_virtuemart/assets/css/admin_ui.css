@@ -53,11 +53,11 @@ dl#system-message dd.notice { background: #eee url(../images/admin_ui/header_bg.
 #system-message dd.remove ul {background: url("../images/icon_32/bin.png") no-repeat scroll 8px center transparent !important;}
 #system-message dd.save ul {background: url("../images/icon_32/disk.png") no-repeat scroll 8px center transparent !important;}
 #system-message dd.cancel ul {background: url("../images/icon_32/cancel.png") no-repeat scroll 8px center transparent !important;}
-#system-message dd ul  .vmdebug{    background: url("../images/icon_32/elements.png") no-repeat scroll 8px top transparent !important;display: block;}
+#system-message dd ul  .vmdebug{    background: url("../images/icon_32/elements_16.png") no-repeat scroll 0px top transparent !important;display: block;}
 #system-message dd.error ul {background: url("../images/icon_32/exclamation.png") no-repeat scroll 8px center transparent !important;}
 
 /* vmdebug */
-.vmdebug pre{ padding-left: 32px; }
+.vmdebug pre{ padding-left: 32px;}
 
 dl#system-message dd .vmdebug  { font-size:10px; }
 /* Fieldset */

@@ -226,9 +226,6 @@ class VirtueMartModelOrders extends VmModel {
 
 		vmdebug('updateSingleItem',$virtuemart_order_item_id,$order_status);
 
-		/* Update the order history */
-		$this->_updateOrderHist($virtuemart_order_id, $order_status, $customer_notified, $comment);
-
 		// Update order item status
 		if(empty($virtuemart_order_item_id)){
 
@@ -238,7 +235,7 @@ class VirtueMartModelOrders extends VmModel {
 						WHERE virtuemart_order_id="'.(int)$virtuemart_order_id.'"';
 				$db = JFactory::getDBO();
 				$db->setQuery($q);
-				$virtuemart_order_id = $db->loadResultArray();
+				$virtuemart_order_item_ids = $db->loadResultArray();
 // 				if ($order_items) {
 // 					foreach ($order_items as $key => $order_item) {
 // 						$this->updateSingleItem($order_item->virtuemart_order_item_id, $new_status);
@@ -246,7 +243,7 @@ class VirtueMartModelOrders extends VmModel {
 // 				}
 // 			}
 		}else {
-			if(!is_array($virtuemart_order_id)) $virtuemart_order_id = array($virtuemart_order_id=>$order_status);
+			if(!is_array($virtuemart_order_item_id)) $virtuemart_order_item_ids = array($virtuemart_order_item_id);
 		}
 
 
@@ -254,19 +251,20 @@ class VirtueMartModelOrders extends VmModel {
 		//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($virtuemart_order_id);
 
 		/* Check if the customer needs to be informed */
-		if (!empty($notify[$virtuemart_order_id])) $this->notifyCustomer($order, $comments);
-		$updated++;
+		//if (!empty($notify[$virtuemart_order_id])) $this->notifyCustomer($order, $comments,$includeComments);
+		//$updated++;
 
-		foreach($virtuemart_order_id as $id){
+		foreach($virtuemart_order_item_ids as $id){
 			$table = $this->getTable('order_items');
 			$table->load($id);
-
-			$oldOrderStatus = $data->order_status;
+			$oldOrderStatus = $table->order_status;
 
 			$data->order_status = $order_status;
-			$data->comment = $comment;
+			//$data->comment = $comment;
+			
 			$data = $table->bindChecknStore($data,true);
-
+		/* Update the order item history */
+			//$this->_updateOrderItemHist($id, $order_status, $customer_notified, $comment);
 			$errors = $table->getErrors();
 			foreach($errors as $error){
 				$this->setError( get_class( $this ).'::store '.$error);
@@ -286,11 +284,11 @@ class VirtueMartModelOrders extends VmModel {
 	 * @author Valérie Isaksen
 	 *
 	 */
-	public function updateOrderStatus($order_id, $order_status){
+	public function updateOrderStatus($order_id, $virtuemart_order_id, $order_status){
 
 		vmdebug('updateOrderStatus');
 
-		$this->updateOrderStatussee($order_id, $order_status);
+		$this->updateOrderStatussee($order_id, $virtuemart_order_id, $order_status);
 		/*		// Update the order
 		 $order = $this->getTable('orders');
 		$order->load((int)$order_id);
@@ -306,71 +304,70 @@ class VirtueMartModelOrders extends VmModel {
 	 * @param unknown_type $order_id
 	 * @param unknown_type $order_status
 	 */
-	public function updateOrderStatussee($order_id=0, $order_status=0){
+	public function updateOrderStatussee($orders=0, $order_id =0,$order_status=0){
 
-
-		vmdebug('updateOrderStatussee',$order_id,$order_status);
+		vmdebug('updateOrderStatussee',$orders,$order_status);
 		//General change of orderstatus
-		if(empty($order_id)){
-			// Get a list of orders to update
-			$order_ids = array_diff_assoc(JRequest::getVar('order_status', array()), JRequest::getVar('current_order_status', array()));
+		if(empty($orders)){
+			//$order_id = array();
+			$ordersArray = JRequest::getVar('orders',  array());
+			$oldStatus = JRequest::getVar('current_order_status', array());
+			// Get the list of updated orders in post
+			foreach ($ordersArray as $key => $_order) {
+				if ( $_order['order_status'] !== $oldStatus[$key]) $orders[$key] = $_order;
+			}
+			//$order_ids = array_diff_assoc(JRequest::getVar('order_status', array()), JRequest::getVar('current_order_status', array()));
 
 			/* Get the list of orders to notify */
 			// TODO as getInt ???
-			$notify = JRequest::getVar('notify_customer', array());
+			//$notify = JRequest::getVar('notify_customer', array());
 
 			/* See where the lines should be updated too */
 			// TODO as getInt ???
-			$update_lines = JRequest::getVar('update_lines', array());
+			//$update_lines = JRequest::getVar('update_lines', array());
 
 			/* Get the list of comments */
-			$comments = JRequest::getVar('order_comment', array());
-
-			// TODO This is not the most logical place for these plugins (or better; the method updateStatus() must be renamed....)
-			if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
-			if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
-			JPluginHelper::importPlugin('vmshipper');
-			$_dispatcher = JDispatcher::getInstance();
-			$_returnValues = $_dispatcher->trigger('plgVmOnSaveOrderShipperBE',array(JRequest::get('post')));
-			foreach ($_returnValues as $_retVal) {
-				if ($_retVal === false) {
-					// Stop as soon as the first active plugin returned a failure status
-					return;
-				}
-			}
-
+			//$comments = JRequest::getVar('order_comment', array());
 		}
-		//update single item or some items
-		else {
-			if(!is_array($order_id)){
-				$order_ids = array($order_id);
-			} else {
-				$order_ids = $order_id;
+
+		// TODO This is not the most logical place for these plugins (or better; the method updateStatus() must be renamed....)
+		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
+		JPluginHelper::importPlugin('vmshipper');
+		$_dispatcher = JDispatcher::getInstance();
+		$_returnValues = $_dispatcher->trigger('plgVmOnSaveOrderShipperBE',array(JRequest::get('post')));
+		foreach ($_returnValues as $_retVal) {
+			if ($_retVal === false) {
+				// Stop as soon as the first active plugin returned a failure status
+				return;
 			}
 		}
+
+		if(!is_array($orders)){
+			$orders = array($orders);
+		} 
 
 		/* Process the orders to update */
 		$updated = 0;
 		$error = 0;
-		if ($order_ids) {
-			foreach ($order_ids as $virtuemart_order_id => $new_status) {
-
+		if ($orders) {
+			foreach ($orders as $virtuemart_order_id => $order) {
+				if  ($order_id >0) $virtuemart_order_id= $order_id;
 				/* Get customer notification */
-				$customer_notified = (@$notify[$virtuemart_order_id] == 1) ? 1 : 0;
-
+				//$customer_notified = (@$notify[$virtuemart_order_id] == 1) ? 1 : 0;
 				/* Get the comments */
-				$comment = (array_key_exists($virtuemart_order_id, $comments)) ? $comments[$virtuemart_order_id] : '';
+				//$comment = (array_key_exists($virtuemart_order_id, $comments)) ? $comments[$virtuemart_order_id] : '';
 
 				/* Update the order */
-				$order = $this->getTable('orders');
-				$order->load($virtuemart_order_id);
-				$order_status_code = $order->order_status;
-
+				$data = $this->getTable('orders');
+				$data->load($virtuemart_order_id);
+				$order_status_code = $data->order_status;
+				$data->bind($order);
 				// Order updates can be ignored if we're updating only lines
-				$order->order_status = $new_status;
+				//$order->order_status = $new_status;
 
 				/* When the order is set to "shipped", we can capture the payment */
-				if( ($order_status_code == "P" || $order_status_code == "C") && $new_status == "S") {
+				if( ($order_status_code == "P" || $order_status_code == "C") && $order['order_status'] == "S") {
 					JPluginHelper::importPlugin('vmpayment');
 					$_dispatcher = JDispatcher::getInstance();
 					$_returnValues = $_dispatcher->trigger('plgVmOnShipOrderPayment',array(
@@ -391,23 +388,22 @@ class VirtueMartModelOrders extends VmModel {
 				 * If an order gets cancelled, fire a plugin event, perhaps
 				 * some authorization needs to be voided
 				 */
-				if ($new_status == "X") {
+				if ($order['order_status'] == "X") {
 					JPluginHelper::importPlugin('vmpayment');
 					$_dispatcher = JDispatcher::getInstance();
 					$_dispatcher->trigger('plgVmOnCancelPayment',array(
 					$virtuemart_order_id
 					,$order_status_code
-					,$new_status
+					,$order['order_status']
 					)
 					);
 				}
 
-				if ($order->store()) {
-
-					$this->updateSingleItem($order_item->virtuemart_order_item_id, $new_status,$comment,$virtuemart_order_id);
+				if ($data->store()) {
+					$this->updateSingleItem($order_item->virtuemart_order_item_id, $order['order_status'],$order['comments'],$virtuemart_order_id);
 
 					/* Update the order history */
-// 					$this->_updateOrderHist($virtuemart_order_id, $new_status, $customer_notified, $comment);
+					$this->_updateOrderHist($virtuemart_order_id, $order['order_status'], $order['customer_notified'], $order['comments']);
 
 					/* Update stock level */
 /*					if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
@@ -450,7 +446,10 @@ class VirtueMartModelOrders extends VmModel {
 					//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($virtuemart_order_id);
 
 					// Check if the customer needs to be informed */
-// 					if (!empty($notify[$virtuemart_order_id])) $this->notifyCustomer($order, $comments);
+					if ($order['customer_notified']) {
+						$order['virtuemart_order_id'] =$virtuemart_order_id ;
+						$this->notifyCustomer($order, $comments);
+					}
 // 					$updated++;*/
 				} else {
 					$error++;
@@ -465,9 +464,9 @@ class VirtueMartModelOrders extends VmModel {
 	 * @author RolandD
 	 * @author Oscar van Eijk
 	 */
-	public function updateStatus()
+	public function updateStatus( $orders=null,$virtuemart_order_id =0)
 	{
-		$this -> updateOrderStatussee();
+		$this -> updateOrderStatussee($orders,$virtuemart_order_id);
 		return;
 
 /*		$db = JFactory::getDBO();
@@ -1057,9 +1056,27 @@ class VirtueMartModelOrders extends VmModel {
 		$_orderHist = $this->getTable('order_histories');
 		$_orderHist->virtuemart_order_id = $_id;
 		$_orderHist->order_status_code = $_status;
-		$_orderHist->date_added = date('Y-m-d G:i:s', time());
+		//$_orderHist->date_added = date('Y-m-d G:i:s', time());
 		$_orderHist->customer_notified = $_notified;
 		$_orderHist->comments = $_comment;
+		$_orderHist->store();
+	}	/**
+	 * Update the order item history
+	 *
+	 * @author Oscar van Eijk,kohl patrick
+	 * @param $_id Order ID
+	 * @param $_status New order status (default: P)
+	 * @param $_notified 1 (default) if the customer was notified, 0 otherwise
+	 * @param $_comment (Customer) comment, default empty
+	 */
+	private function _updateOrderItemHist($_id, $status = 'P', $notified = 1, $comment = '')
+	{
+		$_orderHist = $this->getTable('order_item_histories');
+		$_orderHist->virtuemart_order_item_id = $_id;
+		$_orderHist->order_status_code = $status;
+		//$_orderHist->date_added = date('Y-m-d G:i:s', time());
+		$_orderHist->customer_notified = $notified;
+		$_orderHist->comments = $comment;
 		$_orderHist->store();
 	}
 
@@ -1083,6 +1100,7 @@ class VirtueMartModelOrders extends VmModel {
 	 * Update an order item status
 	 * @author Oscar van Eijk
 	 */
+	 // NEVER USED ???? PATRICK
 	public function updateSingleItemStatus($item, $_status)
 	{
 		$this->updateOrderStatussee($item, $_status);
@@ -1187,11 +1205,11 @@ class VirtueMartModelOrders extends VmModel {
 	 * @author RolandD, Christopher Roussel
 	 * @todo: Fix URL when we have front-end done
 	 */
-	function notifyCustomer($order, $_comments) {
+	function notifyCustomer($order, $comments,$includeComments) {
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
-		$vars = array('order' => $order, 'comments' => $_comments);
-		$vars['includeComments'] = JRequest::getVar('include_comment', array());
+		$vars = array('order' => $order, 'comments' => $comments, 'includeComments' => $includeComments);
+		$vars['includeComments'] = JRequest::getVar('customer_notified', array());
 
 		//$url = VmConfig::get('secureurl')."index.php?option=com_virtuemart&page=account.order_details&virtuemart_order_id=".$order->virtuemart_order_id.'&Itemid='.$sess->getShopItemid();
 		$vars['url'] = 'url';
@@ -1203,7 +1221,7 @@ class VirtueMartModelOrders extends VmModel {
 			ON #__virtuemart_orders.virtuemart_user_id = #__virtuemart_order_userinfos.virtuemart_user_id
 			LEFT JOIN #__virtuemart_orderstates
 			ON #__virtuemart_orderstates.order_status_code = #__virtuemart_orders.order_status
-			WHERE #__virtuemart_orders.virtuemart_order_id = '".$order->virtuemart_order_id."'
+			WHERE #__virtuemart_orders.virtuemart_order_id = '".$order['virtuemart_order_id']."'
 			AND #__virtuemart_orders.virtuemart_order_id = #__virtuemart_order_userinfos.virtuemart_order_id";
 		$db->setQuery($q);
 		$db->query();

@@ -103,3 +103,6 @@
 .virtuemart-admin-area .toggler {	position: absolute; outline: 0;}
 .vmicon-show{ background: url(../images/show.png) no-repeat;width: 20px; height: 50px; }
 .vmicon-hide{background: url(../images/hide.png) no-repeat;width: 20px; height: 50px; }
+
+/* to use inline with no float*/
+.icon-nofloat{ display: inline-block; float: none; vertical-align: middle;}

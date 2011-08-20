@@ -84,7 +84,7 @@ $tt=$this;
 			<?php
 			foreach ($this->order['history'] as $this->orderbt_event ) {
 				echo "<tr>";
-				echo "<td>".$this->orderbt_event->date_added."</td>\n";
+				echo "<td>".$this->orderbt_event->created_on."</td>\n";
 				if ($this->orderbt_event->customer_notified == 1) {
 					echo '<td align="center">Yes</td>';
 				}
@@ -97,8 +97,8 @@ $tt=$this;
 			}
 			?>
 			<tr>
-				<td colspan="4"><?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-editadd.png', "Update Status"); ?>
-				<a href="#" class="show_element"> Update Status </a>
+				<td colspan="4">
+				<a href="#" class="show_element"><span class="vmicon vmicon-16-editadd"></span> Update Status </a>
 				<div style="display: none; background: white;"
 					class="element-hidden vm-absolute"
 					id="updateOrderStatus"><?php echo $this->loadTemplate('editstatus'); ?>
@@ -268,7 +268,7 @@ $tt=$this;
 					<input type="checkbox" name="cid[<?php echo $item->virtuemart_order_item_id; ?>]" value="<?php echo $item->virtuemart_order_item_id; ?>" />
 				</td>
 				<td>
-					<input type="text" size="3" name="cid[<?php echo $item->virtuemart_order_item_id; ?>]['product_quantity']" value="<?php echo $item->product_quantity; ?>"/>
+					<input type="text" size="3" name="cid[<?php echo $item->virtuemart_order_item_id; ?>][product_quantity]" value="<?php echo $item->product_quantity; ?>"/>
 				</td>
 				<td>
 					<?php
@@ -286,10 +286,10 @@ $tt=$this;
 					
 				</td>
 				<td>
-					<input type="text" size="8" name="cid[<?php echo $item->virtuemart_order_item_id; ?>]['product_item_price']" value="<?php echo $item->product_item_price; ?>"/>
+					<input type="text" size="8" name="cid[<?php echo $item->virtuemart_order_item_id; ?>][product_item_price]" value="<?php echo $item->product_item_price; ?>"/>
 				</td>
 				<td>
-					<input type="text" size="8" name="cid[<?php echo $item->virtuemart_order_item_id; ?>]['product_final_price']" value="<?php echo $item->product_final_price; ?>"/>
+					<input type="text" size="8" name="cid[<?php echo $item->virtuemart_order_item_id; ?>][product_final_price]" value="<?php echo $item->product_final_price; ?>"/>
 				</td>
 				<td>
 					<?php echo $this->currency->priceDisplay($item->product_quantity * $item->product_final_price,'',false); ?>
@@ -305,17 +305,9 @@ $tt=$this;
 					<td colspan="8">
 						<?php echo $this->orderStatSelect; ?>
 						&nbsp;&nbsp;&nbsp;
-						<a class="updateOrderItemStatus" href="#">
-						<?php
-							echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('COM_VIRTUEMART_SAVE'))
-								. '&nbsp;'
-								. JText::_('COM_VIRTUEMART_SAVE');
-						?></a>&nbsp;&nbsp;&nbsp;
-						<a href="#" onClick="javascript:resetForm(0);"><?php
-							echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-remove.png', JText::_('COM_VIRTUEMART_CANCEL'))
-							. '&nbsp;'
-							. JText::_('COM_VIRTUEMART_CANCEL');
-						?></a>
+						<a class="updateOrderItemStatus" href="#"><span class="icon-nofloat vmicon vmicon-16-save"></span><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></a>
+						&nbsp;&nbsp;&nbsp;
+						<a href="#" onClick="javascript:resetForm(0);"><span class="icon-nofloat vmicon vmicon-16-remove"></span><?php echo '&nbsp;'. JText::_('COM_VIRTUEMART_CANCEL'); ?></a>
 					</td>
 			</tr>
 		</table>
@@ -499,7 +491,7 @@ function confirmation(destnUrl) {
 /* JS for editstatus */
 
 jQuery('.orderStatFormSubmit').click(function() {
-	document.orderStatForm.task.value = 'updateOrderItemStatus';
+	//document.orderStatForm.task.value = 'updateOrderItemStatus';
 	document.orderStatForm.submit();
 
 	return false

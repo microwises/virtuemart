@@ -162,7 +162,9 @@ class VirtuemartControllerOrders extends VmController {
 	public function updatestatus() {
 		vmdebug('updatestatus');
 		$mainframe = Jfactory::getApplication();
+		$lastTask = JRequest::getWord('last_task');
 
+		
 		/* Load the view object */
 		$view = $this->getView('orders', 'html');
 
@@ -172,15 +174,23 @@ class VirtuemartControllerOrders extends VmController {
 
 		/* Update the statuses */
 		$model = $this->getModel('orders');
-		$result = $model->updateStatus();
+		
+		if ($lastTask == 'updatestatus') {
+			// single order is in post
+			$order = array(JRequest::get('post'));
+			vmdebug(  'order',$order);
+			$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
+			$result = $model->updateStatus($order, $virtuemart_order_id);
+		} else {
+			$result = $model->updateStatus();
+		}
 
 		if ($result['updated'] > 0)
 		    $msg = str_replace('{X}', $result['updated'], JText::_('COM_VIRTUEMART_ORDER_UPDATED_SUCCESSFULLY'));
 		if ($result['error'] > 0)
 		    $msg .= str_replace('{X}', $result['error'], JText::_('COM_VIRTUEMART_ORDER_NOT_UPDATED_SUCCESSFULLY'));
 
-		if ('updatestatus'== JRequest::getWord('last_task')) {
-			$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
+		if ('updatestatus'== $lastTask ) {
 			$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$virtuemart_order_id , $msg);
 		}
 		else {
@@ -258,8 +268,8 @@ class VirtuemartControllerOrders extends VmController {
 		$_orderID = JRequest::getInt('virtuemart_order_id', '');
 
 		foreach ($_items as $key=>$value) {
-			vmdebug('updateOrderItemStatus $value',$value);
-			$model->updateSingleItem($key, $value["'order_statuslist'"],$value["'order_comment'"],$_orderID);
+			vmdebug('updateOrderItemStatus VAL  ',$value);
+			$model->updateSingleItem((int)$key, $value['order_status'],$value['comments'],$_orderID);
 		}
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$_orderID);
