@@ -86,8 +86,8 @@ defined('_JEXEC') or die('Restricted access');
 		<?php 
 		for ($i=0, $n=count($this->recentOrders); $i < $n; $i++) {
 			$row = $this->recentOrders[$i];
-			$link = JROUTE::_('index.php?option=com_virtuemart&page=order.order_print&virtuemart_order_id='.$row->virtuemart_order_id);
-			?> 
+			$link = JROUTE::_('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$row->virtuemart_order_id);
+			?>
 		  	<tr>
 				<td width="50%">
 					<a href="<?php echo $link; ?>"><?php echo $row->virtuemart_order_id; ?></a>
