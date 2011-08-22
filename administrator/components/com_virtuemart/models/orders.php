@@ -837,35 +837,35 @@ class VirtueMartModelOrders extends VmModel {
 			vmError('The workflow for '.$newState.' or  '.$oldState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Cant process workflow, contact the shopowner status '.$newState);
 			return ;
 			}
-		vmdebug( 'updatestock qt :' , $quantity.' id :'.$productId);
+		//vmdebug( 'updatestock qt :' , $quantity.' id :'.$productId);
 		// P 	Pending
 		// C 	Confirmed
 		// X 	Cancelled
 		// R 	Refunded
 		// S 	Shipped
 		// N 	New or comming from cart
-		//  TO have no product setted as ordered when adde to cart simply add 'N' to aray Reserved
-		// what is the condition decreasing stock
-			$stockOut = array('S');
-		// what is the condition increasing reserved stock(virtual Stock = product_in_stock - product_ordered)
-			$Reserved =  array('P','C');
-		// Stock change ?
+		//  TO have no product setted as ordered when added to cart simply delete 'P' FROM array Reserved
+		// don't set same values in the 2 arrays !!!
+		// stockOut is in normal case shipped product
+
+		// the status decreasing real stock ?
+		$stockOut = array('S');
 		$isOut = in_array($newState, $stockOut);
 		$wasOut= in_array($oldState, $stockOut);
-		$isReserved = in_array($newState, $Reserved);
-		$wasReserved = in_array($oldState, $Reserved);
-
+		// Stock change ?
 		if ($isOut && !$wasOut)     $product_in_stock = '-';
 		else if ($wasOut && !$isOut ) $product_in_stock = '+';
 		else $product_in_stock = '=';
-// reserved stock must be change(all ordered product)
+
+		// the status increasing reserved stock(virtual Stock = product_in_stock - product_ordered)
+		$Reserved =  array('P','C');
+		$isReserved = in_array($newState, $Reserved);
+		$wasReserved = in_array($oldState, $Reserved);
+		// reserved stock must be change(all ordered product)
 		if ($isReserved && !$wasReserved )     $product_ordered = '+'; 
 		else if (!$isReserved && $wasReserved ) $product_ordered = '-';
 		else $product_ordered = '=';
 
-
-
- 		vmdebug( 'updatestock me' , $oldState.' new '.$newState.' ordered '.$product_ordered.' '.$oldState.' new '.$newState.' stock '.$product_in_stock  );
 		// P means ordered, but payment not confirmed, => real stock stays the same => product_in_stock = and product_ordered =
 		/* if($newState=='P'){
 			//for a new order

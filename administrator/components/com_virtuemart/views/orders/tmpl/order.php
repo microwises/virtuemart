@@ -250,7 +250,8 @@ $tt=$this;
 					<?php echo $item->order_item_sku; ?>
 				</td>
 				<td align="center">
-					<?php echo $this->orderstatuslist[$item->order_status]; ?>
+					<?php echo $this->orderstatuslist[$item->order_status]; ?><br/ >
+					<?php echo $this->itemstatusupdatefields[$item->virtuemart_order_item_id]; ?>
 					
 				</td>
 				<td>
@@ -263,7 +264,7 @@ $tt=$this;
 					<?php echo $this->currency->priceDisplay($item->product_quantity * $item->product_final_price,'',false); ?>
 				</td>
 			</tr>
-			<tr>
+			<!-- TODO updating all correctly on do a new Cart<tr>
 				<td>
 					<input type="checkbox" name="cid[<?php echo $item->virtuemart_order_item_id; ?>]" value="<?php echo $item->virtuemart_order_item_id; ?>" />
 				</td>
@@ -282,7 +283,7 @@ $tt=$this;
 					<?php echo $item->order_item_sku; ?>
 				</td>
 				<td align="center">
-					<?php echo $this->itemstatusupdatefields[$item->virtuemart_order_item_id]; ?>
+					
 					
 				</td>
 				<td>
@@ -294,20 +295,21 @@ $tt=$this;
 				<td>
 					<?php echo $this->currency->priceDisplay($item->product_quantity * $item->product_final_price,'',false); ?>
 				</td>
-			</tr>
+			</tr> -->
 		<?php } ?>
 			<tr id="updateOrderItemStatus">
 					
-					<td align="center">
-						&nbsp;<?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/vm_witharrow.png', 'With selected'); ?>
-					</td>
-
-					<td colspan="8">
-						<?php echo $this->orderStatSelect; ?>
-						&nbsp;&nbsp;&nbsp;
-						<a class="updateOrderItemStatus" href="#"><span class="icon-nofloat vmicon vmicon-16-save"></span><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></a>
+					<td colspan="4">
+						&nbsp;						<a class="updateOrderItemStatus" href="#"><span class="icon-nofloat vmicon vmicon-16-save"></span><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></a>
 						&nbsp;&nbsp;&nbsp;
 						<a href="#" onClick="javascript:resetForm(0);"><span class="icon-nofloat vmicon vmicon-16-remove"></span><?php echo '&nbsp;'. JText::_('COM_VIRTUEMART_CANCEL'); ?></a>
+					</td>					
+
+
+					<td colspan="4">
+						<?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/vm_witharrow.png', 'With selected'); ?><?php echo $this->orderStatSelect; ?>
+						&nbsp;&nbsp;&nbsp;
+
 					</td>
 			</tr>
 		</table>

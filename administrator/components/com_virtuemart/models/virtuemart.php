@@ -120,7 +120,7 @@ class VirtueMartModelVirtueMart extends JModel {
 	 * @return ObjectList List of recent orders.
 	 */
 	function getRecentOrders($nbrOrders=5) {
-		$query = 'SELECT `virtuemart_order_id`, `order_total` FROM `#__virtuemart_orders` ORDER BY `created_on` desc';
+		$query = 'SELECT * FROM `#__virtuemart_orders` ORDER BY `created_on` desc';
         return $this->_getList($query, 0, $nbrOrders);
     }
 

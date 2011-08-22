@@ -53,6 +53,18 @@ class VirtuemartViewVirtuemart extends JView {
 		$this->assignRef('ordersByStatus', $ordersByStatus);
 
 		$recentOrders = $model->getRecentOrders();
+			if(!class_exists('CurrencyDisplay'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+
+			/* Apply currency This must be done per order since it's vendor specific */
+			$_currencies = array(); // Save the currency data during this loop for performance reasons
+			foreach ($recentOrders as $virtuemart_order_id => $order) {
+
+				//This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
+				if (!array_key_exists('v'.$order->virtuemart_vendor_id, $_currencies)) {
+					$_currencies['v'.$order->virtuemart_vendor_id] = CurrencyDisplay::getInstance('',$order->virtuemart_vendor_id);
+				}
+				$order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->priceDisplay($order->order_total,'',false);
+			}
 		$this->assignRef('recentOrders', $recentOrders);
 		$recentCustomers = $model->getRecentCustomers();
 		$this->assignRef('recentCustomers', $recentCustomers);

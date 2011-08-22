@@ -93,7 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 					<a href="<?php echo $link; ?>"><?php echo $row->virtuemart_order_id; ?></a>
 			  	</td>
 				<td width="50%">
-					(<?php echo 'Here was some strange total and vendor currency' ?>)
+					<?php echo $row->order_total ?>
 				</td>
 			</tr>
 			<?php 
