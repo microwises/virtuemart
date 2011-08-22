@@ -23,6 +23,12 @@ defined('_JEXEC') or die('Restricted access');
 
 <br />
 
+<?php 
+	// SOAP component installed ?
+	$soap_dir_exists = is_dir(JPATH_ADMINISTRATOR.DS.'/components/com_vm_soa') ;
+	if ($soap_dir_exists == true) {
+	
+?>
 <table width="100%">
     <tr><td valign="top" width="50%">
     
@@ -143,12 +149,6 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo VmHTML::checkbox('soap_auth_cat_otherdelete', $this->config->get('soap_auth_cat_otherdelete')); ?>
 			</td>
 		    </tr>
-		    
-		
-		    
-	
-		   
-		    
 		    
 
 		</table>
@@ -681,71 +681,30 @@ defined('_JEXEC') or die('Restricted access');
 	
 	    	<?php 
 			 echo "<ul>";
-			 echo "<li><a href=./components/com_virtuemart/services/VM_CategoriesWSDL.php >". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_CAT')." </a></li>";
-			 echo "<li><a href=./components/com_virtuemart/services/VM_ProductWSDL.php >". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_PROD')." </a></li>";
-			 echo "<li><a href=./components/com_virtuemart/services/VM_OrderWSDL.php > ". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_ORDER')."</a></li>";
-			 echo "<li><a href=./components/com_virtuemart/services/VM_UsersWSDL.php > ". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_USER')." </a></li>";
-			 echo "<li><a href=./components/com_virtuemart/services/VM_SQLQueriesWSDL.php > ". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_SQL')." </a></li>";
-			 echo "<li><a href=./components/com_virtuemart/services/VM_CustomizedWSDL.php > ". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_CUSTOM')." </a></li>";
+			 echo "<li><a href=./components/com_vm_soa/services/VM_CategoriesWSDL.php >". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_CAT')." </a></li>";
+			 echo "<li><a href=./components/com_vm_soa/services/VM_ProductWSDL.php >". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_PROD')." </a></li>";
+			 echo "<li><a href=./components/com_vm_soa/services/VM_OrderWSDL.php > ". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_ORDER')."</a></li>";
+			 echo "<li><a href=./components/com_vm_soa/services/VM_UsersWSDL.php > ". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_USER')." </a></li>";
+			 echo "<li><a href=./components/com_vm_soa/services/VM_SQLQueriesWSDL.php > ". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_SQL')." </a></li>";
+			 echo "<li><a href=./components/com_vm_soa/services/VM_CustomizedWSDL.php > ". JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_SHOW_WSDL_CUSTOM')." </a></li>";
 			 echo "</ul>";
 			
 			?>
-	    
-	
-		<SCRIPT language='javascript' src='./components/com_virtuemart/assets/js/soapclient.js'></SCRIPT>
-		<SCRIPT language=javascript>
-
-			var url = "./components/com_virtuemart/services/VM_UsersWSDL.php";
-			
-			function GetVersions()
-			{
-				//get form
-				//var login = document.getElementById("button_login").value;
-				//var password = document.getElementById("button_pass").value;
-				var method = "GetVersions"; // Method name to Call
-				
-				//alert('Call GetVersions ...');
-				document.getElementById('loadDiv').innerHTML = "Loading ...";
-				
-				//Webservice CALL
-				var pl = new SOAPClientParameters();
-				//pl.add("login", login);
-				//pl.add("password", password);
-				SOAPClient.invoke(url, method, pl, true, GetVersions_callBack);
-			}
-			
-			/* WebService CallBack*/
-			function GetVersions_callBack(r,soapResponse)
-			{
-				document.getElementById('loadDiv').innerHTML = "Done";
-				if(soapResponse.xml)    // IE
-				alert(soapResponse.xml);
-				else    // MOZ
-				alert((new XMLSerializer()).serializeToString(soapResponse)); //print SOAP Response
-				
-				//print Object result
-				if (r == null){
-					alert('Error : Please verify login/pass or component configuration')
-				}else {
-					alert("Joomla version : "+r.Joomla_Version+"\nPHP Version : "+r.PHP_Version+"\nVirtuemart_Version : "+r.Virtuemart_Version+"\nDatabase_Version : "+r.Database_Version);
-				}
-			} 
-
-			
-		</script>
-		<br>
-		
-		<input type="button" value="Call getVersions service" name="button"  onClick="GetVersions();">
-		<br>
-		<div id="loadDiv">
-		</div>
-
-
-
 
 	    </table>
 	    </fieldset>
 	</td></tr>
 </table>
 
-<em><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_INFOMSG') ?></em>
+
+<em><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_INFOMSG'); ?></em>
+
+<?php } else { // SOAP component not installed - show download link ?>
+
+<legend>
+	<a href="http://www.shop.virtuemart.net">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SOAP_GET_EXTENTION'); ?>
+	</a>
+</legend>
+
+<?php }?>
