@@ -38,8 +38,8 @@ class VmElementVmProductsmenu extends VmElements {
 
         $key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
         $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
-
-        return JHTML::_('select.genericlist', $this->_getProducts(), $this->name, 'class="inputbox" multiple="multiple" size="5"', $key, $val, $this->value, $this->id);
+        $products=$this->_getProducts();
+        return JHTML::_('select.genericlist', $products, $this->name, 'class="inputbox"  size="10"', 'value', 'text', $this->value, $this->id);
     }
 
     function fetchElement($name, $value, &$node, $control_name) {

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="COM_VIRTUEMART_MANUFACTURER_LAYOUT_MENU">
+	<layout title="COM_VIRTUEMART_MANUFACTURER_VIEW_DEFAULT_TITLE">
             <message><![CDATA[COM_VIRTUEMART_MANUFACTURER_LAYOUT_DESC]]></message>
 	</layout>
 	<state>
-		<name>COM_VIRTUEMART_MANUFACTURER_LAYOUT_MENU</name>
+		<name>COM_VIRTUEMART_MANUFACTURER_VIEW_DEFAULT_TITLE</name>
 		<description><![CDATA[COM_VIRTUEMART_MANUFACTURER_LAYOUT_DESC]]></description>
                 <url>
 			<param name="virtuemart_manufacturer_id" type="sql" query="SELECT virtuemart_manufacturer_id, mf_name  FROM #__virtuemart_manufacturers" key_field="virtuemart_manufacturer_id" value_field="mf_name" label="Manufacturer" description="Choose a Manufacturer..." />
