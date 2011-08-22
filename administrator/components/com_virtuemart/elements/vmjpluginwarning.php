@@ -28,7 +28,7 @@ class JElementVmjpluginwarning extends JElement {
      * @access	protected
      * @var		string
      */
-    var $_name = 'jpluginwarning';
+    var $_name = 'vmjpluginwarning';
 
     function fetchElement($name, $value, &$node, $control_name) {
         JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);

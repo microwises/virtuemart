@@ -15,7 +15,7 @@
     <files>
         <filename plugin="standard">standard.php</filename>
     </files>
-    <params>
+    <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />
         <param name="payment_info" type="textarea" cols="60" rows="30" default="" label="VMPAYMENT_STANDARD_PAYMENTINFO" description="VMPAYMENT_STANDARD_PAYMENTINFO_DESC" />
     </params>
