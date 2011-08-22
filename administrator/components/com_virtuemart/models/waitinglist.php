@@ -77,7 +77,7 @@ class VirtueMartModelWaitingList extends JModel {
 		$db->setQuery($q);
 		$vars['productName'] = $db->loadResult();
 
-		/* Now get the url information */
+		/*TODO old URL here Now get the url information */
 		$vars['url'] = JURI::root().JRoute::_('index.php?page=shop.product_details&flypage=shop.flypage&virtuemart_product_id='.$virtuemart_product_id.'&option=com_virtuemart');
 
 		foreach ($waiting_users as $key => $waiting_user) {

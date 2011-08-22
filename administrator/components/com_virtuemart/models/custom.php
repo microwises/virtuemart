@@ -159,6 +159,7 @@ class VirtueMartModelCustom extends VmModel {
 	*/
 	public function saveModelCustomfields($table,$datas, $id) {
 
+		JRequest::checkToken() or jexit( 'Invalid Token, in store customfields');
 		//Sanitize id
 		$id = (int)$id;
 
@@ -194,6 +195,7 @@ class VirtueMartModelCustom extends VmModel {
 	 **/
 	public function saveChildCustomRelation($table,$datas) {
 
+		JRequest::checkToken() or jexit( 'Invalid Token, in store customfields');
 		//Table whitelist
 		$tableWhiteList = array('product','category','manufacturer');
 		if(!in_array($table,$tableWhiteList)) return false;

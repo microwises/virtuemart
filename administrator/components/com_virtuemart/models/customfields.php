@@ -115,30 +115,6 @@ class VirtueMartModelCustomfields extends VmModel {
 //			'R'=>'COM_VIRTUEMART_RELATED_PRODUCT',
 //			'Z'=>'COM_VIRTUEMART_RELATED_CATEGORY',
     }
-	/**
-	 * This function determines the type of a custom and creates it.
-	 * When you want to write a child class of the customhandler, you need to manipulate this function.
-	 * We may use later here a hook for plugins or simular
-	 *
-	 * @author Max Milbers
-	 * @param object $table
-	 * @param string  $type vendor,product,category,...
-	 * @param string $file_mimetype such as image/jpeg
-	 */
-//	public function createCustom($table){
-//
-//		$custom = new VmCustomHandler();
-//
-//		$attribs = get_object_vars($table);
-//
-//		foreach($attribs as $k=>$v){
-//			$custom->$k = $v;
-//		}
-//
-//		return $custom;
-//	}
-
-
 	private $_hidden = array();
 
 	/**

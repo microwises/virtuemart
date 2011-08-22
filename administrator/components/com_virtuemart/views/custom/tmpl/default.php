@@ -16,9 +16,6 @@
 * @version $Id: default.php 2978 2011-04-06 14:21:19Z alatak $
 */
 
-/**
- * @todo Edit link like: http://csvi/administrator/index3.php?page=product.file_form&virtuemart_product_id=1&virtuemart_media_id=7&option=com_virtuemart&no_menu=1
- */
 AdminUIHelper::startAdminArea();
 
 jimport('joomla.filesystem.file');

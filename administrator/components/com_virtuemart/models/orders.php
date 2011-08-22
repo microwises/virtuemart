@@ -827,10 +827,17 @@ class VirtueMartModelOrders extends VmModel {
 		}
 	}
 
+	
+	
 	function handleStockAfterStatusChangedPerProduct($newState, $oldState,$productId, $quantity) {
 
 		if($newState == $oldState) return;
-vmdebug( 'updatestock qt :' , $quantity.' id :'.$productId);
+		$StatutWhiteList = array('P','C','X','R','S','N');
+		if(!in_array($oldState,$StatutWhiteList) or !in_array($newState,$StatutWhiteList)) {
+			vmError('The workflow for '.$newState.' or  '.$oldState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Cant process workflow, contact the shopowner status '.$newState);
+			return ;
+			}
+		vmdebug( 'updatestock qt :' , $quantity.' id :'.$productId);
 		// P 	Pending
 		// C 	Confirmed
 		// X 	Cancelled
@@ -855,21 +862,7 @@ vmdebug( 'updatestock qt :' , $quantity.' id :'.$productId);
 		if ($isReserved && !$wasReserved )     $product_ordered = '+'; 
 		else if (!$isReserved && $wasReserved ) $product_ordered = '-';
 		else $product_ordered = '=';
-		// Product is ordered or better said paiement is OK
-		// Patrick kohl note , this is not a real situation if you will permit paiement on delivery or paiment in 3X
-		// if you don't delivery all products whats happen ?
-		// stock must be Always handel here , but not paiement !?
-		// i find a bool in DB for paiement where better, in a checkbox on orders view list/edit,setted to paiement OK on status change P,C,S on same time but can be unchecked by vendor)
-		// in case of reimbursement of the product, you need to cancel a part of the payment or make a credit on the amount
-		// situation is using paiement plugin if this can handel it or coupons generated on "Refunded" on vendor demand(checkbox)
-		//  to do this , we have to use class plgVmOnCancelPayment in paiement plugins, but how to handel it in case of partial refund ?
 
-		// $newOrdered = in_array($newState, $isOrdered);
-		// $oldOrdered = in_array($oldState, $isOrdered);
-
-		// if ($oldOrdered && !$newOrdered )     $product_ordered = '-'; 
-		// else if (!$oldOrdered && $newOrdered ) $product_ordered = '+';
-		// else $product_ordered = '=';
 
 
  		vmdebug( 'updatestock me' , $oldState.' new '.$newState.' ordered '.$product_ordered.' '.$oldState.' new '.$newState.' stock '.$product_in_stock  );
