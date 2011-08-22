@@ -113,7 +113,15 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$model->setStoreOwner();
 
+			//copy sampel media
+			$src= $this->path .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
+			$dst= JPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
+
+			$this->recurse_copy($src);
+
+
 			$this->displayFinished(false);
+
 			//include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
 
 			// perhaps a redirect to updatesMigration here rather than the html file?
@@ -153,7 +161,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
                         $this->updateWeightUnit();
                         $this->updateDimensionUnit();
-                        
+
 			$this->displayFinished(true);
 			// probably should just go to updatesMigration rather than the install success screen
 // 			include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
@@ -193,7 +201,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
                 /**
 		 *
-		 * @author Valérie Isaksen	
+		 * @author Valérie Isaksen
 		 * @return boolean This gives true back, WHEN it altered the table, you may use this information to decide for extra post actions
 		 */
                 private function updateWeightUnit(  ) {
@@ -280,6 +288,39 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$config->setDangerousToolsOff();
 			}
 			return true;
+		}
+
+		/**
+		* copy all $src to $dst folder and remove it
+		* Enter description here ...
+		* @param String $src path
+		* @param String $dst path
+		* @param String $type modules, plugins, languageBE, languageFE
+		*/
+		private function recurse_copy($src,$dst ) {
+
+			$dir = opendir($src);
+			@mkdir($dst);
+
+			if(is_resource($dir)){
+				while(false !== ( $file = readdir($dir)) ) {
+					if (( $file != '.' ) && ( $file != '..' )) {
+						if ( is_dir($src .DS. $file) ) {
+							$this->recurse_copy($src .DS. $file,$dst .DS. $file);
+						}
+						else {
+							JFile::move($src .DS. $file,$dst .DS. $file);
+						}
+					}
+				}
+				closedir($dir);
+				//if (is_dir($src)) $this->RemoveDir($src, true);
+				if (is_dir($src)) JFolder::delete($src);
+			} else {
+				$app = JFactory::getApplication();
+				$app -> enqueueMessage('Couldnt read dir '.$dir.' source '.$src);
+			}
+
 		}
 
 		public function displayFinished($update){

@@ -109,10 +109,11 @@ class VirtuemartControllerProduct extends VmController {
 	function save(){
 
 		$data = JRequest::get('post');
-
+// 		vmdebug('my data in product save ',$data);
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		if(!Permissions::getInstance()->check('admin')){
-			$data['product_desc'] = JRequest::getVar('product_desc','','post','STRING',JREQUEST_ALLOWHTML);
+		if(Permissions::getInstance()->check('admin')){
+// 			$data['product_desc'] = JRequest::getVar('product_desc','','post','STRING',JREQUEST_ALLOWHTML);
+			$data['product_desc'] = JRequest::getVar('product_desc','','post','STRING',2);
 		}
 
 		parent::save($data);

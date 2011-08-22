@@ -40,11 +40,6 @@
 		<folder>views</folder>
 	</files>
 
-	<media folder="images/stories/virtuemart" destination="../images/stories/virtuemart">
-		<folder>category</folder>
-		<folder>manufacturer</folder>
-		<folder>product</folder>
- </media>
 
 	<!-- Language files -->
 	<languages folder="language">
