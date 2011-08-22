@@ -114,7 +114,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$model->setStoreOwner();
 
 			//copy sampel media
-			$src= $this->parent->_paths[source] .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
+			$src= $this->path .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
 			$dst= JPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
 
 			$this->recurse_copy($src,$dst);
