@@ -295,10 +295,10 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			$model->setUserToPermissionGroup($id);
 			$model->installSampleData($id);
 
-			$model = $this->getModel('config');
-			$model -> deleteConfig();
+// 			$model = $this->getModel('config');
+// 			$model -> deleteConfig();
 
-			$errors = $model->getErrors();
+// 			$errors = $model->getErrors();
 
 			$msg = '';
 			if(empty($errors))

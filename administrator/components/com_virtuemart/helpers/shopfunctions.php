@@ -49,7 +49,7 @@ class ShopFunctions {
      * return Array() $list( filter_order and dir )
      */
 
-    function addStandardDefaultViewLists($model, $default_order = 'ordering', $default_dir = 'ASC') {
+    function addStandardDefaultViewLists($model, $default_order = 'ordering', $default_dir = 'ASC',$name = 'search') {
 
         $pagination = $model->getPagination();
         $this->assignRef('pagination', $pagination);
@@ -57,7 +57,7 @@ class ShopFunctions {
         $option = JRequest::getCmd('option');
         $view = JRequest::getCmd('view', JRequest::getCmd('controller'));
         $mainframe = JFactory::getApplication();
-        $lists['search'] = $mainframe->getUserStateFromRequest($option . '.' . $view . '.search', 'search', '', 'string');
+        $lists[$name] = $mainframe->getUserStateFromRequest($option . '.' . $view . '.'.$name, $name, '', 'string');
         $lists['filter_order'] = $mainframe->getUserStateFromRequest($option . '.' . $view . '.filter_order', 'filter_order', $default_order, 'cmd');
         $lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option . '.' . $view . '.filter_order_Dir', 'filter_order_Dir', $default_dir, 'word');
         return $lists;
@@ -472,7 +472,7 @@ class ShopFunctions {
 	}
 
 
-       
+
 
 	/**
 	 * Writes a line  for the price configuration

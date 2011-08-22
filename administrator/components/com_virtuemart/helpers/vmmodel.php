@@ -205,12 +205,20 @@ class VmModel extends JModel {
 				$q = 'SELECT '.$select.$joinedTables;
 			}
 
+// 			vmdebug('my query',$q);
 			$this->_db->setQuery($q,$limitStart,$limit);
 
 			if($object){
 				$list = $this->_db->loadAssocList();
 			} else {
 				$list = $this->_db->loadResultArray();
+			}
+
+			if(empty($list)){
+				$errors = $this->_db->getErrorMsg();
+				if( !empty( $errors)){
+					vmdebug('exeSortSearchListQuery error in db ',$this->_db->getQuery());
+				}
 			}
 
 			if($this->_withCount){

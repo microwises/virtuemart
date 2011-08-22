@@ -30,7 +30,7 @@ $option = JRequest::getWord('option');
 		<table>
 		  <tr>
 			 <td align="left" width="100%">
-				<?php echo ShopFunctions::displayDefaultViewSearch() ?>
+				<?php echo ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_NAME','searchMedia') ?>
 			 </td>
 		  </tr>
 		</table>
