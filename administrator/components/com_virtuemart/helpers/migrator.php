@@ -37,9 +37,9 @@ class Migrator extends VmModel{
 		$this->_oldToNew = new stdClass();
 		$this->starttime = microtime(true);
 		$this->maxScriptTime = ini_get('max_execution_time')*0.95-1;	//Lets use 5% of the execution time as reserve to store the progress
-// 		$this->maxScriptTime = 20;
+		// 		$this->maxScriptTime = 20;
 		$this->maxMemoryLimit = $this -> return_bytes(ini_get('memory_limit')) * 0.8;
-// 		$this->maxMemoryLimit = $this -> return_bytes('20M');
+		// 		$this->maxMemoryLimit = $this -> return_bytes('20M');
 
 		// 		ini_set('memory_limit','35M');
 		$q = 'SELECT `id` FROM `#__virtuemart_migration_oldtonew_ids` ';
@@ -389,7 +389,7 @@ class Migrator extends VmModel{
 		$maxItems = (int)$freeRam * 100;
 		vmdebug('free ram left '.$freeRam.' so limit chunk to '.$maxItems);
 
-// 		$maxItems = 10;
+		// 		$maxItems = 10;
 		$i=0;
 		$startLimit = 0;
 		while($continue){
@@ -455,9 +455,9 @@ class Migrator extends VmModel{
 				}
 
 				$i++;
-			/*	if($i>24){
+				/*	if($i>24){
 					$continue = false;
-					break;
+				break;
 				}*/
 				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 					$continue = false;
@@ -797,7 +797,7 @@ class Migrator extends VmModel{
 		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 			return;
 		}
- 
+
 
 		$ok = true;
 
@@ -1256,78 +1256,80 @@ class Migrator extends VmModel{
 	private function parseWeightUom($weightUnit){
 
 		$weightUnit = strtolower($weightUnit);
-		$weightUnitMigrateValues = $this->getWeightUnitMigrateValues();
-                return $this->parseUom($weightUnit,$weightUnitMigrateValues );
+		$weightUnitMigrateValues = self::getWeightUnitMigrateValues();
+		return $this->parseUom($weightUnit,$weightUnitMigrateValues );
 
 	}
 
 	/**
-         * 
-	* parse the entered string to a standard unit
-	* @author Max Milbers
-	* @author Valerie Isaksen
-	*
-	*/
+	 *
+	 * parse the entered string to a standard unit
+	 * @author Max Milbers
+	 * @author Valerie Isaksen
+	 *
+	 */
 	private function parseDimensionUom($dimensionUnit){
 
-            $dimensionUnitMigrateValues = $this->getDimensionUnitMigrateValues();
-            $dimensionUnit = strtolower($dimensionUnit);
-            return $this->parseUom($dimensionUnit,$dimensionUnitMigrateValues );
+		$dimensionUnitMigrateValues = self::getDimensionUnitMigrateValues();
+		$dimensionUnit = strtolower($dimensionUnit);
+		return $this->parseUom($dimensionUnit,$dimensionUnitMigrateValues );
 
 	}
-        /**
-         *
-	* parse the entered string to a standard unit
-	* @author Max Milbers
-	* @author Valerie Isaksen
-	*
-	*/
+
+	/**
+	 *
+	 * parse the entered string to a standard unit
+	 * @author Max Milbers
+	 * @author Valerie Isaksen
+	 *
+	 */
 	private function parseUom($unit, $migrateValues){
-            $new="";
-            $unit = strtolower($unit);
-            foreach ($migrateValues as $old => $new) {
-                if (strpos($unit, $old) !== false) {
-                    return $new;
-                }
-            }
+		$new="";
+		$unit = strtolower($unit);
+		foreach ($migrateValues as $old => $new) {
+			if (strpos($unit, $old) !== false) {
+				return $new;
+			}
+		}
 	}
-        /**
-         *
-	* get new Length Standard Unit
-	* @author Valerie Isaksen
-	*
-	*/
-        function getDimensionUnitMigrateValues() {
 
-            $dimensionUnitMigrate=array (
+	/**
+	 *
+	 * get new Length Standard Unit
+	 * @author Valerie Isaksen
+	 *
+	 */
+	function getDimensionUnitMigrateValues() {
+
+		$dimensionUnitMigrate=array (
                   'mm' => 'MM'
-                 , 'cm' => 'CM'
-                 , 'm' => 'M'
-                 , 'yd' => 'YD'
-                 , 'foot' => 'FT'
-                 , 'ft' => 'FT'
-                 , 'inch' => 'IN'
-            );
-            return $dimensionUnitMigrate;
-        }
-        /**
-         *
-	* get new Weight Standard Unit
-	* @author Valerie Isaksen
-	*
-	*/
-        function getWeightUnitMigrateValues() {
-            $weightUnitMigrate=array (
+		, 'cm' => 'CM'
+		, 'm' => 'M'
+		, 'yd' => 'YD'
+		, 'foot' => 'FT'
+		, 'ft' => 'FT'
+		, 'inch' => 'IN'
+		);
+		return $dimensionUnitMigrate;
+	}
+	/**
+	 *
+	 * get new Weight Standard Unit
+	 * @author Valerie Isaksen
+	 *
+	 */
+	function getWeightUnitMigrateValues() {
+		$weightUnitMigrate=array (
                   'kg' => 'KG'
-                 , 'kilos' => 'KG'
-                 , 'gr' => 'GR'
-                 , 'pound' => 'LB'
-                 , 'livre' => 'LB'
-                 , 'once' => 'OZ'
-                 , 'ounce' => 'OZ'
-            );
-            return $weightUnitMigrate;
-        }
+		, 'kilos' => 'KG'
+		, 'gr' => 'GR'
+		, 'pound' => 'LB'
+		, 'livre' => 'LB'
+		, 'once' => 'OZ'
+		, 'ounce' => 'OZ'
+		);
+		return $weightUnitMigrate;
+	}
 
 	/**
 	 * Helper function, was used to determine the difference of an loaded array (from vm19
