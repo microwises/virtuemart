@@ -22,7 +22,7 @@ else {
 }
 ?>
 
-<?php echo JText::_('COM_VIRTUEMART_WELCOME')." ".$this->vendor->vendor_store_name . $li;
+<?php echo JText::_('COM_VIRTUEMART_WELCOME_USER')." ".$this->vendor->vendor_store_name . $li;
 
 if(!empty($this->activationLink)) echo  JText::_('COM_VIRTUEMART_LINK_ACTIVATE_ACCOUNT')." ".JURI::root().$this->activationLink .$li; ?>
 

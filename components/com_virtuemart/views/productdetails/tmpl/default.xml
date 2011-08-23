@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
     <layout title="COM_VIRTUEMART_PRODUCTDETAILS_VIEW_DEFAULT_TITLE">
-        <message><![CDATA[COM_VIRTUEMART_PRODUCT_DETAILS_LAYOUT_DESC]]>
+        <message><![CDATA[COM_VIRTUEMART_PRODUCTDETAILS_VIEW_DEFAULT_DESC]]>
         </message>
     </layout>
     <state>
        <name>COM_VIRTUEMART_PRODUCTDETAILS_VIEW_DEFAULT_TITLE</name>
-        <description><![CDATA[COM_VIRTUEMART_PRODUCT_DETAILS_LAYOUT_DESC]]>
+        <description><![CDATA[COM_VIRTUEMART_PRODUCTDETAILS_VIEW_DEFAULT_DESC]]>
         </description>
         <url addpath="/administrator/components/com_virtuemart/elements">
             <param name="virtuemart_product_id" section="com_virtuemart" type="vmproductsmenu"  value_field="product_name" label="COM_VIRTUEMART_PRODUCT" description="COM_VIRTUEMART_CHOOSE_PRODUCT" />
