@@ -30,8 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 <div class="billto-shipto">
 	<div class="width50 floatleft">
 
-		<span class="billto"><?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?></span>
-		<br />
+		<span><span class="vmicon vm2-billto-icon"></span><?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?></span>
 
 		<?php // Output Bill To Address ?>
 		<div class="output-billto">
@@ -61,9 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<div class="width50 floatleft">
 
-		<span class="shipto"><?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?></span>
-		<br />
-
+		<span><span class="vmicon vm2-shipto-icon"></span><?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?></span>
 		<?php // Output Bill To Address ?>
 		<div class="output-shipto">
 		<?php

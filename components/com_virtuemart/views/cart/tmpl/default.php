@@ -84,7 +84,7 @@ JHTML::_ ( 'behavior.modal' );
 
 		<?php // Terms Of Service ?>
 		<div class="terms-of-service">
-			<span class="termsofservice"><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?></span>
+			<span class="terms-of-service"><span class="vmicon vm2-termsofservice-icon"></span><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?></span>
 			<div>
 			<?php echo $this->vendor->vendor_terms_of_service;?>
 			</div>
