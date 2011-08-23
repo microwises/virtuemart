@@ -221,10 +221,8 @@ foreach ( $this->products as $product ) {
 
 
 						<div class="paddingtop8">
-						<?php // Show Stock Status
-						echo JHTML::image(JURI::root().VmConfig::get('assets_general_path').'images/vmgeneral/'.$product->stock->stock_level.'.png', $product->stock->stock_tip, array('title' => $product->stock->stock_tip));
-						echo '<br /><span class="stock-level">'.JText::_('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_TITLE_TIP').'</span>';
-						?>
+							<span class="vmicon vm2-<?php echo $product->stock->stock_level ?>" title="<?php echo $product->stock->stock_tip ?>"></span>
+							<span class="stock-level"><?php echo JText::_('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_TITLE_TIP') ?></span>
 						</div>
 				</div>
 

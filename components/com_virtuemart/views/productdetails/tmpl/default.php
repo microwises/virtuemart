@@ -476,12 +476,12 @@ if (empty ( $this->product )) {
 	if($this->allowRating || $this->showReview) {
 		$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
 		$ratingsShow = VmConfig::get('vm_num_ratings_show',3); // TODO add  vm_num_ratings_show in vmConfig
-		$starsPath = JURI::root().VmConfig::get('assets_general_path').'images/stars/';
+		//$starsPath = JURI::root().VmConfig::get('assets_general_path').'images/stars/';
 		$stars = array();
 		$showall = JRequest::getBool('showall', false);
 		for ($num=0 ; $num <= $maxrating; $num++  ) {
 			$title = (JText::_("COM_VIRTUEMART_RATING_TITLE").' : '. $num . '/' . $maxrating) ;
-			$stars[] = JHTML::image($starsPath.$num.'.gif', JText::_($num.'_STARS'), array("title" => $title) );
+			$stars[] = '<span class="vmicon vm2-stars'.$num.'" title="'.$title.'"></span>'; //JHTML::image($starsPath.$num.'.gif', JText::_($num.'_STARS'), array("title" => $title) );
 		} ?>
 
 	<div class="customer-reviews">
