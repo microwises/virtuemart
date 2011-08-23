@@ -24,27 +24,17 @@ if (!class_exists('TableCategories'))
 if (!class_exists('VmElements'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'elements' . DS . 'vmelements.php');
 /*
- * This element is used by the menu manager
+ * This element is used by the menu manager for J15
  * Should be that way
  */
 
-class VmElementVmProductsmenu extends VmElements {
+class JElementVmproductsmenu extends JElement {
 
-    var $type = 'productsmenu';
     var $_name = 'productsmenu';
-
-// This line is required to keep Joomla! 1.6/1.7 from complaining
-    function getInput() {
-
-        $key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
-        $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
-        $products=$this->_getProducts();
-        return JHTML::_('select.genericlist', $products, $this->name, 'class="inputbox"  size="10"', 'value', 'text', $this->value, $this->id);
-    }
 
     function fetchElement($name, $value, &$node, $control_name) {
 
-        return JHTML::_('select.genericlist', $this->_getProducts(), $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
+        return JHTML::_('select.genericlist', $this->_getProducts(), $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . $name);
     }
 
     private function _getProducts() {
@@ -57,19 +47,3 @@ class VmElementVmProductsmenu extends VmElements {
     }
 
 }
-
-if (version_compare(JVERSION, '1.6.0', 'ge')) {
-
-    class JFormFieldVmProductsmenu extends VmElementVmProductsmenu {
-
-    }
-
-} else {
-
-    class JElementVmProductsmenu extends VmElementVmProductsmenu {
-
-    }
-
-}
-
-
