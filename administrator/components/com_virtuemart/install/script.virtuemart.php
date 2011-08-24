@@ -105,6 +105,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				return $this->update();
 			}
 
+			$this->alterSessionTable();
 			// install essential and required data
 			// should this be covered in install.sql (or 1.6's JInstaller::parseSchemaUpdates)?
 			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
@@ -159,6 +160,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','ADD product_ordered int(11)');
 
+			$this->alterSessionTable();
+
+
+
+
 			$this->updateWeightUnit();
 			$this->updateDimensionUnit();
 
@@ -168,6 +174,20 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//		$parent->getParent()->setRedirectURL('index.php?option=com_virtuemart&view=updatesMigration');
 
 			return true;
+		}
+
+		private function alterSessionTable(){
+
+			if(version_compare(JVERSION,'1.6.0','ge')) {
+				$query = 'SHOW COLUMNS FROM `#__session` ';
+				$this->db->setQuery($query);
+				$columns = $this->db->loadResultArray(0);
+				if(in_array('data',$columns)){
+					$query = 'ALTER TABLE `#__session` CHANGE COLUMN `data` `data` LONGTEXT NULL AFTER `time`;';
+					$this->db->setQuery($query);
+					$this->db->query();
+				}
+			}
 		}
 
 		/**
