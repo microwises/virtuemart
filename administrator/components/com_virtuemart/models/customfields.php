@@ -222,7 +222,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!Permissions::getInstance()->check('admin') ) $readonly='readonly'; else $readonly ='';
 		$html .= VmHTML::inputRow('COM_VIRTUEMART_TITLE','custom_title',$datas->custom_title,VmHTML::validate('S'));
-		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_FIELD_DESCRIPTION','custom_field_desc',$datas->custom_field_desc);
+		$html .= VmHTML::inputRow('COM_VIRTUEMART_DESCRIPTION','custom_field_desc',$datas->custom_field_desc);
 		// change input by type
 		$html .= VmHTML::inputRow('COM_VIRTUEMART_DEFAULT','custom_value',$datas->custom_value);
 		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_TIP','custom_tip',$datas->custom_tip);

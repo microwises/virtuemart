@@ -371,7 +371,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 							<img border="0" align="center" src="components/com_virtuemart/assets/images/vm_menulogo.png" alt="Cart" />
 						</a>
 						<br /><br />
-						<h1>'.JText::_('COM_VIRTUEMART_DESCRIPTION').'</h1>
+						<h1>'.JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME').'</h1>
 					</td>
 					<td>
 						<h1>';
