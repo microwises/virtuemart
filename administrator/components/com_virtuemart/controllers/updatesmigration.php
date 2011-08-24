@@ -353,7 +353,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	function _getMsgDangerousTools(){
 		$uri = JFactory::getURI();
 		$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
-		$msg = JText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED', $link);
+		$msg = JText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_DISABLED', JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS'), $link);
 		return $msg;
 	}
 

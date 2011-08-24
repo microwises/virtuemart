@@ -120,12 +120,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 				JFolder::create(JPATH_ROOT .DS. 'images'.DS.'stories');
 				JFolder::create(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart');
-// 				$dst = JPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
+
 			}
 
 			$dst = JPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
-
-
 
 			$this->recurse_copy($src,$dst);
 

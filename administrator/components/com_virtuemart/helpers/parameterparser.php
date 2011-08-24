@@ -158,14 +158,18 @@ class vmParameters extends JParameter {
      */
     function __construct($data, $element = '', $type='component', $pluginfolder ) {
         JPlugin::loadLanguage('plg_'.$pluginfolder.'_' . $element);
-        $path = JPATH_PLUGINS . DS . $pluginfolder . DS . basename($element) . '.xml';
+    		if (version_compare(JVERSION, '1.6.0', 'ge')) {
+			$path = JPATH_PLUGINS . DS . $pluginfolder . DS . basename($element). DS . basename($element) . '.xml';
+		} else {
+			$path = JPATH_PLUGINS . DS . $pluginfolder . DS . basename($element) . '.xml';
+		}
         parent::__construct($data, $path);
         $this->_type = $type;
         $this->_raw = $data;
     }
 
       /**
-	 * render  
+	 * render
 	 *
 	 * @access	public
 	 * @param	string	The name of the control, or the default text area if a setup file is not found
