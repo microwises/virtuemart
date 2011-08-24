@@ -240,7 +240,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 			return null;
 		}
 		$shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $cart->virtuemart_shippingcarrier_id);
-		//if(!class_exists('JParameter')) require(JPATH_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
+		if(!class_exists('JParameter')) require(JPATH_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 		$params = new JParameter($shipping_carrier_params);
 		$values['virtuemart_order_id'] = $order_id;
 		$values['shipper_id'] = $cart->virtuemart_shippingcarrier_id;
@@ -347,7 +347,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 
 		$nbShipper = 0;
 		$countries = array();
-		//if(!class_exists('JParameter')) require(JPATH_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
+		if(!class_exists('JParameter')) require(JPATH_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 
 		$country_list = $params->get('countries');
 		if (!empty($country_list)) {
