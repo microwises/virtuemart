@@ -290,7 +290,7 @@ function virtuemartParseRoute($segments) {
 			if (empty($segments)) return $vars;
 		}
 		if ($segments[0] == $lang['edit_shipping'] ) $vars['task'] = 'edit_shipping' ;
-		elseif ($segments[0] == $lang['edit_payment'] ) $vars['task'] = 'edit_payment' ;
+		elseif ($segments[0] == $lang['editpayment'] ) $vars['task'] = 'editpayment' ;
 		return $vars;
 	}
 
@@ -598,7 +598,7 @@ class vmrouterHelper {
 				'manufacturer'		=> $lang->_('COM_VIRTUEMART_SEF_MANUFACTURER'),
 				'manufacturers'		=> $lang->_('COM_VIRTUEMART_SEF_MANUFACTURERS'),
 				'askquestion'		=> $lang->_('COM_VIRTUEMART_SEF_ASKQUESTION'),
-				'edit_payment '		=> $lang->_('COM_VIRTUEMART_SEF_EDITPAYMENT'),
+				'editpayment '		=> $lang->_('COM_VIRTUEMART_SEF_EDITPAYMENT'),
 				'user'				=> $lang->_('COM_VIRTUEMART_SEF_USER'),
 				'cart'				=> $lang->_('COM_VIRTUEMART_SEF_CART'),
 				'editaddresscartBT'	=> $lang->_('COM_VIRTUEMART_SEF_EDITADRESSCART_BILL'),
@@ -650,7 +650,7 @@ class vmrouterHelper {
 				'manufacturers' => 'manufacturers',
 				'manufacturer' => 'manufacturer',
 				'askquestion' => 'askquestion',
-				'edit_payment' => 'edit_payment',
+				'editpayment' => 'editpayment',
 				'user' => 'user',
 				'cart' => 'cart',
 				'editaddresscartBT' => 'edit_cart_bill_to',
