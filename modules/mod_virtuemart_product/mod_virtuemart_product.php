@@ -42,6 +42,11 @@ $totalProd = 		count( $products);
 if(empty($products)) return false;
 $currency = CurrencyDisplay::getInstance( );
 
+if ($show_addtocart) {
+	VmConfig::jQuery();
+	VmConfig::jPrice();
+	VmConfig::cssSite();
+}
 /* load the template */
 require(JModuleHelper::getLayoutPath('mod_virtuemart_product'));
 ?>

@@ -474,8 +474,10 @@ class VmConfig{
 		static $jPrice;
 		// If exist exit
 		if ($jPrice) return;
-                        JPlugin::loadLanguage('com_virtuemart');
-
+		
+		JPlugin::loadLanguage('com_virtuemart');
+		VmConfig::jSite();
+		
 		$closeimage = JURI::root(true) .'/components/com_virtuemart/assets/images/facebox/closelabel.png';
 		$jsVars  = "siteurl = '". JURI::root(true) .'/' ."' ;\n" ;
 		$jsVars .= "vmCartText = '". JText::_('COM_VIRTUEMART_MINICART_ADDED') ."' ;\n" ;
@@ -538,7 +540,8 @@ class VmConfig{
 		// If exist exit
 		if ($JcountryStateList) return;
 		$document = JFactory::getDocument();
-		$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/vmsite.js');
+		VmConfig::jSite();
+		//$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/vmsite.js');
 		$document->addScriptDeclaration(' jQuery( function($) {
 			$(".virtuemart_country_id").vm2front("list",{dest : "#virtuemart_state_id",ids : "'.$stateIds.'"});
 		});');
