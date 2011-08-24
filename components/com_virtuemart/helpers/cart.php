@@ -74,7 +74,7 @@ class VirtueMartCart {
 		if (!empty($cartTemp)) {
 			$cart = unserialize(base64_decode($cartTemp) );
 // 			$cart = unserialize($cartTemp);
-			if ($deleteValidation) {
+			if (!empty($cart) && $deleteValidation) {
 				$cart->setDataValidation();
 			}
 		}

@@ -296,7 +296,7 @@ class VmConfig{
 			self::$_jpConfig->_raw = self::installVMconfig();
 			$db->setQuery($query);
 			self::$_jpConfig->_raw = $db->loadResult();
-			self::$_params = null;
+			self::$_jpConfig->_params = null;
 // 			vmTime('After install from file','loadConfig');
 		}
 
@@ -474,10 +474,10 @@ class VmConfig{
 		static $jPrice;
 		// If exist exit
 		if ($jPrice) return;
-		
+
 		JPlugin::loadLanguage('com_virtuemart');
 		VmConfig::jSite();
-		
+
 		$closeimage = JURI::root(true) .'/components/com_virtuemart/assets/images/facebox/closelabel.png';
 		$jsVars  = "siteurl = '". JURI::root(true) .'/' ."' ;\n" ;
 		$jsVars .= "vmCartText = '". JText::_('COM_VIRTUEMART_MINICART_ADDED') ."' ;\n" ;

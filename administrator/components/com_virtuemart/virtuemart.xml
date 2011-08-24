@@ -5,13 +5,13 @@
 
 	<name>VirtueMart</name>
 
-	<creationDate>June 2011</creationDate>
+	<creationDate>August 2011</creationDate>
 	<author>The VirtueMart Development Team</author>
 	<authorEmail>max|at|virtuemart.net</authorEmail>
 	<authorUrl>http://www.virtuemart.net</authorUrl>
 	<copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-	<version status="rc">1.9.8d</version>
+	<version status="rc">1.9.8e</version>
 	<description>COM_VIRTUEMART_DESCRIPTION</description>
 
    <!-- Custom un/installer for 1.6 -->

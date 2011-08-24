@@ -115,8 +115,17 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$model->setStoreOwner();
 
 			//copy sampel media
-			$src= $this->path .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
-			$dst= JPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
+			$src= $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampelimages';
+			if(version_compare(JVERSION,'1.6.0','ge')) {
+
+				JFolder::create(JPATH_ROOT .DS. 'images'.DS.'stories');
+				JFolder::create(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart');
+// 				$dst = JPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
+			}
+
+			$dst = JPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
+
+
 
 			$this->recurse_copy($src,$dst);
 
@@ -162,9 +171,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->alterSessionTable();
 
-
-
-
 			$this->updateWeightUnit();
 			$this->updateDimensionUnit();
 
@@ -179,6 +185,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		private function alterSessionTable(){
 
 			if(version_compare(JVERSION,'1.6.0','ge')) {
+				if(empty($this->db)){
+					$this->db = JFactory::getDBO();
+				}
 				$query = 'SHOW COLUMNS FROM `#__session` ';
 				$this->db->setQuery($query);
 				$columns = $this->db->loadResultArray(0);
