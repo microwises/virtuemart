@@ -34,7 +34,7 @@ class JElementVmproductsmenu extends JElement {
 
     function fetchElement($name, $value, &$node, $control_name) {
 
-        return JHTML::_('select.genericlist', $this->_getProducts(), $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . $name);
+        return JHTML::_('select.genericlist', $this->_getProducts(), $control_name . '[' . $name . ']', '', 'value', 'text', $value, $control_name . $name);
     }
 
     private function _getProducts() {

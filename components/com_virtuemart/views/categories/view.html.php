@@ -86,9 +86,8 @@ class VirtuemartViewCategories extends JView {
 	    }else {
 	    	$catTpl = $category->category_template;
 	    }
-		$this->setLayout('child');
-		//Do we need that here? It should show the general category template or the shop template
-	    //shopFunctionsF::setVmTemplate($this,$catTpl,0,$category->category_layout);
+
+	    shopFunctionsF::setVmTemplate($this,$catTpl,0,$category->category_layout);
 
 		parent::display($tpl);
 	}

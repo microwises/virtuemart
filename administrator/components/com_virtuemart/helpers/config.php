@@ -296,7 +296,7 @@ class VmConfig{
 			self::$_jpConfig->_raw = self::installVMconfig();
 			$db->setQuery($query);
 			self::$_jpConfig->_raw = $db->loadResult();
-			$this->_params = null;
+			self::$_params = null;
 // 			vmTime('After install from file','loadConfig');
 		}
 
