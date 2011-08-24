@@ -265,7 +265,7 @@ $this->_cart->setCartIntoSession();
 
 		$this->_cart->CheckShippingIsValid( );
 		$automaticSelectedShipping =$this->_cart->CheckAutomaticSelectedShipping( );
-		$automaticSelectedPayment =  false;//$this->_cart->CheckAutomaticSelectedPayment( );
+		$automaticSelectedPayment =   $this->_cart->CheckAutomaticSelectedPayment( );
 		/* Get the products for the cart */
 		$prepareCartData = $this->_cart->prepareCartData();
 

@@ -996,7 +996,7 @@ class VirtueMartCart {
 		foreach ($returnValues as $returnValue) {
 			if ((int)$returnValue ) {
                             $nbPayment ++;
-			$virtuemart_paymentmethod_id = $returnValue;
+                            $virtuemart_paymentmethod_id = $returnValue;
                         }
 		}
 		if ($nbPayment==1) {
