@@ -54,7 +54,7 @@ $pagination = $this->pagination;
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($customs); ?>')" /></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_PARENT'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_TITLE'); ?></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_FIELD_DESCRIPTION'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_FIELD_TYPE'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_ADMIN_ONLY'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_HIDDEN'); ?></th>
@@ -79,7 +79,12 @@ $pagination = $this->pagination;
 				<?php
 				$link = "index.php?view=custom&keyword=".urlencode($keyword)."&custom_parent_id=".$custom->custom_parent_id."&option=".$option;
 				?>
-				<td><?php echo JHTML::_('link', JRoute::_($link), $custom->custom_parent_title, array('title' => JText::_('COM_VIRTUEMART_FILTER_BY').' '.$custom->custom_parent_title)); ?></td>
+				<td><?php
+
+                            $lang = JFactory::getLanguage();
+                            $text = $lang->hasKey($custom->custom_parent_title) ? JText::_($custom->custom_parent_title) : $custom->custom_parent_title;
+
+                                echo JHTML::_('link', JRoute::_($link),$text, array('title' => JText::_('COM_VIRTUEMART_FILTER_BY').' '.$text)); ?></td>
 
 				<!-- Product name -->
 				<?php
