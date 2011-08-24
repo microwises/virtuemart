@@ -72,16 +72,20 @@ class VirtueMartCart {
 		$cartTemp = $session->get('vmcart', 0, 'vm');
 
 		if (!empty($cartTemp)) {
-			$cart = unserialize($cartTemp);
+			$cart = unserialize(base64_decode($cartTemp) );
+// 			$cart = unserialize($cartTemp);
 			if ($deleteValidation) {
 				$cart->setDataValidation();
 			}
-		} else {
+		}
+		if(empty($cart)){
 			$cart = new VirtueMartCart;
 		}
+
 		$cart->setPreferred();
 		$cart->setCartIntoSession();
 		return $cart;
+// 		return '';
 	}
 
 	public function setPreferred() {
@@ -132,7 +136,9 @@ class VirtueMartCart {
 	 */
 	public function setCartIntoSession() {
 		$session = JFactory::getSession();
-		$session->set('vmcart', serialize($this), 'vm');
+		$session->set('vmcart', base64_encode(serialize($this)),'vm');
+// 		$session->set('vmcart', serialize($this), 'vm');
+// 		vmdebug('setCartIntoSession',$_SESSION);
 	}
 
 	/**
@@ -148,7 +154,7 @@ class VirtueMartCart {
 
 	public function setDataValidation($valid=false) {
 		$this->_dataValidated = $valid;
-		$this->setCartIntoSession();
+// 		$this->setCartIntoSession();
 	}
 
 	public function getDataValidated() {
@@ -196,13 +202,14 @@ class VirtueMartCart {
 			$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array'); //is sanitized then
 		}
 
+		vmdebug('Add product to cart $virtuemart_product_ids ',$virtuemart_product_ids);
 		if (empty($virtuemart_product_ids)) {
 			$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_ERROR_NO_PRODUCT_IDS', false));
 			return false;
 		}
 
-		if (!class_exists('calculationHelper')
-		)require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+// 		if (!class_exists('calculationHelper')
+// 		)require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 
 		//Iterate through the prod_id's and perform an add to cart for each one
 		foreach ($virtuemart_product_ids as $p_key => $virtuemart_product_id) {
@@ -212,9 +219,15 @@ class VirtueMartCart {
 			/* Check if we have a product */
 			if ($product) {
 				$quantityPost = (int) $post['quantity'][$p_key];
-				$virtuemart_category_idPost = (int) $post['virtuemart_category_id'][$p_key];
 
-				$product->virtuemart_category_id = $virtuemart_category_idPost;
+				if(!empty( $post['virtuemart_category_id'][$p_key])){
+					$virtuemart_category_idPost = (int) $post['virtuemart_category_id'][$p_key];
+					$product->virtuemart_category_id = $virtuemart_category_idPost;
+				}
+
+// 				$virtuemart_category_idPost = (int) $post['virtuemart_category_id'][$p_key];
+
+
 				$productKey = $product->virtuemart_product_id;
 				// INDEX NOT FOUND IN JSON HERE
 				// changed name field you know exactly was this is
@@ -227,7 +240,7 @@ class VirtueMartCart {
 						}
 					}
 				}
-
+				vmdebug('Add product to cart $this->products ',$this->products);
 				if (array_key_exists($productKey, $this->products)) {
 					$this->products[$productKey]->quantity += $quantityPost;
 					if ($this->checkForQuantities($product, $this->products[$productKey]->quantity)) {
@@ -249,6 +262,7 @@ class VirtueMartCart {
 				return false;
 			}
 		}
+		vmdebug('Add product to cart ',$this);
 		// End Iteration through Prod id's
 		$this->setCartIntoSession();
 		return true;
@@ -899,7 +913,7 @@ class VirtueMartCart {
 		return $userAddressData;
 	}
 
-	function saveAddressInCart($data, $type) {
+	function saveAddressInCart($data, $type, $putIntoSession = false) {
 
 		// VirtueMartModelUserfields::getUserFields() won't work
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
@@ -939,7 +953,11 @@ class VirtueMartCart {
 		}
 
 		$this->{$type} = $address;
-		$this->setCartIntoSession();
+
+		if($putIntoSession){
+				$this->setCartIntoSession();
+		}
+
 	}
 
 	function CheckAutomaticSelectedShipping() {
