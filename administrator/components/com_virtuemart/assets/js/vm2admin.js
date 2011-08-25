@@ -91,7 +91,7 @@
 				});
 			event.preventDefault();
 		});
-		jQuery("#dialog" ).delegate(".vm_thumb_image", "click",function(event) {
+		jQuery("#media-dialog" ).delegate(".vm_thumb_image", "click",function(event) {
 			event.preventDefault();
 			var id = $(this).find('input').val(),ok = 0;
 			var inputArray = new Array();
@@ -145,6 +145,10 @@
 		var display = function(num) {
 			if ( typeof this.page == "undefined" ) {
 				this.oldPage =this.page = 0;
+				
+			}
+			if ( typeof display.cache == "undefined" ) {
+				display.cache = new Array();
 			}
 			switch (num) {
 				 case '<':
@@ -168,27 +172,24 @@
 			if (this.oldPage != this.page) {
 				//var cache = this.cache ;
 				var start = this.page ;
-				if (typeof cache[start] == "undefined") {
-					jQuery.get("index.php?option=com_virtuemart&view=media&task=viewJson&format=json&mediatype="+mediatype ,
-						{ start: start },
+				if (typeof display.cache[start] == "undefined") {
+					jQuery.getJSON("index.php?option=com_virtuemart&view=media&task=viewJson&format=json&mediatype="+mediatype+"&start="+start ,
 						function(data) {
-							if (data != "ERROR") {
-								cache[start] = data ;
-								jQuery("#dialog").html(cache[start]);
+							if (data.imageList != "ERROR") {
+								display.cache[start] = data.imageList ;
+								jQuery("#media-dialog").html(display.cache[start]);
 								jQuery(".page").text( "Page(s) "+ (start+1)) ;
 							} else  {
 								jQuery(".page").text( "No  more results : Page(s) "+ (start+1)) ;
 							}
 						}
 					);
-				} else jQuery("#dialog").html(cache[start]);
+				} else jQuery("#media-dialog").html(display.cache[start]);
 				page = this.oldPage = this.page;
 				$('.media-pagination').children().removeClass('media-page-selected');
 				$('.media-pagination').children().eq(start+3).addClass('media-page-selected');
 			}
-			
 		}
-
 	},
 	tips : function(image) {    
 		var xOffset = -20; // x distance from mouse

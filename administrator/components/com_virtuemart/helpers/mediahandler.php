@@ -675,7 +675,7 @@ class VmMediaHandler {
 		$list = $this->displayImages($type);
 		$html = $this->displayFileSelection($fileIds,$type);
 		$html .= $this->displayFileHandler('id="vm_display_image"');
-		$html .= '<div style="display:none"><div id="dialog" >'.$list['htmlImages'].'</div></div>';//$type);
+		$html .= '<div style="display:none"><div id="media-dialog" >'.$list['htmlImages'].'</div></div>';//$type);
 		$this->_db->setQuery('SELECT FOUND_ROWS()');
 		$imagetotal = $this->_db->loadResult();
 		//VmConfig::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
@@ -684,14 +684,14 @@ class VmMediaHandler {
 			$j = "
 			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$list['total']."') });
 			function submitbutton(pressbutton) {
-				jQuery( '#dialog' ).remove();
+				jQuery( '#media-dialog' ).remove();
 				submitform(pressbutton);
 			}" ;
 		}
 		else $j = "
 			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$list['total']."') });
 			Joomla.submitbutton=function(a){
-				jQuery( '#dialog' ).remove();
+				jQuery( '#media-dialog' ).remove();
 				Joomla.submitform(a);
 			}" ;
 		$document = JFactory::getDocument ();
@@ -709,7 +709,7 @@ class VmMediaHandler {
 
 		$html='';
 		$result = $this->getImagesList($type);
-		$html .= '<a id="addnewselectimage2" href="#dialog">'.JText::_('COM_VIRTUEMART_IMAGE_ATTACH_NEW').'</a><div id="ImagesContainer">';
+		$html .= '<a id="addnewselectimage2" href="#media-dialog">'.JText::_('COM_VIRTUEMART_IMAGE_ATTACH_NEW').'</a><div id="ImagesContainer">';
 /*		VmConfig::JimageSelectlist();*/
 
 		// if(empty($fileIds)) {

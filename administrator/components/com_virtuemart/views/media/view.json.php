@@ -39,14 +39,14 @@ class VirtuemartViewMedia extends JView {
 			$db = JFactory::getDBO();
 			$query='SELECT * FROM `#__virtuemart_medias` where `virtuemart_media_id`='.$virtuemart_media_id;
 			$db->setQuery( $query );
-			$json = $db->loadObject();
-			if (isset($json->file_url)) {
-				$json->file_root = JURI::root(true).'/';
-				$json->msg =  'OK';
-				echo json_encode($json);
+			$this->json = $db->loadObject();
+			if (isset($this->json->file_url)) {
+				$this->json->file_root = JURI::root(true).'/';
+				$this->json->msg =  'OK';
+				echo json_encode($this->json);
 			} else {
-				$json->msg =  '<b>'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b>';
-				echo json_encode($json);
+				$this->json->msg =  '<b>'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b>';
+				echo json_encode($this->json);
 			}
 		}
 		else {
@@ -54,7 +54,10 @@ class VirtuemartViewMedia extends JView {
 			$start = JRequest::getInt('start',0);
 			$type = JRequest::getWord('mediatype',0);
 			$list = VmMediaHandler::displayImages($type,$start );
-			echo $list['htmlImages'];
+			$this->json->imageList=$list['htmlImages'];
+			$this->json->statut="ok";
+			
+			echo json_encode($this->json);
 		}
 	}
 
