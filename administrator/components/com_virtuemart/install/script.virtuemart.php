@@ -356,8 +356,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//load specific language
 			$lang->load('com_virtuemart.sys',JPATH_ADMINISTRATOR,null,true);
 			$lang->load('com_virtuemart',JPATH_ADMINISTRATOR,null,true);
-
-			$html ='<link rel="stylesheet" href="components/com_virtuemart/assets/css/install.css" type="text/css" />
+			?>
+			<link rel="stylesheet" href="components/com_virtuemart/assets/css/install.css" type="text/css" />
+			<link rel="stylesheet" href="components/com_virtuemart/assets/css/toolbar_images.css" type="text/css" />
 
 			<div align="center">
 				<table width="100%" border="0">
@@ -367,44 +368,45 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 							<img border="0" align="center" src="components/com_virtuemart/assets/images/vm_menulogo.png" alt="Cart" />
 						</a>
 						<br /><br />
-						<h1>'.JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME').'</h1>
+						<h1><?php echo JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h1>
 					</td>
 					<td>
-						<h1>';
+						<h1>
+						<?php 
+						if($update){ 
+							echo JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
+							echo '<br />'.JText::_('Please use "renew config from file" in Tools => Updates/Migration');
+						} else {
+							echo JText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
+						}
+						?>
+						</h1>
+						<br />
 
-			if($update){
-				$html .= JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
-				$html .= '<br />'.JText::_('Please use "renew config from file" in Tools => Updates/Migration');
-			} else {
-				$html .= JText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
-			}
-			$html .= '</h1>
-						<br /><br />
+						<div id="cpanel">
 
-						<table width="50%">
-						<tr>';
 
-			if(!$update){
-				$html .= '<td width="50%" align="center">
-									<a href="'.JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JUtility::getToken()).'">
-									<img src="components/com_virtuemart/assets/images/icon_48/vm_install_48.png">
-									</a>
-									<br />'.JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA').'</td>';
-			}
-
-			$html .= '<td width="50%" align="center">
-								<a href="'.JROUTE::_('index.php?option=com_virtuemart').'">
-									<img src="components/com_virtuemart/assets/images/icon_48/vm_frontpage_48.png">
-								</a>
-								<br />'.JText::_('COM_VIRTUEMART_INSTALL_GO_SHOP').'
-							</td>
-						</tr>
-						</table>
+						<?php 
+						if(!$update){
+							?>
+							<div class="icon">
+							<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JUtility::getToken()) ?>">
+								<span class="vmicon48 vm_install_48"></span>
+								<br /><?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
+							</a>
+							</div>
+						<?php } ?>
+							<div class="icon">
+							<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart') ?>">
+								<span class="vmicon48 vm_frontpage_48"></span>
+								<br /><?php echo JText::_('COM_VIRTUEMART_INSTALL_GO_SHOP') ?>
+							</a>
+							</div>
 					</td>
 				</tr>
 				</table>
-			</div>';
-			echo $html;
+			</div>
+			<?php 
 		}
 
 	}
