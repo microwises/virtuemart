@@ -53,16 +53,10 @@
 	</tr>
 	<tr>
 		<td colspan="2" align="center" class="key">
-		<a href="#" class="orderStatFormSubmit"><?php
-			echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-save.png', JText::_('COM_VIRTUEMART_SAVE'))
-				. '&nbsp;'
-				. JText::_('COM_VIRTUEMART_SAVE');
-		?></a>&nbsp;&nbsp;&nbsp;
-		<a href="#" onClick="javascript:document.orderStatForm.reset();" class="show_element[updateOrderStatus]"><?php
-			echo JHTML::_('image', 'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-remove.png', JText::_('COM_VIRTUEMART_CANCEL'))
-				. '&nbsp;'
-				. JText::_('COM_VIRTUEMART_CANCEL');
-		?></a>
+		<a href="#" class="orderStatFormSubmit" title="<?php echo JText::_('COM_VIRTUEMART_SAVE'); ?>">
+			<span class="icon-nofloat vmicon vmicon-16-save"></span>&nbsp;<?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></a>&nbsp;&nbsp;&nbsp;
+		<a href="#" title="<?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?>" onClick="javascript:document.orderStatForm.reset();" class="show_element[updateOrderStatus]">
+			<span class="icon-nofloat vmicon vmicon-16-remove"></span>&nbsp;<?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></a>
 		</td>
 <!-- 
 		<input type="submit" value="<?php echo JText::_('COM_VIRTUEMART_SAVE');?>" style="font-size: 10px" />

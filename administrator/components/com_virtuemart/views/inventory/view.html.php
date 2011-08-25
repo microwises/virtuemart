@@ -62,7 +62,7 @@ class VirtuemartViewInventory extends JView {
 		$this->assignRef('lists', $lists);
 
 		/* Toolbar */
-		JToolBarHelper::title(JText::_('COM_VIRTUEMART_PRODUCT_INVENTORY'), 'vm_inventory_48');
+		ShopFunctions::SetViewTitle('PRODUCT_INVENTORY');
 		JToolBarHelper::publish();
 		JToolBarHelper::unpublish();
 

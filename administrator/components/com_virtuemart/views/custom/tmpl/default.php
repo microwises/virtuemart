@@ -95,9 +95,9 @@ $pagination = $this->pagination;
 				<td><?php echo $custom->field_type_display; ?></td>
 				<td>
 					<a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','toggle.admin_only')" title="<?php echo ($custom->admin_only ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
-					<img src="components/com_virtuemart/assets/images/icon_16/<?php echo ( $custom->admin_only  ? 'icon-16-checkin.png' : 'icon-16-bug.png' );?>" width="16" height="16" border="0" alt="<?php echo ( $custom->admin_only ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>" /></a></td>
+					<span class="vmicon <?php echo ( $custom->admin_only  ? 'vmicon-16-checkin' : 'vmicon-16-bug' );?>"></span></a></td>
 				<td><a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','toggle.is_hidden')" title="<?php echo ($custom->is_hidden ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
-					<img src="components/com_virtuemart/assets/images/icon_16/<?php echo ( $custom->is_hidden  ? 'icon-16-checkin.png' : 'icon-16-bug.png' );?>" width="16" height="16" border="0" alt="<?php echo ( $custom->is_hidden ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>" /></a></td>
+					<span class="vmicon <?php echo ( $custom->is_hidden  ? 'vmicon-16-checkin' : 'vmicon-16-bug' );?>"></span></a></td>
 				<td><?php echo $published; ?></td>
 			</tr>
 		<?php

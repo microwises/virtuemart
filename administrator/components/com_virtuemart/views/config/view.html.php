@@ -44,7 +44,7 @@ class VirtuemartViewConfig extends JView {
 		$model = $this->getModel();
 		$usermodel = $this->getModel('user');
 
-		 JToolBarHelper::title( JText::sprintf( 'COM_VIRTUEMART_STRING1_STRING2' , JText::_('COM_VIRTUEMART_CONFIG') ,''), 'vm_config_48');
+		 JToolBarHelper::title( JText::_('COM_VIRTUEMART_CONFIG') , 'head vm_config_48');
 
 		shopFunctions::addStandardEditViewCommands();
 

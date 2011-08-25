@@ -97,7 +97,7 @@ class ShopFunctions {
             $task = 'list';
 
         $taskName = ' <small><small>[ ' . JText::_('COM_VIRTUEMART_' . $task) . ' ]</small></small>';
-        JToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'vm_' . $view . '_48');
+        JToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $view . '_48');
         return $viewText;
     }
 
