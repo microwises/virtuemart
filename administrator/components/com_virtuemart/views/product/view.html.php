@@ -45,7 +45,9 @@ class VirtuemartViewProduct extends JView {
 		JView::loadHelper('image');
 
 		// Load some common models
-		$category_model = $this->getModel('category');
+		if(!class_exists('VirtueMartModelCategory')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'category.php');
+		$category_model = new VirtueMartModelCategory();
+// 		$category_model = $this->getModel('category');
 
 		// Handle any publish/unpublish
 		switch ($task) {

@@ -233,8 +233,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 */
 		private function updateWeightUnit(  ) {
 			if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
-			$migrator = new Migrator();
-			$weightUnitMigrateValues = $migrator->getWeightUnitMigrateValues();
+			$weightUnitMigrateValues = Migrator::getWeightUnitMigrateValues();
 			return $this->updateUnit(  'product_weight_uom', $weightUnitMigrateValues) ;
 		}
 
@@ -245,8 +244,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 */
 		private function updateDimensionUnit(   ) {
 			if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
-			$migrator = new Migrator();
-			$dimensionUnitMigrateValues = $migrator->getDimensionUnitMigrateValues();
+			$dimensionUnitMigrateValues = Migrator::getDimensionUnitMigrateValues();
 			return $this->updateUnit(  'product_lwh_uom', $dimensionUnitMigrateValues) ;
 		}
 		/**
