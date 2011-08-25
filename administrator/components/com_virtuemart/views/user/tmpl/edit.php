@@ -36,8 +36,7 @@ label.invalid {
 }
 </style>
 <script language="javascript">
-function myValidator(f)
-{
+function myValidator(f) {
 	if (f.task.value=='cancel') {
 		return true;
 	}
@@ -45,10 +44,12 @@ function myValidator(f)
 		f.submit();
 		return true;
 	} else {
-		var msg = '<?php echo JText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED'); ?>';
-		alert (msg);
+		var msg = '<div><dl id="system-message" style="display: block;"><dt class="message">Message</dt><dd class="message message"><ul><li>';
+		 msg += '<?php echo JText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED'); ?>';
+		 msg += '</li></ul></dd></dl><div>';
+		jQuery('#element-box').before(msg);
 	}
-	return false;
+	event.preventDefault();
 }
 </script>
 
