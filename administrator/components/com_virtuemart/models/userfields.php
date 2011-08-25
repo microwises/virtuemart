@@ -298,6 +298,16 @@ class VirtueMartModelUserfields extends VmModel {
 	 */
 	public function getUserFieldsFor($layoutName, $type,$userId = -1){
 
+		$register = false;
+		$user = JApplication::getUser();
+		if(!empty($user)){
+			if(empty($user->id)){
+				$register = true;
+			}
+		} else {
+			$register = true;
+		}
+
 		//Here we define the fields to skip
 		if($layoutName=='edit'){
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
@@ -305,9 +315,12 @@ class VirtueMartModelUserfields extends VmModel {
 // 		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $userId === 0){
 // 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed','user_is_vendor');
 
-		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1)){
+		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $register ){
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed','user_is_vendor');
 
+		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) ){
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
+			, 'address_type', 'bank', 'email');
 		} else if ($layoutName=='cart'){
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2', 'address_type', 'bank','user_is_vendor');
 
@@ -332,7 +345,8 @@ class VirtueMartModelUserfields extends VmModel {
 		}
 
 		//Small ugly hack to make registering optional //do we still need that?
-		if($layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $userId === 0){
+		if($layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $type == 'BT' && empty($userId) ){
+
 			$corefields = $this->getCoreFields();
 			unset($corefields[2]); //the 2 is for the email field, it is necessary in almost anycase.
 			foreach($userFields as $field){
