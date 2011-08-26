@@ -35,14 +35,14 @@ class VirtuemartViewOrders extends JView {
 	{
 //		$mainframe = JFactory::getApplication();
 //		$pathway = $mainframe->getPathway();
-		$layoutName = JRequest::getWord('layout', $this->getLayout());
+		$task = JRequest::getWord('task', 'list');
 
 		$_currentUser = JFactory::getUser();
 
 		if (!class_exists('VirtueMartModelOrders')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		$orderModel = new VirtueMartModelOrders();
 
-		if ($layoutName == 'details') {
+		if ($task == 'details') {
 
 			$cuid = $_currentUser->get('id');
 			if(!empty($cuid)){
@@ -100,7 +100,7 @@ class VirtuemartViewOrders extends JView {
 
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
-		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
+		//shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 		parent::display($tpl);
 	}
 }

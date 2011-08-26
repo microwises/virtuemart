@@ -156,6 +156,14 @@ function virtuemartBuildRoute(&$query) {
 			}
 
 		break;
+		case 'orders';
+			if ( isset($jmenu['virtuemart_orders']) ) $query['Itemid'] = $jmenu['virtuemart_orders'];
+			else {
+				$segments[] = $lang['orders'] ;
+				$query['Itemid'] = $jmenu['virtuemart'][0] ;
+			}
+
+		break;
 
 		// sef only view
 		default ;
@@ -291,6 +299,16 @@ function virtuemartParseRoute($segments) {
 		}
 		if ($segments[0] == $lang['edit_shipping'] ) $vars['task'] = 'edit_shipping' ;
 		elseif ($segments[0] == $lang['editpayment'] ) $vars['task'] = 'editpayment' ;
+		return $vars;
+	}
+	if (isset($segments[0]) && $segments[0] == $lang['orders'] || $helper->activeMenu->view == 'orders') {
+		$vars['view'] = 'orders';
+		if (isset($segments[0]) && $segments[0] == $lang['orders']) {
+			array_shift($segments);
+			if (empty($segments)) return $vars;
+		}
+		if ($segments[0] == $lang['list'] ) $vars['task'] = 'list' ;
+		elseif ($segments[0] == $lang['details'] ) $vars['task'] = 'details' ;
 		return $vars;
 	}
 
@@ -600,9 +618,12 @@ class vmrouterHelper {
 				'askquestion'		=> $lang->_('COM_VIRTUEMART_SEF_ASKQUESTION'),
 				'editpayment '		=> $lang->_('COM_VIRTUEMART_SEF_EDITPAYMENT'),
 				'user'				=> $lang->_('COM_VIRTUEMART_SEF_USER'),
+				'orders'			=> $lang->_('COM_VIRTUEMART_SEF_ORDERS'),
+				'list'				=> $lang->_('COM_VIRTUEMART_SEF_LIST'),
 				'cart'				=> $lang->_('COM_VIRTUEMART_SEF_CART'),
 				'editaddresscartBT'	=> $lang->_('COM_VIRTUEMART_SEF_EDITADRESSCART_BILL'),
 				'editaddresscartST'	=> $lang->_('COM_VIRTUEMART_SEF_EDITADRESSCART_SHIP'),
+				'details '			=> $lang->_('COM_VIRTUEMART_SEF_DETAILS'),
 				'search'			=> $lang->_('COM_VIRTUEMART_SEF_SEARCH'),
 				'page'				=> $lang->_('COM_VIRTUEMART_SEF_PAGE'),
 				'orderDesc'			=> $lang->_('COM_VIRTUEMART_SEF_ORDER_DESC'),
@@ -652,9 +673,12 @@ class vmrouterHelper {
 				'askquestion' => 'askquestion',
 				'editpayment' => 'editpayment',
 				'user' => 'user',
+				'orders' => 'orders',
+				'list' => 'list',
 				'cart' => 'cart',
 				'editaddresscartBT' => 'edit_cart_bill_to',
 				'editaddresscartST' => 'edit_cart_ship_to',
+				'details' => 'details',
 				'search' => 'search',
 				'page' => 'page',
 				'orderDesc' => 'desc',

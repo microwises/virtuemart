@@ -69,16 +69,21 @@ class VirtuemartViewUser extends JView {
 
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
-		$this->_model = $this->getModel('user', 'VirtuemartModel');
+		if(!class_exists('VirtuemartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
+		$this->_model = new VirtuemartModelUser();
+		
+		if(!class_exists('VirtuemartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
+		$this->_userFieldsModel = new VirtuemartModelUserfields();
+
+
+
+		//$this->_model = $this->getModel('user', 'VirtuemartModel');
 //		$this->_model->setCurrent(); //without this, the administrator can edit users in the FE, permission is handled in the usermodel, but maybe unsecure?
 		$editor = JFactory::getEditor();
 
 		//the cuid is the id of the current user
 		$this->_currentUser = JFactory::getUser();
 		$this->_cuid = $this->_lists['current_id'] = $this->_currentUser->get('id');
-
-		$this->_userFieldsModel = $this->getModel('userfields', 'VirtuemartModel');
-
 
 		$this->_userDetails = $this->_model->getUser();
 		$this->assignRef('userDetails', $this->_userDetails);
