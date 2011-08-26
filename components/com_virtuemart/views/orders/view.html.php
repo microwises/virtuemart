@@ -38,7 +38,9 @@ class VirtuemartViewOrders extends JView {
 		$layoutName = JRequest::getWord('layout', $this->getLayout());
 
 		$_currentUser = JFactory::getUser();
-		$orderModel = $this->getModel('orders');
+
+		if (!class_exists('VirtueMartModelOrders')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
+		$orderModel = new VirtueMartModelOrders();
 
 		if ($layoutName == 'details') {
 
