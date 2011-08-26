@@ -79,8 +79,8 @@ class VirtueMartControllerPaymentresponse extends JController {
         $layoutName = JRequest::getVar('paymentResponse', 'default');
         $view->setLayout($layoutName);
         JRequest::setVar('paymentResponse', Jtext::_('COM_VIRTUEMART_PAYMENT_USER_CANCEL'));
-        $cart = VirtueMartCart::getCart();
-        $cart->removeCartFromSession();
+       // $cart = VirtueMartCart::getCart();
+        //$cart->removeCartFromSession();
         /* Display it all */
         $view->display();
     }

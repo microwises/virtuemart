@@ -9,7 +9,7 @@
 	<authorEmail>contact@st42.fr</authorEmail>
 	<authorUrl>www.virtuemart.net</authorUrl>
 	<version>1.5</version>
-	<description>Allows Searching of Virtuemart Component</description>
+	<description>Allows Searching of VirtueMart Component</description>
 	<languages>
 		<language tag="en-GB">en-GB.plg_search_virtuemart.ini</language>
 		<language tag="fr-FR">fr-FR.plg_search_virtuemart.ini</language>

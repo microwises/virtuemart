@@ -20,8 +20,8 @@
 defined('_JEXEC') or die('Restricted access');
 JHTML::_( 'behavior.modal' );
 
-$document = JFactory::getDocument();
-$document->addScriptDeclaration($js);
+//$document = JFactory::getDocument();
+//$document->addScriptDeclaration($js);
 
  echo $this->paymentResponse;
 

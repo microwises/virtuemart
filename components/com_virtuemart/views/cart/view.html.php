@@ -132,7 +132,7 @@ class VirtueMartViewCart extends JView {
 
 		$this->assignRef('lists', $this->lists);
                 // @max: quicknirty
-$this->_cart->setCartIntoSession();
+            $this->_cart->setCartIntoSession();
 		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 
 		parent::display($tpl);
