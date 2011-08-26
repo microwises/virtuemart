@@ -123,11 +123,11 @@ span.quantity-controls input.quantity-minus {background: url(../images/vmgeneral
 /* Add To Cart Button */
 .addtocart-bar {padding: 0px 0px 0px 0px;margin: 0px 0px 0px 0px;}
 span.addtocart-button {width: 152px;float: left;margin: 0px 0px 0px 10px;}
-span.addtocart-button input.addtocart-button {width: 152px;padding: 4px 5px;background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;background-position: 0px -160px;color: #fff;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 14px;cursor: pointer;text-shadow: 1px 1px 1px #000;height: 34px;text-align: center;letter-spacing: 1px;text-shadow: 1px 1px 0px #028c02;}
+span.addtocart-button input.addtocart-button {width: 152px;padding: 4px 5px;background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;background-position: 0px -160px;color: #fff;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 14px;cursor: pointer; height: 34px;text-align: center;letter-spacing: 1px; }
 span.addtocart-button input.addtocart-button:hover {background-position: 0px -200px;color: #f2f2f2;}
 
 /* Notify Button */
-span.addtocart-button input.notify-button {width: 160px;padding: 4px 5px;background: #e8e8e8 url(../../images/style1/backgrounds.png) top repeat-x;background-position: 0px -160px;color: #fff;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 14px;cursor: pointer;text-shadow: 1px 1px 1px #000;height: 34px;text-align: center;letter-spacing: 1px;text-shadow: 1px 1px 0px #028c02;}
+span.addtocart-button input.notify-button {width: 160px;padding: 4px 5px;background: #e8e8e8 url(../../images/style1/backgrounds.png) top repeat-x;background-position: 0px -160px;color: #fff;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 14px;cursor: pointer; height: 34px;text-align: center;letter-spacing: 1px;}
 span.addtocart-button input.notify-button:hover {background-position: 0px -200px;color: #f2f2f2;}
 
 
@@ -203,7 +203,7 @@ span.addtocart-button input.notify-button:hover {background-position: 0px -200px
 /* Order list & container */
 .orderby-displaynumber {margin: 10px 0px 10px 0px;border-bottom: solid #E9E8E8 1px;border-top: solid #E9E8E8 1px;padding:10px 0px;}
 .orderlistcontainer {font-size: 12px;display: inline-block;text-decoration: none;margin: 0px 15px 0px 0px;}
-.orderlistcontainer div.activeOrder {padding:2px 24px 1px 12px; background: #FFF top right no-repeat url(../images/vmgeneral/arrow_down.png);cursor: pointer;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;}
+.orderlistcontainer div.activeOrder {padding:2px 24px 1px 12px; background: #FFF top right no-repeat url(../images/vmgeneral/arrow_down.png);cursor: pointer;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;}
 .orderlistcontainer a {text-decoration:none;display:block;}
 .orderlistcontainer a :hover{text-decoration:none;display:block;color: #EEE;background: #777;}
 .orderlistcontainer div.orderlist {display:none;position:absolute;border: solid #CAC9C9 1px;background: #FFF;cursor: pointer;}
@@ -262,10 +262,10 @@ span.addtocart-button input.notify-button:hover {background-position: 0px -200px
 ////////// General Buttons ///////////
 ////////////////////////////////////*/
 
-a.product-details {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;}
+a.product-details {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;}
 a.product-details:hover {background: #fff url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;}
 
-a.ask-a-question {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 12px 1px 12px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;font-weight: bold;background-position: 0px 0px;display: inline-block;text-decoration: none;margin-bottom: 8px;}
+a.ask-a-question {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 12px 1px 12px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;font-weight: bold;background-position: 0px 0px;display: inline-block;text-decoration: none;margin-bottom: 8px;}
 
 a.ask-a-question:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;text-decoration: none;}
 
@@ -274,20 +274,20 @@ input.vm-default {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) t
 input.vm-default:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #000;}
 
 /* Green Button */
-input.highlight-button {padding: 4px 8px 2px 8px;background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;background-position: 0px -160px;color: #fff;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;cursor: pointer;text-shadow: 1px 1px 1px #000;text-align: center;letter-spacing: 1px;text-shadow: 1px 1px 0px #028c02;display: inline-block;text-decoration: none;}
+input.highlight-button {padding: 4px 8px 2px 8px;background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;background-position: 0px -160px;color: #fff;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;cursor: pointer;text-align: center;letter-spacing: 1px;display: inline-block;text-decoration: none;}
 input.highlight-button:hover {background-position: 0px -200px;color: #f2f2f2;}
 input.highlight-button:visited {color: #fff;}
 
 /* Default Link Button */
-a.details {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;}
+a.details {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;}
 a.details:hover {background: #fff url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;text-decoration: none;}
 
 /* Default Input Button */
-button.default {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 5px 8px 4px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;cursor: pointer;}
+button.default {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 5px 8px 4px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;cursor: pointer;}
 button.default:hover {background: #fff url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;text-decoration: none;}
 
 /* Highlight Link Button */
-a.highlight, a.highlight:visited {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 0px #028c02;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;background-position: 0px -160px;color: #fff;}
+a.highlight, a.highlight:visited {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;background-position: 0px -160px;color: #fff;}
 a.highlight:hover {background-position: 0px -200px;color: #f2f2f2;}
 
 /* Text Area */
@@ -362,14 +362,14 @@ textarea.customer-comment:hover {color: #000;background: #e8e8e8;}
 
 /* Terms Of Service */
 div.terms-of-service {margin: 10px 0px 0px 0px;padding: 10px 0px 15px 0px;border-top: solid #E9E8E8 1px;border-bottom: solid #E9E8E8 1px;}
-.terms-of-service h5 {background: #7C1E21;color: rgba(255, 255, 255, 0.9);padding: 15px;font-size: 14px;text-align: center;border-radius: 6px;-moz-border-radius: 6px;-webkit-border-radius: 6px;margin: 0px;font-weight: normal;text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);}
+.terms-of-service h5 {background: #7C1E21;color: rgba(255, 255, 255, 0.9);padding: 15px;font-size: 14px;text-align: center;border-radius: 6px;-moz-border-radius: 6px;-webkit-border-radius: 6px;margin: 0px;font-weight: normal;}
 .terms-of-service h5 a,.terms-of-service h5 a:visited {color: #fff;text-transform: uppercase;}
 
 /* Continue Shopping Button */
 a.continue_link, a.continue_link:hover, a.continue_link:visited {font-size: 12px;font-weight: bold;display: inline-block;text-decoration: none;text-decoration: none;color: #777;}
 
 /* Check out Now button */
-a.checkout_link:link, a.checkout_link:visited {padding: 6px 12px 3px 12px;background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;background-position: 0px -160px;color: #fff;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;cursor: pointer;text-shadow: 1px 1px 1px #000;text-align: center;letter-spacing: 1px;text-shadow: 1px 1px 0px #028c02;display: inline-block;text-decoration: none;}
+a.checkout_link:link, a.checkout_link:visited {padding: 6px 12px 3px 12px;background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;background-position: 0px -160px;color: #fff;border: solid #00a000 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;cursor: pointer;text-align: center;letter-spacing: 1px;display: inline-block;text-decoration: none;}
 a.checkout_link:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -200px;color: #f2f2f2;text-decoration: none;}
 
 .VmArrowdown{padding:0px 12px 0px 12px; background: top right no-repeat url(../images/vmgeneral/arrow_down.png);cursor: pointer;float: right;width: 16px;height: 16px; }
