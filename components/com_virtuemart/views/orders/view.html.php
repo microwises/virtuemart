@@ -86,9 +86,9 @@ class VirtuemartViewOrders extends JView {
 
 		$currency = CurrencyDisplay::getInstance();
 		$this->assignRef('currency', $currency);
-
+		if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
 		// Create a simple indexed array woth ordertatuses
-		$orderStatusModel = $this->getModel('orderstatus');
+		$orderStatusModel = new VirtueMartModelOrderstatus();
 		$_orderstatuses = $orderStatusModel->getOrderStatusList();
 		$orderstatuses = array();
 		foreach ($_orderstatuses as $_ordstat) {
