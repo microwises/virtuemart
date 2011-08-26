@@ -475,7 +475,9 @@ class VmConfig{
 		// If exist exit
 		if ($jPrice) return;
 
-		JPlugin::loadLanguage('com_virtuemart');
+		//JPlugin::loadLanguage('com_virtuemart');
+                $lang = JFactory::getLanguage();
+                $lang->load('com_virtuemart');
 		VmConfig::jSite();
 
 		$closeimage = JURI::root(true) .'/components/com_virtuemart/assets/images/facebox/closelabel.png';
