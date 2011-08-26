@@ -163,8 +163,12 @@ class VirtueMartModelCategory extends VmModel {
 		} else {
 			$whereString = 'WHERE 1 ';
 		}
-
-		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$this->_getOrdering('c.ordering','asc'));
+		if ( JRequest::getCmd('view') == 'category') {
+			$ordering = $this->_getOrdering($defaut='c.ordering',$order_dir = 'asc');
+		} else {
+			$ordering = '';
+		}
+		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
 
 		return $this->_category_tree;
 
