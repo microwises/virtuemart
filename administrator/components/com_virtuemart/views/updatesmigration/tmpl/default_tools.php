@@ -51,7 +51,7 @@ if(!VmConfig::get('dangeroustools', false)){
 	</td>*/ ?>
  	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=portMedia&token='.JUtility::getToken() ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo 'Start migrate Media?'; ?>', '<?php echo $link; ?>');">
+	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING_CONFIRM', JText::_('COM_VIRTUEMART_MEDIA_S')); ?>', '<?php echo $link; ?>');">
 			<span class="vmicon48 vm_shop_products_48"></span>
 			<br /><?php echo JText::_('COM_VIRTUEMART_SYNC_MEDIA_FILES'); ?>
 	    
@@ -67,58 +67,52 @@ if(!VmConfig::get('dangeroustools', false)){
 		</a></div>
 	</td>
 	<td align="left" colspan="3" >
-	    Synchronize media: Just upload your media to the paths:<br />
-	    Media product url: <?php echo VmConfig::get('media_product_path'); ?><br />
-	    Media category url: <?php echo VmConfig::get('media_category_path'); ?><br />
-	    Media manufacturer url: <?php echo VmConfig::get('media_manufacturer_path'); ?><br />
-<br />
-	    You can change these urls in the config settings.<br /><br />
-	    Renew config by file means that the config settings are reset by the values from the file /administrator/components/com_virtuemart/virtuemart_defaults.cfg
+		<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MEDIAS_EXPLAIN',VmConfig::get('media_product_path') ,VmConfig::get('media_category_path') , VmConfig::get('media_manufacturer_path')); ?>
+	    
 	</td>
     </tr>
 
     <tr>
    <td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateUsersFromVmOne&token='.JUtility::getToken() ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo 'Start to migrate users?'; ?>', '<?php echo $link; ?>');">
+	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING_CONFIRM', JText::_('COM_VIRTUEMART_UPDATE_USERS')); ?>', '<?php echo $link; ?>');">
 		<span class="vmicon48 vm_install_48"></span>
 	    <br />
-	    Migrate users we can from VM1 to VM2
+	    <?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING', JText::_('COM_VIRTUEMART_UPDATE_USERS')); ?>
 	</a></div>
 	</td>
 
    <td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateGeneralFromVmOne&token='.JUtility::getToken() ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo 'Start to migrate general?'; ?>', '<?php echo $link; ?>');">
+	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING_CONFIRM', JText::_('COM_VIRTUEMART_UPDATE_GENERAL')); ?>', '<?php echo $link; ?>');">
 		<span class="vmicon48 vm_install_48"></span>
 	    <br />
-	    Migrate general we can from VM1 to VM2
+		<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING', JText::_('COM_VIRTUEMART_UPDATE_GENERAL')); ?>
 		</a></div>
-	</td>
 
 	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateProductsFromVmOne&token='.JUtility::getToken() ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo 'Start to migrate products?'; ?>', '<?php echo $link; ?>');">
+	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING_CONFIRM', JText::_('COM_VIRTUEMART_UPDATE_PRODUCTS')); ?>', '<?php echo $link; ?>');">
 		<span class="vmicon48 vm_install_48"></span>
 	    <br />
-	    Migrate products we can from VM1 to VM2
+	    <?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING', JText::_('COM_VIRTUEMART_UPDATE_PRODUCTS')); ?>
 		</a></div>
 	</td>
 		<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateOrdersFromVmOne&token='.JUtility::getToken() ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo 'Start to migrate orders?'; ?>', '<?php echo $link; ?>');">
+	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING_CONFIRM', JText::_('COM_VIRTUEMART_UPDATE_ORDERS')); ?>', '<?php echo $link; ?>');">
 		<span class="vmicon48 vm_install_48"></span>
 	    <br />
-	    Migrate orders we can from VM1 to VM2
+		<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING', JText::_('COM_VIRTUEMART_UPDATE_ORDERS')); ?>
 		</a></div>
 	</td>
 
  	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateAllInOne&token='.JUtility::getToken() ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo 'Start to migrate?'; ?>', '<?php echo $link; ?>');">
+	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING_CONFIRM', JText::_('COM_VIRTUEMART_UPDATE_ALL')); ?>', '<?php echo $link; ?>');">
 		<span class="vmicon48 vm_install_48"></span>
 	    <br />
-	    Migrate everything we can from VM1 to VM2
+	    <?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING', JText::_('COM_VIRTUEMART_UPDATE_ALL')); ?>
 		</a></div>
 	</td>
 <?php /*	<td align="center">
