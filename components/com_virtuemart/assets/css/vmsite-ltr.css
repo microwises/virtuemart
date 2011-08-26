@@ -340,7 +340,7 @@ span.tos {display: inline-block;margin-right: 15px;}
 .billto-shipto {margin: 10px 0px 0px 0px;padding: 10px 0px 25px 0px;border-top: solid #E9E8E8 1px;border-bottom: solid #E9E8E8 1px;}
 
 /* Title */
-.billto-shipto  span,  span.terms-of-service{display: inline-block;padding: 6px 0px 3px 6px;font-weight: bold;font-size: 14px;}
+.billto-shipto  span,  span.terms-of-service{display: inline-block;font-size: 14px;}
 /*span.billto {background: url(../images/vmgeneral/billto-icon.png) left no-repeat;}
 span.shipto {background: url(../images/vmgeneral/shipto-icon.png) left no-repeat;}
 span.termsofservice {background: url(../images/vmgeneral/termsofservice-icon.png) left no-repeat;margin: 0px 0px 10px 0px;}*/
