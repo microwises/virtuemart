@@ -7,7 +7,7 @@
 
 /* 48x48 images and joomla overide to use it*/
 #cpanel span.vmicon48 {    display: inline-block !important; height: 48px; width: 48px;margin-top: 10px;}
-
+#cpanel div.icon { cursor: pointer; }
 
 .vmicon48, .icon-48-head{background-image: url(../images/icone48.png) ; background-repeat: no-repeat !important; display :inline-block ;}
 .vm_category_48, .vm_product_types_48, .vm_custom_48{ background-position: 0 0; height: 48px; } 

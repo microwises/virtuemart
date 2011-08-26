@@ -121,7 +121,7 @@ class VirtuemartViewCalc extends JView {
 			$this->assignRef('statesList', $statesList);
 
 			//Todo forbid to see this list, when not the admin or mainvendor is looking on it
-			$vendorList= ShopFunctions::renderVendorList($calc->virtuemart_vendor_id,True);
+			$vendorList= ShopFunctions::renderVendorList($calc->virtuemart_vendor_id,false);
 			$this->assignRef('vendorList', $vendorList);
 
 			ShopFunctions::addStandardEditViewCommands();
