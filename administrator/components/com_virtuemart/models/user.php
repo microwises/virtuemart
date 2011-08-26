@@ -784,14 +784,25 @@ class VirtueMartModelUser extends VmModel {
 	 /**
 	  * Retrieve a list of users from the database.
 	  *
+	  * @author Max Milbers
 	  * @return object List of user objects
 	  */
-	 function getUserList()
-	 {
-			$query = $this->_getListQuery();
-			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-			$this->_total = $this->_getListCount($query);
-			return $this->_data;
+	 function getUserList() {
+
+			$select = ' DISTINCT ju.id AS id
+			, ju.name AS name
+			, ju.username AS username
+			, vmu.user_is_vendor AS is_vendor
+			, vmu.perms AS perms
+			, ju.usertype AS usertype
+			, IFNULL(sg.shopper_group_name, "") AS shopper_group_name ';
+			$joinedTables = ' FROM #__users AS ju
+			LEFT JOIN #__virtuemart_vmusers AS vmu ON ju.id = vmu.virtuemart_user_id
+			LEFT JOIN #__virtuemart_vmuser_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id
+			LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.virtuemart_shoppergroup_id = sg.virtuemart_shoppergroup_id ';
+
+			return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$this->_getFilter(),'',$this->_getOrdering('id'));
+
 	 }
 
 
@@ -869,7 +880,7 @@ class VirtueMartModelUser extends VmModel {
 	  *
 	  * @return string SQL query statement
 	  */
-	 function _getListQuery (){
+/*	 function _getListQuery (){
 
 	 	// Used tables #__virtuemart_vmusers, #__virtuemart_userinfos, #__vm_user_perm_groups, #__virtuemart_vmuser_shoppergroups, #__virtuemart_vendors
 	 	$query = 'SELECT DISTINCT ju.id AS id
@@ -888,7 +899,7 @@ class VirtueMartModelUser extends VmModel {
 
 		return ($query);
 	 }
-
+*/
 
 	 /**
 	  * Take a list of userIds and check if they all have a record in #__virtuemart_userinfos

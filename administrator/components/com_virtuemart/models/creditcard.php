@@ -78,13 +78,14 @@ class VirtueMartModelCreditcard extends VmModel {
 	 */
 	function getCreditCards($published=1)
 	{
-		$query = 'SELECT * FROM `#__virtuemart_creditcards` ';
-		if($published) $query .= 'WHERE `published`= "'.(int)$published.'" ';
-		$query .= 'ORDER BY `#__virtuemart_creditcards`.`virtuemart_creditcard_id`';
-		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-		// set total for pagination
-		$this->_total = $this->_getListCount($query);
-		return $this->_data;
+
+		$where = array();
+		if($published) $where[] = ' `published`= "'.(int)$published.'" ';
+		$whereString = '';
+		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
+
+		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_creditcards`',$whereString,'',$this->_getOrdering('virtuemart_creditcard_id'));
+
 	}
 
 			/**

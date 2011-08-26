@@ -123,7 +123,7 @@ class VirtueMartModelMedia extends VmModel {
 	 * @param boolean $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of media objects
 	 */
-	function getFilesOld($onlyPublished=false, $noLimit=false,  $count=false, $where=array()){
+/*	function getFilesOld($onlyPublished=false, $noLimit=false,  $count=false, $where=array()){
 
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 		$vendorId = 1; //TODO set to logged user or requested vendorId, not easy later
@@ -227,6 +227,16 @@ class VirtueMartModelMedia extends VmModel {
 
 		return $this->_data;
 	}
+*/
+
+	/**
+	* Retireve a list of files from the database. This is meant only for backend use
+	*
+	* @author Max Milbers
+	* @param boolean $onlyPublished True to only retreive the published files, false otherwise
+	* @param boolean $noLimit True if no record count limit is used, false otherwise
+	* @return object List of media objects
+	*/
 
 	function getFiles($onlyPublished=false, $noLimit=false,  $count=false, $where=array()){
 
@@ -313,7 +323,7 @@ class VirtueMartModelMedia extends VmModel {
 			return false;
 		}
 
-		$this->_data = $this->exeSortSearchListQuery(false, $select, $joinedTables, $whereString, $groupBy, $orderBy);
+		$this->_data = $this->exeSortSearchListQuery(2, $select, $joinedTables, $whereString, $groupBy, $orderBy);
 
 		if(empty($this->_data)){
 			return array();

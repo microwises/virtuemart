@@ -124,22 +124,22 @@ class VirtuemartModelManufacturercategories extends VmModel {
 	 */
 	function getManufacturerCategories($onlyPublished=false, $noLimit=false)
 	{
-		$query = 'SELECT * FROM `#__virtuemart_manufacturercategories` ';
+		$this->_noLimit = $noLimit;
+
+		$select = ' FROM `#__virtuemart_manufacturercategories` ';
+
+		$where = array();
 		if ($onlyPublished) {
-			$query .= 'WHERE `#__virtuemart_manufacturercategories`.`published` = 1';
+			$where[] = ' `#__virtuemart_manufacturercategories`.`published` = 1';
 		}
-		$query .= ' ORDER BY `#__virtuemart_manufacturercategories`.`mf_category_name`';
 
-		if ($noLimit) {
-			$this->_data = $this->_getList($query);
-		}
-		else {
-			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-		}
-		// set total for pagination
-		$this->_total = $this->_getListCount($query);
+//		$query .= ' ORDER BY `#__virtuemart_manufacturercategories`.`mf_category_name`';
 
-		return $this->_data;
+		$whereString = '';
+		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
+
+		return $this->_data = $this->exeSortSearchListQuery(0,'*','FROM `#__virtuemart_manufacturercategories`',$whereString,'',$this->_getOrdering('mf_category_name'));
+
 	}
 
 	/**

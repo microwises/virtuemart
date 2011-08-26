@@ -129,8 +129,9 @@ class VirtueMartModelCategory extends VmModel {
 
 		$vendorId = 1;
 
-		$select = ' c.`virtuemart_category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared`
-				  FROM `#__virtuemart_categories` AS c
+		$select = ' c.`virtuemart_category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared` ';
+
+		$joinedTables = ' FROM `#__virtuemart_categories` AS c
 				  LEFT JOIN `#__virtuemart_category_categories` AS cx
 				  ON c.`virtuemart_category_id` = cx.`category_child_id` ';
 
@@ -163,7 +164,7 @@ class VirtueMartModelCategory extends VmModel {
 			$whereString = 'WHERE 1 ';
 		}
 
-		$this->_category_tree = $this->exeSortSearchListQuery(0,'',$select,$whereString,'',$this->_getOrdering('c.ordering','asc'));
+		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$this->_getOrdering('c.ordering','asc'));
 
 		return $this->_category_tree;
 

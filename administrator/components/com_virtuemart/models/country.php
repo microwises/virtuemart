@@ -99,25 +99,10 @@ class VirtueMartModelCountry extends VmModel {
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-// 		if($filterCountry){
-// 			$query .= $this->_getOrdering('country_name');
-// 		} else {
-// 			$query .= ' ORDER BY country_name';
-// 		}
-
-// 		if ($noLimit) {
-// 		    $this->_data = $this->_getList($query);
-// 		}
-// 		else {
-// 		    $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-// 		}
-
-		// set total for pagination
-// 		$this->_total = $this->_getListCount($query) ;
 
 		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_countries`',$whereString,'',$this->_getOrdering('country_name'));
 
-		return $this->_data;
+
     }
 
 

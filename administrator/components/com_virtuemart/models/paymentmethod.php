@@ -106,19 +106,17 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	 * @return object List of calculation rule objects
 	 */
 	public function getPayments($onlyPublished=false, $noLimit=false){
-		$query = 'SELECT * FROM `#__virtuemart_paymentmethods` ';
+
+
+		$where = array();
 		if ($onlyPublished) {
-			$query .= 'WHERE `#__virtuemart_paymentmethods`.`published` = 1';
-		}
-		$query .= ' ORDER BY `#__virtuemart_paymentmethods`.`payment_name`';
-		if ($noLimit) {
-			$this->_data = $this->_getList($query);
-		} else {
-			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+			$where[] = ' `#__virtuemart_paymentmethods`.`published` = 1';
 		}
 
-		// set total for pagination
-		$this->_total = $this->_getListCount($query);
+		$whereString = '';
+		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
+
+		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_paymentmethods`',$whereString,'',$this->_getOrdering('payment_name'));
 
 		if(empty($this->_db))  $this->_db = JFactory::getDBO();
 

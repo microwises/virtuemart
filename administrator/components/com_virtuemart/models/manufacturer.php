@@ -130,43 +130,42 @@ class VirtueMartModelManufacturer extends VmModel {
 	 */
 	public function getManufacturers($onlyPublished=false, $noLimit=false) {
 
+		$this->_noLimit = $noLimit;
 		$mainframe = JFactory::getApplication();
-		$db = JFactory::getDBO();
+// 		$db = JFactory::getDBO();
 		$option	= 'com_virtuemart';
 
 		$virtuemart_manufacturercategories_id	= $mainframe->getUserStateFromRequest( $option.'virtuemart_manufacturercategories_id', 'virtuemart_manufacturercategories_id', 0, 'int' );
 		$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string' );
 
+
 		$where = array();
 		if ($virtuemart_manufacturercategories_id > 0) {
 			$where[] .= 'M.`virtuemart_manufacturercategories_id` = '. $virtuemart_manufacturercategories_id;
 		}
+
 		if ( $search && $search != 'true') {
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			//$search = $this->_db->Quote($search, false);
 			$where[] .= 'LOWER( M.`mf_name` ) LIKE '.$search;
 		}
+
 		if ($onlyPublished) {
 			$where[] .= '`M`.`published` = 1';
 		}
 
-		$where = (count($where) ? ' WHERE '.implode(' AND ', $where) : '');
+		$whereString = '';
+		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-		$query = 'SELECT M.*,MC.`mf_category_name`   FROM `#__virtuemart_manufacturers` AS M LEFT JOIN `#__virtuemart_manufacturercategories` AS MC on M.`virtuemart_manufacturercategories_id`= MC.`virtuemart_manufacturercategories_id`'
-				. $where;
-		$query .= ' ORDER BY M.`mf_name`';
-		if ($noLimit) {
-			$this->_data = $this->_getList($query);
-		}
-		else {
-			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-		}
-		// set total for pagination
-		$this->_total = $this->_getListCount($query);
-/*		$app = JFactory::getApplication();
-		$app -> enqueueMessage('manu'.$this->_db->getQuery());
-		$app -> enqueueMessage('manu'.$this->_db->getErrorMsg());*/
-		return $this->_data;
+		$select = ' M.*,MC.`mf_category_name` ';
+
+		$joinedTables = 'FROM `#__virtuemart_manufacturers` AS M LEFT JOIN `#__virtuemart_manufacturercategories` AS MC on M.`virtuemart_manufacturercategories_id`= MC.`virtuemart_manufacturercategories_id`';
+
+		$whereString = '';
+		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
+
+		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$this->_getOrdering('mf_name'));
+
 	}
 
 }

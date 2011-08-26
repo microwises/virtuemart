@@ -44,35 +44,30 @@ class VirtueMartModelInventory extends VmModel {
 
     /**
      * Select the products to list on the product list page
+     * @author Max Milbers
      */
     public function getInventory() {
 
-     	/* Build the query */
-     	$q = "SELECT `#__virtuemart_products`.`virtuemart_product_id`,
+		$select = ' `#__virtuemart_products`.`virtuemart_product_id`,
      				`#__virtuemart_products`.`product_parent_id`,
      				`product_name`,
      				`product_sku`,
      				`product_in_stock`,
      				`product_weight`,
      				`published`,
-     				`product_price`
-     				".$this->getInventoryListQuery().$this->getInventoryFilter();
-     	$this->_data = $this->_getList($q, $this->getState('limitstart'), $this->getState('limit'));
-		$this->_total = $this->_getListCount($this->_query) ;
-		return $this->data ;
-    }
+     				`product_price`';
 
-    /**
-    * List of tables to include for the product query
-    * @author RolandD
-    */
-    private function getInventoryListQuery() {
-    	return 'FROM `#__virtuemart_products`
+     	$joinedTables = 'FROM `#__virtuemart_products`
 			LEFT JOIN `#__virtuemart_product_prices`
 			ON `#__virtuemart_products`.`virtuemart_product_id` = `#__virtuemart_product_prices`.`virtuemart_product_id`
 			LEFT JOIN `#__virtuemart_shoppergroups`
 			ON `#__virtuemart_product_prices`.`virtuemart_shoppergroup_id` = `#__virtuemart_shoppergroups`.`virtuemart_shoppergroup_id`';
+
+
+		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$this->getInventoryFilter(),'',$this->_getOrdering('product_in_stock','asc'));
+
     }
+
 
     /**
     * Collect the filters for the query
@@ -86,13 +81,13 @@ class VirtueMartModelInventory extends VmModel {
      		$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			//$search = $this->_db->Quote($search, false);
      		$filters[] = '`#__virtuemart_products`.`product_name` LIKE '.$search;
-     	} 
+     	}
      	if (JRequest::getInt('stockfilter', 0) == 1){
      		$filters[] = '`#__virtuemart_products`.`product_in_stock` > 0';
-     	} 
+     	}
      	if ($catId = JRequest::getInt('virtuemart_category_id', 0) > 0){
      		$filters[] = '`#__virtuemart_categories`.`virtuemart_category_id` = '.$catId;
-     	} 
+     	}
      	$filters[] = '(`#__virtuemart_shoppergroups`.`default` = 1 OR `#__virtuemart_shoppergroups`.`default` is NULL)';
 
      	return ' WHERE '.implode(' AND ', $filters).$this->_getOrdering('product_name');

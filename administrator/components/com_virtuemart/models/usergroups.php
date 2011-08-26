@@ -61,21 +61,15 @@ class VirtueMartModelUsergroups extends VmModel {
 
     function getUsergroups($onlyPublished=false, $noLimit=false) {
 
-		$db = JFactory::getDBO();
-		$query = 'SELECT * FROM `#__virtuemart_permgroups` ';
-//		if ($onlyPublished) {
-//			$query .= 'WHERE `#__virtuemart_shoppergroups`.`published` = 1';
-//		}
-		$query .= ' ORDER BY `#__virtuemart_permgroups`.`group_name`';
-		if ($noLimit) {
-			$this->_data = $this->_getList($query);
-		}
-	 	else {
-			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-		}
-		/* Total for pagination */
-		$this->_total = $this->_getListCount($query);
-		return $this->_data;
+    	$where = array();
+    	if ($onlyPublished) {
+    		$where[] = ' `#__virtuemart_shoppergroups`.`published` = 1';
+    	}
+
+    	$whereString = '';
+    	if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
+
+    	return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_permgroups`',$whereString,'',$this->_getOrdering('group_name'));
 
     }
 

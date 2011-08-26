@@ -95,12 +95,12 @@ class VirtueMartModelCoupon extends VmModel {
 	 * @return object List of coupon objects
 	 */
 	function getCoupons() {
-		$query = 'SELECT * FROM `#__virtuemart_coupons` ';
-		$query .= 'ORDER BY `#__virtuemart_coupons`.`virtuemart_coupon_id`';
-		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-		// set total for pagination
-		$this->_total = $this->_getListCount($query) ;
-		return $this->_data;
+
+		$whereString = '';
+// 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
+
+		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_coupons`',$whereString,'',$this->_getOrdering('virtuemart_coupon_id'));
+
 	}
 }
 
