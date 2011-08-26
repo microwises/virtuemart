@@ -35,6 +35,7 @@ class VmModel extends JModel {
 	var $_cidName		= 'cid';
 	var $_togglesName	= null;
 	private $_withCount = true;
+	var $_noLimit = false;
 
 	public function __construct($cidName='cid'){
 		parent::__construct();
@@ -116,6 +117,7 @@ class VmModel extends JModel {
 			jimport('joomla.html.pagination');
 // 			$this->_pagination = new JPagination($total , $this->getState('limitstart'), $this->getState('limit') );
 			$this->_pagination = new JPagination($total , $limits[0], $limits[1] );
+// 			vmdebug('created Pagination',$total, $limits[0], $limits[1] );
 		}
 		return $this->_pagination;
 	}
@@ -171,7 +173,7 @@ class VmModel extends JModel {
 	*
 	* @author Max Milbers
 	* @author Patrick Kohl
-	* @param boolean $object use object or array as return value
+	* @param boolean $object use single result array = 2, assoc. array = 1 or object list = 0 as return value
 	* @param string $select the fields to select
 	* @param string $joinedTables the string of the joined tables or the table
 	* @param string $whereString for the where condition
@@ -193,6 +195,10 @@ class VmModel extends JModel {
 				$limitStart = 0;
 				$limit = $nbrReturnProducts;
 				$this->_withCount = false;
+			} else if($this->_noLimit){
+				$this->_withCount = false;
+				$limitStart = 0;
+				$limit = 0;
 			} else {
 				$limits = $this->setPaginationLimits();
 				$limitStart = $limits[0];
@@ -208,16 +214,18 @@ class VmModel extends JModel {
 // 			vmdebug('my query',$q);
 			$this->_db->setQuery($q,$limitStart,$limit);
 
-			if($object){
+			if($object === 2){
+				$list = $this->_db->loadResultArray();
+			} else if($object ===1 ){
 				$list = $this->_db->loadAssocList();
 			} else {
-				$list = $this->_db->loadResultArray();
+				$list = $this->_db->loadObjectList();
 			}
 
 			if(empty($list)){
 				$errors = $this->_db->getErrorMsg();
 				if( !empty( $errors)){
-					vmdebug('exeSortSearchListQuery error in db ',$this->_db->getQuery());
+					vmdebug('exeSortSearchListQuery error in db ',$this->_db->getErrorMsg());
 				}
 			}
 
@@ -230,6 +238,7 @@ class VmModel extends JModel {
 				}
 				$this->_total = $count;
 				$this->getPagination($count,$limitStart,$limit);
+
 			} else {
 				$this->_withCount = true;
 			}

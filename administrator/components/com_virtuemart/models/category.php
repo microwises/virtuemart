@@ -129,42 +129,41 @@ class VirtueMartModelCategory extends VmModel {
 
 		$vendorId = 1;
 
-		$query = 'SELECT c.`virtuemart_category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared`
+		$select = ' c.`virtuemart_category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared`
 				  FROM `#__virtuemart_categories` AS c
 				  LEFT JOIN `#__virtuemart_category_categories` AS cx
-				  ON c.`virtuemart_category_id` = cx.`category_child_id`
-				  WHERE 1 ';
+				  ON c.`virtuemart_category_id` = cx.`category_child_id` ';
 
-		// Get only published categories
+		$where = array();
+
 		if( $onlyPublished ) {
-			$query .= "AND c.`published` = 1 ";
+			$where[] = " c.`published` = 1 ";
+		}
+		if( $withParentId ){
+			$where[] = ' cx.`category_parent_id` = '. (int)$parentId;
+		}
+
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if( !Permissions::getInstance()->check('admin') ){
+			$where[] = ' (c.`virtuemart_vendor_id` = "'. (int)$vendorId. '" OR c.`shared` = "1") ';
 		}
 
 		if( !empty( $keyword ) ) {
 			$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;
 			//$keyword = $this->_db->Quote($keyword, false);
 
-			$query .= 'AND ( c.`category_name` LIKE '.$keyword.'
-					   OR c.`category_description` LIKE '.$keyword.') ';
+			$where[] = ' ( c.`category_name` LIKE '.$keyword.'
+							   OR c.`category_description` LIKE '.$keyword.') ';
 		}
 
-		if( $withParentId ){
-			$query .= ' AND cx.`category_parent_id` = '. (int)$parentId;
-		}
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-		if( !Permissions::getInstance()->check('admin') ){
-			$query .= ' AND (c.`virtuemart_vendor_id` = "'. (int)$vendorId. '" OR c.`shared` = "1") ';
-		}
-		// this are used in multiple views then we must test if the view are the category view
-		if ( JRequest::getCmd('view') == 'category') {
-		$query .= $this->_getOrdering($defaut='c.ordering',$order_dir = 'asc');
+		$whereString = '';
+		if (count($where) > 0){
+			$whereString = ' WHERE '.implode(' AND ', $where) ;
+		} else {
+			$whereString = 'WHERE 1 ';
 		}
 
-		$this->_db->setQuery($query);
-		$this->_category_tree = $this->_db->loadObjectList();
-
-		// set total for pagination
-		if ($this->_total ==null) $this->_total = $this->_getListCount($query) ;
+		$this->_category_tree = $this->exeSortSearchListQuery(0,'',$select,$whereString,'',$this->_getOrdering('c.ordering','asc'));
 
 		return $this->_category_tree;
 

@@ -77,6 +77,7 @@ class VirtueMartModelCountry extends VmModel {
      * Retrieve a list of countries from the database.
      *
      * @author RickG
+     * @author Max Milbers
      * @param string $onlyPublished True to only retrieve the publish countries, false otherwise
      * @param string $noLimit True if no record count limit is used, false otherwise
      * @return object List of country objects
@@ -84,7 +85,8 @@ class VirtueMartModelCountry extends VmModel {
     function getCountries($onlyPublished=true, $noLimit=false, $filterCountry = false) {
 
 		$where = array();
-		$query = 'SELECT * FROM `#__virtuemart_countries` ';
+		$this->_noLimit = $noLimit;
+// 		$query = 'SELECT * FROM `#__virtuemart_countries` ';
 		/* add filters */
 		if ($onlyPublished) $where[] = '`published` = 1';
 
@@ -94,23 +96,26 @@ class VirtueMartModelCountry extends VmModel {
 			$where[] = '`country_name` LIKE '.$filterCountry;
 		}
 
-		if (count($where) > 0) $query .= ' WHERE '.implode(' AND ', $where) ;
+		$whereString = '';
+		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-		if($filterCountry){
-			$query .= $this->_getOrdering('country_name');
-		} else {
-			$query .= ' ORDER BY country_name';
-		}
+// 		if($filterCountry){
+// 			$query .= $this->_getOrdering('country_name');
+// 		} else {
+// 			$query .= ' ORDER BY country_name';
+// 		}
 
-		if ($noLimit) {
-		    $this->_data = $this->_getList($query);
-		}
-		else {
-		    $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-		}
+// 		if ($noLimit) {
+// 		    $this->_data = $this->_getList($query);
+// 		}
+// 		else {
+// 		    $this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+// 		}
 
 		// set total for pagination
-		$this->_total = $this->_getListCount($query) ;
+// 		$this->_total = $this->_getListCount($query) ;
+
+		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_countries`',$whereString,'',$this->_getOrdering('country_name'));
 
 		return $this->_data;
     }

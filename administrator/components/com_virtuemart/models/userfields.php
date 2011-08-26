@@ -299,7 +299,7 @@ class VirtueMartModelUserfields extends VmModel {
 	public function getUserFieldsFor($layoutName, $type,$userId = -1){
 
 		$register = false;
-		$user = JApplication::getUser();
+		$user = JFactory::getUser();
 		if(!empty($user)){
 			if(empty($user->id)){
 				$register = true;

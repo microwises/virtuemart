@@ -63,13 +63,13 @@ class VirtueMartModelCurrency extends VmModel {
     /**
      * Retireve a list of currencies from the database.
      * This function is used in the backend for the currency listing, therefore no asking if enabled or not
-     * @author RickG, Max Milbers
+     * @author Max Milbers
      * @return object List of currency objects
      */
     function getCurrenciesList($search,$vendorId=1) {
 
 		$where = array();
-		$this->_query = 'SELECT * FROM `#__virtuemart_currencies` ';
+// 		$this->_query = 'SELECT * FROM `#__virtuemart_currencies` ';
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if( !Permissions::getInstance()->check('admin') ){
@@ -79,16 +79,24 @@ class VirtueMartModelCurrency extends VmModel {
 		if($search){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			//$search = $this->_db->Quote($search, false);
-			$where[] = '`currency_name` LIKE '.$search;			
+			$where[] = '`currency_name` LIKE '.$search;
 		}
-		
+
 		if (JRequest::getWord('search', false)) $where[] = '`currency_name` LIKE "%'.$this->_db->getEscaped(JRequest::getWord('search')).'%"';
 
-		if (count($where) > 0) $this->_query .= ' WHERE '.implode(' AND ', $where) ;
-		$this->_query .= $this->_getOrdering('currency_name');
-		$this->_data = $this->_getList($this->_query, $this->getState('limitstart'), $this->getState('limit'));
-		$this->_total = $this->_getListCount($this->_query) ;
-		return $this->_data;
+		$whereString='';
+		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
+
+// 		if (count($where) > 0) $this->_query .= ' WHERE '.implode(' AND ', $where) ;
+// 		$this->_query .= $this->_getOrdering('currency_name');
+// 		$this->_data = $this->_getList($this->_query, $this->getState('limitstart'), $this->getState('limit'));
+// 		$this->_total = $this->_getListCount($this->_query) ;
+
+// 		$object, $select, $joinedTables, $whereString = '', $groupBy = '', $orderBy = '', $filter_order_Dir = '', $nbrReturnProducts = false
+			$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_currencies`',$whereString,'',$this->_getOrdering('currency_name'));
+
+			return $this->_data;
+// 		return $this->_data;
     }
 
     /**

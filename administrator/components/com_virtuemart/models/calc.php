@@ -98,10 +98,12 @@ class VirtueMartModelCalc extends VmModel {
 	 * @return object List of calculation rule objects
 	 */
 	public function getCalcs($onlyPublished=false, $noLimit=false, $search=false){
+
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
 		$where = array();
-		$this->_query = 'SELECT * FROM `#__virtuemart_calcs` ';
+		$this->_noLimit = $noLimit;
+// 		$query = 'SELECT * FROM `#__virtuemart_calcs` ';
 		/* add filters */
 		if ($onlyPublished) $where[] = '`published` = 1';
 		//if (JRequest::getWord('search', false)) $where[] = '`calc_name` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
@@ -110,19 +112,23 @@ class VirtueMartModelCalc extends VmModel {
 			$where[] = '`calc_name` LIKE '.$search;
 		}
 
-		if (count($where) > 0)$this->_query .= ' WHERE '.implode(' AND ', $where) ;
-		$this->_query .= $this->_getOrdering('calc_name');
-		if ($noLimit) {
-			$this->_data = $this->_getList($this->_query);
-		}
-	 	else {
-			$this->_data = $this->_getList($this->_query, $this->getState('limitstart'), $this->getState('limit'));
-		}
+		$whereString= '';
+		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
+// 		$this->_query .= $this->_getOrdering('calc_name');
+// 		if ($noLimit) {
+// 			$this->_data = $this->_getList($this->_query);
+// 		}
+// 	 	else {
+// 			$this->_data = $this->_getList($this->_query, $this->getState('limitstart'), $this->getState('limit'));
+// 		}
 
-		if(count($this->_data) >0){
-			$this->_total = $this->_getListCount($this->_query);
-		}
+// 		if(count($this->_data) >0){
+// 			$this->_total = $this->_getListCount($this->_query);
+// 		}
 		//$this->_total = $this->_getListCount($this->_query) ;
+
+		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_calcs`',$whereString,'',$this->_getOrdering('calc_name'));
+
 		if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		foreach ($this->_data as $data){
 

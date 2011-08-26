@@ -259,7 +259,7 @@ class VirtueMartModelProduct extends VmModel {
 			$whereString = '';
 		}
 
-		return $this->exeSortSearchListQuery(false, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
+		return $this->exeSortSearchListQuery(2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
 
 	}
 
@@ -1444,7 +1444,7 @@ class VirtueMartModelProduct extends VmModel {
 		$update = array();
 
 		if($signInStoc != '=' || $signOrderedStock != '='){
-			
+
 			if($signInStoc!='='){
 				$update[] = '`product_in_stock` = `product_in_stock` ' . $signInStoc . $amount ;
 			}

@@ -163,12 +163,13 @@ class VirtueMartModelOrders extends VmModel {
 	 * @param $uid integer Optional user ID to get the orders of a single user
 	 * @param $_ignorePagination boolean If true, ignore the Joomla pagination (for embedded use, default false)
 	 */
-	public function getOrdersList($uid = 0, $_ignorePagination = false)
+	public function getOrdersList($uid = 0, $noLimit = false)
 	{
 
-		$query = "SELECT o.*, CONCAT_WS(' ',u.first_name,u.middle_name,u.last_name) AS order_name "
-		.',m.payment_name AS payment_method '
-		.$this->getOrdersListQuery();
+		$this->_noLimit = $noLimit;
+		$selecct = " o.*, CONCAT_WS(' ',u.first_name,u.middle_name,u.last_name) AS order_name "
+		.',m.payment_name AS payment_method ';
+		$from = $this->getOrdersListQuery();
 		/*		$_filter = array();
 		 if ($uid > 0) {
 		$_filter[] = ('u.virtuemart_user_id = ' . (int)$uid);
@@ -176,13 +177,13 @@ class VirtueMartModelOrders extends VmModel {
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!Permissions::getInstance()->check('admin')){
-			$query .= 'WHERE u.virtuemart_user_id = ' . (int)$uid.' AND o.virtuemart_vendor_id = "1" ';
+			$whereString= 'WHERE u.virtuemart_user_id = ' . (int)$uid.' AND o.virtuemart_vendor_id = "1" ';
 		} else {
-			$query .= 'WHERE o.virtuemart_vendor_id = "1" ';
+			$whereString= 'WHERE o.virtuemart_vendor_id = "1" ';
 		}
 
 
-		$query .= $this->_getOrdering('virtuemart_order_id', 'DESC');
+/*		$query .= $this->_getOrdering('virtuemart_order_id', 'DESC');
 		if ($_ignorePagination) {
 			$this->_data = $this->_getList($query);
 		} else {
@@ -191,7 +192,10 @@ class VirtueMartModelOrders extends VmModel {
 		// set total for pagination
 		if(count($this->_data) >0){
 			$this->_total = $this->_getListCount($query);
-		}
+		}*/
+
+		$this->_data = $this->exeSortSearchListQuery(0,$selecct,$from,$whereString,'',$this->_getOrdering('virtuemart_order_id', 'DESC'));
+
 
 		return $this->_data ;
 	}
@@ -261,7 +265,7 @@ class VirtueMartModelOrders extends VmModel {
 
 			$data->order_status = $order_status;
 			//$data->comment = $comment;
-			
+
 			$data = $table->bindChecknStore($data,true);
 		/* Update the order item history */
 			//$this->_updateOrderItemHist($id, $order_status, $customer_notified, $comment);
@@ -345,7 +349,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		if(!is_array($orders)){
 			$orders = array($orders);
-		} 
+		}
 
 		/* Process the orders to update */
 		$updated = 0;
@@ -827,8 +831,8 @@ class VirtueMartModelOrders extends VmModel {
 		}
 	}
 
-	
-	
+
+
 	function handleStockAfterStatusChangedPerProduct($newState, $oldState,$productId, $quantity) {
 
 		if($newState == $oldState) return;
@@ -862,7 +866,7 @@ class VirtueMartModelOrders extends VmModel {
 		$isReserved = in_array($newState, $Reserved);
 		$wasReserved = in_array($oldState, $Reserved);
 		// reserved stock must be change(all ordered product)
-		if ($isReserved && !$wasReserved )     $product_ordered = '+'; 
+		if ($isReserved && !$wasReserved )     $product_ordered = '+';
 		else if (!$isReserved && $wasReserved ) $product_ordered = '-';
 		else $product_ordered = '=';
 
@@ -945,7 +949,7 @@ class VirtueMartModelOrders extends VmModel {
 		else{
 			vmError('The workflow for '.$newState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Cant process workflow, contact the shopowner status '.$newState);
 			// 				$action
-		} 
+		}
 
 vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_stock  );*/
 
