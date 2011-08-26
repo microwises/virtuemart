@@ -192,6 +192,15 @@ class VmConfig{
 
 	private function __construct() {
 
+		//todo
+/*		if(strpos(JVERSION,'1.5') === false){
+			$jlang = JFactory::getLanguage();
+			$jlang->load('virtuemart', null, 'en-GB', true); // Load English (British)
+			$jlang->load('virtuemart', null, $jlang->getDefault(), true); // Load the site's default language
+			$jlang->load('virtuemart', null, null, true); // Load the currently selected language
+
+		}*/
+
 	}
 
 	function getStartTime(){

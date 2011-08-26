@@ -39,13 +39,13 @@ class vmVersion {
 	/** @var string Date */
 	static $RELDATE = 'August 26, 2011';
 	/** @var string Time */
-	static $RELTIME = '20:30';
+	static $RELTIME = '18:30';
 	/** @var string Timezone */
 	static $RELTZ = 'GMT';
 	/** @var string Revision */
-	static $REVISION = '$Revision: 3961 $';
+	static $REVISION = '$Revision: 3970 $';
 	/** @var string Copyright Text */
-	static $COPYRIGHT = 'Copyright (C) 2005-2011 VirtueMart Development Team - All rights reserved.';
+	static $COPYRIGHT = 'Copyright (C) 2005-2011 VirtueMart Development Team  - All rights reserved.';
 	/** @var string URL */
 	static $URL = '<a href="http://virtuemart.net">VirtueMart</a> is a Free Component for Joomla! released under the GNU/GPL2 and higher License.';
 }
