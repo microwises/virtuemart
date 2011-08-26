@@ -863,7 +863,12 @@ class Migrator extends VmModel{
 				if(!array_key_exists($product['product_id'],$alreadyKnownIds)){
 
 					$product['virtuemart_vendor_id'] = $product['vendor_id'];
-					$product['virtuemart_manufacturer_id'] = $oldtonewManus[$product['manufacturer_id']];
+
+					if(!empty($product['manufacturer_id'])){
+						if(!empty($oldtonewManus[$product['manufacturer_id']])) {
+							$product['virtuemart_manufacturer_id'] = $oldtonewManus[$product['manufacturer_id']];
+						}
+					}
 
 					//product has category_id and categories?
 					if(!empty($oldToNewCats[$product['category_id']])){
