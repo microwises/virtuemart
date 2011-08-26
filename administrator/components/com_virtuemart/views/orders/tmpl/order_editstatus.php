@@ -53,7 +53,7 @@
 	</tr>
 	<tr>
 		<td colspan="2" align="center" class="key">
-		<a href="#" class="orderStatFormSubmit" title="<?php echo JText::_('COM_VIRTUEMART_SAVE'); ?>">
+		<a href="#" class="orderStatFormSubmit" >
 			<span class="icon-nofloat vmicon vmicon-16-save"></span>&nbsp;<?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></a>&nbsp;&nbsp;&nbsp;
 		<a href="#" title="<?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?>" onClick="javascript:document.orderStatForm.reset();" class="show_element[updateOrderStatus]">
 			<span class="icon-nofloat vmicon vmicon-16-remove"></span>&nbsp;<?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></a>
