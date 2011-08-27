@@ -100,7 +100,9 @@ class VirtuemartViewOrders extends JView {
 
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
+		// this is no setting in BE to change the layout !
 		//shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
+
 		parent::display($tpl);
 	}
 }

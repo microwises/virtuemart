@@ -19,11 +19,12 @@
 */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); ?>
-
-<?php if (count($this->orderlist) == 0) :?>
-<?php echo JText::_('COM_VIRTUEMART_ACC_NO_ORDER'); ?>
-<?php else : ?>
+defined('_JEXEC') or die('Restricted access'); 
+if (count($this->orderlist) == 0) { 
+	echo JText::_('COM_VIRTUEMART_ACC_NO_ORDER'); 
+	if (1==1)  echo $this->loadTemplate('login');
+} else {
+ ?>
 <div id="editcell">
 	<table class="adminlist">
 	<thead>
@@ -72,4 +73,4 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	?>
 	</table>
 </div>
-<?php endif; ?>
+<?php } ?>

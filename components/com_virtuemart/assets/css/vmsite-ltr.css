@@ -191,7 +191,7 @@ span.addtocart-button input.notify-button:hover {background-position: 0px -200px
 //////// Browsepage View /////////////
 ////////////////////////////////////*/
 
-.browse-view {margin-bottom: 25px;}
+.browse-view ,.order-view{margin-bottom: 25px;}
 .browse-view h1 {margin: 0px 0px 8px 0px;padding: 0px;font-size: 16px;}
 .browse-view .row {}
 .browse-view .row .product {}
@@ -279,8 +279,8 @@ input.highlight-button:hover {background-position: 0px -200px;color: #f2f2f2;}
 input.highlight-button:visited {color: #fff;}
 
 /* Default Link Button */
-a.details {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;}
-a.details:hover {background: #fff url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;text-decoration: none;}
+a.details, div.details {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;}
+a.details:hover, div.details:hover {background: #fff url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #777;text-decoration: none;}
 
 /* Default Input Button */
 button.default {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;padding: 5px 8px 4px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;cursor: pointer;}
