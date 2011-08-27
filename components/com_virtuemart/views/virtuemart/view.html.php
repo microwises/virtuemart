@@ -16,10 +16,10 @@
  * @version $Id$
  */
 
-// Check to ensure this file is included in Joomla!
+# Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Load the view framework
+# Load the view framework
 jimport( 'joomla.application.component.view');
 
 /**
@@ -51,7 +51,7 @@ class VirtueMartViewVirtueMart extends JView {
 
 			$categoryModel = $this->getModel('category');
 			$productModel = $this->getModel('product');
-
+			$products = array();
 			$categoryId = JRequest::getInt('catid', 0);
 			$categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
 			$categoryModel->addImages($categoryChildren);
@@ -62,34 +62,21 @@ class VirtueMartViewVirtueMart extends JView {
 			$currency = CurrencyDisplay::getInstance( );
 			$this->assignRef('currency', $currency);
 
-			/* Load the recent viewed products */
-			if (VmConfig::get('show_recent', 1)) {
-				$recentProductIds = shopFunctionsF::getRecentProductIds();
-				$recentProducts = $productModel->getProducts($recentProductIds);
-
-				$productModel->addImages($recentProducts);
-				$this->assignRef('recentProducts', $recentProducts);
-			}
-
 			if (VmConfig::get('show_featured', 1)) {
-				$featuredProducts = $productModel->getProductListing('featured', 5);
-				$productModel->addImages($featuredProducts);
-				$this->assignRef('featuredProducts', $featuredProducts);
+				$products['featured'] = $productModel->getProductListing('featured', 5);
+				$productModel->addImages($products['featured']);
 			}
 
 			if (VmConfig::get('show_latest', 1)) {
-				$latestProducts = $productModel->getProductListing('latest', 5);
-				//if(empty($latestProducts)) $latestProducts = 0;
-				$productModel->addImages($latestProducts);
-				//$latestProducts = array();
-				$this->assignRef('latestProducts', $latestProducts);
+				$products['latest']= $productModel->getProductListing('latest', 5);
+				$productModel->addImages($products['latest']);
 			}
 
 			if (VmConfig::get('show_topTen', 1)) {
-				$toptenProducts = $productModel->getProductListing('topten', 5);
-				$productModel->addImages($toptenProducts);
-				$this->assignRef('toptenProducts', $toptenProducts);
+				$products['topten']= $productModel->getProductListing('topten', 5);
+				$productModel->addImages($products['topten']);
 			}
+			$this->assignRef('products', $products);
 
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
@@ -104,7 +91,7 @@ class VirtueMartViewVirtueMart extends JView {
 			$this->setLayout('off_line');
 		}
 
-		/* Set the titles */
+		# Set the titles
 		$document = JFactory::getDocument();
 
 		$error = JRequest::getInt('error',0);
@@ -130,4 +117,4 @@ class VirtueMartViewVirtueMart extends JView {
 	}
 
 }
-// pure php no closing tag
+# pure php no closing tag

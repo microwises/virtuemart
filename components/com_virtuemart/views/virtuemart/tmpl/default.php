@@ -21,28 +21,21 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_( 'behavior.modal' );
 ?>
 
-<?php // Vendor Store Description
+<?php # Vendor Store Description
 if (!empty($this->vendor->vendor_store_desc)) { ?>
 <div class="vendor-store-desc">
-	<?php /** @todo Add vendor description */
-	echo $this->vendor->vendor_store_desc; ?>
+	<?php echo $this->vendor->vendor_store_desc; ?>
 </div>
 <?php } ?>
 
 <?php
 
-// load categories from front_categories if exist
+# load categories from front_categories if exist
 if ($this->categories) echo $this->loadTemplate('categories');
 
-/* Show Featured Products */
-if (VmConfig::get('show_featured', 1) && !empty($this->featuredProducts) ) echo $this->loadTemplate('featuredproducts');
-
-/* Recent products */
-if (VmConfig::get('show_recent', 1) && !empty($this->recentProducts) ) echo $this->loadTemplate('recentproducts');
-
-/* Topten products */
-if (VmConfig::get('show_topTen', 1) && !empty($this->toptenProducts) ) echo $this->loadTemplate('toptenproducts');
-// load categories from front_categories if exist
-if (VmConfig::get('show_latest', 1) && !empty($this->latestProducts) ) echo $this->loadTemplate('latestproducts');
+# Show template for : topten,Featured, Latest Products if selected in config BE
+if (!empty($this->products) ) { ?>
+	<?php echo $this->loadTemplate('products');
+}
 
 ?>
