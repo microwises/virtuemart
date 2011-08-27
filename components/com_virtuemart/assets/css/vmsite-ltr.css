@@ -247,6 +247,11 @@ span.addtocart-button input.notify-button:hover {background-position: 0px -200px
 .ask-a-question-view .form-field .submit input.counter:hover {background: #e8e8e8 url(../images/vmgeneral/backgrounds.png) repeat-x;background-position: 0px -40px;color: #000;}
 
 /*////////////////////////////////////
+/////    orders  View           //////
+////////////////////////////////////*/
+
+#userForm select{width: 80%;}
+/*////////////////////////////////////
 ///// Manufacturer Details View //////
 ////////////////////////////////////*/
 

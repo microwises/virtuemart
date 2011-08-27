@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL') ?>
 	</legend>
-	<table class="admintable">
+	<table class="admintable width100">
 		<tr>
 			<td class="key">
 				<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_STORE_NAME'); ?>
@@ -76,7 +76,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DISPLAY') ?>
 	</legend>
-	<table class="admintable">
+	<table class="admintable width100">
 		<tr>
 			<td class="key">
 				<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_CURRENCY'); ?>
@@ -142,10 +142,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</td>
 			<td><br />
 				<?php echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', 'size=20 multiple', 'virtuemart_currency_id', 'currency_name', $this->vendor->vendor_accepted_currencies); ?>
-
-			<td><br />	<?php																					//'size=20 multiple = "multiple"'
-				 echo JHTML::_('Select.genericlist', $this->currencies, 'vendor_accepted_currencies[]', array('size'=>'20', 'multiple' => 'multiple'), 'virtuemart_currency_id', 'currency_name', $this->vendor->vendor_accepted_currencies); ?>
-
 			</td>
 		</tr>
 	</table>
@@ -153,7 +149,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <fieldset class="adminform">
 	<legend>
-		<?php echo JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL') ?>
+		<?php echo JText::_('COM_VIRTUEMART_VENDOR_FORM_MEDIA') ?>
 	</legend>
 	
 	<?php
