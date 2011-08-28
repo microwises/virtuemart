@@ -165,7 +165,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$db->query();
 			}*/
 
-			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','ADD product_ordered int(11)');
+			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','int(11)');
 
 			$this->alterSessionTable();
 
@@ -216,7 +216,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$query = 'ALTER TABLE `'.$table.'` ADD '.$field.' '.$fieldType;
 				$this->db->setQuery($query);
 				if(!$this->db->query()){
-					$app->getApplication();
+					$app = JFactory::getApplication();
 					$app->enqueueMessage('Install checkAddFieldToTable '.$this->db->getErrorMsg() );
 					return false;
 				} else {
@@ -372,8 +372,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					</td>
 					<td>
 						<h1>
-						<?php 
-						if($update){ 
+						<?php
+						if($update){
 							echo JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
 							echo '<br />'.JText::_('Please use "renew config from file" in Tools => Updates/Migration');
 						} else {
@@ -386,7 +386,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 						<div id="cpanel">
 
 
-						<?php 
+						<?php
 						if(!$update){
 							?>
 							<div class="icon">
@@ -406,7 +406,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				</tr>
 				</table>
 			</div>
-			<?php 
+			<?php
 		}
 
 	}

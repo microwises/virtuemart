@@ -78,8 +78,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		$data = array();
 	     	foreach ($childs as &$child) {
 	     		$query='SELECT C.* , field.*
-					FROM `jos_virtuemart_product_customfields` AS field
-					LEFT JOIN `jos_virtuemart_customs` AS C ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+					FROM `#__virtuemart_product_customfields` AS field
+					LEFT JOIN `#__virtuemart_customs` AS C ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
 					WHERE `virtuemart_product_id` ='.(int)$child->virtuemart_product_id;
 				$query .=' and C.field_type = "C" ';
 

@@ -57,7 +57,7 @@ class TableOrder_item_histories extends VmTable {
 // pure php no closing tag
 /* code to generate the table
 
-CREATE TABLE IF NOT EXISTS `jos_virtuemart_order_item_histories` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_order_item_histories` (
   `virtuemart_order_item_history_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `virtuemart_order_item_id` int(11) NOT NULL DEFAULT '0',
   `order_status_code` char(1) NOT NULL DEFAULT '0',
