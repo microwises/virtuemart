@@ -117,7 +117,7 @@ class VmTable extends JTable{
 				}
 			}
 		}
-		$this->setError('VmTable developer notice, table ' . get_class($this) . ' means that there is no data to store. When you experience that something does not get stored as expected, please write in the forum.virtuemart.net');
+		vmdebug('VmTable developer notice, table ' . get_class($this) . ' means that there is no data to store. When you experience that something does not get stored as expected, please write in the forum.virtuemart.net');
 		return false;
 	}
 

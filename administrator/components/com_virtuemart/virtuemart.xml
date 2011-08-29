@@ -11,8 +11,7 @@
 	<authorUrl>http://www.virtuemart.net</authorUrl>
 	<copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-	<version status="rc">1.9.8e</version>
-	<description>COM_VIRTUEMART_INSTALLATION_WELCOME</description>
+	<version status="rc">1.9.8f</version>
 
    <!-- Custom un/installer for 1.6 -->
    <scriptfile>install/script.virtuemart.php</scriptfile>
@@ -21,12 +20,6 @@
 	<!-- Custom uninstaller for 1.5 -->
 	<uninstallfile>install/script.virtuemart.php</uninstallfile>
 
-	<!-- SQL queries -->
-	<install>
-		<sql>
-			<file charset="utf8" driver="mysql">install/install.sql</file>
-		</sql>
-	</install>
 
 	<!-- Site Main File Copy Section -->
 	<files folder="components/com_virtuemart">

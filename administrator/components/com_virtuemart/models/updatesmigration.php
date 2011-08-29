@@ -313,7 +313,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 		// Check that sql files exists before reading. Otherwise raise error for rollback
 		if ( !file_exists($sqlfile) ) {
-		    $this->setError('No SQL file provided!');
+		    vmError('No SQL file provided!');
 		    return false;
 		}
 
@@ -322,7 +322,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$queries = JInstallerHelper::splitSql(file_get_contents($sqlfile));
 
 		if (count($queries) == 0) {
-		    $this->setError('SQL file has no queries!');
+		    vmError('SQL file has no queries!');
 		    return false;
 		}
 		$ok = true;
@@ -335,7 +335,6 @@ class VirtueMartModelUpdatesMigration extends JModel {
 				if (!$db->query()) {
 				    JError::raiseWarning(1, 'JInstaller::install: '.$sqlfile.' '.JText::_('COM_VIRTUEMART_SQL_ERROR')." ".$db->stderr(true));
 				    $ok = false;
-				    //return false;
 				}
 		    }
 		}

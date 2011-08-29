@@ -42,8 +42,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$update = false;
 
-			$db = JFactory::getDBO();
+			//Execute always the base installation file
+//			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
+//			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
 
+			$db = JFactory::getDBO();
 			$q = "SELECT count(id) AS idCount FROM `#__virtuemart_adminmenuentries`";
 			$db->setQuery($q);
 			$result = $db->loadResult();
@@ -53,8 +56,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			} else {
 				$update = true;
 			}
+
 			return $update;
 		}
+
 
 		/**
 		 * Pre-process method (e.g. install/upgrade) and any header HTML
@@ -108,7 +113,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->alterSessionTable();
 			// install essential and required data
 			// should this be covered in install.sql (or 1.6's JInstaller::parseSchemaUpdates)?
+//			if(!class_exists('VirtueMartModelUpdatesMigration')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'updatesMigration.php');
 			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
+			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
 			$model->execSQLFile($this->path.DS.'install'.DS.'install_essential_data.sql');
 			$model->execSQLFile($this->path.DS.'install'.DS.'install_required_data.sql');
 
