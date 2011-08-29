@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea();
-
+$states = JText::_('COM_VIRTUEMART_STATE_S');
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -81,8 +81,8 @@ AdminUIHelper::startAdminArea();
 			<?php echo $checked; ?>
 		</td>
 		<td align="left">
-		    <a href="<?php echo $editlink; ?>"><?php echo $row->country_name; ?></a>
-		    <a href="<?php echo $statelink; ?>">&nbsp;[States]</a>
+		    <a href="<?php echo $editlink; ?>"><?php echo $row->country_name; ?></a>&nbsp;
+		    <a title="<?php echo JText::sprintf('COM_VIRTUEMART_STATES_VIEW_LINK', $row->country_name ); ?>" href="<?php echo $statelink; ?>">[<?php echo $states ?>]</a>
 		</td>
 <?php /* TODO not implemented				<td align="left">
 			<?php echo $row->virtuemart_worldzone_id; ?>

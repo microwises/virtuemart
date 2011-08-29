@@ -147,9 +147,6 @@ class TableMedias extends VmTable {
 			if(strlen($this->file_description)>254){
 				$this->setError(JText::sprintf('COM_VIRTUEMART_DESCRIPTION_TOO_LONG',strlen($this->file_description) ) );
 			}
-		} else{
-			//$this->setError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_DESCRIPTION'));
-			//$ok = false;
 		}
 
 //		$app = JFactory::getApplication();
