@@ -63,7 +63,9 @@ class VirtueMartModelOrderstatus extends VmModel {
 
 		return $this->_data;
 	}
-
+        function getVMCoreStatusCode(){
+		 return array( 'P','S');
+	}
 	/**
 	 * Bind the post data to the order status table and save it
 	 *   This function looks like not working in our patttern.

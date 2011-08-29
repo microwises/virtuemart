@@ -29,6 +29,10 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDERSTATUS_DETAILS');
 <div class="col50">
 	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_ORDERSTATUS_DETAILS'); ?></legend>
+        <?php
+          $editcoreStatus = (in_array($this->orderStatus->order_status_code, $this->lists['vmCoreStatusCode']));
+          $orderStatusCodeTip = ($editcoreStatus) ? 'COM_VIRTUEMART_ORDER_STATUS_CODE_CORE':'COM_VIRTUEMART_ORDER_STATUS_CODE_TIP';
+                            ?>
 	<table class="admintable">
 		<tr>
 			<td width="110" class="key">
@@ -43,14 +47,19 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDERSTATUS_DETAILS');
 		<tr>
 			<td width="110" class="key">
 				<label for="order_status_code">
-                                     <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_TIP'); ?>">
+                                     <span class="hasTip" title="<?php echo JText::_($orderStatusCodeTip); ?>">
 					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE'); ?>:
                                      </span>
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="order_status_code" id="order_status_code" size="3" value="<?php echo $this->orderStatus->order_status_code; ?>" />
-			</td>
+                            <?php if ($editcoreStatus) {
+                                echo  $this->orderStatus->order_status_code;
+                            } else {
+                                ?>
+				<input class="inputbox" type="text" name="order_status_code" id="order_status_code" maxlength="1"  size="3" value="<?php echo $this->orderStatus->order_status_code; ?>" />
+			<?php } ?>
+                        </td>
 		</tr>
 
 		<tr>

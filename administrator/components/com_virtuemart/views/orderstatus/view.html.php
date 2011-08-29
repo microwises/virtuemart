@@ -47,6 +47,8 @@ class VirtuemartViewOrderstatus extends JView {
 		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getWord('layout', 'default');
+
+               
 		if ($layoutName == 'edit') {
 			$editor = JFactory::getEditor();
 
@@ -63,12 +65,14 @@ class VirtuemartViewOrderstatus extends JView {
 
 
 			}
+                           $lists['vmCoreStatusCode'] = $model->getVMCoreStatusCode();
+			$this->assignRef('lists', $lists);
 			// Vendor selection
 			$vendor_model = $this->getModel('vendor');
 			$vendor_list = $vendor_model->getVendors();
 			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $orderStatus->virtuemart_vendor_id);
-			$this->assignRef('lists', $lists);
 
+                     
 			$this->assignRef('orderStatus', $orderStatus);
 			$this->assignRef('editor', $editor);
 
@@ -80,6 +84,7 @@ class VirtuemartViewOrderstatus extends JView {
 
 			ShopFunctions::addStandardDefaultViewCommands();
 			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+                        $lists['vmCoreStatusCode'] = $model->getVMCoreStatusCode();
 			$this->assignRef('lists', $lists);
 		}
 

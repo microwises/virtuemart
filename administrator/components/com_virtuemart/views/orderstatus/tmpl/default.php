@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea();
-
+$j15 = VmConfig::isJ15();
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<div id="editcell">
@@ -66,10 +66,19 @@ AdminUIHelper::startAdminArea();
 		</thead>
 		<?php
 		$k = 0;
+                $vmCoreStatusCode= $this->lists['vmCoreStatusCode'];
 		for ($i = 0, $n = count($this->orderStatusList); $i < $n; $i++) {
 			$row = $this->orderStatusList[$i];
 			$published = JHTML::_('grid.published', $row, $i );
 			$checked = JHTML::_('grid.id', $i, $row->virtuemart_orderstate_id);
+
+                        $coreStatus = (in_array($row->order_status_code, $this->lists['vmCoreStatusCode']));
+			$image = ($j15) ? 'checked_out.png' : 'admin/checked_out.png';
+			$image = JHtml::_('image.administrator', $image, '/images/', null, null, JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_CORE'));
+			$checked = ($coreStatus) ?
+				'<span class="hasTip" title="'. JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_CORE').'">'. $image .'</span>' :
+				JHTML::_('grid.id', $i, $row->virtuemart_orderstate_id);
+
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=orderstatus&task=edit&cid[]=' . $row->virtuemart_orderstate_id);
 			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&view=orderstatus&task=remove&cid[]=' . $row->virtuemart_orderstate_id);
 			$ordering = $row->ordering ;
