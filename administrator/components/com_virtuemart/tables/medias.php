@@ -92,26 +92,29 @@ class TableMedias extends VmTable {
       		$this->setError(JText::sprintf('COM_VIRTUEMART_URL_NOT_VALID',strlen($this->file_url) ) );
       	}
 
-      	$q = 'SELECT `virtuemart_media_id`,`file_url` FROM `'.$this->_tbl.'` WHERE `file_url` = "'.$this->_db->getEscaped($this->file_url).'" ';
-      	$this->_db->setQuery($q);
-      	$unique_id = $this->_db->loadAssocList();
+      	if(empty($this->virtuemart_media_id)){
+           	$q = 'SELECT `virtuemart_media_id`,`file_url` FROM `'.$this->_tbl.'` WHERE `file_url` = "'.$this->_db->getEscaped($this->file_url).'" ';
+	      	$this->_db->setQuery($q);
+	      	$unique_id = $this->_db->loadAssocList();
 
-      	$count = count($unique_id);
-      	if($count!==0){
-      		vmdebug('check medias $count',$count);
-      		if($count == 1){
-      			if(empty($this->virtuemart_media_id)){
-      				$this->virtuemart_media_id = $unique_id[0]['virtuemart_media_id'];
-      			} else {
-      				vmError(JText::_('COM_VIRTUEMART_MEDIA_IS_ALREADY_IN_DB'));
+	      	$count = count($unique_id);
+	      	if($count!==0){
+	      		vmdebug('check medias $count',$count);
+	      		if($count == 1){
+	      			if(empty($this->virtuemart_media_id)){
+	      				$this->virtuemart_media_id = $unique_id[0]['virtuemart_media_id'];
+	      			} else {
+	      				vmError(JText::_('COM_VIRTUEMART_MEDIA_IS_ALREADY_IN_DB'));
+							$ok = false;
+	      			}
+	      		} else {
+	//      			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_IS_DOUBLED_IN_DB'));
+	      			vmError(JText::_('COM_VIRTUEMART_MEDIA_IS_DOUBLED_IN_DB'));
 						$ok = false;
-      			}
-      		} else {
-//      			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_IS_DOUBLED_IN_DB'));
-      			vmError(JText::_('COM_VIRTUEMART_MEDIA_IS_DOUBLED_IN_DB'));
-					$ok = false;
-      		}
+	      		}
+	      	}
       	}
+
       } else{
       	$this->setError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_URL'));
       	$ok = false;
