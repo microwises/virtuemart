@@ -42,7 +42,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         $this->_tablename = '#__virtuemart_order_payment_' . $this->_pelement;
         $this->_createTable();
         parent::__construct($subject, $config);
-           JPlugin::loadLanguage( 'plg_vmpayment_paypal', JPATH_ADMINISTRATOR );
+         //  JPlugin::loadLanguage( 'plg_vmpayment_paypal', JPATH_ADMINISTRATOR );
     }
 
     /**

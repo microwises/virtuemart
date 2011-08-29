@@ -36,7 +36,8 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 		$this->_tablename = '#__virtuemart_order_shipper_' . $this->_selement;
 		$this->_createTable();
 		parent::__construct($subject, $config);
-		JPlugin::loadLanguage('plg_vmshipper_weight_countries', JPATH_ADMINISTRATOR);
+		//JPlugin::loadLanguage('plg_vmshipper_weight_countries', JPATH_ADMINISTRATOR);
+
 	}
 
 	/**

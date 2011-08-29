@@ -46,6 +46,9 @@ abstract class vmPaymentPlugin extends JPlugin {
      * @since 1.5
      */
     function __construct(& $subject, $config) {
+           $lang = JFactory::getLanguage();
+        $filename = 'plg_vmpayment_' . $this->_selement;
+        $lang->load($filename, JPATH_ADMINISTRATOR);
     		if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 			parent::__construct($subject, $config);
     }

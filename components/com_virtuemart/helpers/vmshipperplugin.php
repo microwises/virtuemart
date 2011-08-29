@@ -70,7 +70,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * $this->_selement = basename(__FILE, '.php');
      */
     protected $_selement = '';
-     protected $_tablename = '';
+    protected $_tablename = '';
     /**
      * @var array List with all carriers the have been implemented with the plugin in the format
      * id => name
@@ -86,8 +86,12 @@ abstract class vmShipperPlugin extends JPlugin {
      */
     function __construct(& $subject, $config) {
         parent::__construct($subject, $config);
+        $lang = JFactory::getLanguage();
+        $filename = 'plg_vmshipper_' . $this->_selement;
+        $lang->load($filename, JPATH_ADMINISTRATOR);
         $this->carrier = array();
-        if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
+        if (!class_exists('JParameter'))
+            require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
     }
 
     /**
@@ -117,13 +121,13 @@ abstract class vmShipperPlugin extends JPlugin {
      * @return float Total weight for the order
      * @author Oscar van Eijk
      */
-   protected function getOrderWeight(VirtueMartCart $cart, $to_weight_unit) {
-		$weight = 0;
-		foreach ($cart->products as $prod) {
-			$weight += ( ShopFunctions::convertWeigthUnit($prod->product_weight, $prod->product_weight_unit,$to_weight_unit) * $prod->quantity);
-		}
-		return $weight;
-	}
+    protected function getOrderWeight(VirtueMartCart $cart, $to_weight_unit) {
+        $weight = 0;
+        foreach ($cart->products as $prod) {
+            $weight += ( ShopFunctions::convertWeigthUnit($prod->product_weight, $prod->product_weight_unit, $to_weight_unit) * $prod->quantity);
+        }
+        return $weight;
+    }
 
     /**
      * Fill the array with all carriers found with this plugin for the current vendor
@@ -292,13 +296,12 @@ abstract class vmShipperPlugin extends JPlugin {
      */
     public function plgVmOnShipperSelected($cart, $_selectedShipper = 0) {
 
-          if (!$this->selectedThisShipper($this->_selement, $_selectedShipper)) {
-          return null; // Another shipper was selected, do nothing
-          }
-          // should return $shipping rates for this
-          $cart->setShippingRate($this->selectShippingRate($cart));
-          return true;
-
+        if (!$this->selectedThisShipper($this->_selement, $_selectedShipper)) {
+            return null; // Another shipper was selected, do nothing
+        }
+        // should return $shipping rates for this
+        $cart->setShippingRate($this->selectShippingRate($cart));
+        return true;
     }
 
     /**
@@ -679,7 +682,8 @@ abstract class vmShipperPlugin extends JPlugin {
 
         $shipping->shipping_name = $this->getThisShipperName($shipping);
 
-        if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
+        if (!class_exists('JParameter'))
+            require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
         $params = new JParameter($shipping->shipping_carrier_params);
         $shipping->shipping_rate_vat_id = $params->get('tax_id');
         $shipping->shipping_value = $params->get('shipping_value');
@@ -696,7 +700,7 @@ abstract class vmShipperPlugin extends JPlugin {
     }
 
     function plgVmOnCheckShippingIsValid(VirtueMartCart $cart) {
-         if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
+        if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
             return null; // Another shipper was selected, do nothing
         }
         $shipper = $this->getThisShipperData($cart->virtuemart_shippingcarrier_id);
