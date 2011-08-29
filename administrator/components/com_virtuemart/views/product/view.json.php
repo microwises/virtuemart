@@ -62,7 +62,6 @@ class VirtuemartViewProduct extends JView {
 			$field = $db->loadObject();
 			$html = array ();
 			$display = $model->inputType($field->id,'R',0,0,$row,0);
-			$cartIcone= 'icon-16-default-off.png';
 			$html[] = '<tr>
 				 <td>'.JText::_('COM_VIRTUEMART_RELATED_PRODUCTS').'</td>
 				 <td>'.$display.'
@@ -73,7 +72,7 @@ class VirtuemartViewProduct extends JView {
 					<input type="hidden" value="'.$field->id.'" name="field['.$row.'][custom_value]" />
 					<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
 				 </td>
-				 <td><img src="components/com_virtuemart/assets/images/icon_16/'.$cartIcone.'" width="16" height="16" border="0" /></td>
+				 <td><span class="vmicon vmicon-16-default-off"></span></td>
 				 <td></td>
 				</tr>';
 			$json['value'] = $html;
@@ -102,7 +101,6 @@ class VirtuemartViewProduct extends JView {
 			$field = $db->loadObject();
 			$html = array ();
 			$display = $model->inputType($field->id,'Z',0,0,$row,0);
-			$cartIcone= 'icon-16-default-off.png';
 			$html[] = '<tr>
 				 <td>'.JText::_('COM_VIRTUEMART_RELATED_CATEGORIES').'</td>
 				 <td>'.$display.'
@@ -113,7 +111,7 @@ class VirtuemartViewProduct extends JView {
 					<input type="hidden" value="'.$field->id.'" name="field['.$row.'][custom_value]" />
 					<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
 				 </td>
-				 <td><img src="components/com_virtuemart/assets/images/icon_16/'.$cartIcone.'" width="16" height="16" border="0" /></td>
+				 <td><span class="vmicon vmicon-16-default-off"></span></td>
 				 <td></td>
 				</tr>';
 			$json['value'] = $html;
@@ -136,8 +134,8 @@ class VirtuemartViewProduct extends JView {
 			$html = array ();
 			foreach ($rows as $field) {
 			 $display = $model->inputType($field->custom_value,$field->field_type,$field->is_list,0,$row,$field->is_cart_attribute);
-			 if ($field->is_cart_attribute) $cartIcone=  'icon-16-default.png';
-			 else  $cartIcone= 'icon-16-default-off.png';
+			 if ($field->is_cart_attribute) $cartIcone=  'default';
+			 else  $cartIcone= 'default-off';
 			 $html[] = '<tr>
 				 <td>'.$field->custom_title.'</td>
 				 <td>'.$display.$field->custom_tip.'
@@ -147,7 +145,7 @@ class VirtuemartViewProduct extends JView {
 					<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
 					<input type="hidden" value="'.$field->admin_only.'" name="field['.$row.'][admin_only]" />
 				 </td>
-				 <td><img src="components/com_virtuemart/assets/images/icon_16/'.$cartIcone.'" width="16" height="16" border="0" /></td>
+				 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
 				 <td></td>
 				</tr>';
 				$row++;

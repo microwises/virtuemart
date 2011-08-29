@@ -77,8 +77,8 @@ defined('_JEXEC') or die('Restricted access');
 					$this->fieldTypes['R']='COM_VIRTUEMART_RELATED_PRODUCT';
 					$this->fieldTypes['Z']='COM_VIRTUEMART_RELATED_CATEGORY';
 					foreach ($this->product->customfields as $customRow) {
-					if ($customRow->is_cart_attribute) $cartIcone=  'icon-16-default.png';
-					else  $cartIcone= 'icon-16-default-off.png'; 
+					if ($customRow->is_cart_attribute) $cartIcone=  'default';
+					else  $cartIcone= 'default-off'; 
 					 echo '<tr>
 							
 							<td>'.JText::_($customRow->custom_title).'</td>
@@ -91,9 +91,9 @@ defined('_JEXEC') or die('Restricted access');
 							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
 							</td>
 							<td>
-							 <img src="components/com_virtuemart/assets/images/icon_16/'.$cartIcone.'" width="16" height="16" border="0" />
+							 <span class="vmicon vmicon-16-'.$cartIcone.'"></span>
 							</td>
-							<td><div class="remove vmicon-16-trash">'.JText::_('DELETE').'</div></td>
+							<td><div class="remove"><span class="vmicon vmicon-16-trash"></span>'.JText::_('COM_VIRTUEMART_DELETE').'</div></td>
 						 </tr>';
 
 						$i++;
@@ -114,7 +114,7 @@ defined('_JEXEC') or die('Restricted access');
 </table>
 
 <div style="clear:both;"></div>
-<div style="display:none;float:left;" class="customDelete remove vmicon-16-trash"><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></div>
+<div style="display:none;" class="customDelete remove"><span class="vmicon vmicon-16-trash"></span><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></div>
 
 <script type="text/javascript">
 nextCustom = <?php echo $i ?>;

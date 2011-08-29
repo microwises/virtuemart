@@ -150,36 +150,7 @@ font-size: 12px;
     vertical-align: middle;
     width: 120px;
 }
-.trash{
-    background-image: url("../images/trash-24.png");
-    background-position: center center;
-    background-repeat: no-repeat;
-    border: 1px solid;
-    border-radius: 4px;
-    display: inline;
-    height: 24px;
-    left: 0;
-    margin: 2px 0 0 2px;
-    position: absolute;
-    top: 0;
-    width: 24px;
-	cursor: pointer;
-}
-.next{
-    background-image: url("../images/trash-24.png");
-    background-position: center center;
-    background-repeat: no-repeat;
-    border: 1px solid;
-    border-radius: 4px;
-    display: inline;
-    height: 24px;
-    left: 0;
-    margin: 2px 0 0 2px;
-    position: absolute;
-    top: 0;
-    width: 24px;
-	cursor: pointer;
-}
+.remove{cursor:pointer;}
 .vm-order_comment{
     display: block;
     margin: -20px;
@@ -225,8 +196,6 @@ div.threecols ul   {
    margin:0;
    padding:0;
 }
-/* 
-Read more: http://www.nitinh.com/2010/03/sexy-tooltip-using-css3/#ixzz1SjDMxhqs */
 
 .hasTip:after{
 	font:12px/1.4 Arial,Georgia,sans-serif;
@@ -262,36 +231,4 @@ Read more: http://www.nitinh.com/2010/03/sexy-tooltip-using-css3/#ixzz1SjDMxhqs 
 	border-radius:6px;
 	}
 .media-pagination span:hover, .media-pagination span.media-page-selected{background:  #CAC9C9;cursor: pointer;}
-/* creates triangle */
-/* .hasTip:before{
-	z-index:13;
-	position:absolute;
-	content:"\00a0";
-	display:none;
-	width:0;
-	height:0;
-	border-style:solid;
- 
-	top:-3px;
-	left:0px;
-	border-width:15px 7px 15px 7px;
-	border-color:transparent transparent #075698;
-}
- 
-.hasTip:hover::before{
-	display:block;
-}
- 
-.hasTip:hover{
-	z-index:10;
-	position:relative;
-}
- 
-.hasTip:hover::after{
-	width:200px;
-	display:block;
-	margin:25px 0 0 10px;
-} */
-.element-hidden{
-	display: none;
-}
+.element-hidden{display: none;}
