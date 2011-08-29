@@ -170,7 +170,7 @@ class CurrencyDisplay {
 
 			$this->_db->setQuery($q);
 			$result = $this->_db->loadRow();
-			if($result[0]){
+			if(!empty($result[0])){
 				$result[0] = unserialize($result[0]);
 			}
 		}

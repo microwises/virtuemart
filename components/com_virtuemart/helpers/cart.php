@@ -741,7 +741,7 @@ class VirtueMartCart {
 		foreach ($neededFields as $field) {
 
 			if($field->required && empty($this->{$type}[$field->name]) && $field->name != 'virtuemart_state_id'){
-				$redirectMsg = 'Missing value for '.$field->name;
+				$redirectMsg = JText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',$field->name) ;
 				$i++;
 				//more than four fields missing, this is not a normal error (should be catche by js anyway, so show the address again.
 				if($i>2 && $type=='BT'){

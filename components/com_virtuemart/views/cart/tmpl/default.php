@@ -68,7 +68,7 @@ JHTML::_ ( 'behavior.modal' );
 	<input type='hidden' name='option' value='com_virtuemart'/>
 	<input type='hidden' name='view' value='cart'/>
 */
-
+$checkoutProcess = true ;
 	// This displays the pricelist MUST be done with tables, because it is also used for the emails
 	include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'price_list.php');
 	?>

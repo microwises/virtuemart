@@ -51,7 +51,12 @@ class VirtueMartViewCart extends JView {
     }
 
 	public function renderMail ($doVendor=false) {
-		$tpl = ($doVendor) ? 'mail_raw_vendor' : 'mail_raw_shopper';
+		if ( VmConfig::get('order_mail_html') ) {
+			$tpl = ($doVendor) ? 'mail_html_vendor' : 'mail_html_shopper';
+		} else {
+			$tpl = ($doVendor) ? 'mail_raw_vendor' : 'mail_raw_shopper';
+		}
+		
 		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 
 		$this->_cart = VirtueMartCart::getCart(false);
