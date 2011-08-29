@@ -191,7 +191,7 @@ class Migrator extends VmModel{
 		$this->mediaModel = new VirtueMartModelMedia();
 		//First lets read which files are already stored
 		$this->storedMedias = $this->mediaModel->getFiles(false, true, false);
-
+		//		vmdebug('portMedia',$this->storedMedias);
 		$countTotal = 0;
 		//We do it per type
 		$url = VmConfig::get('media_product_path');
@@ -231,12 +231,13 @@ class Migrator extends VmModel{
 		//create array of filenames for easier handling
 		foreach($this->storedMedias as $media){
 			if($media->file_type == $type){
-				$lastIndexOfSlash = strrpos($media->file_url, '/');
-				$name = substr($media->file_url, $lastIndexOfSlash + 1);
-				$knownNames[] = $name;
+				///$lastIndexOfSlash = strrpos($media->file_url, '/');
+				//$name = substr($media->file_url, $lastIndexOfSlash + 1);
+
+				$knownNames[] = $media->file_url;
 			}
 		}
-
+		vmdebug('my known paths ',$knownNames);
 		$filesInDir = array();
 		$foldersInDir = array();
 
@@ -250,22 +251,27 @@ class Migrator extends VmModel{
 				$relUrl = str_replace(DS, '/', substr($dir, strlen(JPATH_ROOT . DS)));
 				if($handle = opendir($dir)){
 					while(false !== ($file = readdir($handle))){
-						if($file != "." && $file != ".." && $file != '.svn' && $file != 'index.html'){
-			    //$info = pathinfo($file);
-			    //dump($info,'pathinfo($file)');
-			    //dump(filetype($dir.DS.$file),'filetype($dir.DS.$file');
-			    $filetype = filetype($dir . DS . $file);
-			    //We port all type of media, regardless the extension
-			    if($filetype == 'file'){
-			    	if(!in_array($file, $knownNames)){
-			    		$filesInDir[] = array('filename' => $file, 'url' => $relUrl);
-			    	}
-			    }else {
-			    	if($filetype == 'dir' && $file != 'resized'){
 
-			    		$subfoldersInDir[] = $dir . $file;
-			    	}
-			    }
+						if(!empty($file) && $file != "." && $file != ".." && $file != '.svn' && $file != 'index.html'){
+
+							//$info = pathinfo($file);
+							//dump($info,'pathinfo($file)');
+							//dump(filetype($dir.DS.$file),'filetype($dir.DS.$file');
+							$filetype = filetype($dir . DS . $file);
+
+							$relUrlName = '';
+							$relUrlName = $relUrl.$file;
+
+							//We port all type of media, regardless the extension
+							if($filetype == 'file'){
+								if(!in_array($relUrlName, $knownNames)){
+									$filesInDir[] = array('filename' => $file, 'url' => $relUrl);
+								}
+							}else {
+								if($filetype == 'dir' && $file != 'resized'){
+									$subfoldersInDir[] = $dir . $file;
+								}
+							}
 						}
 					}
 				}
@@ -276,7 +282,7 @@ class Migrator extends VmModel{
 			}
 		}
 		//echo '<pre>'.print_r($filesInDir,1).'</pre>';
-
+//		die;
 		$i = 0;
 		foreach($filesInDir as $file){
 
@@ -285,7 +291,7 @@ class Migrator extends VmModel{
 		    'virtuemart_vendor_id' => 1,
 		    'file_description' => $file['filename'],
 		    'file_meta' => $file['filename'],
-		    'file_url' => $file['url'] . '/' . $file['filename'],
+		    'file_url' => $file['url'] . $file['filename'],
 			//'file_url_thumb'=>$url.'resized/'.$filename,
 	    'media_published' => 1
 			);
@@ -457,8 +463,8 @@ class Migrator extends VmModel{
 				$i++;
 				/*	if($i>24){
 					$continue = false;
-				break;
-				}*/
+					break;
+					}*/
 				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 					$continue = false;
 					break;
@@ -839,14 +845,14 @@ class Migrator extends VmModel{
 			/* Not in VM1
 			 slug low_stock_notification intnotes metadesc metakey metarobot metaauthor layout published
 
-			created_on created_by modified_on modified_by
-			product_override_price override link
+			 created_on created_by modified_on modified_by
+			 product_override_price override link
 
-			Not in VM2
-			product_thumb_image product_full_image attribute
-			custom_attribute child_options quantity_options child_option_ids
-			shopper_group_id    product_list
-			*/
+			 Not in VM2
+			 product_thumb_image product_full_image attribute
+			 custom_attribute child_options quantity_options child_option_ids
+			 shopper_group_id    product_list
+			 */
 
 
 			$alreadyKnownIds = $this->getMigrationProgress('products');
@@ -1308,14 +1314,14 @@ class Migrator extends VmModel{
 
 		$dimensionUnitMigrate=array (
                   'mm' => 'MM'
-		, 'cm' => 'CM'
-		, 'm' => 'M'
-		, 'yd' => 'YD'
-		, 'foot' => 'FT'
-		, 'ft' => 'FT'
-		, 'inch' => 'IN'
-		);
-		return $dimensionUnitMigrate;
+                  , 'cm' => 'CM'
+                  , 'm' => 'M'
+                  , 'yd' => 'YD'
+                  , 'foot' => 'FT'
+                  , 'ft' => 'FT'
+                  , 'inch' => 'IN'
+                  );
+                  return $dimensionUnitMigrate;
 	}
 	/**
 	 *
@@ -1326,14 +1332,14 @@ class Migrator extends VmModel{
 	function getWeightUnitMigrateValues() {
 		$weightUnitMigrate=array (
                   'kg' => 'KG'
-		, 'kilos' => 'KG'
-		, 'gr' => 'GR'
-		, 'pound' => 'LB'
-		, 'livre' => 'LB'
-		, 'once' => 'OZ'
-		, 'ounce' => 'OZ'
-		);
-		return $weightUnitMigrate;
+                  , 'kilos' => 'KG'
+                  , 'gr' => 'GR'
+                  , 'pound' => 'LB'
+                  , 'livre' => 'LB'
+                  , 'once' => 'OZ'
+                  , 'ounce' => 'OZ'
+                  );
+                  return $weightUnitMigrate;
 	}
 
 	/**

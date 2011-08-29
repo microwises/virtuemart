@@ -124,8 +124,9 @@ defined('_JEXEC') or die('Restricted access');
 			$product_rows[$i]['product_sku'] = $product->product_sku;
 
 			/* Product PRICE */
-			$product_rows[$i]['salesPrice'] = $this->prices[$priceKey]['salesPrice'];
-                        $product_rows[$i]['basePriceWithTax'] = $this->prices[$priceKey]['basePriceWithTax'];
+			$product_rows[$i]['salesPrice'] = empty($this->prices[$priceKey]['salesPrice'])? 0:$this->prices[$priceKey]['salesPrice'];
+			$product_rows[$i]['basePriceWithTax'] = empty($this->prices[$priceKey]['salesPrice'])? 0:$this->prices[$priceKey]['basePriceWithTax'];
+//			$product_rows[$i]['basePriceWithTax'] = $this->prices[$priceKey]['basePriceWithTax'];
 			$product_rows[$i]['subtotal'] = $this->prices[$priceKey]['subtotal'];
 			$product_rows[$i]['subtotal_tax_amount'] = $this->prices[$priceKey]['subtotal_tax_amount'];
 			$product_rows[$i]['subtotal_discount'] = $this->prices[$priceKey]['subtotal_discount'];

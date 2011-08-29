@@ -203,7 +203,6 @@ class VirtueMartCart {
 			$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array'); //is sanitized then
 		}
 
-		vmdebug('Add product to cart $virtuemart_product_ids ',$virtuemart_product_ids);
 		if (empty($virtuemart_product_ids)) {
 			$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_ERROR_NO_PRODUCT_IDS', false));
 			return false;
@@ -241,7 +240,7 @@ class VirtueMartCart {
 						}
 					}
 				}
-				vmdebug('Add product to cart $this->products ',$this->products);
+
 				if (array_key_exists($productKey, $this->products)) {
 					$this->products[$productKey]->quantity += $quantityPost;
 					if ($this->checkForQuantities($product, $this->products[$productKey]->quantity)) {
@@ -263,7 +262,7 @@ class VirtueMartCart {
 				return false;
 			}
 		}
-		vmdebug('Add product to cart ',$this);
+
 		// End Iteration through Prod id's
 		$this->setCartIntoSession();
 		return true;
@@ -882,17 +881,22 @@ public function prepareCartData(){
 	if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 	$currency = CurrencyDisplay::getInstance();
 
-	foreach($product_prices as $k=>$price){
+	if(!empty($product_prices)){
+		foreach($product_prices as $k=>$price){
 
-		if(is_array($price)){
-			foreach($price as $sk=>$sprice){
-				$prices[$k][$sk] = $currency->priceDisplay($sprice);
+			if(is_array($price)){
+				foreach($price as $sk=>$sprice){
+					$prices[$k][$sk] = $currency->priceDisplay($sprice);
+				}
+
+			} else {
+				$prices[$k] = $currency->priceDisplay($price);
 			}
-
-		} else {
-			$prices[$k] = $currency->priceDisplay($price);
 		}
+	} else {
+		$prices = array();
 	}
+
 
 	if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 	$calculator = calculationHelper::getInstance();
