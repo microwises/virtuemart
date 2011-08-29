@@ -821,6 +821,7 @@ private function confirmedOrder() {
 		$dispatcher = JDispatcher::getInstance();
 
 		$returnValues = $dispatcher->trigger('plgVmAfterCheckoutDoPayment', array($orderID, $cart));
+
 		// may be redirect is done by the payment plugin (eg: paypal) so we do not come back here
 		// if payment plugin echos a form, false = nothing happen, true= echo form ,
 
@@ -845,6 +846,39 @@ private function confirmedOrder() {
 	}
 
 }
+
+/**
+ * Used for new payment handling, not implemented yet. Idea is to use the token and the stored session to refer
+ * to a cart and so not to create an order for payment attempts
+ *
+ * @author Valerie
+ * @author Max Milbers
+ *
+ */
+public function executeConfirmedOrder(){
+
+		$order = new VirtueMartModelOrders();
+		if (($orderID = $order->createOrderFromCart($this)) === false) {
+			$mainframe = JFactory::getApplication();
+			JError::raiseWarning(500, $order->getError());
+			$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
+		}
+
+		$this->virtuemart_order_id = $orderID;
+		$this->sentOrderConfirmedEmail($order->getOrder($orderID));
+
+		//We delete the old stuff
+		$this->products = array();
+		$this->_inCheckOut = false;
+		$this->_dataValidated = false;
+		$this->_confirmDone = false;
+		$this->customer_comment = '';
+		$this->couponCode = '';
+		$this->tosAccepted = false;
+
+		$this->setCartIntoSession();
+}
+
 
 /**
  * Prepares the body for shopper and vendor, renders them and sends directly the emails
