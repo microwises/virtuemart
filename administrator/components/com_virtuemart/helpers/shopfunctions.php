@@ -547,10 +547,6 @@ class ShopFunctions {
 
 		static $categoryTree = '';
 
-		//We have every where multi selection? so we dont need this anylonger
-//		if($level==0){
-//			$categoryTree .= '<option value="">'.JText::_('COM_VIRTUEMART_SEL_CATEGORY').'</option>';
-//		}
 		$virtuemart_vendor_id = 1;
 
 		$categoryModel = self::getModel('category');

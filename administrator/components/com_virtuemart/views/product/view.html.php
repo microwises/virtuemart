@@ -317,8 +317,6 @@ class VirtuemartViewProduct extends JView {
 				$lists['search_order'] = VmHTML::selectList('search_order', JRequest::getVar('search_order'),$options);
 
 				/* Toolbar */
-				//JToolBarHelper::title(JText::_('COM_VIRTUEMART_PRODUCT_LIST'), 'vm_product_48');
-
 
 				JToolBarHelper::custom('createchild', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_CHILD'), true);
 				JToolBarHelper::custom('cloneproduct', 'copy', 'copy', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);

@@ -173,15 +173,6 @@ if(!VmConfig::get('dangeroustools', false)){
             <?php echo Jtext::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH'); ?>
 		</a></div>
 	</td>
-
-<?php /*   <td align="center">
-		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=updateTable&token='.JUtility::getToken() ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::_('UPDATE table'); ?>', '<?php echo $link; ?>');">
-		<span class="vmicon48 vm_trash_48"></span>
-	    <br />
-            <?php echo Jtext::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH'); ?>
-		</a></div>
-	</td> */ ?>
     </tr>
 </table>
 </div>

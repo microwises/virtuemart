@@ -54,33 +54,6 @@ class TableManufacturercategories extends VmTable {
 	}
 
 
-	/**
-	 * Validates the manufacturer category record fields before saving to db.
-	 *
-	 * @return boolean True if the table buffer is contains valid data, false otherwise.
-	 */
-//	function check()
-//	{
-//        if (!$this->mf_category_name) {
-//			$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME_IS_EMPTY'));
-//			return false;
-//		}
-//
-//		if (($this->mf_category_name) && ($this->virtuemart_manufacturercategories_id == 0)) {
-//		    $db = JFactory::getDBO();
-//
-//			$q = 'SELECT count(*) FROM #__virtuemart_manufacturercategories ';
-//			$q .= 'WHERE mf_category_name="' .  $this->mf_category_name . '"';
-//            $db->setQuery($q);
-//		    $rowCount = $db->loadResult();
-//			if ($rowCount > 0) {
-//				$this->setError(JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME_ALREADY_EXISTS'));
-//				return false;
-//			}
-//		}
-//
-//		return true;
-//	}
 	/*
 	 * Verify that user have to delete all manufacturers of a particular category before that category can be removed
 	 *

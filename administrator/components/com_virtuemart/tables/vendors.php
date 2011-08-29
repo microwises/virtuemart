@@ -73,67 +73,6 @@ class TableVendors extends VmTableData {
 
 		$this->setLoggable();
     }
-
-
-    /**
-     * Validates the vendor record fields.
-     *
-     * @author RickG
-     * @return boolean True if the table buffer is contains valid data, false otherwise.
-     */
-//    function check() {
-//		if (($this->vendor_name) && ($this->virtuemart_vendor_id == 0)) {
-//		    $db = JFactory::getDBO();
-//
-//		    $q = 'SELECT count(*) FROM `#__virtuemart_vendors` ';
-//		    $q .= 'WHERE `vendor_name`="' .  $this->vendor_name . '"';
-//		    $db->setQuery($q);
-//		    $rowCount = $db->loadResult();
-//		    if ($rowCount > 0) {
-//				$this->setError(JText::_('COM_VIRTUEMART_VENDOR_NAME_ALREADY_EXISTS'));
-//				return false;
-//		    }
-//		}
-//
-//		$date = JFactory::getDate();
-//		$today = $date->toMySQL();
-//		if(empty($this->created_on)){
-//			$this->created_on = $today;
-//		}
-//     	$this->modified_on = $today;
-//
-//		return true;
-//    }
-
- 	/**
-	 * Records in this table do not need to exist, so we might need to create a record even
-	 * if the primary key is set. Therefore we need to overload the store() function.
-	 *
-	 * @author Oscar van Eijk
-	 * @author Max Milbers
-	 * @see libraries/joomla/database/JTable#store($updateNulls)
-	 */
-//	public function store()
-//	{
-//		$_qry = 'SELECT virtuemart_vendor_id '
-//				. 'FROM #__virtuemart_vendors '
-//				. 'WHERE virtuemart_vendor_id = ' . $this->virtuemart_vendor_id
-//		;
-//		$this->_db->setQuery($_qry);
-//		$_count = $this->_db->loadResultArray();
-//
-//		if (count($_count) > 0) {
-//			$returnCode = $this->_db->updateObject( $this->_tbl, $this, $this->_tbl_key, false );
-//		} else {
-//			$returnCode = $this->_db->insertObject( $this->_tbl, $this, $this->_tbl_key);
-//		}
-//
-//		if (!$returnCode){
-//			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
-//			return false;
-//		}
-//		else return true;
-//	}
 }
 
 //pure php no closing tag

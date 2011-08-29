@@ -66,7 +66,7 @@ defined('_JEXEC') or die('Restricted access');
 					</tr>
 					<tr>
 						<td class="key">
-							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_REGISTER_TEXT_TIP'); ?>">
+							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_TEXT_REGISTER_TIP'); ?>">
 								<label for="oncheckout_show_register_text"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_TEXT_REGISTER') ?></label>
 							</span>
 						</td>

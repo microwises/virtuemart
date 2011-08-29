@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');?>
 		</tr>
 		<tr>
 			<td >
-				<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_METAKEYS'); ?>: </div>
+				<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_METAKEY'); ?>: </div>
 			</td>
 			<td valign="top">
 				<textarea class="inputbox" name="metakey" id="meta_keyword" cols="60" rows="6"><?php echo $this->product->metakey; ?></textarea>

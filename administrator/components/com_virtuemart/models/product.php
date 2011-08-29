@@ -390,7 +390,8 @@ class VirtueMartModelProduct extends VmModel {
 
 				// Add the product link  for canonical
 				$producCategory = empty($product->categories[0])? '':$product->categories[0];
-				$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->_id.'&virtuemart_category_id='.$producCategory);
+				$product->canonical = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->_id.'&virtuemart_category_id='.$producCategory);
+				$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->_id.'&virtuemart_category_id='.$product->virtuemart_category_id);
 
 				//only needed in FE productdetails, is now loaded in the view.html.php
 //				/* Load the neighbours */
