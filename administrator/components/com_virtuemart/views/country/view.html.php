@@ -39,7 +39,9 @@ class VirtuemartViewCountry extends JView {
 
 
 		$model = $this->getModel();
-		$zoneModel = $this->getModel('Worldzones');
+		if(!class_exists('VirtueMartModelWorldzones'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'worldzones.php');
+		$zoneModel = new VirtueMartModelWorldzones();
+//		$zoneModel = $this->getModel('Worldzones');
 
 		$viewName=ShopFunctions::SetViewTitle();
 		$this->assignRef('viewName',$viewName);
