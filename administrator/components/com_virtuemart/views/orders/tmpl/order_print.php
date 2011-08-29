@@ -36,7 +36,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 			</tr>
 			<tr>
 				<td><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?>:</strong></td>
-				<td><?php echo date('Y-m-d H:i:s', $this->orderbt->created_on);?></td>
+				<td><?php echo $this->orderbt->created_on;?></td>
 			</tr>
 			<tr>
 				<td><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?>:</strong></td>
@@ -107,7 +107,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 				<td><?php echo $item->order_item_sku; ?></td>
 				<td align="center"><?php echo $this->orderstatuslist[$item->order_status]; ?>
 				</td>
-				<td><?php echo $this->currency->priceDisplay($item->product_item_price,'',false); ?>
+				<td><?php echo $item->product_item_price.' price '.$this->currency->priceDisplay($item->product_item_price,'',false); ?>
 				</td>
 				<td><?php echo $this->currency->priceDisplay($item->product_final_price,'',false); ?>
 				</td>

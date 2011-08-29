@@ -85,11 +85,11 @@ class VirtuemartViewOrders extends JView {
 		// We'll probably want to put this somewhere in ShopFunctions...
 		$_orderStats = $this->get('OrderStatusList');
 		$_orderStatusList = array();
-		foreach ($_orderStats as $_ordStat) {
-			$_orderStatusList[$_ordStat->value] = $_ordStat->text;
+		foreach ($_orderStats as $orderState) {
+				$_orderStatusList[$orderState->order_status_code] = JText::_($orderState->order_status_name);
 		}
 
-		foreach($order['items'] as $_item) {
+		/*foreach($order['items'] as $_item) {
 			if (!empty($_item->product_attribute)) {
 				$_attribs = preg_split('/\s?<br\s*\/?>\s?/i', $_item->product_attribute);
 
@@ -107,7 +107,7 @@ class VirtuemartViewOrders extends JView {
 					}
 				}
 			}
-		}
+		}*/
 		//$_shippingInfo = ShopFunctions::getShippingRateDetails($orderbt->ship_method_id);
 
 		/* Assign the data */

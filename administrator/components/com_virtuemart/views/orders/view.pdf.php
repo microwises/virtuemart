@@ -34,7 +34,6 @@ class VirtuemartViewOrders extends JView {
 	function display($tpl = null) {
 
 		$mainframe = JFactory::getApplication();
-		$option = JRequest::getWord('option');
 		$lists = array();
 
 		/* Load helpers */
@@ -43,7 +42,7 @@ class VirtuemartViewOrders extends JView {
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');
 
-		require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+//		require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
 		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
 		if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
@@ -61,7 +60,7 @@ class VirtuemartViewOrders extends JView {
 		$orderbt = $order['details']['BT'];
 		$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 
-		$currency = VirtueMartModelVendor::getInstance('',$order['details']['BT']->virtuemart_vendor_id);
+		$currency = CurrencyDisplay::getInstance('',$order['details']['BT']->virtuemart_vendor_id);
 		$this->assignRef('currency', $currency);
 
 		$_userFields = $userFieldsModel->getUserFields(
@@ -93,7 +92,7 @@ class VirtuemartViewOrders extends JView {
 			$_orderStatusList[$_ordStat->order_status_code] = $_ordStat->order_status_name;
 		}
 
-		foreach($order['items'] as $_item) {
+/* 		foreach($order['items'] as $_item) {
 			if (!empty($_item->product_attribute)) {
 				$_attribs = preg_split('/\s?<br\s*\/?>\s?/i', $_item->product_attribute);
 
@@ -111,7 +110,7 @@ class VirtuemartViewOrders extends JView {
 					}
 				}
 			}
-		}
+		} */
 		//$_shippingInfo = ShopFunctions::getShippingRateDetails($orderbt->ship_method_id);
 
 		/* Assign the data */
