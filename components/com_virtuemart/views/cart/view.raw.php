@@ -264,7 +264,7 @@ class VirtueMartViewCart extends JView {
 
 			$i++;
 		}
-                JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR); //  when AJAX it needs to be loaded manually here
+                JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR); //  when AJAX it needs to be loaded manually here >> in case you are outside virtuemart !!!
 		if ($this->data->totalProduct>1) $this->data->totalProductTxt = JText::sprintf('COM_VIRTUEMART_AJAX_PRODUCTS_LBL', $this->data->totalProduct);
 		else if ($this->data->totalProduct == 1) $this->data->totalProductTxt = JText::_('COM_VIRTUEMART_AJAX_PRODUCT_LBL');
 		else $this->data->totalProductTxt = JText::_('COM_VIRTUEMART_EMPTY_CART');

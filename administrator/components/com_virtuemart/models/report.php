@@ -115,7 +115,7 @@ class VirtuemartModelReport extends VmModel {
 		$selectFields['intervals'] = $this->intervals.' AS intervals,`o`.`created_on` ';
 		$groupBy = 'GROUP BY intervals ';
 
-		$selectFields[] = 'COUNT(virtuemart_order_id) as number_of_orders';
+		//$selectFields[] = 'COUNT(virtuemart_order_id) as number_of_orders';
 		$selectFields[] = 'SUM(order_subtotal) as revenue';
 		$this->dates = ' DATE( `o`.`created_on` ) BETWEEN "'.$this->from_period.'" AND "'.$this->until_period.'" ';
 
@@ -197,7 +197,7 @@ class VirtuemartModelReport extends VmModel {
 
 		// TODO $nbrReturnProducts ?
 
-		return $this->exeSortSearchListQuery(true, $select, $joinedTables, $whereString, $groupBy, $orderBy );
+		return $this->exeSortSearchListQuery(1, $select, $joinedTables, $whereString, $groupBy, $orderBy );
 
 	}
 
