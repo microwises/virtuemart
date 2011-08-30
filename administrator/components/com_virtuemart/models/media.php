@@ -299,10 +299,15 @@ class VirtueMartModelMedia extends VmModel {
 		}
 
 		$orderField = '';
-		$orderBy = $this->_getOrdering($orderField,'asc');
-		if ( 'product_quantity'==JRequest::getWord('filter_order')) {
-			$orderBy = '';
+		$orderBy = '';
+		if ( JRequest::getCmd('view') == 'media') {
+			$orderBy = $this->_getOrdering();
 		}
+//		$orderBy = $this->_getOrdering($orderField,'asc');
+//		$orderBy = $this->_getOrdering($orderField,'asc');
+//		if ( 'product_quantity'==JRequest::getWord('filter_order')) {
+//			$orderBy = '';
+//		}
 
 		if(!empty($orderField)){
 			$selectFields[] = $orderField;
@@ -325,7 +330,6 @@ class VirtueMartModelMedia extends VmModel {
 
 		$this->_data = $this->exeSortSearchListQuery(2, $select, $joinedTables, $whereString, $groupBy, $orderBy);
 
-		vmdebug('komisch',$this->_data);
 		if(empty($this->_data)){
 			return array();
 		}
