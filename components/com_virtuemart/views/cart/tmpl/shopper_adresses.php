@@ -22,28 +22,40 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
-<fieldset>
-	<legend>
+<table width="100%">
+  <tr>
+    <td width="50%" bgcolor="#ccc">
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?>
-	</legend>
-<?php 	foreach($this->BTaddress as $item){
-			if(!empty($item['value'])){
-				echo $item['title'].': '.$this->escape($item['value']).'<br/>';
-			}
-		} ?>
+	</td> 
+	<td width="50%" bgcolor="#ccc">
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
+	</td>
+  </tr>
+  <tr>
+    <td width="50%">
 
-</fieldset>
+		<?php 	foreach($this->BTaddress as $item){
+					if(!empty($item['value'])){
+						echo $item['title'].': '.$this->escape($item['value']).'<br/>';
+					}
+				} ?>
 
-<?php
-if(!empty($this->STaddress)){ ?>
-	<fieldset>
-		<legend>
-			<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
-		</legend>
-	<?php 	foreach($this->STaddress as $item){
-				if(!empty($item['value'])){
-					echo $item['title'].': '.$this->escape($item['value']).'<br/>';
+	</td>
+    <td width="50%">
+			<?php 
+			if(!empty($this->STaddress)){ 
+				foreach($this->STaddress as $item){
+					if(!empty($item['value'])){
+						echo $item['title'].': '.$this->escape($item['value']).'<br/>';
+					}
+				}
+			} else {
+				foreach($this->BTaddress as $item){
+					if(!empty($item['value'])){
+						echo $item['title'].': '.$this->escape($item['value']).'<br/>';
+					}
 				}
 			} ?>
-	</fieldset>
-<?php } ?>
+	</td>
+  </tr>
+</table>

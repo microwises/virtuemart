@@ -34,72 +34,69 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	
 	<head>
 		<style type="text/css">
-			table.html-email {width:700px;margin:30px auto;background:#fff;border:solid #dad8d8 1px;padding:25px;}
+			table.html-email {margin:30px auto;background:#fff;border:solid #dad8d8 1px;padding:25px;}
+			.html-email tr{border-bottom : 1px solid #eee;}
 			span.grey {color:#666;}
-			a.default:link, a.default:hover, a.default:visited {color:#666;line-height:25px;background: #f2f2f2;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;}
-			
-		
+			a.default:link, a.default:hover, a.default:visited {color:#666;line-height:25px;background: #f2f2f2;margin: 10px ;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;}
+			a.default:hover {color:#888;background: #f8f8f8;}
+			.cart-summary{font-size: 8px;}
+			.sectiontableentry2, .cart-summary th{font-size:8px;background: #ccc;margin: 0px;padding: 10px;}
+			.sectiontableentry1, .cart-summary td {font-size:8px;background: #fff;margin: 0px;padding: 10px;}
 		</style>
 	
 	</head>
 	
 	<body style="background: f2f2f2;word-wrap: break-word;">
 
-<table width="700" border="0" cellpadding="0" cellspacing="0" class="html-email">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="html-email">
   <tr>
-    <td colspan="2" align="right"><span class="grey"><?php echo $this->order['details']['BT']->created_on ?></span></td>
+    <td colspan="2"><strong><?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_NAME',$this->shopperName); ?></strong><br/></td> 
+	<td align="right"><span class="grey"><?php echo $this->order['details']['BT']->created_on ?></span><br/></td>
   </tr>
   <tr>
-    <td colspan="2"><strong><?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_NAME',$this->shopperName); ?></strong></td>
+    <td colspan="3" bgcolor="#ccc">
+				<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_SUMMARY',$this->vendor->vendor_store_name); ?></td>
   </tr>
   <tr>
-    <td colspan="2"><br />
-				<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_SUMMARY',$this->order['details']['BT']->order_total,$this->vendor->vendor_store_name); ?></td>
+    <td width="25%">
+		<p><?php echo JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_ORDER'); ?><br />
+		<b><?php echo $this->order['details']['BT']->order_number ?></b>
+		</p>
+	</td>
+    <td width="25%">
+		<p><?php echo JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_PASSWORD'); ?><br />
+		<b><?php echo $this->order['details']['BT']->order_pass ?></b></p>
+	</td>
+    <td width="50%">
+    	<p/>
+			<a class="default" title="<?php echo $this->vendor->vendor_store_name ?>" href="<?php echo JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&order_number='.$this->order['details']['BT']->order_number.'&order_pass='.$this->order['details']['BT']->order_pass; ?>">
+			<?php echo JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_ORDER_LINK'); ?></a>
+		</p>
+	</td>
   </tr>
   <tr>
-    <td width="180"><br /><br />
-				<?php echo JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_ORDER'); ?></td>
-    <td width="520"><br /><br />
-				<?php echo $this->order['details']['BT']->order_number ?></td>
+    <td colspan="3">
+				<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_TOTAL_ORDER',$this->prices['billTotal'] ); ?></td>
   </tr>
   <tr>
-    <td><br />
-				<?php echo JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_PASSWORD'); ?></td>
-    <td><br />
-				<?php echo $this->order['details']['BT']->order_pass ?></td>
+    <td colspan="3">
+		<?php include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'shopper_adresses.php'); ?>
+	</td>
   </tr>
+  <?php if(!empty($this->order['details']['BT']->customer_note)){ ?>
   <tr>
-    <td colspan="2">
-    	<br />
-        <a class="default" title="<?php echo $this->vendor->vendor_store_name ?>" href="<?php echo JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&order_number='.$this->order['details']['BT']->order_number.'&order_pass='.$this->order['details']['BT']->order_pass;
- ?>"><?php echo JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_ORDER_LINK'); ?></a></td>
-    </tr>
+    <td colspan="3">
+		<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_QUESTION',$this->order['details']['BT']->customer_note) ?>
+
+	</td>
+  </tr>
+  <?php } ?>
+  <tr>
+    <td colspan="3">
+		<?php include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'price_list.php'); ?>
+	</td>
+  </tr>
 </table>
 
- 
- <?php
-
-
-// Vendor Image
-//echo '<img src="'.JURI::root().$this->vendor->images[0]->file_url.'" />';
-
-
-if(!empty($this->order['details']['BT']->customer_note)){
-	echo '<br />'.JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_QUESTION',$this->order['details']['BT']->customer_note).'<br />';
-}
-
-//PriceList
-include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'price_list.php');
-
-include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'shopper_adresses.php');
-
-//TODO if silent registration logindata
-//TODO if Paymentmethod needs Bank account data of vendor
-
-//We may wish to integrate later a kind of signature
-//include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'footer.php');
-
-	//Footer for shopper
-?>
-	</body>
+</body>
 </html>

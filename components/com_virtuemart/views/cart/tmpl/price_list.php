@@ -22,8 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 // jimport( 'joomla.application.component.view');
 // $viewEscape = new JView();
 // $viewEscape->setEscape('htmlspecialchars');
-?>
 
+ if ( isset ($checkoutProcess ) ) { ?>
 <div class="billto-shipto">
 	<div class="width50 floatleft">
 
@@ -47,13 +47,12 @@ defined('_JEXEC') or die('Restricted access');
 		} ?>
 		<div class="clear"></div>
 		</div>
-<?php if ( isset ($checkoutProcess ) ) { ?>
+
 		<a class="details" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=BT">
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL'); ?>
 		</a>
 
 		<input type="hidden" name="billto" value="<?php echo $this->lists['billTo']; ?>"/>
-<?php } ?>
 	</div>
 
 	<div class="width50 floatleft">
@@ -77,16 +76,15 @@ defined('_JEXEC') or die('Restricted access');
 		} ?>
 		<div class="clear"></div>
 		</div>
-<?php if (isset ($checkoutProcess ) ) { ?>
 		<a class="details" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=0&cid[]=<?php echo $this->lists['current_id']; ?>">
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'); ?>
 		</a>
-<?php } ?>
+
 	</div>
 
 <div class="clear"></div>
 </div>
-
+<?php } ?>
 
 
 <fieldset>
