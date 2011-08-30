@@ -159,6 +159,8 @@ class CurrencyDisplay {
      */
     function setPriceArray(){
 
+    	if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
+
 		$user = JFactory::getUser();
 
 		if(!empty($user->id)){

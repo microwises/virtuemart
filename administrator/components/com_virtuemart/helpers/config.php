@@ -324,8 +324,6 @@ class VmConfig{
 			}
 
 			self::$_jpConfig->_params = $pair;
-
-
 			self::$_jpConfig->setSession();
 
 // 			vmTime('Parsed and in session','loadConfig');
