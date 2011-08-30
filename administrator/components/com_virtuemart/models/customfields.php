@@ -556,7 +556,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				break;
 				/* parent */
 				case 'P':
-					return '<span class="product_custom_parent">'.JText::_($value).'<span/>';
+					return '<span class="product_custom_parent">'.JText::_($value).'</span>';
 				break;
 				/* related */
 				case 'R':

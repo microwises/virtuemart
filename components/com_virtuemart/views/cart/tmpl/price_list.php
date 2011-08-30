@@ -137,14 +137,14 @@ defined('_JEXEC') or die('Restricted access');
 				<input type="hidden" name="view" value="cart" />
 				<input type="hidden" name="task" value="update" />
 				<input type="hidden" name="cart_virtuemart_product_id" value="'.$priceKey.'" />
-				<input type="image" name="update" title="'. JText::_('COM_VIRTUEMART_CART_UPDATE') .'" src="'.JURI::root().'components/com_virtuemart/assets/images/vmgeneral/update_quantity_cart.png" alt="'. JText::_('COM_VIRTUEMART_UPDATE') .'" align="middle" />
+				<input type="submit" class="vmicon vm2-add_quantity_cart" name="update" title="'. JText::_('COM_VIRTUEMART_CART_UPDATE') .'" align="middle" value=" "/>
 			  </form>';
 			$product_rows[$i]['delete_form'] = '<form action="index.php" method="post" name="delete" style="display: inline;">
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="hidden" name="view" value="cart" />
 				<input type="hidden" name="task" value="delete" />
 				<input type="hidden" name="cart_virtuemart_product_id" value="'.$priceKey.'" />
-				<input type="image" name="delete" title="'. JText::_('COM_VIRTUEMART_CART_DELETE') .'" src="'.JURI::root().'components/com_virtuemart/assets/images/vmgeneral/remove_from_cart.png" alt="'. JText::_('COM_VIRTUEMART_CART_DELETE') .'" align="middle" />
+				<input type="submit" class="vmicon vm2-remove_from_cart" name="delete" title="'. JText::_('COM_VIRTUEMART_CART_DELETE') .'" align="middle" value=" "/>
 			  </form>';
 			} else {
 				$product_rows[$i]['update_form'] = $product->quantity;
