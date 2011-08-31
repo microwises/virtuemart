@@ -223,6 +223,8 @@ class VmHTML{
 	}
 	/* simple row display */
 	function Row($label, $value ){
+             $lang = JFactory::getLanguage();
+              $value = $lang->hasKey($value) ? JText::_($value) : $value;
 			$html = '<tr>
 		<td class="labelcell">'.JText::_($label).'</td>
 		<td>'.$value.'</td><td>-</td>

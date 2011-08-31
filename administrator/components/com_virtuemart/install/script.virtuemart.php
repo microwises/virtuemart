@@ -175,6 +175,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','int(11)');
 
 			$this->alterSessionTable();
+                        $this->alterOrderItemsTable();
 
 			$this->updateWeightUnit();
 			$this->updateDimensionUnit();
@@ -203,7 +204,30 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				}
 			}
 		}
+                /**
+		 *
+		 * @author Valérie Isaksen
+		 * @param unknown_type $table
+		 * @param unknown_type $field
+		 * @param unknown_type $action
+		 * @return boolean This gives true back, WHEN it altered the table, you may use this information to decide for extra post actions
+		 */
+                private function alterOrderItemsTable(){
 
+
+                    if(empty($this->db)){
+                            $this->db = JFactory::getDBO();
+                    }
+                    $query = 'SHOW COLUMNS FROM `#__virtuemart_order_items` ';
+                    $this->db->setQuery($query);
+                    $columns = $this->db->loadResultArray(0);
+                    if(in_array('order_item_name',$columns)){
+                            $query = 'ALTER TABLE `#__virtuemart_order_items` CHANGE COLUMN `order_item_name` `order_item_name` VARCHAR( 255 )  NOT NULL DEFAULT "" ;';
+                            $this->db->setQuery($query);
+                            return $this->db->query();
+                    }
+                    return false;
+		}
 		/**
 		 *
 		 * @author Max Milbers

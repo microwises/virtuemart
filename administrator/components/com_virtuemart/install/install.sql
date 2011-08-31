@@ -528,7 +528,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_items` (
   `virtuemart_vendor_id` int(11) DEFAULT NULL,
   `virtuemart_product_id` int(11) DEFAULT NULL,
   `order_item_sku` varchar(64) NOT NULL DEFAULT '',
-  `order_item_name` varchar(64) NOT NULL DEFAULT '',
+  `order_item_name` varchar(255) NOT NULL DEFAULT '',
   `product_quantity` int(11) DEFAULT NULL,
   `product_item_price` decimal(15,5) DEFAULT NULL,
   `product_final_price` decimal(15,5) NOT NULL DEFAULT '0.00000',

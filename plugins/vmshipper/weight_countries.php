@@ -19,6 +19,9 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  *
  * http://virtuemart.org
  */
+if (!class_exists('ShopFunctions'))
+    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+
 class plgVmShipperWeight_countries extends vmShipperPlugin {
 
 	/**
@@ -70,6 +73,11 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 		, 'order_weight' => array(
                 'type' => 'int'
 		, 'length' => 11
+		, 'null' => false
+		)
+                , 'shipping_weight_unit' => array(
+                'type' => 'varchar '
+		, 'length' => 3
 		, 'null' => false
 		)
 		, 'shipper_cost' => array(
@@ -246,7 +254,8 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 		$values['shipper_id'] = $cart->virtuemart_shippingcarrier_id;
 		$values['shipper_name'] = $this->getThisShipperNameById($cart->virtuemart_shippingcarrier_id);
 		$values['order_weight'] = $this->getOrderWeight($cart, $params->get('weight_unit'));
-		$values['shipper_cost'] = $params->get('rate_value');
+		$values['shipping_weight_unit'] = $params->get('weight_unit');
+                $values['shipper_cost'] = $params->get('rate_value');
 		$values['shipper_package_fee'] = $params->get('package_fee');
 		$values['tax_id'] = $params->get('tax_id');
 
@@ -294,7 +303,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 		. '	</tr>' . "\n"
 		. '	<tr>' . "\n"
 		. '		<td class="key">' . JText::_('VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT') . ': </td>' . "\n"
-		. '		<td>' . $shipinfo->order_weight . '</td>' . "\n"
+		. '		<td>' . $shipinfo->order_weight .' ' .  ShopFunctions::renderWeightUnit ( $shipinfo->shipping_weight_unit ). '</td>' . "\n"
 		. '	</tr>' . "\n"
 		. '	<tr>' . "\n"
 		. '		<td class="key">' . JText::_('VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE') . ': </td>' . "\n"

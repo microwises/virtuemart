@@ -395,6 +395,33 @@ class ShopFunctions {
 
         return array_merge($defaulttemplate, $jtemplates);
     }
+     /**
+     * Returns all the weight unit
+     *
+     * @author Valérie Isaksen
+     */
+    function getWeightUnit() {
+        return array(
+                'KG' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_KG')
+                , 'GR' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_GR')
+                , 'MG' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_MG')
+                , 'LB' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_LB')
+                , 'OZ' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_ONCE')
+            );
+    }
+     /**
+     * Renders the string for the
+     *
+     * @author Valérie Isaksen
+     */
+    function renderWeightUnit ($name ) {
+
+        $weigth_unit = self::getWeightUnit();
+        if (isset($weigth_unit[$name]))
+            return $weigth_unit[$name];
+        else
+            return '';
+    }
 
     /**
      * Renders the list for the Weight Unit
@@ -403,13 +430,7 @@ class ShopFunctions {
      */
     function renderWeightUnitList($name, $selected) {
 
-        $weigth_unit_default = array(
-            'KG' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_KG')
-            , 'GR' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_GR')
-            , 'MG' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_MG')
-            , 'LB' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_LB')
-            , 'OZ' => JText::_('COM_VIRTUEMART_WEIGHT_UNIT_NAME_ONCE')
-        );
+        $weigth_unit_default = self::getWeightUnit();
         return VmHTML::selectList($name, $selected, $weigth_unit_default);
     }
 

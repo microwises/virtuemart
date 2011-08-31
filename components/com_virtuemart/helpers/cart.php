@@ -217,7 +217,7 @@ class VirtueMartCart {
 			$tmpProduct = $this->getProduct((int) $virtuemart_product_id);
 
 //			dump($tmpProduct,'my product add to cart before');
-//
+                        // trying to save some space in the session table
 			$product = new stdClass();
 			$product -> virtuemart_manufacturer_id = $tmpProduct -> virtuemart_manufacturer_id;
 			$product -> mf_name = $tmpProduct -> mf_name;
