@@ -69,7 +69,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * by adding this code to the constructor:
      * $this->_selement = basename(__FILE, '.php');
      */
-    protected $_selement = '';
+    protected $_pelement = '';
     protected $_tablename = '';
     /**
      * @var array List with all carriers the have been implemented with the plugin in the format

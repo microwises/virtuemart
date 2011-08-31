@@ -258,3 +258,7 @@ INSERT INTO `#__virtuemart_worldzones` (`virtuemart_worldzone_id`, `zone_name`, 
 (2, 'Zone 1', '1000.00', '10000.00', 'This is a zone example', 2),
 (3, 'Zone 2', '2.00', '22.00', 'This is the second zone. You can use this for notes about this zone', 2),
 (4, 'Zone 3', '11.00', '64.00', 'Another usefull thing might be details about this zone or special instructions.', 2);
+
+INSERT INTO `#__virtuemart_userfield_values` (`virtuemart_userfield_value_id`, `virtuemart_userfield_id`, `fieldtitle`, `fieldvalue`, `sys`, `ordering`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
+(null, 10, 'M', 'M', 0, 0, '', 0, '', 0, '', 0),
+(null, 10, 'Mrs', 'Mrs', 0, 1, '', 0, '', 0, '', 0);

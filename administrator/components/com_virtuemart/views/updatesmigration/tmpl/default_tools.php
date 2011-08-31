@@ -33,7 +33,18 @@ if(!VmConfig::get('dangeroustools', false)){
 
 ?>
 <div id="cpanel">
-<table cellpadding="10">
+<table  >
+    <tr>
+
+
+	<td align="left" colspan="3" >
+             <h3> <?php echo JText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'); ?> </h3>
+	</td>
+    
+	<td align="left" colspan="2" >
+            <h3> <?php echo JText::_('COM_VIRTUEMART_TOOLS_RENEW_CONFIG'); ?> </h3>
+	</td>
+    </tr>
     <tr>
 <?php /*	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JUtility::getToken()); ?>
@@ -49,14 +60,22 @@ if(!VmConfig::get('dangeroustools', false)){
 	    <br /><?php echo JText::_('COM_VIRTUEMART_SYNC_JOOMLA_USERS'); ?>
 		</a></div>
 	</td>*/ ?>
+
  	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=portMedia&token='.JUtility::getToken() ); ?>
 	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING_CONFIRM', JText::_('COM_VIRTUEMART_MEDIA_S')); ?>', '<?php echo $link; ?>');">
 			<span class="vmicon48 vm_shop_products_48"></span>
-			<br /><?php echo JText::_('COM_VIRTUEMART_SYNC_MEDIA_FILES'); ?>
+			<br /><?php echo JText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'); ?>
 	    
 		</a></div>
 	</td>
+
+        <td align="left" colspan="2">
+
+        		<?php echo JText::sprintf('COM_VIRTUEMART_TOOLS_SYNC_MEDIAS_EXPLAIN',VmConfig::get('media_product_path') ,VmConfig::get('media_category_path') , VmConfig::get('media_manufacturer_path')); ?>
+        </td>
+          
+
 	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=renewConfig&token='.JUtility::getToken() ); ?>
 	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_TOOLS_RENEW_CONFIG_CONFIRM'); ?>', '<?php echo $link; ?>');">
@@ -66,12 +85,18 @@ if(!VmConfig::get('dangeroustools', false)){
 		
 		</a></div>
 	</td>
-	<td align="left" colspan="3" >
-		<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MEDIAS_EXPLAIN',VmConfig::get('media_product_path') ,VmConfig::get('media_category_path') , VmConfig::get('media_manufacturer_path')); ?>
+	<td align="left" colspan="4" >
+		<?php echo JText::sprintf('COM_VIRTUEMART_TOOLS_RENEW_CONFIG_EXPLAIN'); ?>
 	    
 	</td>
     </tr>
+  <tr>
 
+
+	<td align="left" colspan="5" >
+             <h3> <?php echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TITLE'); ?> </h3>
+	</td>
+    </tr>
     <tr>
    <td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateUsersFromVmOne&token='.JUtility::getToken() ); ?>
@@ -140,7 +165,7 @@ if(!VmConfig::get('dangeroustools', false)){
 	</td>*/ ?>
     </tr>
 
-    <tr><td colspan="4"><?php echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING'); ?></td></tr>
+    <tr><td align="left" colspan="5"><?php echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING'); ?></td></tr>
     <tr>
 	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=restoreSystemDefaults&token='.JUtility::getToken()); ?>
@@ -173,6 +198,7 @@ if(!VmConfig::get('dangeroustools', false)){
             <?php echo Jtext::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH'); ?>
 		</a></div>
 	</td>
+        <td></td>
     </tr>
 </table>
 </div>

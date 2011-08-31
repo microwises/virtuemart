@@ -375,10 +375,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 							<img border="0" align="center" src="components/com_virtuemart/assets/images/vm_menulogo.png" alt="Cart" />
 						</a>
 						<br /><br />
-						<h1><?php echo JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h1>
+						<h2><?php echo JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h2>
 					</td>
 					<td>
-						<h1>
+						<h2>
 						<?php
 						if($update){
 							echo JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
@@ -387,7 +387,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 							echo JText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
 						}
 						?>
-						</h1>
+						</h2>
 						<br />
 
 						<div id="cpanel">
