@@ -245,6 +245,7 @@ class VirtueMartModelConfig extends JModel {
 	*
 	* @author Kohl Patrick
 	* @return array of order list
+         *
 	*/
 	function getTitlesFields( $titlesChecked ) {
 

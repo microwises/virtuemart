@@ -114,7 +114,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUPON_DETAILS');
 			<td>
 				<?php
                 $mydate = JFactory::getDate($this->coupon->coupon_start_date);
-				echo VmConfig::jDate($mydate->toFormat($this->dateformat), 'coupon_start_date'); 
+				echo vmJsApi::jDate($mydate->toFormat($this->dateformat), 'coupon_start_date'); 
 				// echo JHTML::_('calendar', $mydate->toFormat($this->dateformat), "coupon_start_date", "coupon_start_date", $this->dateformat);
                 ?>
 			</td>
@@ -130,7 +130,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUPON_DETAILS');
 			<td>
 				<?php
                 $expireDate = JFactory::getDate($this->coupon->coupon_expiry_date);
-				echo VmConfig::jDate($expireDate->toFormat($this->dateformat), 'coupon_expiry_date'); 
+				echo vmJsApi::jDate($expireDate->toFormat($this->dateformat), 'coupon_expiry_date'); 
                 //echo JHTML::_('calendar', $expireDate->toFormat($this->dateformat), "coupon_expiry_date", "coupon_expiry_date", $this->dateformat);
                 ?>
 

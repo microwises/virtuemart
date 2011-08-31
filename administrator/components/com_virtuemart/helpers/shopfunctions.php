@@ -309,7 +309,7 @@ class ShopFunctions {
 
         if (is_array($stateId))
             $stateId = implode(",", $stateId);
-        VmConfig::JcountryStateList($stateId);
+        vmJsApi::JcountryStateList($stateId);
         $attrs = array();
         if ($multiple) {
             $attrs = 'multiple="multiple" size="12" name="' . $_prefix . 'virtuemart_state_id[]" ';

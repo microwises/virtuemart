@@ -25,8 +25,8 @@ if(JRequest::getCmd('view','') == 'liveupdate') {
 
 require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
-VmConfig::jQuery();
-VmConfig::jSite();
+vmJsApi::jQuery();
+vmJsApi::jSite();
 // check for permission Only vendor and Admin can use VM2 BE
 if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 if(!Permissions::getInstance()->check('admin','storeowner')){

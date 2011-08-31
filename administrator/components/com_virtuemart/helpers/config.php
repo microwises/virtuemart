@@ -465,8 +465,7 @@ class VmConfig{
 	 * @return Boolean; true on success, false otherwise
 	 * @author Oscar van Eijk
 	 */
-	public function installVMconfig($_section = 'config')
-	{
+	public function installVMconfig($_section = 'config'){
 
 		$_datafile = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart_defaults.cfg';
 		if (!file_exists($_datafile)) {
@@ -561,96 +560,97 @@ class VmConfig{
 		}
 
 	}
+}
+
+/**
+ *
+ * Class to provide js API of vm
+ * @author Patrick Kohl
+ * @author Max Milbers
+ */
+class vmJsApi{
+
+	private function __construct() {
+
+	}
 
 	/**
-	 *
-	 * Class to provide js API of vm
-	 * @author Patrick Kohl
-	 * @author Max Milbers
+	 * ADD some javascript if needed
+	 * Prevent duplicate load of script
+	 * @ Author KOHL Patrick
 	 */
-	class vmJsApi(){
+	function jQuery()
+	{
+		static $jquery;
+		// If exist exit
+		if ($jquery) return;
+		$document = JFactory::getDocument();
+		$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js');
+		$document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js');
+		//JHTML::script('jquery.min.js', '//ajax.googleapis.com/ajax/libs/jquery/1.6.1/', false);
+		/*$document = JFactory::getDocument();
+		 $document->addScriptDeclaration('jQuery.noConflict();');*/
 
-		private function __construct() {
+		$jquery = true;
+		return;
+	}
+	// Virtuemart product and price script
+	function jPrice()
+	{
+		static $jPrice;
+		// If exist exit
+		if ($jPrice) return;
 
-		}
+		//JPlugin::loadLanguage('com_virtuemart');
+		$lang = JFactory::getLanguage();
+		$lang->load('com_virtuemart');
+		vmJsApi::jSite();
 
-		/**
-		 * ADD some javascript if needed
-		 * Prevent duplicate load of script
-		 * @ Author KOHL Patrick
-		 */
-		function jQuery()
-		{
-			static $jquery;
-			// If exist exit
-			if ($jquery) return;
-			$document = JFactory::getDocument();
-			$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js');
-			$document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js');
-			//JHTML::script('jquery.min.js', '//ajax.googleapis.com/ajax/libs/jquery/1.6.1/', false);
-			/*$document = JFactory::getDocument();
-			 $document->addScriptDeclaration('jQuery.noConflict();');*/
+		$closeimage = JURI::root(true) .'/components/com_virtuemart/assets/images/facebox/closelabel.png';
+		$jsVars  = "siteurl = '". JURI::root(true) .'/' ."' ;\n" ;
+		$jsVars .= "vmCartText = '". JText::_('COM_VIRTUEMART_MINICART_ADDED') ."' ;\n" ;
+		$jsVars .= "vmCartError = '". JText::_('COM_VIRTUEMART_MINICART_ERROR') ."' ;\n" ;
+		$jsVars .= "loadingImage = '".JURI::root(true) ."/components/com_virtuemart/assets/images/facebox/loading.gif'  ;\n" ;
+		$jsVars .= "closeImage = '".$closeimage."' ; \n";
+		$jsVars .= "faceboxHtml = \"<div id='facebox' style='display:none;'><div class='popup'><div class='content'></div> <a href='#' class='close'><img src='".$closeimage."' title='close' class='close_image' /></a></div></div>\" ;\n";
+		$document = JFactory::getDocument();
+		$document->addScriptDeclaration($jsVars);
+		JHTML::script('facebox.js', 'components/com_virtuemart/assets/js/', false);
+		JHTML::script('vmprices.js', 'components/com_virtuemart/assets/js/', false);
+		JHTML::stylesheet('facebox.css', 'components/com_virtuemart/assets/css/', false);
+		$jPrice = true;
+		return;
+	}
 
-			$jquery = true;
-			return;
-		}
-		// Virtuemart product and price script
-		function jPrice()
-		{
-			static $jPrice;
-			// If exist exit
-			if ($jPrice) return;
+	// Virtuemart Site Js script
+	function jSite()
+	{
+		static $jSite;
+		// If exist exit
+		if ($jSite) return;
+		JHTML::script('vmsite.js', 'components/com_virtuemart/assets/js/', false);
+		$jSite = true;
+		return;
+	}
 
-			//JPlugin::loadLanguage('com_virtuemart');
-			$lang = JFactory::getLanguage();
-			$lang->load('com_virtuemart');
-			VmConfig::jSite();
-
-			$closeimage = JURI::root(true) .'/components/com_virtuemart/assets/images/facebox/closelabel.png';
-			$jsVars  = "siteurl = '". JURI::root(true) .'/' ."' ;\n" ;
-			$jsVars .= "vmCartText = '". JText::_('COM_VIRTUEMART_MINICART_ADDED') ."' ;\n" ;
-			$jsVars .= "vmCartError = '". JText::_('COM_VIRTUEMART_MINICART_ERROR') ."' ;\n" ;
-			$jsVars .= "loadingImage = '".JURI::root(true) ."/components/com_virtuemart/assets/images/facebox/loading.gif'  ;\n" ;
-			$jsVars .= "closeImage = '".$closeimage."' ; \n";
-			$jsVars .= "faceboxHtml = \"<div id='facebox' style='display:none;'><div class='popup'><div class='content'></div> <a href='#' class='close'><img src='".$closeimage."' title='close' class='close_image' /></a></div></div>\" ;\n";
-			$document = JFactory::getDocument();
-			$document->addScriptDeclaration($jsVars);
-			JHTML::script('facebox.js', 'components/com_virtuemart/assets/js/', false);
-			JHTML::script('vmprices.js', 'components/com_virtuemart/assets/js/', false);
-			JHTML::stylesheet('facebox.css', 'components/com_virtuemart/assets/css/', false);
-			$jPrice = true;
-			return;
-		}
-
-		// Virtuemart Site Js script
-		function jSite()
-		{
-			static $jSite;
-			// If exist exit
-			if ($jSite) return;
-			JHTML::script('vmsite.js', 'components/com_virtuemart/assets/js/', false);
-			$jSite = true;
-			return;
-		}
-
-		// Virtuemart Site Js script VmConfig::jDate();
-		function jDate($value='',$name="date",$class='class="datepicker"')
-		{
-			static $jDate;
-			// If exist exit
-			$display= '<input '.$class.' type="date" name="'.$name.'" value="'.$value.'" />';
-			if ($jDate) return $display;
-			$front = JURI::root(true).'/components/com_virtuemart/assets/';
-			$document = JFactory::getDocument();
-			//$document->addScript($front.'js/jquery.ui.core.min.js');
-			//$document->addScript($front.'js/jquery.ui.datepicker.min.js');
-			$document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
-			$lg = &JFactory::getLanguage();
-			$lang = substr($lg->getTag(), 0, 2);
-			$existingLang = array("af","ar","ar-DZ","az","bg","bs","ca","cs","da","de","el","en-AU","en-GB","en-NZ","eo","es","et","eu","fa","fi","fo","fr","fr-CH","gl","he","hr","hu","hy","id","is","it","ja","ko","kz","lt","lv","ml","ms","nl","no","pl","pt","pt-BR","rm","ro","ru","sk","sl","sq","sr","sr-SR","sv","ta","th","tj","tr","uk","vi","zh-CN","zh-HK","zh-TW");
-			if (!in_array($lang, $existingLang)) $lang ="en-GB";
-			$document->addScript($front.'js/i18n/jquery.ui.datepicker-'.$lang.'.js');
-			$document->addScriptDeclaration('
+	// Virtuemart Site Js script vmJsApi::jDate();
+	function jDate($value='',$name="date",$class='class="datepicker"')
+	{
+		static $jDate;
+		// If exist exit
+		$display= '<input '.$class.' type="date" name="'.$name.'" value="'.$value.'" />';
+		if ($jDate) return $display;
+		$front = JURI::root(true).'/components/com_virtuemart/assets/';
+		$document = JFactory::getDocument();
+		//$document->addScript($front.'js/jquery.ui.core.min.js');
+		//$document->addScript($front.'js/jquery.ui.datepicker.min.js');
+		$document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
+		$lg = &JFactory::getLanguage();
+		$lang = substr($lg->getTag(), 0, 2);
+		$existingLang = array("af","ar","ar-DZ","az","bg","bs","ca","cs","da","de","el","en-AU","en-GB","en-NZ","eo","es","et","eu","fa","fi","fo","fr","fr-CH","gl","he","hr","hu","hy","id","is","it","ja","ko","kz","lt","lv","ml","ms","nl","no","pl","pt","pt-BR","rm","ro","ru","sk","sl","sq","sr","sr-SR","sv","ta","th","tj","tr","uk","vi","zh-CN","zh-HK","zh-TW");
+		if (!in_array($lang, $existingLang)) $lang ="en-GB";
+		$document->addScript($front.'js/i18n/jquery.ui.datepicker-'.$lang.'.js');
+		$document->addScriptDeclaration('
 		jQuery(document).ready( function() {
 			jQuery( ".datepicker" ).datepicker({
 			changeMonth: true,
@@ -660,119 +660,118 @@ class VmConfig{
 
 		});
 		');
-			$jDate = true;
-			return $display;
-		}
+		$jDate = true;
+		return $display;
+	}
 
-		function JcountryStateList($stateIds) {
-			static $JcountryStateList;
-			// If exist exit
-			if ($JcountryStateList) return;
-			$document = JFactory::getDocument();
-			VmJsApi::jSite();
-			//$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/vmsite.js');
-			$document->addScriptDeclaration(' jQuery( function($) {
+	function JcountryStateList($stateIds) {
+		static $JcountryStateList;
+		// If exist exit
+		if ($JcountryStateList) return;
+		$document = JFactory::getDocument();
+		VmJsApi::jSite();
+		//$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/vmsite.js');
+		$document->addScriptDeclaration(' jQuery( function($) {
 			$(".virtuemart_country_id").vm2front("list",{dest : "#virtuemart_state_id",ids : "'.$stateIds.'"});
 		});');
-			$JcountryStateList = true;
-			return;
-		}
+		$JcountryStateList = true;
+		return;
+	}
 
-		/* 	function JimageSelectlist() {
-		 static $JimageSelectlist;
-		 if ($JimageSelectlist) return;
-			$js = "
-			jQuery(document).ready(function() {
+	/* 	function JimageSelectlist() {
+	 static $JimageSelectlist;
+	 if ($JimageSelectlist) return;
+	 $js = "
+	 jQuery(document).ready(function() {
 
-			jQuery('#addnewselectimage').click(function() {
-			jQuery('.selectimage select:first').clone(true).insertAfter('.selectimage select:last');
-			});
-			jQuery('.detachselectimage').click(function() {
-			if (jQuery('.selectimage select:eq(1)').length)
-			jQuery('.selectimage select:last').remove();
-			});
-			jQuery('.selectimage select').change(function() {
-			var data = jQuery(this).val();
+	 jQuery('#addnewselectimage').click(function() {
+	 jQuery('.selectimage select:first').clone(true).insertAfter('.selectimage select:last');
+	 });
+	 jQuery('.detachselectimage').click(function() {
+	 if (jQuery('.selectimage select:eq(1)').length)
+	 jQuery('.selectimage select:last').remove();
+	 });
+	 jQuery('.selectimage select').change(function() {
+	 var data = jQuery(this).val();
 
-			jQuery.getJSON('index.php?option=com_virtuemart&view=media&task=viewJson&format=json&virtuemart_media_id='+data ,
-			function(datas, textStatus) {
-			if (datas.msg =='OK') {
-			jQuery('#vm_display_image').attr('src', datas.file_root+datas.file_url);
-			jQuery('#vm_display_image').attr('alt', datas.file_title);
-			jQuery('#file_title').html(datas.file_title);
-			jQuery('.adminform [name=file_title]').val(datas.file_title);
-			jQuery('.adminform [name=file_description]').val(datas.file_description);
-			jQuery('.adminform [name=file_meta]').val(datas.file_meta);
-			jQuery('.adminform [name=file_url]').val(datas.file_url);
-			jQuery('.adminform [name=file_url_thumb]').val(datas.file_url_thumb);
-			jQuery('[name=active_media_id]').val(datas.virtuemart_media_id);
-			if (datas.file_url_thumb !== 'undefined') { jQuery('#vm_thumb_image').attr('src',datas.file_root+datas.file_url_thumb); }
-			else { jQuery('#vm_thumb_image').attr('src','');}
-			} else jQuery('#file_title').html(datas.msg);
-			});
-			//if (jQuery('.selectimage select:eq(1)').length)
-			//jQuery('.selectimage select:last').remove();
-			});
-			});";
-			$document = JFactory::getDocument();
-			$document->addScriptDeclaration($js);
-			$JimageSelectlist = true;
-			return;
-			} */
-		function JvalideForm()
-		{
-			static $jvalideForm;
-			// If exist exit
-			if ($jvalideForm) return;
-			$lg = &JFactory::getLanguage();
-			$lang = substr($lg->getTag(), 0, 2);
-			$existingLang = array("cz", "da", "de", "en", "es", "fr", "it", "ja", "nl", "pl", "pt", "ro", "ru", "tr");
-			if (!in_array($lang, $existingLang)) $lang ="en";
-			JHTML::script('jquery.validationEngine.js', 'components/com_virtuemart/assets/js/', false);
-			JHTML::script('jquery.validationEngine-'.$lang.'.js', 'components/com_virtuemart/assets/js/languages/', false);
-			$document = JFactory::getDocument();
-			$document->addScriptDeclaration( "
+	 jQuery.getJSON('index.php?option=com_virtuemart&view=media&task=viewJson&format=json&virtuemart_media_id='+data ,
+	 function(datas, textStatus) {
+	 if (datas.msg =='OK') {
+	 jQuery('#vm_display_image').attr('src', datas.file_root+datas.file_url);
+	 jQuery('#vm_display_image').attr('alt', datas.file_title);
+	 jQuery('#file_title').html(datas.file_title);
+	 jQuery('.adminform [name=file_title]').val(datas.file_title);
+	 jQuery('.adminform [name=file_description]').val(datas.file_description);
+	 jQuery('.adminform [name=file_meta]').val(datas.file_meta);
+	 jQuery('.adminform [name=file_url]').val(datas.file_url);
+	 jQuery('.adminform [name=file_url_thumb]').val(datas.file_url_thumb);
+	 jQuery('[name=active_media_id]').val(datas.virtuemart_media_id);
+	 if (datas.file_url_thumb !== 'undefined') { jQuery('#vm_thumb_image').attr('src',datas.file_root+datas.file_url_thumb); }
+	 else { jQuery('#vm_thumb_image').attr('src','');}
+	 } else jQuery('#file_title').html(datas.msg);
+	 });
+	 //if (jQuery('.selectimage select:eq(1)').length)
+	 //jQuery('.selectimage select:last').remove();
+	 });
+	 });";
+	 $document = JFactory::getDocument();
+	 $document->addScriptDeclaration($js);
+	 $JimageSelectlist = true;
+	 return;
+	 } */
+	function JvalideForm()
+	{
+		static $jvalideForm;
+		// If exist exit
+		if ($jvalideForm) return;
+		$lg = &JFactory::getLanguage();
+		$lang = substr($lg->getTag(), 0, 2);
+		$existingLang = array("cz", "da", "de", "en", "es", "fr", "it", "ja", "nl", "pl", "pt", "ro", "ru", "tr");
+		if (!in_array($lang, $existingLang)) $lang ="en";
+		JHTML::script('jquery.validationEngine.js', 'components/com_virtuemart/assets/js/', false);
+		JHTML::script('jquery.validationEngine-'.$lang.'.js', 'components/com_virtuemart/assets/js/languages/', false);
+		$document = JFactory::getDocument();
+		$document->addScriptDeclaration( "
 
 			jQuery(document).ready(function() {
 				jQuery('#adminform').validationEngine();
 			});"  );
-			JHTML::stylesheet ( 'validationEngine.template.css', 'components/com_virtuemart/assets/css/', false );
-			JHTML::stylesheet ( 'validationEngine.jquery.css', 'components/com_virtuemart/assets/css/', false );
-			$jvalideForm = true;
-			return;
-		}
-		/*	function cssSite()
-		 {
-		 static $jSite;
-		 // If exist exit
-		 if ($jSite) return;
-		 JHTML::script('vmsite.js', 'components/com_virtuemart/assets/js/', false);
-		 $jSite = true;
-		 return;
-		 }*/
+		JHTML::stylesheet ( 'validationEngine.template.css', 'components/com_virtuemart/assets/css/', false );
+		JHTML::stylesheet ( 'validationEngine.jquery.css', 'components/com_virtuemart/assets/css/', false );
+		$jvalideForm = true;
+		return;
+	}
+	/*	function cssSite()
+	 {
+	 static $jSite;
+	 // If exist exit
+	 if ($jSite) return;
+	 JHTML::script('vmsite.js', 'components/com_virtuemart/assets/js/', false);
+	 $jSite = true;
+	 return;
+	 }*/
 
-		/**
-		 * ADD some CSS if needed
-		 * Prevent duplicate load of CSS stylesheet
-		 * @ Author KOHL Patrick
-		 */
+	/**
+	 * ADD some CSS if needed
+	 * Prevent duplicate load of CSS stylesheet
+	 * @ Author KOHL Patrick
+	 */
 
-		function cssSite() {
-			static $cssSite;
-			if ($cssSite) return;
-			// Get the Page direction for right to left support
-			$document = & JFactory::getDocument ();
-			$direction = $document->getDirection ();
-			$cssFile = 'vmsite-' . $direction . '.css';
+	function cssSite() {
+		static $cssSite;
+		if ($cssSite) return;
+		// Get the Page direction for right to left support
+		$document = & JFactory::getDocument ();
+		$direction = $document->getDirection ();
+		$cssFile = 'vmsite-' . $direction . '.css';
 
-			// If exist exit
+		// If exist exit
 
-			JHTML::stylesheet ( $cssFile, 'components/com_virtuemart/assets/css/', false );
-			$cssSite = true;
-			return;
-		}
-
+		JHTML::stylesheet ( $cssFile, 'components/com_virtuemart/assets/css/', false );
+		$cssSite = true;
+		return;
 	}
 
 }
+
 // pure php no closing tag

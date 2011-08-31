@@ -18,7 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-VmConfig::jDate();
+vmJsApi::jDate();
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
@@ -184,7 +184,7 @@ VmConfig::jDate();
 				<?php
 					$startDate = JFactory::getDate($this->calc->publish_up,$this->tzoffset);
 					//echo JHTML::_('calendar', $startDate->toFormat($this->dateformat), "publish_up", "publish_up", $this->dateformat);
-					echo VmConfig::jDate($startDate->toFormat($this->dateformat), 'publish_up'); 
+					echo vmJsApi::jDate($startDate->toFormat($this->dateformat), 'publish_up'); 
  				?>
 			</td>
 		</tr>
@@ -202,7 +202,7 @@ VmConfig::jDate();
 					$date = JFactory::getDate($this->calc->publish_down,$this->tzoffset);
 					$endDate = $date->toFormat($this->dateformat);
 				}
-				echo VmConfig::jDate($endDate, 'publish_down'); 
+				echo vmJsApi::jDate($endDate, 'publish_down'); 
 				//echo JHTML::_('calendar', $endDate, "publish_down", "publish_down", $this->dateformat,array('class'=>'inputbox', 'size'=>'25',  'maxlength'=>'19')); ?>
 
 			</td>

@@ -34,9 +34,9 @@ if(VmConfig::get('shop_is_offline',0)){
 	require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
 
 	/* Loading jQuery and VM scripts. */
-	VmConfig::jQuery();
-	VmConfig::jSite();
-	VmConfig::cssSite();
+	vmJsApi::jQuery();
+	vmJsApi::jSite();
+	vmJsApi::cssSite();
 
 	/* Require specific controller if requested */
 	if($_controller = JRequest::getWord('controller', JRequest::getWord('view', 'virtuemart'))) {

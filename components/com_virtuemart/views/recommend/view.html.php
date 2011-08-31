@@ -46,7 +46,7 @@ class virtuemartViewrecommend extends JView {
 		$document = JFactory::getDocument();
 
 		/* add javascript for price and cart */
-		VmConfig::jPrice();
+		vmJsApi::jPrice();
 
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();

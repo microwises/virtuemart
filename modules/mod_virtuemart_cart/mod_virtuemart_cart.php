@@ -21,8 +21,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');}
 //VmConfig::loadConfig();
 
-VmConfig::jPrice();
-VmConfig::cssSite();*/
+vmJsApi::jPrice();
+vmJsApi::cssSite();*/
 $jsVars  = ' jQuery(document).ready(function(){
 	jQuery(".vmCartModule").productUpdate();
 
@@ -32,9 +32,9 @@ if (!class_exists( 'VmConfig' )) {
 	require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');}
             
 
-VmConfig::jQuery();
-VmConfig::jPrice();
-VmConfig::cssSite();
+vmJsApi::jQuery();
+vmJsApi::jPrice();
+vmJsApi::cssSite();
 $document = JFactory::getDocument();
 $document->addScriptDeclaration($jsVars);
 $show_price = (bool)$params->get( 'show_price', 1 ); // Display the Product Price?

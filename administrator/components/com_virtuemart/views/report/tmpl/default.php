@@ -52,8 +52,8 @@ if( $this->pagination->limit < $rows ){
 						<?php echo JText::_('COM_VIRTUEMART_REPORT_INTERVAL').':'. $this->lists['intervals']; ?>
                         <?php echo JText::_('COM_VIRTUEMART_REPORT_SET_PERIOD') . $this->lists['select_date']; ?>
                         
-                        <?php echo JText::_('COM_VIRTUEMART_REPORT_FROM_PERIOD') .  VmConfig::jDate($this->from_period, 'from_period'); ?>
-                        <?php echo JText::_('COM_VIRTUEMART_REPORT_UNTIL_PERIOD') . VmConfig::jDate($this->until_period, 'until_period'); ?>
+                        <?php echo JText::_('COM_VIRTUEMART_REPORT_FROM_PERIOD') .  vmJsApi::jDate($this->from_period, 'from_period'); ?>
+                        <?php echo JText::_('COM_VIRTUEMART_REPORT_UNTIL_PERIOD') . vmJsApi::jDate($this->until_period, 'until_period'); ?>
                         <button onclick="this.form.period.value='';this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?>
                         </button>
                     </td>

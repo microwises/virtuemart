@@ -46,7 +46,7 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 				<?php
 					echo $this->lists['search_type'];
 					echo $this->lists['search_order'];
-					//echo VmConfig::jDate(JRequest::getVar('search_date', $nowstring), 'product_available_date'); 
+					//echo vmJsApi::jDate(JRequest::getVar('search_date', $nowstring), 'product_available_date'); 
 					echo JHTML::calendar( JRequest::getVar('search_date', $nowstring), 'search_date', 'search_date', '%H.%M %d.%m.%Y', 'size="20"');
 				?>
 				<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>

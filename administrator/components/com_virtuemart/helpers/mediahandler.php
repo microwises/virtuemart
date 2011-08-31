@@ -678,7 +678,7 @@ class VmMediaHandler {
 		$html .= '<div style="display:none"><div id="media-dialog" >'.$list['htmlImages'].'</div></div>';//$type);
 		$this->_db->setQuery('SELECT FOUND_ROWS()');
 		$imagetotal = $this->_db->loadResult();
-		//VmConfig::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
+		//vmJsApi::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
 		$isJ15 = VmConfig::isJ15();
 		if ($isJ15) {
 			$j = "
