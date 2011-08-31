@@ -214,7 +214,72 @@ class VirtueMartCart {
 		//Iterate through the prod_id's and perform an add to cart for each one
 		foreach ($virtuemart_product_ids as $p_key => $virtuemart_product_id) {
 
-			$product = $this->getProduct((int) $virtuemart_product_id);
+			$tmpProduct = $this->getProduct((int) $virtuemart_product_id);
+
+//			dump($tmpProduct,'my product add to cart before');
+//
+			$product = new stdClass();
+			$product -> virtuemart_manufacturer_id = $tmpProduct -> virtuemart_manufacturer_id;
+			$product -> mf_name = $tmpProduct -> mf_name;
+			$product -> slug = $tmpProduct -> slug;
+			$product -> mf_desc = $tmpProduct -> mf_desc;
+			$product -> mf_url = $tmpProduct -> mf_url;
+			$product -> published = $tmpProduct -> published;
+			$product -> created_on = $tmpProduct -> created_on;
+			$product -> created_by = $tmpProduct -> created_by;
+			$product -> modified_on = $tmpProduct -> modified_on;
+			$product -> modified_by = $tmpProduct -> modified_by;
+
+			$product -> virtuemart_product_price_id = $tmpProduct -> virtuemart_product_price_id;
+			$product -> virtuemart_product_id = $tmpProduct -> virtuemart_product_id;
+			$product -> virtuemart_shoppergroup_id = $tmpProduct -> virtuemart_shoppergroup_id;
+			$product -> product_price = $tmpProduct -> product_price;
+			$product -> override = $tmpProduct -> override;
+			$product -> product_override_price = $tmpProduct -> product_override_price;
+
+			$product -> product_tax_id = $tmpProduct -> product_tax_id;
+			$product -> product_discount_id = $tmpProduct -> product_discount_id;
+			$product -> product_currency = $tmpProduct -> product_currency;
+			$product -> product_price_vdate = $tmpProduct -> product_price_vdate;
+			$product -> product_price_edate = $tmpProduct -> product_price_edate;
+			$product -> virtuemart_vendor_id = $tmpProduct -> virtuemart_vendor_id;
+			$product -> product_parent_id = $tmpProduct -> product_parent_id;
+			$product -> product_sku = $tmpProduct -> product_sku;
+			$product -> product_name = $tmpProduct -> product_name;
+			$product -> product_s_desc = $tmpProduct -> product_s_desc;
+//			$product -> product_desc = $tmpProduct -> product_desc;
+
+			$product -> product_weight = $tmpProduct -> product_weight;
+			$product -> product_weight_uom = $tmpProduct -> product_weight_uom;
+			$product -> product_length = $tmpProduct -> product_length;
+			$product -> product_width = $tmpProduct -> product_width;
+			$product -> product_lwh_uom = $tmpProduct -> product_lwh_uom;
+			$product -> product_url = $tmpProduct -> product_url;
+			$product -> product_in_stock = $tmpProduct -> product_in_stock;
+			$product -> product_ordered = $tmpProduct -> product_ordered;
+			$product -> low_stock_notification = $tmpProduct -> low_stock_notification;
+			$product -> product_available_date = $tmpProduct -> product_available_date;
+			$product -> ship_code_id = $tmpProduct -> ship_code_id;
+			$product -> product_sales = $tmpProduct -> product_sales;
+			$product -> product_unit = $tmpProduct -> product_unit;
+			$product -> product_packaging = $tmpProduct -> product_packaging;
+			$product -> product_order_levels = $tmpProduct -> product_order_levels;
+			$product -> virtuemart_media_id = $tmpProduct -> virtuemart_media_id;
+			$product -> categories = $tmpProduct -> categories;
+			$product -> virtuemart_category_id = $tmpProduct -> virtuemart_category_id;
+			$product -> category_name = $tmpProduct -> category_name;
+			$product -> canonical = $tmpProduct -> canonical;
+			$product -> link = $tmpProduct -> link;
+			$product -> packaging = $tmpProduct -> packaging;
+			$product -> customfields = $tmpProduct -> customfields;
+			$product -> customfieldsCart = $tmpProduct -> customfieldsCart;
+			$product -> customsChilds = $tmpProduct -> customsChilds;
+
+//			echo '<pre>'.print_r($tmpProduct,1).'<pre>';
+//			die;
+//			$product = $tmpProduct;
+
+//			vmdebug('my product add to cart after',$product);
 
 			/* Check if we have a product */
 			if ($product) {

@@ -21,6 +21,7 @@
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.formvalidation');
 JHTML::_ ( 'behavior.modal' );
+
 ?>
 
 <div class="cart-view">
