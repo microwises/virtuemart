@@ -214,7 +214,7 @@ class VirtueMartCart {
 		//Iterate through the prod_id's and perform an add to cart for each one
 		foreach ($virtuemart_product_ids as $p_key => $virtuemart_product_id) {
 
-			$tmpProduct = $this->getProduct((int) $virtuemart_product_id);
+/*			$tmpProduct = $this->getProduct((int) $virtuemart_product_id);
 
 //			dump($tmpProduct,'my product add to cart before');
                         // trying to save some space in the session table
@@ -274,13 +274,14 @@ class VirtueMartCart {
 			$product -> customfields = $tmpProduct -> customfields;
 			$product -> customfieldsCart = $tmpProduct -> customfieldsCart;
 			$product -> customsChilds = $tmpProduct -> customsChilds;
-
+*/
 //			echo '<pre>'.print_r($tmpProduct,1).'<pre>';
 //			die;
 //			$product = $tmpProduct;
 
 //			vmdebug('my product add to cart after',$product);
 
+      $product = $this->getProduct((int) $virtuemart_product_id);
 			/* Check if we have a product */
 			if ($product) {
 				$quantityPost = (int) $post['quantity'][$p_key];
