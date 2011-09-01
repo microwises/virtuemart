@@ -287,10 +287,13 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 			JError::raiseWarning(500, $q . " " . $db->getErrorMsg());
 			return '';
 		}
+                if (!class_exists('ShopFunctions'))
+                    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 		if (!class_exists('CurrencyDisplay')
 		)require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
-
+                $tax= ShopFunctions::getTaxByID($shipinfo->tax_id );
+                $taxDisplay= is_array($tax)? $tax['calc_value'].' '.$tax['calc_value_mathop']:$shipinfo->tax_id;
 		$html = '<table class="admintable">' . "\n"
 		. '	<thead>' . "\n"
 		. '		<tr>' . "\n"
@@ -315,7 +318,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 		. '	</tr>' . "\n"
 		. '	<tr>' . "\n"
 		. '		<td class="key">' . JText::_('VMSHIPPER_WEIGHT_COUNTRIES_TAX') . ': </td>' . "\n"
-		. '		<td>' . $shipinfo->tax_id . '</td>' . "\n" // want a function from shopfunction
+		. '		<td>' .$taxDisplay . '</td>' . "\n"
 		. '	</tr>' . "\n"
 		. '</table>' . "\n"
 		;

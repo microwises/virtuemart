@@ -608,13 +608,13 @@ class ShopFunctions {
 	}
 
 
-   	/**
-	 * Gets the total number of product for category
-	 *
-     * @author jseros
-     * @param int $categoryId Own category id
-	 * @return int Total number of products
-	 */
+        /**
+	* Gets the total number of product for category
+	*
+        * @author jseros
+        * @param int $categoryId Own category id
+	* @return int Total number of products
+	*/
 	public function countProductsByCategory( $categoryId = 0 )
 	{
 		$categoryModel = self::getModel('category');
@@ -700,6 +700,24 @@ class ShopFunctions {
 		$db->setQuery($_q);
 		$_r = $db->loadResult();
 		return $_r;
+	}
+/*	 
+	* Return the Tax or code of a given taxID
+	*
+	* @author Valérie Isaksen
+	* @access public
+	* @param int $_d TAx ID
+	* @return string Country name or code
+	*/
+	public function getTaxByID ($id){
+		if (empty($id)) return '';
+
+		$id = (int) $id;
+		$db = JFactory::getDBO();               
+		$q = 'SELECT  *   FROM `#__virtuemart_calcs` WHERE virtuemart_calc_id = ' . (int)$id;
+		$db->setQuery($q);
+		return $db->loadAssoc();
+              
 	}
 
 	/**
