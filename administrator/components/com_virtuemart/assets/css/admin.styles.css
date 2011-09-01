@@ -166,7 +166,21 @@ font-size: 12px;
  right: 20px;
  left: auto;
 }
-
+.trash{
+    background-image: url("../images/trash-24.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: 1px solid;
+    border-radius: 4px;
+    display: inline;
+    height: 24px;
+    left: 0;
+    margin: 2px 0 0 2px;
+    position: absolute;
+    top: 0;
+    width: 24px;
+	cursor: pointer;
+}
 .edit-24-grey{
     background-image: url("../images/edit-24-grey.png");
     background-position: center center;
