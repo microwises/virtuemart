@@ -194,12 +194,12 @@ class VmConfig{
 
 		//todo
 		/*		if(strpos(JVERSION,'1.5') === false){
-			$jlang = JFactory::getLanguage();
-			$jlang->load('virtuemart', null, 'en-GB', true); // Load English (British)
-			$jlang->load('virtuemart', null, $jlang->getDefault(), true); // Load the site's default language
-			$jlang->load('virtuemart', null, null, true); // Load the currently selected language
+		$jlang = JFactory::getLanguage();
+		$jlang->load('virtuemart', null, 'en-GB', true); // Load English (British)
+		$jlang->load('virtuemart', null, $jlang->getDefault(), true); // Load the site's default language
+		$jlang->load('virtuemart', null, null, true); // Load the currently selected language
 
-			}*/
+		}*/
 
 	}
 
@@ -585,16 +585,16 @@ class vmJsApi{
 		// If exist exit
 		if ($jquery) return;
 		$document = JFactory::getDocument();
-		if(VmConfig::get('useGooglejQuery',false)){
-      $document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js');
-      $document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js');
+		if(VmConfig::get('google_jquery',true)){
+			$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js');
+			$document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js');
 		} else {
-      $document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.min.js');
-      $document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery-ui.min.js');		
+			$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.min.js');
+			$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery-ui.min.js');
 		}
 		//JHTML::script('jquery.min.js', '//ajax.googleapis.com/ajax/libs/jquery/1.6.1/', false);
 		/*$document = JFactory::getDocument();
-		 $document->addScriptDeclaration('jQuery.noConflict();');*/
+		$document->addScriptDeclaration('jQuery.noConflict();');*/
 
 		$jquery = true;
 		return;
@@ -685,45 +685,45 @@ class vmJsApi{
 
 	/* 	function JimageSelectlist() {
 	 static $JimageSelectlist;
-	 if ($JimageSelectlist) return;
-	 $js = "
-	 jQuery(document).ready(function() {
+	if ($JimageSelectlist) return;
+	$js = "
+	jQuery(document).ready(function() {
 
-	 jQuery('#addnewselectimage').click(function() {
-	 jQuery('.selectimage select:first').clone(true).insertAfter('.selectimage select:last');
-	 });
-	 jQuery('.detachselectimage').click(function() {
-	 if (jQuery('.selectimage select:eq(1)').length)
-	 jQuery('.selectimage select:last').remove();
-	 });
-	 jQuery('.selectimage select').change(function() {
-	 var data = jQuery(this).val();
+	jQuery('#addnewselectimage').click(function() {
+	jQuery('.selectimage select:first').clone(true).insertAfter('.selectimage select:last');
+	});
+	jQuery('.detachselectimage').click(function() {
+	if (jQuery('.selectimage select:eq(1)').length)
+	jQuery('.selectimage select:last').remove();
+	});
+	jQuery('.selectimage select').change(function() {
+	var data = jQuery(this).val();
 
-	 jQuery.getJSON('index.php?option=com_virtuemart&view=media&task=viewJson&format=json&virtuemart_media_id='+data ,
-	 function(datas, textStatus) {
-	 if (datas.msg =='OK') {
-	 jQuery('#vm_display_image').attr('src', datas.file_root+datas.file_url);
-	 jQuery('#vm_display_image').attr('alt', datas.file_title);
-	 jQuery('#file_title').html(datas.file_title);
-	 jQuery('.adminform [name=file_title]').val(datas.file_title);
-	 jQuery('.adminform [name=file_description]').val(datas.file_description);
-	 jQuery('.adminform [name=file_meta]').val(datas.file_meta);
-	 jQuery('.adminform [name=file_url]').val(datas.file_url);
-	 jQuery('.adminform [name=file_url_thumb]').val(datas.file_url_thumb);
-	 jQuery('[name=active_media_id]').val(datas.virtuemart_media_id);
-	 if (datas.file_url_thumb !== 'undefined') { jQuery('#vm_thumb_image').attr('src',datas.file_root+datas.file_url_thumb); }
-	 else { jQuery('#vm_thumb_image').attr('src','');}
-	 } else jQuery('#file_title').html(datas.msg);
-	 });
-	 //if (jQuery('.selectimage select:eq(1)').length)
-	 //jQuery('.selectimage select:last').remove();
-	 });
-	 });";
-	 $document = JFactory::getDocument();
-	 $document->addScriptDeclaration($js);
-	 $JimageSelectlist = true;
-	 return;
-	 } */
+	jQuery.getJSON('index.php?option=com_virtuemart&view=media&task=viewJson&format=json&virtuemart_media_id='+data ,
+	function(datas, textStatus) {
+	if (datas.msg =='OK') {
+	jQuery('#vm_display_image').attr('src', datas.file_root+datas.file_url);
+	jQuery('#vm_display_image').attr('alt', datas.file_title);
+	jQuery('#file_title').html(datas.file_title);
+	jQuery('.adminform [name=file_title]').val(datas.file_title);
+	jQuery('.adminform [name=file_description]').val(datas.file_description);
+	jQuery('.adminform [name=file_meta]').val(datas.file_meta);
+	jQuery('.adminform [name=file_url]').val(datas.file_url);
+	jQuery('.adminform [name=file_url_thumb]').val(datas.file_url_thumb);
+	jQuery('[name=active_media_id]').val(datas.virtuemart_media_id);
+	if (datas.file_url_thumb !== 'undefined') { jQuery('#vm_thumb_image').attr('src',datas.file_root+datas.file_url_thumb); }
+	else { jQuery('#vm_thumb_image').attr('src','');}
+	} else jQuery('#file_title').html(datas.msg);
+	});
+	//if (jQuery('.selectimage select:eq(1)').length)
+	//jQuery('.selectimage select:last').remove();
+	});
+	});";
+	$document = JFactory::getDocument();
+	$document->addScriptDeclaration($js);
+	$JimageSelectlist = true;
+	return;
+	} */
 	function JvalideForm()
 	{
 		static $jvalideForm;
@@ -748,13 +748,13 @@ class vmJsApi{
 	}
 	/*	function cssSite()
 	 {
-	 static $jSite;
-	 // If exist exit
-	 if ($jSite) return;
-	 JHTML::script('vmsite.js', 'components/com_virtuemart/assets/js/', false);
-	 $jSite = true;
-	 return;
-	 }*/
+	static $jSite;
+	// If exist exit
+	if ($jSite) return;
+	JHTML::script('vmsite.js', 'components/com_virtuemart/assets/js/', false);
+	$jSite = true;
+	return;
+	}*/
 
 	/**
 	 * ADD some CSS if needed

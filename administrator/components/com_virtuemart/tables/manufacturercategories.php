@@ -71,6 +71,7 @@ class TableManufacturercategories extends VmTable {
 			$mCount = $db->loadResult();
 
 			if($mCount > 0) {
+				vmInfo('COM_VIRTUEMART_REMOVE_IN_USE');
 				return false;
 			}
 

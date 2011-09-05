@@ -14,11 +14,11 @@
  * other free or open source software licenses.
  * @version $Id$
  */
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 /*
 <table width="100%">
 	<tr>
-		<td valign="top" width="50%"> */ ?> 
+		<td valign="top" width="50%"> */ ?>
 			<fieldset>
 				<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECKOUT_SETTINGS') ?></legend>
 				<table class="admintable">
@@ -72,6 +72,16 @@ defined('_JEXEC') or die('Restricted access');
 						</td>
 						<td>
 							<textarea rows="6" cols="50" name="oncheckout_show_register_text"><?php echo $this->config->get('oncheckout_show_register_text'); ?></textarea>
+						</td>
+					</tr>
+						<tr>
+						<td class="key">
+							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_PRODUCTIMAGES_TIP'); ?>">
+								<label for="oncheckout_show_register"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_PRODUCTIMAGES') ?></label>
+							</span>
+						</td>
+						<td>
+							<?php echo VmHTML::checkbox('oncheckout_show_images', $this->config->get('oncheckout_show_images',0)); ?>
 						</td>
 					</tr>
 				</table>

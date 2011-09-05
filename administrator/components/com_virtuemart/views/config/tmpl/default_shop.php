@@ -114,6 +114,19 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 	</td>
 	</tr>
+
+	<td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_GOOGLE_JQUERY_EXPLAIN'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_GOOGLE_JQUERY') ?>
+		</span>
+		</td>
+		<td>
+		<?php
+			echo VmHTML::checkbox('google_jquery', $this->config->get('google_jquery','1'));
+		?>
+	</td>
+	</tr>
+
     </table>
 </fieldset>
 <?php /*

@@ -91,31 +91,6 @@ class VirtuemartModelManufacturercategories extends VmModel {
 
 
 	/**
-	 * Delete all state records for a given  id.
-     *
-     * @return boolean True is the remove was successful, false otherwise.
-     */
-	function removeManufacturerCategories($categoryId = '')
-	{
-		if ($categoryId) {
-			$db = JFactory::getDBO();
-
-			$query = 'DELETE FROM `#__virtuemart_manufacturercategories`  WHERE `virtuemart_manufacturercategories_id`= "'.(int)$categoryId.'"';
-			$db->setQuery($query);
-			if ($db->query()) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		else {
-    		return false;
-    	}
-	}
-
-
-	/**
 	 * Retireve a list of countries from the database.
 	 *
      * @param string $onlyPuiblished True to only retreive the published categories, false otherwise

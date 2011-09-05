@@ -125,7 +125,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$src = $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampelimages';
 // 			if(version_compare(JVERSION,'1.6.0','ge')) {
 
-				$this->createIndexFolder();
 				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories');
 				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart');
 				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'category');
@@ -162,7 +161,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		public function createIndexFolder($path){
 
 			if(JFolder::create($path)) {
-				JFile::move(JPATH_ROOT.DS.'components'.DS.'index.html', $path .DS. 'index.html');
+				JFile::copy(JPATH_ROOT.DS.'components'.DS.'index.html', $path .DS. 'index.html');
 			}
 
 		}
@@ -364,6 +363,15 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$config = JModel::getInstance('config', 'VirtueMartModel');
 				$config->setDangerousToolsOff();
 			}
+
+			//Test if vm1.1 is installed and rename file to avoid conflicts
+			if(JFile::exists(JPATH_VM_ADMINISTRATOR.DS.'toolbar.php')){
+				JFile::move('toolbar.php','toolbar.vm1.php',JPATH_VM_ADMINISTRATOR);
+			}
+			if(JFile::exists(JPATH_VM_ADMINISTRATOR.DS.'toolbar.php')){
+				JFile::move('toolbar.virtuemart.php','toolbar.virtuemart.vm1.php',JPATH_VM_ADMINISTRATOR);
+			}
+
 			return true;
 		}
 
