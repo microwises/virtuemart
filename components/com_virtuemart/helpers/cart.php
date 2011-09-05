@@ -271,7 +271,7 @@ class VirtueMartCart {
 			$product -> canonical = $tmpProduct -> canonical;
 			$product -> link = $tmpProduct -> link;
 			$product -> packaging = $tmpProduct -> packaging;
-			$product -> customfields = $tmpProduct -> customfields;
+			$product -> customfields = empty($tmpProduct -> customfields)? array():$tmpProduct -> customfields ;
 			$product -> customfieldsCart = $tmpProduct -> customfieldsCart;
 			$product -> customsChilds = $tmpProduct -> customsChilds;
 */

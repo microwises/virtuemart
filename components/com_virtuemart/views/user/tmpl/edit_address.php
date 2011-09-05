@@ -63,7 +63,7 @@ function callValidatorForRegister(f){
 
 </script>
 <?php if(VmConfig::get('oncheckout_show_register',1) && $this->userDetails->JUser->id===0 ){
-	echo VmConfig::get('oncheckout_show_register_text',JText::_('COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER')) ;
+	echo JText::_(VmConfig::get('oncheckout_show_register_text','COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER')) ;
 } ?>
 
 <form method="post" id="userForm" name="userForm" class="form-validate">

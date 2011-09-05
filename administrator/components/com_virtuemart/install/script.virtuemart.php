@@ -122,13 +122,20 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$model->setStoreOwner();
 
 			//copy sampel media
-			$src= $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampelimages';
-			if(version_compare(JVERSION,'1.6.0','ge')) {
+			$src = $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampelimages';
+// 			if(version_compare(JVERSION,'1.6.0','ge')) {
 
-				JFolder::create(JPATH_ROOT .DS. 'images'.DS.'stories');
-				JFolder::create(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart');
+				$this->createIndexFolder();
+				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories');
+				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart');
+				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'category');
+				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'category'.DS.'resized');
+				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'manufacturer');
+				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'manufacturer'.DS.'resized');
+				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'product');
+				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'product'.DS.'resized');
 
-			}
+// 			}
 
 			$dst = JPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
 
@@ -143,6 +150,21 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//			$parent->getParent()->setRedirectURL('index.php?option=com_virtuemart&view=updatesMigration');
 
 			return true;
+		}
+
+
+		/**
+		 * creates a folder with empty html file
+		 *
+		 * @author Max Milbers
+		 *
+		 */
+		public function createIndexFolder($path){
+
+			if(JFolder::create($path)) {
+				JFile::move(JPATH_ROOT.DS.'components'.DS.'index.html', $path .DS. 'index.html');
+			}
+
 		}
 
 		/**

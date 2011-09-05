@@ -674,7 +674,7 @@ class VmMediaHandler {
 	public function displayFilesHandler($fileIds,$type){
 		$list = $this->displayImages($type);
 		$html = $this->displayFileSelection($fileIds,$type);
-		$html .= $this->displayFileHandler('id="vm_display_image"');
+		$html .= $this->displayFileHandler('id="vm_display_image" ');
 		$html .= '<div style="display:none"><div id="media-dialog" >'.$list['htmlImages'].'</div></div>';//$type);
 		$this->_db->setQuery('SELECT FOUND_ROWS()');
 		$imagetotal = $this->_db->loadResult();
@@ -848,7 +848,8 @@ class VmMediaHandler {
 		<input type="checkbox" class="inputbox" id="published" name="media_published'.$identify.'" '.$checked.' size="16" value="1" />
 	</td>';
 		$html .= '<td rowspan = 5>';
-		$html .= JHTML::image($this->file_url_thumb, 'thumbnail', 'id="vm_thumb_image" style="overflow: auto; float: right;"');
+// 		$html .= JHTML::image($this->file_url_thumb, 'thumbnail', 'id="vm_thumb_image" style="overflow: auto; float: right;"');
+		$html .= $this->displayMediaThumb('',false,'id="vm_thumb_image" style="overflow: auto; float: right;"');
 		$html .= '</td>';
 
 $html .= '</tr>';
