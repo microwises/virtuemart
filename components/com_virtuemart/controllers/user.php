@@ -100,7 +100,7 @@ class VirtueMartControllerUser extends JController
 		$msg = (is_array($ret)) ? $ret['message'] : $ret;
 
 		$this->saveToCart();
-		$this->setRedirect( JRoute::_ ('index.php?option=com_virtuemart&view=user'), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user'), $msg );
 	}
 
 	function editAddressSt(){
@@ -178,7 +178,7 @@ class VirtueMartControllerUser extends JController
 	 */
 	function cancelCartUser(){
 //		$this->setRedirect( 'index.php?option=com_virtuemart&view=cart&task=checkout', $msg );
-		$this->setRedirect( JRoute::_ ('index.php?option=com_virtuemart&view=cart'), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart'), $msg );
 	}
 
 	/**
@@ -193,13 +193,13 @@ class VirtueMartControllerUser extends JController
 		$this->saveToCart();
 
 		//We may add here the option for silent registration.
-		$this->setRedirect( JRoute::_ ('index.php?option=com_virtuemart&view=cart&task=checkout'), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout'), $msg );
 	}
 
 	function registerCheckoutUser(){
 		$msg = $this->saveData(true,true);
 		$this->saveToCart();
-		$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=cart&task=checkout' ),$msg);
+		$this->setRedirect(JRoute::_( 'index.php?option=com_virtuemart&view=cart&task=checkout' ),$msg);
 	}
 
 	/**
@@ -212,14 +212,14 @@ class VirtueMartControllerUser extends JController
 
 		$msg = $this->saveData(true);
 		$this->saveToCart();
-		$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=cart' ),$msg);
+		$this->setRedirect(JRoute::_( 'index.php?option=com_virtuemart&view=cart' ),$msg);
 	}
 
 	function registerCartuser(){
 
 		$msg = $this->saveData(true,true);
 		$this->saveToCart();
-		$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=cart' ),$msg);
+		$this->setRedirect(JRoute::_( 'index.php?option=com_virtuemart&view=cart' ),$msg);
 	}
 
 
@@ -229,7 +229,7 @@ class VirtueMartControllerUser extends JController
 	 * @author Oscar van Eijk
 	 */
 	function cancelCheckoutUser(){
-		$this->setRedirect( JRoute::_ ('index.php?option=com_virtuemart&view=cart&task=checkout'), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout'), $msg );
 	}
 
 	/**

@@ -268,7 +268,9 @@ class shopFunctionsF {
 		$controller->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
 
 		$view = $controller->getView($viewName, $format);
-		$model = $controller->getModel($viewName);
+		$modelName = 'VirtueMartController'.ucfirst ($viewName) ;
+		if (!class_exists($modelName)) require(JPATH_VM_SITE.DS.'controllers'.DS.$viewName.'.php');
+		$model = new $modelName;
 		if ($model) {
 			$view->setModel($model);
 		}
@@ -541,7 +543,19 @@ class shopFunctionsF {
 		$html .= '</div>';
 		echo $html;
 	}
+	/**
+	 * Align in plain text the strings
+	 * $string text to resize
+	 * $size, number of char
+	 * $toUpper uppercase Y/N ?
+	 * @author kohl patrick
+	 */
+	function tabPrint( $size, $string,$header = false){
+		if ($header) $string = strtoupper (JText::_($string ) );
+		sprintf("%".$size.".".$size."s ",$string ) ;
 
+	}
+	
 }
 
 // pure php no closing tag

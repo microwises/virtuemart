@@ -150,6 +150,13 @@ font-size: 12px;
     vertical-align: middle;
     width: 120px;
 }
+.vm__img_autocrop{
+    display: block;
+    max-height: 400px;
+    overflow: auto;
+    position: relative;
+    text-align: center;
+}
 .remove{cursor:pointer;}
 .vm-order_comment{
     display: block;

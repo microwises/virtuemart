@@ -338,7 +338,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 
 		$img = "";
 		/* TODO: chercher chemin dynamique */
-		$path = JURI::base() . "images" . DS . "stories" . DS . "virtuemart" . DS . "shipper" . DS;
+		$path = JURI::root() . "images/stories/virtuemart/shipper/";
 		$img = "";
 		if (!(empty($shipper_logo))) {
 			$img = '<img align="middle" src="' . $path . $shipper_logo . '"  alt="' . $alt_text . '" > ';

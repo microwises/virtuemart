@@ -822,8 +822,8 @@ class VmMediaHandler {
 		$this->addHiddenByType();
 
 
-		$html = '<div id="file_title">'.$this->file_title.'</div>';
-		$html .= $this->displayMediaFull($imageArgs,false);
+		$html = '<div class="vm__img_autocrop"><div id="file_title">'.$this->file_title.'</div>';
+		$html .=  $this->displayMediaFull($imageArgs,false).'</div>';
 
 		//This makes problems, when there is already a form, and there would be form in a form. breaks js in some browsers
 //		$html .= '<form name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">';
