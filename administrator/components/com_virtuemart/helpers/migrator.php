@@ -818,9 +818,8 @@ class Migrator extends VmModel{
 		while($continue){
 
 			$q = 'SELECT * FROM #__vm_product AS `p`
-					LEFT OUTER JOIN #__vm_product_price ON #__vm_product_price.product_id = `p`.product_id
-					LEFT OUTER JOIN #__vm_product_category_xref ON #__vm_product_category_xref.product_id = `p`.product_id
-					LEFT OUTER JOIN #__vm_product_mf_xref ON #__vm_product_mf_xref.product_id = `p`.product_id LIMIT '.$startLimit.','.$maxItems;
+					LEFT JOIN #__vm_product_price ON #__vm_product_price.product_id = `p`.product_id
+					LEFT JOIN #__vm_product_mf_xref ON #__vm_product_mf_xref.product_id = `p`.product_id LIMIT '.$startLimit.','.$maxItems;
 			$this->_db->setQuery($q);
 			$oldProducts = $this->_db->loadAssocList();
 			if(empty($oldProducts)){
@@ -868,6 +867,7 @@ class Migrator extends VmModel{
 
 				if(!array_key_exists($product['product_id'],$alreadyKnownIds)){
 
+
 					$product['virtuemart_vendor_id'] = $product['vendor_id'];
 
 					if(!empty($product['manufacturer_id'])){
@@ -876,13 +876,25 @@ class Migrator extends VmModel{
 						}
 					}
 
-					//product has category_id and categories?
-					if(!empty($oldToNewCats[$product['category_id']])){
+					$q = 'SELECT `category_id` FROM #__vm_product_category_xref WHERE #__vm_product_category_xref.product_id = "'.$product['product_id'].'" ';
+					$this->_db->setQuery($q);
+					$productCats = $this->_db->loadResultArray();
 
-						$product['virtuemart_category_id'] = $oldToNewCats[$product['category_id']];
-						//This should be an array, or is it not in vm1? not cleared, may need extra foreach
-						$product['categories'] = $oldToNewCats[$product['category_id']];
+					$productcategories = array();
+					if(!empty($productCats)){
+						foreach($productCats as $cat){
+							//product has category_id and categories?
+							if(!empty($oldToNewCats[$cat])){
+// 								$product['virtuemart_category_id'] = $oldToNewCats[$cat];
+								//This should be an array, or is it not in vm1? not cleared, may need extra foreach
+								$productcategories[] = $oldToNewCats[$cat];
+							} else {
+								vmInfo('Coulndt find category for product, maybe just not in a category');
+							}
+						}
 					}
+
+					$product['categories'] = $productcategories;
 
 					$product['published'] = $product['product_publish'] == 'Y' ? 1 : 0;
 
