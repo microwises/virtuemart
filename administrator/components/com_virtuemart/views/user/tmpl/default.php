@@ -62,9 +62,12 @@ AdminUIHelper::startAdminArea();
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>
 			</th>
-			<th width="80">
+<?php		if(Vmconfig::get('multix','none')!='none'){ ?>
+		<th width="80">
 			<?php echo JText::_('COM_VIRTUEMART_USER_IS_VENDOR'); ?>
 			</th>
+	<?php } ?>
+
 			<th>
 			<?php echo JText::_('COM_VIRTUEMART_USER_GROUP'); ?>
 			</th>
@@ -97,10 +100,11 @@ AdminUIHelper::startAdminArea();
 				<td align="left">
 					<?php echo $row->name; ?>
 				</td>
+				<?php		if(Vmconfig::get('multix','none')!='none'){ ?>
 				<td align="center">
 					<?php echo $is_vendor; ?>
 				</td>
-
+				<?php } ?>
 				<td align="left">
 					<?php echo $row->perms . ' / (' . $row->usertype . ')'; ?>
 				</td>

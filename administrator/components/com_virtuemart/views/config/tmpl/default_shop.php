@@ -127,6 +127,24 @@ defined('_JEXEC') or die('Restricted access');
 	</td>
 	</tr>
 
+	<tr>
+	<td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_EXPLAIN'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX') ?>
+		</span>
+		</td>
+		<td>
+		<?php
+			$options = array(
+				'none'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_NONE'),
+				'admin'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_MULTIX_ADMIN')
+// 				'all'	=> JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_DEBUG_ALL')
+			);
+			echo VmHTML::radioList('multix', $this->config->get('multix','none'),$options);
+		?>
+	</td>
+	</tr>
+
     </table>
 </fieldset>
 <?php /*
