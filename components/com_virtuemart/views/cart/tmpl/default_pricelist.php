@@ -100,7 +100,21 @@
 		$i=1;
 		foreach( $this->cart->products as $pkey =>$prow ) { ?>
 			<tr valign="top" class="sectiontableentry<?php echo $i ?>">
-				<td align="left" ><?php echo JHTML::link(JURI::root(true) .'/'.$prow->url, $prow->product_name).$prow->customfields; ?></td>
+				<td align="left" >
+					<?php if ( $prow->virtuemart_media_id) {  ?>
+						<span class="cart-images">
+						 <?php  
+							if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
+								$db =& JFactory::getDBO();
+								$db->setQuery('SELECT * from #__virtuemart_medias where virtuemart_media_id='. $prow->virtuemart_media_id[0] );
+								$data = $db->loadObject();
+							$media = VmMediaHandler::createMedia($data,'product');
+							echo $media->displayMediaThumb('',false); ?>
+						</span>
+					<?php } ?>
+					<?php echo JHTML::link(JURI::root(true) .'/'.$prow->url, $prow->product_name).$prow->customfields; ?>
+				
+				</td>
 				<td align="left" ><?php echo $prow->product_sku ?></td>
 				<td align="center" >
 					<?php if ($prow->basePriceWithTax != $prow->salesPrice ) {

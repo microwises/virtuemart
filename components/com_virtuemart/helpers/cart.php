@@ -232,7 +232,6 @@ class VirtueMartCart {
 		foreach ($virtuemart_product_ids as $p_key => $virtuemart_product_id) {
 
 			$tmpProduct = $this->getProduct((int) $virtuemart_product_id);
-
 //			dump($tmpProduct,'my product add to cart before');
                         // trying to save some space in the session table
 			$product = new stdClass();
@@ -328,7 +327,6 @@ class VirtueMartCart {
 
 				if (array_key_exists($productKey, $this->products)) {
 					$this->products[$productKey]->quantity += $quantityPost;
-					$this->cartData->products[$productKey]->quantity += $quantityPost;
 					if ($this->checkForQuantities($product, $this->products[$productKey]->quantity)) {
 						$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_UPDATED'));
 					} else {
@@ -336,7 +334,6 @@ class VirtueMartCart {
 					}
 				} else {
 					$this->products[$productKey] = $product;
-					$this->carData->products[$productKey] = $product;
 					$product->quantity = $quantityPost;
 					if ($this->checkForQuantities($product, $quantityPost)) {
 						$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED'));
@@ -456,7 +453,9 @@ class VirtueMartCart {
 	private function getProduct($virtuemart_product_id) {
 		JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
 		$model = JModel::getInstance('Product', 'VirtueMartModel');
-		return $model->getProduct($virtuemart_product_id, true, false);
+		$product = $model->getProduct($virtuemart_product_id, true, false);
+		if ( VmConfig::get('oncheckout_show_images')) $model->addImages($product);
+		return $product;
 	}
 
 
@@ -1042,7 +1041,6 @@ private function confirmedOrder() {
 				$userAddressData->{$k} = $v;
 			}
 		}
-		dump($userAddressData,'userAddressData');
 		return $userAddressData;
 	}
 

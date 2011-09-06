@@ -42,6 +42,11 @@ span.quantity-controls input.quantity-plus{background:url(../images/vmgeneral/qu
 span.quantity-controls input.quantity-minus{background:url(../images/vmgeneral/quantity-controls.png) repeat-x;background-position:15px 0;}
 .addtocart-bar{margin:0;padding:0;}
 span.addtocart-button{width:152px;float:left;margin:0 0 0 10px;}
+span.cart-images img {
+    float: left;
+    margin: 0;
+    width: 45px;
+}
 span.addtocart-button input.addtocart-button,span.addtocart-button input.notify-button{width:152px;background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;background-position:0 -160px;color:#fff;border:solid #00a000 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;font-size:14px;cursor:pointer;height:34px;text-align:center;letter-spacing:1px;padding:4px 5px;}
 .category-view h4{font-size:14px;margin:0;padding:0;}
 .category-view .row .category .spacer h2{margin:0;padding:0;}
