@@ -41,7 +41,6 @@ class VirtueMartCart {
 	var $vendorId = 1;
 	var $lastVisitedCategoryId = 0;
 	var $virtuemart_shippingcarrier_id = 0;
-	//var $shipper_id = 0;
 	var $virtuemart_paymentmethod_id = 0;
         var $automaticSelectedShipping = false;
         var $automaticSelectedPayment  = false;

@@ -164,4 +164,5 @@ span.addtocart-button input.addtocart-button:hover,span.addtocart-button input.n
 textarea.virtuemart:hover,textarea.customer-comment:hover{color:#000;background:#e8e8e8;}
 label.invalid,span.red{color:red;}
 .output-billto span.values,.output-shipto span.values,.floatleft,span.floatleft{float:left;}
-.output-billto span.values,.output-shipto span.values padding-right:5px;}
+.output-billto span.values,.output-shipto span.values {padding-right:5px;}
+.joomlaCoreField {background-color: #FFFFDD;}
