@@ -83,15 +83,13 @@ function callValidatorForRegister(f){
 ?>	<form action="<?php echo JRoute::_( 'index.php', true, 0 ); ?>" method="post" name="com-login" >
 
 <fieldset class="input">
-	<LEGEND><?php echo JText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM') ?></LEGEND>
+	<legend><?php echo JText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM') ?></legend>
 
 	<p class="width30 floatleft" id="com-form-login-username">
-		<label for="username"><?php echo JText::_('Username') ?></label><br />
-		<input name="username" id="username" type="text" class="inputbox" alt="username" size="18" />
+		<input type="text" name="username" size="18" alt="<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>" value="<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>" onblur="if(this.value=='') this.value='<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>';" onfocus="if(this.value=='<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>') this.value='';" />
 	</p>
 	<p class="width30 floatleft" id="com-form-login-password">
-		<label for="passwd"><?php echo JText::_('Password') ?></label><br />
-		<input type="password" id="passwd" name="passwd" class="inputbox" size="18" alt="password" />
+                  <input type="password" name="passwd" size="10" alt="<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>" value="<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>" onblur="if(this.value=='') this.value='<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>';" onfocus="if(this.value=='<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>') this.value='';" />
 	</p>
 	<p class="width30 floatleft" id="com-form-login-remember">
 		<input type="submit" name="Submit" class="button" value="<?php echo JText::_('LOGIN') ?>" />
@@ -103,21 +101,24 @@ function callValidatorForRegister(f){
 	<?php endif; ?>
 	<div class="clr"></div>
 	<div class="width30 floatleft">
-		<a class="details" href="<?php echo JRoute::_( 'index.php?option=com_user&view=reset' ); ?>">
+		<a   href="<?php echo JRoute::_( 'index.php?option=com_user&view=reset' ); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_PASSWORD'); ?></a>
 	</div>
 	<div class="width30 floatleft">
-		<a class="details" href="<?php echo JRoute::_( 'index.php?option=com_user&view=remind' ); ?>">
+		<a   href="<?php echo JRoute::_( 'index.php?option=com_user&view=remind' ); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_USERNAME'); ?></a>
 	</div>
 	<?php
+        /*
 	$usersConfig = &JComponentHelper::getParams( 'com_users' );
 	if ($usersConfig->get('allowUserRegistration')) { ?>
 	<div class="width30 floatleft">
 		<a  class="details" href="<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=user' ); ?>">
 			<?php echo JText::_('COM_VIRTUEMART_ORDER_REGISTER'); ?></a>
 	</div>
-	<?php } ?>
+	<?php }
+         */  ?>
+
 	<div class="clr"></div>
 </fieldset>
 
@@ -140,7 +141,7 @@ echo JText::_(VmConfig::get('oncheckout_show_register_text','COM_VIRTUEMART_ONCH
 		<button class="default" type="submit" onclick="javascript:return callValidatorForRegister(userForm);" ><?php echo JText::_('COM_VIRTUEMART_REGISTER'); ?></button>
 
 	<?php } ?>
-	<button class="default" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
+	<button class="default" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?></button>
 	<button class="default" type="reset" onclick="window.location.href='<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart' ); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 </div>
 

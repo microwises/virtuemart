@@ -43,6 +43,8 @@ class VirtueMartCart {
 	var $virtuemart_shippingcarrier_id = 0;
 	//var $shipper_id = 0;
 	var $virtuemart_paymentmethod_id = 0;
+        var $automaticSelectedShipping = false;
+        var $automaticSelectedPayment  = false;
 	var $BT = 0;
 	var $ST = 0;
 	var $tosAccepted = null;
@@ -1101,13 +1103,12 @@ private function confirmedOrder() {
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipping', array('cart' => $this));
 		foreach ($returnValues as $returnValue) {
-
 			if ((int)$returnValue ) {
 				$nbShipping ++;
 				$virtuemart_shippingcarrier_id = $returnValue;
 			}
 		}
-		if ($nbShipping) {
+		if ($nbShipping==1) {
 			$this->virtuemart_shippingcarrier_id = $virtuemart_shippingcarrier_id;
 			$this->setCartIntoSession();
 			return true;
@@ -1167,8 +1168,8 @@ private function confirmedOrder() {
 	function prepareCartViewData(){
 		$data = new stdClass();
 		$this->CheckShippingIsValid( );
-		$this->CheckAutomaticSelectedShipping( );
-		$this->automaticSelectedPayment = false; //& $this->_cart->CheckAutomaticSelectedPayment( );
+		$this->automaticSelectedShipping = $this->CheckAutomaticSelectedShipping( );
+		$this->automaticSelectedPayment =   $this->CheckAutomaticSelectedPayment( );
 		/* Get the products for the cart */
 		$this->cartData = $this->prepareCartData();
 		$this->prepareCartPrice( $this->prices ) ;
