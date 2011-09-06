@@ -33,18 +33,21 @@ if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components'
 if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 $cart = VirtueMartCart::getCart(false,false);
 $data = $cart->prepareAjaxData();
-		if ($data->totalProduct>1) $data->totalProductTxt = JText::sprintf('COM_VIRTUEMART_QUANTITY_PRODUCTS', $data->totalProduct);
-		else if ($data->totalProduct == 1) $data->totalProductTxt = JText::_('COM_VIRTUEMART_QUANTITY_PRODUCT');
-		else $data->totalProductTxt = JText::_('COM_VIRTUEMART_EMPTY_CART');
-		if ($data->dataValidated == true) {
-			$taskRoute = '&task=confirm';
-			$linkName = JText::_('COM_VIRTUEMART_CART_CONFIRM');
-		} else {
-			$taskRoute = '';
-			$linkName = JText::_('COM_VIRTUEMART_CART_SHOW');
-		}
-		$data->cart_show = '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart".$taskRoute).'">'.$linkName.'</a>';
-		$data->billTotal = $lang->_('COM_VIRTUEMART_TOTAL').' : <strong>'. $data->billTotal .'</strong>';
+$lang = JFactory::getLanguage();
+$extension = 'com_virtuemart';
+$lang->load($extension);//  when AJAX it needs to be loaded manually here >> in case you are outside virtuemart !!!
+if ($data->totalProduct>1) $data->totalProductTxt = JText::sprintf('COM_VIRTUEMART_CART_X_PRODUCTS', $data->totalProduct);
+else if ($data->totalProduct == 1) $data->totalProductTxt = JText::_('COM_VIRTUEMART_CART_ONE_PRODUCT');
+else $data->totalProductTxt = JText::_('COM_VIRTUEMART_EMPTY_CART');
+if ($data->dataValidated == true) {
+	$taskRoute = '&task=confirm';
+	$linkName = JText::_('COM_VIRTUEMART_CART_CONFIRM');
+} else {
+	$taskRoute = '';
+	$linkName = JText::_('COM_VIRTUEMART_CART_SHOW');
+}
+$data->cart_show = '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart".$taskRoute).'">'.$linkName.'</a>';
+$data->billTotal = $lang->_('COM_VIRTUEMART_CART_TOTAL').' : <strong>'. $data->billTotal .'</strong>';
 
 vmJsApi::jQuery();
 vmJsApi::jPrice();
