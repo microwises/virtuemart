@@ -44,14 +44,14 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</td>
     <td width="50%">
     	<p/>
-			<a class="default" title="<?php echo $this->vendor->vendor_store_name ?>" href="<?php echo JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&order_number='.$this->order['details']['BT']->order_number.'&order_pass='.$this->order['details']['BT']->order_pass; ?>">
+			<a class="default" title="<?php echo $this->cart->vendor->vendor_store_name ?>" href="<?php echo JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&order_number='.$this->order['details']['BT']->order_number.'&order_pass='.$this->order['details']['BT']->order_pass; ?>">
 			<?php echo JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_ORDER_LINK'); ?></a>
 		</p>
 	</td>
   </tr>
   <tr>
     <td colspan="3">
-				<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_TOTAL_ORDER',$this->prices['billTotal'] ); ?></td>
+				<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_TOTAL_ORDER',$this->cart->prices['billTotal'] ); ?></td>
   </tr>
   <?php if(!empty($this->order['details']['BT']->customer_note)){ ?>
   <tr>

@@ -417,7 +417,6 @@ class VirtueMartModelProduct extends VmModel {
 					$customfields = new VirtueMartModelCustomfields();
 					// Load the custom product fields
 					$product->customfields = $customfields->getProductCustomsField($product);
-
 					//  custom product fields for add to cart
 					$product->customfieldsCart = $customfields->getProductCustomsFieldCart($product);
 					$product->customsChilds = $customfields->getProductCustomsChilds($child , $this->_id);

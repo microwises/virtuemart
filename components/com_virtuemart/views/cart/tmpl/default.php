@@ -69,12 +69,13 @@ JHTML::_ ( 'behavior.modal' );
 	<input type='hidden' name='option' value='com_virtuemart'/>
 	<input type='hidden' name='view' value='cart'/>
 */
-$checkoutProcess = true ;
 	// This displays the pricelist MUST be done with tables, because it is also used for the emails
-	include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'price_list.php');
+	echo $this->loadTemplate('pricelist');
+	if ($this->checkout_task) $taskRoute = '&task='.$this->checkout_task;
+	else $taskRoute ='';
 	?>
 
-	<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_( 'index.php?option=com_virtuemart' ); ?>">
+	<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart'.$taskRoute ); ?>">
 
 		<?php // Leave A Comment Field ?>
 		<div class="customer-comment marginbottom15">
@@ -87,7 +88,7 @@ $checkoutProcess = true ;
 		<div class="terms-of-service">
 			<span class="terms-of-service"><span class="vmicon vm2-termsofservice-icon"></span><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?></span>
 			<div>
-			<?php echo $this->vendor->vendor_terms_of_service;?>
+			<?php echo $this->cart->vendor->vendor_terms_of_service;?>
 			</div>
 		</div>
 		<?php // Terms Of Service END ?>

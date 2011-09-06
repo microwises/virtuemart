@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
   <tr>
     <td width="50%">
 
-		<?php 	foreach($this->BTaddress as $item){
+		<?php 	foreach($this->cart->BTaddress as $item){
 					if(!empty($item['value'])){
 						echo $item['title'].': '.$this->escape($item['value']).'<br/>';
 					}
@@ -43,14 +43,14 @@ defined('_JEXEC') or die('Restricted access');
 	</td>
     <td width="50%">
 			<?php 
-			if(!empty($this->STaddress)){ 
-				foreach($this->STaddress as $item){
+			if(!empty($this->cart->STaddress)){ 
+				foreach($this->cart->STaddress as $item){
 					if(!empty($item['value'])){
 						echo $item['title'].': '.$this->escape($item['value']).'<br/>';
 					}
 				}
 			} else {
-				foreach($this->BTaddress as $item){
+				foreach($this->cart->BTaddress as $item){
 					if(!empty($item['value'])){
 						echo $item['title'].': '.$this->escape($item['value']).'<br/>';
 					}

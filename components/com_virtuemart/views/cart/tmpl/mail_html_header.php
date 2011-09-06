@@ -27,6 +27,6 @@ defined('_JEXEC') or die('Restricted access');
   </tr>
   <tr>
     <td colspan="3" bgcolor="#ccc">
-				<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_SUMMARY',$this->vendor->vendor_store_name); ?></td>
+				<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_SUMMARY',$this->cart->vendor->vendor_store_name); ?></td>
   </tr>
 </table>

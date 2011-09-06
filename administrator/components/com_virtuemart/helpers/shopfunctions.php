@@ -442,7 +442,8 @@ class ShopFunctions {
     function convertWeigthUnit($value, $from, $to) {
 
         $value = str_replace(',', '.', $value);
-
+        $g = 1 ;
+	   
         switch ($from) {
             case 'KG': $g = 1000 * $value;
                 break;

@@ -815,8 +815,8 @@ class VirtueMartModelOrders extends VmModel {
 
 		foreach ($returnValues as $returnValue) {
 			if ($returnValue !== null) {
-				$this->handleStockAfterStatusChanged($returnValue);
-
+				//dump ($returnValue);
+				$this->handleStockAfterStatusChanged('P',$cart->products,'N');
 				break; // This was the active plugin, so there's nothing left to do here.
 			}
 			// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
@@ -1012,6 +1012,7 @@ vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_s
 								'.$_prod->customfieldsCart[$row]->options[$selected]->custom_value.' '.$_prod->customfieldsCart[$row]->custom_field_desc;
 					$row++;
 				}
+				$_orderItems->product_attribute = $_prod->product_attribute;
 			}
 			// TODO: add fields for the following data:
 			//    * [double] basePrice = 38.48
@@ -1038,7 +1039,7 @@ vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_s
 			$_orderItems->product_final_price = $_prod->prices['salesPrice'];
 			//			$_orderItems->order_item_currency = $_prices[$_lineCount]['']; // TODO Currency
 			$_orderItems->order_status = 'P';
-			$_orderItems->product_attribute = $_prod->product_attribute;
+
 
 			if (!$_orderItems->check()) {
 				$this->setError($this->getError());

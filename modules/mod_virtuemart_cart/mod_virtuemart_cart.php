@@ -28,15 +28,18 @@ $jsVars  = ' jQuery(document).ready(function(){
 
 });' ;
 
-if (!class_exists( 'VmConfig' )) {
-	require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');}
+if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
             
+if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+$cart = VirtueMartCart::getCart(false,false);
+$data = $cart->prepareAjaxData();
 
 vmJsApi::jQuery();
 vmJsApi::jPrice();
 vmJsApi::cssSite();
 $document = JFactory::getDocument();
-$document->addScriptDeclaration($jsVars);
+//$document->addScriptDeclaration($jsVars);
+
 $show_price = (bool)$params->get( 'show_price', 1 ); // Display the Product Price?
 $show_product_list = (bool)$params->get( 'show_product_list', 1 ); // Display the Product Price?
 /* Laod tmpl default */

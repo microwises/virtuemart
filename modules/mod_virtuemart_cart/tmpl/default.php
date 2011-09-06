@@ -1,5 +1,7 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+//dump ($cart,'mod cart');
 // Ajax is displayed in vm_cart_products
 // ALL THE DISPLAY IS Done by Ajax using "hiddencontainer" ?>
 
@@ -20,14 +22,28 @@ if ($show_product_list) {
 			<div class="product_attributes"></div>
 		</div>
 	</div>
-<div class="vm_cart_products">
-</div>
-<?php
-}
-?>
-<div class="total" style="float: right;"></div>
-<div class="total_products"><img src="components/com_virtuemart/assets/images/vmgeneral/cart-loading.gif"><img src="components/com_virtuemart/assets/images/vmgeneral/cart-loading.gif"></div>
-<div class="show_cart"></div>
+	<div class="vm_cart_products">
+		<div class="container">
+		<?php foreach ($data->products as $product)
+		{ 
+			if ($show_price) { ?>
+				  <div class="prices" style="float: right;"><?php echo  $product['prices'] ?></div>
+				<?php } ?>
+			<div class="product_row">
+				<span class="quantity"><?php echo  $product['quantity'] ?></span>&nbsp;x&nbsp;<span class="product_name"><?php echo  $product['product_name'] ?></span>
+			</div>
+			<?php if (!empty($product['$product_attributes']) ) { ?>	
+				<div class="product_attributes"><?php echo  $product['product_attributes'] ?></div>
+
+			<?php }
+		}
+		?>
+		</div>
+	</div>
+<?php } ?>
+<div class="total" style="float: right;"><?php echo  $data->billTotal ?></div>
+<div class="total_products"><?php echo  $data->totalProductTxt ?></div>
+<div class="show_cart"><?php echo  $data->cart_show ?></div>
 <noscript>
 <?php echo JText::_('MOD_VIRTUEMART_CART_AJAX_CART_PLZ_JAVASCRIPT') ?>
 </noscript>

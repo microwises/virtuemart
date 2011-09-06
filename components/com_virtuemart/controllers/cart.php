@@ -124,36 +124,36 @@ class VirtueMartControllerCart extends JController {
 	* @access public
 	*/
 	public function addJS(){
-
+	
 		//maybe we should use $mainframe->close(); or jexit();instead of die;
 		/* Load the cart helper */
 		//require_once(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-		$cart = VirtueMartCart::getCart();
+		$this->json = null;
+		$cart = VirtueMartCart::getCart(true,false);
 		if($cart){
 			// Get a continue link */
-			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
-			$categoryLink='';
-			if($virtuemart_category_id>0){
+			$virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId() ;
+			if( $virtuemart_category_id ){
 				$categoryLink='&view=category&virtuemart_category_id='.$virtuemart_category_id;
 			} else $categoryLink='';
 			$continue_link = JRoute::_('index.php?option=com_virtuemart'.$categoryLink);
 
 			if($cart->add()){
-				$text = '<a href="'.$continue_link.'" >'.JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING').'</a>';
-				$text .= '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart").'">'.JText::_('COM_VIRTUEMART_CART_SHOW').'</a>';
-				echo json_encode (array('stat'=>1,'msg'=>$text));
+				$this->json->msg = '<a class="continue" href="'.$continue_link.'" >'.JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING').'</a>';
+				$this->json->msg .= '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart").'">'.JText::_('COM_VIRTUEMART_CART_SHOW').'</a>';
+				$this->json->stat = '1';
 			} else {
-				$text = '<p>'.$cart->getError().'</p>';
-				$text .= '<a href="'.$continue_link.'" >'.JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING').'</a>';
-				echo json_encode (array('stat'=>0,'msg'=>$text));
+				$this->json->msg = '<p>'.$cart->getError().'</p>';
+				$this->json->msg .= '<a class="'.$continue_link.'" href="#" >'.JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING').'</a>';
+				$this->json->stat = '1';
 			}
 		} else {
-			echo (0);
+			$this->json->msg = '<a href="'.JRoute::_('index.php?option=com_virtuemart').'" >'.JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING').'</a>';
+			$this->json->msg .= '<p>'.JText::_('COM_VIRTUEMART_MINICART_ERROR').'</p>';
+			$this->json->stat = '0';
 		}
+		echo json_encode($this->json);
 		jExit();
-		$mainframe = JFactory::getApplication();
-		$mainframe->close();
-
 	}
 	/**
 	* Add the product to the cart, with JS
@@ -163,22 +163,12 @@ class VirtueMartControllerCart extends JController {
 	*/
 	public function viewJS(){
 
-		/* Create the view */
-		$view = $this->getView('cart', 'raw');
-		/* Add the default model */
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), false );
-		$view->setModel( $this->getModel( 'vendor', 'VirtuemartModel' ), false );
-		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'country', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'state', 'VirtuemartModel' ), true );
+		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+		$cart = VirtueMartCart::getCart(false,false);
+		$this->data = $cart->prepareAjaxData();
 
-		/* Set the layout */
-		$layoutName = JRequest::getWord('layout', 'default');
-		$view->setLayout($layoutName);
-
-		/* Display it all */
-		$view->display();
+		echo json_encode($this->data);
+		Jexit();
 
 	}
 
@@ -206,7 +196,7 @@ class VirtueMartControllerCart extends JController {
 	public function setcoupon(){
 		$mainframe = JFactory::getApplication();
 		/* Get the coupon_code of the cart */
-		$coupon_code= JRequest::getInt('coupon_code', '');
+		$coupon_code= JRequest::getInt('coupon_code', '');//TODO VAR OR INT OR WORD?
 		if($coupon_code){
 			//Now set the shipping rate into the cart
 			$cart = VirtueMartCart::getCart();
@@ -352,7 +342,7 @@ class VirtueMartControllerCart extends JController {
 		if ($cart->removeProductCart()) $mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_REMOVED_SUCCESSFULLY'));
 		else $mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_REMOVED_SUCCESSFULLY'), 'error');
 
-		$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
+		$mainframe->redirect( JRoute::_('index.php?option=com_virtuemart&view=cart') );
 	}
 
 	/**

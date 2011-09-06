@@ -121,7 +121,7 @@ span.bold{font-weight:700;}
 .vm2-add_quantity_cart{background-position:0 0;width:24px;height:24px;border: 0px;cursor:pointer;}
 .vm2-arrow_down{background-position:0 -72px;width:16px;height:16px;}
 .vm2-billto-icon{background-position:0 -138px;height:24px;margin-right:6px;vertical-align:middle;width:24px;border :0px;}
-.vm2-remove_from_cart{background-position:0 -212px;width:24px;height:24px;border :0px;cursor:pointer;}
+.vm2-remove_from_cart{    background-position: 0 -212px; border: 0 none; cursor: pointer; display: inline-block; height: 24px; vertical-align: bottom; width: 24px;}
 .vm2-shipto-icon{background-position:0 -284px;height:24px;margin-right:6px;vertical-align:middle;width:24px;}
 .vm2-stars0{background-position:0 -358px;width:64px;height:13px;}
 .vm2-stars1{background-position:0 -421px;width:64px;height:13px;}
@@ -159,3 +159,4 @@ span.addtocart-button input.addtocart-button:hover,span.addtocart-button input.n
 textarea.virtuemart:hover,textarea.customer-comment:hover{color:#000;background:#e8e8e8;}
 label.invalid,span.red{color:red;}
 .output-billto span.values,.output-shipto span.values,.floatleft,span.floatleft{float:left;}
+.output-billto span.values,.output-shipto span.values padding-right:5px;}

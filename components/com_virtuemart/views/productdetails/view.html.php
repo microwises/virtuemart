@@ -48,7 +48,6 @@ class VirtueMartViewProductdetails extends JView {
 		}
 		$this->assignRef('show_prices', $show_prices);
 
-
 		$document = JFactory::getDocument();
 
 		/* add javascript for price and cart */
