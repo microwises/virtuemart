@@ -1387,21 +1387,8 @@ private function confirmedOrder() {
 
 			$i++;
 		}
-			$lang = JFactory::getLanguage();
-			$extension = 'mod_virtuemart_cart';
-			$lang->load($extension);//  when AJAX it needs to be loaded manually here >> in case you are outside virtuemart !!!
-		if ($this->data->totalProduct>1) $this->data->totalProductTxt = JText::sprintf('MOD_VIRTUEMART_QUANTITY_PRODUCTS', $this->data->totalProduct);
-		else if ($this->data->totalProduct == 1) $this->data->totalProductTxt = JText::_('MOD_VIRTUEMART_QUANTITY_PRODUCT');
-		else $this->data->totalProductTxt = JText::_('MOD_VIRTUEMART_EMPTY_CART');
-		if ($this->_dataValidated == true) {
-			$taskRoute = '&task=confirm';
-			$linkName = JText::_('MOD_VIRTUEMART_CART_CONFIRM');
-		} else {
-			$taskRoute = '';
-			$linkName = JText::_('MOD_VIRTUEMART_CART_SHOW');
-		}
-		$this->data->cart_show = '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart".$taskRoute).'">'.$linkName.'</a>';
-		$this->data->billTotal = $lang->_('MOD_VIRTUEMART_TOTAL').' : <strong>'. $this->prices['billTotal'] .'</strong>';
+		$this->data->billTotal = $this->prices['billTotal'];
+		$this->data->dataValidated = $this->_dataValidated ;
 		return $this->data ;
 	}
 }
