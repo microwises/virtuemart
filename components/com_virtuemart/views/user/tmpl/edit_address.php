@@ -39,7 +39,6 @@ function myValidator(f, t)
 
 function callValidatorForRegister(f){
 
-
 	var elem = jQuery('#username_field');
 	elem.attr('class', "required");
 
@@ -160,6 +159,9 @@ echo JText::_(VmConfig::get('oncheckout_show_register_text','COM_VIRTUEMART_ONCH
 		echo join("\n", $this->userFields['functions']);
 		echo '</script>'."\n";
 	}
+
+	$corefields = array('username_field', 'name_field', 'password_field', 'password2_field');
+
 	for ($_i = 0, $_n = count($this->userFields['fields']); $_i < $_n; $_i++) {
 		// Do this at the start of the loop, since we're using 'continue' below!
 		if ($_i == 0) {
@@ -194,7 +196,14 @@ echo JText::_(VmConfig::get('oncheckout_show_register_text','COM_VIRTUEMART_ONCH
 			echo '	<table class="adminform user-details">'."\n";
 			$_table = true;
 		}
-		echo '		<tr>'."\n";
+
+		$class='';
+		$corefields = VirtueMartModelUserfields::getCoreFields();
+		if(in_array($_field['name'],$corefields)){
+			$class = 'class = "joomlaCoreField" ';
+		}
+
+		echo '		<tr '.$class.' >'."\n";
 		echo '			<td class="key">'."\n";
 		echo '				<label for="'.$_field['name'].'_field">'."\n";
 		echo '					'.$_field['title'] . ($_field['required']?' *': '')."\n";

@@ -96,14 +96,14 @@
                                 <th align="right" width="60px"><?php echo "<span  style='color:gray'>".JText::_('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></th>
 				<th align="right" width="70px"><?php echo JText::_('COM_VIRTUEMART_CART_TOTAL') ?></th>
 			</tr>
-		<?php 
+		<?php
 		$i=1;
 		foreach( $this->cart->products as $pkey =>$prow ) { ?>
 			<tr valign="top" class="sectiontableentry<?php echo $i ?>">
 				<td align="left" >
 					<?php if ( $prow->virtuemart_media_id) {  ?>
 						<span class="cart-images">
-						 <?php  
+						 <?php
 							if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 								$db =& JFactory::getDBO();
 								$db->setQuery('SELECT * from #__virtuemart_medias where virtuemart_media_id='. $prow->virtuemart_media_id[0] );
@@ -113,7 +113,7 @@
 						</span>
 					<?php } ?>
 					<?php echo JHTML::link(JURI::root(true) .'/'.$prow->url, $prow->product_name).$prow->customfields; ?>
-				
+
 				</td>
 				<td align="left" ><?php echo $prow->product_sku ?></td>
 				<td align="center" >
@@ -140,7 +140,7 @@
 				<td align="right"><?php echo "<span  style='color:gray'>".$prow->subtotal_discount."</span>" ?></td>
 				<td colspan="1" align="right"><?php echo $prow->subtotal_with_tax ?></td>
 			</tr>
-		<?php 
+		<?php
 			$i = 1 ? 2 : 1;
 		} ?>
 		<!--Begin of SubTotal, Tax, Shipping, Coupon Discount and Total listing -->
