@@ -623,7 +623,7 @@ class VirtueMartModelUserfields extends VmModel {
 					,'required' => $_fld->required
 					,'hidden' => false
 			);
-			vmdebug('getUserFieldsByUser ',$_return['fields'][$_fld->name]);
+
 			// First, see if there are predefined fields by checking the name
 			switch( $_fld->name ) {
 

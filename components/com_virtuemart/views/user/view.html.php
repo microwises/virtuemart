@@ -259,16 +259,17 @@ class VirtuemartViewUser extends JView {
 		if(Permissions::getInstance()->check("admin,storeadmin")){
 			$this->_lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $this->_userDetails->perms);
 		} else {
-			if(!empty($_userDetailsList->perms)){
-				$this->_lists['perms'] = $_userDetailsList->perms;
-			}
+			if(!empty($this->_userDetails->perms)){
+				$this->_lists['perms'] = $this->_userDetails->perms;
+
 			/* This now done in the model, so it is unnecessary here, notice by Max Milbers
 			if(empty($this->_lists['perms'])){
 				$this->_lists['perms'] = 'shopper'; // TODO Make this default configurable
 			}
 			*/
-			$_hiddenInfo = '<input type="hidden" name="perms" value = "' . $this->_lists['perms'] . '" />';
-			$this->_lists['perms'] .= $_hiddenInfo;
+				$_hiddenInfo = '<input type="hidden" name="perms" value = "' . $this->_lists['perms'] . '" />';
+				$this->_lists['perms'] .= $_hiddenInfo;
+			}
 		}
 
 		// Load the required scripts

@@ -370,7 +370,8 @@ class VirtueMartCart {
 			$product -> product_packaging = $tmpProduct -> product_packaging;
 			$product -> product_order_levels = $tmpProduct -> product_order_levels;
 			$product -> virtuemart_media_id = $tmpProduct -> virtuemart_media_id;
-			$product -> image = $tmpProduct -> image;
+
+			if(!empty($tmpProduct -> image)) $product -> image =  $tmpProduct -> image;
 
 			$product -> categories = $tmpProduct -> categories;
 			$product -> virtuemart_category_id = $tmpProduct -> virtuemart_category_id;
