@@ -237,7 +237,7 @@ class Migrator extends VmModel{
 				$knownNames[] = $media->file_url;
 			}
 		}
-		vmdebug('my known paths ',$knownNames);
+// 		vmdebug('my known paths ',$knownNames);
 		$filesInDir = array();
 		$foldersInDir = array();
 
@@ -261,7 +261,7 @@ class Migrator extends VmModel{
 
 							$relUrlName = '';
 							$relUrlName = $relUrl.$file;
-
+							vmdebug('my relative url ',$relUrlName);
 							//We port all type of media, regardless the extension
 							if($filetype == 'file'){
 								if(!in_array($relUrlName, $knownNames)){
@@ -269,7 +269,8 @@ class Migrator extends VmModel{
 								}
 							}else {
 								if($filetype == 'dir' && $file != 'resized'){
-									$subfoldersInDir[] = $dir . $file;
+									$subfoldersInDir[] = $dir.$file.DS;
+// 									vmdebug('my sub folder ',$dir.$file);
 								}
 							}
 						}
