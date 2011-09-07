@@ -28,10 +28,11 @@ VmConfig::loadConfig();
 vmJsApi::jQuery();
 vmJsApi::jSite();
 // check for permission Only vendor and Admin can use VM2 BE
-if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+// this makes trouble somehow, we need to check if the perm object works not too strict maybe
+/*if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 if(!Permissions::getInstance()->check('admin','storeowner')){
 	die( 'Access restricted to Vendor and Administrator only' );
-}
+}*/
 /* Require specific controller if requested */
 if($_controller = JRequest::getWord('controller', JRequest::getWord('view', 'virtuemart'))) {
 	if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php')) {

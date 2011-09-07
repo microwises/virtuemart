@@ -134,10 +134,13 @@ class TableMedias extends VmTable {
 			$unique_id = $this->_db->loadAssocList();
 
 			$tblKey = 'virtuemart_media_id';
+
 			if (!empty($unique_id)){
-				foreach($unique_id as $id){
-					if($id!=$this->virtuemart_media_id) {
-						$this->file_title = $this->file_title.rand(10,99);
+				foreach($unique_id as $item){
+					if($item['virtuemart_media_id']!=$this->virtuemart_media_id) {
+						$lastDir = substr($this->file_url,0,strrpos($this->file_url,'/'));
+						$lastDir = substr($lastDir,strrpos($lastDir,'/')+1);
+						$this->file_title = $this->file_title.' '.$lastDir;
 					}
 				}
 			}
