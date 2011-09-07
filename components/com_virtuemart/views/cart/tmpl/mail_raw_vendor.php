@@ -28,9 +28,3 @@ if(!empty($this->order['details']['BT']->customer_note)) {
 	echo "\n" . JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_SHOPPER_QUESTION', $this->order['details']['BT']->customer_note);
 }
 echo "\n";
-
-//TODO make plain text
-//PriceList
-include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'price_list.php');
-
-include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'shopper_adresses.php');

@@ -308,7 +308,7 @@ class shopFunctionsF {
 		$mailer = JFactory::getMailer();
 		$mailer->addRecipient($recipient);
 		$mailer->setSubject($subject);
-		$mailer->isHTML(VmConfig::get('html_email',true));
+		$mailer->isHTML(VmConfig::get('order_mail_html',true));
 		$mailer->setBody($body);
 
 		if (isset($view->replyTo)) {
@@ -552,10 +552,14 @@ class shopFunctionsF {
 	 */
 	function tabPrint( $size, $string,$header = false){
 		if ($header) $string = strtoupper (JText::_($string ) );
-		sprintf("%".$size.".".$size."s ",$string ) ;
+		sprintf("%".$size.".".$size."s",$string ) ;
 
 	}
+	function toupper($strings) {
+		foreach ($strings as &$string) {
+			$string = strtoupper (JText::_($string ) );
+		}
+		return $strings;
 	
+	}
 }
-
-// pure php no closing tag

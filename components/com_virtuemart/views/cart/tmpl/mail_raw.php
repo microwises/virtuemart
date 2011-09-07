@@ -34,14 +34,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
 // Shop desc for shopper and vendor
 // echo $this->loadTemplate('header');
 // Message for shopper or vendor
-// echo $this->loadTemplate($this->recipient);
+echo $this->loadTemplate($this->recipient);
 // render shipto billto adresses
-//echo $this->loadTemplate('shopperadresses');
+echo $this->loadTemplate('shopperadresses');
 // render price list
-$teste = $this->loadTemplate('pricelist');
+echo  $this->loadTemplate('pricelist');
 //dump($salesPriceShipping , 'rawmail');
-echo $teste ;
-jexit();
 // more infos
 //echo $this->loadTemplate($this->recipient.'_more');
 // end of mail

@@ -38,7 +38,7 @@ class VirtueMartViewCart extends JView {
 	private $_userDetails;
 	public $lists;
     public function display($tpl = null) {
-		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+
 		$cart = VirtueMartCart::getCart(false);
 		$cart->prepareCartData();
 		$this->data = $cart->prepareAjaxData();

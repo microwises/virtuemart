@@ -29,31 +29,25 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+echo strip_tags( JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_ORDER_TITLE' ) ). "\n" . "\n";
+echo strip_tags( JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_SUMMARY',$this->cart->vendor->vendor_store_name) ). "\n" . "\n";
 
 echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_CONTENT',
 						$this->shopperName,
-						$this->vendor->vendor_store_name,
+						$this->cart->vendor->vendor_store_name,
 						$this->order['details']['BT']->order_total,
 						$this->order['details']['BT']->order_number,
 						$this->order['details']['BT']->order_pass,
 						$this->order['details']['BT']->created_on) . "\n" . "\n";
 
-echo 'Link to view your order' .  JURI::root() . JRoute::_( 'index.php?option=com_virtuemart&view=orders&task=details&order_number=' . $this->order['details']['BT']->order_number . '&order_pass=' . $this->order['details']['BT']->order_pass ) . "\n";
+echo JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_ORDER_LINK') .' : '. JURI::root() . JRoute::_( 'index.php?option=com_virtuemart&view=orders&task=details&order_number=' . $this->order['details']['BT']->order_number . '&order_pass=' . $this->order['details']['BT']->order_pass ) . "\n";
 if(!empty($this->order['details']['BT']->customer_note)){
 	echo "\n" . JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_QUESTION',$this->order['details']['BT']->customer_note);
 }
-echo "\n";
-
-//TODO make plain text
-//PriceList
-include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'price_list.php');
-
-include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'shopper_adresses.php');
+echo "\n\n";
 
 //TODO if silent registration logindata
 //TODO if Paymentmethod needs Bank account data of vendor
 
 //We may wish to integrate later a kind of signature
-//include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'footer.php');
 
-	//Footer for shopper
