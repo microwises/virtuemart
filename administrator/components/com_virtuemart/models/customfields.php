@@ -499,7 +499,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					foreach ($group->options as $productCustom) {
 						$productCustom->text =  $productCustom->custom_value.' : '.$currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
 					}
-					$group->display .= '<label for="'.$productCustom->value.'">'.$this->displayType($productCustom->custom_value,$group->field_type,0,'',$row).': '.$currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)).'</label>' ;
+					$group->display .= '<input type="text" value="'.JText::_($productCustom->custom_value).'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']['.$productCustom->value.']" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').': '.$currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)) ;
 				} else {
 					$group->display ='';
 					$checked = 'checked="checked"';

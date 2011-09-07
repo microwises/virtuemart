@@ -411,9 +411,19 @@ class VirtueMartCart {
 					$productKey.= '::';
 					foreach ($product->customPrices as $customPrice) {
 						foreach ($customPrice as $customId => $custom_fieldId) {
-							$productKey .= $customId . ':' . $custom_fieldId . ';';
+							
+							if ( is_array($custom_fieldId) ) {
+								foreach ($custom_fieldId as $userfieldId => $userfield) {
+								$productKey .= $customId . ':' . $userfieldId . ';';
+								$product->userfield = $userfield;
+								}
+							} else {
+								$productKey .= $customId . ':' . $custom_fieldId . ';';
+							}
+							
 						}
 					}
+					
 				}
 
 				if (array_key_exists($productKey, $this->products)) {
@@ -1282,7 +1292,7 @@ private function confirmedOrder() {
 			// No full link because Mail want absolute path and in shop is better relative path
 			$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//JHTML::link($url, $product->product_name);
 			if(!empty($product->customfieldsCart)){
-				$product->customfields = ShopFunctions::customFieldInCartDisplay($cart_item_id,$product->customfieldsCart);
+				$product->customfields = ShopFunctions::customFieldInCartDisplay($cart_item_id,$product);
 			} else {
 				$product->customfields ='';
 			}
@@ -1460,7 +1470,15 @@ private function confirmedOrder() {
 				$variantmods = $calculator->parseModifier($priceKey);
 				$row = 0 ;
 				foreach ($variantmods as $variant=>$selected){
+				
+					if ($product->customfieldsCart[$row]->field_type == "U") { 
+						$this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
+								'.$product->userfield.' '.$product->customfieldsCart[$row]->custom_field_desc;
+					
+					} else {
+				
 							$this->data->products[$i]['customfieldsCart'] .= '<br/ ><b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$product->customfieldsCart[$row]->options[$selected]->custom_value;
+					}
 							$row++;
 				}
 			}

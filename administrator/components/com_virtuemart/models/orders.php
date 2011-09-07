@@ -1008,10 +1008,17 @@ vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_s
 				$row=0 ;
 				$_prod->product_attribute = '';
 				foreach($variantmods as $variant=>$selected){
+					if ($_prod->customfieldsCart[$row]->field_type == "U") { 
+						$_prod->product_attribute .= '<br/ > <b>'.$_prod->customfieldsCart[$row]->custom_title.' : </b>
+								'.$_prod->userfield.' '.$_prod->customfieldsCart[$row]->custom_field_desc;
+					
+					} else {
 					$_prod->product_attribute .= '<br/ > <b>'.$_prod->customfieldsCart[$row]->custom_title.' : </b>
 								'.$_prod->customfieldsCart[$row]->options[$selected]->custom_value.' '.$_prod->customfieldsCart[$row]->custom_field_desc;
+					}
 					$row++;
 				}
+				if (isset($_prod->userfield )$_prod->product_attribute .= '<br/ > <b>'.$_prod->userfield.' : </b>'
 				$_orderItems->product_attribute = $_prod->product_attribute;
 			}
 			// TODO: add fields for the following data:

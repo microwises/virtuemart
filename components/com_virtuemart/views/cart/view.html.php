@@ -97,6 +97,7 @@ class VirtueMartViewCart extends JView {
 		} else if($layoutName=='default' ){
 
 			$cart->prepareCartViewData();
+			dump($cart,'cart');
 
 			$cart->prepareAddressRadioSelection();
 

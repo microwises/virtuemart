@@ -1098,26 +1098,28 @@ class ShopFunctions {
 	 * @param unknown_type $priceKey
 	 * @param unknown_type $customFields
 	 */
-	function customFieldInCartDisplay ($priceKey,$customFields){
-
+	function customFieldInCartDisplay ($priceKey,$product){
 		$html ='';
 		if (!is_int($priceKey)) {
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 			$calculator = calculationHelper::getInstance();
 			$variantmods = $calculator->parseModifier($priceKey);
 			$row=0 ;
-
+			dump ($variantmods);
 			foreach($variantmods as $variant=>$selected){
-				$custom_value = $customFields[$row]->options[$selected]->custom_value;
-				if( $customFields[$row]->field_type == "M") {
+				$custom_value = $product->customfieldsCart[$row]->options[$selected]->custom_value;
+				if( $product->customfieldsCart[$row]->field_type == "M") {
 					$db = JFactory::getDBO();
 					$q = 'SELECT * FROM `#__virtuemart_medias` WHERE `virtuemart_media_id` = ' . (int) $custom_value . ' LIMIT 1';
 					$db->setQuery($q);
 					$image = $db->loadObject();
 					$custom_value = JHTML::_('image', $image->file_url_thumb, $image->file_title,'WIDTH = "48"');
+				} else if( $product->customfieldsCart[$row]->field_type == "U") { 
+						$custom_value = $product->userfield ;
+					
 				}
-				$html .= '<br/ > <b>'.$customFields[$row]->custom_title.' : </b>
-									'.$custom_value.' '.$customFields[$row]->custom_field_desc;
+				$html .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
+									'.$custom_value.' '.$product->customfieldsCart[$row]->custom_field_desc;
 				$row++;
 			}
 
