@@ -45,7 +45,7 @@ class VirtueMartModelOrders extends VmModel {
 
 	/**
 	 * This function gets the orderId, for anonymous users
-	 *
+	 * @author Max Milbers
 	 */
 	public function getOrderIdByOrderPass($orderNumber,$orderPass){
 
@@ -59,7 +59,7 @@ class VirtueMartModelOrders extends VmModel {
 	}
 	/**
 	 * This function gets the orderId, for payment response
-	 *
+	 * author Valerie Isaksen
 	 */
 	public function getOrderIdByOrderNumber($orderNumber){
 
@@ -1102,7 +1102,6 @@ vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_s
 		$_orderHist = $this->getTable('order_item_histories');
 		$_orderHist->virtuemart_order_item_id = $_id;
 		$_orderHist->order_status_code = $status;
-		//$_orderHist->date_added = date('Y-m-d G:i:s', time());
 		$_orderHist->customer_notified = $notified;
 		$_orderHist->comments = $comment;
 		$_orderHist->store();

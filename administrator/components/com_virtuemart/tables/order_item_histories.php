@@ -61,7 +61,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_item_histories` (
   `virtuemart_order_item_history_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `virtuemart_order_item_id` int(11) NOT NULL DEFAULT '0',
   `order_status_code` char(1) NOT NULL DEFAULT '0',
-  `date_added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `customer_notified` int(1) DEFAULT '0',
   `comments` text,
   `published` tinyint(1) NOT NULL DEFAULT '1',

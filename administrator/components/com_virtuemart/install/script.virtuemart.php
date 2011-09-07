@@ -43,8 +43,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$update = false;
 
 			//Execute always the base installation file
-//			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
-//			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
+			//			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
+			//			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
 
 			$db = JFactory::getDBO();
 			$q = "SELECT count(id) AS idCount FROM `#__virtuemart_adminmenuentries`";
@@ -113,7 +113,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->alterSessionTable();
 			// install essential and required data
 			// should this be covered in install.sql (or 1.6's JInstaller::parseSchemaUpdates)?
-//			if(!class_exists('VirtueMartModelUpdatesMigration')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'updatesMigration.php');
+			//			if(!class_exists('VirtueMartModelUpdatesMigration')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'updatesMigration.php');
 			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
 			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
 			$model->execSQLFile($this->path.DS.'install'.DS.'install_essential_data.sql');
@@ -123,18 +123,18 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			//copy sampel media
 			$src = $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampelimages';
-// 			if(version_compare(JVERSION,'1.6.0','ge')) {
+			// 			if(version_compare(JVERSION,'1.6.0','ge')) {
 
-				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories');
-				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart');
-				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'category');
-				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'category'.DS.'resized');
-				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'manufacturer');
-				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'manufacturer'.DS.'resized');
-				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'product');
-				$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'product'.DS.'resized');
+			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories');
+			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart');
+			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'category');
+			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'category'.DS.'resized');
+			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'manufacturer');
+			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'manufacturer'.DS.'resized');
+			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'product');
+			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories'.DS.'virtuemart'.DS.'product'.DS.'resized');
 
-// 			}
+			// 			}
 
 			$dst = JPATH_ROOT .DS. 'images' .DS. 'stories' .DS. 'virtuemart';
 
@@ -196,7 +196,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','int(11)');
 
 			$this->alterSessionTable();
-                        $this->alterOrderItemsTable();
+			$this->alterOrderItemsTable();
 
 			$this->updateWeightUnit();
 			$this->updateDimensionUnit();
@@ -225,7 +225,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				}
 			}
 		}
-                /**
+		/**
 		 *
 		 * @author Valérie Isaksen
 		 * @param unknown_type $table
@@ -233,22 +233,44 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * @param unknown_type $action
 		 * @return boolean This gives true back, WHEN it altered the table, you may use this information to decide for extra post actions
 		 */
-                private function alterOrderItemsTable(){
+		private function alterOrderItemsTable(){
 
-
-                    if(empty($this->db)){
-                            $this->db = JFactory::getDBO();
-                    }
-                    $query = 'SHOW COLUMNS FROM `#__virtuemart_order_items` ';
-                    $this->db->setQuery($query);
-                    $columns = $this->db->loadResultArray(0);
-                    if(in_array('order_item_name',$columns)){
-                            $query = 'ALTER TABLE `#__virtuemart_order_items` CHANGE COLUMN `order_item_name` `order_item_name` VARCHAR( 255 )  NOT NULL DEFAULT "" ;';
-                            $this->db->setQuery($query);
-                            return $this->db->query();
-                    }
-                    return false;
+			if(empty($this->db)){
+				$this->db = JFactory::getDBO();
+			}
+			$query = 'SHOW COLUMNS FROM `#__virtuemart_order_items` ';
+			$this->db->setQuery($query);
+			$columns = $this->db->loadResultArray(0);
+			if(in_array('order_item_name',$columns)){
+				$query = 'ALTER TABLE `#__virtuemart_order_items` CHANGE COLUMN `order_item_name` `order_item_name` VARCHAR( 255 )  NOT NULL DEFAULT "" ;';
+				$this->db->setQuery($query);
+				return $this->db->query();
+			}
+			return false;
 		}
+
+		/**
+		 *
+		 * @author Max Milbers
+		 */
+		private function alterOrderHistoriesTable(){
+
+			if(empty($this->db)){
+				$this->db = JFactory::getDBO();
+			}
+			$query = 'SHOW COLUMNS FROM `#__virtuemart_order_histories` ';
+			$this->db->setQuery($query);
+			$columns = $this->db->loadResultArray(0);
+			if(in_array('date_added',$columns)){
+				$query = 'ALTER TABLE `#__virtuemart_order_histories` DROP COLUMN `date_added`;';
+				$this->db->setQuery($query);
+				return $this->db->query();
+			}
+			return false;
+
+			;
+		}
+
 		/**
 		 *
 		 * @author Max Milbers
@@ -264,6 +286,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$columns = $this->db->loadResultArray(0);
 
 			if(!in_array($field,$columns)){
+
 
 				$query = 'ALTER TABLE `'.$table.'` ADD '.$field.' '.$fieldType;
 				$this->db->setQuery($query);
@@ -418,44 +441,69 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$lang->load('com_virtuemart.sys',JPATH_ADMINISTRATOR,null,true);
 			$lang->load('com_virtuemart',JPATH_ADMINISTRATOR,null,true);
 			?>
-			<link rel="stylesheet" href="components/com_virtuemart/assets/css/install.css" type="text/css" />
-			<link rel="stylesheet" href="components/com_virtuemart/assets/css/toolbar_images.css" type="text/css" />
+<link
+	rel="stylesheet"
+	href="components/com_virtuemart/assets/css/install.css"
+	type="text/css" />
+<link
+	rel="stylesheet"
+	href="components/com_virtuemart/assets/css/toolbar_images.css"
+	type="text/css" />
 
-			<div align="center">
-				<table width="100%" border="0">
-				<tr>
-					<td valign="top" align="center">
-						<a href="http://virtuemart.net" target="_blank">
-							<img border="0" align="center" src="components/com_virtuemart/assets/images/vm_menulogo.png" alt="Cart" />
-						</a>
-						<br /><br />
-						<h2><?php echo JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h2>
-					</td>
-					<td>
-						<h2>
-						<?php
-						if($update){
-							echo JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
-							echo '<br />'.JText::_('Please use "renew config from file" in Tools => Updates/Migration');
-						} else {
-							echo JText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
-						}
-						?>
-						</h2>
-						<br />
+<div align="center">
+	<table
+		width="100%"
+		border="0">
+		<tr>
+			<td
+				valign="top"
+				align="center"><a
+				href="http://virtuemart.net"
+				target="_blank"> <img
+					border="0"
+					align="center"
+					src="components/com_virtuemart/assets/images/vm_menulogo.png"
+					alt="Cart" /> </a> <br /> <br />
+				<h2>
 
-						<div id="cpanel">
+				<?php echo JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h2>
+			</td>
+			<td>
+				<h2>
 
 
-						<?php
-						if(!$update){
-							?>
-							<div class="icon">
-							<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JUtility::getToken()) ?>">
-								<span class="vmicon48 vm_install_48"></span>
-								<br /><?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
+				<?php
+				if($update){
+					echo JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
+					echo '<br />'.JText::_('Please use "renew config from file" in Tools => Updates/Migration');
+				} else {
+					echo JText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
+				}
+				?>
+				</h2> <br />
+
+				<div id="cpanel">
+
+
+
+
+				<?php
+				if(!$update){
+					?>
+					<div class="icon">
+						<a
+							href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JUtility::getToken()) ?>">
+							<span class="vmicon48 vm_install_48"></span> <br />
+
+
+
+						<?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
 							</a>
-							</div>
+					</div>
+
+
+
+
 						<?php } ?>
 							<div class="icon">
 							<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart') ?>">
@@ -463,11 +511,16 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 								<br /><?php echo JText::_('COM_VIRTUEMART_INSTALL_GO_SHOP') ?>
 							</a>
 							</div>
-					</td>
-				</tr>
-				</table>
-			</div>
-			<?php
+
+
+
+
+			</td>
+		</tr>
+	</table>
+</div>
+
+<?php
 		}
 
 	}

@@ -252,7 +252,7 @@ class ShopFunctions {
             $emptyOption = JHTML::_('select.option', '', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
             array_unshift($shoppergrps, $emptyOption);
         }
-        vmdebug('renderShopperGroupList',$shopperGroupId);
+
         $listHTML = JHTML::_('select.genericlist', $shoppergrps, $idA, $attrs, $id, $name, $shopperGroupId);
         return $listHTML;
     }
@@ -1115,9 +1115,9 @@ class ShopFunctions {
 					$db->setQuery($q);
 					$image = $db->loadObject();
 					$custom_value = JHTML::_('image', $image->file_url_thumb, $image->file_title,'WIDTH = "48"');
-				} else if( $product->customfieldsCart[$row]->field_type == "U") { 
+				} else if( $product->customfieldsCart[$row]->field_type == "U") {
 						$custom_value = $product->userfield ;
-					
+
 				}
 				$html .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
 									'.$custom_value.' '.$product->customfieldsCart[$row]->custom_field_desc;

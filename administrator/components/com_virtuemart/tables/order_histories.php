@@ -36,8 +36,7 @@ class TableOrder_histories extends VmTable {
 	var $virtuemart_order_id = 0;
 	/** @var char Order status code */
 	var $order_status_code = 0;
-//	/** @var datetime Date added */
-//	var $date_added = '0000-00-00 00:00:00';
+
 	/** @var int Customer notified */
 	var $customer_notified = 0;
 	/** @var text Comments */

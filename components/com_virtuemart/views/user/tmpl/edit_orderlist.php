@@ -42,11 +42,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<?php
 		$k = 0;
 		foreach ($this->orderlist as $i => $row) {
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=orders&task=details&virtuemart_order_id=' . $row->virtuemart_order_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=orders&task=details&order_number=' . $row->order_number);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td align="left">
-					<a href="<?php echo $editlink; ?>"><?php echo $row->virtuemart_order_id; ?></a>
+					<a href="<?php echo $editlink; ?>"><?php echo $row->order_number; ?></a>
 				</td>
 				<td align="left">
 					<?php echo JHTML::_('date', $row->created_on); ?>

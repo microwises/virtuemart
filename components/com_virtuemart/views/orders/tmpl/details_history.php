@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 		<tr valign="top">
 			<td align="left">
-				<?php echo $_hist->date_added; ?>
+				<?php echo $_hist->created_on; ?>
 			</td>
 			<td align="left" >
 				<?php echo $this->orderstatuses[$_hist->order_status_code]; ?>
