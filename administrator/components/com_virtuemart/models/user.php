@@ -191,12 +191,9 @@ class VirtueMartModelUser extends VmModel {
 		if(empty($this->_data->shopper_groups)){
 
 			if(empty($this->_defaultShopperGroup)){
-				$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default` = "1" ';
-				$this->_db->setQuery($q);
-				$this->_defaultShopperGroup = $this->_db->loadResult();
-				if(count($this->_db->getErrors())>0){
-					vmError('Error, cant find default shoppergroup '.$this->_db->getErrorMsg(),'Default shoppergroup not defined, write to the shopowner');
-				}
+				if(!class_exists('VirtueMartModelShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shoppergroup.php');
+				$shoppergroupmodel = new VirtueMartModelShopperGroup();
+				$this->_defaultShopperGroup = $shoppergroupmodel->getDefault()->virtuemart_shoppergroup_id;
 			}
 			$this->_data->shopper_groups = $this->_defaultShopperGroup ;
 		}
@@ -568,12 +565,12 @@ class VirtueMartModelUser extends VmModel {
 			vmError($error);
 		}
 
-		if(empty($data['virtuemart_shoppergroup_id'])){
+/*		if(empty($data['virtuemart_shoppergroup_id'])){
 			if(!class_exists('VirtueMartModelShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shoppergroup.php');
 			$shoppergroupmodel = new VirtueMartModelShopperGroup();
 			$defaultShopperGroup = $shoppergroupmodel->getDefault();
 			$data['virtuemart_shoppergroup_id'] = $defaultShopperGroup->virtuemart_shoppergroup_id;
-		}
+		}*/
 
 		// Bind the form fields to the auth_user_group table
 		$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$data['virtuemart_shoppergroup_id']);

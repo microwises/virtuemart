@@ -123,7 +123,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 	}
 
 	function getDefault(){
-		$this->_db->setQuery('SELECT * FROM `#__virtuemart_shoppergroups`  WHERE `default` = "1"');
+		$this->_db->setQuery('SELECT * FROM `#__virtuemart_shoppergroups` WHERE `default` = "1" AND `virtuemart_vendor_id` = "1" ');
 
 		if(!$res = $this->_db->loadObject()){
 			$app = JFactory::getApplication();

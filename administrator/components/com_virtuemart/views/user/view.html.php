@@ -291,6 +291,11 @@ class VirtuemartViewUser extends JView {
 			$lists['order']     = $mainframe->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'id', 'cmd' );
 			$lists['order_Dir'] = $mainframe->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', '', 'word' );
 			$this->assignRef('lists', $lists);
+
+			if(!class_exists('VirtueMartModelShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shoppergroup.php');
+			$shoppergroupmodel = new VirtueMartModelShopperGroup();
+			$defaultShopperGroup = $shoppergroupmodel->getDefault()->shopper_group_name;
+			$this->assignRef('defaultShopperGroup', $defaultShopperGroup);
 		}
 
 		parent::display($tpl);

@@ -106,10 +106,16 @@ AdminUIHelper::startAdminArea();
 				</td>
 				<?php } ?>
 				<td align="left">
-					<?php echo $row->perms . ' / (' . $row->usertype . ')'; ?>
+					<?php
+					if(empty($row->perms)) $row->perms = 'shopper';
+					echo $row->perms . ' / (' . $row->usertype . ')';
+					?>
 				</td>
 				<td align="left">
-					<?php echo $row->shopper_group_name; ?>
+					<?php
+					if(empty($row->shopper_group_name)) $row->shopper_group_name = $this->defaultShopperGroup;
+					echo $row->shopper_group_name;
+					?>
 				</td>
 			</tr>
 			<?php
