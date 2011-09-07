@@ -127,11 +127,11 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
 
 
 <?php
-        $msg = JText::sprintf('COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER', JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'), JText::_('COM_VIRTUEMART_CHECKOUT_AS_GUEST'));
-        if (VmConfig::get('oncheckout_show_register', 1)) {
-            echo JText::_(VmConfig::get('oncheckout_show_register_text', $msg));
-        }
-    }
+	if (VmConfig::get('oncheckout_show_register', 1)) {
+       	echo JText::sprintf('COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER', JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'), JText::_('COM_VIRTUEMART_CHECKOUT_AS_GUEST'));
+//         	echo JText::_(VmConfig::get('oncheckout_show_register_text', $msg));
+	}
+}
 ?>
 
         <form method="post" id="userForm" name="userForm" class="form-validate">
@@ -145,12 +145,16 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
             } else {
                 $rtask = 'registercheckoutuser';
             }
+
         ?>
-            <button class="default" type="submit" onclick="javascript:return callValidatorForRegister(userForm);" ><?php echo JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?></button>
+         <button class="default" type="submit" onclick="javascript:return callValidatorForRegister(userForm);" ><?php echo JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?></button>
+         <button class="default" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?></button>
+
+<?php } else { ?>
+			<button class="default" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
+			<button class="default" type="reset" onclick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 
 <?php } ?>
-        <button class="default" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?></button>
-        <button class="default" type="reset" onclick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
     </div>
 
     <fieldset>
@@ -206,7 +210,7 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
 
                 $class = '';
 
-                if (in_array($_field['name'], $corefields)) {
+                if (in_array($_field['name'], $corefields)  && $_field['name'] != 'email') {
                     $class = 'class = "joomlaCoreField" ';
                 }
 

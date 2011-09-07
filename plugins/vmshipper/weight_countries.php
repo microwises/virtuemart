@@ -39,7 +39,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 		$this->_tablename = '#__virtuemart_order_shipper_' . $this->_selement;
 		$this->_createTable();
 		parent::__construct($subject, $config);
-		 
+
 	}
 
 	/**

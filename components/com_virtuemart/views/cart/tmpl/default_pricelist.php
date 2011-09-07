@@ -104,12 +104,14 @@
 					<?php if ( $prow->virtuemart_media_id) {  ?>
 						<span class="cart-images">
 						 <?php
-							if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
+/*							if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 								$db =& JFactory::getDBO();
 								$db->setQuery('SELECT * from #__virtuemart_medias where virtuemart_media_id='. $prow->virtuemart_media_id[0] );
 								$data = $db->loadObject();
 							$media = VmMediaHandler::createMedia($data,'product');
-							echo $media->displayMediaThumb('',false); ?>
+							echo $media->displayMediaThumb('',false);*/
+						 echo $prow->image->displayMediaThumb('',false);
+						 ?>
 						</span>
 					<?php } ?>
 					<?php echo JHTML::link(JURI::root(true) .'/'.$prow->url, $prow->product_name).$prow->customfields; ?>

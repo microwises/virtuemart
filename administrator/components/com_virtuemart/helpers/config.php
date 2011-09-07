@@ -281,9 +281,16 @@ class VmConfig{
 				$session = JFactory::getSession();
 				$vmConfig = $session->get('vmconfig','','vm');
 				if(!empty($vmConfig)){
-					$test = unserialize(base64_decode($vmConfig));
-					if(!empty($test) && !empty($test->_params)) {
-						self::$_jpConfig = $test;
+// 					$params = unserialize(base64_decode($vmConfig));
+					$params = unserialize($vmConfig);
+					if(!empty($params)) {
+
+						$params->offline_message = base64_decode($params->offline_message);
+// 						$params->oncheckout_show_register_text =  base64_decode($params->oncheckout_show_register_text);
+
+						self::$_jpConfig = new VmConfig();
+						self::$_jpConfig->_params = $params;
+// 						self::$_jpConfig = $test;
 						// 						$app = JFactory::getApplication();
 						// 						$app ->enqueueMessage('loadConfig session cache');
 						// 						vmTime('Session Cache','loadConfig');
@@ -339,7 +346,15 @@ class VmConfig{
 		$session->clear('vmconfig');
 		// 		$app = JFactory::getApplication();
 		// 		$app ->enqueueMessage('setSession session cache <pre>'.print_r(self::$_jpConfig->_params,1).'</pre>');
-		$session->set('vmconfig', base64_encode(serialize(self::$_jpConfig)),'vm');
+
+// 		$session->set('vmconfig', base64_encode(serialize(self::$_jpConfig)),'vm');
+
+		//We must use base64 for text fields
+		$params = self::$_jpConfig->_params;
+		$params['offline_message'] = base64_encode($params['offline_message']);
+// 		$params['oncheckout_show_register_text'] =  base64_encode($params['oncheckout_show_register_text']);
+
+		$session->set('vmconfig', serialize($params),'vm');
 		self::$loaded = true;
 	}
 
