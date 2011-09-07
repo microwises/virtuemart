@@ -165,7 +165,7 @@ class VirtueMartModelUser extends VmModel {
 	}
 
 
-	var $defaultShopperGroup = 0;
+	private $_defaultShopperGroup = 0;
 	/**
 	 * Retrieve the detail record for the current $id if the data has not already been loaded.
 	 */
@@ -185,15 +185,15 @@ class VirtueMartModelUser extends VmModel {
 		$this->_data->shopper_groups = $xrefTable->load($this->_id);
 		if(empty($this->_data->shopper_groups)){
 
-			if(empty($this->defaultShopperGroup)){
+			if(empty($this->_defaultShopperGroup)){
 				$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default` = "1" ';
 				$this->_db->setQuery($q);
-				$this->defaultShopperGroup = $this->_db->loadResult();
+				$this->_defaultShopperGroup = $this->_db->loadResult();
 				if(count($this->_db->getErrors())>0){
 					vmError('Error, cant find default shoppergroup '.$this->_db->getErrorMsg(),'Default shoppergroup not defined, write to the shopowner');
 				}
 			}
-			$this->_data->shopper_groups = $this->defaultShopperGroup ;
+			$this->_data->shopper_groups = $this->_defaultShopperGroup ;
 		}
 
 		$this->_data->JUser = JUser::getInstance($this->_id);

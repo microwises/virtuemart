@@ -177,9 +177,15 @@ class VirtueMartModelOrders extends VmModel {
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!Permissions::getInstance()->check('admin')){
-			$whereString= 'WHERE u.virtuemart_user_id = ' . (int)$uid.' AND o.virtuemart_vendor_id = "1" ';
+			$myuser		=& JFactory::getUser();
+			$whereString= 'WHERE u.virtuemart_user_id = ' . (int)$myuser->id.' AND o.virtuemart_vendor_id = "1" ';
 		} else {
-			$whereString= 'WHERE o.virtuemart_vendor_id = "1" ';
+			if(empty($uid)){
+				$whereString= 'WHERE o.virtuemart_vendor_id = "1" ';
+			} else {
+				$whereString= 'WHERE u.virtuemart_user_id = ' . (int)$uid.' AND o.virtuemart_vendor_id = "1" ';
+			}
+
 		}
 
 
