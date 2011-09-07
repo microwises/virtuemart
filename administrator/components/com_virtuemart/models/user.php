@@ -131,8 +131,8 @@ class VirtueMartModelUser extends VmModel {
 		}
 		$userFields = array();
 		$userdata = $this->getUser();
-
-		if(!empty($userdata->userInfo) && count($userdata->userInfo)>0) {
+// 		vmdebug('getUserDataInFields $userdata',$userdata);
+		if(!empty($id) && !empty($userdata->userInfo) && count($userdata->userInfo)>0) {
 
 			$currentUserData = current($userdata->userInfo);
 			for ($_i = 0; $_i < count($userdata->userInfo); $_i++) {
@@ -151,10 +151,15 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
+
 		if(empty($userFields)){
+			if (!class_exists('VirtueMartCart'))
+                require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+         $cart = VirtueMartCart::getCart();
+
 			$fields = $userFieldsModel->getUserFieldsByUser(
 								$prepareUserFields
-								,null
+								,(object)$cart->BT
 								,$preFix
 							);
 			$fields['virtuemart_userinfo_id'] = 0;
@@ -523,8 +528,6 @@ class VirtueMartModelUser extends VmModel {
 			echo 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones';
 			vmError( 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones');
 		}
-
-		vmdebug('saveUserData',$data,1);
 
 		JPluginHelper::importPlugin('vmextended');
 		$dispatcher = JDispatcher::getInstance();

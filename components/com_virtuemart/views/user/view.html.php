@@ -71,7 +71,7 @@ class VirtuemartViewUser extends JView {
 
 		if(!class_exists('VirtuemartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 		$this->_model = new VirtuemartModelUser();
-		
+
 		if(!class_exists('VirtuemartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
 		$this->_userFieldsModel = new VirtuemartModelUserfields();
 
@@ -238,10 +238,13 @@ class VirtuemartViewUser extends JView {
 
 		} else {
 			$this->_lists['shoppergroups'] = $_shoppergroup['shopper_group_name'];
-			if(empty($this->_lists['shoppergroups'])){
-				$this->_lists['shoppergroups']='unregistered';
-			}
-			$this->_lists['shoppergroups'] .= '<input type="hidden" name="virtuemart_shoppergroup_id" value = "' . $_shoppergroup['virtuemart_shoppergroup_id'] . '" />';
+
+			//I dont think that makes sense anymore
+// 			if(empty($this->_lists['shoppergroups'])){
+// 				$this->_lists['shoppergroups']='unregistered';
+// 			} else {
+				$this->_lists['shoppergroups'] .= '<input type="hidden" name="virtuemart_shoppergroup_id" value = "' . $_shoppergroup['virtuemart_shoppergroup_id'] . '" />';
+// 			}
 
 			if(!empty($this->_userDetails->virtuemart_vendor_id)){
 				$this->_lists['vendors'] = $this->_userDetails->virtuemart_vendor_id;
@@ -259,9 +262,11 @@ class VirtuemartViewUser extends JView {
 			if(!empty($_userDetailsList->perms)){
 				$this->_lists['perms'] = $_userDetailsList->perms;
 			}
+			/* This now done in the model, so it is unnecessary here, notice by Max Milbers
 			if(empty($this->_lists['perms'])){
 				$this->_lists['perms'] = 'shopper'; // TODO Make this default configurable
 			}
+			*/
 			$_hiddenInfo = '<input type="hidden" name="perms" value = "' . $this->_lists['perms'] . '" />';
 			$this->_lists['perms'] .= $_hiddenInfo;
 		}
@@ -331,30 +336,6 @@ class VirtuemartViewUser extends JView {
 		}
 
 	}
-
-
-	/**
-	 * Additional grid function for custom toggles
-	 *
-	 * @return string HTML code to write the toggle button
-	 */
-/*	function toggle( $field, $i, $toggle, $imgY = 'tick.png', $imgX = 'publish_x.png', $prefix='' )
-	{
-
-		$img 	= $field ? $imgY : $imgX;
-		if ($toggle == 'published') { // Stay compatible with grid.published
-			$task 	= $field ? 'unpublish' : 'publish';
-			$alt 	= $field ? JText::_('COM_VIRTUEMART_PUBLISHED') : JText::_('COM_VIRTUEMART_UNPUBLISHED');
-			$action = $field ? JText::_('COM_VIRTUEMART_UNPUBLISH_ITEM') : JText::_('COM_VIRTUEMART_PUBLISH_ITEM');
-		} else {
-			$task 	= $field ? 'disable_'.$toggle : 'enable_'.$toggle;
-			$alt 	= $field ? JText::_('COM_VIRTUEMART_PUBLISHED') : JText::_('COM_VIRTUEMART_DISABLED');
-			$action = $field ? JText::_('COM_VIRTUEMART_DISABLE_ITEM') : JText::_('COM_VIRTUEMART_ENABLE_ITEM');
-		}
-
-		return ('<a href="javascript:void(0);" onclick="return listItemTask(\'cb'. $i .'\',\''. $task .'\')" title="'. $action .'">'
-		.'<img src="images/'. $img .'" border="0" alt="'. $alt .'" /></a>');
-	}*/
 
 
 }

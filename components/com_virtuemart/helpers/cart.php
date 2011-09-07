@@ -411,7 +411,7 @@ class VirtueMartCart {
 					$productKey.= '::';
 					foreach ($product->customPrices as $customPrice) {
 						foreach ($customPrice as $customId => $custom_fieldId) {
-							
+
 							if ( is_array($custom_fieldId) ) {
 								foreach ($custom_fieldId as $userfieldId => $userfield) {
 								$productKey .= $customId . ':' . $userfieldId . ';';
@@ -420,10 +420,10 @@ class VirtueMartCart {
 							} else {
 								$productKey .= $customId . ':' . $custom_fieldId . ';';
 							}
-							
+
 						}
 					}
-					
+
 				}
 
 				if (array_key_exists($productKey, $this->products)) {
@@ -573,6 +573,7 @@ class VirtueMartCart {
 	 * @author RolandD
 	 * @access public
 	 * @return mixed if found the category ID else null
+	 * @deprecated
 	 */
 	public function getCategoryId() {
 		$db = JFactory::getDBO();
@@ -1160,19 +1161,21 @@ private function confirmedOrder() {
 		$prefix = '';
 		if ($type == 'ST') {
 			$prefix = 'shipto_';
-			$prepareUserFields = $userFieldsModel->getUserFields(
-								'shipping'
-			, array()
-			, array( 'user_is_vendor') // Default toggles
-			);
+			$prepareUserFields = $userFieldsModel->getUserFieldsFor('cart',$type);
+// 			$prepareUserFields = $userFieldsModel->getUserFields(
+// 								'shipping'
+// 			, array()
+// 			, array( 'user_is_vendor') // Default toggles
+// 			);
 
 		} else { // BT
 			// The user is not logged in (anonymous), so we need tome extra fields
-			$prepareUserFields = $userFieldsModel->getUserFields(
-								'account'
-			, array() // Default toggles
-			, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
-			);
+			$prepareUserFields = $userFieldsModel->getUserFieldsFor('cart',$type);
+// 			$prepareUserFields = $userFieldsModel->getUserFields(
+// 								'account'
+// 			, array() // Default toggles
+// 			, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
+// 			);
 
 		}
 		$address = array();
@@ -1187,8 +1190,11 @@ private function confirmedOrder() {
 
 		} else {
 			foreach ($prepareUserFields as $fld) {
-				if(!empty($fld->name))$name = $fld->name; else  $name = '';
-				$address[$name] = $data->{$name};
+				if(!empty($fld->name)){
+					$name = $fld->name;
+					if(!empty($data->{$prefix.$name})) $address[$name] = $data->{$prefix.$name};
+				}
+
 			}
 		}
 
@@ -1470,13 +1476,13 @@ private function confirmedOrder() {
 				$variantmods = $calculator->parseModifier($priceKey);
 				$row = 0 ;
 				foreach ($variantmods as $variant=>$selected){
-				
-					if ($product->customfieldsCart[$row]->field_type == "U") { 
+
+					if ($product->customfieldsCart[$row]->field_type == "U") {
 						$this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
 								'.$product->userfield.' '.$product->customfieldsCart[$row]->custom_field_desc;
-					
+
 					} else {
-				
+
 							$this->data->products[$i]['customfieldsCart'] .= '<br/ ><b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$product->customfieldsCart[$row]->options[$selected]->custom_value;
 					}
 							$row++;

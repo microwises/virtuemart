@@ -344,6 +344,7 @@ class VirtueMartModelUserfields extends VmModel {
 			);
 		}
 
+
 		//Small ugly hack to make registering optional //do we still need that?
 		if($layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $type == 'BT' && empty($userId) ){
 
@@ -448,7 +449,7 @@ class VirtueMartModelUserfields extends VmModel {
 			$_address_type->shipping = 0;
 			$_address_type->account = 1;
 			$_address_type->readonly = 0;
-			$_address_type->calculated = 0;
+			$_address_type->calculated = 0; // what is this???
 			$_address_type->sys = 0;
 			$_address_type->virtuemart_vendor_id = 1;
 			$_address_type->params = '';
@@ -622,7 +623,7 @@ class VirtueMartModelUserfields extends VmModel {
 					,'required' => $_fld->required
 					,'hidden' => false
 			);
-
+			vmdebug('getUserFieldsByUser ',$_return['fields'][$_fld->name]);
 			// First, see if there are predefined fields by checking the name
 			switch( $_fld->name ) {
 

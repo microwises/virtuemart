@@ -28,7 +28,7 @@ jimport( 'joomla.application.component.view');
 * View for the shopping cart
 * @package VirtueMart
 * @author Max Milbers
-* @author Patrick Kohl 
+* @author Patrick Kohl
 */
 class VirtueMartViewCart extends JView {
 
@@ -97,7 +97,6 @@ class VirtueMartViewCart extends JView {
 		} else if($layoutName=='default' ){
 
 			$cart->prepareCartViewData();
-			dump($cart,'cart');
 
 			$cart->prepareAddressRadioSelection();
 
