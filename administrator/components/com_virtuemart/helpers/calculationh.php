@@ -760,8 +760,10 @@ class calculationHelper {
          * false if not any more
          */
 
+			if(!isset($shipping->shipping_value)) $shipping->shipping_value ='';
+			$this->_cartPrices['shippingValue'] = $shipping->shipping_value;
 
-        $this->_cartPrices['shippingValue'] = $shipping->shipping_value;
+			if(!isset($shipping->shipping_name)) $shipping->shipping_name ='';
         $this->_cartData['shippingName'] = $shipping->shipping_name;
 
 
