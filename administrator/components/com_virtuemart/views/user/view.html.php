@@ -110,6 +110,7 @@ class VirtuemartViewUser extends JView {
 			$lists['params'] = $userDetails->JUser->getParameters(true);
 
 			// Shopper info
+			vmdebug('my userDetails',$userDetails);
 			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($userDetails->shopper_groups);
 			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->virtuemart_vendor_id);
 			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
@@ -164,6 +165,7 @@ class VirtuemartViewUser extends JView {
 										);
 
 			//			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $_userDetailsList->perms);
+
 			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $userDetails->perms);
 
 			// Load the required scripts

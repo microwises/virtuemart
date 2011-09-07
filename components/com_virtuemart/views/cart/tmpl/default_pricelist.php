@@ -73,6 +73,7 @@
 		} ?>
 		<div class="clear"></div>
 		</div>
+		<?php if(!isset($this->cart->lists['current_id'])) $this->cart->lists['current_id'] = 0; ?>
 		<a class="details" href="index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=0&cid[]=<?php echo $this->cart->lists['current_id']; ?>">
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'); ?>
 		</a>
@@ -104,13 +105,7 @@
 					<?php if ( $prow->virtuemart_media_id) {  ?>
 						<span class="cart-images">
 						 <?php
-/*							if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
-								$db =& JFactory::getDBO();
-								$db->setQuery('SELECT * from #__virtuemart_medias where virtuemart_media_id='. $prow->virtuemart_media_id[0] );
-								$data = $db->loadObject();
-							$media = VmMediaHandler::createMedia($data,'product');
-							echo $media->displayMediaThumb('',false);*/
-						 echo $prow->image->displayMediaThumb('',false);
+						 if(!empty($prow->image)) echo $prow->image->displayMediaThumb('',false);
 						 ?>
 						</span>
 					<?php } ?>

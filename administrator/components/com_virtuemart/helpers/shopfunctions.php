@@ -252,6 +252,7 @@ class ShopFunctions {
             $emptyOption = JHTML::_('select.option', '', JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'), $id, $name);
             array_unshift($shoppergrps, $emptyOption);
         }
+        vmdebug('renderShopperGroupList',$shopperGroupId);
         $listHTML = JHTML::_('select.genericlist', $shoppergrps, $idA, $attrs, $id, $name, $shopperGroupId);
         return $listHTML;
     }
@@ -443,7 +444,7 @@ class ShopFunctions {
 
         $value = str_replace(',', '.', $value);
         $g = 1 ;
-	   
+
         switch ($from) {
             case 'KG': $g = 1000 * $value;
                 break;
@@ -702,7 +703,7 @@ class ShopFunctions {
 		$_r = $db->loadResult();
 		return $_r;
 	}
-/*	 
+/*
 	* Return the Tax or code of a given taxID
 	*
 	* @author Valérie Isaksen
@@ -714,11 +715,11 @@ class ShopFunctions {
 		if (empty($id)) return '';
 
 		$id = (int) $id;
-		$db = JFactory::getDBO();               
+		$db = JFactory::getDBO();
 		$q = 'SELECT  *   FROM `#__virtuemart_calcs` WHERE virtuemart_calc_id = ' . (int)$id;
 		$db->setQuery($q);
 		return $db->loadAssoc();
-              
+
 	}
 
 	/**
