@@ -99,8 +99,10 @@ class VirtueMartModelCountry extends VmModel {
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
+		if (JRequest::getWord('view') !== 'country') $ordering = ' order by `country_name` ';
+		else $ordering = $this->_getOrdering();
 
-		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_countries`',$whereString,'',$this->_getOrdering('country_name'));
+		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_countries`',$whereString,'',$ordering);
 
 
     }
