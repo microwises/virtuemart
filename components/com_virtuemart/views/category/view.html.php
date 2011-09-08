@@ -62,7 +62,7 @@ class VirtuemartViewCategory extends JView {
 		$category = $categoryModel->getCategory($categoryId);
 		$search = JRequest::getWord('search') ;
 
-		//No redirect here, category id = 0 means show ALL categories! not by Max Milbers
+		//No redirect here, category id = 0 means show ALL categories! note by Max Milbers
 /*		if(empty($category->virtuemart_vendor_id) && $search == null ) {
 	    	$mainframe -> enqueueMessage(JText::_('COM_VIRTUEMART_CATEGORY_NOT_FOUND'));
 	    	$mainframe -> redirect( 'index.php');
