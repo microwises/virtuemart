@@ -756,15 +756,15 @@ class VirtueMartModelOrders extends VmModel {
 				$_userInfoData[$_name] = $_cart->BT[$_name];
 			}
 		}
-
+		vmdebug('_writeUserInfo BT $_userInfoData',$_userInfoData);
 		$_userInfoData['virtuemart_order_id'] = $_id;
 		$_userInfoData['virtuemart_user_id'] = $_usr->get('id');
 		$_userInfoData['address_type'] = 'BT';
-		if (!$order_userinfosTable->bindChecknStore()){
-			$this->setError($_userInfoData->getError());
+		if (!$order_userinfosTable->bindChecknStore($_userInfoData)){
+			$this->setError($order_userinfosTable->getError());
+			vmdebug('_writeUserInfo BT',$order_userinfosTable);
 			return false;
 		}
-		$_userInfoData->virtuemart_order_userinfo_id = null; // Reset key to make sure it doesn't get overwritten by ST
 
 		if ($_cart->ST) {
 			$_userInfoData['virtuemart_order_userinfo_id'] = null; // Reset key to make sure it doesn't get overwritten by ST
@@ -782,8 +782,8 @@ class VirtueMartModelOrders extends VmModel {
 			$_userInfoData['virtuemart_order_id'] = $_id;
 			$_userInfoData['virtuemart_user_id'] = $_usr->get('id');
 			$_userInfoData['address_type'] = 'ST';
-			if (!$order_userinfosTable->bindChecknStore()){
-				$this->setError($_userInfoData->getError());
+			if (!$order_userinfosTable->bindChecknStore($_userInfoData)){
+				$this->setError($order_userinfosTable->getError());
 				return false;
 			}
 		}
