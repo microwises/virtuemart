@@ -42,8 +42,8 @@ class VirtueMartCart {
 	var $lastVisitedCategoryId = 0;
 	var $virtuemart_shippingcarrier_id = 0;
 	var $virtuemart_paymentmethod_id = 0;
-        var $automaticSelectedShipping = false;
-        var $automaticSelectedPayment  = false;
+	var $automaticSelectedShipping = false;
+	var $automaticSelectedPayment  = false;
 	var $BT = 0;
 	var $ST = 0;
 	var $tosAccepted = null;
@@ -56,7 +56,7 @@ class VirtueMartCart {
 
 	private static $_cart = null;
 
-// 	static $first = true;
+	// 	static $first = true;
 
 	private function __construct() {
 
@@ -64,16 +64,7 @@ class VirtueMartCart {
 
 	/**
 	 * Get the cart from the session
-
-	 * // Size is from 40 KO to 170 KO in  database because all models DATA are serialised !!!!
-	 * //TODO MAX data not always found in table and to include in session
-	 * Data to add in session
-	  - BT, ST useradress(only for anonymous ??? use ST,BT ID for registered ?)
-	  - product quatity, key,id & attributes (POST category_id for rules ?)
-	  - cart Form confirm & tos accepted
-	  - Paiement id ?
-	  - shipper id ?
-	  - coupon code, valide ?
+	 *
 	 * @author Max Milbers
 	 * @access public
 	 * @param array $cart the cart to store in the session
@@ -90,23 +81,20 @@ class VirtueMartCart {
 			$cartSession = $session->get('vmcart', 0, 'vm');
 
 			if (!empty($cartSession)) {
-// 				self::_cart = unserialize(base64_decode($cartSession) );
 				$cartData = unserialize( $cartSession );
 
-// 				if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
-// 				$productModel = new VirtueMartModelProduct();
+				// 				if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
+				// 				$productModel = new VirtueMartModelProduct();
 
-// 				$sessionProducts = array();
-// 				vmdebug('my $cartData CartSessionData ',$cartData);
-// 				foreach($cartData->products as $product){
+				// 				$sessionProducts = array();
+				// 				vmdebug('my $cartData CartSessionData ',$cartData);
+				// 				foreach($cartData->products as $product){
 
-// 					$sessionProducts[] = $productModel->getProduct($product);
-// 				}
-// 				$cartData->products = $sessionProducts;
+				// 					$sessionProducts[] = $productModel->getProduct($product);
+				// 				}
+				// 				$cartData->products = $sessionProducts;
 
 				self::$_cart = new VirtueMartCart;
-
-
 
 				self::$_cart->products = $cartData->products;
 				// 		echo '<pre>'.print_r($products,1).'</pre>';die;
@@ -123,364 +111,361 @@ class VirtueMartCart {
 				self::$_cart->couponCode 							= $cartData->couponCode;
 				self::$_cart->cartData 								= $cartData->cartData;
 				self::$_cart->lists 									= $cartData->lists;
-// 				self::$_cart->user 									= $cartData->user;
+				// 				self::$_cart->user 									= $cartData->user;
 				self::$_cart->prices 								= $cartData->prices;
 
-// 				vmdebug('my cart generated with CartSessionData ',self::$_cart);
+				self::$_cart->_inCheckOut 							= $cartData->_inCheckOut;
+				self::$_cart->_dataValidated						= $cartData->_dataValidated;
+				self::$_cart->_confirmDone							= $cartData->_confirmDone;
+
+				// 				vmdebug('my cart generated with CartSessionData ',self::$_cart);
 				//$cart = unserialize($cartTemp);
 				if (!empty(self::$_cart) && $deleteValidation) {
 					self::$_cart->setDataValidation();
 				}
 
-			}
-
 		}
 
-		if(empty(self::$_cart)){
-			self::$_cart = new VirtueMartCart;
-		}
-
-		if ( $setCart == true ) {
-			self::$_cart->setPreferred();
-			self::$_cart->setCartIntoSession();
-		}
-
-// 		vmdebug('my cart at end of getCart',self::$_cart);
-
-		return self::$_cart;
-		// 		return '';
 	}
-	/*
-	 * Set non product info in object
-	 */
-	public function setPreferred() {
 
-		if (!class_exists('VirtueMartModelUser'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
-		$usermodel = new VirtueMartModelUser();
-		$usermodel->setCurrent();
-		$user = $usermodel->getUser();
+	if(empty(self::$_cart)){
+		self::$_cart = new VirtueMartCart;
+	}
 
-		if (empty($this->BT) || (!empty($this->BT) && count($this->BT) <=1) ) {
-			foreach ($user->userInfo as $address) {
-				if ($address->address_type == 'BT') {
-					$this->saveAddressInCart((array) $address, $address->address_type,false);
-				}
+	if ( $setCart == true ) {
+		self::$_cart->setPreferred();
+		self::$_cart->setCartIntoSession();
+	}
+
+	return self::$_cart;
+	// 		return '';
+}
+/*
+ * Set non product info in object
+*/
+public function setPreferred() {
+
+	if (!class_exists('VirtueMartModelUser'))
+	require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
+	$usermodel = new VirtueMartModelUser();
+	$usermodel->setCurrent();
+	$user = $usermodel->getUser();
+
+	if (empty($this->BT) || (!empty($this->BT) && count($this->BT) <=1) ) {
+		foreach ($user->userInfo as $address) {
+			if ($address->address_type == 'BT') {
+				$this->saveAddressInCart((array) $address, $address->address_type,false);
 			}
 		}
+	}
 
-		//I dont think that automated shipping is good.
-/*		if (empty($this->ST) || (!empty($this->ST) && count($this->ST) == 0) ) {
-			foreach ($user->userInfo as $address) {
-				if ($address->address_type == 'ST') {
-					$this->saveAddressInCart($address, $address->address_type,false);
-					break;
-				}
+	if (empty($this->virtuemart_shippingcarrier_id) && !empty($user->virtuemart_shippingcarrier_id)) {
+		$this->virtuemart_shippingcarrier_id = $user->virtuemart_shippingcarrier_id;
+	}
+
+	if (empty($this->virtuemart_paymentmethod_id) && !empty($user->virtuemart_paymentmethod_id)) {
+		$this->virtuemart_paymentmethod_id = $user->virtuemart_paymentmethod_id;
+	}
+
+	if(isset($user->agreed) && !VmConfig::get('agree_to_tos_onorder') && $this->tosAccepted===null){
+		$this->tosAccepted = $user->agreed;
+	}
+}
+
+/**
+ * Set the cart in the session
+ *
+ * @author RolandD
+ *
+ * @access public
+ * @param array $cart the cart to store in the session
+ */
+public function setCartIntoSession() {
+
+	$session = JFactory::getSession();
+
+	$sessionCart = new stdClass();
+	// 		vmdebug('setCartIntoSession ids',$this);
+
+	$products = array();
+	foreach($this->products as $key =>$product){
+		$product->prices = null;
+
+	}
+	// 		$sessionCart->products = $products;
+	$sessionCart->products = $this->products;
+	// 		echo '<pre>'.print_r($products,1).'</pre>';die;
+	$sessionCart->vendorId	 							= $this->vendorId;
+	$sessionCart->lastVisitedCategoryId	 			= $this->lastVisitedCategoryId;
+	$sessionCart->virtuemart_shippingcarrier_id	= $this->virtuemart_shippingcarrier_id;
+	$sessionCart->virtuemart_paymentmethod_id 	= $this->virtuemart_paymentmethod_id;
+	$sessionCart->automaticSelectedShipping 		= $this->automaticSelectedShipping;
+	$sessionCart->automaticSelectedPayment 		= $this->automaticSelectedPayment;
+	$sessionCart->BT 										= $this->BT;
+	$sessionCart->ST 										= $this->ST;
+	$sessionCart->tosAccepted 							= $this->tosAccepted;
+	$sessionCart->customer_comment 					= base64_encode($this->customer_comment);
+	$sessionCart->couponCode 							= $this->couponCode;
+	$sessionCart->cartData 								= $this->cartData;
+	$sessionCart->lists 									= $this->lists;
+	// 		$sessionCart->user 									= $this->user;
+	$sessionCart->prices 								= $this->prices;
+
+	//private variables
+	$sessionCart->_inCheckOut 							= $this->_inCheckOut;
+	$sessionCart->_dataValidated						= $this->_dataValidated;
+	$sessionCart->_confirmDone							= $this->_confirmDone;
+
+
+	// 		[_inCheckOut:VirtueMartCart:private] =>
+	// 		[_dataValidated:VirtueMartCart:private] =>
+	// 		[_confirmDone:VirtueMartCart:private] =>
+	// 		[_lastError:VirtueMartCart:private] =>
+	// 		[_now] => 2011-09-06 14:56:37
+
+
+	// 		$session->set('vmcart', base64_encode(serialize($this)),'vm');
+	$session->set('vmcart', serialize($sessionCart),'vm');
+
+	// Idea to save only a Part of object in session($this->cart)
+	// $session->set('vmcart', base64_encode(serialize($this->cart)),'vm');
+	// $session->set('vmcart', serialize($this), 'vm');
+
+}
+
+/**
+ * Remove the cart from the session
+ *
+ * @author Max Milbers
+ * @access public
+ */
+public function removeCartFromSession() {
+	$session = JFactory::getSession();
+	$session->set('vmcart', 0, 'vm');
+}
+
+public function setDataValidation($valid=false) {
+	$this->_dataValidated = $valid;
+	// 		$this->setCartIntoSession();
+}
+
+public function getDataValidated() {
+	return $this->_dataValidated;
+}
+
+public function getInCheckOut() {
+	return $this->_inCheckOut;
+}
+
+/**
+ * Set the last error that occured.
+ * This is used on error to pass back to the cart when addJS() is invoked.
+ * @param string $txt Error message
+ * @author Oscar van Eijk
+ */
+private function setError($txt) {
+	$this->_lastError = $txt;
+}
+
+/**
+ * Retrieve the last error message
+ * @return string The last error message that occured
+ * @author Oscar van Eijk
+ */
+public function getError() {
+	return ($this->_lastError);
+}
+
+/**
+ * Add a product to the cart
+ *
+ * @author RolandD
+ * @author Max Milbers
+ * @access public
+ */
+public function add($virtuemart_product_ids=null) {
+	$mainframe = JFactory::getApplication();
+
+	$post = JRequest::get('default');
+	//$total_quantity = 0;
+	//$total_updated = 0;
+	//$total_deleted = 0;
+	if(empty($virtuemart_product_ids)){
+		$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array'); //is sanitized then
+	}
+
+	if (empty($virtuemart_product_ids)) {
+		$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_ERROR_NO_PRODUCT_IDS', false));
+		return false;
+	}
+
+	// 		if (!class_exists('calculationHelper')
+	// 		)require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+	//  if (empty ($this->cartData->products))$this->cartData->products = array();
+	//Iterate through the prod_id's and perform an add to cart for each one
+	foreach ($virtuemart_product_ids as $p_key => $virtuemart_product_id) {
+
+		$tmpProduct = $this->getProduct((int) $virtuemart_product_id);
+		//			dump($tmpProduct,'my product add to cart before');
+		// trying to save some space in the session table
+		$product = new stdClass();
+		$product -> virtuemart_manufacturer_id = $tmpProduct -> virtuemart_manufacturer_id;
+		$product -> mf_name = $tmpProduct -> mf_name;
+		$product -> slug = $tmpProduct -> slug;
+		$product -> mf_desc = $tmpProduct -> mf_desc;
+		$product -> mf_url = $tmpProduct -> mf_url;
+		$product -> published = $tmpProduct -> published;
+		// 			$product -> created_on = $tmpProduct -> created_on;
+		// 			$product -> created_by = $tmpProduct -> created_by;
+		// 			$product -> modified_on = $tmpProduct -> modified_on;
+		// 			$product -> modified_by = $tmpProduct -> modified_by;
+
+		$product -> virtuemart_product_price_id = $tmpProduct -> virtuemart_product_price_id;
+		$product -> virtuemart_product_id = $tmpProduct -> virtuemart_product_id;
+		$product -> virtuemart_shoppergroup_id = $tmpProduct -> virtuemart_shoppergroup_id;
+		$product -> product_price = $tmpProduct -> product_price;
+		$product -> override = $tmpProduct -> override;
+		$product -> product_override_price = $tmpProduct -> product_override_price;
+
+		$product -> product_tax_id = $tmpProduct -> product_tax_id;
+		$product -> product_discount_id = $tmpProduct -> product_discount_id;
+		$product -> product_currency = $tmpProduct -> product_currency;
+		$product -> product_price_vdate = $tmpProduct -> product_price_vdate;
+		$product -> product_price_edate = $tmpProduct -> product_price_edate;
+		$product -> virtuemart_vendor_id = $tmpProduct -> virtuemart_vendor_id;
+		$product -> product_parent_id = $tmpProduct -> product_parent_id;
+		$product -> product_sku = $tmpProduct -> product_sku;
+		$product -> product_name = $tmpProduct -> product_name;
+		$product -> product_s_desc = $tmpProduct -> product_s_desc;
+		//			$product -> product_desc = $tmpProduct -> product_desc;
+
+		$product -> product_weight = $tmpProduct -> product_weight;
+		$product -> product_weight_uom = $tmpProduct -> product_weight_uom;
+		$product -> product_length = $tmpProduct -> product_length;
+		$product -> product_width = $tmpProduct -> product_width;
+		$product -> product_lwh_uom = $tmpProduct -> product_lwh_uom;
+		$product -> product_url = $tmpProduct -> product_url;
+		$product -> product_in_stock = $tmpProduct -> product_in_stock;
+		$product -> product_ordered = $tmpProduct -> product_ordered;
+		// 			$product -> low_stock_notification = $tmpProduct -> low_stock_notification;
+		// 			$product -> product_available_date = $tmpProduct -> product_available_date;
+		$product -> ship_code_id = $tmpProduct -> ship_code_id;
+		$product -> product_sales = $tmpProduct -> product_sales;
+		$product -> product_unit = $tmpProduct -> product_unit;
+		$product -> product_packaging = $tmpProduct -> product_packaging;
+		$product -> product_order_levels = $tmpProduct -> product_order_levels;
+		$product -> virtuemart_media_id = $tmpProduct -> virtuemart_media_id;
+
+		if(!empty($tmpProduct -> image)) $product -> image =  $tmpProduct -> image;
+
+		$product -> categories = $tmpProduct -> categories;
+		$product -> virtuemart_category_id = $tmpProduct -> virtuemart_category_id;
+		$product -> category_name = $tmpProduct -> category_name;
+		$product -> canonical = $tmpProduct -> canonical;
+		$product -> link = $tmpProduct -> link;
+		$product -> packaging = $tmpProduct -> packaging;
+		$product -> customfields = empty($tmpProduct -> customfields)? array():$tmpProduct -> customfields ;
+		$product -> customfieldsCart = empty($tmpProduct -> customfieldsCart)? array(): $tmpProduct -> customfieldsCart;
+		$product -> customsChilds = empty($tmpProduct -> customsChilds)? array(): $tmpProduct -> customsChilds;
+
+		//			echo '<pre>'.print_r($tmpProduct,1).'<pre>';
+		//			die;
+		//			$product = $tmpProduct;
+
+		//			vmdebug('my product add to cart after',$product);
+		//TODO Why reloading the product wiht same name $product ?
+		// passed all from $tmpProduct and relaoding it second time ????
+		// $tmpProduct = $this->getProduct((int) $virtuemart_product_id); seee before !!!
+		// $product = $this->getProduct((int) $virtuemart_product_id);
+		/* Check if we have a product */
+		if ($product) {
+			$quantityPost = (int) $post['quantity'][$p_key];
+
+			if(!empty( $post['virtuemart_category_id'][$p_key])){
+				$virtuemart_category_idPost = (int) $post['virtuemart_category_id'][$p_key];
+				$product->virtuemart_category_id = $virtuemart_category_idPost;
 			}
-		}*/
 
-		if (empty($this->virtuemart_shippingcarrier_id) && !empty($user->virtuemart_shippingcarrier_id)) {
-			$this->virtuemart_shippingcarrier_id = $user->virtuemart_shippingcarrier_id;
-		}
-
-		if (empty($this->virtuemart_paymentmethod_id) && !empty($user->virtuemart_paymentmethod_id)) {
-			$this->virtuemart_paymentmethod_id = $user->virtuemart_paymentmethod_id;
-		}
-
-		if(isset($user->agreed) && !VmConfig::get('agree_to_tos_onorder') && $this->tosAccepted===null){
-			$this->tosAccepted = $user->agreed;
-		}
-	}
-
-	/**
-	 * Set the cart in the session
-	 *
-	 * @author RolandD
-	 *
-	 * @access public
-	 * @param array $cart the cart to store in the session
-	 */
-	public function setCartIntoSession() {
-
-		$session = JFactory::getSession();
-
-		$sessionCart = new stdClass();
-// 		vmdebug('setCartIntoSession ids',$this);
-
-		$products = array();
-		foreach($this->products as $key =>$product){
-			$product->prices = null;
-
-		}
-// 		$sessionCart->products = $products;
-		$sessionCart->products = $this->products;
-// 		echo '<pre>'.print_r($products,1).'</pre>';die;
-		$sessionCart->vendorId	 							= $this->vendorId;
-		$sessionCart->lastVisitedCategoryId	 			= $this->lastVisitedCategoryId;
-		$sessionCart->virtuemart_shippingcarrier_id	= $this->virtuemart_shippingcarrier_id;
-		$sessionCart->virtuemart_paymentmethod_id 	= $this->virtuemart_paymentmethod_id;
-		$sessionCart->automaticSelectedShipping 		= $this->automaticSelectedShipping;
-		$sessionCart->automaticSelectedPayment 		= $this->automaticSelectedPayment;
-		$sessionCart->BT 										= $this->BT;
-		$sessionCart->ST 										= $this->ST;
-		$sessionCart->tosAccepted 							= $this->tosAccepted;
-		$sessionCart->customer_comment 					= base64_encode($this->customer_comment);
-		$sessionCart->couponCode 							= $this->couponCode;
-		$sessionCart->cartData 								= $this->cartData;
-		$sessionCart->lists 									= $this->lists;
-// 		$sessionCart->user 									= $this->user;
-		$sessionCart->prices 								= $this->prices;
+			// $virtuemart_category_idPost = (int) $post['virtuemart_category_id'][$p_key];
 
 
-// 		[_inCheckOut:VirtueMartCart:private] =>
-// 		[_dataValidated:VirtueMartCart:private] =>
-// 		[_confirmDone:VirtueMartCart:private] =>
-// 		[_lastError:VirtueMartCart:private] =>
-// 		[_now] => 2011-09-06 14:56:37
+			$productKey = $product->virtuemart_product_id;
+			// INDEX NOT FOUND IN JSON HERE
+			// changed name field you know exactly was this is
+			if (isset($post['customPrice'])) {
+				$product->customPrices = $post['customPrice'];
+				$productKey.= '::';
+				foreach ($product->customPrices as $customPrice) {
+					foreach ($customPrice as $customId => $custom_fieldId) {
 
-
-// 		$session->set('vmcart', base64_encode(serialize($this)),'vm');
-		$session->set('vmcart', serialize($sessionCart),'vm');
-
-		// Idea to save only a Part of object in session($this->cart)
-		// $session->set('vmcart', base64_encode(serialize($this->cart)),'vm');
-		// $session->set('vmcart', serialize($this), 'vm');
-
-	}
-
-	/**
-	 * Remove the cart from the session
-	 *
-	 * @author Max Milbers
-	 * @access public
-	 */
-	public function removeCartFromSession() {
-		$session = JFactory::getSession();
-		$session->set('vmcart', 0, 'vm');
-	}
-
-	public function setDataValidation($valid=false) {
-		$this->_dataValidated = $valid;
-		// 		$this->setCartIntoSession();
-	}
-
-	public function getDataValidated() {
-		return $this->_dataValidated;
-	}
-
-	public function getInCheckOut() {
-		return $this->_inCheckOut;
-	}
-
-	/**
-	 * Set the last error that occured.
-	 * This is used on error to pass back to the cart when addJS() is invoked.
-	 * @param string $txt Error message
-	 * @author Oscar van Eijk
-	 */
-	private function setError($txt) {
-		$this->_lastError = $txt;
-	}
-
-	/**
-	 * Retrieve the last error message
-	 * @return string The last error message that occured
-	 * @author Oscar van Eijk
-	 */
-	public function getError() {
-		return ($this->_lastError);
-	}
-
-	/**
-	 * Add a product to the cart
-	 *
-	 * @author RolandD
-	 * @author Max Milbers
-	 * @access public
-	 */
-	public function add($virtuemart_product_ids=null) {
-		$mainframe = JFactory::getApplication();
-
-		$post = JRequest::get('default');
-		//$total_quantity = 0;
-		//$total_updated = 0;
-		//$total_deleted = 0;
-		if(empty($virtuemart_product_ids)){
-			$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array'); //is sanitized then
-		}
-
-		if (empty($virtuemart_product_ids)) {
-			$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_ERROR_NO_PRODUCT_IDS', false));
-			return false;
-		}
-
-		// 		if (!class_exists('calculationHelper')
-		// 		)require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-//  if (empty ($this->cartData->products))$this->cartData->products = array();
-		//Iterate through the prod_id's and perform an add to cart for each one
-		foreach ($virtuemart_product_ids as $p_key => $virtuemart_product_id) {
-
-			$tmpProduct = $this->getProduct((int) $virtuemart_product_id);
-//			dump($tmpProduct,'my product add to cart before');
-                        // trying to save some space in the session table
-			$product = new stdClass();
-			$product -> virtuemart_manufacturer_id = $tmpProduct -> virtuemart_manufacturer_id;
-			$product -> mf_name = $tmpProduct -> mf_name;
-			$product -> slug = $tmpProduct -> slug;
-			$product -> mf_desc = $tmpProduct -> mf_desc;
-			$product -> mf_url = $tmpProduct -> mf_url;
-			$product -> published = $tmpProduct -> published;
-// 			$product -> created_on = $tmpProduct -> created_on;
-// 			$product -> created_by = $tmpProduct -> created_by;
-// 			$product -> modified_on = $tmpProduct -> modified_on;
-// 			$product -> modified_by = $tmpProduct -> modified_by;
-
-			$product -> virtuemart_product_price_id = $tmpProduct -> virtuemart_product_price_id;
-			$product -> virtuemart_product_id = $tmpProduct -> virtuemart_product_id;
-			$product -> virtuemart_shoppergroup_id = $tmpProduct -> virtuemart_shoppergroup_id;
-			$product -> product_price = $tmpProduct -> product_price;
-			$product -> override = $tmpProduct -> override;
-			$product -> product_override_price = $tmpProduct -> product_override_price;
-
-			$product -> product_tax_id = $tmpProduct -> product_tax_id;
-			$product -> product_discount_id = $tmpProduct -> product_discount_id;
-			$product -> product_currency = $tmpProduct -> product_currency;
-			$product -> product_price_vdate = $tmpProduct -> product_price_vdate;
-			$product -> product_price_edate = $tmpProduct -> product_price_edate;
-			$product -> virtuemart_vendor_id = $tmpProduct -> virtuemart_vendor_id;
-			$product -> product_parent_id = $tmpProduct -> product_parent_id;
-			$product -> product_sku = $tmpProduct -> product_sku;
-			$product -> product_name = $tmpProduct -> product_name;
-			$product -> product_s_desc = $tmpProduct -> product_s_desc;
-//			$product -> product_desc = $tmpProduct -> product_desc;
-
-			$product -> product_weight = $tmpProduct -> product_weight;
-			$product -> product_weight_uom = $tmpProduct -> product_weight_uom;
-			$product -> product_length = $tmpProduct -> product_length;
-			$product -> product_width = $tmpProduct -> product_width;
-			$product -> product_lwh_uom = $tmpProduct -> product_lwh_uom;
-			$product -> product_url = $tmpProduct -> product_url;
-			$product -> product_in_stock = $tmpProduct -> product_in_stock;
-			$product -> product_ordered = $tmpProduct -> product_ordered;
-// 			$product -> low_stock_notification = $tmpProduct -> low_stock_notification;
-// 			$product -> product_available_date = $tmpProduct -> product_available_date;
-			$product -> ship_code_id = $tmpProduct -> ship_code_id;
-			$product -> product_sales = $tmpProduct -> product_sales;
-			$product -> product_unit = $tmpProduct -> product_unit;
-			$product -> product_packaging = $tmpProduct -> product_packaging;
-			$product -> product_order_levels = $tmpProduct -> product_order_levels;
-			$product -> virtuemart_media_id = $tmpProduct -> virtuemart_media_id;
-
-			if(!empty($tmpProduct -> image)) $product -> image =  $tmpProduct -> image;
-
-			$product -> categories = $tmpProduct -> categories;
-			$product -> virtuemart_category_id = $tmpProduct -> virtuemart_category_id;
-			$product -> category_name = $tmpProduct -> category_name;
-			$product -> canonical = $tmpProduct -> canonical;
-			$product -> link = $tmpProduct -> link;
-			$product -> packaging = $tmpProduct -> packaging;
-			$product -> customfields = empty($tmpProduct -> customfields)? array():$tmpProduct -> customfields ;
-			$product -> customfieldsCart = empty($tmpProduct -> customfieldsCart)? array(): $tmpProduct -> customfieldsCart;
-			$product -> customsChilds = empty($tmpProduct -> customsChilds)? array(): $tmpProduct -> customsChilds;
-
-//			echo '<pre>'.print_r($tmpProduct,1).'<pre>';
-//			die;
-//			$product = $tmpProduct;
-
-//			vmdebug('my product add to cart after',$product);
-//TODO Why reloading the product wiht same name $product ?
-// passed all from $tmpProduct and relaoding it second time ????
-// $tmpProduct = $this->getProduct((int) $virtuemart_product_id); seee before !!!
-     // $product = $this->getProduct((int) $virtuemart_product_id);
-			/* Check if we have a product */
-			if ($product) {
-				$quantityPost = (int) $post['quantity'][$p_key];
-
-				if(!empty( $post['virtuemart_category_id'][$p_key])){
-					$virtuemart_category_idPost = (int) $post['virtuemart_category_id'][$p_key];
-					$product->virtuemart_category_id = $virtuemart_category_idPost;
-				}
-
-				// $virtuemart_category_idPost = (int) $post['virtuemart_category_id'][$p_key];
-
-
-				$productKey = $product->virtuemart_product_id;
-				// INDEX NOT FOUND IN JSON HERE
-				// changed name field you know exactly was this is
-				if (isset($post['customPrice'])) {
-					$product->customPrices = $post['customPrice'];
-					$productKey.= '::';
-					foreach ($product->customPrices as $customPrice) {
-						foreach ($customPrice as $customId => $custom_fieldId) {
-
-							if ( is_array($custom_fieldId) ) {
-								foreach ($custom_fieldId as $userfieldId => $userfield) {
+						if ( is_array($custom_fieldId) ) {
+							foreach ($custom_fieldId as $userfieldId => $userfield) {
 								$productKey .= $customId . ':' . $userfieldId . ';';
 								$product->userfield = $userfield;
-								}
-							} else {
-								$productKey .= $customId . ':' . $custom_fieldId . ';';
 							}
-
+						} else {
+							$productKey .= $customId . ':' . $custom_fieldId . ';';
 						}
-					}
 
+					}
 				}
 
-				if (array_key_exists($productKey, $this->products)) {
-					$this->products[$productKey]->quantity += $quantityPost;
-					if ($this->checkForQuantities($product, $this->products[$productKey]->quantity)) {
-						$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_UPDATED'));
-					} else {
-						return false;
-					}
+			}
+
+			if (array_key_exists($productKey, $this->products)) {
+				$this->products[$productKey]->quantity += $quantityPost;
+				if ($this->checkForQuantities($product, $this->products[$productKey]->quantity)) {
+					$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_UPDATED'));
 				} else {
-					$this->products[$productKey] = $product;
-					$product->quantity = $quantityPost;
-					if ($this->checkForQuantities($product, $quantityPost)) {
-						$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED'));
-					} else {
-						return false;
-					}
+					return false;
 				}
 			} else {
-				$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND', false));
-				return false;
+				$this->products[$productKey] = $product;
+				$product->quantity = $quantityPost;
+				if ($this->checkForQuantities($product, $quantityPost)) {
+					$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED'));
+				} else {
+					return false;
+				}
 			}
+		} else {
+			$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND', false));
+			return false;
 		}
-
-		// End Iteration through Prod id's
-		$this->setCartIntoSession();
-		return true;
 	}
 
-	/**
-	 * Remove a product from the cart
-	 *
-	 * @author RolandD
-	 * @param array $cart_id the cart IDs to remove from the cart
-	 * @access public
-	 */
-	public function removeProductCart($prod_id=0) {
-		/* Check for cart IDs */
-		if (empty($prod_id))
-		$prod_id = JRequest::getVar('cart_virtuemart_product_id');
-		//		$prod_id = JRequest::get();
-		//		/* Check if the product ID is ok */
-		//		if (!$prod_ids || !is_array($prod_ids) || empty($prod_ids)) return;
-		//
-		//		if (empty($prod_variants)) $cart_ids = array(JRequest::getInt('variants'));
-		//		if (!$prod_variants || !is_array($prod_variants) || empty($prod_variants)) return;
-		//
-		//		if (empty($prod_customvariants)) $cart_ids = array(JRequest::getInt('customvariants'));
-		//		if (!$prod_customvariants || !is_array($prod_customvariants) || empty($prod_customvariants)) return;
-		//
-		//		/* Load the cart */
-		//		$cart = $this->getCart();
-		//
-		//		/* Remove the product */
-		//		foreach ($cart_ids as $cart_id) {
-		//			'P'.$product->virtuemart_product_id.$product->variants.$product->customvariants
+	// End Iteration through Prod id's
+	$this->setCartIntoSession();
+	return true;
+}
+
+/**
+ * Remove a product from the cart
+ *
+ * @author RolandD
+ * @param array $cart_id the cart IDs to remove from the cart
+ * @access public
+ */
+public function removeProductCart($prod_id=0) {
+	/* Check for cart IDs */
+	if (empty($prod_id))
+	$prod_id = JRequest::getVar('cart_virtuemart_product_id');
+	//		$prod_id = JRequest::get();
+	//		/* Check if the product ID is ok */
+	//		if (!$prod_ids || !is_array($prod_ids) || empty($prod_ids)) return;
+	//
+	//		if (empty($prod_variants)) $cart_ids = array(JRequest::getInt('variants'));
+	//		if (!$prod_variants || !is_array($prod_variants) || empty($prod_variants)) return;
+	//
+	//		if (empty($prod_customvariants)) $cart_ids = array(JRequest::getInt('customvariants'));
+	//		if (!$prod_customvariants || !is_array($prod_customvariants) || empty($prod_customvariants)) return;
+	//
+	//		/* Load the cart */
+	//		$cart = $this->getCart();
+	//
+	//		/* Remove the product */
+	//		foreach ($cart_ids as $cart_id) {
+	//			'P'.$product->virtuemart_product_id.$product->variants.$product->customvariants
 		unset($this->products[$prod_id]);
 		//		}
 
@@ -689,9 +674,12 @@ class VirtueMartCart {
 	}
 
 	function checkout() {
+
 		if ($this->checkoutData()) {
 			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=confirm'), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
+			//This is dangerous, we may add it as option, direclty calling the confirm is in most countries illegal and can lead to confusion. notice by Max
+			// 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=confirm'), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
 		}
 	}
 
@@ -931,7 +919,7 @@ class VirtueMartCart {
 
 		$i = 0 ;
 
-/*		if(empty($obj)){
+		/*		if(empty($obj)){
 			$obj = $this->$type;
 		}*/
 
@@ -976,91 +964,29 @@ class VirtueMartCart {
 		// 			}
 
 		return $redirectMsg;
-}
-
-/**
- * This function is called, when the order is confirmed by the shopper.
- *
- * Here are the last checks done by payment plugins.
- * The mails are created and send to vendor and shopper
- * will show the orderdone page (thank you page)
- *
- */
-private function confirmedOrder() {
-
-	//Just to prevent direct call
-	if ($this->_dataValidated && $this->_confirmDone) {
-		if (!class_exists('VirtueMartModelOrders'))
-		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-
-		$order = new VirtueMartModelOrders();
-		if (($orderID = $order->createOrderFromCart($this)) === false) {
-			$mainframe = JFactory::getApplication();
-			JError::raiseWarning(500, $order->getError());
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart') );
-		}
-		$this->virtuemart_order_id = $orderID;
-		$this->sentOrderConfirmedEmail($order->getOrder($orderID));
-
-		//We delete the old stuff
-		$this->products = array();
-		$this->_inCheckOut = false;
-		$this->_dataValidated = false;
-		$this->_confirmDone = false;
-		$this->customer_comment = '';
-		$this->couponCode = '';
-		$this->tosAccepted = false;
-
-		$this->setCartIntoSession();
-
-		// TODO valerie TO DO  -- not finished
-		$cart = $this->getCart();
-		$dispatcher = JDispatcher::getInstance();
-
-		$returnValues = $dispatcher->trigger('plgVmAfterCheckoutDoPayment', array($orderID, $cart));
-
-		// may be redirect is done by the payment plugin (eg: paypal) so we do not come back here
-		// if payment plugin echos a form, false = nothing happen, true= echo form ,
-
-		// 			$activeplugin = false;
-		// 			foreach ($returnValues as $returnValue) {
-		// 				if ($returnValue == 'P' || ) {
-		// 					$order->handleStockAfterStatusChanged($returnValue);
-		// 					$activeplugin = true;
-		// 					break;
-		// 				}
-		// 				Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
-		// 			}
-
-		// 			if ($activeplugin)   {
-		$mainframe = JFactory::getApplication();
-		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&layout=order_done'),JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));
-		// 			}
-	} else {
-		$mainframe = JFactory::getApplication();
-		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'),JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
-
 	}
 
-}
-
 	/**
-	 * Used for new payment handling, not implemented yet. Idea is to use the token and the stored session to refer
-	 * to a cart and so not to create an order for payment attempts
+	 * This function is called, when the order is confirmed by the shopper.
 	 *
-	 * @author Valerie
-	 * @author Max Milbers
+	 * Here are the last checks done by payment plugins.
+	 * The mails are created and send to vendor and shopper
+	 * will show the orderdone page (thank you page)
 	 *
 	 */
-	public function executeConfirmedOrder(){
+	private function confirmedOrder() {
+
+		//Just to prevent direct call
+		if ($this->_dataValidated && $this->_confirmDone) {
+			if (!class_exists('VirtueMartModelOrders'))
+			require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
 			$order = new VirtueMartModelOrders();
 			if (($orderID = $order->createOrderFromCart($this)) === false) {
 				$mainframe = JFactory::getApplication();
 				JError::raiseWarning(500, $order->getError());
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
+				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart') );
 			}
-
 			$this->virtuemart_order_id = $orderID;
 			$this->sentOrderConfirmedEmail($order->getOrder($orderID));
 
@@ -1074,6 +1000,68 @@ private function confirmedOrder() {
 			$this->tosAccepted = false;
 
 			$this->setCartIntoSession();
+
+			// TODO valerie TO DO  -- not finished
+			$cart = $this->getCart();
+			$dispatcher = JDispatcher::getInstance();
+
+			$returnValues = $dispatcher->trigger('plgVmAfterCheckoutDoPayment', array($orderID, $cart));
+
+			// may be redirect is done by the payment plugin (eg: paypal) so we do not come back here
+			// if payment plugin echos a form, false = nothing happen, true= echo form ,
+
+			// 			$activeplugin = false;
+			// 			foreach ($returnValues as $returnValue) {
+			// 				if ($returnValue == 'P' || ) {
+				// 					$order->handleStockAfterStatusChanged($returnValue);
+				// 					$activeplugin = true;
+				// 					break;
+				// 				}
+				// 				Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
+				// 			}
+
+			// 			if ($activeplugin)   {
+			$mainframe = JFactory::getApplication();
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&layout=order_done'),JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));
+			// 			}
+		} else {
+			$mainframe = JFactory::getApplication();
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'),JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
+
+		}
+
+	}
+
+	/**
+	 * Used for new payment handling, not implemented yet. Idea is to use the token and the stored session to refer
+	 * to a cart and so not to create an order for payment attempts
+	 *
+	 * @author Valerie
+	 * @author Max Milbers
+	 *
+	 */
+	public function executeConfirmedOrder(){
+
+		$order = new VirtueMartModelOrders();
+		if (($orderID = $order->createOrderFromCart($this)) === false) {
+			$mainframe = JFactory::getApplication();
+			JError::raiseWarning(500, $order->getError());
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
+		}
+
+		$this->virtuemart_order_id = $orderID;
+		$this->sentOrderConfirmedEmail($order->getOrder($orderID));
+
+		//We delete the old stuff
+		$this->products = array();
+		$this->_inCheckOut = false;
+		$this->_dataValidated = false;
+		$this->_confirmDone = false;
+		$this->customer_comment = '';
+		$this->couponCode = '';
+		$this->tosAccepted = false;
+
+		$this->setCartIntoSession();
 	}
 
 
@@ -1163,20 +1151,20 @@ private function confirmedOrder() {
 		if ($type == 'ST') {
 			$prefix = 'shipto_';
 			$prepareUserFields = $userFieldsModel->getUserFieldsFor('cart',$type);
-// 			$prepareUserFields = $userFieldsModel->getUserFields(
-// 								'shipping'
-// 			, array()
-// 			, array( 'user_is_vendor') // Default toggles
-// 			);
+			// 			$prepareUserFields = $userFieldsModel->getUserFields(
+			// 								'shipping'
+			// 			, array()
+			// 			, array( 'user_is_vendor') // Default toggles
+			// 			);
 
 		} else { // BT
 			// The user is not logged in (anonymous), so we need tome extra fields
 			$prepareUserFields = $userFieldsModel->getUserFieldsFor('cart',$type);
-// 			$prepareUserFields = $userFieldsModel->getUserFields(
-// 								'account'
-// 			, array() // Default toggles
-// 			, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
-// 			);
+			// 			$prepareUserFields = $userFieldsModel->getUserFields(
+			// 								'account'
+			// 			, array() // Default toggles
+			// 			, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
+			// 			);
 
 		}
 		$address = array();
@@ -1275,9 +1263,9 @@ private function confirmedOrder() {
 
 	/*
 	 * Prepare the datas for cart/mail views
-	 * set product, price, user, adress and vendor as Object
-	 * @author Patrick Kohl
-	 */
+	* set product, price, user, adress and vendor as Object
+	* @author Patrick Kohl
+	*/
 	function prepareCartViewData(){
 		$data = new stdClass();
 		$this->CheckShippingIsValid( );
@@ -1305,7 +1293,7 @@ private function confirmedOrder() {
 			}
 			$product->salesPrice = empty($prices[$cart_item_id]['salesPrice'])? 0:$prices[$cart_item_id]['salesPrice'];
 			$product->basePriceWithTax = empty($prices[$cart_item_id]['salesPrice'])? 0:$prices[$cart_item_id]['basePriceWithTax'];
-//			$product->basePriceWithTax = $prices[$cart_item_id]['basePriceWithTax'];
+			//			$product->basePriceWithTax = $prices[$cart_item_id]['basePriceWithTax'];
 			$product->subtotal = $prices[$cart_item_id]['subtotal'];
 			$product->subtotal_tax_amount = $prices[$cart_item_id]['subtotal_tax_amount'];
 			$product->subtotal_discount = $prices[$cart_item_id]['subtotal_discount'];
@@ -1324,9 +1312,9 @@ private function confirmedOrder() {
 			$userFieldsBT = $userFieldsModel->getUserFieldsFor('cart','BT');
 			$userAddressBT = $this->getCartAdressData('BT');
 			$BTaddress = $userFieldsModel->getUserFieldsByUser(
-							 $userFieldsBT
-							,$userAddressBT
-							);
+			$userFieldsBT
+			,$userAddressBT
+			);
 
 		}
 
@@ -1337,9 +1325,9 @@ private function confirmedOrder() {
 			$userFieldsST = $userFieldsModel->getUserFieldsFor('cart','ST');
 			$userAddressST = $this->getCartAdressData('ST');
 			$STaddress = $userFieldsModel->getUserFieldsByUser(
-							 $userFieldsST
-							,$userAddressST
-							);
+			$userFieldsST
+			,$userAddressST
+			);
 
 		}
 		$this->STaddress = & $STaddress['fields'];
@@ -1347,22 +1335,22 @@ private function confirmedOrder() {
 
 	function prepareUserData(){
 
-/*		//For User address
-		$currentUser = JFactory::getUser();
+		/*		//For User address
+		 $currentUser = JFactory::getUser();
 		//$this->lists['current_id'] = $currentUser->get('id');
-//		$this->assignRef('virtuemart_user_id', $this->lists['current_id']);
+		//		$this->assignRef('virtuemart_user_id', $this->lists['current_id']);
 		if($this->lists['current_id']  = $currentUser->get('id') ){
-			if(!class_exists('VirtuemartModelUser')) require(JPATH_VM_ADMIN.DS.'models'.DS.'user.php');
-			$this->user = new VirtueMartModelUser;
-			$this->user->setCurrent();
-			if(!$this->user){
+		if(!class_exists('VirtuemartModelUser')) require(JPATH_VM_ADMIN.DS.'models'.DS.'user.php');
+		$this->user = new VirtueMartModelUser;
+		$this->user->setCurrent();
+		if(!$this->user){
 
-			} else {
-				$this->userDetails = & $this->user->getUser();
+		} else {
+		$this->userDetails = & $this->user->getUser();
 
-				//This are other contact details, like used in CB or so.
-	//			$_contactDetails = $this->_user->getContactDetails();
-			}
+		//This are other contact details, like used in CB or so.
+		//			$_contactDetails = $this->_user->getContactDetails();
+		}
 		}*/
 	}
 
@@ -1384,34 +1372,34 @@ private function confirmedOrder() {
 
 		} else {
 			$_addressBT[0]->address_type_name = '<a href="index.php'
-					.'?option=com_virtuemart'
-					.'&view=user'
-					.'&task=editaddresscart'
-					.'&addrtype=BT'
-				. '">'.JText::_('COM_VIRTUEMART_ACC_BILL_DEF').'</a>'.'<br />';
-				$_addressST = array();
+			.'?option=com_virtuemart'
+			.'&view=user'
+			.'&task=editaddresscart'
+			.'&addrtype=BT'
+			. '">'.JText::_('COM_VIRTUEMART_ACC_BILL_DEF').'</a>'.'<br />';
+			$_addressST = array();
 		}
 
 		$addressList = array_merge(
-			array($_addressBT[0])// More BT addresses can exist for shopowners :-(
-			, $_addressST );
+		array($_addressBT[0])// More BT addresses can exist for shopowners :-(
+		, $_addressST );
 
 		if($this->user){
 			for ($_i = 0; $_i < count($addressList); $_i++) {
 				$addressList[$_i]->address_type_name = '<a href="index.php'
-									.'?option=com_virtuemart'
-									.'&view=user'
-									.'&task=editaddresscart'
-									.'&addrtype='.(($_i == 0) ? 'BT' : 'ST')
-									.'&virtuemart_userinfo_id='.(empty($addressList[$_i]->virtuemart_userinfo_id)? 0 : $addressList[$_i]->virtuemart_userinfo_id)
-									. '">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
+				.'?option=com_virtuemart'
+				.'&view=user'
+				.'&task=editaddresscart'
+				.'&addrtype='.(($_i == 0) ? 'BT' : 'ST')
+				.'&virtuemart_userinfo_id='.(empty($addressList[$_i]->virtuemart_userinfo_id)? 0 : $addressList[$_i]->virtuemart_userinfo_id)
+				. '">'.$addressList[$_i]->address_type_name.'</a>'.'<br />';
 			}
 
 			if(!empty($addressList[0]->virtuemart_userinfo_id)){
 				$_selectedAddress = (
-					empty($this->_cart->selected_shipto)
-					? $addressList[0]->virtuemart_userinfo_id // Defaults to 1st BillTo
-					: $this->_cart->selected_shipto
+				empty($this->_cart->selected_shipto)
+				? $addressList[0]->virtuemart_userinfo_id // Defaults to 1st BillTo
+				: $this->_cart->selected_shipto
 				);
 				$this->lists['shipTo'] = JHTML::_('select.radiolist', $addressList, 'shipto', null, 'virtuemart_userinfo_id', 'address_type_name', $_selectedAddress);
 			}else{
@@ -1468,7 +1456,7 @@ private function confirmedOrder() {
 			// @todo Add variants
 			$this->data->products[$i]['product_name'] = JHTML::link($url, $product->product_name);
 			$this->data->products[$i]['customfieldsCart'] ='';
-//			/* Add the variants */
+			//			/* Add the variants */
 			if (!is_int($priceKey)) {
 				if (empty($calculator)) {
 					if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
@@ -1484,9 +1472,9 @@ private function confirmedOrder() {
 
 					} else {
 
-							$this->data->products[$i]['customfieldsCart'] .= '<br/ ><b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$product->customfieldsCart[$row]->options[$selected]->custom_value;
+						$this->data->products[$i]['customfieldsCart'] .= '<br/ ><b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$product->customfieldsCart[$row]->options[$selected]->custom_value;
 					}
-							$row++;
+					$row++;
 				}
 			}
 			$this->data->products[$i]['product_name'] .= $this->data->products[$i]['customfieldsCart'] ;
@@ -1497,17 +1485,17 @@ private function confirmedOrder() {
 			//$weight_total += $weight_subtotal;
 
 
-// product Price total for ajax cart
+			// product Price total for ajax cart
 			$this->data->products[$i]['prices'] = $this->prices[$priceKey]['subtotal_with_tax'];
-// other possible option to use for display
+			// other possible option to use for display
 			$this->data->products[$i]['subtotal'] = $this->prices[$priceKey]['subtotal'];
 			$this->data->products[$i]['subtotal_tax_amount'] = $this->prices[$priceKey]['subtotal_tax_amount'];
 			$this->data->products[$i]['subtotal_discount'] = $this->prices[$priceKey]['subtotal_discount'];
 			$this->data->products[$i]['subtotal_with_tax'] = $this->prices[$priceKey]['subtotal_with_tax'];
 
 			// UPDATE CART / DELETE FROM CART
-				$this->data->products[$i]['quantity'] = $product->quantity;
-				$this->data->totalProduct += $product->quantity ;
+			$this->data->products[$i]['quantity'] = $product->quantity;
+			$this->data->totalProduct += $product->quantity ;
 
 			$i++;
 		}
