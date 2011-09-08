@@ -1106,7 +1106,7 @@ class ShopFunctions {
 			$calculator = calculationHelper::getInstance();
 			$variantmods = $calculator->parseModifier($priceKey);
 			$row=0 ;
-			dump ($variantmods);
+			//dump ($variantmods);
 			foreach($variantmods as $variant=>$selected){
 				$custom_value = $product->customfieldsCart[$row]->options[$selected]->custom_value;
 				if( $product->customfieldsCart[$row]->field_type == "M") {
