@@ -47,20 +47,19 @@ AdminUIHelper::startAdminArea();
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->manufacturers); ?>);" />
 		    </th>
 		    <th>
-				<?php echo JHTML::_('grid.sort', JText::_('COM_VIRTUEMART_MANUFACTURER_NAME') , 'manufacturer_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
-
+				<?php echo JHTML::_('grid.sort', JText::_('COM_VIRTUEMART_MANUFACTURER_NAME') , 'mf_category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 		    </th>
 		    <th>
-				<?php  echo JText::_('COM_VIRTUEMART_MANUFACTURER_EMAIL'); ?>
+				<?php echo JHTML::_('grid.sort', JText::_('COM_VIRTUEMART_MANUFACTURER_EMAIL') , 'mf_email', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 		    </th>
 		    <th>
-				<?php  echo JText::_('COM_VIRTUEMART_MANUFACTURER_DESCRIPTION'); ?>
+				<?php echo JHTML::_('grid.sort', JText::_('COM_VIRTUEMART_MANUFACTURER_DESCRIPTION') , 'mf_desc', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 		    </th>
 		    <th>
-				<?php  echo JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY'); ?>
+				<?php echo JHTML::_('grid.sort', JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY') , 'mf_category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 		    </th>
 		    <th>
-				<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_URL'); ?>
+				<?php echo JHTML::_('grid.sort', JText::_('COM_VIRTUEMART_MANUFACTURER_URL') , 'mf_url', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 		    </th>
 		    <th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>
