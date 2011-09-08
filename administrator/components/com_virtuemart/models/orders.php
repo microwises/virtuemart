@@ -738,7 +738,8 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	private function _writeUserInfo($_id, &$_usr, $_cart)
 	{
-		$_userInfoData =  $this->getTable('order_userinfos');
+		$_userInfoData = array();
+		$order_userinfosTable = $this->getTable('order_userinfos');
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
 
 		//if(!class_exists('shopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
@@ -752,30 +753,21 @@ class VirtueMartModelOrders extends VmModel {
 		foreach ($_userFieldsBT as $_fld) {
 			$_name = $_fld->name;
 			if(!empty( $_cart->BT[$_name])){
-				/*				if ($_name == 'virtuemart_country_id') {
-					$_userInfoData->country = $_cart->BT['virtuemart_country_id'];
-				//				$_userInfoData->country = shopFunctions::getCountryByID($_cart->BT['virtuemart_country_id']);
-				} elseif ($_name == 'virtuemart_state_id') {
-				$_userInfoData->state = $_cart->BT['virtuemart_state_id'];
-				//				$_userInfoData->state = shopFunctions::getStateByID($_cart->BT['virtuemart_state_id']);
-				} else {*/
-
-				$_userInfoData->$_name = $_cart->BT[$_name];
-				//	}
+				$_userInfoData[$_name] = $_cart->BT[$_name];
 			}
 		}
 
-		$_userInfoData->virtuemart_order_id = $_id;
-		$_userInfoData->virtuemart_user_id = $_usr->get('id');
-		$_userInfoData->address_type = 'BT';
-		if (!$_userInfoData->store()){
+		$_userInfoData['virtuemart_order_id'] = $_id;
+		$_userInfoData['virtuemart_user_id'] = $_usr->get('id');
+		$_userInfoData['address_type'] = 'BT';
+		if (!$order_userinfosTable->bindChecknStore()){
 			$this->setError($_userInfoData->getError());
 			return false;
 		}
 		$_userInfoData->virtuemart_order_userinfo_id = null; // Reset key to make sure it doesn't get overwritten by ST
 
 		if ($_cart->ST) {
-			$_userInfoData->virtuemart_order_userinfo_id = null; // Reset key to make sure it doesn't get overwritten by ST
+			$_userInfoData['virtuemart_order_userinfo_id'] = null; // Reset key to make sure it doesn't get overwritten by ST
 			$_userFieldsST = $_userFieldsModel->getUserFields('shipping'
 			, array('delimiters'=>true, 'captcha'=>true)
 			, array('username', 'password', 'password2', 'user_is_vendor')
@@ -783,14 +775,14 @@ class VirtueMartModelOrders extends VmModel {
 			foreach ($_userFieldsST as $_fld) {
 				$_name = $_fld->name;
 				if(!empty( $_cart->ST[$_name])){
-					$_userInfoData->$_name = $_cart->ST[$_name];
+					$_userInfoData[$_name] = $_cart->ST[$_name];
 				}
 			}
 
-			$_userInfoData->virtuemart_order_id = $_id;
-			$_userInfoData->virtuemart_user_id = $_usr->get('id');
-			$_userInfoData->address_type = 'ST';
-			if (!$_userInfoData->store()){
+			$_userInfoData['virtuemart_order_id'] = $_id;
+			$_userInfoData['virtuemart_user_id'] = $_usr->get('id');
+			$_userInfoData['address_type'] = 'ST';
+			if (!$order_userinfosTable->bindChecknStore()){
 				$this->setError($_userInfoData->getError());
 				return false;
 			}
