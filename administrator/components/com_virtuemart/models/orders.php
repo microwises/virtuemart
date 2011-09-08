@@ -749,7 +749,7 @@ class VirtueMartModelOrders extends VmModel {
 		, array('delimiters'=>true, 'captcha'=>true)
 		, array('username', 'password', 'password2', 'user_is_vendor')
 		);
-		vmdebug('_writeUserInfo',$_userFieldsBT);
+
 		foreach ($_userFieldsBT as $_fld) {
 			$_name = $_fld->name;
 			if(!empty( $_cart->BT[$_name])){

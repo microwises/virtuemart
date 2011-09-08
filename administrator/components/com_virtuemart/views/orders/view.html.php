@@ -71,9 +71,9 @@ class VirtuemartViewOrders extends JView {
 			$this->assignRef('currency', $currency);
 
 			$_userFields = $userFieldsModel->getUserFields(
-					 'registration'
+					 'account'
 					, array('captcha' => true, 'delimiters' => true) // Ignore these types
-					, array('delimiter_userinfo','user_is_vendor' ,'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
+					, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
 			);
 
 			$userfields = $userFieldsModel->getUserFieldsByUser(
