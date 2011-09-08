@@ -124,13 +124,13 @@ class VirtueMartModelOrderstatus extends VmModel {
 	function getOrderStatusList()
 	{
 
-/*		if (JRequest::getWord('view') !== 'orderstatus') $query .= ' order by `ordering` ';
-		else $query .= $this->_getOrdering();
-		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+if (JRequest::getWord('view') !== 'orderstatus') $ordering = ' order by `ordering` ';
+		else $ordering = $this->_getOrdering();
+/*				$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		// set total for pagination
 		$this->_total = $this->_getListCount($query);*/
 
-		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_orderstates`','','',$this->_getOrdering());
+		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_orderstates`','','',$ordering);
 
 	}
 
