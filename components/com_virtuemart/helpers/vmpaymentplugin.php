@@ -384,16 +384,16 @@ abstract class vmPaymentPlugin extends JPlugin {
      * Get the name of the payment method
      * @param int $_pid The payment method ID
      * @author Oscar van Eijk
+     * @author Valérie Isaken
      * @return string Payment method name
      */
-    function getThisPaymentName($payment_id) {
-        $db = JFactory::getDBO();
-
-        $q = 'SELECT `payment_name` FROM #__virtuemart_paymentmethods WHERE `virtuemart_paymentmethod_id`="' . (int) $payment_id . '"';
-
-        $db->setQuery($q);
-        return $db->loadResult(); // TODO Error check
+    public function plgVmGetThisPaymentName(TablePaymentmethods $payment) {
+         if (!$this->selectedThisPayment($this->_pelement, $payment->virtuemart_paymentmethod_id)) {
+            return null; // Another paymen was selected, do nothing
+        }
+        return $payment->payment_name;
     }
+
 
     /**
      * This functions gets the used and configured payment method

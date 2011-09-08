@@ -42,7 +42,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         $this->_tablename = '#__virtuemart_order_payment_' . $this->_pelement;
         $this->_createTable();
         parent::__construct($subject, $config);
-         //  JPlugin::loadLanguage( 'plg_vmpayment_paypal', JPATH_ADMINISTRATOR );
+        //  JPlugin::loadLanguage( 'plg_vmpayment_paypal', JPATH_ADMINISTRATOR );
     }
 
     /**
@@ -110,8 +110,10 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             }
         }
         $html = "";
-        $logos = $this->_getPaymentLogos($this->params->get('payment_logos', ''));
-        foreach ($this->payments as $payment) {
+      
+        foreach ($this->payments as $payment) {          
+            $params = new JParameter($payment->payment_params);
+            $logos = $this->_getPaymentLogos($params->get('payment_logos', ''));
             $payment->payment_name = $logos . ' ' . $payment->payment_name;
             $html .= $this->getPaymentHtml($payment, $selectedPayment, $cart);
         }
@@ -134,7 +136,10 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         if (!$this->selectedThisPayment($this->_pelement, $orderData->virtuemart_paymentmethod_id)) {
             return null; // Another method was selected, do nothing
         }
-          JPlugin::loadLanguage( 'plg_vmpayment_paypal', JPATH_ADMINISTRATOR );
+
+        $lang = JFactory::getLanguage();
+        $lang->load('plg_vmpayment_paypal', JPATH_ADMINISTRATOR);
+
         $paramstring = $this->getVmPaymentParams($vendorId = 0, $orderData->virtuemart_paymentmethod_id);
         $params = new JParameter($paramstring);
 
@@ -143,7 +148,8 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
         if (!class_exists('VirtueMartModelOrders'))
             require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
- 	if(!class_exists('VirtueMartModelCurrency'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'currency.php');
+        if (!class_exists('VirtueMartModelCurrency')
+            )require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 
         $usr = & JFactory::getUser();
 
@@ -158,14 +164,13 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         $vendor = $vendorModel->getVendor();
 
         $currencyModel = new VirtueMartModelCurrency();
-        $currency = $currencyModel->getCurrency($orderData->cartData->calculator->vendorCurrency);
-
+        $currency = $currencyModel->getCurrency($orderData->calculator->vendorCurrency);
 
         $merchant_email = $this->_getMerchantEmail($params);
         $orderNumber = VirtueMartModelOrders::getOrderNumber($virtuemart_order_id);
         $testReq = $params->get('DEBUG') == 1 ? 'YES' : 'NO';
         $custom = mt_rand();
-
+ 
         $post_variables = Array(
             'cmd' => '_ext-enter',
             'redirect_cmd' => '_xclick',
@@ -177,7 +182,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             "order_id" => $orderNumber,
             "invoice" => $orderNumber,
             'custom' => $custom,
-            "amount" => $orderData->cartData->pricesUnformatted['billTotal'],
+            "amount" => $orderData->pricesUnformatted['billTotal'],
             // "shipping" =>  $orderData->prices['order_shipping'],
             "currency_code" => $currency->currency_code_3, // TODO
             "address_override" => "1",
@@ -197,7 +202,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             "undefined_quantity" => "0",
             "ipn_test" => $params->get('debug'),
             "pal" => "NRUBJXESJTY24",
-           // "image_url" => $vendor_image_url, // TO DO
+            // "image_url" => $vendor_image_url, // TO DO
             "no_shipping" => "1",
             "no_note" => "1");
 
@@ -227,7 +232,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
          */
 
         $mainframe = JFactory::getApplication();
-        $mainframe->redirect("https://" . $url . $qstring);
+         $mainframe->redirect("https://" . $url . $qstring);
 
 
         return 'P'; // Does not return anyway... Set order status to Pending.
@@ -280,7 +285,6 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         if (!$this->_processIPN($paypal_data)) {
 
             $new_state = $params->get('status_canceled');
-
         } else {
 
             $query = 'SELECT ' . $this->_tablename . '.`virtuemart_payment_id` FROM ' . $this->_tablename
@@ -300,7 +304,6 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             $paramstring = $this->getVmPaymentParams($vendorId = 0, $orderData->virtuemart_paymentmethod_id);
             $params = new JParameter($paramstring);
             $new_state = $params->get('status_success');
-
         }
         //fclose($fp);
         return $new_state;
@@ -365,6 +368,20 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         }
         return $img;
     }
+ /**
+     * Get the name of the payment method
+     * @param int $payment  The payment method ID
+     * @author Valerie Isaksen
+     * @return string Payment method name
+     */
+    function plgVmGetThisPaymentName(TablePaymentmethods $payment) {
+        if (!$this->selectedThisPayment($this->_pelement, $payment->virtuemart_paymentmethod_id)) {
+            return null; // Another payment was selected, do nothing
+        }
+		$params = new JParameter($payment->payment_params);
+		$logo = $this->_getPaymentLogos($params->get('payment_logos'), $payment->payment_name);
+		return $logo . " " . $payment->payment_name;
+	}
 
     /**
      * Get ipn data, send verification to PayPal, run corresponding handler

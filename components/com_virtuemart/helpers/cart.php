@@ -1120,11 +1120,11 @@ public function removeProductCart($prod_id=0) {
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 
-		//$this->pricesUnformatted = $product_prices;// TODO MAX
+		$this->pricesUnformatted = $product_prices; 
 		$this->prices = $prices;
 		//$this->cartData = $calculator->getCartData();//TODO MAX
 		$cartData = $calculator->getCartData();
-		//$this->calculator = $calculator; TODO MAX ?
+		 $this->calculator = $calculator;
 
 		$this->setCartIntoSession();
 		return $cartData ;

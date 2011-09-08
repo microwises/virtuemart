@@ -90,7 +90,7 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
                 <input type="password" name="passwd" size="10" alt="<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>" value="<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>" onblur="if(this.value=='') this.value='<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>';" onfocus="if(this.value=='<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>') this.value='';" />
             </p>
             <p class="width30 floatleft" id="com-form-login-remember">
-                <input type="submit" name="Submit" class="button" value="<?php echo JText::_('LOGIN') ?>" />
+                <input type="submit" name="Submit" class="default" value="<?php echo JText::_('COM_VIRTUEMART_LOGIN') ?>" />
 <?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
                 <label for="remember"><?php echo JText::_('Remember me') ?></label>
             <input type="checkbox" id="remember" name="remember" class="inputbox" value="yes" alt="Remember Me" />
@@ -149,10 +149,13 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
         ?>
          <button class="default" type="submit" onclick="javascript:return callValidatorForRegister(userForm);" ><?php echo JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?></button>
          <button class="default" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?></button>
+         <button class="default" type="reset" onclick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
+
 
 <?php } else { ?>
-			<button class="default" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
-			<button class="default" type="reset" onclick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
+        
+	<button class="default" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
+	<button class="default" type="reset" onclick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 
 <?php } ?>
     </div>
@@ -160,7 +163,7 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
     <fieldset>
         <span class="bold">
         <?php echo JText::_('COM_VIRTUEMART_USERFIELDS_FORM_LBL'); ?>
-            </span><br /><br />
+        </span>
         <?php
             $_k = 0;
             $_set = false;

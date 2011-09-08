@@ -807,7 +807,17 @@ class calculationHelper {
         $model->setId($virtuemart_paymentmethod_id);
         $payment = $model->getPayment();
 
-        $this->_cartData['paymentName'] = !empty($payment->payment_name) ? $payment->payment_name : JText::_('COM_VIRTUEMART_CART_NO_PAYMENT_SELECTED');
+        if ($virtuemart_paymentmethod_id) {
+              if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
+            JPluginHelper::importPlugin('vmpayment');
+            $dispatcher = JDispatcher::getInstance();
+            $retValues = $dispatcher->trigger('plgVmGetThisPaymentName', array('tablePaymentMethods' => $payment ) );
+            $payment_name='';
+            foreach ($retValues as $return ) { $payment_name.=$return;}
+          }
+
+
+        $this->_cartData['paymentName'] = !empty($payment_name) ? $payment_name : JText::_('COM_VIRTUEMART_CART_NO_PAYMENT_SELECTED');
         $this->_cartPrices['paymentValue'] = 0;
         $this->_cartPrices['paymentTax'] = 0;
         $this->_cartPrices['paymentDiscount'] = 0;

@@ -217,7 +217,8 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 	 * if more ID's match, the cheapest will be selected.
 	 */
 	protected function selectShippingRate(VirtueMartCart $cart, $selectedShipper = 0) {
-            $params = new JParameter($shipping_carrier_params);
+            $shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $cart->virtuemart_shippingcarrier_id);
+                 $params = new JParameter($shipping_carrier_params);
 
 		if ($selectedShipper == 0) {
 			$selectedShipper = $cart->virtuemart_shippingcarrier_id;
@@ -338,7 +339,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 
 		$img = "";
 		/* TODO: chercher chemin dynamique */
-		$path = JURI::root() . "images/stories/virtuemart/shipper/";
+		$path = JURI::root() . 'images'.DS.'stories'.DS.'virtuemart'.DS.'shipper'.DS;
 		$img = "";
 		if (!(empty($shipper_logo))) {
 			$img = '<img align="middle" src="' . $path . $shipper_logo . '"  alt="' . $alt_text . '" > ';

@@ -46,7 +46,7 @@
 
         <param   type="spacer" default="VMPAYMENT_PAYPAL_VIRTUEMART_PARAMS" level="level1" />
 
-        <param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_PAYPAL_STATUS_PENDING" description="VMPAYMENT_PAYPAL_STATUS_PENDING_EXPLAIN" />
+        <param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="P" label="VMPAYMENT_PAYPAL_STATUS_PENDING" description="VMPAYMENT_PAYPAL_STATUS_PENDING_EXPLAIN" />
         <param name="status_success" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_PAYPAL_STATUS_SUCCESS" description="VMPAYMENT_PAYPAL_STATUS_SUCCESS_EXPLAIN" />
         <param name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_PAYPAL_STATUS_FAILED" description="VMPAYMENT_PAYPAL_STATUS_FAILED_EXPLAIN" />
 

@@ -567,7 +567,7 @@ abstract class vmShipperPlugin extends JPlugin {
 
     /**
      * Get the name of the shipper
-     * @param int $_sid The Shipper ID
+     * @param TableShippingCarriers $shipping
      * @author Valérie Isaksen
      * @return string Shipper name
      */
