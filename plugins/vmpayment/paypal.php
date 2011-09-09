@@ -337,7 +337,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         $html .= '		</tr>' . "\n";
         $html .= '	</thead>' . "\n";
         $html .= '	<tr>' . "\n";
-        $html .= '		<td>' . $this->getThisPaymentName($paymethod_id) . '</td>' . "\n";
+        $html .= '		<td>' . $this->plgVmGetPaymentName($paymethod_id) . '</td>' . "\n";
 //		$html .= '		<td></td>'."\n";
 //		$html .= '		<td></td>'."\n";
 //		$html .= '		<td></td>'."\n";
@@ -370,11 +370,11 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
     }
  /**
      * Get the name of the payment method
-     * @param int $payment  The payment method ID
+     * @param TablePaymentmethods $payment
      * @author Valerie Isaksen
      * @return string Payment method name
      */
-    function plgVmGetThisPaymentName(TablePaymentmethods $payment) {
+    function plgVmGetDisplayedPaymentName(TablePaymentmethods $payment) {
         if (!$this->selectedThisPayment($this->_pelement, $payment->virtuemart_paymentmethod_id)) {
             return null; // Another payment was selected, do nothing
         }

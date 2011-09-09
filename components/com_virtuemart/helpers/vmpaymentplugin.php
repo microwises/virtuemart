@@ -502,7 +502,22 @@ abstract class vmPaymentPlugin extends JPlugin {
         $html .="</label><br/>\n";
         return $html;
     }
+/**
+     * Get the name of the payment method
+     * @param int $_pid The payment method ID
+     * @author Oscar van Eijk
+     * @return string Payment method name
+     */
 
+    function getThisPaymentName($payment_id) {
+
+        $db = JFactory::getDBO();
+
+        $q = 'SELECT `payment_name` FROM #__virtuemart_paymentmethods WHERE `virtuemart_paymentmethod_id`="' . (int) $payment_id . '"';
+        $db->setQuery($q);
+        return $db->loadResult(); // TODO Error check
+
+    }
     function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart) {
 
         $nbPayment = 0;
