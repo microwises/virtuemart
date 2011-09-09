@@ -412,16 +412,12 @@ abstract class vmShipperPlugin extends JPlugin {
      * This method is fired when showing the order details in the frontend.
      * It displays the shipper-specific data.
      *
-     * @param integer $_orderId The order ID
+     * @param integer $order_id The order ID
      * @return mixed Null for shippers that aren't active, text (HTML) otherwise
      * @author Oscar van Eijk
      */
-    public function plgVmOnShowOrderShipperFE($_orderId) {
-        /*
-          if (!($this->selectedThisShipper($this->_selement, $this->getShipperIDForOrder($_orderId)))) {
-          return null;
-          }
-         */
+    public function plgVmOnShowOrderShipperFE($order_id) {
+        return;
     }
 
     /**
