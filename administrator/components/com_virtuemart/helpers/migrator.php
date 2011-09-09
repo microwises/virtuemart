@@ -191,7 +191,6 @@ class Migrator extends VmModel{
 		$this->mediaModel = new VirtueMartModelMedia();
 		//First lets read which files are already stored
 		$this->storedMedias = $this->mediaModel->getFiles(false, true, false);
-
 		$countTotal = 0;
 		//We do it per type
 		$url = VmConfig::get('media_product_path');

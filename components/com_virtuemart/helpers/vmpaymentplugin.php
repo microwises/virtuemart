@@ -393,6 +393,20 @@ abstract class vmPaymentPlugin extends JPlugin {
         }
         return $payment->payment_name;
     }
+ /**
+     * Get the name of the payment method
+     * @param int $_pid The payment method ID
+     * @author Oscar van Eijk
+     * @author Valérie Isaken
+     * @return string Payment method name
+     */
+    function plgVmGetDisplayedPaymentName(TablePaymentmethods $payment) {
+        if (!$this->selectedThisPayment($this->_pelement, $payment->virtuemart_paymentmethod_id)) {
+            return null; // Another payment was selected, do nothing
+        }
+		$params = new JParameter($payment->payment_params);
+		return   $payment->payment_name;
+	}
 
 
     /**

@@ -811,7 +811,7 @@ class calculationHelper {
               if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
             JPluginHelper::importPlugin('vmpayment');
             $dispatcher = JDispatcher::getInstance();
-            $retValues = $dispatcher->trigger('plgVmGetThisPaymentName', array('tablePaymentMethods' => $payment ) );
+            $retValues = $dispatcher->trigger('plgVmGetDisplayedPaymentName', array('tablePaymentMethods' => $payment ) );
             $payment_name='';
             foreach ($retValues as $return ) { $payment_name.=$return;}
           }

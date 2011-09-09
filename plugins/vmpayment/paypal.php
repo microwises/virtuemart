@@ -337,7 +337,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         $html .= '		</tr>' . "\n";
         $html .= '	</thead>' . "\n";
         $html .= '	<tr>' . "\n";
-        $html .= '		<td>' . $this->plgVmGetPaymentName($paymethod_id) . '</td>' . "\n";
+        $html .= '		<td>' . $this->getThisPaymentName($paymethod_id) . '</td>' . "\n";
 //		$html .= '		<td></td>'."\n";
 //		$html .= '		<td></td>'."\n";
 //		$html .= '		<td></td>'."\n";
