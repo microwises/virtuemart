@@ -261,7 +261,7 @@ class shopFunctionsF {
 	 */
 	public function renderMail ($viewName, $recipient, $vars=array()) {
 		if(!class_exists('VirtueMartControllerVirtuemart')) require(JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
-		$format = (VmConfig::get('html_email')) ? 'html' : 'raw';
+		$format = (VmConfig::get('order_html_email',1)) ? 'html' : 'raw';
 
 		$controller = new VirtueMartControllerVirtuemart();
 		$controller->addModelPath(JPATH_VM_SITE.DS.'models');
@@ -281,12 +281,13 @@ class shopFunctionsF {
 		foreach ($vars as $key => $val) {
 			$view->$key = $val;
 		}
-
-		return self::sendMail($view, $recipient);
-
 		if (isset($view->doVendor)) {
-			return self::sendMail($view, $view->vendorEmail, true);
+			self::sendMail($view, $view->vendorEmail, true);
+		} else {
+			return self::sendMail($view, $recipient);
 		}
+
+
 	}
 	// VirtueMartViewUser: registerUser,
 

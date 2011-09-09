@@ -330,14 +330,14 @@ class VirtueMartModelOrders extends VmModel {
 
 			/* Get the list of orders to notify */
 			// TODO as getInt ???
-			//$notify = JRequest::getVar('notify_customer', array());
+
 
 			/* See where the lines should be updated too */
 			// TODO as getInt ???
 			//$update_lines = JRequest::getVar('update_lines', array());
 
 			/* Get the list of comments */
-			//$comments = JRequest::getVar('order_comment', array());
+
 		}
 
 		// TODO This is not the most logical place for these plugins (or better; the method updateStatus() must be renamed....)
@@ -361,12 +361,15 @@ class VirtueMartModelOrders extends VmModel {
 		$updated = 0;
 		$error = 0;
 		if ($orders) {
+
+			$notify = JRequest::getVar('notify_customer', array());
+			$comments = JRequest::getVar('comment', array());
 			foreach ($orders as $virtuemart_order_id => $order) {
 				if  ($order_id >0) $virtuemart_order_id= $order_id;
 				/* Get customer notification */
-				//$customer_notified = (@$notify[$virtuemart_order_id] == 1) ? 1 : 0;
+				$customer_notified = (@$notify[$virtuemart_order_id] == 1) ? 1 : 0;
 				/* Get the comments */
-				//$comment = (array_key_exists($virtuemart_order_id, $comments)) ? $comments[$virtuemart_order_id] : '';
+				$comment = (array_key_exists($virtuemart_order_id, $comments)) ? $comments[$virtuemart_order_id] : '';
 
 				/* Update the order */
 				$data = $this->getTable('orders');
@@ -410,8 +413,17 @@ class VirtueMartModelOrders extends VmModel {
 				}
 
 				if ($data->store()) {
-					$this->updateSingleItem($order_item->virtuemart_order_item_id, $order['order_status'],$order['comments'],$virtuemart_order_id);
-
+					$q = 'SELECT virtuemart_order_item_id
+										FROM #__virtuemart_order_items
+										WHERE virtuemart_order_id="'.$virtuemart_order_id.'"';
+					$db = JFactory::getDBO();
+					$db->setQuery($q);
+					$order_items = $db->loadObjectList();
+					if ($order_items) {
+						foreach ($order_items as $order_item) {
+						$this->updateSingleItem($order_item->virtuemart_order_item_id, $order['order_status'],$order['comments'],$virtuemart_order_id);
+						}
+					}
 					/* Update the order history */
 					$this->_updateOrderHist($virtuemart_order_id, $order['order_status'], $order['customer_notified'], $order['comments']);
 
@@ -1225,11 +1237,11 @@ vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_s
 	 * @author RolandD, Christopher Roussel
 	 * @todo: Fix URL when we have front-end done
 	 */
-	function notifyCustomer($order, $comments,$includeComments) {
+	function notifyCustomer($order, $comments,$includeComments=array() ) {
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
 		$vars = array('order' => $order, 'comments' => $comments, 'includeComments' => $includeComments);
-		$vars['includeComments'] = JRequest::getVar('customer_notified', array());
+		//$vars['includeComments'] = JRequest::getVar('customer_notified', array());
 
 		//$url = VmConfig::get('secureurl')."index.php?option=com_virtuemart&page=account.order_details&virtuemart_order_id=".$order->virtuemart_order_id.'&Itemid='.$sess->getShopItemid();
 		$vars['url'] = 'url';

@@ -191,7 +191,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
                             $lang = JFactory::getLanguage();
                             $text = $lang->hasKey($this->userField->title) ? JText::_($this->userField->title) : $this->userField->title;
                             ?>
-				<input class="inputbox" type="text" name="title" id="title" size="50" value="<?php echo $text; ?>" />
+				<input class="inputbox" type="text" name="title" id="title" size="50" value="<?php echo $this->userField->title; ?>" />(<?php echo $text ?>)
 			</td>
 		</tr>
 

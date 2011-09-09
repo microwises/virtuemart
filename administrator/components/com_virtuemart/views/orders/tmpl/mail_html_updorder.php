@@ -1,8 +1,8 @@
 <?php 
 echo JText::_('COM_VIRTUEMART_HI') .' '. $this->user->full_name . '<br/>';
-echo JText::sprintf('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_1', $this->order->virtuemart_order_id) .'<br/>'  .'<br/>';
+echo JText::sprintf('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_1', $this->order['virtuemart_order_id'] ).'<br/>'  .'<br/>';
 
-if (array_key_exists($this->order->virtuemart_order_id, $this->includeComments) && !empty($this->includeComments)) {
+if (array_key_exists($this->order['virtuemart_order_id'], $this->includeComments) && !empty($this->includeComments)) {
 	echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_COMMENT_EMAIL').":"  .'<br/>';
 	echo implode('<br/>', $this->includeComments)  .'<br/>';
 	echo ' ____________________________________________________________'  .'<br/>';
