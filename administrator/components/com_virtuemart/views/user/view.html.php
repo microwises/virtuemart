@@ -105,8 +105,8 @@ class VirtuemartViewUser extends JView {
 			$lists['canBlock'] = ($currentUser->authorize('com_users', 'block user')
 			&& ($userDetails->JUser->get('id') != $currentUser->get('id'))); // Can't block myself
 			$lists['canSetMailopt'] = $currentUser->authorize('workflow', 'email_events');
-			$lists['block'] = JHTML::_('select.booleanlist', 'block',     0, $userDetails->JUser->get('block'),     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-			$lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail', 0, $userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$lists['block'] = JHTML::_('select.booleanlist', 'block',      'class="inputbox"', $userDetails->JUser->get('block'),     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail',  'class="inputbox"', $userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 			$lists['params'] = $userDetails->JUser->getParameters(true);
 
 			// Shopper info

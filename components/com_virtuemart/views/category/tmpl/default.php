@@ -171,12 +171,7 @@ $verticalseparator = " vertical-separator";
 		<div class="width70 floatleft">
 			<?php echo $this->orderByList; ?>
 		</div>
-		<div class="width30 floatright display-number">
-			<form  method="post" >
-				<input type="hidden" name="keyword" value="<?php echo JRequest::getWord('keyword') ?>" >
-				<?php echo $this->pagination->getListFooter(); ?>
-			</form>
-		</div>
+		<div class="width30 floatright display-number"><?php echo $this->pagination->getResultsCounter();?><br/><?php echo $this->pagination->getLimitBox() ?></div>
 	<div class="clear"></div>
 	</div>
 
@@ -290,6 +285,6 @@ if ($iBrowseCol != 1) { ?>
 <?php
 }
 ?>
-	<div class="page-results"><?php echo $this->pagination->getResultsCounter();?></div>
+	<div id="bottom-pagination"><?php echo $this->pagination->getListFooter(); ?></div>
 </div>
 <?php } ?>

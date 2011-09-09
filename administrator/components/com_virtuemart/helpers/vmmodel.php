@@ -213,7 +213,6 @@ class VmModel extends JModel {
 
 // 			vmdebug('my query',$q);
 			$this->_db->setQuery($q,$limitStart,$limit);
-
 			if($object == 2){
 				$list = $this->_db->loadResultArray();
 			} else if($object == 1 ){
@@ -230,6 +229,7 @@ class VmModel extends JModel {
 			}
 
 			if($this->_withCount){
+
 				$this->_db->setQuery('SELECT FOUND_ROWS()');
 				$count = $this->_db->loadResult();
 
