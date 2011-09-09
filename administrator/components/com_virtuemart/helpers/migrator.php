@@ -570,7 +570,11 @@ class Migrator extends VmModel{
 				$category['published'] = $oldcategory['category_publish'] == 'Y' ? 1 : 0;
 				$category['created_on'] = $oldcategory['cdate'];
 				$category['modified_on'] = $oldcategory['mdate'];
-				$category['category_layout'] = $oldcategory['category_browsepage'];
+                                $browsepage = $oldcategory['category_browsepage'];
+                                if (strcmp($browsepage, 'managed') ==0 ) {
+                                    $browsepage="browse_".$oldcategory['products_per_row'];
+                                }
+				$category['category_layout'] = $browsepage;
 				$category['category_product_layout'] = $oldcategory['category_flypage'];
 				//	$category[''] = $oldcategory['products_per_row']; //now done by the layout
 				$category['ordering'] = $oldcategory['list_order'];
