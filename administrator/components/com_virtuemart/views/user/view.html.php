@@ -110,7 +110,7 @@ class VirtuemartViewUser extends JView {
 			$lists['params'] = $userDetails->JUser->getParameters(true);
 
 			// Shopper info
-			vmdebug('my userDetails',$userDetails);
+// 			vmdebug('my userDetails',$userDetails);
 			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($userDetails->shopper_groups);
 			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->virtuemart_vendor_id);
 			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));

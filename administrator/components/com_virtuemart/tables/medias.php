@@ -99,7 +99,7 @@ class TableMedias extends VmTable {
 
 	      	$count = count($unique_id);
 	      	if($count!==0){
-	      		vmdebug('check medias $count',$count);
+
 	      		if($count == 1){
 	      			if(empty($this->virtuemart_media_id)){
 	      				$this->virtuemart_media_id = $unique_id[0]['virtuemart_media_id'];

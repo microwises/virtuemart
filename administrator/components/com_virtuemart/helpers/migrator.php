@@ -191,7 +191,7 @@ class Migrator extends VmModel{
 		$this->mediaModel = new VirtueMartModelMedia();
 		//First lets read which files are already stored
 		$this->storedMedias = $this->mediaModel->getFiles(false, true, false);
-		//		vmdebug('portMedia',$this->storedMedias);
+
 		$countTotal = 0;
 		//We do it per type
 		$url = VmConfig::get('media_product_path');
@@ -237,7 +237,7 @@ class Migrator extends VmModel{
 				$knownNames[] = $media->file_url;
 			}
 		}
-// 		vmdebug('my known paths ',$knownNames);
+// 		vmdebug('my known paths of type'.$type,$knownNames);
 		$filesInDir = array();
 		$foldersInDir = array();
 
@@ -261,14 +261,14 @@ class Migrator extends VmModel{
 
 							$relUrlName = '';
 							$relUrlName = $relUrl.$file;
-							vmdebug('my relative url ',$relUrlName);
+// 							vmdebug('my relative url ',$relUrlName);
 							//We port all type of media, regardless the extension
 							if($filetype == 'file'){
 								if(!in_array($relUrlName, $knownNames)){
 									$filesInDir[] = array('filename' => $file, 'url' => $relUrl);
 								}
 							}else {
-								if($filetype == 'dir' && $file != 'resized'){
+								if($filetype == 'dir' && $file != 'resized' && $file != '.svn'){
 									$subfoldersInDir[] = $dir.$file.DS;
 // 									vmdebug('my sub folder ',$dir.$file);
 								}
