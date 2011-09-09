@@ -221,7 +221,7 @@ class VmTable extends JTable{
 	 *
 	 * @author Max Milbers
 	 * @param array/obj $data input data as assoc array or obj
-	 * @param unknown_type $obligatory
+	 * @param boolean $preload You can preload the data here too preserve not updated data
 	 * @return array/obj $data the updated data
 	 */
 	public function bindChecknStore(&$data,$preload=false){
@@ -242,6 +242,7 @@ class VmTable extends JTable{
 
 		$ok = true;
 		$msg = '';
+
 		if(!$this->bind($data)){
 			$ok = false;
 			$msg = 'bind';

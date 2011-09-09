@@ -259,7 +259,26 @@ class VirtueMartModelProduct extends VmModel {
 			$whereString = '';
 		}
 
-		return $this->exeSortSearchListQuery(2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
+		$product_ids =  $this->exeSortSearchListQuery(2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
+
+		// This makes products searchable, we decided that this is not good, because variant childs appear then in lists
+		//So the new convention is that products which should be shown on a category or a manufacturer page should have entered this data
+/*		if ($joinCategory == true || $joinMf) {
+
+			$tmp = array();;
+			foreach($product_ids as $k=>$id){
+				$tmp[] = $id;
+				$children = $this->getProductChildIds($id);
+				if($children){
+					$tmp = array_merge($tmp,$children);
+				}
+			}
+			$product_ids = $tmp;
+		}*/
+
+// 		vmdebug('my product ids',$product_ids);
+
+		return $product_ids;
 
 	}
 
@@ -291,7 +310,7 @@ class VirtueMartModelProduct extends VmModel {
     	while(!empty($child->product_parent_id)){
 
     		$parentProduct = $this->getProductSingle($child->product_parent_id,$front, false,false);
-    	    $attribs = get_object_vars($parentProduct);
+    	   $attribs = get_object_vars($parentProduct);
 
 	    	foreach($attribs as $k=>$v){
 
@@ -343,7 +362,7 @@ class VirtueMartModelProduct extends VmModel {
     			$q = 'SELECT `virtuemart_product_price_id` FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$this->_id.'" ';
 				$this->_db->setQuery($q);
     			$ppId = $this->_db->loadResult();
-   				$ppTable->load($ppId);
+   			$ppTable->load($ppId);
 				$product = (object) array_merge((array) $ppTable, (array) $product);
 //   		}
 
@@ -653,8 +672,7 @@ class VirtueMartModelProduct extends VmModel {
      	$this->_db->setQuery($q);
 
      	return $this->_db->loadResult();
-//    	if ($this->_db->loadResult() == 'Y') return true;
-//     	else if ($this->_db->loadResult() == 'N') return false;
+
     }
 
 
@@ -731,36 +749,35 @@ class VirtueMartModelProduct extends VmModel {
 			$data = JRequest::get('post');
 		}
 
-		/* Setup some place holders */
+		vmdebug('my data in product store ',$data);
+
+		// Setup some place holders
 		$product_data = $this->getTable('products');
 
-		// Load the old product details first  hmm for what exactly do we need it?
-//		if(!empty($data['virtuemart_product_id'])){
-			$product_data->load((int)$data['virtuemart_product_id']);
-			$product_data->resetErrors();
-	//		$errors = $product_data->getErrors();
-//			vmdebug('Error loading product table products ',$errors);
-//		}
+		//Set the product packaging
+		$data['product_packaging'] = (($data['product_box'] << 16) | ($data['product_packaging']&0xFFFF));
+		// Set the order levels
+		$data['product_order_levels'] = $data['min_order_level'].','.$data['max_order_level'];
 
-
-        /* Set the product packaging */
-        $data['product_packaging'] = (($data['product_box'] << 16) | ($data['product_packaging']&0xFFFF));
-        /* Set the order levels */
-        $data['product_order_levels'] = $data['min_order_level'].','.$data['max_order_level'];
-
-        $product_data->bindChecknStore($data);
+		//with the true, we do preloading and preserve so old values, but why do we do that? I try with false note by Max Milbers
+		$product_data->bindChecknStore($data,true);
 
 		$errors = $product_data->getErrors();
 		foreach($errors as $error){
 			vmdebug('Error storing product table products ',$errors);
 			$this->setError($error);
+			return false;
 		}
 
-		if(empty($data['virtuemart_product_id'])){
-			$dbv = $product_data->getDBO();
-			//I dont like the solution to use three variables
-			$this->_id = $data['virtuemart_product_id'] = $product_data->virtuemart_product_id ;// = $dbv->insertid();
+		$this->_id = $data['virtuemart_product_id'] = $product_data->virtuemart_product_id ;
+
+
+		if(!empty($data['categories']) && count($data['categories'])>0){
+			$data['virtuemart_category_id'] = $data['categories'];
+
+			$data = $this->updateXrefAndChildTables($data,'product_categories');
 		}
+
 
 		if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
 			VirtueMartModelCustom::saveModelCustomfields('product',$data,$product_data->virtuemart_product_id);
@@ -770,27 +787,15 @@ class VirtueMartModelProduct extends VmModel {
 			VirtueMartModelCustom::saveChildCustomRelation('product',$data['ChildCustomRelation'],$product_data->virtuemart_product_id);
 		}
 
-		$product_price_table = $this->getTable('product_prices');
 
-		$product_price_table->bindChecknStore($data);
+ 		$data = $this->updateXrefAndChildTables($data, 'product_prices');
 
-		$errors = $product_price_table->getErrors();
-		foreach($errors as $error){
-			vmdebug('Error storing product table product_prices ',$errors);
-			$this->setError($error);
-		}
-
-		/* Update manufacturer link */
+		// Update manufacturer link
 		if(!empty($data['virtuemart_manufacturer_id'])){
-
-			$xrefTable = $this->getTable('product_manufacturers');
-	    	if (!$xrefTable->bindChecknStore($data)) {
-	    		vmdebug('Error storing product table product_manufacturers ',$errors);
-				$this->setError($xrefTable->getError());
-			}
+			$data = $this->updateXrefAndChildTables($data, 'product_manufacturers');
 		}
 
-		/* Update waiting list  */
+		// Update waiting list
 		if(!empty($data['notify_users'])){
 			if ($data['product_in_stock'] > 0 && $data['notify_users'] == '1' ) {
 				$waitinglist = new VirtueMartModelWaitingList();
@@ -798,54 +803,31 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-		//Should be replaced by xref table
-		if(!empty($data['categories']) && count($data['categories'])>0){
-			/* Delete old category links */
-			$q  = "DELETE FROM `#__virtuemart_product_categories` ";
-			$q .= "WHERE `virtuemart_product_id` = '".(int)$product_data->virtuemart_product_id."' ";
-			$this->_db->setQuery($q);
-			$this->_db->Query();
-			if(!is_array($data['categories'])) $data['categories'] = array($data['categories']);
-
-			/* Store the new categories */
-			foreach( $data["categories"] as $virtuemart_category_id ) {
-				$this->_db->setQuery('SELECT IF(ISNULL(`ordering`), 1, MAX(`ordering`) + 1) as ordering FROM `#__virtuemart_product_categories` WHERE `virtuemart_category_id`='.$virtuemart_category_id );
-				$list_order = $this->_db->loadResult();
-
-				$q  = "INSERT INTO #__virtuemart_product_categories ";
-				$q .= "(virtuemart_category_id,virtuemart_product_id,ordering) ";
-				$q .= "VALUES ('".(int)$virtuemart_category_id."','".(int) $product_data->virtuemart_product_id . "', ".(int)$list_order. ")";
-				$this->_db->setQuery($q);
-				$this->_db->query();
-			}
-		}
-
 		// Process the images
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		$mediaModel = new VirtueMartModelMedia();
-// 		vmdebug('my data in product store ',$data);
+
 		$mediaModel->storeMedia($data,'product');
 		$errors = $mediaModel->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);
 		}
 
-		/* Update product types
-		* 'product_type_tables' are all types tables in product edit view
-		TODO CAN BE CUSTOM FIELDS
-
-		if (array_key_exists('product_type_tables', $data)) {
-			if(!class_exists('VirtueMartModelProducttypes')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'producttypes.php');
-			$ProducttypesModel = new VirtueMartModelProducttypes();
-			$ProducttypesModel->saveProductProducttypes($data['product_type_tables']);
-		}
-
-		*/
-		/* Update product custom field
-		* 'product_type_tables' are all types tables in product edit view
-		*/
-		//$product['virtuemart_product_id'] = $product_data->virtuemart_product_id;
 		return $product_data->virtuemart_product_id;
+	}
+
+	private function updateXrefAndChildTables($data,$tableName){
+
+		//First we load the xref table, to get the old data
+		$product_table_Parent = $this->getTable($tableName);
+		$product_table_Parent->bindChecknStore($data);
+		$errors = $product_table_Parent->getErrors();
+		foreach($errors as $error){
+			vmdebug('Error storing product table '.$tableName.' ',$errors);
+			$this->setError($error);
+		}
+		return $data;
+
 	}
 
 	/**
@@ -1490,6 +1472,13 @@ class VirtueMartModelProduct extends VmModel {
 
 	}
 
+	function getProductChildIds($product_id ) {
+		if(empty($product_id)) return array();
+		$db = JFactory::getDBO();
+		$db->setQuery(' SELECT virtuemart_product_id FROM `#__virtuemart_products` WHERE `product_parent_id` ='.(int)$product_id);
+		return $db->loadResultArray();
+
+	}
 
 	function getProductParent($product_parent_id) {
 		if(empty($product_parent_id)) return array();
