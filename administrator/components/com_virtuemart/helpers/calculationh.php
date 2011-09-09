@@ -42,6 +42,7 @@ class calculationHelper {
     public $productCurrency;
     public $product_tax_id = 0;
     public $product_discount_id = 0;
+    public $product_marge_id = 0;
     public $vendorCurrency = 0;
     private $exchangeRateVendor = 0;
     private $exchangeRateShopper = 0;
@@ -77,6 +78,7 @@ class calculationHelper {
 
         $this->setShopperGroupIds();
 
+        $this->rules['Marge'] = array();
         $this->rules['Tax'] 	= array();
         $this->rules['dBTax'] = array();
         $this->rules['dATax'] = array();
@@ -247,7 +249,17 @@ class calculationHelper {
 
         $prices['costPrice'] = $costPrice;
         $basePriceShopCurrency = $this->roundDisplay($this->_currencyDisplay->convertCurrencyTo((int) $this->productCurrency, $costPrice));
-        $prices['basePrice'] = $basePriceShopCurrency;
+//         vmdebug('my pure $basePriceShopCurrency',$basePriceShopCurrency);
+
+        //For Profit, margin, and so on
+        $this->rules['Marge'] = $this->gatherEffectingRulesForProductPrice('Marge', $this->product_marge_id);
+//         vmdebug('my rules for marge',$this->rules['Marge']);
+        $basePriceMargin = $this->roundDisplay($this->executeCalculation($this->rules['Marge'], $basePriceShopCurrency));
+        $basePriceShopCurrency = $prices['basePrice'] = !empty($basePriceMargin) ? $basePriceMargin : $basePriceShopCurrency;
+
+//         vmdebug('my $basePriceShopCurrency after Marge',$basePriceShopCurrency);
+
+//         $prices['basePrice'] = $basePriceShopCurrency;
 
         if (!empty($variant)) {
             $basePriceShopCurrency = $basePriceShopCurrency + doubleval($variant);
@@ -259,11 +271,8 @@ class calculationHelper {
         if (empty($prices['basePriceVariant'])) {
             $prices['basePriceVariant'] = $prices['basePrice'];
         }
-        //For Profit, margin, and so on
-//		if(count($calcRules)!==0){
-//			$prices['profit'] =
-//		}
-//		$basePrice = !empty($prices['basePriceVariant'])?$prices['basePriceVariant']:$prices['basePrice'];
+
+
         $prices['basePriceWithTax'] = $this->roundDisplay($this->executeCalculation($this->rules['Tax'], $prices['basePrice'], true));
         $prices['discountedPriceWithoutTax'] = $this->roundDisplay($this->executeCalculation($this->rules['dBTax'], $prices['basePrice']));
 
@@ -615,7 +624,7 @@ class calculationHelper {
             if (!empty($this->_amount)) {
                 //Test
             }
-
+//             vmdebug('tested $hitsCategory '.$rule['calc_name'],$hitsCategory,$hitsShopper,$hitsDeliveryArea);
 //if ($this -> _debug	) echo '<br/ >foreach '.$rule["virtuemart_calc_id"].' and hitsCat '.$hitsCategory.' and hitsS '.$hitsShopper.' and '.$entrypoint;
             if ($hitsCategory && $hitsShopper && $hitsDeliveryArea) {
                 if ($this->_debug)
@@ -623,6 +632,7 @@ class calculationHelper {
                 $testedRules[] = $rule;
             }
         }
+// 			vmdebug('$testedRules',$testedRules);
         return $testedRules;
     }
 
