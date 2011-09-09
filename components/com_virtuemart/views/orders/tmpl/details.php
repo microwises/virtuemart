@@ -22,22 +22,22 @@ JHTML::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets
 ?>
 <h2><?php echo JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'); ?></h2>
 
-<div style="float: left; max-width:40%; overflow: auto; padding: 0px; margin: 0px; spacing: 0px;">
+<div style="padding: 0px; margin: 10px; spacing: 0px;">
 <?php
 echo $this->loadTemplate('order');
 ?>
 </div>
 
-<div style="float: right; max-width:60%; overflow: auto; padding: 0px; margin: 0px; spacing: 0px;">
+<div style="padding: 0px; margin: 0px; spacing: 0px;">
 <?php
 echo $this->pane->startPane("order-pane");
 
-echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_ORDER_HISTORY'), 'details_history' );
-echo $this->loadTemplate('history');
-echo $this->pane->endPanel();
-
 echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_ORDER_ITEM'), 'details_items' );
 echo $this->loadTemplate('items');
+echo $this->pane->endPanel();
+
+echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_ORDER_HISTORY'), 'details_history' );
+echo $this->loadTemplate('history');
 echo $this->pane->endPanel();
 
 //echo "<pre>\n";
