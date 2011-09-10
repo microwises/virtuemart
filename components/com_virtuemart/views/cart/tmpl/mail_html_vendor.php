@@ -22,16 +22,10 @@ defined('_JEXEC') or die('Restricted access');
 
 
 //	echo JText::_('COM_VIRTUEMART_CART_MAIL_VENDOR_TITLE').$this->vendor->vendor_name.'<br/>';
-	echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_CONTENT',$this->vendor->vendor_store_name,$this->shopperName,$this->prices['billTotal'],$this->order['details']['BT']->order_number);
+	echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_CONTENT',$this->vendor->vendor_store_name,$this->shopperName,$this->cart->prices['billTotal'],$this->order['details']['BT']->order_number);
 
 if(!empty($this->order['details']['BT']->customer_note)){
 	echo '<br />'.JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_SHOPPER_QUESTION',$this->order['details']['BT']->customer_note).'<br />';
 }
-
-	//PriceList
-include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'price_list.php');
-
-include(JPATH_VM_SITE.DS.'views'.DS.'cart'.DS.'tmpl'.DS.'shopper_adresses.php');
-
 
 	?>

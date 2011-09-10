@@ -1304,7 +1304,7 @@ public function removeProductCart($prod_id=0) {
 
 	function prepareAddressDataInCart(){
 
-		if(!class_exists('VirtuemartModelUserfields')) require(JPATH_VM_ADMIN.DS.'models'.DS.'userfields.php');
+		if(!class_exists('VirtuemartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
 		$userFieldsModel =new VirtueMartModelUserfields;
 
 		$BTaddress['fields']= array();
@@ -1340,7 +1340,7 @@ public function removeProductCart($prod_id=0) {
 		//$this->lists['current_id'] = $currentUser->get('id');
 		//		$this->assignRef('virtuemart_user_id', $this->lists['current_id']);
 		if($this->lists['current_id']  = $currentUser->get('id') ){
-		if(!class_exists('VirtuemartModelUser')) require(JPATH_VM_ADMIN.DS.'models'.DS.'user.php');
+		if(!class_exists('VirtuemartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 		$this->user = new VirtueMartModelUser;
 		$this->user->setCurrent();
 		if(!$this->user){

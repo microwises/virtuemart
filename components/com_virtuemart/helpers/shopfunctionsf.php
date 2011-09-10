@@ -281,11 +281,11 @@ class shopFunctionsF {
 		foreach ($vars as $key => $val) {
 			$view->$key = $val;
 		}
+		$user= self::sendMail($view, $recipient);
 		if (isset($view->doVendor)) {
 			self::sendMail($view, $view->vendorEmail, true);
-		} else {
-			return self::sendMail($view, $recipient);
 		}
+			return $user ;
 
 
 	}

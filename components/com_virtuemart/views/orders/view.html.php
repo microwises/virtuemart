@@ -46,8 +46,10 @@ class VirtuemartViewOrders extends JView {
 
 			$cuid = $_currentUser->get('id');
 			if(!empty($cuid)){
-
-				$orderNumber = $orderModel->getOrderIdByOrderNumber(JRequest::getString('order_number'));
+				$orderNumber = JRequest::getInt('virtuemart_order_id',0) ;
+				if (!$orderNumber) {
+					$orderNumber = $orderModel->getOrderIdByOrderNumber(JRequest::getString('order_number'));
+				}
 				$orderDetails = $orderModel->getOrder($orderNumber);
 				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 				if(!Permissions::getInstance()->check("admin")) {

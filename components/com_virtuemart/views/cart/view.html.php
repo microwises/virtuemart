@@ -131,7 +131,6 @@ class VirtueMartViewCart extends JView {
 	}
 
 	public function renderMail ($doVendor=false) {
-		$tpl = ($doVendor) ? 'mail_html_vendor' : 'mail_html_shopper';
 		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 
 		$cart = VirtueMartCart::getCart(false);
@@ -139,11 +138,20 @@ class VirtueMartViewCart extends JView {
 		$cart->prepareCartViewData();
 		$cart->prepareMailData();
 
-		$this->subject = ($doVendor) ? JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED',	$this->shopperName, $this->cart->prices['billTotal'], $this->order['details']['BT']->order_number) : JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED', $this->vendor->vendor_store_name, $this->order['details']['BT']->order_total, $this->order['details']['BT']->order_number, $this->order['details']['BT']->order_pass);
-
+		if ($doVendor) {
+			$this->subject = JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED',	$this->shopperName,  $this->cart->prices['billTotal'],$this->order['details']['BT']->order_number);
+			$recipient = 'vendor';
+		} else {
+			$this->subject = JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED', $this->cart->vendor->vendor_store_name, $this->cart->prices['billTotal'], $this->order['details']['BT']->order_number, $this->order['details']['BT']->order_pass);
+			$recipient = 'shopper';
+		}
 		$this->doVendor = true;
+		if (VmConfig::get('order_mail_html')) $tpl = 'mail_html';
+		else $tpl = 'mail_raw';
+		$this->assignRef('recipient', $recipient);
+
 		$vendorModel = $this->getModel('vendor');
-		$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
+		$this->vendorEmail = $vendorModel->getVendorEmail($cart->vendor->virtuemart_vendor_id);
 		$this->layoutName = $tpl;
 		$this->setLayout($tpl);
 		parent::display();
