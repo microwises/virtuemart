@@ -68,6 +68,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<input type="text" class="inputbox"  name="product_url" value="<?php echo $this->product->product_url; ?>" size="32" maxlength="255" />
 					</td>
 				</tr>
+			<?php	if(Vmconfig::get('multix','none')!=='none'){ ?>
 				<tr class="row0">
 					<td width="21%"><div style="text-align:right;font-weight:bold;">
 						<?php echo JText::_('COM_VIRTUEMART_VENDOR') ?></div>
@@ -75,6 +76,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<td width="79%">
 					<?php echo $this->lists['vendors'];?>
 				</td>
+			<?php } ?>
 			</tr>
 			<tr class="row1">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">

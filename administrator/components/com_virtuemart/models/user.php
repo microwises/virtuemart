@@ -600,7 +600,9 @@ class VirtueMartModelUser extends VmModel {
 
 			//TODO Attention this is set now to virtuemart_vendor_id=1, because using a vendor with different id then 1 is not completly supported and can lead to bugs
 			//So we disable the possibility to store vendors not with virtuemart_vendor_id = 1
-			$data['virtuemart_vendor_id'] = 1;
+			if(Vmconfig::get('multix','none')==='none'){
+				$data['virtuemart_vendor_id'] = 1;
+			}
 			$vendorModel->setId($data['virtuemart_vendor_id']);
 
 			if (!$vendorModel->store($data)) {

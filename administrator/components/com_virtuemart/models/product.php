@@ -154,7 +154,7 @@ class VirtueMartModelProduct extends VmModel {
 			$where[] = ' `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` = '.$virtuemart_manufacturer_id;
 		}
 
-		if ($app->isSite() && VmConfig::get('check_stock') && Vmconfig::get('show_out_of_stock_products') != '1'){
+		if ($app->isSite() && VmConfig::get('check_stock') && Vmconfig::get('show_out_of_stock_products') != 1){
 			$where[] = ' `product_in_stock` > 0 ';
 		}
 

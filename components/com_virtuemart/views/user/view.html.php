@@ -329,7 +329,12 @@ class VirtuemartViewUser extends JView {
 			}
 
 			$vendorModel = $this->getModel('vendor');
-			$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
+
+			if(Vmconfig::get('multix','none')==='none'){
+				$vendorModel->setId(1);
+			} else {
+				$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
+			}
 			$vendor = $vendorModel->getVendor();
 			$vendorModel->addImages($vendor);
 			$this->assignRef('vendor', $vendor);

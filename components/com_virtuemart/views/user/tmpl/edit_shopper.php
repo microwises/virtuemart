@@ -26,6 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_LBL') ?>
 	</legend>
 	<table class="adminform">
+<?php	if(Vmconfig::get('multix','none')!=='none'){ ?>
 		<tr>
 			<td class="key">
 				<label for="virtuemart_vendor_id">
@@ -36,6 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo $this->lists['vendors']; ?>
 			</td>
 		</tr>
+<?php } ?>
 
 		<tr>
 			<td class="key">

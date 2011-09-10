@@ -62,7 +62,7 @@ AdminUIHelper::startAdminArea();
 					, $this->lists['order_Dir']
 					, $this->lists['order']); ?>
 			</th>
-<?php		if(Vmconfig::get('multix','none')!='none'){ ?>
+<?php		if(Vmconfig::get('multix','none')!=='none'){ ?>
 		<th width="80">
 			<?php echo JText::_('COM_VIRTUEMART_USER_IS_VENDOR'); ?>
 			</th>
@@ -100,7 +100,7 @@ AdminUIHelper::startAdminArea();
 				<td align="left">
 					<?php echo $row->name; ?>
 				</td>
-				<?php		if(Vmconfig::get('multix','none')!='none'){ ?>
+				<?php		if(Vmconfig::get('multix','none')!=='none'){ ?>
 				<td align="center">
 					<?php echo $is_vendor; ?>
 				</td>

@@ -115,9 +115,12 @@ class VirtuemartViewProduct extends JView {
 				// Load the vendors
 				$vendor_model = $this->getModel('vendor');
 
-				$vendors = $vendor_model->getVendors();
-				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $product->virtuemart_vendor_id);
+// 				$vendors = $vendor_model->getVendors();
+// 				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $product->virtuemart_vendor_id);
 
+				if(Vmconfig::get('multix','none')!=='none'){
+					$lists['vendors'] = Shopfunctions::renderVendorList($product->virtuemart_vendor_id);
+				}
 				// Load the currencies
 				$currency_model = $this->getModel('currency');
 

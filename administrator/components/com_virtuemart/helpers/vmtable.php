@@ -208,10 +208,11 @@ class VmTable extends JTable{
 			}
 		}
 
-		//This is a hack for single store, shouldnt be used, when we write multivendor there should be message
-		//if(isset($this->virtuemart_vendor_id)){
-		//if(empty($this->virtuemart_vendor_id)) $this->virtuemart_vendor_id = 1;
-		//}
+		if(isset($this->virtuemart_vendor_id)){
+			if(Vmconfig::get('multix','none')==='none'){
+				$data['virtuemart_vendor_id'] = 1;
+			}
+		}
 
 		return true;
 	}
