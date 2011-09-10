@@ -41,9 +41,13 @@ if ($show_product_list) {
 		</div>
 	</div>
 <?php } ?>
-<div class="total" style="float: right;"><?php echo  $data->billTotal ?></div>
+<?php if ($data->totalProduct) { ?>
+	<div class="total" style="float: right;"><?php echo  $data->billTotal ?></div>
+<?php }  ?>
 <div class="total_products"><?php echo  $data->totalProductTxt ?></div>
-<div class="show_cart"><?php echo  $data->cart_show ?></div>
+<?php if ($data->totalProduct) { ?>
+	<div class="show_cart"><?php echo  $data->cart_show ?></div>
+<?php }  ?>
 <noscript>
 <?php echo JText::_('MOD_VIRTUEMART_CART_AJAX_CART_PLZ_JAVASCRIPT') ?>
 </noscript>
