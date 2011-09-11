@@ -55,22 +55,24 @@ class AdminUIHelper {
 		?>
 
 		<div class="virtuemart-admin-area">
-		<?php 
+		<?php
 		// Include ALU System
 		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 		?>
-			
+
 			<div class="menu-wrapper">
 				<a href="http://virtuemart.net"><div class="menu-vmlogo"></div></a>
-				<?php AdminUIHelper::showAdminMenu(); 
+				<?php AdminUIHelper::showAdminMenu();
 				?>
 				<div class="menu-notice">
-				<?php 
+				<?php
 				echo LiveUpdate::getIcon(array(),'notice');
 				?>
+				<?php echo VmConfig::getInstalledVersion(); ?>
 				</div>
+
 			</div>
-			
+
 			<div id="admin-content-wrapper">
 			<div class="toggler vmicon-show"></div>
 				<div id="admin-content" class="admin-content">
@@ -92,7 +94,7 @@ class AdminUIHelper {
 			</div>
 			<div class="clear"></div>
 		</div>
-	<?php 
+	<?php
 	    }
 
 	/**
@@ -119,7 +121,7 @@ class AdminUIHelper {
 		$html .= '</div>';
 		echo $html;
 	}
-	
+
 	/**
 	 * Admin UI Tabs Imtation
 	 * Gives A Tab Based Navigation Back And Loads The Templates With A Nice Design

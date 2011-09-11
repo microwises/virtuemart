@@ -20,18 +20,14 @@
 defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea();
 ?>
-<form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" >
-<input type="hidden" name="task" value="" />
+
 
 
 <?php // Loading Templates in Tabs
 AdminUIHelper::buildTabs ( array (	'tools' 	=> 	'COM_VIRTUEMART_UPDATE_TOOLS_TAB',
-									'update' 	=> 	'COM_VIRTUEMART_UPDATE_VERSION_TAB'
+									'migrator' 	=> 	'COM_VIRTUEMART_UPDATE_VERSION_TAB'
 									 ) );
 ?>
 
-<!-- Hidden Fields -->
-<input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="view" value="updatesMigration" />
-</form>
+
 <?php AdminUIHelper::endAdminArea(); ?>

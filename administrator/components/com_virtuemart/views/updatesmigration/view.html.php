@@ -38,8 +38,9 @@ class VirtuemartViewUpdatesMigration extends JView {
 
 		JToolBarHelper::title(JTEXT::_('COM_VIRTUEMART_UPDATE_MIGRATION'), 'head vm_config_48');
 
-		$this->loadHelper('connection');
+// 		$this->loadHelper('connection');
 		$this->loadHelper('image');
+		$this->loadHelper('html');
 		$model = $this->getModel();
 
 		$this->assignRef('checkbutton_style', $checkbutton_style);

@@ -7,7 +7,7 @@
 * @subpackage UpdatesMigration
 * @author Max Milbers
 * @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @copyright Copyright (c) 2004 - 2011 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
 * VirtueMart is free software. This version may have been modified pursuant
 * to the GNU General Public License, and as distributed it includes or
@@ -40,7 +40,7 @@ if(!VmConfig::get('dangeroustools', false)){
 	<td align="left" colspan="3" >
              <h3> <?php echo JText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'); ?> </h3>
 	</td>
-    
+
 	<td align="left" colspan="2" >
             <h3> <?php echo JText::_('COM_VIRTUEMART_TOOLS_RENEW_CONFIG'); ?> </h3>
 	</td>
@@ -66,7 +66,7 @@ if(!VmConfig::get('dangeroustools', false)){
 	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING_CONFIRM', JText::_('COM_VIRTUEMART_MEDIA_S')); ?>', '<?php echo $link; ?>');">
 			<span class="vmicon48 vm_shop_products_48"></span>
 			<br /><?php echo JText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'); ?>
-	    
+
 		</a></div>
 	</td>
 
@@ -74,7 +74,7 @@ if(!VmConfig::get('dangeroustools', false)){
 
         		<?php echo JText::sprintf('COM_VIRTUEMART_TOOLS_SYNC_MEDIAS_EXPLAIN',VmConfig::get('media_product_path') ,VmConfig::get('media_category_path') , VmConfig::get('media_manufacturer_path')); ?>
         </td>
-          
+
 
 	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=renewConfig&token='.JUtility::getToken() ); ?>
@@ -82,17 +82,17 @@ if(!VmConfig::get('dangeroustools', false)){
 		<span class="vmicon48 vm_install_48"></span>
 	    <br />
             <?php echo Jtext::_('COM_VIRTUEMART_TOOLS_RENEW_CONFIG'); ?>
-		
+
 		</a></div>
 	</td>
 	<td align="left" colspan="4" >
 		<?php echo JText::sprintf('COM_VIRTUEMART_TOOLS_RENEW_CONFIG_EXPLAIN'); ?>
-	    
+
 	</td>
     </tr>
   <tr>
 
-
+<?php /*
 	<td align="left" colspan="5" >
              <h3> <?php echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TITLE'); ?> </h3>
 	</td>
