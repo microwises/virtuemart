@@ -59,7 +59,12 @@ echo JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE').' '.JHTML::_('select.genericlis
 </form>
 
 <!-- End Search Box -->
-<?php }
+<?php } ?>
+
+<div class="category_description">
+	<?php echo $this->category->category_description ; ?>
+</div>
+<?php
 /* Show child categories */
 
 if ( VmConfig::get('showCategory',1) ) {
