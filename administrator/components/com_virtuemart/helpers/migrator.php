@@ -621,7 +621,6 @@ class Migrator extends VmModel{
 					break;
 				}
 
-
 				$oldtonewCats[$oldcategory['category_id']] = $category['virtuemart_category_id'];
 				unset($category['virtuemart_category_id']);
 				$i++;
@@ -957,10 +956,17 @@ class Migrator extends VmModel{
 
 					//Unsolved Here we must look for the url product_full_image and check which media has the same
 					// full_image url
-					$q = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_medias` WHERE `file_titel` = "'.$product['product_full_image'].'" ';
-					$this->_db->setQuery($q);
-					$virtuemart_media_id = $this->loadResult();
-					if(!empty($virtuemart_media_id))$product['virtuemart_media_id'] = $virtuemart_media_id;
+					if(!empty($mediaIdFilename[$product['product_full_image']])){
+						$product['virtuemart_media_id'] = $mediaIdFilename[$product['product_full_image']];
+					} else {
+						$q = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_medias` WHERE `file_titel` = "'.$product['product_full_image'].'" ';
+						$this->_db->setQuery($q);
+						$virtuemart_media_id = $this->_db->loadResult();
+						if(!empty($virtuemart_media_id)){
+							$mediaIdFilename[$product['product_full_image']] = $product['virtuemart_media_id'] = $virtuemart_media_id;
+						}
+					}
+
 					//$product['virtuemart_media_id'] =
 
 					$product['virtuemart_product_id'] = $productModel->store($product);

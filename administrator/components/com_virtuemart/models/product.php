@@ -749,7 +749,7 @@ class VirtueMartModelProduct extends VmModel {
 			$data = JRequest::get('post');
 		}
 
-		vmdebug('my data in product store ',$data);
+// 		vmdebug('my data in product store ',$data);
 
 		// Setup some place holders
 		$product_data = $this->getTable('products');
