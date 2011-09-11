@@ -486,7 +486,7 @@ class calculationHelper {
         }
         $_value_is_total = ($_data->percent_or_total == 'total');
         $this->_cartData['couponCode'] = $_code;
-        $this->_cartData['couponDescr'] = ($_value_is_total ? $this->priceDisplay($_data->coupon_value) : (round($_data->coupon_value) . '%')
+        $this->_cartData['couponDescr'] = ($_value_is_total ? '' : (round($_data->coupon_value) . '%')
                 );
         $this->_cartPrices['salesPriceCoupon'] = ($_value_is_total ? $_data->coupon_value : ($this->_cartPrices['salesPrice'] * ($_data->coupon_value / 100))
                 );

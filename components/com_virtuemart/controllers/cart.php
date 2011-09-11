@@ -210,9 +210,9 @@ class VirtueMartControllerCart extends JController {
 	public function setcoupon(){
 		$mainframe = JFactory::getApplication();
 		/* Get the coupon_code of the cart */
-		$coupon_code= JRequest::getInt('coupon_code', '');//TODO VAR OR INT OR WORD?
+		$coupon_code= JRequest::getVar('coupon_code', '');//TODO VAR OR INT OR WORD?
 		if($coupon_code){
-			//Now set the shipping rate into the cart
+
 			$cart = VirtueMartCart::getCart();
 			if($cart){
 				$msg = $cart->setCouponCode($coupon_code);

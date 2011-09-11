@@ -178,7 +178,8 @@
 				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_coupon'), JText::_('COM_VIRTUEMART_CART_EDIT_COUPON')); ?> </td>
 				<?php if (!empty($this->cart->cartData['couponCode'])) { ?>
 					<td colspan="2" align="left"><?php
-						echo $this->cart->cartData['couponCode'] . ' (' . $this->cart->cartData['couponDescr'] . ')';
+						echo $this->cart->cartData['couponCode'] ;
+                                                echo $this->cart->cartData['couponDescr'] ? (' (' . $this->cart->cartData['couponDescr'] . ')' ): '';
 					?> </td>
 
                                         <?php if ( VmConfig::get('show_tax')) { ?>
