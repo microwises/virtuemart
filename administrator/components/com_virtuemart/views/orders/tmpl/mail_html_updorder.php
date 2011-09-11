@@ -8,16 +8,18 @@ if (array_key_exists($this->order['virtuemart_order_id'], $this->includeComments
 	echo ' ____________________________________________________________'  .'<br/>';
 }
 
-echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_2')  .'<br/>';
-echo '____________________________________________________________'  .'<br/>';
-echo $this->user->order_status_name  .'<br/>'  .'<br/>';
-
-if (VmConfig::get('vm_registration_type') != 'NO_REGISTRATION' ) {
-	echo '____________________________________________________________'  .'<br/>';
-	echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_3')  .'<br/>';
-	echo $this->url  .'<br/>'  .'<br/>';
-}
-echo '____________________________________________________________'  .'<br/>';
-echo $this->vendor->vendor_name  .'<br/>';
+echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_2') ?><br/>
+____________________________________________________________<br/>
+<?php echo $this->user->order_status_name  ?><br/><br/>
+<?php if (VmConfig::get('vm_registration_type') != 'NO_REGISTRATION' ) { ?>
+  ____________________________________________________________<br/>
+<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_3') ?><br/>
+	<p/>
+			<a class="default" title="<?php echo $this->vendor->vendor_store_name ?>" href="<?php echo JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&order_number='.$this->orderdata['details']['BT']->order_number.'&order_pass='.$this->orderdata['details']['BT']->order_pass; ?>">
+			<?php echo JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_ORDER_LINK'); ?></a>
+		</p><br/><br/>
+<?php } ?>
+____________________________________________________________<br/>
+<?php echo $this->vendor->vendor_name  .'<br/>';
 echo VmConfig::get('url')  .'<br/>';
 echo $this->vendor->email  .'<br/>';
