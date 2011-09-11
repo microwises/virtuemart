@@ -56,7 +56,7 @@ echo JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE').' '.JHTML::_('select.genericlis
 </div>
 		<input type="hidden" name="search" value="true" />
 		<input type="hidden" name="category" value="0" />
-	  </form>
+</form>
 
 <!-- End Search Box -->
 <?php }
@@ -162,7 +162,7 @@ $Browsecellwidth = ' width'.floor ( 100 / $BrowseProducts_per_row );
 // Separator
 $verticalseparator = " vertical-separator";
 ?>
-
+<form action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$this->category->virtuemart_category_id ); ?>" method="post">
 <div class="browse-view">
 
 	<h1><?php echo $this->category->category_name; ?></h1>
@@ -174,7 +174,7 @@ $verticalseparator = " vertical-separator";
 		<div class="width30 floatright display-number"><?php echo $this->pagination->getResultsCounter();?><br/><?php echo $this->pagination->getLimitBox() ?></div>
 	<div class="clear"></div>
 	</div>
-
+</form>
 <?php // Start the Output
 foreach ( $this->products as $product ) {
 
@@ -285,6 +285,6 @@ if ($iBrowseCol != 1) { ?>
 <?php
 }
 ?>
-	<div id="bottom-pagination"><?php echo $this->pagination->getListFooter(); ?></div>
+	<div id="bottom-pagination"><?php echo $this->pagination->getPagesLinks(); ?><span style="float:right"><?php echo $this->pagination->getPagesCounter(); ?><span></div>
 </div>
 <?php } ?>
