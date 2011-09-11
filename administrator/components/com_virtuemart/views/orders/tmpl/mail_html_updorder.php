@@ -16,7 +16,7 @@ ____________________________________________________________<br/>
 <?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_3') ?><br/>
 	<p/>
 			<a class="default" title="<?php echo $this->vendor->vendor_store_name ?>" href="<?php echo JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&order_number='.$this->orderdata['details']['BT']->order_number.'&order_pass='.$this->orderdata['details']['BT']->order_pass; ?>">
-			<?php echo JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_ORDER_LINK'); ?></a>
+			<?php echo JText::_('COM_VIRTUEMART_ORDER_MAIL_SHOPPER_YOUR_ORDER_LINK'); ?></a>
 		</p><br/><br/>
 <?php } ?>
 ____________________________________________________________<br/>
