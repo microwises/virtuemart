@@ -131,10 +131,8 @@ class AdminUIHelper {
 	function imitateTabs($return,$language = '') {
 		if ($return == 'start') {
 			$html = 	'<div id="admin-ui-tabs">
-							<ul id="tabs">
-								<li class="current">'.JText::_($language).'</li>
-							</ul>
-							<div class="tabs">';
+
+							<div class="tabs" title="'.JText::_($language).'">';
 			echo $html;
 		}
 		if ($return == 'end') {
