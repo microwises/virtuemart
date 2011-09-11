@@ -56,7 +56,7 @@ class VirtuemartViewCategories extends JView {
 		$categoryModel->addImages($category->children);
 
 	   //Add the category name to the pathway
-		$pathway->addItem($category->category_name); //Todo what should be shown up?
+		$pathway->addItem(strip_tags($category->category_name)); //Todo what should be shown up?
 	   $this->assignRef('category', $category);
 
 	    /* Set the titles */
@@ -75,7 +75,7 @@ class VirtuemartViewCategories extends JView {
 		}
 
 		if ($mainframe->getCfg('MetaTitle') == '1') {
-			$document->setMetaData('title', $category->category_description);  //Maybe better category_name
+			$document->setMetaData('title', strip_tags($category->category_name));  //Maybe better category_name
 		}
 		if ($mainframe->getCfg('MetaAuthor') == '1') {
 			$document->setMetaData('author', $category->metaauthor);

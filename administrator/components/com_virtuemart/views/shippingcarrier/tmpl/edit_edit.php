@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php echo $this->pluginList; ?>
                 </td>
             </tr>
-            
+
             <tr>
                 <td width="110" class="key">
                     <label for="ordering">
@@ -66,21 +66,24 @@ defined('_JEXEC') or die('Restricted access');
                     <input class="inputbox" type="text" name="ordering" id="ordering" size="3" value="<?php echo $this->carrier->ordering; ?>" />
                 </td>
             </tr>
-           
-            <tr>
-                <td width="110" class="key">
-                    <label for="virtuemart_vendor_id">
-<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
-                    </label>
-                </td>
-                <td>
-<?php echo $this->vendorList; ?>
-                </td>
-            </tr>
+
+
             <tr>
                 <td class="key"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?></td>
                 <td><fieldset class="radio"><?php echo JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $this->carrier->published); ?></fieldset></td>
             </tr>
+           <?php if(Vmconfig::get('multix','none')!=='none'){ ?>
+            <tr>
+                <td width="110" class="key">
+                    <label for="virtuemart_vendor_id">
+							<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
+                    </label>
+                </td>
+                <td>
+						<?php echo $this->vendorList; ?>
+                </td>
+            </tr>
+			<?php } ?>
         </table>
     </fieldset>
 </div>

@@ -45,8 +45,8 @@ class VirtuemartViewPaymentMethod extends JView {
 		$model = $this->getModel('paymentmethod');
 
 		//@todo should be depended by loggedVendor
-		$vendorId=1;
-		$this->assignRef('vendorId', $vendorId);
+//		$vendorId=1;
+//		$this->assignRef('vendorId', $vendorId);
 		// TODO logo
 		$viewName=ShopFunctions::SetViewTitle();
 		$this->assignRef('viewName',$viewName);
@@ -70,8 +70,10 @@ class VirtuemartViewPaymentMethod extends JView {
 			$this->assignRef('creditCardList',ShopFunctions::renderCreditCardList($paym->payment_creditcards,true));
 			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($paym->virtuemart_shoppergroup_ids));
 
-			$vendorList= ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
-			$this->assignRef('vendorList', $vendorList);
+			if(Vmconfig::get('multix','none')!=='none'){
+				$vendorList= ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
+				$this->assignRef('vendorList', $vendorList);
+			}
 
 			ShopFunctions::addStandardEditViewCommands();
 		} else {

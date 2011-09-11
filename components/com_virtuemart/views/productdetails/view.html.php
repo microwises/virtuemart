@@ -122,7 +122,7 @@ class VirtueMartViewProductdetails extends JView {
 
 			if ($category->parents) {
 				foreach ($category->parents as $c){
-					$pathway->addItem($c->category_name,JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id));
+					$pathway->addItem(strip_tags($c->category_name),JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id));
 				}
 			}
 			if($category->children)	$category_model->addImages($category->children);
@@ -135,11 +135,11 @@ class VirtueMartViewProductdetails extends JView {
 
 
 		/* Set the titles */
-		$document->setTitle( $category->category_name.' : '.$product->product_name);
+		$document->setTitle( strip_tags($category->category_name.' : '.$product->product_name));
 
 		$uri = JURI::getInstance();
 		//$pathway->addItem(JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
-		$pathway->addItem($product->product_name);
+		$pathway->addItem(strip_tags($product->product_name));
 
 		$ratingModel = $this->getModel('ratings');
 

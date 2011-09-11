@@ -191,6 +191,36 @@ class Migrator extends VmModel{
 		$this->mediaModel = new VirtueMartModelMedia();
 		//First lets read which files are already stored
 		$this->storedMedias = $this->mediaModel->getFiles(false, true, false);
+
+		//check for entries without file
+		foreach($this->storedMedias as $media){
+
+			$media_path = JPATH_ROOT.DS.str_replace('/',DS,$media->file_url);
+			if(!file_exists($media_path)){
+				vmInfo('File for '.$media->file_url.' is missing');
+
+				//The idea is here to test if the media with missing data is used somewhere and to display it
+				//When it not used, the entry should be deleted then.
+/*				$q = 'SELECT * FROM `#__virtuemart_category_medias` as cm,
+											`#__virtuemart_product_medias` as pm,
+											`#__virtuemart_manufacturer_medias` as mm,
+											`#__virtuemart_vendor_medias` as vm
+						WHERE cm.`virtuemart_media_id` = "'.$media->virtuemart_media_id.'"
+						OR pm.`virtuemart_media_id` = "'.$media->virtuemart_media_id.'"
+						OR mm.`virtuemart_media_id` = "'.$media->virtuemart_media_id.'"
+						OR vm.`virtuemart_media_id` = "'.$media->virtuemart_media_id.'" ';
+
+				$this->_db->setQuery($q);
+				$res = $this->_db->loadResultArray();
+				vmdebug('so',$res);
+				if(count($res)>0){
+					vmInfo('File for '.$media->file_url.' is missing, but used ');
+				}
+				*/
+			}
+		}
+
+
 		$countTotal = 0;
 		//We do it per type
 		$url = VmConfig::get('media_product_path');
@@ -924,8 +954,13 @@ class Migrator extends VmModel{
 					if(empty($product['product_name'] )){
 						$product['product_name'] =  $product['product_sku'].':'.$product['product_id'].':'.$product['product_s_desc'];
 					}
+
 					//Unsolved Here we must look for the url product_full_image and check which media has the same
 					// full_image url
+					$q = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_medias` WHERE `file_titel` = "'.$product['product_full_image'].'" ';
+					$this->_db->setQuery($q);
+					$virtuemart_media_id = $this->loadResult();
+					if(!empty($virtuemart_media_id))$product['virtuemart_media_id'] = $virtuemart_media_id;
 					//$product['virtuemart_media_id'] =
 
 					$product['virtuemart_product_id'] = $productModel->store($product);

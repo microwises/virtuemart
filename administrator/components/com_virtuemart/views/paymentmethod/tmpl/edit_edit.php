@@ -31,13 +31,6 @@ defined('_JEXEC') or die('Restricted access');
         <input type="text" class="inputbox" name="payment_name" value="<?php echo $this->paym->payment_name; ?>" size="32" />
       </td>
     </tr>
-<?php /*    <tr class="row0">
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_ELEMENT'); ?></td>
-      <td width="69%">
-      	<input type="text" class="inputbox" name="payment_element" value="<?php	echo $this->paym->payment_element;?>" size="4" />
-		<?php echo JHTML::tooltip( JText::_('COM_VIRTUEMART_PAYMENTMETHOD_ELEMENT_TIP') ); ?>
-      </td>
-    </tr> */ ?>
     <tr  >
       <td class="key"><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PAYMENT_CLASS_NAME_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_PAYMENT_CLASS_NAME'); ?></span></td>
       <td width="69%"><?php
@@ -46,13 +39,6 @@ defined('_JEXEC') or die('Restricted access');
        ?>
       </td>
     </tr>
-<?php /*    <tr class="row0">
-      <td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_FORM_ENABLE_PROCESSOR') ?></td>
-      <td width="69%" ><?php
-		echo $this->PaymentTypeList ?>
-      </td>
-    </tr>
-    */ ?>
     <tr   id=creditcardlist style="display : none;" >
       <td class="key"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_FORM_CREDITCARD_LIST') ?></td>
       <td width="69%" ><?php
@@ -94,7 +80,7 @@ defined('_JEXEC') or die('Restricted access');
       	<td class="key"><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_DISCOUNT_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_DISCOUNT_MIN_AMOUNT') ?></td>
       	<td width="69%" >
       	<input type="text" class="inputbox" name="discount_min_amount" value="<?php	echo $this->paym->discount_min_amount;?>" size="4" />
-       
+
       </td>
     </tr>
     <tr  >
@@ -103,13 +89,14 @@ defined('_JEXEC') or die('Restricted access');
         <input type="text" class="inputbox" name="ordering" size="4" maxlength="4" value="<?php echo $this->paym->ordering; ?>" />
       </td>
     </tr>
-    <?php if($this->perms->check('admin')){?>
-	<tr >
-      <td class="key"><?php echo JText::_('COM_VIRTUEMART_VENDOR') ?></td>
-      <td width="69%" ><?php
-		echo $this->vendorList ?>
-      </td>
-    </tr>
+    <?php if(Vmconfig::get('multix','none')!=='none'){ ?>
+    	<tr >
+    	<td class="key"><?php echo JText::_('COM_VIRTUEMART_VENDOR') ?></td>
+    	<td width="69%" ><?php
+			echo $this->vendorList ?>
+		</td>
+	</tr>
+
     <?php } ?>
   </table>
 
