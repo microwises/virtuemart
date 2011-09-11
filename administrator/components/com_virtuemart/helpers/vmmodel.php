@@ -226,6 +226,7 @@ class VmModel extends JModel {
 				if( !empty( $errors)){
 					vmdebug('exeSortSearchListQuery error in db ',$this->_db->getErrorMsg());
 				}
+				if($object == 2 or $object == 1){ $list = array(); }
 			}
 
 			if($this->_withCount){

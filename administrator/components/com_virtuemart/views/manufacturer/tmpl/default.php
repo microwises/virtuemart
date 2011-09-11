@@ -47,7 +47,7 @@ AdminUIHelper::startAdminArea();
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->manufacturers); ?>);" />
 		    </th>
 		    <th>
-				<?php echo JHTML::_('grid.sort', JText::_('COM_VIRTUEMART_MANUFACTURER_NAME') , 'mf_category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
+				<?php echo JHTML::_('grid.sort', JText::_('COM_VIRTUEMART_MANUFACTURER_NAME') , 'mf_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 		    </th>
 		    <th>
 				<?php echo JHTML::_('grid.sort', JText::_('COM_VIRTUEMART_MANUFACTURER_EMAIL') , 'mf_email', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>

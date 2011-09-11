@@ -60,7 +60,7 @@ class VirtuemartViewManufacturer extends JView {
 			$mediaModel -> setId($manufacturer->virtuemart_media_id);
 			$image = $mediaModel->getFile('manufacturer','image');
 
-			$manufacturerCategories = $categoryModel->getManufacturerCategories();
+			$manufacturerCategories = $categoryModel->getManufacturerCategories(false,true);
 			$this->assignRef('manufacturerCategories',	$manufacturerCategories);
 
 			ShopFunctions::addStandardEditViewCommands();
