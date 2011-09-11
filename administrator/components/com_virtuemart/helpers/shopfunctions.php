@@ -82,6 +82,37 @@ class ShopFunctions {
 		JToolBarHelper::save();
 		JToolBarHelper::apply();
 		JToolBarHelper::cancel();
+		// javascript for cookies setting in case of press "APPLY"
+		$document = JFactory::getDocument();
+				$isJ15 = VmConfig::isJ15();
+		if ($isJ15) {
+			$j = "
+	function submitbutton(pressbutton) {
+
+		jQuery( '#media-dialog' ).remove();
+		var options = { path: '/', expires: 2}
+		if (pressbutton == 'apply') {
+			var idx = jQuery('#tabs li.current').index();
+			jQuery.cookie('vmapply', idx, options);
+		} else {
+			jQuery.cookie('vmapply', '0', options);
+		}
+		 submitform(pressbutton);
+	};" ;
+		}
+		else $j = "
+	Joomla.submitbutton=function(a){
+		var options = { path: '/', expires: 2}
+		if (a == 'apply') {
+			var idx = jQuery('#tabs li.current').index();
+			jQuery.cookie('vmapply', idx, options);
+		} else {
+			jQuery.cookie('vmapply', '0', options);
+		}
+		jQuery( '#media-dialog' ).remove();
+		Joomla.submitform(a);
+	};" ;
+		$document->addScriptDeclaration ( $j);
 	}
 
 	function SetViewTitle($name ='', $msg ='') {

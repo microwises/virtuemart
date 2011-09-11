@@ -16,6 +16,11 @@
         <filename plugin="standard">standard.php</filename>
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements">
+		 <param	name="payment_logo" type="vmfiles" label="VMPAYEMNT_STANDARD_LOGOS"
+		description="VMPAYEMNT_STANDARD_LOGOS_LOGOS_DESC"
+		directory="/images/stories/virtuemart/payment"
+		default="default" hide_default="1" hide_none="1"
+		stripext="0"   exclude="^_" />
         <param type="vmjpluginwarning" />
         <param name="payment_info" type="textarea" cols="60" rows="30" default="" label="VMPAYMENT_STANDARD_PAYMENTINFO" description="VMPAYMENT_STANDARD_PAYMENTINFO_DESC" />
     </params>

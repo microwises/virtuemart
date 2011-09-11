@@ -110,7 +110,8 @@ class VirtueMartModelCustomfields extends VmModel {
 			'C'=>'COM_VIRTUEMART_CUSTOM_PRODUCT_CHILD',
 			'M'=>'COM_VIRTUEMART_IMAGE',
 			'V'=>'COM_VIRTUEMART_CUSTOM_CART_VARIANT',
-			'U'=>'COM_VIRTUEMART_CUSTOM_CART_USER_VARIANT'
+			'U'=>'COM_VIRTUEMART_CUSTOM_CART_USER_VARIANT',
+			'E'=>'COM_VIRTUEMART_CUSTOM_EXTENTION'
 			);
 //			'R'=>'COM_VIRTUEMART_RELATED_PRODUCT',
 //			'Z'=>'COM_VIRTUEMART_RELATED_CATEGORY',
@@ -304,7 +305,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		$productCustoms = $this->_db->loadObjectList();
 		$row= 0 ;
 		foreach ($productCustoms as $field ) {
-			$field->display = $this->inputType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row,$field->is_cart_attribute);
+			$field->display = $this->inputType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row,$field->is_cart_attribute,$virtuemart_product_id);
 			$row++ ;
 		}
 		return $productCustoms;
@@ -334,7 +335,7 @@ class VirtueMartModelCustomfields extends VmModel {
  * $pricable if can have a price
  */
 
-	public function inputType($value,$type,$is_list=0,$price,$row,$pricable=0){
+	public function inputType($value,$type,$is_list=0,$price,$row,$pricable=0,$product_id=0){
 		if ($is_list>0) {
 			$options = array();
 			$values = explode(';',$value);
@@ -352,6 +353,17 @@ class VirtueMartModelCustomfields extends VmModel {
 				/*userfield variants*/
 				case 'U':
 				return '<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" />'.$priceInput;
+				break;
+				/*Extended by plugin*/
+				case 'E':
+					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+					JPluginHelper::importPlugin('vmcustom');
+					$dispatcher = JDispatcher::getInstance();
+					
+					$value = $dispatcher->trigger('plgVmOnProductEdit',
+						array('value' => $value, 'product_id' => $product_id));
+					$html = $value;
+				return $html.$priceInput;
 				break;
 				/* string or integer */
 				case 'S':

@@ -682,18 +682,10 @@ class VmMediaHandler {
 		$isJ15 = VmConfig::isJ15();
 		if ($isJ15) {
 			$j = "
-			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$list['total']."') });
-			function submitbutton(pressbutton) {
-				jQuery( '#media-dialog' ).remove();
-				submitform(pressbutton);
-			}" ;
+			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$list['total']."') }); " ;
 		}
 		else $j = "
-			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$list['total']."') });
-			Joomla.submitbutton=function(a){
-				jQuery( '#media-dialog' ).remove();
-				Joomla.submitform(a);
-			}" ;
+			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$list['total']."') }); " ;
 		$document = JFactory::getDocument ();
 		$document->addScriptDeclaration ( $j);
 		return $html;
