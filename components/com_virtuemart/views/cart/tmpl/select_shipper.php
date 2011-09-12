@@ -51,6 +51,10 @@ JHTML::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/asse
         return false;
     }
 </script>
+<?php if (VmConfig::get('oncheckout_show_steps', 1)){
+	echo '<div class="checkoutStep" id="checkoutStep2">'.JText::_('COM_VIRTUEMART_USER_FORM_CART_STEP2').'</div>';
+}
+?>
 <form method="post" id="userForm" name="chooseShippingRate" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate">
     <div style="text-align: right; width: 100%;">
         <button class="button" type="submit" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
@@ -67,7 +71,7 @@ if (!class_exists('vmShipperPlugin'))
     $_html = $_dispatcher->trigger('plgVmOnSelectShipper', $_tmp);
 // if only one Shipper , should be checked by default
     $found_shipping_method = false;
- 
+
     foreach($_html as $_item){
 		if ($_item) {
 			echo "<fieldset>\n".$_item."</fieldset>\n";
@@ -75,7 +79,7 @@ if (!class_exists('vmShipperPlugin'))
 		}
 	}
 
-	
+
     if (! $found_shipping_method ){
           $app = JFactory::getApplication();
           vmError(JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD'), JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'));

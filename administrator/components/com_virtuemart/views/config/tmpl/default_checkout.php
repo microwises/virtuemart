@@ -64,16 +64,16 @@ defined('_JEXEC') or die('Restricted access');
 							<?php echo VmHTML::checkbox('oncheckout_show_register', $this->config->get('oncheckout_show_register')); ?>
 						</td>
 					</tr>
-<?php /*					<tr>
+					<tr>
 						<td class="key">
-							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_TEXT_REGISTER_TIP'); ?>">
-								<label for="oncheckout_show_register_text"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_TEXT_REGISTER') ?></label>
+							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_STEPS_TIP'); ?>">
+								<label for="oncheckout_show_steps"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_STEPS') ?></label>
 							</span>
 						</td>
 						<td>
-							<textarea rows="6" cols="50" name="oncheckout_show_register_text"><?php echo $this->config->get('oncheckout_show_register_text'); ?></textarea>
+							<textarea rows="6" cols="50" name="oncheckout_show_steps"><?php echo $this->config->get('oncheckout_show_steps'); ?></textarea>
 						</td>
-					</tr>  */ ?>
+					</tr>
 						<tr>
 						<td class="key">
 							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_PRODUCTIMAGES_TIP'); ?>">

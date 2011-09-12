@@ -54,6 +54,10 @@ function myValidator(f, t)
 }
 
 </script>
+<?php if (VmConfig::get('oncheckout_show_steps', 1)){
+	echo '<div class="checkoutStep" id="checkoutStep3">'.JText::_('COM_VIRTUEMART_USER_FORM_CART_STEP3').'</div>';
+}
+?>
 <form method="post" id="userForm" name="choosePaymentRate" action="<?php echo JRoute::_( 'index.php' ); ?>" class="form-validate">
 <div style="text-align: right; width: 100%;">
 	<button class="button" type="submit"><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>

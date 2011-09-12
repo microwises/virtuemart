@@ -61,6 +61,10 @@ JHTML::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/asse
 
 </script>
 <?php
+if (VmConfig::get('oncheckout_show_steps', 1)){
+	echo '<div class="checkoutStep" id="checkoutStep1">'.JText::_('COM_VIRTUEMART_USER_FORM_CART_STEP1').'</div>';
+}
+
 if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->id === 0) {
 
     if (JPluginHelper::isEnabled('authentication', 'openid')) {
@@ -153,7 +157,7 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
 
 
 <?php } else { ?>
-        
+
 	<button class="default" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
 	<button class="default" type="reset" onclick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 
