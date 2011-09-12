@@ -1,21 +1,21 @@
 <?php defined('_JEXEC') or die('Restricted access');
 /**
-*
-* Layout for the shopping cart
-*
-* @package	VirtueMart
-* @subpackage Cart
-* @author Max Milbers
-* @author Patrick Kohl
-* @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-*
-*/
+ *
+ * Layout for the shopping cart
+ *
+ * @package	VirtueMart
+ * @subpackage Cart
+ * @author Max Milbers
+ * @author Patrick Kohl
+ * @link http://www.virtuemart.net
+ * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * VirtueMart is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ *
+ */
 
 // Check to ensure this file is included in Joomla!
 
@@ -26,7 +26,15 @@
 <div class="billto-shipto">
 	<div class="width50 floatleft">
 
-		<span><span class="vmicon vm2-billto-icon"></span><?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?></span>
+		<span><span class="vmicon vm2-billto-icon"></span>
+
+
+
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?></span>
+
+
+
+
 
 		<?php // Output Bill To Address ?>
 		<div class="output-billto">
@@ -57,23 +65,31 @@
 
 	<div class="width50 floatleft">
 
-		<span><span class="vmicon vm2-shipto-icon"></span><?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?></span>
+		<span><span class="vmicon vm2-shipto-icon"></span>
+
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?></span>
+
 		<?php // Output Bill To Address ?>
 		<div class="output-shipto">
 		<?php
-		foreach($this->cart->STaddress as $item){
-			if(!empty($item['value'])){ ?>
-				<!-- <span class="titles"><?php echo $item['title'] ?></span> -->
-				<?php
-				if ($item['name'] == 'first_name' || $item['name'] == 'middle_name' || $item['name'] == 'zip') { ?>
-					<span class="values<?php echo '-'.$item['name'] ?>" ><?php echo $this->escape($item['value']) ?></span>
-				<?php } else { ?>
-					<span class="values" ><?php echo $this->escape($item['value']) ?></span>
-					<br class="clear" />
-				<?php
+		if(empty($this->cart->STaddress)){
+			echo JText::sprintf('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_EXPLAIN',JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL') );
+		} else {
+			foreach($this->cart->STaddress as $item){
+				if(!empty($item['value'])){ ?>
+					<!-- <span class="titles"><?php echo $item['title'] ?></span> -->
+					<?php
+					if ($item['name'] == 'first_name' || $item['name'] == 'middle_name' || $item['name'] == 'zip') { ?>
+						<span class="values<?php echo '-'.$item['name'] ?>" ><?php echo $this->escape($item['value']) ?></span>
+					<?php } else { ?>
+						<span class="values" ><?php echo $this->escape($item['value']) ?></span>
+						<br class="clear" />
+					<?php
+					}
 				}
 			}
-		} ?>
+		}
+ 		?>
 		<div class="clear"></div>
 		</div>
 		<?php if(!isset($this->cart->lists['current_id'])) $this->cart->lists['current_id'] = 0; ?>
@@ -83,16 +99,30 @@
 
 	</div>
 
-<div class="clear"></div>
+	<div class="clear"></div>
 </div>
 
 <fieldset>
-		<table class="cart-summary" cellspacing="0" cellpadding="0" border="0" width="100%">
-			<tr>
-				<th align="left"><?php echo JText::_('COM_VIRTUEMART_CART_NAME') ?></th>
-				<th align="left" ><?php echo JText::_('COM_VIRTUEMART_CART_SKU') ?></th>
- 				<th align="center" width="60px" ><?php echo JText::_('COM_VIRTUEMART_CART_PRICE') ?></th>
-				<th align="right" width="140px" ><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY') ?> / <?php echo JText::_('COM_VIRTUEMART_CART_ACTION') ?></th>
+	<table
+		class="cart-summary"
+		cellspacing="0"
+		cellpadding="0"
+		border="0"
+		width="100%">
+		<tr>
+			<th align="left"><?php echo JText::_('COM_VIRTUEMART_CART_NAME') ?></th>
+			<th align="left"><?php echo JText::_('COM_VIRTUEMART_CART_SKU') ?></th>
+			<th
+				align="center"
+				width="60px"><?php echo JText::_('COM_VIRTUEMART_CART_PRICE') ?></th>
+			<th
+				align="right"
+				width="140px"><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY') ?>
+				/ <?php echo JText::_('COM_VIRTUEMART_CART_ACTION') ?></th>
+
+
+
+
 
                                         <?php if ( VmConfig::get('show_tax')) { ?>
                                 <th align="right" width="60px"><?php  echo "<span  style='color:gray'>".JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') ?></th>
@@ -100,6 +130,10 @@
                                 <th align="right" width="60px"><?php echo "<span  style='color:gray'>".JText::_('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></th>
 				<th align="right" width="70px"><?php echo JText::_('COM_VIRTUEMART_CART_TOTAL') ?></th>
 			</tr>
+
+
+
+
 		<?php
 		$i=1;
 		foreach( $this->cart->products as $pkey =>$prow ) { ?>
