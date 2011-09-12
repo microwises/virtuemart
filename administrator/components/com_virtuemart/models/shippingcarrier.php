@@ -136,8 +136,10 @@ class VirtueMartModelShippingCarrier extends VmModel {
 		$data['shipping_carrier_element'] = $this->_db->loadResult();
 
 		$table = $this->getTable('shippingcarriers');
-		if (!$table->bindChecknStore($data)) {
-			$this->setError($table->getError());
+		$table->bindChecknStore($data);
+		$errors = $table->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
 		}
 
 		return $table->virtuemart_shippingcarrier_id;

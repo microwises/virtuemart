@@ -71,15 +71,6 @@
 
 <tr>
 	<td>
-		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_DPROD_FLY'); ?>
-	</td>
-	<td>
-		<input class="inputbox" type="text" name="default_product_fly" size="15" value="" />
-	</td>
-</tr>
-
-<tr>
-	<td>
 		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_STOREOWNERID'); ?>
 	</td>
 	<td>

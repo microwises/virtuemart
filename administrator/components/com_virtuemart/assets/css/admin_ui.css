@@ -44,7 +44,7 @@
 /* info message in dark grey */
 #system-message dd.remove,#system-message dd.save,#system-message dd.cancel {color: #F4F6F8; background: #7c7d7f url(../images/admin_ui/tabs-ul-background.png) top repeat-x !important;}
 /* message in RED */
-dl#system-message dd.error,l#system-message dd ul .vmdebug { background: #cd3737 url(../images/admin_ui/save_bg.png) top repeat !important;}
+dl#system-message dd.error,l#system-message dd ul .vmdebug { background: #ffffff url(../images/admin_ui/save_bg.png) top repeat !important;}
 /* message in RED */
 dl#system-message dd.notice { background: #eee url(../images/admin_ui/header_bg.png) top repeat-x !important;}
 /* message icons */

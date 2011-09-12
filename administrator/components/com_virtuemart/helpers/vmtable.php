@@ -98,7 +98,6 @@ class VmTable extends JTable{
 		$fromObject = is_object($from);
 
 		if(!$fromArray && !$fromObject){
-
 			$this->setError(get_class($this) . '::check if data contains table fields failed. Invalid from argument <pre>' . print_r($from, 1) . '</pre>');
 			return false;
 		}
@@ -184,29 +183,37 @@ class VmTable extends JTable{
 			$this->_db = JFactory::getDBO();
 			foreach($this->_unique_name as $obkeys => $error){
 
-				$q = 'SELECT `' . $this->_tbl_key . '`,`' . $this->_db->getEscaped($obkeys) . '` FROM `' . $this->_tbl . '` ';
-				$q .= 'WHERE `' . $this->_db->getEscaped($obkeys) . '`="' . $this->_db->getEscaped($this->$obkeys) . '"';
-				$this->_db->setQuery($q);
-				$unique_id = $this->_db->loadResultArray();
+				if(empty($this->$obkeys)){
+// 					$this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE_KEY',$this->$obkeys));
+					$this->setError($error);
+					return false;
+				} else {
+					$q = 'SELECT `' . $this->_tbl_key . '`,`' . $this->_db->getEscaped($obkeys) . '` FROM `' . $this->_tbl . '` ';
+					$q .= 'WHERE `' . $this->_db->getEscaped($obkeys) . '`="' . $this->_db->getEscaped($this->$obkeys) . '"';
+					$this->_db->setQuery($q);
+					$unique_id = $this->_db->loadResultArray();
 
-				$tblKey = $this->_tbl_key;
-				if(!empty($unique_id)){
-					foreach($unique_id as $id){
-						if($id != $this->$tblKey){
-			    //$datenow = JFactory::getDate();
-			    $this->$obkeys = $this->$obkeys.rand();
+					$tblKey = $this->_tbl_key;
+					if(!empty($unique_id)){
+						foreach($unique_id as $id){
+							if($id != $this->$tblKey){
+								//$datenow = JFactory::getDate();
+								$this->$obkeys = $this->$obkeys.rand();
+								vmWarn('COM_VIRTUEMART_NON_UNIQUE_WARN',$obkeys);
+							}
+						}
+					}
+				}
 
-			    /*			    if(empty($error)){
+			    /* if(empty($error)){
 			     $this->setError(JText::_($error));
 			    }else {
 			    $this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE', $this->_tbl, $obkeys . ': ' . $this->$obkeys));
 			    }*/
 			    //return false;
-						}
-					}
-				}
 			}
 		}
+
 
 		if(isset($this->virtuemart_vendor_id)){
 			if(Vmconfig::get('multix','none')==='none'){
@@ -277,10 +284,6 @@ class VmTable extends JTable{
 			$data[$tblKey] = !empty($this->$tblKey) ? $this->$tblKey : 0;
 		}
 
-		if(!$ok){
-			//$this->setError(get_class( $this ).':: bindChecknStore made a mistake in '.$msg);
-			////    		$this->setError(get_class( $this ).':: bindChecknStore db message '.$this->_db->getErrorMsg());
-		}
 
 		return $data;
 	}

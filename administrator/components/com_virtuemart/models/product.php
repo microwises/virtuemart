@@ -764,7 +764,6 @@ class VirtueMartModelProduct extends VmModel {
 
 		$errors = $product_data->getErrors();
 		foreach($errors as $error){
-			vmdebug('Error storing product table products ',$errors);
 			$this->setError($error);
 			return false;
 		}
@@ -823,7 +822,6 @@ class VirtueMartModelProduct extends VmModel {
 		$product_table_Parent->bindChecknStore($data);
 		$errors = $product_table_Parent->getErrors();
 		foreach($errors as $error){
-			vmdebug('Error storing product table '.$tableName.' ',$errors);
 			$this->setError($error);
 		}
 		return $data;

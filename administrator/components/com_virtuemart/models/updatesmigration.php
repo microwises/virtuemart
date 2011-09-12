@@ -103,6 +103,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
      * @author Max Milbers
      */
     function setStoreOwner($userId=0) {
+
 		if (empty($userId)) {
 		    $userId = $this->determineStoreOwner();
 		}
@@ -135,6 +136,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		    }
 		    else {
 				$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_user_id` ="'.$userId.'" ');
+				$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "0", `user_is_vendor` = "0", `perms` = "" WHERE `virtuemart_user_id` ="'.$oldUserId.'" ');
 		    }
 
 		    if ($db->query() == false ) {

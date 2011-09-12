@@ -162,7 +162,7 @@ class VirtuemartViewCalc extends JView {
 
 		//MathOp array
 		$entryPoints = array(
-		'0' => array('calc_kind' => 'Marge', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_MARGE')),
+		'0' => array('calc_kind' => 'Marge', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_PMARGIN')),
 		'1' => array('calc_kind' => 'Tax', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_TAX')),
 		'2' => array('calc_kind' => 'DBTax', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_DBTAX')),
 		'3' => array('calc_kind' => 'DATax', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_DATAX')),

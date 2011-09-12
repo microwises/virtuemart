@@ -177,29 +177,33 @@ class VirtueMartModelCalc extends VmModel {
 			$data['publish_down']	= $expireDate->toMySQL();
 		}
 
-		if (!$table->bindChecknStore($data)) {
+		$table->bindChecknStore($data);
+		if($table->getError()){
 			$this->setError($table->getError());
-			vmError('calculation rule store error ','calculation rule store error ');
 			return false;
 		}
 
     	$xrefTable = $this->getTable('calc_categories');
-    	if (!$xrefTable->bindChecknStore($data)) {
+    	$xrefTable->bindChecknStore($data);
+    	if($xrefTable->getError()){
 			$this->setError($xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_shoppergroups');
-    	if (!$xrefTable->bindChecknStore($data)) {
+    	$xrefTable->bindChecknStore($data);
+    	if($xrefTable->getError()){
 			$this->setError($xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_countries');
-    	if (!$xrefTable->bindChecknStore($data)) {
+    	$xrefTable->bindChecknStore($data);
+    	if($xrefTable->getError()){
 			$this->setError($xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_states');
-    	if (!$xrefTable->bindChecknStore($data)) {
+    	$xrefTable->bindChecknStore($data);
+    	if($xrefTable->getError()){
 			$this->setError($xrefTable->getError());
 		}
 

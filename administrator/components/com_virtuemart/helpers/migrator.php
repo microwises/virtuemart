@@ -186,7 +186,7 @@ class Migrator extends VmModel{
 
 		//$imageExtensions = array('jpg','jpeg','gif','png');
 
-		if(!class_exists('TableManufacturers'))
+		if(!class_exists('VirtueMartModelMedia'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'media.php');
 		$this->mediaModel = new VirtueMartModelMedia();
 		//First lets read which files are already stored
@@ -572,6 +572,10 @@ class Migrator extends VmModel{
 
 	private function portCategories(){
 
+		if(!class_exists('VirtueMartModelCategory'))
+		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
+		$catModel = new VirtueMartModelCategory();
+
 		$default_category_browse = JRequest::getWord('default_category_browse','');
 		$default_category_fly = JRequest::getWord('default_category_fly','');
 		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
@@ -618,11 +622,15 @@ class Migrator extends VmModel{
 				$category['products_per_row'] = $oldcategory['products_per_row'];
 				$category['ordering'] = $oldcategory['list_order'];
 
-				$table = $this->getTable('categories');
+				if(!empty($category['category_full_image'])){
+					$category['virtuemart_media_id'] = $this->_getMediaIdByName($category['category_full_image'],'category');
+				}
 
 
-				$category = $table->bindChecknStore($category);
-				$errors = $table->getErrors();
+
+				$catModel->setId(0);
+				$category_id = $catModel->store($category);
+				$errors = $catModel->getErrors();
 				if(!empty($errors)){
 					foreach($errors as $error){
 						$this->setError($error);
@@ -630,8 +638,19 @@ class Migrator extends VmModel{
 					}
 					break;
 				}
+// 				$table = $this->getTable('categories');
 
-				$oldtonewCats[$oldcategory['category_id']] = $category['virtuemart_category_id'];
+// 				$category = $table->bindChecknStore($category);
+// 				$errors = $table->getErrors();
+// 				if(!empty($errors)){
+// 					foreach($errors as $error){
+// 						$this->setError($error);
+// 						$ok = false;
+// 					}
+// 					break;
+// 				}
+
+				$oldtonewCats[$oldcategory['category_id']] = $category_id;
 				unset($category['virtuemart_category_id']);
 				$i++;
 			} else {
@@ -849,6 +868,7 @@ class Migrator extends VmModel{
 
                 $mediaIdFilename = array();
 		$ok = true;
+		$mediaIdFilename = array();
 
 		//approximatly 100 products take a 1 MB
 		$freeRam =  ($this->maxMemoryLimit - memory_get_usage(true))/(1024 * 1024) ;
@@ -903,6 +923,7 @@ class Migrator extends VmModel{
 
 			$oldtonewProducts = array();
 			$oldtonewManus = $this->getMigrationProgress('manus');
+
 
 			//There are so many names the same, so we use the loaded array and manipulate it
 
@@ -964,22 +985,9 @@ class Migrator extends VmModel{
 						$product['product_name'] =  $product['product_sku'].':'.$product['product_id'].':'.$product['product_s_desc'];
 					}
 
-					//Unsolved Here we must look for the url product_full_image and check which media has the same
+					// Here we  look for the url product_full_image and check which media has the same
 					// full_image url
-					if(!empty($mediaIdFilename[$product['product_full_image']])){
-						$product['virtuemart_media_id'] = $mediaIdFilename[$product['product_full_image']];
-					} else {
-						 
-                                                  $q = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_medias`
-                                              WHERE `file_title`="' .  $this->_db->getEscaped($product['product_full_image']) . '" AND `file_type`="' . $this->_db->getEscaped('product') . '"';
-						$this->_db->setQuery($q);
-						$virtuemart_media_id = $this->_db->loadResult();
-						if(!empty($virtuemart_media_id)){
-							$mediaIdFilename[$product['product_full_image']] = $product['virtuemart_media_id'] = $virtuemart_media_id;
-						}
-					}
-
-					//$product['virtuemart_media_id'] =
+					$product['virtuemart_media_id'] = $this->_getMediaIdByName($product['product_full_image'],'product');
 
 					$product['virtuemart_product_id'] = $productModel->store($product);
 
@@ -1006,7 +1014,7 @@ class Migrator extends VmModel{
 					$continue = false;
 					break;
 				}
-                                
+
 			}
 		}
 
@@ -1014,6 +1022,31 @@ class Migrator extends VmModel{
 		vmInfo('Migration: '.$i.' products processed ');
 
 		return $ok;
+	}
+
+	/**
+	 * Finds the media id in the vm2 table for a given filename
+	 *
+	 * @author Max Milbers
+	 * @author Valerie Isaksen
+	 *
+	 */
+	var $mediaIdFilename = array();
+
+	function _getMediaIdByName($filename,$type){
+		if(!empty($this->mediaIdFilename[$filename])){
+			return $this->mediaIdFilename[$filename];
+		} else {
+			$q = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_medias`
+										WHERE `file_title`="' .  $this->_db->getEscaped($filename) . '"
+										AND `file_type`="' . $this->_db->getEscaped($type) . '"';
+			$this->_db->setQuery($q);
+			$virtuemart_media_id = $this->_db->loadResult();
+			if(!empty($virtuemart_media_id)){
+				$this->mediaIdFilename[$filename] = $virtuemart_media_id;
+				return $virtuemart_media_id;
+			}
+		}
 	}
 
 	function portOrders(){
