@@ -295,6 +295,17 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 			</td>
 		</tr>
 
+		<tr>
+		<td width="110" class="key">
+		<label for="size">
+		<?php echo JText::_('COM_VIRTUEMART_ORDERING') ?>
+						</label>
+					</td>
+					<td>
+						<input class="inputbox" type="text" name="size" id="size" size="5" value="<?php echo $this->userField->ordering; ?>" />
+					</td>
+				</tr>
+
 <?php	if(Vmconfig::get('multix','none')!=='none'){ ?>
 		<tr>
 			<td width="110" class="key">

@@ -1282,13 +1282,17 @@ class Migrator extends VmModel{
 
 	private function _ensureUsingCurrencyId($curr){
 
-		$this->_db = JFactory::getDBO();
-		$q = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `currency_code_3`="' . $this->_db->getEscaped($curr) . '"';
-		$this->_db->setQuery($q);
-		$currInt = $this->_db->loadResult();
-		if(empty($currInt)){
-			JError::raiseWarning(E_WARNING, 'Attention, couldnt find currency id in the table for id = ' . $curr);
+		$currInt = '';
+		if(!empty($curr)){
+			$this->_db = JFactory::getDBO();
+			$q = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `currency_code_3`="' . $this->_db->getEscaped($curr) . '"';
+			$this->_db->setQuery($q);
+			$currInt = $this->_db->loadResult();
+			if(empty($currInt)){
+				JError::raiseWarning(E_WARNING, 'Attention, couldnt find currency id in the table for id = ' . $curr);
+			}
 		}
+
 		return $currInt;
 	}
 

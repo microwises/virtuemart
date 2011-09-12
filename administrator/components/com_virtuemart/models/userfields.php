@@ -236,7 +236,8 @@ class VirtueMartModelUserfields extends VmModel {
 			$field->ordering = $field->getNextOrder();
 		}
 
-		if (($_id = $field->store()) === false) { // Write data to the DB
+		$_id = $field->store();
+		if ($_id === false) { // Write data to the DB
 			$this->setError($field->getError());
 			return false;
 		}
@@ -249,6 +250,7 @@ class VirtueMartModelUserfields extends VmModel {
 			$field->reorder();
 		}
 
+		vmdebug('storing userfield',$_id);
 		// Alter the user_info database to hold the values
 
 		return $_id;

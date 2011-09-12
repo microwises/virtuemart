@@ -203,7 +203,7 @@ class TableUserfields extends VmTable {
 			$this->setError($this->getError());
 			return false;
 		} else {
-			return ($isNew ? $this->_db->insertid() : true);
+			return $this->virtuemart_userfield_id;
 		}
 	}
 
