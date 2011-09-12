@@ -33,8 +33,11 @@
 		<?php
 
 		foreach($this->cart->BTaddress as $item){
-			if(!empty($item['value'])){ ?>
-				<!-- span class="titles"><?php echo $item['title'] ?></span -->
+			if(!empty($item['value'])){
+				if($item['name']==='agreed'){
+					$item['value'] =  ($item['value']===0) ? JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_TOS_NO'):JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_TOS_YES');
+				}
+				?><!-- span class="titles"><?php echo $item['title'] ?></span -->
 					<span class="values vm2<?php echo '-'.$item['name'] ?>" ><?php echo $this->escape($item['value']) ?></span>
 				<?php if ($item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') { ?>
 					<br class="clear" />

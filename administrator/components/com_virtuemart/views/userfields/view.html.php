@@ -40,14 +40,14 @@ class VirtuemartViewUserfields extends JView {
 		// Load the helper(s)
 		$this->loadHelper('adminui');
       	$this->loadHelper('shopFunctions');
-                
+
 		$layoutName = JRequest::getWord('layout', 'default');
 		$model = $this->getModel();
 
 		// The list of fields which can't be toggled
 		//$lists['coreFields']= array( 'name','username', 'email', 'password', 'password2' );
 		$lists['coreFields'] = $model->getCoreFields();
-		
+
 		if ($layoutName == 'edit') {
 			$editor = JFactory::getEditor();
 
@@ -56,7 +56,7 @@ class VirtuemartViewUserfields extends JView {
                                 $this->assignRef('viewName',$viewName);
 			if ($userField->virtuemart_userfield_id < 1) { // Insert new userfield
 
-                                 
+
 				$this->assignRef('ordering', JText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
 				$userFieldValues = array();
 				$attribs = 'onchange="toggleType(this.options[this.selectedIndex].value);"';
@@ -78,13 +78,16 @@ class VirtuemartViewUserfields extends JView {
 			JToolBarHelper::save();
 			JToolBarHelper::apply();
 			JToolBarHelper::cancel();
-			
+
 			$notoggle = (in_array($userField->name, $lists['coreFields']) ? 'readonly="readonly"' : '');
 
 			// Vendor selection
-			$vendor_model = $this->getModel('vendor');
-			$vendor_list = $vendor_model->getVendors();
-			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $userField->virtuemart_vendor_id);
+			if(Vmconfig::get('multix','none')!=='none'){
+				$lists['vendors']= ShopFunctions::renderVendorList($userField->virtuemart_vendor_id);
+			}
+// 			$vendor_model = $this->getModel('vendor');
+// 			$vendor_list = $vendor_model->getVendors();
+// 			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $userField->virtuemart_vendor_id);
 
 			// Shopper groups for EU VAT Id
 			$shoppergroup_model = $this->getModel('shoppergroup');
@@ -148,7 +151,7 @@ class VirtuemartViewUserfields extends JView {
 			JToolBarHelper::unpublishList();
 			JToolBarHelper::divider();
 			$barText = JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_HIDE');
-			
+
 			$bar=& JToolBar::getInstance( 'toolbar' );
 			$bar->appendButton( 'Separator', '"><span class="bartext">'.$barText.'</span><hr style="display: none;' );
 //$bar->appendButton( 'publish', 'upload', $alt, '', 550, 400 );

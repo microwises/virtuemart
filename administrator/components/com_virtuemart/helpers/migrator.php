@@ -463,7 +463,7 @@ class Migrator extends VmModel{
 				$user['user_is_vendor'] = 0;
 				if($user['gid'] == 25){
 					$user['perms'] = 'admin';
-					$user['user_is_vendor'] = 1;
+// 					$user['user_is_vendor'] = 1;
 				}elseif($user['gid'] == 24){
 					$user['perms'] = 'storeadmin';
 				}else {
@@ -605,7 +605,7 @@ class Migrator extends VmModel{
                                 }
 				$category['category_layout'] = $browsepage;
 				$category['category_product_layout'] = $oldcategory['category_flypage'];
-				//	$category[''] = $oldcategory['products_per_row']; //now done by the layout
+				$category['products_per_row'] = $oldcategory['products_per_row']; //now done by the layout
 				$category['ordering'] = $oldcategory['list_order'];
 
 				$table = $this->getTable('categories');

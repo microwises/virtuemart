@@ -35,7 +35,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 		<tr>
 			<td width="110" class="key">
 				<label for="type">
-					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_TYPE') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_TYPE') ?>
 				</label>
 			</td>
 			<td>
@@ -53,7 +53,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 							<tr>
 								<td width="110" class="key">
 									<label for="maxlength">
-										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_MAXLENGTH'); ?>:
+										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_MAXLENGTH'); ?>
 									</label>
 								</td>
 								<td>
@@ -71,7 +71,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 							<tr>
 								<td width="110" class="key">
 									<label for="cols">
-										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_COLUMNS'); ?>:
+										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_COLUMNS'); ?>
 									</label>
 								</td>
 								<td>
@@ -81,7 +81,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 							<tr>
 								<td width="110" class="key">
 									<label for="rows">
-										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ROWS'); ?>:
+										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ROWS'); ?>
 									</label>
 								</td>
 								<td>
@@ -99,7 +99,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 							<tr>
 								<td width="110" class="key">
 									<label for="virtuemart_shoppergroup_id">
-										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_EUVATID_MOVESHOPPER'); ?>:
+										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_EUVATID_MOVESHOPPER'); ?>
 									</label>
 								</td>
 								<td>
@@ -117,7 +117,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 							<tr>
 								<td width="110" class="key">
 									<label for="minimum_age">
-										<?php echo JText::_('COM_VIRTUEMART_FIELDS_AGEVERIFICATION_MINIMUM'); ?>:
+										<?php echo JText::_('COM_VIRTUEMART_FIELDS_AGEVERIFICATION_MINIMUM'); ?>
 									</label>
 								</td>
 								<td>
@@ -168,7 +168,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 		<tr>
 			<td width="110" class="key">
 				<label for="name">
-					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_NAME') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_NAME') ?>
 				</label>
 			</td>
 			<td>
@@ -183,11 +183,11 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 		<tr>
 			<td width="110" class="key">
 				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_TITLE') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_TITLE') ?>
 				</label>
 			</td>
 			<td>
-                            <?php 
+                            <?php
                             $lang = JFactory::getLanguage();
                             $text = $lang->hasKey($this->userField->title) ? JText::_($this->userField->title) : $this->userField->title;
                             ?>
@@ -198,7 +198,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 		<tr>
 			<td width="110" class="key">
 				<label for="description">
-					<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_DESCRIPTION') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_DESCRIPTION') ?>
 				</label>
 			</td>
 			<td>
@@ -209,7 +209,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 		<tr>
 			<td width="110" class="key">
 				<label for="required">
-					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_REQUIRED') ?>?:
+					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_REQUIRED') ?>
 				</label>
 			</td>
 			<td>
@@ -222,7 +222,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 		<tr>
 			<td width="110" class="key">
 				<label for="registration">
-					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_REGISTRATION') ?>?:
+					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_REGISTRATION') ?>
 				</label>
 			</td>
 			<td>
@@ -235,7 +235,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 		<tr>
 			<td width="110" class="key">
 				<label for="account">
-					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_ACCOUNT') ?>?:
+					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_ACCOUNT') ?>
 				</label>
 			</td>
 			<td>
@@ -248,7 +248,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 		<tr>
 			<td width="110" class="key">
 				<label for="shipping">
-					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_SHIPPING') ?>?:
+					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_SHIPPING') ?>
 				</label>
 			</td>
 			<td>
@@ -261,7 +261,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 		<tr>
 			<td width="110" class="key">
 				<label for="readonly">
-					<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_READONLY') ?>?:
+					<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_READONLY') ?>
 				</label>
 			</td>
 			<td>
@@ -274,7 +274,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 		<tr>
 			<td width="110" class="key">
 				<label for="published">
-					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?>
 				</label>
 			</td>
 			<td>
@@ -287,7 +287,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 		<tr>
 			<td width="110" class="key">
 				<label for="size">
-					<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_SIZE') ?>:
+					<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_SIZE') ?>
 				</label>
 			</td>
 			<td>
@@ -295,17 +295,18 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 			</td>
 		</tr>
 
+<?php	if(Vmconfig::get('multix','none')!=='none'){ ?>
 		<tr>
 			<td width="110" class="key">
 				<label for="virtuemart_vendor_id">
-					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>:
+					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
 				</label>
 			</td>
 			<td>
 				<?php echo $this->lists['vendors'];?>
 			</td>
 		</tr>
-
+<?php	} ?>
 	</table>
 	</fieldset>
 </div>
@@ -318,7 +319,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
-<?php 
+<?php
 AdminUIHelper::imitateTabs('end');
 AdminUIHelper::endAdminArea(); ?>
 

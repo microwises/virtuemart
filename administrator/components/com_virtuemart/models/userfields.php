@@ -346,7 +346,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 
 		//Small ugly hack to make registering optional //do we still need that?
-		if($layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $type == 'BT' && empty($userId) ){
+/*		if($layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $type == 'BT' && empty($userId) ){
 
 			$corefields = $this->getCoreFields();
 			unset($corefields[2]); //the 2 is for the email field, it is necessary in almost anycase.
@@ -358,7 +358,7 @@ class VirtueMartModelUserfields extends VmModel {
 				}
 			}
 		}
-
+*/
 		return $userFields;
 	}
 	/**
@@ -496,16 +496,17 @@ class VirtueMartModelUserfields extends VmModel {
 	 */
 	private function _userFieldFormat($_f, $_v)
 	{
-		switch ($_f) {
-			case 'agreed':
-			case 'title':
-				if (substr($_v, 0, 1) == '_') {
-					$_v = substr($_v, 1);
-				}
+// 		vmdebug('What is happening here?',$_f, $_v);
+// 		switch ($_f) {
+// 			case 'agreed':
+// 			case 'title':
+// 				if (substr($_v, 0, 1) == '_') {
+// 					$_v = substr($_v, 1);
+// 				}
 				$_r = (JText::_($_v)?JText::_($_v):$_v);
-				if( $_f == 'title') {
-					break;
-				}
+// 				if( $_f == 'title') {
+// 					break;
+// 				}
 				// TODO Handling Agreed field
 /*				$_r->title = '<script type="text/javascript">//<![CDATA[
 						document.write(\'<label for="agreed_field">'. str_replace("'","\\'",JText::_('COM_VIRTUEMART_I_AGREE_TO_TOS')) .'</label><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_virtuemart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');
@@ -516,8 +517,9 @@ class VirtueMartModelUserfields extends VmModel {
 					<a target="_blank" href="/index.php?option=com_virtuemart&amp;page=shop.tos" title="'. JText::_('COM_VIRTUEMART_I_AGREE_TO_TOS') .'">
 					 ('.JText::_('COM_VIRTUEMART_STORE_FORM_TOS').')
 					</a></noscript>';*/
-				break;
-		}
+// 				break;
+// 		}
+// 		vmdebug('return _userFieldFormat',$_r);
 		return $_r;
 	}
 
@@ -609,16 +611,14 @@ class VirtueMartModelUserfields extends VmModel {
 				,'links' => array()
 		);
 
+// 		vmdebug('my user data in getUserFieldsByUser',$_selection,$_userData);
 		foreach ($_selection as $_fld) {
 			$_return['fields'][$_fld->name] = array(
 					 'name' => $_prefix . $_fld->name
 					,'value' => (($_userData == null || !array_key_exists($_fld->name, $_userData))
 						? $_fld->default
 						: @$_userData->{$_fld->name})
-					,'title' => self::_userFieldFormat(
-							 ($_fld->name == 'agreed')?'agreed':'title' //what has the title todo with agreed?
-							,$_fld->title
-						)
+					,'title' => JText::_($_fld->title)
 					,'type' => $_fld->type
 					,'required' => $_fld->required
 					,'hidden' => false
@@ -629,22 +629,13 @@ class VirtueMartModelUserfields extends VmModel {
 
 				case 'virtuemart_country_id':
 					$_return['fields'][$_fld->name]['formcode'] = ShopFunctions::renderCountryList(
-						$_return['fields'][$_fld->name]['value'], false, array(), $_prefix);
-// 						The table data can contain the virtuemart_country_id or the country name
-// 					if (!isset($_userData->{$_fld->name}) && isset($_userData->country)) {
-// 						$_return['fields'][$_fld->name]['value'] = $_userData->country;
-//					}
+					$_return['fields'][$_fld->name]['value'], false, array(), $_prefix);
 
 					// Translate the value from ID to name
 					$_return['fields'][$_fld->name]['value'] = shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']);
 					break;
 
 				case 'virtuemart_state_id':
-
-// 					The table data can contain the virtuemart_state_id or the state name
-// 					if (!isset($_userData->{$_fld->name}) && isset($_userData->state)) {
-// 						$_return['fields'][$_fld->name]['value'] = $_userData->state;
-//					}
 
 					$_return['fields'][$_fld->name]['formcode'] =
 					shopFunctions::renderStateList(	$_return['fields'][$_fld->name]['value'],
@@ -724,7 +715,7 @@ class VirtueMartModelUserfields extends VmModel {
 						case 'checkbox':
 							$_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" name="'
 								. $_prefix.$_fld->name . '" id="' . $_prefix.$_fld->name . '_field" value="1" '
-								. ($_return['fields'][$_fld->name]['value'] ? '' : 'checked="checked"') .'/>';
+								. ($_return['fields'][$_fld->name]['value'] ? 'checked="checked"' : '') .'/>';
 							break;
 						case 'captcha':
 							// FIXME Implement the new securityimages component

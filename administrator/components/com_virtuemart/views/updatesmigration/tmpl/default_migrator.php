@@ -43,7 +43,8 @@
 			'migrateUsersFromVmOne'	=>	JText::_('COM_VIRTUEMART_UPDATE_USERS'),
 			'migrateProductsFromVmOne'	=> JText::_('COM_VIRTUEMART_UPDATE_PRODUCTS'),
 			'migrateOrdersFromVmOne'	=> JText::_('COM_VIRTUEMART_UPDATE_ORDERS'),
-			'migrateAllInOne'	=> JText::_('COM_VIRTUEMART_UPDATE_ALL')
+			'migrateAllInOne'	=> JText::_('COM_VIRTUEMART_UPDATE_ALL'),
+			'setStoreOwner'	=> JText::_('COM_VIRTUEMART_SETSTOREOWNER')
 		);
 		echo VmHTML::radioList('task', 'all', $options);
 	?>
@@ -77,9 +78,19 @@
 	</td>
 </tr>
 
+<tr>
+	<td>
+		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_STOREOWNERID'); ?>
+	</td>
+	<td>
+		<input class="inputbox" type="text" name="storeOwnerId" size="15" value="" />
+	</td>
+</tr>
+
+
 </table>
 <!-- Hidden Fields -->
 <input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="view" value="updatesMigration" />
+<input type="hidden" name="view" value="updatesmigration" />
 <?php echo JHTML::_( 'form.token' ); ?>
 </form>

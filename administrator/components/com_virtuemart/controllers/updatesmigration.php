@@ -149,7 +149,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->checkPermissionForTools();
 
 		$model = $this->getModel('updatesMigration');
-		$msg = $model->setStoreOwner();
+		$msg = $model->setStoreOwner($data['storeOwnerId']);
 
 		$this->setRedirect($this->redirectPath, $msg);
 	}

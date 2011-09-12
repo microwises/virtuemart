@@ -1120,7 +1120,7 @@ public function removeProductCart($prod_id=0) {
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 
-		$this->pricesUnformatted = $product_prices; 
+		$this->pricesUnformatted = $product_prices;
 		$this->prices = $prices;
 		//$this->cartData = $calculator->getCartData();//TODO MAX
 		$cartData = $calculator->getCartData();
@@ -1148,32 +1148,27 @@ public function removeProductCart($prod_id=0) {
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = new VirtueMartModelUserfields();
 		$prefix = '';
+
+		$prepareUserFields = $userFieldsModel->getUserFieldsFor('cart',$type);
+
 		if ($type == 'ST') {
 			$prefix = 'shipto_';
-			$prepareUserFields = $userFieldsModel->getUserFieldsFor('cart',$type);
-			// 			$prepareUserFields = $userFieldsModel->getUserFields(
-			// 								'shipping'
-			// 			, array()
-			// 			, array( 'user_is_vendor') // Default toggles
-			// 			);
 
 		} else { // BT
-			// The user is not logged in (anonymous), so we need tome extra fields
-			$prepareUserFields = $userFieldsModel->getUserFieldsFor('cart',$type);
-			// 			$prepareUserFields = $userFieldsModel->getUserFields(
-			// 								'account'
-			// 			, array() // Default toggles
-			// 			, array('delimiter_userinfo', 'name', 'username', 'password', 'password2', 'user_is_vendor') // Skips
-			// 			);
-
+			if(is_array($data)){
+				$this->tosAccepted = $data['agreed'];
+			} else {
+				$this->tosAccepted = $data->agreed;
+			}
 		}
+
 		$address = array();
 
 		if(is_array($data)){
 			foreach ($prepareUserFields as $fld) {
 				if(!empty($fld->name)){
 					$name = $fld->name;
-					if(!empty($data[$prefix.$name]))$address[$name] = $data[$prefix.$name];
+					if(!empty($data[$prefix.$name])) $address[$name] = $data[$prefix.$name];
 				}
 			}
 
@@ -1188,6 +1183,7 @@ public function removeProductCart($prod_id=0) {
 		}
 
 		$this->{$type} = $address;
+
 
 		if($putIntoSession){
 			$this->setCartIntoSession();
