@@ -132,7 +132,7 @@ class Migrator extends VmModel{
 	}
 
 	function migrateProducts(){
-
+		$result = $this->portMedia();
 		$result = $this->portCategories();
 		$result = $this->portManufacturerCategories();
 		$result = $this->portManufacturers();
@@ -847,7 +847,7 @@ class Migrator extends VmModel{
 			return;
 		}
 
-
+                $mediaIdFilename = array();
 		$ok = true;
 
 		//approximatly 100 products take a 1 MB
@@ -969,7 +969,9 @@ class Migrator extends VmModel{
 					if(!empty($mediaIdFilename[$product['product_full_image']])){
 						$product['virtuemart_media_id'] = $mediaIdFilename[$product['product_full_image']];
 					} else {
-						$q = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_medias` WHERE `file_titel` = "'.$product['product_full_image'].'" ';
+						 
+                                                  $q = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_medias`
+                                              WHERE `file_title`="' .  $this->_db->getEscaped($product['product_full_image']) . '" AND `file_type`="' . $this->_db->getEscaped('product') . '"';
 						$this->_db->setQuery($q);
 						$virtuemart_media_id = $this->_db->loadResult();
 						if(!empty($virtuemart_media_id)){
@@ -1004,6 +1006,7 @@ class Migrator extends VmModel{
 					$continue = false;
 					break;
 				}
+                                
 			}
 		}
 
