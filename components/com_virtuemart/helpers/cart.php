@@ -1155,9 +1155,9 @@ public function removeProductCart($prod_id=0) {
 			$prefix = 'shipto_';
 
 		} else { // BT
-			if(is_array($data)){
+			if(!empty($data['agreed'])){
 				$this->tosAccepted = $data['agreed'];
-			} else {
+			} else if (!empty($data->agreed)){
 				$this->tosAccepted = $data->agreed;
 			}
 		}

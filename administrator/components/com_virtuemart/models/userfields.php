@@ -215,7 +215,7 @@ class VirtueMartModelUserfields extends VmModel {
 		// Get the fieldtype for the database
 		$_fieldType = $field->formatFieldType($data);
 
-		$coreFields= $this->getCoreFields();
+
 		if(!in_array($data['name'],$coreFields) && $field->type != 'delimiter'){
 
 			// Alter the user_info table
@@ -345,8 +345,8 @@ class VirtueMartModelUserfields extends VmModel {
 		}
 
 
-		//Small ugly hack to make registering optional //do we still need that?
-/*		if($layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $type == 'BT' && empty($userId) ){
+		//Small ugly hack to make registering optional //do we still need that? YES !  notice by Max Milbers
+		if($layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $type == 'BT' && empty($userId) ){
 
 			$corefields = $this->getCoreFields();
 			unset($corefields[2]); //the 2 is for the email field, it is necessary in almost anycase.
@@ -358,7 +358,7 @@ class VirtueMartModelUserfields extends VmModel {
 				}
 			}
 		}
-*/
+
 		return $userFields;
 	}
 	/**

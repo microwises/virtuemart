@@ -479,7 +479,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$update = false;
 		if (!empty($result) ) {
 			$update = true;
-			vmdebug('is an update',$result);
+// 			vmdebug('is an update',$result);
 		}
 
 		$this->setRedirect($this->redirectPath, 'is an update '.$update);
