@@ -211,7 +211,6 @@ class VmModel extends JModel {
 				$q = 'SELECT '.$select.$joinedTables;
 			}
 
-// 			vmdebug('my query',$q);
 			$this->_db->setQuery($q,$limitStart,$limit);
 			if($object == 2){
 				$list = $this->_db->loadResultArray();

@@ -38,7 +38,7 @@ class Migrator extends VmModel{
 		$this->starttime = microtime(true);
 		$this->maxScriptTime = ini_get('max_execution_time')*0.95-1;	//Lets use 5% of the execution time as reserve to store the progress
 		// 		$this->maxScriptTime = 20;
-		$this->maxMemoryLimit = $this -> return_bytes(ini_get('memory_limit')) * 0.8;		//Lets use 20 % as reserve
+		$this->maxMemoryLimit = $this -> return_bytes(ini_get('memory_limit')) * 0.75;		//Lets use 20 % as reserve
 		// 		$this->maxMemoryLimit = $this -> return_bytes('20M');
 
 		// 		ini_set('memory_limit','35M');
@@ -572,6 +572,8 @@ class Migrator extends VmModel{
 
 	private function portCategories(){
 
+		$default_category_browse = JRequest::getWord('default_category_browse','');
+		$default_category_fly = JRequest::getWord('default_category_fly','');
 		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 			return;
 		}
@@ -599,13 +601,21 @@ class Migrator extends VmModel{
 				$category['published'] = $oldcategory['category_publish'] == 'Y' ? 1 : 0;
 				$category['created_on'] = $oldcategory['cdate'];
 				$category['modified_on'] = $oldcategory['mdate'];
-                                $browsepage = $oldcategory['category_browsepage'];
-                                if (strcmp($browsepage, 'managed') ==0 ) {
-                                    $browsepage="browse_".$oldcategory['products_per_row'];
-                                }
-				$category['category_layout'] = $browsepage;
-				$category['category_product_layout'] = $oldcategory['category_flypage'];
-				$category['products_per_row'] = $oldcategory['products_per_row']; //now done by the layout
+
+				if($default_category_browse!=$oldcategory['category_browsepage']){
+					$browsepage = $oldcategory['category_browsepage'];
+					if (strcmp($browsepage, 'managed') ==0 ) {
+						$browsepage="browse_".$oldcategory['products_per_row'];
+					}
+					$category['category_layout'] = $browsepage;
+				}
+
+				if($default_category_fly!=$oldcategory['category_flypage']){
+					$category['category_product_layout'] = $oldcategory['category_flypage'];
+				}
+
+				//idea was to do it by the layout, but we store this information additionally for enhanced pagination
+				$category['products_per_row'] = $oldcategory['products_per_row'];
 				$category['ordering'] = $oldcategory['list_order'];
 
 				$table = $this->getTable('categories');

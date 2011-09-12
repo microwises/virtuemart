@@ -189,6 +189,18 @@ class VirtueMartModelOrders extends VmModel {
 		}
 
 
+		if ($search = JRequest::getWord('search', false)){
+
+			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+
+			if(empty($whereString)){
+				$whereString = ' WHERE ( u.first_name LIKE '.$search.' OR u.middle_name LIKE '.$search.' OR u.last_name LIKE '.$search.' OR `order_number` LIKE '.$search.')';
+			} else {
+				$whereString .= ' AND ( u.first_name LIKE '.$search.' OR u.middle_name LIKE '.$search.' OR u.last_name LIKE '.$search.' OR `order_number` LIKE '.$search.')';
+			}
+
+
+		}
 /*		$query .= $this->_getOrdering('virtuemart_order_id', 'DESC');
 		if ($_ignorePagination) {
 			$this->_data = $this->_getList($query);

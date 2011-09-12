@@ -71,7 +71,7 @@ defined('_JEXEC') or die('Restricted access');
 							</span>
 						</td>
 						<td>
-							<?php echo VmHTML::checkbox('oncheckout_show_steps', $this->config->get('oncheckout_show_steps')); ?>>
+							<?php echo VmHTML::checkbox('oncheckout_show_steps', $this->config->get('oncheckout_show_steps')); ?>
 						</td>
 					</tr>
 						<tr>
