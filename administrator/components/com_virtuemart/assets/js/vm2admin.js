@@ -268,7 +268,7 @@ jQuery.noConflict();
 	$('dl#system-message').hide().slideDown(400);
 	$('.virtuemart-admin-area .toggler').vm2admin('toggle');
 	$('#admin-ui-menu').vm2admin('accordeon');
-	if ( typeof ('vmapply') !== 'undefined' ) {
+	if ( $("#admin-ui-tabs").length  ) {
 		$("#admin-ui-tabs").vm2admin("tabs",'vmapply');
 		$('select').chosen(); 
 	}

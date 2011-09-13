@@ -19,16 +19,9 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 AdminUIHelper::startAdminArea();
 /* Load some variables */
-$search_date = JRequest::getVar('search_date', null); // Changed search by date
-$now = getdate();
-$nowstring = $now["hours"].":".substr('0'.$now["minutes"], -2).' '.$now["mday"].".".$now["mon"].".".$now["year"];
-$search_order = JRequest::getVar('search_order', '>');
-$search_type = JRequest::getVar('search_type', 'product');
-$virtuemart_order_id = JRequest::getInt('virtuemart_order_id', false);
 $format = JText::_('DATE_FORMAT_LC');
 $rows = count( $this->report );
-$intervalTitle = JRequest::getVar('intervals', 'REPORT_BASIC_DATE');
-if ($intervalTitle =='N') { $intervalTitle = 'REPORT_BASIC_DATE';}
+$intervalTitle = JRequest::getVar('intervals');
 $dateinfo ='';
 if ( ($intervalTitle =='week') or ($intervalTitle =='month') ) $addDateInfo = true ;
 else $addDateInfo = false;
@@ -42,7 +35,7 @@ if( $this->pagination->limit < $rows ){
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
     <div id="header">
-        <h2><?php echo JText::sprintf('COM_VIRTUEMART_REPORT_TITLE', JHTML::_('date', $this->from_period, $format) , JHTML::_('date', $this->until_period, $format)); ?></h2>
+        <h2><?php echo JText::sprintf('COM_VIRTUEMART_REPORT_TITLE', vmJsApi::date( $this->from_period, 'LC') , vmJsApi::date( $this->until_period, 'LC') ); ?></h2>
         <div id="filterbox">
 
             <table>
@@ -70,7 +63,7 @@ if( $this->pagination->limit < $rows ){
             <thead>
                 <tr>
                     <th>
-                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_'.$intervalTitle,'created_on',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
+                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_'.$intervalTitle,'o.created_on',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
                     </th>
                     <th>
                         <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_ORDERS','virtuemart_order_id',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>

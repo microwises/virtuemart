@@ -52,7 +52,7 @@ $tt=$this;
 			</tr>
 			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?></strong></td>
-				<td><?php echo $this->orderbt->created_on ; ?></td>
+				<td><?php  echo vmJsApi::date($this->orderbt->created_on,'LC2',true); ?></td>
 			</tr>
 			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?></strong></td>
@@ -84,7 +84,7 @@ $tt=$this;
 			<?php
 			foreach ($this->order['history'] as $this->orderbt_event ) {
 				echo "<tr>";
-				echo "<td>".$this->orderbt_event->created_on."</td>\n";
+				echo "<td>". vmJsApi::date($this->orderbt_event->created_on,'LC2',true) ."</td>\n";
 				if ($this->orderbt_event->customer_notified == 1) {
 					echo '<td align="center">Yes</td>';
 				}

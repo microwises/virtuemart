@@ -69,7 +69,7 @@ $option = JRequest::getWord('option');
 				<td><?php echo $checked; ?></td>
 				<!-- Username + time -->
 				<?php $link = 'index.php?option='.$option.'&view=ratings&task=listreviews&virtuemart_product_id='.$review->virtuemart_product_id; ?>
-				<td><?php echo JHTML::_('link', $link, $review->created_on, array("title" => JText::_('COM_VIRTUEMART_RATING_EDIT_TITLE'))); ?></td>
+				<td><?php echo JHTML::_('link', $link,vmJsApi::date($review->created_on,'LC2',true) , array("title" => JText::_('COM_VIRTUEMART_RATING_EDIT_TITLE'))); ?></td>
 				<!-- Product name -->
 				<?php $link = 'index.php?option='.$option.'&view=product&task=edit&virtuemart_product_id='.$review->virtuemart_product_id.'&product_parent_id='.$review->product_parent_id; ?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $review->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$review->product_name)); ?></td>

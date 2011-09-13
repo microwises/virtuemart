@@ -654,15 +654,31 @@ class vmJsApi{
 		return;
 	}
 
-	// Virtuemart Site Js script vmJsApi::jDate();
-	function jDate($value='',$name="date",$class='class="datepicker"')
-	{
+	// Virtuemart Datepicker script
+	function jDate($value='',$name="date",$class='class="datepicker"') {
+
+		if ( !VmConfig::isJ15()) $J16 = "_J16"; else $J16 ="";
 		static $jDate;
+		$displayDate = self::date($value,'INPUT'); 
+		$display= '<input id="'.$name.'_text" '.$class.' type="date" name="'.$name.'" value="'.$displayDate.'" />';
+		$display.= '<input id="'.$name.'" type="hidden" name="'.$name.'" value="'.$value.'" />';
+		$document = JFactory::getDocument();
+		$document->addScriptDeclaration('
+		jQuery(document).ready( function() {
+			jQuery( "#'.$name.'_text" ).datepicker({
+			changeMonth: true,
+			changeYear: true,
+			dateFormat:"'.JText::_('COM_VIRTUEMART_DATE_FORMAT_INPUT_JS').'",
+			altField:"#'.$name.'",
+			altFormat: "yy-mm-dd"
+			});
+
+		});
+		');
 		// If exist exit
-		$display= '<input '.$class.' type="date" name="'.$name.'" value="'.$value.'" />';
 		if ($jDate) return $display;
 		$front = JURI::root(true).'/components/com_virtuemart/assets/';
-		$document = JFactory::getDocument();
+
 		//$document->addScript($front.'js/jquery.ui.core.min.js');
 		//$document->addScript($front.'js/jquery.ui.datepicker.min.js');
 		$document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
@@ -671,16 +687,7 @@ class vmJsApi{
 		$existingLang = array("af","ar","ar-DZ","az","bg","bs","ca","cs","da","de","el","en-AU","en-GB","en-NZ","eo","es","et","eu","fa","fi","fo","fr","fr-CH","gl","he","hr","hu","hy","id","is","it","ja","ko","kz","lt","lv","ml","ms","nl","no","pl","pt","pt-BR","rm","ro","ru","sk","sl","sq","sr","sr-SR","sv","ta","th","tj","tr","uk","vi","zh-CN","zh-HK","zh-TW");
 		if (!in_array($lang, $existingLang)) $lang ="en-GB";
 		$document->addScript($front.'js/i18n/jquery.ui.datepicker-'.$lang.'.js');
-		$document->addScriptDeclaration('
-		jQuery(document).ready( function() {
-			jQuery( ".datepicker" ).datepicker({
-			changeMonth: true,
-			changeYear: true,
-			dateFormat:"yy-mm-dd"
-			});
 
-		});
-		');
 		$jDate = true;
 		return $display;
 	}
@@ -792,7 +799,23 @@ class vmJsApi{
 		$cssSite = true;
 		return;
 	}
-
+	
+	/*
+	 * Convert formated date;
+	 * @ $date the date to convert
+	 * @ $format Joomla DATE_FORMAT Key endding eg. 'LC2' for DATE_FORMAT_LC2
+	 * @ revert date format for database- TODO ?
+	 */
+	
+	function date($date , $format ='LC2', $joomla=false ,$revert=false ){
+		If ($joomla) {
+			$formatedDate = JHTML::_('date', $date, JText::_('DATE_FORMAT_'.$format)); 
+		} else {
+			if ( !VmConfig::isJ15()) $J16 = "_J16"; else $J16 ="";
+			$formatedDate = JHTML::_('date', $date, JText::_('COM_VIRTUEMART_DATE_FORMAT_'.$format.$J16)); 
+		}
+		return $formatedDate;
+	}
 }
 
 // pure php no closing tag

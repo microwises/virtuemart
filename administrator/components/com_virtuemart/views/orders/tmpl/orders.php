@@ -87,9 +87,9 @@ $j15 = VmConfig::isJ15();
 			?>
 		<td><?php echo $details_link; ?></td>
 		<!-- Order date -->
-		<td><?php echo $order->created_on //date('d-M-y H:i', $order->created_on); ?></td>
+		<td><?php  echo vmJsApi::date($order->created_on,'LC2',true); ?></td>
 		<!-- Last modified -->
-		<td><?php echo $order->modified_on //date('d-M-y H:i', $order->modified_on); ?></td>
+		<td><?php echo vmJsApi::date($order->modified_on,'LC2',true); ?></td>
 		<!-- Status -->
 		<td style="position:relative;">
 				<?php echo JHTML::_('select.genericlist', $this->orderstatuses, "orders[". $order->virtuemart_order_id."][order_status]", '', 'order_status_code', 'order_status_name', $order->order_status, 'order_status'.$i,true); ?>

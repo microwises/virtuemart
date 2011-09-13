@@ -55,10 +55,10 @@ if (count($this->orderlist) == 0) {
 					<a href="<?php echo $editlink; ?>"><?php echo $row->virtuemart_order_id; ?></a>
 				</td>
 				<td align="left">
-					<?php echo JHTML::_('date', $row->created_on); ?>
+					<?php echo vmJsApi::date($row->created_on,'LC2',true); ?>
 				</td>
 				<td align="left">
-					<?php echo JHTML::_('date', $row->modified_on); ?>
+					<?php echo vmJsApi::date($row->modified_on,'LC2',true); ?>
 				</td>
 				<td align="left">
 					<?php echo ShopFunctions::getOrderStatusName($row->order_status); ?>

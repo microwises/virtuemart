@@ -367,7 +367,7 @@ class VirtuemartModelReport extends VmModel {
 	public function renderIntervalsList() {
 		$intervals = JRequest::getWord('intervals','day');
 		$options = array();
-		$options[] = JHTML::_('select.option' , JText::_('COM_VIRTUEMART_NONE') , '' ) ;
+		$options[] = JHTML::_('select.option' , JText::_('COM_VIRTUEMART_ORDERS') , 'orders' ) ;
 		$options[] = JHTML::_('select.option' , JText::_('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_DAILY') , 'day') ;
 		$options[] = JHTML::_('select.option' , JText::_('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_WEEKLY') , 'week') ;
 		$options[] = JHTML::_('select.option' , JText::_('COM_VIRTUEMART_REPORT_INTERVAL_GROUP_MONTHLY') , 'month' ) ;

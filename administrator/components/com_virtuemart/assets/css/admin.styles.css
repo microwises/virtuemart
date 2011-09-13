@@ -253,3 +253,6 @@ div.threecols ul   {
 	}
 .media-pagination span:hover, .media-pagination span.media-page-selected{background:  #CAC9C9;cursor: pointer;}
 .element-hidden{display: none;}
+.datepicker {
+    text-align: center;
+}
