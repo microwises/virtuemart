@@ -29,7 +29,7 @@ $jsVars  = ' jQuery(document).ready(function(){
 });' ;
 
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
-            
+
 if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 $cart = VirtueMartCart::getCart(false,false);
 $data = $cart->prepareAjaxData();
@@ -46,7 +46,9 @@ if ($data->dataValidated == true) {
 	$taskRoute = '';
 	$linkName = JText::_('COM_VIRTUEMART_CART_SHOW');
 }
-$data->cart_show = '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart".$taskRoute).'">'.$linkName.'</a>';
+$this->useSSL = VmConfig::get('useSSL',1);
+$this->useXHTML = true;
+$data->cart_show = '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart".$taskRoute,$this->useXHTML,$this->useSSL).'">'.$linkName.'</a>';
 $data->billTotal = $lang->_('COM_VIRTUEMART_CART_TOTAL').' : <strong>'. $data->billTotal .'</strong>';
 
 vmJsApi::jQuery();

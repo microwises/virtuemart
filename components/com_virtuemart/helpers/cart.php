@@ -56,10 +56,12 @@ class VirtueMartCart {
 
 	private static $_cart = null;
 
+	var $useSSL = 1;
 	// 	static $first = true;
 
 	private function __construct() {
-
+		$this->useSSL = VmConfig::get('useSSL',1);
+		$this->useXHTML = true;
 	}
 
 	/**
@@ -728,7 +730,7 @@ public function removeProductCart($prod_id=0) {
 				break; // Plugin completed succesful; nothing else to do
 			} elseif ($retVal === false) {
 				// Missing data, ask for it (again)
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipping'));
+				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipping',$this->useXHTML,$this->useSSL));
 				//	Remove comments if newchecks need to be implemented.
 				//	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
 			}
@@ -804,13 +806,13 @@ public function removeProductCart($prod_id=0) {
 			if (!empty($redirectMsg)) {
 				$this->couponCode = '';
 				//				$this->setCartIntoSession();
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_coupon'), $redirectMsg);
+				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_coupon',$this->useXHTML,$this->useSSL), $redirectMsg);
 			}
 		}
 
 		//Test Shipment and show shipment plugin
 		if (empty($this->virtuemart_shippingcarrier_id)) {
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipping'), $redirectMsg);
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipping',$this->useXHTML,$this->useSSL), $redirectMsg);
 		} else {
 			if (!class_exists('vmShipperPlugin'))
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
@@ -824,7 +826,7 @@ public function removeProductCart($prod_id=0) {
 					break; // Plugin completed succesful; nothing else to do
 				} elseif ($retVal === false) {
 					// Missing data, ask for it (again)
-					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipping'), $redirectMsg);
+					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipping',$this->useXHTML,$this->useSSL), $redirectMsg);
 					// 	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
 				}
 			}
@@ -832,7 +834,7 @@ public function removeProductCart($prod_id=0) {
 		//echo 'hier ';
 		//Test Payment and show payment plugin
 		if (empty($this->virtuemart_paymentmethod_id)) {
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment'), $redirectMsg);
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $redirectMsg);
 		} else {
 			if (!class_exists('vmPaymentPlugin'))
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
@@ -846,7 +848,7 @@ public function removeProductCart($prod_id=0) {
 					break; // Plugin completed succesful; nothing else to do
 				} elseif ($retVal === false) {
 					// Missing data, ask for it (again)
-					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment'), $redirectMsg);
+					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $redirectMsg);
 					// 	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
 				}
 			}

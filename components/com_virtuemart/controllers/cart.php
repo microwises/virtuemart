@@ -48,7 +48,8 @@ class VirtueMartControllerCart extends JController {
 			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		}
-
+		$this->useSSL = VmConfig::get('useSSL',1);
+		$this->useXHTML = true;
 	}
 
 
@@ -124,7 +125,7 @@ class VirtueMartControllerCart extends JController {
 	* @access public
 	*/
 	public function addJS(){
-	
+
 		//maybe we should use $mainframe->close(); or jexit();instead of die;
 		/* Load the cart helper */
 		//require_once(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
@@ -179,7 +180,7 @@ class VirtueMartControllerCart extends JController {
 			$taskRoute = '';
 			$linkName = JText::_('COM_VIRTUEMART_CART_SHOW');
 		}
-		$this->data->cart_show = '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart".$taskRoute).'">'.$linkName.'</a>';
+		$this->data->cart_show = '<a style ="float:right;" href="'.JRoute::_("index.php?option=com_virtuemart&view=cart".$taskRoute,$this->useXHTML,$this->useSSL).'">'.$linkName.'</a>';
 		$this->data->billTotal = $lang->_('COM_VIRTUEMART_CART_TOTAL').' : <strong>'. $this->data->billTotal .'</strong>';
 		echo json_encode($this->data);
 		Jexit();

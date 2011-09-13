@@ -55,7 +55,7 @@ function myValidator(f, t)
 	return false;
 }
 </script>
-<form method="post" id="userForm" name="userForm" action="index.php?view=user" class="form-validate">
+<form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_('index.php?view=user',$this->useXHTML,$this->useSSL) ?>" class="form-validate">
 <div style="text-align: right; width: 100%;">
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'saveuser');" ><?php echo $this->button_lbl ?></button>
 	&nbsp;

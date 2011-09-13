@@ -37,6 +37,6 @@ Your Registration data <?php echo $li ?>
 	if(!empty($userField['value']) && $userField['name']!='user_is_vendor') echo $userField['title'].' '.$userField['value'].$li ;
 }
 echo $li;
-echo JURI::root().JRoute::_('index.php?option=com_virtuemart&view=user').$li;
+echo JURI::root().JRoute::_('index.php?option=com_virtuemart&view=user',$this->useXHTML,$this->useSSL).$li;
 //Multi-X
 //echo JURI::root().JRoute::_('index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id='.$this->vendor->virtuemart_vendor_id).$li;

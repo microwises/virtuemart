@@ -78,7 +78,7 @@ defined('_JEXEC') or die('Restricted access');
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
 	</legend>
-	<a class="vmicon vmicon-16-editadd" href="index.php?option=com_virtuemart&view=user&task=editAddressSt&s&addrtype=ST&cid[]=<?php echo $this->userDetails->JUser->get('id'); ?>">
+	<a class="vmicon vmicon-16-editadd" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user&task=editAddressSt&s&addrtype=ST&cid[]='.$this->userDetails->JUser->get('id'),$this->useXHTML,$this->useSSL) ?>">
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'); ?>
 	</a>
 

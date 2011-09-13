@@ -88,6 +88,16 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	<td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SSL_EXPLAIN'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SSL') ?>
+		</span>
+		</td>
+		<td>
+		<?php echo VmHTML::checkbox('useSSL', $this->config->get('useSSL')); ?>
+		</td>
+	</tr>
+	<tr>
+	<td class="key">
 		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS') ?>
 		</span>

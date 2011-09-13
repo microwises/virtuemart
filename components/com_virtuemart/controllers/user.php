@@ -33,6 +33,8 @@ class VirtueMartControllerUser extends JController
 	public function __construct()
 	{
 		parent::__construct();
+		$this->useSSL = VmConfig::get('useSSL',1);
+		$this->useXHTML = true;
 	}
 
 	/**
@@ -193,13 +195,13 @@ class VirtueMartControllerUser extends JController
 		$this->saveToCart();
 
 		//We may add here the option for silent registration.
-		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout'), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout',$this->useXHTML,$this->useSSL), $msg );
 	}
 
 	function registerCheckoutUser(){
 		$msg = $this->saveData(true,true);
 		$this->saveToCart();
-		$this->setRedirect(JRoute::_( 'index.php?option=com_virtuemart&view=cart&task=checkout' ),$msg);
+		$this->setRedirect(JRoute::_( 'index.php?option=com_virtuemart&view=cart&task=checkout',$this->useXHTML,$this->useSSL ),$msg);
 	}
 
 	/**
@@ -229,7 +231,7 @@ class VirtueMartControllerUser extends JController
 	 * @author Oscar van Eijk
 	 */
 	function cancelCheckoutUser(){
-		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout'), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout',$this->useXHTML,$this->useSSL), $msg );
 	}
 
 	/**

@@ -14,7 +14,7 @@ endif;
 
 			$uri = JFactory::getURI();
 			$url = $uri->toString(array('path', 'query', 'fragment'));
-			
+
 
  ?>
  <div class="order-view">
@@ -79,7 +79,7 @@ endif;
 	$usersConfig = &JComponentHelper::getParams( 'com_users' );
 	if ($usersConfig->get('allowUserRegistration')) { ?>
 	<div class="width30 floatleft">
-		<a  class="details" href="<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=user' ); ?>">
+		<a  class="details" href="<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=user',$this->useXHTML,$this->useSSL ); ?>">
 			<?php echo JText::_('COM_VIRTUEMART_ORDER_REGISTER'); ?></a>
 	</div>
 	<?php } ?>

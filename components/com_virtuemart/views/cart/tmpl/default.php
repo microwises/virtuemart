@@ -79,7 +79,7 @@ JHTML::_ ( 'behavior.modal' );
 	else $taskRoute ='';
 	?>
 
-	<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart'.$taskRoute ); ?>">
+	<form method="post" id="checkoutForm" name="checkoutForm" action="<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart'.$taskRoute,$this->useXHTML,$this->useSSL ); ?>">
 
 		<?php // Leave A Comment Field ?>
 		<div class="customer-comment marginbottom15">

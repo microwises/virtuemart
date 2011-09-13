@@ -164,6 +164,21 @@ class Img2Thumb	{
 	}
 
 	/**
+*	Maybe adding sharpening with
+*            $sharpenMatrix = array
+            (
+                array(-1.2, -1, -1.2),
+                array(-1, 20, -1),
+                array(-1.2, -1, -1.2)
+            );
+
+            // calculate the sharpen divisor
+            $divisor = array_sum(array_map('array_sum', $sharpenMatrix));
+
+            $offset = 0;
+
+            // apply the matrix
+            imageconvolution($img, $sharpenMatrix, $divisor, $offset);
 *
 *	private function - do not call
 *	includes function ImageCreateTrueColor and ImageCopyResampled which are available only under GD 2.0.1 or higher !

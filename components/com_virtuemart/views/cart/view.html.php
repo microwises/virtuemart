@@ -123,6 +123,11 @@ class VirtueMartViewCart extends JView {
 			$this->assignRef('checkout_link_html', $checkout_link_html);
 		}
 
+		$useSSL = VmConfig::get('useSSL',1);
+		$useXHTML = true;
+		$this->assignRef('useSSL', $useSSL);
+		$this->assignRef('useXHTML', $useXHTML);
+
                 // @max: quicknirty
                 $cart->setCartIntoSession();
 		shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
