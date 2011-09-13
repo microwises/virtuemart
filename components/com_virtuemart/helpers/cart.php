@@ -1316,6 +1316,15 @@ public function removeProductCart($prod_id=0) {
 
 		}
 
+		if(empty($BTaddress['fields']['email']['value'])){
+			$BTaddress['fields']['email']['value'] = JFactory::getUser()->email;
+		}
+
+		vmdebug('my userfields',$BTaddress['fields']);
+		// 		if($userFields->$field->email' && empty($field->value)){
+
+		// 			$field->value = JFactory::getUser()->email;
+		// 		}
 		$this->BTaddress = & $BTaddress['fields'];
 
 		$STaddress['fields']= array();

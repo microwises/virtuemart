@@ -323,7 +323,12 @@ class VmConfig{
 			foreach($config as $item){
 				$item = explode('=',$item);
 				if(!empty($item[1])){
-					$pair[$item[0]] = unserialize(base64_decode($item[1]) );
+					if($item[0]!=='offline_message'){
+						$pair[$item[0]] = unserialize($item[1] );
+					} else {
+						$pair[$item[0]] = unserialize(base64_decode($item[1]) );
+					}
+
 				} else {
 					$pair[$item[0]] ='';
 				}
@@ -424,14 +429,14 @@ class VmConfig{
 
 		jimport( 'joomla.utilities.arrayhelper' );
 		foreach(self::$_jpConfig->_params as $paramkey => $value){
-			// 			if(is_array($value)){
-			// 				JArrayHelper::toInteger($value);
-			// 			} else {
-			// 				$value = $db->getEscaped($value);
-			// 			}
 
-			$raw .= $paramkey.'='.base64_encode(serialize($value)).'|';
-			// 			$raw .= $paramkey.'='.$value.'|';
+			//Texts get broken, when serialized, therefore we do a simple encoding,
+			//btw we need serialize for storing arrays   note by Max Milbers
+			if($paramkey!=='offline_message'){
+				$raw .= $paramkey.'='.serialize($value).'|';
+			} else {
+				$raw .= $paramkey.'='.base64_encode(serialize($value)).'|';
+			}
 		}
 		self::$_jpConfig->_raw = substr($raw,0,-1);
 		return self::$_jpConfig->_raw;
@@ -524,7 +529,12 @@ class VmConfig{
 						$pair[1] = substr($pair[1],6);
 						$pair[1] = explode('|',$pair[1]);
 					}
-					$_line = $pair[0].'='.base64_encode(serialize($pair[1]));
+					if($pair[0]!=='offline_message'){
+						$_line = $pair[0].'='.serialize($pair[1]);
+					} else {
+						$_line = $pair[0].'='.base64_encode(serialize($pair[1]));
+					}
+
 				} else {
 					$_line = $pair[0].'=';
 				}
@@ -659,7 +669,7 @@ class vmJsApi{
 
 		if ( !VmConfig::isJ15()) $J16 = "_J16"; else $J16 ="";
 		static $jDate;
-		$displayDate = self::date($value,'INPUT'); 
+		$displayDate = self::date($value,'INPUT');
 		$display= '<input id="'.$name.'_text" '.$class.' type="date" name="'.$name.'" value="'.$displayDate.'" />';
 		$display.= '<input id="'.$name.'" type="hidden" name="'.$name.'" value="'.$value.'" />';
 		$document = JFactory::getDocument();
@@ -799,20 +809,20 @@ class vmJsApi{
 		$cssSite = true;
 		return;
 	}
-	
+
 	/*
 	 * Convert formated date;
 	 * @ $date the date to convert
 	 * @ $format Joomla DATE_FORMAT Key endding eg. 'LC2' for DATE_FORMAT_LC2
 	 * @ revert date format for database- TODO ?
 	 */
-	
+
 	function date($date , $format ='LC2', $joomla=false ,$revert=false ){
 		If ($joomla) {
-			$formatedDate = JHTML::_('date', $date, JText::_('DATE_FORMAT_'.$format)); 
+			$formatedDate = JHTML::_('date', $date, JText::_('DATE_FORMAT_'.$format));
 		} else {
 			if ( !VmConfig::isJ15()) $J16 = "_J16"; else $J16 ="";
-			$formatedDate = JHTML::_('date', $date, JText::_('COM_VIRTUEMART_DATE_FORMAT_'.$format.$J16)); 
+			$formatedDate = JHTML::_('date', $date, JText::_('COM_VIRTUEMART_DATE_FORMAT_'.$format.$J16));
 		}
 		return $formatedDate;
 	}

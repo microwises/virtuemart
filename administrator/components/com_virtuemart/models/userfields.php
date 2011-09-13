@@ -357,6 +357,7 @@ class VirtueMartModelUserfields extends VmModel {
 					$field->required = 0;
 					$field->value = '';
 					$field->default = '';
+
 				}
 			}
 		}
