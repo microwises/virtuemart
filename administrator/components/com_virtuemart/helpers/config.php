@@ -604,8 +604,9 @@ class vmJsApi{
 	 * Prevent duplicate load of script
 	 * @ Author KOHL Patrick
 	 */
-	function jQuery()
-	{
+	function jQuery() {
+
+		if ( !VmConfig::get('jquery',true ) ) return false;
 		static $jquery;
 		// If exist exit
 		if ($jquery) return;
@@ -623,11 +624,12 @@ class vmJsApi{
 		$document->addScriptDeclaration('jQuery.noConflict();');*/
 
 		$jquery = true;
-		return;
+		return true;
 	}
 	// Virtuemart product and price script
 	function jPrice()
 	{
+		if ( !VmConfig::get('jprice',true ) ) return false;
 		static $jPrice;
 		// If exist exit
 		if ($jPrice) return;
@@ -650,18 +652,19 @@ class vmJsApi{
 		JHTML::script('vmprices.js', 'components/com_virtuemart/assets/js/', false);
 		JHTML::stylesheet('facebox.css', 'components/com_virtuemart/assets/css/', false);
 		$jPrice = true;
-		return;
+		return true;
 	}
 
 	// Virtuemart Site Js script
 	function jSite()
 	{
+		if ( !VmConfig::get('jsite',true ) ) return false;
 		static $jSite;
 		// If exist exit
 		if ($jSite) return;
 		JHTML::script('vmsite.js', 'components/com_virtuemart/assets/js/', false);
 		$jSite = true;
-		return;
+		return true;
 	}
 
 	// Virtuemart Datepicker script
@@ -716,47 +719,7 @@ class vmJsApi{
 		return;
 	}
 
-	/* 	function JimageSelectlist() {
-	 static $JimageSelectlist;
-	if ($JimageSelectlist) return;
-	$js = "
-	jQuery(document).ready(function() {
 
-	jQuery('#addnewselectimage').click(function() {
-	jQuery('.selectimage select:first').clone(true).insertAfter('.selectimage select:last');
-	});
-	jQuery('.detachselectimage').click(function() {
-	if (jQuery('.selectimage select:eq(1)').length)
-	jQuery('.selectimage select:last').remove();
-	});
-	jQuery('.selectimage select').change(function() {
-	var data = jQuery(this).val();
-
-	jQuery.getJSON('index.php?option=com_virtuemart&view=media&task=viewJson&format=json&virtuemart_media_id='+data ,
-	function(datas, textStatus) {
-	if (datas.msg =='OK') {
-	jQuery('#vm_display_image').attr('src', datas.file_root+datas.file_url);
-	jQuery('#vm_display_image').attr('alt', datas.file_title);
-	jQuery('#file_title').html(datas.file_title);
-	jQuery('.adminform [name=file_title]').val(datas.file_title);
-	jQuery('.adminform [name=file_description]').val(datas.file_description);
-	jQuery('.adminform [name=file_meta]').val(datas.file_meta);
-	jQuery('.adminform [name=file_url]').val(datas.file_url);
-	jQuery('.adminform [name=file_url_thumb]').val(datas.file_url_thumb);
-	jQuery('[name=active_media_id]').val(datas.virtuemart_media_id);
-	if (datas.file_url_thumb !== 'undefined') { jQuery('#vm_thumb_image').attr('src',datas.file_root+datas.file_url_thumb); }
-	else { jQuery('#vm_thumb_image').attr('src','');}
-	} else jQuery('#file_title').html(datas.msg);
-	});
-	//if (jQuery('.selectimage select:eq(1)').length)
-	//jQuery('.selectimage select:last').remove();
-	});
-	});";
-	$document = JFactory::getDocument();
-	$document->addScriptDeclaration($js);
-	$JimageSelectlist = true;
-	return;
-	} */
 	function JvalideForm()
 	{
 		static $jvalideForm;
@@ -796,6 +759,8 @@ class vmJsApi{
 	 */
 
 	function cssSite() {
+
+		if ( !VmConfig::get('css',true ) ) return false;
 		static $cssSite;
 		if ($cssSite) return;
 		// Get the Page direction for right to left support
@@ -807,7 +772,7 @@ class vmJsApi{
 
 		JHTML::stylesheet ( $cssFile, 'components/com_virtuemart/assets/css/', false );
 		$cssSite = true;
-		return;
+		return true;
 	}
 
 	/*

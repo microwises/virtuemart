@@ -266,10 +266,124 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 		</table>
 		</fieldset>
+		<fieldset>
+		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_TITLE') ?></legend>
+		<table class="admintable">
+			<tr>
+				<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ASSETS_GENERAL_PATH_EXPLAIN'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ASSETS_GENERAL_PATH') ?>
+				</span>
+				</td>
+				<td>
+					<input type="text" name="assets_general_path"  size="60" class="inputbox" value="<?php echo $this->config->get('assets_general_path') ?>" />
+				</td>
+			</tr>
+			<tr>
+				<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_CATEGORY_PATH_EXPLAIN'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_CATEGORY_PATH') ?>
+				</span>
+				</td>
+				<td>
+					<input type="text" name="media_category_path"  size="60" class="inputbox" value="<?php echo $this->config->get('media_category_path') ?>" />
+				</td>
+			</tr>
+			<tr>
+				<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_PRODUCT_PATH_EXPLAIN'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_PRODUCT_PATH') ?>
+				</span>
+				</td>
+				<td>
+					<input type="text" name="media_product_path"  size="60" class="inputbox" value="<?php echo $this->config->get('media_product_path') ?>" />
+				</td>
+			</tr>
+			<tr>
+				<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_MANUFACTURER_PATH_EXPLAIN'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_MANUFACTURER_PATH') ?>
+				</span>
+				</td>
+				<td>
+					<input type="text" name="media_manufacturer_path"  size="60" class="inputbox" value="<?php echo $this->config->get('media_manufacturer_path') ?>" />
+				</td>
+			</tr>
+			<?php
+			if( function_exists('imagecreatefromjpeg') ) {
+				?>
+				<tr>
+					<td class="key">
+						<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP'); ?>">
+						<label for="img_resize_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING') ?></label>
+						</span>
+					</td>
+					<td>
+						<?php echo VmHTML::checkbox('img_resize_enable', $this->config->get('img_resize_enable')); ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="key">
+						<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_WIDTH_TIP'); ?>">
+						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_WIDTH') ?>
+						</span>
+					</td>
+					<td>
+						<input type="text" name="img_width" class="inputbox" value="<?php echo $this->config->get('img_width') ?>" />
+					</td>
+				</tr>
+				<tr>
+					<td class="key">
+						<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
+						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_HEIGHT') ?>
+						</span>
+					</td>
+					<td>
+						<input type="text" name="img_height" class="inputbox" value="<?php echo $this->config->get('img_height') ?>" />
+					</td>
+				</tr>
+				<?php
+			}
+			else { ?>
+				<tr>
+					<td colspan="2"><strong><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_GD_MISSING') ?></strong>
+						<input type="hidden" name="img_resize_enable" value="0" />
+						<input type="hidden" name="img_width" value="<?php echo  $this->config->get('img_width',90) ?>" />
+						<input type="hidden" name="img_height" value="<?php echo  $this->config->get('img_height',90) ?>" />
+					</td>
+				</tr>
+			<?php }
+			?>
+			<tr>
+			<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEPAGE') ?>
+				</span>
+			</td>
+			<td>
+				<?php
+				echo JHTML::_('Select.genericlist', $this->noimagelist, 'no_image_set', 'size=1', 'value', 'text', $this->config->get('no_image_set'));
+				?>
+			</td>
+			</tr>
+			<tr>
+			<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND_EXPLAIN'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND') ?>
+				</span>
+			</td>
+			<td>
+				<?php
+				echo JHTML::_('Select.genericlist', $this->noimagelist, 'no_image_found', 'size=1', 'value', 'text', $this->config->get('no_image_found'));
+				?>
+			</td>
+			</tr>
 
-	</td><td valign="top" width="50%">
-
-	    <fieldset>
+		</table>
+		</fieldset>
+	</td>
+	<td valign="top" width="50%">
+		<fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOPFRONT_SETTINGS') ?></legend>
 		<table class="admintable">
 		    <tr>
@@ -442,125 +556,51 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		</table>
 	    </fieldset>
-	</td></tr>
-</table>
-
-<table width="100%">
-    <tr><td valign="top">
 		<fieldset>
-		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_TITLE') ?></legend>
+		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CSS_JS_FRONT_SETTINGS') ?></legend>
 		<table class="admintable">
-	    	<tr>
-				<td class="key">
-				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ASSETS_GENERAL_PATH_EXPLAIN'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ASSETS_GENERAL_PATH') ?>
-			    </span>
-				</td>
-				<td>
-					<input type="text" name="assets_general_path"  size="60" class="inputbox" value="<?php echo $this->config->get('assets_general_path') ?>" />
-				</td>
-		    </tr>
-		    <tr>
-				<td class="key">
-				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_CATEGORY_PATH_EXPLAIN'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_CATEGORY_PATH') ?>
-			    </span>
-				</td>
-				<td>
-					<input type="text" name="media_category_path"  size="60" class="inputbox" value="<?php echo $this->config->get('media_category_path') ?>" />
-				</td>
-		    </tr>
-		    <tr>
-				<td class="key">
-				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_PRODUCT_PATH_EXPLAIN'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_PRODUCT_PATH') ?>
-			    </span>
-				</td>
-				<td>
-					<input type="text" name="media_product_path"  size="60" class="inputbox" value="<?php echo $this->config->get('media_product_path') ?>" />
-				</td>
-		    </tr>
-		    <tr>
-				<td class="key">
-				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_MANUFACTURER_PATH_EXPLAIN'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_MANUFACTURER_PATH') ?>
-			    </span>
-				</td>
-				<td>
-					<input type="text" name="media_manufacturer_path"  size="60" class="inputbox" value="<?php echo $this->config->get('media_manufacturer_path') ?>" />
-				</td>
-		    </tr>
-		    <?php
-		    if( function_exists('imagecreatefromjpeg') ) {
-				?>
-				<tr>
-					<td class="key">
-						<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING_TIP'); ?>">
-						<label for="img_resize_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DYNAMIC_THUMBNAIL_RESIZING') ?></label>
-						</span>
-					</td>
-					<td>
-						<?php echo VmHTML::checkbox('img_resize_enable', $this->config->get('img_resize_enable')); ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="key">
-						<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_WIDTH_TIP'); ?>">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_WIDTH') ?>
-						</span>
-					</td>
-					<td>
-						<input type="text" name="img_width" class="inputbox" value="<?php echo $this->config->get('img_width') ?>" />
-					</td>
-				</tr>
-				<tr>
-					<td class="key">
-						<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
-						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_HEIGHT') ?>
-						</span>
-					</td>
-					<td>
-						<input type="text" name="img_height" class="inputbox" value="<?php echo $this->config->get('img_height') ?>" />
-					</td>
-				</tr>
-				<?php
-			}
-			else { ?>
-				<tr>
-					<td colspan="2"><strong><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_GD_MISSING') ?></strong>
-						<input type="hidden" name="img_resize_enable" value="0" />
-						<input type="hidden" name="img_width" value="<?php echo  $this->config->get('img_width',90) ?>" />
-						<input type="hidden" name="img_height" value="<?php echo  $this->config->get('img_height',90) ?>" />
-					</td>
-				</tr>
-			<?php }
-		    ?>
-		    <tr>
+			<tr>
 			<td class="key">
-			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEPAGE_EXPLAIN'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEPAGE') ?>
-			    </span>
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CSS_FRONT_TIP'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS') ?>
+				</span>
 			</td>
 			<td>
-			    <?php
-			    echo JHTML::_('Select.genericlist', $this->noimagelist, 'no_image_set', 'size=1', 'value', 'text', $this->config->get('no_image_set'));
-			    ?>
+				<?php echo VmHTML::checkbox('css', $this->config->get('css',1)); ?>
 			</td>
-		    </tr>
-		    <tr>
+			</tr>
+			<tr>
 			<td class="key">
-			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND_EXPLAIN'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND') ?>
-			    </span>
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_JQUERY_FRONT_TIP'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JQUERY') ?>
+				</span>
 			</td>
 			<td>
-			    <?php
-			    echo JHTML::_('Select.genericlist', $this->noimagelist, 'no_image_found', 'size=1', 'value', 'text', $this->config->get('no_image_found'));
-			    ?>
+				<?php echo VmHTML::checkbox('jquery', $this->config->get('jquery',1)); ?>
 			</td>
-		    </tr>
-
-	    </table>
+			</tr>
+			<tr>
+			<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_JPRICE_FRONT_TIP'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JPRICE') ?>
+				</span>
+			</td>
+			<td>
+				<?php echo VmHTML::checkbox('jprice', $this->config->get('jprice',1)); ?>
+			</td>
+			</tr>
+			<tr>
+			<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_JSITE_FRONT_TIP'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JSITE') ?>
+				</span>
+			</td>
+			<td>
+				<?php echo VmHTML::checkbox('jsite', $this->config->get('jsite',1)); ?>
+			</td>
+			</tr>
+		</table>
 	    </fieldset>
-	</td></tr>
+	</td>
+  </tr>
 </table>
