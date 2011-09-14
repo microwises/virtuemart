@@ -33,25 +33,28 @@ jimport('joomla.html.pane');
  */
 class VirtuemartViewCategory extends JView {
 
-    function display($tpl = null) {
+	function display($tpl = null) {
 
-        // Load the helper(s)
-        $this->loadHelper('adminui');
-        $this->loadHelper('shopFunctions');
-//		$this->loadHelper('image');
+		// Load the helper(s)
+		$this->loadHelper('adminui');
+		$this->loadHelper('shopFunctions');
+		//		$this->loadHelper('image');
 
-        $model = $this->getModel();
-        $layoutName = JRequest::getWord('layout', 'default');
+		$model = $this->getModel();
+		$layoutName = JRequest::getWord('layout', 'default');
 
-        if ($layoutName == 'edit') {
+		if ($layoutName == 'edit') {
+
+			$category = $model->getCategory('',false);
+
 			if (isset($category->category_name)) $name = $category->category_name; else $name ='';
 			$viewName=ShopFunctions::SetViewTitle('CATEGORY',$name);
 			$this->assignRef('viewName', $viewName);
-	        $category = $model->getCategory('',false);
-		
-		
-		$this->assignRef('viewName',$viewName);
-	       	$model->addImages($category);
+
+
+
+			$this->assignRef('viewName',$viewName);
+			$model->addImages($category);
 
 			if ( $category->virtuemart_category_id > 1 ) {
 				$relationInfo = $model->getRelationInfo( $category->virtuemart_category_id );
@@ -59,53 +62,53 @@ class VirtuemartViewCategory extends JView {
 			}
 
 			$parent = $model->getParentCategory( $category->virtuemart_category_id );
-            $this->assignRef('parent', $parent);
+			$this->assignRef('parent', $parent);
 
 			if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-            $templateList = ShopFunctions::renderTemplateList(JText::_('COM_VIRTUEMART_CATEGORY_TEMPLATE_DEFAULT'));
+			$templateList = ShopFunctions::renderTemplateList(JText::_('COM_VIRTUEMART_CATEGORY_TEMPLATE_DEFAULT'));
 
-            $this->assignRef('jTemplateList', $templateList);
+			$this->assignRef('jTemplateList', $templateList);
 
 			if(!class_exists('VirtueMartModelConfig'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'config.php');
-            $categoryLayoutList = VirtueMartModelConfig::getLayoutList('category');
-            $this->assignRef('categoryLayouts', $categoryLayoutList);
+			$categoryLayoutList = VirtueMartModelConfig::getLayoutList('category');
+			$this->assignRef('categoryLayouts', $categoryLayoutList);
 
-            $productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
-            $this->assignRef('productLayouts', $productLayouts);
+			$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
+			$this->assignRef('productLayouts', $productLayouts);
 
-            $categorylist = ShopFunctions::categoryListTree(array($parent->virtuemart_category_id));
+			$categorylist = ShopFunctions::categoryListTree(array($parent->virtuemart_category_id));
 
-            $this->assignRef('category', $category);
-            $this->assignRef('categorylist', $categorylist);
+			$this->assignRef('category', $category);
+			$this->assignRef('categorylist', $categorylist);
 
-            ShopFunctions::addStandardEditViewCommands();
-        }
-        else {
-            $viewName = ShopFunctions::SetViewTitle('CATEGORY_S');
-            $this->assignRef('viewName', $viewName);
+			ShopFunctions::addStandardEditViewCommands();
+		}
+		else {
+			$viewName = ShopFunctions::SetViewTitle('CATEGORY_S');
+			$this->assignRef('viewName', $viewName);
 
-            /**
-             * Commented out for future use
-              JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('COM_VIRTUEMART_CATEGORY_SHARE'), true);
-              JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('COM_VIRTUEMART_CATEGORY_UNSHARE'), true);
-             */
+			/**
+			 * Commented out for future use
+			 JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('COM_VIRTUEMART_CATEGORY_SHARE'), true);
+			 JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('COM_VIRTUEMART_CATEGORY_UNSHARE'), true);
+			 */
 
-            $categories = $model->getCategoryTree(false);
-            $categoriesSorted = $model->sortCategoryTree($categories);
+			$categories = $model->getCategoryTree(false);
+			$categoriesSorted = $model->sortCategoryTree($categories);
 
 			$this->assignRef('model',	$model);
-            $this->assignRef('categories', $categoriesSorted['categories']);
-            $this->assignRef('depthList', $categoriesSorted['depth_list']);
+			$this->assignRef('categories', $categoriesSorted['categories']);
+			$this->assignRef('depthList', $categoriesSorted['depth_list']);
 			$this->assignRef('rowList',	$categoriesSorted['row_list']);
-            $this->assignRef('idList', $categoriesSorted['id_list']);
+			$this->assignRef('idList', $categoriesSorted['id_list']);
 
 			ShopFunctions::addStandardDefaultViewCommands();
 			$lists = ShopFunctions::addStandardDefaultViewLists($model);
-            $this->assignRef('lists', $lists);
-        }
+			$this->assignRef('lists', $lists);
+		}
 
-        parent::display($tpl);
-    }
+		parent::display($tpl);
+	}
 
 }
 

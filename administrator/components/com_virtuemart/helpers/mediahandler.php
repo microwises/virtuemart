@@ -63,7 +63,7 @@ class VmMediaHandler {
 			$relUrl = VmConfig::get('forSale_path');
 			$choosed = true;
 		}
-
+		vmdebug('my type',$type);
 		if($choosed && empty($relUrl)){
 			$uri = JFactory::getURI();
 			$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
