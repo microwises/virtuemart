@@ -141,8 +141,8 @@ vmJsApi::jDate();
 			<td>
 				<?php echo $this->countriesList?>
 			</td>
-		
-		
+
+
 			<td width="110" class="key">
 		    	<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_STATE'); ?>
 			</td>
@@ -184,7 +184,7 @@ vmJsApi::jDate();
 				<?php
 					$startDate = JFactory::getDate($this->calc->publish_up,$this->tzoffset);
 					//echo JHTML::_('calendar', $startDate->toFormat($this->dateformat), "publish_up", "publish_up", $this->dateformat);
-					echo vmJsApi::jDate($startDate->toFormat($this->dateformat), 'publish_up'); 
+					echo vmJsApi::jDate($startDate->toFormat($this->dateformat), 'publish_up');
  				?>
 			</td>
 		</tr>
@@ -202,7 +202,7 @@ vmJsApi::jDate();
 					$date = JFactory::getDate($this->calc->publish_down,$this->tzoffset);
 					$endDate = $date->toFormat($this->dateformat);
 				}
-				echo vmJsApi::jDate($endDate, 'publish_down'); 
+				echo vmJsApi::jDate($endDate, 'publish_down');
 				//echo JHTML::_('calendar', $endDate, "publish_down", "publish_down", $this->dateformat,array('class'=>'inputbox', 'size'=>'25',  'maxlength'=>'19')); ?>
 
 			</td>
@@ -227,7 +227,7 @@ vmJsApi::jDate();
 				<input class="inputbox" type="text" name="calc_amount_dimunit" id="calc_amount_cond" size="4" value="<?php echo $this->calc->calc_amount_dimunit; ?>" />
 			</td>
 		</tr>
-		<?php if($this->perms->check('admin')){?>
+		<?php if(Vmconfig::get('multix','none')!=='none' && $this->perms->check('admin') ){?>
 		<tr>
 			<td width="110" class="key">
 				<label for="vendor">

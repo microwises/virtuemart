@@ -391,8 +391,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if(JFile::exists(JPATH_VM_ADMINISTRATOR.DS.'toolbar.php')){
 				JFile::move('toolbar.php','toolbar.vm1.php',JPATH_VM_ADMINISTRATOR);
 			}
-			if(JFile::exists(JPATH_VM_ADMINISTRATOR.DS.'toolbar.php')){
-				JFile::move('toolbar.virtuemart.php','toolbar.virtuemart.vm1.php',JPATH_VM_ADMINISTRATOR);
+
+			//Prevents overwriting existing file.
+			if(!JFile::exists(JPATH_VM_ADMINISTRATOR.DS.'virtuemart_defaults.cfg')){
+				JFile::move('virtuemart_defaults.cfg-php','virtuemart_defaults.cfg',JPATH_VM_ADMINISTRATOR);
 			}
 
 			return true;

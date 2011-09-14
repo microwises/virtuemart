@@ -174,10 +174,14 @@ class VmMediaHandler {
 
 	    	$lastIndexOfSlash= strrpos($this->file_url,'/');
 	    	$name = substr($this->file_url,$lastIndexOfSlash+1);
+
 	    	$this->file_name = JFile::stripExt($name);
 
 	    	//Ensure using right directory
-	    	$this->file_url = $this->getMediaUrlByView($type).$this->file_name;
+	    	$file_url = $this->getMediaUrlByView($type).$this->file_name;
+	    	if(JFile::exists($file_url)){
+	    		$this->file_url = $file_url;
+	    	}
 			vmdebug('strange',$this->file_url);
 
 			$lastIndexOfSlash= strrpos($this->file_url,'/');
