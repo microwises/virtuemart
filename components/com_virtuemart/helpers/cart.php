@@ -190,10 +190,12 @@ public function setCartIntoSession() {
 	// 		vmdebug('setCartIntoSession ids',$this);
 
 	$products = array();
-	foreach($this->products as $key =>$product){
-		$product->prices = null;
+        if ($this->products) {
+            foreach($this->products as $key =>$product){
+                    $product->prices = null;
 
-	}
+            }
+        }
 	// 		$sessionCart->products = $products;
 	$sessionCart->products = $this->products;
 	// 		echo '<pre>'.print_r($products,1).'</pre>';die;
@@ -990,7 +992,8 @@ public function removeProductCart($prod_id=0) {
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart') );
 			}
 			$this->virtuemart_order_id = $orderID;
-			$this->sentOrderConfirmedEmail($order->getOrder($orderID));
+                        // Email sent when Payment reposnse received
+			//$this->sentOrderConfirmedEmail($order->getOrder($orderID));
 
 			//We delete the old stuff
 			$this->products = array();
