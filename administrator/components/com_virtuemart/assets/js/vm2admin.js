@@ -106,7 +106,7 @@
 			);
 			if ($.inArray(id,inputArray) == -1){
 				that = jQuery(this);
-				jQuery(this).clone().appendTo(container).unbind("click").append('<div class="trash"></div><div class="edit-24-grey"><div>');
+				jQuery(this).clone().appendTo(container).unbind("click").append('<div class="trash" title="remove"></div><div class="edit-24-grey" title="'+vm2string.editImage+'"><div>');
 				that.hide().fadeIn();
 			}
 			

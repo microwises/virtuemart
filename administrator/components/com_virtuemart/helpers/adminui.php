@@ -49,9 +49,12 @@ class AdminUIHelper {
 		$document->addScript($front.'js/chosen.jquery.min.js');
 		$document->addScript($admin.'js/vm2admin.js');
 		//$document->addScript($admin.'js/jquery.jqtransform.js');
-		$document->addScriptDeclaration ( '
-		var tip_image="'.JURI::root(true).'/components/com_virtuemart/assets/js/images/vtip_arrow.png";
-		');
+		if (JText::_('COM_VIRTUEMART_JS_STRINGS') == 'COM_VIRTUEMART_JS_STRINGS') $vm2string = "editImage: 'edit image'" ;
+		else $vm2string = JText::_('COM_VIRTUEMART_JS_STRINGS') ;
+		$document->addScriptDeclaration ( "
+		var tip_image='".JURI::root(true)."/components/com_virtuemart/assets/js/images/vtip_arrow.png';
+		var vm2string ={".$vm2string."} ;
+		");
 		?>
 
 		<div class="virtuemart-admin-area">
