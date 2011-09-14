@@ -121,7 +121,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	 *
 	 * @author RickG
 	 * @author Max Milbers
-	 */
+	 *
 	function userSync(){
 
 		$data = JRequest::get('get');
@@ -358,8 +358,10 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		return $msg;
 	}
 
-	function portMedia(){		$data = JRequest::get('get');
+	function portMedia(){
 
+		$data = JRequest::get('get');
+		JRequest::setVar($data['token'], '1', 'post');
 		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
 		$this->checkPermissionForTools();
 
