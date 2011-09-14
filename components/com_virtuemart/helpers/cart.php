@@ -405,7 +405,7 @@ public function add($virtuemart_product_ids=null) {
 						if ( is_array($custom_fieldId) ) {
 							foreach ($custom_fieldId as $userfieldId => $userfield) {
 								$productKey .= $customId . ':' . $userfieldId . ';';
-								$product->userfield = $userfield;
+								$product->userfield[$customId . '-' . $userfieldId] = $userfield;
 							}
 						} else {
 							$productKey .= $customId . ':' . $custom_fieldId . ';';
@@ -415,6 +415,10 @@ public function add($virtuemart_product_ids=null) {
 				}
 
 			}
+			// print_r($product->customPrices);
+			// print_r($product->userfield);
+			
+			// jExit();
 
 			if (array_key_exists($productKey, $this->products)) {
 				$this->products[$productKey]->quantity += $quantityPost;
@@ -1469,12 +1473,13 @@ public function removeProductCart($prod_id=0) {
 				}
 				$variantmods = $calculator->parseModifier($priceKey);
 				$row = 0 ;
+
 				foreach ($variantmods as $variant=>$selected){
 
 					if ($product->customfieldsCart[$row]->field_type == "U") {
-						$this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
-								'.$product->userfield.' '.$product->customfieldsCart[$row]->custom_field_desc;
-
+						foreach ($product->userfield as $pKey => $puser) {
+							$this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
+						}
 					} else {
 
 						$this->data->products[$i]['customfieldsCart'] .= '<br/ ><b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$product->customfieldsCart[$row]->options[$selected]->custom_value;

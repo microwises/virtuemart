@@ -1151,19 +1151,25 @@ class ShopFunctions {
 			$row=0 ;
 			//dump ($variantmods);
 			foreach($variantmods as $variant=>$selected){
-				$custom_value = $product->customfieldsCart[$row]->options[$selected]->custom_value;
+
 				if( $product->customfieldsCart[$row]->field_type == "M") {
 					$db = JFactory::getDBO();
 					$q = 'SELECT * FROM `#__virtuemart_medias` WHERE `virtuemart_media_id` = ' . (int) $custom_value . ' LIMIT 1';
 					$db->setQuery($q);
 					$image = $db->loadObject();
 					$custom_value = JHTML::_('image', $image->file_url_thumb, $image->file_title,'WIDTH = "48"');
+					$html .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
+							'.$custom_value.' '.$product->customfieldsCart[$row]->custom_field_desc;
 				} else if( $product->customfieldsCart[$row]->field_type == "U") {
-					$custom_value = $product->userfield ;
+					foreach ($product->userfield as $pKey => $puser) {
+						$html .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
+					}
 
+				} else { 
+					$custom_value = $product->customfieldsCart[$row]->options[$selected]->custom_value;
+					$html .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
+							'.$custom_value.' '.$product->customfieldsCart[$row]->custom_field_desc;
 				}
-				$html .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
-									'.$custom_value.' '.$product->customfieldsCart[$row]->custom_field_desc;
 				$row++;
 			}
 
