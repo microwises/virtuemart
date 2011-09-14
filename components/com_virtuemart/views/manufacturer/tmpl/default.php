@@ -23,7 +23,7 @@ $i = 1 ;
 <div class="category-row">
 	<?php
 	foreach ($this->manufacturers as $manufacturer) {
-		$link = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&&virtuemart_manufacturer_id=' . $manufacturer->virtuemart_manufacturer_id);
+		$link = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id=' . $manufacturer->virtuemart_manufacturer_id);
 
 		$productlink = JROUTE::_('index.php?option=com_virtuemart&view=category&virtuemart_manufacturer_id=' . $manufacturer->virtuemart_manufacturer_id);
 		?>

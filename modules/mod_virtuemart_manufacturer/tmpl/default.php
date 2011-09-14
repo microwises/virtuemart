@@ -1,17 +1,17 @@
 <?php // no direct access
-defined('_JEXEC') or die('Restricted access'); 
+defined('_JEXEC') or die('Restricted access');
 $col= 1 ;
 ?>
 <div class="vmgroup<?php echo $params->get( 'moduleclass_sfx' ) ?>">
 
 <?php if ($headerText) : ?>
 	<div class="vmheader"><?php echo $headerText ?></div>
-<?php endif; 
+<?php endif;
 if ($display_style =="div") { ?>
 	<div class="vmmanufacturer<?php echo $params->get('moduleclass_sfx'); ?>">
 	<?php foreach ($manufacturers as $manufacturer) {
-		$link = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&&virtuemart_manufacturer_id=' . $manufacturer->virtuemart_manufacturer_id);
-		
+		$link = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id=' . $manufacturer->virtuemart_manufacturer_id);
+
 		?>
 		<div style="float:left;">
 			<a href="<?php echo $link; ?>">
@@ -22,29 +22,29 @@ if ($display_style =="div") { ?>
 		}
 		if ($show == 'text' or $show == 'all' ) { ?>
 		 <div><?php echo $manufacturer->mf_name; ?></div>
-		<?php 
+		<?php
 		} ?>
 			</a>
 		</div>
-		<?php 
+		<?php
 		if ($col == $manufacturers_per_row) {
 			echo "</div><div style='clear:both;'>";
 			$col= 1 ;
-		} else { 
-			$col++; 
+		} else {
+			$col++;
 		}
 	} ?>
 	</div>
 	<br style='clear:both;' />
 
-<?php 
+<?php
 } else {
 ?>
 
 <ul class="vmmanufacturer<?php echo $params->get('moduleclass_sfx'); ?>">
 <?php
-foreach ($manufacturers as $manufacturer) { 
-	$link = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&&virtuemart_manufacturer_id=' . $manufacturer->virtuemart_manufacturer_id);
+foreach ($manufacturers as $manufacturer) {
+	$link = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id=' . $manufacturer->virtuemart_manufacturer_id);
 	?>
 	<li><a href="<?php echo $link; ?>">
 		<?php
@@ -54,7 +54,7 @@ foreach ($manufacturers as $manufacturer) {
 		}
 		if ($show == 'text' or $show == 'all' ) { ?>
 		 <div><?php echo $manufacturer->mf_name; ?></div>
-		<?php 
+		<?php
 		}
 		?>
 		</a>
@@ -63,8 +63,8 @@ foreach ($manufacturers as $manufacturer) {
 	if ($col == $manufacturers_per_row) {
 		echo "</ul><ul>";
 		$col= 1 ;
-	} else { 
-		$col++; 
+	} else {
+		$col++;
 	}
 } ?>
 </ul>

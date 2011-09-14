@@ -63,7 +63,7 @@ class VmMediaHandler {
 			$relUrl = VmConfig::get('forSale_path');
 			$choosed = true;
 		}
-		vmdebug('my type',$type);
+
 		if($choosed && empty($relUrl)){
 			$uri = JFactory::getURI();
 			$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
@@ -161,6 +161,7 @@ class VmMediaHandler {
      */
     function setFileInfo($type=0){
 
+
     	if(empty($this->file_url)){
     		$this->file_url = $this->getMediaUrlByView($type);
      		$this->file_url_folder = $this->file_url;
@@ -172,10 +173,15 @@ class VmMediaHandler {
 	     	if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 
 	    	$lastIndexOfSlash= strrpos($this->file_url,'/');
-
 	    	$name = substr($this->file_url,$lastIndexOfSlash+1);
-
 	    	$this->file_name = JFile::stripExt($name);
+
+	    	//Ensure using right directory
+	    	$this->file_url = $this->getMediaUrlByView($type).$this->file_name;
+			vmdebug('strange',$this->file_url);
+
+			$lastIndexOfSlash= strrpos($this->file_url,'/');
+
 	    	$this->file_url_folder = substr($this->file_url,0,$lastIndexOfSlash+1);
 	    	$this->file_path_folder = str_replace('/',DS,$this->file_url_folder).'../.....';
 
