@@ -557,11 +557,11 @@ defined('_JEXEC') or die('Restricted access');
 		</table>
 	    </fieldset>
 		<fieldset>
-		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CSS_JS_FRONT_SETTINGS') ?></legend>
+		<legend class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS_JS_SETTINGS_TIP'); ?>"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS_JS_SETTINGS') ?></legend>
 		<table class="admintable">
 			<tr>
 			<td class="key">
-				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CSS_FRONT_TIP'); ?>">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS_TIP'); ?>">
 				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS') ?>
 				</span>
 			</td>
@@ -571,7 +571,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 			<td class="key">
-				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_JQUERY_FRONT_TIP'); ?>">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JQUERY_TIP'); ?>">
 				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JQUERY') ?>
 				</span>
 			</td>
@@ -581,7 +581,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 			<td class="key">
-				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_JPRICE_FRONT_TIP'); ?>">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JPRICE_TIP'); ?>">
 				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JPRICE') ?>
 				</span>
 			</td>
@@ -591,7 +591,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 			<td class="key">
-				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_JSITE_FRONT_TIP'); ?>">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JSITE_TIP'); ?>">
 				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JSITE') ?>
 				</span>
 			</td>

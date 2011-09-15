@@ -358,11 +358,10 @@ class VirtueMartModelCustomfields extends VmModel {
 				case 'E':
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
 					JPluginHelper::importPlugin('vmcustom');
-					$dispatcher = JDispatcher::getInstance();
-					
-					$value = $dispatcher->trigger('plgVmOnProductEdit',
-						array('value' => $value, 'product_id' => $product_id));
-					$html = $value;
+					$dispatcher =& JDispatcher::getInstance();
+					$retValue = $dispatcher->trigger('plgVmOnProductEdit',
+						array('value' => $value,'row' => $row, 'product_id' => $product_id));
+					$html = $retValue[0] ;
 				return $html.$priceInput;
 				break;
 				/* string or integer */
