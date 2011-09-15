@@ -22,6 +22,7 @@
 // jimport( 'joomla.application.component.view');
 // $viewEscape = new JView();
 // $viewEscape->setEscape('htmlspecialchars');
+
 ?>
 <div class="billto-shipto">
 	<div class="width50 floatleft">
@@ -146,7 +147,7 @@
 						 ?>
 						</span>
 					<?php } ?>
-					<?php echo JHTML::link(JURI::root(true) .'/'.$prow->url, $prow->product_name).$prow->customfields; ?>
+					<?php echo JHTML::link($prow->url, $prow->product_name).$prow->customfields; ?>
 
 				</td>
 				<td align="left" ><?php echo $prow->product_sku ?></td>

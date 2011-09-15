@@ -122,7 +122,7 @@ class VirtueMartViewCart extends JView {
 			}
 			$this->assignRef('checkout_link_html', $checkout_link_html);
 		}
-
+dump ($cart,'cart');
 		$useSSL = VmConfig::get('useSSL',0);
 		$useXHTML = true;
 		$this->assignRef('useSSL', $useSSL);

@@ -23,7 +23,8 @@ defined('_JEXEC') or die('Restricted access');
 // $viewEscape = new JView();
 // $viewEscape->setEscape('htmlspecialchars');
 
-
+$u =& JURI::getInstance( );
+$root = $u->toString( array( 'scheme', 'host') );
 
 		?>
 		<table class="cart-summary" cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -43,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 		$i=1;
 		foreach( $this->cart->products as $prow ) { ?>
 			<tr valign="top" class="sectiontableentry<?php echo $i ?>">
-				<td align="left" ><?php echo JHTML::link(JURI::root() .$prow->url, $prow->product_name).$prow->customfields; ?></td>
+				<td align="left" ><?php echo JHTML::link( $root.$prow->url, $prow->product_name).$prow->customfields; ?></td>
 				<td align="left" ><?php echo $prow->product_sku ?></td>
 				<td align="center" >
 					<?php if ($prow->basePriceWithTax != $prow->salesPrice ) {
