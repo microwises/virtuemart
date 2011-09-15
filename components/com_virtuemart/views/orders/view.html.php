@@ -78,6 +78,10 @@ class VirtuemartViewOrders extends JView {
 			$pane = JPane::getInstance((__VM_ORDER_USE_SLIDERS?'Sliders':'Tabs'));
 			$this->assignRef('pane', $pane);
 		} else { // 'list' -. default
+			$useSSL = VmConfig::get('useSSL',1);
+			$useXHTML = true;
+			$this->assignRef('useSSL', $useSSL);
+			$this->assignRef('useXHTML', $useXHTML);
 			if ($_currentUser->get('id') == 0) {
 				// getOrdersList() returns all orders when no userID is set (admin function),
 				// so explicetly define an empty array when not logged in.

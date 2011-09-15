@@ -314,17 +314,11 @@ class VirtueMartModelUserfields extends VmModel {
 		if($layoutName=='edit'){
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
 						, 'address_type', 'bank', 'email');
-// 		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $userId === 0){
-// 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed','user_is_vendor');
+		} else if ($layoutName=='cart' && $register){
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','user_is_vendor');
 
-		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $register ){
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','agreed','user_is_vendor');
-
-		} else if ( $layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) ){
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'name', 'password', 'password2'
-			, 'address_type', 'bank', 'email');
-		} else if ($layoutName=='cart'){
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2', 'address_type', 'bank','user_is_vendor');
+		} else if ($layoutName=='cart' && !$register){
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'name', 'password', 'password2', 'address_type', 'bank','user_is_vendor');
 
 		} else {
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
@@ -348,7 +342,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 
 		//Small ugly hack to make registering optional //do we still need that? YES !  notice by Max Milbers
-		if($layoutName=='edit_address' && VmConfig::get('oncheckout_show_register',1) && $type == 'BT' && empty($userId) ){
+		if($register && $type == 'BT'  && VmConfig::get('oncheckout_show_register',1) ){
 
 			$corefields = $this->getCoreFields();
 			unset($corefields[2]); //the 2 is for the email field, it is necessary in almost anycase.
@@ -627,12 +621,17 @@ class VirtueMartModelUserfields extends VmModel {
 					,'hidden' => false
 			);
 
+// 			if($_fld->name==='email') vmdebug('user data email getuserfieldbyuser',$_userData);
 			// First, see if there are predefined fields by checking the name
 			switch( $_fld->name ) {
 
+// 				case 'email':
+// 					$_return['fields'][$_fld->name]['formcode'] = $_userData->email;
+// 					vmdebug('hm',$_userData);
+// 					break;
 				case 'virtuemart_country_id':
-					$_return['fields'][$_fld->name]['formcode'] = ShopFunctions::renderCountryList(
-					$_return['fields'][$_fld->name]['value'], false, array(), $_prefix);
+					$_return['fields'][$_fld->name]['formcode'] =
+							ShopFunctions::renderCountryList($_return['fields'][$_fld->name]['value'], false, array(), $_prefix);
 
 					// Translate the value from ID to name
 					$_return['fields'][$_fld->name]['value'] = shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']);
@@ -692,10 +691,13 @@ class VirtueMartModelUserfields extends VmModel {
 								. ($_fld->readonly ? ' readonly="readonly"' : '') . ' /> '."\n"
 								. '<img class="calendar" src="templates/system/images/calendar.png" alt="calendar" id="'. $_prefix.$_fld->name . '_field_img" />';
 							break;
-						case 'text':
 						case 'emailaddress':
+							if(empty($_return['fields'][$_fld->name]['value'])) $_return['fields'][$_fld->name]['value'] = JFactory::getUser()->email;
+// 							vmdebug('emailaddress',$_fld);
+						case 'text':
 						case 'webaddress':
 						case 'euvatid':
+
 							$_return['fields'][$_fld->name]['formcode'] = '<input type="text" id="'
 								. $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name.'" size="' . $_fld->size
 								. '" value="' . $_return['fields'][$_fld->name]['value'] .'" '

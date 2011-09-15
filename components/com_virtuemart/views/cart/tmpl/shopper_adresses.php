@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
   <tr>
     <td width="50%" bgcolor="#ccc">
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?>
-	</td> 
+	</td>
 	<td width="50%" bgcolor="#ccc">
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
 	</td>
@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
   <tr>
     <td width="50%">
 
-		<?php 	foreach($this->BTaddress as $item){
+		<?php 	foreach($this->BTaddress['fields'] as $item){
 					if(!empty($item['value'])){
 						echo $item['title'].': '.$this->escape($item['value']).'<br/>';
 					}
@@ -42,15 +42,15 @@ defined('_JEXEC') or die('Restricted access');
 
 	</td>
     <td width="50%">
-			<?php 
-			if(!empty($this->STaddress)){ 
-				foreach($this->STaddress as $item){
+			<?php
+			if(!empty($this->STaddress['fields'])){
+				foreach($this->STaddress['fields'] as $item){
 					if(!empty($item['value'])){
 						echo $item['title'].': '.$this->escape($item['value']).'<br/>';
 					}
 				}
 			} else {
-				foreach($this->BTaddress as $item){
+				foreach($this->BTaddress['fields'] as $item){
 					if(!empty($item['value'])){
 						echo $item['title'].': '.$this->escape($item['value']).'<br/>';
 					}

@@ -585,6 +585,10 @@ class ShopFunctions {
 		} else {
 			$_shipTo = array();
 			for ($_i = 0; $_i < $_c; $_i++) {
+				if(empty($_addressList[$_i]->virtuemart_user_id)) $_addressList[$_i]->virtuemart_user_id = JFactory::getUser()->id;
+				if(empty($_addressList[$_i]->virtuemart_userinfo_id)) $_addressList[$_i]->virtuemart_userinfo_id = 0;
+				if(empty($_addressList[$_i]->address_type_name)) $_addressList[$_i]->address_type_name = 0;
+
 				$_shipTo[] = '<li>'.'<a href="index.php'
 				.'?option=com_virtuemart'
 				.'&view=user'

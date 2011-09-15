@@ -3,13 +3,13 @@
 *
 * Layout for the shopper mail, when he confirmed an ordner
 *
-* The addresses are reachable with $this->BTaddress, take a look for an exampel at shopper_adresses.php
+* The addresses are reachable with $this->BTaddress['fields'], take a look for an exampel at shopper_adresses.php
 *
 * With $this->cartData->paymentName or shippingName, you get the name of the used paymentmethod/shippmentmethod
 *
 * In the array order you have details and items ($this->order['details']), the items gather the products, but that is done directly from the cart data
 *
-* $this->order['details'] contains the raw address data (use the formatted ones, like BTaddress). Interesting informatin here is,
+* $this->order['details'] contains the raw address data (use the formatted ones, like BTaddress['fields']). Interesting informatin here is,
 * order_number ($this->order['details']['BT']->order_number), order_pass, coupon_code, order_status, order_status_name,
 * user_currency_rate, created_on, customer_note, ip_address
 *

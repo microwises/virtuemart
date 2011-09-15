@@ -641,7 +641,7 @@ class VirtueMartModelUser extends VmModel {
 	* @author Max Milbers
 	*/
 
-	function getUserDataInFields($layoutName, $type, $id, $toggles=0, $skips=0){
+	function getUserDataInFields($layoutName, $type, $id, $cart=false){
 
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = new VirtuemartModelUserfields();
@@ -658,11 +658,11 @@ class VirtueMartModelUser extends VmModel {
 			$preFix = '';
 		}
 		$userFields = array();
+
+		$this->setId($id);
 		$userdata = $this->getUser();
 
-		if(!empty($id) && !empty($userdata->userInfo) && count($userdata->userInfo)>0) {
-
-
+		if(!$cart && !empty($id) && !empty($userdata->userInfo) && count($userdata->userInfo)>0) {
 
 			$currentUserData = current($userdata->userInfo);
 
@@ -677,7 +677,12 @@ class VirtueMartModelUser extends VmModel {
 					,$preFix
 					);
 					$fields['virtuemart_userinfo_id'] = key($userdata->userInfo);
-					$userFields[] = $fields;
+					if($type!=='ST'){
+							$userFields= $fields;break;
+					} else {
+						$userFields[] = $fields;
+					}
+
 				}
 				$currentUserData = next($userdata->userInfo);
 
@@ -689,14 +694,21 @@ class VirtueMartModelUser extends VmModel {
 			if (!class_exists('VirtueMartCart'))
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 			$cart = VirtueMartCart::getCart();
+			$adType = $type.'address';
+			if(empty($cart->$adType)){
+				$cart->$adType = $userFieldsModel->getUserFieldsByUser(
+				$prepareUserFields
+				,(object)$cart->$type
+				,$preFix
+				);
+			}
 
-			$fields = $userFieldsModel->getUserFieldsByUser(
-			$prepareUserFields
-			,(object)$cart->BT
-			,$preFix
-			);
-			$fields['virtuemart_userinfo_id'] = 0;
-			$userFields[] = $fields;
+			$cart->$adType['virtuemart_userinfo_id'] = 0;
+			if($type!=='ST'){
+				$userFields = $cart->$adType;
+			} else {
+				$userFields[] = $cart->$adType;
+			}
 		}
 
 		return $userFields;

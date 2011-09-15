@@ -51,7 +51,7 @@ class VirtueMartCart {
 	var $couponCode = '';
 	var $cartData = null;
 	var $lists = null;
-	var $user = null;
+// 	var $user = null;
 	var $prices = null;
 
 	private static $_cart = null;
@@ -1093,6 +1093,8 @@ public function removeProductCart($prod_id=0) {
 	}
 
 
+
+
 	/**
 	 * prepare display of cart
 	 *
@@ -1131,25 +1133,13 @@ public function removeProductCart($prod_id=0) {
 
 		$this->pricesUnformatted = $product_prices;
 		$this->prices = $prices;
-		//$this->cartData = $calculator->getCartData();//TODO MAX
+
 		$cartData = $calculator->getCartData();
-		 $this->calculator = $calculator;
 
 		$this->setCartIntoSession();
 		return $cartData ;
 	}
 
-	function getCartAdressData($type){
-
-		$userAddressData = new stdClass();
-		if(!empty($this->$type)){
-			$data = $this->$type;
-			foreach ($data as $k => $v) {
-				$userAddressData->{$k} = $v;
-			}
-		}
-		return $userAddressData;
-	}
 
 	function saveAddressInCart($data, $type, $putIntoSession = true) {
 
@@ -1160,7 +1150,7 @@ public function removeProductCart($prod_id=0) {
 
 		$prepareUserFields = $userFieldsModel->getUserFieldsFor('cart',$type);
 
-		if ($type == 'ST') {
+		if ($type == 'STaddress') {
 			$prefix = 'shipto_';
 
 		} else { // BT
@@ -1168,6 +1158,10 @@ public function removeProductCart($prod_id=0) {
 				$this->tosAccepted = $data['agreed'];
 			} else if (!empty($data->agreed)){
 				$this->tosAccepted = $data->agreed;
+			}
+
+			if(empty($data['email'])){
+				$address->email = JFactory::getUser()->email;
 			}
 		}
 
@@ -1307,39 +1301,27 @@ public function removeProductCart($prod_id=0) {
 		}
 	}
 
-	function prepareAddressDataInCart(){
+	function prepareAddressDataInCart($type='BT'){
+
 
 		if(!class_exists('VirtuemartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
 		$userFieldsModel =new VirtueMartModelUserfields;
 
-		$BTaddress['fields']= array();
-		if(!empty($this->BT)){
-			$userFieldsBT = $userFieldsModel->getUserFieldsFor('cart','BT');
-			$userAddressBT = $this->getCartAdressData('BT');
-			$BTaddress = $userFieldsModel->getUserFieldsByUser(
-			$userFieldsBT
-			,$userAddressBT
-			);
+		$addresstype = $type.'address';
+		$userFieldsBT = $userFieldsModel->getUserFieldsFor('cart',$type);
+		$this->$addresstype = $userFieldsModel->getUserFieldsByUser(
+		$userFieldsBT
+		,(object)$this->$type
+		);
 
-		}
-
-		if(empty($BTaddress['fields']['email']['value'])){
-			$BTaddress['fields']['email']['value'] = JFactory::getUser()->email;
-		}
-
-		$this->BTaddress = & $BTaddress['fields'];
-
-		$STaddress['fields']= array();
-		if(!empty($this->ST)){
+		if(!empty($this->ST) && $type!=='ST'){
 			$userFieldsST = $userFieldsModel->getUserFieldsFor('cart','ST');
-			$userAddressST = $this->getCartAdressData('ST');
-			$STaddress = $userFieldsModel->getUserFieldsByUser(
+			$this->STaddress = $userFieldsModel->getUserFieldsByUser(
 			$userFieldsST
-			,$userAddressST
+			,(object)$this->ST
 			);
-
 		}
-		$this->STaddress = & $STaddress['fields'];
+
 	}
 
 	function prepareUserData(){
@@ -1366,9 +1348,13 @@ public function removeProductCart($prod_id=0) {
 	function prepareAddressRadioSelection(){
 
 		//Just in case
-		if(!$this->user){
-			$this->prepareUserData();
-		}
+// 		if(!$this->user){
+// 			$this->prepareUserData();
+// 		}
+		if(!class_exists('VirtuemartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
+		$this->user = new VirtueMartModelUser;
+		$this->user->setCurrent();
+		$this->userDetails = $this->user->getUser();
 
 		// Shipping address(es)
 		if($this->user){

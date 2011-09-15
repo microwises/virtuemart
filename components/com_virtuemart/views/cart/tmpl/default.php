@@ -110,7 +110,7 @@ JHTML::_ ( 'behavior.modal' );
 			$text = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
 			?>
 		</div>
-		<?php // Continue and Checkout Button END ?>
+		<?php //vmdebug('my cart',$this->cart);// Continue and Checkout Button END ?>
 
 		<input type='hidden' name='task' value='<?php echo $this->checkout_task; ?>'/>
 		<input type='hidden' name='option' value='com_virtuemart'/>

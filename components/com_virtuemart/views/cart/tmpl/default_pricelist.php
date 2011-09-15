@@ -40,7 +40,7 @@
 		<div class="output-billto">
 		<?php
 
-		foreach($this->cart->BTaddress as $item){
+		foreach($this->cart->BTaddress['fields'] as $item){
 			if(!empty($item['value'])){
 				if($item['name']==='agreed'){
 					$item['value'] =  ($item['value']===0) ? JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_TOS_NO'):JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_TOS_YES');
@@ -72,10 +72,10 @@
 		<?php // Output Bill To Address ?>
 		<div class="output-shipto">
 		<?php
-		if(empty($this->cart->STaddress)){
+		if(empty($this->cart->STaddress['fields'])){
 			echo JText::sprintf('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_EXPLAIN',JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL') );
 		} else {
-			foreach($this->cart->STaddress as $item){
+			foreach($this->cart->STaddress['fields'] as $item){
 				if(!empty($item['value'])){ ?>
 					<!-- <span class="titles"><?php echo $item['title'] ?></span> -->
 					<?php

@@ -139,7 +139,7 @@ class VmImage extends VmMediaHandler {
 				return 0;
 			}
 		} else {
-			vmError('Couldnt create thumb, file not found '.$fullSizeFilenamePath,'Couldnt create thumb, file not found');
+			vmError('Couldnt create thumb, file not found '.$fullSizeFilenamePath);
 			return 0;
 		}
 

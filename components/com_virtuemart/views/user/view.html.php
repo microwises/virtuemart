@@ -62,6 +62,11 @@ class VirtuemartViewUser extends JView {
 	 */
 	function display($tpl = null) {
 
+		$useSSL = VmConfig::get('useSSL',1);
+		$useXHTML = true;
+		$this->assignRef('useSSL', $useSSL);
+		$this->assignRef('useXHTML', $useXHTML);
+
 		$layoutName = $this->getLayout();
 		if(empty($layoutName)){
 			$layoutName = JRequest::getWord('layout','default');
@@ -71,10 +76,6 @@ class VirtuemartViewUser extends JView {
 
 		if(!class_exists('VirtuemartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 		$this->_model = new VirtuemartModelUser();
-
-		if(!class_exists('VirtuemartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
-		$this->_userFieldsModel = new VirtuemartModelUserfields();
-
 
 
 		//$this->_model = $this->getModel('user', 'VirtuemartModel');
@@ -91,10 +92,22 @@ class VirtuemartViewUser extends JView {
 		$type = JRequest::getWord('addrtype', 'BT');
 		$this->assignRef('address_type', $type);
 
-		$userFields  = $this->_model->getUserDataInFields($layoutName,$type,$this->userDetails->JUser->id);
-		$this->assignRef('userFields', $userFields[0]);
+		$userFields = null;
+		if($layoutName=='edit'){
+			$userFields  = $this->_model->getUserDataInFields($layoutName,$type,$this->userDetails->JUser->id);
+		} else {
+			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+			$cart = VirtueMartCart::getCart();
+			$cart->prepareAddressDataInCart($type);
+
+			$fieldtype = $type.'address';
+			$userFields = $cart->$fieldtype;
+		}
+
+		$this->assignRef('userFields', $userFields);
 
 		if($layoutName=='edit'){
+
 			if($this->_model->getId()==0 && $this->_cuid==0){
 				$button_lbl = JText::_('COM_VIRTUEMART_REGISTER');
 			} else {
@@ -103,14 +116,16 @@ class VirtuemartViewUser extends JView {
 
 			$this->assignRef('button_lbl', $button_lbl);
 			$this->lUser();
-			$this->shopper($userFields[0]);
+			$this->shopper($userFields);
 		}
 
 		$this->_lists['shipTo'] = ShopFunctions::generateStAddressList($this->_model);
 
-		$this->lshipto();
-
 		if($layoutName=='edit'){
+		$userFieldsST  = $this->_model->getUserDataInFields($layoutName,'ST',$this->userDetails->JUser->id);
+		$this->lshipto($userFieldsST);
+
+
 			$this->payment();
 			$this->lOrderlist();
 			$this->lVendor();
@@ -153,15 +168,19 @@ class VirtuemartViewUser extends JView {
 	 * For the edit_shipto layout
 	 *
 	 */
-	function lshipto(){
+	function lshipto($staddress){
 
 		// The ShipTo address if selected
 		$_shipto_id = JRequest::getInt('virtuemart_userinfo_id', 0);
+
+		if(!class_exists('VirtuemartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
+		$this->_userFieldsModel = new VirtuemartModelUserfields();
 
 		$_shiptoFields = $this->_userFieldsModel->getUserFields(
 			 'shipping'
 			,array() // Default toggles
 		);
+
 
 		$_userDetailsList = null;
 
@@ -183,12 +202,20 @@ class VirtuemartViewUser extends JView {
 					$_userDetailsList = next($this->_userDetails->userInfo);
 				}
 //			}
+		} else {
+			if(!empty($staddress)){
+				$_userDetailsList = (object)$staddress[0];
+				$this->_openTab = 3;
+				vmdebug('recognised shipto');
+			}
 		}
+
 		$shipToFields = $this->_userFieldsModel->getUserFieldsByUser(
 			 $_shiptoFields
 			,$_userDetailsList
 			,'shipto_'
 			);
+
 
 		$this->assignRef('shipToFields', $shipToFields);
 		$this->assignRef('shipToID', $_shipto_id);

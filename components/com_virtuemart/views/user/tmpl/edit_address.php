@@ -173,15 +173,23 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
             $_set = false;
             $_table = false;
             $_hiddenFields = '';
+            if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
+//             $cart = VirtueMartCart::getCart();
+//             $cart->prepareAddressDataInCart();
+//             $this->assignRef('cart', $cart);
+// 				vmdebug('my cart in edit_adress',$cart->BTaddress);
+
 
             if (count($this->userFields['functions']) > 0) {
                 echo '<script language="javascript">' . "\n";
                 echo join("\n", $this->userFields['functions']);
                 echo '</script>' . "\n";
             }
+
             $corefields = VirtueMartModelUserfields::getCoreFields();
+//             for ($_i = 0, $_n = count($this->userFields['fields']); $_i < $_n; $_i++) {
             for ($_i = 0, $_n = count($this->userFields['fields']); $_i < $_n; $_i++) {
-                // Do this at the start of the loop, since we're using 'continue' below!
+            	// Do this at the start of the loop, since we're using 'continue' below!
                 if ($_i == 0) {
                     $_field = current($this->userFields['fields']);
                 } else {
@@ -267,6 +275,6 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
             <input type="hidden" name="controller" value="user" />
             <input type="hidden" name="task" value="<?php echo $this->fTask; // I remember, we removed that, but why?  ?>" />
             <input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>" />
-            <input type="hidden" name="virtuemart_userinfo_id" value="<?php echo $this->userFields['virtuemart_userinfo_id']; ?>" />
+            <input type="hidden" name="virtuemart_userinfo_id" value="<?php echo $this->BTaddress['virtuemart_userinfo_id']; ?>" />
 <?php echo JHTML::_('form.token'); ?>
 </form>
