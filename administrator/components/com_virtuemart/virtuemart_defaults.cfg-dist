@@ -21,6 +21,7 @@ offline_message=Our Shop is currently down for maintenance. Please check back ag
 use_as_catalog=0
 currency_converter_module=convertECB.php
 order_mail_html=1
+useSSL=0
 dateformat=%m/%d/%y
 dangeroustools=1
 debug_enable=none

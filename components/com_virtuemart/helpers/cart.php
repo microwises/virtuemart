@@ -60,7 +60,7 @@ class VirtueMartCart {
 	// 	static $first = true;
 
 	private function __construct() {
-		$this->useSSL = VmConfig::get('useSSL',1);
+		$this->useSSL = VmConfig::get('useSSL',0);
 		$this->useXHTML = true;
 	}
 

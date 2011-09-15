@@ -48,7 +48,7 @@ class VirtueMartControllerCart extends JController {
 			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		}
-		$this->useSSL = VmConfig::get('useSSL',1);
+		$this->useSSL = VmConfig::get('useSSL',0);
 		$this->useXHTML = true;
 	}
 

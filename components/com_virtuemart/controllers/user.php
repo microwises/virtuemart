@@ -33,7 +33,7 @@ class VirtueMartControllerUser extends JController
 	public function __construct()
 	{
 		parent::__construct();
-		$this->useSSL = VmConfig::get('useSSL',1);
+		$this->useSSL = VmConfig::get('useSSL',0);
 		$this->useXHTML = true;
 	}
 

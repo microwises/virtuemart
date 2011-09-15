@@ -78,7 +78,7 @@ class VirtuemartViewOrders extends JView {
 			$pane = JPane::getInstance((__VM_ORDER_USE_SLIDERS?'Sliders':'Tabs'));
 			$this->assignRef('pane', $pane);
 		} else { // 'list' -. default
-			$useSSL = VmConfig::get('useSSL',1);
+			$useSSL = VmConfig::get('useSSL',0);
 			$useXHTML = true;
 			$this->assignRef('useSSL', $useSSL);
 			$this->assignRef('useXHTML', $useXHTML);

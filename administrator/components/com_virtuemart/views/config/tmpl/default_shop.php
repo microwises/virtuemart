@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 	    </td>
 	    <td>
-		<?php echo VmHTML::checkbox('shop_is_offline', $this->config->get('shop_is_offline')); ?>
+		<?php echo VmHTML::checkbox('shop_is_offline', $this->config->get('shop_is_offline',0)); ?>
 	    </td>
 	</tr>
 	<tr>
@@ -93,7 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 		</span>
 		</td>
 		<td>
-		<?php echo VmHTML::checkbox('useSSL', $this->config->get('useSSL')); ?>
+		<?php echo VmHTML::checkbox('useSSL', $this->config->get('useSSL',0)); ?>
 		</td>
 	</tr>
 	<tr>

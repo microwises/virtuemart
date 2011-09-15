@@ -62,7 +62,7 @@ class VirtuemartViewUser extends JView {
 	 */
 	function display($tpl = null) {
 
-		$useSSL = VmConfig::get('useSSL',1);
+		$useSSL = VmConfig::get('useSSL',0);
 		$useXHTML = true;
 		$this->assignRef('useSSL', $useSSL);
 		$this->assignRef('useXHTML', $useXHTML);

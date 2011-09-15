@@ -475,6 +475,7 @@ class ShopFunctions {
 	function renderWeightUnitList($name, $selected) {
 
 		$weigth_unit_default = self::getWeightUnit();
+		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 		return VmHTML::selectList($name, $selected, $weigth_unit_default);
 	}
 
@@ -1169,7 +1170,7 @@ class ShopFunctions {
 						$html .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
 					}
 
-				} else { 
+				} else {
 					$custom_value = $product->customfieldsCart[$row]->options[$selected]->custom_value;
 					$html .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>
 							'.$custom_value.' '.$product->customfieldsCart[$row]->custom_field_desc;
