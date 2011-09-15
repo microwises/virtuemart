@@ -46,7 +46,8 @@ class VirtuemartViewCustom extends JView {
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 			$custom = $model->getCustom();
-
+			$plugin = self::renderInstalledCustomPlugins(0);
+			$this->assignRef('plugins',$plugin);
 			$customfields = $this->getModel('customfields');
 			$this->assignRef('custom',	$custom);
 			$this->assignRef('customfields',	$customfields);
@@ -72,6 +73,26 @@ class VirtuemartViewCustom extends JView {
 		}
 
 		parent::display($tpl);
+	}
+		function renderInstalledCustomPlugins($selected)
+	{
+		$db = JFactory::getDBO();
+
+		if (VmConfig::isJ15()) {
+			$table = '#__plugins';
+			$enable = 'published';
+			$ext_id = 'id';
+		}
+		else {
+			$table = '#__extensions';
+			$enable = 'enabled';
+			$ext_id = 'extension_id';
+		}
+		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmcustom" AND `'.$enable.'`="1" ';
+		$db->setQuery($q);
+		$result = $db->loadAssocList($ext_id);
+
+		return JHtml::_('select.genericlist', $result, 'custom_jplugin_id', null, $ext_id, 'name', $selected);
 	}
 
 }

@@ -78,6 +78,11 @@ class VirtuemartControllerCustom extends VmController {
 		/* Now display the view. */
 		$view->display(null);
 	}
+	function save() {
+		$data = JRequest::get('post');
+		// onSaveCustom plugin;
+		parent::save($data);
+	}
 
 	/**
 	* Clone a product
