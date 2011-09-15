@@ -28,8 +28,10 @@ class VmImage extends VmMediaHandler {
 	function addMediaAttributesByType(){
 
 		parent::addMediaAttributesByType();
-		$this->addMediaAttributes('file_is_product_image','COM_VIRTUEMART_FORM_MEDIA_PRODUCT_IMAGE');
-
+		if(!$this->setRole){
+			//This attribute indicates, that the FileHandler should show the file as image, other files will only show a thumbnail
+			$this->addMediaAttributes('file_is_product_image','COM_VIRTUEMART_FORM_MEDIA_PRODUCT_IMAGE');
+		}
 	}
 
 	function processAction($data){
