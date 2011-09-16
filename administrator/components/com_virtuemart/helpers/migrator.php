@@ -108,6 +108,7 @@ class Migrator extends VmModel{
 
 	function migrateGeneral(){
 
+		$result = $this->portMedia();
 		$result = $this->portShoppergroups();
 		$result = $this->portCategories();
 		$result = $this->portManufacturerCategories();
@@ -146,6 +147,7 @@ class Migrator extends VmModel{
 
 	function migrateOrders(){
 
+		$result = $this->portMedia();
 		$result = $this->portCategories();
 		$result = $this->portManufacturerCategories();
 		$result = $this->portManufacturers();
@@ -421,9 +423,8 @@ class Migrator extends VmModel{
 		$continue = true;
 
 		//approximatly 110 users take a 1 MB
-		$freeRam =  ($this->maxMemoryLimit - memory_get_usage(true))/(1024 * 1024) ;
-		$maxItems = (int)$freeRam * 100;
-		vmdebug('free ram left '.$freeRam.' so limit chunk to '.$maxItems);
+		$maxItems = $this->_getMaxItems('Users');
+
 
 		// 		$maxItems = 10;
 		$i=0;
@@ -871,9 +872,7 @@ class Migrator extends VmModel{
 		$mediaIdFilename = array();
 
 		//approximatly 100 products take a 1 MB
-		$freeRam =  ($this->maxMemoryLimit - memory_get_usage(true))/(1024 * 1024) ;
-		$maxItems = (int) ($freeRam * 100);
-		vmdebug('free ram left '.$freeRam.' so limit chunk to '.$maxItems);
+		$maxItems = $this->_getMaxItems('Products');
 
 		$startLimit = 0;
 		$i=0;
@@ -1056,9 +1055,7 @@ class Migrator extends VmModel{
 		}
 
 		//approximatly 100 products take a 1 MB
-		$freeRam =  ($this->maxMemoryLimit - memory_get_usage(true))/(1024 * 1024) ;
-		$maxItems = (int) ($freeRam * 100);
-		vmdebug('free ram left '.$freeRam.' so limit chunk to '.$maxItems);
+		$maxItems = $this->_getMaxItems('Orders');
 
 		$startLimit = 0;
 		$i = 0;
@@ -1294,6 +1291,19 @@ class Migrator extends VmModel{
 		}
 
 		return $currInt;
+	}
+
+	private function _getMaxItems($name){
+
+		$maxItems = 50;
+		$freeRam =  ($this->maxMemoryLimit - memory_get_usage(true))/(1024 * 1024) ;
+		$maxItems = (int)$freeRam * 100;
+		if($maxItems<=0){
+			$maxItems = 50;
+			vmWarn('Your system is low on RAM! Limit set: '.$this->maxMemoryLimit.' used '.memory_get_usage(true))/(1024 * 1024).' MB and php.ini '.ini_get('memory_limit'));
+		}
+		vmdebug('Migrating '.$name.', free ram left '.$freeRam.' so limit chunk to '.$maxItems);
+		return $maxItems;
 	}
 
 	/**

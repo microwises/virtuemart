@@ -51,7 +51,7 @@
 			<filename>index.html</filename>
 			<filename>pear.php</filename>
 			<filename>version.php</filename>
-			<filename>virtuemart_defaults.cfg</filename>
+			<filename>virtuemart_defaults.cfg-dist</filename>
 			<folder>assets</folder>
 			<folder>controllers</folder>
 			<folder>elements</folder>

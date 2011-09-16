@@ -48,6 +48,8 @@ class VirtueMartModelProduct extends VmModel {
 	function __construct() {
 		parent::__construct('virtuemart_product_id');
 		$this->setMainTable('products');
+		$this->starttime = microtime(true);
+		$this->maxScriptTime = ini_get('max_execution_time')*0.95-1;
 	}
 
 	/**
@@ -308,7 +310,14 @@ class VirtueMartModelProduct extends VmModel {
 		$i = 0;
 		//Check for all attributes to inherited by parent products
     	while(!empty($child->product_parent_id)){
-
+    		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+    			vmdebug('Max execution time reached in model product getProduct() ',$child);
+    			vmError('Max execution time reached in model product getProduct() '.$child->product_parent_id);
+    			return false;
+    		} else if($i>20){
+    			vmdebug('Too many child products in getProduct() ',$child);
+    			vmError('Too many child products in getProduct() '.$child->product_parent_id);
+    		}
     		$parentProduct = $this->getProductSingle($child->product_parent_id,$front, false,false);
     	   $attribs = get_object_vars($parentProduct);
 
@@ -318,7 +327,7 @@ class VirtueMartModelProduct extends VmModel {
 					$child->$k = $v;
 				}
 	    	}
-
+			$i++;
 			$child->product_parent_id = $parentProduct->product_parent_id;
 
     	}

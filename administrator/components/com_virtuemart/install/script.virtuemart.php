@@ -478,6 +478,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				if($update){
 					echo JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
 					echo '<br />'.JText::_('Please use "renew config from file" in Tools => Updates/Migration');
+					echo '<br />'.JText::_('<b>Reminder to update also your extensions with the AIO installer');
+
 				} else {
 					echo JText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
 				}
@@ -485,9 +487,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				</h2> <br />
 
 				<div id="cpanel">
-
-
-
 
 				<?php
 				if(!$update){
@@ -503,16 +502,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 							</a>
 					</div>
 
+		<?php } ?>
 
-
-
-						<?php } ?>
-							<div class="icon">
-							<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart') ?>">
-								<span class="vmicon48 vm_frontpage_48"></span>
-								<br /><?php echo JText::_('COM_VIRTUEMART_INSTALL_GO_SHOP') ?>
-							</a>
-							</div>
+				<div class="icon">
+				<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart') ?>">
+					<span class="vmicon48 vm_frontpage_48"></span>
+					<br /><?php echo JText::_('COM_VIRTUEMART_INSTALL_GO_SHOP') ?>
+				</a>
+				</div>
 
 
 

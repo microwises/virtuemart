@@ -180,7 +180,9 @@ class VirtueMartModelUser extends VmModel {
 
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php' );
 			$vendorModel = new VirtueMartModelVendor();
-
+			if(Vmconfig::get('multix','none')==='none'){
+				$this->_data->virtuemart_vendor_id = 1;
+			}
 			$vendorModel->setId($this->_data->virtuemart_vendor_id);
 			$this->_data->vendor = $vendorModel->getVendor();
 		}
@@ -220,6 +222,8 @@ class VirtueMartModelUser extends VmModel {
 			$gids = $this->_data->JUser->get('groups');
 			return array_flip($gids);
 		}
+
+		if(empty($this->_data)) $this->getUser();
 
 		$_usr = $_aclObject->get_object_id ('users', $this->_data->JUser->get('id'), 'ARO');
 		$_grp = $_aclObject->get_object_groups ($_usr, 'ARO');

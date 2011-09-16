@@ -38,7 +38,7 @@ class VirtueMartModelVendor extends VmModel {
 	 */
 	function __construct() {
 		parent::__construct();
-		
+
 		//Todo multivendor nasty hack, to get vendor with id 1
 		$this->setId(1);
 		$this->setMainTable('vendors');
@@ -145,7 +145,7 @@ class VirtueMartModelVendor extends VmModel {
 	foreach($plg_datas as $plg_data){
 		$data = array_merge($plg_data);
 	}
-	
+
 	$table = $this->getTable('vendors');
 
 	if(!$table->checkDataContainsTableFields($data)){
@@ -178,7 +178,7 @@ class VirtueMartModelVendor extends VmModel {
 	foreach($errors as $error){
 		$this->setError($error);
 	}
-	
+
 	$plg_datas = $dispatcher->trigger('plgVmAfterVendorStore',$data);
 	foreach($plg_datas as $plg_data){
 		$data = array_merge($plg_data);
@@ -200,8 +200,8 @@ class VirtueMartModelVendor extends VmModel {
 		$db = JFactory::getDBO();
 
 		$q = 'SELECT *  FROM `#__virtuemart_currencies` AS c
-			, `#__virtuemart_vendors` AS v 
-			WHERE v.virtuemart_vendor_id = '.(int)$_vendorId . ' 
+			, `#__virtuemart_vendors` AS v
+			WHERE v.virtuemart_vendor_id = '.(int)$_vendorId . '
 			AND   v.vendor_currency = c.virtuemart_currency_id';
 		$db->setQuery($q);
 		$r = $db->loadObject();
@@ -253,10 +253,10 @@ class VirtueMartModelVendor extends VmModel {
 	*/
 	public function getVendorId($type, $value, $ownerOnly=true){
 		if(empty($value)) return 0;
-		
+
 		//sanitize input params
 		$value = (int) $value;
-		
+
 		//static call used, so we need our own db instance
 		$db = JFactory::getDBO();
 		switch ($type) {

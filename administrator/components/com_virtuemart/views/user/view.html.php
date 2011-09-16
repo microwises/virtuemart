@@ -48,7 +48,15 @@ class VirtuemartViewUser extends JView {
 
 		$task = JRequest::getWord('task', 'edit');
 		if($task == 'editshop'){
-			$model->setCurrent();
+
+			if(Vmconfig::get('multix','none') !=='none'){
+				$model->setCurrent();
+			} else {
+				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+				$userId = VirtueMartModelVendor::getUserIdByVendorId(1);
+				$model->setId($userId);
+			}
+
 			$viewName=ShopFunctions::SetViewTitle('STORE'  );
 		} else if ($task == 'add'){
 			$model->setUserId(0);

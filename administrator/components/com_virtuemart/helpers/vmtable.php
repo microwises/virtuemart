@@ -199,7 +199,7 @@ class VmTable extends JTable{
 							if($id != $this->$tblKey){
 								//$datenow = JFactory::getDate();
 								$this->$obkeys = $this->$obkeys.rand();
-								vmWarn('COM_VIRTUEMART_NON_UNIQUE_WARN',$obkeys);
+								vmWarn('COM_VIRTUEMART_NON_UNIQUE_WARN',$obkeys,$this->$obkeys);
 							}
 						}
 					}
@@ -216,8 +216,8 @@ class VmTable extends JTable{
 
 
 		if(isset($this->virtuemart_vendor_id)){
-			if(Vmconfig::get('multix','none')==='none'){
-				$data['virtuemart_vendor_id'] = 1;
+			if(Vmconfig::get('multix','none') ==='none'){
+				$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 1;
 			}
 		}
 
