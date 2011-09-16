@@ -115,7 +115,7 @@ class VirtueMartCart {
 				self::$_cart->lists 									= $cartData->lists;
 				// 				self::$_cart->user 									= $cartData->user;
 				self::$_cart->prices 								= $cartData->prices;
-				self::$_cart->pricesUnformatted					= $cartData->pricesUnformatted
+				self::$_cart->pricesUnformatted					= $cartData->pricesUnformatted;
 				self::$_cart->_inCheckOut 							= $cartData->_inCheckOut;
 				self::$_cart->_dataValidated						= $cartData->_dataValidated;
 				self::$_cart->_confirmDone							= $cartData->_confirmDone;
@@ -1009,8 +1009,7 @@ public function removeProductCart($prod_id=0) {
 			$this->tosAccepted = false;
 
 			$this->setCartIntoSession();
-
-			// TODO valerie TO DO  -- not finished
+			
 			$cart = $this->getCart();
 			$dispatcher = JDispatcher::getInstance();
 
@@ -1019,25 +1018,24 @@ public function removeProductCart($prod_id=0) {
 			// may be redirect is done by the payment plugin (eg: paypal) so we do not come back here
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
 
-			// 			$activeplugin = false;
-			// 			foreach ($returnValues as $returnValue) {
-			// 				if ($returnValue == 'P' || ) {
-				// 					$order->handleStockAfterStatusChanged($returnValue);
-				// 					$activeplugin = true;
-				// 					break;
-				// 				}
-				// 				Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
-				// 			}
 
-			// 			if ($activeplugin)   {
-			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&layout=order_done'),JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));
-			// 			}
-		} else {
-			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'),JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
+                        foreach ($returnValues as $returnValue) {
+                                if ($returnValue !== null  ) {
+                                    if ($returnValue ==1 )   {
+                                        $mainframe = JFactory::getApplication();
+                                        $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&layout=order_done'),JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));
+                                        // 			}
+                                     } else {
+                                        $mainframe = JFactory::getApplication();
+                                        $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'),JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 
-		}
+                                       }
+                                       break;
+                                  }
+                                        //Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
+                                }
+                        }
+
 
 	}
 
