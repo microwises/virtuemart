@@ -328,7 +328,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
 -- Table structure for table `#_virtuemart_customplugins`
 --
 
-CREATE TABLE IF NOT EXISTS `#_virtuemart_customplugins` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_customplugins` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `virtuemart_custom_id` bigint(20) unsigned NOT NULL,
   `virtuemart_vendor_id` int(11) NOT NULL DEFAULT '1',
