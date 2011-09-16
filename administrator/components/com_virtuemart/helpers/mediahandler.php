@@ -727,6 +727,10 @@ class VmMediaHandler {
 		public function displayFileSelection($fileIds,$type = 0){
 
 			$html='';
+                        // this one break the tabs. Don't know why.
+                         //$html .= '<fieldset class="checkboxes">' ;
+                        //$html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGES').'</legend>';
+                          
 			$result = $this->getImagesList($type);
 			$html .= '<a id="addnewselectimage2" href="#media-dialog">'.JText::_('COM_VIRTUEMART_IMAGE_ATTACH_NEW').'</a><div id="ImagesContainer">';
 			/*		VmConfig::JimageSelectlist();*/
@@ -740,7 +744,8 @@ class VmMediaHandler {
 					$html .= $this->displayImage($id );
 				}
 			}
-
+                        //$html .= '</fieldset>' ;
+                      
 
 			return $html.'</div><div class="clear"></div>';
 		}
@@ -757,7 +762,7 @@ class VmMediaHandler {
 				return  '<div  class="vm_thumb_image"><input type="hidden" value="'.$image->virtuemart_media_id.'" name="virtuemart_media_id[]">
 			<a class="vm_thumb" rel="group1" title ="'.$image->file_title.'"href="'.JURI::root(true).'/'.$image->file_url.'" >
 			'.JHTML::image($image->file_url_thumb, $image->file_title, '').'
-			</a><div class="trash" title="remove"></div><div class="edit-24-grey" title="edit image"></div></div>';
+			</a><div class="trash" title="remove image"></div><div class="edit-24-grey" title="edit image information"></div></div>';
 			} else {
 				$fileTitle = empty($image->file_title)? 'no  title':$image->file_title;
 				return  '<div  class="vm_thumb_image"><b>'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b><br />'.$fileTitle.'</div>';
@@ -841,8 +846,9 @@ class VmMediaHandler {
 
 			$this->addHiddenByType();
 
-
-			$html = '<div class="vm__img_autocrop"><div id="file_title">'.$this->file_title.'</div>';
+                        $html = '<fieldset class="checkboxes">' ;
+                        $html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGE_INFORMATION').'</legend>';
+			$html .= '<div class="vm__img_autocrop"><div id="file_title">'.$this->file_title.'</div>';
 			$html .=  $this->displayMediaFull($imageArgs,false).'</div>';
 
 			//This makes problems, when there is already a form, and there would be form in a form. breaks js in some browsers
@@ -894,15 +900,18 @@ class VmMediaHandler {
 		<td><fieldset class="checkboxes">'.JHTML::_('select.radiolist', $this->getOptions($this->_attributes), 'media_attributes'.$identify, '', 'value', 'text', $this->media_attributes).'</fieldset></td></tr>';
 
 			$html .= '</table>';
-
+                        $html .='<br /></fieldset>';
 			$this->addMediaActionByType();
 
-			$html .= '<fieldset class="checkboxes">' . JText::_('COM_VIRTUEMART_IMAGE_ACTION'). JHTML::_('select.radiolist', $this->getOptions($this->_actions), 'media_action'.$identify, '', 'value', 'text', 0).'</fieldset><br style="clear:both" />';
+			$html .= '<fieldset class="checkboxes">' ;
+                        $html .= '<legend>'.JText::_('COM_VIRTUEMART_FILE_UPLOAD').'</legend>';
+                        $html .= JText::_('COM_VIRTUEMART_IMAGE_ACTION'). JHTML::_('select.radiolist', $this->getOptions($this->_actions), 'media_action'.$identify, '', 'value', 'text', 0).'<br /><br style="clear:both" />';
 
 
 			$html .= JText::_('COM_VIRTUEMART_FILE_UPLOAD').'<input type="file" name="upload" id="upload" size="50" class="inputbox" /><br />';
 
 			$html .= '<br />'.$this->displaySupportedImageTypes();
+                        $html .='<br /></fieldset>';
 			$html .= $this->displayFoldersWriteAble();
 
 			$html .= $this->displayHidden();
