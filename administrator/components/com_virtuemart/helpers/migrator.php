@@ -623,11 +623,9 @@ class Migrator extends VmModel{
 				$category['products_per_row'] = $oldcategory['products_per_row'];
 				$category['ordering'] = $oldcategory['list_order'];
 
-				if(!empty($category['category_full_image'])){
-					$category['virtuemart_media_id'] = $this->_getMediaIdByName($category['category_full_image'],'category');
+				if(!empty($oldcategory['category_full_image'])){
+					$category['virtuemart_media_id'] = $this->_getMediaIdByName($oldcategory['category_full_image'],'category');
 				}
-
-
 
 				$catModel->setId(0);
 				$category_id = $catModel->store($category);
@@ -986,7 +984,10 @@ class Migrator extends VmModel{
 
 					// Here we  look for the url product_full_image and check which media has the same
 					// full_image url
-					$product['virtuemart_media_id'] = $this->_getMediaIdByName($product['product_full_image'],'product');
+					if(!empty($product['product_full_image'])){
+						$product['virtuemart_media_id'] = $this->_getMediaIdByName($product['product_full_image'],'product');
+					}
+
 
 					$product['virtuemart_product_id'] = $productModel->store($product);
 
@@ -1033,17 +1034,24 @@ class Migrator extends VmModel{
 	var $mediaIdFilename = array();
 
 	function _getMediaIdByName($filename,$type){
-		if(!empty($this->mediaIdFilename[$filename])){
-			return $this->mediaIdFilename[$filename];
+		if(!empty($this->mediaIdFilename[$type][$filename])){
+
+			return $this->mediaIdFilename[$type][$filename];
 		} else {
 			$q = 'SELECT `virtuemart_media_id` FROM `#__virtuemart_medias`
 										WHERE `file_title`="' .  $this->_db->getEscaped($filename) . '"
 										AND `file_type`="' . $this->_db->getEscaped($type) . '"';
 			$this->_db->setQuery($q);
 			$virtuemart_media_id = $this->_db->loadResult();
+			if($this->_db->getErrors()){
+				vmError('Error in _getMediaIdByName',$this->_db->getErrorMsg());
+			}
 			if(!empty($virtuemart_media_id)){
-				$this->mediaIdFilename[$filename] = $virtuemart_media_id;
+				$this->mediaIdFilename[$type][$filename] = $virtuemart_media_id;
 				return $virtuemart_media_id;
+			} else {
+
+				vmdebug('nothing found for '.$type.' '.$filename);
 			}
 		}
 	}
