@@ -846,11 +846,10 @@ class VirtueMartModelProduct extends VmModel {
 		// created_on , modified_on
 		$db = JFactory::getDBO();
 		$vendorId = 1;
-		//$db->setQuery('SELECT max( `virtuemart_product_id` ) FROM `#__virtuemart_product_categories`' );
-	//	$slug_id = 1+$db->loadResult();
+		$childs = count($this->getProductChildIds($id));
 		$db->setQuery('SELECT `product_name`,`slug` FROM `#__virtuemart_products` WHERE `virtuemart_product_id`='.(int)$id );
 		$parent = $db->loadObject();
-		$q = 'INSERT INTO `#__virtuemart_products` ( `product_name`,`slug` ,`virtuemart_vendor_id`, `product_parent_id`) VALUES ( "'.$parent->product_name.'","P-'.$parent->slug.'", '.(int)$vendorId.', '.(int)$id.' )';
+		$q = 'INSERT INTO `#__virtuemart_products` ( `product_name`,`slug` ,`virtuemart_vendor_id`, `product_parent_id`) VALUES ( "'.$parent->product_name.'","P'.$childs.rand(1,9).'-'.$parent->slug.'", '.(int)$vendorId.', '.(int)$id.' )';
 		$db->setQuery($q);
 		$db->query();
 		return $db->insertid();

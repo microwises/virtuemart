@@ -1300,7 +1300,7 @@ class Migrator extends VmModel{
 		$maxItems = (int)$freeRam * 100;
 		if($maxItems<=0){
 			$maxItems = 50;
-			vmWarn('Your system is low on RAM! Limit set: '.$this->maxMemoryLimit.' used '.memory_get_usage(true))/(1024 * 1024).' MB and php.ini '.ini_get('memory_limit'));
+			vmWarn('Your system is low on RAM! Limit set: '.$this->maxMemoryLimit.' used '.memory_get_usage(true)/(1024 * 1024).' MB and php.ini '.ini_get('memory_limit'));
 		}
 		vmdebug('Migrating '.$name.', free ram left '.$freeRam.' so limit chunk to '.$maxItems);
 		return $maxItems;
