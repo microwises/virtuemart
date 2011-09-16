@@ -115,7 +115,7 @@ class VirtueMartCart {
 				self::$_cart->lists 									= $cartData->lists;
 				// 				self::$_cart->user 									= $cartData->user;
 				self::$_cart->prices 								= $cartData->prices;
-
+				self::$_cart->pricesUnformatted					= $cartData->pricesUnformatted
 				self::$_cart->_inCheckOut 							= $cartData->_inCheckOut;
 				self::$_cart->_dataValidated						= $cartData->_dataValidated;
 				self::$_cart->_confirmDone							= $cartData->_confirmDone;
@@ -214,7 +214,7 @@ public function setCartIntoSession() {
 	$sessionCart->lists 									= $this->lists;
 	// 		$sessionCart->user 									= $this->user;
 	$sessionCart->prices 								= $this->prices;
-
+	$sessionCart->pricesUnformatted					= $this->pricesUnformatted;
 	//private variables
 	$sessionCart->_inCheckOut 							= $this->_inCheckOut;
 	$sessionCart->_dataValidated						= $this->_dataValidated;
@@ -417,7 +417,7 @@ public function add($virtuemart_product_ids=null) {
 			}
 			// print_r($product->customPrices);
 			// print_r($product->userfield);
-			
+
 			// jExit();
 
 			if (array_key_exists($productKey, $this->products)) {
