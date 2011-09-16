@@ -35,7 +35,7 @@ class VirtuemartViewCustom extends JView {
 		// Load the helper(s)
 		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
-
+		$this->loadHelper('vmcustomplugin');
 		$model = $this->getModel('custom');
 		$this->loadHelper('permissions');
 		// TODO Make an Icon for custom
@@ -45,9 +45,12 @@ class VirtuemartViewCustom extends JView {
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
+			$this->loadHelper('parameterparser');
 			$custom = $model->getCustom();
-			$plugin = self::renderInstalledCustomPlugins(0);
-			$this->assignRef('plugins',$plugin);
+			$customPlugin = $model->getCustomPlugin($custom->virtuemart_custom_id);
+			$this->assignRef('customPlugin',	$customPlugin);
+			$pluginList = self::renderInstalledCustomPlugins($customPlugin->custom_jplugin_id);
+			$this->assignRef('pluginList',$pluginList);
 			$customfields = $this->getModel('customfields');
 			$this->assignRef('custom',	$custom);
 			$this->assignRef('customfields',	$customfields);

@@ -31,6 +31,7 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  */
 class VirtueMartModelCustom extends VmModel {
 
+	private $plugin=null ;
 	/**
 	 * constructs a VmModel
 	 * setMainTable defines the maintable of the model
@@ -83,7 +84,50 @@ class VirtueMartModelCustom extends VmModel {
 
     }
 
+	public function getCustomPlugin($virtuemart_custom_id ){
 
+  		if (empty($this->plugin)) {
+			$this->_db->setQuery('SELECT * FROM `#__virtuemart_customplugins` WHERE virtuemart_custom_id =' .(int)$virtuemart_custom_id);
+			$this->plugin = $this->_db->loadObject();
+  		}
+		if (empty($this->plugin)) return ;
+  		if(empty($this->plugin->virtuemart_vendor_id)){
+  		   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+   			$this->plugin->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
+  		}
+
+  		if(!empty($this->_id)){
+			// /* Add the paymentmethod shoppergroups */
+			// $q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_paymentmethod_shoppergroups WHERE `virtuemart_paymentmethod_id` = "'.$this->_id.'"';
+			// $this->_db->setQuery($q);
+			// $this->plugin->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
+
+			// /* Add the accepted credit cards */
+			// $q = 'SELECT `virtuemart_creditcard_id` FROM #__virtuemart_paymentmethod_creditcards WHERE `virtuemart_paymentmethod_id` = "'.$this->_id.'"';
+			// $this->_db->setQuery($q);
+			// $this->plugin->payment_creditcards = $this->_db->loadResultArray();
+
+
+			if (VmConfig::isJ15()) {
+				$table = '#__plugins';
+				$ext_id = 'id';
+			} else {
+				$table = '#__extensions';
+				$ext_id = 'extension_id';
+			}
+			$q = 'SELECT `params` FROM `' . $table . '` WHERE `' . $ext_id . '` = "'.$this->plugin->custom_jplugin_id.'"';
+			$this->_db->setQuery($q);
+			$this->plugin->param = $this->_db->loadResult();
+  		} else {
+  			// $this->plugin->virtuemart_shoppergroup_ids = '';
+  			// $this->plugin->payment_creditcards = '';
+  			$this->plugin->param = '';
+  		}
+
+
+
+  		return $this->plugin;
+	}
 
     /**
 	 * Retireve a list of customs from the database. This is meant only for backend use
@@ -217,6 +261,60 @@ class VirtueMartModelCustom extends VmModel {
 			}
 		}
 
+	}
+	public function store(&$data){
+		$id = parent::store($data);
+		if(isset($data['custom_jplugin_id'])){
+		//$data['virtuemart_custom_id' ;
+		self::saveCustomPlugin($data) ;
+		}
+
+		return $id ; 
+	}
+
+	/**
+	 * Bind the post data to the paymentmethod tables and save it
+	 *
+	 * @author Max Milbers
+	 * @return boolean True is the save was successful, false otherwise.
+	 */
+	public function saveCustomPlugin($data)
+	{
+		//$data = JRequest::get('post');
+		$data['custom_name'] = $data['custom_title'];
+		if(isset($data['params'])){
+			if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
+			$params = new JParameter('');
+			$params->bind($data['params']);
+			$data['custom_params'] = $params->toString();
+		}
+
+		if(empty($data['virtuemart_vendor_id'])){
+			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+			$data['virtuemart_vendor_id'] = VirtueMartModelVendor::getLoggedVendor();
+		} else {
+			$data['virtuemart_vendor_id'] = (int) $data['virtuemart_vendor_id'];
+		}
+		// missing string FIX, Bad way ?
+		if (VmConfig::isJ15()) {
+			$tb = '#__plugins';
+			$ext_id = 'id';
+		} else {
+			$tb = '#__extensions';
+			$ext_id = 'extension_id';
+		}
+		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['custom_jplugin_id'].'"';
+		$this->_db->setQuery($q);
+		$data['custom_element'] = $this->_db->loadResult();
+		
+		$table = $this->getTable('customplugins');
+		$table->bindChecknStore($data);
+		$errors = $table->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
+		}
+				vmdebug('custom',$data);
+		return $table->virtuemart_custom_id;
 	}
 }
 // pure php no closing tag

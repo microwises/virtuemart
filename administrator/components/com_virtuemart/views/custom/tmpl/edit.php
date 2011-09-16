@@ -20,6 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 vmJsApi::JvalideForm();
 AdminUIHelper::startAdminArea();
+
 ?>
 <form name="adminForm" id="adminform" method="post" action="">
 <fieldset>
@@ -36,10 +37,28 @@ echo $this->customfields->displayCustomFields('',$this->custom); ?>
 <table class="adminform" id="custom_plg">
 	<tr>
 		<td class="labelcell">Choix du plugin</td>
-		<td><?php echo $this->plugins ?></td>
+		<td><?php echo $this->pluginList ?></td>
 		<td></td>
 	</tr>
-	<td><div id="plugin-Container"><div></td>
+	<tr>
+		<td>
+		<div id="plugin-Container">
+		<?php
+		if($this->customPlugin){
+				echo $this->customPlugin->custom_name .'<br />' ;
+	        //$parameters = new vmParameters($this->paym->custom_params, JPATH_PLUGINS.DS.'vmcustom'.DS.basename($this->paym->custom_element).'.xml', 'plugin' );
+                $parameters = new vmParameters($this->customPlugin->custom_params,  $this->customPlugin->custom_element , 'plugin' ,'vmcustom');
+               
+	        echo $rendered = $parameters->render(); ?>
+			<input type="hidden" name="id" value="<?php echo $this->customPlugin->id ?>" >
+			<?php
+        } else { ?>
+			<input type="text" name="custom_name" value="<?php echo $this->custom->custom_title ?>" >
+             <?php echo JText::_('COM_VIRTUEMART_SELECT_PAYMENT_METHOD' );
+           } ?>
+		<div>
+		</td>
+	</tr>
 </table>
 	</fieldset>
 </form>
@@ -49,7 +68,7 @@ function submitbutton(pressbutton) {
 	if (jQuery('#adminform').validationEngine('validate')== true) submitform(pressbutton);
 	else return false ;
 }
-jQuery('#custom_plg').hide();
+<?php if ( $this->custom->field_type !== "E" ){ ?>jQuery('#custom_plg').hide();<?php } ?>
 jQuery('#field_type').change(function () { 
 	var $selected = jQuery(this).val();
 	if ($selected == "E" ) jQuery('#custom_plg').show();
