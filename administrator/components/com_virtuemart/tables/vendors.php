@@ -74,61 +74,18 @@ class TableVendors extends VmTableData {
 		parent::__construct('#__virtuemart_vendors', 'virtuemart_vendor_id', $db);
 		$this->setPrimaryKey('virtuemart_vendor_id');
 		$this->setUniqueName('vendor_name');
-//		$this->setObligatoryKeys('country_2_code');
-//		$this->setObligatoryKeys('country_3_code');
 
 		$this->setLoggable();
 
-		foreach($this->_varsToPushParam as $k=>$v){
-				$this->$k = $v;
-		}
-    }
+		$varsToPushParam =
+		    				'vendor_min_pov'=>array(0.0,'float'),
+		    				'vendor_min_poq'=>array(1,'int'),
+		    				'vendor_freeshipping'=>array(0.0,'float'),
+		    				'vendor_address_format'=>array('','string'),
+		    				'vendor_date_format'=>array('','string');
 
-    private $_varsToPushParam =
-    				array('vendor_min_pov'=>0.0,'vendor_min_poq'=>1,'vendor_freeshipping'=>0.0,'vendor_address_format'=>'','vendor_date_format'=>'');
+		$this->setParameterable('vendor_params',$varsToPushParam);
 
-    /**
-     * Test of technic to inject params as table attributes
-     * @author Max Milbers
-     */
-    function load($int){
-
-    	parent::load($int);
-
-    	if(!empty($this->vendor_params)){
-
-    	$config = explode('|', $this->vendor_params);
-    		foreach($config as $item){
-    			$item = explode('=',$item);
-    			if(count($item)===2){
-    				$this->$item[0] = unserialize($item[1]);
-    			}
-
-    		}
-    	}
-
-    	foreach($this->_varsToPushParam as $k=>$v){
-    		if(!isset($this->$k)){
-    			$this->$k = $v;
-    		}
-    	}
-
-    	return $this;
-    }
-
-    function store(){
-
-    	foreach($this->_varsToPushParam as $k=>$v){
-    		if(isset($this->$k)){
-    			$this->vendor_params .= $k.'='.serialize($this->$k).'|';
-    		} else {
-    			$this->vendor_params .= $k.'='.serialize($v).'|';
-    		}
-    		unset($this->$k);
-    	}
-
-    	vmdebug('my data in vendors store', $this);
-    	return parent::store();
     }
 
 }

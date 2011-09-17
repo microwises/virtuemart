@@ -30,50 +30,50 @@ if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmta
  */
 class TableUserfields extends VmTable {
 
-	/** @var var Primary Key*/
+// 	/** @var var Primary Key*/
 	var $virtuemart_userfield_id		= 0;
-	/** @var string Internal fielname*/
-	var $name			= null;
-	/** @var string Visible title*/
-	var $title			= null;
-	/** @var string Description*/
-	var $description	= null;
-	/** @var string Input type*/
-	var $type			= null;
-	/** @var int Max size of string inputs*/
-	var $maxlength		= 0;
-	/** @var int Fieldsize*/
-	var $size			= 0;
-	/** @var boolean True if required*/
-	var $required		= 0;
-	/** @var int Field ordering*/
-	var $ordering		= 0;
-	/** @var int Nr of columns for textarea*/
-	var $cols			= 0;
-	/** @var int Nr of rows for textarea*/
-	var $rows			= 0;
-	/** @var string */
-	var $value			= null;
-	/** @var int */
-	var $default		= 0;
-	/** @var boolean True if publised*/
-	var $published		= 1;
-	/** @var boolean True to display in registration form*/
-	var $registration	= 0;
-	/** @var boolean True to display in shipping form*/
-	var $shipping		= 0;
-	/** @var boolean True to display in account maintenance*/
-	var $account		= 1;
-	/** @var boolean True if readonly*/
-	var $readonly		= 0;
-	/** @var boolean */
-	var $calculated		= 0;
-	/** @var boolean True if part of the VirtueMart installation; False for User specified*/
-	var $sys			= 0;
-	/** @var int The Vendor ID, if vendor specific*/
-	var $virtuemart_vendor_id		= 0;
-	/** @var mediumtex Additional type-specific parameters */
-	var $params			= null;
+// 	/** @var string Internal fielname*/
+// 	var $name			= null;
+// 	/** @var string Visible title*/
+// 	var $title			= null;
+// 	/** @var string Description*/
+// 	var $description	= null;
+// 	/** @var string Input type*/
+// 	var $type			= null;
+// 	/** @var int Max size of string inputs*/
+// 	var $maxlength		= 0;
+// 	/** @var int Fieldsize*/
+// 	var $size			= 0;
+// 	/** @var boolean True if required*/
+// 	var $required		= 0;
+// 	/** @var int Field ordering*/
+// 	var $ordering		= 0;
+// 	/** @var int Nr of columns for textarea*/
+// 	var $cols			= 0;
+// 	/** @var int Nr of rows for textarea*/
+// 	var $rows			= 0;
+// 	/** @var string */
+// 	var $value			= null;
+// 	/** @var int */
+// 	var $default		= 0;
+// 	/** @var boolean True if publised*/
+// 	var $published		= 1;
+// 	/** @var boolean True to display in registration form*/
+// 	var $registration	= 0;
+// 	/** @var boolean True to display in shipping form*/
+// 	var $shipping		= 0;
+// 	/** @var boolean True to display in account maintenance*/
+// 	var $account		= 1;
+// 	/** @var boolean True if readonly*/
+// 	var $readonly		= 0;
+// 	/** @var boolean */
+// 	var $calculated		= 0;
+// 	/** @var boolean True if part of the VirtueMart installation; False for User specified*/
+// 	var $sys			= 0;
+// 	/** @var int The Vendor ID, if vendor specific*/
+// 	var $virtuemart_vendor_id		= 0;
+// 	/** @var mediumtex Additional type-specific parameters */
+// 	var $params			= null;
 //              /** @var boolean */
 //	var $locked_on	= 0;
 //	/** @var time */

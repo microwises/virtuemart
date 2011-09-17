@@ -90,6 +90,37 @@ class VmTable extends JTable{
 		$this->setUniqueName($key);
 	}
 
+	/**
+	 * This function defines a database field as parameter field, which means that some values get injected there
+	 * As delimiters are used | for the pair and = for key, value
+	 *
+	 * @author Max Milbers
+	 * @param string $paramsFieldName
+	 * @param string $varsToPushParam
+	 */
+	function setParameterable($paramsFieldName,$varsToPushParam){
+		$this->_varsToPushParam = $varsToPushParam;
+		$this->_xParams = $paramsFieldName;
+		foreach($this->_varsToPushParam as $k=>$v){
+			$this->$k = $v;
+		}
+	}
+
+	/**
+	 * This function helps to define which data fields should use the injection technic of setParameterable
+	 * When you need an exampel for the array look in the vendors table.
+	 * @author Max Milbers
+	 * @param array $arrayToAdd
+	 * @param boolean $overwrite
+	 */
+	function setVarsToPushParam($arrayToAdd,$overwrite=false){
+		if($overwrite){
+			$this->_varsToPushParam = $arrayToAdd;
+		} else {
+			$this->_varsToPushParam = array_merge($this->_varsToPushParam,$arrayToAdd);
+		}
+	}
+
 	function checkDataContainsTableFields($from, $ignore=array()){
 
 		if(empty($from))
@@ -142,12 +173,79 @@ class VmTable extends JTable{
 		}
 	}
 
-	public function store(){
+	/**
+	 * Technic to inject params as table attributes
+	 * @author Max Milbers
+	 */
+	function load($int){
+
+		parent::load($int);
+
+
+		if(!empty($this->_xParams)){
+
+			$config = explode('|', $this->_xParams);
+			foreach($config as $item){
+				$item = explode('=',$item);
+				if(count($item)===2){
+					if($this->_varsToPushParam[$item[0]][1]==='string'){
+						$this->$item[0] = base64_decode(unserialize($item[1]));
+					} else {
+						$this->$item[0] = unserialize($item[1]);
+					}
+				}
+			}
+
+			foreach($this->_varsToPushParam as $key=>$v){
+				if(!isset($this->$key)){
+					//     			$k = $key[0];
+					//     			if($this->_varsToPushParam[$item[0]][1]==='string'){
+					//     				$this->$k = base64_decode($v);
+					//     			} else {
+					$this->$key = $v[0];
+					//     			}
+
+				}
+			}
+
+		}
+
+
+		return $this;
+	}
+
+	/**
+	 * Technic to inject params as table attributes
+	 * @author Max Milbers
+	 */
+	function store(){
 
 		$this->setLoggableFieldsForStore();
+		foreach($this->_varsToPushParam as $key=>$v){
 
+			if(isset($this->$key)){
+				if($key[1]==='string'){
+					$this->vendor_params .= $key.'='.base64_encode(serialize($this->$key)).'|';
+				} else {
+					$this->vendor_params .= $key.'='.serialize($this->$key).'|';
+				}
+			} else {
+				if($key[1]==='string'){
+					$this->vendor_params .= $key.'='.base64_encode(serialize($v[0])).'|';
+				} else {
+					$this->vendor_params .= $key.'='.serialize($v[0]).'|';
+				}
+			}
+			unset($this->$k);
+		}
+
+		vmdebug('my data in vendors store', $this);
 		return parent::store();
 	}
+
+	// 	public function store(){
+	// 		return parent::store();
+	// 	}
 
 	/**
 	 * @author Max Milbers
@@ -184,7 +282,7 @@ class VmTable extends JTable{
 			foreach($this->_unique_name as $obkeys => $error){
 
 				if(empty($this->$obkeys)){
-// 					$this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE_KEY',$this->$obkeys));
+					// 					$this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE_KEY',$this->$obkeys));
 					$this->setError($error);
 					return false;
 				} else {
@@ -205,12 +303,12 @@ class VmTable extends JTable{
 					}
 				}
 
-			    /* if(empty($error)){
-			     $this->setError(JText::_($error));
-			    }else {
-			    $this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE', $this->_tbl, $obkeys . ': ' . $this->$obkeys));
-			    }*/
-			    //return false;
+				/* if(empty($error)){
+				 $this->setError(JText::_($error));
+				}else {
+				$this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE', $this->_tbl, $obkeys . ': ' . $this->$obkeys));
+				}*/
+				//return false;
 			}
 		}
 
