@@ -451,6 +451,12 @@ class VmMediaHandler {
 					//Sanitize name of media
 					jimport('joomla.filesystem.file');
 					$media['name'] = JFile::makeSafe( $media['name'] );
+
+					while (file_exists(JPATH_ROOT.DS.$path_folder.$media['name'])) {
+						$media['name'] = $this->file_name = $this->file_name.rand(1,9);
+
+					}
+
 					JFile::upload($media['tmp_name'],JPATH_ROOT.DS.$path_folder.$media['name']);
 					//	move_uploaded_file( $media['tmp_name'], JPATH_ROOT.DS.$path_folder.$media['name']);
 					$this->file_mimetype = $media['type'];
@@ -730,7 +736,7 @@ class VmMediaHandler {
                         // this one break the tabs. Don't know why.
                          //$html .= '<fieldset class="checkboxes">' ;
                         //$html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGES').'</legend>';
-                          
+
 			$result = $this->getImagesList($type);
 			$html .= '<a id="addnewselectimage2" href="#media-dialog">'.JText::_('COM_VIRTUEMART_IMAGE_ATTACH_NEW').'</a><div id="ImagesContainer">';
 			/*		VmConfig::JimageSelectlist();*/
@@ -745,7 +751,7 @@ class VmMediaHandler {
 				}
 			}
                         //$html .= '</fieldset>' ;
-                      
+
 
 			return $html.'</div><div class="clear"></div>';
 		}

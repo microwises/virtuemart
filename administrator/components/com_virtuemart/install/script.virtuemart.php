@@ -195,6 +195,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','int(11)');
 
+			$this->alterVendorsTable();
 			$this->alterSessionTable();
 			$this->alterOrderItemsTable();
 
@@ -249,6 +250,47 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			return false;
 		}
 
+		private function alterVendorsTable(){
+
+			if(empty($this->db)){
+				$this->db = JFactory::getDBO();
+			}
+			$query = 'SHOW COLUMNS FROM `#__virtuemart_vendors` ';
+			$this->db->setQuery($query);
+			$columns = $this->db->loadResultArray(0);
+			if(in_array('config',$columns)){
+				$query = 'ALTER TABLE `#__virtuemart_vendors` CHANGE COLUMN `config` `vendor_params` VARCHAR( 255 )  NOT NULL DEFAULT "" ;';
+				$this->db->setQuery($query);
+				return $this->db->query();
+			}
+
+			if(in_array('vendor_min_pov',$columns)){
+				$query = 'ALTER TABLE `#__virtuemart_vendors` DROP COLUMN `vendor_min_pov`  ;';
+				$this->db->setQuery($query);
+				return $this->db->query();
+			}
+
+			if(in_array('vendor_freeshipping',$columns)){
+				$query = 'ALTER TABLE `#__virtuemart_vendors` DROP COLUMN `vendor_freeshipping`  ;';
+				$this->db->setQuery($query);
+				return $this->db->query();
+			}
+
+			if(in_array('vendor_address_format',$columns)){
+				$query = 'ALTER TABLE `#__virtuemart_vendors` DROP COLUMN `vendor_address_format`  ;';
+				$this->db->setQuery($query);
+				return $this->db->query();
+			}
+
+			if(in_array('vendor_date_format',$columns)){
+				$query = 'ALTER TABLE `#__virtuemart_vendors` DROP COLUMN `vendor_date_format`  ;';
+				$this->db->setQuery($query);
+				return $this->db->query();
+			}
+
+			return false;
+
+		}
 		/**
 		 *
 		 * @author Max Milbers

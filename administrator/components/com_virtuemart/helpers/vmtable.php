@@ -274,6 +274,7 @@ class VmTable extends JTable{
 			if(!$this->store()){
 				$ok = false;
 				$msg .= ' store';
+				vmdebug('Problem in store '.get_class($this).' '.$this->_db->getErrorMsg());
 			}
 		}
 

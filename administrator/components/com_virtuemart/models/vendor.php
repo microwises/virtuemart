@@ -160,7 +160,7 @@ class VirtueMartModelVendor extends VmModel {
 	}
 
 	$data = $table->bindChecknStore($data);
-    $errors = $table->getErrors();
+   $errors = $table->getErrors();
 	foreach($errors as $error){
 		$this->setError($error);
 	}

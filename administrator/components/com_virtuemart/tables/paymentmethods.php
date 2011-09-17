@@ -79,43 +79,5 @@ class TablePaymentmethods extends VmTable
 
 	}
 
-
-//	/**
-//	 * Validates the calculation rule record fields.
-//	 *
-//	 * @author Max Milbers
-//	 * @return boolean True if the table buffer is contains valid data, false otherwise.
-//	 */
-//	function check() {
-//
-//        if (!$this->payment_name) {
-//			$this->setError(JText::_('COM_VIRTUEMART_PAYMENTMETHODS_RECORDS_MUST_CONTAIN_NAME'));
-//			return false;
-//		}
-//
-//        if (!$this->virtuemart_vendor_id) {
-//			$this->setError(JText::_('COM_VIRTUEMART_PAYMENTMETHODS_RECORDS_MUST_HAVE_VENDOR'));
-//			return false;
-//		}
-//
-//		if (($this->payment_name)) {
-//		    $db = JFactory::getDBO();
-//
-//			$q = 'SELECT virtuemart_paymentmethod_id FROM `#__virtuemart_paymentmethods` ';
-//			$q .= 'WHERE `payment_name`="' .  $this->payment_name . '"';
-//            $db->setQuery($q);
-//		    $virtuemart_paymentmethod_id = $db->loadResult();
-//		    if(!empty($virtuemart_paymentmethod_id) && $virtuemart_paymentmethod_id!=$this->virtuemart_paymentmethod_id){
-//				$this->setError(JText::_('COM_VIRTUEMART_PAYMENTMETHOD_NAME_ALREADY_EXISTS'));
-//				return false;
-//			}
-//		}
-//
-//		return true;
-//	}
-
-
-
-
 }
 // pure php no closing tag

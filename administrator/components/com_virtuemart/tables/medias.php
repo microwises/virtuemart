@@ -140,7 +140,11 @@ class TableMedias extends VmTable {
 					if($item['virtuemart_media_id']!=$this->virtuemart_media_id) {
 						$lastDir = substr($this->file_url,0,strrpos($this->file_url,'/'));
 						$lastDir = substr($lastDir,strrpos($lastDir,'/')+1);
-						$this->file_title = $this->file_title.' '.$lastDir;
+						if(!empty($lastDir)){
+							$this->file_title = $this->file_title.'_'.$lastDir;
+						} else {
+							$this->file_title = $this->file_title.'_'.rand(1,9);
+						}
 					}
 				}
 			}

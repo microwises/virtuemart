@@ -143,7 +143,7 @@ INSERT INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_vendor_id
 (10, 1, 'drill', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/1ff5f2527907ca86103288e1b7cc3446.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
 (11, 1, 'circular saw', 'for the fine cut', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/9a4448bb13e2f7699613b2cfd7cd51ad.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
 (12, 1, 'chain saw', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/8716aefc3b0dce8870360604e6eb8744.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
-(13, 1, 'hand shovel', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/cca3cd5db813ee6badf6a3598832f2fc.jpg', 'images/stories/virtuemart/product/resized/cca3cd5db813ee6badf6a3598832f2fc_90x90.jpg', NULL, NULL, 1, 1, 0, 0, 0, '');
+(13, 1, 'hand shovel', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/cca3cd5db813ee6badf6a3598832f2fc.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, '');
 
 --
 -- Dumping data for table `#__virtuemart_products`

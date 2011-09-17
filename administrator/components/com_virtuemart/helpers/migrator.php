@@ -324,8 +324,7 @@ class Migrator extends VmModel{
 		    'file_description' => $file['filename'],
 		    'file_meta' => $file['filename'],
 		    'file_url' => $file['url'] . $file['filename'],
-			//'file_url_thumb'=>$url.'resized/'.$filename,
-	    'media_published' => 1
+	    	 'media_published' => 1
 			);
 			if($type == 'product')
 			$data['file_is_product_image'] = 1;

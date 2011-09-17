@@ -93,7 +93,6 @@ class VirtueMartModelPaymentmethod extends VmModel{
   		}
 
 
-
   		return $this->_data;
 	}
 

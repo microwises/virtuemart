@@ -514,15 +514,18 @@ class VirtueMartModelUser extends VmModel {
 		}*/
 
 		// Bind the form fields to the auth_user_group table
-		$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$data['virtuemart_shoppergroup_id']);
-		$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
-
-		$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
-		$errors = $user_shoppergroups_table->getErrors();
-		foreach($errors as $error){
-			$this->setError($error);
-			vmError($error);
+		if(!empty($data['virtuemart_shoppergroup_id'])){
+			$shoppergroupData = array('virtuemart_user_id'=>$this->_id,'virtuemart_shoppergroup_id'=>$data['virtuemart_shoppergroup_id']);
+			$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
+			$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
+			$errors = $user_shoppergroups_table->getErrors();
+			foreach($errors as $error){
+				$this->setError($error);
+				vmError($error);
+			}
 		}
+
+
 
   		$plg_datas = $dispatcher->trigger('plgVmAfterUserStore',$data);
 		foreach($plg_datas as $plg_data){

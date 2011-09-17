@@ -404,7 +404,7 @@ abstract class vmPaymentPlugin extends JPlugin {
         if (!$this->selectedThisPayment($this->_pelement, $payment->virtuemart_paymentmethod_id)) {
             return null; // Another payment was selected, do nothing
         }
-		$params = new JParameter($payment->payment_params);
+		$params = new JParameter($payment->payment_params); //? note by Max Milbers, why is this here?
 		return   $payment->payment_name;
 	}
 
