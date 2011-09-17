@@ -623,6 +623,7 @@ class ShopFunctions {
 		$categoryModel = self::getModel('category');
 		$level++;
 
+		$categoryModel->_noLimit = true;
 		$records = $categoryModel->getCategoryTree(true, true, $cid);
 		$selected="";
 		if(!empty($records)){
