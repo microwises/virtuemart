@@ -77,7 +77,7 @@ class TableVendors extends VmTableData {
 
 		$this->setLoggable();
 
-		$varsToPushParam =
+		$varsToPushParam = array(
 		    				'vendor_min_pov'=>array(0.0,'float'),
 		    				'vendor_min_poq'=>array(1,'int'),
 		    				'vendor_freeshipping'=>array(0.0,'float'),
