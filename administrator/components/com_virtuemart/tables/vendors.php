@@ -82,7 +82,7 @@ class TableVendors extends VmTableData {
 		    				'vendor_min_poq'=>array(1,'int'),
 		    				'vendor_freeshipping'=>array(0.0,'float'),
 		    				'vendor_address_format'=>array('','string'),
-		    				'vendor_date_format'=>array('','string');
+		    				'vendor_date_format'=>array('','string'));
 
 		$this->setParameterable('vendor_params',$varsToPushParam);
 
