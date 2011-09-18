@@ -358,12 +358,14 @@ class Migrator extends VmModel{
 
 		$oldtoNewShoppergroups = array();
 		$alreadyKnownIds = $this->getMigrationProgress('shoppergroups');
-		$sGroups = array();
+
 		$starttime = microtime(true);
 		$i = 0;
 		foreach($oldShopperGroups as $oldgroup){
 
 			if(!array_key_exists($oldgroup['shopper_group_id'],$alreadyKnownIds)){
+				$sGroups = null;
+				$sGroups = array();
 				//$category['virtuemart_category_id'] = $oldcategory['category_id'];
 				$sGroups['virtuemart_vendor_id'] = $oldgroup['vendor_id'];
 				$sGroups['shopper_group_name'] = $oldgroup['shopper_group_name'];
@@ -755,7 +757,8 @@ class Migrator extends VmModel{
 
 			if(!array_key_exists($oldmfcategory['mf_category_id'],$alreadyKnownIds)){
 				//$category['virtuemart_category_id'] = $oldcategory['category_id'];
-
+				$mfcategory = null;
+				$mfcategory = array();
 				$mfcategory['mf_category_name'] = $oldmfcategory['mf_category_name'];
 				$mfcategory['mf_category_desc'] = $oldmfcategory['mf_category_desc'];
 
@@ -808,13 +811,16 @@ class Migrator extends VmModel{
 		$this->_db->setQuery($q);
 		$oldManus = $this->_db->loadAssocList();
 
+// 		vmdebug('my old manus',$oldManus);
 		$oldtonewManus = array();
 		$oldtoNewMfcats = $this->getMigrationProgress('mfcats');
 		$alreadyKnownIds = $this->getMigrationProgress('manus');
-		$manu = array();
+
 		$i =0 ;
 		foreach($oldManus as $oldmanu){
 			if(!array_key_exists($oldmanu['manufacturer_id'],$alreadyKnownIds)){
+				$manu = null;
+				$manu = array();
 				$manu['mf_name'] = $oldmanu['mf_name'];
 				$manu['mf_email'] = $oldmanu['mf_email'];
 				$manu['mf_desc'] = $oldmanu['mf_desc'];
@@ -826,11 +832,12 @@ class Migrator extends VmModel{
 				require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'manufacturers.php');
 				$table = $this->getTable('manufacturers');
 
-				$manu = $table->bindChecknStore($manu);
+				$table->bindChecknStore($manu);
 				$errors = $table->getErrors();
 				if(!empty($errors)){
 					foreach($errors as $error){
 						$this->setError($error);
+						vmError($error);
 						$ok = false;
 					}
 					break;
@@ -926,8 +933,8 @@ class Migrator extends VmModel{
 			foreach($oldProducts as $product){
 
 				if(!array_key_exists($product['product_id'],$alreadyKnownIds)){
-
-
+					$product = null;
+					$product = array();
 					$product['virtuemart_vendor_id'] = $product['vendor_id'];
 
 					if(!empty($product['manufacturer_id'])){
@@ -1007,7 +1014,7 @@ class Migrator extends VmModel{
 				} else {
 					$oldtonewProducts[$product['product_id']] = $alreadyKnownIds[$product['product_id']];
 				}
-				unset($product['virtuemart_product_id']);
+// 				unset($product['virtuemart_product_id']);
 				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 
 					$continue = false;

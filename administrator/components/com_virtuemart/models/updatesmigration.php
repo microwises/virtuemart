@@ -49,41 +49,6 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 
     /**
-     * Add existing Joomla users into the Virtuemart database.
-     *
-     * @author Max Milbers, RickG
-     */
-    function integrateJoomlaUsers() {
-
-/*	    $msg = JText::_('COM_VIRTUEMART_START_SYNCRONIZING');
-		$db = JFactory::getDBO();
-		$query = "SELECT * FROM `#__users`";
-		$db->setQuery($query);
-		$row = $db->loadObjectList();
-
-		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
-		$usermodel = new VirtueMartModelUser();
-
-		foreach ($row as $user) {
-
-			$usermodel->setId($user->id);
-			$userdata = array(	'virtuemart_user_id' => $user->id,
-								'virtuemart_vendor_id' => 0,
-								'username' => $user->username,
-								'user_is_vendor' => 0,
-								'perms' => 'shopper'
-								);
-
-			$usermodel->saveUserData($userdata);
-
-		}
-		$msg = JText::_('COM_VIRTUEMART_USERS_SYNCRONIZED');
-		return $msg;*/
-    	return;
-    }
-
-
-    /**
      * @author Max Milbers
      */
     function determineStoreOwner() {

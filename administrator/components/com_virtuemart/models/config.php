@@ -291,9 +291,7 @@ class VirtueMartModelConfig extends JModel {
 			$confData['virtuemart_config_id'] = 0;
 		}
 
-		//if($confData['virtuemart_config_id']>1)$confData['virtuemart_config_id'] = 1;
 
-		// 		$confData['config'] = $this->_db->getEscaped($config->toString());
 		$confData['config'] = $config->toString();
 
 		$confTable = $this->getTable('configs');
@@ -314,18 +312,19 @@ class VirtueMartModelConfig extends JModel {
 	 * @author Max Milbers
 	 */
 	function setDangerousToolsOff(){
-		$config = VmConfig::loadConfig();
 
-		$config -> set('dangeroustools',0);
+		VmConfig::loadConfig(true);
 
+		vmdebug('test', VmConfig::get('dangeroustools'));
 		//ATM we want to ensure that only one config is used
-		$data['virtuemart_config_id'] = 1;
-
-		$data['config'] = $this->_db->getEscaped($config->toString());
-		$confTable = $this->getTable('configs');
-		if (!$confTable->bindChecknStore($data)) {
-			$this->setError($confTable->getError());
+		if(VmConfig::get('dangeroustools',0)==='0'){
+			$data['virtuemart_config_id'] = 1;
+			$data['dangeroustools'] = 0;
+			$this->store($data);
+		} else {
+			VmInfo('Attention dangerous database still active due config setting in file');
 		}
+
 
 	}
 

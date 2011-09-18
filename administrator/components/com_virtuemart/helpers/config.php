@@ -310,10 +310,14 @@ class VmConfig{
 		self::$_jpConfig->_raw = $db->loadResult();
 		// 		vmTime('First config db load','loadConfig');
 		if(empty(self::$_jpConfig->_raw)){
-			self::$_jpConfig->_raw = self::installVMconfig();
-			$db->setQuery($query);
-			self::$_jpConfig->_raw = $db->loadResult();
-			self::$_jpConfig->_params = null;
+			if(self::installVMconfig()){
+				$db->setQuery($query);
+				self::$_jpConfig->_raw = $db->loadResult();
+				self::$_jpConfig->_params = null;
+			} else {
+				VmError('Error loading configuration file','Error loading configuration file, please contact the storeowner');
+			}
+
 			// 			vmTime('After install from file','loadConfig');
 		}
 
