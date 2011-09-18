@@ -28,14 +28,15 @@ jimport( 'joomla.application.component.view');
  * @package		VirtueMart
  * @author  Patrick Kohl
  */
-class VirtuemartViewMedia extends JView {
+class VirtuemartViewCustom extends JView {
 
 	/* json object */
 	private $json = null;
 	
 	function display($tpl = null) {
-		if ( $virtuemart_media_id = JRequest::getInt('virtuemart_media_id') ) {
 			$db = JFactory::getDBO();
+		if ( $virtuemart_media_id = JRequest::getInt('virtuemart_media_id') ) {
+			//$db = JFactory::getDBO();
 			$query='SELECT `file_url`,`file_title` FROM `#__virtuemart_medias` where `virtuemart_media_id`='.$virtuemart_media_id;
 			$db->setQuery( $query );
 			$json = $db->loadObject();
@@ -48,12 +49,25 @@ class VirtuemartViewMedia extends JView {
 				echo json_encode($json);
 			}
 		} 
-		elseif ( $virtuemart_customplugin_id = JRequest::getInt('virtuemart_customplugin_id') ) {
-			$db = JFactory::getDBO();
-			
+		elseif ( $custom_jplugin_id = JRequest::getInt('custom_jplugin_id') ) {
+			if (VmConfig::isJ15()) {
+				$table = '#__plugins';
+				$ext_id = 'id';
+			} else {
+				$table = '#__extensions';
+				$ext_id = 'extension_id';
+			}
+			$q = 'SELECT `params`,`element` FROM `' . $table . '` WHERE `' . $ext_id . '` = "'.$custom_jplugin_id.'"';
+			$db ->setQuery($q);
+			$this->plugin = $db ->loadObject();
+			$this->loadHelper('parameterparser');
+                $parameters = new vmParameters($this->plugin->params,  $this->plugin->element , 'plugin' ,'vmcustom');
+               
+	        echo $rendered = $parameters->render(); 
+			jExit();
 		}
+		jExit();
 	}
-	parameterparser.php
 
 }
 // pure php no closing tag

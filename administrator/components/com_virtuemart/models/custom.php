@@ -90,7 +90,10 @@ class VirtueMartModelCustom extends VmModel {
 			$this->_db->setQuery('SELECT * FROM `#__virtuemart_customplugins` WHERE virtuemart_custom_id =' .(int)$virtuemart_custom_id);
 			$this->plugin = $this->_db->loadObject();
   		}
-		if (empty($this->plugin)) return ;
+		if (empty($this->plugin)) {
+			$this->plugin->custom_jplugin_id = null;
+			return $this->plugin ;
+		}
   		if(empty($this->plugin->virtuemart_vendor_id)){
   		   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
    			$this->plugin->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
@@ -122,6 +125,7 @@ class VirtueMartModelCustom extends VmModel {
   			// $this->plugin->virtuemart_shoppergroup_ids = '';
   			// $this->plugin->payment_creditcards = '';
   			$this->plugin->param = '';
+			
   		}
 
 
@@ -265,22 +269,22 @@ class VirtueMartModelCustom extends VmModel {
 	public function store(&$data){
 		$id = parent::store($data);
 		if(isset($data['custom_jplugin_id'])){
-		//$data['virtuemart_custom_id' ;
-		self::saveCustomPlugin($data) ;
+		if ($data['custom_jplugin_id'] ) self::saveCustomPlugin($data) ;
 		}
 
 		return $id ; 
 	}
 
 	/**
-	 * Bind the post data to the paymentmethod tables and save it
-	 *
-	 * @author Max Milbers
+	 * Bind the post data to the customPlugin tables 
+	 * Save the default personnal setting(original are in joomla plugin Table)
+	 * @author Patrick Kohl
 	 * @return boolean True is the save was successful, false otherwise.
 	 */
 	public function saveCustomPlugin($data)
 	{
 		//$data = JRequest::get('post');
+		//TODO  remove if $data['custom_jplugin_id'] == 0 ; no custom plugin selected
 		$data['custom_name'] = $data['custom_title'];
 		if(isset($data['params'])){
 			if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
@@ -306,7 +310,6 @@ class VirtueMartModelCustom extends VmModel {
 		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['custom_jplugin_id'].'"';
 		$this->_db->setQuery($q);
 		$data['custom_element'] = $this->_db->loadResult();
-		
 		$table = $this->getTable('customplugins');
 		$table->bindChecknStore($data);
 		$errors = $table->getErrors();

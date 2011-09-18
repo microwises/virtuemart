@@ -360,7 +360,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					JPluginHelper::importPlugin('vmcustom');
 					$dispatcher =& JDispatcher::getInstance();
 					$retValue = $dispatcher->trigger('plgVmOnProductEdit',
-						array('value' => $value,'row' => $row, 'product_id' => $product_id));
+						array('virtuemart_custom_id' => $value,'row' => $row, 'product_id' => $product_id));
 					$html = $retValue[0] ;
 				return $html.$priceInput;
 				break;
@@ -457,7 +457,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		//$calculator = calculationHelper::getInstance();
 		foreach ($productCustoms as & $field ) {
 			//$custom_price = $calculator->calculateCustomPriceWithTax($field->custom_price);
-			$field->display = $this->displayType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
+			if ($field->field_type == "E") $field->display = $this->displayPlugin($field,$product,$row);
+			else $field->display = $this->displayType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
 			$row++ ;
 		}
 		return $productCustoms;
@@ -533,6 +534,19 @@ class VirtueMartModelCustomfields extends VmModel {
 			return $groups;
 
      }
+	 public function displayPlugin($field,$product,$row){
+		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+		$currency = CurrencyDisplay::getInstance();
+		$price = $currency->priceDisplay((float)$field->custom_price);
+		if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+		JPluginHelper::importPlugin('vmcustom');
+		$dispatcher =& JDispatcher::getInstance();
+		$retValue = $dispatcher->trigger('plgVmOnDisplayProductFE',
+			array('field' => $field, 'product_id' => $product,'row' => $row));
+		$html = $retValue[0] ;
+		return $html;
+		//return '<input type="text" value="'.JText::_($value).'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
+	 }
   /**
   * Formating front display by roles
   *  for product only !
@@ -555,14 +569,14 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				/* variants*/
 				case 'V':
-				if ($price == 0 ) $price = JText::_('COM_VIRTUEMART_CART_PRICE_FREE') ;
-				/* Loads the product price details */
-				return '<input type="text" value="'.JText::_($value).'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
-				break;
+					if ($price == 0 ) $price = JText::_('COM_VIRTUEMART_CART_PRICE_FREE') ;
+					/* Loads the product price details */
+					return '<input type="text" value="'.JText::_($value).'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
+					break;
 				/*userfield variants*/
 				case 'U':
-				return '<input type="text" value="'.JText::_($value).'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
-				break;
+					return '<input type="text" value="'.JText::_($value).'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
+					break;				/*userfield variants*/
 				/* string or integer */
 				case 'S':
 				case 'I':

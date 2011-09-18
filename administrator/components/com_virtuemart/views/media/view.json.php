@@ -34,12 +34,20 @@ class VirtuemartViewMedia extends JView {
 	private $json = null;
 
 	function display($tpl = null) {
+		$document =& JFactory::getDocument();
+		$document->setMimeEncoding( 'application/json' );
 
 		if ($virtuemart_media_id = JRequest::getInt('virtuemart_media_id')) {
-			$db = JFactory::getDBO();
-			$query='SELECT * FROM `#__virtuemart_medias` where `virtuemart_media_id`='.$virtuemart_media_id;
-			$db->setQuery( $query );
-			$this->json = $db->loadObject();
+			JResponse::setHeader( 'Content-Disposition', 'attachment; filename="media'.$virtuemart_media_id.'.json"' );
+			if(!class_exists('VirtueMartModelMedia'))require(JPATH_VM_ADMINISTRATOR.DS.'model'.DS.'media.php');
+			$model = new VirtueMartModelMedia ;
+			// $db = JFactory::getDBO();
+			// $query='SELECT * FROM `#__virtuemart_medias` where `virtuemart_media_id`='.$virtuemart_media_id;
+			// $db->setQuery( $query );
+			// $this->json = $db->loadObject();
+			$image = $model->createMediaByIds($virtuemart_media_id);
+			$this->json = $image[0];
+			//echo json_encode($this->json);
 			if (isset($this->json->file_url)) {
 				$this->json->file_root = JURI::root(true).'/';
 				$this->json->msg =  'OK';

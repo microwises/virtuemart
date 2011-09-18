@@ -133,7 +133,8 @@ class VirtuemartViewProduct extends JView {
 			$rows = $db->loadObjectlist();
 			$html = array ();
 			foreach ($rows as $field) {
-			 $display = $model->inputType($field->custom_value,$field->field_type,$field->is_list,0,$row,$field->is_cart_attribute);
+			if ($field->field_type =="E")  $display = $model->inputType($field->virtuemart_custom_id,$field->field_type,$field->is_list,0,$row,$field->is_cart_attribute);
+			else  $display = $model->inputType($field->custom_value,$field->field_type,$field->is_list,0,$row,$field->is_cart_attribute);
 			 if ($field->is_cart_attribute) $cartIcone=  'default';
 			 else  $cartIcone= 'default-off';
 			 $html[] = '<tr>

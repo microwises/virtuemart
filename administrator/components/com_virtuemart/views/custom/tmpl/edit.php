@@ -44,7 +44,7 @@ echo $this->customfields->displayCustomFields('',$this->custom); ?>
 		<td>
 		<div id="plugin-Container">
 		<?php
-		if($this->customPlugin){
+		if($this->customPlugin->custom_jplugin_id){
 				echo $this->customPlugin->custom_name .'<br />' ;
 	        //$parameters = new vmParameters($this->paym->custom_params, JPATH_PLUGINS.DS.'vmcustom'.DS.basename($this->paym->custom_element).'.xml', 'plugin' );
                 $parameters = new vmParameters($this->customPlugin->custom_params,  $this->customPlugin->custom_element , 'plugin' ,'vmcustom');
@@ -72,7 +72,15 @@ function submitbutton(pressbutton) {
 jQuery('#field_type').change(function () { 
 	var $selected = jQuery(this).val();
 	if ($selected == "E" ) jQuery('#custom_plg').show();
-	else jQuery('#custom_plg').hide();
+	else { jQuery('#custom_plg').hide();
+		jQuery('#custom_jplugin_id option:eq(0)').attr("selected", "selected");
+		jQuery('#custom_jplugin_id').change();
+	}
+
+});
+jQuery('#custom_jplugin_id').change(function () { 
+	var $id = jQuery(this).val();
+	jQuery('#plugin-Container').load( 'index.php?option=com_virtuemart&view=custom&task=viewJson&format=json&custom_jplugin_id='+$id);
 
 });
 </script>

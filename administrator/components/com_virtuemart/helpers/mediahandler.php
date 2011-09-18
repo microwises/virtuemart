@@ -806,8 +806,8 @@ class VmMediaHandler {
 		 */
 		function getImagesList($type = '',$page=0,$max=24) {
 			$list = array();
-			$vendorId=1;
-			$q='SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_medias` WHERE `published`=1
+			$vendorId=1;//TODO control the vendor
+			$q='SELECT SQL_CALC_FOUND_ROWS `virtuemart_media_id` FROM `#__virtuemart_medias` WHERE `published`=1
     	AND (`virtuemart_vendor_id`= "'.(int)$vendorId.'" OR `shared` = "1")';
 			if(!empty($type)){
 				$q .= ' AND `file_type` = "'.$type.'" ';
@@ -818,12 +818,16 @@ class VmMediaHandler {
 
 			$this->_db->setQuery($q);
 			//		$result = $this->_db->loadAssocList();
-			$list['images'] = $this->_db->loadObjectList();
-
+			$virtuemart_media_ids = $this->_db->loadResultArray();
 			$errMsg = $this->_db->getErrorMsg();
 			$errs = $this->_db->getErrors();
+
+			if(!class_exists('VirtueMartModelMedia'))require(JPATH_VM_ADMINISTRATOR.DS.'model'.DS.'media.php');
+			$model = new VirtueMartModelMedia ;
 			$this->_db->setQuery('SELECT FOUND_ROWS()');
 			$list['total'] = $this->_db->loadResult();
+
+			$list['images'] = $model->createMediaByIds($virtuemart_media_ids);
 
 			if(!empty($errMsg)){
 				$app = JFactory::getApplication();

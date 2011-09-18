@@ -35,6 +35,7 @@ class VirtuemartViewCustom extends JView {
 		// Load the helper(s)
 		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 		$this->loadHelper('vmcustomplugin');
 		$model = $this->getModel('custom');
 		$this->loadHelper('permissions');
@@ -93,7 +94,9 @@ class VirtuemartViewCustom extends JView {
 		}
 		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmcustom" AND `'.$enable.'`="1" ';
 		$db->setQuery($q);
+
 		$result = $db->loadAssocList($ext_id);
+		return VmHTML::select($result, 'custom_jplugin_id', $selected,"",$ext_id, 'name');
 
 		return JHtml::_('select.genericlist', $result, 'custom_jplugin_id', null, $ext_id, 'name', $selected);
 	}

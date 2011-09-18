@@ -128,9 +128,7 @@ abstract class vmCustomPlugin extends JPlugin {
 	/**
 	 * display the plugin on product FE
 	 */
-		public function plgVmOnDisplayFE(&$value, $product_id){
-			$value = $value.'2';
-	}
+	abstract function plgVmOnDisplayProductFE($field,$product,$idx);
 	
 	/**
 	 * *** Can only set in table at order then put it in session ***

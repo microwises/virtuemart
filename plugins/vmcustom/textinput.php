@@ -91,7 +91,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 	
 	
-	
+	// get product param for this plugin on edit
 	function plgVmOnProductEdit($value,$row, $product_id) {
 	
 	//print_r($value);
@@ -107,10 +107,12 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnDisplayProductFE()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnDisplayProductFE(&$idx,$virtuemart_product_id) {
-
-		$html ='<input type="text" class="textfield" value="" size="10" name="custom[\''.$this->_pelement.'\']['.$idx.']">';
-		$idx ++;
+	function plgVmOnDisplayProductFE($field,$product,$idx) {
+		// set value for price and custom array
+		$html ='<input type="hidden" value="'.$this->_pelement.'" size="10" name="customPrice['.$idx.']['.$field->virtuemart_custom_id.']">';
+		// Here the plugin values
+		$html.='<input type="text" value="'.$this->_pelement.'" size="10" name="customPlugin['.$idx.']['.$field->virtuemart_custom_id.']">';
+		$html.='<input type="text" value="" size="10" name="customPlugin['.$idx.'][Morecomment]">';
         return $html;
     }
 
