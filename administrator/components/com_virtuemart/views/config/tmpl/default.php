@@ -25,6 +25,7 @@ AdminUIHelper::startAdminArea ();
 <?php // Loading Templates in Tabs
 AdminUIHelper::buildTabs ( array (	'shop' 			=> 	'COM_VIRTUEMART_ADMIN_CFG_SHOPTAB',
 									'shopfront' 	=> 	'COM_VIRTUEMART_ADMIN_CFG_SHOPFRONTTAB',
+									'templates' 	=> 	'COM_VIRTUEMART_ADMIN_CFG_TEMPLATESTAB',
 									'product_order'	=> 	'COM_VIRTUEMART_ADMIN_CFG_PRODUCTORDERTAB',
 									'pricing' 		=> 	'COM_VIRTUEMART_ADMIN_CFG_PRICINGTAB',
 									'checkout' 		=> 	'COM_VIRTUEMART_ADMIN_CFG_CHECKOUTTAB',
