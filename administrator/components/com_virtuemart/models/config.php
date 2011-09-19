@@ -315,7 +315,6 @@ class VirtueMartModelConfig extends JModel {
 
 		VmConfig::loadConfig(true);
 
-		vmdebug('test', VmConfig::get('dangeroustools'));
 		//ATM we want to ensure that only one config is used
 		if(VmConfig::get('dangeroustools',0)==='0'){
 			$data['virtuemart_config_id'] = 1;
