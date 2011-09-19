@@ -741,11 +741,11 @@ class VmMediaHandler {
 
 			$html='';
                         // this one break the tabs. Don't know why.
-                         //$html .= '<fieldset class="checkboxes">' ;
-                        //$html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGES').'</legend>';
+                          $html .= '<fieldset class="checkboxes">' ;
+                         $html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGES').'</legend>';
 
 			$result = $this->getImagesList($type);
-			$html .= '<a id="addnewselectimage2" href="#media-dialog">'.JText::_('COM_VIRTUEMART_IMAGE_ATTACH_NEW').'</a><div id="ImagesContainer">';
+			$html .= '<div id="ImagesContainer">';
 			/*		VmConfig::JimageSelectlist();*/
 
 			// if(empty($fileIds)) {
@@ -757,10 +757,11 @@ class VmMediaHandler {
 					$html .= $this->displayImage($id );
 				}
 			}
-                        //$html .= '</fieldset>' ;
+                        $html .= '<a id="addnewselectimage2" href="#media-dialog">'.JText::_('COM_VIRTUEMART_IMAGE_ATTACH_NEW').'</a>';
+                         $html .= '</div></fieldset>' ;
 
 
-			return $html.'</div><div class="clear"></div>';
+			return $html.'<div class="clear"></div>';
 		}
 
 		function displayImage($virtuemart_media_id ) {
@@ -925,7 +926,7 @@ class VmMediaHandler {
                         $html .= JText::_('COM_VIRTUEMART_IMAGE_ACTION'). JHTML::_('select.radiolist', $this->getOptions($this->_actions), 'media_action'.$identify, '', 'value', 'text', 0).'<br /><br style="clear:both" />';
 
 
-			$html .= JText::_('COM_VIRTUEMART_FILE_UPLOAD').'<input type="file" name="upload" id="upload" size="50" class="inputbox" /><br />';
+			$html .= JText::_('COM_VIRTUEMART_FILE_UPLOAD').' <input type="file" name="upload" id="upload" size="50" class="inputbox" /><br />';
 
 			$html .= '<br />'.$this->displaySupportedImageTypes();
                         $html .='<br /></fieldset>';

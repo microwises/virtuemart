@@ -52,10 +52,10 @@ class VirtuemartViewMedia extends JView {
 			if (isset($this->json->file_url)) {
 				$this->json->file_root = JURI::root(true).'/';
 				$this->json->msg =  'OK';
-				echo json_encode($this->json);
+				echo @json_encode($this->json);
 			} else {
 				$this->json->msg =  '<b>'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b>';
-				echo json_encode($this->json);
+				echo @json_encode($this->json);
 			}
 		}
 		else {
