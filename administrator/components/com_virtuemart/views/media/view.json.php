@@ -46,6 +46,7 @@ class VirtuemartViewMedia extends JView {
 			// $db->setQuery( $query );
 			// $this->json = $db->loadObject();
 			$image = $model->createMediaByIds($virtuemart_media_id);
+// 			echo '<pre>'.print_r($image,1).'</pre>';
 			$this->json = $image[0];
 			//echo json_encode($this->json);
 			if (isset($this->json->file_url)) {
@@ -64,7 +65,7 @@ class VirtuemartViewMedia extends JView {
 			$list = VmMediaHandler::displayImages($type,$start );
 			$this->json->imageList=$list['htmlImages'];
 			$this->json->statut="ok";
-			
+
 			echo json_encode($this->json);
 		}
 	}

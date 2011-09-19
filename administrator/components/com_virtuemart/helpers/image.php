@@ -91,7 +91,7 @@ class VmImage extends VmMediaHandler {
 	/**
 	 * a small function that ensures that we always build the thumbnail name with the same method
 	 */
-	private function createThumbName($width=0,$height=0){
+	public function createThumbName($width=0,$height=0){
 
 		if(empty($this->file_name)) return false;
 		if(empty($width)) $width = VmConfig::get('img_width', 90);

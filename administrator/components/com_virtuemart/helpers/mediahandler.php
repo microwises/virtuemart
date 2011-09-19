@@ -210,6 +210,13 @@ class VmMediaHandler {
 
 		$this->determineFoldersToTest();
 
+		if(empty($this->file_url_thumb)){
+			$this->displayMediaThumb('',true,'',false);
+		}
+// 		$this->file_name_thumb = $this->createThumbName();
+// 		$this->file_url_thumb = $this->file_url_folder_thumb.$this->file_name_thumb.'.'.$this->file_extension;
+
+
 	}
 
 	public function getUrl(){
@@ -354,12 +361,12 @@ class VmMediaHandler {
 		 * @param boolean $lightbox alternative display method
 		 * @param string $effect alternative lightbox display
 		 */
-		function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal' rel='group'"){
+		function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal' rel='group'",$return = true){
 
 			if(empty($this->file_name)){
 				$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
 				$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_SET').' '.$this->file_description;
-				return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox);
+				if($return) return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox);
 			}
 
 			if(!empty($this->file_url_thumb)){
@@ -385,11 +392,11 @@ class VmMediaHandler {
 			}
 
 			if (empty($this->file_url_thumb) || !file_exists($media_path)) {
-				return $this->getIcon($imageArgs,$lightbox);
+				return $this->getIcon($imageArgs,$lightbox,$return);
 			}
 
 
-			return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox,$effect);
+			if($return) return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox,$effect);
 
 		}
 
@@ -401,11 +408,11 @@ class VmMediaHandler {
 		 * @param string $imageArgs
 		 * @param boolean $lightbox
 		 */
-		function getIcon($imageArgs,$lightbox){
+		function getIcon($imageArgs,$lightbox,$return=false){
 			//we can later add here icons for different types
 			$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
 			$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_FOUND').' '.$this->file_description;
-			return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox);
+			if($return)return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox);
 		}
 
 		/**
