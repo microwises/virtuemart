@@ -5,4 +5,3 @@ vmWarn($attentionText);
 echo $attentionText;
 
 vmTrace('Called by');
-

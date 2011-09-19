@@ -933,8 +933,7 @@ class Migrator extends VmModel{
 			foreach($oldProducts as $product){
 
 				if(!array_key_exists($product['product_id'],$alreadyKnownIds)){
-					$product = null;
-					$product = array();
+
 					$product['virtuemart_vendor_id'] = $product['vendor_id'];
 
 					if(!empty($product['manufacturer_id'])){

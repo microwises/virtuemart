@@ -210,7 +210,7 @@ class VmMediaHandler {
 
 		$this->determineFoldersToTest();
 
-		if(empty($this->file_url_thumb)){
+		if(!empty($this->file_url) && empty($this->file_url_thumb)){
 			$this->displayMediaThumb('',true,'',false);
 		}
 // 		$this->file_name_thumb = $this->createThumbName();
