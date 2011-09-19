@@ -36,6 +36,8 @@ class VmTableData extends VmTable {
 
 		$this->setLoggableFieldsForStore();
 
+		$this->storeParams();
+
     	$id = 0;
     	$pKey = $this->_pkey;
     	if(!empty($this->$pKey)){

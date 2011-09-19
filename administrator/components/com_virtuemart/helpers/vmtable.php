@@ -184,11 +184,12 @@ class VmTable extends JTable{
 
 		if(!empty($this->_xParams)){
 			$paramFieldName = $this->_xParams;
-			$config = explode('|', $this->$paramFieldName);
-			foreach($config as $item){
+			$params = explode('|', $this->$paramFieldName);
+			vmdebug('load',$params);
+			foreach($params as $item){
 				$item = explode('=',$item);
 				if(count($item)===2){
-// 					vmdebug('load',$item);
+
 					if($this->_varsToPushParam[$item[0]][1]==='string'){
 						$this->$item[0] = base64_decode(unserialize($item[1]));
 					} else {
@@ -223,33 +224,36 @@ class VmTable extends JTable{
 
 		$this->setLoggableFieldsForStore();
 
+		$this->storeParams();
+
+		return parent::store();
+
+	}
+
+
+	function storeParams(){
 		if(!empty($this->_xParams)){
 			foreach($this->_varsToPushParam as $key=>$v){
+
 				$paramFieldName = $this->_xParams;
 				if(isset($this->$key)){
-					if($key[1]==='string'){
+					if($v[1]==='string'){
 						$this->$paramFieldName .= $key.'='.base64_encode(serialize($this->$key)).'|';
 					} else {
 						$this->$paramFieldName .= $key.'='.serialize($this->$key).'|';
 					}
 				} else {
-					if($key[1]==='string'){
+					if($v[1]==='string'){
 						$this->$paramFieldName .= $key.'='.base64_encode(serialize($v[0])).'|';
 					} else {
 						$this->$paramFieldName .= $key.'='.serialize($v[0]).'|';
 					}
 				}
-				unset($this->$k);
+				unset($this->$key);
 			}
 		}
-// 		vmdebug('my data in vendors store', $this);
-		return parent::store();
+		return true;
 	}
-
-	// 	public function store(){
-	// 		return parent::store();
-	// 	}
-
 	/**
 	 * @author Max Milbers
 	 * @param

@@ -38,7 +38,7 @@ class Migrator extends VmModel{
 		$this->starttime = microtime(true);
 		$this->maxScriptTime = ini_get('max_execution_time')*0.85-1;	//Lets use 5% of the execution time as reserve to store the progress
 		// 		$this->maxScriptTime = 20;
-		$this->maxMemoryLimit = $this -> return_bytes(ini_get('memory_limit')) * 0.80;		//Lets use 20 % as reserve
+		$this->maxMemoryLimit = $this -> return_bytes(ini_get('memory_limit')) * 0.75;		//Lets use 25 % as reserve
 		// 		$this->maxMemoryLimit = $this -> return_bytes('20M');
 
 		// 		ini_set('memory_limit','35M');
