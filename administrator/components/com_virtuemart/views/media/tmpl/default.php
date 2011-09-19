@@ -97,7 +97,7 @@ $productfileslist = $this->files;
 				<!-- File title -->
 				<td><?php echo $productfile->file_name; ?></td>
 				<!-- File extension -->
-				<td><?php echo $productfile->file_extension; ?></td>
+				<td><span class="vmicon vmicon-16-ext_<?php echo $productfile->file_extension; ?>"></span><?php echo $productfile->file_extension; ?></td>
 				<!-- published -->
 				<td><?php echo $published; ?></td>
 			</tr>
