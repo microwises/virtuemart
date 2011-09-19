@@ -892,8 +892,8 @@ class VmMediaHandler {
 		<input type="checkbox" class="inputbox" id="published" name="media_published'.$identify.'" '.$checked.' size="16" value="1" />
 	</td>';
 			$html .= '<td rowspan = 5>';
-			// 		$html .= JHTML::image($this->file_url_thumb, 'thumbnail', 'id="vm_thumb_image" style="overflow: auto; float: right;"');
-			$html .= $this->displayMediaThumb('',false,'id="vm_thumb_image" style="overflow: auto; float: right;"');
+					$html .= JHTML::image($this->file_url_thumb, 'thumbnail', 'id="vm_thumb_image" style="overflow: auto; float: right;"');
+			// $html .= $this->displayMediaThumb('',false,'id="vm_thumb_image" style="overflow: auto; float: right;"');
 			$html .= '</td>';
 
 			$html .= '</tr>';
