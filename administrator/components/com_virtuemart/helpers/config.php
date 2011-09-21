@@ -494,10 +494,16 @@ class VmConfig{
 	 */
 	public function installVMconfig($_section = 'config'){
 
-		$_datafile = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'virtuemart_defaults.cfg';
+		$_datafile = JPATH_VM_ADMINISTRATOR.DS.'virtuemart_defaults.cfg';
 		if (!file_exists($_datafile)) {
-			JError::raiseWarning(500, 'The data file with the default configuration could not be found. You must configure the shop manually.');
-			return false;
+			if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'virtuemart_defaults.cfg-dist')) {
+				if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+				JFile::copy('virtuemart_defaults.cfg-dist','virtuemart_defaults.cfg',JPATH_VM_ADMINISTRATOR);
+			} else {
+				JError::raiseWarning(500, 'The data file with the default configuration could not be found. You must configure the shop manually.');
+				return false;
+			}
+
 		} else {
 			vmInfo('Taking config from file');
 		}
