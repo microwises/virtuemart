@@ -247,6 +247,16 @@ defined('_JEXEC') or die('Restricted access');
 					<input type="text" name="media_manufacturer_path"  size="60" class="inputbox" value="<?php echo $this->config->get('media_manufacturer_path') ?>" />
 				</td>
 			</tr>
+                        <tr>
+				<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_VENDOR_PATH_EXPLAIN'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_VENDOR_PATH') ?>
+				</span>
+				</td>
+				<td>
+					<input type="text" name="media_vendor_path"  size="60" class="inputbox" value="<?php echo $this->config->get('media_vendor_path') ?>" />
+				</td>
+			</tr>
 			<?php
 			if( function_exists('imagecreatefromjpeg') ) {
 				?>
