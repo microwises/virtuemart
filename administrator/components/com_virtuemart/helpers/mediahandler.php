@@ -835,7 +835,7 @@ class VmMediaHandler {
 			$this->_db->setQuery('SELECT FOUND_ROWS()');
 			$list['total'] = $this->_db->loadResult();
 
-			$list['images'] = $model->createMediaByIds($virtuemart_media_ids);
+			$list['images'] = $model->createMediaByIds($virtuemart_media_ids, $type);
 
 			if(!empty($errMsg)){
 				$app = JFactory::getApplication();
