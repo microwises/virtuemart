@@ -183,16 +183,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			}
 
 			$this->db = JFactory::getDBO();
-			/*			$query = 'SHOW COLUMNS FROM `#__virtuemart_products` ';
-			 $db->setQuery($query);
-			$columns = $db->loadResultArray(0);
-
-			if(!in_array('product_ordered',$columns)){
-
-			$query = 'ALTER TABLE `#__virtuemart_products` ADD product_ordered int(11)';
-			$db->setQuery($query);
-			$db->query();
-			}*/
 
 			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','int(11)');
 
@@ -203,6 +193,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->updateWeightUnit();
 			$this->updateDimensionUnit();
 
+			$this->addProductCustomFields();
 			$this->displayFinished(true);
 			// probably should just go to updatesMigration rather than the install success screen
 			// 			include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
@@ -251,20 +242,42 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			return false;
 		}
 
-/*		private function alterProductCustomFields(){
+		private function addProductCustomFields(){
 			if(empty($this->db)){
 				$this->db = JFactory::getDBO();
 			}
-			$query = 'SHOW COLUMNS FROM `#__virtuemart_vendors` ';
+			$query = "CREATE TABLE IF NOT EXISTS `#__virtuemart_customplugins` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `virtuemart_custom_id` bigint(20) unsigned NOT NULL,
+  `virtuemart_vendor_id` int(11) NOT NULL DEFAULT '1',
+  `custom_jplugin_id` int(11) NOT NULL,
+  `custom_name` varchar(255) NOT NULL DEFAULT '',
+  `custom_element` varchar(50) NOT NULL DEFAULT '',
+  `discount` decimal(12,2) NOT NULL DEFAULT '0.00',
+  `discount_is_percentage` tinyint(1) NOT NULL DEFAULT '0',
+  `discount_max_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `discount_min_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `custom_params` text NOT NULL,
+  `shared` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'valide for all vendors?',
+  `ordering` int(2) NOT NULL DEFAULT '0',
+  `published` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT '0',
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `virtuemart_custom_id` (`virtuemart_custom_id`),
+  KEY `idx_custom_plugin_virtuemart_vendor_id` (`virtuemart_vendor_id`),
+  KEY `idx_custom_plugin_name` (`custom_name`),
+  KEY `idx_custom_plugin_ordering` (`ordering`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The custom plugins for product';
+			";
 			$this->db->setQuery($query);
-			$columns = $this->db->loadResultArray(0);
-			if(in_array('config',$columns)){
-				$query = 'ALTER TABLE `#__virtuemart_vendors` CHANGE COLUMN `custom_param` `vendor_params` VARCHAR( 255 )  NOT NULL DEFAULT "" ;';
-				$this->db->setQuery($query);
-				return $this->db->query();
-			}
+			$this->db->query();
 		}
-*/
+
 		private function alterVendorsTable(){
 
 			if(empty($this->db)){
