@@ -219,7 +219,7 @@ public function setCartIntoSession() {
 	$sessionCart->_inCheckOut 							= $this->_inCheckOut;
 	$sessionCart->_dataValidated						= $this->_dataValidated;
 	$sessionCart->_confirmDone							= $this->_confirmDone;
-
+	//vmdebug('ses prod',$sessionCart->products);
 
 	// 		[_inCheckOut:VirtueMartCart:private] =>
 	// 		[_dataValidated:VirtueMartCart:private] =>
@@ -368,9 +368,9 @@ public function add($virtuemart_product_ids=null) {
 		$product -> canonical = $tmpProduct -> canonical;
 		$product -> link = $tmpProduct -> link;
 		$product -> packaging = $tmpProduct -> packaging;
-		$product -> customfields = empty($tmpProduct -> customfields)? array():$tmpProduct -> customfields ;
+		//$product -> customfields = empty($tmpProduct -> customfields)? array():$tmpProduct -> customfields ;
 		$product -> customfieldsCart = empty($tmpProduct -> customfieldsCart)? array(): $tmpProduct -> customfieldsCart;
-		$product -> customsChilds = empty($tmpProduct -> customsChilds)? array(): $tmpProduct -> customsChilds;
+		//$product -> customsChilds = empty($tmpProduct -> customsChilds)? array(): $tmpProduct -> customsChilds;
 
 		//			echo '<pre>'.print_r($tmpProduct,1).'<pre>';
 		//			die;
@@ -398,6 +398,7 @@ public function add($virtuemart_product_ids=null) {
 			// changed name field you know exactly was this is
 			if (isset($post['customPrice'])) {
 				$product->customPrices = $post['customPrice'];
+				if (isset($post['customPlugin'])) $product->customPlugin = json_encode($post['customPlugin']);
 				$productKey.= '::';
 				foreach ($product->customPrices as $customPrice) {
 					foreach ($customPrice as $customId => $custom_fieldId) {
@@ -415,19 +416,23 @@ public function add($virtuemart_product_ids=null) {
 				}
 
 			}
-			// print_r($product->customPrices);
+			
 			// print_r($product->userfield);
 
 			// jExit();
 
-			if (array_key_exists($productKey, $this->products)) {
+			if (array_key_exists($productKey, $this->products) && (empty($product->customPlugin)) ) {
 				$this->products[$productKey]->quantity += $quantityPost;
 				if ($this->checkForQuantities($product, $this->products[$productKey]->quantity)) {
 					$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_UPDATED'));
 				} else {
 					return false;
 				}
-			} else {
+			}  else {
+				if ($product->customPlugin) {
+					$productKey .= count($this->products);
+					//print_r($product);
+				}
 				$this->products[$productKey] = $product;
 				$product->quantity = $quantityPost;
 				if ($this->checkForQuantities($product, $quantityPost)) {
@@ -1105,7 +1110,7 @@ public function removeProductCart($prod_id=0) {
 		/* Get the products for the cart */
 		$prices = array();
 		$product_prices = $this->getCartPrices();
-
+		if (empty($product_prices)) return;
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
 
@@ -1459,14 +1464,25 @@ public function removeProductCart($prod_id=0) {
 				$row = 0 ;
 
 				foreach ($variantmods as $variant=>$selected){
+					if ($selected) {
+						if ($product->customfieldsCart[$row]->field_type == "E") {
+						
+							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+							//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
+							if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
+							else $custom_param = array();
+							JPluginHelper::importPlugin('vmcustom');
+							$dispatcher =& JDispatcher::getInstance();
+							$retValue = $dispatcher->trigger('plgVmOnViewCartModFE',
+								array('product' => $product, 'custom_param' => $custom_param, 'row' => $row));
+							$this->data->products[$i]['customfieldsCart'] .=  implode($retValue).' row '.$row ;
+							// foreach ($product->userfield as $pKey => $puser) {
+								// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
+							// }
+						} else {
 
-					if ($product->customfieldsCart[$row]->field_type == "U") {
-						foreach ($product->userfield as $pKey => $puser) {
-							$this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
+							$this->data->products[$i]['customfieldsCart'] .= '<br/ ><b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$product->customfieldsCart[$row]->options[$selected]->custom_value;
 						}
-					} else {
-
-						$this->data->products[$i]['customfieldsCart'] .= '<br/ ><b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$product->customfieldsCart[$row]->options[$selected]->custom_value;
 					}
 					$row++;
 				}

@@ -74,10 +74,15 @@ class VirtueMartModelCustom extends VmModel {
      */
     function getProductCustoms($virtuemart_product_id){
 
-		$query='SELECT * FROM `#__virtuemart_product_customfields`
+		$query='SELECT `virtuemart_customfield_id` FROM `#__virtuemart_product_customfields`
 			WHERE `virtuemart_product_id`='.(int)$virtuemart_product_id;
 		$this->_db->setQuery($query);
-		$this->_data->productCustoms = $this->_db->loadObjectList();
+		$ids = $this->_db->loadResultArray();
+
+		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
+   		$data =& $this->getTable('customs');
+		foreach ($ids as $id) $this->_data->productCustoms[] = $data->load($id);
+
 		$this->_data->customFields = self::getCustoms() ;
 
   		return $this->_data;
@@ -220,11 +225,25 @@ class VirtueMartModelCustom extends VmModel {
 		if(!$this->_db->query()){
 			$this->setError('Error in saveModelCustomfields '); //.$this->_db->getQuery()); Dont give hackers too much info
 		}
+		 if (isset ( $datas['custom_param'] )) $params = true ;
 		if (array_key_exists('field', $datas)) {
 			$customfieldIds = array();
-			foreach($datas['field'] as $fields){
+			foreach($datas['field'] as $key => $fields){
 				$fields['virtuemart_'.$table.'_id'] =$id;
 				$tableCustomfields = $this->getTable($table.'_customfields');
+				if ( $params  ) {
+					if (array_key_exists( $key,$datas['custom_param'])) {
+
+						$fields['custom_param'] = json_encode($datas['custom_param'][$key]);
+						// $varsToPushParam = null;
+						// $ParamKeys = array_keys($datas['custom_param'][$key]);
+						// foreach ( $ParamKeys as $key =>$param )$varsToPushParam[ $param ] = array("",'string');
+						// $tableCustomfields->setParameterable('custom_param',$varsToPushParam);
+						// $fields =  (array)$datas['custom_param'][$key]+$fields;
+ 
+					}
+				
+				}
 				$data = $tableCustomfields->bindChecknStore($fields);
 				$errors = $tableCustomfields->getErrors();
 				foreach($errors as $error){
@@ -316,7 +335,7 @@ class VirtueMartModelCustom extends VmModel {
 		foreach($errors as $error){
 			$this->setError($error);
 		}
-				vmdebug('custom',$data);
+
 		return $table->virtuemart_custom_id;
 	}
 }

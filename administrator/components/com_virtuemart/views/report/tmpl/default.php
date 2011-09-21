@@ -35,7 +35,7 @@ if( $this->pagination->limit < $rows ){
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
     <div id="header">
-        <h2><?php echo JText::sprintf('COM_VIRTUEMART_REPORT_TITLE', vmJsApi::date( $this->from_period, 'LC') , vmJsApi::date( $this->until_period, 'LC') ); ?></h2>
+        <h2><?php echo JText::sprintf('COM_VIRTUEMART_REPORT_TITLE', vmJsApi::date( $this->from_period, 'LC',true) , vmJsApi::date( $this->until_period, 'LC',true) ); ?></h2>
         <div id="filterbox">
 
             <table>

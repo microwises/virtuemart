@@ -116,7 +116,7 @@ abstract class vmCustomPlugin extends JPlugin {
 	/**
 	 * display the plugin param for product
 	 */
-	abstract function plgVmOnProductEdit($value,$row, $product_id);
+	abstract function plgVmOnProductEdit($field,$param,$row, $product_id);
 
 	/**
 	 * save the plugin param on product save
@@ -127,8 +127,8 @@ abstract class vmCustomPlugin extends JPlugin {
  
 	/**
 	 * display the plugin on product FE
-	 */
-	abstract function plgVmOnDisplayProductFE($field,$product,$idx);
+	 */	
+	abstract function plgVmOnDisplayProductFE( $field, $param, $product, $idx);
 	
 	/**
 	 * *** Can only set in table at order then put it in session ***
@@ -146,7 +146,17 @@ abstract class vmCustomPlugin extends JPlugin {
 		$session->set('vmcustom', serialize($sessionCustom),'vm');
 		}
     }
+	/**
+	 * display the plugin on cart module product FE
+	 */	
+	abstract function plgVmOnViewCartModFE($product, $param, $row);
 
+	/**
+	* display the plugin on cart product FE
+	 */	
+	abstract function plgVmOnViewCartFE($product, $param, $virtuemart_product_id);
+	
+	
 	/**
 	 * save the product in cart
 	 * Have to save product plugin param value from session  to custom table
@@ -328,19 +338,19 @@ abstract class vmCustomPlugin extends JPlugin {
      * @return HTML code to display the form
      * @author Oscar van Eijk
      */
-    public function plgVmOnSelectShipper($cart, $_selectedShipper = 0) {
+    // public function plgVmOnSelectShipper($cart, $_selectedShipper = 0) {
 
-        if ($this->getShippers($cart->vendorId) === false) {
-            if (empty($this->_name)) {
-                $app = JFactory::getApplication();
-                $app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_CARRIER'));
-                return;
-            } else {
-                //return JText::sprintf('COM_VIRTUEMART_SHIPPER_NOT_VALID_FOR_THIS_VENDOR', $this->_name , $_cart->vendorId );
-                return;
-            }
-        }
-    }
+        // if ($this->getShippers($cart->vendorId) === false) {
+            // if (empty($this->_name)) {
+                // $app = JFactory::getApplication();
+                // $app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_CARRIER'));
+                // return;
+            // } else {
+                // return JText::sprintf('COM_VIRTUEMART_SHIPPER_NOT_VALID_FOR_THIS_VENDOR', $this->_name , $_cart->vendorId );
+                // return;
+            // }
+        // }
+    // }
 
     /**
      * This event is fired after the shipping method has been selected. It can be used to store
@@ -352,15 +362,15 @@ abstract class vmCustomPlugin extends JPlugin {
      * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
      * @author Oscar van Eijk
      */
-    public function plgVmOnShipperSelected($cart, $_selectedShipper = 0) {
+    // public function plgVmOnShipperSelected($cart, $_selectedShipper = 0) {
 
-        if (!$this->selectedThisShipper($this->_selement, $_selectedShipper)) {
-            return null; // Another shipper was selected, do nothing
-        }
+        // if (!$this->selectedThisShipper($this->_selement, $_selectedShipper)) {
+            // return null; // Another shipper was selected, do nothing
+        // }
         // should return $shipping rates for this
-        $cart->setShippingRate($this->selectShippingRate($cart));
-        return true;
-    }
+        // $cart->setShippingRate($this->selectShippingRate($cart));
+        // return true;
+    // }
 
     /**
      * This event is fired after the payment has been processed; it selects the actual shipping rate
@@ -377,9 +387,9 @@ abstract class vmCustomPlugin extends JPlugin {
      * @return integer The shipping rate ID
      * @author Oscar van Eijk
      */
-    public function plgVmOnCheckoutCheckShipperData(VirtueMartCart $cart) {
-        return $this->selectShippingRate($cart);
-    }
+    // public function plgVmOnCheckoutCheckShipperData(VirtueMartCart $cart) {
+        // return $this->selectShippingRate($cart);
+    // }
 
     /**
      * This method is fired when showing the order details in the backend.
@@ -393,10 +403,10 @@ abstract class vmCustomPlugin extends JPlugin {
      * @return mixed Null for shippers that aren't active, text (HTML) otherwise
      * @author Oscar van Eijk
      */
-    public function plgVmOnShowOrderShipperBE($_orderId, $_vendorId, $_shipInfo) {
-        if (!($this->selectedThisShipper($this->_selement, $this->getShipperIDForOrder($_orderId)))) {
-            return null;
-        }
+    // public function plgVmOnShowOrderShipperBE($_orderId, $_vendorId, $_shipInfo) {
+        // if (!($this->selectedThisShipper($this->_selement, $this->getShipperIDForOrder($_orderId)))) {
+            // return null;
+        // }
         /*
           if (!class_exists('CurrencyDisplay')
 
@@ -426,8 +436,8 @@ abstract class vmCustomPlugin extends JPlugin {
          *
          *
          */
-        return $_html;
-    }
+        // return $_html;
+    // }
 
     /**
      * This method is fired when editing the order line details in the backend.
@@ -438,9 +448,9 @@ abstract class vmCustomPlugin extends JPlugin {
      * @return mixed Null for shippers that aren't active, text (HTML) otherwise
      * @author Oscar van Eijk
      */
-    public function plgVmOnEditOrderLineShipperBE($_orderId, $_lineId) {
-        return null;
-    }
+    // public function plgVmOnEditOrderLineShipperBE($_orderId, $_lineId) {
+        // return null;
+    // }
 
     /**
      * Save updated order data to the shipper specific table
@@ -450,9 +460,9 @@ abstract class vmCustomPlugin extends JPlugin {
      * skipped!), or null when this shipper is not actived.
      * @author Oscar van Eijk
      */
-    public function plgVmOnUpdateOrderShipper($_formData) {
-        return null;
-    }
+    // public function plgVmOnUpdateOrderShipper($_formData) {
+        // return null;
+    // }
 
     /**
      * Save updated orderline data to the shipper specific table
@@ -462,9 +472,9 @@ abstract class vmCustomPlugin extends JPlugin {
      * skipped!), or null when this shipper is not actived.
      * @author Oscar van Eijk
      */
-    public function plgVmOnUpdateOrderLineShipper($_formData) {
-        return null;
-    }
+    // public function plgVmOnUpdateOrderLineShipper($_formData) {
+        // return null;
+    // }
 
     /**
      * This method is fired when showing the order details in the frontend.
@@ -474,13 +484,13 @@ abstract class vmCustomPlugin extends JPlugin {
      * @return mixed Null for shippers that aren't active, text (HTML) otherwise
      * @author Oscar van Eijk
      */
-    public function plgVmOnShowOrderShipperFE($_orderId) {
+    // public function plgVmOnShowOrderShipperFE($_orderId) {
         /*
           if (!($this->selectedThisShipper($this->_selement, $this->getShipperIDForOrder($_orderId)))) {
           return null;
           }
          */
-    }
+    // }
 
     /**
      * This method is fired when showing the order details in the frontend, for every orderline.
@@ -492,9 +502,9 @@ abstract class vmCustomPlugin extends JPlugin {
      * @return mixed Null for shippers that aren't active, text (HTML) otherwise
      * @author Oscar van Eijk
      */
-    public function plgVmOnShowOrderLineShipperFE($_orderId, $_lineId) {
-        return null;
-    }
+    // public function plgVmOnShowOrderLineShipperFE($_orderId, $_lineId) {
+        // return null;
+    // }
 
     /**
      * Get the shipping rate ID for a given order number
@@ -503,17 +513,17 @@ abstract class vmCustomPlugin extends JPlugin {
      * @param int $_id The order ID
      * @return int The shipping rate ID, or -1 when not found
      */
-    protected function getShippingRateIDForOrder($_id) {
-        $_db = JFactory::getDBO();
-        $_q = 'SELECT `ship_method_id` '
-                . 'FROM #__virtuemart_orders '
-                . "WHERE virtuemart_order_id = $_id";
-        $_db->setQuery($_q);
-        if (!($_r = $_db->loadAssoc())) {
-            return -1;
-        }
-        return $_r['ship_method_id'];
-    }
+    // protected function getShippingRateIDForOrder($_id) {
+        // $_db = JFactory::getDBO();
+        // $_q = 'SELECT `ship_method_id` '
+                // . 'FROM #__virtuemart_orders '
+                // . "WHERE virtuemart_order_id = $_id";
+        // $_db->setQuery($_q);
+        // if (!($_r = $_db->loadAssoc())) {
+            // return -1;
+        // }
+        // return $_r['ship_method_id'];
+    // }
 
     /**
      * Check the order total to see if this order is valid for free shipping.
@@ -522,24 +532,24 @@ abstract class vmCustomPlugin extends JPlugin {
      * @return boolean; true when shipping is free
      * @author Oscar van Eijk
      */
-    final protected function freeShipping() {
-        if (!class_exists('VirtueMartCart'))
-            require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-        $_cart = VirtueMartCart::getCart();
-        if (!class_exists('VirtueMartModelVendor'))
-            require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-        $_vendor = new VirtueMartModelVendor();
-        $_vendor->setId($_cart->vendorId);
-        $_store = $_vendor->getVendor();
+    // final protected function freeShipping() {
+        // if (!class_exists('VirtueMartCart'))
+            // require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+        // $_cart = VirtueMartCart::getCart();
+        // if (!class_exists('VirtueMartModelVendor'))
+            // require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+        // $_vendor = new VirtueMartModelVendor();
+        // $_vendor->setId($_cart->vendorId);
+        // $_store = $_vendor->getVendor();
 
-        if ($_store->vendor_freeshipping > 0) {
-            $_prices = $_cart->getCartPrices();
-            if ($_prices['salesPrice'] > $_store->vendor_freeshipping) {
-                return true;
-            }
-        }
-        return false;
-    }
+        // if ($_store->vendor_freeshipping > 0) {
+            // $_prices = $_cart->getCartPrices();
+            // if ($_prices['salesPrice'] > $_store->vendor_freeshipping) {
+                // return true;
+            // }
+        // }
+        // return false;
+    // }
 
     /**
      * Get the shipper ID for a given order number
@@ -583,45 +593,30 @@ abstract class vmCustomPlugin extends JPlugin {
      * @author Oscar van Eijk
      * @return True if the calling plugin has the given payment ID
      */
-    final protected function selectedThisShipper($selement, $sid) {
-        $db = JFactory::getDBO();
+    // final protected function selectedThisShipper($selement, $sid) {
+        // $db = JFactory::getDBO();
 
-        if (VmConfig::isJ15()) {
-            $q = 'SELECT COUNT(*) AS c '
-                    . 'FROM #__virtuemart_custom_plg AS vm '
-                    . ',    #__plugins AS j '
-                    . "WHERE vm.virtuemart_shippingcarrier_id = '$sid' "
-                    . 'AND   vm.shipping_carrier_jplugin_id = j.id '
-                    . "AND   j.element = '$selement'";
-        } else {
-            $q = 'SELECT COUNT(*) AS c '
-                    . 'FROM #__virtuemart_custom_plg AS vm '
-                    . ',      #__extensions    AS      j '
-                    . 'WHERE j.`folder` = "vmshipper" '
-                    . "AND vm.virtuemart_shippingcarrier_id = '$sid' "
-                    . 'AND   vm.shipping_carrier_jplugin_id = j.extension_id '
-                    . "AND   j.element = '$selement'";
-        }
+        // if (VmConfig::isJ15()) {
+            // $q = 'SELECT COUNT(*) AS c '
+                    // . 'FROM #__virtuemart_custom_plg AS vm '
+                    // . ',    #__plugins AS j '
+                    // . "WHERE vm.virtuemart_shippingcarrier_id = '$sid' "
+                    // . 'AND   vm.shipping_carrier_jplugin_id = j.id '
+                    // . "AND   j.element = '$selement'";
+        // } else {
+            // $q = 'SELECT COUNT(*) AS c '
+                    // . 'FROM #__virtuemart_custom_plg AS vm '
+                    // . ',      #__extensions    AS      j '
+                    // . 'WHERE j.`folder` = "vmshipper" '
+                    // . "AND vm.virtuemart_shippingcarrier_id = '$sid' "
+                    // . 'AND   vm.shipping_carrier_jplugin_id = j.extension_id '
+                    // . "AND   j.element = '$selement'";
+        // }
 
 
-        $db->setQuery($q);
-        return $db->loadResult(); // TODO Error check
-    }
-
-    /**
-     * Get the name of the shipper
-     * @param int $_sid The Shipper ID
-     * @author Valérie Isaksen
-     * @return string Shipper name
-     */
-    final protected function getThisShipperNameById($id) {
-        $db = JFactory::getDBO();
-        $q = 'SELECT `shipping_carrier_name` '
-                . 'FROM #__virtuemart_custom_plg '
-                . "WHERE virtuemart_shippingcarrier_id ='$id' ";
-        $db->setQuery($q);
-        return $db->loadResult(); // TODO Error check
-    }
+        // $db->setQuery($q);
+        // return $db->loadResult(); // TODO Error check
+    // }
 
     /**
      * Get the name of the shipper
@@ -629,9 +624,24 @@ abstract class vmCustomPlugin extends JPlugin {
      * @author Valérie Isaksen
      * @return string Shipper name
      */
-    public function getThisShipperName(Tablecustom_plg $shipping) {
-        return $shipping->shipping_carrier_name;
-    }
+    // final protected function getThisShipperNameById($id) {
+        // $db = JFactory::getDBO();
+        // $q = 'SELECT `shipping_carrier_name` '
+                // . 'FROM #__virtuemart_custom_plg '
+                // . "WHERE virtuemart_shippingcarrier_id ='$id' ";
+        // $db->setQuery($q);
+        // return $db->loadResult(); // TODO Error check
+    // }
+
+    /**
+     * Get the name of the shipper
+     * @param int $_sid The Shipper ID
+     * @author Valérie Isaksen
+     * @return string Shipper name
+     */
+    // public function getThisShipperName(Tablecustom_plg $shipping) {
+        // return $shipping->shipping_carrier_name;
+    // }
 
     /**
      * Get Shipper Data for a go given Shipper ID
@@ -639,15 +649,15 @@ abstract class vmCustomPlugin extends JPlugin {
      * @author Valérie Isaksen
      * @return  Shipper data
      */
-    final protected function getThisShipperData($virtuemart_shippingcarrier_id) {
-        $db = JFactory::getDBO();
-        $q = 'SELECT * '
-                . 'FROM #__virtuemart_custom_plg '
-                . "WHERE virtuemart_shippingcarrier_id ='" . $virtuemart_shippingcarrier_id . "' ";
-        $db->setQuery($q);
-        $result = $db->loadObject(); // TODO Error check
-        return $result;
-    }
+    // final protected function getThisShipperData($virtuemart_shippingcarrier_id) {
+        // $db = JFactory::getDBO();
+        // $q = 'SELECT * '
+                // . 'FROM #__virtuemart_custom_plg '
+                // . "WHERE virtuemart_shippingcarrier_id ='" . $virtuemart_shippingcarrier_id . "' ";
+        // $db->setQuery($q);
+        // $result = $db->loadObject(); // TODO Error check
+        // return $result;
+    // }
 
     /**
      * This method writes all shipper plugin specific data to the plugin's table
@@ -656,150 +666,150 @@ abstract class vmCustomPlugin extends JPlugin {
      * @param string $_table Table name
      * @author Oscar van Eijk
      */
-    protected function writeShipperData($_values, $_table) {
-        if (count($_values) == 0) {
-            JError::raiseWarning(500, 'writeShipperData got no data to save to ' . $_table);
-            return;
-        }
-        $_cols = array();
-        $_vals = array();
-        foreach ($_values as $_col => $_val) {
-            $_cols[] = "`$_col`";
-            $_vals[] = "'$_val'";
-        }
-        $_db = JFactory::getDBO();
-        $_q = 'INSERT INTO `' . $_table . '` ('
-                . implode(',', $_cols)
-                . ') VALUES ('
-                . implode(',', $_vals)
-                . ')';
-        $_db->setQuery($_q);
-        if (!$_db->query()) {
-            JError::raiseWarning(500, $_db->getErrorMsg());
-        }
-    }
+    // protected function writeShipperData($_values, $_table) {
+        // if (count($_values) == 0) {
+            // JError::raiseWarning(500, 'writeShipperData got no data to save to ' . $_table);
+            // return;
+        // }
+        // $_cols = array();
+        // $_vals = array();
+        // foreach ($_values as $_col => $_val) {
+            // $_cols[] = "`$_col`";
+            // $_vals[] = "'$_val'";
+        // }
+        // $_db = JFactory::getDBO();
+        // $_q = 'INSERT INTO `' . $_table . '` ('
+                // . implode(',', $_cols)
+                // . ') VALUES ('
+                // . implode(',', $_vals)
+                // . ')';
+        // $_db->setQuery($_q);
+        // if (!$_db->query()) {
+            // JError::raiseWarning(500, $_db->getErrorMsg());
+        // }
+    // }
 
-    protected function calculateSalesPriceShipping($shipping_value, $tax_id, $currency_id) {
+    // protected function calculateSalesPriceShipping($shipping_value, $tax_id, $currency_id) {
 
-        if (!class_exists('calculationHelper'))
-            require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-        if (!class_exists('CurrencyDisplay'))
-            require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+        // if (!class_exists('calculationHelper'))
+            // require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+        // if (!class_exists('CurrencyDisplay'))
+            // require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 
-        $db = JFactory::getDBO();
-        $calculator = calculationHelper::getInstance();
-        $currency = CurrencyDisplay::getInstance();
+        // $db = JFactory::getDBO();
+        // $calculator = calculationHelper::getInstance();
+        // $currency = CurrencyDisplay::getInstance();
 
-        $shipping_value = $currency->convertCurrencyTo($currency_id, $shipping_value);
+        // $shipping_value = $currency->convertCurrencyTo($currency_id, $shipping_value);
 
-        $taxrules = array();
-        if (!empty($tax_id)) {
-            $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $tax_id . '" ';
-            $db->setQuery($q);
-            $taxrules = $db->loadAssocList();
-        }
+        // $taxrules = array();
+        // if (!empty($tax_id)) {
+            // $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $tax_id . '" ';
+            // $db->setQuery($q);
+            // $taxrules = $db->loadAssocList();
+        // }
 
-        if (count($taxrules) > 0) {
-            $salesPriceShipping = $calculator->roundDisplay($calculator->executeCalculation($taxrules, $shipping_value));
-        } else {
-            $salesPriceShipping = $shipping_value;
-        }
+        // if (count($taxrules) > 0) {
+            // $salesPriceShipping = $calculator->roundDisplay($calculator->executeCalculation($taxrules, $shipping_value));
+        // } else {
+            // $salesPriceShipping = $shipping_value;
+        // }
 
-        return $salesPriceShipping;
-    }
+        // return $salesPriceShipping;
+    // }
 
-    protected function getShippingHtml($shipper_name, $shipper_id, $selectedShipper, $cost, $tax_id) {
-        if ($selectedShipper == $shipper_id) {
-            $checked = '"checked"';
-        } else {
-            $checked = '';
-        }
+    // protected function getShippingHtml($shipper_name, $shipper_id, $selectedShipper, $cost, $tax_id) {
+        // if ($selectedShipper == $shipper_id) {
+            // $checked = '"checked"';
+        // } else {
+            // $checked = '';
+        // }
 
-        if (!class_exists('VirtueMartModelVendor'))
-            require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-        $vendor_id = 1;
-        $vendor_currency = VirtueMartModelVendor::getVendorCurrency($vendor_id);
+        // if (!class_exists('VirtueMartModelVendor'))
+            // require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+        // $vendor_id = 1;
+        // $vendor_currency = VirtueMartModelVendor::getVendorCurrency($vendor_id);
 
-        if (!class_exists('CurrencyDisplay'))
-            require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-        $currency = CurrencyDisplay::getInstance();
-        $salesPriceShipping = $this->calculateSalesPriceShipping($cost, $tax_id, $vendor_currency->virtuemart_currency_id);
+        // if (!class_exists('CurrencyDisplay'))
+            // require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+        // $currency = CurrencyDisplay::getInstance();
+        // $salesPriceShipping = $this->calculateSalesPriceShipping($cost, $tax_id, $vendor_currency->virtuemart_currency_id);
 
-        $shippingCostDisplay = $currency->priceDisplay($salesPriceShipping);
+        // $shippingCostDisplay = $currency->priceDisplay($salesPriceShipping);
 
-        $html = '<input type="radio" name="shipper_id" id="shipper_id_' . $shipper_id . '" value="' . $shipper_id . '" ' . $checked . '>'
-                . '<label for="shipper_id_' . $shipper_id . '">' . $shipper_name . " (" . $shippingCostDisplay . ")</label><br/>\n";
-        return $html;
-    }
+        // $html = '<input type="radio" name="shipper_id" id="shipper_id_' . $shipper_id . '" value="' . $shipper_id . '" ' . $checked . '>'
+                // . '<label for="shipper_id_' . $shipper_id . '">' . $shipper_name . " (" . $shippingCostDisplay . ")</label><br/>\n";
+        // return $html;
+    // }
 
-    public function plgVmOnShipperSelectedCalculatePrice(VirtueMartCart $cart, Tablecustom_plg $shipping) {
+    // public function plgVmOnShipperSelectedCalculatePrice(VirtueMartCart $cart, Tablecustom_plg $shipping) {
 
-        if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
-            return null; // Another shipper was selected, do nothing
-        }
+        // if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
+            // return null; // Another shipper was selected, do nothing
+        // }
 
-        $shipping->shipping_name = $this->getThisShipperName($shipping);
+        // $shipping->shipping_name = $this->getThisShipperName($shipping);
 
-        if (!class_exists('JParameter'))
-            require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
-        $params = new JParameter($shipping->shipping_carrier_params);
-        $shipping->shipping_rate_vat_id = $params->get('tax_id');
-        $shipping->shipping_value = $params->get('shipping_value');
+        // if (!class_exists('JParameter'))
+            // require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
+        // $params = new JParameter($shipping->shipping_carrier_params);
+        // $shipping->shipping_rate_vat_id = $params->get('tax_id');
+        // $shipping->shipping_value = $params->get('shipping_value');
 
-        return true;
-    }
+        // return true;
+    // }
 
-    function plgVmOnCheckAutomaticSelectedShipping(VirtueMartCart $cart) {
+    // function plgVmOnCheckAutomaticSelectedShipping(VirtueMartCart $cart) {
 
-        $nbShipper = 0;
-        $virtuemart_shippingcarrier_id = 0;
-        $nbShipper = $this->getSelectableShipping($cart, $virtuemart_shippingcarrier_id);
-        return ($nbShipper == 1) ? $virtuemart_shippingcarrier_id : 0;
-    }
+        // $nbShipper = 0;
+        // $virtuemart_shippingcarrier_id = 0;
+        // $nbShipper = $this->getSelectableShipping($cart, $virtuemart_shippingcarrier_id);
+        // return ($nbShipper == 1) ? $virtuemart_shippingcarrier_id : 0;
+    // }
 
-    function plgVmOnCheckShippingIsValid(VirtueMartCart $cart) {
-        if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
-            return null; // Another shipper was selected, do nothing
-        }
-        $shipper = $this->getThisShipperData($cart->virtuemart_shippingcarrier_id);
-        return $this->checkShippingConditions($cart, $shipper);
-    }
+    // function plgVmOnCheckShippingIsValid(VirtueMartCart $cart) {
+        // if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
+            // return null; // Another shipper was selected, do nothing
+        // }
+        // $shipper = $this->getThisShipperData($cart->virtuemart_shippingcarrier_id);
+        // return $this->checkShippingConditions($cart, $shipper);
+    // }
 
-    function getParamShippings($cart, &$nbShipper, &$virtuemart_shippingcarrier_id, $selectedShipper=0) {
+    // function getParamShippings($cart, &$nbShipper, &$virtuemart_shippingcarrier_id, $selectedShipper=0) {
 
-        return null;
-    }
+        // return null;
+    // }
 
-    /*
-     * This method returns the number of shipping methods valid
-     */
+    // /*
+     // * This method returns the number of shipping methods valid
+     // */
 
-    function getSelectableShipping(VirtueMartCart $cart, &$virtuemart_shippingcarrier_id) {
-        $nbShipper = 0;
-        if ($this->getShippers($cart->vendorId) === false) {
-            return false;
-        }
+    // function getSelectableShipping(VirtueMartCart $cart, &$virtuemart_shippingcarrier_id) {
+        // $nbShipper = 0;
+        // if ($this->getShippers($cart->vendorId) === false) {
+            // return false;
+        // }
 
-        foreach ($this->shippers as $shipper) {
-            if ($this->checkShippingConditions($cart, $shipper)) {
-                $nbShipper++;
-                $virtuemart_shippingcarrier_id = $shipper->virtuemart_shippingcarrier_id;
-            }
-        }
-        return $nbShipper;
-    }
+        // foreach ($this->shippers as $shipper) {
+            // if ($this->checkShippingConditions($cart, $shipper)) {
+                // $nbShipper++;
+                // $virtuemart_shippingcarrier_id = $shipper->virtuemart_shippingcarrier_id;
+            // }
+        // }
+        // return $nbShipper;
+    // }
 
-    function displayTaxRule($tax_id) {
-        $html = '';
-        $db = JFactory::getDBO();
-        if (!empty($tax_id)) {
-            $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $tax_id . '" ';
-            $db->setQuery($q);
-            $taxrule = $db->loadObject();
+    // function displayTaxRule($tax_id) {
+        // $html = '';
+        // $db = JFactory::getDBO();
+        // if (!empty($tax_id)) {
+            // $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $tax_id . '" ';
+            // $db->setQuery($q);
+            // $taxrule = $db->loadObject();
 
-            $html = $taxrule->calc_name . '(' . $taxrule->calc_kind . ':' . $taxrule->calc_value_mathop . $taxrule->calc_value . ')';
-        }
-        return $html;
-    }
+            // $html = $taxrule->calc_name . '(' . $taxrule->calc_kind . ':' . $taxrule->calc_value_mathop . $taxrule->calc_value . ')';
+        // }
+        // return $html;
+    // }
 
 }

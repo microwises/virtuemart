@@ -126,29 +126,28 @@ class VirtuemartViewProduct extends JView {
 		} else if ($type=='customfield') {
 			$fieldTypes= $model->getField_types() ;
 
-			$query = "SELECT * FROM #__virtuemart_customs
+			$query = "SELECT *,custom_value as value FROM #__virtuemart_customs
 			WHERE `field_type`!='C' AND (`virtuemart_custom_id`=".$id." or `custom_parent_id`=".$id.")";
 			$query .=" order by custom_parent_id asc";
 			$db->setQuery($query);
 			$rows = $db->loadObjectlist();
 			$html = array ();
 			foreach ($rows as $field) {
-			if ($field->field_type =="E")  $display = $model->inputType($field->virtuemart_custom_id,$field->field_type,$field->is_list,0,$row,$field->is_cart_attribute);
-			else  $display = $model->inputType($field->custom_value,$field->field_type,$field->is_list,0,$row,$field->is_cart_attribute);
-			 if ($field->is_cart_attribute) $cartIcone=  'default';
-			 else  $cartIcone= 'default-off';
-			 $html[] = '<tr>
-				 <td>'.$field->custom_title.'</td>
-				 <td>'.$display.$field->custom_tip.'
-				 </td>
-				 <td>'.JText::_($fieldTypes[$field->field_type]).'
-					<input type="hidden" value="'.$field->field_type .'" name="field['.$row.'][field_type]" />
-					<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
-					<input type="hidden" value="'.$field->admin_only.'" name="field['.$row.'][admin_only]" />
-				 </td>
-				 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
-				 <td></td>
-				</tr>';
+				$display = $model->inputType($field,0,$row);
+				 if ($field->is_cart_attribute) $cartIcone=  'default';
+				 else  $cartIcone= 'default-off';
+				 $html[] = '<tr>
+					<td>'.$field->custom_title.'</td>
+					 <td>'.$display.$field->custom_tip.'
+					 </td>
+					 <td>'.JText::_($fieldTypes[$field->field_type]).'
+						<input type="hidden" value="'.$field->field_type .'" name="field['.$row.'][field_type]" />
+						<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
+						<input type="hidden" value="'.$field->admin_only.'" name="field['.$row.'][admin_only]" />
+					 </td>
+					 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
+					 <td></td>
+					</tr>';
 				$row++;
 			}
 			$json['value'] = $html;

@@ -48,19 +48,22 @@ echo $this->customfields->displayCustomFields('',$this->custom); ?>
 				echo $this->customPlugin->custom_name .'<br />' ;
 	        //$parameters = new vmParameters($this->paym->custom_params, JPATH_PLUGINS.DS.'vmcustom'.DS.basename($this->paym->custom_element).'.xml', 'plugin' );
                 $parameters = new vmParameters($this->customPlugin->custom_params,  $this->customPlugin->custom_element , 'plugin' ,'vmcustom');
-               
+              // vmdebug ( 'csutomplg',$this->customPlugin->custom_element);
 	        echo $rendered = $parameters->render(); ?>
-			<input type="hidden" name="id" value="<?php echo $this->customPlugin->id ?>" >
+			
 			<?php
         } else { ?>
 			<input type="text" name="custom_name" value="<?php echo $this->custom->custom_title ?>" >
-             <?php echo JText::_('COM_VIRTUEMART_SELECT_PAYMENT_METHOD' );
+             <?php echo JText::_('COM_VIRTUEMART_SELECT_CUSTOM_PLUGIN' );
            } ?>
 		<div>
 		</td>
 	</tr>
 </table>
 	</fieldset>
+	<?php if($this->customPlugin->custom_jplugin_id){ ?>
+		<input type="hidden" name="id" value="<?php echo $this->customPlugin->id ?>" >
+	<?php } ?>
 </form>
 <script type="text/javascript">
 function submitbutton(pressbutton) {

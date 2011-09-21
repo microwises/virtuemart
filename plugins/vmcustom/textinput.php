@@ -92,12 +92,20 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	
 	
 	// get product param for this plugin on edit
-	function plgVmOnProductEdit($value,$row, $product_id) {
-	
-	//print_r($value);
-	$html='<input type="text" value="'.$value.'" name="field['.$row.'][custom_value]" />';
+	function plgVmOnProductEdit($field,$param,$row, $product_id) {
+		if ($field->value != $this->_pelement) return '';
+		$html =$this->_pelement.''.$field->custom_value;
+		//print_r($value);
+		if (!$param) {
+			$param['class']='' ;
+			$param['lenght']='' ;
+		}
+		$html.='<input type="text" value="'.$param['class'].'" size="10" name="custom_param['.$row.'][class]">';
+		$html.='<input type="text" value="'.$param['lenght'].'" size="10" name="custom_param['.$row.'][lenght]">';
+		$html.='Setup YOur Mp3 Player here';
+		$html .='You have a new tex input';
 
-	//jExit();
+		//jExit();
 	
 		return $html  ;
 	}
@@ -107,15 +115,34 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnDisplayProductFE()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnDisplayProductFE($field,$product,$idx) {
-		// set value for price and custom array
-		$html ='<input type="hidden" value="'.$this->_pelement.'" size="10" name="customPrice['.$idx.']['.$field->virtuemart_custom_id.']">';
+	function plgVmOnDisplayProductFE($field, $param,$product,$idx) {
+		// default return if it's not this plugin
+		if ($field->custom_value != $this->_pelement) return '';
+		if (!$param) {
+			$param['class']='' ;
+			$param['lenght']='10' ;
+		}
+		
+
 		// Here the plugin values
-		$html.='<input type="text" value="'.$this->_pelement.'" size="10" name="customPlugin['.$idx.']['.$field->virtuemart_custom_id.']">';
+		$html ='Text inputs ';
+		$html.='<input type="text" value="hello'.$param['class'].'" size="'.$param['lenght'].'" name="customPlugin['.$idx.']['.$field->virtuemart_custom_id.']">';
 		$html.='<input type="text" value="" size="10" name="customPlugin['.$idx.'][Morecomment]">';
         return $html;
     }
 
+	/**
+	 * all param are in session
+	 * *** Can only set in table at order then put it in session ***
+	 * *** Have to add it in VIrtuemart cart ? ***
+	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnSaveProductFE()
+	 * @author Patrick Kohl
+	 */
+	function plgVmOnViewCartModFE($product, $param, $row) {
+		
+		return 'textinput';
+    }
+	
 	/**
 	 * TODO Add all param to session
 	 * *** Can only set in table at order then put it in session ***
@@ -123,19 +150,9 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnSaveProductFE()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCartFE($virtuemart_product_id) {
+	function plgVmOnViewCartFE($product, $param, $row) {
 		
-		if (!empty($textInputs)) {
-        $session = JFactory::getSession();
-		$sessionCustom = $session->get('vmcustom', 0, 'vm');
-			if (!empty($sessionCustom)) {
-				$custom = $sessionCustom ;
-				if (!empty ($custom[$this->_pelement]) ) { $html = '';
-					foreach ($custom[$this->_pelement] as $text) 
-						 $html = '<div>'.$text.'<div>';
-				}
-			}
-		}
+		return 'textinput';
     }
 	
 	function plgVmOnOrder($product) {

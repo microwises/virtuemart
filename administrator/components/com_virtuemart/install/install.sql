@@ -780,6 +780,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
   `virtuemart_custom_id` int(11) NOT NULL COMMENT 'custom group id',
   `custom_value` char(255) DEFAULT NULL COMMENT 'field value',
   `custom_price` char(255) DEFAULT NULL COMMENT 'price',
+  `custom_param` text COMMENT 'Param for Plugins',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
@@ -792,7 +793,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
   KEY `idx_virtuemart_custom_id` (`virtuemart_custom_id`),
   KEY `idx_custom_value` (`custom_value`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields' AUTO_INCREMENT=1 ;
-
 
 -- --------------------------------------------------------
 --
