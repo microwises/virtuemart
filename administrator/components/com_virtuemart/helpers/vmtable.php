@@ -102,7 +102,7 @@ class VmTable extends JTable{
 		$this->_varsToPushParam = $varsToPushParam;
 		$this->_xParams = $paramsFieldName;
 		foreach($this->_varsToPushParam as $k=>$v){
-			$this->$k = $v;
+			$this->$k = $v[0];
 		}
 	}
 
@@ -181,31 +181,33 @@ class VmTable extends JTable{
 
 		parent::load($int);
 
-
 		if(!empty($this->_xParams)){
+
 			$paramFieldName = $this->_xParams;
-			$params = explode('|', $this->$paramFieldName);
+			$paramFields = $this->$paramFieldName;
+			if(!empty($this->$paramFieldName)){
 
-			foreach($params as $item){
-				$item = explode('=',$item);
-				if(count($item)===2){
+				$params = explode('|', $this->$paramFieldName);
+				foreach($params as $item){
 
-					if($this->_varsToPushParam[$item[0]][1]==='string'){
-						$this->$item[0] = base64_decode(unserialize($item[1]));
-					} else {
-						$this->$item[0] = unserialize($item[1]);
+					$item = explode('=',$item);
+					if(count($item)===2){
+						if($this->_varsToPushParam[$item[0]][1]==='string'){
+							$this->$item[0] = base64_decode(unserialize($item[1]));
+						} else {
+							$this->$item[0] = unserialize($item[1]);
+						}
 					}
 				}
 			}
 
 			foreach($this->_varsToPushParam as $key=>$v){
+
 				if(!isset($this->$key)){
 					$this->$key = $v[0];
 				}
 			}
-
 		}
-
 
 		return $this;
 	}

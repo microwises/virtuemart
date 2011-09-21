@@ -45,7 +45,7 @@ function myValidator(f) {
 		return true;
 	} else {
 		var msg = '<div><dl id="system-message" style="display: block;"><dt class="message">Message</dt><dd class="message message"><ul><li>';
-		 msg += '<?php echo JText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED'); ?>';
+		 msg += '<?php echo JText::sprintf("COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_OTHER_TAB",JText::_("COM_VIRTUEMART_SHOPPER_FORM_LBL") ) ?>';
 		 msg += '</li></ul></dd></dl><div>';
 		jQuery('#element-box').before(msg);
 	}

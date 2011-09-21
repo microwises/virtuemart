@@ -250,6 +250,20 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			return false;
 		}
 
+/*		private function alterProductCustomFields(){
+			if(empty($this->db)){
+				$this->db = JFactory::getDBO();
+			}
+			$query = 'SHOW COLUMNS FROM `#__virtuemart_vendors` ';
+			$this->db->setQuery($query);
+			$columns = $this->db->loadResultArray(0);
+			if(in_array('config',$columns)){
+				$query = 'ALTER TABLE `#__virtuemart_vendors` CHANGE COLUMN `custom_param` `vendor_params` VARCHAR( 255 )  NOT NULL DEFAULT "" ;';
+				$this->db->setQuery($query);
+				return $this->db->query();
+			}
+		}
+*/
 		private function alterVendorsTable(){
 
 			if(empty($this->db)){

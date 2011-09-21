@@ -77,9 +77,11 @@ class VmMediaHandler {
 			$this->setRole=true;
 		} else if(!$choosed && empty($relUrl)){
 			vmError('Ignore this message, when it appears while the media synchronisation process, else report to http://forum.virtuemart.net/index.php?board=127.0 : cant create media of unknown type, a programmers error, used type ',$type);
+
 			//$relUrl = VmConfig::get('media_path');
 			$relUrl = 'images/stories/virtuemart/';
 			$this->setRole=true;
+
 		}
 
 		return $relUrl;
