@@ -276,6 +276,15 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			";
 			$this->db->setQuery($query);
 			$this->db->query();
+
+			$query = 'SHOW COLUMNS FROM `#__virtuemart_vendors` ';
+			$this->db->setQuery($query);
+			$columns = $this->db->loadResultArray(0);
+			if(in_array('config',$columns)){
+				$query = "ALTER TABLE `#__virtuemart_product_customfields` ADD COLUMN `custom_param` text COMMENT 'Param for Plugins' ";
+				$this->db->setQuery($query);
+				return $this->db->query();
+			}
 		}
 
 		private function alterVendorsTable(){
