@@ -177,7 +177,7 @@ class VmTable extends JTable{
 	 * Technic to inject params as table attributes
 	 * @author Max Milbers
 	 */
-	function load($int){
+	function load($int=null){
 
 		parent::load($int);
 
@@ -185,7 +185,7 @@ class VmTable extends JTable{
 		if(!empty($this->_xParams)){
 			$paramFieldName = $this->_xParams;
 			$params = explode('|', $this->$paramFieldName);
-			vmdebug('load',$params);
+
 			foreach($params as $item){
 				$item = explode('=',$item);
 				if(count($item)===2){
@@ -200,13 +200,7 @@ class VmTable extends JTable{
 
 			foreach($this->_varsToPushParam as $key=>$v){
 				if(!isset($this->$key)){
-					//     			$k = $key[0];
-					//     			if($this->_varsToPushParam[$item[0]][1]==='string'){
-					//     				$this->$k = base64_decode($v);
-					//     			} else {
 					$this->$key = $v[0];
-					//     			}
-
 				}
 			}
 

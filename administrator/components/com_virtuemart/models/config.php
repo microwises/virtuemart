@@ -48,11 +48,25 @@ class VirtueMartModelConfig extends JModel {
 		//This does not work, joomla takes only overrides of their standard template
 		//		$tplpath = VmConfig::get('vmtemplate',0);
 		//So we lookf for template overrides in the joomla standard template
-		$app = JFactory::getApplication('site');
-		$tplpath = $app->getTemplate();
-		if($tplpath){
-			if(is_dir(JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'html'.DS.'com_virtuemart'.DS.$view)){
-				$dirs[] = JPATH_ROOT.DS.'templates'.DS.$tplpath.DS.'html'.DS.'com_virtuemart'.DS.$view;
+
+		//This method does not work, we get the Template of the backend
+		//$app = JFactory::getApplication('site');
+		//$tplpath = $app->getTemplate();vmdebug('template',$tplpath);
+		if(version_compare(JVERSION,'1.6.0','ge')) {
+			$q = 'SELECT `template` FROM `#__templates_styles` WHERE `client_id` ="0" AND `home`="1" ';
+		} else {
+			$q = 'SELECT `template` FROM `#__templates_menu` WHERE `client_id` ="0" ';
+		}
+
+
+		$db = JFactory::getDBO();
+		$db->setQuery($q);
+
+		$tplnames = $db->loadResult();
+		vmdebug('$tplpath',$tplnames);
+		if($tplnames){
+			if(is_dir(JPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.$view)){
+				$dirs[] = JPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.$view;
 			}
 		}
 

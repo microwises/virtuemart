@@ -30,16 +30,6 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MORE_CORE_SETTINGS') ?></legend>
 				<table class="admintable">
 
-				<?php /*    <tr>
-				<td class="key">
-				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ERRORPAGE_EXPLAIN'); ?>">
-				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ERRORPAGE') ?>
-				</span>
-				</td>
-				<td>
-				<input type="text" name="errorpage" class="inputbox" value="<?php echo $this->config->get('errorpage'); ?>" />
-				</td>
-				</tr> */ ?>
 					<tr>
 						<td class="key"><span
 							class="hasTip"
@@ -73,17 +63,6 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo VmHTML::checkbox('show_printicon', $this->config->get('show_printicon')); ?>
 						</td>
 					</tr>
-
-<?php /*			<tr>
-	    	<td class="key">
-				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_CONTENT_PLUGINS_ENABLE_TIP'); ?>">
-				<label for="content_plugins_enable"><?php echo JText::_('COM_VIRTUEMART_CFG_CONTENT_PLUGINS_ENABLE') ?></label>
-				</span>
-	    	</td>
-	    	<td>
-				<?php echo VmHTML::checkbox('content_plugins_enable', $this->config->get('content_plugins_enable')); ?>
-	    	</td>
-			</tr> */ ?>
 			<tr>
 	    	<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN'); ?>">
@@ -125,7 +104,7 @@ defined('_JEXEC') or die('Restricted access');
 echo VmHTML::selectList('coupons_default_expire',$this->config->get('coupons_default_expire'),$_defaultExpTime)
 				?>
 			</td>
-
+</tr>
 	    	<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_WEIGHT_UNIT_DEFAULT_EXPLAIN'); ?>">
 				<label for="weight_unit_default"><?php echo JText::_('COM_VIRTUEMART_WEIGHT_UNIT_DEFAULT') ?></label>
@@ -137,8 +116,8 @@ echo ShopFunctions::renderWeightUnitList('weight_unit_default', $this->config->g
 				?>
 			</td>
 			</tr>
+
 			<tr>
-                              <tr>
 	    	<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_LWH_UNIT_DEFAULT_EXPLAIN'); ?>">
 				<label for="weight_unit_default"><?php echo JText::_('COM_VIRTUEMART_LWH_UNIT_DEFAULT') ?></label>
@@ -160,19 +139,10 @@ echo ShopFunctions::renderLWHUnitList('lwh_unit_default', $this->config->get('lw
 				<input type="text" value="<?php echo $this->config->get('list_limit',10); ?>" class="inputbox" size="4" name="list_limit">
 			</td>
 			</tr>
-<?php /*	    <tr>
-			<td class="key">
-			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION') ?>
-			    </span>
-			</td>
-			<td>
-			    <?php echo VmHTML::checkbox('show_footer', $this->config->get('show_footer')); ?>
-			</td>
-		    </tr> */ ?>
 		</table>
-			</fieldset>
+	</fieldset>
 
+<td>
 			<fieldset>
 				<legend>
 
@@ -229,9 +199,9 @@ echo ShopFunctions::renderLWHUnitList('lwh_unit_default', $this->config->get('lw
 								<label><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_SHOW') ?>
 							</label> </span>
 						</td>
-						<td><fieldset class="checkboxes">
+						<td>
 
-
+				<fieldset class="checkboxes">
 
 
 						<?php
@@ -250,10 +220,9 @@ echo ShopFunctions::renderLWHUnitList('lwh_unit_default', $this->config->get('lw
 								<label><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING') ?>
 							</label> </span>
 						</td>
-						<td><fieldset class="checkboxes">
+						<td>
 
-
-
+				<fieldset class="checkboxes">
 
 						<?php
 						$showReviewFor = array('none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_RATING_MODE_NONE'),
