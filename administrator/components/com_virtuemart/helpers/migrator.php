@@ -251,7 +251,15 @@ class Migrator extends VmModel{
 		$countTotal += $count;
 		$this->_app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_UPDATE_PORT_MEDIA_RESULT', $count, $type, $url));
 
-		//$this->portMediaByType(VmConfig::get('media_path'),'shop');
+		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+			return $msg = JText::sprintf('COM_VIRTUEMART_UPDATE_PORT_MEDIA_RESULT_NOT_FINISH', $countTotal);
+		}
+
+		$url = VmConfig::get('media_vendor_path');
+		$type = 'vendor';
+		$count = $this->_portMediaByType($url, $type);
+		$countTotal += $count;
+		$this->_app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_UPDATE_PORT_MEDIA_RESULT', $count, $type, $url));
 
 		return $msg = JText::sprintf('COM_VIRTUEMART_UPDATE_PORT_MEDIA_RESULT_FINISH', $countTotal);
 	}

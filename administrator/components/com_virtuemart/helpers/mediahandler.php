@@ -52,7 +52,8 @@ class VmMediaHandler {
 			$choosed = true;
 		}
 		else if($type == 'vendor' || $type == 'vendors'){
-			$relUrl = 'components/com_virtuemart/assets/images/vendors/';
+			$relUrl = VmConfig::get('media_vendor_path');
+		//	$relUrl = 'components/com_virtuemart/assets/images/vendors/';
 			$choosed = true;
 		}
 		else if($type == 'manufacturer' || $type == 'manufacturers'){

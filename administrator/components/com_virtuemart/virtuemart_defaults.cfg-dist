@@ -64,6 +64,8 @@ vmlayout=default
     media_category_path=images/stories/virtuemart/category/
     media_product_path=images/stories/virtuemart/product/
     media_manufacturer_path=images/stories/virtuemart/manufacturer/
+	media_vendor_path=images/stories/virtuemart/vendor/
+	
     img_resize_enable=1
     img_width=90
     img_height=90

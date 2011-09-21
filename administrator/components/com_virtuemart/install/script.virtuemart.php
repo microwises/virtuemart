@@ -119,10 +119,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$model->execSQLFile($this->path.DS.'install'.DS.'install_essential_data.sql');
 			$model->execSQLFile($this->path.DS.'install'.DS.'install_required_data.sql');
 
-			$model->setStoreOwner();
+			$id = $model->determineStoreOwner();
+			$model->setStoreOwner($id);
 
 			//copy sampel media
-			$src = $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampelimages';
+			$src = $this->path .DS. 'assets' .DS. 'images' .DS. 'vmsampleimages';
 			// 			if(version_compare(JVERSION,'1.6.0','ge')) {
 
 			$this->createIndexFolder(JPATH_ROOT .DS. 'images'.DS.'stories');

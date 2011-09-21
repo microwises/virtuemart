@@ -86,7 +86,7 @@ class TableVendors extends VmTableData {
 
 		$this->setParameterable('vendor_params',$varsToPushParam);
 
-		vmdebug('vendor table',$this);
+// 		vmdebug('vendor table',$this);
     }
 
 }

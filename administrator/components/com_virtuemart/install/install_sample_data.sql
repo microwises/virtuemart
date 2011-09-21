@@ -124,7 +124,7 @@ INSERT INTO `#__virtuemart_manufacturercategories` (`virtuemart_manufacturercate
 --
 
 INSERT IGNORE INTO `#__virtuemart_manufacturer_medias` (`id`,`virtuemart_manufacturer_id`, `virtuemart_media_id`) VALUES
-(NULL, 1, 1);
+(NULL, 1, 14);
 
 --
 -- Dumping data for table `#__virtuemart_medias`
@@ -134,7 +134,7 @@ INSERT INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_vendor_id
 (1, 1, 'black shovel', '', '', 'image/jpeg', 'category', 'images/stories/virtuemart/category/fc2f001413876a374484df36ed9cf775.jpg', '', NULL, NULL, 1, 0, 0, 0, 0, ''),
 (2, 1, 'fe2f63f4c46023e3b33404c80bdd2bfe.jpg', '', '', 'image/jpeg','category', 'images/stories/virtuemart/category/fe2f63f4c46023e3b33404c80bdd2bfe.jpg', '', NULL, NULL, 1, 0, 0, 0, 0, ''),
 (3, 1, 'green shovel', '', '', 'image/jpeg', 'category', 'images/stories/virtuemart/category/756ff6d140e11079caf56955060f1162.jpg', '', NULL, NULL, 1, 0, 0, 0, 0, ''),
-(4, 1, 'wooden shovel', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/1b0c96d67abdbea648cd0ea96fd6abcb.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
+(4, 1, 'wooden shovel', '', '', 'image/jpeg', 'category', 'images/stories/virtuemart/category/1b0c96d67abdbea648cd0ea96fd6abcb.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
 (5, 1, 'black shovel', 'the', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/520efefd6d7977f91b16fac1149c7438.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
 (6, 1, '480655b410d98a5cc3bef3927e786866.jpg', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/480655b410d98a5cc3bef3927e786866.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
 (7, 1, 'nice saw', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/e614ba08c3ee0c2adc62fd9e5b9440eb.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
@@ -143,7 +143,9 @@ INSERT INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_vendor_id
 (10, 1, 'drill', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/1ff5f2527907ca86103288e1b7cc3446.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
 (11, 1, 'circular saw', 'for the fine cut', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/9a4448bb13e2f7699613b2cfd7cd51ad.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
 (12, 1, 'chain saw', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/8716aefc3b0dce8870360604e6eb8744.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
-(13, 1, 'hand shovel', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/cca3cd5db813ee6badf6a3598832f2fc.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, '');
+(13, 1, 'hand shovel', '', '', 'image/jpeg', 'product', 'images/stories/virtuemart/product/cca3cd5db813ee6badf6a3598832f2fc.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
+(14, 1, 'manufacturer', '', '', 'image/jpeg', 'manufacturer', 'images/stories/virtuemart/manufacturer/manufacturersample.jpg', '', NULL, NULL, 1, 1, 0, 0, 0, ''),
+(15, 1, 'Washupito', '', '', 'image/jpeg', 'vendor', 'images/stories/virtuemart/vendor/washupito.gif', '', NULL, NULL, 1, 1, 0, 0, 0, '');
 
 --
 -- Dumping data for table `#__virtuemart_products`
@@ -179,7 +181,8 @@ INSERT IGNORE INTO `#__virtuemart_product_medias` (`id`,`virtuemart_product_id`,
 (NULL, 9, 10),
 (NULL, 10, 6);
 
-
+INSERT IGNORE INTO `#__virtuemart_vendor_medias` (`id`,`virtuemart_vendor_id`, `virtuemart_media_id`) VALUES
+(NULL, 1, 15);
 --
 -- Dumping data for table `#__virtuemart_product_categories`
 --

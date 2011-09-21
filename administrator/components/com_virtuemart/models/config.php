@@ -58,12 +58,10 @@ class VirtueMartModelConfig extends JModel {
 			$q = 'SELECT `template` FROM `#__templates_menu` WHERE `client_id` ="0" ';
 		}
 
-
 		$db = JFactory::getDBO();
 		$db->setQuery($q);
 
 		$tplnames = $db->loadResult();
-		vmdebug('$tplpath',$tplnames);
 		if($tplnames){
 			if(is_dir(JPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.$view)){
 				$dirs[] = JPATH_ROOT.DS.'templates'.DS.$tplnames.DS.'html'.DS.'com_virtuemart'.DS.$view;
