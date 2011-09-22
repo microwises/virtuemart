@@ -25,7 +25,6 @@ class VmEUVatCheck {
 	var $output = false;
 
 	function VmEUVatCheck($uservatid) {
-		global $vmLogger;
 
 		/* Load the SOAP library */
 		require(JPATH_VM_ADMINISTRATOR.DS.'libraries'.DS.'nusoap'.DS.'nusoap.php');

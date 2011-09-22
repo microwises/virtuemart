@@ -183,7 +183,7 @@ class VirtueMartModelProduct extends VmModel {
 			$groupBy = 'group by `#__virtuemart_products`.`virtuemart_product_id`';
 		    switch ($group) {
 				case 'featured':
-					$where[] = '`#__virtuemart_products`.`product_special`="Y" ';
+					$where[] = '`#__virtuemart_products`.`product_special`="1" ';
 					break;
 				case 'latest':
 					$date = JFactory::getDate( time()-(60*60*24*7) ); //Set on a week, maybe make that configurable
@@ -202,7 +202,7 @@ class VirtueMartModelProduct extends VmModel {
 		// special  orders case
 		switch ($filter_order) {
 			case 'product_special':
-				$where[] = ' `#__virtuemart_products`.`product_special`="Y" ';// TODO Change  to  a  individual button
+				$where[] = ' `#__virtuemart_products`.`product_special`="1" ';// TODO Change  to  a  individual button
 				break;
 			case 'category_name':
 				$orderBy = ' ORDER BY `category_name` ';

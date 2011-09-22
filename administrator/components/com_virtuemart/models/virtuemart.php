@@ -94,7 +94,7 @@ class VirtueMartModelVirtueMart extends JModel {
 	 * @return int Total number of featured products in the database
 	 */
 	function getTotalFeaturedProducts() {
-		$query = 'SELECT `virtuemart_product_id` FROM `#__virtuemart_products` WHERE `product_special`="Y"';
+		$query = 'SELECT `virtuemart_product_id` FROM `#__virtuemart_products` WHERE `product_special`="1"';
         return $this->_getListCount($query);
     }
 
