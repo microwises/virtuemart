@@ -102,6 +102,8 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		    else {
 				$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "1", `user_is_vendor` = "1", `perms` = "admin" WHERE `virtuemart_user_id` ="'.$userId.'" ');
 				$db->setQuery( 'UPDATE `#__virtuemart_vmusers` SET `virtuemart_vendor_id` = "0", `user_is_vendor` = "0", `perms` = "" WHERE `virtuemart_user_id` ="'.$oldUserId.'" ');
+
+				//$db->setQuery( 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "'.$oldUserId.'" ');
 		    }
 
 		    if ($db->query() == false ) {
