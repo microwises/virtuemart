@@ -71,14 +71,20 @@ class TableProduct_prices extends VmTableData {
      * @author Max Milbers
      * @param
      */
-	
+
 	function check(){
-		
-		$this->product_price = str_replace(array(',',' '),array('.',''),$this->product_price);
-		
+
+		if(!empty($this->product_price)){
+			$this->product_price = str_replace(array(',',' '),array('.',''),$this->product_price);
+		} else {
+			$this->product_price = null;
+		}
+
+
+
 		return parent::check();
 	}
-	
+
 }
 
 // pure php no closing tag

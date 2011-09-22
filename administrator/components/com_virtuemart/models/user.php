@@ -503,7 +503,7 @@ class VirtueMartModelUser extends VmModel {
 		$errors = $usertable->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);
-			vmError($error);
+			vmError('storing user adress data'.$error);
 		}
 
 /*		if(empty($data['virtuemart_shoppergroup_id'])){
@@ -521,7 +521,7 @@ class VirtueMartModelUser extends VmModel {
 			$errors = $user_shoppergroups_table->getErrors();
 			foreach($errors as $error){
 				$this->setError($error);
-				vmError($error);
+				vmError('Set shoppergroup '.$error);
 			}
 		}
 

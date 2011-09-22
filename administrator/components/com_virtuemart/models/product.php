@@ -768,6 +768,12 @@ class VirtueMartModelProduct extends VmModel {
 		// Set the order levels
 		$data['product_order_levels'] = $data['min_order_level'].','.$data['max_order_level'];
 
+// 		vmdebug('product_price is',$data['product_price']);
+// 		if(empty($data['product_price'])){
+// 			vmdebug('product_price is empty');
+// 			$data['product_price'] ='NULL';
+// 			unset($data['product_price']);
+// 		}
 		//with the true, we do preloading and preserve so old values, but why do we do that? I try with false note by Max Milbers
 		$product_data->bindChecknStore($data,true);
 
@@ -1071,9 +1077,9 @@ class VirtueMartModelProduct extends VmModel {
 	public function getPrice($product,$customVariant,$quantity){
 
 		$this->_db = JFactory::getDBO();
-
+// 		vmdebug('strange',$product);
 		if(!is_object($product)){
-			$product = $this->getProduct($product,true,false,false);
+			$product = $this->getProduct($product,true,false,true);
 		}
 
 		// Loads the product price details
