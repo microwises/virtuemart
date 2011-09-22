@@ -728,22 +728,27 @@ class vmrouterHelper {
 
 	/* Set $this->menu with the Item ID from Joomla Menus */
 	private function setMenuItemId(){
-		$items = array() ;
+
 		$app		= JFactory::getApplication();
 		$menus		= $app->getMenu('site');
 		$component	= JComponentHelper::getComponent('com_virtuemart');
 		if ( VmConfig::isJ15() ) $items = $menus->getItems('componentid', $component->id);
 		else $items = $menus->getItems('component_id', $component->id);
 
-		// Search  Virtuemart itemID in joomla menu
-		foreach ($items as $item)	{
-			$view = $item->query['view'] ;
-			if ($view=='virtuemart') $this->menu['virtuemart'][] = $item->id;
+		if(empty($items)){
+			vmWarn('Assign virtuemart to a menu item');
+		} else {
+			// Search  Virtuemart itemID in joomla menu
+			foreach ($items as $item)	{
+				$view = $item->query['view'] ;
+				if ($view=='virtuemart') $this->menu['virtuemart'][] = $item->id;
 
-			if ( isset($item->query['virtuemart_'.$view.'_id']) )
-			$this->menu['virtuemart_'.$view.'_id'][ $item->query['virtuemart_'.$view.'_id'] ] = $item->id;
-			else $this->menu['virtuemart_'.$view]= $item->id ;
+				if ( isset($item->query['virtuemart_'.$view.'_id']) )
+				$this->menu['virtuemart_'.$view.'_id'][ $item->query['virtuemart_'.$view.'_id'] ] = $item->id;
+				else $this->menu['virtuemart_'.$view]= $item->id ;
+			}
 		}
+
 		// init unsetted views  to defaut front view or nothing(prevent duplicates routes)
 		if ( !isset( $this->menu['virtuemart'][0]) ) {
 			$this->menu['virtuemart'][0] = null;
