@@ -37,10 +37,10 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @param array  $config  An array that holds the plugin configuration
 	 * @since 1.5
 	 */
-	function plgVmCustomTextinput(& $subject, $config) {
+	function plgVmCustomTextinput() {
 		$this->_pelement = basename(__FILE__, '.php');
 		$this->_createTable();
-		parent::__construct($subject, $config);
+		//parent::__construct($subject, $config);
 	}
 
 	/**

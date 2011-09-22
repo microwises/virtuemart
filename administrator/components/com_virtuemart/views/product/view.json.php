@@ -54,14 +54,13 @@ class VirtuemartViewProduct extends JView {
 			$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type ="R" ';
 			$db->setQuery($query);
 			$customs = $db->loadObject();
-
-			$query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
-				FROM #__virtuemart_products WHERE virtuemart_product_id =".$id;
-			$db->setQuery($query);
-
-			$field = $db->loadObject();
+			$customs->value = '';
+			// $query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
+				// FROM #__virtuemart_products WHERE virtuemart_product_id =".$id;
+			// $db->setQuery($query);
+			// $field = $db->loadObject();
 			$html = array ();
-			$display = $model->inputType($field->id,'R',0,0,$row,0);
+			$display = $model->inputType($customs,$id,$row);
 			$html[] = '<tr>
 				 <td>'.JText::_('COM_VIRTUEMART_RELATED_PRODUCTS').'</td>
 				 <td>'.$display.'
@@ -69,14 +68,14 @@ class VirtuemartViewProduct extends JView {
 				 <td>'.JText::_('COM_VIRTUEMART_RELATED_PRODUCTS').'
 					<input type="hidden" value="R" name="field['.$row.'][field_type]" />
 					<input type="hidden" value="'.$customs->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
-					<input type="hidden" value="'.$field->id.'" name="field['.$row.'][custom_value]" />
+					<input type="hidden" value="'.$id.'" name="field['.$row.'][custom_value]" />
 					<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
 				 </td>
 				 <td><span class="vmicon vmicon-16-default-off"></span></td>
 				 <td></td>
 				</tr>';
 			$json['value'] = $html;
-			$json['ok'] = $field->id ;
+			$json['ok'] = $id ;
 		}else if ($type=='relatedcategory') {
 			$query = "SELECT virtuemart_category_id AS id, CONCAT(category_name, '::', virtuemart_category_id) AS value
 				FROM #__virtuemart_categories ";
@@ -91,16 +90,14 @@ class VirtuemartViewProduct extends JView {
 			$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type = "Z" ';
 			$db->setQuery($query);
 			$customs = $db->loadObject();
+			$customs->value = '';
 
-
-			$query = "SELECT virtuemart_category_id AS id, category_name AS value
-				FROM #__virtuemart_categories WHERE virtuemart_category_id =".$id;
-			$db->setQuery($query);
-
-
-			$field = $db->loadObject();
+			// $query = "SELECT virtuemart_category_id AS id, category_name AS value
+				// FROM #__virtuemart_categories WHERE virtuemart_category_id =".$id;
+			// $db->setQuery($query);
+			// $field = $db->loadObject();
 			$html = array ();
-			$display = $model->inputType($field->id,'Z',0,0,$row,0);
+			$display = $model->inputType($customs,$id,$row);
 			$html[] = '<tr>
 				 <td>'.JText::_('COM_VIRTUEMART_RELATED_CATEGORIES').'</td>
 				 <td>'.$display.'
@@ -108,14 +105,14 @@ class VirtuemartViewProduct extends JView {
 				 <td>'.JText::_('COM_VIRTUEMART_RELATED_CATEGORIES').'
 					<input type="hidden" value="Z" name="field['.$row.'][field_type]" />
 					<input type="hidden" value="'.$customs->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
-					<input type="hidden" value="'.$field->id.'" name="field['.$row.'][custom_value]" />
+					<input type="hidden" value="'.$id.'" name="field['.$row.'][custom_value]" />
 					<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
 				 </td>
 				 <td><span class="vmicon vmicon-16-default-off"></span></td>
 				 <td></td>
 				</tr>';
 			$json['value'] = $html;
-			$json['ok'] = $field->id ;
+			$json['ok'] = $id ;
 		} else if ($type=='custom') {
 			$query = "SELECT CONCAT(virtuemart_custom_id, '|', custom_value, '|', field_type) AS id, CONCAT(custom_title, '::', custom_tip) AS value
 				FROM #__virtuemart_customs";

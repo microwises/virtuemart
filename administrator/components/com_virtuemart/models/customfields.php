@@ -337,7 +337,7 @@ class VirtueMartModelCustomfields extends VmModel {
  * $field->is_cart_attribute if can have a price
  */
 
-	public function inputType($field,$row,$product_id){
+	public function inputType($field,$product_id,$row){
 
 		$field->custom_value = empty($field->custom_value) ? $field->value : $field->custom_value ;
 		//echo $field->custom_value;
@@ -388,36 +388,37 @@ class VirtueMartModelCustomfields extends VmModel {
 				break;
 				/* related category*/
 				case 'Z':
-					$q='SELECT * FROM `#__virtuemart_categories` WHERE `published`=1 AND `virtuemart_category_id`= "'.(int)$field->custom_value.'" ';
+					if (!$product_id) return '';// special case it's category ID !
+					$q='SELECT * FROM `#__virtuemart_categories` WHERE `published`=1 AND `virtuemart_category_id`= "'.(int)$product_id.'" ';
 					$this->_db->setQuery($q);
 					//echo $this->_db->_sql;
 					if ($category = $this->_db->loadObject() ) {
-						$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_category_medias`WHERE `virtuemart_category_id`= "'.$category->virtuemart_category_id.'" ';
+						$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_category_medias`WHERE `virtuemart_category_id`= "'.(int)$product_id.'" ';
 						$this->_db->setQuery($q);
 						$thumb ='';
 						if ($media_id = $this->_db->loadResult()) {
 							$thumb = $this->displayCustomMedia($media_id);
 						}
 						$display = '<input type="hidden" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" />';
-						return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . $category->virtuemart_category_id ), $thumb.' '.$category->category_name, array ('title' => $category->category_name ) ).$display;
+						return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . (int)$product_id ), $thumb.' '.$category->category_name, array ('title' => $category->category_name ) ).$display;
 					}
 					else return 'no result';
 				/* related product*/
 				case 'R':
-					if (!$field->custom_value) return '';
-					$q='SELECT `product_name`,`product_sku` FROM `#__virtuemart_products` WHERE `virtuemart_product_id`='.(int)$field->custom_value ;
+					if (!$product_id) return '';
+					$q='SELECT `product_name`,`product_sku` FROM `#__virtuemart_products` WHERE `virtuemart_product_id`='.(int)$product_id;
 					$this->_db->setQuery($q);
 					$related = $this->_db->loadObject();
 					$display = $related->product_name.'('.$related->product_sku.')';
-					$display .= '<input type="hidden" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" />';
+					//$display .= '<input type="hidden" value="'.$field->id.'" name="field['.$row.'][custom_value]" />';
 
-					$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "'.(int)$field->custom_value.'" ';
+					$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "'.(int)$product_id.'" ';
 					$this->_db->setQuery($q);
 					$thumb ='';
 					if ($media_id = $this->_db->loadResult()) {
 						$thumb = $this->displayCustomMedia($media_id);
 					}
-					return JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$field->custom_value ), $thumb.' '.$related->product_name, array ('title' => $related->product_name ) ).$display;
+					return JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$product_id), $thumb.' '.$related->product_name, array ('title' => $related->product_name ) ).$display;
 				break;
 				/* image */
 				case 'M':
@@ -558,15 +559,24 @@ class VirtueMartModelCustomfields extends VmModel {
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
 		$price = $currency->priceDisplay((float)$field->custom_price);
-		if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
-		$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
 		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
 		else $custom_param = array();
-		JPluginHelper::importPlugin('vmcustom');
-		$dispatcher =& JDispatcher::getInstance();
-		$retValue = $dispatcher->trigger('plgVmOnDisplayProductFE',
-			array('field' => $field, 'custom_param' => $custom_param, 'product' => $product,'row' => $row));
-		$html = implode($retValue).' row '.$row ;
+		if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+		if ($field->custom_value) {
+			$plgName = 'plgVmCustom'.ucfirst ($field->custom_value );
+			if(!class_exists($plgName)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$field->custom_value.'.php');
+			$plg = new $plgName ;
+			$html = $plg->plgVmOnDisplayProductFE(  $field,$custom_param, $product, $row);
+		} else return '';
+		//plgVmCustomVm2dewplayer
+		$html .='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
+
+		// JPluginHelper::importPlugin('vmcustom');
+		// $dispatcher =& JDispatcher::getInstance();
+
+		// $retValue = $dispatcher->trigger('plgVmOnDisplayProductFE',
+			// array('field' => $field, 'custom_param' => $custom_param, 'product' => $product,'row' => $row));
+		// $html = implode($retValue).' row '.$row ;
 		return $html;
 		//return '<input type="text" value="'.JText::_($value).'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
 	 }
