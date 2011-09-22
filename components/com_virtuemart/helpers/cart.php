@@ -429,7 +429,7 @@ public function add($virtuemart_product_ids=null) {
 					return false;
 				}
 			}  else {
-				if ($product->customPlugin) {
+				if ( !empty($product->customPlugin)) {
 					$productKey .= count($this->products);
 					//print_r($product);
 				}
