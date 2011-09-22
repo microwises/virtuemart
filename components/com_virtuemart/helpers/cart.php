@@ -416,7 +416,7 @@ public function add($virtuemart_product_ids=null) {
 				}
 
 			}
-			
+
 			// print_r($product->userfield);
 
 			// jExit();
@@ -939,7 +939,7 @@ public function removeProductCart($prod_id=0) {
 		foreach ($neededFields as $field) {
 
 			if($field->required && empty($this->{$type}[$field->name]) && $field->name != 'virtuemart_state_id'){
-				$redirectMsg = JText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',$field->name) ;
+				$redirectMsg = JText::sprintf('COM_VIRTUEMART_MISSING_VALUE_FOR_FIELD',JText::_($field->title) );
 				$i++;
 				//more than four fields missing, this is not a normal error (should be catche by js anyway, so show the address again.
 				if($i>2 && $type=='BT'){
@@ -1014,7 +1014,7 @@ public function removeProductCart($prod_id=0) {
 			$this->tosAccepted = false;
 
 			$this->setCartIntoSession();
-			
+
 			$cart = $this->getCart();
 			$dispatcher = JDispatcher::getInstance();
 
@@ -1466,7 +1466,7 @@ public function removeProductCart($prod_id=0) {
 				foreach ($variantmods as $variant=>$selected){
 					if ($selected) {
 						if ($product->customfieldsCart[$row]->field_type == "E") {
-						
+
 							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
 							//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
 							if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);

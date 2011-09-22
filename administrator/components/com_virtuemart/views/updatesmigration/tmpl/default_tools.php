@@ -41,7 +41,7 @@ if(!VmConfig::get('dangeroustools', false)){
              <h3> <?php echo JText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'); ?> </h3>
 	</td>
 
-	<td align="left" colspan="2" >
+	<td align="left" colspan="3" >
             <h3> <?php echo JText::_('COM_VIRTUEMART_TOOLS_RENEW_CONFIG'); ?> </h3>
 	</td>
     </tr>
@@ -85,87 +85,16 @@ if(!VmConfig::get('dangeroustools', false)){
 
 		</a></div>
 	</td>
-	<td align="left" colspan="4" >
+	<td align="left" colspan="2" >
 		<?php echo JText::sprintf('COM_VIRTUEMART_TOOLS_RENEW_CONFIG_EXPLAIN'); ?>
 
 	</td>
     </tr>
   <tr>
 
-<?php /*
-	<td align="left" colspan="5" >
-             <h3> <?php echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TITLE'); ?> </h3>
-	</td>
-    </tr>
-    <tr>
-   <td align="center">
-		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateUsersFromVmOne&token='.JUtility::getToken() ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING_CONFIRM', JText::_('COM_VIRTUEMART_UPDATE_USERS')); ?>', '<?php echo $link; ?>');">
-		<span class="vmicon48 vm_install_48"></span>
-	    <br />
-	    <?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING', JText::_('COM_VIRTUEMART_UPDATE_USERS')); ?>
-	</a></div>
-	</td>
-
-   <td align="center">
-		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateGeneralFromVmOne&token='.JUtility::getToken() ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING_CONFIRM', JText::_('COM_VIRTUEMART_UPDATE_GENERAL')); ?>', '<?php echo $link; ?>');">
-		<span class="vmicon48 vm_install_48"></span>
-	    <br />
-		<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING', JText::_('COM_VIRTUEMART_UPDATE_GENERAL')); ?>
-		</a></div>
-
-	<td align="center">
-		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateProductsFromVmOne&token='.JUtility::getToken() ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING_CONFIRM', JText::_('COM_VIRTUEMART_UPDATE_PRODUCTS')); ?>', '<?php echo $link; ?>');">
-		<span class="vmicon48 vm_install_48"></span>
-	    <br />
-	    <?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING', JText::_('COM_VIRTUEMART_UPDATE_PRODUCTS')); ?>
-		</a></div>
-	</td>
-		<td align="center">
-		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateOrdersFromVmOne&token='.JUtility::getToken() ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING_CONFIRM', JText::_('COM_VIRTUEMART_UPDATE_ORDERS')); ?>', '<?php echo $link; ?>');">
-		<span class="vmicon48 vm_install_48"></span>
-	    <br />
-		<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING', JText::_('COM_VIRTUEMART_UPDATE_ORDERS')); ?>
-		</a></div>
-	</td>
-
- 	<td align="center">
-		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateAllInOne&token='.JUtility::getToken() ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING_CONFIRM', JText::_('COM_VIRTUEMART_UPDATE_ALL')); ?>', '<?php echo $link; ?>');">
-		<span class="vmicon48 vm_install_48"></span>
-	    <br />
-	    <?php echo JText::sprintf('COM_VIRTUEMART_UPDATE_MIGRATION_STRING', JText::_('COM_VIRTUEMART_UPDATE_ALL')); ?>
-		</a></div>
-	</td>
-<?php /*	<td align="center">
-		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateVmOneUsers&token='.JUtility::getToken() ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo 'Start migrate Users?'; ?>', '<?php echo $link; ?>');">
-		<span class="vmicon48 vm_install_48"></span>
-	    <br />
-	    Migrate VM1.1 users to VM2
-		</a></div>
-	</td>
- 	<td align="center">
-		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=migrateVmOneOrders&token='.JUtility::getToken() ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo 'Start migrate Orders?'; ?>', '<?php echo $link; ?>');">
-		<span class="vmicon48 vm_install_48"></span>
-	    <br />
-	    Migrate VM1.1 orders to VM2
-		</a></div>
-	</td>
-	<td align="left">
-		To import data from virtuemart1.1 you must have the tables of virtuemart1.1 in your database. That means the migrator
-		is looking for tables with the format "joomla prefix" + "vm". When you followed the defaults than it should be
-		jos_vm_.<br />
-		You should start with migrating medias, then users (not working yet), then products, then orders (not working yet).
-		</a></div>
-	</td>*/ ?>
     </tr>
 
-    <tr><td align="left" colspan="5"><?php echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING'); ?></td></tr>
+    <tr><td align="left" colspan="6"><?php echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TOOLS_WARNING'); ?></td></tr>
     <tr>
 	<td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=restoreSystemDefaults&token='.JUtility::getToken()); ?>
@@ -192,10 +121,18 @@ if(!VmConfig::get('dangeroustools', false)){
 
     <td align="center">
 		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=refreshCompleteInstall&token='.JUtility::getToken() ); ?>
-	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH_CONFIRM'); ?>', '<?php echo $link; ?>');">
+	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_SAMPLE_CONFIRM'); ?>', '<?php echo $link; ?>');">
 		<span class="vmicon48 vm_trash_48"></span>
 	    <br />
-            <?php echo Jtext::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_FRESH'); ?>
+            <?php echo Jtext::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_SAMPLE'); ?>
+		</a></div>
+	</td>
+	   <td align="center">
+		<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=refreshCompleteInstallAndSample&token='.JUtility::getToken() ); ?>
+	    <div class="icon"><a onclick="javascript:confirmation('<?php echo JText::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_SAMPLE_CONFIRM'); ?>', '<?php echo $link; ?>');">
+		<span class="vmicon48 vm_trash_48"></span>
+	    <br />
+            <?php echo Jtext::_('COM_VIRTUEMART_DELETES_ALL_VM_TABLES_AND_SAMPLE'); ?>
 		</a></div>
 	</td>
         <td></td>

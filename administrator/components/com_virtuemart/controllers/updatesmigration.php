@@ -277,7 +277,13 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->setRedirect($this->redirectPath, $msg);
 	}
 
-	function refreshCompleteInstall(){
+	function refreshCompleteInstallAndSample(){
+
+		$this->refreshCompleteInstall(true);
+	}
+
+
+	function refreshCompleteInstall($sample=false){
 
 		$data = JRequest::get('get');
 		JRequest::setVar($data['token'], '1', 'post');
@@ -294,7 +300,8 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			$id = $model->determineStoreOwner();
 			$sid = $model->setStoreOwner($id);
 			$model->setUserToPermissionGroup($id);
-			$model->installSampleData($id);
+
+			if($sample)$model->installSampleData($id);
 
 // 			$model = $this->getModel('config');
 // 			$model -> deleteConfig();

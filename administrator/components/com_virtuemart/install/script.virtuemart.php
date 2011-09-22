@@ -189,7 +189,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->alterVendorsTable();
 			$this->alterSessionTable();
 			$this->alterOrderItemsTable();
-
+			$this->alterProductPriceTable();
 			$this->updateWeightUnit();
 			$this->updateDimensionUnit();
 
@@ -201,6 +201,35 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			return true;
 		}
+
+		private function alterProductPriceTable(){
+
+			if(empty($this->db)){
+				$this->db = JFactory::getDBO();
+			}
+
+			$fields = array('virtuemart_shoppergroup_id'=>'int(11) DEFAULT NULL',
+								'product_price'=>'decimal(15,5) DEFAULT NULL',
+								'override'=>'tinyint(1) DEFAULT NULL',
+								'product_override_price' => 'decimal(15,5) NULL',
+								'product_tax_id' => 'int(11) DEFAULT NULL',
+								'product_discount_id' => 'int(11) DEFAULT NULL',
+								'product_currency' => 'int(11) DEFAULT NULL',
+								'product_price_vdate' => 'datetime DEFAULT NULL',
+								'product_price_edate' => 'datetime DEFAULT NULL',
+								'price_quantity_start' => 'int(11) unsigned DEFAULT NULL',
+								'price_quantity_end' => 'int(11) unsigned DEFAULT NULL'
+								);
+			foreach($fields as $fieldname => $alterCommand){
+				$query = 'ALTER TABLE `#__virtuemart_product_prices` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
+
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
+
+
+		}
+
 
 		private function alterSessionTable(){
 
