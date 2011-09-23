@@ -113,10 +113,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<td width="79%" >
 					<span style="font-weight:bold;">
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?></span>
-					<?php
-					$checked = '';
-					if (!empty($this->product->product_special)) $checked = 'checked="checked"' ?>
-					<input type="checkbox" name="product_special" value="1" <?php echo $checked; ?> />
+					<?php echo VmHTML::checkbox('product_special', $this->product->product_special); ?>
 				</td>
 			</tr>
 		</table>
