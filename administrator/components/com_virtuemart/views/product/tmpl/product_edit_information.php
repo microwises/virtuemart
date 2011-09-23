@@ -115,7 +115,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?></span>
 					<?php
 					$checked = '';
-					if (!empty($this->product_special)) $checked = 'checked="checked"' ?>
+					if (!empty($this->product->product_special)) $checked = 'checked="checked"' ?>
 					<input type="checkbox" name="product_special" value="1" <?php echo $checked; ?> />
 				</td>
 			</tr>

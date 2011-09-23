@@ -323,6 +323,19 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->setRedirect($this->redirectPath, $msg);
 	}
 
+	function updateDatabase(){
+
+		$data = JRequest::get('get');
+		JRequest::setVar($data['token'], '1', 'post');
+		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
+		$this->checkPermissionForTools();
+
+		if(!class_exists('com_virtuemartInstallerScript')) require(JPATH_VM_ADMINISTRATOR . DS . 'install' . DS . 'script.virtuemart.php');
+		$updater = new com_virtuemartInstallerScript();
+		$updater->update(false);
+		$this->setRedirect($this->redirectPath, 'Database updated');
+	}
+
 	/**
 	 * Delete the config stored in the database and renews it using the file
 	 *

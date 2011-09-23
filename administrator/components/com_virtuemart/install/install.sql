@@ -687,6 +687,14 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethod_creditcards` (
   UNIQUE KEY `i_virtuemart_paymentmethod_id` (`virtuemart_paymentmethod_id`,`virtuemart_creditcard_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarrier_shoppergroups` (
+  `id` SERIAL,
+  `virtuemart_shippingcarrier_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_shoppergroup_id` int(11) NOT NULL DEFAULT '0',
+  UNIQUE KEY `i_virtuemart_shippingcarrier_id` (`virtuemart_shippingcarrier_id`,`virtuemart_shoppergroup_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='xref table for shippingcarrier to shoppergroup' AUTO_INCREMENT=1 ;
+
 -- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_paymentmethod_shoppergroups`
@@ -726,7 +734,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `low_stock_notification` int(11) NOT NULL DEFAULT '0',
   `product_available_date` datetime NOT NULL default '0000-00-00 00:00:00',
   `product_availability` varchar(56) NOT NULL DEFAULT '',
-  `product_special` char(1) DEFAULT NULL,
+  `product_special` tinyint(1) DEFAULT '0',
   `ship_code_id` int(11) DEFAULT NULL,
   `product_sales` int(11) NOT NULL DEFAULT '0',
   `product_unit` varchar(32) DEFAULT NULL,

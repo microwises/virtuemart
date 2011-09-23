@@ -102,12 +102,12 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * @param object JInstallerComponent parent
 		 * @return boolean True on success
 		 */
-		public function install ($parent=null) {
+		public function install ($loadVm = true) {
 
-			$this->loadVm();
+			if($loadVm) $this->loadVm();
 
 			if($this->checkIfUpdate()){
-				return $this->update();
+				return $this->update($loadVm);
 			}
 
 			$this->alterSessionTable();
@@ -174,27 +174,61 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * @param object JInstallerComponent parent
 		 * @return boolean True on success
 		 */
-		public function update ($parent=null) {
+		public function update ($loadVm = true) {
 
-			$this->loadVm();
+			if($loadVm) $this->loadVm();
 
 			if(!$this->checkIfUpdate()){
-				return $this->install();
+				return $this->install($loadVm);
 			}
 
 			$this->db = JFactory::getDBO();
 
+			if(empty($this->path)) $this->path = JPATH_VM_ADMINISTRATOR;
+			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
+			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
+
 			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','int(11)');
+			$this->checkAddFieldToTable('#__virtuemart_vendors','custom_param',' text COMMENT "Param for Plugins"');
+
+
+			$fields = array('virtuemart_shoppergroup_id'=>'`virtuemart_shoppergroup_id` int(11) DEFAULT NULL',
+														'product_price'=>'`product_price` decimal(15,5) DEFAULT NULL',
+														'override'=>'`override` tinyint(1) DEFAULT NULL',
+														'product_override_price' => '`product_override_price` decimal(15,5) NULL',
+														'product_tax_id' => '`product_tax_id` int(11) DEFAULT NULL',
+														'product_discount_id' => '`product_discount_id` int(11) DEFAULT NULL',
+														'product_currency' => '`product_currency` int(11) DEFAULT NULL',
+														'product_price_vdate' => '`product_price_vdate` datetime DEFAULT NULL',
+														'product_price_edate' => '`product_price_edate` datetime DEFAULT NULL',
+														'price_quantity_start' => '`price_quantity_start` int(11) unsigned DEFAULT NULL',
+														'price_quantity_end' => '`price_quantity_end` int(11) unsigned DEFAULT NULL'
+			);
+			$this->alterTable('#__virtuemart_product_prices',$fields);
+
+
+			$fields = array('product_special'=>'`product_special` tinyint(1) DEFAULT "0"');
+			$this->alterTable('#__virtuemart_products',$fields);
+
+
+			if(version_compare(JVERSION,'1.6.0','ge')) {
+				$fields = array('data'=>'`data` LONGTEXT NULL AFTER `time`');
+				$this->alterTable('#__session',$fields);
+			}
+
+			//alterOrderItemsTable
+			$fields = array('order_item_name'=>'`order_item_name` VARCHAR( 255 )  NOT NULL DEFAULT "" ');
+			$this->alterTable('#__virtuemart_order_items',$fields);
+
+			$this->alterOrderHistoriesTable();
+
 
 			$this->alterVendorsTable();
-			$this->alterSessionTable();
-			$this->alterOrderItemsTable();
-			$this->alterProductPriceTable();
+
 			$this->updateWeightUnit();
 			$this->updateDimensionUnit();
 
-			$this->addProductCustomFields();
-			$this->displayFinished(true);
+			if($loadVm) $this->displayFinished(true);
 			// probably should just go to updatesMigration rather than the install success screen
 			// 			include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
 			//		$parent->getParent()->setRedirectURL('index.php?option=com_virtuemart&view=updatesMigration');
@@ -202,118 +236,78 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			return true;
 		}
 
-		private function alterProductPriceTable(){
+		private function alterTable($tablename,$fields){
 
 			if(empty($this->db)){
 				$this->db = JFactory::getDBO();
 			}
 
-			$fields = array('virtuemart_shoppergroup_id'=>'int(11) DEFAULT NULL',
-								'product_price'=>'decimal(15,5) DEFAULT NULL',
-								'override'=>'tinyint(1) DEFAULT NULL',
-								'product_override_price' => 'decimal(15,5) NULL',
-								'product_tax_id' => 'int(11) DEFAULT NULL',
-								'product_discount_id' => 'int(11) DEFAULT NULL',
-								'product_currency' => 'int(11) DEFAULT NULL',
-								'product_price_vdate' => 'datetime DEFAULT NULL',
-								'product_price_edate' => 'datetime DEFAULT NULL',
-								'price_quantity_start' => 'int(11) unsigned DEFAULT NULL',
-								'price_quantity_end' => 'int(11) unsigned DEFAULT NULL'
-								);
+			$query = 'SHOW COLUMNS FROM `'.$tablename.'` ';
+			$this->db->setQuery($query);
+			$columns = $this->db->loadResultArray(0);
+
 			foreach($fields as $fieldname => $alterCommand){
-				$query = 'ALTER TABLE `#__virtuemart_product_prices` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
+				if(in_array($fieldname,$columns)){
+					$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` '.$alterCommand;
 
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-
-
-		}
-
-
-		private function alterSessionTable(){
-
-			if(version_compare(JVERSION,'1.6.0','ge')) {
-				if(empty($this->db)){
-					$this->db = JFactory::getDBO();
-				}
-				$query = 'SHOW COLUMNS FROM `#__session` ';
-				$this->db->setQuery($query);
-				$columns = $this->db->loadResultArray(0);
-				if(in_array('data',$columns)){
-					$query = 'ALTER TABLE `#__session` CHANGE COLUMN `data` `data` LONGTEXT NULL AFTER `time`;';
 					$this->db->setQuery($query);
 					$this->db->query();
 				}
 			}
+
+
 		}
+
 		/**
 		 *
-		 * @author Valérie Isaksen
+		 * @author Max Milbers
 		 * @param unknown_type $table
 		 * @param unknown_type $field
 		 * @param unknown_type $action
 		 * @return boolean This gives true back, WHEN it altered the table, you may use this information to decide for extra post actions
 		 */
-		private function alterOrderItemsTable(){
+		private function checkAddFieldToTable($table,$field,$fieldType){
 
-			if(empty($this->db)){
-				$this->db = JFactory::getDBO();
-			}
-			$query = 'SHOW COLUMNS FROM `#__virtuemart_order_items` ';
+			$query = 'SHOW COLUMNS FROM `'.$table.'` ';
 			$this->db->setQuery($query);
 			$columns = $this->db->loadResultArray(0);
-			if(in_array('order_item_name',$columns)){
-				$query = 'ALTER TABLE `#__virtuemart_order_items` CHANGE COLUMN `order_item_name` `order_item_name` VARCHAR( 255 )  NOT NULL DEFAULT "" ;';
+
+			if(!in_array($field,$columns)){
+
+
+				$query = 'ALTER TABLE `'.$table.'` ADD '.$field.' '.$fieldType;
 				$this->db->setQuery($query);
-				return $this->db->query();
+				if(!$this->db->query()){
+					$app = JFactory::getApplication();
+					$app->enqueueMessage('Install checkAddFieldToTable '.$this->db->getErrorMsg() );
+					return false;
+				} else {
+					return true;
+				}
 			}
 			return false;
 		}
 
-		private function addProductCustomFields(){
+		/**
+		*
+		* @author Max Milbers
+		*/
+		private function alterOrderHistoriesTable(){
+
 			if(empty($this->db)){
 				$this->db = JFactory::getDBO();
 			}
-			$query = "CREATE TABLE IF NOT EXISTS `#__virtuemart_customplugins` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `virtuemart_custom_id` bigint(20) unsigned NOT NULL,
-  `virtuemart_vendor_id` int(11) NOT NULL DEFAULT '1',
-  `custom_jplugin_id` int(11) NOT NULL,
-  `custom_name` varchar(255) NOT NULL DEFAULT '',
-  `custom_element` varchar(50) NOT NULL DEFAULT '',
-  `discount` decimal(12,2) NOT NULL DEFAULT '0.00',
-  `discount_is_percentage` tinyint(1) NOT NULL DEFAULT '0',
-  `discount_max_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `discount_min_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `custom_params` text NOT NULL,
-  `shared` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'valide for all vendors?',
-  `ordering` int(2) NOT NULL DEFAULT '0',
-  `published` tinyint(1) NOT NULL DEFAULT '1',
-  `created_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_by` int(11) NOT NULL DEFAULT '0',
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) NOT NULL DEFAULT '0',
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `virtuemart_custom_id` (`virtuemart_custom_id`),
-  KEY `idx_custom_plugin_virtuemart_vendor_id` (`virtuemart_vendor_id`),
-  KEY `idx_custom_plugin_name` (`custom_name`),
-  KEY `idx_custom_plugin_ordering` (`ordering`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The custom plugins for product';
-			";
-			$this->db->setQuery($query);
-			$this->db->query();
-
-			$query = 'SHOW COLUMNS FROM `#__virtuemart_vendors` ';
+			$query = 'SHOW COLUMNS FROM `#__virtuemart_order_histories` ';
 			$this->db->setQuery($query);
 			$columns = $this->db->loadResultArray(0);
-			if(in_array('config',$columns)){
-				$query = "ALTER TABLE `#__virtuemart_product_customfields` ADD COLUMN `custom_param` text COMMENT 'Param for Plugins' ";
+			if(in_array('date_added',$columns)){
+				$query = 'ALTER TABLE `#__virtuemart_order_histories` DROP COLUMN `date_added`;';
 				$this->db->setQuery($query);
 				return $this->db->query();
 			}
+			return false;
+
+			;
 		}
 
 		private function alterVendorsTable(){
@@ -357,57 +351,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			return false;
 
 		}
-		/**
-		 *
-		 * @author Max Milbers
-		 */
-		private function alterOrderHistoriesTable(){
 
-			if(empty($this->db)){
-				$this->db = JFactory::getDBO();
-			}
-			$query = 'SHOW COLUMNS FROM `#__virtuemart_order_histories` ';
-			$this->db->setQuery($query);
-			$columns = $this->db->loadResultArray(0);
-			if(in_array('date_added',$columns)){
-				$query = 'ALTER TABLE `#__virtuemart_order_histories` DROP COLUMN `date_added`;';
-				$this->db->setQuery($query);
-				return $this->db->query();
-			}
-			return false;
-
-			;
-		}
-
-		/**
-		 *
-		 * @author Max Milbers
-		 * @param unknown_type $table
-		 * @param unknown_type $field
-		 * @param unknown_type $action
-		 * @return boolean This gives true back, WHEN it altered the table, you may use this information to decide for extra post actions
-		 */
-		private function checkAddFieldToTable($table,$field,$fieldType){
-
-			$query = 'SHOW COLUMNS FROM `'.$table.'` ';
-			$this->db->setQuery($query);
-			$columns = $this->db->loadResultArray(0);
-
-			if(!in_array($field,$columns)){
-
-
-				$query = 'ALTER TABLE `'.$table.'` ADD '.$field.' '.$fieldType;
-				$this->db->setQuery($query);
-				if(!$this->db->query()){
-					$app = JFactory::getApplication();
-					$app->enqueueMessage('Install checkAddFieldToTable '.$this->db->getErrorMsg() );
-					return false;
-				} else {
-					return true;
-				}
-			}
-			return false;
-		}
 
 		/**
 		 *
