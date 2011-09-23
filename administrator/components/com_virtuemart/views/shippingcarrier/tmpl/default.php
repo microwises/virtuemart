@@ -37,6 +37,9 @@ AdminUIHelper::startAdminArea();
                         <th>
 				<?php echo JText::_('COM_VIRTUEMART_CARRIER_LIST_DESCRIPTION_LBL'); ?>
 			</th>
+                        <th width="20">
+				<?php echo JText::_('COM_VIRTUEMART_SHIPPING_SHOPPERGROUPS'); ?>
+			</th>
                         <th>
 				<?php echo JText::_('COM_VIRTUEMART_SHIPPINGCARRIER'); ?>
 			</th>
@@ -67,6 +70,9 @@ AdminUIHelper::startAdminArea();
 				</td>
                                 <td align="left">
 					<?php echo $row->shipping_carrier_desc; ?>
+				</td>
+                                <td>
+					<?php echo $row->shippingShoppersList; ?>
 				</td>
                                 <td align="left">
 					<?php echo JHTML::_('link', $editlink, JText::_($row->shipping_method_name)); ?>

@@ -117,8 +117,6 @@ class VirtueMartModelPaymentmethod extends VmModel{
 
 		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_paymentmethods`',$whereString,'',$this->_getOrdering('payment_name'));
 
-		if(empty($this->_db))  $this->_db = JFactory::getDBO();
-
 		if(isset($this->_data)){
 
 			if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');

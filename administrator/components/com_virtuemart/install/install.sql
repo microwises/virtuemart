@@ -710,6 +710,19 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethod_shoppergroups` (
 
 -- --------------------------------------------------------
 --
+-- Table structure for table `#__virtuemart_shippingcarriers_shoppergroups`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarrier_shoppergroups` (
+  `id` SERIAL,
+  `virtuemart_shippingcarrier_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_shoppergroup_id` int(11) NOT NULL DEFAULT '0',
+  UNIQUE KEY `i_virtuemart_shippingcarrier_id` (`virtuemart_shippingcarrier_id`,`virtuemart_shoppergroup_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='xref table for shippingcarrier to shoppergroup' AUTO_INCREMENT=1 ;
+
+
+-- --------------------------------------------------------
+--
 -- Table structure for table `#__virtuemart_products`
 --
 

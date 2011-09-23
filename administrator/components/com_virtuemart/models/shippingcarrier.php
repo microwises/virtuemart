@@ -65,7 +65,12 @@ class VirtueMartModelShippingCarrier extends VmModel {
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 				$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();;
 			}
-
+                        if(!empty($this->_id)){
+                                                /* Add the shippingcarreir shoppergroups */
+                                                $q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shippingcarrier_shoppergroups WHERE `virtuemart_shippingcarrier_id` = "'.$this->_id.'"';
+                                                $this->_db->setQuery($q);
+                                                $this->_data->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
+                        }
 		}
 
 		return $this->_data;
@@ -94,14 +99,30 @@ class VirtueMartModelShippingCarrier extends VmModel {
 		$whereString = '';
 
 		$this->_data = $this->exeSortSearchListQuery(0,'',$query,$whereString,'',$this->_getOrdering('virtuemart_shippingcarrier_id'));
+                
+                if(isset($this->_data)){
 
+			if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+			foreach ($this->_data as $data){
+				/* Add the shippingcarrier shoppergroups */
+				$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shippingcarrier_shoppergroups WHERE `virtuemart_shippingcarrier_id` = "'.$data->virtuemart_shippingcarrier_id.'"';
+				$this->_db->setQuery($q);
+				$data->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
+                                
+                                /* Write the first 5 shoppergroups in the list */
+				$data->shippingShoppersList = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_shippingcarrier_shoppergroups','virtuemart_shippingcarrier_id',$data->virtuemart_shippingcarrier_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','shoppergroup');
+
+
+			}
+
+		}
 		return $this->_data;
 	}
 
 
 
 	/**
-	 * Bind the post data to the paymentmethod tables and save it
+	 * Bind the post data to the shippingcarrier tables and save it
 	 *
 	 * @author Max Milbers
 	 * @return boolean True is the save was successful, false otherwise.
@@ -141,7 +162,12 @@ class VirtueMartModelShippingCarrier extends VmModel {
 		foreach($errors as $error){
 			$this->setError($error);
 		}
-
+                $xrefTable = $this->getTable('shippingcarrier_shoppergroups');
+                $xrefTable->bindChecknStore($data);
+                $errors = $xrefTable->getErrors();
+                foreach($errors as $error){
+                        $this->setError($error);
+                }
 		return $table->virtuemart_shippingcarrier_id;
 	}
 

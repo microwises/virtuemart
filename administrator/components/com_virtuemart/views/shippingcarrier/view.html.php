@@ -58,13 +58,14 @@ class VirtuemartViewShippingCarrier extends JView {
                          $currency=VirtueMartModelVendor::getVendorCurrency ($vendor_id);
                          $this->assignRef('vendor_currency', $currency->currency_symbol);
 
-         if(Vmconfig::get('multix','none')!=='none'){
-         	$vendorList= ShopFunctions::renderVendorList($shippingCarrier->virtuemart_vendor_id);
-         	$this->assignRef('vendorList', $vendorList);
-         }
+                         if(Vmconfig::get('multix','none')!=='none'){
+                                $vendorList= ShopFunctions::renderVendorList($shippingCarrier->virtuemart_vendor_id);
+                                $this->assignRef('vendorList', $vendorList);
+                         }
 
 			$this->assignRef('pluginList', self::renderInstalledShipperPlugins($shippingCarrier->shipping_carrier_jplugin_id));
 			$this->assignRef('carrier',	$shippingCarrier);
+			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($shippingCarrier->virtuemart_shoppergroup_ids));
 
 			ShopFunctions::addStandardEditViewCommands();
 
