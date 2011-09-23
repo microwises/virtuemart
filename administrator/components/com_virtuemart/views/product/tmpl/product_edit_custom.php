@@ -31,7 +31,7 @@ defined('_JEXEC') or die('Restricted access');
 						<legend><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS');?></legend>
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_RELATED_SEARCH'); ?>
 						<div class="jsonSuggestResults" style="width: auto;">
-						<input type="text" size="40" name="search" id="relatedproductSearch" value="" />
+						<input type="text" size="40" name="search" id="relatedproductsSearch" value="" />
 						</div>
 					</fieldset>
 					</td>
@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 						<legend><?php echo JText::_('COM_VIRTUEMART_RELATED_CATEGORIES');?></legend>
 						<?php echo JText::_('COM_VIRTUEMART_CATEGORIES_RELATED_SEARCH'); ?>
 						<div class="jsonSuggestResults" style="width: auto;">
-						<input type="text" size="40" name="search" id="relatedcategorySearch" value="" />
+						<input type="text" size="40" name="search" id="relatedcategoriesSearch" value="" />
 						</div>
 					</fieldset>
 					</td>
@@ -63,8 +63,8 @@ defined('_JEXEC') or die('Restricted access');
 			$i=0;
 			$tables= array('categories'=>'','products'=>'','customfields'=>'','childs'=>'',);
 			if (isset($this->product->customfields)) {
-				$this->fieldTypes['R']='COM_VIRTUEMART_RELATED_PRODUCT';
-				$this->fieldTypes['Z']='COM_VIRTUEMART_RELATED_CATEGORY';
+				$this->fieldTypes['R']=JTEXT::_('COM_VIRTUEMART_RELATED_PRODUCTS');
+				$this->fieldTypes['Z']=JTEXT::_('COM_VIRTUEMART_RELATED_CATEGORIES');
 				foreach ($this->product->customfields as $customRow) {
 					if ($customRow->is_cart_attribute) $cartIcone=  'default';
 					else  $cartIcone= 'default-off'; 
@@ -151,9 +151,9 @@ jQuery('select#customlist').chosen().change(function() {
 	function(data) {
 		var trash = jQuery("div.customDelete").clone().css('display', 'block').removeClass('customDelete');
 		jQuery.each(data.value, function(index, value){
-			jQuery("table#customfields").append(value);
+			jQuery("table"+data.table).append(value);
 		});
-		jQuery("table#customfields tr").find("td:empty").append(trash).click( function() {
+		jQuery("table"+data.table+" tr").find("td:empty").append(trash).click( function() {
 			jQuery(this).closest('tr').remove();
 		});
 	});
@@ -188,9 +188,9 @@ function removeSelectedOptions(from) {
 				function(data) {
 					var trash = jQuery("div.customDelete").clone().css('display', 'block').removeClass('customDelete');
 					jQuery.each(data.value, function(index, value){
-						jQuery("table#customfields").append(value);
+						jQuery("table#"+$type).append(value);
 					});
-					jQuery("table#customfields tr").find("td:empty").append(trash).click( function() {
+					jQuery("table#"+$type+" tr").find("td:empty").append(trash).click( function() {
 						jQuery(this).closest('tr').remove();
 					});
 				});
@@ -199,6 +199,6 @@ function removeSelectedOptions(from) {
 		});
 
 	}
-	customautocomplete( 'product' ,<?php echo (int)$this->product->virtuemart_product_id; ?>) 
-	customautocomplete( 'category' ,<?php echo (int)$this->product->virtuemart_category_id; ?>) 
+	customautocomplete( 'products' ,<?php echo (int)$this->product->virtuemart_product_id; ?>) 
+	customautocomplete( 'categories' ,<?php echo (int)$this->product->virtuemart_category_id; ?>) 
 </script>

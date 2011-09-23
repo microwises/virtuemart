@@ -42,14 +42,14 @@ class VirtuemartViewProduct extends JView {
 		//$customfield = $model->getcustomfield();
 		$db = JFactory::getDBO();
 		/* Get the task */
-		if ($type=='relatedproduct') {
+		if ($type=='relatedproducts') {
 			$query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
 				FROM #__virtuemart_products";
 			if ($filter) $query .= " WHERE product_name LIKE '%". $db->getEscaped( $filter, true ) ."%' limit 0,50";
 				$db->setQuery($query);
 				echo json_encode($db->loadObjectList());
 				return;
-		} else if ($type=='product') {
+		} else if ($type=='products') {
 
 			$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type ="R" ';
 			$db->setQuery($query);
@@ -77,7 +77,7 @@ class VirtuemartViewProduct extends JView {
 			$json['table'] = '#products';
 			$json['value'] = $html;
 			$json['ok'] = $id ;
-		}else if ($type=='relatedcategory') {
+		}else if ($type=='relatedcategories') {
 			$query = "SELECT virtuemart_category_id AS id, CONCAT(category_name, '::', virtuemart_category_id) AS value
 				FROM #__virtuemart_categories ";
 			if ($filter) $query .= " WHERE category_name LIKE '%". $db->getEscaped( $filter, true ) ."%' limit 0,50";
@@ -86,7 +86,7 @@ class VirtuemartViewProduct extends JView {
 			else echo $db->_sql;
 			return;
 
-		} else if ($type=='category') {
+		} else if ($type=='categories') {
 
 			$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type = "Z" ';
 			$db->setQuery($query);
@@ -162,6 +162,7 @@ class VirtuemartViewProduct extends JView {
 						}
 					}
 				} else {
+				$json['table'] = '#customfields';
 				$display = $model->inputType($field,0,$row);
 				 if ($field->is_cart_attribute) $cartIcone=  'default';
 				 else  $cartIcone= 'default-off';
@@ -180,7 +181,7 @@ class VirtuemartViewProduct extends JView {
 				$row++;
 				}
 			}
-			$json['table'] = '#customfields';
+
 			$json['value'] = $html;
 			$json['ok'] = 1 ;
 		} else $json['ok'] = 0 ;
