@@ -124,12 +124,41 @@ class VirtuemartViewProduct extends JView {
 			$fieldTypes= $model->getField_types() ;
 
 			$query = "SELECT *,custom_value as value FROM #__virtuemart_customs
-			WHERE `field_type`!='C' AND (`virtuemart_custom_id`=".$id." or `custom_parent_id`=".$id.")";
+			WHERE (`virtuemart_custom_id`=".$id." or `custom_parent_id`=".$id.")";
 			$query .=" order by custom_parent_id asc";
 			$db->setQuery($query);
 			$rows = $db->loadObjectlist();
+			
 			$html = array ();
 			foreach ($rows as $field) {
+				if ($field->field_type =='C' ){
+					$q='SELECT `virtuemart_product_id` FROM `#__virtuemart_products` WHERE `published`=1
+					AND `product_parent_id`= '.JRequest::getInt('virtuemart_product_id');
+					//$db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products` WHERE `product_parent_id` ='.(int)$product_id);
+					$db->setQuery($q);
+					if ($childIds = $db->loadResultArray()) {
+					// Get childs
+						foreach ($childIds as $childId) {
+							$field->custom_value = $childId;
+							$display = $model->inputType($field,$childId,$row);
+							 if ($field->is_cart_attribute) $cartIcone=  'default';
+							 else  $cartIcone= 'default-off';
+							 $html[] = '<tr>
+								<td>'.$field->custom_title.'</td>
+								 <td>'.$display.$field->custom_tip.'
+								 </td>
+								 <td>'.JText::_($fieldTypes[$field->field_type]).'
+									<input type="hidden" value="'.$field->field_type .'" name="field['.$row.'][field_type]" />
+									<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
+									<input type="hidden" value="'.$field->admin_only.'" name="field['.$row.'][admin_only]" />
+								 </td>
+								 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
+								 <td></td>
+								</tr>';
+							$row++;
+						}
+					}
+				} else {
 				$display = $model->inputType($field,0,$row);
 				 if ($field->is_cart_attribute) $cartIcone=  'default';
 				 else  $cartIcone= 'default-off';
@@ -146,6 +175,7 @@ class VirtuemartViewProduct extends JView {
 					 <td></td>
 					</tr>';
 				$row++;
+				}
 			}
 			$json['value'] = $html;
 			$json['ok'] = 1 ;

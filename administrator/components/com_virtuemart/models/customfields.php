@@ -300,7 +300,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		$query='SELECT C.`virtuemart_custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_cart_attribute` , `is_hidden` , C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`,field.`custom_param`,field.`custom_price`
 			FROM `#__virtuemart_customs` AS C
 			LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-			Where `field_type`!="C" AND `virtuemart_product_id` ='.$virtuemart_product_id;
+			Where `virtuemart_product_id` ='.$virtuemart_product_id;
 		$this->_db->setQuery($query);
 		$productCustoms = $this->_db->loadObjectList();
 		if (!$productCustoms ) return array();
@@ -435,12 +435,18 @@ class VirtueMartModelCustomfields extends VmModel {
 					} else {
 						$virtuemart_product_id = $product->virtuemart_product_id;
 					}
-					$q='SELECT concat(`product_sku`,":",`product_name`) as text FROM `#__virtuemart_products` WHERE `published`=1
-					AND `virtuemart_product_id`= "'.$virtuemart_product_id.'"';
+					$html = '';
+					$q='SELECT concat(`product_sku`,":",`product_name`) as text ,`virtuemart_product_id`,`product_in_stock` FROM `#__virtuemart_products` WHERE `published`=1
+					AND `virtuemart_product_id`= "'.$field->custom_value.'"';
+					//$db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products` WHERE `product_parent_id` ='.(int)$product_id);
 					$this->_db->setQuery($q);
-					if ($productParent = $this->_db->loadResult())
-//					return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" />';
-					return $productParent.' ('.$field->custom_value.') ';
+					if ($child = $this->_db->loadObject()) {
+						$html .= JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id'.$field->custom_value), $child->text.' ('.$field->custom_value.')', array ('title' => $child->text ));
+						$html .= ' '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK').':'.$child->product_in_stock ;
+						$html .= '<input type="hidden" value="'.$child->virtuemart_product_id.'" name="field['.$row.'][custom_value]" />'.$priceInput;
+						return $html;
+//					return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" />';						
+					}
 					else return JText::_('COM_VIRTUEMART_CUSTOM_NO_CHILD_PRODUCT');
 				break;
 			}
