@@ -48,7 +48,7 @@
 				}
 				?><!-- span class="titles"><?php echo $item['title'] ?></span -->
 					<span class="values vm2<?php echo '-'.$item['name'] ?>" ><?php echo $this->escape($item['value']) ?></span>
-				<?php if ($item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') { ?>
+				<?php if ($item['name'] != 'title' and $item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') { ?>
 					<br class="clear" />
 				<?php
 				}

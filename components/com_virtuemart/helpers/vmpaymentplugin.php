@@ -349,25 +349,37 @@ abstract class vmPaymentPlugin extends JPlugin {
      * @author Oscar van Eijk
      */
     protected function getPaymentMethods($vendorId) {
+        	
+        if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
+
+        $usermodel = new VirtueMartModelUser();
+	$user= $usermodel->getUser();
+
         $db = JFactory::getDBO();
         if (VmConfig::isJ15()) {
             $q = 'SELECT v.* FROM   #__virtuemart_paymentmethods AS v
             		, #__plugins j
+                        , #__virtuemart_paymentmethod_shoppergroups AS s
             		WHERE j.`element` = "' . $db->getEscaped($this->_pelement) . '"
+                    AND   v.`virtuemart_paymentmethod_id` = s.`virtuemart_paymentmethod_id`
                     AND   v.`payment_jplugin_id` = j.`id`
+                    AND   s.`virtuemart_shoppergroup_id`= "' . (int) $user->shopper_groups . '"
                     AND   v.`published` = "1"
                     AND  (v.`virtuemart_vendor_id` = "' . (int) $vendorId . '"
                     OR   v.`virtuemart_vendor_id` = "0") ';
         } else {
-            $q = 'SELECT v.*    '
-                    . 'FROM   #__virtuemart_paymentmethods AS v '
-                    . ',      #__extensions    AS      j '
-                    . 'WHERE j.`folder` = "vmpayment" '
-                    . 'AND j.`element` = "' . $db->getEscaped($this->_pelement) . '" '
-                    . 'AND   v.`published` = "1" '
-                    . 'AND   v.`payment_jplugin_id` = j.`extension_id` '
-                    . 'AND  (v.`virtuemart_vendor_id` = "' . (int) $vendorId . '" '
-                    . ' OR   v.`virtuemart_vendor_id` = "0") '
+            $q = 'SELECT v.*    
+                     FROM   #__virtuemart_paymentmethods AS v 
+                    ,      #__extensions    AS      j 
+                    ,       #__virtuemart_paymentmethod_shoppergroups AS s
+                    WHERE j.`folder` = "vmpayment" 
+                    AND j.`element` = "' . $db->getEscaped($this->_pelement) . '" 
+                    AND   v.`published` = "1" 
+                    AND   v.`payment_jplugin_id` = j.`extension_id` 
+                    AND   v.`virtuemart_paymentmethod_id` = s.`virtuemart_paymentmethod_id`
+                    AND   s.`virtuemart_shoppergroup_id`= "' . (int) $user->shopper_groups . '"
+                    AND  (v.`virtuemart_vendor_id` = "' . (int) $vendorId . '" 
+                     OR   v.`virtuemart_vendor_id` = "0") '
             ;
         }
 

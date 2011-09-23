@@ -17,7 +17,7 @@
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />
-        <param type="spacer" default="VMSHIPPER_WEIGHT_COUNTRIES" level="level1" />
+        <param type="spacer" default="VMSHIPPER_WEIGHT_COUNTRIES_PLUGIN" level="level1" />
          <param	name="shipper_logo" type="vmfiles" label="VMSHIPPER_WEIGHT_COUNTRIES_LOGOS"
              	description="VMSHIPPER_WEIGHT_COUNTRIES_LOGOS_DESC"
              	directory="/images/stories/virtuemart/shipper"

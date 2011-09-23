@@ -135,16 +135,24 @@ abstract class vmShipperPlugin extends JPlugin {
      * @author Oscar van Eijk
      */
     protected function getShippers($_vendorId) {
+        if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
+
+        $usermodel = new VirtueMartModelUser();
+	$user= $usermodel->getUser();
+
         $db = JFactory::getDBO();
         if (VmConfig::isJ15()) {
-            $q = 'SELECT v.*  '
-                    . 'FROM   #__virtuemart_shippingcarriers AS v '
-                    . ',      #__plugins             j '
-                    . 'WHERE j.`element` = "' . $this->_selement . '" '
-                    . 'AND   v.`shipping_carrier_jplugin_id` = j.`id` '
-                    . 'AND   v.`published` = "1" '
-                    . 'AND  (v.`virtuemart_vendor_id` = "' . $_vendorId . '" '
-                    . ' OR   v.`virtuemart_vendor_id` = "0") '
+            $q = 'SELECT v.*  
+                    FROM   #__virtuemart_shippingcarriers AS v 
+                    ,      #__plugins             j 
+                    LEFT JOIN #__virtuemart_shippingcarrier_shoppergroups AS s
+                    ON   v.`virtuemart_shippingcarrier_id` = s.`virtuemart_shippingcarrier_id`
+                    WHERE j.`element` = "' . $this->_selement . '" 
+                    AND   v.`shipping_carrier_jplugin_id` = j.`id` 
+                    AND   v.`published` = "1" 
+                    AND   s.`virtuemart_shoppergroup_id`= "' . (int) $user->shopper_groups . '"
+                    AND  (v.`virtuemart_vendor_id` = "' . $_vendorId . '" 
+                     OR   v.`virtuemart_vendor_id` = "0") '
             ;
         } else {
             $q = 'SELECT v.* '
