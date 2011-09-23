@@ -93,8 +93,9 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	
 	// get product param for this plugin on edit
 	function plgVmOnProductEdit($field,$param,$row, $product_id) {
-		if ($field->value != $this->_pelement) return '';
 		$html =$this->_pelement.''.$field->custom_value;
+		if ($field->custom_value != $this->_pelement) return '';
+
 		//print_r($value);
 		if (!$param) {
 			$param['class']='' ;
@@ -105,8 +106,6 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		$html.='Setup YOur Mp3 Player here';
 		$html .='You have a new tex input';
 
-		//jExit();
-	
 		return $html  ;
 	}
 	/**
@@ -123,7 +122,9 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 			$param['lenght']='10' ;
 		}
 		
+		$plgParam = $this->getVmCustomParams($field->virtuemart_custom_id);
 
+		//echo $plgParam->get('custom_info');
 		// Here the plugin values
 		$html ='Text inputs ';
 		$html.='<input type="text" value="hello'.$param['class'].'" size="'.$param['lenght'].'" name="customPlugin['.$idx.']['.$field->virtuemart_custom_id.']">';

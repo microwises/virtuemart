@@ -54,7 +54,7 @@ class VirtuemartViewProduct extends JView {
 			$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type ="R" ';
 			$db->setQuery($query);
 			$customs = $db->loadObject();
-			$customs->value = '';
+			$customs->custom_value = $id;
 			// $query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
 				// FROM #__virtuemart_products WHERE virtuemart_product_id =".$id;
 			// $db->setQuery($query);
@@ -90,7 +90,7 @@ class VirtuemartViewProduct extends JView {
 			$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type = "Z" ';
 			$db->setQuery($query);
 			$customs = $db->loadObject();
-			$customs->value = '';
+			$customs->custom_value = $id;
 
 			// $query = "SELECT virtuemart_category_id AS id, category_name AS value
 				// FROM #__virtuemart_categories WHERE virtuemart_category_id =".$id;

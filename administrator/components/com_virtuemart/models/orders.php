@@ -1030,19 +1030,31 @@ vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_s
 				$variantmods = $calculator->parseModifier($priceKey);
 				$row=0 ;
 				$_prod->product_attribute = '';
+				$product_attribute = array();
 				foreach($variantmods as $variant=>$selected){
-					if ($_prod->customfieldsCart[$row]->field_type == "U") {
-						foreach ($_prod->userfield as $pKey => $puser) {
-							$_prod->product_attribute .= '<br/ > <b>'.$_prod->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$_prod->customfieldsCart[$row]->custom_field_desc;
+					if ($selected) {
+
+						if ($_prod->customfieldsCart[$row]->field_type == "U") {
+							foreach ($_prod->userfield as $pKey => $puser) {
+								$_prod->product_attribute .= '<br/ > <b>'.$_prod->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$_prod->customfieldsCart[$row]->custom_field_desc;
+							}
+						} else {
+						$_prod->product_attribute .= '<br/ > <b>'.$_prod->customfieldsCart[$row]->custom_title.' : </b>
+									'.$_prod->customfieldsCart[$row]->options[$selected]->custom_value.' '.$_prod->customfieldsCart[$row]->custom_field_desc;
 						}
-					} else {
-					$_prod->product_attribute .= '<br/ > <b>'.$_prod->customfieldsCart[$row]->custom_title.' : </b>
-								'.$_prod->customfieldsCart[$row]->options[$selected]->custom_value.' '.$_prod->customfieldsCart[$row]->custom_field_desc;
+						$product_attribute[$row] = array('field_type' => $_prod->customfieldsCart[$row]->field_type,'custom_title' => $_prod->customfieldsCart[$row]->custom_title,'custom_value' => $_prod->customfieldsCart[$row]->options[$selected]->custom_value);
+						
+						$row++;
 					}
-					$row++;
 				}
+				if (!empty($_prod->custom_param)) {
+					$custom_param = json_decode($_prod->custom_param,true);
+					//print_r($custom_param);
+				}
+							else $custom_param = array();
 				//if (isset($_prod->userfield )) $_prod->product_attribute .= '<br/ > <b>'.$_prod->userfield.' : </b>';
 				$_orderItems->product_attribute = $_prod->product_attribute.' key :'.$priceKey;
+				//print_r($product_attribute);
 			}
 			// TODO: add fields for the following data:
 			//    * [double] basePrice = 38.48
@@ -1084,6 +1096,7 @@ vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_s
 			$this->handleStockAfterStatusChangedPerProduct( $_orderItems->order_status,'N',$_orderItems->virtuemart_product_id,$_orderItems->product_quantity);
 
 		}
+		//jExit();
 		return true;
 	}
 

@@ -95,23 +95,26 @@ abstract class vmCustomPlugin extends JPlugin {
     }
 
     /**
-     * This functions gets the used and configured payment method
-     * pelement of this class determines the used jplugin.
-     * The right payment method is determined by the vendor and the jplugin id.
+     * This functions gets the used and configured customplugins
+     * virtuemart_custom_id odetermines the used jplugin.
+     * The right custom_param is determined by the vendor and the jplugin id.
      *
-     * This function sets the used payment plugin as variable of this class
-     * @author Max Milbers
+     * This function sets the custom plugin param
+     * @author Patrick Kohl
      *
      */
-    protected function getVmCustomParams($vendorId=0, $shipper_id=0) {
+	function getVmCustomParams($virtuemart_custom_id=0,$vendorId=0 ) {
 
-        if (!$vendorId)
+	if (!$vendorId)
             $vendorId = 1;
-        $db = JFactory::getDBO();
-
-        $q = 'SELECT   `custom_params` FROM #__virtuemart_custom_plg WHERE `virtuemart_shippingcarrier_id` = "' . $shipper_id . '" AND `virtuemart_vendor_id` = "' . $vendorId . '" AND `published`="1" ';
-        $db->setQuery($q);
-        return $db->loadResult();
+		$db = JFactory::getDBO();
+		$db->setQuery('SELECT `custom_params`,`custom_element` FROM `#__virtuemart_customplugins` WHERE virtuemart_custom_id =' .(int)$virtuemart_custom_id);
+		$plg_params = $db->loadObject();
+		if (empty($plg_params)) return array();
+		//if(!class_exists('vmParameters')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'parameterparser.php' );
+			//$parameters = new vmParameters($plg_params->custom_params,  $plg_params->custom_element , 'plugin' ,'vmcustom'); 
+			//$params->bind($custom_params);
+        return  new JParameter( $plg_params->custom_params );
     }
 	/**
 	 * display the plugin param for product
@@ -181,6 +184,44 @@ abstract class vmCustomPlugin extends JPlugin {
 			$value = $value.'2';
 	}
 
+	/**
+	 * display The plugin in Product view FE
+	 * 
+	 */
+	 public function displayTypePlugin($field,$product,$row){
+
+		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
+		else $custom_param = array();
+
+		if ($field->custom_value) {
+			$plgName = 'plgVmCustom'.ucfirst ($field->custom_value );
+			if(!class_exists($plgName)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$field->custom_value.'.php');
+			$plg = new $plgName ;
+			$html = $plg->plgVmOnDisplayProductFE(  $field,$custom_param, $product, $row);
+		} else return '';
+
+		$html .='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
+
+		return $html;
+	 }
+
+	/**
+	 * display The plugin in Product edit view BE
+	 * 
+	 */
+	 public function inputTypePlugin($field,$product,$row){
+
+		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
+		else $custom_param = array();
+
+		if ($field->custom_value) {
+			$plgName = 'plgVmCustom'.ucfirst ($field->custom_value );
+			if(!class_exists($plgName)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$field->custom_value.'.php');
+			$plg = new $plgName ;
+			$html = $plg->plgVmOnProductEdit(  $field,$custom_param, $product, $row);
+		} else return '';
+		return $html;
+	 }
 /***************OLD CODE !!!*****************/
     /**
      * Get the total weight for the order, based on which the proper shipping rate
