@@ -32,7 +32,26 @@ defined('_JEXEC') or die('Restricted access');
 							<?php echo VmHTML::checkbox('check_stock', $this->config->get('check_stock')); ?>
 						</td>
 					</tr>
-
+                                        <tr>
+						<td class="key">
+							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPPING_EXPLAIN'); ?>">
+								<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPPING') ?>
+							</span>
+						</td>
+						<td>
+							<?php echo VmHTML::checkbox('automatic_shipping', $this->config->get('automatic_shipping')); ?>
+						</td>
+					</tr>
+                                         <tr>
+						<td class="key">
+							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_PAYMENT_EXPLAIN'); ?>">
+								<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_PAYMENt') ?>
+							</span>
+						</td>
+						<td>
+							<?php echo VmHTML::checkbox('automatic_payment', $this->config->get('automatic_payment')); ?>
+						</td>
+					</tr>
 					<tr>
 						<td class="key">
 							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN'); ?>">

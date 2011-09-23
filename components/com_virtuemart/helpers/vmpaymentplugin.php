@@ -358,7 +358,9 @@ abstract class vmPaymentPlugin extends JPlugin {
 
     	if (VmConfig::isJ15()) {
     		$extPlgTable = '#__plugins';
-    		$extField = 'element';
+    		$extField1 = 'id';   
+                $extField2 = 'element';                
+
     	} else {
     		$extPlgTable = '#__extensions';
     		$extField = 'folder';
@@ -366,13 +368,13 @@ abstract class vmPaymentPlugin extends JPlugin {
 
     	$db = JFactory::getDBO();
 
-    	$select = 'SELECT v.*,j.`id`,s.* ';
+    	$select = 'SELECT v.*,j.*,s.virtuemart_shoppergroup_id ';
 
     	$q = $select.' FROM   #__virtuemart_paymentmethods AS v ';
 
-    	$q.= 'LEFT JOIN '.$extPlgTable.' as j ON j.`'.$extField.'` = "' . $this->_pelement . '" ';
-    	$q.= 'LEFT OUTER JOIN #__virtuemart_paymentmethod_shoppergroups AS s ON v.`virtuemart_paymentmethod_id` = s.`virtuemart_paymentmethod_id` ';
-    	$q.= ' WHERE v.`published` = "1"
+    	$q.= ' LEFT JOIN '.$extPlgTable.' as j ON j.`'.$extField1.'` =  v.`payment_jplugin_id` ' ;
+    	$q.= ' LEFT OUTER JOIN #__virtuemart_paymentmethod_shoppergroups AS s ON v.`virtuemart_paymentmethod_id` = s.`virtuemart_paymentmethod_id` ';
+    	$q.= ' WHERE v.`published` = "1" AND j.`'.$extField2.'` = "'.$this->_pelement.'" 
     						AND  (v.`virtuemart_vendor_id` = "' . $vendorId . '" OR   v.`virtuemart_vendor_id` = "0")
     						AND  (';
 
@@ -383,52 +385,12 @@ abstract class vmPaymentPlugin extends JPlugin {
 
     	$db->setQuery($q);
     	if (!$results = $db->loadObjectList()) {
-    		vmdebug(JText::_('COM_VIRTUEMART_CART_NO_PAYMENT'),$db->getQuery());
     		return false;
     	}
     	$this->payments = $results;
     	return true;
 
- /*       if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
-
-        $usermodel = new VirtueMartModelUser();
-	$user= $usermodel->getUser();
-
-        $db = JFactory::getDBO();
-        if (VmConfig::isJ15()) {
-            $q = 'SELECT v.* FROM   #__virtuemart_paymentmethods AS v
-            		, #__plugins j
-                        , #__virtuemart_paymentmethod_shoppergroups AS s
-            		WHERE j.`element` = "' . $db->getEscaped($this->_pelement) . '"
-                    AND   v.`virtuemart_paymentmethod_id` = s.`virtuemart_paymentmethod_id`
-                    AND   v.`payment_jplugin_id` = j.`id`
-                    AND   s.`virtuemart_shoppergroup_id`= "' . (int) $user->shopper_groups . '"
-                    AND   v.`published` = "1"
-                    AND  (v.`virtuemart_vendor_id` = "' . (int) $vendorId . '"
-                    OR   v.`virtuemart_vendor_id` = "0") ';
-        } else {
-            $q = 'SELECT v.*
-                     FROM   #__virtuemart_paymentmethods AS v
-                    ,      #__extensions    AS      j
-                    ,       #__virtuemart_paymentmethod_shoppergroups AS s
-                    WHERE j.`folder` = "vmpayment"
-                    AND j.`element` = "' . $db->getEscaped($this->_pelement) . '"
-                    AND   v.`published` = "1"
-                    AND   v.`payment_jplugin_id` = j.`extension_id`
-                    AND   v.`virtuemart_paymentmethod_id` = s.`virtuemart_paymentmethod_id`
-                    AND   s.`virtuemart_shoppergroup_id`= "' . (int) $user->shopper_groups . '"
-                    AND  (v.`virtuemart_vendor_id` = "' . (int) $vendorId . '"
-                     OR   v.`virtuemart_vendor_id` = "0") '
-            ;
-        }
-
-
-        $db->setQuery($q);
-        if (!$results = $db->loadObjectList()) {
-            return false;
-        }
-        $this->payments = $results;
-        return true;*/
+ 
     }
 
     /**
