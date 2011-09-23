@@ -74,6 +74,7 @@ class VirtuemartViewProduct extends JView {
 				 <td><span class="vmicon vmicon-16-default-off"></span></td>
 				 <td></td>
 				</tr>';
+			$json['table'] = '#products';
 			$json['value'] = $html;
 			$json['ok'] = $id ;
 		}else if ($type=='relatedcategory') {
@@ -111,6 +112,7 @@ class VirtuemartViewProduct extends JView {
 				 <td><span class="vmicon vmicon-16-default-off"></span></td>
 				 <td></td>
 				</tr>';
+			$json['table'] = '#categories';
 			$json['value'] = $html;
 			$json['ok'] = $id ;
 		} else if ($type=='custom') {
@@ -132,6 +134,7 @@ class VirtuemartViewProduct extends JView {
 			$html = array ();
 			foreach ($rows as $field) {
 				if ($field->field_type =='C' ){
+					$json['table'] = '#childs';
 					$q='SELECT `virtuemart_product_id` FROM `#__virtuemart_products` WHERE `published`=1
 					AND `product_parent_id`= '.JRequest::getInt('virtuemart_product_id');
 					//$db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products` WHERE `product_parent_id` ='.(int)$product_id);
@@ -177,6 +180,7 @@ class VirtuemartViewProduct extends JView {
 				$row++;
 				}
 			}
+			$json['table'] = '#customfields';
 			$json['value'] = $html;
 			$json['ok'] = 1 ;
 		} else $json['ok'] = 0 ;

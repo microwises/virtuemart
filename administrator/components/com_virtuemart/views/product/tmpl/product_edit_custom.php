@@ -58,28 +58,21 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 		<td valign="top" width="%100">
-			<fieldset style="background-color:#F9F9F9;">
-					<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM');?></legend>
-			<table id="customfields" class="adminlist" cellspacing="0" cellpadding="0">
-				<thead>
-				<tr class="row1">
-					<th><?php echo JText::_('COM_VIRTUEMART_TITLE');?></th>
-					<th><?php echo JText::_('COM_VIRTUEMART_VALUE');?></th>
-					<th><?php echo JText::_('COM_VIRTUEMART_TYPE');?></th>
-					<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE');?></th>
-					<th><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></th>
-				</tr>
-				</thead>
-				<tbody>
-				<?php
-				$i=0;
-				if (isset($this->product->customfields)) {
-					$this->fieldTypes['R']='COM_VIRTUEMART_RELATED_PRODUCT';
-					$this->fieldTypes['Z']='COM_VIRTUEMART_RELATED_CATEGORY';
-					foreach ($this->product->customfields as $customRow) {
+
+			<?php
+			$i=0;
+			$tables= array('categories'=>'','products'=>'','customfields'=>'','childs'=>'',);
+			if (isset($this->product->customfields)) {
+				$this->fieldTypes['R']='COM_VIRTUEMART_RELATED_PRODUCT';
+				$this->fieldTypes['Z']='COM_VIRTUEMART_RELATED_CATEGORY';
+				foreach ($this->product->customfields as $customRow) {
 					if ($customRow->is_cart_attribute) $cartIcone=  'default';
 					else  $cartIcone= 'default-off'; 
-					 echo '<tr>
+					if ($customRow->field_type == 'Z') $tr="categories";
+					elseif ($customRow->field_type == 'R') $tr="products";
+					elseif ($customRow->field_type == 'C') $tr="childs";
+					else $tr="customfields";
+					$tables[$tr] .= '<tr>
 							
 							<td>'.JText::_($customRow->custom_title).'</td>
 							<td>
@@ -96,18 +89,40 @@ defined('_JEXEC') or die('Restricted access');
 							<td><div class="remove"><span class="vmicon vmicon-16-trash"></span>'.JText::_('COM_VIRTUEMART_DELETE').'</div></td>
 						 </tr>';
 
-						$i++;
-					}
-				} else {
-				echo '<tr>
-						<td colspan="5">'.JText::_( 'COM_VIRTUEMART_CUSTOM_NO_TYPES').'
-						</td>
-					<tr>';
+					$i++;
 				}
-				?>
-				</tbody>
-			</table>
-			</fieldset>
+			} 
+			
+			 $emptyTable = '
+				<tr>
+					<td colspan="5">'.JText::_( 'COM_VIRTUEMART_CUSTOM_NO_TYPES').'</td>
+				<tr>';
+
+			foreach ($tables as $tableName => $table ) { ?>
+
+				<fieldset style="background-color:#F9F9F9;">
+					<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM_'.strtoupper ( $tableName) );?></legend>
+					<table id="<?php echo $tableName ?>" class="adminlist" cellspacing="0" cellpadding="0">
+						<thead>
+						<tr class="row1">
+							<th><?php echo JText::_('COM_VIRTUEMART_TITLE');?></th>
+							<th><?php echo JText::_('COM_VIRTUEMART_VALUE');?></th>
+							<th><?php echo JText::_('COM_VIRTUEMART_TYPE');?></th>
+							<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE');?></th>
+							<th><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></th>
+						</tr>
+						</thead>
+						<tbody>
+						<?php if (empty($table)) echo $emptyTable;
+						 else echo  $table ;
+						?>
+						</tbody>
+					</table>
+				</fieldset>
+				<?php
+				}
+			?>
+
 		</td>
 
 	</tr>

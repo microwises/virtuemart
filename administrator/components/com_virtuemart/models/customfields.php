@@ -441,7 +441,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					//$db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products` WHERE `product_parent_id` ='.(int)$product_id);
 					$this->_db->setQuery($q);
 					if ($child = $this->_db->loadObject()) {
-						$html .= JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id'.$field->custom_value), $child->text.' ('.$field->custom_value.')', array ('title' => $child->text ));
+						$html .= JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$field->custom_value), $child->text.' ('.$field->custom_value.')', array ('title' => $child->text ));
 						$html .= ' '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK').':'.$child->product_in_stock ;
 						$html .= '<input type="hidden" value="'.$child->virtuemart_product_id.'" name="field['.$row.'][custom_value]" />'.$priceInput;
 						return $html;
@@ -658,7 +658,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						}
 						return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $child->virtuemart_product_id . '&virtuemart_category_id=' . $child->virtuemart_category_id ), $thumb.' '.$child->product_name, array ('title' => $child->product_name ) );
 					}
-					else return '';
+					else return 'not child'.$value;
 				break;
 			}
 		}
