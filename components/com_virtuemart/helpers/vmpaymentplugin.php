@@ -363,7 +363,8 @@ abstract class vmPaymentPlugin extends JPlugin {
 
     	} else {
     		$extPlgTable = '#__extensions';
-    		$extField = 'folder';
+                $extField1 = 'extension_id';   
+    		$extField2 = 'folder';
     	}
 
     	$db = JFactory::getDBO();
