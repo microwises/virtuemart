@@ -65,7 +65,7 @@ class VirtuemartViewShippingCarrier extends JView {
 
 			$this->assignRef('pluginList', self::renderInstalledShipperPlugins($shippingCarrier->shipping_carrier_jplugin_id));
 			$this->assignRef('carrier',	$shippingCarrier);
-			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($shippingCarrier->virtuemart_shoppergroup_ids));
+			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($shippingCarrier->virtuemart_shoppergroup_ids,true));
 
 			ShopFunctions::addStandardEditViewCommands();
 
