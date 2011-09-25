@@ -30,30 +30,36 @@ defined('_JEXEC') or die('Restricted access');
 		<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?></th>
 	</tr>
 <?php
-	foreach($this->orderdetails['items'] as $_item) {
-		$_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $_item->virtuemart_product_id);
+	foreach($this->orderdetails['items'] as $item) {
+		$_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $item->virtuemart_product_id);
 ?>
 		<tr valign="top">
 			<td align="left" >
-				<?php echo $_item->order_item_sku; ?>
+				<?php echo $item->order_item_sku; ?>
 			</td>
 			<td align="right" >
-				<?php echo $_item->product_quantity; ?>
+				<?php echo $item->product_quantity; ?>
 			</td>
 			<td align="left" >
-				<a href="<?php echo $_link; ?>"><?php echo $_item->order_item_name; ?></a>
+				<a href="<?php echo $_link; ?>"><?php echo $item->order_item_name; ?></a>
 			</td>
 			<td align="left" >
-				<?php echo implode(', ', explode("\n", $_item->product_attribute)); ?>
+				<?php 
+					if (!empty($item->product_attribute)) {
+							if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+							$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplayFE($item);							
+						echo '<div>'.$product_attribute.'</div>';
+					}
+				?>
 			</td>
 			<td align="right" >
-				<?php echo $this->currency->priceDisplay($_item->product_final_price); ?>
+				<?php echo $this->currency->priceDisplay($item->product_final_price); ?>
 			</td>
 			<td align="right" >
-				<?php echo $this->currency->priceDisplay($_item->product_quantity * $_item->product_final_price); ?>
+				<?php echo $this->currency->priceDisplay($item->product_quantity * $item->product_final_price); ?>
 			</td>
 			<td align="left" >
-				<?php echo $this->orderstatuses[$_item->order_status]; ?>
+				<?php echo $this->orderstatuses[$item->order_status]; ?>
 			</td>
 		</tr>
 

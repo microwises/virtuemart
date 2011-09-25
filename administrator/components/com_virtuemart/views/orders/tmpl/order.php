@@ -220,7 +220,9 @@ $tt=$this;
 					<?php
 						echo $item->order_item_name;
 						if (!empty($item->product_attribute)) {
-							echo '<div>'.$item->product_attribute.'</div>';
+								if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+								$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplayBE($item);							
+							echo '<div>'.$product_attribute.'</div>';
 						}
 						$_dispatcher = JDispatcher::getInstance();
 						$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderLineShipperBE',array(

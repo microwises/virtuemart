@@ -93,24 +93,21 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	
 	// get product param for this plugin on edit
 	function onProductEdit($field,$param,$row, $product_id) {
-		$html =$this->_pelement.''.$field->custom_value;
 		if ($field->custom_value != $this->_pelement) return '';
 
 		//print_r($value);
 		if (!$param) {
-			$param['class']='' ;
-			$param['lenght']='' ;
+			$param['comment']='' ;
+			$param['Morecomment']='' ;
 		}
-		$html.='<input type="text" value="'.$param['class'].'" size="10" name="custom_param['.$row.'][class]">';
-		$html.='<input type="text" value="'.$param['lenght'].'" size="10" name="custom_param['.$row.'][lenght]">';
-		$html.='Setup YOur Mp3 Player here';
-		$html .='You have a new tex input';
+		$html  ='<input type="text" value="'.$param['comment'].'" size="10" name="custom_param['.$row.'][comment]"> ';
+		$html .='<input type="text" value="'.$param['Morecomment'].'" size="10" name="custom_param['.$row.'][Morecomment]">';
+		$html .='Plz fill the Text ';
 
 		return $html  ;
 	}
 	/**
-	 * @ idx to increment and return to next plugin
-	 *	 TODO Get from table registred product
+	 * @ idx plugin index
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onDisplayProductFE()
 	 * @author Patrick Kohl
 	 */
@@ -118,8 +115,8 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		// default return if it's not this plugin
 		if ($field->custom_value != $this->_pelement) return '';
 		if (!$param) {
-			$param['class']='' ;
-			$param['lenght']='10' ;
+			$param['comment']='' ;
+			$param['Morecomment']='10';
 		}
 		
 		$plgParam = $this->getVmCustomParams($field->virtuemart_custom_id);
@@ -127,8 +124,8 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		//echo $plgParam->get('custom_info');
 		// Here the plugin values
 		$html ='Text inputs ';
-		$html.='<input type="text" value="'.$param['class'].'" size="'.$param['lenght'].'" name="customPlugin['.$idx.'][comment]">';
-		$html.='<input type="text" value="" size="10" name="customPlugin['.$idx.'][Morecomment]">';
+		$html.='<input type="text" value="'.$param['comment'].'" size="10" name="customPlugin['.$idx.'][comment]"><br />';
+		$html.='<input type="text" value="'.$param['Morecomment'].'" size="10" name="customPlugin['.$idx.'][Morecomment]">';
         return $html;
     }
 
@@ -140,10 +137,10 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @author Patrick Kohl
 	 */
 	function onViewCartModule( $product,$param,$productCustom, $row) {
-		
-		return 'textinput';
+		if ($param->comment) return 'commented';
+		return 'not commented';
     }
-	
+
 	/**
 	 * TODO Add all param to session
 	 * *** Can only set in table at order then put it in session ***
@@ -152,10 +149,52 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @author Patrick Kohl
 	 */
 	function onViewCart($product, $param,$productCustom, $row) {
-		$htmml  = '<div>';
-		$htmml .='<span>'.$param->comment.'</span>';
-		$htmml .='<span>'.$param->Morecomment.'</span>';
-		return $htmml.'</div>';
+		$html  = '<div>';
+		$html .='<span>'.$param->comment.'</span>';
+		$html .='<span>'.$param->Morecomment.'</span>';
+		return $html.'</div>';
+    }
+	/**
+	 * Add param as product_attributes 
+	 * from cart to order
+	 * @author Patrick Kohl
+	 */
+	function onViewCartOrder($product, $param,$productCustom, $row) {
+		// $html  = '<div>';
+		// $html .='<span>'.$param->comment.'</span>';
+		// $html .='<span>'.$param->Morecomment.'</span>';
+		// $html .='</div>';
+		// return $html;
+		return $param;
+    }
+	
+	/**
+	 *
+	 * venodr order display
+	 */
+	function onViewOrderBE($item, $param,$productCustom, $row) {
+		$html  = '<div>';
+		$html .='<span>'.$param->comment.'</span>';
+		$html .='<span>'.$param->Morecomment.'</span>';
+
+		return $html.'</div>';
+    }
+	
+	/**
+	 *
+	 * shopper order display
+	 */
+	function onViewOrderFE($item, $param,$productCustom, $row) {
+		$html  = '<div>';
+		if ($item->order_status == 'S' or $item->order_status == 'C' ) {
+			$html .=' Link to media';
+		} else {
+			$html .=' Paiment not confiremed, PLz come back later ';
+		}
+		// $html .='<span>'.$param->comment.'</span>';
+		// $html .='<span>'.$param->Morecomment.'</span>';
+
+		return $html.'</div>';
     }
 	
 	function plgVmOnOrder($product) {
@@ -164,26 +203,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		$dbValues['textinput'] = $this->_virtuemart_paymentmethod_id;
 		$this->writeCustomData($dbValues, '#__virtuemart_product_custom_' . $this->_pelement);
 	}
-	/**
-	 *
-	 * Admin order display
-	 */
-	function plgVmOnOrderShowBE($virtuemart_product_id) {
 
-		$db = JFactory::getDBO();
-		$q = 'SELECT * FROM `#__virtuemart_product_custom_' . $this->_pelement . '` '
-			. 'WHERE `virtuemart_product_id` = ' . $virtuemart_product_id;
-		$db->setQuery($q);
-		if (!($customs = $db->loadObjectList())) {
-			JError::raiseWarning(500, $db->getErrorMsg());
-			return '';
-		}
-		$html = '';
-		foreach ($customs as $custom) {
-			$html .= '<div>'.$custom.'</div>';
-		}
-		return $html ;
-	}
 	
 	/**
 	 *
@@ -207,85 +227,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		}
 		return $html ;
 	}
-	
-/*****************************Old Code*****************************************/
-    function plgVmAfterCheckout($virtuemart_order_id, $orderData) {
 
-		if (!$this->selectedThisPayment($this->_pelement, $orderData->virtuemart_paymentmethod_id)) {
-			return null; // Another method was selected, do nothing
-		}
-
-            $paramstring = $this->getVmCustomParams($vendorId = 0, $orderData->virtuemart_paymentmethod_id);
-                $params = new JParameter($paramstring);
-                $payment_info = $params->get('payment_info');
-	    /**
-	     * CODE from VM1
-	     */
-
-        if (!empty($payment_info) ){
-// // Here's the place where the Payment Extra Form Code is included
-	    // Thanks to Steve for this solution (why make it complicated...?)
-	    if( eval('?>' . $payment_info . '<?php ') === false ) {
-                 JError::raiseWarning(500, 'Error: The code of the payment method contains a Parse Error!<br />Please correct that first');
-
-	    }
-        }
-
-	    // END printing out HTML Form code (Payment Extra Info)
-
-
-
-
-		$this->_virtuemart_paymentmethod_id = $orderData->virtuemart_paymentmethod_id;
-		$dbValues['virtuemart_order_id'] = $virtuemart_order_id;
-		$dbValues['payment_method_id'] = $this->_virtuemart_paymentmethod_id;
-		$this->writePaymentData($dbValues, '#__virtuemart_order_payment_' . $this->_pelement);
-		return 'P'; // Set order status to Pending.  TODO Must be a plugin parameter
-	}
-        /*
-        function plgVmOnPaymentResponseReceived( $pelement)  {
-           return null;
-       }
-*/
-	/**
-	 * Display stored payment data for an order
-	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnShowOrderPaymentBE()
-	 */
-	function plgVmOnShowOrderPaymentBE($virtuemart_order_id, $paymethod_id)
-	{
-
-		if (!$this->selectedThisPayment($this->_pelement, $paymethod_id)) {
-			return null; // Another method was selected, do nothing
-		}
-		$db = JFactory::getDBO();
-		$q = 'SELECT * FROM `#__virtuemart_order_payment_' . $this->_pelement . '` '
-			. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
-		$db->setQuery($q);
-		if (!($payment = $db->loadObject())) {
-			JError::raiseWarning(500, $db->getErrorMsg());
-			return '';
-		}
-
-		$html = '<table class="adminlist">'."\n";
-		$html .= '	<thead>'."\n";
-		$html .= '		<tr>'."\n";
-		$html .= '			<th>'.JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL').'</th>'."\n";
-//		$html .= '			<th width="40%">'.JText::_('VM_ORDER_PRINT_ACCOUNT_NAME').'</th>'."\n";
-//		$html .= '			<th width="30%">'.JText::_('VM_ORDER_PRINT_ACCOUNT_NUMBER').'</th>'."\n";
-//		$html .= '			<th width="17%">'.JText::_('VM_ORDER_PRINT_EXPIRE_DATE').'</th>'."\n";
-		$html .= '		</tr>'."\n";
-		$html .= '	</thead>'."\n";
-		$html .= '	<tr>'."\n";
-		$html .= '		<td>'.$this->getThisPaymentName($paymethod_id).'</td>'."\n";
-//		$html .= '		<td></td>'."\n";
-//		$html .= '		<td></td>'."\n";
-//		$html .= '		<td></td>'."\n";
-		$html .= '	<tr>'."\n";
-		$html .= '</table>'."\n";
-		return $html;
-	}
-
- 
 }
 
 // No closing tag

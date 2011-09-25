@@ -96,7 +96,7 @@ abstract class vmCustomPlugin extends JPlugin {
 
     /**
      * This functions gets the used and configured customplugins
-     * virtuemart_custom_id odetermines the used jplugin.
+     * virtuemart_custom_id determines the used jplugin.
      * The right custom_param is determined by the vendor and the jplugin id.
      *
      * This function sets the custom plugin param
@@ -111,53 +111,36 @@ abstract class vmCustomPlugin extends JPlugin {
 		$db->setQuery('SELECT `custom_params`,`custom_element` FROM `#__virtuemart_customplugins` WHERE virtuemart_custom_id =' .(int)$virtuemart_custom_id);
 		$plg_params = $db->loadObject();
 		if (empty($plg_params)) return array();
-		//if(!class_exists('vmParameters')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'parameterparser.php' );
-			//$parameters = new vmParameters($plg_params->custom_params,  $plg_params->custom_element , 'plugin' ,'vmcustom'); 
-			//$params->bind($custom_params);
+
         return  new JParameter( $plg_params->custom_params );
     }
 	/**
-	 * display the plugin param for product
+	 * render the plugin with param  to display on product edit
+	 * called by customfields inputTypePlugin 
 	 */
 	abstract function onProductEdit($field,$param,$row, $product_id);
 
 	/**
-	 * save the plugin param on product save
-	 */
-	public function plgVmOnProducSave(&$value, $product_id){
-			
-	}
- 
-	/**
 	 * display the plugin on product FE
 	 */	
 	abstract function onDisplayProductFE( $field, $param, $product, $idx);
-	
+
 	/**
-	 * *** Can only set in table at order then put it in session ***
-	 * *** Have to add it in Virtuemart cart ? ***
-	 * * @author Patrick Kohl
-	 */
-	function plgVmOnAddProductInCartFE($product, $customPlg , $virtuemart_product_id) {
-		
-		if (!empty($textInputs)) {
-        $session = JFactory::getSession();
-		$sessionCustom = $session->get('vmcustom', 0, 'vm');
-			if (!empty($sessionCustom)) {
-				foreach ($textInputs as $textInput) $sessionCustom[$this->_celement][] = $textInput ;
-			}
-		$session->set('vmcustom', serialize($sessionCustom),'vm');
-		}
-    }
-	/**
-	 * display the plugin on cart module product FE
+	 * display the product plugin on cart module
 	 */	
 	abstract function onViewCartModule( $product,$custom_param,$productCustom, $row);
 
 	/**
-	* display the plugin on cart product FE
+	* display the product plugin on cart
 	 */	
 	abstract function onViewCart($product, $param,$productCustom, $row);
+
+	/**
+	 * display the plugin in order
+	 * TODO One for customer and one for vendor
+	 * Get the statut (Eg. payed. >> render only the link for downloadable )
+	 */	
+	abstract function onViewOrderBE($product, $param,$productCustom, $row);
 	
 	
 	/**
@@ -169,24 +152,8 @@ abstract class vmCustomPlugin extends JPlugin {
 	}
 
 	/**
-	 * display values for Vendor
-	 * 
-	 */
-		public function plgVmOnOrderDisplayVendor(&$value, $product_id){
-			$value = $value.'2';
-	}
-
-	/**
-	 * display values for shopper
-	 * 
-	 */
-		public function plgVmOnOrderDisplayShopper(&$value, $product_id){
-			$value = $value.'2';
-	}
-
-	/**
 	 * display The plugin in Product view FE
-	 * 
+	 * override displayType() customfields.
 	 */
 	 public function displayTypePlugin($field,$product,$row){
 
@@ -214,14 +181,34 @@ abstract class vmCustomPlugin extends JPlugin {
 			$param = array_merge($product_param , $custom_param);
 		}
 
-
-//print_r ($product);
 		if ($plgName) {
 			$plgClass = 'plgVmCustom'.ucfirst ($plgName );
 			if(!class_exists($plgClass)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$plgName.'.php');
 			//$plg = new $plgClass ;
 			$plgFunction = 'onViewCart'.$view ;
-			$html = $plgClass::$plgFunction( $product,$param[$row],$productCustom, $row);
+			return $plgClass::$plgFunction( $product,$param[$row],$productCustom, $row);
+		} else return '';
+	 }
+	 /**
+	 * display The plugin in order view FE/BE
+	 * @ $view is "BE" for see in back-End, default is FE
+	 */
+	 public function displayInOrderPlugin($item,$param,$productCustom, $row ,$view='FE'){
+		$plgName = $productCustom->value;
+		$plgPath = JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$plgName.'.php';
+		// defaut render if the plugin is not found/installed
+		if (!file_exists($plgPath)) {
+			echo '<div style="color: #CC0000;">plugin <b>'.$plgName.'</b> not found.</div><br/>';
+			if ($view =='FE') echo implode(',',(array)$param);
+			else foreach ((array)$param as $key=>$text) echo '<span>parameter : '.$key.' : '.$text. '<span><br/>';
+			return ;
+		}
+		if ($plgName) {
+			$plgClass = 'plgVmCustom'.ucfirst ($plgName );
+			if(!class_exists($plgClass)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$plgName.'.php');
+			//$plg = new $plgClass ;
+			$plgFunction = 'onViewOrder'.$view ;
+			$html = $plgClass::$plgFunction( $item,$param,$productCustom, $row);
 		} else return '';
 
 		return $html;
@@ -348,531 +335,5 @@ abstract class vmCustomPlugin extends JPlugin {
             return false;
         }
     }
-
-    /**
-     * Method to create te plugin specific table; must be reimplemented.
-     * @example
-     * 	$_scheme = DbScheme::get_instance();
-     * 	$_scheme->create_scheme('#__vm_order_shipper_'.$this->_selement);
-     * 	$_schemeCols = array(
-     * 		 'id' => array (
-     * 				 'type' => 'int'
-     * 				,'length' => 11
-     * 				,'auto_inc' => true
-     * 				,'null' => false
-     * 		)
-     * 		,'virtuemart_order_id' => array (
-     * 				 'type' => 'int'
-     * 				,'length' => 11
-     * 				,'null' => false
-     * 		)
-     * 		,'shipper_id' => array (
-     * 				 'type' => 'text'
-     * 				,'null' => false
-     * 		)
-     * 	);
-     * 	$_schemeIdx = array(
-     * 		 'idx_order_s' => array(
-     * 				 'columns' => array ('virtuemart_order_id')
-     * 				,'primary' => false
-     * 				,'unique' => false
-     * 				,'type' => null
-     * 		)
-     * 	);
-     * 	$_scheme->define_scheme($_schemeCols);
-     * 	$_scheme->define_index($_schemeIdx);
-     * 	if (!$_scheme->scheme()) {
-     * 		JError::raiseWarning(500, $_scheme->get_db_error());
-     * 	}
-     * 	$_scheme->reset();
-     * @author Oscar van Eijk
-     */
-    abstract protected function _createTable();
-
-    /**
-     * This event is fired during the checkout process. It allows the shopper to select
-     * one of the available shippers.
-     * It should display a radio button (name: shipper_id) to select the shipper. In the description,
-     * the shipping cost can also be displayed, based on the total order weight and the shipto
-     * country (this wil be calculated again during order confirmation)
-     *
-     * @param object $_cart the cart object
-     * @param integer $_selected ID of the shipper currently selected
-     * @return HTML code to display the form
-     * @author Oscar van Eijk
-     */
-    // public function plgVmOnSelectShipper($cart, $_selectedShipper = 0) {
-
-        // if ($this->getShippers($cart->vendorId) === false) {
-            // if (empty($this->_name)) {
-                // $app = JFactory::getApplication();
-                // $app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_CARRIER'));
-                // return;
-            // } else {
-                // return JText::sprintf('COM_VIRTUEMART_SHIPPER_NOT_VALID_FOR_THIS_VENDOR', $this->_name , $_cart->vendorId );
-                // return;
-            // }
-        // }
-    // }
-
-    /**
-     * This event is fired after the shipping method has been selected. It can be used to store
-     * additional shipper info in the cart.
-     *
-     * @param object $_cart Cart object
-     * @param integer $_selected ID of the shipper selected
-     * @return boolean True on succes, false on failures, null when this plugin was not selected.
-     * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
-     * @author Oscar van Eijk
-     */
-    // public function plgVmOnShipperSelected($cart, $_selectedShipper = 0) {
-
-        // if (!$this->selectedThisShipper($this->_selement, $_selectedShipper)) {
-            // return null; // Another shipper was selected, do nothing
-        // }
-        // should return $shipping rates for this
-        // $cart->setShippingRate($this->selectShippingRate($cart));
-        // return true;
-    // }
-
-    /**
-     * This event is fired after the payment has been processed; it selects the actual shipping rate
-     * based on the shipto (country, zip) and/or order weight, and optionally writes extra info
-     * to the database (in which case this method must be reimplemented).
-     * Reimplementation is not required, but when done, the following check MUST be made:
-     * 	if (!$this->selectedThisShipper($this->_selement, $_cart->shipper_id)) {
-     * 		return null;
-     * 	}
-     *
-     * Returing parent::plgVmOnCheckoutCheckShipperData($_cart) is valid but will produce extra overhead!
-     *
-     * @param object $_cart Cart object
-     * @return integer The shipping rate ID
-     * @author Oscar van Eijk
-     */
-    // public function plgVmOnCheckoutCheckShipperData(VirtueMartCart $cart) {
-        // return $this->selectShippingRate($cart);
-    // }
-
-    /**
-     * This method is fired when showing the order details in the backend.
-     * It displays the shipper-specific data.
-     * NOTE, this plugin should NOT be used to display form fields, since it's called outside
-     * a form! Use plgVmOnUpdateOrderBE() instead!
-     *
-     * @param integer $_orderId The order ID
-     * @param integer $_vendorId Vendor ID
-     * @param object $_shipInfo Object with the properties 'carrier' and 'name'
-     * @return mixed Null for shippers that aren't active, text (HTML) otherwise
-     * @author Oscar van Eijk
-     */
-    // public function plgVmOnShowOrderShipperBE($_orderId, $_vendorId, $_shipInfo) {
-        // if (!($this->selectedThisShipper($this->_selement, $this->getShipperIDForOrder($_orderId)))) {
-            // return null;
-        // }
-        /*
-          if (!class_exists('CurrencyDisplay')
-
-          )require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-          $_currency = CurrencyDisplay::getInstance();  //Todo, set currency of shopper or user?
-          //		$_currency = VirtueMartModelVendor::getCurrencyDisplay($_vendorId);
-          $_html = '<table class="admintable">' . "\n"
-          . '	<thead>' . "\n"
-          . '		<tr>' . "\n"
-          . '			<td class="key" style="text-align: center;" colspan="2">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_LBL') . '</td>' . "\n"
-          . '		</tr>' . "\n"
-          . '	</thead>' . "\n"
-          . '	<tr>' . "\n"
-          . '		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_CARRIER_LBL') . ': </td>' . "\n"
-          . '		<td align="left">' . $_shipInfo->carrier . '</td>' . "\n"
-          . '	</tr>' . "\n"
-          . '	<tr>' . "\n"
-          . '		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_MODE_LBL') . ': </td>' . "\n"
-          . '		<td>' . $_shipInfo->name . '</td>' . "\n"
-          . '	</tr>' . "\n"
-          . '	<tr>' . "\n"
-          . '		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_PRICE_LBL') . ': </td>' . "\n"
-          . '		<td align="left">' . $_currency->priceDisplay($this->getShippingRate($this->getShippingRateIDForOrder($_orderId))) . '</td>' . "\n"
-          . '	</tr>' . "\n"
-          . '</table>' . "\n"
-          ;
-         *
-         *
-         */
-        // return $_html;
-    // }
-
-    /**
-     * This method is fired when editing the order line details in the backend.
-     * It can be used to add line specific package codes
-     *
-     * @param integer $_orderId The order ID
-     * @param integer $_lineId
-     * @return mixed Null for shippers that aren't active, text (HTML) otherwise
-     * @author Oscar van Eijk
-     */
-    // public function plgVmOnEditOrderLineShipperBE($_orderId, $_lineId) {
-        // return null;
-    // }
-
-    /**
-     * Save updated order data to the shipper specific table
-     *
-     * @param array $_formData Form data
-     * @return mixed, True on success, false on failures (the rest of the save-process will be
-     * skipped!), or null when this shipper is not actived.
-     * @author Oscar van Eijk
-     */
-    // public function plgVmOnUpdateOrderShipper($_formData) {
-        // return null;
-    // }
-
-    /**
-     * Save updated orderline data to the shipper specific table
-     *
-     * @param array $_formData Form data
-     * @return mixed, True on success, false on failures (the rest of the save-process will be
-     * skipped!), or null when this shipper is not actived.
-     * @author Oscar van Eijk
-     */
-    // public function plgVmOnUpdateOrderLineShipper($_formData) {
-        // return null;
-    // }
-
-    /**
-     * This method is fired when showing the order details in the frontend.
-     * It displays the shipper-specific data.
-     *
-     * @param integer $_orderId The order ID
-     * @return mixed Null for shippers that aren't active, text (HTML) otherwise
-     * @author Oscar van Eijk
-     */
-    // public function plgVmOnShowOrderShipperFE($_orderId) {
-        /*
-          if (!($this->selectedThisShipper($this->_selement, $this->getShipperIDForOrder($_orderId)))) {
-          return null;
-          }
-         */
-    // }
-
-    /**
-     * This method is fired when showing the order details in the frontend, for every orderline.
-     * It can be used to display line specific package codes, e.g. with a link to external tracking and
-     * tracing systems
-     *
-     * @param integer $_orderId The order ID
-     * @param integer $_lineId
-     * @return mixed Null for shippers that aren't active, text (HTML) otherwise
-     * @author Oscar van Eijk
-     */
-    // public function plgVmOnShowOrderLineShipperFE($_orderId, $_lineId) {
-        // return null;
-    // }
-
-    /**
-     * Get the shipping rate ID for a given order number
-     * @access protected
-     * @author Oscar van Eijk
-     * @param int $_id The order ID
-     * @return int The shipping rate ID, or -1 when not found
-     */
-    // protected function getShippingRateIDForOrder($_id) {
-        // $_db = JFactory::getDBO();
-        // $_q = 'SELECT `ship_method_id` '
-                // . 'FROM #__virtuemart_orders '
-                // . "WHERE virtuemart_order_id = $_id";
-        // $_db->setQuery($_q);
-        // if (!($_r = $_db->loadAssoc())) {
-            // return -1;
-        // }
-        // return $_r['ship_method_id'];
-    // }
-
-    /**
-     * Check the order total to see if this order is valid for free shipping.
-     * @access protected
-     * @final
-     * @return boolean; true when shipping is free
-     * @author Oscar van Eijk
-     */
-    // final protected function freeShipping() {
-        // if (!class_exists('VirtueMartCart'))
-            // require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-        // $_cart = VirtueMartCart::getCart();
-        // if (!class_exists('VirtueMartModelVendor'))
-            // require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-        // $_vendor = new VirtueMartModelVendor();
-        // $_vendor->setId($_cart->vendorId);
-        // $_store = $_vendor->getVendor();
-
-        // if ($_store->vendor_freeshipping > 0) {
-            // $_prices = $_cart->getCartPrices();
-            // if ($_prices['salesPrice'] > $_store->vendor_freeshipping) {
-                // return true;
-            // }
-        // }
-        // return false;
-    // }
-
-    /**
-     * Get the shipper ID for a given order number
-     * @access protected
-     * @author Oscar van Eijk
-     * @param int $_id The order ID
-     * @return int The shipper ID, or -1 when not found
-     */
-    protected function getShipperIDForOrder($order_id) {
-        /*
-          $_db = &JFactory::getDBO();
-          $_q = 'SELECT s.`shipping_rate_carrier_id` AS shipper_id '
-          . 'FROM #__virtuemart_orders        AS o '
-
-          . "WHERE o.`virtuemart_order_id` = $_id "
-          . 'AND   o.`ship_method_id` = s.`virtuemart_shippingrate_id`';
-          $_db->setQuery($_q);
-          if (!($_r = $_db->loadAssoc())) {
-          return -1;
-          }
-          return $_r['shipper_id'];
-         * */
-    }
-
-    /**
-     * Select the shipping rate ID, based on the selected shipper in combination with the
-     * shipto address (country and zipcode)  .
-     * @param object $_cart Cart object
-     * @param int $_shipperID Shipper ID, by default taken from the cart
-     * @return int Shipping rate ID, -1 when no match is found. Only 1 selected ID will be returned;
-     * if more ID's match, the cheapest will be selected. ????
-     */
-    protected function selectShippingRate(VirtueMartCart $_cart, $_shipperId = 0) {
-
-    }
-
-    /**
-     * This method checks if the selected shipper matches the current plugin
-     * @param string $_selement Element name, taken from the plugin filename
-     * @param int $_sid The shipper ID
-     * @author Oscar van Eijk
-     * @return True if the calling plugin has the given payment ID
-     */
-    // final protected function selectedThisShipper($selement, $sid) {
-        // $db = JFactory::getDBO();
-
-        // if (VmConfig::isJ15()) {
-            // $q = 'SELECT COUNT(*) AS c '
-                    // . 'FROM #__virtuemart_custom_plg AS vm '
-                    // . ',    #__plugins AS j '
-                    // . "WHERE vm.virtuemart_shippingcarrier_id = '$sid' "
-                    // . 'AND   vm.shipping_carrier_jplugin_id = j.id '
-                    // . "AND   j.element = '$selement'";
-        // } else {
-            // $q = 'SELECT COUNT(*) AS c '
-                    // . 'FROM #__virtuemart_custom_plg AS vm '
-                    // . ',      #__extensions    AS      j '
-                    // . 'WHERE j.`folder` = "vmshipper" '
-                    // . "AND vm.virtuemart_shippingcarrier_id = '$sid' "
-                    // . 'AND   vm.shipping_carrier_jplugin_id = j.extension_id '
-                    // . "AND   j.element = '$selement'";
-        // }
-
-
-        // $db->setQuery($q);
-        // return $db->loadResult(); // TODO Error check
-    // }
-
-    /**
-     * Get the name of the shipper
-     * @param int $_sid The Shipper ID
-     * @author Valérie Isaksen
-     * @return string Shipper name
-     */
-    // final protected function getThisShipperNameById($id) {
-        // $db = JFactory::getDBO();
-        // $q = 'SELECT `shipping_carrier_name` '
-                // . 'FROM #__virtuemart_custom_plg '
-                // . "WHERE virtuemart_shippingcarrier_id ='$id' ";
-        // $db->setQuery($q);
-        // return $db->loadResult(); // TODO Error check
-    // }
-
-    /**
-     * Get the name of the shipper
-     * @param int $_sid The Shipper ID
-     * @author Valérie Isaksen
-     * @return string Shipper name
-     */
-    // public function getThisShipperName(Tablecustom_plg $shipping) {
-        // return $shipping->shipping_carrier_name;
-    // }
-
-    /**
-     * Get Shipper Data for a go given Shipper ID
-     * @param int $_sid The Shipper ID
-     * @author Valérie Isaksen
-     * @return  Shipper data
-     */
-    // final protected function getThisShipperData($virtuemart_shippingcarrier_id) {
-        // $db = JFactory::getDBO();
-        // $q = 'SELECT * '
-                // . 'FROM #__virtuemart_custom_plg '
-                // . "WHERE virtuemart_shippingcarrier_id ='" . $virtuemart_shippingcarrier_id . "' ";
-        // $db->setQuery($q);
-        // $result = $db->loadObject(); // TODO Error check
-        // return $result;
-    // }
-
-    /**
-     * This method writes all shipper plugin specific data to the plugin's table
-     *
-     * @param array $_values Indexed array in the format 'column_name' => 'value'
-     * @param string $_table Table name
-     * @author Oscar van Eijk
-     */
-    // protected function writeShipperData($_values, $_table) {
-        // if (count($_values) == 0) {
-            // JError::raiseWarning(500, 'writeShipperData got no data to save to ' . $_table);
-            // return;
-        // }
-        // $_cols = array();
-        // $_vals = array();
-        // foreach ($_values as $_col => $_val) {
-            // $_cols[] = "`$_col`";
-            // $_vals[] = "'$_val'";
-        // }
-        // $_db = JFactory::getDBO();
-        // $_q = 'INSERT INTO `' . $_table . '` ('
-                // . implode(',', $_cols)
-                // . ') VALUES ('
-                // . implode(',', $_vals)
-                // . ')';
-        // $_db->setQuery($_q);
-        // if (!$_db->query()) {
-            // JError::raiseWarning(500, $_db->getErrorMsg());
-        // }
-    // }
-
-    // protected function calculateSalesPriceShipping($shipping_value, $tax_id, $currency_id) {
-
-        // if (!class_exists('calculationHelper'))
-            // require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-        // if (!class_exists('CurrencyDisplay'))
-            // require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-
-        // $db = JFactory::getDBO();
-        // $calculator = calculationHelper::getInstance();
-        // $currency = CurrencyDisplay::getInstance();
-
-        // $shipping_value = $currency->convertCurrencyTo($currency_id, $shipping_value);
-
-        // $taxrules = array();
-        // if (!empty($tax_id)) {
-            // $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $tax_id . '" ';
-            // $db->setQuery($q);
-            // $taxrules = $db->loadAssocList();
-        // }
-
-        // if (count($taxrules) > 0) {
-            // $salesPriceShipping = $calculator->roundDisplay($calculator->executeCalculation($taxrules, $shipping_value));
-        // } else {
-            // $salesPriceShipping = $shipping_value;
-        // }
-
-        // return $salesPriceShipping;
-    // }
-
-    // protected function getShippingHtml($shipper_name, $shipper_id, $selectedShipper, $cost, $tax_id) {
-        // if ($selectedShipper == $shipper_id) {
-            // $checked = '"checked"';
-        // } else {
-            // $checked = '';
-        // }
-
-        // if (!class_exists('VirtueMartModelVendor'))
-            // require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-        // $vendor_id = 1;
-        // $vendor_currency = VirtueMartModelVendor::getVendorCurrency($vendor_id);
-
-        // if (!class_exists('CurrencyDisplay'))
-            // require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-        // $currency = CurrencyDisplay::getInstance();
-        // $salesPriceShipping = $this->calculateSalesPriceShipping($cost, $tax_id, $vendor_currency->virtuemart_currency_id);
-
-        // $shippingCostDisplay = $currency->priceDisplay($salesPriceShipping);
-
-        // $html = '<input type="radio" name="shipper_id" id="shipper_id_' . $shipper_id . '" value="' . $shipper_id . '" ' . $checked . '>'
-                // . '<label for="shipper_id_' . $shipper_id . '">' . $shipper_name . " (" . $shippingCostDisplay . ")</label><br/>\n";
-        // return $html;
-    // }
-
-    // public function plgVmOnShipperSelectedCalculatePrice(VirtueMartCart $cart, Tablecustom_plg $shipping) {
-
-        // if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
-            // return null; // Another shipper was selected, do nothing
-        // }
-
-        // $shipping->shipping_name = $this->getThisShipperName($shipping);
-
-        // if (!class_exists('JParameter'))
-            // require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
-        // $params = new JParameter($shipping->shipping_carrier_params);
-        // $shipping->shipping_rate_vat_id = $params->get('tax_id');
-        // $shipping->shipping_value = $params->get('shipping_value');
-
-        // return true;
-    // }
-
-    // function plgVmOnCheckAutomaticSelectedShipping(VirtueMartCart $cart) {
-
-        // $nbShipper = 0;
-        // $virtuemart_shippingcarrier_id = 0;
-        // $nbShipper = $this->getSelectableShipping($cart, $virtuemart_shippingcarrier_id);
-        // return ($nbShipper == 1) ? $virtuemart_shippingcarrier_id : 0;
-    // }
-
-    // function plgVmOnCheckShippingIsValid(VirtueMartCart $cart) {
-        // if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
-            // return null; // Another shipper was selected, do nothing
-        // }
-        // $shipper = $this->getThisShipperData($cart->virtuemart_shippingcarrier_id);
-        // return $this->checkShippingConditions($cart, $shipper);
-    // }
-
-    // function getParamShippings($cart, &$nbShipper, &$virtuemart_shippingcarrier_id, $selectedShipper=0) {
-
-        // return null;
-    // }
-
-    // /*
-     // * This method returns the number of shipping methods valid
-     // */
-
-    // function getSelectableShipping(VirtueMartCart $cart, &$virtuemart_shippingcarrier_id) {
-        // $nbShipper = 0;
-        // if ($this->getShippers($cart->vendorId) === false) {
-            // return false;
-        // }
-
-        // foreach ($this->shippers as $shipper) {
-            // if ($this->checkShippingConditions($cart, $shipper)) {
-                // $nbShipper++;
-                // $virtuemart_shippingcarrier_id = $shipper->virtuemart_shippingcarrier_id;
-            // }
-        // }
-        // return $nbShipper;
-    // }
-
-    // function displayTaxRule($tax_id) {
-        // $html = '';
-        // $db = JFactory::getDBO();
-        // if (!empty($tax_id)) {
-            // $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $tax_id . '" ';
-            // $db->setQuery($q);
-            // $taxrule = $db->loadObject();
-
-            // $html = $taxrule->calc_name . '(' . $taxrule->calc_kind . ':' . $taxrule->calc_value_mathop . $taxrule->calc_value . ')';
-        // }
-        // return $html;
-    // }
 
 }

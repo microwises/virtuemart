@@ -1040,21 +1040,21 @@ vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_s
 
 							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
 							//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
-							$product_attribute[] = vmCustomPlugin::displayInCartPlugin( $product,$productCustom, $row,'Order');
+							$product_attribute[$selected] = vmCustomPlugin::displayInCartPlugin( $_prod,$productCustom, $row,'Order');
 							// foreach ($product->userfield as $pKey => $puser) {
 								// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
 							// }
 						} else {
 
-							$product_attribute[] = ' <span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
+							$product_attribute[$selected] = ' <span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
 						}
 					}
 					$row++;
 				}
 				//if (isset($_prod->userfield )) $_prod->product_attribute .= '<br/ > <b>'.$_prod->userfield.' : </b>';
-				$_orderItems->product_attribute = json_encode($product_attribute);
+				$_orderItems->product_attribute = json_encode($product_attribute); 
 				//print_r($product_attribute);
-			}
+			} else $_orderItems->product_attribute = null ;
 			// TODO: add fields for the following data:
 			//    * [double] basePrice = 38.48
 			//    * [double] basePriceVariant = 38.48
