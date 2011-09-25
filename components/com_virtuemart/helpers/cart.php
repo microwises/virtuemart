@@ -370,7 +370,7 @@ public function add($virtuemart_product_ids=null) {
 		$product -> packaging = $tmpProduct -> packaging;
 		//$product -> customfields = empty($tmpProduct -> customfields)? array():$tmpProduct -> customfields ;
 		//$product -> customfieldsCart = empty($tmpProduct -> customfieldsCart)? array(): $tmpProduct -> customfieldsCart;
-		if ($tmpProduct -> customfieldsCart) $product -> customfieldsCart = true;
+		if (!empty($tmpProduct -> customfieldsCart) ) $product -> customfieldsCart = true;
 		//$product -> customsChilds = empty($tmpProduct -> customsChilds)? array(): $tmpProduct -> customsChilds;
 
 		//			echo '<pre>'.print_r($tmpProduct,1).'<pre>';

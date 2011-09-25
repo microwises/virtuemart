@@ -1029,31 +1029,30 @@ vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_s
 				$calculator = calculationHelper::getInstance();
 				$variantmods = $calculator->parseModifier($priceKey);
 				$row=0 ;
+				$product_id = (int)$priceKey;
 				$_prod->product_attribute = '';
 				$product_attribute = array();
 				foreach($variantmods as $variant=>$selected){
 					if ($selected) {
+						if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+						$productCustom = VirtueMartModelCustomfields::getProductCustomFieldCart ($product_id,$selected );
+						if ($productCustom->field_type == "E") {
 
-						if ($_prod->customfieldsCart[$row]->field_type == "U") {
-							foreach ($_prod->userfield as $pKey => $puser) {
-								$_prod->product_attribute .= '<br/ > <b>'.$_prod->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$_prod->customfieldsCart[$row]->custom_field_desc;
-							}
+							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+							//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
+							$product_attribute[] = vmCustomPlugin::displayInCartPlugin( $product,$productCustom, $row,'Order');
+							// foreach ($product->userfield as $pKey => $puser) {
+								// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
+							// }
 						} else {
-						$_prod->product_attribute .= '<br/ > <b>'.$_prod->customfieldsCart[$row]->custom_title.' : </b>
-									'.$_prod->customfieldsCart[$row]->options[$selected]->custom_value.' '.$_prod->customfieldsCart[$row]->custom_field_desc;
+
+							$product_attribute[] = ' <span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
 						}
-						$product_attribute[$row] = array('field_type' => $_prod->customfieldsCart[$row]->field_type,'custom_title' => $_prod->customfieldsCart[$row]->custom_title,'custom_value' => $_prod->customfieldsCart[$row]->options[$selected]->custom_value);
-						
-						$row++;
 					}
+					$row++;
 				}
-				if (!empty($_prod->custom_param)) {
-					$custom_param = json_decode($_prod->custom_param,true);
-					//print_r($custom_param);
-				}
-							else $custom_param = array();
 				//if (isset($_prod->userfield )) $_prod->product_attribute .= '<br/ > <b>'.$_prod->userfield.' : </b>';
-				$_orderItems->product_attribute = $_prod->product_attribute.' key :'.$priceKey;
+				$_orderItems->product_attribute = json_encode($product_attribute);
 				//print_r($product_attribute);
 			}
 			// TODO: add fields for the following data:
