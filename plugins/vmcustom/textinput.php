@@ -92,7 +92,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	
 	
 	// get product param for this plugin on edit
-	function plgVmOnProductEdit($field,$param,$row, $product_id) {
+	function onProductEdit($field,$param,$row, $product_id) {
 		$html =$this->_pelement.''.$field->custom_value;
 		if ($field->custom_value != $this->_pelement) return '';
 
@@ -111,10 +111,10 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	/**
 	 * @ idx to increment and return to next plugin
 	 *	 TODO Get from table registred product
-	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnDisplayProductFE()
+	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onDisplayProductFE()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnDisplayProductFE($field, $param,$product,$idx) {
+	function onDisplayProductFE($field, $param,$product,$idx) {
 		// default return if it's not this plugin
 		if ($field->custom_value != $this->_pelement) return '';
 		if (!$param) {
@@ -127,7 +127,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		//echo $plgParam->get('custom_info');
 		// Here the plugin values
 		$html ='Text inputs ';
-		$html.='<input type="text" value="hello'.$param['class'].'" size="'.$param['lenght'].'" name="customPlugin['.$idx.']['.$field->virtuemart_custom_id.']">';
+		$html.='<input type="text" value="'.$param['class'].'" size="'.$param['lenght'].'" name="customPlugin['.$idx.'][comment]">';
 		$html.='<input type="text" value="" size="10" name="customPlugin['.$idx.'][Morecomment]">';
         return $html;
     }
@@ -139,7 +139,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnSaveProductFE()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCartModFE($product, $param, $row) {
+	function onViewCartModule( $product,$param,$productCustom, $row) {
 		
 		return 'textinput';
     }
@@ -151,9 +151,11 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnSaveProductFE()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCartFE($product, $param, $row) {
-		
-		return 'textinput';
+	function onViewCart($product, $param,$productCustom, $row) {
+		$htmml  = '<div>';
+		$htmml .='<span>'.$param->comment.'</span>';
+		$htmml .='<span>'.$param->Morecomment.'</span>';
+		return $htmml.'</div>';
     }
 	
 	function plgVmOnOrder($product) {

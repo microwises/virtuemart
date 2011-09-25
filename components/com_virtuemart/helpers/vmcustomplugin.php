@@ -119,7 +119,7 @@ abstract class vmCustomPlugin extends JPlugin {
 	/**
 	 * display the plugin param for product
 	 */
-	abstract function plgVmOnProductEdit($field,$param,$row, $product_id);
+	abstract function onProductEdit($field,$param,$row, $product_id);
 
 	/**
 	 * save the plugin param on product save
@@ -131,7 +131,7 @@ abstract class vmCustomPlugin extends JPlugin {
 	/**
 	 * display the plugin on product FE
 	 */	
-	abstract function plgVmOnDisplayProductFE( $field, $param, $product, $idx);
+	abstract function onDisplayProductFE( $field, $param, $product, $idx);
 	
 	/**
 	 * *** Can only set in table at order then put it in session ***
@@ -152,12 +152,12 @@ abstract class vmCustomPlugin extends JPlugin {
 	/**
 	 * display the plugin on cart module product FE
 	 */	
-	abstract function plgVmOnViewCartModFE($product, $param, $row);
+	abstract function onViewCartModule( $product,$custom_param,$productCustom, $row);
 
 	/**
 	* display the plugin on cart product FE
 	 */	
-	abstract function plgVmOnViewCartFE($product, $param, $virtuemart_product_id);
+	abstract function onViewCart($product, $param,$productCustom, $row);
 	
 	
 	/**
@@ -190,17 +190,39 @@ abstract class vmCustomPlugin extends JPlugin {
 	 */
 	 public function displayTypePlugin($field,$product,$row){
 
+		if (empty($field->custom_value)) return '';
 		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
 		else $custom_param = array();
 
-		if ($field->custom_value) {
-			$plgName = 'plgVmCustom'.ucfirst ($field->custom_value );
-			if(!class_exists($plgName)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$field->custom_value.'.php');
-			$plg = new $plgName ;
-			$html = $plg->plgVmOnDisplayProductFE(  $field,$custom_param, $product, $row);
-		} else return '';
+		$plgName = 'plgVmCustom'.ucfirst ($field->custom_value );
+		if(!class_exists($plgName)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$field->custom_value.'.php');
+		$plg = new $plgName ;
+		return $plg->onDisplayProductFE(  $field,$custom_param, $product, $row);
+	 }
 
-		$html .='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
+	 /**
+	 * convert param for render and
+	 * display The plugin in Product view FE
+	 * @ $view is "Module" for see in module, "" for see in cart
+	 */
+	 public function displayInCartPlugin($product,$productCustom, $row ,$view=''){
+		$plgName = $productCustom->value;
+		static $param = null ;
+		if ( $row ==0 ) {
+			$custom_param = empty($product->custom_param) ? array() : (array)json_decode($product->custom_param);
+			$product_param = empty($product->customPlugin) ? array() : (array)json_decode($product->customPlugin);
+			$param = array_merge($product_param , $custom_param);
+		}
+
+
+//print_r ($product);
+		if ($plgName) {
+			$plgClass = 'plgVmCustom'.ucfirst ($plgName );
+			if(!class_exists($plgClass)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$plgName.'.php');
+			//$plg = new $plgClass ;
+			$plgFunction = 'onViewCart'.$view ;
+			$html = $plgClass::$plgFunction( $product,$param[$row],$productCustom, $row);
+		} else return '';
 
 		return $html;
 	 }
@@ -218,7 +240,7 @@ abstract class vmCustomPlugin extends JPlugin {
 			$plgName = 'plgVmCustom'.ucfirst ($field->custom_value );
 			if(!class_exists($plgName)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$field->custom_value.'.php');
 			$plg = new $plgName ;
-			$html = $plg->plgVmOnProductEdit(  $field,$custom_param, $product, $row);
+			$html = $plg->onProductEdit(  $field,$custom_param, $product, $row);
 		} else return '';
 		return $html;
 	 }

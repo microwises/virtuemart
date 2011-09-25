@@ -530,7 +530,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$productCustom->text =  $productCustom->custom_value.' : '.$price;
 //// plugin
 						$group->display .= vmCustomPlugin::displayTypePlugin($productCustom,$product,$row);
-						$group->display .= '<input type="hidden" value="'.$productCustom->custom_value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']['.$productCustom->value.']" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').': '.$price ;
+						$group->display .= '<input type="hidden" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').': '.$price ;
 						$row++;
 					}
 				} else if ($group->field_type == 'U'){
@@ -689,6 +689,88 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		return $media->displayMediaThumb('',false);
 
+	}
+	
+	/*
+	 * render custom ields display cart module FE
+	 */
+	public function CustomsFieldCartModDisplay($priceKey,$product) {
+		if (empty($calculator)) {
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			$calculator = calculationHelper::getInstance();
+		}
+		$product_id = (int)$priceKey;
+		$variantmods = $calculator->parseModifier($priceKey);
+		$row = 0 ;
+		$html = '<div class="vm-customfield-mod">';
+		foreach ($variantmods as $variant=>$selected){
+			if ($selected) {
+				$productCustom = self::getProductCustomFieldCart ($product_id,$selected );
+ 				if ($productCustom->field_type == "E") {
+
+					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+					//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
+					$html .= vmCustomPlugin::displayInCartPlugin( $product,$productCustom, $row,'Module');
+					// foreach ($product->userfield as $pKey => $puser) {
+						// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
+					// }
+				} else {
+
+					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
+				}
+			}
+			$row++;
+		}
+
+		return $html.'</div>';
+	}
+
+	/*
+	 * render custom fields display cart FE
+	 */
+	public function CustomsFieldCartDisplay($priceKey,$product) {
+		if (empty($calculator)) {
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			$calculator = calculationHelper::getInstance();
+		}
+		$product_id = (int)$priceKey;
+		$variantmods = $calculator->parseModifier($priceKey);
+		$row = 0 ;
+
+		$html = '<div class="vm-customfield-cart">';
+		foreach ($variantmods as $variant=>$selected){
+			if ($selected) {
+				$productCustom = self::getProductCustomFieldCart ($product_id,$selected );
+ 				if ($productCustom->field_type == "E") {
+
+					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+					//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
+					$html .= vmCustomPlugin::displayInCartPlugin( $product,$productCustom, $row);
+					// foreach ($product->userfield as $pKey => $puser) {
+						// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
+					// }
+				} else {
+
+					$html .= '<br/ ><span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
+				}
+			}
+			$row++;
+		}
+
+		return $html.'</div>';
+	}
+
+	/*
+	 * custom fields for cart and cart module
+	 */
+	public function getProductCustomFieldCart($product_id,$selected) {
+		$db =& JFactory::getDBO();
+		$query='SELECT C.`virtuemart_custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_cart_attribute` , `is_hidden` , C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`,field.`custom_param`,field.`custom_price`
+			FROM `#__virtuemart_customs` AS C
+			LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+			Where `virtuemart_product_id` ='.$product_id.' and `virtuemart_customfield_id` ='.(int)$selected;
+		$db->setQuery($query);
+		return $db->loadObject();
 	}
 }
 // pure php no closing tag

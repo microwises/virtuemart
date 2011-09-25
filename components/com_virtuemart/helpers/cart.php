@@ -125,7 +125,7 @@ class VirtueMartCart {
 				if (!empty(self::$_cart) && $deleteValidation) {
 					self::$_cart->setDataValidation();
 				}
-
+				//print_r(self::$_cart);
 		}
 
 	}
@@ -369,7 +369,8 @@ public function add($virtuemart_product_ids=null) {
 		$product -> link = $tmpProduct -> link;
 		$product -> packaging = $tmpProduct -> packaging;
 		//$product -> customfields = empty($tmpProduct -> customfields)? array():$tmpProduct -> customfields ;
-		$product -> customfieldsCart = empty($tmpProduct -> customfieldsCart)? array(): $tmpProduct -> customfieldsCart;
+		//$product -> customfieldsCart = empty($tmpProduct -> customfieldsCart)? array(): $tmpProduct -> customfieldsCart;
+		if ($tmpProduct -> customfieldsCart) $product -> customfieldsCart = true;
 		//$product -> customsChilds = empty($tmpProduct -> customsChilds)? array(): $tmpProduct -> customsChilds;
 
 		//			echo '<pre>'.print_r($tmpProduct,1).'<pre>';
@@ -440,6 +441,8 @@ public function add($virtuemart_product_ids=null) {
 				} else {
 					return false;
 				}
+				// echo $productKey;
+					// print_r ($this->products);
 			}
 		} else {
 			$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND', false));
@@ -1297,7 +1300,8 @@ public function removeProductCart($prod_id=0) {
 			// No full link because Mail want absolute path and in shop is better relative path
 			$product->url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id);//JHTML::link($url, $product->product_name);
 			if(!empty($product->customfieldsCart)){
-				$product->customfields = ShopFunctions::customFieldInCartDisplay($cart_item_id,$product);
+				if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+				$product->customfields = VirtueMartModelCustomfields::CustomsFieldCartDisplay($cart_item_id,$product);
 			} else {
 				$product->customfields ='';
 			}
@@ -1461,41 +1465,14 @@ public function removeProductCart($prod_id=0) {
 
 			// @todo Add variants
 			$this->data->products[$i]['product_name'] = JHTML::link($url, $product->product_name);
-			$this->data->products[$i]['customfieldsCart'] ='';
-			//			/* Add the variants */
+
+			// Add the variants
 			if (!is_int($priceKey)) {
-				if (empty($calculator)) {
-					if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-					$calculator = calculationHelper::getInstance();
-				}
-				$variantmods = $calculator->parseModifier($priceKey);
-				$row = 0 ;
+				if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+				//  custom product fields display for cart
+				$this->data->products[$i]['product_attributes'] = VirtueMartModelCustomfields::CustomsFieldCartModDisplay($priceKey,$product);
 
-				foreach ($variantmods as $variant=>$selected){
-					if ($selected) {
-						if ($product->customfieldsCart[$row]->field_type == "E") {
-
-							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
-							//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
-							if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
-							else $custom_param = array();
-							JPluginHelper::importPlugin('vmcustom');
-							$dispatcher =& JDispatcher::getInstance();
-							$retValue = $dispatcher->trigger('plgVmOnViewCartModFE',
-								array('product' => $product, 'custom_param' => $custom_param, 'row' => $row));
-							$this->data->products[$i]['customfieldsCart'] .=  implode($retValue).' row '.$row ;
-							// foreach ($product->userfield as $pKey => $puser) {
-								// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
-							// }
-						} else {
-
-							$this->data->products[$i]['customfieldsCart'] .= '<br/ ><b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$product->customfieldsCart[$row]->options[$selected]->custom_value;
-						}
-					}
-					$row++;
-				}
 			}
-			$this->data->products[$i]['product_name'] .= $this->data->products[$i]['customfieldsCart'] ;
 			$this->data->products[$i]['product_sku'] = $product->product_sku;
 
 			//** @todo WEIGHT CALCULATION
