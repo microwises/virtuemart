@@ -17,7 +17,7 @@
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />
-        <param name="custom_info" type="textarea" cols="60" rows="30" default="" label="VMCUSTOM_TEXTINPUT_INFO" description="VMCUSTOM_TEXTINPUT_INFO_DESC" />
-        <param name="custom_size" type="text"  size="5"  default="10" label="VMCUSTOM_TEXTINPUT_INFO" description="VMCUSTOM_TEXTINPUT_INFO_DESC" />
+        <param name="custom_name" type="text" size="20"  default="COM_VIRTUEMART_COMMENT" label="VMCUSTOM_NAME_INFO" description="VMCUSTOM_NAME_INFO_DESC" />
+        <param name="custom_size" type="text"  size="5"  default="10" label="VMCUSTOM_TEXTINPUT_SIZE" description="VMCUSTOM_TEXTINPUT_SIZE_DESC" />
     </params>
 </install>

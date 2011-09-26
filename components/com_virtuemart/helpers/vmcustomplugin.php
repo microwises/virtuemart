@@ -69,7 +69,7 @@ abstract class vmCustomPlugin extends JPlugin {
      * by adding this code to the constructor:
      * $this->_selement = basename(__FILE, '.php');
      */
-    protected $_celement = '';
+    protected $_pname = '';
     protected $_tablename = '';
     /**
      * @var array List with all carriers the have been implemented with the plugin in the format
@@ -84,12 +84,12 @@ abstract class vmCustomPlugin extends JPlugin {
      * @param array  $config  An array that holds the plugin configuration
      * @since 1.5
      */
-    function __construct(& $subject, $config) {
-        parent::__construct($subject, $config);
+    function __construct() {
+        //parent::__construct($subject, $config);
         $lang = JFactory::getLanguage();
-        $filename = 'plg_vmcustom_' . $this->_celement;
+        $filename = 'plg_vmcustom_' . $this->_pname;
         $lang->load($filename, JPATH_ADMINISTRATOR);
-        $this->carrier = array();
+        //$this->carrier = array();
         if (!class_exists('JParameter'))
             require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
     }
@@ -198,9 +198,9 @@ abstract class vmCustomPlugin extends JPlugin {
 		if ($plgName) {
 			$plgClass = 'plgVmCustom'.ucfirst ($plgName );
 			if(!class_exists($plgClass)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$plgName.'.php');
-			//$plg = new $plgClass ;
+			$plg = new $plgClass ;
 			$plgFunction = 'onViewOrder'.$view ;
-			$html = $plgClass::$plgFunction( $item,$param,$productCustom, $row);
+			$html = $plg->$plgFunction( $item,$param,$productCustom, $row);
 		} else return '';
 
 		return $html;

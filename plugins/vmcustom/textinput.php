@@ -40,7 +40,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	function plgVmCustomTextinput() {
 		$this->_pname = basename(__FILE__, '.php');
 		$this->_createTable();
-		//parent::__construct($subject, $config);
+		parent::__construct();
 	}
 
 	/**
@@ -94,15 +94,15 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	// get product param for this plugin on edit
 	function onProductEdit($field,$param,$row, $product_id) {
 		if ($field->custom_value != $this->_pname) return '';
-
-		//print_r($value);
-		if (!$param) {
-			$param['comment']='' ;
-			$param['Morecomment']='' ;
+		$plgParam = $this->getVmCustomParams($field->virtuemart_custom_id);
+		//print_r($plgParam);
+		if (empty($param)) {
+			$param['custom_name']= $plgParam->get('custom_name');
+			$param['custom_size']= $plgParam->get('custom_size');
 		}
-		$html  ='<input type="text" value="'.$param['comment'].'" size="10" name="custom_param['.$row.'][comment]"> ';
-		$html .='<input type="text" value="'.$param['Morecomment'].'" size="10" name="custom_param['.$row.'][Morecomment]">';
-		$html .='Plz fill the Text ';
+		$html  ='<input type="text" value="'.$param['custom_name'].'" size="10" name="custom_param['.$row.'][custom_name]"> ';
+		$html .='<input type="text" value="'.$param['custom_size'].'" size="10" name="custom_param['.$row.'][custom_size]">';
+		$html .=JTEXT::_('VMCUSTOM_TEXTINPUT_NO_CHANGES_BE');
 
 		return $html  ;
 	}
@@ -115,17 +115,16 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		// default return if it's not this plugin
 		if ($field->custom_value != $this->_pname) return '';
 		if (!$param) {
-			$param['comment']='' ;
-			$param['Morecomment']='10';
+			$param['custom_name']='' ;
+			$param['custom_size']='10';
 		}
 		
-		$plgParam = $this->getVmCustomParams($field->virtuemart_custom_id);
+
 
 		//echo $plgParam->get('custom_info');
 		// Here the plugin values
-		$html ='Text inputs ';
-		$html.='<input type="text" value="'.$param['comment'].'" size="10" name="customPlugin['.$idx.'][comment]"><br />';
-		$html.='<input type="text" value="'.$param['Morecomment'].'" size="10" name="customPlugin['.$idx.'][Morecomment]">';
+		$html =JTEXT::_($param['custom_name']) ;
+		$html.=': <input type="text" value="" size="'.$param['custom_name'].'" name="customPlugin['.$idx.'][comment]"><br />';
         return $html;
     }
 
@@ -145,7 +144,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	function onViewCart($product, $param,$productCustom, $row) {
 		$html  = '<div>';
 		$html .='<span>'.$param->comment.'</span>';
-		$html .='<span>'.$param->Morecomment.'</span>';
+		// $html .='<span>'.$param->Morecomment.'</span>';
 		return $html.'</div>';
     }
 	/**
@@ -170,7 +169,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	function onViewOrderBE($item, $param,$productCustom, $row) {
 		$html  = '<div>';
 		$html .='<span>'.$param->comment.'</span>';
-		$html .='<span>'.$param->Morecomment.'</span>';
+		// $html .='<span>'.$param->Morecomment.'</span>';
 
 		return $html.'</div>';
     }
@@ -181,12 +180,12 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 */
 	function onViewOrderFE($item, $param,$productCustom, $row) {
 		$html  = '<div>';
-		if ($item->order_status == 'S' or $item->order_status == 'C' ) {
-			$html .=' Link to media';
-		} else {
-			$html .=' Paiment not confiremed, PLz come back later ';
-		}
-		// $html .='<span>'.$param->comment.'</span>';
+		// if ($item->order_status == 'S' or $item->order_status == 'C' ) {
+			// $html .=' Link to media';
+		// } else {
+			// $html .=' Paiment not confiremed, PLz come back later ';
+		// }
+		$html .='<span>'.$param->comment.'</span>';
 		// $html .='<span>'.$param->Morecomment.'</span>';
 
 		return $html.'</div>';
