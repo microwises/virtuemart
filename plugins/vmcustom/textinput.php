@@ -118,7 +118,6 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 			$param['custom_name']='' ;
 			$param['custom_size']='10';
 		}
-		
 
 
 		//echo $plgParam->get('custom_info');
@@ -149,7 +148,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
     }
 	/**
 	 * Add param as product_attributes 
-	 * from cart to order
+	 * from cart >>> to order
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCart()
 	 * @author Patrick Kohl
 	 */

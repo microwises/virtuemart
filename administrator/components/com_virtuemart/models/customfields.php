@@ -836,7 +836,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	/*
 	 * custom fields for cart and cart module
 	 */
-	private function getProductCustomFieldCart($product_id,$selected) {
+	public function getProductCustomFieldCart($product_id,$selected) {
 		$db =& JFactory::getDBO();
 		$query='SELECT C.`virtuemart_custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_cart_attribute` , `is_hidden` , C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`,field.`custom_param`,field.`custom_price`
 			FROM `#__virtuemart_customs` AS C
