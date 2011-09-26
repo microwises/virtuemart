@@ -176,9 +176,9 @@ abstract class vmCustomPlugin extends JPlugin {
 			$plgClass = 'plgVmCustom'.ucfirst ($plgName );
 			if(!class_exists($plgClass)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$plgName.'.php');
 			if(!class_exists($plgClass)) ($this->setError('error '.$plgClass.' not found'));
-			//$plg = new $plgClass ;
+			$plg = new $plgClass ;
 			$plgFunction = 'onViewCart'.$view ;
-			return $plgClass::$plgFunction( $product,$param[$row],$productCustom, $row);
+			return $plg->$plgFunction( $product,$param[$row],$productCustom, $row);
 		} else return '';
 	 }
 	 /**
