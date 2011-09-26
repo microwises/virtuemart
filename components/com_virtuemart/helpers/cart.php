@@ -125,7 +125,6 @@ class VirtueMartCart {
 				if (!empty(self::$_cart) && $deleteValidation) {
 					self::$_cart->setDataValidation();
 				}
-				//print_r(self::$_cart);
 		}
 
 	}
@@ -417,8 +416,6 @@ public function add($virtuemart_product_ids=null) {
 				}
 
 			}
-
-			// print_r($product->userfield);
 
 			// jExit();
 

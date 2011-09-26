@@ -461,18 +461,19 @@ class VirtueMartModelCustomfields extends VmModel {
 			Where `virtuemart_product_id` ='.(int)$product->virtuemart_product_id;
 		$query .=' and is_cart_attribute = 0 order by virtuemart_custom_id' ;
 		$this->_db->setQuery($query);
-		$productCustoms = $this->_db->loadObjectList();
-		$row= 0 ;
-		if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
-		//if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-		//$calculator = calculationHelper::getInstance();
-		foreach ($productCustoms as & $field ) {
-			//$custom_price = $calculator->calculateCustomPriceWithTax($field->custom_price);
-			if ($field->field_type == "E") $field->display = vmCustomPlugin::displayTypePlugin($field,$product,$row);
-			else $field->display = $this->displayType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
-			$row++ ;
-		}
-		return $productCustoms;
+		if ($productCustoms = $this->_db->loadObjectList()) {
+			$row= 0 ;
+			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+			//if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			//$calculator = calculationHelper::getInstance();
+			foreach ($productCustoms as & $field ) {
+				//$custom_price = $calculator->calculateCustomPriceWithTax($field->custom_price);
+				if ($field->field_type == "E") $field->display = vmCustomPlugin::displayTypePlugin($field,$product,$row);
+				else $field->display = $this->displayType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
+				$row++ ;
+			}
+			return $productCustoms;
+		} else return array();
      }
 
 	 // temp function TODO better one
