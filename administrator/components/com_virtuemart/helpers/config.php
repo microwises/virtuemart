@@ -618,8 +618,7 @@ class vmJsApi{
 	 * @ Author KOHL Patrick
 	 */
 	function jQuery() {
-
-		if ( !VmConfig::get('jquery',true ) ) return false;
+		if ( !VmConfig::get('jquery',true ) && JFactory::getApplication()->isSite()) return false;
 		static $jquery;
 		// If exist exit
 		if ($jquery) return;
@@ -642,7 +641,7 @@ class vmJsApi{
 	// Virtuemart product and price script
 	function jPrice()
 	{
-		if ( !VmConfig::get('jprice',true ) ) return false;
+		if ( !VmConfig::get('jprice',true )  && JFactory::getApplication()->isSite() ) return false;
 		static $jPrice;
 		// If exist exit
 		if ($jPrice) return;
@@ -671,7 +670,7 @@ class vmJsApi{
 	// Virtuemart Site Js script
 	function jSite()
 	{
-		if ( !VmConfig::get('jsite',true ) ) return false;
+		if ( !VmConfig::get('jsite',true )  && JFactory::getApplication()->isSite() ) return false;
 		static $jSite;
 		// If exist exit
 		if ($jSite) return;
