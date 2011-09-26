@@ -23,7 +23,7 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 
 class plgVmCustomTextinput extends vmCustomPlugin {
 
-	var $_pelement;
+	var $_pname;
 
 
 	/**
@@ -38,7 +38,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @since 1.5
 	 */
 	function plgVmCustomTextinput() {
-		$this->_pelement = basename(__FILE__, '.php');
+		$this->_pname = basename(__FILE__, '.php');
 		$this->_createTable();
 		//parent::__construct($subject, $config);
 	}
@@ -50,7 +50,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	protected function _createTable()
 	{
 		$scheme = DbScheme::get_instance();
-		$scheme->create_scheme('#__virtuemart_product_custom_'.$this->_pelement);
+		$scheme->create_scheme('#__virtuemart_product_custom_'.$this->_pname);
 		$schemeCols = array(
 			 'id' => array (
 					 'type' => 'int'
@@ -93,7 +93,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	
 	// get product param for this plugin on edit
 	function onProductEdit($field,$param,$row, $product_id) {
-		if ($field->custom_value != $this->_pelement) return '';
+		if ($field->custom_value != $this->_pname) return '';
 
 		//print_r($value);
 		if (!$param) {
@@ -113,7 +113,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 */
 	function onDisplayProductFE($field, $param,$product,$idx) {
 		// default return if it's not this plugin
-		if ($field->custom_value != $this->_pelement) return '';
+		if ($field->custom_value != $this->_pname) return '';
 		if (!$param) {
 			$param['comment']='' ;
 			$param['Morecomment']='10';
@@ -130,10 +130,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
     }
 
 	/**
-	 * all param are in session
-	 * *** Can only set in table at order then put it in session ***
-	 * *** Have to add it in VIrtuemart cart ? ***
-	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnSaveProductFE()
+	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCartModule()
 	 * @author Patrick Kohl
 	 */
 	function onViewCartModule( $product,$param,$productCustom, $row) {
@@ -142,10 +139,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
     }
 
 	/**
-	 * TODO Add all param to session
-	 * *** Can only set in table at order then put it in session ***
-	 * *** Have to add it in VIrtuemart cart ? ***
-	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnSaveProductFE()
+	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCart()
 	 * @author Patrick Kohl
 	 */
 	function onViewCart($product, $param,$productCustom, $row) {
@@ -157,6 +151,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	/**
 	 * Add param as product_attributes 
 	 * from cart to order
+	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCart()
 	 * @author Patrick Kohl
 	 */
 	function onViewCartOrder($product, $param,$productCustom, $row) {
@@ -170,7 +165,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	
 	/**
 	 *
-	 * venodr order display
+	 * vendor order display BE
 	 */
 	function onViewOrderBE($item, $param,$productCustom, $row) {
 		$html  = '<div>';
@@ -182,7 +177,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	
 	/**
 	 *
-	 * shopper order display
+	 * shopper order display FE
 	 */
 	function onViewOrderFE($item, $param,$productCustom, $row) {
 		$html  = '<div>';
@@ -201,20 +196,19 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 		$dbValues['virtuemart_product_id'] = $product->virtuemart_product_id;
 		$dbValues['textinput'] = $this->_virtuemart_paymentmethod_id;
-		$this->writeCustomData($dbValues, '#__virtuemart_product_custom_' . $this->_pelement);
+		$this->writeCustomData($dbValues, '#__virtuemart_product_custom_' . $this->_pname);
 	}
 
 	
 	/**
-	 *
-	 * User order display
+	 * (depredicate)
 	 */
 	function plgVmOnOrderShowFE($product,$order_item_id) {
 		//$dbValues['virtuemart_product_id'] = $product->virtuemart_product_id;
 		//$dbValues['textinput'] = $this->_virtuemart_paymentmethod_id;
-		//$this->writePaymentData($dbValues, '#__virtuemart_product_custom_' . $this->_pelement);
+		//$this->writePaymentData($dbValues, '#__virtuemart_product_custom_' . $this->_pname);
 				$db = JFactory::getDBO();
-		$q = 'SELECT * FROM `#__virtuemart_product_custom_' . $this->_pelement . '` '
+		$q = 'SELECT * FROM `#__virtuemart_product_custom_' . $this->_pname . '` '
 			. 'WHERE `virtuemart_product_id` = ' . $virtuemart_product_id;
 		$db->setQuery($q);
 		if (!($customs = $db->loadObjectList())) {

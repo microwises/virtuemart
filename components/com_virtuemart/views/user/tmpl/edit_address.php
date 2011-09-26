@@ -91,12 +91,16 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
                 <input type="text" name="username" size="18" alt="<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>" value="<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>" onblur="if(this.value=='') this.value='<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>';" onfocus="if(this.value=='<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>') this.value='';" />
             </p>
             <p class="width30 floatleft" id="com-form-login-password">
-                <input type="password" name="passwd" size="10" alt="<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>" value="<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>" onblur="if(this.value=='') this.value='<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>';" onfocus="if(this.value=='<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>') this.value='';" />
-            </p>
+				<?php if ( VmConfig::isJ15() ) { ?>
+					<input type="password" id="passwd" name="passwd" class="inputbox" size="18" alt="password" />
+				<?php } else { ?>
+					<input id="modlgn-passwd" type="password" name="password" class="inputbox" size="18"  />
+				<?php } ?>
+			</p>
             <p class="width30 floatleft" id="com-form-login-remember">
                 <input type="submit" name="Submit" class="default" value="<?php echo JText::_('COM_VIRTUEMART_LOGIN') ?>" />
 <?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
-                <label for="remember"><?php echo JText::_('Remember me') ?></label>
+			<label for="remember"><?php echo $remember_me = VmConfig::isJ15()? JText::_('Remember me') : JText::_('JGLOBAL_REMEMBER_ME') ?></label>
             <input type="checkbox" id="remember" name="remember" class="inputbox" value="yes" alt="Remember Me" />
         </p>
 <?php endif; ?>
@@ -122,9 +126,13 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
         <div class="clr"></div>
     </fieldset>
 
-
-    <input type="hidden" name="option" value="com_user" />
-    <input type="hidden" name="task" value="login" />
+<?php if ( VmConfig::isJ15() ) { ?>
+	<input type="hidden" name="option" value="com_user" />
+	<input type="hidden" name="task" value="login" />
+<?php } else { ?>
+	<input type="hidden" name="option" value="com_users" />
+	<input type="hidden" name="task" value="user.login" />
+<?php } ?>
     <input type="hidden" name="return" value="<?php echo base64_encode($url) ?>" />
     <?php echo JHTML::_('form.token'); ?>
     </form>

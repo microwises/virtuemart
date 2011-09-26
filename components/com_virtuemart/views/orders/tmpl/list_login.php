@@ -51,18 +51,22 @@ endif;
 	<LEGEND><?php echo JText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM') ?></LEGEND>
 
 	<p class="width30 floatleft" id="com-form-login-username">
-		<label for="username"><?php echo JText::_('Username') ?></label><br />
+		<label for="username"><?php echo JText::_('COM_VIRTUEMART_USERNAME') ?></label><br />
 		<input name="username" id="username" type="text" class="inputbox" alt="username" size="18" />
 	</p>
 	<p class="width30 floatleft" id="com-form-login-password">
-		<label for="passwd"><?php echo JText::_('Password') ?></label><br />
-		<input type="password" id="passwd" name="passwd" class="inputbox" size="18" alt="password" />
+		<label for="passwd"><?php echo JText::_('COM_VIRTUEMART_PASSWORD') ?></label><br />
+		<?php if ( VmConfig::isJ15() ) { ?>
+			<input type="password" id="passwd" name="passwd" class="inputbox" size="18" alt="password" />
+		<?php } else { ?>
+			<input id="modlgn-passwd" type="password" name="password" class="inputbox" size="18"  />
+		<?php } ?>
 	</p>
 	<p class="width30 floatleft" id="com-form-login-remember">
 		<input type="submit" name="Submit" class="button" value="<?php echo JText::_('LOGIN') ?>" />
 		<?php if(JPluginHelper::isEnabled('system', 'remember')) : ?>
 		<br/ >
-		<label for="remember"><?php echo JText::_('Remember me') ?></label>
+			<label for="remember"><?php echo $remember_me = VmConfig::isJ15()? JText::_('Remember me') : JText::_('JGLOBAL_REMEMBER_ME') ?></label>
 		<input type="checkbox" id="remember" name="remember" class="inputbox" value="yes" alt="Remember Me" />
 	</p>
 	<?php endif; ?>
@@ -86,9 +90,13 @@ endif;
 	<div class="clr"></div>
 </fieldset>
 
-
+<?php if ( VmConfig::isJ15() ) { ?>
 	<input type="hidden" name="option" value="com_user" />
 	<input type="hidden" name="task" value="login" />
+<?php } else { ?>
+	<input type="hidden" name="option" value="com_users" />
+	<input type="hidden" name="task" value="user.login" />
+<?php } ?>
 	<input type="hidden" name="return" value="<?php echo base64_encode($url) ?>" />
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>

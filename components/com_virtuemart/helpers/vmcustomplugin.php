@@ -141,15 +141,6 @@ abstract class vmCustomPlugin extends JPlugin {
 	 * Get the statut (Eg. payed. >> render only the link for downloadable )
 	 */	
 	abstract function onViewOrderBE($product, $param,$productCustom, $row);
-	
-	
-	/**
-	 * save the product in cart
-	 * Have to save product plugin param value from session  to custom table
-	 */
-		public function plgVmOnOrder(&$value, $product_id){
-			$value = $value.'2';
-	}
 
 	/**
 	 * display The plugin in Product view FE
@@ -169,7 +160,7 @@ abstract class vmCustomPlugin extends JPlugin {
 
 	 /**
 	 * convert param for render and
-	 * display The plugin in Product view FE
+	 * display The plugin in cart
 	 * @ $view is "Module" for see in module, "" for see in cart
 	 */
 	 public function displayInCartPlugin($product,$productCustom, $row ,$view=''){
@@ -184,6 +175,7 @@ abstract class vmCustomPlugin extends JPlugin {
 		if ($plgName) {
 			$plgClass = 'plgVmCustom'.ucfirst ($plgName );
 			if(!class_exists($plgClass)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$plgName.'.php');
+			if(!class_exists($plgClass)) ($this->setError('error '.$plgClass.' not found'));
 			//$plg = new $plgClass ;
 			$plgFunction = 'onViewCart'.$view ;
 			return $plgClass::$plgFunction( $product,$param[$row],$productCustom, $row);
@@ -216,7 +208,7 @@ abstract class vmCustomPlugin extends JPlugin {
 
 	/**
 	 * display The plugin in Product edit view BE
-	 * 
+	 * extend customFields inputType
 	 */
 	 public function inputTypePlugin($field,$product,$row){
 
@@ -231,109 +223,4 @@ abstract class vmCustomPlugin extends JPlugin {
 		} else return '';
 		return $html;
 	 }
-/***************OLD CODE !!!*****************/
-    /**
-     * Get the total weight for the order, based on which the proper shipping rate
-     * can be selected.
-     * @param object $_cart Cart object
-     * @return float Total weight for the order
-     * @author Oscar van Eijk
-     */
-    protected function getOrderWeight(VirtueMartCart $cart, $to_weight_unit) {
-        $weight = 0;
-        foreach ($cart->products as $prod) {
-            $weight += ( ShopFunctions::convertWeigthUnit($prod->product_weight, $prod->product_weight_unit, $to_weight_unit) * $prod->quantity);
-        }
-        return $weight;
-    }
-
-    /**
-     * Fill the array with all carriers found with this plugin for the current vendor
-     * @return True when carrier(s) was (were) found for this vendor, false otherwise
-     * @author Oscar van Eijk
-     */
-    protected function getCustoms($_vendorId) {
-        $db = JFactory::getDBO();
-        if (VmConfig::isJ15()) {
-            $q = 'SELECT v.*  '
-                    . 'FROM   #__virtuemart_custom_plg AS v '
-                    . ',      #__plugins             j '
-                    . 'WHERE j.`element` = "' . $this->_selement . '" '
-                    . 'AND   v.`custom_jplugin_id` = j.`id` '
-                    . 'AND   v.`published` = "1" '
-                    . 'AND  (v.`virtuemart_vendor_id` = "' . $_vendorId . '" '
-                    . ' OR   v.`virtuemart_vendor_id` = "0") '
-            ;
-        } else {
-            $q = 'SELECT v.* '
-                    . 'FROM   #__virtuemart_custom_plg AS v '
-                    . ',      #__extensions    AS      j '
-                    . 'WHERE j.`folder` = "vmshipper" '
-                    . 'AND j.`element` = "' . $this->_selement . '" '
-                    . 'AND   v.`published` = "1" '
-                    . 'AND   v.`custom_jplugin_id` = j.`extension_id` '
-                    . 'AND  (v.`virtuemart_vendor_id` = "' . $_vendorId . '" '
-                    . ' OR   v.`virtuemart_vendor_id` = "0") '
-            ;
-        }
-
-
-        $db->setQuery($q);
-        if (!$results = $db->loadObjectList()) {
-//			$app = JFactory::getApplication();
-//			$app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_CARRIER'));
-            return false;
-        }
-        $this->shippers = $results;
-        return true;
-    }
-
-    /**
-     * Check if this shipper has carriers for the current vendor.
-     * @author Oscar van Eijk
-     * @param integer $_vendorId The vendor ID taken from the cart.
-     * @return True when a shipper_id was found for this vendor, false otherwise
-     */
-    protected function validateVendor($_vendorId) {
-
-        if (!$_vendorId) {
-            $_vendorId = 1;
-        }
-
-        $_db = JFactory::getDBO();
-
-        if (VmConfig::isJ15()) {
-            $_q = 'SELECT 1 '
-                    . 'FROM   #__virtuemart_custom_plg v '
-                    . ',      #__plugins             j '
-                    . 'WHERE j.`element` = "' . $this->_selement . '" '
-                    . 'AND   v.`custom_jplugin_id` = j.`id` '
-                    . 'AND   v.`virtuemart_vendor_id` = "' . $_vendorId . '" '
-                    . 'AND   v.`published` = 1 '
-            ;
-        } else {
-            $_q = 'SELECT 1 '
-                    . 'FROM   #__virtuemart_custom_plg AS v '
-                    . ',      #__extensions   AS     j '
-                    . 'WHERE j.`folder` = "vmshipper" '
-                    . 'AND j.`element` = "' . $this->_selement . '" '
-                    . 'AND   v.`custom_jplugin_id` = j.`extension_id` '
-                    . 'AND   v.`virtuemart_vendor_id` = "' . $_vendorId . '" '
-                    . 'AND   v.`published` = 1 '
-            ;
-        }
-
-
-
-
-        $_db->setQuery($_q);
-        $_r = $_db->loadAssoc();
-
-        if ($_r) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
 }
