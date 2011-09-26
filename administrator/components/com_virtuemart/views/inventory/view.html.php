@@ -44,9 +44,10 @@ class VirtuemartViewInventory extends JView {
 
 		/* Apply currency */
 		$currencydisplay = CurrencyDisplay::getInstance();;
-
+                $weigth_unit = ShopFunctions::getWeightUnit();
 		foreach ($inventorylist as $virtuemart_product_id => $product) {
 			$product->product_price_display = $currencydisplay->priceDisplay($product->product_price,'',false);
+                        $product->weigth_unit_display= $weigth_unit[$product->product_weight_uom];
 		}
 		$this->assignRef('inventorylist', $inventorylist);
 

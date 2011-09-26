@@ -159,7 +159,7 @@ if (empty ( $this->product )) {
 			<span class="product-field-display"><?php echo $field->display ?></span>
 
 			<span class="product-field-desc"><?php echo $field->custom_field_desc ?></span>
-			</div><br/ >
+			</div><br />
 			<?php
 		}
 		?>
@@ -178,7 +178,7 @@ if (empty ( $this->product )) {
 				<span class="product-field-desc"><?php echo JText::_($field->field->custom_value) ?></span>
 				<span class="product-field-display"><?php echo $field->display ?></span>
 
-				</div><br/ >
+				</div><br />
 				<?php
 			} ?>
 		</div>

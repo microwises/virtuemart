@@ -72,7 +72,7 @@ AdminUIHelper::startAdminArea();
 				<!-- Product price -->
 				<td><?php echo $product->product_price_display; ?></td>
 				<!-- Product weight -->
-				<td><?php echo $product->product_weight; ?></td>
+				<td><?php echo $product->product_weight." ". $product->weigth_unit_display; ?></td>
 				<!-- published -->
 				<td><?php echo $published; ?></td>
 			</tr>

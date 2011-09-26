@@ -189,7 +189,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
 
 			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','int(11)');
-			$this->checkAddFieldToTable('#__virtuemart_vendors','custom_param',' text COMMENT "Param for Plugins"');
+			$this->checkAddFieldToTable('#__virtuemart_product_customfields','custom_param',' text COMMENT "Param for Plugins"');
 
 
 			$fields = array('virtuemart_shoppergroup_id'=>'`virtuemart_shoppergroup_id` int(11) DEFAULT NULL',
