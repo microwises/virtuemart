@@ -22,6 +22,11 @@ require(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'application' . DS 
 if(!class_exists('VmModel'))
 require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
 
+//Maybe it is possible to set this within the xml file note by Max Milbers
+@ini_set( 'memory_limit', '32M' );
+@ini_set( 'max_execution_time', '120' );
+
+
 class Migrator extends VmModel{
 
 	//Object to hold old against new ids. We wanna port as when it setup fresh, so no importing of old ids!

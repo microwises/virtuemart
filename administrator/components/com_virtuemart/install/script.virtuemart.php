@@ -110,7 +110,12 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				return $this->update($loadVm);
 			}
 
-			$this->alterSessionTable();
+
+			if(version_compare(JVERSION,'1.6.0','ge')) {
+				$fields = array('data'=>'`data` LONGTEXT NULL AFTER `time`');
+				$this->alterTable('#__session',$fields);
+			}
+
 			// install essential and required data
 			// should this be covered in install.sql (or 1.6's JInstaller::parseSchemaUpdates)?
 			//			if(!class_exists('VirtueMartModelUpdatesMigration')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'updatesMigration.php');

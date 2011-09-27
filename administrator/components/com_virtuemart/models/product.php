@@ -692,7 +692,6 @@ class VirtueMartModelProduct extends VmModel {
 	 function saveorder($cid , $orders) {
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		global $mainframe;
 
 		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0);
 
@@ -723,7 +722,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		if ($ordered) $msg = JText::sprintf('COM_VIRTUEMART_ITEMS_MOVED', $ordered);
 		else $msg = JText::_('COM_VIRTUEMART_ITEMS_NOT_MOVED');
-		$mainframe->redirect('index.php?option=com_virtuemart&view=product&virtuemart_category_id='.$virtuemart_category_id, $msg);
+		JFactory::getApplication()->redirect('index.php?option=com_virtuemart&view=product&virtuemart_category_id='.$virtuemart_category_id, $msg);
 
 	}
 
@@ -734,12 +733,12 @@ class VirtueMartModelProduct extends VmModel {
 	function move($direction) {
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		global $mainframe;
+
 		// Check for request forgeries
 		$table = $this->getTable('product_categories');
 		$table->move($direction);
 
-		$mainframe->redirect('index.php?option=com_virtuemart&view=product&virtuemart_category_id='.JRequest::getInt('virtuemart_category_id', 0));
+		JFactory::getApplication()->redirect('index.php?option=com_virtuemart&view=product&virtuemart_category_id='.JRequest::getInt('virtuemart_category_id', 0));
 	}
 
 	/**

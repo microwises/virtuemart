@@ -503,6 +503,7 @@ class VirtueMartModelUser extends VmModel {
 		$errors = $usertable->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);
+			vmdebug('hmm',$usertable);
 			vmError('storing user adress data'.$error);
 		}
 
