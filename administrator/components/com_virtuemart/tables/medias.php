@@ -219,11 +219,11 @@ class TableMedias extends VmTable {
 				     $this->file_mimetype = 'image/png';
 			     }
 			     elseif($file_extension === 'bmp'){
-				     $this->setError(JText::_('COM_VIRTUEMART_MEDIA_SHOULD_NOT_BMP'));
+				     $this->setError(JText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_NOT_BMP',$name));
 				     $notice = true;
 			     }
 			     else{
-				     $this->setError(JText::_('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE'));
+				     $this->setError(JText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE',$name));
 				     $notice = true;
 			     }
 		     }

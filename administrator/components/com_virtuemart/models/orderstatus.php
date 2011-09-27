@@ -1,20 +1,20 @@
 <?php
 /**
-*
-* Data module for the order status
-*
-* @package	VirtueMart
-* @subpackage OrderStatus
-* @author Oscar van Eijk
-* @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* @version $Id$
-*/
+ *
+ * Data module for the order status
+ *
+ * @package	VirtueMart
+ * @subpackage OrderStatus
+ * @author Oscar van Eijk
+ * @link http://www.virtuemart.net
+ * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * VirtueMart is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * @version $Id$
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -63,8 +63,8 @@ class VirtueMartModelOrderstatus extends VmModel {
 
 		return $this->_data;
 	}
-        function getVMCoreStatusCode(){
-		 return array( 'P','S');
+	function getVMCoreStatusCode(){
+		return array( 'P','S');
 	}
 	/**
 	 * Bind the post data to the order status table and save it
@@ -72,50 +72,50 @@ class VirtueMartModelOrderstatus extends VmModel {
 	 *
 	 * @return boolean True is the save was successful, false otherwise.
 	 */
-/*	function store($data){
+	/*	function store($data){
 
-		$table = $this->getTable('orderstates');
+	$table = $this->getTable('orderstates');
 
 
-// 		$isNew = ($data['virtuemart_orderstate_id'] < 1) ? true : false;
-// 		if ($isNew) {
-// 			$reorderRequired = false;
-// 		} else {
-// 			$table->load($data['virtuemart_orderstate_id']);
+	// 		$isNew = ($data['virtuemart_orderstate_id'] < 1) ? true : false;
+	// 		if ($isNew) {
+	// 			$reorderRequired = false;
+	// 		} else {
+	// 			$table->load($data['virtuemart_orderstate_id']);
 
-// 			if ($table->ordering == $data['ordering']) {
-// 				$reorderRequired = false;
-// 			} else {
-// 				$reorderRequired = true;
-// 			}
-// 		}
-// 		if (!$table->bind($data)) { // Bind data
-// 			$this->setError($table->getError());
-// 			return false;
-// 		}
+	// 			if ($table->ordering == $data['ordering']) {
+	// 				$reorderRequired = false;
+	// 			} else {
+	// 				$reorderRequired = true;
+	// 			}
+	// 		}
+	// 		if (!$table->bind($data)) { // Bind data
+	// 			$this->setError($table->getError());
+	// 			return false;
+	// 		}
 
-// 		if (!$table->check()) { // Perform data checks
-// 			$this->setError($table->getError());
-// 			return false;
-// 		}
+	// 		if (!$table->check()) { // Perform data checks
+	// 			$this->setError($table->getError());
+	// 			return false;
+	// 		}
 
-		if new item, order last in appropriate group
-// 		if ($isNew) {
-// 			$table->ordering = $table->getNextOrder();
-// 		}
+	if new item, order last in appropriate group
+	// 		if ($isNew) {
+	// 			$table->ordering = $table->getNextOrder();
+	// 		}
 
-// 		if (!$table->store($data)) { // Write data to the DB
-// 			$this->setError($table->getError());
-// 			return false;
-// 		}
+	// 		if (!$table->store($data)) { // Write data to the DB
+	// 			$this->setError($table->getError());
+	// 			return false;
+	// 		}
 
-// 		if ($reorderRequired) {
-// 			$table->reorder();
-// 		}
+	// 		if ($reorderRequired) {
+	// 			$table->reorder();
+	// 		}
 
-		return $table->virtuemart_orderstate_id;
+	return $table->virtuemart_orderstate_id;
 	}
-*/
+	*/
 	/**
 	 * Retrieve a list of order statuses from the database.
 	 *
@@ -124,14 +124,12 @@ class VirtueMartModelOrderstatus extends VmModel {
 	function getOrderStatusList()
 	{
 
-if (JRequest::getWord('view') !== 'orderstatus') $ordering = ' order by `ordering` ';
+		if (JRequest::getWord('view') !== 'orderstatus') $ordering = ' order by `ordering` ';
 		else $ordering = $this->_getOrdering();
-/*				$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
-		// set total for pagination
-		$this->_total = $this->_getListCount($query);*/
-
-		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_orderstates`','','',$ordering);
-
+		$this->_noLimit=true;
+		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_orderstates`','','',$ordering);
+		// 		vmdebug('order data',$this->_data);
+		return $this->_data ;
 	}
 
 
@@ -173,7 +171,8 @@ if (JRequest::getWord('view') !== 'orderstatus') $ordering = ' order by `orderin
 			} else {
 				return 0;
 			}
-		} elseif ($_oldStat == 'C' || $_oldStat == 'S') { // Status Shipped shouldn't be changeble...
+		} elseif ($_oldStat == 'C' || $_oldStat == 'S') {
+			// Status Shipped shouldn't be changeble...
 			if ($_newStat == 'X' || $_newStat == 'R' || $_newStat == 'P') {
 				return 1; // Increase stock
 			} else {

@@ -697,21 +697,29 @@ class ShopFunctions {
 	 * Return the countryID of a given country name
 	 *
 	 * @author Oscar van Eijk
+	 * @author Max Milbers
 	 * @access public
 	 * @param string $_name Country name
 	 * @return int Country ID
 	 */
-	public function getCountryIDByName ($_name)
+	public function getCountryIDByName ($name)
 	{
-		if (empty($_name)) {
+		if (empty($name)) {
 			return 0;
 		}
 		$db = JFactory::getDBO();
 
-		$_q = 'SELECT `virtuemart_country_id` FROM `#__virtuemart_countries` WHERE `country_name` = "'.$db->getEscaped($_name).'"';
-		$db->setQuery($_q);
-		$_r = $db->loadResult();
-		return $_r;
+		if(strlen($name)===2){
+			$fieldname = 'country_2_code';
+		} else if(strlen($name)===3){
+			$fieldname = 'country_3_code';
+		} else {
+			$fieldname = 'country_name';
+		}
+		$q = 'SELECT `virtuemart_country_id` FROM `#__virtuemart_countries` WHERE `'.$fieldname.'` = "'.$db->getEscaped($name).'"';
+		$db->setQuery($q);
+		$r = $db->loadResult();
+		return $r;
 	}
 
 	/**
@@ -735,22 +743,28 @@ class ShopFunctions {
 	/**
 	 * Return the stateID of a given state name
 	 *
-	 * @author Max Milberse
+	 * @author Max Milbers
 	 * @access public
 	 * @param string $_name Country name
 	 * @return int Country ID
 	 */
-	public function getStateIDByName ($_name)
+	public function getStateIDByName ($name)
 	{
-		if (empty($_name)) {
+		if (empty($name)) {
 			return 0;
 		}
 		$db = JFactory::getDBO();
-
-		$_q = 'SELECT `virtuemart_state_id` FROM `#__virtuemart_states` WHERE `state_name` = "'.$db->getEscaped($_name).'"';
-		$db->setQuery($_q);
-		$_r = $db->loadResult();
-		return $_r;
+		if(strlen($name)===2){
+			$fieldname = 'state_2_code';
+		} else if(strlen($name)===3){
+			$fieldname = 'state_3_code';
+		} else {
+			$fieldname = 'state_name';
+		}
+		$q = 'SELECT `virtuemart_state_id` FROM `#__virtuemart_states` WHERE `'.$fieldname.'` = "'.$db->getEscaped($name).'"';
+		$db->setQuery($q);
+		$r = $db->loadResult();
+		return $r;
 	}
 	/*
 	 * Return the Tax or code of a given taxID

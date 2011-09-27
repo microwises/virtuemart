@@ -385,6 +385,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
 		$this->checkPermissionForTools();
 
+		$this->storeMigrationOptionsInSession();
 		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->portMedia();
@@ -397,6 +398,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
 		$this->checkPermissionForTools();
 
+		$this->storeMigrationOptionsInSession();
 		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->migrateGeneral();
@@ -414,6 +416,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
 		$this->checkPermissionForTools();
 
+		$this->storeMigrationOptionsInSession();
 		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->migrateUsers();
@@ -432,6 +435,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
 		$this->checkPermissionForTools();
 
+		$this->storeMigrationOptionsInSession();
 		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->migrateProducts();
@@ -449,6 +453,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
 		$this->checkPermissionForTools();
 
+		$this->storeMigrationOptionsInSession();
 		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->migrateOrders();
@@ -465,7 +470,6 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	 * Is doing all migrator steps in one row
 	 *
 	 * @author Max Milbers
-	 * @return boolean
 	 */
 	function migrateAllInOne(){
 
@@ -478,6 +482,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 			return false;
 		}
 
+		$this->storeMigrationOptionsInSession();
 		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->migrateAllInOne();
@@ -485,6 +490,21 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->setRedirect($this->redirectPath, $msg);
 	}
 
+	function storeMigrationOptionsInSession(){
+
+
+		$session = JFactory::getSession();
+
+		$session->set('migration_task', JRequest::getString('task',''), 'vm');
+		$session->set('migration_default_category_browse', JRequest::getString('migration_default_category_browse',''), 'vm');
+		$session->set('migration_default_category_fly', JRequest::getString('migration_default_category_fly',''), 'vm');
+	}
+
+	/**
+	 * This is executing the update table commands to adjust tables to the latest layout
+	 *
+	 * @author Max Milbers
+	 */
 	function updateTable(){
 
 		$db = JFactory::getDBO();

@@ -210,7 +210,7 @@ class VmModel extends JModel {
 			} else {
 				$q = 'SELECT '.$select.$joinedTables;
 			}
-
+// 			vmdebug('my q',$q);
 			$this->_db->setQuery($q,$limitStart,$limit);
 			if($object == 2){
 				$list = $this->_db->loadResultArray();
@@ -219,7 +219,7 @@ class VmModel extends JModel {
 			} else {
 				$list = $this->_db->loadObjectList();
 			}
-
+// 			vmdebug('my $list',$list);
 			if(empty($list)){
 				$errors = $this->_db->getErrorMsg();
 				if( !empty( $errors)){

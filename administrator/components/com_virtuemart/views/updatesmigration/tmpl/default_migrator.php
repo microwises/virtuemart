@@ -16,6 +16,8 @@
 * @version $Id: default_tools.php 4007 2011-08-31 07:31:35Z alatak $
 */
 
+$session = JFactory::getSession();
+vmdebug('my session',$session);
 ?>
 <form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" >
 <input type="hidden" name="task" value="" />
@@ -29,7 +31,8 @@
 
 <tr>
 	<td align="left" colspan="5" >
-		<?php
+		<?php if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+
 		$max_execution_time = ini_get('max_execution_time');
 		echo 'max_execution_time '.$max_execution_time;
 		echo '<br />';
@@ -38,7 +41,7 @@
 		if($max_execution_time===$new_max_execution_time){
 			echo 'Server settings do not allow changes of your max_execution_time in the php.ini file, you may get problems migrating a big shop';
 		} else {
-			echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_CHANGE_MAX_EXECUTION_TIME').'<input class="inputbox" type="text" name="max_execution_time" size="15" value="" />';
+			echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_CHANGE_MAX_EXECUTION_TIME').'<input class="inputbox" type="text" name="max_execution_time" size="15" value="'.$max_execution_time.'" />';
 		}
 		@ini_set( 'max_execution_time', $max_execution_time );
 
@@ -53,7 +56,7 @@
 // 			if($memory_limit===$new_memory_limit){
 // 				echo 'Server settings do not allow changes of your memory_limit in the php.ini file, you may get problems migrating a big shop';
 // 			}else {
-				echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_CHANGE_MEMORY_LIMIT').'<input class="inputbox" type="text" name="memory_limit" size="15" value="" />';
+				echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_CHANGE_MEMORY_LIMIT').'<input class="inputbox" type="text" name="memory_limit" size="15" value="'.$memory_limit.'" />';
 // 			}
 // 			@ini_set( 'max_execution_time', $memory_limit );
 		}
@@ -82,7 +85,7 @@
 			'migrateAllInOne'	=> JText::_('COM_VIRTUEMART_UPDATE_ALL'),
 			'setStoreOwner'	=> JText::_('COM_VIRTUEMART_SETSTOREOWNER')
 		);
-		echo VmHTML::radioList('task', 'all', $options);
+		echo VmHTML::radioList('task', $session->get('migration_task', 'migrateAllInOne', 'vm'), $options);
 	?>
 	</td>
 </tr>
@@ -92,7 +95,7 @@
 		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_DCAT_BROWSE'); ?>
 	</td>
 	<td>
-		<input class="inputbox" type="text" name="default_category_browse" size="15" value="" />
+		<input class="inputbox" type="text" name="migration_default_category_browse" size="15" value="<?php echo $session->get('migration_default_category_browse', '', 'vm') ?>" />
 	</td>
 </tr>
 
@@ -101,7 +104,7 @@
 		<?php echo JText::_('COM_VIRTUEMART_MIGRATION_DCAT_FLY'); ?>
 	</td>
 	<td>
-		<input class="inputbox" type="text" name="default_category_fly" size="15" value="" />
+		<input class="inputbox" type="text" name="migration_default_category_fly" size="" value="<?php echo $session->get('migration_default_category_fly', '', 'vm') ?>" />
 	</td>
 </tr>
 

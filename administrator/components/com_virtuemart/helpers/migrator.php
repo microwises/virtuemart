@@ -42,11 +42,11 @@ class Migrator extends VmModel{
 		$jrmax_execution_time= JRequest::getInt('max_execution_time');
 
 		if(!empty($jrmax_execution_time)){
-			vmdebug('$jrmax_execution_time',$jrmax_execution_time);
+// 			vmdebug('$jrmax_execution_time',$jrmax_execution_time);
 			if($max_execution_time!==$jrmax_execution_time) @ini_set( 'max_execution_time', $jrmax_execution_time );
 		}
 
-		$this->maxScriptTime = ini_get('max_execution_time')*0.85-1;	//Lets use 5% of the execution time as reserve to store the progress
+		$this->maxScriptTime = ini_get('max_execution_time')*0.90-1;	//Lets use 5% of the execution time as reserve to store the progress
 
 
 		$memory_limit = ini_get('memory_limit');
@@ -602,8 +602,8 @@ class Migrator extends VmModel{
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
 		$catModel = new VirtueMartModelCategory();
 
-		$default_category_browse = JRequest::getWord('default_category_browse','');
-		$default_category_fly = JRequest::getWord('default_category_fly','');
+		$default_category_browse = JRequest::getWord('migration_default_category_browse','');
+		$default_category_fly = JRequest::getWord('migration_default_category_fly','');
 		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 			return;
 		}
@@ -1149,7 +1149,6 @@ class Migrator extends VmModel{
 					//$orderData->order_status = $orderCodeToId[$order['order_status']];
 					$orderData->order_status = $order['order_status'];
 
-
 					if(isset($_cart->virtuemart_currency_id)){
 						$orderData->user_currency_id = $order['order_currency'];
 						//$orderData->user_currency_rate = $order['order_status'];
@@ -1233,6 +1232,8 @@ class Migrator extends VmModel{
 						$item['virtuemart_order_id'] = $newId;
 						$item['virtuemart_country_id'] = ShopFunctions::getCountryIDByName($item['country']);
 						$item['virtuemart_state_id'] = ShopFunctions::getStateIDByName($item['state']);
+
+						$item['email'] = $item['user_email'];
 						$orderUserinfoTable = $this->getTable('order_userinfos');
 						$orderUserinfoTable->bindChecknStore($item);
 						$errors = $orderUserinfoTable->getErrors();
