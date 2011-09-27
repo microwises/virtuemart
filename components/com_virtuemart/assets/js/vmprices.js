@@ -44,17 +44,15 @@
 					if(datas.stat !=0){
 						var value = form.find('.quantity-input').val() ;
 						var txt = value+" "+form.find(".pname").val()+' '+vmCartText;
-						$.facebox({ text: datas.msg +"<H4>"+txt+"</H4>",
-							closeImage : closeImage,
-							loadingImage : loadingImage,
-							faceboxHtml : faceboxHtml
-						}, 'my-groovy-style');
+                                                $.facebox.settings.closeImage = closeImage;
+                                                $.facebox.settings.loadingImage = loadingImage;
+                                                $.facebox.settings.faceboxHtml = faceboxHtml;
+						$.facebox({ text: datas.msg +"<H4>"+txt+"</H4>" }, 'my-groovy-style');
 					} else {
-						$.facebox({ text: "<H4>"+vmCartError+"</H4>"+datas.msg,
-							closeImage : closeImage,
-							loadingImage : loadingImage,
-							faceboxHtml : faceboxHtml
-						}, 'my-groovy-style');
+                                                $.facebox.settings.closeImage = closeImage;
+                                                $.facebox.settings.loadingImage = loadingImage;
+                                                $.facebox.settings.faceboxHtml = faceboxHtml;
+						$.facebox({ text: "<H4>"+vmCartError+"</H4>"+datas.msg }, 'my-groovy-style');
 					}
 					if ($(".vmCartModule")[0]) {
 						$.ajaxSetup({ cache: false })
