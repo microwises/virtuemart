@@ -300,7 +300,7 @@ class VmTable extends JTable{
 							if($id != $this->$tblKey){
 								//$datenow = JFactory::getDate();
 								$this->$obkeys = $this->$obkeys.rand();
-								vmWarn('COM_VIRTUEMART_NON_UNIQUE_WARN',$obkeys,$this->$obkeys);
+								vmWarn('COM_VIRTUEMART_NON_UNIQUE_WARN',$obkeys,$this->_tbl,$this->$obkeys);
 							}
 						}
 					}

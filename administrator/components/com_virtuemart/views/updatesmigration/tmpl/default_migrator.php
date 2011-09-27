@@ -26,6 +26,42 @@
 		<h3> <?php echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_TITLE'); ?> </h3>
 	</td>
 </tr>
+
+<tr>
+	<td align="left" colspan="5" >
+		<?php
+		$max_execution_time = ini_get('max_execution_time');
+		echo 'max_execution_time '.$max_execution_time;
+		echo '<br />';
+		@ini_set( 'max_execution_time', $max_execution_time+1 );
+		$new_max_execution_time = ini_get('max_execution_time');
+		if($max_execution_time===$new_max_execution_time){
+			echo 'Server settings do not allow changes of your max_execution_time in the php.ini file, you may get problems migrating a big shop';
+		} else {
+			echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_CHANGE_MAX_EXECUTION_TIME').'<input class="inputbox" type="text" name="max_execution_time" size="15" value="" />';
+		}
+		@ini_set( 'max_execution_time', $max_execution_time );
+
+		echo '<br />';
+		$memory_limit = ini_get('memory_limit');
+		echo 'memory_limit '.$memory_limit;
+		echo '<br />';
+		if($memory_limit!=='128MB'){
+
+// 			@ini_set( 'memory_limit', '128MB' );
+// 			$new_memory_limit = ini_get('memory_limit');
+// 			if($memory_limit===$new_memory_limit){
+// 				echo 'Server settings do not allow changes of your memory_limit in the php.ini file, you may get problems migrating a big shop';
+// 			}else {
+				echo JText::_('COM_VIRTUEMART_UPDATE_MIGRATION_CHANGE_MEMORY_LIMIT').'<input class="inputbox" type="text" name="memory_limit" size="15" value="" />';
+// 			}
+// 			@ini_set( 'max_execution_time', $memory_limit );
+		}
+
+		?>
+	</td>
+</tr>
+
 <tr>
     <td align="center">
 		<button class="default" type="submit" ><?php echo JText::_('COM_VIRTUEMART_MIGRATE'); ?></button>

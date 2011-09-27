@@ -22,10 +22,6 @@ require(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'application' . DS 
 if(!class_exists('VmModel'))
 require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
 
-//Maybe it is possible to set this within the xml file note by Max Milbers
-@ini_set( 'memory_limit', '32M' );
-@ini_set( 'max_execution_time', '120' );
-
 
 class Migrator extends VmModel{
 
@@ -41,10 +37,23 @@ class Migrator extends VmModel{
 		$this->_db = JFactory::getDBO();
 		$this->_oldToNew = new stdClass();
 		$this->starttime = microtime(true);
+
+		$max_execution_time = ini_get('max_execution_time');
+		$jrmax_execution_time= JRequest::getInt('max_execution_time');
+
+		if(!empty($jrmax_execution_time)){
+			vmdebug('$jrmax_execution_time',$jrmax_execution_time);
+			if($max_execution_time!==$jrmax_execution_time) @ini_set( 'max_execution_time', $jrmax_execution_time );
+		}
+
 		$this->maxScriptTime = ini_get('max_execution_time')*0.85-1;	//Lets use 5% of the execution time as reserve to store the progress
-		// 		$this->maxScriptTime = 20;
-		$this->maxMemoryLimit = $this -> return_bytes(ini_get('memory_limit')) * 0.75;		//Lets use 25 % as reserve
-		// 		$this->maxMemoryLimit = $this -> return_bytes('20M');
+
+
+		$memory_limit = ini_get('memory_limit');
+		if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
+
+		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) * 0.75;		//Lets use 25 % as reserve
+		//$this->maxMemoryLimit = $this -> return_bytes('20M');
 
 		// 		ini_set('memory_limit','35M');
 		$q = 'SELECT `id` FROM `#__virtuemart_migration_oldtonew_ids` ';
@@ -138,7 +147,9 @@ class Migrator extends VmModel{
 	}
 
 	function migrateProducts(){
+
 		$result = $this->portMedia();
+
 		$result = $this->portCategories();
 		$result = $this->portManufacturerCategories();
 		$result = $this->portManufacturers();
