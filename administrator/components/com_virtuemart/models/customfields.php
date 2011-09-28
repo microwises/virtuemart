@@ -525,6 +525,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$group->display = VmHTML::select($group->options,'customPrice['.$row.']['.$group->virtuemart_custom_id.']',$group->custom_value,$default->custom_value,'value','text',false);
 				} else if ($group->field_type == 'E'){
 					$group->display ='';
+					
 					foreach ($group->options as $productCustom) {
 						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
 						else  $price = $free ;
@@ -534,6 +535,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$group->display .= '<input type="hidden" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').': '.$price ;
 						$row++;
 					}
+					$row--;
 				} else if ($group->field_type == 'U'){
 					foreach ($group->options as $productCustom) {
 						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
@@ -706,9 +708,10 @@ class VirtueMartModelCustomfields extends VmModel {
 		$html = '<div class="vm-customfield-mod">';
 		foreach ($variantmods as $variant=>$selected){
 			if ($selected) {
+
 				$productCustom = self::getProductCustomFieldCart ($product_id,$selected );
  				if ($productCustom->field_type == "E") {
-
+					$product = self::addParam($product);
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
 					//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
 					$html .= vmCustomPlugin::displayInCartPlugin( $product,$productCustom, $row,'Module');
@@ -743,7 +746,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			if ($selected) {
 				$productCustom = self::getProductCustomFieldCart ($product_id,$selected );
  				if ($productCustom->field_type == "E") {
-
+					$product = self::addParam($product);
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
 					//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
 					$html .= vmCustomPlugin::displayInCartPlugin( $product,$productCustom, $row);
@@ -815,7 +818,6 @@ class VirtueMartModelCustomfields extends VmModel {
  			if ($param) {
 				$productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id );
  				if ($productCustom->field_type == "E") {
-
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
 					//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
 					$html .= vmCustomPlugin::displayInOrderPlugin( $item,$param,$productCustom, $row,"FE");
@@ -844,6 +846,17 @@ class VirtueMartModelCustomfields extends VmModel {
 			Where `virtuemart_product_id` ='.$product_id.' and `virtuemart_customfield_id` ='.(int)$selected;
 		$db->setQuery($query);
 		return $db->loadObject();
+	}
+	/*
+	 * add parameter to product definition
+	 */
+	public function addParam($product) {
+			$custom_param = empty($product->custom_param) ? array() : json_decode($product->custom_param);
+			$product_param = empty($product->customPlugin) ? array() : json_decode($product->customPlugin);
+			$params = (array)$product_param + (array)$custom_param;
+			foreach ($params as $key => $param )
+				$product->param[$key] = $param ;
+		return $product ;
 	}
 }
 // pure php no closing tag

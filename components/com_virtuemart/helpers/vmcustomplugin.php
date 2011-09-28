@@ -17,6 +17,8 @@
  * @version $Id: vmshipperplugin.php 4007 2011-08-31 07:31:35Z alatak $
  */
 // Load the helper functions that are needed by all plugins
+if (!class_exists('VmHTML'))
+    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 if (!class_exists('ShopFunctions'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 if (!class_exists('DbScheme'))
@@ -165,20 +167,13 @@ abstract class vmCustomPlugin extends JPlugin {
 	 */
 	 public function displayInCartPlugin($product,$productCustom, $row ,$view=''){
 		$plgName = $productCustom->value;
-		static $param = null ;
-		if ( $row ==0 ) {
-			$custom_param = empty($product->custom_param) ? array() : (array)json_decode($product->custom_param);
-			$product_param = empty($product->customPlugin) ? array() : (array)json_decode($product->customPlugin);
-			$param = array_merge($product_param , $custom_param);
-		}
-
 		if ($plgName) {
 			$plgClass = 'plgVmCustom'.ucfirst ($plgName );
 			if(!class_exists($plgClass)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$plgName.'.php');
 			if(!class_exists($plgClass)) ($this->setError('error '.$plgClass.' not found'));
 			$plg = new $plgClass ;
 			$plgFunction = 'onViewCart'.$view ;
-			return $plg->$plgFunction( $product,$param[$row],$productCustom, $row);
+			return $plg->$plgFunction( $product,$product->param[$row] ,$productCustom, $row);
 		} else return '';
 	 }
 	 /**
