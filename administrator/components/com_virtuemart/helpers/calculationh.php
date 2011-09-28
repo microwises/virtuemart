@@ -479,6 +479,19 @@ class calculationHelper {
 	 * @param $_code Coupon code
 	 */
 	private function couponHandler($_code) {
+
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmCouponHandler', array($_code, $this->_cartData, $this->_cartPrices));
+		if(!empty($returnValues)){
+			foreach ($returnValues as $returnValue) {
+				if ($returnValue !== null  ) {
+					//Take a look on this seyi, I am not sure about that, but it should work at least simular note by Max
+					//$couponData = $returnValue;
+					return $returnValue;
+				}
+			}
+		}
+
 		if (!class_exists('CouponHelper'))
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
 		if (!($_data = CouponHelper::getCouponDetails($_code))) {

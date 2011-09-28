@@ -439,43 +439,6 @@ class VirtueMartModelOrders extends VmModel {
 					/* Update the order history */
 					$this->_updateOrderHist($virtuemart_order_id, $order['order_status'], $order['customer_notified'], $order['comments']);
 
-					/* Update stock level */
-/*					if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
-					$_updateStock = VirtueMartModelOrderstatus::updateStockAfterStatusChange($new_status, $order_status_code);
-					if ($_updateStock != 0) {
-						if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
-						$_productModel = new VirtueMartModelProduct();
-						$_q = 'SELECT virtuemart_product_id, product_quantity
-											FROM `#__virtuemart_order_items`
-											WHERE `virtuemart_order_id` = "'.(int)$virtuemart_order_id.'" ';
-						$db->setQuery($_q);
-						if ($_products = $db->loadObjectList()) {
-							foreach ($_products as $_key => $_product) {
-								if ($_updateStock > 0) {
-									// Increase
-									$_productModel->increaseStockAfterCancel ($_product->virtuemart_product_id, $_product->product_quantity);
-								} else { // Decrease
-									$_productModel->decreaseStockAfterSales ($_product->virtuemart_product_id, $_product->product_quantity);
-								}
-							}
-						}
-					}*/
-
-					// Update order item status
-/*					if (!empty($update_lines[$virtuemart_order_id])) {
-						$q = 'SELECT virtuemart_order_item_id
-											FROM #__virtuemart_order_items
-											WHERE virtuemart_order_id="'.$virtuemart_order_id.'"';
-						$db = JFactory::getDBO();
-						$db->setQuery($q);
-						$order_items = $db->loadObjectList();
-						if ($order_items) {
-							foreach ($order_items as $key => $order_item) {
-								$this->updateSingleItem($order_item->virtuemart_order_item_id, $new_status);
-							}
-						}
-					}
-
 					// Send a download ID */
 					//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($virtuemart_order_id);
 
@@ -484,7 +447,19 @@ class VirtueMartModelOrders extends VmModel {
 						$order['virtuemart_order_id'] =$virtuemart_order_id ;
 						$this->notifyCustomer($order, $comments);
 					}
-// 					$updated++;*/
+
+					$dispatcher = JDispatcher::getInstance();
+					$returnValues = $dispatcher->trigger('plgVmUpdateOrderStatus', array($data, $order_status_code));
+					if(!empty($returnValues)){
+						foreach ($returnValues as $returnValue) {
+							if ($returnValue !== null  ) {
+								//Take a look on this seyi, I am not sure about that, but it should work at least simular note by Max
+								//$couponData = $returnValue;
+								return $returnValue;
+							}
+						}
+					}
+
 				} else {
 					$error++;
 				}
@@ -744,6 +719,8 @@ class VirtueMartModelOrders extends VmModel {
 		$_orderID = $db->insertid();
 
 		if (!empty($_cart->couponCode)) {
+			//set the virtuemart_order_id in the Request for 3rd party coupon components (by Seyi and Max)
+			JRequest::setVar ( 'virtuemart_order_id', $_orderData->virtuemart_order_id );
 			// If a gift coupon was used, remove it now
 			CouponHelper::RemoveCoupon($_cart->couponCode);
 		}
@@ -1052,7 +1029,7 @@ vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_s
 					$row++;
 				}
 				//if (isset($_prod->userfield )) $_prod->product_attribute .= '<br/ > <b>'.$_prod->userfield.' : </b>';
-				$_orderItems->product_attribute = json_encode($product_attribute); 
+				$_orderItems->product_attribute = json_encode($product_attribute);
 				//print_r($product_attribute);
 			} else $_orderItems->product_attribute = null ;
 			// TODO: add fields for the following data:

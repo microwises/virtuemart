@@ -79,7 +79,7 @@ class VmImage extends VmMediaHandler {
 				$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_FOUND').' '.$this->file_description;
 			} else {
 				$file_url = $this->file_url;
-				$file_alt = $this->file_description;
+				$file_alt = $this->file_meta;
 			}
 		}
 

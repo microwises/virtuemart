@@ -435,7 +435,7 @@ class VmMediaHandler {
 				if ($file_alt ) $file_alt = 'title="'.$file_alt.'"';
 				if ($this->file_url) $href = JURI::root() .$this->file_url ;
 				else $href = $image ;
-				$lightboxImage = '<a '.$file_alt.' '.$effect.' href="'.$href.'">'.$image.'</a>';
+				$lightboxImage = '<a '.$file_alt.' '.$effect.' href="'.$href.'">'.$image.'</a>'.$this->file_description;
 				return $lightboxImage;
 			} else {
 				return JHTML::image($file_url, $file_alt, $imageArgs);

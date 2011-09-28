@@ -14,7 +14,7 @@
  * other free or open source software licenses
  * @version $Id$
  */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -26,32 +26,49 @@ abstract class CouponHelper
 	 * @param string $_code Coupon code
 	 * @param float $_billTotal Total amount for the order
 	 * @author Oscar van Eijk
+	 * @author Max Milbers
 	 * @return string Empty when the code is valid, otherwise the error message
 	 */
 	static public function ValidateCouponCode($_code, $_billTotal)
 	{
-		$_db = JFactory::getDBO();
-		$_q = 'SELECT IF( NOW() >= `coupon_start_date` , 1, 0 ) AS started '
+		$couponData = 0;
+
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmValidateCouponCode', array($_code, $_billTotal));
+		if(!empty($returnValues)){
+			foreach ($returnValues as $returnValue) {
+				if ($returnValue !== null  ) {
+					//Take a look on this seyi, I am not sure about that, but it should work at least simular note by Max
+					$couponData = $returnValue;
+				}
+			}
+		}
+		if(empty($couponData)){
+			$_db = JFactory::getDBO();
+			$_q = 'SELECT IF( NOW() >= `coupon_start_date` , 1, 0 ) AS started '
 			. ', `coupon_start_date` '
 			. ', IF( NOW() > `coupon_expiry_date`, 1, 0 ) AS ended '
 			. ', `coupon_value_valid` '
 			. 'FROM `#__virtuemart_coupons` '
 			. 'WHERE `coupon_code` = "' . $_db->getEscaped($_code) . '"';
-		$_db->setQuery($_q);
-		$_couponData = $_db->loadObject();
-		if (!$_couponData) {
+			$_db->setQuery($_q);
+			$couponData = $_db->loadObject();
+		}
+
+		if (!$couponData) {
 			return JText::_('COM_VIRTUEMART_COUPON_CODE_INVALID');
 		}
-		if (!$_couponData->started) {
-			return JText::_('COM_VIRTUEMART_COUPON_CODE_NOTYET') . $_couponData->coupon_start_date;
+		if (!$couponData->started) {
+			return JText::_('COM_VIRTUEMART_COUPON_CODE_NOTYET') . $couponData->coupon_start_date;
 		}
-		if ($_couponData->ended) {
+		if ($couponData->ended) {
 			self::RemoveCoupon($_code, true);
 			return JText::_('COM_VIRTUEMART_COUPON_CODE_EXPIRED');
 		}
-		if ($_billTotal < $_couponData->coupon_value_valid) {
-			return JText::_('COM_VIRTUEMART_COUPON_CODE_TOOLOW') . $_couponData->coupon_value_valid;
+		if ($_billTotal < $couponData->coupon_value_valid) {
+			return JText::_('COM_VIRTUEMART_COUPON_CODE_TOOLOW') . $couponData->coupon_value_valid;
 		}
+
 		return '';
 	}
 
@@ -82,6 +99,18 @@ abstract class CouponHelper
 	 */
 	static public function RemoveCoupon($_code, $_force = false)
 	{
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmRemoveCoupon', array($_code, $_force));
+		if(!empty($returnValues)){
+			foreach ($returnValues as $returnValue) {
+				if ($returnValue !== null  ) {
+					//Take a look on this seyi, I am not sure about that, but it should work at least simular note by Max
+					//$couponData = $returnValue;
+					return $returnValue;
+				}
+			}
+		}
+
 		if ($_force !== true) {
 			$_data = self::getCouponDetails($_code);
 			if ($_data->coupon_type != 'gift') {

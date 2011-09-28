@@ -53,6 +53,7 @@ class VirtueMartCart {
 	var $lists = null;
 // 	var $user = null;
 	var $prices = null;
+	var $pricesUnformatted = null;
 
 	private static $_cart = null;
 
@@ -1202,7 +1203,7 @@ public function removeProductCart($prod_id=0) {
 		$nbShipping = 0;
 		if (!class_exists('vmShipperPlugin'))
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
-		JPluginHelper::importPlugin('vmshipper'); 
+		JPluginHelper::importPlugin('vmshipper');
                 if (VmConfig::get('automatic_shipping',1) ) {
                     $dispatcher = JDispatcher::getInstance();
                     $returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipping', array('cart' => $this));
@@ -1231,7 +1232,7 @@ public function removeProductCart($prod_id=0) {
 		if (!class_exists('vmPaymentPlugin'))
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
-                if (VmConfig::get('automatic_payment',1) ) {      
+                if (VmConfig::get('automatic_payment',1) ) {
                     $dispatcher = JDispatcher::getInstance();
                     $returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedPayment', array('cart' => $this));
                     foreach ($returnValues as $returnValue) {
