@@ -296,8 +296,7 @@ if (empty ( $this->product )) {
 	$product_packaging = '';
 	if ($this->product->packaging || $this->product->box) { ?>
 	<div class="product-packaging">
-		<span class="bold"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_PACKAGING2') ?></span>
-		<br />
+		
 		<?php
 		if ($this->product->packaging) {
 			$product_packaging .= JText::_('COM_VIRTUEMART_PRODUCT_PACKAGING1').$this->product->packaging;
