@@ -272,10 +272,12 @@ class VmTable extends JTable{
 		foreach($this->_obkeys as $obkeys => $error){
 			if(empty($this->$obkeys)){
 				if(empty($error)){
-					$this->setError('Serious error cant save ' . $this->_tbl . ' without ' . $obkeys);
+					$error = 'Serious error cant save ' . $this->_tbl . ' without ' . $obkeys;
 				}else {
-					$this->setError(get_class($this).' '.JText::_($error));
+					$error = get_class($this).' '.JText::_($error);
 				}
+				$this->setError($error);
+				vmError($error);
 				return false;
 			}
 		}
@@ -287,6 +289,7 @@ class VmTable extends JTable{
 				if(empty($this->$obkeys)){
 					// 					$this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE_KEY',$this->$obkeys));
 					$this->setError($error);
+					vmError($error);
 					return false;
 				} else {
 					$q = 'SELECT `' . $this->_tbl_key . '`,`' . $this->_db->getEscaped($obkeys) . '` FROM `' . $this->_tbl . '` ';

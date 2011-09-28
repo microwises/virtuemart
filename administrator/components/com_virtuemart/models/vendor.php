@@ -137,7 +137,7 @@ class VirtueMartModelVendor extends VmModel {
      * @author Max Milbers
      * @return boolean True is the save was successful, false otherwise.
 	 */
-    function store($data){
+    function store(&$data){
 
 	JPluginHelper::importPlugin('vmvendor');
 	$dispatcher = JDispatcher::getInstance();
@@ -146,13 +146,15 @@ class VirtueMartModelVendor extends VmModel {
 		$data = array_merge($plg_data);
 	}
 
+	$oldVendorId = $data['virtuemart_vendor_id'];
+
 	$table = $this->getTable('vendors');
 
-	if(!$table->checkDataContainsTableFields($data)){
+/*	if(!$table->checkDataContainsTableFields($data)){
 		$app = JFactory::getApplication();
     	//$app->enqueueMessage('Data contains no Info for vendor, storing not needed');
 		return $this->_id;
-	}
+	}*/
 
 	// Store multiple selectlist entries as a ; separated string
 	if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
@@ -163,11 +165,35 @@ class VirtueMartModelVendor extends VmModel {
    $errors = $table->getErrors();
 	foreach($errors as $error){
 		$this->setError($error);
+		vmError('store vendor',$error);
 	}
 
 	//set vendormodel id to the lastinserted one
 	$dbv = $table->getDBO();
 	if(empty($this->_id)) $this->_id = $dbv->insertid();
+
+	if($this->_id!=$oldVendorId){
+
+		$app = JFactory::getApplication();
+		$app ->enqueueMessage('Developer notice, tried to update vendor xref should not appear in singlestore');
+
+		//update user table
+		$usertable = $this->getTable('vmusers');
+// 		$vendorsUserData =$usertable->load($this->_id);
+// 		$vendorsUserData =$usertable->load($data['virtuemart_user_id']);
+// 		$vendorsUserData->virtuemart_vendor_id = $virtuemart_vendor_id;
+		//$vmusersData = array('virtuemart_user_id'=>$data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$data['customer_number'],'perms'=>$data['perms']);
+
+		$usertable->bindChecknStore($data,true);
+
+		$errors = $usertable->getErrors();
+		foreach($errors as $error){
+			$this->setError($error);
+			vmError('Store vendor '.$error);
+			vmdebug('Store vendor '.$error);
+		}
+
+	}
 
 	/* Process the images */
 	if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
@@ -178,6 +204,7 @@ class VirtueMartModelVendor extends VmModel {
 	foreach($errors as $error){
 		$this->setError($error);
 	}
+
 
 	$plg_datas = $dispatcher->trigger('plgVmAfterVendorStore',$data);
 	foreach($plg_datas as $plg_data){

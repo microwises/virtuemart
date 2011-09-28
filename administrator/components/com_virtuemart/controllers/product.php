@@ -1,20 +1,20 @@
 <?php
 /**
-*
-* Product controller
-*
-* @package	VirtueMart
-* @subpackage
-* @author RolandD
-* @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* @version $Id$
-*/
+ *
+ * Product controller
+ *
+ * @package	VirtueMart
+ * @subpackage
+ * @author RolandD
+ * @link http://www.virtuemart.net
+ * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * VirtueMart is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * @version $Id$
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -108,14 +108,12 @@ class VirtuemartControllerProduct extends VmController {
 	 */
 	function save(){
 
-		$product_desc = JRequest::getVar('product_desc','','post','STRING',JREQUEST_ALLOWRAW);
- $data = JRequest::get('post');
- $data['product_desc'] = $product_desc;
-// 		vmdebug('my data in product save ',$data);
+		$data = JRequest::get('post');
+
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(Permissions::getInstance()->check('admin')){
-// 			$data['product_desc'] = JRequest::getVar('product_desc','','post','STRING',JREQUEST_ALLOWHTML);
 			$data['product_desc'] = JRequest::getVar('product_desc','','post','STRING',2);
+			$data['product_s_desc'] = JRequest::getVar('product_s_desc','','post','STRING',2);
 		}
 
 		parent::save($data);
@@ -154,10 +152,10 @@ class VirtuemartControllerProduct extends VmController {
 	}
 
 	/**
-	* Clone a product
-	*
-	* @author RolandD, Max Milbers
-	*/
+	 * Clone a product
+	 *
+	 * @author RolandD, Max Milbers
+	 */
 	public function CloneProduct() {
 		$mainframe = Jfactory::getApplication();
 
@@ -184,11 +182,11 @@ class VirtuemartControllerProduct extends VmController {
 
 
 	/**
-	* Get a list of related products, categories
-	* or customfields
-	* @author RolandD
-	* Kohl Patrick
-	*/
+	 * Get a list of related products, categories
+	 * or customfields
+	 * @author RolandD
+	 * Kohl Patrick
+	 */
 	public function getData() {
 
 		/* Create the view object. */
@@ -206,18 +204,18 @@ class VirtuemartControllerProduct extends VmController {
 	}
 
 	/**
-	* Add a product rating
-	* @author RolandD
-	*/
+	 * Add a product rating
+	 * @author RolandD
+	 */
 	public function addRating() {
 		$mainframe = Jfactory::getApplication();
 
 		/* Get the product ID */
-// 		$cids = array();
+		// 		$cids = array();
 		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
 		jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($cids);
-// 		if (!is_array($cids)) $cids = array($cids);
+		// 		if (!is_array($cids)) $cids = array($cids);
 
 		$mainframe->redirect('index.php?option=com_virtuemart&view=ratings&task=add&virtuemart_product_id='.$cids[0]);
 	}

@@ -349,7 +349,7 @@ class VirtueMartModelUser extends VmModel {
 // 				$this->setError('user bind '.$error);
 				vmError('user bind '.$error,'Couldnt store user '.$error);
 			}
-			return false;
+			array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId,'success'=>false);
 		}
 
 		if($new){
@@ -394,7 +394,7 @@ class VirtueMartModelUser extends VmModel {
 		// If an exising superadmin gets a new group, make sure enough admins are left...
 		if (!$new && $user->get('gid') != $gid && $gid == __SUPER_ADMIN_GID) {
 			if ($this->getSuperAdminCount() <= 1) {
-				$this->setError(JText::_('COM_VIRTUEMART_USER_ERR_ONLYSUPERADMIN'));
+				vmError(JText::_('COM_VIRTUEMART_USER_ERR_ONLYSUPERADMIN'));
 				return false;
 			}
 		}
@@ -410,16 +410,38 @@ class VirtueMartModelUser extends VmModel {
 		$this->setUserId($newId);
 
 		//Save the VM user stuff
-		if(!$this->saveUserData($data)){
-			$this->setError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA')  );
-			JError::raiseWarning('', JText::_('COM_VIRTUEMART_RAISEWARNING_NOT_ABLE_TO_SAVE_USER_DATA'));
+		if(!$this->saveUserData($data) || !self::storeAddress($data)){
+			vmError('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA');
+// 			vmError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
+		} else {
+			if ($new) {
+				if ( $useractivation == 1 ) {
+					vmInfo('COM_VIRTUEMART_REG_COMPLETE_ACTIVATE');
+				} else {
+					vmInfo('COM_VIRTUEMART_REG_COMPLETE');
+				}
+			} else {
+				vmInfo('COM_VIRTUEMART_USER_DATA_STORED');
+			}
 		}
 
-		if (!self::storeAddress($data)) {
-			$this->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
-		}
+// 		if (!self::storeAddress($data)) {
+// 			vmError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
+// 		}
 
-		$this ->storeVendorData($data);
+		if($data['user_is_vendor']!==0){
+			if($this ->storeVendorData($data)){
+				if ($new) {
+					if ( $useractivation == 1 ) {
+						vmInfo('COM_VIRTUEMART_REG_VENDOR_COMPLETE_ACTIVATE');
+					} else {
+						vmInfo('COM_VIRTUEMART_REG_VENDOR_COMPLETE');
+					}
+				} else {
+					vmInfo('COM_VIRTUEMART_VENDOR_DATA_STORED');
+				}
+			}
+		}
 
 		// Send registration confirmation mail
 		//		$password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
@@ -428,17 +450,33 @@ class VirtueMartModelUser extends VmModel {
 		//		self::doRegisterEmail($user, $password);
 
 		// Everything went fine, set relevant message depending upon user activation state and display message
-		if ($new) {
+
+/*		if ($new) {
 			if ( $useractivation == 1 ) {
-				$message  = JText::_('COM_VIRTUEMART_REG_COMPLETE_ACTIVATE');
+				if($data['user_is_vendor']!==0){
+					$message  = JText::_('COM_VIRTUEMART_REG_VENDOR_COMPLETE_ACTIVATE');
+				} else {
+					$message  = JText::_('COM_VIRTUEMART_REG_COMPLETE_ACTIVATE');
+				}
+
 			} else {
-				$message = JText::_('COM_VIRTUEMART_REG_COMPLETE');
+				if($data['user_is_vendor']!==0){
+					$message = JText::_('COM_VIRTUEMART_REG_VENDOR_COMPLETE');
+				} else {
+					$message = JText::_('COM_VIRTUEMART_REG_COMPLETE');
+				}
+
 			}
 		} else {
-			$message = JText::_('COM_VIRTUEMART_USER_DATA_STORED');	//TODO write right keystring
+			if($data['user_is_vendor']!==0){
+				$message = JText::_('COM_VIRTUEMART_VENDOR_DATA_STORED');
+			} else {
+				$message = JText::_('COM_VIRTUEMART_USER_DATA_STORED');
+			}
 		}
 
-		return array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId);
+		vmInfo($message);*/
+		return array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId,'success'=>$success);
 
 	}
 
@@ -503,7 +541,6 @@ class VirtueMartModelUser extends VmModel {
 		$errors = $usertable->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);
-			vmdebug('hmm',$usertable);
 			vmError('storing user adress data'.$error);
 		}
 
@@ -525,8 +562,6 @@ class VirtueMartModelUser extends VmModel {
 				vmError('Set shoppergroup '.$error);
 			}
 		}
-
-
 
   		$plg_datas = $dispatcher->trigger('plgVmAfterUserStore',$data);
 		foreach($plg_datas as $plg_data){
@@ -552,10 +587,10 @@ class VirtueMartModelUser extends VmModel {
 
 			if (!$vendorModel->store($data)) {
 				$this->setError($vendorModel->getError());
-
+				vmdebug('Error storing vendor',$vendorModel);
 				return false;
 			}
-			else{
+/*			else{
 				//Update xref Table
 				$virtuemart_vendor_id = $vendorModel->getId();
 				if($virtuemart_vendor_id!=$data['virtuemart_vendor_id']){
@@ -569,13 +604,19 @@ class VirtueMartModelUser extends VmModel {
 					$vendorsUserData->virtuemart_vendor_id = $virtuemart_vendor_id;
 					//$vmusersData = array('virtuemart_user_id'=>$data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$data['customer_number'],'perms'=>$data['perms']);
 
-					if (!$usertable->bindChecknStore($vendorsUserData)){
-						$this->setError($usertable->getError());
-						return false;
+					$usertable->bindChecknStore($vendorsUserData);
+
+					$errors = $usertable->getErrors();
+					foreach($errors as $error){
+						$this->setError($error);
+						vmError('Store vendor '.$error);
+						vmdebug('Store vendor '.$error);
 					}
+
 				}
-			}
+			} */
 		}
+
 		return true;
 	}
 

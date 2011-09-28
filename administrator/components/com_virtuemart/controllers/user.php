@@ -135,12 +135,13 @@ class VirtuemartControllerUser extends VmController {
 			$data['vendor_store_desc'] = JRequest::getVar('vendor_store_desc','','post','STRING',JREQUEST_ALLOWHTML);
 			$data['vendor_terms_of_service'] = JRequest::getVar('vendor_terms_of_service','','post','STRING',JREQUEST_ALLOWHTML);
 
-
-			if ($ret=$model->store($data)) {
-				$msg = JText::_('COM_VIRTUEMART_USER_SAVED');
+			$ret=$model->store($data);
+			if(!$ret){
+				$msg = '';
 			} else {
-				$msg = JText::_($model->getError());
+				$msg = $ret['message'];
 			}
+
 		}
 		$cmd = JRequest::getCmd('task');
 		$lastTask = JRequest::getWord('last_task');
@@ -151,7 +152,8 @@ class VirtuemartControllerUser extends VmController {
 			if ($lastTask == 'editshop') $redirection = 'index.php?option=com_virtuemart';
 			else $redirection = 'index.php?option=com_virtuemart&view=user';
 		}
-		$this->setRedirect($redirection, $msg);
+// 		$this->setRedirect($redirection, $ret['message']);
+		$this->setRedirect($redirection);
 	}
 
 
