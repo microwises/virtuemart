@@ -269,9 +269,9 @@ class VmTable extends JTable{
 					$this->$slugName = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
 				}
 			} else {
-				$this->slugName = JApplication::stringURLSafe($this->slugName);
-				if (trim(str_replace('-','',$this->slugName)) == '') {
-					$this->slugName = JFactory::getDate()->format('Y-m-d-H-i-s');
+				$this->$slugName = JApplication::stringURLSafe($this->$slugName);
+				if (trim(str_replace('-','',$this->$slugName)) == '') {
+					$this->$slugName = JFactory::getDate()->format('Y-m-d-H-i-s');
 				}
 			}
 		}
