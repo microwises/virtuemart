@@ -88,7 +88,7 @@ abstract class vmCustomPlugin extends JPlugin {
      */
     function __construct() {
         //parent::__construct($subject, $config);
-        $lang = JFactory::getLanguage();
+        $lang =& JFactory::getLanguage();
         $filename = 'plg_vmcustom_' . $this->_pname;
         $lang->load($filename, JPATH_ADMINISTRATOR);
         //$this->carrier = array();

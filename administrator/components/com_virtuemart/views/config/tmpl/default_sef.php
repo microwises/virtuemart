@@ -32,6 +32,15 @@ defined('_JEXEC') or die('Restricted access');
 	    <td>
 		<?php echo VmHTML::checkbox('seo_disabled', $this->config->get('seo_disabled')); ?>
 	    </td>
+	</tr>	<tr>
+	    <td class="key">		 
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_SUFIX_TIP'); ?>">
+			<label for="seo_disabled"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SEO_SUFIX') ?></label>
+		</span>
+	    </td>
+	    <td>
+			<input type="text" name="seo_sufix" class="inputbox" value="<?php echo $this->config->get('seo_sufix','-detail') ?>" />
+	    </td>
 	</tr>
 	<tr>
 	    <td class="key">

@@ -38,7 +38,7 @@ function virtuemartBuildRoute(&$query) {
 	$lang = &$helper->lang ;
 	$view = '';
 
-	$jmenu = $helper->menu ;
+	$jmenu = & $helper->menu ;
 	if (empty($query['Itemid'])) $query['Itemid'] = $jmenu['virtuemart'][0];
 
 
@@ -338,9 +338,7 @@ function virtuemartParseRoute($segments) {
 	 * uppercase first (trick for product details )
 	 * Product must begin with A-Z
 	 */
-	$ascii = ord ( end($segments ));
-
-	if ($ascii >65 && $ascii<90  ){
+	 if (substr(end($segments ), -(int)$helper->seo_sufix_size ) == $helper->seo_sufix ) {
 		$vars['view'] = 'productdetails';
 		if (!$helper->use_id ) {
 			$product = $helper->getProductId($segments ,$helper->activeMenu->virtuemart_category_id);
@@ -424,6 +422,8 @@ class vmrouterHelper {
 		$this->setActiveMenu();
 		$this->use_id = VmConfig::get('seo_use_id', false);
 		$this->router_disabled = VmConfig::get('seo_disabled', false) ;
+		$this->seo_sufix = VmConfig::get('seo_sufix', '-detail');
+		$this->seo_sufix_size = strlen($this->seo_sufix) ;
 
 	}
 
@@ -539,7 +539,7 @@ class vmrouterHelper {
 
 		$db->setQuery($query);
 
-		return ucfirst( $db->loadResult() );
+		return $db->loadResult().$this->seo_sufix;
 	}
 
 	/* Get parent Product first found category ID */
@@ -565,6 +565,7 @@ class vmrouterHelper {
 	/* get product and category ID */
 	public function getProductId($names,$virtuemart_category_id = NULL ){
 		$productName = array_pop($names);
+		$productName =  substr($productName, 0, -(int)$this->seo_sufix_size );
 		$product = array();
 		$categoryName = end($names);
 
