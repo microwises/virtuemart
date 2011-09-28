@@ -262,10 +262,17 @@ class VmTable extends JTable{
 			if(empty($this->$slugName)){
 				$this->$slugName = $this->$slugAutoName;
 			}
-			$this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
-			if(trim(str_replace('-', '', $this->$slugName)) == ''){
-				$datenow = JFactory::getDate();
-				$this->$slugName = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
+			if(VmConfig::isJ15()){
+				$this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
+				if(trim(str_replace('-', '', $this->$slugName)) == ''){
+					$datenow = JFactory::getDate();
+					$this->$slugName = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
+				}
+			} else {
+				$this->slugName = JApplication::stringURLSafe($this->slugName);
+				if (trim(str_replace('-','',$this->slugName)) == '') {
+					$this->slugName = JFactory::getDate()->format('Y-m-d-H-i-s');
+				}
 			}
 		}
 
