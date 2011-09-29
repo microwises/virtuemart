@@ -340,7 +340,15 @@ class VmMediaHandler {
 				}
 			}
 
-			$supportedTypes = JText::_('COM_VIRTUEMART_FILES_FORM_IMAGETYPES_SUPPORTED'). implode($aSupportedTypes,', ');
+			$supportedTypes = '';
+			if(function_exists('mime_content_type')){
+				$supportedTypes .= 'server supports mime_content_type<br />';
+			} else {
+				$supportedTypes .= 'server does not support mime_content_type<br />';
+			}
+
+			$supportedTypes .= JText::_('COM_VIRTUEMART_FILES_FORM_IMAGETYPES_SUPPORTED'). implode($aSupportedTypes,', ');
+
 			return $supportedTypes;
 		}
 

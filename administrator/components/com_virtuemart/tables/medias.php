@@ -177,15 +177,15 @@ class TableMedias extends VmTable {
 					$this->file_mimetype = mime_content_type(JPATH_ROOT.DS.$rel_path);
 					if(!empty($this->file_mimetype)){
 						if($this->file_mimetype == 'directory'){
-							$this->setError('cant store this media, is a directory '.$rel_path);
+							vmError('cant store this media, is a directory '.$rel_path);
 							return false;
 						} else if(strpos($this->file_mimetype,'corrupt')!==false){
-							$this->setError('cant store this media, Document corrupt: Cannot read summary info '.$rel_path);
+							vmError('cant store this media, Document corrupt: Cannot read summary info '.$rel_path);
 							return false;
 						}
 						//$this->setError('file_mime '.$this->file_mimetype.' for '.$rel_path);
 					} else {
-						$this->setError('Couldnt resolve mime '.$rel_path);
+						vmError('Couldnt resolve mime '.$rel_path);
 						return false;
 					}
 // 				     $this->setError('mime'.$this->file_mimetype);
@@ -210,6 +210,8 @@ class TableMedias extends VmTable {
 			     if( empty($name) ){
 				     $this->setError(JText::_('COM_VIRTUEMART_NO_MEDIA'));
 			     }
+
+			     //images
 			     elseif($file_extension === 'jpg' || $file_extension === 'jpeg'){
 				     $this->file_mimetype = 'image/jpeg';
 			     }
@@ -222,6 +224,39 @@ class TableMedias extends VmTable {
 			     elseif($file_extension === 'bmp'){
 				     $this->setError(JText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_NOT_BMP',$name));
 				     $notice = true;
+			     }
+
+			     //audio
+			     elseif($file_extension === 'mp3'){
+			     	$this->file_mimetype = 'audio/mpeg';
+			     }
+			     elseif($file_extension === 'ogg'){
+			     	$this->file_mimetype = 'audio/ogg';
+			     }
+			     elseif($file_extension === 'oga'){
+			     	$this->file_mimetype = 'audio/vorbis';
+			     }
+
+			     //audio
+			     elseif($file_extension === 'mp3'){
+			     	$this->file_mimetype = 'audio/mpeg';
+			     }
+			     elseif($file_extension === 'ogg'){
+			     	$this->file_mimetype = 'audio/ogg';
+			     }
+			     elseif($file_extension === 'oga'){
+			     	$this->file_mimetype = 'audio/vorbis';
+			     }
+
+			     //applications
+			     elseif($file_extension === 'zip'){
+			     	$this->file_mimetype = 'application/zip';
+			     }
+			     elseif($file_extension === 'pdf'){
+			     	$this->file_mimetype = 'application/pdf';
+			     }
+		        elseif($file_extension === 'gz'){
+			     	$this->file_mimetype = 'application/x-gzip';
 			     }
 			     else{
 				     $this->setError(JText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE',$name));
