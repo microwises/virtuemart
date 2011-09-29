@@ -395,7 +395,7 @@ class VirtueMartModelCustomfields extends VmModel {
 							$thumb = $this->displayCustomMedia($media_id);
 						}
 						$display = '<input type="hidden" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" />';
-						return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . (int)$field->custom_value ), $thumb.' '.$category->category_name, array ('title' => $category->category_name ) ).$display;
+						return  $display.JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . (int)$field->custom_value ), $thumb.' '.$category->category_name, array ('title' => $category->category_name ) ).$display;
 					}
 					else return 'no result';
 				/* related product*/
@@ -413,7 +413,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					if ($media_id = $this->_db->loadResult()) {
 						$thumb = $this->displayCustomMedia($media_id);
 					}
-					return JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$field->custom_value), $thumb.'<br /> '.$related->product_name, array ('title' => $related->product_name.'<br/>'.$related->product_s_desc) );
+					return $display.JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$field->custom_value), $thumb.'<br /> '.$related->product_name, array ('title' => $related->product_name.'<br/>'.$related->product_s_desc) );
 				break;
 				/* image */
 				case 'M':

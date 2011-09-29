@@ -62,8 +62,8 @@ defined('_JEXEC') or die('Restricted access');
 							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
 							<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
 							<div class="trash"></div></div>';
-					} else $tables['fields'] .= '<tr class="removable">
-							
+					} else {
+						$tables['fields'] .= '<tr class="removable">
 							<td>'.JText::_($customRow->custom_title).'</td>
 							<td>'.$customRow->custom_tip.'</td>
 							<td>'.$customRow->display.'</td>
@@ -77,6 +77,7 @@ defined('_JEXEC') or die('Restricted access');
 							</td>
 							<td><span class="trash"></span></td>
 						 </tr>';
+						}
 
 					$i++;
 				}
@@ -142,10 +143,7 @@ defined('_JEXEC') or die('Restricted access');
 <div style="display:none;" class="customDelete remove"><span class="vmicon vmicon-16-trash"></span><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></div>
 
 <script type="text/javascript">
-nextCustom = <?php echo $i ?>;
-jQuery('div.remove').click( function() {
-	jQuery(this).closest('.removable').remove();
-});
+	nextCustom = <?php echo $i ?>;
 
 		    // $("select##customlist").chosen().change(function() {
 			          // var str = "";
@@ -155,20 +153,20 @@ jQuery('div.remove').click( function() {
 
          // console.log(str);//$("#someInput").first().focus();
      // });
-jQuery('select#customlist').chosen().change(function() {
-	selected = jQuery(this).find( 'option:selected').val() ;
-	jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=fields&id='+selected+'&row='+nextCustom+'&virtuemart_product_id=<?php echo $this->product->virtuemart_product_id; ?>',
-	function(data) {
-		jQuery.each(data.value, function(index, value){
-			jQuery("#custom_fields").append(value);
+	jQuery('select#customlist').chosen().change(function() {
+		selected = jQuery(this).find( 'option:selected').val() ;
+		jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=fields&id='+selected+'&row='+nextCustom+'&virtuemart_product_id=<?php echo $this->product->virtuemart_product_id; ?>',
+		function(data) {
+			jQuery.each(data.value, function(index, value){
+				jQuery("#custom_fields").append(value);
+			});
 		});
+		nextCustom++;
 	});
-	nextCustom++;
-});
 
-function removeSelectedOptions(from) {
-	jQuery('select#'+from+' :selected').remove()
-}
+	function removeSelectedOptions(from) {
+		jQuery('select#'+from+' :selected').remove()
+	}
 
 	function customautocomplete( $type ,$id) {
 		jQuery('input#related'+$type+'Search').autocomplete('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=related'+$type, {
