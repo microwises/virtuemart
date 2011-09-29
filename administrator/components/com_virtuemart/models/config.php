@@ -303,6 +303,17 @@ class VirtueMartModelConfig extends JModel {
 			$confData['virtuemart_config_id'] = 0;
 		}
 
+		$urls = array('assets_general_path','media_category_path','media_product_path','media_manufacturer_path','media_vendor_path');
+		foreach($urls as $urlkey){
+				$url = $config->get($urlkey);
+				$length = strlen($url);
+// 				vmdebug('my url ',$url,$length,strrpos($url,'/'));
+				if(strrpos($url,'/')!=($length-1)){
+// 					vmdebug('found our without ending /',$url);
+					$config->set($urlkey,$url.'/');
+					vmInfo('Corrected media path '.$urlkey.' added missing /');
+				}
+		}
 
 		$confData['config'] = $config->toString();
 

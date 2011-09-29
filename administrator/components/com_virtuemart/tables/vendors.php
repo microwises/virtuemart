@@ -55,17 +55,6 @@ class TableVendors extends VmTableData {
 
     var $vendor_params = '';
 
-//     var $_params = array();
-
-//     /** @var decimal Min POV */
-//     var $vendor_min_pov 	   		= 0;
-//     /** @var decimal Freeshipping */
-//     var $vendor_freeshipping  		= 0;
-
-//     /** @var text Vendor address format */
-//     var $vendor_address_format		= '';
-//     /** @var varchar Vendor date format */
-//     var $vendor_date_format			= '';
 
     /* @author RickG, Max Milbers
      * @param $db A database connector object
@@ -86,7 +75,6 @@ class TableVendors extends VmTableData {
 
 		$this->setParameterable('vendor_params',$varsToPushParam);
 
-// 		vmdebug('vendor table',$this);
     }
 
 }
