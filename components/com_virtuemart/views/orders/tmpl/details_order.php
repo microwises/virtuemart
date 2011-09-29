@@ -21,6 +21,12 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <table width="100%" cellspacing="2" cellpadding="4" border="0">
+    	<tr>
+		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></td>
+		<td align="left">
+                <?php printf("%08d", $this->orderdetails['details']['BT']->virtuemart_order_id);?>
+                </td>
+	</tr>
 	<tr>
 		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?></td>
 		<td align="left"><?php echo vmJsApi::date($this->orderdetails['details']['BT']->created_on,'LC2',true); ?></td>
@@ -57,6 +63,11 @@ defined('_JEXEC') or die('Restricted access');
 		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?></td>
 		<td align="right"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_shipping); ?></td>
 	</tr>
+       	<tr>
+		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_TAX') ?></td>
+		<td align="right"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_shipping_tax); ?></td>
+	</tr>
+
 	<tr>
 		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></td>
 		<td align="right"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_discount); ?></td>
