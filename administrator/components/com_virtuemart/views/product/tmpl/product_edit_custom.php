@@ -22,71 +22,60 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <table width="100%">
 	<tr>
-		<td valign="top">
-
-			<table width="%100">
-				<tr>
-					<td style="width: 280px;" >
-					<fieldset style="background-color:#F9F9F9;">
-						<legend><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS');?></legend>
-						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_RELATED_SEARCH'); ?>
-						<div class="jsonSuggestResults" style="width: auto;">
-						<input type="text" size="40" name="search" id="relatedproductsSearch" value="" />
-						</div>
-					</fieldset>
-					</td>
-				
-					<td style="width: 280px;" >
-					<fieldset style="background-color:#F9F9F9;">
-						<legend><?php echo JText::_('COM_VIRTUEMART_RELATED_CATEGORIES');?></legend>
-						<?php echo JText::_('COM_VIRTUEMART_CATEGORIES_RELATED_SEARCH'); ?>
-						<div class="jsonSuggestResults" style="width: auto;">
-						<input type="text" size="40" name="search" id="relatedcategoriesSearch" value="" />
-						</div>
-					</fieldset>
-					</td>
-					<td style="width: auto;">
-					<fieldset style="background-color:#F9F9F9;">
-						<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM_FIELD_TYPE');?></legend>
-						<div><?php echo JText::_('COM_VIRTUEMART_SELECT').'<div class="inline">'.$this->customsList; ?><div></div>
-					</fieldset>
-					</td>
-				</tr>
-			</table>
-
-		</td>
-	</tr>
-	<tr>
 		<td valign="top" width="%100">
 
 			<?php
 			$i=0;
-			$tables= array('categories'=>'','products'=>'','customfields'=>'','childs'=>'',);
+			$tables= array('categories'=>'','products'=>'','fields'=>'','childs'=>'',);
 			if (isset($this->product->customfields)) {
 				$this->fieldTypes['R']=JTEXT::_('COM_VIRTUEMART_RELATED_PRODUCTS');
 				$this->fieldTypes['Z']=JTEXT::_('COM_VIRTUEMART_RELATED_CATEGORIES');
 				foreach ($this->product->customfields as $customRow) {
 					if ($customRow->is_cart_attribute) $cartIcone=  'default';
 					else  $cartIcone= 'default-off'; 
-					if ($customRow->field_type == 'Z') $tr="categories";
-					elseif ($customRow->field_type == 'R') $tr="products";
-					elseif ($customRow->field_type == 'C') $tr="childs";
-					else $tr="customfields";
-					$tables[$tr] .= '<tr>
+					if ($customRow->field_type == 'Z') { 
+
+						$tables['categories'] .=  '<div class="vm_thumb_image">
+							<span>'.$customRow->display.'</span>
+							<span>'.JText::_($this->fieldTypes[$customRow->field_type]).'</span>
+							<input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
+							<input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
+							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
+							<div class="trash"></div></div>';
+
+					} elseif ($customRow->field_type == 'R') {
+
+						$tables['products'] .=  '<div class="vm_thumb_image">
+							<span>'.$customRow->display.'</span>
+							<input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
+							<input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
+							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
+							<div class="trash"></div></div>';
+
+					} elseif ($customRow->field_type == 'C'){
+
+						$tables['childs'] .=  '<div class="vm_thumb_image"><span>'.JText::_($customRow->custom_title).'</span>
+							<span>'.$customRow->display.$customRow->custom_tip.'</span>
+							<span>'.JText::_($this->fieldTypes[$customRow->field_type]).'</span>
+							<input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
+							<input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
+							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
+							<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
+							<div class="trash"></div></div>';
+					} else $tables['fields'] .= '<tr class="removable">
 							
 							<td>'.JText::_($customRow->custom_title).'</td>
-							<td>
-							 '.$customRow->display.$customRow->custom_tip.'
-							</td>
+							<td>'.$customRow->custom_tip.'</td>
+							<td>'.$customRow->display.'</td>
 							<td>'.JText::_($this->fieldTypes[$customRow->field_type]).'
-							 <input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
-							 <input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
+							<input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
+							<input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
 							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
 							</td>
 							<td>
-							 <span class="vmicon vmicon-16-'.$cartIcone.'"></span>
+							<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
 							</td>
-							<td><div class="remove"><span class="vmicon vmicon-16-trash"></span>'.JText::_('COM_VIRTUEMART_DELETE').'</div></td>
+							<td><span class="trash"></span></td>
 						 </tr>';
 
 					$i++;
@@ -95,33 +84,54 @@ defined('_JEXEC') or die('Restricted access');
 			
 			 $emptyTable = '
 				<tr>
-					<td colspan="5">'.JText::_( 'COM_VIRTUEMART_CUSTOM_NO_TYPES').'</td>
+					<td colspan="6">'.JText::_( 'COM_VIRTUEMART_CUSTOM_NO_TYPES').'</td>
 				<tr>';
-
-			foreach ($tables as $tableName => $table ) { ?>
-
-				<fieldset style="background-color:#F9F9F9;">
-					<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM_'.strtoupper ( $tableName) );?></legend>
-					<table id="<?php echo $tableName ?>" class="adminlist" cellspacing="0" cellpadding="0">
-						<thead>
-						<tr class="row1">
-							<th><?php echo JText::_('COM_VIRTUEMART_TITLE');?></th>
-							<th><?php echo JText::_('COM_VIRTUEMART_VALUE');?></th>
-							<th><?php echo JText::_('COM_VIRTUEMART_TYPE');?></th>
-							<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE');?></th>
-							<th><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></th>
-						</tr>
-						</thead>
-						<tbody>
-						<?php if (empty($table)) echo $emptyTable;
-						 else echo  $table ;
-						?>
-						</tbody>
-					</table>
-				</fieldset>
-				<?php
-				}
 			?>
+			<fieldset style="background-color:#F9F9F9;">
+				<legend><?php echo JText::_('COM_VIRTUEMART_RELATED_CATEGORIES'); ?></legend>
+				<?php echo JText::_('COM_VIRTUEMART_CATEGORIES_RELATED_SEARCH'); ?>
+				<div class="jsonSuggestResults" style="width: auto;">
+					<input type="text" size="40" name="search" id="relatedcategoriesSearch" value="" />
+				</div>
+				<div id="custom_categories"><?php echo  $tables['categories']; ?></div>
+			</fieldset>
+			<fieldset style="background-color:#F9F9F9;">
+				<legend><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS'); ?></legend>
+				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_RELATED_SEARCH'); ?>
+				<div class="jsonSuggestResults" style="width: auto;">
+					<input type="text" size="40" name="search" id="relatedproductsSearch" value="" />
+				</div>
+				<div id="custom_products"><?php echo  $tables['products']; ?></div>
+			</fieldset>
+			<fieldset style="background-color:#F9F9F9;">
+				<legend><?php echo JText::_('COM_VIRTUEMART_STOCKABLE_VARIANTS'); ?></legend>
+				<div id="custom_childs"><?php echo  $tables['childs']; ?></div>
+					
+			</fieldset>
+			<fieldset style="background-color:#F9F9F9;">
+				<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM_FIELD_TYPE' );?></legend>
+				<div><?php echo JText::_('COM_VIRTUEMART_SELECT').'<div class="inline">'.$this->customsList; ?></div>
+
+				<table id="custom_fields" class="adminlist" cellspacing="0" cellpadding="0">
+					<thead>
+					<tr class="row1">
+						<th><?php echo JText::_('COM_VIRTUEMART_TITLE');?></th>
+						<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_TIP');?></th>
+						<th><?php echo JText::_('COM_VIRTUEMART_VALUE');?></th>
+						<th><?php echo JText::_('COM_VIRTUEMART_CART_PRICE');?></th>
+						<th><?php echo JText::_('COM_VIRTUEMART_TYPE');?></th>
+						<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE');?></th>
+						<th><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></th>
+					</tr>
+					</thead>
+					<tbody id="custom_fields">
+						<?php 
+						if ($tables['fields']) echo $tables['fields'] ;
+						else echo $emptyTable;
+						?>
+					</tbody>
+				</table>
+			</fieldset>
 
 		</td>
 
@@ -134,7 +144,7 @@ defined('_JEXEC') or die('Restricted access');
 <script type="text/javascript">
 nextCustom = <?php echo $i ?>;
 jQuery('div.remove').click( function() {
-	jQuery(this).closest('tr').remove();
+	jQuery(this).closest('.removable').remove();
 });
 
 		    // $("select##customlist").chosen().change(function() {
@@ -147,14 +157,10 @@ jQuery('div.remove').click( function() {
      // });
 jQuery('select#customlist').chosen().change(function() {
 	selected = jQuery(this).find( 'option:selected').val() ;
-	jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=customfield&id='+selected+'&row='+nextCustom+'&virtuemart_product_id=<?php echo $this->product->virtuemart_product_id; ?>',
+	jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=fields&id='+selected+'&row='+nextCustom+'&virtuemart_product_id=<?php echo $this->product->virtuemart_product_id; ?>',
 	function(data) {
-		var trash = jQuery("div.customDelete").clone().css('display', 'block').removeClass('customDelete');
 		jQuery.each(data.value, function(index, value){
-			jQuery("table"+data.table).append(value);
-		});
-		jQuery("table"+data.table+" tr").find("td:empty").append(trash).click( function() {
-			jQuery(this).closest('tr').remove();
+			jQuery("#custom_fields").append(value);
 		});
 	});
 	nextCustom++;
@@ -186,12 +192,8 @@ function removeSelectedOptions(from) {
 		}).result(function(e, item) {
 			jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type='+$type+'&id='+item.id+'&row='+nextCustom+'&virtuemart_'+$type+'_id='+$id,
 				function(data) {
-					var trash = jQuery("div.customDelete").clone().css('display', 'block').removeClass('customDelete');
 					jQuery.each(data.value, function(index, value){
-						jQuery("table#"+$type).append(value);
-					});
-					jQuery("table#"+$type+" tr").find("td:empty").append(trash).click( function() {
-						jQuery(this).closest('tr').remove();
+						jQuery("#custom_"+$type).append(value);
 					});
 				});
 			nextCustom++;

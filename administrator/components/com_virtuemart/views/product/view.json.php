@@ -61,20 +61,16 @@ class VirtuemartViewProduct extends JView {
 			// $field = $db->loadObject();
 			$html = array ();
 			$display = $model->inputType($customs,$id,$row);
-			$html[] = '<tr>
-				 <td>'.JText::_('COM_VIRTUEMART_RELATED_PRODUCTS').'</td>
-				 <td>'.$display.'
-				 </td>
-				 <td>'.JText::_('COM_VIRTUEMART_RELATED_PRODUCTS').'
-					<input type="hidden" value="R" name="field['.$row.'][field_type]" />
-					<input type="hidden" value="'.$customs->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
-					<input type="hidden" value="'.$id.'" name="field['.$row.'][custom_value]" />
-					<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
-				 </td>
-				 <td><span class="vmicon vmicon-16-default-off"></span></td>
-				 <td></td>
-				</tr>';
-			$json['table'] = '#products';
+			$html[] = '<div class="vm_thumb_image">
+				<span>'.$display.'</span>
+				<input type="hidden" value="R" name="field['.$row.'][field_type]" />
+				<input type="hidden" value="'.$customs->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
+
+				<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
+				<span class="vmicon vmicon-16-default-off"></span>
+				<div class="trash"></div></div>';
+
+				$json['table'] = 'products';
 			$json['value'] = $html;
 			$json['ok'] = $id ;
 		}else if ($type=='relatedcategories') {
@@ -99,19 +95,12 @@ class VirtuemartViewProduct extends JView {
 			// $field = $db->loadObject();
 			$html = array ();
 			$display = $model->inputType($customs,$id,$row);
-			$html[] = '<tr>
-				 <td>'.JText::_('COM_VIRTUEMART_RELATED_CATEGORIES').'</td>
-				 <td>'.$display.'
-				 </td>
-				 <td>'.JText::_('COM_VIRTUEMART_RELATED_CATEGORIES').'
-					<input type="hidden" value="Z" name="field['.$row.'][field_type]" />
-					<input type="hidden" value="'.$customs->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
-					<input type="hidden" value="'.$id.'" name="field['.$row.'][custom_value]" />
-					<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
-				 </td>
-				 <td><span class="vmicon vmicon-16-default-off"></span></td>
-				 <td></td>
-				</tr>';
+			$html[] = '<div class="vm_thumb_image">
+				<span>'.$display.'</span>
+				<input type="hidden" value="Z" name="field['.$row.'][field_type]" />
+				<input type="hidden" value="'.$customs->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
+				<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
+				<div class="trash"></div></div>';
 			$json['table'] = '#categories';
 			$json['value'] = $html;
 			$json['ok'] = $id ;
@@ -122,7 +111,7 @@ class VirtuemartViewProduct extends JView {
 			$db->setQuery($query);
 			$json['value'] = $db->loadObjectList();
 			$json['ok'] = 1 ;
-		} else if ($type=='customfield') {
+		} else if ($type=='fields') {
 			$fieldTypes= $model->getField_types() ;
 
 			$query = "SELECT *,custom_value as value FROM #__virtuemart_customs
@@ -134,7 +123,7 @@ class VirtuemartViewProduct extends JView {
 			$html = array ();
 			foreach ($rows as $field) {
 				if ($field->field_type =='C' ){
-					$json['table'] = '#childs';
+					$json['table'] = 'childs';
 					$q='SELECT `virtuemart_product_id` FROM `#__virtuemart_products` WHERE `published`=1
 					AND `product_parent_id`= '.JRequest::getInt('virtuemart_product_id');
 					//$db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products` WHERE `product_parent_id` ='.(int)$product_id);
@@ -146,7 +135,7 @@ class VirtuemartViewProduct extends JView {
 							$display = $model->inputType($field,$childId,$row);
 							 if ($field->is_cart_attribute) $cartIcone=  'default';
 							 else  $cartIcone= 'default-off';
-							 $html[] = '<tr>
+							 $html[] = '<div class="removable">
 								<td>'.$field->custom_title.'</td>
 								 <td>'.$display.$field->custom_tip.'
 								 </td>
@@ -157,26 +146,26 @@ class VirtuemartViewProduct extends JView {
 								 </td>
 								 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
 								 <td></td>
-								</tr>';
+								</div>';
 							$row++;
 						}
 					}
 				} else {
-				$json['table'] = '#customfields';
+				$json['table'] = 'fields';
 				$display = $model->inputType($field,0,$row);
 				 if ($field->is_cart_attribute) $cartIcone=  'default';
 				 else  $cartIcone= 'default-off';
-				 $html[] = '<tr>
+				 $html[] = '<tr class="removable">
 					<td>'.$field->custom_title.'</td>
-					 <td>'.$display.$field->custom_tip.'
-					 </td>
+					<td>'.$field->custom_tip.'</td>
+					 <td>'.$display.'</td>
 					 <td>'.JText::_($fieldTypes[$field->field_type]).'
 						<input type="hidden" value="'.$field->field_type .'" name="field['.$row.'][field_type]" />
 						<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
 						<input type="hidden" value="'.$field->admin_only.'" name="field['.$row.'][admin_only]" />
 					 </td>
 					 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
-					 <td></td>
+					 <td><span class="trash"></span></td>
 					</tr>';
 				$row++;
 				}
