@@ -448,8 +448,9 @@ class VirtueMartModelOrders extends VmModel {
 						$this->notifyCustomer($order, $comments);
 					}
 
+					JPluginHelper::importPlugin('vmcoupon');
 					$dispatcher = JDispatcher::getInstance();
-					$returnValues = $dispatcher->trigger('plgVmUpdateOrderStatus', array($data, $order_status_code));
+					$returnValues = $dispatcher->trigger('plgVmCouponUpdateOrderStatus', array($data, $order_status_code));
 					if(!empty($returnValues)){
 						foreach ($returnValues as $returnValue) {
 							if ($returnValue !== null  ) {

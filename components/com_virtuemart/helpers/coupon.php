@@ -33,13 +33,14 @@ abstract class CouponHelper
 	{
 		$couponData = 0;
 
+		JPluginHelper::importPlugin('vmcoupon');
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmValidateCouponCode', array($_code, $_billTotal));
 		if(!empty($returnValues)){
 			foreach ($returnValues as $returnValue) {
 				if ($returnValue !== null  ) {
 					//Take a look on this seyi, I am not sure about that, but it should work at least simular note by Max
-					$couponData = $returnValue;
+					return $returnValue;
 				}
 			}
 		}
@@ -99,6 +100,7 @@ abstract class CouponHelper
 	 */
 	static public function RemoveCoupon($_code, $_force = false)
 	{
+		JPluginHelper::importPlugin('vmcoupon');
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmRemoveCoupon', array($_code, $_force));
 		if(!empty($returnValues)){

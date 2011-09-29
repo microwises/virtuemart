@@ -480,13 +480,12 @@ class calculationHelper {
 	 */
 	private function couponHandler($_code) {
 
+		JPluginHelper::importPlugin('vmcoupon');
 		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmCouponHandler', array($_code, $this->_cartData, $this->_cartPrices));
+		$returnValues = $dispatcher->trigger('plgVmCouponHandler', array($_code,&$this->_cartData, &$this->_cartPrices));
 		if(!empty($returnValues)){
 			foreach ($returnValues as $returnValue) {
 				if ($returnValue !== null  ) {
-					//Take a look on this seyi, I am not sure about that, but it should work at least simular note by Max
-					//$couponData = $returnValue;
 					return $returnValue;
 				}
 			}

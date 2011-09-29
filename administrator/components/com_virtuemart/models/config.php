@@ -307,9 +307,7 @@ class VirtueMartModelConfig extends JModel {
 		foreach($urls as $urlkey){
 				$url = $config->get($urlkey);
 				$length = strlen($url);
-// 				vmdebug('my url ',$url,$length,strrpos($url,'/'));
 				if(strrpos($url,'/')!=($length-1)){
-// 					vmdebug('found our without ending /',$url);
 					$config->set($urlkey,$url.'/');
 					vmInfo('Corrected media path '.$urlkey.' added missing /');
 				}

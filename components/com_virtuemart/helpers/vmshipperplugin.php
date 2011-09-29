@@ -143,14 +143,14 @@ abstract class vmShipperPlugin extends JPlugin {
 
 		if (VmConfig::isJ15()) {
 			$extPlgTable = '#__plugins';
-			$extField1 = 'id';   
-                        $extField2 = 'element';        
+			$extField1 = 'id';
+			$extField2 = 'element';
 		} else {
 			$extPlgTable = '#__extensions';
-                        $extField1 = 'extension_id';   
-                        $extField2 = 'folder';		
-                        
-                        }
+			$extField1 = 'extension_id';
+			$extField2 = 'element';
+
+		}
 
 		$db = JFactory::getDBO();
 
@@ -162,7 +162,7 @@ abstract class vmShipperPlugin extends JPlugin {
 
 		$q.= 'LEFT OUTER JOIN #__virtuemart_shippingcarrier_shoppergroups AS s ON v.`virtuemart_shippingcarrier_id` = s.`virtuemart_shippingcarrier_id` ';
 
-		$q.= ' WHERE v.`published` = "1"  AND j.`'.$extField2.'` = "'.$this->_selement.'" 
+		$q.= ' WHERE v.`published` = "1"  AND j.`'.$extField2.'` = "'.$this->_selement.'"
 					AND  (v.`virtuemart_vendor_id` = "' . $vendorId . '" OR   v.`virtuemart_vendor_id` = "0")
 					AND  (';
 
