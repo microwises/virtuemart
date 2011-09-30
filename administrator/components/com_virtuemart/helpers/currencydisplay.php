@@ -205,7 +205,25 @@ class CurrencyDisplay {
 		}
 
 	}
+/**
+	 * getCurrencyDisplay: get The actual displayed Currency
+	 * Use this only in a view, plugin or modul, never in a model
+	 *
+	 * @param integer $currencyId
+	 * return integer $currencyId: displayed Currency
+         *
+	 */
+	public function getCurrencyDisplay( $currencyId=0 ){
 
+		if(empty($currencyId)){
+			$currencyId = (int)$this->_app->getUserStateFromRequest( 'virtuemart_currency_id', 'virtuemart_currency_id',$this->_vendorCurrency );
+			if(empty($currencyId)){
+				$currencyId = $this->_vendorCurrency;
+			}
+		}
+
+		return $currencyId;
+	}
 	/**
 	 * This function is for the gui only!
 	 * Use this only in a view, plugin or modul, never in a model
@@ -216,14 +234,15 @@ class CurrencyDisplay {
 	 */
 	public function priceDisplay($price=0, $currencyId=0,$inToShopCurrency = false,$nb = 2){
 		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipping)
-
+/*
 		if(empty($currencyId)){
 			$currencyId = (int)$this->_app->getUserStateFromRequest( 'virtuemart_currency_id', 'virtuemart_currency_id',$this->_vendorCurrency );
 			if(empty($currencyId)){
 				$currencyId = $this->_vendorCurrency;
 			}
 		}
-
+*/
+                $currencyId = $this->getCurrencyDisplay($currencyId);
 		$price = $this->convertCurrencyTo($currencyId,$price,$inToShopCurrency);
 		return $this->getFormattedCurrency($price,$nb);
 	}

@@ -165,7 +165,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         $vendor = $vendorModel->getVendor();
 
         $currencyModel = new VirtueMartModelCurrency();
-        $currency = $currencyModel->getCurrency($orderData->calculator->vendorCurrency);
+        $currency = $currencyModel->getCurrency($orderData->pricesCurrency);
 
         $merchant_email = $this->_getMerchantEmail($params);
         $orderNumber = VirtueMartModelOrders::getOrderNumber($virtuemart_order_id);
@@ -183,7 +183,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             "invoice" => $orderNumber,
             'custom' => $return_context,
             "amount" => $orderData->pricesUnformatted['billTotal'],
-            "currency_code" => $currency->currency_code_3, // TODO
+            "currency_code" => $currency->currency_code_3,
             "address_override" => "1",
             "first_name" => $usrBT['first_name'],
             "last_name" => $usrBT['last_name'],
@@ -196,8 +196,8 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
             "email" => $usrBT['email'],
             "night_phone_b" => $usrBT['phone_1'],
             "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentresponsereceived&pelement=' . $this->_pelement."&pm=".$orderData->virtuemart_paymentmethod_id),
-            "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentnotification&pelement=' . $this->_pelement."&pm=".$orderData->virtuemart_paymentmethod_id),
-            "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentusercancel&tmpl=component&pelement=' . $this->_pelement."&pm=".$orderData->virtuemart_paymentmethod_id),
+            "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentnotification&tmpl=component&pelement=' . $this->_pelement."&pm=".$orderData->virtuemart_paymentmethod_id),
+            "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentusercancel&pelement=' . $this->_pelement."&pm=".$orderData->virtuemart_paymentmethod_id."&on=".$orderNumber."&rc=".$return_context),
             "undefined_quantity" => "0",
             "ipn_test" => $params->get('debug'),
             "pal" => "NRUBJXESJTY24",
@@ -215,7 +215,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         // Prepare data that should be stored in the database
         $dbValues['virtuemart_order_id'] = $virtuemart_order_id;
         $dbValues['payment_method_id'] = $orderData->virtuemart_paymentmethod_id;
-        $dbValues['paypal_custom'] = $custom;
+        $dbValues['paypal_custom'] = $return_context;
         // TODO wait for PAYPAL return ???
         $this->writePaymentData($dbValues, '#__virtuemart_order_payment_' . $this->_pelement);
 
@@ -244,15 +244,34 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         
             $paramstring = $this->getVmPaymentParams($vendorId = 0, $virtuemart_paymentmethod_id);
             $params = new JParameter($paramstring);
-        return true;
+            $paypal_data = JRequest::get('post');
+                   $order_number= $paypal_data['order_id'];
+              if (!class_exists('VirtueMartModelOrders'))
+                        require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+
+            $orderId= VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
+            $payment_name= $this->getThisPaymentName($virtuemart_paymentmethod_id);
+
+                 $html = $this->_getPaymentResponseHtml($paypal_data, $payment_name, $orderId);
+
+            
+
+            return true;
+            
     }
 
 
 
     function plgVmOnPaymentUserCancel ($pelement,  $virtuemart_paymentmethod_id, $orderId){
-                $order_number=$this->_getSipsResponseOrderNumber($sips_response);
+             $paramstring = $this->getVmPaymentParams($vendorId = 0, $virtuemart_paymentmethod_id);
+             $params = new JParameter($paramstring);
+             $return_context = JRequest::getInt('rc', 0);
 
-                if (!$order_number) return false;
+              if ( !JFactory::getSession( array('id'=>$return_context))) {
+                  return false;
+              }
+              $order_number = JRequest::getWord('on');
+              if (!$order_number) return false;
               if (!class_exists('VirtueMartModelOrders'))
                         require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
@@ -540,6 +559,30 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
         }
     }
 
+function _getPaymentResponseHtmlTr($col1,$col2) {
+   $html=" <tr>
+                                        <td class=\"key\" style=\"text-align: center;\" >".$col1 ."</td>
+                                        <td class=\"key\" style=\"text-align: center;\" >". $col2."</td>
+                                </tr>";
+   return $html;
+}
+    function _getPaymentResponseHtml($paypal_data, $payment_name, $orderId){
+$html="<pre>".
+        print_r($paypal_data, true)."</pre>"; return $html;
+$html="mettre aussi les references de la comande dans vm
+     <table>
+                        <thead>"
+                        .$this->_getPaymentResponseHTMLTr(JText::_('VMPAYMENT_PAYPAL_PAYMENT_INFO'),$payment_name)
+
+                        ."</thead>"
+.$this->_getPaymentResponseHTMLTr('get info','getinfo')
+                                 
+
+                    ."</table>";
+
+
+    return $html;
+}
 }
 
 // No closing tag

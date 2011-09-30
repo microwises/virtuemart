@@ -54,6 +54,7 @@ class VirtueMartCart {
 // 	var $user = null;
 	var $prices = null;
 	var $pricesUnformatted = null;
+        var $pricesCurrency = null;
 
 	private static $_cart = null;
 
@@ -117,6 +118,7 @@ class VirtueMartCart {
 				// 				self::$_cart->user 									= $cartData->user;
 				self::$_cart->prices 								= $cartData->prices;
 				self::$_cart->pricesUnformatted					= $cartData->pricesUnformatted;
+                                self::$_cart->pricesCurrency					= $cartData->pricesCurrency;
 				self::$_cart->_inCheckOut 							= $cartData->_inCheckOut;
 				self::$_cart->_dataValidated						= $cartData->_dataValidated;
 				self::$_cart->_confirmDone							= $cartData->_confirmDone;
@@ -215,6 +217,8 @@ public function setCartIntoSession() {
 	// 		$sessionCart->user 									= $this->user;
 	$sessionCart->prices 								= $this->prices;
 	$sessionCart->pricesUnformatted					= $this->pricesUnformatted;
+        $sessionCart->pricesCurrency					= $this->pricesCurrency;
+
 	//private variables
 	$sessionCart->_inCheckOut 							= $this->_inCheckOut;
 	$sessionCart->_dataValidated						= $this->_dataValidated;
@@ -1151,6 +1155,7 @@ public function removeProductCart($prod_id=0) {
 
 		$this->pricesUnformatted = $product_prices;
 		$this->prices = $prices;
+                $this->pricesCurrency = $currency->getCurrencyDisplay();
 
 		$cartData = $calculator->getCartData();
 

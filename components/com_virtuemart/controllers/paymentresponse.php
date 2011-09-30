@@ -188,9 +188,12 @@ $html="";
                             if (!class_exists('VirtueMartModelOrders'))
                                 require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
                             $modelOrder = new VirtueMartModelOrders();
-                            $order['order_status']=$new_status;
-                            $order['virtuemart_order_id']=$orderId;
-                            //$modelOrder -> updateOrderStatus($order);
+                            $order[0]['order_status']=$new_status;
+                            $order[0]['virtuemart_order_id']=$orderId;
+                            $order[0]['include_comment']=0;
+                            $order[0]['customer_notified']=0;
+                            $virtuemart_order_id =$orderId;
+                            $modelOrder -> updateOrderStatus($order, $virtuemart_order_id);
                         }
                         break; // This was the active plugin, so there's nothing left to do here.
                      }
