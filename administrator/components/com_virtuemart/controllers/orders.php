@@ -149,7 +149,7 @@ class VirtuemartControllerOrders extends VmController {
 
 		/* Default model */
 		$model = $this->getModel('orders');
-		$model->updateStatus();
+		$model->updateOrderStatus();
 		/* Now display the view. */
 		$view->display();
 	}
@@ -164,7 +164,7 @@ class VirtuemartControllerOrders extends VmController {
 		$mainframe = Jfactory::getApplication();
 		$lastTask = JRequest::getWord('last_task');
 
-		
+
 		/* Load the view object */
 		$view = $this->getView('orders', 'html');
 
@@ -174,15 +174,15 @@ class VirtuemartControllerOrders extends VmController {
 
 		/* Update the statuses */
 		$model = $this->getModel('orders');
-		
+
 		if ($lastTask == 'updatestatus') {
 			// single order is in POST but we need an array
 			$order = array(JRequest::get('post'));
 			vmdebug(  'order',$order);
 			$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
-			$result = $model->updateStatus($order, $virtuemart_order_id);
+			$result = $model->updateOrderStatus($order, $virtuemart_order_id);
 		} else {
-			$result = $model->updateStatus();
+			$result = $model->updateOrderStatus();
 		}
 
 		if ($result['updated'] > 0)
