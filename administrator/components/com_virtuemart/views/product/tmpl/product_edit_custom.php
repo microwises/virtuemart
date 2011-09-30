@@ -18,7 +18,6 @@
  
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
 ?>
 <table width="100%">
 	<tr>
@@ -104,11 +103,7 @@ defined('_JEXEC') or die('Restricted access');
 				</div>
 				<div id="custom_products"><?php echo  $tables['products']; ?></div>
 			</fieldset>
-			<fieldset style="background-color:#F9F9F9;">
-				<legend><?php echo JText::_('COM_VIRTUEMART_STOCKABLE_VARIANTS'); ?></legend>
-				<div id="custom_childs"><?php echo  $tables['childs']; ?></div>
-					
-			</fieldset>
+
 			<fieldset style="background-color:#F9F9F9;">
 				<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM_FIELD_TYPE' );?></legend>
 				<div><?php echo JText::_('COM_VIRTUEMART_SELECT').'<div class="inline">'.$this->customsList; ?></div>
@@ -133,7 +128,27 @@ defined('_JEXEC') or die('Restricted access');
 					</tbody>
 				</table>
 			</fieldset>
-
+			<fieldset style="background-color:#F9F9F9;">
+				<legend><?php echo JText::_('COM_VIRTUEMART_STOCKABLE_VARIANTS'); ?></legend>
+				<div id="custom_childs"><?php echo  $tables['childs']; ?></div>
+				<div style="clear:both;"></div>
+				<fieldset style="background-color:#F9F9F9;">
+					<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_NEW_PRODUCT_LBL'); ?></legend>
+					<div id="new_stockable">
+						<?php foreach ($this->product_child as $child  ) {
+							$ChildCustom = VirtueMartModelCustomfields::getProductChildCustom($child->virtuemart_product_id);
+							echo JHTML::_('select.genericlist', $this->ChildCustomRelation,'ChildCustomRelation['.$child->virtuemart_product_id.'][virtuemart_custom_id]','','value','text',$ChildCustom->virtuemart_custom_id).' <input type="text" name="ChildCustomRelation['.$child->virtuemart_product_id.'][custom_value]" value="'.$ChildCustom->custom_value.'"><br />'; 
+						  }
+						?>
+						<span><?php echo JText::_('COM_VIRTUEMART_PRODUCT_SKU'); ?> : <input value="" name="stockable[product_sku]" type="text"></span>
+						<span><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME'); ?> : <input value="" name="stockable[product_name]" type="text"></span>
+						<span><?php echo JText::_('COM_VIRTUEMART_PRODUCT_PRICE'); ?> : <input value="" name="stockable[product_price]" type="text"></span>
+						<span><?php echo JText::_('COM_VIRTUEMART_PRODUCT_IN_STOCK'); ?> : <input value="" name="stockable[product_in_stock]" type="text"></span>
+						
+						<span id="new_stockable_product"><span class="icon-nofloat vmicon vmicon-16-new"></span><?php echo JText::_('COM_VIRTUEMART_ADD'); ?></span>
+					</div>
+				</fieldset>
+			</fieldset>
 		</td>
 
 	</tr>
@@ -144,7 +159,25 @@ defined('_JEXEC') or die('Restricted access');
 
 <script type="text/javascript">
 	nextCustom = <?php echo $i ?>;
-
+	jQuery('#new_stockable_product').click(function() {
+		var Prod = jQuery('#new_stockable');// input[name^="stockable"]').serialize();
+		console.log (Prod);
+		jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=saveJS&token=<?php echo JUtility::getToken(); ?>' ,
+			{
+				product_sku: Prod.find('input[name*="product_sku"]').val(),
+				product_name: Prod.find('input[name*="product_name"]').val(),
+				product_price: Prod.find('input[name*="product_price"]').val(),
+				product_in_stock: Prod.find('input[name*="product_in_stock"]').val(),
+				product_parent_id: <?php echo $this->product->virtuemart_product_id ?>,
+				published: 1,
+				format: "json"
+			},
+			function(data) {
+				//jQuery.each(data.msg, function(index, value){
+					jQuery("#new_stockable").append(data.msg);
+				//});
+			});
+	});
 		    // $("select##customlist").chosen().change(function() {
 			          // var str = "";
           // $(this).find("option:selected").each(function () {

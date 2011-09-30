@@ -119,6 +119,36 @@ class VirtuemartControllerProduct extends VmController {
 		parent::save($data);
 	}
 
+	function saveJS(){
+		$data = JRequest::get('get');
+		JRequest::setVar($data['token'], '1', 'post');
+
+		JRequest::checkToken() or jexit( 'Invalid Token save' );
+		$model = $this->getModel($this->_cname);
+		$id = $model->store($data);
+
+		$errors = $model->getErrors();
+		if(empty($errors)) {
+			$msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',$this->mainLangKey);
+			$type = 'save';
+		}
+		else $type = 'error';
+		foreach($errors as $error){
+			$msg = ($error).'<br />';
+		}
+		$json['msg'] = $msg;
+		if ($id) {
+			 $this->getProductSingle((int)$id,false,false,false);
+
+			$json['ok'] = 1 ;
+		} else {
+			$json['ok'] = 0 ;
+			
+		}
+		echo json_encode($json);
+		jExit();
+	
+	}
 	/**
 	 * This task creates a child by a given product id
 	 *

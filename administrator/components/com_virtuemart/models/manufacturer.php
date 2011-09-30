@@ -163,8 +163,12 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
-
-		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$this->_getOrdering('mf_name'));
+		if ( JRequest::getCmd('view') == 'manufacturercategories') {
+			$ordering = $this->_getOrdering('mf_name');
+		} else {
+			$ordering = 'mf_name';
+		}
+		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
 
 	}
 

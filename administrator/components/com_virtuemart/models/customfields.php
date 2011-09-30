@@ -108,6 +108,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			'D'=>'COM_VIRTUEMART_DATE',
 			'T'=>'COM_VIRTUEMART_TIME',
 			'C'=>'COM_VIRTUEMART_CUSTOM_PRODUCT_CHILD',
+			'G'=>'COM_VIRTUEMART_CUSTOM_PRODUCT_CHILD_GROUP',
 			'M'=>'COM_VIRTUEMART_IMAGE',
 			'V'=>'COM_VIRTUEMART_CUSTOM_CART_VARIANT',
 			'U'=>'COM_VIRTUEMART_CUSTOM_CART_USER_VARIANT',
@@ -428,6 +429,9 @@ class VirtueMartModelCustomfields extends VmModel {
 					$options = $this->_db->loadObjectList();
 					return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]','','value' ,'text',$field->custom_value).'</td><td>'.$priceInput;
 				break;
+				/* Child product Group */
+				case 'G':
+				break;
 				/* Child product */
 				case 'C':
 					if (empty($product)){
@@ -443,7 +447,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					if ($child = $this->_db->loadObject()) {
 						$html .= JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$field->custom_value), $child->text.' ('.$field->custom_value.')', array ('title' => $child->text ));
 						$html .= ' '.JText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK').':'.$child->product_in_stock ;
-						$html .= '<input type="hidden" value="'.$child->virtuemart_product_id.'" name="field['.$row.'][custom_value]" /></td><td>'.$priceInput;
+						$html .= '<input type="hidden" value="'.$child->virtuemart_product_id.'" name="field['.$row.'][custom_value]" /></div><div>'.$priceInput;
 						return $html;
 //					return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" />';
 					}
@@ -639,6 +643,11 @@ class VirtueMartModelCustomfields extends VmModel {
 						return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id ), $thumb.' '.$category->category_name, array ('title' => $category->category_name ) );
 					}
 					else return '';
+				/* Child Group list */
+				case 'G':
+					return '<input type="text" value="'.JText::_($value).'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
+					break;
+				break;
 				/* related */
 				case 'R':
 				/* Child product */

@@ -145,7 +145,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						foreach ($this->product_child as $child  ) {
 							$ChildCustom = VirtueMartModelCustomfields::getProductChildCustom($child->virtuemart_product_id);
 							echo JHTML::_('link', JRoute::_('index.php?view=product&task=edit&product_parent_id='.$this->product->virtuemart_product_id.'&virtuemart_product_id='.$child->virtuemart_product_id.'&option=com_virtuemart'), $child->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name)).' | ';
-							//echo JHTML::_('select.genericlist', $this->ChildCustomRelation,'ChildCustomRelation['.$child->virtuemart_product_id.'][virtuemart_custom_id]','','value','text',$ChildCustom->virtuemart_custom_id).' <input type="text" name="ChildCustomRelation['.$child->virtuemart_product_id.'][custom_value]" value="'.$ChildCustom->custom_value.'"><br />';
+							
 						}
 					 }
                                  ?>

@@ -763,9 +763,11 @@ class VirtueMartModelProduct extends VmModel {
 		$product_data = $this->getTable('products');
 
 		//Set the product packaging
+		if (array_key_exists('product_box', $data )) {
 		$data['product_packaging'] = (($data['product_box'] << 16) | ($data['product_packaging']&0xFFFF));
 		// Set the order levels
-		$data['product_order_levels'] = $data['min_order_level'].','.$data['max_order_level'];
+			$data['product_order_levels'] = empty ($data['min_order_level'])? 0 : $data['min_order_level'].','.empty ($data['max_order_level'])? 0 : $data['max_order_level'];
+		}
 
 // 		vmdebug('product_price is',$data['product_price']);
 // 		if(empty($data['product_price'])){

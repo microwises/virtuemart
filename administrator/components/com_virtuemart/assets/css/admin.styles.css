@@ -214,7 +214,11 @@ span.trash {
     width: 24px;
 	cursor: pointer;
 }
-
+#new_stockable_product {
+    border: 1px solid #CCCCCC;
+    cursor: pointer;
+    padding: 2px;
+}
 div.threecols ul li {
     background: none repeat scroll 0 0 transparent;
     display: inline-block;
