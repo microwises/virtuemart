@@ -166,7 +166,7 @@ class VirtueMartModelCategory extends VmModel {
 		if ( JRequest::getCmd('view') == 'category') {
 			$ordering = $this->_getOrdering($defaut='c.ordering',$order_dir = 'asc');
 		} else {
-			$ordering = 'ordering by category_name DESC';
+			$ordering = ' order by category_name DESC';
 		}
 		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
 

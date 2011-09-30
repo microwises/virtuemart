@@ -1178,7 +1178,7 @@ class VirtueMartModelProduct extends VmModel {
 		$query .= ' ORDER BY `#__virtuemart_manufacturers`.`mf_name`';
 		$this->_db->setQuery($query);
 		$manufacturers = $this->_db->loadObjectList();
-
+// 		vmdebug('my manufacturers',$this->_db->getQuery());
 		$manufacturerLink='';
 		if (count($manufacturers)>0) {
 			$manufacturerLink ='<div class="orderlist">';

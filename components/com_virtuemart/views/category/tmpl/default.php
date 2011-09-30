@@ -33,6 +33,7 @@ jQuery(document).ready(function () {
 	)
 });
 ";
+
 $document = JFactory::getDocument();
 $document->addScriptDeclaration($js);
 if ($this->search) { ?>

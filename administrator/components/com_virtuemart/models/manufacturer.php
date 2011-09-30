@@ -163,10 +163,14 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
-		if ( JRequest::getCmd('view') == 'manufacturer') {
+
+		$option = JRequest::getCmd( 'option');
+		$view = JRequest::getCmd('view');
+		if ($view == 'manufacturer') {
 			$ordering = $this->_getOrdering('mf_name');
 		} else {
-			$ordering = ' order by mf_name DESC';
+			$app = JFactory::getApplication() ;
+			$ordering = ' order by mf_name '.$app->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', $default, 'cmd' );;
 		}
 		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
 
