@@ -65,7 +65,7 @@ class VmImage extends VmMediaHandler {
 		return $data;
 	}
 
-	function displayMediaFull($imageArgs='',$lightbox=true){
+	function displayMediaFull($imageArgs='',$lightbox=true,$effect ="class='modal'",$description = true ){
 
 		// Remote image URL
 		if( substr( $this->file_url, 0, 4) == "http" ) {
@@ -82,8 +82,8 @@ class VmImage extends VmMediaHandler {
 				$file_alt = $this->file_meta;
 			}
 		}
-
-		return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox);
+		if($description) $postText = $this->file_description;
+		return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox,'',$postText);
 
 	}
 

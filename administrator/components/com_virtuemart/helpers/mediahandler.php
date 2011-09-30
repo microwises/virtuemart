@@ -441,14 +441,14 @@ class VmMediaHandler {
 		 * @param string $imageArgs attributes for displaying the images
 		 * @param boolean $lightbox use lightbox
 		 */
-		function displayIt($file_url, $file_alt, $imageArgs,$lightbox, $effect ="class='modal'"){
+		function displayIt($file_url, $file_alt, $imageArgs,$lightbox, $effect ="class='modal'",$postText=''){
 
 			if($lightbox){
 				$image = JHTML::image($file_url, $file_alt, $imageArgs);
 				if ($file_alt ) $file_alt = 'title="'.$file_alt.'"';
 				if ($this->file_url) $href = JURI::root() .$this->file_url ;
 				else $href = $image ;
-				$lightboxImage = '<a '.$file_alt.' '.$effect.' href="'.$href.'">'.$image.'</a>'.$this->file_description;
+				$lightboxImage = '<a '.$file_alt.' '.$effect.' href="'.$href.'">'.$image.'</a>'.$postText;
 				return $lightboxImage;
 			} else {
 				return JHTML::image($file_url, $file_alt, $imageArgs);
