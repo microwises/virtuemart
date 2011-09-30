@@ -24,23 +24,23 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
  * to show the prices to the user in a later stadium.
   */
 $mainframe = Jfactory::getApplication();
-$virtuemart_currency_id = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',JRequest::getInt('virtuemart_currency_id', 1) );
-
 $vendorId = JRequest::getInt('vendorid', 1);
 $text_before = $params->get( 'text_before', '');
-
 /* table vm_vendor */
 $db = JFactory::getDBO();
-$q  = 'SELECT `vendor_accepted_currencies` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`='.$vendorId;
+$q  = 'SELECT `vendor_accepted_currencies`, `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`='.$vendorId;
 $db->setQuery($q);
-$currency_ids = $db->loadResult();
-if (!$currency_ids) return;
+$vendor_currency = $db->loadAssoc();
+ 
+$virtuemart_currency_id = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',JRequest::getInt('virtuemart_currency_id', $vendor_currency['vendor_currency']) );
+
+if (!$vendor_currency['vendor_accepted_currencies']) return;
 //$currency_codes = explode(',' , $currencies->vendor_accepted_currencies );
 
 /* table vm_currency */
 //$q = 'SELECT `virtuemart_currency_id`,CONCAT_WS(" ",`currency_name`,`currency_exchange_rate`,`currency_symbol`) as currency_txt FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` IN ('.$currency_codes.') and enabled =1 ORDER BY `currency_name`';
 $q = 'SELECT `virtuemart_currency_id`,CONCAT_WS(" ",`currency_name`,`currency_symbol`) as currency_txt
-FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` IN ('.$currency_ids.') and (`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `ordering`,`currency_name`';
+FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` IN ('.$vendor_currency['vendor_accepted_currencies'].') and (`virtuemart_vendor_id` = "'.$vendorId.'" OR `shared`="1") AND published = "1" ORDER BY `ordering`,`currency_name`';
 $db->setQuery($q);
 $currencies = $db->loadObjectList();
 /* load the template */
