@@ -55,7 +55,7 @@ defined('_JEXEC') or die('Restricted access');?>
         <div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_WEIGHT') ?></div>
       </td>
       <td width="79%" >
-        <input type="text" class="inputbox"  name="product_weight" size="15" maxlength="15" value="<?php echo $this->product->product_weight; ?>" /> <?php echo $this->product->product_unit; ?>
+        <input type="text" class="inputbox"  name="product_weight" size="15" maxlength="15" value="<?php echo $this->product->product_weight; ?>" /> 
         <?php echo " ".$this->lists['product_weight_uom'];?>
       </td>
     </tr>

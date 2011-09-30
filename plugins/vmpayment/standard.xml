@@ -16,8 +16,8 @@
         <filename plugin="standard">standard.php</filename>
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements">
-		 <param	name="payment_logo" type="vmfiles" label="VMPAYEMNT_STANDARD_LOGOS"
-		description="VMPAYEMNT_STANDARD_LOGOS_LOGOS_DESC"
+		 <param	name="payment_logo" type="vmfiles" label="VMPAYMENT_STANDARD_LOGOS"
+		description="VMPAYMENT_STANDARD_LOGOS_LOGOS_DESC"
 		directory="/images/stories/virtuemart/payment"
 		default="default" hide_default="1" hide_none="1"
 		stripext="0"   exclude="^_" />

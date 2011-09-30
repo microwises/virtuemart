@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* View for the shopping cart
+* View for the PaymentResponse
 *
 * @package	VirtueMart
 * @subpackage
@@ -35,10 +35,13 @@ class VirtueMartViewPaymentresponse extends JView {
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		$document = JFactory::getDocument();
-        $paymentResponse = JRequest::getVar('paymentResponse', '');
+                $paymentResponse = JRequest::getVar('paymentResponse', '');
+
+                  $paymentResponseHtml = JRequest::getVar('paymentResponseHtml','','post','STRING',JREQUEST_ALLOWRAW);
 		$layoutName = $this->getLayout();
-		
-        $this->assignRef('paymentResponse', $paymentResponse);
+
+                $this->assignRef('paymentResponse', $paymentResponse);
+                $this->assignRef('paymentResponseHtml', $paymentResponseHtml);
 
 		parent::display($tpl);
 	}

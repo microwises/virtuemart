@@ -205,8 +205,24 @@ abstract class vmPaymentPlugin extends JPlugin {
 		return null;
 	}
 
-	//abstract function plgVmOnPaymentResponseReceived($pelement);
-
+      function plgVmOnPaymentResponseReceived($pelement, $virtuemart_paymentmethod_id,    $orderId, $html) {
+          if ($this->_pelement != $pelement) {
+            return null;
+        }
+        return false;
+      }
+     function plgVmOnPaymentUserCancel ($pelement,  $virtuemart_paymentmethod_id, $orderId) {
+            if ($this->_pelement != $pelement) {
+            return null;
+        }
+        return false;
+     }
+   function plgVmOnPaymentNotification($pelement, $virtuemart_paymentmethod_id,   $return_context, $new_status){
+            if ($this->_pelement != $pelement) {
+            return null;
+        }
+        return false;
+     }
 	/**
 	 * This event is fired after the payment has been processed; it stores the payment method-
 	 * specific data.
@@ -224,18 +240,46 @@ abstract class vmPaymentPlugin extends JPlugin {
 	 */
 	abstract function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData);
 
-	/**
-	 * This method is fired when showing the order details in the backend.
-	 * It displays the the payment method-specific data.
-	 * All plugins *must* reimplement this method.
-	 *
-	 * @param integer $_virtuemart_order_id The order ID
-	 * @param integer $_paymethod_id Payment method used for this order
-	 * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
-	 * @author Max Milbers
-	 * @author Oscar van Eijk
-	 */
-	abstract function plgVmOnShowOrderPaymentBE($_virtuemart_order_id, $_paymethod_id);
+
+/**
+     * This event is fired after the order has been created
+     * All plugins *must* reimplement this method.
+     * NOTE for Plugin developers:
+     *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
+     * returns 1 if the Cart should be deleted, and order sent
+     *
+     * @author Valérie Isaksen
+     */
+    abstract   function plgVmOnConfirmedOrderGetPaymentForm($virtuemart_order_id, $orderData, $return_context, $html ) ;
+
+    /**
+     * This event is fired after the order has been
+     * All plugins *must* reimplement this method.
+     * NOTE for Plugin developers:
+     *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
+     *  If this plugin IS executed, it MUST return the order status code that the order should get. This triggers the stock updates if required
+     *
+     * @param int $_orderNr The ordernumber being processed
+     * @param object $_orderData Data from the cart
+     * @param array $_priceData Price information for this order
+     * @return mixed Null when this method was not selected, otherwise the new order status
+     * @author Max Milbers
+     * @author Oscar van Eijk
+     */
+    /**
+     * This method is fired when showing the order details in the backend.
+     * It displays the the payment method-specific data.
+     * All plugins *must* reimplement this method.
+     *
+     * @param integer $_virtuemart_order_id The order ID
+     * @param integer $_paymethod_id Payment method used for this order
+     * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
+     * @author Max Milbers
+     * @author Oscar van Eijk
+     */
+ 
+    
+    abstract function plgVmOnShowOrderPaymentBE($_virtuemart_order_id, $_paymethod_id);
 
 	/**
 	 * This event is fired each time the status of an order is changed to Cancelled.
@@ -360,7 +404,6 @@ abstract class vmPaymentPlugin extends JPlugin {
 			$extPlgTable = '#__plugins';
 			$extField1 = 'id';
 			$extField2 = 'element';
-
 		} else {
 			$extPlgTable = '#__extensions';
 			$extField1 = 'extension_id';
@@ -524,18 +567,15 @@ abstract class vmPaymentPlugin extends JPlugin {
 
 		$html = '<input type="radio" name="virtuemart_paymentmethod_id" value="' . $payment->virtuemart_paymentmethod_id . '" ' . $checked . '>' . $payment_name;
 
-		/*       if ($discount) {
-		 $html .=" (" . "get discount amoutn??".$discountDisplay . ")";
-		} */
-		$html .="</label><br/>\n";
-		return $html;
-	}
-	/**
-	 * Get the name of the payment method
-	 * @param int $_pid The payment method ID
-	 * @author Oscar van Eijk
-	 * @return string Payment method name
-	 */
+        $html .="</label><br/>\n";
+        return $html;
+    }
+/**
+     * Get the name of the payment method
+     * @param int $_pid The payment method ID
+     * @author Oscar van Eijk
+     * @return string Payment method name
+     */
 
 	function getThisPaymentName($payment_id) {
 

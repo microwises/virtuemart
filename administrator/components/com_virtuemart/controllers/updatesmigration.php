@@ -211,7 +211,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	}
 
 	/**
-	 * Deletes all dynamical created data and leaves a "fresh" installation without sampeldata
+	 * Deletes all dynamical created data and leaves a "fresh" installation without sampledata
 	 * OUTDATED
 	 * @author Max Milbers
 	 *
@@ -310,7 +310,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 
 			$msg = '';
 			if(empty($errors))
-			$msg = 'System succesfull restored and sampeldata installed, user id of the mainvendor is ' . $sid;
+			$msg = 'System succesfull restored and sampledata installed, user id of the mainvendor is ' . $sid;
 			foreach($errors as $error){
 				$msg .= ( $error) . '<br />';
 			}

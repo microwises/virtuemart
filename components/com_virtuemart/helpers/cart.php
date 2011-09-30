@@ -1002,9 +1002,9 @@ public function removeProductCart($prod_id=0) {
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart') );
 			}
 			$this->virtuemart_order_id = $orderID;
-                        // Email sent when Payment reposnse received
+                        // Email sent when Payment reponse received
 			//$this->sentOrderConfirmedEmail($order->getOrder($orderID));
-
+/*
 			//We delete the old stuff
 			$this->products = array();
 			$this->_inCheckOut = false;
@@ -1015,23 +1015,37 @@ public function removeProductCart($prod_id=0) {
 			$this->tosAccepted = false;
 
 			$this->setCartIntoSession();
-
+*/
 			$cart = $this->getCart();
 			$dispatcher = JDispatcher::getInstance();
-
-			$returnValues = $dispatcher->trigger('plgVmAfterCheckoutDoPayment', array($orderID, $cart));
-
-			// may be redirect is done by the payment plugin (eg: paypal) so we do not come back here
+                        $html="";
+                        $session = JFactory::getSession();
+                        $return_context = $session->getId();
+			$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderGetPaymentForm', array($orderID, $cart , $return_context, &$html));
+			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
-
+                        // 1 = cart should be emptied, 0 cart should not be emptied
 
                         foreach ($returnValues as $returnValue) {
                                 if ($returnValue !== null  ) {
-                                    if ($returnValue ==1 )   {
-                                        $mainframe = JFactory::getApplication();
-                                        $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&layout=order_done'),JText::_('COM_VIRTUEMART_CART_ORDERDONE_THANK_YOU'));
-                                        // 			}
-                                     } else {
+                                    if ($returnValue == 1 )   {
+                                        $this->sentOrderConfirmedEmail($order->getOrder($orderID));
+
+                                        //We delete the old stuff
+                                        $this->products = array();
+                                        $this->_inCheckOut = false;
+                                        $this->_dataValidated = false;
+                                        $this->_confirmDone = false;
+                                        $this->customer_comment = '';
+                                        $this->couponCode = '';
+                                        $this->tosAccepted = false;
+
+                                        $this->setCartIntoSession();
+                                        JRequest::setVar('html' , $html);
+                                     } elseif ($returnValue == 0 )   {
+                                         JRequest::setVar('html' , $html);
+                                     }
+                                     else {
                                         $mainframe = JFactory::getApplication();
                                         $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'),JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 
@@ -1087,7 +1101,7 @@ public function removeProductCart($prod_id=0) {
 	 * @param int $orderID
 	 *
 	 */
-	private function sentOrderConfirmedEmail ($order) {
+	function sentOrderConfirmedEmail ($order) {
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 
 		$vars = array('order' => $order);

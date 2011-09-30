@@ -39,7 +39,7 @@ $lang->load($extension);//  when AJAX it needs to be loaded manually here >> in 
 if ($data->totalProduct>1) $data->totalProductTxt = JText::sprintf('COM_VIRTUEMART_CART_X_PRODUCTS', $data->totalProduct);
 else if ($data->totalProduct == 1) $data->totalProductTxt = JText::_('COM_VIRTUEMART_CART_ONE_PRODUCT');
 else $data->totalProductTxt = JText::_('COM_VIRTUEMART_EMPTY_CART');
-if ($data->dataValidated == true) {
+if (false && $data->dataValidated == true) {
 	$taskRoute = '&task=confirm';
 	$linkName = JText::_('COM_VIRTUEMART_CART_CONFIRM');
 } else {

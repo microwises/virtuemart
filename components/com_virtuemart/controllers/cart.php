@@ -405,10 +405,14 @@ class VirtueMartControllerCart extends JController {
 		//Use false to prevent valid boolean to get deleted
 		$cart = VirtueMartCart::getCart(false);
 		if($cart){
-			$cart->confirmDone();
+			$cart->confirmDone();                       
+                        $view = $this->getView('cart', 'html');
+                        $view->setLayout('order_done');
+                        /* Display it all */                     
+                        $view->display();
 		} else {
 	 		$mainframe = JFactory::getApplication();
-	 		$mainframe->redirect('index.php?option=com_virtuemart&view=cart','Cart data not valid');
+	 		$mainframe->redirect('index.php?option=com_virtuemart&view=cart',JText::_('COM_VIRTUEMART_CART_DATA_NOT_VALID'));
 		}
 	}
 

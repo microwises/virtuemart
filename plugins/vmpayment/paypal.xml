@@ -81,9 +81,7 @@
         </field -->
 
         <field name="PAYPAL_VERIFIED_ONLY" type="radio" default="0" label="VMPAYMENT_PAYPAL_ONLYVERIFIED" description="VMPAYMENT_PAYPAL_ONLYVERIFIED_EXPLAIN">
-            <option value="0">
                 <option value="0">COM_VIRTUEMART_NO</option>
-            </option>
             <option value="1">COM_VIRTUEMART_YES</option>
         </field>
         <field	name="payment_logos" type="vmfiles" label="VMPAYMENT_PAYPAL_LOGOS"

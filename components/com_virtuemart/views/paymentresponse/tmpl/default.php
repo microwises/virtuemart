@@ -23,8 +23,8 @@ JHTML::_( 'behavior.modal' );
 //$document = JFactory::getDocument();
 //$document->addScriptDeclaration($js);
 
- echo $this->paymentResponse;
-
+ echo "<h3>".$this->paymentResponse."</h3>";
+ echo $this->paymentResponseHtml;
  // add something???
 
  ?>

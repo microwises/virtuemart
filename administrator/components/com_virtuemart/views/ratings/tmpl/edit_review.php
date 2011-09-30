@@ -21,7 +21,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+vmJsApi::cssSite();
 AdminUIHelper::startAdminArea();
 AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_REVIEW_DETAILS');
 ?>
@@ -42,7 +42,11 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_REVIEW_DETAILS');
 		$rating_options = array();
 		for ($i=0;$i<=$this->max_rating;$i++) {
 			$text = JHTML::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.$i.'.gif','');
-			$rating_options[] = JHTML::_('select.option',$i,$text);
+
+                        $title = (JText::_("COM_VIRTUEMART_RATING_TITLE").' : '. $i . '/' . $this->max_rating) ;
+			$stars  = '<span class="vmicon vm2-stars'.$i.'" title="'.$title.'"></span>';
+			$rating_options[] = JHTML::_('select.option',$i,$stars);
+
 		}
 		echo JHTML::_('select.radiolist', $rating_options, 'vote', 'id="vote" class="inputbox"', 'value', 'text', $this->rating->vote);
 		?>

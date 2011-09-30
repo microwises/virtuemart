@@ -21,7 +21,12 @@ defined('_JEXEC') or die('Restricted access');
 <head>
 <?php
 echo '<link rel="stylesheet" href="'.'templates'.DS.'system'.DS.'css'.DS.'system.css'.'" type="text/css" />'."\n";
-echo '<link rel="stylesheet" href="'.'templates'.DS.'bluestork'.DS.'css'.DS.'template.css'.'" type="text/css" />'."\n";
+if( version_compare(JVERSION,'1.6.0','ge') ) {
+        echo '<link rel="stylesheet" href="'.'templates'.DS.'bluestork'.DS.'css'.DS.'template.css'.'" type="text/css" />'."\n";
+} else {
+echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'template.css'.'" type="text/css" />'."\n";
+}
+ 
 ?>
 <title><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL'). ' ' . $this->orderID; ?></title>
 </head>

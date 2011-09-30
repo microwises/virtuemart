@@ -300,35 +300,17 @@ class VirtueMartModelOrders extends VmModel {
 	}
 
 
-	/**
-	 * Update an order status and send e-mail if needed
-	 *
-	 * @author Valérie Isaksen
-	 *
-	 */
-	public function updateOrderStatus($order_id, $virtuemart_order_id, $order_status){
-
-		vmdebug('updateOrderStatus');
-
-		$this->updateOrderStatussee($order_id, $virtuemart_order_id, $order_status);
-		/*		// Update the order
-		 $order = $this->getTable('orders');
-		$order->load((int)$order_id);
-		$order->order_status = $order_status;
-		$order->store();
-
-		// here should update stock level*/
-	}
 
 	/**
 	 * Strange name is just temporarly
 	 *
 	 * @param unknown_type $order_id
 	 * @param unknown_type $order_status
+         * @author Max Milbers
 	 */
-	public function updateOrderStatussee($orders=0, $order_id =0,$order_status=0){
+	public function updateOrderStatus($orders=0, $order_id =0,$order_status=0){
 
-		vmdebug('updateOrderStatussee',$orders,$order_status);
+		vmdebug('updateOrderStatus',$orders,$order_status);
 		//General change of orderstatus
 		if(empty($orders)){
 			//$order_id = array();
@@ -476,7 +458,7 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	public function updateStatus( $orders=null,$virtuemart_order_id =0)
 	{
-		$this -> updateOrderStatussee($orders,$virtuemart_order_id);
+		$this -> updateOrderStatus($orders,$virtuemart_order_id);
 		return;
 
 /*		$db = JFactory::getDBO();
@@ -1137,7 +1119,7 @@ vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_s
 	 // NEVER USED ???? PATRICK
 	public function updateSingleItemStatus($item, $_status)
 	{
-		$this->updateOrderStatussee($item, $_status);
+		$this->updateOrderStatus($item,'', $_status);
 /*/		$table = $this->getTable('order_items');
 		$table->load($item);
 

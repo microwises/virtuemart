@@ -67,9 +67,8 @@ function myValidator(f, t)
 <?php
 	echo JText::_('COM_VIRTUEMART_CART_SELECT_PAYMENT');
 
-	$_dispatcher = JDispatcher::getInstance();
-	$tmp = array('cart'=>$this->cart,'checked'=>$this->selectedPaym);
-	$html = $_dispatcher->trigger('plgVmOnSelectPayment', $tmp);
+	$dispatcher = JDispatcher::getInstance();	
+	$html = $dispatcher->trigger('plgVmOnSelectPayment', array('cart'=>$this->cart,'checked'=>$this->selectedPaym) );
  echo "<fieldset>\n";
 	foreach($html as $item){
 		echo $item;
