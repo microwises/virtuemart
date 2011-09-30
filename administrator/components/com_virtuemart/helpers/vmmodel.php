@@ -119,6 +119,7 @@ class VmModel extends JModel {
 			$this->_pagination = new JPagination($total , $limits[0], $limits[1] );
 // 			vmdebug('created Pagination',$total, $limits[0], $limits[1] );
 		}
+// 		vmdebug('my pagination',$this->_pagination);
 		return $this->_pagination;
 	}
 
@@ -210,8 +211,9 @@ class VmModel extends JModel {
 			} else {
 				$q = 'SELECT '.$select.$joinedTables;
 			}
-// 			vmdebug('my q',$q);
+
 			$this->_db->setQuery($q,$limitStart,$limit);
+// 			vmdebug('my q',$this->_db->getQuery() );
 			if($object == 2){
 				$list = $this->_db->loadResultArray();
 			} else if($object == 1 ){
@@ -245,53 +247,6 @@ class VmModel extends JModel {
 // 			vmTime('exeSortSearchListQuery SQL_CALC_FOUND_ROWS','exe');
 			return $list;
 
-			/**
-			 * For testing purposes, donte delete, notice by Max
-			 */
-/*		} else {
-
-			//and the where conditions
-			$joinedTables .= $whereString .$groupBy .$orderBy .$filter_order_Dir ;
-
-// 			vmTime('exeSortSearchListQuery count','count');
-			$this->_db->setQuery($selectFindRows.$joinedTables);
-
-			$count = $this->_db->loadResult();
-// 			vmTime('exeSortSearchListQuery count','count');
-
-			if($count == false || $count == 0){
-				$app = JFactory::getApplication();
-				$app->enqueueMessage('sortSearchOrder Error in query '.$this->_db->getQuery().'<br /><br />'.$this->_db->getErrorMsg().'<br />');
-				$this->_total = 0;;
-				return array();
-			}
-			else if($count > 0){
-
-				if($nbrReturnProducts){
-					$limitStart = 0;
-					$limit = $nbrReturnProducts;
-				} else {
-					//     			$count =  $this->_db->loadResult();
-					$this->getPagination($count);
-					$limitStart = $this->_pagination->limitstart;
-					$limit = $this->_pagination->limit;
-				}
-
-// 				vmTime('exeSortSearchListQuery load array','array');
-				$this->_db->setQuery('SELECT '.$select.$joinedTables, $limitStart, $limit);
-
-				if($object){
-					$list = $this->_db->loadObjectList();
-				} else {
-					$list = $this->_db->loadResultArray();
-				}
-// 				vmdebug('my db query ding COUNT ',$list);
-// 				vmTime('exeSortSearchListQuery load array','array');
-				vmTime('exeSortSearchListQuery COUNT','exe');
-				return $list;
-			}
-		}
-*/
 	}
 
 	/**

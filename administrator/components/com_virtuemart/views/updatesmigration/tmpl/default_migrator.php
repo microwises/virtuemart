@@ -17,7 +17,7 @@
 */
 
 $session = JFactory::getSession();
-vmdebug('my session',$session);
+
 ?>
 <form action="index.php" method="post" name="adminForm" enctype="multipart/form-data" >
 <input type="hidden" name="task" value="" />

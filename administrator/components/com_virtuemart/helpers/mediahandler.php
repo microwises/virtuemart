@@ -322,6 +322,7 @@ class VmMediaHandler {
 		 * Shows the supported file types for the server
 		 *
 		 * @author enyo 06-Nov-2003 03:32 http://www.php.net/manual/en/function.imagetypes.php
+		 * @author Max Milbers
 		 * @return multitype:string
 		 */
 		function displaySupportedImageTypes() {
@@ -335,16 +336,20 @@ class VmMediaHandler {
 			);
 
 			foreach ($aPossibleImageTypeBits as $iImageTypeBits => $sImageTypeString) {
-				if (imagetypes() & $iImageTypeBits) {
-					$aSupportedTypes[] = $sImageTypeString;
+
+				if(function_exists('imagetypes')){
+					if (imagetypes() & $iImageTypeBits) {
+						$aSupportedTypes[] = $sImageTypeString;
+					}
 				}
+
 			}
 
 			$supportedTypes = '';
 			if(function_exists('mime_content_type')){
-				$supportedTypes .= 'server supports mime_content_type<br />';
+				$supportedTypes .= JText::_('COM_VIRTUEMART_FILES_FORM_MIME_CONTENT_TYPE_SUPPORTED').'<br />';
 			} else {
-				$supportedTypes .= 'server does not support mime_content_type<br />';
+				$supportedTypes .= JText::_('COM_VIRTUEMART_FILES_FORM_MIME_CONTENT_TYPE_NOT_SUPPORTED').'<br />';
 			}
 
 			$supportedTypes .= JText::_('COM_VIRTUEMART_FILES_FORM_IMAGETYPES_SUPPORTED'). implode($aSupportedTypes,', ');

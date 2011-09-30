@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage Category
-* @author RickG, jseros, RolandD
+* @author RickG, jseros, RolandD, Max Milbers
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -21,13 +21,6 @@ defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea();
 
-$nrows = count( $this->categories );
-
-if( $this->pagination->limit < $nrows ){
-	if( ($this->pagination->limitstart + $this->pagination->limit) < $nrows ) {
-		$nrows = $this->pagination->limitstart + $this->pagination->limit;
-	}
-}
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -69,7 +62,17 @@ if( $this->pagination->limit < $nrows ){
 		$k = 0;
 		$repeat = 0;
 
-		for ($i = $this->pagination->limitstart; $i < $nrows; $i++) {
+// 		$nrows = count( $this->categories );
+
+// 		if( $this->pagination->limit < $nrows ){
+// 			if( ($this->pagination->limitstart + $this->pagination->limit) < $nrows ) {
+// 				$nrows = $this->pagination->limitstart + $this->pagination->limit;
+// 			}
+// 		}
+
+// 		for ($i = $this->pagination->limitstart; $i < $nrows; $i++) {
+
+		foreach($this->categories as $i=>$value){
 
 			if( !isset($this->rowList[$i])) $this->rowList[$i] = $i;
 			if( !isset($this->depthList[$i])) $this->depthList[$i] = 0;
