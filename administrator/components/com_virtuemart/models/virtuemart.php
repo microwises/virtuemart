@@ -30,28 +30,6 @@ jimport( 'joomla.application.component.model');
  */
 class VirtueMartModelVirtueMart extends JModel {
 
-    /**
-	 * creates a bulleted of the childen of this category if they exist
-	 * @author pablo
-	 * @param int $virtuemart_category_id
-	 * @return string The HTML code
-	 */
-/*	function GetVendorDetails($virtuemart_vendor_id)
-	{
-		$db = JFactory::getDBO();
-
-		$query = "SELECT virtuemart_category_id, category_child_id, category_name ";
-		$query .= "FROM #__virtuemart_categories, #__virtuemart_category_categories ";
-		$query .= "WHERE #__virtuemart_category_categories.category_parent_id = '$virtuemart_category_id' ";
-		$query .= "AND #__virtuemart_categories.virtuemart_category_id = #__virtuemart_category_categories.category_child_id ";
-		//$query .= "AND #__virtuemart_categories.virtuemart_vendor_id = '$hVendor_id' ";
-		$query .= "AND #__virtuemart_categories.virtuemart_vendor_id = '1' ";
-		$query .= "AND #__virtuemart_categories.published = '1' ";
-		$query .= "ORDER BY #__virtuemart_categories.ordering, #__virtuemart_categories.category_name ASC";
-
-		$childList = $this->_getList( $query );
-		return $childList;
-	}*/
 
 
 	/**
@@ -139,7 +117,7 @@ class VirtueMartModelVirtueMart extends JModel {
 		$query .= 'WHERE `perms` <> "admin" ';
         $query .= 'AND `perms` <> "storeadmin" ';
         $query .= 'AND INSTR(`usertype`, "administrator") = 0 AND INSTR(`usertype`, "Administrator") = 0 ';
-        $query .= 'ORDER BY uo.`created_on` DESC';
+        $query .= ' ORDER BY uo.`created_on` DESC';
         return $this->_getList($query, 0, $nbrCusts);
     }
 }

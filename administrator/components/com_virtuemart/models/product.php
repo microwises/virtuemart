@@ -191,10 +191,10 @@ class VirtueMartModelProduct extends VmModel {
 					$where[] = '`#__virtuemart_products`.`modified_on` > "'.$dateSql.'" ';
 					break;
 				case 'random':
-					$orderBy = 'ORDER BY RAND() LIMIT 0, '.(int)$nbrReturnProducts ; //TODO set limit LIMIT 0, '.(int)$nbrReturnProducts;
+					$orderBy = ' ORDER BY RAND() LIMIT 0, '.(int)$nbrReturnProducts ; //TODO set limit LIMIT 0, '.(int)$nbrReturnProducts;
 					break;
 				case 'topten';
-					$orderBy = 'ORDER BY product_sales LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
+					$orderBy = ' ORDER BY product_sales LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
 					$filter_order_Dir = 'DESC';
 			}
 		}

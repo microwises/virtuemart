@@ -173,7 +173,7 @@ class VirtuemartModelReport extends VmModel {
 		} else {
 			$this->whereItem = ' WHERE ';
 		}
-		
+
 		$this->whereItem;
 		/* WHERE differences with orders and items from orders are only date periods and ordering */
 		$whereString =$this->whereItem.$this->dates ;
@@ -287,7 +287,7 @@ class VirtuemartModelReport extends VmModel {
 		$query .= "AND o.virtuemart_order_id=i.virtuemart_order_id ";
   		$query .= "AND i.virtuemart_product_id=p.virtuemart_product_id ";
   		$query .= "GROUP BY product_sku, product_name, order_date ";
-  		$query .= "ORDER BY order_date, product_name ASC";
+  		$query .= " ORDER BY order_date, product_name ASC";
 
 		if($noLimit){
 			$this->_data = $this->_getList($query);

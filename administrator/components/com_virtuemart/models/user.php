@@ -1053,7 +1053,7 @@ class VirtueMartModelUser extends VmModel {
 	 	$query .= 'WHERE `node`.`lft` BETWEEN `parent`.`lft` AND `parent`.`rgt` ';
 	 	$query .= $and;
 	 	$query .= 'GROUP BY `node`.`' . $name . '` ';
-	 	$query .= 'ORDER BY `node`.`lft`';
+	 	$query .= ' ORDER BY `node`.`lft`';
 
 	 	$this->_db->setQuery($query);
 		//$app = JFactory::getApplication();

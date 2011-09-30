@@ -101,7 +101,7 @@ class VirtueMartModelCategory extends VmModel {
 		$query .= 'AND `#__virtuemart_categories`.`virtuemart_category_id` = `#__virtuemart_category_categories`.`category_child_id` ';
 		$query .= 'AND `#__virtuemart_categories`.`virtuemart_vendor_id` = ' . (int)$vendorId . ' ';
 		$query .= 'AND `#__virtuemart_categories`.`published` = "1" ';
-		$query .= 'ORDER BY `#__virtuemart_categories`.`ordering`, `#__virtuemart_categories`.`category_name` ASC';
+		$query .= ' ORDER BY `#__virtuemart_categories`.`ordering`, `#__virtuemart_categories`.`category_name` ASC';
 		$childList = $this->_getList( $query );
 
 		if(!empty($childList)){
@@ -697,7 +697,7 @@ class VirtueMartModelCategory extends VmModel {
 				$query .= "OR `category_description` LIKE '%$keyword%' ";
 				$query .= ") ";
 			}*/
-			$query .= "ORDER BY `#__virtuemart_categories`.`ordering` ASC, `#__virtuemart_categories`.`category_name` ASC";
+			$query .= " ORDER BY `#__virtuemart_categories`.`ordering` ASC, `#__virtuemart_categories`.`category_name` ASC";
 
 			// initialise the query in the $database connector
 			$db->setQuery($query);

@@ -422,7 +422,7 @@ class VirtueMartModelUserfields extends VmModel {
 		if (count($_skip) > 0) {
 			$_q .= "AND FIND_IN_SET(name, '".implode(',', $_skip)."') = 0 ";
 		}
-		$_q .= 'ORDER BY ordering ';
+		$_q .= ' ORDER BY ordering ';
 		$_fields = $this->_getList($_q);
 
 		// We need some extra fields that are not in the userfields table. They will be hidden on the details form
@@ -738,8 +738,8 @@ class VirtueMartModelUserfields extends VmModel {
 						case 'radio':
 							$_qry = 'SELECT fieldtitle, fieldvalue '
 								. 'FROM #__virtuemart_userfield_values '
-								. 'WHERE virtuemart_userfield_id = ' . $_fld->virtuemart_userfield_id . ' '
-								. 'ORDER BY ordering ';
+								. 'WHERE virtuemart_userfield_id = ' . $_fld->virtuemart_userfield_id
+								. ' ORDER BY ordering ';
 							$_values = $this->_getList($_qry);
 							// We need an extra lok here, especially for the Bank info; the values
 							// must be translated.
