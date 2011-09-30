@@ -115,7 +115,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
 		if ( JRequest::getCmd('view') == 'manufacturercategories') {
 			$ordering = $this->_getOrdering('mf_category_name');
 		} else {
-			$ordering = 'mf_category_name';
+			$ordering = 'order by mf_category_name DESC';
 		}
 		return $this->_data = $this->exeSortSearchListQuery(0,'*','FROM `#__virtuemart_manufacturercategories`',$whereString,'',$ordering);
 

@@ -7,6 +7,9 @@
  * @subpackage
  * @author RolandD
  * @author Oscar van Eijk
+ * @author Max Milbers
+ * @author Patrick Kohl
+ * @author Valerie Isaksen
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -185,7 +188,6 @@ class VirtueMartModelOrders extends VmModel {
 			} else {
 				$whereString= 'WHERE u.virtuemart_user_id = ' . (int)$uid.' AND o.virtuemart_vendor_id = "1" ';
 			}
-
 		}
 
 
@@ -212,7 +214,13 @@ class VirtueMartModelOrders extends VmModel {
 			$this->_total = $this->_getListCount($query);
 		}*/
 
-		$this->_data = $this->exeSortSearchListQuery(0,$selecct,$from,$whereString,'',$this->_getOrdering('virtuemart_order_id', 'DESC'));
+		if ( JRequest::getCmd('view') == 'orders') {
+			$ordering = $this->_getOrdering('virtuemart_order_id');
+		} else {
+			$ordering = 'order by modified_on DESC';
+		}
+
+		$this->_data = $this->exeSortSearchListQuery(0,$selecct,$from,$whereString,'',$ordering);
 
 
 		return $this->_data ;

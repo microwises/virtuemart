@@ -166,7 +166,7 @@ class VirtueMartModelManufacturer extends VmModel {
 		if ( JRequest::getCmd('view') == 'manufacturer') {
 			$ordering = $this->_getOrdering('mf_name');
 		} else {
-			$ordering = 'mf_name';
+			$ordering = 'order by mf_name DESC';
 		}
 		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
 
