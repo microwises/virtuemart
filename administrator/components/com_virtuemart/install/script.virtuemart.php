@@ -476,7 +476,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 							$this->recurse_copy($src .DS. $file,$dst .DS. $file);
 						}
 						else {
-							JFile::move($src .DS. $file,$dst .DS. $file);
+							if(!JFile::move($src .DS. $file,$dst .DS. $file)){
+								vmError('Couldnt move '.$src .DS. $file.' to '.$dst .DS. $file);
+							}
 						}
 					}
 				}

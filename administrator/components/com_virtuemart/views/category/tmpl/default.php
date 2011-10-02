@@ -62,13 +62,13 @@ AdminUIHelper::startAdminArea();
 		$k = 0;
 		$repeat = 0;
 
-// 		$nrows = count( $this->categories );
+ 		$nrows = count( $this->categories );
 
-// 		if( $this->pagination->limit < $nrows ){
-// 			if( ($this->pagination->limitstart + $this->pagination->limit) < $nrows ) {
-// 				$nrows = $this->pagination->limitstart + $this->pagination->limit;
-// 			}
-// 		}
+		if( $this->pagination->limit < $nrows ){
+			if( ($this->pagination->limitstart + $this->pagination->limit) < $nrows ) {
+				$nrows = $this->pagination->limitstart + $this->pagination->limit;
+			}
+		}
 
 // 		for ($i = $this->pagination->limitstart; $i < $nrows; $i++) {
 

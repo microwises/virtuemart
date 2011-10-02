@@ -290,15 +290,16 @@ class VirtuemartViewUser extends JView {
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination', $pagination);
 
-			// search filter
+			$lists = ShopFunctions::addStandardDefaultViewLists($model,'id');
+/*// 			search filter
 			$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string');
 			$search = JString::strtolower( $search );
 			$lists['search']= $search;
 
-			// Get the ordering
+// 			Get the ordering
 			$lists['order']     = $mainframe->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'id', 'cmd' );
 			$lists['order_Dir'] = $mainframe->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', '', 'word' );
-			$this->assignRef('lists', $lists);
+*/			$this->assignRef('lists', $lists);
 
 			if(!class_exists('VirtueMartModelShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shoppergroup.php');
 			$shoppergroupmodel = new VirtueMartModelShopperGroup();

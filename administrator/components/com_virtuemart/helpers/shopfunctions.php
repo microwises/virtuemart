@@ -52,14 +52,20 @@ class ShopFunctions {
 	function addStandardDefaultViewLists($model, $default_order = 'ordering', $default_dir = 'ASC',$name = 'search') {
 
 		$pagination = $model->getPagination();
+
 		$this->assignRef('pagination', $pagination);
+
 		/* set list filters */
 		$option = JRequest::getCmd('option');
 		$view = JRequest::getCmd('view', JRequest::getCmd('controller'));
 		$mainframe = JFactory::getApplication();
+
 		$lists[$name] = $mainframe->getUserStateFromRequest($option . '.' . $view . '.'.$name, $name, '', 'string');
-		$lists['filter_order'] = $mainframe->getUserStateFromRequest($option . '.' . $view . '.filter_order', 'filter_order', $default_order, 'cmd');
-		$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option . '.' . $view . '.filter_order_Dir', 'filter_order_Dir', $default_dir, 'word');
+
+		$lists['filter_order'] =  $model->getValidFilterOrdering($default_order);
+
+		$lists['filter_order_Dir'] = $model->getValidFilterDir($default_dir);
+
 		return $lists;
 	}
 

@@ -67,6 +67,8 @@ class VmModel extends JModel {
 		}
 		$defaultTable = $this->getTable($this->_maintablename);
 		$this->_idName = $defaultTable->getKeyName();
+
+		$this->setDefaultValidOrderingFields($defaultTable);
 	}
 
 	public function setIdName($idName){
@@ -98,6 +100,96 @@ class VmModel extends JModel {
 		return $this->_id;
 	}
 
+	function setDefaultValidOrderingFields($defaultTable=null){
+
+		if($defaultTable===null){
+			$defaultTable = $this->getTable($this->_maintablename);
+		}
+
+		// Iterate over the object variables to build the query fields and values.
+		foreach (get_object_vars($defaultTable) as $k => $v){
+
+			// Ignore any internal fields.
+			if ($k[0] == '_') {
+				continue;
+			}
+			$this->_validOrderingFieldName[] = $k;
+		}
+
+	}
+
+	function addvalidOrderingFieldName($add){
+		$this->_validOrderingFieldName = array_merge($this->_validOrderingFieldName,$add);
+	}
+
+	var $_validFilterDir = array('ASC','DESC');
+	function getValidFilterDir($default){
+
+		$view = JRequest::getWord('view');
+		$mainframe = JFactory::getApplication() ;
+		$filter_order_Dir = strtoupper($mainframe->getUserStateFromRequest( 'com_virtuemart'.$view.'.filter_order_Dir', 'filter_order_Dir', $default, 'word' ));
+		if(!in_array($filter_order_Dir, $this->_validFilterDir)){
+			$filter_order_Dir = $default;
+			$mainframe->setUserState( $option.'.'.$view.'.filter_order_Dir',$filter_order_Dir);
+		}
+		return $filter_order_Dir;
+	}
+
+// 	var $_validDefaultOrderingFieldName = 'ordering';
+	var $_validOrderingFieldName = null;
+
+	function getValidFilterOrdering($overwrite=null){
+
+// 		if($overwrite!==null){
+
+// 		}
+		$view = JRequest::getWord('view');
+		$mainframe = JFactory::getApplication() ;
+		$filter_order = strtolower($mainframe->getUserStateFromRequest( 'com_virtuemart'.$view.'.filter_order', 'filter_order', $this->_validOrderingFieldName[0], 'cmd' ));
+		$prefix = '';
+		if($dotps = strrpos($filter_order, '.')!==false){
+			$prefix = substr($filter_order, 0,$dotps+1);
+			$filter_order = substr($filter_order, $dotps+1);
+			vmdebug('Found dot $prefix '.$prefix.'  $filter_order '.$filter_order);
+		}
+		if(!in_array($filter_order, $this->_validOrderingFieldName)){
+			if(!empty($overwrite)){
+				vmdebug('checkValidOrderingField: programmer choosed invalid ordering '.$filter_order.', overwrite used '.$overwrite);
+				$default = $overwrite;
+			} else {
+				vmdebug('checkValidOrderingField: programmer choosed invalid ordering, model _validDefaultOrderingFieldName used');
+				$default = $this->_validOrderingFieldName[0];
+			}
+			$filter_order = $default;
+			$mainframe->setUserState( 'com_virtuemart.'.$view.'.filter_order',$prefix.$filter_order);
+		}
+
+		return $prefix.$filter_order;
+	}
+
+	/**
+	* Get the SQL Ordering statement
+	*
+	* @return string text to add to the SQL statement
+	*/
+	function _getOrdering($default='ordering',$order_dir = 'ASC') {
+		if ($default == '') return '';
+		// 		$option = JRequest::getCmd( 'option');
+		// 		$view = JRequest::getWord('view');
+		// 		$mainframe = JFactory::getApplication() ;
+
+
+		//		$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order_Dir', 'filter_order_Dir', $order_dir, 'word' );
+		$filter_order_Dir = $this->getValidFilterDir($order_dir);
+
+		// 			$filter_order     = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', $default, 'cmd' );
+		$filter_order     = $this->getValidFilterOrdering($default);
+
+		return ' ORDER BY '.$filter_order.' '.$filter_order_Dir ;
+	}
+
+
+
 	/**
 	 * Loads the pagination
 	 *
@@ -105,21 +197,23 @@ class VmModel extends JModel {
 	 */
 	public function getPagination($total=0,$limitStart=0,$limit=0) {
 		if ($this->_pagination == null) {
-		if(empty($limit) ){
-			$limits = $this->setPaginationLimits();
-		} else {
-			$limits[0] = $limitStart;
-			$limits[1] = $limit;
-		}
 
-		// TODO, this give result when result = 0 >>> if(empty($total)) $total = $this->getTotal();
+
+			if(empty($limit) ){
+				$limits = $this->setPaginationLimits();
+			} else {
+				$limits[0] = $limitStart;
+				$limits[1] = $limit;
+			}
+
+			// TODO, this give result when result = 0 >>> if(empty($total)) $total = $this->getTotal();
 
 			jimport('joomla.html.pagination');
-// 			$this->_pagination = new JPagination($total , $this->getState('limitstart'), $this->getState('limit') );
+			// 			$this->_pagination = new JPagination($total , $this->getState('limitstart'), $this->getState('limit') );
 			$this->_pagination = new JPagination($total , $limits[0], $limits[1] );
-// 			vmdebug('created Pagination',$total, $limits[0], $limits[1] );
+			// 			vmdebug('created Pagination',$total, $limits[0], $limits[1] );
 		}
-// 		vmdebug('my pagination',$this->_pagination);
+		// 		vmdebug('my pagination',$this->_pagination);
 		return $this->_pagination;
 	}
 
@@ -154,9 +248,9 @@ class VmModel extends JModel {
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit',  VmConfig::get('list_limit',10), 'int');
 		$this->setState('limit', $limit);
 
-// 		$this->setState('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
+		// 		$this->setState('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
 		// In case limit has been changed, adjust limitstart accordingly
-// 		$this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
+		// 		$this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
 		$limitstart = ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0);
 		$this->setState('limitstart', $limitstart);
 
@@ -169,83 +263,85 @@ class VmModel extends JModel {
 	}
 
 	/**
-	*
-	* exeSortSearchListQuery
-	*
-	* @author Max Milbers
-	* @author Patrick Kohl
-	* @param boolean $object use single result array = 2, assoc. array = 1 or object list = 0 as return value
-	* @param string $select the fields to select
-	* @param string $joinedTables the string of the joined tables or the table
-	* @param string $whereString for the where condition
-	* @param string $groupBy
-	* @param string $orderBy
-	* @param string $filter_order_Dir
-	*/
+	 *
+	 * exeSortSearchListQuery
+	 *
+	 * @author Max Milbers
+	 * @author Patrick Kohl
+	 * @param boolean $object use single result array = 2, assoc. array = 1 or object list = 0 as return value
+	 * @param string $select the fields to select
+	 * @param string $joinedTables the string of the joined tables or the table
+	 * @param string $whereString for the where condition
+	 * @param string $groupBy
+	 * @param string $orderBy
+	 * @param string $filter_order_Dir
+	 */
 
 	public function exeSortSearchListQuery($object, $select, $joinedTables, $whereString = '', $groupBy = '', $orderBy = '', $filter_order_Dir = '', $nbrReturnProducts = false){
 
-// 		vmSetStartTime('exe');
-// 		if(USE_SQL_CALC_FOUND_ROWS){
+		// 		vmSetStartTime('exe');
+		// 		if(USE_SQL_CALC_FOUND_ROWS){
 
-			//and the where conditions
-			$joinedTables .= $whereString .$groupBy .$orderBy .$filter_order_Dir ;
-// 			$joinedTables .= $whereString .$groupBy .$orderBy;
+		//and the where conditions
+		$joinedTables .= $whereString .$groupBy .$orderBy .$filter_order_Dir ;
+		// 			$joinedTables .= $whereString .$groupBy .$orderBy;
 
-			if($nbrReturnProducts){
-				$limitStart = 0;
-				$limit = $nbrReturnProducts;
-				$this->_withCount = false;
-			} else if($this->_noLimit){
-				$this->_withCount = false;
-				$limitStart = 0;
-				$limit = 0;
-			} else {
-				$limits = $this->setPaginationLimits();
-				$limitStart = $limits[0];
-				$limit = $limits[1];
+		if($nbrReturnProducts){
+			$limitStart = 0;
+			$limit = $nbrReturnProducts;
+			$this->_withCount = false;
+		} else if($this->_noLimit){
+			$this->_withCount = false;
+			$limitStart = 0;
+			$limit = 0;
+		} else {
+			$limits = $this->setPaginationLimits();
+			$limitStart = $limits[0];
+			$limit = $limits[1];
+		}
+
+		if($this->_withCount){
+			$q = 'SELECT SQL_CALC_FOUND_ROWS '.$select.$joinedTables;
+		} else {
+			$q = 'SELECT '.$select.$joinedTables;
+		}
+
+		$this->_db->setQuery($q,$limitStart,$limit);
+		// 			vmdebug('my q',$this->_db->getQuery() );
+		if($object == 2){
+			$list = $this->_db->loadResultArray();
+		} else if($object == 1 ){
+			$list = $this->_db->loadAssocList();
+		} else {
+			$list = $this->_db->loadObjectList();
+		}
+		// 			vmdebug('my $list',$list);
+		if(empty($list)){
+			$errors = $this->_db->getErrorMsg();
+			if( !empty( $errors)){
+				vmdebug('exeSortSearchListQuery error in db ',$this->_db->getErrorMsg());
 			}
-
-			if($this->_withCount){
-				$q = 'SELECT SQL_CALC_FOUND_ROWS '.$select.$joinedTables;
-			} else {
-				$q = 'SELECT '.$select.$joinedTables;
+			if($object == 2 or $object == 1){
+				$list = array();
 			}
+		}
 
-			$this->_db->setQuery($q,$limitStart,$limit);
-// 			vmdebug('my q',$this->_db->getQuery() );
-			if($object == 2){
-				$list = $this->_db->loadResultArray();
-			} else if($object == 1 ){
-				$list = $this->_db->loadAssocList();
-			} else {
-				$list = $this->_db->loadObjectList();
+		if($this->_withCount){
+
+			$this->_db->setQuery('SELECT FOUND_ROWS()');
+			$count = $this->_db->loadResult();
+
+			if($count == false){
+				$count = 0;
 			}
-// 			vmdebug('my $list',$list);
-			if(empty($list)){
-				$errors = $this->_db->getErrorMsg();
-				if( !empty( $errors)){
-					vmdebug('exeSortSearchListQuery error in db ',$this->_db->getErrorMsg());
-				}
-				if($object == 2 or $object == 1){ $list = array(); }
-			}
+			$this->_total = $count;
+			$this->getPagination($count,$limitStart,$limit);
 
-			if($this->_withCount){
-
-				$this->_db->setQuery('SELECT FOUND_ROWS()');
-				$count = $this->_db->loadResult();
-
-				if($count == false){
-					$count = 0;
-				}
-				$this->_total = $count;
-				$this->getPagination($count,$limitStart,$limit);
-
-			} else {
-				$this->_withCount = true;
-			}
-// 			vmTime('exeSortSearchListQuery SQL_CALC_FOUND_ROWS','exe');
-			return $list;
+		} else {
+			$this->_withCount = true;
+		}
+		// 			vmTime('exeSortSearchListQuery SQL_CALC_FOUND_ROWS','exe');
+		return $list;
 
 	}
 
@@ -408,22 +504,7 @@ class VmModel extends JModel {
 		return true;
 	}
 
-	/**
-	 * Get the SQL Ordering statement
-	 *
-	 * @return string text to add to the SQL statement
-	 */
-	function _getOrdering($default='ordering',$order_dir = 'asc') {
-		if ($default == '') return '';
-		$option = JRequest::getCmd( 'option');
-		$view = JRequest::getWord('view');
-		$mainframe = JFactory::getApplication() ;
 
-		$filter_order_Dir = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order_Dir', 'filter_order_Dir', $order_dir, 'word' );
-		$filter_order     = $mainframe->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', $default, 'cmd' );
-
-		return ' ORDER BY '.$filter_order.' '.$filter_order_Dir ;
-	}
 	/**
 	 * Since an object like product, category dont need always an image, we can attach them to the object with this function
 	 * The parameter takes a single product or arrays of products, look for BE/views/product/view.html.php

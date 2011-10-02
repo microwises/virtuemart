@@ -52,15 +52,15 @@ AdminUIHelper::startAdminArea();
 			<?php echo JHTML::_('grid.sort'
 					, JText::_('COM_VIRTUEMART_USERNAME')
 					, 'username'
-					, $this->lists['order_Dir']
-					, $this->lists['order']); ?>
+					, $this->lists['filter_order_Dir']
+					, $this->lists['filter_order']); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
 					, JText::_('COM_VIRTUEMART_USER_DISPLAYED_NAME')
 					, 'name'
-					, $this->lists['order_Dir']
-					, $this->lists['order']); ?>
+					, $this->lists['filter_order_Dir']
+					, $this->lists['filter_order']); ?>
 			</th>
 <?php		if(Vmconfig::get('multix','none')!=='none'){ ?>
 		<th width="80">
@@ -75,8 +75,8 @@ AdminUIHelper::startAdminArea();
 			<?php echo JHTML::_('grid.sort'
 					, JText::_('COM_VIRTUEMART_SHOPPERGROUP')
 					, 'shopper_group_name'
-					, $this->lists['order_Dir']
-					, $this->lists['order']); ?>
+					, $this->lists['filter_order_Dir']
+					, $this->lists['filter_order']); ?>
 			</th>
 		</thead>
 		<?php
