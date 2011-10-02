@@ -42,8 +42,7 @@ $j15 = VmConfig::isJ15();
 	<thead>
 	    <tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->orderslist); ?>')" /></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_ID', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-                <th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_NUMBER', 'order_number', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+                 <th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_NUMBER', 'order_number', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_NAME', 'order_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL', 'payment_method', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_PRINT_VIEW'); ?></th>
@@ -60,7 +59,7 @@ $j15 = VmConfig::isJ15();
 		$i = 0;
 		$k = 0;
 		$keyword = JRequest::getWord('keyword');
-		
+
 		foreach ($this->orderslist as $key => $order) {
 		    $checked = JHTML::_('grid.id', $i , $order->virtuemart_order_id);
 		    ?>
@@ -71,10 +70,8 @@ $j15 = VmConfig::isJ15();
 			<?php
 			$link = 'index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$order->virtuemart_order_id;
 			?>
-		<td><?php echo JHTML::_('link', JRoute::_($link), $order->virtuemart_order_id, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$order->virtuemart_order_id)); ?></td>
-		<!-- Name -->
-		<td><?php echo $order->order_number; ?></td>
-                <!-- Name -->
+		<td><?php echo JHTML::_('link', JRoute::_($link), $order->order_number, array('title' => JText::_('COM_VIRTUEMART_ORDER_VIEW').' '.$order->order_number)); ?></td>
+
 		<td><?php echo $order->order_name; ?></td>
 		<!-- Payment method -->
 		<td><?php echo $order->payment_method; ?></td>

@@ -30,7 +30,7 @@ $j15 = VmConfig::isJ15();
 			<?php echo JText::_('COM_VIRTUEMART_#'); ?>
 		</th>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_ID'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_NUMBER'); ?>
 		</th>
 		<th>
 			<?php echo JText::_('COM_VIRTUEMART_PRINT_VIEW'); ?>
@@ -64,7 +64,7 @@ $j15 = VmConfig::isJ15();
 					<?php echo $n++; ?>
 				</td>
 				<td align="left">
-					<a href="<?php echo $editlink; ?>"><?php echo $row->virtuemart_order_id; ?></a>
+					<a href="<?php echo $editlink; ?>"><?php echo $row->order_number; ?></a>
 				</td>
 				<td align="center">
 					<?php echo $print_link; ?>

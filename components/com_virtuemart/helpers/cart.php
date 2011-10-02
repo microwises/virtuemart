@@ -73,7 +73,7 @@ class VirtueMartCart {
 	 * @access public
 	 * @param array $cart the cart to store in the session
 	 */
-	public static function getCart($deleteValidation=true,$setCart=true) {
+	public static function getCart($deleteValidation=true,$setCart=true, $options = array()) {
 
 		//What does this here? for json stuff?
 		if (!class_exists('JTable')
@@ -81,7 +81,7 @@ class VirtueMartCart {
 		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
 
 		if(empty(self::$_cart)){
-			$session = JFactory::getSession();
+			$session = JFactory::getSession($options);
 			$cartSession = $session->get('vmcart', 0, 'vm');
 
 			if (!empty($cartSession)) {
@@ -249,6 +249,8 @@ public function setCartIntoSession() {
  */
 public function removeCartFromSession() {
 	$session = JFactory::getSession();
+
+        vmdebug('removeCartFromSession',$session);
 	$session->set('vmcart', 0, 'vm');
 }
 
@@ -1064,6 +1066,26 @@ public function removeProductCart($prod_id=0) {
 	}
 
 	/**
+	 * emptyCart: Used for payment handling.
+	 *
+	 * @author Valerie
+	 *
+	 */
+	public function emptyCart(){
+
+
+		//We delete the old stuff
+		$this->products = array();
+		$this->_inCheckOut = false;
+		$this->_dataValidated = false;
+		$this->_confirmDone = false;
+		$this->customer_comment = '';
+		$this->couponCode = '';
+		$this->tosAccepted = false;
+
+		$this->setCartIntoSession();
+	}
+/**
 	 * Used for new payment handling, not implemented yet. Idea is to use the token and the stored session to refer
 	 * to a cart and so not to create an order for payment attempts
 	 *
@@ -1083,18 +1105,8 @@ public function removeProductCart($prod_id=0) {
 		$this->virtuemart_order_id = $orderID;
 		$this->sentOrderConfirmedEmail($order->getOrder($orderID));
 
-		//We delete the old stuff
-		$this->products = array();
-		$this->_inCheckOut = false;
-		$this->_dataValidated = false;
-		$this->_confirmDone = false;
-		$this->customer_comment = '';
-		$this->couponCode = '';
-		$this->tosAccepted = false;
-
-		$this->setCartIntoSession();
+		$this->emptyCart();
 	}
-
 
 	/**
 	 * Prepares the body for shopper and vendor, renders them and sends directly the emails

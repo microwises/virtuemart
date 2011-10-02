@@ -318,7 +318,6 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	public function updateOrderStatus($orders=0, $order_id =0,$order_status=0){
 
-		vmdebug('updateOrderStatus',$orders,$order_status);
 		//General change of orderstatus
 		if(empty($orders)){
 			//$order_id = array();
@@ -363,7 +362,6 @@ class VirtueMartModelOrders extends VmModel {
 		$updated = 0;
 		$error = 0;
 		if ($orders) {
-
 			$notify = JRequest::getVar('notify_customer', array());
 			$comments = JRequest::getVar('comment', array());
 			foreach ($orders as $virtuemart_order_id => $order) {
@@ -1140,7 +1138,7 @@ vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_s
 	 * @return boolean True of remove was successful, false otherwise
 	 */
 	function remove($cids) {
-
+vmdebug('remove', $cids);
 		foreach($cids as $_id) {
 			$this->removeOrderItems ($_id);
 		}
