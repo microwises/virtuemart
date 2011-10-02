@@ -42,10 +42,7 @@ $tt=$this;
 			<tr>
 				<td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL') ?></td>
 			</tr>
-			<tr>
-				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_ID') ?></strong></td>
-				<td><?php printf("%08d", $this->orderbt->virtuemart_order_id);?></td>
-			</tr>
+			 
                         <tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></strong></td>
 				<td><?php echo  $this->orderbt->order_number;?></td>
@@ -211,7 +208,7 @@ $tt=$this;
 					<a href="javascript:enableItemEdit(<?php echo $item->virtuemart_order_item_id; ?>)"> <?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/icon_16/icon-16-category.png', "Edit", NULL, "Edit"); ?></a>
 				</td> -->
 				<td>
-					
+
 				</td>
 				<td>
 					<?php echo $item->product_quantity; ?>
@@ -251,7 +248,7 @@ $tt=$this;
 				<td align="center">
 					<?php echo $this->orderstatuslist[$item->order_status]; ?><br/ >
 					<?php echo $this->itemstatusupdatefields[$item->virtuemart_order_item_id]; ?>
-					
+
 				</td>
 				<td>
 					<?php echo $this->currency->priceDisplay($item->product_item_price,'',false); ?>
@@ -282,8 +279,8 @@ $tt=$this;
 					<?php echo $item->order_item_sku; ?>
 				</td>
 				<td align="center">
-					
-					
+
+
 				</td>
 				<td>
 					<input type="text" size="8" name="cid[<?php echo $item->virtuemart_order_item_id; ?>][product_item_price]" value="<?php echo $item->product_item_price; ?>"/>
@@ -297,12 +294,12 @@ $tt=$this;
 			</tr> -->
 		<?php } ?>
 			<tr id="updateOrderItemStatus">
-					
+
 					<td colspan="4">
 						&nbsp;						<a class="updateOrderItemStatus" href="#"><span class="icon-nofloat vmicon vmicon-16-save"></span><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></a>
 						&nbsp;&nbsp;&nbsp;
 						<a href="#" onClick="javascript:resetForm(0);"><span class="icon-nofloat vmicon vmicon-16-remove"></span><?php echo '&nbsp;'. JText::_('COM_VIRTUEMART_CANCEL'); ?></a>
-					</td>					
+					</td>
 
 
 					<td colspan="4">
