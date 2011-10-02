@@ -603,7 +603,8 @@ class VirtueMartModelProduct extends VmModel {
 	public function getProducts($productIds, $front=true, $withCalc = true, $onlyPublished = true,$single=false){
 
 		if(empty($productIds)){
-			vmdebug('getProducts has no $productIds','No ids given to get products');
+// 			vmdebug('getProducts has no $productIds','No ids given to get products');
+// 			vmTrace('getProducts has no $productIds');
 			return array();
 		}
 
@@ -1162,8 +1163,11 @@ class VirtueMartModelProduct extends VmModel {
 	$db->setQuery($this->_query);
 	$mf_virtuemart_product_ids = $db->loadResultArray();*/
 
-	$mf_virtuemart_product_ids = $this->sortSearchListQuery();
+	$tmp = $this->_noLimit;
+	$this->_noLimit = true;
 
+	$mf_virtuemart_product_ids = $this->sortSearchListQuery();
+	$this->_noLimit = $tmp;
 	//$mf_virtuemart_product_ids = array();
 	//foreach ($virtuemart_product_ids as $virtuemart_product_id) $mf_virtuemart_product_ids[] = $virtuemart_product_id->virtuemart_product_id ;
 
