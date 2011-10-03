@@ -50,7 +50,9 @@ class VirtueMartModelProduct extends VmModel {
 		$this->setMainTable('products');
 		$this->starttime = microtime(true);
 		$this->maxScriptTime = ini_get('max_execution_time')*0.95-1;
-		$this->addvalidOrderingFieldName(array('m.mf_name','pp.product_price'));
+// 		$this->addvalidOrderingFieldName(array('m.mf_name','pp.product_price'));
+		$browseOrderByFields = VmConfig::get('browse_orderby_field');
+		$this->addvalidOrderingFieldName((array)$browseOrderByFields);
 	}
 
 	/**
@@ -71,13 +73,10 @@ class VirtueMartModelProduct extends VmModel {
 
 		//First setup the variables for filtering
 		if($app->isSite()){
-			$filter_order = JRequest::getWord('orderby', VmConfig::get('browse_orderby_field','virtuemart_product_id'));
+			$filter_order = JRequest::getWord('orderby', VmConfig::get('browse_orderby_field','p.virtuemart_product_id'));
+
 			// sanitize $filter_order and dir
-			$browse_orderby_fields = VmConfig::get('browse_orderby_fields') ;
-			if (!is_array($browse_orderby_fields)) $browse_orderby_fields = array($browse_orderby_fields);
-			if (!in_array($filter_order, $browse_orderby_fields)) {
-				$filter_order = VmConfig::get('browse_orderby_field');
-			}
+			$filter_order     = $this->getValidFilterOrdering($filter_order);
 
 			$filter_order_Dir 	= strtoupper(JRequest::getWord('order', 'ASC'));
 			//sanitize Direction
@@ -232,7 +231,6 @@ class VirtueMartModelProduct extends VmModel {
 				break;
 			default ;
 				if(!empty($filter_order)){
-// 					vmdebug('Use in switch sortSearchListQuery default');
 					$orderBy = ' ORDER BY '.$this->_db->getEscaped($filter_order).' ';
 				} else {
 					$filter_order_Dir = '';

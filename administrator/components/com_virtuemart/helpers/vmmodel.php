@@ -147,31 +147,41 @@ class VmModel extends JModel {
 // 	var $_validDefaultOrderingFieldName = 'ordering';
 	var $_validOrderingFieldName = null;
 
-	function getValidFilterOrdering($overwrite=null){
+	function getValidFilterOrdering($overwrite=null,$overWriteDefault=null){
 
-// 		if($overwrite!==null){
+		$defaultValue = $this->_validOrderingFieldName[0];
+		if($overWriteDefault!==null){
+			$defaultValue = $overWriteDefault;
+		}
 
-// 		}
-		$view = JRequest::getWord('view');
-		$mainframe = JFactory::getApplication() ;
-		$filter_order = $filter_order_orig = strtolower($mainframe->getUserStateFromRequest( 'com_virtuemart'.$view.'.filter_order', 'filter_order', $this->_validOrderingFieldName[0], 'cmd' ));
+		if($overwrite!==null){
+			$filter_order = $overwrite;
+		} else {
+			$view = JRequest::getWord('view');
+			$mainframe = JFactory::getApplication() ;
 
-		$dotps = strrpos($filter_order_orig, '.');
+			$filter_order = strtolower($mainframe->getUserStateFromRequest( 'com_virtuemart'.$view.'.filter_order', 'filter_order',$defaultValue , 'cmd' ));
+
+		}
+
+
+
+		$dotps = strrpos($filter_order, '.');
 		if($dotps===false && !empty($this->_tablePreFix) ){
-			$filter_order = $this->_tablePreFix . $filter_order_orig;
+			$filter_order = $this->_tablePreFix . $filter_order;
 		}
 
 		if(!in_array($filter_order, $this->_validOrderingFieldName)){
 
-			if(!empty($overwrite)){
-				vmdebug('checkValidOrderingField: programmer choosed invalid ordering '.$filter_order.', overwrite used '.$overwrite);
-				$default = $overwrite;
-			} else {
-				vmdebug('checkValidOrderingField: programmer choosed invalid ordering '.$filter_order.', use '.$this->_validOrderingFieldName[0]);
-				$default = $this->_validOrderingFieldName[0];
-			}
-			$filter_order_orig = $default;
-			$mainframe->setUserState( 'com_virtuemart.'.$view.'.filter_order',$filter_order_orig);
+// 			if(!empty($overwrite)){
+// 				vmdebug('checkValidOrderingField: programmer choosed invalid ordering '.$filter_order.', overwrite used '.$overwrite);
+// 				$default = $overwrite;
+// 			} else {
+				vmdebug('checkValidOrderingField: programmer choosed invalid ordering '.$filter_order.', use '.$defaultValue);
+				$filter_order = $defaultValue;
+// 			}
+// 			$filter_order = $default;
+			$mainframe->setUserState( 'com_virtuemart.'.$view.'.filter_order',$filter_order);
 // 			return $prefix.$filter_order;
 		}
 
@@ -331,7 +341,7 @@ class VmModel extends JModel {
 			$errors = $this->_db->getErrorMsg();
 			if( !empty( $errors)){
 				vmdebug('exeSortSearchListQuery error in db ',$this->_db->getErrorMsg());
-
+				VmTrace('productsortseachr',true);
 			}
 			if($object == 2 or $object == 1){
 				$list = array();

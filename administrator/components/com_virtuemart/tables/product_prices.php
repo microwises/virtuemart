@@ -65,6 +65,7 @@ class TableProduct_prices extends VmTableData {
 
         $this->setPrimaryKey('virtuemart_product_id');
 		$this->setLoggable();
+		$this->setTableShortCut('pp');
     }
 
     /**
