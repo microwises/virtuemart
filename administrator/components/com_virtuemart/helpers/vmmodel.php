@@ -144,12 +144,13 @@ class VmModel extends JModel {
 		return $filter_order_Dir;
 	}
 
-// 	var $_validDefaultOrderingFieldName = 'ordering';
+	// 	var $_validDefaultOrderingFieldName = 'ordering';
 	var $_validOrderingFieldName = null;
 
 	function getValidFilterOrdering($overwrite=null,$overWriteDefault=null){
 
 		$mainframe = JFactory::getApplication() ;
+		$view = JRequest::getWord('view');
 
 		$defaultValue = $this->_validOrderingFieldName[0];
 		if($overWriteDefault!==null){
@@ -159,14 +160,8 @@ class VmModel extends JModel {
 		if($overwrite!==null){
 			$filter_order = $overwrite;
 		} else {
-			$view = JRequest::getWord('view');
-
-
 			$filter_order = strtolower($mainframe->getUserStateFromRequest( 'com_virtuemart'.$view.'.filter_order', 'filter_order',$defaultValue , 'cmd' ));
-
 		}
-
-
 
 		$dotps = strrpos($filter_order, '.');
 		if($dotps===false && !empty($this->_tablePreFix) ){
@@ -175,26 +170,21 @@ class VmModel extends JModel {
 
 		if(!in_array($filter_order, $this->_validOrderingFieldName)){
 
-// 			if(!empty($overwrite)){
-// 				vmdebug('checkValidOrderingField: programmer choosed invalid ordering '.$filter_order.', overwrite used '.$overwrite);
-// 				$default = $overwrite;
-// 			} else {
-				vmdebug('checkValidOrderingField: programmer choosed invalid ordering '.$filter_order.', use '.$defaultValue);
-				$filter_order = $defaultValue;
-// 			}
-// 			$filter_order = $default;
+			vmdebug('checkValidOrderingField: programmer choosed invalid ordering '.$filter_order.', use '.$defaultValue);
+			$filter_order = $defaultValue;
+
 			$mainframe->setUserState( 'com_virtuemart.'.$view.'.filter_order',$filter_order);
-// 			return $prefix.$filter_order;
+
 		}
 
 		return $filter_order;
 	}
 
 	/**
-	* Get the SQL Ordering statement
-	*
-	* @return string text to add to the SQL statement
-	*/
+	 * Get the SQL Ordering statement
+	 *
+	 * @return string text to add to the SQL statement
+	 */
 	function _getOrdering($default='ordering',$order_dir = 'ASC') {
 		if ($default == '') return '';
 		// 		$option = JRequest::getCmd( 'option');
