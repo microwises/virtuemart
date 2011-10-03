@@ -194,7 +194,11 @@ class VirtueMartModelConfig extends JModel {
 		$orderByFields = new stdClass();
 		$orderByFields->checkbox ='<div  class="threecols"><ul>';
 
-		$orderByFieldsArray = array('virtuemart_product_id', 'product_sku','product_price','category_name','category_description','mf_name', 'product_s_desc', 'product_desc', 'product_weight', 'product_weight_uom', 'product_length', 'product_width', 'product_height', 'product_lwh_uom', 'product_in_stock', 'low_stock_notification', 'product_available_date', 'product_availability', 'product_special', 'ship_code_id', 'created_on', 'modified_on', 'product_name', 'product_sales','product_unit', 'product_packaging', 'product_order_levels', 'intnotes', 'metadesc', 'metakey', 'metarobot', 'metaauthor');
+		$orderByFieldsArray = array('p.virtuemart_product_id', 'p.product_sku','pp.product_price','c.category_name','c.category_description',
+		'm.mf_name', 'p.product_s_desc', 'p.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width',
+		'p.product_height', 'p.product_lwh_uom', 'p.product_in_stock', 'p.low_stock_notification', 'p.product_available_date',
+		'p.product_availability', 'p.product_special', 'ship_code_id', 'p.created_on', 'p.modified_on', 'p.product_name', 'p.product_sales',
+		'p.product_unit', 'p.product_packaging', 'p.product_order_levels', 'p.intnotes', 'p.metadesc', 'p.metakey', 'p.metarobot', 'p.metaauthor');
 		foreach ($orderByFieldsArray as $key => $field ) {
 			if (!empty($orderByChecked) && in_array($field, $orderByChecked) ) {
 				$checked = 'checked="checked"';
@@ -202,7 +206,19 @@ class VirtueMartModelConfig extends JModel {
 			else {
 				$checked = '';
 			}
-			$text = JText::_('COM_VIRTUEMART_'.strtoupper($field)) ;
+			// 			if(!empty($this->_tablePreFix)){
+
+			// 			}
+			// 			$prefix = '';
+			$fieldWithoutPrefix = $field;
+			$dotps = strrpos($fieldWithoutPrefix, '.');
+			if($dotps!==false){
+				$prefix = substr($field, 0,$dotps+1);
+				$fieldWithoutPrefix = substr($field, $dotps+1);
+// 				vmdebug('Found dot '.$dotps.' $prefix '.$prefix.'  $fieldWithoutPrefix '.$fieldWithoutPrefix);
+			}
+
+			$text = JText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
 			$orderByFields->select[] =  JHTML::_('select.option', $field, $text) ;
 			$orderByFields->checkbox.= '<li><label for="' .$field.$key. '">' .$text. '</label><input type="checkbox" id="' .$field.$key. '" name="browse_orderby_fields[]" value="' .$field. '" ' .$checked. ' /></li>';
 

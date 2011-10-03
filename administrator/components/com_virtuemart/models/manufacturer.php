@@ -170,7 +170,7 @@ class VirtueMartModelManufacturer extends VmModel {
 			$ordering = $this->_getOrdering('mf_name');
 		} else {
 			$app = JFactory::getApplication() ;
-			$ordering = ' order by mf_name '.$app->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', $default, 'cmd' );;
+			$ordering = ' order by M.mf_name '.$app->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', 'DESC', 'cmd' );;
 		}
 		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
 

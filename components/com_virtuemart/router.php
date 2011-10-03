@@ -61,9 +61,20 @@ function virtuemartBuildRoute(&$query) {
 				unset($query['start']);
 			}
 			if ( isset($query['orderby']) ) {
-				$segments[] = $lang['orderby'].','.$lang[ $query['orderby'] ] ;
+
+				$dotps = strrpos($query['orderby'], '.');
+				if($dotps!==false){
+					$prefix = substr($query['orderby'], 0,$dotps).'_';
+					$fieldWithoutPrefix = substr($query['orderby'], $dotps+1);
+					// 				vmdebug('Found dot '.$dotps.' $prefix '.$prefix.'  $fieldWithoutPrefix '.$fieldWithoutPrefix);
+				} else {
+					$prefix = '';
+					$fieldWithoutPrefix = $query['orderby'];
+				}
+				$segments[] = $lang['orderby'].','.$prefix.$lang[ $fieldWithoutPrefix ] ;
 				unset($query['orderby']);
-			}			if ( isset($query['order']) ) {
+			}
+			if ( isset($query['order']) ) {
 				if ($query['order'] =='DESC') $segments[] = $lang['orderDesc'] ;
 				unset($query['order']);
 			}

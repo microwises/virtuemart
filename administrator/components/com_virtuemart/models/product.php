@@ -206,15 +206,15 @@ class VirtueMartModelProduct extends VmModel {
 				$where[] = ' p.`product_special`="1" ';// TODO Change  to  a  individual button
 				break;
 			case 'c.category_name':
-				$orderBy = ' ORDER BY `category_name` ';
+				$orderBy = ' ORDER BY `c.category_name` ';
 				$joinCategory = true ;
 				break;
 			case 'c.category_description':
-				$orderBy = ' ORDER BY `category_description` ';
+				$orderBy = ' ORDER BY `c.category_description` ';
 				$joinCategory = true ;
 				break;
 			case 'm.mf_name':
-				$orderBy = ' ORDER BY `mf_name` ';
+				$orderBy = ' ORDER BY `m.mf_name` ';
 				$joinMf = true ;
 				break;
 			case 'ordering':
@@ -228,6 +228,7 @@ class VirtueMartModelProduct extends VmModel {
 				break;
 			default ;
 				if(!empty($filter_order)){
+// 					vmdebug('Use in switch sortSearchListQuery default');
 					$orderBy = ' ORDER BY '.$this->_db->getEscaped($filter_order).' ';
 				} else {
 					$filter_order_Dir = '';
@@ -1209,7 +1210,19 @@ class VirtueMartModelProduct extends VmModel {
 		$orderByLink ='<div class="orderlist">';
 		foreach ($fields as $field) {
 			if ($field != $orderby) {
-				$text = JText::_('COM_VIRTUEMART_'.strtoupper($field)) ;
+
+				$dotps = strrpos($field, '.');
+				if($dotps!==false){
+					$prefix = substr($field, 0,$dotps+1);
+					$fieldWithoutPrefix = substr($field, $dotps+1);
+					// 				vmdebug('Found dot '.$dotps.' $prefix '.$prefix.'  $fieldWithoutPrefix '.$fieldWithoutPrefix);
+				} else {
+					$prefix = '';
+					$fieldWithoutPrefix = $field;
+				}
+
+				$text = JText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
+
 				if ($field == $orderbyCfg) $link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$manufacturerTxt ) ;
 				else $link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$manufacturerTxt.'&orderby='.$field ) ;
 				$orderByLink .='<div><a title="'.$text.'" href="'.$link.'">'.$text.'</a></div>';
@@ -1231,6 +1244,16 @@ class VirtueMartModelProduct extends VmModel {
 	if ($orderby=='') $orderby=$orderbyCfg;
 	$orderby=strtoupper($orderby);
 	$link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$orderlink.$orderbyTxt.$manufacturerTxt) ;
+
+	$dotps = strrpos($orderby, '.');
+	if($dotps!==false){
+		$prefix = substr($orderby, 0,$dotps+1);
+		$orderby = substr($orderby, $dotps+1);
+		// 				vmdebug('Found dot '.$dotps.' $prefix '.$prefix.'  $fieldWithoutPrefix '.$fieldWithoutPrefix);
+	} else {
+		$prefix = '';
+// 		$orderby = $orderby;
+	}
 
 	$orderByList ='<div class="orderlistcontainer"><div class="title">'.JText::_('COM_VIRTUEMART_ORDERBY').'</div><div class="activeOrder"><a title="'.$orderTxt.'" href="'.$link.'">'.JText::_('COM_VIRTUEMART_SEARCH_ORDER_'.$orderby).' '.$orderTxt.'</a></div>';
 	$orderByList .= $orderByLink.'</div>';

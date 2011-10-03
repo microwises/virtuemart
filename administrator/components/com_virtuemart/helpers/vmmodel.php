@@ -163,10 +163,10 @@ class VmModel extends JModel {
 		if(!in_array($filter_order, $this->_validOrderingFieldName)){
 
 			if(!empty($overwrite)){
-				vmdebug('checkValidOrderingField: programmer choosed invalid ordering '.$filter_order_orig.', overwrite used '.$overwrite);
+				vmdebug('checkValidOrderingField: programmer choosed invalid ordering '.$filter_order.', overwrite used '.$overwrite);
 				$default = $overwrite;
 			} else {
-				vmdebug('checkValidOrderingField: programmer choosed invalid ordering '.$filter_order_orig.', use '.$this->_validOrderingFieldName[0]);
+				vmdebug('checkValidOrderingField: programmer choosed invalid ordering '.$filter_order.', use '.$this->_validOrderingFieldName[0]);
 				$default = $this->_validOrderingFieldName[0];
 			}
 			$filter_order_orig = $default;
@@ -174,7 +174,7 @@ class VmModel extends JModel {
 // 			return $prefix.$filter_order;
 		}
 
-		return $filter_order_orig;
+		return $filter_order;
 	}
 
 	/**
