@@ -484,7 +484,7 @@ class shopFunctionsF {
 		}
 
 		if(!empty($layout)){
-			$view->setLayout($layout);
+			$view->setLayout(strtolower($layout));
 		}
 
 
