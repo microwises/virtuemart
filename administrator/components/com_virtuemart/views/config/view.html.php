@@ -95,8 +95,7 @@ class VirtuemartViewConfig extends JView {
 		$this->assignRef('orderByFields', $orderByFields);
 		$searchFields = $model->getSearchFields( VmConfig::get('browse_search_fields') );
 		$this->assignRef('searchFields', $searchFields);
-		//$titlesFields = $model->getTitlesFields( VmConfig::get('titles') );
-		//$this->assignRef('titlesFields', $titlesFields);
+
 		$aclGroups = $usermodel->getAclGroupIndentedTree();
 		$this->assignRef('aclGroups', $aclGroups);
 

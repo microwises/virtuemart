@@ -34,6 +34,7 @@ class TableCategory_categories extends VmTableData {
 		$this->setPrimaryKey('category_child_id');
 
 		$this->setOrderable();
+		$this->setTableShortCut('cx');
 	}
 
 }

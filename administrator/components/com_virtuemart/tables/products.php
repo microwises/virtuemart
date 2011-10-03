@@ -118,6 +118,8 @@ class TableProducts extends VmTable {
 		$this->setObligatoryKeys('product_name');
 		$this->setLoggable();
 		$this->setSlug('product_name');
+		$this->setTableShortCut('p');
+
 	}
 
 }

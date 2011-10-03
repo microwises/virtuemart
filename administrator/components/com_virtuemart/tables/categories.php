@@ -85,6 +85,7 @@ class TableCategories extends VmTable {
 		$this->setObligatoryKeys('category_name');
 		$this->setLoggable();
 		$this->setSlug('category_name');
+		$this->setTableShortCut('c');
 	}
 
 

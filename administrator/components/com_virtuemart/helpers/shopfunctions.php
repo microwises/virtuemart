@@ -62,7 +62,7 @@ class ShopFunctions {
 
 		$lists[$name] = $mainframe->getUserStateFromRequest($option . '.' . $view . '.'.$name, $name, '', 'string');
 
-		$lists['filter_order'] =  $model->getValidFilterOrdering($default_order);
+		$lists['filter_order'] =  $model->getValidFilterOrdering();
 
 		$lists['filter_order_Dir'] = $model->getValidFilterDir($default_dir);
 

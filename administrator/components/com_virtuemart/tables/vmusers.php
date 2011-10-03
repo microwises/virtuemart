@@ -53,14 +53,15 @@ if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'
 
 		$this->setLoggable();
 
+		$this->setTableShortCut('vmu');
 	}
 
 	//function check(){
-	    
+
 	   // if(empty($this->virtuemart_user_id)){
 		//$this->virtuemart_user_id = JFactory::getUser()->id;
 	  //  }
-	    
+
 	 //   parent::check();
 	//}
 }

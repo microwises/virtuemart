@@ -91,6 +91,7 @@ class TableOrders extends VmTable {
 //		$this->setObligatoryKeys('virtuemart_userinfo_id');
 		$this->setLoggable();
 
+		$this->setTableShortCut('o');
 	}
 
 	/**

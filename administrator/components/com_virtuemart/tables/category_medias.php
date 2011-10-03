@@ -40,6 +40,7 @@ class TableCategory_medias extends VmTableXarray {
 		$this->setSecondaryKey('virtuemart_media_id');
 		$this->setOrderable();
 
+		$this->setTableShortCut('cm');
 	}
 
 }

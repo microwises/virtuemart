@@ -121,6 +121,11 @@ class VmTable extends JTable{
 		}
 	}
 
+	var $_tablePreFix = '';
+	function setTableShortCut($prefix){
+		$this->_tablePreFix = $prefix.'.';
+	}
+
 	function checkDataContainsTableFields($from, $ignore=array()){
 
 		if(empty($from))

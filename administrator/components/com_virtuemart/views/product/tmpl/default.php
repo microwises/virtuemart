@@ -52,7 +52,7 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 				<button onclick="this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?></button>
 				<button onclick="document.adminForm.filter_product.value=''; document.adminForm.search_type.options[0].selected = true;"><?php echo JText::_('COM_VIRTUEMART_RESET'); ?></button>
 			</td>
-			
+
 		</tr>
 	</table>
 	</div>
@@ -69,15 +69,15 @@ $this->productlist
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->productlist); ?>')" /></th>
-		<th><?php echo JHTML::_('grid.sort', $col_product_name, 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', $col_product_name, 'p.product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<?php if (!$product_parent_id ) { ?>
                 <th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILDREN_OF'); ?></th>
                 <?php } ?>
                 <th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_PARENT_LIST_CHILDREN'); ?></th>
                 <th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_MEDIA'); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_SKU', 'product_sku', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_PRICE_TITLE', 'product_price', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY', 'category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_SKU', 'p.product_sku', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_PRICE_TITLE', 'pp.product_price', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY', 'c.category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<!-- Only show reordering fields when a category ID is selected! -->
 		<?php
 		$num_rows = 0;
@@ -87,7 +87,7 @@ $this->productlist
 				<?php echo JHTML::_('grid.order', $this->productlist); //vmCommonHTML::getSaveOrderButton( $num_rows, 'changeordering' ); ?>
 			</th>
 		<?php } ?>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_MANUFACTURER_S', 'mf_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_MANUFACTURER_S', 'm.mf_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_REVIEW_S'); ?></th>
 		<th width="40px" ><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 	                <th><?php echo 'id' //echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_VENDOR_NAME', 'vendor_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
@@ -116,14 +116,14 @@ $this->productlist
 				?>
 				<td><?php
                         echo JHTML::_('link', JRoute::_($link), $product->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$product->product_name));
-						 
+
                                 ?></td>
 				<!-- Vendor name -->
                                 <?php if (!$product_parent_id ) { ?>
 				<td><?php
                                 if ($product->product_parent_id  ) {
 							VirtuemartViewProduct::displayLinkToParent($product->product_parent_id);
-						}                               
+						}
                                    ?></td>
 				<!-- Vendor name -->
                                 <?php } ?>

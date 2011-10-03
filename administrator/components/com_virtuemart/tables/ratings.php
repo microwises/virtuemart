@@ -54,6 +54,7 @@ class TableRatings extends VmTable {
 
 		$this->setLoggable();
 
+		$this->setTableShortCut('r');
 	}
 }
 // pure php no closing tag

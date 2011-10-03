@@ -75,6 +75,8 @@ class TableUserinfos extends VmTableData {
 //		$this->setObligatoryKeys('address_type_name');
 
 		$this->setLoggable();
+
+		$this->setTableShortCut('ui');
 	}
 
 	/**
