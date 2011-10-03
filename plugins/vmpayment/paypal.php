@@ -308,39 +308,41 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	    // send email admin
 	    exit;
 	}
-	//$fp = fopen("/homez.130/joomlavi/www/ZZ_joomla_virtuemart_fr/virtuemart15/logs/paypal.text", "a+");
-	//fwrite($fp, "plgVmOnPaymentResponseReceived" . $virtuemart_order_id . "\n");
-	//fwrite($fp, "plgVmOnPaymentResponseReceived" . $post_msg . "\n");
-
 
 	$paramstring = $this->getVmPaymentParams($vendorId = 0, $virtuemart_paymentmethod_id);
 	$params = new JParameter($paramstring);
-	//fwrite($fp, "plgVmOnPaymentResponseReceived params " . $paramstring . "\n");
+
 	$this->updatePaymentData($response_fields, $this->_tablename, 'virtuemart_order_id', $virtuemart_order_id);
-	if (!$this->_processIPN($paypal_data)) {
+	if (! ($error_msg = $this->_processIPN($paypal_data, $params ) ) ) {
 	    $new_state = $params->get('status_canceled');
 	} else {
 
-	    $query = 'SELECT ' . $this->_tablename . '.`virtuemart_payment_id` FROM ' . $this->_tablename
-		    . ' LEFT JOIN #__virtuemart_orders ON   ' . $this->_tablename . '.`virtuemart_order_id` = #__virtuemart_orders.`virtuemart_order_id`
-                    WHERE #__virtuemart_orders.`order_number`=' . $paypal_data['invoice']
-		    . ' AND #__virtuemart_orders.`order_total` = ' . $paypal_data['mc_gross']
-		    // . ' AND #__virtuemart_orders.`order_currency` = ' . $paypal_data['mc_currency']
-		    . ' AND ' . $this->_tablename . '.`paypal_custom` = "' . $paypal_data['custom'] . '"';
-
-
-	    $db = JFactory::getDBO();
-	    $db->setQuery($query);
-	    $result = $db->loadResult();
-
-	    if (!$result) {
-		fwrite($fp, "query" . $query . "\n");
+	    /*
+	     * https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_IPNandPDTVariables
+	     * The status of the payment:
+	     * Canceled_Reversal: A reversal has been canceled. For example, you won a dispute with the customer, and the funds for the transaction that was reversed have been returned to you.
+	     * Completed: The payment has been completed, and the funds have been added successfully to your account balance.
+	     * Created: A German ELV payment is made using Express Checkout.
+	     * Denied: You denied the payment. This happens only if the payment was previously pending because of possible reasons described for the pending_reason variable or the Fraud_Management_Filters_x variable.
+	     * Expired: This authorization has expired and cannot be captured.
+	     * Failed: The payment has failed. This happens only if the payment was made from your customer’s bank account.
+	     * Pending: The payment is pending. See pending_reason for more information.
+	     * Refunded: You refunded the payment.
+	     * Reversed: A payment was reversed due to a chargeback or other type of reversal. The funds have been removed from your account balance and returned to the buyer. The reason for the reversal is specified in the ReasonCode element.
+	     * Processed: A payment has been accepted.
+	     * Voided: This authorization has been voided.
+	     *
+	     */
+	    if (empty($paypal_data['payment_status']) || ($paypal_data['payment_status'] != 'Completed' && $paypal_data['payment_status'] != 'Pending')) {
+		return false;
+	    }
+	    if ( $paypal_data['payment_status'] == 'Completed'  ) {
+		 $new_status = $params->get('status_success');
 	    }
 
-	    $new_status = $params->get('status_success');
 	}
 
-	//fclose($fp);
+
 	return true;
     }
 
@@ -407,8 +409,8 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
     /**
      * Get the name of the payment method
      * @param TablePaymentmethods $payment
-     * @author Valerie Isaksen
      * @return string Payment method name
+     * @author Valerie Isaksen
      */
     function plgVmGetDisplayedPaymentName(TablePaymentmethods $payment) {
 	if (!$this->selectedThisPayment($this->_pelement, $payment->virtuemart_paymentmethod_id)) {
@@ -426,30 +428,18 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
      * @return string Empty string if data is valid and an error message otherwise
      * @access protected
      */
-    function _processIPN($paypal_data) {
-	$secure_post = $this->params->get('secure_post', '0');
-	$paypal_url = $this->_getPaypalURL($this->params);
+    function _processIPN($paypal_data, $params ) {
+	$secure_post = $params->get('secure_post', '0');
+	$paypal_url = $this->_getPaypalURL($params);
 	// read the post from PayPal system and add 'cmd'
 	$post_msg = 'cmd=_notify-validate';
+        foreach ($data as $key => $value) {
+            if ($key != 'view' && $key != 'layout') {
+                $value = urlencode($value);
+                $post_msg .= "&$key=$value";
+            }
+        }
 
-	foreach ($paypal_data as $ipnkey => $ipnval) {
-	    if (get_magic_quotes_gpc())
-	    // Fix issue with magic quotes
-		$ipnval = stripslashes($ipnval);
-
-	    if (!preg_match("/^[_0-9a-z-]{1,30}$/", $ipnkey) || !strcasecmp($ipnkey, 'cmd')) {
-		// ^ Antidote to potential variable injection and poisoning
-		unset($ipnkey);
-		unset($ipnval);
-	    }
-	    // Eliminate the above
-	    // Remove empty keys (not values)
-	    if (@$ipnkey != '') {
-		//unset ($_POST); // Destroy the original ipn post array, sniff...
-		$workstring.='&' . @$ipnkey . '=' . urlencode(@$ipnval);
-	    }
-	    $post_msg .= "key " . $i++ . ": $ipnkey, value: $ipnval<br />";
-	} // Notify string
 
 	$this->checkPaypalIps($paypal_data['ipn_test']);
 
@@ -461,28 +451,31 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	if ($secure_post) {
 	    // If possible, securely post back to paypal using HTTPS
 	    // Your PHP server will need to be SSL enabled
-	    $fp = fsockopen('ssl://' . $paypal_url, 443, $errno, $errstr, 30);
+	    $fps = fsockopen('ssl://' . $paypal_url, 443, $errno, $errstr, 30);
 	} else {
-	    $fp = fsockopen($paypal_url, 80, $errno, $errstr, 30);
+	    $fps = fsockopen($paypal_url, 80, $errno, $errstr, 30);
 	}
 
-	if (!$fp) {
+	if (!$fps) {
+
 	    return JText::sprintf('COM_VIRTUEMART_PAYPAL_ERROR_POSTING_IPN', $errstr, $errno); // send email
 	} else {
-	    fputs($fp, $header . $post_msg);
-	    while (!feof($fp)) {
-		$res = fgets($fp, 1024);
+	    fputs($fps, $header . $post_msg);
+	    while (!feof($fps)) {
+		$res = fgets($fps, 1024);
+
 		if (strcmp($res, 'VERIFIED') == 0) {
 
-		    return true;
+			return '';
 		} elseif (strcmp($res, 'INVALID') == 0) {
+
 		    return JText::_('COM_VIRTUEMART_PAYPAL_ERROR_IPN_VALIDATION');
 		}
 	    }
 	}
 
-	fclose($fp);
-	return true;
+	fclose($fps);
+	return '';
     }
 
     function _getMerchantEmail($params) {
@@ -492,7 +485,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
     function _getPaypalUrl($params) {
 
 	$url = $params->get('sandbox') ? 'www.sandbox.paypal.com' : 'www.paypal.com';
-	$url = $url . '/cgi-bin/webscr';
+
 	return $url;
     }
 
@@ -568,8 +561,9 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
     }
 
     function _getPaymentResponseHtml($paypal_data, $payment_name, $orderId) {
-	//$html = "<pre>" .
-		//print_r($paypal_data, true) . "</pre>";
+return "";
+	$html = "<pre>" .
+		print_r($paypal_data, true) . "</pre>";
 	return $html;
 	$html = "mettre aussi les references de la comande dans vm
      <table>
