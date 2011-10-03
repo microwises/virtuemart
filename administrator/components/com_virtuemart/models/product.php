@@ -80,15 +80,19 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			$filter_order_Dir 	= strtoupper(JRequest::getWord('order', 'ASC'));
+			//sanitize Direction
+			if($filter_order_Dir!='ASC' && $filter_order_Dir!='DESC'){
+				$filter_order_Dir ='';
+			}
 		} else {
+
 			$filter_order_Dir = strtoupper($app->getUserStateFromRequest( $option.'.'.$view.'.filter_order_Dir', 'filter_order_Dir', $order_dir, 'word' ));
-			$filter_order     = $app->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', $default_order, 'cmd' );
+			$filter_order_Dir = $this->getValidFilterDir();
+// 			$filter_order     = $app->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', $default_order, 'cmd' );
+			$filter_order     = $this->getValidFilterOrdering();
 		}
 
-		//sanitize Direction
-		if($filter_order_Dir!='ASC' && $filter_order_Dir!='DESC'){
-			$filter_order_Dir ='';
-		}
+
 
 		$search 				= JRequest::getWord('search', false );
 		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0 );

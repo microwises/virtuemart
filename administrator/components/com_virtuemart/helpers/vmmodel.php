@@ -138,7 +138,7 @@ class VmModel extends JModel {
 		$filter_order_Dir = strtoupper($mainframe->getUserStateFromRequest( 'com_virtuemart'.$view.'.filter_order_Dir', 'filter_order_Dir', $default, 'word' ));
 		if(!in_array($filter_order_Dir, $this->_validFilterDir)){
 			$filter_order_Dir = $default;
-			$mainframe->setUserState( $option.'.'.$view.'.filter_order_Dir',$filter_order_Dir);
+			$mainframe->setUserState( 'com_virtuemart'.$view.'.filter_order_Dir',$filter_order_Dir);
 			vmdebug('checkValidOrderingField: programmer choosed invalid ordering direction, model _validDefaultOrderingFieldName used');
 		}
 		return $filter_order_Dir;
