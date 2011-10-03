@@ -156,7 +156,8 @@ class VmModel extends JModel {
 		$mainframe = JFactory::getApplication() ;
 		$filter_order = $filter_order_orig = strtolower($mainframe->getUserStateFromRequest( 'com_virtuemart'.$view.'.filter_order', 'filter_order', $this->_validOrderingFieldName[0], 'cmd' ));
 
-		if($dotps = strrpos($filter_order_orig, '.')===false && !empty($this->_tablePreFix) ){
+		$dotps = strrpos($filter_order_orig, '.');
+		if($dotps===false && !empty($this->_tablePreFix) ){
 			$filter_order = $this->_tablePreFix . $filter_order_orig;
 		}
 
@@ -330,6 +331,7 @@ class VmModel extends JModel {
 			$errors = $this->_db->getErrorMsg();
 			if( !empty( $errors)){
 				vmdebug('exeSortSearchListQuery error in db ',$this->_db->getErrorMsg());
+
 			}
 			if($object == 2 or $object == 1){
 				$list = array();

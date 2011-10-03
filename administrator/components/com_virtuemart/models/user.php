@@ -51,7 +51,7 @@ class VirtueMartModelUser extends VmModel {
 
 		$this->setMainTable('vmusers');
 		$this->setToggleName('user_is_vendor');
-		array_unshift($this->_validOrderingFieldName,'id');
+		array_unshift($this->_validOrderingFieldName,'ju.id');
 	}
 
 	/**

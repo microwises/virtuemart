@@ -286,6 +286,7 @@ class VirtueMartModelProduct extends VmModel {
 
 // 		vmdebug('my product ids',$product_ids);
 
+
 		return $product_ids;
 
 	}
@@ -648,12 +649,12 @@ class VirtueMartModelProduct extends VmModel {
 		$this->_db = JFactory::getDBO();
 		$neighbors = array('previous' => '','next' => '');
 
-		$q = "SELECT x.`virtuemart_product_id`, ordering, `p`.product_name
-			FROM `#__virtuemart_product_categories` as x
+		$q = "SELECT pcx.`virtuemart_product_id`, ordering, `p`.product_name
+			FROM `#__virtuemart_product_categories` as pcx
 			LEFT JOIN `#__virtuemart_products` as `p`
-			ON `p`.`virtuemart_product_id` = `x`.`virtuemart_product_id`
+			ON `p`.`virtuemart_product_id` = `pcx`.`virtuemart_product_id`
 			WHERE `virtuemart_category_id` = ".(int)$product->virtuemart_category_id."
-			ORDER BY `ordering`, `x`.`virtuemart_product_id`";
+			ORDER BY `ordering`, `pcx`.`virtuemart_product_id`";
 		$this->_db->setQuery($q);
 		$products = $this->_db->loadAssocList('virtuemart_product_id');
 
