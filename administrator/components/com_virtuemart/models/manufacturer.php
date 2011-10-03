@@ -141,25 +141,25 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		$where = array();
 		if ($virtuemart_manufacturercategories_id > 0) {
-			$where[] .= 'M.`virtuemart_manufacturercategories_id` = '. $virtuemart_manufacturercategories_id;
+			$where[] .= 'm.`virtuemart_manufacturercategories_id` = '. $virtuemart_manufacturercategories_id;
 		}
 
 		if ( $search && $search != 'true') {
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			//$search = $this->_db->Quote($search, false);
-			$where[] .= 'LOWER( M.`mf_name` ) LIKE '.$search;
+			$where[] .= 'LOWER( `m.mf_name` ) LIKE '.$search;
 		}
 
 		if ($onlyPublished) {
-			$where[] .= '`M`.`published` = 1';
+			$where[] .= '`m.published` = 1';
 		}
 
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-		$select = ' M.*,MC.`mf_category_name` ';
+		$select = ' m.*,mc.`mf_category_name` ';
 
-		$joinedTables = 'FROM `#__virtuemart_manufacturers` AS M LEFT JOIN `#__virtuemart_manufacturercategories` AS MC on M.`virtuemart_manufacturercategories_id`= MC.`virtuemart_manufacturercategories_id`';
+		$joinedTables = 'FROM `#__virtuemart_manufacturers` AS m LEFT JOIN `#__virtuemart_manufacturercategories` AS mc on m.`virtuemart_manufacturercategories_id`= mc.`virtuemart_manufacturercategories_id`';
 
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
@@ -170,7 +170,7 @@ class VirtueMartModelManufacturer extends VmModel {
 			$ordering = $this->_getOrdering('mf_name');
 		} else {
 			$app = JFactory::getApplication() ;
-			$ordering = ' order by M.mf_name '.$app->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', 'DESC', 'cmd' );;
+			$ordering = ' order by m.mf_name '.$app->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', 'DESC', 'cmd' );;
 		}
 		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
 
