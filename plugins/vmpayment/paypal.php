@@ -219,8 +219,8 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	// TODO wait for PAYPAL return ???
 	$this->writePaymentData($dbValues, '#__virtuemart_order_payment_' . $this->_pelement);
 
-	$url = $this->_getPaypalUrl($params);
-	/*
+	$url = $this->_getPaypalUrlHttps($params);
+/*
 	  echo '<form action="'."https://" .$url.'" method="post" target="_blank">';
 	  echo '<input type="image" name="submit" src="https://www.paypal.com/en_US/i/btn/x-click-but6.gif" alt="Click to pay with PayPal - it is fast, free and secure!" />';
 
@@ -231,7 +231,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	 */
 // we can display the logo, or do the redirect
 	$mainframe = JFactory::getApplication();
-	$mainframe->redirect("https://" . $url . $qstring);
+	 $mainframe->redirect("https://" . $url . $qstring);
 
 
 	return false; // don't delete the cart, don't send email
@@ -460,7 +460,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	$header .= "POST /cgi-bin/webscr HTTP/1.0\r\n";
 	$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
 	$header .= "Content-Length: " . strlen($post_msg) . "\r\n\r\n";
- 
+
 	if ($secure_post) {
 	    // If possible, securely post back to paypal using HTTPS
 	    // Your PHP server will need to be SSL enabled
@@ -504,7 +504,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
     function _getPaypalUrlHttps($params) {
 	$url = $this->_getPaypalUrl($params);
-	$url = 'https://' . $url . '/cgi-bin/webscr';
+	$url =  $url . '/cgi-bin/webscr';
 
 	return $url;
     }
