@@ -484,7 +484,7 @@ class shopFunctionsF {
 		}
 
 		if(!empty($layout)){
-			$view->setLayout(strtolower($layout));
+			$view->setLayout($layout);
 		}
 
 
@@ -561,6 +561,6 @@ class shopFunctionsF {
 			$string = strtoupper (JText::_($string ) );
 		}
 		return $strings;
-	
+
 	}
 }
