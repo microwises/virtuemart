@@ -149,6 +149,8 @@ class VmModel extends JModel {
 
 	function getValidFilterOrdering($overwrite=null,$overWriteDefault=null){
 
+		$mainframe = JFactory::getApplication() ;
+
 		$defaultValue = $this->_validOrderingFieldName[0];
 		if($overWriteDefault!==null){
 			$defaultValue = $overWriteDefault;
@@ -158,7 +160,7 @@ class VmModel extends JModel {
 			$filter_order = $overwrite;
 		} else {
 			$view = JRequest::getWord('view');
-			$mainframe = JFactory::getApplication() ;
+
 
 			$filter_order = strtolower($mainframe->getUserStateFromRequest( 'com_virtuemart'.$view.'.filter_order', 'filter_order',$defaultValue , 'cmd' ));
 
