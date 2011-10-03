@@ -147,11 +147,11 @@ class VirtueMartModelManufacturer extends VmModel {
 		if ( $search && $search != 'true') {
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			//$search = $this->_db->Quote($search, false);
-			$where[] .= 'LOWER( `m.mf_name` ) LIKE '.$search;
+			$where[] .= 'LOWER( m.`mf_name` ) LIKE '.$search;
 		}
 
 		if ($onlyPublished) {
-			$where[] .= '`m.published` = 1';
+			$where[] .= 'm.`published` = 1';
 		}
 
 		$whereString = '';
@@ -170,7 +170,7 @@ class VirtueMartModelManufacturer extends VmModel {
 			$ordering = $this->_getOrdering('mf_name');
 		} else {
 			$app = JFactory::getApplication() ;
-			$ordering = ' order by m.mf_name '.$app->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', 'DESC', 'cmd' );;
+			$ordering = ' order by m.`mf_name` '.$app->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', 'DESC', 'cmd' );;
 		}
 		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
 
