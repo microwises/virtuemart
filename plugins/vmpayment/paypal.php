@@ -313,10 +313,24 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	$params = new JParameter($paramstring);
 
 	$this->updatePaymentData($response_fields, $this->_tablename, 'virtuemart_order_id', $virtuemart_order_id);
-	if (! ($error_msg = $this->_processIPN($paypal_data, $params ) ) ) {
+	if (!($error_msg = $this->_processIPN($paypal_data, $params) )) {
 	    $new_state = $params->get('status_canceled');
 	} else {
+	    if (false) {
+		$query = 'SELECT ' . $this->_tablename . '.`payment_id` FROM ' . $this->_tablename
+			. ' LEFT JOIN #__virtuemart_orders ON   ' . $this->_tablename . '.`virtuemart_order_id` = #__virtuemart_orders.`virtuemart_order_id`
+                    WHERE #__virtuemart_orders.`order_number`=' . $paypal_data['invoice']
+			. ' AND #__virtuemart_orders.`order_total` = ' . $paypal_data['mc_gross']
+			// . ' AND #__virtuemart_orders.`order_currency` = ' . $paypal_data['mc_currency']
+			. ' AND ' . $this->_tablename . '.`paypal_custom` = "' . $paypal_data['custom'] . '"';
 
+
+		$db = JFactory::getDBO();
+		$db->setQuery($query);
+		$result = $db->loadResult();
+
+
+	    }
 	    /*
 	     * https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_IPNandPDTVariables
 	     * The status of the payment:
@@ -336,10 +350,9 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	    if (empty($paypal_data['payment_status']) || ($paypal_data['payment_status'] != 'Completed' && $paypal_data['payment_status'] != 'Pending')) {
 		return false;
 	    }
-	    if ( $paypal_data['payment_status'] == 'Completed'  ) {
-		 $new_status = $params->get('status_success');
+	    if ($paypal_data['payment_status'] == 'Completed') {
+		$new_status = $params->get('status_success');
 	    }
-
 	}
 
 
@@ -433,12 +446,12 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	$paypal_url = $this->_getPaypalURL($params);
 	// read the post from PayPal system and add 'cmd'
 	$post_msg = 'cmd=_notify-validate';
-        foreach ($data as $key => $value) {
-            if ($key != 'view' && $key != 'layout') {
-                $value = urlencode($value);
-                $post_msg .= "&$key=$value";
-            }
-        }
+	foreach ($data as $key => $value) {
+	    if ($key != 'view' && $key != 'layout') {
+		$value = urlencode($value);
+		$post_msg .= "&$key=$value";
+	    }
+	}
 
 
 	$this->checkPaypalIps($paypal_data['ipn_test']);
@@ -447,7 +460,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	$header .= "POST /cgi-bin/webscr HTTP/1.0\r\n";
 	$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
 	$header .= "Content-Length: " . strlen($post_msg) . "\r\n\r\n";
-
+ 
 	if ($secure_post) {
 	    // If possible, securely post back to paypal using HTTPS
 	    // Your PHP server will need to be SSL enabled
@@ -466,7 +479,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 		if (strcmp($res, 'VERIFIED') == 0) {
 
-			return '';
+		    return '';
 		} elseif (strcmp($res, 'INVALID') == 0) {
 
 		    return JText::_('COM_VIRTUEMART_PAYPAL_ERROR_IPN_VALIDATION');
@@ -485,6 +498,13 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
     function _getPaypalUrl($params) {
 
 	$url = $params->get('sandbox') ? 'www.sandbox.paypal.com' : 'www.paypal.com';
+
+	return $url;
+    }
+
+    function _getPaypalUrlHttps($params) {
+	$url = $this->_getPaypalUrl($params);
+	$url = 'https://' . $url . '/cgi-bin/webscr';
 
 	return $url;
     }
@@ -561,20 +581,18 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
     }
 
     function _getPaymentResponseHtml($paypal_data, $payment_name, $orderId) {
-return "";
-	$html = "<pre>" .
-		print_r($paypal_data, true) . "</pre>";
-	return $html;
-	$html = "mettre aussi les references de la comande dans vm
-     <table>
+
+	$html=" <table>
                         <thead>"
-		. $this->_getPaymentResponseHTMLTr(JText::_('VMPAYMENT_PAYPAL_PAYMENT_INFO'), $payment_name)
-		. "</thead>"
-		. $this->_getPaymentResponseHTMLTr('get info', 'getinfo')
-		. "</table>";
+                        .$this->_getPaymentResponseHTMLTr(JText::_('VMPAYMENT_PAYPAL_PAYMENT_INFO'),$payment_name)
+                        ."</thead>"
+			.$this->_getPaymentResponseHTMLTr(JText::_('VMPAYMENT_PAYPAL_INVOICE'),$paypal_data['invoice'])
+                        .$this->_getPaymentResponseHTMLTr(JText::_('VMPAYMENT_PAYPAL_AMOUNT'), $paypal_data['mc_gross']." ".$paypal_data['mc_currency'])
+                    ."</table>";
 
 
-	return $html;
+    return $html;
+
     }
 
 }
