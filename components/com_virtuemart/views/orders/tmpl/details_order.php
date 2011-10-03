@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
     	<tr>
 		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></td>
 		<td align="left">
-                <?php printf("%08d", $this->orderdetails['details']['BT']->virtuemart_order_id);?>
+                <?php echo $this->orderdetails['details']['BT']->order_number;?>
                 </td>
 	</tr>
 	<tr>

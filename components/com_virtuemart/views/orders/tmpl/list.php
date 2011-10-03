@@ -19,9 +19,9 @@
 */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access'); 
-if (count($this->orderlist) == 0) { 
-	echo JText::_('COM_VIRTUEMART_ACC_NO_ORDER'); 
+defined('_JEXEC') or die('Restricted access');
+if (count($this->orderlist) == 0) {
+	echo JText::_('COM_VIRTUEMART_ACC_NO_ORDER');
 	if (1==1)  echo $this->loadTemplate('login');
 } else {
  ?>
@@ -30,7 +30,7 @@ if (count($this->orderlist) == 0) {
 	<thead>
 	<tr>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_ID'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_ORDER_NUMBER'); ?>
 		</th>
 		<th>
 			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_CDATE'); ?>
@@ -52,7 +52,7 @@ if (count($this->orderlist) == 0) {
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td align="left">
-					<a href="<?php echo $editlink; ?>"><?php echo $row->virtuemart_order_id; ?></a>
+					<a href="<?php echo $editlink; ?>"><?php echo $row->order_number; ?></a>
 				</td>
 				<td align="left">
 					<?php echo vmJsApi::date($row->created_on,'LC2',true); ?>

@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<thead>
 	<tr>
 		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_ID'); ?>
+			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_ORDER_NUMBER'); ?>
 		</th>
 		<th>
 			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_CDATE'); ?>

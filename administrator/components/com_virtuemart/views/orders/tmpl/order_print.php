@@ -26,9 +26,9 @@ if( version_compare(JVERSION,'1.6.0','ge') ) {
 } else {
 echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'template.css'.'" type="text/css" />'."\n";
 }
- 
+
 ?>
-<title><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL'). ' ' . $this->orderID; ?></title>
+<title><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL'). ' ' . $this->orderNumber; ?></title>
 </head>
 <body onload="javascript:print();">
 <table class="adminlist">
@@ -37,7 +37,7 @@ echo '<link rel="stylesheet" href="'.'templates'.DS.'khepri'.DS.'css'.DS.'templa
 		<table class="adminlist">
 			<tr>
 				<td><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?>:</strong></td>
-				<td><?php printf("%08d", $this->orderbt->virtuemart_order_id);?></td>
+				<td><?php echo $this->orderNumber; ?></td>
 			</tr>
 			<tr>
 				<td><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?>:</strong></td>

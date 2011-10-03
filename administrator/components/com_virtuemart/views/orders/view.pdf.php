@@ -56,7 +56,7 @@ class VirtuemartViewOrders extends JView {
 
 		$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
 		$order = $orderModel->getOrder($virtuemart_order_id);
-		$_orderID = $order['details']['BT']->virtuemart_order_id;
+		$orderNumber = $order['details']['BT']->order_number;
 		$orderbt = $order['details']['BT'];
 		$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 
@@ -115,7 +115,7 @@ class VirtuemartViewOrders extends JView {
 
 		/* Assign the data */
 		$this->assignRef('order', $order);
-		$this->assignRef('orderID', $_orderID);
+		$this->assignRef('orderNumber', $orderNumber);
 		$this->assignRef('userfields', $userfields);
 		$this->assignRef('shippingfields', $shippingfields);
 		$this->assignRef('orderstatuslist', $_orderStatusList);
@@ -125,7 +125,7 @@ class VirtuemartViewOrders extends JView {
 
 		$_doc = JFactory::getDocument();
 		//$_doc->setMimeEncoding('application/pdf');
-		$_doc->setTitle(JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL'). ' ' . $_orderID);
+		$_doc->setTitle(JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL'). ' ' . $orderNumber);
 		//$_doc->setName('Order' . $_orderID);
 
 		error_reporting(0);

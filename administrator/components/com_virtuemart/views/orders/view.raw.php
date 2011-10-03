@@ -55,7 +55,7 @@ class VirtuemartViewOrders extends JView {
 		$virtuemart_order_id = JRequest::getvar('virtuemart_order_id');
 		$order = $orderModel->getOrder($virtuemart_order_id);
 		//$order = $this->get('Order');
-		$_orderID = $order['details']['BT']->virtuemart_order_id;
+		$orderNumber = $order['details']['BT']->virtuemart_order_number;
 		$orderbt = $order['details']['BT'];
 		$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 
@@ -112,7 +112,7 @@ class VirtuemartViewOrders extends JView {
 
 		/* Assign the data */
 		$this->assignRef('order', $order);
-		$this->assignRef('orderID', $_orderID);
+		$this->assignRef('orderNumber', $orderNumber);
 		$this->assignRef('userfields', $userfields);
 		$this->assignRef('shippingfields', $shippingfields);
 		$this->assignRef('orderstatuslist', $_orderStatusList);
