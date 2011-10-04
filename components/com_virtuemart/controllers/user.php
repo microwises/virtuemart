@@ -232,8 +232,11 @@ class VirtueMartControllerUser extends JController
 
 			$ret = $userModel->store($data);
 			$msg = (is_array($ret)) ? $ret['message'] : $ret;
+
+			$this->saveToCart($data);
 		}
-		$this->saveToCart($data);
+
+
 		return $msg;
 	}
 
