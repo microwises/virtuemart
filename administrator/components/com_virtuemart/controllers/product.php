@@ -138,7 +138,7 @@ class VirtuemartControllerProduct extends VmController {
 		}
 		$json['msg'] = $msg;
 		if ($id) {
-			 $this->getProductSingle((int)$id,false,false,false);
+			$json['product_id'] = $id;
 
 			$json['ok'] = 1 ;
 		} else {

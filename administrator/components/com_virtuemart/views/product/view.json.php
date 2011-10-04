@@ -38,6 +38,7 @@ class VirtuemartViewProduct extends JView {
 		$type = JRequest::getWord('type', false);
 		$id = JRequest::getInt('id', false);
 		$row = JRequest::getInt('row', false);
+		$product_id = JRequest::getInt('virtuemart_product_id', 0);
 		$model = $this->getModel('customfields');
 		//$customfield = $model->getcustomfield();
 		$db = JFactory::getDBO();
@@ -150,9 +151,24 @@ class VirtuemartViewProduct extends JView {
 							$row++;
 						}
 					}
+				} elseif ($field->field_type =='E') {
+					$json['table'] = 'childs';
+					$display = $model->inputType($field,$product_id,$row);
+					 if ($field->is_cart_attribute) $cartIcone=  'default';
+					 else  $cartIcone= 'default-off';
+					 $html[] = '<div class="removable">
+						<div>'.$field->custom_title.'<span> ('.$field->custom_tip.')</span></div>				
+						<span>'.$display.'</span>
+						<input type="hidden" value="'.$field->field_type .'" name="field['.$row.'][field_type]" />
+						<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
+						<input type="hidden" value="'.$field->admin_only.'" name="field['.$row.'][admin_only]" />
+						 <span class="vmicon vmicon-16-'.$cartIcone.'"></span>
+						<span class="trash"></span>'.JTEXT::_('COM_VIRTUEMART_CUSTOM_ACTIVATE_JAVASCRIPT').'</div>';
+					$row++;
+
 				} else {
 				$json['table'] = 'fields';
-				$display = $model->inputType($field,0,$row);
+				$display = $model->inputType($field,$product_id,$row);
 				 if ($field->is_cart_attribute) $cartIcone=  'default';
 				 else  $cartIcone= 'default-off';
 				 $html[] = '<tr class="removable">

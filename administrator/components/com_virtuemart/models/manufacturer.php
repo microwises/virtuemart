@@ -174,7 +174,7 @@ class VirtueMartModelManufacturer extends VmModel {
 // 		}
 
 		$ordering = $this->_getOrdering('m.mf_name');
-		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
+		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,' ',$ordering );
 
 	}
 

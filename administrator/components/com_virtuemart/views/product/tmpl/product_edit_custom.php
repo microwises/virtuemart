@@ -51,16 +51,18 @@ defined('_JEXEC') or die('Restricted access');
 							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
 							<div class="trash"></div></div>';
 
-					} elseif ($customRow->field_type == 'C'){
+					} elseif ($customRow->field_type == 'G') {
+						// no display (group of) child , handled by plugin;
+					} elseif ($customRow->field_type == 'C' or $customRow->field_type == 'E'){
 
-						$tables['childs'] .=  '<div class="vm_thumb_image"><span>'.JText::_($customRow->custom_title).'</span>
+						$tables['childs'] .=  '<div class="removable"><div>'.JText::_($customRow->custom_title).'</div>
 							<span>'.$customRow->display.$customRow->custom_tip.'</span>
 							<span>'.JText::_($this->fieldTypes[$customRow->field_type]).'</span>
 							<input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
 							<input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
-							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
+							<input type="hidden" value="'.$customRow->admin_only.'" name="admin_only" />
 							<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
-							<div class="trash"></div></div>';
+							<span class="trash"></span></div>';
 					} else {
 						$tables['fields'] .= '<tr class="removable">
 							<td>'.JText::_($customRow->custom_title).'</td>
@@ -129,25 +131,8 @@ defined('_JEXEC') or die('Restricted access');
 				</table>
 			</fieldset>
 			<fieldset style="background-color:#F9F9F9;">
-				<legend><?php echo JText::_('COM_VIRTUEMART_STOCKABLE_VARIANTS'); ?></legend>
+				<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM_EXTENSION'); ?></legend>
 				<div id="custom_childs"><?php echo  $tables['childs']; ?></div>
-				<div style="clear:both;"></div>
-				<fieldset style="background-color:#F9F9F9;">
-					<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_NEW_PRODUCT_LBL'); ?></legend>
-					<div id="new_stockable">
-						<?php foreach ($this->product_child as $child  ) {
-							$ChildCustom = VirtueMartModelCustomfields::getProductChildCustom($child->virtuemart_product_id);
-							echo JHTML::_('select.genericlist', $this->ChildCustomRelation,'ChildCustomRelation['.$child->virtuemart_product_id.'][virtuemart_custom_id]','','value','text',$ChildCustom->virtuemart_custom_id).' <input type="text" name="ChildCustomRelation['.$child->virtuemart_product_id.'][custom_value]" value="'.$ChildCustom->custom_value.'"><br />'; 
-						  }
-						?>
-						<span><?php echo JText::_('COM_VIRTUEMART_PRODUCT_SKU'); ?> : <input value="" name="stockable[product_sku]" type="text"></span>
-						<span><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME'); ?> : <input value="" name="stockable[product_name]" type="text"></span>
-						<span><?php echo JText::_('COM_VIRTUEMART_PRODUCT_PRICE'); ?> : <input value="" name="stockable[product_price]" type="text"></span>
-						<span><?php echo JText::_('COM_VIRTUEMART_PRODUCT_IN_STOCK'); ?> : <input value="" name="stockable[product_in_stock]" type="text"></span>
-						
-						<span id="new_stockable_product"><span class="icon-nofloat vmicon vmicon-16-new"></span><?php echo JText::_('COM_VIRTUEMART_ADD'); ?></span>
-					</div>
-				</fieldset>
 			</fieldset>
 		</td>
 
@@ -159,25 +144,25 @@ defined('_JEXEC') or die('Restricted access');
 
 <script type="text/javascript">
 	nextCustom = <?php echo $i ?>;
-	jQuery('#new_stockable_product').click(function() {
-		var Prod = jQuery('#new_stockable');// input[name^="stockable"]').serialize();
-		console.log (Prod);
-		jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=saveJS&token=<?php echo JUtility::getToken(); ?>' ,
-			{
-				product_sku: Prod.find('input[name*="product_sku"]').val(),
-				product_name: Prod.find('input[name*="product_name"]').val(),
-				product_price: Prod.find('input[name*="product_price"]').val(),
-				product_in_stock: Prod.find('input[name*="product_in_stock"]').val(),
-				product_parent_id: <?php echo $this->product->virtuemart_product_id ?>,
-				published: 1,
-				format: "json"
-			},
-			function(data) {
+	// jQuery('#new_stockable_product').click(function() {
+		// var Prod = jQuery('#new_stockable');// input[name^="stockable"]').serialize();
+		// console.log (Prod);
+		// jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=saveJS&token=<?php echo JUtility::getToken(); ?>' ,
+			// {
+				// product_sku: Prod.find('input[name*="product_sku"]').val(),
+				// product_name: Prod.find('input[name*="product_name"]').val(),
+				// product_price: Prod.find('input[name*="product_price"]').val(),
+				// product_in_stock: Prod.find('input[name*="product_in_stock"]').val(),
+				// product_parent_id: <?php echo $this->product->virtuemart_product_id ?>,
+				// published: 1,
+				// format: "json"
+			// },
+			// function(data) {
 				//jQuery.each(data.msg, function(index, value){
-					jQuery("#new_stockable").append(data.msg);
+					// jQuery("#new_stockable").append(data.msg);
 				//});
-			});
-	});
+			// });
+	// });
 		    // $("select##customlist").chosen().change(function() {
 			          // var str = "";
           // $(this).find("option:selected").each(function () {
@@ -191,7 +176,7 @@ defined('_JEXEC') or die('Restricted access');
 		jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=fields&id='+selected+'&row='+nextCustom+'&virtuemart_product_id=<?php echo $this->product->virtuemart_product_id; ?>',
 		function(data) {
 			jQuery.each(data.value, function(index, value){
-				jQuery("#custom_fields").append(value);
+				jQuery("#custom_"+data.table).append(value);
 			});
 		});
 		nextCustom++;

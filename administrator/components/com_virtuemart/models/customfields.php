@@ -351,7 +351,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]');
 		} else {
 			if ($field->is_cart_attribute)  $priceInput = '<input type="text" value="'.(isset($field->custom_price)?$field->custom_price: '0').'" name="field['.$row.'][custom_price]" />';
-			else $priceInput = '-';
+			else $priceInput = ' ';
 			switch ($field->field_type) {
 				/* variants*/
 				case 'V':
@@ -361,13 +361,18 @@ class VirtueMartModelCustomfields extends VmModel {
 				case 'U':
 				return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" /></td><td>'.$priceInput;
 				break;
+				/*Stockable (group of) child variants*/
+				case 'G':
+				return ;
+				break;
 				/*Extended by plugin*/
 				case 'E':
+				
 					$html = '<input type="hidden" value="'.$field->value.'" name="field['.$row.'][custom_value]" />' ;
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
-					$retValue = vmCustomPlugin::inputTypePlugin($field,$row,  $product_id);
+					$retValue = vmCustomPlugin::inputTypePlugin($field, $product_id,$row);
 					
-				return $html.$retValue.'</td><td>'.$priceInput;
+				return $html.$retValue.$priceInput;
 				break;
 				/* string or integer */
 				case 'S':
@@ -527,6 +532,8 @@ class VirtueMartModelCustomfields extends VmModel {
 						$productCustom->text =  $productCustom->custom_value.' : '.$price;
 					}
 					$group->display = VmHTML::select($group->options,'customPrice['.$row.']['.$group->virtuemart_custom_id.']',$default->custom_value,'','value','text',false);
+				} else if ($group->field_type == 'G'){
+					$group->display .=''; // no direct display done by plugin;
 				} else if ($group->field_type == 'E'){
 					$group->display ='';
 					
@@ -570,7 +577,11 @@ class VirtueMartModelCustomfields extends VmModel {
   *  for product only !
   */
 	public function displayType($value,$type,$is_list=0,$price = 0,$row=''){
-		if ($is_list>0) {
+
+			if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+			$currency = CurrencyDisplay::getInstance();
+
+			if ($is_list>0) {
 			$options = array();
 			$values = explode(';',$value);
 
@@ -581,6 +592,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]',null,'value','text',false,true);
 		} else {
 			if ($price > 0){
+				
 				$price = $currency->priceDisplay((float)$price);
 			}
 			switch ($type) {
@@ -643,9 +655,11 @@ class VirtueMartModelCustomfields extends VmModel {
 						return  JHTML::link ( JRoute::_ ( 'index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $category->virtuemart_category_id ), $thumb.' '.$category->category_name, array ('title' => $category->category_name ) );
 					}
 					else return '';
-				/* Child Group list */
+				/* Child Group list
+				* this have no direct display , used for stockable product
+				*/
 				case 'G':
-					return '<input type="text" value="'.JText::_($value).'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
+					return '';//'<input type="text" value="'.JText::_($value).'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
 					break;
 				break;
 				/* related */

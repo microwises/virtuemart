@@ -205,7 +205,7 @@ abstract class vmCustomPlugin extends JPlugin {
 	 * display The plugin in Product edit view BE
 	 * extend customFields inputType
 	 */
-	 public function inputTypePlugin($field,$product,$row){
+	 public function inputTypePlugin($field,$product_id,$row){
 
 		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
 		else $custom_param = array();
@@ -214,7 +214,7 @@ abstract class vmCustomPlugin extends JPlugin {
 			$plgName = 'plgVmCustom'.ucfirst ($field->custom_value );
 			if(!class_exists($plgName)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$field->custom_value.'.php');
 			$plg = new $plgName ;
-			$html = $plg->onProductEdit(  $field,$custom_param, $product, $row);
+			$html = $plg->onProductEdit(  $field,$custom_param, $row, $product_id);
 		} else return '';
 		return $html;
 	 }

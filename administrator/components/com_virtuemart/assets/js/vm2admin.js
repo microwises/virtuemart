@@ -115,7 +115,7 @@
 		jQuery("#admin-ui-tabs" ).delegate("div.trash", "click",function() { 
 			jQuery(this).closest(".vm_thumb_image").fadeOut("500",function() {jQuery(this).remove()});
 		});
-		jQuery("#custom_fields" ).delegate("span.trash", "click",function() { 
+		jQuery("#admin-ui-tabs" ).delegate("span.trash", "click",function() { 
 			jQuery(this).closest(".removable").fadeOut("500",function() {jQuery(this).remove()});
 		});
 

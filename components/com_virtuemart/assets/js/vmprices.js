@@ -29,10 +29,10 @@
 				}
 			});
 			select.change(function() {
-				setproducttype(cart,virtuemart_product_id);
+				$.setproducttype(cart,virtuemart_product_id);
 			});
 			radio.change(function() {
-				setproducttype(cart,virtuemart_product_id);
+				$.setproducttype(cart,virtuemart_product_id);
 			});
 		});
 
@@ -61,25 +61,25 @@
 				});
 		};
 
-		function setproducttype(form,id){
 
-			var datas = form.serialize(),
-			prices = $("#productPrice"+id);
-			prices.fadeTo("slow", 0.33);
-			$.getJSON(siteurl+'index.php?option=com_virtuemart&view=productdetails&task=recalculate&format=json',encodeURIComponent(datas),
-				function(datas, textStatus) {
-					prices.fadeTo("slow", 1);
-					// refresh price
-					for(key in datas) {
-						var value = datas[key];
-						if (value!=0) prices.find(".Price"+key).show().html(value);
-						else prices.find(".Price"+key).html(0).hide();
-					}
-				});
-			return false; // prevent reload
-		};
 	}
-	
+	$.setproducttype = function(form,id){
+
+		var datas = form.serialize(),
+		prices = $("#productPrice"+id);
+		prices.fadeTo("slow", 0.33);
+		$.getJSON(siteurl+'index.php?option=com_virtuemart&view=productdetails&task=recalculate&format=json',encodeURIComponent(datas),
+			function(datas, textStatus) {
+				prices.fadeTo("slow", 1);
+				// refresh price
+				for(key in datas) {
+					var value = datas[key];
+					if (value!=0) prices.find(".Price"+key).show().html(value);
+					else prices.find(".Price"+key).html(0).hide();
+				}
+			});
+		return false; // prevent reload
+	};	
 	$.fn.productUpdate = function() {
 	mod = $(this);
 		$.getJSON(siteurl+"index.php?option=com_virtuemart&view=cart&task=viewJS&format=json",
