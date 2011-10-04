@@ -51,6 +51,7 @@ class VirtueMartModelUser extends VmModel {
 
 		$this->setMainTable('vmusers');
 		$this->setToggleName('user_is_vendor');
+		$this->addvalidOrderingFieldName(array('ju.username','ju.name','sg.virtuemart_shoppergroup_id','sg.shopper_group_name','sg.shopper_group_desc') );
 		array_unshift($this->_validOrderingFieldName,'ju.id');
 	}
 
@@ -888,10 +889,27 @@ class VirtueMartModelUser extends VmModel {
 			LEFT JOIN #__virtuemart_vmuser_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id
 			LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.virtuemart_shoppergroup_id = sg.virtuemart_shoppergroup_id ';
 
-			return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$this->_getFilter(),'',$this->_getOrdering('vmu.virtuemart_user_id'));
+			return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$this->_getFilter(),'',$this->_getOrdering());
 
 	 }
 
+
+	 /**
+	 * If a filter was set, get the SQL WHERE clase
+	 *
+	 * @return string text to add to the SQL statement
+	 */
+	 function _getFilter()
+	 {
+	 	if ($search = JRequest::getWord('search', false)) {
+	 		$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+	 		//$search = $this->_db->Quote($search, false);
+
+	 		$where = ' WHERE `name` LIKE '.$search.' OR `username` LIKE ' .$search;
+	 		return ($where);
+	 	}
+	 	return ('');
+	 }
 
 	 /**
 	  * Retrieve a single address for a user
@@ -944,83 +962,8 @@ class VirtueMartModelUser extends VmModel {
 			return ($this->_db->loadResult());
 	 }
 
-	 /**
-	  * If a filter was set, get the SQL WHERE clase
-	  *
-	  * @return string text to add to the SQL statement
-	  */
-	 function _getFilter()
-	 {
-	 	if ($search = JRequest::getWord('search', false)) {
-	 		$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
-			//$search = $this->_db->Quote($search, false);
-
-	 		$where = ' WHERE `name` LIKE '.$search.' OR `username` LIKE ' .$search;
-	 		return ($where);
-	 	}
-	 	return ('');
-	 }
 
 
-	 /**
-	  * Build the query to list all Users
-	  *
-	  * @return string SQL query statement
-	  */
-/*	 function _getListQuery (){
-
-	 	// Used tables #__virtuemart_vmusers, #__virtuemart_userinfos, #__vm_user_perm_groups, #__virtuemart_vmuser_shoppergroups, #__virtuemart_vendors
-	 	$query = 'SELECT DISTINCT ju.id AS id
-			, ju.name AS name
-			, ju.username AS username
-			, vmu.user_is_vendor AS is_vendor
-			, vmu.perms AS perms
-			, ju.usertype AS usertype
-			, IFNULL(sg.shopper_group_name, "") AS shopper_group_name
-			FROM #__users AS ju
-			LEFT JOIN #__virtuemart_vmusers AS vmu ON ju.id = vmu.virtuemart_user_id
-			LEFT JOIN #__virtuemart_vmuser_shoppergroups AS vx ON ju.id = vx.virtuemart_user_id
-			LEFT JOIN #__virtuemart_shoppergroups AS sg ON vx.virtuemart_shoppergroup_id = sg.virtuemart_shoppergroup_id ';
-		$query .= $this->_getFilter();
-		$query .= $this->_getOrdering('id') ;
-
-		return ($query);
-	 }
-*/
-
-	 /**
-	  * Take a list of userIds and check if they all have a record in #__virtuemart_userinfos
-	  *
-	  * TODO place this to the tools
-	  * @author Oscar van Eijk
-	  * @param $_ids Array with userIds to check (uId, uId, ...)
-	  * @return array with invalid users (userId => userName, ...)
-	  */
-/*	 function validateUsers ($_ids = array())
-	 {
-	 	if (count($_ids) == 0) {
-	 		return array();
-	 	}
-
-		jimport( 'joomla.utilities.arrayhelper' );
-		JArrayHelper::toInteger($_ids);
-
-	 	$_missing = $this->_getList('SELECT j.username AS uname '
-			. ',      j.id       AS uid '
-			. 'FROM `#__users` j '
-			. 'WHERE j.id IN (' . join(',', $_ids) . ') '
-			. 'AND NOT EXISTS ('
-			. 'SELECT virtuemart_user_id FROM `#__virtuemart_userinfos` v '
-			. 'WHERE v.virtuemart_user_id = j.id'
-			. ')'
-			);
-			$_missingUsers = array();
-			foreach ($_missing as $_m) {
-				$_missingUsers[$_m->uid] = $_m->uname;
-			}
-			return $_missingUsers;
-	 }
-*/
 
 	 /**
 	  * Return a list of Joomla ACL groups.

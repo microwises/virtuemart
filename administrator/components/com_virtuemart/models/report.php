@@ -53,6 +53,9 @@ class VirtuemartModelReport extends VmModel {
 			$this->setPeriod();
 		}
 
+
+
+		$this->addvalidOrderingFieldName(array('DATE( `o`.`created_on` )','p.product_quantity' ) );
 	}
 
 	/*
@@ -93,8 +96,11 @@ class VirtuemartModelReport extends VmModel {
 		$where= array();
 		/* group always by intervals (day,week, ... or ID) and set grouping and defaut ordering */
 
+		$orderBy = $this->_getOrdering();
+
 		$intervals = JRequest::getWord('intervals','day');
 		switch ($intervals) {
+
 			case 'day':
 				$this->intervals= 'DATE( `o`.`created_on` )';
 				break;
@@ -111,6 +117,9 @@ class VirtuemartModelReport extends VmModel {
 				// invidual grouping
 				$this->intervals= '`o`.`created_on`';
 				break;
+		}
+		if(!empty($this->intervals)){
+			$orderBy = $this->_getOrdering($this->intervals,'asc');
 		}
 		$selectFields['intervals'] = $this->intervals.' AS intervals,`o`.`created_on` ';
 		$groupBy = 'GROUP BY intervals ';
@@ -190,7 +199,7 @@ class VirtuemartModelReport extends VmModel {
 			// $orderBy = 'ORDER BY created_on, product_name ';
 		// }
 
-		$orderBy = $this->_getOrdering($this->intervals,'asc');
+
 		if ( 'product_quantity'==JRequest::getWord('filter_order')) {
 			$orderBy = '';
 		}

@@ -42,7 +42,7 @@ $j15 = VmConfig::isJ15();
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->orderslist); ?>')" /></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_NUMBER', 'order_number', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_NAME', 'order_name', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL', 'payment_method', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL', 'pm.payment_method', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_PRINT_VIEW'); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_CDATE', 'created_on', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_MDATE', 'modified_on', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>

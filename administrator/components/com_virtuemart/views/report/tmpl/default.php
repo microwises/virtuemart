@@ -44,7 +44,7 @@ if( $this->pagination->limit < $rows ){
 						<?php echo JText::_('COM_VIRTUEMART_ORDERSTATUS').':'. $this->lists['state_list']; ?>
 						<?php echo JText::_('COM_VIRTUEMART_REPORT_INTERVAL').':'. $this->lists['intervals']; ?>
                         <?php echo JText::_('COM_VIRTUEMART_REPORT_SET_PERIOD') . $this->lists['select_date']; ?>
-                        
+
                         <?php echo JText::_('COM_VIRTUEMART_REPORT_FROM_PERIOD') .  vmJsApi::jDate($this->from_period, 'from_period'); ?>
                         <?php echo JText::_('COM_VIRTUEMART_REPORT_UNTIL_PERIOD') . vmJsApi::jDate($this->until_period, 'until_period'); ?>
                         <button onclick="this.form.period.value='';this.form.submit();"><?php echo JText::_('COM_VIRTUEMART_GO'); ?>
@@ -66,10 +66,10 @@ if( $this->pagination->limit < $rows ){
                         <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_'.$intervalTitle,'o.created_on',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
                     </th>
                     <th>
-                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_ORDERS','virtuemart_order_id',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
+                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_ORDERS','o.virtuemart_order_id',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
                     </th>
                     <th>
-                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_TOTAL_ITEMS','product_quantity',$this->lists['filter_order_Dir'],$this->lists['filter_order']); ?>
+                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_TOTAL_ITEMS','p.product_quantity',$this->lists['filter_order_Dir'],$this->lists['filter_order']); ?>
                     </th>
                     <th>
                         <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_REVENUE','revenue',$this->lists['filter_order_Dir'],$this->lists['filter_order']); ?>
@@ -88,7 +88,7 @@ if( $this->pagination->limit < $rows ){
 	    $i = 0;
 	    for ($j =0; $j < $rows; ++$j ){
 	    	$r = $this->report[$j];
-			
+
 	    	//$is = $this->itemsSold[$j];
 	    	$s = 0;
 	    	?>

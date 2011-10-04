@@ -194,7 +194,7 @@ class VmModel extends JModel {
 
 			if(!in_array($filter_order, $this->_validOrderingFieldName)){
 
-				vmdebug('checkValidOrderingField: programmer choosed invalid ordering '.$filter_order.', use '.$defaultValue);
+				vmdebug('checkValidOrderingField:'.get_class($this).' programmer choosed invalid ordering '.$filter_order.', use '.$defaultValue);
 				$filter_order = $defaultValue;
 
 				$mainframe->setUserState( 'com_virtuemart.'.$view.'.filter_order',$filter_order);

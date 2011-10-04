@@ -42,6 +42,7 @@ class VirtueMartModelRatings extends VmModel {
 	function __construct() {
 		parent::__construct();
 		$this->setMainTable('ratings');
+		$this->addvalidOrderingFieldName(array('p.product_name'));
 
 	}
 
@@ -50,13 +51,16 @@ class VirtueMartModelRatings extends VmModel {
      */
     public function getRatings() {
 
-     	$q = 'SELECT p.*,pr.* FROM `#__virtuemart_ratings` AS `pr` JOIN `#__virtuemart_products` AS `p`
-     			ON `pr`.`virtuemart_product_id` = `p`.`virtuemart_product_id` ORDER BY `pr`.`modified_on` ';
-	    $this->_data = $this->_getList($q, $this->getState('limitstart'), $this->getState('limit'));
+     	$tables = ' FROM `#__virtuemart_ratings` AS `r` JOIN `#__virtuemart_products` AS `p`
+     			ON `r`.`virtuemart_product_id` = `p`.`virtuemart_product_id` ';
+     	$whereString = '';
+     	$this->_data = $this->exeSortSearchListQuery(0,' r.*,p.* ',$tables,$whereString,'',$this->_getOrdering());
+// 	    $this->_data = $this->_getList($q, $this->getState('limitstart'), $this->getState('limit'));
+
 		// set total for pagination
-		$this->_total = $this->_getListCount($q) ;
-		if(empty($this->_data)) $this->_data = array();
-		if(!isset($this->_total)) $this->_total = 0;
+// 		$this->_total = $this->_getListCount($q) ;
+// 		if(empty($this->_data)) $this->_data = array();
+// 		if(!isset($this->_total)) $this->_total = 0;
 
      	return $this->_data;
     }
@@ -64,7 +68,7 @@ class VirtueMartModelRatings extends VmModel {
     /**
     * List of tables to include for the product query
     * @author RolandD
-    */
+    *
     private function getRatingsListQuery() {
     	return 'FROM #__virtuemart_rating_reviews
 			LEFT JOIN #__virtuemart_products
@@ -76,10 +80,10 @@ class VirtueMartModelRatings extends VmModel {
     /**
     * Collect the filters for the query
     * @author RolandD
-    */
+    *
     private function getRatingsFilter() {
 
-    	/* Check some filters */
+    	// Check some filters
      	$filters = array();
      	if ($search = JRequest::getVar('filter_ratings', false)){
  			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;

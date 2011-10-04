@@ -113,7 +113,7 @@ class VirtueMartModelCalc extends VmModel {
 		//if (JRequest::getWord('search', false)) $where[] = '`calc_name` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
 		if($search){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
-			$where[] = '`calc_name`,`calc_descr`,`calc_calue` LIKE '.$search;
+			$where[] = ' `calc_name` LIKE '.$search.' OR `calc_descr` LIKE '.$search.' OR `calc_value` LIKE '.$search.' ';
 		}
 
 		$whereString= '';

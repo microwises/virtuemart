@@ -174,7 +174,7 @@ class VirtueMartModelMedia extends VmModel {
 
 		if ($search = JRequest::getWord('searchMedia', false)){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
-			$where[] = '`file_title` LIKE '.$search;
+			$where[] = ' (`file_title` LIKE '.$search.' OR `file_description` LIKE '.$search.' OR `file_meta` LIKE '.$search.') ';
 		}
 
 		if (!empty($where)) $whereItems = array_merge($whereItems,$where);
@@ -188,9 +188,9 @@ class VirtueMartModelMedia extends VmModel {
 
 		$orderField = '';
 		$orderBy = '';
-		if ( JRequest::getCmd('view') == 'media') {
+// 		if ( JRequest::getCmd('view') == 'media') {
 			$orderBy = $this->_getOrdering();
-		}
+// 		}
 //		$orderBy = $this->_getOrdering($orderField,'asc');
 //		$orderBy = $this->_getOrdering($orderField,'asc');
 //		if ( 'product_quantity'==JRequest::getWord('filter_order')) {

@@ -44,6 +44,8 @@ class VirtueMartModelOrders extends VmModel {
 	function __construct() {
 		parent::__construct();
 		$this->setMainTable('orders');
+		$this->addvalidOrderingFieldName(array('o.order_name','pm.payment_method' ) );
+
 	}
 
 	/**
@@ -171,7 +173,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		$this->_noLimit = $noLimit;
 		$selecct = " o.*, CONCAT_WS(' ',u.first_name,u.middle_name,u.last_name) AS order_name "
-		.',m.payment_name AS payment_method ';
+		.',pm.payment_name AS payment_method ';
 		$from = $this->getOrdersListQuery();
 		/*		$_filter = array();
 		 if ($uid > 0) {
@@ -232,11 +234,11 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	private function getOrdersListQuery()
 	{
-		return ' FROM #__virtuemart_orders o
-			LEFT JOIN #__virtuemart_order_userinfos u
+		return ' FROM #__virtuemart_orders as o
+			LEFT JOIN #__virtuemart_order_userinfos as u
 			ON u.virtuemart_order_id = o.virtuemart_order_id AND u.address_type="BT"
-			LEFT JOIN #__virtuemart_paymentmethods m
-			ON o.payment_method_id = m.virtuemart_paymentmethod_id ';
+			LEFT JOIN #__virtuemart_paymentmethods as pm
+			ON o.payment_method_id = pm.virtuemart_paymentmethod_id ';
 	}
 
 

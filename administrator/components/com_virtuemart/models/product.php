@@ -50,11 +50,15 @@ class VirtueMartModelProduct extends VmModel {
 		$this->setMainTable('products');
 		$this->starttime = microtime(true);
 		$this->maxScriptTime = ini_get('max_execution_time')*0.95-1;
-// 		$this->addvalidOrderingFieldName(array('m.mf_name','pp.product_price'));
+// 	$this->addvalidOrderingFieldName(array('m.mf_name','pp.product_price'));
 		$browseOrderByFields = VmConfig::get('browse_orderby_fields');
-// 		vmdebug('$browseOrderByFields',$browseOrderByFields);
+// 	vmdebug('$browseOrderByFields',$browseOrderByFields);
 		$this->addvalidOrderingFieldName((array)$browseOrderByFields);
-// 		vmdebug('product allows following orderingFields ',$this->_validOrderingFieldName);
+		$app = JFactory::getApplication();
+		if(!$app->isSite() ){
+			$this->addvalidOrderingFieldName(array('pp.product_price'));
+		}
+// 	vmdebug('product allows following orderingFields ',$this->_validOrderingFieldName);
 	}
 
 	/**
@@ -253,7 +257,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		if ($joinMf == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_manufacturers` ON p.`virtuemart_product_id` = `#__virtuemart_product_manufacturers`.`virtuemart_product_id`
-			 LEFT JOIN `#__virtuemart_manufacturers` ON `#__virtuemart_manufacturers`.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
+			 LEFT JOIN `#__virtuemart_manufacturers` as m ON m.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
 		}
 		if ($joinPrice == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_prices` as pp ON p.`virtuemart_product_id` = pp.`virtuemart_product_id` ';
@@ -579,9 +583,9 @@ class VirtueMartModelProduct extends VmModel {
 	public function getProductListing($group = false, $nbrReturnProducts = false, $withCalc = true, $onlyPublished = true, $single = false){
 
 		$app = JFactory::getApplication();
-		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if($app->isSite() ){
 			$front = true;
+			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			if(!Permissions::getInstance()->check('admin','storeadmin')){
 				$onlyPublished = true;
 				if ($show_prices=VmConfig::get('show_prices',1) == '0'){
@@ -653,7 +657,7 @@ class VirtueMartModelProduct extends VmModel {
 			FROM `#__virtuemart_product_categories` as pcx
 			LEFT JOIN `#__virtuemart_products` as `p`
 			ON `p`.`virtuemart_product_id` = `pcx`.`virtuemart_product_id`
-			WHERE `virtuemart_category_id` = ".(int)$product->virtuemart_category_id."
+			WHERE `virtuemart_category_id` = ".(int)$product->virtuemart_category_id." AND `published`= '1'
 			ORDER BY `ordering`, `pcx`.`virtuemart_product_id`";
 		$this->_db->setQuery($q);
 		$products = $this->_db->loadAssocList('virtuemart_product_id');

@@ -132,8 +132,8 @@ AdminUIHelper::startAdminArea();
 	</table>
 </div>
 
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
 	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="controller" value="user" />
 	<input type="hidden" name="view" value="user" />
