@@ -57,6 +57,7 @@ class TableShoppergroups extends VmTable
 		$this->setUniqueName('shopper_group_name');
 
 		$this->setLoggable();
+		$this->setTableShortCut('sg');
 	}
 
 

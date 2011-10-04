@@ -51,14 +51,14 @@ AdminUIHelper::startAdminArea();
 			<th>
 			<?php echo JHTML::_('grid.sort'
 					, JText::_('COM_VIRTUEMART_USERNAME')
-					, 'username'
+					, 'ju.username'
 					, $this->lists['filter_order_Dir']
 					, $this->lists['filter_order']); ?>
 			</th>
 			<th>
 			<?php echo JHTML::_('grid.sort'
 					, JText::_('COM_VIRTUEMART_USER_DISPLAYED_NAME')
-					, 'name'
+					, 'ju.name'
 					, $this->lists['filter_order_Dir']
 					, $this->lists['filter_order']); ?>
 			</th>
@@ -74,7 +74,7 @@ AdminUIHelper::startAdminArea();
 			<th>
 			<?php echo JHTML::_('grid.sort'
 					, JText::_('COM_VIRTUEMART_SHOPPERGROUP')
-					, 'shopper_group_name'
+					, 'sg.shopper_group_name'
 					, $this->lists['filter_order_Dir']
 					, $this->lists['filter_order']); ?>
 			</th>
