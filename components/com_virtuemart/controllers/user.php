@@ -215,11 +215,14 @@ class VirtueMartControllerUser extends JController
 
 		$currentUser = JFactory::getUser();
 		$msg = '';
+
+		$data = JRequest::get('post');
+
 		if($currentUser->id!=0 || $register){
 			$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 			$userModel = $this->getModel('user');
 
-			$data = JRequest::get('post');
+
 
 			// Store multiple selectlist entries as a ; separated string
 			if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
@@ -233,10 +236,10 @@ class VirtueMartControllerUser extends JController
 			$ret = $userModel->store($data);
 			$msg = (is_array($ret)) ? $ret['message'] : $ret;
 
-			$this->saveToCart($data);
+
 		}
 
-
+		$this->saveToCart($data);
 		return $msg;
 	}
 
