@@ -290,7 +290,7 @@ class VirtuemartViewUser extends JView {
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination', $pagination);
 
-			$lists = ShopFunctions::addStandardDefaultViewLists($model,'id');
+			$lists = ShopFunctions::addStandardDefaultViewLists($model,'ju.id');
 /*// 			search filter
 			$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string');
 			$search = JString::strtolower( $search );

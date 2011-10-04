@@ -113,7 +113,7 @@ class VirtueMartModelCalc extends VmModel {
 		//if (JRequest::getWord('search', false)) $where[] = '`calc_name` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
 		if($search){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
-			$where[] = '`calc_name` LIKE '.$search;
+			$where[] = '`calc_name`,`calc_descr`,`calc_calue` LIKE '.$search;
 		}
 
 		$whereString= '';
@@ -131,7 +131,7 @@ class VirtueMartModelCalc extends VmModel {
 // 		}
 		//$this->_total = $this->_getListCount($this->_query) ;
 
-		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_calcs`',$whereString,'',$this->_getOrdering('calc_name'));
+		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_calcs`',$whereString,'',$this->_getOrdering());
 
 		if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		foreach ($this->_data as $data){

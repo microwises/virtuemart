@@ -41,6 +41,8 @@ class VirtueMartModelCountry extends VmModel {
 	function __construct() {
 		parent::__construct();
 		$this->setMainTable('countries');
+		array_unshift($this->_validOrderingFieldName,'country_name');
+
 	}
 
     /**
@@ -93,14 +95,18 @@ class VirtueMartModelCountry extends VmModel {
 		if($filterCountry){
 			$filterCountry = '"%' . $this->_db->getEscaped( $filterCountry, true ) . '%"' ;
 			//$keyword = $this->_db->Quote($filterCountry, false);
-			$where[] = '`country_name` LIKE '.$filterCountry;
+			$where[] = '`country_name`,`country_2_code`,`country_3_code` LIKE '.$filterCountry;
 		}
 
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-		if (JRequest::getWord('view') !== 'country') $ordering = ' order by `country_name` ';
-		else $ordering = $this->_getOrdering();
+		if($this->_noLimit){
+			$ordering = $this->_getOrdering(null,'ASC');
+		} else {
+			$ordering = $this->_getOrdering();
+		}
+
 
 		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_countries`',$whereString,'',$ordering);
 

@@ -51,8 +51,10 @@ class VirtueMartModelProduct extends VmModel {
 		$this->starttime = microtime(true);
 		$this->maxScriptTime = ini_get('max_execution_time')*0.95-1;
 // 		$this->addvalidOrderingFieldName(array('m.mf_name','pp.product_price'));
-		$browseOrderByFields = VmConfig::get('browse_orderby_field');
+		$browseOrderByFields = VmConfig::get('browse_orderby_fields');
+// 		vmdebug('$browseOrderByFields',$browseOrderByFields);
 		$this->addvalidOrderingFieldName((array)$browseOrderByFields);
+// 		vmdebug('product allows following orderingFields ',$this->_validOrderingFieldName);
 	}
 
 	/**
@@ -73,8 +75,8 @@ class VirtueMartModelProduct extends VmModel {
 
 		//First setup the variables for filtering
 		if($app->isSite()){
-			$filter_order = JRequest::getWord('orderby', VmConfig::get('browse_orderby_field','p.virtuemart_product_id'));
-
+			$filter_order = JRequest::getString('orderby', VmConfig::get('browse_orderby_field','p.virtuemart_product_id'));
+// 			vmdebug('getProduct sortSearchListQuery '.$filter_order);
 			// sanitize $filter_order and dir
 			$filter_order     = $this->getValidFilterOrdering($filter_order);
 
@@ -209,15 +211,15 @@ class VirtueMartModelProduct extends VmModel {
 				$where[] = ' p.`product_special`="1" ';// TODO Change  to  a  individual button
 				break;
 			case 'c.category_name':
-				$orderBy = ' ORDER BY `c.category_name` ';
+				$orderBy = ' ORDER BY c.`category_name` ';
 				$joinCategory = true ;
 				break;
 			case 'c.category_description':
-				$orderBy = ' ORDER BY `c.category_description` ';
+				$orderBy = ' ORDER BY c.`category_description` ';
 				$joinCategory = true ;
 				break;
 			case 'm.mf_name':
-				$orderBy = ' ORDER BY `m.mf_name` ';
+				$orderBy = ' ORDER BY m.`mf_name` ';
 				$joinMf = true ;
 				break;
 			case 'ordering':
@@ -247,7 +249,7 @@ class VirtueMartModelProduct extends VmModel {
 		$joinedTables = '';
 		if ($joinCategory == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_categories` ON p.`virtuemart_product_id` = `#__virtuemart_product_categories`.`virtuemart_product_id`
-			 LEFT JOIN `#__virtuemart_categories` ON `#__virtuemart_categories`.`virtuemart_category_id` = `#__virtuemart_product_categories`.`virtuemart_category_id`';
+			 LEFT JOIN `#__virtuemart_categories` as c ON c.`virtuemart_category_id` = `#__virtuemart_product_categories`.`virtuemart_category_id`';
 		}
 		if ($joinMf == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_manufacturers` ON p.`virtuemart_product_id` = `#__virtuemart_product_manufacturers`.`virtuemart_product_id`
@@ -422,8 +424,8 @@ class VirtueMartModelProduct extends VmModel {
 			if($front){
 
 				// Add the product link  for canonical
-				$producCategory = empty($product->categories[0])? '':$product->categories[0];
-				$product->canonical = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->_id.'&virtuemart_category_id='.$producCategory);
+				$productCategory = empty($product->categories[0])? '':$product->categories[0];
+				$product->canonical = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->_id.'&virtuemart_category_id='.$productCategory);
 				$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->_id.'&virtuemart_category_id='.$product->virtuemart_category_id);
 
 				//only needed in FE productdetails, is now loaded in the view.html.php

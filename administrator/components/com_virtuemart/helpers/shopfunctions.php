@@ -49,7 +49,7 @@ class ShopFunctions {
 	* return Array() $list( filter_order and dir )
 	*/
 
-	function addStandardDefaultViewLists($model, $default_order = 'ordering', $default_dir = 'ASC',$name = 'search') {
+	function addStandardDefaultViewLists($model, $default_order = null, $default_dir = null,$name = 'search') {
 
 		$pagination = $model->getPagination();
 
@@ -62,7 +62,7 @@ class ShopFunctions {
 
 		$lists[$name] = $mainframe->getUserStateFromRequest($option . '.' . $view . '.'.$name, $name, '', 'string');
 
-		$lists['filter_order'] =  $model->getValidFilterOrdering();
+		$lists['filter_order'] =  $model->getValidFilterOrdering($default_order);
 
 		$lists['filter_order_Dir'] = $model->getValidFilterDir($default_dir);
 
