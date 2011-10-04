@@ -32,11 +32,12 @@ defined('_JEXEC') or die('Restricted access');
 	    <?php
 	    foreach ($this->cart->BTaddress['fields'] as $item) {
 		if (!empty($item['value'])) {
-		    ?><?php echo $item['title'] ?>
+		    ?>
 		   <?php echo $this->escape($item['value']) ?>
 		    <?php if ($item['name'] != 'title' and $item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') { ?>
 
 			<?php
+			 echo "\n";
 		    }
 		}
 	    }
@@ -47,11 +48,12 @@ defined('_JEXEC') or die('Restricted access');
 if (!empty($this->cart->STaddress['fields'])) {
     foreach ($this->cart->STaddress['fields'] as $item) {
 	if (!empty($item['value'])) {
-		    ?><?php echo $item['title'] ?>
+		    ?>
 		    <?php echo $this->escape($item['value']) ?>
 		    <?php if ($item['name'] != 'title' and $item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') { ?>
 
 			<?php
+			 echo "\n";
 		    }
 		}
 	}
@@ -59,11 +61,12 @@ if (!empty($this->cart->STaddress['fields'])) {
 } else {
     foreach ($this->cart->BTaddress['fields'] as $item) {
 	if (!empty($item['value'])) {
-		    ?><?php echo $item['title'] ?>
+		    ?>
 		    <?php echo $this->escape($item['value']) ?>
 		    <?php if ($item['name'] != 'title' and $item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') { ?>
 
 			<?php
+			 echo "\n";
 		    }
 		}
 	}
