@@ -40,7 +40,7 @@ $root = $u->toString( array( 'scheme', 'host') );
                                 <th align="right" width="60px"><?php echo "<span  style='color:gray'>".JText::_('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></th>
 				<th align="right" width="70px"><?php echo JText::_('COM_VIRTUEMART_CART_TOTAL') ?></th>
 			</tr>
-		<?php 
+		<?php
 		$i=1;
 		foreach( $this->cart->products as $prow ) { ?>
 			<tr valign="top" class="sectiontableentry<?php echo $i ?>">
@@ -63,9 +63,9 @@ $root = $u->toString( array( 'scheme', 'host') );
 				<td align="right"><?php echo "<span  style='color:gray'>".$prow->subtotal_discount."</span>" ?></td>
 				<td colspan="1" align="right"><?php echo $prow->subtotal_with_tax ?></td>
 			</tr>
-		<?php 
+		<?php
 			$i = 1 ? 2 : 1;
-			
+
 		} ?>
 		<!--Begin of SubTotal, Tax, Shipping, Coupon Discount and Total listing -->
                   <?php if ( VmConfig::get('show_tax')) { $colspan=3; } else { $colspan=2; } ?>
@@ -123,7 +123,7 @@ $root = $u->toString( array( 'scheme', 'host') );
 			<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"><?php echo "<span  style='color:gray'>".$this->cart->prices['shippingTax']."</span>"; ?> </td>
 			<?php } ?>
-			<td></td>
+			 <td></td>
 			<td align="right"><?php echo $this->cart->prices['salesPriceShipping']; ?> </td>
 		</tr>
 
@@ -152,7 +152,7 @@ $root = $u->toString( array( 'scheme', 'host') );
 		foreach($this->cart->cartData['dATaxRulesBill'] as $rule){ ?>
 			<tr class="sectiontableentry<?php $i ?>">
 				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
-				<td> </td>
+				
                                      <?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"><?php  ?> </td>
                                 <?php } ?>

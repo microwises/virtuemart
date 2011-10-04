@@ -19,13 +19,17 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
-
+?>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="html-email">
+    <tr>
+    <td>
+<?php
 //	echo JText::_('COM_VIRTUEMART_CART_MAIL_VENDOR_TITLE').$this->vendor->vendor_name.'<br/>';
 	echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_CONTENT',$this->vendor->vendor_store_name,$this->shopperName,$this->cart->prices['billTotal'],$this->order['details']['BT']->order_number);
 
 if(!empty($this->order['details']['BT']->customer_note)){
-	echo '<br />'.JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_SHOPPER_QUESTION',$this->order['details']['BT']->customer_note).'<br />';
+	echo '<br /><br />'.JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_SHOPPER_QUESTION',$this->order['details']['BT']->customer_note).'<br />';
 }
 
 	?>
+</td></tr></table>

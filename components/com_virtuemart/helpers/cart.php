@@ -767,7 +767,7 @@ public function removeProductCart($prod_id=0) {
 		$this->_inCheckOut = true;
 
 		$this->tosAccepted = JRequest::getInt('tosAccepted', $this->tosAccepted);
-		$this->customer_comment = JRequest::getWord('customer_comment', $this->customer_comment);
+		$this->customer_comment = JRequest::getVar('customer_comment', $this->customer_comment);
 
 		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
 			JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
@@ -1046,7 +1046,7 @@ public function removeProductCart($prod_id=0) {
                                         $this->couponCode = '';
                                         $this->tosAccepted = false;
 
-                                        $this->setCartIntoSession();
+                                       $this->setCartIntoSession();
                                         JRequest::setVar('html' , $html);
                                      } elseif ($returnValue == 0 )   {
                                          JRequest::setVar('html' , $html);

@@ -316,7 +316,36 @@ abstract class vmPaymentPlugin extends JPlugin {
      */
     abstract function plgVmOnConfirmedOrderGetPaymentForm($virtuemart_order_id, $orderData, $return_context, $html);
 
+    /**
+     * plgVmOnShowOrderPaymentFE
+     * This method is fired when showing the order details in the frontend.
+     * It displays the the payment method-specific data.
+     * All plugins *must* reimplement this method.
+     *
+     * @param integer $virtuemart_order_id The order ID
+     * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
+     * @author Max Milbers
+     * @author Oscar van Eijk
+     */
+    function plgVmOnShowOrderPaymentFE($virtuemart_order_id) {
+	if ($this->_tablename) {
+	    $db = JFactory::getDBO();
+	    $q = 'SELECT * FROM `' . $this->_tablename . '` '
+		    . 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
+	    $db->setQuery($q);
+	    if (!($paymentinfo = $db->loadObject())) {
+		JError::raiseWarning(500, $q . " " . $db->getErrorMsg());
+		return '';
+	    }
+	} else {
+	    return null;
+	}
 
+	if (!$this->selectedThisPayment($this->_pelement, $paymentinfo->payment_method_id)) {
+	    return null; // Another method was selected, do nothing
+	}
+	return $this->getThisPaymentName($paymentinfo->payment_method_id);
+    }
 
     /**
      * plgVmOnShowOrderPaymentBE

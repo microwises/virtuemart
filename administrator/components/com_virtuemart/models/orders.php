@@ -217,7 +217,7 @@ class VirtueMartModelOrders extends VmModel {
 		}*/
 
 		if ( JRequest::getCmd('view') == 'orders') {
-			$ordering = $this->_getOrdering('virtuemart_order_id');
+			$ordering = $this->_getOrdering('created_on');
 		} else {
 			$ordering = ' order by modified_on DESC';
 		}

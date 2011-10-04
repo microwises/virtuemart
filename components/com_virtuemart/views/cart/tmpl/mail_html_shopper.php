@@ -33,25 +33,25 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="html-email">
 
   <tr>
-    <td width="25%">
-		<p><?php echo JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_ORDER'); ?><br />
+    <td width="30%">
+		<?php echo JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_ORDER'); ?><br />
 		<b><?php echo $this->order['details']['BT']->order_number ?></b>
-		</p>
+
 	</td>
-    <td width="25%">
-		<p><?php echo JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_PASSWORD'); ?><br />
-		<b><?php echo $this->order['details']['BT']->order_pass ?></b></p>
+    <td width="30%">
+		<?php echo JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_PASSWORD'); ?><br />
+		<b><?php echo $this->order['details']['BT']->order_pass ?></b>
 	</td>
-    <td width="50%">
-    	<p/>
+    <td width="40%">
+    	<p>
 			<a class="default" title="<?php echo $this->cart->vendor->vendor_store_name ?>" href="<?php echo JURI::root().'index.php?option=com_virtuemart&view=orders&task=details&order_number='.$this->order['details']['BT']->order_number.'&order_pass='.$this->order['details']['BT']->order_pass; ?>">
 			<?php echo JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_ORDER_LINK'); ?></a>
 		</p>
 	</td>
   </tr>
   <tr>
-    <td colspan="3">
-				<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_TOTAL_ORDER',$this->cart->prices['billTotal'] ); ?></td>
+    <td colspan="3"><p>
+				<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_TOTAL_ORDER',$this->cart->prices['billTotal'] ); ?></p></td>
   </tr>
   <?php if(!empty($this->order['details']['BT']->customer_note)){ ?>
   <tr>

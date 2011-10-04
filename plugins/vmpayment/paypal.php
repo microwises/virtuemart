@@ -359,7 +359,8 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	return true;
     }
 
-    /**
+     
+/**
      * Display stored payment data for an order
      * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
      */
@@ -395,7 +396,6 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	$html .= '</table>' . "\n";
 	return $html;
     }
-
     /*
      * This method returns the logo image form the shipper
      */
@@ -478,7 +478,6 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		$res = fgets($fps, 1024);
 
 		if (strcmp($res, 'VERIFIED') == 0) {
-
 		    return '';
 		} elseif (strcmp($res, 'INVALID') == 0) {
 

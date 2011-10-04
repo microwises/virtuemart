@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 	<tr align="left" class="sectiontableheader">
 		<th align="left" ><?php echo JText::_('COM_VIRTUEMART_DATE') ?></th>
 		<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?></th>
-		<th align="left" ><?php echo JText::_('COM_VIRTUEMART_COMMENT') ?></th>
+		<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_COMMENT') ?></th>
 	</tr>
 <?php
 	foreach($this->orderdetails['history'] as $_hist) {

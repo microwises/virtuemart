@@ -124,12 +124,12 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 
 	    }
              * */
-             
+
         }
          if (!class_exists('VirtueMartModelOrders'))
             require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
                 $orderNumber = VirtueMartModelOrders::getOrderNumber($virtuemart_order_id);
- 
+
                 $html .= "<fieldset><table><tr>";
                 $html .= "<th colspan='2'>".JText::_('VMPAYMENT_STANDARD_ORDER_INFO')."</th>";
                 $html .= "</tr><tr>";
@@ -149,7 +149,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 		return true;  // empty cart, send order
 	}
 
-        
+
 
 	/**
 	 * Display stored payment data for an order
@@ -189,7 +189,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 		return $_html;
 	}
 
- 
+
 }
 
 // No closing tag

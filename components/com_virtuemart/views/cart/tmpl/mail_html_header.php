@@ -22,11 +22,11 @@ defined('_JEXEC') or die('Restricted access');
 /* TODO Change the header place in helper or assets ???*/ ?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="html-email">
   <tr>
-    <td colspan="2"><strong><?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_NAME',$this->shopperName); ?></strong><br/></td> 
-	<td align="right"><span class="grey"><?php echo $this->order['details']['BT']->created_on ?></span><br/></td>
+    <td colspan="2"><strong><?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_NAME',$this->shopperName); ?></strong><br/></td>
+	<td align="right"><span class="date"><?php echo $this->order['details']['BT']->created_on ?></span><br/></td>
   </tr>
   <tr>
-    <td colspan="3" bgcolor="#ccc">
-				<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_SUMMARY',$this->cart->vendor->vendor_store_name); ?></td>
+    <td colspan="3" >
+	<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_SUMMARY',$this->cart->vendor->vendor_store_name); ?></td>
   </tr>
 </table>
