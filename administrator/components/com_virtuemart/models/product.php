@@ -127,11 +127,11 @@ class VirtueMartModelProduct extends VmModel {
 				$searchFields = VmConfig::get('browse_search_fields');
 
 				foreach ($searchFields as $searchField) {
-					if (($searchField == 'category_name') || ($searchField == 'category_description')) $joinCategory = true ;
-					if ($searchField == 'mf_name') $joinMf = true ;
-					if ($searchField == 'product_price') $joinPrice = true ;
+					if (($searchField == 'c.category_name') || ($searchField == 'c.category_description')) $joinCategory = true ;
+					if ($searchField == 'm.mf_name') $joinMf = true ;
+					if ($searchField == 'pp.product_price') $joinPrice = true ;
 
-					$filter_search[] = ' `'.$searchField.'` LIKE '.$keyword;
+					$filter_search[] = ' '.$searchField.' LIKE '.$keyword;
 				}
 				if(!empty($filter_search)){
 					$where[] = " ( ".implode(' OR ', $filter_search )." ) ";

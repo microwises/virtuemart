@@ -355,7 +355,6 @@ class VmModel extends JModel {
 			$errors = $this->_db->getErrorMsg();
 			if( !empty( $errors)){
 				vmdebug('exeSortSearchListQuery error in db ',$this->_db->getErrorMsg());
-				VmTrace('productsortseachr',true);
 			}
 			if($object == 2 or $object == 1){
 				$list = array();
