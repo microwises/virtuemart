@@ -83,7 +83,7 @@ jQuery('#field_type').change(function () {
 });
 jQuery('#custom_jplugin_id').change(function () { 
 	var $id = jQuery(this).val();
-	jQuery('#plugin-Container').load( 'index.php?option=com_virtuemart&view=custom&task=viewJson&format=json&custom_jplugin_id='+$id);
+	jQuery('#plugin-Container').load( 'index.php?option=com_virtuemart&view=custom&task=viewJson&format=json&custom_jplugin_id='+$id , function() { jQuery(this).find("[title]").vm2admin('tips',tip_image) });
 
 });
 </script>

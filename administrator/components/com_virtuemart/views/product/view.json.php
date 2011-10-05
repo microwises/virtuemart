@@ -156,8 +156,10 @@ class VirtuemartViewProduct extends JView {
 					$display = $model->inputType($field,$product_id,$row);
 					 if ($field->is_cart_attribute) $cartIcone=  'default';
 					 else  $cartIcone= 'default-off';
+					 if (!empty ($field->custom_tip) ) $field->custom_tip = '<span> ('.$field->custom_tip.')</span>';
+					 else $field->custom_tip ='';
 					 $html[] = '<div class="removable">
-						<div>'.$field->custom_title.'<span> ('.$field->custom_tip.')</span></div>				
+						<div>'.$field->custom_title.$field->custom_tip.'</span></div>				
 						<span>'.$display.'</span>
 						<input type="hidden" value="'.$field->field_type .'" name="field['.$row.'][field_type]" />
 						<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />

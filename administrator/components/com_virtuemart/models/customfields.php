@@ -467,7 +467,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		$query='SELECT C.`virtuemart_custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`, field.`custom_param`, field.`custom_price`
 			FROM `#__virtuemart_customs` AS C
 			LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-			Where `virtuemart_product_id` ='.(int)$product->virtuemart_product_id;
+			Where `virtuemart_product_id` ='.(int)$product->virtuemart_product_id.' and `field_type` != "G"';
 		$query .=' and is_cart_attribute = 0 order by virtuemart_custom_id' ;
 		$this->_db->setQuery($query);
 		if ($productCustoms = $this->_db->loadObjectList()) {
@@ -492,7 +492,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			$query='SELECT C.`virtuemart_custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`virtuemart_customfield_id`,`is_hidden`
 				FROM `#__virtuemart_customs` AS C
 				LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-				Where `virtuemart_product_id` ='.(int)$product->virtuemart_product_id;
+				Where `virtuemart_product_id` ='.(int)$product->virtuemart_product_id.' and `field_type` != "G"';
 			$query .=' and is_cart_attribute = 1 group by virtuemart_custom_id' ;
 
 			$this->_db->setQuery($query);
