@@ -21,39 +21,22 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL')."\n";
 
-?>
-
-	    <?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?>
-
-	    <?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
-
-
-	    <?php
 	    foreach ($this->cart->BTaddress['fields'] as $item) {
 		if (!empty($item['value'])) {
-		    ?>
-		   <?php echo $this->escape($item['value']) ?>
-		    <?php if ($item['name'] != 'title' and $item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') { ?>
-
-			<?php
+		   echo $this->escape($item['value']) ." ";
+		   if ($item['name'] != 'title' and $item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') {
 			 echo "\n";
 		    }
 		}
 	    }
-	    ?>
-
-
-<?php
+echo "\n".JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL')."\n";
 if (!empty($this->cart->STaddress['fields'])) {
     foreach ($this->cart->STaddress['fields'] as $item) {
 	if (!empty($item['value'])) {
-		    ?>
-		    <?php echo $this->escape($item['value']) ?>
-		    <?php if ($item['name'] != 'title' and $item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') { ?>
-
-			<?php
-			 echo "\n";
+		     echo $this->escape($item['value']) ." ";
+		    if ($item['name'] != 'title' and $item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') {  echo "\n";
 		    }
 		}
 	}
@@ -61,12 +44,8 @@ if (!empty($this->cart->STaddress['fields'])) {
 } else {
     foreach ($this->cart->BTaddress['fields'] as $item) {
 	if (!empty($item['value'])) {
-		    ?>
-		    <?php echo $this->escape($item['value']) ?>
-		    <?php if ($item['name'] != 'title' and $item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') { ?>
-
-			<?php
-			 echo "\n";
+		     echo $this->escape($item['value']) ." ";
+		     if ($item['name'] != 'title' and $item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') {  echo "\n";
 		    }
 		}
 	}
