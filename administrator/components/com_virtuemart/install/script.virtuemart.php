@@ -233,40 +233,12 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->updateWeightUnit();
 			$this->updateDimensionUnit();
 
-			$table = '#__virtuemart_customs';
-			$fieldname = 'field_type';
-			$fieldvalue = 'G';
-			$this->addToRequired($table,$fieldname,$fieldvalue,"INSERT INTO `#__virtuemart_customs`
-			(`custom_parent_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`,
-			 `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `published`) VALUES
-				(0, 0, 'COM_VIRTUEMART_STOCKABLE_PRODUCT', 'COM_VIRTUEMART_STOCKABLE_PRODUCT_TIP', NULL,
-			'COM_VIRTUEMART_STOCKABLE_PRODUCT_DESC', 'G', 0, 0, 0, 1 );");
-
 			if($loadVm) $this->displayFinished(true);
 			// probably should just go to updatesMigration rather than the install success screen
 			// 			include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
 			//		$parent->getParent()->setRedirectURL('index.php?option=com_virtuemart&view=updatesMigration');
 
 			return true;
-		}
-
-		private function addToRequired($table,$fieldname,$fieldvalue,$insert){
-			if(empty($this->db)){
-				$this->db = JFactory::getDBO();
-			}
-
-			$query = 'SELECT * FROM `'.$table.'` WHERE '.$fieldname.' = "'.$fieldvalue.'" ';
-			$this->db->setQuery($query);
-			$result = $this->db->loadResult();
-			if(empty($result) || !$result ){
-				$this->db->setQuery($insert);
-				if(!$this->db->query()){
-					$app = JFactory::getApplication();
-					$app->enqueueMessage('Install addToRequired '.$this->db->getErrorMsg() );
-				}
-			}
-
-
 		}
 
 		private function alterTable($tablename,$fields){
