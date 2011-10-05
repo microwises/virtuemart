@@ -167,6 +167,8 @@ label.invalid,span.red{color:red;}
 .output-billto span.values,.output-shipto span.values {padding-right:5px;}
 .joomlaCoreField {background-color: #FFFFDD;}
 #bottom-pagination div{text-align:center !important;}
+#bottom-pagination ul{text-align:center !important;}
+#bottom-pagination ul li{display: inline;}
 #bottom-pagination  .counter{text-align: right !important;}
 
 td.orders-key{font-weight: bold; text-align: left; }
