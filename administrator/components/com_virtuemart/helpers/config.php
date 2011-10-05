@@ -681,7 +681,7 @@ class vmJsApi{
 
 	// Virtuemart Datepicker script
 	function jDate($value='',$name="date",$class='class="datepicker"') {
-
+		if ($value == "0000-00-00 00:00:00") $value= date("Y-m-d") ; 
 		if ( !VmConfig::isJ15()) $J16 = "_J16"; else $J16 ="";
 		static $jDate;
 		$displayDate = self::date($value,'INPUT');

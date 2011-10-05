@@ -146,7 +146,7 @@ class VirtuemartViewProduct extends JView {
 
 
 				if( empty( $product->product_available_date )) {
-					$product->product_available_date = time();
+					$product->product_available_date = date("Y-m-d") ; 
 				}
 
 				/* Get the minimum and maximum order levels */

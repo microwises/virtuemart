@@ -71,9 +71,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					</td>
 					<td width="79%" >
 						<?php 
-						$startDate = JFactory::getDate($this->product->product_available_date,$this->tzoffset);
-						$this->dateformat = VmConfig::get('dateformat');
-						echo vmJsApi::jDate($startDate->toFormat($this->dateformat), 'product_available_date'); ?>
+						
+						echo vmJsApi::jDate($this->product->product_available_date, 'product_available_date'); ?>
 					</td>
 				</tr>
 				<tr>
