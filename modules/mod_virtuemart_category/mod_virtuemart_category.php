@@ -22,6 +22,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 /* Load  VM fonction */
 require('helper.php');
+JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
+
 vmJsApi::jQuery();
 vmJsApi::cssSite();
 
@@ -34,7 +36,8 @@ $layout = $params->get('layout','default');
 $active_category_id = JRequest::getInt('virtuemart_category_id', '0');
 $vendorId = '1';
 
-$categories = $categoryModel->getChildrenList($category_id) ;
+$categories = $categoryModel->getChildCategoryList($vendorId, $category_id);
+$categoryModel->addImages($categories);
 /*		$q = "SELECT virtuemart_category_id, category_name
 			FROM #__virtuemart_categories, #__virtuemart_category_categories
 			WHERE #__virtuemart_category_categories.category_parent_id = ".$category_id."
@@ -48,7 +51,8 @@ if(empty($categories)) return false;
 
 
 foreach ($categories as $category) {
-$category->childs = $categoryModel->getChildrenList($category->virtuemart_category_id) ;
+    $category->childs = $categoryModel->getChildCategoryList($vendorId, $category->virtuemart_category_id) ;
+    $categoryModel->addImages($category->childs);
 }
 $parentCategories = $categoryModel->getCategoryRecurse($active_category_id,0);
 
