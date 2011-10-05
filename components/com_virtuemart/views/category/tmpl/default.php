@@ -291,6 +291,6 @@ if ($iBrowseCol != 1) { ?>
 <?php
 }
 ?>
-	<div id="bottom-pagination"><?php echo $this->pagination->getPagesLinks(); ?><span style="float:right"><?php echo $this->pagination->getPagesCounter(); ?><span></div>
+	<div id="bottom-pagination"><?php echo $this->pagination->getPagesLinks(); ?><span style="float:right"><?php echo $this->pagination->getPagesCounter(); ?></span></div>
 </div>
 <?php } ?>
