@@ -54,14 +54,14 @@ defined('_JEXEC') or die('Restricted access');
 					} elseif ($customRow->field_type == 'G') {
 						// no display (group of) child , handled by plugin;
 					} elseif ($customRow->field_type == 'C' or $customRow->field_type == 'E'){
-
+//<span>'.JText::_($this->fieldTypes[$customRow->field_type]).'</span>
 						$tables['childs'] .=  '<div class="removable"><div>'.JText::_($customRow->custom_title).'</div>
 							<span>'.$customRow->display.$customRow->custom_tip.'</span>
-							<span>'.JText::_($this->fieldTypes[$customRow->field_type]).'</span>
+							
 							<input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
 							<input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
 							<input type="hidden" value="'.$customRow->admin_only.'" name="admin_only" />
-							<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
+							<span class="vmicon icon-nofloat vmicon-16-'.$cartIcone.'"></span>
 							<span class="trash"></span></div>';
 					} else {
 						$tables['fields'] .= '<tr class="removable">

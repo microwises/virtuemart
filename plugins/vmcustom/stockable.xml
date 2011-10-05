@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install version="1.5" type="plugin" group="vmcustom" >	
+    <name>VMCustom -stockable variant</name>
+    <creationDate>June 2011</creationDate>
+    <author>The VirtueMart Development Team</author>
+    <authorUrl>http://www.virtuemart.net</authorUrl>
+    <copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
+    <version>1.9.8</version>
+    <description>Stockable product variant selector plugin</description>
+    <languages>
+        <language tag="en-GB">en-GB.plg_vmcustom_stockable.ini</language>
+        <language tag="fr-FR">fr-FR.plg_vmcustom_stockable.ini</language>
+    </languages>
+    <files>
+        <filename plugin="stockable">stockable.php</filename>
+    </files>
+    <params addpath="/administrator/components/com_virtuemart/elements">
+        <param type="vmjpluginwarning" />
+		<param   type="spacer" default="VMCUSTOM_STOCKABLE_DESC" level="level1" />
+        <param name="selectname1" type="text"  size="30"  default="VMCUSTOM_STOCKABLE_SIZE" label="VMCUSTOM_STOCKABLE_SELECTNAME" description="VMCUSTOM_STOCKABLE_SELECTNAME_DESC" />
+        <param name="selectoptions1" type="textarea"  rows="10" cols="5" label="VMCUSTOM_STOCKABLE_SELECTOPTIONS" description="VMCUSTOM_STOCKABLE_SELECTOPTIONS_DESC" />
+        <param name="selectname2" type="text"  size="30"  default="COM_VIRTUEMART_PRODUCT_WIDTH" label="VMCUSTOM_STOCKABLE_SELECTNAME" description="VMCUSTOM_STOCKABLE_SELECTNAME_DESC" />
+        <param name="selectoptions2" type="textarea"  rows="10" cols="5" label="VMCUSTOM_STOCKABLE_SELECTOPTIONS" description="VMCUSTOM_STOCKABLE_SELECTOPTIONS_DESC" />
+        <param name="selectname3" type="text"  size="30"  default="COM_VIRTUEMART_PRODUCT_LENGTH" label="VMCUSTOM_STOCKABLE_SELECTNAME" description="VMCUSTOM_STOCKABLE_SELECTNAME_DESC" />
+        <param name="selectoptions3" type="textarea"  rows="10" cols="5" label="VMCUSTOM_STOCKABLE_SELECTOPTIONS" description="VMCUSTOM_STOCKABLE_SELECTOPTIONS_DESC" />
+        <param name="selectname4" type="text"  size="30"  default="COM_VIRTUEMART_PRODUCT_HEIGHT" label="VMCUSTOM_STOCKABLE_SELECTNAME" description="VMCUSTOM_STOCKABLE_SELECTNAME_DESC" />
+        <param name="selectoptions4" type="textarea"  rows="10" cols="5" label="VMCUSTOM_STOCKABLE_SELECTOPTIONS" description="VMCUSTOM_STOCKABLE_SELECTOPTIONS_DESC" />
+    </params>
+</install>
