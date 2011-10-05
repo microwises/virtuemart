@@ -94,13 +94,14 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	// get product param for this plugin on edit
 	function onProductEdit($field,$param,$row, $product_id) {
 		if ($field->custom_value != $this->_pname) return '';
-		if (!$childs = $this->getChilds($product_id) ) return 'no child found';
+		$html ='';
+		if (!$childs = $this->getChilds($product_id) ) $html .='<DIV>'.JTEXT::_('VMCUSTOM_STOCKABLE_NO_CHILD').'</DIV>';
 		$db = JFactory::getDBO();
 		$db->setQuery('SELECT `virtuemart_custom_id` FROM `#__virtuemart_customs` WHERE field_type="G" ');
 		$group_custom_id = $db->loadResult();
 		$plgParam = $this->getVmCustomParams($field->virtuemart_custom_id);
 		//print_r($plgParam);
-		$html ='<span style="width:20px; display: inline-block;"> </span>';
+		$html .='<span style="width:20px; display: inline-block;"> </span>';
 
 		for ($i = 1; $i<5 ;$i++) { 
 			$listname = $plgParam->get('selectname'.$i,'');
@@ -124,7 +125,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 					if (empty($param[$child->id]['attribute'.$i])) {
 						$param[$child->id]['attribute'.$i] ='';
 					}
-					$html .= JHTML::_('select.genericlist', $option, 'custom_param['.$row.']['.$child->id.'][attribute'.$i.']','style="width:100px !important;"','text','value',$param[$child->id]['attribute'.$i],false,true)."\n";
+					if ($listoptions[0] == '') $html .= ' <span style="width:98px; display: inline-block;color:#000;">'.JText::_('VMCUSTOM_STOCKABLE_NO_OPTION') .'</span>';
+					else $html .= JHTML::_('select.genericlist', $option, 'custom_param['.$row.']['.$child->id.'][attribute'.$i.']','style="width:100px !important;"','text','value',$param[$child->id]['attribute'.$i],false,true)."\n";
 				}
 
 			}
