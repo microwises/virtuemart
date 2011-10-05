@@ -117,6 +117,16 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo VmHTML::checkbox('show_top_pagenav', $this->config->get('show_top_pagenav')); ?>
 			</td>
 		 </tr>
+	 	<tr>
+		<td class="key">
+		    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MANUFACTURER_PER_ROW_EXPLAIN'); ?>">
+		    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MANUFACTURER_PER_ROW') ?>
+		    </span>
+		</td>
+		<td>
+		    <input type="text" name="manufacturer_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('manufacturer_per_row') ?>" />
+		</td>
+	    </tr>
       </table>
       </fieldset>
 	</td>

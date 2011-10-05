@@ -172,3 +172,6 @@ label.invalid,span.red{color:red;}
 #bottom-pagination  .counter{text-align: right !important;}
 
 td.orders-key{font-weight: bold; text-align: left; }
+
+/* Manufacturer View Default */
+.manufacturer-view-default .row .manufacturer .spacer {padding: 6px;}
