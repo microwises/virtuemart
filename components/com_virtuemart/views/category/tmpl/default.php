@@ -178,6 +178,7 @@ $verticalseparator = " vertical-separator";
 			<?php echo $this->orderByList; ?>
 		</div>
 		<div class="width30 floatright display-number"><?php echo $this->pagination->getResultsCounter();?><br/><?php echo $this->pagination->getLimitBox() ?></div>
+<div id="bottom-pagination"><?php echo $this->pagination->getPagesLinks(); ?><span style="float:right"><?php echo $this->pagination->getPagesCounter(); ?></span></div>
 	<div class="clear"></div>
 	</div>
 </form>
@@ -291,6 +292,5 @@ if ($iBrowseCol != 1) { ?>
 <?php
 }
 ?>
-	<div id="bottom-pagination"><?php echo $this->pagination->getPagesLinks(); ?><span style="float:right"><?php echo $this->pagination->getPagesCounter(); ?></span></div>
-</div>
+	</div>
 <?php } ?>

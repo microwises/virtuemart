@@ -140,7 +140,7 @@ class VmModel extends JModel {
 		$view = JRequest::getWord('view');
 		$mainframe = JFactory::getApplication() ;
 		if($default!==null){
-			vmdebug('Default not null');
+// 			vmdebug('Default not null');
 			$filter_order_Dir = strtoupper($default);
 		} else {
 			$filter_order_Dir = strtoupper($mainframe->getUserStateFromRequest( 'com_virtuemart'.$view.'.filter_order_Dir', 'filter_order_Dir', $default, 'word' ));
@@ -289,7 +289,9 @@ class VmModel extends JModel {
 			$limitStart = JRequest::getInt('limitstart',0);
 		}
 
-// 		$limitstart = ceil((float)$limitStart/(float)$limit) * $limit;
+		//There is a strange error in the frontend giving back 9 instead of 10, or 24 instead of 25
+		//This functions assures that the steps of limitstart fit with the limit
+		$limitStart = ceil((float)$limitStart/(float)$limit) * $limit;
 		vmdebug('$limitStart',$limitStart);
 
 		$this->setState('limitstart', $limitStart);
