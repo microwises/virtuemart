@@ -233,6 +233,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->updateWeightUnit();
 			$this->updateDimensionUnit();
 
+			//delete old config file
+			if(JFile::delete($this->path.'virtuemart.cfg-dist')){
+
+				$model = JModel::getInstance('config', 'VirtueMartModel');
+				if (!class_exists('VirtueMartModelConfig')
+				)require($this->path . DS . 'models' . DS . 'config.php');
+				$model -> deleteConfig();
+			}
 			if($loadVm) $this->displayFinished(true);
 			// probably should just go to updatesMigration rather than the install success screen
 			// 			include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
