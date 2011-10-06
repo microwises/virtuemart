@@ -235,10 +235,14 @@ class VirtueMartModelConfig extends JModel {
 	 */
 	function getSearchFields( $searchChecked ) {
 
-		if (empty ($searchChecked)) $searchChecked = array('product_sku','category_name','category_description','mf_name','product_name', 'product_s_desc');
+		if (empty ($searchChecked)) $searchChecked = array('p.product_sku','c.category_name','c.category_description','m.mf_name','p.product_name', 'p.product_s_desc');
 		else if (!is_array($searchChecked)) $searchChecked = array($searchChecked);
 		$searchFields ='<div  class="threecols"><ul>';
-		$searchFieldsArray = array('product_sku','product_price','category_name','category_description','mf_name','product_name', 'product_s_desc', 'product_desc', 'product_weight', 'product_weight_uom', 'product_length', 'product_width', 'product_height', 'product_lwh_uom', 'product_in_stock', 'low_stock_notification', 'product_available_date', 'product_availability', 'product_special', 'ship_code_id', 'created_on', 'modified_on',  'product_sales','product_unit', 'product_packaging', 'product_order_levels', 'intnotes', 'metadesc', 'metakey', 'metarobot', 'metaauthor');
+		$searchFieldsArray = array('p.product_sku','pp.product_price','c.category_name','c.category_description','m.mf_name','p.product_name',
+		'p.product_s_desc', 'p.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width', 'p.product_height',
+		'p.product_lwh_uom', 'p.product_in_stock', 'p.low_stock_notification', 'p.product_available_date', 'p.product_availability', 'p.product_special',
+		'ship_code_id', 'p.created_on', 'p.modified_on',  'p.product_sales','p.product_unit', 'p.product_packaging', 'p.product_order_levels', 'p.intnotes',
+		'p.metadesc', 'p.metakey', 'p.metarobot', 'p.metaauthor');
 		foreach ($searchFieldsArray as $key => $field ) {
 			if (in_array($field, $searchChecked) ) {
 				$checked = 'checked="checked"';
