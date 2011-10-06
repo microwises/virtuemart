@@ -234,7 +234,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->updateDimensionUnit();
 
 			//delete old config file
-			if(JFile::delete($this->path.'virtuemart.cfg-dist')){
+
+			$this->renewConfigManually = !JFile::delete($this->path.DS.'virtuemart.cfg');
+			if(!$this->renewConfigManually){
 
 				$model = JModel::getInstance('config', 'VirtueMartModel');
 				if (!class_exists('VirtueMartModelConfig')
@@ -544,7 +546,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				<?php
 				if($update){
 					echo JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
-					echo '<br />'.JText::_('Please use "renew config from file" in Tools => Updates/Migration');
+					if($this->renewConfigManually){
+						echo '<br />'.JText::_('When you got an error deleting the virtuemart.cfg file <br />
+											Delete this file manually (administrator/components/com_virtuemart/virtuemart.cfg) and please use
+											"renew config from file" in Tools => Updates/Migration');
+					}
 					echo '<br />'.JText::_('<b>Reminder to update also your extensions with the AIO installer');
 
 				} else {
