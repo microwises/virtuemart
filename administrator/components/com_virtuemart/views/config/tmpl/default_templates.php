@@ -107,16 +107,7 @@ defined('_JEXEC') or die('Restricted access');
 			    <input type="text" name="products_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('products_per_row') ?>" />
 			</td>
 		    </tr>
-		    <tr>
-			<td class="key">
-			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NAV_AT_TOP_TIP'); ?>" >
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_NAV_AT_TOP') ?>
-			    </span>
-			</td>
-			<td>
-			    <?php echo VmHTML::checkbox('show_top_pagenav', $this->config->get('show_top_pagenav')); ?>
-			</td>
-		 </tr>
+
 	 	<tr>
 		<td class="key">
 		    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MANUFACTURER_PER_ROW_EXPLAIN'); ?>">
