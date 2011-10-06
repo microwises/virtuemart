@@ -223,6 +223,9 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!Permissions::getInstance()->check('admin') ) $readonly='readonly'; else $readonly ='';
+		// only input when not set else display
+		if ($datas->field_type) $html .= VmHTML::Row('COM_VIRTUEMART_CUSTOM_FIELD_TYPE', $datas->field_types[$datas->field_type] ) ;
+		else $html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_FIELD_TYPE',$this->getOptions($datas->field_types),'field_type', $datas->field_type,VmHTML::validate('R')) ;
 		$html .= VmHTML::inputRow('COM_VIRTUEMART_TITLE','custom_title',$datas->custom_title,VmHTML::validate('S'));
 		$html .= VmHTML::inputRow('COM_VIRTUEMART_DESCRIPTION','custom_field_desc',$datas->custom_field_desc);
 		// change input by type
@@ -234,9 +237,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_LIST','is_list',$datas->is_list);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_HIDDEN','is_hidden',$datas->is_hidden);
 		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE','is_cart_attribute',$datas->is_cart_attribute);
-		// only input when not set else display
-		if ($datas->field_type) $html .= VmHTML::Row('COM_VIRTUEMART_CUSTOM_FIELD_TYPE', $datas->field_types[$datas->field_type] ) ;
-		else $html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_FIELD_TYPE',$this->getOptions($datas->field_types),'field_type', $datas->field_type,VmHTML::validate('R')) ;
+
 		$html .= '</table>';
 		$html .= VmHTML::inputHidden($this->_hidden);
 

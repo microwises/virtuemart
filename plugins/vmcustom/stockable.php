@@ -119,8 +119,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			$html .='	<input type="checkbox" '.$checked.' title="use it as variant" value="1" name="custom_param['.$row.']['.$child->id.'][is_variant]">';
 			for ($i = 1; $i<5 ;$i++) { 
 				$option = array();
-				
-				if ($listoptions = explode("\n",$plgParam->get('selectoptions'.$i,'') ) ) {
+				$tmpOptions = str_replace( "\r", "" ,$plgParam->get('selectoptions'.$i,'')); 
+				if ($listoptions = explode("\n",$tmpOptions ) ) {
 					foreach ($listoptions as $key => $val) $option[] = JHTML::_('select.option',JText::_( $val ) , $val  );
 					if (empty($param[$child->id]['attribute'.$i])) {
 						$param[$child->id]['attribute'.$i] ='';

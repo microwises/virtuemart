@@ -36,7 +36,7 @@ if(!empty($attribute_id)) $this->customfields->addHidden('attribute_id',$attribu
 echo $this->customfields->displayCustomFields('',$this->custom); ?>
 <table class="adminform" id="custom_plg">
 	<tr>
-		<td class="labelcell">Choix du plugin</td>
+		<td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_SELECT_CUSTOM_PLUGIN' ); ?></td>
 		<td><?php echo $this->pluginList ?></td>
 		<td></td>
 	</tr>
@@ -53,7 +53,6 @@ echo $this->customfields->displayCustomFields('',$this->custom); ?>
 			
 			<?php
         } else { ?>
-			<input type="text" name="custom_name" value="<?php echo $this->custom->custom_title ?>" >
              <?php echo JText::_('COM_VIRTUEMART_SELECT_CUSTOM_PLUGIN' );
            } ?>
 		<div>
