@@ -325,8 +325,9 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @author Patrick Kohl
 	 */
 	function onViewCartModule( $product,$param,$productCustom, $row) {
-		if ($param->comment) return 'commented';
-		return 'not commented';
+		// if ($param->comment) return 'commented';
+		// return 'not commented';
+		return '';
     }
 
 	/**
@@ -334,10 +335,11 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @author Patrick Kohl
 	 */
 	function onViewCart($product, $param,$productCustom, $row) {
-		$html  = '<div>';
-		$html .='<span>'.$param->comment.'</span>';
-		// $html .='<span>'.$param->Morecomment.'</span>';
-		return $html.'</div>';
+		// $html  = '<div>';
+		// $html .='<span>'.$param->comment.'</span>';
+		//$html .='<span>'.$param->Morecomment.'</span>';
+		// return $html.'</div>';
+		return '';
     }
 	/**
 	 * Add param as product_attributes 
@@ -351,7 +353,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		// $html .='<span>'.$param->Morecomment.'</span>';
 		// $html .='</div>';
 		// return $html;
-		return $param;
+		return '';//$param;
     }
 	
 	/**
@@ -359,11 +361,12 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * vendor order display BE
 	 */
 	function onViewOrderBE($item, $param,$productCustom, $row) {
-		$html  = '<div>';
-		$html .='<span>'.$param->comment.'</span>';
-		// $html .='<span>'.$param->Morecomment.'</span>';
+		// $html  = '<div>';
+		// $html .='<span>'.$param->comment.'</span>';
+		//$html .='<span>'.$param->Morecomment.'</span>';
 
-		return $html.'</div>';
+		// return $html.'</div>';
+		return '';
     }
 	
 	/**

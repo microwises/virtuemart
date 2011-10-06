@@ -147,7 +147,7 @@ class VirtueMartModelCustom extends VmModel {
     function getCustoms($custom_parent_id,$search = false){
 
 		$this->_db = JFactory::getDBO();
-		$query='SELECT * FROM `#__virtuemart_customs` WHERE field_type <> "R" AND field_type <> "Z" ';
+		$query='SELECT * FROM `#__virtuemart_customs` WHERE field_type <> "R" AND field_type <> "Z" AND field_type <> "G" ';
 		if($custom_parent_id){
 			$query .= 'AND `custom_parent_id` ='.(int)$custom_parent_id;
 		}

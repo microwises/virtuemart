@@ -168,7 +168,9 @@ abstract class vmCustomPlugin extends JPlugin {
 		if ($plgName) {
 			$plg = self::setClass($plgName) ; 
 			$plgFunction = 'onViewCart'.$view ;
-			return $plg->$plgFunction( $product,$product->param[$row] ,$productCustom, $row);
+			if ( empty($product->param[$row])) $param = null ;
+			else $param = $product->param[$row] ;
+			return $plg->$plgFunction( $product,$param ,$productCustom, $row);
 		} else return '';
 	 }
 	 /**

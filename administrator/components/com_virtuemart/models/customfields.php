@@ -719,7 +719,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	}
 	
 	/*
-	 * render custom ields display cart module FE
+	 * render custom fields display cart module FE
 	 */
 	public function CustomsFieldCartModDisplay($priceKey,$product) {
 		if (empty($calculator)) {
@@ -742,6 +742,10 @@ class VirtueMartModelCustomfields extends VmModel {
 					// foreach ($product->userfield as $pKey => $puser) {
 						// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
 					// }
+				} elseif (($productCustom->field_type == "G")) {
+					$child = self::getChild($productCustom->custom_value);
+					// $html .= ' <span>'.$productCustom->custom_title.' : </span>'.$child->product_name;
+					$html .= '<br/ >'.$child->product_name;
 				} else {
 
 					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
@@ -777,6 +781,9 @@ class VirtueMartModelCustomfields extends VmModel {
 					// foreach ($product->userfield as $pKey => $puser) {
 						// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
 					// }
+				} elseif (($productCustom->field_type == "G")) {
+					$child = self::getChild($productCustom->custom_value);
+					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$child->product_name;
 				} else {
 
 					$html .= '<br/ ><span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
@@ -813,6 +820,9 @@ class VirtueMartModelCustomfields extends VmModel {
 					// foreach ($product->userfield as $pKey => $puser) {
 						// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
 					// }
+				} elseif (($productCustom->field_type == "G")) {
+					$child = self::getChild($productCustom->custom_value);
+					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$child->product_name;
 				} else {
 
 					$html .= '<br/ ><span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
@@ -848,6 +858,9 @@ class VirtueMartModelCustomfields extends VmModel {
 					// foreach ($product->userfield as $pKey => $puser) {
 						// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
 					// }
+				} elseif (($productCustom->field_type == "G")) {
+					$child = self::getChild($productCustom->custom_value);
+					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$child->product_name;
 				} else {
 
 					$html .= '<br/ ><span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
@@ -881,6 +894,11 @@ class VirtueMartModelCustomfields extends VmModel {
 			foreach ($params as $key => $param )
 				$product->param[$key] = $param ;
 		return $product ;
+	}
+	public function getChild($child) {
+		$db = JFactory::getDBO();
+		$db->setQuery('SELECT  `product_sku`, `product_name` FROM `#__virtuemart_products` WHERE virtuemart_product_id='.$child);
+		return $db->loadObject();
 	}
 }
 // pure php no closing tag
