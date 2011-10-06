@@ -283,26 +283,14 @@ class VmModel extends JModel {
 		$limit = $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit',  VmConfig::get('list_limit',10), 'int');
 		$this->setState('limit', $limit);
 
-		// 		$this->setState('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
-		// In case limit has been changed, adjust limitstart accordingly
-		// 		$this->setState('limitstart', ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0));
-
 		if(version_compare(JVERSION,'1.6.0','ge')) {
 			$limitStart = $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.limitstart', 'limitstart',  0, 'int');
 		} else {
 			$limitStart = JRequest::getInt('limitstart',0);
 		}
 
-// 		if(empty($limitstart)){
-// 			$limitStart
-// 		}
-// 		$limitStart = $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.limitstart', 'limitstart',  0, 'int');
+// 		$limitstart = ceil((float)$limitStart/(float)$limit) * $limit;
 		vmdebug('$limitStart',$limitStart);
-// 		$limitStart = $this->getState('limitstart');
-
-
-
-// 		$limitstart = ($this->getState('limit') != 0 ? (floor($this->getState('limitstart') / $this->getState('limit')) * $this->getState('limit')) : 0);
 
 		$this->setState('limitstart', $limitStart);
 
