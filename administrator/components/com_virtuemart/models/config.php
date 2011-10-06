@@ -206,16 +206,12 @@ class VirtueMartModelConfig extends JModel {
 			else {
 				$checked = '';
 			}
-			// 			if(!empty($this->_tablePreFix)){
 
-			// 			}
-			// 			$prefix = '';
 			$fieldWithoutPrefix = $field;
 			$dotps = strrpos($fieldWithoutPrefix, '.');
 			if($dotps!==false){
 				$prefix = substr($field, 0,$dotps+1);
 				$fieldWithoutPrefix = substr($field, $dotps+1);
-// 				vmdebug('Found dot '.$dotps.' $prefix '.$prefix.'  $fieldWithoutPrefix '.$fieldWithoutPrefix);
 			}
 
 			$text = JText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
@@ -250,7 +246,16 @@ class VirtueMartModelConfig extends JModel {
 			else {
 				$checked = '';
 			}
-			$text = JText::_('COM_VIRTUEMART_'.strtoupper($field)) ;
+
+			$fieldWithoutPrefix = $field;
+			$dotps = strrpos($fieldWithoutPrefix, '.');
+			if($dotps!==false){
+				$prefix = substr($field, 0,$dotps+1);
+				$fieldWithoutPrefix = substr($field, $dotps+1);
+			}
+
+			$text = JText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
+
 			$searchFields.= '<li><label for="' .$field.$key. '">' .$text. '</label><input type="checkbox" id="' .$field.$key. '" name="browse_search_fields[]" value="' .$field. '" ' .$checked. ' /></li>';
 		}
 		$searchFields .='</ul></div>';
