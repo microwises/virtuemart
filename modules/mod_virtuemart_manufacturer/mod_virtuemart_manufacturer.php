@@ -28,7 +28,7 @@ $manufacturers_per_row = $params->get( 'manufacturers_per_row', 1 ); // Display 
 $headerText = 		$params->get( 'headerText', '' ); // Display a Header Text
 $footerText = 		$params->get( 'footerText', ''); // Display a footerText
 $show = 			$params->get( 'show', 'all'); // Display a footerText
-$manufacturers = $model->getManufacturers(true, true);
+$manufacturers = $model->getManufacturers(true, true,true);
 $model->addImages($manufacturers);
 if(empty($manufacturers)) return false;
 /* load the template */

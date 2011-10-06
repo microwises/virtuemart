@@ -128,7 +128,7 @@ class VirtueMartModelManufacturer extends VmModel {
      * @param string $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of manufacturer objects
 	 */
-	public function getManufacturers($onlyPublished=false, $noLimit=false) {
+	public function getManufacturers($onlyPublished=false, $noLimit=false, $getMedia=false) {
 
 		$this->_noLimit = $noLimit;
 		$mainframe = JFactory::getApplication();
@@ -159,8 +159,10 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		$select = ' m.*,mc.`mf_category_name` ';
 
-		$joinedTables = 'FROM `#__virtuemart_manufacturers` AS m LEFT JOIN `#__virtuemart_manufacturercategories` AS mc on m.`virtuemart_manufacturercategories_id`= mc.`virtuemart_manufacturercategories_id`';
-
+		$joinedTables = 'FROM `#__virtuemart_manufacturers` AS m LEFT JOIN `#__virtuemart_manufacturercategories` AS mc on m.`virtuemart_manufacturercategories_id`= mc.`virtuemart_manufacturercategories_id` ';
+		if($getMedia){
+			$joinedTables = 'LEFT JOIN `#__virtuemart_manufacturer_medias as mmex. ON  m.`virtuemart_manufacturer_id`= mmex.`virtuemart_manufacturer_id` ';
+		}
 		$whereString = ' ';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where).' ' ;
 
