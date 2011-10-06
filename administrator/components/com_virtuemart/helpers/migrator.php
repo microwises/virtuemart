@@ -602,8 +602,10 @@ class Migrator extends VmModel{
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
 		$catModel = new VirtueMartModelCategory();
 
-		$default_category_browse = JRequest::getWord('migration_default_category_browse','');
-		$default_category_fly = JRequest::getWord('migration_default_category_fly','');
+		$default_category_browse = JRequest::getString('migration_default_category_browse','');
+		vmdebug('migration_default_category_browse '.$default_category_browse);
+
+		$default_category_fly = JRequest::getString('migration_default_category_fly','');
 		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 			return;
 		}
