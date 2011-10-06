@@ -153,10 +153,8 @@ abstract class vmCustomPlugin extends JPlugin {
 		if (empty($field->custom_value)) return '';
 		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
 		else $custom_param = array();
-
-		$plgName = 'plgVmCustom'.ucfirst ($field->custom_value );
-		if(!class_exists($plgName)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$field->custom_value.'.php');
-		$plg = new $plgName ;
+		
+		$plg = self::setClass($field->custom_value) ;
 		return $plg->onDisplayProductFE(  $field,$custom_param, $product, $row);
 	 }
 
@@ -168,10 +166,7 @@ abstract class vmCustomPlugin extends JPlugin {
 	 public function displayInCartPlugin($product,$productCustom, $row ,$view=''){
 		$plgName = $productCustom->value;
 		if ($plgName) {
-			$plgClass = 'plgVmCustom'.ucfirst ($plgName );
-			if(!class_exists($plgClass)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$plgName.'.php');
-			if(!class_exists($plgClass)) ($this->setError('error '.$plgClass.' not found'));
-			$plg = new $plgClass ;
+			$plg = self::setClass($plgName) ; 
 			$plgFunction = 'onViewCart'.$view ;
 			return $plg->$plgFunction( $product,$product->param[$row] ,$productCustom, $row);
 		} else return '';
@@ -191,9 +186,7 @@ abstract class vmCustomPlugin extends JPlugin {
 			return ;
 		}
 		if ($plgName) {
-			$plgClass = 'plgVmCustom'.ucfirst ($plgName );
-			if(!class_exists($plgClass)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$plgName.'.php');
-			$plg = new $plgClass ;
+			$plg = self::setClass($plgName) ; 
 			$plgFunction = 'onViewOrder'.$view ;
 			$html = $plg->$plgFunction( $item,$param,$productCustom, $row);
 		} else return '';
@@ -211,11 +204,18 @@ abstract class vmCustomPlugin extends JPlugin {
 		else $custom_param = array();
 
 		if ($field->custom_value) {
-			$plgName = 'plgVmCustom'.ucfirst ($field->custom_value );
-			if(!class_exists($plgName)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$field->custom_value.'.php');
-			$plg = new $plgName ;
+			$plg = self::setClass($field->custom_value) ;
 			$html = $plg->onProductEdit(  $field,$custom_param, $row, $product_id);
 		} else return '';
 		return $html;
+	 }
+	 private function setClass($name) {
+		$plgName = 'plgVmCustom'.ucfirst ($name );
+		if  ( VmConfig::isJ15() ) { 
+			if(!class_exists($plgName)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$name.'.php'); 
+		} else {
+			if(!class_exists($plgName)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$name.DS.$name.'.php');
+		}
+		return new $plgName;
 	 }
 }

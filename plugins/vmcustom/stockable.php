@@ -428,7 +428,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	function getFieldId($virtuemart_product_id, $chil_id ) {
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT cf.* FROM `jos_virtuemart_product_customfields` as cf JOIN `jos_virtuemart_customs` as c ON `c`.`virtuemart_custom_id` = cf.`virtuemart_custom_id` AND c.`field_type`="G" 
+		$q = 'SELECT cf.* FROM `#__virtuemart_product_customfields` as cf JOIN `#__virtuemart_customs` as c ON `c`.`virtuemart_custom_id` = cf.`virtuemart_custom_id` AND c.`field_type`="G" 
 			WHERE cf.`virtuemart_product_id` ='.(int)$virtuemart_product_id.' and cf.custom_value='.(int)$chil_id ;
 			$db->setQuery($q);
 			$result = $db->loadObject();
