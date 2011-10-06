@@ -553,6 +553,7 @@ class vmrouterHelper {
 		return $db->loadResult().$this->seo_sufix;
 	}
 
+	var $counter = 0;
 	/* Get parent Product first found category ID */
 	public function getParentProductcategory($id){
 
@@ -566,9 +567,18 @@ class vmrouterHelper {
 			$query = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories`  ' .
 				' WHERE `virtuemart_product_id` = ' . $parent_id;
 			$db->setQuery($query);
-			if (!$virtuemart_category_id = $db->loadResult()) $this->getParentProductcategory($parent_id) ;
+
+			//When the child and parent id is the same, this creates a deadlock
+			//add $counter, dont allow more then 10 levels
+			if (!$virtuemart_category_id = $db->loadResult()){
+				$this->counter++;
+				if($this->counter<10){
+					$this->getParentProductcategory($parent_id) ;
+				}
+			}
 
 		}
+		$this->counter = 0;
 		return $virtuemart_category_id ;
 	}
 

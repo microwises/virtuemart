@@ -319,18 +319,22 @@ class VirtueMartModelProduct extends VmModel {
 		$published = $child->published;
 
 		$i = 0;
+		$runtime = microtime(true)-$this->starttime;
 		//Check for all attributes to inherited by parent products
-    	while(!empty($child->product_parent_id)){
-    		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+    	while(!empty($child->product_parent_id) ){
+    		$runtime = microtime(true)-$this->starttime;
+    		if($runtime >= $this->maxScriptTime){
     			vmdebug('Max execution time reached in model product getProduct() ',$child);
     			vmError('Max execution time reached in model product getProduct() '.$child->product_parent_id);
-    			return false;
-    		} else if($i>20){
-    			vmdebug('Too many child products in getProduct() ',$child);
-    			vmError('Too many child products in getProduct() '.$child->product_parent_id);
+    			break;
+    		} else if($i>2){
+    			vmdebug('Time: '.$runtime.' Too many child products in getProduct() ',$child);
+    			vmError('Time: '.$runtime.' Too many child products in getProduct() '.$child->product_parent_id);
+    			break;
     		}
     		$parentProduct = $this->getProductSingle($child->product_parent_id,$front, false,false);
     	   $attribs = get_object_vars($parentProduct);
+			if($child->product_parent_id === $parentProduct->product_parent_id) break;
 
 	    	foreach($attribs as $k=>$v){
 
@@ -339,9 +343,16 @@ class VirtueMartModelProduct extends VmModel {
 				}
 	    	}
 			$i++;
-			$child->product_parent_id = $parentProduct->product_parent_id;
+			if($child->product_parent_id != $parentProduct->product_parent_id){
+				$child->product_parent_id = $parentProduct->product_parent_id;
+			} else {
+				$child->product_parent_id = 0;
+			}
 
     	}
+
+//     	vmdebug('getProduct Time: '.$runtime);
+
 		$child->published = $published;
 		$child->virtuemart_product_id = $pId;
 		$child->product_parent_id = $ppId;

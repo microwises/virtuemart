@@ -1017,6 +1017,11 @@ class Migrator extends VmModel{
 						$product['virtuemart_media_id'] = $this->_getMediaIdByName($product['product_full_image'],'product');
 					}
 
+					if(!empty($alreadyKnownIds[$product['product_id']])){
+						$product['product_parent_id'] = $alreadyKnownIds[$product['product_id']];
+					} else {
+						$product['product_parent_id'] = 0;
+					}
 
 					$product['virtuemart_product_id'] = $productModel->store($product);
 

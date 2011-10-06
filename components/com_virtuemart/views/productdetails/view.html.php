@@ -98,16 +98,16 @@ class VirtueMartViewProductdetails extends JView {
 		$product_model->addImages($product);
 		$this->assignRef('product', $product);
 
-		/* Load the neighbours */
+		// Load the neighbours
 		$product->neighbours = $product_model->getNeighborProducts($product);
 //		if(!empty($product->neighbours) && is_array($product->neighbours) && !empty($product->neighbours[0]))$product_model->addImages($product->neighbours);
 
 //		$product->related = $product_model->getRelatedProducts($virtuemart_product_id);
 //		if(!empty($product->related) && is_array($product->related) && !empty($product->related[0]))$product_model->addImages($product->related);
 
-		/* Load the category */
+		// Load the category
 		$category_model = $this->getModel('category');
-		/* Get the category ID */
+		// Get the category ID
 		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
 		if ($virtuemart_category_id == 0 && !empty($product)) {
 			if (array_key_exists('0', $product->categories)) $virtuemart_category_id = $product->categories[0];
@@ -129,12 +129,12 @@ class VirtueMartViewProductdetails extends JView {
 		}
 		$format = JRequest::getCmd('format','html');
 		if ($format=='html') {
-			/* Set Canonic link */
+			// Set Canonic link
 			$document->addHeadLink( $product->canonical , 'canonical', 'rel', '' );
 		}
 
 
-		/* Set the titles */
+		// Set the titles
 		$document->setTitle( strip_tags($category->category_name.' : '.$product->product_name));
 
 		$uri = JURI::getInstance();
@@ -174,8 +174,8 @@ class VirtueMartViewProductdetails extends JView {
 		$allowRating = $ratingModel->allowRating($product->virtuemart_product_id);
 		$this->assignRef('allowRating', $allowRating);
 
-		/* Check for editing access */
-		/** @todo build edit page */
+		// Check for editing access
+		// @todo build edit page
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if (Permissions::getInstance()->check("admin,storeadmin")) {
 			$url = JRoute::_('index2.php?option=com_virtuemart&view=productdetails&task=edit&virtuemart_product_id='.$product->virtuemart_product_id);
@@ -186,10 +186,10 @@ class VirtueMartViewProductdetails extends JView {
 		}
 		$this->assignRef('edit_link', $edit_link);
 
-		/* Load the user details */
+		// Load the user details
 		$this->assignRef('user', JFactory::getUser());
 
-		/* More reviews link */
+		// More reviews link
 		$uri = JURI::getInstance();
 		$uri->setVar('showall', 1);
 		$this->assignRef('more_reviews', $uri->toString());
@@ -252,8 +252,6 @@ class VirtueMartViewProductdetails extends JView {
 //		$results = $dispatcher->trigger('onAfterDisplayContent', array (&$product, &$params, $limitstart));
 //		$article->event->afterDisplayContent = trim(implode("\n", $results));
 
-
-		/* Display it all */
 		parent::display($tpl);
 	}
 
