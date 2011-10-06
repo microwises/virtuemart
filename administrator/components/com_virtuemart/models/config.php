@@ -231,8 +231,13 @@ class VirtueMartModelConfig extends JModel {
 	 */
 	function getSearchFields( $searchChecked ) {
 
-		if (empty ($searchChecked)) $searchChecked = array('p.product_sku','c.category_name','c.category_description','m.mf_name','p.product_name', 'p.product_s_desc');
-		else if (!is_array($searchChecked)) $searchChecked = array($searchChecked);
+// 		if (empty ($searchChecked)) $searchChecked = array('p.product_sku','c.category_name','c.category_description','m.mf_name','p.product_name', 'p.product_s_desc');
+// 		else if (!is_array($searchChecked))
+		if (empty ($searchChecked)){
+			$searchChecked = array();
+		} else if (!is_array($searchChecked)) {
+			$searchChecked = array($searchChecked);
+		}
 		$searchFields ='<div  class="threecols"><ul>';
 		$searchFieldsArray = array('p.product_sku','pp.product_price','c.category_name','c.category_description','m.mf_name','p.product_name',
 		'p.product_s_desc', 'p.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width', 'p.product_height',
