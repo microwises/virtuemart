@@ -68,7 +68,7 @@ class VirtueMartControllerPaymentresponse extends JController {
 
 	foreach ($returnValues as $returnValue) {
 	    if ($returnValue !== null) {
-		if ($returnValue  ) {
+		if ($returnValue) {
 		    if ($virtuemart_order_id) {
 			if (!class_exists('VirtueMartCart'))
 			    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
@@ -79,8 +79,8 @@ class VirtueMartControllerPaymentresponse extends JController {
 			if (!class_exists('VirtueMartModelOrders'))
 			    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 			$order = new VirtueMartModelOrders();
-			$orderitems =$order->getOrder($virtuemart_order_id);
-				vmdebug('PaymentResponseReceived CART',$orderitems);
+			$orderitems = $order->getOrder($virtuemart_order_id);
+			vmdebug('PaymentResponseReceived CART', $orderitems);
 			$cart->sentOrderConfirmedEmail($orderitems);
 			//We delete the old stuff
 
@@ -145,11 +145,11 @@ class VirtueMartControllerPaymentresponse extends JController {
 	}
 
 
-	$view = $this->getView('paymentresponse', 'html');
+	$view = $this->getView('cart', 'html');
 	$layoutName = JRequest::getWord('layout', 'default');
 	$view->setLayout($layoutName);
 	JRequest::setVar('paymentResponse', Jtext::_('COM_VIRTUEMART_PAYMENT_USER_CANCEL'));
-
+	 
 	/* Display it all */
 	$view->display();
     }
