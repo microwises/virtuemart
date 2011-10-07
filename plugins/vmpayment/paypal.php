@@ -264,12 +264,12 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
     function plgVmOnPaymentUserCancel($pelement, $virtuemart_paymentmethod_id, $virtuemart_order_id) {
 	$paramstring = $this->getVmPaymentParams($vendorId = 0, $virtuemart_paymentmethod_id);
 	$params = new JParameter($paramstring);
-	$return_context = JRequest::getInt('rc', 0);
+	$return_context = JRequest::getVar('rc', 0);
 
 	if (!JFactory::getSession(array('id' => $return_context))) {
 	    return false;
 	}
-	$order_number = JRequest::getWord('on');
+	$order_number = JRequest::getVar('on');
 	if (!$order_number)
 	    return false;
 	if (!class_exists('VirtueMartModelOrders'))
@@ -281,7 +281,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
     }
 
     /*
-     *   plgVmOnPaymentOfflinePaymentNotification() - This event is fired after Offline Payment. It can be used to validate the payment data as entered by the user.
+     *   plgVmOnPaymentNotification() - This event is fired after Offline Payment. It can be used to validate the payment data as entered by the user.
      * Return:
      *  Plugins that were not selected must return null, otherwise True of False must be returned indicating Success or Failure.
      * Parameters:
@@ -359,7 +359,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	return true;
     }
 
-     
+
 /**
      * Display stored payment data for an order
      * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
