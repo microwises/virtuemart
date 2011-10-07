@@ -148,7 +148,7 @@ abstract class vmCustomPlugin extends JPlugin {
 	 * defaut price modifation if nothing is set in plugin
 	 * you have to rewrite it in your plugin to do other calculations
 	 */	
-	public function modifyPrice( $product, $field,$param ) {
+	public function modifyPrice( $product, $field,$param,$selected ) {
 		if (!empty($field->custom_price)) {
 			//TODO adding % and more We should use here $this->interpreteMathOp
 			return $field->custom_price;
@@ -175,14 +175,14 @@ abstract class vmCustomPlugin extends JPlugin {
 	 * You must reimplement modifyPrice() in your plugin
 	 * or price is returned defaut custom_price
 	 */
-	 public function calculatePluginVariant( $product, $field){
+	 public function calculatePluginVariant( $product, $field,$selected,$row){
 
 		if (empty($field->custom_value)) return 0 ;
 		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
 		else $custom_param = array();
 		
 		$plg = self::setClass($field->custom_value) ;
-		return $plg->modifyPrice( $product, $field,$custom_param );
+		return $plg->modifyPrice( $product, $field,$custom_param,$selected,$row);
 	 }
 
 	 /**

@@ -19,5 +19,9 @@
         <param type="vmjpluginwarning" />
         <param name="custom_name" type="text" size="20"  default="COM_VIRTUEMART_COMMENT" label="VMCUSTOM_NAME_INFO" description="VMCUSTOM_NAME_INFO_DESC" />
         <param name="custom_size" type="text"  size="5"  default="10" label="VMCUSTOM_TEXTINPUT_SIZE" description="VMCUSTOM_TEXTINPUT_SIZE_DESC" />
+        <param name="custom_price_by_letter" type="text"  size="5"  default="10" label="VMCUSTOM_PRICE_BY_LETTER" description="VMCUSTOM_PRICE_BY_LETTER_DESC" />
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>		
     </params>
 </install>

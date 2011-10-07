@@ -1067,7 +1067,7 @@ class calculationHelper {
 		public function calculateModificators($product, $variants) {
 
 			$modificatorSum = 0.0;
-
+			$row = 0;
 			foreach ($variants as $variant => $selected) {
 				if (!empty($selected)) {
 					$query = 'SELECT  c.* , field.*
@@ -1079,13 +1079,14 @@ class calculationHelper {
 					$productCustomsPrice = $this->_db->loadObject();
 					if ($productCustomsPrice->field_type =='E') {
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
-						$productCustomsPrice->custom_price = vmCustomPlugin::calculatePluginVariant( $product, $productCustomsPrice);
+						$productCustomsPrice->custom_price = vmCustomPlugin::calculatePluginVariant( $product, $productCustomsPrice,$selected,$row);
 					}
 					//$app = JFactory::getApplication();
 					if (!empty($productCustomsPrice->custom_price)) {
 						//TODO adding % and more We should use here $this->interpreteMathOp
 						$modificatorSum = $modificatorSum + $productCustomsPrice->custom_price;
 					}
+					$row++;
 				}
 			}
 			return $modificatorSum;

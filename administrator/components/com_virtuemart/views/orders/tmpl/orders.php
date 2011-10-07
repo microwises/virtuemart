@@ -40,16 +40,16 @@ $j15 = VmConfig::isJ15();
 	<thead>
 	    <tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->orderslist); ?>')" /></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_NUMBER', 'order_number', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_NAME', 'order_name', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_NUMBER', 'o.order_number', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_NAME', 'o.order_name', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
 		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL', 'pm.payment_method', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_PRINT_VIEW'); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_CDATE', 'created_on', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_MDATE', 'modified_on', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_STATUS', 'order_status', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_CDATE', 'o.created_on', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_MDATE', 'o.modified_on', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_STATUS', 'o.order_status', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_TOTAL', 'order_total', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_ID', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_TOTAL', 'o.order_total', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
+		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_ID', 'o.virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
 
 	    </tr>
 	</thead>

@@ -110,6 +110,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @ idx plugin index
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onDisplayProductFE()
 	 * @author Patrick Kohl
+	 * eg. name="customPlugin['.$idx.'][comment] save the comment in the cart & order
 	 */
 	function onDisplayProductFE($field, $param,$product,$idx) {
 		// default return if it's not this plugin
@@ -123,7 +124,22 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		//echo $plgParam->get('custom_info');
 		// Here the plugin values
 		$html =JTEXT::_($param['custom_name']) ;
-		$html.=': <input type="text" value="" size="'.$param['custom_size'].'" name="customPlugin['.$idx.'][comment]"><br />';
+		$html.=': <input class="vmcustom-textinput" type="text" value="" size="'.$param['custom_size'].'" name="customPlugin['.$idx.'][comment]"><br />';
+		static $textinputjs;
+		// preventing 2 x load javascript
+		if ($textinputjs) return $html;
+		$textinputjs = true ;
+		//javascript to update price
+		$document = JFactory::getDocument();
+		$document->addScriptDeclaration('
+	jQuery( function($) {
+		jQuery(".vmcustom-textinput").keyup(function() {
+				formProduct = $(".productdetails-view").find(".product");
+				virtuemart_product_id = formProduct.find(\'input[name="virtuemart_product_id[]"]\').val();
+			$.setproducttype(formProduct,virtuemart_product_id);
+			});
+	});
+		');
         return $html;
     }
 
@@ -189,7 +205,18 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 		return $html.'</div>';
     }
-	
+	public function modifyPrice( $product, $field,$param,$selected,$row ) {
+		if (!empty($field->custom_price)) {
+			//TODO adding % and more We should use here $this->interpreteMathOp
+			// eg. to calculate the price * comment text length
+			$pluginFields = JRequest::getVar('customPlugin',array());
+			if ($textinput = $pluginFields[$row]['comment']) {
+				$field->custom_price = strlen ($textinput) *  $field->custom_price ;
+			}
+			
+			return $field->custom_price;
+		}		
+	}	
 	function plgVmOnOrder($product) {
 
 		$dbValues['virtuemart_product_id'] = $product->virtuemart_product_id;
