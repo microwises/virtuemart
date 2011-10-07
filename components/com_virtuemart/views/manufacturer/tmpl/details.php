@@ -18,9 +18,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
 $manufacturerImage = $this->manufacturer->images[0]->displayMediaThumb('class="manufacturer-image"',false);
-	$manufacturerProductsURL = JROUTE::_('index.php?option=com_virtuemart&view=category&search=true&virtuemart_manufacturer_id=' . $this->manufacturer->virtuemart_manufacturer_id);
-	?>
+$manufacturerProductsURL = JROUTE::_('index.php?option=com_virtuemart&view=category&search=true&virtuemart_manufacturer_id=' . $this->manufacturer->virtuemart_manufacturer_id);
+?>
 	
 <div class="manufacturer-details-view">
 	<h1><?php echo $this->manufacturer->mf_name; ?></h1>
