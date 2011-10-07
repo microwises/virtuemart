@@ -76,7 +76,7 @@ INSERT INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_parent_id`,
 (10, 0, 0, 'User Comment', 'Add a personnal Text', 'Your text Here', 'comment', 'U', 0, 0, 1, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
 (11, 0, 0, 'Group of fields', 'Add fields to this parent and they are added all at once', 'I''m a parent', 'Add many fields', 'P', 0, 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
 (12, 1, 0, 'I''m a string', 'Here you can add some text', 'Please enter a text', 'Comment', 'S', 0, 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(13, 0, 0, 'Color', '', 'Choice a color', 'Colors', 'S', 0, 0, 1, 1, '2011-05-26 04:06:08', 62, '2011-05-26 04:06:08', 62, '0000-00-00 00:00:00', 0),
+(13, 0, 0, 'Color', '', 'Choose a color', 'Colors', 'S', 0, 0, 1, 1, '2011-05-26 04:06:08', 62, '2011-05-26 04:06:08', 62, '0000-00-00 00:00:00', 0),
 (14, 0, 0, 'add a showel', 'The best choice', '', 'Showels', 'M', 0, 0, 1, 1, '2011-05-26 04:11:35', 62, '2011-05-26 04:11:35', 62, '0000-00-00 00:00:00', 0);
 
 --

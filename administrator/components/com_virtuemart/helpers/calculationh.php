@@ -1070,7 +1070,7 @@ class calculationHelper {
 			$row = 0;
 			foreach ($variants as $variant => $selected) {
 				if (!empty($selected)) {
-					$query = 'SELECT  c.* , field.*
+					$query = 'SELECT  C.* , field.*
 						FROM `#__virtuemart_customs` AS C
 						LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
 						WHERE `virtuemart_product_id` =' . $product->virtuemart_product_id;
