@@ -155,10 +155,10 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		
 		$script = "
 	jQuery( function($) {
-		jQuery('#new_stockable_product').click(function() {
-			var Prod = jQuery('#new_stockable');// input[name^=\"stockable\"]').serialize();
+		$('#new_stockable_product').click(function() {
+			var Prod = $('#new_stockable');// input[name^=\"stockable\"]').serialize();
 			
-			jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=saveJS&token=".JUtility::getToken()."' ,
+			$.getJSON('index.php?option=com_virtuemart&view=product&task=saveJS&token=".JUtility::getToken()."' ,
 				{
 					product_sku: Prod.find('input[name*=\"product_sku\"]').val(),
 					product_name: Prod.find('input[name*=\"product_name\"]').val(),
@@ -169,9 +169,9 @@ class plgVmCustomStockable extends vmCustomPlugin {
 					format: \"json\"
 				},
 				function(data) {
-					console.log (data);
-					//jQuery.each(data.msg, function(index, value){
-						jQuery(\"#new_stockable\").append(data.msg);
+					//console.log (data);
+					//$.each(data.msg, function(index, value){
+						$(\"#new_stockable\").append(data.msg);
 					//});
 				});
 		});
@@ -229,35 +229,45 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			}
 			$i++;
 		}
+		static $stockablejs;
+		// preventing 2 x load javascript
+		if ($stockablejs) return $html;
+		$stockablejs = true ;
 		// TODO ONE PARAM IS MISSING
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration('
 		jQuery( function($) {
 			var customfield_id = {'. implode(',' , $js ) .'};
-			var stockable =jQuery.parseJSON(\'' .$field->custom_param. '\') ;
+			var stockable =$.parseJSON(\'' .$field->custom_param. '\') ;
 			var selecteds = [];//all selected options
 			var found_id=0;//found child id
 			var original=[];
-			var totalattribut = jQuery(".attribute_list").length+1;
+			var totalattribut = $(".attribute_list").length+1;
 			// get all initial select list values
-			jQuery.each(jQuery(".attribute_list"), function(idx,selec) {
-				original[selec.name] = jQuery.map(jQuery(this).find("option"), function(idx, opt) {
+			$.each($(".attribute_list"), function(idx,selec) {
+				original[selec.name] = $.map($(this).find("option"), function(idx, opt) {
 						return [[ idx.value ,idx.text ]];
 					});			
 			});
-			console.log(stockable) ;
-			jQuery(".attribute_list").change(function(){
-				var listIndex = jQuery(".attribute_list").index(this) +2 ;
-				choix = jQuery(this).attr("id") ; valeur = jQuery(this).val() ;
+			//console.log(stockable) ;
+			recalculate($("#attribute1"));
+			$(".attribute_list").change(function(){
+				recalculate($(this));
+			
+			});
+			function recalculate(Opt){
+				var listIndex = $(".attribute_list").index(Opt) +2 ;
+				choix = Opt.attr("id") ; valeur = Opt.val() ;
+				//console.log (choix , valeur);
 				var selection = new Object() ;
 				for(var i=listIndex; i<totalattribut; i++){ selection["attribute"+i] =[] ; }
 				var j=0;
 				
 				// set the option to show
-				jQuery.each(stockable, function(child_id, child_attrib) {
+				$.each(stockable, function(child_id, child_attrib) {
 					// find all  matrix with an invalid "stockable" child
 					if (child_attrib[choix] == valeur && child_attrib["is_variant"] == 1) { 
-						jQuery.each(child_attrib, function(index, value) {
+						$.each(child_attrib, function(index, value) {
 							if (index != "is_variant" && index > choix)
 							selection[index][j] = value ;
 							
@@ -270,20 +280,20 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				// unset invalid option
 				// regenerate the option by selected val() after last index attribute
 				for(var i=listIndex; i<totalattribut; i++){ 
-					selectlist = jQuery("#attribute"+i) ;
+					selectlist = $("#attribute"+i) ;
 					orgOptions = original["attribute"+i];
-					selectedOptions =jQuery.unique(selection["attribute"+i]) ; 
+					selectedOptions =$.unique(selection["attribute"+i]) ; 
 					var auxArr = [];
-					jQuery.each(selectedOptions, function( index, orgtext){ auxArr[index] = "<option value=\'" + orgtext+ "\'>" + orgtext + "</option>"; });
+					$.each(selectedOptions, function( index, orgtext){ auxArr[index] = "<option value=\'" + orgtext+ "\'>" + orgtext + "</option>"; });
 					selectlist.empty().append(auxArr.join(\'\'))
 					selectlist.find("option:first").attr("selected","selected");						
 				}
 				// get the selected valid values
 				for(var i=1 ; i<totalattribut; i++){
-					selecteds["attribute"+i] = jQuery("#attribute"+i).val();
+					selecteds["attribute"+i] = $("#attribute"+i).val();
 				}
 				// find the product child id
-				 jQuery.each(stockable, function(child_id, attribut) {
+				 $.each(stockable, function(child_id, attribut) {
 					 atrID = (listIndex-1) ;
 					if (attribut.is_variant == 1 && attribut[ "attribute"+ atrID  ] == valeur ) {
 						var i=j=1;
@@ -292,19 +302,19 @@ class plgVmCustomStockable extends vmCustomPlugin {
 								break;
 							}
 							j++;
-							console.log(selecteds["attribute"+i],attribut["attribute"+i]);
+							//console.log(selecteds["attribute"+i],attribut["attribute"+i]);
 						}
 						if (j>totalattribut-2) { found_id = child_id; return } // we have found the selected child
 					}
 				   if (found_id >0 ) return;
 				 });
 				// recalculate the price by found product child id;
-				formProduct = jQuery(this).parents(".productdetails-view").find(".product");
+				formProduct = Opt.parents(".productdetails-view").find(".product");
 				virtuemart_product_id = formProduct.find(\'input[name="virtuemart_product_id[]"]\').val();
 				formProduct.find("#stockableChild").remove();
 				formProduct.append(\'<input id="stockableChild" type="hidden" value="\'+customfield_id[found_id]+\'" name="customPrice['.$idx.'][\'+found_id+\']">\');
-				jQuery.setproducttype(formProduct,virtuemart_product_id);
-			});
+				$.setproducttype(formProduct,virtuemart_product_id);
+			}
 		}); 
 		');
 

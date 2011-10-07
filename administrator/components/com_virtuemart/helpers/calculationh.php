@@ -1070,13 +1070,17 @@ class calculationHelper {
 
 			foreach ($variants as $variant => $selected) {
 				if (!empty($selected)) {
-					$query = 'SELECT  field.`virtuemart_customfield_id` ,field.`custom_value`,field.`custom_price`
+					$query = 'SELECT  c.* , field.*
 						FROM `#__virtuemart_customs` AS C
 						LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
 						WHERE `virtuemart_product_id` =' . $product->virtuemart_product_id;
 					$query .=' and is_cart_attribute = 1 and field.`virtuemart_customfield_id`=' . $selected;
 					$this->_db->setQuery($query);
 					$productCustomsPrice = $this->_db->loadObject();
+					if ($productCustomsPrice->field_type =='E') {
+						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+						$productCustomsPrice->custom_price = vmCustomPlugin::calculatePluginVariant( $product, $productCustomsPrice);
+					}
 					//$app = JFactory::getApplication();
 					if (!empty($productCustomsPrice->custom_price)) {
 						//TODO adding % and more We should use here $this->interpreteMathOp

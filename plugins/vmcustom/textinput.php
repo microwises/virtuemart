@@ -123,7 +123,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		//echo $plgParam->get('custom_info');
 		// Here the plugin values
 		$html =JTEXT::_($param['custom_name']) ;
-		$html.=': <input type="text" value="" size="'.$param['custom_name'].'" name="customPlugin['.$idx.'][comment]"><br />';
+		$html.=': <input type="text" value="" size="'.$param['custom_size'].'" name="customPlugin['.$idx.'][comment]"><br />';
         return $html;
     }
 

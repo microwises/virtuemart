@@ -145,17 +145,44 @@ abstract class vmCustomPlugin extends JPlugin {
 	abstract function onViewOrderBE($product, $param,$productCustom, $row);
 
 	/**
+	 * defaut price modifation if nothing is set in plugin
+	 * you have to rewrite it in your plugin to do other calculations
+	 */	
+	public function modifyPrice( $product, $field,$param ) {
+		if (!empty($field->custom_price)) {
+			//TODO adding % and more We should use here $this->interpreteMathOp
+			return $field->custom_price;
+		}		
+	}
+
+	/**
 	 * display The plugin in Product view FE
 	 * override displayType() customfields.
 	 */
 	 public function displayTypePlugin($field,$product,$row){
-
+		
 		if (empty($field->custom_value)) return '';
 		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
 		else $custom_param = array();
 		
 		$plg = self::setClass($field->custom_value) ;
 		return $plg->onDisplayProductFE(  $field,$custom_param, $product, $row);
+	 }
+	 /**
+	 * Calculate the variant price by The plugin
+	 * override calculateModificators() in calculatorh.
+	 * Eg. recalculate price by a quantity set in the plugin
+	 * You must reimplement modifyPrice() in your plugin
+	 * or price is returned defaut custom_price
+	 */
+	 public function calculatePluginVariant( $product, $field){
+
+		if (empty($field->custom_value)) return 0 ;
+		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
+		else $custom_param = array();
+		
+		$plg = self::setClass($field->custom_value) ;
+		return $plg->modifyPrice( $product, $field,$custom_param );
 	 }
 
 	 /**
@@ -211,13 +238,24 @@ abstract class vmCustomPlugin extends JPlugin {
 		} else return '';
 		return $html;
 	 }
+	 
+	/**
+	 * Select the right file and class j1.5/j1.7
+	 * Return new class $plgName
+	 */	 
 	 private function setClass($name) {
 		$plgName = 'plgVmCustom'.ucfirst ($name );
-		if  ( VmConfig::isJ15() ) { 
-			if(!class_exists($plgName)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$name.'.php'); 
-		} else {
-			if(!class_exists($plgName)) require(JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$name.DS.$name.'.php');
+		if(class_exists($plgName)) return new $plgName;
+		else {
+			if  ( VmConfig::isJ15() ) { 
+				$path = JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$name.'.php'; 
+			} else {
+				$path = JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$name.DS.$name.'.php';
+			}
+			if (is_file($path)) {
+				require($path);
+				return new $plgName;
+			} else return false ;
 		}
-		return new $plgName;
 	 }
 }
