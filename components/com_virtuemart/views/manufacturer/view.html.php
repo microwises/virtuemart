@@ -48,9 +48,13 @@ class VirtuemartViewManufacturer extends JView {
 			$manufacturer = $model->getManufacturer();
 			$model->addImages($manufacturer);
 
+$manufacturerImage = $manufacturer->images[0]->displayMediaThumb('class="manufacturer-image"',false);
+$manufacturerProductsURL = JROUTE::_('index.php?option=com_virtuemart&view=category&search=true&virtuemart_manufacturer_id=' . $manufacturer->virtuemart_manufacturer_id);
+
 			$document->setTitle(JText::_('COM_VIRTUEMART_MANUFACTURER_DETAILS').' '.strip_tags($manufacturer->mf_name));
 
 			$this->assignRef('manufacturerImage', $manufacturerImage);
+			$this->assignRef('manufacturerProductsURL', $manufacturerProductsURL);
 			$this->assignRef('manufacturer',	$manufacturer);
 			$pathway->addItem(strip_tags($manufacturer->mf_name));
 
