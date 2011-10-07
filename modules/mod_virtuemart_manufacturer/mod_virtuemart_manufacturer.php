@@ -18,6 +18,8 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 */
 /* Load  VM fonction */
 require('helper.php');
+if (!class_exists( 'VirtueMartModelManufacturer' ))
+   JLoader::import( 'manufacturer', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models' );
 
 /* Setting */
 $vendorId = JRequest::getInt('vendorid', 1);
