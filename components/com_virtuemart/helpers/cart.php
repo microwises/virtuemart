@@ -160,6 +160,9 @@ public function setPreferred() {
 			if ($address->address_type == 'BT') {
 				$this->saveAddressInCart((array) $address, $address->address_type,false);
 			}
+// 			if ($address->address_type == 'ST') {
+// 				$this->saveAddressInCart((array) $address, $address->address_type,false);
+// 			}
 		}
 	}
 
@@ -249,8 +252,6 @@ public function setCartIntoSession() {
  */
 public function removeCartFromSession() {
 	$session = JFactory::getSession();
-
-        vmdebug('removeCartFromSession',$session);
 	$session->set('vmcart', 0, 'vm');
 }
 
@@ -1185,7 +1186,8 @@ public function removeProductCart($prod_id=0) {
 
 		$prepareUserFields = $userFieldsModel->getUserFieldsFor('cart',$type);
 
-		if ($type == 'STaddress') {
+		//STaddress may be obsolete
+		if ($type == 'STaddress' || $type =='ST') {
 			$prefix = 'shipto_';
 
 		} else { // BT
@@ -1316,7 +1318,6 @@ public function removeProductCart($prod_id=0) {
 		/* Get the products for the cart */
 		$this->cartData = $this->prepareCartData();
 		$this->prepareCartPrice( $this->prices ) ;
-		$this->prepareUserData();
 
 		$this->prepareAddressDataInCart();
 		$this->prepareVendor();
@@ -1345,56 +1346,48 @@ public function removeProductCart($prod_id=0) {
 		}
 	}
 
-	function prepareAddressDataInCart($type='BT'){
-
+	function prepareAddressDataInCart($type='BT',$new = false){
 
 		if(!class_exists('VirtuemartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
 		$userFieldsModel =new VirtueMartModelUserfields;
+
+		$data = (object)$this->$type;
+		if($new){
+			$data = null;
+		}
+
+		if($type=='ST'){
+			$preFix = 'shipto_';
+		} else {
+			$preFix = '';
+		}
 
 		$addresstype = $type.'address';
 		$userFieldsBT = $userFieldsModel->getUserFieldsFor('cart',$type);
 		$this->$addresstype = $userFieldsModel->getUserFieldsByUser(
 		$userFieldsBT
-		,(object)$this->$type
+		,$data
+		,$preFix
 		);
 
 		if(!empty($this->ST) && $type!=='ST'){
+			$data = (object)$this->ST;
+			if($new){
+				$data = null;
+			}
 			$userFieldsST = $userFieldsModel->getUserFieldsFor('cart','ST');
 			$this->STaddress = $userFieldsModel->getUserFieldsByUser(
 			$userFieldsST
-			,(object)$this->ST
+			,$data
+			,$preFix
 			);
 		}
 
 	}
 
-	function prepareUserData(){
-
-		/*		//For User address
-		 $currentUser = JFactory::getUser();
-		//$this->lists['current_id'] = $currentUser->get('id');
-		//		$this->assignRef('virtuemart_user_id', $this->lists['current_id']);
-		if($this->lists['current_id']  = $currentUser->get('id') ){
-		if(!class_exists('VirtuemartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
-		$this->user = new VirtueMartModelUser;
-		$this->user->setCurrent();
-		if(!$this->user){
-
-		} else {
-		$this->userDetails = & $this->user->getUser();
-
-		//This are other contact details, like used in CB or so.
-		//			$_contactDetails = $this->_user->getContactDetails();
-		}
-		}*/
-	}
-
 	function prepareAddressRadioSelection(){
 
 		//Just in case
-// 		if(!$this->user){
-// 			$this->prepareUserData();
-// 		}
 		if(!class_exists('VirtuemartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 		$this->user = new VirtueMartModelUser;
 		$this->user->setCurrent();

@@ -265,10 +265,6 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
             <legend>
 <?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
             </legend>
-            <a class="vmicon vmicon-16-editadd" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=new&cid[]='.$this->userDetails->JUser->get('id'),$this->useXHTML,$this->useSSL) ?>">
-<?php echo JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'); ?>
-            </a>
-
     <?php echo $this->lists['shipTo']; ?>
 
                 </fieldset>
@@ -278,7 +274,7 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
             <input type="hidden" name="controller" value="user" />
             <input type="hidden" name="task" value="<?php echo $this->fTask; // I remember, we removed that, but why?  ?>" />
             <input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>" />
-            <input type="hidden" name="virtuemart_userinfo_id" value="<?php echo current($this->userDetails->userInfo)->virtuemart_userinfo_id; ?>" />
+            <input type="hidden" name="virtuemart_userinfo_id" value="<?php echo $this->virtuemart_userinfo_id; ?>" />
 <?php echo JHTML::_('form.token');
 // $userinfoid = current($this->userDetails->userInfo);
 // vmdebug('hmm',$userinfoid->virtuemart_userinfo_id);

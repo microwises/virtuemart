@@ -65,6 +65,9 @@ class VirtueMartControllerUser extends JController
 		jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($cid);
 
+		$ftask ='saveUser';
+		$view->assignRef('fTask', $ftask);
+
 		/* Display it all */
 		$view->display();
 
@@ -181,12 +184,12 @@ class VirtueMartControllerUser extends JController
 	* @author Max Milbers
 	*/
 	function saveUser(){
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+/*		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$userModel = $this->getModel('user');
 
 		$data = JRequest::get('post');
 
-		// Store multiple selectlist entries as a ; separated string
+// 		Store multiple selectlist entries as a ; separated string
 		if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 			$data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 		}
@@ -198,9 +201,11 @@ class VirtueMartControllerUser extends JController
 		$ret = $userModel->store($data);
 		$msg = (is_array($ret)) ? $ret['message'] : $ret;
 
-		$this->saveToCart($data);
+		$this->saveToCart($data);*/
+		$this->saveData(false,true);
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=user'), $msg );
 	}
+
 
 	/**
 	* Save the user info. The saveData function dont use the userModel store function for anonymous shoppers, because it would register them.
@@ -222,8 +227,6 @@ class VirtueMartControllerUser extends JController
 			$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 			$userModel = $this->getModel('user');
 
-
-
 			// Store multiple selectlist entries as a ; separated string
 			if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
 				$data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
@@ -235,7 +238,6 @@ class VirtueMartControllerUser extends JController
 
 			$ret = $userModel->store($data);
 			$msg = (is_array($ret)) ? $ret['message'] : $ret;
-
 
 		}
 

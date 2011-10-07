@@ -583,7 +583,7 @@ class ShopFunctions {
 	 * This generates the list when the user have different ST addresses saved
 	 * @author Oscar van Eijk
 	 */
-	function generateStAddressList ($userModel){
+	function generateStAddressList ($userModel,$task){
 
 		// Shipping address(es)
 		$_addressList = $userModel->getUserAddressList($userModel->getId() , 'ST');
@@ -599,14 +599,17 @@ class ShopFunctions {
 				$_shipTo[] = '<li>'.'<a href="index.php'
 				.'?option=com_virtuemart'
 				.'&view=user'
-				.'&task=editAddressSt'
+				.'&task='.$task
 				.'&addrtype=ST'
 				.'&cid[]='.$_addressList[$_i]->virtuemart_user_id
 				.'&virtuemart_userinfo_id='.$_addressList[$_i]->virtuemart_userinfo_id
 				. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
 
 			}
-			return '<ul>' . join('', $_shipTo) . '</ul>';
+$addLink = '<a class="vmicon vmicon-16-editadd" href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task='.$task.'&new=1&addrtype=ST&cid[]='.$this->userDetails->JUser->get('id'),$this->useXHTML,$this->useSSL) .'">';
+		$addLink .= JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL').'</a>';
+
+			return $addLink.'<ul>' . join('', $_shipTo) . '</ul>';
 		}
 	}
 

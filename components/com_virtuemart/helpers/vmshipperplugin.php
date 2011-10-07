@@ -173,7 +173,7 @@ abstract class vmShipperPlugin extends JPlugin {
 
 		$db->setQuery($q);
 		if (!$results = $db->loadObjectList()) {
-			vmdebug(JText::_('COM_VIRTUEMART_CART_NO_CARRIER'),$db->getQuery());
+// 			vmdebug(JText::_('COM_VIRTUEMART_CART_NO_CARRIER'),$db->getQuery());
 			return false;
 		}
 		$this->shippers = $results;

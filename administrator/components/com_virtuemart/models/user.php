@@ -728,9 +728,10 @@ class VirtueMartModelUser extends VmModel {
 					);
 					$fields['virtuemart_userinfo_id'] = key($userdata->userInfo);
 					if($type!=='ST'){
-							$userFields= $fields;break;
+							$userFields= $fields;
+							break;
 					} else {
-						$userFields[] = $fields;
+						$userFields[key($userdata->userInfo)] = $fields;
 					}
 
 				}
@@ -741,6 +742,8 @@ class VirtueMartModelUser extends VmModel {
 
 
 		if(empty($userFields)){
+
+			//New Address is filled here with the data of the cart (we are in the userview)
 			if (!class_exists('VirtueMartCart'))
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 			$cart = VirtueMartCart::getCart();

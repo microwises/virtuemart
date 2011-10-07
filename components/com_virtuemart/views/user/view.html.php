@@ -69,7 +69,7 @@ class VirtuemartViewUser extends JView {
 
 		$layoutName = $this->getLayout();
 		if(empty($layoutName)){
-			$layoutName = JRequest::getWord('layout','default');
+			$layoutName = JRequest::getWord('layout','edit');
 		}
 
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
@@ -92,21 +92,40 @@ class VirtuemartViewUser extends JView {
 		$type = JRequest::getWord('addrtype', 'BT');
 		$this->assignRef('address_type', $type);
 
+		$new = false;
+		$new = JRequest::getInt('new', '0','','int');
+		if(!empty($new)){
+			$new = true;
+		}
+
+		$virtuemart_userinfo_id = JRequest::getString('virtuemart_userinfo_id', '0','');
 		$userFields = null;
-		if($layoutName=='edit'){
-			$userFields  = $this->_model->getUserDataInFields($layoutName,$type,$this->userDetails->JUser->id);
-		} else {
+		if((strpos($this->fTask,'cart') || strpos($this->fTask,'checkout')) && empty($virtuemart_userinfo_id) ){
+// 			vmdebug('I came from the cart and new address',$this->fTask,$type,$new);
+			//New Address is filled here with the data of the cart (we are in the cart)
 			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 			$cart = VirtueMartCart::getCart();
-			$cart->prepareAddressDataInCart($type);
 
 			$fieldtype = $type.'address';
+			$cart->prepareAddressDataInCart($type,$new);
+
 			$userFields = $cart->$fieldtype;
+
+			$task = JRequest::getWord('task','');
+
+		} else {
+			$userFields  = $this->_model->getUserDataInFields($layoutName,$type,$this->userDetails->JUser->id);
+			if(!empty($virtuemart_userinfo_id)){
+				$userFields = $userFields[$virtuemart_userinfo_id];
+			}
+			$task = 'editAddressSt';
+// 			vmdebug('I came from the user view',$this->fTask);
 		}
 
 		$this->assignRef('userFields', $userFields);
 
 		if($layoutName=='edit'){
+
 
 			if($this->_model->getId()==0 && $this->_cuid==0){
 				$button_lbl = JText::_('COM_VIRTUEMART_REGISTER');
@@ -117,18 +136,26 @@ class VirtuemartViewUser extends JView {
 			$this->assignRef('button_lbl', $button_lbl);
 			$this->lUser();
 			$this->shopper($userFields);
-		}
 
-		$this->_lists['shipTo'] = ShopFunctions::generateStAddressList($this->_model);
-
-		if($layoutName=='edit'){
 			$userFieldsST  = $this->_model->getUserDataInFields($layoutName,'ST',$this->userDetails->JUser->id);
 			$this->lshipto($userFieldsST);
 
 			$this->payment();
 			$this->lOrderlist();
 			$this->lVendor();
+
 		}
+
+		if($new || empty($this->_cuid)){
+			$virtuemart_userinfo_id = 0;
+		} else{
+			$virtuemart_userinfo_id = current($this->userDetails->userInfo)->virtuemart_userinfo_id;
+		}
+		$this->assignRef('virtuemart_userinfo_id', $virtuemart_userinfo_id);
+
+
+		$this->_lists['shipTo'] = ShopFunctions::generateStAddressList($this->_model,$task);
+
 
 		if ($this->_openTab < 0) {
 			$_paneOffset = array();
@@ -172,12 +199,13 @@ class VirtuemartViewUser extends JView {
 		// The ShipTo address if selected
 		$virtuemart_userinfo_id = JRequest::getInt('virtuemart_userinfo_id', 0);
 
+		$this->assignRef('virtuemart_userinfo_id', $virtuemart_userinfo_id);
+// 		vmdebug('lshipto $virtuemart_userinfo_id',$virtuemart_userinfo_id);
+
 		$new = false;
-		$cid = JRequest::getVar('shipto', 'none','','array');
-		if(!empty($cid)){
-			if($cid=='new'){
-				$new = true;
-			}
+		$new = JRequest::getVar('new', '0','','int');
+		if(!empty($new)){
+			$new = true;
 		}
 
 
@@ -205,17 +233,14 @@ class VirtuemartViewUser extends JView {
 					break;
 				}
 				$_userDetailsList = next($this->_userDetails->userInfo);
+
 			}
 			//			}
 		} else {
-			if(!$new){
 				if(!empty($staddress)){
-					$_userDetailsList = (object)$staddress[0];
+					$_userDetailsList = (object)$staddress;
 					$this->_openTab = 3;
-					vmdebug('recognised shipto');
 				}
-			}
-
 		}
 
 		$shipToFields = $this->_userFieldsModel->getUserFieldsByUser(
@@ -225,7 +250,7 @@ class VirtuemartViewUser extends JView {
 		);
 
 		$this->assignRef('shipToFields', $shipToFields);
-		$this->assignRef('virtuemart_userinfo_id', $virtuemart_userinfo_id);
+
 	}
 
 

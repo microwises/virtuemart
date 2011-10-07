@@ -116,7 +116,7 @@ class VirtueMartViewCart extends JView {
 			$this->assignRef('checkout_task', $checkout_task);
 
 			if(!VmConfig::get('use_as_catalog')){
-				$checkout_link_html = '<a class="checkout_link" href="javascript:document.checkoutForm.submit();" /><span>'.$text.'</span></a>';
+				$checkout_link_html = '<a class="checkout_link" href="javascript:document.checkoutForm.submit();" ><span>'.$text.'</span></a>';
 			} else {
 				$checkout_link_html = '';
 			}
@@ -171,7 +171,7 @@ class VirtueMartViewCart extends JView {
 		}
 		$continue_link = JRoute::_('index.php?option=com_virtuemart&view=category'.$categoryLink);
 
-		$continue_link_html = '<a class="continue_link" href="'.$continue_link.'" />'.JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING').'</a>';
+		$continue_link_html = '<a class="continue_link" href="'.$continue_link.'" >'.JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING').'</a>';
 		$this->assignRef('continue_link_html', $continue_link_html);
 		$this->assignRef('continue_link', $continue_link);
 	}
