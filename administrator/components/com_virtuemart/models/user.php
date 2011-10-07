@@ -430,7 +430,7 @@ class VirtueMartModelUser extends VmModel {
 // 			vmError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
 // 		}
 
-		if($data['user_is_vendor']!==0){
+		if((int)$data['user_is_vendor']!==0){
 			if($this ->storeVendorData($data)){
 				if ($new) {
 					if ( $useractivation == 1 ) {

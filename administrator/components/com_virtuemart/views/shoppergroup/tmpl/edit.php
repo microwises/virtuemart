@@ -51,6 +51,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_SHOPPERGROUP_NAME');
 				</fieldset>
 			</td>
 		</tr>
+		<?php /*
 		<tr>
 			<td width="110" class="key">
 				<label for="virtuemart_vendor_id">
@@ -61,6 +62,9 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_SHOPPERGROUP_NAME');
 				<?php echo $this->vendorList; ?>
 			</td>
 		</tr>
+		 *
+		 */
+		?>
 		<?php
 		if ($this->shoppergroup->default == 1) {
 			?>
@@ -98,7 +102,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_SHOPPERGROUP_NAME');
 		<table class="admintable">
 			<tr>
 				<th></th>
-				<th></th>
+				<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_LABEL'); ?></th>
 				<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_TEXT'); ?></th>
 				<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_ROUNDING'); ?></th>
 			</tr>
@@ -127,6 +131,6 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_SHOPPERGROUP_NAME');
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 
-<?php 
+<?php
 AdminUIHelper::imitateTabs('end');
 AdminUIHelper::endAdminArea(); ?>
