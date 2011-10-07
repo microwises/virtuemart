@@ -217,7 +217,7 @@ public function setCartIntoSession() {
 	// 		$sessionCart->user 									= $this->user;
 	$sessionCart->prices 								= $this->prices;
 	$sessionCart->pricesUnformatted					= $this->pricesUnformatted;
-        $sessionCart->pricesCurrency					= $this->pricesCurrency;
+  	$sessionCart->pricesCurrency						= $this->pricesCurrency;
 
 	//private variables
 	$sessionCart->_inCheckOut 							= $this->_inCheckOut;

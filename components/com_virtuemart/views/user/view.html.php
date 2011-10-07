@@ -58,7 +58,7 @@ class VirtuemartViewUser extends JView {
 	 * putting that in an array and after that we call the preparedataforlayoutBlub
 	 *
 	 * @author Oscar van Eijk
- 	 * @author Max Milbers
+	 * @author Max Milbers
 	 */
 	function display($tpl = null) {
 
@@ -79,7 +79,7 @@ class VirtuemartViewUser extends JView {
 
 
 		//$this->_model = $this->getModel('user', 'VirtuemartModel');
-//		$this->_model->setCurrent(); //without this, the administrator can edit users in the FE, permission is handled in the usermodel, but maybe unsecure?
+		//		$this->_model->setCurrent(); //without this, the administrator can edit users in the FE, permission is handled in the usermodel, but maybe unsecure?
 		$editor = JFactory::getEditor();
 
 		//the cuid is the id of the current user
@@ -122,9 +122,8 @@ class VirtuemartViewUser extends JView {
 		$this->_lists['shipTo'] = ShopFunctions::generateStAddressList($this->_model);
 
 		if($layoutName=='edit'){
-		$userFieldsST  = $this->_model->getUserDataInFields($layoutName,'ST',$this->userDetails->JUser->id);
-		$this->lshipto($userFieldsST);
-
+			$userFieldsST  = $this->_model->getUserDataInFields($layoutName,'ST',$this->userDetails->JUser->id);
+			$this->lshipto($userFieldsST);
 
 			$this->payment();
 			$this->lOrderlist();
@@ -153,7 +152,7 @@ class VirtuemartViewUser extends JView {
 
 		if($layoutName=='mailregisteruser'){
 			$vendorModel = $this->getModel('vendor');
-//			$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
+			//			$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
 			$vendor = $vendorModel->getVendor();
 			$this->assignRef('vendor', $vendor);
 		}
@@ -171,54 +170,62 @@ class VirtuemartViewUser extends JView {
 	function lshipto($staddress){
 
 		// The ShipTo address if selected
-		$_shipto_id = JRequest::getInt('virtuemart_userinfo_id', 0);
+		$virtuemart_userinfo_id = JRequest::getInt('virtuemart_userinfo_id', 0);
+
+		$new = false;
+		$cid = JRequest::getVar('shipto', 'none','','array');
+		if(!empty($cid)){
+			if($cid=='new'){
+				$new = true;
+			}
+		}
+
 
 		if(!class_exists('VirtuemartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
 		$this->_userFieldsModel = new VirtuemartModelUserfields();
 
 		$_shiptoFields = $this->_userFieldsModel->getUserFields(
 			 'shipping'
-			,array() // Default toggles
+		,array() // Default toggles
 		);
 
 
 		$_userDetailsList = null;
 
-		if(!empty($_shipto_id)){
+		if(!empty($virtuemart_userinfo_id)){
 			// Contains 0 for new, otherwise a virtuemart_userinfo_id
 			$_shipto = $this->_model->getUserAddressList($this->_model->getId(), 'ST', $_shipto_id);
 			$this->_openTab = 3;
 
-//			if ($_shipto_id === 0) {
-//				$_userDetailsList = null;
-//			} else {
-				// Find the correct record
-				$_userDetailsList = current($this->_userDetails->userInfo);
-				for ($_i = 0; $_i < count($this->_userDetails->userInfo); $_i++) {
-					if ($_userDetailsList->virtuemart_userinfo_id == $_shipto_id) {
-						reset($this->_userDetails->userInfo);
-						break;
-					}
-					$_userDetailsList = next($this->_userDetails->userInfo);
+			// Find the correct record
+			$_userDetailsList = current($this->_userDetails->userInfo);
+			for ($_i = 0; $_i < count($this->_userDetails->userInfo); $_i++) {
+				if ($_userDetailsList->virtuemart_userinfo_id == $virtuemart_userinfo_id) {
+					reset($this->_userDetails->userInfo);
+					break;
 				}
-//			}
-		} else {
-			if(!empty($staddress)){
-				$_userDetailsList = (object)$staddress[0];
-				$this->_openTab = 3;
-				vmdebug('recognised shipto');
+				$_userDetailsList = next($this->_userDetails->userInfo);
 			}
+			//			}
+		} else {
+			if(!$new){
+				if(!empty($staddress)){
+					$_userDetailsList = (object)$staddress[0];
+					$this->_openTab = 3;
+					vmdebug('recognised shipto');
+				}
+			}
+
 		}
 
 		$shipToFields = $this->_userFieldsModel->getUserFieldsByUser(
-			 $_shiptoFields
-			,$_userDetailsList
-			,'shipto_'
-			);
-
+		$_shiptoFields
+		,$_userDetailsList
+		,'shipto_'
+		);
 
 		$this->assignRef('shipToFields', $shipToFields);
-		$this->assignRef('shipToID', $_shipto_id);
+		$this->assignRef('virtuemart_userinfo_id', $virtuemart_userinfo_id);
 	}
 
 
@@ -267,110 +274,110 @@ class VirtuemartViewUser extends JView {
 			$this->_lists['shoppergroups'] = $_shoppergroup['shopper_group_name'];
 
 			//I dont think that makes sense anymore
-// 			if(empty($this->_lists['shoppergroups'])){
-// 				$this->_lists['shoppergroups']='unregistered';
-// 			} else {
+			// 			if(empty($this->_lists['shoppergroups'])){
+			// 				$this->_lists['shoppergroups']='unregistered';
+			// 			} else {
 				$this->_lists['shoppergroups'] .= '<input type="hidden" name="virtuemart_shoppergroup_id" value = "' . $_shoppergroup['virtuemart_shoppergroup_id'] . '" />';
-// 			}
+				// 			}
 
-			if(!empty($this->_userDetails->virtuemart_vendor_id)){
-				$this->_lists['vendors'] = $this->_userDetails->virtuemart_vendor_id;
+				if(!empty($this->_userDetails->virtuemart_vendor_id)){
+					$this->_lists['vendors'] = $this->_userDetails->virtuemart_vendor_id;
+				}
+
+				if(empty($this->_lists['vendors'])){
+					$this->_lists['vendors'] = JText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR');// . $_setVendor;
+				}
 			}
 
-			if(empty($this->_lists['vendors'])){
-				$this->_lists['vendors'] = JText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR');// . $_setVendor;
-			}
-		}
-
-		//todo here is something broken we use $_userDetailsList->perms and $this->_userDetailsList->perms and perms seems not longer to exist
-		if(Permissions::getInstance()->check("admin,storeadmin")){
-			$this->_lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $this->_userDetails->perms);
-		} else {
-			if(!empty($this->_userDetails->perms)){
-				$this->_lists['perms'] = $this->_userDetails->perms;
-
-			/* This now done in the model, so it is unnecessary here, notice by Max Milbers
-			if(empty($this->_lists['perms'])){
-				$this->_lists['perms'] = 'shopper'; // TODO Make this default configurable
-			}
-			*/
-				$_hiddenInfo = '<input type="hidden" name="perms" value = "' . $this->_lists['perms'] . '" />';
-				$this->_lists['perms'] .= $_hiddenInfo;
-			}
-		}
-
-		// Load the required scripts
-		if (count($userFields['scripts']) > 0) {
-			foreach ($userFields['scripts'] as $_script => $_path) {
-				JHTML::script($_script, $_path);
-			}
-		}
-		// Load the required styresheets
-		if (count($userFields['links']) > 0) {
-			foreach ($userFields['links'] as $_link => $_path) {
-				JHTML::stylesheet($_link, $_path);
-			}
-		}
-	}
-
-	function lUser(){
-
-		$_groupList = $this->_model->getGroupList();
-
-		if (!is_array($_groupList)) {
-			$this->_lists['gid'] = '<input type="hidden" name="gid" value="'. $this->_userDetails->JUser->get('gid') .'" /><strong>'. JText::_($_groupList) .'</strong>';
-		} else {
-			$this->_lists['gid'] 	= JHTML::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $this->_userDetails->JUser->get('gid'));
-		}
-
-		$this->_lists['canBlock']      = ($this->_currentUser->authorize('com_users', 'block user')
-		&& ($this->_model->getId() != $this->_cuid)); // Can't block myself TODO I broke that, please retest if it is working again
-		$this->_lists['canSetMailopt'] = $this->_currentUser->authorize('workflow', 'email_events');
-		$this->_lists['block']     = JHTML::_('select.booleanlist', 'block',    'class="inputbox"', $this->_userDetails->JUser->get('block'),     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-		$this->_lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail','class="inputbox"', $this->_userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-
-		$this->_lists['params'] = $this->_userDetails->JUser->getParameters(true);
-
-		$this->_lists['custnumber'] = $this->_model->getCustomerNumberById($this->_model->getId());
-
-		//TODO I do not understand for what we have that by Max.
-		if ($this->_model->getId() < 1) {
-			$this->_lists['register_new'] = 1;
-		} else {
-			$this->_lists['register_new'] = 0;
-		}
-
-	}
-
-	function lVendor(){
-
-		// If the current user is a vendor, load the store data
-		if ($this->_userDetails->user_is_vendor) {
-
-			$currencymodel = $this->getModel('currency', 'VirtuemartModel');
-			$currencies = $currencymodel->getCurrencies();
-			$this->assignRef('currencies', $currencies);
-
-			if(!$this->_orderList){
-				$this->lOrderlist();
-			}
-
-			$vendorModel = $this->getModel('vendor');
-
-			if(Vmconfig::get('multix','none')==='none'){
-				$vendorModel->setId(1);
+			//todo here is something broken we use $_userDetailsList->perms and $this->_userDetailsList->perms and perms seems not longer to exist
+			if(Permissions::getInstance()->check("admin,storeadmin")){
+				$this->_lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $this->_userDetails->perms);
 			} else {
-				$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
+				if(!empty($this->_userDetails->perms)){
+					$this->_lists['perms'] = $this->_userDetails->perms;
+
+					/* This now done in the model, so it is unnecessary here, notice by Max Milbers
+					 if(empty($this->_lists['perms'])){
+					$this->_lists['perms'] = 'shopper'; // TODO Make this default configurable
+					}
+					*/
+					$_hiddenInfo = '<input type="hidden" name="perms" value = "' . $this->_lists['perms'] . '" />';
+					$this->_lists['perms'] .= $_hiddenInfo;
+				}
 			}
-			$vendor = $vendorModel->getVendor();
-			$vendorModel->addImages($vendor);
-			$this->assignRef('vendor', $vendor);
+
+			// Load the required scripts
+			if (count($userFields['scripts']) > 0) {
+				foreach ($userFields['scripts'] as $_script => $_path) {
+					JHTML::script($_script, $_path);
+				}
+			}
+			// Load the required styresheets
+			if (count($userFields['links']) > 0) {
+				foreach ($userFields['links'] as $_link => $_path) {
+					JHTML::stylesheet($_link, $_path);
+				}
+			}
+		}
+
+		function lUser(){
+
+			$_groupList = $this->_model->getGroupList();
+
+			if (!is_array($_groupList)) {
+				$this->_lists['gid'] = '<input type="hidden" name="gid" value="'. $this->_userDetails->JUser->get('gid') .'" /><strong>'. JText::_($_groupList) .'</strong>';
+			} else {
+				$this->_lists['gid'] 	= JHTML::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $this->_userDetails->JUser->get('gid'));
+			}
+
+			$this->_lists['canBlock']      = ($this->_currentUser->authorize('com_users', 'block user')
+			&& ($this->_model->getId() != $this->_cuid)); // Can't block myself TODO I broke that, please retest if it is working again
+			$this->_lists['canSetMailopt'] = $this->_currentUser->authorize('workflow', 'email_events');
+			$this->_lists['block']     = JHTML::_('select.booleanlist', 'block',    'class="inputbox"', $this->_userDetails->JUser->get('block'),     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$this->_lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail','class="inputbox"', $this->_userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+
+			$this->_lists['params'] = $this->_userDetails->JUser->getParameters(true);
+
+			$this->_lists['custnumber'] = $this->_model->getCustomerNumberById($this->_model->getId());
+
+			//TODO I do not understand for what we have that by Max.
+			if ($this->_model->getId() < 1) {
+				$this->_lists['register_new'] = 1;
+			} else {
+				$this->_lists['register_new'] = 0;
+			}
 
 		}
 
+		function lVendor(){
+
+			// If the current user is a vendor, load the store data
+			if ($this->_userDetails->user_is_vendor) {
+
+				$currencymodel = $this->getModel('currency', 'VirtuemartModel');
+				$currencies = $currencymodel->getCurrencies();
+				$this->assignRef('currencies', $currencies);
+
+				if(!$this->_orderList){
+					$this->lOrderlist();
+				}
+
+				$vendorModel = $this->getModel('vendor');
+
+				if(Vmconfig::get('multix','none')==='none'){
+					$vendorModel->setId(1);
+				} else {
+					$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
+				}
+				$vendor = $vendorModel->getVendor();
+				$vendorModel->addImages($vendor);
+				$this->assignRef('vendor', $vendor);
+
+			}
+
+		}
+
+
 	}
 
-
-}
-
-//No Closing Tag
+	//No Closing Tag

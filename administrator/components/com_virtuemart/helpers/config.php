@@ -494,11 +494,11 @@ class VmConfig{
 	 */
 	public function installVMconfig($_section = 'config'){
 
-		$_datafile = JPATH_VM_ADMINISTRATOR.DS.'virtuemart_defaults.cfg';
+		$_datafile = JPATH_VM_ADMINISTRATOR.DS.'virtuemart.cfg';
 		if (!file_exists($_datafile)) {
 			if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'virtuemart_defaults.cfg-dist')) {
 				if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
-				JFile::copy('virtuemart_defaults.cfg-dist','virtuemart_defaults.cfg',JPATH_VM_ADMINISTRATOR);
+				JFile::copy('virtuemart_defaults.cfg-dist','virtuemart.cfg',JPATH_VM_ADMINISTRATOR);
 			} else {
 				JError::raiseWarning(500, 'The data file with the default configuration could not be found. You must configure the shop manually.');
 				return false;
@@ -681,7 +681,7 @@ class vmJsApi{
 
 	// Virtuemart Datepicker script
 	function jDate($value='',$name="date",$class='class="datepicker"') {
-		if ($value == "0000-00-00 00:00:00") $value= date("Y-m-d") ; 
+		if ($value == "0000-00-00 00:00:00") $value= date("Y-m-d") ;
 		if ( !VmConfig::isJ15()) $J16 = "_J16"; else $J16 ="";
 		static $jDate;
 		$displayDate = self::date($value,'INPUT');

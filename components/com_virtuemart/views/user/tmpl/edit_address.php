@@ -265,17 +265,12 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
             <legend>
 <?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
             </legend>
-            <a class="vmicon vmicon-16-editadd" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=0&cid[]='.$this->userDetails->JUser->get('id'),$this->useXHTML,$this->useSSL) ?>">
+            <a class="vmicon vmicon-16-editadd" href="<?php echo JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscart&addrtype=ST&shipto=new&cid[]='.$this->userDetails->JUser->get('id'),$this->useXHTML,$this->useSSL) ?>">
 <?php echo JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'); ?>
             </a>
 
-            <table class="adminform user-details">
-                <tr>
-                    <td>
     <?php echo $this->lists['shipTo']; ?>
-                            </td>
-                        </tr>
-                    </table>
+
                 </fieldset>
 <?php } ?>
             <input type="hidden" name="option" value="com_virtuemart" />

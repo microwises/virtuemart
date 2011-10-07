@@ -235,14 +235,15 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			//delete old config file
 
-			$this->renewConfigManually = !JFile::delete($this->path.DS.'virtuemart.cfg');
-			if(!$this->renewConfigManually){
+// 			$this->renewConfigManually = !JFile::delete($this->path.DS.'virtuemart.cfg');
+// 			if(!$this->renewConfigManually){
 
 				$model = JModel::getInstance('config', 'VirtueMartModel');
 				if (!class_exists('VirtueMartModelConfig')
 				)require($this->path . DS . 'models' . DS . 'config.php');
 				$model -> deleteConfig();
-			}
+// 			}
+
 			if($loadVm) $this->displayFinished(true);
 			// probably should just go to updatesMigration rather than the install success screen
 			// 			include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
@@ -546,11 +547,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				<?php
 				if($update){
 					echo JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
-					if($this->renewConfigManually){
+/*					if($this->renewConfigManually){
 						echo '<br />'.JText::_('When you got an error deleting the virtuemart.cfg file <br />
 											Delete this file manually (administrator/components/com_virtuemart/virtuemart.cfg) and please use
 											"renew config from file" in Tools => Updates/Migration');
-					}
+					}*/
 					echo '<br />'.JText::_('<b>Reminder to update also your extensions with the AIO installer');
 
 				} else {
