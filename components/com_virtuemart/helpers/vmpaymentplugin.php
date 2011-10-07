@@ -334,7 +334,6 @@ abstract class vmPaymentPlugin extends JPlugin {
 		    . 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
 	    $db->setQuery($q);
 	    if (!($paymentinfo = $db->loadObject())) {
-		JError::raiseWarning(500, $q . " " . $db->getErrorMsg());
 		return '';
 	    }
 	} else {
