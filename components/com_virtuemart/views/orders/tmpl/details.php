@@ -30,22 +30,31 @@ echo $this->loadTemplate('order');
 
 <div style="padding: 0px; margin: 0px; spacing: 0px;">
 <?php
-echo $this->pane->startPane("order-pane");
+// echo $this->pane->startPane("order-pane");
 
-echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_ORDER_ITEM'), 'details_items' );
-echo $this->loadTemplate('items');
-echo $this->pane->endPanel();
+// echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_ORDER_ITEM'), 'details_items' );
+// echo $this->loadTemplate('items');
+// echo $this->pane->endPanel();
 
-echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_ORDER_HISTORY'), 'details_history' );
-echo $this->loadTemplate('history');
-echo $this->pane->endPanel();
+// echo $this->pane->startPanel( JText::_('COM_VIRTUEMART_ORDER_HISTORY'), 'details_history' );
+// echo $this->loadTemplate('history');
+// echo $this->pane->endPanel();
 
 //echo "<pre>\n";
 //print_r ($this->orderdetails);
 //echo "</pre>\n";
 //echo $this->pane->endPanel();
 
-echo $this->pane->endPane();
+// echo $this->pane->endPane();
+$tabarray = array();
+
+$tabarray['items'] = 'COM_VIRTUEMART_SHOPPER_FORM_LBL';
+$tabarray['history'] = 'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO';
+
+
+shopFunctionsF::buildTabs ($tabarray);
+
+
 ?>
 </div>
 <br clear="all"/><br/>
