@@ -35,7 +35,7 @@ class TableShippingcarriers extends VmTable {
         /** @var int Vendor ID */
 	var $virtuemart_vendor_id		= 0;
         /** @var int Shipping Joomla plugin I */
-	var $shipping_carrier_jplugin_id	= 0;	
+	var $shipping_carrier_jplugin_id	= 0;
 	/** @var string Shipping Carrier name*/
 	var $shipping_carrier_name	= '';
         	/** @var string Shipping Carrier name*/
@@ -48,21 +48,21 @@ class TableShippingcarriers extends VmTable {
         var $shipping_carrier_value				= 0;
         var $shipping_carrier_package_fee                       = 0;
         var $shipping_carrier_vat_id				= 0;
-       
+
         var $ordering						= 0;
         var $shared						= 0;
 	/** @var int published boolean */
 	var $published						= 1;
 
-	
+
     /**
      * @author Max Milbers
      * @param $db A database connector object
      */
     function __construct(&$db) {
 		parent::__construct('#__virtuemart_shippingcarriers', 'virtuemart_shippingcarrier_id', $db);
-
-		$this->setUniqueName('shipping_carrier_name');
+		// we can have several time the same shipping name. It is the vendor problem to set up correctly his shipping rate.
+		//$this->setUniqueName('shipping_carrier_name');
 		$this->setObligatoryKeys('shipping_carrier_jplugin_id');
 
 		$this->setLoggable();
