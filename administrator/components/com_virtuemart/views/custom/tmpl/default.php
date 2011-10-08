@@ -58,12 +58,20 @@ $pagination = $this->pagination;
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_FIELD_TYPE'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_ADMIN_ONLY'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_HIDDEN'); ?></th>
+		<th>
+		<?php echo JHTML::_('grid.sort'
+				, JText::_('COM_VIRTUEMART_ORDERING')
+				, 'ordering'
+				, $this->lists['filter_order_Dir']
+				, $this->lists['filter_order']); ?>
+		<?php echo JHTML::_('grid.order',  $customs ); ?>
+		</th>
 		<th><?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
 	<?php
-	if (count($customs) > 0) {
+	if ($n = count($customs)) {
 
 		$i = 0;
 		$k = 0;
@@ -98,6 +106,11 @@ $pagination = $this->pagination;
 					<span class="vmicon <?php echo ( $custom->admin_only  ? 'vmicon-16-checkin' : 'vmicon-16-bug' );?>"></span></a></td>
 				<td><a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','toggle.is_hidden')" title="<?php echo ($custom->is_hidden ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
 					<span class="vmicon <?php echo ( $custom->is_hidden  ? 'vmicon-16-checkin' : 'vmicon-16-bug' );?>"></span></a></td>
+				<td align="center" class="order">
+					<span><?php echo $this->pagination->orderUpIcon($i, true, 'orderUp', 'Move Up'); ?></span>
+					<span><?php echo $this->pagination->orderDownIcon( $i, $n, true, 'orderDown', 'Move Down'); ?></span>
+					<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $custom->ordering; ?>" style="text-align: center" />
+				</td>
 				<td><?php echo $published; ?></td>
 			</tr>
 		<?php

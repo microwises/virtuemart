@@ -62,6 +62,8 @@ class TableCustoms extends VmTable {
 
 	/** @var int custom published or not */
 	var $published		= 1;
+	/** @var int Order in which the order status is listed */
+	var $ordering	= 0;
 
 
 	/**
@@ -75,6 +77,7 @@ class TableCustoms extends VmTable {
 		$this->setObligatoryKeys('field_type');
 
 		$this->setLoggable();
+		$this->setOrderable('ordering',false);
 	}
 
 
