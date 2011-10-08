@@ -99,7 +99,7 @@ class VirtueMartModelProduct extends VmModel {
 
 
 
-		$search 				= JRequest::getWord('search', false );
+		$search 				= JRequest::getString('search', false );
 		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0 );
 
 		//administrative variables to organize the joining of tables

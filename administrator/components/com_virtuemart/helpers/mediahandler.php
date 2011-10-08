@@ -475,10 +475,18 @@ class VmMediaHandler {
 					jimport('joomla.filesystem.file');
 					$media['name'] = JFile::makeSafe( $media['name'] );
 
-					while (file_exists(JPATH_ROOT.DS.$path_folder.$media['name'])) {
-						$media['name'] = $this->file_name = $this->file_name.rand(1,9);
+					$mediaPure = JFile::stripExt($media['name']).'-';
+					$mediaExtension = JFile::getExt($media['name'];
 
+					while (file_exists(JPATH_ROOT.DS.$path_folder.$mediaPure.$mediaExtension)) {
+						$media['name'] = $this->file_name = $mediaPure = $mediaPure.rand(1,9);
 					}
+// 					$this->file_name = JFile::stripExt($media['name']).'-';
+// 					while (file_exists(JPATH_ROOT.DS.$path_folder.$media['name'])) {
+// 						$this->file_name .= rand(1,9);
+// 						$media['name'] = $this->file_name.'.'.JFile::getExt($media['name']);
+// 					}
+// 					$this->file_name = $media['name'];
 
 					JFile::upload($media['tmp_name'],JPATH_ROOT.DS.$path_folder.$media['name']);
 					//	move_uploaded_file( $media['tmp_name'], JPATH_ROOT.DS.$path_folder.$media['name']);
