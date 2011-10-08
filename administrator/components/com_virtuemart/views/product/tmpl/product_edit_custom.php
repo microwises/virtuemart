@@ -71,12 +71,12 @@ defined('_JEXEC') or die('Restricted access');
 							<td>'.JText::_($this->fieldTypes[$customRow->field_type]).'
 							<input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
 							<input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
-							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
+							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="field['.$i .'][admin_only]" />
 							</td>
 							<td>
 							<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
 							</td>
-							<td><span class="trash"></span></td>
+							<td><span class="trash"></span><input class="ordering" type="hidden" value="'.$customRow->ordering.'" name="field['.$i .'][ordering]" /></td>
 						 </tr>';
 						}
 
@@ -122,7 +122,7 @@ defined('_JEXEC') or die('Restricted access');
 						<th><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></th>
 					</tr>
 					</thead>
-					<tbody id="custom_fields">
+					<tbody id="custom_field">
 						<?php 
 						if ($tables['fields']) echo $tables['fields'] ;
 						else echo $emptyTable;
@@ -144,33 +144,27 @@ defined('_JEXEC') or die('Restricted access');
 
 <script type="text/javascript">
 	nextCustom = <?php echo $i ?>;
-	// jQuery('#new_stockable_product').click(function() {
-		// var Prod = jQuery('#new_stockable');// input[name^="stockable"]').serialize();
-		// console.log (Prod);
-		// jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=saveJS&token=<?php echo JUtility::getToken(); ?>' ,
-			// {
-				// product_sku: Prod.find('input[name*="product_sku"]').val(),
-				// product_name: Prod.find('input[name*="product_name"]').val(),
-				// product_price: Prod.find('input[name*="product_price"]').val(),
-				// product_in_stock: Prod.find('input[name*="product_in_stock"]').val(),
-				// product_parent_id: <?php echo $this->product->virtuemart_product_id ?>,
-				// published: 1,
-				// format: "json"
-			// },
-			// function(data) {
-				//jQuery.each(data.msg, function(index, value){
-					// jQuery("#new_stockable").append(data.msg);
-				//});
-			// });
-	// });
-		    // $("select##customlist").chosen().change(function() {
-			          // var str = "";
-          // $(this).find("option:selected").each(function () {
-                // str += $(this).text() + " ";
-              // });
+	// jQuery("#custom_field").sortable(
+			// update: function(event, ui) {
+				// var fruitOrder = $(this).sortable('toArray').toString();
+				// console.log(fruitOrder);
+				// $.get('update-sort.cfm', {fruitOrder:fruitOrder});
+			// }
+	
+	// );
+	jQuery(document).ready(function(){
+		jQuery('#custom_field').sortable({
+			update: function(event, ui) {
+				jQuery(this).find('.ordering').each(function(index,element) {
+					jQuery(element).val(index);
+					console.log(index+' ');
 
-         // console.log(str);//$("#someInput").first().focus();
-     // });
+				});
+				
+				//$.get('update-sort.cfm', {fruitOrder:fruitOrder});
+			}
+		});
+	});
 	jQuery('select#customlist').chosen().change(function() {
 		selected = jQuery(this).find( 'option:selected').val() ;
 		jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=fields&id='+selected+'&row='+nextCustom+'&virtuemart_product_id=<?php echo $this->product->virtuemart_product_id; ?>',

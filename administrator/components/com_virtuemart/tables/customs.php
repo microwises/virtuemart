@@ -62,7 +62,7 @@ class TableCustoms extends VmTable {
 
 	/** @var int custom published or not */
 	var $published		= 1;
-	/** @var int Order in which the order status is listed */
+	/** @var int listed Order */
 	var $ordering	= 0;
 
 

@@ -183,7 +183,7 @@ class VirtuemartViewProduct extends JView {
 						<input type="hidden" value="'.$field->admin_only.'" name="field['.$row.'][admin_only]" />
 					 </td>
 					 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
-					 <td><span class="trash"></span></td>
+					 <td><span class="trash"></span><input class="ordering" type="hidden" value="'.$row.'" name="field['.$row .'][ordering]" /></td>
 					</tr>';
 				$row++;
 				}

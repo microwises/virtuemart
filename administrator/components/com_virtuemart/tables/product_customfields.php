@@ -47,6 +47,9 @@ class TableProduct_customfields extends VmTable {
 	/** @var int custom published or not */
 	var $published		= 0;
 
+	/** @var int listed Order */
+	var $ordering	= 0;
+
 	/**
 	 * @author Max Milbers
 	 * @param $db A database connector object
