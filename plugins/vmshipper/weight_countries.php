@@ -149,7 +149,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
                 $params = new JParameter($shipper->shipping_carrier_params);
                 $cost = $this->_getShippingCost($params);
                 $logo = $this->_getShipperLogo($params->get('shipper_logo'), $shipper->shipping_carrier_name);
-                $html .= $this->getShippingHtml($logo . $shipper->shipping_carrier_name, $shipper->virtuemart_shippingcarrier_id, $selectedShipper, $cost, $params->get('tax_id'));
+                $html[]= $this->getShippingHtml($logo . $shipper->shipping_carrier_name, $shipper->virtuemart_shippingcarrier_id, $selectedShipper, $cost, $params->get('tax_id'));
             }
         }
 
@@ -307,7 +307,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
         if (!class_exists('ShopFunctions'))
             require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
         if (!class_exists('CurrencyDisplay')
-        
+
             )require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
         $currency = CurrencyDisplay::getInstance();
         $tax = ShopFunctions::getTaxByID($shipinfo->tax_id);

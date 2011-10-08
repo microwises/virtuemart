@@ -115,7 +115,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	    $params = new JParameter($payment->payment_params);
 	    $logos = $this->_getPaymentLogos($params->get('payment_logos', ''));
 	    $payment->payment_name = $logos . ' ' . $payment->payment_name;
-	    $html .= $this->getPaymentHtml($payment, $selectedPayment, $cart);
+	    $html []= $this->getPaymentHtml($payment, $selectedPayment, $cart);
 	}
 
 	return $html;

@@ -181,7 +181,7 @@ abstract class vmPaymentPlugin extends JPlugin {
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 
 	foreach ($this->payments as $payment) {
-	    $html .= $this->getPaymentHtml($payment, $selectedPayment, $cart);
+	    $html []= $this->getPaymentHtml($payment, $selectedPayment, $cart);
 	}
 
 	return $html;
@@ -651,7 +651,7 @@ abstract class vmPaymentPlugin extends JPlugin {
 
 	$html = '<input type="radio" name="virtuemart_paymentmethod_id" value="' . $payment->virtuemart_paymentmethod_id . '" ' . $checked . '>' . $payment_name;
 
-	$html .="</label><br/>\n";
+	$html .="\n";
 	return $html;
     }
 

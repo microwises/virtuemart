@@ -51,8 +51,9 @@ JHTML::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/asse
         return false;
     }
 </script>
-<?php if (VmConfig::get('oncheckout_show_steps', 1)){
-	echo '<div class="checkoutStep" id="checkoutStep2">'.JText::_('COM_VIRTUEMART_USER_FORM_CART_STEP2').'</div>';
+<?php
+if (VmConfig::get('oncheckout_show_steps', 1)) {
+    echo '<div class="checkoutStep" id="checkoutStep2">' . JText::_('COM_VIRTUEMART_USER_FORM_CART_STEP2') . '</div>';
 }
 ?>
 <form method="post" id="userForm" name="chooseShippingRate" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate">
@@ -61,31 +62,35 @@ JHTML::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/asse
         &nbsp;
         <button class="button" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
     </div>
-<?php
-echo JText::_('COM_VIRTUEMART_CART_SELECT_SHIPPER');
-if (!class_exists('vmShipperPlugin'))
-    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
+    <?php
+    echo JText::_('COM_VIRTUEMART_CART_SELECT_SHIPPER');
+    if (!class_exists('vmShipperPlugin'))
+	require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
     JPluginHelper::importPlugin('vmshipper');
-    $_dispatcher = JDispatcher::getInstance();
-    $_tmp = array('cart' => $this->cart, 'checked' => $this->selectedShipper);
-    $_html = $_dispatcher->trigger('plgVmOnSelectShipper', $_tmp);
+    $dispatcher = JDispatcher::getInstance();
+    $tmp = array('cart' => $this->cart, 'checked' => $this->selectedShipper);
+    $html = $dispatcher->trigger('plgVmOnSelectShipper', $tmp);
+   echo "<fieldset>\n";
 // if only one Shipper , should be checked by default
     $found_shipping_method = false;
-
-    foreach($_html as $_item){
-		if ($_item) {
-			echo "<fieldset>\n".$_item."</fieldset>\n";
-			$found_shipping_method=true;
-		}
+    foreach ($html as $items) {
+	if (is_array($items)) {
+	    foreach ($items as $item) {
+		echo $item;
+		$found_shipping_method = true;
+	    }
 	}
-
-
-    if (! $found_shipping_method ){
-          $app = JFactory::getApplication();
-          vmError(JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD'), JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'));
     }
+    echo "</fieldset>\n";
 
-?>
+
+
+
+    if (!$found_shipping_method) {
+	$app = JFactory::getApplication();
+	vmError(JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD'), JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'));
+    }
+    ?>
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="view" value="cart" />
     <input type="hidden" name="task" value="setshipping" />

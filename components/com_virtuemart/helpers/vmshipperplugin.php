@@ -676,7 +676,7 @@ abstract class vmShipperPlugin extends JPlugin {
 		$shippingCostDisplay = $currency->priceDisplay($salesPriceShipping);
 
 		$html = '<input type="radio" name="shipper_id" id="shipper_id_' . $shipper_id . '" value="' . $shipper_id . '" ' . $checked . '>'
-		. '<label for="shipper_id_' . $shipper_id . '">' . $shipper_name . " (" . $shippingCostDisplay . ")</label><br/>\n";
+		. '<label for="shipper_id_' . $shipper_id . '">' . $shipper_name . " (" . $shippingCostDisplay . ")</label>\n";
 		return $html;
 	}
 
