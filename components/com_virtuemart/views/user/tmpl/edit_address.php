@@ -276,7 +276,7 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
             <input type="hidden" name="controller" value="user" />
             <input type="hidden" name="task" value="<?php echo $this->fTask; // I remember, we removed that, but why?  ?>" />
             <input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>" />
-            <input type="hidden" name="virtuemart_userinfo_id" value="<?php echo (isset(current($this->userDetails->userInfo)->virtuemart_userinfo_id)?current($this->userDetails->userInfo)->virtuemart_userinfo_id:0) ; ?>" />
+            <input type="hidden" name="virtuemart_userinfo_id" value="<?php echo $this->virtuemart_userinfo_id ; ?>" />
 <?php echo JHTML::_('form.token');
  ///userinfoid = current($this->userDetails->userInfo);
  //vmdebug('hmm',$userinfoid->virtuemart_userinfo_id);
