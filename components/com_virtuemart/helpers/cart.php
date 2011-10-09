@@ -1364,7 +1364,7 @@ class VirtueMartCart {
 
 		$addresstype = $type.'address';
 		$userFieldsBT = $userFieldsModel->getUserFieldsFor('cart',$type);
-		$this->$addresstype = $userFieldsModel->getUserFieldsByUser(
+		$this->$addresstype = $userFieldsModel->getUserFieldsFilled(
 		$userFieldsBT
 		,$data
 		,$preFix
@@ -1376,7 +1376,7 @@ class VirtueMartCart {
 				$data = null;
 			}
 			$userFieldsST = $userFieldsModel->getUserFieldsFor('cart','ST');
-			$this->STaddress = $userFieldsModel->getUserFieldsByUser(
+			$this->STaddress = $userFieldsModel->getUserFieldsFilled(
 			$userFieldsST
 			,$data
 			,$preFix

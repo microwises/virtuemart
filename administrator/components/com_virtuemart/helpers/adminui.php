@@ -16,6 +16,8 @@ defined ( '_JEXEC' ) or die ();
 
 class AdminUIHelper {
 
+	public static $vmAdminAreaStarted = false;
+
    /**
      * Start the administrator area table
      *
@@ -25,6 +27,8 @@ class AdminUIHelper {
      */
     function startAdminArea() {
 
+    	if(self::$vmAdminAreaStarted) return;
+    	self::$vmAdminAreaStarted = true;
 		$front = JURI::root(true).'/components/com_virtuemart/assets/';
 		$admin = JURI::base().'components/com_virtuemart/assets/';
 		$document = JFactory::getDocument();
@@ -87,6 +91,7 @@ class AdminUIHelper {
 	 * @author RickG, Max Milbers
 	 */
 	function endAdminArea() {
+		self::$vmAdminAreaStarted = false;
 		if (VmConfig::get('debug') == '1') {
 		//TODO maybe add debuggin again here
 //		include(JPATH_VM_ADMINISTRATOR.'debug.php');

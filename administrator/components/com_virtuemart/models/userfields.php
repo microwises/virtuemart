@@ -370,7 +370,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 *                         * system       System fields filter (no default; true: only system fields, false: exclude system fields)
 	 * @param array $_skip Array with fieldsnames to exclude. Default: array('username', 'password', 'password2', 'agreed'),
 	 *                     specify array() to skip nothing.
-	 * @see getUserFieldsByUser()
+	 * @see getUserFieldsFilled()
 	 * @author Oscar van Eijk
 	 * @return array
 	 */
@@ -564,7 +564,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 *                  , array() // Default switches
 	 *                  , array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
 	 *    );
-	 *   $usrFieldValues = $userFieldsModel->getUserFieldsByUser(
+	 *   $usrFieldValues = $userFieldsModel->getUserFieldsFilled(
 	 *                      $_usrFieldList
 	 *                     ,$_usrDetails
 	 *   );
@@ -598,7 +598,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 *    </table>
 	 * </pre>
 	 */
-	public function getUserFieldsByUser($_selection, $_userData = null, $_prefix = ''){
+	public function getUserFieldsFilled($_selection, $_userData = null, $_prefix = ''){
 
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 		$_return = array(
@@ -608,7 +608,7 @@ class VirtueMartModelUserfields extends VmModel {
 				,'links' => array()
 		);
 
-// 		vmdebug('my user data in getUserFieldsByUser',$_selection,$_userData);
+// 		vmdebug('my user data in getUserFieldsFilled',$_selection,$_userData);
 		foreach ($_selection as $_fld) {
 			$_return['fields'][$_fld->name] = array(
 					 'name' => $_prefix . $_fld->name

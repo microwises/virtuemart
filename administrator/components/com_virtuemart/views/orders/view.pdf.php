@@ -68,7 +68,7 @@ class VirtuemartViewOrders extends JView {
 				, array('captcha' => true, 'delimiters' => true) // Ignore these types
 				, array('delimiter_userinfo','user_is_vendor' ,'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
 		);
-		$userfields = $userFieldsModel->getUserFieldsByUser(
+		$userfields = $userFieldsModel->getUserFieldsFilled(
 				 $_userFields
 				,$orderbt
 		);
@@ -77,7 +77,7 @@ class VirtuemartViewOrders extends JView {
 				, array() // Default switches
 				, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
 		);
-		$shippingfields = $userFieldsModel->getUserFieldsByUser(
+		$shippingfields = $userFieldsModel->getUserFieldsFilled(
 				 $_userFields
 				,$orderst
 		);

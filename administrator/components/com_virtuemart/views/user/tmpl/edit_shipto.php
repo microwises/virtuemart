@@ -19,13 +19,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+AdminUIHelper::startAdminArea();
+
 ?>
 
 <fieldset>
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_SHIPTO_LBL'); ?>
 	</legend>
-<?php 
+<?php
 	$_k = 0;
 	$_set = false;
 	$_table = false;
@@ -66,7 +68,7 @@ defined('_JEXEC') or die('Restricted access');
 		}
 
 		if (!$_table) {
-			// A table hasn't been opened as well. We need one here, 
+			// A table hasn't been opened as well. We need one here,
 			echo '	<table class="adminform">'."\n";
 			$_table = true;
 		}
@@ -93,3 +95,9 @@ defined('_JEXEC') or die('Restricted access');
 <input type="hidden" name="shipto_virtuemart_userinfo_id" value="<?php echo $this->shipToID; ?>" />
 
 </fieldset>
+
+<?php
+
+	AdminUIHelper::endAdminArea();
+
+?>

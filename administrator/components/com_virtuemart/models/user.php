@@ -718,13 +718,7 @@ class VirtueMartModelUser extends VmModel {
 			$this->_data->userInfo[$uid] = $this->getTable('userinfos');
 			$this->_data->userInfo[$uid]->load($uid);
 
-			$fields = $userFieldsModel->getUserFieldsByUser(
-			$prepareUserFields
-			,$this->_data->userInfo[$uid]
-			,$preFix
-			);
-
-			$userFields[$uid] = $fields;
+			$data = $this->_data->userInfo[$uid];
 		}
 		else {
 			//New Address is filled here with the data of the cart (we are in the userview)
@@ -755,18 +749,15 @@ class VirtueMartModelUser extends VmModel {
 				$data = null;
 			}
 
-
-			$userFields[$uid] = $userFieldsModel->getUserFieldsByUser(
-			$prepareUserFields
-			,$data
-			,$preFix
-			);
 		}
 
-
+		$userFields[$uid] = $userFieldsModel->getUserFieldsFilled(
+		$prepareUserFields
+		,$data
+		,$preFix
+		);
 
 		return $userFields;
-
 	}
 
 
@@ -810,7 +801,7 @@ class VirtueMartModelUser extends VmModel {
 			for ($_i = 0; $_i < count($userdata->userInfo); $_i++) {
 
 				if($currentUserData->address_type==$type){
-					$fields = $userFieldsModel->getUserFieldsByUser(
+					$fields = $userFieldsModel->getUserFieldsFilled(
 					$prepareUserFields
 					,$currentUserData
 					,$preFix
@@ -833,7 +824,7 @@ class VirtueMartModelUser extends VmModel {
 			$cart = VirtueMartCart::getCart();
 			$adType = $type.'address';
 			if(empty($cart->$adType)){
-				$cart->$adType = $userFieldsModel->getUserFieldsByUser(
+				$cart->$adType = $userFieldsModel->getUserFieldsFilled(
 				$prepareUserFields
 				,(object)$cart->$type
 				,$preFix

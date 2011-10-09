@@ -243,7 +243,7 @@ class VirtuemartViewUser extends JView {
 				}
 		}
 
-		$shipToFields = $this->_userFieldsModel->getUserFieldsByUser(
+		$shipToFields = $this->_userFieldsModel->getUserFieldsFilled(
 		$_shiptoFields
 		,$_userDetailsList
 		,'shipto_'

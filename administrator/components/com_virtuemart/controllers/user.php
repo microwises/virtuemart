@@ -98,6 +98,7 @@ class VirtuemartControllerUser extends VmController {
 		$viewType = $document->getType();
 		$view = $this->getView('user', 'html');
 		$view->setLayout('edit_shipto');
+		vmJsApi::jQuery();
 		$this->edit($view);
 	}
 
