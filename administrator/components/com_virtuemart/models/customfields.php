@@ -107,13 +107,14 @@ class VirtueMartModelCustomfields extends VmModel {
 			'B'=>'COM_VIRTUEMART_CUSTOM_BOOL',
 			'D'=>'COM_VIRTUEMART_DATE',
 			'T'=>'COM_VIRTUEMART_TIME',
-			'C'=>'COM_VIRTUEMART_CUSTOM_PRODUCT_CHILD',
-			'G'=>'COM_VIRTUEMART_CUSTOM_PRODUCT_CHILD_GROUP',
 			'M'=>'COM_VIRTUEMART_IMAGE',
 			'V'=>'COM_VIRTUEMART_CUSTOM_CART_VARIANT',
-			'U'=>'COM_VIRTUEMART_CUSTOM_CART_USER_VARIANT',
 			'E'=>'COM_VIRTUEMART_CUSTOM_EXTENSION'
 			);
+
+			// 'U'=>'COM_VIRTUEMART_CUSTOM_CART_USER_VARIANT',			
+			// 'C'=>'COM_VIRTUEMART_CUSTOM_PRODUCT_CHILD',
+			// 'G'=>'COM_VIRTUEMART_CUSTOM_PRODUCT_CHILD_GROUP',
 //			'R'=>'COM_VIRTUEMART_RELATED_PRODUCT',
 //			'Z'=>'COM_VIRTUEMART_RELATED_CATEGORY',
     }
@@ -358,11 +359,10 @@ class VirtueMartModelCustomfields extends VmModel {
 				case 'V':
 				return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" /></td><td>'.$priceInput;
 				break;
-				/*userfield variants*/
-				case 'U':
-				return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" /></td><td>'.$priceInput;
-				break;
-				/*Stockable (group of) child variants*/
+				/*
+				 * Stockable (group of) child variants
+				 * Special type setted by the plugin
+				 */
 				case 'G':
 				return ;
 				break;
@@ -469,15 +469,12 @@ class VirtueMartModelCustomfields extends VmModel {
 			FROM `#__virtuemart_customs` AS C
 			LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
 			Where `virtuemart_product_id` ='.(int)$product->virtuemart_product_id.' and `field_type` != "G" and `field_type` != "R" and `field_type` != "Z"';
-		$query .=' and is_cart_attribute = 0 order by virtuemart_custom_id' ;
+		$query .=' and is_cart_attribute = 0 order by field.`ordering`,virtuemart_custom_id' ;
 		$this->_db->setQuery($query);
 		if ($productCustoms = $this->_db->loadObjectList()) {
 			$row= 0 ;
 			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
-			//if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-			//$calculator = calculationHelper::getInstance();
 			foreach ($productCustoms as & $field ) {
-				//$custom_price = $calculator->calculateCustomPriceWithTax($field->custom_price);
 				if ($field->field_type == "E") $field->display = vmCustomPlugin::displayTypePlugin($field,$product,$row);
 				else $field->display = $this->displayType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
 				$row++ ;

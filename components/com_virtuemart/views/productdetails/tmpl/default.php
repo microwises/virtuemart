@@ -277,9 +277,9 @@ if (empty ( $this->product )) {
 		<?php
 		$custom_title = null ;
 		foreach ($this->product->customfields as $field){
-			?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
+			?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
 			<?php if ($field->custom_title != $custom_title) { ?>
-				<span class="product-fields-title" ><b><?php echo JText::_($field->custom_title); ?></b></span>
+				<span class="product-fields-title" ><?php echo JText::_($field->custom_title); ?></span>
 				<?php if ($field->custom_tip) echo JHTML::tooltip($field->custom_tip,  JText::_($field->custom_title), 'tooltip.png');
 			} ?>
 			<span class="product-field-display"><?php echo $field->display ?></span>

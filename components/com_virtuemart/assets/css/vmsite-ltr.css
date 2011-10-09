@@ -177,3 +177,8 @@ td.orders-key{font-weight: bold; text-align: left; }
 .manufacturer-view-default .row .manufacturer .spacer {padding: 6px;}
 .product-field-display a img{display: block;}
 .product-related-products, .product-related-categories{border-top:solid #ccc 1px;padding-bottom: 10px;}
+.product-fields .product-field-type-P{clear: both; border-bottom: 1px solid #EEEEEE; margin-top: 18px;}
+.product-field-type-P .product-fields-title{ font-size: 120%;}
+.product-field-type-B,.product-field-type-S,.product-field-type-I{padding-left:3%;float:left;width:30%}
+.product-fields-title{ font-weight: bold;}
+
