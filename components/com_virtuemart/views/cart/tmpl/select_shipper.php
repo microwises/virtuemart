@@ -76,7 +76,7 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
     foreach ($html as $items) {
 	if (is_array($items)) {
 	    foreach ($items as $item) {
-		echo $item;
+		echo $item.'<br />';
 		$found_shipping_method = true;
 	    }
 	}
