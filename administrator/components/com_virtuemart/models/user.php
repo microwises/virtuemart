@@ -696,7 +696,7 @@ class VirtueMartModelUser extends VmModel {
 	 *
 	 * @author Max Milbers
 	 */
-	function getUserInfoInUserFields($layoutName, $type,$uid){
+	function getUserInfoInUserFields($layoutName, $type,$uid,$cart=true){
 
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
 		$userFieldsModel = new VirtuemartModelUserfields();
@@ -728,37 +728,42 @@ class VirtueMartModelUser extends VmModel {
 		}
 		else {
 			//New Address is filled here with the data of the cart (we are in the userview)
-			if (!class_exists('VirtueMartCart'))
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-			$cart = VirtueMartCart::getCart();
-			$adType = $type.'address';
+			if($cart){
+				if (!class_exists('VirtueMartCart'))
+				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+				$cart = VirtueMartCart::getCart();
+				$adType = $type.'address';
 
-			if(empty($cart->$adType)){
-				$data = $cart->$type;
-				if(empty($data)) $data = array();
-				$jUser = JUser::getInstance($this->_id);
-				if($jUser){
-					if(empty($data['name'])){
-						$data['name'] = $jUser->name;
-					}
-					if(empty($data['email'])){
-						$data['email'] = $jUser->email;
-					}
-					if(empty($data['username'])){
-						$data['username'] = $jUser->username;
+				if(empty($cart->$adType)){
+					$data = $cart->$type;
+					if(empty($data)) $data = array();
+					$jUser = JUser::getInstance($this->_id);
+					if($jUser){
+						if(empty($data['name'])){
+							$data['name'] = $jUser->name;
+						}
+						if(empty($data['email'])){
+							$data['email'] = $jUser->email;
+						}
+						if(empty($data['username'])){
+							$data['username'] = $jUser->username;
+						}
 					}
 				}
-
-				$cart->$adType = $userFieldsModel->getUserFieldsByUser(
-				$prepareUserFields
-				,(object)$data
-				,$preFix
-				);
+				$data = (object)$data;
+			} else {
+				$data = null;
 			}
 
-			$userFields[$uid] = $cart->$adType;
 
+			$userFields[$uid] = $userFieldsModel->getUserFieldsByUser(
+			$prepareUserFields
+			,$data
+			,$preFix
+			);
 		}
+
+
 
 		return $userFields;
 

@@ -51,6 +51,7 @@ class VirtuemartControllerUser extends VmController {
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView('user', $viewType);
+		$view->setLayout('default');
 
 		// Push a model into the view
 		$model = $this->getModel('user');
@@ -78,8 +79,8 @@ class VirtuemartControllerUser extends VmController {
 			$document = JFactory::getDocument();
 			$viewType = $document->getType();
 			$view = $this->getView('user', $viewType);
+			$view->setLayout('edit');
 		}
-
 
 		// Load the additional models
 		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
@@ -88,7 +89,7 @@ class VirtuemartControllerUser extends VmController {
 		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
 
-		parent::edit();
+		parent::edit($view->getLayout());
 	}
 
 	function addST(){

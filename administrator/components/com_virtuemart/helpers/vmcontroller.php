@@ -54,11 +54,11 @@ class VmController extends JController{
 	 *
 	 * @author Max Milbers
 	 */
-	function edit(){
+	function edit($layout='edit'){
 
 		JRequest::setVar('controller', $this->_cname);
 		JRequest::setVar('view', $this->_cname);
-		JRequest::setVar('layout', 'edit');
+		JRequest::setVar('layout', $layout);
 		JRequest::setVar('hidemenu', 1);
 
 		if(empty($view)){

@@ -68,7 +68,9 @@ class VirtuemartViewUser extends JView {
 		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getWord('layout', 'default');
-		if ($layoutName == 'edit') {
+		$layoutName = $this->getLayout();
+
+		if ($layoutName == 'edit' || $layoutName == 'edit_shipto') {
 
 			$editor = JFactory::getEditor();
 
@@ -118,7 +120,6 @@ class VirtuemartViewUser extends JView {
 			$lists['params'] = $userDetails->JUser->getParameters(true);
 
 			// Shopper info
-// 			vmdebug('my userDetails',$userDetails);
 			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($userDetails->shopper_groups);
 			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->virtuemart_vendor_id);
 			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
@@ -140,43 +141,9 @@ class VirtuemartViewUser extends JView {
 				}
 
 			}
-			$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'BT',$virtuemart_userinfo_id);
+			$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'BT',$virtuemart_userinfo_id,false);
 
 			$userFields = $userFieldsArray[$virtuemart_userinfo_id];
-// 			vmdebug('$userFields',$userFields);
-/*			$_userFields = $userFieldsModel->getUserFields(
-					 				'account'
-									, array() // Default toggles
-									, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'address_type','user_is_vendor') // Skips
-									);
-
-			if (($_addressCount = count($userDetails->userInfo)) == 0) {
-				$_userInfoID = null;
-// 				Set some default values
-				$_userDetailsList = new StdClass ();
-				$_userDetailsList->address_type = 'BT';
-				$_userDetailsList->perms = 'shopper';
-			} else {
-				$_userDetailsList = current($userDetails->userInfo);
-				for ($_i = 0; $_i < $_addressCount; $_i++) {
-					if ($_userDetailsList->address_type == 'BT') {
-						if(!empty($_userDetailsList->virtuemart_userinfo_id)){
-							$_userInfoID = $_userDetailsList->virtuemart_userinfo_id;
-							reset($userDetails->userInfo);
-							break;
-						}
-					}
-					$_userDetailsList = next($userDetails->userInfo);
-				}
-			}
-			$userFields = $userFieldsModel->getUserFieldsByUser(
-										$_userFields
-										,$_userDetailsList
-										);
-*/
-
-
-			//			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $_userDetailsList->perms);
 
 			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $userDetails->perms);
 
@@ -193,48 +160,8 @@ class VirtuemartViewUser extends JView {
 				}
 			}
 
-
-			// The ShipTo address if selected
-			$_shipto_id = JRequest::getVar('shipto', -1);
-			if ($_shipto_id == -1) {
-				$_shipto = 0;
-				$_paneOffset = array();
-			} else {
-				// Contains 0 for new, otherwise a virtuemart_userinfo_id
-				$_shipto = $model->getUserAddressList($userDetails->JUser->get('id'), 'ST', $_shipto_id);
-				$_paneOffset = array('startOffset' => 2);
-				$_shiptoFields = $userFieldsModel->getUserFields(
-					 'shipping'
-				, array() // Default toggles
-				);
-				if ($_shipto_id === 0 || empty($userDetails->userInfo)) {
-					$_userDetailsList = null;
-				} else {
-					// Find the correct record
-					$_userDetailsList = current($userDetails->userInfo);
-					for ($_i = 0; $_i <= count($userDetails->userInfo); $_i++) {
-
-						// @todo oscar, I just added that, but maybe it breaks the logic, please take a look on it
-						if(!empty($_userDetailsList)){
-							if ($_userDetailsList->virtuemart_userinfo_id == $_shipto_id) {
-								reset($userDetails->userInfo);
-								break;
-							}
-						}
-						$_userDetailsList = next($userDetails->userInfo);
-					}
-				}
-
-				$shipToFields = $userFieldsModel->getUserFieldsByUser(
-				$_shiptoFields
-				,$_userDetailsList
-				,'shipto_'
-				);
-
-				if(empty($shipToFields)) $shipToFields = array();
-				$this->assignRef('shipToFields', $shipToFields);
-				$this->assignRef('shipToID', $_shipto_id);
-			}
+				$this->assignRef('shipToFields', $userFields);
+				$this->assignRef('shipToID', $virtuemart_userinfo_id);
 
 
 			if (!$_new) {
@@ -295,15 +222,8 @@ class VirtuemartViewUser extends JView {
 			$this->assignRef('pagination', $pagination);
 
 			$lists = ShopFunctions::addStandardDefaultViewLists($model,'ju.id');
-/*// 			search filter
-			$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string');
-			$search = JString::strtolower( $search );
-			$lists['search']= $search;
 
-// 			Get the ordering
-			$lists['order']     = $mainframe->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'id', 'cmd' );
-			$lists['order_Dir'] = $mainframe->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', '', 'word' );
-*/			$this->assignRef('lists', $lists);
+			$this->assignRef('lists', $lists);
 
 			if(!class_exists('VirtueMartModelShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shoppergroup.php');
 			$shoppergroupmodel = new VirtueMartModelShopperGroup();
