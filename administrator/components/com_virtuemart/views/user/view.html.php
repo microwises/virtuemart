@@ -124,7 +124,8 @@ class VirtuemartViewUser extends JView {
 			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
 
 			// Shipping address(es)
-			$_addressList = $model->getUserAddressList($userDetails->JUser->get('id') , 'ST');
+			$lists['shipTo'] = ShopFunctions::generateStAddressList($this->_model,'edit');
+/*			$_addressList = $model->getUserAddressList($userDetails->JUser->get('id') , 'ST');
 			if (($_c = count($_addressList)) == 0) {
 				$lists['shipTo'] = JText::_('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
 			} else {
@@ -140,7 +141,7 @@ class VirtuemartViewUser extends JView {
 
 				}
 				$lists['shipTo'] = '<ul>' . join('', $_shipTo) . '</ul>';
-			}
+			}*/
 
 			$_userFields = $userFieldsModel->getUserFields(
 					 				'account'

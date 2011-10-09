@@ -479,7 +479,8 @@ class VmMediaHandler {
 					$mediaExtension = JFile::getExt($media['name']);
 
 					while (file_exists(JPATH_ROOT.DS.$path_folder.$mediaPure.$mediaExtension)) {
-						$media['name'] = $this->file_name = $mediaPure = $mediaPure.rand(1,9);
+						$mediaPure = $mediaPure.rand(1,9);
+						$media['name'] = $this->file_name =$mediaPure.$mediaExtension;
 					}
 // 					$this->file_name = JFile::stripExt($media['name']).'-';
 // 					while (file_exists(JPATH_ROOT.DS.$path_folder.$media['name'])) {

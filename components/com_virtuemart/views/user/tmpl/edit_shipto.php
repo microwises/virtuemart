@@ -21,6 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 if(count($this->shipToFields['fields']==0)){
 	echo 'THIS WHOLE TAB SHOULDNT BE SHOWN WHEN THERE IS NO SHIPPING ADDRESS SET';
+	echo 'This whole tab is afaik unnecessary and should be deleted, use instead edit_address';
 }
 ?>
 
@@ -28,7 +29,7 @@ if(count($this->shipToFields['fields']==0)){
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_SHIPTO_LBL'); ?>
 	</legend>
-<?php 
+<?php
 	$_k = 0;
 	$_set = false;
 	$_table = false;
@@ -69,7 +70,7 @@ if(count($this->shipToFields['fields']==0)){
 		}
 
 		if (!$_table) {
-			// A table hasn't been opened as well. We need one here, 
+			// A table hasn't been opened as well. We need one here,
 			echo '	<table class="adminform">'."\n";
 			$_table = true;
 		}

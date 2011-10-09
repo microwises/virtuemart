@@ -138,47 +138,46 @@ class VirtueMartModelUser extends VmModel {
 
 		$this->_data->JUser = JUser::getInstance($this->_id);
 
-		$_ui = $this->_getList('SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"');
-
+// 		$_ui = $this->_getList('SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"');
+		$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"';
+		$this->_db->setQuery($q);
+		$userInfo_ids = $this->_db->loadResultArray(0);
+// 		vmdebug('my query',$this->_db->getQuery());
+// 		vmdebug('my $_ui',$userInfo_ids,$this->_id);
 		$this->_data->userInfo = array ();
 
 		$BTuid = 0;
 		//$userinfo = $this->getTable('userinfos');
-		for ($i = 0, $n = count($_ui); $i < $n; $i++) {
+// 		for ($i = 0, $n = count($_ui); $i < $n; $i++) {
+		foreach($userInfo_ids as $uid){
 
-			$_ui_id = $_ui[$i]->virtuemart_userinfo_id;
+			$this->_data->userInfo[$uid] = $this->getTable('userinfos');
+			$this->_data->userInfo[$uid]->load($uid);
 
-			$this->_data->userInfo[$_ui_id] = $this->getTable('userinfos');
-			$this->_data->userInfo[$_ui_id]->load($_ui_id);
+			if ($this->_data->userInfo[$uid]->address_type == 'BT') {
+				$BTuid = $uid;
 
-			/*
-			 * Hack by Oscar for Ticket #296 (redmine); user_is_vendor gets reset when a BT address is saved
-			 * from the cart. I don't know is this is the only location, but it can be fixed by
-			 * making sure the user_is_vendor field is in the BT dataset.
-			 * I make this hack here, since I'm not sure if it causes problems on more locations.
-			 * @TODO Find out is there's a more decvent solution. Maybe when the user_info table gets reorganised?
-			 */
-			if ($this->_data->userInfo[$_ui_id]->address_type == 'BT') {
-				$BTuid = $_ui_id;
-
-// 				$this->_data->userInfo[$_ui_id]->user_is_vendor = $this->_data->user_is_vendor;
-// 				$this->_data->userInfo[$_ui_id]->name = $this->_data->JUser->name;
+				$this->_data->userInfo[$BTuid]->name = $this->_data->JUser->name;
+				$this->_data->userInfo[$BTuid]->email = $this->_data->JUser->email;
+				$this->_data->userInfo[$BTuid]->username = $this->_data->JUser->username;
+				$this->_data->userInfo[$BTuid]->address_type = 'BT';
 			}
-			// End hack
-			//$this->_data->userInfo[$_ui_id]->email = $this->_data->JUser->email;
+
 		}
 
-// 		if(!empty($this->_data->userInfo[$BTuid])){
+/*			$this->_data->userInfo[$BTuid] = $this->getTable('userinfos');
+			$this->_data->userInfo[$BTuid]->load($BTuid);
 
 			$this->_data->userInfo[$BTuid]->name = $this->_data->JUser->name;
 			$this->_data->userInfo[$BTuid]->email = $this->_data->JUser->email;
 			$this->_data->userInfo[$BTuid]->username = $this->_data->JUser->username;
 			$this->_data->userInfo[$BTuid]->address_type = 'BT';
-//
-//		}
-
+// 			vmdebug('loading empty table',$BTuid,$this->_data->userInfo[$BTuid]);
+		}
+*/
 		if($this->_data->user_is_vendor){
-
+			// 				$this->_data->userInfo[$_ui_id]->user_is_vendor = $this->_data->user_is_vendor;
+			// 				$this->_data->userInfo[$_ui_id]->name = $this->_data->JUser->name;
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php' );
 			$vendorModel = new VirtueMartModelVendor();
 			if(Vmconfig::get('multix','none')==='none'){
@@ -685,6 +684,86 @@ class VirtueMartModelUser extends VmModel {
 		return $data;
 	}
 
+	function getBTuserinfo_id(){
+		if(empty($this->_db)) $this->_db = JFactory::getDBO();
+
+		$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'" AND `address_type`="BT" ';
+		$this->_db->setQuery($q);
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 *
+	 */
+	function getUserInfoInUserFields($layoutName, $type,$uid){
+
+		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
+		$userFieldsModel = new VirtuemartModelUserfields();
+
+		$prepareUserFields = $userFieldsModel->getUserFieldsFor(
+		$layoutName,
+		$type
+		);
+
+		if($type=='ST'){
+			$preFix = 'shipto_';
+		} else {
+			$preFix = '';
+		}
+
+		$userFields = array();
+		if($uid!=0){
+			vmdebug(' user data with infoid',$uid);
+			$this->_data->userInfo[$uid] = $this->getTable('userinfos');
+			$this->_data->userInfo[$uid]->load($uid);
+
+			$fields = $userFieldsModel->getUserFieldsByUser(
+			$prepareUserFields
+			,$this->_data->userInfo[$uid]
+			,$preFix
+			);
+
+			$userFields[$uid] = $fields;
+		}
+		else {
+			//New Address is filled here with the data of the cart (we are in the userview)
+			if (!class_exists('VirtueMartCart'))
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			$cart = VirtueMartCart::getCart();
+			$adType = $type.'address';
+
+			if(empty($cart->$adType)){
+				$data = $cart->$type;
+				if(empty($data)) $data = array();
+				$jUser = JUser::getInstance($this->_id);
+				if($jUser){
+					if(empty($data['name'])){
+						$data['name'] = $jUser->name;
+					}
+					if(empty($data['email'])){
+						$data['email'] = $jUser->email;
+					}
+					if(empty($data['username'])){
+						$data['username'] = $jUser->username;
+					}
+				}
+
+				$cart->$adType = $userFieldsModel->getUserFieldsByUser(
+				$prepareUserFields
+				,(object)$data
+				,$preFix
+				);
+			}
+
+			$userFields[$uid] = $cart->$adType;
+
+		}
+
+		return $userFields;
+
+	}
+
+
 	/**
 	* This should load the userdata in userfields so that they can easily displayed
 	*
@@ -712,6 +791,9 @@ class VirtueMartModelUser extends VmModel {
 		$this->setId($id);
 		$userdata = $this->getUser();
 
+// 		vmdebug('$userdata',$userdata);
+		$found = false;
+		//Non anonymous case
 		if(!$cart && !empty($id) && !empty($userdata->userInfo) && count($userdata->userInfo)>0) {
 
 			$currentUserData = current($userdata->userInfo);
@@ -726,23 +808,18 @@ class VirtueMartModelUser extends VmModel {
 					,$currentUserData
 					,$preFix
 					);
-					$fields['virtuemart_userinfo_id'] = key($userdata->userInfo);
-					if($type!=='ST'){
-							$userFields= $fields;
-							break;
-					} else {
-						$userFields[key($userdata->userInfo)] = $fields;
-					}
 
+					$fields['virtuemart_userinfo_id'] = key($userdata->userInfo);
+					$userFields[key($userdata->userInfo)] = $fields;
+					$found = true;
 				}
 				$currentUserData = next($userdata->userInfo);
 
 			}
 		}
 
-
+		//anonymous case or no data provided or new
 		if(empty($userFields)){
-
 			//New Address is filled here with the data of the cart (we are in the userview)
 			if (!class_exists('VirtueMartCart'))
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
@@ -757,11 +834,8 @@ class VirtueMartModelUser extends VmModel {
 			}
 
 			$cart->$adType['virtuemart_userinfo_id'] = 0;
-			if($type!=='ST'){
-				$userFields = $cart->$adType;
-			} else {
-				$userFields[] = $cart->$adType;
-			}
+			$userFields[0] = $cart->$adType;
+
 		}
 
 		return $userFields;

@@ -93,15 +93,20 @@ class VirtuemartViewUser extends JView {
 		$this->assignRef('address_type', $type);
 
 		$new = false;
-		$new = JRequest::getInt('new', '0','','int');
-		if(!empty($new)){
+		if(JRequest::getInt('new','0')===1){
 			$new = true;
 		}
 
 		$virtuemart_userinfo_id = JRequest::getString('virtuemart_userinfo_id', '0','');
+		if($new){
+			$virtuemart_userinfo_id = 0;
+		}
+
+		$this->assignRef('virtuemart_userinfo_id', $virtuemart_userinfo_id);
+
 		$userFields = null;
 		if((strpos($this->fTask,'cart') || strpos($this->fTask,'checkout')) && empty($virtuemart_userinfo_id) ){
-// 			vmdebug('I came from the cart and new address',$this->fTask,$type,$new);
+
 			//New Address is filled here with the data of the cart (we are in the cart)
 			if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 			$cart = VirtueMartCart::getCart();
@@ -114,12 +119,14 @@ class VirtuemartViewUser extends JView {
 			$task = JRequest::getWord('task','');
 
 		} else {
-			$userFields  = $this->_model->getUserDataInFields($layoutName,$type,$this->userDetails->JUser->id);
-			if(!empty($virtuemart_userinfo_id)){
-				$userFields = $userFields[$virtuemart_userinfo_id];
+			$userFields  = $this->_model->getUserInfoInUserFields($layoutName,$type,$virtuemart_userinfo_id);
+			if(!$new && empty( $userFields[$virtuemart_userinfo_id]) ){
+				$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
+				vmdebug('Try to get $virtuemart_userinfo_id by type BT',$virtuemart_userinfo_id);
 			}
+			$userFields = $userFields[$virtuemart_userinfo_id];
 			$task = 'editAddressSt';
-// 			vmdebug('I came from the user view',$this->fTask);
+
 		}
 
 		$this->assignRef('userFields', $userFields);
@@ -136,21 +143,15 @@ class VirtuemartViewUser extends JView {
 			$this->lUser();
 			$this->shopper($userFields);
 
-			$userFieldsST  = $this->_model->getUserDataInFields($layoutName,'ST',$this->userDetails->JUser->id);
-			$this->lshipto($userFieldsST);
+
+// 			$userFieldsST  = $this->_model->getUserDataInFields($layoutName,'ST',$this->userDetails->JUser->id);
+// 			$this->lshipto($userFieldsST); //TEST !
 
 			$this->payment();
 			$this->lOrderlist();
 			$this->lVendor();
 
 		}
-
-		if($new || empty($this->_cuid)){
-			$virtuemart_userinfo_id = 0;
-		} else{
-			$virtuemart_userinfo_id = current($this->userDetails->userInfo)->virtuemart_userinfo_id;
-		}
-		$this->assignRef('virtuemart_userinfo_id', $virtuemart_userinfo_id);
 
 
 		$this->_lists['shipTo'] = ShopFunctions::generateStAddressList($this->_model,$task);

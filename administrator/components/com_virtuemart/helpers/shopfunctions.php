@@ -587,11 +587,11 @@ class ShopFunctions {
 
 		// Shipping address(es)
 		$_addressList = $userModel->getUserAddressList($userModel->getId() , 'ST');
-		if (($_c = count($_addressList)) == 0) {
-			return JText::_('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
-		} else {
+// 		if (($_c = count($_addressList)) == 0) {
+// 			return JText::_('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
+// 		} else {
 			$_shipTo = array();
-			for ($_i = 0; $_i < $_c; $_i++) {
+			for ($_i = 0; $_i < count($_addressList); $_i++) {
 				if(empty($_addressList[$_i]->virtuemart_user_id)) $_addressList[$_i]->virtuemart_user_id = JFactory::getUser()->id;
 				if(empty($_addressList[$_i]->virtuemart_userinfo_id)) $_addressList[$_i]->virtuemart_userinfo_id = 0;
 				if(empty($_addressList[$_i]->address_type_name)) $_addressList[$_i]->address_type_name = 0;
@@ -610,7 +610,7 @@ $addLink = '<a class="vmicon vmicon-16-editadd" href="'.JRoute::_('index.php?opt
 		$addLink .= JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL').'</a>';
 
 			return $addLink.'<ul>' . join('', $_shipTo) . '</ul>';
-		}
+// 		}
 	}
 
 	/**

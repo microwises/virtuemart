@@ -53,7 +53,7 @@ class VirtueMartModelConfig extends JModel {
 		//$app = JFactory::getApplication('site');
 		//$tplpath = $app->getTemplate();vmdebug('template',$tplpath);
 		if(version_compare(JVERSION,'1.6.0','ge')) {
-			$q = 'SELECT `template` FROM `#__templates_styles` WHERE `client_id` ="0" AND `home`="1" ';
+			$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id` ="0" AND `home`="1" ';
 		} else {
 			$q = 'SELECT `template` FROM `#__templates_menu` WHERE `client_id` ="0" ';
 		}
