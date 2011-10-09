@@ -67,16 +67,19 @@ class VirtuemartControllerUser extends VmController {
 	/**
 	 * Handle the edit task
 	 */
-	function edit(){
+	function edit($view=0){
 
 		//We set here the cid, when no cid is set to 0, for adding a new user
 		//In every other case the cid is sent.
 		$cid = JRequest::getVar('cid');
 		if(!isset($cid)) JRequest::setVar('cid', (int)0);
 
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
-		$view = $this->getView('user', $viewType);
+		if(empty($view)){
+			$document = JFactory::getDocument();
+			$viewType = $document->getType();
+			$view = $this->getView('user', $viewType);
+		}
+
 
 		// Load the additional models
 		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
@@ -88,6 +91,14 @@ class VirtuemartControllerUser extends VmController {
 		parent::edit();
 	}
 
+	function addST(){
+
+		$document = JFactory::getDocument();
+		$viewType = $document->getType();
+		$view = $this->getView('user', 'html');
+		$view->setLayout('edit_shipto');
+		$this->edit($view);
+	}
 
 	function editshop(){
 

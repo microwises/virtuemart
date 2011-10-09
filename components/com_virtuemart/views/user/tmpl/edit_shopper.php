@@ -161,6 +161,6 @@ defined('_JEXEC') or die('Restricted access');
 	echo $_hiddenFields;
 ?>
 </fieldset>
-<input type="hidden" name="virtuemart_userinfo_id" value="<?php echo$this->userFields['virtuemart_userinfo_id']; ?>" />
+<input type="hidden" name="virtuemart_userinfo_id" value="<?php echo $this->virtuemart_userinfo_id; ?>" />
 <input type="hidden" name="address_type" value="BT" />
 

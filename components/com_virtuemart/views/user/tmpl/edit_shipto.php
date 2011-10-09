@@ -19,9 +19,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+vmError('This whole tab is afaik unnecessary and should be deleted, use instead edit_address','This tab is outdated, please contact the developers at forum.virtuemart.net');
+
 if(count($this->shipToFields['fields']==0)){
 	echo 'THIS WHOLE TAB SHOULDNT BE SHOWN WHEN THERE IS NO SHIPPING ADDRESS SET';
-	echo 'This whole tab is afaik unnecessary and should be deleted, use instead edit_address';
+
 }
 ?>
 

@@ -78,17 +78,8 @@ defined('_JEXEC') or die('Restricted access');
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
 	</legend>
 
-	<a href="index.php?option=com_virtuemart&view=user&task=edit&shipto=0&cid[]=<?php echo $this->userDetails->JUser->get('id'); ?>">
-		<span class="vmicon vmicon-16-editadd"></span><?php echo JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL'); ?>
-	</a>
+	<?php echo $this->lists['shipTo']; ?>
 
-	<table class="adminform">
-		<tr>
-			<td>
-				<?php echo $this->lists['shipTo']; ?>
-			</td>
-		</tr>
-	</table>
 </fieldset>
 <?php } ?>
 
@@ -96,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_FORM_LBL'); ?>
 	</legend>
-<?php 
+<?php
 	$_k = 0;
 	$_set = false;
 	$_table = false;
@@ -137,7 +128,7 @@ defined('_JEXEC') or die('Restricted access');
 		}
 
 		if (!$_table) {
-			// A table hasn't been opened as well. We need one here, 
+			// A table hasn't been opened as well. We need one here,
 			echo '	<table class="adminform">'."\n";
 			$_table = true;
 		}

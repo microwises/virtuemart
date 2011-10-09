@@ -124,26 +124,27 @@ class VirtuemartViewUser extends JView {
 			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
 
 			// Shipping address(es)
-			$lists['shipTo'] = ShopFunctions::generateStAddressList($this->_model,'edit');
-/*			$_addressList = $model->getUserAddressList($userDetails->JUser->get('id') , 'ST');
-			if (($_c = count($_addressList)) == 0) {
-				$lists['shipTo'] = JText::_('COM_VIRTUEMART_USER_NOSHIPPINGADDR');
+			$lists['shipTo'] = ShopFunctions::generateStAddressList($model,'addST');
+
+			$new = false;
+			if(JRequest::getInt('new','0')===1){
+				$new = true;
+			}
+
+			$virtuemart_userinfo_id = JRequest::getString('virtuemart_userinfo_id', '0','');
+			if($new){
+				$virtuemart_userinfo_id = 0;
 			} else {
-				$_shipTo = array();
-				for ($_i = 0; $_i < $_c; $_i++) {
-					$_shipTo[] = '<li>'.'<a href="index.php'
-					.'?option=com_virtuemart'
-					.'&view=user'
-					.'&task=edit'
-					.'&cid[]='.$_addressList[$_i]->virtuemart_user_id
-					.'&shipto='.$_addressList[$_i]->virtuemart_userinfo_id
-					. '">'.$_addressList[$_i]->address_type_name.'</a>'.'</li>';
-
+				if(empty($virtuemart_userinfo_id)){
+					$virtuemart_userinfo_id = $model->getBTuserinfo_id();
 				}
-				$lists['shipTo'] = '<ul>' . join('', $_shipTo) . '</ul>';
-			}*/
 
-			$_userFields = $userFieldsModel->getUserFields(
+			}
+			$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'BT',$virtuemart_userinfo_id);
+
+			$userFields = $userFieldsArray[$virtuemart_userinfo_id];
+// 			vmdebug('$userFields',$userFields);
+/*			$_userFields = $userFieldsModel->getUserFields(
 					 				'account'
 									, array() // Default toggles
 									, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'address_type','user_is_vendor') // Skips
@@ -151,7 +152,7 @@ class VirtuemartViewUser extends JView {
 
 			if (($_addressCount = count($userDetails->userInfo)) == 0) {
 				$_userInfoID = null;
-				// Set some default values
+// 				Set some default values
 				$_userDetailsList = new StdClass ();
 				$_userDetailsList->address_type = 'BT';
 				$_userDetailsList->perms = 'shopper';
@@ -172,6 +173,8 @@ class VirtuemartViewUser extends JView {
 										$_userFields
 										,$_userDetailsList
 										);
+*/
+
 
 			//			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $_userDetailsList->perms);
 
