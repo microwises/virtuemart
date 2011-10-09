@@ -194,7 +194,7 @@ class VirtuemartViewUser extends JView {
 	 * For the edit_shipto layout
 	 *
 	 */
-	function lshipto($staddress){
+/*	function lshipto($staddress){
 
 		// The ShipTo address if selected
 		$virtuemart_userinfo_id = JRequest::getInt('virtuemart_userinfo_id', 0);
@@ -251,7 +251,7 @@ class VirtuemartViewUser extends JView {
 
 		$this->assignRef('shipToFields', $shipToFields);
 
-	}
+	}*/
 
 
 	function payment(){

@@ -138,7 +138,13 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
     </form>
 
  <fieldset>
-	 <legend><?php echo JText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL') ?></legend>
+	 <legend><?php
+	 if($this->address_type=='BT'){
+	 	echo JText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL');
+	 } else {
+	 	echo JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
+	 } ?>
+	</legend>
 <?php
 	if (VmConfig::get('oncheckout_show_register', 1)) {
        	echo JText::sprintf('COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER', JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'), JText::_('COM_VIRTUEMART_CHECKOUT_AS_GUEST'));

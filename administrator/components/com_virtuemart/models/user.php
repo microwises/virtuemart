@@ -694,6 +694,7 @@ class VirtueMartModelUser extends VmModel {
 
 	/**
 	 *
+	 * @author Max Milbers
 	 */
 	function getUserInfoInUserFields($layoutName, $type,$uid){
 
@@ -768,6 +769,7 @@ class VirtueMartModelUser extends VmModel {
 	* This should load the userdata in userfields so that they can easily displayed
 	*
 	* @author Max Milbers
+	* @deprecated
 	*/
 
 	function getUserDataInFields($layoutName, $type, $id, $cart=false){
