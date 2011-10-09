@@ -60,82 +60,6 @@ JHTML::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/asse
 
 
 </script>
-<?php
-if (VmConfig::get('oncheckout_show_steps', 1)){
-	echo '<div class="checkoutStep" id="checkoutStep1">'.JText::_('COM_VIRTUEMART_USER_FORM_CART_STEP1').'</div>';
-}
-
-if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->id === 0) {
-
-    if (JPluginHelper::isEnabled('authentication', 'openid')) {
-        $lang = &JFactory::getLanguage();
-        $lang->load('plg_authentication_openid', JPATH_ADMINISTRATOR);
-        $langScript = 'var JLanguage = {};' .
-                ' JLanguage.WHAT_IS_OPENID = \'' . JText::_('WHAT_IS_OPENID') . '\';' .
-                ' JLanguage.LOGIN_WITH_OPENID = \'' . JText::_('LOGIN_WITH_OPENID') . '\';' .
-                ' JLanguage.NORMAL_LOGIN = \'' . JText::_('NORMAL_LOGIN') . '\';' .
-                ' var comlogin = 1;';
-        $document = &JFactory::getDocument();
-        $document->addScriptDeclaration($langScript);
-        JHTML::_('script', 'openid.js');
-    }
-
-    $uri = JFactory::getURI();
-    $url = $uri->toString(array('path', 'query', 'fragment'));
-?>	<form action="<?php echo JRoute::_('index.php', true, 0); ?>" method="post" name="com-login" >
-
-        <fieldset class="input">
-            <legend><?php echo JText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM') ?></legend>
-
-            <p class="width30 floatleft" id="com-form-login-username">
-                <input type="text" name="username" size="18" alt="<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>" value="<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>" onblur="if(this.value=='') this.value='<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>';" onfocus="if(this.value=='<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>') this.value='';" />
-            </p>
-            <p class="width30 floatleft" id="com-form-login-password">
-				<?php if ( VmConfig::isJ15() ) { ?>
-					<input type="password" id="passwd" name="passwd" class="inputbox" size="18" alt="password" />
-				<?php } else { ?>
-					<input id="modlgn-passwd" type="password" name="password" class="inputbox" size="18"  />
-				<?php } ?>
-			</p>
-            <p class="width30 floatleft" id="com-form-login-remember">
-                <input type="submit" name="Submit" class="default" value="<?php echo JText::_('COM_VIRTUEMART_LOGIN') ?>" />
-<?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
-			<label for="remember"><?php echo $remember_me = VmConfig::isJ15()? JText::_('Remember me') : JText::_('JGLOBAL_REMEMBER_ME') ?></label>
-            <input type="checkbox" id="remember" name="remember" class="inputbox" value="yes" alt="Remember Me" />
-        </p>
-<?php endif; ?>
-        <div class="clr"></div>
-        <div class="width30 floatleft">
-            <a   href="<?php echo JRoute::_('index.php?option=com_user&view=reset'); ?>">
-<?php echo JText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_PASSWORD'); ?></a>
-        </div>
-        <div class="width30 floatleft">
-            <a   href="<?php echo JRoute::_('index.php?option=com_user&view=remind'); ?>">
-<?php echo JText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_USERNAME'); ?></a>
-        </div>
-        <?php /*
-          $usersConfig = &JComponentHelper::getParams( 'com_users' );
-          if ($usersConfig->get('allowUserRegistration')) { ?>
-          <div class="width30 floatleft">
-          <a  class="details" href="<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=user' ); ?>">
-          <?php echo JText::_('COM_VIRTUEMART_ORDER_REGISTER'); ?></a>
-          </div>
-          <?php }
-         */ ?>
-
-        <div class="clr"></div>
-    </fieldset>
-
-<?php if ( VmConfig::isJ15() ) { ?>
-	<input type="hidden" name="option" value="com_user" />
-	<input type="hidden" name="task" value="login" />
-<?php } else { ?>
-	<input type="hidden" name="option" value="com_users" />
-	<input type="hidden" name="task" value="user.login" />
-<?php } ?>
-    <input type="hidden" name="return" value="<?php echo base64_encode($url) ?>" />
-    <?php echo JHTML::_('form.token'); ?>
-    </form>
 
  <fieldset>
 	 <legend><?php
@@ -150,7 +74,7 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
        	echo JText::sprintf('COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER', JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'), JText::_('COM_VIRTUEMART_CHECKOUT_AS_GUEST'));
 //         	echo JText::_(VmConfig::get('oncheckout_show_register_text', $msg));
 	}
-}
+ 
 ?>
 
 

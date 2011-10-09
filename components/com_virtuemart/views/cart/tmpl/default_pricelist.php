@@ -232,7 +232,7 @@
 		<?php } ?>
 		<tr class="sectiontableentry1">
                     <?php if (!$this->cart->automaticSelectedShipping) { ?>
-				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default' && !$this->cart->automaticSelectedShipping  ) echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_shipping',$this->useXHTML,$this->useSSL), JText::_('COM_VIRTUEMART_CART_EDIT_SHIPPING'),'class="highlight"'); else JText::_('COM_VIRTUEMART_CART_SHIPPING'); ?> </td>
+				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default' && !$this->cart->automaticSelectedShipping  ) echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_shipping',$this->useXHTML,$this->useSSL), JText::_('COM_VIRTUEMART_CART_EDIT_SHIPPING'),'class="details"'); else JText::_('COM_VIRTUEMART_CART_SHIPPING'); ?> </td>
 		<?php	/*	<td colspan="2" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING'); ?> </td> */?>
 				<td colspan="2" align="left"><?php echo $this->cart->cartData['shippingName']; ?> </td>
                                 <?php } else { ?>
@@ -248,7 +248,7 @@
 
 		<tr class="sectiontableentry1">
                           <?php if (!$this->cart->automaticSelectedPayment) { ?>
-				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment',$this->useXHTML,$this->useSSL), JText::_('COM_VIRTUEMART_CART_EDIT_PAYMENT'),'class="highlight"'); else JText::_('COM_VIRTUEMART_CART_PAYMENT'); ?> </td>
+				<td colspan="2" align="left"><?php if(!empty($this->layoutName) && $this->layoutName=='default') echo JHTML::_('link', JRoute::_('index.php?view=cart&task=editpayment',$this->useXHTML,$this->useSSL), JText::_('COM_VIRTUEMART_CART_EDIT_PAYMENT'),'class="details"'); else JText::_('COM_VIRTUEMART_CART_PAYMENT'); ?> </td>
 		<?php	/*	<td colspan="2" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL') ?> </td> */?>
 				<td colspan="2" align="left"><?php echo $this->cart->cartData['paymentName']; ?> </td>
                          <?php } else { ?>

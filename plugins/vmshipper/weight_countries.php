@@ -399,8 +399,8 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
             //Todo for  valerie, you may take a look, maybe should be false, or configurable.
             $zip_cond = true;
         }
-
-        if (!isset($address['virtuemart_country_id']))
+	if (!is_array($address)) return false;
+        if (  !isset($address['virtuemart_country_id']))
             $address['virtuemart_country_id'] = 0;
         if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
             if ($weight_cond AND $zip_cond) {

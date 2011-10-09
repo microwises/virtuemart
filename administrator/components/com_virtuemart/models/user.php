@@ -367,16 +367,22 @@ class VirtueMartModelUser extends VmModel {
 			// Initialize new usertype setting
 			$newUsertype = $usersConfig->get( 'new_usertype' );
 			if (!$newUsertype) {
+			    if ( VmConfig::isJ15()){
 				$newUsertype = 'Registered';
-			}
 
+			    } else {
+				$newUsertype=2;
+			    }
+			}
 			// Set some initial user values
 			$user->set('usertype', $newUsertype);
 
 			if ( VmConfig::isJ15()){
 				$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
+			} else {
+			    	$user->groups[] = $newUsertype;
 			}
-
+			
 			$date = JFactory::getDate();
 			$user->set('registerDate', $date->toMySQL());
 
@@ -476,7 +482,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		vmInfo($message);*/
-		return array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId,'success'=>$success);
+		return array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId,'success'=>true);
 
 	}
 

@@ -171,9 +171,9 @@ class VirtueMartControllerUser extends JController
 
 	function registerCartuser(){
 
-		$msg = $this->saveData(true,true);
-		$this->setRedirect(JRoute::_( 'index.php?option=com_virtuemart&view=cart' ),$msg);
-	}
+	$msg = $this->saveData(true, true);
+	   $this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart') , $msg);
+    }
 
 
 	/**
@@ -195,12 +195,13 @@ class VirtueMartControllerUser extends JController
 	* We make this function private, so we can do the tests in the tasks.
 	*
 	* @author Max Milbers
+	* @author Valérie Isaksen
 	*
 	* @param boolean Defaults to false, the param is for the userModel->store function, which needs it to determin how to handle the data.
 	* @return String it gives back the messages.
 	*/
 	private function saveData($cart=false,$register=false) {
-
+		$mainframe = JFactory::getApplication();
 		$currentUser = JFactory::getUser();
 		$msg = '';
 
@@ -218,9 +219,20 @@ class VirtueMartControllerUser extends JController
 			$data['vendor_store_name'] = JRequest::getVar('vendor_store_name','','post','STRING',JREQUEST_ALLOWHTML);
 			$data['vendor_store_desc'] = JRequest::getVar('vendor_store_desc','','post','STRING',JREQUEST_ALLOWHTML);
 			$data['vendor_terms_of_service'] = JRequest::getVar('vendor_terms_of_service','','post','STRING',JREQUEST_ALLOWHTML);
-
-			$ret = $userModel->store($data);
+			if($currentUser->id==0 ){
+			    $ret = $userModel->store($data);
+			}
 			$msg = (is_array($ret)) ? $ret['message'] : $ret;
+
+			if (is_array($ret) && $ret['success']) {
+
+			    // Username and password must be passed in an array
+			    $credentials = array('username' => $ret['user']->username,
+				'password' => $ret['user']->password_clear
+			    );
+			    $return = $mainframe->login($credentials);
+
+			}
 
 		}
 

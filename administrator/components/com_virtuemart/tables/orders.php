@@ -126,7 +126,7 @@ class TableOrders extends VmTable {
 				.	' virtuemart_order_history_id'
 				.	',virtuemart_order_id'
 				.	',order_status_code'
-				.	',date_added'
+				.	',created_on'
 				.	',customer_notified'
 				.	',comments'
 				.') VALUES ('

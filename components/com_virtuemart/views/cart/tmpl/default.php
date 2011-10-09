@@ -42,7 +42,15 @@ JHTML::_ ( 'behavior.modal' );
 <div class="clear"></div>
 </div>
 
-<?php // Continue and Checkout Button
+
+
+<?php
+echo $this->loadTemplate('login');
+
+
+//
+//
+//// Continue and Checkout Button
 /* The problem here is that we use a form for the quantity boxes and so we cant let the form start here,
  * because we would have then a form in a form.
  *
