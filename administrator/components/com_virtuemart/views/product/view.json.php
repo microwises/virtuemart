@@ -34,7 +34,7 @@ class VirtuemartViewProduct extends JView {
 
 		//$this->loadHelper('customhandler');
 
-		$filter = JRequest::getVar('q', false);
+		$filter = JRequest::getVar('q', JRequest::getVar('term', false) );
 		$type = JRequest::getWord('type', false);
 		$id = JRequest::getInt('id', false);
 		$row = JRequest::getInt('row', false);
@@ -46,65 +46,63 @@ class VirtuemartViewProduct extends JView {
 		if ($type=='relatedproducts') {
 			$query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
 				FROM #__virtuemart_products";
-			if ($filter) $query .= " WHERE product_name LIKE '%". $db->getEscaped( $filter, true ) ."%' or product_sku LIKE '%". $db->getEscaped( $filter, true ) ."%' limit 0,50";
-				$db->setQuery($query);
-				echo json_encode($db->loadObjectList());
-				return;
-		} else if ($type=='products') {
-
+			if ($filter) $query .= " WHERE product_name LIKE '%". $db->getEscaped( $filter, true ) ."%' or product_sku LIKE '%". $db->getEscaped( $filter, true ) ."%' limit 0,10";
+			$db->setQuery($query);
+			$json = $db->loadObjectList();
+				// echo json_encode($db->loadObjectList());
+				// return;
+		//} else if ($type=='products') {
 			$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type ="R" ';
 			$db->setQuery($query);
 			$customs = $db->loadObject();
-			$customs->custom_value = $id;
-			// $query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
-				// FROM #__virtuemart_products WHERE virtuemart_product_id =".$id;
-			// $db->setQuery($query);
-			// $field = $db->loadObject();
-			$html = array ();
-			$display = $model->inputType($customs,$id,$row);
-			$html[] = '<div class="vm_thumb_image">
-				<span>'.$display.'</span>
-				<input type="hidden" value="R" name="field['.$row.'][field_type]" />
-				<input type="hidden" value="'.$customs->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
+			foreach ($json as &$product) {
 
-				<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
-				<span class="vmicon vmicon-16-default-off"></span>
-				<div class="trash"></div></div>';
+				$customs->custom_value = $product->id;
+				// $query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
+					// FROM #__virtuemart_products WHERE virtuemart_product_id =".$id;
+				// $db->setQuery($query);
+				// $field = $db->loadObject();
+				//$html = array ();
+				$display = $model->inputType($customs,$product->id,$row);
+				$html = '<div class="vm_thumb_image">
+					<span>'.$display.'</span>
+					<input type="hidden" value="R" name="field['.$row.'][field_type]" />
+					<input type="hidden" value="'.$customs->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
 
-				$json['table'] = 'products';
-			$json['value'] = $html;
-			$json['ok'] = $id ;
+					<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
+					<div class="trash"></div></div>';
+
+					
+				$product->label = $html;
+				
+			}
 		}else if ($type=='relatedcategories') {
 			$query = "SELECT virtuemart_category_id AS id, CONCAT(category_name, '::', virtuemart_category_id) AS value
 				FROM #__virtuemart_categories ";
-			if ($filter) $query .= " WHERE category_name LIKE '%". $db->getEscaped( $filter, true ) ."%' limit 0,50";
+			if ($filter) $query .= " WHERE category_name LIKE '%". $db->getEscaped( $filter, true ) ."%' limit 0,10";
 			$db->setQuery($query);
-			if ($result = $db->loadObjectList() ) echo json_encode($result);
-			else echo $db->_sql;
-			return;
-
-		} else if ($type=='categories') {
-
+			$json = $db->loadObjectList();
 			$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type = "Z" ';
 			$db->setQuery($query);
 			$customs = $db->loadObject();
-			$customs->custom_value = $id;
+			foreach ($json as &$category) {
+
+			$customs->custom_value = $category->id;
 
 			// $query = "SELECT virtuemart_category_id AS id, category_name AS value
 				// FROM #__virtuemart_categories WHERE virtuemart_category_id =".$id;
 			// $db->setQuery($query);
 			// $field = $db->loadObject();
-			$html = array ();
-			$display = $model->inputType($customs,$id,$row);
-			$html[] = '<div class="vm_thumb_image">
+			$display = $model->inputType($customs,$category->id,$row);
+			$html = '<div class="vm_thumb_image">
 				<span>'.$display.'</span>
 				<input type="hidden" value="Z" name="field['.$row.'][field_type]" />
 				<input type="hidden" value="'.$customs->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
 				<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
 				<div class="trash"></div></div>';
-			$json['table'] = '#categories';
-			$json['value'] = $html;
-			$json['ok'] = $id ;
+				$category->label = $html;
+				
+			}
 		} else if ($type=='custom') {
 			$query = "SELECT CONCAT(virtuemart_custom_id, '|', custom_value, '|', field_type) AS id, CONCAT(custom_title, '::', custom_tip) AS value
 				FROM #__virtuemart_customs";

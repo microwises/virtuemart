@@ -36,7 +36,6 @@ defined('_JEXEC') or die('Restricted access');
 
 						$tables['categories'] .=  '<div class="vm_thumb_image">
 							<span>'.$customRow->display.'</span>
-							<span>'.JText::_($this->fieldTypes[$customRow->field_type]).'</span>
 							<input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
 							<input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
 							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
@@ -180,37 +179,29 @@ defined('_JEXEC') or die('Restricted access');
 		jQuery('select#'+from+' :selected').remove()
 	}
 
-	function customautocomplete( $type ,$id) {
-		jQuery('input#related'+$type+'Search').autocomplete('index.php?option=com_virtuemart&view=product&task=getData&format=json&type=related'+$type, {
-			mustMatch: false,
-			max : 50,
-			dataType: "json",
-			minChars:2,
-			cacheLength:20,
-			parse: function(data) {
-				return jQuery.map(data, function(row) {
-					return {
-						data: row,
-						value: row.value,
-						result: row.value
-					}
-				});
-			},
-			formatItem: function(item) {
-				return item.value;
-			}
-		}).result(function(e, item) {
-			jQuery.getJSON('index.php?option=com_virtuemart&view=product&task=getData&format=json&type='+$type+'&id='+item.id+'&row='+nextCustom+'&virtuemart_'+$type+'_id='+$id,
-				function(data) {
-					jQuery.each(data.value, function(index, value){
-						jQuery("#custom_"+$type).append(value);
-					});
-				});
+	jQuery('input#relatedproductsSearch').autocomplete({
+
+		source: 'index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts&row='+nextCustom,
+		select: function(event, ui){
+			jQuery("#custom_products").append(ui.item.label);
 			nextCustom++;
+			jQuery(this).autocomplete( "option" , 'source' , 'index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts&row='+nextCustom )
+			jQuery('input#relatedcategoriesSearch').autocomplete( "option" , 'source' , 'index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
+		},
+		minLength:1,
+		html: true
+	});	
+	jQuery('input#relatedcategoriesSearch').autocomplete({
 
-		});
+		source: 'index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom,
+		select: function(event, ui){
+			jQuery("#custom_categories").append(ui.item.label);
+			nextCustom++;
+			jQuery(this).autocomplete( "option" , 'source' , 'index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
+			jQuery('input#relatedproductsSearch').autocomplete( "option" , 'source' , 'index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts&row='+nextCustom )
+		},
+		minLength:1,
+		html: true
+	});
 
-	}
-	customautocomplete( 'products' ,<?php echo (int)$this->product->virtuemart_product_id; ?>) 
-	customautocomplete( 'categories' ,<?php echo (int)$this->product->virtuemart_category_id; ?>) 
 </script>
