@@ -7,7 +7,7 @@ span.custom-variant-inputbox input.custom-attribute:hover,span.quantity-box inpu
 .product-neighbours a.previous-page{background:url(../images/vmgeneral/previous_16x16.png) no-repeat left;padding-left:30px;line-height:20px;float:left;}
 .productdetails-view h1{font-size:22px;margin:0 0 6px;padding:0;}
 .productdetails-view .product-short-description{margin:0 0 15px;padding:0;}
-.productdetails-view .product-description{margin:15px 0;}
+.productdetails-view .product-description,.product-fields{margin:15px 0;}
 span.title{font-weight:700;display:block;border-bottom:solid #CAC9C9 1px;font-size:14px;margin:0 0 6px;}
 .product-packaging{margin:15px 0 0;}
 .icons{text-align:right;float:right;margin:0 0 10px 30px;}
@@ -175,3 +175,5 @@ td.orders-key{font-weight: bold; text-align: left; }
 
 /* Manufacturer View Default */
 .manufacturer-view-default .row .manufacturer .spacer {padding: 6px;}
+.product-field-display a img{display: block;}
+.product-related-products, .product-related-categories{border-top:solid #ccc 1px;padding-bottom: 10px;}

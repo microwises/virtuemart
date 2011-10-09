@@ -270,8 +270,8 @@ if (empty ( $this->product )) {
 		<span class="title"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_DESC_TITLE') ?></span>
 		<?php echo $this->product->product_desc; ?>
 	</div>
-	<?php } // Product Description END ?>
-	<?php
+	<?php } // Product Description END 
+
 	if (!empty($this->product->customfields)) { ?>
 		<div class="product-fields">
 		<?php
@@ -290,9 +290,9 @@ if (empty ( $this->product )) {
 		} ?>
 		</div>
 		<?php
-	} // Product custom_fields END ?>
+	} // Product custom_fields END 
 
-	<?php // Product Packaging
+	// Product Packaging
 	$product_packaging = '';
 	if ($this->product->packaging || $this->product->box) { ?>
 	<div class="product-packaging">
@@ -318,86 +318,38 @@ if (empty ( $this->product )) {
 		// $link = JRoute::_('index.php?view=productdetails&task=getfile&virtuemart_media_id='.$file->virtuemart_media_id.'&virtuemart_product_id='.$this->product->virtuemart_product_id);
 		// echo JHTMl::_('link', $link, $file->file_title.$filesize_display, array('target' => $target));
 	// }
-	?>
-
-	<?php // Related Products
-/*	if ($this->product->related && !empty($this->product->related)) {
-		$iRelatedCol = 1;
-		$iRelatedProduct = 1;
-		$RelatedProducts_per_row = 4 ;
-		$Relatedcellwidth = ' width'.floor ( 100 / $RelatedProducts_per_row );
-		$verticalseparator = " vertical-separator"; ?>
-
-		<div class="related-products-view">
-			<h4><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS_HEADING') ?></h4>
-
-		<?php // Start the Output
-		foreach ($this->product->related as $rkey => $related) {
-
-			// Show the horizontal seperator
-			if ($iRelatedCol == 1 && $iRelatedProduct > $RelatedProducts_per_row) { ?>
-				<div class="horizontal-separator"></div>
-			<?php }
-
-			// this is an indicator wether a row needs to be opened or not
-			if ($iRelatedCol == 1) { ?>
-				<div class="row">
-			<?php }
-
-			// Show the vertical seperator
-			if ($iRelatedProduct == $RelatedProducts_per_row or $iRelatedProduct % $RelatedProducts_per_row == 0) {
-				$show_vertical_separator = ' ';
-			} else {
-				$show_vertical_separator = $verticalseparator;
-			}
-
-					// Show Products ?>
-					<div class="product floatleft<?php echo $Relatedcellwidth . $show_vertical_separator ?>">
-						<div class="spacer">
-							<div>
-								<h3><?php echo JHTML::_('link', $related->link, $related->product_name); ?></h3>
-
-								<?php // Product Image
-								echo JHTML::link($related->link, $related->images[0]->displayMediaThumb('title="'.$related->product_name.'"')); ?>
-
-								<div class="product-price">
-								<?php /** @todo Format pricing  ?>
-								<?php if (is_array($related->price)) echo $related->price['salesPrice']; ?>
-								</div>
-
-								<div>
-								<?php // Product Details Button
-								echo JHTML::link($related->link, JText::_ ( 'COM_VIRTUEMART_PRODUCT_DETAILS' ), array ('title' => $related->product_name, 'class' => 'product-details' ) ); ?>
-								</div>
-							</div>
-						<div class="clear"></div>
-						</div>
-					</div>
-			<?php
-			$iRelatedProduct ++;
-
-			// Do we need to close the current row now?
-			if ($iRelatedCol == $RelatedProducts_per_row) { ?>
-				<div class="clear"></div>
-				</div>
-			<?php
-			$iRelatedCol = 1;
-			} else {
-				$iRelatedCol ++;
-			}
-		}
-		// Do we need a final closing row tag?
-		if ($iRelatedCol != 1) { ?>
-			<div class="clear"></div>
+	if (!empty($this->product->customfieldsRelatedProducts)) { ?>
+		<div class="product-related-products">
+		<h4><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS'); ?></h4>
+		
+		<?php
+		foreach ($this->product->customfieldsRelatedProducts as $field){
+			?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
+			<span class="product-field-display"><?php echo $field->display ?></span>
+			<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?></span>
 			</div>
-		<?php } ?>
+			<?php
+		} ?>
 		</div>
-	<?php } */ ?>
+		<?php
+	} // Product customfieldsRelatedProducts END 
 
+	if (!empty($this->product->customfieldsRelatedCategories)) { ?>
+		<div class="product-related-categories">
+		<h4><?php echo JText::_('COM_VIRTUEMART_RELATED_CATEGORIES'); ?></h4>
+		<?php
+		foreach ($this->product->customfieldsRelatedCategories as $field){
+			?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
+			<span class="product-field-display"><?php echo $field->display ?></span>
+			<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?></span>
+			</div>
+			<?php
+		} ?>
+		</div>
+		<?php
+	} // Product customfieldsRelatedCategories END 
 
-
-
-	<?php // Show child categories
+	// Show child categories
 	if ( VmConfig::get('showCategory',1) ) {
 		if ($this->category->haschildren) {
 			$iCol = 1;
