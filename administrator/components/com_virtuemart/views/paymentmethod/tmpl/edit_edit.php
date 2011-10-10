@@ -73,14 +73,14 @@ defined('_JEXEC') or die('Restricted access');
       	<td class="key"><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_DISCOUNT_MAX_AMOUNT_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_DISCOUNT_MAX_AMOUNT') ?></span></td>
       	<td width="69%" >
       	<input type="text" class="inputbox" name="discount_max_amount" value="<?php	echo $this->paym->discount_max_amount;?>" size="4" />
-
+	<?php echo $this->vendor_currency;   ?>
       </td>
     </tr>
         <tr  >
       	<td class="key"><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_DISCOUNT_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_DISCOUNT_MIN_AMOUNT') ?></td>
       	<td width="69%" >
       	<input type="text" class="inputbox" name="discount_min_amount" value="<?php	echo $this->paym->discount_min_amount;?>" size="4" />
-
+	<?php echo $this->vendor_currency;   ?>
       </td>
     </tr>
     <tr  >

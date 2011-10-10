@@ -109,10 +109,10 @@ AdminUIHelper::startAdminArea();
 					<?php echo ($row->discount_is_percentage?'%':JText::_('COM_VIRTUEMART_TOTAL') ); ?>
 				</td>
 				<td>
-					<?php echo $row->discount_min_amount; ?>
+					<?php echo $row->discount_min_amount; ?> <?php echo $this->vendor_currency;   ?>
 				</td>
 				<td>
-					<?php echo $row->discount_max_amount; ?>
+					<?php echo $row->discount_max_amount; ?> <?php echo $this->vendor_currency;   ?>
 				</td>
 <?php /*				<td>
 					<?php

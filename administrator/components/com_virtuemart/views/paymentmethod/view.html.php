@@ -4,8 +4,9 @@
 * Calc View
 *
 * @package	VirtueMart
-* @subpackage Calculation tool
+* @subpackage Payment Method
 * @author Max Milbers
+ * @author valérie isaksen
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -26,9 +27,12 @@ jimport( 'joomla.application.component.view');
  * Description
  *
  * @package		VirtueMart
- * @author
+ * @author valérie isaksen
  */
-
+if (!class_exists('VirtueMartModelCurrency'))
+    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
+if (!class_exists('VirtueMartModelVendor'))
+    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 class VirtuemartViewPaymentMethod extends JView {
 
 	function display($tpl = null) {
@@ -52,6 +56,24 @@ class VirtuemartViewPaymentMethod extends JView {
 		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getWord('layout', 'default');
+
+		if(Vmconfig::get('multix','none')!=='none'){
+				$vendorList= ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
+				$this->assignRef('vendorList', $vendorList);
+			}
+
+			 $vendorModel = new VirtueMartModelVendor();
+
+	     if (Vmconfig::get('multix', 'none') !== 'none') {
+		$vendorList = ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
+		$this->assignRef('vendorList', $vendorList);
+	    }
+	    $vendorModel->setId(1);
+	    $vendor = $vendorModel->getVendor();
+	    $currencyModel = new VirtueMartModelCurrency();
+	    $currencyModel = $currencyModel->getCurrency($vendor->vendor_currency);
+	    $this->assignRef('vendor_currency', $currencyModel->currency_symbol);
+
 		if ($layoutName == 'edit') {
 
 		// Load the helper(s)
@@ -74,7 +96,7 @@ class VirtuemartViewPaymentMethod extends JView {
 				$vendorList= ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
 				$this->assignRef('vendorList', $vendorList);
 			}
-
+ 
 			ShopFunctions::addStandardEditViewCommands();
 		} else {
 
