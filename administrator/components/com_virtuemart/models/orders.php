@@ -160,6 +160,7 @@ class VirtueMartModelOrders extends VmModel {
 		$db->setQuery($q);
 		$order['items'] = $db->loadObjectList();
 
+		vmdebug('getOrder my order',$order);
 		return $order;
 	}
 
@@ -550,10 +551,11 @@ class VirtueMartModelOrders extends VmModel {
 			$_orderData->coupon_discount = $_prices['salesPriceCoupon'];
 		}
 		$_orderData->order_discount = $_prices['discountAmount'];
-// 		$_orderData->order_currency = null; // TODO; Max: the currency should be in the cart somewhere!
-		$_orderData->order_status = 'P'; // TODO; when flows are implemented (1.6?); look it up
-		if (isset($_cart->virtuemart_currency_id)) {
-			$_orderData->user_currency_id = $_cart->virtuemart_currency_id;
+
+		$_orderData->order_status = 'P';
+// 		if (isset($_cart->virtuemart_currency_id)) {
+		if (isset($_cart->pricesCurrency)) {
+			$_orderData->user_currency_id = $_cart->pricesCurrency;
 			$_orderData->user_currency_rate = $_cart->currency_rate;
 		}
 		$_orderData->payment_method_id = $_cart->virtuemart_paymentmethod_id;

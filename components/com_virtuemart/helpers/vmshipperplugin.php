@@ -169,7 +169,7 @@ abstract class vmShipperPlugin extends JPlugin {
 		foreach($user->shopper_groups as $groups){
 			$q .= 's.`virtuemart_shoppergroup_id`= "' . (int) $groups . '" OR';
 		}
-		$q .= ' ISNULL(s.`virtuemart_shoppergroup_id`) )';
+		$q .= ' ISNULL(s.`virtuemart_shoppergroup_id`) ) ORDER BY v.`ordering`';
 
 		$db->setQuery($q);
 		if (!$results = $db->loadObjectList()) {

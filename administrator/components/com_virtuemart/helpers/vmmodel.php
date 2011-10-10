@@ -295,12 +295,11 @@ class VmModel extends JModel {
 			$limitStart = ceil((float)$limitStart/(float)$limit) * $limit;
 		}
 
-// 		vmdebug('$limitStart',$limitStart);
-
 		$this->setState('limitstart', $limitStart);
 
 		return array($limitStart,$limit);
 	}
+
 
 	public function setGetCount($withCount){
 

@@ -1010,20 +1010,7 @@ class VirtueMartCart {
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart') );
 			}
 			$this->virtuemart_order_id = $orderID;
-			// Email sent when Payment reponse received
-			//$this->sentOrderConfirmedEmail($order->getOrder($orderID));
-			/*
-				//We delete the old stuff
-			$this->products = array();
-			$this->_inCheckOut = false;
-			$this->_dataValidated = false;
-			$this->_confirmDone = false;
-			$this->customer_comment = '';
-			$this->couponCode = '';
-			$this->tosAccepted = false;
 
-			$this->setCartIntoSession();
-			*/
 			$cart = $this->getCart();
 			$dispatcher = JDispatcher::getInstance();
 			$html="";
@@ -1040,15 +1027,16 @@ class VirtueMartCart {
 						$this->sentOrderConfirmedEmail($order->getOrder($orderID));
 
 						//We delete the old stuff
-						$this->products = array();
-						$this->_inCheckOut = false;
-						$this->_dataValidated = false;
-						$this->_confirmDone = false;
-						$this->customer_comment = '';
-						$this->couponCode = '';
-						$this->tosAccepted = false;
+						$this->emptyCart();
+// 						$this->products = array();
+// 						$this->_inCheckOut = false;
+// 						$this->_dataValidated = false;
+// 						$this->_confirmDone = false;
+// 						$this->customer_comment = '';
+// 						$this->couponCode = '';
+// 						$this->tosAccepted = false;
 
-						$this->setCartIntoSession();
+// 						$this->setCartIntoSession();
 						JRequest::setVar('html' , $html);
 					} elseif ($returnValue == 0 )   {
 						JRequest::setVar('html' , $html);
@@ -1098,6 +1086,7 @@ class VirtueMartCart {
 	 */
 	public function executeConfirmedOrder(){
 
+		VmError('Deprecated function executeConfirmedOrder called');
 		$order = new VirtueMartModelOrders();
 		if (($orderID = $order->createOrderFromCart($this)) === false) {
 			$mainframe = JFactory::getApplication();
@@ -1122,7 +1111,7 @@ class VirtueMartCart {
 	 */
 	function sentOrderConfirmedEmail ($order) {
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-
+		vmdebug('sentOrderConfirmedEmail my order',$order);
 		$vars = array('order' => $order);
 		$vars['shopperName'] =  $order['details']['BT']->title.' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name;
 
