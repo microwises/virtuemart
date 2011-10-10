@@ -375,6 +375,13 @@ class VirtueMartModelCustomfields extends VmModel {
 					
 				return $html.$retValue.$priceInput;
 				break;
+				case 'D':
+					return vmJsApi::jDate($field->custom_value, 'field['.$row.'][custom_value]','field_'.$row.'_customvalue').$priceInput;
+				break;
+				case 'T':
+					//TODO Patrick
+					return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" /></td><td>'.$priceInput;
+				break;
 				/* string or integer */
 				case 'S':
 				case 'I':
@@ -636,10 +643,10 @@ class VirtueMartModelCustomfields extends VmModel {
 					/* Loads the product price details */
 					return '<input type="text" value="'.JText::_($value).'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
 					break;
-				/*userfield variants*/
-				case 'U':
-					return '<input type="text" value="'.JText::_($value).'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
-					break;				/*userfield variants*/
+				/*Date variant*/
+				case 'D':
+					return '<span class="product_custom_date">'.vmJsApi::date($value,'LC1',true).'</span>';//vmJsApi::jDate($field->custom_value, 'field['.$row.'][custom_value]','field_'.$row.'_customvalue').$priceInput;
+				break;
 				/* string or integer */
 				case 'S':
 				case 'I':

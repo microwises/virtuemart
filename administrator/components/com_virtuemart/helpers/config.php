@@ -680,30 +680,33 @@ class vmJsApi{
 	}
 
 	// Virtuemart Datepicker script
-	function jDate($value='',$name="date",$class='class="datepicker"') {
+	function jDate($value='',$name="date",$id=null) {
 		if ($value == "0000-00-00 00:00:00") $value= date("Y-m-d") ;
+		if (empty($id)) $id = $name ;
 		if ( !VmConfig::isJ15()) $J16 = "_J16"; else $J16 ="";
 		static $jDate;
 		$displayDate = self::date($value,'INPUT');
-		$display= '<input id="'.$name.'_text" '.$class.' type="date" name="'.$name.'" value="'.$displayDate.'" />';
-		$display.= '<input id="'.$name.'" type="hidden" name="'.$name.'" value="'.$value.'" />';
+		$display= '<input id="'.$id.'_text" class="datepicker" type="date" name="'.$name.'" value="'.$displayDate.'" />';
+		$display.= '<input id="'.$id.'" type="hidden" name="'.$name.'" value="'.$value.'" />';
+
+		// If exist exit
+		if ($jDate) return $display;
+		$front = JURI::root(true).'/components/com_virtuemart/assets/';
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration('
 		jQuery(document).ready( function() {
-			jQuery( "#'.$name.'_text" ).datepicker({
-			changeMonth: true,
-			changeYear: true,
-			dateFormat:"'.JText::_('COM_VIRTUEMART_DATE_FORMAT_INPUT_JS').'",
-			altField:"#'.$name.'",
-			altFormat: "yy-mm-dd"
+			jQuery("#adminform").delegate(".datepicker","focus", function() {
+				jQuery( this ).datepicker({
+					changeMonth: true,
+					changeYear: true,
+					dateFormat:"'.JText::_('COM_VIRTUEMART_DATE_FORMAT_INPUT_JS').'",
+					altField: jQuery(this).next("input"),
+					altFormat: "yy-mm-dd"
+				});
 			});
 
 		});
 		');
-		// If exist exit
-		if ($jDate) return $display;
-		$front = JURI::root(true).'/components/com_virtuemart/assets/';
-
 		//$document->addScript($front.'js/jquery.ui.core.min.js');
 		//$document->addScript($front.'js/jquery.ui.datepicker.min.js');
 		$document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
