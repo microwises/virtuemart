@@ -49,7 +49,7 @@ class AdminUIHelper {
 		$document->addScript($front.'js/fancybox/jquery.mousewheel-3.0.4.pack.js');
 		$document->addScript($front.'js/fancybox/jquery.easing-1.3.pack.js');
 		$document->addScript($front.'js/fancybox/jquery.fancybox-1.3.4.pack.js');
-		$document->addScript($admin.'js/jquery.cookie.js');
+		$document->addScript($admin.'js/jquery.coookie.js');
 		$document->addScript($front.'js/chosen.jquery.min.js');
 		$document->addScript($admin.'js/vm2admin.js');
 		//$document->addScript($admin.'js/jquery.jqtransform.js');
