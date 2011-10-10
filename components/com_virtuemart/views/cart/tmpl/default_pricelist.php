@@ -213,17 +213,19 @@
 		if (VmConfig::get('coupons_enable')) {
 		?>
 			<tr class="sectiontableentry2">
-				<td colspan="2" align="left">
+				<td colspan="4" align="left">
 		    <?php if(!empty($this->layoutName) && $this->layoutName=='default')
 			   // echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_coupon',$this->useXHTML,$this->useSSL), JText::_('COM_VIRTUEMART_CART_EDIT_COUPON'));
-				echo $this->loadTemplate('coupon');
+
 				?>
-				</td>
+
 				<?php if (!empty($this->cart->cartData['couponCode'])) { ?>
-					<td colspan="2" align="left"><?php
+					 <br /><?php
 						echo $this->cart->cartData['couponCode'] ;
                                                 echo $this->cart->cartData['couponDescr'] ? (' (' . $this->cart->cartData['couponDescr'] . ')' ): '';
-					?> </td>
+					echo $this->loadTemplate('coupon');
+						?>
+				</td>
 
                                         <?php if ( VmConfig::get('show_tax')) { ?>
 					<td align="right"><?php echo $this->cart->prices['couponTax']; ?> </td>

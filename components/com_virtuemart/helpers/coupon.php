@@ -67,7 +67,7 @@ abstract class CouponHelper
 			return JText::_('COM_VIRTUEMART_COUPON_CODE_EXPIRED');
 		}
 		if ($_billTotal < $couponData->coupon_value_valid) {
-			return JText::_('COM_VIRTUEMART_COUPON_CODE_TOOLOW') . $couponData->coupon_value_valid;
+			return JText::_('COM_VIRTUEMART_COUPON_CODE_TOOLOW') . " ".$couponData->coupon_value_valid;
 		}
 
 		return '';
