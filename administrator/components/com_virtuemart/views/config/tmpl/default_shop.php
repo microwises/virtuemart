@@ -136,6 +136,17 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 	</td>
 	</tr>
+	<td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_CONTENT_PLUGIN_EXPLAIN'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_CONTENT_PLUGIN') ?>
+		</span>
+		</td>
+		<td>
+		<?php
+			echo VmHTML::checkbox('enable_content_plugin', $this->config->get('enable_content_plugin','0'));
+		?>
+	</td>
+	</tr>
 
 	<tr>
 	<td class="key">

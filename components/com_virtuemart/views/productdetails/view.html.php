@@ -94,15 +94,17 @@ class VirtueMartViewProductdetails extends JView {
 
 			return;
 		}
-		// add content plugin //
-        $dispatcher	=& JDispatcher::getInstance();
-        JPluginHelper::importPlugin('content');
-        $product->text = $product->product_desc;
-		$params = "";
-        $results = $dispatcher->trigger('onPrepareContent',
-		array (& $product, & $params, 0));
-        $product->product_desc = $product->text;
-		
+		if ( VmConfig::get('enable_content_plugin',0)) {
+			// add content plugin //
+			$dispatcher	=& JDispatcher::getInstance();
+			JPluginHelper::importPlugin('content');
+			$product->text = $product->product_desc;
+			$params = "";
+
+			$results = $dispatcher->trigger('onPrepareContent',
+			array (& $product, & $params, 0));
+			$product->product_desc = $product->text;
+		}
 		$product_model->addImages($product);
 		$this->assignRef('product', $product);
 
