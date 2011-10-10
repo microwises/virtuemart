@@ -143,14 +143,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <script type="text/javascript">
 	nextCustom = <?php echo $i ?>;
-	// jQuery("#custom_field").sortable(
-			// update: function(event, ui) {
-				// var fruitOrder = $(this).sortable('toArray').toString();
-				// console.log(fruitOrder);
-				// $.get('update-sort.cfm', {fruitOrder:fruitOrder});
-			// }
-	
-	// );
+
 	jQuery(document).ready(function(){
 		jQuery('#custom_field').sortable({
 			update: function(event, ui) {
@@ -174,10 +167,6 @@ defined('_JEXEC') or die('Restricted access');
 		});
 		nextCustom++;
 	});
-
-	function removeSelectedOptions(from) {
-		jQuery('select#'+from+' :selected').remove()
-	}
 
 	jQuery('input#relatedproductsSearch').autocomplete({
 
