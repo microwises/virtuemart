@@ -56,7 +56,7 @@ function virtuemartBuildRoute(&$query) {
 			if ( isset($query['start'] )) {
 				$segments[] = $lang['page'] ;
 				$mainframe = Jfactory::getApplication(); ;
-				$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+				$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', VmConfig::get('list_limit', 20), 'int');
 				$segments[] = floor($query['start']/$limit)+1;
 				unset($query['start']);
 			}
@@ -217,7 +217,7 @@ function virtuemartParseRoute($segments) {
 		array_shift($segments);
 
 		$mainframe = Jfactory::getApplication();
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', VmConfig::get('list_limit', 20), 'int');
 		$vars['limitstart'] = (array_shift($segments)*$limit)-1;
 		if (empty($segments)) return $vars;
 	}

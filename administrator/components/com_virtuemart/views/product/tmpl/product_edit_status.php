@@ -83,14 +83,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					</td>
 					<td width="79%" >
 						<input type="text" class="inputbox" id="product_availability" name="product_availability" value="<?php echo $this->product->product_availability; ?>" />
-						<?php echo JHTML::tooltip(JText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP1'), JText::_('COM_VIRTUEMART_AVAILABILITY'), 'tooltip.png', '', '', false); ?>
-						<script type="text/javascript">
-							jQuery('#image').live('click', function() { jQuery('#product_availability').val(jQuery('#image').val()); })
-						</script>
-						<?php
-						echo JHTML::_('list.images', 'image', $this->product->product_availability, null, $this->imagePath);
-						echo JHTML::tooltip(str_replace('%s', $this->imagePath, JText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP2')), JText::_('COM_VIRTUEMART_AVAILABILITY'), 'tooltip.png', '', '', false); 
-						?> 
+						<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>'.JText::_('COM_VIRTUEMART_AVAILABILITY').'</b><br/ >'.JText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP1') ?>"></span>
+						
+						<?php echo JHTML::_('list.images', 'image', $this->product->product_availability, " ", $this->imagePath); ?>
+						<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>'.JText::_('COM_VIRTUEMART_AVAILABILITY').'</b><br/ >'.JText::sprintf('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP2',  $this->imagePath ) ?>"></span>
 					</td>
 				</tr>
 				<tr>
@@ -105,4 +101,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</td>
 	</tr>
 </table>
-
+<script type="text/javascript">
+	jQuery('#image').change( function() { 
+		var $newimage = jQuery(this).val();
+		jQuery('#product_availability').val($newimage);
+		jQuery('#imagelib').attr({ src:'<?php echo JURI::root(true).$this->imagePath ?>'+$newimage, alt:$newimage });
+		})
+</script>

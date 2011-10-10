@@ -43,5 +43,5 @@ echo  $this->loadTemplate('pricelist');
 // more infos
 //echo $this->loadTemplate($this->recipient.'_more');
 // end of mail
-// echo $this->loadTemplate('footer');
+echo $this->loadTemplate('footer');
 ?>
