@@ -101,7 +101,7 @@ class VirtueMartViewCart extends JView {
 			$cart->prepareAddressRadioSelection();
 
 			$this->prepareContinueLink();
-
+			$this->lSelectCoupon();
 			if($cart->getDataValidated()){
 				$pathway->addItem(JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
 				$document->setTitle(JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
@@ -179,6 +179,8 @@ class VirtueMartViewCart extends JView {
 	private function lSelectCoupon(){
 
 		$this->couponCode =  (isset($this->cartData['couponCode']) ? $this->cartData['couponCode'] : '');
+		 $coupon_text=$this->couponCode ?  JText::_('COM_VIRTUEMART_COUPON_CODE_CHANGE'): JText::_('COM_VIRTUEMART_COUPON_CODE_CHANGE');
+		 $this->assignRef('coupon_text', $coupon_text);
 	}
 
 	private function lSelectShipper(){

@@ -6,6 +6,7 @@
 * @package	VirtueMart
 * @subpackage Coupon
 * @author RickG
+ * @author Valerie Isaksen
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -28,7 +29,13 @@ jimport( 'joomla.application.component.view');
  * @package	VirtueMart
  * @subpackage Coupon
  * @author RickG
+ * @author Valerie Isaksen
  */
+
+if (!class_exists('VirtueMartModelCurrency'))
+    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
+if (!class_exists('VirtueMartModelVendor'))
+    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 class VirtuemartViewCoupon extends JView {
 
 	function display($tpl = null) {
@@ -44,6 +51,25 @@ class VirtuemartViewCoupon extends JView {
 		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getWord('layout', 'default');
+
+
+		if(Vmconfig::get('multix','none')!=='none'){
+				$vendorList= ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
+				$this->assignRef('vendorList', $vendorList);
+			}
+
+			 $vendorModel = new VirtueMartModelVendor();
+
+	     if (Vmconfig::get('multix', 'none') !== 'none') {
+		$vendorList = ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
+		$this->assignRef('vendorList', $vendorList);
+	    }
+	    $vendorModel->setId(1);
+	    $vendor = $vendorModel->getVendor();
+	    $currencyModel = new VirtueMartModelCurrency();
+	    $currencyModel = $currencyModel->getCurrency($vendor->vendor_currency);
+	    $this->assignRef('vendor_currency', $currencyModel->currency_symbol);
+
 		if ($layoutName == 'edit') {
 			if ($coupon->virtuemart_coupon_id < 1) {
 				// Set a default expiration date
@@ -70,7 +96,7 @@ class VirtuemartViewCoupon extends JView {
 					$_expDate->add(new DateInterval('P'.$_expTime[0].$_expTime[1]));
 					$coupon->coupon_expiry_date = $_expDate->format("U");
 				}
-			} 
+			}
 
 			$this->assignRef('coupon',	$coupon);
 
@@ -88,7 +114,7 @@ class VirtuemartViewCoupon extends JView {
 		$this->assignRef('dateformat',	$dateformat);
 
 
-		
+
 		parent::display($tpl);
 	}
 

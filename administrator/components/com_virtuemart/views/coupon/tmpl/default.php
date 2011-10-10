@@ -71,9 +71,11 @@ AdminUIHelper::startAdminArea();
 		</td>
 		<td>
 			<?php echo JText::_($row->coupon_value); ?>
+		    <?php if ( $row->percent_or_total=='percent') echo '%' ;
+		    else echo $this->vendor_currency;   ?>
 		</td>
 		<td align="left">
-			<?php echo JText::_($row->coupon_value_valid); ?>
+			<?php echo JText::_($row->coupon_value_valid); ?> <?php echo $this->vendor_currency; ?>
 		</td>
 	    </tr>
 		<?php
