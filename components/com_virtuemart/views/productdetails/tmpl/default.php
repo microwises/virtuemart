@@ -115,7 +115,7 @@ if (empty ( $this->product )) {
 				<?php
 				if($this->showRating){
 					$rating = empty($this->rating)? JText::_('COM_VIRTUEMART_UNRATED'):$this->rating->rating;
-					echo JText::_('COM_VIRTUEMART_RATING') . $rating;
+					echo JText::_('COM_VIRTUEMART_RATING') . round($rating, 2);
 				}
 
 				// Product Price
@@ -270,7 +270,7 @@ if (empty ( $this->product )) {
 		<span class="title"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_DESC_TITLE') ?></span>
 		<?php echo $this->product->product_desc; ?>
 	</div>
-	<?php } // Product Description END 
+	<?php } // Product Description END
 
 	if (!empty($this->product->customfields)) { ?>
 		<div class="product-fields">
@@ -290,13 +290,13 @@ if (empty ( $this->product )) {
 		} ?>
 		</div>
 		<?php
-	} // Product custom_fields END 
+	} // Product custom_fields END
 
 	// Product Packaging
 	$product_packaging = '';
 	if ($this->product->packaging || $this->product->box) { ?>
 	<div class="product-packaging">
-		
+
 		<?php
 		if ($this->product->packaging) {
 			$product_packaging .= JText::_('COM_VIRTUEMART_PRODUCT_PACKAGING1').$this->product->packaging;
@@ -321,7 +321,7 @@ if (empty ( $this->product )) {
 	if (!empty($this->product->customfieldsRelatedProducts)) { ?>
 		<div class="product-related-products">
 		<h4><?php echo JText::_('COM_VIRTUEMART_RELATED_PRODUCTS'); ?></h4>
-		
+
 		<?php
 		foreach ($this->product->customfieldsRelatedProducts as $field){
 			?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
@@ -332,7 +332,7 @@ if (empty ( $this->product )) {
 		} ?>
 		</div>
 		<?php
-	} // Product customfieldsRelatedProducts END 
+	} // Product customfieldsRelatedProducts END
 
 	if (!empty($this->product->customfieldsRelatedCategories)) { ?>
 		<div class="product-related-categories">
@@ -347,7 +347,7 @@ if (empty ( $this->product )) {
 		} ?>
 		</div>
 		<?php
-	} // Product customfieldsRelatedCategories END 
+	} // Product customfieldsRelatedCategories END
 
 	// Show child categories
 	if ( VmConfig::get('showCategory',1) ) {
