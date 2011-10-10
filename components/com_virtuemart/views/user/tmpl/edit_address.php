@@ -70,11 +70,11 @@ JHTML::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/asse
 	 } ?>
 	</legend>
 <?php
-	if (VmConfig::get('oncheckout_show_register', 1)) {
-       	echo JText::sprintf('COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER', JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'), JText::_('COM_VIRTUEMART_CHECKOUT_AS_GUEST'));
+// 	if (VmConfig::get('oncheckout_show_register', 1)) {
+//        	echo JText::sprintf('COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER', JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'), JText::_('COM_VIRTUEMART_CHECKOUT_AS_GUEST'));
 //         	echo JText::_(VmConfig::get('oncheckout_show_register_text', $msg));
-	}
- 
+// 	}
+
 ?>
 
 
@@ -90,6 +90,7 @@ if( strpos($this->fTask,'cart') || strpos($this->fTask,'checkout') ){
 }
 
 if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->id === 0) {
+	echo JText::sprintf('COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER', JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'), JText::_('COM_VIRTUEMART_CHECKOUT_AS_GUEST'));
 	vmdebug('my fTask '.$this->fTask);
 	if ($this->fTask === 'savecartuser') {
 		$rtask = 'registercartuser';
