@@ -226,9 +226,7 @@ echo $this->loadTemplate('coupon');
 
 						?>
 
-					   <?php if(!empty($this->layoutName) && $this->layoutName=='default')
-			   // echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_coupon',$this->useXHTML,$this->useSSL), JText::_('COM_VIRTUEMART_CART_EDIT_COUPON'));
-echo $this->loadTemplate('coupon');?>
+					 
 				</td>
 
                                         <?php if ( VmConfig::get('show_tax')) { ?>
