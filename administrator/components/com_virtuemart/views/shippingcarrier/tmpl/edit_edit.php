@@ -45,13 +45,7 @@ defined('_JEXEC') or die('Restricted access');
                     <input class="inputbox" type="text" name="shipping_carrier_desc" id="shipping_carrier_desc" size="80" value="<?php echo $this->carrier->shipping_carrier_desc; ?>" />
                 </td>
             </tr>
-            <tr >
-      <td class="key"><?php echo JText::_('COM_VIRTUEMART_SHIPPING_FORM_SHOPPER_GROUP') ?></td>
-      <td width="69%" ><?php
-		echo $this->shopperGroupList ?>
-      </td>
-    </tr>
-            
+
              <tr>
                 <td width="110" class="key">
                     <label for="shipping">
@@ -59,9 +53,16 @@ defined('_JEXEC') or die('Restricted access');
                     </label>
                 </td>
                 <td>
-<?php echo $this->pluginList; ?>
+						<?php echo $this->pluginList; ?>
                 </td>
             </tr>
+
+            <tr>
+      			<td class="key"><?php echo JText::_('COM_VIRTUEMART_SHIPPING_FORM_SHOPPER_GROUP') ?></td>
+      			<td width="69%" ><?php
+						echo $this->shopperGroupList ?>
+      		</td>
+   		 </tr>
 
             <tr>
                 <td width="110" class="key">
