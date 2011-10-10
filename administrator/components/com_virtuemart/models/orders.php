@@ -556,7 +556,13 @@ class VirtueMartModelOrders extends VmModel {
 // 		if (isset($_cart->virtuemart_currency_id)) {
 		if (isset($_cart->pricesCurrency)) {
 			$_orderData->user_currency_id = $_cart->pricesCurrency;
-			$_orderData->user_currency_rate = $_cart->currency_rate;
+			$currency = CurrencyDisplay::getInstance();
+			if(!empty($currency->exchangeRateShopper)){
+				$_orderData->user_currency_rate = $currency->exchangeRateShopper;
+			} else {
+				$_orderData->user_currency_rate = 1.0;
+			}
+
 		}
 		$_orderData->payment_method_id = $_cart->virtuemart_paymentmethod_id;
 		$_orderData->ship_method_id = $_cart->virtuemart_shippingcarrier_id;
@@ -597,7 +603,7 @@ class VirtueMartModelOrders extends VmModel {
 	private function _writeUserInfo($_id, &$_usr, $_cart)
 	{
 		$_userInfoData = array();
-		$order_userinfosTable = $this->getTable('order_userinfos');
+
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
 
 		//if(!class_exists('shopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
@@ -608,9 +614,11 @@ class VirtueMartModelOrders extends VmModel {
 		, array('username', 'password', 'password2', 'user_is_vendor')
 		);
 
+
 		foreach ($_userFieldsBT as $_fld) {
 			$_name = $_fld->name;
 			if(!empty( $_cart->BT[$_name])){
+
 				$_userInfoData[$_name] = $_cart->BT[$_name];
 			}
 		}
@@ -618,14 +626,16 @@ class VirtueMartModelOrders extends VmModel {
 		$_userInfoData['virtuemart_order_id'] = $_id;
 		$_userInfoData['virtuemart_user_id'] = $_usr->get('id');
 		$_userInfoData['address_type'] = 'BT';
-		if (!$order_userinfosTable->bindChecknStore($_userInfoData)){
-			$this->setError($order_userinfosTable->getError());
 
+		$order_userinfosTable = $this->getTable('order_userinfos');
+		if (!$order_userinfosTable->bindChecknStore($_userInfoData)){
+			vmError($order_userinfosTable->getError());
 			return false;
 		}
 
 		if ($_cart->ST) {
-			$_userInfoData['virtuemart_order_userinfo_id'] = null; // Reset key to make sure it doesn't get overwritten by ST
+			$_userInfoData = array();
+// 			$_userInfoData['virtuemart_order_userinfo_id'] = null; // Reset key to make sure it doesn't get overwritten by ST
 			$_userFieldsST = $_userFieldsModel->getUserFields('shipping'
 			, array('delimiters'=>true, 'captcha'=>true)
 			, array('username', 'password', 'password2', 'user_is_vendor')
@@ -640,8 +650,9 @@ class VirtueMartModelOrders extends VmModel {
 			$_userInfoData['virtuemart_order_id'] = $_id;
 			$_userInfoData['virtuemart_user_id'] = $_usr->get('id');
 			$_userInfoData['address_type'] = 'ST';
+			$order_userinfosTable = $this->getTable('order_userinfos');
 			if (!$order_userinfosTable->bindChecknStore($_userInfoData)){
-				$this->setError($order_userinfosTable->getError());
+				vmError($order_userinfosTable->getError());
 				return false;
 			}
 		}
@@ -727,99 +738,11 @@ class VirtueMartModelOrders extends VmModel {
 		else if (!$isReserved && $wasReserved ) $product_ordered = '-';
 		else $product_ordered = '=';
 
-		// P means ordered, but payment not confirmed, => real stock stays the same => product_in_stock = and product_ordered =
-		/* if($newState=='P'){
-			//for a new order
-			if($oldState=='P'){
-				$product_in_stock = '=';
-				$product_ordered = '=';
-			}
-
-			else if($oldState=='C'){
-				$product_in_stock = '=';
-				$product_ordered = '-';
-			}
-
-			else if($oldState=='S'){
-				$product_in_stock = '+';
-				$product_ordered = '=';
-
-			}
-
-			else if($oldState=='X'){
-
-			}
-
-		}
-		else if($newState=='C'){
-			if($oldState=='P'){
-				$product_in_stock = '=';
-				$product_ordered = '+';
-			}
-
-			else if($oldState=='S'){
-				$product_in_stock = '+';
-				$product_ordered = '+';
-			}
-
-			else if($oldState=='X'){
-
-			}
-		}
-		// S means shipped => means real stock decreased an virtual stock => product_in_stock -  and product_ordered -
-		else if($newState=='S'){
-			// 				$action = 'decreaseStockAfterSales';
-			if($oldState=='P'){
-				$product_in_stock = '-';
-				$product_ordered = '=';
-			}
-
-			else if($oldState=='C'){
-				$product_in_stock = '-';
-				$product_ordered = '-';
-			}
-
-			else if($oldState=='X'){
-
-			}
-
-		}
-		//X Cancelled, we should revert the old stocks, so we different options here,
-		// we have different things todo depending on the state set before
-		else if($newState=='X' || $newState=='R'){
-			if($oldState=='P'){
-				$product_in_stock = '=';
-				$product_ordered = '=';
-			}
-			else if($oldState=='C'){
-				$product_in_stock = '=';
-				$product_ordered = '-';
-
-			}
-			else if($oldState=='S'){
-				$product_in_stock = '+';
-				$product_ordered = '=';
-
-			}
-
-		}
-		else{
-			vmError('The workflow for '.$newState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Cant process workflow, contact the shopowner status '.$newState);
-			// 				$action
-		}
-
-vmdebug( 'updatestock Max ', 'ordered '.$product_ordered.' stock '.$product_in_stock  );*/
-
-// 		foreach ($products as $prod) {
 
 		if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
 		$productModel = new VirtueMartModelProduct();
 
-			$productModel->updateStock ($productId, $quantity,$product_in_stock,$product_ordered);
-
-// 		}
-
-		// 		}
+		$productModel->updateStock ($productId, $quantity,$product_in_stock,$product_ordered);
 
 	}
 

@@ -1028,15 +1028,7 @@ class VirtueMartCart {
 
 						//We delete the old stuff
 						$this->emptyCart();
-// 						$this->products = array();
-// 						$this->_inCheckOut = false;
-// 						$this->_dataValidated = false;
-// 						$this->_confirmDone = false;
-// 						$this->customer_comment = '';
-// 						$this->couponCode = '';
-// 						$this->tosAccepted = false;
 
-// 						$this->setCartIntoSession();
 						JRequest::setVar('html' , $html);
 					} elseif ($returnValue == 0 )   {
 						JRequest::setVar('html' , $html);

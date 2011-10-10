@@ -370,6 +370,7 @@ class VmTable extends JTable{
 		if(!$this->bind($data)){
 			$ok = false;
 			$msg = 'bind';
+			vmdebug('Problem in bind '.get_class($this).' '.$this->_db->getErrorMsg());
 		}
 
 		if($ok){
