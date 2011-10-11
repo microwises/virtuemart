@@ -29,10 +29,10 @@ $root = $u->toString( array( 'scheme', 'host') );
 		?>
 		<table class="cart-summary" cellspacing="0" cellpadding="0" border="0" width="100%">
 			<tr>
-				<th align="left"><?php echo JText::_('COM_VIRTUEMART_CART_NAME') ?></th>
+				<th align="left" width="220px" ><?php echo JText::_('COM_VIRTUEMART_CART_NAME') ?></th>
 				<th align="left" ><?php echo JText::_('COM_VIRTUEMART_CART_SKU') ?></th>
- 				<th align="center" width="100px" ><?php echo JText::_('COM_VIRTUEMART_CART_PRICE') ?></th>
-				<th align="right" width="100px" ><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY') ?></th>
+ 				<th align="center" width="60px" ><?php echo JText::_('COM_VIRTUEMART_CART_PRICE') ?></th>
+				<th align="right" ><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY') ?></th>
 
                                         <?php if ( VmConfig::get('show_tax')) { ?>
                                 <th align="right" width="60px"><?php  echo "<span  style='color:gray'>".JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') ?></th>

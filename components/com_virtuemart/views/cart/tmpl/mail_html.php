@@ -33,6 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 <html>
     <head>
 	<style type="text/css">
+            body, td, span, p, th { font-size: 11px; }
 	    table.html-email {margin:10px auto;background:#fff;border:solid #dad8d8 1px;}
 	    .html-email tr{border-bottom : 1px solid #eee;}
 	    span.grey {color:#666;}
