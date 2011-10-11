@@ -26,7 +26,10 @@ defined('_JEXEC') or die('Restricted access');
 	<td align="right"><span class="date"><?php echo $this->order['details']['BT']->created_on ?></span><br/></td>
   </tr>
   <tr>
-    <td colspan="3" ><?php echo $this->cart->vendor->images[0]->displayMediaThumb('class="product-image"',false,' ')<br/>
-	 echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_SUMMARY',$this->cart->vendor->vendor_store_name); ?></td>
+    <td colspan="3">
+	<?php echo $this->cart->vendor->images[0]->displayMediaThumb('class="product-image"',false,' ')?>
+	<br/>
+	<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_SUMMARY',$this->cart->vendor->vendor_store_name); ?>
+    </td>
   </tr>
 </table>
