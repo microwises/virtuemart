@@ -24,7 +24,19 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 // addon for joomla modal Box
 JHTML::_ ( 'behavior.modal' );
 JHTML::_('behavior.tooltip');
-
+$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component');
+$document = &JFactory::getDocument();
+$document->addScriptDeclaration("
+	jQuery(document).ready(function($) {
+		$('a.ask-a-question').click( function(){
+			$.facebox({
+				iframe: '".$url."',
+				rev: 'iframe|500|550'
+			});
+			return false ;
+		});
+	});
+");
 /* Let's see if we found the product */
 if (empty ( $this->product )) {
 	echo JText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
@@ -234,12 +246,13 @@ if (empty ( $this->product )) {
 				<div class="availability">
 					<?php echo JHTML::image(JURI::root().VmConfig::get('assets_general_path').'images/availability/'.$this->product->product_availability, $this->product->product_availability, array('class' => 'availability')); ?>
 				</div>
-				<?php } ?>
+				<?php } 
 
-				<?php // Ask a question about this product
-				$url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component'); ?>
+				// Ask a question about this product ?>
+				
 				<div class="ask-a-question">
-					<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $url ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
+				<a class="ask-a-question" href="<?php echo $url ?>" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
+				<!--<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $url ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>-->
 				</div>
 
 				<?php // Manufacturer of the Product
@@ -522,7 +535,7 @@ if (empty ( $this->product )) {
 					var form = document.getElementById('reviewform');
 					form.counter.value= form.comment.value.length;
 				}";
-			$document = &JFactory::getDocument();
+
 			$document->addScriptDeclaration($reviewJavascript);
 
 			if($this->showRating) {

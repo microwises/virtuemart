@@ -259,7 +259,7 @@ class shopFunctionsF {
 	 * @param string $recipient shopper@whatever.com
 	 * @param array $vars variables to assign to the view
 	 */
-	public function renderMail ($viewName, $recipient, $vars=array()) {
+	public function renderMail ($viewName, $recipient, $vars=array(),$controllerName = null) {
 		if(!class_exists('VirtueMartControllerVirtuemart')) require(JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
 		$format = (VmConfig::get('order_html_email',1)) ? 'html' : 'raw';
 
@@ -268,8 +268,9 @@ class shopFunctionsF {
 		$controller->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
 
 		$view = $controller->getView($viewName, $format);
-		$modelName = 'VirtueMartController'.ucfirst ($viewName) ;
-		if (!class_exists($modelName)) require(JPATH_VM_SITE.DS.'controllers'.DS.$viewName.'.php');
+		if (!$controllerName) $controllerName = $viewName;
+		$modelName = 'VirtueMartController'.ucfirst ($controllerName) ;
+		if (!class_exists($modelName)) require(JPATH_VM_SITE.DS.'controllers'.DS.$controllerName.'.php');
 		$model = new $modelName;
 		if ($model) {
 			$view->setModel($model);

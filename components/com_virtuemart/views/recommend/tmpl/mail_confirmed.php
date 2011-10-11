@@ -22,5 +22,5 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 <div class="productdetails-view">
 	<?php echo JText::_('COM_VIRTUEMART_RECOMMEND_THANK_YOU'); ?>
-	<button onclick="window.parent.document.getElementById('sbox-window').close();" type="button"><?php echo JText::_('COM_VIRTUEMART_CLOSE'); ?></button>
+	<button onclick="parent.jQuery.facebox.close();" type="button"><?php echo JText::_('COM_VIRTUEMART_CLOSE'); ?></button>
 </div>

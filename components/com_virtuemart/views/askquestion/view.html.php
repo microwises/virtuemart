@@ -62,8 +62,10 @@ class VirtueMartViewAskquestion extends JView {
 
 		/* Load the product */
 //		$product = $this->get('product');
-		$product_model = $this->getModel('product');
-
+		if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
+		$product_model = new VirtueMartModelProduct ;
+		if(!class_exists('VirtueMartModelCategory')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'category.php');
+		$category_model = new VirtueMartModelCategory ;
 		$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id',0);
 		if(is_array($virtuemart_product_idArray)){
 			$virtuemart_product_id=$virtuemart_product_idArray[0];
@@ -94,8 +96,6 @@ class VirtueMartViewAskquestion extends JView {
 		$product_model->addImages($product);
 
 
-		/* Load the category */
-		$category_model = $this->getModel('category');
 		/* Get the category ID */
 		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
 		if ($virtuemart_category_id == 0 && !empty($product)) {
