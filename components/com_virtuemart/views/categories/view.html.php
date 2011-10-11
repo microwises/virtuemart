@@ -60,13 +60,19 @@ class VirtuemartViewCategories extends JView {
 	   $this->assignRef('category', $category);
 
 	    /* Set the titles */
-		$document->setTitle($category->category_name); //Todo same here, what should be shown up?
 
-
+		if ($category->category_name) $document->setTitle($category->category_name); //Todo same here, what should be shown up?
+		else {
+			$menus = &JSite::getMenu();
+			$menu  = $menus->getActive();
+			$menu_params = new JParameter( $menu->params );
+			$category->category_name = $menu_params->get( 'page_title');
+		}
+		print_r($menu_params);
 		//Todo think about which metatags should be shown in the categories view
 	    if ($category->metadesc) {
 			$document->setDescription( $category->metadesc );
-		}
+		} else $document->setDescription( $category->category_description );
 		if ($category->metakey) {
 			$document->setMetaData('keywords', $category->metakey);
 		}
@@ -74,9 +80,9 @@ class VirtuemartViewCategories extends JView {
 			$document->setMetaData('robots', $category->metarobot);
 		}
 
-		if ($mainframe->getCfg('MetaTitle') == '1') {
+		//if ($mainframe->getCfg('MetaTitle') == '1') {
 			$document->setMetaData('title', strip_tags($category->category_name));  //Maybe better category_name
-		}
+		//}
 		if ($mainframe->getCfg('MetaAuthor') == '1') {
 			$document->setMetaData('author', $category->metaauthor);
 		}
