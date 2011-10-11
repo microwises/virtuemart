@@ -19,12 +19,35 @@
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
-// addon for joomla form validator
-JHTML::_ ( 'behavior.formvalidation' );
-
-// Loading Modal Box Effects
-JHTML::_ ( 'behavior.modal' );
-
+$min = VmConfig::get('vm_asks_minimum_comment_length', 50)
+$max = VmConfig::get('vm_asks_maximum_comment_length', 2000)
+$document = JFactory::getDocument();
+$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.validation.js');
+$document->addScriptDeclaration('
+	jQuery(function($){
+		var askForm = $("#askform");
+		askForm.validation();
+		askForm.find(".highlight-button").click(function() {
+			if(!askForm.validate()) {
+				alert("'.JText::_('COM_VIRTUEMART_COMMENT_NOT_VALID').'");
+				return false;
+			}
+		});
+		$.Validation.addRule("range",{
+			check: function(value) {
+			   if(value)
+				   return (value.length >= '.$min.' && value.length <= '.$max.' );
+			   return false;
+			},
+			msg : "'.JText::sprintf('COM_VIRTUEMART_COMMENT_MIN_MAX',$min, $max).'"
+		});
+		
+		$("#comment").keyup( function () {
+			var result = $(this).val();
+				$("#counter").val( result.length );
+		});
+	});
+');
 /* Let's see if we found the product */
 if (empty ( $this->product )) {
 	echo JText::_ ( 'COM_VIRTUEMART_PRODUCT_NOT_FOUND' );
@@ -32,99 +55,67 @@ if (empty ( $this->product )) {
 } else { ?>
 
 <div class="ask-a-question-view">
-	<div class="spacer">
-		<h1><?php echo JText::_('COM_VIRTUEMART_PRODUCT_RECOMMEND')  ?></h1>
-		
-		<div class="product-summary">
-			<div class="width70 floatleft">
-				<h2><?php echo $this->product->product_name ?></h2>
+	<h1><?php echo JText::_('COM_VIRTUEMART_PRODUCT_RECOMMEND')  ?></h1>
+	
+	<div class="product-summary">
+		<div class="width70 floatleft">
+			<h2><?php echo $this->product->product_name ?></h2>
 
-				<?php // Product Short Description
-				if (!empty($this->product->product_s_desc)) { ?>
-					<div class="short-description">
-						<?php echo $this->product->product_s_desc ?>
-					</div>
-				<?php } // Product Short Description END ?>
-			
-			</div>
-		
-			<div class="width30 floatleft center">
-				<?php // Product Image
-				echo $this->product->images[0]->displayMediaThumb('class="modal product-image"'); ?>
-			</div>
-
-		<div class="clear"></div>
-		</div>
-		
-		<?php // Get User
-		if (!empty($this->user->id)) {
-			$user = JFactory::getUser();
-		} ?>
-		
-		<div class="form-field">
-
-			<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component') ; ?>" name="askform" id="askform" onSubmit="return myValidate(this);">
-				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : <input type="text" value="" name="email" id="email" size="30"  class="required validate-email"/>
-					<br /><br />
-					<?php
-					$ask_comment = JText::sprintf('COM_VIRTUEMART_COMMENT', VmConfig::get('vm_asks_minimum_comment_length', 50), VmConfig::get('vm_asks_maximum_comment_length', 2000));
-					echo $ask_comment;
-					?>
-					<br />
-					<textarea title="<?php echo $ask_comment ?>" class="field" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" OnKeyUp="refresh_counter();" name="comment" rows="10"></textarea>
-					<br /><br />
-					
-					<div class="submit">
-						<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo JText::_('COM_VIRTUEMART_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_SUBMIT')  ?>" />
-						
-						<div class="width50 floatright right paddingtop">
-							<?php echo JText::_('COM_VIRTUEMART_COUNT')  ?>
-							<input type="text" value="0" size="4" class="counter" name="counter" maxlength="4" readonly="readonly" />
-						</div>
-					</div>
-					
-					<input type="hidden" name="cid[]" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
-					<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
-					<input type="hidden" name="tmpl" value="component" />
-					<input type="hidden" name="view" value="productdetails" />
-					<input type="hidden" name="option" value="com_virtuemart" />
-					<input type="hidden" name="virtuemart_category_id" value="<?php echo JRequest::getInt('virtuemart_category_id'); ?>" />
-					<input type="hidden" name="task" value="mailRecommend" />
-					<?php echo JHTML::_( 'form.token' ); ?>
-				</form>
+			<?php // Product Short Description
+			if (!empty($this->product->product_s_desc)) { ?>
+				<div class="short-description">
+					<?php echo $this->product->product_s_desc ?>
+				</div>
+			<?php } // Product Short Description END ?>
 		
 		</div>
-	</div>	
+	
+		<div class="width30 floatleft center">
+			<?php // Product Image
+			echo $this->product->images[0]->displayMediaThumb('class="modal product-image"',false); ?>
+		</div>
+
+	<div class="clear"></div>
+	</div>
+	
+	<?php // Get User
+	if (!empty($this->user->id)) {
+		$user = JFactory::getUser();
+	} ?>
+	
+	<div class="form-field">
+
+		<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component') ; ?>" name="askform" id="askform" >
+			<label><?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : <input type="text" value="" name="email" id="email" size="30"  class="required validate-email"/></label>
+				<br />
+			<label>
+				<?php
+				$ask_comment = JText::sprintf('COM_VIRTUEMART_COMMENT', VmConfig::get('vm_asks_minimum_comment_length', 50), VmConfig::get('vm_asks_maximum_comment_length', 2000));
+				echo $ask_comment;
+				?>
+				<textarea title="<?php echo $ask_comment ?>" class="field" id="comment" name="comment" rows="10" validation="range"></textarea>
+			</label>
+				
+				<div class="submit">
+					<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo JText::_('COM_VIRTUEMART_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_SUBMIT')  ?>" />
+					
+					<div class="width50 floatright right paddingtop">
+						<?php echo JText::_('COM_VIRTUEMART_COUNT')  ?>
+						<input type="text" value="0" size="4" class="counter" ID="counter" name="counter" maxlength="4" readonly="readonly" />
+					</div>
+				</div>
+				
+				<input type="hidden" name="cid[]" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
+				<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
+				<input type="hidden" name="tmpl" value="component" />
+				<input type="hidden" name="view" value="productdetails" />
+				<input type="hidden" name="option" value="com_virtuemart" />
+				<input type="hidden" name="virtuemart_category_id" value="<?php echo JRequest::getInt('virtuemart_category_id'); ?>" />
+				<input type="hidden" name="task" value="mailRecommend" />
+				<?php echo JHTML::_( 'form.token' ); ?>
+			</form>
+	
+	</div>
 </div>
 
 <?php } ?>
-
-<script language="javascript" type="text/javascript">
-	function myValidate(f) {
-		if (f.comment.value.length < <?php echo VmConfig::get('vm_asks_minimum_comment_length', 50); ?>) {
-			alert('<?php echo JText::sprintf('COM_VIRTUEMART_ASK_ERR_COMMENT1', VmConfig::get('vm_asks_minimum_comment_length', 50)); ?>');
-			return false;
-		} else
-		if (f.comment.value.length > <?php echo VmConfig::get('vm_asks_maximum_comment_length', 2000); ?>) {
-			alert('<?php echo JText::sprintf('COM_VIRTUEMART_ASK_ERR_COMMENT2', VmConfig::get('vm_asks_maximum_comment_length', 2000)); ?>');
-			return false;
-		}
-		if (document.formvalidator.isValid(f)) {
-			f.check.value='<?php echo JUtility::getToken(); ?>'; //send token
-			return true;
-		} else {
-			var msg = '';
-			//Example on how to test specific fields
-			if($('email').hasClass('invalid')){
-				msg += "\n\n\t<?php echo JText::_('COM_VIRTUEMART_ENTER_A_VALID_EMAIL_ADDRESS')  ?>";
-			}
-		alert(msg);
-		}
-			return false;
-		}
-
-		function refresh_counter() {
-			var form = document.getElementById('askform');
-			form.counter.value= form.comment.value.length;
-		}
-</script>

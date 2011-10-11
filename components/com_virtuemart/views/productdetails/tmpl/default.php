@@ -31,7 +31,7 @@ $document->addScriptDeclaration("
 		$('a.ask-a-question').click( function(){
 			$.facebox({
 				iframe: '".$url."',
-				rev: 'iframe|500|550'
+				rev: 'iframe|550|550'
 			});
 			return false ;
 		});

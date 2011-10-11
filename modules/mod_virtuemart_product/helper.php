@@ -24,7 +24,7 @@ if (!class_exists( 'calculationHelper' )) require(JPATH_COMPONENT_SITE.DS.'helpe
 if (!class_exists( 'VirtueMartModelProduct' )){
    JLoader::import( 'product', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models' );
 }
-if (!class_exists( 'mod_virtuemart_product' )) {
+
 
 class mod_virtuemart_product {
 	function addtocart($product) {
@@ -92,5 +92,4 @@ class mod_virtuemart_product {
 				</div>
 			<?php }
 	}
-}
 }

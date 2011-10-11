@@ -255,7 +255,7 @@
     }
   }
 function fillFaceboxFromIframe(href, klass, height, width) {
-	$.facebox.reveal('<iframe scrolling="no" marginwidth="0" width="'+width+'" height="' + height + '" frameborder="0" src="' + href + '" marginheight="0"></iframe>', klass)
+	$.facebox.reveal('<iframe scrolling="auto" marginwidth="0" width="'+width+'" height="' + height + '" frameborder="0" src="' + href + '" marginheight="0"></iframe>', klass)
 }
 
   function fillFaceboxFromImage(href, klass) {

@@ -23,9 +23,9 @@ JHTML::_( 'behavior.modal' );
 
 <?php # Vendor Store Description
 if (!empty($this->vendor->vendor_store_desc)) { ?>
-<div class="vendor-store-desc">
+<p class="vendor-store-desc">
 	<?php echo $this->vendor->vendor_store_desc; ?>
-</div>
+</p>
 <?php } ?>
 
 <?php

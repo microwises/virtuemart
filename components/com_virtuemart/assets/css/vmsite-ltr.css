@@ -161,7 +161,7 @@ span.addtocart-button input.addtocart-button:hover,span.addtocart-button input.n
 .featured-view .spacer span,.latest-view .spacer span,.topten-view .spacer span,.related-products-view .spacer span,.browse-view .row .product .spacer span{font-size:11px;color:#666;}
 .browse-view .row .product .spacer img,.related-products-view .row .product .spacer img{max-width:90%;height:auto;}
 .display-number,.control-buttons,.right{text-align:right !important;}
-.ask-a-question-view .spacer,.manufacturer-details-view .spacer{padding:30px;}
+.ask-a-question-view,.manufacturer-details-view .spacer{padding:30px;}
 .ask-a-question-view h1,.manufacturer-details-view h1{font-size:18px;margin:0;padding:0;}
 #userForm select,.width80{width:80%;}
 textarea.virtuemart:hover,textarea.customer-comment:hover{color:#000;background:#e8e8e8;}

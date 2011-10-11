@@ -18,7 +18,7 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * www.virtuemart.net
 */
 /* Load  VM fonction */
-require('helper.php');
+if (!class_exists( 'mod_virtuemart_product' )) require('helper.php');
 
 /* Setting */
 $vendorId = JRequest::getInt('vendorid', 1);
