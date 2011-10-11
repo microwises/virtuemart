@@ -43,10 +43,16 @@ class VirtuemartViewCategories extends JView {
 
 		/* Load helpers */
 		$this->loadHelper('image');
+		$vendorId = JRequest::getInt('vendorid', 1);
+
+		$vendorModel = $this->getModel('vendor');
+
+		$vendorModel->setId(1);
+		$vendor = $vendorModel->getVendor();
+		//$this->assignRef('vendor',$vendor);
 
 		$categoryModel = $this->getModel('category');
 	    $categoryId = JRequest::getInt('virtuemart_category_id', 0);
-	    $vendorId = 1; //Todo change that for multivendor
 		$this->assignRef('categoryModel', $categoryModel);
 //		$categoryId = 0;	//The idea is that you can choose a parent catgory, this value should come from the joomla view parameter stuff
 		$category = $categoryModel->getCategory($categoryId);
@@ -66,9 +72,11 @@ class VirtuemartViewCategories extends JView {
 			$menus = &JSite::getMenu();
 			$menu  = $menus->getActive();
 			$menu_params = new JParameter( $menu->params );
-			$category->category_name = $menu_params->get( 'page_title');
+			if (!$menu_params->get( 'page_title')) { 
+				$document->setTitle($vendor->vendor_store_name);
+				$category->category_name = $vendor->vendor_store_name ;
+			} else $category->category_name = $menu_params->get( 'page_title');
 		}
-		print_r($menu_params);
 		//Todo think about which metatags should be shown in the categories view
 	    if ($category->metadesc) {
 			$document->setDescription( $category->metadesc );

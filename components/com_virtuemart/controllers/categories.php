@@ -57,6 +57,8 @@ class VirtueMartControllerCategories extends JController {
 		/* Set the layout */
 		//$view->setLayout('category');
 
+		/* Add the default model */
+		$view->setModel($this->getModel('vendor', 'VirtuemartModel'));
 		/* Display it all */
 		$view->display();
 	}
