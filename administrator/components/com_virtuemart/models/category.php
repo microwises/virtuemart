@@ -66,14 +66,14 @@ class VirtueMartModelCategory extends VmModel {
   			$this->_data->haschildren = $this->hasChildren($this->_id);
 
   			/* Get children if they exist */
-			if ($this->_data->haschildren) $this->_data->children = $this->getChildrenList($this->_id);
+			if ($this->_data->haschildren) $this->_data->children = $this->getCategories(true,$this->_id);
 			else $this->_data->children = null;
 
 			/* Get the product count */
 			$this->_data->productcount = $this->countProducts($this->_id);
 
 			/* Get parent for breatcrumb */
-			$this->_data->parents = $this->getparentsList($this->_id);
+			$this->_data->parents = $this->getParentsList($this->_id);
 
   		}
 
@@ -125,7 +125,22 @@ class VirtueMartModelCategory extends VmModel {
 	* @param string $keyword the keyword to filter categories
 	* @return array Categories list
 	*/
-	public function getCategoryTree($onlyPublished = true, $withParentId = false, $parentId = 0, $keyword = "") {
+	public function getCategoryTree($parentId=0, $level = 0, $onlyPublished = true,$keyword = "") {
+
+		$cats = self::getCategories($onlyPublished, $parentId,false, $keyword);
+		$level++;
+		if(!empty($cats)){
+			foreach ($cats as $key => $category) {
+				$category->level = $level;
+				$childCats = self::getCategoryTree($category->virtuemart_category_id, $level, $onlyPublished, $keyword);
+				$cats = array_merge($cats,$childCats);
+			}
+		}
+
+		return $cats;
+	}
+
+	public function getCategories($onlyPublished = true, $parentId = false, $childId = false,$keyword = "") {
 
 		$vendorId = 1;
 
@@ -140,8 +155,12 @@ class VirtueMartModelCategory extends VmModel {
 		if( $onlyPublished ) {
 			$where[] = " c.`published` = 1 ";
 		}
-		if( $withParentId ){
+		if( $parentId !== false ){
 			$where[] = ' cx.`category_parent_id` = '. (int)$parentId;
+		}
+
+		if( $childId !== false ){
+			$where[] = ' cx.`category_child_id` = '. (int)$childId;
 		}
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
@@ -152,7 +171,6 @@ class VirtueMartModelCategory extends VmModel {
 		if( !empty( $keyword ) ) {
 			$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;
 			//$keyword = $this->_db->Quote($keyword, false);
-
 			$where[] = ' ( c.`category_name` LIKE '.$keyword.'
 							   OR c.`category_description` LIKE '.$keyword.') ';
 		}
@@ -166,13 +184,15 @@ class VirtueMartModelCategory extends VmModel {
 		if ( JRequest::getCmd('view') == 'category') {
 			$ordering = $this->_getOrdering('c.ordering');
 		} else {
-			$ordering = ' order by category_name DESC';
+			$ordering = ' order by c.`category_name` DESC';
 		}
+
 		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
 
 		return $this->_category_tree;
 
 	}
+
 
 
 	/**
@@ -182,6 +202,7 @@ class VirtueMartModelCategory extends VmModel {
 	 *
 	 * @param array $this->_category_tree
 	 * @return associative array ordering categories
+	 * @deprecated
 	 */
 	public function sortCategoryTree($categoryArr){
 
@@ -541,7 +562,7 @@ class VirtueMartModelCategory extends VmModel {
 	 * @param int $virtuemart_category_id the category ID to create the list of
 	 * @return array containing the child categories
 	 */
-	public function getChildrenList($virtuemart_category_id,$limit=false) {
+/*	public function getChildrenList($virtuemart_category_id,$limit=false) {
 		$db = JFactory::getDBO();
 		$childs = array();
 
@@ -555,7 +576,7 @@ class VirtueMartModelCategory extends VmModel {
 		if ($limit) $q .=' limit 0,'.$limit;
 		$db->setQuery($q);
 		$childs = $db->loadObjectList();
-		/* Get the products in the category */
+		// Get the products in the category
 		if(!empty($childs)){
 			foreach ($childs as $ckey => $child) {
 				$childs[$ckey]->number_of_products = $this->countProducts($child->category_child_id);
@@ -565,6 +586,7 @@ class VirtueMartModelCategory extends VmModel {
 
 		return $childs;
 	}
+*/
 
 	/**
 	 * Creates a bulleted of the childen of this category if they exist
@@ -574,7 +596,7 @@ class VirtueMartModelCategory extends VmModel {
 	 * @param int $virtuemart_category_id the category ID to create the list of
 	 * @return array containing the child categories
 	 */
-	public function getparentsList($virtuemart_category_id) {
+	public function getParentsList($virtuemart_category_id) {
 
 		$db = JFactory::getDBO();
 		$menu = JSite::getMenu();
@@ -625,7 +647,8 @@ class VirtueMartModelCategory extends VmModel {
 	* @author Kohl Patrick
 	* @param int $id
 	* @param int $maxLevel
-	 * @Object $this->container
+	* @Object $this->container
+	* @deprecated
 	*/
 	function treeCat($id=0,$maxLevel =1000) {
 		static $level = 0;
@@ -659,6 +682,7 @@ class VirtueMartModelCategory extends VmModel {
 	 * if you set Maxlevel to 0, then you see nothing
 	 * max level =1 for simple category,2 for category and child cat ....
 	 * don't set it for all (1000 levels)
+	 * @deprecated
 	 */
 	function GetTreeCat($id=0,$maxLevel = 1000) {
 		self::treeCat($id ,$maxLevel) ;
@@ -670,6 +694,7 @@ class VirtueMartModelCategory extends VmModel {
 	* This function is repsonsible for returning an array containing category information
 	* @param boolean Show only published products?
 	* @param string the keyword to filter categories
+	* @deprecated
 	*/
 	function getCategoryTreeArray( $only_published=true, $keyword = "" ) {
 
@@ -716,6 +741,7 @@ class VirtueMartModelCategory extends VmModel {
 	 * Sorts an array with categories so the order of the categories is the same as in a tree, just as a flat list.
 	 * The Tree Depth is
 	 *
+	 * @deprecated
 	 * @param array $categoryArr
 	 */
 	function sortCategoryTreeArray() {

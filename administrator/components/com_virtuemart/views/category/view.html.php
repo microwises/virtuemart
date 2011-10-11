@@ -93,14 +93,14 @@ class VirtuemartViewCategory extends JView {
 			 JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('COM_VIRTUEMART_CATEGORY_UNSHARE'), true);
 			 */
 
-			$categories = $model->getCategoryTree(false);
-			$categoriesSorted = $model->sortCategoryTree($categories);
+// 			$keyWord = JRequest::
+			$keyWord ='';
+			$categories = $model->getCategoryTree(0,0,false);
+// 			vmdebug('$categories',$categories);
+			$this->assignRef('categories', $categories);
 
 			$this->assignRef('model',	$model);
-			$this->assignRef('categories', $categoriesSorted['categories']);
-			$this->assignRef('depthList', $categoriesSorted['depth_list']);
-			$this->assignRef('rowList',	$categoriesSorted['row_list']);
-			$this->assignRef('idList', $categoriesSorted['id_list']);
+
 
 			ShopFunctions::addStandardDefaultViewCommands();
 			$lists = ShopFunctions::addStandardDefaultViewLists($model);

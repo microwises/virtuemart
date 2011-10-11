@@ -52,7 +52,7 @@ AdminUIHelper::startAdminArea();
 			</th>
 			-->
 			<th align="left" width="13%">
-				<?php echo JHTML::_('grid.sort', 'ORDER', 'c.ordering', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDERING', 'c.ordering', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 				<?php echo JHTML::_('grid.order', $this->categories, 'filesave.png', 'saveOrder' ); ?>
 			</th>
 		</tr>
@@ -72,21 +72,21 @@ AdminUIHelper::startAdminArea();
 
 // 		for ($i = $this->pagination->limitstart; $i < $nrows; $i++) {
 
-		foreach($this->categories as $i=>$value){
+		foreach($this->categories as $i=>$cat){
 
-			if( !isset($this->rowList[$i])) $this->rowList[$i] = $i;
-			if( !isset($this->depthList[$i])) $this->depthList[$i] = 0;
+// 			if( !isset($this->rowList[$i])) $this->rowList[$i] = $i;
+// 			if( !isset($this->depthList[$i])) $this->depthList[$i] = 0;
 
-			$row = $this->categories[$this->rowList[$i]];
+// 			$row = $this->categories[$this->rowList[$i]];
 
-			$checked = JHTML::_('grid.id', $i, $row->virtuemart_category_id);
-			$published = JHTML::_('grid.published', $row, $i);
-			$editlink = JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid[]=' . $row->virtuemart_category_id);
-			$statelink	= JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $row->virtuemart_category_id);
-			$showProductsLink = JRoute::_('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . $row->virtuemart_category_id);
+			$checked = JHTML::_('grid.id', $i, $cat->virtuemart_category_id);
+			$published = JHTML::_('grid.published', $cat, $i);
+			$editlink = JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid[]=' . $cat->virtuemart_category_id);
+			$statelink	= JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $cat->virtuemart_category_id);
+			$showProductsLink = JRoute::_('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . $cat->virtuemart_category_id);
 
 			$categoryLevel = '';
-			$repeat = $this->depthList[$i] + 1;
+			$repeat = $cat->level;
 
 			if($repeat > 1){
 				$categoryLevel = str_repeat(".&nbsp;&nbsp;&nbsp;", $repeat - 1);
@@ -100,13 +100,13 @@ AdminUIHelper::startAdminArea();
 				<td><?php echo $checked;?></td>
 				<td align="left">
 					<span class="categoryLevel"><?php echo $categoryLevel;?></span>
-					<a href="<?php echo $editlink;?>"><?php echo $this->escape($row->category_name);?></a>
+					<a href="<?php echo $editlink;?>"><?php echo $this->escape($cat->category_name);?></a>
 				</td>
 				<td align="left">
-					<?php echo $row->category_description; ?>
+					<?php echo $cat->category_description; ?>
 				</td>
 				<td>
-					<?php echo  $this->model->countProducts($row->virtuemart_category_id);//ShopFunctions::countProductsByCategory($row->virtuemart_category_id);?>
+					<?php echo  $this->model->countProducts($cat->virtuemart_category_id);//ShopFunctions::countProductsByCategory($row->virtuemart_category_id);?>
 					&nbsp;<a href="<?php echo $showProductsLink; ?>">[ <?php echo JText::_('COM_VIRTUEMART_SHOW');?> ]</a>
 				</td>
 				<td align="center">
@@ -124,9 +124,9 @@ AdminUIHelper::startAdminArea();
 				*/
 ?>
 				<td align="center" class="order">
-					<span><?php echo $this->pagination->orderUpIcon( $i, ($row->category_parent_id == 0 || $row->category_parent_id == @$this->categories[$this->rowList[$i - 1]]->category_parent_id), 'orderUp', 'Move Up'); ?></span>
-					<span><?php echo $this->pagination->orderDownIcon( $i, $nrows, ($row->category_parent_id == 0 || $row->category_parent_id == @$this->categories[$this->rowList[$i + 1]]->category_parent_id), 'orderDown', 'Move Down'); ?></span>
-					<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $row->ordering; ?>" style="text-align: center" />
+					<span><?php echo $this->pagination->orderUpIcon( $i, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i - 1]]->category_parent_id), 'orderUp', 'Move Up'); ?></span>
+					<span><?php echo $this->pagination->orderDownIcon( $i, $nrows, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i + 1]]->category_parent_id), 'orderDown', 'Move Down'); ?></span>
+					<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $cat->ordering; ?>" style="text-align: center" />
 				</td>
 			</tr>
 		<?php
