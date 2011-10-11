@@ -23,10 +23,11 @@ defined('_JEXEC') or die('Restricted access');
 define( 'JPATH_VM_SITE', JPATH_ROOT.DS.'components'.DS.'com_virtuemart' );
 define( 'JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );
 
-if(VmConfig::isJ15()){
-	define ('JPATH_VM_LIBRARIES', JPATH_LIBRARIES);
-} else {
+if(version_compare(JVERSION,'1.7.0','ge')) {
 	define ('JPATH_VM_LIBRARIES', JPATH_PLATFORM);
+} else {
+	define ('JPATH_VM_LIBRARIES', JPATH_LIBRARIES);
+
 }
 
 require(JPATH_VM_ADMINISTRATOR.DS.'version.php');

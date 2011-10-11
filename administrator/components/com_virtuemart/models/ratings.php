@@ -298,7 +298,7 @@ class VirtueMartModelRatings extends VmModel {
 			}
 
 			$data['virtuemart_rating_id'] = empty($rating->virtuemart_rating_id)? 0: $rating->virtuemart_rating_id;
-			vmdebug('$$data',$data);
+			vmdebug('saveRating $data',$data);
 			$rating = $this->getTable('ratings');
 			$data = $rating->bindChecknStore($data,true);
 	    	$errors = $rating->getErrors();

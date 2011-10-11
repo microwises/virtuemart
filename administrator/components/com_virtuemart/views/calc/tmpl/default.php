@@ -157,7 +157,7 @@ $j15 = VmConfig::isJ15();
 					<?php echo $row->calc_amount_cond; ?>
 				</td>
 				<td>
-					<?php echo JText::_($row->calc_amount_dimunit); ?> 
+					<?php echo JText::_($row->calc_amount_dimunit); ?>
 				</td> */  ?>
 				<td>
 					<?php echo JText::_($row->calcCountriesList); ?>

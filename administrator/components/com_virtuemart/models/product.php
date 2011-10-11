@@ -113,7 +113,9 @@ class VirtueMartModelProduct extends VmModel {
 			$where[] = ' p.`published`="1" ';
 		}
 
-     	// Product name Backend?
+		if($app->isSite() && !VmConfig::get('show_out_of_stock_products',0)){
+			$where[] = ' p.`product_in_stock`>"0" ';
+		}
 
 
 		// search fields filters set Frontend?
@@ -245,6 +247,7 @@ class VirtueMartModelProduct extends VmModel {
 				break;
 		}
 
+
 		//write the query, incldue the tables
 // 		$selectFindRows = 'SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_products` ';
 // 		$selectFindRows = 'SELECT COUNT(*) FROM `#__virtuemart_products` ';
@@ -307,8 +310,11 @@ class VirtueMartModelProduct extends VmModel {
     	if (isset($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId($virtuemart_product_id);
 		} else {
-
-			return false;
+			if(empty($this->_id)){
+				return false;
+			} else {
+				$virtuemart_product_id = $this->_id;
+			}
 		}
 
     	$child = $this->getProductSingle($virtuemart_product_id,$front, false,$onlyPublished);
@@ -359,6 +365,12 @@ class VirtueMartModelProduct extends VmModel {
 
 		if ($withCalc) {
 			$child->prices = $this->getPrice($child,array(),1);
+		}
+
+		$app = JFactory::getApplication() ;
+
+		if($app->isSite() && !VmConfig::get('show_out_of_stock_products',0) && $child->product_in_stock<=0){
+			return false;
 		}
 
     	return $child;

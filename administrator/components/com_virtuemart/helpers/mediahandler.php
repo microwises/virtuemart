@@ -475,22 +475,17 @@ class VmMediaHandler {
 					jimport('joomla.filesystem.file');
 					$media['name'] = JFile::makeSafe( $media['name'] );
 
-					$mediaPure = JFile::stripExt($media['name']).'-';
-					$mediaExtension = JFile::getExt($media['name']);
+					$mediaPure = JFile::stripExt($media['name']);
+					$mediaExtension = '.'.JFile::getExt($media['name']);
 
 					while (file_exists(JPATH_ROOT.DS.$path_folder.$mediaPure.$mediaExtension)) {
 						$mediaPure = $mediaPure.rand(1,9);
-						$media['name'] = $this->file_name =$mediaPure.$mediaExtension;
-					}
-// 					$this->file_name = JFile::stripExt($media['name']).'-';
-// 					while (file_exists(JPATH_ROOT.DS.$path_folder.$media['name'])) {
-// 						$this->file_name .= rand(1,9);
-// 						$media['name'] = $this->file_name.'.'.JFile::getExt($media['name']);
-// 					}
-// 					$this->file_name = $media['name'];
 
+					}
+
+					$media['name'] = $this->file_name =$mediaPure.$mediaExtension;
 					JFile::upload($media['tmp_name'],JPATH_ROOT.DS.$path_folder.$media['name']);
-					//	move_uploaded_file( $media['tmp_name'], JPATH_ROOT.DS.$path_folder.$media['name']);
+
 					$this->file_mimetype = $media['type'];
 					$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_UPLOAD_OK',JPATH_ROOT.DS.$path_folder.$media['name']));
 					return $media['name'];
