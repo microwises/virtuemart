@@ -257,8 +257,10 @@ class VirtueMartViewCart extends JView {
 
     private function lSelectPayment() {
 	if (!$this->checkPaymentMethodsConfigured()) {
-	    $this->assignRef('paymentplugins_payments', array());
-	    $this->assignRef('found_payment_method', 0);
+            $tmp = array();
+	    $this->assignRef('paymentplugins_payments', $tmp);
+            $tmp = 0;
+	    $this->assignRef('found_payment_method', $tmp);
 	}
 
 	$selectedPayment = empty($this->cart->virtuemart_paymentmethod_id) ? 0 : $this->cart->virtuemart_paymentmethod_id;
@@ -310,7 +312,8 @@ class VirtueMartViewCart extends JView {
 	    $app = JFactory::getApplication();
 	    $app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED', $text));
 
-	    $this->assignRef('found_payment_method', 0);
+	    $tmp = 0;
+            $this->assignRef('found_payment_method', $tmp);
 
 	    return false;
 	}
@@ -337,7 +340,8 @@ class VirtueMartViewCart extends JView {
 	    $app = JFactory::getApplication();
 	    $app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_NO_SHIPPING_METHODS_CONFIGURED', $text));
 
-	    $this->assignRef('found_shipping_method', 0);
+	    $tmp = 0;
+            $this->assignRef('found_shipping_method', $tmp);
 
 	    return false;
 	}
