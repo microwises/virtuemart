@@ -774,7 +774,7 @@ class VmMediaHandler {
 			// $text = 'COM_VIRTUEMART_FILES_FORM_ALREADY_ATTACHED_FILE_PRIMARY';
 			if(!empty($fileIds)) {
 				foreach($fileIds as $k=>$id){
-					$html .= $this->displayImage($id );
+					$html .= $this->displayImage($id,$k );
 				}
 			}
                         $html .= '<a id="addnewselectimage2" href="#media-dialog">'.JText::_('COM_VIRTUEMART_IMAGE_ATTACH_NEW').'</a>';
@@ -784,7 +784,7 @@ class VmMediaHandler {
 			return $html.'<div class="clear"></div>';
 		}
 
-		function displayImage($virtuemart_media_id ) {
+		function displayImage($virtuemart_media_id ,$key) {
 
 			$db = JFactory::getDBO();
 			$query='SELECT * FROM `#__virtuemart_medias` where `virtuemart_media_id`='.(int)$virtuemart_media_id;
@@ -794,7 +794,7 @@ class VmMediaHandler {
 				$image->file_root = JURI::root(true).'/';
 				$image->msg =  'OK';
 				return  '<div  class="vm_thumb_image"><input type="hidden" value="'.$image->virtuemart_media_id.'" name="virtuemart_media_id[]">
-				<input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value="">
+				<input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value="'.$key.'">
 			<a class="vm_thumb" rel="group1" title ="'.$image->file_title.'"href="'.JURI::root(true).'/'.$image->file_url.'" >
 			'.JHTML::image($image->file_url_thumb, $image->file_title, '').'
 			</a><div class="trash" title="remove image"></div><div class="edit-24-grey" title="edit image information"></div></div>';

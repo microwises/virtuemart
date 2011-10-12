@@ -41,7 +41,7 @@ class TableProduct_customfields extends VmTable {
     /** @var string custom value */
 	var $custom_value	= '';
     /** @var string price  */
-	var $custom_price	= '';
+	var $custom_price	= null;
 
     var $custom_param = '';
 	/** @var int custom published or not */
