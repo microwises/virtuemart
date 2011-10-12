@@ -450,6 +450,22 @@ class VirtueMartModelCategory extends VmModel {
 
 		$table = $this->getTable('categories');
 
+/*		vmdebug('categorytemplate to null',VmConfig::get('categorytemplate'),$data['category_template']);
+ * VmConfig::get('categorytemplate') = default
+ * $data['category_template'] = 0
+ *
+		if(VmConfig::get('categorytemplate') == $data['category_template'] ){
+			$data['category_template'] = null;
+		}
+
+		if(VmConfig::get('categorylayout') == $data['category_layout']){
+			$data['category_layout'] = null;
+		}
+
+		if(VmConfig::get('productlayout') == $data['category_product_layout']){
+			$data['category_product_layout'] = null;
+		}
+*/
 		$data = $table->bindChecknStore($data);
     	$errors = $table->getErrors();
 		foreach($errors as $error){

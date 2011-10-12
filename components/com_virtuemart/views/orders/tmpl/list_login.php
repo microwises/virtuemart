@@ -72,11 +72,11 @@ endif;
 	<?php endif; ?>
 	<div class="clr"></div>
 	<div class="width30 floatleft">
-		<a class="details" href="<?php echo JRoute::_( 'index.php?option=com_user&view=reset' ); ?>">
+		<a class="details" href="<?php echo JRoute::_( 'index.php?option=com_users&view=reset' ); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_PASSWORD'); ?></a>
 	</div>
 	<div class="width30 floatleft">
-		<a class="details" href="<?php echo JRoute::_( 'index.php?option=com_user&view=remind' ); ?>">
+		<a class="details" href="<?php echo JRoute::_( 'index.php?option=com_users&view=remind' ); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_USERNAME'); ?></a>
 	</div>
 	<?php
@@ -91,7 +91,7 @@ endif;
 </fieldset>
 
 <?php if ( VmConfig::isJ15() ) { ?>
-	<input type="hidden" name="option" value="com_user" />
+	<input type="hidden" name="option" value="com_users" />
 	<input type="hidden" name="task" value="login" />
 <?php } else { ?>
 	<input type="hidden" name="option" value="com_users" />

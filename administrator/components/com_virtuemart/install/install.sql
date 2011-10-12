@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `category_template` varchar(255) DEFAULT NULL,
   `category_layout` varchar(255) DEFAULT NULL,
   `category_product_layout` varchar(255) DEFAULT NULL,
-  `products_per_row` tinyint(2) NOT NULL DEFAULT '1',
+  `products_per_row` tinyint(2) DEFAULT NULL,
   `limit_list_start` int(11) DEFAULT NULL,
   `limit_list_step` int(11) DEFAULT NULL,
   `limit_list_max` int(11) DEFAULT NULL,

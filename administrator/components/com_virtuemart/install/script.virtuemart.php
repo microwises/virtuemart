@@ -233,8 +233,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->updateWeightUnit();
 			$this->updateDimensionUnit();
 
-			$fields = array('virtuemart_customs'=>' ADD `ordering` INT( 11 ) UNSIGNED NOT NULL  DEFAULT 0');
-			$this->alterTable('#__virtuemart_customs',$fields);
+			$this->checkAddFieldToTable('#__virtuemart_customs','ordering','INT( 11 ) UNSIGNED NOT NULL  DEFAULT 0');
+
+			$fields = array('products_per_row'=>' `products_per_row` NULL DEFAULT NULL');
+			$this->alterTable('#__virtuemart_categories',$fields);
+
 
 			//delete old config file
 // 			$this->renewConfigManually = !JFile::delete($this->path.DS.'virtuemart.cfg');

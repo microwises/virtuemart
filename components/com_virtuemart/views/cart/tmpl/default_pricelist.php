@@ -34,9 +34,6 @@
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?></span>
 
 
-
-
-
 		<?php // Output Bill To Address ?>
 		<div class="output-billto">
 		<?php
