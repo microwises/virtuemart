@@ -39,7 +39,7 @@
 		function sendtocart(form){
 
 			var datas = form.serialize();
-			$.getJSON(siteurl+'index.php?option=com_virtuemart&view=cart&task=addJS&format=json',encodeURIComponent(datas),
+			$.getJSON(siteurl+'?option=com_virtuemart&nosef=1view=cart&task=addJS&format=json',encodeURIComponent(datas),
 				function(datas, textStatus) {
 					if(datas.stat !=0){
 						var value = form.find('.quantity-input').val() ;
@@ -68,7 +68,7 @@
 		var datas = form.serialize(),
 		prices = $("#productPrice"+id);
 		prices.fadeTo("slow", 0.33);
-		$.getJSON(siteurl+'index.php?option=com_virtuemart&view=productdetails&task=recalculate&format=json',encodeURIComponent(datas),
+		$.getJSON(siteurl+'?option=com_virtuemart&nosef=1&view=productdetails&task=recalculate&format=json',encodeURIComponent(datas),
 			function(datas, textStatus) {
 				prices.fadeTo("slow", 1);
 				// refresh price
@@ -82,7 +82,7 @@
 	};	
 	$.fn.productUpdate = function() {
 	mod = $(this);
-		$.getJSON(siteurl+"index.php?option=com_virtuemart&view=cart&task=viewJS&format=json",
+		$.getJSON(siteurl+"?option=com_virtuemart&nosef=1&view=cart&task=viewJS&format=json",
 			function(datas, textStatus) {
 				if (datas.totalProduct >0) {
 					mod.find(".vm_cart_products").html("");
