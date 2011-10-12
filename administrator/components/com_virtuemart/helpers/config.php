@@ -653,7 +653,7 @@ class vmJsApi{
 		vmJsApi::jSite();
 
 		$closeimage = JURI::root(true) .'/components/com_virtuemart/assets/images/facebox/closelabel.png';
-		$jsVars  = "siteurl = '". JURI::root(true) .'/' ."' ;\n" ;
+		$jsVars  = "siteurl = '". JURI::base( ) ."' ;\n" ;
 		$jsVars .= "vmCartText = '". JText::_('COM_VIRTUEMART_MINICART_ADDED') ."' ;\n" ;
 		$jsVars .= "vmCartError = '". JText::_('COM_VIRTUEMART_MINICART_ERROR') ."' ;\n" ;
 		$jsVars .= "loadingImage = '".JURI::root(true) ."/components/com_virtuemart/assets/images/facebox/loading.gif'  ;\n" ;
