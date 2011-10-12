@@ -76,8 +76,8 @@ class TableCustomplugins extends VmTable {
 	{
 		parent::__construct('#__virtuemart_customplugins', 'id', $db);
 
-		//TODO ? 
-		$this->setUniqueName('custom_name');
+		//it should work without, we had users who need that, lets try
+// 		$this->setUniqueName('custom_name');
 		//$this->setObligatoryKeys('custom_name');
 		//$this->setPrimaryKey('id');
 		//$this->setSecondaryKey('custom_jplugin_id');

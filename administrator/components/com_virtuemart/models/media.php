@@ -273,7 +273,15 @@ class VirtueMartModelMedia extends VmModel {
 
 		}
 
-// 		vmdebug('my data in media to store',$data['virtuemart_media_id']);
+		asort($data['mediaordering']);
+		$sortedMediaIds = array();
+		foreach($data['mediaordering'] as $k=>$v){
+			$sortedMediaIds[] = $k;
+		}
+		$data['virtuemart_media_id'] = $sortedMediaIds;
+
+// 		vmdebug('my data in media to store',$data['virtuemart_media_id'],$data['mediaordering']);
+
 		//set the relations
 		$table = $this->getTable($type.'_medias');
 		// Bind the form fields to the country table

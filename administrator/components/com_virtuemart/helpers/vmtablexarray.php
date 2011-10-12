@@ -47,7 +47,9 @@ class VmTableXarray extends VmTable {
 
     }
 
-
+	function setOrderableFormname($orderAbleFormName){
+		$this->_okeyForm = $orderAbleFormName;
+	}
 
 	/**
 	* swap the ordering of a record in the Xref tables
@@ -107,6 +109,7 @@ class VmTableXarray extends VmTable {
 		if($this->_orderable){
 			$orderby = 'ORDER BY `'.$this->_orderingKey.'`';
 		} else {
+
 			$orderby = '';
 		}
 
@@ -198,8 +201,10 @@ class VmTableXarray extends VmTable {
 				if($this->_autoOrdering){
 					$oKey = $this->_orderingKey;
 					$obj->$oKey = $this->_ordering++;
+				} else {
+
 				}
-// 				vmdebug('my stuff to store',$obj);
+// 				vmdebug('my stuff to store',(array)$obj);
 				$returnCode = $this->_db->insertObject($this->_tbl, $obj, $pkey);
 			}
 		}
