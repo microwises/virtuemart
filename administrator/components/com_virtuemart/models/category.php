@@ -127,14 +127,33 @@ class VirtueMartModelCategory extends VmModel {
 	*/
 	public function getCategoryTree($parentId=0, $level = 0, $onlyPublished = true,$keyword = "") {
 
-		$cats = self::getCategories($onlyPublished, $parentId,false, $keyword);
 		$level++;
+		if( $level == 1 ){
+			$this->_noLimit = false;
+// 			$limits = $this->setPaginationLimits();
+// 			$limitStart = $limits[0];
+// 			$limit = $limits[1];
+		} else {
+			$this->_noLimit = true;
+		}
+		$cats = self::getCategories($onlyPublished, $parentId,false, $keyword);
+
 		if(!empty($cats)){
 			foreach ($cats as $key => $category) {
 				$category->level = $level;
 				$childCats = self::getCategoryTree($category->virtuemart_category_id, $level, $onlyPublished, $keyword);
 				$cats = array_merge($cats,$childCats);
 			}
+		}
+		if( $level == 1 ){
+			$this->_noLimit = false;
+			$this->_total = count($cats);
+
+// 			$limits = $this->setPaginationLimits();
+// 			$limitStart = $limits[0];
+// 			$limit = $limits[1];
+// 			vmdebug('cats count',$this->_total);
+			$this->getPagination();
 		}
 
 		return $cats;

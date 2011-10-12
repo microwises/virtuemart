@@ -233,7 +233,6 @@ class VmModel extends JModel {
 	public function getPagination($total=0,$limitStart=0,$limit=0) {
 		if ($this->_pagination == null) {
 
-
 			if(empty($limit) ){
 				$limits = $this->setPaginationLimits();
 			} else {
@@ -241,6 +240,9 @@ class VmModel extends JModel {
 				$limits[1] = $limit;
 			}
 
+			if(empty($total)){
+				$total = $this->_total;
+			}
 			// TODO, this give result when result = 0 >>> if(empty($total)) $total = $this->getTotal();
 
 			jimport('joomla.html.pagination');

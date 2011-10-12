@@ -199,7 +199,7 @@ class VmTableXarray extends VmTable {
 					$oKey = $this->_orderingKey;
 					$obj->$oKey = $this->_ordering++;
 				}
-
+// 				vmdebug('my stuff to store',$obj);
 				$returnCode = $this->_db->insertObject($this->_tbl, $obj, $pkey);
 			}
 		}

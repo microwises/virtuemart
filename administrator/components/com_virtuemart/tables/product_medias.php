@@ -39,7 +39,7 @@ class TableProduct_medias extends VmTableXarray {
 
 		$this->setPrimaryKey('virtuemart_product_id');
 		$this->setSecondaryKey('virtuemart_media_id');
-		$this->setOrderable();
+		$this->setOrderable('ordering',true);
 
 	}
 

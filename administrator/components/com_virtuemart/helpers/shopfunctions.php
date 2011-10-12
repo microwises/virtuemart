@@ -636,7 +636,7 @@ $addLink = '<a class="vmicon vmicon-16-editadd" href="'.JRoute::_('index.php?opt
 		$level++;
 
 		$categoryModel->_noLimit = true;
-		$records = $categoryModel->getCategories(true, true, $cid);
+		$records = $categoryModel->getCategories(true, $cid);
 		$selected="";
 		if(!empty($records)){
 			foreach ($records as $key => $category) {
@@ -665,7 +665,6 @@ $addLink = '<a class="vmicon vmicon-16-editadd" href="'.JRoute::_('index.php?opt
 				self::categoryListTree($selectedCategories, $childId, $level, $disabledFields);
 			}
 		}
-
 
 		return $categoryTree;
 	}
