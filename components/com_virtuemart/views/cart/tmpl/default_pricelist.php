@@ -251,8 +251,11 @@ echo $this->loadTemplate('coupon');
 				<?php
 				if(!empty($this->layoutName) && $this->layoutName=='default' && !$this->cart->automaticSelectedShipping  )
 					echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_shipping',$this->useXHTML,$this->useSSL), $this->select_shipper_text,'class=""');
-				else JText::_('COM_VIRTUEMART_CART_SHIPPING');   } else { ?>
-                                       </td>
+				else JText::_('COM_VIRTUEMART_CART_SHIPPING');   }
+				else { ?>
+                                <td colspan="4" align="left">
+				<?php echo $this->cart->cartData['shippingName']; ?>
+				</td>
                                  <?php } ?>
 
                                      <?php if ( VmConfig::get('show_tax')) { ?>

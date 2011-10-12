@@ -283,7 +283,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * @return HTML code to display the form
      * @author Oscar van Eijk
      */
-    public function plgVmOnSelectShipper(VirtueMartCart $cart,  $selectedShipper = 0) {
+    public function plgVmOnSelectShipper(VirtueMartCart $cart, $selectedShipper = 0) {
 
 	if ($this->getShippers($cart->vendorId) === false) {
 	    return false;
@@ -312,7 +312,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
      * @author Oscar van Eijk
      */
-    public function plgVmOnShipperSelected(VirtueMartCart $cart,  $selectedShipper = 0) {
+    public function plgVmOnShipperSelected(VirtueMartCart $cart, $selectedShipper = 0) {
 
 	if (!$this->selectedThisShipper($this->_selement, $selectedShipper)) {
 	    return null; // Another shipper was selected, do nothing
@@ -538,6 +538,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * @param int $_sid The shipper ID
      * @author Oscar van Eijk
      * @return True if the calling plugin has the given payment ID
+     * @deprecated
      */
     final protected function selectedThisShipper($selement, $sid) {
 	$db = JFactory::getDBO();
@@ -562,6 +563,22 @@ abstract class vmShipperPlugin extends JPlugin {
 
 	$db->setQuery($q);
 	return $db->loadResult(); // TODO Error check
+    }
+    /*
+     * ShippingSelected
+     * return $shipper if found
+     * return null otherwise
+     *
+     * @author Valérie Isaksen
+     */
+
+    function ShippingSelected($virtuemart_shippingcarrier_id) {
+	foreach ($this->shippers as $shipper) {
+	    if ($shipper->virtuemart_shippingcarrier_id == $virtuemart_shippingcarrier_id) {
+		return $shipper;
+	    }
+	}
+	return null;
     }
 
     /**
@@ -658,28 +675,46 @@ abstract class vmShipperPlugin extends JPlugin {
      *
      */
 
-    public function plgVmOnShipperSelectedCalculatePrice(VirtueMartCart $cart, array $cart_prices, TableShippingCarriers $shipping) {
+    public function plgVmOnShipperSelectedCalculatePrice(VirtueMartCart $cart, array $cart_prices, $shipping_name) {
 
-	if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
+	if (!($shipping =  $this->selectedThisShipper($this->_selement, $cart->virtuemart_paymentmethod_id) )) {
 	    return null; // Another shipper was selected, do nothing
 	}
 
-	$shipping->shipping_name = $this->getThisShipperName($shipping);
-	$shipping->shipping_tax_id = 0;
-	$shipping->shipping_value = 0;
+	if (!class_exists('TableShippingcarriers'))
+	    require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'shippingcarriers.php');
+	$db = JFactory::getDBO();
+	$shipping = new TableShippingcarriers($db);
+	$shipping->load($cart->virtuemart_shippingcarrier_id);
+
+	$shipping_name = '';
+	$cart_prices['shipping_tax_id'] = 0;
+	$cart_prices['shipping_value'] = 0;
+
+
+	if (!$this->CheckShippingIsValid($cart))
+	    return false;
+	$params = new JParameter($shipping->shipping_carrier_params);
+	$shipping_name = $this->getShippingName($shipping);
+	$shipping_value = $this->getShippingValue($params, $cart_prices);
+	$shipping_tax_id = $this->getShippingTaxId($params);
+
+	$this->setCartPrices(&$cart_prices, $shipping_value, $shipping_tax_id);
 
 	return true;
     }
-/*
+
+    /*
      * plgVmOnCheckAutomaticSelectedShipping
      * Checks how many shipping rates are available. If only one, the user will not have the choice. Enter edit_shipping page
      * @cart: VirtueMartCart the current cart
-*
+     *
      *  @return null if no shipper was found, 0 if more then one shipping rate was found,  virtuemart_shipping if only one shipping rate is found
      *
      * @author Valerie Isaksen
      *
      */
+
     function plgVmOnCheckAutomaticSelectedShipping(VirtueMartCart $cart) {
 
 	$nbShipper = 0;
@@ -690,9 +725,10 @@ abstract class vmShipperPlugin extends JPlugin {
 	return ($nbShipper == 1) ? $virtuemart_shippingcarrier_id : 0;
     }
 
-    function plgVmOnCheckShippingIsValid(VirtueMartCart $cart) {
-	return $this->CheckShippingIsValid($cart);
-    }
+    /*
+     * CheckShippingIsValid
+     * @author Valérie Isaksen
+     */
 
     function CheckShippingIsValid(VirtueMartCart $cart) {
 	if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
@@ -754,7 +790,7 @@ abstract class vmShipperPlugin extends JPlugin {
 
     /**
      * Get Shipper Data for a go given Shipper ID
-     * @param int $_sid The Shipper ID
+     * @param int $virtuemart_shippingcarrier_id The Shipper ID
      * @author Valérie Isaksen
      * @return  Shipper data
      */
@@ -785,16 +821,41 @@ abstract class vmShipperPlugin extends JPlugin {
 	return $html;
     }
 
-    /**
-     * Get the name of the payment method
-     * @param TablePaymentmethods $payment
-     * @return string Payment method name
-     * @author Valerie Isaksen
+    /*
+     * setCartPrices
+     *
+     * @author Valérie Isaksen
      */
-    function getPaymentName($payment) {
 
-	$params = new JParameter($payment->payment_params);
-	return $payment->payment_name;
+    function setCartPrices($cart_prices, $shipping_value, $shipping_tax_id) {
+	if (!isset($shipping_value))
+	    $shipping->shipping_value = '';
+	$cart_prices['shippingValue'] = $shipping_value;
+
+
+	$taxrules = array();
+	if (!empty($shipping_tax_id)) {
+	    $db = JFactory::getDBO();
+	    $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $shipping_tax_id . '" ';
+	    $db->setQuery($q);
+	    $taxrules = $db->loadAssocList();
+	}
+
+	if (count($taxrules) > 0) {
+	    $cart_prices['salesPriceShipping'] = self::roundDisplay(self::executeCalculation($taxrules, $cart_prices['shippingValue']));
+	    $cart_prices['shippingTax'] = self::roundDisplay($cart_prices['salesPriceShipping']) - $cart_prices['shippingValue'];
+	} else {
+	    $cart_prices['salesPriceShipping'] = $cart_prices['shippingValue'];
+	    $cart_prices['shippingTax'] = 0;
+	}
+    }
+
+    function getShippingValue($params, $cart_prices) {
+	return 0;
+    }
+
+    function getShippingTaxId($params) {
+	return 0;
     }
 
 }

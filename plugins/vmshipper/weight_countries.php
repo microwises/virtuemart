@@ -127,37 +127,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 	return $weight;
     }
 
-    /**
-     * This event is fired during the checkout process. It allows the shopper to select
-     * one of the available shippers.
-     * It should display a radio button (name: shipper_id) to select the shipper. In the description,
-     * the shipping cost can also be displayed, based on the total order weight and the shipto
-     * country (this wil be calculated again during order confirmation)
-     *
-     * @param object $cart the cart object
-     * @param integer $selected ID of the shipper currently selected
-     * @return HTML code to display the form
-     * @author Valérie Isaksen
-     */
-    public function xxplgVmOnSelectShipper(VirtueMartCart $cart, $selectedShipper = 0) {
 
-	if (( parent::getShippers($cart->vendorId)) === false) {
-	    return false;
-	}
-
-	$html = "";
-	foreach ($this->shippers as $shipper) {
-	    if ($this->checkShippingConditions($cart, $shipper)) {
-		$params = new JParameter($shipper->shipping_carrier_params);
-		$salesPrice = $this->calculateSalesPriceShipping($this->getShippingValue($params, $cart->pricesUnformatted), $this->getShippingTaxId($params, $cart));
-		$logo = $this->_getShipperLogo($params->get('shipper_logo'), $shipper->shipping_carrier_name);
-		$shipper->shipping_carrier_name = $logo . $shipper->shipping_carrier_name;
-		$html[] = $this->getShippingHtml($shipper, $selectedShipper, $salesPrice);
-	    }
-	}
-
-	return $html;
-    }
 
     /**
      * This event is fired after the shipping method has been selected. It can be used to store
@@ -177,30 +147,6 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 	}
     }
 
-    /*
-     * plgVmOnShipperSelectedCalculatePrice
-     * Calculate the price of the selected Shipper
-     * @cart: VirtueMartCart the current cart
-     * @cart_prices: array the new cart prices
-     * @shippingTable ShippingCarriers: shipping carrier rate description
-     *  @return null if the shipper was not selected, false if the shiiping rate is not valid any more, true otherwise
-     *
-     * @author Valerie Isaksen
-     *
-     */
-
-    public function plgVmOnShipperSelectedCalculatePrice(VirtueMartCart $cart, $cart_prices, TableShippingCarriers $shipping) {
-	if (!parent::plgVmOnShipperSelectedCalculatePrice($cart, $cart_prices, $shipping)) {
-	    return null;
-	}
-	if (!$this->CheckShippingIsValid($cart))
-	    return false;
-	$params = new JParameter($shipping->shipping_carrier_params);
-	$shipping->shipping_name = $this->getShippingName($shipping);
-	$shipping->shipping_value = $this->getShippingValue($params, $cart_prices);
-	$shipping->shipping_tax_id = $this->getShippingTaxId($params);
-	return true;
-    }
 
     /**
      * This method is fired when showing the order details in the frontend.
@@ -391,13 +337,8 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 	return $img;
     }
 
-    function checkShippingConditions( $cart, $shipper) {
-	/*
-	  }
-	  if (!($this->selectedThisShipper($this->_selement, $ship_method_id))) {
-	  return false;
-	  }
-	 * */
+    function checkShippingConditions($cart, $shipper) {
+
 	$params = new JParameter($shipper->shipping_carrier_params);
 	$orderWeight = $this->getOrderWeight($cart, $params->get('weight_unit'));
 	$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);

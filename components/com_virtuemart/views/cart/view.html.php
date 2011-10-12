@@ -213,27 +213,7 @@ class VirtueMartViewCart extends JView {
 	    return;
 	}
 	$this->selectedShipper = (empty($this->cart->virtuemart_shippingcarrier_id) ? 0 : $this->cart->virtuemart_shippingcarrier_id);
-
-	/* Should add this also for the shipping
-	  //For the selection of the payment method we need the total amount to pay.
-	  $paymentModel = $this->getModel('paymentmethod');
-	  $this->payments = $paymentModel->getPayments(false,true);
-	  if(empty($this->payments)){
-
-	  $text ='';
-	  if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-	  if (Permissions::getInstance()->check("admin,storeadmin")) {
-	  $uri = JFactory::getURI();
-	  $link = $uri->root().'administrator/index.php?option=com_virtuemart&view=paymentmethod';
-	  $text = JText::sprintf('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED_LINK','<a href="'.$link.'">'.$link.'</a>');
-	  }
-	  $app = JFactory::getApplication();
-	  $app -> enqueueMessage(JText::sprintf('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED',$text));
-	  }
-	 */
-
-
-
+	$shipping_not_found_text = '';
 	if (!class_exists('vmShipperPlugin'))
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
 	JPluginHelper::importPlugin('vmshipper');
@@ -251,6 +231,9 @@ class VirtueMartViewCart extends JView {
 		}
 	    }
 	}
+	if (!$found_shipping_method) {
+	    $shipping_not_found_text = JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');
+	}
 	/*
 	  $layoutName='select_shipper'; // by dafault should be the same
 	  if (!$found_shipping_method) {
@@ -259,6 +242,7 @@ class VirtueMartViewCart extends JView {
 	  $this->assignRef('select_shipper_text',JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD'), JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'));
 	  }
 	 */
+	$this->assignRef('shipping_not_found_text', JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'));
 	$this->assignRef('shippers_shipping_rates', $shippers_shipping_rates);
 	$this->assignRef('found_shipping_method', $found_shipping_method);
 	return;

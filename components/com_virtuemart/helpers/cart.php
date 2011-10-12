@@ -1228,13 +1228,14 @@ class VirtueMartCart {
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipping', array('cart' => $this));
 			foreach ($returnValues as $returnValue) {
-				if (is_int($returnValue )) {
+				if ((int) $returnValue ) {
 					$nbShipping ++;
 					if ($returnValue) $virtuemart_shippingcarrier_id = $returnValue;
 				}
 			}
 			if ($nbShipping==1 && $virtuemart_shippingcarrier_id) {
 				$this->virtuemart_shippingcarrier_id = $virtuemart_shippingcarrier_id;
+				$this->automaticSelectedShipping=true;
 				$this->setCartIntoSession();
 				return true;
 			} else {
@@ -1271,6 +1272,7 @@ class VirtueMartCart {
 			}
 			if ($nbPayment==1 && $virtuemart_paymentmethod_id) {
 				$this->virtuemart_paymentmethod_id = $virtuemart_paymentmethod_id;
+				$cart->automaticSelectedPayment=true;
 				$this->setCartIntoSession();
 				return true;
 			} else {
@@ -1307,30 +1309,7 @@ class VirtueMartCart {
 		}
 	}
 
-	/*
-	 * CheckPaymentIsValid:
-	 * check if the selected payment is still valid for this new cart
-	 *
-	 * @author Valerie Isaksen
-	 */
-	function CheckPaymentIsValid() {
 
-		if ($this->virtuemart_paymentmethod_id===0)
-		return;
-		$paymentValid = false;
-		if (!class_exists('vmPaymentPlugin'))
-		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
-		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnCheckPaymentIsValid', array('cart' => $this));
-		foreach ($returnValues as $returnValue) {
-			$paymentValid += $returnValue;
-		}
-		if (!$paymentValid) {
-			$this->virtuemart_paymentmethod_id = 0;
-			$this->setCartIntoSession();
-		}
-	}
 
 	/*
 	 * Prepare the datas for cart/mail views

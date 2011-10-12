@@ -124,19 +124,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 	return $html;
     }
-
-    public function plgVmOnPaymentSelectedCalculatePrice(VirtueMartCart $cart, array $cart_prices, TablePaymentMethods $payment) {
-	 $return=parent::plgVmOnPaymentSelectedCalculatePrice($cart, $cart_prices, $payment) ;
-	    if ($return==false OR $return==null) return $return;
-
-	    $params = new JParameter($payment->payment_params);
-	    $payment->payment_value = $this->getPaymentValue($params);
-	    $payment->payment_tax_id = $this->getPaymentTaxId($params);
-
-	    return true;
-
-    }
-
+ 
     /**
      * Reimplementation of vmPaymentPlugin::plgVmOnCheckoutCheckPaymentData()
      * 	Here have to give all value for the BANK
@@ -617,7 +605,17 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	$logo = $this->_getPaymentLogos($params->get('payment_logos'), $payment->payment_name);
 	return $logo . " " . $payment->payment_name;
     }
+function getPaymentValue($params) {
+	return $params->get('payment_value', 0);
+    }
 
+    function getPaymentTaxId($params) {
+	return $params->get('payment_tax_id', 0);
+    }
+
+    function getPaymentCost($params, $cart) {
+	return $params->get('payment_value', 0);
+    }
 }
 
 // No closing tag

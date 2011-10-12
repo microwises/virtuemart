@@ -761,7 +761,7 @@ class calculationHelper {
 			$this->_cartData['shippingName'] = JText::_('COM_VIRTUEMART_CART_NO_SHIPMENT_SELECTED');
 			$this->_cartPrices['shippingValue'] = 0; //could be automatically set to a default set in the globalconfig
 			$this->_cartPrices['shippingTax'] = 0;
-			$this->_cartPrices['shippingTotal'] = 0; 
+			$this->_cartPrices['shippingTotal'] = 0;
 			$this->_cartPrices['salesPriceShipping'] = 0;
 			// check if there is only one possible shipping method
 
@@ -769,21 +769,15 @@ class calculationHelper {
 			if ($automaticSelectedShipping) $ship_id=$cart->virtuemart_shippingcarrier_id;
 			if (empty($ship_id)) return;
 
-			if (!class_exists('TableShippingcarriers'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'shippingcarriers.php');
-
-			$shipping = new TableShippingcarriers($this->_db);
-			$shipping->load($ship_id);
-
 			// Handling shipping plugins
 			if (!class_exists('vmShipperPlugin'))
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
 			JPluginHelper::importPlugin('vmshipper');
-			$_dispatcher = JDispatcher::getInstance();
-			$returnValues = $_dispatcher->trigger('plgVmOnShipperSelectedCalculatePrice',
+			$dispatcher = JDispatcher::getInstance();
+			$returnValues = $dispatcher->trigger('plgVmOnShipperSelectedCalculatePrice',
 			array('cart' => $cart,
-			    'prices' => $this->_cartPrices,
-                            'shipping' => $shipping));
+			    'cart_prices' => &$this->_cartPrices,
+			    'shipping_name' =>&$this->_cartData['shippingName']  ));
 			/*
 			* Plugin return true if shipping rate is still valid
 			* false if not any more
@@ -796,27 +790,7 @@ class calculationHelper {
 				    $cart->virtuemart_shippingcarrier_id = 0;
 				    $cart->setCartIntoSession();
 			 }
-			if(!isset($shipping->shipping_value)) $shipping->shipping_value ='';
-			$this->_cartPrices['shippingValue'] = $shipping->shipping_value;
 
-			if(!isset($shipping->shipping_name)) $shipping->shipping_name ='';
-			$this->_cartData['shippingName'] = $shipping->shipping_name;
-
-
-			$taxrules = array();
-			if (!empty($shipping->shipping_tax_id)) {
-				$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $shipping->shipping_tax_id . '" ';
-				$this->_db->setQuery($q);
-				$taxrules = $this->_db->loadAssocList();
-			}
-
-			if (count($taxrules) > 0) {
-				$this->_cartPrices['salesPriceShipping'] = self::roundDisplay(self::executeCalculation($taxrules, $this->_cartPrices['shippingValue']));
-				$this->_cartPrices['shippingTax'] = self::roundDisplay($this->_cartPrices['salesPriceShipping']) - $this->_cartPrices['shippingValue'];
-			} else {
-				$this->_cartPrices['salesPriceShipping'] = $this->_cartPrices['shippingValue'];
-				$this->_cartPrices['shippingTax'] = 0;
-			}
 
 			return $this->_cartPrices;
 		}
@@ -853,51 +827,27 @@ class calculationHelper {
 			$payment = new TablePaymentmethods($this->_db);
 			$payment->load($payment_id);
 
-			$cc_id = empty($cart->virtuemart_creditcard_id) ? 0 : $cart->virtuemart_creditcard_id;
 
 
 			if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnPaymentSelectedCalculatePrice',
-					array('cart' => $cart,
-					    $this->_cartPrices,
-					    'TablePaymentmethods' => $payment));
+					array($cart,
+					    &$this->_cartPrices,
+					    &$this->_cartData['paymentName']  ));
+
 
 			/*
 			* Plugin return true if payment plugin is  valid
 			* false if not  valid anymore
 			* only one value is returned
 			*/
-
 			foreach ($returnValues as $returnValue) {
 				   if ($returnValue === false) {
 				       return;
 				   }
 			 }
-
-
-			if(!isset($payment->payment_value)) $payment->payment_value ='';
-			$this->_cartPrices['paymentValue'] = $payment->payment_value;
-
-			if(!isset($payment->payment_name)) $payment->payment_name ='';
-			$this->_cartData['paymentName'] = $payment->payment_name;
-			$taxrules = array();
-			if (!empty($payment->payment_tax_id)) {
-				$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $payment->payment_tax_id . '" ';
-				$this->_db->setQuery($q);
-				$taxrules = $this->_db->loadAssocList();
-			}
-
-			if (count($taxrules) > 0) {
-				$this->_cartPrices['salesPricePayment'] = self::roundDisplay(self::executeCalculation($taxrules, $this->_cartPrices['paymentValue']));
-				$this->_cartPrices['paymentTax'] = self::roundDisplay($this->_cartPrices['salesPriceShipping']) - $this->_cartPrices['paymentValue'];
-			} else {
-				$this->_cartPrices['salesPricePayment'] = $this->_cartPrices['paymentValue'];
-				$this->_cartPrices['paymentTax'] = 0;
-			}
-
-
 
 			return $this->_cartPrices;
 		}

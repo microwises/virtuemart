@@ -78,6 +78,8 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 		}
 	    }
 	    echo "</fieldset>\n";
+    } else {
+	 echo "<h1>".$this->shipping_not_found_text."</h1>";
     }
 
     ?>

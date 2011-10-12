@@ -176,7 +176,7 @@ abstract class vmPaymentPlugin extends JPlugin {
 		return;
 	    }
 	}
-	$html=array();
+	$html = array();
 	foreach ($this->payments as $payment) {
 	    if ($this->checkPaymentConditions($cart->pricesUnformatted, $payment)) {
 		vmdebug('plgVmOnSelectPayment', $payment->payment_name, $payment->payment_params);
@@ -455,13 +455,13 @@ abstract class vmPaymentPlugin extends JPlugin {
 	$db = JFactory::getDBO();
 
 	if (VmConfig::isJ15()) {
-	    $q = 'SELECT COUNT(*) AS c
+	    $q = 'SELECT count(*) AS c
             		FROM #__virtuemart_paymentmethods AS vm , #__plugins AS j
             		WHERE vm.virtuemart_paymentmethod_id="' . (int) $pid . '"
             		AND   vm.payment_jplugin_id = j.id
 					AND   j.element = "' . $db->getEscaped($pelement) . '"';
 	} else {
-	    $q = 'SELECT COUNT(*) AS c
+	    $q = 'SELECT count(*) AS c
             		FROM #__virtuemart_paymentmethods AS vm
             		, #__extensions AS j
             		WHERE vm.virtuemart_paymentmethod_id="' . (int) $pid . '"
@@ -696,23 +696,30 @@ abstract class vmPaymentPlugin extends JPlugin {
 	return ($nbPayment == 1) ? $virtuemart_paymentmethod_id : 0;
     }
 
-    function plgVmOnCheckPaymentIsValid(VirtueMartCart $cart) {
+    public function plgVmOnPaymentSelectedCalculatePrice(VirtueMartCart $cart, array $cart_prices, $payment_name) {
 	if (!$this->selectedThisPayment($this->_pelement, $cart->virtuemart_paymentmethod_id)) {
 	    return null; // Another payment was selected, do nothing
 	}
-	$payment = $this->getThisPaymentData($cart->virtuemart_shippingcarrier_id);
-	return $this->checkPaymentIsValid($cart);
-    }
 
-    public function plgVmOnPaymentSelectedCalculatePrice(VirtueMartCart $cart, array $cart_prices, TablePaymentmethods $payment) {
-	if (!$this->selectedThisPayment($this->_pelement, $cart->virtuemart_paymentmethod_id)) {
-	    return null; // Another payment was selected, do nothing
+	foreach ($this->payments as $payment) {
+	    if ($payment->virtuemart_paymentmethod_id ==$cart->virtuemart_paymentmethod_id) {
+		break;
+	    }
 	}
-	if (!$this->checkPaymentConditions($cart_prices, $payment) ) return false;
 
+	$payment_name = '';
+	$cart_prices['payment_tax_id'] = 0;
+	$cart_prices['payment_value'] = 0;
+
+	if (!$this->CheckPaymentIsValid($cart, $cart_prices))
+	    return false;
 	$params = new JParameter($payment->payment_params);
-	$payment->payment_value = 0;
-	$payment->payment_tax = 0;
+	$payment_name = $this->getPaymentName($payment);
+	$payment_value = $this->getPaymentValue($params, $cart_prices);
+	$payment_tax_id = $this->getPaymentTaxId($params);
+
+	$this->setCartPrices( &$cart_prices, $payment_value, $payment_tax_id);
+
 	return true;
     }
 
@@ -748,15 +755,15 @@ abstract class vmPaymentPlugin extends JPlugin {
     }
 
     function getPaymentValue($params) {
-	return $params->get('payment_value', 0);
+	return 0;
     }
 
     function getPaymentTaxId($params) {
-	return $params->get('payment_tax_id', 0);
+	return -1;
     }
 
     function getPaymentCost($params, $cart) {
-	return $params->get('payment_value', 0);
+	return 0;
     }
 
     protected function calculateSalesPricePayment($payment_value, $tax_id) {
@@ -776,7 +783,7 @@ abstract class vmPaymentPlugin extends JPlugin {
 	$calculator = calculationHelper::getInstance();
 	$currency = CurrencyDisplay::getInstance();
 
-	$shipping_value = $currency->convertCurrencyTo($vendor_currency->virtuemart_currency_id, $payment_value);
+	$payment_value = $currency->convertCurrencyTo($vendor_currency->virtuemart_currency_id, $payment_value);
 
 	$taxrules = array();
 	if (!empty($tax_id)) {
@@ -806,9 +813,36 @@ abstract class vmPaymentPlugin extends JPlugin {
 	return $payment->payment_name;
     }
 
-    function checkPaymentIsValid($cart, $cart_prices) {
-	$payment = $this->getThisPaymentData($cart->virtuemart_shippingcarrier_id);
+    function checkPaymentIsValid(VirtueMartCart $cart, array $cart_prices) {
+	$payment = $this->getThisPaymentData($cart->virtuemart_paymentmethod_id);
 	return $this->checkPaymentConditions($cart_prices, $payment);
+    }
+
+    /*
+     * setCartPrices
+     *
+     * @author Valérie Isaksen
+     */
+
+    function setCartPrices($cart_prices, $payment_value, $payment_tax_id) {
+
+	$cart_prices['paymentValue'] = $payment_value;
+
+	$taxrules = array();
+	if (!empty($payment_tax_id)) {
+	    $db = JFactory::getDBO();
+	    $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $payment_tax_id . '" ';
+	    $db->setQuery($q);
+	    $taxrules = $db->loadAssocList();
+	}
+
+	if (count($taxrules) > 0) {
+	    $cart_prices['salesPricePayment'] = self::roundDisplay(self::executeCalculation($taxrules, $cart_prices['paymentValue']));
+	    $cart_prices['paymentTax'] = self::roundDisplay($cartPrices['salesPricePayment']) - $cart_prices['paymentValue'];
+	} else {
+	    $cart_prices['salesPricePayment'] = $payment_value;
+	    $cart_prices['paymentTax'] = 0;
+	}
     }
 
 }
