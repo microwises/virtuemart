@@ -102,7 +102,8 @@ function virtuemartBuildRoute(&$query) {
 					else $query['Itemid'] = $jmenu['virtuemart'][0] ;
 				}
 				unset($query['virtuemart_category_id']);
-			} else { $query['Itemid'] = $jmenu['virtuemart'][0] ;
+			} else {
+				$query['Itemid'] = $jmenu['virtuemart'][0] ;
 			}
 
 
