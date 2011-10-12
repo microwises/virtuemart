@@ -65,13 +65,13 @@ function toggleFullURL() {
 	toggleDisable( document.adminForm.product_full_image_action[1], document.adminForm.product_thumb_image, true );
 }
 jQuery('#ImagesContainer').sortable({
-	// update: function(event, ui) {
-		// jQuery(this).find('.ordering').each(function(index,element) {
-			// jQuery(element).val(index);
-			// console.log(index+' ');
+	update: function(event, ui) {
+		jQuery(this).find('.ordering').each(function(index,element) {
+			jQuery(element).val(index);
+			//console.log(index+' ');
 
-		// });
+		});
 		
-	// }
+	}
 });
 </script>
