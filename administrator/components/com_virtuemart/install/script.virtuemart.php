@@ -246,6 +246,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$model -> deleteConfig();
 // 			}
 
+
+			// payment_discount values
+			$this->alterPaymentMethodsTable();
+
+
 			if($loadVm) $this->displayFinished(true);
 			// probably should just go to updatesMigration rather than the install success screen
 			// 			include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
@@ -326,6 +331,29 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			return false;
 
 			;
+		}
+		private function alterPaymentMethodsTable() {
+
+		    $fields = array('discount' ,
+			    'discount_is_percentage' ,
+			    'discount_max_amount' ,
+			    'discount_min_amount'
+			    );
+
+			if(empty($this->db)){
+				$this->db = JFactory::getDBO();
+			}
+			$query = 'SHOW COLUMNS FROM `#__virtuemart_paymentmethods` ';
+			$this->db->setQuery($query);
+			$columns = $this->db->loadResultArray(0);
+			foreach ( $fields as $field) {
+			    if(in_array($field,$columns)){
+				    $query = 'ALTER TABLE `#__virtuemart_paymentmethods` DROP COLUMN `'.$field."` ;";
+				    $this->db->setQuery($query);
+				    $this->db->query();
+			    }
+			}
+			return true;
 		}
 
 		private function alterVendorsTable(){

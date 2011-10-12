@@ -41,15 +41,6 @@ class TablePaymentmethods extends VmTable
 	///** @var string Shoppergroups allowed to use payment_method */
 	//var $payment_shoppervirtuemart_shoppergroup_id         = '';	  // virtuemart_shoppergroup_id?
 
-	/** @var string discount of the paymentmethod */
-	var $discount       		 	= '';
-	/** @var string discount_is_percentage of the paymentmethod */
-	var $discount_is_percentage     = '';
-	/** @var string discount_max_amount, maximum amount of money to transfers,... todo ask for what we need that? */
-	var $discount_max_amount       	= '';
-	/** @var string discount_min_amount of the paymentmethod */
-	var $discount_min_amount		='';
-
 //	/** @var string Type of the paymentmethod */
 //	var $payment_type       		 	= '';
 /** @var string extra information to hold with the paymentmethod */

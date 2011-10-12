@@ -1211,10 +1211,16 @@ class VirtueMartCart {
 		}
 
 	}
-
+	/*
+	 * CheckAutomaticSelectedShipping
+	 * If only one shipping is available for this amount, then automatically select it
+	 *
+	 * @author Valérie Isaksen
+	 */
 	function CheckAutomaticSelectedShipping() {
 
 		$nbShipping = 0;
+		$virtuemart_shippingcarrier_id=0;
 		if (!class_exists('vmShipperPlugin'))
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
@@ -1222,12 +1228,12 @@ class VirtueMartCart {
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipping', array('cart' => $this));
 			foreach ($returnValues as $returnValue) {
-				if ((int)$returnValue ) {
+				if (is_int($returnValue )) {
 					$nbShipping ++;
-					$virtuemart_shippingcarrier_id = $returnValue;
+					if ($returnValue) $virtuemart_shippingcarrier_id = $returnValue;
 				}
 			}
-			if ($nbShipping==1) {
+			if ($nbShipping==1 && $virtuemart_shippingcarrier_id) {
 				$this->virtuemart_shippingcarrier_id = $virtuemart_shippingcarrier_id;
 				$this->setCartIntoSession();
 				return true;
@@ -1240,22 +1246,30 @@ class VirtueMartCart {
 
 
 	}
-	function CheckAutomaticSelectedPayment() {
+
+	/*
+	 * CheckAutomaticSelectedPayment
+	 * If only one payment is available for this amount, then automatically select it
+	 *
+	 * @author Valérie Isaksen
+	 */
+	function CheckAutomaticSelectedPayment($cart_prices) {
 
 		$nbPayment = 0;
+		$virtuemart_paymentmethod_id=0;
 		if (!class_exists('vmPaymentPlugin'))
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
 		if (VmConfig::get('automatic_payment',1) ) {
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedPayment', array('cart' => $this));
+			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedPayment', array('cart' => $this, $cart_prices));
 			foreach ($returnValues as $returnValue) {
-				if ((int)$returnValue ) {
+				if ( is_int($returnValue )) {
 					$nbPayment ++;
-					$virtuemart_paymentmethod_id = $returnValue;
+					if($returnValue) $virtuemart_paymentmethod_id = $returnValue;
 				}
 			}
-			if ($nbPayment==1) {
+			if ($nbPayment==1 && $virtuemart_paymentmethod_id) {
 				$this->virtuemart_paymentmethod_id = $virtuemart_paymentmethod_id;
 				$this->setCartIntoSession();
 				return true;
@@ -1268,6 +1282,13 @@ class VirtueMartCart {
 
 
 	}
+
+	/*
+	 * CheckShippingIsValid:
+	 * check if the selected shipping is still valid for this new cart
+	 *
+	 * @author Valerie Isaksen
+	 */
 	function CheckShippingIsValid() {
 		if ($this->virtuemart_shippingcarrier_id===0)
 		return;
@@ -1287,21 +1308,48 @@ class VirtueMartCart {
 	}
 
 	/*
+	 * CheckPaymentIsValid:
+	 * check if the selected payment is still valid for this new cart
+	 *
+	 * @author Valerie Isaksen
+	 */
+	function CheckPaymentIsValid() {
+
+		if ($this->virtuemart_paymentmethod_id===0)
+		return;
+		$paymentValid = false;
+		if (!class_exists('vmPaymentPlugin'))
+		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
+		JPluginHelper::importPlugin('vmpayment');
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmOnCheckPaymentIsValid', array('cart' => $this));
+		foreach ($returnValues as $returnValue) {
+			$paymentValid += $returnValue;
+		}
+		if (!$paymentValid) {
+			$this->virtuemart_paymentmethod_id = 0;
+			$this->setCartIntoSession();
+		}
+	}
+
+	/*
 	 * Prepare the datas for cart/mail views
 	* set product, price, user, adress and vendor as Object
 	* @author Patrick Kohl
+	* @author Valerie Isaksen
 	*/
 	function prepareCartViewData(){
 		$data = new stdClass();
-		$this->CheckShippingIsValid( );
-		$this->automaticSelectedShipping = $this->CheckAutomaticSelectedShipping( );
-		$this->automaticSelectedPayment =   $this->CheckAutomaticSelectedPayment( );
 		/* Get the products for the cart */
 		$this->cartData = $this->prepareCartData();
+
 		$this->prepareCartPrice( $this->prices ) ;
 
 		$this->prepareAddressDataInCart();
 		$this->prepareVendor();
+
+		//$this->automaticSelectedShipping = $this->CheckAutomaticSelectedShipping( );
+		//$this->automaticSelectedPayment =   $this->CheckAutomaticSelectedPayment( );
 	}
 
 	private function prepareCartPrice( $prices ){

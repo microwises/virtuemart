@@ -176,12 +176,15 @@ abstract class vmPaymentPlugin extends JPlugin {
 		return;
 	    }
 	}
-	$html = "";
-	if (!class_exists('calculationHelper'))
-	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-
+	$html=array();
 	foreach ($this->payments as $payment) {
-	    $html []= $this->getPaymentHtml($payment, $selectedPayment, $cart);
+	    if ($this->checkPaymentConditions($cart->pricesUnformatted, $payment)) {
+		vmdebug('plgVmOnSelectPayment', $payment->payment_name, $payment->payment_params);
+		$params = new JParameter($payment->payment_params);
+		$paymentSalesPrice = $this->calculateSalesPricePayment($this->getPaymentValue($params, $cart), $this->getPaymentTaxId($params, $cart));
+		$payment->payment_name = $this->getPaymentName($payment);
+		$html [] = $this->getPaymentHtml($payment, $selectedPayment, $paymentSalesPrice);
+	    }
 	}
 
 	return $html;
@@ -633,24 +636,21 @@ abstract class vmPaymentPlugin extends JPlugin {
 	}
     }
 
-    protected function getPaymentHtml($payment, $selectedPayment, $cart) {
+    protected function getPaymentHtml($payment, $selectedPayment, $paymentSalesPrice) {
 
 	if ($selectedPayment == $payment->virtuemart_paymentmethod_id) {
-	    $checked = '"checked"';
+	    $checked = 'checked';
 	} else {
 	    $checked = '';
 	}
 
-	if (!class_exists('JParameter'))
-	    require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
-	$params = new JParameter($payment->payment_params);
+	if (!class_exists('CurrencyDisplay'))
+	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+	$currency = CurrencyDisplay::getInstance();
 
-
-	$payment_name = $payment->payment_name; //.$payment_discount;
-
-
-	$html = '<input type="radio" name="virtuemart_paymentmethod_id" value="' . $payment->virtuemart_paymentmethod_id . '" ' . $checked . '>' . $payment_name;
-
+	$paymentCostDisplay = $currency->priceDisplay($paymentSalesPrice);
+	$html = '<input type="radio" name="virtuemart_paymentmethod_id" id="payment_id_' . $payment->virtuemart_paymentmethod_id . '" value="' . $payment->virtuemart_paymentmethod_id . '" ' . $checked . '>'
+		. '<label for="payment_id_' . $payment->virtuemart_paymentmethod_id . '">' . $payment->payment_name . " (" . $paymentCostDisplay . ")</label>\n";
 	$html .="\n";
 	return $html;
     }
@@ -670,27 +670,145 @@ abstract class vmPaymentPlugin extends JPlugin {
 	return $db->loadResult(); // TODO Error check
     }
 
-    function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart) {
+    /**
+     * Get Shipper Data for a go given Payment ID
+     * @param int $virtuemart_payment_id The Payment ID
+     * @author Valérie Isaksen
+     * @return  Shipper data
+     */
+    final protected function getThisPaymentData($virtuemart_payment_id) {
+	$db = JFactory::getDBO();
+	$q = 'SELECT * '
+		. 'FROM #__virtuemart_paymentmethods '
+		. "WHERE virtuemart_paymentmethod_id ='" . $virtuemart_payment_id . "' ";
+	$db->setQuery($q);
+	$result = $db->loadObject(); // TODO Error check
+	return $result;
+    }
+
+    function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart, array $cart_prices) {
 
 	$nbPayment = 0;
 	$virtuemart_paymentmethod_id = 0;
-	$nbPayment = $this->getSelectablePayment($cart, $virtuemart_paymentmethod_id);
+	$nbPayment = $this->getSelectablePayment($cart, $cart_prices, $virtuemart_paymentmethod_id);
+	if ($nbPayment == null)
+	    return null;
 	return ($nbPayment == 1) ? $virtuemart_paymentmethod_id : 0;
+    }
+
+    function plgVmOnCheckPaymentIsValid(VirtueMartCart $cart) {
+	if (!$this->selectedThisPayment($this->_pelement, $cart->virtuemart_paymentmethod_id)) {
+	    return null; // Another payment was selected, do nothing
+	}
+	$payment = $this->getThisPaymentData($cart->virtuemart_shippingcarrier_id);
+	return $this->checkPaymentIsValid($cart);
+    }
+
+    public function plgVmOnPaymentSelectedCalculatePrice(VirtueMartCart $cart, array $cart_prices, TablePaymentmethods $payment) {
+	if (!$this->selectedThisPayment($this->_pelement, $cart->virtuemart_paymentmethod_id)) {
+	    return null; // Another payment was selected, do nothing
+	}
+	if (!$this->checkPaymentConditions($cart_prices, $payment) ) return false;
+
+	$params = new JParameter($payment->payment_params);
+	$payment->payment_value = 0;
+	$payment->payment_tax = 0;
+	return true;
     }
 
     /*
      * This method returns the number of payment methods valid
      */
 
-    function getSelectablePayment(VirtueMartCart $cart, &$virtuemart_paymentmethod_id) {
+    function getSelectablePayment(VirtueMartCart $cart, $cart_prices, &$virtuemart_paymentmethod_id) {
 	$nbPayments = 0;
 	if ($this->getPaymentMethods($cart->vendorId) === false) {
 	    return false;
 	}
-	if (($nbPayments = count($this->payments)) == 1) {
-	    $virtuemart_paymentmethod_id = (int) $this->payments[0]->virtuemart_paymentmethod_id;
+
+	foreach ($this->payments as $payment) {
+	    if ($this->checkPaymentConditions($cart_prices, $payment)) {
+		$nbPayments++;
+		$virtuemart_paymentmethod_id = (int) $payment->virtuemart_paymentmethod_id;
+	    }
 	}
+
 	return $nbPayments;
+    }
+
+    function checkPaymentConditions($cart_prices, $payment) {
+
+	$params = new JParameter($payment->payment_params);
+	$amount = $cart_prices['salesPrice'];
+	$amount_cond = ($amount >= $params->get('min_amount', 0) AND $amount <= $params->get('max_amount', 0)
+		OR
+		($params->get('min_amount', 0) <= $amount AND ($params->get('max_amount', '') == '') ));
+
+	return $amount_cond;
+    }
+
+    function getPaymentValue($params) {
+	return $params->get('payment_value', 0);
+    }
+
+    function getPaymentTaxId($params) {
+	return $params->get('payment_tax_id', 0);
+    }
+
+    function getPaymentCost($params, $cart) {
+	return $params->get('payment_value', 0);
+    }
+
+    protected function calculateSalesPricePayment($payment_value, $tax_id) {
+
+	if (!class_exists('calculationHelper'))
+	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+	if (!class_exists('CurrencyDisplay'))
+	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+
+	if (!class_exists('VirtueMartModelVendor'))
+	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+	$vendor_id = 1;
+	$vendor_currency = VirtueMartModelVendor::getVendorCurrency($vendor_id);
+
+
+	$db = JFactory::getDBO();
+	$calculator = calculationHelper::getInstance();
+	$currency = CurrencyDisplay::getInstance();
+
+	$shipping_value = $currency->convertCurrencyTo($vendor_currency->virtuemart_currency_id, $payment_value);
+
+	$taxrules = array();
+	if (!empty($tax_id)) {
+	    $q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $tax_id . '" ';
+	    $db->setQuery($q);
+	    $taxrules = $db->loadAssocList();
+	}
+
+	if (count($taxrules) > 0) {
+	    $salesPricePayment = $calculator->roundDisplay($calculator->executeCalculation($taxrules, $payment_value));
+	} else {
+	    $salesPricePayment = $payment_value;
+	}
+
+	return $salesPricePayment;
+    }
+
+    /**
+     * Get the name of the payment method
+     * @param TablePaymentmethods $payment
+     * @return string Payment method name
+     * @author Valerie Isaksen
+     */
+    function getPaymentName($payment) {
+
+	$params = new JParameter($payment->payment_params);
+	return $payment->payment_name;
+    }
+
+    function checkPaymentIsValid($cart, $cart_prices) {
+	$payment = $this->getThisPaymentData($cart->virtuemart_shippingcarrier_id);
+	return $this->checkPaymentConditions($cart_prices, $payment);
     }
 
 }

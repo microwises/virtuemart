@@ -48,21 +48,7 @@ AdminUIHelper::startAdminArea();
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_SHOPPERGROUPS'); ?>
 			</th>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_DISCOUNT'); ?>
-			</th>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_IS_PERCENTAGE'); ?>
-			</th>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_MIN_DISCOUNT'); ?>
-			</th>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_MAX_DISCOUNT'); ?>
-			</th>
-<?php /*			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_TYPE'); ?>
-			</th>  */?>
+
 			<th width="10">
 				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 			</th>
@@ -102,39 +88,7 @@ AdminUIHelper::startAdminArea();
 				<td>
 					<?php echo $row->paymShoppersList; ?>
 				</td>
-				<td>
-					<?php echo $row->discount; ?>
-				</td>
-				<td>
-					<?php echo ($row->discount_is_percentage?'%':JText::_('COM_VIRTUEMART_TOTAL') ); ?>
-				</td>
-				<td>
-					<?php echo $row->discount_min_amount; ?> <?php echo $this->vendor_currency;   ?>
-				</td>
-				<td>
-					<?php echo $row->discount_max_amount; ?> <?php echo $this->vendor_currency;   ?>
-				</td>
-<?php /*				<td>
-					<?php
-					switch($row->payment_type) {
-						case "Y":
-							$tmp_cell = JText::_('COM_VIRTUEMART_PAYMENT_FORM_USE_PP');
-							break;
-						case "N":
-							$tmp_cell = JText::_('COM_VIRTUEMART_PAYMENT_FORM_AO');
-							break;
-						case "B":
-							$tmp_cell = JText::_('COM_VIRTUEMART_PAYMENT_FORM_BANK_DEBIT');
-							break;
-						case "P":
-							$tmp_cell = JText::_('COM_VIRTUEMART_PAYMENT_FORM_FORMBASED');
-							break;
-						default:
-							$tmp_cell = JText::_('COM_VIRTUEMART_PAYMENT_FORM_CC');
-							break;
-					}
-					echo $tmp_cell; ?>
-				</td> */ ?>
+				
 				<td align="center">
 					<?php echo $published; ?>
 				</td>

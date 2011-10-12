@@ -52,37 +52,6 @@ defined('_JEXEC') or die('Restricted access');
 		echo $this->shopperGroupList ?>
       </td>
     </tr>
-    <tr >
-      <td class="key"><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_DISCOUNT_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_FORM_DISCOUNT') ?></span></td>
-      <td width="69%" >
-      <input type="text" class="inputbox" name="discount" value="<?php	echo $this->paym->discount;?>" size="4" />
-
-      </td>
-    </tr>
-	<tr  >
-      <td class="key"><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_DISCOUNT_ISPERCENT_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_DISCOUNT_AMOUNTTYPE') ?></span></td>
-      <td width="69%" >
-		<fieldset class="radio">
-		<?php
-		echo JHTML::_('select.booleanlist',  'discount_is_percentage', 'class="inputbox"', $this->paym->discount_is_percentage, 'COM_VIRTUEMART_DISCOUNT_ISPERCENT', 'COM_VIRTUEMART_DISCOUNT_ISTOTAL');
-		  ?>
-		</fieldset>
-      </td>
-    </tr>
-	<tr  >
-      	<td class="key"><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_DISCOUNT_MAX_AMOUNT_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_DISCOUNT_MAX_AMOUNT') ?></span></td>
-      	<td width="69%" >
-      	<input type="text" class="inputbox" name="discount_max_amount" value="<?php	echo $this->paym->discount_max_amount;?>" size="4" />
-	<?php echo $this->vendor_currency;   ?>
-      </td>
-    </tr>
-        <tr  >
-      	<td class="key"><span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_DISCOUNT_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_DISCOUNT_MIN_AMOUNT') ?></td>
-      	<td width="69%" >
-      	<input type="text" class="inputbox" name="discount_min_amount" value="<?php	echo $this->paym->discount_min_amount;?>" size="4" />
-	<?php echo $this->vendor_currency;   ?>
-      </td>
-    </tr>
     <tr  >
       <td class="key"><?php echo JText::_('COM_VIRTUEMART_LIST_ORDER') ?></td>
       <td width="69%" >

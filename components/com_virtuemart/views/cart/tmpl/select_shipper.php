@@ -63,33 +63,23 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
         <button class="button" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
     </div>
     <?php
-    echo JText::_('COM_VIRTUEMART_CART_SELECT_SHIPPER');
-    if (!class_exists('vmShipperPlugin'))
-	require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
-    JPluginHelper::importPlugin('vmshipper');
-    $dispatcher = JDispatcher::getInstance();
-    $tmp = array('cart' => $this->cart, 'checked' => $this->selectedShipper);
-    $html = $dispatcher->trigger('plgVmOnSelectShipper', $tmp);
-   echo "<fieldset>\n";
-// if only one Shipper , should be checked by default
-    $found_shipping_method = false;
-    foreach ($html as $items) {
-	if (is_array($items)) {
-	    foreach ($items as $item) {
-		echo $item.'<br />';
-		$found_shipping_method = true;
+
+
+    if ($this->found_shipping_method) {
+
+	 echo JText::_('COM_VIRTUEMART_CART_SELECT_SHIPPER');
+	   echo "<fieldset>\n";
+	// if only one Shipper , should be checked by default
+	    foreach ($this->shippers_shipping_rates as $shipper_shipping_rates) {
+		if (is_array($shipper_shipping_rates)) {
+		    foreach ($shipper_shipping_rates as $shipper_shipping_rate) {
+			echo $shipper_shipping_rate.'<br />';
+		    }
+		}
 	    }
-	}
+	    echo "</fieldset>\n";
     }
-    echo "</fieldset>\n";
 
-
-
-
-    if (!$found_shipping_method) {
-	$app = JFactory::getApplication();
-	vmError(JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD'), JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'));
-    }
     ?>
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="view" value="cart" />

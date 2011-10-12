@@ -231,6 +231,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
      * @author jseros
      *
      * @return int 1 is the publishing action was successful, -1 is the unsharing action was successfully, 0 otherwise.
+     	* @deprecated
      */
 	public function changeIsPercentagePublish($quotedId){
 

@@ -64,21 +64,22 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 	<button class="button" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
     </div>
     <?php
+     if ($this->found_payment_method) {
     echo JText::_('COM_VIRTUEMART_CART_SELECT_PAYMENT');
 
-    $dispatcher = JDispatcher::getInstance();
-    $html = $dispatcher->trigger('plgVmOnSelectPayment', array('cart' => $this->cart, 'checked' => $this->selectedPaym));
     echo "<fieldset>\n";
-    foreach ($html as $items) {
-	if (is_array($items)) {
-	    foreach ($items as $item) {
-		echo $item.'<br />';
-	    }
-	}
+		foreach ($this->paymentplugins_payments as $paymentplugin_payments) {
+		    if (is_array($paymentplugin_payments)) {
+			foreach ($paymentplugin_payments as $paymentplugin_payment) {
+			    echo $paymentplugin_payment.'<br />';
+			}
+		    }
+		}
+    echo "</fieldset>\n";
 
     }
-    echo "</fieldset>\n";
-    ?>	<input type="hidden" name="option" value="com_virtuemart" />
+    ?>
+    <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="view" value="cart" />
     <input type="hidden" name="task" value="setpayment" />
     <input type="hidden" name="controller" value="cart" />

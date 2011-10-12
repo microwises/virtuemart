@@ -3,7 +3,7 @@
 /**
  * Calculation helper class
  *
- * This class provides the functions for the calculatoins
+ * This class provides the functions for the calculations
  *
  * @package	VirtueMart
  * @subpackage Helpers
@@ -431,7 +431,7 @@ class calculationHelper {
 		$shippercarrier_id = empty($cart->virtuemart_shippingcarrier_id) ? 0 : $cart->virtuemart_shippingcarrier_id;
 
 		//$this->calculateShipmentPrice($cart, $shippingRateId);
-		$this->calculateShipmentPrice($cart, $shippercarrier_id);
+		$this->calculateShipmentPrice($cart,  $shippercarrier_id);
 
 		//		$pBRules = $this->gatherEffectingRulesForPayment($paymId);
 		$this->_cartData['taxRulesBill'] = $taxRules = $this->gatherEffectingRulesForBill('TaxBill');
@@ -456,12 +456,12 @@ class calculationHelper {
 		$paymentId = empty($cart->virtuemart_paymentmethod_id) ? 0 : $cart->virtuemart_paymentmethod_id;
 		$creditId = empty($cart->virtuemart_creditcard_id) ? 0 : $cart->virtuemart_creditcard_id;
 
-		$this->calculatePaymentPrice($paymentId, $creditId, $this->_cartPrices['withTax']);
+		$this->calculatePaymentPrice($cart, $paymentId);
 
 		//		$sub =!empty($this->_cartPrices['discountedPriceWithoutTax'])? $this->_cartPrices['discountedPriceWithoutTax']:$this->_cartPrices['basePrice'];
 		$this->_cartPrices['billSub'] = $this->_cartPrices['basePrice'] + $this->_cartPrices['shippingValue'] + $this->_cartPrices['paymentValue'];
 		//		$this->_cartPrices['billSub']  = $sub + $this->_cartPrices['shippingValue'] + $this->_cartPrices['paymentValue'];
-		$this->_cartPrices['billDiscountAmount'] = $this->_cartPrices['discountAmount'] + $this->_cartPrices['paymentDiscount'];
+		$this->_cartPrices['billDiscountAmount'] = $this->_cartPrices['paymentValue']  ;
 		$this->_cartPrices['billTaxAmount'] = $this->_cartPrices['taxAmount'] + $this->_cartPrices['withTax'] - $toTax + $this->_cartPrices['shippingTax'] + $this->_cartPrices['paymentTax'];
 		$this->_cartPrices['billTotal'] = $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'];
 
@@ -752,18 +752,22 @@ class calculationHelper {
 		 * @todo
 		 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
 		 * @author Max Milbers
+		 * @author Valerie Isaksen
 		 * @param 	$code 	The Id of the coupon
 		 * @return 	$rules 	ids of the coupons
 		 */
-		function calculateShipmentPrice($cart, $ship_id) {
+		function calculateShipmentPrice(  $cart, $ship_id) {
 
 			$this->_cartData['shippingName'] = JText::_('COM_VIRTUEMART_CART_NO_SHIPMENT_SELECTED');
 			$this->_cartPrices['shippingValue'] = 0; //could be automatically set to a default set in the globalconfig
 			$this->_cartPrices['shippingTax'] = 0;
-			$this->_cartPrices['shippingTotal'] = 0;
+			$this->_cartPrices['shippingTotal'] = 0; 
 			$this->_cartPrices['salesPriceShipping'] = 0;
-			if (empty($ship_id))
-			return;
+			// check if there is only one possible shipping method
+
+			$automaticSelectedShipping =   $cart->CheckAutomaticSelectedShipping( );
+			if ($automaticSelectedShipping) $ship_id=$cart->virtuemart_shippingcarrier_id;
+			if (empty($ship_id)) return;
 
 			if (!class_exists('TableShippingcarriers'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'shippingcarriers.php');
@@ -776,15 +780,22 @@ class calculationHelper {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
 			JPluginHelper::importPlugin('vmshipper');
 			$_dispatcher = JDispatcher::getInstance();
-			$_retValues = $_dispatcher->trigger('plgVmOnShipperSelectedCalculatePrice',
+			$returnValues = $_dispatcher->trigger('plgVmOnShipperSelectedCalculatePrice',
 			array('cart' => $cart,
+			    'prices' => $this->_cartPrices,
                             'shipping' => $shipping));
 			/*
-			 * TODO
 			* Plugin return true if shipping rate is still valid
 			* false if not any more
 			*/
-
+			$shippingValid=0;
+			foreach ($returnValues as $returnValue) {
+				    $shippingValid += $returnValue;
+			 }
+			 if (!$shippingValid) {
+				    $cart->virtuemart_shippingcarrier_id = 0;
+				    $cart->setCartIntoSession();
+			 }
 			if(!isset($shipping->shipping_value)) $shipping->shipping_value ='';
 			$this->_cartPrices['shippingValue'] = $shipping->shipping_value;
 
@@ -793,8 +804,8 @@ class calculationHelper {
 
 
 			$taxrules = array();
-			if (!empty($shipping->shipping_rate_vat_id)) {
-				$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $shipping->shipping_rate_vat_id . '" ';
+			if (!empty($shipping->shipping_tax_id)) {
+				$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $shipping->shipping_tax_id . '" ';
 				$this->_db->setQuery($q);
 				$taxrules = $this->_db->loadAssocList();
 			}
@@ -815,78 +826,78 @@ class calculationHelper {
 		 * @todo
 		 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
 		 * @author Max Milbers
+		 * @author Valerie Isaksen
 		 * @param 	$code 	The Id of the paymentmethod
 		 * @param	$value	amount of the money to transfere
 		 * @param	$value	$cartVendorId
 		 * @return 	$paymentCosts 	The amount of money the customer has to pay. Calculated in shop currency
 		 */
-		function calculatePaymentPrice($virtuemart_paymentmethod_id=0, $cc_id=0, $value=0.0, $cartVendorId=1) {
+		function calculatePaymentPrice($cart,   $payment_id ) {
 			//		if (empty($code)) return 0.0;
 			//		$code=4;
-			$paymentCosts = 0.0;
-
-			if (!class_exists('VirtueMartModelPaymentmethod'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'paymentmethod.php');
-
-			$model = new VirtueMartModelPaymentmethod();
-			$model->setId($virtuemart_paymentmethod_id);
-			$payment = $model->getPayment();
-
-			if ($virtuemart_paymentmethod_id) {
-				if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
-				JPluginHelper::importPlugin('vmpayment');
-				$dispatcher = JDispatcher::getInstance();
-				$retValues = $dispatcher->trigger('plgVmGetDisplayedPaymentName', array('tablePaymentMethods' => $payment ) );
-				$payment_name='';
-				foreach ($retValues as $return ) {
-					$payment_name.=$return;
-				}
-			}
-
-
-			$this->_cartData['paymentName'] = !empty($payment_name) ? $payment_name : JText::_('COM_VIRTUEMART_CART_NO_PAYMENT_SELECTED');
-			$this->_cartPrices['paymentValue'] = 0;
+			$this->_cartData['paymentName'] = JText::_('COM_VIRTUEMART_CART_NO_PAYMENT_SELECTED');
+			$this->_cartPrices['paymentValue'] = 0; //could be automatically set to a default set in the globalconfig
 			$this->_cartPrices['paymentTax'] = 0;
-			$this->_cartPrices['paymentDiscount'] = 0;
-			//		$this->_cartPrices['paymentTotal'] = 0;
-			//		echo '<pre>'.print_r($paym).'</pre>';
-			if (!empty($payment->discount)) {
+			$this->_cartPrices['paymentTotal'] = 0;
+			$this->_cartPrices['salesPricePayment'] = 0;
 
-				if ($payment->discount > 0) {
-					$toggle = 'paymentDiscount';
-				} else {
-					$toggle = 'paymentValue';
-				}
+			// check if there is only one possible payment method
+			$cart->automaticSelectedPayment =   $cart->CheckAutomaticSelectedPayment( $this->_cartPrices);
+			if ($cart->automaticSelectedPayment) $payment_id=$cart->virtuemart_paymentmethod_id;
+			if (empty($payment_id)) return;
 
-				if ($payment->discount_min_amount <= $value) {
+			// either there is only one payment method, either the old one is still valid
+			if (!class_exists('TablePaymentmethods'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'paymentmethods.php');
 
-					//if($payment->discount_max_amount == 0 || $value <=$payment->discount_max_amount){
+			$payment = new TablePaymentmethods($this->_db);
+			$payment->load($payment_id);
 
-					//Attention the minus is due the strange logic by entering discount instead of a fee, maybe changed, but later
-					if ($payment->discount_is_percentage) {
-						$this->_cartPrices[$toggle] = - $value * ($payment->discount / 100);
+			$cc_id = empty($cart->virtuemart_creditcard_id) ? 0 : $cart->virtuemart_creditcard_id;
 
-						if (abs($this->_cartPrices[$toggle]) > $payment->discount_max_amount && $payment->discount_max_amount > 0) {
-							$this->_cartPrices[$toggle] = -$payment->discount_max_amount;
-						} elseif (abs($this->_cartPrices[$toggle]) < $payment->discount_min_amount && $payment->discount_min_amount > 0) {
-							$this->_cartPrices[$toggle] = -$payment->discount_min_amount;
-						}
-					} else {
-						$this->_cartPrices[$toggle] = - $payment->discount;
-					}
-					//}
-				}
-			} else {
-				//			echo '<br />$paymFields->discount was EMPTY';
-				$toggle = 'paymentValue';
+
+			if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
+			JPluginHelper::importPlugin('vmpayment');
+			$dispatcher = JDispatcher::getInstance();
+			$returnValues = $dispatcher->trigger('plgVmOnPaymentSelectedCalculatePrice',
+					array('cart' => $cart,
+					    $this->_cartPrices,
+					    'TablePaymentmethods' => $payment));
+
+			/*
+			* Plugin return true if payment plugin is  valid
+			* false if not  valid anymore
+			* only one value is returned
+			*/
+
+			foreach ($returnValues as $returnValue) {
+				   if ($returnValue === false) {
+				       return;
+				   }
+			 }
+
+
+			if(!isset($payment->payment_value)) $payment->payment_value ='';
+			$this->_cartPrices['paymentValue'] = $payment->payment_value;
+
+			if(!isset($payment->payment_name)) $payment->payment_name ='';
+			$this->_cartData['paymentName'] = $payment->payment_name;
+			$taxrules = array();
+			if (!empty($payment->payment_tax_id)) {
+				$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $payment->payment_tax_id . '" ';
+				$this->_db->setQuery($q);
+				$taxrules = $this->_db->loadAssocList();
 			}
 
-			//Strange thing here, yes. The amount to pay for the payment is solved via the discount.
-			//a negative discount is like a payment method which costs
-			//		$this->_cartPrices['paymentValue'] = $this->_cartPrices['paymentDiscount'];
-			$this->_cartPrices['salesPricePayment'] = self::roundDisplay($this->_cartPrices[$toggle] + $this->_cartPrices['paymentTax']);
+			if (count($taxrules) > 0) {
+				$this->_cartPrices['salesPricePayment'] = self::roundDisplay(self::executeCalculation($taxrules, $this->_cartPrices['paymentValue']));
+				$this->_cartPrices['paymentTax'] = self::roundDisplay($this->_cartPrices['salesPriceShipping']) - $this->_cartPrices['paymentValue'];
+			} else {
+				$this->_cartPrices['salesPricePayment'] = $this->_cartPrices['paymentValue'];
+				$this->_cartPrices['paymentTax'] = 0;
+			}
 
-			//		echo '<pre>'.print_r($this->_cartPrices[$toggle]).'</pre>';
+
 
 			return $this->_cartPrices;
 		}

@@ -80,7 +80,7 @@ class VirtueMartControllerPaymentresponse extends JController {
 			    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 			$order = new VirtueMartModelOrders();
 			$orderitems = $order->getOrder($virtuemart_order_id);
-			vmdebug('PaymentResponseReceived CART', $orderitems);
+			//vmdebug('PaymentResponseReceived CART', $orderitems);
 			$cart->sentOrderConfirmedEmail($orderitems);
 			//We delete the old stuff
 
@@ -149,7 +149,7 @@ class VirtueMartControllerPaymentresponse extends JController {
 	$layoutName = JRequest::getWord('layout', 'default');
 	$view->setLayout($layoutName);
 	JRequest::setVar('paymentResponse', Jtext::_('COM_VIRTUEMART_PAYMENT_USER_CANCEL'));
-	 
+
 	/* Display it all */
 	$view->display();
     }

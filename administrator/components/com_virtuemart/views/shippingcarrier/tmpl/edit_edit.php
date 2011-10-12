@@ -25,6 +25,10 @@ defined('_JEXEC') or die('Restricted access');
     <fieldset>
         <legend><?php echo JText::_('COM_VIRTUEMART_SHIPPINGCARRIER'); ?></legend>
         <table class="admintable">
+	    <tr>
+                <td class="key"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?></td>
+                <td><fieldset class="radio"><?php echo JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $this->carrier->published); ?></fieldset></td>
+            </tr>
             <tr>
                 <td width="110" class="key">
                     <label for="shipping_carrier_name">
@@ -75,11 +79,6 @@ defined('_JEXEC') or die('Restricted access');
                 </td>
             </tr>
 
-
-            <tr>
-                <td class="key"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?></td>
-                <td><fieldset class="radio"><?php echo JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $this->carrier->published); ?></fieldset></td>
-            </tr>
            <?php if(Vmconfig::get('multix','none')!=='none'){ ?>
             <tr>
                 <td width="110" class="key">
@@ -88,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');
                     </label>
                 </td>
                 <td>
-						<?php echo $this->vendorList; ?>
+			<?php echo $this->vendorList; ?>
                 </td>
             </tr>
 			<?php } ?>

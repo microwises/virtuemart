@@ -60,14 +60,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								<input class="inputbox" type="text" name="vendor_min_pov" id="vendor_min_pov" size="10" value="<?php echo $this->vendor->vendor_min_pov; ?>" />
 							</td>
 						</tr>
-						<tr>
-							<td class="key">
-								<?php echo JText::_('COM_VIRTUEMART_FREE_SHIPPING_AMOUNT'); ?>:
-							</td>
-							<td>
-								<input class="inputbox" type="text" name="vendor_freeshipping" id="vendor_freeshipping" size="10" value="<?php echo $this->vendor->vendor_freeshipping; ?>" />
-							</td>
-						</tr>
+						 
 					</table>
 				</fieldset>
 			</td>

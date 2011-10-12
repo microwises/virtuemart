@@ -31,6 +31,33 @@
         <param name="weight_unit" type="vmweightunit" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_UNIT" description="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_UNIT_DESC"/>
         <param name="rate_value" type="text"   label="VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE" description="VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE_DESC" />
         <param name="package_fee" type="text"   label="VMSHIPPER_WEIGHT_COUNTRIES_PACKAGE_FEE" description="VMSHIPPER_WEIGHT_COUNTRIES_PACKAGE_FEE_DESC" />
-        <param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPPER_WEIGHT_COUNTRIES_TAX" description="VMSHIPPER_WEIGHT_COUNTRIES_TAX_DESC" />
+        <param name="shipping_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPPER_WEIGHT_COUNTRIES_TAX" description="VMSHIPPER_WEIGHT_COUNTRIES_TAX_DESC" />
+        <param name="free_shipping" type="text"    label="COM_VIRTUEMART_FREE_SHIPPING_AMOUNT" description="COM_VIRTUEMART_FREE_SHIPPING_AMOUNT_DESC" />
     </params>
+
+
+
+
+    <fieldset addpath="/administrator/components/com_virtuemart/elements">
+        <field type="vmjpluginwarning" />
+        <field type="vmjpluginwarning" />
+        <field type="spacer" default="VMSHIPPER_WEIGHT_COUNTRIES_PLUGIN" level="level1" />
+         <field	name="shipper_logo" type="vmfiles" label="VMSHIPPER_WEIGHT_COUNTRIES_LOGOS"
+             	description="VMSHIPPER_WEIGHT_COUNTRIES_LOGOS_DESC"
+             	directory="/images/stories/virtuemart/shipper"
+             	default="default" hide_default="1" hide_none="1"
+             	stripext="0"   exclude="^_" />
+        <field name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_COUNTRIES" description="VMSHIPPER_WEIGHT_COUNTRIES_COUNTRIES_DESC"/>
+        <field name="zip_start" type="text" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_ZIP_START" description="VMSHIPPER_WEIGHT_COUNTRIES_ZIP_START_DESC"/>
+        <field name="zip_stop" type="text" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_ZIP_STOP" description="VMSHIPPER_WEIGHT_COUNTRIES_ZIP_STOP_DESC"/>
+        <field name="weight_start" type="text" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_START" description="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_START_DESC"/>
+        <field name="weight_stop" type="text" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_STOP" description="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_STOP_DESC"/>
+        <field name="weight_unit" type="vmweightunit" size="10" default="" label="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_UNIT" description="VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT_UNIT_DESC"/>
+        <field name="rate_value" type="text"   label="VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE" description="VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE_DESC" />
+        <field name="package_fee" type="text"   label="VMSHIPPER_WEIGHT_COUNTRIES_PACKAGE_FEE" description="VMSHIPPER_WEIGHT_COUNTRIES_PACKAGE_FEE_DESC" />
+        <field name="shipping_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPPER_WEIGHT_COUNTRIES_TAX" description="VMSHIPPER_WEIGHT_COUNTRIES_TAX_DESC" />
+        <field name="free_shipping" type="text"    label="COM_VIRTUEMART_FREE_SHIPPING_AMOUNT" description="COM_VIRTUEMART_FREE_SHIPPING_AMOUNT_DESC" />
+
+
+    </fieldset>
 </install>
