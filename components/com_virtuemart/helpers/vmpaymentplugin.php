@@ -718,7 +718,7 @@ abstract class vmPaymentPlugin extends JPlugin {
 	$payment_value = $this->getPaymentValue($params, $cart_prices);
 	$payment_tax_id = $this->getPaymentTaxId($params);
 
-	$this->setCartPrices( &$cart_prices, $payment_value, $payment_tax_id);
+	$this->setCartPrices( $cart_prices, $payment_value, $payment_tax_id);
 
 	return true;
     }
@@ -824,7 +824,7 @@ abstract class vmPaymentPlugin extends JPlugin {
      * @author Valérie Isaksen
      */
 
-    function setCartPrices($cart_prices, $payment_value, $payment_tax_id) {
+    function setCartPrices( &$cart_prices, $payment_value, $payment_tax_id) {
 
 	$cart_prices['paymentValue'] = $payment_value;
 
