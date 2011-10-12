@@ -38,11 +38,12 @@
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.com_virtuemart.ini</language>
 		<language tag="en-GB">en-GB/en-GB.com_virtuemart.sys.ini</language>
+		<language tag="en-GB">en-GB/en-GB.com_virtuemart.menu.ini</language>
 	</languages>
 
 	<administration>
 		<!-- Administration Menu Section -->
-		<menu img="../components/com_virtuemart/assets/images/vmgeneral/menu_icon.png">VirtueMart</menu>
+		<menu img="../components/com_virtuemart/assets/images/vmgeneral/menu_icon.png">COM_VIRTUEMART</menu>
 		<!-- Administration Main File Copy Section -->
 		<files folder="administrator/components/com_virtuemart">
 			<filename>admin.virtuemart.php</filename>
