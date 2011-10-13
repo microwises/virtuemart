@@ -70,27 +70,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 */
 		/*		public function preflight ($type, $parent=null) {
 
-		$update = false;
-
-		$db = JFactory::getDBO();
-
-		$q = "SELECT count(id) AS idCount FROM `#__virtuemart_adminmenuentries`";
-		$db->setQuery($q);
-		$result = $db->loadResult();
-
-		if (empty($result)) {
-		$update = false;
-		} else {
-		$update = true;
-		}
-
-
-		// return true so com_install wrapper will know what to do in j1.5
-		if ($parent == null) {
-		return $update;
-		}
-
-		//$parent->getParent()->setUpgrade($update);
 
 		}*/
 
@@ -238,6 +217,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$fields = array('products_per_row'=>' `products_per_row` NULL DEFAULT NULL');
 			$this->alterTable('#__virtuemart_categories',$fields);
 
+
+			$fields = array('product_order_levels',' `product_params` text NOT NULL ');
+			$this->alterTable('#__virtuemart_products',$fields);
 
 			//delete old config file
 // 			$this->renewConfigManually = !JFile::delete($this->path.DS.'virtuemart.cfg');

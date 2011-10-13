@@ -55,9 +55,11 @@ defined('_JEXEC') or die('Restricted access');
 	<?php } ?>
 
 	<?php // Manufacturer Product Link
-	if(!empty($manufacturerProductsURL)) { ?>
+	$manufacturerProductsURL = JROUTE::_('index.php?option=com_virtuemart&view=category&search=true&virtuemart_manufacturer_id=' . $this->manufacturer->virtuemart_manufacturer_id);
+
+	if(!empty($this->manufacturer->virtuemart_manufacturer_id)) { ?>
 		<div class="manufacturer-product-link">
-			<a href="<?php echo $this->manufacturerProductsURL; ?>"><?php echo JText::sprintf('COM_VIRTUEMART_PRODUCT_FROM_MF',$this->manufacturer->mf_name); ?></a>
+			<a href="<?php echo $manufacturerProductsURL; ?>"><?php echo JText::sprintf('COM_VIRTUEMART_PRODUCT_FROM_MF',$this->manufacturer->mf_name); ?></a>
 		</div>
 	<?php } ?>
 

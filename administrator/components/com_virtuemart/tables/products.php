@@ -89,7 +89,7 @@ class TableProducts extends VmTable {
 	/** @var int File thumbnail image width */
 	var $product_packaging	= null;
 	/** @var int File thumbnail image width */
-	var $product_order_levels	= '0,0';
+	var $product_params	= null;
 	/** @var string Internal note for product */
 	var $intnotes = '';
 	/** @var string Meta description */
@@ -119,6 +119,14 @@ class TableProducts extends VmTable {
 		$this->setLoggable();
 		$this->setSlug('product_name');
 		$this->setTableShortCut('p');
+
+		//We could put into the params also the product_availability and the low_stock_notification
+		$varsToPushParam = array(
+				    				'min_order_level'=>array(0.0,'float'),
+				    				'max_order_level'=>array(0.0,'float')
+									);
+
+		$this->setParameterable('product_params',$varsToPushParam);
 
 	}
 

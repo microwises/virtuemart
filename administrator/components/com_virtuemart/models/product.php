@@ -487,9 +487,6 @@ class VirtueMartModelProduct extends VmModel {
 				}
 
 
-				// Check the order levels
-				if (empty($product->product_order_levels)) $product->product_order_levels = '0,0';
-
 				// Check the stock level
 				if (empty($product->product_in_stock)) $product->product_in_stock = 0;
 
@@ -801,17 +798,9 @@ class VirtueMartModelProduct extends VmModel {
 
 		//Set the product packaging
 		if (array_key_exists('product_box', $data )) {
-		$data['product_packaging'] = (($data['product_box'] << 16) | ($data['product_packaging']&0xFFFF));
-		// Set the order levels
-			$data['product_order_levels'] = empty ($data['min_order_level'])? 0 : $data['min_order_level'].','.empty ($data['max_order_level'])? 0 : $data['max_order_level'];
+			$data['product_packaging'] = (($data['product_box'] << 16) | ($data['product_packaging']&0xFFFF));
 		}
 
-// 		vmdebug('product_price is',$data['product_price']);
-// 		if(empty($data['product_price'])){
-// 			vmdebug('product_price is empty');
-// 			$data['product_price'] ='NULL';
-// 			unset($data['product_price']);
-// 		}
 		//with the true, we do preloading and preserve so old values, but why do we do that? I try with false note by Max Milbers
 		$product_data->bindChecknStore($data,true);
 

@@ -146,22 +146,8 @@ class VirtuemartViewProduct extends JView {
 
 
 				if( empty( $product->product_available_date )) {
-					$product->product_available_date = date("Y-m-d") ; 
+					$product->product_available_date = date("Y-m-d") ;
 				}
-
-				/* Get the minimum and maximum order levels */
-				$min_order = 0;
-				$max_order = 0;
-				if(strstr($product->product_order_levels, ',')) {
-					$order_levels = explode(',', $product->product_order_levels);
-					$min_order = $order_levels[0];
-					$max_order = $order_levels[1];
-				}
-
-				/* Get the related products */
-				// $related_products = $product_model->getRelatedProducts($product->virtuemart_product_id);
-				// if (!$related_products) $related_products = array();
-				// $lists['related_products'] = JHTML::_('select.genericlist', $related_products, 'related_products[]', 'autocomplete="off" multiple="multiple" size="10" ondblclick="removeSelectedOptions(\'related_products\')"', 'id', 'text', $related_products);
 
 				/* Load waiting list */
 				if ($product->virtuemart_product_id) {
@@ -215,8 +201,7 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('product', $product);
 				$this->assignRef('currencies', $currencies);
 				$this->assignRef('manufacturers', $manufacturers);
-				$this->assignRef('min_order', $min_order);
-				$this->assignRef('max_order', $max_order);
+
 				$this->assignRef('related_products', $related_products);
 				$this->assignRef('product_child', $product_child);
 				$this->assignRef('product_parent', $product_parent);

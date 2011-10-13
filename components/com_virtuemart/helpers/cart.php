@@ -365,7 +365,8 @@ class VirtueMartCart {
 			$product -> product_sales = $tmpProduct -> product_sales;
 			$product -> product_unit = $tmpProduct -> product_unit;
 			$product -> product_packaging = $tmpProduct -> product_packaging;
-			$product -> product_order_levels = $tmpProduct -> product_order_levels;
+			$product -> min_order_level = $tmpProduct -> min_order_level;
+			$product -> max_order_level = $tmpProduct -> max_order_level;
 			$product -> virtuemart_media_id = $tmpProduct -> virtuemart_media_id;
 
 			if(!empty($tmpProduct -> image)) $product -> image =  $tmpProduct -> image;
@@ -633,7 +634,9 @@ class VirtueMartCart {
 		}
 
 		/* Check for the minimum and maximum quantities */
-		list($min, $max) = explode(',', $product->product_order_levels);
+// 		list($min, $max) = explode(',', $product->product_order_levels);
+		$min = $product->min_order_level;
+		$max = $product->max_order_level;
 		if ($min != 0 && $quantity < $min) {
 			//			$this->_error[] = 'Quantity reached not minimum';
 			$error = JText::sprintf('COM_VIRTUEMART_CART_MIN_ORDER', $min);

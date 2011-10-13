@@ -749,7 +749,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `product_sales` int(11) NOT NULL DEFAULT '0',
   `product_unit` varchar(32) DEFAULT NULL,
   `product_packaging` int(11) DEFAULT NULL,
-  `product_order_levels` varchar(45) DEFAULT NULL,
+  `product_params` text NOT NULL,
   `hits` int(11) unsigned NOT NULL DEFAULT '0',
   `intnotes` text,
   `metadesc` text NOT NULL,
