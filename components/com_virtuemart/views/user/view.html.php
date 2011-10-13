@@ -411,7 +411,7 @@ class VirtuemartViewUser extends JView {
 		$vendorModel = $this->getModel('vendor');
 		$this->vendor = $vendorModel->getVendor();
 
- 		if ($this->vendor) {
+ 		if ($vendor) {
 		    $this->subject = JText::sprintf('COM_VIRTUEMART_NEW_SHOPPER', $this->user->username);
 		    //$recipient = $this->vendor->email;
 		    if (VmConfig::get('order_mail_html')) {
