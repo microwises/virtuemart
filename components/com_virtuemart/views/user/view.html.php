@@ -355,7 +355,10 @@ class VirtuemartViewUser extends JView {
 				$this->_lists['gid'] 	= JHTML::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $this->_userDetails->JUser->get('gid'));
 			}
 
-			$this->_lists['canBlock']      = ($this->_currentUser->authorize('com_users', 'block user')
+			if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+			$comUserOption=shopfunctionsF::getComUserOption();
+
+			$this->_lists['canBlock']      = ($this->_currentUser->authorize($comUserOption, 'block user')
 			&& ($this->_model->getId() != $this->_cuid)); // Can't block myself TODO I broke that, please retest if it is working again
 			$this->_lists['canSetMailopt'] = $this->_currentUser->authorize('workflow', 'email_events');
 			$this->_lists['block']     = JHTML::_('select.booleanlist', 'block',    'class="inputbox"', $this->_userDetails->JUser->get('block'),     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');

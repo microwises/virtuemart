@@ -564,4 +564,11 @@ class shopFunctionsF {
 		return $strings;
 
 	}
+	function getComUserOption() {
+	 if ( VmConfig::isJ15() ) {
+		return 'com_user';
+	    } else {
+		return 'com_users';
+	    }
+	}
 }
