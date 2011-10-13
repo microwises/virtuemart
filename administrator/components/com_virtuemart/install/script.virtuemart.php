@@ -172,9 +172,18 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
 			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
 
-			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','int(11)');
-			$this->checkAddFieldToTable('#__virtuemart_product_customfields','custom_param',' text COMMENT "Param for Plugins"');
+			if(version_compare(JVERSION,'1.6.0','ge')) {
+				$fields = array('data'=>'`data` LONGTEXT NULL AFTER `time`');
+				$this->alterTable('#__session',$fields);
+			}
 
+			//product tables
+			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','int(11)');
+
+			$fields = array('product_special'=>'`product_special` tinyint(1) DEFAULT "0"');
+			$this->alterTable('#__virtuemart_products',$fields);
+
+			$this->checkAddFieldToTable('#__virtuemart_product_customfields','custom_param',' text COMMENT "Param for Plugins"');
 
 			$fields = array('virtuemart_shoppergroup_id'=>'`virtuemart_shoppergroup_id` int(11) DEFAULT NULL',
 														'product_price'=>'`product_price` decimal(15,5) DEFAULT NULL',
@@ -191,21 +200,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->alterTable('#__virtuemart_product_prices',$fields);
 
 
-			$fields = array('product_special'=>'`product_special` tinyint(1) DEFAULT "0"');
-			$this->alterTable('#__virtuemart_products',$fields);
 
 
-			if(version_compare(JVERSION,'1.6.0','ge')) {
-				$fields = array('data'=>'`data` LONGTEXT NULL AFTER `time`');
-				$this->alterTable('#__session',$fields);
-			}
 
 			//alterOrderItemsTable
 			$fields = array('order_item_name'=>'`order_item_name` VARCHAR( 255 )  NOT NULL DEFAULT "" ');
 			$this->alterTable('#__virtuemart_order_items',$fields);
 
 			$this->alterOrderHistoriesTable();
-
 
 			$this->alterVendorsTable();
 
@@ -214,7 +216,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->checkAddFieldToTable('#__virtuemart_customs','ordering','INT( 11 ) UNSIGNED NOT NULL  DEFAULT 0');
 
-			$fields = array('products_per_row'=>' `products_per_row` NULL DEFAULT NULL');
+			$fields = array('products_per_row'=>' `products_per_row` INT(1) NULL DEFAULT NULL');
 			$this->alterTable('#__virtuemart_categories',$fields);
 
 

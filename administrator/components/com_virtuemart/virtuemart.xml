@@ -38,7 +38,6 @@
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.com_virtuemart.ini</language>
 		<language tag="en-GB">en-GB/en-GB.com_virtuemart.sys.ini</language>
-		<language tag="en-GB">en-GB/en-GB.com_virtuemart.menu.ini</language>
 	</languages>
 
 	<administration>
@@ -69,6 +68,7 @@
 		<languages folder="administrator/language">
 			<language tag="en-GB">en-GB/en-GB.com_virtuemart.ini</language>
 			<language tag="en-GB">en-GB/en-GB.com_virtuemart.sys.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_virtuemart.menu.ini</language>
 		</languages>
 	</administration>
 
