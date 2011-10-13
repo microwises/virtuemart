@@ -99,7 +99,7 @@ if (empty ( $this->product )) {
 		<?php // Product Main Image
 		if (!empty($this->product->images[0])) { ?>
 			<div class="main-image">
-			<?php echo $this->product->images[0]->displayMediaFull('class="product-image"',false); ?>
+			<?php echo $this->product->images[0]->displayMediaFull('class="product-image"',false,"class='modal'",true); ?>
 			</div>
 		<?php } // Product Main Image END ?>
 
@@ -246,10 +246,10 @@ if (empty ( $this->product )) {
 				<div class="availability">
 					<?php echo JHTML::image(JURI::root().VmConfig::get('assets_general_path').'images/availability/'.$this->product->product_availability, $this->product->product_availability, array('class' => 'availability')); ?>
 				</div>
-				<?php } 
+				<?php }
 
 				// Ask a question about this product ?>
-				
+
 				<div class="ask-a-question">
 				<a class="ask-a-question" href="<?php echo $url ?>" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
 				<!--<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $url ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>-->
