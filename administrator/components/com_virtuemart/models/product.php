@@ -823,12 +823,12 @@ class VirtueMartModelProduct extends VmModel {
 
 		$this->_id = $data['virtuemart_product_id'] = $product_data->virtuemart_product_id ;
 
-
-		if(!empty($data['categories']) && count($data['categories'])>0){
-			$data['virtuemart_category_id'] = $data['categories'];
-
-			$data = $this->updateXrefAndChildTables($data,'product_categories');
-		}
+                if(!empty($data['categories']) && count($data['categories'])>0){
+                    $data['virtuemart_category_id'] = $data['categories'];
+                } else {
+                    $data['virtuemart_category_id'] = array();
+                }
+                $data = $this->updateXrefAndChildTables($data,'product_categories');
 
 
 		if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
