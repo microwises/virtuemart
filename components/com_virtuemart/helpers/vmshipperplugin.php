@@ -699,7 +699,7 @@ abstract class vmShipperPlugin extends JPlugin {
 	$shipping_value = $this->getShippingValue($params, $cart_prices);
 	$shipping_tax_id = $this->getShippingTaxId($params);
 
-	$this->setCartPrices(&$cart_prices, $shipping_value, $shipping_tax_id);
+	$this->setCartPrices($cart_prices, $shipping_value, $shipping_tax_id);
 
 	return true;
     }
@@ -827,7 +827,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * @author Valérie Isaksen
      */
 
-    function setCartPrices($cart_prices, $shipping_value, $shipping_tax_id) {
+    function setCartPrices(&$cart_prices, $shipping_value, $shipping_tax_id) {
 	if (!isset($shipping_value))
 	    $shipping->shipping_value = '';
 	$cart_prices['shippingValue'] = $shipping_value;
