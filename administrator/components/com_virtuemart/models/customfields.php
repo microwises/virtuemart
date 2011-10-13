@@ -747,13 +747,18 @@ class VirtueMartModelCustomfields extends VmModel {
 		return $this->searchCustom;
 	}
 	function displayCustomMedia($media_id,$table='product'){
-		$data = $this->getTable('medias');
+	
+			if (!class_exists('TableMedias'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'medias.php');
+		//$data = $this->getTable('medias');
+		$db =& JFactory::getDBO();
+		$data = new TableMedias($db);
    		$data->load((int)$media_id);
 
   		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
   		$media = VmMediaHandler::createMedia($data,$table);
 
-		return $media->displayMediaThumb('',false);
+		return $media->displayMediaThumb('',false,'',true,true);
 
 	}
 	
@@ -785,7 +790,9 @@ class VirtueMartModelCustomfields extends VmModel {
 					$child = self::getChild($productCustom->custom_value);
 					// $html .= ' <span>'.$productCustom->custom_title.' : </span>'.$child->product_name;
 					$html .= '<br/ >'.$child->product_name;
-				} else {
+				} elseif (($productCustom->field_type == "M")) {
+					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.self::displayCustomMedia($productCustom->custom_value);
+				}else {
 
 					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
 				}
@@ -823,6 +830,8 @@ class VirtueMartModelCustomfields extends VmModel {
 				} elseif (($productCustom->field_type == "G")) {
 					$child = self::getChild($productCustom->custom_value);
 					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$child->product_name;
+				} elseif (($productCustom->field_type == "M")) {
+					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.self::displayCustomMedia($productCustom->custom_value);
 				} else {
 
 					$html .= '<br/ ><span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
@@ -862,7 +871,9 @@ class VirtueMartModelCustomfields extends VmModel {
 				} elseif (($productCustom->field_type == "G")) {
 					$child = self::getChild($productCustom->custom_value);
 					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$child->product_name;
-				} else {
+				} elseif (($productCustom->field_type == "M")) {
+					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.self::displayCustomMedia($productCustom->custom_value);
+				}  else {
 
 					$html .= '<br/ ><span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
 				}
@@ -900,6 +911,8 @@ class VirtueMartModelCustomfields extends VmModel {
 				} elseif (($productCustom->field_type == "G")) {
 					$child = self::getChild($productCustom->custom_value);
 					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$child->product_name;
+				} elseif (($productCustom->field_type == "M")) {
+					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.self::displayCustomMedia($productCustom->custom_value);
 				} else {
 
 					$html .= '<br/ ><span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;

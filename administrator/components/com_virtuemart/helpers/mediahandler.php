@@ -376,8 +376,9 @@ class VmMediaHandler {
 		 * @param string $imageArgs Attributes to be included in the <img> tag.
 		 * @param boolean $lightbox alternative display method
 		 * @param string $effect alternative lightbox display
+		 * @param boolean $withDesc display the image media description
 		 */
-		function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal' rel='group'",$return = true){
+		function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal' rel='group'",$return = true,$withDesc = false){
 
 			if(empty($this->file_name)){
 				$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
@@ -412,7 +413,7 @@ class VmMediaHandler {
 			}
 
 
-			if($return) return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox,$effect);
+			if($return) return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox,$effect,'',$withDesc);
 
 		}
 
@@ -441,17 +442,19 @@ class VmMediaHandler {
 		 * @param string $imageArgs attributes for displaying the images
 		 * @param boolean $lightbox use lightbox
 		 */
-		function displayIt($file_url, $file_alt, $imageArgs,$lightbox, $effect ="class='modal'",$postText=''){
+		function displayIt($file_url, $file_alt, $imageArgs,$lightbox, $effect ="class='modal'",$postText='',$withDesc=false){
 
+			if ($withDesc) $desc='<span class="vm-img-desc">'.$file_alt.'</span>';
+			else $desc='';
 			if($lightbox){
 				$image = JHTML::image($file_url, $file_alt, $imageArgs);
 				if ($file_alt ) $file_alt = 'title="'.$file_alt.'"';
 				if ($this->file_url) $href = JURI::root() .$this->file_url ;
 				else $href = $image ;
 				$lightboxImage = '<a '.$file_alt.' '.$effect.' href="'.$href.'">'.$image.'</a>'.$postText;
-				return $lightboxImage;
+				return $lightboxImage.$desc;
 			} else {
-				return JHTML::image($file_url, $file_alt, $imageArgs);
+				return JHTML::image($file_url, $file_alt, $imageArgs).$desc;
 			}
 		}
 

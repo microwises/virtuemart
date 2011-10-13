@@ -185,3 +185,5 @@ td.orders-key{font-weight: bold; text-align: left; }
 .product-field-type-B,.product-field-type-S,.product-field-type-I{padding-left:3%;float:left;width:30%}
 .product-fields-title{ font-weight: bold;}
 
+.vm-customfield-mod img,.vm-customfield-cart img{ vertical-align: middle; width: 16px;}
+.vm-img-desc{display:block;}
