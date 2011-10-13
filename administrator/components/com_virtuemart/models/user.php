@@ -29,7 +29,9 @@ jimport('joomla.application.component.model');
 jimport('joomla.version');
 
 if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
-if(!class_exists('UserController')) require(JPATH_SITE.DS.'components'.DS.'com_user'.DS.'controller.php');
+
+$comUserOption=shopfunctionsF::getComUserOption();
+if(!class_exists('UserController')) require(JPATH_SITE.DS.'components'.DS. $comUserOption .DS.'controller.php');
 
 /**
  * Model class for shop users
