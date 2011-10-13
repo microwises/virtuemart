@@ -408,11 +408,10 @@ class VirtuemartViewUser extends JView {
 		if (!class_exists('VirtueMartCart'))
 		    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 
-
 		$vendorModel = $this->getModel('vendor');
 		$this->vendor = $vendorModel->getVendor();
 
- 		if ($vendor) {
+ 		if ($this->vendor) {
 		    $this->subject = JText::sprintf('COM_VIRTUEMART_NEW_SHOPPER', $this->user->username);
 		    //$recipient = $this->vendor->email;
 		    if (VmConfig::get('order_mail_html')) {
@@ -427,10 +426,10 @@ class VirtuemartViewUser extends JView {
 		    }
 		}
 
-		//$this->assignRef('recipient', $recipient);
+		$this->assignRef('recipient', $recipient);
 		//$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
 		//$this->vendor = $vendorModel->getVendor();
-		$this->vendorEmail = $vendorModel->getVendorEmail($vendor->virtuemart_vendor_id);
+		$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
 		$this->layoutName = $tpl;
 		$this->setLayout($tpl);
 		parent::display();
