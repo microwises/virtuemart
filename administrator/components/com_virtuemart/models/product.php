@@ -123,7 +123,7 @@ class VirtueMartModelProduct extends VmModel {
 			$groupBy = 'group by p.`virtuemart_product_id`';
 			//Why keyword and search used? why not only keyword or search? notice by Max Milbers
 			//$keyword = trim( str_replace(' ', '%', JRequest::getWord('keyword', '') ) );
-			if ($keyword = JRequest::getWord('keyword', false)) {
+			if ($keyword = JRequest::getString('keyword', false)) {
 
 				$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;
 				$searchFields = VmConfig::get('browse_search_fields');

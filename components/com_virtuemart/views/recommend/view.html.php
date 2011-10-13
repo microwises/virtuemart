@@ -143,7 +143,7 @@ class virtuemartViewrecommend extends JView {
 		parent::display($tpl);
 	}
 
-	function renderMail() {
+	function renderMailLayout() {
 		$this->setLayout('mail_html');
 		$this->comment = JRequest::getString('comment');
 	 	$this->subject = Jtext::_('COM_VIRTUEMART_QUESTION_ABOUT').$this->product->product_name;

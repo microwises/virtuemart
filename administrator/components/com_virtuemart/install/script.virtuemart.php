@@ -180,8 +180,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//product tables
 			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','int(11)');
 
-			$fields = array('product_order_levels'=>' `product_params` text NOT NULL ');
-			$this->alterTable('#__virtuemart_products',$fields);
+			$fields = array('product_order_levels'=>' COLUMN `product_order_levels` ');
+			$this->alterTable('#__virtuemart_products',$fields,'DROP');
+
+// 			$fields = array('product_order_levels'=>' `product_params` text NOT NULL ');
+			$this->checkAddFieldToTable('#__virtuemart_products','product_params','text NOT NULL');
 
 			$fields = array('product_special'=>'`product_special` tinyint(1) DEFAULT "0"');
 			$this->alterTable('#__virtuemart_products',$fields);
@@ -244,7 +247,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			return true;
 		}
 
-		private function alterTable($tablename,$fields){
+		private function alterTable($tablename,$fields,$command='CHANGE'){
 
 			if(empty($this->db)){
 				$this->db = JFactory::getDBO();
@@ -256,7 +259,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			foreach($fields as $fieldname => $alterCommand){
 				if(in_array($fieldname,$columns)){
-					$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` '.$alterCommand;
+					$query = 'ALTER TABLE `'.$tablename.'` '.$command.' COLUMN `'.$fieldname.'` '.$alterCommand;
 
 					$this->db->setQuery($query);
 					$this->db->query();

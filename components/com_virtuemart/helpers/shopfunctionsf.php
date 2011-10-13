@@ -302,7 +302,7 @@ class shopFunctionsF {
 	 */
 	private function sendMail (&$view, $recipient, $vendor=false) {
 		ob_start();
-		$view->renderMail($vendor);
+		$view->renderMailLayout($vendor);
 		$body = ob_get_contents();
 		ob_end_clean();
 
