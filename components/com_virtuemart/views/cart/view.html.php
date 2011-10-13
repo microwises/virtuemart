@@ -207,19 +207,21 @@ class VirtueMartViewCart extends JView {
      */
 
     private function lSelectShipper() {
+	$found_shipping_method=false;
+	$shipping_not_found_text='';
 	if (!$this->checkShippingMethodsConfigured()) {
 	    $this->assignRef('shippers_shipping_rates', array());
-	    $this->assignRef('found_shipping_method', 0);
+	    $this->assignRef('found_shipping_method', $found_shipping_method);
 	    return;
 	}
-	$this->selectedShipper = (empty($this->cart->virtuemart_shippingcarrier_id) ? 0 : $this->cart->virtuemart_shippingcarrier_id);
+	$selectedShipper = (empty($this->cart->virtuemart_shippingcarrier_id) ? 0 : $this->cart->virtuemart_shippingcarrier_id);
 	$shipping_not_found_text = '';
 	if (!class_exists('vmShipperPlugin'))
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
 	JPluginHelper::importPlugin('vmshipper');
 	$dispatcher = JDispatcher::getInstance();
 	$shippers_shipping_rates = $dispatcher->trigger('plgVmOnSelectShipper', array('cart' => $this->cart,
-	    'selectedShipper' => $this->selectedShipper));
+	    'selectedShipper' => $selectedShipper));
 	// if no shipping rate defined
 	$found_shipping_method = false;
 
@@ -242,7 +244,7 @@ class VirtueMartViewCart extends JView {
 	  $this->assignRef('select_shipper_text',JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD'), JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'));
 	  }
 	 */
-	$this->assignRef('shipping_not_found_text', JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'));
+	$this->assignRef('shipping_not_found_text', $shipping_not_found_text);
 	$this->assignRef('shippers_shipping_rates', $shippers_shipping_rates);
 	$this->assignRef('found_shipping_method', $found_shipping_method);
 	return;

@@ -356,7 +356,12 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 		$countries = $country_list;
 	    }
 	}
-
+	// probably did not gave his BT:ST address
+	if (!is_array($address)) {
+		$address=array();
+	    $address['zip']=0;
+	    $address['virtuemart_country_id']=0;
+	}
 	$weight_cond = $this->_weightCond($orderWeight, $params);
 
 	if (isset($address['zip'])) {
@@ -366,8 +371,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 	    //Todo for  valerie, you may take a look, maybe should be false, or configurable.
 	    $zip_cond = true;
 	}
-	if (!is_array($address))
-	    return false;
+
 	if (!isset($address['virtuemart_country_id']))
 	    $address['virtuemart_country_id'] = 0;
 	if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
