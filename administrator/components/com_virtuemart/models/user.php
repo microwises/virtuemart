@@ -277,6 +277,10 @@ class VirtueMartModelUser extends VmModel {
 	 */
 	function store($data=0){
 
+		$message = '';
+		$user = '';
+		$newId = 0;
+
 		JRequest::checkToken() or jexit( 'Invalid Token, while trying to save user' );
 		$mainframe = JFactory::getApplication() ;
 
@@ -349,6 +353,7 @@ class VirtueMartModelUser extends VmModel {
 // 				$this->setError('user bind '.$error);
 				vmError('user bind '.$error,'Couldnt store user '.$error);
 			}
+			$message = 'Couldnt bind data to joomla user';
 			array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId,'success'=>false);
 		}
 
@@ -382,7 +387,7 @@ class VirtueMartModelUser extends VmModel {
 			} else {
 			    	$user->groups[] = $newUsertype;
 			}
-			
+
 			$date = JFactory::getDate();
 			$user->set('registerDate', $date->toMySQL());
 

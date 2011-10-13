@@ -273,12 +273,14 @@ class VirtueMartModelMedia extends VmModel {
 
 		}
 
-		asort($data['mediaordering']);
-		$sortedMediaIds = array();
-		foreach($data['mediaordering'] as $k=>$v){
-			$sortedMediaIds[] = $k;
+		if(!empty($data['mediaordering'])){
+			asort($data['mediaordering']);
+			$sortedMediaIds = array();
+			foreach($data['mediaordering'] as $k=>$v){
+				$sortedMediaIds[] = $k;
+			}
+			$data['virtuemart_media_id'] = $sortedMediaIds;
 		}
-		$data['virtuemart_media_id'] = $sortedMediaIds;
 
 // 		vmdebug('my data in media to store',$data['virtuemart_media_id'],$data['mediaordering']);
 

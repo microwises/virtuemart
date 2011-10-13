@@ -309,11 +309,15 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 // 			$errors = $model->getErrors();
 
 			$msg = '';
-			if(empty($errors))
-			$msg = 'System succesfull restored and sampledata installed, user id of the mainvendor is ' . $sid;
-			foreach($errors as $error){
-				$msg .= ( $error) . '<br />';
+			if(empty($errors)){
+				$msg = 'System succesfull restored and sampledata installed, user id of the mainvendor is ' . $sid;
+			} else {
+				foreach($errors as $error){
+					$msg .= ( $error) . '<br />';
+				}
 			}
+
+
 
 			$this->setDangerousToolsOff();
 		}else {

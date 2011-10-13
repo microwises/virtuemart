@@ -32,6 +32,7 @@ if(version_compare(JVERSION,'1.7.0','ge')) {
 
 require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 
+// if(!class_exists('VmTable')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
 
 /**
  * This function shows an info message, the messages gets translated with JText::,
@@ -177,10 +178,11 @@ function vmTime($descr,$name='current'){
 
 }
 
+
 /**
  * We use this Class STATIC not dynamically !
  */
-class VmConfig{
+class VmConfig {
 
 	// instance of class
 	private static $_jpConfig = null;
@@ -194,13 +196,13 @@ class VmConfig{
 	private function __construct() {
 
 		//todo
-		/*		if(strpos(JVERSION,'1.5') === false){
-		$jlang = JFactory::getLanguage();
-		$jlang->load('virtuemart', null, 'en-GB', true); // Load English (British)
-		$jlang->load('virtuemart', null, $jlang->getDefault(), true); // Load the site's default language
-		$jlang->load('virtuemart', null, null, true); // Load the currently selected language
-
+		/*	if(strpos(JVERSION,'1.5') === false){
+			$jlang = JFactory::getLanguage();
+			$jlang->load('virtuemart', null, 'en-GB', true); // Load English (British)
+			$jlang->load('virtuemart', null, $jlang->getDefault(), true); // Load the site's default language
+			$jlang->load('virtuemart', null, null, true); // Load the currently selected language
 		}*/
+
 
 	}
 
@@ -272,7 +274,6 @@ class VmConfig{
 	 */
 	public function loadConfig($force = false) {
 
-
 		// 		vmSetStartTime('loadConfig');
 		if(!$force && self::$loaded){
 			if(!empty(self::$_jpConfig) && !empty(self::$_jpConfig->_params)){
@@ -293,9 +294,9 @@ class VmConfig{
 						self::$_jpConfig = new VmConfig();
 						self::$_jpConfig->_params = $params;
 // 						self::$_jpConfig = $test;
-						// 						$app = JFactory::getApplication();
-						// 						$app ->enqueueMessage('loadConfig session cache');
-						// 						vmTime('Session Cache','loadConfig');
+						// $app = JFactory::getApplication();
+						// $app ->enqueueMessage('loadConfig session cache');
+						// vmTime('Session Cache','loadConfig');
 						return self::$_jpConfig;
 					}
 				}
@@ -351,6 +352,7 @@ class VmConfig{
 		$app ->enqueueMessage('Attention config is empty');
 		return 'Was not able to create config';
 	}
+
 
 	function setSession(){
 		$session = JFactory::getSession();
@@ -495,6 +497,56 @@ class VmConfig{
 	 */
 	public function installVMconfig($_section = 'config'){
 
+		$_value = self::readConfigFile(false);
+
+		if(!$_value) return false;
+
+// 		if ($_section == '[CONFIG]') {
+			$qry = "CREATE TABLE IF NOT EXISTS `#__virtuemart_configs` (
+  `virtuemart_config_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `config` text,
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`virtuemart_config_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Holds configuration settings' AUTO_INCREMENT=1 ;";
+			$_db = JFactory::getDBO();
+			$_db->setQuery($qry);
+			$_db->query();
+
+
+			$qry = 'DELETE FROM `jos_virtuemart_configs` WHERE `virtuemart_config_id`=1';
+			$_db->setQuery($qry);
+			$_db->query();
+
+			$_value = join('|', $_value);
+			$qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES ('1', '$_value')";
+
+		// Write to the DB
+		$_db = JFactory::getDBO();
+		$_db->setQuery($qry);
+		if (!$_db->query()) {
+			JError::raiseWarning(1, 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(true));
+			echo 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(true);
+			die;
+			return false;
+		}else {
+			//vmdebug('Config installed file, store values '.$_value);
+			return true;
+		}
+
+	}
+
+	/**
+	 *
+	 * @author Oscar van Eijk
+	 * @author Max Milbers
+	 */
+	function readConfigFile($returnDangerousTools){
+
 		$_datafile = JPATH_VM_ADMINISTRATOR.DS.'virtuemart.cfg';
 		if (!file_exists($_datafile)) {
 			if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'virtuemart_defaults.cfg-dist')) {
@@ -509,7 +561,7 @@ class VmConfig{
 			vmInfo('Taking config from file');
 		}
 
-		$_section = '['.strtoupper($_section).']';
+		$_section = '[CONFIG]';
 		$_data = fopen($_datafile, 'r');
 		$_configData = array();
 		$_switch = false;
@@ -549,6 +601,10 @@ class VmConfig{
 						$_line = $pair[0].'='.base64_encode(serialize($pair[1]));
 					}
 
+					if($returnDangerousTools && $pair[0] == 'dangeroustools' ){
+						if($pair[1]==0) return false; else return true;
+					}
+
 				} else {
 					$_line = $pair[0].'=';
 				}
@@ -560,45 +616,14 @@ class VmConfig{
 
 		fclose ($_data);
 
-		$_value = join('|', $_configData);
-		if (!$_value) {
+
+		if (!$_configData) {
 			return false; // Nothing to do
+		} else {
+			return $_configData;
 		}
-
-		if ($_section == '[CONFIG]') {
-			$_qry = "CREATE TABLE IF NOT EXISTS `#__virtuemart_configs` (
-  `virtuemart_config_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `config` text,
-  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created_by` int(11) NOT NULL DEFAULT 0,
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) NOT NULL DEFAULT 0,
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_config_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Holds configuration settings' AUTO_INCREMENT=1 ;";
-			$_db = JFactory::getDBO();
-			$_db->setQuery($_qry);
-			$_db->query();
-			$_qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES ('1', '$_value')";
-
-		}
-
-		// Other sections can be implemented here
-
-		// Write to the DB
-		$_db = JFactory::getDBO();
-		$_db->setQuery($_qry);
-		if (!$_db->query()) {
-			JError::raiseWarning(1, 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(true));
-			return false;
-		}else {
-
-			// 			vmdebug('Config installed file, store values '.$_value);
-			return true;
-		}
-
 	}
+
 }
 
 /**

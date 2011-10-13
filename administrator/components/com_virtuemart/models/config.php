@@ -323,16 +323,18 @@ class VirtueMartModelConfig extends JModel {
 	function setDangerousToolsOff(){
 
 		VmConfig::loadConfig(true);
+		$dangerousTools = VmConfig::readConfigFile(true);
 
-		//ATM we want to ensure that only one config is used
-		if(VmConfig::get('dangeroustools',0)==='0'){
-			$data['virtuemart_config_id'] = 1;
-			$data['dangeroustools'] = 0;
-			$this->store($data);
+		if( $dangerousTools){
+			$uri = JFactory::getURI();
+			$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
+			$lang = JText::sprintf('COM_VIRTUEMART_SYSTEM_DANGEROUS_TOOL_STILL_ENABLED',JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS'),$link);
+			VmInfo($lang);
 		} else {
-			VmInfo('Attention dangerous database still active due config setting in file');
+			$data['dangeroustools'] = 0;
+			$data['virtuemart_config_id'] = 1;
+			$this->store($data);
 		}
-
 
 	}
 
