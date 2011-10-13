@@ -282,9 +282,9 @@ class shopFunctionsF {
 		foreach ($vars as $key => $val) {
 			$view->$key = $val;
 		}
-		$user= self::sendMail($view, $recipient);
+		$user= self::sendVmMail($view, $recipient);
 		if (isset($view->doVendor)) {
-			self::sendMail($view, $view->vendorEmail, true);
+			self::sendVmMail($view, $view->vendorEmail, true);
 		}
 			return $user ;
 
@@ -300,7 +300,7 @@ class shopFunctionsF {
 	 * @param string $recipient shopper@whatever.com
 	 * @param bool $vendor true for notifying vendor of user action (e.g. registration)
 	 */
-	private function sendMail (&$view, $recipient, $vendor=false) {
+	private function sendVmMail (&$view, $recipient, $vendor=false) {
 		ob_start();
 		$view->renderMailLayout($vendor);
 		$body = ob_get_contents();
@@ -328,96 +328,7 @@ class shopFunctionsF {
 	}
 
 
-	/**
-	 * Sends the mail using joomla mailer
-	 * TODO people often send media with emails. Like pictures, serials,...
-	 *
-	 * @author Max Milbers
-	 * @param $body the html body to send, the content of the email
-	 * @param $recipient the recipients of the mail, can be array also
-	 * @param $mediaToSend an array for the paths which holds the files which should be sent to
-	 * @param $vendorId default is 1 (mainstore)
-	 * @deprecated
-	 */
-	public function sendVmMail ($body, $recipient, $subject='', $replyTo=array(), $mediaToSend=array()) {
-		$subject = (empty($subject)) ? JText::_('COM_VIRTUEMART_DEFAULT_MESSAGE_SUBJECT') : $subject;
-		$mailer = JFactory::getMailer();
-		$mailer->addRecipient($recipient);
-		$mailer->setSubject($subject);
-		$mailer->isHTML(VmConfig::get('html_email',true));
-		$mailer->setBody($body);
 
-		if (!empty($replyTo)) {
-			$mailer->addReplyTo($replyTo);
-		}
-
-		// Optional file attached  //this information must come from the cart
-		if (!empty($mediaToSend)) {
-			foreach ((array)$mediaToSend as $media) {
-				//Todo test and such things.
-				$mailer->addAttachment($media);
-			}
-		}
-
-		return $mailer->Send();
-	}
-
-	/**
-	 * Sends the mail joomla conform
-	 * TODO people often send media with emails. Like pictures, serials,...
-	 *
-	 * @author Max Milbers
-	 * @param $body the html body to send, the content of the email
-	 * @param $recipient the recipients of the mail, can be array also
-	 * @param $mediaToSend an array for the paths which holds the files which should be sent to
-	 * @param $vendorId default is 1 (mainstore)
-	 * @deprecated
-	 */
-	function sendVmMailold($body,$recipient,$subject='TODO set subject', $virtuemart_vendor_id=1, $mediaToSend = false ){
-
-		$mailer = JFactory::getMailer();
-
-		//This is now just without multivendor
-		$config = JFactory::getConfig();
-		$sender = array(
-    	$config->getValue( 'config.mailfrom' ),
-    	$config->getValue( 'config.fromname' ) );
-
-		$mailer->setSender($sender);
-
-		$mailer->addRecipient($recipient);
-
-		$mailer->setSubject($subject);
-
-		// Optional file attached  //this information must come from the cart
-		if($mediaToSend){
-			//Test if array, if not make an array out of it
-			foreach ($mediaToSend as $media){
-				//Todo test and such things.
-				$mailer->addAttachment($media);
-			}
-		}
-
-		$mailer->isHTML(true);
-		$mailer->setBody($body);
-
-		// Optionally add embedded image  //TODO Test it
-		$vendor = $this->getModel('vendor','VirtuemartModel');
-		$vendor->setId($virtuemart_vendor_id);
-		$_store = $vendor->getVendor();
-
-		$mailer->AddEmbeddedImage( VmConfig::get('media_path').DS.$_store->virtuemart_media_id, 'base64', 'image/jpeg' );
-
-		return $mailer->Send();
-
-		//Perfect Exampel for a misplaced return message. The function is used in different locations, so the messages should be set there!
-//		if ( $send !== true ) {
-//		    echo 'Error sending email: ' . $send->message;
-//		} else {
-//		    echo 'Mail sent';
-//		}
-
-	}
 
 	/**
 	 * This function sets the right template on the view

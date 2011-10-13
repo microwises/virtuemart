@@ -223,8 +223,9 @@ class VirtueMartControllerUser extends JController
 			    $ret = $userModel->store($data);
 			}
 			$msg = (is_array($ret)) ? $ret['message'] : $ret;
-
-			if (is_array($ret) && $ret['success']) {
+			$usersConfig = &JComponentHelper::getParams( 'com_users' );
+			$useractivation = $usersConfig->get( 'useractivation' );
+			if (is_array($ret) && $ret['success'] && !$useractivation) {
 
 			    // Username and password must be passed in an array
 			    $credentials = array('username' => $ret['user']->username,

@@ -404,7 +404,37 @@ class VirtuemartViewUser extends JView {
 			}
 
 		}
+	 public function renderMailLayout( ) {
+		if (!class_exists('VirtueMartCart'))
+		    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 
+
+		$vendorModel = $this->getModel('vendor');
+		$this->vendor = $vendorModel->getVendor();
+
+ 		if ($this->doVendor) {
+		    $this->subject = JText::sprintf('COM_VIRTUEMART_NEW_SHOPPER', $this->user->username);
+		    $recipient = 'vendor';
+		    if (VmConfig::get('order_mail_html')) {
+			 $tpl = 'mail_html_reguser';
+		    }
+
+		} else {
+		    $this->subject = JText::sprintf('COM_VIRTUEMART_NEW_SHOPPER', $this->vendor->vendor_store_name);
+		    $recipient = 'shopper';
+		    if (VmConfig::get('order_mail_html')) {
+			$tpl = 'mail_html_regvendor';
+		    }
+		}
+
+		$this->assignRef('recipient', $recipient);
+		//$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
+		//$this->vendor = $vendorModel->getVendor();
+		//$this->vendorEmail = $vendorModel->getVendorEmail($vendor->virtuemart_vendor_id);
+		$this->layoutName = $tpl;
+		$this->setLayout($tpl);
+		parent::display();
+	    }
 
 	}
 

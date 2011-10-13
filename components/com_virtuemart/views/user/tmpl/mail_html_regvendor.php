@@ -13,26 +13,28 @@
  * other free or open source software licenses.
  * @version $Id: view.html.php 2459 2010-07-02 17:30:23Z milbo $
  */
-
-if(VmConfig::get('html_email',true)){
-	$li = '<br />';
+if (VmConfig::get('html_email', true)) {
+    $li = '<br />';
 } else {
-	$li = "\n";
+    $li = "\n";
 }
 ?>
+ <html>
+    <head>
+    </head>
+    <body>
 
-  <?php echo JText::_('COM_VIRTUEMART_NEW_SHOPPER').' '  .$this->_models['user']->_data->JUser->name .$li; ?>
+<?php echo  JText::sprintf('COM_VIRTUEMART_NEW_SHOPPER', $this->user->username). $li ?>
+<?php echo JText::_('COM_VIRTUEMART_REGISTRATION_DATA') . " " . $li; ?>
+<?php echo  JText::_('COM_VIRTUEMART_LOGINAME').": ".$this->user->username .$li; ?>
+<?php echo  JText::_('COM_VIRTUEMART_DISPLAYED_NAME').": ".$this->user->name .$li;  ?>
+<?php  echo JText::_('COM_VIRTUEMART_ENTERED_ADRESS').": ".  $li ?>
+<?php
 
- <?php   echo JText::_('COM_VIRTUEMART_REGISTRATION_DATA')." ".$li; ?>
+	echo $li;
+	echo JURI::root() . 'index.php?option=com_virtuemart&view=user&virtuemart_user_id=' . $this->_models['user']->_id . ' ' . $li;
+	echo JURI::root() . 'index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id . ' ' . $li;
+	?>
 
-<?php echo JText::_('COM_VIRTUEMART_LOGINNAME')." ".$this->_models['user']->_data->JUser->username .$li; ?>
-<?php echo JText::_('COM_VIRTUEMART_DISPLAYED_NAME')." ".$this->_models['user']->_data->JUser->name .$li; ?>
-
-
-<?php echo JText::_('COM_VIRTUEMART_ENTERED_ADRESS')." ".  $li ?>
-<?php foreach($this->userFields['fields'] as $userField){
-	if(!empty($userField['value']) && $userField['name']!='user_is_vendor') echo $userField['title'].' '.$userField['value'].$li ;
-}
-echo $li;
-echo JURI::root().'index.php?option=com_virtuemart&view=user&virtuemart_user_id='.$this->_models['user']->_id.' '.$li;
-echo JURI::root().'index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id='.$this->vendor->virtuemart_vendor_id.' '.$li;
+</body>
+</html>

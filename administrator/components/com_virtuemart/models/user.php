@@ -29,6 +29,7 @@ jimport('joomla.application.component.model');
 jimport('joomla.version');
 
 if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+if(!class_exists('UserController')) require(JPATH_SITE.DS.'components'.DS.'com_user'.DS.'controller.php');
 
 /**
  * Model class for shop users
@@ -426,6 +427,7 @@ class VirtueMartModelUser extends VmModel {
 // 			vmError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
 		} else {
 			if ($new) {
+				$this->sendRegistrationEmail($user,$user->password_clear, $useractivation);
 				if ( $useractivation == 1 ) {
 					vmInfo('COM_VIRTUEMART_REG_COMPLETE_ACTIVATE');
 				} else {
@@ -883,31 +885,57 @@ class VirtueMartModelUser extends VmModel {
 	  * This uses the shopfunctionsF::renderAndSendVmMail function, which uses a controller and task to render the content
 	  * and sents it then.
 	  *
-	  * @deprecated: Sends a standard registration email.
 	  *
 	  * @author Oscar van Eijk
 	  * @author Max Milbers
 	  * @author Christopher Roussel
+	  * @author Valérie Isaksen
 	  */
-	 function sendRegistrationEmail($user){
+	 private function sendRegistrationEmail($user, $password, $useractivation){
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$vars = array('user' => $user);
 
 		// Send registration confirmation mail
-		$password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
+
 		$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
 		$vars['password'] = $password;
 
-	 	// If user activation is turned on, we need to set the activation information
-	 	$usersConfig = JComponentHelper::getParams('com_users');
-		$useractivation = $usersConfig->get('useractivation');
 		if ($useractivation == '1') {
 			jimport('joomla.user.helper');
 			$activationLink = 'index.php?option=com_user&task=activate&activation='.$user->get('activation');
 			$vars['activationLink'] = $activationLink;
 		}
-
+		$vars['doVendor']=true;
+		// public function renderMail ($viewName, $recipient, $vars=array(),$controllerName = null)
 		shopFunctionsF::renderMail('user', $user->get('email'), $vars);
+
+		//get all super administrator
+		$query = 'SELECT name, email, sendEmail' .
+				' FROM #__users' .
+				' WHERE LOWER( usertype ) = "super administrator"';
+		$this->_db->setQuery( $query );
+		$rows = $this->_db->loadObjectList();
+
+		// Send email to user
+		shopFunctionsF::renderMail('user', $user->get('email'), $vars);
+
+		// Send notification to all administrators
+		$subject2 = sprintf ( JText::_( 'COM_VIRTUEMART_ACCOUNT_DETAILS_FOR' ), $name, $sitename);
+		$subject2 = html_entity_decode($subject2, ENT_QUOTES);
+
+		// get superadministrators id
+		foreach ( $rows as $row )
+		{
+			if ($row->sendEmail)
+			{
+				$message2 = sprintf ( JText::_( 'COM_VIRTUEMART_SEND_MSG_ADMIN' ), $row->name, $sitename, $name, $email, $username);
+				$message2 = html_entity_decode($message2, ENT_QUOTES);
+				//JUtility::sendMail($mailfrom, $fromname, $row->email, $subject2, $message2);
+				shopFunctionsF::renderMail('user', $row->email, $vars);
+			}
+		}
+
+
 	 }
 
 	 /**

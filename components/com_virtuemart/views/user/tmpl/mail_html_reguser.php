@@ -22,21 +22,32 @@ else {
 }
 ?>
 
-<?php echo JText::_('COM_VIRTUEMART_WELCOME_USER')." ".$this->vendor->vendor_store_name . $li;
+<html>
+    <head>
+    </head>
+    <body>
+<?php
 
-if(!empty($this->activationLink)) echo  JText::_('COM_VIRTUEMART_LINK_ACTIVATE_ACCOUNT')." ".JURI::root().$this->activationLink .$li; ?>
+echo JText::_('COM_VIRTUEMART_WELCOME_USER')." ".$this->vendor->vendor_store_name . $li;
 
-Your Registration data <?php echo $li ?>
+if(!empty($this->activationLink)) {
+    $activationLink = '<a class="default" href="'.JURI::root(). $this->activationLink.'>'.JText::_('COM_VIRTUEMART_LINK_ACTIVATE_ACCOUNT').'</a>';
+}
+	?>
 
-<?php echo  JText::_('COM_VIRTUEMART_YOUR_LOGINAME').": ".$this->_models['user']->_data->JUser->username .$li; ?>
-<?php echo  JText::_('COM_VIRTUEMART_YOUR_DISPLAYED_NAME').": ".$this->_models['user']->_data->JUser->name .$li;  ?>
-<?php echo  JText::_('COM_VIRTUEMART_YOUR_PASSWORD').": ".$this->password .$li; ?>
+<?php echo  JText::_('COM_VIRTUEMART_REGISTRATION_DATA'). $li ?>
+
+<?php echo  JText::_('COM_VIRTUEMART_YOUR_LOGINAME').": ".$this->user->username .$li; ?>
+<?php echo  JText::_('COM_VIRTUEMART_YOUR_DISPLAYED_NAME').": ".$this->user->name .$li;  ?>
+<?php echo  JText::_('COM_VIRTUEMART_YOUR_PASSWORD').": ".$this->user->password_clear .$li; ?>
 
 <?php  echo JText::_('COM_VIRTUEMART_YOUR_ADDRESS').": ".  $li ?>
-<?php foreach($this->userFields['fields'] as $userField){
-	if(!empty($userField['value']) && $userField['name']!='user_is_vendor') echo $userField['title'].' '.$userField['value'].$li ;
-}
+<?php
+
 echo $li;
-echo JURI::root().JRoute::_('index.php?option=com_virtuemart&view=user',$this->useXHTML,$this->useSSL).$li;
-//Multi-X
-//echo JURI::root().JRoute::_('index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id='.$this->vendor->virtuemart_vendor_id).$li;
+ echo  $activationLink .$li;
+?>
+
+</body>
+
+</html>
