@@ -45,11 +45,12 @@ class VmTableXarray extends VmTable {
 		$this->$key			= array();
 		$this->_skeyForm	= empty($keyForm)? $key:$keyForm;
 
-    }
+        }
 
 	function setOrderableFormname($orderAbleFormName){
 		$this->_okeyForm = $orderAbleFormName;
 	}
+
 
 	/**
 	* swap the ordering of a record in the Xref tables
@@ -109,7 +110,6 @@ class VmTableXarray extends VmTable {
 		if($this->_orderable){
 			$orderby = 'ORDER BY `'.$this->_orderingKey.'`';
 		} else {
-
 			$orderby = '';
 		}
 
@@ -153,98 +153,124 @@ class VmTableXarray extends VmTable {
 
     /**
      *
-     *
-     * @author Max Milbers
+     * @author Max Milbers, George Kostopoulos
      * @see libraries/joomla/database/JTable#store($updateNulls)
      */
     public function store() {
 
-		$this->setLoggableFieldsForStore();
-		$db = JFactory::getDBO();
-//INSERT INTO FOO
-//(ID, BAR)
-//VALUES(1,2),(3,4)
-//ON DUPLICATE KEY UPDATE BAR=VALUES(BAR)
+	$this->setLoggableFieldsForStore();
+	$db = JFactory::getDBO();
 
-//		$q = 'INSERT INTO `'.$this->_tbl.'` (`'.$this->_pkey.'`,`'.$this->_skey.'`) ';
-//		$q .= 'VALUES (';
-//		for($i = 0; $i<count($this->_svalue); $i++){
-//			$q .= $this->_pvalue.',';
-//		}
-//		$q = substr($q,0,-1).'),(';
-//		foreach($this->_svalue as $value){
-//			$q .= $value.',';
-//		}
-//		$q = substr($q,0,-1).') ON DUPLICATE KEY UPDATE '.$this->_skey.'=VALUES('.$this->_skey.')';
+        $pkey = $this->_pkey;
+        $skey = $this->_skey;
+        $tblkey = $this->_tbl_key;
 
-		$q  = 'DELETE FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'. $this->_pvalue.'" ';
-		$this->_db->setQuery($q);
-		if(!$this->_db->Query()){
-			$this->setError(get_class( $this ).':: store'.$this->_db->getErrorMsg());
-		}
+        // We select all database rows based on our _pkey
+        $q  = 'SELECT * FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'. $this->_pvalue.'" ';
+        $this->_db->setQuery($q);
+        $objList = $this->_db->loadObjectList();
 
-		$returnCode = true;
-		if(!empty($this->_svalue)){
-			if(!is_array($this->_svalue)) $this->_svalue = array($this->_svalue);
+        // We convert the database object list that we got in a more friendly array        
+        $oldArray = null;
+        if($objList) {                    
+            foreach($objList as $obj){
+                $oldArray[] = array($pkey=>$obj->$pkey, $skey=>$obj->$skey);
+            }
+        }
 
-			foreach($this->_svalue as $value){
+        // We make another database object list with the values that we want to insert into the database
+        $newArray = null;
+	if(!empty($this->_svalue)){
+            if(!is_array($this->_svalue)) $this->_svalue = array($this->_svalue);
+            foreach($this->_svalue as $value) $newArray[] = array($pkey=>$this->_pvalue, $skey=>$value);
+	}
 
-				$obj = new stdClass;
+        // Inserts and Updates
+        if(!empty($newArray)){
+            $myOrdering = count($this->_svalue);
 
-				$pkey = $this->_pkey;
-				$obj->$pkey = $this->_pvalue;
+            foreach ($newArray as $newValue) {
+                // We search in the existing (old) rows to find one of the new rows we want to insert
+                $result = $this->array_msearch($oldArray, $newValue);
 
-				$skey = $this->_skey;
-				$obj->$skey = $value;
+                // We start creating the row we will insert or update
+                $obj = new stdClass;
+                $obj->$pkey = $newValue[$pkey];
+                $obj->$skey = $newValue[$skey];
 
-				//When $value is an array, then we could add more values here.
-				if($this->_autoOrdering){
-					$oKey = $this->_orderingKey;
-					$obj->$oKey = $this->_ordering++;
-				} else {
+                if($this->_autoOrdering){
+                    $oKey = $this->_orderingKey;
+                    $obj->$oKey = $myOrdering--;
+                }
 
-				}
-// 				vmdebug('my stuff to store',(array)$obj);
-				$returnCode = $this->_db->insertObject($this->_tbl, $obj, $pkey);
-			}
-		}
+                // If the new row does not exist in the old rows, we will insert it
+                if( $result === false ) {
+                    $returnCode = $this->_db->insertObject($this->_tbl, $obj, $pkey);
+                }
+                else {
+                    // If the new row exists in the old rows, we will update it
+                    $obj->$tblkey = $objList[$result]->$tblkey;
+                    $returnCode = $this->_db->updateObject($this->_tbl, $obj, $tblkey);
+                }
+            }
+        }
+        else {
+            // There are zero new rows, so the user asked for all the rows to be deleted
+            $q  = 'DELETE FROM `'.$this->_tbl.'` WHERE `' . $pkey.'` = "'. $this->_pvalue .'" ';
+            $this->_db->setQuery($q);
+            if(!$this->_db->Query()){
+                $returnCode = false;
+                $this->setError(get_class( $this ).':: store'.$this->_db->getErrorMsg());
+            }
+        }
 
-//    	$newIds = array();
-//
-//		foreach ($fields as $field) {
-//			$q = 'REPLACE INTO `#__virtuemart_customfields` ( `virtuemart_customfield_id` ,`virtuemart_custom_id` , `custom_value`, `custom_price`  )';
-//			$q .= " VALUES( '".$field['virtuemart_customfield_id']."', '".$field['virtuemart_custom_id']."', '". $field['custom_value'] ."', '". $field['custom_price'] ."') ";
-//			$this->_db->setQuery($q);
-//			$this->_db->query();
-//			$virtuemart_customfield_id = mysql_insert_id();
-//			$newIds[]=$virtuemart_customfield_id;
-//			$q = 'REPLACE INTO `#__virtuemart_product_customfields` ( `virtuemart_customfield_id` , `virtuemart_product_id`  )';
-//			$q .= " VALUES( '".$virtuemart_customfield_id."', '". $virtuemart_product_id ."') ";
-//			$this->_db->setQuery($q);
-//			$this->_db->query();
-//		}
-//
-//		// slect all virtuemart_customfield_id from product
-//		$q="select virtuemart_customfield_id from `#__virtuemart_product_customfields` where `virtuemart_product_id`=".$virtuemart_product_id ;
-//		$this->_db->setQuery($q);
-//		$Ids = $this->_db->loadResultArray();
-//		// delete from database old unused product custom fields
-//		$deleteIds = array_diff(  $Ids,$newIds);
-//		$id = '('.implode (',',$deleteIds).')';
-//				$this->_db->setQuery('DELETE from `#__virtuemart_product_customfields` WHERE `virtuemart_customfield_id` in  ' . $id);
-//		if ($this->_db->query() === false) {
-//			$this->setError($this->_db->getError());
-//			return false;
-//		}
-//		$this->_db->setQuery('DELETE from `#__virtuemart_customfields` WHERE `virtuemart_customfield_id` in  ' . $id);
-//		if ($this->_db->query() === false) {
-//			$this->setError($this->_db->getError());
-//			return false;
-//		}
 
-		return $returnCode;
+        // Deletions
+        if(!empty($oldArray)) {
+            for ($i = 0; $i < count($oldArray); $i++) {
+                $result = $this->array_msearch($newArray, $oldArray[$i]);
+                
+                // If no new row exists in the old rows, we will delete the old rows
+                if( $result === false ) {
+                    // If the old row does not exist in the new rows, we will delete it
+                    $q  = 'DELETE FROM `'.$this->_tbl.'` WHERE `' . $tblkey.'` = "'. $objList[$i]->$tblkey .'" ';
+                    $this->_db->setQuery($q);
+                    if(!$this->_db->Query()){
+                        $returnCode = false;
+                        $this->setError(get_class( $this ).':: store'.$this->_db->getErrorMsg());
+                    }
+                }
+             }
+        }
+                
+ 	return $returnCode;
 
     }
+
+    /**
+     *
+     * Searches in an array of arrays to find a specific array we want
+     *
+     * @author George Kostopoulos
+     * @param source array of arrays that we will search
+     * @param the target array we want to find
+     */
+    protected function array_msearch($parents, $searched) {
+        if (empty($searched) || empty($parents)) {
+            return false;
+        }
+
+        foreach ($parents as $key => $value) {
+            $exists = true;
+            foreach ($searched as $skey => $svalue) {
+                $exists = ($exists && IsSet($parents[$key][$skey]) && $parents[$key][$skey] == $svalue);
+            }
+            if($exists){ return $key; }
+         }
+
+        return false;
+    }
+
 
     function deleteRelation(){
     	$q  = 'DELETE FROM `'.$this->_tbl.'` WHERE `'.$this->_pkey.'` = "'. $this->_pvalue.'" ';
