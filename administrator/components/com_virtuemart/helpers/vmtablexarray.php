@@ -186,8 +186,8 @@ class VmTableXarray extends VmTable {
 	}
 
         // Inserts and Updates
-        if(!empty($newArray)){
-            $myOrdering = count($this->_svalue);
+        if(!empty($newArray)){            
+            $myOrdering = 1;
 
             foreach ($newArray as $newValue) {
                 // We search in the existing (old) rows to find one of the new rows we want to insert
@@ -200,7 +200,7 @@ class VmTableXarray extends VmTable {
 
                 if($this->_autoOrdering){
                     $oKey = $this->_orderingKey;
-                    $obj->$oKey = $myOrdering--;
+                    $obj->$oKey = $myOrdering++;
                 }
 
                 // If the new row does not exist in the old rows, we will insert it
