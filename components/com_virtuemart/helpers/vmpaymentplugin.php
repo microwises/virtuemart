@@ -233,7 +233,7 @@ abstract class vmPaymentPlugin extends JPlugin {
      * @author Valerie Isaksen
      *
      */
-    function plgVmOnPaymentResponseReceived($pelement, $virtuemart_paymentmethod_id, $virtuemart_order_id, $html) {
+    function plgVmOnPaymentResponseReceived($pelement, $virtuemart_paymentmethod_id, &$virtuemart_order_id, &$html) {
 	if ($this->_pelement != $pelement) {
 	    return null;
 	}
@@ -317,7 +317,7 @@ abstract class vmPaymentPlugin extends JPlugin {
      *
      * @author Valérie Isaksen
      */
-    abstract function plgVmOnConfirmedOrderGetPaymentForm($virtuemart_order_id, $orderData, $return_context, $html);
+    abstract function plgVmOnConfirmedOrderGetPaymentForm($virtuemart_order_id, $orderData, $return_context, &$html);
 
     /**
      * plgVmOnShowOrderPaymentFE
@@ -696,7 +696,7 @@ abstract class vmPaymentPlugin extends JPlugin {
 	return ($nbPayment == 1) ? $virtuemart_paymentmethod_id : 0;
     }
 
-    public function plgVmOnPaymentSelectedCalculatePrice(VirtueMartCart $cart, array $cart_prices, $payment_name) {
+    public function plgVmOnPaymentSelectedCalculatePrice(VirtueMartCart $cart, array &$cart_prices, $payment_name) {
 	if (!$this->selectedThisPayment($this->_pelement, $cart->virtuemart_paymentmethod_id)) {
 	    return null; // Another payment was selected, do nothing
 	}
@@ -835,10 +835,12 @@ abstract class vmPaymentPlugin extends JPlugin {
 	    $db->setQuery($q);
 	    $taxrules = $db->loadAssocList();
 	}
-
+	if (!class_exists('calculationHelper'))
+	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+	$calculator = calculationHelper::getInstance();
 	if (count($taxrules) > 0) {
-	    $cart_prices['salesPricePayment'] = self::roundDisplay(self::executeCalculation($taxrules, $cart_prices['paymentValue']));
-	    $cart_prices['paymentTax'] = self::roundDisplay($cartPrices['salesPricePayment']) - $cart_prices['paymentValue'];
+	    $cart_prices['salesPricePayment'] = $calculator->roundDisplay($calculator->executeCalculation($taxrules, $cart_prices['paymentValue']));
+	    $cart_prices['paymentTax'] = $calculator->roundDisplay($cartPrices['salesPricePayment']) - $cart_prices['paymentValue'];
 	} else {
 	    $cart_prices['salesPricePayment'] = $payment_value;
 	    $cart_prices['paymentTax'] = 0;

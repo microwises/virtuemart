@@ -1016,7 +1016,7 @@ class VirtueMartCart {
 			$html="";
 			$session = JFactory::getSession();
 			$return_context = $session->getId();
-			$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderGetPaymentForm', array($orderID, $cart , $return_context, &$html));
+			$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderGetPaymentForm', array($orderID, $cart , $return_context, $html));
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
 			// 1 = cart should be emptied, 0 cart should not be emptied
@@ -1239,6 +1239,8 @@ class VirtueMartCart {
 				$this->setCartIntoSession();
 				return true;
 			} else {
+				$this->automaticSelectedShipping=false;
+				$this->setCartIntoSession();
 				return false;
 			}
 		} else {
@@ -1276,6 +1278,8 @@ class VirtueMartCart {
 				$this->setCartIntoSession();
 				return true;
 			} else {
+				$cart->automaticSelectedPayment=false;
+				$this->setCartIntoSession();
 				return false;
 			}
 		} else {

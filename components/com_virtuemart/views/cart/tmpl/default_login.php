@@ -87,10 +87,10 @@ if (VmConfig::get('oncheckout_show_register', 1)  && $this->cart->userDetails->J
     </fieldset>
 
 <?php if ( VmConfig::isJ15() ) { ?>
-	<input type="hidden" name="option" value="com_users" />
+	<input type="hidden" name="option" value="com_user" />
 	<input type="hidden" name="task" value="login" />
 <?php } else { ?>
-	<input type="hidden" name="option" value="com_users" />
+	<input type="hidden" name="option" value="com_user" />
 	<input type="hidden" name="task" value="user.login" />
 <?php } ?>
     <input type="hidden" name="return" value="<?php echo base64_encode($url) ?>" />
@@ -108,7 +108,7 @@ if (VmConfig::get('oncheckout_show_register', 1)  && $this->cart->userDetails->J
 		<input type="submit" name="Submit" class="button" value="<?php echo JText::_( 'COM_VIRTUEMART_BUTTON_LOGOUT'); ?>" />
 
 
-	<input type="hidden" name="option" value="com_users" />
+	<input type="hidden" name="option" value="com_user" />
 	<input type="hidden" name="task" value="logout" />
 	<input type="hidden" name="return" value="<?php echo base64_encode($url) ?>" />
 </form>

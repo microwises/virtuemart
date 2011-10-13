@@ -77,7 +77,11 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 		}
     echo "</fieldset>\n";
 
+    } else {
+	 echo "<h1>".$this->payment_not_found_text."</h1>";
     }
+   
+
     ?>
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="view" value="cart" />

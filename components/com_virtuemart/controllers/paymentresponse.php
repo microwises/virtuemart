@@ -61,8 +61,8 @@ class VirtueMartControllerPaymentresponse extends JController {
 	$html = "";
 	$returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived', array('pelement' => $pelement,
 	    'virtuemart_payment_id' => $pm,
-	    'virtuemart_order_id' => &$virtuemart_order_id,
-	    'html' => &$html
+	    'virtuemart_order_id' => $virtuemart_order_id,
+	    'html' => $html
 		));
 
 

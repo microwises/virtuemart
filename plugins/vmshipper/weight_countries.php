@@ -399,7 +399,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      * @param int $zip : zip code
      * @param $params paremters for this specific shiper
      * @author Valérie Isaksen
-     * @return string Shipper name
+     * @return string if Zip condition is ok or not
      */
     function _zipCond($zip, $params) {
 	if (!empty($zip)) {

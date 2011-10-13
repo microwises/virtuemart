@@ -209,13 +209,13 @@ class VirtueMartViewCart extends JView {
     private function lSelectShipper() {
 	$found_shipping_method=false;
 	$shipping_not_found_text='';
+	$shippers_shipping_rates=array();
 	if (!$this->checkShippingMethodsConfigured()) {
-	    $this->assignRef('shippers_shipping_rates', array());
+	    $this->assignRef('shippers_shipping_rates',$shippers_shipping_rates);
 	    $this->assignRef('found_shipping_method', $found_shipping_method);
 	    return;
 	}
 	$selectedShipper = (empty($this->cart->virtuemart_shippingcarrier_id) ? 0 : $this->cart->virtuemart_shippingcarrier_id);
-	$shipping_not_found_text = '';
 	if (!class_exists('vmShipperPlugin'))
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
 	JPluginHelper::importPlugin('vmshipper');
@@ -234,7 +234,8 @@ class VirtueMartViewCart extends JView {
 	    }
 	}
 	if (!$found_shipping_method) {
-	    $shipping_not_found_text = JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');
+	     $link=''; // todo
+	    $shipping_not_found_text = JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC', '<a href="'.$link.'">'.$link.'</a>');
 	}
 	/*
 	  $layoutName='select_shipper'; // by dafault should be the same
@@ -258,11 +259,12 @@ class VirtueMartViewCart extends JView {
      */
 
     private function lSelectPayment() {
+	$found_payment_method=false;
+	$payment_not_found_text='';
+	$shippers_payment_rates=array();
 	if (!$this->checkPaymentMethodsConfigured()) {
-            $tmp = array();
-	    $this->assignRef('paymentplugins_payments', $tmp);
-            $tmp = 0;
-	    $this->assignRef('found_payment_method', $tmp);
+	    $this->assignRef('paymentplugins_payments', $shippers_payment_rates);
+	    $this->assignRef('found_payment_method', $found_payment_method);
 	}
 
 	$selectedPayment = empty($this->cart->virtuemart_paymentmethod_id) ? 0 : $this->cart->virtuemart_paymentmethod_id;
@@ -282,7 +284,11 @@ class VirtueMartViewCart extends JView {
 		}
 	    }
 	}
-
+	if (!$found_payment_method) {
+	  $link=''; // todo
+	    $payment_not_found_text = JText::sprintf('COM_VIRTUEMART_CART_NO_PAYMENT_METHOD_PUBLIC', '<a href="'.$link.'">'.$link.'</a>');
+	}
+	$this->assignRef('payment_not_found_text', $payment_not_found_text);
 	$this->assignRef('paymentplugins_payments', $paymentplugins_payments);
 	$this->assignRef('found_payment_method', $found_payment_method);
     }

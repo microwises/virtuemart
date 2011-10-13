@@ -124,7 +124,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 	return $html;
     }
- 
+
     /**
      * Reimplementation of vmPaymentPlugin::plgVmOnCheckoutCheckPaymentData()
      * 	Here have to give all value for the BANK
@@ -135,7 +135,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	return false;
     }
 
-    function plgVmOnConfirmedOrderGetPaymentForm($virtuemart_order_id, $orderData, $return_context, $html) {
+    function plgVmOnConfirmedOrderGetPaymentForm($virtuemart_order_id, $orderData, $return_context, &$html) {
 
 	if (!$this->selectedThisPayment($this->_pelement, $orderData->virtuemart_paymentmethod_id)) {
 	    return null; // Another method was selected, do nothing
@@ -241,7 +241,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	return false; // don't delete the cart, don't send email
     }
 
-    function plgVmOnPaymentResponseReceived($pelement, $virtuemart_paymentmethod_id, $virtuemart_order_id, $html) {
+    function plgVmOnPaymentResponseReceived($pelement, $virtuemart_paymentmethod_id, &$virtuemart_order_id, &$html) {
 	if ($this->_pelement != $pelement) {
 	    return null;
 	}

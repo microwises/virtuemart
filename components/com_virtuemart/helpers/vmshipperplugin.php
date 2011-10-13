@@ -564,6 +564,7 @@ abstract class vmShipperPlugin extends JPlugin {
 	$db->setQuery($q);
 	return $db->loadResult(); // TODO Error check
     }
+
     /*
      * ShippingSelected
      * return $shipper if found
@@ -677,9 +678,10 @@ abstract class vmShipperPlugin extends JPlugin {
 
     public function plgVmOnShipperSelectedCalculatePrice(VirtueMartCart $cart, array $cart_prices, $shipping_name) {
 
-	if (!($shipping =  $this->selectedThisShipper($this->_selement, $cart->virtuemart_paymentmethod_id) )) {
+	if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
 	    return null; // Another shipper was selected, do nothing
 	}
+
 
 	if (!class_exists('TableShippingcarriers'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'shippingcarriers.php');
@@ -840,10 +842,12 @@ abstract class vmShipperPlugin extends JPlugin {
 	    $db->setQuery($q);
 	    $taxrules = $db->loadAssocList();
 	}
-
+	if (!class_exists('calculationHelper'))
+	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
+	$calculator = calculationHelper::getInstance();
 	if (count($taxrules) > 0) {
-	    $cart_prices['salesPriceShipping'] = self::roundDisplay(self::executeCalculation($taxrules, $cart_prices['shippingValue']));
-	    $cart_prices['shippingTax'] = self::roundDisplay($cart_prices['salesPriceShipping']) - $cart_prices['shippingValue'];
+	    $cart_prices['salesPriceShipping'] = $calculator->roundDisplay($calculator->executeCalculation($taxrules, $cart_prices['shippingValue']));
+	    $cart_prices['shippingTax'] = $calculator->roundDisplay($cart_prices['salesPriceShipping']) - $cart_prices['shippingValue'];
 	} else {
 	    $cart_prices['salesPriceShipping'] = $cart_prices['shippingValue'];
 	    $cart_prices['shippingTax'] = 0;
