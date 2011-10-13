@@ -180,6 +180,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//product tables
 			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','int(11)');
 
+			$fields = array('product_order_levels',' `product_params` text NOT NULL ');
+			$this->alterTable('#__virtuemart_products',$fields);
+
 			$fields = array('product_special'=>'`product_special` tinyint(1) DEFAULT "0"');
 			$this->alterTable('#__virtuemart_products',$fields);
 
@@ -201,8 +204,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 
 
-
-
 			//alterOrderItemsTable
 			$fields = array('order_item_name'=>'`order_item_name` VARCHAR( 255 )  NOT NULL DEFAULT "" ');
 			$this->alterTable('#__virtuemart_order_items',$fields);
@@ -220,8 +221,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->alterTable('#__virtuemart_categories',$fields);
 
 
-			$fields = array('product_order_levels',' `product_params` text NOT NULL ');
-			$this->alterTable('#__virtuemart_products',$fields);
 
 			//delete old config file
 // 			$this->renewConfigManually = !JFile::delete($this->path.DS.'virtuemart.cfg');
@@ -231,7 +230,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				if (!class_exists('VirtueMartModelConfig')
 				)require($this->path . DS . 'models' . DS . 'config.php');
 				$model -> deleteConfig();
-// 			}
 
 
 			// payment_discount values
