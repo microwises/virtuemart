@@ -916,9 +916,6 @@ class VirtueMartModelUser extends VmModel {
 		$this->_db->setQuery( $query );
 		$rows = $this->_db->loadObjectList();
 
-		// Send email to user
-		shopFunctionsF::renderMail('user', $user->get('email'), $vars);
-
 		// Send notification to all administrators
 		$subject2 = sprintf ( JText::_( 'COM_VIRTUEMART_ACCOUNT_DETAILS_FOR' ), $name, $sitename);
 		$subject2 = html_entity_decode($subject2, ENT_QUOTES);

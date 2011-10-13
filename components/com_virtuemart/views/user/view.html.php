@@ -404,7 +404,7 @@ class VirtuemartViewUser extends JView {
 			}
 
 		}
-	 public function renderMailLayout( ) {
+	 public function renderMailLayout( $vendor=false) {
 		if (!class_exists('VirtueMartCart'))
 		    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 
@@ -412,22 +412,22 @@ class VirtuemartViewUser extends JView {
 		$vendorModel = $this->getModel('vendor');
 		$this->vendor = $vendorModel->getVendor();
 
- 		if ($this->doVendor) {
+ 		if ($vendor) {
 		    $this->subject = JText::sprintf('COM_VIRTUEMART_NEW_SHOPPER', $this->user->username);
-		    $recipient = 'vendor';
+		    //$recipient = $this->vendor->email;
 		    if (VmConfig::get('order_mail_html')) {
 			 $tpl = 'mail_html_reguser';
 		    }
 
 		} else {
 		    $this->subject = JText::sprintf('COM_VIRTUEMART_NEW_SHOPPER', $this->vendor->vendor_store_name);
-		    $recipient = 'shopper';
+		    //$recipient = $this->user->email;
 		    if (VmConfig::get('order_mail_html')) {
 			$tpl = 'mail_html_regvendor';
 		    }
 		}
 
-		$this->assignRef('recipient', $recipient);
+		//$this->assignRef('recipient', $recipient);
 		//$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
 		//$this->vendor = $vendorModel->getVendor();
 		//$this->vendorEmail = $vendorModel->getVendorEmail($vendor->virtuemart_vendor_id);
