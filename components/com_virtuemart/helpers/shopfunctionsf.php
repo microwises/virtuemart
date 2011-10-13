@@ -313,9 +313,12 @@ class shopFunctionsF {
 		$mailer->isHTML(VmConfig::get('order_mail_html',true));
 		$mailer->setBody($body);
 
-		if (isset($view->replyTo)) {
-			$mailer->addReplyTo($view->replyTo);
+		if(!$vendor){
+			$mailer->addReplyTo($view->vendorEmail);
 		}
+// 		if (isset($view->replyTo)) {
+// 			$mailer->addReplyTo($view->replyTo);
+// 		}
 
 		if (isset($view->mediaToSend)) {
 			foreach ((array)$view->mediaToSend as $media) {
