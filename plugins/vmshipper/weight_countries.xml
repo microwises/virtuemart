@@ -32,7 +32,7 @@
         <param name="rate_value" type="text"   label="VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE" description="VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE_DESC" />
         <param name="package_fee" type="text"   label="VMSHIPPER_WEIGHT_COUNTRIES_PACKAGE_FEE" description="VMSHIPPER_WEIGHT_COUNTRIES_PACKAGE_FEE_DESC" />
         <param name="shipping_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPPER_WEIGHT_COUNTRIES_TAX" description="VMSHIPPER_WEIGHT_COUNTRIES_TAX_DESC" />
-        <param name="free_shipping" type="text"    label="COM_VIRTUEMART_FREE_SHIPPING_AMOUNT" description="COM_VIRTUEMART_FREE_SHIPPING_AMOUNT_DESC" />
+        <param name="free_shipping" type="text"    label="VMSHIPPER_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT" description="VMSHIPPER_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT_DESC" />
     </params>
 
 
@@ -56,7 +56,7 @@
         <field name="rate_value" type="text"   label="VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE" description="VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE_DESC" />
         <field name="package_fee" type="text"   label="VMSHIPPER_WEIGHT_COUNTRIES_PACKAGE_FEE" description="VMSHIPPER_WEIGHT_COUNTRIES_PACKAGE_FEE_DESC" />
         <field name="shipping_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPPER_WEIGHT_COUNTRIES_TAX" description="VMSHIPPER_WEIGHT_COUNTRIES_TAX_DESC" />
-        <field name="free_shipping" type="text"    label="COM_VIRTUEMART_FREE_SHIPPING_AMOUNT" description="COM_VIRTUEMART_FREE_SHIPPING_AMOUNT_DESC" />
+        <field name="free_shipping" type="text"    label="VMSHIPPER_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT" description="VMSHIPPER_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT_DESC" />
 
 
     </fieldset>

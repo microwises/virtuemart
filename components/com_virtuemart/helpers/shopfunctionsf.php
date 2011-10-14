@@ -315,7 +315,8 @@ class shopFunctionsF {
 		$mailer->setBody($body);
 
 		if(!$vendor){
-			$mailer->addReplyTo($view->vendorEmail);
+			$replyto[0]=$view->vendorEmail;
+			$mailer->addReplyTo($replyto[0]);
 		}
 // 		if (isset($view->replyTo)) {
 // 			$mailer->addReplyTo($view->replyTo);

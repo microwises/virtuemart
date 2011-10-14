@@ -35,14 +35,13 @@
 
 			<table class="html-email" cellspacing="0" cellpadding="0" border="0" width="100%">  <tr >
 				<th width="100%">
-				    <?php echo JText::_('COM_VIRTUEMART_QUESTION_ABOUT') ?>
+				    <?php echo JText::_('COM_VIRTUEMART_QUESTION_ABOUT').' '.$this->product->product_name ?>
 				</th>
 			    </tr>
 			    <tr>
 				<td valign="top" width="100%">
 				    <?php
 				    echo JText::sprintf('COM_VIRTUEMART_QUESTION_MAIL_FROM', $this->user['name'], $this->user['email']) . "<br />";
-				    echo JText::sprintf('COM_VIRTUEMART_QUESTION_MAIL_PRODUCT', $this->product->product_name) . "<br />";
 				    echo $this->comment. "<br />";
 				    ?>
 				</td>
