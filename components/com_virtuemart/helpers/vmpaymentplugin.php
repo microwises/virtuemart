@@ -317,7 +317,7 @@ abstract class vmPaymentPlugin extends JPlugin {
      *
      * @author Valérie Isaksen
      */
-    abstract function plgVmOnConfirmedOrderGetPaymentForm($virtuemart_order_id, $orderData, $return_context, &$html);
+    abstract function plgVmOnConfirmedOrderGetPaymentForm($virtuemart_order_id, $orderData, $return_context, $html);
 
     /**
      * plgVmOnShowOrderPaymentFE

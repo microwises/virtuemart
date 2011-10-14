@@ -103,7 +103,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 *
 	 * @author Valérie Isaksen
 	 */
-    function plgVmOnConfirmedOrderGetPaymentForm($virtuemart_order_id, $orderData, $return_context, &$html) {
+    function plgVmOnConfirmedOrderGetPaymentForm($virtuemart_order_id, $orderData, $return_context, $html) {
 
 		if (!$this->selectedThisPayment($this->_pelement, $orderData->virtuemart_paymentmethod_id)) {
 			return null; // Another method was selected, do nothing
