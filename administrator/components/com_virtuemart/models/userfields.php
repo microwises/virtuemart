@@ -683,13 +683,15 @@ class VirtueMartModelUserfields extends VmModel {
 								$_doc = JFactory::getDocument();
 								$_doc->addScript( JURI::root(true).'/includes/js/joomla.javascript.js');
 							}
-							$calendar = JHTML::calendar($_return['fields'][$_fld->name]['value'], $_prefix.$_fld->name , $_prefix.$_fld->name . '_field', '%Y-%m-%d', null);
-							$_return['fields'][$_fld->name]['formcode'] = '<input type="text" id="' . $_prefix.$_fld->name . '_field" name="'
-								. $_prefix.$_fld->name.'" size="' . $_fld->size . '" value="'. $_return['fields'][$_fld->name]['value'] . '" '
-								. ($_fld->required ? ' class="required"' : '')
-								. ($_fld->maxlength ? ' maxlength="' . $_fld->maxlength . '"' : '')
-								. ($_fld->readonly ? ' readonly="readonly"' : '') . ' /> '."\n"
-								. '<img class="calendar" src="templates/system/images/calendar.png" alt="calendar" id="'. $_prefix.$_fld->name . '_field_img" />';
+							$calendar = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,  $_prefix.$_fld->name . '_field');
+							//$calendar = JHTML::calendar($_return['fields'][$_fld->name]['value'], $_prefix.$_fld->name , $_prefix.$_fld->name . '_field', '%Y-%m-%d', null);
+							// $_return['fields'][$_fld->name]['formcode'] = '<input type="text" id="' . $_prefix.$_fld->name . '_field" name="'
+								// . $_prefix.$_fld->name.'" size="' . $_fld->size . '" value="'. $_return['fields'][$_fld->name]['value'] . '" '
+								// . ($_fld->required ? ' class="required"' : '')
+								// . ($_fld->maxlength ? ' maxlength="' . $_fld->maxlength . '"' : '')
+								// . ($_fld->readonly ? ' readonly="readonly"' : '') . ' /> '."\n"
+								// . '<img class="calendar" src="templates/system/images/calendar.png" alt="calendar" id="'. $_prefix.$_fld->name . '_field_img" />';
+								 $_return['fields'][$_fld->name]['formcode'] = $calendar ;
 							break;
 						case 'emailaddress':
 							if(empty($_return['fields'][$_fld->name]['value'])) $_return['fields'][$_fld->name]['value'] = JFactory::getUser()->email;
