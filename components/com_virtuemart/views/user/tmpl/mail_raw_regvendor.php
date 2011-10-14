@@ -19,17 +19,17 @@ $li = "\n";
 ?>
 
 
-<?php echo JText::sprintf('COM_VIRTUEMART_NEW_SHOPPER', $this->user->username) . $li. $li ?>
-<?php echo JText::_('COM_VIRTUEMART_REGISTRATION_DATA') . " " . $li; ?>
+<?php echo JText::sprintf('COM_VIRTUEMART_WELCOME_VENDOR', $this->vendor->vendor_store_name) . $li. $li ?>
+<?php echo JText::_('COM_VIRTUEMART_VENDOR_REGISTRATION_DATA') . " " . $li; ?>
 <?php echo JText::_('COM_VIRTUEMART_LOGINAME') . ": " . $this->user->username . $li; ?>
-<?php echo JText::_('COM_VIRTUEMART_DISPLAYED_NAME') . ": " . $this->user->name . $li; ?>
+<?php echo JText::_('COM_VIRTUEMART_DISPLAYED_NAME') . ": " . $this->user->name . $li. $li; ?>
 <?php echo JText::_('COM_VIRTUEMART_ENTERED_ADRESS') . ": " . $li ?>
 
 
 <?php
 
 foreach ($this->userFields['fields'] as $userField) {
-    if (!empty($userField['value']) && $userField['type'] != 'delimiter') {
+    if (!empty($userField['value']) && $userField['type'] != 'delimiter' && $userField['type'] != 'BT') {
 	echo $userField['title'] . ' ' . $userField['value'] . $li;
     }
 }
@@ -37,8 +37,6 @@ foreach ($this->userFields['fields'] as $userField) {
 echo $li;
 
 echo JURI::root() . JRoute::_('index.php?option=com_virtuemart&view=user', $this->useXHTML, $this->useSSL) . $li;
-
-
 
 echo $li;
 //echo JURI::root() . 'index.php?option=com_virtuemart&view=user&virtuemart_user_id=' . $this->_models['user']->_id . ' ' . $li;
