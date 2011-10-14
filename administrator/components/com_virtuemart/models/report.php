@@ -55,7 +55,7 @@ class VirtuemartModelReport extends VmModel {
 
 
 
-		$this->addvalidOrderingFieldName(array('DATE( `o`.`created_on` )','p.product_quantity' ) );
+		$this->addvalidOrderingFieldName(array('DATE( `o`.`created_on` )','WEEK( `o`.`created_on` )', 'MONTH( `o`.`created_on` )','YEAR( `o`.`created_on` )','i.product_quantity','order_subtotal' ) );
 	}
 
 	/*
@@ -75,13 +75,14 @@ class VirtuemartModelReport extends VmModel {
 	}
 
 	function  getItemsByRevenue($revenue){
-		$q = 'select SUM(`product_quantity`) as total from `#__virtuemart_order_items` as i LEFT JOIN #__virtuemart_orders as o ON o.virtuemart_order_id=i.virtuemart_order_id '.$this->whereItem.' '. $this->intervals.'="'.$revenue['intervals'].'" ';
+		$q = 'select SUM(`product_quantity`) as product_quantity from `#__virtuemart_order_items` as i LEFT JOIN #__virtuemart_orders as o ON o.virtuemart_order_id=i.virtuemart_order_id '.$this->whereItem.' '. $this->intervals.'="'.$revenue['intervals'].'" ';
 		$this->_db->setQuery( $q );
 		//echo $this->_db->_sql;
 		return $this->_db->loadResult();
 
 	}
 	function getRevenueSortListOrderQuery($sold=false,$items= false){
+
 
 		$selectFields = array();
 		$mainTable = '';
@@ -119,7 +120,7 @@ class VirtuemartModelReport extends VmModel {
 		$groupBy = 'GROUP BY intervals ';
 
 		//$selectFields[] = 'COUNT(virtuemart_order_id) as number_of_orders';
-		$selectFields[] = 'SUM(order_subtotal) as revenue';
+		$selectFields[] = 'SUM(order_subtotal) as order_subtotal';
 		$this->dates = ' DATE( `o`.`created_on` ) BETWEEN "'.$this->from_period.'" AND "'.$this->until_period.'" ';
 
 		/* Filter by statut */
@@ -137,7 +138,7 @@ class VirtuemartModelReport extends VmModel {
 		else if($sold){
 
 			$selectFields['intervals'] = 'i.`created_on` ';
-			$selectFields[] = 'SUM(product_quantity) as items_sold';
+			$selectFields[] = 'SUM(product_quantity) as product_quantity';
 
 			$mainTable = '`#__virtuemart_order_items` as i';
 
@@ -145,7 +146,7 @@ class VirtuemartModelReport extends VmModel {
 		else {
 
 			$selectFields['intervals'] = 'i.`created_on` ';
-			$selectFields[] = 'SUM(product_quantity) as items_sold';
+			$selectFields[] = 'SUM(product_quantity) as product_quantity';
 			$selectFields[] = 'product_name';
 			$selectFields[] = 'product_sku';
 
@@ -284,7 +285,7 @@ class VirtuemartModelReport extends VmModel {
 
 		$query = "SELECT `product_name`, `product_sku`, ";
 		$query .= "i.created_on as order_date, ";
-		$query .= "SUM(product_quantity) as items_sold ";
+		$query .= "SUM(product_quantity) as product_quantity ";
   		$query .= "FROM #__virtuemart_order_items i, #__virtuemart_orders o, #__virtuemart_products p ";
 		$query .= "WHERE i.created_on BETWEEN '{$this->start_date} 00:00:00' AND '{$this->until_period} 23:59:59' ";
 		$query .= "AND o.virtuemart_order_id=i.virtuemart_order_id ";

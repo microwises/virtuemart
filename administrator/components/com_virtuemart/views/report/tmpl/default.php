@@ -67,10 +67,10 @@ if( $this->pagination->limit < $rows ){
                         <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_ORDERS','o.virtuemart_order_id',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
                     </th>
                     <th>
-                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_TOTAL_ITEMS','p.product_quantity',$this->lists['filter_order_Dir'],$this->lists['filter_order']); ?>
+                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_TOTAL_ITEMS','i.product_quantity',$this->lists['filter_order_Dir'],$this->lists['filter_order']); ?>
                     </th>
                     <th>
-                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_REVENUE','revenue',$this->lists['filter_order_Dir'],$this->lists['filter_order']); ?>
+                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_REVENUE','o.order_subtotal',$this->lists['filter_order_Dir'],$this->lists['filter_order']); ?>
                     </th>
                 </tr>
             </thead>
@@ -101,10 +101,10 @@ if( $this->pagination->limit < $rows ){
                         <?php echo $r['number_of_orders'];?>
                     </td>
                     <td align="center">
-                        <?php echo $r['itemsSold'];?>
+                        <?php echo $r['product_quantity'];?>
                     </td>
                     <td align="right">
-                        <?php echo $r['revenue'];?>
+                        <?php echo $r['order_subtotal'];?>
                     </td>
                 </tr>
                 <?php

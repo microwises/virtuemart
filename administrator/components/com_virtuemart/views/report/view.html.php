@@ -61,13 +61,14 @@ class VirtuemartViewReport extends JView {
 		$revenueBasic = $model->getRevenue();
 
 		if($revenueBasic){
-			$totalReport['revenueTotal']= $totalReport['number_of_ordersTotal'] = $totalReport['itemsSoldTotal'] = 0 ;
+			$totalReport['revenueTotal']= $totalReport['number_of_ordersTotal'] = $totalReport['itemsSoldTotal'] = 0 ; vmdebug('revenue',$revenueBasic);
 			foreach($revenueBasic as &$j){
-				$totalReport['revenueTotal'] += $j['revenue'];
+			
+				$totalReport['revenueTotal'] += $j['order_subtotal'];
 				$totalReport['number_of_ordersTotal'] += $j['number_of_orders'];
-				$j['revenue'] = $myCurrencyDisplay->priceDisplay($j['revenue'],'',false);
-				$j['itemsSold'] = $model->getItemsByRevenue($j);
-				$totalReport['itemsSoldTotal'] +=$j['itemsSold'];
+				$j['order_subtotal'] = $myCurrencyDisplay->priceDisplay($j['order_subtotal'],'',false);
+				$j['product_quantity'] = $model->getItemsByRevenue($j);
+				$totalReport['itemsSoldTotal'] +=$j['product_quantity'];
 			}
 			$totalReport['revenueTotal'] = $myCurrencyDisplay->priceDisplay($totalReport['revenueTotal'],'',false);
 
@@ -75,7 +76,7 @@ class VirtuemartViewReport extends JView {
 				foreach ($revenueBasic as $key => $row) {
 					$created_on[] =$row['created_on'];
 					$intervals[] =$row['intervals'];
-					$itemsSold[] =$row['itemsSold'];
+					$itemsSold[] =$row['product_quantity'];
 					$number_of_orders[] =$row['number_of_orders'];
 					$revenue[] =$row['revenue'];
 
