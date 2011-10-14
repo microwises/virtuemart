@@ -43,7 +43,7 @@ class VirtuemartViewReport extends JView {
 		$model		= $this->getModel();
 		// $config		= JFactory::getConfig();
 		// $tzoffset	= $config->getValue('config.offset');
-		$task		= JRequest::getWord('task');
+		JRequest::setvar('task','');
 		// set period
 		//$date_presets = $model->getDatePresets();
 

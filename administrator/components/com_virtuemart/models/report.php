@@ -64,12 +64,6 @@ class VirtuemartModelReport extends VmModel {
 	function  setPeriod(){
 		$this->from_period  = JRequest::getVar('from_period', $this->date_presets['today']['from']);
 		$this->until_period = JRequest::getVar('until_period', $this->date_presets['today']['until']);
-		$from   = JFactory::getDate($this->from_period, $this->tzoffset);
-		$until  = JFactory::getDate($this->until_period, $this->tzoffset);
-		$start_date = JFactory::getDate($from->_date);
-		$this->from_period = $start_date->toFormat('%Y-%m-%d');
-		$end_date = JFactory::getDate($until->_date);
-		$this->until_period = $end_date->toFormat('%Y-%m-%d');
 	}
 
 	/*
@@ -119,7 +113,7 @@ class VirtuemartModelReport extends VmModel {
 				break;
 		}
 		if(!empty($this->intervals)){
-			$orderBy = $this->_getOrdering($this->intervals,'asc');
+			$orderBy = $this->_getOrdering(`o`.`created_on`,'asc');
 		}
 		$selectFields['intervals'] = $this->intervals.' AS intervals,`o`.`created_on` ';
 		$groupBy = 'GROUP BY intervals ';

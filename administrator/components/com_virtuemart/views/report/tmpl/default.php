@@ -19,10 +19,8 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 AdminUIHelper::startAdminArea();
 /* Load some variables */
-$format = JText::_('DATE_FORMAT_LC');
 $rows = count( $this->report );
-$intervalTitle = JRequest::getVar('intervals');
-$dateinfo ='';
+$intervalTitle = JRequest::getVar('intervals','day');
 if ( ($intervalTitle =='week') or ($intervalTitle =='month') ) $addDateInfo = true ;
 else $addDateInfo = false;
 
@@ -33,7 +31,7 @@ if( $this->pagination->limit < $rows ){
 }
 
 ?>
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminform">
     <div id="header">
         <h2><?php echo JText::sprintf('COM_VIRTUEMART_REPORT_TITLE', vmJsApi::date( $this->from_period, 'LC',true) , vmJsApi::date( $this->until_period, 'LC',true) ); ?></h2>
         <div id="filterbox">
