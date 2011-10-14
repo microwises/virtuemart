@@ -1,3 +1,4 @@
+.ui-autocomplete {position : absolute;}
 
 
 #vmPage input {background: #e8e8e8 url(../images/backgrounds.png) top repeat-x;padding: 5px 5px 4px 5px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color: #000;}

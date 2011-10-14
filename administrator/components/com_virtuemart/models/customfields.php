@@ -819,22 +819,23 @@ class VirtueMartModelCustomfields extends VmModel {
 		foreach ($variantmods as $variant=>$selected){
 			if ($selected) {
 				$productCustom = self::getProductCustomFieldCart ($product_id,$selected );
+				$html .= ' <span class="product-field-type-'.$productCustom->field_type.'>';
  				if ($productCustom->field_type == "E") {
 					$product = self::addParam($product);
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
 					//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
-					$html .= vmCustomPlugin::displayInCartPlugin( $product,$productCustom, $row);
+					$html .= vmCustomPlugin::displayInCartPlugin( $product,$productCustom, $row).'</span>';
 					// foreach ($product->userfield as $pKey => $puser) {
 						// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
 					// }
 				} elseif (($productCustom->field_type == "G")) {
 					$child = self::getChild($productCustom->custom_value);
-					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$child->product_name;
+					$html .= $productCustom->custom_title.' : </span>'.$child->product_name;
 				} elseif (($productCustom->field_type == "M")) {
-					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.self::displayCustomMedia($productCustom->custom_value);
+					$html .= $productCustom->custom_title.' : </span>'.self::displayCustomMedia($productCustom->custom_value);
 				} else {
 
-					$html .= '<br/ ><span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
+					$html .= $productCustom->custom_title.' : </span>'.$productCustom->custom_value;
 				}
 			}
 			$row++;
