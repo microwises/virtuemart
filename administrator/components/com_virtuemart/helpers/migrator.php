@@ -307,7 +307,8 @@ class Migrator extends VmModel{
 				if($handle = opendir($dir)){
 					while(false !== ($file = readdir($handle))){
 
-						if(!empty($file) && $file != "." && $file != ".." && $file != '.svn' && $file != 'index.html'){
+						//$file != "." && $file != ".." replaced by strpos
+						if(!empty($file) && strpos($file,'.')!==0  && $file != '.svn' && $file != 'index.html'){
 
 							//$info = pathinfo($file);
 							//dump($info,'pathinfo($file)');

@@ -148,7 +148,7 @@ class Permissions extends JObject{
 		//JRequest::checkToken() or jexit( 'Invalid Token doAuthentication' );
 
 		if (VmConfig::get('vm_price_access_level') != '') {
-			/* Is the user allowed to see the prices? */
+			// Is the user allowed to see the prices?
 			$this->_show_prices  = $user->authorize( 'virtuemart', 'prices' );
 		}
 		else {
