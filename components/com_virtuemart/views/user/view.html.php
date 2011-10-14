@@ -63,7 +63,8 @@ class VirtuemartViewUser extends JView {
 	$useXHTML = true;
 	$this->assignRef('useSSL', $useSSL);
 	$this->assignRef('useXHTML', $useXHTML);
-
+	$document = JFactory::getDocument();
+	$document->setTitle( JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS') );
 	$layoutName = $this->getLayout();
 	if (empty($layoutName)) {
 	    $layoutName = JRequest::getWord('layout', 'edit');
@@ -75,7 +76,6 @@ class VirtuemartViewUser extends JView {
 	if (!class_exists('VirtuemartModelUser'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
 	$this->_model = new VirtuemartModelUser();
-
 
 	//$this->_model = $this->getModel('user', 'VirtuemartModel');
 	//		$this->_model->setCurrent(); //without this, the administrator can edit users in the FE, permission is handled in the usermodel, but maybe unsecure?

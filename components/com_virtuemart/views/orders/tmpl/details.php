@@ -20,6 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 JHTML::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/');
 ?>
+AddReplyTo
 <h2><?php echo JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'); ?></h2>
 
 <div style="padding: 0px; margin: 10px; spacing: 0px;">
@@ -48,8 +49,8 @@ echo $this->loadTemplate('order');
 // echo $this->pane->endPane();
 $tabarray = array();
 
-$tabarray['items'] = 'COM_VIRTUEMART_SHOPPER_FORM_LBL';
-$tabarray['history'] = 'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO';
+$tabarray['items'] = 'COM_VIRTUEMART_ORDER_ITEM';
+$tabarray['history'] = 'COM_VIRTUEMART_ORDER_HISTORY';
 
 
 shopFunctionsF::buildTabs ($tabarray);

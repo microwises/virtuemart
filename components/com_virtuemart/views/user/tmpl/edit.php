@@ -55,6 +55,7 @@ function myValidator(f, t)
 	return false;
 }
 </script>
+<h2><?php echo JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS'); ?></h2>
 <form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_('index.php?view=user',$this->useXHTML,$this->useSSL) ?>" class="form-validate">
 <div style="text-align: right; width: 100%;">
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'saveuser');" ><?php echo $this->button_lbl ?></button>
