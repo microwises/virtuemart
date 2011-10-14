@@ -326,7 +326,7 @@ class VirtueMartModelRatings extends VmModel {
 				$review = $this->getReviewByProduct($data['virtuemart_product_id'],$userId);
 
 				if(!empty($review->review_rates)){
-					$data['review_rates'] = $review->review_rates + $data['review_rate'];
+					$data['review_rates'] = $review->review_rates + $data['review_vote'];
 				} else {
 					$data['review_rates'] = $data['review_vote'];
 				}

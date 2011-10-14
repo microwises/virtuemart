@@ -51,9 +51,13 @@ class VmModel extends JModel {
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 
-		// Get the id or array of ids.
-		$idArray = JRequest::getVar($this->_cidName,  0, '', 'array');
-		$this->setId((int)$idArray[0]);
+		// Get the task
+		$task = JRequest::getWord('task');
+		if($task!=='add'){
+			// Get the id or array of ids.
+			$idArray = JRequest::getVar($this->_cidName,  0, '', 'array');
+			$this->setId((int)$idArray[0]);
+		}
 
 	}
 
