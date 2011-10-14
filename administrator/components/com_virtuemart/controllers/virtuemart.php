@@ -26,24 +26,20 @@ jimport('joomla.application.component.controller');
 class VirtuemartControllerVirtuemart extends JController {
 
 
+	public function __construct() {
+		parent::__construct();
+	}
+
 	/**
-	 * Method to display the view
 	 *
-	 * @access	public
+	 * Task for disabling dangerous database tools, used after install
+	 * @author Max Milbers
 	 */
-	function display() {
-
-		$document = JFactory::getDocument();
-		$viewName = JRequest::getWord('view', '');
-		$viewType = $document->getType();
-		$view = $this->getView($viewName, $viewType);
-
-		// Push a model into the view
-		$model = $this->getModel( 'virtuemart' );
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}
-
-		parent::display();
+	public function disableDangerousTools(){
+		$data = JRequest::get('get');
+		JRequest::setVar($data['token'], '1', 'post');
+		$config = JModel::getInstance('config', 'VirtueMartModel');
+		$config->setDangerousToolsOff();
+		$this->display();
 	}
 }

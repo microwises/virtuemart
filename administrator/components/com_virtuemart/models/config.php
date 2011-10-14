@@ -370,9 +370,6 @@ class VirtueMartModelConfig extends JModel {
 			return false;
 		}
 
-
-
-
 	}
 
 }

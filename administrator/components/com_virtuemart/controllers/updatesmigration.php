@@ -107,7 +107,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$data = JRequest::get('get');
 		JRequest::setVar($data['token'], '1', 'post');
 		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
-		$this->checkPermissionForTools();
+// 		$this->checkPermissionForTools();
 
 		$model = $this->getModel('updatesMigration');
 

@@ -590,7 +590,7 @@ class VmConfig {
 			if (strpos($_line, '=') !== false) {
 
 				$pair = explode('=',$_line);
-				if(!empty($pair[1])){
+				if(isset($pair[1])){
 					if(strpos($pair[1], 'array:') !== false){
 						$pair[1] = substr($pair[1],6);
 						$pair[1] = explode('|',$pair[1]);
@@ -602,7 +602,8 @@ class VmConfig {
 					}
 
 					if($returnDangerousTools && $pair[0] == 'dangeroustools' ){
-						if($pair[1]==0) return false; else return true;
+						vmdebug('dangeroustools'.$pair[1]);
+						if($pair[1]=="0") return false; else return true;
 					}
 
 				} else {

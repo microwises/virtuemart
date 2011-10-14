@@ -31,23 +31,23 @@ class vmVersion {
 	/** @var string Product */
 	static $PRODUCT = 'VirtueMart';
 	/** @var int Release Number */
-	static $RELEASE = '2.0.0-RC-2H';
+	static $RELEASE = '2.0.0-RC-2i';
 	/** @var string Development Status */
 	static $DEV_STATUS = 'release candidate';
 	/** @var string Codename */
 	static $CODENAME = 'BeJooKu';
 	/** @var string Date */
-	static $RELDATE = 'October 6, 2011';
+	static $RELDATE = 'October 14, 2011';
 	/** @var string Time */
-	static $RELTIME = '21:30';
+	static $RELTIME = '20:30';
 	/** @var string Timezone */
 	static $RELTZ = 'GMT';
 	/** @var string Revision */
-	static $REVISION = '$Revision: 4280 $';
+	static $REVISION = '$Revision: 4412 $';
 	/** @var string Copyright Text */
 	static $COPYRIGHT = 'Copyright (C) 2005-2011 VirtueMart Development Team  - All rights reserved.';
 	/** @var string URL */
-	static $URL = '<a href="http://virtuemart.net">VirtueMart</a> is a Free Component for Joomla! released under the GNU/GPL2 and higher License.';
+	static $URL = '<a href="http://virtuemart.net">VirtueMart</a> is a Free Component for Joomla! released under the GNU/GPL2 License.';
 }
 
 $shortversion = vmVersion::$PRODUCT . " " . vmVersion::$RELEASE . " " . vmVersion::$DEV_STATUS. " ";

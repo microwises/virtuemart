@@ -570,7 +570,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 											Delete this file manually (administrator/components/com_virtuemart/virtuemart.cfg) and please use
 											"renew config from file" in Tools => Updates/Migration');
 					}*/
-					echo '<br />'.JText::_('<b>Reminder to update also your extensions with the AIO installer');
+					echo '<br />'.JText::_('<b>Remind to update also your extensions with the AIO installer');
 
 				} else {
 					echo JText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
@@ -588,8 +588,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 							href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JUtility::getToken()) ?>">
 							<span class="vmicon48 vm_install_48"></span> <br />
 
-
-
 						<?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
 							</a>
 					</div>
@@ -597,14 +595,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		<?php } ?>
 
 				<div class="icon">
-				<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart') ?>">
+				<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&task=disableDangerousTools&token='.JUtility::getToken() ) ?>">
 					<span class="vmicon48 vm_frontpage_48"></span>
 					<br /><?php echo JText::_('COM_VIRTUEMART_INSTALL_GO_SHOP') ?>
 				</a>
 				</div>
-
-
-
 
 			</td>
 		</tr>
