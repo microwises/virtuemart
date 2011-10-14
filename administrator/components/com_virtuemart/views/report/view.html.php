@@ -47,8 +47,6 @@ class VirtuemartViewReport extends JView {
 		// set period
 		//$date_presets = $model->getDatePresets();
 
-
-
 		$viewName = ShopFunctions::SetViewTitle('REPORT');
 		$this->assignRef('viewName', $viewName);
 
@@ -59,11 +57,11 @@ class VirtuemartViewReport extends JView {
 		$myCurrencyDisplay = CurrencyDisplay::getInstance();
 
 		$revenueBasic = $model->getRevenue();
-
+// 		vmdebug('VirtuemartViewReport revenue',$revenueBasic);
 		if($revenueBasic){
-			$totalReport['revenueTotal']= $totalReport['number_of_ordersTotal'] = $totalReport['itemsSoldTotal'] = 0 ; vmdebug('revenue',$revenueBasic);
+			$totalReport['revenueTotal']= $totalReport['number_of_ordersTotal'] = $totalReport['itemsSoldTotal'] = 0 ;
 			foreach($revenueBasic as &$j){
-			
+
 				$totalReport['revenueTotal'] += $j['order_subtotal'];
 				$totalReport['number_of_ordersTotal'] += $j['number_of_orders'];
 				$j['order_subtotal'] = $myCurrencyDisplay->priceDisplay($j['order_subtotal'],'',false);

@@ -53,9 +53,7 @@ class VirtuemartModelReport extends VmModel {
 			$this->setPeriod();
 		}
 
-
-
-		$this->addvalidOrderingFieldName(array('DATE( `o`.`created_on` )','WEEK( `o`.`created_on` )', 'MONTH( `o`.`created_on` )','YEAR( `o`.`created_on` )','i.product_quantity','order_subtotal' ) );
+		$this->addvalidOrderingFieldName(array('o.`created_on`','DATE( o.`created_on` )','WEEK( o.`created_on` )', 'MONTH( o.`created_on` )','YEAR( o.`created_on` )','i.product_quantity','order_subtotal' ) );
 	}
 
 	/*
@@ -89,24 +87,24 @@ class VirtuemartModelReport extends VmModel {
 		$joinTables = array();
 		$joinedTables = '';
 		$where= array();
-		/* group always by intervals (day,week, ... or ID) and set grouping and defaut ordering */
 
+		// group always by intervals (day,week, ... or ID) and set grouping and defaut ordering
 		$orderBy = $this->_getOrdering();
 
 		$intervals = JRequest::getWord('intervals','day');
 		switch ($intervals) {
 
 			case 'day':
-				$this->intervals= 'DATE( `o`.`created_on` )';
+				$this->intervals= 'DATE( o.`created_on` )';
 				break;
 			case 'week':
-				$this->intervals= 'WEEK( `o`.`created_on` )';
+				$this->intervals= 'WEEK( o.`created_on` )';
 				break;
 			case 'month':
-				$this->intervals= 'MONTH( `o`.`created_on` )';
+				$this->intervals= 'MONTH( o.`created_on` )';
 				break;
 			case 'year':
-				$this->intervals= 'YEAR( `o`.`created_on` )';
+				$this->intervals= 'YEAR( o.`created_on` )';
 				break;
 			default:
 				// invidual grouping
@@ -114,16 +112,16 @@ class VirtuemartModelReport extends VmModel {
 				break;
 		}
 		if(!empty($this->intervals)){
-			$orderBy = $this->_getOrdering(`o`.`created_on`,'asc');
+			$orderBy = $this->_getOrdering('o.`created_on`');
 		}
-		$selectFields['intervals'] = $this->intervals.' AS intervals,`o`.`created_on` ';
+		$selectFields['intervals'] = $this->intervals.' AS intervals, o.`created_on` ';
 		$groupBy = 'GROUP BY intervals ';
 
 		//$selectFields[] = 'COUNT(virtuemart_order_id) as number_of_orders';
 		$selectFields[] = 'SUM(order_subtotal) as order_subtotal';
-		$this->dates = ' DATE( `o`.`created_on` ) BETWEEN "'.$this->from_period.'" AND "'.$this->until_period.'" ';
+		$this->dates = ' DATE( o.`created_on` ) BETWEEN "'.$this->from_period.'" AND "'.$this->until_period.'" ';
 
-		/* Filter by statut */
+		// Filter by statut
 		if ($orderstates = JRequest::getWord('order_status_code','')) $where[] = 'o.order_status ="'.$orderstates.'"';
 		//getRevenue
 		if(!$sold && !$items){

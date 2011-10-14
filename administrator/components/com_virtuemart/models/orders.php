@@ -45,6 +45,11 @@ class VirtueMartModelOrders extends VmModel {
 		parent::__construct();
 		$this->setMainTable('orders');
 		$this->addvalidOrderingFieldName(array('o.order_name','pm.payment_method' ) );
+		$key = array_search('o.modified_on',$this->_validOrderingFieldName);
+
+		//Delete the field so that and push it to the begin of the array so that it is used as default value
+		unset($this->_validOrderingFieldName[$key]);
+		array_unshift($this->_validOrderingFieldName,'o.modified_on');
 
 	}
 
@@ -218,7 +223,7 @@ class VirtueMartModelOrders extends VmModel {
 		}*/
 
 		if ( JRequest::getCmd('view') == 'orders') {
-			$ordering = $this->_getOrdering('o.created_on');
+			$ordering = $this->_getOrdering();
 		} else {
 			$ordering = ' order by o.modified_on DESC';
 		}
