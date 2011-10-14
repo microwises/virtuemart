@@ -166,11 +166,12 @@ class AdminUIHelper {
 			$filter [] = 'vmmod.module_id=' . ( int ) $moduleId;
 		}
 
-		$query = 'SELECT `jmmod`.`module_id`, `module_name`, `module_perms`, `id`, `name`, `link`, `depends`, `icon_class`, `view`, `task`';
-		$query .= 'FROM `#__virtuemart_modules` AS jmmod ';
-		$query .= 'LEFT JOIN `#__virtuemart_adminmenuentries` AS item ON `jmmod`.`module_id`=`item`.`module_id` ';
-		$query .= 'WHERE  ' . implode ( ' AND ', $filter ) . ' ';
-		$query .= 'ORDER BY `jmmod`.`ordering`, `item`.`ordering`';
+		$query = 'SELECT `jmmod`.`module_id`, `module_name`, `module_perms`, `id`, `name`, `link`, `depends`, `icon_class`, `view`, `task`
+						FROM `#__virtuemart_modules` AS jmmod
+						LEFT JOIN `#__virtuemart_adminmenuentries` AS item ON `jmmod`.`module_id`=`item`.`module_id`
+						WHERE  ' . implode ( ' AND ', $filter ) . '
+						ORDER BY `jmmod`.`ordering`, `item`.`ordering` ';
+
 		$db->setQuery ( $query );
 		$result = $db->loadObjectList ();
 		//		echo '<pre>'.print_r($query,1).'</pre>';

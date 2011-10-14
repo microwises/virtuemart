@@ -52,9 +52,11 @@ AdminUIHelper::startAdminArea();
 			<th width="10">
 				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 			</th>
+			<?php if(Vmconfig::get('multix','none')!=='none'){ ?>
 			<th width="10">
 				<?php echo JText::_('COM_VIRTUEMART_CALC_SHARED'); ?>
 			</th>
+			<?php } ?>
 		</tr>
 		</thead>
 		<?php
@@ -88,13 +90,15 @@ AdminUIHelper::startAdminArea();
 				<td>
 					<?php echo $row->paymShoppersList; ?>
 				</td>
-				
+
 				<td align="center">
 					<?php echo $published; ?>
 				</td>
+				<?php if(Vmconfig::get('multix','none')!=='none'){ ?>
 				<td align="center">
 					<?php echo $row->shared; ?>
 				</td>
+				<?php } ?>
 			</tr>
 			<?php
 			$k = 1 - $k;

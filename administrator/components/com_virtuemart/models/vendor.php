@@ -40,7 +40,10 @@ class VirtueMartModelVendor extends VmModel {
 		parent::__construct();
 
 		//Todo multivendor nasty hack, to get vendor with id 1
-		$this->setId(1);
+		if(Vmconfig::get('multix','none')=='none'){
+			$this->setId(1);
+		}
+
 		$this->setMainTable('vendors');
 	}
 

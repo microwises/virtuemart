@@ -130,7 +130,7 @@ class VirtueMartModelCustom extends VmModel {
   			// $this->plugin->virtuemart_shoppergroup_ids = '';
   			// $this->plugin->payment_creditcards = '';
   			$this->plugin->param = '';
-			
+
   		}
 
 
@@ -173,11 +173,17 @@ class VirtueMartModelCustom extends VmModel {
 		$datas->field_types = $customfields->getField_types() ;
 
 		foreach ($datas->items as $key => & $data) {
-  		if (!empty($data->custom_parent_id)) $data->custom_parent_title = $customfields->getCustomParentTitle($data->custom_parent_id);
-		else {
-			$data->custom_parent_title =  '-' ;
-		}
-  		$data->field_type_display = JText::_( $datas->field_types[$data->field_type ] );
+	  		if (!empty($data->custom_parent_id)) $data->custom_parent_title = $customfields->getCustomParentTitle($data->custom_parent_id);
+			else {
+				$data->custom_parent_title =  '-' ;
+			}
+			if(!empty($datas->field_types[$data->field_type ])){
+				$data->field_type_display = JText::_( $datas->field_types[$data->field_type ] );
+			} else {
+				$data->field_type_display = 'not valid, delete this line';
+				vmError('The field with id '.$data->virtuemart_custom_id.' and title '.$data->custom_title.' is not longer valid, please delete it from the list');
+			}
+
 		}
 		$datas->customsSelect=$customfields->displayCustomSelection();
 
@@ -240,9 +246,9 @@ class VirtueMartModelCustom extends VmModel {
 						// foreach ( $ParamKeys as $key =>$param )$varsToPushParam[ $param ] = array("",'string');
 						// $tableCustomfields->setParameterable('custom_param',$varsToPushParam);
 						// $fields =  (array)$datas['custom_param'][$key]+$fields;
- 
+
 					}
-				
+
 				}
 				$data = $tableCustomfields->bindChecknStore($fields);
 				$errors = $tableCustomfields->getErrors();
@@ -291,11 +297,11 @@ class VirtueMartModelCustom extends VmModel {
 		if ($data['custom_jplugin_id'] ) self::saveCustomPlugin($data) ;
 		}
 
-		return $id ; 
+		return $id ;
 	}
 
 	/**
-	 * Bind the post data to the customPlugin tables 
+	 * Bind the post data to the customPlugin tables
 	 * Save the default personnal setting(original are in joomla plugin Table)
 	 * @author Patrick Kohl
 	 * @return boolean True is the save was successful, false otherwise.
