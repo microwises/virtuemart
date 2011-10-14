@@ -73,15 +73,19 @@ class VirtueMartModelConfig extends JModel {
 		foreach($dirs as $dir){
 			if ($handle = opendir($dir)) {
 				while (false !== ($file = readdir($handle))) {
-					//Handling directly for extension is much cleaner
-					$path_info = pathinfo($file);
-					if(empty($path_info)){
-						vmError('Attention file '.$file.' has no extension in view '.$view.' and directory '.$dir);
-					}
-					if ($path_info['extension'] == 'php' && !in_array($file,$alreadyAddedFile)) {
-						$alreadyAddedFile[] = $file;
-						//There is nothing to translate here
-						$result[] = JHTML::_('select.option', $file, $path_info['filename']);
+
+					if(!empty($file) && strpos($file,'.')!==0  && $file != '.svn' && $file != 'index.html'){
+						//Handling directly for extension is much cleaner
+						$path_info = pathinfo($file);
+						if(empty($path_info['extension'])){
+							vmError('Attention file '.$file.' has no extension in view '.$view.' and directory '.$dir);
+							$path_info['extension'] = '';
+						}
+						if ($path_info['extension'] == 'php' && !in_array($file,$alreadyAddedFile)) {
+							$alreadyAddedFile[] = $file;
+							//There is nothing to translate here
+							$result[] = JHTML::_('select.option', $file, $path_info['filename']);
+						}
 					}
 				}
 			}

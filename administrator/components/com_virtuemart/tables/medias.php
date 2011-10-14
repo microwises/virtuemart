@@ -237,17 +237,6 @@ class TableMedias extends VmTable {
 			     	$this->file_mimetype = 'audio/vorbis';
 			     }
 
-			     //audio
-			     elseif($file_extension === 'mp3'){
-			     	$this->file_mimetype = 'audio/mpeg';
-			     }
-			     elseif($file_extension === 'ogg'){
-			     	$this->file_mimetype = 'audio/ogg';
-			     }
-			     elseif($file_extension === 'oga'){
-			     	$this->file_mimetype = 'audio/vorbis';
-			     }
-
 			     //applications
 			     elseif($file_extension === 'zip'){
 			     	$this->file_mimetype = 'application/zip';
