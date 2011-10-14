@@ -75,6 +75,9 @@ class VirtueMartModelConfig extends JModel {
 				while (false !== ($file = readdir($handle))) {
 					//Handling directly for extension is much cleaner
 					$path_info = pathinfo($file);
+					if(empty($path_info)){
+						vmError('Attention file '.$file.' has no extension in view '.$view.' and directory '.$dir);
+					}
 					if ($path_info['extension'] == 'php' && !in_array($file,$alreadyAddedFile)) {
 						$alreadyAddedFile[] = $file;
 						//There is nothing to translate here
