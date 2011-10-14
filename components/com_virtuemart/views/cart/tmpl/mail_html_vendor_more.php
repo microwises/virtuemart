@@ -17,4 +17,4 @@
 */
 ?>
 
-<?php echo JText::_('COM_VIRTUEMART_VENDOR_MORE'); ?> 
+<?php //echo JText::_('COM_VIRTUEMART_VENDOR_MORE'); ?>

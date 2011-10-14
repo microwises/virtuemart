@@ -4,6 +4,7 @@
  * @package	VirtueMart
  * @subpackage User
  * @author Max Milbers
+ * @author Valérie Isaksen
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -13,28 +14,33 @@
  * other free or open source software licenses.
  * @version $Id: view.html.php 2459 2010-07-02 17:30:23Z milbo $
  */
-if (VmConfig::get('html_email', true)) {
+
     $li = '<br />';
-} else {
-    $li = "\n";
-}
+
 ?>
- <html>
+<html>
     <head>
     </head>
     <body>
+<?php echo JText::sprintf('COM_VIRTUEMART_WELCOME_VENDOR', $this->vendor->vendor_store_name) . $li; ?>
+	<?php echo JText::sprintf('COM_VIRTUEMART_NEW_SHOPPER', $this->user->username) . $li ?>
+	<?php echo JText::_('COM_VIRTUEMART_REGISTRATION_DATA') . " " . $li; ?>
+	<?php echo JText::_('COM_VIRTUEMART_LOGINAME') . ": " . $this->user->username . $li; ?>
+	<?php echo JText::_('COM_VIRTUEMART_DISPLAYED_NAME') . ": " . $this->user->name . $li; ?>
+	<?php echo JText::_('COM_VIRTUEMART_ENTERED_ADRESS') . ": " . $li ?>
 
-<?php echo  JText::sprintf('COM_VIRTUEMART_NEW_SHOPPER', $this->user->username). $li ?>
-<?php echo JText::_('COM_VIRTUEMART_REGISTRATION_DATA') . " " . $li; ?>
-<?php echo  JText::_('COM_VIRTUEMART_LOGINAME').": ".$this->user->username .$li; ?>
-<?php echo  JText::_('COM_VIRTUEMART_DISPLAYED_NAME').": ".$this->user->name .$li;  ?>
-<?php  echo JText::_('COM_VIRTUEMART_ENTERED_ADRESS').": ".  $li ?>
-<?php
-
+	<?php
+	foreach ($this->userFields['fields'] as $userField) {
+	    if (!empty($userField['value']) && $userField['type'] != 'delimiter') {
+		echo $userField['title'] . ': ' . $userField['value'] . $li;
+	    }
+	}
+	echo $li;
+	echo JURI::root() . JRoute::_('index.php?option=com_virtuemart&view=user', $this->useXHTML, $this->useSSL) . $li;
 	echo $li;
 	echo JURI::root() . 'index.php?option=com_virtuemart&view=user&virtuemart_user_id=' . $this->_models['user']->_id . ' ' . $li;
 	echo JURI::root() . 'index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id . ' ' . $li;
 	?>
 
-</body>
+    </body>
 </html>

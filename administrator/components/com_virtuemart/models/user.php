@@ -925,7 +925,7 @@ class VirtueMartModelUser extends VmModel {
 				//$message2 = sprintf ( JText::_( 'COM_VIRTUEMART_SEND_MSG_ADMIN' ), $row->name, $sitename, $name, $email, $username);
 				//$message2 = html_entity_decode($message2, ENT_QUOTES);
 				//JUtility::sendMail($mailfrom, $fromname, $row->email, $subject2, $message2);
-				shopFunctionsF::renderMail('user', $row->email, $vars);
+				//shopFunctionsF::renderMail('user', $row->email, $vars);
 			}
 		}
 

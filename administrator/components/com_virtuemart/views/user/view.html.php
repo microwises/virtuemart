@@ -234,7 +234,12 @@ class VirtuemartViewUser extends JView {
 		parent::display($tpl);
 	}
 
-	function renderMail ($doVendor=false) {
+	/*
+	*	What is this doing here?
+	*
+	*/
+
+	function renderMailLayout ($doVendor=false) {
 		$tpl = ($doVendor) ? 'mail_html_regvendor' : 'mail_html_reguser';
 		$this->setLayout($tpl);
 

@@ -301,6 +301,7 @@ class shopFunctionsF {
 	 * @param bool $vendor true for notifying vendor of user action (e.g. registration)
 	 */
 	private function sendVmMail (&$view, $recipient, $vendor=false) {
+
 		ob_start();
 		$view->renderMailLayout($vendor);
 		$body = ob_get_contents();

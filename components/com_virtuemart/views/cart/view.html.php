@@ -158,10 +158,10 @@ class VirtueMartViewCart extends JView {
 		$cart->prepareMailData();
 
 		if ($doVendor) {
-			$this->subject = JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED', $this->shopperName, $this->cart->prices['billTotal'], $this->order['details']['BT']->order_number);
+			$this->subject = JText::sprintf('COM_VIRTUEMART_VENDOR_NEW_ORDER_CONFIRMED', $this->shopperName, $this->cart->prices['billTotal'], $this->order['details']['BT']->order_number);
 			$recipient = 'vendor';
 		} else {
-			$this->subject = JText::sprintf('COM_VIRTUEMART_NEW_ORDER_CONFIRMED', $this->cart->vendor->vendor_store_name, $this->cart->prices['billTotal'], $this->order['details']['BT']->order_number, $this->order['details']['BT']->order_pass);
+			$this->subject = JText::sprintf('COM_VIRTUEMART_SHOPPER_NEW_ORDER_CONFIRMED', $this->cart->vendor->vendor_store_name, $this->cart->prices['billTotal'], $this->order['details']['BT']->order_number, $this->order['details']['BT']->order_pass);
 			$recipient = 'shopper';
 		}
 		$this->doVendor = true;
