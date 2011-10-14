@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 JHTML::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/');
 ?>
-AddReplyTo
+
 <h2><?php echo JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'); ?></h2>
 
 <div style="padding: 0px; margin: 10px; spacing: 0px;">
