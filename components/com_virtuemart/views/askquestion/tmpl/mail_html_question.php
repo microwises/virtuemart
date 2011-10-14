@@ -41,7 +41,7 @@
 			    <tr>
 				<td valign="top" width="100%">
 				    <?php
-				    echo JText::sprintf('COM_VIRTUEMART_QUESTION_MAIL_FROM', $this->name, $this->email) . "<br />";
+				    echo JText::sprintf('COM_VIRTUEMART_QUESTION_MAIL_FROM', $this->user['name'], $this->user['email']) . "<br />";
 				    echo JText::sprintf('COM_VIRTUEMART_QUESTION_MAIL_PRODUCT', $this->product->product_name) . "<br />";
 				    echo $this->comment. "<br />";
 				    ?>
