@@ -41,7 +41,7 @@ $document->addScriptDeclaration('
 			},
 			msg : "'.JText::sprintf('COM_VIRTUEMART_COMMENT_MIN_MAX',$min, $max).'"
 		});
-		
+
 		$("#comment").keyup( function () {
 			var result = $(this).val();
 				$("#counter").val( result.length );
@@ -56,7 +56,7 @@ if (empty ( $this->product )) {
 
 <div class="ask-a-question-view">
 	<h1><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')  ?></h1>
-		
+
 	<div class="product-summary">
 		<div class="width70 floatleft">
 			<h2><?php echo $this->product->product_name ?></h2>
@@ -67,9 +67,9 @@ if (empty ( $this->product )) {
 					<?php echo $this->product->product_s_desc ?>
 				</div>
 			<?php } // Product Short Description END ?>
-		
+
 		</div>
-	
+
 		<div class="width30 floatleft center">
 			<?php // Product Image
 			echo $this->product->images[0]->displayMediaThumb('class="product-image"',false); ?>
@@ -77,15 +77,18 @@ if (empty ( $this->product )) {
 
 	<div class="clear"></div>
 	</div>
-		
+
 	<?php // Get User
 	if (!empty($this->user->id)) {
 		$user = JFactory::getUser();
 	} ?>
-		
+
 	<div class="form-field">
 
 		<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component') ; ?>" name="askform" id="askform">
+
+			<label><?php echo JText::_('COM_VIRTUEMART_USER_FORM_NAME')  ?> : <input type="text" value="<?php echo $this->user->name ?>" name="name" id="name" size="30"  validation="required name"/></label>
+			<br />
 			<label><?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : <input type="text" value="<?php echo $this->user->email ?>" name="email" id="email" size="30"  validation="required email"/></label>
 			<br/>
 			<label>
@@ -97,13 +100,13 @@ if (empty ( $this->product )) {
 			</label>
 			<div class="submit">
 				<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo JText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" />
-				
+
 				<div class="width50 floatright right paddingtop">
 					<?php echo JText::_('COM_VIRTUEMART_ASK_COUNT')  ?>
 					<input type="text" value="0" size="4" class="counter" ID="counter" name="counter" maxlength="4" readonly="readonly" />
 				</div>
 			</div>
-			
+
 			<input type="hidden" name="cid[]" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
 			<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
 			<input type="hidden" name="tmpl" value="component" />
@@ -113,7 +116,7 @@ if (empty ( $this->product )) {
 			<input type="hidden" name="task" value="mailAskquestion" />
 			<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
-	
+
 	</div>
 
 </div>

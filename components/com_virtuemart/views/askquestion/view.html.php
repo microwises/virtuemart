@@ -52,15 +52,15 @@ class VirtueMartViewAskquestion extends JView {
 		$pathway = $mainframe->getPathway();
 		$task = JRequest::getCmd('task');
 
-		/* Set the helper path */
+		// Set the helper path
 		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 
-		/* Load helpers */
+
 		$this->loadHelper('image');
 		$this->loadHelper('addtocart');
 
 
-		/* Load the product */
+		// Load the product
 //		$product = $this->get('product');
 		if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
 		$product_model = new VirtueMartModelProduct ;
@@ -77,12 +77,13 @@ class VirtueMartViewAskquestion extends JView {
 			self::showLastCategory($tpl);
 			return;
 		}
+
 		if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		$product = $product_model->getProduct($virtuemart_product_id);
-		/* Set Canonic link */
+		// Set Canonic link
 		$document->addHeadLink( $product->link , 'canonical', 'rel', '' );
 
-		/* Set the titles */
+		// Set the titles
 		$document->setTitle(JText::sprintf('COM_VIRTUEMART_PRODUCT_DETAILS_TITLE',$product->product_name.' - '.JText::_('COM_VIRTUEMART_PRODUCT_ASK_QUESTION')));
 		$uri = JURI::getInstance();
 
@@ -116,9 +117,11 @@ class VirtueMartViewAskquestion extends JView {
 		// for askquestion
 		$pathway->addItem( JText::_('COM_VIRTUEMART_PRODUCT_ASK_QUESTION'));
 
-		/* Check for editing access */
-		/** @todo build edit page */
-		/* Load the user details */
+
+		// Load the user details
+// 		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
+// 		$user_model = new VirtueMartModelUser ;
+// 		$user = $user_model->getUser();
 
 		$this->assignRef('user', JFactory::getUser());
 

@@ -308,8 +308,11 @@ class Migrator extends VmModel{
 					while(false !== ($file = readdir($handle))){
 
 						//$file != "." && $file != ".." replaced by strpos
-						if(!empty($file) && strpos($file,'.')!==0  && $file != '.svn' && $file != 'index.html'){
+						if(!empty($file) && strpos($file,'.')!==0  && $file != 'index.html'){
 
+							if($file=='tmpl'){
+								vmError('You use the wrong structure for template overrides, they dont need a tmpl folder');
+							}
 							//$info = pathinfo($file);
 							//dump($info,'pathinfo($file)');
 							//dump(filetype($dir.DS.$file),'filetype($dir.DS.$file');

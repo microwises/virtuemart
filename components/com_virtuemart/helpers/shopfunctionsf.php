@@ -286,10 +286,10 @@ class shopFunctionsF {
 		if (isset($view->doVendor)) {
 			self::sendVmMail($view, $view->vendorEmail, true);
 		}
-			return $user ;
-
+		return $user ;
 
 	}
+
 	// VirtueMartViewUser: registerUser,
 
 	/**
