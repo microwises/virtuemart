@@ -30,8 +30,6 @@ jimport('joomla.version');
 
 if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 
-$comUserOption=shopfunctionsF::getComUserOption();
-if(!class_exists('UserController')) require(JPATH_SITE.DS.'components'.DS. $comUserOption .DS.'controller.php');
 
 /**
  * Model class for shop users
@@ -918,17 +916,14 @@ class VirtueMartModelUser extends VmModel {
 		$this->_db->setQuery( $query );
 		$rows = $this->_db->loadObjectList();
 
-		// Send notification to all administrators
-		$subject2 = sprintf ( JText::_( 'COM_VIRTUEMART_ACCOUNT_DETAILS_FOR' ), $name, $sitename);
-		$subject2 = html_entity_decode($subject2, ENT_QUOTES);
 
 		// get superadministrators id
 		foreach ( $rows as $row )
 		{
 			if ($row->sendEmail)
 			{
-				$message2 = sprintf ( JText::_( 'COM_VIRTUEMART_SEND_MSG_ADMIN' ), $row->name, $sitename, $name, $email, $username);
-				$message2 = html_entity_decode($message2, ENT_QUOTES);
+				//$message2 = sprintf ( JText::_( 'COM_VIRTUEMART_SEND_MSG_ADMIN' ), $row->name, $sitename, $name, $email, $username);
+				//$message2 = html_entity_decode($message2, ENT_QUOTES);
 				//JUtility::sendMail($mailfrom, $fromname, $row->email, $subject2, $message2);
 				shopFunctionsF::renderMail('user', $row->email, $vars);
 			}
