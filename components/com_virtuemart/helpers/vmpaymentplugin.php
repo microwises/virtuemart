@@ -179,7 +179,7 @@ abstract class vmPaymentPlugin extends JPlugin {
 	$html = array();
 	foreach ($this->payments as $payment) {
 	    if ($this->checkPaymentConditions($cart->pricesUnformatted, $payment)) {
-		vmdebug('plgVmOnSelectPayment', $payment->payment_name, $payment->payment_params);
+		//vmdebug('plgVmOnSelectPayment', $payment->payment_name, $payment->payment_params);
 		$params = new JParameter($payment->payment_params);
 		$paymentSalesPrice = $this->calculateSalesPricePayment($this->getPaymentValue($params, $cart), $this->getPaymentTaxId($params, $cart));
 		$payment->payment_name = $this->getPaymentName($payment);
