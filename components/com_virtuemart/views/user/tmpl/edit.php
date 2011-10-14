@@ -55,7 +55,7 @@ function myValidator(f, t)
 	return false;
 }
 </script>
-<h2><?php echo JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS'); ?></h2>
+<h1><?php echo JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS'); ?></h1>
 <form method="post" id="userForm" name="userForm" action="<?php echo JRoute::_('index.php?view=user',$this->useXHTML,$this->useSSL) ?>" class="form-validate">
 <div style="text-align: right; width: 100%;">
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'saveuser');" ><?php echo $this->button_lbl ?></button>
@@ -74,7 +74,7 @@ if (!empty($this->shipto)) {
 	$tabarray['shipto'] = 'COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL';
 }
 if (($_ordcnt = count($this->orderlist)) > 0) {
-	$tabarray['orderlist'] = 'COM_VIRTUEMART_ORDER_LIST_LBL';
+	$tabarray['orderlist'] = 'COM_VIRTUEMART_YOUR_ORDERS';
 }
 
 

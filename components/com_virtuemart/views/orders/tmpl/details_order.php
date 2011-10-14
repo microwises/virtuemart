@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<table width="100%" cellspacing="2" cellpadding="2" border="0">
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
     	<tr>
 		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></td>
 		<td align="left">
@@ -42,34 +42,13 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?></td>
 		<td align="left"><?php
-		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
-		JPluginHelper::importPlugin('vmshipper');
-		$_dispatcher = JDispatcher::getInstance();
-		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderShipperFE',array(
-			 $this->orderdetails['details']['BT']->virtuemart_order_id
-		));
-		foreach ($_returnValues as $_returnValue) {
-			if ($_returnValue !== null) {
-				echo $_returnValue;
-			}
-		}
+		echo $this->shipping;
 		?></td>
 	</tr>
 	<tr>
 		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL') ?></td>
-		<td align="left"><?php
-		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
-		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnShowOrderPaymentFE',array(
-			 $this->orderdetails['details']['BT']->virtuemart_order_id
-		));
-		foreach ($returnValues as $returnValue) {
-			if ($returnValue !== null) {
-				echo $returnValue;
-			}
-		}
-		?></td>
+		<td align="left"><?php echo $this->payment; ?>
+		</td>
 	</tr>
 	<tr>
 		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL') ?></td>

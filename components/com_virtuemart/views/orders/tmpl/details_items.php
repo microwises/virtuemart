@@ -19,7 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
-<table width="100%" cellspacing="2" cellpadding="4" border="0">
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
 	<tr align="left" class="sectiontableheader">
 		<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></th>
 		<th align="right" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></th>
@@ -43,10 +43,10 @@ defined('_JEXEC') or die('Restricted access');
 				<a href="<?php echo $_link; ?>"><?php echo $item->order_item_name; ?></a>
 			</td>
 			<td align="left" >
-				<?php 
+				<?php
 					if (!empty($item->product_attribute)) {
 							if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-							$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplayFE($item);							
+							$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplayFE($item);
 						echo '<div>'.$product_attribute.'</div>';
 					}
 				?>

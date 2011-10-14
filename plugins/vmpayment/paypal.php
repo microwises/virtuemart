@@ -24,6 +24,7 @@ if (!defined('_VALID_MOS') && !defined('_JEXEC'))
 class plgVMPaymentPaypal extends vmPaymentPlugin {
 
     var $_pelement;
+    var $_tablename;
 
     /**
      * Constructor
@@ -112,7 +113,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 
 	foreach ($this->payments as $payment) {
-	    vmdebug('plgVmOnSelectPayment', $payment->payment_params);
+	    //vmdebug('plgVmOnSelectPayment', $payment->payment_params);
 	    if (parent::checkPaymentConditions($cart, $payment)) {
 		$params = new JParameter($payment->payment_params);
 		$logos = $this->_getPaymentLogos($params->get('payment_logos', ''));
@@ -221,7 +222,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	$dbValues['payment_method_id'] = $orderData->virtuemart_paymentmethod_id;
 	$dbValues['paypal_custom'] = $return_context;
 	// TODO wait for PAYPAL return ???
-	$this->writePaymentData($dbValues, '#__virtuemart_order_payment_' . $this->_pelement);
+	$this->writePaymentData($dbValues,   $this->_tablename  );
 
 	$url = $this->_getPaypalUrlHttps($params);
 	/*
@@ -360,6 +361,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 	return true;
     }
+ 
 
     /**
      * Display stored payment data for an order

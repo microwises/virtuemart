@@ -24,7 +24,7 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 class plgVmPaymentStandard extends vmPaymentPlugin {
 
 	var $_pelement;
-
+	var $_tablename;
 
 	/**
 	 * Constructor
@@ -39,6 +39,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 	 */
 	function plgVmPaymentStandard(& $subject, $config) {
 		$this->_pelement = basename(__FILE__, '.php');
+		$this->_tablename = '#__virtuemart_order_payment_' . $this->_pelement;
 		$this->_createTable();
 		parent::__construct($subject, $config);
 	}
@@ -162,8 +163,8 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 			return null; // Another method was selected, do nothing
 		}
 		$_db = JFactory::getDBO();
-		$_q = 'SELECT * FROM `#__virtuemart_order_payment_' . $this->_pelement . '` '
-			. 'WHERE `virtuemart_order_id` = ' . $_virtuemart_order_id;
+		$_q = 'SELECT * FROM `' . $this->_tablename . '` '
+			.'WHERE `virtuemart_order_id` = ' . $_virtuemart_order_id;
 		$_db->setQuery($_q);
 		if (!($payment = $_db->loadObject())) {
 			JError::raiseWarning(500, $_db->getErrorMsg());

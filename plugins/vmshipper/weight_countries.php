@@ -156,11 +156,11 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      * @return mixed Null for shippers that aren't active, text (HTML) otherwise
      * @author Valérie Isaksen
      */
-    public function plgVmOnShowOrderShipperFE($order_id) {
+    public function plgVmOnShowOrderShipperFE($virtuemart_order_id) {
 
 	$db = JFactory::getDBO();
 	$q = 'SELECT * FROM `' . $this->_tablename . '` '
-		. 'WHERE `virtuemart_order_id` = ' . $order_id;
+		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
 	$db->setQuery($q);
 	if (!($shipinfo = $db->loadObject())) {
 	    JError::raiseWarning(500, $q . " " . $db->getErrorMsg());

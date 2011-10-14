@@ -21,9 +21,17 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/');
 ?>
 
-<h2><?php echo JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'); ?></h2>
+		<?php // Continue Shopping Button
+		if ($this->account_link_html != '') { ?>
+    <div class="width100 floatleft right">
+			<?php echo $this->account_link_html; ?>
+			</div>
+<div class="clear"></div>
+		<?php } ?>
 
-<div style="padding: 0px; margin: 10px; spacing: 0px;">
+<h1><?php echo JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'); ?></h1>
+
+<div style="padding: 0px; margin: 5px; spacing: 0px;">
 <?php
 echo $this->loadTemplate('order');
 ?>

@@ -38,7 +38,8 @@ class VirtuemartViewOrders extends JView {
 		$task = JRequest::getWord('task', 'list');
 
 		$_currentUser = JFactory::getUser();
-
+		$document = JFactory::getDocument();
+		$document->setTitle( JText::_('COM_VIRTUEMART_ACC_ORDER_INFO') );
 		if (!class_exists('VirtueMartModelOrders')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		$orderModel = new VirtueMartModelOrders();
 
@@ -69,6 +70,12 @@ class VirtuemartViewOrders extends JView {
 					return;
 				}
 				$orderDetails = $orderModel->getOrder($orderId);
+			} else {
+			    $account_link = JRoute::_('index.php?option=com_virtuemart&view=user&layout=edit' );
+			    $account_link_html = '<a class="continue_link" href="' . $account_link . '" >' . JText::_('COM_VIRTUEMART_BACK_TO_ACCOUNT') . '</a>';
+			    $this->assignRef('account_link_html', $account_link_html);
+			    $this->assignRef('account_link', $account_link);
+
 			}
 			$this->assignRef('orderdetails', $orderDetails);
 
@@ -104,7 +111,37 @@ class VirtuemartViewOrders extends JView {
 		foreach ($_orderstatuses as $_ordstat) {
 			$orderstatuses[$_ordstat->order_status_code] = JText::_($_ordstat->order_status_name);
 		}
+
+		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+		JPluginHelper::importPlugin('vmshipper');
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmOnShowOrderShipperFE',array(
+			 $this->orderdetails['details']['BT']->virtuemart_order_id
+		));
+		foreach ($returnValues as $returnValue) {
+			if ($returnValue !== null) {
+				$shipping = $returnValue;
+				break;
+			}
+		}
+
+		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
+		JPluginHelper::importPlugin('vmpayment');
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmOnShowOrderPaymentFE',array(
+			 $this->orderdetails['details']['BT']->virtuemart_order_id
+		));
+		foreach ($returnValues as $returnValue) {
+			if ($returnValue !== null) {
+				$payment= $returnValue;
+				break;
+			}
+		}
+
+		$this->assignRef('shipping', $shipping);
+		$this->assignRef('payment', $payment);
 		$this->assignRef('orderstatuses', $orderstatuses);
+
 
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 

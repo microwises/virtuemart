@@ -73,20 +73,11 @@ defined('_JEXEC') or die('Restricted access');
 	</table>
 </fieldset>
 
-<?php if ($this->userDetails->JUser->get('id') ) { ?>
-<fieldset>
-	<legend>
-		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
-	</legend>
-		<?php echo $this->lists['shipTo']; ?>
-
-</fieldset>
-<?php } ?>
 
 
 <fieldset>
 	<legend>
-		<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_FORM_LBL'); ?>
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_INFORMATION'); ?>
 	</legend>
 <?php
 	$_k = 0;
@@ -161,6 +152,19 @@ defined('_JEXEC') or die('Restricted access');
 	echo $_hiddenFields;
 ?>
 </fieldset>
+
+<?php if ($this->userDetails->JUser->get('id') ) { ?>
+<fieldset>
+	<legend>
+		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?>
+	</legend>
+		<?php echo $this->lists['shipTo']; ?>
+
+</fieldset>
+<?php } ?>
+
+
+
 <input type="hidden" name="virtuemart_userinfo_id" value="<?php echo $this->virtuemart_userinfo_id; ?>" />
 <input type="hidden" name="address_type" value="BT" />
 
