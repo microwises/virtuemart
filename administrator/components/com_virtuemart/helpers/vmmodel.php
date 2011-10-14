@@ -357,7 +357,7 @@ class VmModel extends JModel {
 		}
 
 		$this->_db->setQuery($q,$limitStart,$limit);
-// 		vmdebug('my q',$this->_db->getQuery() );
+		vmdebug('my q',$this->_db->getQuery() );
 		if($object == 2){
 			$list = $this->_db->loadResultArray();
 		} else if($object == 1 ){

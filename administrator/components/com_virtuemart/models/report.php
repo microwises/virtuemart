@@ -54,6 +54,10 @@ class VirtuemartModelReport extends VmModel {
 		}
 
 		$this->addvalidOrderingFieldName(array('o.`created_on`','DATE( o.`created_on` )','WEEK( o.`created_on` )', 'MONTH( o.`created_on` )','YEAR( o.`created_on` )','i.product_quantity','order_subtotal' ) );
+		//Delete the field so that and push it to the begin of the array so that it is used as default value
+// 		$key = array_search('o.modified_on',$this->_validOrderingFieldName);
+// 		unset($this->_validOrderingFieldName[$key]);
+// 		array_unshift($this->_validOrderingFieldName,'o.modified_on');
 	}
 
 	/*
@@ -111,9 +115,9 @@ class VirtuemartModelReport extends VmModel {
 				$this->intervals= '`o`.`created_on`';
 				break;
 		}
-		if(!empty($this->intervals)){
-			$orderBy = $this->_getOrdering('o.`created_on`');
-		}
+// 		if(!empty($this->intervals)){
+// 			$orderBy = $this->_getOrdering('o.`created_on`');
+// 		}
 		$selectFields['intervals'] = $this->intervals.' AS intervals, o.`created_on` ';
 		$groupBy = 'GROUP BY intervals ';
 
@@ -124,7 +128,7 @@ class VirtuemartModelReport extends VmModel {
 		// Filter by statut
 		if ($orderstates = JRequest::getWord('order_status_code','')) $where[] = 'o.order_status ="'.$orderstates.'"';
 		//getRevenue
-		if(!$sold && !$items){
+/*		if(!$sold && !$items){
 
 			$selectFields[] = 'COUNT(virtuemart_order_id) as number_of_orders';
 			//$selectFields[] = 'SUM(order_subtotal) as revenue';
@@ -136,24 +140,26 @@ class VirtuemartModelReport extends VmModel {
 		else if($sold){
 
 			$selectFields['intervals'] = 'i.`created_on` ';
-			$selectFields[] = 'SUM(product_quantity) as product_quantity';
+			$selectFields[] = 'SUM(i.product_quantity) as i.product_quantity';
 
 			$mainTable = '`#__virtuemart_order_items` as i';
 
 		} //getOrderItems
-		else {
+		else {*/
 
-			$selectFields['intervals'] = 'i.`created_on` ';
+// 			$selectFields['intervals'] = 'i.`created_on` ';
+			$selectFields[] = 'COUNT(o.virtuemart_order_id) as number_of_orders';
 			$selectFields[] = 'SUM(product_quantity) as product_quantity';
 			$selectFields[] = 'product_name';
 			$selectFields[] = 'product_sku';
+// 			$selectFields['intervals'] = 'i.`created_on` ';
 
 			$mainTable = '`#__virtuemart_order_items` as i';
 
 			$joinTables['orders'] = ' LEFT JOIN #__virtuemart_orders as o ON o.virtuemart_order_id=i.virtuemart_order_id ';
-			$joinTables['products'] = ' LEFT JOIN #__virtuemart_products as o ON i.virtuemart_product_id=p.virtuemart_product_id ';
+			$joinTables['products'] = ' LEFT JOIN #__virtuemart_products as p ON i.virtuemart_product_id=p.virtuemart_product_id ';
 
-		}
+	//	}
 
 		if(count($selectFields)>0){
 
