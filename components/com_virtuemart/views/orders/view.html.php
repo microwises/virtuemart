@@ -70,13 +70,9 @@ class VirtuemartViewOrders extends JView {
 					return;
 				}
 				$orderDetails = $orderModel->getOrder($orderId);
-			} else {
-			    $account_link = JRoute::_('index.php?option=com_virtuemart&view=user&layout=edit' );
-			    $account_link_html = '<a class="continue_link" href="' . $account_link . '" >' . JText::_('COM_VIRTUEMART_BACK_TO_ACCOUNT') . '</a>';
-			    $this->assignRef('account_link_html', $account_link_html);
-			    $this->assignRef('account_link', $account_link);
 
 			}
+
 			$this->assignRef('orderdetails', $orderDetails);
 
 			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.

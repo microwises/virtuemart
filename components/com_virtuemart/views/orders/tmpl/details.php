@@ -19,15 +19,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 JHTML::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/');
-?>
-
-		<?php // Continue Shopping Button
-		if ($this->account_link_html != '') { ?>
-    <div class="width100 floatleft right">
-			<?php echo $this->account_link_html; ?>
-			</div>
-<div class="clear"></div>
-		<?php } ?>
+?> 
 
 <h1><?php echo JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'); ?></h1>
 
