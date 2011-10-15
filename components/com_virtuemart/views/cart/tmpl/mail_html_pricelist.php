@@ -132,7 +132,7 @@ $root = $u->toString( array( 'scheme', 'host') );
 							 <?php if ( VmConfig::get('show_tax')) { ?>
 			<td align="right"><?php //echo $this->prices['paymentTax']; ?> </td>
 							<?php } ?>
-			<td align="right"><?php echo "<span  style='color:gray'>".$this->cart->prices['paymentDiscount']."</span>"; ?></td>
+			<td align="right"><?php //echo "<span  style='color:gray'>".$this->cart->prices['paymentDiscount']."</span>"; ?></td>
 			<td align="right"><?php  echo $this->cart->prices['salesPricePayment']; ?> </td>
 		</tr>
 		<?php
