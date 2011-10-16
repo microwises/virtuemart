@@ -149,21 +149,7 @@ INSERT INTO `#__virtuemart_medias` (`virtuemart_media_id`, `virtuemart_vendor_id
 -- Dumping data for table `#__virtuemart_products`
 --
 
-# --------------------------------------------------------
-# Host:                         127.0.0.1
-# Server version:               5.5.8
-# Server OS:                    Win32
-# HeidiSQL version:             6.0.0.3603
-# Date/time:                    2011-10-13 19:29:50
-# --------------------------------------------------------
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-
-# Dumping structure for table j15vm2.jos_virtuemart_products
-CREATE TABLE IF NOT EXISTS `jos_virtuemart_products` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `virtuemart_product_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `virtuemart_vendor_id` int(11) NOT NULL DEFAULT '0',
   `product_parent_id` int(11) NOT NULL DEFAULT '0',
