@@ -165,9 +165,10 @@ class VirtueMartModelUser extends VmModel {
 			}
 
 		}
-// 		vmdebug('hmm',$this->_data->userInfo);
 
+		vmdebug('user_is_vendor ?',$this->_data->user_is_vendor);
 		if($this->_data->user_is_vendor){
+
 			// 				$this->_data->userInfo[$_ui_id]->user_is_vendor = $this->_data->user_is_vendor;
 			// 				$this->_data->userInfo[$_ui_id]->name = $this->_data->JUser->name;
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php' );
@@ -434,6 +435,7 @@ class VirtueMartModelUser extends VmModel {
 // 		}
 
 		if((int)$data['user_is_vendor']==1){
+			vmdebug('vendor recognised');
 			if($this ->storeVendorData($data)){
 				if ($new) {
 					if ( $useractivation == 1 ) {
@@ -540,26 +542,6 @@ class VirtueMartModelUser extends VmModel {
 			$data['virtuemart_vendor_id'] = $alreadyStoredUserData->virtuemart_vendor_id;
 
 		} else {
-			if(Vmconfig::get('multix','none')=='none'){
-				$data['user_is_vendor'] = $alreadyStoredUserData->user_is_vendor;
-				if(!empty($data['user_is_vendor'])){
-					$data['virtuemart_vendor_id'] = 1;
-				} else {
-					$data['virtuemart_vendor_id'] = 1;
-				}
-			} else {
-				//Multivendor case, then we have the data in the post
-// 				if(empty($data['user_is_vendor'])){
-// 					$data['user_is_vendor'] = $alreadyStoredUserData->user_is_vendor;
-// 				}
-// 				if(empty($data['user_is_vendor'])){
-// 					$data['virtuemart_vendor_id'] = 0;
-// 				} else {
-// 					if(empty($data['virtuemart_vendor_id'])){
-// 						$data['virtuemart_vendor_id'] = $alreadyStoredUserData->virtuemart_vendor_id;
-// 					}
-// 				}
-			}
 
 		}
 

@@ -331,9 +331,15 @@ class VmTable extends JTable{
 		}
 
 
-		if(isset($this->virtuemart_vendor_id)){
+		if(isset($this->virtuemart_vendor_id )){
 			if(Vmconfig::get('multix','none') ==='none'){
-				$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 1;
+				if(!isset($this->user_is_vendor)){
+					$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 1;
+				} else if($this->user_is_vendor){
+					$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 1;
+				} else {
+					$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 0;
+				}
 			}
 		}
 

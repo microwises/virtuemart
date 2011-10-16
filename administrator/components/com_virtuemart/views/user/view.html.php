@@ -139,9 +139,8 @@ class VirtuemartViewUser extends JView {
 				if(empty($virtuemart_userinfo_id)){
 					$virtuemart_userinfo_id = $model->getBTuserinfo_id();
 				}
-
 			}
-			vmdebug('$virtuemart_userinfo_id',$virtuemart_userinfo_id);
+// 			vmdebug('$virtuemart_userinfo_id',$virtuemart_userinfo_id);
 			$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'BT',$virtuemart_userinfo_id,false);
 
 			$userFields = $userFieldsArray[$virtuemart_userinfo_id];

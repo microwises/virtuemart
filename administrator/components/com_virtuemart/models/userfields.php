@@ -313,7 +313,7 @@ class VirtueMartModelUserfields extends VmModel {
 		//Here we define the fields to skip
 		if($layoutName=='edit'){
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
-						, 'address_type', 'bank', 'email');
+						, 'address_type', 'bank', 'email','user_is_vendor');
 		} else if ($layoutName=='cart' && $register){
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','user_is_vendor');
 
@@ -322,7 +322,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 		} else {
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
-						, 'address_type', 'bank');
+						, 'address_type', 'bank','user_is_vendor');
 		}
 
 		//Here we get the fields
@@ -453,32 +453,32 @@ class VirtueMartModelUserfields extends VmModel {
 			$_fields[] = $_address_type;
 		}
 
-		if (!in_array('user_is_vendor', $_skip)) {
-			$_user_is_vendor = new stdClass();
-			$_user_is_vendor->virtuemart_userfield_id = 0;
-			$_user_is_vendor->name = 'user_is_vendor';
-			$_user_is_vendor->title = '';
-			$_user_is_vendor->description = '' ;
-			$_user_is_vendor->type = 'hidden';
-			$_user_is_vendor->maxlength = 0;
-			$_user_is_vendor->size = 0;
-			$_user_is_vendor->required = 0;
-			$_user_is_vendor->ordering = 0;
-			$_user_is_vendor->cols = 0;
-			$_user_is_vendor->rows = 0;
-			$_user_is_vendor->value = 0;
-			$_user_is_vendor->default = '0';
-			$_user_is_vendor->published = 1;
-			$_user_is_vendor->registration = 1;
-			$_user_is_vendor->shipping = 0;
-			$_user_is_vendor->account = 1;
-			$_user_is_vendor->readonly = 0;
-			$_user_is_vendor->calculated = 0;
-			$_user_is_vendor->sys = 0;
-			$_user_is_vendor->virtuemart_vendor_id = 1;
-			$_user_is_vendor->params = '';
-			$_fields[] = $_user_is_vendor;
-		}
+// 		if (!in_array('user_is_vendor', $_skip)) {
+// 			$_user_is_vendor = new stdClass();
+// 			$_user_is_vendor->virtuemart_userfield_id = 0;
+// 			$_user_is_vendor->name = 'user_is_vendor';
+// 			$_user_is_vendor->title = '';
+// 			$_user_is_vendor->description = '' ;
+// 			$_user_is_vendor->type = 'hidden';
+// 			$_user_is_vendor->maxlength = 0;
+// 			$_user_is_vendor->size = 0;
+// 			$_user_is_vendor->required = 0;
+// 			$_user_is_vendor->ordering = 0;
+// 			$_user_is_vendor->cols = 0;
+// 			$_user_is_vendor->rows = 0;
+// 			$_user_is_vendor->value = 0;
+// 			$_user_is_vendor->default = '0';
+// 			$_user_is_vendor->published = 1;
+// 			$_user_is_vendor->registration = 1;
+// 			$_user_is_vendor->shipping = 0;
+// 			$_user_is_vendor->account = 1;
+// 			$_user_is_vendor->readonly = 0;
+// 			$_user_is_vendor->calculated = 0;
+// 			$_user_is_vendor->sys = 0;
+// 			$_user_is_vendor->virtuemart_vendor_id = 1;
+// 			$_user_is_vendor->params = '';
+// 			$_fields[] = $_user_is_vendor;
+// 		}
 		return $_fields;
 	}
 
