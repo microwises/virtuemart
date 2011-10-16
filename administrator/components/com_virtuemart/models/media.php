@@ -212,7 +212,7 @@ class VirtueMartModelMedia extends VmModel {
 			}
 
 		} else {
-			$vmError('No select fields given in getRevenueSortListOrderQuery','No select fields given');
+			$vmError('No select fields given in getFiles','No select fields given');
 			return false;
 		}
 

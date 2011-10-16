@@ -466,7 +466,7 @@ class VmMediaHandler {
 		 * @param string $urlfolder relative url of the folder where to store the media
 		 * @return name of the uploaded file
 		 */
-		function uploadFile($urlfolder){
+		function uploadFile($urlfolder,$overwrite = false){
 
 			$media = JRequest::getVar('upload', array(), 'files');
 
@@ -480,11 +480,12 @@ class VmMediaHandler {
 					$media['name'] = JFile::makeSafe( $media['name'] );
 
 					$mediaPure = JFile::stripExt($media['name']);
-					$mediaExtension = '.'.JFile::getExt($media['name']);
+					$mediaExtension = '.'.strtolower(JFile::getExt($media['name']));
 
-					while (file_exists(JPATH_ROOT.DS.$path_folder.$mediaPure.$mediaExtension)) {
-						$mediaPure = $mediaPure.rand(1,9);
-
+					if(!$overwrite){
+						while (file_exists(JPATH_ROOT.DS.$path_folder.$mediaPure.$mediaExtension)) {
+							$mediaPure = $mediaPure.rand(1,9);
+						}
 					}
 
 					$media['name'] = $this->file_name =$mediaPure.$mediaExtension;
@@ -555,7 +556,7 @@ class VmMediaHandler {
 // 				$oldFileUrl = $data['file_url'];
 // 				vmdebug('replace media',$this);
 				$oldFileUrl = $this->file_url;
-				$file_name = $this->uploadFile($this->file_url_folder);
+				$file_name = $this->uploadFile($this->file_url_folder,true);
 				$this->file_name = $file_name;
 				$this->file_url = $this->file_url_folder.$this->file_name;
 				if($this->file_url!=$oldFileUrl && !empty($this->file_name)){
