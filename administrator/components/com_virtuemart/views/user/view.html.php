@@ -141,6 +141,7 @@ class VirtuemartViewUser extends JView {
 				}
 
 			}
+			vmdebug('$virtuemart_userinfo_id',$virtuemart_userinfo_id);
 			$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'BT',$virtuemart_userinfo_id,false);
 
 			$userFields = $userFieldsArray[$virtuemart_userinfo_id];
@@ -161,7 +162,7 @@ class VirtuemartViewUser extends JView {
 			}
 
 				$this->assignRef('shipToFields', $userFields);
-				$this->assignRef('shipToID', $virtuemart_userinfo_id);
+// 				$this->assignRef('shipToID', $virtuemart_userinfo_id);
 
 
 			if (!$_new) {
@@ -198,7 +199,7 @@ class VirtuemartViewUser extends JView {
 			$this->assignRef('userDetails', $userDetails);
 			$this->assignRef('shipto', $_shipto);
 			$this->assignRef('userFields', $userFields);
-			$this->assignRef('userInfoID', $_userInfoID);
+			$this->assignRef('userInfoID', $virtuemart_userinfo_id);
 			//			$this->assignRef('vendor', $vendor);
 			$this->assignRef('orderlist', $orderList);
 			$this->assignRef('contactDetails', $_contactDetails);

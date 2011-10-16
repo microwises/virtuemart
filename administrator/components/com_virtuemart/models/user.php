@@ -165,17 +165,8 @@ class VirtueMartModelUser extends VmModel {
 			}
 
 		}
+// 		vmdebug('hmm',$this->_data->userInfo);
 
-/*			$this->_data->userInfo[$BTuid] = $this->getTable('userinfos');
-			$this->_data->userInfo[$BTuid]->load($BTuid);
-
-			$this->_data->userInfo[$BTuid]->name = $this->_data->JUser->name;
-			$this->_data->userInfo[$BTuid]->email = $this->_data->JUser->email;
-			$this->_data->userInfo[$BTuid]->username = $this->_data->JUser->username;
-			$this->_data->userInfo[$BTuid]->address_type = 'BT';
-// 			vmdebug('loading empty table',$BTuid,$this->_data->userInfo[$BTuid]);
-		}
-*/
 		if($this->_data->user_is_vendor){
 			// 				$this->_data->userInfo[$_ui_id]->user_is_vendor = $this->_data->user_is_vendor;
 			// 				$this->_data->userInfo[$_ui_id]->name = $this->_data->JUser->name;
@@ -442,7 +433,7 @@ class VirtueMartModelUser extends VmModel {
 // 			vmError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
 // 		}
 
-		if((int)$data['user_is_vendor']!==0){
+		if((int)$data['user_is_vendor']==1){
 			if($this ->storeVendorData($data)){
 				if ($new) {
 					if ( $useractivation == 1 ) {
@@ -539,14 +530,36 @@ class VirtueMartModelUser extends VmModel {
 
 		$usertable = $this->getTable('vmusers');
 
+		$alreadyStoredUserData = $usertable->load($this->_id);
 		$app = JFactory::getApplication();
 		if($app->isSite()){
 			unset($data['user_is_vendor']);
 			unset($data['virtuemart_vendor_id']);
 
-			$alreadyStoredUserData = $usertable->load($this->_id);
 			$data['user_is_vendor'] = $alreadyStoredUserData->user_is_vendor;
 			$data['virtuemart_vendor_id'] = $alreadyStoredUserData->virtuemart_vendor_id;
+
+		} else {
+			if(Vmconfig::get('multix','none')=='none'){
+				$data['user_is_vendor'] = $alreadyStoredUserData->user_is_vendor;
+				if(!empty($data['user_is_vendor'])){
+					$data['virtuemart_vendor_id'] = 1;
+				} else {
+					$data['virtuemart_vendor_id'] = 1;
+				}
+			} else {
+				//Multivendor case, then we have the data in the post
+// 				if(empty($data['user_is_vendor'])){
+// 					$data['user_is_vendor'] = $alreadyStoredUserData->user_is_vendor;
+// 				}
+// 				if(empty($data['user_is_vendor'])){
+// 					$data['virtuemart_vendor_id'] = 0;
+// 				} else {
+// 					if(empty($data['virtuemart_vendor_id'])){
+// 						$data['virtuemart_vendor_id'] = $alreadyStoredUserData->virtuemart_vendor_id;
+// 					}
+// 				}
+			}
 
 		}
 
@@ -593,7 +606,7 @@ class VirtueMartModelUser extends VmModel {
 
 			//TODO Attention this is set now to virtuemart_vendor_id=1, because using a vendor with different id then 1 is not completly supported and can lead to bugs
 			//So we disable the possibility to store vendors not with virtuemart_vendor_id = 1
-			if(Vmconfig::get('multix','none')==='none'){
+			if(Vmconfig::get('multix','none')==='none' ){
 				$data['virtuemart_vendor_id'] = 1;
 			}
 			$vendorModel->setId($data['virtuemart_vendor_id']);
@@ -603,31 +616,6 @@ class VirtueMartModelUser extends VmModel {
 				vmdebug('Error storing vendor',$vendorModel);
 				return false;
 			}
-/*			else{
-				//Update xref Table
-				$virtuemart_vendor_id = $vendorModel->getId();
-				if($virtuemart_vendor_id!=$data['virtuemart_vendor_id']){
-
-					$app = JFactory::getApplication();
-					$app ->enqueueMessage('Developer notice, tried to update vendor xref should not appear in singlestore');
-
-					//update user table
-					$usertable = $this->getTable('vmusers');
-					$vendorsUserData =$usertable->load($this->_id);
-					$vendorsUserData->virtuemart_vendor_id = $virtuemart_vendor_id;
-					//$vmusersData = array('virtuemart_user_id'=>$data['virtuemart_user_id'],'user_is_vendor'=>1,'virtuemart_vendor_id'=>$virtuemart_vendor_id,'customer_number'=>$data['customer_number'],'perms'=>$data['perms']);
-
-					$usertable->bindChecknStore($vendorsUserData);
-
-					$errors = $usertable->getErrors();
-					foreach($errors as $error){
-						$this->setError($error);
-						vmError('Store vendor '.$error);
-						vmdebug('Store vendor '.$error);
-					}
-
-				}
-			} */
 		}
 
 		return true;
@@ -726,7 +714,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 		$userFields = array();
-		if($uid!=0){
+		if(!empty($uid)){
 			vmdebug(' user data with infoid',$uid);
 			$this->_data->userInfo[$uid] = $this->getTable('userinfos');
 			$this->_data->userInfo[$uid]->load($uid);
@@ -763,7 +751,7 @@ class VirtueMartModelUser extends VmModel {
 			}
 
 		}
-
+// 		vmdebug('getUserInfoInUserFields',$data);
 		$userFields[$uid] = $userFieldsModel->getUserFieldsFilled(
 		$prepareUserFields
 		,$data
