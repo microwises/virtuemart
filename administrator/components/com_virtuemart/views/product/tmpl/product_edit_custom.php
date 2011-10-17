@@ -15,7 +15,7 @@
 * other free or open source software licenses.
 * @version $Id: product_edit_waitinglist.php 2978 2011-04-06 14:21:19Z alatak $
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
@@ -31,8 +31,8 @@ defined('_JEXEC') or die('Restricted access');
 				$this->fieldTypes['Z']=JTEXT::_('COM_VIRTUEMART_RELATED_CATEGORIES');
 				foreach ($this->product->customfields as $customRow) {
 					if ($customRow->is_cart_attribute) $cartIcone=  'default';
-					else  $cartIcone= 'default-off'; 
-					if ($customRow->field_type == 'Z') { 
+					else  $cartIcone= 'default-off';
+					if ($customRow->field_type == 'Z') {
 
 						$tables['categories'] .=  '<div class="vm_thumb_image">
 							<span>'.$customRow->display.'</span>
@@ -56,7 +56,7 @@ defined('_JEXEC') or die('Restricted access');
 //<span>'.JText::_($this->fieldTypes[$customRow->field_type]).'</span>
 						$tables['childs'] .=  '<div class="removable"><div>'.JText::_($customRow->custom_title).'</div>
 							<span>'.$customRow->display.$customRow->custom_tip.'</span>
-							
+
 							<input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
 							<input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
 							<input type="hidden" value="'.$customRow->admin_only.'" name="admin_only" />
@@ -81,11 +81,11 @@ defined('_JEXEC') or die('Restricted access');
 
 					$i++;
 				}
-			} 
-			
+			}
+
 			 $emptyTable = '
 				<tr>
-					<td colspan="6">'.JText::_( 'COM_VIRTUEMART_CUSTOM_NO_TYPES').'</td>
+					<td colspan="7">'.JText::_( 'COM_VIRTUEMART_CUSTOM_NO_TYPES').'</td>
 				<tr>';
 			?>
 			<fieldset style="background-color:#F9F9F9;">
@@ -107,7 +107,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			<fieldset style="background-color:#F9F9F9;">
 				<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM_FIELD_TYPE' );?></legend>
-				<div><?php echo JText::_('COM_VIRTUEMART_SELECT').'<div class="inline">'.$this->customsList; ?></div>
+				<div><?php echo  '<div class="inline">'.$this->customsList; ?></div>
 
 				<table id="custom_fields" class="adminlist" cellspacing="0" cellpadding="0">
 					<thead>
@@ -122,7 +122,7 @@ defined('_JEXEC') or die('Restricted access');
 					</tr>
 					</thead>
 					<tbody id="custom_field">
-						<?php 
+						<?php
 						if ($tables['fields']) echo $tables['fields'] ;
 						else echo $emptyTable;
 						?>
@@ -152,7 +152,7 @@ defined('_JEXEC') or die('Restricted access');
 					console.log(index+' ');
 
 				});
-				
+
 				//$.get('update-sort.cfm', {fruitOrder:fruitOrder});
 			}
 		});
@@ -179,7 +179,7 @@ defined('_JEXEC') or die('Restricted access');
 		},
 		minLength:1,
 		html: true
-	});	
+	});
 	jQuery('input#relatedcategoriesSearch').autocomplete({
 
 		source: 'index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom,

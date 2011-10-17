@@ -145,7 +145,7 @@ class VirtueMartViewProductdetails extends JView {
 
 
 		// Set the titles
-		$document->setTitle( strip_tags($category->category_name.' : '.$product->product_name));
+		$document->setTitle( strip_tags(($category->category_name?($category->category_name.' : '):'').$product->product_name));
 
 		$uri = JURI::getInstance();
 		//$pathway->addItem(JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
