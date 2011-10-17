@@ -819,7 +819,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		foreach ($variantmods as $variant=>$selected){
 			if ($selected) {
 				$productCustom = self::getProductCustomFieldCart ($product_id,$selected );
-				$html .= ' <span class="product-field-type-'.$productCustom->field_type.'>';
+				$html .= ' <span class="product-field-type-'.$productCustom->field_type.'">';
  				if ($productCustom->field_type == "E") {
 					$product = self::addParam($product);
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
