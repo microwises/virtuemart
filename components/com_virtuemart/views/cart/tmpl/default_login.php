@@ -106,17 +106,18 @@ if (VmConfig::get('oncheckout_show_register', 1)  && $this->cart->userDetails->J
 <?php }else {
    ?>
    <form action="index.php" method="post" name="login" id="form-login">
-<?php
-		echo JText::sprintf( 'COM_VIRTUEMART_HINAME', $this->cart->userDetails->JUser->name );
-	 ?>
-
-		<input type="submit" name="Submit" class="button" value="<?php echo JText::_( 'COM_VIRTUEMART_BUTTON_LOGOUT'); ?>" />
-
-
-	<input type="hidden" name="option" value="<?php echo $comUserOption ?>" />
-	<input type="hidden" name="task" value="logout" />
+        <?php echo JText::sprintf( 'COM_VIRTUEMART_HINAME', $this->cart->userDetails->JUser->name ); ?>
+	<input type="submit" name="Submit" class="button" value="<?php echo JText::_( 'COM_VIRTUEMART_BUTTON_LOGOUT'); ?>" />
+        <input type="hidden" name="option" value="<?php echo $comUserOption ?>" />
+        
+        <?php if ( VmConfig::isJ15() ) { ?>
+            <input type="hidden" name="task" value=logout" />
+        <?php } else { ?>
+            <input type="hidden" name="task" value=user.logout" />
+            <?php echo JHtml::_('form.token'); ?>
+        <?php } ?>        
 	<input type="hidden" name="return" value="<?php echo base64_encode($url) ?>" />
-</form>
+    </form>
     <?php
 }
 ?>
