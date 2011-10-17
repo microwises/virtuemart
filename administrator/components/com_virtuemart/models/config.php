@@ -329,7 +329,7 @@ class VirtueMartModelConfig extends JModel {
 	 */
 	function setDangerousToolsOff(){
 
-		VmConfig::loadConfig(true);
+// 		VmConfig::loadConfig(true);
 		$dangerousTools = VmConfig::readConfigFile(true);
 
 		if( $dangerousTools){

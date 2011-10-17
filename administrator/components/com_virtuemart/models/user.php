@@ -166,7 +166,7 @@ class VirtueMartModelUser extends VmModel {
 
 		}
 
-		vmdebug('user_is_vendor ?',$this->_data->user_is_vendor);
+// 		vmdebug('user_is_vendor ?',$this->_data->user_is_vendor);
 		if($this->_data->user_is_vendor){
 
 			// 				$this->_data->userInfo[$_ui_id]->user_is_vendor = $this->_data->user_is_vendor;
