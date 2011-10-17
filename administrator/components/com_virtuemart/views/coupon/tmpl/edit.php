@@ -23,16 +23,15 @@ AdminUIHelper::startAdminArea();
 AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_COUPON_DETAILS');
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php" method="post" name="adminForm" ID="adminForm">
 
-    <div class="col50">
 	<fieldset>
 	    <legend><?php echo JText::_('COM_VIRTUEMART_COUPON_DETAILS'); ?></legend>
 	    <table class="admintable">
 		<tr>
 		    <td width="110" class="key">
 			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_TOOLTIP'); ?>">
-			    <label for="title">
+			    <label for="coupon_code">
 				<?php echo JText::_('COM_VIRTUEMART_COUPON'); ?>
 			    </label>
 			</span>
@@ -44,7 +43,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_COUPON_DETAILS');
 		<tr>
 		    <td width="110" class="key">
 			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_PERCTOT_TOOLTIP'); ?>">
-			    <label for="title">
+			    <label for="percent_or_total">
 				<?php echo JText::_('COM_VIRTUEMART_COUPON_PERCENT_TOTAL'); ?>
 			    </label>
 			</span>
@@ -62,7 +61,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_COUPON_DETAILS');
 		<tr>
 		    <td width="110" class="key">
 			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_TYPE_TOOLTIP'); ?>">
-			    <label for="title">
+			    <label for="coupon_type">
 <?php echo JText::_('COM_VIRTUEMART_COUPON_TYPE'); ?>
 			    </label>
 			</span>
@@ -80,7 +79,7 @@ echo JHTML::_('select.genericlist', $listOptions, 'coupon_type', '', 'value', 't
 		<tr>
 		    <td width="110" class="key">
 			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_TOOLTIP'); ?>">
-			    <label for="title">
+			    <label for="coupon_value">
 <?php echo JText::_('COM_VIRTUEMART_VALUE'); ?>
 			    </label>
 			</span>
@@ -92,7 +91,7 @@ echo JHTML::_('select.genericlist', $listOptions, 'coupon_type', '', 'value', 't
 		</tr>
 		<tr>
 		    <td width="110" class="key">
-			<label for="title">
+			<label for="coupon_value_valid">
 <?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_VALID_AT'); ?>
 			</label>
 		    </td>
@@ -104,7 +103,7 @@ echo JHTML::_('select.genericlist', $listOptions, 'coupon_type', '', 'value', 't
 		<tr>
 		    <td width="110" class="key">
 			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_START_TIP'); ?>">
-			    <label for="title">
+			    <label for="coupon_start_date">
 <?php echo JText::_('COM_VIRTUEMART_COUPON_START'); ?>
 			    </label>
 			</span>
@@ -120,7 +119,7 @@ echo vmJsApi::jDate($mydate->toFormat($this->dateformat), 'coupon_start_date');
 		<tr>
 		    <td width="110" class="key">
 			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_EXPIRY_TIP'); ?>">
-			    <label for="title">
+			    <label for="coupon_expiry_date">
 <?php echo JText::_('COM_VIRTUEMART_COUPON_EXPIRY'); ?>
 			    </label>
 			</span>
@@ -136,8 +135,6 @@ echo vmJsApi::jDate($expireDate->toFormat($this->dateformat), 'coupon_expiry_dat
 		</tr>
 	    </table>
 	</fieldset>
-    </div>
-
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="virtuemart_coupon_id" value="<?php echo $this->coupon->virtuemart_coupon_id; ?>" />
     <input type="hidden" name="task" value="" />

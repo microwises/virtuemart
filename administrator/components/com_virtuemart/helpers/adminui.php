@@ -138,6 +138,10 @@ class AdminUIHelper {
 	 */
 	function imitateTabs($return,$language = '') {
 		if ($return == 'start') {
+			$document = JFactory::getDocument ();
+			$document->addScriptDeclaration ( '
+			var virtuemartcookie="vm-tab";
+			');
 			$html = 	'<div id="admin-ui-tabs">
 
 							<div class="tabs" title="'.JText::_($language).'">';

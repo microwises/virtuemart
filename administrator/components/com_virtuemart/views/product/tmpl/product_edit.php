@@ -31,7 +31,7 @@ vmJsApi::JvalideForm();
 $this->editor = JFactory::getEditor();
 
 ?>
-<form method="post" name="adminForm" action="index.php" enctype="multipart/form-data" ID="adminform">
+<form method="post" name="adminForm" action="index.php" enctype="multipart/form-data" ID="adminForm">
 
 <?php // Loading Templates in Tabs
 $tabarray = array();

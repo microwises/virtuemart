@@ -745,14 +745,14 @@ class VmMediaHandler {
 			$imagetotal = $this->_db->loadResult();
 			//vmJsApi::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
 			$isJ15 = VmConfig::isJ15();
-			// if ($isJ15) {
-				// $j = "
-			// jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$this->lists['total']."') }); " ;
-			// }
-			// else $j = "
-			// jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$this->lists['total']."') }); " ;
+			if ($isJ15) {
+				$j = "
+			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','0') }); " ;
+			}
+			else $j = "
+			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','0') }); " ;
 
-			$j =" 
+			$j .=" 
 			jQuery(document).ready(function(){
 			jQuery('input#searchMedia').autocomplete({
 
@@ -803,7 +803,7 @@ class VmMediaHandler {
 			$html .= '</div>';
 			$html .=  JText::_('COM_VIRTUEMART_FILTER') . ' ' . JText::_('COM_VIRTUEMART_IMAGES') . ':
 					<input type="text" name="searchMedia" id="searchMedia" value="' .JRequest::getString('searchMedia') . '" class="text_area" />
-					<button onclick="document.getElementById(\'searchMedia\').value=\'\';return false;">'.JText::_('COM_VIRTUEMART_RESET') .'</button>';
+					<button class="reset-value">'.JText::_('COM_VIRTUEMART_RESET') .'</button>';
 
 
 			return $html.'</fieldset><div class="clear"></div>';
@@ -847,7 +847,7 @@ class VmMediaHandler {
 				} else {
 					$htmlImages .=  '<div class="vm_thumb_image">'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'<br />'.$image->file_title ;
 				}
-				$Images[$key ]['label'] = $htmlImages.'<input type="hidden" value="'.$image->virtuemart_media_id.'" name="virtuemart_media_id['.$image->virtuemart_media_id.']"><input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value=""><div class="add-image"></div></div>';
+				$Images[$key ]['label'] = $htmlImages.'<input type="hidden" value="'.$image->virtuemart_media_id.'" name="virtuemart_media_id['.$image->virtuemart_media_id.']"><input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value=""><div class="trash" title="remove"></div><div title="edit image information" class="edit-24-grey"></div></div>';
 				$Images[$key ]['value'] = $image->file_title.' :: '.$image->virtuemart_media_id;
 			}
 			//$list['htmlImages'] = $htmlImages;

@@ -156,6 +156,12 @@ defined('_JEXEC') or die('Restricted access');
 				//$.get('update-sort.cfm', {fruitOrder:fruitOrder});
 			}
 		});
+		jQuery('.reset-value').click( function(e){
+			e.preventDefault();
+			none = ''
+			$(this).prev('input').val(none);
+			
+		});
 	});
 	jQuery('select#customlist').chosen().change(function() {
 		selected = jQuery(this).find( 'option:selected').val() ;
