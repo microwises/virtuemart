@@ -93,6 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('COM_VIRTUEMART_CATEGORIES_RELATED_SEARCH'); ?>
 				<div class="jsonSuggestResults" style="width: auto;">
 					<input type="text" size="40" name="search" id="relatedcategoriesSearch" value="" />
+					<button class="reset-value"><?php echo JText::_('COM_VIRTUEMART_RESET') ?></button>
 				</div>
 				<div id="custom_categories"><?php echo  $tables['categories']; ?></div>
 			</fieldset>
@@ -101,6 +102,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_RELATED_SEARCH'); ?>
 				<div class="jsonSuggestResults" style="width: auto;">
 					<input type="text" size="40" name="search" id="relatedproductsSearch" value="" />
+					<button class="reset-value"><?php echo JText::_('COM_VIRTUEMART_RESET') ?></button>
 				</div>
 				<div id="custom_products"><?php echo  $tables['products']; ?></div>
 			</fieldset>
@@ -158,8 +160,8 @@ defined('_JEXEC') or die('Restricted access');
 		});
 		jQuery('.reset-value').click( function(e){
 			e.preventDefault();
-			none = ''
-			$(this).prev('input').val(none);
+			none = '';
+			jQuery(this).parent().find('.ui-autocomplete-input').val(none);
 			
 		});
 	});

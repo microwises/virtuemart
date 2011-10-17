@@ -737,7 +737,7 @@ class VmMediaHandler {
 		 * @param array $fileIds
 		 */
 		public function displayFilesHandler($fileIds,$type){
-			$this->lists= $this->displayImages($type);
+			//$this->lists= $this->displayImages($type);
 			$html = $this->displayFileSelection($fileIds,$type);
 			$html .= $this->displayFileHandler('id="vm_display_image" ');
 			//$html .= '<div style="display:none"><div id="media-dialog" >'.$this->lists['htmlImages'].'</div></div>';//$type);
@@ -781,11 +781,12 @@ class VmMediaHandler {
 		public function displayFileSelection($fileIds,$type = 0){
 
 			$html='';
-                        // this one break the tabs. Don't know why.
-                          $html .= '<fieldset class="checkboxes">' ;
-                         $html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGES').'</legend>';
-
-			$result = $this->getImagesList($type);
+			$html .= '<fieldset class="checkboxes">' ;
+			$html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGES').'</legend>';
+			$html .=  JText::_('COM_VIRTUEMART_FILTER') . ' ' . JText::_('COM_VIRTUEMART_IMAGES') . ':
+					<input type="text" name="searchMedia" id="searchMedia" value="' .JRequest::getString('searchMedia') . '" class="text_area" />
+					<button class="reset-value">'.JText::_('COM_VIRTUEMART_RESET') .'</button>';
+			//$result = $this->getImagesList($type);
 			$html .= '<div id="ImagesContainer">';
 
 // 			$html .= ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_NAME','','searchMedia') ;
@@ -801,9 +802,7 @@ class VmMediaHandler {
 			}
 			//$html .= '<a id="addnewselectimage2" href="#media-dialog">'.JText::_('COM_VIRTUEMART_IMAGE_ATTACH_NEW').'</a>';
 			$html .= '</div>';
-			$html .=  JText::_('COM_VIRTUEMART_FILTER') . ' ' . JText::_('COM_VIRTUEMART_IMAGES') . ':
-					<input type="text" name="searchMedia" id="searchMedia" value="' .JRequest::getString('searchMedia') . '" class="text_area" />
-					<button class="reset-value">'.JText::_('COM_VIRTUEMART_RESET') .'</button>';
+
 
 
 			return $html.'</fieldset><div class="clear"></div>';
@@ -834,7 +833,7 @@ class VmMediaHandler {
 			
 			$images = array();
 			$list = VmMediaHandler::getImagesList($types,$page);
-			if (empty($list['images'])) return 'ERROR';
+			if (empty($list['images'])) return JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND');
 			
 			foreach ($list['images'] as $key =>$image) {
 				$htmlImages ='';
@@ -880,31 +879,33 @@ class VmMediaHandler {
 
 			$this->_db->setQuery($q);
 			//		$result = $this->_db->loadAssocList();
-			$virtuemart_media_ids = $this->_db->loadResultArray();
-			$errMsg = $this->_db->getErrorMsg();
-			$errs = $this->_db->getErrors();
+			if ($virtuemart_media_ids = $this->_db->loadResultArray()) {
+				$errMsg = $this->_db->getErrorMsg();
+				$errs = $this->_db->getErrors();
 
-			if(!class_exists('VirtueMartModelMedia'))require(JPATH_VM_ADMINISTRATOR.DS.'model'.DS.'media.php');
-			$model = new VirtueMartModelMedia ;
-			$this->_db->setQuery('SELECT FOUND_ROWS()');
-			$list['total'] = $this->_db->loadResult();
+				if(!class_exists('VirtueMartModelMedia'))require(JPATH_VM_ADMINISTRATOR.DS.'model'.DS.'media.php');
+				$model = new VirtueMartModelMedia ;
+				$this->_db->setQuery('SELECT FOUND_ROWS()');
+				$list['total'] = $this->_db->loadResult();
 
-			$list['images'] = $model->createMediaByIds($virtuemart_media_ids, $type);
+				$list['images'] = $model->createMediaByIds($virtuemart_media_ids, $type);
 
-			if(!empty($errMsg)){
-				$app = JFactory::getApplication();
-				$errNum = $this->_db->getErrorNum();
-				$app->enqueueMessage('SQL-Error: '.$errNum.' '.$errMsg);
-			}
-
-			if($errs){
-				$app = JFactory::getApplication();
-				foreach($errs as $err){
-					$app->enqueueMessage($err);
+				if(!empty($errMsg)){
+					$app = JFactory::getApplication();
+					$errNum = $this->_db->getErrorNum();
+					$app->enqueueMessage('SQL-Error: '.$errNum.' '.$errMsg);
 				}
-			}
 
-			return $list;
+				if($errs){
+					$app = JFactory::getApplication();
+					foreach($errs as $err){
+						$app->enqueueMessage($err);
+					}
+				}
+
+				return $list;
+			}
+			else return array();
 		}
 		/**
 		 * This displays a media handler. It displays the full and the thumb (icon) of the media.
