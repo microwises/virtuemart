@@ -722,7 +722,7 @@ class vmJsApi{
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration('
 		jQuery(document).ready( function() {
-			jQuery("#adminform").delegate(".datepicker","focus", function() {
+			jQuery("#adminForm").delegate(".datepicker","focus", function() {
 				jQuery( this ).datepicker({
 					changeMonth: true,
 					changeYear: true,
@@ -777,7 +777,7 @@ class vmJsApi{
 		$document->addScriptDeclaration( "
 
 			jQuery(document).ready(function() {
-				jQuery('#adminform').validationEngine();
+				jQuery('#adminForm').validationEngine();
 			});"  );
 		JHTML::stylesheet ( 'validationEngine.template.css', 'components/com_virtuemart/assets/css/', false );
 		JHTML::stylesheet ( 'validationEngine.jquery.css', 'components/com_virtuemart/assets/css/', false );

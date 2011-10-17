@@ -63,7 +63,7 @@ class VirtuemartViewReport extends JView {
 			foreach($revenueBasic as &$j){
 
 				$totalReport['revenueTotal'] += $j['order_subtotal'];
-				$totalReport['number_of_ordersTotal'] += $j['number_of_orders'];
+				$totalReport['number_of_ordersTotal'] += $j['count_order_id'];
 				$j['order_subtotal'] = $myCurrencyDisplay->priceDisplay($j['order_subtotal'],'',false);
 				$j['product_quantity'] = $model->getItemsByRevenue($j);
 				$totalReport['itemsSoldTotal'] +=$j['product_quantity'];
@@ -75,7 +75,7 @@ class VirtuemartViewReport extends JView {
 					$created_on[] =$row['created_on'];
 					$intervals[] =$row['intervals'];
 					$itemsSold[] =$row['product_quantity'];
-					$number_of_orders[] =$row['number_of_orders'];
+					$number_of_orders[] =$row['count_order_id'];
 					$revenue[] =$row['revenue'];
 
 				}

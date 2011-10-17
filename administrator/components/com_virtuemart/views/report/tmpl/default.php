@@ -31,7 +31,7 @@ if( $this->pagination->limit < $rows ){
 }
 
 ?>
-<form action="index.php" method="post" name="adminForm" id="adminform">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
     <div id="header">
         <h2><?php echo JText::sprintf('COM_VIRTUEMART_REPORT_TITLE', vmJsApi::date( $this->from_period, 'LC',true) , vmJsApi::date( $this->until_period, 'LC',true) ); ?></h2>
         <div id="filterbox">
@@ -98,7 +98,7 @@ if( $this->pagination->limit < $rows ){
 						;?>
                     </td>
                     <td align="center">
-                        <?php echo $r['number_of_orders'];?>
+                        <?php echo $r['count_order_id'];?>
                     </td>
                     <td align="center">
                         <?php echo $r['product_quantity'];?>

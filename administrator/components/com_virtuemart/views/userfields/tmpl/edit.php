@@ -24,7 +24,7 @@ AdminUIHelper::startAdminArea();
 AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 ?>
 
-<form id="adminform" action="index.php" method="post" name="adminForm" id="adminForm">
+<form id="adminForm" action="index.php" method="post" name="adminForm" id="adminForm">
 
 
 <div class="col50">
@@ -466,7 +466,7 @@ function checkName(field, rules, i, options){
 <?php } ?>
 function submitbutton(pressbutton) {
 	if (pressbutton=='cancel') submitform(pressbutton);
-	if (jQuery('#adminform').validationEngine('validate')== true) submitform(pressbutton);
+	if (jQuery('#adminForm').validationEngine('validate')== true) submitform(pressbutton);
 	else return false ;
 }
 function prep4SQL(o){

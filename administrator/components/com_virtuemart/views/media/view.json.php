@@ -57,12 +57,10 @@ class VirtuemartViewMedia extends JView {
 		else {
 			$this->loadHelper('mediahandler');
 			$start = JRequest::getInt('start',0);
+			
 			$type = JRequest::getWord('mediatype',0);
 			$list = VmMediaHandler::displayImages($type,$start );
-			$this->json->imageList=$list['htmlImages'];
-			$this->json->statut="ok";
-
-			echo json_encode($this->json);
+			echo json_encode($list);
 		}
 	}
 

@@ -53,7 +53,7 @@ class VirtuemartModelReport extends VmModel {
 			$this->setPeriod();
 		}
 
-		$this->addvalidOrderingFieldName(array('o.`created_on`','DATE( o.`created_on` )','WEEK( o.`created_on` )', 'MONTH( o.`created_on` )','YEAR( o.`created_on` )','i.product_quantity','order_subtotal' ) );
+		//$this->addvalidOrderingFieldName(array('o.`created_on`','DATE( o.`created_on` )','WEEK( o.`created_on` )', 'MONTH( o.`created_on` )','YEAR( o.`created_on` )','i.product_quantity','order_subtotal' ) );
 		//Delete the field so that and push it to the begin of the array so that it is used as default value
 // 		$key = array_search('o.modified_on',$this->_validOrderingFieldName);
 // 		unset($this->_validOrderingFieldName[$key]);
@@ -128,6 +128,34 @@ class VirtuemartModelReport extends VmModel {
 		// Filter by statut
 		if ($orderstates = JRequest::getWord('order_status_code','')) $where[] = 'o.order_status ="'.$orderstates.'"';
 		//getRevenue
+		// select wich table to order sum ordered
+		$filterorders = JRequest::getvar('filter_order','');
+		$orderdir = JRequest::getWord('filter_order_Dir','');
+		switch ($filterorders ) {
+
+			case 'o.virtuemart_order_id':
+				$orderBy = ' ORDER by count_order_id '.$orderdir;
+				$groupBy = 'GROUP BY intervals ';
+				break;
+			case 'i.product_quantity'   :
+				// GROUP BY product_quantity, intervals
+				// ORDER BY `product_quantity` ASC
+				$orderBy = ' ORDER by product_quantity '.$orderdir;
+				$groupBy = 'GROUP BY  product_quantity , intervals ';
+				
+				//$selectFields['intervals'] = $this->intervals.' AS intervals, i.`created_on` ';
+				break;
+			case 'o.order_subtotal'   :
+				$orderBy = ' ORDER BY order_subtotal';
+				break;
+				//getOrderItemsSumGrouped($this->intervals , $filterorders);
+				break;
+			default:
+				// invidual grouping
+				//$this->intervals= '`o`.`created_on`';
+				$orderBy = $filterorders.' '.$orderdir;
+				break;		
+		}
 /*		if(!$sold && !$items){
 
 			$selectFields[] = 'COUNT(virtuemart_order_id) as number_of_orders';
@@ -148,16 +176,16 @@ class VirtuemartModelReport extends VmModel {
 		else {*/
 
 // 			$selectFields['intervals'] = 'i.`created_on` ';
-			$selectFields[] = 'COUNT(o.virtuemart_order_id) as number_of_orders';
+			$selectFields[] = 'COUNT(o.virtuemart_order_id) as count_order_id';
 			$selectFields[] = 'SUM(product_quantity) as product_quantity';
-			$selectFields[] = 'product_name';
-			$selectFields[] = 'product_sku';
+			//$selectFields[] = 'product_name';
+			//$selectFields[] = 'product_sku';
 // 			$selectFields['intervals'] = 'i.`created_on` ';
 
 			$mainTable = '`#__virtuemart_order_items` as i';
 
 			$joinTables['orders'] = ' LEFT JOIN #__virtuemart_orders as o ON o.virtuemart_order_id=i.virtuemart_order_id ';
-			$joinTables['products'] = ' LEFT JOIN #__virtuemart_products as p ON i.virtuemart_product_id=p.virtuemart_product_id ';
+			//$joinTables['products'] = ' LEFT JOIN #__virtuemart_products as p ON i.virtuemart_product_id=p.virtuemart_product_id ';
 
 	//	}
 
@@ -199,9 +227,9 @@ class VirtuemartModelReport extends VmModel {
 		// }
 
 
-		if ( 'product_quantity'==JRequest::getWord('filter_order')) {
-			$orderBy = '';
-		}
+		// if ( 'product_quantity'==JRequest::getWord('filter_order')) {
+			// $orderBy = '';
+		// }
 
 		// TODO $nbrReturnProducts ?
 

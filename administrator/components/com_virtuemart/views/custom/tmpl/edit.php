@@ -22,7 +22,7 @@ vmJsApi::JvalideForm();
 AdminUIHelper::startAdminArea();
 
 ?>
-<form name="adminForm" id="adminform" method="post" action="">
+<form name="adminForm" id="adminForm" method="post" action="">
 <fieldset>
 <legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CUSTOM_FIELD'); ?></legend>
 <?php
@@ -67,7 +67,7 @@ echo $this->customfields->displayCustomFields('',$this->custom); ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) {
 	if (pressbutton=='cancel') submitform(pressbutton);
-	if (jQuery('#adminform').validationEngine('validate')== true) submitform(pressbutton);
+	if (jQuery('#adminForm').validationEngine('validate')== true) submitform(pressbutton);
 	else return false ;
 }
 <?php if ( $this->custom->field_type !== "E" ){ ?>jQuery('#custom_plg').hide();<?php } ?>

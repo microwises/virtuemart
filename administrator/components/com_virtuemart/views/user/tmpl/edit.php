@@ -37,7 +37,7 @@ label.invalid {
 </style>
 
 
-<form method="post" id="adminform" name="adminForm" action="index.php" enctype="multipart/form-data" class="form-validate" onSubmit="return myValidator(this);">
+<form method="post" id="adminForm" name="adminForm" action="index.php" enctype="multipart/form-data" class="form-validate" onSubmit="return myValidator(this);">
 <?php
 
 $tabarray = array();
