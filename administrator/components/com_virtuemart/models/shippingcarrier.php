@@ -99,7 +99,7 @@ class VirtueMartModelShippingCarrier extends VmModel {
 
 		$whereString = '';
 
-		$this->_data = $this->exeSortSearchListQuery(0,'',$query,$whereString,'',$this->_getOrdering('virtuemart_shippingcarrier_id'));
+		$this->_data = $this->exeSortSearchListQuery(0,'',$query,$whereString,'',$this->_getOrdering('ordering'));
 
 		if(isset($this->_data)){
 

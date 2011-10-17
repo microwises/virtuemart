@@ -48,7 +48,9 @@ AdminUIHelper::startAdminArea();
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_SHOPPERGROUPS'); ?>
 			</th>
-
+			<th width="20">
+				<?php echo JText::_('COM_VIRTUEMART_LIST_ORDER'); ?>
+			</th>
 			<th width="10">
 				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 			</th>
@@ -90,7 +92,9 @@ AdminUIHelper::startAdminArea();
 				<td>
 					<?php echo $row->paymShoppersList; ?>
 				</td>
-
+				<td>
+					<?php echo $row->ordering; ?>
+				</td>
 				<td align="center">
 					<?php echo $published; ?>
 				</td>

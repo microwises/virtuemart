@@ -115,7 +115,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_paymentmethods`',$whereString,'',$this->_getOrdering('payment_name'));
+		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_paymentmethods`',$whereString,'',$this->_getOrdering('ordering'));
 
 		if(isset($this->_data)){
 
