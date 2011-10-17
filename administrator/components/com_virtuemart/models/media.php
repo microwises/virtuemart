@@ -174,7 +174,12 @@ class VirtueMartModelMedia extends VmModel {
 
 		if ($search = JRequest::getString('searchMedia', false)){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
-			$where[] = ' (`file_title` LIKE '.$search.' OR `file_description` LIKE '.$search.' OR `file_meta` LIKE '.$search.') ';
+			$where[] = ' (`file_title` LIKE '.$search.'
+								OR `file_description` LIKE '.$search.'
+								OR `file_meta` LIKE '.$search.'
+								OR `file_url` LIKE '.$search.'
+								OR `file_url_thumb` LIKE '.$search.'
+							) ';
 		}
 
 		if (!empty($where)) $whereItems = array_merge($whereItems,$where);
