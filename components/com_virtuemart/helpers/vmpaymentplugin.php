@@ -700,7 +700,7 @@ abstract class vmPaymentPlugin extends JPlugin {
 	if (!$this->selectedThisPayment($this->_pelement, $cart->virtuemart_paymentmethod_id)) {
 	    return null; // Another payment was selected, do nothing
 	}
-
+	if (!is_array($this->payments)) return null;
 	foreach ($this->payments as $payment) {
 	    if ($payment->virtuemart_paymentmethod_id ==$cart->virtuemart_paymentmethod_id) {
 		break;

@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* paymentmethod_shoppergroups table ( for media)
+* shippingcarrier_shoppergroups table ( for media)
 *
 * @package	VirtueMart
 * @subpackage Shippingcarriers_shoppergraoups
@@ -21,8 +21,8 @@ defined('_JEXEC') or die();
 if(!class_exists('VmTableXarray'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtablexarray.php');
 
 /**
- * Calculator table class
- * The class is is used to manage the media in the shop.
+ * shippingcarrier_shoppergroups table class
+ * The class is is used to manage the shopper groups with shipping.
  *
  * @author Max Milbers
  * @package		VirtueMart
@@ -39,7 +39,7 @@ class TableShippingcarrier_shoppergroups extends VmTableXarray {
 
 		$this->setPrimaryKey('virtuemart_shippingcarrier_id');
 		$this->setSecondaryKey('virtuemart_shoppergroup_id');
-		$this->setOrderable();
+		//$this->setOrderable();
 
 	}
 
