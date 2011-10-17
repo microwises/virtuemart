@@ -557,6 +557,10 @@ class VirtueMartModelCustomfields extends VmModel {
 					LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
 					Where `virtuemart_product_id` ='.(int)$product->virtuemart_product_id;
 				$query .=' and is_cart_attribute = 1 and C.`virtuemart_custom_id`='.(int)$group->virtuemart_custom_id ;
+                                
+                                // We want the field to be ordered as the user defined
+                                $query .=' ORDER BY field.`ordering`';
+                                
 				$this->_db->setQuery($query);
 				$options = $this->_db->loadObjectList();
 				$group->options = array();
