@@ -28,12 +28,7 @@
 	<div class="width50 floatleft">
 
 		<span><span class="vmicon vm2-billto-icon"></span>
-
-
-
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'); ?></span>
-
-
 		<?php // Output Bill To Address ?>
 		<div class="output-billto">
 		<?php
@@ -64,15 +59,15 @@
 	<div class="width50 floatleft">
 
 		<span><span class="vmicon vm2-shipto-icon"></span>
-
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'); ?></span>
-
 		<?php // Output Bill To Address ?>
 		<div class="output-shipto">
 		<?php
 		if(empty($this->cart->STaddress['fields'])){
 			echo JText::sprintf('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_EXPLAIN',JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL') );
 		} else {
+			if(!class_exists('VmHtml'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
+			echo JText::_('COM_VIRTUEMART_USER_FORM_ST_SAME_AS_BT'). VmHtml::checkbox('STsameAsBT',$this->cart->STsameAsBT).'<br />';
 			foreach($this->cart->STaddress['fields'] as $item){
 				if(!empty($item['value'])){ ?>
 					<!-- <span class="titles"><?php echo $item['title'] ?></span> -->
@@ -122,12 +117,20 @@
 
 
 
+
+
+
+
                                         <?php if ( VmConfig::get('show_tax')) { ?>
                                 <th align="right" width="60px"><?php  echo "<span  style='color:gray'>".JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') ?></th>
 				<?php } ?>
                                 <th align="right" width="60px"><?php echo "<span  style='color:gray'>".JText::_('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></th>
 				<th align="right" width="70px"><?php echo JText::_('COM_VIRTUEMART_CART_TOTAL') ?></th>
 			</tr>
+
+
+
+
 
 
 
@@ -219,14 +222,11 @@ echo $this->loadTemplate('coupon');
 				<?php if (!empty($this->cart->cartData['couponCode'])) { ?>
 					 <br /><?php
 						echo $this->cart->cartData['couponCode'] ;
-                                                echo $this->cart->cartData['couponDescr'] ? (' (' . $this->cart->cartData['couponDescr'] . ')' ): '';
-
+						echo $this->cart->cartData['couponDescr'] ? (' (' . $this->cart->cartData['couponDescr'] . ')' ): '';
 						?>
-
-
 				</td>
 
-                                        <?php if ( VmConfig::get('show_tax')) { ?>
+              <?php if ( VmConfig::get('show_tax')) { ?>
 					<td align="right"><?php echo $this->cart->prices['couponTax']; ?> </td>
                                         <?php } ?>
 					<td align="right">&nbsp;</td>

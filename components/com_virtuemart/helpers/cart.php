@@ -56,6 +56,8 @@ class VirtueMartCart {
 	var $pricesUnformatted = null;
 	var $pricesCurrency = null;
 
+	var $STsameAsBT = 0;
+
 	private static $_cart = null;
 
 	var $useSSL = 1;
@@ -118,11 +120,11 @@ class VirtueMartCart {
 				// 				self::$_cart->user 									= $cartData->user;
 				self::$_cart->prices 								= $cartData->prices;
 				self::$_cart->pricesUnformatted					= $cartData->pricesUnformatted;
-				self::$_cart->pricesCurrency					= $cartData->pricesCurrency;
+				self::$_cart->pricesCurrency						= $cartData->pricesCurrency;
 				self::$_cart->_inCheckOut 							= $cartData->_inCheckOut;
 				self::$_cart->_dataValidated						= $cartData->_dataValidated;
 				self::$_cart->_confirmDone							= $cartData->_confirmDone;
-
+				self::$_cart->STsameAsBT							= $cartData->STsameAsBT;
 				// 				vmdebug('my cart generated with CartSessionData ',self::$_cart);
 				//$cart = unserialize($cartTemp);
 				if (!empty(self::$_cart) && $deleteValidation) {
@@ -227,6 +229,7 @@ class VirtueMartCart {
 		$sessionCart->_inCheckOut 							= $this->_inCheckOut;
 		$sessionCart->_dataValidated						= $this->_dataValidated;
 		$sessionCart->_confirmDone							= $this->_confirmDone;
+		$sessionCart->STsameAsBT							= $this->STsameAsBT;
 		//vmdebug('ses prod',$sessionCart->products);
 
 		// 		[_inCheckOut:VirtueMartCart:private] =>
@@ -811,14 +814,20 @@ class VirtueMartCart {
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $redirectMsg);
 			}
 		}
-		//Only when there is an ST data, test if all necessary fields are filled
-		if (!empty($this->ST)) {
-			$redirectMsg = self::validateUserData('ST');
-			if ($redirectMsg) {
-				//				$this->setCartIntoSession();
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST'), $redirectMsg);
+
+		if($this->STsameAsBT!==0){
+			$this->ST = $this->BT;
+		} else {
+			//Only when there is an ST data, test if all necessary fields are filled
+			if (!empty($this->ST)) {
+				$redirectMsg = self::validateUserData('ST');
+				if ($redirectMsg) {
+					//				$this->setCartIntoSession();
+					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST'), $redirectMsg);
+				}
 			}
 		}
+
 
 		// Test Coupon
 		if (!empty($this->couponCode)) {

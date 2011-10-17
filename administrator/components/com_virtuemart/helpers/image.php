@@ -132,6 +132,8 @@ class VmImage extends VmMediaHandler {
 		$file_path_thumb = str_replace('/',DS,$this->file_url_folder_thumb);
 		$resizedFilenamePath = JPATH_ROOT.DS.$file_path_thumb.$this->file_name_thumb.'.'.$this->file_extension;
 
+		$this->checkPathCreateFolders($file_path_thumb);
+
 		if (file_exists($fullSizeFilenamePath)) {
 			if (!class_exists('Img2Thumb')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'img2thumb.php');
 			$createdImage = new Img2Thumb($fullSizeFilenamePath, $width, $height, $resizedFilenamePath, $maxsize, $bgred, $bggreen, $bgblue);
@@ -147,6 +149,18 @@ class VmImage extends VmMediaHandler {
 
 	}
 
+	public function checkPathCreateFolders($path){
+
+		$elements = explode(DS,$path);
+		$examine = JPATH_ROOT;
+		foreach($elements as $piece){
+			$examine = $examine.DS.$piece;
+			if(!JFolder::exists($examine)){
+				JFolder::create($examine);
+				vmInfo('create folder for resized image '.$examine);
+			}
+		}
+	}
 
 	/**
 	 * Display an image icon for the given image and create a link to the given link.
