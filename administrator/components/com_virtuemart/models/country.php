@@ -95,7 +95,7 @@ class VirtueMartModelCountry extends VmModel {
 		if($filterCountry){
 			$filterCountry = '"%' . $this->_db->getEscaped( $filterCountry, true ) . '%"' ;
 			//$keyword = $this->_db->Quote($filterCountry, false);
-			$where[] = '`country_name`,`country_2_code`,`country_3_code` LIKE '.$filterCountry;
+			$where[] = '`country_name` LIKE '.$filterCountry.' OR `country_2_code` LIKE '.$filterCountry.' OR `country_3_code` LIKE '.$filterCountry;
 		}
 
 		$whereString = '';

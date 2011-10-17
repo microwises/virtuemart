@@ -75,14 +75,18 @@ class VirtueMartModelCurrency extends VmModel {
 		if( !Permissions::getInstance()->check('admin') ){
 			$where[]  = '(`virtuemart_vendor_id` = "'.(int)$vendorId.'" OR `shared`="1")';
 		}
+
+		if(empty($search)){
+			$search = JRequest::getString('search', false);
+		}
 		/* add filters */
 		if($search){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			//$search = $this->_db->Quote($search, false);
-			$where[] = '`currency_name` LIKE '.$search;
+			$where[] = '`currency_name` LIKE '.$search.' OR `currency_code_2` LIKE '.$search.' OR `currency_code_3` LIKE '.$search;
 		}
 
-		if (JRequest::getWord('search', false)) $where[] = '`currency_name` LIKE "%'.$this->_db->getEscaped(JRequest::getWord('search')).'%"';
+// 		if (JRequest::getString('search', false)) $where[] = '`currency_name` LIKE "%'.$this->_db->getEscaped(JRequest::getString('search')).'%"';
 
 		$whereString='';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
