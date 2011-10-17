@@ -507,11 +507,12 @@ class VirtueMartCart {
 	public function updateProductCart($cart_virtuemart_product_id=0) {
 
 		if (empty($cart_virtuemart_product_id))
-		$cart_virtuemart_product_id = JRequest::getInt('cart_virtuemart_product_id');
+		$cart_virtuemart_product_id = JRequest::getString('cart_virtuemart_product_id');
 		if (empty($quantity))
 		$quantity = JRequest::getInt('quantity');
 
 		//		foreach($cart_virtuemart_product_ids as $cart_virtuemart_product_id){
+                $updated = false;
 		if (array_key_exists($cart_virtuemart_product_id, $this->products)) {
 			if (!empty($quantity)) {
 				if ($this->checkForQuantities($this->products[$cart_virtuemart_product_id], $quantity)) {
