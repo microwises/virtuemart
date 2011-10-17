@@ -93,17 +93,17 @@ defined('_JEXEC') or die('Restricted access');
 	$_table = false;
 	$_hiddenFields = '';
 
-	if (count($this->userFields['functions']) > 0) {
+	if (count($this->userFieldsBT['functions']) > 0) {
 		echo '<script language="javascript">'."\n";
-		echo join("\n", $this->userFields['functions']);
+		echo join("\n", $this->userFieldsBT['functions']);
 		echo '</script>'."\n";
 	}
-	for ($_i = 0, $_n = count($this->userFields['fields']); $_i < $_n; $_i++) {
+	for ($_i = 0, $_n = count($this->userFieldsBT['fields']); $_i < $_n; $_i++) {
 		// Do this at the start of the loop, since we're using 'continue' below!
 		if ($_i == 0) {
-			$_field = current($this->userFields['fields']);
+			$_field = current($this->userFieldsBT['fields']);
 		} else {
-			$_field = next($this->userFields['fields']);
+			$_field = next($this->userFieldsBT['fields']);
 		}
 
 		if ($_field['hidden'] == true) {

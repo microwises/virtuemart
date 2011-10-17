@@ -124,7 +124,7 @@ class VirtueMartModelMedia extends VmModel {
 	* @return object List of media objects
 	*/
 
-	function getFiles($onlyPublished=false, $noLimit=false,  $count=false, $where=array()){
+	function getFiles($onlyPublished=false, $noLimit=false,  $count=false, $where=array(),$nbr=false){
 
 		$this->_noLimit = $noLimit;
 
@@ -172,7 +172,7 @@ class VirtueMartModelMedia extends VmModel {
 			$whereItems[] = '`#__virtuemart_medias`.`published` = 1';
 		}
 
-		if ($search = JRequest::getWord('searchMedia', false)){
+		if ($search = JRequest::getString('searchMedia', false)){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			$where[] = ' (`file_title` LIKE '.$search.' OR `file_description` LIKE '.$search.' OR `file_meta` LIKE '.$search.') ';
 		}
@@ -216,7 +216,7 @@ class VirtueMartModelMedia extends VmModel {
 			return false;
 		}
 
-		$this->_data = $this->exeSortSearchListQuery(2, $select, $joinedTables, $whereString, $groupBy, $orderBy);
+		$this->_data = $this->exeSortSearchListQuery(2, $select, $joinedTables, $whereString, $groupBy, $orderBy,'',$nbr);
 		if(empty($this->_data)){
 			return array();
 		}

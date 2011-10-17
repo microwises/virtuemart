@@ -737,20 +737,20 @@ class VmMediaHandler {
 		 * @param array $fileIds
 		 */
 		public function displayFilesHandler($fileIds,$type){
-			$list = $this->displayImages($type);
+			$this->lists= $this->displayImages($type);
 			$html = $this->displayFileSelection($fileIds,$type);
 			$html .= $this->displayFileHandler('id="vm_display_image" ');
-			$html .= '<div style="display:none"><div id="media-dialog" >'.$list['htmlImages'].'</div></div>';//$type);
+			$html .= '<div style="display:none"><div id="media-dialog" >'.$this->lists['htmlImages'].'</div></div>';//$type);
 			$this->_db->setQuery('SELECT FOUND_ROWS()');
 			$imagetotal = $this->_db->loadResult();
 			//vmJsApi::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
 			$isJ15 = VmConfig::isJ15();
 			if ($isJ15) {
 				$j = "
-			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$list['total']."') }); " ;
+			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$this->lists['total']."') }); " ;
 			}
 			else $j = "
-			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$list['total']."') }); " ;
+			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','".$this->lists['total']."') }); " ;
 			$document = JFactory::getDocument ();
 			$document->addScriptDeclaration ( $j);
 			return $html;
@@ -771,7 +771,14 @@ class VmMediaHandler {
 
 			$result = $this->getImagesList($type);
 			$html .= '<div id="ImagesContainer">';
-			/*		VmConfig::JimageSelectlist();*/
+
+// 			$html .= ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_NAME','','searchMedia') ;
+			$name = 'searchMedia';
+			$html .=  JText::_('COM_VIRTUEMART_FILTER') . ' ' . JText::_('COM_VIRTUEMART_IMAGES') . ':
+					<input type="text" name="' . $name . '" id="' . $name . '" value="' .JRequest::getString('searchMedia') . '" class="text_area" onchange="document.adminForm.submit();" />
+					<button onclick="document.getElementById(\'' . $name . '\').value=\'\';this.form.submit();">' . JText::_('COM_VIRTUEMART_RESET') . '</button>';
+
+
 
 			// if(empty($fileIds)) {
 			// return  $html;
@@ -845,6 +852,10 @@ class VmMediaHandler {
     	AND (`virtuemart_vendor_id`= "'.(int)$vendorId.'" OR `shared` = "1")';
 			if(!empty($type)){
 				$q .= ' AND `file_type` = "'.$type.'" ';
+			}
+			if ($search = JRequest::getString('searchMedia', false)){
+				$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+				$q .=  ' AND (`file_title` LIKE '.$search.' OR `file_description` LIKE '.$search.' OR `file_meta` LIKE '.$search.') ';
 			}
 			$q .= ' LIMIT '.(int)$page*$max.', '.(int)$max;
 

@@ -73,11 +73,12 @@ class ShopFunctions {
 	 * Add simple search to form
 	* @param $searchLabel text to display before searchbox
 	* @param $name 		 lists and id name
+	* ??JText::_('COM_VIRTUEMART_NAME')
 	*/
 
-	function displayDefaultViewSearch($searchLabel = 'COM_VIRTUEMART_NAME', $name ='search') {
+	function displayDefaultViewSearch($searchLabel, $value, $name ='search') {
 		return JText::_('COM_VIRTUEMART_FILTER') . ' ' . JText::_($searchLabel) . ':
-		<input type="text" name="' . $name . '" id="' . $name . '" value="' . $this->lists[$name] . '" class="text_area" onchange="document.adminForm.submit();" />
+		<input type="text" name="' . $name . '" id="' . $name . '" value="' .$value . '" class="text_area" onchange="document.adminForm.submit();" />
 		<button onclick="this.form.submit();">' . JText::_('COM_VIRTUEMART_GO') . '</button>
 		<button onclick="document.getElementById(\'' . $name . '\').value=\'\';this.form.submit();">' . JText::_('COM_VIRTUEMART_RESET') . '</button>';
 	}

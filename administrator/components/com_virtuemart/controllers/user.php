@@ -94,12 +94,12 @@ class VirtuemartControllerUser extends VmController {
 
 	function addST(){
 
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
-		$view = $this->getView('user', 'html');
-		$view->setLayout('edit_shipto');
-		vmJsApi::jQuery();
-		$this->edit($view);
+// 		$document = JFactory::getDocument();
+// 		$viewType = $document->getType();
+// 		$view = $this->getView('user', 'html');
+// 		$view->setLayout('edit_shipto');
+// 		vmJsApi::jQuery();
+		$this->edit();
 	}
 
 	function editshop(){

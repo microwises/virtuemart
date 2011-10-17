@@ -27,7 +27,7 @@ AdminUIHelper::startAdminArea();
     <table>
 	<tr>
 	    <td width="100%">
-			<?php echo ShopFunctions::displayDefaultViewSearch (JText::_('COM_VIRTUEMART_CURRENCY')." ".JText::_('COM_VIRTUEMART_NAME')) ; ?>
+			<?php echo ShopFunctions::displayDefaultViewSearch ('COM_VIRTUEMART_CURRENCY',$this->lists['search']) ; ?>
 	    </td>
 	</tr>
     </table>

@@ -26,7 +26,7 @@ AdminUIHelper::startAdminArea();
 		<table>
 		  <tr>
 			 <td align="left">
-				<?php echo ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_PRODUCT_NAME','filter_product') ?>
+				<?php echo ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_PRODUCT_NAME',$this->lists['filter_product'],'filter_product') ?>
 			 </td>
 		  </tr>
 		</table>

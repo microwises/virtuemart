@@ -46,6 +46,7 @@ class VirtuemartViewUser extends JView {
 
 		$currentUser = JFactory::getUser();
 
+
 		$task = JRequest::getWord('task', 'edit');
 		if($task == 'editshop'){
 
@@ -56,7 +57,6 @@ class VirtuemartViewUser extends JView {
 				$userId = VirtueMartModelVendor::getUserIdByVendorId(1);
 				$model->setId($userId);
 			}
-
 			$viewName=ShopFunctions::SetViewTitle('STORE'  );
 		} else if ($task == 'add'){
 			$model->setUserId(0);
@@ -78,7 +78,7 @@ class VirtuemartViewUser extends JView {
 			$this->loadHelper('permissions');
 			$this->loadHelper('shoppergroup');
 
-			$this->loadHelper('currencydisplay');
+// 			$this->loadHelper('currencydisplay');
 			$this->loadHelper('image');
 
 			$userFieldsModel = $this->getModel('userfields');
@@ -132,35 +132,53 @@ class VirtuemartViewUser extends JView {
 				$new = true;
 			}
 
-			$virtuemart_userinfo_id = JRequest::getString('virtuemart_userinfo_id', '0','');
-			if($new){
-				$virtuemart_userinfo_id = 0;
-			} else {
-				if(empty($virtuemart_userinfo_id)){
-					$virtuemart_userinfo_id = $model->getBTuserinfo_id();
-				}
-			}
 // 			vmdebug('$virtuemart_userinfo_id',$virtuemart_userinfo_id);
-			$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'BT',$virtuemart_userinfo_id,false);
+// 			$addressType = 'BT';
+// 			if($layoutName == 'edit_shipto'){
+// 				$addressType = 'ST';
+// 			}
 
-			$userFields = $userFieldsArray[$virtuemart_userinfo_id];
+			$virtuemart_userinfo_id_BT = $model->getBTuserinfo_id();
+			$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'BT',$virtuemart_userinfo_id_BT,false);
+			$userFieldsBT = $userFieldsArray[$virtuemart_userinfo_id_BT];
+
 
 			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $userDetails->perms);
 
 			// Load the required scripts
-			if (count($userFields['scripts']) > 0) {
-				foreach ($userFields['scripts'] as $_script => $_path) {
+			if (count($userFieldsBT['scripts']) > 0) {
+				foreach ($userFieldsBT['scripts'] as $_script => $_path) {
 					JHTML::script($_script, $_path);
 				}
 			}
 			// Load the required stylesheets
-			if (count($userFields['links']) > 0) {
-				foreach ($userFields['links'] as $_link => $_path) {
+			if (count($userFieldsBT['links']) > 0) {
+				foreach ($userFieldsBT['links'] as $_link => $_path) {
 					JHTML::stylesheet($_link, $_path);
 				}
 			}
 
-				$this->assignRef('shipToFields', $userFields);
+			$this->assignRef('userFieldsBT', $userFieldsBT);
+			$this->assignRef('userInfoID', $virtuemart_userinfo_id_BT);
+
+
+			$virtuemart_userinfo_id = JRequest::getString('virtuemart_userinfo_id', '0','');
+			$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'ST',$virtuemart_userinfo_id,false);
+
+			if($new ){
+				$virtuemart_userinfo_id = 0;
+// 				$userFieldsST = $userFieldsArray[$virtuemart_userinfo_id];
+			} else {
+// 				$userFieldsST = $userFieldsArray[$virtuemart_userinfo_id];
+// 				if(empty($virtuemart_userinfo_id)){
+// 					$virtuemart_userinfo_id = $model->getBTuserinfo_id();
+// 				}
+			}
+			$userFieldsST = $userFieldsArray[$virtuemart_userinfo_id];
+
+			$this->assignRef('shipToFields', $userFieldsST);
+			$this->assignRef('shipToId', $virtuemart_userinfo_id);
+			$this->assignRef('new', $new);
 // 				$this->assignRef('shipToID', $virtuemart_userinfo_id);
 
 
@@ -172,8 +190,6 @@ class VirtuemartViewUser extends JView {
 				$orderList = null;
 			}
 
-			$vendorModel = $this->getModel('vendor');
-			$vendorModel->setId($userDetails->virtuemart_vendor_id);
 
 			if (count($orderList) > 0 || !empty($userDetails->user_is_vendor)) {
 				if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
@@ -182,6 +198,9 @@ class VirtuemartViewUser extends JView {
 			}
 
 			if (!empty($userDetails->user_is_vendor)) {
+
+				$vendorModel = $this->getModel('vendor');
+				$vendorModel->setId($userDetails->virtuemart_vendor_id);
 
 				$vendorModel->addImages($userDetails->vendor);
 				$this->assignRef('vendor', $userDetails->vendor);
@@ -193,12 +212,11 @@ class VirtuemartViewUser extends JView {
 			}
 
 
-
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userDetails', $userDetails);
-			$this->assignRef('shipto', $_shipto);
-			$this->assignRef('userFields', $userFields);
-			$this->assignRef('userInfoID', $virtuemart_userinfo_id);
+
+// 			$this->assignRef('userFields', $userFields);
+// 			$this->assignRef('userInfoID', $virtuemart_userinfo_id);
 			//			$this->assignRef('vendor', $vendor);
 			$this->assignRef('orderlist', $orderList);
 			$this->assignRef('contactDetails', $_contactDetails);

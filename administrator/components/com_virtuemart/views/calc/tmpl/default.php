@@ -30,7 +30,7 @@ $j15 = VmConfig::isJ15();
 		<table>
 		  <tr>
 			 <td align="left">
-				<?php echo ShopFunctions::displayDefaultViewSearch() ?>
+				<?php echo ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_NAME',$this->lists['search']) ?>
 			 </td>
 		  </tr>
 		</table>
