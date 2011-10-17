@@ -755,4 +755,21 @@ class VmTable extends JTable{
 
 		$this->_errors = array();
 	}
+
+
+	function delete( $oid=null ){
+		$k = $this->_tbl_key;
+
+		$query = 'SELECT '.$this->_tbl_key.' FROM '.$this->_db->nameQuote( $this->_tbl ).
+				' WHERE '.$this->_tbl_key.' = '. $this->_db->Quote($this->$k);
+		$this->_db->setQuery( $query );
+
+		if ($this->_db->query()){
+			parent::delete();
+		} else {
+			return false;
+		}
+	}
+
+
 }
