@@ -54,7 +54,7 @@ class TableCoupons extends VmTable {
 	function __construct(&$db)
 	{
 		parent::__construct('#__virtuemart_coupons', 'virtuemart_coupon_id', $db);
-
+		$this->setObligatoryKeys('coupon_code');
 		$this->setLoggable();
 	}
 
