@@ -364,7 +364,7 @@ class VmMediaHandler {
 		 */
 		function displayMediaFull(){
 
-			return 'False setting';
+			 $this->displayMediaThumb('id="vm_display_image"',false);
 		}
 
 		/**
@@ -821,7 +821,7 @@ class VmMediaHandler {
 				<input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value="'.$key.'">
 			<a class="vm_thumb" rel="group1" title ="'.$image->file_title.'"href="'.JURI::root(true).'/'.$image->file_url.'" >
 			'.JHTML::image($image->file_url_thumb, $image->file_title, '').'
-			</a><div class="trash" title="remove image"></div><div class="edit-24-grey" title="edit image information"></div></div>';
+			</a><div class="vmicon vmicon-16-remove" title="remove image"></div><div class="edit-24-grey" title="edit image information"></div></div>';
 			} else {
 				$fileTitle = empty($image->file_title)? 'no  title':$image->file_title;
 				return  '<div  class="vm_thumb_image"><b>'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b><br />'.$fileTitle.'</div>';
@@ -846,7 +846,7 @@ class VmMediaHandler {
 				} else {
 					$htmlImages .=  '<div class="vm_thumb_image">'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'<br />'.$image->file_title ;
 				}
-				$Images[$key ]['label'] = $htmlImages.'<input type="hidden" value="'.$image->virtuemart_media_id.'" name="virtuemart_media_id['.$image->virtuemart_media_id.']"><input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value=""><div class="trash" title="remove"></div><div title="edit image information" class="edit-24-grey"></div></div>';
+				$Images[$key ]['label'] = $htmlImages.'<input type="hidden" value="'.$image->virtuemart_media_id.'" name="virtuemart_media_id['.$image->virtuemart_media_id.']"><input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value=""><div class="vmicon vmicon-16-remove" title="remove"></div><div title="edit image information" class="edit-24-grey"></div></div>';
 				$Images[$key ]['value'] = $image->file_title.' :: '.$image->virtuemart_media_id;
 			}
 			//$list['htmlImages'] = $htmlImages;

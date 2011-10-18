@@ -70,7 +70,7 @@ class VirtuemartViewProduct extends JView {
 					<input type="hidden" value="'.$customs->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
 
 					<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
-					<div class="trash"></div></div>';
+					<div class="vmicon vmicon-16-remove"></div></div>';
 
 					
 				$product->label = $html;
@@ -99,7 +99,7 @@ class VirtuemartViewProduct extends JView {
 				<input type="hidden" value="Z" name="field['.$row.'][field_type]" />
 				<input type="hidden" value="'.$customs->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
 				<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
-				<div class="trash"></div></div>';
+				<div class="vmicon vmicon-16-remove"></div></div>';
 				$category->label = $html;
 				
 			}
@@ -163,7 +163,7 @@ class VirtuemartViewProduct extends JView {
 						<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
 						<input type="hidden" value="'.$field->admin_only.'" name="field['.$row.'][admin_only]" />
 						 <span class="vmicon vmicon-16-'.$cartIcone.'"></span>
-						<span class="trash"></span>'.JTEXT::_('COM_VIRTUEMART_CUSTOM_ACTIVATE_JAVASCRIPT').'</div>';
+						<span class="vmicon vmicon-16-remove"></span>'.JTEXT::_('COM_VIRTUEMART_CUSTOM_ACTIVATE_JAVASCRIPT').'</div>';
 					$row++;
 
 				} else {
@@ -181,7 +181,7 @@ class VirtuemartViewProduct extends JView {
 						<input type="hidden" value="'.$field->admin_only.'" name="field['.$row.'][admin_only]" />
 					 </td>
 					 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
-					 <td><span class="trash"></span><input class="ordering" type="hidden" value="'.$row.'" name="field['.$row .'][ordering]" /></td>
+					 <td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$row.'" name="field['.$row .'][ordering]" /></td>
 					</tr>';
 				$row++;
 				}

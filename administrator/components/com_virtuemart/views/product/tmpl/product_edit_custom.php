@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 							<input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
 							<input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
 							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
-							<div class="trash"></div></div>';
+							<div class="vmicon vmicon-16-remove"></div></div>';
 
 					} elseif ($customRow->field_type == 'R') {
 
@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 							<input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
 							<input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
 							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
-							<div class="trash"></div></div>';
+							<div class="vmicon vmicon-16-remove"></div></div>';
 
 					} elseif ($customRow->field_type == 'G') {
 						// no display (group of) child , handled by plugin;
@@ -61,7 +61,7 @@ defined('_JEXEC') or die('Restricted access');
 							<input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
 							<input type="hidden" value="'.$customRow->admin_only.'" name="admin_only" />
 							<span class="vmicon icon-nofloat vmicon-16-'.$cartIcone.'"></span>
-							<span class="trash"></span></div>';
+							<span class="vmicon vmicon-16-remove"></span></div>';
 					} else {
 						$tables['fields'] .= '<tr class="removable">
 							<td>'.JText::_($customRow->custom_title).'</td>
@@ -75,7 +75,7 @@ defined('_JEXEC') or die('Restricted access');
 							<td>
 							<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
 							</td>
-							<td><span class="trash"></span><input class="ordering" type="hidden" value="'.$customRow->ordering.'" name="field['.$i .'][ordering]" /></td>
+							<td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$customRow->ordering.'" name="field['.$i .'][ordering]" /></td>
 						 </tr>';
 						}
 

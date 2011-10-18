@@ -107,16 +107,16 @@
 			);
 			if ($.inArray(id,inputArray) == -1){
 				that = jQuery(this);
-				jQuery(this).clone().appendTo(container).unbind("click").append('<div class="trash" title="remove"></div><div class="edit-24-grey" title="'+vm2string.editImage+'"><div>');
+				jQuery(this).clone().appendTo(container).unbind("click").append('<div class="vmicon vmicon-16-remove" title="remove"></div><div class="edit-24-grey" title="'+vm2string.editImage+'"><div>');
 				that.hide().fadeIn();
 			}
 			
 		});
 
-		jQuery("#admin-ui-tabs" ).delegate("div.trash", "click",function() { 
+		jQuery("#admin-ui-tabs" ).delegate("div.vmicon-16-remove", "click",function() { 
 			jQuery(this).closest(".vm_thumb_image").fadeOut("500",function() {jQuery(this).remove()});
 		});
-		jQuery("#admin-ui-tabs" ).delegate("span.trash", "click",function() { 
+		jQuery("#admin-ui-tabs" ).delegate("span.vmicon-16-remove", "click",function() { 
 			jQuery(this).closest(".removable").fadeOut("500",function() {jQuery(this).remove()});
 		});
 
