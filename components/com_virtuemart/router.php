@@ -57,7 +57,12 @@ function virtuemartBuildRoute(&$query) {
 				$segments[] = $lang['page'] ;
 				$mainframe = Jfactory::getApplication(); ;
 				$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', VmConfig::get('list_limit', 20), 'int');
-				$segments[] = floor($query['start']/$limit)+1;
+				//Pagination changed, maybe the +1 is wrong note by Max Milbers
+				if(version_compare(JVERSION,'1.6.0','ge')) {
+					$segments[] = floor($query['start']/$limit);
+				} else {
+					$segments[] = floor($query['start']/$limit)+1;
+				}
 				unset($query['start']);
 			}
 			if ( isset($query['orderby']) ) {
@@ -219,7 +224,12 @@ function virtuemartParseRoute($segments) {
 
 		$mainframe = Jfactory::getApplication();
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', VmConfig::get('list_limit', 20), 'int');
-		$vars['limitstart'] = (array_shift($segments)*$limit)-1;
+		//Pagination has changed, removed the -1 note by Max Milbers NOTE: Works on j1.5, but NOT j1.7
+// 		if(version_compare(JVERSION,'1.6.0','ge')) {
+// 			$vars['limitstart'] = (array_shift($segments)*$limit);
+// 		} else {
+			$vars['limitstart'] = (array_shift($segments)*$limit);
+// 		}
 		if (empty($segments)) return $vars;
 	}
 	$orderby = explode(',',$segments[0]);
