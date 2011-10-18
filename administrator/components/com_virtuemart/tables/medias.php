@@ -84,9 +84,16 @@ class TableMedias extends VmTable {
       $notice = true;
 
       if(!empty($this->file_url)){
-      	if(mb_strlen($this->file_url)>254){
-      		$this->setError(JText::sprintf('COM_VIRTUEMART_URL_TOO_LONG',mb_strlen($this->file_url) ) );
+      	if(function_exists('mb_strlen') ){
+      		if(mb_strlen($this->file_url)>254){
+      			$this->setError(JText::sprintf('COM_VIRTUEMART_URL_TOO_LONG',mb_strlen($this->file_url) ) );
+      		}
+      	} else {
+      		if(strlen($this->file_url)>254){
+      			$this->setError(JText::sprintf('COM_VIRTUEMART_URL_TOO_LONG',strlen($this->file_url) ) );
+      		}
       	}
+
       	if(strpos($this->file_url,'..')!==false){
       		$ok = false;
       		$this->setError(JText::sprintf('COM_VIRTUEMART_URL_NOT_VALID',$this->file_url ) );

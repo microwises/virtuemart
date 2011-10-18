@@ -72,9 +72,22 @@ class TableShoppergroups extends VmTable
 		if (empty($this->shopper_group_name) ){
 			$this->setError(JText::_('COM_VIRTUEMART_SHOPPERGROUP_RECORDS_MUST_HAVE_NAME'));
 			return false;
-		} else if (mb_strlen($this->shopper_group_name) > 32) {
-			$this->setError(JText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME_LESS_THAN_32_CHARACTERS'));
-			return false;
+		} else {
+
+			if(function_exists('mb_strlen') ){
+				if (mb_strlen($this->shopper_group_name) > 32) {
+					$this->setError(JText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME_LESS_THAN_32_CHARACTERS'));
+					return false;
+				}
+			} else {
+				if (strlen($this->shopper_group_name) > 32) {
+					$this->setError(JText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME_LESS_THAN_32_CHARACTERS'));
+					return false;
+				}
+			}
+
+
+
 		}
 /* commented by PATRICK This set always shoppergroup to 1 if you do a new shoppergroup
 		if(empty($this->virtuemart_shoppergroup_id)){
