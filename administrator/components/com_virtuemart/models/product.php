@@ -801,6 +801,10 @@ class VirtueMartModelProduct extends VmModel {
 			$data['product_packaging'] = (($data['product_box'] << 16) | ($data['product_packaging']&0xFFFF));
 		}
 
+// 		if(VmConfig::get('productlayout') == $data['layout']){
+// 			$data['layout'] = 0;
+// 		}
+
 		//with the true, we do preloading and preserve so old values, but why do we do that? I try with false note by Max Milbers
 		$product_data->bindChecknStore($data,true);
 

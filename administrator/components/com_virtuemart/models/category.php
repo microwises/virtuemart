@@ -507,19 +507,19 @@ class VirtueMartModelCategory extends VmModel {
 /*		vmdebug('categorytemplate to null',VmConfig::get('categorytemplate'),$data['category_template']);
  * VmConfig::get('categorytemplate') = default
  * $data['category_template'] = 0
- *
+ */
 		if(VmConfig::get('categorytemplate') == $data['category_template'] ){
-			$data['category_template'] = null;
+			$data['category_template'] = 0;
 		}
 
 		if(VmConfig::get('categorylayout') == $data['category_layout']){
-			$data['category_layout'] = null;
+			$data['category_layout'] = 0;
 		}
 
 		if(VmConfig::get('productlayout') == $data['category_product_layout']){
-			$data['category_product_layout'] = null;
+			$data['category_product_layout'] = 0;
 		}
-*/
+
 		$data = $table->bindChecknStore($data);
     	$errors = $table->getErrors();
 		foreach($errors as $error){

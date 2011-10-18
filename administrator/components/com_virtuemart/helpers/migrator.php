@@ -610,6 +610,9 @@ class Migrator extends VmModel{
 		vmdebug('migration_default_category_browse '.$default_category_browse);
 
 		$default_category_fly = JRequest::getString('migration_default_category_fly','');
+
+		$portFlypages = JRequest::getInt('migration_default_category_fly',0);
+
 		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 			return;
 		}
@@ -646,7 +649,7 @@ class Migrator extends VmModel{
 					$category['category_layout'] = $browsepage;
 				}
 
-				if($default_category_fly!=$oldcategory['category_flypage']){
+				if($portFlypages && $default_category_fly!=$oldcategory['category_flypage']){
 					$category['category_product_layout'] = $oldcategory['category_flypage'];
 				}
 

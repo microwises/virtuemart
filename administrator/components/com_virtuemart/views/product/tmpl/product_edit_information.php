@@ -103,7 +103,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_PAGE') ?></div>
 				</td>
 				<td width="79%">
-					<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'text', 'text', $this->product->layout); ?>
+					<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'value', 'text', $this->product->layout); ?>
 				</td>
 			</tr>
 			<tr class="row0">
@@ -145,7 +145,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						foreach ($this->product_child as $child  ) {
 							$ChildCustom = VirtueMartModelCustomfields::getProductChildCustom($child->virtuemart_product_id);
 							echo JHTML::_('link', JRoute::_('index.php?view=product&task=edit&product_parent_id='.$this->product->virtuemart_product_id.'&virtuemart_product_id='.$child->virtuemart_product_id.'&option=com_virtuemart'), $child->product_name, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name)).' | ';
-							
+
 						}
 					 }
                                  ?>

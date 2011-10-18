@@ -349,7 +349,7 @@ class shopFunctionsF {
 				$q = 'SELECT `category_template` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.(int)$catTpl.'" ';
 				$db->setQuery($q);
 				$temp = $db->loadResult();
-				if ($temp) $template = $temp;
+				if (!empty($temp)) $template = $temp;
 			} else {
 				$template = $catTpl;
 			}
@@ -361,7 +361,7 @@ class shopFunctionsF {
 				$q = 'SELECT `product_template` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` = "'.(int)$prodTpl.'" ';
 				$db->setQuery($q);
 				$temp = $db->loadResult();
-				if($temp) $template = $temp;
+				if (!empty($temp)) $template = $temp;
 			} else {
 				$template = $prodTpl;
 			}
@@ -380,7 +380,7 @@ class shopFunctionsF {
 					$q = 'SELECT `layout` FROM `#__virtuemart_categories` WHERE `virtuemart_category_id` = "'.(int)$catLayout.'" ';
 					$db->setQuery($q);
 					$temp = $db->loadResult();
-					if ($temp) $layout = $temp;
+					if (!empty($temp)) $layout = $temp;
 				} else {
 					$layout = $catLayout;
 				}
@@ -392,7 +392,7 @@ class shopFunctionsF {
 					$q = 'SELECT `layout` FROM `#__virtuemart_products` WHERE `virtuemart_product_id` = "'.(int)$prodLayout.'" ';
 					$db->setQuery($q);
 					$temp = $db->loadResult();
-					if ($temp) $layout = $temp;
+					if (!empty($temp)) $layout = $temp;
 				} else {
 					$layout = $prodLayout;
 				}

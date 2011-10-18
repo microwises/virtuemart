@@ -188,7 +188,7 @@ $mainframe = JFactory::getApplication();
 							</label>
 						</td>
 						<td>
-							<?php echo JHTML::_('Select.genericlist', $this->categoryLayouts, 'category_layout', 'size=1', 'text', 'text', $this->category->category_layout); ?>
+							<?php echo JHTML::_('Select.genericlist', $this->categoryLayouts, 'category_layout', 'size=1', 'value', 'text', $this->category->category_layout); ?>
 						</td>
 					</tr>
 					<tr>
@@ -198,7 +198,7 @@ $mainframe = JFactory::getApplication();
 							</label>
 						</td>
 						<td>
-							<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'category_product_layout', 'size=1', 'text', 'text', $this->category->category_product_layout); ?>
+							<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'category_product_layout', 'size=1', 'value', 'text', $this->category->category_product_layout); ?>
 						</td>
 					</tr>
 				</table>

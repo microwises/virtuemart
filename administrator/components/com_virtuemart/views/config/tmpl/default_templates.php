@@ -71,7 +71,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->categoryLayoutList, 'categorylayout', 'size=1', 'text', 'text', $this->config->get('categorylayout'));
+			    echo JHTML::_('Select.genericlist', $this->categoryLayoutList, 'categorylayout', 'size=1', 'value', 'text', $this->config->get('categorylayout'));
 			    ?>
 			</td>
 		    </tr>
@@ -93,7 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->productLayoutList, 'productlayout', 'size=1', 'text', 'text', $this->config->get('productlayout'));
+			    echo JHTML::_('Select.genericlist', $this->productLayoutList, 'productlayout', 'size=1', 'value', 'text', $this->config->get('productlayout'));
 			    ?>
 			</td>
 		    </tr>
@@ -133,7 +133,7 @@ defined('_JEXEC') or die('Restricted access');
 			</td>
 			<td>
 			    <?php
-			    echo JHTML::_('Select.genericlist', $this->vmLayoutList, 'vmlayout', 'size=1', 'text', 'text', $this->config->get('vmlayout'));
+			    echo JHTML::_('Select.genericlist', $this->vmLayoutList, 'vmlayout', 'size=1', 'value', 'text', $this->config->get('vmlayout'));
 			    ?>
 			</td>
 		    </tr>

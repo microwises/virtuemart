@@ -47,7 +47,7 @@ class VirtueMartModelConfig extends JModel {
 
 		//This does not work, joomla takes only overrides of their standard template
 		//		$tplpath = VmConfig::get('vmtemplate',0);
-		//So we lookf for template overrides in the joomla standard template
+		//So we look for template overrides in the joomla standard template
 
 		//This method does not work, we get the Template of the backend
 		//$app = JFactory::getApplication('site');
@@ -68,7 +68,10 @@ class VirtueMartModelConfig extends JModel {
 			}
 		}
 
-		$result = '';
+		$result = array();
+		$emptyOption = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_ADMIN_CFG_NO_OVERRIDE'));
+		$result[] = $emptyOption;
+
 		$alreadyAddedFile = array();
 		foreach($dirs as $dir){
 			if ($handle = opendir($dir)) {
