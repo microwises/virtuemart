@@ -113,26 +113,40 @@ class VirtueMartModelCategory extends VmModel {
 		return $childList;
 	}
 
+// 	public sortArraysPerXref(){
+
+// 		$q = 'SELECT * FROM '
+// 	}
 
 	public function getCategoryTree($parentId=0, $level = 0, $onlyPublished = true,$keyword = ""){
 
 		$sortedCats = array();
-		$cats = self::getCategories($onlyPublished, $parentId,false, $keyword);
-		if(!empty($cats)){
-			while (!empty($childCats){
-				$childCats = $this->addSubCats($childCats,$onlyPublished, $category->virtuemart_category_id, false, $keyword);
 
+// 		$this->_noLimit = true;
+		$this->rekurseCats($parentId,$level,$onlyPublished,$keyword,$sortedCats);
+
+// 		$this->_noLimit = false;
+		$this->_total = count($sortedCats);
+
+		$this->getPagination();
+
+// 		vmdebug('getCategoryTree',$sortedCats);
+		return $sortedCats;
+
+	}
+
+	public function rekurseCats($virtuemart_category_id,$level,$onlyPublished,$keyword,&$sortedCats){
+		$level++;
+		$childCats = self::getCategories($onlyPublished, $virtuemart_category_id, false, $keyword);
+		if(!empty($childCats)){
+			foreach ($childCats as $key => $category) {
+				$category->level = $level;
+				$sortedCats[] = $category;
+				$this->rekurseCats($category->virtuemart_category_id,$level,$onlyPublished,$keyword,$sortedCats);
 			}
 		}
 	}
 
-	public function addSubCats($childCats){
-		foreach ($cats as $key => $category) {
-			$sortedCats[] = $category;
-			$childCats = self::getCategories($onlyPublished, $category->virtuemart_category_id, false, $keyword);
-		}
-		return $childCats;
-	}
 
 	/**
 	* Return an array containing category information
@@ -144,11 +158,11 @@ class VirtueMartModelCategory extends VmModel {
 	* @param integer $parentId Show only its childs
 	* @param string $keyword the keyword to filter categories
 	* @return array Categories list
-	*/
-	public function getCategoryTree($parentId=0, $level = 0, $onlyPublished = true,$keyword = "") {
+	*
+	public function getCategoryTreeOld($parentId=0, $level = 0, $onlyPublished = true,$keyword = "") {
 
 		$level++;
-		$this->level; //intern machen
+// 		$this->level; //intern machen
 		if( $level == 1 ){
 			$this->_noLimit = false;
 // 			$limits = $this->setPaginationLimits();
@@ -157,13 +171,26 @@ class VirtueMartModelCategory extends VmModel {
 		} else {
 			$this->_noLimit = true;
 		}
+
 		$cats = self::getCategories($onlyPublished, $parentId,false, $keyword);
-		vmdebug('my level '.$level.' my cats',$cats);
+
 		if(!empty($cats)){
+			vmdebug('my level '.$level.' my cats',$cats);
 			foreach ($cats as $key => $category) {
 				$category->level = $level;
 				$childCats = self::getCategoryTree($category->virtuemart_category_id, $level, $onlyPublished, $keyword);
-				$cats = array_merge($cats,$childCats);
+				if(!empty($childCats)){
+					vmdebug(' my cats davor ',$cats);
+// 					$cats
+// 					$arrayToSplice = array_merge((array)$category,$childCats);
+// 					$arrayToSplice = $childCats;
+// 					$this->categoryList = array_splice($this->categoryList,$key,0,$arrayToSplice);
+					vmdebug('my cats danach',$this->categoryList);
+				} else{
+					$this->categoryList[] = $category;
+				}
+
+// 				$cats = array_merge($cats,$childCats);
 // 				foreach($childCats as $childCat){
 // 					$cats[] = $childCat;
 // 				}
@@ -172,7 +199,7 @@ class VirtueMartModelCategory extends VmModel {
 		} else {
 
 		}
-		if( $level == 1 ){
+/*		if( $level == 1 ){
 			$this->_noLimit = false;
 			$this->_total = count($cats);
 
@@ -181,11 +208,11 @@ class VirtueMartModelCategory extends VmModel {
 // 			$limit = $limits[1];
 // 			vmdebug('cats count',$this->_total);
 			$this->getPagination();
-		}
-
+		}*
+// 		vmdebug('my level '.$level.' my cats',$cats);
 		return $cats;
 	}
-
+/*/
 	public function getCategories($onlyPublished = true, $parentId = false, $childId = false,$keyword = "") {
 
 		$vendorId = 1;
