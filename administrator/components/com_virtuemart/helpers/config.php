@@ -518,7 +518,7 @@ class VmConfig {
 			$_db->query();
 
 
-			$qry = 'DELETE FROM `#__virtuemart_configs` WHERE `virtuemart_config_id`=1';
+			$qry = 'DELETE FROM `#__virtuemart_configs` WHERE EXISTS `virtuemart_config_id`=1';
 			$_db->setQuery($qry);
 			$_db->query();
 
