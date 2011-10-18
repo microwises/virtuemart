@@ -17,7 +17,14 @@
         <filename>tmpl/current.php</filename>
         <filename>tmpl/default.php</filename>
         <filename>tmpl/index.html</filename>
+		<folder>language</folder>
     </files>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.mod_virtuemart_category.ini</language>
+        <language tag="en-GB">en-GB/en-GB.mod_virtuemart_category.sys.ini</language>
+        <language tag="fr-FR">fr-FR/fr-FR.mod_virtuemart_category.ini</language>
+        <language tag="fr-FR">fr-FR/fr-FR.mod_virtuemart_category.sys.ini</language>
+    </languages
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param name="Parent_Category_id" type="vmcategories"  value_field="category_name" label="MOD_VIRTUEMART_CATEGORY_PARENT_CATEGORY_ID" description="MOD_VIRTUEMART_CATEGORY_CHOOSE." />
 

@@ -67,10 +67,10 @@
 
 		var datas = form.serialize(),
 		prices = $("#productPrice"+id);
-		prices.fadeTo("slow", 0.33);
+		prices.fadeTo("fast", 0.75);
 		$.getJSON(siteurl+'?option=com_virtuemart&nosef=1&view=productdetails&task=recalculate&format=json',encodeURIComponent(datas),
 			function(datas, textStatus) {
-				prices.fadeTo("slow", 1);
+				prices.fadeTo("fast", 1);
 				// refresh price
 				for(key in datas) {
 					var value = datas[key];
@@ -103,6 +103,15 @@
 
 })(jQuery);
 jQuery.noConflict();
-jQuery(document).ready(function() {
-	jQuery(".product").product();
+jQuery(document).ready(function($) {
+
+	$(".product").product();
+
+	$("form.js-recalculate").each(function(){
+		var id= $(this).find('input[name="virtuemart_product_id[]"]').val();
+		$.setproducttype($(this),id);
+		console.log($(this),id);
+	});
+		
 });
+
