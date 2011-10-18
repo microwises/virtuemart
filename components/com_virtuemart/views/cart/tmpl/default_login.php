@@ -54,7 +54,7 @@ if (VmConfig::get('oncheckout_show_register', 1)  && $this->cart->userDetails->J
         <p class="width30 floatleft" id="com-form-login-username">
             <input type="text" name="username" size="18" alt="<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>" value="<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>" onblur="if(this.value=='') this.value='<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>';" onfocus="if(this.value=='<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>') this.value='';" />
         </p>
-        
+
         <p class="width30 floatleft" id="com-form-login-password">
             <?php if ( VmConfig::isJ15() ) { ?>
             <input type="password" id="passwd" name="passwd" class="inputbox" size="18" alt="password" />
@@ -62,7 +62,7 @@ if (VmConfig::get('oncheckout_show_register', 1)  && $this->cart->userDetails->J
             <input id="modlgn-passwd" type="password" name="password" class="inputbox" size="18"  />
             <?php } ?>
 	</p>
-        
+
         <p class="width30 floatleft" id="com-form-login-remember">
             <input type="submit" name="Submit" class="default" value="<?php echo JText::_('COM_VIRTUEMART_LOGIN') ?>" />
             <?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
@@ -71,17 +71,17 @@ if (VmConfig::get('oncheckout_show_register', 1)  && $this->cart->userDetails->J
             <?php endif; ?>
         </p>
         <div class="clr"></div>
-        
+
         <div class="width30 floatleft">
             <a   href="<?php echo JRoute::_('index.php?option='.$comUserOption.'&view=reset'); ?>">
             <?php echo JText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_PASSWORD'); ?></a>
         </div>
-        
+
         <div class="width30 floatleft">
             <a   href="<?php echo JRoute::_('index.php?option='.$comUserOption.'&view=remind'); ?>">
             <?php echo JText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_USERNAME'); ?></a>
         </div>
-        
+
         <?php /*
           $usersConfig = &JComponentHelper::getParams( 'com_users' );
           if ($usersConfig->get('allowUserRegistration')) { ?>
@@ -93,7 +93,7 @@ if (VmConfig::get('oncheckout_show_register', 1)  && $this->cart->userDetails->J
          */ ?>
 
         <div class="clr"></div>
-   
+
 
         <?php if ( VmConfig::isJ15() ) { ?>
         <input type="hidden" name="task" value="login" />
@@ -105,7 +105,7 @@ if (VmConfig::get('oncheckout_show_register', 1)  && $this->cart->userDetails->J
         <?php echo JHTML::_('form.token'); ?>
     </form>
 
-<?php }else { ?>
+<?php }else if ($this->cart->userDetails->JUser->id  ){ ?>
 
    <form action="index.php" method="post" name="login" id="form-login">
         <?php echo JText::sprintf( 'COM_VIRTUEMART_HINAME', $this->cart->userDetails->JUser->name ); ?>
@@ -115,7 +115,7 @@ if (VmConfig::get('oncheckout_show_register', 1)  && $this->cart->userDetails->J
             <input type="hidden" name="task" value="logout" />
         <?php } else { ?>
             <input type="hidden" name="task" value="user.logout" />
-        <?php } ?>        
+        <?php } ?>
         <?php echo JHtml::_('form.token'); ?>
 	<input type="hidden" name="return" value="<?php echo base64_encode($url) ?>" />
     </form>
