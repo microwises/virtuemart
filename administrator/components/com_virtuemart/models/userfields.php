@@ -301,14 +301,21 @@ class VirtueMartModelUserfields extends VmModel {
 	public function getUserFieldsFor($layoutName, $type,$userId = -1){
 
 		$register = false;
-		$user = JFactory::getUser();
-		if(!empty($user)){
-			if(empty($user->id)){
+
+		if(!VmConfig::get('oncheckout_show_register',1)){
+			$user = JFactory::getUser();
+			if(!empty($user)){
+				if(empty($user->id)){
+					$register = true;
+				}
+			} else {
 				$register = true;
 			}
 		} else {
-			$register = true;
+			$register = false;
 		}
+
+
 
 		//Here we define the fields to skip
 // 		if($layoutName=='edit' || ){

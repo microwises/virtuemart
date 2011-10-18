@@ -771,7 +771,7 @@ class VmTable extends JTable{
 		if ($this->_db->query()){
 			parent::delete($oid);
 		} else {
-			return false;
+			return true;
 		}
 	}
 

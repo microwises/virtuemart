@@ -364,7 +364,8 @@ class VmMediaHandler {
 		 */
 		function displayMediaFull(){
 
-			 $this->displayMediaThumb('id="vm_display_image"',false);
+// 			return 'No display full media function defined for this media, this is a developer error';
+			return $this->displayMediaThumb('id="vm_display_image"',false);
 		}
 
 		/**
@@ -741,6 +742,7 @@ class VmMediaHandler {
 			$html = $this->displayFileSelection($fileIds,$type);
 			$html .= $this->displayFileHandler('id="vm_display_image" ');
 			//$html .= '<div style="display:none"><div id="media-dialog" >'.$this->lists['htmlImages'].'</div></div>';//$type);
+			if(empty($this->_db)) $this->_db = JFactory::getDBO();
 			$this->_db->setQuery('SELECT FOUND_ROWS()');
 			$imagetotal = $this->_db->loadResult();
 			//vmJsApi::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
@@ -752,7 +754,7 @@ class VmMediaHandler {
 			else $j = "
 			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','0') }); " ;
 
-			$j .=" 
+			$j .="
 			jQuery(document).ready(function(){
 			jQuery('input#searchMedia').autocomplete({
 
@@ -765,7 +767,7 @@ class VmMediaHandler {
 				minLength:1,
 				html: true
 			});
-		}); ";	
+		}); ";
 
 			$document = JFactory::getDocument ();
 			$document->addScriptDeclaration ( $j);
@@ -830,11 +832,11 @@ class VmMediaHandler {
 		}
 		function displayImages($types ='',$page=0 ) {
 
-			
+
 			$images = array();
 			$list = VmMediaHandler::getImagesList($types,$page);
 			if (empty($list['images'])) return JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND');
-			
+
 			foreach ($list['images'] as $key =>$image) {
 				$htmlImages ='';
 				if ($image->file_url_thumb > "0" ) {

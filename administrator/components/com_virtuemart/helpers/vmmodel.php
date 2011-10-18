@@ -386,7 +386,7 @@ class VmModel extends JModel {
 			}
 			$this->_total = $count;
 			if($limitStart>$count){
-				$limitStart = $count%$limit;
+				$limitStart = floor($count/$limit);
 			}
 			$this->getPagination($count,$limitStart,$limit);
 
