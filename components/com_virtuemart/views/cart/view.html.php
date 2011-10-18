@@ -341,7 +341,7 @@ class VirtueMartViewCart extends JView {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 			if (Permissions::getInstance()->check("admin,storeadmin")) {
 				$uri = JFactory::getURI();
-				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=paymentmethod';
+				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=shippingcarrier';
 				$text = JText::sprintf('COM_VIRTUEMART_NO_SHIPPING_METHODS_CONFIGURED_LINK', '<a href="' . $link . '">' . $link . '</a>');
 			}
 
