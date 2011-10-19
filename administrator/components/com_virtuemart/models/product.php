@@ -148,7 +148,7 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 
-		} elseif ($search = JRequest::getWord('filter_product', false)){
+		} elseif ($search = JRequest::getString('filter_product', false)){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			$where[] = 'p.`product_name` LIKE '.$search;
      	}

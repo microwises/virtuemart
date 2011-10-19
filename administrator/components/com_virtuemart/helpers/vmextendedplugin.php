@@ -23,7 +23,7 @@ abstract class VmExtendedPlugin extends JPlugin {
 	 * @var string plugin name
 	 * @access private
 	 */
-	private $_name = '';
+	protected $_name = '';
 
 	/**
 	 * Method to get the plugin name
@@ -33,7 +33,7 @@ abstract class VmExtendedPlugin extends JPlugin {
 	 *
 	 * @return	string The name of the plugin
 	 */
-	private function getName() {
+	protected function getName() {
 		$name = $this->_name;
 
 		if (empty($name)) {

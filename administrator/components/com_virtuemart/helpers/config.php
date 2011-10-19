@@ -518,15 +518,20 @@ class VmConfig {
 			$_db->query();
 
 
-			$qry = 'DELETE FROM `#__virtuemart_configs` WHERE EXISTS `virtuemart_config_id`=1';
-			$_db->setQuery($qry);
-			$_db->query();
+			$query = 'SELECT `virtuemart_config_id` FROM `#__virtuemart_configs`
+							 WHERE `virtuemart_config_id` = 1';
+			$_db->setQuery( $query );
+			if ($_db->query()){
+				$qry = 'DELETE FROM `#__virtuemart_configs` WHERE `virtuemart_config_id`=1';
+				$_db->setQuery($qry);
+				$_db->query();
+			}
+
 
 			$_value = join('|', $_value);
 			$qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES ('1', '$_value')";
 
-		// Write to the DB
-		$_db = JFactory::getDBO();
+
 		$_db->setQuery($qry);
 		if (!$_db->query()) {
 			JError::raiseWarning(1, 'VmConfig::installVMConfig: '.JText::_('COM_VIRTUEMART_SQL_ERROR').' '.$_db->stderr(true));

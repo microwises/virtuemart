@@ -122,27 +122,40 @@ class VirtueMartModelCategory extends VmModel {
 
 		$sortedCats = array();
 
-// 		$this->_noLimit = true;
-		$this->rekurseCats($parentId,$level,$onlyPublished,$keyword,$sortedCats);
+		$limits = $this->setPaginationLimits();
+		$limitStart = $limits[0];
+		$limit = $limits[1];
 
-// 		$this->_noLimit = false;
+// 		vmRam('What take the cats?');
+
+		$this->_noLimit = true;
+		$this->rekurseCats($parentId,$level,$onlyPublished,$keyword,$limit,$sortedCats);
+
+
+		$this->_noLimit = false;
 		$this->_total = count($sortedCats);
+// 		vmRam('What take the cats?');
 
-		$this->getPagination();
+		$this->getPagination($this->_total,$limitStart,$limit);
 
+		$sortedCats = array_slice($sortedCats, $limitStart,$limit);
 // 		vmdebug('getCategoryTree',$sortedCats);
+
 		return $sortedCats;
 
 	}
 
-	public function rekurseCats($virtuemart_category_id,$level,$onlyPublished,$keyword,&$sortedCats){
+	public function rekurseCats($virtuemart_category_id,$level,$onlyPublished,$keyword,$limit,&$sortedCats){
 		$level++;
 		$childCats = self::getCategories($onlyPublished, $virtuemart_category_id, false, $keyword);
 		if(!empty($childCats)){
 			foreach ($childCats as $key => $category) {
 				$category->level = $level;
 				$sortedCats[] = $category;
-				$this->rekurseCats($category->virtuemart_category_id,$level,$onlyPublished,$keyword,$sortedCats);
+				$this->rekurseCats($category->virtuemart_category_id,$level,$onlyPublished,$keyword,$limit,$sortedCats);
+// 				if(count($sortedCats)<$limits){
+// 					break;
+// 				}
 			}
 		}
 	}
@@ -213,7 +226,7 @@ class VirtueMartModelCategory extends VmModel {
 		return $cats;
 	}
 /*/
-	public function getCategories($onlyPublished = true, $parentId = false, $childId = false,$keyword = "") {
+	public function getCategories($onlyPublished = true, $parentId = false, $childId = false, $keyword = "") {
 
 		$vendorId = 1;
 
@@ -254,11 +267,12 @@ class VirtueMartModelCategory extends VmModel {
 		} else {
 			$whereString = 'WHERE 1 ';
 		}
-		if ( JRequest::getCmd('view') == 'category') {
-			$ordering = $this->_getOrdering('c.ordering');
-		} else {
-			$ordering = ' order by c.`category_name` DESC';
-		}
+// 		if ( JRequest::getCmd('view') == 'category') {
+// 			$ordering = $this->_getOrdering('c.ordering');
+// 		} else {
+			$ordering = $this->_getOrdering();
+// 			$ordering = ' order by c.`category_name` DESC';
+// 		}
 
 		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
 
