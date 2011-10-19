@@ -129,8 +129,7 @@ class VirtueMartModelCategory extends VmModel {
 // 		vmRam('What take the cats?');
 
 		$this->_noLimit = true;
-		$this->rekurseCats($parentId,$level,$onlyPublished,$keyword,$limit,$sortedCats);
-
+		$this->rekurseCats($parentId,$level,$onlyPublished,$keyword,$sortedCats);
 
 		$this->_noLimit = false;
 		$this->_total = count($sortedCats);
@@ -145,17 +144,14 @@ class VirtueMartModelCategory extends VmModel {
 
 	}
 
-	public function rekurseCats($virtuemart_category_id,$level,$onlyPublished,$keyword,$limit,&$sortedCats){
+	public function rekurseCats($virtuemart_category_id,$level,$onlyPublished,$keyword,&$sortedCats){
 		$level++;
 		$childCats = self::getCategories($onlyPublished, $virtuemart_category_id, false, $keyword);
 		if(!empty($childCats)){
 			foreach ($childCats as $key => $category) {
 				$category->level = $level;
 				$sortedCats[] = $category;
-				$this->rekurseCats($category->virtuemart_category_id,$level,$onlyPublished,$keyword,$limit,$sortedCats);
-// 				if(count($sortedCats)<$limits){
-// 					break;
-// 				}
+				$this->rekurseCats($category->virtuemart_category_id,$level,$onlyPublished,$keyword,$sortedCats);
 			}
 		}
 	}
@@ -267,12 +263,13 @@ class VirtueMartModelCategory extends VmModel {
 		} else {
 			$whereString = 'WHERE 1 ';
 		}
-// 		if ( JRequest::getCmd('view') == 'category') {
-// 			$ordering = $this->_getOrdering('c.ordering');
-// 		} else {
+
+		//Important, yes, this construction is most time not need and outdated, BUT NOT HERE ! dont remove it! note by Max Milbers
+		if ( JRequest::getCmd('view') == 'category') {
 			$ordering = $this->_getOrdering();
-// 			$ordering = ' order by c.`category_name` DESC';
-// 		}
+		} else {
+			$ordering = $this->_getOrdering('c.category_name','ASC');
+		}
 
 		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
 

@@ -179,13 +179,13 @@ class VmModel extends JModel {
 			$filter_order = $overwrite;
 // 			vmdebug('getValidFilterOrdering use $overwrite '.$filter_order);
 		} else {
-			if($this->_noLimit){
-				$filter_order = $defaultValue;
+// 			if($this->_noLimit){
+// 				$filter_order = $defaultValue;
 // 				vmdebug('getValidFilterOrdering use listmode and default value '.$filter_order);
-			} else {
+// 			} else {
 				$filter_order = strtolower($mainframe->getUserStateFromRequest( 'com_virtuemart'.$view.'.filter_order', 'filter_order',$defaultValue , 'cmd' ));
 // 				vmdebug('getValidFilterOrdering use getUserStateFromRequest '.$filter_order);
-			}
+// 			}
 		}
 
 		if(!empty($filter_order)){
