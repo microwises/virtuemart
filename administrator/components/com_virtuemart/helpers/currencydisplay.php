@@ -277,7 +277,7 @@ class CurrencyDisplay {
 			if($this->_priceConfig[$name][2]) $descr = JText::_($description);
 
 			//	 	if(!empty($product_price[$name])){
-			return '<div style="display : '.$vis.';" >'.$descr.'<span class="Price'.$name.'" >'.$product_price[$name].'</span></div>';
+			return '<div class="Price'.$name.'" style="display : '.$vis.';" >'.$descr.'<span class="Price'.$name.'" >'.$product_price[$name].'</span></div>';
 			//	 	}
 		}
 	}
