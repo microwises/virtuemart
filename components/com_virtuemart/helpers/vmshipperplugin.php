@@ -248,6 +248,11 @@ abstract class vmShipperPlugin extends JPlugin {
      * 				,'length' => 11
      * 				,'null' => false
      * 		)
+     *		,    'order_number' => array (
+     * 				 'type' => 'varchar'
+     * 				,'length' => 32
+     * 				,'null' => false
+     * 		)
      * 		,'shipper_id' => array (
      * 				 'type' => 'text'
      * 				,'null' => false
@@ -609,6 +614,11 @@ abstract class vmShipperPlugin extends JPlugin {
 	    JError::raiseWarning(500, 'writeShipperData got no data to save to ' . $_table);
 	    return;
 	}
+	if (!class_exists('VirtueMartModelOrders'))
+	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+	if (!isset($_values['virtuemart_order_id'])) {
+	   $_values['virtuemart_order_id'] = VirtueMartModelOrders::getOrderIdByOrderNumber($_values['order_number']);
+	}
 	$_cols = array();
 	$_vals = array();
 	foreach ($_values as $_col => $_val) {
@@ -621,6 +631,7 @@ abstract class vmShipperPlugin extends JPlugin {
 		. ') VALUES ('
 		. implode(',', $_vals)
 		. ')';
+	 
 	$_db->setQuery($_q);
 	if (!$_db->query()) {
 	    JError::raiseWarning(500, $_db->getErrorMsg());

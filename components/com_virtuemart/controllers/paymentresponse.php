@@ -59,10 +59,9 @@ class VirtueMartControllerPaymentresponse extends JController {
 	$return_context = "";
 	$dispatcher = JDispatcher::getInstance();
 	$html = "";
-	$returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived', array('pelement' => $pelement,
-	    'virtuemart_payment_id' => $pm,
-	    'virtuemart_order_id' => $virtuemart_order_id,
-	    'html' => $html
+	$returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived', array(
+	    'virtuemart_order_id' => &$virtuemart_order_id,
+	    'html' => &$html
 		));
 
 
@@ -119,9 +118,12 @@ class VirtueMartControllerPaymentresponse extends JController {
 	JPluginHelper::importPlugin('vmpayment');
 	$pelement = JRequest::getWord('pelement');
 	$pm = JRequest::getInt('pm', 0);
+	$return_context = JRequest::getVar('rc', 0);
+	if (!JFactory::getSession(array('id' => $return_context))) {
+	    return false;
+	}
 	$dispatcher = JDispatcher::getInstance();
-	$returnValues = $dispatcher->trigger('plgVmOnPaymentUserCancel', array('pelement' => $pelement,
-	    'virtuemart_paymentmethod_id' => $pm,
+	$returnValues = $dispatcher->trigger('plgVmOnPaymentUserCancel', array(
 	    'virtuemart_order_id' => &$virtuemart_order_id));
 
 	foreach ($returnValues as $returnValue) {
@@ -173,11 +175,9 @@ class VirtueMartControllerPaymentresponse extends JController {
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
 	JPluginHelper::importPlugin('vmpayment');
-	$pelement = JRequest::getVar('pelement');
-	$pm = JRequest::getInt('pm', 0);
+
 	$dispatcher = JDispatcher::getInstance();
-	$returnValues = $dispatcher->trigger('plgVmOnPaymentNotification', array('pelement' => $pelement,
-	    'virtuemart_paymentmethod_id' => $pm,
+	$returnValues = $dispatcher->trigger('plgVmOnPaymentNotification', array(
 	    'return_context' => &$return_context,
 	    'virtuemart_order_id' => &$virtuemart_order_id,
 	    'new_status' => &$new_status));

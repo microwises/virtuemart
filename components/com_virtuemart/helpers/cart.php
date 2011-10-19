@@ -1023,13 +1023,13 @@ class VirtueMartCart {
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart') );
 			}
 			$this->virtuemart_order_id = $orderID;
-
+			$order_number= $order->getOrderNumber($orderID);
 			$cart = $this->getCart();
 			$dispatcher = JDispatcher::getInstance();
 			$html="";
 			$session = JFactory::getSession();
 			$return_context = $session->getId();
-			$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderGetPaymentForm', array($orderID, $cart , $return_context, $html));
+			$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderGetPaymentForm', array($order_number, $cart , $return_context, &$html));
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
 			// 1 = cart should be emptied, 0 cart should not be emptied
@@ -1038,10 +1038,8 @@ class VirtueMartCart {
 				if ($returnValue !== null  ) {
 					if ($returnValue == 1 )   {
 						$this->sentOrderConfirmedEmail($order->getOrder($orderID));
-
 						//We delete the old stuff
 						$this->emptyCart();
-
 						JRequest::setVar('html' , $html);
 					} elseif ($returnValue == 0 )   {
 						JRequest::setVar('html' , $html);

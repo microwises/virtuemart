@@ -29,11 +29,12 @@ $uri    = JURI::getInstance();
 $prefix = $uri->toString(array('scheme', 'host', 'port'));
 $link = JRoute::_ ( 'index.php?option=com_virtuemart' );
 
-echo '<br/><br/><b>'.JHTML::_('link',$prefix.$link, $this->vendor->vendor_name).'</b> :: ';
+echo '<br/><br/>';
+$link='<b>'.JHTML::_('link',$prefix.$link, $this->vendor->vendor_name).'</b> ';
 
 //	echo JText::_('COM_VIRTUEMART_CART_MAIL_VENDOR_TITLE').$this->vendor->vendor_name.'<br/>';
 /* GENERAL FOOTER FOR ALL MAILS */
-	echo JText::_('COM_VIRTUEMART_CART_MAIL_FOOTER');
+	echo JText::_('COM_VIRTUEMART_CART_MAIL_FOOTER' ) . $link;
         echo '<br/>';
 	echo $this->vendor->vendor_name .'<br/>'.$this->vendor->vendor_phone .' '.$this->vendor->vendor_store_name .'<br/ > '.$this->vendor->vendor_store_desc;
 

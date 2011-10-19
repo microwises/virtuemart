@@ -74,6 +74,11 @@ abstract class vmPaymentPlugin extends JPlugin {
      * 				,'length' => 11
      * 				,'null' => false
      * 		)
+     * 		,'order_number' => array (
+     * 				 'type' => 'varchar'
+     * 				,'length' => 32
+     * 				,'null' => false
+     * 		)
      * 		,'payment_method_id' => array (
      * 				 'type' => 'text'
      * 				,'null' => false
@@ -219,7 +224,7 @@ abstract class vmPaymentPlugin extends JPlugin {
      * This event is fired when the payment method returns to the shop after
      * Typically,  the events may also represent authorizations, Fraud Management Filter actions and other actions,
      * such as refunds, disputes, and chargebacks.
-     *
+     *  the payment itseff should send in the URL the parameters needed
      * NOTE for Plugin developers:
      *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
      *
@@ -233,10 +238,8 @@ abstract class vmPaymentPlugin extends JPlugin {
      * @author Valerie Isaksen
      *
      */
-    function plgVmOnPaymentResponseReceived($pelement, $virtuemart_paymentmethod_id, &$virtuemart_order_id, &$html) {
-	if ($this->_pelement != $pelement) {
+    function plgVmOnPaymentResponseReceived(  &$virtuemart_order_id, &$html) {
 	    return null;
-	}
 	return false;
     }
 
@@ -247,7 +250,7 @@ abstract class vmPaymentPlugin extends JPlugin {
      * NOTE for Plugin developers:
      *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL.
      * The order previously created is deleted.. the acrt is not emptied, so the user can change the payment, and re-order.
-     *
+     * The payment itself should decide which parameter is necessary
      * @param int $pelement code to the constructor
      * @param int $virtuemart_paymentmethod_id
      * @param int $virtuemart_order_id : payment notification order id
@@ -256,7 +259,7 @@ abstract class vmPaymentPlugin extends JPlugin {
      * @author Valerie Isaksen
      *
      */
-    function plgVmOnPaymentUserCancel($pelement, $virtuemart_paymentmethod_id, $virtuemart_order_id) {
+    function plgVmOnPaymentUserCancel(  &$virtuemart_order_id) {
 	if ($this->_pelement != $pelement) {
 	    return null;
 	}
@@ -274,15 +277,16 @@ abstract class vmPaymentPlugin extends JPlugin {
      *
      * @param int $pelement
      * @param int $virtuemart_paymentmethod_id
-     * @param $return_context: it was given and sent in the payment form. The notification should return it back.  Used to know which cart should be emptied
-     * @param int $virtuemart_order_id : payment notification order id
+     * @param $return_context: it was given and sent in the payment form. The notification should return it back.
+     * Used to know which cart should be emptied, in case it is still in the session.
+     * @param int $virtuemart_order_id : payment  order id
      * @param char $new_status : new_status for this order id.
      * * @return mixed Null when this method was not selected, otherwise the true or false
      *
      * @author Valerie Isaksen
      *
      */
-    function plgVmOnPaymentNotification($pelement, $virtuemart_paymentmethod_id, $return_context, $virtuemart_order_id, $new_status) {
+    function plgVmOnPaymentNotification(  &$return_context, &$virtuemart_order_id, &$new_status) {
 	if ($this->_pelement != $pelement) {
 	    return null;
 	}
@@ -314,10 +318,14 @@ abstract class vmPaymentPlugin extends JPlugin {
      * NOTE for Plugin developers:
      *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
      * returns 1 if the Cart should be deleted, and order sent
-     *
+     * $order_number: the actual order number
+     * $orderDate
+     * $return_context: contains the session id. Should be sent to the form. And the payment will sent it back.
+     *                  Will be used to empty the cart if necessary, and semnd the order email.
+     * $html: the payment form to display. But in some case, the bank can be called directly.
      * @author Valérie Isaksen
      */
-    abstract function plgVmOnConfirmedOrderGetPaymentForm($virtuemart_order_id, $orderData, $return_context, $html);
+    abstract function plgVmOnConfirmedOrderGetPaymentForm($order_number, $orderData, $return_context, &$html);
 
     /**
      * plgVmOnShowOrderPaymentFE
@@ -538,21 +546,6 @@ abstract class vmPaymentPlugin extends JPlugin {
     }
 
     /**
-     * Get the name of the payment method
-     * @param int $_pid The payment method ID
-     * @author Oscar van Eijk
-     * @author Valérie Isaken
-     * @return string Payment method name
-     */
-    function plgVmGetDisplayedPaymentName(TablePaymentmethods $payment) {
-	if (!$this->selectedThisPayment($this->_pelement, $payment->virtuemart_paymentmethod_id)) {
-	    return null; // Another payment was selected, do nothing
-	}
-	$params = new JParameter($payment->payment_params); //? note by Max Milbers, why is this here?
-	return $payment->payment_name;
-    }
-
-    /**
      * This functions gets the used and configured payment method
      * pelement of this class determines the used jplugin.
      * The right payment method is determined by the vendor and the jplugin id.
@@ -584,6 +577,11 @@ abstract class vmPaymentPlugin extends JPlugin {
 	if (count($_values) == 0) {
 	    JError::raiseWarning(500, 'writePaymentData got no data to save to ' . $_table);
 	    return;
+	}
+	if (!class_exists('VirtueMartModelOrders'))
+	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+	if (!isset($_values['virtuemart_order_id'])) {
+	    $_values['virtuemart_order_id'] = VirtueMartModelOrders::getOrderIdByOrderNumber($_values['order_number']);
 	}
 	$_cols = array();
 	$_vals = array();
@@ -686,6 +684,23 @@ abstract class vmPaymentPlugin extends JPlugin {
 	return $result;
     }
 
+    /**
+     * Get Shipper Data for a go given Payment ID
+     * @param int $virtuemart_payment_id The Payment ID
+     * @author Valérie Isaksen
+     * @return  Shipper data
+     */
+    final protected function getPaymentDataByOrderId($virtuemart_order_id  ) {
+	$db = JFactory::getDBO();
+	$q = 'SELECT * FROM `' . $this->_tablename . '` '
+		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
+
+	$db->setQuery($q);
+	$payment = $db->loadObject();
+
+	return $payment;
+    }
+
     function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart, array $cart_prices) {
 
 	$nbPayment = 0;
@@ -700,9 +715,10 @@ abstract class vmPaymentPlugin extends JPlugin {
 	if (!$this->selectedThisPayment($this->_pelement, $cart->virtuemart_paymentmethod_id)) {
 	    return null; // Another payment was selected, do nothing
 	}
-	if (!is_array($this->payments)) return null;
+	if (!is_array($this->payments))
+	    return null;
 	foreach ($this->payments as $payment) {
-	    if ($payment->virtuemart_paymentmethod_id ==$cart->virtuemart_paymentmethod_id) {
+	    if ($payment->virtuemart_paymentmethod_id == $cart->virtuemart_paymentmethod_id) {
 		break;
 	    }
 	}
@@ -718,7 +734,7 @@ abstract class vmPaymentPlugin extends JPlugin {
 	$payment_value = $this->getPaymentValue($params, $cart_prices);
 	$payment_tax_id = $this->getPaymentTaxId($params);
 
-	$this->setCartPrices( $cart_prices, $payment_value, $payment_tax_id);
+	$this->setCartPrices($cart_prices, $payment_value, $payment_tax_id);
 
 	return true;
     }
@@ -824,7 +840,7 @@ abstract class vmPaymentPlugin extends JPlugin {
      * @author Valérie Isaksen
      */
 
-    function setCartPrices( &$cart_prices, $payment_value, $payment_tax_id) {
+    function setCartPrices(&$cart_prices, $payment_value, $payment_tax_id) {
 
 	$cart_prices['paymentValue'] = $payment_value;
 
