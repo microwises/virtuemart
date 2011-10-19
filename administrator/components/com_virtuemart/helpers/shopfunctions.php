@@ -78,7 +78,7 @@ class ShopFunctions {
 
 	function displayDefaultViewSearch($searchLabel, $value, $name ='search') {
 		return JText::_('COM_VIRTUEMART_FILTER') . ' ' . JText::_($searchLabel) . ':
-		<input type="text" name="' . $name . '" id="' . $name . '" value="' .$value . '" class="text_area" onchange="document.adminForm.submit();" />
+		<input type="text" name="' . $name . '" id="' . $name . '" value="' .$value . '" class="text_area" />
 		<button onclick="this.form.submit();">' . JText::_('COM_VIRTUEMART_GO') . '</button>
 		<button onclick="document.getElementById(\'' . $name . '\').value=\'\';this.form.submit();">' . JText::_('COM_VIRTUEMART_RESET') . '</button>';
 	}

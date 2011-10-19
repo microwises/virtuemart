@@ -56,6 +56,11 @@ dl#system-message dd.notice { background: #eee url(../images/admin_ui/header_bg.
 #system-message dd ul  .vmdebug{    background: url("../images/icon_32/elements_16.png") no-repeat scroll 0px top transparent !important;display: block;}
 #system-message dd.error ul {background: url("../images/icon_32/exclamation.png") no-repeat scroll 8px center transparent !important;}
 
+fieldset input, fieldset textarea, fieldset select, fieldset img, fieldset button {
+    float: left;
+    margin: 5px 5px 5px 0;
+    width: auto;
+}
 /* vmdebug */
 .vmdebug pre{ padding-left: 32px;}
 
