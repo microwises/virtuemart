@@ -280,6 +280,11 @@ jQuery.noConflict();
 
 	$('#content-box [title]').vm2admin('tips',tip_image);
 	$('.modal').fancybox();
-
+	$('.reset-value').click( function(e){
+		e.preventDefault();
+		none = '';
+		jQuery(this).parent().find('.ui-autocomplete-input').val(none);
+		
+	});
 
 });

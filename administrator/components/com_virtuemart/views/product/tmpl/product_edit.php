@@ -24,7 +24,7 @@ AdminUIHelper::startAdminArea();
 JHTML::_('behavior.calendar');
 
 $document = JFactory::getDocument();
-$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.ui.autocomplete.html.js');
+
 //$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.autocomplete.pack.js');
 //$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jquery.autocomplete.css');
 vmJsApi::JvalideForm();
