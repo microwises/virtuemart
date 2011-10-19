@@ -181,6 +181,9 @@ class VirtueMartModelMedia extends VmModel {
 								OR `file_url_thumb` LIKE '.$search.'
 							) ';
 		}
+		if ($type = JRequest::getWord('search_type')) {
+			$where[] = 'file_type = "'.$type.'" ' ;
+		}
 
 		if (!empty($where)) $whereItems = array_merge($whereItems,$where);
 

@@ -30,7 +30,7 @@ $option = JRequest::getWord('option');
 		<table>
 		  <tr>
 			 <td align="left" width="100%">
-				<?php echo ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_NAME',$this->lists['searchMedia'],'searchMedia') ?>
+				<?php echo ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_NAME',$this->lists['searchMedia'],'searchMedia') .' '. $this->lists['search_type']; ?>
 			 </td>
 		  </tr>
 		</table>

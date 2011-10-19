@@ -36,7 +36,7 @@ class VirtuemartViewMedia extends JView {
 		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('permissions');
-
+		$this->loadHelper('html');
 		//@todo should be depended by loggedVendor
 		$vendorId=1;
 		$this->assignRef('vendorId', $vendorId);
@@ -76,6 +76,13 @@ class VirtuemartViewMedia extends JView {
 			JToolBarHelper::customX('synchronizeMedia', 'new', 'new', JText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'),false);
 			ShopFunctions::addStandardDefaultViewCommands(false);
 			$lists = ShopFunctions::addStandardDefaultViewLists($model,null,null,'searchMedia');
+			$options = array( '' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'),
+				'product' => JText::_('COM_VIRTUEMART_PRODUCT'),
+				'category' => JText::_('COM_VIRTUEMART_CATEGORY'),
+				'manufacturer' => JText::_('COM_VIRTUEMART_MANUFACTURER'),
+				'vendor' => JText::_('COM_VIRTUEMART_VENDOR')
+				);
+			$lists['search_type'] = VmHTML::selectList('search_type', JRequest::getVar('search_type'),$options,1,'','onchange="this.form.submit();"');
 			$this->assignRef('lists', $lists);
 
 		}
