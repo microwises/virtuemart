@@ -81,7 +81,7 @@ if (empty ( $this->product )) {
 				if ($this->product->product_unit && VmConfig::get ( 'price_show_packaging_pricelabel' )) {
 					echo "<strong>" . JText::_ ( 'COM_VIRTUEMART_CART_PRICE_PER_UNIT' ) . ' (' . $this->product->product_unit . "):</strong>";
 				} else {
-					echo "<strong>" . JText::_ ( 'COM_VIRTUEMART_CART_PRICE' ) . ": </strong>";
+					echo "<strong>" . JText::_ ( 'COM_VIRTUEMART_CART_PRICE' ) . "</strong>";
 				}
 
 				if ($this->showBasePrice) {

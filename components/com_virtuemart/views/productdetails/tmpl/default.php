@@ -137,7 +137,7 @@ if (empty ( $this->product )) {
 				if ($this->product->product_unit && VmConfig::get ( 'price_show_packaging_pricelabel' )) {
 					echo "<strong>" . JText::_ ( 'COM_VIRTUEMART_CART_PRICE_PER_UNIT' ) . ' (' . $this->product->product_unit . "):</strong>";
 				} else {
-					echo "<strong>" . JText::_ ( 'COM_VIRTUEMART_CART_PRICE' ) . ": </strong>";
+					echo "<strong>" . JText::_ ( 'COM_VIRTUEMART_CART_PRICE' ) . "</strong>";
 				}
 
 				if ($this->showBasePrice) {
@@ -444,7 +444,7 @@ if (empty ( $this->product )) {
 		$stars = array();
 		$showall = JRequest::getBool('showall', false);
 		for ($num=0 ; $num <= $maxrating; $num++  ) {
-			$title = (JText::_("COM_VIRTUEMART_RATING_TITLE").' : '. $num . '/' . $maxrating) ;
+			$title = (JText::_("COM_VIRTUEMART_RATING_TITLE") . $num . '/' . $maxrating) ;
 			$stars[] = '<span class="vmicon vm2-stars'.$num.'" title="'.$title.'"></span>'; //JHTML::image($starsPath.$num.'.gif', JText::_($num.'_STARS'), array("title" => $title) );
 		} ?>
 

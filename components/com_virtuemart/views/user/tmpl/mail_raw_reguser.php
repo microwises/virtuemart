@@ -25,11 +25,11 @@ if (!empty($this->activationLink)) {
 echo $activationLink . $li;
 echo JText::_('COM_VIRTUEMART_SHOPPER_REGISTRATION_DATA') . $li;
 
-echo JText::_('COM_VIRTUEMART_YOUR_LOGINAME') . ": " . $this->user->username . $li;
-echo JText::_('COM_VIRTUEMART_YOUR_DISPLAYED_NAME') . ": " . $this->user->name . $li;
-echo JText::_('COM_VIRTUEMART_YOUR_PASSWORD') . ": " . $this->user->password_clear . $li;
+echo JText::_('COM_VIRTUEMART_YOUR_LOGINAME')   . $this->user->username . $li;
+echo JText::_('COM_VIRTUEMART_YOUR_DISPLAYED_NAME')   . $this->user->name . $li;
+echo JText::_('COM_VIRTUEMART_YOUR_PASSWORD')   . $this->user->password_clear . $li;
 
-echo JText::_('COM_VIRTUEMART_YOUR_ADDRESS') . ": " . $li;
+echo JText::_('COM_VIRTUEMART_YOUR_ADDRESS')   . $li;
 
 echo $li;
 echo $activationLink . $li;

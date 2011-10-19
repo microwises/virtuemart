@@ -59,10 +59,10 @@ $li = '<br />';
 			    <tr>
 				<td valign="top" width="100%">
 <?php
-echo JText::_('COM_VIRTUEMART_LOGINAME') . ": " . $this->user->username . $li;
-echo JText::_('COM_VIRTUEMART_DISPLAYED_NAME') . ": " . $this->user->name . $li. $li;
+echo JText::_('COM_VIRTUEMART_LOGINAME')  . $this->user->username . $li;
+echo JText::_('COM_VIRTUEMART_DISPLAYED_NAME')   . $this->user->name . $li. $li;
 
-echo JText::_('COM_VIRTUEMART_ENTERED_ADDRESS') . ": " . $li;
+echo JText::_('COM_VIRTUEMART_ENTERED_ADDRESS')   . $li;
 
 foreach ($this->userFields['fields'] as $userField) {
     if (!empty($userField['value']) && $userField['type'] != 'delimiter'&& $userField['type'] != 'BT') {

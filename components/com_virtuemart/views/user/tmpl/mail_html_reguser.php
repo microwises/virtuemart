@@ -66,11 +66,11 @@ $li = '<br />';
 			    <tr>
 				<td valign="top" width="100%">
 				    <?php
-				    echo JText::_('COM_VIRTUEMART_YOUR_LOGINAME') . ": " . $this->user->username . $li;
-				    echo JText::_('COM_VIRTUEMART_YOUR_DISPLAYED_NAME') . ": " . $this->user->name . $li;
-				    echo JText::_('COM_VIRTUEMART_YOUR_PASSWORD') . ": " . $this->user->password_clear . $li. $li;
+				    echo JText::_('COM_VIRTUEMART_YOUR_LOGINAME')   . $this->user->username . $li;
+				    echo JText::_('COM_VIRTUEMART_YOUR_DISPLAYED_NAME')   . $this->user->name . $li;
+				    echo JText::_('COM_VIRTUEMART_YOUR_PASSWORD')  . $this->user->password_clear . $li. $li;
 
-				    echo JText::_('COM_VIRTUEMART_YOUR_ADDRESS') . ": " . $li;
+				    echo JText::_('COM_VIRTUEMART_YOUR_ADDRESS')  . $li;
 
 				    foreach ($this->userFields['fields'] as $userField) {
 					if (!empty($userField['value']) && $userField['type'] != 'delimiter' && $userField['type'] != 'BT' && $userField['type'] != 'hidden') {
