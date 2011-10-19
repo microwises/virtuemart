@@ -74,7 +74,7 @@
 				// refresh price
 				for(key in datas) {
 					var value = datas[key];
-					if (value!=0) prices.find(".Price"+key).show().html(value);
+					if (value!=0) prices.find("span.Price"+key).show().html(value);
 					else prices.find(".Price"+key).html(0).hide();
 				}
 			});
