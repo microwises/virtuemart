@@ -298,7 +298,26 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
     }
 
     function plgVmOnPaymentUserCancel(&$virtuemart_order_id) {
-	$paramstring = $this->getVmPaymentParams($vendorId = 0, $virtuemart_paymentmethod_id);
+	/// hummm
+	if (!class_exists('VirtueMartModelOrders'))
+	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+	$paypal_data = JRequest::get('post');
+
+	$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($paypal_data['invoice']);
+	//fwrite($fp, "order" . $virtuemart_order_id);
+	if (!$virtuemart_order_id) {
+	    // send an email to admin, and ofc not update the order status: exit  is fine
+	   return false;
+	}
+	//fwrite($fp, "\nafgdfgdfgdfms");
+	$payment = $this->getPaymentDataByOrderId($virtuemart_order_id);
+
+	if (!$payment) {
+	    return false;
+	}
+
+	$paramstring = $this->getVmPaymentParams($vendorId = 0, $payment->payment_method_id);
+
 	$params = new JParameter($paramstring);
 
 
@@ -349,13 +368,13 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	    $table_key = 'paypal_reponse_' . $key;
 	    if (in_array($table_key, $columns)) {
 		$response_fields[$table_key] = $value;
-		fwrite($fp, "\n" . $table_key);
-		fwrite($fp, $value);
+		//fwrite($fp, "\n" . $table_key);
+		//fwrite($fp, $value);
 	    }
 	}
 
 	$response_fields['paypal_response_notification'] = implode("|", $paypal_data); // raw data
-	fwrite($fp, "\napres notif" . $response_fields['paypal_response_notification']);
+	//fwrite($fp, "\napres notif" . $response_fields['paypal_response_notification']);
 	// we want to check that custom param is the same
 	// if not should Add a message in the BE,  send an email, and ofc not update the order status
 	if (false) {
