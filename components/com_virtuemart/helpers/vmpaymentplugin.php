@@ -856,7 +856,7 @@ abstract class vmPaymentPlugin extends JPlugin {
 	$calculator = calculationHelper::getInstance();
 	if (count($taxrules) > 0) {
 	    $cart_prices['salesPricePayment'] = $calculator->roundDisplay($calculator->executeCalculation($taxrules, $cart_prices['paymentValue']));
-	    $cart_prices['paymentTax'] = $calculator->roundDisplay($cartPrices['salesPricePayment']) - $cart_prices['paymentValue'];
+	    $cart_prices['paymentTax'] = $calculator->roundDisplay($cart_prices['salesPricePayment']) - $cart_prices['paymentValue'];
 	} else {
 	    $cart_prices['salesPricePayment'] = $payment_value;
 	    $cart_prices['paymentTax'] = 0;
