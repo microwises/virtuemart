@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmshipper" >
-     <name>VMSHIPPER_WEIGHT_COUNTRIES_PLUGIN</name>
+     <name>VMSHIPPER_WEIGHT_COUNTRIES</name>
     <creationDate>June 2011</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
@@ -10,7 +10,6 @@
     <description>VMSHIPPER_WEIGHT_COUNTRIES_PLUGIN_DESC</description>
     <languages>
         <language tag="en-GB">en-GB.plg_vmshipper_weight_countries.ini</language>
-        <language tag="fr-FR">fr-FR.plg_vmshipper_weight_countries.ini</language>
     </languages>
     <files>
         <filename plugin="weight_countries">weight_countries.php</filename>
