@@ -834,12 +834,12 @@ class VirtueMartModelCustomfields extends VmModel {
 					// }
 				} elseif (($productCustom->field_type == "G")) {
 					$child = self::getChild($productCustom->custom_value);
-					$html .= $productCustom->custom_title.' : </span>'.$child->product_name;
+					$html .= $productCustom->custom_title.' : '.$child->product_name.'</span>';
 				} elseif (($productCustom->field_type == "M")) {
-					$html .= $productCustom->custom_title.' : </span>'.self::displayCustomMedia($productCustom->custom_value);
+					$html .= $productCustom->custom_title.' : '.self::displayCustomMedia($productCustom->custom_value).'</span>';
 				} else {
 
-					$html .= $productCustom->custom_title.' : </span>'.$productCustom->custom_value;
+					$html .= $productCustom->custom_title.' : '.$productCustom->custom_value.'</span>';
 				}
 			}
 			$row++;

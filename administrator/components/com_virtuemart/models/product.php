@@ -1225,7 +1225,7 @@ class VirtueMartModelProduct extends VmModel {
 					else $currentManufacturerLink ='<div class="activeOrder">'.$mf->mf_name.'</div>';
 				}
 			} elseif ($virtuemart_manufacturer_id > 0) $currentManufacturerLink ='<div class="title">'.JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL').'</div><div class="activeOrder">'. $manufacturers[0]->mf_name.'</div>';
-			else $currentManufacturerLink ='<div class="title">'.JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL').'</div><div class="activeOrder"> '.$manufacturers[0]->mf_name.'</div>';
+			else $currentManufacturerLink ='<div class="title">'.JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL').'</div><div class="Order"> '.$manufacturers[0]->mf_name.'</div>';
 			$manufacturerLink .='</div>';
 		}
 	} else $manufacturerLink = "" ;
