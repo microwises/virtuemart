@@ -67,7 +67,12 @@ abstract class CouponHelper
 			return JText::_('COM_VIRTUEMART_COUPON_CODE_EXPIRED');
 		}
 		if ($_billTotal < $couponData->coupon_value_valid) {
-			return JText::_('COM_VIRTUEMART_COUPON_CODE_TOOLOW') . " ".$couponData->coupon_value_valid;
+			if (!class_exists('CurrencyDisplay'))
+			    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+			$currency = CurrencyDisplay::getInstance();
+
+			$coupon_value_valid = $currency->priceDisplay($couponData->coupon_value_valid);
+			return JText::_('COM_VIRTUEMART_COUPON_CODE_TOOLOW') . " ".$coupon_value_valid;
 		}
 
 		return '';
