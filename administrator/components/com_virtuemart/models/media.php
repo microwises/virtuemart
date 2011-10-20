@@ -279,7 +279,7 @@ class VirtueMartModelMedia extends VmModel {
 					$data['mediaordering'][$virtuemart_media_id] = count($data['mediaordering']);
 				}
 				$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
-				vmdebug('merged old and new',$virtuemart_media_ids);
+// 				vmdebug('merged old and new',$virtuemart_media_ids);
 				$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
 			} else {
 				$data['virtuemart_media_id'] = $virtuemart_media_id;

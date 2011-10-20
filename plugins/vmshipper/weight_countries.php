@@ -329,18 +329,19 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      * This method returns the logo image form the shipper
      */
 
-    function _getShipperLogo($shipper_logo, $alt_text) {
-
+ /*   function _getShipperLogo($shipper_logo, $alt_text) {
 
 	$img = "";
-	/* TODO: chercher chemin dynamique */
-	$path = JURI::root() . 'images' . DS . 'stories' . DS . 'virtuemart' . DS . 'shipper' . DS;
+
+// 	$path = JURI::root() . 'images' . DS . 'stories' . DS . 'virtuemart' . DS . 'shipper' . DS;
+	$url = JURI::root() . 'images/stories/virtuemart/shipper/';
 	$img = "";
 	if (!(empty($shipper_logo))) {
-	    $img = '<img align="middle" src="' . $path . $shipper_logo . '"  alt="' . $alt_text . '" > ';
+	    $img = '<img align="middle" src="' . $url . $shipper_logo . '"  alt="' . $alt_text . '" > ';
 	}
 	return $img;
     }
+*/
 
     function checkShippingConditions($cart, $shipper) {
 
@@ -425,7 +426,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      */
     function getShippingName($shipping) {
 	$params = new JParameter($shipping->shipping_carrier_params);
-	$logo = $this->_getShipperLogo($params->get('shipper_logo'), $shipping->shipping_carrier_name);
+	$logo = $this->displayLogos(array($params->get('shipper_logo')=> $shipping->shipping_carrier_name));
 
 	return $logo . " " . $shipping->shipping_carrier_name;
     }
