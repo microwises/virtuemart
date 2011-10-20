@@ -161,91 +161,91 @@ if (empty ( $this->product )) {
 				<div class="addtocart-area">
 
 					<form method="post" class="product js-recalculate" action="index.php" id="addtocartproduct<?php echo $this->product->virtuemart_product_id ?>">
-	<?php // Product custom_fields
-	if (!empty($this->product->customfieldsCart)) {  ?>
-	<div class="product-fields">
-		<?php foreach ($this->product->customfieldsCart as $field)
-		{ ?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
-			<span class="product-fields-title" ><b><?php echo  JText::_($field->custom_title) ?></b></span>
-			<?php if ($field->custom_tip) echo JHTML::tooltip($field->custom_tip,  JText::_($field->custom_title), 'tooltip.png'); ?>
-			<span class="product-field-display"><?php echo $field->display ?></span>
+					<?php // Product custom_fields
+					if (!empty($this->product->customfieldsCart)) {  ?>
+					<div class="product-fields">
+						<?php foreach ($this->product->customfieldsCart as $field)
+						{ ?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
+							<span class="product-fields-title" ><b><?php echo  JText::_($field->custom_title) ?></b></span>
+							<?php if ($field->custom_tip) echo JHTML::tooltip($field->custom_tip,  JText::_($field->custom_title), 'tooltip.png'); ?>
+							<span class="product-field-display"><?php echo $field->display ?></span>
 
-			<span class="product-field-desc"><?php echo $field->custom_field_desc ?></span>
-			</div><br />
-			<?php
-		}
-		?>
-	</div>
-	<?php }
-	 /* Product custom Childs
-	  * to display a simple link use $field->virtuemart_product_id as link to child product_id
-	  * custom_value is relation value to child
-	  */
+							<span class="product-field-desc"><?php echo $field->custom_field_desc ?></span>
+							</div><br />
+							<?php
+						}
+						?>
+					</div>
+					<?php }
+					 /* Product custom Childs
+					  * to display a simple link use $field->virtuemart_product_id as link to child product_id
+					  * custom_value is relation value to child
+					  */
 
-	if (!empty($this->product->customsChilds)) {  ?>
-		<div class="product-fields">
-			<?php foreach ($this->product->customsChilds as $field) {  ?>
-				<div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field->field_type ?>">
-				<span class="product-fields-title" ><b><?php echo JText::_($field->field->custom_title) ?></b></span>
-				<span class="product-field-desc"><?php echo JText::_($field->field->custom_value) ?></span>
-				<span class="product-field-display"><?php echo $field->display ?></span>
+					if (!empty($this->product->customsChilds)) {  ?>
+						<div class="product-fields">
+							<?php foreach ($this->product->customsChilds as $field) {  ?>
+								<div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field->field_type ?>">
+								<span class="product-fields-title" ><b><?php echo JText::_($field->field->custom_title) ?></b></span>
+								<span class="product-field-desc"><?php echo JText::_($field->field->custom_value) ?></span>
+								<span class="product-field-display"><?php echo $field->display ?></span>
 
-				</div><br />
-				<?php
-			} ?>
-		</div>
-	<?php } ?>
+								</div><br />
+								<?php
+							} ?>
+						</div>
+					<?php } ?>
 
-		<div class="addtocart-bar">
+					<div class="addtocart-bar">
 
-			<?php // Display the quantity box ?>
-			<!-- <label for="quantity<?php echo $this->product->virtuemart_product_id;?>" class="quantity_box"><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY'); ?>: </label> -->
-			<span class="quantity-box">
-				<input type="text" class="quantity-input" name="quantity[]" value="1" />
-			</span>
-			<span class="quantity-controls">
-				<input type="button" class="quantity-controls quantity-plus" />
-				<input type="button" class="quantity-controls quantity-minus" />
-			</span>
-			<?php // Display the quantity box END ?>
+						<?php // Display the quantity box ?>
+						<!-- <label for="quantity<?php echo $this->product->virtuemart_product_id;?>" class="quantity_box"><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY'); ?>: </label> -->
+						<span class="quantity-box">
+							<input type="text" class="quantity-input" name="quantity[]" value="1" />
+						</span>
+						<span class="quantity-controls">
+							<input type="button" class="quantity-controls quantity-plus" />
+							<input type="button" class="quantity-controls quantity-minus" />
+						</span>
+						<?php // Display the quantity box END ?>
 
-			<?php // Add the button
-			$button_lbl = JText::_('COM_VIRTUEMART_CART_ADD_TO');
-			$button_cls = ''; //$button_cls = 'addtocart_button';
-			if (VmConfig::get('check_stock') == '1' && !$this->product->product_in_stock) {
-				$button_lbl = JText::_('COM_VIRTUEMART_CART_NOTIFY');
-				$button_cls = 'notify-button';
-			} ?>
+						<?php // Add the button
+						$button_lbl = JText::_('COM_VIRTUEMART_CART_ADD_TO');
+						$button_cls = ''; //$button_cls = 'addtocart_button';
+						if (VmConfig::get('check_stock') == '1' && !$this->product->product_in_stock) {
+							$button_lbl = JText::_('COM_VIRTUEMART_CART_NOTIFY');
+							$button_cls = 'notify-button';
+						} ?>
 
-			<?php // Display the add to cart button ?>
-			<span class="addtocart-button">
-				<input type="submit" name="addtocart"  class="addtocart-button" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
-			</span>
+						<?php // Display the add to cart button ?>
+						<span class="addtocart-button">
+							<input type="submit" name="addtocart"  class="addtocart-button" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
+						</span>
 
-		<div class="clear"></div>
-		</div>
+					<div class="clear"></div>
+					</div>
 
-		<?php // Display the add to cart button END ?>
-		<input type="hidden" class="pname" value="<?php echo $this->product->product_name ?>">
-		<input type="hidden" name="option" value="com_virtuemart" />
-		<input type="hidden" name="view" value="cart" />
-		<noscript><input type="hidden" name="task" value="add" /></noscript>
-		<input type="hidden" name="virtuemart_product_id[]" value="<?php echo $this->product->virtuemart_product_id ?>" />
-		<?php /** @todo Handle the manufacturer view */ ?>
-		<input type="hidden" name="virtuemart_manufacturer_id" value="<?php echo $this->product->virtuemart_manufacturer_id ?>" />
-		<input type="hidden" name="virtuemart_category_id[]" value="<?php echo $this->product->virtuemart_category_id ?>" />
-	</form>
+					<?php // Display the add to cart button END ?>
+					<input type="hidden" class="pname" value="<?php echo $this->product->product_name ?>">
+					<input type="hidden" name="option" value="com_virtuemart" />
+					<input type="hidden" name="view" value="cart" />
+					<noscript><input type="hidden" name="task" value="add" /></noscript>
+					<input type="hidden" name="virtuemart_product_id[]" value="<?php echo $this->product->virtuemart_product_id ?>" />
+					<?php /** @todo Handle the manufacturer view */ ?>
+					<input type="hidden" name="virtuemart_manufacturer_id" value="<?php echo $this->product->virtuemart_manufacturer_id ?>" />
+					<input type="hidden" name="virtuemart_category_id[]" value="<?php echo $this->product->virtuemart_category_id ?>" />
+					</form>
 
-				<div class="clear"></div>
+					<div class="clear"></div>
 				</div>
-			<?php }  // Add To Cart Button END ?>
+				<?php }  // Add To Cart Button END ?>
 
 				<?php // Availability Image
 				/* TO DO add width and height to the image */
 				if (!empty($this->product->product_availability)) { ?>
-				<div class="availability">
-					<?php echo JHTML::image(JURI::root().VmConfig::get('assets_general_path').'images/availability/'.$this->product->product_availability, $this->product->product_availability, array('class' => 'availability')); ?>
-				</div>
+					<div class="availability">
+						<?php echo JHTML::image(JURI::root().VmConfig::get('assets_general_path').'images/availability/'.$this->product->product_availability, $this->product->product_availability, array('class' => 'availability')); ?>
+					</div>
 				<?php }
 
 				// Ask a question about this product ?>
@@ -273,7 +273,7 @@ if (empty ( $this->product )) {
 
 			</div>
 		</div>
-	<div class="clear"></div>
+		<div class="clear"></div>
 	</div>
 
 	<?php // Product Description
@@ -286,23 +286,23 @@ if (empty ( $this->product )) {
 	<?php } // Product Description END
 
 	if (!empty($this->product->customfields)) { ?>
-		<div class="product-fields">
-		<?php
-		$custom_title = null ;
-		foreach ($this->product->customfields as $field){
-			?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
-			<?php if ($field->custom_title != $custom_title) { ?>
-				<span class="product-fields-title" ><?php echo JText::_($field->custom_title); ?></span>
-				<?php if ($field->custom_tip) echo JHTML::tooltip($field->custom_tip,  JText::_($field->custom_title), 'tooltip.png');
-			} ?>
-			<span class="product-field-display"><?php echo $field->display ?></span>
-			<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?></span>
-			</div>
-			<?php
-			$custom_title = $field->custom_title;
+	<div class="product-fields">
+	<?php
+	$custom_title = null ;
+	foreach ($this->product->customfields as $field){
+		?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
+		<?php if ($field->custom_title != $custom_title) { ?>
+			<span class="product-fields-title" ><?php echo JText::_($field->custom_title); ?></span>
+			<?php if ($field->custom_tip) echo JHTML::tooltip($field->custom_tip,  JText::_($field->custom_title), 'tooltip.png');
 		} ?>
+		<span class="product-field-display"><?php echo $field->display ?></span>
+		<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?></span>
 		</div>
 		<?php
+		$custom_title = $field->custom_title;
+	} ?>
+	</div>
+	<?php
 	} // Product custom_fields END
 
 	// Product Packaging
@@ -348,18 +348,17 @@ if (empty ( $this->product )) {
 	} // Product customfieldsRelatedProducts END
 
 	if (!empty($this->product->customfieldsRelatedCategories)) { ?>
-		<div class="product-related-categories">
+	<div class="product-related-categories">
 		<h4><?php echo JText::_('COM_VIRTUEMART_RELATED_CATEGORIES'); ?></h4>
-		<?php
-		foreach ($this->product->customfieldsRelatedCategories as $field){
-			?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
+		<?php foreach ($this->product->customfieldsRelatedCategories as $field){ ?>
+			<div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
 			<span class="product-field-display"><?php echo $field->display ?></span>
 			<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?></span>
 			</div>
 			<?php
 		} ?>
-		</div>
-		<?php
+	</div>
+	<?php
 	} // Product customfieldsRelatedCategories END
 
 	// Show child categories
@@ -445,7 +444,7 @@ if (empty ( $this->product )) {
 		$showall = JRequest::getBool('showall', false);
 		for ($num=0 ; $num <= $maxrating; $num++  ) {
 			$title = (JText::_("COM_VIRTUEMART_RATING_TITLE") . $num . '/' . $maxrating) ;
-			$stars[] = '<span class="vmicon vm2-stars'.$num.'" title="'.$title.'"></span>'; //JHTML::image($starsPath.$num.'.gif', JText::_($num.'_STARS'), array("title" => $title) );
+			$stars[] = '<span class="vmicon vm2-stars'.$num.'" title="'.$title.'"></span>';
 		} ?>
 
 	<div class="customer-reviews">
@@ -477,7 +476,6 @@ if (empty ( $this->product )) {
 				if (!empty($this->rating_reviews)) { ?>
 				<div class="<?php echo $color ?>">
 					<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>
-					<?php //echo $stars[ $review->review_rating ] //Attention the review rating is the rating of the review itself, rating for the product is the vote ! ?>
 					<blockquote><?php echo $review->comment; ?></blockquote>
 					<span class="bold"><?php echo $review->customer ?></span>
 				</div>
@@ -547,8 +545,7 @@ if (empty ( $this->product )) {
 					<?php // Print The Rating Stars + Checkboxes
 					for ($num=0 ; $num<=$maxrating;  $num++ ) { ?>
 						<li id="<?php echo $num ?>_stars">
-							<span><?php echo $stars[ $num ]; ?></span>
-							<br />
+							<label for="vote<?php echo $num ?>"><?php echo $stars[ $num ]; ?></label>
 							<?php
 							if ($num == 5) {
 								$selected = ' checked="checked"';

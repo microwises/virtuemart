@@ -812,13 +812,12 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	{
 		$categoryModel = self::getModel('category');
 
-		$categories = $categoryModel->getCategoryTree($onlyPublished, $withParentId, (int)$parentId);
+		$categories = $categoryModel->getCategories($onlyPublished, $parentId);
 
 		foreach($categories as $index => $cat){
 			$cat->category_name = $cat->ordering .'. '. $cat->category_name;
 			$categories[$index] = $cat;
 		}
-
 		return JHTML::_('Select.genericlist', $categories, $name, $attribs, $key, $text, $selected, $name);
 	}
 
