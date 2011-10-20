@@ -840,8 +840,9 @@ abstract class vmPaymentPlugin extends JPlugin {
 
 		$return = '';
 		$params = new JParameter($payment->payment_params);
-		if(!empty($params->get('payment_logos'))){
-			$return = $this->displayLogos(array($params->get('payment_logos')=> $payment->payment_name)).' ';
+		$paymentLogo = $params->get('payment_logos');
+		if(!empty($paymentLogo)){
+			$return = $this->displayLogos(array($paymentLogo => $payment->payment_name)).' ';
 		}
 
 		return $return . $payment->payment_name;

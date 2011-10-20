@@ -740,7 +740,7 @@ class VmMediaHandler {
 		public function displayFilesHandler($fileIds,$type){
 			//$this->lists= $this->displayImages($type);
 			$html = $this->displayFileSelection($fileIds,$type);
-			$html .= $this->displayFileHandler('id="vm_display_image" ');
+			$html .= $this->displayFileHandler();
 			//$html .= '<div style="display:none"><div id="media-dialog" >'.$this->lists['htmlImages'].'</div></div>';//$type);
 			if(empty($this->_db)) $this->_db = JFactory::getDBO();
 			$this->_db->setQuery('SELECT FOUND_ROWS()');
@@ -915,7 +915,7 @@ class VmMediaHandler {
 		 *
 		 * @param string $imageArgs html atttributes, Just for displaying the fullsized image
 		 */
-		public function displayFileHandler($imageArgs=''){
+		public function displayFileHandler(){
 
 			$identify = ''; // ':'.$this->virtuemart_media_id;
 
@@ -923,8 +923,9 @@ class VmMediaHandler {
 
                         $html = '<fieldset class="checkboxes">' ;
                         $html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGE_INFORMATION').'</legend>';
-			$html .= '<div class="vm__img_autocrop"><div id="file_title">'.$this->file_title.'</div>';
-			$html .=  $this->displayMediaFull($imageArgs,false).'</div>';
+			$html .= '<div class="vm__img_autocrop">';
+			$imageArgs = 'id="vm_display_image" ';
+			$html .=  $this->displayMediaFull($imageArgs,false,'',false).'</div>';
 
 			//This makes problems, when there is already a form, and there would be form in a form. breaks js in some browsers
 			//		$html .= '<form name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">';
@@ -955,10 +956,10 @@ class VmMediaHandler {
 
 			$html .= '</tr>';
 
-			$html .= '<tr>
-	<td class="labelcell">'. JText::_('COM_VIRTUEMART_FILES_FORM_CURRENT_FILE') .'</td>
-	<td>'.$this->file_name.'.'.$this->file_extension .'</td>
-</tr>';
+// 			$html .= '<tr>
+// 	<td class="labelcell">'. JText::_('COM_VIRTUEMART_FILES_FORM_CURRENT_FILE') .'</td>
+// 	<td>'.$this->file_name.'.'.$this->file_extension .'</td>
+// </tr>';
 
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			if(!Permissions::getInstance()->check('admin') ) $readonly='readonly'; else $readonly ='';

@@ -82,6 +82,7 @@ class VmImage extends VmMediaHandler {
 				$file_alt = $this->file_meta;
 			}
 		}
+		$postText = '';
 		if($description) $postText = $this->file_description;
 		return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox,'',$postText);
 

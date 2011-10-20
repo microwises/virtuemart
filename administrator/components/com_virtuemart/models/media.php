@@ -274,7 +274,7 @@ class VirtueMartModelMedia extends VmModel {
 			if(!empty($oldIds)){
 				if(!is_array($oldIds)) $oldIds = array($oldIds);
 
-				if(!empty($data['mediaordering'])){
+				if(!empty($data['mediaordering']) && $data['media_action']=='upload'){
 // 					array_push($data['mediaordering'],count($data['mediaordering'])+1);
 					$data['mediaordering'][$virtuemart_media_id] = count($data['mediaordering']);
 				}

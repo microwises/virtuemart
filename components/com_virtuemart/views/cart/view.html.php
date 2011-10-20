@@ -208,7 +208,9 @@ class VirtueMartViewCart extends JView {
 
 	private function lSelectShipper() {
 		$found_shipping_method=false;
-		$shipping_not_found_text='';
+		$shipping_not_found_text = JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');
+		$this->assignRef('shipping_not_found_text', $shipping_not_found_text);
+
 		$shippers_shipping_rates=array();
 		if (!$this->checkShippingMethodsConfigured()) {
 			$this->assignRef('shippers_shipping_rates',$shippers_shipping_rates);
@@ -233,10 +235,11 @@ class VirtueMartViewCart extends JView {
 				}
 			}
 		}
-		if (!$found_shipping_method) {
-			$link=''; // todo
-			$shipping_not_found_text = JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC', '<a href="'.$link.'">'.$link.'</a>');
-		}
+/*		if (!$found_shipping_method) {
+// 			$link=''; // todo
+// 			$admintext = ('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_FITTING_ADMIN', '<a href="'.$link.'">'.$link.'</a>')
+			$shipping_not_found_text = vmInfo($admintext,'COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');;
+		}*/
 		/*
 	  $layoutName='select_shipper'; // by dafault should be the same
 		if (!$found_shipping_method) {
@@ -245,7 +248,7 @@ class VirtueMartViewCart extends JView {
 		$this->assignRef('select_shipper_text',JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD'), JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'));
 		}
 	 */
-		$this->assignRef('shipping_not_found_text', $shipping_not_found_text);
+
 		$this->assignRef('shippers_shipping_rates', $shippers_shipping_rates);
 		$this->assignRef('found_shipping_method', $found_shipping_method);
 		return;
@@ -317,8 +320,7 @@ class VirtueMartViewCart extends JView {
 				$text = JText::sprintf('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED_LINK', '<a href="' . $link . '">' . $link . '</a>');
 			}
 
-			$app = JFactory::getApplication();
-			$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED', $text));
+			vmInfo('COM_VIRTUEMART_NO_PAYMENT_METHODS_CONFIGURED', $text);
 
 			$tmp = 0;
 			$this->assignRef('found_payment_method', $tmp);
@@ -345,8 +347,7 @@ class VirtueMartViewCart extends JView {
 				$text = JText::sprintf('COM_VIRTUEMART_NO_SHIPPING_METHODS_CONFIGURED_LINK', '<a href="' . $link . '">' . $link . '</a>');
 			}
 
-			$app = JFactory::getApplication();
-			$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_NO_SHIPPING_METHODS_CONFIGURED', $text));
+			vmInfo('COM_VIRTUEMART_NO_SHIPPING_METHODS_CONFIGURED', $text);
 
 			$tmp = 0;
 			$this->assignRef('found_shipping_method', $tmp);
