@@ -591,6 +591,19 @@ class VirtueMartCart {
 			return false;
 		}
 
+		// Check to see if checking stock quantity
+		if (VmConfig::get('check_stock', false)) {
+			$request_stock = array();
+			$productsleft = $product->product_in_stock - $product->product_ordered;
+			if ($quantity > $productsleft ){
+
+				$error = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
+				$this->setError($error); // Private error retrieved with getError is used only by addJS, so only the latest is fine
+				vmInfo($error,$product->product_name,$productsleft);
+				return false;
+			}
+		}
+
 		/* Check for the minimum and maximum quantities */
 		// 		list($min, $max) = explode(',', $product->product_order_levels);
 		$min = $product->min_order_level;
@@ -610,21 +623,7 @@ class VirtueMartCart {
 			return false;
 		}
 
-		// 			$ci = 0;
 
-
-		/* Check to see if checking stock quantity */
-		if (VmConfig::get('check_stock', false)) {
-			$request_stock = array();
-			if ($quantity > ($product->product_in_stock - $product->product_ordered) ){
-
-				$error = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
-				$this->setError($error); // Private error retrieved with getError is used only by addJS, so only the latest is fine
-				vmInfo($error,$product->product_name);
-				return false;
-			}
-
-		}
 
 		return true;
 	}

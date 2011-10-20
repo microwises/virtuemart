@@ -96,14 +96,18 @@ echo $this->loadTemplate('login');
 		</div>
 		<?php // Leave A Comment Field END ?>
 
-		<?php // Terms Of Service ?>
+		<?php // Terms Of Service
+		if(VmConfig::get('oncheckout_show_legal_info',1)){
+		?>
 		<div class="terms-of-service">
 			<span class="terms-of-service"><span class="vmicon vm2-termsofservice-icon"></span><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?></span>
 			<div>
-			<?php echo $this->cart->vendor->vendor_terms_of_service;?>
+			<?php
+			echo $this->cart->vendor->vendor_terms_of_service;?>
 			</div>
 		</div>
-		<?php // Terms Of Service END ?>
+		<?php
+		} // Terms Of Service END ?>
 
 		<?php // Continue and Checkout Button ?>
 		<div class="checkout-button-top">

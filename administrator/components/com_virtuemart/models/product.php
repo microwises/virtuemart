@@ -168,7 +168,10 @@ class VirtueMartModelProduct extends VmModel {
 			$where[] = ' `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` = '.$virtuemart_manufacturer_id;
 		}
 
-		if ($app->isSite() && VmConfig::get('check_stock') && Vmconfig::get('show_out_of_stock_products') != 1){
+		//Worked for me that way, but others got problems that the products where not shown up in the category list
+		// the check_stock is only meant for the cart, so I removed it. note by Max Milbers
+// 		if ($app->isSite() && VmConfig::get('check_stock') && Vmconfig::get('show_out_of_stock_products') != 1){
+		if ($app->isSite() && Vmconfig::get('show_out_of_stock_products') != 1){
 			$where[] = ' `product_in_stock` > 0 ';
 		}
 
