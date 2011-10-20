@@ -85,6 +85,16 @@ defined('_JEXEC') or die('Restricted access');
 					</tr>
 					<tr>
 						<td class="key">
+							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_ONLY_REGISTERED_TIP'); ?>">
+								<label for="oncheckout_only_registered"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_ONLY_REGISTERED') ?></label>
+							</span>
+						</td>
+						<td>
+							<?php echo VmHTML::checkbox('oncheckout_show_register', $this->config->get('oncheckout_show_register')); ?>
+						</td>
+					</tr>
+					<tr>
+						<td class="key">
 							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_STEPS_TIP'); ?>">
 								<label for="oncheckout_show_steps"><?php echo JText::_('COM_VIRTUEMART_ADMIN_ONCHECKOUT_SHOW_STEPS') ?></label>
 							</span>
