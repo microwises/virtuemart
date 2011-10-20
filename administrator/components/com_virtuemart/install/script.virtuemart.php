@@ -180,7 +180,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//product tables
 			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','int(11)');
 
-			$fields = array('product_order_levels'=>' COLUMN `product_order_levels` ');
+			$fields = array('product_order_levels'=>' ');
 			$this->alterTable('#__virtuemart_products',$fields,'DROP');
 
 // 			$fields = array('product_order_levels'=>' `product_params` text NOT NULL ');

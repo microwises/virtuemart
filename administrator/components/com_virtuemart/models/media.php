@@ -273,7 +273,13 @@ class VirtueMartModelMedia extends VmModel {
 
 			if(!empty($oldIds)){
 				if(!is_array($oldIds)) $oldIds = array($oldIds);
+
+				if(!empty($data['mediaordering'])){
+// 					array_push($data['mediaordering'],count($data['mediaordering'])+1);
+					$data['mediaordering'][$virtuemart_media_id] = count($data['mediaordering']);
+				}
 				$virtuemart_media_ids = array_merge( (array)$virtuemart_media_id,$oldIds);
+				vmdebug('merged old and new',$virtuemart_media_ids);
 				$data['virtuemart_media_id'] = array_unique($virtuemart_media_ids);
 			} else {
 				$data['virtuemart_media_id'] = $virtuemart_media_id;
@@ -287,6 +293,7 @@ class VirtueMartModelMedia extends VmModel {
 			foreach($data['mediaordering'] as $k=>$v){
 				$sortedMediaIds[] = $k;
 			}
+			vmdebug('merging old and new',$oldIds,$virtuemart_media_id);
 			$data['virtuemart_media_id'] = $sortedMediaIds;
 		}
 
@@ -322,17 +329,18 @@ class VirtueMartModelMedia extends VmModel {
 		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
 
 		// workarround for media published and product published two fields in one form.
-		if ($data['media_published'])
-		$data['published'] = $data['media_published'];
-		else
-		$data['published'] = 0;
+		if ($data['media_published']){
+			$data['published'] = $data['media_published'];
+		} else {
+			$data['published'] = 0;
+		}
 
 		$table->bindChecknStore($data);
 		$errors = $table->getErrors();
 		foreach($errors as $error){
 			$this->setError('store medias '.$error);
 		}
-
+		vmdebug('store media $table->virtuemart_media_id '.$table->virtuemart_media_id);
 		return $table->virtuemart_media_id;
 	}
 
