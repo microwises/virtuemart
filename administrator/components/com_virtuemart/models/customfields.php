@@ -849,79 +849,35 @@ class VirtueMartModelCustomfields extends VmModel {
 	}
 
 	/*
-	 * render custom fields display cart FE
-	 * TODO ADD by plugin render
+	 * render custom fields display order BE/FE
 	 */
-	public function CustomsFieldOrderDisplayBE($item) {
-		// if (empty($calculator)) {
-			// if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-			// $calculator = calculationHelper::getInstance();
-		// }
-		//$product_id = (int)$priceKey;
-		//$variantmods = $calculator->parseModifier($priceKey);
+	public function CustomsFieldOrderDisplay($item,$view='FE') {
 		$row = 0 ;
 		$product_attributes = json_decode($item->product_attribute);
 		$html = '<div class="vm-customfield-cart">';
 		foreach ($product_attributes as $virtuemart_customfield_id=>$param){
  			if ($param) {
-				$productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id );
- 				if ($productCustom->field_type == "E") {
+				if ($productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id ) ) {
+					if ($productCustom->field_type == "E") {
 
-					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
-					//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
-					$html .= vmCustomPlugin::displayInOrderPlugin( $item,$param,$productCustom, $row,"BE");
-					// foreach ($product->userfield as $pKey => $puser) {
-						// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
-					// }
-				} elseif (($productCustom->field_type == "G")) {
-					$child = self::getChild($productCustom->custom_value);
-					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$child->product_name;
-				} elseif (($productCustom->field_type == "M")) {
-					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.self::displayCustomMedia($productCustom->custom_value);
-				}  else {
+						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+						//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
+						$html .= vmCustomPlugin::displayInOrderPlugin( $item,$param,$productCustom, $row,$view);
+						// foreach ($product->userfield as $pKey => $puser) {
+							// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
+						// }
+					} elseif (($productCustom->field_type == "G")) {
+						$child = self::getChild($productCustom->custom_value);
+						$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$child->product_name;
+					} elseif (($productCustom->field_type == "M")) {
+						$html .= ' <span>'.$productCustom->custom_title.' : </span>'.self::displayCustomMedia($productCustom->custom_value);
+					}  else {
 
-					$html .= '<br/ ><span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
-				}
-			} 
-			$row++;
-		}
-
-		return $html.'</div>';
-	}
-
-	/*
-	 * render custom fields display cart FE
-	 * TODO ADD by plugin render
-	 */
-	public function CustomsFieldOrderDisplayFE($item) {
-		// if (empty($calculator)) {
-			// if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-			// $calculator = calculationHelper::getInstance();
-		// }
-		//$product_id = (int)$priceKey;
-		//$variantmods = $calculator->parseModifier($priceKey);
-		$row = 0 ;
-		$product_attributes = json_decode($item->product_attribute);
-		$html = '<div class="vm-customfield-cart">';
-		foreach ($product_attributes as $virtuemart_customfield_id=>$param){
- 			if ($param) {
-				$productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id );
- 				if ($productCustom->field_type == "E") {
-					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
-					//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
-					$html .= vmCustomPlugin::displayInOrderPlugin( $item,$param,$productCustom, $row,"FE");
-					// foreach ($product->userfield as $pKey => $puser) {
-						// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
-					// }
-				} elseif (($productCustom->field_type == "G")) {
-					$child = self::getChild($productCustom->custom_value);
-					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$child->product_name;
-				} elseif (($productCustom->field_type == "M")) {
-					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.self::displayCustomMedia($productCustom->custom_value);
+						$html .= '<br/ ><span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
+					}
 				} else {
-
-					$html .= '<br/ ><span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
-				}
+					foreach((array)$param as $key => $value) $html .= '<br/ >'.($key?'<span>'.$key.' : </span>':'').$value;
+				} 
 			} 
 			$row++;
 		}

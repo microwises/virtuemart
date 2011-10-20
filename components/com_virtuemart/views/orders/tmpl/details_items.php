@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php
 					if (!empty($item->product_attribute)) {
 							if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-							$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplayFE($item);
+							$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item);
 						echo '<div>'.$product_attribute.'</div>';
 					}
 				?>
