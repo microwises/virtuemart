@@ -192,7 +192,7 @@ class VirtueMartViewCart extends JView {
 	private function lSelectCoupon() {
 
 		$this->couponCode = (isset($this->cartData['couponCode']) ? $this->cartData['couponCode'] : '');
-		$coupon_text = $this->couponCode ? JText::_('COM_VIRTUEMART_COUPON_CODE_CHANGE') : JText::_('COM_VIRTUEMART_COUPON_CODE_CHANGE');
+		$coupon_text = $this->couponCode ? JText::_('COM_VIRTUEMART_COUPON_CODE_CHANGE') : JText::_('COM_VIRTUEMART_COUPON_CODE_ENTER');
 		$this->assignRef('coupon_text', $coupon_text);
 	}
 
