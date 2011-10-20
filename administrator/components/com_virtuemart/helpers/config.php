@@ -168,7 +168,7 @@ function vmTime($descr,$name='current'){
 		vmdebug('vmTime: starting at general runtime '.microtime(true));
 		VmConfig::$_starttime[$name] = microtime(true);
 	} else if($name=='current'){
-		vmdebug('vmTime: time consumed '.microtime(true) - $starttime[$name]);
+		vmdebug('vmTime: time consumed '.(microtime(true) - $starttime[$name]) );
 		VmConfig::$_starttime[$name] = microtime(true);
 	} else {
 		if(empty($descr)) $descr = $name;
@@ -663,7 +663,7 @@ class vmJsApi{
 			$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery-ui.min.js');
 		}
 		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.ui.autocomplete.html.js');
-		
+
 		//JHTML::script('jquery.min.js', '//ajax.googleapis.com/ajax/libs/jquery/1.6.1/', false);
 		/*$document = JFactory::getDocument();
 		$document->addScriptDeclaration('jQuery.noConflict();');*/

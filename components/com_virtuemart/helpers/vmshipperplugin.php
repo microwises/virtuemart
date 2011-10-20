@@ -874,6 +874,25 @@ abstract class vmShipperPlugin extends JPlugin {
 	}
 
 	/**
+	* Get the name of the payment method
+	*
+	* @author Valerie Isaksen
+	* @param TablePaymentmethods $payment
+	* @return string Payment method name
+	*/
+	function getShippingName($shipping) {
+
+		$return = '';
+		$params = new JParameter($shipping->shipping_carrier_params);
+		$shipperLogo = $params->get('shipper_logo');
+		if(!empty($shipperLogo)){
+			$return = $this->displayLogos(array($shipperLogo => $shipping->shipping_carrier_name)).' ';
+		}
+
+		return $return . $shipping->shipping_carrier_name;
+	}
+
+	/**
 	* displays the logos of a payment plugin
 	*
 	* @author Valerie Isaksen

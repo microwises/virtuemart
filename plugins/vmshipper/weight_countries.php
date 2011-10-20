@@ -424,13 +424,13 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      * @author Valérie Isaksen
      * @return string Shipper name
      */
-    function getShippingName($shipping) {
+/*    function getShippingName($shipping) {
 	$params = new JParameter($shipping->shipping_carrier_params);
 	$logo = $this->displayLogos(array($params->get('shipper_logo')=> $shipping->shipping_carrier_name));
 
 	return $logo . " " . $shipping->shipping_carrier_name;
     }
-
+*/
 }
 
 // No closing tag

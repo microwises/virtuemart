@@ -1,20 +1,20 @@
 <?php
 /**
-*
-* Controller for the front end User maintenance
-*
-* @package	VirtueMart
-* @subpackage User
-* @author Oscar van Eijk
-* @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* @version $Id$
-*/
+ *
+ * Controller for the front end User maintenance
+ *
+ * @package	VirtueMart
+ * @subpackage User
+ * @author Oscar van Eijk
+ * @link http://www.virtuemart.net
+ * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * VirtueMart is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * @version $Id$
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -171,18 +171,18 @@ class VirtueMartControllerUser extends JController
 
 	function registerCartuser(){
 
-	$msg = $this->saveData(true, true);
-	   $this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart') , $msg);
-    }
+		$msg = $this->saveData(true, true);
+		$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart') , $msg);
+	}
 
 
 	/**
-	* This is the save function for the normal user edit.php layout.
-	* We use here directly the userModel store function, because this view is for registering also
-	* it redirects to the standard user view.
-	*
-	* @author Max Milbers
-	*/
+	 * This is the save function for the normal user edit.php layout.
+	 * We use here directly the userModel store function, because this view is for registering also
+	 * it redirects to the standard user view.
+	 *
+	 * @author Max Milbers
+	 */
 	function saveUser(){
 
 		$msg = $this->saveData(false,true);
@@ -191,15 +191,15 @@ class VirtueMartControllerUser extends JController
 
 
 	/**
-	* Save the user info. The saveData function dont use the userModel store function for anonymous shoppers, because it would register them.
-	* We make this function private, so we can do the tests in the tasks.
-	*
-	* @author Max Milbers
-	* @author Valérie Isaksen
-	*
-	* @param boolean Defaults to false, the param is for the userModel->store function, which needs it to determin how to handle the data.
-	* @return String it gives back the messages.
-	*/
+	 * Save the user info. The saveData function dont use the userModel store function for anonymous shoppers, because it would register them.
+	 * We make this function private, so we can do the tests in the tasks.
+	 *
+	 * @author Max Milbers
+	 * @author Valérie Isaksen
+	 *
+	 * @param boolean Defaults to false, the param is for the userModel->store function, which needs it to determin how to handle the data.
+	 * @return String it gives back the messages.
+	 */
 	private function saveData($cart=false,$register=false) {
 		$mainframe = JFactory::getApplication();
 		$currentUser = JFactory::getUser();
@@ -207,7 +207,7 @@ class VirtueMartControllerUser extends JController
 
 		$data = JRequest::get('post');
 
-		vmdebug('$currentUser',$currentUser);
+// 		vmdebug('$currentUser',$currentUser);
 		if($currentUser->id!=0 || $register){
 			$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 			$userModel = $this->getModel('user');
@@ -224,22 +224,23 @@ class VirtueMartControllerUser extends JController
 			}
 
 			//It should always be stored
-// 			if($currentUser->id==0 ){
-			    $ret = $userModel->store($data);
-// 			}
+			// 			if($currentUser->id==0 ){
+			$ret = $userModel->store($data);
+			// 			}
 
-			$msg = (is_array($ret)) ? $ret['message'] : $ret;
-			$usersConfig = &JComponentHelper::getParams( 'com_users' );
-			$useractivation = $usersConfig->get( 'useractivation' );
-			if (is_array($ret) && $ret['success'] && !$useractivation) {
-
-			    // Username and password must be passed in an array
-			    $credentials = array('username' => $ret['user']->username,
-				'password' => $ret['user']->password_clear
-			    );
-			    $return = $mainframe->login($credentials);
-
+			if($currentUser->id==0){
+				$msg = (is_array($ret)) ? $ret['message'] : $ret;
+				$usersConfig = &JComponentHelper::getParams( 'com_users' );
+				$useractivation = $usersConfig->get( 'useractivation' );
+				if (is_array($ret) && $ret['success'] && !$useractivation) {
+					// Username and password must be passed in an array
+					$credentials = array('username' => $ret['user']->username,
+			  					'password' => $ret['user']->password_clear
+					);
+					$return = $mainframe->login($credentials);
+				}
 			}
+
 
 		}
 
@@ -248,10 +249,10 @@ class VirtueMartControllerUser extends JController
 	}
 
 	/**
-	* This function just gets the post data and put the data if there is any to the cart
-	*
-	* @author Max Milbers
-	*/
+	 * This function just gets the post data and put the data if there is any to the cart
+	 *
+	 * @author Max Milbers
+	 */
 	private function saveToCart($data){
 
 		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
@@ -261,20 +262,20 @@ class VirtueMartControllerUser extends JController
 	}
 
 	/**
-	* Editing a user address was cancelled when called from the cart; return to the cart
-	*
-	* @author Oscar van Eijk
-	*/
+	 * Editing a user address was cancelled when called from the cart; return to the cart
+	 *
+	 * @author Oscar van Eijk
+	 */
 	function cancelCartUser(){
 
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart'), $msg );
 	}
 
 	/**
-	* Editing a user address was cancelled during chaeckout; return to the cart
-	*
-	* @author Oscar van Eijk
-	*/
+	 * Editing a user address was cancelled during chaeckout; return to the cart
+	 *
+	 * @author Oscar van Eijk
+	 */
 	function cancelCheckoutUser(){
 		$this->setRedirect( JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout',$this->useXHTML,$this->useSSL), $msg );
 	}

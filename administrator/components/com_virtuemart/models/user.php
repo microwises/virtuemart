@@ -435,7 +435,7 @@ class VirtueMartModelUser extends VmModel {
 // 		}
 
 		if((int)$data['user_is_vendor']==1){
-			vmdebug('vendor recognised');
+// 			vmdebug('vendor recognised');
 			if($this ->storeVendorData($data)){
 				if ($new) {
 					if ( $useractivation == 1 ) {
@@ -449,39 +449,6 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
-		// Send registration confirmation mail
-		//		$password = JRequest::getString('password', '', 'post', JREQUEST_ALLOWRAW);
-		//		$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
-
-		//		self::doRegisterEmail($user, $password);
-
-		// Everything went fine, set relevant message depending upon user activation state and display message
-
-/*		if ($new) {
-			if ( $useractivation == 1 ) {
-				if($data['user_is_vendor']!==0){
-					$message  = JText::_('COM_VIRTUEMART_REG_VENDOR_COMPLETE_ACTIVATE');
-				} else {
-					$message  = JText::_('COM_VIRTUEMART_REG_COMPLETE_ACTIVATE');
-				}
-
-			} else {
-				if($data['user_is_vendor']!==0){
-					$message = JText::_('COM_VIRTUEMART_REG_VENDOR_COMPLETE');
-				} else {
-					$message = JText::_('COM_VIRTUEMART_REG_COMPLETE');
-				}
-
-			}
-		} else {
-			if($data['user_is_vendor']!==0){
-				$message = JText::_('COM_VIRTUEMART_VENDOR_DATA_STORED');
-			} else {
-				$message = JText::_('COM_VIRTUEMART_USER_DATA_STORED');
-			}
-		}
-
-		vmInfo($message);*/
 		return array('user'=>$user,'password'=>$data['password'],'message'=>$message,'newId'=>$newId,'success'=>true);
 
 	}

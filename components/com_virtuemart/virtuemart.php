@@ -23,6 +23,9 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
+vmRam('Start');
+// vmSetStartTime();
+vmTime('Start');
 if(VmConfig::get('shop_is_offline',0)){
 	$_controller = 'virtuemart';
 	require (JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
@@ -61,7 +64,8 @@ $controller = new $_class();
 /* Perform the Request task */
 $controller->execute(JRequest::getWord('task', JRequest::getWord('view', $_controller)));
 //Console::logSpeed('virtuemart start');
-
+vmTime('Finished');
+vmRam('End');
 /* Redirect if set by the controller */
 $controller->redirect();
 
