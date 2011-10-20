@@ -89,17 +89,6 @@ class VirtueMartCart {
 			if (!empty($cartSession)) {
 				$cartData = unserialize( $cartSession );
 
-				// 				if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
-				// 				$productModel = new VirtueMartModelProduct();
-
-				// 				$sessionProducts = array();
-				// 				vmdebug('my $cartData CartSessionData ',$cartData);
-				// 				foreach($cartData->products as $product){
-
-				// 					$sessionProducts[] = $productModel->getProduct($product);
-				// 				}
-				// 				$cartData->products = $sessionProducts;
-
 				self::$_cart = new VirtueMartCart;
 
 				self::$_cart->products = $cartData->products;
@@ -144,7 +133,6 @@ class VirtueMartCart {
 		}
 
 		return self::$_cart;
-		// 		return '';
 	}
 
 	/*
@@ -163,9 +151,6 @@ class VirtueMartCart {
 				if ($address->address_type == 'BT') {
 					$this->saveAddressInCart((array) $address, $address->address_type,false);
 				}
-				// 			if ($address->address_type == 'ST') {
-				// 				$this->saveAddressInCart((array) $address, $address->address_type,false);
-				// 			}
 			}
 		}
 
@@ -177,7 +162,9 @@ class VirtueMartCart {
 			$this->virtuemart_paymentmethod_id = $user->virtuemart_paymentmethod_id;
 		}
 
-		if(isset($user->agreed) && !VmConfig::get('agree_to_tos_onorder') && $this->tosAccepted===null){
+		//$this->tosAccepted is due session stuff always set to 0, so testing for null does not work
+		// 		if(isset($user->agreed) && !VmConfig::get('agree_to_tos_onorder',0) && $this->tosAccepted===null){
+		if(isset($user->agreed) && !VmConfig::get('agree_to_tos_onorder',0) ){
 			$this->tosAccepted = $user->agreed;
 		}
 	}
@@ -230,21 +217,8 @@ class VirtueMartCart {
 		$sessionCart->_dataValidated						= $this->_dataValidated;
 		$sessionCart->_confirmDone							= $this->_confirmDone;
 		$sessionCart->STsameAsBT							= $this->STsameAsBT;
-		//vmdebug('ses prod',$sessionCart->products);
 
-		// 		[_inCheckOut:VirtueMartCart:private] =>
-		// 		[_dataValidated:VirtueMartCart:private] =>
-		// 		[_confirmDone:VirtueMartCart:private] =>
-		// 		[_lastError:VirtueMartCart:private] =>
-		// 		[_now] => 2011-09-06 14:56:37
-
-
-		// 		$session->set('vmcart', base64_encode(serialize($this)),'vm');
 		$session->set('vmcart', serialize($sessionCart),'vm');
-
-		// Idea to save only a Part of object in session($this->cart)
-		// $session->set('vmcart', base64_encode(serialize($this->cart)),'vm');
-		// $session->set('vmcart', serialize($this), 'vm');
 
 	}
 
@@ -476,26 +450,8 @@ class VirtueMartCart {
 		/* Check for cart IDs */
 		if (empty($prod_id))
 		$prod_id = JRequest::getVar('cart_virtuemart_product_id');
-		//		$prod_id = JRequest::get();
-		//		/* Check if the product ID is ok */
-		//		if (!$prod_ids || !is_array($prod_ids) || empty($prod_ids)) return;
-		//
-		//		if (empty($prod_variants)) $cart_ids = array(JRequest::getInt('variants'));
-		//		if (!$prod_variants || !is_array($prod_variants) || empty($prod_variants)) return;
-		//
-		//		if (empty($prod_customvariants)) $cart_ids = array(JRequest::getInt('customvariants'));
-		//		if (!$prod_customvariants || !is_array($prod_customvariants) || empty($prod_customvariants)) return;
-		//
-		//		/* Load the cart */
-		//		$cart = $this->getCart();
-		//
-		//		/* Remove the product */
-		//		foreach ($cart_ids as $cart_id) {
-		//			'P'.$product->virtuemart_product_id.$product->variants.$product->customvariants
-			unset($this->products[$prod_id]);
-			//		}
+		unset($this->products[$prod_id]);
 
-		/* Save the cart */
 		$this->setCartIntoSession();
 		return true;
 	}
@@ -515,7 +471,7 @@ class VirtueMartCart {
 		$quantity = JRequest::getInt('quantity');
 
 		//		foreach($cart_virtuemart_product_ids as $cart_virtuemart_product_id){
-                $updated = false;
+		$updated = false;
 		if (array_key_exists($cart_virtuemart_product_id, $this->products)) {
 			if (!empty($quantity)) {
 				if ($this->checkForQuantities($this->products[$cart_virtuemart_product_id], $quantity)) {
@@ -550,8 +506,6 @@ class VirtueMartCart {
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 		$prices = $calculator->getCheckoutPrices($this);
-		//$this->cartData->cartData = $calculator->getCartData();
-		// $this->setCartIntoSession();
 
 		return $prices;
 	}
@@ -638,7 +592,7 @@ class VirtueMartCart {
 		}
 
 		/* Check for the minimum and maximum quantities */
-// 		list($min, $max) = explode(',', $product->product_order_levels);
+		// 		list($min, $max) = explode(',', $product->product_order_levels);
 		$min = $product->min_order_level;
 		$max = $product->max_order_level;
 		if ($min != 0 && $quantity < $min) {
@@ -669,22 +623,7 @@ class VirtueMartCart {
 				vmInfo($error,$product->product_name);
 				return false;
 			}
-			/*					// Create an array for out of stock items and continue to next item
-			 $request_stock[$ci]['virtuemart_product_id'] = $product->virtuemart_product_id;
-			$request_stock[$ci]['quantity'] = $quantity;
-			// 					$ci++;
-			//				$this->_error[] = 'Quantity reached stock limit '.$product->virtuemart_product_id;
-			continue;
-			}
 
-			if (count($request_stock) != 0) {
-			foreach ($request_stock as $rstock) {
-			$error = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
-			$this->setError($error); // Private error retrieved with getError is used only by addJS, so only the latest is fine
-			$mainframe->enqueueMessage($error, 'error');
-			}
-			return false;
-			}*/
 		}
 
 		return true;
@@ -776,6 +715,7 @@ class VirtueMartCart {
 		$this->_inCheckOut = true;
 
 		$this->tosAccepted = JRequest::getInt('tosAccepted', $this->tosAccepted);
+		vmdebug('checkoutData tosAccepted',$this->tosAccepted);
 		$this->customer_comment = JRequest::getVar('customer_comment', $this->customer_comment);
 
 		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
@@ -983,20 +923,7 @@ class VirtueMartCart {
 				}
 
 			}
-
 		}
-			/*            if (empty($this->{$type}[$field->name]) && $field->name != 'virtuemart_state_id') {
-			 $app = JFactory::getApplication();
-			$app->enqueueMessage('NOTICE: Enter for "' . $type . '" "' . $field->name . '" title: ' . JText::_($field->title) . ' and value: ' . $this->{$type}[$field->name] . ' but ' . $this->BT['first_name']);
-			//$redirectMsg = 'Enter for "' . $type . '" "' . $field->name . '" title: ' . JText::_($field->title) . ' and value: ' . $this->{$type}[$field->name] . ' but ' . $this->BT['first_name'];
-			} else {*/
-
-			//We may add here further Tests. Like if the email has the form a@b.xxx and so on
-			//             }
-			// 			} else {
-			// 				if($type=='ST')
-			// 				$redirectMsg = 'No '.$type.' address set';
-			// 			}
 
 		return $redirectMsg;
 	}
@@ -1074,7 +1001,7 @@ class VirtueMartCart {
 		$this->_confirmDone = false;
 		$this->customer_comment = '';
 		$this->couponCode = '';
-		$this->tosAccepted = false;
+		$this->tosAccepted = null;
 
 		$this->setCartIntoSession();
 	}
@@ -1224,10 +1151,10 @@ class VirtueMartCart {
 	}
 	/*
 	 * CheckAutomaticSelectedShipping
-	 * If only one shipping is available for this amount, then automatically select it
-	 *
-	 * @author Valérie Isaksen
-	 */
+	* If only one shipping is available for this amount, then automatically select it
+	*
+	* @author Valérie Isaksen
+	*/
 	function CheckAutomaticSelectedShipping() {
 
 		$nbShipping = 0;
@@ -1263,10 +1190,10 @@ class VirtueMartCart {
 
 	/*
 	 * CheckAutomaticSelectedPayment
-	 * If only one payment is available for this amount, then automatically select it
-	 *
-	 * @author Valérie Isaksen
-	 */
+	* If only one payment is available for this amount, then automatically select it
+	*
+	* @author Valérie Isaksen
+	*/
 	function CheckAutomaticSelectedPayment($cart_prices) {
 
 		$nbPayment = 0;
@@ -1297,15 +1224,14 @@ class VirtueMartCart {
 			return false;
 		}
 
-
 	}
 
 	/*
 	 * CheckShippingIsValid:
-	 * check if the selected shipping is still valid for this new cart
-	 *
-	 * @author Valerie Isaksen
-	 */
+	* check if the selected shipping is still valid for this new cart
+	*
+	* @author Valerie Isaksen
+	*/
 	function CheckShippingIsValid() {
 		if ($this->virtuemart_shippingcarrier_id===0)
 		return;
@@ -1342,8 +1268,6 @@ class VirtueMartCart {
 		$this->prepareAddressDataInCart();
 		$this->prepareVendor();
 
-		//$this->automaticSelectedShipping = $this->CheckAutomaticSelectedShipping( );
-		//$this->automaticSelectedPayment =   $this->CheckAutomaticSelectedPayment( );
 	}
 
 	private function prepareCartPrice( $prices ){

@@ -207,21 +207,27 @@ class VirtueMartControllerUser extends JController
 
 		$data = JRequest::get('post');
 
+		vmdebug('$currentUser',$currentUser);
 		if($currentUser->id!=0 || $register){
 			$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 			$userModel = $this->getModel('user');
 
-			// Store multiple selectlist entries as a ; separated string
-			if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
-				$data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
+			if(!$cart){
+				// Store multiple selectlist entries as a ; separated string
+				if (key_exists('vendor_accepted_currencies', $data) && is_array($data['vendor_accepted_currencies'])) {
+					$data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
+				}
+
+				$data['vendor_store_name'] = JRequest::getVar('vendor_store_name','','post','STRING',JREQUEST_ALLOWHTML);
+				$data['vendor_store_desc'] = JRequest::getVar('vendor_store_desc','','post','STRING',JREQUEST_ALLOWHTML);
+				$data['vendor_terms_of_service'] = JRequest::getVar('vendor_terms_of_service','','post','STRING',JREQUEST_ALLOWHTML);
 			}
 
-			$data['vendor_store_name'] = JRequest::getVar('vendor_store_name','','post','STRING',JREQUEST_ALLOWHTML);
-			$data['vendor_store_desc'] = JRequest::getVar('vendor_store_desc','','post','STRING',JREQUEST_ALLOWHTML);
-			$data['vendor_terms_of_service'] = JRequest::getVar('vendor_terms_of_service','','post','STRING',JREQUEST_ALLOWHTML);
-			if($currentUser->id==0 ){
+			//It should always be stored
+// 			if($currentUser->id==0 ){
 			    $ret = $userModel->store($data);
-			}
+// 			}
+
 			$msg = (is_array($ret)) ? $ret['message'] : $ret;
 			$usersConfig = &JComponentHelper::getParams( 'com_users' );
 			$useractivation = $usersConfig->get( 'useractivation' );

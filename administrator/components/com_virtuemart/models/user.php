@@ -515,7 +515,7 @@ class VirtueMartModelUser extends VmModel {
 		$dispatcher = JDispatcher::getInstance();
   		$plg_datas = $dispatcher->trigger('plgVmOnUserStore',$data);
 		foreach($plg_datas as $plg_data){
-			$data = array_merge($plg_data);
+			$data = array_merge($plg_data,$data);
 		}
 
 		if(empty($data['customer_number'])){
@@ -545,6 +545,7 @@ class VirtueMartModelUser extends VmModel {
 
 		}
 
+// 		vmdebug('I store the data',$data);
 		$vmusersData = $usertable -> bindChecknStore($data);
 		$errors = $usertable->getErrors();
 		foreach($errors as $error){
