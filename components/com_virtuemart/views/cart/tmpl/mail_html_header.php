@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
   </tr>
   <tr>
     <td colspan="3">
-	<?php echo $this->cart->vendor->images[0]->displayMediaThumb('class="product-image"',false,' ')?>
+	<?php echo JURI::root().$this->cart->vendor->images[0]->displayMediaThumb('class="product-image"',false,' ')?>
 	<br/>
 	<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_SUMMARY',$this->cart->vendor->vendor_store_name); ?>
     </td>
