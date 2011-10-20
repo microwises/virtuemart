@@ -19,8 +19,10 @@ if ($display_style =="div") { ?>
 		<?php echo JHTML::link(JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id), $product->product_name, array('title' => $product->product_name)); ?>
 	<?php
 	if ($show_price) {
-		echo $currency->priceDisplay($product->prices['salesPrice']);
-		if ($product->prices['salesPriceWithDiscount']>0) echo $currency->priceDisplay($product->prices['salesPriceWithDiscount']);
+// 		echo $currency->priceDisplay($product->prices['salesPrice']);
+		if ($product->prices['salesPrice']>0) echo $currency->createPriceDiv('salesPrice',$product->prices);
+// 		if ($product->prices['salesPriceWithDiscount']>0) echo $currency->priceDisplay($product->prices['salesPriceWithDiscount']);
+		if ($product->prices['salesPriceWithDiscount']>0) echo $currency->createPriceDiv('salesPriceWithDiscount',$product->prices);
 	}
 
 	?>
@@ -52,7 +54,8 @@ endforeach; ?>
 <?php
 	if ($show_price) {
 		echo $currency->priceDisplay($product->prices['salesPrice']);
-		if ($product->prices['salesPriceWithDiscount']>0) echo $currency->priceDisplay($product->prices['salesPriceWithDiscount']);
+// 		if ($product->prices['salesPriceWithDiscount']>0) echo $currency->priceDisplay($product->prices['salesPriceWithDiscount']);
+		if ($product->prices['salesPriceWithDiscount']>0) echo $currency->createPriceDiv('salesPriceWithDiscount',$product->prices);
 	}
 	if ($show_addtocart) echo mod_virtuemart_product::addtocart($product);
 	?>
