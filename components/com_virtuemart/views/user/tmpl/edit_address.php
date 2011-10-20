@@ -82,7 +82,7 @@ if( strpos($this->fTask,'cart') || strpos($this->fTask,'checkout') ){
 	$rview = 'user';
 }
 
-if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->id === 0) {
+if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->id === 0 && !VmConfig::get('oncheckout_only_registered',0)) {
 	echo JText::sprintf('COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER', JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'), JText::_('COM_VIRTUEMART_CHECKOUT_AS_GUEST'));
 	vmdebug('my fTask '.$this->fTask);
 	if ($this->fTask === 'savecartuser') {
@@ -95,7 +95,7 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
 
  ?>
 <button class="<?php echo $buttonclass ?>" type="submit" onclick="javascript:return callValidatorForRegister(userForm);" ><?php echo JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?></button>
-<?php if(VmConfig::get('oncheckout_only_registered',0)) { ?>
+<?php if(!VmConfig::get('oncheckout_only_registered',0)) { ?>
 <button class="<?php echo $buttonclass ?>" type="submit" onclick="javascript:return myValidator(userForm, '<?php echo $this->fTask; ?>');" ><?php echo JText::_('COM_VIRTUEMART_CHECKOUT_AS_GUEST'); ?></button>
 <?php } ?>
 <button class="default" type="reset" onclick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view='.$rview); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
