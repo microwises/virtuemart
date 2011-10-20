@@ -842,8 +842,8 @@ class VirtueMartModelOrders extends VmModel {
 			$_orderItems->order_item_sku = $_prod->product_sku;
 			$_orderItems->order_item_name = $_prod->product_name; //TODO Patrick
 			$_orderItems->product_quantity = $_prod->quantity;
-			$_orderItems->product_item_price = $_cart->prices[$priceKey]['basePrice'];
-			$_orderItems->product_final_price = $_cart->prices[$priceKey]['salesPrice'];
+			$_orderItems->product_item_price = $_cart->pricesUnformatted[$priceKey]['basePrice'];
+			$_orderItems->product_final_price = $_cart->pricesUnformatted[$priceKey]['salesPrice'];
 			//			$_orderItems->order_item_currency = $_prices[$_lineCount]['']; // TODO Currency
 			$_orderItems->order_status = 'P';
 
