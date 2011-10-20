@@ -816,7 +816,9 @@ class VirtueMartModelOrders extends VmModel {
 				//if (isset($_prod->userfield )) $_prod->product_attribute .= '<br/ > <b>'.$_prod->userfield.' : </b>';
 				$_orderItems->product_attribute = json_encode($product_attribute);
 				//print_r($product_attribute);
-			} else $_orderItems->product_attribute = null ;
+			} else {
+			    $_orderItems->product_attribute = null ;
+			}
 			// TODO: add fields for the following data:
 			//    * [double] basePrice = 38.48
 			//    * [double] basePriceVariant = 38.48
@@ -838,8 +840,8 @@ class VirtueMartModelOrders extends VmModel {
 			$_orderItems->order_item_sku = $_prod->product_sku;
 			$_orderItems->order_item_name = $_prod->product_name; //TODO Patrick
 			$_orderItems->product_quantity = $_prod->quantity;
-			$_orderItems->product_item_price = $_prod->prices['basePrice'];
-			$_orderItems->product_final_price = $_prod->prices['salesPrice'];
+			$_orderItems->product_item_price = $_cart->prices[$priceKey]['basePrice'];
+			$_orderItems->product_final_price = $_cart->prices[$priceKey]['salesPrice'];
 			//			$_orderItems->order_item_currency = $_prices[$_lineCount]['']; // TODO Currency
 			$_orderItems->order_status = 'P';
 
