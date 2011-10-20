@@ -214,16 +214,18 @@
 		?>
 			<tr class="sectiontableentry2">
 				<td colspan="4" align="left">
-		    <?php if(!empty($this->layoutName) && $this->layoutName=='default')
-			   // echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_coupon',$this->useXHTML,$this->useSSL), JText::_('COM_VIRTUEMART_CART_EDIT_COUPON'));
-echo $this->loadTemplate('coupon');
-				?>
+		     
 
 				<?php if (!empty($this->cart->cartData['couponCode'])) { ?>
 					 <br /><?php
 						echo $this->cart->cartData['couponCode'] ;
 						echo $this->cart->cartData['couponDescr'] ? (' (' . $this->cart->cartData['couponDescr'] . ')' ): '';
 						?>
+					  <?php if(!empty($this->layoutName) && $this->layoutName=='default') {
+			   // echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_coupon',$this->useXHTML,$this->useSSL), JText::_('COM_VIRTUEMART_CART_EDIT_COUPON'));
+			    echo $this->loadTemplate('coupon');
+			    }
+				?>
 				</td>
 
               <?php if ( VmConfig::get('show_tax')) { ?>
