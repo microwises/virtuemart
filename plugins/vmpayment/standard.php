@@ -189,6 +189,18 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 	return $_html;
     }
 
+    function getPaymentValue($params) {
+	return $params->get('payment_value', 0);
+    }
+
+    function getPaymentTaxId($params) {
+	return $params->get('payment_tax_id', 0);
+    }
+
+    function getPaymentCost($params, $cart) {
+	return $params->get('payment_value', 0);
+    }
+
 }
 
 // No closing tag

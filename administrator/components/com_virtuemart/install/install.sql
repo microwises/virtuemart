@@ -502,6 +502,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `order_tax_details` text NOT NULL,
   `order_shipping` decimal(10,2) DEFAULT NULL,
   `order_shipping_tax` decimal(10,5) DEFAULT NULL,
+  `order_payment` decimal(10,2) DEFAULT NULL,
+  `order_payment_tax` decimal(10,5) DEFAULT NULL,
   `coupon_discount` decimal(12,2) NOT NULL DEFAULT '0.00',
   `coupon_code` varchar(32) DEFAULT NULL,
   `order_discount` decimal(12,2) NOT NULL DEFAULT '0.00',

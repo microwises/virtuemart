@@ -54,6 +54,10 @@ class TableOrders extends VmTable {
 	var $order_shipping = 0.00000;
 	/** @var decimal Shipping cost tax */
 	var $order_shipping_tax = 0.00000;
+	/** @var decimal Shipping costs */
+	var $order_payment = 0.00000;
+	/** @var decimal Shipping cost tax */
+	var $order_payment_tax = 0.00000;
 	/** @var decimal Coupon value */
 	var $coupon_discount = 0.00000;
 	/** @var string Coupon code */

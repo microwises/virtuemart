@@ -42,7 +42,7 @@ $tt=$this;
 			<tr>
 				<td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_LBL') ?></td>
 			</tr>
-			 
+
                         <tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></strong></td>
 				<td><?php echo  $this->orderbt->order_number;?></td>
@@ -246,7 +246,7 @@ $tt=$this;
 					<?php echo $item->order_item_sku; ?>
 				</td>
 				<td align="center">
-					<?php echo $this->orderstatuslist[$item->order_status]; ?><br/ >
+					<?php echo $this->orderstatuslist[$item->order_status]; ?><br />
 					<?php echo $this->itemstatusupdatefields[$item->virtuemart_order_item_id]; ?>
 
 				</td>
@@ -364,6 +364,14 @@ $tt=$this;
 			<tr>
 				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_TAX') ?>:</strong></td>
 				<td   align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipping_tax,'',false); ?></td>
+			</tr>
+			<tr>
+				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT') ?>:</strong></td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment,'',false); ?></td>
+			</tr>
+			<tr>
+				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_TAX') ?>:</strong></td>
+				<td   align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment_tax,'',false); ?></td>
 			</tr>
 			<?php
 			if (VmConfig::get('payment_discount_before') != '1') {
