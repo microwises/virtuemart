@@ -57,13 +57,24 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 }
 ?>
 <form method="post" id="userForm" name="chooseShippingRate" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate">
+<?php
 
-    <?php
+	echo JText::_('COM_VIRTUEMART_CART_SELECT_SHIPPER');
+	if($this->cart->getInCheckOut()){
+		$buttonclass = 'button vm-button-correct';
+	} else {
+		$buttonclass = 'default';
+	}
+	?>
+	<div style="text-align: right; width: 100%;">
 
-
+	        <button class="<?php echo $buttonclass ?>" type="submit" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>  &nbsp;
+	<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
+	</div>
+<?php
     if ($this->found_shipping_method) {
 
-	 echo JText::_('COM_VIRTUEMART_CART_SELECT_SHIPPER');
+
 	   echo "<fieldset>\n";
 	// if only one Shipper , should be checked by default
 	    foreach ($this->shippers_shipping_rates as $shipper_shipping_rates) {
@@ -79,11 +90,7 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
     }
 
     ?>
-    <div style="text-align: right; width: 100%;">
-        <button class="button vm-button-correct" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
-        &nbsp;
-        <button class="button vm-button-correct" type="submit" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
-    </div>
+
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="view" value="cart" />
     <input type="hidden" name="task" value="setshipping" />
