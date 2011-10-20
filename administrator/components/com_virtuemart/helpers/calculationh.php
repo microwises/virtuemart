@@ -461,7 +461,7 @@ class calculationHelper {
 		//		$sub =!empty($this->_cartPrices['discountedPriceWithoutTax'])? $this->_cartPrices['discountedPriceWithoutTax']:$this->_cartPrices['basePrice'];
 		$this->_cartPrices['billSub'] = $this->_cartPrices['basePrice'] + $this->_cartPrices['shippingValue'] + $this->_cartPrices['paymentValue'];
 		//		$this->_cartPrices['billSub']  = $sub + $this->_cartPrices['shippingValue'] + $this->_cartPrices['paymentValue'];
-		$this->_cartPrices['billDiscountAmount'] = $this->_cartPrices['paymentValue']  ;
+		$this->_cartPrices['billDiscountAmount'] = $this->_cartPrices['discountAmount']  ;
 		$this->_cartPrices['billTaxAmount'] = $this->_cartPrices['taxAmount'] + $this->_cartPrices['withTax'] - $toTax + $this->_cartPrices['shippingTax'] + $this->_cartPrices['paymentTax'];
 		$this->_cartPrices['billTotal'] = $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'];
 
