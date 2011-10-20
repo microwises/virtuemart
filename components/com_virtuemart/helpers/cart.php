@@ -164,8 +164,17 @@ class VirtueMartCart {
 
 		//$this->tosAccepted is due session stuff always set to 0, so testing for null does not work
 		// 		if(isset($user->agreed) && !VmConfig::get('agree_to_tos_onorder',0) && $this->tosAccepted===null){
-		if(isset($user->agreed) && !VmConfig::get('agree_to_tos_onorder',0) ){
-			$this->tosAccepted = $user->agreed;
+// 		vmdebug('cart',isset($user->agreed),$this->BT['agreed'],VmConfig::get('agree_to_tos_onorder',0),$this->tosAccepted);
+		if((!empty($user->agreed) || !empty($this->BT['agreed'])) && !VmConfig::get('agree_to_tos_onorder',0) && $this->tosAccepted!==1){
+// 			if(isset($user->agreed)){
+// 				vmdebug('go for user');
+				$this->tosAccepted = 1;
+// 			}
+// 			else {
+// 				vmdebug('go for BT');
+// 				$this->tosAccepted = $this->BT['agreed'];
+// 			}
+
 		}
 	}
 
@@ -714,7 +723,7 @@ class VirtueMartCart {
 		$this->_inCheckOut = true;
 
 		$this->tosAccepted = JRequest::getInt('tosAccepted', $this->tosAccepted);
-		vmdebug('checkoutData tosAccepted',$this->tosAccepted);
+
 		$this->customer_comment = JRequest::getVar('customer_comment', $this->customer_comment);
 
 		if (($this->selected_shipto = JRequest::getVar('shipto', null)) !== null) {
@@ -830,7 +839,7 @@ class VirtueMartCart {
 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS'));
 		}
 
-		if(VmConfig::get('oncheckout_only_registered')) {
+		if(VmConfig::get('oncheckout_only_registered',0)) {
 			$currentUser = JFactory::getUser();
 			if(empty($currentUser->id)){
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_ONLY_REGISTERED'));

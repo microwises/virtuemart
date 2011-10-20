@@ -313,7 +313,7 @@ class VirtueMartModelConfig extends JModel {
 		}
 
 		$confData['config'] = $config->toString();
-
+// 		vmdebug('config to store',$confData);
 		$confTable = $this->getTable('configs');
 		if (!$confTable->bindChecknStore($confData)) {
 			$this->setError($confTable->getError());

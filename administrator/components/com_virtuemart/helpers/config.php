@@ -289,14 +289,10 @@ class VmConfig {
 
 						$params->offline_message = base64_decode($params->offline_message);
 						$params->dateformat = base64_decode($params->dateformat);
-// 						$params->oncheckout_show_register_text =  base64_decode($params->oncheckout_show_register_text);
 
 						self::$_jpConfig = new VmConfig();
 						self::$_jpConfig->_params = $params;
-// 						self::$_jpConfig = $test;
-						// $app = JFactory::getApplication();
-						// $app ->enqueueMessage('loadConfig session cache');
-						// vmTime('Session Cache','loadConfig');
+
 						return self::$_jpConfig;
 					}
 				}
@@ -366,8 +362,6 @@ class VmConfig {
 		$params = self::$_jpConfig->_params;
 		$params['offline_message'] = base64_encode($params['offline_message']);
 		$params['dateformat'] = base64_encode($params['dateformat']);
-
-// 		$params['oncheckout_show_register_text'] =  base64_encode($params['oncheckout_show_register_text']);
 
 		$session->set('vmconfig', serialize($params),'vm');
 		self::$loaded = true;

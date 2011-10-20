@@ -69,13 +69,6 @@ JHTML::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/asse
 	 	echo JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
 	 } ?>
 	</legend>
-<?php
-// 	if (VmConfig::get('oncheckout_show_register', 1)) {
-//        	echo JText::sprintf('COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER', JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'), JText::_('COM_VIRTUEMART_CHECKOUT_AS_GUEST'));
-//         	echo JText::_(VmConfig::get('oncheckout_show_register_text', $msg));
-// 	}
-
-?>
 
 
 <form method="post" id="adminForm" name="userForm" class="form-validate">

@@ -26,16 +26,16 @@ class CurrencyDisplay {
 	static $_instance;
 	private $_currencyConverter;
 
-   private $_currency_id   = '0';		// string ID related with the currency (ex : language)
-   private $_symbol    		= 'udef';	// Printable symbol
-   private $_nbDecimal 		= 2;	// Number of decimals past colon (or other)
-   private $_decimal   		= ',';	// Decimal symbol ('.', ',', ...)
-   private $_thousands 		= ' '; 	// Thousands separator ('', ' ', ',')
-   private $_positivePos	= '{number}{symbol}';	// Currency symbol position with Positive values :
-   private $_negativePos	= '{sign}{number}{symbol}';	// Currency symbol position with Negative values :
+	private $_currency_id   = '0';		// string ID related with the currency (ex : language)
+	private $_symbol    		= 'udef';	// Printable symbol
+	private $_nbDecimal 		= 2;	// Number of decimals past colon (or other)
+	private $_decimal   		= ',';	// Decimal symbol ('.', ',', ...)
+	private $_thousands 		= ' '; 	// Thousands separator ('', ' ', ',')
+	private $_positivePos	= '{number}{symbol}';	// Currency symbol position with Positive values :
+	private $_negativePos	= '{sign}{number}{symbol}';	// Currency symbol position with Negative values :
 	private $_priceConfig	= array();	//holds arrays of 0 and 1 first is if price should be shown, second is rounding
 
-    private function __construct ($vendorId = 0){
+	private function __construct ($vendorId = 0){
 
 		$converterFile  = VmConfig::get('currency_converter_module');
 
@@ -57,7 +57,7 @@ class CurrencyDisplay {
 		$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`="'.(int)$vendorId.'"';
 		$this->_db->setQuery($q);
 		$this->_vendorCurrency = $this->_db->loadResult();
-// 		$this->_currency_id = $this->_vendorCurrency = $this->_db->loadResult();
+		// 		$this->_currency_id = $this->_vendorCurrency = $this->_db->loadResult();
 
 		$this->setPriceArray();
 	}
@@ -71,18 +71,18 @@ class CurrencyDisplay {
 	 * @param int 		$currencyId Id of the currency
 	 * @param int 		$vendorId Id of the vendor
 	 * @param string 	$style The vendor_currency_display_code
-	*   FORMAT:
-    1: id,
-    2: CurrencySymbol,
-    3: NumberOfDecimalsAfterDecimalSymbol,
-    4: DecimalSymbol,
-    5: Thousands separator
-    6: Currency symbol position with Positive values :
-    7: Currency symbol position with Negative values :
+	 *   FORMAT:
+	 1: id,
+	 2: CurrencySymbol,
+	 3: NumberOfDecimalsAfterDecimalSymbol,
+	 4: DecimalSymbol,
+	 5: Thousands separator
+	 6: Currency symbol position with Positive values :
+	 7: Currency symbol position with Negative values :
 
-    	EXAMPLE: ||&euro;|2|,||1|8
-	* @return string
-	*/
+	 EXAMPLE: ||&euro;|2|,||1|8
+	 * @return string
+	 */
 	public function getInstance($currencyId=0,$vendorId=0){
 
 		if(empty(self::$_instance) || empty(self::$_instance->_currency_id) || ($currencyId!=self::$_instance->_currency_id && !empty($currencyId)) ){
@@ -121,7 +121,7 @@ class CurrencyDisplay {
 					}
 				}
 
-//				self::$_instance->setCurrencyDisplayToStyleStr($currencyId);
+				//				self::$_instance->setCurrencyDisplayToStyleStr($currencyId);
 				//would be nice to automatically unpublish the product/currency or so
 			}
 		}
@@ -129,19 +129,19 @@ class CurrencyDisplay {
 		return self::$_instance;
 	}
 
-    /**
-     * Parse the given currency display string into the currency diplsy values.
-     *
-     * This function takes the currency style string as saved in the vendor
-     * record and parses it into its appropriate values.  An example style
-     * string would be 1|&euro;|2|,|.|0|0
-     *
-     * @author Max Milbers
-     * @param String $currencyStyle String containing the currency display settings
-     */
-    private function setCurrencyDisplayToStyleStr($style) {
+	/**
+	 * Parse the given currency display string into the currency diplsy values.
+	 *
+	 * This function takes the currency style string as saved in the vendor
+	 * record and parses it into its appropriate values.  An example style
+	 * string would be 1|&euro;|2|,|.|0|0
+	 *
+	 * @author Max Milbers
+	 * @param String $currencyStyle String containing the currency display settings
+	 */
+	private function setCurrencyDisplayToStyleStr($style) {
 
-    	$this->_currency_id = $style->virtuemart_currency_id;
+		$this->_currency_id = $style->virtuemart_currency_id;
 		$this->_symbol = $style->currency_symbol;
 		$this->_nbDecimal = $style->currency_decimal_place;
 		$this->_decimal = $style->currency_decimal_symbol;
@@ -149,17 +149,17 @@ class CurrencyDisplay {
 		$this->_positivePos = $style->currency_positive_style;
 		$this->_negativePos = $style->currency_negative_style;
 
-    }
+	}
 
-    /**
-     * This function sets an array, which holds the information if
-     * a price is to be shown and the number of rounding digits
-     *
-     * @author Max Milbers
-     */
-    function setPriceArray(){
+	/**
+	 * This function sets an array, which holds the information if
+	 * a price is to be shown and the number of rounding digits
+	 *
+	 * @author Max Milbers
+	 */
+	function setPriceArray(){
 
-    	if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
+		if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 
 		$user = JFactory::getUser();
 
@@ -205,13 +205,14 @@ class CurrencyDisplay {
 		}
 
 	}
-/**
+
+	/**
 	 * getCurrencyDisplay: get The actual displayed Currency
 	 * Use this only in a view, plugin or modul, never in a model
 	 *
 	 * @param integer $currencyId
 	 * return integer $currencyId: displayed Currency
-         *
+	 *
 	 */
 	public function getCurrencyDisplay( $currencyId=0 ){
 
@@ -224,6 +225,7 @@ class CurrencyDisplay {
 
 		return $currencyId;
 	}
+
 	/**
 	 * This function is for the gui only!
 	 * Use this only in a view, plugin or modul, never in a model
@@ -234,29 +236,29 @@ class CurrencyDisplay {
 	 */
 	public function priceDisplay($price=0, $currencyId=0,$inToShopCurrency = false,$nb = 2){
 		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipping)
-/*
+		/*
+		 if(empty($currencyId)){
+		$currencyId = (int)$this->_app->getUserStateFromRequest( 'virtuemart_currency_id', 'virtuemart_currency_id',$this->_vendorCurrency );
 		if(empty($currencyId)){
-			$currencyId = (int)$this->_app->getUserStateFromRequest( 'virtuemart_currency_id', 'virtuemart_currency_id',$this->_vendorCurrency );
-			if(empty($currencyId)){
-				$currencyId = $this->_vendorCurrency;
-			}
+		$currencyId = $this->_vendorCurrency;
 		}
-*/
-                $currencyId = $this->getCurrencyDisplay($currencyId);
+		}
+		*/
+		$currencyId = $this->getCurrencyDisplay($currencyId);
 		$price = $this->convertCurrencyTo($currencyId,$price,$inToShopCurrency);
 		return $this->getFormattedCurrency($price,$nb);
 	}
 
 	/**
-	* function to create a div to show the prices, is necessary for JS
-	*
-	* @author Max Milbers
-	* @author Patrick Kohl
-	* @param string name of the price
-	* @param String description key
-	* @param array the prices of the product
-	* return a div for prices which is visible according to config and have all ids and class set
-	*/
+	 * function to create a div to show the prices, is necessary for JS
+	 *
+	 * @author Max Milbers
+	 * @author Patrick Kohl
+	 * @param string name of the price
+	 * @param String description key
+	 * @param array the prices of the product
+	 * return a div for prices which is visible according to config and have all ids and class set
+	 */
 	public function createPriceDiv($name,$description,$product_price){
 
 		if(empty($product_price)) return '';
@@ -302,7 +304,7 @@ class CurrencyDisplay {
 
 		if($shop){
 			// TODO optimize this... the exchangeRate cant be cached, there are more than one currency possible
-//			$exchangeRate = &$this->exchangeRateVendor;
+			//			$exchangeRate = &$this->exchangeRateVendor;
 			$exchangeRate = 0;
 		} else {
 			//caches the exchangeRate between shopper and vendor
@@ -315,7 +317,7 @@ class CurrencyDisplay {
 				$exchangeRate = $currency->_vendorCurrency;
 			}
 			else {
-//				$this->_db = JFactory::getDBO();
+				//				$this->_db = JFactory::getDBO();
 				$q = 'SELECT `currency_exchange_rate`
 				FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.(int)$currency.'" ';
 				$this->_db->setQuery($q);
@@ -364,116 +366,116 @@ class CurrencyDisplay {
 		return $curr;
 	}
 
-    /**
-     * Format, Round and Display Value
-     * @author Max Milbers
-     * @param val number
-     */
-    private function getFormattedCurrency( $nb, $nbDecimal=-1){
+	/**
+	 * Format, Round and Display Value
+	 * @author Max Milbers
+	 * @param val number
+	 */
+	private function getFormattedCurrency( $nb, $nbDecimal=-1){
 
-    	if($nbDecimal===-1) $nbDecimal = $this->_nbDecimal;
-    	if($nb>=0){
-    		$format = $this->_positivePos;
-    		$sign = '+';
-    	} else {
-    		$format = $this->_negativePos;
-    		$sign = '-';
+		if($nbDecimal===-1) $nbDecimal = $this->_nbDecimal;
+		if($nb>=0){
+			$format = $this->_positivePos;
+			$sign = '+';
+		} else {
+			$format = $this->_negativePos;
+			$sign = '-';
 			$nb = abs($nb);
-    	}
+		}
 
-    	//$res = $this->formatNumber($nb, $nbDecimal, $this->_thousands, $this->_decimal);
+		//$res = $this->formatNumber($nb, $nbDecimal, $this->_thousands, $this->_decimal);
 		$res = number_format((float)$nb,$nbDecimal,$this->_decimal,$this->_thousands);
-    	$search = array('{sign}', '{number}', '{symbol}');
-    	$replace = array($sign, $res, $this->_symbol);
-    	$formattedRounded = str_replace ($search,$replace,$format);
+		$search = array('{sign}', '{number}', '{symbol}');
+		$replace = array($sign, $res, $this->_symbol);
+		$formattedRounded = str_replace ($search,$replace,$format);
 
-    	return $formattedRounded;
-    }
+		return $formattedRounded;
+	}
 
-    /**
-     *
-     * @author Horvath, Sandor [HU] http://de.php.net/manual/de/function.number-format.php
-     * @author Max Milbers
-     * @param double $number
-     * @param int $decimals
-     * @param string $thousand_separator
-     * @param string $decimal_point
-     */
-    function formatNumber($number, $decimals = 2, $decimal_point = '.', $thousand_separator = '&nbsp;' ){
+	/**
+	 *
+	 * @author Horvath, Sandor [HU] http://de.php.net/manual/de/function.number-format.php
+	 * @author Max Milbers
+	 * @param double $number
+	 * @param int $decimals
+	 * @param string $thousand_separator
+	 * @param string $decimal_point
+	 */
+	function formatNumber($number, $decimals = 2, $decimal_point = '.', $thousand_separator = '&nbsp;' ){
 
-//    	$tmp1 = round((float) $number, $decimals);
+		//    	$tmp1 = round((float) $number, $decimals);
 
-    	return number_format($number,$decimals,$decimal_point,$thousand_separator);
-//		while (($tmp2 = preg_replace('/(\d+)(\d\d\d)/', '\1 \2', $tmp1)) != $tmp1){
-//			$tmp1 = $tmp2;
-//		}
-//
-//		return strtr($tmp1, array(' ' => $thousand_separator, '.' => $decimal_point));
-    }
+		return number_format($number,$decimals,$decimal_point,$thousand_separator);
+		//		while (($tmp2 = preg_replace('/(\d+)(\d\d\d)/', '\1 \2', $tmp1)) != $tmp1){
+		//			$tmp1 = $tmp2;
+		//		}
+		//
+		//		return strtr($tmp1, array(' ' => $thousand_separator, '.' => $decimal_point));
+	}
 
-    /**
-     * Return the currency symbol
-     */
-    public function getSymbol() {
+	/**
+	 * Return the currency symbol
+	 */
+	public function getSymbol() {
 		return($this->_symbol);
-    }
+	}
 
-    /**
-     * Return the currency ID
-     */
-    public function getId() {
+	/**
+	 * Return the currency ID
+	 */
+	public function getId() {
 		return($this->_currency_id);
-    }
+	}
 
-    /**
-     * Return the number of decimal places
-     *
-     * @author RickG
-     * @return int Number of decimal places
-     */
-    public function getNbrDecimals() {
+	/**
+	 * Return the number of decimal places
+	 *
+	 * @author RickG
+	 * @return int Number of decimal places
+	 */
+	public function getNbrDecimals() {
 		return($this->_nbDecimal);
-    }
+	}
 
-    /**
-     * Return the decimal symbol
-     *
-     * @author RickG
-     * @return string Decimal place symbol
-     */
-    public function getDecimalSymbol() {
+	/**
+	 * Return the decimal symbol
+	 *
+	 * @author RickG
+	 * @return string Decimal place symbol
+	 */
+	public function getDecimalSymbol() {
 		return($this->_decimal);
-    }
+	}
 
-    /**
-     * Return the decimal symbol
-     *
-     * @author RickG
-     * @return string Decimal place symbol
-     */
-    public function getThousandsSeperator() {
+	/**
+	 * Return the decimal symbol
+	 *
+	 * @author RickG
+	 * @return string Decimal place symbol
+	 */
+	public function getThousandsSeperator() {
 		return($this->_thousands);
-    }
+	}
 
-    /**
-     * Return the positive format
-     *
-     * @author RickG
-     * @return string Positive number format
-     */
-    public function getPositiveFormat() {
+	/**
+	 * Return the positive format
+	 *
+	 * @author RickG
+	 * @return string Positive number format
+	 */
+	public function getPositiveFormat() {
 		return($this->_positivePos);
-    }
+	}
 
-     /**
-     * Return the negative format
-     *
-     * @author RickG
-     * @return string Negative number format
-     */
-    public function getNegativeFormat() {
+	/**
+	 * Return the negative format
+	 *
+	 * @author RickG
+	 * @return string Negative number format
+	 */
+	public function getNegativeFormat() {
 		return($this->_negativePos);
-    }
+	}
 
 
 

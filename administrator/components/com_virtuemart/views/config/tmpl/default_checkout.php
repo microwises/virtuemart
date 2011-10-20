@@ -90,7 +90,7 @@ defined('_JEXEC') or die('Restricted access');
 							</span>
 						</td>
 						<td>
-							<?php echo VmHTML::checkbox('oncheckout_show_register', $this->config->get('oncheckout_show_register')); ?>
+							<?php echo VmHTML::checkbox('oncheckout_only_registered', $this->config->get('oncheckout_only_registered')); ?>
 						</td>
 					</tr>
 					<tr>
