@@ -265,19 +265,19 @@ class CurrencyDisplay {
 
 		//This could be easily extended by product specific settings
 		//if(VmConfig::get($name) =='1'){
-		if($this->_priceConfig[$name][0]!==0){
+		if(!empty($this->_priceConfig[$name][0])){
 			if(!empty($product_price[$name])){
 				$vis = "block";
 				//if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 
 				$product_price[$name] = $this->priceDisplay($product_price[$name],0,false,$this->_priceConfig[$name][1]);
-				if($priceOnly){
-					return $product_price[$name];
-				}
+
 			} else {
 				$vis = "none";
 			}
-
+			if($priceOnly){
+				return $product_price[$name];
+			}
 			$descr = '';
 			if($this->_priceConfig[$name][2]) $descr = JText::_($description);
 
