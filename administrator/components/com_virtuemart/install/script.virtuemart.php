@@ -196,7 +196,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			// orders :
 
 			$this->checkAddFieldToTable('#__virtuemart_orders','order_payment',' decimal(10,2) DEFAULT NULL');
-			$this->checkAddFieldToTable('#__virtuemart_orders','order_payment_tax',' decimal(10,2) DEFAULT NULL');
+			$this->checkAddFieldToTable('#__virtuemart_orders','order_payment_tax',' decimal(10,5) DEFAULT NULL');
 
 			$fields = array('virtuemart_shoppergroup_id'=>'`virtuemart_shoppergroup_id` int(11) DEFAULT NULL',
 														'product_price'=>'`product_price` decimal(15,5) DEFAULT NULL',
