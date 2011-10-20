@@ -160,7 +160,7 @@ class VirtueMartViewAskquestion extends JView {
 
 	$this->subject = Jtext::_('COM_VIRTUEMART_QUESTION_ABOUT') . $this->product->product_name;
 	$this->vendorEmail= $this->user['email'];
-	$this->vendorName= $this->user['email'];
+	//$this->vendorName= $this->user['email'];
 	if (VmConfig::get('order_mail_html')) {
 	    $tpl = 'mail_html_question';
 	} else {
