@@ -303,7 +303,7 @@ $tt=$this;
 
 
 					<td colspan="4">
-						<?php echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/vm_witharrow.png', 'With selected'); ?><?php echo $this->orderStatSelect; ?>
+						<?php // echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/vm_witharrow.png', 'With selected'); $this->orderStatSelect; ?>
 						&nbsp;&nbsp;&nbsp;
 
 					</td>
@@ -477,12 +477,12 @@ jQuery('.show_element').click(function() {
   jQuery('.element-hidden').toggle();
   return false
 });
-jQuery('select#order_items_status').change(function() {
-	//selectItemStatusCode
-	var statusCode = this.value;
-	jQuery('.selectItemStatusCode').val(statusCode);
-	return false
-});
+// jQuery('select#order_items_status').change(function() {
+	////selectItemStatusCode
+	// var statusCode = this.value;
+	// jQuery('.selectItemStatusCode').val(statusCode);
+	// return false
+// });
 jQuery('.updateOrderItemStatus').click(function() {
 	document.orderItemForm.task.value = 'updateOrderItemStatus';
 	document.orderItemForm.submit();

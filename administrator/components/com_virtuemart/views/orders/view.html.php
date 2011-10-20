@@ -125,8 +125,8 @@ class VirtuemartViewOrders extends JView {
 			/* Data for the Edit Status form popup */
 			$_currentOrderStat = $order['details']['BT']->order_status;
 			// used to update all item status in one time
-			$_orderStatusSelect = JHTML::_('select.genericlist', $orderStates, 'order_status', '', 'order_status_code', 'order_status_name', $_currentOrderStat, 'order_items_status',true);
-			$this->assignRef('orderStatSelect', $_orderStatusSelect);
+			// $_orderStatusSelect = JHTML::_('select.genericlist', $orderStates, 'order_status', '', 'order_status_code', 'order_status_name', $_currentOrderStat, 'order_items_status',true);
+			// $this->assignRef('orderStatSelect', $_orderStatusSelect);
 			$this->assignRef('currentOrderStat', $_currentOrderStat);
 
 			/* Toolbar */
