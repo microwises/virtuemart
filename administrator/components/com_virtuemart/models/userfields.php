@@ -302,7 +302,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 		$register = false;
 
-		if(!VmConfig::get('oncheckout_show_register',1)){
+		if(VmConfig::get('oncheckout_show_register',1)){
 			$user = JFactory::getUser();
 			if(!empty($user)){
 				if(empty($user->id)){

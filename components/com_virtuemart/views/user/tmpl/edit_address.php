@@ -88,16 +88,18 @@ if( strpos($this->fTask,'checkout') ){
 	$buttonclass = 'button vm-button-correct';
 }
 
-if ($this->fTask === 'savecartuser') {
-	$rtask = 'registercartuser';
-} else {
-	$rtask = 'registercheckoutuser';
-}
+
 
 if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->id === 0 && !VmConfig::get('oncheckout_only_registered',0)) {
 	echo JText::sprintf('COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER', JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'), JText::_('COM_VIRTUEMART_CHECKOUT_AS_GUEST'));
 }
 if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->id === 0 ) {
+
+	if ($this->fTask === 'savecartuser') {
+		$rtask = 'registercartuser';
+	} else {
+		$rtask = 'registercheckoutuser';
+	}
 // 	vmdebug('my fTask '.$this->fTask);
  ?>
 <button class="<?php echo $buttonclass ?>" type="submit" onclick="javascript:return callValidatorForRegister(userForm);" ><?php echo JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?></button>
