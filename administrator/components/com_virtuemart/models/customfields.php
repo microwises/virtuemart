@@ -876,6 +876,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$html .= '<br/ ><span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
 					}
 				} else {
+					// falldown method if customfield are deleted
 					foreach((array)$param as $key => $value) $html .= '<br/ >'.($key?'<span>'.$key.' : </span>':'').$value;
 				} 
 			} 

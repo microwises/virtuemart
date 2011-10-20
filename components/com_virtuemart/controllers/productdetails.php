@@ -264,8 +264,8 @@ class VirtueMartControllerProductdetails extends JController {
 
 		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
-		foreach ( $prices as &$value  ){
-			$value = $currency->priceDisplay($value);
+		foreach ( $prices as $name => &$product_price  ){
+			$product_price = $currency->createPriceDiv($name,'',$product_price,true);
 		}
 
 		// Get the document object.

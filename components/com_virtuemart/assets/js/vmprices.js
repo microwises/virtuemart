@@ -110,7 +110,7 @@ jQuery(document).ready(function($) {
 	$("form.js-recalculate").each(function(){
 		var id= $(this).find('input[name="virtuemart_product_id[]"]').val();
 		$.setproducttype($(this),id);
-		console.log($(this),id);
+		//console.log($(this),id);
 	});
 		
 });

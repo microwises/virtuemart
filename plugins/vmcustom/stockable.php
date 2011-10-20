@@ -250,7 +250,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 					});			
 			});
 			//console.log(stockable) ;
-			recalculate($("#attribute1"));
+			if ( $("#attribute1").length ) recalculate($("#attribute1"));
 			$(".attribute_list").change(function(){
 				recalculate($(this));
 			
