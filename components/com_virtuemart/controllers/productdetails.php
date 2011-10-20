@@ -261,11 +261,11 @@ class VirtueMartControllerProductdetails extends JController {
 		$product_model = $this->getModel('product');
 
 		$prices = $product_model->getPrice($virtuemart_product_id,$customPrices,$quantity);
-
+		$priceFormated = array();
 		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();vmdebug('hmm',$currency);
 		foreach ( $prices as $name => $product_price  ){
-			$product_price = $currency->createPriceDiv($name,'',$product_price,true);
+			$priceFormated[$name] = $currency->createPriceDiv($name,'',$prices,true);
 		}
 
 		// Get the document object.
@@ -274,7 +274,7 @@ class VirtueMartControllerProductdetails extends JController {
 		// Set the MIME type for JSON output.
 		$document->setMimeEncoding( 'application/json' );
 
-		echo json_encode ($prices);
+		echo json_encode ($priceFormated);
 		jexit();
 		die;
 
