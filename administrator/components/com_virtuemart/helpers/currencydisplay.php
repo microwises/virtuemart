@@ -259,10 +259,9 @@ class CurrencyDisplay {
 	 * @param array the prices of the product
 	 * return a div for prices which is visible according to config and have all ids and class set
 	 */
-	public function createPriceDiv($name,$description,$product_price){
+	public function createPriceDiv($name,$description,$product_price,$priceOnly=false){
 
 		if(empty($product_price)) return '';
-
 
 		//This could be easily extended by product specific settings
 		//if(VmConfig::get($name) =='1'){
@@ -272,15 +271,18 @@ class CurrencyDisplay {
 				//if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 
 				$product_price[$name] = $this->priceDisplay($product_price[$name],0,false,$this->_priceConfig[$name][1]);
+				if($priceOnly){
+					return $product_price[$name];
+				}
 			} else {
 				$vis = "none";
 			}
+
 			$descr = '';
 			if($this->_priceConfig[$name][2]) $descr = JText::_($description);
 
-			//	 	if(!empty($product_price[$name])){
 			return '<div class="Price'.$name.'" style="display : '.$vis.';" >'.$descr.'<span class="Price'.$name.'" >'.$product_price[$name].'</span></div>';
-			//	 	}
+
 		}
 	}
 
