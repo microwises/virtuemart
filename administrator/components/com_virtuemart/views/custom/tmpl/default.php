@@ -47,15 +47,16 @@ $pagination = $this->pagination;
 ?>
 
 
-			
+
 <table class="adminlist" cellspacing="0" cellpadding="0">
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($customs); ?>')" /></th>
-		<th><?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_PARENT'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_PARENT'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_TITLE'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_FIELD_DESCRIPTION'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_FIELD_TYPE'); ?></th>
+		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_ADMIN_ONLY'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_HIDDEN'); ?></th>
 		<th>
@@ -97,10 +98,13 @@ $pagination = $this->pagination;
 				<!-- Product name -->
 				<?php
 				$link = "index.php?option=com_virtuemart&view=custom&task=edit&virtuemart_custom_id=".$custom->virtuemart_custom_id;
+				if ($custom->is_cart_attribute) $cartIcon=  'default';
+							 else  $cartIcon= 'default-off';
 				?>
 				<td><?php echo JHTML::_('link', JRoute::_($link), $custom->custom_title, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$custom->custom_title)); ?></td>
 				<td><?php echo $custom->custom_field_desc; ?></td>
 				<td><?php echo $custom->field_type_display; ?></td>
+				<td><span class="vmicon vmicon-16-<?php echo $cartIcon ?>"></span></td>
 				<td>
 					<a href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','toggle.admin_only')" title="<?php echo ($custom->admin_only ) ? JText::_('COM_VIRTUEMART_YES') : JText::_('COM_VIRTUEMART_NO');?>">
 					<span class="vmicon <?php echo ( $custom->admin_only  ? 'vmicon-16-checkin' : 'vmicon-16-bug' );?>"></span></a></td>
