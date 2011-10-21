@@ -18,23 +18,23 @@
 #vmPage fieldset.adminform legend, #vmPage fieldset legend {display: inline-block;padding: 0px 12px;}
 
 
-#cpanel { 
-	text-align: center; 
+#cpanel {
+	text-align: center;
 	vertical-align: middle;
 	height: 1%;
 	overflow: hidden;
 }
 
-#cpanel div.icon   { 
-	margin: 3px; 
+#cpanel div.icon   {
+	margin: 3px;
 }
-.admin-content div.icon a { 
-	display: block; 
+.admin-content div.icon a {
+	display: block;
 	height: 93px !important;
-	height: 95px; 
+	height: 95px;
 	width: 118px !important;
-	width: 120px; 
-	vertical-align: middle; 
+	width: 120px;
+	vertical-align: middle;
 	text-decoration : none;
 	border: none;
 	padding: 8px 12px 6px 12px;
@@ -42,38 +42,38 @@
 	-webkit-box-shadow:rgba(0, 0, 0, 0.148438) 0 1px 2px inset, #FFFFFF 0 1px 2px;
 	background-image: -moz-linear-gradient(100% 100% 90deg, #F1F1F1, #FFFFFF);
 	background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#FFFFFF), to(#F1F1F1));
-	
+
 	-webkit-border-radius: 6px;
 -moz-border-radius: 6px;
 font-size: 12px;
 }
 
-#vmPage #cpanel div.icon a:link    { 
-	color : #000; 
+#vmPage #cpanel div.icon a:link    {
+	color : #000;
 	font-weight: bold;
 }
-#vmPage #cpanel div.icon a:hover   { 
-	color : #333; 
-	background-color: #f1e8e6;  
+#vmPage #cpanel div.icon a:hover   {
+	color : #333;
+	background-color: #f1e8e6;
 	background-image: -moz-linear-gradient(100% 100% 90deg, #FFFFFF, #F1F1F1);
 	background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#F1F1F1), to(#FFFFFF));
 }
-#vmPage #cpanel div.icon a:active  { 
-	color : #808080; 
+#vmPage #cpanel div.icon a:active  {
+	color : #808080;
 	font-weight: bold;
 }
-#vmPage #cpanel div.icon a:visited { 
-	color : #000; 
+#vmPage #cpanel div.icon a:visited {
+	color : #000;
 	font-weight: bold;
 }
 
-#vmPage #cpanel div.iconimage { 
-	padding-top: 13px; 
-} 
+#vmPage #cpanel div.iconimage {
+	padding-top: 13px;
+}
 .adminListHeader {
 	height: 48px; background-repeat: no-repeat;
 	text-align: left; font-size: 18px; font-weight: bold;
-	padding-left: 80px;	
+	padding-left: 80px;
 }
 .editable {
 	background: #ffff33;
@@ -126,7 +126,7 @@ font-size: 12px;
 .vm-absolute{
 	position: absolute;
 }
-.detachselectimage , #addnewselectimage {    
+.detachselectimage , #addnewselectimage {
     background-repeat: no-repeat;
     border: 1px solid #CCCCCC;
     cursor: pointer;
@@ -215,7 +215,7 @@ span.trash {
     width: 24px;
 	cursor: pointer;
 }
-.removable{padding: 2px; border-radius: 6px 6px 6px 6px; border: 1px solid;}
+.removable{padding: 2px; border-radius: 6px 6px 6px 6px; border: 1px solid #CCCCCC;}
 #new_stockable_product {
     border: 1px solid #CCCCCC;
     cursor: pointer;
@@ -246,16 +246,16 @@ div.threecols ul   {
 	color:#fff;
 	background:#075698;
 	left:-20px;
- 
+
 	-moz-border-radius:4px;
 	-webkit-border-radius:4px;
 	border-radius:4px;
- 
+
 	background:-webkit-gradient(linear, left top, left bottom, from(#075698), to(#2e88c4));
 	background:-moz-linear-gradient(top, #075698, #2e88c4);
 	background:-o-linear-gradient(top, #075698, #2e88c4);
 	background:linear-gradient(top, #075698, #2e88c4);
- 
+
 	-moz-box-shadow: 0px 0px 4px #000; /* FF3.5+ */
 	-webkit-box-shadow: 0px 0px 4px #000; /* Saf3.0+, Chrome */
 	box-shadow: 0px 0px 4px #000; /* Opera 10.5, IE 9.0 */

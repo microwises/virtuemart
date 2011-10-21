@@ -36,9 +36,9 @@ if(!empty($attribute_id)) $this->customfields->addHidden('attribute_id',$attribu
 echo $this->customfields->displayCustomFields('',$this->custom); ?>
 <table class="adminform" id="custom_plg">
 	<tr>
-		<td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_SELECT_CUSTOM_PLUGIN' ); ?></td>
-		<td><?php echo $this->pluginList ?></td>
-		<td></td>
+		<td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_SELECT_CUSTOM_PLUGIN' ) ."<br /> ". $this->pluginList ?></td>
+
+
 	</tr>
 	<tr>
 		<td>
@@ -50,7 +50,7 @@ echo $this->customfields->displayCustomFields('',$this->custom); ?>
                 $parameters = new vmParameters($this->customPlugin->custom_params,  $this->customPlugin->custom_element , 'plugin' ,'vmcustom');
               // vmdebug ( 'csutomplg',$this->customPlugin->custom_element);
 	        echo $rendered = $parameters->render(); ?>
-			
+
 			<?php
         } else { ?>
              <?php echo JText::_('COM_VIRTUEMART_SELECT_CUSTOM_PLUGIN' );
@@ -71,7 +71,7 @@ function submitbutton(pressbutton) {
 	else return false ;
 }
 <?php if ( $this->custom->field_type !== "E" ){ ?>jQuery('#custom_plg').hide();<?php } ?>
-jQuery('#field_type').change(function () { 
+jQuery('#field_type').change(function () {
 	var $selected = jQuery(this).val();
 	if ($selected == "E" ) jQuery('#custom_plg').show();
 	else { jQuery('#custom_plg').hide();
@@ -80,7 +80,7 @@ jQuery('#field_type').change(function () {
 	}
 
 });
-jQuery('#custom_jplugin_id').change(function () { 
+jQuery('#custom_jplugin_id').change(function () {
 	var $id = jQuery(this).val();
 	jQuery('#plugin-Container').load( 'index.php?option=com_virtuemart&view=custom&task=viewJson&format=json&custom_jplugin_id='+$id , function() { jQuery(this).find("[title]").vm2admin('tips',tip_image) });
 
