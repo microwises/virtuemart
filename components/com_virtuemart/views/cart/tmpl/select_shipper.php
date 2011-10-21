@@ -59,7 +59,7 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 <form method="post" id="userForm" name="chooseShippingRate" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate">
 <?php
 
-	echo JText::_('COM_VIRTUEMART_CART_SELECT_SHIPPER');
+	echo "<h1>".JText::_('COM_VIRTUEMART_CART_SELECT_SHIPPER')."</h1>";
 	if($this->cart->getInCheckOut()){
 		$buttonclass = 'button vm-button-correct';
 	} else {

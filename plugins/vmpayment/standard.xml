@@ -25,7 +25,7 @@
         <param name="max_amount" type="text"  label="VMPAYMENT_STANDARD_MAX_AMOUNT" description="VMPAYMENT_STANDARD_MAX_AMOUNT_EXPLAIN" />
         <param name="payment_value" type="text"  label="VMPAYMENT_STANDARD_FEE" description="VMPAYMENT_STANDARD_FEE_EXPLAIN" />
         <param name="payment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_STANDARD_TAX" description="VMPAYMENT_STANDARD_TAX_DESC" />
- 	<param name="payment_info" type="textarea" cols="60" rows="30" default="" label="VMPAYMENT_STANDARD_PAYMENTINFO" description="VMPAYMENT_STANDARD_PAYMENTINFO_EXPLAIN" />
+ 	<param name="payment_info" type="textarea" cols="60" rows="30" default="Your order will be treated as soon as we receive your payment." label="VMPAYMENT_STANDARD_PAYMENTINFO" description="VMPAYMENT_STANDARD_PAYMENTINFO_EXPLAIN" />
     </params>
 
     <fieldset addpath="/administrator/components/com_virtuemart/elements">
