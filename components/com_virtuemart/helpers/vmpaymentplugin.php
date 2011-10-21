@@ -609,7 +609,7 @@ abstract class vmPaymentPlugin extends JPlugin {
 	 * @author Valerie Isaksen
 	 *
 	 */
-	protected function updatePaymentData($values, $table, $where_key, $where_value) {
+	protected function updatePaymentData($values, $table, $where_key, $where_value ) {
 		if (count($values) == 0) {
 			JError::raiseWarning(500, 'updatePaymentData got no data to update to ' . $table);
 			return;

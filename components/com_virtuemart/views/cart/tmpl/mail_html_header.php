@@ -6,7 +6,7 @@
  * @package	VirtueMart
  * @subpackage Cart
  * @author Kohl Patrick
- *
+ * author Valérie Isaksen
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -27,9 +27,10 @@ defined('_JEXEC') or die('Restricted access');
 	<strong><?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_NAME', $this->shopperName); ?></strong><br/>
     </td>
     <tr>
-	<td colspan="2"><strong><?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_NAME', $this->shopperName); ?>
+	<td colspan="2">
 		<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_SUMMARY', $this->cart->vendor->vendor_store_name); ?>
-	    <br/></td>
+
+	</td>
 	<td align="right"><span class="date"><?php echo $this->order['details']['BT']->created_on ?></span><br/></td>
     </tr>
 </table>
