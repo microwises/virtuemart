@@ -878,9 +878,9 @@ abstract class vmShipperPlugin extends JPlugin {
 	*
 	* @author Valerie Isaksen
 	* @param TableShippingcarriers $shipping
-	* @return string Payment method name
+	* @return string Shipping method name
 	*/
-	function getShippingName(TableShippingcarriers $shipping) {
+	function getShippingName( $shipping) {
 
 		$return = '';
 		$params = new JParameter($shipping->shipping_carrier_params);
