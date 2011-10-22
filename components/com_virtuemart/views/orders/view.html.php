@@ -73,6 +73,34 @@ class VirtuemartViewOrders extends JView {
 
 			}
 
+			if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+			JPluginHelper::importPlugin('vmshipper');
+			$dispatcher = JDispatcher::getInstance();
+			$returnValues = $dispatcher->trigger('plgVmOnShowOrderShipperFE',array(
+				 $orderDetails['details']['BT']->virtuemart_order_id
+			));
+			foreach ($returnValues as $returnValue) {
+				if ($returnValue !== null) {
+					$shipping = $returnValue;
+					break;
+				}
+			}
+
+			if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
+			JPluginHelper::importPlugin('vmpayment');
+			$dispatcher = JDispatcher::getInstance();
+			$returnValues = $dispatcher->trigger('plgVmOnShowOrderPaymentFE',array(
+				 $orderDetails['details']['BT']->virtuemart_order_id
+			));
+			foreach ($returnValues as $returnValue) {
+				if ($returnValue !== null) {
+					$payment= $returnValue;
+					break;
+				}
+			}
+
+			$this->assignRef('shipping', $shipping);
+			$this->assignRef('payment', $payment);
 			$this->assignRef('orderdetails', $orderDetails);
 
 			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
@@ -108,34 +136,8 @@ class VirtuemartViewOrders extends JView {
 			$orderstatuses[$_ordstat->order_status_code] = JText::_($_ordstat->order_status_name);
 		}
 
-		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
-		JPluginHelper::importPlugin('vmshipper');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnShowOrderShipperFE',array(
-			 $this->orderdetails['details']['BT']->virtuemart_order_id
-		));
-		foreach ($returnValues as $returnValue) {
-			if ($returnValue !== null) {
-				$shipping = $returnValue;
-				break;
-			}
-		}
 
-		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
-		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnShowOrderPaymentFE',array(
-			 $this->orderdetails['details']['BT']->virtuemart_order_id
-		));
-		foreach ($returnValues as $returnValue) {
-			if ($returnValue !== null) {
-				$payment= $returnValue;
-				break;
-			}
-		}
 
-		$this->assignRef('shipping', $shipping);
-		$this->assignRef('payment', $payment);
 		$this->assignRef('orderstatuses', $orderstatuses);
 
 
