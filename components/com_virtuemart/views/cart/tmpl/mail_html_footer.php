@@ -25,12 +25,12 @@ if (empty($this->vendor)) {
 		$this->vendor = $vendorModel->getVendor();
 }
 
-$uri    = JURI::getInstance();
-$prefix = $uri->toString(array('scheme', 'host', 'port'));
-$link = JRoute::_ ( 'index.php?option=com_virtuemart' );
+// $uri    = JURI::getInstance();
+// $prefix = $uri->toString(array('scheme', 'host', 'port'));
+$link = JRoute::_ ( 'index.php?option=com_virtuemart',true,-1);
 
 echo '<br/><br/>';
-$link='<b>'.JHTML::_('link',$prefix.$link, $this->vendor->vendor_name).'</b> ';
+$link='<b>'.JHTML::_('link', $link, $this->vendor->vendor_name).'</b> ';
 
 //	echo JText::_('COM_VIRTUEMART_CART_MAIL_VENDOR_TITLE').$this->vendor->vendor_name.'<br/>';
 /* GENERAL FOOTER FOR ALL MAILS */
