@@ -231,6 +231,12 @@ function virtuemartParseRoute($segments) {
 		$value = str_replace(':', '-', $value);
 	}
 
+        // George Kostopoulos
+        // Set initial value for limitStart in order to be sure that the default value is set
+        if(version_compare(JVERSION,'1.6.0','ge')) 
+            $vars['limitstart'] = 0;
+        else
+            $vars['limitstart'] = 1;  
 	if ($segments[0] == $lang['page']) {
 		array_shift($segments);
 
