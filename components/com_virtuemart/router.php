@@ -66,14 +66,16 @@ function virtuemartBuildRoute(&$query) {
 				unset($query['start']);
 			}
                         else {
-                                // George Kostopoulos, a possible fix for J1.7 SEF enabled pagination problem (where pages must start from 0)
-                                // May not work in J1.5
-                                $segments[] = $lang['page'] ;                                
-                                if(version_compare(JVERSION,'1.6.0','ge')) {
-					$segments[] = 0;
-				} else {
-					$segments[] = 1;
-				}				
+                                // George Kostopoulos, 
+                                // This was a wrong fix for J1.7 SEF enabled pagination problem (where pages must start from 0)
+                                // It;s not a good solutions because it tries to correct page's default value
+                                // by forcing the default value                                
+                                //$segments[] = $lang['page'] ;                                
+                                //if(version_compare(JVERSION,'1.6.0','ge')) {
+				//	$segments[] = 0;
+				//} else {
+				//	$segments[] = 1;
+				//}				
                         }
 			if ( isset($query['orderby']) ) {
 
