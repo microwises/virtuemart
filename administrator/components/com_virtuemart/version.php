@@ -31,19 +31,19 @@ class vmVersion {
 	/** @var string Product */
 	static $PRODUCT = 'VirtueMart';
 	/** @var int Release Number */
-	static $RELEASE = '2.0.0-RC-2i';
+	static $RELEASE = '2.0.0-RC-2j';
 	/** @var string Development Status */
 	static $DEV_STATUS = 'release candidate';
 	/** @var string Codename */
-	static $CODENAME = 'BeJooKu';
+	static $CODENAME = 'BeFree';
 	/** @var string Date */
-	static $RELDATE = 'October 15, 2011';
+	static $RELDATE = 'October 20, 2011';
 	/** @var string Time */
 	static $RELTIME = '00:30';
 	/** @var string Timezone */
 	static $RELTZ = 'GMT';
 	/** @var string Revision */
-	static $REVISION = '$Revision: 4415 $';
+	static $REVISION = '$Revision: 4500 $';
 	/** @var string Copyright Text */
 	static $COPYRIGHT = 'Copyright (C) 2005-2011 VirtueMart Development Team  - All rights reserved.';
 	/** @var string URL */

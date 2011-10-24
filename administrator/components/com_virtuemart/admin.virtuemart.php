@@ -16,6 +16,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 * http://virtuemart.net
 */
 
+require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+VmConfig::loadConfig();
+
 //This is for akeeba release system, it must be executed before any other task
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 if(JRequest::getCmd('view','') == 'liveupdate') {
@@ -23,8 +26,7 @@ if(JRequest::getCmd('view','') == 'liveupdate') {
     return;
 }
 
-require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
-VmConfig::loadConfig();
+
 vmJsApi::jQuery();
 vmJsApi::jSite();
 // check for permission Only vendor and Admin can use VM2 BE

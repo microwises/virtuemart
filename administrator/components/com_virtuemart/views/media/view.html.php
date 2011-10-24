@@ -69,8 +69,10 @@ class VirtuemartViewMedia extends JView {
 
         }
         else {
+        	$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
+        	$cat_id = JRequest::getInt('virtuemart_category_id',0);
 
-			$files = $model->getFiles();
+			$files = $model->getFiles(false,false,$virtuemart_product_id,$cat_id);
 			$this->assignRef('files',	$files);
 
 			JToolBarHelper::customX('synchronizeMedia', 'new', 'new', JText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'),false);

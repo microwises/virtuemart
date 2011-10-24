@@ -13,7 +13,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
 *
-* http://virtuemart.org
+* http://virtuemart.net
 */
 
 ?>
@@ -27,13 +27,15 @@ GNU General Public License as of September 15, 2005, and as distributed,
 it includes or is derivative of works licensed under the GNU General
 Public License or other free or open source software licenses, including
 works copyrighted by any or all of the following, from 2009 - 2011,
-Max Milbers, Rick Glunt, Roland Dalmulder, Oscar van Eijk, Patrick Kohl, Valérie Isaksen, Urs Brülhart, Devendra Kumar Shukla,
-Christopher Roussel, Eugen Stranz, John Acosta, Zbigniew Mazur, John Wicks, Markus Öhler, Stephanie Schmidt, Vu Hoang Viet, Simon Hodgkiss,
-Fred Bidon, Alexander Kludt, Mickaël Cabanas
+Max Milbers, Patrick Kohl, Valérie Isaksen, Rick Glunt, Roland Dalmulder, Oscar van Eijk, Urs Brülhart, Devendra Kumar Shukla,
+Jörg Kiekebusch, Eugen Stranz, Christopher Roussel, John Acosta, George Kostopoulos, Zbigniew Mazur, John Wicks, Markus Öhler, Stephanie Schmidt,
+Vu Hoang Viet, Simon Hodgkiss, Fred Bidon, Mickaël Cabanas, Alexander Kludt, Konstantin Dzvonik
+
+
 
 If you have contributed a vital part of VirtueMart that is not mentioned and/or missing here,
 and you feel that your copyright note should be mentioned here,
-please contact the author of VirtueMart (max|at|virtuemart.net).
+please contact the leader of the author team of VirtueMart (max|at|virtuemart.net).
 
 VirtueMart includes or is derivative of works distributed under the following copyright notices:
 

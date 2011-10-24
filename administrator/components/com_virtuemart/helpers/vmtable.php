@@ -679,61 +679,6 @@ class VmTable extends JTable{
 	}
 
 	/**
-	 * Generic Publish/Unpublish function
-	 *
-	 * @access public
-	 * @param array An array of id numbers
-	 * @param integer 0 if unpublishing, 1 if publishing
-	 * @param integer The id of the user performnig the operation
-	 * @since 1.0.4
-	 */
-	function publish($cid=null, $publish=1, $user_id=0){
-
-		JArrayHelper::toInteger($cid);
-		$user_id = (int)$user_id;
-		$publish = (int)$publish;
-		$k = $this->_tbl_key;
-
-		if(count($cid) < 1){
-			if($this->$k){
-				$cid = array($this->$k);
-			}else {
-				$this->setError("No items selected.");
-				return false;
-			}
-		}
-
-		$cids = $k . '=' . implode(' OR ' . $k . '=', $cid);
-
-		$query = 'UPDATE ' . $this->_tbl
-		. ' SET published = ' . (int)$publish
-		. ' WHERE (' . $cids . ')'
-		;
-
-		$checkin = in_array('locked_by', array_keys($this->getProperties()));
-		if($checkin){
-			$query .= ' AND (locked_by = 0 OR locked_by = ' . (int)$user_id . ')';
-		}
-
-		$this->_db->setQuery($query);
-		if(!$this->_db->query()){
-			$this->setError(get_class($this) . '::Error publish query ' . $this->_db->getErrorMsg());
-			return false;
-		}
-
-		if(count($cid) == 1 && $checkin){
-			if($this->_db->getAffectedRows() == 1){
-				$this->checkin($cid[0]);
-				if($this->$k == $cid[0]){
-					$this->published = $publish;
-				}
-			}
-		}
-		$this->setError(get_class($this) . '::Error publish ');
-		return true;
-	}
-
-	/**
 	 * toggle (0/1) a field
 	 * or invert by $val
 	 * @author impleri
@@ -748,7 +693,7 @@ class VmTable extends JTable{
 			$this->$field = $val;
 		}
 
-		return (parent::store(true));
+		return ($this->store(true));
 	}
 
 	public function resetErrors(){
@@ -769,7 +714,7 @@ class VmTable extends JTable{
 		$this->_db->setQuery( $query );
 
 		if ($this->_db->query()){
-			return parent::delete($oid);
+			return $this->delete($oid);
 		} else {
 			return true;
 		}

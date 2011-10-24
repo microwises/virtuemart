@@ -124,7 +124,7 @@ class VirtueMartModelMedia extends VmModel {
 	* @return object List of media objects
 	*/
 
-	function getFiles($onlyPublished=false, $noLimit=false,  $count=false, $where=array(),$nbr=false){
+	function getFiles($onlyPublished=false, $noLimit=false, $virtuemart_product_id=null, $cat_id=null, $where=array(),$nbr=false){
 
 		$this->_noLimit = $noLimit;
 
@@ -138,10 +138,6 @@ class VirtueMartModelMedia extends VmModel {
 		$joinedTables = '';
 		$whereItems= array();
 		$groupBy ='';
-
-		$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
-		$cat_id = JRequest::getInt('virtuemart_category_id',0);
-
 
 		if(!empty($virtuemart_product_id)){
 			$mainTable = '`#__virtuemart_product_medias`';
@@ -293,7 +289,7 @@ class VirtueMartModelMedia extends VmModel {
 			foreach($data['mediaordering'] as $k=>$v){
 				$sortedMediaIds[] = $k;
 			}
-			vmdebug('merging old and new',$oldIds,$virtuemart_media_id);
+// 			vmdebug('merging old and new',$oldIds,$virtuemart_media_id);
 			$data['virtuemart_media_id'] = $sortedMediaIds;
 		}
 
@@ -340,7 +336,7 @@ class VirtueMartModelMedia extends VmModel {
 		foreach($errors as $error){
 			$this->setError('store medias '.$error);
 		}
-		vmdebug('store media $table->virtuemart_media_id '.$table->virtuemart_media_id);
+// 		vmdebug('store media $table->virtuemart_media_id '.$table->virtuemart_media_id);
 		return $table->virtuemart_media_id;
 	}
 

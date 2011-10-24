@@ -208,7 +208,7 @@ class Migrator extends VmModel{
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'media.php');
 		$this->mediaModel = new VirtueMartModelMedia();
 		//First lets read which files are already stored
-		$this->storedMedias = $this->mediaModel->getFiles(false, true, false);
+		$this->storedMedias = $this->mediaModel->getFiles(false, true);
 
 		//check for entries without file
 		foreach($this->storedMedias as $media){
@@ -310,9 +310,9 @@ class Migrator extends VmModel{
 						//$file != "." && $file != ".." replaced by strpos
 						if(!empty($file) && strpos($file,'.')!==0  && $file != 'index.html'){
 
-							if($file=='tmpl'){
-								vmError('You use the wrong structure for template overrides, they dont need a tmpl folder');
-							}
+// 							if($file=='tmpl'){
+// 								vmError('You use the wrong structure for template overrides, they dont need a tmpl folder');
+// 							}
 							//$info = pathinfo($file);
 							//dump($info,'pathinfo($file)');
 							//dump(filetype($dir.DS.$file),'filetype($dir.DS.$file');
@@ -327,7 +327,7 @@ class Migrator extends VmModel{
 									$filesInDir[] = array('filename' => $file, 'url' => $relUrl);
 								}
 							}else {
-								if($filetype == 'dir' && $file != 'resized' && $file != '.svn'){
+								if($filetype == 'dir' && $file != 'resized'){
 									$subfoldersInDir[] = $dir.$file.DS;
 // 									vmdebug('my sub folder ',$dir.$file);
 								}
@@ -338,6 +338,7 @@ class Migrator extends VmModel{
 			}
 			$foldersInDir = $subfoldersInDir;
 			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+
 				break;
 			}
 		}
@@ -365,6 +366,7 @@ class Migrator extends VmModel{
 			$this->mediaModel->resetErrors();
 			if($success) $i++;
 			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+				vmError('Attention script time too short, no time left to store the media, please rise script execution time');
 				break;
 			}
 		}

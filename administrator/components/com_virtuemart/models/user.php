@@ -840,7 +840,12 @@ class VirtueMartModelUser extends VmModel {
 
 		if ($useractivation == '1') {
 			jimport('joomla.user.helper');
-			$activationLink = 'index.php?option=com_user&task=activate&activation='.$user->get('activation');
+			if(version_compare(JVERSION,'1.6.0','ge')) {
+				$com_users = 'com_users';
+			} else {
+				$com_users = 'com_user';
+			}
+			$activationLink = 'index.php?option='.$com_users.'&task=activate&activation='.$user->get('activation');
 			$vars['activationLink'] = $activationLink;
 		}
 		$vars['doVendor']=true;
