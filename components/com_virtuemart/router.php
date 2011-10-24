@@ -53,30 +53,23 @@ function virtuemartBuildRoute(&$query) {
 		 All ideas are wellcome to improve this
 		 because is the biggest and more used */
 		case 'category';
-			if ( isset($query['start'] )) {
+			 $start = null;
+			if 	( isset($query['limitstart'] ) ) {
+				$start = $query['limitstart'] ;
+				unset($query['limitstart']);
+			}
+			if ( isset($query['start'] ) ) {
+				$start = $query['start'] ;
+				unset($query['start']);
+			} 
+			if ($start) {
 				$segments[] = $lang['page'] ;
 				$mainframe = Jfactory::getApplication(); ;
 				$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', VmConfig::get('list_limit', 20), 'int');
+
 				//Pagination changed, maybe the +1 is wrong note by Max Milbers
-				if(version_compare(JVERSION,'1.6.0','ge')) {
-					$segments[] = floor($query['start']/$limit);
-				} else {
-					$segments[] = floor($query['start']/$limit)+1;
-				}
-				unset($query['start']);
+					$segments[] = floor($start/$limit);
 			}
-                        else {
-                                // George Kostopoulos, 
-                                // This was a wrong fix for J1.7 SEF enabled pagination problem (where pages must start from 0)
-                                // It;s not a good solutions because it tries to correct page's default value
-                                // by forcing the default value                                
-                                //$segments[] = $lang['page'] ;                                
-                                //if(version_compare(JVERSION,'1.6.0','ge')) {
-				//	$segments[] = 0;
-				//} else {
-				//	$segments[] = 1;
-				//}				
-                        }
 			if ( isset($query['orderby']) ) {
 
 				$dotps = strrpos($query['orderby'], '.');
@@ -231,25 +224,20 @@ function virtuemartParseRoute($segments) {
 		$value = str_replace(':', '-', $value);
 	}
 
-        // George Kostopoulos
-        // Set initial value for limitStart in order to be sure that the default value is set
-        if(version_compare(JVERSION,'1.6.0','ge')) 
-            $vars['limitstart'] = 0;
-        else
-            $vars['limitstart'] = 1;  
 	if ($segments[0] == $lang['page']) {
 		array_shift($segments);
 
 		$mainframe = Jfactory::getApplication();
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', VmConfig::get('list_limit', 20), 'int');
 		//Pagination has changed, removed the -1 note by Max Milbers NOTE: Works on j1.5, but NOT j1.7
-// 		if(version_compare(JVERSION,'1.6.0','ge')) {
-// 			$vars['limitstart'] = (array_shift($segments)*$limit);
-// 		} else {
 			$vars['limitstart'] = (array_shift($segments)*$limit);
-// 		}
+			// echo $limit;exit;
 		if (empty($segments)) return $vars;
-	}
+	} else 	if(version_compare(JVERSION,'1.6.0','ge')) {
+		$vars['limitstart'] = 0 ;
+	} 
+
+
 	$orderby = explode(',',$segments[0]);
 	if ( $orderby[0] == $lang['orderby'] ) {
 		$key = array_search($orderby[1],$lang );
@@ -396,7 +384,7 @@ function virtuemartParseRoute($segments) {
 
 	} elseif (!$helper->use_id && ($helper->activeMenu->view == 'category' || ($helper->activeMenu->view == 'virtuemart') ) ) {
 		$vars['virtuemart_category_id'] = $helper->getCategoryId (end($segments) ,$helper->activeMenu->virtuemart_category_id);
-		$vars['view'] = 'category' ;
+		$vars['view'] = 'category' ;//print_r($vars);	echo $limit;	print_r($segments);exit;
 		return $vars;
 
 	} elseif (isset($segments[0]) && ctype_digit ($segments[0]) || $helper->activeMenu->virtuemart_category_id>0 ) {
