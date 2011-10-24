@@ -202,16 +202,17 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		$js = array();
 	
 		foreach($param as $child_id => $attribut) {
-			$customfield_id = $this->getFieldId($product->virtuemart_product_id, $child_id);
-			$js[]= '"'.$child_id.'" :'.$customfield_id->virtuemart_customfield_id;
-			if ($attribut['is_variant']) { 
-				unset ($attribut['is_variant']);
-				foreach ($attribut as $key => $list) {
-					if (empty ($selects[$key])) {
-						$selects[$key][] = $list ;
-					} else { 
-						if (!in_array($list , $selects[$key]) ) {
-							$selects[$key][$list] = $list ;
+			if ($customfield_id = $this->getFieldId($product->virtuemart_product_id, $child_id)) {
+				$js[]= '"'.$child_id.'" :'.$customfield_id->virtuemart_customfield_id;
+				if ($attribut['is_variant']) { 
+					unset ($attribut['is_variant']);
+					foreach ($attribut as $key => $list) {
+						if (empty ($selects[$key])) {
+							$selects[$key][] = $list ;
+						} else { 
+							if (!in_array($list , $selects[$key]) ) {
+								$selects[$key][$list] = $list ;
+							}
 						}
 					}
 				}
