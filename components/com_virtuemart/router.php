@@ -72,16 +72,16 @@ function virtuemartBuildRoute(&$query) {
 			}
 			if ( isset($query['orderby']) ) {
 
-				$dotps = strrpos($query['orderby'], '.');
-				if($dotps!==false){
-					$prefix = substr($query['orderby'], 0,$dotps).'_';
-					$fieldWithoutPrefix = substr($query['orderby'], $dotps+1);
-					// 				vmdebug('Found dot '.$dotps.' $prefix '.$prefix.'  $fieldWithoutPrefix '.$fieldWithoutPrefix);
-				} else {
-					$prefix = '';
-					$fieldWithoutPrefix = $query['orderby'];
-				}
-				$segments[] = $lang['orderby'].','.$prefix.$lang[ $fieldWithoutPrefix ] ;
+				// $dotps = strrpos($query['orderby'], '.');
+				// if($dotps!==false){
+					// $prefix = substr($query['orderby'], 0,$dotps).'_';
+					// $fieldWithoutPrefix = substr($query['orderby'], $dotps+1);
+									//vmdebug('Found dot '.$dotps.' $prefix '.$prefix.'  $fieldWithoutPrefix '.$fieldWithoutPrefix);
+				// } else {
+					// $prefix = '';
+					// $fieldWithoutPrefix = $query['orderby'];
+				// }
+				$segments[] = $lang['orderby'].','.$lang[ $query['orderby'] ] ;
 				unset($query['orderby']);
 			}
 			if ( isset($query['order']) ) {
@@ -671,38 +671,38 @@ class vmrouterHelper {
 				'page'				=> JText::_('COM_VIRTUEMART_SEF_PAGE'),
 				'orderDesc'			=> JText::_('COM_VIRTUEMART_SEF_ORDER_DESC'),
 				'orderby'			=> JText::_('COM_VIRTUEMART_SEF_BY'),
-				'virtuemart_product_id'=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_ID'),
-				'product_sku'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_SKU'),
-				'product_price'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_PRICE'),
-				'category_name'		=> JText::_('COM_VIRTUEMART_SEF_BY_CATEGORY_NAME'),
-				'category_description'=> JText::_('COM_VIRTUEMART_SEF_BY_CATEGORY_DESCRIPTION'),
-				'mf_name' 			=> JText::_('COM_VIRTUEMART_SEF_BY_MF_NAME'),
-				'product_s_desc'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_S_DESC'),
-				'product_desc'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_DESC'),
-				'product_weight'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_WEIGHT'),
-				'product_weight_uom'=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_WEIGHT_UOM'),
-				'product_length'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_LENGTH'),
-				'product_width'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_WIDTH'),
-				'product_height'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_HEIGHT'),
-				'product_lwh_uom'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_LWH_UOM'),
-				'product_in_stock'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_IN_STOCK'),
+				'p.virtuemart_product_id'=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_ID'),
+				'p.product_sku'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_SKU'),
+				'p.product_price'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_PRICE'),
+				'c.category_name'		=> JText::_('COM_VIRTUEMART_SEF_BY_CATEGORY_NAME'),
+				'c.category_description'=> JText::_('COM_VIRTUEMART_SEF_BY_CATEGORY_DESCRIPTION'),
+				'm.mf_name' 			=> JText::_('COM_VIRTUEMART_SEF_BY_MF_NAME'),
+				'p.product_s_desc'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_S_DESC'),
+				'p.product_desc'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_DESC'),
+				'p.product_weight'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_WEIGHT'),
+				'p.product_weight_uom'=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_WEIGHT_UOM'),
+				'p.product_length'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_LENGTH'),
+				'p.product_width'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_WIDTH'),
+				'p.product_height'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_HEIGHT'),
+				'p.product_lwh_uom'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_LWH_UOM'),
+				'p.product_in_stock'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_IN_STOCK'),
 				'low_stock_notification'=> JText::_('COM_VIRTUEMART_SEF_BY_LOW_STOCK_NOTIFICATION'),
-				'product_available_date'=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_AVAILABLE_DATE'),
-				'product_availability'  => JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_AVAILABILITY'),
-				'product_special'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_SPECIAL'),
-				'ship_code_id'		=> JText::_('COM_VIRTUEMART_SEF_BY_SHIP_CODE_ID'),
-				'created_on' 		=> JText::_('COM_VIRTUEMART_SEF_BY_CDATE'),
-				'modified_on' 		=> JText::_('COM_VIRTUEMART_SEF_BY_MDATE'),
-				'product_name'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_NAME'),
-				'product_sales'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_SALES'),
-				'product_unit'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_UNIT'),
-				'product_packaging'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_PACKAGING'),
-				'intnotes'			=> JText::_('COM_VIRTUEMART_SEF_BY_INTNOTES'),
-				'metadesc'			=> JText::_('COM_VIRTUEMART_SEF_BY_METADESC'),
-				'metakey'			=> JText::_('COM_VIRTUEMART_SEF_BY_METAKEY'),
-				'metarobot'			=> JText::_('COM_VIRTUEMART_SEF_BY_METAROBOT'),
-				'metaauthor'		=> JText::_('COM_VIRTUEMART_SEF_BY_METAAUTHOR'),
-				'recommend'			=> JText::_('COM_VIRTUEMART_SEF_RECOMMEND')
+				'p.product_available_date'=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_AVAILABLE_DATE'),
+				'p.product_availability'  => JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_AVAILABILITY'),
+				'p.product_special'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_SPECIAL'),
+				'p.ship_code_id'		=> JText::_('COM_VIRTUEMART_SEF_BY_SHIP_CODE_ID'),
+				'p.created_on' 		=> JText::_('COM_VIRTUEMART_SEF_BY_CDATE'),
+				'p.modified_on' 		=> JText::_('COM_VIRTUEMART_SEF_BY_MDATE'),
+				'p.product_name'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_NAME'),
+				'p.product_sales'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_SALES'),
+				'p.product_unit'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_UNIT'),
+				'p.product_packaging'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_PACKAGING'),
+				'p.intnotes'			=> JText::_('COM_VIRTUEMART_SEF_BY_INTNOTES'),
+				'p.metadesc'			=> JText::_('COM_VIRTUEMART_SEF_BY_METADESC'),
+				'p.metakey'			=> JText::_('COM_VIRTUEMART_SEF_BY_METAKEY'),
+				'p.metarobot'			=> JText::_('COM_VIRTUEMART_SEF_BY_METAROBOT'),
+				'p.metaauthor'		=> JText::_('COM_VIRTUEMART_SEF_BY_METAAUTHOR'),
+				'p.recommend'			=> JText::_('COM_VIRTUEMART_SEF_RECOMMEND')
 			);
 
 
@@ -728,38 +728,38 @@ class vmrouterHelper {
 				'search' => 'search',
 				'page' => 'page',
 				'orderDesc' => 'desc',
-				'virtuemart_product_id' => 'virtuemart_product_id',
-				'product_sku' => 'product_sku',
-				'product_price' => 'product_price',
+				'virtuemart_product_id' => 'id',
+				'p.product_sku' => 'sku',
+				'p.product_price' => 'price',
 				'orderby' => 'order_by',
-				'category_name' => 'category_name',
-				'category_description' => 'category_description',
-				'mf_name' => 'mf_name',
-				'product_s_desc' => 'product_s_desc',
-				'product_desc' => 'product_desc',
-				'product_weight' => 'product_weight',
-				'product_weight_uom' => 'product_weight_uom',
-				'product_length' => 'product_length',
-				'product_width' => 'product_width',
-				'product_height' => 'product_height',
-				'product_lwh_uom' => 'product_lwh_uom',
-				'product_in_stock' => 'product_in_stock',
-				'low_stock_notification' => 'low_stock_notification',
-				'product_available_date' => 'product_available_date',
-				'product_availability' => 'product_availability',
-				'product_special' => 'product_special',
+				'c.category_name' => 'category',
+				'c.category_description' => 'category_description',
+				'm.mf_name' => 'manufacturer',
+				'p.product_s_desc' => 'short_desc',
+				'p.product_desc' => 'desc',
+				'p.product_weight' => 'weight',
+				'p.product_weight_uom' => 'product_weight_uom',
+				'p.product_length' => 'length',
+				'p.product_width' => 'width',
+				'p.product_height' => 'height',
+				'p.product_lwh_uom' => 'product_lwh_uom',
+				'p.product_in_stock' => 'stock',
+				'low_stock_notification' => 'low_stock',
+				'p.product_available_date' => 'available_date',
+				'p.product_availability' => 'availability',
+				'p.product_special' => 'product_special',
 				'ship_code_id' => 'ship_code_id',
 				'created_on' => 'created_on',
 				'modified_on' => 'modified_on',
-				'product_name' => 'product_name',
-				'product_sales' => 'product_sales',
-				'product_unit' => 'product_unit',
-				'product_packaging' => 'product_packaging',
-				'intnotes' => 'intnotes',
-				'metadesc' => 'metadesc',
-				'metakey' => 'metakey',
-				'metarobot' => 'metarobot',
-				'metaauthor' => 'metaauthor',
+				'p.product_name' => 'name',
+				'p.product_sales' => 'sales',
+				'p.product_unit' => 'unit',
+				'p.product_packaging' => 'packaging',
+				'p.intnotes' => 'intnotes',
+				'p.metadesc' => 'metadesc',
+				'p.metakey' => 'metakey',
+				'p.metarobot' => 'metarobot',
+				'p.metaauthor' => 'metaauthor',
 				'recommend' => 'recommend'
 			);
 		}
