@@ -135,12 +135,15 @@ class VirtueMartModelCategory extends VmModel {
 		$this->_total = count($sortedCats);
 // 		vmRam('What take the cats?');
 
+		vmdebug('$limitStart',$limitStart,$limit);
 		$this->getPagination($this->_total,$limitStart,$limit);
 
-		$sortedCats = array_slice($sortedCats, $limitStart,$limit);
-// 		vmdebug('getCategoryTree',$sortedCats);
-
-		return $sortedCats;
+		if(empty($limit)){
+			return $sortedCats;
+		} else {
+			$sortedCats = array_slice($sortedCats, $limitStart,$limit);
+			return $sortedCats;
+		}
 
 	}
 

@@ -643,17 +643,17 @@ class Migrator extends VmModel{
 				$category['created_on'] = $oldcategory['cdate'];
 				$category['modified_on'] = $oldcategory['mdate'];
 
-				if($default_category_browse!=$oldcategory['category_browsepage']){
-					$browsepage = $oldcategory['category_browsepage'];
-					if (strcmp($browsepage, 'managed') ==0 ) {
-						$browsepage="browse_".$oldcategory['products_per_row'];
-					}
-					$category['category_layout'] = $browsepage;
-				}
+// 				if($default_category_browse!=$oldcategory['category_browsepage']){
+// 					$browsepage = $oldcategory['category_browsepage'];
+// 					if (strcmp($browsepage, 'managed') ==0 ) {
+// 						$browsepage="browse_".$oldcategory['products_per_row'];
+// 					}
+// 					$category['category_layout'] = $browsepage;
+// 				}
 
-				if($portFlypages && $default_category_fly!=$oldcategory['category_flypage']){
-					$category['category_product_layout'] = $oldcategory['category_flypage'];
-				}
+// 				if($portFlypages && $default_category_fly!=$oldcategory['category_flypage']){
+// 					$category['category_product_layout'] = $oldcategory['category_flypage'];
+// 				}
 
 				//idea was to do it by the layout, but we store this information additionally for enhanced pagination
 				$category['products_per_row'] = $oldcategory['products_per_row'];

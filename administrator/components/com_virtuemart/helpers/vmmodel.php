@@ -251,6 +251,7 @@ class VmModel extends JModel {
 
 			jimport('joomla.html.pagination');
 			// 			$this->_pagination = new JPagination($total , $this->getState('limitstart'), $this->getState('limit') );
+
 			$this->_pagination = new JPagination($total , $limits[0], $limits[1] );
 			// 			vmdebug('created Pagination',$total, $limits[0], $limits[1] );
 		}
@@ -356,7 +357,13 @@ class VmModel extends JModel {
 			$q = 'SELECT '.$select.$joinedTables;
 		}
 
-		$this->_db->setQuery($q,$limitStart,$limit);
+		if($this->_noLimit || empty($limit)){
+			vmdebug('exeSortSearchListQuery no limit');
+			$this->_db->setQuery($q);
+		} else {
+			$this->_db->setQuery($q,$limitStart,$limit);
+		}
+
 // 		vmdebug('my q',$this->_db->getQuery() );
 		if($object == 2){
 			$list = $this->_db->loadResultArray();

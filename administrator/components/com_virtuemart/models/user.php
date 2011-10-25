@@ -210,13 +210,13 @@ class VirtueMartModelUser extends VmModel {
 	{
 		$_aclObject = JFactory::getACL();
 
+		if(empty($this->_data)) $this->getUser();
+
 		if (VmConfig::isAtLeastVersion('1.6.0')){
 			//TODO fix this latter. It's just an workarround to make it working on 1.6
 			$gids = $this->_data->JUser->get('groups');
 			return array_flip($gids);
 		}
-
-		if(empty($this->_data)) $this->getUser();
 
 		$_usr = $_aclObject->get_object_id ('users', $this->_data->JUser->get('id'), 'ARO');
 		$_grp = $_aclObject->get_object_groups ($_usr, 'ARO');
