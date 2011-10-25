@@ -868,12 +868,12 @@ class VirtueMartModelCustomfields extends VmModel {
 						// }
 					} elseif (($productCustom->field_type == "G")) {
 						$child = self::getChild($productCustom->custom_value);
-						$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$child->product_name;
+						$html .= ' <span>'.$productCustom->custom_title.' : '.$child->product_name.'</span>';
 					} elseif (($productCustom->field_type == "M")) {
-						$html .= ' <span>'.$productCustom->custom_title.' : </span>'.self::displayCustomMedia($productCustom->custom_value);
+						$html .= ' <span>'.$productCustom->custom_title.' : '.self::displayCustomMedia($productCustom->custom_value).'</span>';
 					}  else {
 
-						$html .= '<br/ ><span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
+						$html .= '<span>'.$productCustom->custom_title.' : '.$productCustom->custom_value.'</span>';
 					}
 				} else {
 					// falldown method if customfield are deleted
