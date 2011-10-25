@@ -363,8 +363,9 @@ function virtuemartParseRoute($segments) {
 	}
 
 	/*
-	 * uppercase first (trick for product details )
-	 * Product must begin with A-Z
+	 * seo_sufix must never be used in category or router can't find it
+	 * eg. suffix as "-suffix", a category with "name-suffix" get always a false return
+	 * Trick : YOu can simply use "-p","-x","-" or ".htm" for better seo result if it's never in the category name !
 	 */
 	 if (substr(end($segments ), -(int)$helper->seo_sufix_size ) == $helper->seo_sufix ) {
 		$vars['view'] = 'productdetails';
