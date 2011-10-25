@@ -256,10 +256,8 @@ abstract class vmPaymentPlugin extends JPlugin {
      *
      */
     function plgVmOnPaymentUserCancel(&$virtuemart_order_id) {
-	if ($this->_pelement != $pelement) {
-	    return null;
-	}
-	return false;
+
+	return null;
     }
 
     /**

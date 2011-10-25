@@ -234,7 +234,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	    "night_phone_b" => $usrBT['phone_1'],
 	    "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentresponsereceived&pelement=' . $this->_pelement . "&pm=" . $orderData->virtuemart_paymentmethod_id),
 	    "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentnotification&tmpl=component'),
-	    "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentusercancel'),
+	    "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentusercancel&on=' . $order_number . '&pm=' . $orderData->virtuemart_paymentmethod_id),
 	    "undefined_quantity" => "0",
 	    "ipn_test" => $params->get('debug'),
 	    "pal" => "NRUBJXESJTY24",
@@ -258,24 +258,24 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 	$url = $this->_getPaypalUrlHttps($params);
 	/*
-// add spin image
-	echo '<form action="' . "https://" . $url . '" method="post" name="vm_paypal_form" >';
-	echo '<input type="image" name="submit" src="https://www.paypal.com/en_US/i/btn/x-click-but6.gif" alt="Click to pay with PayPal - it is fast, free and secure!" />';
+	  // add spin image
+	  echo '<form action="' . "https://" . $url . '" method="post" name="vm_paypal_form" >';
+	  echo '<input type="image" name="submit" src="https://www.paypal.com/en_US/i/btn/x-click-but6.gif" alt="Click to pay with PayPal - it is fast, free and secure!" />';
 
-	foreach ($post_variables as $name => $value) {
-	    echo '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
-	}
-	echo '</form>';
+	  foreach ($post_variables as $name => $value) {
+	  echo '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
+	  }
+	  echo '</form>';
 
 
-	echo ' <script type="text/javascript">';
-	echo ' document.vm_paypal_form.submit();';
-	echo ' </script>';
+	  echo ' <script type="text/javascript">';
+	  echo ' document.vm_paypal_form.submit();';
+	  echo ' </script>';
 	 * */
 
 	// we can display the logo, or do the redirect
-	 $mainframe = JFactory::getApplication();
-	 $mainframe->redirect("https://" . $url . $qstring);
+	$mainframe = JFactory::getApplication();
+	$mainframe->redirect("https://" . $url . $qstring);
 
 
 	return false; // don't delete the cart, don't send email
@@ -313,18 +313,21 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-	$paypal_data = JRequest::get('post');
 
-	$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($paypal_data['invoice']);
+	$order_number = JRequest::getVar('on');
+	$pm = JRequest::getVar('pm');
+	if (!$order_number)
+	    return false;
+	$db = JFactory::getDBO();
+	$query = 'SELECT ' . $this->_tablename . '.`virtuemart_order_id` FROM ' . $this->_tablename
+		. " WHERE  `order_number`= '" . $order_number ."'"
+		. ' AND  `payment_method_id` = ' . $pm;
+	$db->setQuery($query);
+	$virtuemart_order_id = $db->loadResult();
+
 	//fwrite($fp, "order" . $virtuemart_order_id);
 	if (!$virtuemart_order_id) {
 	    return null;
-	}
-
-	$payment = $this->getPaymentDataByOrderId($virtuemart_order_id);
-
-	if (!$payment) {
-	    return false;
 	}
 
 

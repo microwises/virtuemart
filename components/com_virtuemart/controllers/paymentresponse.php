@@ -116,10 +116,12 @@ class VirtueMartControllerPaymentresponse extends JController {
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 
 	JPluginHelper::importPlugin('vmpayment');
-
+/*
 	if (!JFactory::getSession(array('id' => $return_context))) {
 	    return false;
 	}
+ * */
+
 	$dispatcher = JDispatcher::getInstance();
 	$returnValues = $dispatcher->trigger('plgVmOnPaymentUserCancel', array(
 	    'virtuemart_order_id' => &$virtuemart_order_id));
