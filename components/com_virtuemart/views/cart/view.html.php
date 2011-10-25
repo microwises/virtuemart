@@ -222,7 +222,7 @@ class VirtueMartViewCart extends JView {
 		$shippers_shipping_rates = $dispatcher->trigger('plgVmOnSelectShipper', array('cart' => $this->cart,
 	    'selectedShipper' => $selectedShipper));
 		// if no shipping rate defined
-		$found_shipping_method = count($shippers_shipping_rates);
+		$found_shipping_method = false;
 
 		foreach ($shippers_shipping_rates as $shipper_shipping_rates) {
 			if (is_array($shipper_shipping_rates)) {
@@ -274,8 +274,7 @@ class VirtueMartViewCart extends JView {
 		$dispatcher = JDispatcher::getInstance();
 		$paymentplugins_payments = $dispatcher->trigger('plgVmOnSelectPayment', array('cart' => $this->cart, 'checked' => $selectedPayment));
 		// if no payment defined
-		$found_payment_method = count($paymentplugins_payments);
-		/*
+
 		foreach ($paymentplugins_payments as $paymentplugin_payments) {
 			if (is_array($paymentplugin_payments)) {
 				foreach ($paymentplugin_payments as $paymentplugin_payment) {
@@ -284,11 +283,10 @@ class VirtueMartViewCart extends JView {
 				}
 			}
 		}
-		 * */
 
 		if (!$found_payment_method) {
-	  $link=''; // todo
-	  $payment_not_found_text = JText::sprintf('COM_VIRTUEMART_CART_NO_PAYMENT_METHOD_PUBLIC', '<a href="'.$link.'">'.$link.'</a>');
+		    $link=''; // todo
+		    $payment_not_found_text = JText::sprintf('COM_VIRTUEMART_CART_NO_PAYMENT_METHOD_PUBLIC', '<a href="'.$link.'">'.$link.'</a>');
 		}
 		$this->assignRef('payment_not_found_text', $payment_not_found_text);
 		$this->assignRef('paymentplugins_payments', $paymentplugins_payments);

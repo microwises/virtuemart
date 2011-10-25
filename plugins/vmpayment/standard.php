@@ -51,7 +51,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
      */
     protected function _createTable() {
 	$_scheme = DbScheme::get_instance();
-	$_scheme->create_scheme('#__virtuemart_order_payment_' . $this->_pelement);
+	$_scheme->create_scheme($this->_tablename);
 	$_schemeCols = array(
 	    'id' => array(
 		'type' => 'int'

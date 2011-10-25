@@ -214,17 +214,18 @@
 		?>
 			<tr class="sectiontableentry2">
 				<td colspan="4" align="left">
-		    <?php if(!empty($this->layoutName) && $this->layoutName=='default') {
-			   // echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_coupon',$this->useXHTML,$this->useSSL), JText::_('COM_VIRTUEMART_CART_EDIT_COUPON'));
-			    echo $this->loadTemplate('coupon');
-		    }
+				    <?php if(!empty($this->layoutName) && $this->layoutName=='default') {
+					   // echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_coupon',$this->useXHTML,$this->useSSL), JText::_('COM_VIRTUEMART_CART_EDIT_COUPON'));
+					    echo $this->loadTemplate('coupon');
+				    }
 				?>
 
 				<?php if (!empty($this->cart->cartData['couponCode'])) { ?>
-					 <br /><?php
+					 <?php
 						echo $this->cart->cartData['couponCode'] ;
 						echo $this->cart->cartData['couponDescr'] ? (' (' . $this->cart->cartData['couponDescr'] . ')' ): '';
 						?>
+
 				</td>
 
               <?php if ( VmConfig::get('show_tax')) { ?>
@@ -249,8 +250,10 @@
 				<?php
 				if(!empty($this->layoutName) && $this->layoutName=='default' && !$this->cart->automaticSelectedShipping  )
 					echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_shipping',$this->useXHTML,$this->useSSL), $this->select_shipper_text,'class=""');
-				else JText::_('COM_VIRTUEMART_CART_SHIPPING');   }
-				else { ?>
+				else {
+				    JText::_('COM_VIRTUEMART_CART_SHIPPING');
+				}
+				} else { ?>
                                 <td colspan="4" align="left">
 				<?php echo $this->cart->cartData['shippingName']; ?>
 				</td>

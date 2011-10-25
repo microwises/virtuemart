@@ -848,7 +848,14 @@ class calculationHelper {
 				       return;
 				   }
 			 }
-
+			$paymentValid=0;
+			foreach ($returnValues as $returnValue) {
+				    $paymentValid += $returnValue;
+			 }
+			 if (!$paymentValid) {
+				    $cart->virtuemart_paymentmethod_id = 0;
+				    $cart->setCartIntoSession();
+			 }
 			return $this->_cartPrices;
 		}
 

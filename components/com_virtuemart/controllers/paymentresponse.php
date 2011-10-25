@@ -116,9 +116,7 @@ class VirtueMartControllerPaymentresponse extends JController {
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 
 	JPluginHelper::importPlugin('vmpayment');
-	$pelement = JRequest::getWord('pelement');
-	$pm = JRequest::getInt('pm', 0);
-	$return_context = JRequest::getVar('rc', 0);
+
 	if (!JFactory::getSession(array('id' => $return_context))) {
 	    return false;
 	}

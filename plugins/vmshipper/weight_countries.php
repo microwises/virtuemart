@@ -223,7 +223,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 	$values['order_number'] = VirtueMartModelOrders::getOrderNumber($orderID);
 	$values['virtuemart_order_id'] = $orderID;
 	$values['virtuemart_shippingcarrier_id'] = $cart->virtuemart_shippingcarrier_id;
-	$values['shipper_name'] = $this->getThisShipperNameById($cart->virtuemart_shippingcarrier_id);
+	$values['shipper_name'] = $this->getThisShipperName($cart->virtuemart_shippingcarrier_id);
 	$values['order_weight'] = $this->getOrderWeight($cart, $params->get('weight_unit'));
 	$values['shipping_weight_unit'] = $params->get('weight_unit');
 	$values['shipper_cost'] = $params->get('rate_value');
