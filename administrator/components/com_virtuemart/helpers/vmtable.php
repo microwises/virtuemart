@@ -713,8 +713,8 @@ class VmTable extends JTable{
 				' WHERE '.$this->_tbl_key.' = '. $this->_db->Quote($this->$k);
 		$this->_db->setQuery( $query );
 
-		if ($this->_db->query()){
-			return $this->delete($oid);
+		if ($this->_db->query()){                        
+                        return parent::delete($oid);
 		} else {
 			return true;
 		}
