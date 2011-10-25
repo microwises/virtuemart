@@ -30,8 +30,6 @@ if (!class_exists( 'VirtueMartModelProduct' )){
    JLoader::import( 'product', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models' );
 }
 
- echo JText::_('COM_VIRTUEMART_ACC_BILL_DEF');
-
 class mod_virtuemart_product {
 	function addtocart($product) {
 	if (!VmConfig::get('use_as_catalog',0)) { ?>
