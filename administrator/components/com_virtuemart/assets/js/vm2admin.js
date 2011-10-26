@@ -226,8 +226,18 @@
 				tip.left = (e.pageX + xOffset);
 				$("#vtip").css("top", tip.top+"px").css("left", tip.left+"px");
 			}
+		).mousedown(
+		   function(e) {
+			  this.title = tip.t;
+			  $("#vtip").fadeOut("slow").remove();
+		   }
+		).mouseup(
+		   function(e) {
+			  this.title = tip.t;
+			  $("#vtip").fadeOut("slow").remove();
+		   }
 		);
-		
+	
 	},
 	toggle : function() {
 		var options = { path: '/', expires: 2};
