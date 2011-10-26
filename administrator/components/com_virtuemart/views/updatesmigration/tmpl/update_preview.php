@@ -109,7 +109,7 @@ $formObj->finishForm('applypatchpackage', 'admin.update_result');
  	if( document.adminForm.confirm_update.checked ) {
  		return true;
  	}
- 	alert( "<?php echo JText::_('COM_VIRTUEMART_UPDATE_PATCH_PLEASEMARK_JS') ?>" );
+ 	alert( "<?php echo addslashes( JText::_('COM_VIRTUEMART_UPDATE_PATCH_PLEASEMARK_JS') ) ?>" );
  	return false;
  }
  </script>

@@ -517,11 +517,11 @@ if (empty ( $this->product )) {
 						return false;
 					}
 					else if (form.comment.value.length < ". VmConfig::get('reviews_minimum_comment_length', 100).") {
-						alert('". JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT1_JS', VmConfig::get('reviews_minimum_comment_length', 100))."');
+						alert('". addslashes( JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT1_JS', VmConfig::get('reviews_minimum_comment_length', 100)) )."');
 						return false;
 					}
 					else if (form.comment.value.length > ". VmConfig::get('reviews_maximum_comment_length', 2000).") {
-						alert('". JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT2_JS', VmConfig::get('reviews_maximum_comment_length', 2000))."');
+						alert('". addslashes( JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT2_JS', VmConfig::get('reviews_maximum_comment_length', 2000)) )."');
 						return false;
 					}
 					else {

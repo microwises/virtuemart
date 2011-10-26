@@ -36,7 +36,7 @@ if ($this->fTask === 'savecartuser') {
             f.submit();
             return true;
         } else {
-            var msg = '<?php echo JText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_JS'); ?>';
+            var msg = '<?php echo addslashes( JText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_JS') ); ?>';
             alert (msg+' ');
         }
         return false;

@@ -680,8 +680,8 @@ class vmJsApi{
 
 		$closeimage = JURI::root(true) .'/components/com_virtuemart/assets/images/facebox/closelabel.png';
 		$jsVars  = "siteurl = '". JURI::base( ) ."' ;\n" ;
-		$jsVars .= "vmCartText = '". JText::_('COM_VIRTUEMART_MINICART_ADDED_JS') ."' ;\n" ;
-		$jsVars .= "vmCartError = '". JText::_('COM_VIRTUEMART_MINICART_ERROR_JS') ."' ;\n" ;
+		$jsVars .= "vmCartText = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ADDED_JS') )."' ;\n" ;
+		$jsVars .= "vmCartError = '". addslashes( JText::_('COM_VIRTUEMART_MINICART_ERROR_JS') )."' ;\n" ;
 		$jsVars .= "loadingImage = '".JURI::root(true) ."/components/com_virtuemart/assets/images/facebox/loading.gif'  ;\n" ;
 		$jsVars .= "closeImage = '".$closeimage."' ; \n";
 		$jsVars .= "faceboxHtml = \"<div id='facebox' style='display:none;'><div class='popup'><div class='content'></div> <a href='#' class='close'><img src='".$closeimage."' title='close' class='close_image' /></a></div></div>\" ;\n";

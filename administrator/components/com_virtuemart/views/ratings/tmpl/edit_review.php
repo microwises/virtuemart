@@ -125,8 +125,8 @@ function submitbutton(pressbutton) {
 		return;
 	}
 	else {
-		if (document.adminForm.counter.value > <?php echo VmConfig::get('reviews_maximum_comment_length'); ?>) alert('<?php echo JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT2_JS',VmConfig::get('reviews_maximum_comment_length')); ?>');
-		else if (document.adminForm.counter.value < <?php echo VmConfig::get('reviews_minimum_comment_length'); ?>) alert('<?php echo JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT1_JS',VmConfig::get('reviews_minimum_comment_length')); ?>');
+		if (document.adminForm.counter.value > <?php echo VmConfig::get('reviews_maximum_comment_length'); ?>) alert('<?php echo addslashes( JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT2_JS',VmConfig::get('reviews_maximum_comment_length')) ); ?>');
+		else if (document.adminForm.counter.value < <?php echo VmConfig::get('reviews_minimum_comment_length'); ?>) alert('<?php echo addslashes( JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT1_JS',VmConfig::get('reviews_minimum_comment_length')) ); ?>');
 		else submitform( pressbutton );
 		return;
 	}
