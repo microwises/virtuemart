@@ -1,6 +1,11 @@
 <?php defined('_JEXEC') or die('Restricted access'); ?>
 <?php
-if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+	echo 'Developer notice, shouldnt be called list_login.php';
+// if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+
+//  echo shopFunctionsF::getLoginForm(false,true);
+
+/*
 $comUserOption=shopfunctionsF::getComUserOption();
 ?>
 
@@ -106,3 +111,4 @@ endif;
 	<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 </div>
+*/

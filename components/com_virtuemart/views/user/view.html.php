@@ -67,11 +67,19 @@ class VirtuemartViewUser extends JView {
 	$document->setTitle( JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS') );
 	$layoutName = $this->getLayout();
 	if (empty($layoutName)) {
-	    $layoutName = JRequest::getWord('layout', 'edit');
+	    $layoutName = JRequest::getWord('layout', 'default');
 	}
 
 	if (!class_exists('ShopFunctions'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+
+	vmdebug('my layoutname',$layoutName);
+	if($layoutName=='login'){
+// 		$true = true;
+// 		$this->assignRef('anonymous',$true);
+		parent::display($tpl);
+		return;
+	}
 
 	if (!class_exists('VirtuemartModelUser'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
@@ -84,6 +92,14 @@ class VirtuemartViewUser extends JView {
 	//the cuid is the id of the current user
 	$this->_currentUser = JFactory::getUser();
 	$this->_cuid = $this->_lists['current_id'] = $this->_currentUser->get('id');
+	$this->assignRef('userId', $this->_cuid);
+
+	if(empty($this->_cuid)){
+		$layout = 'default';
+		$this->setLayout('default');
+// 		$true = true;
+// 		$this->assignRef('anonymous',$true);
+	}
 
 	$this->_userDetails = $this->_model->getUser();
 	$this->assignRef('userDetails', $this->_userDetails);

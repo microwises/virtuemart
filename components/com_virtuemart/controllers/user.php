@@ -56,10 +56,15 @@ class VirtueMartControllerUser extends JController
 		$view->setModel( $this->getModel( 'currency', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
 
-		/* Set the layout */
-		$view->setLayout('edit');
 		$cid = JRequest::getVar('cid',null);
-		if(!isset($cid)) JRequest::setVar('cid', (int)0);
+		if(!isset($cid)){
+			JRequest::setVar('cid', (int)0);
+// 			$view->setLayout('default');
+		} else {
+// 			$view->setLayout('edit');
+		}
+
+		$view->setLayout('edit');
 
 		//Important! sanitize array to int
 		jimport( 'joomla.utilities.arrayhelper' );
@@ -73,6 +78,9 @@ class VirtueMartControllerUser extends JController
 
 	}
 
+	function edit(){
+
+	}
 
 	function editAddressSt(){
 

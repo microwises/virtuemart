@@ -22,7 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.formvalidation');
 JHTML::_ ( 'behavior.modal' );
 // vmdebug('cart',$this->cart);
-
+echo 'Developer notice, shouldnt be called list_login.php';
+/*
 if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 $comUserOption=shopfunctionsF::getComUserOption();
 ?>
@@ -90,7 +91,7 @@ if (VmConfig::get('oncheckout_show_register', 1)  && $this->cart->userDetails->J
           <?php echo JText::_('COM_VIRTUEMART_ORDER_REGISTER'); ?></a>
           </div>
           <?php }
-         */ ?>
+         */ /* ?>
 
         <div class="clr"></div>
 
@@ -120,5 +121,5 @@ if (VmConfig::get('oncheckout_show_register', 1)  && $this->cart->userDetails->J
 	<input type="hidden" name="return" value="<?php echo base64_encode($url) ?>" />
     </form>
 
-<?php } ?>
+<?php } */ ?>
 

@@ -25,6 +25,38 @@ defined('_JEXEC') or die('Restricted access');
 class shopFunctionsF {
 
 	/**
+	 *
+	 */
+
+	public function getLoginForm($cart=false,$order=false){
+
+
+		if(!class_exists('VirtuemartViewUser')) require(JPATH_VM_SITE . DS . 'views' . DS . 'user' .DS. 'view.html.php');
+		$view = new VirtuemartViewUser();
+		$view -> setLayout('login');
+
+		$show=true;
+		if($cart){
+			$show = VmConfig::get('oncheckout_show_register', 1);
+			$user = $cart->userDetails->JUser;
+		} else {
+			$user = JFactory::getUser();
+		}
+		$view->assignRef('JUser',$user);
+
+		$view->assignRef('show',$show);
+
+		$view->assignRef('order',$order);
+
+		ob_start();
+		$view->display();
+		$body = ob_get_contents();
+		ob_end_clean();
+
+		return $body;
+	}
+
+	/**
 	 * @author Max Milbers
 	 */
 	public function getLastVisitedCategoryId(){
