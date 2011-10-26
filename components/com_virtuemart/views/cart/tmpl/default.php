@@ -44,8 +44,7 @@ JHTML::_ ( 'behavior.modal' );
 
 
 
-<?php
-echo shopFunctionsF::getLoginForm($this->cart,false);
+<?php echo shopFunctionsF::getLoginForm($this->cart,false);
 //echo $this->loadTemplate('login');
 
 

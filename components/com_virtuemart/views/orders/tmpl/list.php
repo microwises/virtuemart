@@ -22,7 +22,7 @@
 defined('_JEXEC') or die('Restricted access');
 if (count($this->orderlist) == 0) {
 	echo JText::_('COM_VIRTUEMART_ACC_NO_ORDER');
-	if (1==1)  echo $this->loadTemplate('login');
+	if (1==1) echo shopFunctionsF::getLoginForm(false,true);
 } else {
  ?>
 <div id="editcell">
