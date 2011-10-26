@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="VM_ORDERS_LIST" hidden="true">
-		<message><![CDATA[VM_PRICELIST_DESC]]></message>
-	</layout>
+    <layout title="COM_VIRTUEMART_ORDER_VIEW_DEFAULT_TITLE">
+        <message><![CDATA[COM_VIRTUEMART_ORDER_VIEW_DEFAULT_DESC]]></message>
+    </layout>
+    <state>
+        <name>COM_VIRTUEMART_ORDER_VIEW_DEFAULT_TITLE</name>
+        <description><![CDATA[COM_VIRTUEMART_ORDER_VIEW_DEFAULT_DESC]]>
+        </description>
+
+    </state>
+
+    <fields name="request" >
+
+    </fields>
 </metadata>
