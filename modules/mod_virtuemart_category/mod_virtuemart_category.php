@@ -37,22 +37,16 @@ $active_category_id = JRequest::getInt('virtuemart_category_id', '0');
 $vendorId = '1';
 
 $categories = $categoryModel->getChildCategoryList($vendorId, $category_id);
-$categoryModel->addImages($categories);
-/*		$q = "SELECT virtuemart_category_id, category_name
-			FROM #__virtuemart_categories, #__virtuemart_category_categories
-			WHERE #__virtuemart_category_categories.category_parent_id = ".$category_id."
-			AND #__virtuemart_categories.virtuemart_category_id=#__virtuemart_category_categories.category_child_id
-			AND #__virtuemart_categories.virtuemart_vendor_id = 1
-			AND #__virtuemart_categories.enabled = 1
-			ORDER BY #__virtuemart_categories.ordering, #__virtuemart_categories.category_name ASC";
-$db->setQuery($q);
-$categories = $db->loadObjectList();*/
+// We dont use image here 
+//$categoryModel->addImages($categories);
+
 if(empty($categories)) return false;
 
 
 foreach ($categories as $category) {
     $category->childs = $categoryModel->getChildCategoryList($vendorId, $category->virtuemart_category_id) ;
-    $categoryModel->addImages($category->childs);
+	// No image used here
+	//$categoryModel->addImages($category->childs);
 }
 $parentCategories = $categoryModel->getCategoryRecurse($active_category_id,0);
 

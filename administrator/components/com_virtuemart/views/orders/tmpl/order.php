@@ -489,7 +489,7 @@ jQuery('.updateOrderItemStatus').click(function() {
 	return false
 });
 function confirmation(destnUrl) {
-	var answer = confirm("<?php echo JText::_('COM_VIRTUEMART_ORDER_DELETE_ITEM_MSG'); ?>");
+	var answer = confirm("<?php echo JText::_('COM_VIRTUEMART_ORDER_DELETE_ITEM_JS'); ?>");
 	if (answer) {
 		window.location = destnUrl;
 	}

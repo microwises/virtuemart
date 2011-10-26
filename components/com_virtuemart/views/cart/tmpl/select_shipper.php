@@ -45,7 +45,7 @@ JHTML::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/asse
             f.submit();
             return true;
         } else {
-            var msg = '<?php echo JText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED'); ?>';
+            var msg = '<?php echo JText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_JS'); ?>';
             alert (msg);
         }
         return false;

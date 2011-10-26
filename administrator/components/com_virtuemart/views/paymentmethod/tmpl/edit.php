@@ -40,7 +40,7 @@ AdminUIHelper::buildTabs ( $tabarray,$this->paym->virtuemart_paymentmethod_id );
 <?php AdminUIHelper::endAdminArea(); ?>
 
 <script language="javascript">
-
+<?php /*TODO BETTER SCRIPT */ ?>
 jQuery(document).ready(function() {
 
 	var toggler = document.getElements('#pam_type_CC_on');

@@ -29,7 +29,7 @@ $document->addScriptDeclaration('
 		askForm.validation();
 		askForm.find(".highlight-button").click(function() {
 			if(!askForm.validate()) {
-				alert("'.JText::_('COM_VIRTUEMART_COMMENT_NOT_VALID').'");
+				alert("'.JText::_('COM_VIRTUEMART_COMMENT_NOT_VALID_JS').'");
 				return false;
 			}
 		});
@@ -39,7 +39,7 @@ $document->addScriptDeclaration('
 				   return (value.length >= '.$min.' && value.length <= '.$max.' );
 			   return false;
 			},
-			msg : "'.JText::sprintf('COM_VIRTUEMART_COMMENT_MIN_MAX',$min, $max).'"
+			msg : "'.JText::sprintf('COM_VIRTUEMART_COMMENT_MIN_MAX_JS',$min, $max).'"
 		});
 
 		$("#comment").keyup( function () {
