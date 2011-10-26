@@ -355,7 +355,7 @@ class VirtueMartCart {
 			$product -> max_order_level = $tmpProduct -> max_order_level;
 			$product -> virtuemart_media_id = $tmpProduct -> virtuemart_media_id;
 
-			if(!empty($tmpProduct -> image)) $product -> image =  $tmpProduct -> image;
+			if(!empty($tmpProduct ->images)) $product->image =  $tmpProduct -> images[0];
 
 			$product -> categories = $tmpProduct -> categories;
 			$product -> virtuemart_category_id = $tmpProduct -> virtuemart_category_id;
@@ -531,12 +531,13 @@ class VirtueMartCart {
 		JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
 		$model = JModel::getInstance('Product', 'VirtueMartModel');
 		$product = $model->getProduct($virtuemart_product_id, true, false);
+		
 		if ( VmConfig::get('oncheckout_show_images')){
-
-			$db =& JFactory::getDBO();
-			$db->setQuery('SELECT * from #__virtuemart_medias where virtuemart_media_id='. $product->virtuemart_media_id[0] );
-			$data = $db->loadObject();
-			$product->image = VmMediaHandler::createMedia($data,'product');
+			$model->addImages($product);
+			// $db =& JFactory::getDBO();
+			// $db->setQuery('SELECT * from #__virtuemart_medias where virtuemart_media_id='. $product->virtuemart_media_id[0] );
+			// $data = $db->loadObject();
+			// $product->image = VmMediaHandler::createMedia($data,'product');
 
 		}
 		return $product;
