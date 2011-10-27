@@ -565,11 +565,12 @@ class VmMediaHandler {
 				}
 			}
 			else if( $data['media_action'] == 'replace_thumb' ){
-// 				$oldFileUrl = $data['file_url_thumb'];
 
-				$file_name = $this->uploadFile($this->file_url_folder_thumb);
-				$this->file_url_thumb = $this->file_url_folder_thumb.$file_name;
-				if($this->file_url_thumb!=$oldFileUrl&& !empty($file_name)){
+				$oldFileUrl = $this->file_url_folder_thumb;
+				$file_name = $this->uploadFile($this->file_url_folder_thumb,true);
+				$this->file_name = $file_name;
+				$this->file_url_thumb = $this->file_url_folder_thumb.$this->file_name;
+				if($this->file_url_thumb!=$oldFileUrl&& !empty($this->file_name)){
 					$this->deleteFile($oldFileUrl);
 				}
 
