@@ -243,12 +243,13 @@ class VirtuemartViewProduct extends JView {
 				$model = $this->getModel();
 
 				/* Get the list of products */
-				$productlist = $model->getProductListing(false,false,false,false);
+				$productlist = $model->getProductListing(false,false,false,false,true);
 
 				/* Get the category tree */
 				$categoryId = JRequest::getInt('virtuemart_category_id');
 //				if(!empty($categoryId)){
 					$category_tree = ShopFunctions::categoryListTree(array($categoryId));
+					vmdebug('End with categoryListTree');
 					$this->assignRef('category_tree', $category_tree);
 //				}
 

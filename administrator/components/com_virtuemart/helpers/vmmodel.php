@@ -358,10 +358,11 @@ class VmModel extends JModel {
 		}
 
 		if($this->_noLimit || empty($limit)){
-			vmdebug('exeSortSearchListQuery no limit');
+			vmdebug('exeSortSearchListQuery '.get_class($this).' no limit');
 			$this->_db->setQuery($q);
 		} else {
 			$this->_db->setQuery($q,$limitStart,$limit);
+			vmdebug('exeSortSearchListQuery '.get_class($this).' with limit');
 		}
 
 // 		vmdebug('my q',$this->_db->getQuery() );

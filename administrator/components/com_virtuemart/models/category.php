@@ -135,7 +135,7 @@ class VirtueMartModelCategory extends VmModel {
 		$this->_total = count($sortedCats);
 // 		vmRam('What take the cats?');
 
-		vmdebug('$limitStart',$limitStart,$limit);
+		vmdebug('getCategoryTree $limitStart',$limitStart,$limit);
 		$this->getPagination($this->_total,$limitStart,$limit);
 
 		if(empty($limit)){
@@ -149,14 +149,17 @@ class VirtueMartModelCategory extends VmModel {
 
 	public function rekurseCats($virtuemart_category_id,$level,$onlyPublished,$keyword,&$sortedCats){
 		$level++;
-		$childCats = self::getCategories($onlyPublished, $virtuemart_category_id, false, $keyword);
-		if(!empty($childCats)){
-			foreach ($childCats as $key => $category) {
-				$category->level = $level;
-				$sortedCats[] = $category;
-				$this->rekurseCats($category->virtuemart_category_id,$level,$onlyPublished,$keyword,$sortedCats);
+		if($this->hasChildren($virtuemart_category_id)){
+			$childCats = self::getCategories($onlyPublished, $virtuemart_category_id, false, $keyword);
+			if(!empty($childCats)){
+				foreach ($childCats as $key => $category) {
+					$category->level = $level;
+					$sortedCats[] = $category;
+					$this->rekurseCats($category->virtuemart_category_id,$level,$onlyPublished,$keyword,$sortedCats);
+				}
 			}
 		}
+
 	}
 
 

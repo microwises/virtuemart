@@ -286,9 +286,9 @@ class Migrator extends VmModel{
 		//create array of filenames for easier handling
 		foreach($this->storedMedias as $media){
 			if($media->file_type == $type){
-				///$lastIndexOfSlash = strrpos($media->file_url, '/');
-				//$name = substr($media->file_url, $lastIndexOfSlash + 1);
 
+				//Somehow we must use here the right char encoding, so that it works below
+				// in line 320
 				$knownNames[] = $media->file_url;
 			}
 		}
@@ -310,17 +310,11 @@ class Migrator extends VmModel{
 						//$file != "." && $file != ".." replaced by strpos
 						if(!empty($file) && strpos($file,'.')!==0  && $file != 'index.html'){
 
-// 							if($file=='tmpl'){
-// 								vmError('You use the wrong structure for template overrides, they dont need a tmpl folder');
-// 							}
-							//$info = pathinfo($file);
-							//dump($info,'pathinfo($file)');
-							//dump(filetype($dir.DS.$file),'filetype($dir.DS.$file');
 							$filetype = filetype($dir . DS . $file);
-
 							$relUrlName = '';
 							$relUrlName = $relUrl.$file;
-// 							vmdebug('my relative url ',$relUrlName);
+// 						vmdebug('my relative url ',$relUrlName);
+
 							//We port all type of media, regardless the extension
 							if($filetype == 'file'){
 								if(!in_array($relUrlName, $knownNames)){

@@ -163,12 +163,13 @@ function vmSetStartTime($name='current'){
 
 function vmTime($descr,$name='current'){
 
+	if(empty($descr)) $descr = $name;
 	$starttime = VmConfig::$_starttime ;
 	if(empty($starttime[$name])){
-		vmdebug('vmTime: starting at general runtime '.microtime(true));
+		vmdebug('vmTime: '.$descr.' starting '.microtime(true));
 		VmConfig::$_starttime[$name] = microtime(true);
 	} else if($name=='current'){
-		vmdebug('vmTime: time consumed '.(microtime(true) - $starttime[$name]) );
+		vmdebug('vmTime: '.$descr.' time consumed '.(microtime(true) - $starttime[$name]) );
 		VmConfig::$_starttime[$name] = microtime(true);
 	} else {
 		if(empty($descr)) $descr = $name;
@@ -195,6 +196,9 @@ class VmConfig {
 
 	private function __construct() {
 
+		if(function_exists('mb_ereg_replace')){
+			mb_regex_encoding('UTF-8');
+		}
 		//todo
 		/*	if(strpos(JVERSION,'1.5') === false){
 			$jlang = JFactory::getLanguage();
@@ -625,6 +629,23 @@ class VmConfig {
 	}
 
 }
+
+class vmRequest{
+
+ 	function get($field, $default, $custom=''){
+
+ 		$source = JRequest::getVar($field,$default);
+
+ 		if(function_exists('mb_ereg_replace')){
+ 			//$source is string that will be filtered, $custom is string that contains custom characters
+ 			return mb_ereg_replace('[^\w'.preg_quote($custom).']', '', $source);
+ 		} else {
+ 			return ereg_replace('[^\w'.preg_quote($custom).']', '', $source);
+ 		}
+ 	}
+
+}
+
 
 /**
  *

@@ -617,6 +617,20 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 // 		}
 	}
 
+	public static $counter = 0;
+	public static $categoryTree = 0;
+
+	public function categoryListTree($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields=array()) {
+
+		if(empty(self::$categoryTree)){
+			vmTime('Start with categoryListTree');
+			self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
+			vmTime('end loop categoryListTree '.self::$counter);
+		}
+
+		return self::$categoryTree;
+	}
+
 	/**
 	 * Creates structured option fields for all categories
 	 *
@@ -627,7 +641,9 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 * @param int 		$level 		Internally used for recursion
 	 * @return string 	$category_tree HTML: Category tree list
 	 */
-	public function categoryListTree($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields=array()) {
+	public function categoryListTreeLoop($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields=array()) {
+
+		self::$counter++;
 
 		static $categoryTree = '';
 
@@ -663,7 +679,10 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 					}
 				}
 
-				self::categoryListTree($selectedCategories, $childId, $level, $disabledFields);
+				if($categoryModel->hasChildren($childId)){
+					self::categoryListTreeLoop($selectedCategories, $childId, $level, $disabledFields);
+				}
+
 			}
 		}
 

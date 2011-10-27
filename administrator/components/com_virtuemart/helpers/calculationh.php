@@ -629,9 +629,9 @@ class calculationHelper {
 			$states = $this->_db->loadResultArray();
 
 			$hitsDeliveryArea = true;
-			if (!empty($countries) && empty($states)) {
+			if (!empty($this->_deliveryCountry) && !empty($countries) && empty($states)) {
 				$hitsDeliveryArea = $this->testRulePartEffecting($countries, $this->_deliveryCountry);
-			} else if (!empty($states)) {
+			} else if (!empty($this->_deliveryState) && !empty($states)) {
 				$hitsDeliveryArea = $this->testRulePartEffecting($states, $this->_deliveryState);
 			}
 
