@@ -106,14 +106,14 @@
                 <field name="show_price" type="list" default="1"
 			label="MOD_VIRTUEMART_PRODUCT_SHOW_PRICE"
 			description="MOD_VIRTUEMART_PRODUCT_SHOW_PRICE_DESC">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
                 </field>
                 <field name="show_addtocart" type="list" default="1"
 			label="MOD_VIRTUEMART_PRODUCT_SHOW_ADDTOCART"
 			description="MOD_VIRTUEMART_PRODUCT_SHOW_ADDTOCART_DES">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
                 </field>
                 <field name="@spacer" type="spacer" default="" label="" description="" />
                 <field name="headerText" type="text" default=""

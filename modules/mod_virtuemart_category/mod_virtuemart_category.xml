@@ -39,11 +39,10 @@
         <param name="class_sfx" type="text" default="" label="Menu Class Suffix" description="A suffix to be applied to the css class of the menu items" />
     </params>
 
-    <config addpath="/administrator/components/com_virtuemart/elements">
+    <config>
         <fields name = "params">
-            <fieldset name="basic">
-
-                <field name="Parent_Category_id" type="vmcategories"  value_field="category_name" label="MOD_VIRTUEMART_CATEGORY_PARENT_CATEGORY_ID" description="MOD_VIRTUEMART_CATEGORY_CHOOSE." />
+		 <fieldset name="basic" addfieldpath="/administrator/components/com_virtuemart/elements">
+                <field name="Parent_Category_id" type="vmcategories"  value_field="category_name" label="MOD_VIRTUEMART_CATEGORY_PARENT_CATEGORY_ID" description="MOD_VIRTUEMART_PRODUCT_CHOOSE." />
 
                 <field name="layout" type="radio" default="default" label="MOD_VIRTUEMART_CATEGORY_CHILD_CAT_MENU_TYPE" description="MOD_VIRTUEMART_CATEGORY_CHILD_CAT_MENU_TYPE_DESC">
                     <option value="current">MOD_VIRTUEMART_CATEGORY_CURRENT</option>

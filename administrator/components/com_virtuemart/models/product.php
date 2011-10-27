@@ -193,26 +193,6 @@ class VirtueMartModelProduct extends VmModel {
      		}
      	}
 
-		//Group case
-		if($group){
-			$groupBy = 'group by p.`virtuemart_product_id`';
-		    switch ($group) {
-				case 'featured':
-					$where[] = 'p.`product_special`="1" ';
-					break;
-				case 'latest':
-					$date = JFactory::getDate( time()-(60*60*24*7) ); //Set on a week, maybe make that configurable
-					$dateSql = $date->toMySQL();
-					$where[] = 'p.`modified_on` > "'.$dateSql.'" ';
-					break;
-				case 'random':
-					$orderBy = ' ORDER BY RAND() LIMIT 0, '.(int)$nbrReturnProducts ; //TODO set limit LIMIT 0, '.(int)$nbrReturnProducts;
-					break;
-				case 'topten';
-					$orderBy = ' ORDER BY product_sales LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
-					$filter_order_Dir = 'DESC';
-			}
-		}
 
 		// special  orders case
 		switch ($filter_order) {
@@ -249,7 +229,26 @@ class VirtueMartModelProduct extends VmModel {
 				}
 				break;
 		}
-
+//Group case from the modules
+		if($group){
+			$groupBy = 'group by p.`virtuemart_product_id`';
+		    switch ($group) {
+				case 'featured':
+					$where[] = 'p.`product_special`="1" ';
+					break;
+				case 'latest':
+					$date = JFactory::getDate( time()-(60*60*24*7) ); //Set on a week, maybe make that configurable
+					$dateSql = $date->toMySQL();
+					$where[] = 'p.`modified_on` > "'.$dateSql.'" ';
+					break;
+				case 'random':
+					$orderBy = ' ORDER BY RAND() ';//LIMIT 0, '.(int)$nbrReturnProducts ; //TODO set limit LIMIT 0, '.(int)$nbrReturnProducts;
+					break;
+				case 'topten';
+					$orderBy = ' ORDER BY product_sales ';//LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
+					$filter_order_Dir = 'DESC';
+			}
+		}
 
 		//write the query, incldue the tables
 // 		$selectFindRows = 'SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_products` ';

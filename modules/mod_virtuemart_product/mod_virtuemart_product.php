@@ -8,8 +8,6 @@ if( !defined( '_VALID_MOS' ) && !defined( '_JEXEC' ) ) die( 'Direct Access to '.
 * @subpackage modules
 *
 * 	@copyright (C) 2010 - Patrick Kohl
-// W: demo.st42.fr
-// E: cyber__fr|at|hotmail.com
 *
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
 * VirtueMart is Free Software.
