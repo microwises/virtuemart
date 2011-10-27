@@ -70,7 +70,6 @@ class VirtueMartModelProduct extends VmModel {
 
 		$app = JFactory::getApplication() ;
 
-		if ($group==false) $group = JRequest::getWord('group', false );
 		$option = 'com_virtuemart';
 		$view = 'product';
 		$default_order = 'product_name';
