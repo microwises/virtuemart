@@ -141,6 +141,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		if ($searchcustoms = JRequest::getVar('customfields', array(), 'default' ,'array')){
+
 			$joinCustom = true ;
 			foreach ($searchcustoms as $key => $searchcustom) {
 				$custom_search[] = '(`#__virtuemart_product_customfields`.`virtuemart_custom_id`="'.(int)$key.'" and `#__virtuemart_product_customfields`.`custom_value` like "%' . $this->_db->getEscaped( $searchcustom, true ) . '%")';
@@ -638,14 +639,24 @@ class VirtueMartModelProduct extends VmModel {
 			return array();
 		}
 
+		$maxNumber = VmConfig::get('absoluteMaxNumberOfProducts',500);
 		$products=array();
 		if($single){
 			foreach($productIds as $id){
+				$i = 0;
 				if($product = $this->getProductSingle((int)$id,$front, $withCalc, $onlyPublished)){
-					if($onlyPublished && $product->published){
+// 					if($onlyPublished && $product->published){
 						$products[] = $product;
-					}
-					if(!$onlyPublished) $products[] = $product;
+						$i++;
+// 					}
+// 					if(!$onlyPublished){
+// 						$products[] = $product;
+// 						$i++;
+// 					}
+				}
+				if($i>$maxNumber){
+					vmdebug('Better not to display more than '.$maxNumber.' products');
+					return $products;
 				}
 			}
 		} else {
@@ -655,8 +666,8 @@ class VirtueMartModelProduct extends VmModel {
 					$products[] = $product;
 					$i++;
 				}
-				if($i>10){
-					vmdebug('Better not to display more than 1000 products');
+				if($i>$maxNumber){
+					vmdebug('Better not to display more than '.$maxNumber.' products');
 					return $products;
 				}
 			}

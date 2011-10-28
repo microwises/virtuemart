@@ -105,19 +105,7 @@ class VirtueMartModelUserfields extends VmModel {
 	}
 
 
-	/**
-	 * Gets the total number of userfields
-	 *
-	 * @return int Total number of userfields in the database
-	 */
-	function _getTotal()
-	{
-		if (empty($this->_total)) {
-			$query = $this->_getListQuery();
-			$this->_total = $this->_getListCount($query);
-	}
-		return $this->_total;
-	}
+
 
 	/**
 	 * Retrieve the detail record for the current $id if the data has not already been loaded.
@@ -392,10 +380,10 @@ class VirtueMartModelUserfields extends VmModel {
 			$_q .= "AND name LIKE '%bank%' ";
 		}
 
-		if (($_skipBank = array_search('bank', $_skip)) !== false ) {
+/*		if (($_skipBank = array_search('bank', $_skip)) !== false ) {
 			$_q .= "AND name NOT LIKE '%bank%' ";
 			unset ($_skip[$_skipBank]);
-		}
+		}*/
 
 		if(array_key_exists('published',$_switches)){
 			if ($_switches['published'] !== false ) {
@@ -815,6 +803,26 @@ class VirtueMartModelUserfields extends VmModel {
 	}
 
 	/**
+	 * Checks if a single field is required, used in the cart
+	 *
+	 * @author Max Milbers
+	 * @param string $fieldname
+	 */
+	function getIfRequired($fieldname) {
+
+		$q = 'SELECT `required` FROM #__virtuemart_userfields WHERE `name` = "'.$fieldname.'" ';
+
+		$this->_db->setQuery($q);
+		$result = $this->_db->loadResult();
+		$error = $this->_db->getErrorMsg();
+		if(!empty($error)){
+			vmError('userfields getIfRequired '.$error,'Programmer used an unknown userfield '.$fieldname);
+		}
+		return $result;
+
+	}
+
+	/**
 	 * Translate arrays form userfield_values to the format expected by the table class.
 	 *
 	 * @param array $titles List of titles from the formdata
@@ -902,6 +910,7 @@ class VirtueMartModelUserfields extends VmModel {
 	/**
 	 * Retrieve a list of userfields from the database.
 	 *
+	 * @deprecated
 	 * @return object List of userfield objects
 	 */
 	function getUserfieldsList()
@@ -914,8 +923,24 @@ class VirtueMartModelUserfields extends VmModel {
 	}
 
 	/**
+	* Gets the total number of userfields
+	*
+	* @return int Total number of userfields in the database
+	* @deprecated
+	*
+	function _getTotal()
+	{
+		if (empty($this->_total)) {
+			$query = $this->_getListQuery();
+			$this->_total = $this->_getListCount($query);
+		}
+		return $this->_total;
+	}
+
+	/**
 	 * If a filter was set, get the SQL WHERE clase
 	 *
+	 *@deprecated
 	 * @return string text to add to the SQL statement
 	 */
 	function _getFilter()
@@ -932,6 +957,7 @@ class VirtueMartModelUserfields extends VmModel {
 	/**
 	 * Build the query to list all Userfields
 	 *
+	 *@deprecated
 	 * @return string SQL query statement
 	 */
 	function _getListQuery ()
@@ -941,7 +967,7 @@ class VirtueMartModelUserfields extends VmModel {
 		$query .= $this->_getOrdering();
 		return ($query);
 	}
-
+ //*/
 }
 
 // No closing tag

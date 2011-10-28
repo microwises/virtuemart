@@ -165,7 +165,7 @@ class VirtueMartCart {
 		//$this->tosAccepted is due session stuff always set to 0, so testing for null does not work
 		// 		if(isset($user->agreed) && !VmConfig::get('agree_to_tos_onorder',0) && $this->tosAccepted===null){
 // 		vmdebug('cart',isset($user->agreed),$this->BT['agreed'],VmConfig::get('agree_to_tos_onorder',0),$this->tosAccepted);
-		if((!empty($user->agreed) || !empty($this->BT['agreed'])) && !VmConfig::get('agree_to_tos_onorder',0) && $this->tosAccepted!==1){
+		if((!empty($user->agreed) || !empty($this->BT['agreed'])) && !VmConfig::get('agree_to_tos_onorder',0) ){
 // 			if(isset($user->agreed)){
 // 				vmdebug('go for user');
 				$this->tosAccepted = 1;
@@ -373,11 +373,14 @@ class VirtueMartCart {
 			//			$product = $tmpProduct;
 
 			//			vmdebug('my product add to cart after',$product);
-			//TODO Why reloading the product wiht same name $product ?
+			//Why reloading the product wiht same name $product ?
 			// passed all from $tmpProduct and relaoding it second time ????
 			// $tmpProduct = $this->getProduct((int) $virtuemart_product_id); seee before !!!
 			// $product = $this->getProduct((int) $virtuemart_product_id);
-			/* Check if we have a product */
+			// Who ever noted that, yes that is exactly right that way, before we have a full object, with all functions
+			// of all its parents, we only need the data of the product, so we create a dummy class which contains only the data
+			// This is extremly important for performance reasons, else the sessions becomes too big.
+			// Check if we have a product
 			if ($product) {
 				$quantityPost = (int) $post['quantity'][$p_key];
 
@@ -531,7 +534,7 @@ class VirtueMartCart {
 		JModel::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'models');
 		$model = JModel::getInstance('Product', 'VirtueMartModel');
 		$product = $model->getProduct($virtuemart_product_id, true, false);
-		
+
 		if ( VmConfig::get('oncheckout_show_images')){
 			$model->addImages($product);
 			// $db =& JFactory::getDBO();
@@ -836,8 +839,15 @@ class VirtueMartCart {
 			}
 		}
 
+
 		if ($this->tosAccepted !== 1) {
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS'));
+			if (!class_exists('VirtueMartModelUserfields')){
+				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
+			}
+			$userFieldsModel = new VirtueMartModelUserfields();
+			if(!$userFieldsModel->getIfRequired('agreed')){
+				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS'));
+			}
 		}
 
 		if(VmConfig::get('oncheckout_only_registered',0)) {
@@ -1151,9 +1161,13 @@ class VirtueMartCart {
 					$name = $fld->name;
 					if(!empty($data->{$prefix.$name})) $address[$name] = $data->{$prefix.$name};
 				}
-
 			}
+
 		}
+
+		//dont store passwords in the session
+		unset($address['password']);
+		unset($address['password2']);
 
 		$this->{$type} = $address;
 

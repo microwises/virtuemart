@@ -113,11 +113,16 @@ JHTML::_ ( 'behavior.modal' );
 		<div class="checkout-button-top">
 
 			<?php // Terms Of Service Checkbox
+			if (!class_exists('VirtueMartModelUserfields')){
+				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
+			}
+			$userFieldsModel = new VirtueMartModelUserfields();
+			if($userFieldsModel->getIfRequired('agreed')){
 				if(!class_exists('VmHtml'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 				echo VmHtml::checkbox('tosAccepted',$this->cart->tosAccepted,1,0,'class="terms-of-service"');
-			//$checked = '';
-			//echo '<input class="terms-of-service" type="checkbox" name="tosAccepted" value="1" ' . $checked . '/>
-			echo '<span class="tos">'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
+				echo '<span class="tos">'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
+			}
+
 			echo $this->checkout_link_html;
 			$text = JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU');
 			?>
