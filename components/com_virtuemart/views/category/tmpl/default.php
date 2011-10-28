@@ -57,6 +57,7 @@ echo JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE').' '.JHTML::_('select.genericlis
 </div>
 		<input type="hidden" name="search" value="true" />
 		<input type="hidden" name="category" value="0" />
+		<input type="hidden" name="view" value="category" />
 </form>
 
 <!-- End Search Box -->

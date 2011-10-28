@@ -1,7 +1,7 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
 <!--BEGIN Search Box -->
-<form action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=category&search=true&limitstart=0&virtuemart_category_id='.$category_id ); ?>" method="get">
+<form action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=category&search=true&limitstart=0&virtuemart_category_id='.$category_id ); ?>" method="post">
 <div class="search<?php echo $params->get('moduleclass_sfx'); ?>">
 <?php $output = '<input style="height:16px;vertical-align :middle;" name="keyword" id="mod_virtuemart_search" maxlength="'.$maxlength.'" alt="'.$button_text.'" class="inputbox'.$moduleclass_sfx.'" type="text" size="'.$width.'" value="'.$text.'"  onblur="if(this.value==\'\') this.value=\''.$text.'\';" onfocus="if(this.value==\''.$text.'\') this.value=\'\';" />'; 
  $image = JURI::base().'component/com_virtuemart/assets/images/vmgeneral/search.png' ;
