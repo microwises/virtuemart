@@ -117,40 +117,36 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 
-		// search fields filters set Frontend?
-		if ( $search == 'true') {
+		if ($keyword = vmRequest::get('keyword', false, ' ')) {
 			$groupBy = 'group by p.`virtuemart_product_id`';
-			//Why keyword and search used? why not only keyword or search? notice by Max Milbers
-			//$keyword = trim( str_replace(' ', '%', JRequest::getWord('keyword', '') ) );
-			if ($keyword = JRequest::getString('keyword', false)) {
 
-				$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;
-				$searchFields = VmConfig::get('browse_search_fields');
+//			$keyword = trim(preg_replace('/\s+/', '%', $keyword), '%');
+			$keyword = '"%' . $this->_db->getEscaped($keyword, true) . '%"';
 
-				foreach ($searchFields as $searchField) {
-					if (($searchField == 'c.category_name') || ($searchField == 'category_name')|| ($searchField == 'category_description')|| ($searchField == 'c.category_description')) $joinCategory = true ;
-					if ($searchField == 'm.mf_name' || $searchField == 'mf_name') $joinMf = true ;
-					if ($searchField == 'pp.product_price') $joinPrice = true ;
+			$searchFields = VmConfig::get('browse_search_fields');
+			foreach ($searchFields as $searchField) {
+				if (($searchField == 'c.category_name') || ($searchField == 'category_name') || ($searchField == 'category_description') || ($searchField == 'c.category_description')) $joinCategory = true ;
+				if ($searchField == 'm.mf_name' || $searchField == 'mf_name') $joinMf = true ;
+				if ($searchField == 'pp.product_price') $joinPrice = true ;
 
-					$filter_search[] = ' '.$searchField.' LIKE '.$keyword;
-				}
-				if(!empty($filter_search)){
-					$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
-				}
-
-				if ($searchcustoms = JRequest::getVar('customfields', array(),	'default' ,'array')){
-					$joinCustom = true ;
-					foreach ($searchcustoms as $key => $searchcustom) {
-						$custom_search[] = '(`#__virtuemart_product_customfields`.`virtuemart_custom_id`="'.(int)$key.'" and `#__virtuemart_product_customfields`.`custom_value` like "%' . $this->_db->getEscaped( $searchcustom, true ) . '%")';
-					}
-					$where[] = " ( ".implode(' OR ', $custom_search )." ) ";
-				}
+				$filter_search[] = ' '.$searchField.' LIKE '.$keyword;
+			}
+			if(!empty($filter_search)){
+				$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
 			}
 
-		} elseif ($search = JRequest::getString('filter_product', false)){
+		} elseif ($search = vmRequest::get('filter_product', false)){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			$where[] = 'p.`product_name` LIKE '.$search;
-     	}
+		}
+
+		if ($searchcustoms = JRequest::getVar('customfields', array(), 'default' ,'array')){
+			$joinCustom = true ;
+			foreach ($searchcustoms as $key => $searchcustom) {
+				$custom_search[] = '(`#__virtuemart_product_customfields`.`virtuemart_custom_id`="'.(int)$key.'" and `#__virtuemart_product_customfields`.`custom_value` like "%' . $this->_db->getEscaped( $searchcustom, true ) . '%")';
+			}
+			$where[] = " ( ".implode(' OR ', $custom_search )." ) ";
+		}
 
 		if ($virtuemart_category_id>0){
 			$joinCategory = true ;

@@ -99,16 +99,13 @@ class VirtuemartViewCategory extends JView {
 		} else {
 			$document->setTitle($categoryStripped);
 		}
-		$keyword = JRequest::getWord('keyword', '');
-
 
 		// set search and keyword
+		if ($keyword = vmRequest::get('keyword', '', ' ')) {
+			$pathway->addItem($keyword);
+			$document->setTitle( $categoryStripped.' '.$keyword);
+		}
 		if ($search = JRequest::getWord('search', '')) {
-			if ($keyword) {
-				$pathway->addItem($keyword);
-
-				$document->setTitle( $categoryStripped.' '.$keyword);
-			}
 			if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 			$modelCustomfields = new VirtueMartModelCustomfields();
 			$searchcustom = $modelCustomfields->getSearchCustom();
