@@ -5,7 +5,7 @@
     </layout>
     <state>
         <name>COM_VIRTUEMART_CATEGORIES_VIEW_DEFAULT_TITLE</name>
-       		<description><![CDATA[COM_VIRTUEMART_CATEGORY_VIEW_DEFAULT_DESC]]></description>
+       		<description><![CDATA[COM_VIRTUEMART_CATEGORIES_VIEW_DEFAULT_DESC]]></description>
 
         <url addpath="/administrator/components/com_virtuemart/elements">
             <param name="virtuemart_category_id" section="com_virtuemart" type="vmcategoriesmenu"  value_field="category_name" label="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_TITLE" description="COM_VIRTUEMART_CATEGORY_FIELD_SELECT_TITLE_DESC" />
