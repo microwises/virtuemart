@@ -649,9 +649,15 @@ class VirtueMartModelProduct extends VmModel {
 				}
 			}
 		} else {
+			$i = 0;
 			foreach($productIds as $id){
 				if($product = $this->getProduct((int)$id,$front, $withCalc, $onlyPublished)){
 					$products[] = $product;
+					$i++;
+				}
+				if($i>10){
+					vmdebug('Better not to display more than 1000 products');
+					return $products;
 				}
 			}
 		}
