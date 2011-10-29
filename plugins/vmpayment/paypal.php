@@ -164,7 +164,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	return null;
     }
 
-    function plgVmOnConfirmedOrderGetPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status=false) {
+    function plgVmOnConfirmedOrderGetPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status) {
 
 	if (!$this->selectedThisPayment($this->_pelement, $orderData->virtuemart_paymentmethod_id)) {
 	    return null; // Another method was selected, do nothing
@@ -183,7 +183,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 
 	//$usr = & JFactory::getUser();
-
+	$new_status = '';
 	$usrBT = $orderData->BT;
 	$usrST = (($orderData->ST === null) ? $orderData->BT : $orderData->ST);
 
@@ -320,7 +320,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	    return false;
 	$db = JFactory::getDBO();
 	$query = 'SELECT ' . $this->_tablename . '.`virtuemart_order_id` FROM ' . $this->_tablename
-		. " WHERE  `order_number`= '" . $order_number ."'"
+		. " WHERE  `order_number`= '" . $order_number . "'"
 		. ' AND  `payment_method_id` = ' . $pm;
 	$db->setQuery($query);
 	$virtuemart_order_id = $db->loadResult();
@@ -364,7 +364,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	    return null;
 	}
 
-	//fwrite($fp, $paypal_data);
+	//fwrite($fp, implode('   ', $paypal_data));
 	// get all know columns of the table
 	$db = JFactory::getDBO();
 	$query = 'SHOW COLUMNS FROM `' . $this->_tablename . '` ';
@@ -380,7 +380,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		$response_fields[$table_key] = $value;
 	    }
 	}
-
+	$return_context = $response_fields['paypal_response_custom'];
 	//$response_fields['paypal_response_notification'] = implode("|", $paypal_data); // raw data
 	//fwrite($fp, "\napres notif" . $response_fields['paypal_response_notification']);
 	// we want to check that custom param is the same
@@ -406,9 +406,9 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	$params = new JParameter($paramstring);
 	//fwrite($fp, "\n" . $virtuemart_order_id);
 	$this->updatePaymentData($response_fields, $this->_tablename, 'virtuemart_order_id', $virtuemart_order_id);
-
-	if (!($error_msg = $this->_processIPN($paypal_data, $params) )) {
-	    $new_state = $params->get('status_canceled');
+	$error_msg = $this->_processIPN($paypal_data, $params);
+	if (!(empty($error_msg) )) {
+	    $new_status = $params->get('status_canceled');
 	} else {
 
 
@@ -431,12 +431,13 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	    if (empty($paypal_data['payment_status']) || ($paypal_data['payment_status'] != 'Completed' && $paypal_data['payment_status'] != 'Pending')) {
 		return false;
 	    }
-	    if ($paypal_data['payment_status'] == 'Completed') {
+	    $paypal_status = $paypal_data['payment_status'];
+	    if (strcmp($paypal_status, 'Completed') == 0) {
 		$new_status = $params->get('status_success');
 	    }
 	}
 
-	//fwrite($fp,"\nreturn");
+ 	//fclose($fp);
 	return true;
     }
 
