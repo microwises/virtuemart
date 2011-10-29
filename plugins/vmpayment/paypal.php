@@ -380,7 +380,8 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		$response_fields[$table_key] = $value;
 	    }
 	}
-	$return_context = $response_fields['paypal_response_custom'];
+	$return_context = $paypal_data['custom'];
+	//fwrite($fp, "\n" . $return_context);
 	//$response_fields['paypal_response_notification'] = implode("|", $paypal_data); // raw data
 	//fwrite($fp, "\napres notif" . $response_fields['paypal_response_notification']);
 	// we want to check that custom param is the same
