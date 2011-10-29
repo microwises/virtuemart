@@ -604,7 +604,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * @author Valérie Isaksen
      * @return string Shipper name
      */
-    final protected function getThisShipperName ($virtuemart_shippingcarrier_id) {
+    final protected function getThisShipperName($virtuemart_shippingcarrier_id) {
 	$db = JFactory::getDBO();
 	$q = 'SELECT `shipping_carrier_name` '
 		. 'FROM #__virtuemart_shippingcarriers '
@@ -721,7 +721,7 @@ abstract class vmShipperPlugin extends JPlugin {
 	$cart_prices['shipping_tax_id'] = 0;
 	$cart_prices['shipping_value'] = 0;
 
-	if (!$this->checkShippingConditions($cart, $shipper) ) {
+	if (!$this->checkShippingConditions($cart, $shipper)) {
 	    return false;
 	}
 	$params = new JParameter($shipper->shipping_carrier_params);
@@ -814,7 +814,6 @@ abstract class vmShipperPlugin extends JPlugin {
 	return $html;
     }
 
-
     /**
      * Get Shipper Data for a go given Shipper ID
      * @author Valérie Isaksen
@@ -835,7 +834,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * getShippingHtml
      */
 
-    protected function getShippingHtml( $shipper, $selectedShipper, $shippingSalesPrice) {
+    protected function getShippingHtml($shipper, $selectedShipper, $shippingSalesPrice) {
 	if ($selectedShipper == $shipper->virtuemart_shippingcarrier_id) {
 	    $checked = 'checked';
 	} else {
@@ -903,11 +902,17 @@ abstract class vmShipperPlugin extends JPlugin {
 	$return = '';
 	$params = new JParameter($shipping->shipping_carrier_params);
 	$shipperLogo = $params->get('shipper_logo');
+	$shipperDescription = $params->get('shipper_description', '');
 	if (!empty($shipperLogo)) {
 	    $return = $this->displayLogos(array($shipperLogo => $shipping->shipping_carrier_name)) . ' ';
 	}
+	if (!empty($shipperDescription)) {
+	    $shipperDescription = '<span class="vmshipper_description">' . $shipperDescription . '</span>';
+	}
+	 
+	return $return . '<span class="vmshipper_name">' . $shipping->shipping_carrier_name . '</span>' . $shipperDescription;
 
-	return $return . $shipping->shipping_carrier_name;
+
     }
 
     /**

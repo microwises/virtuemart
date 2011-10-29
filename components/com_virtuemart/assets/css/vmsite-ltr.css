@@ -187,6 +187,6 @@ td.orders-key{font-weight: bold; text-align: left; }
 
 .vm-customfield-mod img,.vm-customfield-cart img{ vertical-align: middle; width: 16px;}
 .vm-img-desc{display:block;}
-.vmpayment_name, .vmpayment_cost{padding:0 2px;}
-.vmpayment_description{color:gray;font-size:9px;padding:0 2px;}
+.vmpayment_name, .vmpayment_cost, .vmshipper_name, .vmshipper_cost{padding:0 2px;}
+.vmpayment_description,.vmshipper_description {color:gray;font-size:9px;padding:0 2px;}
 .vmpayment_cardinfo {color:gray;font-size:9px;}
