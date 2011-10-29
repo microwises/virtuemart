@@ -805,6 +805,34 @@ class vmJsApi{
 		$jvalideForm = true;
 		return;
 	}
+
+	// Virtuemart product and price script
+	function jCreditCard()
+	{
+
+		static $jCreditCard;
+		// If exist exit
+		if ($jCreditCard) return;
+		JFactory::getLanguage()->load('com_virtuemart');
+
+
+		$js = "var ccErrors = new Array ()
+		ccErrors [0] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_UNKNOWN_TYPE') ). "';
+		ccErrors [1] =  '" . addslashes( JText::_("COM_VIRTUEMART_CREDIT_CARD_NO_NUMBER") ). "';
+		ccErrors [2] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_FORMAT')) . "';
+		ccErrors [3] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_NUMBER')) . "';
+		ccErrors [4] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_WRONG_DIGIT')) . "';
+		ccErrors [5] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_EXPIRE_DATE')) . "';
+		";
+
+		$doc = & JFactory::getDocument();
+		$doc->addScriptDeclaration($js);
+
+		$jCreditCard = true;
+		return true;
+	}
+
+
 	/*	function cssSite()
 	 {
 	static $jSite;

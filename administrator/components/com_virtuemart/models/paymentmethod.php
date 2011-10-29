@@ -70,12 +70,6 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			$this->_db->setQuery($q);
 			$this->_data->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
 
-			/* Add the accepted credit cards */
-			$q = 'SELECT `virtuemart_creditcard_id` FROM #__virtuemart_paymentmethod_creditcards WHERE `virtuemart_paymentmethod_id` = "'.$this->_id.'"';
-			$this->_db->setQuery($q);
-			$this->_data->payment_creditcards = $this->_db->loadResultArray();
-
-
 			if (VmConfig::isJ15()) {
 				$table = '#__plugins';
 				$ext_id = 'id';
@@ -88,7 +82,6 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			$this->_data->param = $this->_db->loadResult();
   		} else {
   			$this->_data->virtuemart_shoppergroup_ids = '';
-  			$this->_data->payment_creditcards = '';
   			$this->_data->param = '';
   		}
 
@@ -127,15 +120,15 @@ class VirtueMartModelPaymentmethod extends VmModel{
 				$data->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
 
 				/* Add the accepted credit cards */
-				$q = 'SELECT `virtuemart_creditcard_id` FROM #__virtuemart_paymentmethod_creditcards WHERE `virtuemart_paymentmethod_id` = "'.$data->virtuemart_paymentmethod_id.'"';
-				$this->_db->setQuery($q);
-				$data->payment_creditcards = $this->_db->loadResultArray();
+				//$q = 'SELECT `virtuemart_creditcard_id` FROM #__virtuemart_paymentmethod_creditcards WHERE `virtuemart_paymentmethod_id` = "'.$data->virtuemart_paymentmethod_id.'"';
+				//$this->_db->setQuery($q);
+				//$data->payment_creditcards = $this->_db->loadResultArray();
 
 				/* Write the first 5 shoppergroups in the list */
 				$data->paymShoppersList = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_paymentmethod_shoppergroups','virtuemart_paymentmethod_id',$data->virtuemart_paymentmethod_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','shoppergroup');
 
 				/* Write the first 5 accepted creditcards in the list */
-				$data->paymCreditCardList = shopfunctions::renderGuiList('virtuemart_creditcard_id','#__virtuemart_paymentmethod_creditcards','virtuemart_paymentmethod_id',$data->virtuemart_paymentmethod_id,'creditcard_name','#__virtuemart_creditcards','virtuemart_creditcard_id','creditcart');
+				//$data->paymCreditCardList = shopfunctions::renderGuiList('virtuemart_creditcard_id','#__virtuemart_paymentmethod_creditcards','virtuemart_paymentmethod_id',$data->virtuemart_paymentmethod_id,'creditcard_name','#__virtuemart_creditcards','virtuemart_creditcard_id','creditcart');
 
 				/* Add published from table plugins obsolete */
 //				$q = 'SELECT `id` FROM #__plugins WHERE `element` = "'.$data->payment_element.'"';
@@ -297,6 +290,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	 *
 	 * @param radio list of creditcards
 	 * @return html
+	 * @deprecated
 	 */
 
 	public function renderCreditCardRadioList($selected,$creditcardIds=0){
@@ -329,6 +323,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	 * Gets the ids of accepted creditcards
 	 *
 	 * @return ids of Creditcards
+	 * @deprecated
 	 */
 	function getPaymentAcceptedCreditCards(){
 

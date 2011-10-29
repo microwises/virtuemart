@@ -197,6 +197,7 @@ class ShopFunctions {
 	 * Creates a Drop Down list of available Creditcards
 	 *
 	 * @author Max Milbers
+	 * @deprecated
 	 */
 	public function renderCreditCardList($ccId, $multiple = false) {
 
@@ -949,24 +950,25 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 * @param string $selected_item The pre-selected value
 	 *
 	 */
-	function listMonths($list_name, $selected=false) {
+	function listMonths($list_name, $selected=false, $class='') {
 		$options = array();
 		if (!$selected) $selected = date('m');
 
 		$options[] = JHTML::_('select.option', 0, JText::_('MONTH'));
-		$options[] = JHTML::_('select.option', "01", JText::_('JAN'));
-		$options[] = JHTML::_('select.option', "02", JText::_('FEB'));
-		$options[] = JHTML::_('select.option', "03", JText::_('MAR'));
-		$options[] = JHTML::_('select.option', "04", JText::_('APR'));
+		$options[] = JHTML::_('select.option', "01", JText::_('JANUARY'));
+		$options[] = JHTML::_('select.option', "02", JText::_('FEBRUARY'));
+		$options[] = JHTML::_('select.option', "03", JText::_('MARCH'));
+		$options[] = JHTML::_('select.option', "04", JText::_('APRIL'));
 		$options[] = JHTML::_('select.option', "05", JText::_('MAY'));
-		$options[] = JHTML::_('select.option', "06", JText::_('JUN'));
-		$options[] = JHTML::_('select.option', "07", JText::_('JUL'));
-		$options[] = JHTML::_('select.option', "08", JText::_('AUG'));
-		$options[] = JHTML::_('select.option', "09", JText::_('SEP'));
-		$options[] = JHTML::_('select.option', "10", JText::_('OCT'));
-		$options[] = JHTML::_('select.option', "11", JText::_('NOV'));
-		$options[] = JHTML::_('select.option', "12", JText::_('DEC'));
+		$options[] = JHTML::_('select.option', "06", JText::_('JUNE'));
+		$options[] = JHTML::_('select.option', "07", JText::_('JULY'));
+		$options[] = JHTML::_('select.option', "08", JText::_('AUGUST'));
+		$options[] = JHTML::_('select.option', "09", JText::_('SEPTEMBER'));
+		$options[] = JHTML::_('select.option', "10", JText::_('OCTOBER'));
+		$options[] = JHTML::_('select.option', "11", JText::_('NOVEMBER'));
+		$options[] = JHTML::_('select.option', "12", JText::_('DECEMBER'));
 		return JHTML::_('select.genericlist', $options, $list_name, '', 'value', 'text', $selected);
+
 	}
 
 	/**
@@ -975,7 +977,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 * @param string $list_name The name of the select element
 	 * @param string $selected_item The pre-selected value
 	 */
-	function listYears($list_name, $selected=false, $start=null, $end=null) {
+	function listYears($list_name, $selected=false, $start=null, $end=null, $attr='') {
 		$options = array();
 		if (!$selected) $selected = date('Y');
 		$start = $start ? $start : date('Y');
@@ -984,7 +986,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		for ($i=$start; $i<=$end; $i++) {
 			$options[] = JHTML::_('select.option', $i, $i);
 		}
-		return JHTML::_('select.genericlist', $options, $list_name, '', 'value', 'text', $selected);
+		return JHTML::_('select.genericlist', $options, $list_name, $attr, 'value', 'text', $selected);
 	}
 
 	function checkboxListArr( $arr, $tag_name, $tag_attribs,  $key='value', $text='text',$selected=null, $required=0  ) {

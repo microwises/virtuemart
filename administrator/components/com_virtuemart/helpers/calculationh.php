@@ -454,7 +454,7 @@ class calculationHelper {
 		$this->_cartPrices['withTax'] = $this->_cartPrices['discountAfterTax'] = !empty($discountAfterTax) ? $discountAfterTax : $toDisc;
 
 		$paymentId = empty($cart->virtuemart_paymentmethod_id) ? 0 : $cart->virtuemart_paymentmethod_id;
-		$creditId = empty($cart->virtuemart_creditcard_id) ? 0 : $cart->virtuemart_creditcard_id;
+		//$creditId = empty($cart->virtuemart_creditcard_id) ? 0 : $cart->virtuemart_creditcard_id;
 
 		$this->calculatePaymentPrice($cart, $paymentId);
 
@@ -819,14 +819,15 @@ class calculationHelper {
 			$cart->automaticSelectedPayment =   $cart->CheckAutomaticSelectedPayment( $this->_cartPrices);
 			if ($cart->automaticSelectedPayment) $payment_id=$cart->virtuemart_paymentmethod_id;
 			if (empty($payment_id)) return;
-
+			
+/*
 			// either there is only one payment method, either the old one is still valid
 			if (!class_exists('TablePaymentmethods'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'paymentmethods.php');
 
-			$payment = new TablePaymentmethods($this->_db);
+			$payment = new TablePaymentmethods($this->_db); /// we need that?
 			$payment->load($payment_id);
-
+*/
 
 
 			if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');

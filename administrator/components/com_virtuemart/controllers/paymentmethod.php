@@ -70,7 +70,7 @@ class VirtuemartControllerPaymentmethod extends VmController {
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 		$view = $this->getView($this->_cname, $viewType);
-		$view->setModel($paymModel = $this->getModel('creditcard'));
+		//$view->setModel($paymModel = $this->getModel('creditcard'));
 
 		parent::edit();
 	}
@@ -79,6 +79,7 @@ class VirtuemartControllerPaymentmethod extends VmController {
 		$data = JRequest::get('post');
 		// TODO disallow html in paym_name ?
 		$data['paym_name'] = JRequest::getVar('paym_name','','post','STRING',JREQUEST_ALLOWHTML);
+		// ?????
 		$data['shipping_carrier_desc'] = JRequest::getVar('shipping_carrier_desc','','post','STRING',JREQUEST_ALLOWHTML);
 
 		parent::save($data);

@@ -240,29 +240,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_coupons` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__virtuemart_creditcards`
---
-
-CREATE TABLE IF NOT EXISTS `#__virtuemart_creditcards` (
-  `virtuemart_creditcard_id` SERIAL,
-  `virtuemart_vendor_id` int(11) NOT NULL DEFAULT '0',
-  `creditcard_name` varchar(70) NOT NULL DEFAULT '',
-  `creditcard_code` varchar(30) NOT NULL DEFAULT '',
-  `ordering` int(2) NOT NULL DEFAULT '0',
-  `shared` tinyint(1) NOT NULL DEFAULT '1',
-  `published` tinyint(1) NOT NULL DEFAULT '1',
-  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created_by` int(11) NOT NULL DEFAULT 0,
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) NOT NULL DEFAULT 0,
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,
-  KEY (`virtuemart_vendor_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Used to store credit card types' AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `#__virtuemart_currencies`
 --
 
@@ -673,18 +650,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethods` (
   KEY `idx_payment_method_name` (`payment_name`),
   KEY `idx_payment_method_ordering` (`ordering`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The payment methods of your store' AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
---
--- Table structure for table `#__virtuemart_paymentmethod_creditcards`
---
-
-CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethod_creditcards` (
-  `id` SERIAL,
-  `virtuemart_paymentmethod_id` int(11) NOT NULL DEFAULT '0',
-  `virtuemart_creditcard_id` int(11) NOT NULL DEFAULT '0',
-  UNIQUE KEY `i_virtuemart_paymentmethod_id` (`virtuemart_paymentmethod_id`,`virtuemart_creditcard_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarrier_shoppergroups` (

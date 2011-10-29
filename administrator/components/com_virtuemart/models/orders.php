@@ -678,21 +678,23 @@ class VirtueMartModelOrders extends VmModel {
 	private function _handlePayment($orderID, $cart, $prices)
 	{
 
-		// 		$orderNr = $this->getOrderNumber($orderID);
+		$order_number = $this->getOrderNumber($orderID);
 
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStorePaymentData',array(
-		$orderID
+		$order_number
 		,$cart
 		,$prices
 		));
 
 		foreach ($returnValues as $returnValue) {
 			if ($returnValue !== null) {
-				//dump ($returnValue);
+			    if ($returnValue ) {
+				// i have some infos to display ??
 				$this->handleStockAfterStatusChanged('P',$cart->products,'N');
 				break; // This was the active plugin, so there's nothing left to do here.
+			    }
 			}
 			// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
 
@@ -758,9 +760,9 @@ class VirtueMartModelOrders extends VmModel {
 	 * take care of the stock updates.
 	 *
 	 * @author Valérie Isaksen
-	 * @param int $_orderID Order ID
+	 * @param int $orderID Order ID
 	 * @param object $_cart Cart object
-	 * @param array $_prices Price data
+	 * @param array $prices Price data
 	 */
 	private function _handleShipping($orderID, $cart, $prices)
 	{

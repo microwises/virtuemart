@@ -59,7 +59,6 @@ class TableCurrencies extends VmTable {
 		parent::__construct('#__virtuemart_currencies', 'virtuemart_currency_id', $db);
 
 		$this->setUniqueName('currency_name');
-//		$this->setObligatoryKeys('creditcard_code');
 
 		$this->setLoggable();
 
@@ -67,7 +66,7 @@ class TableCurrencies extends VmTable {
 	}
 
 	function check(){
-		
+
 		//$this->checkCurrencySymbol();
 		return parent::check();
 	}
@@ -77,7 +76,7 @@ class TableCurrencies extends VmTable {
 	 * Checks a currency symbol wether it is a HTML entity.
 	 * When not and $convertToEntity is true, it converts the symbol
 	 * Seems not be used      ATTENTION   seems BROKEN, working only for euro, ...
-	 * 
+	 *
 	 */
 	function checkCurrencySymbol($convertToEntity=true ) {
 

@@ -39,12 +39,6 @@ defined('_JEXEC') or die('Restricted access');
        ?>
       </td>
     </tr>
-    <tr   id=creditcardlist style="display : none;" >
-      <td class="key"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_FORM_CREDITCARD_LIST') ?></td>
-      <td width="69%" ><?php
-		echo $this->creditCardList ?>
-      </td>
-    </tr>
 
     <tr >
       <td class="key"><?php echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_FORM_SHOPPER_GROUP') ?></td>

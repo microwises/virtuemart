@@ -97,9 +97,9 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
      * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnConfirmedOrderStorePaymentData()
      * @author Oscar van Eijk
      */
-    function plgVmOnConfirmedOrderStorePaymentData($virtuemart_order_id, $orderData, $priceData) {
+    function plgVmOnConfirmedOrderStorePaymentData($virtuemart_order_id, VirtueMartCart $cart, $priceData) {
 
-	return false;
+	return null;
     }
 
     /**
@@ -107,7 +107,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
      *
      * @author Valérie Isaksen
      */
-    function plgVmOnConfirmedOrderGetPaymentForm($order_number, $orderData, $return_context, &$html) {
+    function plgVmOnConfirmedOrderGetPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status) {
 
 	if (!$this->selectedThisPayment($this->_pelement, $orderData->virtuemart_paymentmethod_id)) {
 	    return null; // Another method was selected, do nothing
@@ -118,6 +118,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 	$payment_info = $params->get('payment_info');
 
 	$html = "";
+	$new_status=false;
 	if (!empty($payment_info)) {
 // // Here's the place where the Payment Extra Form Code is included
 	    // Thanks to Steve for this solution (why make it complicated...?)

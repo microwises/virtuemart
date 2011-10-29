@@ -184,7 +184,7 @@ class VirtueMartControllerPaymentresponse extends JController {
 
 	foreach ($returnValues as $returnValue) {
 	    if ($returnValue !== null) {
-		$this->emptyCart($return_context);
+		$this->emptyCart($return_context); // remove vmcart
 		if ($virtuemart_order_id) {
 		    // send the email only if payment has been accepted
 		    if (!class_exists('VirtueMartModelOrders'))
@@ -196,8 +196,8 @@ class VirtueMartControllerPaymentresponse extends JController {
 		    JRequest::setVar('notify_customer', $customer_notifed);
 		    $comments[$virtuemart_order_id] = 0;
 		    JRequest::setVar('comment', $comments);
-		    $modelOrder->updateOrderStatus($orders); // take directly the session from the DB
-		    // remove vmcart
+		    $modelOrder->updateOrderStatus($orders); //
+
 		}
 		break; // This was the active plugin, so there's nothing left to do here.
 	    }

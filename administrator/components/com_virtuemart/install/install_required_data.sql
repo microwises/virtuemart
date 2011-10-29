@@ -260,18 +260,6 @@ INSERT INTO `#__virtuemart_countries` (`virtuemart_country_id`, `virtuemart_worl
 (244, 1, 'Canary Islands', 'XCA', 'XC'),
 (245, 1, 'Serbia', 'SRB', 'RS');
 
---
--- Dumping data for table `#__virtuemart_creditcards`
---
-
-INSERT INTO `#__virtuemart_creditcards` (`virtuemart_creditcard_id`, `virtuemart_vendor_id`, `creditcard_name`, `creditcard_code`,`published`) VALUES
-(1, 1, 'Visa', 'VISA',1),
-(2, 1, 'MasterCard', 'MC',1),
-(3, 1, 'American Express', 'amex',1),
-(4, 1, 'Discover Card', 'discover',1),
-(5, 1, 'Diners Club', 'diners',1),
-(6, 1, 'JCB', 'jcb',1),
-(7, 1, 'Australian Bankcard', 'australian_bc',1);
 
 --
 -- Dumping data for table `#__virtuemart_currencies`

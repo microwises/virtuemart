@@ -89,14 +89,14 @@ class VirtuemartViewPaymentMethod extends JView {
 
 //			$this->assignRef('creditCardList',self::renderCreditCardRadioList($paym->payment_creditcards));
 //			echo 'humpf <pre>'.print_r($paym).'</pre>' ;
-			$this->assignRef('creditCardList',ShopFunctions::renderCreditCardList($paym->payment_creditcards,true));
+			//$this->assignRef('creditCardList',ShopFunctions::renderCreditCardList($paym->payment_creditcards,true));
 			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($paym->virtuemart_shoppergroup_ids));
 
 			if(Vmconfig::get('multix','none')!=='none'){
 				$vendorList= ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
 				$this->assignRef('vendorList', $vendorList);
 			}
- 
+
 			ShopFunctions::addStandardEditViewCommands();
 		} else {
 
@@ -119,6 +119,7 @@ class VirtuemartViewPaymentMethod extends JView {
 	 * @author 		Max Milbers
 	 * @param 	$selected 	the selected values, may be single data or array
 	 * @return 	$list 		list of the Entrypoints
+	 * @deprecated
 	 */
 
 	function renderPaymentTypesList($selected){
@@ -134,7 +135,10 @@ class VirtuemartViewPaymentMethod extends JView {
 		$listHTML = JHTML::_('Select.genericlist', $list, 'payment_type', '', 'payment_type', 'payment_type_name', $selected );
 		return $listHTML;
 	}
-
+	/*
+	 *
+	 * @deprecated
+	 */
 	function renderPaymentRadioList($selected){
 
 		$list = array(

@@ -56,6 +56,13 @@ class VirtueMartCart {
 	var $pricesUnformatted = null;
 	var $pricesCurrency = null;
 
+	// card infos
+	var $cc_type = null;
+	var $cc_number	 = null;
+	var $cc_cvv	= null;
+	var $cc_expire_month= null;
+	var $cc_expire_year= null;
+
 	var $STsameAsBT = 0;
 
 	private static $_cart = null;
@@ -114,6 +121,14 @@ class VirtueMartCart {
 				self::$_cart->_dataValidated						= $cartData->_dataValidated;
 				self::$_cart->_confirmDone							= $cartData->_confirmDone;
 				self::$_cart->STsameAsBT							= $cartData->STsameAsBT;
+
+				self::$_cart->cc_type                  =   $cartData->cc_type;
+				self::$_cart->cc_number                =   $cartData->cc_number;
+				self::$_cart->cc_cvv                   =   $cartData->cc_cvv;
+				self::$_cart->cc_expire_month          =   $cartData->cc_expire_month;
+				self::$_cart->cc_expire_year           =   $cartData->cc_expire_year;
+
+
 				// 				vmdebug('my cart generated with CartSessionData ',self::$_cart);
 				//$cart = unserialize($cartTemp);
 				if (!empty(self::$_cart) && $deleteValidation) {
@@ -227,6 +242,12 @@ class VirtueMartCart {
 		$sessionCart->_confirmDone							= $this->_confirmDone;
 		$sessionCart->STsameAsBT							= $this->STsameAsBT;
 
+		// card information
+		$sessionCart->cc_type							= $this->cc_type;
+		$sessionCart->cc_number							= $this->cc_number;
+		$sessionCart->cc_cvv							= $this->cc_cvv;
+		$sessionCart->cc_expire_month						= $this->cc_expire_month;
+		$sessionCart->cc_expire_year						= $this->cc_expire_year;
 		$session->set('vmcart', serialize($sessionCart),'vm');
 
 	}
@@ -980,7 +1001,7 @@ class VirtueMartCart {
 			$html="";
 			$session = JFactory::getSession();
 			$return_context = $session->getId();
-			$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderGetPaymentForm', array($order_number, $cart , $return_context, &$html));
+			$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderGetPaymentForm', array($order_number, $cart , $return_context, &$html, &$new_status));
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
 			// 1 = cart should be emptied, 0 cart should not be emptied
@@ -992,6 +1013,21 @@ class VirtueMartCart {
 						//We delete the old stuff
 						$this->emptyCart();
 						JRequest::setVar('html' , $html);
+						 // send the email only if payment has been accepted
+						// update status?
+						if ($new_status) {
+						    if (!class_exists('VirtueMartModelOrders'))
+							require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+						    $modelOrder = new VirtueMartModelOrders();
+						    $orders[$virtuemart_order_id]['order_status'] = $new_status;
+						    $orders[$virtuemart_order_id]['virtuemart_order_id'] = $virtuemart_order_id;
+						    $customer_notifed[$virtuemart_order_id] = 0;
+						    JRequest::setVar('notify_customer', $customer_notifed);
+						    $comments[$virtuemart_order_id] = 0;
+						    JRequest::setVar('comment', $comments);
+						    $modelOrder->updateOrderStatus($orders); //
+						}
+
 					} elseif ($returnValue == 0 )   {
 						JRequest::setVar('html' , $html);
 					}
@@ -1012,7 +1048,7 @@ class VirtueMartCart {
 	/**
 	 * emptyCart: Used for payment handling.
 	 *
-	 * @author Valerie
+	 * @author Valerie Cartan Isaksen
 	 *
 	 */
 	public function emptyCart(){
@@ -1026,6 +1062,11 @@ class VirtueMartCart {
 		$this->customer_comment = '';
 		$this->couponCode = '';
 		$this->tosAccepted = null;
+		$this->cc_type = '';
+		$this->cc_number = '';
+		$this->cc_cvv = '';
+		$this->cc_expire_month = '';
+		$this->cc_expire_year = '';
 
 		$this->setCartIntoSession();
 	}

@@ -244,7 +244,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			// payment_discount values
 			$this->alterPaymentMethodsTable();
-
+			$this->deleteCreditcardsTable(); // for J version
+			 $this->removeCreditCardFromAdminMenus(); // remove credit card from the menu
 
 			if($loadVm) $this->displayFinished(true);
 			// probably should just go to updatesMigration rather than the install success screen
@@ -350,7 +351,36 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			}
 			return true;
 		}
+		/*
+		 * Credit Card Table delete in J version
+		 */
+		private function deleteCreditcardsTable() {
 
+
+			if(empty($this->db)){
+				$this->db = JFactory::getDBO();
+			}
+			$query = 'DROP TABLE  IF EXISTS `#__virtuemart_creditcards` ';
+			$this->db->setQuery($query);
+			$this->db->query();
+			$query = 'DROP TABLE  IF EXISTS `#__virtuemart_paymentmethod_creditcards` ';
+			$this->db->setQuery($query);
+			$this->db->query();
+
+
+
+			return true;
+		}
+		private function  removeCreditCardFromAdminMenus() {
+		    if(empty($this->db)){
+				$this->db = JFactory::getDBO();
+			}
+			$query = "DELETE FROM  `#__virtuemart_adminmenuentries` WHERE `name` = 'COM_VIRTUEMART_CREDIT_CARD_S'";
+			$this->db->setQuery($query);
+
+			return $this->db->query();
+
+		}
 		private function alterVendorsTable(){
 
 			if(empty($this->db)){

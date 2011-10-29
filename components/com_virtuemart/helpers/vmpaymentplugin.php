@@ -200,13 +200,19 @@ abstract class vmPaymentPlugin extends JPlugin {
      * This event is fired after the payment method has been selected. It can be used to store
      * additional payment info in the cart.
      *
-     * @param VirtueMartCart $cart: the actual cart
-     *
      * @author Max Milbers
      * @author Valérie isaksen
+     *
+     * @param VirtueMartCart $cart: the actual cart
+     * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
+     *
+
      */
     public function plgVmOnPaymentSelectCheck(VirtueMartCart $cart) {
-	return null;
+	if (!$this->selectedThisPayment($this->_pelement, $cart->virtuemart_paymentmethod_id)) {
+	    return null; // Another method was selected, do nothing
+	}
+	return true; // this payment was selected , and the data is valid by default
     }
 
     /**
@@ -295,13 +301,13 @@ abstract class vmPaymentPlugin extends JPlugin {
      *  If this plugin IS executed, it MUST return the order status code that the order should get. This triggers the stock updates if required
      *
      * @param int $_orderNr The ordernumber being processed
-     * @param object $_orderData Data from the cart
+     * @param VirtueMartCart $cart Data from the cart
      * @param array $_priceData Price information for this order
      * @return mixed Null when this method was not selected, otherwise the new order status
      * @author Max Milbers
      * @author Oscar van Eijk
      */
-    abstract function plgVmOnConfirmedOrderStorePaymentData($_orderNr, $_orderData, $_priceData);
+    abstract function plgVmOnConfirmedOrderStorePaymentData($_orderNr, VirtueMartCart $cart, $_priceData);
 
     /**
      * plgVmOnConfirmedOrderGetPaymentForm
@@ -309,15 +315,16 @@ abstract class vmPaymentPlugin extends JPlugin {
      * All plugins *must* reimplement this method.
      * NOTE for Plugin developers:
      *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
-     * returns 1 if the Cart should be deleted, and order sent
-     * $order_number: the actual order number
-     * $orderDate
-     * $return_context: contains the session id. Should be sent to the form. And the payment will sent it back.
-     *                  Will be used to empty the cart if necessary, and semnd the order email.
-     * $html: the payment form to display. But in some case, the bank can be called directly.
      * @author Valérie Isaksen
+     * @param $order_number: the actual order number
+     * @param $orderData
+     * @param $return_context: contains the session id. Should be sent to the form. And the payment will sent it back.
+     *                  Will be used to empty the cart if necessary, and semnd the order email.
+     * @param $html: the payment form to display. But in some case, the bank can be called directly.
+     * @param $new_status: false if it should not be changed, otherwise new staus
+     * @return returns 1 if the Cart should be deleted, and order sent
      */
-    abstract function plgVmOnConfirmedOrderGetPaymentForm($order_number, $orderData, $return_context, &$html);
+    abstract function plgVmOnConfirmedOrderGetPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status);
 
     /**
      * plgVmOnShowOrderPaymentFE
@@ -431,9 +438,11 @@ abstract class vmPaymentPlugin extends JPlugin {
      * Retrieve the payment method-specific encryption key
      *
      * @author Oscar van Eijk
+     * @author Valerie Isaksen
      * @return mixed
      */
     function get_passkey() {
+	return true;
 	$_db = JFactory::getDBO();
 	$_q = 'SELECT ' . VM_DECRYPT_FUNCTION . "(secret_key, '" . ENCODE_KEY . "') as passkey "
 		. 'FROM #__virtuemart_paymentmethods '
@@ -641,7 +650,7 @@ abstract class vmPaymentPlugin extends JPlugin {
 
 	$paymentCostDisplay = $currency->priceDisplay($paymentSalesPrice);
 	$html = '<input type="radio" name="virtuemart_paymentmethod_id" id="payment_id_' . $payment->virtuemart_paymentmethod_id . '" value="' . $payment->virtuemart_paymentmethod_id . '" ' . $checked . '>'
-		. '<label for="payment_id_' . $payment->virtuemart_paymentmethod_id . '">' . $payment->payment_name . " (" . $paymentCostDisplay . ")</label>\n";
+		. '<label for="payment_id_' . $payment->virtuemart_paymentmethod_id . '">' .'<span class="vmpayment">'. $payment->payment_name . '<span class="vmpayment_cost">(' . $paymentCostDisplay . ")</span></span></label>\n";
 	$html .="\n";
 	return $html;
     }
@@ -875,7 +884,7 @@ abstract class vmPaymentPlugin extends JPlugin {
 
     /**
      * getPaymentName
-     * Get the name of the payment method
+     * Get the name of the payment method, add the logo, and the payment description if any.
      *
      * @author Valerie Isaksen
      * @param  $payment
@@ -886,15 +895,20 @@ abstract class vmPaymentPlugin extends JPlugin {
 	$return = '';
 	$params = new JParameter($payment->payment_params);
 	$paymentLogo = $params->get('payment_logos');
+	$paymentDescription = $params->get('payment_description','');
 	if (!empty($paymentLogo)) {
 	    $return = $this->displayLogos(array($paymentLogo => $payment->payment_name)) . ' ';
 	}
-
-	return $return . $payment->payment_name;
+	 if (!empty($paymentDescription)) {
+	    $paymentDescription = '<span class="vmpayment_description">'.$paymentDescription.'</span>';
+	}
+	return  $return . '<span class="vmpayment_name">'.$payment->payment_name.'</span>'. $paymentDescription  ;
     }
-/*
- * @deprecated
- */
+
+    /*
+     * @deprecated
+     */
+
     function checkPaymentIsValid(VirtueMartCart $cart, array $cart_prices) {
 	$payment = $this->getThisPaymentData($cart->virtuemart_paymentmethod_id);
 	return $this->checkPaymentConditions($cart_prices, $payment);
@@ -955,6 +969,28 @@ abstract class vmPaymentPlugin extends JPlugin {
 	    }
 	}
 	return $img;
+    }
+
+    /*
+     * logPayment
+     * to help debugging Payment notification
+     */
+
+    public function logPaymentInfo($text, $type = 'message') {
+
+	if ($this->_debug) {
+	    $file = JPATH_ROOT . "/logs/" . $this->_pelement . "log";
+	    $date = JFactory::getDate();
+
+	    $f = fopen($file, 'a');
+	    fwrite($f, "\n\n" . $date->toFormat('%Y-%m-%d %H:%M:%S'));
+	    fwrite($f, "\n" . $type . ': ' . $text);
+	    fclose($f);
+	}
+    }
+
+    public function sendEmailToVendor($message) {
+
     }
 
 }

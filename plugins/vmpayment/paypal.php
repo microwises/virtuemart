@@ -160,11 +160,11 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
      * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnConfirmedOrderStorePaymentData()
      * @author Oscar van Eijk
      */
-    function plgVmOnConfirmedOrderStorePaymentData($virtuemart_order_id, $orderData, $priceData) {
-	return false;
+    function plgVmOnConfirmedOrderStorePaymentData($virtuemart_order_id, VirtueMartCart $cart, $priceData) {
+	return null;
     }
 
-    function plgVmOnConfirmedOrderGetPaymentForm($order_number, $orderData, $return_context, &$html) {
+    function plgVmOnConfirmedOrderGetPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status=false) {
 
 	if (!$this->selectedThisPayment($this->_pelement, $orderData->virtuemart_paymentmethod_id)) {
 	    return null; // Another method was selected, do nothing
@@ -182,7 +182,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	)
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 
-	$usr = & JFactory::getUser();
+	//$usr = & JFactory::getUser();
 
 	$usrBT = $orderData->BT;
 	$usrST = (($orderData->ST === null) ? $orderData->BT : $orderData->ST);
@@ -228,7 +228,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	    "address2" => $usrBT['address_2'],
 	    "zip" => $usrBT['zip'],
 	    "city" => $usrBT['city'],
-	    "state" => ShopFunctions::getCountryByID($usrBT['virtuemart_state_id']),
+	    "state" => ShopFunctions::getStateByID($usrBT['virtuemart_state_id']),
 	    "country" => ShopFunctions::getCountryByID($usrBT['virtuemart_country_id'], 'country_3_code'),
 	    "email" => $usrBT['email'],
 	    "night_phone_b" => $usrBT['phone_1'],
