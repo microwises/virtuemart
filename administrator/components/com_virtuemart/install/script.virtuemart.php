@@ -89,7 +89,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				return $this->update($loadVm);
 			}
 
-
 			if(version_compare(JVERSION,'1.6.0','ge')) {
 				$fields = array('data'=>'`data` LONGTEXT NULL AFTER `time`');
 				$this->alterTable('#__session',$fields);
@@ -236,10 +235,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 // 			$this->renewConfigManually = !JFile::delete($this->path.DS.'virtuemart.cfg');
 // 			if(!$this->renewConfigManually){
 
-				$model = JModel::getInstance('config', 'VirtueMartModel');
-				if (!class_exists('VirtueMartModelConfig')
-				)require($this->path . DS . 'models' . DS . 'config.php');
-				$model -> deleteConfig();
+// 				$model = JModel::getInstance('config', 'VirtueMartModel');
+// 				if (!class_exists('VirtueMartModelConfig')
+// 				)require($this->path . DS . 'models' . DS . 'config.php');
+// 				$model -> deleteConfig();
 
 
 			// payment_discount values

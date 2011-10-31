@@ -230,37 +230,12 @@ class VirtueMartViewProductdetails extends JView {
 	    	$category->category_template = VmConfig::get('categorytemplate');
 	    }
 
-	    if(empty($product->layout)){
-	    	$product->layout = VmConfig::get('productlayout');
-	    }
-
-		shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout,$product->layout);
+		shopFunctionsF::setVmTemplate($this,$category->category_template,$product->product_template,$category->category_layout,$product->layout);
 
 		shopFunctionsF::addProductToRecent($virtuemart_product_id);
 
 		$currency = CurrencyDisplay::getInstance( );
 		$this->assignRef('currency', $currency);
-
-		//TODO add params, add event
-//		$params = new JParameter();
-//		/*
-//		 * Process the prepare content plugins
-//		 */
-//		JPluginHelper::importPlugin('content');
-//		$results = $dispatcher->trigger('onPrepareContent', array (& $product, & $params, $limitstart));
-//
-//		/*
-//		 * Handle display events
-//		 */
-//		$article->event = new stdClass();
-//		$results = $dispatcher->trigger('onAfterDisplayTitle', array (&$product, &$params, $limitstart));
-//		$article->event->afterDisplayTitle = trim(implode("\n", $results));
-//
-//		$results = $dispatcher->trigger('onBeforeDisplayContent', array (&$product, &$params, $limitstart));
-//		$article->event->beforeDisplayContent = trim(implode("\n", $results));
-//
-//		$results = $dispatcher->trigger('onAfterDisplayContent', array (&$product, &$params, $limitstart));
-//		$article->event->afterDisplayContent = trim(implode("\n", $results));
 
 		parent::display($tpl);
 	}

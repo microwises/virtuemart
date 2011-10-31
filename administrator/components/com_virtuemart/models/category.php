@@ -62,6 +62,14 @@ class VirtueMartModelCategory extends VmModel {
 
 		if($xrefTable->getError()) $this->setError($xrefTable->getError());
 
+		if(empty($this->_data->category_template)){
+			$this->_data->category_template = VmConfig::get('categorytemplate');
+		}
+
+		if(empty($this->_data->category_layout)){
+			$this->_data->category_layout = VmConfig::get('categorylayout');
+		}
+
   		if($childs){
   			$this->_data->haschildren = $this->hasChildren($this->_id);
 

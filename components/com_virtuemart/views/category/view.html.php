@@ -163,12 +163,13 @@ class VirtuemartViewCategory extends JView {
 
 	    shopFunctionsF::setLastVisitedCategoryId($categoryId);
 
-	    if(empty($category->category_template)){
-	    	$catTpl = VmConfig::get('categorytemplate');
-	    }else {
-	    	$catTpl = $category->category_template;
-	    }
-	    shopFunctionsF::setVmTemplate($this,$catTpl,0,$category->category_layout);
+// 	    if(empty($category->category_template)){
+// 	    	$catTpl = VmConfig::get('categorytemplate');
+// 	    	vmdebug('category_template',$catTpl);
+// 	    } else {
+// 	    	$catTpl = $category->category_template;
+// 	    }
+	    shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
 
 		parent::display($tpl);
 	}

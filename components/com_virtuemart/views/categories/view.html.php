@@ -74,7 +74,7 @@ class VirtuemartViewCategories extends JView {
 			if (!class_exists('JParameter'))
 				require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
 			$menu_params = new JParameter( $menu->params );
-			if (!$menu_params->get( 'page_title')) { 
+			if (!$menu_params->get( 'page_title')) {
 				$document->setTitle($vendor->vendor_store_name);
 				$category->category_name = $vendor->vendor_store_name ;
 			} else $category->category_name = $menu_params->get( 'page_title');
@@ -97,13 +97,13 @@ class VirtuemartViewCategories extends JView {
 			$document->setMetaData('author', $category->metaauthor);
 		}
 
-	    if(empty($category->category_template)){
-	    	$catTpl = VmConfig::get('categorytemplate');
-	    }else {
-	    	$catTpl = $category->category_template;
-	    }
+// 	    if(empty($category->category_template)){
+// 	    	$catTpl = VmConfig::get('categorytemplate');
+// 	    }else {
+// 	    	$catTpl = $category->category_template;
+// 	    }
 
-	    shopFunctionsF::setVmTemplate($this,$catTpl,0,$category->category_layout);
+	    shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
 
 		parent::display($tpl);
 	}

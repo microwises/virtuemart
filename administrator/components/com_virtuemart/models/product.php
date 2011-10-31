@@ -365,8 +365,15 @@ class VirtueMartModelProduct extends VmModel {
 			$child->prices = $this->getPrice($child,array(),1);
 		}
 
-		$app = JFactory::getApplication() ;
+		if(empty($child->product_template)){
+			$child->product_template = VmConfig::get('producttemplate');
+		}
 
+		if(empty($child->layout)){ // product_layout ?
+			$child->layout = VmConfig::get('productlayout');
+		}
+
+		$app = JFactory::getApplication() ;
 		if($app->isSite() && !VmConfig::get('show_out_of_stock_products',0) && $child->product_in_stock<=0){
 			return false;
 		}

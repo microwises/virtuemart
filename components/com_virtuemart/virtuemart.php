@@ -32,6 +32,13 @@ if(VmConfig::get('shop_is_offline',0)){
 	JRequest::setVar('view', 'virtuemart');
 
 } else {
+
+	//Lets load first englisch, then joomla default standard, then user language.
+	$jlang =& JFactory::getLanguage();
+	$jlang->load('com_virtuemart', JPATH_SITE, 'en-GB', true);
+	$jlang->load('com_virtuemart', JPATH_SITE, $jlang->getDefault(), true);
+	$jlang->load('com_virtuemart', JPATH_SITE, null, true);
+
 	/* Front-end helpers */
 	require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
 	require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
