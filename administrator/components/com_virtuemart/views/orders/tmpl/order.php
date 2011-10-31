@@ -328,21 +328,8 @@ $tt=$this;
 			</tr>
 			<?php
 			/* COUPON DISCOUNT */
-			if (VmConfig::get('payment_discount_before') == '1') {
-				if ($this->orderbt->order_discount != 0) {
-					?>
-			<tr>
-				<td align="right" colspan="7"><strong> <?php
-				if ($this->orderbt->order_discount > 0) echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_LIST_DISCOUNT');
-				else echo JText::_('COM_VIRTUEMART_FEE');
-				?>:</strong></td>
-				<td   align="right" style="padding-right: 5px;"><?php
-				if ($this->orderbt->order_discount > 0 ) echo "-" . $this->currency->priceDisplay($this->orderbt->order_discount,'',false);
-				elseif ($this->orderbt->order_discount < 0 )  echo "+" . $this->currency->priceDisplay($ordert->order_discount,'',false); ?>
-				</td>
-			</tr>
-			<?php
-				}
+			if (VmConfig::get('coupons_enable') == '1') {
+
 				if ($this->orderbt->coupon_discount > 0 || $this->orderbt->coupon_discount < 0) {
 					?>
 			<tr>
@@ -373,33 +360,7 @@ $tt=$this;
 				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_TAX') ?>:</strong></td>
 				<td   align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment_tax,'',false); ?></td>
 			</tr>
-			<?php
-			if (VmConfig::get('payment_discount_before') != '1') {
-				if ($this->orderbt->order_discount != 0) {
-					?>
-			<tr>
-				<td align="right" colspan="7"><strong><?php
-				if( $this->orderbt->order_discount > 0) echo JText::_('COM_VIRTUEMART_PAYMENTMETHOD_LIST_DISCOUNT');
-				else echo JText::_('COM_VIRTUEMART_DISCOUNT');
-				?>:</strong></td>
-				<td   align="right" style="padding-right: 5px;"><?php
-				if ($this->orderbt->order_discount > 0 )
-				echo "-" . $this->currency->priceDisplay($this->orderbt->order_discount,'',false);
-				elseif ($this->orderbt->order_discount < 0 ) echo $this->currency->priceDisplay($this->orderbt->order_discount,'',false); ?>
-				</td>
-			</tr>
-			<?php
-				}
-				if( $this->orderbt->coupon_discount > 0 || $this->orderbt->coupon_discount < 0) {
-					?>
-			<tr>
-				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT') ?>:</strong></td>
-				<td   align="right" style="padding-right: 5px;"><?php echo "- ".$this->currency->priceDisplay($this->orderbt->coupon_discount,'',false); ?></td>
-			</tr>
-			<?php
-				}
-			}
-			?>
+			 
 			<tr>
 				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_CART_TOTAL') ?>:</strong></td>
 				<td   align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->priceDisplay($this->orderbt->order_total,'',false); ?></strong>
