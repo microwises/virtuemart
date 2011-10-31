@@ -39,7 +39,6 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
      */
     function plgVMPaymentPaypal(& $subject, $config) {
 	$this->_pelement = basename(__FILE__, '.php');
-	$this->_pelement = basename(__FILE__, '.php');
 	$this->_tablename = '#__virtuemart_order_payment_' . $this->_pelement;
 	$this->_createTable();
 	parent::__construct($subject, $config);
@@ -344,34 +343,40 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
      */
 
     function plgVmOnPaymentNotification(&$return_context, &$virtuemart_order_id, &$new_status) {
-	//$fp = fopen("paypal.txt", "w");
-	//fwrite($fp, "\ndebut");
 
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 	$paypal_data = JRequest::get('post');
 
+	$paramstring = $this->getVmPaymentParams($vendorId = 0, $payment->payment_method_id);
+
+	$params = new JParameter($paramstring);
+	$this->_debug = $params->get('debug');
+	$this->logPaymentInfo('plgVmOnPaymentNotification', 'message');
 	$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($paypal_data['invoice']);
-	//fwrite($fp, "order" . $virtuemart_order_id);
+	$this->logPaymentInfo('virtuemart_order_id ' . $virtuemart_order_id, 'message');
 	if (!$virtuemart_order_id) {
+	    $this->logPaymentInfo('virtuemart_order_id not found ' . $virtuemart_order_id, 'message');
 	    // send an email to admin, and ofc not update the order status: exit  is fine
+	  $this->sendEmailToVendorAndAdmins( JText::_('VMPAYMENT_PAYPAL_ERROR_EMAIL_SUBJECT'),JText::_('VMPAYMENT_PAYPAL_UNKNOW_ORDER_ID'));
+
 	    exit;
 	}
 
 	$payment = $this->getPaymentDataByOrderId($virtuemart_order_id);
 
 	if (!$payment) {
+	    $this->logPaymentInfo('payment not found: exit ', 'ERROR');
 	    return null;
 	}
+	$this->logPaymentInfo('payapl_data ' . implode('   ', $paypal_data), 'message');
 
-	//fwrite($fp, implode('   ', $paypal_data));
 	// get all know columns of the table
 	$db = JFactory::getDBO();
 	$query = 'SHOW COLUMNS FROM `' . $this->_tablename . '` ';
 	$db->setQuery($query);
 	$columns = $db->loadResultArray(0);
 
-	//fwrite($fp, "\napres colums");
 
 	foreach ($paypal_data as $key => $value) {
 	    $post_msg .= $key . "=" . $value . "<br />";
@@ -401,14 +406,12 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	}
 
 
-	//fwrite($fp, "\n" . $payment->payment_method_id);
-	$paramstring = $this->getVmPaymentParams($vendorId = 0, $payment->payment_method_id);
-	//fwrite($fp, "\nparmastring" . $paramstring);
-	$params = new JParameter($paramstring);
-	//fwrite($fp, "\n" . $virtuemart_order_id);
+
 	$this->updatePaymentData($response_fields, $this->_tablename, 'virtuemart_order_id', $virtuemart_order_id);
 	$error_msg = $this->_processIPN($paypal_data, $params);
+
 	if (!(empty($error_msg) )) {
+	    $this->logPaymentInfo('process IPN ' . $error_msg, 'ERROR');
 	    $new_status = $params->get('status_canceled');
 	} else {
 
@@ -438,7 +441,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	    }
 	}
 
- 	//fclose($fp);
+	 $this->logPaymentInfo('return new_status' . $new_status, 'message');
 	return true;
     }
 

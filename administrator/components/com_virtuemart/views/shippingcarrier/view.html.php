@@ -37,6 +37,7 @@ class VirtuemartViewShippingCarrier extends JView {
                 $this->addHelperPath(JPATH_VM_SITE.DS.'helpers');
 		$this->loadHelper('adminui');
 		$this->loadHelper('permissions');
+		$this->loadHelper('vmplugin');
 		$this->loadHelper('vmshipperplugin');
 		$this->loadHelper('shopFunctions');
 

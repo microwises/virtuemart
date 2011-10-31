@@ -69,9 +69,9 @@ abstract class vmShipperPlugin extends JPlugin {
     /**
      * @var string Identification of the shipper. This var must be overwritten by all plugins,
      * by adding this code to the constructor:
-     * $this->_selement = basename(__FILE, '.php');
+     * $this->_pelement = basename(__FILE, '.php');
      */
-    protected $_selement = '';
+    protected $_pelement = '';
     protected $_tablename = '';
 
     /**
@@ -88,9 +88,10 @@ abstract class vmShipperPlugin extends JPlugin {
      * @since 1.5
      */
     function __construct(& $subject, $config) {
+	$this->_vmplugin='shipper';
 	parent::__construct($subject, $config);
 	$lang = JFactory::getLanguage();
-	$filename = 'plg_vmshipper_' . $this->_selement;
+	$filename = 'plg_vm'.$this->_vmplugin.'_' . $this->_pelement;
 	$lang->load($filename, JPATH_ADMINISTRATOR);
 
 	if (!class_exists('JParameter'))
@@ -169,7 +170,7 @@ abstract class vmShipperPlugin extends JPlugin {
 
 	$q.= 'LEFT OUTER JOIN #__virtuemart_shippingcarrier_shoppergroups AS s ON v.`virtuemart_shippingcarrier_id` = s.`virtuemart_shippingcarrier_id` ';
 
-	$q.= ' WHERE v.`published` = "1"  AND j.`' . $extField2 . '` = "' . $this->_selement . '"
+	$q.= ' WHERE v.`published` = "1"  AND j.`' . $extField2 . '` = "' . $this->_pelement . '"
 					AND  (v.`virtuemart_vendor_id` = "' . $vendorId . '" OR   v.`virtuemart_vendor_id` = "0")
 					AND  (';
 
@@ -206,7 +207,7 @@ abstract class vmShipperPlugin extends JPlugin {
 	    $_q = 'SELECT 1 '
 		    . 'FROM   #__virtuemart_shippingcarriers v '
 		    . ',      #__plugins             j '
-		    . 'WHERE j.`element` = "' . $this->_selement . '" '
+		    . 'WHERE j.`element` = "' . $this->_pelement . '" '
 		    . 'AND   v.`shipping_carrier_jplugin_id` = j.`id` '
 		    . 'AND   v.`virtuemart_vendor_id` = "' . $_vendorId . '" '
 		    . 'AND   v.`published` = 1 '
@@ -216,15 +217,12 @@ abstract class vmShipperPlugin extends JPlugin {
 		    . 'FROM   #__virtuemart_shippingcarriers AS v '
 		    . ',      #__extensions   AS     j '
 		    . 'WHERE j.`folder` = "vmshipper" '
-		    . 'AND j.`element` = "' . $this->_selement . '" '
+		    . 'AND j.`element` = "' . $this->_pelement . '" '
 		    . 'AND   v.`shipping_carrier_jplugin_id` = j.`extension_id` '
 		    . 'AND   v.`virtuemart_vendor_id` = "' . $_vendorId . '" '
 		    . 'AND   v.`published` = 1 '
 	    ;
 	}
-
-
-
 
 	$_db->setQuery($_q);
 	$_r = $_db->loadAssoc();
@@ -240,7 +238,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * Method to create te plugin specific table; must be reimplemented.
      * @example
      * 	$_scheme = DbScheme::get_instance();
-     * 	$_scheme->create_scheme('#__vm_order_shipper_'.$this->_selement);
+     * 	$_scheme->create_scheme('#__vm_order_shipper_'.$this->_pelement);
      * 	$_schemeCols = array(
      * 		 'id' => array (
      * 				 'type' => 'int'
@@ -325,7 +323,7 @@ abstract class vmShipperPlugin extends JPlugin {
      */
     public function plgVmOnShipperSelected(VirtueMartCart $cart, $selectedShipper = 0) {
 
-	if (!$this->selectedThisShipper($this->_selement, $selectedShipper)) {
+	if (!$this->selectedThisShipper($this->_pelement, $selectedShipper)) {
 	    return null; // Another shipper was selected, do nothing
 	}
 	// should return $shipping rates for this
@@ -339,7 +337,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * based on the shipto (country, zip) and/or order weight, and optionally writes extra info
      * to the database (in which case this method must be reimplemented).
      * Reimplementation is not required, but when done, the following check MUST be made:
-     * 	if (!$this->selectedThisShipper($this->_selement, $_cart->shipper_id)) {
+     * 	if (!$this->selectedThisShipper($this->_pelement, $_cart->shipper_id)) {
      * 		return null;
      * 	}
      *
@@ -366,7 +364,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * @author Oscar van Eijk
      */
     public function plgVmOnShowOrderShipperBE($_orderId, $_vendorId, $_shipInfo) {
-	if (!($this->selectedThisShipper($this->_selement, $this->getShipperIDForOrder($_orderId)))) {
+	if (!($this->selectedThisShipper($this->_pelement, $this->getShipperIDForOrder($_orderId)))) {
 	    return null;
 	}
 	/*
@@ -548,13 +546,13 @@ abstract class vmShipperPlugin extends JPlugin {
 
     /**
      * This method checks if the selected shipper matches the current plugin
-     * @param string $_selement Element name, taken from the plugin filename
+     * @param string $_pelement Element name, taken from the plugin filename
      * @param int $_sid The shipper ID
      * @author Oscar van Eijk
      * @return True if the calling plugin has the given payment ID
      * @deprecated
      */
-    final protected function selectedThisShipper($selement, $sid) {
+    final protected function selectedThisShipper($pelement, $sid) {
 	$db = JFactory::getDBO();
 
 	if (VmConfig::isJ15()) {
@@ -563,7 +561,7 @@ abstract class vmShipperPlugin extends JPlugin {
 		    . ',    #__plugins AS j '
 		    . "WHERE vm.virtuemart_shippingcarrier_id = '$sid' "
 		    . 'AND   vm.shipping_carrier_jplugin_id = j.id '
-		    . "AND   j.element = '$selement'";
+		    . "AND   j.element = '$pelement'";
 	} else {
 	    $q = 'SELECT COUNT(*) AS c '
 		    . 'FROM #__virtuemart_shippingcarriers AS vm '
@@ -571,7 +569,7 @@ abstract class vmShipperPlugin extends JPlugin {
 		    . 'WHERE j.`folder` = "vmshipper" '
 		    . "AND vm.virtuemart_shippingcarrier_id = '$sid' "
 		    . 'AND   vm.shipping_carrier_jplugin_id = j.extension_id '
-		    . "AND   j.element = '$selement'";
+		    . "AND   j.element = '$pelement'";
 	}
 
 
@@ -708,7 +706,7 @@ abstract class vmShipperPlugin extends JPlugin {
 
     public function plgVmOnShipperSelectedCalculatePrice(VirtueMartCart $cart, array $cart_prices, $shipping_name) {
 
-	if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
+	if (!$this->selectedThisShipper($this->_pelement, $cart->virtuemart_shippingcarrier_id)) {
 	    return null; // Another shipper was selected, do nothing
 	}
 
@@ -761,7 +759,7 @@ abstract class vmShipperPlugin extends JPlugin {
      */
 
     function CheckShippingIsValid(VirtueMartCart $cart) {
-	if (!$this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id)) {
+	if (!$this->selectedThisShipper($this->_pelement, $cart->virtuemart_shippingcarrier_id)) {
 	    return null; // Another shipper was selected, do nothing
 	}
 	$shipper = $this->getThisShipperData($cart->virtuemart_shippingcarrier_id);
@@ -901,7 +899,7 @@ abstract class vmShipperPlugin extends JPlugin {
 
 	$return = '';
 	$params = new JParameter($shipping->shipping_carrier_params);
-	$shipperLogo = $params->get('shipper_logo');
+	$shipperLogo = $params->get('shipper_logos');
 	$shipperDescription = $params->get('shipper_description', '');
 	if (!empty($shipperLogo)) {
 	    $return = $this->displayLogos(array($shipperLogo => $shipping->shipping_carrier_name)) . ' ';
@@ -909,19 +907,17 @@ abstract class vmShipperPlugin extends JPlugin {
 	if (!empty($shipperDescription)) {
 	    $shipperDescription = '<span class="vmshipper_description">' . $shipperDescription . '</span>';
 	}
-	 
+
 	return $return . '<span class="vmshipper_name">' . $shipping->shipping_carrier_name . '</span>' . $shipperDescription;
 
 
     }
 
-    /**
-     * getShippingHtml
-     * displays the logos of a shipping plugin
+/**
+     * displays the logos of a VirtueMart plugin
      *
      * @author Valerie Isaksen
      * @author Max Milbers
-     *
      * @param array $logo_list
      * @return html with logos
      */
@@ -930,11 +926,11 @@ abstract class vmShipperPlugin extends JPlugin {
 	$img = "";
 
 	if (!(empty($logo_list))) {
-	    $url = JURI::root() . 'images/stories/virtuemart/shipper/';
+	    $url = JURI::root() . 'images/stories/virtuemart/' . $this->_vmplugin . '/';
 	    if (!is_array($logo_list))
 		$logo_list = (array) $logo_list;
-	    foreach ($logo_list as $shipper_logo => $alt_text) {
-		$img .= '<img align="middle" src="' . $url . $shipper_logo . '"  alt="' . $alt_text . '" > ';
+	    foreach ($logo_list as $logo => $alt_text) {
+		$img .= '<img align="middle" src="' . $url . $logo . '"  alt="' . $alt_text . '" > ';
 	    }
 	}
 	return $img;

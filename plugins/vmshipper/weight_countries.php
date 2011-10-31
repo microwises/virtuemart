@@ -37,8 +37,8 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      * @param array  $config  An array that holds the plugin configuration
      */
     function plgVmShipperWeight_countries(&$subject, $config) {
-	$this->_selement = basename(__FILE__, '.php');
-	$this->_tablename = '#__virtuemart_order_shipper_' . $this->_selement;
+	$this->_pelement = basename(__FILE__, '.php');
+	$this->_tablename = '#__virtuemart_order_shipper_' . $this->_pelement;
 	$this->_createTable();
 	parent::__construct($subject, $config);
     }
@@ -143,7 +143,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      * @author Valérie Isaksen
      */
     public function plgVmOnShipperSelected(VirtueMartCart $cart, $selectedShipper = 0) {
-	if (!$this->selectedThisShipper($this->_selement, $selectedShipper)) {
+	if (!$this->selectedThisShipper($this->_pelement, $selectedShipper)) {
 	    return null; // Another shipper was selected, do nothing
 	} else {
 	    return true;
@@ -168,7 +168,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 	    JError::raiseWarning(500, $q . " " . $db->getErrorMsg());
 	    return '';
 	}
-	if (!($this->selectedThisShipper($this->_selement, $shipinfo->virtuemart_shippingcarrier_id))) {
+	if (!($this->selectedThisShipper($this->_pelement, $shipinfo->virtuemart_shippingcarrier_id))) {
 	    return null;
 	}
 	return $shipinfo->shipper_name;
@@ -211,7 +211,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      */
     function plgVmOnConfirmedOrderStoreShipperData($orderID, VirtueMartCart $cart, $priceData) {
 
-	if (!($this->selectedThisShipper($this->_selement, $cart->virtuemart_shippingcarrier_id))) {
+	if (!($this->selectedThisShipper($this->_pelement, $cart->virtuemart_shippingcarrier_id))) {
 	    return null;
 	}
 	$shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $cart->virtuemart_shippingcarrier_id);
@@ -247,7 +247,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      * @author Valerie Isaksen
      */
     public function plgVmOnShowOrderShipperBE($virtuemart_order_id, $vendorId, $ship_method_id) {
-	if (!($this->selectedThisShipper($this->_selement, $ship_method_id))) {
+	if (!($this->selectedThisShipper($this->_pelement, $ship_method_id))) {
 	    return null;
 	}
 	$html = $this->getOrderShippingHtml($virtuemart_order_id);
@@ -418,19 +418,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 	return $zip_cond;
     }
 
-    /**
-     * Get the name of the shipper
-     * @param int $shipping The Shipper ID
-     * @author Valérie Isaksen
-     * @return string Shipper name
-     */
-/*    function getShippingName($shipping) {
-	$params = new JParameter($shipping->shipping_carrier_params);
-	$logo = $this->displayLogos(array($params->get('shipper_logo')=> $shipping->shipping_carrier_name));
-
-	return $logo . " " . $shipping->shipping_carrier_name;
-    }
-*/
+   
 }
 
 // No closing tag

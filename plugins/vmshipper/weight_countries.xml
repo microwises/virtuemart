@@ -17,7 +17,7 @@
     <params addpath="/administrator/components/com_virtuemart/elements">
 	<param type="vmjpluginwarning" />
 	<param type="spacer" default="VMSHIPPER_WEIGHT_COUNTRIES_PLUGIN" level="level1" />
-	<param	name="shipper_logo" type="vmfiles" label="VMSHIPPER_WEIGHT_COUNTRIES_LOGOS"
+	<param	name="shipper_logos" type="vmfiles" label="VMSHIPPER_WEIGHT_COUNTRIES_LOGOS"
              	description="VMSHIPPER_WEIGHT_COUNTRIES_LOGOS_DESC"
              	directory="/images/stories/virtuemart/shipper"
              	default="default" hide_default="1" hide_none="1"
@@ -39,7 +39,7 @@
 	<field type="vmjpluginwarning" />
 	<field type="vmjpluginwarning" />
 	<field type="spacer" default="VMSHIPPER_WEIGHT_COUNTRIES_PLUGIN" level="level1" />
-	<field	name="shipper_logo" type="vmfiles" label="VMSHIPPER_WEIGHT_COUNTRIES_LOGOS"
+	<field	name="shipper_logos" type="vmfiles" label="VMSHIPPER_WEIGHT_COUNTRIES_LOGOS"
              	description="VMSHIPPER_WEIGHT_COUNTRIES_LOGOS_DESC"
              	directory="/images/stories/virtuemart/shipper"
              	default="default" hide_default="1" hide_none="1"

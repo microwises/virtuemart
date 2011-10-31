@@ -23,62 +23,72 @@ defined('_JEXEC') or die('Restricted access');
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
     	<tr>
 		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></td>
-		<td align="left">
+		<td class="orders-key" align="left">
                 <?php echo $this->orderdetails['details']['BT']->order_number;?>
                 </td>
 	</tr>
 	<tr>
-		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?></td>
+		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?></td>
 		<td align="left"><?php echo vmJsApi::date($this->orderdetails['details']['BT']->created_on,'LC2',true); ?></td>
 	</tr>
 	<tr>
-		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?></td>
+		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?></td>
 		<td align="left"><?php echo $this->orderstatuses[$this->orderdetails['details']['BT']->order_status]; ?></td>
 	</tr>
 	<tr>
-		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_LAST_UPDATED') ?></td>
+		<td class=""><?php echo JText::_('COM_VIRTUEMART_LAST_UPDATED') ?></td>
 		<td align="left"><?php  echo vmJsApi::date($this->orderdetails['details']['BT']->modified_on,'LC2',true); ?></td>
 	</tr>
 	<tr>
-		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?></td>
+		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?></td>
 		<td align="left"><?php
 		echo $this->shipping;
 		?></td>
 	</tr>
 	<tr>
-		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL') ?></td>
+		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL') ?></td>
 		<td align="left"><?php echo $this->payment; ?>
 		</td>
 	</tr>
+
+<tr>
+		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></td>
+		<td class="orders-key" align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_total); ?></td>
+	</tr>
 	<tr>
-		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL') ?></td>
+		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL') ?></td>
 		<td align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_subtotal); ?></td>
-	</tr>
-	<tr>
-		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?></td>
-		<td align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_shipping); ?></td>
-	</tr>
-       	<tr>
-		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_TAX') ?></td>
-		<td align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_shipping_tax); ?></td>
 	</tr>
 
 	<tr>
-		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></td>
+		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?></td>
+		<td align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_shipping); ?></td>
+	</tr>
+       	<tr>
+		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_TAX') ?></td>
+		<td align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_shipping_tax); ?></td>
+	</tr>
+<tr>
+		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT') ?></td>
+		<td align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_payment); ?></td>
+	</tr>
+       	<tr>
+		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_TAX') ?></td>
+		<td align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_payment_tax); ?></td>
+	</tr>
+	<tr>
+		<td class=""><?php echo JText::_('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></td>
 		<td align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_discount); ?></td>
 	</tr>
 <?php if (VmConfig::get('coupons_enable',0)=='1') : ?>
 	<tr>
-		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT') ?></td>
+		<td class=""><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT') ?></td>
 		<td align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->coupon_discount); ?></td>
 	</tr>
 <?php  endif; ?>
 	<tr>
-		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL_TAX') ?></td>
+		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL_TAX') ?></td>
 		<td align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_tax); ?></td>
 	</tr>
-	<tr>
-		<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></td>
-		<td align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_total); ?></td>
-	</tr>
+
 </table>

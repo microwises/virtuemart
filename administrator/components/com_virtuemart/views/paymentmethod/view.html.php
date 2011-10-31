@@ -33,6 +33,7 @@ if (!class_exists('VirtueMartModelCurrency'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 if (!class_exists('VirtueMartModelVendor'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+
 class VirtuemartViewPaymentMethod extends JView {
 
 	function display($tpl = null) {
@@ -41,6 +42,7 @@ class VirtuemartViewPaymentMethod extends JView {
 		$this->addHelperPath(JPATH_VM_SITE.DS.'helpers');
 		$this->loadHelper('adminui');
 		$this->loadHelper('permissions');
+		$this->loadHelper('vmplugin');
 		$this->loadHelper('vmpaymentplugin');
 		$this->loadHelper('shopFunctions');
 

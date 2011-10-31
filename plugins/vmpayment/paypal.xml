@@ -40,30 +40,29 @@
 
 	<param   type="spacer" default="VMPAYMENT_PAYPAL_SANDBOX_PARAMS" level="level1" />
 
-	<param name="DEBUG" type="radio" default="0" label="VMPAYMENT_PAYPAL_DEBUG" description="VMPAYMENT_PAYPAL_DEBUG_DESC" >
-	    <option value="0">COM_VIRTUEMART_NO</option>
-	    <option value="1">COM_VIRTUEMART_YES</option>
-	</param>
 	<param name="sandbox" type="radio" default="1" label="VMPAYMENT_PAYPAL_SANDBOX" description="VMPAYMENT_PAYPAL_SANDBOX_DESC" >
 	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
 	</param>
 	<param name="sandbox_merchant_email" type="text" size="50" default="" label="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT" description="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT_DESC" />
-	<param   type="spacer" default="VMPAYMENT_PAYPAL_VIRTUEMART_PARAMS" level="level1" />
-	<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_PAYPAL_LOGOS"
-             	description="VMPAYMENT_PAYPAL_LOGOS_DESC"
+	<param   type="spacer" default="COM_VIRTUEMART_VMPAYMENT_VIRTUEMART_PARAMS" level="level1" />
+	<param	name="payment_logos" type="vmfiles" label="COM_VIRTUEMART_VMPAYMENT_LOGOS"
+             	description="COM_VIRTUEMART_VMPAYMENT_LOGOS_DESC"
              	directory="/images/stories/virtuemart/payment"
              	default="default" hide_default="1" hide_none="1"
              	stripext="0"  exclude="^_" />
-	<param name="payment_description" type="textarea" default="" label="VMPAYMENT_PAYPAL_VIRTUEMART_DESCRIPTION" description="VMPAYMENT_PAYPAL_VIRTUEMART_DESCRIPTION_DESC" rows="5" cols="30" />
-
+	<param name="payment_description" type="textarea" default="" label="COM_VIRTUEMART_VMPAYMENT_DESCRIPTION" description="COM_VIRTUEMART_VMPAYMENT_DESCRIPTION_DESC" rows="5" cols="30" />
+	<param name="debug" type="radio" default="0" label="COM_VIRTUEMART_VMPAYMENT_DEBUG" description="COM_VIRTUEMART_VMPAYMENT_DEBUG_DESC" >
+	    <option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="1">COM_VIRTUEMART_YES</option>
+	</param>
 	<param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="P" label="VMPAYMENT_PAYPAL_STATUS_PENDING" description="VMPAYMENT_PAYPAL_STATUS_PENDING_EXPLAIN" />
 	<param name="status_success" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_PAYPAL_STATUS_SUCCESS" description="VMPAYMENT_PAYPAL_STATUS_SUCCESS_EXPLAIN" />
 	<param name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_PAYPAL_STATUS_FAILED" description="VMPAYMENT_PAYPAL_STATUS_FAILED_EXPLAIN" />
-	<param name="min_amount" type="text"  label="VMPAYMENT_PAYPAL_MIN_AMOUNT" description="VMPAYMENT_PAYPAL_MIN_AMOUNT_EXPLAIN" />
-	<param name="max_amount" type="text"  label="VMPAYMENT_PAYPAL_MAX_AMOUNT" description="VMPAYMENT_PAYPAL_MAX_AMOUNT_EXPLAIN" />
-	<param name="payment_value" type="text"  label="VMPAYMENT_PAYPAL_PAYMENT_FEE" description="VMPAYMENT_PAYPAL_PAYMENT_FEE_EXPLAIN" />
-	<param name="payment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_PAYPAL_TAX" description="VMPAYMENT_PAYPAL_TAX_EXPLAIN" />
+	<param name="min_amount" type="text"  label="COM_VIRTUEMART_VMPAYMENT_MIN_AMOUNT" description="COM_VIRTUEMART_VMPAYMENT_MIN_AMOUNT_EXPLAIN" />
+	<param name="max_amount" type="text"  label="COM_VIRTUEMART_VMPAYMENT_MAX_AMOUNT" description="COM_VIRTUEMART_VMPAYMENT_MAX_AMOUNT_EXPLAIN" />
+	<param name="payment_value" type="text"  label="COM_VIRTUEMART_VMPAYMENT_FEE" description="COM_VIRTUEMART_VMPAYMENT_FEE_EXPLAIN" />
+	<param name="payment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="COM_VIRTUEMART_VMPAYMENT_TAX" description="COM_VIRTUEMART_VMPAYMENT_TAX_EXPLAIN" />
     </params>
 
     <fieldset addpath="/administrator/components/com_virtuemart/elements">
@@ -94,10 +93,6 @@
 
 	<field   type="spacer" default="VMPAYMENT_PAYPAL_SANDBOX_fieldS" level="level1" />
 
-	<field name="DEBUG" type="radio" default="0" label="VMPAYMENT_PAYPAL_DEBUG" description="VMPAYMENT_PAYPAL_DEBUG_DESC" >
-	    <option value="0">COM_VIRTUEMART_NO</option>
-	    <option value="1">COM_VIRTUEMART_YES</option>
-	</field>
 	<field name="sandbox" type="radio" default="1" label="VMPAYMENT_PAYPAL_SANDBOX" description="VMPAYMENT_PAYPAL_SANDBOX_DESC" >
 	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
@@ -105,20 +100,23 @@
 	<field name="sandbox_merchant_email" type="text" size="50" default="" label="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT" description="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT_DESC" />
 
 	<field   type="spacer" default="VMPAYMENT_PAYPAL_VIRTUEMART_fieldS" level="level1" />
-	<field	name="payment_logos" type="vmfiles" label="VMPAYMENT_PAYPAL_LOGOS"
-             	description="VMPAYMENT_PAYPAL_LOGOS_DESC"
+	<field	name="payment_logos" type="vmfiles" label="COM_VIRTUEMART_VMPAYMENT_LOGOS"
+             	description="COM_VIRTUEMART_VMPAYMENT_LOGOS_DESC"
              	directory="/images/stories/virtuemart/payment"
              	default="default" hide_default="1" hide_none="1"
              	stripext="0"  exclude="^_" />
 	<field name="payment_description" type="textarea" default="" label="VMPAYMENT_PAYPAL_VIRTUEMART_DESCRIPTION" description="VMPAYMENT_PAYPAL_VIRTUEMART_DESCRIPTION_DESC" rows="5" cols="30" />
-
+	<field name="debug" type="radio" default="0" label="VMPAYMENT_PAYPAL_DEBUG" description="VMPAYMENT_PAYPAL_DEBUG_DESC" >
+	    <option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="1">COM_VIRTUEMART_YES</option>
+	</field>
 	<field name="status_pending" type="vmorderstate" scope="com_virtuemart" default="P" label="VMPAYMENT_PAYPAL_STATUS_PENDING" description="VMPAYMENT_PAYPAL_STATUS_PENDING_DESC" />
 	<field name="status_success" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_PAYPAL_STATUS_SUCCESS" description="VMPAYMENT_PAYPAL_STATUS_SUCCESS_DESC" />
 	<field name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_PAYPAL_STATUS_FAILED" description="VMPAYMENT_PAYPAL_STATUS_FAILED_DESC" />
-	<field name="min_amount" type="text"  label="VMPAYMENT_PAYPAL_MIN_AMOUNT" description="VMPAYMENT_PAYPAL_MIN_AMOUNT_EXPLAIN" />
-	<field name="max_amount" type="text"  label="VMPAYMENT_PAYPAL_MAX_AMOUNT" description="VMPAYMENT_PAYPAL_MAX_AMOUNT_EXPLAIN" />
-	<field name="payment_value" type="text"  label="VMPAYMENT_PAYPAL_PAYMENT_FEE" description="VMPAYMENT_PAYPAL_PAYMENT_FEE_EXPLAIN" />
-	<field name="payment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_PAYPAL_TAX" description="VMPAYMENT_PAYPAL_TAX_EXPLAIN" />
+	<field name="min_amount" type="text"  label="COM_VIRTUEMART_VMPAYMENT_MIN_AMOUNT" description="COM_VIRTUEMART_VMPAYMENT_MIN_AMOUNT_EXPLAIN" />
+	<field name="max_amount" type="text"  label="COM_VIRTUEMART_VMPAYMENT_MAX_AMOUNT" description="COM_VIRTUEMART_VMPAYMENT_MAX_AMOUNT_EXPLAIN" />
+	<field name="payment_value" type="text"  label="COM_VIRTUEMART_VMPAYMENT_FEE" description="COM_VIRTUEMART_VMPAYMENT_FEE_EXPLAIN" />
+	<field name="payment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="COM_VIRTUEMART_VMPAYMENT_TAX" description="COM_VIRTUEMART_VMPAYMENT_TAX_EXPLAIN" />
 
 
     </fieldset>

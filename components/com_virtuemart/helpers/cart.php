@@ -1029,10 +1029,9 @@ class VirtueMartCart {
 						}
 
 					} elseif ($returnValue == 0 )   {
-						JRequest::setVar('html' , $html);
-					}
-					else {
+					    // error while processing the payment
 						$mainframe = JFactory::getApplication();
+						$mainframe->enqueueMessage($html);
 						$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'),JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 
 					}

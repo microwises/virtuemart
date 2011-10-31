@@ -16,31 +16,31 @@
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements">
 	<param type="vmjpluginwarning" />
-	<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_STANDARD_LOGOS"
-		description="VMPAYMENT_STANDARD_LOGOS_LOGOS_DESC"
+	<param	name="payment_logos" type="vmfiles" label="COM_VIRTUEMART_VMPAYMENT_LOGOS"
+		description="COM_VIRTUEMART_VMPAYMENT_LOGOS_DESC"
 		directory="/images/stories/virtuemart/payment"
 		default="default" hide_default="1" hide_none="1"
 		stripext="0"   exclude="^_" />
-	<param name="payment_description" type="textarea" default="" label="VMPAYMENT_STANDARD_VIRTUEMART_DESCRIPTION" description="VMPAYMENT_STANDARD_VIRTUEMART_DESCRIPTION_DESC" rows="5" cols="30" />
-	<param name="min_amount" type="text"  label="VMPAYMENT_STANDARD_MIN_AMOUNT" description="VMPAYMENT_STANDARD_MIN_AMOUNT_EXPLAIN" />
-	<param name="max_amount" type="text"  label="VMPAYMENT_STANDARD_MAX_AMOUNT" description="VMPAYMENT_STANDARD_MAX_AMOUNT_EXPLAIN" />
-	<param name="payment_value" type="text"  label="VMPAYMENT_STANDARD_FEE" description="VMPAYMENT_STANDARD_FEE_EXPLAIN" />
-	<param name="payment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_STANDARD_TAX" description="VMPAYMENT_STANDARD_TAX_DESC" />
+	<param name="payment_description" type="textarea" default="" label="COM_VIRTUEMART_VMPAYMENT_VIRTUEMART_DESCRIPTION" description="COM_VIRTUEMART_VMPAYMENT_VIRTUEMART_DESCRIPTION_DESC" rows="5" cols="30" />
+	<param name="min_amount" type="text"  label="COM_VIRTUEMART_VMPAYMENT_MIN_AMOUNT" description="VMPAYMENT_STANDARD_MIN_AMOUNT_EXPLAIN" />
+	<param name="max_amount" type="text"  label="COM_VIRTUEMART_VMPAYMENT_MAX_AMOUNT" description="VMPAYMENT_STANDARD_MAX_AMOUNT_EXPLAIN" />
+	<param name="payment_value" type="text"  label="COM_VIRTUEMART_VMPAYMENT_FEE" description="COM_VIRTUEMART_VMPAYMENT_FEE_EXPLAIN" />
+	<param name="payment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="COM_VIRTUEMART_VMPAYMENT_TAX" description="COM_VIRTUEMART_VMPAYMENT_TAX_DESC" />
 	<param name="payment_info" type="textarea" cols="60" rows="30" default="Your order will be treated as soon as we receive your payment." label="VMPAYMENT_STANDARD_PAYMENTINFO" description="VMPAYMENT_STANDARD_PAYMENTINFO_EXPLAIN" />
     </params>
 
     <fieldset addpath="/administrator/components/com_virtuemart/elements">
 	<field type="vmjpluginwarning" />
-	<field	name="payment_logos" type="vmfiles" label="VMPAYMENT_STANDARD_LOGOS"
-             	description="VMPAYMENT_STANDARD_LOGOS_LOGOS_DESC"
+	<field	name="payment_logos" type="vmfiles" label="COM_VIRTUEMART_VMPAYMENT_LOGOS"
+             	description="COM_VIRTUEMART_VMPAYMENT_LOGOS_DESC"
              	directory="/images/stories/virtuemart/payment"
              	default="default" hide_default="1" hide_none="1"
              	stripext="0"  exclude="^_" />
 	<field name="payment_description" type="textarea" default="" label="VMPAYMENT_STANDARD_VIRTUEMART_DESCRIPTION" description="VMPAYMENT_STANDARD_VIRTUEMART_DESCRIPTION_DESC" rows="5" cols="30" />
-	<field name="min_amount" type="text"  label="VMPAYMENT_STANDARD_MIN_AMOUNT" description="VMPAYMENT_STANDARD_MIN_AMOUNT_EXPLAIN" />
-	<field name="max_amount" type="text"  label="VMPAYMENT_STANDARD_MAX_AMOUNT" description="VMPAYMENT_STANDARD_MAX_AMOUNT_EXPLAIN" />
-	<field name="payment_value" type="text"  label="VMPAYMENT_STANDARD_FEE" description="VMPAYMENT_STANDARD_FEE_EXPLAIN" />
-	<field name="payment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_STANDARD_TAX" description="VMPAYMENT_STANDARD_TAX_EXPLAIN" />
+	<field name="min_amount" type="text"  label="VMPAYMENT_STANDARD_MIN_AMOUNT" description="COM_VIRTUEMART_VMPAYMENT_MIN_AMOUNT_EXPLAIN" />
+	<field name="max_amount" type="text"  label="VMPAYMENT_STANDARD_MAX_AMOUNT" description="COM_VIRTUEMART_VMPAYMENT_MAX_AMOUNT_EXPLAIN" />
+	<field name="payment_value" type="text"  label="COM_VIRTUEMART_VMPAYMENT_FEE" description="COM_VIRTUEMART_VMPAYMENT_FEE_EXPLAIN" />
+	<field name="payment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="COM_VIRTUEMART_VMPAYMENT_TAX" description="COM_VIRTUEMART_VMPAYMENT_TAX_EXPLAIN" />
 
     </fieldset>
 
