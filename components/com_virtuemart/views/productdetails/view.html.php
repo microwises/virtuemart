@@ -140,7 +140,7 @@ class VirtueMartViewProductdetails extends JView {
 		$format = JRequest::getCmd('format','html');
 		if ($format=='html') {
 			// Set Canonic link
-			$document->addHeadLink( $product->canonical , 'canonical', 'rel', '' );
+			$document->addHeadLink( JRoute::_( $product->canonical ,true,-1 ), 'canonical', 'rel', '' );
 		}
 
 
