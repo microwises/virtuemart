@@ -96,6 +96,7 @@ if (empty ( $this->product )) {
 				$ask_comment = JText::sprintf('COM_VIRTUEMART_ASK_COMMENT', $min, $max);
 				echo $ask_comment;
 				?>
+				<br />
 				<textarea title="<?php echo $ask_comment ?>" class="field" id="comment" name="comment" rows="10" validation="range"></textarea>
 			</label>
 			<div class="submit">

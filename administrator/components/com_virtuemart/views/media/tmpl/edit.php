@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea();
 AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_PRODUCT_MEDIA');
- 
+
 echo'<form name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">';
 echo '<fieldset>';
 
@@ -29,6 +29,7 @@ echo '<fieldset>';
 $this->media->addHidden('view','media');
 $this->media->addHidden('task','');
 $this->media->addHidden(JUtility::getToken(),1);
+$this->media->addHidden('file_type',$this->media->file_type);
 
 
 $virtuemart_product_id = JRequest::getInt('virtuemart_product_id', '');
@@ -37,6 +38,7 @@ if(!empty($virtuemart_product_id)) $this->media->addHidden('virtuemart_product_i
 $virtuemart_category_id = JRequest::getInt('virtuemart_category_id', '');
 if(!empty($virtuemart_category_id)) $this->media->addHidden('virtuemart_category_id',$virtuemart_category_id);
 
+vmdebug('my media',$this->media);
 echo $this->media->displayFileHandler();
 echo '</fieldset>';
 echo '</form>';
@@ -120,6 +122,6 @@ function checkThumbnailing() {
 }
 checkThumbnailing();
 </script>
-<?php */ 
+<?php */
 AdminUIHelper::imitateTabs('end');
 AdminUIHelper::endAdminArea(); ?>
