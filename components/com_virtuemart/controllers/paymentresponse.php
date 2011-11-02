@@ -75,11 +75,15 @@ class VirtueMartControllerPaymentresponse extends JController {
 			$cart = VirtueMartCart::getCart();
 
 			// send the email WITH THE NOTIFICATION
+			/*
 			if (!class_exists('VirtueMartModelOrders'))
 			    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 			$order = new VirtueMartModelOrders();
 			$orderitems = $order->getOrder($virtuemart_order_id);
 			//vmdebug('PaymentResponseReceived CART', $orderitems);
+			 *
+			 */
+			//// SEND EMAIL WITH NOTIFICATION
 			//$cart->sentOrderConfirmedEmail($orderitems);
 			//We delete the old stuff
 
@@ -195,7 +199,7 @@ class VirtueMartControllerPaymentresponse extends JController {
 		    $orders[$virtuemart_order_id]['virtuemart_order_id'] = $virtuemart_order_id;
 		    $customer_notifed[$virtuemart_order_id] = 0;
 		    JRequest::setVar('notify_customer', $customer_notifed);
-		    $comments[$virtuemart_order_id] = 0;
+		    $comments[$virtuemart_order_id] = JText::sprintf('COM_VIRTUEMART_NOTIFICATION_RECEVEIVED', $date->toFormat('%Y-%m-%d %H:%M:%S')) ;
 		    JRequest::setVar('comment', $comments);
 		    $modelOrder->updateOrderStatus($orders); //
 		    /*
@@ -211,7 +215,7 @@ class VirtueMartControllerPaymentresponse extends JController {
 		    $result = $modelOrder->updateOrderStatus($orders, $virtuemart_order_id);
 		    $modelOrder->sentOrderConfirmedEmail($modelOrder->getOrder($virtuemart_order_id));
 		     * */
-		     
+		      $modelOrder->sentOrderConfirmedEmail($modelOrder->getOrder($virtuemart_order_id));
 		}
 		break; // This was the active plugin, so there's nothing left to do here.
 	    }

@@ -310,9 +310,6 @@ class plgVmPaymentAuthorizenet extends vmPaymentPlugin {
 	}
 	$params = new JParameter($payment->payment_params);
 
-	$lang = JFactory::getLanguage();
-	$lang->load('plg_vmpayment_paypal', JPATH_ADMINISTRATOR);
-
 	$this->_cc_type = $cart->cc_type;
 	$this->_cc_number = $cart->cc_number;
 	$this->_cc_cvv = $cart->cc_cvv;
