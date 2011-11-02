@@ -74,13 +74,13 @@ class VirtueMartControllerPaymentresponse extends JController {
 			// get the correct cart / session
 			$cart = VirtueMartCart::getCart();
 
-			// send the email ONLY if payment has been accepted
+			// send the email WITH THE NOTIFICATION
 			if (!class_exists('VirtueMartModelOrders'))
 			    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 			$order = new VirtueMartModelOrders();
 			$orderitems = $order->getOrder($virtuemart_order_id);
 			//vmdebug('PaymentResponseReceived CART', $orderitems);
-			$cart->sentOrderConfirmedEmail($orderitems);
+			//$cart->sentOrderConfirmedEmail($orderitems);
 			//We delete the old stuff
 
 			$cart->emptyCart();
@@ -116,11 +116,11 @@ class VirtueMartControllerPaymentresponse extends JController {
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 
 	JPluginHelper::importPlugin('vmpayment');
-/*
-	if (!JFactory::getSession(array('id' => $return_context))) {
-	    return false;
-	}
- * */
+	/*
+	  if (!JFactory::getSession(array('id' => $return_context))) {
+	  return false;
+	  }
+	 * */
 
 	$dispatcher = JDispatcher::getInstance();
 	$returnValues = $dispatcher->trigger('plgVmOnPaymentUserCancel', array(
@@ -189,6 +189,7 @@ class VirtueMartControllerPaymentresponse extends JController {
 		    // send the email only if payment has been accepted
 		    if (!class_exists('VirtueMartModelOrders'))
 			require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+
 		    $modelOrder = new VirtueMartModelOrders();
 		    $orders[$virtuemart_order_id]['order_status'] = $new_status;
 		    $orders[$virtuemart_order_id]['virtuemart_order_id'] = $virtuemart_order_id;
@@ -197,7 +198,20 @@ class VirtueMartControllerPaymentresponse extends JController {
 		    $comments[$virtuemart_order_id] = 0;
 		    JRequest::setVar('comment', $comments);
 		    $modelOrder->updateOrderStatus($orders); //
-
+		    /*
+		    $modelOrder = new VirtueMartModelOrders();
+		    $modelOrder->sentOrderConfirmedEmail($modelOrder->getOrder($virtuemart_order_id));
+		    $orders[$virtuemart_order_id]['order_status'] = $new_status;
+		    $orders[$virtuemart_order_id]['virtuemart_order_id'] = $virtuemart_order_id;
+		    $customer_notifed[$virtuemart_order_id] = 0;
+		    JRequest::setVar('notify_customer', $customer_notifed);
+		    $date = JFactory::getDate();
+		    $comments[$virtuemart_order_id] = '';//JText::sprintf('COM_VIRTUEMART_NOTIFICATION_RECEVEIVED', $date->toFormat('%Y-%m-%d %H:%M:%S'));
+		    JRequest::setVar('comment', $comments);
+		    $result = $modelOrder->updateOrderStatus($orders, $virtuemart_order_id);
+		    $modelOrder->sentOrderConfirmedEmail($modelOrder->getOrder($virtuemart_order_id));
+		     * */
+		     
 		}
 		break; // This was the active plugin, so there's nothing left to do here.
 	    }

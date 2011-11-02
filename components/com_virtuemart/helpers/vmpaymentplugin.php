@@ -337,27 +337,8 @@ abstract class vmPaymentPlugin extends vmPlugin {
      * @author Oscar van Eijk
      */
     function plgVmOnShowOrderPaymentFE($virtuemart_order_id) {
-	if ($this->_tablename) {
-	    $db = JFactory::getDBO();
-	    $q = 'SELECT * FROM `' . $this->_tablename . '` '
-		    . 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
-	    $db->setQuery($q);
-	    if (!($paymentinfo = $db->loadObject())) {
-		return null;
-	    }
-	} else {
-	    return null;
-	}
-	if (!($payment = $this->getThisPaymentData($paymentinfo->payment_method_id) )) {
-	    return null;
-	}
-	/*
-	  if (!$this->selectedThisPayment($this->_pelement, $paymentinfo->payment_method_id)) {
-	  return null; // Another method was selected, do nothing
-	  }
-	 * */
+	return $this->getOrderPaymentNamebyOrderId($virtuemart_order_id)  ;
 
-	return $this->getPaymentName($payment);
     }
 
     /**
@@ -483,7 +464,22 @@ abstract class vmPaymentPlugin extends vmPlugin {
 	$db->setQuery($q);
 	return $db->loadResult(); // TODO Error check
     }
+ /**
+     * This method checks if the selected payment method matches the current plugin
+     * @param string $_pelement Element name, taken from the plugin filename
+     * @param int $_pid The payment method ID
+     * @author Oscar van Eijk
+     * @return True if the calling plugin has the given payment ID
+     */
+    final protected function getPaymentMethod ( $payment_id) {
+	$db = JFactory::getDBO();
 
+	$q = 'SELECT * FROM #__virtuemart_paymentmethods
+        		WHERE `virtuemart_paymentmethod_id`="' . $payment_id . '" AND `payment_element` = "'.$this->_pelement.'"';
+
+	$db->setQuery($q);
+	return  $db->loadObject();
+    }
     /**
      * Fill the array with all carriers found with this plugin for the current vendor
      * @return True when carrier(s) was (were) found for this vendor, false otherwise
@@ -567,74 +563,6 @@ abstract class vmPaymentPlugin extends vmPlugin {
         		WHERE `virtuemart_paymentmethod_id`="' . $payment_id . '" ';
 	$db->setQuery($q);
 	return $db->loadResult();
-    }
-
-    /**
-     * This method writes all payment plugin specific data to the plugin's table
-     *
-     * @param array $_values Indexed array in the format 'column_name' => 'value'
-     * @param string $_table Table name
-     * @author Oscar van Eijk
-     */
-    protected function writePaymentData($_values, $_table) {
-	if (count($_values) == 0) {
-	    JError::raiseWarning(500, 'writePaymentData got no data to save to ' . $_table);
-	    return;
-	}
-	if (!class_exists('VirtueMartModelOrders'))
-	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-	if (!isset($_values['virtuemart_order_id'])) {
-	    $_values['virtuemart_order_id'] = VirtueMartModelOrders::getOrderIdByOrderNumber($_values['order_number']);
-	}
-	$_cols = array();
-	$_vals = array();
-	foreach ($_values as $_col => $_val) {
-	    $_cols[] = "`$_col`";
-	    $_vals[] = "'$_val'";
-	}
-	$_db = JFactory::getDBO();
-	$_q = 'INSERT INTO `' . $_table . '` ('
-		. implode(',', $_cols)
-		. ') VALUES ('
-		. implode(',', $_vals)
-		. ')';
-	$_db->setQuery($_q);
-	if (!$_db->query()) {
-	    JError::raiseWarning(500, $_db->getErrorMsg());
-	}
-    }
-
-    /**
-     * This method updates all payment plugin specific data to the plugin's table
-     *
-     * @param array $_values Indexed array in the format 'column_name' => 'value'
-     * @param string $_table Table name
-     * @author Valerie Isaksen
-     *
-     */
-    protected function updatePaymentData($values, $table, $where_key, $where_value) {
-	if (count($values) == 0) {
-	    JError::raiseWarning(500, 'updatePaymentData got no data to update to ' . $table);
-	    return;
-	}
-	$cols = array();
-	$vals = array();
-	foreach ($values as $col => $val) {
-	    $fields[] = "`$col`" . "=" . "'$val'";
-	}
-	$db = JFactory::getDBO();
-	$q = 'UPDATE `' . $table . '` SET ';
-	foreach ($values as $key => $value) {
-	    $q .= $db->getEscaped($key) . '="' . $value . '",';
-	}
-	$q = substr($q, 0, strlen($q) - 1);
-	$q .= ' WHERE `' . $where_key . '` =' . $where_value;
-
-
-	$db->setQuery($q);
-	if (!$db->query()) {
-	    JError::raiseWarning(500, $db->getErrorMsg());
-	}
     }
 
     protected function getPaymentHtml($payment, $selectedPayment, $paymentSalesPrice) {
@@ -891,7 +819,7 @@ abstract class vmPaymentPlugin extends vmPlugin {
 	$paymentLogo = $params->get('payment_logos');
 	$paymentDescription = $params->get('payment_description', '');
 	if (!empty($paymentLogo)) {
-	    $return = $this->displayLogos(array($paymentLogo => $payment->payment_name)) . ' ';
+	    $return = $this->displayLogos($paymentLogo ) . ' ';
 	}
 	if (!empty($paymentDescription)) {
 	    $paymentDescription = '<span class="vmpayment_description">' . $paymentDescription . '</span>';
@@ -941,4 +869,78 @@ abstract class vmPaymentPlugin extends vmPlugin {
 	}
     }
 
+    /**
+     * This method is fired when showing when priting an Order
+     * It displays the the payment method-specific data.
+     *
+     * @param integer $_virtuemart_order_id The order ID
+     * @param integer $_paymethod_id Payment method used for this order
+     * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
+     * @author Valerie Isaksen
+     */
+     /**
+     * Display stored payment data for an order
+     * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
+     */
+    function plgVmOnShowOrderPrintPayment($order_number, $payment_method_id) {
+
+	if (! ($order_payment_name= $this->getOrderPaymentNameByOrderNumber($order_number, $payment_method_id)) ) {
+	    return null;
+	}
+
+
+	$html = '<table class="admintable">' . "\n"
+		. '	<thead>' . "\n"
+		. '		<tr>' . "\n"
+		. '			<td class="key" style="text-align: center;" colspan="2">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL') . '</td>' . "\n"
+		. '		</tr>' . "\n"
+		. '	</thead>' . "\n"
+		. '	<tr>' . "\n"
+		. '		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_' . $this->_vmplugin . '_LBL')  . ': </td>' . "\n"
+		. '		<td align="left">' . $order_payment_name .  '</td>' . "\n"
+		. '	</tr>' . "\n";
+
+	$html .= '</table>' . "\n";
+	return $html;
+
+    }
+
+
+
+    /**
+   *
+     */
+
+
+    function getOrderPaymentNamebyOrderNumber($order_number, $payment_method_id) {
+
+	$db = JFactory::getDBO();
+	$q = 'SELECT * FROM `' . $this->_tablename . '` '
+		. 'WHERE `order_number` = "' . $order_number  . '" ';// AND `payment_id` =' . $payment_method_id;
+	$db->setQuery($q);
+	if (!($order_payment = $db->loadObject())) {
+	    return null;
+	}
+	 return $order_payment->payment_name  ;
+
+    }
+
+    /**
+   *
+     */
+
+
+    function getOrderPaymentNamebyOrderId($virtuemart_order_id) {
+
+	$db = JFactory::getDBO();
+	$q = 'SELECT * FROM `' . $this->_tablename . '` '
+		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id ;
+	$db->setQuery($q);
+	if (!($order_payment = $db->loadObject())) {
+	    return null;
+	}
+
+	 return $order_payment->payment_name  ;
+
+    }
 }

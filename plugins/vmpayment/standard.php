@@ -64,6 +64,10 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 		, 'length' => 11
 		, 'null' => false
 	    )
+	    , 'payment_name' => array(
+		'type' => 'text'
+		, 'null' => false
+	    )
 	    , 'order_number' => array(
 		'type' => 'varchar'
 		, 'length' => 32
@@ -108,47 +112,44 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
      * @author Valérie Isaksen
      */
     function plgVmOnConfirmedOrderGetPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status) {
-
-	if (!$this->selectedThisPayment($this->_pelement, $orderData->virtuemart_paymentmethod_id)) {
+	if (!($payment = $this->getPaymentMethod($orderData->virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
+	$params = new JParameter($payment->payment_params);
+	$lang = JFactory::getLanguage();
+	$filename = 'com_virtuemart';
+	$lang->load($filename, JPATH_ADMINISTRATOR);
 	$vendorId = 0;
-	$paramstring = $this->getVmPaymentParams($vendorId, $orderData->virtuemart_paymentmethod_id);
-	$params = new JParameter($paramstring);
+
 	$payment_info = $params->get('payment_info');
 
 	$html = "";
-	$new_status=false;
-	if (!empty($payment_info)) {
-// // Here's the place where the Payment Extra Form Code is included
-	    // Thanks to Steve for this solution (why make it complicated...?)
-	    $html = $payment_info;
-	    /*
-	      if( ( eval($html= '?>' . $payment_info . '<?php ')) === false ) {
-	      JError::raiseWarning(500, 'Error: The code of the payment method contains a Parse Error!<br />Please correct that first');
+	$new_status = false;
 
-	      }
-	     * */
-	}
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
-
-	$html .= "<table><tr>";
-	$html .= "<th colspan='2'>" . JText::_('VMPAYMENT_STANDARD_ORDER_INFO') . "</th>";
-	$html .= "</tr><tr>";
-	$html .= "<td>" . JText::_('VMPAYMENT_STANDARD_ORDER_NUMBER') . "</td>";
-	$html .= "<td>" . $order_number . "</td>";
-	$html .= "</tr><tr>";
-	$html .= "<td>" . JText::_('VMPAYMENT_STANDARD_ORDER_TOTAL') . "</td>";
-	$html .= "<td>" . $orderData->prices['billTotal'] . "</td>";
-	$html .= "</tr></table>";
 	// END printing out HTML Form code (Payment Extra Info)
 
 	$this->_virtuemart_paymentmethod_id = $orderData->virtuemart_paymentmethod_id;
-	$_dbValues['order_number'] = $order_number;
-	$_dbValues['payment_method_id'] = $this->_virtuemart_paymentmethod_id;
-	$this->writePaymentData($_dbValues, '#__virtuemart_order_payment_' . $this->_pelement);
+	$dbValues['payment_name'] = parent::getPaymentName($payment);
+	$dbValues['order_number'] = $order_number;
+	$dbValues['payment_method_id'] = $this->_virtuemart_paymentmethod_id;
+	$this->writeData($dbValues, '#__virtuemart_order_payment_' . $this->_pelement);
+
+	$html = '<table>' . "\n";
+	$html .= $this->getHtmlRow('', $dbValues['payment_name']);
+	if (!empty($payment_info)) {
+	    $html .= $this->getHtmlRow('STANDARD_INFO', $payment_info);
+	}
+
+	$html .= $this->getHtmlRow('STANDARD_ORDER_NUMBER', $order_number);
+	$html .= $this->getHtmlRow('STANDARD_AMOUNT', $orderData->prices['billTotal']);
+
+
+	$html .= '</table>' . "\n";
+
+
 
 	return true;  // empty cart, send order
     }
@@ -157,37 +158,23 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
      * Display stored payment data for an order
      * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
      */
-    function plgVmOnShowOrderPaymentBE($_virtuemart_order_id, $_paymethod_id) {
-
-	if (!$this->selectedThisPayment($this->_pelement, $_paymethod_id)) {
+    function plgVmOnShowOrderPaymentBE($_virtuemart_order_id, $virtuemart_payment_id) {
+	if (!$this->selectedThisPayment($this->_pelement, $virtuemart_payment_id)) {
 	    return null; // Another method was selected, do nothing
 	}
-	$_db = JFactory::getDBO();
-	$_q = 'SELECT * FROM `' . $this->_tablename . '` '
-		. 'WHERE `virtuemart_order_id` = ' . $_virtuemart_order_id;
-	$_db->setQuery($_q);
-	if (!($payment = $_db->loadObject())) {
-	    JError::raiseWarning(500, $_db->getErrorMsg());
+	$db = JFactory::getDBO();
+	$q = 'SELECT * FROM `' . $this->_tablename . '` '
+		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
+	$db->setQuery($q);
+	if (!($paymentTable = $db->loadObject())) {
+	    JError::raiseWarning(500, $db->getErrorMsg());
 	    return '';
 	}
+	$html = '<table class="admintable">' . "\n";
+	$html .= $this->getHtmlRowBE('VMPAYMENT_STANDARD_NAME', $this->getThisPaymentName($_paymethod_id));
 
-	$_html = '<table class="adminlist">' . "\n";
-	$_html .= '	<thead>' . "\n";
-	$_html .= '		<tr>' . "\n";
-	$_html .= '			<th>' . JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL') . '</th>' . "\n";
-//		$_html .= '			<th width="40%">'.JText::_('VM_ORDER_PRINT_ACCOUNT_NAME').'</th>'."\n";
-//		$_html .= '			<th width="30%">'.JText::_('VM_ORDER_PRINT_ACCOUNT_NUMBER').'</th>'."\n";
-//		$_html .= '			<th width="17%">'.JText::_('VM_ORDER_PRINT_EXPIRE_DATE').'</th>'."\n";
-	$_html .= '		</tr>' . "\n";
-	$_html .= '	</thead>' . "\n";
-	$_html .= '	<tr>' . "\n";
-	$_html .= '		<td>' . $this->getThisPaymentName($_paymethod_id) . '</td>' . "\n";
-//		$_html .= '		<td></td>'."\n";
-//		$_html .= '		<td></td>'."\n";
-//		$_html .= '		<td></td>'."\n";
-	$_html .= '	<tr>' . "\n";
-	$_html .= '</table>' . "\n";
-	return $_html;
+	$html .= '</table>' . "\n";
+	return $html;
     }
 
     function getPaymentValue($params) {

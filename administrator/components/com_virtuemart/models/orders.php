@@ -429,17 +429,17 @@ class VirtueMartModelOrders extends VmModel {
 					$order_items = $db->loadObjectList();
 					if ($order_items) {
 						foreach ($order_items as $order_item) {
-						$this->updateSingleItem($order_item->virtuemart_order_item_id, $order['order_status'],$order['comments'],$virtuemart_order_id);
+						$this->updateSingleItem($order_item->virtuemart_order_item_id, $order['order_status'], $comments , $virtuemart_order_id);
 						}
 					}
 					/* Update the order history */
-					$this->_updateOrderHist($virtuemart_order_id, $order['order_status'], $order['customer_notified'], $order['comments']);
+					$this->_updateOrderHist($virtuemart_order_id, $order['order_status'], $customer_notified, $comments);
 
 					// Send a download ID */
 					//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($virtuemart_order_id);
 
 					// Check if the customer needs to be informed */
-					if ($order['customer_notified']) {
+					if ($customer_notified) {
 						$order['virtuemart_order_id'] =$virtuemart_order_id ;
 						$this->notifyCustomer($order, $comments);
 					}

@@ -1019,13 +1019,13 @@ class VirtueMartCart {
 						    if (!class_exists('VirtueMartModelOrders'))
 							require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 						    $modelOrder = new VirtueMartModelOrders();
-						    $orders[$virtuemart_order_id]['order_status'] = $new_status;
-						    $orders[$virtuemart_order_id]['virtuemart_order_id'] = $virtuemart_order_id;
-						    $customer_notifed[$virtuemart_order_id] = 0;
+						    $orders[$orderID]['order_status'] = $new_status;
+						    $orders[$orderID]['virtuemart_order_id'] = $orderID;
+						    $customer_notifed[$orderID] = 0;
 						    JRequest::setVar('notify_customer', $customer_notifed);
-						    $comments[$virtuemart_order_id] = 0;
+						    $comments[$orderID] = 0;
 						    JRequest::setVar('comment', $comments);
-						    $modelOrder->updateOrderStatus($orders); //
+						    $modelOrder->updateOrderStatus($orders, $orderID); //
 						}
 
 					} elseif ($returnValue == 0 )   {

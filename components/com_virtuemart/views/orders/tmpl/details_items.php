@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
 	<tr align="left" class="sectiontableheader">
 		<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></th>
-		<th align="right" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></th>
+		<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></th>
 		<th align="left" colspan="2"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></th>
 		<th align="right" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRICE') ?></th>
 		<th align="right" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></th>
@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td align="left" >
 				<?php echo $item->order_item_sku; ?>
 			</td>
-			<td align="right" >
+			<td align="left" >
 				<?php echo $item->product_quantity; ?>
 			</td>
 			<td align="left" >

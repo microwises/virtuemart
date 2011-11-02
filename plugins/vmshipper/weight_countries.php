@@ -67,7 +67,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 		, 'length' => 32
 		, 'null' => false
 	    )
-	    , 'virtuemart_shippingcarrier_id' => array(
+	    , 'shipper_id' => array(
 		'type' => 'bigint'
 		, 'length' => 20
 		, 'null' => false
@@ -168,7 +168,7 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 	    JError::raiseWarning(500, $q . " " . $db->getErrorMsg());
 	    return '';
 	}
-	if (!($this->selectedThisShipper($this->_pelement, $shipinfo->virtuemart_shippingcarrier_id))) {
+	if (!($this->selectedThisShipper($this->_pelement, $shipinfo->shipper_id))) {
 	    return null;
 	}
 	return $shipinfo->shipper_name;
@@ -211,26 +211,28 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      */
     function plgVmOnConfirmedOrderStoreShipperData($orderID, VirtueMartCart $cart, $priceData) {
 
-	if (!($this->selectedThisShipper($this->_pelement, $cart->virtuemart_shippingcarrier_id))) {
-	    return null;
+	if (!($shipper = $this->getShipper($cart->virtuemart_shippingcarrier_id))) {
+	    return null; // Another method was selected, do nothing
 	}
-	$shipping_carrier_params = $this->getVmShipperParams($cart->vendorId, $cart->virtuemart_shippingcarrier_id);
 	if (!class_exists('JParameter'))
 	    require(JPATH_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
-	$params = new JParameter($shipping_carrier_params);
+
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+
+	$params = new JParameter($shipper->shipping_carrier_params);
+
 	$values['order_number'] = VirtueMartModelOrders::getOrderNumber($orderID);
 	$values['virtuemart_order_id'] = $orderID;
-	$values['virtuemart_shippingcarrier_id'] = $cart->virtuemart_shippingcarrier_id;
-	$values['shipper_name'] = $this->getThisShipperName($cart->virtuemart_shippingcarrier_id);
+	$values['shipper_id'] = $cart->virtuemart_shippingcarrier_id;
+	$values['shipper_name'] = parent::getShippingName($shipper);
 	$values['order_weight'] = $this->getOrderWeight($cart, $params->get('weight_unit'));
 	$values['shipping_weight_unit'] = $params->get('weight_unit');
 	$values['shipper_cost'] = $params->get('rate_value');
 	$values['shipper_package_fee'] = $params->get('package_fee');
 	$values['tax_id'] = $params->get('shipping_tax_id');
 
-	$this->writeShipperData($values, $this->_tablename);
+	$this->writeData($values, $this->_tablename);
 	return true;
     }
 
@@ -240,8 +242,8 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      * NOTE, this plugin should NOT be used to display form fields, since it's called outside
      * a form! Use plgVmOnUpdateOrderBE() instead!
      *
-     * @param integer $_orderId The order ID
-     * @param integer $_vendorId Vendor ID
+     * @param integer $virtuemart_order_id The order ID
+     * @param integer $vendorId Vendor ID
      * @param object $_shipInfo Object with the properties 'carrier' and 'name'
      * @return mixed Null for shippers that aren't active, text (HTML) otherwise
      * @author Valerie Isaksen
@@ -273,34 +275,16 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 	$tax = ShopFunctions::getTaxByID($shipinfo->tax_id);
 	$taxDisplay = is_array($tax) ? $tax['calc_value'] . ' ' . $tax['calc_value_mathop'] : $shipinfo->tax_id;
 	$taxDisplay = ($taxDisplay == -1 ) ? JText::_('COM_VIRTUEMART_PRODUCT_TAX_NONE') : $taxDisplay;
-	$html = '<table class="admintable">' . "\n"
-		. '	<thead>' . "\n"
-		. '		<tr>' . "\n"
-		. '			<td class="key" style="text-align: center;" colspan="2">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_LBL') . '</td>' . "\n"
-		. '		</tr>' . "\n"
-		. '	</thead>' . "\n"
-		. '	<tr>' . "\n"
-		. '		<td class="key">' . JText::_('VMSHIPPER_WEIGHT_COUNTRIES_SHIPPING_NAME') . ': </td>' . "\n"
-		. '		<td align="left">' . $shipinfo->shipper_name . '</td>' . "\n"
-		. '	</tr>' . "\n"
-		. '	<tr>' . "\n"
-		. '		<td class="key">' . JText::_('VMSHIPPER_WEIGHT_COUNTRIES_WEIGHT') . ': </td>' . "\n"
-		. '		<td>' . $shipinfo->order_weight . ' ' . ShopFunctions::renderWeightUnit($shipinfo->shipping_weight_unit) . '</td>' . "\n"
-		. '	</tr>' . "\n"
-		. '	<tr>' . "\n"
-		. '		<td class="key">' . JText::_('VMSHIPPER_WEIGHT_COUNTRIES_RATE_VALUE') . ': </td>' . "\n"
-		. '		<td>' . $currency->priceDisplay($shipinfo->shipper_cost, '', false) . '</td>' . "\n"
-		. '	</tr>' . "\n"
-		. '	<tr>' . "\n"
-		. '		<td class="key">' . JText::_('VMSHIPPER_WEIGHT_COUNTRIES_PACKAGE_FEE') . ': </td>' . "\n"
-		. '		<td>' . $currency->priceDisplay($shipinfo->shipper_package_fee, '', false) . '</td>' . "\n"
-		. '	</tr>' . "\n"
-		. '	<tr>' . "\n"
-		. '		<td class="key">' . JText::_('VMSHIPPER_WEIGHT_COUNTRIES_TAX') . ': </td>' . "\n"
-		. '		<td>' . $taxDisplay . '</td>' . "\n"
-		. '	</tr>' . "\n"
-		. '</table>' . "\n"
-	;
+
+	$html = '<table class="admintable">' . "\n";
+	$html .=$this->getHtmlHeaderBE();
+	$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_SHIPPING_NAME', $shipinfo->shipper_name);
+	$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_WEIGHT', ShopFunctions::renderWeightUnit($shipinfo->shipping_weight_unit));
+	$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_RATE_VALUE', $currency->priceDisplay($shipinfo->shipper_cost, '', false));
+	$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_PACKAGE_FEE', $currency->priceDisplay($shipinfo->shipper_package_fee, '', false));
+	$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_TAX', $taxDisplay);
+	$html .= '</table>' . "\n";
+
 	return $html;
     }
 
@@ -329,19 +313,19 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
      * This method returns the logo image form the shipper
      */
 
- /*   function _getShipperLogo($shipper_logo, $alt_text) {
+    /*   function _getShipperLogo($shipper_logo, $alt_text) {
 
-	$img = "";
+      $img = "";
 
-// 	$path = JURI::root() . 'images' . DS . 'stories' . DS . 'virtuemart' . DS . 'shipper' . DS;
-	$url = JURI::root() . 'images/stories/virtuemart/shipper/';
-	$img = "";
-	if (!(empty($shipper_logo))) {
-	    $img = '<img align="middle" src="' . $url . $shipper_logo . '"  alt="' . $alt_text . '" > ';
-	}
-	return $img;
-    }
-*/
+      // 	$path = JURI::root() . 'images' . DS . 'stories' . DS . 'virtuemart' . DS . 'shipper' . DS;
+      $url = JURI::root() . 'images/stories/virtuemart/shipper/';
+      $img = "";
+      if (!(empty($shipper_logo))) {
+      $img = '<img align="middle" src="' . $url . $shipper_logo . '"  alt="' . $alt_text . '" > ';
+      }
+      return $img;
+      }
+     */
 
     function checkShippingConditions($cart, $shipper) {
 
@@ -418,7 +402,6 @@ class plgVmShipperWeight_countries extends vmShipperPlugin {
 	return $zip_cond;
     }
 
-   
 }
 
 // No closing tag

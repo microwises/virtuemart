@@ -72,7 +72,7 @@ class JElementVMFiles extends JElement {
 			}
 		}
                 $class = 'multiple="true" size="5"';
-		return JHTML::_('select.genericlist',  $options, ''.$control_name.'['.$name.']', $class, 'value', 'text', $value, $control_name.$name);
+		return JHTML::_('select.genericlist',  $options, ''.$control_name.'['.$name.'][]', $class, 'value', 'text', $value, $control_name.$name);
     }
 
 }

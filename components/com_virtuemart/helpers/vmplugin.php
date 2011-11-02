@@ -5,8 +5,6 @@
  *
  * @package	VirtueMart
  * @subpackage Plugins
- * @author Max Milbers
- * @author Oscar van Eijk
  * @author Valérie Isaksen
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2011 VirtueMart Team. All rights reserved.
@@ -33,7 +31,6 @@ abstract class vmPlugin extends JPlugin {
     var $_vmplugin = '';
     var $_debug = false;
 
-
     /**
      * Constructor
      *
@@ -51,9 +48,13 @@ abstract class vmPlugin extends JPlugin {
 	parent::__construct($subject, $config);
     }
 
+    function getDebug() {
+	return $this->_debug;
+    }
 
-
-
+    function setDebug($params) {
+	return $this->_debug = $params->get('debug');
+    }
     /*
      * logPaymentInfo
      * to help debugging Payment notification
@@ -62,7 +63,7 @@ abstract class vmPlugin extends JPlugin {
     public function logInfo($text, $type = 'message') {
 
 	if ($this->_debug) {
-	    $file = JPATH_ROOT . "/logs/" . $this->_pelement . "log";
+	    $file = JPATH_ROOT . "/logs/" . $this->_pelement . ".log";
 	    $date = JFactory::getDate();
 
 	    $fp = fopen($file, 'a');
@@ -97,7 +98,7 @@ abstract class vmPlugin extends JPlugin {
 		    ' FROM #__users' .
 		    ' WHERE sendEmail=1';
 	}
-	$db= JFactory::getDBO();
+	$db = JFactory::getDBO();
 	$db->setQuery($query);
 	$rows = $db->loadObjectList();
 
@@ -128,11 +129,112 @@ abstract class vmPlugin extends JPlugin {
 	    $url = JURI::root() . 'images/stories/virtuemart/' . $this->_vmplugin . '/';
 	    if (!is_array($logo_list))
 		$logo_list = (array) $logo_list;
-	    foreach ($logo_list as $logo => $alt_text) {
+	    foreach ($logo_list as $logo) {
+		$alt_text = substr($logo, 0, strpos($logo, '.'));
 		$img .= '<img align="middle" src="' . $url . $logo . '"  alt="' . $alt_text . '" /> ';
 	    }
 	}
 	return $img;
+    }
+
+    function getHtmlHeaderBE() {
+	$class = "class='key'";
+	$html = ' 	<thead>' . "\n"
+		. '		<tr>' . "\n"
+		. '			<td ' . $class . ' style="text-align: center;" colspan="2">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_' . $this->_vmplugin . '_LBL') . '</td>' . "\n"
+		. '		</tr>' . "\n"
+		. '	</thead>' . "\n";
+
+	return $html;
+    }
+
+    function getHtmlRow($key, $value, $class='') {
+	$lang = & JFactory::getLanguage();
+	$key_text = '';
+	$complete_key = 'VM' . $this->_vmplugin . '_' . $key;
+	// vmdebug('getHtmlRow',$key,$complete_key);
+	if ($lang->hasKey($complete_key)) {
+	    $key_text = JText::_($complete_key);
+	}
+	$more_key = 'VM' . $this->_vmplugin . '_' . $key . '_' . $value;
+	if ($lang->hasKey($more_key)) {
+	    $value .=" (" . JText::_($more_key) . ")";
+	}
+	$html = "<tr>\n<td " . $class . ">" . $key_text . "</td>\n <td align='left'>" . $value . "</td>\n</tr>\n";
+	return $html;
+    }
+
+    function getHtmlRowBE($key, $value) {
+	return $this->getHtmlRow($key, $value, "class='key'");
+    }
+
+
+    /**
+     * This method writes all  plugin specific data to the plugin's table
+     *
+     * @param array $_values Indexed array in the format 'column_name' => 'value'
+     * @param string $_table Table name
+     * @author Oscar van Eijk
+     */
+    protected function writeData($_values, $_table) {
+	if (count($_values) == 0) {
+	    JError::raiseWarning(500, 'writeData got no data to save to ' . $_table);
+	    return;
+	}
+	if (!class_exists('VirtueMartModelOrders'))
+	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+	if (!isset($_values['virtuemart_order_id'])) {
+	    $_values['virtuemart_order_id'] = VirtueMartModelOrders::getOrderIdByOrderNumber($_values['order_number']);
+	}
+	$_cols = array();
+	$_vals = array();
+	foreach ($_values as $_col => $_val) {
+	    $_cols[] = "`$_col`";
+	    $_vals[] = "'$_val'";
+	}
+	$_db = JFactory::getDBO();
+	$_q = 'INSERT INTO `' . $_table . '` ('
+		. implode(',', $_cols)
+		. ') VALUES ('
+		. implode(',', $_vals)
+		. ')';
+	$_db->setQuery($_q);
+	if (!$_db->query()) {
+	    JError::raiseWarning(500, $_db->getErrorMsg());
+	}
+    }
+
+    /**
+     * This method updates all  plugin specific data to the plugin's table
+     *
+     * @param array $_values Indexed array in the format 'column_name' => 'value'
+     * @param string $_table Table name
+     * @author Valerie Isaksen
+     *
+     */
+    protected function updateData($values, $table, $where_key, $where_value) {
+	if (count($values) == 0) {
+	    JError::raiseWarning(500, 'updateData got no data to update to ' . $table);
+	    return;
+	}
+	$cols = array();
+	$vals = array();
+	foreach ($values as $col => $val) {
+	    $fields[] = "`$col`" . "=" . "'$val'";
+	}
+	$db = JFactory::getDBO();
+	$q = 'UPDATE `' . $table . '` SET ';
+	foreach ($values as $key => $value) {
+	    $q .= $db->getEscaped($key) . '="' . $value . '",';
+	}
+	$q = substr($q, 0, strlen($q) - 1);
+	$q .= ' WHERE `' . $where_key . '` =' . $where_value;
+
+
+	$db->setQuery($q);
+	if (!$db->query()) {
+	    JError::raiseWarning(500, $db->getErrorMsg());
+	}
     }
 
 }

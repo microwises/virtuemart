@@ -21,7 +21,8 @@ if (!class_exists('ShopFunctions'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 if (!class_exists('DbScheme'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'dbscheme.php');
-
+if (!class_exists('vmPlugin'))
+    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmplugin.php');
 
 // Get the plugin library
 jimport('joomla.plugin.plugin');
@@ -63,7 +64,7 @@ jimport('joomla.plugin.plugin');
  * @author Valérie Isaksen
  *
  */
-abstract class vmShipperPlugin extends JPlugin {
+abstract class vmShipperPlugin extends vmPlugin {
 
     //private $_virtuemart_shippermethod_id = 0;
     /**
@@ -88,10 +89,10 @@ abstract class vmShipperPlugin extends JPlugin {
      * @since 1.5
      */
     function __construct(& $subject, $config) {
-	$this->_vmplugin='shipper';
+	$this->_vmplugin = 'shipper';
 	parent::__construct($subject, $config);
 	$lang = JFactory::getLanguage();
-	$filename = 'plg_vm'.$this->_vmplugin.'_' . $this->_pelement;
+	$filename = 'plg_vm' . $this->_vmplugin . '_' . $this->_pelement;
 	$lang->load($filename, JPATH_ADMINISTRATOR);
 
 	if (!class_exists('JParameter'))
@@ -134,14 +135,30 @@ abstract class vmShipperPlugin extends JPlugin {
 	}
 	return $weight;
     }
+ /**
+     *  @author Valerie Isaksen
+     * @param int $shipper_id The shipper method ID
 
-    /**
-     * getShippers
-     * Fill the array with all carriers found with this plugin for the current vendor
-     * @param int $vendorId : the actual vendor id
-     * @return True when carrier(s) was (were) found for this vendor, false otherwise
-     * @author Oscar van Eijk
+     * @return shipper table
      */
+    final protected function getShipper ( $shipper_id) {
+	$db = JFactory::getDBO();
+
+	$q = 'SELECT * FROM #__virtuemart_shippingcarriers
+        		WHERE `virtuemart_shippingcarrier_id`="' . $shipper_id . '" AND `shipping_carrier_element` = "'.$this->_pelement.'"';
+
+	$db->setQuery($q);
+	return  $db->loadObject();
+    }
+    /**
+     * This method checks if the selected payment method matches the current plugin
+     * @param string $_pelement Element name, taken from the plugin filename
+     * @param int $_pid The payment method ID
+     * @author Oscar van Eijk
+     * @author Max Milbers
+     * @return True if the calling plugin has the given payment ID
+     */
+
     protected function getShippers($vendorId) {
 	if (!class_exists('VirtueMartModelUser'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
@@ -288,7 +305,7 @@ abstract class vmShipperPlugin extends JPlugin {
      *
      * @param object $cart the cart object
      * @param integer $selectedShipper ID of the shipper currently selected
-     * @return HTML code to display the form
+     * @return HTML array. Each row contains the code to display in the form
      * @author Oscar van Eijk
      */
     public function plgVmOnSelectShipper(VirtueMartCart $cart, $selectedShipper = 0) {
@@ -483,6 +500,30 @@ abstract class vmShipperPlugin extends JPlugin {
     }
 
     /**
+     * Display stored payment data for an order
+     * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
+     */
+    function plgVmOnShowOrderPrintShipper($order_number, $shipper_method_id) {
+	if (! ($order_shipper_name= $this->getOrderShipperName($order_number, $shipper_method_id)) ) {
+	    return null;
+	}
+
+	JFactory::getLanguage()->load('com_virtuemart');
+	$html = '<table class="admintable">' . "\n"
+		. '	<thead>' . "\n"
+		. '		<tr>' . "\n"
+		. '			<td class="key" style="text-align: center;" colspan="2">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_CARRIER_LBL') . '</td>' . "\n"
+		. '		</tr>' . "\n"
+		. '	</thead>' . "\n"
+		. '	<tr>' . "\n"
+		. '		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_' . $this->_vmplugin . '_LBL')  . ': </td>' . "\n"
+		. '		<td align="left">' . $order_shipper_name . '</td>' . "\n"
+		. '	</tr>' . "\n";
+
+	$html .= '</table>' . "\n";
+	return $html;
+    }
+    /**
      * Check the order total to see if this order is valid for free shipping.
      * @access protected
      * @final
@@ -550,7 +591,7 @@ abstract class vmShipperPlugin extends JPlugin {
      * @param int $_sid The shipper ID
      * @author Oscar van Eijk
      * @return True if the calling plugin has the given payment ID
-     * @deprecated
+     *
      */
     final protected function selectedThisShipper($pelement, $sid) {
 	$db = JFactory::getDBO();
@@ -611,42 +652,7 @@ abstract class vmShipperPlugin extends JPlugin {
 	return $db->loadResult(); // TODO Error check
     }
 
-    /**
-     * writeShipperData
-     * This method writes all shipper plugin specific data to the plugin's table
-     *
-     * @param array $_values Indexed array in the format 'column_name' => 'value'
-     * @param string $_table Table name
-     * @author Oscar van Eijk
-     */
-    protected function writeShipperData($_values, $_table) {
-	if (count($_values) == 0) {
-	    JError::raiseWarning(500, 'writeShipperData got no data to save to ' . $_table);
-	    return;
-	}
-	if (!class_exists('VirtueMartModelOrders'))
-	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-	if (!isset($_values['virtuemart_order_id'])) {
-	    $_values['virtuemart_order_id'] = VirtueMartModelOrders::getOrderIdByOrderNumber($_values['order_number']);
-	}
-	$_cols = array();
-	$_vals = array();
-	foreach ($_values as $_col => $_val) {
-	    $_cols[] = "`$_col`";
-	    $_vals[] = "'$_val'";
-	}
-	$_db = JFactory::getDBO();
-	$_q = 'INSERT INTO `' . $_table . '` ('
-		. implode(',', $_cols)
-		. ') VALUES ('
-		. implode(',', $_vals)
-		. ')';
 
-	$_db->setQuery($_q);
-	if (!$_db->query()) {
-	    JError::raiseWarning(500, $_db->getErrorMsg());
-	}
-    }
 
     /*
      * calculateSalesPriceShipping
@@ -902,38 +908,33 @@ abstract class vmShipperPlugin extends JPlugin {
 	$shipperLogo = $params->get('shipper_logos');
 	$shipperDescription = $params->get('shipper_description', '');
 	if (!empty($shipperLogo)) {
-	    $return = $this->displayLogos(array($shipperLogo => $shipping->shipping_carrier_name)) . ' ';
+	    $return = $this->displayLogos( $shipperLogo  ) . ' ';
 	}
 	if (!empty($shipperDescription)) {
 	    $shipperDescription = '<span class="vmshipper_description">' . $shipperDescription . '</span>';
 	}
 
 	return $return . '<span class="vmshipper_name">' . $shipping->shipping_carrier_name . '</span>' . $shipperDescription;
-
-
     }
 
-/**
-     * displays the logos of a VirtueMart plugin
-     *
-     * @author Valerie Isaksen
-     * @author Max Milbers
-     * @param array $logo_list
-     * @return html with logos
+    /**
+   *
      */
-    public function displayLogos($logo_list) {
 
-	$img = "";
 
-	if (!(empty($logo_list))) {
-	    $url = JURI::root() . 'images/stories/virtuemart/' . $this->_vmplugin . '/';
-	    if (!is_array($logo_list))
-		$logo_list = (array) $logo_list;
-	    foreach ($logo_list as $logo => $alt_text) {
-		$img .= '<img align="middle" src="' . $url . $logo . '"  alt="' . $alt_text . '" > ';
-	    }
+    function getOrderShipperName($order_number, $shipper_method_id) {
+
+
+	$db = JFactory::getDBO();
+	$q = 'SELECT * FROM `' . $this->_tablename . '` '
+		. 'WHERE `order_number` = "' . $order_number . '"  AND `shipper_id` =' . $shipper_method_id;
+	$db->setQuery($q);
+	if (!($order_shipper = $db->loadObject())) {
+	    return null;
 	}
-	return $img;
+	JFactory::getLanguage()->load('com_virtuemart');
+	 return $order_shipper->shipper_name  ;
+
     }
 
 }
