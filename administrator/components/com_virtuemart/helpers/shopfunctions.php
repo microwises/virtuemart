@@ -690,7 +690,6 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		return $categoryTree;
 	}
 
-
 	/**
 	 * Gets the total number of product for category
 	 *

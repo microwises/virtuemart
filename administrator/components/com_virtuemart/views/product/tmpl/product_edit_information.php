@@ -106,6 +106,14 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'value', 'text', $this->product->layout); ?>
 				</td>
 			</tr>
+			<tr class="row1">
+				<td width="21%" ><div style="text-align:right;font-weight:bold;">
+					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP') ?></div>
+				</td>
+				<td width="79%">
+					<?php echo $this->shoppergroupList; ?>
+				</td>
+			</tr>
 			<tr class="row0">
 				<td width="21%" >
 

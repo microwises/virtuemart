@@ -82,6 +82,10 @@ class VirtuemartControllerProduct extends VmController {
 		$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ));
 		/* Product category functions */
 		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
+		/* Product category functions Cleanshooter*/
+		$view->setModel( $this->getModel( 'shoppergroup', 'VirtueMartModel' ));
+		/* Product user functions Cleanshooter*/
+		$view->setModel( $this->getModel( 'user', 'VirtueMartModel' ));
 		/* Vendor functions */
 		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
 		/* Manufacturer functions */

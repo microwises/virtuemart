@@ -75,6 +75,11 @@ class VirtueMartModelProduct extends VmModel {
 		$default_order = 'product_name';
 		$order_dir = '';
 		$groupBy = '';
+		
+		//Cleanshooter get current user and send it to the next query
+		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
+		$currentVMuser = VirtueMartModelUser::getUser();
+		$userID = $currentVMuser->shopper_groups;
 
 		//First setup the variables for filtering
 		if($app->isSite()){
@@ -156,6 +161,12 @@ class VirtueMartModelProduct extends VmModel {
 		$product_parent_id= JRequest::getInt('product_parent_id', false );
 		if ($product_parent_id){
 			$where[] = ' p.`product_parent_id` = '.$product_parent_id;
+		}
+		
+		if ($userID>0){
+			$joinShopper = true;
+			//The OR NULL ensures that if no shopper group is set that the product will show in view
+			$where[] = ' `#__virtuemart_product_shoppergroups`.`virtuemart_shoppergroup_id` = "'.$userID.'" OR NULL';
 		}
 
 		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', false );
@@ -259,6 +270,10 @@ class VirtueMartModelProduct extends VmModel {
 		if ($joinMf == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_manufacturers` ON p.`virtuemart_product_id` = `#__virtuemart_product_manufacturers`.`virtuemart_product_id`
 			 LEFT JOIN `#__virtuemart_manufacturers` as m ON m.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
+		}
+		if ($joinShopper == true) {
+			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_shoppergroups` ON p.`virtuemart_product_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_product_id`
+			 LEFT JOIN `#__virtuemart_shoppergroups` as s ON s.`virtuemart_shoppergroup_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_shoppergroup_id`';
 		}
 		if ($joinPrice == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_prices` as pp ON p.`virtuemart_product_id` = pp.`virtuemart_product_id` ';
@@ -403,7 +418,9 @@ class VirtueMartModelProduct extends VmModel {
 
    			$xrefTable = $this->getTable('product_medias');
 			$product->virtuemart_media_id = $xrefTable->load((int)$this->_id);
-
+			
+			// Load the shoppers the product is available to for Custom Shopper Visibility
+			$product->shoppergroups = $this->getProductShoppergroups($this->_id);
 
 //   		if(!$front){
     			$ppTable = $this->getTable('product_prices');
@@ -421,7 +438,6 @@ class VirtueMartModelProduct extends VmModel {
    			$mfTable = $this->getTable('manufacturers');
    			$mfTable->load((int)$mf_id);
    			$product = (object) array_merge((array) $mfTable, (array) $product);
-
 
 			/* Load the categories the product is in */
 			$product->categories = $this->getProductCategories($this->_id);
@@ -550,12 +566,14 @@ class VirtueMartModelProduct extends VmModel {
 		 $product->product_override_price = null;
 		 $product->override = 0;
 		 $product->categories = array();
+		 $product->shoppers= array();
 
 	 	 if($front){
 	 	 	$product->link = '';
 
 	 	 	$product->prices = array();
 	 	 	$product->virtuemart_category_id = 0;
+	 	 	$product->virtuemart_shoppergroup_id = 0;
 	 	 	$product->mf_name = '';
 	 	 	$product->packaging = '';
 	 	 	$product->related = '';
@@ -581,6 +599,24 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		return $categories;
+	}
+	
+	/**
+	* Load  the product shoppergroups
+	*
+	* @author Kohl Patrick,RolandD,Max Milbers, Cleanshooter
+	* @return array list of shoppers that can view the product
+	*/
+	private function getProductShoppergroups($virtuemart_product_id=0) {
+
+		$shoppergroups = array();
+		if ($virtuemart_product_id > 0) {
+			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_product_shoppergroups` WHERE `virtuemart_product_id` = "'.(int)$virtuemart_product_id.'"';
+			$this->_db->setQuery($q);
+			$shoppergroups = $this->_db->loadResultArray();
+		}
+		
+		return $shoppergroups;
 	}
 
 	/**
@@ -844,6 +880,14 @@ class VirtueMartModelProduct extends VmModel {
                 }
                 $data = $this->updateXrefAndChildTables($data,'product_categories');
 
+               //Cleanshooter - I think there is a better way to do this... but it works for now
+               $data['shoppergroups'] = $data['virtuemart_shoppergroup_id'];
+               if(!empty($data['shoppergroups']) && count($data['shoppergroups'])>0){
+                    $data['virtuemart_shoppergroup_id'] = $data['shoppergroups'];
+                } else {
+                    $data['virtuemart_shoppergroup_id'] = array();
+                }
+                $data = $this->updateXrefAndChildTables($data,'product_shoppergroups');
 
 		if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
 			VirtueMartModelCustom::saveModelCustomfields('product',$data,$product_data->virtuemart_product_id);
@@ -945,6 +989,7 @@ class VirtueMartModelProduct extends VmModel {
 		$manufacturers = $this->getTable('product_manufacturers');
 		$medias = $this->getTable('product_medias');
 		$prices = $this->getTable('product_prices');
+		$shop = $this->getTable('product_shoppergroups');
 		$rating = $this->getTable('ratings');
 		$review = $this->getTable('rating_reviews');
 
@@ -984,6 +1029,11 @@ class VirtueMartModelProduct extends VmModel {
 
 		 	if (!$prices->delete($id)) {
 				$this->setError($prices->getError());
+				$ok = false;
+		    }
+		    
+			if (!$shop->delete($id)) {
+				$this->setError($shop->getError());
 				$ok = false;
 		    }
 
@@ -1041,6 +1091,11 @@ class VirtueMartModelProduct extends VmModel {
 
 			/* Delete categories xref */
 			$q  = "DELETE FROM #__virtuemart_product_categories WHERE virtuemart_product_id = ".$virtuemart_product_id;
+			$this->_db->setQuery($q);
+			$this->_db->query();
+			
+			/* Delete shoppers xref */
+			$q  = "DELETE FROM #__virtuemart_product_shoppergroups WHERE virtuemart_product_id = ".$virtuemart_product_id;
 			$this->_db->setQuery($q);
 			$this->_db->query();
 
