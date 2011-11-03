@@ -14,7 +14,7 @@ if (!defined('_JEXEC'))
  * http://www.alatak.net
  */
 if (!class_exists('Creditcard')) {
-    require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'creditcard.php');
+    require_once(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'creditcard.php');
 }
 
 class plgVmPaymentAuthorizenet extends vmPaymentPlugin {
@@ -316,7 +316,6 @@ class plgVmPaymentAuthorizenet extends vmPaymentPlugin {
 	$this->_cc_expire_month = $cart->cc_expire_month;
 	$this->_cc_expire_year = $cart->cc_expire_year;
 
-	//return $params->get('check_card_code', 0) ? $this->_validate_creditcard_data(true) : true;
 	return $this->_validate_creditcard_data(true);
     }
 

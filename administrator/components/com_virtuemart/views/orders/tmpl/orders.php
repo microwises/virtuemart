@@ -99,9 +99,9 @@ if (count($this->orderslist) > 0) {
 			<td>
 			    <input type="checkbox" value=1 class="inputbox" name="orders[<?php echo $order->virtuemart_order_id; ?>][customer_notified]" /><?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?>
 			    <br />
-			    &nbsp;&nbsp;&nbsp;<input type="checkbox" class="inputbox" name="orders[<?php echo $order->virtuemart_order_id; ?>][customer_send_comment]" /><?php echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT'); ?>
+			    &nbsp;&nbsp;&nbsp;<input type="checkbox" value=1 class="inputbox" name="orders[<?php echo $order->virtuemart_order_id; ?>][customer_send_comment]" /><?php echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT'); ?>
 			    <br />
-			    <input type="checkbox" class="inputbox" name="orders[<?php echo $order->virtuemart_order_id; ?>][update_lines]"  checked="checked" /><?php echo JText::_('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS'); ?>
+			    <input type="checkbox" value=1 class="inputbox" name="orders[<?php echo $order->virtuemart_order_id; ?>][update_lines]"  checked="checked" /><?php echo JText::_('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS'); ?>
 			</td>
 			<!-- Total -->
 			<td><?php echo $order->order_total; ?></td>

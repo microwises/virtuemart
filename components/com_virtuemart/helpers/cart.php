@@ -1009,7 +1009,6 @@ class VirtueMartCart {
 			foreach ($returnValues as $returnValue) {
 				if ($returnValue !== null  ) {
 					if ($returnValue == 1 )   {
-						$this->sentOrderConfirmedEmail($order->getOrder($orderID));
 						//We delete the old stuff
 						$this->emptyCart();
 						JRequest::setVar('html' , $html);
@@ -1021,13 +1020,11 @@ class VirtueMartCart {
 						    $modelOrder = new VirtueMartModelOrders();
 						    $orders[$orderID]['order_status'] = $new_status;
 						    $orders[$orderID]['virtuemart_order_id'] = $orderID;
-						    $customer_notifed[$orderID] = 0;
-						    JRequest::setVar('notify_customer', $customer_notifed);
-						    $comments[$orderID] = 0;
-						    JRequest::setVar('comment', $comments);
+						    $orders[$orderID]['customer_notified'] = 0;
+						    $orders[$orderID]['comments'] = '';
 						    $modelOrder->updateOrderStatus($orders, $orderID); //
 						}
-
+						$this->sentOrderConfirmedEmail($order->getOrder($orderID));
 					} elseif ($returnValue == 0 )   {
 					    // error while processing the payment
 						$mainframe = JFactory::getApplication();

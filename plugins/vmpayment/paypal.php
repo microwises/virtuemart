@@ -455,7 +455,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	    }
 	}
 
-	$this->logInfo('return new_status' . $new_status, 'message');
+	$this->logInfo('plgVmOnPaymentNotification return new_status' . $new_status, 'message');
 	return true;
     }
 
@@ -501,13 +501,12 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	$paypal_url = $this->_getPaypalURL($params);
 	// read the post from PayPal system and add 'cmd'
 	$post_msg = 'cmd=_notify-validate';
-	foreach ($data as $key => $value) {
+	foreach ($paypal_data as $key => $value) {
 	    if ($key != 'view' && $key != 'layout') {
 		$value = urlencode($value);
 		$post_msg .= "&$key=$value";
 	    }
 	}
-
 
 	$this->checkPaypalIps($paypal_data['ipn_test']);
 

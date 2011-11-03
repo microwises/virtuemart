@@ -68,6 +68,7 @@ abstract class vmPaymentPlugin extends vmPlugin {
      * 	$_scheme = DbScheme::get_instance();
      * 	$_scheme->create_scheme('#__vm_order_payment_'.$this->_pelement);
      * 	$_schemeCols = array(
+     *  those fields are REQUIRED
      * 		 'id' => array (
      * 				 'type' => 'int'
      * 				,'length' => 11
@@ -88,6 +89,7 @@ abstract class vmPaymentPlugin extends vmPlugin {
      * 				 'type' => 'text'
      * 				,'null' => false
      * 		)
+     *
      * 	);
      * 	$_schemeIdx = array(
      * 		 'idx_order_payment' => array(
@@ -104,6 +106,23 @@ abstract class vmPaymentPlugin extends vmPlugin {
      * 	}
      * 	$_scheme->reset();
      * @author Oscar van Eijk
+     *
+     * (1) add some fields with specific values for the request
+     *  (2) add some fields for the response: to reuse the predefined functions create those row woth the follong convention:
+     *  'plugin_name'_'response'_'field_name' example: 'paypal_response_payment_status'
+     *  (3) create the language key following this convention
+     *      VMPAYMENT_'plugin_name'_RESPONSE_'field_name'
+     *	    example:  VMPAYMENT_PAYPAL_RESPONSE_PAYMENT_STATUS="Payment_status"
+     *  (4) if the field is actually a code, and there is a string with this code, add a key following this convention
+     *       VMPAYMENT_PAYPAL_RESPONSE_PAYMENT_STATUS_'code number or letter'
+     *
+     * example:
+     * 'authorizenet_response_response_code' : entry in the table
+     * VMPAYMENT_AUTHORIZENET_RESPONSE_RESPONSE_CODE="Response Code" the language key
+     * VMPAYMENT_AUTHORIZENET_RESPONSE_RESPONSE_CODE_1="This transaction has been approved." : the language key decoded
+     *
+     * @author Valerie Isaksen
+     *
      */
     abstract protected function _createTable();
 
@@ -114,6 +133,7 @@ abstract class vmPaymentPlugin extends vmPlugin {
      *
      * This function sets the used payment plugin as variable of this class
      * @author Max Milbers
+     * @deprecated
      *
      */
     protected function setVmPaymentParams($vendorId=0, $jplugin_id=0) {

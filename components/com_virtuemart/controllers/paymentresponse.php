@@ -75,16 +75,13 @@ class VirtueMartControllerPaymentresponse extends JController {
 			$cart = VirtueMartCart::getCart();
 
 			// send the email WITH THE NOTIFICATION
-			/*
-			if (!class_exists('VirtueMartModelOrders'))
-			    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-			$order = new VirtueMartModelOrders();
-			$orderitems = $order->getOrder($virtuemart_order_id);
-			//vmdebug('PaymentResponseReceived CART', $orderitems);
-			 *
-			 */
-			//// SEND EMAIL WITH NOTIFICATION
-			//$cart->sentOrderConfirmedEmail($orderitems);
+
+			  if (!class_exists('VirtueMartModelOrders'))
+			  require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+			  $order = new VirtueMartModelOrders();
+			  $orderitems = $order->getOrder($virtuemart_order_id);
+			  VirtueMartCart::sentOrderConfirmedEmail($orderitems);
+
 			//We delete the old stuff
 
 			$cart->emptyCart();
@@ -161,13 +158,13 @@ class VirtueMartControllerPaymentresponse extends JController {
     }
 
     /**
-     * Attention this is the function which processs the response of the payment plugin
+     * Attention this is the function which processs the NOTIFICATION response of the payment plugin
      *
      * @author Valerie Isaksen
      * @return success of update
      */
     function paymentNotification() {
-
+	$debug = false;
 	$data = JRequest::get('post');
 	if (!class_exists('vmPaymentPlugin'))
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
@@ -185,10 +182,16 @@ class VirtueMartControllerPaymentresponse extends JController {
 	    'return_context' => &$return_context,
 	    'virtuemart_order_id' => &$virtuemart_order_id,
 	    'new_status' => &$new_status));
-
+	if ($debug) {
+	    $file = JPATH_ROOT . "/logs/notification.log";
+	    $date = JFactory::getDate();
+	    $fp = fopen($file, 'a');
+	    fwrite($fp, "\n\n" . $date->toFormat('%Y-%m-%d %H:%M:%S'));
+	    fwrite($fp, "\n" . $virtuemart_order_id . ': ' . $new_status);
+	}
 	foreach ($returnValues as $returnValue) {
+	    // Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
 	    if ($returnValue !== null) {
-		$this->emptyCart($return_context); // remove vmcart
 		if ($virtuemart_order_id) {
 		    // send the email only if payment has been accepted
 		    if (!class_exists('VirtueMartModelOrders'))
@@ -197,40 +200,42 @@ class VirtueMartControllerPaymentresponse extends JController {
 		    $modelOrder = new VirtueMartModelOrders();
 		    $orders[$virtuemart_order_id]['order_status'] = $new_status;
 		    $orders[$virtuemart_order_id]['virtuemart_order_id'] = $virtuemart_order_id;
-		    $customer_notifed[$virtuemart_order_id] = 0;
-		    JRequest::setVar('notify_customer', $customer_notifed);
-		    $comments[$virtuemart_order_id] = JText::sprintf('COM_VIRTUEMART_NOTIFICATION_RECEVEIVED', $date->toFormat('%Y-%m-%d %H:%M:%S')) ;
-		    JRequest::setVar('comment', $comments);
-		    $modelOrder->updateOrderStatus($orders); //
-		    /*
-		    $modelOrder = new VirtueMartModelOrders();
-		    $modelOrder->sentOrderConfirmedEmail($modelOrder->getOrder($virtuemart_order_id));
 		    $orders[$virtuemart_order_id]['order_status'] = $new_status;
-		    $orders[$virtuemart_order_id]['virtuemart_order_id'] = $virtuemart_order_id;
-		    $customer_notifed[$virtuemart_order_id] = 0;
-		    JRequest::setVar('notify_customer', $customer_notifed);
+		    $orders[$virtuemart_order_id]['customer_notified'] = 0;
 		    $date = JFactory::getDate();
-		    $comments[$virtuemart_order_id] = '';//JText::sprintf('COM_VIRTUEMART_NOTIFICATION_RECEVEIVED', $date->toFormat('%Y-%m-%d %H:%M:%S'));
-		    JRequest::setVar('comment', $comments);
-		    $result = $modelOrder->updateOrderStatus($orders, $virtuemart_order_id);
-		    $modelOrder->sentOrderConfirmedEmail($modelOrder->getOrder($virtuemart_order_id));
-		     * */
-		      $modelOrder->sentOrderConfirmedEmail($modelOrder->getOrder($virtuemart_order_id));
+		    $orders[$virtuemart_order_id]['comments'] = JText::sprintf('COM_VIRTUEMART_NOTIFICATION_RECEVEIVED', $date->toFormat('%Y-%m-%d %H:%M:%S'));
+		    if ($debug) {
+			fwrite($fp, "\n" . updateOrderStatus . ': ' . $new_status);
+		    }
+		    $modelOrder->updateOrderStatus($orders); //
+		    $orderitems = $modelOrder->getOrder($virtuemart_order_id);
+		    // Do we have a cart?
+		    $sessionDatabase = new JSessionStorageDatabase();
+		    if (!$sessionDatabase->read($return_context)) {
+			 break; // no we don't , so finished
+		    }
+		    // yes we do, lets get back the cart then
+		    $options['name'] = $session_name;
+		    //$session = JFactory::getSession($options);
+		    $cart = VirtueMartCart::getCart($options);
+		    // and it means that the customer did not receive the email. So let's send it.
+		    VirtueMartCart::sentOrderConfirmedEmail($orderitems);
 		}
+		$this->emptyCart($return_context); // remove vmcart
 		break; // This was the active plugin, so there's nothing left to do here.
 	    }
 	}
-	// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
+	if ($debug) {
+	    fclose($fp);
+	}
     }
 
     function emptyCart($session_name) {
-
 	$sessionDatabase = new JSessionStorageDatabase();
 	if (!$sessionDatabase->read($session_name)) {
 	    // session does not exist, should not be created
 	    return false;
 	}
-
 	$options['name'] = $session_name;
 	//$session = JFactory::getSession($options);
 	$cart = VirtueMartCart::getCart($options);

@@ -329,11 +329,11 @@ class VirtueMartModelOrders extends VmModel {
 		//General change of orderstatus
 		if(empty($orders)){
 			//$order_id = array();
-			$ordersArray = JRequest::getVar('orders',  array());
+			$orders = JRequest::getVar('orders',  array());
 			$oldStatus = JRequest::getVar('current_order_status', array());
 			// Get the list of updated orders in post
-			foreach ($ordersArray as $key => $_order) {
-				if ( $_order['order_status'] !== $oldStatus[$key]) $orders[$key] = $_order;
+			foreach ($orders as $key => $_order) {
+				if ( $order['order_status'] !== $oldStatus[$key]) $orders[$key] = $_order;
 			}
 			//$order_ids = array_diff_assoc(JRequest::getVar('order_status', array()), JRequest::getVar('current_order_status', array()));
 
@@ -370,14 +370,14 @@ class VirtueMartModelOrders extends VmModel {
 		$updated = 0;
 		$error = 0;
 		if ($orders) {
-			$notify = JRequest::getVar('notify_customer', array());
-			$comments = JRequest::getVar('comment', array());
+			$notify = JRequest::getVar('customer_notified', array()); // ???
+			$comments = JRequest::getVar('comments', array()); // ???
 			foreach ($orders as $virtuemart_order_id => $order) {
 				if  ($order_id >0) $virtuemart_order_id= $order_id;
 				/* Get customer notification */
-				$customer_notified = (@$notify[$virtuemart_order_id] == 1) ? 1 : 0;
+				//$customer_notified = (@$notify[$virtuemart_order_id] == 1) ? 1 : 0;
 				/* Get the comments */
-				$comment = (array_key_exists($virtuemart_order_id, $comments)) ? $comments[$virtuemart_order_id] : '';
+				//$comment = (array_key_exists($virtuemart_order_id, $comments)) ? $comments[$virtuemart_order_id] : '';
 
 				/* Update the order */
 				$data = $this->getTable('orders');
@@ -429,19 +429,19 @@ class VirtueMartModelOrders extends VmModel {
 					$order_items = $db->loadObjectList();
 					if ($order_items) {
 						foreach ($order_items as $order_item) {
-						$this->updateSingleItem($order_item->virtuemart_order_item_id, $order['order_status'], $comments , $virtuemart_order_id);
+						$this->updateSingleItem($order_item->virtuemart_order_item_id, $order['order_status'], $order['comments'] , $virtuemart_order_id);
 						}
 					}
 					/* Update the order history */
-					$this->_updateOrderHist($virtuemart_order_id, $order['order_status'], $customer_notified, $comments);
+					$this->_updateOrderHist($virtuemart_order_id, $order['order_status'], $order['customer_notified'], $order['comments']);
 
 					// Send a download ID */
 					//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($virtuemart_order_id);
 
 					// Check if the customer needs to be informed */
-					if ($customer_notified) {
+					if ($order['customer_notified']) {
 						$order['virtuemart_order_id'] =$virtuemart_order_id ;
-						$this->notifyCustomer($order, $comments);
+						$this->notifyCustomer($order,  $order['comments'],  $order['customer_send_comment']);
 					}
 
 					JPluginHelper::importPlugin('vmcoupon');
