@@ -69,9 +69,8 @@ class VirtuemartViewProduct extends JView {
 				else $category_tree = ShopFunctions::categoryListTree();
 				$this->assignRef('category_tree', $category_tree);
 
-				//Get the shoppergoup list for Custom Shopper Visibility 
+				//Get the shoppergoup list - Cleanshooter Custom Shopper Visibility 
 				if (isset($product->shoppergroups)) $shoppergroupList = ShopFunctions::renderShopperGroupList($product->shoppergroups, true);
-				else $shoppergroupList = ShopFunctions::renderShopperGroupList(0, true);//1 is by defualt the -defualt- user which will display for all unless user assigns different groups to other users
 				$this->assignRef('shoppergroupList', $shoppergroupList);
 				
 				// Load the product price

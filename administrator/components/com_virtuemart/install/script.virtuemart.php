@@ -190,9 +190,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->checkAddFieldToTable('#__virtuemart_product_customfields','custom_param',' text COMMENT "Param for Plugins"');
 
-			//Cleanshooter need to update product_shoppers table so that all current products have defualt user listed.
-			$this->updateProductShoppergroupsTable();
-
 			// orders :
 
 			$this->checkAddFieldToTable('#__virtuemart_orders','order_payment',' decimal(10,2) DEFAULT NULL');
@@ -305,31 +302,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				}
 			}
 			return false;
-		}
-
-		/**
-		 * @author Cleanshooter
-		 * creates rows in product_shoppers for all products and adds the defualt user to every product
-		 * this isn't necessary with the recent update should it be removed? 
-		 */
-		
-		private function updateProductShoppersTable(){
-			if(empty($this->db)){
-				$this->db = JFactory::getDBO();
-			}
-			$q = 'SELECT *
-					FROM `jkm21_virtuemart_products` AS p
-					LEFT JOIN `jkm21_virtuemart_product_shoppers` ON p.`virtuemart_product_id` = `jkm21_virtuemart_product_shoppers`.`virtuemart_product_id`
-					LEFT JOIN `jkm21_virtuemart_shoppergroups` AS s ON s.`virtuemart_shoppergroup_id` = `jkm21_virtuemart_product_shoppers`.`virtuemart_shopper_id`
-					WHERE `virtuemart_shoppergroup_id` IS NULL';
-			$this->db->setQuery($q);
-			$rows = $this->db->loadResultArray();
-			foreach ($rows as $id=>$product_id){
-				$updateQuery = 'INSERT INTO `#__virtuemart_product_shoppers` (`id` ,`virtuemart_product_id` ,`virtuemart_shopper_id` ,`ordering`)
-								VALUES (NULL , "'. $product_id .'", "'. 1 .'", NULL)';
-				$this->db->setQuery($updateQuery);
-				$this->db->query();
-			}
 		}
 		
 		/**

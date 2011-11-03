@@ -79,7 +79,6 @@ class VirtueMartModelProduct extends VmModel {
 		//Cleanshooter get current user and send it to the next query
 		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 		$currentVMuser = VirtueMartModelUser::getUser();
-		$userID = $currentVMuser->shopper_groups;
 
 		//First setup the variables for filtering
 		if($app->isSite()){
@@ -163,9 +162,11 @@ class VirtueMartModelProduct extends VmModel {
 			$where[] = ' p.`product_parent_id` = '.$product_parent_id;
 		}
 		
-		if ($userID>0){
+		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
+		$virtuemart_user = VirtueMartModelUser::getUser();
+		$virtuemart_shoppergroup_id = $virtuemart_user->shopper_group;
+		if ($virtuemart_shoppergroup_id){
 			$joinShopper = true;
-			//The OR NULL ensures that if no shopper group is set that the product will show in view
 			$where[] = ' `#__virtuemart_product_shoppergroups`.`virtuemart_shoppergroup_id` = "'.$userID.'" OR NULL';
 		}
 
@@ -566,7 +567,7 @@ class VirtueMartModelProduct extends VmModel {
 		 $product->product_override_price = null;
 		 $product->override = 0;
 		 $product->categories = array();
-		 $product->shoppers= array();
+		 $product->shoppergroups= array();
 
 	 	 if($front){
 	 	 	$product->link = '';
@@ -605,7 +606,7 @@ class VirtueMartModelProduct extends VmModel {
 	* Load  the product shoppergroups
 	*
 	* @author Kohl Patrick,RolandD,Max Milbers, Cleanshooter
-	* @return array list of shoppers that can view the product
+	* @return array list of updateProductShoppergroupsTable that can view the product
 	*/
 	private function getProductShoppergroups($virtuemart_product_id=0) {
 
@@ -880,15 +881,6 @@ class VirtueMartModelProduct extends VmModel {
                 }
                 $data = $this->updateXrefAndChildTables($data,'product_categories');
 
-               //Cleanshooter - I think there is a better way to do this... but it works for now
-               $data['shoppergroups'] = $data['virtuemart_shoppergroup_id'];
-               if(!empty($data['shoppergroups']) && count($data['shoppergroups'])>0){
-                    $data['virtuemart_shoppergroup_id'] = $data['shoppergroups'];
-                } else {
-                    $data['virtuemart_shoppergroup_id'] = array();
-                }
-                $data = $this->updateXrefAndChildTables($data,'product_shoppergroups');
-
 		if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
 			VirtueMartModelCustom::saveModelCustomfields('product',$data,$product_data->virtuemart_product_id);
 
@@ -897,6 +889,7 @@ class VirtueMartModelProduct extends VmModel {
 			VirtueMartModelCustom::saveChildCustomRelation('product',$data['ChildCustomRelation'],$product_data->virtuemart_product_id);
 		}
 
+		$data = $this->updateXrefAndChildTables($data,'product_shoppergroups');
 
  		$data = $this->updateXrefAndChildTables($data, 'product_prices');
 
