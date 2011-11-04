@@ -386,7 +386,18 @@ class VirtueMartModelUser extends VmModel {
 
 			// If user activation is turned on, we need to set the activation information
 			$useractivation = $usersConfig->get( 'useractivation' );
-			if ($useractivation == '1')
+			$doUserActivation=false;
+			if ( VmConfig::isJ15()){
+			    if ($useractivation == '1' ) {
+				$doUserActivation=true;
+			    }
+			} else {
+			    if ($useractivation == '1' or $useractivation == '2') {
+				$doUserActivation=true;
+			    }
+			}
+			vmdebug('user',$useractivation , $doUserActivation);
+			if ($doUserActivation )
 			{
 				jimport('joomla.user.helper');
 				$user->set('activation', JUtility::getHash( JUserHelper::genRandomPassword()) );
@@ -419,8 +430,8 @@ class VirtueMartModelUser extends VmModel {
 // 			vmError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
 		} else {
 			if ($new) {
-				$this->sendRegistrationEmail($user,$user->password_clear, $useractivation);
-				if ( $useractivation == 1 ) {
+				$this->sendRegistrationEmail($user,$user->password_clear, $doUserActivation);
+				if ($doUserActivation ) {
 					vmInfo('COM_VIRTUEMART_REG_COMPLETE_ACTIVATE');
 				} else {
 					vmInfo('COM_VIRTUEMART_REG_COMPLETE');
@@ -438,7 +449,7 @@ class VirtueMartModelUser extends VmModel {
 // 			vmdebug('vendor recognised');
 			if($this ->storeVendorData($data)){
 				if ($new) {
-					if ( $useractivation == 1 ) {
+					if ($doUserActivation ) {
 						vmInfo('COM_VIRTUEMART_REG_VENDOR_COMPLETE_ACTIVATE');
 					} else {
 						vmInfo('COM_VIRTUEMART_REG_VENDOR_COMPLETE');
@@ -829,7 +840,7 @@ class VirtueMartModelUser extends VmModel {
 	  * @author Christopher Roussel
 	  * @author Valérie Isaksen
 	  */
-	 private function sendRegistrationEmail($user, $password, $useractivation){
+	 private function sendRegistrationEmail($user, $password, $doUserActivation){
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$vars = array('user' => $user);
 
@@ -838,15 +849,16 @@ class VirtueMartModelUser extends VmModel {
 		$password = preg_replace('/[\x00-\x1F\x7F]/', '', $password); //Disallow control chars in the email
 		$vars['password'] = $password;
 
-		if ($useractivation == '1') {
+		if ($doUserActivation) {
 			jimport('joomla.user.helper');
 			if(version_compare(JVERSION,'1.6.0','ge')) {
 				$com_users = 'com_users';
+				$activationLink = 'index.php?option='.$com_users.'&task=registration.activate&token='.$user->get('activation');
 			} else {
 				$com_users = 'com_user';
+				$activationLink = 'index.php?option='.$com_users.'&task=activate&activation='.$user->get('activation');
 			}
-			$activationLink = 'index.php?option='.$com_users.'&task=activate&activation='.$user->get('activation');
-			$vars['activationLink'] = $activationLink;
+ 			$vars['activationLink'] = $activationLink;
 		}
 		$vars['doVendor']=true;
 		// public function renderMail ($viewName, $recipient, $vars=array(),$controllerName = null)

@@ -25,20 +25,25 @@ if (!empty($this->activationLink)) {
 echo $activationLink . $li;
 echo JText::_('COM_VIRTUEMART_SHOPPER_REGISTRATION_DATA') . $li;
 
-echo JText::_('COM_VIRTUEMART_YOUR_LOGINAME')   . $this->user->username . $li;
-echo JText::_('COM_VIRTUEMART_YOUR_DISPLAYED_NAME')   . $this->user->name . $li;
-echo JText::_('COM_VIRTUEMART_YOUR_PASSWORD')   . $this->user->password_clear . $li;
-
-echo JText::_('COM_VIRTUEMART_YOUR_ADDRESS')   . $li;
+echo JText::_('COM_VIRTUEMART_YOUR_LOGINAME') .' : '    . $this->user->username . $li;
+echo JText::_('COM_VIRTUEMART_YOUR_DISPLAYED_NAME') .' : '    . $this->user->name . $li;
+echo JText::_('COM_VIRTUEMART_YOUR_PASSWORD') .' : '    . $this->user->password_clear . $li;
+echo JText::_('COM_VIRTUEMART_YOUR_ADDRESS')  .' : '   . $li;
 
 echo $li;
 echo $activationLink . $li;
 
 foreach ($this->userFields['fields'] as $userField) {
-    if (!empty($userField['value']) && $userField['type'] != 'delimiter' && $userField['type'] != 'BT') {
-	echo $userField['title'] . ': ' . $userField['value'] . $li;
-    }
-}
+    if (!empty($userField['value']) && $userField['type'] != 'delimiter'&& $userField['type'] != 'BT') {
+	echo $userField['title'] . ': ' .  $this->escape($userField['value']) . $li;
+	?>
+					    <?php if ($userField['name'] != 'title' and $userField['name'] != 'first_name' and $userField['name'] != 'middle_name' and $userField['name'] != 'zip') { ?>
+	    				    <br class="clear" />
+						<?php
+					    }
+					}
+				    }
+				    ?>
 
 echo $li;
 
