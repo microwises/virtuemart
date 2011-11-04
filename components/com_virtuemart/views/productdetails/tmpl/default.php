@@ -201,7 +201,7 @@ if (empty ( $this->product )) {
 						<?php // Display the quantity box ?>
 						<!-- <label for="quantity<?php echo $this->product->virtuemart_product_id;?>" class="quantity_box"><?php echo JText::_('COM_VIRTUEMART_CART_QUANTITY'); ?>: </label> -->
 						<span class="quantity-box">
-							<input type="text" class="quantity-input" name="quantity[]" value="1" />
+							<input type="text" class="quantity-input" name="quantity[]" value="<?php if(isset($this->product->min_order_level) && (int) $this->product->min_order_level > 0){echo $this->product->min_order_level;} else{ echo '1'; } ?>" />
 						</span>
 						<span class="quantity-controls">
 							<input type="button" class="quantity-controls quantity-plus" />
