@@ -478,7 +478,7 @@ class VmMediaHandler {
 
 					//Sanitize name of media
 					jimport('joomla.filesystem.file');
-					$media['name'] = JFile::makeSafe( $media['name'] );
+					$media['name'] = vmFile::makeSafe( $media['name'] );
 
 					$mediaPure = JFile::stripExt($media['name']);
 					$mediaExtension = '.'.strtolower(JFile::getExt($media['name']));

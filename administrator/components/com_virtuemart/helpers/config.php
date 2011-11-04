@@ -640,10 +640,23 @@ class vmRequest{
  			//$source is string that will be filtered, $custom is string that contains custom characters
  			return mb_ereg_replace('[^\w'.preg_quote($custom).']', '', $source);
  		} else {
- 			return ereg_replace('[^\w'.preg_quote($custom).']', '', $source);
+ 			return preg_replace('/[^\w'.preg_quote($custom).']/', '', $source);
  		}
  	}
 
+}
+
+class vmFile {
+	function makeSafe($file='') {
+		$lang = JFactory::getLanguage();
+		$file = $lang->transliterate($file);
+		if(function_exists('mb_ereg_replace')){
+			$regex = array('#(\.){2,}#', '#[^\w\.\- ]#', '#^\.#');
+			return mb_ereg_replace($regex, '', $file);
+		} else {
+			return JFile::makeSafe($file);
+		}
+	}
 }
 
 
