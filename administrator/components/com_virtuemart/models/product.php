@@ -78,7 +78,8 @@ class VirtueMartModelProduct extends VmModel {
 
 		//Cleanshooter get current user and send it to the next query
 		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
-		$currentVMuser = VirtueMartModelUser::getUser();
+		$usermodel = new VirtueMartModelUser();
+		$currentVMuser = $usermodel->getUser();
 
 		//First setup the variables for filtering
 		if($app->isSite()){
@@ -161,20 +162,18 @@ class VirtueMartModelProduct extends VmModel {
 		if ($product_parent_id){
 			$where[] = ' p.`product_parent_id` = '.$product_parent_id;
 		}
-
-		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
-		    $virtuemart_user = VirtueMartModelUser::getUser();
-		    $virtuemart_shoppergroup_ids =  (array) $virtuemart_user->shopper_groups;
-		    $joinShopper = false;
-		    $where_groups='';
-		    if ($app->isSite() && $virtuemart_shoppergroup_ids){
+		 $joinShopper = false;
+		    if ($app->isSite()) {
+			$shoppergroup_ids =  (array) $currentVMuser->shopper_groups;
+			$where_groups='';
+			if (  $shoppergroup_ids){
 			    $joinShopper = true;
-			foreach ($virtuemart_shoppergroup_ids as $groups) {
-				$where_groups .= 's.`virtuemart_shoppergroup_id`= "' . (int) $groups . '" OR';
+			    foreach ($shoppergroup_ids as $groups) {
+				    $where_groups .= 's.`virtuemart_shoppergroup_id`= "' . (int) $groups . '" OR';
+			}
+			$where[] = $where_groups. ' ISNULL(s.`virtuemart_shoppergroup_id`) ';
 		    }
-		    $where[] = $where_groups. ' ISNULL(s.`virtuemart_shoppergroup_id`) ';
 		}
-
 		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', false );
 		if ($virtuemart_manufacturer_id) {
 			$joinMf = true ;
