@@ -441,7 +441,7 @@ class VirtueMartModelOrders extends VmModel {
 					// Check if the customer needs to be informed */
 					if ($order['customer_notified']) {
 						$order['virtuemart_order_id'] =$virtuemart_order_id ;
-						$this->notifyCustomer($order,  $order['comments'],  $order['customer_send_comment']);
+						$this->notifyCustomer($order,  $order['comments'],  $order['customer_notified']);
 					}
 
 					JPluginHelper::importPlugin('vmcoupon');
@@ -984,7 +984,7 @@ class VirtueMartModelOrders extends VmModel {
 	 * @author RolandD, Christopher Roussel
 	 * @todo: Fix URL when we have front-end done
 	 */
-	function notifyCustomer($order, $comments,$includeComments=array() ) {
+	function notifyCustomer($order, $comments,$includeComments ) {
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
 		$vars = array('order' => $order, 'comments' => $comments, 'includeComments' => $includeComments);
@@ -992,7 +992,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		//$url = VmConfig::get('secureurl')."index.php?option=com_virtuemart&page=account.order_details&virtuemart_order_id=".$order->virtuemart_order_id.'&Itemid='.$sess->getShopItemid();
 		$vars['url'] = 'url';
-
+		$vars['doVendor']=false;
 		$db = JFactory::getDBO();
 		$q = "SELECT CONCAT_WS(' ',first_name, middle_name , last_name) AS full_name, email, order_status_name
 			FROM #__virtuemart_order_userinfos

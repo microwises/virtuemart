@@ -210,8 +210,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 	$merchant_email = $this->_getMerchantEmail($params);
 	if (empty($merchant_email)) {
-	      $app = & JFactory::getApplication();
-	    $app->enqueueMessage(JText::_('VMPAYMENT_PAYPAL_MERCHANT_EMAIL_NOT_SET'));
+	    vmInfo(JText::_('VMPAYMENT_PAYPAL_MERCHANT_EMAIL_NOT_SET'));
 	    return false;
 	}
 

@@ -64,6 +64,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 		, 'length' => 11
 		, 'null' => false
 	    )
+
 	    , 'payment_name' => array(
 		'type' => 'text'
 		, 'null' => false
@@ -158,7 +159,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
      * Display stored payment data for an order
      * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
      */
-    function plgVmOnShowOrderPaymentBE($_virtuemart_order_id, $virtuemart_payment_id) {
+    function plgVmOnShowOrderPaymentBE($virtuemart_order_id, $virtuemart_payment_id) {
 	if (!$this->selectedThisPayment($this->_pelement, $virtuemart_payment_id)) {
 	    return null; // Another method was selected, do nothing
 	}

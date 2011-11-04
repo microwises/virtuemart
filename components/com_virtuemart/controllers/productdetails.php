@@ -93,6 +93,7 @@ class VirtueMartControllerProductdetails extends JController {
 
 	 	$vendorModel = $this->getModel('vendor');
 		$VendorEmail = $vendorModel->getVendorEmail($vars['product']->virtuemart_vendor_id);
+		$vars['vendor'] = array('vendor_store_name' => $fromName );
 
 		if (shopFunctionsF::renderMail('askquestion', $VendorEmail, $vars,'productdetails')) {
 			$string = 'COM_VIRTUEMART_MAIL_SEND_SUCCESSFULLY';
