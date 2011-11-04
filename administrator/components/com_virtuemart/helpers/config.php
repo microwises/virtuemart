@@ -632,7 +632,7 @@ class VmConfig {
 
 class vmRequest{
 
- 	function get($field, $default, $custom=''){
+ 	function uword($field, $default, $custom=''){
 
  		$source = JRequest::getVar($field,$default);
 

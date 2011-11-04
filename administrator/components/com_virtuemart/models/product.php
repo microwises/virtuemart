@@ -121,7 +121,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 
-		if ($keyword = vmRequest::get('keyword', false, ' ')) {
+		if ($keyword = vmRequest::uword('keyword', false, ' ')) {
 			$groupBy = 'group by p.`virtuemart_product_id`';
 
 //			$keyword = trim(preg_replace('/\s+/', '%', $keyword), '%');
@@ -139,7 +139,7 @@ class VirtueMartModelProduct extends VmModel {
 				$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
 			}
 
-		} elseif ($search = vmRequest::get('filter_product', false)){
+		} elseif ($search = vmRequest::uword('filter_product', false)){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			$where[] = 'p.`product_name` LIKE '.$search;
 		}

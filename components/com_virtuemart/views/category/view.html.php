@@ -101,7 +101,7 @@ class VirtuemartViewCategory extends JView {
 		}
 
 		// set search and keyword
-		if ($keyword = vmRequest::get('keyword', '', ' ')) {
+		if ($keyword = vmRequest::uword('keyword', '', ' ')) {
 			$pathway->addItem($keyword);
 			$document->setTitle( $categoryStripped.' '.$keyword);
 		}
