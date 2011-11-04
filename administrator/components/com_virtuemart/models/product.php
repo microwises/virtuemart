@@ -75,7 +75,7 @@ class VirtueMartModelProduct extends VmModel {
 		$default_order = 'product_name';
 		$order_dir = '';
 		$groupBy = '';
-		
+
 		//Cleanshooter get current user and send it to the next query
 		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 		$currentVMuser = VirtueMartModelUser::getUser();
@@ -161,13 +161,18 @@ class VirtueMartModelProduct extends VmModel {
 		if ($product_parent_id){
 			$where[] = ' p.`product_parent_id` = '.$product_parent_id;
 		}
-		
+
 		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
-		$virtuemart_user = VirtueMartModelUser::getUser();
-		$virtuemart_shoppergroup_id = $virtuemart_user->shopper_group;
-		if ($virtuemart_shoppergroup_id){
-			$joinShopper = true;
-			$where[] = ' `#__virtuemart_product_shoppergroups`.`virtuemart_shoppergroup_id` = "'.$userID.'" OR NULL';
+		    $virtuemart_user = VirtueMartModelUser::getUser();
+		    $virtuemart_shoppergroup_ids =  (array) $virtuemart_user->shopper_groups;
+		    $joinShopper = false;
+		    $where_groups='';
+		    if ($app->isSite() && $virtuemart_shoppergroup_ids){
+			    $joinShopper = true;
+			foreach ($virtuemart_shoppergroup_ids as $groups) {
+				$where_groups .= 's.`virtuemart_shoppergroup_id`= "' . (int) $groups . '" OR';
+		    }
+		    $where[] = $where_groups. ' ISNULL(s.`virtuemart_shoppergroup_id`) ';
 		}
 
 		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', false );
@@ -274,7 +279,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		if ($joinShopper == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_shoppergroups` ON p.`virtuemart_product_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_product_id`
-			 LEFT JOIN `#__virtuemart_shoppergroups` as s ON s.`virtuemart_shoppergroup_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_shoppergroup_id`';
+			 LEFT  OUTER JOIN `#__virtuemart_shoppergroups` as s ON s.`virtuemart_shoppergroup_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_shoppergroup_id`';
 		}
 		if ($joinPrice == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_prices` as pp ON p.`virtuemart_product_id` = pp.`virtuemart_product_id` ';
@@ -419,7 +424,7 @@ class VirtueMartModelProduct extends VmModel {
 
    			$xrefTable = $this->getTable('product_medias');
 			$product->virtuemart_media_id = $xrefTable->load((int)$this->_id);
-			
+
 			// Load the shoppers the product is available to for Custom Shopper Visibility
 			$product->shoppergroups = $this->getProductShoppergroups($this->_id);
 
@@ -601,7 +606,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		return $categories;
 	}
-	
+
 	/**
 	* Load  the product shoppergroups
 	*
@@ -616,7 +621,7 @@ class VirtueMartModelProduct extends VmModel {
 			$this->_db->setQuery($q);
 			$shoppergroups = $this->_db->loadResultArray();
 		}
-		
+
 		return $shoppergroups;
 	}
 
@@ -1024,7 +1029,7 @@ class VirtueMartModelProduct extends VmModel {
 				$this->setError($prices->getError());
 				$ok = false;
 		    }
-		    
+
 			if (!$shop->delete($id)) {
 				$this->setError($shop->getError());
 				$ok = false;
@@ -1086,7 +1091,7 @@ class VirtueMartModelProduct extends VmModel {
 			$q  = "DELETE FROM #__virtuemart_product_categories WHERE virtuemart_product_id = ".$virtuemart_product_id;
 			$this->_db->setQuery($q);
 			$this->_db->query();
-			
+
 			/* Delete shoppers xref */
 			$q  = "DELETE FROM #__virtuemart_product_shoppergroups WHERE virtuemart_product_id = ".$virtuemart_product_id;
 			$this->_db->setQuery($q);

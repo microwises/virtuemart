@@ -39,7 +39,6 @@ class TableProduct_shoppergroups extends VmTableXarray {
 
 		$this->setPrimaryKey('virtuemart_product_id');
 		$this->setSecondaryKey('virtuemart_shoppergroup_id');
-		$this->setOrderable();
 
 	}
 

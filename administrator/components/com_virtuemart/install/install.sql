@@ -757,14 +757,13 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_categories` (
 -- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_product_shoppergroups`
--- 
+--
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_product_shoppergroups` (
   `id` SERIAL,
   `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
   `virtuemart_shoppergroup_id` int(11) NOT NULL DEFAULT '0',
-  `ordering` int(11) DEFAULT NULL,
   UNIQUE KEY `i_virtuemart_product_id` (`virtuemart_product_id`,`virtuemart_shoppergroup_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Maps Products to Categories';
 
