@@ -65,6 +65,16 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		    <tr>
 			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_MANUFACTURERS_EXPLAIN'); ?>">
+			    <label for="show_manufacturers"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_MANUFACTURERS') ?></label>
+			    </span>
+			</td>
+			<td>
+			   <?php echo VmHTML::checkbox('show_manufacturers', $this->config->get('show_manufacturers', 1)); ?>
+			</td>
+		    </tr>
+		    <tr>
+			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORY_LAYOUT_EXPLAIN'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CATEGORY_LAYOUT') ?>
 			    </span>

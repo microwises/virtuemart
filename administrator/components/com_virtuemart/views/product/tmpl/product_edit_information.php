@@ -78,6 +78,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</td>
 			<?php } ?>
 			</tr>
+			<?php if(isset($this->lists['manufacturers'])){?>
 			<tr class="row1">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">
 					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER') ?></div>
@@ -85,7 +86,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<td width="79%">
 					<?php echo $this->lists['manufacturers'];?>
 				</td>
-			</tr>
+			<?php }?>
 			<tr class="row0">
 				<td width="29%" valign="top">
 					<div style="text-align:right;font-weight:bold;">
