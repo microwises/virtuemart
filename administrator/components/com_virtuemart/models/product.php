@@ -164,14 +164,10 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		 $joinShopper = false;
 		    if ($app->isSite()) {
-			$shoppergroup_ids =  (array) $currentVMuser->shopper_groups;
-			$where_groups='';
-			if (  $shoppergroup_ids){
+			$virtuemart_shoppergroup_id =  $currentVMuser->shopper_groups;
+			if (  $virtuemart_shoppergroup_id){
 			    $joinShopper = true;
-			    foreach ($shoppergroup_ids as $groups) {
-				    $where_groups .= 's.`virtuemart_shoppergroup_id`= "' . (int) $groups . '" OR';
-			}
-			$where[] = $where_groups. ' ISNULL(s.`virtuemart_shoppergroup_id`) ';
+				$where[] .= 's.`virtuemart_shoppergroup_id`= "' . (int) $virtuemart_shoppergroup_id . '" OR' . ' ISNULL(s.`virtuemart_shoppergroup_id`) ';
 		    }
 		}
 		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', false );
