@@ -362,6 +362,7 @@ class VirtueMartCart {
 			$product -> product_weight_uom = $tmpProduct -> product_weight_uom;
 			$product -> product_length = $tmpProduct -> product_length;
 			$product -> product_width = $tmpProduct -> product_width;
+			$product -> product_height = $tmpProduct -> product_height;
 			$product -> product_lwh_uom = $tmpProduct -> product_lwh_uom;
 			$product -> product_url = $tmpProduct -> product_url;
 			$product -> product_in_stock = $tmpProduct -> product_in_stock;
