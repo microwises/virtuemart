@@ -2,7 +2,7 @@
 
   var methods = {
 	tabs : function (cookie) {
-		if ($.cookie(cookie) == null) var idx=0;
+		if ($.cookie(cookie) == null || cookie == "product0") var idx=0;
 		else var idx = $.cookie(cookie);
 		if (idx == null) idx=0;
 		var options = { path: '/', expires: 2},
