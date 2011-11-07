@@ -223,11 +223,12 @@ foreach ( $this->products as $product ) {
 						// echo JText::_('COM_VIRTUEMART_TOTAL_VOTES').": ". $product->votes->allvotes; ?>
 						<?php } ?>
 
-
+						<?php if (!VmConfig::get('use_as_catalog')){?>
 						<div class="paddingtop8">
 							<span class="vmicon vm2-<?php echo $product->stock->stock_level ?>" title="<?php echo $product->stock->stock_tip ?>"></span>
 							<span class="stock-level"><?php echo JText::_('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_TITLE_TIP') ?></span>
 						</div>
+						<?php }?>
 				</div>
 
 				<div class="width70 floatright">
