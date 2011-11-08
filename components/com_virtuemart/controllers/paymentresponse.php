@@ -219,7 +219,7 @@ class VirtueMartControllerPaymentresponse extends JController {
 		    //$session = JFactory::getSession($options);
 		    $cart = VirtueMartCart::getCart($options);
 		    // and it means that the customer did not receive the email. So let's send it.
-		    VirtueMartCart::sentOrderConfirmedEmail($orderitems);
+		    //VirtueMartCart::sentOrderConfirmedEmail($orderitems);
 		}
 		$this->emptyCart($return_context); // remove vmcart
 		break; // This was the active plugin, so there's nothing left to do here.
