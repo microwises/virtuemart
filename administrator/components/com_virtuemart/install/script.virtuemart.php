@@ -534,7 +534,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		private function recurse_copy($src,$dst ) {
 
 			$dir = opendir($src);
-			@mkdir($dst);
+			$this->createIndexFolder($dst);
+// 			@mkdir($dst);
 
 			if(is_resource($dir)){
 				while(false !== ( $file = readdir($dir)) ) {
@@ -543,7 +544,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 							$this->recurse_copy($src .DS. $file,$dst .DS. $file);
 						}
 						else {
-							if(JFile::exists($dst .DS. $file) && !JFile::move($src .DS. $file,$dst .DS. $file)){
+							if(!JFile::exists($dst .DS. $file) && !JFile::move($src .DS. $file,$dst .DS. $file)){
 								vmError('Couldnt move '.$src .DS. $file.' to '.$dst .DS. $file);
 							}
 						}
