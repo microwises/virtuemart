@@ -60,7 +60,7 @@ class VirtuemartViewCategory extends JView {
 		$productModel = new VirtueMartModelProduct();
 		//$categoryModel = $this->getModel('category');
 		//$productModel = $this->getModel('product');
-		$categoryId = JRequest::getInt('virtuemart_category_id', 0);
+		$categoryId = JRequest::getInt('virtuemart_category_id', false);
 		$vendorId = 1;
 
 		$category = $categoryModel->getCategory($categoryId);
@@ -123,13 +123,15 @@ class VirtuemartViewCategory extends JView {
 			$product->stock = $productModel->getStockIndicator($product);
 		}
 
+		vmdebug('my count of products '.count($products) );
 //	    $total = $productModel->getTotalProductsInCategory($categoryId);
-	    $total = $categoryModel->countProducts($categoryId);
-	    $this->assignRef('total', $total);
+// 	    $total = $categoryModel->countProducts($categoryId);
+// 	    $this->assignRef('total', $total);
 
-	    $pagination = $productModel->getPagination(true);
+	    $pagination = $productModel->getPagination();
 	    $this->assignRef('pagination', $pagination);
-	    $orderByList = $productModel->getOrderByList();
+
+	    $orderByList = $productModel->getOrderByList($categoryId);
 	    $this->assignRef('orderByList', $orderByList);
 		//$sortOrderButton = $productModel->getsortOrderButton();
 		//$this->assignRef('sortOrder', $sortOrderButton);

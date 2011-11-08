@@ -365,22 +365,24 @@ class VmModel extends JModel {
 			vmdebug('exeSortSearchListQuery '.get_class($this).' with limit');
 		}
 
-// 		vmdebug('my q',$this->_db->getQuery() );
+		vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q ',$this->_db->getQuery() );
+
+
 		if($object == 2){
-			$list = $this->_db->loadResultArray();
+			 $this->ids = $this->_db->loadResultArray();
 		} else if($object == 1 ){
-			$list = $this->_db->loadAssocList();
+			 $this->ids = $this->_db->loadAssocList();
 		} else {
-			$list = $this->_db->loadObjectList();
+			 $this->ids = $this->_db->loadObjectList();
 		}
 		// 			vmdebug('my $list',$list);
-		if(empty($list)){
+		if(empty($this->ids)){
 			$errors = $this->_db->getErrorMsg();
 			if( !empty( $errors)){
 				vmdebug('exeSortSearchListQuery error in db ',$this->_db->getErrorMsg());
 			}
 			if($object == 2 or $object == 1){
-				$list = array();
+				 $this->ids = array();
 			}
 		}
 
@@ -402,7 +404,7 @@ class VmModel extends JModel {
 			$this->_withCount = true;
 		}
 		// 			vmTime('exeSortSearchListQuery SQL_CALC_FOUND_ROWS','exe');
-		return $list;
+		return $this->ids;
 
 	}
 
