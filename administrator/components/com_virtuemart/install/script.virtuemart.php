@@ -145,9 +145,12 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		public function createIndexFolder($path){
 
 			if(JFolder::create($path)) {
-				JFile::copy(JPATH_ROOT.DS.'components'.DS.'index.html', $path .DS. 'index.html');
+				if(!JFile::exists($path .DS. 'index.html')){
+					JFile::copy(JPATH_ROOT.DS.'components'.DS.'index.html', $path .DS. 'index.html');
+				}
+				return true;
 			}
-
+			return false;
 		}
 
 		/**
@@ -303,7 +306,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			}
 			return false;
 		}
-		
+
 		/**
 		*
 		* @author Max Milbers

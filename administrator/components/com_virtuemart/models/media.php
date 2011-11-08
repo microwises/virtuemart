@@ -108,7 +108,24 @@ class VirtueMartModelMedia extends VmModel {
 
 		if(empty($medias)){
 			$data = $this->getTable('medias');
-			$data->load(0);
+
+			//Create empty data
+			$data->virtuemart_media_id = 0;
+			$data->virtuemart_vendor_id = 0;
+			$data->file_title = '';
+			$data->file_description = '';
+			$data->file_meta = '';
+			$data->file_mimetype = '';
+			$data->file_type = '';
+			$data->file_url = '';
+			$data->file_url_thumb = '';
+			$data->published = 0;
+			$data->file_is_downloadable = 0;
+			$data->file_is_forSale = 0;
+			$data->file_is_product_image = 0;
+			$data->shared = 0;
+			$data->file_params = 0;
+
 			$medias[] = VmMediaHandler::createMedia($data,$type,$mime);
 		}
 
