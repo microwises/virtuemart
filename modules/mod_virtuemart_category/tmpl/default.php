@@ -1,6 +1,6 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access');
-JHTML::stylesheet ( 'menucss.css', 'modules/mod_virtuemart_category/css/', false );
+//JHTML::stylesheet ( 'menucss.css', 'modules/mod_virtuemart_category/css/', false );
 
 /* ID for jQuery dropdown */
 $ID = str_replace('.', '_', substr(microtime(true), -8, 8));
