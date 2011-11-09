@@ -172,7 +172,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 	    return '';
 	}
 	$html = '<table class="admintable">' . "\n";
-	$html .= $this->getHtmlRowBE('VMPAYMENT_STANDARD_NAME', $this->getThisPaymentName($_paymethod_id));
+	$html .= $this->getHtmlRowBE('VMPAYMENT_STANDARD_NAME', $paymentTable->payment_name);
 
 	$html .= '</table>' . "\n";
 	return $html;
