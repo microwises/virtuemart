@@ -35,10 +35,9 @@ AdminUIHelper::buildTabs ( $tabarray , $this->carrier->virtuemart_shipmentmethod
 <input type="hidden" name="virtuemart_shipmentmethod_id" value="<?php echo $this->carrier->virtuemart_shipmentmethod_id; ?>" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="xxcontroller" value="shipment" />
-<input type="hidden" name="view" value="shipment" />
+<input type="hidden" name="xxcontroller" value="shipmentmethod" />
+<input type="hidden" name="view" value="shipmentmethod" />
 
 <?php echo JHTML::_('form.token'); ?>
 </form>
     <?php AdminUIHelper::endAdminArea(); ?>
- 

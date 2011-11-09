@@ -97,8 +97,8 @@ AdminUIHelper::startAdminArea();
 </div>
 
 	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="controller" value="shipment" />
-	<input type="hidden" name="view" value="shipment" />
+	<input type="hidden" name="controller" value="shipmentmethod" />
+	<input type="hidden" name="view" value="shipmentmethod" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<?php echo JHTML::_( 'form.token' ); ?>
