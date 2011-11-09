@@ -35,9 +35,9 @@ class TableShipmentcarrier_shoppergroups extends VmTableXarray {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__virtuemart_shipment_shoppergroups', 'id', $db);
+		parent::__construct('#__virtuemart_shipmentmethod_shoppergroups', 'id', $db);
 
-		$this->setPrimaryKey('virtuemart_shipment_id');
+		$this->setPrimaryKey('virtuemart_shipmentmethod_id');
 		$this->setSecondaryKey('virtuemart_shoppergroup_id');
 		//$this->setOrderable();
 

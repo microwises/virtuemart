@@ -572,7 +572,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		}
 		$_orderData->payment_method_id = $_cart->virtuemart_paymentmethod_id;
-		$_orderData->ship_method_id = $_cart->virtuemart_shipment_id;
+		$_orderData->ship_method_id = $_cart->virtuemart_shipmentmethod_id;
 
 		$_filter = JFilterInput::getInstance (array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
 		$_orderData->customer_note = $_filter->clean($_cart->customer_comment);

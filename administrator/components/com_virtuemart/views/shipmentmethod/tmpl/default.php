@@ -58,8 +58,8 @@ AdminUIHelper::startAdminArea();
 			 * @todo Add to database layout published column
 			 */
 			$row->published = 1;
-			$checked = JHTML::_('grid.id', $i, $row->virtuemart_shipment_id);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=shipment&task=edit&cid[]=' . $row->virtuemart_shipment_id);
+			$checked = JHTML::_('grid.id', $i, $row->virtuemart_shipmentmethod_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=shipment&task=edit&cid[]=' . $row->virtuemart_shipmentmethod_id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td width="10">

@@ -113,7 +113,7 @@ class VirtueMartViewCart extends JView {
 			$this->assignRef('checkout_task', $checkout_task);
 			$this->checkPaymentMethodsConfigured();
 			$this->checkShipmentMethodsConfigured();
-			if ($cart->virtuemart_shipment_id) {
+			if ($cart->virtuemart_shipmentmethod_id) {
 				$this->assignRef('select_shipment_text', JText::_('COM_VIRTUEMART_CART_CHANGE_SHIPPING'));
 			} else {
 				$this->assignRef('select_shipment_text', JText::_('COM_VIRTUEMART_CART_EDIT_SHIPPING'));
@@ -213,7 +213,7 @@ class VirtueMartViewCart extends JView {
 			$this->assignRef('found_shipment_method', $found_shipment_method);
 			return;
 		}
-		$selectedShipment = (empty($this->cart->virtuemart_shipment_id) ? 0 : $this->cart->virtuemart_shipment_id);
+		$selectedShipment = (empty($this->cart->virtuemart_shipmentmethod_id) ? 0 : $this->cart->virtuemart_shipmentmethod_id);
 		if (!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipmentplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
 		$dispatcher = JDispatcher::getInstance();

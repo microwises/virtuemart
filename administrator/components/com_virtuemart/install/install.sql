@@ -1047,7 +1047,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vmusers` (
   `customer_number` varchar(32) DEFAULT NULL,
   `perms` varchar(40) NOT NULL DEFAULT 'shopper',
   `virtuemart_paymentmethod_id` int NOT NULL DEFAULT '0',
-  `virtuemart_shipment_id` int NOT NULL DEFAULT '0',
+  `virtuemart_shipmentmethod_id` int NOT NULL DEFAULT '0',
   `agreed` tinyint(1) NOT NULL DEFAULT '0',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT 0,

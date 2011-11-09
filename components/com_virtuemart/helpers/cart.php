@@ -40,7 +40,7 @@ class VirtueMartCart {
 	//todo multivendor stuff must be set in the add function, first product determins ownership of cart, or a fixed vendor is used
 	var $vendorId = 1;
 	var $lastVisitedCategoryId = 0;
-	var $virtuemart_shipment_id = 0;
+	var $virtuemart_shipmentmethod_id = 0;
 	var $virtuemart_paymentmethod_id = 0;
 	var $automaticSelectedShipment = false;
 	var $automaticSelectedPayment  = false;
@@ -102,7 +102,7 @@ class VirtueMartCart {
 				// 		echo '<pre>'.print_r($products,1).'</pre>';die;
 				self::$_cart->vendorId	 							= $cartData->vendorId;
 				self::$_cart->lastVisitedCategoryId	 			= $cartData->lastVisitedCategoryId;
-				self::$_cart->virtuemart_shipment_id	= $cartData->virtuemart_shipment_id;
+				self::$_cart->virtuemart_shipmentmethod_id	= $cartData->virtuemart_shipmentmethod_id;
 				self::$_cart->virtuemart_paymentmethod_id 	= $cartData->virtuemart_paymentmethod_id;
 				self::$_cart->automaticSelectedShipment 		= $cartData->automaticSelectedShipment;
 				self::$_cart->automaticSelectedPayment 		= $cartData->automaticSelectedPayment;
@@ -169,8 +169,8 @@ class VirtueMartCart {
 			}
 		}
 
-		if (empty($this->virtuemart_shipment_id) && !empty($user->virtuemart_shipment_id)) {
-			$this->virtuemart_shipment_id = $user->virtuemart_shipment_id;
+		if (empty($this->virtuemart_shipmentmethod_id) && !empty($user->virtuemart_shipmentmethod_id)) {
+			$this->virtuemart_shipmentmethod_id = $user->virtuemart_shipmentmethod_id;
 		}
 
 		if (empty($this->virtuemart_paymentmethod_id) && !empty($user->virtuemart_paymentmethod_id)) {
@@ -220,7 +220,7 @@ class VirtueMartCart {
 		// 		echo '<pre>'.print_r($products,1).'</pre>';die;
 		$sessionCart->vendorId	 							= $this->vendorId;
 		$sessionCart->lastVisitedCategoryId	 			= $this->lastVisitedCategoryId;
-		$sessionCart->virtuemart_shipment_id	= $this->virtuemart_shipment_id;
+		$sessionCart->virtuemart_shipmentmethod_id	= $this->virtuemart_shipmentmethod_id;
 		$sessionCart->virtuemart_paymentmethod_id 	= $this->virtuemart_paymentmethod_id;
 		$sessionCart->automaticSelectedShipment 		= $this->automaticSelectedShipment;
 		$sessionCart->automaticSelectedPayment 		= $this->automaticSelectedPayment;
@@ -724,7 +724,7 @@ class VirtueMartCart {
 		array('cart' => $this, '_selectedShipment' => $shipment_id));
 		foreach ($retValues as $retVal) {
 			if ($retVal === true) {
-				$this->virtuemart_shipment_id = $shipment_id;
+				$this->virtuemart_shipmentmethod_id = $shipment_id;
 				$this->setCartIntoSession();
 				break; // Plugin completed succesful; nothing else to do
 			} elseif ($retVal === false) {
@@ -735,7 +735,7 @@ class VirtueMartCart {
 			}
 		}
 
-		//$this->virtuemart_shipment_id=$shipment_id;
+		//$this->virtuemart_shipmentmethod_id=$shipment_id;
 	}
 
 	public function setPaymentMethod($virtuemart_paymentmethod_id) {
@@ -817,7 +817,7 @@ class VirtueMartCart {
 		}
 
 		//Test Shipment and show shipment plugin
-		if (empty($this->virtuemart_shipment_id)) {
+		if (empty($this->virtuemart_shipmentmethod_id)) {
 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $redirectMsg);
 		} else {
 			if (!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipmentplugin.php');
@@ -1221,7 +1221,7 @@ class VirtueMartCart {
 	function CheckAutomaticSelectedShipment() {
 
 		$nbShipment = 0;
-		$virtuemart_shipment_id=0;
+		$virtuemart_shipmentmethod_id=0;
 		if (!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipmentplugin.php');
 
 		JPluginHelper::importPlugin('vmshipment');
@@ -1231,11 +1231,11 @@ class VirtueMartCart {
 			foreach ($returnValues as $returnValue) {
 				if ((int) $returnValue ) {
 					$nbShipment ++;
-					if ($returnValue) $virtuemart_shipment_id = $returnValue;
+					if ($returnValue) $virtuemart_shipmentmethod_id = $returnValue;
 				}
 			}
-			if ($nbShipment==1 && $virtuemart_shipment_id) {
-				$this->virtuemart_shipment_id = $virtuemart_shipment_id;
+			if ($nbShipment==1 && $virtuemart_shipmentmethod_id) {
+				$this->virtuemart_shipmentmethod_id = $virtuemart_shipmentmethod_id;
 				$this->automaticSelectedShipment=true;
 				$this->setCartIntoSession();
 				return true;
@@ -1295,7 +1295,7 @@ class VirtueMartCart {
 	* @author Valerie Isaksen
 	*/
 	function CheckShipmentIsValid() {
-		if ($this->virtuemart_shipment_id===0)
+		if ($this->virtuemart_shipmentmethod_id===0)
 		return;
 		$shipmentValid = false;
 		if (!class_exists('vmShipmentPlugin'))	require(JPATH_VM_PLUGINS . DS . 'vmshipmentplugin.php');
@@ -1307,7 +1307,7 @@ class VirtueMartCart {
 			$shipmentValid += $returnValue;
 		}
 		if (!$shipmentValid) {
-			$this->virtuemart_shipment_id = 0;
+			$this->virtuemart_shipmentmethod_id = 0;
 			$this->setCartIntoSession();
 		}
 	}

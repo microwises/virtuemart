@@ -114,7 +114,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 		$vendorId = 1;
 		$db = JFactory::getDBO();
 
-		$q = 'SELECT   `shipment_params` FROM #__virtuemart_shipmentmethods WHERE `virtuemart_shipment_id` = "' . $shipment_id . '" AND `virtuemart_vendor_id` = "' . $vendorId . '" AND `published`="1" ';
+		$q = 'SELECT   `shipment_params` FROM #__virtuemart_shipmentmethods WHERE `virtuemart_shipmentmethod_id` = "' . $shipment_id . '" AND `virtuemart_vendor_id` = "' . $vendorId . '" AND `published`="1" ';
 		$db->setQuery($q);
 		return $db->loadResult();
 	}
@@ -145,7 +145,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 		$db = JFactory::getDBO();
 
 		$q = 'SELECT * FROM #__virtuemart_shipmentmethods
-        		WHERE `virtuemart_shipment_id`="' . $shipment_id . '" AND `shipment_element` = "'.$this->_pelement.'"';
+        		WHERE `virtuemart_shipmentmethod_id`="' . $shipment_id . '" AND `shipment_element` = "'.$this->_pelement.'"';
 
 		$db->setQuery($q);
 		return  $db->loadObject();
@@ -185,7 +185,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 
 		$q.= 'LEFT JOIN ' . $extPlgTable . ' as j ON j.`' . $extField1 . '` =  v.`shipment_jplugin_id` ';
 
-		$q.= 'LEFT OUTER JOIN #__virtuemart_shipment_shoppergroups AS s ON v.`virtuemart_shipment_id` = s.`virtuemart_shipment_id` ';
+		$q.= 'LEFT OUTER JOIN #__virtuemart_shipmentmethod_shoppergroups AS s ON v.`virtuemart_shipmentmethod_id` = s.`virtuemart_shipmentmethod_id` ';
 
 		$q.= ' WHERE v.`published` = "1"  AND j.`' . $extField2 . '` = "' . $this->_pelement . '"
 					AND  (v.`virtuemart_vendor_id` = "' . $vendorId . '" OR   v.`virtuemart_vendor_id` = "0")
@@ -600,7 +600,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 			$q = 'SELECT COUNT(*) AS c '
 			. 'FROM #__virtuemart_shipmentmethods AS vm '
 			. ',    #__plugins AS j '
-			. "WHERE vm.virtuemart_shipment_id = '$sid' "
+			. "WHERE vm.virtuemart_shipmentmethod_id = '$sid' "
 			. 'AND   vm.shipment_jplugin_id = j.id '
 			. "AND   j.element = '$pelement'";
 		} else {
@@ -608,7 +608,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 			. 'FROM #__virtuemart_shipmentmethods AS vm '
 			. ',      #__extensions    AS      j '
 			. 'WHERE j.`folder` = "vmshipment" '
-			. "AND vm.virtuemart_shipment_id = '$sid' "
+			. "AND vm.virtuemart_shipmentmethod_id = '$sid' "
 			. 'AND   vm.shipment_jplugin_id = j.extension_id '
 			. "AND   j.element = '$pelement'";
 		}
@@ -620,16 +620,16 @@ abstract class vmShipmentPlugin extends vmPlugin {
 
 	/*
 	 * ShipmentSelected
-	* @param int $virtuemart_shipment_id
+	* @param int $virtuemart_shipmentmethod_id
 	* return $shipment if found
 	* return null otherwise
 	*
 	* @author Valérie Isaksen
 	*/
 
-	function ShipmentSelected($virtuemart_shipment_id) {
+	function ShipmentSelected($virtuemart_shipmentmethod_id) {
 		foreach ($this->shipments as $shipment) {
-			if ($shipment->virtuemart_shipment_id == $virtuemart_shipment_id) {
+			if ($shipment->virtuemart_shipmentmethod_id == $virtuemart_shipmentmethod_id) {
 				return $shipment;
 			}
 		}
@@ -643,11 +643,11 @@ abstract class vmShipmentPlugin extends vmPlugin {
 	 * @author Valérie Isaksen
 	 * @return string Shipment name
 	 */
-	final protected function getThisShipmentName($virtuemart_shipment_id) {
+	final protected function getThisShipmentName($virtuemart_shipmentmethod_id) {
 		$db = JFactory::getDBO();
 		$q = 'SELECT `shipment_name` '
 		. 'FROM #__virtuemart_shipmentmethods '
-		. "WHERE virtuemart_shipment_id ='$virtuemart_shipment_id' ";
+		. "WHERE virtuemart_shipmentmethod_id ='$virtuemart_shipmentmethod_id' ";
 		$db->setQuery($q);
 		return $db->loadResult(); // TODO Error check
 	}
@@ -712,11 +712,11 @@ abstract class vmShipmentPlugin extends vmPlugin {
 
 	public function plgVmOnShipmentSelectedCalculatePrice(VirtueMartCart $cart, array $cart_prices, $shipment_name) {
 
-		if (!$this->selectedThisShipment($this->_pelement, $cart->virtuemart_shipment_id)) {
+		if (!$this->selectedThisShipment($this->_pelement, $cart->virtuemart_shipmentmethod_id)) {
 			return null; // Another shipment was selected, do nothing
 		}
 
-		$shipment = $this->getthisShipmentData($cart->virtuemart_shipment_id);
+		$shipment = $this->getthisShipmentData($cart->virtuemart_shipmentmethod_id);
 		if (!$shipment) {
 			return null;
 		}
@@ -751,11 +751,11 @@ abstract class vmShipmentPlugin extends vmPlugin {
 	function plgVmOnCheckAutomaticSelectedShipment(VirtueMartCart $cart) {
 
 		$nbShipment = 0;
-		$virtuemart_shipment_id = 0;
-		$nbShipment = $this->getSelectableShipment($cart, $virtuemart_shipment_id);
+		$virtuemart_shipmentmethod_id = 0;
+		$nbShipment = $this->getSelectableShipment($cart, $virtuemart_shipmentmethod_id);
 		if ($nbShipment == null)
 		return null;
-		return ($nbShipment == 1) ? $virtuemart_shipment_id : 0;
+		return ($nbShipment == 1) ? $virtuemart_shipmentmethod_id : 0;
 	}
 
 	/*
@@ -765,14 +765,14 @@ abstract class vmShipmentPlugin extends vmPlugin {
 	*/
 
 	function CheckShipmentIsValid(VirtueMartCart $cart) {
-		if (!$this->selectedThisShipment($this->_pelement, $cart->virtuemart_shipment_id)) {
+		if (!$this->selectedThisShipment($this->_pelement, $cart->virtuemart_shipmentmethod_id)) {
 			return null; // Another shipment was selected, do nothing
 		}
-		$shipment = $this->getThisShipmentData($cart->virtuemart_shipment_id);
+		$shipment = $this->getThisShipmentData($cart->virtuemart_shipmentmethod_id);
 		return $this->checkShipmentConditions($cart, $shipment);
 	}
 
-	function getParamShipments(VirtueMartCart $cart, &$nbShipment, &$virtuemart_shipment_id, $selectedShipment=0) {
+	function getParamShipments(VirtueMartCart $cart, &$nbShipment, &$virtuemart_shipmentmethod_id, $selectedShipment=0) {
 		return null;
 	}
 
@@ -780,11 +780,11 @@ abstract class vmShipmentPlugin extends vmPlugin {
 	 * getSelectableShipment
 	* This method returns the number of shipment methods valid
 	* @param VirtueMartCart cart: the cart object
-	* @param $virtuemart_shipment_id
+	* @param $virtuemart_shipmentmethod_id
 	*
 	*/
 
-	function getSelectableShipment(VirtueMartCart $cart, &$virtuemart_shipment_id) {
+	function getSelectableShipment(VirtueMartCart $cart, &$virtuemart_shipmentmethod_id) {
 		$nbShipment = 0;
 		if ($this->getShipments($cart->vendorId) === false) {
 			return false;
@@ -793,7 +793,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 		foreach ($this->shipments as $shipment) {
 			if ($this->checkShipmentConditions($cart, $shipment)) {
 				$nbShipment++;
-				$virtuemart_shipment_id = $shipment->virtuemart_shipment_id;
+				$virtuemart_shipmentmethod_id = $shipment->virtuemart_shipmentmethod_id;
 			}
 		}
 		return $nbShipment;
@@ -821,14 +821,14 @@ abstract class vmShipmentPlugin extends vmPlugin {
 	/**
 	 * Get Shipment Data for a go given Shipment ID
 	 * @author Valérie Isaksen
-	 * @param int $virtuemart_shipment_id The Shipment ID
+	 * @param int $virtuemart_shipmentmethod_id The Shipment ID
 	 * @return  Shipment data
 	 */
-	final protected function getThisShipmentData($virtuemart_shipment_id) {
+	final protected function getThisShipmentData($virtuemart_shipmentmethod_id) {
 		$db = JFactory::getDBO();
 		$q = 'SELECT * '
 		. 'FROM #__virtuemart_shipmentmethods '
-		. "WHERE `virtuemart_shipment_id` ='" . $virtuemart_shipment_id . "' ";
+		. "WHERE `virtuemart_shipmentmethod_id` ='" . $virtuemart_shipmentmethod_id . "' ";
 		$db->setQuery($q);
 		$result = $db->loadObject();
 		return $result;
@@ -839,7 +839,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 	*/
 
 	protected function getShipmentHtml($shipment, $selectedShipment, $shipmentSalesPrice) {
-		if ($selectedShipment == $shipment->virtuemart_shipment_id) {
+		if ($selectedShipment == $shipment->virtuemart_shipmentmethod_id) {
 			$checked = 'checked';
 		} else {
 			$checked = '';
@@ -850,8 +850,8 @@ abstract class vmShipmentPlugin extends vmPlugin {
 		$currency = CurrencyDisplay::getInstance();
 
 		$shipmentCostDisplay = $currency->priceDisplay($shipmentSalesPrice);
-		$html = '<input type="radio" name="shipment_id" id="shipment_id_' . $shipment->virtuemart_shipment_id . '" value="' . $shipment->virtuemart_shipment_id . '" ' . $checked . '>'
-		. '<label for="shipment_id_' . $shipment->virtuemart_shipment_id . '">' . $shipment->shipment_name . " (" . $shipmentCostDisplay . ")</label>\n";
+		$html = '<input type="radio" name="shipment_id" id="shipment_id_' . $shipment->virtuemart_shipmentmethod_id . '" value="' . $shipment->virtuemart_shipmentmethod_id . '" ' . $checked . '>'
+		. '<label for="shipment_id_' . $shipment->virtuemart_shipmentmethod_id . '">' . $shipment->shipment_name . " (" . $shipmentCostDisplay . ")</label>\n";
 		return $html;
 	}
 

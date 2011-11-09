@@ -31,7 +31,7 @@ if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmta
 class TableShipments extends VmTable {
 
 	/** @var int Primary key */
-	var $virtuemart_shipment_id			= 0;
+	var $virtuemart_shipmentmethod_id			= 0;
         /** @var int Vendor ID */
 	var $virtuemart_vendor_id		= 0;
         /** @var int Shipment Joomla plugin I */
@@ -60,7 +60,7 @@ class TableShipments extends VmTable {
      * @param $db A database connector object
      */
     function __construct(&$db) {
-		parent::__construct('#__virtuemart_shipmentmethods', 'virtuemart_shipment_id', $db);
+		parent::__construct('#__virtuemart_shipmentmethods', 'virtuemart_shipmentmethod_id', $db);
 		// we can have several time the same shipment name. It is the vendor problem to set up correctly his shipment rate.
 		//$this->setUniqueName('shipment_name');
 		$this->setObligatoryKeys('shipment_jplugin_id');

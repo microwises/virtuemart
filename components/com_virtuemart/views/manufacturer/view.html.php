@@ -48,7 +48,7 @@ class VirtuemartViewManufacturer extends JView {
 			$manufacturer = $model->getManufacturer();
 			$model->addImages($manufacturer);
 
-$manufacturerImage = $manufacturer->images[0]->displayMediaThumb('class="manufacturer-image"',false);
+			$manufacturerImage = $manufacturer->images[0]->displayMediaThumb('class="manufacturer-image"',false);
 
 			$document->setTitle(JText::_('COM_VIRTUEMART_MANUFACTURER_DETAILS').' '.strip_tags($manufacturer->mf_name));
 

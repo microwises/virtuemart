@@ -428,7 +428,7 @@ class calculationHelper {
 		$this->_cartData['dBTaxRulesBill'] = $dBTaxRules = $this->gatherEffectingRulesForBill('DBTaxBill');
 		//		$cBRules = $this->gatherEffectingRulesForCoupon($couponId);
 		//
-		$shipment_id = empty($cart->virtuemart_shipment_id) ? 0 : $cart->virtuemart_shipment_id;
+		$shipment_id = empty($cart->virtuemart_shipmentmethod_id) ? 0 : $cart->virtuemart_shipmentmethod_id;
 
 		//$this->calculateShipmentPrice($cart, $shipmentRateId);
 		$this->calculateShipmentPrice($cart,  $shipment_id);
@@ -766,7 +766,7 @@ class calculationHelper {
 			// check if there is only one possible shipment method
 
 			$automaticSelectedShipment =   $cart->CheckAutomaticSelectedShipment( );
-			if ($automaticSelectedShipment) $ship_id=$cart->virtuemart_shipment_id;
+			if ($automaticSelectedShipment) $ship_id=$cart->virtuemart_shipmentmethod_id;
 			if (empty($ship_id)) return;
 
 			// Handling shipment plugins
@@ -786,7 +786,7 @@ class calculationHelper {
 				    $shipmentValid += $returnValue;
 			 }
 			 if (!$shipmentValid) {
-				    $cart->virtuemart_shipment_id = 0;
+				    $cart->virtuemart_shipmentmethod_id = 0;
 				    $cart->setCartIntoSession();
 			 }
 

@@ -67,7 +67,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			}
 // 			if(!empty($this->_id)){
 				/* Add the shipmentcarreir shoppergroups */
-				$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shipment_shoppergroups WHERE `virtuemart_shipment_id` = "'.$this->_id.'"';
+				$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shipmentmethod_shoppergroups WHERE `virtuemart_shipmentmethod_id` = "'.$this->_id.'"';
 				$this->_db->setQuery($q);
 				$this->_data->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();#
 				if(empty($this->_data->virtuemart_shoppergroup_ids)) $this->_data->virtuemart_shoppergroup_ids = 0;
@@ -106,12 +106,12 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 			foreach ($this->_data as $data){
 				/* Add the shipment shoppergroups */
-				$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shipment_shoppergroups WHERE `virtuemart_shipment_id` = "'.$data->virtuemart_shipment_id.'"';
+				$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shipmentmethod_shoppergroups WHERE `virtuemart_shipmentmethod_id` = "'.$data->virtuemart_shipmentmethod_id.'"';
 				$this->_db->setQuery($q);
 				$data->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
 
 				/* Write the first 5 shoppergroups in the list */
-				$data->shipmentShoppersList = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_shipment_shoppergroups','virtuemart_shipment_id',$data->virtuemart_shipment_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','shoppergroup');
+				$data->shipmentShoppersList = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_shipmentmethod_shoppergroups','virtuemart_shipmentmethod_id',$data->virtuemart_shipmentmethod_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','shoppergroup');
 
 
 			}
@@ -169,7 +169,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 		foreach($errors as $error){
 			$this->setError($error);
 		}
-		return $table->virtuemart_shipment_id;
+		return $table->virtuemart_shipmentmethod_id;
 	}
 
 }
