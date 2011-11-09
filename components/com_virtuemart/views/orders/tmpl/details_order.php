@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?></td>
 		<td align="left"><?php
-		echo $this->shipping;
+		echo $this->shipment;
 		?></td>
 	</tr>
 	<tr>
@@ -62,11 +62,11 @@ defined('_JEXEC') or die('Restricted access');
 
 	<tr>
 		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?></td>
-		<td align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_shipping); ?></td>
+		<td align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_shipment); ?></td>
 	</tr>
        	<tr>
 		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_TAX') ?></td>
-		<td align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_shipping_tax); ?></td>
+		<td align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_shipment_tax); ?></td>
 	</tr>
 <tr>
 		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT') ?></td>

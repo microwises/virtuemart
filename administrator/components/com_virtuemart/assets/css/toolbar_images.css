@@ -35,8 +35,8 @@
 .vm_product_files_48{ background-position: 0 -1058px !important; height: 48px; } 
 .vm_report_48{ background-position: 0 -1106px !important; height: 48px; } 
 .vm_ratings_48{ background-position: 0 -1154px !important; height: 48px; } 
-.vm_shipping_48{ background-position: 0 -1202px !important; height: 48px; } 
-.vm_shipping_rates_48{ background-position: 0 -1250px; width: 56px !important; height: 42px; } 
+.vm_shipment_48{ background-position: 0 -1202px !important; height: 48px; } 
+.vm_shipment_rates_48{ background-position: 0 -1250px; width: 56px !important; height: 42px; } 
 .vm_shop_categories_48{ background-position: 0 -1292px !important; height: 48px; } 
 .vm_shop_configuration_48{ background-position: 0 -1340px !important; height: 48px; } 
 .vm_shop_help_48{ background-position: 0 -1388px !important; height: 48px; } 
@@ -49,6 +49,6 @@
 .vm_usergroup_48{ background-position: 0 -1724px !important; height: 48px; } 
 .vm_store_48{ background-position: 0 -1772px !important; height: 48px; } 
 .vm_tax_48{ background-position: 0 -1820px !important; height: 48px; } 
-.vm_shippingcarrier_48{ background-position: 0 -1868px !important; height: 48px; } 
+.vm_shipment_48{ background-position: 0 -1868px !important; height: 48px; } 
 .vm_user_48{ background-position: 0 -1916px !important; height: 48px; } 
 

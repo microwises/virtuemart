@@ -50,13 +50,13 @@ class TableOrders extends VmTable {
 	var $order_tax = 0.00000;
 	/** @var text Serialized tax details */
 	var $order_tax_details = null;
-	/** @var decimal Shipping costs */
-	var $order_shipping = 0.00000;
-	/** @var decimal Shipping cost tax */
-	var $order_shipping_tax = 0.00000;
-	/** @var decimal Shipping costs */
+	/** @var decimal Shipment costs */
+	var $order_shipment = 0.00000;
+	/** @var decimal Shipment cost tax */
+	var $order_shipment_tax = 0.00000;
+	/** @var decimal Shipment costs */
 	var $order_payment = 0.00000;
-	/** @var decimal Shipping cost tax */
+	/** @var decimal Shipment cost tax */
 	var $order_payment_tax = 0.00000;
 	/** @var decimal Coupon value */
 	var $coupon_discount = 0.00000;
@@ -74,7 +74,7 @@ class TableOrders extends VmTable {
 	var $user_currency_rate = NULL;
 	/** @var int Payment method ID */
 	var $payment_method_id = NULL;
-	/** @var int Shipping method ID */
+	/** @var int Shipment method ID */
 	var $ship_method_id = NULL;
 	/** @var text Customer note */
 	var $customer_note = 0;

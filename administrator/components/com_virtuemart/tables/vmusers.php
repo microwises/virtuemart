@@ -38,7 +38,7 @@ if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'
 	var $customer_number 		= 0;
 	var $perms					= 0;
 	var $virtuemart_paymentmethod_id = 0;
-	var $virtuemart_shippingcarrier_id = 0;
+	var $virtuemart_shipment_id = 0;
 	var $agreed					= 0;
 
 

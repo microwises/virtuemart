@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 							</span>
 						</td>
 						<td>
-							<?php echo VmHTML::checkbox('automatic_shipping', $this->config->get('automatic_shipping')); ?>
+							<?php echo VmHTML::checkbox('automatic_shipment', $this->config->get('automatic_shipment')); ?>
 						</td>
 					</tr>
                                          <tr>

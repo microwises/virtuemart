@@ -124,7 +124,7 @@ class VirtuemartViewUser extends JView {
 			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->virtuemart_vendor_id);
 			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
 
-			// Shipping address(es)
+			// Shipment address(es)
 			$lists['shipTo'] = ShopFunctions::generateStAddressList($model,'addST');
 
 			$new = false;

@@ -44,7 +44,7 @@ class VirtuemartViewOrders extends JView {
 
 //		require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpaymentplugin.php');
-		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_PLUGINS.DS.'vmshipperplugin.php');
+		if(!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmshipmentplugin.php');
 		if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
 
 		// Load addl models
@@ -73,11 +73,11 @@ class VirtuemartViewOrders extends JView {
 				,$orderbt
 		);
 		$_userFields = $userFieldsModel->getUserFields(
-				 'shipping'
+				 'shipment'
 				, array() // Default switches
 				, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
 		);
-		$shippingfields = $userFieldsModel->getUserFieldsFilled(
+		$shipmentfields = $userFieldsModel->getUserFieldsFilled(
 				 $_userFields
 				,$orderst
 		);
@@ -111,13 +111,13 @@ class VirtuemartViewOrders extends JView {
 				}
 			}
 		} */
-		//$_shippingInfo = ShopFunctions::getShippingRateDetails($orderbt->ship_method_id);
+		//$_shipmentInfo = ShopFunctions::getShipmentRateDetails($orderbt->ship_method_id);
 
 		/* Assign the data */
 		$this->assignRef('order', $order);
 		$this->assignRef('orderNumber', $orderNumber);
 		$this->assignRef('userfields', $userfields);
-		$this->assignRef('shippingfields', $shippingfields);
+		$this->assignRef('shipmentfields', $shipmentfields);
 		$this->assignRef('orderstatuslist', $_orderStatusList);
 		$this->assignRef('orderbt', $orderbt);
 		$this->assignRef('orderst', $orderst);

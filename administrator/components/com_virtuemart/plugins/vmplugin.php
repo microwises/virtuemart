@@ -33,7 +33,6 @@ abstract class vmPlugin extends JPlugin {
 	// just as note: protected can be accessed only within the class itself and by inherited and parent classes
 
 	protected $_pelement = '';
-	protected $_vmplugin = '';
 	protected $_tablename = '';
 	protected $_debug = false;
 
@@ -51,126 +50,6 @@ abstract class vmPlugin extends JPlugin {
 		$lang->load($filename, JPATH_ADMINISTRATOR);
 		if (!class_exists('JParameter')) require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
 		parent::__construct($subject, $config);
-	}
-
-	function getDebug() {
-		return $this->_debug;
-	}
-
-	function setDebug($params) {
-		return $this->_debug = $params->get('debug');
-	}
-	/*
-	 * logPaymentInfo
-	* to help debugging Payment notification
-	*/
-
-	public function logInfo($text, $type = 'message') {
-
-		if ($this->_debug) {
-			$file = JPATH_ROOT . "/logs/" . $this->_pelement . ".log";
-			$date = JFactory::getDate();
-
-			$fp = fopen($file, 'a');
-			fwrite($fp, "\n\n" . $date->toFormat('%Y-%m-%d %H:%M:%S'));
-			fwrite($fp, "\n" . $type . ': ' . $text);
-			fclose($fp);
-		}
-	}
-
-	/*
-	 * Something went wrong, Send notification to all administrators
-	* @param string subject of the mail
-	* @param string message
-	*/
-
-	public function sendEmailToVendorAndAdmins($subject, $message) {
-		// recipient is vendor and admin
-		$vendorId = 1;
-		if (!class_exists('VirtueMartModelVendor'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-		$vendorModel = new VirtueMartModelVendor();
-		$vendorEmail = $vendorModel->getVendorEmail($vendorId);
-		$vendorName = $vendorModel->getVendorName($vendorId);
-		JUtility::sendMail($vendorEmail, $vendorName, $vendorEmail, $subject, $message);
-		if (VmConfig::isJ15()) {
-			//get all super administrator
-			$query = 'SELECT name, email, sendEmail' .
-		    ' FROM #__users' .
-		    ' WHERE LOWER( usertype ) = "super administrator"';
-		} else {
-			$query = 'SELECT name, email, sendEmail' .
-		    ' FROM #__users' .
-		    ' WHERE sendEmail=1';
-		}
-		$db = JFactory::getDBO();
-		$db->setQuery($query);
-		$rows = $db->loadObjectList();
-
-		$subject = html_entity_decode($subject, ENT_QUOTES);
-
-		// get superadministrators id
-		foreach ($rows as $row) {
-			if ($row->sendEmail) {
-				$message = html_entity_decode($message, ENT_QUOTES);
-				JUtility::sendMail($vendorEmail, $vendorName, $row->email, $subject, $message);
-			}
-		}
-	}
-
-	/**
-	 * displays the logos of a VirtueMart plugin
-	 *
-	 * @author Valerie Isaksen
-	 * @author Max Milbers
-	 * @param array $logo_list
-	 * @return html with logos
-	 */
-	public function displayLogos($logo_list) {
-
-		$img = "";
-
-		if (!(empty($logo_list))) {
-			$url = JURI::root() . 'images/stories/virtuemart/' . $this->_vmplugin . '/';
-			if (!is_array($logo_list))
-			$logo_list = (array) $logo_list;
-			foreach ($logo_list as $logo) {
-				$alt_text = substr($logo, 0, strpos($logo, '.'));
-				$img .= '<img align="middle" src="' . $url . $logo . '"  alt="' . $alt_text . '" /> ';
-			}
-		}
-		return $img;
-	}
-
-	function getHtmlHeaderBE() {
-		$class = "class='key'";
-		$html = ' 	<thead>' . "\n"
-		. '		<tr>' . "\n"
-		. '			<td ' . $class . ' style="text-align: center;" colspan="2">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_' . $this->_vmplugin . '_LBL') . '</td>' . "\n"
-		. '		</tr>' . "\n"
-		. '	</thead>' . "\n";
-
-		return $html;
-	}
-
-	function getHtmlRow($key, $value, $class='') {
-		$lang = & JFactory::getLanguage();
-		$key_text = '';
-		$complete_key = 'VM' . $this->_vmplugin . '_' . $key;
-		// vmdebug('getHtmlRow',$key,$complete_key);
-		if ($lang->hasKey($complete_key)) {
-			$key_text = JText::_($complete_key);
-		}
-		$more_key = 'VM' . $this->_vmplugin . '_' . $key . '_' . $value;
-		if ($lang->hasKey($more_key)) {
-			$value .=" (" . JText::_($more_key) . ")";
-		}
-		$html = "<tr>\n<td " . $class . ">" . $key_text . "</td>\n <td align='left'>" . $value . "</td>\n</tr>\n";
-		return $html;
-	}
-
-	function getHtmlRowBE($key, $value) {
-		return $this->getHtmlRow($key, $value, "class='key'");
 	}
 
 

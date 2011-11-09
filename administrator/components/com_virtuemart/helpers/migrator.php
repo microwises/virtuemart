@@ -1151,8 +1151,8 @@ class Migrator extends VmModel{
 					$orderData->order_subtotal = $order['order_subtotal'];
 					$orderData->order_tax = $order['order_tax'];
 					$orderData->order_tax_details = null; // TODO What's this?? Which data needs to be serialized?  I dont know also
-					$orderData->order_shipping = $order['order_shipping'];
-					$orderData->order_shipping_tax = $order['order_shipping_tax'];
+					$orderData->order_shipment = $order['order_shipment'];
+					$orderData->order_shipment_tax = $order['order_shipment_tax'];
 					if(!empty($_cart->couponCode)){
 						$orderData->coupon_code = $order['coupon_code'];
 						$orderData->coupon_discount = $order['coupon_discount'];

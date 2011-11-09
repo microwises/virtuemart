@@ -1,10 +1,10 @@
 <?php
 /**
 *
-* shippingcarrier_shoppergroups table ( for media)
+* shipment_shoppergroups table ( for media)
 *
 * @package	VirtueMart
-* @subpackage Shippingcarriers_shoppergraoups
+* @subpackage Shipmentcarriers_shoppergraoups
 * @author Max Milbers
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -21,13 +21,13 @@ defined('_JEXEC') or die();
 if(!class_exists('VmTableXarray'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtablexarray.php');
 
 /**
- * shippingcarrier_shoppergroups table class
- * The class is is used to manage the shopper groups with shipping.
+ * shipment_shoppergroups table class
+ * The class is is used to manage the shopper groups with shipment.
  *
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TableShippingcarrier_shoppergroups extends VmTableXarray {
+class TableShipmentcarrier_shoppergroups extends VmTableXarray {
 
 
 	/**
@@ -35,9 +35,9 @@ class TableShippingcarrier_shoppergroups extends VmTableXarray {
 	 * @param $db A database connector object
 	 */
 	function __construct(&$db){
-		parent::__construct('#__virtuemart_shippingcarrier_shoppergroups', 'id', $db);
+		parent::__construct('#__virtuemart_shipment_shoppergroups', 'id', $db);
 
-		$this->setPrimaryKey('virtuemart_shippingcarrier_id');
+		$this->setPrimaryKey('virtuemart_shipment_id');
 		$this->setSecondaryKey('virtuemart_shoppergroup_id');
 		//$this->setOrderable();
 

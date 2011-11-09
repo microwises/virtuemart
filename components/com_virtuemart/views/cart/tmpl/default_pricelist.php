@@ -178,7 +178,7 @@
 		<?php
 			$i = 1 ? 2 : 1;
 		} ?>
-		<!--Begin of SubTotal, Tax, Shipping, Coupon Discount and Total listing -->
+		<!--Begin of SubTotal, Tax, Shipment, Coupon Discount and Total listing -->
                   <?php if ( VmConfig::get('show_tax')) { $colspan=3; } else { $colspan=2; } ?>
 		<tr>
 			<td colspan="4">&nbsp;</td>
@@ -241,29 +241,29 @@
 			</tr>
 		<?php } ?>
 		<tr class="sectiontableentry1">
-                    <?php if (!$this->cart->automaticSelectedShipping) { ?>
+                    <?php if (!$this->cart->automaticSelectedShipment) { ?>
 
 		<?php	/*	<td colspan="2" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING'); ?> </td> */?>
 				<td colspan="4" align="left">
-				<?php echo $this->cart->cartData['shippingName']; ?>
+				<?php echo $this->cart->cartData['shipmentName']; ?>
 				    <br />
 				<?php
-				if(!empty($this->layoutName) && $this->layoutName=='default' && !$this->cart->automaticSelectedShipping  )
-					echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_shipping',$this->useXHTML,$this->useSSL), $this->select_shipper_text,'class=""');
+				if(!empty($this->layoutName) && $this->layoutName=='default' && !$this->cart->automaticSelectedShipment  )
+					echo JHTML::_('link', JRoute::_('index.php?view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $this->select_shipment_text,'class=""');
 				else {
 				    JText::_('COM_VIRTUEMART_CART_SHIPPING');
 				}
 				} else { ?>
                                 <td colspan="4" align="left">
-				<?php echo $this->cart->cartData['shippingName']; ?>
+				<?php echo $this->cart->cartData['shipmentName']; ?>
 				</td>
                                  <?php } ?>
 
                                      <?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo "<span  style='color:gray'>".$this->cart->prices['shippingTax']."</span>"; ?> </td>
+				<td align="right"><?php echo "<span  style='color:gray'>".$this->cart->prices['shipmentTax']."</span>"; ?> </td>
                                 <?php } ?>
 				<td></td>
-				<td align="right"><?php echo $this->cart->prices['salesPriceShipping']; ?> </td>
+				<td align="right"><?php echo $this->cart->prices['salesPriceShipment']; ?> </td>
 		</tr>
 
 		<tr class="sectiontableentry1">

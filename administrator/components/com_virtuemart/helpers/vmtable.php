@@ -196,7 +196,7 @@ class VmTable extends JTable{
 				foreach($params as $item){
 
 					$item = explode('=',$item);
-					if(count($item)===2){
+					if(count($item)===2 && isset($this->_varsToPushParam[$item[0]][1]) ){
 						if($this->_varsToPushParam[$item[0]][1]==='string'){
 							$this->$item[0] = base64_decode(unserialize($item[1]));
 						} else {
@@ -713,7 +713,7 @@ class VmTable extends JTable{
 				' WHERE '.$this->_tbl_key.' = '. $this->_db->Quote($this->$k);
 		$this->_db->setQuery( $query );
 
-		if ($this->_db->query()){                        
+		if ($this->_db->query()){
                         return parent::delete($oid);
 		} else {
 			return true;

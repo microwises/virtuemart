@@ -31,28 +31,28 @@ defined('_JEXEC') or die('Restricted access');
             </tr>
             <tr>
                 <td width="110" class="key">
-                    <label for="shipping_carrier_name">
+                    <label for="shipment_carrier_name">
 <?php echo JText::_('COM_VIRTUEMART_SHIPPING_FORM_NAME'); ?>
                     </label>
                 </td>
                 <td>
-                    <input class="inputbox" type="text" name="shipping_carrier_name" id="shipping_carrier_name" size="50" value="<?php echo $this->carrier->shipping_carrier_name; ?>" />
+                    <input class="inputbox" type="text" name="shipment_carrier_name" id="shipment_carrier_name" size="50" value="<?php echo $this->carrier->shipment_carrier_name; ?>" />
                 </td>
             </tr>
              <tr>
                 <td width="110" class="key">
-                    <label for="shipping_carrier_desc">
+                    <label for="shipment_carrier_desc">
 <?php echo JText::_('COM_VIRTUEMART_SHIPPING_FORM_DESCRIPTION'); ?>
                     </label>
                 </td>
                 <td>
-                    <input class="inputbox" type="text" name="shipping_carrier_desc" id="shipping_carrier_desc" size="80" value="<?php echo $this->carrier->shipping_carrier_desc; ?>" />
+                    <input class="inputbox" type="text" name="shipment_carrier_desc" id="shipment_carrier_desc" size="80" value="<?php echo $this->carrier->shipment_carrier_desc; ?>" />
                 </td>
             </tr>
 
              <tr>
                 <td width="110" class="key">
-                    <label for="shipping">
+                    <label for="shipment">
                        <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SHIPPING_CLASS_NAME_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_SHIPPING_CLASS_NAME'); ?></span>
                     </label>
                 </td>

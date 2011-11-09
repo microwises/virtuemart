@@ -53,7 +53,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 		$this->setToggleName('required');
 		$this->setToggleName('registration');
-		$this->setToggleName('shipping');
+		$this->setToggleName('shipment');
 		$this->setToggleName('account');
 		// Instantiate the Helper class
 		$this->_params = new ParamHelper();
@@ -330,7 +330,7 @@ class VirtueMartModelUserfields extends VmModel {
 			);
 		} else {
 			$userFields = $this->getUserFields(
-				 'shipping'
+				 'shipment'
 				, array() // Default toggles
 				, $skips
 			);
@@ -439,7 +439,7 @@ class VirtueMartModelUserfields extends VmModel {
 			$_address_type->default = 'BT';
 			$_address_type->published = 1;
 			$_address_type->registration = 1;
-			$_address_type->shipping = 0;
+			$_address_type->shipment = 0;
 			$_address_type->account = 1;
 			$_address_type->readonly = 0;
 			$_address_type->calculated = 0; // what is this???
@@ -466,7 +466,7 @@ class VirtueMartModelUserfields extends VmModel {
 // 			$_user_is_vendor->default = '0';
 // 			$_user_is_vendor->published = 1;
 // 			$_user_is_vendor->registration = 1;
-// 			$_user_is_vendor->shipping = 0;
+// 			$_user_is_vendor->shipment = 0;
 // 			$_user_is_vendor->account = 1;
 // 			$_user_is_vendor->readonly = 0;
 // 			$_user_is_vendor->calculated = 0;
@@ -576,7 +576,7 @@ class VirtueMartModelUserfields extends VmModel {
 	 *       </tr>
 	 *     </thead>
 	 *      <?php
-	 *        foreach ($this->shippingfields['fields'] as $_field ) {
+	 *        foreach ($this->shipmentfields['fields'] as $_field ) {
 	 *          echo '  <tr>'."\n";
 	 *          echo '    <td class="key">'."\n";
 	 *          echo '      '.$_field['title']."\n";

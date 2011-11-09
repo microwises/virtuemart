@@ -21,7 +21,7 @@ jimport('joomla.plugin.plugin');
 /**
 * Abstract class for order plugins.
 * This class defines the plugin used in the backend in the order detail view. The
-* plugins defined here can be used to create special prints (shipping lists, Dymo labels etc.) and
+* plugins defined here can be used to create special prints (shipment lists, Dymo labels etc.) and
 * whatever else you like ;)
 * 
 * @package	VirtueMart

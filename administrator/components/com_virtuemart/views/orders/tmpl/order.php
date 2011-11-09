@@ -24,7 +24,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDER_PRINT_PO_LBL');
 // Get the plugins
 JPluginHelper::importPlugin('vmpayment');
 JPluginHelper::importPlugin('vmorderplugin');
-JPluginHelper::importPlugin('vmshipper');
+JPluginHelper::importPlugin('vmshipment');
 $tt=$this;
 ?>
 
@@ -109,7 +109,7 @@ $tt=$this;
 				$_returnValues1 = $_dispatcher->trigger('plgVmOnUpdateOrderBE',array(
 					 $this->orderID
 				));
-				$_returnValues2 = $_dispatcher->trigger('plgVmOnUpdateOrderShipperBE',array(
+				$_returnValues2 = $_dispatcher->trigger('plgVmOnUpdateOrderShipmentBE',array(
 					 $this->orderID
 				));
 				$_returnValues = array_merge($_returnValues1, $_returnValues2);
@@ -163,7 +163,7 @@ $tt=$this;
 			</thead>
 
 			<?php
-			foreach ($this->shippingfields['fields'] as $_field ) {
+			foreach ($this->shipmentfields['fields'] as $_field ) {
 				echo '		<tr>'."\n";
 				echo '			<td class="key">'."\n";
 				echo '				'.$_field['title']."\n";
@@ -222,7 +222,7 @@ $tt=$this;
 							echo '<div>'.$product_attribute.'</div>';
 						}
 						$_dispatcher = JDispatcher::getInstance();
-						$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderLineShipperBE',array(
+						$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderLineShipmentBE',array(
 							 $this->orderID
 							,$item->virtuemart_order_item_id
 						));
@@ -346,11 +346,11 @@ $tt=$this;
 			</tr>
 			<tr>
 				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?>:</strong></td>
-				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipping,'',false); ?></td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment,'',false); ?></td>
 			</tr>
 			<tr>
 				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_TAX') ?>:</strong></td>
-				<td   align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipping_tax,'',false); ?></td>
+				<td   align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment_tax,'',false); ?></td>
 			</tr>
 			<tr>
 				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT') ?>:</strong></td>
@@ -384,7 +384,7 @@ $tt=$this;
 	<tr>
 		<td valign="top"><?php
 		$_dispatcher = JDispatcher::getInstance();
-		$returnValues = $_dispatcher->trigger('plgVmOnShowOrderShipperBE',array(
+		$returnValues = $_dispatcher->trigger('plgVmOnShowOrderShipmentBE',array(
 			 $this->orderID
 			,$this->orderbt->virtuemart_vendor_id
 			,$this->ship_method_id

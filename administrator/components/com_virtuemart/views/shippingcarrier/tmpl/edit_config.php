@@ -5,7 +5,7 @@
  * Description
  *
  * @package	VirtueMart
- * @subpackage shippingcarrier
+ * @subpackage shipment
  * @author Max Milbers
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -19,8 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if ($this->carrier->shipping_carrier_name) {
-    $parameters = new vmParameters($this->carrier->shipping_carrier_params, $this->carrier->shipping_carrier_element, 'plugin', 'vmshipper');
+if ($this->carrier->shipment_carrier_name) {
+    $parameters = new vmParameters($this->carrier->shipment_carrier_params, $this->carrier->shipment_carrier_element, 'plugin', 'vmshipment');
 
     echo $rendered = $parameters->render();
 } else {

@@ -180,8 +180,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			}
 
 
-// 		$fields = array('calc_amount_cond'=>"`calc_amount_cond_min` float NOT NULL COMMENT 'min number of qualifying products'");
-// 		$this->alterTable('#__virtuemart_calcs',$fields);
+			// 		$fields = array('calc_amount_cond'=>"`calc_amount_cond_min` float NOT NULL COMMENT 'min number of qualifying products'");
+			// 		$this->alterTable('#__virtuemart_calcs',$fields);
 
 			$this->checkAddFieldToTable('#__virtuemart_calcs','calc_amount_cond_min',"float NOT NULL COMMENT 'min number of qualifying products' AFTER `calc_amount_cond`");
 			$this->checkAddFieldToTable('#__virtuemart_calcs','calc_amount_cond_max',"float NOT NULL COMMENT 'max number of qualifying products' AFTER `calc_amount_cond_min`");
@@ -192,7 +192,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$fields = array('product_order_levels'=>' ');
 			$this->alterTable('#__virtuemart_products',$fields,'DROP');
 
-// 			$fields = array('product_order_levels'=>' `product_params` text NOT NULL ');
+			// 			$fields = array('product_order_levels'=>' `product_params` text NOT NULL ');
 			$this->checkAddFieldToTable('#__virtuemart_products','product_params','text NOT NULL');
 
 			$fields = array('product_special'=>'`product_special` tinyint(1) DEFAULT "0"');
@@ -237,22 +237,20 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$fields = array('products_per_row'=>' `products_per_row` INT(1) NULL DEFAULT NULL');
 			$this->alterTable('#__virtuemart_categories',$fields);
 
-
-
 			//delete old config file
-// 			$this->renewConfigManually = !JFile::delete($this->path.DS.'virtuemart.cfg');
-// 			if(!$this->renewConfigManually){
+			// 			$this->renewConfigManually = !JFile::delete($this->path.DS.'virtuemart.cfg');
+			// 			if(!$this->renewConfigManually){
 
-// 				$model = JModel::getInstance('config', 'VirtueMartModel');
-// 				if (!class_exists('VirtueMartModelConfig')
-// 				)require($this->path . DS . 'models' . DS . 'config.php');
-// 				$model -> deleteConfig();
+			// 				$model = JModel::getInstance('config', 'VirtueMartModel');
+			// 				if (!class_exists('VirtueMartModelConfig')
+			// 				)require($this->path . DS . 'models' . DS . 'config.php');
+			// 				$model -> deleteConfig();
 
 
 			// payment_discount values
 			$this->alterPaymentMethodsTable();
 			$this->deleteCreditcardsTable(); // for J version
-			 $this->removeCreditCardFromAdminMenus(); // remove credit card from the menu
+			$this->removeCreditCardFromAdminMenus(); // remove credit card from the menu
 
 			if($loadVm) $this->displayFinished(true);
 			// probably should just go to updatesMigration rather than the install success screen
@@ -315,9 +313,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		}
 
 		/**
-		*
-		* @author Max Milbers
-		*/
+		 *
+		 * @author Max Milbers
+		 */
 		private function alterOrderHistoriesTable(){
 
 			if(empty($this->db)){
@@ -337,11 +335,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		}
 		private function alterPaymentMethodsTable() {
 
-		    $fields = array('discount' ,
+			$fields = array('discount' ,
 			    'discount_is_percentage' ,
 			    'discount_max_amount' ,
 			    'discount_min_amount'
-			    );
+			);
 
 			if(empty($this->db)){
 				$this->db = JFactory::getDBO();
@@ -350,17 +348,43 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->db->setQuery($query);
 			$columns = $this->db->loadResultArray(0);
 			foreach ( $fields as $field) {
-			    if(in_array($field,$columns)){
-				    $query = 'ALTER TABLE `#__virtuemart_paymentmethods` DROP COLUMN `'.$field."` ;";
-				    $this->db->setQuery($query);
-				    $this->db->query();
-			    }
+				if(in_array($field,$columns)){
+					$query = 'ALTER TABLE `#__virtuemart_paymentmethods` DROP COLUMN `'.$field."` ;";
+					$this->db->setQuery($query);
+					$this->db->query();
+				}
 			}
 			return true;
 		}
+
+
+		private function alterShipperCarrierTable(){
+
+			$query = 'SHOW TABLES LIKE "virtuemart_shippingcarriers"';
+			$this->db->setQuery($query);
+			if($this->db->loadResult()){
+				$query = 'ALTER TABLE `#__virtuemart_shippingcarriers` RENAME TO `#__virtuemart_shipments`';
+				$this->db->setQuery($query);
+				$this->db->query();
+
+				$fields = array('virtuemart_shippingcarrier_id'=>'`virtuemart_shipment_id` SERIAL',
+											'shipping_carrier_jplugin_id'=>'`shipment_jplugin_id` int(11) NOT NULL',
+											'shipping_carrier_name'=>"`shipment_name` char(200) NOT NULL DEFAULT ''",
+											'shipping_carrier_desc'=>"`shipment_desc` text NOT NULL COMMENT 'Description'",
+											'shipping_carrier_element'=>"`shipment_element` varchar(50) NOT NULL DEFAULT ''",
+											'shipping_carrier_params'=>' `shipment_params` text NOT NULL',
+											'shipping_carrier_value'=>"`shipment_value` decimal(10,2) NOT NULL DEFAULT '0.00'",
+											'shipping_carrier_package_fee'=>"`shipment_package_fee` decimal(10,2) NOT NULL DEFAULT '0.00'",
+											'shipping_carrier_vat_id'=>"`shipment_vat_id` int(11) NOT NULL DEFAULT '0'"
+				);
+				$this->alterTable('#__virtuemart_shipments',$fields);
+			}
+
+		}
+
 		/*
 		 * Credit Card Table delete in J version
-		 */
+		*/
 		private function deleteCreditcardsTable() {
 
 
@@ -374,12 +398,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->db->setQuery($query);
 			$this->db->query();
 
-
-
 			return true;
 		}
 		private function  removeCreditCardFromAdminMenus() {
-		    if(empty($this->db)){
+			if(empty($this->db)){
 				$this->db = JFactory::getDBO();
 			}
 			$query = "DELETE FROM  `#__virtuemart_adminmenuentries` WHERE `name` = 'COM_VIRTUEMART_CREDIT_CARD_S'";
@@ -512,7 +534,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if ($type != 'uninstall') {
 
 				$this->loadVm();
-// 				VmConfig::loadConfig(true);
+				// 				VmConfig::loadConfig(true);
 				JRequest::setVar(JUtility::getToken(), '1', 'post');
 				$config = JModel::getInstance('config', 'VirtueMartModel');
 				$config->setDangerousToolsOff();
@@ -524,9 +546,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			}
 
 			//Prevents overwriting existing file.
-// 			if(!JFile::exists(JPATH_VM_ADMINISTRATOR.DS.'virtuemart_defaults.cfg')){
-// 				JFile::copy('virtuemart_defaults.cfg-dist','virtuemart_defaults.cfg',JPATH_VM_ADMINISTRATOR);
-// 			}
+			// 			if(!JFile::exists(JPATH_VM_ADMINISTRATOR.DS.'virtuemart_defaults.cfg')){
+			// 				JFile::copy('virtuemart_defaults.cfg-dist','virtuemart_defaults.cfg',JPATH_VM_ADMINISTRATOR);
+			// 			}
 
 			return true;
 		}
@@ -542,7 +564,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$dir = opendir($src);
 			$this->createIndexFolder($dst);
-// 			@mkdir($dst);
+			// 			@mkdir($dst);
 
 			if(is_resource($dir)){
 				while(false !== ( $file = readdir($dir)) ) {
@@ -602,19 +624,23 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					alt="Cart" /> </a> <br /> <br />
 				<h2>
 
+
+
 				<?php echo JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h2>
 			</td>
 			<td>
 				<h2>
 
 
+
+
 				<?php
 				if($update){
 					echo JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
-/*					if($this->renewConfigManually){
+					/*					if($this->renewConfigManually){
 						echo '<br />'.JText::_('When you got an error deleting the virtuemart.cfg file <br />
-											Delete this file manually (administrator/components/com_virtuemart/virtuemart.cfg) and please use
-											"renew config from file" in Tools => Updates/Migration');
+					Delete this file manually (administrator/components/com_virtuemart/virtuemart.cfg) and please use
+					"renew config from file" in Tools => Updates/Migration');
 					}*/
 					echo '<br />'.JText::_('<b>Remind to update also your extensions with the AIO installer');
 
@@ -626,6 +652,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 				<div id="cpanel">
 
+
+
 				<?php
 				if(!$update){
 					?>
@@ -634,9 +662,17 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 							href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JUtility::getToken()) ?>">
 							<span class="vmicon48 vm_install_48"></span> <br />
 
+
+
+
+
 						<?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
 							</a>
 					</div>
+
+
+
+
 
 		<?php } ?>
 
@@ -647,10 +683,15 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				</a>
 				</div>
 
+
+
+
+
 			</td>
 		</tr>
 	</table>
 </div>
+
 
 <?php
 		}

@@ -479,8 +479,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `order_subtotal` decimal(15,5) DEFAULT NULL,
   `order_tax` decimal(10,5) DEFAULT NULL,
   `order_tax_details` text NOT NULL,
-  `order_shipping` decimal(10,2) DEFAULT NULL,
-  `order_shipping_tax` decimal(10,5) DEFAULT NULL,
+  `order_shipment` decimal(10,2) DEFAULT NULL,
+  `order_shipment_tax` decimal(10,5) DEFAULT NULL,
   `order_payment` decimal(10,2) DEFAULT NULL,
   `order_payment_tax` decimal(10,5) DEFAULT NULL,
   `coupon_discount` decimal(12,2) NOT NULL DEFAULT '0.00',
@@ -654,12 +654,12 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethods` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The payment methods of your store' AUTO_INCREMENT=1 ;
 
 
-CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarrier_shoppergroups` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_shipment_shoppergroups` (
   `id` SERIAL,
-  `virtuemart_shippingcarrier_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_shipment_id` int(11) NOT NULL DEFAULT '0',
   `virtuemart_shoppergroup_id` int(11) NOT NULL DEFAULT '0',
-  UNIQUE KEY `i_virtuemart_shippingcarrier_id` (`virtuemart_shippingcarrier_id`,`virtuemart_shoppergroup_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='xref table for shippingcarrier to shoppergroup' AUTO_INCREMENT=1 ;
+  UNIQUE KEY `i_virtuemart_shipment_id` (`virtuemart_shipment_id`,`virtuemart_shoppergroup_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='xref table for shipment to shoppergroup' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 --
@@ -676,15 +676,15 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethod_shoppergroups` (
 
 -- --------------------------------------------------------
 --
--- Table structure for table `#__virtuemart_shippingcarriers_shoppergroups`
+-- Table structure for table `#__virtuemart_shipments_shoppergroups`
 --
 
-CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarrier_shoppergroups` (
+CREATE TABLE IF NOT EXISTS `#__virtuemart_shipment_shoppergroups` (
   `id` SERIAL,
-  `virtuemart_shippingcarrier_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_shipment_id` int(11) NOT NULL DEFAULT '0',
   `virtuemart_shoppergroup_id` int(11) NOT NULL DEFAULT '0',
-  UNIQUE KEY `i_virtuemart_shippingcarrier_id` (`virtuemart_shippingcarrier_id`,`virtuemart_shoppergroup_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='xref table for shippingcarrier to shoppergroup' AUTO_INCREMENT=1 ;
+  UNIQUE KEY `i_virtuemart_shipment_id` (`virtuemart_shipment_id`,`virtuemart_shoppergroup_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='xref table for shipment to shoppergroup' AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
@@ -954,20 +954,20 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_rating_votes` (
 
 -- --------------------------------------------------------
 --
--- Table structure for table `#__virtuemart_shippingcarriers`
+-- Table structure for table `#__virtuemart_shipments`
 --
 
-CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarriers` (
-  `virtuemart_shippingcarrier_id` SERIAL,
+CREATE TABLE IF NOT EXISTS `#__virtuemart_shipments` (
+  `virtuemart_shipment_id` SERIAL,
   `virtuemart_vendor_id` int(11) DEFAULT NULL,
-  `shipping_carrier_jplugin_id` int(11) NOT NULL,
-  `shipping_carrier_name` char(200) NOT NULL DEFAULT '',
-  `shipping_carrier_desc`  text NOT NULL COMMENT 'Description',
-  `shipping_carrier_element` varchar(50) NOT NULL DEFAULT '',
-  `shipping_carrier_params` text NOT NULL,
-  `shipping_carrier_value` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `shipping_carrier_package_fee` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `shipping_carrier_vat_id` int(11) NOT NULL DEFAULT '0',
+  `shipment_carrier_jplugin_id` int(11) NOT NULL,
+  `shipment_carrier_name` char(200) NOT NULL DEFAULT '',
+  `shipment_carrier_desc`  text NOT NULL COMMENT 'Description',
+  `shipment_carrier_element` varchar(50) NOT NULL DEFAULT '',
+  `shipment_carrier_params` text NOT NULL,
+  `shipment_carrier_value` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `shipment_carrier_package_fee` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `shipment_carrier_vat_id` int(11) NOT NULL DEFAULT '0',
   `ordering` int(2) NOT NULL DEFAULT '0',
   `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
@@ -977,9 +977,9 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shippingcarriers` (
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  KEY (`shipping_carrier_jplugin_id`),
+  KEY (`shipment_carrier_jplugin_id`),
   KEY (`virtuemart_vendor_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shipping Carriers created from the shipper plugins' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shipment Carriers created from the shipment plugins' AUTO_INCREMENT=1 ;
 
 
 
@@ -1055,7 +1055,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vmusers` (
   `customer_number` varchar(32) DEFAULT NULL,
   `perms` varchar(40) NOT NULL DEFAULT 'shopper',
   `virtuemart_paymentmethod_id` int NOT NULL DEFAULT '0',
-  `virtuemart_shippingcarrier_id` int NOT NULL DEFAULT '0',
+  `virtuemart_shipment_id` int NOT NULL DEFAULT '0',
   `agreed` tinyint(1) NOT NULL DEFAULT '0',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT 0,
@@ -1121,7 +1121,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userfields` (
   `value` varchar(50) DEFAULT NULL,
   `default` int(11) DEFAULT NULL,
   `registration` tinyint(1) NOT NULL DEFAULT '0',
-  `shipping` tinyint(1) NOT NULL DEFAULT '0',
+  `shipment` tinyint(1) NOT NULL DEFAULT '0',
   `account` tinyint(1) NOT NULL DEFAULT '1',
   `readonly` tinyint(1) NOT NULL DEFAULT '0',
   `calculated` tinyint(1) NOT NULL DEFAULT '0',
@@ -1290,5 +1290,5 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_worldzones` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   KEY (`virtuemart_vendor_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The Zones managed by the Zone Shipping Module' AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The Zones managed by the Zone Shipment Module' AUTO_INCREMENT=1 ;
 

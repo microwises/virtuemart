@@ -225,7 +225,7 @@ class VirtuemartViewUser extends JView {
       $this->_userFieldsModel = new VirtuemartModelUserfields();
 
       $_shiptoFields = $this->_userFieldsModel->getUserFields(
-      'shipping'
+      'shipment'
       ,array() // Default toggles
       );
 

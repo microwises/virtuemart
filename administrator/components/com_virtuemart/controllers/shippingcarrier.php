@@ -1,10 +1,10 @@
 <?php
 /**
 *
-* Shipping Carrier controller
+* Shipment Carrier controller
 *
 * @package	VirtueMart
-* @subpackage ShippingCarrier
+* @subpackage ShipmentCarrier
 * @author RickG
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -26,13 +26,13 @@ if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
 
 
 /**
- * Shipping Carrier Controller
+ * Shipment Carrier Controller
  *
  * @package    VirtueMart
- * @subpackage ShippingCarrier
+ * @subpackage ShipmentCarrier
  * @author RickG, Max Milbers
  */
-class VirtuemartControllerShippingCarrier extends VmController {
+class VirtuemartControllerShipmentCarrier extends VmController {
 
 	/**
 	 * Method to display the view
@@ -44,10 +44,10 @@ class VirtuemartControllerShippingCarrier extends VmController {
 
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
-		$view = $this->getView('shippingcarrier', $viewType);
+		$view = $this->getView('shipment', $viewType);
 
 		// Push a model into the view
-		$model = $this->getModel('shippingcarrier');
+		$model = $this->getModel('shipment');
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
@@ -60,9 +60,9 @@ class VirtuemartControllerShippingCarrier extends VmController {
 	 */
 	function save(){
 		$data = JRequest::get('post');
-		// TODO disallow shipping_carrier_name as HTML
-		$data['shipping_carrier_name'] = JRequest::getVar('shipping_carrier_name','','post','STRING',JREQUEST_ALLOWHTML);
-		$data['shipping_carrier_desc'] = JRequest::getVar('shipping_carrier_desc','','post','STRING',JREQUEST_ALLOWHTML);
+		// TODO disallow shipment_carrier_name as HTML
+		$data['shipment_carrier_name'] = JRequest::getVar('shipment_carrier_name','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['shipment_carrier_desc'] = JRequest::getVar('shipment_carrier_desc','','post','STRING',JREQUEST_ALLOWHTML);
 
 		parent::save($data);
 	}

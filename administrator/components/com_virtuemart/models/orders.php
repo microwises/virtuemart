@@ -350,11 +350,11 @@ class VirtueMartModelOrders extends VmModel {
 		}
 
 		// TODO This is not the most logical place for these plugins (or better; the method updateStatus() must be renamed....)
-		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_PLUGINS.DS.'vmshipperplugin.php');
+		if(!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmshipmentplugin.php');
 		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpaymentplugin.php');
-		JPluginHelper::importPlugin('vmshipper');
+		JPluginHelper::importPlugin('vmshipment');
 		$_dispatcher = JDispatcher::getInstance();
-		$_returnValues = $_dispatcher->trigger('plgVmOnSaveOrderShipperBE',array(JRequest::get('post')));
+		$_returnValues = $_dispatcher->trigger('plgVmOnSaveOrderShipmentBE',array(JRequest::get('post')));
 		foreach ($_returnValues as $_retVal) {
 			if ($_retVal === false) {
 				// Stop as soon as the first active plugin returned a failure status
@@ -506,7 +506,7 @@ class VirtueMartModelOrders extends VmModel {
 			return false;
 		}
 		$this->_handlePayment($orderID, $cart, $prices);
-		$this->_handleShipping($orderID, $cart, $prices);
+		$this->_handleShipment($orderID, $cart, $prices);
 
 		return $orderID;
 	}
@@ -523,10 +523,10 @@ class VirtueMartModelOrders extends VmModel {
 	private function _createOrder($_cart, $_usr, $_prices)
 	{
 		//		TODO We need tablefields for the new values:
-		//		Shipping:
-		//		$_prices['shippingValue']		w/out tax
-		//		$_prices['shippingTax']			Tax
-		//		$_prices['salesPriceShipping']	Total
+		//		Shipment:
+		//		$_prices['shipmentValue']		w/out tax
+		//		$_prices['shipmentTax']			Tax
+		//		$_prices['salesPriceShipment']	Total
 		//
 		//		Payment:
 		//		$_prices['paymentValue']		w/out tax
@@ -549,8 +549,8 @@ class VirtueMartModelOrders extends VmModel {
 		$_orderData->order_subtotal = $_prices['priceWithoutTax'];
 		$_orderData->order_tax = $_prices['taxAmount'];
 		$_orderData->order_tax_details = null; // TODO What's this?? Which data needs to be serialized?  I dont know also
-		$_orderData->order_shipping = $_prices['shippingValue'];
-		$_orderData->order_shipping_tax = $_prices['shippingTax'];
+		$_orderData->order_shipment = $_prices['shipmentValue'];
+		$_orderData->order_shipment_tax = $_prices['shipmentTax'];
 		$_orderData->order_payment = $_prices['paymentValue'];
 		$_orderData->order_payment_tax = $_prices['paymentTax'];
 		if (!empty($_cart->couponCode)) {
@@ -572,7 +572,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		}
 		$_orderData->payment_method_id = $_cart->virtuemart_paymentmethod_id;
-		$_orderData->ship_method_id = $_cart->virtuemart_shippingcarrier_id;
+		$_orderData->ship_method_id = $_cart->virtuemart_shipment_id;
 
 		$_filter = JFilterInput::getInstance (array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
 		$_orderData->customer_note = $_filter->clean($_cart->customer_comment);
@@ -643,7 +643,7 @@ class VirtueMartModelOrders extends VmModel {
 		if ($_cart->ST) {
 			$_userInfoData = array();
 // 			$_userInfoData['virtuemart_order_userinfo_id'] = null; // Reset key to make sure it doesn't get overwritten by ST
-			$_userFieldsST = $_userFieldsModel->getUserFields('shipping'
+			$_userFieldsST = $_userFieldsModel->getUserFields('shipment'
 			, array('delimiters'=>true, 'captcha'=>true)
 			, array('username', 'password', 'password2', 'user_is_vendor')
 			);
@@ -756,7 +756,7 @@ class VirtueMartModelOrders extends VmModel {
 	}
 
 	/**
-	 * Handle the selected shipping method. If triggered to do so, this method will also
+	 * Handle the selected shipment method. If triggered to do so, this method will also
 	 * take care of the stock updates.
 	 *
 	 * @author Valérie Isaksen
@@ -764,11 +764,11 @@ class VirtueMartModelOrders extends VmModel {
 	 * @param object $_cart Cart object
 	 * @param array $prices Price data
 	 */
-	private function _handleShipping($orderID, $cart, $prices)
+	private function _handleShipment($orderID, $cart, $prices)
 	{
-		JPluginHelper::importPlugin('vmshipping');
+		JPluginHelper::importPlugin('vmshipment');
 		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreShipperData',array(
+		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreShipmentData',array(
 		$orderID
 		,$cart
 		,$prices
@@ -1053,10 +1053,10 @@ class VirtueMartModelOrders extends VmModel {
 		$curDate = JFactory::getDate();
 		$data['modified_on'] = $curDate->toMySql();*/
 
-		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_PLUGINS.DS.'vmshipperplugin.php');
-		JPluginHelper::importPlugin('vmshipper');
+		if(!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmshipmentplugin.php');
+		JPluginHelper::importPlugin('vmshipment');
 		$_dispatcher = JDispatcher::getInstance();
-		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLineShipper',array($data));
+		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLineShipment',array($data));
 		foreach ($_returnValues as $_retVal) {
 			if ($_retVal === false) {
 				// Stop as soon as the first active plugin returned a failure status

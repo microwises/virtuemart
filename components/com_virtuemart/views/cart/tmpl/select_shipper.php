@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Template for the shipper selection
+ * Template for the shipment selection
  *
  * @package	VirtueMart
  * @subpackage Cart
@@ -56,10 +56,10 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
     echo '<div class="checkoutStep" id="checkoutStep2">' . JText::_('COM_VIRTUEMART_USER_FORM_CART_STEP2') . '</div>';
 }
 ?>
-<form method="post" id="userForm" name="chooseShippingRate" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate">
+<form method="post" id="userForm" name="chooseShipmentRate" action="<?php echo JRoute::_('index.php'); ?>" class="form-validate">
 <?php
 
-	echo "<h1>".JText::_('COM_VIRTUEMART_CART_SELECT_SHIPPER')."</h1>";
+	echo "<h1>".JText::_('COM_VIRTUEMART_CART_SELECT_SHIPMENT')."</h1>";
 	if($this->cart->getInCheckOut()){
 		$buttonclass = 'button vm-button-correct';
 	} else {
@@ -72,27 +72,27 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 	<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 	</div>
 <?php
-    if ($this->found_shipping_method) {
+    if ($this->found_shipment_method) {
 
 
 	   echo "<fieldset>\n";
-	// if only one Shipper , should be checked by default
-	    foreach ($this->shippers_shipping_rates as $shipper_shipping_rates) {
-		if (is_array($shipper_shipping_rates)) {
-		    foreach ($shipper_shipping_rates as $shipper_shipping_rate) {
-			echo $shipper_shipping_rate.'<br />';
+	// if only one Shipment , should be checked by default
+	    foreach ($this->shipments_shipment_rates as $shipment_shipment_rates) {
+		if (is_array($shipment_shipment_rates)) {
+		    foreach ($shipment_shipment_rates as $shipment_shipment_rate) {
+			echo $shipment_shipment_rate.'<br />';
 		    }
 		}
 	    }
 	    echo "</fieldset>\n";
     } else {
-	 echo "<h1>".$this->shipping_not_found_text."</h1>";
+	 echo "<h1>".$this->shipment_not_found_text."</h1>";
     }
 
     ?>
 
     <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="view" value="cart" />
-    <input type="hidden" name="task" value="setshipping" />
+    <input type="hidden" name="task" value="setshipment" />
     <input type="hidden" name="controller" value="cart" />
 </form>

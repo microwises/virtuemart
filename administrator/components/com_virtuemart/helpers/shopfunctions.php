@@ -587,7 +587,7 @@ class ShopFunctions {
 	 */
 	function generateStAddressList ($userModel,$task){
 
-		// Shipping address(es)
+		// Shipment address(es)
 		$_addressList = $userModel->getUserAddressList($userModel->getId() , 'ST');
 // 		if (($_c = count($_addressList)) == 0) {
 // 			return JText::_('COM_VIRTUEMART_USER_NOSHIPPINGADDR');

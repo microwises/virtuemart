@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Abstract class for shipper plugins
+ * Abstract class for shipment plugins
  *
  * @package	VirtueMart
  * @subpackage Plugins
@@ -14,7 +14,7 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: vmshipperplugin.php 4007 2011-08-31 07:31:35Z alatak $
+ * @version $Id: vmshipmentplugin.php 4007 2011-08-31 07:31:35Z alatak $
  */
 // Load the helper functions that are needed by all plugins
 if (!class_exists('VmHTML'))
@@ -29,35 +29,35 @@ if (!class_exists('DbScheme'))
 jimport('joomla.plugin.plugin');
 
 /**
- * Abstract class for shipper plugins.
+ * Abstract class for shipment plugins.
  * This class provides some standard and abstract methods that can or must be reimplemented.
  *
  * @tutorial All methods are documented, but to make life easier, here's a short overview
  * how the methods can be used in the process order.
  * 	* _createTable() is called by the constructor. Use this method to create or alter the database table.
- * 	* When a shopper selects a shipper, plgOnSelectShipper() is fired. It displays the shipper and can be used
- * 	for collecting extra - shipper specific - info.
- * 	* After selecting, plgVmShipperSelected() can be used to store extra shipper info in the cart. The selected shipper
+ * 	* When a shopper selects a shipment, plgOnSelectShipment() is fired. It displays the shipment and can be used
+ * 	for collecting extra - shipment specific - info.
+ * 	* After selecting, plgVmShipmentSelected() can be used to store extra shipment info in the cart. The selected shipment
  * 	ID will be stored in the cart by the checkout process before this method is fired.
- * 	* plgOnConfirmShipper() is fired when the order is confirmed and stored to the database. It is called
- * 	before the rest of the order or stored, when reimplemented, it *must* include a call to parent::plgOnConfirmShipper()
+ * 	* plgOnConfirmShipment() is fired when the order is confirmed and stored to the database. It is called
+ * 	before the rest of the order or stored, when reimplemented, it *must* include a call to parent::plgOnConfirmShipment()
  * 	(or execute the same steps to put all data in the cart)
  *
  * When a stored order is displayed in the backend, the following events are used:
- * 	* plgVmOnShowOrderShipperBE() displays specific data about (a) shipment(s) (NOTE: this plugin is
+ * 	* plgVmOnShowOrderShipmentBE() displays specific data about (a) shipment(s) (NOTE: this plugin is
  * 	OUTSIDE any form!)
- * 	* plgVmOnShowOrderLineShipperBE() can be used to show information about a single orderline, e.g.
+ * 	* plgVmOnShowOrderLineShipmentBE() can be used to show information about a single orderline, e.g.
  * 	display a package code at line level when more packages are shipped.
- * 	* plgVmOnEditOrderLineShipperBE() can be used add a package code for an order line when more
+ * 	* plgVmOnEditOrderLineShipmentBE() can be used add a package code for an order line when more
  * 	packages are shipped.
- * 	* plgVmOnUpdateOrderShipperBE is fired inside a form. It can be used to add shipper data, like package code.
- * 	* plgVmOnSaveOrderShipperBE() is fired from the backend after the order has been saved. If one of the
+ * 	* plgVmOnUpdateOrderShipmentBE is fired inside a form. It can be used to add shipment data, like package code.
+ * 	* plgVmOnSaveOrderShipmentBE() is fired from the backend after the order has been saved. If one of the
  * 	show methods above have to option to add or edit info, this method must be used to save the data.
  * 	* plgVmOnUpdateOrderLine() is fired from the backend after an order line has been saved. This method
- * 	must be reimplemented if plgVmOnEditOrderLineShipperBE() is used.
+ * 	must be reimplemented if plgVmOnEditOrderLineShipmentBE() is used.
  *
  * The frontend 1 show method:
- * 	* plgVmOnShowOrderShipperFE() collects and displays specific data about (a) shipment(s)
+ * 	* plgVmOnShowOrderShipmentFE() collects and displays specific data about (a) shipment(s)
  *
  * @package	VirtueMart
  * @subpackage Plugins
@@ -65,14 +65,14 @@ jimport('joomla.plugin.plugin');
  */
 abstract class vmCustomPlugin extends JPlugin {
 
-    //private $_virtuemart_shippermethod_id = 0;
+    //private $_virtuemart_shipmentmethod_id = 0;
     /**
-     * @var string Identification of the shipper. This var must be overwritten by all plugins,
+     * @var string Identification of the shipment. This var must be overwritten by all plugins,
      * by adding this code to the constructor:
      * $this->_selement = basename(__FILE, '.php');
      */
-    protected $_pname = '';
-    protected $_tablename = '';
+//     protected $_pname = '';
+//     protected $_tablename = '';
     /**
      * @var array List with all carriers the have been implemented with the plugin in the format
      * id => name
@@ -118,41 +118,41 @@ abstract class vmCustomPlugin extends JPlugin {
     }
 	/**
 	 * render the plugin with param  to display on product edit
-	 * called by customfields inputTypePlugin 
+	 * called by customfields inputTypePlugin
 	 */
 	abstract function onProductEdit($field,$param,$row, $product_id);
 
 	/**
 	 * display the plugin on product FE
-	 */	
+	 */
 	abstract function onDisplayProductFE( $field, $param, $product, $idx);
 
 	/**
 	 * display the product plugin on cart module
-	 */	
+	 */
 	abstract function onViewCartModule( $product,$custom_param,$productCustom, $row);
 
 	/**
 	* display the product plugin on cart
-	 */	
+	 */
 	abstract function onViewCart($product, $param,$productCustom, $row);
 
 	/**
 	 * display the plugin in order
 	 * TODO One for customer and one for vendor
 	 * Get the statut (Eg. payed. >> render only the link for downloadable )
-	 */	
+	 */
 	abstract function onViewOrderBE($product, $param,$productCustom, $row);
 
 	/**
 	 * defaut price modifation if nothing is set in plugin
 	 * you have to rewrite it in your plugin to do other calculations
-	 */	
+	 */
 	public function modifyPrice( $product, $field,$param,$selected ) {
 		if (!empty($field->custom_price)) {
 			//TODO adding % and more We should use here $this->interpreteMathOp
 			return $field->custom_price;
-		}		
+		}
 	}
 
 	/**
@@ -160,11 +160,11 @@ abstract class vmCustomPlugin extends JPlugin {
 	 * override displayType() customfields.
 	 */
 	 public function displayTypePlugin($field,$product,$row){
-		
+
 		if (empty($field->custom_value)) return '';
 		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
 		else $custom_param = array();
-		
+
 		$plg = self::setClass($field->custom_value) ;
 		return $plg->onDisplayProductFE(  $field,$custom_param, $product, $row);
 	 }
@@ -180,7 +180,7 @@ abstract class vmCustomPlugin extends JPlugin {
 		if (empty($field->custom_value)) return 0 ;
 		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
 		else $custom_param = array();
-		
+
 		$plg = self::setClass($field->custom_value) ;
 		return $plg->modifyPrice( $product, $field,$custom_param,$selected,$row);
 	 }
@@ -193,7 +193,7 @@ abstract class vmCustomPlugin extends JPlugin {
 	 public function displayInCartPlugin($product,$productCustom, $row ,$view=''){
 		$plgName = $productCustom->value;
 		if ($plgName) {
-			$plg = self::setClass($plgName) ; 
+			$plg = self::setClass($plgName) ;
 			$plgFunction = 'onViewCart'.$view ;
 			if ( empty($product->param[$row])) $param = null ;
 			else $param = $product->param[$row] ;
@@ -215,7 +215,7 @@ abstract class vmCustomPlugin extends JPlugin {
 			return ;
 		}
 		if ($plgName) {
-			$plg = self::setClass($plgName) ; 
+			$plg = self::setClass($plgName) ;
 			$plgFunction = 'onViewOrder'.$view ;
 			$html = $plg->$plgFunction( $item,$param,$productCustom, $row);
 		} else return '';
@@ -238,17 +238,17 @@ abstract class vmCustomPlugin extends JPlugin {
 		} else return '';
 		return $html;
 	 }
-	 
+
 	/**
 	 * Select the right file and class j1.5/j1.7
 	 * Return new class $plgName
-	 */	 
+	 */
 	 private function setClass($name) {
 		$plgName = 'plgVmCustom'.ucfirst ($name );
 		if(class_exists($plgName)) return new $plgName;
 		else {
-			if  ( VmConfig::isJ15() ) { 
-				$path = JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$name.'.php'; 
+			if  ( VmConfig::isJ15() ) {
+				$path = JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$name.'.php';
 			} else {
 				$path = JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$name.DS.$name.'.php';
 			}

@@ -23,7 +23,7 @@ if (!class_exists('ShopFunctions'))
 
 
 /*
- * This class is used by VirtueMart Payment or Shipping Plugins
+ * This class is used by VirtueMart Payment or Shipment Plugins
  * which uses JParameter
  * So It should be an extension of JElement
  * Those plugins cannot be configured througth the Plugin Manager anyway.

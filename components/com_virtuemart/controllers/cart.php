@@ -236,18 +236,18 @@ class VirtueMartControllerCart extends JController {
     }
 
     /**
-     * For selecting shipper, opens a new layout
+     * For selecting shipment, opens a new layout
      *
      * @author Max Milbers
      */
-    public function edit_shipping() {
+    public function edit_shipment() {
 
 	/* Create the view */
 	$view = $this->getView('cart', 'html');
-	$view->setLayout('select_shipper');
+	$view->setLayout('select_shipment');
 
 	$this->addModelPath(JPATH_VM_ADMINISTRATOR . DS . 'models');
-	$view->setModel($this->getModel('shippingcarrier', 'VirtuemartModel'), true);
+	$view->setModel($this->getModel('shipment', 'VirtuemartModel'), true);
 
 	$view->setModel($this->getModel('user', 'VirtuemartModel'), false);
 	$view->setModel($this->getModel('userfields', 'VirtuemartModel'), true);
@@ -257,19 +257,19 @@ class VirtueMartControllerCart extends JController {
     }
 
     /**
-     * Sets a selected shipper to the cart
+     * Sets a selected shipment to the cart
      *
      * @author Max Milbers
      */
-    public function setshipping() {
+    public function setshipment() {
 
-	/* Get the shipper ID from the cart */
-	$shipper_id = JRequest::getInt('shipper_id', '0');
-	if ($shipper_id) {
-	    //Now set the shipper ID into the cart
+	/* Get the shipment ID from the cart */
+	$shipment_id = JRequest::getInt('shipment_id', '0');
+	if ($shipment_id) {
+	    //Now set the shipment ID into the cart
 	    $cart = VirtueMartCart::getCart();
 	    if ($cart) {
-		$cart->setShipper($shipper_id);
+		$cart->setShipment($shipment_id);
 		if ($cart->getInCheckOut()) {
 		    $mainframe = JFactory::getApplication();
 		    $mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');

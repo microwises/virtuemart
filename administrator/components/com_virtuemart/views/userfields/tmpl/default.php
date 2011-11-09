@@ -110,7 +110,7 @@ $j15 = VmConfig::isJ15();
 //			$published = JHTML::_('grid.published', $row, $i);
 			$published = $this->toggle($row->published, $i, 'toggle.published', $coreField);
 			$registration = $this->toggle($row->registration, $i, 'toggle.registration', $coreField);
-			$shipping = $this->toggle($row->shipping, $i, 'toggle.shipping', $coreField);
+			$shipment = $this->toggle($row->shipment, $i, 'toggle.shipment', $coreField);
 			$account = $this->toggle($row->account, $i, 'toggle.account', $coreField);
 			$ordering = ($this->lists['order'] == 'ordering');
 			$disabled = ($ordering ?  '' : 'disabled="disabled"');
@@ -141,7 +141,7 @@ $j15 = VmConfig::isJ15();
 					<?php echo $registration; ?>
 				</td>
 				<td align="center">
-					<?php echo $shipping; ?>
+					<?php echo $shipment; ?>
 				</td>
 				<td align="center">
 					<?php echo $account; ?>

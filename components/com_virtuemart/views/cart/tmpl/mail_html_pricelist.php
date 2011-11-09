@@ -67,7 +67,7 @@ $root = $u->toString( array( 'scheme', 'host') );
 			$i = 1 ? 2 : 1;
 
 		} ?>
-		<!--Begin of SubTotal, Tax, Shipping, Coupon Discount and Total listing -->
+		<!--Begin of SubTotal, Tax, Shipment, Coupon Discount and Total listing -->
                   <?php if ( VmConfig::get('show_tax')) { $colspan=3; } else { $colspan=2; } ?>
 		<tr>
 			<td colspan="4">&nbsp;</td>
@@ -119,12 +119,12 @@ $root = $u->toString( array( 'scheme', 'host') );
 			</tr>
 		<?php } ?>
 		<tr class="sectiontableentry1">
-			<td colspan="4" align="left"><?php echo $this->cart->cartData['shippingName']; ?> </td>
+			<td colspan="4" align="left"><?php echo $this->cart->cartData['shipmentName']; ?> </td>
 			<?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo "<span  style='color:gray'>".$this->cart->prices['shippingTax']."</span>"; ?> </td>
+				<td align="right"><?php echo "<span  style='color:gray'>".$this->cart->prices['shipmentTax']."</span>"; ?> </td>
 			<?php } ?>
 			 <td></td>
-			<td align="right"><?php echo $this->cart->prices['salesPriceShipping']; ?> </td>
+			<td align="right"><?php echo $this->cart->prices['salesPriceShipment']; ?> </td>
 		</tr>
 
 		<tr class="sectiontableentry1">

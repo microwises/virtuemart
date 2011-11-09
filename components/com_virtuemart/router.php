@@ -323,7 +323,7 @@ function virtuemartParseRoute($segments) {
 			array_shift($segments);
 			if (empty($segments)) return $vars;
 		}
-		if ($segments[0] == $lang['edit_shipping'] ) $vars['task'] = 'edit_shipping' ;
+		if ($segments[0] == $lang['edit_shipment'] ) $vars['task'] = 'edit_shipment' ;
 		elseif ($segments[0] == $lang['editpayment'] ) $vars['task'] = 'editpayment' ;
 		elseif ($segments[0] == $lang['delete'] ) $vars['task'] = 'delete' ;
 		return $vars;
@@ -655,7 +655,7 @@ class vmrouterHelper {
 			$base_dir = JPATH_SITE;
 			$lang->load($extension, $base_dir);
 			$this->lang = array(
-				'edit_shipping'		=> JText::_('COM_VIRTUEMART_SEF_EDITSHIPPING'),
+				'edit_shipment'		=> JText::_('COM_VIRTUEMART_SEF_EDITSHIPPING'),
 				'manufacturer'		=> JText::_('COM_VIRTUEMART_SEF_MANUFACTURER'),
 				'manufacturers'		=> JText::_('COM_VIRTUEMART_SEF_MANUFACTURERS'),
 				'askquestion'		=> JText::_('COM_VIRTUEMART_SEF_ASKQUESTION'),
@@ -713,7 +713,7 @@ class vmrouterHelper {
 		} else {
 			/* use default */
 			$this->lang = array(
-				'edit_shipping' => 'edit_shipping',
+				'edit_shipment' => 'edit_shipment',
 				'manufacturers' => 'manufacturers',
 				'manufacturer' => 'manufacturer',
 				'askquestion' => 'askquestion',

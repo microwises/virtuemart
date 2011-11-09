@@ -72,7 +72,7 @@ foreach ($this->userfields['fields'] as $_field) {
 	    <td valign="top">
 		<strong><em><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIP_TO_LBL') ?></em></strong><br/>
 		<table border="0"><?php
-		    foreach ($this->shippingfields['fields'] as $_field) {
+		    foreach ($this->shipmentfields['fields'] as $_field) {
 			if (!empty($_field['value'])) {
 			    echo '<tr><td class="key">' . $_field['title'] . '</td>'
 			    . '<td>' . $_field['value'] . '</td></tr>';
@@ -151,11 +151,11 @@ if (VmConfig::get('coupons_enable') == '1') {
 		    </tr>
 		    <tr>
 			<td align="right" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?>:</strong></td>
-			<td width="100" align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipping, '', false); ?></td>
+			<td width="100" align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment, '', false); ?></td>
 		    </tr>
 		    <tr>
 			<td align="right" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_TAX') ?>:</strong></td>
-			<td width="100" align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipping_tax, '', false); ?></td>
+			<td width="100" align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment_tax, '', false); ?></td>
 		    </tr>
 		    <tr>
 			<td align="right" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT') ?>:</strong></td>
@@ -189,15 +189,15 @@ if (VmConfig::get('coupons_enable') == '1') {
 if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpaymentplugin.php');
 JPluginHelper::importPlugin('vmpayment');
 
-if (!class_exists('vmShipperPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipperplugin.php');
-JPluginHelper::importPlugin('vmshipper');
+if (!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipmentplugin.php');
+JPluginHelper::importPlugin('vmshipment');
 
 $dispatcher = JDispatcher::getInstance();
 ?>
     <table width="100%">
 	<tr>
 	    <td valign="top"><?php
-    $returnValues = $dispatcher->trigger('plgVmOnShowOrderPrintShipper', array(
+    $returnValues = $dispatcher->trigger('plgVmOnShowOrderPrintShipment', array(
 	$this->orderNumber
 	, $this->ship_method_id
 	    ));

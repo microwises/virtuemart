@@ -428,10 +428,10 @@ class calculationHelper {
 		$this->_cartData['dBTaxRulesBill'] = $dBTaxRules = $this->gatherEffectingRulesForBill('DBTaxBill');
 		//		$cBRules = $this->gatherEffectingRulesForCoupon($couponId);
 		//
-		$shippercarrier_id = empty($cart->virtuemart_shippingcarrier_id) ? 0 : $cart->virtuemart_shippingcarrier_id;
+		$shipment_id = empty($cart->virtuemart_shipment_id) ? 0 : $cart->virtuemart_shipment_id;
 
-		//$this->calculateShipmentPrice($cart, $shippingRateId);
-		$this->calculateShipmentPrice($cart,  $shippercarrier_id);
+		//$this->calculateShipmentPrice($cart, $shipmentRateId);
+		$this->calculateShipmentPrice($cart,  $shipment_id);
 
 		//		$pBRules = $this->gatherEffectingRulesForPayment($paymId);
 		$this->_cartData['taxRulesBill'] = $taxRules = $this->gatherEffectingRulesForBill('TaxBill');
@@ -444,7 +444,7 @@ class calculationHelper {
 
 		//We add the price of the Shipment before the tax. The tax per bill is meant for all services. In the other case people should use taxes per
 		//  product or method
-		$toTax = $toTax + $this->_cartPrices['salesPriceShipping'];
+		$toTax = $toTax + $this->_cartPrices['salesPriceShipment'];
 
 		$this->_cartPrices['withTax'] = $discountWithTax = $this->roundDisplay($this->executeCalculation($taxRules, $toTax, true));
 		$toDisc = !empty($this->_cartPrices['withTax']) ? $this->_cartPrices['withTax'] : $toTax;
@@ -459,10 +459,10 @@ class calculationHelper {
 		$this->calculatePaymentPrice($cart, $paymentId);
 
 		//		$sub =!empty($this->_cartPrices['discountedPriceWithoutTax'])? $this->_cartPrices['discountedPriceWithoutTax']:$this->_cartPrices['basePrice'];
-		$this->_cartPrices['billSub'] = $this->_cartPrices['basePrice'] + $this->_cartPrices['shippingValue'] + $this->_cartPrices['paymentValue'];
-		//		$this->_cartPrices['billSub']  = $sub + $this->_cartPrices['shippingValue'] + $this->_cartPrices['paymentValue'];
+		$this->_cartPrices['billSub'] = $this->_cartPrices['basePrice'] + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'];
+		//		$this->_cartPrices['billSub']  = $sub + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'];
 		$this->_cartPrices['billDiscountAmount'] = $this->_cartPrices['discountAmount']  ;
-		$this->_cartPrices['billTaxAmount'] = $this->_cartPrices['taxAmount'] + $this->_cartPrices['withTax'] - $toTax + $this->_cartPrices['shippingTax'] + $this->_cartPrices['paymentTax'];
+		$this->_cartPrices['billTaxAmount'] = $this->_cartPrices['taxAmount'] + $this->_cartPrices['withTax'] - $toTax + $this->_cartPrices['shipmentTax'] + $this->_cartPrices['paymentTax'];
 		$this->_cartPrices['billTotal'] = $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'];
 
 		// Last step is handling a coupon, if given
@@ -758,35 +758,35 @@ class calculationHelper {
 		 */
 		function calculateShipmentPrice(  $cart, $ship_id) {
 
-			$this->_cartData['shippingName'] = JText::_('COM_VIRTUEMART_CART_NO_SHIPMENT_SELECTED');
-			$this->_cartPrices['shippingValue'] = 0; //could be automatically set to a default set in the globalconfig
-			$this->_cartPrices['shippingTax'] = 0;
-			$this->_cartPrices['shippingTotal'] = 0;
-			$this->_cartPrices['salesPriceShipping'] = 0;
-			// check if there is only one possible shipping method
+			$this->_cartData['shipmentName'] = JText::_('COM_VIRTUEMART_CART_NO_SHIPMENT_SELECTED');
+			$this->_cartPrices['shipmentValue'] = 0; //could be automatically set to a default set in the globalconfig
+			$this->_cartPrices['shipmentTax'] = 0;
+			$this->_cartPrices['shipmentTotal'] = 0;
+			$this->_cartPrices['salesPriceShipment'] = 0;
+			// check if there is only one possible shipment method
 
-			$automaticSelectedShipping =   $cart->CheckAutomaticSelectedShipping( );
-			if ($automaticSelectedShipping) $ship_id=$cart->virtuemart_shippingcarrier_id;
+			$automaticSelectedShipment =   $cart->CheckAutomaticSelectedShipment( );
+			if ($automaticSelectedShipment) $ship_id=$cart->virtuemart_shipment_id;
 			if (empty($ship_id)) return;
 
-			// Handling shipping plugins
-			if (!class_exists('vmShipperPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipperplugin.php');
-			JPluginHelper::importPlugin('vmshipper');
+			// Handling shipment plugins
+			if (!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipmentplugin.php');
+			JPluginHelper::importPlugin('vmshipment');
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnShipperSelectedCalculatePrice',
+			$returnValues = $dispatcher->trigger('plgVmOnShipmentSelectedCalculatePrice',
 			array('cart' => $cart,
 			    'cart_prices' => &$this->_cartPrices,
-			    'shipping_name' =>&$this->_cartData['shippingName']  ));
+			    'shipment_name' =>&$this->_cartData['shipmentName']  ));
 			/*
-			* Plugin return true if shipping rate is still valid
+			* Plugin return true if shipment rate is still valid
 			* false if not any more
 			*/
-			$shippingValid=0;
+			$shipmentValid=0;
 			foreach ($returnValues as $returnValue) {
-				    $shippingValid += $returnValue;
+				    $shipmentValid += $returnValue;
 			 }
-			 if (!$shippingValid) {
-				    $cart->virtuemart_shippingcarrier_id = 0;
+			 if (!$shipmentValid) {
+				    $cart->virtuemart_shipment_id = 0;
 				    $cart->setCartIntoSession();
 			 }
 

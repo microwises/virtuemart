@@ -80,7 +80,7 @@ class VirtuemartControllerPaymentmethod extends VmController {
 		// TODO disallow html in paym_name ?
 		$data['paym_name'] = JRequest::getVar('paym_name','','post','STRING',JREQUEST_ALLOWHTML);
 		// ?????
-		$data['shipping_carrier_desc'] = JRequest::getVar('shipping_carrier_desc','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['shipment_carrier_desc'] = JRequest::getVar('shipment_carrier_desc','','post','STRING',JREQUEST_ALLOWHTML);
 
 		parent::save($data);
 	}

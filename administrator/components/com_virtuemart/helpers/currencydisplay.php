@@ -235,7 +235,7 @@ class CurrencyDisplay {
 	 * return string formatted price
 	 */
 	public function priceDisplay($price=0, $currencyId=0,$inToShopCurrency = false,$nb = 2){
-		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipping)
+		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipment)
 		/*
 		 if(empty($currencyId)){
 		$currencyId = (int)$this->_app->getUserStateFromRequest( 'virtuemart_currency_id', 'virtuemart_currency_id',$this->_vendorCurrency );

@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 // $viewEscape = new JView();
 // $viewEscape->setEscape('htmlspecialchars');
 // TODO Temp fix !!!!! *********************************>>>
-$this->cart->cartData['paymentDiscount'] = $this->cart->cartData['shippingTax'] = '';
+$this->cart->cartData['paymentDiscount'] = $this->cart->cartData['shipmentTax'] = '';
 //$skuPrint = echo sprintf( "%64.64s",strtoupper (JText::_('COM_VIRTUEMART_CART_SKU') ) ) ;
 $p = array();
 // Head of table
@@ -53,7 +53,7 @@ foreach ($this->cart->products as $prow) {
 }
 echo sprintf("%'-64.64s", '');
 echo "\n";
-//SubTotal, Tax, Shipping, Coupon Discount and Total listing
+//SubTotal, Tax, Shipment, Coupon Discount and Total listing
 foreach ($this->cart->cartData['dBTaxRulesBill'] as $rule) {
     echo $rule['calc_name'] . ':' . $this->cart->prices[$rule['virtuemart_calc_id'] . 'Diff'];
     echo "\n";
@@ -64,8 +64,8 @@ if (!empty($this->cart->cartData['couponCode'])) {
     echo "\n";
 }
 
-echo strtoupper(JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_MODE_LBL')) . ' (' . strip_tags($this->cart->cartData['shippingName']) . ' ) ' . "\n";
-echo JText::_('COM_VIRTUEMART_CART_PRICE') . ':' . $this->cart->prices['salesPriceShipping'] . '(' . JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') . $this->cart->prices['shippingTax'] . ')';
+echo strtoupper(JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_MODE_LBL')) . ' (' . strip_tags($this->cart->cartData['shipmentName']) . ' ) ' . "\n";
+echo JText::_('COM_VIRTUEMART_CART_PRICE') . ':' . $this->cart->prices['salesPriceShipment'] . '(' . JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') . $this->cart->prices['shipmentTax'] . ')';
 echo "\n";
 echo strtoupper(JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL')) . ' (' . strip_tags($this->cart->cartData['paymentName']) . ' ) ' . "\n";
 echo JText::_('COM_VIRTUEMART_CART_PRICE') . ':' . $this->cart->prices['salesPricePayment'] . '(' . JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') . ':' . $this->cart->prices['paymentDiscount'] . ')';

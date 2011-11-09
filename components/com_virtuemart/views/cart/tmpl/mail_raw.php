@@ -5,7 +5,7 @@
 *
 * The addresses are reachable with $this->BTaddress, take a look for an exampel at shopper_adresses.php
 *
-* With $this->cartData->paymentName or shippingName, you get the name of the used paymentmethod/shippmentmethod
+* With $this->cartData->paymentName or shipmentName, you get the name of the used paymentmethod/shippmentmethod
 *
 * In the array order you have details and items ($this->order['details']), the items gather the products, but that is done directly from the cart data
 *
@@ -39,7 +39,7 @@ echo $this->loadTemplate($this->recipient);
 echo $this->loadTemplate('shopperadresses');
 // render price list
 echo  $this->loadTemplate('pricelist');
-//dump($salesPriceShipping , 'rawmail');
+//dump($salesPriceShipment , 'rawmail');
 // more infos
 //echo $this->loadTemplate($this->recipient.'_more');
 // end of mail

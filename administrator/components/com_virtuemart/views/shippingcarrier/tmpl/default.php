@@ -4,7 +4,7 @@
 * Description
 *
 * @package	VirtueMart
-* @subpackage ShippingCarrier
+* @subpackage ShipmentCarrier
 * @author RickG
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -29,7 +29,7 @@ AdminUIHelper::startAdminArea();
 		<thead>
 		<tr>
 			<th width="10">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shippingCarriers); ?>);" />
+				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shipmentCarriers); ?>);" />
 			</th>
 			<th>
 				<?php echo JText::_('COM_VIRTUEMART_CARRIER_LIST_NAME_LBL'); ?>
@@ -51,31 +51,31 @@ AdminUIHelper::startAdminArea();
 		</thead>
 		<?php
 		$k = 0;
-		for ($i=0, $n=count( $this->shippingCarriers ); $i < $n; $i++) {
-			$row = $this->shippingCarriers[$i];
+		for ($i=0, $n=count( $this->shipmentCarriers ); $i < $n; $i++) {
+			$row = $this->shipmentCarriers[$i];
 			$published = JHTML::_('grid.published', $row, $i );
 			/**
 			 * @todo Add to database layout published column
 			 */
 			$row->published = 1;
-			$checked = JHTML::_('grid.id', $i, $row->virtuemart_shippingcarrier_id);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=shippingcarrier&task=edit&cid[]=' . $row->virtuemart_shippingcarrier_id);
+			$checked = JHTML::_('grid.id', $i, $row->virtuemart_shipment_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=shipment&task=edit&cid[]=' . $row->virtuemart_shipment_id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td width="10">
 					<?php echo $checked; ?>
 				</td>
 				<td align="left">
-					<?php echo JHTML::_('link', $editlink, JText::_($row->shipping_carrier_name)); ?>
+					<?php echo JHTML::_('link', $editlink, JText::_($row->shipment_carrier_name)); ?>
 				</td>
                                 <td align="left">
-					<?php echo $row->shipping_carrier_desc; ?>
+					<?php echo $row->shipment_carrier_desc; ?>
 				</td>
                                 <td>
-					<?php echo $row->shippingShoppersList; ?>
+					<?php echo $row->shipmentShoppersList; ?>
 				</td>
                                 <td align="left">
-					<?php echo JHTML::_('link', $editlink, JText::_($row->shipping_method_name)); ?>
+					<?php echo JHTML::_('link', $editlink, JText::_($row->shipment_method_name)); ?>
 				</td>
 				<td align="left">
 					<?php echo JText::_($row->ordering); ?>
@@ -97,8 +97,8 @@ AdminUIHelper::startAdminArea();
 </div>
 
 	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="controller" value="shippingcarrier" />
-	<input type="hidden" name="view" value="shippingcarrier" />
+	<input type="hidden" name="controller" value="shipment" />
+	<input type="hidden" name="view" value="shipment" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<?php echo JHTML::_( 'form.token' ); ?>

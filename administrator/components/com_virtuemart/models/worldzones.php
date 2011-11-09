@@ -1,10 +1,10 @@
 <?php
 /**
 *
-* Data module for the shipping zones
+* Data module for the shipment zones
 *
 * @package	VirtueMart
-* @subpackage Shipping
+* @subpackage Shipment
 * @author RickG
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -25,10 +25,10 @@ jimport( 'joomla.application.component.model');
 if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 
 /**
- * Model class for shipping zone
+ * Model class for shipment zone
  *
  * @package	VirtueMart
- * @subpackage Shipping
+ * @subpackage Shipment
  * @author RickG, Max Milbers
  */
 class VirtueMartModelWorldzones extends VmModel {
@@ -49,7 +49,7 @@ class VirtueMartModelWorldzones extends VmModel {
      *
      * @author RickG
      */
-	function getShippingZone()
+	function getShipmentZone()
 	{
 		$db = JFactory::getDBO();
 

@@ -30,7 +30,7 @@ DROP TABLE
 `#__virtuemart_rating_reviews`,
 `#__virtuemart_producttypes`,
 `#__virtuemart_producttype_customfields`,
-`#__virtuemart_shippingcarriers`,
+`#__virtuemart_shipments`,
 `#__virtuemart_shoppergroups`,
 `#__virtuemart_states`,
 `#__virtuemart_userfields`,

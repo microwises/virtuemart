@@ -132,7 +132,7 @@ class VirtuemartViewUserfields extends JView {
 			$lists['required']     = JHTML::_('select.booleanlist', 'required',     $notoggle, $userField->required,     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 			$lists['published']    = JHTML::_('select.booleanlist', 'published',    $notoggle, $userField->published,    'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 			$lists['registration'] = JHTML::_('select.booleanlist', 'registration', $notoggle, $userField->registration, 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-			$lists['shipping']     = JHTML::_('select.booleanlist', 'shipping',     $notoggle, $userField->shipping,     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$lists['shipment']     = JHTML::_('select.booleanlist', 'shipment',     $notoggle, $userField->shipment,     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 			$lists['account']      = JHTML::_('select.booleanlist', 'account',      $notoggle, $userField->account,      'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 			$lists['readonly']     = JHTML::_('select.booleanlist', 'readonly',     $notoggle, $userField->readonly,     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
 
@@ -157,8 +157,8 @@ class VirtuemartViewUserfields extends JView {
 //$bar->appendButton( 'publish', 'upload', $alt, '', 550, 400 );
 			JToolBarHelper::custom('toggle.registration.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_REGISTRATION');
 			JToolBarHelper::custom('toggle.registration.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_REGISTRATION');
-			JToolBarHelper::custom('toggle.shipping.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_SHIPPING');
-			JToolBarHelper::custom('toggle.shipping.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_SHIPPING');
+			JToolBarHelper::custom('toggle.shipment.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_SHIPPING');
+			JToolBarHelper::custom('toggle.shipment.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_SHIPPING');
 			JToolBarHelper::custom('toggle.account.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_ACCOUNT');
 			JToolBarHelper::custom('toggle.account.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_ACCOUNT');
 			JToolBarHelper::divider();

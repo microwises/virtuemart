@@ -4,7 +4,7 @@
  * Description
  *
  * @package	VirtueMart
- * @subpackage ShippingCarrier
+ * @subpackage ShipmentCarrier
  * @author RickG
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -23,20 +23,20 @@ AdminUIHelper::startAdminArea();
 
 <?php // Loading Templates in Tabs
 $tabarray = array();
-$tabarray['edit'] = 'COM_VIRTUEMART_ADMIN_SHIPPER_FORM';
-$tabarray['config'] = 'COM_VIRTUEMART_ADMIN_SHIPPER_CONFIGURATION';
+$tabarray['edit'] = 'COM_VIRTUEMART_ADMIN_SHIPMENT_FORM';
+$tabarray['config'] = 'COM_VIRTUEMART_ADMIN_SHIPMENT_CONFIGURATION';
 
-AdminUIHelper::buildTabs ( $tabarray , $this->carrier->virtuemart_shippingcarrier_id );
+AdminUIHelper::buildTabs ( $tabarray , $this->carrier->virtuemart_shipment_id );
 // Loading Templates in Tabs END ?>
 
     <!-- Hidden Fields -->
 
 <input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="virtuemart_shippingcarrier_id" value="<?php echo $this->carrier->virtuemart_shippingcarrier_id; ?>" />
+<input type="hidden" name="virtuemart_shipment_id" value="<?php echo $this->carrier->virtuemart_shipment_id; ?>" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="xxcontroller" value="shippingcarrier" />
-<input type="hidden" name="view" value="shippingcarrier" />
+<input type="hidden" name="xxcontroller" value="shipment" />
+<input type="hidden" name="view" value="shipment" />
 
 <?php echo JHTML::_('form.token'); ?>
 </form>

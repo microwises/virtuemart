@@ -60,8 +60,8 @@ class TableUserfields extends VmTable {
 // 	var $published		= 1;
 // 	/** @var boolean True to display in registration form*/
 // 	var $registration	= 0;
-// 	/** @var boolean True to display in shipping form*/
-// 	var $shipping		= 0;
+// 	/** @var boolean True to display in shipment form*/
+// 	var $shipment		= 0;
 // 	/** @var boolean True to display in account maintenance*/
 // 	var $account		= 1;
 // 	/** @var boolean True if readonly*/

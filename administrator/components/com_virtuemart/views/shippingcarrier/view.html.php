@@ -1,10 +1,10 @@
 <?php
 /**
 *
-* Shipping Carrier View
+* Shipment Carrier View
 *
 * @package	VirtueMart
-* @subpackage ShippingCarrier
+* @subpackage ShipmentCarrier
 * @author RickG
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -23,13 +23,13 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.view');
 
 /**
- * HTML View class for maintaining the list of shipping carriers
+ * HTML View class for maintaining the list of shipment carriers
  *
  * @package	VirtueMart
- * @subpackage ShippingCarrier
+ * @subpackage ShipmentCarrier
  * @author RickG
  */
-class VirtuemartViewShippingCarrier extends JView {
+class VirtuemartViewShipmentCarrier extends JView {
 
 	function display($tpl = null) {
 
@@ -38,11 +38,11 @@ class VirtuemartViewShippingCarrier extends JView {
 		$this->loadHelper('adminui');
 		$this->loadHelper('permissions');
 		$this->loadHelper('vmplugin');
-		$this->loadHelper('vmshipperplugin');
+		$this->loadHelper('vmshipmentplugin');
 		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();
-		$shippingCarrier = $model->getShippingCarrier();
+		$shipmentCarrier = $model->getShipmentCarrier();
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		$viewName=ShopFunctions::SetViewTitle();
@@ -60,21 +60,21 @@ class VirtuemartViewShippingCarrier extends JView {
                          $this->assignRef('vendor_currency', $currency->currency_symbol);
 
                          if(Vmconfig::get('multix','none')!=='none'){
-                                $vendorList= ShopFunctions::renderVendorList($shippingCarrier->virtuemart_vendor_id);
+                                $vendorList= ShopFunctions::renderVendorList($shipmentCarrier->virtuemart_vendor_id);
                                 $this->assignRef('vendorList', $vendorList);
                          }
 
-			$this->assignRef('pluginList', self::renderInstalledShipperPlugins($shippingCarrier->shipping_carrier_jplugin_id));
-			$this->assignRef('carrier',	$shippingCarrier);
-			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($shippingCarrier->virtuemart_shoppergroup_ids,true));
+			$this->assignRef('pluginList', self::renderInstalledShipmentPlugins($shipmentCarrier->shipment_carrier_jplugin_id));
+			$this->assignRef('carrier',	$shipmentCarrier);
+			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($shipmentCarrier->virtuemart_shoppergroup_ids,true));
 
 			ShopFunctions::addStandardEditViewCommands();
 
 		} else {
 
 
-			$shippingCarriers = $model->getShippingCarriers();
-			$this->assignRef('shippingCarriers', $shippingCarriers);
+			$shipmentCarriers = $model->getShipmentCarriers();
+			$this->assignRef('shipmentCarriers', $shipmentCarriers);
 
 			ShopFunctions::addStandardDefaultViewCommands();
 			$lists = ShopFunctions::addStandardDefaultViewLists($model);
@@ -85,7 +85,7 @@ class VirtuemartViewShippingCarrier extends JView {
 		parent::display($tpl);
 	}
 
-	function renderInstalledShipperPlugins($selected)
+	function renderInstalledShipmentPlugins($selected)
 	{
 		$db = JFactory::getDBO();
 
@@ -99,11 +99,11 @@ class VirtuemartViewShippingCarrier extends JView {
 			$enable = 'enabled';
 			$ext_id = 'extension_id';
 		}
-		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmshipper" AND `'.$enable.'`="1" ';
+		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmshipment" AND `'.$enable.'`="1" ';
 		$db->setQuery($q);
 		$result = $db->loadAssocList($ext_id);
 
-		return JHtml::_('select.genericlist', $result, 'shipping_carrier_jplugin_id', null, $ext_id, 'name', $selected);
+		return JHtml::_('select.genericlist', $result, 'shipment_carrier_jplugin_id', null, $ext_id, 'name', $selected);
 	}
 
 }

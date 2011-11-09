@@ -33,7 +33,7 @@ $ -> Language fix or change
 ^ Coupon maintenance converted to MVC
 + Added the ability to publish/unpublish countries
 ^ Coupon maintenance converted to MVC
-^ Shipping Carrier maintenance converted to MVC
-^ Shipping Rate maintenance converted
+^ Shipment Carrier maintenance converted to MVC
+^ Shipment Rate maintenance converted
 ^ Order Status maintenance page converted to MVC
 # Bug 1538 fixed; Product pricing table change

@@ -33,7 +33,7 @@ DELETE FROM `#__virtuemart_product_relations`;
 DELETE FROM `#__virtuemart_ratings`;
 DELETE FROM `#__virtuemart_rating_reviews`;
 DELETE FROM `#__virtuemart_rating_votes`;
-DELETE FROM `#__virtuemart_shippingcarriers`;
+DELETE FROM `#__virtuemart_shipments`;
 DELETE FROM `#__virtuemart_shoppergroups`;
 DELETE FROM `#__virtuemart_userinfos`;
 DELETE FROM `#__virtuemart_vendors`;

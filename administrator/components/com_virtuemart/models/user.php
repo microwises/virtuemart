@@ -625,7 +625,7 @@ class VirtueMartModelUser extends VmModel {
 
 		if ($type == 'ST') {
 			$prepareUserFields = $userFieldsModel->getUserFields(
-									 'shipping'
+									 'shipment'
 									, array() // Default toggles
 			);
 		} else { // BT

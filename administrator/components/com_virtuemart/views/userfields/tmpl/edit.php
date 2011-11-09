@@ -247,13 +247,13 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 
 		<tr>
 			<td width="110" class="key">
-				<label for="shipping">
+				<label for="shipment">
 					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_SHIPPING') ?>
 				</label>
 			</td>
 			<td>
 				<fieldset class="radio">
-				<?php echo $this->lists['shipping']; ?>
+				<?php echo $this->lists['shipment']; ?>
 				</fieldset>
 			</td>
 		</tr>

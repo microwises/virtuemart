@@ -254,7 +254,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	    "ipn_test" => $params->get('debug'),
 	    "pal" => "NRUBJXESJTY24",
 	    // "image_url" => $vendor_image_url, // TO DO
-	    "no_shipping" => "1",
+	    "no_shipment" => "1",
 	    "no_note" => "1");
 
 

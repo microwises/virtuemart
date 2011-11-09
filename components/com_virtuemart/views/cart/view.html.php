@@ -67,14 +67,14 @@ class VirtueMartViewCart extends JView {
 		$document->setTitle(JText::_('COM_VIRTUEMART_CART_SELECTCOUPON'));
 
 		} else */
-		if ($layoutName == 'select_shipper') {
-			if (!class_exists('vmShipperPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipperplugin.php');
-			JPluginHelper::importPlugin('vmshipper');
-			$this->lSelectShipper();
+		if ($layoutName == 'select_shipment') {
+			if (!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipmentplugin.php');
+			JPluginHelper::importPlugin('vmshipment');
+			$this->lSelectShipment();
 
 			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_OVERVIEW'), JRoute::_('index.php?option=com_virtuemart&view=cart'));
-			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_SELECTSHIPPER'));
-			$document->setTitle(JText::_('COM_VIRTUEMART_CART_SELECTSHIPPER'));
+			$pathway->addItem(JText::_('COM_VIRTUEMART_CART_SELECTSHIPMENT'));
+			$document->setTitle(JText::_('COM_VIRTUEMART_CART_SELECTSHIPMENT'));
 		} else if ($layoutName == 'select_payment') {
 
 			/* Load the cart helper */
@@ -112,11 +112,11 @@ class VirtueMartViewCart extends JView {
 			}
 			$this->assignRef('checkout_task', $checkout_task);
 			$this->checkPaymentMethodsConfigured();
-			$this->checkShippingMethodsConfigured();
-			if ($cart->virtuemart_shippingcarrier_id) {
-				$this->assignRef('select_shipper_text', JText::_('COM_VIRTUEMART_CART_CHANGE_SHIPPING'));
+			$this->checkShipmentMethodsConfigured();
+			if ($cart->virtuemart_shipment_id) {
+				$this->assignRef('select_shipment_text', JText::_('COM_VIRTUEMART_CART_CHANGE_SHIPPING'));
 			} else {
-				$this->assignRef('select_shipper_text', JText::_('COM_VIRTUEMART_CART_EDIT_SHIPPING'));
+				$this->assignRef('select_shipment_text', JText::_('COM_VIRTUEMART_CART_EDIT_SHIPPING'));
 			}
 			if ($cart->virtuemart_paymentmethod_id) {
 				$this->assignRef('select_payment_text', JText::_('COM_VIRTUEMART_CART_CHANGE_PAYMENT'));
@@ -196,56 +196,56 @@ class VirtueMartViewCart extends JView {
 	}
 
 	/*
-	 * lSelectShipper
-	* find al shipping rates available for this cart
+	 * lSelectShipment
+	* find al shipment rates available for this cart
 	*
 	* @author Valerie Isaksen
 	*/
 
-	private function lSelectShipper() {
-		$found_shipping_method=false;
-		$shipping_not_found_text = JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');
-		$this->assignRef('shipping_not_found_text', $shipping_not_found_text);
+	private function lSelectShipment() {
+		$found_shipment_method=false;
+		$shipment_not_found_text = JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');
+		$this->assignRef('shipment_not_found_text', $shipment_not_found_text);
 
-		$shippers_shipping_rates=array();
-		if (!$this->checkShippingMethodsConfigured()) {
-			$this->assignRef('shippers_shipping_rates',$shippers_shipping_rates);
-			$this->assignRef('found_shipping_method', $found_shipping_method);
+		$shipments_shipment_rates=array();
+		if (!$this->checkShipmentMethodsConfigured()) {
+			$this->assignRef('shipments_shipment_rates',$shipments_shipment_rates);
+			$this->assignRef('found_shipment_method', $found_shipment_method);
 			return;
 		}
-		$selectedShipper = (empty($this->cart->virtuemart_shippingcarrier_id) ? 0 : $this->cart->virtuemart_shippingcarrier_id);
-		if (!class_exists('vmShipperPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipperplugin.php');
-		JPluginHelper::importPlugin('vmshipper');
+		$selectedShipment = (empty($this->cart->virtuemart_shipment_id) ? 0 : $this->cart->virtuemart_shipment_id);
+		if (!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipmentplugin.php');
+		JPluginHelper::importPlugin('vmshipment');
 		$dispatcher = JDispatcher::getInstance();
-		$shippers_shipping_rates = $dispatcher->trigger('plgVmOnSelectShipper', array('cart' => $this->cart,
-	    'selectedShipper' => $selectedShipper));
-		// if no shipping rate defined
-		$found_shipping_method = false;
+		$shipments_shipment_rates = $dispatcher->trigger('plgVmOnSelectShipment', array('cart' => $this->cart,
+	    'selectedShipment' => $selectedShipment));
+		// if no shipment rate defined
+		$found_shipment_method = false;
 
-		foreach ($shippers_shipping_rates as $shipper_shipping_rates) {
-			if (is_array($shipper_shipping_rates)) {
-				foreach ($shipper_shipping_rates as $shipper_shipping_rate) {
-					$found_shipping_method = true;
+		foreach ($shipments_shipment_rates as $shipment_shipment_rates) {
+			if (is_array($shipment_shipment_rates)) {
+				foreach ($shipment_shipment_rates as $shipment_shipment_rate) {
+					$found_shipment_method = true;
 					break;
 				}
 			}
 		}
-/*		if (!$found_shipping_method) {
+/*		if (!$found_shipment_method) {
 // 			$link=''; // todo
 // 			$admintext = ('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_FITTING_ADMIN', '<a href="'.$link.'">'.$link.'</a>')
-			$shipping_not_found_text = vmInfo($admintext,'COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');;
+			$shipment_not_found_text = vmInfo($admintext,'COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');;
 		}*/
 		/*
-	  $layoutName='select_shipper'; // by dafault should be the same
-		if (!$found_shipping_method) {
+	  $layoutName='select_shipment'; // by dafault should be the same
+		if (!$found_shipment_method) {
 		//  change the view?
 		$layoutName='default';
-		$this->assignRef('select_shipper_text',JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD'), JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'));
+		$this->assignRef('select_shipment_text',JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD'), JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'));
 		}
 	 */
 
-		$this->assignRef('shippers_shipping_rates', $shippers_shipping_rates);
-		$this->assignRef('found_shipping_method', $found_shipping_method);
+		$this->assignRef('shipments_shipment_rates', $shipments_shipment_rates);
+		$this->assignRef('found_shipment_method', $found_shipment_method);
 		return;
 	}
 
@@ -259,9 +259,9 @@ class VirtueMartViewCart extends JView {
 	private function lSelectPayment() {
 
 		$payment_not_found_text='';
-		$shippers_payment_rates=array();
+		$shipments_payment_rates=array();
 		if (!$this->checkPaymentMethodsConfigured()) {
-			$this->assignRef('paymentplugins_payments', $shippers_payment_rates);
+			$this->assignRef('paymentplugins_payments', $shipments_payment_rates);
 			$this->assignRef('found_payment_method', $found_payment_method);
 		}
 
@@ -325,27 +325,27 @@ class VirtueMartViewCart extends JView {
 		return true;
 	}
 
-	private function checkShippingMethodsConfigured() {
-		if (!class_exists('VirtueMartModelShippingCarrier'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'shippingcarrier.php');
+	private function checkShipmentMethodsConfigured() {
+		if (!class_exists('VirtueMartModelShipmentCarrier'))
+		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'shipment.php');
 		//For the selection of the payment method we need the total amount to pay.
-		$shippingModel = new VirtueMartModelShippingCarrier();
-		$shippings = $shippingModel->getShippingCarriers();
-		if (empty($shippings)) {
+		$shipmentModel = new VirtueMartModelShipmentCarrier();
+		$shipments = $shipmentModel->getShipmentCarriers();
+		if (empty($shipments)) {
 
 			$text = '';
 			if (!class_exists('Permissions'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 			if (Permissions::getInstance()->check("admin,storeadmin")) {
 				$uri = JFactory::getURI();
-				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=shippingcarrier';
+				$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=shipment';
 				$text = JText::sprintf('COM_VIRTUEMART_NO_SHIPPING_METHODS_CONFIGURED_LINK', '<a href="' . $link . '">' . $link . '</a>');
 			}
 
 			vmInfo('COM_VIRTUEMART_NO_SHIPPING_METHODS_CONFIGURED', $text);
 
 			$tmp = 0;
-			$this->assignRef('found_shipping_method', $tmp);
+			$this->assignRef('found_shipment_method', $tmp);
 
 			return false;
 		}
