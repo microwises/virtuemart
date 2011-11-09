@@ -667,18 +667,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethod_shoppergroups` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='xref table for paymentmethods to shoppergroup' AUTO_INCREMENT=1 ;
 
 
--- --------------------------------------------------------
---
--- Table structure for table `#__virtuemart_shipments_shoppergroups`
---
-
-CREATE TABLE IF NOT EXISTS `#__virtuemart_shipment_shoppergroups` (
-  `id` SERIAL,
-  `virtuemart_shipment_id` int(11) NOT NULL DEFAULT '0',
-  `virtuemart_shoppergroup_id` int(11) NOT NULL DEFAULT '0',
-  UNIQUE KEY `i_virtuemart_shipment_id` (`virtuemart_shipment_id`,`virtuemart_shoppergroup_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='xref table for shipment to shoppergroup' AUTO_INCREMENT=1 ;
-
 
 -- --------------------------------------------------------
 --
@@ -950,8 +938,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_rating_votes` (
 -- Table structure for table `#__virtuemart_shipments`
 --
 
-CREATE TABLE IF NOT EXISTS `#__virtuemart_shipments` (
-  `virtuemart_shipment_id` SERIAL,
+CREATE TABLE IF NOT EXISTS `#__virtuemart_shipmentmethods` (
+  `virtuemart_shipmentmethod_id` SERIAL,
   `virtuemart_vendor_id` int(11) DEFAULT NULL,
   `shipment_jplugin_id` int(11) NOT NULL,
   `shipment_name` char(200) NOT NULL DEFAULT '',
@@ -975,6 +963,17 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shipments` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shipment Carriers created from the shipment plugins' AUTO_INCREMENT=1 ;
 
 
+-- --------------------------------------------------------
+--
+-- Table structure for table `#__virtuemart_shipments_shoppergroups`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_shipmentmethod_shoppergroups` (
+  `id` SERIAL,
+  `virtuemart_shipmentmethod_id` int(11) NOT NULL DEFAULT '0',
+  `virtuemart_shoppergroup_id` int(11) NOT NULL DEFAULT '0',
+  UNIQUE KEY `i_virtuemart_shipmentmethod_id` (`virtuemart_shipmentmethod_id`,`virtuemart_shoppergroup_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='xref table for shipment to shoppergroup' AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------

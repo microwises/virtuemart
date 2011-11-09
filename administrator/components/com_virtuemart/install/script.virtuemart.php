@@ -220,14 +220,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->alterTable('#__virtuemart_product_prices',$fields);
 
 
-			$query = 'SHOW TABLES LIKE "_virtuemart_shippingcarriers"';
+			$query = 'SHOW TABLES LIKE "virtuemart_shippingcarriers"';
 			$this->db->setQuery($query);
 			if($this->db->loadResult()){
-				$query = 'ALTER TABLE `#__virtuemart_shippingcarriers` RENAME TO `#__virtuemart_shipments`';
+				$query = 'ALTER TABLE `#__virtuemart_shippingcarriers` RENAME TO `#__virtuemart_shipmentmethods`';
 				$this->db->setQuery($query);
 				$this->db->query();
 
-				$fields = array('virtuemart_shippingcarrier_id'=>'`virtuemart_shipment_id` SERIAL',
+				$fields = array('virtuemart_shippingcarrier_id'=>'`virtuemart_shipmentmethod_id` SERIAL',
 														'shipping_carrier_jplugin_id'=>'`shipment_jplugin_id` int(11) NOT NULL',
 														'shipping_carrier_name'=>"`shipment_name` char(200) NOT NULL DEFAULT ''",
 														'shipping_carrier_desc'=>"`shipment_desc` text NOT NULL COMMENT 'Description'",
@@ -237,19 +237,19 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 														'shipping_carrier_package_fee'=>"`shipment_package_fee` decimal(10,2) NOT NULL DEFAULT '0.00'",
 														'shipping_carrier_vat_id'=>"`shipment_vat_id` int(11) NOT NULL DEFAULT '0'"
 				);
-				$this->alterTable('#__virtuemart_shipments',$fields);
+				$this->alterTable('#__virtuemart_shipmentmethods',$fields);
 			}
 
-			$query = 'SHOW TABLES LIKE "_virtuemart_shippingcarrier_shoppergroups"';
+			$query = 'SHOW TABLES LIKE "virtuemart_shippingcarrier_shoppergroups"';
 			$this->db->setQuery($query);
 			if($this->db->loadResult()){
 
-				$query = 'ALTER TABLE `#__virtuemart_shippingcarrier_shoppergroups` RENAME TO `#__virtuemart_shipment_shoppergroups`';
+				$query = 'ALTER TABLE `#__virtuemart_shippingcarrier_shoppergroups` RENAME TO `#__virtuemart_shipmentmethod_shoppergroups`';
 				$this->db->setQuery($query);
 				$this->db->query();
 
-				$fields = array('virtuemart_shippingcarrier_id'=>"`virtuemart_shipment_id` SERIAL ");
-				$this->alterTable('#__virtuemart_shipment_shoppergroups',$fields);
+				$fields = array('virtuemart_shippingcarrier_id'=>"`virtuemart_shipmentmethod_id` SERIAL ");
+				$this->alterTable('#__virtuemart_shipmentmethod_shoppergroups',$fields);
 			}
 
 
@@ -352,7 +352,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->db = JFactory::getDBO();
 			}
 
-			$query = 'UPDATE `#__virtuemart_adminmenuentries` SET `name`="COM_VIRTUEMART_SHIPMENT_S", `view`="shipment" WHERE `id`="16" LIMIT 1';
+			$query = 'UPDATE `#__virtuemart_adminmenuentries` SET `name`="COM_VIRTUEMART_SHIPMENT_S", `view`="shipmentmethod" WHERE `id`="16" LIMIT 1';
 			$this->db->setQuery($query);
 			$this->db->query($query);
 		}
