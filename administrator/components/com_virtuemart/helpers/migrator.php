@@ -201,6 +201,9 @@ class Migrator extends VmModel{
 	public function portMedia(){
 
 		$ok = true;
+		
+		//Prevents search field from interfering with syncronization
+		JRequest::setVar('searchMedia', '');
 
 		//$imageExtensions = array('jpg','jpeg','gif','png');
 
