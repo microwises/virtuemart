@@ -28,7 +28,7 @@ if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmta
  * @package	VirtueMart
  * @author RickG, Max Milbers
  */
-class TableShipments extends VmTable {
+class TableShipmentmethods extends VmTable {
 
 	/** @var int Primary key */
 	var $virtuemart_shipmentmethod_id			= 0;

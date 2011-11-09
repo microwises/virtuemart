@@ -47,7 +47,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 	 */
 	function __construct() {
 		parent::__construct();
-		$this->setMainTable('shipments');
+		$this->setMainTable('shipmentmethods');
 	}
 
 	/**
@@ -58,7 +58,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 	function getShipment() {
 
 		if (empty($this->_data)) {
-			$this->_data = $this->getTable('shipments');
+			$this->_data = $this->getTable('shipmentmethods');
 			$this->_data->load((int)$this->_id);
 
 			if(empty($this->_data->virtuemart_vendor_id)){
@@ -157,13 +157,13 @@ class VirtueMartModelShipmentmethod extends VmModel {
 		$this->_db->setQuery($q);
 		$data['shipment_element'] = $this->_db->loadResult();
 
-		$table = $this->getTable('shipments');
+		$table = $this->getTable('shipmentmethods');
 		$table->bindChecknStore($data);
 		$errors = $table->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);
 		}
-		$xrefTable = $this->getTable('shipment_shoppergroups');
+		$xrefTable = $this->getTable('shipmentmethod_shoppergroups');
 		$xrefTable->bindChecknStore($data);
 		$errors = $xrefTable->getErrors();
 		foreach($errors as $error){

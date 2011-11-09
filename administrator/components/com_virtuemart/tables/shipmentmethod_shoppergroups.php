@@ -21,13 +21,13 @@ defined('_JEXEC') or die();
 if(!class_exists('VmTableXarray'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtablexarray.php');
 
 /**
- * shipment_shoppergroups table class
+ * shipmentmethod_shoppergroups table class
  * The class is is used to manage the shopper groups with shipment.
  *
  * @author Max Milbers
  * @package		VirtueMart
  */
-class TableShipmentcarrier_shoppergroups extends VmTableXarray {
+class TableShipmentmethod_shoppergroups extends VmTableXarray {
 
 
 	/**
