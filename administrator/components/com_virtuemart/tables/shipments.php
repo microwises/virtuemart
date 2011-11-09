@@ -60,7 +60,7 @@ class TableShipments extends VmTable {
      * @param $db A database connector object
      */
     function __construct(&$db) {
-		parent::__construct('#__virtuemart_shipments', 'virtuemart_shipment_id', $db);
+		parent::__construct('#__virtuemart_shipmentmethods', 'virtuemart_shipment_id', $db);
 		// we can have several time the same shipment name. It is the vendor problem to set up correctly his shipment rate.
 		//$this->setUniqueName('shipment_name');
 		$this->setObligatoryKeys('shipment_jplugin_id');

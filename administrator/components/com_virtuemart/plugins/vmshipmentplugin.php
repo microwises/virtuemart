@@ -114,7 +114,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 		$vendorId = 1;
 		$db = JFactory::getDBO();
 
-		$q = 'SELECT   `shipment_params` FROM #__virtuemart_shipments WHERE `virtuemart_shipment_id` = "' . $shipment_id . '" AND `virtuemart_vendor_id` = "' . $vendorId . '" AND `published`="1" ';
+		$q = 'SELECT   `shipment_params` FROM #__virtuemart_shipmentmethods WHERE `virtuemart_shipment_id` = "' . $shipment_id . '" AND `virtuemart_vendor_id` = "' . $vendorId . '" AND `published`="1" ';
 		$db->setQuery($q);
 		return $db->loadResult();
 	}
@@ -144,7 +144,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 	final protected function getShipment ( $shipment_id) {
 		$db = JFactory::getDBO();
 
-		$q = 'SELECT * FROM #__virtuemart_shipments
+		$q = 'SELECT * FROM #__virtuemart_shipmentmethods
         		WHERE `virtuemart_shipment_id`="' . $shipment_id . '" AND `shipment_element` = "'.$this->_pelement.'"';
 
 		$db->setQuery($q);
@@ -181,7 +181,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 
 		$select = 'SELECT v.*,j.*,s.virtuemart_shoppergroup_id ';
 
-		$q = $select . ' FROM   #__virtuemart_shipments AS v ';
+		$q = $select . ' FROM   #__virtuemart_shipmentmethods AS v ';
 
 		$q.= 'LEFT JOIN ' . $extPlgTable . ' as j ON j.`' . $extField1 . '` =  v.`shipment_jplugin_id` ';
 
@@ -222,7 +222,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 
 		if (VmConfig::isJ15()) {
 			$_q = 'SELECT 1 '
-			. 'FROM   #__virtuemart_shipments v '
+			. 'FROM   #__virtuemart_shipmentmethods v '
 			. ',      #__plugins             j '
 			. 'WHERE j.`element` = "' . $this->_pelement . '" '
 			. 'AND   v.`shipment_jplugin_id` = j.`id` '
@@ -231,7 +231,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 			;
 		} else {
 			$_q = 'SELECT 1 '
-			. 'FROM   #__virtuemart_shipments AS v '
+			. 'FROM   #__virtuemart_shipmentmethods AS v '
 			. ',      #__extensions   AS     j '
 			. 'WHERE j.`folder` = "vmshipment" '
 			. 'AND j.`element` = "' . $this->_pelement . '" '
@@ -598,14 +598,14 @@ abstract class vmShipmentPlugin extends vmPlugin {
 
 		if (VmConfig::isJ15()) {
 			$q = 'SELECT COUNT(*) AS c '
-			. 'FROM #__virtuemart_shipments AS vm '
+			. 'FROM #__virtuemart_shipmentmethods AS vm '
 			. ',    #__plugins AS j '
 			. "WHERE vm.virtuemart_shipment_id = '$sid' "
 			. 'AND   vm.shipment_jplugin_id = j.id '
 			. "AND   j.element = '$pelement'";
 		} else {
 			$q = 'SELECT COUNT(*) AS c '
-			. 'FROM #__virtuemart_shipments AS vm '
+			. 'FROM #__virtuemart_shipmentmethods AS vm '
 			. ',      #__extensions    AS      j '
 			. 'WHERE j.`folder` = "vmshipment" '
 			. "AND vm.virtuemart_shipment_id = '$sid' "
@@ -646,7 +646,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 	final protected function getThisShipmentName($virtuemart_shipment_id) {
 		$db = JFactory::getDBO();
 		$q = 'SELECT `shipment_name` '
-		. 'FROM #__virtuemart_shipments '
+		. 'FROM #__virtuemart_shipmentmethods '
 		. "WHERE virtuemart_shipment_id ='$virtuemart_shipment_id' ";
 		$db->setQuery($q);
 		return $db->loadResult(); // TODO Error check
@@ -827,7 +827,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 	final protected function getThisShipmentData($virtuemart_shipment_id) {
 		$db = JFactory::getDBO();
 		$q = 'SELECT * '
-		. 'FROM #__virtuemart_shipments '
+		. 'FROM #__virtuemart_shipmentmethods '
 		. "WHERE `virtuemart_shipment_id` ='" . $virtuemart_shipment_id . "' ";
 		$db->setQuery($q);
 		$result = $db->loadObject();

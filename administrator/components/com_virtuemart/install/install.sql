@@ -935,7 +935,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_rating_votes` (
 
 -- --------------------------------------------------------
 --
--- Table structure for table `#__virtuemart_shipments`
+-- Table structure for table `#__virtuemart_shipmentmethods`
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_shipmentmethods` (
@@ -965,7 +965,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shipmentmethods` (
 
 -- --------------------------------------------------------
 --
--- Table structure for table `#__virtuemart_shipments_shoppergroups`
+-- Table structure for table `#__virtuemart_shipmentmethods_shoppergroups`
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_shipmentmethod_shoppergroups` (

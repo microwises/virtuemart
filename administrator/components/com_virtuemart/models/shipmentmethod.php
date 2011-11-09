@@ -94,8 +94,8 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			$enable = 'enabled';
 			$ext_id = 'extension_id';
 		}
-		$query = ' `#__virtuemart_shipments`.* ,  `'.$table.'`.`name` as shipment_method_name FROM `#__virtuemart_shipments` ';
-		$query .= 'JOIN `'.$table.'`   ON  `'.$table.'`.`'.$ext_id.'` = `#__virtuemart_shipments`.`shipment_jplugin_id` ';
+		$query = ' `#__virtuemart_shipmentmethods`.* ,  `'.$table.'`.`name` as shipment_method_name FROM `#__virtuemart_shipmentmethods` ';
+		$query .= 'JOIN `'.$table.'`   ON  `'.$table.'`.`'.$ext_id.'` = `#__virtuemart_shipmentmethods`.`shipment_jplugin_id` ';
 
 		$whereString = '';
 
