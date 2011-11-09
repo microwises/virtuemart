@@ -716,8 +716,7 @@ class VirtueMartCart {
 	 */
 	public function setShipper($shipper_id) {
 
-		if (!class_exists('vmShipperPlugin'))
-		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
+		if (!class_exists('vmShipperPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
 
 		$dispatcher = JDispatcher::getInstance();
@@ -821,8 +820,7 @@ class VirtueMartCart {
 		if (empty($this->virtuemart_shippingcarrier_id)) {
 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipping',$this->useXHTML,$this->useSSL), $redirectMsg);
 		} else {
-			if (!class_exists('vmShipperPlugin'))
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
+			if (!class_exists('vmShipperPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipperplugin.php');
 			JPluginHelper::importPlugin('vmshipper');
 			//Add a hook here for other shipment methods, checking the data of the choosed plugin
 			$dispatcher = JDispatcher::getInstance();
@@ -843,8 +841,7 @@ class VirtueMartCart {
 		if (empty($this->virtuemart_paymentmethod_id)) {
 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $redirectMsg);
 		} else {
-			if (!class_exists('vmPaymentPlugin'))
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
+			if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$dispatcher = JDispatcher::getInstance();
@@ -1225,8 +1222,8 @@ class VirtueMartCart {
 
 		$nbShipping = 0;
 		$virtuemart_shippingcarrier_id=0;
-		if (!class_exists('vmShipperPlugin'))
-		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
+		if (!class_exists('vmShipperPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipperplugin.php');
+
 		JPluginHelper::importPlugin('vmshipper');
 		if (VmConfig::get('automatic_shipping',1) ) {
 			$dispatcher = JDispatcher::getInstance();
@@ -1264,8 +1261,7 @@ class VirtueMartCart {
 
 		$nbPayment = 0;
 		$virtuemart_paymentmethod_id=0;
-		if (!class_exists('vmPaymentPlugin'))
-		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
+		if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpaymentplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
 		if (VmConfig::get('automatic_payment',1) ) {
 			$dispatcher = JDispatcher::getInstance();
@@ -1302,8 +1298,8 @@ class VirtueMartCart {
 		if ($this->virtuemart_shippingcarrier_id===0)
 		return;
 		$shippingValid = false;
-		if (!class_exists('vmShipperPlugin'))
-		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
+		if (!class_exists('vmShipperPlugin'))	require(JPATH_VM_PLUGINS . DS . 'vmshipperplugin.php');
+
 		JPluginHelper::importPlugin('vmshipper');
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnCheckShippingIsValid', array('cart' => $this));

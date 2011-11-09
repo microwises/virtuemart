@@ -370,7 +370,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				case 'E':
 
 					$html = '<input type="hidden" value="'.$field->value.'" name="field['.$row.'][custom_value]" />' ;
-					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 					$retValue = vmCustomPlugin::inputTypePlugin($field, $product_id,$row);
 
 				return $html.$retValue.$priceInput;
@@ -480,7 +480,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		$this->_db->setQuery($query);
 		if ($productCustoms = $this->_db->loadObjectList()) {
 			$row= 0 ;
-			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 			foreach ($productCustoms as & $field ) {
 				if ($field->field_type == "E") $field->display = vmCustomPlugin::displayTypePlugin($field,$product,$row);
 				else $field->display = $this->displayType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
@@ -545,7 +545,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 			$calculator = calculationHelper::getInstance();
-			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 
 			$free = JText::_('COM_VIRTUEMART_CART_PRICE_FREE');
 			// render select list
@@ -784,7 +784,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$productCustom = self::getProductCustomFieldCart ($product_id,$selected );
  				if ($productCustom->field_type == "E") {
 					$product = self::addParam($product);
-					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 					//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
 					$html .= vmCustomPlugin::displayInCartPlugin( $product,$productCustom, $row,'Module');
 					// foreach ($product->userfield as $pKey => $puser) {
@@ -826,7 +826,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$html .= ' <span class="product-field-type-'.$productCustom->field_type.'">';
  				if ($productCustom->field_type == "E") {
 					$product = self::addParam($product);
-					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 					//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
 					$html .= vmCustomPlugin::displayInCartPlugin( $product,$productCustom, $row).'</span>';
 					// foreach ($product->userfield as $pKey => $puser) {
@@ -860,7 +860,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				if ($productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id ) ) {
 					if ($productCustom->field_type == "E") {
 
-						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 						//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
 						$html .= vmCustomPlugin::displayInOrderPlugin( $item,$param,$productCustom, $row,$view);
 						// foreach ($product->userfield as $pKey => $puser) {

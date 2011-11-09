@@ -2,7 +2,6 @@
 
 DELETE FROM `#__virtuemart_permgroups`;
 DELETE FROM `#__virtuemart_countries`;
-DELETE FROM `#__virtuemart_creditcards`;
 DELETE FROM `#__virtuemart_currencies`;
 DELETE FROM `#__virtuemart_paymentmethods`;
 DELETE FROM `#__virtuemart_shippingcarriers`;

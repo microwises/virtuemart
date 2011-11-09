@@ -50,8 +50,7 @@ class VirtueMartControllerPaymentresponse extends JController {
      */
     function PaymentResponseReceived() {
 
-	if (!class_exists('vmPaymentPlugin'))
-	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
+	if (!class_exists('vmPaymentPlugin'))  require(JPATH_VM_PLUGINS . DS . 'vmpaymentplugin.php');
 	JPluginHelper::importPlugin('vmpayment');
 	$pm = JRequest::getInt('pm', 0);
 	$pelement = JRequest::getWord('pelement');
@@ -111,8 +110,7 @@ class VirtueMartControllerPaymentresponse extends JController {
      */
     function PaymentUserCancel() {
 
-	if (!class_exists('vmPaymentPlugin'))
-	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
+	if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpaymentplugin.php');
 	if (!class_exists('VirtueMartCart'))
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 
@@ -166,8 +164,7 @@ class VirtueMartControllerPaymentresponse extends JController {
     function paymentNotification() {
 	$debug = false;
 	$data = JRequest::get('post');
-	if (!class_exists('vmPaymentPlugin'))
-	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
+	if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpaymentplugin.php');
 
 	if (!class_exists('VirtueMartCart'))
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');

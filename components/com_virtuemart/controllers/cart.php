@@ -309,8 +309,7 @@ class VirtueMartControllerCart extends JController {
 	//Now set the payment rate into the cart
 	$cart = VirtueMartCart::getCart();
 	if ($cart) {
-	    if (!class_exists('vmPaymentPlugin'))
-		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
+	    if (!class_exists('vmPaymentPlugin'))	require(JPATH_VM_PLUGINS . DS . 'vmpaymentplugin.php');
 	    JPluginHelper::importPlugin('vmpayment');
 	    //Some Paymentmethods needs extra Information like
 	    $virtuemart_paymentmethod_id = JRequest::getInt('virtuemart_paymentmethod_id', '0');

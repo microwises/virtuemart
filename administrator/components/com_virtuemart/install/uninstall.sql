@@ -5,7 +5,6 @@ DROP TABLE
 `#__virtuemart_category_categories`,
 `#__virtuemart_countries`,
 `#__virtuemart_coupons`,
-`#__virtuemart_creditcards`,
 `#__virtuemart_currencies`,
 `#__virtuemart_customs`,
 `#__virtuemart_customplugins`,

@@ -43,8 +43,8 @@ class VirtuemartViewOrders extends JView {
 		$this->loadHelper('html');
 
 //		require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
-		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpaymentplugin.php');
+		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_PLUGINS.DS.'vmshipperplugin.php');
 		if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
 
 		// Load addl models

@@ -15,7 +15,7 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id$
+ * @version $Id: vmpaymentplugin.php 4601 2011-11-03 15:50:01Z alatak $
  */
 // Load the helper functions that are needed by all plugins
 if (!class_exists('ShopFunctions'))
@@ -32,12 +32,6 @@ abstract class vmPaymentPlugin extends vmPlugin {
 
     private $_virtuemart_paymentmethod_id = 0;
     private $_payment_name = '';
-
-    /** var Must be overriden in every plugin file by adding this code to the constructor: $this->_pelement = basename(__FILE, '.php'); */
-    var $_pelement = '';
-    var $_tablename = '';
-    var $_vmplugin = '';
-    var $_debug = false;
 
     /**
      * @var array List with all carriers the have been implemented with the plugin in the format

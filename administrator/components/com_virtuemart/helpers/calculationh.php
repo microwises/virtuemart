@@ -770,8 +770,7 @@ class calculationHelper {
 			if (empty($ship_id)) return;
 
 			// Handling shipping plugins
-			if (!class_exists('vmShipperPlugin'))
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmshipperplugin.php');
+			if (!class_exists('vmShipperPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipperplugin.php');
 			JPluginHelper::importPlugin('vmshipper');
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnShipperSelectedCalculatePrice',
@@ -819,7 +818,7 @@ class calculationHelper {
 			$cart->automaticSelectedPayment =   $cart->CheckAutomaticSelectedPayment( $this->_cartPrices);
 			if ($cart->automaticSelectedPayment) $payment_id=$cart->virtuemart_paymentmethod_id;
 			if (empty($payment_id)) return;
-			
+
 /*
 			// either there is only one payment method, either the old one is still valid
 			if (!class_exists('TablePaymentmethods'))
@@ -830,7 +829,7 @@ class calculationHelper {
 */
 
 
-			if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmpaymentplugin.php');
+			if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnPaymentSelectedCalculatePrice',
@@ -1047,7 +1046,7 @@ class calculationHelper {
 					$this->_db->setQuery($query);
 					$productCustomsPrice = $this->_db->loadObject();
 					if ($productCustomsPrice->field_type =='E') {
-						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 						$productCustomsPrice->custom_price = vmCustomPlugin::calculatePluginVariant( $product, $productCustomsPrice,$selected,$row);
 					}
 					//$app = JFactory::getApplication();

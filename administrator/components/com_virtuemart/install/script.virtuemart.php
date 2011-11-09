@@ -179,6 +179,13 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->alterTable('#__session',$fields);
 			}
 
+
+// 		$fields = array('calc_amount_cond'=>"`calc_amount_cond_min` float NOT NULL COMMENT 'min number of qualifying products'");
+// 		$this->alterTable('#__virtuemart_calcs',$fields);
+
+			$this->checkAddFieldToTable('#__virtuemart_calcs','calc_amount_cond_min',"float NOT NULL COMMENT 'min number of qualifying products' AFTER `calc_amount_cond`");
+			$this->checkAddFieldToTable('#__virtuemart_calcs','calc_amount_cond_max',"float NOT NULL COMMENT 'max number of qualifying products' AFTER `calc_amount_cond_min`");
+
 			//product tables
 			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','int(11)');
 

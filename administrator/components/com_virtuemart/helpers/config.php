@@ -22,6 +22,7 @@ defined('_JEXEC') or die('Restricted access');
  */
 define( 'JPATH_VM_SITE', JPATH_ROOT.DS.'components'.DS.'com_virtuemart' );
 define( 'JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart' );
+define( 'JPATH_VM_PLUGINS', JPATH_VM_ADMINISTRATOR.'plugins' );
 
 if(version_compare(JVERSION,'1.7.0','ge')) {
 	define ('JPATH_VM_LIBRARIES', JPATH_PLATFORM);
@@ -307,7 +308,7 @@ class VmConfig {
 		self::$_jpConfig = new VmConfig();
 
 		$db = JFactory::getDBO();
-		$query = 'SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1"';
+		$query = ' SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1";';
 		$db->setQuery($query);
 		self::$_jpConfig->_raw = $db->loadResult();
 		// 		vmTime('First config db load','loadConfig');
@@ -485,6 +486,21 @@ class VmConfig {
 	}
 
 
+	function getCreateConfigTableQuery(){
+
+		return "CREATE TABLE IF NOT EXISTS `#__virtuemart_configs` (
+  `virtuemart_config_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `config` text,
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT 0,
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT 0,
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`virtuemart_config_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Holds configuration settings' AUTO_INCREMENT=1 ;";
+	}
+
 	/**
 	 * Read the file vm_config.dat from the install directory, compose the SQL to write
 	 * the config record and store it to the dabase.
@@ -500,21 +516,10 @@ class VmConfig {
 		if(!$_value) return false;
 
 // 		if ($_section == '[CONFIG]') {
-			$qry = "CREATE TABLE IF NOT EXISTS `#__virtuemart_configs` (
-  `virtuemart_config_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `config` text,
-  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created_by` int(11) NOT NULL DEFAULT 0,
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) NOT NULL DEFAULT 0,
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`virtuemart_config_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Holds configuration settings' AUTO_INCREMENT=1 ;";
+			$qry = self::$_jpConfig->getCreateConfigTableQuery();
 			$_db = JFactory::getDBO();
 			$_db->setQuery($qry);
 			$_db->query();
-
 
 			$query = 'SELECT `virtuemart_config_id` FROM `#__virtuemart_configs`
 							 WHERE `virtuemart_config_id` = 1';

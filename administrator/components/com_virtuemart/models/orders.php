@@ -350,8 +350,8 @@ class VirtueMartModelOrders extends VmModel {
 		}
 
 		// TODO This is not the most logical place for these plugins (or better; the method updateStatus() must be renamed....)
-		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
-		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
+		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_PLUGINS.DS.'vmshipperplugin.php');
+		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpaymentplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
 		$_dispatcher = JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnSaveOrderShipperBE',array(JRequest::get('post')));
@@ -804,7 +804,7 @@ class VirtueMartModelOrders extends VmModel {
 						$productCustom = VirtueMartModelCustomfields::getProductCustomFieldCart ($product_id,$selected );
 						if ($productCustom->field_type == "E") {
 
-							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmcustomplugin.php');
+							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 							//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
 							$product_attribute[$selected] = vmCustomPlugin::displayInCartPlugin( $_prod,$productCustom, $row,'Order');
 							// foreach ($product->userfield as $pKey => $puser) {
@@ -1053,7 +1053,7 @@ class VirtueMartModelOrders extends VmModel {
 		$curDate = JFactory::getDate();
 		$data['modified_on'] = $curDate->toMySql();*/
 
-		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+		if(!class_exists('vmShipperPlugin')) require(JPATH_VM_PLUGINS.DS.'vmshipperplugin.php');
 		JPluginHelper::importPlugin('vmshipper');
 		$_dispatcher = JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLineShipper',array($data));

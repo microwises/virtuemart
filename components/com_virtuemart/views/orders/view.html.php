@@ -73,7 +73,7 @@ class VirtuemartViewOrders extends JView {
 
 			}
 
-			if(!class_exists('vmShipperPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmshipperplugin.php');
+			if(!class_exists('vmShipperPlugin')) require(JPATH_VM_PLUGINS.DS.'vmshipperplugin.php');
 			JPluginHelper::importPlugin('vmshipper');
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnShowOrderShipperFE',array(
@@ -86,7 +86,7 @@ class VirtuemartViewOrders extends JView {
 				}
 			}
 
-			if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmpaymentplugin.php');
+			if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnShowOrderPaymentFE',array(
