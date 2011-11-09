@@ -659,19 +659,6 @@ class vmRequest{
 
 }
 
-class vmFile {
-	function makeSafe($file='') {
-		$lang = JFactory::getLanguage();
-		$file = $lang->transliterate($file);
-		if(function_exists('mb_ereg_replace')){
-			$regex = array('#(\.){2,}#', '#[^\w\.\- ]#', '#^\.#');
-			return mb_ereg_replace($regex, '', $file);
-		} else {
-			return JFile::makeSafe($file);
-		}
-	}
-}
-
 
 /**
  *

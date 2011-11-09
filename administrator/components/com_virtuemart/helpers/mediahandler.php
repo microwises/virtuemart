@@ -13,6 +13,20 @@
 
 defined('_JEXEC') or die();
 
+class vmFile {
+	function makeSafe($file='') {
+		$lang = JFactory::getLanguage();
+		$file = $lang->transliterate($file);
+		if(function_exists('mb_ereg_replace')){
+			$regex = array('#(\.){2,}#', '#[^\w\.\- ]#', '#^\.#');
+			return mb_ereg_replace($regex, '', $file);
+		} else {
+			jimport('joomla.filesystem.file');
+			return JFile::makeSafe($file);
+		}
+	}
+}
+
 class VmMediaHandler {
 
 	var $media_attributes = 0;
@@ -477,7 +491,6 @@ class VmMediaHandler {
 					$path_folder = str_replace('/',DS,$urlfolder);
 
 					//Sanitize name of media
-					jimport('joomla.filesystem.file');
 					$media['name'] = vmFile::makeSafe( $media['name'] );
 
 					$mediaPure = JFile::stripExt($media['name']);
