@@ -4,7 +4,7 @@
 * Shipment Carrier controller
 *
 * @package	VirtueMart
-* @subpackage ShipmentCarrier
+* @subpackage Shipment
 * @author RickG
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -29,10 +29,10 @@ if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
  * Shipment Carrier Controller
  *
  * @package    VirtueMart
- * @subpackage ShipmentCarrier
+ * @subpackage Shipment
  * @author RickG, Max Milbers
  */
-class VirtuemartControllerShipmentCarrier extends VmController {
+class VirtuemartControllerShipment extends VmController {
 
 	/**
 	 * Method to display the view
@@ -60,9 +60,9 @@ class VirtuemartControllerShipmentCarrier extends VmController {
 	 */
 	function save(){
 		$data = JRequest::get('post');
-		// TODO disallow shipment_carrier_name as HTML
-		$data['shipment_carrier_name'] = JRequest::getVar('shipment_carrier_name','','post','STRING',JREQUEST_ALLOWHTML);
-		$data['shipment_carrier_desc'] = JRequest::getVar('shipment_carrier_desc','','post','STRING',JREQUEST_ALLOWHTML);
+		// TODO disallow shipment_name as HTML
+		$data['shipment_name'] = JRequest::getVar('shipment_name','','post','STRING',JREQUEST_ALLOWHTML);
+		$data['shipment_desc'] = JRequest::getVar('shipment_desc','','post','STRING',JREQUEST_ALLOWHTML);
 
 		parent::save($data);
 	}

@@ -326,11 +326,11 @@ class VirtueMartViewCart extends JView {
 	}
 
 	private function checkShipmentMethodsConfigured() {
-		if (!class_exists('VirtueMartModelShipmentCarrier'))
+		if (!class_exists('VirtueMartModelShipment'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'shipment.php');
 		//For the selection of the payment method we need the total amount to pay.
-		$shipmentModel = new VirtueMartModelShipmentCarrier();
-		$shipments = $shipmentModel->getShipmentCarriers();
+		$shipmentModel = new VirtueMartModelShipment();
+		$shipments = $shipmentModel->getShipments();
 		if (empty($shipments)) {
 
 			$text = '';

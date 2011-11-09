@@ -183,15 +183,15 @@ class plgVmShipmentWeight_countries extends vmShipmentPlugin {
      * if more ID's match, the cheapest will be selected.
      */
     protected function selectShipmentRate(VirtueMartCart $cart, $selectedShipment = 0) {
-	$shipment_carrier_params = $this->getVmShipmentParams($cart->vendorId, $cart->virtuemart_shipment_id);
-	$params = new JParameter($shipment_carrier_params);
+	$shipment_params = $this->getVmShipmentParams($cart->vendorId, $cart->virtuemart_shipment_id);
+	$params = new JParameter($shipment_params);
 
 	if ($selectedShipment == 0) {
 	    $selectedShipment = $cart->virtuemart_shipment_id;
 	}
 	$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
-	$shipment_carrier_params = $this->getVmShipmentParams($cart->vendorId, $selectedShipment);
+	$shipment_params = $this->getVmShipmentParams($cart->vendorId, $selectedShipment);
 
 	$shipment->shipment_name = $params->get('shipment_name');
 	$shipment->shipment_rate_vat_id = $params->get('shipment_tax_id');
@@ -220,7 +220,7 @@ class plgVmShipmentWeight_countries extends vmShipmentPlugin {
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
-	$params = new JParameter($shipment->shipment_carrier_params);
+	$params = new JParameter($shipment->shipment_params);
 
 	$values['order_number'] = VirtueMartModelOrders::getOrderNumber($orderID);
 	$values['virtuemart_order_id'] = $orderID;
@@ -329,7 +329,7 @@ class plgVmShipmentWeight_countries extends vmShipmentPlugin {
 
     function checkShipmentConditions($cart, $shipment) {
 
-	$params = new JParameter($shipment->shipment_carrier_params);
+	$params = new JParameter($shipment->shipment_params);
 	$orderWeight = $this->getOrderWeight($cart, $params->get('weight_unit'));
 	$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 

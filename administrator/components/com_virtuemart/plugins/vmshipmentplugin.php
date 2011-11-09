@@ -114,7 +114,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 		$vendorId = 1;
 		$db = JFactory::getDBO();
 
-		$q = 'SELECT   `shipment_carrier_params` FROM #__virtuemart_shipments WHERE `virtuemart_shipment_id` = "' . $shipment_id . '" AND `virtuemart_vendor_id` = "' . $vendorId . '" AND `published`="1" ';
+		$q = 'SELECT   `shipment_params` FROM #__virtuemart_shipments WHERE `virtuemart_shipment_id` = "' . $shipment_id . '" AND `virtuemart_vendor_id` = "' . $vendorId . '" AND `published`="1" ';
 		$db->setQuery($q);
 		return $db->loadResult();
 	}
@@ -145,7 +145,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 		$db = JFactory::getDBO();
 
 		$q = 'SELECT * FROM #__virtuemart_shipments
-        		WHERE `virtuemart_shipment_id`="' . $shipment_id . '" AND `shipment_carrier_element` = "'.$this->_pelement.'"';
+        		WHERE `virtuemart_shipment_id`="' . $shipment_id . '" AND `shipment_element` = "'.$this->_pelement.'"';
 
 		$db->setQuery($q);
 		return  $db->loadObject();
@@ -183,7 +183,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 
 		$q = $select . ' FROM   #__virtuemart_shipments AS v ';
 
-		$q.= 'LEFT JOIN ' . $extPlgTable . ' as j ON j.`' . $extField1 . '` =  v.`shipment_carrier_jplugin_id` ';
+		$q.= 'LEFT JOIN ' . $extPlgTable . ' as j ON j.`' . $extField1 . '` =  v.`shipment_jplugin_id` ';
 
 		$q.= 'LEFT OUTER JOIN #__virtuemart_shipment_shoppergroups AS s ON v.`virtuemart_shipment_id` = s.`virtuemart_shipment_id` ';
 
@@ -225,7 +225,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 			. 'FROM   #__virtuemart_shipments v '
 			. ',      #__plugins             j '
 			. 'WHERE j.`element` = "' . $this->_pelement . '" '
-			. 'AND   v.`shipment_carrier_jplugin_id` = j.`id` '
+			. 'AND   v.`shipment_jplugin_id` = j.`id` '
 			. 'AND   v.`virtuemart_vendor_id` = "' . $_vendorId . '" '
 			. 'AND   v.`published` = 1 '
 			;
@@ -235,7 +235,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 			. ',      #__extensions   AS     j '
 			. 'WHERE j.`folder` = "vmshipment" '
 			. 'AND j.`element` = "' . $this->_pelement . '" '
-			. 'AND   v.`shipment_carrier_jplugin_id` = j.`extension_id` '
+			. 'AND   v.`shipment_jplugin_id` = j.`extension_id` '
 			. 'AND   v.`virtuemart_vendor_id` = "' . $_vendorId . '" '
 			. 'AND   v.`published` = 1 '
 			;
@@ -315,11 +315,11 @@ abstract class vmShipmentPlugin extends vmPlugin {
 		}
 		$html = array();
 		foreach ($this->shipments as $shipment) {
-			//vmdebug('plgVmOnSelectShipment', $shipment->shipment_carrier_params);
+			//vmdebug('plgVmOnSelectShipment', $shipment->shipment_params);
 			if ($this->checkShipmentConditions($cart, $shipment)) {
-				$params = new JParameter($shipment->shipment_carrier_params);
+				$params = new JParameter($shipment->shipment_params);
 				$salesPrice = $this->calculateSalesPriceShipment($this->getShipmentValue($params, $cart->pricesUnformatted), $this->getShipmentTaxId($params));
-				$shipment->shipment_carrier_name = $this->getShipmentName($shipment);
+				$shipment->shipment_name = $this->getShipmentName($shipment);
 
 				$html[] = $this->getShipmentHtml($shipment, $selectedShipment, $salesPrice);
 			}
@@ -601,7 +601,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 			. 'FROM #__virtuemart_shipments AS vm '
 			. ',    #__plugins AS j '
 			. "WHERE vm.virtuemart_shipment_id = '$sid' "
-			. 'AND   vm.shipment_carrier_jplugin_id = j.id '
+			. 'AND   vm.shipment_jplugin_id = j.id '
 			. "AND   j.element = '$pelement'";
 		} else {
 			$q = 'SELECT COUNT(*) AS c '
@@ -609,7 +609,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 			. ',      #__extensions    AS      j '
 			. 'WHERE j.`folder` = "vmshipment" '
 			. "AND vm.virtuemart_shipment_id = '$sid' "
-			. 'AND   vm.shipment_carrier_jplugin_id = j.extension_id '
+			. 'AND   vm.shipment_jplugin_id = j.extension_id '
 			. "AND   j.element = '$pelement'";
 		}
 
@@ -645,7 +645,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 	 */
 	final protected function getThisShipmentName($virtuemart_shipment_id) {
 		$db = JFactory::getDBO();
-		$q = 'SELECT `shipment_carrier_name` '
+		$q = 'SELECT `shipment_name` '
 		. 'FROM #__virtuemart_shipments '
 		. "WHERE virtuemart_shipment_id ='$virtuemart_shipment_id' ";
 		$db->setQuery($q);
@@ -704,7 +704,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 	* @author Valerie Isaksen
 	* @cart: VirtueMartCart the current cart
 	* @cart_prices: array the new cart prices
-	* @shipmentTable ShipmentCarriers: shipment carrier rate description
+	* @shipmentTable Shipments: shipment carrier rate description
 	* @return null if the shipment was not selected, false if the shiiping rate is not valid any more, true otherwise
 	*
 	*
@@ -728,7 +728,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 		if (!$this->checkShipmentConditions($cart, $shipment)) {
 			return false;
 		}
-		$params = new JParameter($shipment->shipment_carrier_params);
+		$params = new JParameter($shipment->shipment_params);
 		$shipment_name = $this->getShipmentName($shipment);
 		$shipment_value = $this->getShipmentValue($params, $cart_prices);
 		$shipment_tax_id = $this->getShipmentTaxId($params);
@@ -851,7 +851,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 
 		$shipmentCostDisplay = $currency->priceDisplay($shipmentSalesPrice);
 		$html = '<input type="radio" name="shipment_id" id="shipment_id_' . $shipment->virtuemart_shipment_id . '" value="' . $shipment->virtuemart_shipment_id . '" ' . $checked . '>'
-		. '<label for="shipment_id_' . $shipment->virtuemart_shipment_id . '">' . $shipment->shipment_carrier_name . " (" . $shipmentCostDisplay . ")</label>\n";
+		. '<label for="shipment_id_' . $shipment->virtuemart_shipment_id . '">' . $shipment->shipment_name . " (" . $shipmentCostDisplay . ")</label>\n";
 		return $html;
 	}
 
@@ -904,7 +904,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 	function getShipmentName($shipment) {
 
 		$return = '';
-		$params = new JParameter($shipment->shipment_carrier_params);
+		$params = new JParameter($shipment->shipment_params);
 		$shipmentLogo = $params->get('shipment_logos');
 		$shipmentDescription = $params->get('shipment_description', '');
 		if (!empty($shipmentLogo)) {
@@ -914,7 +914,7 @@ abstract class vmShipmentPlugin extends vmPlugin {
 			$shipmentDescription = '<span class="vmshipment_description">' . $shipmentDescription . '</span>';
 		}
 
-		return $return . '<span class="vmshipment_name">' . $shipment->shipment_carrier_name . '</span>' . $shipmentDescription;
+		return $return . '<span class="vmshipment_name">' . $shipment->shipment_name . '</span>' . $shipmentDescription;
 	}
 
 	/**

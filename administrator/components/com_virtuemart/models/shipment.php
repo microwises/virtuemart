@@ -4,7 +4,7 @@
  * Data module for shipment carriers
  *
  * @package	VirtueMart
- * @subpackage ShipmentCarrier
+ * @subpackage Shipment
  * @author RickG
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -28,10 +28,10 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  * Model class for shop shipment carriers
  *
  * @package	VirtueMart
- * @subpackage ShipmentCarrier
+ * @subpackage Shipment
  * @author RickG
  */
-class VirtueMartModelShipmentCarrier extends VmModel {
+class VirtueMartModelShipment extends VmModel {
 
 	//    /** @var integer Primary key */
 	//    var $_id;
@@ -55,7 +55,7 @@ class VirtueMartModelShipmentCarrier extends VmModel {
 	 *
 	 * @author RickG
 	 */
-	function getShipmentCarrier() {
+	function getShipment() {
 
 		if (empty($this->_data)) {
 			$this->_data = $this->getTable('shipments');
@@ -83,7 +83,7 @@ class VirtueMartModelShipmentCarrier extends VmModel {
 	 * @author RickG
 	 * @return object List of shipment carrier objects
 	 */
-	public function getShipmentCarriers() {
+	public function getShipments() {
 		if (VmConfig::isJ15()) {
 			$table = '#__plugins';
 			$enable = 'published';
@@ -95,7 +95,7 @@ class VirtueMartModelShipmentCarrier extends VmModel {
 			$ext_id = 'extension_id';
 		}
 		$query = ' `#__virtuemart_shipments`.* ,  `'.$table.'`.`name` as shipment_method_name FROM `#__virtuemart_shipments` ';
-		$query .= 'JOIN `'.$table.'`   ON  `'.$table.'`.`'.$ext_id.'` = `#__virtuemart_shipments`.`shipment_carrier_jplugin_id` ';
+		$query .= 'JOIN `'.$table.'`   ON  `'.$table.'`.`'.$ext_id.'` = `#__virtuemart_shipments`.`shipment_jplugin_id` ';
 
 		$whereString = '';
 
@@ -136,7 +136,7 @@ class VirtueMartModelShipmentCarrier extends VmModel {
 			if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 			$params = new JParameter('');
 			$params->bind($data['params']);
-			$data['shipment_carrier_params'] = $params->toString();
+			$data['shipment_params'] = $params->toString();
 		}
 
 		if(empty($data['virtuemart_vendor_id'])){
@@ -153,9 +153,9 @@ class VirtueMartModelShipmentCarrier extends VmModel {
 			$tb = '#__extensions';
 			$ext_id = 'extension_id';
 		}
-		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['shipment_carrier_jplugin_id'].'"';
+		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['shipment_jplugin_id'].'"';
 		$this->_db->setQuery($q);
-		$data['shipment_carrier_element'] = $this->_db->loadResult();
+		$data['shipment_element'] = $this->_db->loadResult();
 
 		$table = $this->getTable('shipments');
 		$table->bindChecknStore($data);

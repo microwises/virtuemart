@@ -220,6 +220,38 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->alterTable('#__virtuemart_product_prices',$fields);
 
 
+			$query = 'SHOW TABLES LIKE "_virtuemart_shippingcarriers"';
+			$this->db->setQuery($query);
+			if($this->db->loadResult()){
+				$query = 'ALTER TABLE `#__virtuemart_shippingcarriers` RENAME TO `#__virtuemart_shipments`';
+				$this->db->setQuery($query);
+				$this->db->query();
+
+				$fields = array('virtuemart_shippingcarrier_id'=>'`virtuemart_shipment_id` SERIAL',
+														'shipping_carrier_jplugin_id'=>'`shipment_jplugin_id` int(11) NOT NULL',
+														'shipping_carrier_name'=>"`shipment_name` char(200) NOT NULL DEFAULT ''",
+														'shipping_carrier_desc'=>"`shipment_desc` text NOT NULL COMMENT 'Description'",
+														'shipping_carrier_element'=>"`shipment_element` varchar(50) NOT NULL DEFAULT ''",
+														'shipping_carrier_params'=>' `shipment_params` text NOT NULL',
+														'shipping_carrier_value'=>"`shipment_value` decimal(10,2) NOT NULL DEFAULT '0.00'",
+														'shipping_carrier_package_fee'=>"`shipment_package_fee` decimal(10,2) NOT NULL DEFAULT '0.00'",
+														'shipping_carrier_vat_id'=>"`shipment_vat_id` int(11) NOT NULL DEFAULT '0'"
+				);
+				$this->alterTable('#__virtuemart_shipments',$fields);
+			}
+
+			$query = 'SHOW TABLES LIKE "_virtuemart_shippingcarrier_shoppergroups"';
+			$this->db->setQuery($query);
+			if($this->db->loadResult()){
+
+				$query = 'ALTER TABLE `#__virtuemart_shippingcarrier_shoppergroups` RENAME TO `#__virtuemart_shipment_shoppergroups`';
+				$this->db->setQuery($query);
+				$this->db->query();
+
+				$fields = array('virtuemart_shippingcarrier_id'=>"`virtuemart_shipment_id` SERIAL ");
+				$this->alterTable('#__virtuemart_shipment_shoppergroups',$fields);
+			}
+
 
 			//alterOrderItemsTable
 			$fields = array('order_item_name'=>'`order_item_name` VARCHAR( 255 )  NOT NULL DEFAULT "" ');
@@ -251,6 +283,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->alterPaymentMethodsTable();
 			$this->deleteCreditcardsTable(); // for J version
 			$this->removeCreditCardFromAdminMenus(); // remove credit card from the menu
+
+			$this->updateAdminMenuEntry();
 
 			if($loadVm) $this->displayFinished(true);
 			// probably should just go to updatesMigration rather than the install success screen
@@ -312,6 +346,18 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			return false;
 		}
 
+		private function updateAdminMenuEntry() {
+
+			if(empty($this->db)){
+				$this->db = JFactory::getDBO();
+			}
+
+			$query = 'UPDATE `#__virtuemart_adminmenuentries` SET `name`="COM_VIRTUEMART_SHIPMENT_S", `view`="shipment" WHERE `id`="16" LIMIT 1';
+			$this->db->setQuery($query);
+			$this->db->query($query);
+		}
+
+
 		/**
 		 *
 		 * @author Max Milbers
@@ -333,6 +379,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			;
 		}
+
 		private function alterPaymentMethodsTable() {
 
 			$fields = array('discount' ,
@@ -357,30 +404,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			return true;
 		}
 
-
-		private function alterShipperCarrierTable(){
-
-			$query = 'SHOW TABLES LIKE "virtuemart_shippingcarriers"';
-			$this->db->setQuery($query);
-			if($this->db->loadResult()){
-				$query = 'ALTER TABLE `#__virtuemart_shippingcarriers` RENAME TO `#__virtuemart_shipments`';
-				$this->db->setQuery($query);
-				$this->db->query();
-
-				$fields = array('virtuemart_shippingcarrier_id'=>'`virtuemart_shipment_id` SERIAL',
-											'shipping_carrier_jplugin_id'=>'`shipment_jplugin_id` int(11) NOT NULL',
-											'shipping_carrier_name'=>"`shipment_name` char(200) NOT NULL DEFAULT ''",
-											'shipping_carrier_desc'=>"`shipment_desc` text NOT NULL COMMENT 'Description'",
-											'shipping_carrier_element'=>"`shipment_element` varchar(50) NOT NULL DEFAULT ''",
-											'shipping_carrier_params'=>' `shipment_params` text NOT NULL',
-											'shipping_carrier_value'=>"`shipment_value` decimal(10,2) NOT NULL DEFAULT '0.00'",
-											'shipping_carrier_package_fee'=>"`shipment_package_fee` decimal(10,2) NOT NULL DEFAULT '0.00'",
-											'shipping_carrier_vat_id'=>"`shipment_vat_id` int(11) NOT NULL DEFAULT '0'"
-				);
-				$this->alterTable('#__virtuemart_shipments',$fields);
-			}
-
-		}
 
 		/*
 		 * Credit Card Table delete in J version

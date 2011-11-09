@@ -4,7 +4,7 @@
 * Shipment Carrier table
 *
 * @package	VirtueMart
-* @subpackage ShipmentCarrier
+* @subpackage Shipment
 * @author RickG
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -35,19 +35,19 @@ class TableShipments extends VmTable {
         /** @var int Vendor ID */
 	var $virtuemart_vendor_id		= 0;
         /** @var int Shipment Joomla plugin I */
-	var $shipment_carrier_jplugin_id	= 0;
+	var $shipment_jplugin_id	= 0;
 	/** @var string Shipment Carrier name*/
-	var $shipment_carrier_name	= '';
+	var $shipment_name	= '';
         	/** @var string Shipment Carrier name*/
-	var $shipment_carrier_desc	= '';
+	var $shipment_desc	= '';
         /** @var string Element of shipmentmethod */
-        var $shipment_carrier_element = '';
+        var $shipment_element = '';
         /** @var string parameter of the shipmentmethod*/
-	var $shipment_carrier_params				= 0;
+	var $shipment_params				= 0;
         /** var float rate value */
-        var $shipment_carrier_value				= 0;
-        var $shipment_carrier_package_fee                       = 0;
-        var $shipment_carrier_vat_id				= 0;
+        var $shipment_value				= 0;
+        var $shipment_package_fee                       = 0;
+        var $shipment_vat_id				= 0;
 
         var $ordering						= 0;
         var $shared						= 0;
@@ -62,8 +62,8 @@ class TableShipments extends VmTable {
     function __construct(&$db) {
 		parent::__construct('#__virtuemart_shipments', 'virtuemart_shipment_id', $db);
 		// we can have several time the same shipment name. It is the vendor problem to set up correctly his shipment rate.
-		//$this->setUniqueName('shipment_carrier_name');
-		$this->setObligatoryKeys('shipment_carrier_jplugin_id');
+		//$this->setUniqueName('shipment_name');
+		$this->setObligatoryKeys('shipment_jplugin_id');
 
 		$this->setLoggable();
 

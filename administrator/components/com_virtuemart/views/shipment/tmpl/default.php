@@ -4,7 +4,7 @@
 * Description
 *
 * @package	VirtueMart
-* @subpackage ShipmentCarrier
+* @subpackage Shipment
 * @author RickG
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -66,10 +66,10 @@ AdminUIHelper::startAdminArea();
 					<?php echo $checked; ?>
 				</td>
 				<td align="left">
-					<?php echo JHTML::_('link', $editlink, JText::_($row->shipment_carrier_name)); ?>
+					<?php echo JHTML::_('link', $editlink, JText::_($row->shipment_name)); ?>
 				</td>
                                 <td align="left">
-					<?php echo $row->shipment_carrier_desc; ?>
+					<?php echo $row->shipment_desc; ?>
 				</td>
                                 <td>
 					<?php echo $row->shipmentShoppersList; ?>

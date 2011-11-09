@@ -4,7 +4,7 @@
 * Shipment Carrier View
 *
 * @package	VirtueMart
-* @subpackage ShipmentCarrier
+* @subpackage Shipment
 * @author RickG
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -26,10 +26,10 @@ jimport( 'joomla.application.component.view');
  * HTML View class for maintaining the list of shipment carriers
  *
  * @package	VirtueMart
- * @subpackage ShipmentCarrier
+ * @subpackage Shipment
  * @author RickG
  */
-class VirtuemartViewShipmentCarrier extends JView {
+class VirtuemartViewShipment extends JView {
 
 	function display($tpl = null) {
 
@@ -42,7 +42,7 @@ class VirtuemartViewShipmentCarrier extends JView {
 		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();
-		$shipmentCarrier = $model->getShipmentCarrier();
+		$shipmentCarrier = $model->getShipment();
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		$viewName=ShopFunctions::SetViewTitle();
@@ -64,7 +64,7 @@ class VirtuemartViewShipmentCarrier extends JView {
                                 $this->assignRef('vendorList', $vendorList);
                          }
 
-			$this->assignRef('pluginList', self::renderInstalledShipmentPlugins($shipmentCarrier->shipment_carrier_jplugin_id));
+			$this->assignRef('pluginList', self::renderInstalledShipmentPlugins($shipmentCarrier->shipment_jplugin_id));
 			$this->assignRef('carrier',	$shipmentCarrier);
 			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($shipmentCarrier->virtuemart_shoppergroup_ids,true));
 
@@ -73,7 +73,7 @@ class VirtuemartViewShipmentCarrier extends JView {
 		} else {
 
 
-			$shipmentCarriers = $model->getShipmentCarriers();
+			$shipmentCarriers = $model->getShipments();
 			$this->assignRef('shipmentCarriers', $shipmentCarriers);
 
 			ShopFunctions::addStandardDefaultViewCommands();
@@ -103,7 +103,7 @@ class VirtuemartViewShipmentCarrier extends JView {
 		$db->setQuery($q);
 		$result = $db->loadAssocList($ext_id);
 
-		return JHtml::_('select.genericlist', $result, 'shipment_carrier_jplugin_id', null, $ext_id, 'name', $selected);
+		return JHtml::_('select.genericlist', $result, 'shipment_jplugin_id', null, $ext_id, 'name', $selected);
 	}
 
 }

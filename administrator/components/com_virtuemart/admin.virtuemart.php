@@ -47,7 +47,7 @@ if($_controller = JRequest::getWord('controller', JRequest::getWord('view', 'vir
 		$results = $dispatcher->trigger('onVmAdminController', $_controller);
 		if (empty($results)) {
 			$app = JFactory::getApplication();
-			$app->enqueueMessage('Fatal Error: Couldnt find file '.$_controller);
+			$app->enqueueMessage('Fatal Error in maincontroller admin.virtuemart.php: Couldnt find file '.$_controller);
 			$app->redirect('index.php?option=com_virtuemart');
 		}
 	}

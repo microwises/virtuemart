@@ -654,13 +654,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_paymentmethods` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The payment methods of your store' AUTO_INCREMENT=1 ;
 
 
-CREATE TABLE IF NOT EXISTS `#__virtuemart_shipment_shoppergroups` (
-  `id` SERIAL,
-  `virtuemart_shipment_id` int(11) NOT NULL DEFAULT '0',
-  `virtuemart_shoppergroup_id` int(11) NOT NULL DEFAULT '0',
-  UNIQUE KEY `i_virtuemart_shipment_id` (`virtuemart_shipment_id`,`virtuemart_shoppergroup_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='xref table for shipment to shoppergroup' AUTO_INCREMENT=1 ;
-
 -- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_paymentmethod_shoppergroups`
@@ -960,14 +953,14 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_rating_votes` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_shipments` (
   `virtuemart_shipment_id` SERIAL,
   `virtuemart_vendor_id` int(11) DEFAULT NULL,
-  `shipment_carrier_jplugin_id` int(11) NOT NULL,
-  `shipment_carrier_name` char(200) NOT NULL DEFAULT '',
-  `shipment_carrier_desc`  text NOT NULL COMMENT 'Description',
-  `shipment_carrier_element` varchar(50) NOT NULL DEFAULT '',
-  `shipment_carrier_params` text NOT NULL,
-  `shipment_carrier_value` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `shipment_carrier_package_fee` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `shipment_carrier_vat_id` int(11) NOT NULL DEFAULT '0',
+  `shipment_jplugin_id` int(11) NOT NULL,
+  `shipment_name` char(200) NOT NULL DEFAULT '',
+  `shipment_desc`  text NOT NULL COMMENT 'Description',
+  `shipment_element` varchar(50) NOT NULL DEFAULT '',
+  `shipment_params` text NOT NULL,
+  `shipment_value` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `shipment_package_fee` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `shipment_vat_id` int(11) NOT NULL DEFAULT '0',
   `ordering` int(2) NOT NULL DEFAULT '0',
   `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
@@ -977,7 +970,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shipments` (
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  KEY (`shipment_carrier_jplugin_id`),
+  KEY (`shipment_jplugin_id`),
   KEY (`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Shipment Carriers created from the shipment plugins' AUTO_INCREMENT=1 ;
 

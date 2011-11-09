@@ -31,22 +31,22 @@ defined('_JEXEC') or die('Restricted access');
             </tr>
             <tr>
                 <td width="110" class="key">
-                    <label for="shipment_carrier_name">
+                    <label for="shipment_name">
 <?php echo JText::_('COM_VIRTUEMART_SHIPPING_FORM_NAME'); ?>
                     </label>
                 </td>
                 <td>
-                    <input class="inputbox" type="text" name="shipment_carrier_name" id="shipment_carrier_name" size="50" value="<?php echo $this->carrier->shipment_carrier_name; ?>" />
+                    <input class="inputbox" type="text" name="shipment_name" id="shipment_name" size="50" value="<?php echo $this->carrier->shipment_name; ?>" />
                 </td>
             </tr>
              <tr>
                 <td width="110" class="key">
-                    <label for="shipment_carrier_desc">
+                    <label for="shipment_desc">
 <?php echo JText::_('COM_VIRTUEMART_SHIPPING_FORM_DESCRIPTION'); ?>
                     </label>
                 </td>
                 <td>
-                    <input class="inputbox" type="text" name="shipment_carrier_desc" id="shipment_carrier_desc" size="80" value="<?php echo $this->carrier->shipment_carrier_desc; ?>" />
+                    <input class="inputbox" type="text" name="shipment_desc" id="shipment_desc" size="80" value="<?php echo $this->carrier->shipment_desc; ?>" />
                 </td>
             </tr>
 
