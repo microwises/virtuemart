@@ -17,9 +17,11 @@
 * @version $Id: vmpaymentplugin.php 4601 2011-11-03 15:50:01Z alatak $
 */
 
+if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
+
 abstract class vmPSPlugin extends vmPlugin {
 
-	abstract protected $_vmplugin = '';
+	protected $_vmplugin = '';
 
 	function __construct(& $subject, $config) {
 		parent::__construct($subject, $config);

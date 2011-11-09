@@ -17,18 +17,16 @@
  * other free or open source software licenses.
  * @version $Id: vmpaymentplugin.php 4601 2011-11-03 15:50:01Z alatak $
  */
+
 // Load the helper functions that are needed by all plugins
-if (!class_exists('ShopFunctions'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
-if (!class_exists('DbScheme'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'dbscheme.php');
-if (!class_exists('vmPlugin'))
-    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmplugin.php');
+if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+if (!class_exists('DbScheme')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'dbscheme.php');
+if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
 // Get the plugin library
 jimport('joomla.plugin.plugin');
 
-abstract class vmPaymentPlugin extends vmPlugin {
+abstract class vmPaymentPlugin extends vmPSPlugin {
 
     private $_virtuemart_paymentmethod_id = 0;
     private $_payment_name = '';

@@ -17,12 +17,9 @@
  * @version $Id: vmshipmentplugin.php 4599 2011-11-02 18:29:04Z alatak $
  */
 // Load the helper functions that are needed by all plugins
-if (!class_exists('ShopFunctions'))
-require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
-if (!class_exists('DbScheme'))
-require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'dbscheme.php');
-if (!class_exists('vmPlugin'))
-require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
+if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+if (!class_exists('DbScheme')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'dbscheme.php');
+if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
 // Get the plugin library
 jimport('joomla.plugin.plugin');
@@ -64,7 +61,7 @@ jimport('joomla.plugin.plugin');
  * @author Valérie Isaksen
  *
  */
-abstract class vmShipmentPlugin extends vmPlugin {
+abstract class vmShipmentPlugin extends vmPSPlugin {
 
 	//private $_virtuemart_shipmentmethod_id = 0;
 	/**
