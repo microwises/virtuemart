@@ -220,7 +220,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->alterTable('#__virtuemart_product_prices',$fields);
 
 
-			$query = 'SHOW TABLES LIKE "virtuemart_shippingcarriers"';
+			$query = 'SHOW TABLES LIKE "%virtuemart_shippingcarriers%"';
 			$this->db->setQuery($query);
 			if($this->db->loadResult()){
 				$query = 'ALTER TABLE `#__virtuemart_shippingcarriers` RENAME TO `#__virtuemart_shipmentmethods`';
@@ -240,7 +240,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->alterTable('#__virtuemart_shipmentmethods',$fields);
 			}
 
-			$query = 'SHOW TABLES LIKE "virtuemart_shippingcarrier_shoppergroups"';
+			$query = 'SHOW TABLES LIKE "%virtuemart_shippingcarrier_shoppergroups%"';
 			$this->db->setQuery($query);
 			if($this->db->loadResult()){
 

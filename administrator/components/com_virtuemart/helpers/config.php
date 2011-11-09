@@ -308,20 +308,19 @@ class VmConfig {
 		self::$_jpConfig = new VmConfig();
 
 		$db = JFactory::getDBO();
-		$query = 'SHOW TABLES LIKE "virtuemart_configs"';
+		$query = 'SHOW TABLES LIKE "%virtuemart_configs%"';
 		$db->setQuery($query);
-		if(!$db->loadResult()){
-			if(self::installVMconfig()){
-				$query = ' SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1";';
-				$db->setQuery($query);
-				self::$_jpConfig->_raw = $db->loadResult();
-				self::$_jpConfig->_params = null;
-			}
-		} else {
+		$configTable = $db->loadResult();
+		self::$_debug = true;
+// 		vmdebug('hmm',$configTable);
+		if(empty($configTable)){
+			self::$_jpConfig->installVMconfig();
+		}
+
+		if(empty(self::$_jpConfig->_raw)){
 			$query = ' SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1";';
 			$db->setQuery($query);
 			self::$_jpConfig->_raw = $db->loadResult();
-			// 		vmTime('First config db load','loadConfig');
 			if(empty(self::$_jpConfig->_raw)){
 				if(self::installVMconfig()){
 					$db->setQuery($query);
@@ -332,7 +331,6 @@ class VmConfig {
 				}
 			}
 		}
-
 
 		$i = 0;
 		$pair = array();
@@ -525,25 +523,25 @@ class VmConfig {
 
 		if(!$_value) return false;
 
-// 		if ($_section == '[CONFIG]') {
-			$qry = self::$_jpConfig->getCreateConfigTableQuery();
-			$_db = JFactory::getDBO();
+		$qry = self::$_jpConfig->getCreateConfigTableQuery();
+		$_db = JFactory::getDBO();
+		$_db->setQuery($qry);
+		$_db->query();
+
+		$query = 'SELECT `virtuemart_config_id` FROM `#__virtuemart_configs`
+						 WHERE `virtuemart_config_id` = 1';
+		$_db->setQuery( $query );
+		if ($_db->query()){
+			$qry = 'DELETE FROM `#__virtuemart_configs` WHERE `virtuemart_config_id`=1';
 			$_db->setQuery($qry);
 			$_db->query();
-
-			$query = 'SELECT `virtuemart_config_id` FROM `#__virtuemart_configs`
-							 WHERE `virtuemart_config_id` = 1';
-			$_db->setQuery( $query );
-			if ($_db->query()){
-				$qry = 'DELETE FROM `#__virtuemart_configs` WHERE `virtuemart_config_id`=1';
-				$_db->setQuery($qry);
-				$_db->query();
-			}
+		}
 
 
-			$_value = join('|', $_value);
-			$qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES ('1', '$_value')";
+		$_value = join('|', $_value);
+		$qry = "INSERT INTO `#__virtuemart_configs` (`virtuemart_config_id`, `config`) VALUES ('1', '$_value')";
 
+		self::$_jpConfig->raw = $_value;
 
 		$_db->setQuery($qry);
 		if (!$_db->query()) {
