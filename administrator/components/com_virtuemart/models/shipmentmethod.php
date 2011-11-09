@@ -31,7 +31,7 @@ if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmo
  * @subpackage Shipment
  * @author RickG
  */
-class VirtueMartModelShipment extends VmModel {
+class VirtueMartModelShipmentmethod extends VmModel {
 
 	//    /** @var integer Primary key */
 	//    var $_id;
