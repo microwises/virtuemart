@@ -32,7 +32,7 @@ if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
  * @subpackage Shipment
  * @author RickG, Max Milbers
  */
-class VirtuemartControllerShipment extends VmController {
+class VirtuemartControllerShipmentmethod extends VmController {
 
 	/**
 	 * Method to display the view
@@ -44,10 +44,10 @@ class VirtuemartControllerShipment extends VmController {
 
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
-		$view = $this->getView('shipment', $viewType);
+		$view = $this->getView('shipmentmethod', $viewType);
 
 		// Push a model into the view
-		$model = $this->getModel('shipment');
+		$model = $this->getModel('shipmentmethod');
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
@@ -66,6 +66,6 @@ class VirtuemartControllerShipment extends VmController {
 
 		parent::save($data);
 	}
-	
+
 }
 // pure php no closing tag
