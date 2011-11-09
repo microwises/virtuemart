@@ -352,7 +352,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->db = JFactory::getDBO();
 			}
 
-			$query = 'UPDATE `#__virtuemart_adminmenuentries` SET `name`="COM_VIRTUEMART_SHIPMENT_S", `view`="shipmentmethod" WHERE `id`="16" LIMIT 1';
+			$query = 'UPDATE `#__virtuemart_adminmenuentries` SET `name`="COM_VIRTUEMART_SHIPMENTMETHOD_S", `view`="shipmentmethod" WHERE `id`="16" LIMIT 1';
 			$this->db->setQuery($query);
 			$this->db->query($query);
 		}
