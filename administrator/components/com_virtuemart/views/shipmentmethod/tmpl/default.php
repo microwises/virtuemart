@@ -41,7 +41,7 @@ AdminUIHelper::startAdminArea();
 				<?php echo JText::_('COM_VIRTUEMART_SHIPPING_SHOPPERGROUPS'); ?>
 			</th>
                         <th>
-				<?php echo JText::_('COM_VIRTUEMART_SHIPPINGCARRIER'); ?>
+				<?php echo JText::_('COM_VIRTUEMART_SHIPMENTMETHOD'); ?>
 			</th>
 			<th>
 				<?php echo JText::_('COM_VIRTUEMART_LIST_ORDER'); ?>
