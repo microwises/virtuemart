@@ -226,7 +226,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	    "country" => ShopFunctions::getCountryByID($usrBT['virtuemart_country_id'], 'country_3_code'),
 	    "email" => $usrBT['email'],
 	    "night_phone_b" => $usrBT['phone_1'],
-	    "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentresponsereceived&pelement=' . $this->_name . "&pm=" . $orderData->virtuemart_paymentmethod_id),
+	    "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentresponsereceived&pname=' . $this->_name . "&pm=" . $orderData->virtuemart_paymentmethod_id),
 	    "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentnotification&tmpl=component'),
 	    "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=paymentresponse&task=paymentusercancel&on=' . $order_number . '&pm=' . $orderData->virtuemart_paymentmethod_id),
 	    "undefined_quantity" => "0",
@@ -279,7 +279,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	function plgVmOnPaymentResponseReceived(&$virtuemart_order_id, &$html) {
 		// the payment itself should send the parameter needed.
 		$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
-		$pelement = JRequest::getWord('pelement');
+		$pname = JRequest::getWord('pname');
 
 		if ($this->_name != $pelement) {
 			return null;
@@ -309,13 +309,13 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
 		$order_number = JRequest::getVar('on');
-		$pm = JRequest::getVar('pm');
+		$payment_method_id= JRequest::getVar('pm');
 		if (!$order_number)
 		return false;
 		$db = JFactory::getDBO();
 		$query = 'SELECT ' . $this->_tablename . '.`virtuemart_order_id` FROM ' . $this->_tablename
 		. " WHERE  `order_number`= '" . $order_number . "'"
-		. ' AND  `virtuemart_paymentmethod_id` = ' . $pm;
+		. ' AND  `virtuemart_paymentmethod_id` = ' . $payment_method_id;
 		$db->setQuery($query);
 		$virtuemart_order_id = $db->loadResult();
 
@@ -361,7 +361,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 		$this->_debug = $params->get('debug');
 		if (!$payment) {
-			$this->logInfo('getPaymentDataByOrderId not found: exit ', 'ERROR');
+			$this->logInfo('getPaymentDataByOrderId payment not found: exit ', 'ERROR');
 			return null;
 		}
 		$this->logInfo('paypal_data ' . implode('   ', $paypal_data), 'message');
@@ -380,10 +380,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			}
 		}
 		$response_fields['paypalresponse_raw'] = $return_context = $paypal_data['custom'];
-		//fwrite($fp, "\n" . $return_context);
-		//$response_fields['paypal_response_notification'] = implode("|", $paypal_data); // raw data
-		//fwrite($fp, "\napres notif" . $response_fields['paypal_response_notification']);
-		// we want to check that custom param is the same
+
 		// if not should Add a message in the BE,  send an email, and ofc not update the order status
 		if (false) {
 			$query = 'SELECT ' . $this->_tablename . '.`payment_id` FROM ' . $this->_tablename
@@ -441,7 +438,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	 * Display stored payment data for an order
 	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
 	 */
-	function plgVmOnShowOrderPaymentBE($virtuemart_order_id, $paymethod_id) {
+	function plgVmOnShowOrderPaymentBE($virtuemart_order_id, $payment_method_id) {
 
 		if (!$this->selectedThisPayment($this->_name, $virtuemart_order_id)) {
 			return null; // Another method was selected, do nothing
@@ -608,7 +605,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		vmdebug('paypal response', $paypal_data);
 
 		$html = '<table>' . "\n";
-		$html .= $this->getHtmlRow('', $payment_name);
+		$html .= $this->getHtmlRow('PAYPAL_PAYMENT_NAME', $payment_name);
 		$html .= $this->getHtmlRow('PAYPAL_ORDER_NUMBER', $paypal_data['invoice']);
 		$html .= $this->getHtmlRow('PAYPAL_AMOUNT', $paypal_data['mc_gross'] . " " . $paypal_data['mc_currency']);
 
