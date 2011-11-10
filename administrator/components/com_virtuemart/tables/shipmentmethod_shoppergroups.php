@@ -4,7 +4,7 @@
 * shipment_shoppergroups table ( for media)
 *
 * @package	VirtueMart
-* @subpackage Shipmentcarriers_shoppergraoups
+* @subpackage Shipmentmethod_shoppergraoups
 * @author Max Milbers
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.

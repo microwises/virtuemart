@@ -5,7 +5,6 @@
 * @package	VirtueMart
 * @subpackage Plugins
 * @author Max Milbers
-* @author Oscar van Eijk
 * @author Valérie Isaksen
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2011 VirtueMart Team. All rights reserved.

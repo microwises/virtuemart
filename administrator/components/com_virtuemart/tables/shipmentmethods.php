@@ -23,7 +23,7 @@ if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmta
 
 /**
  * Shipment Carrier table class
- * The class is is used to manage the shipment carriers in the shop.
+ * The class is is used to manage the shipment in the shop.
  *
  * @package	VirtueMart
  * @author RickG, Max Milbers

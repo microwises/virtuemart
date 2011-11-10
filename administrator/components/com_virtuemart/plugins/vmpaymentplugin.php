@@ -465,7 +465,7 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 		return  $db->loadObject();
 	}
 	/**
-	 * Fill the array with all carriers found with this plugin for the current vendor
+	 * Fill the array with all payments found with this plugin for the current vendor
 	 * @return True when carrier(s) was (were) found for this vendor, false otherwise
 	 * @author Oscar van Eijk
 	 */

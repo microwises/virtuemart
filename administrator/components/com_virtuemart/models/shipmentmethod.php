@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * Data module for shipment carriers
+ * Data module for shipment
  *
  * @package	VirtueMart
  * @subpackage Shipment
@@ -25,7 +25,7 @@ jimport( 'joomla.application.component.model');
 if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 
 /**
- * Model class for shop shipment carriers
+ * Model class for shop shipment
  *
  * @package	VirtueMart
  * @subpackage Shipment
@@ -78,7 +78,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 	}
 
 	/**
-	 * Retireve a list of shipment carriers from the database.
+	 * Retireve a list of shipment from the database.
 	 *
 	 * @author RickG
 	 * @return object List of shipment carrier objects

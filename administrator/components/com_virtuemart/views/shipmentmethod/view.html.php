@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.view');
 
 /**
- * HTML View class for maintaining the list of shipment carriers
+ * HTML View class for maintaining the list of shipment
  *
  * @package	VirtueMart
  * @subpackage Shipment
@@ -73,8 +73,8 @@ class VirtuemartViewShipmentmethod extends JView {
 		} else {
 
 
-			$shipmentCarriers = $model->getShipments();
-			$this->assignRef('shipmentCarriers', $shipmentCarriers);
+			$shipments = $model->getShipments();
+			$this->assignRef('shipments', $shipments);
 
 			ShopFunctions::addStandardDefaultViewCommands();
 			$lists = ShopFunctions::addStandardDefaultViewLists($model);

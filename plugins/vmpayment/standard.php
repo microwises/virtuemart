@@ -119,7 +119,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 		$this->writeData($dbValues, '#__virtuemart_order_payment_' . $this->_name);
 
 		$html = '<table>' . "\n";
-		$html .= $this->getHtmlRow('', $dbValues['payment_name']);
+		$html .= $this->getHtmlRow('STANDARD_PAYMENT_INFO', $dbValues['payment_name']);
 		if (!empty($payment_info)) {
 			$html .= $this->getHtmlRow('STANDARD_INFO', $payment_info);
 		}

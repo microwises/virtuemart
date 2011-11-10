@@ -165,7 +165,7 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 
 	/**
 	 * validateVendor
-	 * Check if this shipment has carriers for the current vendor.
+	 * Check if this shipment has methods for the current vendor.
 	 * @author Oscar van Eijk
 	 * @param integer $_vendorId The vendor ID taken from the cart.
 	 * @return True when a shipment_id was found for this vendor, false otherwise
