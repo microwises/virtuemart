@@ -200,11 +200,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->checkAddFieldToTable('#__virtuemart_product_customfields','custom_param',' text COMMENT "Param for Plugins"');
 
-			// orders :
-
-			$this->checkAddFieldToTable('#__virtuemart_orders','order_payment',' decimal(10,2) DEFAULT NULL');
-			$this->checkAddFieldToTable('#__virtuemart_orders','order_payment_tax',' decimal(10,5) DEFAULT NULL');
-
 			$fields = array('virtuemart_shoppergroup_id'=>'`virtuemart_shoppergroup_id` int(11) DEFAULT NULL',
 														'product_price'=>'`product_price` decimal(15,5) DEFAULT NULL',
 														'override'=>'`override` tinyint(1) DEFAULT NULL',
@@ -219,7 +214,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			);
 			$this->alterTable('#__virtuemart_product_prices',$fields);
 
+			// payment_discount values
+			$this->alterPaymentMethodsTable();
 
+			//Shipping methods
 			$query = 'SHOW TABLES LIKE "%virtuemart_shippingcarriers%"';
 			$this->db->setQuery($query);
 			if($this->db->loadResult()){
@@ -252,6 +250,18 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->alterTable('#__virtuemart_shipmentmethod_shoppergroups',$fields);
 			}
 
+			//vmuser:
+			$fields = array('virtuemart_shippingcarrier_id'=>'`virtuemart_shipmentmethod_id` int NOT NULL DEFAULT "0"');
+			$this->alterTable('#__virtuemart_vmusers',$fields);
+
+			// orders :
+			$fields = array('payment_method_id'=>'`virtuemart_paymentmethod_id` INT(11 ) NOT NULL ',
+															'ship_method_id'=>'`virtuemart_shipmentmethod_id` INT(11 ) NOT NULL '
+			);
+			$this->alterTable('#__virtuemart_orders',$fields);
+
+			$this->checkAddFieldToTable('#__virtuemart_orders','order_payment',' decimal(10,2) DEFAULT NULL');
+			$this->checkAddFieldToTable('#__virtuemart_orders','order_payment_tax',' decimal(10,5) DEFAULT NULL');
 
 			//alterOrderItemsTable
 			$fields = array('order_item_name'=>'`order_item_name` VARCHAR( 255 )  NOT NULL DEFAULT "" ');
@@ -277,16 +287,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			// 				if (!class_exists('VirtueMartModelConfig')
 			// 				)require($this->path . DS . 'models' . DS . 'config.php');
 			// 				$model -> deleteConfig();
-
-
-			// payment_discount values
-			$this->alterPaymentMethodsTable();
-			$fields = array('payment_method_id'=>'`virtuemart_paymentmethod_id` INT(11 ) NOT NULL ',
-									'ship_method_id'=>'`virtuemart_shipmentmethod_id` INT(11 ) NOT NULL '
-			);
-			$this->alterTable('#__virtuemart_orders',$fields);
-
-
 
 
 			$this->deleteCreditcardsTable(); // for J version

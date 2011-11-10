@@ -136,12 +136,12 @@ class VmTable extends JTable{
 	/**
 	* Load the fieldlist
 	*/
-	protected function loadFields(&$_db)
+	public function loadFields()
 	{
 		$_fieldlist = array();
-		$_q = "SHOW COLUMNS FROM `#__virtuemart_userfields`";
-		$_db->setQuery($_q);
-		$_fields = $_db->loadObjectList();
+		$_q = 'SHOW COLUMNS FROM `'.$this->_tbl.'`';
+		$this->_db->setQuery($_q);
+		$_fields = $this->_db->loadObjectList();
 		if (count($_fields) > 0) {
 			foreach ($_fields as $key => $_f) {
 				$_fieldlist[$_f->Field] = $_f->Default;
@@ -149,7 +149,6 @@ class VmTable extends JTable{
 			$this->setProperties($_fieldlist);
 		}
 	}
-
 
 	function checkDataContainsTableFields($from, $ignore=array()){
 
@@ -320,7 +319,7 @@ class VmTable extends JTable{
 		}
 
 		if($this->_unique){
-			$this->_db = JFactory::getDBO();
+			if(empty($this->_db))$this->_db = JFactory::getDBO();
 			foreach($this->_unique_name as $obkeys => $error){
 
 				if(empty($this->$obkeys)){

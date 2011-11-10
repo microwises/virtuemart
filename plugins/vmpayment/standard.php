@@ -116,7 +116,8 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 		$dbValues['payment_name'] = parent::getPaymentName($payment);
 		$dbValues['order_number'] = $order_number;
 		$dbValues['virtuemart_paymentmethod_id'] = $this->_virtuemart_paymentmethod_id;
-		$this->writeData($dbValues, '#__virtuemart_order_payment_' . $this->_name);
+// 		$this->writeData($dbValues, '#__virtuemart_order_payment_' . $this->_name);
+		$this->storePluginInternalData($dbValues);
 
 		$html = '<table>' . "\n";
 		$html .= $this->getHtmlRow('STANDARD_PAYMENT_INFO', $dbValues['payment_name']);

@@ -83,9 +83,9 @@ class TableUserfields extends VmTable {
 	 */
 	function __construct(&$db)
 	{
-		parent::loadFields($db);
-		parent::__construct('#__virtuemart_userfields', 'virtuemart_userfield_id', $db);
 
+		parent::__construct('#__virtuemart_userfields', 'virtuemart_userfield_id', $db);
+		parent::loadFields($db);
 		$this->setUniqueName('name');
 		$this->setObligatoryKeys('title');
 

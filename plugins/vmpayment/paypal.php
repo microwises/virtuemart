@@ -249,7 +249,8 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		$dbValues['virtuemart_paymentmethod_id'] = $orderData->virtuemart_paymentmethod_id;
 		$dbValues['paypal_custom'] = $return_context;
 		// TODO wait for PAYPAL return ???
-		$this->writeData($dbValues, $this->_tablename);
+// 		$this->writeData($dbValues, $this->_tablename);
+		$this->storePluginInternalData($dbValues);
 
 		$url = $this->_getPaypalUrlHttps($params);
 		/*
@@ -396,7 +397,10 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			$result = $db->loadResult();
 		}
 
-		$this->updateData($response_fields, $this->_tablename, 'virtuemart_order_id', $virtuemart_order_id);
+		//TODO valerie, the function is now working like the normal tables, $response_fields must be adjusted
+// 		$this->updateData($response_fields, $this->_tablename, 'virtuemart_order_id', $virtuemart_order_id);
+		$this->storePluginInternalData($response_fields);
+
 		$error_msg = $this->_processIPN($paypal_data, $params);
 		$this->logInfo('process IPN ' . $error_msg, 'message');
 		if (!(empty($error_msg) )) {

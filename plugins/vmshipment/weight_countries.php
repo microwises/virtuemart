@@ -158,7 +158,8 @@ class plgVmShipmentWeight_countries extends vmShipmentPlugin {
 		$values['shipment_package_fee'] = $params->get('package_fee');
 		$values['tax_id'] = $params->get('shipment_tax_id');
 
-		$this->writeData($values, $this->_tablename);
+// 		$this->writeData($values, $this->_tablename);
+		$this->storePluginInternalData($values);
 		return true;
 	}
 

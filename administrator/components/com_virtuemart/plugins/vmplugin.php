@@ -52,22 +52,31 @@ abstract class vmPlugin extends JPlugin {
 
 
 	/**
+	 * This stores the data of the plugin, attention NOT the configuration of the pluginmethod
 	 *
+	 * @param array $values array or object with the data to store
+	 * @param string $tableName When different then the default of the plugin, provid it here
+	 * @param string $tableKey an additionally unique key
 	 */
-	protected storePluginInternalData($values, $tableName=0, $tableKey = 0){
+	protected function storePluginInternalData($values, $tableName=0, $tableKey = 0){
 
 		if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
 
 		if(empty($tableName)) $tableName = $this->_tablename;
-		$pluginTable = new VmTable($tableName,'id');
+
+		$db = JFactory::getDBO();
+		$pluginTable = new VmTable($tableName,'id',$db);
 		$pluginTable -> loadFields();
 
-		$pluginTable->setUniqueName($tableKey);
-		$pluginTable->setLoggable();
+		if(!empty($tableKey)) $pluginTable->setUniqueName($tableKey);
 
-		$pluginTable->bindChecknStore($values);
+		//We should force plugins to be loggable
+// 		$pluginTable->setLoggable();
+
+		return $pluginTable->bindChecknStore($values);
 
 	}
+
 
 	/**
 	 * This method writes all  plugin specific data to the plugin's table
@@ -75,7 +84,7 @@ abstract class vmPlugin extends JPlugin {
 	 * @param array $_values Indexed array in the format 'column_name' => 'value'
 	 * @param string $_table Table name
 	 * @author Oscar van Eijk
-	 */
+	 *
 	protected function writeData($_values, $_table) {
 		if (count($_values) == 0) {
 			JError::raiseWarning(500, 'writeData got no data to save to ' . $_table);
@@ -88,15 +97,15 @@ abstract class vmPlugin extends JPlugin {
 			$_cols[] = "`$_col`";
 			$_vals[] = "'$_val'";
 		}
-		$_db = JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$_q = 'INSERT INTO `' . $_table . '` ('
 		. implode(',', $_cols)
 		. ') VALUES ('
 		. implode(',', $_vals)
 		. ')';
-		$_db->setQuery($_q);
-		if (!$_db->query()) {
-			JError::raiseWarning(500, $_db->getErrorMsg());
+		$db->setQuery($_q);
+		if (!$db->query()) {
+			JError::raiseWarning(500, $db->getErrorMsg());
 		}
 	}
 
@@ -107,7 +116,7 @@ abstract class vmPlugin extends JPlugin {
 	 * @param string $_table Table name
 	 * @author Valerie Isaksen
 	 *
-	 */
+	 *
 	protected function updateData($values, $table, $where_key, $where_value) {
 		if (count($values) == 0) {
 			JError::raiseWarning(500, 'updateData got no data to update to ' . $table);
@@ -132,5 +141,5 @@ abstract class vmPlugin extends JPlugin {
 			JError::raiseWarning(500, $db->getErrorMsg());
 		}
 	}
-
+*/
 }

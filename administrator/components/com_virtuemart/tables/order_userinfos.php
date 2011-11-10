@@ -28,15 +28,16 @@ class TableOrder_userinfos extends VmTable {
 	 */
 	function __construct(&$_db)
 	{
-		self::loadFields($_db);
+
 		parent::__construct('#__virtuemart_order_userinfos', 'virtuemart_order_userinfo_id', $_db);
+		parent::loadFields($_db);
 		$this->setLoggable();
 	}
 
 	/**
 	 * Load the fieldlist
 	 */
-	private function loadFields(&$_db)
+/*	private function loadFields(&$_db)
 	{
 		$_fieldlist = array();
 		$_q = "SHOW COLUMNS FROM `#__virtuemart_order_userinfos`";
@@ -49,7 +50,7 @@ class TableOrder_userinfos extends VmTable {
 			$this->setProperties($_fieldlist);
 		}
 	}
-
+*/
 	/**
 	 * Add, change or drop userfields
 	 *
