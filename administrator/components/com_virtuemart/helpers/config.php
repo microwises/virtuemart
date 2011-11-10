@@ -684,8 +684,8 @@ class vmJsApi{
 		if ($jquery) return;
 		$document = JFactory::getDocument();
 		if(VmConfig::get('google_jquery',true)){
-			$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js');
-			$document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js');
+			$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js');
+			$document->addScript('//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js');
 		} else {
 			$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.min.js');
 			$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery-ui.min.js');

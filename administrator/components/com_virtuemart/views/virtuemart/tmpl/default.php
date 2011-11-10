@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea (); 
 
-JToolBarHelper::title(JText::_('COM_VIRTUEMART')." ".JText::_('COM_VIRTUEMART_CONTROL_PANEL'), 'vm_store_48');
+JToolBarHelper::title(JText::_('COM_VIRTUEMART')." ".JText::_('COM_VIRTUEMART_CONTROL_PANEL'), 'head vm_store_48');
 
 
 // Loading Templates in Tabs

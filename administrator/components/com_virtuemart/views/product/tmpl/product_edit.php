@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea();
 
 /* Load some behaviour */
-JHTML::_('behavior.calendar');
+// JHTML::_('behavior.calendar');
 
 $document = JFactory::getDocument();
 

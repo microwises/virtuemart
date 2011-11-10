@@ -91,7 +91,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</tr>
 				<tr>
 					<td width="21%">&nbsp;</td>
-					<td width="79%"><img border="0" id="imagelib" alt="<?php echo JText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php echo JURI::root(true).$this->imagePath.$this->product->product_availability;?>"/></td>
+					<td width="79%"><img border="0" id="imagelib" alt="<?php echo JText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php if ($this->product->product_availability) echo JURI::root(true).$this->imagePath.$this->product->product_availability;?>"/></td>
 				</tr>
 
 				<tr class="row0">
