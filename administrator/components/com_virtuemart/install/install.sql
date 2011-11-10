@@ -490,8 +490,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `order_status` char(1) DEFAULT NULL,
   `user_currency_id` INT(11) DEFAULT NULL,
   `user_currency_rate` DECIMAL(10,5) NOT NULL DEFAULT '1.0',
-  `payment_method_id` INT(11) NOT NULL,
-  `ship_method_id` varchar(255) DEFAULT NULL,
+  `virtuemart_paymentmethod_id` INT(11) NOT NULL,
+  `virtuemart_shipmentmethod_id` INT(11) NOT NULL,
   `customer_note` text NOT NULL,
   `ip_address` varchar(15) NOT NULL DEFAULT '',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -504,7 +504,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   KEY `idx_orders_virtuemart_vendor_id` (`virtuemart_vendor_id`),
   KEY `idx_orders_order_number` (`order_number`),
   KEY `idx_orders_virtuemart_userinfo_id` (`virtuemart_userinfo_id`),
-  KEY `idx_orders_ship_method_id` (`ship_method_id`)
+  KEY `idx_orders_virtuemart_shipmentmethod_id` (`virtuemart_shipmentmethod_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store all orders' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------

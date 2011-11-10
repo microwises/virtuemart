@@ -360,7 +360,7 @@ $tt=$this;
 				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_TAX') ?>:</strong></td>
 				<td   align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment_tax,'',false); ?></td>
 			</tr>
-			 
+
 			<tr>
 				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_CART_TOTAL') ?>:</strong></td>
 				<td   align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->priceDisplay($this->orderbt->order_total,'',false); ?></strong>
@@ -387,7 +387,7 @@ $tt=$this;
 		$returnValues = $_dispatcher->trigger('plgVmOnShowOrderShipmentBE',array(
 			 $this->orderID
 			,$this->orderbt->virtuemart_vendor_id
-			,$this->ship_method_id
+			,$this->virtuemart_shipmentmethod_id
 		));
 		foreach ($returnValues as $returnValue) {
 			if ($returnValue !== null) {
@@ -400,7 +400,7 @@ $tt=$this;
 		$_dispatcher = JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderPaymentBE',array(
 			 $this->orderID
-			,$this->orderbt->payment_method_id
+			,$this->orderbt->virtuemart_paymentmethod_id
 		));
 		foreach ($_returnValues as $_returnValue) {
 			if ($_returnValue !== null) {

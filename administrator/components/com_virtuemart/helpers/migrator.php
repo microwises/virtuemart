@@ -201,7 +201,7 @@ class Migrator extends VmModel{
 	public function portMedia(){
 
 		$ok = true;
-		
+
 		//Prevents search field from interfering with syncronization
 		JRequest::setVar('searchMedia', '');
 
@@ -1166,8 +1166,8 @@ class Migrator extends VmModel{
 						$orderData->user_currency_id = $order['order_currency'];
 						//$orderData->user_currency_rate = $order['order_status'];
 					}
-					$orderData->payment_method_id = $order['payment_method_id'];
-					$orderData->ship_method_id = $order['ship_method_id'];
+					$orderData->virtuemart_paymentmethod_id = $order['payment_method_id'];
+					$orderData->virtuemart_shipmentmethod_id = $order['ship_method_id'];
 					//$orderData->order_status_id = $oldToNewOrderstates[$order['order_status']]
 
 

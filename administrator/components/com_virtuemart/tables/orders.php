@@ -73,9 +73,9 @@ class TableOrders extends VmTable {
 	/** @var char User currency rate */
 	var $user_currency_rate = NULL;
 	/** @var int Payment method ID */
-	var $payment_method_id = NULL;
+	var $virtuemart_paymentmethod_id = NULL;
 	/** @var int Shipment method ID */
-	var $ship_method_id = NULL;
+	var $virtuemart_shipmentmethod_id = NULL;
 	/** @var text Customer note */
 	var $customer_note = 0;
 	/** @var string Users IP Address */
@@ -116,7 +116,7 @@ class TableOrders extends VmTable {
 		}
 		/*vm_order_payment NOT EXIST  have to find the table name*/
 		$this->_db->setQuery( 'SELECT `payment_element` FROM `#__virtuemart_paymentmethods` , `#__virtuemart_orders`
-			WHERE `#__virtuemart_paymentmethods`.`virtuemart_paymentmethod_id` = `#__virtuemart_orders`.`payment_method_id` AND `virtuemart_order_id` = ' . $id );
+			WHERE `#__virtuemart_paymentmethods`.`virtuemart_paymentmethod_id` = `#__virtuemart_orders`.`virtuemart_paymentmethod_id` AND `virtuemart_order_id` = ' . $id );
 		$paymentTable = '#__virtuemart_order_payment_'. $this->_db->loadResult();
 		/*$paymentTable is the paiement used in order*/
 		$this->_db->setQuery('DELETE from `'.$paymentTable.'` WHERE `virtuemart_order_id` = ' . $id);

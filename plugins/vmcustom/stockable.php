@@ -23,25 +23,6 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 
 class plgVmCustomStockable extends vmCustomPlugin {
 
-	var $_pname;
-
-
-	/**
-	 * Constructor
-	 *
-	 * For php4 compatability we must not use the __constructor as a constructor for plugins
-	 * because func_get_args ( void ) returns a copy of all passed arguments NOT references.
-	 * This causes problems with cross-referencing necessary for the observer design pattern.
-	 *
-	 * @param object $subject The object to observe
-	 * @param array  $config  An array that holds the plugin configuration
-	 * @since 1.5
-	 */
-	function plgVmCustomStockable() {
-		$this->_pname = basename(__FILE__, '.php');
-		$this->_createTable();
-		parent::__construct();
-	}
 
 	/**
 	 * Create the table for this plugin if it does not yet exist.
@@ -50,7 +31,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	protected function _createTable()
 	{
 		$scheme = DbScheme::get_instance();
-		$scheme->create_scheme('#__virtuemart_product_custom_'.$this->_pname);
+		$scheme->create_scheme($this->_tablename);
 		$schemeCols = array(
 			 'id' => array (
 					 'type' => 'int'
@@ -89,11 +70,11 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	}
 
 
-	
-	
+
+
 	// get product param for this plugin on edit
 	function onProductEdit($field,$param,$row, $product_id) {
-		if ($field->custom_value != $this->_pname) return '';
+		if ($field->custom_value != $this->_name) return '';
 		$html ='';
 		if (!$childs = $this->getChilds($product_id) ) $html .='<DIV>'.JTEXT::_('VMCUSTOM_STOCKABLE_NO_CHILD').'</DIV>';
 		$db = JFactory::getDBO();
@@ -103,12 +84,12 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		//print_r($plgParam);
 		$html .='<span style="width:20px; display: inline-block;"> </span>';
 
-		for ($i = 1; $i<5 ;$i++) { 
+		for ($i = 1; $i<5 ;$i++) {
 			$listname = $plgParam->get('selectname'.$i,'');
 			$html .=' <span style="width:98px; display: inline-block;color:#000;overflow:hidden;">'.JTEXT::_($listname).'</span>';
 		}
 		$html .=' <span style="width:98px; display: inline-block;color:#000;">'. JText::_('COM_VIRTUEMART_CART_PRICE') .'</span>';
-		foreach ($childs as $child ) { 
+		foreach ($childs as $child ) {
 			if (!array_key_exists($child->id, (array)$param)) $param[$child->id]['is_variant'] = 1;
 			if ($param[$child->id]['is_variant'] ) $checked='checked';
 			else $checked ='';
@@ -117,9 +98,9 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			$html .='<div class="stockable">' ;
 			$html .='	<input type="hidden"  value="0" name="custom_param['.$row.']['.$child->id.'][is_variant]">';
 			$html .='	<input type="checkbox" '.$checked.' title="use it as variant" value="1" name="custom_param['.$row.']['.$child->id.'][is_variant]">';
-			for ($i = 1; $i<5 ;$i++) { 
+			for ($i = 1; $i<5 ;$i++) {
 				$option = array();
-				$tmpOptions = str_replace( "\r", "" ,$plgParam->get('selectoptions'.$i,'')); 
+				$tmpOptions = str_replace( "\r", "" ,$plgParam->get('selectoptions'.$i,''));
 				if ($listoptions = explode("\n",$tmpOptions ) ) {
 					foreach ($listoptions as $key => $val) $option[] = JHTML::_('select.option',JText::_( $val ) , $val  );
 					if (empty($param[$child->id]['attribute'.$i])) {
@@ -136,9 +117,9 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			$html .='<input style="width:98px; display: inline-block;" type="text" name="field[c'.$child->id.'][custom_price]" value="'.$price.'">';
 			$html .='<input type="hidden" name="field[c'.$child->id.'][field_type]" value="G">';
 			$html .='<input type="hidden" name="field[c'.$child->id.'][virtuemart_custom_id]" value="'.$group_custom_id.'">';
-			
+
 			$html .= ' '.$child->product_name.' Stock '.$child->stock.'</div>' ;
-		
+
 		}
 			$html .='
 				<fieldset style="background-color:#F9F9F9;">
@@ -148,16 +129,16 @@ class plgVmCustomStockable extends vmCustomPlugin {
 						<span>'. JText::_('COM_VIRTUEMART_PRODUCT_NAME').' : <input value="" name="stockable[product_name]" type="text"></span>
 						<span>'. JText::_('COM_VIRTUEMART_PRODUCT_PRICE').' : <input value="" name="stockable[product_price]" type="text"></span>
 						<span>'. JText::_('COM_VIRTUEMART_PRODUCT_IN_STOCK').' : <input value="" name="stockable[product_in_stock]" type="text"></span>
-						
+
 						<span id="new_stockable_product"><span class="icon-nofloat vmicon vmicon-16-new"></span>'. JText::_('COM_VIRTUEMART_ADD').'</span>
 					</div>
 				</fieldset>';
-		
+
 		$script = "
 	jQuery( function($) {
 		$('#new_stockable_product').click(function() {
 			var Prod = $('#new_stockable');// input[name^=\"stockable\"]').serialize();
-			
+
 			$.getJSON('index.php?option=com_virtuemart&view=product&task=saveJS&token=".JUtility::getToken()."' ,
 				{
 					product_sku: Prod.find('input[name*=\"product_sku\"]').val(),
@@ -192,24 +173,24 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 */
 	function onDisplayProductFE($field, $param,$product,$idx) {
 		// default return if it's not this plugin
-		if ($field->custom_value != $this->_pname) return '';
-		//if (!$childs = $this->getChilds($product_id) ) return ; 
+		if ($field->custom_value != $this->_name) return '';
+		//if (!$childs = $this->getChilds($product_id) ) return ;
 
 		$plgParam = $this->getVmCustomParams($field->virtuemart_custom_id);
 		$html='<br>';
 		$customfield_id = array();
 		$selects = array();
 		$js = array();
-	
+
 		foreach($param as $child_id => $attribut) {
 			if ($customfield_id = $this->getFieldId($product->virtuemart_product_id, $child_id)) {
 				$js[]= '"'.$child_id.'" :'.$customfield_id->virtuemart_customfield_id;
-				if ($attribut['is_variant']) { 
+				if ($attribut['is_variant']) {
 					unset ($attribut['is_variant']);
 					foreach ($attribut as $key => $list) {
 						if (empty ($selects[$key])) {
 							$selects[$key][] = $list ;
-						} else { 
+						} else {
 							if (!in_array($list , $selects[$key]) ) {
 								$selects[$key][$list] = $list ;
 							}
@@ -220,7 +201,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		}
 		$i = 1;
 		foreach ($selects as $keys =>$options) {
-			if (($listname = $plgParam->get('selectname'.$i,'')) ) { 
+			if (($listname = $plgParam->get('selectname'.$i,'')) ) {
 				$option = array();
 				foreach ($options as $key => $val) if (!empty($val)) $option[] = JHTML::_('select.option',JText::_( $val ) , $val  );
 				if (!empty($option)) {
@@ -248,13 +229,13 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			$.each($(".attribute_list"), function(idx,selec) {
 				original[selec.name] = $.map($(this).find("option"), function(idx, opt) {
 						return [[ idx.value ,idx.text ]];
-					});			
+					});
 			});
 			//console.log(stockable) ;
 			if ( $("#attribute1").length ) recalculate($("#attribute1"));
 			$(".attribute_list").change(function(){
 				recalculate($(this));
-			
+
 			});
 			function recalculate(Opt){
 				var listIndex = $(".attribute_list").index(Opt) +2 ;
@@ -263,31 +244,31 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				var selection = new Object() ;
 				for(var i=listIndex; i<totalattribut; i++){ selection["attribute"+i] =[] ; }
 				var j=0;
-				
+
 				// set the option to show
 				$.each(stockable, function(child_id, child_attrib) {
 					// find all  matrix with an invalid "stockable" child
-					if (child_attrib[choix] == valeur && child_attrib["is_variant"] == 1) { 
+					if (child_attrib[choix] == valeur && child_attrib["is_variant"] == 1) {
 						$.each(child_attrib, function(index, value) {
 							if (index != "is_variant" && index > choix)
 							selection[index][j] = value ;
-							
+
 						});
 					j++;
 					}
-					
+
 				});
 
 				// unset invalid option
 				// regenerate the option by selected val() after last index attribute
-				for(var i=listIndex; i<totalattribut; i++){ 
+				for(var i=listIndex; i<totalattribut; i++){
 					selectlist = $("#attribute"+i) ;
 					orgOptions = original["attribute"+i];
-					selectedOptions =$.unique(selection["attribute"+i]) ; 
+					selectedOptions =$.unique(selection["attribute"+i]) ;
 					var auxArr = [];
 					$.each(selectedOptions, function( index, orgtext){ auxArr[index] = "<option value=\'" + orgtext+ "\'>" + orgtext + "</option>"; });
 					selectlist.empty().append(auxArr.join(\'\'))
-					selectlist.find("option:first").attr("selected","selected");						
+					selectlist.find("option:first").attr("selected","selected");
 				}
 				// get the selected valid values
 				for(var i=1 ; i<totalattribut; i++){
@@ -316,7 +297,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				formProduct.append(\'<input id="stockableChild" type="hidden" value="\'+customfield_id[found_id]+\'" name="customPrice['.$idx.'][\'+found_id+\']">\');
 				$.setproducttype(formProduct,virtuemart_product_id);
 			}
-		}); 
+		});
 		');
 
 		// 'custom_param['.$keys.']'
@@ -353,7 +334,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		return '';
     }
 	/**
-	 * Add param as product_attributes 
+	 * Add param as product_attributes
 	 * from cart >>> to order
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCart()
 	 * @author Patrick Kohl
@@ -366,7 +347,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		// return $html;
 		return '';//$param;
     }
-	
+
 	/**
 	 *
 	 * vendor order display BE
@@ -379,7 +360,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		// return $html.'</div>';
 		return '';
     }
-	
+
 	/**
 	 *
 	 * shopper order display FE
@@ -396,24 +377,24 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 		return $html.'</div>';
     }
-	
+
 	function plgVmOnOrder($product) {
 
 		$dbValues['virtuemart_product_id'] = $product->virtuemart_product_id;
 		$dbValues['stockable'] = $this->_virtuemart_paymentmethod_id;
-		$this->writeCustomData($dbValues, '#__virtuemart_product_custom_' . $this->_pname);
+		$this->writeCustomData($dbValues, '#__virtuemart_product_custom_' . $this->_name);
 	}
 
-	
+
 	/**
 	 * (depredicate)
 	 */
 	function plgVmOnOrderShowFE($product,$order_item_id) {
 		//$dbValues['virtuemart_product_id'] = $product->virtuemart_product_id;
 		//$dbValues['stockable'] = $this->_virtuemart_paymentmethod_id;
-		//$this->writePaymentData($dbValues, '#__virtuemart_product_custom_' . $this->_pname);
+		//$this->writePaymentData($dbValues, '#__virtuemart_product_custom_' . $this->_name);
 				$db = JFactory::getDBO();
-		$q = 'SELECT * FROM `#__virtuemart_product_custom_' . $this->_pname . '` '
+		$q = 'SELECT * FROM `#__virtuemart_product_custom_' . $this->_name . '` '
 			. 'WHERE `virtuemart_product_id` = ' . $virtuemart_product_id;
 		$db->setQuery($q);
 		if (!($customs = $db->loadObjectList())) {
@@ -442,7 +423,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	function getFieldId($virtuemart_product_id, $chil_id ) {
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT cf.* FROM `#__virtuemart_product_customfields` as cf JOIN `#__virtuemart_customs` as c ON `c`.`virtuemart_custom_id` = cf.`virtuemart_custom_id` AND c.`field_type`="G" 
+		$q = 'SELECT cf.* FROM `#__virtuemart_product_customfields` as cf JOIN `#__virtuemart_customs` as c ON `c`.`virtuemart_custom_id` = cf.`virtuemart_custom_id` AND c.`field_type`="G"
 			WHERE cf.`virtuemart_product_id` ='.(int)$virtuemart_product_id.' and cf.custom_value='.(int)$chil_id ;
 			$db->setQuery($q);
 			$result = $db->loadObject();

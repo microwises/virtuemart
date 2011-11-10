@@ -23,25 +23,6 @@ if( ! defined( '_VALID_MOS' ) && ! defined( '_JEXEC' ) )
 
 class plgVmCustomTextinput extends vmCustomPlugin {
 
-	var $_pname;
-
-
-	/**
-	 * Constructor
-	 *
-	 * For php4 compatability we must not use the __constructor as a constructor for plugins
-	 * because func_get_args ( void ) returns a copy of all passed arguments NOT references.
-	 * This causes problems with cross-referencing necessary for the observer design pattern.
-	 *
-	 * @param object $subject The object to observe
-	 * @param array  $config  An array that holds the plugin configuration
-	 * @since 1.5
-	 */
-	function plgVmCustomTextinput() {
-		$this->_pname = basename(__FILE__, '.php');
-		$this->_createTable();
-		parent::__construct();
-	}
 
 	/**
 	 * Create the table for this plugin if it does not yet exist.
@@ -50,7 +31,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	protected function _createTable()
 	{
 		$scheme = DbScheme::get_instance();
-		$scheme->create_scheme('#__virtuemart_product_custom_'.$this->_pname);
+		$scheme->create_scheme($this->_tablename);
 		$schemeCols = array(
 			 'id' => array (
 					 'type' => 'int'
@@ -89,11 +70,11 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	}
 
 
-	
-	
+
+
 	// get product param for this plugin on edit
 	function onProductEdit($field,$param,$row, $product_id) {
-		if ($field->custom_value != $this->_pname) return '';
+		if ($field->custom_value != $this->_name) return '';
 		$plgParam = $this->getVmCustomParams($field->virtuemart_custom_id);
 		//print_r($plgParam);
 		if (empty($param)) {
@@ -114,7 +95,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 */
 	function onDisplayProductFE($field, $param,$product,$idx) {
 		// default return if it's not this plugin
-		if ($field->custom_value != $this->_pname) return '';
+		if ($field->custom_value != $this->_name) return '';
 		if (!$param) {
 			$param['custom_name']='' ;
 			$param['custom_size']='10';
@@ -163,7 +144,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		return $html.'</div>';
     }
 	/**
-	 * Add param as product_attributes 
+	 * Add param as product_attributes
 	 * from cart >>> to order
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCart()
 	 * @author Patrick Kohl
@@ -176,7 +157,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		// return $html;
 		return $param;
     }
-	
+
 	/**
 	 *
 	 * vendor order display BE
@@ -188,7 +169,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 		return $html.'</div>';
     }
-	
+
 	/**
 	 *
 	 * shopper order display FE
@@ -218,25 +199,25 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 				}
 			}
 			return $field->custom_price;
-		}		
-	}	
+		}
+	}
 	function plgVmOnOrder($product) {
 
 		$dbValues['virtuemart_product_id'] = $product->virtuemart_product_id;
 		$dbValues['textinput'] = $this->_virtuemart_paymentmethod_id;
-		$this->writeCustomData($dbValues, '#__virtuemart_product_custom_' . $this->_pname);
+		$this->writeCustomData($dbValues, '#__virtuemart_product_custom_' . $this->_name);
 	}
 
-	
+
 	/**
 	 * (depredicate)
 	 */
 	function plgVmOnOrderShowFE($product,$order_item_id) {
 		//$dbValues['virtuemart_product_id'] = $product->virtuemart_product_id;
 		//$dbValues['textinput'] = $this->_virtuemart_paymentmethod_id;
-		//$this->writePaymentData($dbValues, '#__virtuemart_product_custom_' . $this->_pname);
+		//$this->writePaymentData($dbValues, '#__virtuemart_product_custom_' . $this->_name);
 				$db = JFactory::getDBO();
-		$q = 'SELECT * FROM `#__virtuemart_product_custom_' . $this->_pname . '` '
+		$q = 'SELECT * FROM `#__virtuemart_product_custom_' . $this->_name . '` '
 			. 'WHERE `virtuemart_product_id` = ' . $virtuemart_product_id;
 		$db->setQuery($q);
 		if (!($customs = $db->loadObjectList())) {

@@ -21,11 +21,6 @@ if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
 
 abstract class vmPSPlugin extends vmPlugin {
 
-	protected $_vmplugin = '';
-
-	function __construct(& $subject, $config) {
-		parent::__construct($subject, $config);
-	}
 
 	function getDebug() {
 		return $this->_debug;
@@ -43,7 +38,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	protected function logInfo($text, $type = 'message') {
 
 		if ($this->_debug) {
-			$file = JPATH_ROOT . "/logs/" . $this->_pelement . ".log";
+			$file = JPATH_ROOT . "/logs/" . $this->_name . ".log";
 			$date = JFactory::getDate();
 
 			$fp = fopen($file, 'a');
@@ -106,7 +101,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$img = "";
 
 		if (!(empty($logo_list))) {
-			$url = JURI::root() . 'images/stories/virtuemart/' . $this->_vmplugin . '/';
+			$url = JURI::root() . 'images/stories/virtuemart/' . $this->_type . '/';
 			if (!is_array($logo_list))
 			$logo_list = (array) $logo_list;
 			foreach ($logo_list as $logo) {
@@ -121,7 +116,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$class = "class='key'";
 		$html = ' 	<thead>' . "\n"
 		. '		<tr>' . "\n"
-		. '			<td ' . $class . ' style="text-align: center;" colspan="2">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_' . $this->_vmplugin . '_LBL') . '</td>' . "\n"
+		. '			<td ' . $class . ' style="text-align: center;" colspan="2">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_' . $this->_type . '_LBL') . '</td>' . "\n"
 		. '		</tr>' . "\n"
 		. '	</thead>' . "\n";
 
@@ -131,12 +126,12 @@ abstract class vmPSPlugin extends vmPlugin {
 	protected function getHtmlRow($key, $value, $class='') {
 		$lang = & JFactory::getLanguage();
 		$key_text = '';
-		$complete_key = 'VM' . $this->_vmplugin . '_' . $key;
+		$complete_key =  strtoupper($this->_type . '_' . $key);
 		// vmdebug('getHtmlRow',$key,$complete_key);
 		if ($lang->hasKey($complete_key)) {
 			$key_text = JText::_($complete_key);
 		}
-		$more_key = 'VM' . $this->_vmplugin . '_' . $key . '_' . $value;
+		$more_key = $complete_key . '_' . $value;
 		if ($lang->hasKey($more_key)) {
 			$value .=" (" . JText::_($more_key) . ")";
 		}

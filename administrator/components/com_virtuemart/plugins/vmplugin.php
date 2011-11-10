@@ -20,8 +20,7 @@ if (!class_exists('ShopFunctions'))
 require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 if (!class_exists('DbScheme'))
 require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'dbscheme.php');
-if (!class_exists('vmPlugin'))
-require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmplugin.php');
+
 
 // Get the plugin library
 jimport('joomla.plugin.plugin');
@@ -29,10 +28,8 @@ jimport('joomla.plugin.plugin');
 abstract class vmPlugin extends JPlugin {
 
 	// var Must be overriden in every plugin file by adding this code to the constructor:
-	// $this->_pelement = basename(__FILE, '.php');
+	// $this->_name = basename(__FILE, '.php');
 	// just as note: protected can be accessed only within the class itself and by inherited and parent classes
-
-	protected $_pelement = '';
 	protected $_tablename = '';
 	protected $_debug = false;
 
@@ -45,11 +42,13 @@ abstract class vmPlugin extends JPlugin {
 	 */
 	function __construct(& $subject, $config) {
 
+		parent::__construct($subject, $config);
+
 		$lang = JFactory::getLanguage();
-		$filename = 'plg_vm' . $this->_vmplugin . '_' . $this->_pelement;
+		$filename = 'plg_' . $this->_type . '_' . $this->_name;
 		$lang->load($filename, JPATH_ADMINISTRATOR);
 		if (!class_exists('JParameter')) require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
-		parent::__construct($subject, $config);
+
 	}
 
 

@@ -13,6 +13,12 @@
 
 defined('_JEXEC') or die();
 
+/**
+ * Sanitizes the filenames and transliterates them also for non latin languages
+ *
+ * @author constantined
+ *
+ */
 class vmFile {
 	function makeSafe($file='') {
 		$lang = JFactory::getLanguage();

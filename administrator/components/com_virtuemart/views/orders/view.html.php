@@ -108,7 +108,7 @@ class VirtuemartViewOrders extends JView {
 
 			}
 
-                       // $_shipmentInfo = ShopFunctions::getShipmentRateDetails($orderbt->ship_method_id);
+                       // $_shipmentInfo = ShopFunctions::getShipmentRateDetails($orderbt->virtuemart_shipmentmethod_id);
 
 			/* Assign the data */
 			$this->assignRef('order', $order);
@@ -120,7 +120,7 @@ class VirtuemartViewOrders extends JView {
 			$this->assignRef('itemattributesupdatefields', $_itemAttributesUpdateFields);
 			$this->assignRef('orderbt', $orderbt);
 			$this->assignRef('orderst', $orderst);
-			$this->assignRef('ship_method_id', $orderbt->ship_method_id);
+			$this->assignRef('virtuemart_shipmentmethod_id', $orderbt->virtuemart_shipmentmethod_id);
 
 			/* Data for the Edit Status form popup */
 			$_currentOrderStat = $order['details']['BT']->order_status;

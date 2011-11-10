@@ -244,7 +244,7 @@ class VirtueMartModelOrders extends VmModel {
 			LEFT JOIN #__virtuemart_order_userinfos as u
 			ON u.virtuemart_order_id = o.virtuemart_order_id AND u.address_type="BT"
 			LEFT JOIN #__virtuemart_paymentmethods as pm
-			ON o.payment_method_id = pm.virtuemart_paymentmethod_id ';
+			ON o.virtuemart_paymentmethod_id = pm.virtuemart_paymentmethod_id ';
 	}
 
 
@@ -571,8 +571,8 @@ class VirtueMartModelOrders extends VmModel {
 			}
 
 		}
-		$_orderData->payment_method_id = $_cart->virtuemart_paymentmethod_id;
-		$_orderData->ship_method_id = $_cart->virtuemart_shipmentmethod_id;
+		$_orderData->virtuemart_paymentmethod_id = $_cart->virtuemart_paymentmethod_id;
+		$_orderData->virtuemart_shipmentmethod_id = $_cart->virtuemart_shipmentmethod_id;
 
 		$_filter = JFilterInput::getInstance (array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
 		$_orderData->customer_note = $_filter->clean($_cart->customer_comment);

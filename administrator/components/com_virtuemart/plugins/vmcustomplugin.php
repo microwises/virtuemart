@@ -19,11 +19,7 @@
 // Load the helper functions that are needed by all plugins
 if (!class_exists('VmHTML'))
     require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
-if (!class_exists('ShopFunctions'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
-if (!class_exists('DbScheme'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'dbscheme.php');
-
+if (!class_exists('vmPlugin')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmplugin.php');
 
 // Get the plugin library
 jimport('joomla.plugin.plugin');
@@ -65,36 +61,21 @@ jimport('joomla.plugin.plugin');
  */
 abstract class vmCustomPlugin extends JPlugin {
 
-    //private $_virtuemart_shipmentmethod_id = 0;
-    /**
-     * @var string Identification of the shipment. This var must be overwritten by all plugins,
-     * by adding this code to the constructor:
-     * $this->_selement = basename(__FILE, '.php');
-     */
-//     protected $_pname = '';
-//     protected $_tablename = '';
+
     /**
      * @var array List with all carriers the have been implemented with the plugin in the format
      * id => name
      */
     protected $customs;
 
-    /**
-     * Constructor
-     *
-     * @param object $subject The object to observe
-     * @param array  $config  An array that holds the plugin configuration
-     * @since 1.5
-     */
-    function __construct() {
-        //parent::__construct($subject, $config);
-        $lang =& JFactory::getLanguage();
-        $filename = 'plg_vmcustom_' . $this->_pname;
-        $lang->load($filename, JPATH_ADMINISTRATOR);
-        //$this->carrier = array();
-        if (!class_exists('JParameter'))
-            require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
-    }
+	function __construct(& $subject, $config) {
+
+		parent::__construct($subject, $config);
+
+		$this->_tablename = '#__virtuemart_product_custom_' . $this->_name;
+		$this->_createTable();
+
+	}
 
     /**
      * This functions gets the used and configured customplugins

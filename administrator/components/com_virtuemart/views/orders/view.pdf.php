@@ -111,7 +111,7 @@ class VirtuemartViewOrders extends JView {
 				}
 			}
 		} */
-		//$_shipmentInfo = ShopFunctions::getShipmentRateDetails($orderbt->ship_method_id);
+		//$_shipmentInfo = ShopFunctions::getShipmentRateDetails($orderbt->virtuemart_shipmentmethod_id);
 
 		/* Assign the data */
 		$this->assignRef('order', $order);
@@ -121,7 +121,7 @@ class VirtuemartViewOrders extends JView {
 		$this->assignRef('orderstatuslist', $_orderStatusList);
 		$this->assignRef('orderbt', $orderbt);
 		$this->assignRef('orderst', $orderst);
-		$this->assignRef('ship_method_id', $orderbt->ship_method_id);
+		$this->assignRef('virtuemart_shipmentmethod_id', $orderbt->virtuemart_shipmentmethod_id);
 
 		$_doc = JFactory::getDocument();
 		//$_doc->setMimeEncoding('application/pdf');

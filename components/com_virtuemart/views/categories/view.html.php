@@ -71,10 +71,12 @@ class VirtuemartViewCategories extends JView {
 		else {
 			$menus = &JSite::getMenu();
 			$menu  = $menus->getActive();
-			if (!class_exists('JParameter'))
-				require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
-			$menu_params = new JParameter( $menu->params );
-			if (!$menu_params->get( 'page_title')) {
+			if(!empty($menu)){
+				if (!class_exists('JParameter')) require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
+				$menu_params = new JParameter( $menu->params );
+			}
+
+			if (empty($menu) || !$menu_params->get( 'page_title')) {
 				$document->setTitle($vendor->vendor_store_name);
 				$category->category_name = $vendor->vendor_store_name ;
 			} else $category->category_name = $menu_params->get( 'page_title');

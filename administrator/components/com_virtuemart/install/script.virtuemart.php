@@ -281,6 +281,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			// payment_discount values
 			$this->alterPaymentMethodsTable();
+			$fields = array('payment_method_id'=>'`virtuemart_paymentmethod_id` INT(11 ) NOT NULL ',
+									'ship_method_id'=>'`virtuemart_shipmentmethod_id` INT(11 ) NOT NULL '
+			);
+			$this->alterTable('#__virtuemart_orders',$fields);
+
+
+
+
 			$this->deleteCreditcardsTable(); // for J version
 			$this->removeCreditCardFromAdminMenus(); // remove credit card from the menu
 
