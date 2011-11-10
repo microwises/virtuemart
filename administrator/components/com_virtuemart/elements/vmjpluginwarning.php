@@ -14,7 +14,6 @@
  * other free or open source software licenses.
  * @version $Id: $
  */
-
 /*
  * This class is used by VirtueMart Payment or Shipment Plugins
  * which uses JParameter
@@ -31,13 +30,13 @@ class JElementVmjpluginwarning extends JElement {
     var $_name = 'vmjpluginwarning';
 
     function fetchElement($name, $value, &$node, $control_name) {
-        JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
+	JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
 
-        $option = JRequest::getWord('option');
-        if ($option == 'com_virtuemart')
-            return null;
-        else
-            return JTExt::_('COM_VIRTUEMART_PLUGIN_WARNING');
+	$option = JRequest::getWord('option');
+	if ($option == 'com_virtuemart')
+	    return null;
+	else
+	    return JTExt::_('COM_VIRTUEMART_PLUGIN_WARNING');
     }
 
 }

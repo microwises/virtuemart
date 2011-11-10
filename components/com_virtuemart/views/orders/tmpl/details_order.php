@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 		<td align="left"><?php  echo vmJsApi::date($this->orderdetails['details']['BT']->modified_on,'LC2',true); ?></td>
 	</tr>
 	<tr>
-		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_CARRIER_LBL') ?></td>
+		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPMENT_LBL') ?></td>
 		<td align="left"><?php
 		echo $this->shipment;
 		?></td>

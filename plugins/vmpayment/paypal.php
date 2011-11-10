@@ -282,7 +282,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
 		$pname = JRequest::getWord('pname');
 
-		if ($this->_name != $pelement) {
+		if ($this->_name != $pname) {
 			return null;
 		}
 
@@ -444,7 +444,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	 */
 	function plgVmOnShowOrderPaymentBE($virtuemart_order_id, $payment_method_id) {
 
-		if (!$this->selectedThisPayment($this->_name, $virtuemart_order_id)) {
+		if (!$this->selectedThisPayment(  $virtuemart_order_id)) {
 			return null; // Another method was selected, do nothing
 		}
 		$db = JFactory::getDBO();

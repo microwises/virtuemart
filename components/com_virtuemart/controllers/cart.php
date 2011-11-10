@@ -264,12 +264,12 @@ class VirtueMartControllerCart extends JController {
     public function setshipment() {
 
 	/* Get the shipment ID from the cart */
-	$shipment_id = JRequest::getInt('shipment_id', '0');
-	if ($shipment_id) {
+	$virtuemart_shipmentmethod_id = JRequest::getInt('virtuemart_shipmentmethod_id', '0');
+	if ($virtuemart_shipmentmethod_id) {
 	    //Now set the shipment ID into the cart
 	    $cart = VirtueMartCart::getCart();
 	    if ($cart) {
-		$cart->setShipment($shipment_id);
+		$cart->setShipment($virtuemart_shipmentmethod_id);
 		if ($cart->getInCheckOut()) {
 		    $mainframe = JFactory::getApplication();
 		    $mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');

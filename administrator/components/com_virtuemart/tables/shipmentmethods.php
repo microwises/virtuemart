@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* Shipment Carrier table
+* Shipment  table
 *
 * @package	VirtueMart
 * @subpackage Shipment
@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
 
 /**
- * Shipment Carrier table class
+ * Shipment  table class
  * The class is is used to manage the shipment in the shop.
  *
  * @package	VirtueMart
@@ -36,9 +36,9 @@ class TableShipmentmethods extends VmTable {
 	var $virtuemart_vendor_id		= 0;
         /** @var int Shipment Joomla plugin I */
 	var $shipment_jplugin_id	= 0;
-	/** @var string Shipment Carrier name*/
+	/** @var string Shipment  name*/
 	var $shipment_name	= '';
-        	/** @var string Shipment Carrier name*/
+        	/** @var string Shipment  name*/
 	var $shipment_desc	= '';
         /** @var string Element of shipmentmethod */
         var $shipment_element = '';

@@ -81,7 +81,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 	 * Retireve a list of shipment from the database.
 	 *
 	 * @author RickG
-	 * @return object List of shipment carrier objects
+	 * @return object List of shipment  objects
 	 */
 	public function getShipments() {
 		if (VmConfig::isJ15()) {

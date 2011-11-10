@@ -171,7 +171,7 @@ class plgVmShipmentWeight_countries extends vmShipmentPlugin {
 	 *
 	 * @param integer $virtuemart_order_id The order ID
 	 * @param integer $vendorId Vendor ID
-	 * @param object $_shipInfo Object with the properties 'carrier' and 'name'
+	 * @param object $_shipInfo Object with the properties 'shipment' and 'name'
 	 * @return mixed Null for shipments that aren't active, text (HTML) otherwise
 	 * @author Valerie Isaksen
 	 */
@@ -204,7 +204,7 @@ class plgVmShipmentWeight_countries extends vmShipmentPlugin {
 		$html = '<table class="admintable">' . "\n";
 		$html .=$this->getHtmlHeaderBE();
 		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_SHIPPING_NAME', $shipinfo->shipment_name);
-		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_WEIGHT', ShopFunctions::renderWeightUnit($shipinfo->shipment_weight_unit));
+		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_WEIGHT', $shipinfo->order_weight.' '.ShopFunctions::renderWeightUnit($shipinfo->shipment_weight_unit));
 		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_RATE_VALUE', $currency->priceDisplay($shipinfo->shipment_cost, '', false));
 		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_PACKAGE_FEE', $currency->priceDisplay($shipinfo->shipment_package_fee, '', false));
 		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_TAX', $taxDisplay);

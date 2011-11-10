@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* Shipment Carrier View
+* Shipment  View
 *
 * @package	VirtueMart
 * @subpackage Shipment
@@ -42,7 +42,7 @@ class VirtuemartViewShipmentmethod extends JView {
 		$this->loadHelper('shopFunctions');
 
 		$model = $this->getModel();
-		$shipmentCarrier = $model->getShipment();
+		$shipment = $model->getShipment();
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		$viewName=ShopFunctions::SetViewTitle();
@@ -60,13 +60,13 @@ class VirtuemartViewShipmentmethod extends JView {
                          $this->assignRef('vendor_currency', $currency->currency_symbol);
 
                          if(Vmconfig::get('multix','none')!=='none'){
-                                $vendorList= ShopFunctions::renderVendorList($shipmentCarrier->virtuemart_vendor_id);
+                                $vendorList= ShopFunctions::renderVendorList($shipment->virtuemart_vendor_id);
                                 $this->assignRef('vendorList', $vendorList);
                          }
 
-			$this->assignRef('pluginList', self::renderInstalledShipmentPlugins($shipmentCarrier->shipment_jplugin_id));
-			$this->assignRef('carrier',	$shipmentCarrier);
-			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($shipmentCarrier->virtuemart_shoppergroup_ids,true));
+			$this->assignRef('pluginList', self::renderInstalledShipmentPlugins($shipment->shipment_jplugin_id));
+			$this->assignRef('carrier',	$shipment);
+			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($shipment->virtuemart_shoppergroup_ids,true));
 
 			ShopFunctions::addStandardEditViewCommands();
 

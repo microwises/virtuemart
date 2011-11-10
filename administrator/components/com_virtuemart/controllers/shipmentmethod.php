@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* Shipment Carrier controller
+* Shipment  controller
 *
 * @package	VirtueMart
 * @subpackage Shipment
@@ -26,7 +26,7 @@ if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.
 
 
 /**
- * Shipment Carrier Controller
+ * Shipment  Controller
  *
  * @package    VirtueMart
  * @subpackage Shipment
