@@ -17,9 +17,8 @@
  * @version $Id: vmshipmentplugin.php 4007 2011-08-31 07:31:35Z alatak $
  */
 // Load the helper functions that are needed by all plugins
-if (!class_exists('VmHTML'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
-if (!class_exists('vmPlugin')) require(JPATH_VM_SITE . DS . 'helpers' . DS . 'vmplugin.php');
+if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
+if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
 
 // Get the plugin library
 jimport('joomla.plugin.plugin');
