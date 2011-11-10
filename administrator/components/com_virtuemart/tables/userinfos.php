@@ -36,40 +36,41 @@ class TableUserinfos extends VmTableData {
 
 	/** @var int hidden userkey */
 	var $virtuemart_userinfo_id = 0;
-	var $virtuemart_state_id = '';
-	var $virtuemart_country_id = '';
+// 	var $virtuemart_state_id = '';
+// 	var $virtuemart_country_id = '';
 
-//	var $user_is_vendor = 0;
-	var $address_type = null;
-	var $address_type_name = null;
- 	//var $name = '';
-	var $company = '';
-	var $title ='';
- 	var $last_name = '';
-	var $first_name = '';
-	var $middle_name = '';
-	var $phone_1 = '';
-	var $phone_2 = '';
-	var $fax = '';
-	var $address_1 = '';
-	var $address_2 = '';
-	var $city = '';
+// 	var $user_is_vendor = 0;
+// 	var $address_type = null;
+// 	var $address_type_name = null;
+//  	var $name = '';
+// 	var $company = '';
+// 	var $title ='';
+//  	var $last_name = '';
+// 	var $first_name = '';
+// 	var $middle_name = '';
+// 	var $phone_1 = '';
+// 	var $phone_2 = '';
+// 	var $fax = '';
+// 	var $address_1 = '';
+// 	var $address_2 = '';
+// 	var $city = '';
 
-	var $zip = '';
-	var $extra_field_1 = '';
-	var $extra_field_2 = '';
-	var $extra_field_3 = '';
-	var $extra_field_4 = '';
-	var $extra_field_5 = '';
+// 	var $zip = '';
+// 	var $extra_field_1 = '';
+// 	var $extra_field_2 = '';
+// 	var $extra_field_3 = '';
+// 	var $extra_field_4 = '';
+// 	var $extra_field_5 = '';
 
 	/**
 	 * @author RickG
 	 * @param $db A database connector object
 	 */
 	function __construct($db) {
+
 		/* Make sure the custom fields are added */
-		self::addUserFields();
 		parent::__construct('#__virtuemart_userinfos', 'virtuemart_userinfo_id', $db);
+		parent::loadFields();
 		$this->setPrimaryKey('virtuemart_userinfo_id');
 		$this->setObligatoryKeys('address_type');
 //		$this->setObligatoryKeys('address_type_name');
@@ -77,26 +78,6 @@ class TableUserinfos extends VmTableData {
 		$this->setLoggable();
 
 		$this->setTableShortCut('ui');
-	}
-
-	/**
-	* Add the user fields to the table to make sure all gets updated
-	*
-	* @author RolandD
-	*/
-	private function addUserFields() {
-		$db = JFactory::getDBO();
-		/* Collect the table names for the product types */
-		$customfields = array();
-		$q = "SHOW COLUMNS FROM ".$db->nameQuote('#__virtuemart_userinfos');
-		$db->setQuery($q);
-		$fields = $db->loadObjectList();
-		if (count($fields) > 0) {
-			foreach ($fields as $key => $field) {
-				$customfields[$field->Field] = $field->Default;
-			}
-			$this->setProperties($customfields);
-		}
 	}
 
 	/**

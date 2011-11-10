@@ -56,6 +56,7 @@ class VirtuemartViewCategory extends JView {
 		if (!class_exists('VirtueMartModelCategory')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
 		$categoryModel = new VirtueMartModelCategory();
 
+
 		if (!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
 		$productModel = new VirtueMartModelProduct();
 		//$categoryModel = $this->getModel('category');
@@ -64,6 +65,10 @@ class VirtuemartViewCategory extends JView {
 		$vendorId = 1;
 
 		$category = $categoryModel->getCategory($categoryId);
+		$perRow = empty($category->products_per_row)? VmConfig::get('products_per_row',3):$category->products_per_row;
+		$categoryModel->setPerRow($perRow);
+		$this->assignRef('perRow', $perRow);
+
 		$search = JRequest::getWord('search') ;
 
 		//No redirect here, category id = 0 means show ALL categories! note by Max Milbers
@@ -135,11 +140,6 @@ class VirtuemartViewCategory extends JView {
 	    $this->assignRef('orderByList', $orderByList);
 		//$sortOrderButton = $productModel->getsortOrderButton();
 		//$this->assignRef('sortOrder', $sortOrderButton);
-
-	    //Is there a better way? - I do not know it...
-	    //Should add a check to the VmConfig::get('product_per_rom') but what....
-	    $virtuemart_limit_box = $productModel->getVirtueMartLimitBox(VmConfig::get('products_per_row'), $pagination->limit);
-	    $this->assignRef('virtuemart_limit_box', $virtuemart_limit_box);
 
 	   if ($category->metadesc) {
 			$document->setDescription( $category->metadesc );

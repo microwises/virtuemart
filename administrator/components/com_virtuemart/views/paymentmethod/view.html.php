@@ -42,9 +42,12 @@ class VirtuemartViewPaymentMethod extends JView {
 		$this->addHelperPath(JPATH_VM_SITE.DS.'helpers');
 		$this->loadHelper('adminui');
 		$this->loadHelper('permissions');
+		$this->loadHelper('shopFunctions');
+
+		$this->addHelperPath(JPATH_VM_PLGUINS);
 		$this->loadHelper('vmplugin');
 		$this->loadHelper('vmpaymentplugin');
-		$this->loadHelper('shopFunctions');
+
 
 		$this->assignRef('perms', Permissions::getInstance());
 

@@ -36,6 +36,7 @@ class VmModel extends JModel {
 	var $_togglesName	= null;
 	private $_withCount = true;
 	var $_noLimit = false;
+	var $_perRow = 5;
 
 	public function __construct($cidName='cid'){
 		parent::__construct();
@@ -228,6 +229,9 @@ class VmModel extends JModel {
 	}
 
 
+	public function setPerRow($perRow){
+		$this->_perRow;
+	}
 
 	/**
 	 * Loads the pagination
@@ -249,10 +253,13 @@ class VmModel extends JModel {
 			}
 			// TODO, this give result when result = 0 >>> if(empty($total)) $total = $this->getTotal();
 
-			jimport('joomla.html.pagination');
+
 			// 			$this->_pagination = new JPagination($total , $this->getState('limitstart'), $this->getState('limit') );
 
-			$this->_pagination = new JPagination($total , $limits[0], $limits[1] );
+
+			$this->_pagination = new VmPagination($total , $limits[0], $limits[1] , $this->_perRow );
+
+
 			// 			vmdebug('created Pagination',$total, $limits[0], $limits[1] );
 		}
 		// 		vmdebug('my pagination',$this->_pagination);
@@ -590,44 +597,73 @@ class VmModel extends JModel {
 
 		$this->_errors = array();
 	}
-	
-/**
-	 * Creates a dropdown box for selecting how many records to show per page.
+
+}
+
+jimport('joomla.html.pagination');
+
+class VmPagination extends JPagination {
+
+	private $_perRow = 5;
+
+	function __construct($total, $limitstart, $limit, $perRow=5){
+		parent::__construct($total, $limitstart, $limit);
+		if($perRow!=1){
+			$this->_perRow = $perRow;
+		}
+	}
+
+	/** Creates a dropdown box for selecting how many records to show per page.
 	 * Modification of Joomla Core libraries/html/pagination.php getLimitBox function
-	 * Adding interationAmount paramter so we can control the values of the list box
-	 * @Author Joe Motacek (Cleanshooter)
-	 * @param iterationAmount - used to modify the amount at which the number increases
-	 * @param limit - must be passed since this function in no longer in the pagination class
+	 * The function uses as sequence a generic function or a sequence configured in the vmconfig
+	 *
+	 * use in a view.html.php $vmModel->setPerRow($perRow); to activate it
+	 *
+	 * @author Joe Motacek (Cleanshooter)
+	 * @author Max Milbers
 	 * @return  string   The HTML for the limit # input box.
 	 * @since   11.1
 	 */
-	public function getVirtueMartLimitBox($iterationAmount=5, $limit=0)
+
+	function getLimitBox()
 	{
 		$app = JFactory::getApplication();
 
-		// Initialise variables.
+		// Initialize variables
 		$limits = array ();
 
-		// Make the option list.
-		for ($i = $iterationAmount; $i <= ((int) $iterationAmount * 6); $i += $iterationAmount) {
-			$limits[] = JHtml::_('select.option', "$i");
-		}
-		$iterationX10 = (int) $iterationAmount * 10;
-		$iterationX20 = (int) $iterationAmount * 20;
-		$limits[] = JHtml::_('select.option', "$iterationX10");
-		$limits[] = JHtml::_('select.option', "$iterationX20");
-		$limits[] = JHtml::_('select.option', '0', JText::_('JALL'));
-		
-		//$selected = $this->_viewall ? 0 : $this->limit;Originall Code
-		$selected = $limit;
+		// Make the option list
+		//for 3 = 3,6,12,24,60,90 rows, 4 rows, 6 rows
+		$sequence = VmConfig::get('pagination_sequence_'.$this->_perRow,0);
+		if(!empty($sequence)){
 
-		// Build the select list.
-		if ($app->isAdmin()) {
-			$html = JHtml::_('select.genericlist',  $limits, $this->prefix . 'limit', 'class="inputbox" size="1" onchange="Joomla.submitform();"', 'value', 'text', $selected);
+			$sequenceArray = explode($sequence,',');
+			foreach($sequenceArray as $items){
+
+			}
+
+		} else {
+			$iterationAmount = 4;
+			for ($i = 1; $i <= $iterationAmount; $i ++) {
+				$limits[] = JHtml::_('select.option', $i*$this->_perRow);
+			}
+
+			$limits[] = JHTML::_('select.option', $this->_perRow * 10);
+			$limits[] = JHTML::_('select.option', $this->_perRow * 20);
 		}
-		else {
-			$html = JHtml::_('select.genericlist',  $limits, $this->prefix . 'limit', 'class="inputbox" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
+
+		$limits[] = JHTML::_('select.option', '0', JText::_('all'));
+
+		$selected = $this->_viewall ? 0 : $this->limit;
+
+		// Build the select list
+		if ($app->isAdmin()) {
+			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="submitform();"', 'value', 'text', $selected);
+		} else {
+			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
 		}
 		return $html;
 	}
+
+
 }

@@ -253,6 +253,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//vmuser:
 			$fields = array('virtuemart_shippingcarrier_id'=>'`virtuemart_shipmentmethod_id` int NOT NULL DEFAULT "0"');
 			$this->alterTable('#__virtuemart_vmusers',$fields);
+			$this->checkAddFieldToTable('#__virtuemart_vmusers','agreed',' tinyint(1) NOT NULL DEFAULT '0'');
 
 			// orders :
 			$fields = array('payment_method_id'=>'`virtuemart_paymentmethod_id` INT(11 ) NOT NULL ',
@@ -595,7 +596,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$dir = opendir($src);
 			$this->createIndexFolder($dst);
-			// 			@mkdir($dst);
 
 			if(is_resource($dir)){
 				while(false !== ( $file = readdir($dir)) ) {
@@ -611,7 +611,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					}
 				}
 				closedir($dir);
-				//if (is_dir($src)) $this->RemoveDir($src, true);
 				if (is_dir($src)) JFolder::delete($src);
 			} else {
 				vmError('Couldnt read dir '.$dir.' source '.$src);

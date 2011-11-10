@@ -163,7 +163,7 @@ $iBrowseCol = 1;
 $iBrowseProduct = 1;
 
 // Calculating Products Per Row
-$BrowseProducts_per_row = (empty($this->category->products_per_row)) ?  VmConfig::get('products_per_row',2) : $this->category->products_per_row;
+$BrowseProducts_per_row = $this->perRow;
 $Browsecellwidth = ' width'.floor ( 100 / $BrowseProducts_per_row );
 
 // Separator
