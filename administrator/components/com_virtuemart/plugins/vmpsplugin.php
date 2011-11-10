@@ -48,6 +48,24 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	/**
+	 * Overwrites the standard function in vmplugin. Extendst the input data by virtuemart_order_id
+	 * Calls the parent to execute the write operation
+	 *
+	 * @author Max Milbers
+	 * @param array $_values
+	 * @param string $_table
+	 */
+	protected function writeData($_values, $_table) {
+		if (!class_exists('VirtueMartModelOrders'))
+		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+		if (!isset($_values['virtuemart_order_id'])) {
+			$_values['virtuemart_order_id'] = VirtueMartModelOrders::getOrderIdByOrderNumber($_values['order_number']);
+		}
+		parent::writeData($_values, $_table);
+	}
+
+
+	/**
 	 * Something went wrong, Send notification to all administrators
 	 * @param string subject of the mail
 	 * @param string message

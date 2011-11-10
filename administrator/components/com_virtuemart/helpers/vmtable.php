@@ -42,6 +42,13 @@ class VmTable extends JTable{
 	protected $_slugName = '';
 	protected $_loggable = false;
 
+	function __construct( $table, $key, &$db )
+	{
+		$this->_tbl		= $table;
+		$this->_tbl_key	= $key;
+		$this->_db		=& $db;
+	}
+
 	function setPrimaryKey($key, $keyForm=0){
 		$error = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_PRIMARY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($key)));
 		$this->setObligatoryKeys('_pkey', $error);
@@ -125,6 +132,24 @@ class VmTable extends JTable{
 	function setTableShortCut($prefix){
 		$this->_tablePreFix = $prefix.'.';
 	}
+
+	/**
+	* Load the fieldlist
+	*/
+	protected function loadFields(&$_db)
+	{
+		$_fieldlist = array();
+		$_q = "SHOW COLUMNS FROM `#__virtuemart_userfields`";
+		$_db->setQuery($_q);
+		$_fields = $_db->loadObjectList();
+		if (count($_fields) > 0) {
+			foreach ($_fields as $key => $_f) {
+				$_fieldlist[$_f->Field] = $_f->Default;
+			}
+			$this->setProperties($_fieldlist);
+		}
+	}
+
 
 	function checkDataContainsTableFields($from, $ignore=array()){
 

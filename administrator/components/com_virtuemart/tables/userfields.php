@@ -83,7 +83,7 @@ class TableUserfields extends VmTable {
 	 */
 	function __construct(&$db)
 	{
-		self::loadFields($db);
+		parent::loadFields($db);
 		parent::__construct('#__virtuemart_userfields', 'virtuemart_userfield_id', $db);
 
 		$this->setUniqueName('name');
@@ -92,23 +92,6 @@ class TableUserfields extends VmTable {
 		$this->setLoggable();
 
 		$this->setOrderable('ordering',false);
-	}
-
-	/**
-	 * Load the fieldlist
-	 */
-	private function loadFields(&$_db)
-	{
-		$_fieldlist = array();
-		$_q = "SHOW COLUMNS FROM `#__virtuemart_userfields`";
-		$_db->setQuery($_q);
-		$_fields = $_db->loadObjectList();
-		if (count($_fields) > 0) {
-			foreach ($_fields as $key => $_f) {
-				$_fieldlist[$_f->Field] = $_f->Default;
-			}
-			$this->setProperties($_fieldlist);
-		}
 	}
 
 	/**

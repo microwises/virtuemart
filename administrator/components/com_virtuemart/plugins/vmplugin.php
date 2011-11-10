@@ -52,6 +52,24 @@ abstract class vmPlugin extends JPlugin {
 
 
 	/**
+	 *
+	 */
+	protected storePluginInternalData($values, $tableName=0, $tableKey = 0){
+
+		if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
+
+		if(empty($tableName)) $tableName = $this->_tablename;
+		$pluginTable = new VmTable($tableName,'id');
+		$pluginTable -> loadFields();
+
+		$pluginTable->setUniqueName($tableKey);
+		$pluginTable->setLoggable();
+
+		$pluginTable->bindChecknStore($values);
+
+	}
+
+	/**
 	 * This method writes all  plugin specific data to the plugin's table
 	 *
 	 * @param array $_values Indexed array in the format 'column_name' => 'value'
@@ -63,11 +81,7 @@ abstract class vmPlugin extends JPlugin {
 			JError::raiseWarning(500, 'writeData got no data to save to ' . $_table);
 			return;
 		}
-		if (!class_exists('VirtueMartModelOrders'))
-		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-		if (!isset($_values['virtuemart_order_id'])) {
-			$_values['virtuemart_order_id'] = VirtueMartModelOrders::getOrderIdByOrderNumber($_values['order_number']);
-		}
+
 		$_cols = array();
 		$_vals = array();
 		foreach ($_values as $_col => $_val) {
