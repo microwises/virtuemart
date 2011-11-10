@@ -94,7 +94,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			$enable = 'enabled';
 			$ext_id = 'extension_id';
 		}
-		$query = ' `#__virtuemart_shipmentmethods`.* ,  `'.$table.'`.`name` as shipment_method_name FROM `#__virtuemart_shipmentmethods` ';
+		$query = ' `#__virtuemart_shipmentmethods`.* ,  `'.$table.'`.`name` as shipmentmethod_name FROM `#__virtuemart_shipmentmethods` ';
 		$query .= 'JOIN `'.$table.'`   ON  `'.$table.'`.`'.$ext_id.'` = `#__virtuemart_shipmentmethods`.`shipment_jplugin_id` ';
 
 		$whereString = '';
@@ -145,6 +145,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 		} else {
 			$data['virtuemart_vendor_id'] = (int) $data['virtuemart_vendor_id'];
 		}
+
 		// missing string FIX, Bad way ?
 		if (VmConfig::isJ15()) {
 			$tb = '#__plugins';

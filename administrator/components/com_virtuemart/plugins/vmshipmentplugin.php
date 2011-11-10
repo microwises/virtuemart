@@ -19,9 +19,6 @@
 // Load the helper functions that are needed by all plugins
 if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
-// Get the plugin library
-jimport('joomla.plugin.plugin');
-
 /**
  * Abstract class for shipment plugins.
  * This class provides some standard and abstract methods that can or must be reimplemented.
@@ -94,7 +91,7 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 	}
 
 	/**
-	 *  @author Valerie Isaksen
+	 * @author Valerie Isaksen
 	 * @param int $shipment_id The shipment method ID
 
 	 * @return shipment table
@@ -102,8 +99,8 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 	final protected function getShipment ( $shipment_id) {
 		$db = JFactory::getDBO();
 
-		$q = 'SELECT * FROM #__virtuemart_shipmentmethods
-        		WHERE `virtuemart_shipmentmethod_id`="' . $shipment_id . '" AND `shipment_element` = "'.$this->_name.'"';
+// 		$q = 'SELECT * FROM #__virtuemart_shipmentmethods WHERE `virtuemart_shipmentmethod_id`="' . $shipment_id . '" AND `shipment_element` = "'.$this->_name.'"';
+		$q = 'SELECT * FROM #__virtuemart_shipmentmethods WHERE `virtuemart_shipmentmethod_id`="' . $shipment_id . '" ';
 
 		$db->setQuery($q);
 		return  $db->loadObject();

@@ -21,7 +21,6 @@ require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 if (!class_exists('DbScheme'))
 require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'dbscheme.php');
 
-
 // Get the plugin library
 jimport('joomla.plugin.plugin');
 

@@ -59,7 +59,7 @@ AdminUIHelper::startAdminArea();
 			 */
 			$row->published = 1;
 			$checked = JHTML::_('grid.id', $i, $row->virtuemart_shipmentmethod_id);
-			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=shipment&task=edit&cid[]=' . $row->virtuemart_shipmentmethod_id);
+			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=shipmentmethod&task=edit&cid[]=' . $row->virtuemart_shipmentmethod_id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td width="10">
@@ -75,7 +75,7 @@ AdminUIHelper::startAdminArea();
 					<?php echo $row->shipmentShoppersList; ?>
 				</td>
                                 <td align="left">
-					<?php echo JHTML::_('link', $editlink, JText::_($row->shipment_method_name)); ?>
+					<?php echo JHTML::_('link', $editlink, JText::_($row->shipmentmethod_name)); ?>
 				</td>
 				<td align="left">
 					<?php echo JText::_($row->ordering); ?>
