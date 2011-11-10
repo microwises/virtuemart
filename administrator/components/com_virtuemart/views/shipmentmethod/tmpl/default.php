@@ -29,7 +29,7 @@ AdminUIHelper::startAdminArea();
 		<thead>
 		<tr>
 			<th width="10">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shipmentCarriers); ?>);" />
+				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->shipments); ?>);" />
 			</th>
 			<th>
 				<?php echo JText::_('COM_VIRTUEMART_CARRIER_LIST_NAME_LBL'); ?>
