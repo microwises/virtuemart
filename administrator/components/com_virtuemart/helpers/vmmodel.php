@@ -590,4 +590,44 @@ class VmModel extends JModel {
 
 		$this->_errors = array();
 	}
+	
+/**
+	 * Creates a dropdown box for selecting how many records to show per page.
+	 * Modification of Joomla Core libraries/html/pagination.php getLimitBox function
+	 * Adding interationAmount paramter so we can control the values of the list box
+	 * @Author Joe Motacek (Cleanshooter)
+	 * @param iterationAmount - used to modify the amount at which the number increases
+	 * @param limit - must be passed since this function in no longer in the pagination class
+	 * @return  string   The HTML for the limit # input box.
+	 * @since   11.1
+	 */
+	public function getVirtueMartLimitBox($iterationAmount=5, $limit=0)
+	{
+		$app = JFactory::getApplication();
+
+		// Initialise variables.
+		$limits = array ();
+
+		// Make the option list.
+		for ($i = $iterationAmount; $i <= ((int) $iterationAmount * 6); $i += $iterationAmount) {
+			$limits[] = JHtml::_('select.option', "$i");
+		}
+		$iterationX10 = (int) $iterationAmount * 10;
+		$iterationX20 = (int) $iterationAmount * 20;
+		$limits[] = JHtml::_('select.option', "$iterationX10");
+		$limits[] = JHtml::_('select.option', "$iterationX20");
+		$limits[] = JHtml::_('select.option', '0', JText::_('JALL'));
+		
+		//$selected = $this->_viewall ? 0 : $this->limit;Originall Code
+		$selected = $limit;
+
+		// Build the select list.
+		if ($app->isAdmin()) {
+			$html = JHtml::_('select.genericlist',  $limits, $this->prefix . 'limit', 'class="inputbox" size="1" onchange="Joomla.submitform();"', 'value', 'text', $selected);
+		}
+		else {
+			$html = JHtml::_('select.genericlist',  $limits, $this->prefix . 'limit', 'class="inputbox" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
+		}
+		return $html;
+	}
 }

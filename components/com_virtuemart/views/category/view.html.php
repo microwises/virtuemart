@@ -136,6 +136,10 @@ class VirtuemartViewCategory extends JView {
 		//$sortOrderButton = $productModel->getsortOrderButton();
 		//$this->assignRef('sortOrder', $sortOrderButton);
 
+	    //Is there a better way? - I do not know it...
+	    //Should add a check to the VmConfig::get('product_per_rom') but what....
+	    $virtuemart_limit_box = $productModel->getVirtueMartLimitBox(VmConfig::get('products_per_row'), $pagination->limit);
+	    $this->assignRef('virtuemart_limit_box', $virtuemart_limit_box);
 
 	   if ($category->metadesc) {
 			$document->setDescription( $category->metadesc );
