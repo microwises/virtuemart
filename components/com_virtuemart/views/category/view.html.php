@@ -136,6 +136,10 @@ class VirtuemartViewCategory extends JView {
 	    $pagination = $productModel->getPagination();
 	    $this->assignRef('pagination', $pagination);
 
+	   	if(!class_exists('VmPagination')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+		$vmPagination = new VmPagination($pagination->total, $pagination->limitstart, $pagination->limit, VmConfig::get('products_per_row'));
+		$this->assignRef('vmPagination', $vmPagination);
+	    
 	    $orderByList = $productModel->getOrderByList($categoryId);
 	    $this->assignRef('orderByList', $orderByList);
 		//$sortOrderButton = $productModel->getsortOrderButton();

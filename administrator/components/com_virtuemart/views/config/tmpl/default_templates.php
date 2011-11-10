@@ -128,6 +128,16 @@ defined('_JEXEC') or die('Restricted access');
 		    <input type="text" name="manufacturer_per_row" size="4" class="inputbox" value="<?php echo $this->config->get('manufacturer_per_row') ?>" />
 		</td>
 	    </tr>
+	    <tr>
+		<td class="key">
+		    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PAGINATION_SEQUENCE_EXPLAIN'); ?>">
+		    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PAGINATION_SEQUENCE') ?>
+		    </span>
+		</td>
+		<td>
+		    <input type="text" name="pagination_sequence" class="inputbox" value="<?php echo $this->config->get('pagination_sequence') ?>" />
+		</td>
+	    </tr>
       </table>
       </fieldset>
 	</td>
