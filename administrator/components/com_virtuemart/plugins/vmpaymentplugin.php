@@ -31,20 +31,7 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 
 	protected $payments;
 
-	/**
-	 * Constructor
-	 *
-	 * @param object $subject The object to observe
-	 * @param array  $config  An array that holds the plugin configuration
-	 */
-	function __construct(& $subject, $config) {
 
-		parent::__construct($subject, $config);
-
-		$this->_tablename = '#__virtuemart_order_payment_' . $this->_name;
-		$this->_createTable();
-
-	}
 
 	/**
 	 * Method to create te plugin specific table; must be reimplemented.

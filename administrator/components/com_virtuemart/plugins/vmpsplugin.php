@@ -20,6 +20,13 @@ if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
 
 abstract class vmPSPlugin extends vmPlugin {
 
+	function __construct(& $subject, $config) {
+
+		parent::__construct($subject, $config);
+		$this->psType = substr($this->_type,2);
+		$this->_createTable();
+
+	}
 
 	function getDebug() {
 		return $this->_debug;
@@ -55,13 +62,13 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param array $_values
 	 * @param string $_table
 	 */
-	protected function writeData($_values, $_table) {
+	protected function storePluginInternalData($_values) {
 		if (!class_exists('VirtueMartModelOrders'))
 		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 		if (!isset($_values['virtuemart_order_id'])) {
 			$_values['virtuemart_order_id'] = VirtueMartModelOrders::getOrderIdByOrderNumber($_values['order_number']);
 		}
-		parent::writeData($_values, $_table);
+		parent::storePluginInternalData($_values);
 	}
 
 

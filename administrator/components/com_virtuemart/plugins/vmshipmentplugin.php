@@ -62,15 +62,6 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 
 	protected $shipments;
 
-	function __construct(& $subject, $config) {
-
-		parent::__construct($subject, $config);
-
-		$this->_tablename = '#__virtuemart_order_shipment_' . $this->_name;
-		$this->_createTable();
-
-	}
-
 
 	/**
 	 * getOrderWeight

@@ -48,6 +48,7 @@ abstract class vmPlugin extends JPlugin {
 		$lang->load($filename, JPATH_ADMINISTRATOR);
 		if (!class_exists('JParameter')) require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
 
+		$this->_tablename = '#__virtuemart_'.$this->_type .'_'. $this->_name;
 	}
 
 
@@ -77,69 +78,4 @@ abstract class vmPlugin extends JPlugin {
 
 	}
 
-
-	/**
-	 * This method writes all  plugin specific data to the plugin's table
-	 *
-	 * @param array $_values Indexed array in the format 'column_name' => 'value'
-	 * @param string $_table Table name
-	 * @author Oscar van Eijk
-	 *
-	protected function writeData($_values, $_table) {
-		if (count($_values) == 0) {
-			JError::raiseWarning(500, 'writeData got no data to save to ' . $_table);
-			return;
-		}
-
-		$_cols = array();
-		$_vals = array();
-		foreach ($_values as $_col => $_val) {
-			$_cols[] = "`$_col`";
-			$_vals[] = "'$_val'";
-		}
-		$db = JFactory::getDBO();
-		$_q = 'INSERT INTO `' . $_table . '` ('
-		. implode(',', $_cols)
-		. ') VALUES ('
-		. implode(',', $_vals)
-		. ')';
-		$db->setQuery($_q);
-		if (!$db->query()) {
-			JError::raiseWarning(500, $db->getErrorMsg());
-		}
-	}
-
-	/**
-	 * This method updates all  plugin specific data to the plugin's table
-	 *
-	 * @param array $_values Indexed array in the format 'column_name' => 'value'
-	 * @param string $_table Table name
-	 * @author Valerie Isaksen
-	 *
-	 *
-	protected function updateData($values, $table, $where_key, $where_value) {
-		if (count($values) == 0) {
-			JError::raiseWarning(500, 'updateData got no data to update to ' . $table);
-			return;
-		}
-		$cols = array();
-		$vals = array();
-		foreach ($values as $col => $val) {
-			$fields[] = "`$col`" . "=" . "'$val'";
-		}
-		$db = JFactory::getDBO();
-		$q = 'UPDATE `' . $table . '` SET ';
-		foreach ($values as $key => $value) {
-			$q .= $db->getEscaped($key) . '="' . $value . '",';
-		}
-		$q = substr($q, 0, strlen($q) - 1);
-		$q .= ' WHERE `' . $where_key . '` =' . $where_value;
-
-
-		$db->setQuery($q);
-		if (!$db->query()) {
-			JError::raiseWarning(500, $db->getErrorMsg());
-		}
-	}
-*/
 }
