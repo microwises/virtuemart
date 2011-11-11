@@ -29,9 +29,9 @@
 	<param name="weight_start" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_START" description="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_START_DESC"/>
 	<param name="weight_stop" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_STOP" description="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_STOP_DESC"/>
 	<param name="weight_unit" type="vmweightunit" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_UNIT" description="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_UNIT_DESC"/>
-	<param name="rate_value" type="text"   label="VMSHIPMENT_WEIGHT_COUNTRIES_RATE_VALUE" description="VMSHIPMENT_WEIGHT_COUNTRIES_RATE_VALUE_DESC" />
+	<param name="cost" type="text"   label="VMSHIPMENT_WEIGHT_COUNTRIES_COST" description="VMSHIPMENT_WEIGHT_COUNTRIES_COST_DESC" />
 	<param name="package_fee" type="text"   label="VMSHIPMENT_WEIGHT_COUNTRIES_PACKAGE_FEE" description="VMSHIPMENT_WEIGHT_COUNTRIES_PACKAGE_FEE_DESC" />
-	<param name="shipment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPMENT_WEIGHT_COUNTRIES_TAX" description="VMSHIPMENT_WEIGHT_COUNTRIES_TAX_DESC" />
+	<param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPMENT_WEIGHT_COUNTRIES_TAX" description="VMSHIPMENT_WEIGHT_COUNTRIES_TAX_DESC" />
 	<param name="free_shipment" type="text"    label="VMSHIPMENT_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT" description="VMSHIPMENT_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT_DESC" />
     </params>
 
@@ -51,9 +51,9 @@
 	<field name="weight_start" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_START" description="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_START_DESC"/>
 	<field name="weight_stop" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_STOP" description="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_STOP_DESC"/>
 	<field name="weight_unit" type="vmweightunit" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_UNIT" description="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_UNIT_DESC"/>
-	<field name="rate_value" type="text"   label="VMSHIPMENT_WEIGHT_COUNTRIES_RATE_VALUE" description="VMSHIPMENT_WEIGHT_COUNTRIES_RATE_VALUE_DESC" />
+	<field name="cost" type="text"   label="VMSHIPMENT_WEIGHT_COUNTRIES_COST" description="VMSHIPMENT_WEIGHT_COUNTRIES_COST_DESC" />
 	<field name="package_fee" type="text"   label="VMSHIPMENT_WEIGHT_COUNTRIES_PACKAGE_FEE" description="VMSHIPMENT_WEIGHT_COUNTRIES_PACKAGE_FEE_DESC" />
-	<field name="shipment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPMENT_WEIGHT_COUNTRIES_TAX" description="VMSHIPMENT_WEIGHT_COUNTRIES_TAX_DESC" />
+	<field name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPMENT_WEIGHT_COUNTRIES_TAX" description="VMSHIPMENT_WEIGHT_COUNTRIES_TAX_DESC" />
 	<field name="free_shipment" type="text"    label="VMSHIPMENT_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT" description="VMSHIPMENT_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT_DESC" />
 
 

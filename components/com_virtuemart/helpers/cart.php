@@ -716,26 +716,9 @@ class VirtueMartCart {
 	 */
 	public function setShipment($shipment_id) {
 
-		if (!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipmentplugin.php');
-		JPluginHelper::importPlugin('vmshipment');
+	    $this->virtuemart_shipmentmethod_id = $shipment_id;
+	    $this->setCartIntoSession();
 
-		$dispatcher = JDispatcher::getInstance();
-		$retValues = $dispatcher->trigger('plgVmDisplayListFE',
-		array('cart' => $this, '_selectedShipment' => $shipment_id));
-		foreach ($retValues as $retVal) {
-			if ($retVal === true) {
-				$this->virtuemart_shipmentmethod_id = $shipment_id;
-				$this->setCartIntoSession();
-				break; // Plugin completed succesful; nothing else to do
-			} elseif ($retVal === false) {
-				// Missing data, ask for it (again)
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL));
-				//	Remove comments if newchecks need to be implemented.
-				//	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
-			}
-		}
-
-		//$this->virtuemart_shipmentmethod_id=$shipment_id;
 	}
 
 	public function setPaymentMethod($virtuemart_paymentmethod_id) {
@@ -824,7 +807,7 @@ class VirtueMartCart {
 			JPluginHelper::importPlugin('vmshipment');
 			//Add a hook here for other shipment methods, checking the data of the choosed plugin
 			$dispatcher = JDispatcher::getInstance();
-			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckData', array('cart' => $this));
+			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckData', array('shipment','cart' => $this));
 
 			foreach ($retValues as $retVal) {
 				if ($retVal === true) {
@@ -845,7 +828,7 @@ class VirtueMartCart {
 			JPluginHelper::importPlugin('vmpayment');
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$dispatcher = JDispatcher::getInstance();
-			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckData', array('cart' => $this));
+			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckData', array('payment','cart' => $this));
 
 			foreach ($retValues as $retVal) {
 				if ($retVal === true) {
@@ -1008,8 +991,7 @@ class VirtueMartCart {
 				if ($returnValue !== null  ) {
 					if ($returnValue == 1 )   {
 						//We delete the old stuff
-						$this->emptyCart();
-						JRequest::setVar('html' , $html);
+
 						 // send the email only if payment has been accepted
 						// update status?
 						if ($new_status) {
@@ -1022,7 +1004,17 @@ class VirtueMartCart {
 						    $orders[$orderID]['comments'] = '';
 						    $modelOrder->updateOrderStatus($orders, $orderID); //
 						}
-						$this->sentOrderConfirmedEmail($order->getOrder($orderID));
+						 $this->sentOrderConfirmedEmail($order->getOrder($orderID));
+							 //We delete the old stuff
+						$this->products = array();
+						$this->_inCheckOut = false;
+						$this->_dataValidated = false;
+						$this->_confirmDone = false;
+						$this->customer_comment = '';
+						$this->couponCode = '';
+						$this->tosAccepted = false;
+						$this->setCartIntoSession();
+						JRequest::setVar('html' , $html);
 					} elseif ($returnValue == 0 )   {
 					    // error while processing the payment
 						$mainframe = JFactory::getApplication();
@@ -1227,7 +1219,7 @@ class VirtueMartCart {
 		JPluginHelper::importPlugin('vmshipment');
 		if (VmConfig::get('automatic_shipment',1) ) {
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelected', array('cart' => $this,$cart_prices));
+			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelected', array('shipment','cart' => $this,$cart_prices));
 			foreach ($returnValues as $returnValue) {
 				if ((int) $returnValue ) {
 					$nbShipment ++;
@@ -1265,7 +1257,7 @@ class VirtueMartCart {
 		JPluginHelper::importPlugin('vmpayment');
 		if (VmConfig::get('automatic_payment',1) ) {
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelected', array('cart' => $this, $cart_prices));
+			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelected', array('payment','cart' => $this, $cart_prices));
 			foreach ($returnValues as $returnValue) {
 				if ( is_int($returnValue )) {
 					$nbPayment ++;

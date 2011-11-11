@@ -40,7 +40,7 @@
 	<field name="min_amount" type="text"  label="VMPAYMENT_STANDARD_MIN_AMOUNT" description="VMPAYMENT_STANDARD_MIN_AMOUNT_EXPLAIN" />
 	<field name="max_amount" type="text"  label="VMPAYMENT_STANDARD_MAX_AMOUNT" description="VMPAYMENT_STANDARD_MAX_AMOUNT_EXPLAIN" />
 	<field name="cost" type="text"  label="VMPAYMENT_STANDARD_FEE" description="VMPAYMENT_STANDARD_FEE_EXPLAIN" />
-	<field name="payment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_STANDARD_TAX" description="VMPAYMENT_STANDARD_TAX_EXPLAIN" />
+	<field name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_STANDARD_TAX" description="VMPAYMENT_STANDARD_TAX_EXPLAIN" />
 
     </fieldset>
 

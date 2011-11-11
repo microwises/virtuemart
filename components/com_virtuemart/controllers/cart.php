@@ -269,7 +269,24 @@ class VirtueMartControllerCart extends JController {
 	    //Now set the shipment ID into the cart
 	    $cart = VirtueMartCart::getCart();
 	    if ($cart) {
+		 if (!class_exists('vmShipmentPlugin'))	require(JPATH_VM_PLUGINS . DS . 'vmshipmentplugin.php');
+		JPluginHelper::importPlugin('vmshipment');
 		$cart->setShipment($virtuemart_shipmentmethod_id);
+		//Add a hook here for other payment methods, checking the data of the choosed plugin
+		$_dispatcher = JDispatcher::getInstance();
+		$_retValues = $_dispatcher->trigger('plgVmOnSelectCheck', array('shipment','cart' => $cart));
+		$dataValid = true;
+		foreach ($_retValues as $_retVal) {
+		    if ($_retVal === true ) {// Plugin completed succesfull; nothing else to do
+			$cart->setCartIntoSession();
+			break;
+		    } else if ($_retVal === false ) {
+		       $mainframe = JFactory::getApplication();
+		       $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editshipment',$this->useXHTML,$this->useSSL), $_retVal);
+			break;
+		    }
+		}
+
 		if ($cart->getInCheckOut()) {
 		    $mainframe = JFactory::getApplication();
 		    $mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
@@ -317,7 +334,7 @@ class VirtueMartControllerCart extends JController {
 
 	    //Add a hook here for other payment methods, checking the data of the choosed plugin
 	    $_dispatcher = JDispatcher::getInstance();
-	    $_retValues = $_dispatcher->trigger('plgVmOnSelectCheck', array('cart' => $cart));
+	    $_retValues = $_dispatcher->trigger('plgVmOnSelectCheck', array('payment','cart' => $cart));
 	    $dataValid = true;
 	    foreach ($_retValues as $_retVal) {
 		if ($_retVal === true ) {// Plugin completed succesfull; nothing else to do

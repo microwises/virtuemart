@@ -391,10 +391,7 @@ class VirtueMartModelOrders extends VmModel {
 				if( ($order_status_code == "P" || $order_status_code == "C") && $order['order_status'] == "S") {
 					JPluginHelper::importPlugin('vmpayment');
 					$_dispatcher = JDispatcher::getInstance();
-					$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrder',array(
-					$virtuemart_order_id
-					)
-					);
+					$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrder',array('payment',$virtuemart_order_id));
 					foreach ($_returnValues as $_returnValue) {
 						if ($_returnValue === true) {
 							break; // Plugin was successfull
@@ -682,11 +679,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreData',array(
-		$order_number
-		,$cart
-		,$prices
-		));
+		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreData',array('payment',$order_number,$cart,$prices));
 
 		foreach ($returnValues as $returnValue) {
 			if ($returnValue !== null) {
@@ -768,11 +761,7 @@ class VirtueMartModelOrders extends VmModel {
 	{
 		JPluginHelper::importPlugin('vmshipment');
 		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreData',array(
-		$orderID
-		,$cart
-		,$prices
-		));
+		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreData',array('shipment',$orderID,$cart,$prices));
 
 
 	}
@@ -1056,14 +1045,20 @@ class VirtueMartModelOrders extends VmModel {
 		if(!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmshipmentplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
 		$_dispatcher = JDispatcher::getInstance();
-		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLine',array($data));
+		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLine',array('shipment',$data));
 		foreach ($_returnValues as $_retVal) {
 			if ($_retVal === false) {
 				// Stop as soon as the first active plugin returned a failure status
 				return;
 			}
 		}
-
+$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLine',array('shipment',$data));
+		foreach ($_returnValues as $_retVal) {
+			if ($_retVal === false) {
+				// Stop as soon as the first active plugin returned a failure status
+				return;
+			}
+		}
 		return $table->bindChecknStore($data);
 
 		//		return true;

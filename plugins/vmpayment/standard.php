@@ -80,8 +80,9 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
      *
      * @author Valérie Isaksen
      */
-    function plgVmConfirmedOrderRenderPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status) {
-	if (!($payment = $this->getPluginMethod($orderData->virtuemart_paymentmethod_id))) {
+    function plgVmConfirmedOrderRenderPaymentForm($order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status) {
+
+	if (!($payment = $this->getPluginMethod($cart->virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
 	$params = new JParameter($payment->payment_params);
@@ -100,7 +101,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 
 	// END printing out HTML Form code (Payment Extra Info)
 
-	$this->_virtuemart_paymentmethod_id = $orderData->virtuemart_paymentmethod_id;
+	$this->_virtuemart_paymentmethod_id = $cart->virtuemart_paymentmethod_id;
 	$dbValues['payment_name'] = parent::renderPluginName($payment,$params);
 	$dbValues['order_number'] = $order_number;
 	$dbValues['virtuemart_paymentmethod_id'] = $this->_virtuemart_paymentmethod_id;
@@ -113,7 +114,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 	}
 
 	$html .= $this->getHtmlRow('STANDARD_ORDER_NUMBER', $order_number);
-	$html .= $this->getHtmlRow('STANDARD_AMOUNT', $orderData->prices['billTotal']);
+	$html .= $this->getHtmlRow('STANDARD_AMOUNT', $cart->prices['billTotal']);
 
 
 	$html .= '</table>' . "\n";
@@ -125,8 +126,8 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
      * Display stored payment data for an order
      * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderBE()
      */
-    function plgVmOnShowOrderBE($virtuemart_order_id, $virtuemart_payment_id) {
-	if (!$this->selectedThis($virtuemart_payment_id)) {
+    function plgVmOnShowOrderBE($psType, $virtuemart_order_id, $virtuemart_payment_id) {
+	if (!$this->selectedThis($virtuemart_payment_id, $psType)) {
 	    return null; // Another method was selected, do nothing
 	}
 	$db = JFactory::getDBO();
@@ -145,6 +146,9 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 	$html .= '</table>' . "\n";
 	return $html;
     }
+function getCosts($params, $cart_prices) {
+		return $params->get('cost', 0);
+	}
 
 }
 

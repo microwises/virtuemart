@@ -109,7 +109,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @author Valérie Isaksen
 	 * @author Max Milbers
 	 */
-	public function plgVmOnShowOrderFE($virtuemart_order_id) {
+	public function plgVmOnShowOrderFE($psType, $virtuemart_order_id) {
 
 		$db = JFactory::getDBO();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
@@ -120,7 +120,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 			return '';
 		}
 		$idName = $this->_idName;
-		if (!($this->selectedThis($this->_name, $pluginInfo->$idName))) {
+		if (!($this->selectedThis($this->_name, $psType))) {
 			return null;
 		}
 		return $pluginInfo->$idName;
@@ -138,7 +138,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @return mixed Null when this method was not selected, otherwise true
 	 * @author Valerie Isaksen
 	 */
-	function plgVmOnConfirmedOrderStoreData($orderID, VirtueMartCart $cart, $priceData) {
+	function plgVmOnConfirmedOrderStoreData($psType, $orderID, VirtueMartCart $cart, $priceData) {
 
 		if (!($shipment = $this->getPluginMethod($cart->virtuemart_shipmentmethod_id))) {
 			return null; // Another method was selected, do nothing
@@ -178,7 +178,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @return mixed Null for shipments that aren't active, text (HTML) otherwise
 	 * @author Valerie Isaksen
 	 */
-	public function plgVmOnShowOrderBE($virtuemart_order_id, $virtuemart_shipmentmethod_id) {
+	public function plgVmOnShowOrderBE($psType, $virtuemart_order_id, $virtuemart_shipmentmethod_id) {
 		if (!($this->selectedThis($this->_name, $virtuemart_shipmentmethod_id))) {
 			return null;
 		}
@@ -221,7 +221,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		if ($free_shipment && $cart_prices['salesPrice'] >= $free_shipment) {
 			return 0;
 		} else {
-			return $params->get('rate_value', 0) + $params->get('package_fee', 0);
+			return $params->get('cost', 0) + $params->get('package_fee', 0);
 		}
 	}
 

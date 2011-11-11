@@ -793,8 +793,7 @@ class calculationHelper {
 			if (!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipmentplugin.php');
 			JPluginHelper::importPlugin('vmshipment');
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnSelectedCalculatePrice',
-			array( $cart, &$this->_cartPrices, &$this->_cartData['shipmentName']  ));
+			$returnValues = $dispatcher->trigger('plgVmOnSelectedCalculatePrice',array('shipment', $cart, &$this->_cartPrices, &$this->_cartData['shipmentName']  ));
 
 			/*
 			* Plugin return true if shipment rate is still valid
@@ -851,8 +850,7 @@ class calculationHelper {
 			if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnSelectedCalculatePrice',
-					array($cart, &$this->_cartPrices, &$this->_cartData['paymentName']  ));
+			$returnValues = $dispatcher->trigger('plgVmOnSelectedCalculatePrice',array('payment', $cart, &$this->_cartPrices, &$this->_cartData['paymentName']  ));
 
 
 			/*

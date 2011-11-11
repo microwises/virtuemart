@@ -51,6 +51,31 @@ abstract class vmPlugin extends JPlugin {
 		$this->_tablename = '#__virtuemart_'.$this->_type .'_'. $this->_name;
 	}
 
+/**
+	 * This method checks if the selected method matches the current plugin
+	 * @param int $id The method ID
+	 * @param pssType : shipment or payment
+	 * @author Oscar van Eijk
+	 * @return True if the calling plugin has the given method ID, and psType
+	 *
+	 */
+	final protected function selectedThis($id,$psType) {
+		$db = JFactory::getDBO();
+
+		if (VmConfig::isJ15()) {
+			$q = 'SELECT COUNT(*) AS c FROM #__virtuemart_'.$psType.'methods AS vm,
+			#__plugins AS j WHERE vm.virtuemart_'.$psType.'method_id = "'.$id.'"
+			AND   vm.'.$psType.'_jplugin_id = j.id
+			AND   j.element = "'.$this->_name.'"';
+		} else {
+			$q = 'SELECT COUNT(*) AS c FROM #__virtuemart_'.$psType.'methods AS vm
+			, #__extensions AS j WHERE j.`folder` = "'.$this->_type.'" AND vm.virtuemart_'.$psType.'method_id = "'.$id.'"
+				AND   vm.'.$psType.'_jplugin_id = j.extension_id AND   j.element = "'.$this->_name.'"';
+		}
+
+		$db->setQuery($q);
+		return $db->loadResult(); // TODO Error check
+	}
 
 	/**
 	 * This stores the data of the plugin, attention NOT the configuration of the pluginmethod

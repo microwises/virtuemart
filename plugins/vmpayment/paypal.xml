@@ -62,7 +62,7 @@
 	<param name="min_amount" type="text"  label="VMPAYMENT_PAYPAL_MIN_AMOUNT" description="VMPAYMENT_PAYPAL_MIN_AMOUNT_EXPLAIN" />
 	<param name="max_amount" type="text"  label="VMPAYMENT_PAYPAL_MAX_AMOUNT" description="VMPAYMENT_PAYPAL_MAX_AMOUNT_EXPLAIN" />
 	<param name="cost" type="text"  label="VMPAYMENT_PAYPAL_FEE" description="VMPAYMENT_PAYPAL_FEE_EXPLAIN" />
-	<param name="payment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_PAYPAL_TAX" description="VMPAYMENT_PAYPAL_TAX_EXPLAIN" />
+	<param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_PAYPAL_TAX" description="VMPAYMENT_PAYPAL_TAX_EXPLAIN" />
     </params>
 
     <fieldset addpath="/administrator/components/com_virtuemart/elements">

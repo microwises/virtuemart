@@ -144,7 +144,7 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	 * @param false if it should not be changed, otherwise new staus
 	 * @return returns 1 if the Cart should be deleted, and order sent
 	 */
-	abstract function plgVmConfirmedOrderRenderPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status);
+	abstract function plgVmConfirmedOrderRenderPaymentForm($order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status);
 
 
 // 	/**

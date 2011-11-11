@@ -175,10 +175,7 @@ class VirtueMartControllerPaymentresponse extends JController {
 	JPluginHelper::importPlugin('vmpayment');
 
 	$dispatcher = JDispatcher::getInstance();
-	$returnValues = $dispatcher->trigger('plgVmOnNotification', array(
-	    'return_context' => &$return_context,
-	    'virtuemart_order_id' => &$virtuemart_order_id,
-	    'new_status' => &$new_status));
+	$returnValues = $dispatcher->trigger('plgVmOnNotification', array('payment',  'return_context' => &$return_context, 'virtuemart_order_id' => &$virtuemart_order_id, 'new_status' => &$new_status));
 	if ($debug) {
 	    $file = JPATH_ROOT . "/logs/notification.log";
 	    $date = JFactory::getDate();
