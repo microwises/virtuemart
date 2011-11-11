@@ -650,7 +650,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$cart_prices[$this->_psType . 'Value'] = $value;
 
 		$taxrules = array();
-		if (!empty($payment_tax_id)) {
+		if (!empty($tax_id)) {
 			$db = JFactory::getDBO();
 			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $tax_id . '" ';
 			$db->setQuery($q);
