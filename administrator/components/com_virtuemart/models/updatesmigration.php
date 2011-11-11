@@ -203,7 +203,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	//$fields['virtuemart_media_id'] =  1;
 	$fields['vendor_currency'] =  47;
 	$fields['vendor_accepted_currencies'] = '52,26,47,144';
-	$fields['vendor_terms_of_service'] =  "<h5>You haven't configured any terms of service yet. Click <a href=administrator/index.php?option=com_virtuemart&view=user&task=editshop>here</a> to change this text.</h5>";
+	$fields['vendor_terms_of_service'] =  '<h5>You haven&#39;t configured any terms of service yet. Click <a href="'.JURI::base(true).'/index.php?option=com_virtuemart&view=user&task=editshop">here</a> to change this text.</h5>';
 	$fields['vendor_url'] = JURI::root();
 	$fields['vendor_name'] =  'Washupito';
 	$fields['perms']='admin';
