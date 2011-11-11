@@ -781,18 +781,18 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @return True if the calling plugin has the given payment ID
 	 *
 	 */
-	final protected function selectedThis($id) {
+	final protected function selectedThis($id,$psType) {
 		$db = JFactory::getDBO();
 
 		if (VmConfig::isJ15()) {
-			$q = 'SELECT COUNT(*) AS c FROM #__virtuemart_'.$this->_psType.'methods AS vm,
-			#__plugins AS j WHERE vm.virtuemart_'.$this->_psType.'method_id = "'.$id.'"
-			AND   vm.'.$this->_psType.'_jplugin_id = j.id
+			$q = 'SELECT COUNT(*) AS c FROM #__virtuemart_'.$psType.'methods AS vm,
+			#__plugins AS j WHERE vm.virtuemart_'.$psType.'method_id = "'.$id.'"
+			AND   vm.'.$psType.'_jplugin_id = j.id
 			AND   j.element = "'.$this->_name.'"';
 		} else {
-			$q = 'SELECT COUNT(*) AS c FROM #__virtuemart_'.$this->_psType.'methods AS vm
-			, #__extensions AS j WHERE j.`folder` = "'.$this->_type.'" AND vm.virtuemart_'.$this->_psType.'method_id = "'.$id.'"
-				AND   vm.'.$this->_psType.'_jplugin_id = j.extension_id AND   j.element = "'.$this->_name.'"';
+			$q = 'SELECT COUNT(*) AS c FROM #__virtuemart_'.$psType.'methods AS vm
+			, #__extensions AS j WHERE j.`folder` = "'.$this->_type.'" AND vm.virtuemart_'.$psType.'method_id = "'.$id.'"
+				AND   vm.'.$psType.'_jplugin_id = j.extension_id AND   j.element = "'.$this->_name.'"';
 		}
 
 		$db->setQuery($q);
