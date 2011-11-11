@@ -101,7 +101,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 	// END printing out HTML Form code (Payment Extra Info)
 
 	$this->_virtuemart_paymentmethod_id = $orderData->virtuemart_paymentmethod_id;
-	$dbValues['payment_name'] = parent::renderPluginName($payment);
+	$dbValues['payment_name'] = parent::renderPluginName($payment,$params);
 	$dbValues['order_number'] = $order_number;
 	$dbValues['virtuemart_paymentmethod_id'] = $this->_virtuemart_paymentmethod_id;
 	$this->storePluginInternalData($dbValues);

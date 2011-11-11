@@ -1218,7 +1218,7 @@ class VirtueMartCart {
 	*
 	* @author Valérie Isaksen
 	*/
-	function CheckAutomaticSelectedShipment() {
+	function CheckAutomaticSelectedShipment($cart_prices) {
 
 		$nbShipment = 0;
 		$virtuemart_shipmentmethod_id=0;
@@ -1227,7 +1227,7 @@ class VirtueMartCart {
 		JPluginHelper::importPlugin('vmshipment');
 		if (VmConfig::get('automatic_shipment',1) ) {
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelected', array('cart' => $this));
+			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelected', array('cart' => $this,$cart_prices));
 			foreach ($returnValues as $returnValue) {
 				if ((int) $returnValue ) {
 					$nbShipment ++;

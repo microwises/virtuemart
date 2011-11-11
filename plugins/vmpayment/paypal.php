@@ -280,15 +280,15 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			return null; // Another method was selected, do nothing
 		}
 		$params = new JParameter($payment->payment_params);
-		$paypal_data = JRequest::get('post');
-		$order_number = $paypal_data['invoice'];
-		$return_context = $paypal_data['custom'];
+		$payment_data = JRequest::get('post');
+		$order_number = $payment_data['invoice'];
+		$return_context = $payment_data['custom'];
 		if (!class_exists('VirtueMartModelOrders'))
 		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
 		$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
-		$payment_name = $this->renderPluginName($payment);
-		$html = $this->_getPaymentResponseHtml($paypal_data, $payment_name);
+		$payment_name = $this->renderPluginName($payment,$params);
+		$html = $this->_getPaymentResponseHtml($payment_data, $payment_name);
 
 		return true;
 	}

@@ -140,7 +140,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 */
 	function plgVmOnConfirmedOrderStoreData($orderID, VirtueMartCart $cart, $priceData) {
 
-		if (!($shipment = $this->getShipment($cart->virtuemart_shipmentmethod_id))) {
+		if (!($shipment = $this->getPluginMethod($cart->virtuemart_shipmentmethod_id))) {
 			return null; // Another method was selected, do nothing
 		}
 		if (!class_exists('JParameter'))
@@ -154,7 +154,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$values['order_number'] = VirtueMartModelOrders::getOrderNumber($orderID);
 		$values['virtuemart_order_id'] = $orderID;
 		$values['shipment_id'] = $cart->virtuemart_shipmentmethod_id;
-		$values['shipment_name'] = parent::renderPluginName($shipment);
+		$values['shipment_name'] = parent::renderPluginName($shipment,$params);
 		$values['order_weight'] = $this->getOrderWeight($cart, $params->get('weight_unit'));
 		$values['shipment_weight_unit'] = $params->get('weight_unit');
 		$values['shipment_cost'] = $params->get('rate_value');
@@ -178,7 +178,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @return mixed Null for shipments that aren't active, text (HTML) otherwise
 	 * @author Valerie Isaksen
 	 */
-	public function plgVmOnShowOrderBE($virtuemart_order_id, $vendorId, $virtuemart_shipmentmethod_id) {
+	public function plgVmOnShowOrderBE($virtuemart_order_id, $virtuemart_shipmentmethod_id) {
 		if (!($this->selectedThis($this->_name, $virtuemart_shipmentmethod_id))) {
 			return null;
 		}
@@ -225,10 +225,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		}
 	}
 
-	protected function checkConditions($cart, $shipment) {
+	protected function checkConditions($cart, $shipment, $cart_prices) {
 
 		$params = new JParameter($shipment->shipment_params);
-		$orderWeight = $this->getOrderWeight($cart, $params->get('weight_unit'));
+		$orderWeight = parent::getOrderWeight($cart, $params->get('weight_unit'));
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
 		$nbShipment = 0;

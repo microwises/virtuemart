@@ -269,9 +269,10 @@ class VirtueMartViewCart extends JView {
 
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
-		$paymentplugins_payments = $dispatcher->trigger('plgVmOnSelectPayment', array('cart' => $this->cart, 'checked' => $selectedPayment));
+		$paymentplugins_payments = $dispatcher->trigger('plgVmDisplayListFE', array('cart' => $this->cart, 'checked' => $selectedPayment));
 		// if no payment defined
 
+		$found_payment_method = false;
 		foreach ($paymentplugins_payments as $paymentplugin_payments) {
 			if (is_array($paymentplugin_payments)) {
 				foreach ($paymentplugin_payments as $paymentplugin_payment) {

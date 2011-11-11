@@ -168,6 +168,9 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 // 		return $db->loadResult();
 // 	}
 
+	function getCosts($params, $cart_prices) {
+		return 0;
+	}
 
 	/**
 	 * Check if the payment conditions are fulfilled for this payment method
@@ -179,9 +182,12 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	*
 	*/
 
-	function checkConditions($cart, $payment, $cart_prices) {
+	protected function checkConditions($cart, $payment, $cart_prices) {
 
 		$params = new JParameter($payment->payment_params);
+
+
+// 		if(empty($cart_prices['salesPrice']))
 		$amount = $cart_prices['salesPrice'];
 		$amount_cond = ($amount >= $params->get('min_amount', 0) AND $amount <= $params->get('max_amount', 0)
 		OR
@@ -189,15 +195,5 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 
 		return $amount_cond;
 	}
-
-	/*
-	 * @deprecated
-	*/
-	function checkPaymentIsValid(VirtueMartCart $cart, array $cart_prices) {
-		$payment = $this->getPluginMethod($cart->virtuemart_paymentmethod_id);
-		return $this->checkConditions($cart, $payment, $cart_prices);
-	}
-
-
 
 }

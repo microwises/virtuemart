@@ -765,7 +765,7 @@ class calculationHelper {
 			$this->_cartPrices['salesPriceShipment'] = 0;
 			// check if there is only one possible shipment method
 
-			$automaticSelectedShipment =   $cart->CheckAutomaticSelectedShipment( );
+			$automaticSelectedShipment =   $cart->CheckAutomaticSelectedShipment($this->_cartPrices);
 			if ($automaticSelectedShipment) $ship_id=$cart->virtuemart_shipmentmethod_id;
 			if (empty($ship_id)) return;
 
@@ -774,9 +774,8 @@ class calculationHelper {
 			JPluginHelper::importPlugin('vmshipment');
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnSelectedCalculatePrice',
-			array('cart' => $cart,
-			    'cart_prices' => &$this->_cartPrices,
-			    'shipment_name' =>&$this->_cartData['shipmentName']  ));
+			array( $cart, &$this->_cartPrices, &$this->_cartData['shipmentName']  ));
+
 			/*
 			* Plugin return true if shipment rate is still valid
 			* false if not any more
@@ -833,9 +832,7 @@ class calculationHelper {
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnSelectedCalculatePrice',
-					array($cart,
-					    &$this->_cartPrices,
-					    &$this->_cartData['paymentName']  ));
+					array($cart, &$this->_cartPrices, &$this->_cartData['paymentName']  ));
 
 
 			/*
