@@ -29,10 +29,10 @@ AdminUIHelper::startAdminArea();
 		<table class="adminlist" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
-			<th>
+			<th width="2">
 				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
 			</th>
-			<th width="10">
+			<th width="2">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->payms); ?>);" />
 			</th>
 			<th width="60">
@@ -72,10 +72,10 @@ AdminUIHelper::startAdminArea();
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=paymentmethod&task=edit&cid[]=' . $row->virtuemart_paymentmethod_id);
 			?>
 			<tr class="<?php echo "row".$k; ?>">
-				<td width="10" align="right">
+				<td align="center">
 					<?php echo $row->virtuemart_paymentmethod_id; ?>
 				</td>
-				<td width="10">
+				<td align="center" >
 					<?php echo $checked; ?>
 				</td>
 				<td align="left">

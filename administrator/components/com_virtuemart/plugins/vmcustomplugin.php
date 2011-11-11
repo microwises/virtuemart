@@ -67,9 +67,9 @@ abstract class vmCustomPlugin extends JPlugin {
      */
     protected $customs;
 
-	function __construct(& $subject, $config) {
+	function __construct() {
 
-		parent::__construct($subject, $config);
+		parent::__construct('vmcustom', array());
 
 		$this->_tablename = '#__virtuemart_product_custom_' . $this->_name;
 		$this->_createTable();

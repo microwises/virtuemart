@@ -44,7 +44,7 @@ class VirtuemartViewPaymentMethod extends JView {
 		$this->loadHelper('permissions');
 		$this->loadHelper('shopFunctions');
 
-		$this->addHelperPath(JPATH_VM_PLGUINS);
+		$this->addHelperPath(JPATH_VM_PLUGINS);
 		$this->loadHelper('vmplugin');
 		$this->loadHelper('vmpaymentplugin');
 
@@ -188,7 +188,6 @@ class VirtuemartViewPaymentMethod extends JView {
 			$app -> enqueueMessage(JText::_('COM_VIRTUEMART_NO_PAYMENT_PLUGINS_INSTALLED'));
 		}
 		$listHTML='<select id="payment_jplugin_id" name="payment_jplugin_id">';
-
 		if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 		foreach($result as $paym){
 			$params = new JParameter($paym['params']);
