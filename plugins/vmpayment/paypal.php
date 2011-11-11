@@ -143,17 +143,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		$scheme->reset();
 	}
 
-	/**
-	 * Reimplementation of vmPaymentPlugin::plgVmOnCheckoutCheckPaymentData()
-	 * 	Here have to give all value for the BANK
-	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnConfirmedOrderStorePaymentData()
-	 * @author Oscar van Eijk
-	 */
-	function plgVmOnConfirmedOrderStorePaymentData($virtuemart_order_id, VirtueMartCart $cart, $priceData) {
-		return null;
-	}
-
-	function plgVmOnConfirmedOrderGetPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status) {
+	function plgVmConfirmedOrderRenderPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status) {
 		if (!($payment = $this->getPluginMethod($orderData->virtuemart_paymentmethod_id))) {
 			return null; // Another method was selected, do nothing
 		}
@@ -161,7 +151,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		$params = new JParameter($payment->payment_params);
 
 		$this->_debug = $params->get('debug');
-		$this->logInfo('plgVmOnConfirmedOrderGetPaymentForm order number: ' . $order_number, 'message');
+		$this->logInfo('plgVmConfirmedOrderRenderPaymentForm order number: ' . $order_number, 'message');
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_vmpayment_paypal', JPATH_ADMINISTRATOR);
 
@@ -329,7 +319,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	}
 
 	/*
-	 *   plgVmOnPaymentNotification() - This event is fired by Offline Payment. It can be used to validate the payment data as entered by the user.
+	 *   plgVmOnNotification() - This event is fired by Offline Payment. It can be used to validate the payment data as entered by the user.
 	* Return:
 	*  Plugins that were not selected must return null, otherwise True of False must be returned indicating Success or Failure.
 	* Parameters:
@@ -337,26 +327,26 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	*  @author Valerie Isaksen
 	*/
 
-	function plgVmOnPaymentNotification(&$return_context, &$virtuemart_order_id, &$new_status) {
+	function plgVmOnNotification(&$return_context, &$virtuemart_order_id, &$new_status) {
 
 		if (!class_exists('VirtueMartModelOrders'))
 		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 		$paypal_data = JRequest::get('post');
 		//$this->_debug = true;
-		//$this->logInfo('plgVmOnPaymentNotification: order number: ' . $paypal_data['invoice'], 'message');
+		//$this->logInfo('plgVmOnNotification: order number: ' . $paypal_data['invoice'], 'message');
 		$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($paypal_data['invoice']);
-		$this->logInfo('plgVmOnPaymentNotification: virtuemart_order_id  found ' . $virtuemart_order_id, 'message');
+		$this->logInfo('plgVmOnNotification: virtuemart_order_id  found ' . $virtuemart_order_id, 'message');
 
 		if (!$virtuemart_order_id) {
 			$this->_debug = true; // force debug here
-			$this->logInfo('plgVmOnPaymentNotification: virtuemart_order_id not found ', 'ERROR');
+			$this->logInfo('plgVmOnNotification: virtuemart_order_id not found ', 'ERROR');
 			// send an email to admin, and ofc not update the order status: exit  is fine
 			$this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_PAYPAL_ERROR_EMAIL_SUBJECT'), JText::_('VMPAYMENT_PAYPAL_UNKNOW_ORDER_ID'));
 			exit;
 		}
 
 		$payment = $this->getDataByOrderId($virtuemart_order_id);
-		$paramstring = $this->getVmPaymentParams($vendorId, $payment->virtuemart_paymentmethod_id);
+		$paramstring = $this->getVmParams($vendorId, $payment->virtuemart_paymentmethod_id);
 		$params = new JParameter($paramstring);
 
 		$this->_debug = $params->get('debug');
@@ -433,7 +423,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			}
 		}
 
-		$this->logInfo('plgVmOnPaymentNotification return new_status' . $new_status, 'message');
+		$this->logInfo('plgVmOnNotification return new_status' . $new_status, 'message');
 		return true;
 	}
 

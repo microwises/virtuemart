@@ -18,81 +18,13 @@
  * @version $Id: vmpaymentplugin.php 4601 2011-11-03 15:50:01Z alatak $
  */
 // Load the helper functions that are needed by all plugins
-if (!class_exists('vmPSPlugin'))
-require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
-
-// Get the plugin library
-jimport('joomla.plugin.plugin');
+if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 
 abstract class vmPaymentPlugin extends vmPSPlugin {
 
 	private $_virtuemart_paymentmethod_id = 0;
 	private $_payment_name = '';
-// 	protected $payments;
 
-	/**
-	 * Method to create te plugin specific table; must be reimplemented.
-	 * @example
-	 * 	$_scheme = DbScheme::get_instance();
-	 * 	$_scheme->create_scheme('#__vm_order_payment_'.$this->_name);
-	 * 	$_schemeCols = array(
-	 *  those fields are REQUIRED
-	 * 		 'id' => array (
-	 * 				 'type' => 'int'
-	 * 				,'length' => 11
-	 * 				,'auto_inc' => true
-	 * 				,'null' => false
-	 * 		)
-	 * 		,'virtuemart_order_id' => array (
-	 * 				 'type' => 'int'
-	 * 				,'length' => 11
-	 * 				,'null' => false
-	 * 		)
-	 * 		,'order_number' => array (
-	 * 				 'type' => 'varchar'
-	 * 				,'length' => 32
-	 * 				,'null' => false
-	 * 		)
-	 * 		,'payment_method_id' => array (
-	 * 				 'type' => 'text'
-	 * 				,'null' => false
-	 * 		)
-	 *
-	 * 	);
-	 * 	$_schemeIdx = array(
-	 * 		 'idx_order_payment' => array(
-	 * 				 'columns' => array ('virtuemart_order_id')
-	 * 				,'primary' => false
-	 * 				,'unique' => false
-	 * 				,'type' => null
-	 * 		)
-	 * 	);
-	 * 	$_scheme->define_scheme($_schemeCols);
-	 * 	$_scheme->define_index($_schemeIdx);
-	 * 	if (!$_scheme->scheme()) {
-	 * 		JError::raiseWarning(500, $_scheme->get_db_error());
-	 * 	}
-	 * 	$_scheme->reset();
-	 * @author Oscar van Eijk
-	 *
-	 * (1) add some fields with specific values for the request
-	 *  (2) add some fields for the response: to reuse the predefined functions create those row woth the follong convention:
-	 *  'plugin_name'_'response'_'field_name' example: 'paypal_response_payment_status'
-	 *  (3) create the language key following this convention
-	 *      VMPAYMENT_'plugin_name'_RESPONSE_'field_name'
-	 * 	    example:  VMPAYMENT_PAYPAL_RESPONSE_PAYMENT_STATUS="Payment_status"
-	 *  (4) if the field is actually a code, and there is a string with this code, add a key following this convention
-	 *       VMPAYMENT_PAYPAL_RESPONSE_PAYMENT_STATUS_'code number or letter'
-	 *
-	 * example:
-	 * 'authorizenet_response_response_code' : entry in the table
-	 * VMPAYMENT_AUTHORIZENET_RESPONSE_RESPONSE_CODE="Response Code" the language key
-	 * VMPAYMENT_AUTHORIZENET_RESPONSE_RESPONSE_CODE_1="This transaction has been approved." : the language key decoded
-	 *
-	 * @author Valerie Isaksen
-	 *
-	 */
-	abstract protected function _createTable();
 
 	/**
 	 * This event is fired during the checkout process. It allows the shopper to select
@@ -130,33 +62,8 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 		return $html;
 	}
 
-	/**
-	 * This event is fired after the payment method has been selected. It can be used to store
-	 * additional payment info in the cart.
-	 *
-	 * @author Max Milbers
-	 * @author Valérie isaksen
-	 *
-	 * @param VirtueMartCart $cart: the actual cart
-	 * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
-	 *
 
-	 */
-	public function plgVmOnPaymentSelectCheck(VirtueMartCart $cart) {
-		if (!$this->selectedThis($cart->virtuemart_paymentmethod_id)) {
-			return null; // Another method was selected, do nothing
-		}
-		return true; // this payment was selected , and the data is valid by default
-	}
-
-	/**
-	 * This event is fired during the checkout process. It can be used to validate the
-	 * payment data as entered by the user.
-	 *
-	 * @return boolean True when the data was valid, false otherwise. If the plugin is not activated, it should return null.
-	 * @author Max Milbers
-	 */
-	abstract function plgVmOnCheckoutCheckPaymentData() ;
+	abstract function plgVmOnCheckoutCheckData() ;
 
 
 	/**
@@ -213,33 +120,17 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	 *
 	 * @author Valerie Isaksen
 	 *
-	 */
-	function plgVmOnPaymentNotification(&$return_context, &$virtuemart_order_id, &$new_status) {
+	 *
+	function plgVmOnNotification(&$return_context, &$virtuemart_order_id, &$new_status) {
 		if ($this->_name != $pelement) {
 			return null;
 		}
 		return false;
 	}
 
-	/**
-	 * This event is fired after the payment has been processed; it stores the payment method-
-	 * specific data.
-	 * All plugins *must* reimplement this method.
-	 * NOTE for Plugin developers:
-	 *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
-	 *  If this plugin IS executed, it MUST return the order status code that the order should get. This triggers the stock updates if required
-	 *
-	 * @param int $virtuemart_order_id The order_id being processed
-	 * @param VirtueMartCart $cart Data from the cart
-	 * @param array $priceData Price information for this order
-	 * @return mixed Null when this method was not selected, otherwise the new order status
-	 * @author Max Milbers
-	 * @author Oscar van Eijk
-	 */
-	abstract function plgVmOnConfirmedOrderStorePaymentData($virtuemart_order_id, VirtueMartCart $cart, $priceData);
 
 	/**
-	 * plgVmOnConfirmedOrderGetPaymentForm
+	 * plgVmConfirmedOrderRenderPaymentForm
 	 * This event is fired after the order has been created
 	 * All plugins *must* reimplement this method.
 	 * NOTE for Plugin developers:
@@ -253,70 +144,29 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	 * @param false if it should not be changed, otherwise new staus
 	 * @return returns 1 if the Cart should be deleted, and order sent
 	 */
-	abstract function plgVmOnConfirmedOrderGetPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status);
+	abstract function plgVmConfirmedOrderRenderPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status);
 
 
-	/**
-	 * plgVmOnShipOrderPayment
-	 * This event is fired when the status of an order is changed to Shipped.
-	 * It can be used to confirm or capture payments
-	 *
-	 * Note for plugin developers: you are not required to reimplement this method, but if you
-	 * do so, it MUST start with this code:
-	 *
-	 * 	$_paymethodID = $this->getPluginMethodForOrder($_orderID);
-	 * 	if (!$this->selectedThisMethod($this->_name, $_paymethodID)) {
-	 * 		return null;
-	 * 	}
-	 *
-	 * @author Oscar van Eijk
-	 * @param int $_orderID Order ID
-	 * @return mixed True on success, False on failure, Null if this plugin was not activated
-	 */
-	public function plgVmOnShipOrderPayment($_orderID) {
-		return null;
-	}
+// 	/**
+// 	 * This functions gets the used and configured payment method
+// 	 * pelement of this class determines the used jplugin.
+// 	 * The right payment method is determined by the vendor and the jplugin id.
+// 	 *
+// 	 * This function sets the used payment plugin as variable of this class
+// 	 * @author Max Milbers
+// 	 *
+// 	 */
+// 	protected function getVmParams($vendorId=0, $payment_id=0) {
 
-	/**
-	 * getPluginMethodForOrder
-	 * Get the order payment ID for a given order number
-	 * @access protected
-	 * @author Oscar van Eijk
-	 * @param int $_id The order ID
-	 * @return int The payment method ID, or -1 when not found
-	 */
-	protected function getPluginMethodForOrder($_id) {
-		$_db = JFactory::getDBO();
-		$_q = 'SELECT `virtuemart_paymentmethod_id` FROM #__virtuemart_orders WHERE virtuemart_order_id = ' . (int) $_id;
-		$_db->setQuery($_q);
-		if (!($_r = $_db->loadAssoc())) {
-			return -1;
-		}
-		return $_r['virtuemart_paymentmethod_id'];
-	}
+// 		if (!$vendorId)
+// 		$vendorId = 1;
+// 		$db = JFactory::getDBO();
 
-
-
-	/**
-	 * This functions gets the used and configured payment method
-	 * pelement of this class determines the used jplugin.
-	 * The right payment method is determined by the vendor and the jplugin id.
-	 *
-	 * This function sets the used payment plugin as variable of this class
-	 * @author Max Milbers
-	 *
-	 */
-	protected function getVmPaymentParams($vendorId=0, $payment_id=0) {
-
-		if (!$vendorId)
-		$vendorId = 1;
-		$db = JFactory::getDBO();
-
-		$q = 'SELECT `payment_params` FROM #__virtuemart_paymentmethods
-        		WHERE `virtuemart_paymentmethod_id`="' . $payment_id . '" ';
-		$db->setQuery($q);
-		return $db->loadResult();
-	}
+// 		$q = 'SELECT `payment_params` FROM #__virtuemart_paymentmethods
+//         		WHERE `virtuemart_paymentmethod_id`="' . $payment_id . '" ';
+// 		$db->setQuery($q);
+// 		return $db->loadResult();
+// 	}
 
 
 	/**

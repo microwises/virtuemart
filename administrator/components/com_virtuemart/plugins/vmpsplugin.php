@@ -29,7 +29,88 @@ abstract class vmPSPlugin extends vmPlugin {
 		$this->_createTable();
 	}
 
-	abstract protected function _createTable();
+	/**
+	* Method to create te plugin specific table; must be reimplemented.
+	* @example
+	* 	$_scheme = DbScheme::get_instance();
+	* 	$_scheme->create_scheme('#__vm_order_payment_'.$this->_name);
+	* 	$_schemeCols = array(
+	*  those fields are REQUIRED
+	* 		 'id' => array (
+	* 				 'type' => 'int'
+	* 				,'length' => 11
+	* 				,'auto_inc' => true
+	* 				,'null' => false
+	* 		)
+	* 		,'virtuemart_order_id' => array (
+	* 				 'type' => 'int'
+	* 				,'length' => 11
+	* 				,'null' => false
+	* 		)
+	* 		,'order_number' => array (
+	* 				 'type' => 'varchar'
+	* 				,'length' => 32
+	* 				,'null' => false
+	* 		)
+	* 		,'payment_method_id' => array (
+	* 				 'type' => 'text'
+	* 				,'null' => false
+	* 		)
+	*
+	* 	);
+	* 	$_schemeIdx = array(
+	* 		 'idx_order_payment' => array(
+	* 				 'columns' => array ('virtuemart_order_id')
+	* 				,'primary' => false
+	* 				,'unique' => false
+	* 				,'type' => null
+	* 		)
+	* 	);
+	* 	$_scheme->define_scheme($_schemeCols);
+	* 	$_scheme->define_index($_schemeIdx);
+	* 	if (!$_scheme->scheme()) {
+	* 		JError::raiseWarning(500, $_scheme->get_db_error());
+	* 	}
+	* 	$_scheme->reset();
+	* @author Oscar van Eijk
+	*
+	* (1) add some fields with specific values for the request
+	*  (2) add some fields for the response: to reuse the predefined functions create those row woth the follong convention:
+	*  'plugin_name'_'response'_'field_name' example: 'paypal_response_payment_status'
+	*  (3) create the language key following this convention
+	*      VMPAYMENT_'plugin_name'_RESPONSE_'field_name'
+	* 	    example:  VMPAYMENT_PAYPAL_RESPONSE_PAYMENT_STATUS="Payment_status"
+	*  (4) if the field is actually a code, and there is a string with this code, add a key following this convention
+	*       VMPAYMENT_PAYPAL_RESPONSE_PAYMENT_STATUS_'code number or letter'
+	*
+	* example:
+	* 'authorizenet_response_response_code' : entry in the table
+	* VMPAYMENT_AUTHORIZENET_RESPONSE_RESPONSE_CODE="Response Code" the language key
+	* VMPAYMENT_AUTHORIZENET_RESPONSE_RESPONSE_CODE_1="This transaction has been approved." : the language key decoded
+	*
+	* @author Valerie Isaksen
+	*
+	*/
+	protected function _createTable();
+
+	/**
+	* This event is fired after the payment method has been selected. It can be used to store
+	* additional payment info in the cart.
+	*
+	* @author Max Milbers
+	* @author Valérie isaksen
+	*
+	* @param VirtueMartCart $cart: the actual cart
+	* @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
+	*
+	*/
+	public function plgVmOnSelectCheck(VirtueMartCart $cart) {
+		$idName = $this->_idName;
+		if (!$this->selectedThis($cart->$idName)) {
+			return null; // Another method was selected, do nothing
+		}
+		return true; // this payment was selected , and the data is valid by default
+	}
 
 	/**
 	* plgVmDisplayListFE
@@ -67,11 +148,6 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		return $html;
 
-// 		if (!$this->selectedThis($this->_name, $selected)) {
-// 			return null; // Another  was selected, do nothing
-// 		}
-
-// 		return true;
 	}
 
 	/*
@@ -171,25 +247,16 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	/**
-	* plgVmOnCheckoutCheckData
-	* This event is fired after the method has been selected and the checkout has been pressed;
-	* it assures the correct rate based on the shipto (country, zip) and/or order weight, and optionally writes extra info
-	* to the database (in which case this method must be reimplemented).
-	* Reimplementation is not required, but when done, the following check MUST be made:
-	* 	if (!$this->selectedThis($this->_name, $_cart->shipment_id)) {
-	* 		return null;
-	* 	}
-	*
-	* Returing parent::plgVmOnCheckoutCheckData($_cart) is valid but will produce extra overhead!
-	*
-	* @param object $cart Cart object
-	* @return integer The shipment rate ID
-	* @author Oscar van Eijk
-	*
+	 * This event is fired during the checkout process. It can be used to validate the
+	 * method data as entered by the user.
+	 *
+	 * @return boolean True when the data was valid, false otherwise. If the plugin is not activated, it should return null.
+	 * @author Max Milbers
+	 */
 	public function plgVmOnCheckoutCheckData(VirtueMartCart $cart) {
-		return $this->selectShipmentRate($cart);
+
 	}
-	*/
+
 
 	/**
 	* This method is fired when showing the order details in the backend.
@@ -293,6 +360,27 @@ abstract class vmPSPlugin extends vmPlugin {
 	* @author Oscar van Eijk
 	*/
 	public function plgVmOnShowOrderLineFE($_orderId, $_lineId);
+
+	/**
+	* This event is fired when the payment method notifies you when an event occurs that affects a transaction.
+	* Typically,  the events may also represent authorizations, Fraud Management Filter actions and other actions,
+	* such as refunds, disputes, and chargebacks.
+	*
+	* NOTE for Plugin developers:
+	*  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
+	*
+	* @param $return_context: it was given and sent in the payment form. The notification should return it back.
+	* Used to know which cart should be emptied, in case it is still in the session.
+	* @param int $virtuemart_order_id : payment  order id
+	* @param char $new_status : new_status for this order id.
+	* @return mixed Null when this method was not selected, otherwise the true or false
+	*
+	* @author Valerie Isaksen
+	*
+	*/
+	public function plgVmOnNotification(&$return_context, &$virtuemart_order_id, &$new_status){
+		return null;
+	}
 
 	function getDebug() {
 		return $this->_debug;
@@ -408,17 +496,34 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	/**
-	* This event is fired after the order has been stored; it gets the shipment method-
-	* specific data.
+	* This functions gets the used and configured shipment method
+	* pelement of this class determines the used jplugin.
+	* The right shipment method is determined by the vendor and the jplugin id.
 	*
+	* This function sets the used shipment plugin as variable of this class
+	* @author Max Milbers
+	*
+	*/
+	protected function getVmParams($vendorId=0, $shipment_id=0) {
+
+	if (!$vendorId)
+	$vendorId = 1;
+	$db = JFactory::getDBO();
+
+	$q = 'SELECT   `'.$this->_psType.'_params` FROM #__virtuemart_'.$this->_psType.'methods WHERE `'.$this->_idName.'` = "' . $shipment_id . '" AND `virtuemart_vendor_id` = "' . $vendorId . '" AND `published`="1" ';
+	$db->setQuery($q);
+	return $db->loadResult();
+	}
+
+	/**
+	 *
 	* @param int $order_id The order_id being processed
 	* @param object $cart  the cart
 	* @param array $priceData Price information for this order
 	* @return mixed Null when this method was not selected, otherwise true
-	* @author Valerie Isaksen
+	*
 	*/
-
-	abstract function plgVmOnConfirmedOrderStoreData($orderID, $cart, $priceData);
+ function plgVmOnConfirmedOrderStoreData($orderID, $cart, $priceData);
 
 	/**
 	 * Overwrites the standard function in vmplugin. Extendst the input data by virtuemart_order_id

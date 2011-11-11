@@ -119,7 +119,7 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 	 * if more ID's match, the cheapest will be selected.
 	 */
 /*	protected function selectShipmentRate(VirtueMartCart $cart, $selectedShipment = 0) {
-		$shipment_params = $this->getVmShipmentParams($cart->vendorId, $cart->virtuemart_shipmentmethod_id);
+		$shipment_params = $this->getVmParams($cart->vendorId, $cart->virtuemart_shipmentmethod_id);
 		$params = new JParameter($shipment_params);
 
 		if ($selectedShipment == 0) {
@@ -127,7 +127,7 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 		}
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
-		$shipment_params = $this->getVmShipmentParams($cart->vendorId, $selectedShipment);
+		$shipment_params = $this->getVmParams($cart->vendorId, $selectedShipment);
 
 		$shipment->shipment_name = $params->get('shipment_name');
 		$shipment->shipment_rate_vat_id = $params->get('tax_id');
@@ -144,7 +144,7 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 	 * @author Max Milbers
 	 *
 	 */
-/*	private function getVmShipmentParams($vendorId=0, $shipment_id=0) {
+/*	private function getVmParams($vendorId=0, $shipment_id=0) {
 
 		if (!$vendorId)
 		$vendorId = 1;

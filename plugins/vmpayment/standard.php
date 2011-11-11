@@ -74,23 +74,13 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 	$_scheme->reset();
     }
 
-    /**
-     * Reimplementation of vmPaymentPlugin::plgVmOnCheckoutCheckPaymentData()
-     *
-     * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnConfirmedOrderStorePaymentData()
-     * @author Oscar van Eijk
-     */
-    function plgVmOnConfirmedOrderStorePaymentData($virtuemart_order_id, VirtueMartCart $cart, $priceData) {
-
-	return null;
-    }
 
     /**
-     * Reimplementation of vmPaymentPlugin::plgVmOnConfirmedOrderGetPaymentForm()
+     * Reimplementation of vmPaymentPlugin::plgVmConfirmedOrderRenderPaymentForm()
      *
      * @author Valérie Isaksen
      */
-    function plgVmOnConfirmedOrderGetPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status) {
+    function plgVmConfirmedOrderRenderPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status) {
 	if (!($payment = $this->getPluginMethod($orderData->virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}

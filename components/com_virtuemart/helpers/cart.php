@@ -845,7 +845,7 @@ class VirtueMartCart {
 			JPluginHelper::importPlugin('vmpayment');
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$dispatcher = JDispatcher::getInstance();
-			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckPaymentData', array('cart' => $this));
+			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckData', array('cart' => $this));
 
 			foreach ($retValues as $retVal) {
 				if ($retVal === true) {
@@ -999,7 +999,7 @@ class VirtueMartCart {
 			$html="";
 			$session = JFactory::getSession();
 			$return_context = $session->getId();
-			$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderGetPaymentForm', array($order_number, $cart , $return_context, &$html, &$new_status));
+			$returnValues = $dispatcher->trigger('plgVmConfirmedOrderRenderPaymentForm', array($order_number, $cart , $return_context, &$html, &$new_status));
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
 			// 1 = cart should be emptied, 0 cart should not be emptied

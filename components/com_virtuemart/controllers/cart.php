@@ -317,7 +317,7 @@ class VirtueMartControllerCart extends JController {
 
 	    //Add a hook here for other payment methods, checking the data of the choosed plugin
 	    $_dispatcher = JDispatcher::getInstance();
-	    $_retValues = $_dispatcher->trigger('plgVmOnPaymentSelectCheck', array('cart' => $cart));
+	    $_retValues = $_dispatcher->trigger('plgVmOnSelectCheck', array('cart' => $cart));
 	    $dataValid = true;
 	    foreach ($_retValues as $_retVal) {
 		if ($_retVal === true ) {// Plugin completed succesfull; nothing else to do

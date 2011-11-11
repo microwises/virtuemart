@@ -8,7 +8,7 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  *
  * @version $Id: weight_countries.php 3220 2011-05-12 20:09:14Z Milbo $
  * @package VirtueMart
- * @subpackage Plugins - shippper
+ * @subpackage Plugins - shipment
  * @copyright Copyright (C) 2004-2011 VirtueMart Team - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
@@ -22,8 +22,9 @@ die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
  *
  */
 
+if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 
-class plgVmShipmentWeight_countries extends vmShipmentPlugin {
+class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	/**
 	 * Create the table for this plugin if it does not yet exist.
