@@ -982,7 +982,7 @@ class VirtueMartCart {
 			$html="";
 			$session = JFactory::getSession();
 			$return_context = $session->getId();
-			$returnValues = $dispatcher->trigger('plgVmConfirmedOrderRenderPaymentForm', array($order_number, $cart , $return_context, &$html, &$new_status));
+			$returnValues = $dispatcher->trigger('plgVmConfirmedOrderRenderForm', array('payment',$order_number, $cart , $return_context, &$html, &$new_status));
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
 			// 1 = cart should be emptied, 0 cart should not be emptied

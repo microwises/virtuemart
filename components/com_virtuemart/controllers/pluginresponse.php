@@ -108,7 +108,7 @@ class VirtueMartControllerPaymentresponse extends JController {
      * @author Valerie Isaksen
      *
      */
-    function PaymentUserCancel() {
+    function UserCancel() {
 
 	if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpaymentplugin.php');
 	if (!class_exists('VirtueMartCart'))
@@ -122,8 +122,7 @@ class VirtueMartControllerPaymentresponse extends JController {
 	 * */
 
 	$dispatcher = JDispatcher::getInstance();
-	$returnValues = $dispatcher->trigger('plgVmOnPaymentUserCancel', array(
-	    'virtuemart_order_id' => &$virtuemart_order_id));
+	$returnValues = $dispatcher->trigger('plgVmOnPaymentUserCancel', array('payment','virtuemart_order_id' => &$virtuemart_order_id));
 
 	foreach ($returnValues as $returnValue) {
 	    if ($returnValue !== null) {
@@ -161,10 +160,10 @@ class VirtueMartControllerPaymentresponse extends JController {
      * @author Valerie Isaksen
      * @return success of update
      */
-    function paymentNotification() {
+    function pluginNotification() {
 	$debug = false;
 	$data = JRequest::get('post');
-	if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpaymentplugin.php');
+	if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
 	if (!class_exists('VirtueMartCart'))
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
@@ -216,6 +215,22 @@ class VirtueMartControllerPaymentresponse extends JController {
 		    //VirtueMartCart::sentOrderConfirmedEmail($orderitems);
 		}
 		$this->emptyCart($return_context); // remove vmcart
+		break; // This was the active plugin, so there's nothing left to do here.
+	    }
+	}
+	$dispatcher = JDispatcher::getInstance();
+	$returnValues = $dispatcher->trigger('plgVmOnNotification', array('shipment',  'return_context' => &$return_context, 'virtuemart_order_id' => &$virtuemart_order_id, 'new_status' => &$new_status));
+	if ($debug) {
+	    $file = JPATH_ROOT . "/logs/notification.log";
+	    $date = JFactory::getDate();
+	    $fp = fopen($file, 'a');
+	    fwrite($fp, "\n\n" . $date->toFormat('%Y-%m-%d %H:%M:%S'));
+	    fwrite($fp, "\n" . $virtuemart_order_id . ': ' . $new_status);
+	}
+	foreach ($returnValues as $returnValue) {
+	    // Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
+	    if ($returnValue !== null) {
+
 		break; // This was the active plugin, so there's nothing left to do here.
 	    }
 	}

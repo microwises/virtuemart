@@ -19,6 +19,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 vmJsApi::jDate();
+
+if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');
+		JPluginHelper::importPlugin('vmcalculation');
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmOnDisplayEdit', array());
+		echo $returnValues;
+		vmdebug('pluginstuff',$returnValues);
+
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 

@@ -107,7 +107,12 @@ class VirtueMartViewProductdetails extends JView {
 		}
 		$product_model->addImages($product);
 		$this->assignRef('product', $product);
-
+		if (isset($product->min_order_level) && (int) $product->min_order_level > 0) {
+			 $min_order_level= $product->min_order_level;
+		    } else {
+			$min_order_level= 1;
+		 }
+		 $this->assignRef('min_order_level', $min_order_level);
 		// Load the neighbours
 		$product->neighbours = $product_model->getNeighborProducts($product);
 //		if(!empty($product->neighbours) && is_array($product->neighbours) && !empty($product->neighbours[0]))$product_model->addImages($product->neighbours);

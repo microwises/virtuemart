@@ -84,14 +84,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		, 'null' => false
 		)
 		);
-		$schemeIdx = array(
-	    'idx_order_shipment' => array(
-		'columns' => array('virtuemart_order_id')
-		, 'primary' => false
-		, 'unique' => false
-		, 'type' => null
-		)
-		);
+		$schemeIdx = array();
 		$scheme->define_scheme($schemeCols);
 		$scheme->define_index($schemeIdx);
 		if (!$scheme->scheme(true)) {
@@ -157,7 +150,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$values['shipment_name'] = parent::renderPluginName($shipment,$params);
 		$values['order_weight'] = $this->getOrderWeight($cart, $params->get('weight_unit'));
 		$values['shipment_weight_unit'] = $params->get('weight_unit');
-		$values['shipment_cost'] = $params->get('rate_value');
+		$values['shipment_cost'] = $params->get('cost');
 		$values['shipment_package_fee'] = $params->get('package_fee');
 		$values['tax_id'] = $params->get('shipment_tax_id');
 
@@ -179,7 +172,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @author Valerie Isaksen
 	 */
 	public function plgVmOnShowOrderBE($psType, $virtuemart_order_id, $virtuemart_shipmentmethod_id) {
-		if (!($this->selectedThis($this->_name, $virtuemart_shipmentmethod_id))) {
+		if (!($this->selectedThis(  $virtuemart_shipmentmethod_id, $psType))) {
 			return null;
 		}
 		$html = $this->getOrderShipmentHtml($virtuemart_order_id);
@@ -208,7 +201,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$html .=$this->getHtmlHeaderBE();
 		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_SHIPPING_NAME', $shipinfo->shipment_name);
 		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_WEIGHT', $shipinfo->order_weight.' '.ShopFunctions::renderWeightUnit($shipinfo->shipment_weight_unit));
-		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_RATE_VALUE', $currency->priceDisplay($shipinfo->shipment_cost, '', false));
+		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_COST', $currency->priceDisplay($shipinfo->shipment_cost, '', false));
 		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_PACKAGE_FEE', $currency->priceDisplay($shipinfo->shipment_package_fee, '', false));
 		$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_TAX', $taxDisplay);
 		$html .= '</table>' . "\n";

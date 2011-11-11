@@ -81,9 +81,12 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	 * @author Valerie Isaksen
 	 *
 	 */
-	function plgVmOnPaymentResponseReceived(&$virtuemart_order_id, &$html) {
+	/*
+	function plgVmOnResponseReceived(&$virtuemart_order_id, &$html) {
 		return null;
 	}
+	 * */
+
 
 	/**
 	 * This event is fired when  the user return to the shop without doing the transaction.
@@ -99,11 +102,12 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	 * @author Valerie Isaksen
 	 *
 	 */
-	function plgVmOnPaymentUserCancel(&$virtuemart_order_id) {
+	/*
+	function plgVmOnUserCancel(&$virtuemart_order_id) {
 
 		return null;
 	}
-
+*/
 	/**
 	 * This event is fired when the payment method notifies you when an event occurs that affects a transaction.
 	 * Typically,  the events may also represent authorizations, Fraud Management Filter actions and other actions,
@@ -135,7 +139,6 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	 * All plugins *must* reimplement this method.
 	 * NOTE for Plugin developers:
 	 *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
-	 * @author Valérie Isaksen
 	 * @param the actual order number. IT IS THE ORDER NUMBER THAT MuST BE SENT TO THE FORM. DONT PUT virtuemart_order_id which is a primary key for the order table.
 	 * @param orderData
 	 * @param contains the session id. Should be sent to the form. And the payment will sent it back.
@@ -144,7 +147,7 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	 * @param false if it should not be changed, otherwise new staus
 	 * @return returns 1 if the Cart should be deleted, and order sent
 	 */
-	abstract function plgVmConfirmedOrderRenderPaymentForm($order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status);
+	//abstract function plgVmConfirmedOrderRenderPaymentForm($psType,$order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status);
 
 
 // 	/**
@@ -168,9 +171,6 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 // 		return $db->loadResult();
 // 	}
 
-	function getCosts($params, $cart_prices) {
-		return 0;
-	}
 
 	/**
 	 * Check if the payment conditions are fulfilled for this payment method

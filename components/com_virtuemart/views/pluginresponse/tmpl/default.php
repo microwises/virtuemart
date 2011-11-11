@@ -19,12 +19,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.modal');
- 
 
-echo "<h3>" . $this->paymentResponse . "</h3>";
-if ($this->paymentResponseHtml) {
+
+echo "<h3>" . $this->pluginResponse . "</h3>";
+if ($this->pluginResponseHtml) {
     echo "<fieldset>";
-    echo $this->paymentResponseHtml;
+    echo $this->pluginResponseHtml;
     echo "</fieldset>";
 }
 

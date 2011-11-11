@@ -27,7 +27,7 @@ jimport( 'joomla.application.component.view');
 * @package VirtueMart
 * @author Valérie Isaksen
 */
-class VirtueMartViewPaymentresponse extends JView {
+class VirtueMartViewPluginresponse extends JView {
 
 
 
@@ -35,13 +35,13 @@ class VirtueMartViewPaymentresponse extends JView {
 		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		$document = JFactory::getDocument();
-                $paymentResponse = JRequest::getVar('paymentResponse', '');
+                $pluginResponse = JRequest::getVar('pluginResponse', '');
 
-                  $paymentResponseHtml = JRequest::getVar('paymentResponseHtml','','post','STRING',JREQUEST_ALLOWRAW);
+                  $paymentResponseHtml = JRequest::getVar('pluginResponseHtml','','post','STRING',JREQUEST_ALLOWRAW);
 		$layoutName = $this->getLayout();
 
-                $this->assignRef('paymentResponse', $paymentResponse);
-                $this->assignRef('paymentResponseHtml', $paymentResponseHtml);
+                $this->assignRef('pluginResponse', $pluginResponse);
+                $this->assignRef('pluginResponseHtml', $pluginResponseHtml);
 
 		parent::display($tpl);
 	}

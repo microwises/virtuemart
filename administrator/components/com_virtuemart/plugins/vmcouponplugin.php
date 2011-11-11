@@ -22,7 +22,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
 
-abstract class vmCalculationPlugin extends vmPlugin {
+abstract class vmCouponPlugin extends vmPlugin {
 
 
 	function __construct(& $subject, $config) {

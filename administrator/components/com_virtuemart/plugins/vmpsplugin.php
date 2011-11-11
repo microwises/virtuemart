@@ -154,7 +154,11 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	return $html;
     }
-
+/**
+ * check if it is the correct type
+ * @param string $psType either payment or shipment
+ * @return boolean
+ */
     private function selectedThisType($psType) {
 	if ($this->_psType <> $psType) {
 	    return false;
@@ -205,6 +209,7 @@ abstract class vmPSPlugin extends vmPlugin {
     /**
      * plgVmOnCheckAutomaticSelected
      * Checks how many plugins are available. If only one, the user will not have the choice. Enter edit_xxx page
+     * The pluhgin must check first if it is the correct type
      * @author Valerie Isaksen
      * @param VirtueMartCart cart: the cart object
      * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
@@ -272,6 +277,24 @@ abstract class vmPSPlugin extends vmPlugin {
     public function plgVmOnCheckoutCheckData($psType, VirtueMartCart $cart) {
 
     }
+    /**
+     * plgVmConfirmedOrderRenderForm
+     * This event is fired after the order has been created
+     * All plugins *must* reimplement this method.
+     * NOTE for Plugin developers:
+     *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
+     * @param the actual order number. IT IS THE ORDER NUMBER THAT MuST BE SENT TO THE FORM. DONT PUT virtuemart_order_id which is a primary key for the order table.
+     * @param orderData
+     * @param contains the session id. Should be sent to the form. And the payment will sent it back.
+     *                  Will be used to empty the cart if necessary, and semnd the order email.
+     * @param the payment form to display. But in some case, the bank can be called directly.
+     * @param false if it should not be changed, otherwise new staus
+     * @return returns 1 if the Cart should be deleted, and order sent
+     */
+     public function plgVmConfirmedOrderRenderForm($psType,$order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status){
+	 return null;
+     }
+
 
     /**
      * This method is fired when showing the order details in the backend.
@@ -402,7 +425,24 @@ abstract class vmPSPlugin extends vmPlugin {
     public function plgVmOnNotification($psType, &$return_context, &$virtuemart_order_id, &$new_status) {
 	return null;
     }
-
+    /**
+     * plgVmOnResponseReceived
+     * This event is fired when the  method returns to the shop after the transaction
+     *
+     *  the method itself should send in the URL the parameters needed
+     * NOTE for Plugin developers:
+     *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
+     *
+     * @param int $virtuemart_order_id : should return the virtuemart_order_id
+     * @param text $html: the html to display
+     * @return mixed Null when this method was not selected, otherwise the true or false
+     *
+     * @author Valerie Isaksen
+     *
+     */
+    function plgVmOnResponseReceived(&$virtuemart_order_id, &$html) {
+	    return null;
+    }
     function getDebug() {
 	return $this->_debug;
     }
