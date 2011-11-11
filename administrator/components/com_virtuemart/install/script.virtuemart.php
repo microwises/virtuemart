@@ -253,7 +253,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//vmuser:
 			$fields = array('virtuemart_shippingcarrier_id'=>'`virtuemart_shipmentmethod_id` int NOT NULL DEFAULT "0"');
 			$this->alterTable('#__virtuemart_vmusers',$fields);
-			$this->checkAddFieldToTable('#__virtuemart_vmusers','agreed',' tinyint(1) NOT NULL DEFAULT '0'');
+			$this->checkAddFieldToTable('#__virtuemart_vmusers','agreed',' tinyint(1) NOT NULL DEFAULT "0"');
 
 			// orders :
 			$fields = array('payment_method_id'=>'`virtuemart_paymentmethod_id` INT(11 ) NOT NULL ',
