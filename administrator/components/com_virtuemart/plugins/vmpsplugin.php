@@ -29,10 +29,11 @@ abstract class vmPSPlugin extends vmPlugin {
 		$this->_createTable();
 	}
 
+	abstract protected function _createTable();
+
 	/**
-	* plgVmOnSelected
-	* This event is fired after the  method has been selected. It can be used to store
-	* additional  info in the cart.
+	* plgVmDisplayListFE
+	* This event is fired to display the pluginmethods in the cart (edit shipment/payment) for exampel
 	*
 	* @param object $cart Cart object
 	* @param integer $selected ID of the method selected
@@ -42,13 +43,35 @@ abstract class vmPSPlugin extends vmPlugin {
 	* @author Valerie Isaksen
 	* @author Max Milbers
 	*/
-	public function plgVmOnSelected(VirtueMartCart $cart, $selected = 0) {
+	public function plgVmDisplayListFE(VirtueMartCart $cart, $selected = 0) {
 
-		if (!$this->selectedThis($this->_name, $selected)) {
-			return null; // Another  was selected, do nothing
+		if ($this->getPluginMethods($cart->vendorId) === false) {
+			if (empty($this->_name)) {
+				$app = JFactory::getApplication();
+				$app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_'.strtoupper($this->_psType)));
+				return;
+			} else {
+				return;
+			}
+		}
+		$html = array();
+		foreach ($this->methods as $method) {
+			if ($this->checkConditions($cart, $method, $cart->pricesUnformatted)) {
+				//vmdebug('plgVmOnSelectPayment', $method->payment_name, $method->payment_params);
+				$params = new JParameter($method->payment_params);
+				$methodSalesPrice = $this->calculateSalesPrice();
+				$method->payment_name = $this->renderPluginName($method);
+				$html [] = $this->getPluginHtml($method, $selectedPayment, $methodSalesPrice);
+			}
 		}
 
-		return true;
+		return $html;
+
+// 		if (!$this->selectedThis($this->_name, $selected)) {
+// 			return null; // Another  was selected, do nothing
+// 		}
+
+// 		return true;
 	}
 
 	/*
@@ -64,17 +87,17 @@ abstract class vmPSPlugin extends vmPlugin {
 	*
 	*/
 	public function plgVmOnSelectedCalculatePrice(VirtueMartCart $cart, array &$cart, $method, $cart_prices_name) {
-	    $id=$this->_idName;
+	   $id=$this->_idName;
 		if (!$this->selectedThis($cart->$id)) {
 			return null; // Another method was selected, do nothing
 		}
 
-		if (!($method = $this->getThisPaymentData($cart->$id) )) {
+		if (!($method = $this->getPluginMethod($cart->$id) )) {
 			return null;
 		}
 
 		$payment_name = '';
-		$cart_prices['payment_tax_id'] = 0;
+		$cart_prices[$this->_psType.'_tax_id'] = 0;
 		$cart_prices['cost'] = 0;
 
 		if (!$this->checkConditions($cart, $method, $cart_prices)) {
@@ -146,6 +169,27 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 		return $pluginInfo->$idName;
 	}
+
+	/**
+	* plgVmOnCheckoutCheckData
+	* This event is fired after the method has been selected and the checkout has been pressed;
+	* it assures the correct rate based on the shipto (country, zip) and/or order weight, and optionally writes extra info
+	* to the database (in which case this method must be reimplemented).
+	* Reimplementation is not required, but when done, the following check MUST be made:
+	* 	if (!$this->selectedThis($this->_name, $_cart->shipment_id)) {
+	* 		return null;
+	* 	}
+	*
+	* Returing parent::plgVmOnCheckoutCheckData($_cart) is valid but will produce extra overhead!
+	*
+	* @param object $cart Cart object
+	* @return integer The shipment rate ID
+	* @author Oscar van Eijk
+	*
+	public function plgVmOnCheckoutCheckData(VirtueMartCart $cart) {
+		return $this->selectShipmentRate($cart);
+	}
+	*/
 
 	/**
 	* This method is fired when showing the order details in the backend.
@@ -259,53 +303,122 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	/**
-	 * logPaymentInfo
-	 * to help debugging Payment notification for example
-	 */
-	protected function logInfo($text, $type = 'message') {
+	* Get Plugin Data for a go given plugin ID
+	* @author Valérie Isaksen
+	* @param int $pluginmethod_id The method ID
+	* @return  method data
+	*/
 
-		if ($this->_debug) {
-			$file = JPATH_ROOT . "/logs/" . $this->_name . ".log";
-			$date = JFactory::getDate();
+	final protected function getPluginMethod($plugin_id) {
+		$db = JFactory::getDBO();
 
-			$fp = fopen($file, 'a');
-			fwrite($fp, "\n\n" . $date->toFormat('%Y-%m-%d %H:%M:%S'));
-			fwrite($fp, "\n" . $type . ': ' . $text);
-			fclose($fp);
-		}
+		// 		$q = 'SELECT * FROM #__virtuemart_shipmentmethods WHERE `virtuemart_shipmentmethod_id`="' . $shipment_id . '" AND `shipment_element` = "'.$this->_name.'"';
+		$q = 'SELECT * FROM #__virtuemart_' . $this->_psType . 'methods WHERE `'.$this->_idName.'`="' . $plugin_id . '" ';
+
+		$db->setQuery($q);
+		return $db->loadObject();
 	}
 
 	/**
-	* This method checks if the selected method matches the current plugin
-	* @param string $_name Element name, taken from the plugin filename
-	* @param int $_sid The method ID
-	* @author Oscar van Eijk
-	* @return True if the calling plugin has the given payment ID
-	*
-	*/
-	final protected function selectedThis($id) {
-		$db = JFactory::getDBO();
+	 * Fill the array with all plugins found with this plugin for the current vendor
+	 * @return True when plugins(s) was (were) found for this vendor, false otherwise
+	 * @author Oscar van Eijk
+	 * @author max Milbers
+	 * @author valerie Isaksen
+	 */
+	protected function getPluginMethods($vendorId) {
+
+		if (!class_exists('VirtueMartModelUser'))
+		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
+
+		$usermodel = new VirtueMartModelUser();
+		$user = $usermodel->getUser();
+		$user->shopper_groups = (array) $user->shopper_groups;
 
 		if (VmConfig::isJ15()) {
-			$q = 'SELECT COUNT(*) AS c '
-			. 'FROM #__virtuemart_'.$this->_psType.'methods AS vm '
-			. ',    #__plugins AS j '
-			. "WHERE vm.virtuemart_'.$this->_psType.'method_id = '$id' "
-			. 'AND   vm.'.$this->_psType.'_jplugin_id = j.id '
-				. "AND   j.element = '$this->_name'";
+			$extPlgTable = '#__plugins';
+			$extField1 = 'id';
+			$extField2 = 'element';
 		} else {
-		$q = 'SELECT COUNT(*) AS c '
-				. 'FROM #__virtuemart_'.$this->_psType.'methods AS vm '
-				. ',      #__extensions    AS      j '
-				. 'WHERE j.`folder` = "'.$this->_type.'" '
-				. "AND vm.virtuemart_'.$this->_psType.'method_id = '$id' "
-		. 'AND   vm.'.$this->_psType.'_jplugin_id = j.extension_id '
-				. "AND   j.element = '$this->_name'";
-			}
+			$extPlgTable = '#__extensions';
+			$extField1 = 'extension_id';
+			$extField2 = 'element';
+		}
 
+		$db = JFactory::getDBO();
+
+		$select = 'SELECT v.*,j.*,s.virtuemart_shoppergroup_id ';
+
+		$q = $select . ' FROM   #__virtuemart_' . $this->_psType . 'methods AS v ';
+
+		$q.= ' LEFT JOIN ' . $extPlgTable . ' as j ON j.`' . $extField1 . '` =  v.`' . $this->_psType . '_jplugin_id` ';
+		$q.= ' LEFT OUTER JOIN #__virtuemart_' . $this->_psType . 'method_shoppergroups AS s ON v.`virtuemart_' . $this->_psType . 'method_id` = s.`virtuemart_' . $this->_psType . 'method_id` ';
+		$q.= ' WHERE v.`published` = "1" AND j.`' . $extField2 . '` = "' . $this->_name . '"
+	    						AND  (v.`virtuemart_vendor_id` = "' . $vendorId . '" OR   v.`virtuemart_vendor_id` = "0")
+	    						AND  (';
+
+		foreach ($user->shopper_groups as $groups) {
+			$q .= 's.`virtuemart_shoppergroup_id`= "' . (int) $groups . '" OR';
+		}
+		$q .= ' ISNULL(s.`virtuemart_shoppergroup_id`) ) ORDER BY v.`ordering`';
+
+		$db->setQuery($q);
+		if (!$this->methods = $db->loadObjectList()) {
+			return false;
+		} else {
+			return $this->methods;
+		}
+
+	}
+
+
+
+	/**
+	* Get Payment Data for a given Payment ID
+	* @author Valérie Isaksen
+	* @param int $virtuemart_payment_id The Payment ID
+
+	* @return  Payment data
+	*/
+	final protected function getDataByOrderId($virtuemart_order_id) {
+		$db = JFactory::getDBO();
+		$q = 'SELECT * FROM `' . $this->_tablename . '` '
+		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
+
+		$db->setQuery($q);
+		$methodData = $db->loadObject();
+
+		return $methodData;
+	}
+
+	/**
+	* getThisShipmentNameById
+	* Get the name of the shipment
+	* @param int $id The Shipment ID
+	* @author Valérie Isaksen
+	* @return string Shipment name
+	*/
+	final protected function getThisName($virtuemart_shipmentmethod_id) {
+		$db = JFactory::getDBO();
+		$q = 'SELECT `'.$this->_psType.'_name` '
+		. 'FROM #__virtuemart_'.$this->_psType.'methods '
+		. 'WHERE '.$this->_idName.' = "'.$virtuemart_shipmentmethod_id.'" ';
 		$db->setQuery($q);
 		return $db->loadResult(); // TODO Error check
 	}
+
+	/**
+	* This event is fired after the order has been stored; it gets the shipment method-
+	* specific data.
+	*
+	* @param int $order_id The order_id being processed
+	* @param object $cart  the cart
+	* @param array $priceData Price information for this order
+	* @return mixed Null when this method was not selected, otherwise true
+	* @author Valerie Isaksen
+	*/
+
+	abstract function plgVmOnConfirmedOrderStoreData($orderID, $cart, $priceData);
 
 	/**
 	 * Overwrites the standard function in vmplugin. Extendst the input data by virtuemart_order_id
@@ -315,14 +428,15 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param array $_values
 	 * @param string $_table
 	 */
-	protected function storePluginInternalData($_values) {
+	protected function storePluginInternalData($values) {
 		if (!class_exists('VirtueMartModelOrders'))
 		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-		if (!isset($_values['virtuemart_order_id'])) {
-			$_values['virtuemart_order_id'] = VirtueMartModelOrders::getOrderIdByOrderNumber($_values['order_number']);
+		if (!isset($values['virtuemart_order_id'])) {
+			$values['virtuemart_order_id'] = VirtueMartModelOrders::getOrderIdByOrderNumber($values['order_number']);
 		}
-		parent::storePluginInternalData($_values);
+		parent::storePluginInternalData($values);
 	}
+
 
 	/**
 	 * Something went wrong, Send notification to all administrators
@@ -471,72 +585,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $this->getHtmlRow($key, $value, "class='key'");
 	}
 
-	/**
-	 * @author Valerie Isaksen
-	 * @param int $plugin_id The plugin method ID
 
-	 * @return plugin table
-	 */
-	final protected function getPluginMethod($plugin_id) {
-		$db = JFactory::getDBO();
-
-		// 		$q = 'SELECT * FROM #__virtuemart_shipmentmethods WHERE `virtuemart_shipmentmethod_id`="' . $shipment_id . '" AND `shipment_element` = "'.$this->_name.'"';
-		$q = 'SELECT * FROM #__virtuemart_' . $this->_psType . 'methods WHERE `'.$this->_idName.'`="' . $plugin_id . '" ';
-
-		$db->setQuery($q);
-		return $db->loadObject();
-	}
-
-	/**
-	 * Fill the array with all plugins found with this plugin for the current vendor
-	 * @return True when plugins(s) was (were) found for this vendor, false otherwise
-	 * @author Oscar van Eijk
-	 * @author max Milbers
-	 * @author valerie Isaksen
-	 */
-	protected function getPluginMethods($vendorId) {
-
-		if (!class_exists('VirtueMartModelUser'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
-
-		$usermodel = new VirtueMartModelUser();
-		$user = $usermodel->getUser();
-		$user->shopper_groups = (array) $user->shopper_groups;
-
-		if (VmConfig::isJ15()) {
-			$extPlgTable = '#__plugins';
-			$extField1 = 'id';
-			$extField2 = 'element';
-		} else {
-			$extPlgTable = '#__extensions';
-			$extField1 = 'extension_id';
-			$extField2 = 'element';
-		}
-
-		$db = JFactory::getDBO();
-
-		$select = 'SELECT v.*,j.*,s.virtuemart_shoppergroup_id ';
-
-		$q = $select . ' FROM   #__virtuemart_' . $this->_psType . 'methods AS v ';
-
-		$q.= ' LEFT JOIN ' . $extPlgTable . ' as j ON j.`' . $extField1 . '` =  v.`' . $this->_psType . '_jplugin_id` ';
-		$q.= ' LEFT OUTER JOIN #__virtuemart_' . $this->_psType . 'method_shoppergroups AS s ON v.`virtuemart_' . $this->_psType . 'method_id` = s.`virtuemart_' . $this->_psType . 'method_id` ';
-		$q.= ' WHERE v.`published` = "1" AND j.`' . $extField2 . '` = "' . $this->_name . '"
-    						AND  (v.`virtuemart_vendor_id` = "' . $vendorId . '" OR   v.`virtuemart_vendor_id` = "0")
-    						AND  (';
-
-		foreach ($user->shopper_groups as $groups) {
-			$q .= 's.`virtuemart_shoppergroup_id`= "' . (int) $groups . '" OR';
-		}
-		$q .= ' ISNULL(s.`virtuemart_shoppergroup_id`) ) ORDER BY v.`ordering`';
-
-		$db->setQuery($q);
-		if (!$results = $db->loadObjectList()) {
-			return false;
-		}
-
-		return $results;
-	}
 
 	/*
 	 * getSelectable
@@ -584,7 +633,6 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	function pluginSelected($pluginmethod_id) {
 
-		$plugins = $this->_psType . 's';
 		$virtuemart_pluginmethod_id = $this->_idName;
 		foreach ($this->methods as $plugin) {
 			if ($plugin->$virtuemart_pluginmethod_id == $pluginmethod_id) {
@@ -595,19 +643,35 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	/**
-	 * Get Plugin Data for a go given plugin ID
-	 * @author Valérie Isaksen
-	 * @param int $pluginmethod_id The method ID
-	 * @return  method data
-	 */
-	final protected function getThisPluginData($pluginmethod_id) {
-
+	* This method checks if the selected method matches the current plugin
+	* @param string $_name Element name, taken from the plugin filename
+	* @param int $_sid The method ID
+	* @author Oscar van Eijk
+	* @return True if the calling plugin has the given payment ID
+	*
+	*/
+	final protected function selectedThis($id) {
 		$db = JFactory::getDBO();
-		$q = 'SELECT * '
-		. 'FROM #__virtuemart_' . $this->_psType . 'methods '
-		. "WHERE `" .$this->_idName . "` ='" . $pluginmethod_id . "' ";
+
+		if (VmConfig::isJ15()) {
+			$q = 'SELECT COUNT(*) AS c '
+			. 'FROM #__virtuemart_'.$this->_psType.'methods AS vm '
+			. ',    #__plugins AS j '
+			. "WHERE vm.virtuemart_'.$this->_psType.'method_id = '$id' "
+			. 'AND   vm.'.$this->_psType.'_jplugin_id = j.id '
+					. "AND   j.element = '$this->_name'";
+		} else {
+		$q = 'SELECT COUNT(*) AS c '
+					. 'FROM #__virtuemart_'.$this->_psType.'methods AS vm '
+					. ',      #__extensions    AS      j '
+					. 'WHERE j.`folder` = "'.$this->_type.'" '
+					. "AND vm.virtuemart_'.$this->_psType.'method_id = '$id' "
+		. 'AND   vm.'.$this->_psType.'_jplugin_id = j.extension_id '
+					. "AND   j.element = '$this->_name'";
+		}
+
 		$db->setQuery($q);
-		return $db->loadObject();
+		return $db->loadResult(); // TODO Error check
 	}
 
 
@@ -643,6 +707,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	function setCartPrices(&$cart_prices) {
 
+		$params = new JParameter($payment->payment_params);
 		$value = $params->get('cost', 0);
 		$tax_id = $params->get('tax_id', 0);
 
@@ -675,7 +740,11 @@ abstract class vmPSPlugin extends vmPlugin {
 	* @return $salesPrice
 	*/
 
-	protected function calculateSalesPrice($value, $tax_id) {
+	protected function calculateSalesPrice() {
+
+		$params = new JParameter($payment->payment_params);
+		$value = $params->get('cost', 0);
+		$tax_id = $params->get('tax_id', 0);
 
 		if (!class_exists('calculationHelper'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
@@ -708,6 +777,43 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		return $salesPrice;
+	}
+
+	/**
+	* logPaymentInfo
+	* to help debugging Payment notification for example
+	*/
+	protected function logInfo($text, $type = 'message') {
+
+		if ($this->_debug) {
+			$file = JPATH_ROOT . "/logs/" . $this->_name . ".log";
+			$date = JFactory::getDate();
+
+			$fp = fopen($file, 'a');
+			fwrite($fp, "\n\n" . $date->toFormat('%Y-%m-%d %H:%M:%S'));
+			fwrite($fp, "\n" . $type . ': ' . $text);
+			fclose($fp);
+		}
+	}
+
+	/**
+	* get_passkey
+	* Retrieve the payment method-specific encryption key
+	*
+	* @author Oscar van Eijk
+	* @author Valerie Isaksen
+	* @return mixed
+	* @deprecated
+	*/
+	function get_passkey() {
+		return true;
+		$_db = JFactory::getDBO();
+		$_q = 'SELECT ' . VM_DECRYPT_FUNCTION . "(secret_key, '" . ENCODE_KEY . "') as passkey "
+		. 'FROM #__virtuemart_paymentmethods '
+		. "WHERE virtuemart_paymentmethod_id='" . (int) $this->_virtuemart_paymentmethod_id . "'";
+		$_db->setQuery($_q);
+		$_r = $_db->loadAssoc(); // TODO Error check
+		return $_r['passkey'];
 	}
 
 	/**

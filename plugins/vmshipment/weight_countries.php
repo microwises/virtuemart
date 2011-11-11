@@ -137,7 +137,7 @@ class plgVmShipmentWeight_countries extends vmShipmentPlugin {
 	 * @return mixed Null when this method was not selected, otherwise true
 	 * @author Valerie Isaksen
 	 */
-	function plgVmOnConfirmedOrderStoreShipmentData($orderID, VirtueMartCart $cart, $priceData) {
+	function plgVmOnConfirmedOrderStoreData($orderID, VirtueMartCart $cart, $priceData) {
 
 		if (!($shipment = $this->getShipment($cart->virtuemart_shipmentmethod_id))) {
 			return null; // Another method was selected, do nothing
@@ -213,6 +213,15 @@ class plgVmShipmentWeight_countries extends vmShipmentPlugin {
 		$html .= '</table>' . "\n";
 
 		return $html;
+	}
+
+	function getCosts($params, $cart_prices) {
+		$free_shipment = $params->get('free_shipment', 0);
+		if ($free_shipment && $cart_prices['salesPrice'] >= $free_shipment) {
+			return 0;
+		} else {
+			return $params->get('rate_value', 0) + $params->get('package_fee', 0);
+		}
 	}
 
 	protected function checkConditions($cart, $shipment) {

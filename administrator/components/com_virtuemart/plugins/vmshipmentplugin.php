@@ -106,47 +106,8 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 	 * 	$_scheme->reset();
 	 * @author Oscar van Eijk
 	 */
-	abstract protected function _createTable();
+// 	abstract protected function _createTable();
 
-	/**
-	 * plgVmOnCheckoutCheckShipmentData
-	 * This event is fired after the payment has been processed; it selects the actual shipment rate
-	 * based on the shipto (country, zip) and/or order weight, and optionally writes extra info
-	 * to the database (in which case this method must be reimplemented).
-	 * Reimplementation is not required, but when done, the following check MUST be made:
-	 * 	if (!$this->selectedThis($this->_name, $_cart->shipment_id)) {
-	 * 		return null;
-	 * 	}
-	 *
-	 * Returing parent::plgVmOnCheckoutCheckShipmentData($_cart) is valid but will produce extra overhead!
-	 *
-	 * @param object $cart Cart object
-	 * @return integer The shipment rate ID
-	 * @author Oscar van Eijk
-	 */
-	public function plgVmOnCheckoutCheckShipmentData(VirtueMartCart $cart) {
-		return $this->selectShipmentRate($cart);
-	}
-
-	/**
-	 * This method is fired when showing the order details in the backend.
-	 * It displays the shipment-specific data.
-	 * NOTE, this plugin should NOT be used to display form fields, since it's called outside
-	 * a form! Use plgVmOnUpdateOrderBE() instead!
-	 *
-	 * @param integer $_orderId The order ID
-	 * @param integer $_vendorId Vendor ID
-	 * @param object $_shipInfo Object with the properties 'carrier' and 'name'
-	 * @return mixed Null for shipments that aren't active, text (HTML) otherwise
-	 * @author Oscar van Eijk
-	 */
-	public function plgVmOnShowOrderBE($_orderId, $_vendorId, $_shipInfo) {
-		// 		if (!($this->selectedThis($this->_name, $this->getShipmentIDForOrder($_orderId)))) {
-		// 			return null;
-		// 		}
-		vmWarn('You should overwrite the function plgVmOnShowOrderBE in class ' . get_class($this));
-		return null;
-	}
 
 
 	/**
@@ -157,7 +118,7 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 	 * @return int Shipment rate ID, -1 when no match is found. Only 1 selected ID will be returned;
 	 * if more ID's match, the cheapest will be selected.
 	 */
-	protected function selectShipmentRate(VirtueMartCart $cart, $selectedShipment = 0) {
+/*	protected function selectShipmentRate(VirtueMartCart $cart, $selectedShipment = 0) {
 		$shipment_params = $this->getVmShipmentParams($cart->vendorId, $cart->virtuemart_shipmentmethod_id);
 		$params = new JParameter($shipment_params);
 
@@ -169,7 +130,7 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 		$shipment_params = $this->getVmShipmentParams($cart->vendorId, $selectedShipment);
 
 		$shipment->shipment_name = $params->get('shipment_name');
-		$shipment->shipment_rate_vat_id = $params->get('shipment_tax_id');
+		$shipment->shipment_rate_vat_id = $params->get('tax_id');
 		$shipment->shipment_value = $this->_getShipmentCost($params, $cart);
 		return $selectedShipment;
 	}
@@ -183,7 +144,7 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 	 * @author Max Milbers
 	 *
 	 */
-	private function getVmShipmentParams($vendorId=0, $shipment_id=0) {
+/*	private function getVmShipmentParams($vendorId=0, $shipment_id=0) {
 
 		if (!$vendorId)
 		$vendorId = 1;
@@ -201,30 +162,6 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 		$taxDisplay = is_array($tax) ? $tax['calc_value'] . ' ' . $tax['calc_value_mathop'] : $shipment_tax_id;
 		$taxDisplay = ($taxDisplay == -1 ) ? JText::_('COM_VIRTUEMART_PRODUCT_TAX_NONE') : $taxDisplay;
 	}
-
-	/**
-	 * getThisShipmentNameById
-	 * Get the name of the shipment
-	 * @param int $id The Shipment ID
-	 * @author Valérie Isaksen
-	 * @return string Shipment name
-	 */
-	final protected function getThisShipmentName($virtuemart_shipmentmethod_id) {
-		$db = JFactory::getDBO();
-		$q = 'SELECT `shipment_name` '
-		. 'FROM #__virtuemart_shipmentmethods '
-		. "WHERE virtuemart_shipmentmethod_id ='$virtuemart_shipmentmethod_id' ";
-		$db->setQuery($q);
-		return $db->loadResult(); // TODO Error check
-	}
-
-	function getCosts($params, $cart_prices) {
-		$free_shipment = $params->get('free_shipment', 0);
-		if ($free_shipment && $cart_prices['salesPrice'] >= $free_shipment) {
-			return 0;
-		} else {
-			return $params->get('rate_value', 0) + $params->get('package_fee', 0);
-		}
-	}
+*/
 
 }

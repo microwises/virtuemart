@@ -91,7 +91,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
      * @author Valérie Isaksen
      */
     function plgVmOnConfirmedOrderGetPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status) {
-	if (!($payment = $this->getPaymentMethod($orderData->virtuemart_paymentmethod_id))) {
+	if (!($payment = $this->getPluginMethod($orderData->virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
 	$params = new JParameter($payment->payment_params);

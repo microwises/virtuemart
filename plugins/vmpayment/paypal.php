@@ -154,7 +154,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	}
 
 	function plgVmOnConfirmedOrderGetPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status) {
-		if (!($payment = $this->getPaymentMethod($orderData->virtuemart_paymentmethod_id))) {
+		if (!($payment = $this->getPluginMethod($orderData->virtuemart_paymentmethod_id))) {
 			return null; // Another method was selected, do nothing
 		}
 
@@ -286,7 +286,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		}
 
 		$vendorId = 0;
-		if (!($payment = $this->getPaymentMethod($virtuemart_paymentmethod_id))) {
+		if (!($payment = $this->getPluginMethod($virtuemart_paymentmethod_id))) {
 			return null; // Another method was selected, do nothing
 		}
 		$params = new JParameter($payment->payment_params);
@@ -355,13 +355,13 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 			exit;
 		}
 
-		$payment = $this->getPaymentDataByOrderId($virtuemart_order_id);
+		$payment = $this->getDataByOrderId($virtuemart_order_id);
 		$paramstring = $this->getVmPaymentParams($vendorId, $payment->virtuemart_paymentmethod_id);
 		$params = new JParameter($paramstring);
 
 		$this->_debug = $params->get('debug');
 		if (!$payment) {
-			$this->logInfo('getPaymentDataByOrderId payment not found: exit ', 'ERROR');
+			$this->logInfo('getDataByOrderId payment not found: exit ', 'ERROR');
 			return null;
 		}
 		$this->logInfo('paypal_data ' . implode('   ', $paypal_data), 'message');

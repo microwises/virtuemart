@@ -104,10 +104,10 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	 * @param integer $selectedPayment of an already selected payment method ID, if any
 	 * @return array html to display the radio button
 	 *
-	 */
+	 *
 	public function plgVmOnSelectPayment(VirtueMartCart $cart, $selectedPayment=0) {
 
-		if ($this->getPaymentMethods($cart->vendorId) === false) {
+		if ($this->getPluginMethods($cart->vendorId) === false) {
 			if (empty($this->_name)) {
 				$app = JFactory::getApplication();
 				$app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_PAYMENT'));
@@ -123,7 +123,7 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 				$params = new JParameter($payment->payment_params);
 				$paymentSalesPrice = $this->calculateSalesPrice($params->get('cost', 0), $this->getPaymentTaxId($params, $cart));
 				$payment->payment_name = $this->renderPluginName($payment);
-				$html [] = $this->getPaymentHtml($payment, $selectedPayment, $paymentSalesPrice);
+				$html [] = $this->getPluginHtml($payment, $selectedPayment, $paymentSalesPrice);
 			}
 		}
 
@@ -264,7 +264,7 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	 * Note for plugin developers: you are not required to reimplement this method, but if you
 	 * do so, it MUST start with this code:
 	 *
-	 * 	$_paymethodID = $this->getPaymentMethodForOrder($_orderID);
+	 * 	$_paymethodID = $this->getPluginMethodForOrder($_orderID);
 	 * 	if (!$this->selectedThisMethod($this->_name, $_paymethodID)) {
 	 * 		return null;
 	 * 	}
@@ -278,14 +278,14 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	}
 
 	/**
-	 * getPaymentMethodForOrder
+	 * getPluginMethodForOrder
 	 * Get the order payment ID for a given order number
 	 * @access protected
 	 * @author Oscar van Eijk
 	 * @param int $_id The order ID
 	 * @return int The payment method ID, or -1 when not found
 	 */
-	protected function getPaymentMethodForOrder($_id) {
+	protected function getPluginMethodForOrder($_id) {
 		$_db = JFactory::getDBO();
 		$_q = 'SELECT `virtuemart_paymentmethod_id` FROM #__virtuemart_orders WHERE virtuemart_order_id = ' . (int) $_id;
 		$_db->setQuery($_q);
@@ -295,46 +295,7 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 		return $_r['virtuemart_paymentmethod_id'];
 	}
 
-	/**
-	 * get_passkey
-	 * Retrieve the payment method-specific encryption key
-	 *
-	 * @author Oscar van Eijk
-	 * @author Valerie Isaksen
-	 * @return mixed
-	 */
-	function get_passkey() {
-		return true;
-		$_db = JFactory::getDBO();
-		$_q = 'SELECT ' . VM_DECRYPT_FUNCTION . "(secret_key, '" . ENCODE_KEY . "') as passkey "
-		. 'FROM #__virtuemart_paymentmethods '
-		. "WHERE virtuemart_paymentmethod_id='" . (int) $this->_virtuemart_paymentmethod_id . "'";
-		$_db->setQuery($_q);
-		$_r = $_db->loadAssoc(); // TODO Error check
-		return $_r['passkey'];
-	}
 
-	/**
-	 * This method checks if the selected payment method matches the current plugin
-	 * @param string $_name Element name, taken from the plugin filename
-	 * @param int $_pid The payment method ID
-	 * @author Oscar van Eijk
-	 * @return True if the calling plugin has the given payment ID
-	 */
-	final protected function getPaymentMethod($payment_id) {
-		return parent::getPluginMethod($payment_id);
-	}
-
-	/**
-	 * Fill the array with all payments found with this plugin for the current vendor
-	 * @return True when payment(s) was (were) found for this vendor, false otherwise
-	 * @author Oscar van Eijk
-	 */
-	protected function getPaymentMethods($vendorId) {
-
-		$this->methods = parent::getPluginMethods($vendorId);
-		return $this->methods;
-	}
 
 	/**
 	 * This functions gets the used and configured payment method
@@ -357,81 +318,8 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 		return $db->loadResult();
 	}
 
-	protected function getPaymentHtml($payment, $selectedPayment, $paymentSalesPrice) {
-		return parent::getPluginHtml($payment, $selectedPayment, $paymentSalesPrice);
-	}
 
 	/**
-	 * Get the name of the payment method
-	 * @param int $_pid The payment method ID
-	 * @author Oscar van Eijk
-	 * @return string Payment method name
-	 */
-	function getThisPaymentName($payment_id) {
-
-		$db = JFactory::getDBO();
-
-		$q = 'SELECT `payment_name` FROM #__virtuemart_paymentmethods WHERE `virtuemart_paymentmethod_id`="' . (int) $payment_id . '"';
-		$db->setQuery($q);
-		return $db->loadResult(); // TODO Error check
-	}
-
-	/**
-	 * Get Payment Data for a go given Payment ID
-	 * @author Valérie Isaksen
-	 * @param int $virtuemart_payment_id The Payment ID
-	 * @return  Payment data
-	 */
-	final protected function getThisPaymentData($virtuemart_payment_id) {
-		return parent::getThisPluginData($virtuemart_payment_id);
-	}
-
-	/**
-	 * Get Payment Data for a given Payment ID
-	 * @author Valérie Isaksen
-	 * @param int $virtuemart_payment_id The Payment ID
-
-	 * @return  Payment data
-	 */
-	final protected function getPaymentDataByOrderId($virtuemart_order_id) {
-		$db = JFactory::getDBO();
-		$q = 'SELECT * FROM `' . $this->_tablename . '` '
-		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
-
-		$db->setQuery($q);
-		$payment = $db->loadObject();
-
-		return $payment;
-	}
-
-	/*
-	 * This method return the number of payment actually valid
-	* @author Valerie Isaksen
-	*
-	* @param VirtueMartCart $cart: the actual cart
-	* @param array $cart_prices: the all the prices of the cart
-	* @param int $virtuemart_paymentmethod_id
-	* @return int the number of valid payments
-	*
-	*/
-
-/*	function getSelectable(VirtueMartCart $cart, $cart_prices, &$virtuemart_paymentmethod_id) {
-		$nbPayments = 0;
-		if ($this->getPaymentMethods($cart->vendorId) === false) {
-			return false;
-		}
-
-		foreach ($this->methods as $payment) {
-			if ($this->checkConditions($cart, $payment, $cart_prices)) {
-				$nbPayments++;
-				$virtuemart_paymentmethod_id = (int) $payment->virtuemart_paymentmethod_id;
-			}
-		}
-
-		return $nbPayments;
-	}*/
-
-	/*
 	 * Check if the payment conditions are fulfilled for this payment method
 	* @author: Valerie Isaksen
 	*
@@ -456,7 +344,7 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	 * @deprecated
 	*/
 	function checkPaymentIsValid(VirtueMartCart $cart, array $cart_prices) {
-		$payment = $this->getThisPaymentData($cart->virtuemart_paymentmethod_id);
+		$payment = $this->getPluginMethod($cart->virtuemart_paymentmethod_id);
 		return $this->checkConditions($cart, $payment, $cart_prices);
 	}
 

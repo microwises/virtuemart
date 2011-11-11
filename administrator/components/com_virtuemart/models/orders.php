@@ -768,7 +768,7 @@ class VirtueMartModelOrders extends VmModel {
 	{
 		JPluginHelper::importPlugin('vmshipment');
 		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreShipmentData',array(
+		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreData',array(
 		$orderID
 		,$cart
 		,$prices

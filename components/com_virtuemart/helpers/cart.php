@@ -720,7 +720,7 @@ class VirtueMartCart {
 		JPluginHelper::importPlugin('vmshipment');
 
 		$dispatcher = JDispatcher::getInstance();
-		$retValues = $dispatcher->trigger('plgVmOnSelected',
+		$retValues = $dispatcher->trigger('plgVmDisplayListFE',
 		array('cart' => $this, '_selectedShipment' => $shipment_id));
 		foreach ($retValues as $retVal) {
 			if ($retVal === true) {
@@ -824,7 +824,7 @@ class VirtueMartCart {
 			JPluginHelper::importPlugin('vmshipment');
 			//Add a hook here for other shipment methods, checking the data of the choosed plugin
 			$dispatcher = JDispatcher::getInstance();
-			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckShipmentData', array('cart' => $this));
+			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckData', array('cart' => $this));
 
 			foreach ($retValues as $retVal) {
 				if ($retVal === true) {
