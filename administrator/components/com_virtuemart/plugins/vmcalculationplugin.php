@@ -38,7 +38,7 @@ abstract class vmCalculationPlugin extends vmPlugin {
 	}
 
 	function plgVmOnDisplayEdit(){
-
+		vmdebug('plgVmOnDisplayEdit abstract');
 		return $html;
 	}
 

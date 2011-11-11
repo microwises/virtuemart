@@ -207,32 +207,16 @@ vmJsApi::jDate();
 
 			</td>
 		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="calc_amount_cond">
-					<?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_COND'); ?>
-				</label>
-			</td>
-			<td >
-				<?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_COND_OPERATOR'); ?>&nbsp;<input class="inputbox" type="text" name="calc_amount_cond" id="calc_amount_cond" size="4" value="<?php echo $this->calc->calc_amount_cond_max; ?>" />
-				<?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_COND_MIN'); ?>&nbsp;<input class="inputbox" type="text" name="calc_amount_cond_min" id="calc_amount_cond_min" size="4" value="<?php echo $this->calc->calc_amount_cond_min; ?>" />
-				<?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_COND_MAX'); ?>&nbsp;<input class="inputbox" type="text" name="calc_amount_cond_max" id="calc_amount_cond_max" size="4" value="<?php echo $this->calc->calc_amount_cond_max; ?>" />
-			</td>
-			<td colspan="3">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_COND_EXPLAIN'); ?>
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="calc_amount_dimunit">
-				<?php echo JText::_('COM_VIRTUEMART_CALC_AMOUNT_DIMUNIT'); ?>
-				</label>
-			</td>
-			<td colspan="3">
-				<input class="inputbox" type="text" name="calc_amount_dimunit" id="calc_amount_dimunit" size="4" value="<?php echo $this->calc->calc_amount_dimunit; ?>" />
-			</td>
-		</tr>
-		<?php if(Vmconfig::get('multix','none')!=='none' && $this->perms->check('admin') ){?>
+
+		<?php
+		if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');
+		JPluginHelper::importPlugin('vmcalculation');
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmOnDisplayEdit');
+		echo $returnValues;
+		vmdebug('pluginstuff',$returnValues);
+
+		if(Vmconfig::get('multix','none')!=='none' && $this->perms->check('admin') ){?>
 		<tr>
 			<td width="110" class="key">
 				<label for="vendor">

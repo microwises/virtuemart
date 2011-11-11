@@ -58,14 +58,8 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 		, 'null' => false
 	    )
 	);
-	$_schemeIdx = array(
-	    'idx_order_payment' => array(
-		'columns' => array('virtuemart_order_id')
-		, 'primary' => false
-		, 'unique' => false
-		, 'type' => null
-	    )
-	);
+	$_schemeIdx = array();
+
 	$_scheme->define_scheme($_schemeCols);
 	$_scheme->define_index($_schemeIdx);
 	if (!$_scheme->scheme(true)) {

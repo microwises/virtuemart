@@ -846,8 +846,7 @@ class calculationHelper {
 			$payment->load($payment_id);
 */
 
-
-			if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpaymentplugin.php');
+			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnSelectedCalculatePrice',array('payment', $cart, &$this->_cartPrices, &$this->_cartData['paymentName']  ));
