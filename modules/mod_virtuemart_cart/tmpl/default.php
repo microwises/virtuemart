@@ -49,6 +49,7 @@ if ($show_product_list) {
 <div class="show_cart">
 	<?php if ($data->totalProduct) echo  $data->cart_show; ?>
 </div>
+<div style="clear:both;"></div>
 
 <noscript>
 <?php echo JText::_('MOD_VIRTUEMART_CART_AJAX_CART_PLZ_JAVASCRIPT') ?>
