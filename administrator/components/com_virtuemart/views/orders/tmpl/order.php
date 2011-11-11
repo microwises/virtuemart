@@ -23,7 +23,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDER_PRINT_PO_LBL');
 
 // Get the plugins
 JPluginHelper::importPlugin('vmpayment');
-JPluginHelper::importPlugin('vmorderplugin');
+JPluginHelper::importPlugin('vmshopper');
 JPluginHelper::importPlugin('vmshipment');
 $tt=$this;
 ?>

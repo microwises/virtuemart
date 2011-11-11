@@ -14,7 +14,7 @@
  * other free or open source software licenses.
  * @version $Id: vmorderplugin.php 2687 2011-02-02 18:07:50Z oscar $
  */
- 
+
 // Get the plugin library
 jimport('joomla.plugin.plugin');
 
@@ -23,12 +23,12 @@ jimport('joomla.plugin.plugin');
 * This class defines the plugin used in the backend in the order detail view. The
 * plugins defined here can be used to create special prints (shipment lists, Dymo labels etc.) and
 * whatever else you like ;)
-* 
+*
 * @package	VirtueMart
 * @subpackage Plugins
 * @author Oscar van Eijk
 */
-abstract class vmOrderPlugin extends JPlugin
+abstract class vmShopperPlugin extends JPlugin
 {
 	/**
 	 * Constructor
@@ -49,5 +49,14 @@ abstract class vmOrderPlugin extends JPlugin
 	 * @author Oscar van Eijk
 	 */
 	abstract public function plgVmOnUpdateOrderBE($_orderID);
+
+
+	public function plgVmOnUserStore($data){
+		return $data;
+	}
+
+	public function plgVmAfterUserStore($data){
+		return $data;
+	}
 
 }

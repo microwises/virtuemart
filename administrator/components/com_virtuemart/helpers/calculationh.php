@@ -531,6 +531,11 @@ class calculationHelper {
 		if (isset($rulesEffSorted)) {
 			foreach ($rulesEffSorted as $rule) {
 
+				JPluginHelper::importPlugin('vmcalculation');
+				$dispatcher = JDispatcher::getInstance();
+				$continue = $dispatcher->trigger('InGatherEffectRulesBill', array($rule, $relateToBaseAmount, $baseprice, $this->_cartPrices,$price);
+				if($continue) continue;
+
 				if ($relateToBaseAmount) {
 					$cIn = $baseprice;
 				} else {
@@ -598,6 +603,7 @@ class calculationHelper {
 		$this->_db->setQuery($q);
 		$rules = $this->_db->loadAssocList();
 
+
 		$testedRules = array();
 		//Cant be done with Leftjoin afaik, because both conditions could be arrays.
 		foreach ($rules as $rule) {
@@ -639,15 +645,27 @@ class calculationHelper {
 			if (!empty($this->_amount)) {
 				//Test
 			}
+
 			//             vmdebug('tested $hitsCategory '.$rule['calc_name'],$hitsCategory,$hitsShopper,$hitsDeliveryArea);
 			//if ($this -> _debug	) echo '<br/ >foreach '.$rule["virtuemart_calc_id"].' and hitsCat '.$hitsCategory.' and hitsS '.$hitsShopper.' and '.$entrypoint;
 			if ($hitsCategory && $hitsShopper && $hitsDeliveryArea) {
 				if ($this->_debug)
 				echo '<br/ >Add rule ForProductPrice ' . $rule["virtuemart_calc_id"];
+
+
+
 				$testedRules[] = $rule;
 			}
 		}
-		// 			vmdebug('$testedRules',$testedRules);
+
+		//Test rules in plugins
+		if(!empty($testedRules)){
+			JPluginHelper::importPlugin('vmcalculation');
+			$dispatcher = JDispatcher::getInstance();
+			$testedRules = $dispatcher->trigger('InGatherEffectRulesProduct', $testedRules);
+		}
+
+		vmdebug('$testedRules',$testedRules);
 		return $testedRules;
 	}
 
@@ -719,11 +737,13 @@ class calculationHelper {
 				}
 			}
 
-			//		if (empty($rules)) return;
-			//Just for developing
-			foreach ($testedRules as $rule) {
-				//			echo '<br /> Add rule Entrypoint '.$entrypoint.'  and '.$rule['calc_name'].' query: '.$q;
+			//Test rules in plugins
+			if(!empty($testedRules)){
+				JPluginHelper::importPlugin('vmcalculation');
+				$dispatcher = JDispatcher::getInstance();
+				$testedRules = $dispatcher->trigger('InGatherEffectRulesBill', $testedRules);
 			}
+
 			return $testedRules;
 		}
 

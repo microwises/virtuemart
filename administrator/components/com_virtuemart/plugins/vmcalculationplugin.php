@@ -25,12 +25,37 @@ if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
 abstract class vmCalculationPlugin extends vmPlugin {
 
 
-	function __construct(& $subject, $config) {
+	function __construct() {
 
-		parent::__construct($subject, $config);
+		parent::__construct();
 
 		$this->_tablename = '#__virtuemart_calc_' . $this->_name;
-		$this->_createTable();
 	}
 
+	function plgVmAddRuleKindOption(&$entryPoints){
+
+		return ;
+	}
+
+	function plgVmOnDisplayEdit(){
+
+		return $html;
+	}
+
+	function plgVmInGatherEffectRulesProduct(&$rules){
+
+		return $rules;
+	}
+
+	function plgVmInGatherEffectRulesBill(&$rules){
+
+		return $rules;
+	}
+
+	function plgVmExecuteCalculation ($rule, $relateToBaseAmount, $baseprice, &$_cartPrices, &$price){
+
+		$calculated = false;
+
+		return $calculated;
+	}
 }

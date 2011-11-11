@@ -172,6 +172,10 @@ class VirtuemartViewCalc extends JView {
 		'6' => array('calc_kind' => 'DATaxBill', 'calc_kind_name' => JText::_('COM_VIRTUEMART_CALC_EPOINT_DATAXBILL')),
 		);
 
+		JPluginHelper::importPlugin('vmcalculation');
+		$dispatcher = JDispatcher::getInstance();
+		$entryPoints = $dispatcher->trigger('InGatherEffectRulesBill', $entryPoints);
+
 		$listHTML = JHTML::_('Select.genericlist', $entryPoints, 'calc_kind', '', 'calc_kind', 'calc_kind_name', $selected );
 		return $listHTML;
 
