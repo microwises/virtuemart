@@ -111,7 +111,7 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 	// END printing out HTML Form code (Payment Extra Info)
 
 	$this->_virtuemart_paymentmethod_id = $orderData->virtuemart_paymentmethod_id;
-	$dbValues['payment_name'] = parent::getPaymentName($payment);
+	$dbValues['payment_name'] = parent::renderPluginName($payment);
 	$dbValues['order_number'] = $order_number;
 	$dbValues['virtuemart_paymentmethod_id'] = $this->_virtuemart_paymentmethod_id;
 	$this->storePluginInternalData($dbValues);
@@ -133,10 +133,10 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 
     /**
      * Display stored payment data for an order
-     * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
+     * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderBE()
      */
-    function plgVmOnShowOrderPaymentBE($virtuemart_order_id, $virtuemart_payment_id) {
-	if (!$this->selectedThisPayment($virtuemart_payment_id)) {
+    function plgVmOnShowOrderBE($virtuemart_order_id, $virtuemart_payment_id) {
+	if (!$this->selectedThis($virtuemart_payment_id)) {
 	    return null; // Another method was selected, do nothing
 	}
 	$db = JFactory::getDBO();

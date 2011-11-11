@@ -1056,7 +1056,7 @@ class VirtueMartModelOrders extends VmModel {
 		if(!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmshipmentplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
 		$_dispatcher = JDispatcher::getInstance();
-		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLineShipment',array($data));
+		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLine',array($data));
 		foreach ($_returnValues as $_retVal) {
 			if ($_retVal === false) {
 				// Stop as soon as the first active plugin returned a failure status

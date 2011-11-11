@@ -32,7 +32,7 @@ jimport('joomla.plugin.plugin');
  * 	* _createTable() is called by the constructor. Use this method to create or alter the database table.
  * 	* When a shopper selects a shipment, plgOnSelectShipment() is fired. It displays the shipment and can be used
  * 	for collecting extra - shipment specific - info.
- * 	* After selecting, plgVmShipmentSelected() can be used to store extra shipment info in the cart. The selected shipment
+ * 	* After selecting, plgVmpluginSelected() can be used to store extra shipment info in the cart. The selected shipment
  * 	ID will be stored in the cart by the checkout process before this method is fired.
  * 	* plgOnConfirmShipment() is fired when the order is confirmed and stored to the database. It is called
  * 	before the rest of the order or stored, when reimplemented, it *must* include a call to parent::plgOnConfirmShipment()
@@ -43,16 +43,16 @@ jimport('joomla.plugin.plugin');
  * 	OUTSIDE any form!)
  * 	* plgVmOnShowOrderLineShipmentBE() can be used to show information about a single orderline, e.g.
  * 	display a package code at line level when more packages are shipped.
- * 	* plgVmOnEditOrderLineShipmentBE() can be used add a package code for an order line when more
+ * 	* plgVmOnEditOrderLineBE() can be used add a package code for an order line when more
  * 	packages are shipped.
- * 	* plgVmOnUpdateOrderShipmentBE is fired inside a form. It can be used to add shipment data, like package code.
+ * 	* plgVmOnUpdateOrderBE is fired inside a form. It can be used to add shipment data, like package code.
  * 	* plgVmOnSaveOrderShipmentBE() is fired from the backend after the order has been saved. If one of the
  * 	show methods above have to option to add or edit info, this method must be used to save the data.
  * 	* plgVmOnUpdateOrderLine() is fired from the backend after an order line has been saved. This method
- * 	must be reimplemented if plgVmOnEditOrderLineShipmentBE() is used.
+ * 	must be reimplemented if plgVmOnEditOrderLineBE() is used.
  *
  * The frontend 1 show method:
- * 	* plgVmOnShowOrderShipmentFE() collects and displays specific data about (a) shipment(s)
+ * 	* plgVmOnShowOrderFE() collects and displays specific data about (a) shipment(s)
  *
  * @package	VirtueMart
  * @subpackage Plugins

@@ -773,7 +773,7 @@ class calculationHelper {
 			if (!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipmentplugin.php');
 			JPluginHelper::importPlugin('vmshipment');
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnShipmentSelectedCalculatePrice',
+			$returnValues = $dispatcher->trigger('plgVmOnpluginSelectedCalculatePrice',
 			array('cart' => $cart,
 			    'cart_prices' => &$this->_cartPrices,
 			    'shipment_name' =>&$this->_cartData['shipmentName']  ));

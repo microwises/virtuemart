@@ -245,7 +245,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 		// Prepare data that should be stored in the database
 		$dbValues['order_number'] = $order_number;
-		$dbValues['payment_name'] = parent::getPaymentName($payment);
+		$dbValues['payment_name'] = parent::renderPluginName($payment);
 		$dbValues['virtuemart_paymentmethod_id'] = $orderData->virtuemart_paymentmethod_id;
 		$dbValues['paypal_custom'] = $return_context;
 		// TODO wait for PAYPAL return ???
@@ -298,7 +298,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
 		$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
-		$payment_name = $this->getPaymentName($payment);
+		$payment_name = $this->renderPluginName($payment);
 		$html = $this->_getPaymentResponseHtml($paypal_data, $payment_name);
 
 		return true;
@@ -440,11 +440,11 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 	/**
 	 * Display stored payment data for an order
-	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
+	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderBE()
 	 */
-	function plgVmOnShowOrderPaymentBE($virtuemart_order_id, $payment_method_id) {
+	function plgVmOnShowOrderBE($virtuemart_order_id, $payment_method_id) {
 
-		if (!$this->selectedThisPayment(  $virtuemart_order_id)) {
+		if (!$this->selectedThis(  $virtuemart_order_id)) {
 			return null; // Another method was selected, do nothing
 		}
 		$db = JFactory::getDBO();

@@ -109,7 +109,7 @@ $tt=$this;
 				$_returnValues1 = $_dispatcher->trigger('plgVmOnUpdateOrderBE',array(
 					 $this->orderID
 				));
-				$_returnValues2 = $_dispatcher->trigger('plgVmOnUpdateOrderShipmentBE',array(
+				$_returnValues2 = $_dispatcher->trigger('plgVmOnUpdateOrderBE',array(
 					 $this->orderID
 				));
 				$_returnValues = array_merge($_returnValues1, $_returnValues2);
@@ -398,7 +398,7 @@ $tt=$this;
 		</td>
 		<td valign="top"><?php
 		$_dispatcher = JDispatcher::getInstance();
-		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderPaymentBE',array(
+		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderBE',array(
 			 $this->orderID
 			,$this->orderbt->virtuemart_paymentmethod_id
 		));

@@ -197,7 +197,7 @@ $dispatcher = JDispatcher::getInstance();
     <table width="100%">
 	<tr>
 	    <td valign="top"><?php
-    $returnValues = $dispatcher->trigger('plgVmOnShowOrderPrintShipment', array(
+    $returnValues = $dispatcher->trigger('plgVmOnShowOrderPrint', array(
 	$this->orderNumber
 	, $this->virtuemart_shipmentmethod_id
 	    ));
@@ -209,7 +209,7 @@ $dispatcher = JDispatcher::getInstance();
 ?>
 	    </td>
 	    <td valign="top"><?php
-		$returnValues = $dispatcher->trigger('plgVmOnShowOrderPrintPayment', array(
+		$returnValues = $dispatcher->trigger('plgVmOnShowOrderPrint', array(
 		    $this->orderNumber
 		    , $this->orderbt->virtuemart_paymentmethod_id
 			));

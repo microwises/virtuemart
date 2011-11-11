@@ -106,21 +106,23 @@ class plgVmShipmentWeight_countries extends vmShipmentPlugin {
 	 * @param integer $order_number The order Number
 	 * @return mixed Null for shipments that aren't active, text (HTML) otherwise
 	 * @author Valérie Isaksen
+	 * @author Max Milbers
 	 */
-	public function plgVmOnShowOrderShipmentFE($virtuemart_order_id) {
+	public function plgVmOnShowOrderFE($virtuemart_order_id) {
 
 		$db = JFactory::getDBO();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
 		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
 		$db->setQuery($q);
-		if (!($shipinfo = $db->loadObject())) {
+		if (!($pluginInfo = $db->loadObject())) {
 			JError::raiseWarning(500, $q . " " . $db->getErrorMsg());
 			return '';
 		}
-		if (!($this->selectedThisShipment($this->_name, $shipinfo->shipment_id))) {
+		$idName = $this->_idName;
+		if (!($this->selectedThis($this->_name, $pluginInfo->$idName))) {
 			return null;
 		}
-		return $shipinfo->shipment_name;
+		return $pluginInfo->$idName;
 	}
 
 
@@ -151,7 +153,7 @@ class plgVmShipmentWeight_countries extends vmShipmentPlugin {
 		$values['order_number'] = VirtueMartModelOrders::getOrderNumber($orderID);
 		$values['virtuemart_order_id'] = $orderID;
 		$values['shipment_id'] = $cart->virtuemart_shipmentmethod_id;
-		$values['shipment_name'] = parent::getShipmentName($shipment);
+		$values['shipment_name'] = parent::renderPluginName($shipment);
 		$values['order_weight'] = $this->getOrderWeight($cart, $params->get('weight_unit'));
 		$values['shipment_weight_unit'] = $params->get('weight_unit');
 		$values['shipment_cost'] = $params->get('rate_value');
@@ -176,7 +178,7 @@ class plgVmShipmentWeight_countries extends vmShipmentPlugin {
 	 * @author Valerie Isaksen
 	 */
 	public function plgVmOnShowOrderShipmentBE($virtuemart_order_id, $vendorId, $virtuemart_shipmentmethod_id) {
-		if (!($this->selectedThisShipment($this->_name, $virtuemart_shipmentmethod_id))) {
+		if (!($this->selectedThis($this->_name, $virtuemart_shipmentmethod_id))) {
 			return null;
 		}
 		$html = $this->getOrderShipmentHtml($virtuemart_order_id);
@@ -213,7 +215,7 @@ class plgVmShipmentWeight_countries extends vmShipmentPlugin {
 		return $html;
 	}
 
-	protected function checkShipmentConditions($cart, $shipment) {
+	protected function checkConditions($cart, $shipment) {
 
 		$params = new JParameter($shipment->shipment_params);
 		$orderWeight = $this->getOrderWeight($cart, $params->get('weight_unit'));
