@@ -39,7 +39,7 @@ jimport('joomla.plugin.plugin');
  * 	(or execute the same steps to put all data in the cart)
  *
  * When a stored order is displayed in the backend, the following events are used:
- * 	* plgVmOnShowOrderShipmentBE() displays specific data about (a) shipment(s) (NOTE: this plugin is
+ * 	* plgVmOnShowOrderBE() displays specific data about (a) shipment(s) (NOTE: this plugin is
  * 	OUTSIDE any form!)
  * 	* plgVmOnShowOrderLineShipmentBE() can be used to show information about a single orderline, e.g.
  * 	display a package code at line level when more packages are shipped.

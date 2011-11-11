@@ -30,7 +30,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	/**
-	* plgVmOnpluginSelected
+	* plgVmOnSelected
 	* This event is fired after the shipment method has been selected. It can be used to store
 	* additional shipment info in the cart.
 	*
@@ -38,15 +38,54 @@ abstract class vmPSPlugin extends vmPlugin {
 	* @param integer $selectedShipment ID of the shipment selected
 	* @return boolean True on succes, false on failures, null when this plugin was not selected.
 	* On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
-	* @author Oscar van Eijk
+	*
+	* @author Valerie Isaksen
+	* @author Max Milbers
 	*/
-	public function plgVmOnpluginSelected(VirtueMartCart $cart, $selectedShipment = 0) {
+	public function plgVmOnSelected(VirtueMartCart $cart, $selectedShipment = 0) {
 
 		if (!$this->selectedThis($this->_name, $selectedShipment)) {
 			return null; // Another shipment was selected, do nothing
 		}
-		// should return $shipment rates for this this seems to be obsolete, valerie? old stuff by oscar maybe, note by Max
-		// $cart->setShipmentRate($this->selectShipmentRate($cart));
+
+		return true;
+	}
+
+	/*
+	* plgVmOnSelectedCalculatePrice
+	* Calculate the price (value, tax_id) of the selected Shipment
+	* It is called by the calculator
+	* This function does NOT to be reimplemented. If not reimplemented, then the default values from this function are taken.
+	* @author Valerie Isaksen
+	* @cart: VirtueMartCart the current cart
+	* @cart_prices: array the new cart prices
+	* @shipmentTable Shipments: shipment  rate description
+	* @return null if the shipment was not selected, false if the shiiping rate is not valid any more, true otherwise
+	*
+	*
+	*/
+	public function plgVmOnSelectedCalculatePrice(VirtueMartCart $cart, array &$cart, $payment, $cart_prices_name) {
+		if (!$this->selectedThis($cart->virtuemart_paymentmethod_id)) {
+			return null; // Another payment was selected, do nothing
+		}
+
+		if (!($payment = $this->getThisPaymentData($cart->virtuemart_paymentmethod_id) )) {
+			return null;
+		}
+
+		$payment_name = '';
+		$cart_prices['payment_tax_id'] = 0;
+		$cart_prices['cost'] = 0;
+
+		if (!$this->checkConditions($cart, $payment, $cart_prices)) {
+			return false;
+		}
+		$params = new JParameter($payment->payment_params);
+		$payment_name = $this->renderPluginName($payment);
+		$payment_tax_id = $this->getPaymentTaxId($params);
+
+		$this->setCartPrices($cart_prices);
+
 		return true;
 	}
 
@@ -73,7 +112,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	/**
 	 * This method is fired when showing the order details in the frontend.
-	 * It displays the shipment-specific data.
+	 * It displays the method-specific data.
 	 *
 	 * @param integer $order_id The order ID
 	 * @return mixed Null for shipments that aren't active, text (HTML) otherwise
@@ -120,7 +159,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	* @author Max Milbers
 	* @author Valerie Isaksen
 	*/
-	abstract function plgVmOnShowOrderBE($_virtuemart_order_id, $_paymethod_id);
+	abstract function plgVmOnShowOrderBE($_virtuemart_order_id, $_method_id);
 
 
 	/**
@@ -510,7 +549,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	function getSelectable(VirtueMartCart $cart, &$method_id, $cart_prices) {
 		$nbShipment = 0;
-		if ($this->getPluginMethods($cart->vendorId) === false) {
+		if ($this->methods = $this->getPluginMethods($cart->vendorId) === false) {
 			return false;
 		}
 
@@ -545,10 +584,10 @@ abstract class vmPSPlugin extends vmPlugin {
 	*/
 
 	function pluginSelected($pluginmethod_id) {
-		// 		$plugins = $this->_psType . 's';
-		// 		$virtuemart_pluginmethod_id = 'virtuemart_' . $this->_psType . 'method_id';
+
+		$plugins = $this->_psType . 's';
 		$virtuemart_pluginmethod_id = $this->_idName;
-		foreach ($this->$plugins as $plugin) {
+		foreach ($this->methods as $plugin) {
 			if ($plugin->$virtuemart_pluginmethod_id == $pluginmethod_id) {
 				return $plugin;
 			}
@@ -571,6 +610,9 @@ abstract class vmPSPlugin extends vmPlugin {
 		$db->setQuery($q);
 		return $db->loadObject();
 	}
+
+
+	abstract function getCosts($params, $cart) ;
 
 	/*
 	 * displayTaxRule
@@ -600,7 +642,11 @@ abstract class vmPSPlugin extends vmPlugin {
 	* @param $tax_id :  tax id
 	*/
 
-	function setCartPrices(&$cart_prices, $value, $tax_id) {
+	function setCartPrices(&$cart_prices) {
+
+		$value = $params->get('cost', 0);
+		$tax_id = $params->get('tax_id', 0)
+
 		$_psType = ucfirst($this->_psType);
 		$cart_prices[$this->_psType . 'Value'] = $value;
 

@@ -61,7 +61,7 @@
 	<param name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_PAYPAL_STATUS_FAILED" description="VMPAYMENT_PAYPAL_STATUS_FAILED_EXPLAIN" />
 	<param name="min_amount" type="text"  label="VMPAYMENT_PAYPAL_MIN_AMOUNT" description="VMPAYMENT_PAYPAL_MIN_AMOUNT_EXPLAIN" />
 	<param name="max_amount" type="text"  label="VMPAYMENT_PAYPAL_MAX_AMOUNT" description="VMPAYMENT_PAYPAL_MAX_AMOUNT_EXPLAIN" />
-	<param name="payment_value" type="text"  label="VMPAYMENT_PAYPAL_FEE" description="VMPAYMENT_PAYPAL_FEE_EXPLAIN" />
+	<param name="cost" type="text"  label="VMPAYMENT_PAYPAL_FEE" description="VMPAYMENT_PAYPAL_FEE_EXPLAIN" />
 	<param name="payment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_PAYPAL_TAX" description="VMPAYMENT_PAYPAL_TAX_EXPLAIN" />
     </params>
 
@@ -115,7 +115,7 @@
 	<field name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_PAYPAL_STATUS_FAILED" description="VMPAYMENT_PAYPAL_STATUS_FAILED_DESC" />
 	<field name="min_amount" type="text"  label="VMPAYMENT_PAYPAL_MIN_AMOUNT" description="VMPAYMENT_PAYPAL_MIN_AMOUNT_EXPLAIN" />
 	<field name="max_amount" type="text"  label="VMPAYMENT_PAYPAL_MAX_AMOUNT" description="VMPAYMENT_PAYPAL_MAX_AMOUNT_EXPLAIN" />
-	<field name="payment_value" type="text"  label="VMPAYMENT_PAYPAL_FEE" description="VMPAYMENT_PAYPAL_FEE_EXPLAIN" />
+	<field name="cost" type="text"  label="VMPAYMENT_PAYPAL_FEE" description="VMPAYMENT_PAYPAL_FEE_EXPLAIN" />
 	<field name="payment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_PAYPAL_TAX" description="VMPAYMENT_PAYPAL_TAX_EXPLAIN" />
 
 

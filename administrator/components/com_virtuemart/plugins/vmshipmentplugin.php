@@ -36,7 +36,7 @@ require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
  * 	(or execute the same steps to put all data in the cart)
  *
  * When a stored order is displayed in the backend, the following events are used:
- * 	* plgVmOnShowOrderShipmentBE() displays specific data about (a) shipment(s) (NOTE: this plugin is
+ * 	* plgVmOnShowOrderBE() displays specific data about (a) shipment(s) (NOTE: this plugin is
  * 	OUTSIDE any form!)
  * 	* plgVmOnShowOrderLineShipmentBE() can be used to show information about a single orderline, e.g.
  * 	display a package code at line level when more packages are shipped.
@@ -109,81 +109,6 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 	abstract protected function _createTable();
 
 	/**
-	 * This event is fired during the checkout process. It allows the shopper to select
-	 * one of the available shipments.
-	 * It should display a radio button (name: shipment_id) to select the shipment. In the description,
-	 * the shipment cost can also be displayed, based on the total order weight and the shipto
-	 * country (this wil be calculated again during order confirmation)
-	 *
-	 * @param object $cart the cart object
-	 * @param integer $selectedShipment ID of the shipment currently selected
-	 * @return HTML array. Each row contains the code to display in the form
-	 * @author Oscar van Eijk
-	 */
-	public function plgVmOnSelectShipment(VirtueMartCart $cart, $selectedShipment = 0) {
-
-		if ($this->getPluginMethods($cart->vendorId) === false) {
-	  return false;
-		}
-		$html = array();
-		foreach ($this->methods as $shipment) {
-	  if ($this->checkConditions($cart, $shipment)) {
-	  	$params = new JParameter($shipment->shipment_params);
-	  	$salesPrice = $this->calculateSalesPrice ($this->getShipmentValue($params, $cart->pricesUnformatted), $this->getShipmentTaxId($params));
-	  	$shipment->shipment_name = $this->renderPluginName($shipment);
-
-	  	$html[] = $this->getPluginHtml($shipment, $selectedShipment, $salesPrice);
-	  }
-		}
-		return $html;
-
-	}
-
-
-
-	/*
-	 * plgVmOnpluginSelectedCalculatePrice
-	* Calculate the price (value, tax_id) of the selected Shipment
-	* It is called by the calculator
-	* This function does NOT to be reimplemented. If not reimplemented, then the default values from this function are taken.
-	* @author Valerie Isaksen
-	* @cart: VirtueMartCart the current cart
-	* @cart_prices: array the new cart prices
-	* @shipmentTable Shipments: shipment  rate description
-	* @return null if the shipment was not selected, false if the shiiping rate is not valid any more, true otherwise
-	*
-	*
-	*/
-
-	public function plgVmOnpluginSelectedCalculatePrice(VirtueMartCart $cart, array $cart_prices, $shipment_name) {
-
-		if (!$this->selectedThis($this->_name, $cart->virtuemart_shipmentmethod_id)) {
-			return null; // Another shipment was selected, do nothing
-		}
-
-		$shipment = $this->getthisShipmentData($cart->virtuemart_shipmentmethod_id);
-		if (!$shipment) {
-			return null;
-		}
-
-		$shipment_name = '';
-		$cart_prices['shipment_tax_id'] = 0;
-		$cart_prices['shipment_value'] = 0;
-
-		if (!$this->checkConditions($cart, $shipment)) {
-			return false;
-		}
-		$params = new JParameter($shipment->shipment_params);
-		$shipment_name = $this->renderPluginName($shipment);
-		$shipment_value = $this->getShipmentValue($params, $cart_prices);
-		$shipment_tax_id = $this->getShipmentTaxId($params);
-
-		$this->setCartPrices($cart_prices, $shipment_value, $shipment_tax_id);
-
-		return true;
-	}
-
-	/**
 	 * plgVmOnCheckoutCheckShipmentData
 	 * This event is fired after the payment has been processed; it selects the actual shipment rate
 	 * based on the shipto (country, zip) and/or order weight, and optionally writes extra info
@@ -215,11 +140,11 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 	 * @return mixed Null for shipments that aren't active, text (HTML) otherwise
 	 * @author Oscar van Eijk
 	 */
-	public function plgVmOnShowOrderShipmentBE($_orderId, $_vendorId, $_shipInfo) {
+	public function plgVmOnShowOrderBE($_orderId, $_vendorId, $_shipInfo) {
 		// 		if (!($this->selectedThis($this->_name, $this->getShipmentIDForOrder($_orderId)))) {
 		// 			return null;
 		// 		}
-		vmWarn('You should overwrite the function plgVmOnShowOrderShipmentBE in class ' . get_class($this));
+		vmWarn('You should overwrite the function plgVmOnShowOrderBE in class ' . get_class($this));
 		return null;
 	}
 
@@ -270,13 +195,12 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 	}
 
 	private function _getShipmentCost($params, VirtueMartCart $cart) {
-		$value = $this->getShipmentValue($params, $cart->pricesUnformatted);
-		$shipment_tax_id = $this->getShipmentTaxId($params, $cart);
+		$value = $this->getCosts($params, $cart->pricesUnformatted);
+		$shipment_tax_id = $this->getTaxId($params, $cart);
 		$tax = ShopFunctions::getTaxByID($shipment_tax_id);
 		$taxDisplay = is_array($tax) ? $tax['calc_value'] . ' ' . $tax['calc_value_mathop'] : $shipment_tax_id;
 		$taxDisplay = ($taxDisplay == -1 ) ? JText::_('COM_VIRTUEMART_PRODUCT_TAX_NONE') : $taxDisplay;
 	}
-
 
 	/**
 	 * getThisShipmentNameById
@@ -294,42 +218,7 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 		return $db->loadResult(); // TODO Error check
 	}
 
-
-	/*
-	 * CheckShipmentIsValid
-	* @author Valérie Isaksen
-	* @deprecated
-	*/
-
-	function CheckShipmentIsValid(VirtueMartCart $cart) {
-		if (!$this->selectedThis($this->_name, $cart->virtuemart_shipmentmethod_id)) {
-			return null; // Another shipment was selected, do nothing
-		}
-		$shipment = $this->getThisPluginData($cart->virtuemart_shipmentmethod_id);
-		return $this->checkConditions($cart, $shipment);
-	}
-
-
-	/**
-	 * getOrderWeight
-	 * Get the total weight for the order, based on which the proper shipment rate
-	 * can be selected.
-	 * @param object VirtueMartCart $cart Cart object
-	 * @param $to_weight_unit string weight unit
-	 * @return float Total weight for the order
-	 * @author Oscar van Eijk
-	 */
-	protected function getOrderWeight(VirtueMartCart $cart, $to_weight_unit) {
-		$weight = 0;
-		foreach ($cart->products as $prod) {
-			// 			vmdebug('hm',$prod);
-			$weight += ( ShopFunctions::convertWeigthUnit($prod->product_weight, $prod->product_weight_uom, $to_weight_unit) * $prod->quantity);
-		}
-		return $weight;
-	}
-
-
-	function getShipmentValue($params, $cart_prices) {
+	function getCosts($params, $cart_prices) {
 		$free_shipment = $params->get('free_shipment', 0);
 		if ($free_shipment && $cart_prices['salesPrice'] >= $free_shipment) {
 			return 0;
@@ -337,10 +226,5 @@ abstract class vmShipmentPlugin extends vmPSPlugin {
 			return $params->get('rate_value', 0) + $params->get('package_fee', 0);
 		}
 	}
-
-	function getShipmentTaxId($params) {
-		return $params->get('shipment_tax_id', 0);
-	}
-
 
 }

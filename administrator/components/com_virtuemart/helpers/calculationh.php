@@ -773,7 +773,7 @@ class calculationHelper {
 			if (!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipmentplugin.php');
 			JPluginHelper::importPlugin('vmshipment');
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnpluginSelectedCalculatePrice',
+			$returnValues = $dispatcher->trigger('plgVmOnSelectedCalculatePrice',
 			array('cart' => $cart,
 			    'cart_prices' => &$this->_cartPrices,
 			    'shipment_name' =>&$this->_cartData['shipmentName']  ));
@@ -832,7 +832,7 @@ class calculationHelper {
 			if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpaymentplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnPaymentSelectedCalculatePrice',
+			$returnValues = $dispatcher->trigger('plgVmOnSelectedCalculatePrice',
 					array($cart,
 					    &$this->_cartPrices,
 					    &$this->_cartData['paymentName']  ));

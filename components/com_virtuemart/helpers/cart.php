@@ -720,7 +720,7 @@ class VirtueMartCart {
 		JPluginHelper::importPlugin('vmshipment');
 
 		$dispatcher = JDispatcher::getInstance();
-		$retValues = $dispatcher->trigger('plgVmOnpluginSelected',
+		$retValues = $dispatcher->trigger('plgVmOnSelected',
 		array('cart' => $this, '_selectedShipment' => $shipment_id));
 		foreach ($retValues as $retVal) {
 			if ($retVal === true) {

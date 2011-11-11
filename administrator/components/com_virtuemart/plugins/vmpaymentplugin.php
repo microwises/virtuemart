@@ -28,7 +28,7 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 
 	private $_virtuemart_paymentmethod_id = 0;
 	private $_payment_name = '';
-	protected $payments;
+// 	protected $payments;
 
 	/**
 	 * Method to create te plugin specific table; must be reimplemented.
@@ -117,11 +117,11 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 			}
 		}
 		$html = array();
-		foreach ($this->payments as $payment) {
-			if ($this->checkConditions($cart->pricesUnformatted, $payment)) {
+		foreach ($this->methods as $payment) {
+			if ($this->checkConditions($cart, $payment, $cart->pricesUnformatted)) {
 				//vmdebug('plgVmOnSelectPayment', $payment->payment_name, $payment->payment_params);
 				$params = new JParameter($payment->payment_params);
-				$paymentSalesPrice = $this->calculateSalesPrice($this->getPaymentValue($params, $cart), $this->getPaymentTaxId($params, $cart));
+				$paymentSalesPrice = $this->calculateSalesPrice($params->get('cost', 0), $this->getPaymentTaxId($params, $cart));
 				$payment->payment_name = $this->renderPluginName($payment);
 				$html [] = $this->getPaymentHtml($payment, $selectedPayment, $paymentSalesPrice);
 			}
@@ -156,35 +156,8 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	 * @return boolean True when the data was valid, false otherwise. If the plugin is not activated, it should return null.
 	 * @author Max Milbers
 	 */
-	public function plgVmOnCheckoutCheckPaymentData() {
-		return null;
-	}
+	abstract function plgVmOnCheckoutCheckPaymentData() ;
 
-	public function plgVmOnPaymentSelectedCalculatePrice(VirtueMartCart $cart, array &$cart_prices, $payment_name) {
-		if (!$this->selectedThis($cart->virtuemart_paymentmethod_id)) {
-			return null; // Another payment was selected, do nothing
-		}
-
-		if (!($payment = $this->getThisPaymentData($cart->virtuemart_paymentmethod_id) )) {
-			return null;
-		}
-
-		$payment_name = '';
-		$cart_prices['payment_tax_id'] = 0;
-		$cart_prices['payment_value'] = 0;
-
-		if (!$this->checkConditions($cart_prices, $payment)) {
-			return false;
-		}
-		$params = new JParameter($payment->payment_params);
-		$payment_name = $this->renderPluginName($payment);
-		$payment_value = $this->getPaymentValue($params, $cart_prices);
-		$payment_tax_id = $this->getPaymentTaxId($params);
-
-		$this->setCartPrices($cart_prices, $payment_value, $payment_tax_id);
-
-		return true;
-	}
 
 	/**
 	 * plgVmOnPaymentResponseReceived
@@ -282,44 +255,6 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	 */
 	abstract function plgVmOnConfirmedOrderGetPaymentForm($order_number, $orderData, $return_context, &$html, &$new_status);
 
-	/**
-	 * This method is fired when showing the order details in the frontend.
-	 * It displays the the payment method-specific data.
-	 * All plugins *must* reimplement this method.
-	 *
-	 * @param integer $virtuemart_order_id The order ID
-	 * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
-	 * @author Max Milbers
-	 * @author Oscar van Eijk
-	 */
-	function plgVmOnShowOrderFE($virtuemart_order_id) {
-		return parent::getOrderPluginNamebyOrderId($virtuemart_order_id);
-	}
-
-
-	/**
-	 * This event is fired each time the status of an order is changed to Cancelled.
-	 * It can be used to refund payments, void authorization etc.
-	 * Return values are ignored.
-	 *
-	 * Note for plugin developers: you are not required to reimplement this method, but if you
-	 * do so, it MUST start with this code:
-	 *
-	 * 	$_paymethodID = $this->getPaymentMethodForOrder($_orderID);
-	 * 	if (!$this->selectedThisMethod($this->_name, $_paymethodID)) {
-	 * 		return;
-	 * 	}
-	 *
-	 * @author Oscar van Eijk
-	 * @param int $_orderID
-	 * @param char $_oldStat Previous order status
-	 * @param char $_newStat New order status
-	 */
-	/*
-	 function plgVmOnCancelPayment($_orderID, $_oldStat, $_newStat) {
-	return;
-	}
-	*/
 
 	/**
 	 * plgVmOnShipOrderPayment
@@ -386,35 +321,6 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	 * @author Oscar van Eijk
 	 * @return True if the calling plugin has the given payment ID
 	 */
-	final protected function selectedThis($pid) {
-		$db = JFactory::getDBO();
-
-		if (VmConfig::isJ15()) {
-			$q = 'SELECT count(*) AS c
-            		FROM #__virtuemart_paymentmethods AS vm , #__plugins AS j
-            		WHERE vm.virtuemart_paymentmethod_id="' . (int) $pid . '"
-            		AND   vm.payment_jplugin_id = j.id
-					AND   j.element = "' . $db->getEscaped($this->_name) . '"';
-		} else {
-			$q = 'SELECT count(*) AS c
-            		FROM #__virtuemart_paymentmethods AS vm
-            		, #__extensions AS j
-            		WHERE vm.virtuemart_paymentmethod_id="' . (int) $pid . '"
-            		AND   vm.payment_jplugin_id = j.extension_id
-            		AND   j.element = "' . $db->getEscaped($this->_name) . '"';
-		}
-
-		$db->setQuery($q);
-		return $db->loadResult(); // TODO Error check
-	}
-
-	/**
-	 * This method checks if the selected payment method matches the current plugin
-	 * @param string $_name Element name, taken from the plugin filename
-	 * @param int $_pid The payment method ID
-	 * @author Oscar van Eijk
-	 * @return True if the calling plugin has the given payment ID
-	 */
 	final protected function getPaymentMethod($payment_id) {
 		return parent::getPluginMethod($payment_id);
 	}
@@ -426,8 +332,8 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	 */
 	protected function getPaymentMethods($vendorId) {
 
-		$this->payments = parent::getPluginMethods($vendorId);
-		return $this->payments;
+		$this->methods = parent::getPluginMethods($vendorId);
+		return $this->methods;
 	}
 
 	/**
@@ -515,8 +421,8 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 			return false;
 		}
 
-		foreach ($this->payments as $payment) {
-			if ($this->checkConditions($cart_prices, $payment)) {
+		foreach ($this->methods as $payment) {
+			if ($this->checkConditions($cart, $payment, $cart_prices)) {
 				$nbPayments++;
 				$virtuemart_paymentmethod_id = (int) $payment->virtuemart_paymentmethod_id;
 			}
@@ -535,7 +441,7 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 	*
 	*/
 
-	function checkConditions($cart_prices, $payment) {
+	function checkConditions($cart, $payment, $cart_prices) {
 
 		$params = new JParameter($payment->payment_params);
 		$amount = $cart_prices['salesPrice'];
@@ -546,25 +452,12 @@ abstract class vmPaymentPlugin extends vmPSPlugin {
 		return $amount_cond;
 	}
 
-	function getPaymentValue($params) {
-		return $params->get('payment_value', 0);
-	}
-
-	function getPaymentTaxId($params) {
-		return $params->get('payment_tax_id', 0);
-	}
-
-	function getPaymentCost($params, $cart) {
-		return $params->get('payment_value', 0);
-	}
-
-
 	/*
 	 * @deprecated
 	*/
 	function checkPaymentIsValid(VirtueMartCart $cart, array $cart_prices) {
 		$payment = $this->getThisPaymentData($cart->virtuemart_paymentmethod_id);
-		return $this->checkConditions($cart_prices, $payment);
+		return $this->checkConditions($cart, $payment, $cart_prices);
 	}
 
 

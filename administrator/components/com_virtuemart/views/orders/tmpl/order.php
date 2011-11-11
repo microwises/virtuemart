@@ -384,7 +384,7 @@ $tt=$this;
 	<tr>
 		<td valign="top"><?php
 		$_dispatcher = JDispatcher::getInstance();
-		$returnValues = $_dispatcher->trigger('plgVmOnShowOrderShipmentBE',array(
+		$returnValues = $_dispatcher->trigger('plgVmOnShowOrderBE',array(
 			 $this->orderID
 			,$this->orderbt->virtuemart_vendor_id
 			,$this->virtuemart_shipmentmethod_id

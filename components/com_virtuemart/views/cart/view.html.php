@@ -217,7 +217,7 @@ class VirtueMartViewCart extends JView {
 		if (!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipmentplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
 		$dispatcher = JDispatcher::getInstance();
-		$shipments_shipment_rates = $dispatcher->trigger('plgVmOnSelectShipment', array('cart' => $this->cart,
+		$shipments_shipment_rates = $dispatcher->trigger('plgVmOnSelected', array('cart' => $this->cart,
 	    'selectedShipment' => $selectedShipment));
 		// if no shipment rate defined
 		$found_shipment_method = false;

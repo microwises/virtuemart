@@ -177,7 +177,7 @@ class plgVmShipmentWeight_countries extends vmShipmentPlugin {
 	 * @return mixed Null for shipments that aren't active, text (HTML) otherwise
 	 * @author Valerie Isaksen
 	 */
-	public function plgVmOnShowOrderShipmentBE($virtuemart_order_id, $vendorId, $virtuemart_shipmentmethod_id) {
+	public function plgVmOnShowOrderBE($virtuemart_order_id, $vendorId, $virtuemart_shipmentmethod_id) {
 		if (!($this->selectedThis($this->_name, $virtuemart_shipmentmethod_id))) {
 			return null;
 		}
