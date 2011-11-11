@@ -78,7 +78,8 @@ class VirtuemartViewCustom extends JView {
 
 		parent::display($tpl);
 	}
-		function renderInstalledCustomPlugins($selected)
+
+	function renderInstalledCustomPlugins($selected)
 	{
 		$db = JFactory::getDBO();
 
@@ -95,8 +96,15 @@ class VirtuemartViewCustom extends JView {
 		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmcustom" AND `'.$enable.'`="1" ';
 		$db->setQuery($q);
 
-		$result = $db->loadAssocList($ext_id);
-		return VmHTML::select($result, 'custom_jplugin_id', $selected,"",$ext_id, 'name');
+		$results = $db->loadAssocList($ext_id);
+        $lang =& JFactory::getLanguage();
+		foreach ($results as &$result) {
+        $filename = 'plg_' .strtolower ( $result['name']).'.sys';
+		
+        $lang->load($filename, JPATH_ADMINISTRATOR);
+		//print_r($lang);
+		}
+		return VmHTML::select($results, 'custom_jplugin_id', $selected,"",$ext_id, 'name');
 
 		return JHtml::_('select.genericlist', $result, 'custom_jplugin_id', null, $ext_id, 'name', $selected);
 	}
