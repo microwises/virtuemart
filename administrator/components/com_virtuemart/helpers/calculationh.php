@@ -533,7 +533,7 @@ class calculationHelper {
 
 				JPluginHelper::importPlugin('vmcalculation');
 				$dispatcher = JDispatcher::getInstance();
-				$continue = $dispatcher->trigger('InGatherEffectRulesBill', array($rule, $relateToBaseAmount, $baseprice, $this->_cartPrices,$price);
+				$continue = $dispatcher->trigger('InGatherEffectRulesBill', array($rule, $relateToBaseAmount, $baseprice, $this->_cartPrices,$price));
 				if($continue) continue;
 
 				if ($relateToBaseAmount) {
