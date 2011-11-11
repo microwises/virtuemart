@@ -31,21 +31,21 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	/**
 	* plgVmOnSelected
-	* This event is fired after the shipment method has been selected. It can be used to store
-	* additional shipment info in the cart.
+	* This event is fired after the  method has been selected. It can be used to store
+	* additional  info in the cart.
 	*
 	* @param object $cart Cart object
-	* @param integer $selectedShipment ID of the shipment selected
+	* @param integer $selected ID of the method selected
 	* @return boolean True on succes, false on failures, null when this plugin was not selected.
 	* On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
 	*
 	* @author Valerie Isaksen
 	* @author Max Milbers
 	*/
-	public function plgVmOnSelected(VirtueMartCart $cart, $selectedShipment = 0) {
+	public function plgVmOnSelected(VirtueMartCart $cart, $selected = 0) {
 
-		if (!$this->selectedThis($this->_name, $selectedShipment)) {
-			return null; // Another shipment was selected, do nothing
+		if (!$this->selectedThis($this->_name, $selected)) {
+			return null; // Another  was selected, do nothing
 		}
 
 		return true;
@@ -53,23 +53,23 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	/*
 	* plgVmOnSelectedCalculatePrice
-	* Calculate the price (value, tax_id) of the selected Shipment
+	* Calculate the price (value, tax_id) of the selected method
 	* It is called by the calculator
 	* This function does NOT to be reimplemented. If not reimplemented, then the default values from this function are taken.
 	* @author Valerie Isaksen
 	* @cart: VirtueMartCart the current cart
 	* @cart_prices: array the new cart prices
-	* @shipmentTable Shipments: shipment  rate description
-	* @return null if the shipment was not selected, false if the shiiping rate is not valid any more, true otherwise
+	* @return null if the method was not selected, false if the shiiping rate is not valid any more, true otherwise
 	*
 	*
 	*/
-	public function plgVmOnSelectedCalculatePrice(VirtueMartCart $cart, array &$cart, $payment, $cart_prices_name) {
-		if (!$this->selectedThis($cart->virtuemart_paymentmethod_id)) {
-			return null; // Another payment was selected, do nothing
+	public function plgVmOnSelectedCalculatePrice(VirtueMartCart $cart, array &$cart, $method, $cart_prices_name) {
+	    $id=$this->_idName;
+		if (!$this->selectedThis($cart->$id)) {
+			return null; // Another method was selected, do nothing
 		}
 
-		if (!($payment = $this->getThisPaymentData($cart->virtuemart_paymentmethod_id) )) {
+		if (!($method = $this->getThisPaymentData($cart->$id) )) {
 			return null;
 		}
 
@@ -77,12 +77,11 @@ abstract class vmPSPlugin extends vmPlugin {
 		$cart_prices['payment_tax_id'] = 0;
 		$cart_prices['cost'] = 0;
 
-		if (!$this->checkConditions($cart, $payment, $cart_prices)) {
+		if (!$this->checkConditions($cart, $method, $cart_prices)) {
 			return false;
 		}
 		$params = new JParameter($payment->payment_params);
-		$payment_name = $this->renderPluginName($payment);
-		$payment_tax_id = $this->getPaymentTaxId($params);
+		$payment_name = $this->renderPluginName($method);
 
 		$this->setCartPrices($cart_prices);
 
@@ -115,7 +114,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * It displays the method-specific data.
 	 *
 	 * @param integer $order_id The order ID
-	 * @return mixed Null for shipments that aren't active, text (HTML) otherwise
+	 * @return mixed Null for methods that aren't active, text (HTML) otherwise
 	 * @author Max Milbers
 	 * @author Valerie Isaksen
 	 */
@@ -173,7 +172,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 
 	function plgVmOnShowOrderPrint($order_number, $method_id) {
-		if (!($order_shipment_name = $this->getOrderPluginName($order_number, $method_id))) {
+		if (!($order_name = $this->getOrderPluginName($order_number, $method_id))) {
 			return null;
 		}
 
@@ -186,7 +185,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		. '	</thead>' . "\n"
 		. '	<tr>' . "\n"
 		. '		<td class="key">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_' . $this->_type . '_LBL') . ': </td>' . "\n"
-		. '		<td align="left">' . $order_shipment_name . '</td>' . "\n"
+		. '		<td align="left">' . $order_name . '</td>' . "\n"
 		. '	</tr>' . "\n";
 
 		$html .= '</table>' . "\n";
@@ -208,21 +207,21 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	/**
-	* Save updated order data to the shipment specific table
+	* Save updated order data to the method specific table
 	*
 	* @param array $_formData Form data
 	* @return mixed, True on success, false on failures (the rest of the save-process will be
-	* skipped!), or null when this shipment is not actived.
+	* skipped!), or null when this method is not actived.
 	* @author Oscar van Eijk
 	*/
 	abstract function plgVmOnUpdateOrder($_formData);
 
 	/**
-	 * Save updated orderline data to the shipment specific table
+	 * Save updated orderline data to the method specific table
 	 *
 	 * @param array $_formData Form data
 	 * @return mixed, True on success, false on failures (the rest of the save-process will be
-	 * skipped!), or null when this shipment is not actived.
+	 * skipped!), or null when this method is not actived.
 	 * @author Oscar van Eijk
 	 */
 	abstract function plgVmOnUpdateOrderLine($_formData);
@@ -234,7 +233,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	*
 	* @param integer $_orderId The order ID
 	* @param integer $_lineId
-	* @return mixed Null for shipments that aren't active, text (HTML) otherwise
+	* @return mixed Null for method that aren't active, text (HTML) otherwise
 	* @author Oscar van Eijk
 	*/
 	abstract function plgVmOnEditOrderLineBE($_orderId, $_lineId);
@@ -246,7 +245,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	*
 	* @param integer $_orderId The order ID
 	* @param integer $_lineId
-	* @return mixed Null for shipments that aren't active, text (HTML) otherwise
+	* @return mixed Null for method that aren't active, text (HTML) otherwise
 	* @author Oscar van Eijk
 	*/
 	public function plgVmOnShowOrderLineFE($_orderId, $_lineId);
@@ -277,30 +276,30 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	/**
-	* This method checks if the selected shipment matches the current plugin
+	* This method checks if the selected method matches the current plugin
 	* @param string $_name Element name, taken from the plugin filename
-	* @param int $_sid The shipment ID
+	* @param int $_sid The method ID
 	* @author Oscar van Eijk
 	* @return True if the calling plugin has the given payment ID
 	*
 	*/
-	final protected function selectedThis($sid) {
+	final protected function selectedThis($id) {
 		$db = JFactory::getDBO();
 
 		if (VmConfig::isJ15()) {
 			$q = 'SELECT COUNT(*) AS c '
-			. 'FROM #__virtuemart_shipmentmethods AS vm '
+			. 'FROM #__virtuemart_'.$this->_psType.'methods AS vm '
 			. ',    #__plugins AS j '
-			. "WHERE vm.virtuemart_shipmentmethod_id = '$sid' "
-			. 'AND   vm.shipment_jplugin_id = j.id '
+			. "WHERE vm.virtuemart_'.$this->_psType.'method_id = '$id' "
+			. 'AND   vm.'.$this->_psType.'_jplugin_id = j.id '
 				. "AND   j.element = '$this->_name'";
 		} else {
 		$q = 'SELECT COUNT(*) AS c '
-				. 'FROM #__virtuemart_shipmentmethods AS vm '
+				. 'FROM #__virtuemart_'.$this->_psType.'methods AS vm '
 				. ',      #__extensions    AS      j '
-				. 'WHERE j.`folder` = "vmshipment" '
-				. "AND vm.virtuemart_shipmentmethod_id = '$sid' "
-		. 'AND   vm.shipment_jplugin_id = j.extension_id '
+				. 'WHERE j.`folder` = "'.$this->_type.'" '
+				. "AND vm.virtuemart_'.$this->_psType.'method_id = '$id' "
+		. 'AND   vm.'.$this->_psType.'_jplugin_id = j.extension_id '
 				. "AND   j.element = '$this->_name'";
 			}
 
@@ -482,7 +481,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$db = JFactory::getDBO();
 
 		// 		$q = 'SELECT * FROM #__virtuemart_shipmentmethods WHERE `virtuemart_shipmentmethod_id`="' . $shipment_id . '" AND `shipment_element` = "'.$this->_name.'"';
-		$q = 'SELECT * FROM #__virtuemart_' . $this->_psType . 'methods WHERE `virtuemart_' . $this->_psType . 'method_id`="' . $plugin_id . '" ';
+		$q = 'SELECT * FROM #__virtuemart_' . $this->_psType . 'methods WHERE `'.$this->_idName.'`="' . $plugin_id . '" ';
 
 		$db->setQuery($q);
 		return $db->loadObject();
@@ -548,19 +547,19 @@ abstract class vmPSPlugin extends vmPlugin {
 	*/
 
 	function getSelectable(VirtueMartCart $cart, &$method_id, $cart_prices) {
-		$nbShipment = 0;
+		$nbMethod = 0;
 		if ($this->methods = $this->getPluginMethods($cart->vendorId) === false) {
 			return false;
 		}
 
 		foreach ($this->methods as $method) {
 			if ($this->checkConditions($cart, $method, $cart_prices)) {
-				$nbShipment++;
+				$nbMethod++;
 				$idName = $this->_idName;
 				$method_id = $method->$idName;
 			}
 		}
-		return $nbShipment;
+		return $nbMethod;
 	}
 
 	/**
@@ -598,15 +597,15 @@ abstract class vmPSPlugin extends vmPlugin {
 	/**
 	 * Get Plugin Data for a go given plugin ID
 	 * @author Valérie Isaksen
-	 * @param int $virtuemart_shipmentmethod_id The Shipment ID
-	 * @return  Shipment data
+	 * @param int $pluginmethod_id The method ID
+	 * @return  method data
 	 */
 	final protected function getThisPluginData($pluginmethod_id) {
 
 		$db = JFactory::getDBO();
 		$q = 'SELECT * '
 		. 'FROM #__virtuemart_' . $this->_psType . 'methods '
-		. "WHERE `" .$this->_idName; . "` ='" . $pluginmethod_id . "' ";
+		. "WHERE `" .$this->_idName . "` ='" . $pluginmethod_id . "' ";
 		$db->setQuery($q);
 		return $db->loadObject();
 	}
@@ -645,7 +644,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	function setCartPrices(&$cart_prices) {
 
 		$value = $params->get('cost', 0);
-		$tax_id = $params->get('tax_id', 0)
+		$tax_id = $params->get('tax_id', 0);
 
 		$_psType = ucfirst($this->_psType);
 		$cart_prices[$this->_psType . 'Value'] = $value;
@@ -670,10 +669,10 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	/*
-	 * calculateSalesPriceShipment
-	* @param $shipment_value
+	 * calculateSalesPrice
+	* @param $value
 	* @param $tax_id: tax id
-	* @return $salesPriceShipment
+	* @return $salesPrice
 	*/
 
 	protected function calculateSalesPrice($value, $tax_id) {
@@ -716,7 +715,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * Check if this plugin has methods for the current vendor.
 	 * @author Oscar van Eijk
 	 * @param integer $_vendorId The vendor ID taken from the cart.
-	 * @return True when a shipment_id was found for this vendor, false otherwise
+	 * @return True when a  id was found for this vendor, false otherwise
 	 *
 	 * @deprecated ????
 	 */
