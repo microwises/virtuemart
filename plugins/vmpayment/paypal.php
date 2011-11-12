@@ -210,9 +210,9 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	    "country" => ShopFunctions::getCountryByID($usrBT['virtuemart_country_id'], 'country_3_code'),
 	    "email" => $usrBT['email'],
 	    "night_phone_b" => $usrBT['phone_1'],
-	    "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginResponse&task=pluginResponseReceived&pname=' . $this->_name . "&pm=" . $orderData->virtuemart_paymentmethod_id),
-	    "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginNotification&tmpl=component'),
-	    "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginResponse&task=pluginUserCancel&on=' . $order_number . '&pm=' . $orderData->virtuemart_paymentmethod_id),
+	    "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginResponse&task=paymentResponseReceived&pname=' . $this->_name . "&pm=" . $orderData->virtuemart_paymentmethod_id),
+	    "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=paymentNotification&tmpl=component'),
+	    "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginResponse&task=paymentUserCancel&on=' . $order_number . '&pm=' . $orderData->virtuemart_paymentmethod_id),
 	    "undefined_quantity" => "0",
 	    "ipn_test" => $params->get('debug'),
 	    "pal" => "NRUBJXESJTY24",
@@ -229,7 +229,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
 	// Prepare data that should be stored in the database
 	$dbValues['order_number'] = $order_number;
-	$dbValues['payment_name'] = parent::renderPluginName($payment);
+	$dbValues['payment_name'] = parent::renderPluginName($payment,$params);
 	$dbValues['virtuemart_paymentmethod_id'] = $cart->virtuemart_paymentmethod_id;
 	$dbValues['paypal_custom'] = $return_context;
 	// TODO wait for PAYPAL return ???
@@ -606,29 +606,51 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 	return $params->get('cost', 0);
     }
 
-	/**
-	 * Check if the payment conditions are fulfilled for this payment method
-	* @author: Valerie Isaksen
-	*
-	* @param $cart_prices: cart prices
-	* @param $payment
-	* @return true: if the conditions are fulfilled, false otherwise
-	*
-	*/
+    /**
+     * Check if the payment conditions are fulfilled for this payment method
+     * @author: Valerie Isaksen
+     *
+     * @param $cart_prices: cart prices
+     * @param $payment
+     * @return true: if the conditions are fulfilled, false otherwise
+     *
+     */
+    protected function checkConditions($cart, $payment, $cart_prices) {
 
-	protected function checkConditions($cart, $payment, $cart_prices) {
+	$params = new JParameter($payment->payment_params);
+	$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
-		$params = new JParameter($payment->payment_params);
-$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
+	$amount = $cart_prices['salesPrice'];
+	$amount_cond = ($amount >= $params->get('min_amount', 0) AND $amount <= $params->get('max_amount', 0)
+			OR
+			($params->get('min_amount', 0) <= $amount AND ($params->get('max_amount', '') == '') ));
 
-// 		if(empty($cart_prices['salesPrice']))
-		$amount = $cart_prices['salesPrice'];
-		$amount_cond = ($amount >= $params->get('min_amount', 0) AND $amount <= $params->get('max_amount', 0)
-		OR
-		($params->get('min_amount', 0) <= $amount AND ($params->get('max_amount', '') == '') ));
-
-		return $amount_cond;
+	$countries = array();
+	$country_list = $params->get('countries');
+	if (!empty($country_list)) {
+	    if (!is_array($country_list)) {
+		$countries[0] = $country_list;
+	    } else {
+		$countries = $country_list;
+	    }
 	}
+	// probably did not gave his BT:ST address
+	if (!is_array($address)) {
+	    $address = array();
+	    $address['virtuemart_country_id'] = 0;
+	}
+
+	if (!isset($address['virtuemart_country_id']))
+	    $address['virtuemart_country_id'] = 0;
+	if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
+	    if ($amount_cond) {
+		return true;
+	    }
+	}
+
+	return false;
+    }
+
 }
 
 // No closing tag

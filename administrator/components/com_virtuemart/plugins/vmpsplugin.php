@@ -159,7 +159,7 @@ abstract class vmPSPlugin extends vmPlugin {
  * @param string $psType either payment or shipment
  * @return boolean
  */
-    private function selectedThisType($psType) {
+    public function selectedThisType($psType) {
 	if ($this->_psType <> $psType) {
 	    return false;
 	} else {

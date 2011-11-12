@@ -33,9 +33,9 @@ class JElementVmCurl extends JElement {
     function fetchElement($name, $value, &$node, $control_name) {
         JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
 	if (!function_exists('curl_init')) {
-            return JTExt::_('VMPAYMENT_AUTHORIZENET_CURL_LIBRARY_NOT_INSTALLED');
+            return JTExt::_('VMPAYMENT_ALATAK_AUTHORIZENET_CURL_LIBRARY_NOT_INSTALLED');
 	} else {
-	    return JTExt::_('VMPAYMENT_AUTHORIZENET_CURL_LIBRARY_INSTALLED');
+	    return JTExt::_('VMPAYMENT_ALATAK_AUTHORIZENET_CURL_LIBRARY_INSTALLED');
 	}
     }
 

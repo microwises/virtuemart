@@ -257,7 +257,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			// orders :
 			$fields = array('payment_method_id'=>'`virtuemart_paymentmethod_id` INT(11 ) NOT NULL ',
-															'ship_method_id'=>'`virtuemart_shipmentmethod_id` INT(11 ) NOT NULL '
+					'ship_method_id'=>'`virtuemart_shipmentmethod_id` INT(11 ) NOT NULL ',
+					'order_shipping'=>'`order_shipment` decimal(10,2) DEFAULT NULL ',
+					'order_shipping_tax'=>'`order_shipment_tax` decimal(10,2) DEFAULT NULL ',
 			);
 			$this->alterTable('#__virtuemart_orders',$fields);
 

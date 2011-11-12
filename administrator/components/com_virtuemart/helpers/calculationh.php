@@ -790,7 +790,7 @@ class calculationHelper {
 			if (empty($ship_id)) return;
 
 			// Handling shipment plugins
-			if (!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipmentplugin.php');
+			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmshipment');
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnSelectedCalculatePrice',array('shipment', $cart, &$this->_cartPrices, &$this->_cartData['shipmentName']  ));

@@ -22,7 +22,7 @@
 		default="default" hide_default="1" hide_none="1"
 		stripext="0"   exclude="^_" />
 	<param name="payment_description" type="textarea" default="" label="VMPAYMENT_STANDARD_DESCRIPTION" description="VMPAYMENT_STANDARD_DESCRIPTION_DESC" rows="5" cols="30" />
-	<param name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMPAYMENT_STANDARD_COUNTRIES_DESC" description="VMPAYMENT_PAYPAL_COUNTRIES_DESC"/>
+	<param name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMPAYMENT_STANDARD_COUNTRIES" description="VMPAYMENT_STANDARD_COUNTRIES_DESC"/>
 	<param name="min_amount" type="text"  label="VMPAYMENT_STANDARD_MIN_AMOUNT" description="VMPAYMENT_STANDARD_MIN_AMOUNT_EXPLAIN" />
 	<param name="max_amount" type="text"  label="VMPAYMENT_STANDARD_MAX_AMOUNT" description="VMPAYMENT_STANDARD_MAX_AMOUNT_EXPLAIN" />
 	<param name="cost" type="text"  label="VMPAYMENT_STANDARD_FEE" description="VMPAYMENT_STANDARD_FEE_EXPLAIN" />
@@ -38,7 +38,7 @@
              	default="default" hide_default="1" hide_none="1"
              	stripext="0"  exclude="^_" />
 	<field name="payment_description" type="textarea" default="" label="VMPAYMENT_STANDARD_DESCRIPTION" description="VMPAYMENT_STANDARD_DESCRIPTION_DESC" rows="5" cols="30" />
-	<field name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMPAYMENT_PAYPAL_COUNTRIES_DESC" description="VMPAYMENT_PAYPAL_COUNTRIES_DESC"/>
+	<field name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMPAYMENT_STANDARD_COUNTRIES" description="VMPAYMENT_STANDARD_COUNTRIES_DESC"/>
 
 	<field name="min_amount" type="text"  label="VMPAYMENT_STANDARD_MIN_AMOUNT" description="VMPAYMENT_STANDARD_MIN_AMOUNT_EXPLAIN" />
 	<field name="max_amount" type="text"  label="VMPAYMENT_STANDARD_MAX_AMOUNT" description="VMPAYMENT_STANDARD_MAX_AMOUNT_EXPLAIN" />
