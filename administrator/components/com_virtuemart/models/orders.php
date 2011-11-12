@@ -333,7 +333,7 @@ class VirtueMartModelOrders extends VmModel {
 			$oldStatus = JRequest::getVar('current_order_status', array());
 			// Get the list of updated orders in post
 			foreach ($orders as $key => $_order) {
-				if ( $order['order_status'] !== $oldStatus[$key]) $orders[$key] = $_order;
+				if ( $_order['order_status'] !== $oldStatus[$key]) $orders[$key] = $_order;
 			}
 			//$order_ids = array_diff_assoc(JRequest::getVar('order_status', array()), JRequest::getVar('current_order_status', array()));
 
@@ -417,6 +417,7 @@ class VirtueMartModelOrders extends VmModel {
 					);
 				}
 
+
 				if ($data->store()) {
 					$q = 'SELECT virtuemart_order_item_id
 										FROM #__virtuemart_order_items
@@ -457,7 +458,8 @@ class VirtueMartModelOrders extends VmModel {
 				} else {
 					$error++;
 				}
-			}
+				
+			}//print_r($data); jExit();
 		}
 
 	}

@@ -96,12 +96,11 @@ if (count($this->orderslist) > 0) {
 	<?php echo JHTML::_('link', '#', JText::_('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_comment')); ?>
 			</td>
 			<!-- Update -->
-			<td>
-			    <input type="checkbox" value=1 class="inputbox" name="orders[<?php echo $order->virtuemart_order_id; ?>][customer_notified]" /><?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?>
+			<td><?php echo VmHTML::checkbox('orders['.$order->virtuemart_order_id.'][customer_notified]', 0 ) . JText::_('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?>
 			    <br />
-			    &nbsp;&nbsp;&nbsp;<input type="checkbox" value=1 class="inputbox" name="orders[<?php echo $order->virtuemart_order_id; ?>][customer_send_comment]" /><?php echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT'); ?>
+			    &nbsp;&nbsp;&nbsp;<?php echo VmHTML::checkbox('orders['.$order->virtuemart_order_id.'][customer_send_comment]', 1 ) . JText::_('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT'); ?>
 			    <br />
-			    <input type="checkbox" value=1 class="inputbox" name="orders[<?php echo $order->virtuemart_order_id; ?>][update_lines]"  checked="checked" /><?php echo JText::_('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS'); ?>
+			    <?php echo VmHTML::checkbox('orders['.$order->virtuemart_order_id.'][update_lines]', 1 ) . JText::_('COM_VIRTUEMART_ORDER_UPDATE_LINESTATUS'); ?>
 			</td>
 			<!-- Total -->
 			<td><?php echo $order->order_total; ?></td>

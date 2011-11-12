@@ -51,9 +51,9 @@ class TableOrders extends VmTable {
 	/** @var text Serialized tax details */
 	var $order_tax_details = null;
 	/** @var decimal Shipment costs */
-	var $order_shipment = 0.00000;
+	var $order_shipping = 0.00000;
 	/** @var decimal Shipment cost tax */
-	var $order_shipment_tax = 0.00000;
+	var $order_shipping_tax = 0.00000;
 	/** @var decimal Shipment costs */
 	var $order_payment = 0.00000;
 	/** @var decimal Shipment cost tax */
