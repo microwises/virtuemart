@@ -104,7 +104,7 @@ $this->productlist
 			$checked = JHTML::_('grid.id', $i , $product->virtuemart_product_id,null,'virtuemart_product_id');
 			$published = JHTML::_('grid.published', $product, $i );
 			?>
-			<tr class="<?php echo "row$k"; ?>">
+			<tr class="row<?php echo $k ; ?>">
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Product name -->

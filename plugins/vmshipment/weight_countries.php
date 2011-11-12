@@ -292,7 +292,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		}
 		return $zip_cond;
 	}
-
+	function plgVmOnUpdateOrder($_formData){}
+	function plgVmOnUpdateOrderLine($_formData){} 
+	function plgVmOnEditOrderLineBE ($_orderId, $_lineId){}
+	function plgVmOnShowOrderLineFE ($_orderId, $_lineId){}
 }
 
 // No closing tag

@@ -61,7 +61,7 @@ AdminUIHelper::startAdminArea();
 			$checked = JHTML::_('grid.id', $i, $row->virtuemart_shipmentmethod_id);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=shipmentmethod&task=edit&cid[]=' . $row->virtuemart_shipmentmethod_id);
 			?>
-			<tr class="<?php echo "row$k"; ?>">
+			<tr class="row<?php echo $k ; ?>">
 				<td width="10">
 					<?php echo $checked; ?>
 				</td>

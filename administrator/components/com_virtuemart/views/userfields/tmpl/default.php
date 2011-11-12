@@ -115,7 +115,7 @@ $j15 = VmConfig::isJ15();
 			$ordering = ($this->lists['order'] == 'ordering');
 			$disabled = ($ordering ?  '' : 'disabled="disabled"');
 		?>
-			<tr class="<?php echo "row$k"; ?>">
+			<tr class="row<?php echo $k ; ?>">
 				<td width="10">
 					<?php echo $checked; ?>
 				</td>

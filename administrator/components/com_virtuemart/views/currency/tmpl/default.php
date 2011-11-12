@@ -79,7 +79,7 @@ AdminUIHelper::startAdminArea();
 		$published = JHTML::_('grid.published', $row, $i);
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=currency&task=edit&cid[]=' . $row->virtuemart_currency_id);
 		?>
-	    <tr class="<?php echo "row$k"; ?>">
+	    <tr class="row<?php echo $k ; ?>">
 		<td align="center">
 			<?php echo $checked; ?>
 		</td>

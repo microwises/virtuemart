@@ -82,7 +82,7 @@ $pagination = $this->pagination;
 			if (!is_null($custom->virtuemart_custom_id)) $published = JHTML::_('grid.published', $custom, $i );
 			else $published = '';
 			?>
-			<tr class="<?php echo "row$k"; ?>">
+			<tr class="row<?php echo $k ; ?>">
 				<!-- Checkbox -->
 				<td><?php echo $checked; echo $custom->virtuemart_custom_id; ?></td>
 				<?php

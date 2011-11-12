@@ -83,7 +83,7 @@ $j15 = VmConfig::isJ15();
 			$deletelink	= JROUTE::_('index.php?option=com_virtuemart&view=orderstatus&task=remove&cid[]=' . $row->virtuemart_orderstate_id);
 			$ordering = $row->ordering ;
 		?>
-			<tr class="<?php echo "row$k"; ?>">
+			<tr class="row<?php echo $k ; ?>">
 				<td width="10">
 					<?php echo $checked; ?>
 				</td>

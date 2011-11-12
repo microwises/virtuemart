@@ -56,7 +56,7 @@ AdminUIHelper::startAdminArea();
 			$manufacturersList = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturercategories_id=' . $row->virtuemart_manufacturercategories_id);
 
 			?>
-			<tr class="<?php echo "row$k"; ?>">
+			<tr class="row<?php echo $k ; ?>">
 				<td width="10">
 					<?php echo $checked; ?>
 				</td>

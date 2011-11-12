@@ -60,7 +60,7 @@ AdminUIHelper::startAdminArea();
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=state&task=edit&virtuemart_state_id=' . $row->virtuemart_state_id);
 
 		?>
-	    <tr class="<?php echo "row$k"; ?>">
+	    <tr class="row<?php echo $k ; ?>">
 		<td width="10">
 			<?php echo $checked; ?>
 		</td>

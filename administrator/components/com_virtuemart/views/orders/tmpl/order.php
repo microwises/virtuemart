@@ -255,10 +255,10 @@ $tt=$this;
 			</tr>
 			<!-- TODO updating all correctly on do a new Cart<tr>
 				<td>
-					<input type="checkbox" name="cid[<?php echo $item->virtuemart_order_item_id; ?>]" value="<?php echo $item->virtuemart_order_item_id; ?>" />
+					<input type="checkbox" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>]" value="<?php echo $item->virtuemart_order_item_id; ?>" />
 				</td>
 				<td>
-					<input type="text" size="3" name="cid[<?php echo $item->virtuemart_order_item_id; ?>][product_quantity]" value="<?php echo $item->product_quantity; ?>"/>
+					<input type="text" size="3" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_quantity]" value="<?php echo $item->product_quantity; ?>"/>
 				</td>
 				<td>
 					<?php
@@ -276,10 +276,10 @@ $tt=$this;
 
 				</td>
 				<td>
-					<input type="text" size="8" name="cid[<?php echo $item->virtuemart_order_item_id; ?>][product_item_price]" value="<?php echo $item->product_item_price; ?>"/>
+					<input type="text" size="8" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_item_price]" value="<?php echo $item->product_item_price; ?>"/>
 				</td>
 				<td>
-					<input type="text" size="8" name="cid[<?php echo $item->virtuemart_order_item_id; ?>][product_final_price]" value="<?php echo $item->product_final_price; ?>"/>
+					<input type="text" size="8" name="item_id[<?php echo $item->virtuemart_order_item_id; ?>][product_final_price]" value="<?php echo $item->product_final_price; ?>"/>
 				</td>
 				<td>
 					<?php echo $this->currency->priceDisplay($item->product_quantity * $item->product_final_price,'',false); ?>

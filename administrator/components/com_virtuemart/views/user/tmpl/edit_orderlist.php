@@ -59,7 +59,7 @@ $j15 = VmConfig::isJ15();
 				. JHTML::_('image.site', 'printButton.png', ($j15 ? '/images/M_images/' : '/images/system/'), null, null, JText::_('COM_VIRTUEMART_PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
 
 			?>
-			<tr class="<?php echo "row$k"; ?>">
+			<tr class="row<?php echo $k ; ?>">
 				<td align="center">
 					<?php echo $n++; ?>
 				</td>

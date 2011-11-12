@@ -63,7 +63,7 @@ if (count($this->orderslist) > 0) {
     foreach ($this->orderslist as $key => $order) {
 	$checked = JHTML::_('grid.id', $i, $order->virtuemart_order_id);
 	?>
-		    <tr class="<?php echo "row$k"; ?>">
+		    <tr class="row<?php echo $k ; ?>">
 			<!-- Checkbox -->
 			<td><?php echo $checked; ?></td>
 			<!-- Order id -->

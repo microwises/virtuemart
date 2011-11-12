@@ -24,36 +24,6 @@ if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
 jimport('joomla.plugin.plugin');
 
 /**
- * Abstract class for shipment plugins.
- * This class provides some standard and abstract methods that can or must be reimplemented.
- *
- * @tutorial All methods are documented, but to make life easier, here's a short overview
- * how the methods can be used in the process order.
- * 	* _createTable() is called by the constructor. Use this method to create or alter the database table.
- * 	* When a shopper selects a shipment, plgOnSelectShipment() is fired. It displays the shipment and can be used
- * 	for collecting extra - shipment specific - info.
- * 	* After selecting, plgVmpluginSelected() can be used to store extra shipment info in the cart. The selected shipment
- * 	ID will be stored in the cart by the checkout process before this method is fired.
- * 	* plgOnConfirmShipment() is fired when the order is confirmed and stored to the database. It is called
- * 	before the rest of the order or stored, when reimplemented, it *must* include a call to parent::plgOnConfirmShipment()
- * 	(or execute the same steps to put all data in the cart)
- *
- * When a stored order is displayed in the backend, the following events are used:
- * 	* plgVmOnShowOrderBE() displays specific data about (a) shipment(s) (NOTE: this plugin is
- * 	OUTSIDE any form!)
- * 	* plgVmOnShowOrderLineShipmentBE() can be used to show information about a single orderline, e.g.
- * 	display a package code at line level when more packages are shipped.
- * 	* plgVmOnEditOrderLineBE() can be used add a package code for an order line when more
- * 	packages are shipped.
- * 	* plgVmOnUpdateOrderBE is fired inside a form. It can be used to add shipment data, like package code.
- * 	* plgVmOnSaveOrderShipmentBE() is fired from the backend after the order has been saved. If one of the
- * 	show methods above have to option to add or edit info, this method must be used to save the data.
- * 	* plgVmOnUpdateOrderLine() is fired from the backend after an order line has been saved. This method
- * 	must be reimplemented if plgVmOnEditOrderLineBE() is used.
- *
- * The frontend 1 show method:
- * 	* plgVmOnShowOrderFE() collects and displays specific data about (a) shipment(s)
- *
  * @package	VirtueMart
  * @subpackage Plugins
  * @author Oscar van Eijk
@@ -68,8 +38,9 @@ abstract class vmCustomPlugin extends JPlugin {
     protected $customs;
 
 	function __construct() {
-
-		parent::__construct('vmcustom', array());
+		
+		$subject = 'vmcustom';
+//		parent::__construct();
 
 		$this->_tablename = '#__virtuemart_product_custom_' . $this->_name;
 		$this->_createTable();
@@ -202,7 +173,10 @@ abstract class vmCustomPlugin extends JPlugin {
 
 		return $html;
 	 }
-
+	 public function GetProductStockToUpdateByPlugin($item) {
+	 
+		return $item;
+	 }
 	/**
 	 * display The plugin in Product edit view BE
 	 * extend customFields inputType

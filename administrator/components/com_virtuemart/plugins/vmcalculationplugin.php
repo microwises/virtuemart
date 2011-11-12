@@ -24,12 +24,12 @@ if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
 
 abstract class vmCalculationPlugin extends vmPlugin {
 
+	public $_type = 'calc';
+	function __construct(& $subject, $config) {
 
-	function __construct() {
+		parent::__construct($subject, $config);
 
-		parent::__construct();
-
-		$this->_tablename = '#__virtuemart_calc_' . $this->_name;
+		//$this->_tablename = '#__virtuemart_calc_' . $this->_name;
 	}
 
 	function plgVmAddRuleKindOption(&$entryPoints){

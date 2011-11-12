@@ -65,7 +65,7 @@ $option = JRequest::getWord('option');
 			$checked = JHTML::_('grid.id', $i , $review->virtuemart_rating_review_id );
 			$published = JHTML::_('grid.published', $review, $i );
 			?>
-			<tr class="<?php echo "row$k"; ?>">
+			<tr class="row<?php echo $k ; ?>">
 				<!-- Checkbox -->
 				<td><?php echo $checked; ?></td>
 				<!-- Username + time -->

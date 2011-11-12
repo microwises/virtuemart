@@ -76,7 +76,7 @@ $states = JText::_('COM_VIRTUEMART_STATE_S');
 		$editlink = JROUTE::_('index.php?option=com_virtuemart&view=country&task=edit&cid[]=' . $row->virtuemart_country_id);
 		$statelink	= JROUTE::_('index.php?option=com_virtuemart&view=state&view=state&virtuemart_country_id=' . $row->virtuemart_country_id);
 		?>
-	    <tr class="<?php echo "row$k"; ?>">
+	    <tr class="row<?php echo $k ; ?>">
 		<td width="10">
 			<?php echo $checked; ?>
 		</td>

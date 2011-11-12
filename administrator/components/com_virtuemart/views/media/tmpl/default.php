@@ -65,7 +65,7 @@ $productfileslist = $this->files;
 			if (!is_null($productfile->virtuemart_media_id)) $published = JHTML::_('grid.published', $productfile, $i );
 			else $published = '';
 			?>
-			<tr class="<?php echo "row$k"; ?>">
+			<tr class="row<?php echo $k ; ?>">
 				<!-- Checkbox -->
 				<td><?php echo $checked; echo $productfile->virtuemart_media_id; ?></td>
 				<!-- Product name -->

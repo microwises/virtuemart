@@ -187,6 +187,8 @@ class VirtuemartControllerOrders extends VmController {
 
 		if ($result['updated'] > 0)
 		    $msg = str_replace('{X}', $result['updated'], JText::_('COM_VIRTUEMART_ORDER_UPDATED_SUCCESSFULLY'));
+		else 
+			 $msg = str_replace('{X}', 0 , JText::_('COM_VIRTUEMART_ORDER_UPDATED_SUCCESSFULLY'));
 		if ($result['error'] > 0)
 		    $msg .= str_replace('{X}', $result['error'], JText::_('COM_VIRTUEMART_ORDER_NOT_UPDATED_SUCCESSFULLY'));
 
@@ -262,7 +264,7 @@ class VirtuemartControllerOrders extends VmController {
 		vmdebug('updateOrderItemStatus');
 		$mainframe = Jfactory::getApplication();
 		$model = $this->getModel('orders');
-		$_items = JRequest::getVar('cid',  0, '', 'array');
+		$_items = JRequest::getVar('item_id',  0, '', 'array');
 		//JArrayHelper::toInteger($_items);
 
 		$_orderID = JRequest::getInt('virtuemart_order_id', '');
