@@ -165,7 +165,7 @@ class VirtueMartModelOrders extends VmModel {
 		$db->setQuery($q);
 		$order['items'] = $db->loadObjectList();
 
-		vmdebug('getOrder my order',$order);
+		//vmdebug('getOrder my order',$order);
 		return $order;
 	}
 
@@ -262,7 +262,7 @@ class VirtueMartModelOrders extends VmModel {
 		$table->product_item_price = JRequest::getVar('product_item_price_'.$item, '');
 		$table->product_final_price = JRequest::getVar('product_final_price_'.$item, '');*/
 
-		vmdebug('updateSingleItem',$virtuemart_order_item_id,$order_status);
+		//vmdebug('updateSingleItem',$virtuemart_order_item_id,$order_status);
 
 		// Update order item status
 		if(empty($virtuemart_order_item_id)){
@@ -309,7 +309,7 @@ class VirtueMartModelOrders extends VmModel {
 			}
 
 			// 		$this->handleStockAfterStatusChanged($order_status,array($product),$table->order_status);
-			$this->handleStockAfterStatusChangedPerProduct($order_status, $oldOrderStatus, $table->virtuemart_product_id,$table->product_quantity);
+			$this->handleStockAfterStatusChangedPerProduct($order_status, $oldOrderStatus, $table,$table->product_quantity);
 
 		}
 
@@ -327,28 +327,23 @@ class VirtueMartModelOrders extends VmModel {
 	public function updateOrderStatus($orders=0, $order_id =0,$order_status=0){
 
 		//General change of orderstatus
+		$total = 1 ;
 		if(empty($orders)){
-			//$order_id = array();
-			$orders = JRequest::getVar('orders',  array());
-			$oldStatus = JRequest::getVar('current_order_status', array());
-			// Get the list of updated orders in post
-			foreach ($orders as $key => $_order) {
-				if ( $_order['order_status'] !== $oldStatus[$key]) $orders[$key] = $_order;
+			$orders = array();
+			$orderslist = JRequest::getVar('orders',  array());
+			$total = 0 ;
+			// Get the list of orders in post to update
+			foreach ($orderslist as $key => $order) {
+				if ( $orderslist[$key]['order_status'] !== $orderslist[$key]['current_order_status'] ) {
+					$orders[$key] =  $orderslist[$key];
+					$total++;
+				}
 			}
-			//$order_ids = array_diff_assoc(JRequest::getVar('order_status', array()), JRequest::getVar('current_order_status', array()));
-
-			/* Get the list of orders to notify */
-			// TODO as getInt ???
-
-
-			/* See where the lines should be updated too */
-			// TODO as getInt ???
-			//$update_lines = JRequest::getVar('update_lines', array());
-
-			/* Get the list of comments */
-
 		}
 
+		if(!is_array($orders)){
+			$orders = array($orders);
+		}
 		// TODO This is not the most logical place for these plugins (or better; the method updateStatus() must be renamed....)
 		if(!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmshipmentplugin.php');
 		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpaymentplugin.php');
@@ -362,16 +357,14 @@ class VirtueMartModelOrders extends VmModel {
 			}
 		}
 
-		if(!is_array($orders)){
-			$orders = array($orders);
-		}
+
 
 		/* Process the orders to update */
 		$updated = 0;
 		$error = 0;
 		if ($orders) {
-			$notify = JRequest::getVar('customer_notified', array()); // ???
-			$comments = JRequest::getVar('comments', array()); // ???
+			// $notify = JRequest::getVar('customer_notified', array()); // ???
+			// $comments = JRequest::getVar('comments', array()); // ???
 			foreach ($orders as $virtuemart_order_id => $order) {
 				if  ($order_id >0) $virtuemart_order_id= $order_id;
 				/* Get customer notification */
@@ -454,13 +447,15 @@ class VirtueMartModelOrders extends VmModel {
 							}
 						}
 					}
-
+					$updated ++;
 				} else {
 					$error++;
 				}
 				
-			}//print_r($data); jExit();
+			}
 		}
+		$result = array( 'updated' => $updated , 'error' =>$error , 'total' => $total ) ;
+		return $result ;
 
 	}
 
@@ -699,13 +694,13 @@ class VirtueMartModelOrders extends VmModel {
 	function handleStockAfterStatusChanged($newState,$products,$oldState = 'P'){
 // after cart
 		foreach ($products as $prod) {
-			$this->handleStockAfterStatusChangedPerProduct($newState,$oldState,$prod->virtuemart_product_id,$prod->quantity);
+			$this->handleStockAfterStatusChangedPerProduct($newState,$oldState,$prod,$prod->quantity);
 		}
 	}
 
 
 
-	function handleStockAfterStatusChangedPerProduct($newState, $oldState,$productId, $quantity) {
+	function handleStockAfterStatusChangedPerProduct($newState, $oldState,$product, $quantity) {
 
 		if($newState == $oldState) return;
 		$StatutWhiteList = array('P','C','X','R','S','N');
@@ -746,7 +741,7 @@ class VirtueMartModelOrders extends VmModel {
 		if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
 		$productModel = new VirtueMartModelProduct();
 
-		$productModel->updateStock ($productId, $quantity,$product_in_stock,$product_ordered);
+		$productModel->updateStock ($product, $quantity,$product_in_stock,$product_ordered);
 
 	}
 
@@ -851,7 +846,7 @@ class VirtueMartModelOrders extends VmModel {
 				$this->setError($this->getError());
 				return false;
 			}
-			$this->handleStockAfterStatusChangedPerProduct( $_orderItems->order_status,'N',$_orderItems->virtuemart_product_id,$_orderItems->product_quantity);
+			$this->handleStockAfterStatusChangedPerProduct( $_orderItems->order_status,'N',$_orderItems,$_orderItems->product_quantity);
 
 		}
 		//jExit();

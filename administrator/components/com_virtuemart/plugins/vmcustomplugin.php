@@ -173,8 +173,15 @@ abstract class vmCustomPlugin extends JPlugin {
 
 		return $html;
 	 }
-	 public function GetProductStockToUpdateByPlugin($item) {
-	 
+	/*
+	 * Default return $item( Object: the product item in cart)
+	 * The plugins can remove or change or adding more virtuemart_product_id eg. to do packs
+	 * can return an array of item or a simple item
+	 * Each item in aray must return $item->virtuemart_product_id
+	 * or an array of Object with $item->virtuemart_product_id in it;
+	 */ 
+	 public function GetProductStockToUpdateByPlugin($item,$param,$productCustom) {
+		
 		return $item;
 	 }
 	/**

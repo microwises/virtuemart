@@ -1567,8 +1567,20 @@ class VirtueMartModelProduct extends VmModel {
 		}
 	}
 
-	public function updateStock($id, $amount, $signInStoc, $signOrderedStock){
+	public function updateStock($product, $amount, $signInStoc, $signOrderedStock){
 
+
+		// control stock to update Child or packs
+		if (!empty($product->product_attribute)) {
+				if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+				$product = VirtueMartModelCustomfields::GetProductStockToUpdate($product);
+				// we can have more then one product in case of pack 
+				// in case of child, ID must be the child ID
+				if (is_array($product))
+					foreach ($products as $prod ) updateStock($prod, $amount, $signInStoc, $signOrderedStock);
+		}
+
+		vmdebug( 'stockupdate', $product->virtuemart_product_id,$amount, $signInStoc, $signOrderedStock );
 		$validFields = array('=','+','-');
 		if(!in_array($signInStoc,$validFields)){
 			return false;
@@ -1577,7 +1589,7 @@ class VirtueMartModelProduct extends VmModel {
 			return false;
 		}
 		//sanitize fields
-		$id = (int) $id;
+		$id = (int) $product->virtuemart_product_id;
 		$amount = (float) $amount;
 		$update = array();
 
@@ -1593,6 +1605,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			$this->_db->setQuery($q);
 			$this->_db->query();
+			vmdebug('query',$this->_db->q);
 
 			if ($signInStoc == '-') {
 				$this->_db->setQuery('SELECT `product_in_stock` < `low_stock_notification` '

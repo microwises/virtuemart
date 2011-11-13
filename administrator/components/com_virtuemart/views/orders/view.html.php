@@ -105,7 +105,7 @@ class VirtuemartViewOrders extends JView {
 			$_itemStatusUpdateFields = array();
 			$_itemAttributesUpdateFields = array();
 			foreach($order['items'] as $_item) {
-				$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $orderStates, "cid[".$_item->virtuemart_order_item_id."][order_status]", 'class="selectItemStatusCode"', 'order_status_code', 'order_status_name', $_item->order_status, 'order_item_status'.$_item->virtuemart_order_item_id,true);
+				$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $orderStates, "item_id[".$_item->virtuemart_order_item_id."][order_status]", 'class="selectItemStatusCode"', 'order_status_code', 'order_status_name', $_item->order_status, 'order_item_status'.$_item->virtuemart_order_item_id,true);
 
 			}
 
@@ -178,7 +178,7 @@ class VirtuemartViewOrders extends JView {
 			 */
 
 			 /* Toolbar */
-			JToolBarHelper::custom('updatestatus','save','save', JText::_('COM_VIRTUEMART_UPDATE_STATUS'),true);
+			JToolBarHelper::save('updatestatus', JText::_('COM_VIRTUEMART_UPDATE_STATUS'));
 			JToolBarHelper::deleteListX();
 
 			/* Assign the data */

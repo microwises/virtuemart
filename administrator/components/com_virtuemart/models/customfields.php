@@ -858,6 +858,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		foreach ($product_attributes as $virtuemart_customfield_id=>$param){
  			if ($param) {
 				if ($productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id ) ) {
+					
 					if ($productCustom->field_type == "E") {
 
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
@@ -889,6 +890,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	/*
 	 * Get product(ID) Stock to change by custom plugin
 	 * $product_id is order item ID 
+	 * Only used by plugin for now
 	 */
 	public function GetProductStockToUpdate($item){
 	
@@ -900,6 +902,9 @@ class VirtueMartModelCustomfields extends VmModel {
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 						$item = self::GetProductStockToUpdateByPlugin($item,$param,$productCustom);
 						//$item = self::addParam($item);
+					}
+					if ($productCustom->field_type == "G") {
+						$item->virtuemart_product_id = $productCustom->custom_value ;
 					}
 				}
 			}

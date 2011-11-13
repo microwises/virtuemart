@@ -143,7 +143,7 @@ class VirtuemartControllerOrders extends VmController {
 	* @deprecated
 	*/
 	public function editOrderStatus() {
-		vmdebug('editOrderStatus');
+		//vmdebug('editOrderStatus');
 		/* Create the view object */
 		$view = $this->getView('orders', 'html');
 
@@ -160,7 +160,7 @@ class VirtuemartControllerOrders extends VmController {
 	* @author RolandD
 	*/
 	public function updatestatus() {
-		vmdebug('updatestatus');
+		//vmdebug('updatestatus');
 		$mainframe = Jfactory::getApplication();
 		$lastTask = JRequest::getWord('last_task');
 
@@ -177,21 +177,22 @@ class VirtuemartControllerOrders extends VmController {
 
 		if ($lastTask == 'updatestatus') {
 			// single order is in POST but we need an array
-			$order = array(JRequest::get('post'));
-			vmdebug(  'order',$order);
+			$order = array() ;
 			$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
-			$result = $model->updateOrderStatus($order, $virtuemart_order_id);
+			$order[$virtuemart_order_id] = (JRequest::get('post'));
+			//vmdebug(  'order',$order);
+			$result = $model->updateOrderStatus($order);
 		} else {
 			$result = $model->updateOrderStatus();
 		}
 
+		$msg='';
 		if ($result['updated'] > 0)
-		    $msg = str_replace('{X}', $result['updated'], JText::_('COM_VIRTUEMART_ORDER_UPDATED_SUCCESSFULLY'));
-		else 
-			 $msg = str_replace('{X}', 0 , JText::_('COM_VIRTUEMART_ORDER_UPDATED_SUCCESSFULLY'));
+		    $msg = JText::sprintf('COM_VIRTUEMART_ORDER_UPDATED_SUCCESSFULLY', $result['updated'] );
+		else if ($result['error'] == 0)
+			 $msg .= JText::_('COM_VIRTUEMART_ORDER_NOT_UPDATED');
 		if ($result['error'] > 0)
-		    $msg .= str_replace('{X}', $result['error'], JText::_('COM_VIRTUEMART_ORDER_NOT_UPDATED_SUCCESSFULLY'));
-
+		    $msg .= JText::sprintf('COM_VIRTUEMART_ORDER_NOT_UPDATED_SUCCESSFULLY', $result['error'] , $result['total']); 
 		if ('updatestatus'== $lastTask ) {
 			$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$virtuemart_order_id , $msg);
 		}
@@ -206,7 +207,7 @@ class VirtuemartControllerOrders extends VmController {
 	 *
 	 */
 	public function saveItemStatus() {
-		vmdebug('saveItemStatus');
+		//vmdebug('saveItemStatus');
 	    $mainframe = Jfactory::getApplication();
 
 	    /* Load the view object */
@@ -228,7 +229,7 @@ class VirtuemartControllerOrders extends VmController {
 	 * Display the order item details for editing
 	 */
 	public function editOrderItem() {
-		vmdebug('editOrderItem');
+		//vmdebug('editOrderItem');
 	    JRequest::setVar('layout', 'orders_editorderitem');
 	    JRequest::setVar('hidemenu', 1);
 
@@ -261,7 +262,7 @@ class VirtuemartControllerOrders extends VmController {
 	 */
 	public function updateOrderItemStatus()
 	{
-		vmdebug('updateOrderItemStatus');
+		//vmdebug('updateOrderItemStatus');
 		$mainframe = Jfactory::getApplication();
 		$model = $this->getModel('orders');
 		$_items = JRequest::getVar('item_id',  0, '', 'array');
@@ -270,7 +271,7 @@ class VirtuemartControllerOrders extends VmController {
 		$_orderID = JRequest::getInt('virtuemart_order_id', '');
 
 		foreach ($_items as $key=>$value) {
-			vmdebug('updateOrderItemStatus VAL  ',$value);
+			//vmdebug('updateOrderItemStatus VAL  ',$value);
 			$model->updateSingleItem((int)$key, $value['order_status'],$value['comments'],$_orderID);
 		}
 
@@ -282,7 +283,7 @@ class VirtuemartControllerOrders extends VmController {
 	 */
 	public function updateOrderItem()
 	{
-		vmdebug('updateOrderItem');
+		//vmdebug('updateOrderItem');
 		$mainframe = Jfactory::getApplication();
 		$model = $this->getModel('orders');
 		$model->updateSingleItem();
@@ -293,7 +294,7 @@ class VirtuemartControllerOrders extends VmController {
 	* Save the given order item
 	*/
 	public function saveOrderItem() {
-		vmdebug('saveOrderItem');
+		//vmdebug('saveOrderItem');
 	    $orderId = JRequest::getInt('virtuemart_order_id', '');
 	    $model = $this->getModel('orders');
 	    $msg = '';
@@ -311,7 +312,7 @@ class VirtuemartControllerOrders extends VmController {
 	* Removes the given order item
 	*/
 	public function removeOrderItem() {
-		vmdebug('removeOrderItem');
+		//vmdebug('removeOrderItem');
 	    $model = $this->getModel('orders');
 	    $msg = '';
 	    $orderId = JRequest::getInt('orderId', '');
