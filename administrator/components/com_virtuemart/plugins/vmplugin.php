@@ -31,7 +31,7 @@ abstract class vmPlugin extends JPlugin {
 	// just as note: protected can be accessed only within the class itself and by inherited and parent classes
 	protected $_tablename = '';
 	protected $_debug = false;
-
+	protected $_loggable = false;
 	/**
 	 * Constructor
 	 *
@@ -93,18 +93,18 @@ abstract class vmPlugin extends JPlugin {
 		$pluginTable = new VmTableData($tableName,'id',$db);
 		$pluginTable -> loadFields();
 
+		if(empty($primaryKey)) $primaryKey = $this->_tablepkey;
 		$pluginTable->setPrimaryKey($primaryKey);
-// 		if(!empty($tableKey)) $pluginTable->setUniqueName($tableKey);
 
-		//We should force plugins to be loggable
-// 		$pluginTable->setLoggable();
+		if($this->_loggable)	$pluginTable->setLoggable();
+
 		$res = $pluginTable->bindChecknStore($values);
-// 		vmdebug('storePluginInternalData',$pluginTable);
+
 		return $res;
 
 	}
 
-	protected function getPluginInternalData($id, $primaryKey, $tableName=0){
+	protected function getPluginInternalData($id, $primaryKey=0, $tableName=0){
 
 		if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 		if(empty($tableName)) $tableName = $this->_tablename;
@@ -113,7 +113,10 @@ abstract class vmPlugin extends JPlugin {
 		$pluginTable = new VmTableData($tableName,'id',$db);
 		$pluginTable -> loadFields();
 
+		if(empty($primaryKey)) $primaryKey = $this->_tablepkey;
 		$pluginTable->setPrimaryKey($primaryKey);
+
+		if($this->_loggable)	$pluginTable->setLoggable();
 
 		return $pluginTable->load($id);
 	}

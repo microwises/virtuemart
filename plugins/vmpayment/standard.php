@@ -57,6 +57,28 @@ class plgVmPaymentStandard extends vmPaymentPlugin {
 		, 'length' => 20
 		, 'null' => false
 	    )
+	, 'created_on' => array(
+			'type' => 'DATETIME'
+	, 'null' => false
+	, 'default' =>'0000-00-00 00:00:00'
+	)
+	, 'created_by' => array(
+			'type' => 'int'
+	, 'length' => 11
+	, 'null' => false
+	, 'default' =>0
+	)
+	, 'modified_on' => array(
+			'type' => 'DATETIME'
+	, 'null' => false
+	, 'default' =>'0000-00-00 00:00:00'
+	)
+	, 'modified_by' => array(
+			'type' => 'int'
+	, 'length' => 11
+	, 'null' => false
+	, 'default' =>0
+	)
 	);
 	$_schemeIdx = array();
 

@@ -28,11 +28,12 @@ abstract class vmCalculationPlugin extends vmPlugin {
 
 		parent::__construct($subject, $config);
 
+		$this->_tablepkey = 'virtuemart_calc_id';
 		$this->_tablename = '#__virtuemart_calc_' . $this->_name;
 	}
 
 	function plgVmStorePluginInternalDataCalc($data){
-		$this->storePluginInternalData($data,'virtuemart_calc_id');
+		$this->storePluginInternalData($data);
 	}
 
 	function plgVmGetPluginInternalDataCalc(&$calcData){
@@ -58,13 +59,15 @@ abstract class vmCalculationPlugin extends vmPlugin {
 	}
 
 	function plgVmInGatherEffectRulesProduct(&$calculationHelper,&$rules){
-
-		return $rules;
+// 		foreach ($rules as $i => $rule) {
+// 			$ruleData = $this -> getPluginInternalData($rule['virtuemart_calc_id'],'virtuemart_calc_id');
+// 		}
+		return false;
 	}
 
-	function plgVmInGatherEffectRulesBill(&$rules){
+	function plgVmInGatherEffectRulesBill(&$calculationHelper,&$rules){
 
-		return $rules;
+		return false;
 	}
 
 	function plgVmExecuteCalculation ($rule, $relateToBaseAmount, $baseprice, &$_cartPrices, &$price){

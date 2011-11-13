@@ -738,7 +738,7 @@ class calculationHelper {
 			if(!empty($testedRules)){
 				JPluginHelper::importPlugin('vmcalculation');
 				$dispatcher = JDispatcher::getInstance();
-				$testedRules = $dispatcher->trigger('plgVmInGatherEffectRulesBill', $testedRules);
+				$dispatcher->trigger('plgVmInGatherEffectRulesBill', array(&$this, &$testedRules));
 			}
 
 			return $testedRules;
@@ -947,7 +947,7 @@ class calculationHelper {
 					}
 
 				} else {
-					VmWarn('Unrecognised mathop '.$sign.' in calculation rule found, seems you created this rule with plugin not longer accesible (deactivated, uninstalled?)');
+					VmWarn('Unrecognised mathop '.$mathop.' in calculation rule found, seems you created this rule with plugin not longer accesible (deactivated, uninstalled?)');
 					return $price;
 				}
 			}
@@ -957,7 +957,7 @@ class calculationHelper {
 			} else if($sign == '-'){
 				return $price - (float)$calculated;
 			} else {
-				VmWarn('Unrecognised mathop '.$sign.' in calculation rule found, seems you created this rule with plugin not longer accesible (deactivated, uninstalled?)');
+				VmWarn('Unrecognised mathop '.$mathop.' in calculation rule found, seems you created this rule with plugin not longer accesible (deactivated, uninstalled?)');
 				return $price;
 			}
 

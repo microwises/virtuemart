@@ -83,6 +83,28 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		, 'length' => 11
 		, 'null' => false
 		)
+		, 'created_on' => array(
+			'type' => 'DATETIME'
+		, 'null' => false
+		, 'default' =>'0000-00-00 00:00:00'
+		)
+		, 'created_by' => array(
+			'type' => 'int'
+		, 'length' => 11
+		, 'null' => false
+		, 'default' =>0
+		)
+		, 'modified_on' => array(
+			'type' => 'DATETIME'
+		, 'null' => false
+		, 'default' =>'0000-00-00 00:00:00'
+		)
+		, 'modified_by' => array(
+			'type' => 'int'
+		, 'length' => 11
+		, 'null' => false
+		, 'default' =>0
+		)
 		);
 		$schemeIdx = array();
 		$scheme->define_scheme($schemeCols);
@@ -293,7 +315,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		return $zip_cond;
 	}
 	function plgVmOnUpdateOrder($_formData){}
-	function plgVmOnUpdateOrderLine($_formData){} 
+	function plgVmOnUpdateOrderLine($_formData){}
 	function plgVmOnEditOrderLineBE ($_orderId, $_lineId){}
 	function plgVmOnShowOrderLineFE ($_orderId, $_lineId){}
 }

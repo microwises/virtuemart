@@ -25,7 +25,9 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	parent::__construct($subject, $config);
 	$this->_psType = substr($this->_type, 2);
+	$this->_tablepkey = 'virtuemart_order_id';
 	$this->_idName = 'virtuemart_' . $this->_psType . 'method_id';
+	$this->_loggable = true;
 	$this->_createTable();
     }
 
