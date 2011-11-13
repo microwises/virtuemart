@@ -84,23 +84,38 @@ abstract class vmPlugin extends JPlugin {
 	 * @param string $tableName When different then the default of the plugin, provid it here
 	 * @param string $tableKey an additionally unique key
 	 */
-	protected function storePluginInternalData($values, $tableName=0, $tableKey = 0){
+	protected function storePluginInternalData(&$values, $primaryKey, $tableName=0){
 
-		if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
-
+		if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 		if(empty($tableName)) $tableName = $this->_tablename;
 
 		$db = JFactory::getDBO();
-		$pluginTable = new VmTable($tableName,'id',$db);
+		$pluginTable = new VmTableData($tableName,'id',$db);
 		$pluginTable -> loadFields();
 
-		if(!empty($tableKey)) $pluginTable->setUniqueName($tableKey);
+		$pluginTable->setPrimaryKey($primaryKey);
+// 		if(!empty($tableKey)) $pluginTable->setUniqueName($tableKey);
 
 		//We should force plugins to be loggable
 // 		$pluginTable->setLoggable();
+		$res = $pluginTable->bindChecknStore($values);
+// 		vmdebug('storePluginInternalData',$pluginTable);
+		return $res;
 
-		return $pluginTable->bindChecknStore($values);
+	}
 
+	protected function getPluginInternalData($id, $primaryKey, $tableName=0){
+
+		if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
+		if(empty($tableName)) $tableName = $this->_tablename;
+
+		$db = JFactory::getDBO();
+		$pluginTable = new VmTableData($tableName,'id',$db);
+		$pluginTable -> loadFields();
+
+		$pluginTable->setPrimaryKey($primaryKey);
+
+		return $pluginTable->load($id);
 	}
 
 }

@@ -53,14 +53,14 @@ class TableCalcs extends VmTable
 	/** @var string end date */
 	var $publish_down;
 
-	var $calc_qualify;
-         /** @var string   */
-	var $calc_affected;
-	/** @var string conditional amount to trigger the rule */
-	var $calc_amount_cond_min;
-	var $calc_amount_cond_max;
-	/** @var string The dimension of the amount, maybe unnecessary*/
-	var $calc_amount_dimunit;
+// 	var $calc_qualify;
+//          /** @var string   */
+// 	var $calc_affected;
+// 	/** @var string conditional amount to trigger the rule */
+// 	var $calc_amount_cond_min;
+// 	var $calc_amount_cond_max;
+// 	/** @var string The dimension of the amount, maybe unnecessary*/
+// 	var $calc_amount_dimunit;
 	/** @var Affects the rule all products of all Vendors? */
 	var $shared				= 0;//this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
     /** @var int published or unpublished */

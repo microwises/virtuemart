@@ -81,6 +81,11 @@ class VirtueMartModelCalc extends VmModel {
 				$this->setError(get_class( $this ).' virtuemart_state_ids '.$xrefTable->getError());
 			}
 
+			vmdebug('Trigger now getCalc');
+			JPluginHelper::importPlugin('vmcalculation');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('plgVmGetPluginInternalDataCalc',array(&$this->_data));
+
   		}
 
 		if($errs = $this->getErrors()){
@@ -152,6 +157,9 @@ class VirtueMartModelCalc extends VmModel {
 			$this->_db->setQuery($query);
 			$data->currencyName = $this->_db->loadResult();
 
+			JPluginHelper::importPlugin('vmcalculation');
+			$dispatcher = JDispatcher::getInstance();
+			$error = $dispatcher->trigger('GetPluginInternalDataCalc',$data);
 		}
 
 		return $this->_data;
@@ -210,6 +218,10 @@ class VirtueMartModelCalc extends VmModel {
     	if($xrefTable->getError()){
 			$this->setError($xrefTable->getError());
 		}
+
+		JPluginHelper::importPlugin('vmcalculation');
+		$dispatcher = JDispatcher::getInstance();
+		$error = $dispatcher->trigger('plgVmStorePluginInternalDataCalc',array($data));
 
     	$errMsg = $this->_db->getErrorMsg();
 		$errs = $this->_db->getErrors();

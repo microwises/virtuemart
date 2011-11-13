@@ -30,13 +30,16 @@ class calculationHelper {
 	private $_nullDate;
 	//	private $_currency;
 	private $_debug;
-	private $_amount;
+
 	private $_deliveryCountry;
 	private $_deliveryState;
 	private $_currencyDisplay;
 	private $_cart = null;
 	private $_cartPrices;
 	private $_cartData;
+
+	public $_amount;
+
 	public $override = 0;
 	public $productVendorId;
 	public $productCurrency;
@@ -238,7 +241,7 @@ class calculationHelper {
 		$this->vendorCurrency = $single;
 
 		if (!empty($amount)) {
-			//			$this->_amount = $amount;
+						$this->_amount = $amount;
 		}
 
 		$this->setCountryState($this->_cart);
@@ -529,12 +532,8 @@ class calculationHelper {
 		$price = $baseprice;
 		$finalprice = $baseprice;
 		if (isset($rulesEffSorted)) {
-			foreach ($rulesEffSorted as $rule) {
 
-				JPluginHelper::importPlugin('vmcalculation');
-				$dispatcher = JDispatcher::getInstance();
-				$continue = $dispatcher->trigger('InGatherEffectRulesBill', array($rule, $relateToBaseAmount, $baseprice, $this->_cartPrices,$price));
-				if($continue) continue;
+			foreach ($rulesEffSorted as $rule) {
 
 				if ($relateToBaseAmount) {
 					$cIn = $baseprice;
@@ -594,9 +593,9 @@ class calculationHelper {
                      AND ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
                      AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" ) ';
 
-			if (!empty($this->_amount)) {
-				$q .=' AND (`calc_amount_cond` <= "' . $this->_db->getEscaped($this->_amount) . '" OR calc_amount_cond="0" )';
-			}
+// 			if (!empty($this->_amount)) {
+// 				$q .=' AND (`calc_amount_cond` <= "' . $this->_db->getEscaped($this->_amount) . '" OR calc_amount_cond="0" )';
+// 			}
 		}
 		//		' AND ( calc_amount_cond = "'.$this->_db->getEscaped($this ->_nullDate).'" OR publish_down >= "'.$this->_db->getEscaped($this ->_now).'" ) ';
 
@@ -652,8 +651,6 @@ class calculationHelper {
 				if ($this->_debug)
 				echo '<br/ >Add rule ForProductPrice ' . $rule["virtuemart_calc_id"];
 
-
-
 				$testedRules[] = $rule;
 			}
 		}
@@ -662,10 +659,10 @@ class calculationHelper {
 		if(!empty($testedRules)){
 			JPluginHelper::importPlugin('vmcalculation');
 			$dispatcher = JDispatcher::getInstance();
-			$testedRules = $dispatcher->trigger('InGatherEffectRulesProduct', $testedRules);
+			$dispatcher->trigger('plgVmInGatherEffectRulesProduct',array(&$this,&$testedRules));
 		}
 
-		vmdebug('$testedRules',$testedRules);
+// 		vmdebug('$testedRules',$testedRules);
 		return $testedRules;
 	}
 
@@ -741,7 +738,7 @@ class calculationHelper {
 			if(!empty($testedRules)){
 				JPluginHelper::importPlugin('vmcalculation');
 				$dispatcher = JDispatcher::getInstance();
-				$testedRules = $dispatcher->trigger('InGatherEffectRulesBill', $testedRules);
+				$testedRules = $dispatcher->trigger('plgVmInGatherEffectRulesBill', $testedRules);
 			}
 
 			return $testedRules;
@@ -928,14 +925,50 @@ class calculationHelper {
 		function interpreteMathOp($mathop, $value, $price, $currency='') {
 
 			$sign = substr($mathop, 0, 1);
-			if (!strcmp($sign, '+')) {
+
+			$calculated = false;
+			if (strlen($mathop) == 2) {
+				$cmd = substr($mathop, 1, 2);
+				if ($cmd == '%') {
+					$calculated = $price * $value / 100.0;
+				} else {
+					$calculated = $this->_currencyDisplay->convertCurrencyTo($currency, $value);
+				}
+			}
+
+			if(!$calculated){
+				JPluginHelper::importPlugin('vmcalculation');
+				$dispatcher = JDispatcher::getInstance();
+				$calculated = $dispatcher->trigger('interpreteMathOp', array($this, $mathop, $value, $price, $currency));
+				if($calculated){
+// 					vmdebug('my calculated',$calculated);
+					foreach($calculated as $calc){
+						if($calc) return $calc;
+					}
+
+				} else {
+					VmWarn('Unrecognised mathop '.$sign.' in calculation rule found, seems you created this rule with plugin not longer accesible (deactivated, uninstalled?)');
+					return $price;
+				}
+			}
+
+			if($sign == '+'){
+				return $price + (float)$calculated;
+			} else if($sign == '-'){
+				return $price - (float)$calculated;
+			} else {
+				VmWarn('Unrecognised mathop '.$sign.' in calculation rule found, seems you created this rule with plugin not longer accesible (deactivated, uninstalled?)');
+				return $price;
+			}
+
+
+/*			if (!strcmp($sign, '+')) {
 				if (strlen($mathop) > 1) {
 					$second = substr($mathop, 1, 2);
 					if (strcmp($sign, "%")) {
 						return $price * (1 + $value / 100.0);
 					}
 				} else {
-
 					$value = $this->_currencyDisplay->convertCurrencyTo($currency, $value);
 					return $price + $value;
 				}
@@ -943,7 +976,7 @@ class calculationHelper {
 				if (strlen($mathop) > 1) {
 					$second = substr($mathop, 1, 2);
 					if (strcmp($sign, "%")) {
-						//					if($this -> _debug)	echo '"grmbl "'. $price.' * (1-'.$value.'/100.0) '.$price * (1-$value/100.0);
+// 											if($this -> _debug)	echo '"grmbl "'. $price.' * (1-'.$value.'/100.0) '.$price * (1-$value/100.0);
 						return $price * (1 - $value / 100.0);
 					}
 				} else {
@@ -953,6 +986,7 @@ class calculationHelper {
 			} else if (!strcmp($sign, '=')) {
 				return $value;
 			}
+			*/
 		}
 
 		/**

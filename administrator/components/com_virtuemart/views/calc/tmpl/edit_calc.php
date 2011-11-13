@@ -222,9 +222,9 @@ vmJsApi::jDate();
 		JPluginHelper::importPlugin('vmcalculation');
 		$dispatcher = JDispatcher::getInstance();
 		$html ='';
-		$returnValues = $dispatcher->trigger('plgVmOnDisplayEdit', array('vmcalculation' , $html));
+		$returnValues = $dispatcher->trigger('plgVmOnDisplayEdit', array(&$this->calc));
 		foreach ($returnValues as $html) echo $html;
-		vmdebug('pluginstuff',$returnValues);
+// 		vmdebug('pluginstuff',$returnValues);
 
 		if(Vmconfig::get('multix','none')!=='none' && $this->perms->check('admin') ){?>
 		<tr>

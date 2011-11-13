@@ -433,7 +433,7 @@ class VmTable extends JTable{
 			$data[$tblKey] = !empty($this->$tblKey) ? $this->$tblKey : 0;
 		}
 
-
+// 		vmdebug('bindChecknStore '.get_class($this).' '.$this->_db->getErrorMsg());
 		return $data;
 	}
 

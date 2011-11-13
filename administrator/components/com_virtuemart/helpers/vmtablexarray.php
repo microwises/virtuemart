@@ -158,6 +158,7 @@ class VmTableXarray extends VmTable {
      */
     public function store() {
 
+    	$returnCode = true;
 	$this->setLoggableFieldsForStore();
 	$db = JFactory::getDBO();
 
@@ -170,9 +171,9 @@ class VmTableXarray extends VmTable {
         $this->_db->setQuery($q);
         $objList = $this->_db->loadObjectList();
 
-        // We convert the database object list that we got in a more friendly array        
+        // We convert the database object list that we got in a more friendly array
         $oldArray = null;
-        if($objList) {                    
+        if($objList) {
             foreach($objList as $obj){
                 $oldArray[] = array($pkey=>$obj->$pkey, $skey=>$obj->$skey);
             }
@@ -186,7 +187,7 @@ class VmTableXarray extends VmTable {
 	}
 
         // Inserts and Updates
-        if(!empty($newArray)){            
+        if(!empty($newArray)){
             $myOrdering = 1;
 
             foreach ($newArray as $newValue) {
@@ -229,7 +230,7 @@ class VmTableXarray extends VmTable {
         if(!empty($oldArray)) {
             for ($i = 0; $i < count($oldArray); $i++) {
                 $result = $this->array_msearch($newArray, $oldArray[$i]);
-                
+
                 // If no new row exists in the old rows, we will delete the old rows
                 if( $result === false ) {
                     // If the old row does not exist in the new rows, we will delete it
@@ -242,7 +243,7 @@ class VmTableXarray extends VmTable {
                 }
              }
         }
-                
+
  	return $returnCode;
 
     }

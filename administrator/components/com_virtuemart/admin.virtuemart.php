@@ -16,7 +16,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 * http://virtuemart.net
 */
 
-require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
 
 //This is for akeeba release system, it must be executed before any other task

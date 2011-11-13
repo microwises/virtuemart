@@ -24,25 +24,40 @@ if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
 
 abstract class vmCalculationPlugin extends vmPlugin {
 
-	public $_type = 'calc';
 	function __construct(& $subject, $config) {
 
 		parent::__construct($subject, $config);
 
-		//$this->_tablename = '#__virtuemart_calc_' . $this->_name;
+		$this->_tablename = '#__virtuemart_calc_' . $this->_name;
 	}
 
-	function plgVmAddRuleKindOption(&$entryPoints){
+	function plgVmStorePluginInternalDataCalc($data){
+		$this->storePluginInternalData($data,'virtuemart_calc_id');
+	}
+
+	function plgVmGetPluginInternalDataCalc(&$calcData){
+
+	 	$datas = $this->getPluginInternalData($calcData->virtuemart_calc_id,'virtuemart_calc_id');
+
+		$attribsCalc = get_object_vars($datas);
+
+		unset($attribsCalc['virtuemart_calc_id']);
+		foreach($attribsCalc as $k=>$v){
+			$calcData->$k = $v;
+		}
+
+	}
+
+	function plgVmAddMathOp(&$entryPoints){
 
 		return ;
 	}
 
-	function plgVmOnDisplayEdit(){
-		vmdebug('plgVmOnDisplayEdit abstract');
+	function plgVmOnDisplayEdit(&$calc){
 		return $html;
 	}
 
-	function plgVmInGatherEffectRulesProduct(&$rules){
+	function plgVmInGatherEffectRulesProduct(&$calculationHelper,&$rules){
 
 		return $rules;
 	}
