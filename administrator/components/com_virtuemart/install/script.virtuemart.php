@@ -674,7 +674,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					Delete this file manually (administrator/components/com_virtuemart/virtuemart.cfg) and please use
 					"renew config from file" in Tools => Updates/Migration');
 					}*/
-					echo '<br />'.JText::_('<b>Remind to update also your extensions with the AIO installer');
+					echo '<br />'.JText::_('COM_VIRTUEMART_EXTENSION_UPGRADE_REMIND');
 
 				} else {
 					echo JText::_('COM_VIRTUEMART_INSTALLATION_SUCCESSFUL');
