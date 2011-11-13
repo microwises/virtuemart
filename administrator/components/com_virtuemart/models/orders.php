@@ -1098,18 +1098,52 @@ vmdebug('remove', $cids);
 	 */
 	function removeOrderLineItem($orderLineId) {
 
-		$table = $this->getTable('order_items');
-
-		if ($table->delete($orderLineId)) {
+		$item = $this->getTable('order_items');
+		if (!$item->load($orderLineId)) {
+			$this->setError($item->getError());
+			return false;
+		}
+		$this->handleStockAfterStatusChangedPerProduct('C', $item->order_status,$item, $item->product_quantity);
+		if ($item->delete($orderLineId)) {
 			return true;
 		}
 		else {
-			$this->setError($table->getError());
+			$this->setError($item->getError());
 			return false;
 		}
 	}
 
+	/**
+	 * Delete all record ids selected
+	 *
+	 * @author Max Milbers
+	 * @return boolean True is the delete was successful, false otherwise.
+	 */
+	public function remove($ids) {
 
+		$table = $this->getTable($this->_maintablename);
+
+		foreach($ids as $id) {
+
+			// remove order_item and update stock
+			$q = "SELECT `virtuemart_order_item_id` FROM `#__virtuemart_order_items`
+				WHERE `virtuemart_order_id`=".$id;
+			$this->_db->setQuery($q);
+			$item_ids = $this->_db->loadResultArray();
+			foreach( $item_ids as $item_id ) $this->removeOrderLineItem($item_id);
+
+			if (!$table->delete((int)$id)) {
+				$this->setError(get_class( $this ).'::remove '.$id.' '.$table->getError());
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+
+	
+	
 	/**
 	 *  Create a list of products for JSON return
 	 *

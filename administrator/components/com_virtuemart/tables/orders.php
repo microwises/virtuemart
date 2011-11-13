@@ -123,6 +123,15 @@ class TableOrders extends VmTable {
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());
 			return false;
+		}		/*vm_order_shipment NOT EXIST  have to find the table name*/
+		$this->_db->setQuery( 'SELECT `shipment_element` FROM `#__virtuemart_shipmentmethods` , `#__virtuemart_orders`
+			WHERE `#__virtuemart_shipmentmethods`.`virtuemart_shipmentmethod_id` = `#__virtuemart_orders`.`virtuemart_shipmentmethod_id` AND `virtuemart_order_id` = ' . $id );
+		$shipmentTable = '#__virtuemart_order_shipment_'. $this->_db->loadResult();
+		/*$paymentTable is the paiement used in order*/
+		$this->_db->setQuery('DELETE from `'.$shipmentTable.'` WHERE `virtuemart_order_id` = ' . $id);
+		if ($this->_db->query() === false) {
+			$this->setError($this->_db->getError());
+			return false;
 		}
 
 
