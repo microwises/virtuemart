@@ -44,7 +44,7 @@ if($_controller = JRequest::getWord('controller', JRequest::getWord('view', 'vir
 		// try plugins
 		JPluginHelper::importPlugin('vmextended');
 		$dispatcher = JDispatcher::getInstance();
-		$results = $dispatcher->trigger('onVmAdminController', $_controller);
+		$results = $dispatcher->trigger('onVmAdminController', array($_controller));
 		if (empty($results)) {
 			$app = JFactory::getApplication();
 			$app->enqueueMessage('Fatal Error in maincontroller admin.virtuemart.php: Couldnt find file '.$_controller);
