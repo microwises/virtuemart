@@ -106,7 +106,7 @@ JPluginHelper::importPlugin('vmpayment');
      */
     function paymentUserCancel() {
 
-	if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpaymentplugin.php');
+		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 	if (!class_exists('VirtueMartCart'))
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 

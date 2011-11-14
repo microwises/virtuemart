@@ -14,7 +14,7 @@
  * to the GNU General Public License, and as distributed it includes or
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
- * @version $Id: vmshipmentplugin.php 4007 2011-08-31 07:31:35Z alatak $
+ * @version $Id: vmpsplugin.php 4007 2011-08-31 07:31:35Z alatak $
  */
 // Load the helper functions that are needed by all plugins
 if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
@@ -38,7 +38,7 @@ abstract class vmCustomPlugin extends JPlugin {
     protected $customs;
 
 	function __construct() {
-		
+
 		$subject = 'vmcustom';
 //		parent::__construct();
 
@@ -179,9 +179,9 @@ abstract class vmCustomPlugin extends JPlugin {
 	 * can return an array of item or a simple item
 	 * Each item in aray must return $item->virtuemart_product_id
 	 * or an array of Object with $item->virtuemart_product_id in it;
-	 */ 
+	 */
 	 public function GetProductStockToUpdateByPlugin($item,$param,$productCustom) {
-		
+
 		return $item;
 	 }
 	/**

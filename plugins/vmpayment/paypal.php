@@ -20,7 +20,9 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
  *
  * http://virtuemart.org
  */
-class plgVMPaymentPaypal extends vmPaymentPlugin {
+if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+
+class plgVMPaymentPaypal extends vmPSPlugin {
 
     /**
      * Create the table for this plugin if it does not yet exist.
@@ -446,7 +448,7 @@ class plgVMPaymentPaypal extends vmPaymentPlugin {
 
     /**
      * Display stored payment data for an order
-     * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderBE()
+     * @see components/com_virtuemart/helpers/vmPSPlugin::plgVmOnShowOrderBE()
      */
     function plgVmOnShowOrderBE($psType, $virtuemart_order_id, $payment_method_id) {
 

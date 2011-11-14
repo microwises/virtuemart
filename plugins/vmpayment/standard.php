@@ -22,7 +22,10 @@ if (!defined('_VALID_MOS') && !defined('_JEXEC'))
  *
  * http://virtuemart.org
  */
-class plgVmPaymentStandard extends vmPaymentPlugin {
+
+if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+
+class plgVmPaymentStandard extends vmPSPlugin {
 
     /**
      * Create the table for this plugin if it does not yet exist.

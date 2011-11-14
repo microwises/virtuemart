@@ -931,9 +931,9 @@ class calculationHelper {
 				$cmd = substr($mathop, 1, 2);
 				if ($cmd == '%') {
 					$calculated = $price * $value / 100.0;
-				} else {
-					$calculated = $this->_currencyDisplay->convertCurrencyTo($currency, $value);
 				}
+			} else if (strlen($mathop) == 1){
+				$calculated = $this->_currencyDisplay->convertCurrencyTo($currency, $value);
 			}
 
 			if(!$calculated){

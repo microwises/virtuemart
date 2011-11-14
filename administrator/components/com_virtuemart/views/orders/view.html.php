@@ -45,8 +45,7 @@ class VirtuemartViewOrders extends JView {
 //		require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php'); Obsolete now??
 		//if(!class_exists('vmOrderPlugin')) require(JPATH_VM_PLUGINS.DS.'vmorderplugin.php');
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
-		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpaymentplugin.php');
-		if(!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmshipmentplugin.php');
+
 		if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
 		$orderStatusModel=new VirtueMartModelOrderstatus();
 		$orderStates = $orderStatusModel->getOrderStatusList();

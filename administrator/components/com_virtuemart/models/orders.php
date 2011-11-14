@@ -345,8 +345,7 @@ class VirtueMartModelOrders extends VmModel {
 			$orders = array($orders);
 		}
 		// TODO This is not the most logical place for these plugins (or better; the method updateStatus() must be renamed....)
-		if(!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmshipmentplugin.php');
-		if(!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpaymentplugin.php');
+		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
 		$_dispatcher = JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnSaveOrderShipmentBE',array(JRequest::get('post')));
@@ -451,7 +450,7 @@ class VirtueMartModelOrders extends VmModel {
 				} else {
 					$error++;
 				}
-				
+
 			}
 		}
 		$result = array( 'updated' => $updated , 'error' =>$error , 'total' => $total ) ;
@@ -1039,7 +1038,7 @@ class VirtueMartModelOrders extends VmModel {
 		$curDate = JFactory::getDate();
 		$data['modified_on'] = $curDate->toMySql();*/
 
-		if(!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS.DS.'vmshipmentplugin.php');
+		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
 		$_dispatcher = JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLine',array('shipment',$data));
@@ -1144,8 +1143,8 @@ $_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLine',array('shipment'
 	}
 
 
-	
-	
+
+
 	/**
 	 *  Create a list of products for JSON return
 	 *

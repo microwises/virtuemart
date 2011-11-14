@@ -186,10 +186,8 @@ if (VmConfig::get('coupons_enable') == '1') {
     </table>
     &nbsp;
 <?php
-if (!class_exists('vmPaymentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpaymentplugin.php');
+if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 JPluginHelper::importPlugin('vmpayment');
-
-if (!class_exists('vmShipmentPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmshipmentplugin.php');
 JPluginHelper::importPlugin('vmshipment');
 
 $dispatcher = JDispatcher::getInstance();
