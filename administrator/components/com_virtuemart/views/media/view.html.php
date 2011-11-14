@@ -35,6 +35,7 @@ class VirtuemartViewMedia extends JView {
 		// Load the helper(s)
 		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 		$this->loadHelper('permissions');
 		$this->loadHelper('html');
 		//@todo should be depended by loggedVendor

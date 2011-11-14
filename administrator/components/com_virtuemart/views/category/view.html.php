@@ -38,6 +38,7 @@ class VirtuemartViewCategory extends JView {
 		// Load the helper(s)
 		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 		//		$this->loadHelper('image');
 
 		$model = $this->getModel();

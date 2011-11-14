@@ -253,7 +253,7 @@ class Permissions extends JObject{
 		if( $size==1 ) {
 			$values[0] = JText::_('COM_VIRTUEMART_SELECT');
 		}
-		while( list($key,$value) = each( $perms ) ) {
+		foreach($perms as $key => $value) {
 			// Display only those permission that this user can set
 			if ($value >= $dvalue) {
 				$values[$key] = $key;

@@ -36,6 +36,7 @@ class VirtuemartViewCustom extends JView {
 		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');
+		$this->loadHelper('html');
 		$this->loadHelper('vmcustomplugin');
 		$model = $this->getModel('custom');
 		$this->loadHelper('permissions');
@@ -104,9 +105,9 @@ class VirtuemartViewCustom extends JView {
         $lang->load($filename, JPATH_ADMINISTRATOR);
 		//print_r($lang);
 		}
-		return VmHTML::select($results, 'custom_jplugin_id', $selected,"",$ext_id, 'name');
+		return VmHTML::select( 'custom_jplugin_id', $results, $selected,"",$ext_id, 'name');
 
-		return JHtml::_('select.genericlist', $result, 'custom_jplugin_id', null, $ext_id, 'name', $selected);
+		//return JHtml::_('select.genericlist', $result, 'custom_jplugin_id', null, $ext_id, 'name', $selected);
 	}
 
 }

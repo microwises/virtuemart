@@ -29,28 +29,9 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_SHOPPERGROUP_NAME');
 	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DETAILS'); ?></legend>
 	<table class="admintable">
-		<tr>
-			<td width="110" class="key">
-				<label for="shopper_group_name">
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="shopper_group_name" id="shopper_group_name" size="50" value="<?php echo $this->shoppergroup->shopper_group_name; ?>" />
-			</td>
-		</tr>
-			<tr>
-			<td width="110" class="key">
-				<label for="published">
-					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
-				</label>
-			</td>
-			<td width="110"  >
-				<fieldset class="radio" >
-				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->shoppergroup->published); ?>
-				</fieldset>
-			</td>
-		</tr>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_SHOPPERGROUP_NAME','shopper_group_name',$this->shoppergroup->shopper_group_name); ?>
+		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$this->shoppergroup->published); ?>
+
 		<?php /*
 		<tr>
 			<td width="110" class="key">
@@ -82,16 +63,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_SHOPPERGROUP_NAME');
 			</tr>
 			<?php
 		} ?>
-		<tr>
-			<td width="110" class="key">
-				<label for="shopper_group_desc">
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DESCRIPTION'); ?>
-				</label>
-			</td>
-			<td>
-				<textarea rows="10" cols="30" name="shopper_group_desc" id="shopper_group_desc"><?php echo $this->shoppergroup->shopper_group_desc; ?></textarea>
-			</td>
-		</tr>
+		<?php echo VmHTML::row('textarea','COM_VIRTUEMART_SHOPPERGROUP_DESCRIPTION','shopper_group_desc',$this->shoppergroup->shopper_group_desc); ?>
 	</table>
 	</fieldset>
 
@@ -123,12 +95,9 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_SHOPPERGROUP_NAME');
 </div>
 
 	<input type="hidden" name="default" value="<?php echo $this->shoppergroup->default ?>" />
-	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="virtuemart_shoppergroup_id" value="<?php echo $this->shoppergroup->virtuemart_shoppergroup_id; ?>" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="controller" value="shoppergroup" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo VmHTML::HiddenEdit() ?>
+
 </form>
 
 <?php

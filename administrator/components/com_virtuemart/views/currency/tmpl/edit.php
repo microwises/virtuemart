@@ -30,68 +30,12 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CURRENCY_DETAILS');
 	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_CURRENCY_DETAILS'); ?></legend>
 	<table class="admintable">
-		<tr>
-			<td width="110" class="key">
-				<label for="currency_name">
-					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_NAME'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="currency_name" id="currency_name" size="50" value="<?php echo $this->currency->currency_name; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="published">
-					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
-				</label>
-			</td>
-			<td>
-				<fieldset class="radio">
-				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->currency->published); ?>
-				</fieldset>
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="currency_exchange_rate">
-					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_EXCHANGE_RATE'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="currency_exchange_rate" id="currency_exchange_rate" size="6" value="<?php echo $this->currency->currency_exchange_rate; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="currency_code_2">
-					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_CODE_2'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="currency_code_2" id="currency_code_2" size="2" value="<?php echo $this->currency->currency_code_2; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="currency_code_3">
-					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_CODE_3'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="currency_code_3" id="currency_code_3" size="3" value="<?php echo $this->currency->currency_code_3; ?>" />
-			</td>
-		</tr>
-                <tr>
-			<td width="110" class="key">
-				<label for="currency_numeric_code">
-					<?php echo JText::_('COM_VIRTUEMART_CURRENCY_NUMERIC_CODE'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="currency_numeric_code" id="currency_numeric_code" size="3" value="<?php echo $this->currency->currency_numeric_code; ?>" />
-			</td>
-		</tr>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_NAME','currency_name',$this->calc->currency_name); ?>
+		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$this->currency->published); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_EXCHANGE_RATE','currency_exchange_rate',$this->currency->currency_exchange_rate,'class="inputbox"','',6); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_CODE_2','currency_code_2',$this->currency->currency_code_2,'class="inputbox"','',2,2); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_CODE_3','currency_code_3',$this->currency->currency_code_3,'class="inputbox"','',3,3); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_NUMERIC_CODE','currency_numeric_code',$this->currency->currency_numeric_code,'class="inputbox"','',3,3); ?>
 <?php /*		<tr>
 		<td width="110" class="key">
 				<label for="title">
@@ -122,66 +66,21 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CURRENCY_DETAILS');
 				echo JHTML::_('calendar', $endDate, "publish_down", "publish_down", $this->dateformat,array('class'=>'inputbox', 'size'=>'25',  'maxlength'=>'19')); ?>
 			</td>
 		</tr> */ ?>
-	<tr>
-		<td class="key">
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_SYMBOL'); ?>
-		</td>
-		<td>
-			<input class="inputbox" type="text" name="currency_symbol" id="currency_symbol" size="20" value="<?php echo $this->currency->currency_symbol; ?>" />
-		</td>
-	</tr>
-	<tr>
-		<td class="key">
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DECIMALS'); ?>
-		</td>
-		<td>
-			<input class="inputbox" type="text" name="currency_decimal_place" id="currency_decimal_place" size="20" value="<?php echo $this->currency->currency_decimal_place; ?>" />
-		</td>
-	</tr>
-	<tr>
-		<td class="key">
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DECIMALSYMBOL'); ?>
-		</td>
-		<td>
-			<input class="inputbox" type="text" name="currency_decimal_symbol" id="currency_decimal_symbol" size="10" value="<?php echo $this->currency->currency_decimal_symbol; ?>" />
-		</td>
-	</tr>
-	<tr>
-		<td class="key">
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_THOUSANDS'); ?>
-		</td>
-		<td>
-			<input class="inputbox" type="text" name="currency_thousands" id="currency_thousands" size="10" value="<?php echo $this->currency->currency_thousands; ?>" />
-		</td>
-	</tr>
-	<tr>
-		<td class="key">
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_POSITIVE_DISPLAY'); ?>
-		</td>
-		<td >
-			<input class="inputbox" type="text" name="currency_positive_style" id="currency_positive_style" size="50" value="<?php echo $this->currency->currency_positive_style; ?>" />
-		</td>
-	</tr>
-	<tr>
-		<td class="key">
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_NEGATIVE_DISPLAY'); ?>
-		</td>
-		<td>
-			<input class="inputbox" type="text" name="currency_negative_style" id="currency_negative_style" size="50" value="<?php echo $this->currency->currency_negative_style; ?>" />
-		</td>
-	</tr>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_SYMBOL','currency_symbol',$this->currency->currency_symbol,'class="inputbox"','',20,20); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_DECIMALS','currency_decimal_place',$this->currency->currency_decimal_place,'class="inputbox"','',20,20); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_DECIMALSYMBOL','currency_decimal_symbol',$this->currency->currency_decimal_symbol,'class="inputbox"','',10,10); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_THOUSANDS','currency_thousands',$this->currency->currency_thousands,'class="inputbox"','',10,10); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_POSITIVE_DISPLAY','currency_positive_style',$this->currency->currency_positive_style,'class="inputbox"','',50,50); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_NEGATIVE_DISPLAY','currency_negative_style',$this->currency->currency_negative_style,'class="inputbox"','',50,50); ?>
+
 	</table>
 	<?php echo JText::_('COM_VIRTUEMART_CURRENCY_DISPLAY_EXPL'); ?>
 	</fieldset>
 
 </div>
 	<input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->currency->virtuemart_vendor_id; ?>" />
-	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="virtuemart_currency_id" value="<?php echo $this->currency->virtuemart_currency_id; ?>" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="controller" value="currency" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo VmHTML::HiddenEdit('currency') ?>
 </form>
 
 

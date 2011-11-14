@@ -61,6 +61,7 @@ fieldset input, fieldset textarea, fieldset select, fieldset img, fieldset butto
     margin: 5px 5px 5px 0;
     width: auto;
 }
+
 /* vmdebug */
 .vmdebug pre{ padding-left: 32px;}
 
@@ -69,11 +70,11 @@ dl#system-message dd .vmdebug  { font-size:10px; }
 .virtuemart-admin-area fieldset {border-radius: 6px;-moz-border-radius: 6px;-webkit-border-radius: 6px;padding: 10px 20px;}
 .virtuemart-admin-area fieldset legend {padding: 0px 10px;}
 
-/* Radio Box */
+/* Inputs */
 .virtuemart-admin-area fieldset input {float: none;clear: none;display: inline-block;}
 .virtuemart-admin-area fieldset label, .virtuemart-admin-area fieldset.adminform label, .virtuemart-admin-area fieldset.adminform span.faux-label {float: none;clear: none;display: inline-block;min-width: 0px;}
-/* Text Area*/
 textarea {width: 100%;}
+.datepicker{width: 60px;}
 /*////////////////////////////////////
 /////////////// Tabs /////////////////
 ////////////////////////////////////*/

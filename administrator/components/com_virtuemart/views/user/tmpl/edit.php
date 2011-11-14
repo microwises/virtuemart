@@ -57,11 +57,8 @@ if (($_ordcnt = count($this->orderlist)) > 0) {
 AdminUIHelper::buildTabs ( $tabarray,'vm-user' );
 
 ?>
-<input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="controller" value="user" />
-<?php echo JHTML::_( 'form.token' ); ?>
+
+<?php echo VmHTML::HiddenEdit() ?>
 </form>
 <script language="javascript">
 function myValidator(f) {

@@ -58,7 +58,47 @@ class VmHTML{
 			return 'UTF-8';
 		}
 	}
+		
+    /**
+     * Generate HTML code for a row using VmHTML function
+     *
+     * @func string  : function to call
+     * @label string : Text Label
+     * @args array : arguments
+     * @return string: HTML code for row table
+     */
+    function row($func,$label){
+		$VmHTML="VmHTML";
+		$passedArgs = func_get_args();
+		array_shift( $passedArgs );//remove function
+		array_shift( $passedArgs );//remove label
+			$args = array();
+			foreach ($passedArgs as $k => $v) {
+			    $args[] = &$passedArgs[$k];
+			}
+		$lang =& JFactory::getLanguage();
+		$label = $lang->hasKey($label.'_TIP') ? '<span class="hasTip" title="'.JText::_($label.'_TIP').'">'.JText::_($label).'</span>' : JText::_($label) ;
+		$html = '
+		<tr>
+			<td class="key">
+				'.$label.'
+			</td>
+			<td>
+				'.call_user_func_array(array($VmHTML, $func), $args).'
+			</td>
+		</tr>';
+		return $html ;
+	}
+	/* simple value display */
+	function value( $value ){
+		$lang =& JFactory::getLanguage();
+		return $lang->hasKey($value) ? JText::_($value) : $value;
+	}
 
+	/* simple raw render */
+	function raw( $value ){
+		return $value;
+	}
     /**
      * Generate HTML code for a checkbox
      *
@@ -203,7 +243,7 @@ class VmHTML{
 		}
 		$html = '';
 		$i = 0;
-		while (list($key, $val) = each($arr)) {
+		foreach($arr as $key => $val) {
 			$checked = '';
 			if( is_array( $value )) {
 				if( in_array( $key, $value )) {
@@ -221,32 +261,16 @@ class VmHTML{
 
 		return $html;
 	}
-	/* simple row display */
-	function Row($label, $value ){
-             $lang = JFactory::getLanguage();
-              $value = $lang->hasKey($value) ? JText::_($value) : $value;
-			$html = '<tr>
-		<td class="labelcell">'.JText::_($label).'</td>
-		<td>'.$value.'</td><td>-</td>
-	</tr>';
-		return $html ;
-	}
+
 	/**
-	 * Creates rows with with a Radio Input List
-	 *
-	 * @param string $label
+	 * Creates radio List
 	 * @param array $radios
 	 * @param string $name
 	 * @param string $default
 	 * @return string
 	 */
-	function radioRow($label, $radios, $name, $default,$key='value',$text='text') {
-			$html = '<tr>
-		<td class="labelcell">'.JText::_($label).'</td>
-		<td>'.$default.JHTML::_('select.radiolist', $radios, $name, '', $key, $text, $default).'</td>
-		<td></td>
-		</tr>';
-		return $html ;
+	function radio( $name, $radios, $default,$key='value',$text='text') {
+		return '<fieldset class="radio">'.JHTML::_('select.radiolist', $radios, $name, '', $key, $text, $default).'</fieldset>';
 	}
 	/**
 	 * Creating rows with boolean list
@@ -257,40 +281,48 @@ class VmHTML{
 	 * @param string $value
 	 *
 	 */
-	public function booleanRow( $label , $name, $value,$class='class="inputbox"'){
-	$html = '<tr>
-	<td class="labelcell">
-		<label for="'.$name.'">'. JText::_($label) .'</label>
-	</td>
-	<td><fieldset class="radio">
-				'.JHTML::_( 'select.booleanlist',  $name , $class , $value).'
-		</fieldset>
-	</td>
-	<td></td>
-</tr>';
-	return $html ;
+	public function booleanlist (  $name, $value,$class='class="inputbox"'){
+		return '<fieldset class="radio">'.JHTML::_( 'select.booleanlist',  $name , $class , $value).'</fieldset>' ;
 	}
 		/**
 	 * Creating rows with input fields
 	 *
-	 * @author Max Milbers
 	 * @author Patrick Kohl
 	 * @param string $text
 	 * @param string $name
 	 * @param string $value
 	 */
-	public function inputRow($label, $name,$value,$class='class="inputbox"',$readonly='',$size='70'){
-		$html = '<tr>
-		<td class="labelcell">'.JText::_($label).'</td>
-		<td> <input type="text" '.$readonly.' '.$class.' name="'.$name.'" size="'.$size.'" value="'.$value.'" /></td>
-		<td></td>
-	</tr>';
-		return $html;
+	public function input($name,$value,$class='class="inputbox"',$readonly='',$size='37',$maxlength='255'){
+		return '<input type="text" '.$readonly.' '.$class.' name="'.$name.'" size="'.$size.'" $maxlength="'.$maxlength.'" value="'.$value.'" /></td>';
 	}
+
+	/**
+	 * Creating rows with input fields
+	 *
+	 * @author Patrick Kohl
+	 * @param string $text
+	 * @param string $name
+	 * @param string $value
+	 */
+	public function textarea($name,$value,$class='class="inputbox"',$cols='70',$rows="10"){
+		return '<textarea '.$class.' name="'.$name.'" cols="'.$cols.'" rows="'.$rows.'"/>'.$value.'</textarea ></td>';
+	}
+	/**
+	 * render editor code
+	 *
+	 * @author Patrick Kohl
+	 * @param string $text
+	 * @param string $name
+	 * @param string $value
+	 */
+	public function editor($name,$value,$size='100%',$height='300',$hide = array('pagebreak', 'readmore')){
+		$editor =& JFactory::getEditor();
+		return $editor->display($name, $value, $size, $height, null, null ,$hide )  ;
+	}
+
 	/**
 	 *
 	 * @author Patrick Kohl
-	 * @param string $label textlabel
 	 * @param array $options( value & text)
 	 * @param string $name option name
 	 * @param string $defaut defaut value
@@ -299,28 +331,7 @@ class VmHTML{
 	 * @param boolean $zero add  a '0' value in the option
 	 * return a select list
 	 */
-	public function selectRow($label , $options, $name, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true){
-
-		$html = '<tr>
-		<td class="labelcell">'.JText::_($label).'</td>
-		<td>'.self::select($options, $name, $default, $attrib, $key, $text, $zero).'</td>
-		<td></td>
-	</tr>';
-
-		return $html ;
-	}
-	/**
-	 *
-	 * @author Patrick Kohl
-	 * @param array $options( value & text)
-	 * @param string $name option name
-	 * @param string $defaut defaut value
-	 * @param string $key option value
-	 * @param string $text option text
-	 * @param boolean $zero add  a '0' value in the option
-	 * return a select list
-	 */
-	public function select($options, $name, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true){
+	public function select($name, $options, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true){
 		if ($zero==true) {
 		$option  = array($key =>null, $text => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
 		$options = array_merge(array($option), $options);
@@ -337,8 +348,20 @@ class VmHTML{
 			$html .= '<input type="hidden" name="'.$k.'" value="'.$v.'" />';
 		}
 		return $html;
+	}	/**
+	 * renders the Edit Form hidden default input
+	 * @author Patrick Kohl
+	 */
+	public function HiddenEdit($controller=0, $task=''){
+		if (!$controller)	$controller = JRequest::getCmd('view');
+		return '
+		<input type="hidden" name="task" value="'.$task.'" />
+		<input type="hidden" name="option" value="com_virtuemart" />
+		<input type="hidden" name="boxchecked" value="0" />
+		<input type="hidden" name="controller" value="'.$controller.'" />
+		'. JHTML::_( 'form.token' ) ;
 	}
-
+	
 	/**
 	* @author Patrick Kohl
 	* @var $type type of regular Expression to validate
@@ -360,8 +383,7 @@ class VmHTML{
 		if ($type=='S' ) return 'id="validate'.$validateID.'" class="validate[required,minSize[2],maxSize[255]]"';
 		$validate = array ( 'I'=>'onlyNumberSp', 'F'=>'number','D'=>'dateTime','A'=>'date','M'=>'time','T'=>'Text','L'=>'link','U'=>'url','P'=>'phone');
 		if (isset ($validate[$type])) $validTxt .= ',custom['.$validate[$type].']';
-		$html ='';
-		$html .='id="validate'.$validateID.'" class="validate['.$validTxt.']"';
+		$html ='id="validate'.$validateID.'" class="validate['.$validTxt.']"';
 
 		return $html ;
 	}

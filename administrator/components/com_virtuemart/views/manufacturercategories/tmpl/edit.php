@@ -30,53 +30,18 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_MANUFACTURER_CATEGORY_DETAILS
 	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_DETAILS'); ?></legend>
 	<table class="admintable">
-		<tr>
-			<td width="110" class="key">
-				<label for="mf_category_name">
-					<?php echo   JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="mf_category_name" id="mf_category_name" size="50" value="<?php echo $this->manufacturerCategory->mf_category_name; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="mf_category_desc">
-									<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_DESCRIPTION'); ?>
-				</label>
-			</td>
-			<td>
-				<textarea rows="20" cols="50" name="mf_category_desc" id="mf_category_desc"><?php echo $this->manufacturerCategory->mf_category_desc; ?></textarea>
 
-
-			</td>
-		</tr>
-
-		<tr>
-			<td width="110" class="key">
-				<label for="published">
-					<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>
-				</label>
-			</td>
-			<td>
-				<fieldset class="radio">
-				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->manufacturerCategory->published); ?>
-				</fieldset>
-			</td>
-		</tr>
-
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_MANUFACTURER_CATEGORY_NAME','mf_category_name',$this->manufacturerCategory->mf_category_name); ?>
+		<?php echo VmHTML::row('textarea','COM_VIRTUEMART_MANUFACTURER_CATEGORY_DESCRIPTION','mf_category_desc',$this->manufacturerCategory->mf_category_desc); ?>
+		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$this->manufacturerCategory->published); ?>
 
 	</table>
 	</fieldset>
 </div>
 
-	<input type="hidden" name="option" value="com_virtuemart" />
+
 	<input type="hidden" name="virtuemart_manufacturercategories_id" value="<?php echo $this->manufacturerCategory->virtuemart_manufacturercategories_id; ?>" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="controller" value="manufacturercategories" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo VmHTML::HiddenEdit() ?>
 </form>
 
 <?php 

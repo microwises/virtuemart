@@ -110,7 +110,7 @@ $j15 = VmConfig::isJ15();
 //			$published = JHTML::_('grid.published', $row, $i);
 			$published = $this->toggle($row->published, $i, 'toggle.published', $coreField);
 			$registration = $this->toggle($row->registration, $i, 'toggle.registration', $coreField);
-			$shipment = $this->toggle($row->shipment, $i, 'toggle.shipment', $coreField);
+			$shipping = $this->toggle($row->shipping, $i, 'toggle.shipping', $coreField);
 			$account = $this->toggle($row->account, $i, 'toggle.account', $coreField);
 			$ordering = ($this->lists['order'] == 'ordering');
 			$disabled = ($ordering ?  '' : 'disabled="disabled"');
@@ -141,7 +141,7 @@ $j15 = VmConfig::isJ15();
 					<?php echo $registration; ?>
 				</td>
 				<td align="center">
-					<?php echo $shipment; ?>
+					<?php echo $shipping; ?>
 				</td>
 				<td align="center">
 					<?php echo $account; ?>
@@ -168,12 +168,8 @@ $j15 = VmConfig::isJ15();
 
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="controller" value="userfields" />
 	<input type="hidden" name="view" value="userfields" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo VmHTML::HiddenEdit() ?>
 </form>
 
 <?php AdminUIHelper::endAdminArea(); ?>

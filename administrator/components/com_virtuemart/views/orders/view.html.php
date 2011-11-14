@@ -40,6 +40,7 @@ class VirtuemartViewOrders extends JView {
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');
+		$this->loadHelper('html');
 
 //		require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php'); Obsolete now??
 		//if(!class_exists('vmOrderPlugin')) require(JPATH_VM_PLUGINS.DS.'vmorderplugin.php');

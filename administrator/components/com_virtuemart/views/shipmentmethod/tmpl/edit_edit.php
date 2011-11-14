@@ -25,72 +25,15 @@ defined('_JEXEC') or die('Restricted access');
     <fieldset>
         <legend><?php echo JText::_('COM_VIRTUEMART_SHIPMENTMETHOD'); ?></legend>
         <table class="admintable">
-	    <tr>
-                <td class="key"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?></td>
-                <td><fieldset class="radio"><?php echo JHTML::_('select.booleanlist', 'published', 'class="inputbox"', $this->carrier->published); ?></fieldset></td>
-            </tr>
-            <tr>
-                <td width="110" class="key">
-                    <label for="shipment_name">
-<?php echo JText::_('COM_VIRTUEMART_SHIPPING_FORM_NAME'); ?>
-                    </label>
-                </td>
-                <td>
-                    <input class="inputbox" type="text" name="shipment_name" id="shipment_name" size="50" value="<?php echo $this->carrier->shipment_name; ?>" />
-                </td>
-            </tr>
-             <tr>
-                <td width="110" class="key">
-                    <label for="shipment_desc">
-<?php echo JText::_('COM_VIRTUEMART_SHIPPING_FORM_DESCRIPTION'); ?>
-                    </label>
-                </td>
-                <td>
-                    <input class="inputbox" type="text" name="shipment_desc" id="shipment_desc" size="80" value="<?php echo $this->carrier->shipment_desc; ?>" />
-                </td>
-            </tr>
-
-             <tr>
-                <td width="110" class="key">
-                    <label for="shipment">
-                       <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_SHIPPING_CLASS_NAME_TIP') ?>"><?php echo JText::_('COM_VIRTUEMART_SHIPPING_CLASS_NAME'); ?></span>
-                    </label>
-                </td>
-                <td>
-						<?php echo $this->pluginList; ?>
-                </td>
-            </tr>
-
-            <tr>
-      			<td class="key"><?php echo JText::_('COM_VIRTUEMART_SHIPPING_FORM_SHOPPER_GROUP') ?></td>
-      			<td width="69%" ><?php
-						echo $this->shopperGroupList ?>
-      		</td>
-   		 </tr>
-
-            <tr>
-                <td width="110" class="key">
-                    <label for="ordering">
-<?php echo JText::_('COM_VIRTUEMART_LIST_ORDER'); ?>
-                    </label>
-                </td>
-                <td>
-                    <input class="inputbox" type="text" name="ordering" id="ordering" size="3" value="<?php echo $this->carrier->ordering; ?>" />
-                </td>
-            </tr>
-
-           <?php if(Vmconfig::get('multix','none')!=='none'){ ?>
-            <tr>
-                <td width="110" class="key">
-                    <label for="virtuemart_vendor_id">
-							<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
-                    </label>
-                </td>
-                <td>
-			<?php echo $this->vendorList; ?>
-                </td>
-            </tr>
-			<?php } ?>
+			<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$this->carrier->published); ?>
+			<?php echo VmHTML::row('input','COM_VIRTUEMART_SHIPPING_FORM_NAME','shipment_name',$this->carrier->shipment_name); ?>
+			<?php echo VmHTML::row('input','COM_VIRTUEMART_SHIPPING_FORM_DESCRIPTION','shipment_desc',$this->carrier->shipment_desc); ?>
+			<?php echo VmHTML::row('raw','COM_VIRTUEMART_SHIPPING_CLASS_NAME', $this->pluginList ); ?>
+			<?php echo VmHTML::row('raw','COM_VIRTUEMART_SHIPPING_FORM_SHOPPER_GROUP', $this->shopperGroupList ); ?>
+			<?php echo VmHTML::row('input','COM_VIRTUEMART_LIST_ORDER','ordering',$this->carrier->ordering,'class="inputbox"','',4,4); ?>
+			<?php if(Vmconfig::get('multix','none')!=='none'){ 
+					echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->vendorList ); 
+				} ?>
         </table>
     </fieldset>
 </div>

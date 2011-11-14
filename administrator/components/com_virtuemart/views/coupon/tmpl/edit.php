@@ -28,119 +28,38 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_COUPON_DETAILS');
 	<fieldset>
 	    <legend><?php echo JText::_('COM_VIRTUEMART_COUPON_DETAILS'); ?></legend>
 	    <table class="admintable">
-		<tr>
-		    <td width="110" class="key">
-			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_TOOLTIP'); ?>">
-			    <label for="coupon_code">
-				<?php echo JText::_('COM_VIRTUEMART_COUPON'); ?>
-			    </label>
-			</span>
-		    </td>
-		    <td>
-			<input class="inputbox" type="text" name="coupon_code" id="coupon_code" size="20" maxlength="32" value="<?php echo JText::_($this->coupon->coupon_code); ?>" />
-		    </td>
-		</tr>
-		<tr>
-		    <td width="110" class="key">
-			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_PERCTOT_TOOLTIP'); ?>">
-			    <label for="percent_or_total">
-				<?php echo JText::_('COM_VIRTUEMART_COUPON_PERCENT_TOTAL'); ?>
-			    </label>
-			</span>
-		    </td>
-		    <td>
-
+			<?php echo VmHTML::row('input','COM_VIRTUEMART_COUPON','coupon_code',$this->coupon->coupon_code,'class="inputbox"','',20,32); ?>
+			<?php 
+				$radioOptions = array();
+				$radioOptions[] = JHTML::_('select.option', 'percent', JText::_('COM_VIRTUEMART_COUPON_PERCENT'));
+				$radioOptions[] = JHTML::_('select.option', 'total', JText::_('COM_VIRTUEMART_COUPON_TOTAL'));
+				echo VmHTML::row('radio','COM_VIRTUEMART_COUPON_PERCENT_TOTAL','percent_or_total',$radioOptions,$this->coupon->percent_or_total); ?>
 			<?php
-			$radioOptions = '';
-			$radioOptions[] = JHTML::_('select.option', 'percent', JText::_('COM_VIRTUEMART_COUPON_PERCENT'));
-			$radioOptions[] = JHTML::_('select.option', 'total', JText::_('COM_VIRTUEMART_COUPON_TOTAL'));
-			echo '<fieldset class="radio">' . JHTML::_('select.radiolist', $radioOptions, 'percent_or_total', '', 'value', 'text', $this->coupon->percent_or_total) . '</fieldset>';
-			?>
-		    </td>
-		</tr>
-		<tr>
-		    <td width="110" class="key">
-			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_TYPE_TOOLTIP'); ?>">
-			    <label for="coupon_type">
-<?php echo JText::_('COM_VIRTUEMART_COUPON_TYPE'); ?>
-			    </label>
-			</span>
-		    </td>
-		    <td>
-
-<?php
-$listOptions = '';
-$listOptions[] = JHTML::_('select.option', 'permanent', JText::_('COM_VIRTUEMART_COUPON_TYPE_PERMANENT'));
-$listOptions[] = JHTML::_('select.option', 'gift', JText::_('COM_VIRTUEMART_COUPON_TYPE_GIFT'));
-echo JHTML::_('select.genericlist', $listOptions, 'coupon_type', '', 'value', 'text', $this->coupon->coupon_type);
-?>
-		    </td>
-		</tr>
-		<tr>
-		    <td width="110" class="key">
-			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_TOOLTIP'); ?>">
-			    <label for="coupon_value">
-<?php echo JText::_('COM_VIRTUEMART_VALUE'); ?>
-			    </label>
-			</span>
-		    </td>
-		    <td>
-			<input class="inputbox" type="text" name="coupon_value" id="coupon_value" size="10" value="<?php echo $this->coupon->coupon_value; ?>" />
-    <?php // echo " " . $this->vendor_currency; ?>
-		    </td>
-		</tr>
-		<tr>
-		    <td width="110" class="key">
-			<label for="coupon_value_valid">
-<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_VALID_AT'); ?>
-			</label>
-		    </td>
-		    <td>
-			<input class="inputbox" type="text" name="coupon_value_valid" id="coupon_value_valid" size="10" value="<?php echo $this->coupon->coupon_value_valid; ?>" />
-<?php echo " " . $this->vendor_currency; ?>
-		    </td>
-		</tr>
-		<tr>
-		    <td width="110" class="key">
-			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_START_TIP'); ?>">
-			    <label for="coupon_start_date">
-<?php echo JText::_('COM_VIRTUEMART_COUPON_START'); ?>
-			    </label>
-			</span>
-		    </td>
-		    <td>
-<?php
-$mydate = JFactory::getDate($this->coupon->coupon_start_date);
-echo vmJsApi::jDate($mydate->toFormat($this->dateformat), 'coupon_start_date');
-// echo JHTML::_('calendar', $mydate->toFormat($this->dateformat), "coupon_start_date", "coupon_start_date", $this->dateformat);
-?>
-		    </td>
-		</tr>
-		<tr>
-		    <td width="110" class="key">
-			<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPON_EXPIRY_TIP'); ?>">
-			    <label for="coupon_expiry_date">
-<?php echo JText::_('COM_VIRTUEMART_COUPON_EXPIRY'); ?>
-			    </label>
-			</span>
-		    </td>
-		    <td>
-<?php
-$expireDate = JFactory::getDate($this->coupon->coupon_expiry_date);
-echo vmJsApi::jDate($expireDate->toFormat($this->dateformat), 'coupon_expiry_date');
-//echo JHTML::_('calendar', $expireDate->toFormat($this->dateformat), "coupon_expiry_date", "coupon_expiry_date", $this->dateformat);
-?>
-
-		    </td>
-		</tr>
+				$listOptions = array();
+				$listOptions[] = JHTML::_('select.option', 'permanent', JText::_('COM_VIRTUEMART_COUPON_TYPE_PERMANENT'));
+				$listOptions[] = JHTML::_('select.option', 'gift', JText::_('COM_VIRTUEMART_COUPON_TYPE_GIFT'));
+				 echo VmHTML::row('select','COM_VIRTUEMART_COUPON_TYPE', 'coupon_type', $listOptions ,$this->coupon->coupon_type,'','value', 'text',false) ; ?>
+			<?php echo VmHTML::row('input','COM_VIRTUEMART_VALUE','coupon_value',$this->coupon->coupon_value,'class="inputbox"','',10,32); ?>
+			<tr>
+				<td width="110" class="key">
+					<label for="coupon_value_valid">
+						<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_VALID_AT'); ?>
+					</label>
+				</td>
+				<td>
+					<input class="inputbox" type="text" name="coupon_value_valid" id="coupon_value_valid" size="10" value="<?php echo $this->coupon->coupon_value_valid; ?>" /><?php echo " " . $this->vendor_currency; ?>
+				</td>
+			</tr>
+			<?php $mydate = JFactory::getDate($this->coupon->coupon_start_date);
+			echo VmHTML::row('raw','COM_VIRTUEMART_COUPON_START',  vmJsApi::jDate($mydate->toFormat($this->dateformat), 'coupon_start_date') ); ?>
+			<?php
+			$expireDate = JFactory::getDate($this->coupon->coupon_expiry_date);
+			echo VmHTML::row('raw','COM_VIRTUEMART_COUPON_EXPIRY',  vmJsApi::jDate($expireDate->toFormat($this->dateformat), 'coupon_expiry_date') ); ?>
 	    </table>
 	</fieldset>
-    <input type="hidden" name="option" value="com_virtuemart" />
     <input type="hidden" name="virtuemart_coupon_id" value="<?php echo $this->coupon->virtuemart_coupon_id; ?>" />
-    <input type="hidden" name="task" value="" />
-    <input type="hidden" name="boxchecked" value="0" />
-    <input type="hidden" name="controller" value="coupon" />
-<?php echo JHTML::_('form.token'); ?>
+
+ 	<?php echo VmHTML::HiddenEdit() ?>
 </form>
 
 

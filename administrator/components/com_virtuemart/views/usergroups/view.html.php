@@ -35,6 +35,8 @@ class VirtuemartViewUsergroups extends JView {
 
 		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
+
 		$model = $this->getModel();
 		// TODO icon for this view
 		$viewName=ShopFunctions::SetViewTitle();

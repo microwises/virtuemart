@@ -34,34 +34,9 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDERSTATUS_DETAILS');
           $orderStatusCodeTip = ($editcoreStatus) ? 'COM_VIRTUEMART_ORDER_STATUS_CODE_CORE':'COM_VIRTUEMART_ORDER_STATUS_CODE_TIP';
                             ?>
 	<table class="admintable">
-		<tr>
-			<td width="110" class="key">
-				<label for="order_status_name">
-					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_NAME'); ?>:
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="order_status_name" id="order_status_name" size="50" value="<?php echo $this->orderStatus->order_status_name; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="order_status_code">
-                                     <span class="hasTip" title="<?php echo JText::_($orderStatusCodeTip); ?>">
-					<?php echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE'); ?>:
-                                     </span>
-				</label>
-			</td>
-			<td>
-                            <?php if ($editcoreStatus) {
-                                echo  $this->orderStatus->order_status_code;
-                            } else {
-                                ?>
-				<input class="inputbox" type="text" name="order_status_code" id="order_status_code" maxlength="1"  size="3" value="<?php echo $this->orderStatus->order_status_code; ?>" />
-			<?php } ?>
-                        </td>
-		</tr>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_ORDER_STATUS_NAME','order_status_name',$this->orderStatus->order_status_name,'class="inputbox"','',50,50); ?>
 
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_ORDER_STATUS_CODE','order_status_code',$this->orderStatus->order_status_code,'class="inputbox"','',3,1); ?>
 		<tr>
 			<td width="110" class="key">
 				<label for="order_status_description">
@@ -72,36 +47,15 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDERSTATUS_DETAILS');
 				<?php echo $this->editor->display('order_status_description',  $this->orderStatus->order_status_description, '100%;', '250', '75', '20', array('image', 'pagebreak', 'readmore') ) ; ?>
 			</td>
 		</tr>
+		<?php echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->lists['vendors'] ); ?>
+		<?php echo VmHTML::row('raw','COM_VIRTUEMART_ORDERING', $this->ordering); ?>
 
-		<tr>
-			<td width="110" class="key">
-				<label for="vendor">
-					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>:
-				</label>
-			</td>
-			<td>
-				<?php echo $this->lists['vendors'];?>
-			</td>
-		</tr>
-
-		<tr>
-			<td width="110" class="key">
-					<?php echo JText::_('COM_VIRTUEMART_ORDERING'); ?>:
-			</td>
-			<td>
-				<?php echo $this->ordering; ?>
-			</td>
-		</tr>
 	</table>
 	</fieldset>
 </div>
 
-	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="virtuemart_orderstate_id" value="<?php echo $this->orderStatus->virtuemart_orderstate_id; ?>" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="controller" value="orderstatus" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo VmHTML::HiddenEdit() ?>
 </form>
 
 

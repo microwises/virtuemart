@@ -36,6 +36,7 @@ class VirtuemartViewCalc extends JView {
 		// Load the helper(s)
 		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 
 		$model = $this->getModel('calc');
 		$this->loadHelper('permissions');

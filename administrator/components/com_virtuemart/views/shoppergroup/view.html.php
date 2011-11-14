@@ -35,6 +35,7 @@ class VirtuemartViewShopperGroup extends JView {
 		// Load the helper(s)
 		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 
 //		$this->assignRef('perms', Permissions::getInstance());
 
@@ -45,7 +46,8 @@ class VirtuemartViewShopperGroup extends JView {
 			$shoppergroup = $model->getShopperGroup();
                         $viewName=ShopFunctions::SetViewTitle('SHOPPERGROUP',$shoppergroup->shopper_group_name);
                          $this->assignRef('viewName',$viewName);
-			$this->loadHelper('shopfunctions');
+			$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 			$vendors = ShopFunctions::renderVendorList($shoppergroup->virtuemart_vendor_id);
 			$this->assignRef('vendorList',	$vendors);
 

@@ -563,7 +563,7 @@ class ShopFunctions {
 			'<tr>
 				<td class="key">
 					<span class="editlinktip hasTip" title="'. JText::_($langkey.'_EXPLAIN').'">
-						<label for="conf_TAX_VIRTUAL">'.JText::_($langkey).
+						<label>'.JText::_($langkey).
 						'</label>
 					</span>
 				</td>

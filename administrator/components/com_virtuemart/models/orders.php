@@ -1067,14 +1067,15 @@ $_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLine',array('shipment'
 	 * @author Oscar van Eijk
 	 * @return boolean True of remove was successful, false otherwise
 	 */
-	function remove($cids) {
-vmdebug('remove', $cids);
-		foreach($cids as $_id) {
-			$this->removeOrderItems ($_id);
-		}
+	// old remove
+	// function remove($cids) {
+		// vmdebug('remove', $cids);
+		// foreach($cids as $_id) {
+			// $this->removeOrderItems ($_id);
+		// }
 
-		parent::remove($cids);
-	}
+		// parent::remove($cids);
+	// }
 	/*
 	 *remove product from order item table
 	*@var $virtuemart_order_id Order to clear
@@ -1117,6 +1118,7 @@ vmdebug('remove', $cids);
 	 * Delete all record ids selected
 	 *
 	 * @author Max Milbers
+	 * @author Patrick Kohl
 	 * @return boolean True is the delete was successful, false otherwise.
 	 */
 	public function remove($ids) {

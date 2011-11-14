@@ -36,6 +36,7 @@ class VirtuemartViewManufacturercategories extends JView {
 		// Load the helper(s)
 		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 
 		// get necessary model
 		$model = $this->getModel();

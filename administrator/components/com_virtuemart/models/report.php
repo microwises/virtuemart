@@ -398,7 +398,7 @@ class VirtuemartModelReport extends VmModel {
 			WHERE published=1 ' ;
 		$this->_db->setQuery($query);
 		$list = $this->_db->loadObjectList();
-		return VmHTML::select($list, 'order_status_code', $orderstates,'class="inputbox" onchange="this.form.submit();"');
+		return VmHTML::select( 'order_status_code', $list,  $orderstates,'class="inputbox" onchange="this.form.submit();"');
     }
 	public function renderIntervalsList() {
 		$intervals = JRequest::getWord('intervals','day');

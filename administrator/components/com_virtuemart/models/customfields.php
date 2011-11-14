@@ -144,19 +144,6 @@ class VirtueMartModelCustomfields extends VmModel {
 	}
 
 	/**
-	 * Displays custom handler and file selector
-	 *
-	 * @author Max Milbers
-	 * @param array $fileIds
-	 */
-	public function displayCustom($field_types){
-
-		$html = $this->displayCustomSelection();
-		$html .= $this->displayCustomFields('id="vm_display_image"',$field_types);
-		return $html;
-	}
-
-	/**
 	 * Displays a possibility to select created custom
 	 * @author Max Milbers
 	 * @author Patrick Kohl
@@ -166,7 +153,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		$customslist = $this->getCustomsList();
 		if (isset($this->virtuemart_custom_id)) $value = $this->virtuemart_custom_id ;
 		else $value = JRequest::getInt( 'custom_parent_id',0);
-		return  VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_PARENT',$customslist, 'custom_parent_id', $value);
+		return  VmHTML::row('select','COM_VIRTUEMART_CUSTOM_PARENT', 'custom_parent_id', $customslist , $value);
 	}
 
     /**
@@ -212,7 +199,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	 *
 	 * @param string $html atttributes, Just for displaying the fullsized image
 	 */
-	public function displayCustomFields($imageArgs='',$datas){
+	public function displayCustomFields($datas){
 
 		$identify = ''; // ':'.$this->virtuemart_custom_id;
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
@@ -220,24 +207,24 @@ class VirtueMartModelCustomfields extends VmModel {
 		$this->addHiddenByType($datas);
 
 		$html = '<div id="custom_title">'.$datas->custom_title.'</div>';
-		$html .= ' <table class="adminform"> ';
+		$html .= ' <table class="admintable"> ';
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!Permissions::getInstance()->check('admin') ) $readonly='readonly'; else $readonly ='';
 		// only input when not set else display
-		if ($datas->field_type) $html .= VmHTML::Row('COM_VIRTUEMART_CUSTOM_FIELD_TYPE', $datas->field_types[$datas->field_type] ) ;
-		else $html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_FIELD_TYPE',$this->getOptions($datas->field_types),'field_type', $datas->field_type,VmHTML::validate('R')) ;
-		$html .= VmHTML::inputRow('COM_VIRTUEMART_TITLE','custom_title',$datas->custom_title,VmHTML::validate('S'));
-		$html .= VmHTML::inputRow('COM_VIRTUEMART_DESCRIPTION','custom_field_desc',$datas->custom_field_desc);
+		if ($datas->field_type) $html .= VmHTML::row('value','COM_VIRTUEMART_CUSTOM_FIELD_TYPE', $datas->field_types[$datas->field_type] ) ;
+		else $html .= VmHTML::row('select','COM_VIRTUEMART_CUSTOM_FIELD_TYPE', 'field_type', $this->getOptions($datas->field_types) , $datas->field_type,VmHTML::validate('R')) ;
+		$html .= VmHTML::row('input','COM_VIRTUEMART_TITLE','custom_title',$datas->custom_title,VmHTML::validate('S'));
+		$html .= VmHTML::row('input','COM_VIRTUEMART_DESCRIPTION','custom_field_desc',$datas->custom_field_desc);
 		// change input by type
-		$html .= VmHTML::inputRow('COM_VIRTUEMART_DEFAULT','custom_value',$datas->custom_value);
-		$html .= VmHTML::inputRow('COM_VIRTUEMART_CUSTOM_TIP','custom_tip',$datas->custom_tip);
-		$html .= VmHTML::selectRow('COM_VIRTUEMART_CUSTOM_PARENT',$this->getCustomsList(), 'custom_parent_id', $datas->custom_parent_id,'');
-		$html .= VmHTML::booleanRow('COM_VIRTUEMART_PUBLISHED','published',$datas->published);
-		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_ADMIN_ONLY','admin_only',$datas->admin_only);
-		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_LIST','is_list',$datas->is_list);
-		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_HIDDEN','is_hidden',$datas->is_hidden);
-		$html .= VmHTML::booleanRow('COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE','is_cart_attribute',$datas->is_cart_attribute);
+		$html .= VmHTML::row('input','COM_VIRTUEMART_DEFAULT','custom_value',$datas->custom_value);
+		$html .= VmHTML::row('input','COM_VIRTUEMART_CUSTOM_TIP','custom_tip',$datas->custom_tip);
+		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_PARENT','custom_parent_id',$this->getCustomsList(),  $datas->custom_parent_id,'');
+		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$datas->published);
+		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_ADMIN_ONLY','admin_only',$datas->admin_only);
+		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_IS_LIST','is_list',$datas->is_list);
+		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_IS_HIDDEN','is_hidden',$datas->is_hidden);
+		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE','is_cart_attribute',$datas->is_cart_attribute);
 
 		$html .= '</table>';
 		$html .= VmHTML::inputHidden($this->_hidden);
@@ -575,7 +562,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						else  $price = $free ;
 						$productCustom->text =  $productCustom->custom_value.' : '.$price;
 					}
-					$group->display = VmHTML::select($group->options,'customPrice['.$row.']['.$group->virtuemart_custom_id.']',$default->custom_value,'','value','text',false);
+					$group->display = VmHTML::select('customPrice['.$row.']['.$group->virtuemart_custom_id.']',$group->options,$default->custom_value,'','value','text',false);
 				} else if ($group->field_type == 'G'){
 					$group->display .=''; // no direct display done by plugin;
 				} else if ($group->field_type == 'E'){

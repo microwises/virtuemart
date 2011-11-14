@@ -20,87 +20,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); 
 
-$editor = JFactory::getEditor();
 ?>
 
 <div class="col50">
 	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_DETAILS'); ?></legend>
 	<table class="admintable">
-		<tr>
-			<td width="110" class="key">
-				<label for="mf_name">
-					<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_NAME'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="mf_name" id="mf_name" size="60" value="<?php echo $this->manufacturer->mf_name; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td class="key">
-				<label for="slug">
-					<?php echo $this->viewName.' '. JText::_('COM_VIRTUEMART_SLUG'); ?>
-				</label>
-			</td>
-			<td>
-				<input type="text" name="slug" id="slug" size="60" value="<?php echo $this->manufacturer->slug; ?>" class="inputbox" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="mf_category_name">
-					<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY'); ?>
-				</label>
-			</td>
-			<td>
-				<?php
-				echo JHTML::_('Select.genericlist', $this->manufacturerCategories, 'virtuemart_manufacturercategories_id', '', 'virtuemart_manufacturercategories_id', 'mf_category_name', $this->manufacturer->virtuemart_manufacturercategories_id); ?>
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="mf_url">
-					<?php echo   JText::_('COM_VIRTUEMART_MANUFACTURER_URL'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="mf_url" id="mf_url" size="60" value="<?php echo $this->manufacturer->mf_url; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="published">
-					<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>
-				</label>
-			</td>
-			<td>
-				<fieldset class="radio">
-				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->manufacturer->published); ?>
-				</fieldset>
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="mf_email">
-					<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_EMAIL'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="mf_email" id="mf_email" size="60" value="<?php echo $this->manufacturer->mf_email; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="mf_desc">
-					<?php echo  JText::_('COM_VIRTUEMART_MANUFACTURER_DESCRIPTION'); ?>
-				</label>
-			</td>
-			<td>
-				<?php echo $editor->display('mf_desc', $this->manufacturer->mf_desc, '100%', '300', '50', '8', array('pagebreak', 'readmore'));?>
-			</td>
-		</tr>
-
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_MANUFACTURER_NAME','mf_name',$this->manufacturer->mf_name); ?>
+		<?php echo VmHTML::row('input',$this->viewName.' '. JText::_('COM_VIRTUEMART_SLUG'),'slug',$this->manufacturer->slug); ?>
+		<?php echo VmHTML::row('select','COM_VIRTUEMART_MANUFACTURER_NAME','mf_category_name',$this->manufacturerCategories,$this->manufacturer->virtuemart_manufacturercategories_id,'','virtuemart_manufacturercategories_id', 'mf_category_name',false); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_MANUFACTURER_URL','mf_url',$this->manufacturer->mf_url); ?>
+		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$this->manufacturer->published); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_MANUFACTURER_EMAIL','mf_email',$this->manufacturer->mf_email); ?>
+		<?php echo VmHTML::row('editor','COM_VIRTUEMART_MANUFACTURER_DESCRIPTION','mf_desc',$this->manufacturer->mf_desc); ?>
 	</table>
 	</fieldset>
 </div>

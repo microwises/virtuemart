@@ -35,90 +35,15 @@ vmJsApi::jDate();
 	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_CALC_DETAILS'); ?></legend>
 	<table class="admintable">
-		<tr>
-			<td width="110" class="key">
-				<label for="calc_name">
-					<?php echo JText::_('COM_VIRTUEMART_CALC_NAME'); ?>
-				</label>
-			</td>
-			<td width="110">
-				<input class="inputbox" type="text" name="calc_name" id="calc_name" size="50" value="<?php echo $this->calc->calc_name; ?>" />
-			</td>
-			<td width="110"></td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="published">
-					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
-				</label>
-			</td>
-			<td width="110"  >
-				<fieldset class="radio" >
-				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->calc->published); ?>
-				</fieldset>
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key" >
-				<label for="ordering">
-				<?php echo JText::_('COM_VIRTUEMART_ORDERING'); ?>
-				</label>
-			</td>
-			<td colspan="2">
-				<input class="inputbox" type="text" name="ordering" id="ordering" size="4" value="<?php echo $this->calc->ordering; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="calc_descr">
-					<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
-				</label>
-			</td>
-			<td colspan="3" >
-				<input class="inputbox" type="text" name="calc_descr" id="calc_descr" size="80" value="<?php echo $this->calc->calc_descr; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="entrypoint">
-					<?php echo JText::_('COM_VIRTUEMART_CALC_KIND'); ?>
-				</label>
-			</td>
-			<td colspan="3">
-				<?php echo $this->entryPointsList; ?>
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="mathops">
-					<?php echo JText::_('COM_VIRTUEMART_CALC_VALUE_MATHOP'); ?>
-				</label>
-			</td>
-			<td colspan="3">
-				<?php echo $this->mathOpList; ?>
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="calc_value">
-					<?php echo JText::_('COM_VIRTUEMART_VALUE'); ?>
-				</label>
-			</td>
-			<td colspan="3">
-				<input class="inputbox" type="text" name="calc_value" id="calc_value" size="4" value="<?php echo $this->calc->calc_value; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="calc_currency">
-					<?php echo JText::_('COM_VIRTUEMART_CURRENCY'); ?>
-				</label>
-			</td>
-			<td colspan="3">
-			<?php echo JHTML::_('Select.genericlist', $this->currencies, 'calc_currency', '', 'virtuemart_currency_id', 'currency_name', $this->calc->calc_currency); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CALC_NAME','calc_name',$this->calc->calc_name); ?>
+		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$this->calc->published); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_ORDERING','ordering',$this->calc->ordering,'class="inputbox"','',4,4); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_DESCRIPTION','calc_descr',$this->calc->calc_descr,'class="inputbox"','',70,255); ?>
+		<?php echo VmHTML::row('raw','COM_VIRTUEMART_CALC_KIND', $this->entryPointsList ); ?>
+		<?php echo VmHTML::row('raw','COM_VIRTUEMART_CALC_VALUE_MATHOP', $this->mathOpList ); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_VALUE','calc_value',$this->calc->calc_value); ?>
+		<?php echo VmHTML::row('select','COM_VIRTUEMART_CURRENCY', 'calc_currency', $this->currencies ,$this->calc->calc_currency,'','virtuemart_currency_id', 'currency_name',false) ; ?>
 
-			</td>
-		</tr>
 		<tr>
 			<td width="110" class="key">
 				<label for="calc_categories">
@@ -131,92 +56,22 @@ vmJsApi::jDate();
 				</select>
 			</td>
 		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="shoppergroup">
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_IDS'); ?>
-				</label>
-			</td>
-			<td colspan="3">
-				<?php echo $this->shopperGroupList ?>
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="coutry">
-				<?php echo JText::_('COM_VIRTUEMART_COUNTRY'); ?>
-				</label>
-			</td>
-			<td>
-				<?php echo $this->countriesList?>
-			</td>
+		<?php echo VmHTML::row('raw','COM_VIRTUEMART_SHOPPERGROUP_IDS', $this->shopperGroupList ); ?>
+		<?php echo VmHTML::row('raw','COM_VIRTUEMART_COUNTRY', $this->countriesList ); ?>
+		<?php echo VmHTML::row('raw','COM_VIRTUEMART_STORE_FORM_STATE', $this->statesList ); ?>
 
-
-			<td width="110" class="key">
-		    	<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_STATE'); ?>
-			</td>
-			<td>
-				<?php echo $this->statesList; ?>
-			</td>
-
-		<tr>
-			<td width="110" class="key">
-				<label for="calc_shopper_published">
-					<?php echo JText::_('COM_VIRTUEMART_VISIBLE_FOR_SHOPPER'); ?>
-				</label>
-			</td>
-			<td colspan="3">
-				<fieldset class="radio">
-				<?php echo JHTML::_('select.booleanlist',  'calc_shopper_published', 'class="inputbox"', $this->calc->calc_shopper_published); ?>
-				</fieldset>
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="calc_vendor_published">
-					<?php echo JText::_('COM_VIRTUEMART_VISIBLE_FOR_VENDOR'); ?>
-				</label>
-			</td>
-			<td colspan="3">
-				<fieldset class="radio">
-				<?php echo JHTML::_('select.booleanlist',  'calc_vendor_published', 'class="inputbox"', $this->calc->calc_vendor_published); ?>
-				</fieldset>
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="publish_up">
-					<?php echo JText::_('COM_VIRTUEMART_START_DATE'); ?>
-				</label>
-			</td>
-			<td colspan="3">
-				<?php
-					$startDate = JFactory::getDate($this->calc->publish_up,$this->tzoffset);
-					//echo JHTML::_('calendar', $startDate->toFormat($this->dateformat), "publish_up", "publish_up", $this->dateformat);
-					echo vmJsApi::jDate($startDate->toFormat($this->dateformat), 'publish_up');
- 				?>
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="publish_down">
-					<?php echo JText::_('COM_VIRTUEMART_END_DATE'); ?>
-				</label>
-			</td>
-			<td colspan="3">
-				<?php $endDate;
-				if (empty($this->calc->publish_down) || !strcmp($this->calc->publish_down,'0000-00-00 00:00:00')  ) {
-					$endDate = '';//JText::_('COM_VIRTUEMART_NEVER');
-				} else {
-					$date = JFactory::getDate($this->calc->publish_down,$this->tzoffset);
-					$endDate = $date->toFormat($this->dateformat);
-				}
-				echo vmJsApi::jDate($endDate, 'publish_down');
-				//echo JHTML::_('calendar', $endDate, "publish_down", "publish_down", $this->dateformat,array('class'=>'inputbox', 'size'=>'25',  'maxlength'=>'19')); ?>
-
-			</td>
-		</tr>
-
+		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_VISIBLE_FOR_SHOPPER','calc_shopper_published',$this->calc->calc_shopper_published); ?>
+		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_VISIBLE_FOR_VENDOR','calc_vendor_published',$this->calc->calc_vendor_published); ?>
+		<?php $startDate = JFactory::getDate($this->calc->publish_up,$this->tzoffset);
+			echo VmHTML::row('raw','COM_VIRTUEMART_START_DATE', vmJsApi::jDate($startDate->toFormat($this->dateformat), 'publish_up') ); ?>
+		<?php 
+			if (empty($this->calc->publish_down) || !strcmp($this->calc->publish_down,'0000-00-00 00:00:00')  ) {
+				$endDate = '';//JText::_('COM_VIRTUEMART_NEVER');
+			} else {
+				$date = JFactory::getDate($this->calc->publish_down,$this->tzoffset);
+				$endDate = $date->toFormat($this->dateformat);
+			}
+			echo VmHTML::row('raw','COM_VIRTUEMART_END_DATE',  vmJsApi::jDate($endDate, 'publish_down') ); ?>
 		<?php
 		if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');
 		JPluginHelper::importPlugin('vmcalculation');
@@ -226,28 +81,15 @@ vmJsApi::jDate();
 		foreach ($returnValues as $html) echo $html;
 // 		vmdebug('pluginstuff',$returnValues);
 
-		if(Vmconfig::get('multix','none')!=='none' && $this->perms->check('admin') ){?>
-		<tr>
-			<td width="110" class="key">
-				<label for="vendor">
-				<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
-				</label>
-			</td>
-     		<td width="69%" colspan="3"><?php
-				echo $this->vendorList ?>
-      		</td>
-		</tr>
-		<?php } ?>
+		if(Vmconfig::get('multix','none')!=='none' && $this->perms->check('admin') ){
+			echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->vendorList );
+		} ?>
 	</table>
 	</fieldset>
 </div>
 
-	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="virtuemart_calc_id" value="<?php echo $this->calc->virtuemart_calc_id; ?>" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="controller" value="calc" />
 	<input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->vendorId; ?>" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo VmHTML::HiddenEdit() ?>
 
 </form>

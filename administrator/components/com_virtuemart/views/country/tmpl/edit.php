@@ -30,26 +30,8 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUNTRY_DETAILS');
 	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_COUNTRY_DETAILS'); ?></legend>
 	<table class="admintable">
-		<tr>
-			<td width="110" class="key">
-				<label for="country_name">
-					<?php echo JText::_('COM_VIRTUEMART_COUNTRY_NAME'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="country_name" id="country_name" size="50" value="<?php echo $this->country->country_name; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="published">
-					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
-				</label>
-			</td>
-			<td><fieldset class="radio">
-				<?php echo JHTML::_('select.booleanlist',  'published', 'class="inputbox"', $this->country->published); ?>
-			</fieldset></td>
-		</tr>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_COUNTRY_NAME','country_name',$this->country->country_name); ?>
+		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$this->country->published); ?>
 <?php /* TODO not implemented		<tr>
 			<td width="110" class="key">
 				<label for="title">
@@ -60,36 +42,15 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUNTRY_DETAILS');
 				<?php echo JHTML::_('Select.genericlist', $this->worldZones, 'virtuemart_worldzone_id', '', 'virtuemart_worldzone_id', 'zone_name', $this->country->virtuemart_worldzone_id); ?>
 			</td>
 		</tr>*/ ?>
-		<tr>
-			<td width="110" class="key">
-				<label for="country_3_code">
-					<?php echo JText::_('COM_VIRTUEMART_COUNTRY_3_CODE'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="country_3_code" id="country_3_code" size="10" value="<?php echo $this->country->country_3_code; ?>" />
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="country_2_code">
-					<?php echo JText::_('COM_VIRTUEMART_COUNTRY_2_CODE'); ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="country_2_code" id="country_2_code" size="10" value="<?php echo $this->country->country_2_code; ?>" />
-			</td>
-		</tr>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_COUNTRY_3_CODE','country_3_code',$this->country->country_3_code); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_COUNTRY_2_CODE','country_2_code',$this->country->country_2_code); ?>
 	</table>
 	</fieldset>
 </div>
 
-	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="virtuemart_country_id" value="<?php echo $this->country->virtuemart_country_id; ?>" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="controller" value="country" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+
+	<?php echo VmHTML::HiddenEdit('country') ?>
 </form>
 
 <?php 

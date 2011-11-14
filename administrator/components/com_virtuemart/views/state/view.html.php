@@ -36,6 +36,7 @@ class VirtuemartViewState extends JView {
 		// Load the helper(s)
 		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 
 		$viewName=ShopFunctions::SetViewTitle();
 		$this->assignRef('viewName',$viewName);

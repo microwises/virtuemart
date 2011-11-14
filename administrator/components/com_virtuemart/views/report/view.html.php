@@ -37,6 +37,7 @@ class VirtuemartViewReport extends JView {
 		$this->loadHelper('adminui');
 		$this->loadHelper('html');
 		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('reportFunctions');
 

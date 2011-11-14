@@ -24,42 +24,23 @@ AdminUIHelper::startAdminArea();
 AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 ?>
 
-<form id="adminForm" action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php" method="post" name="adminForm" id="adminForm">
 
 
 <div class="col50">
 	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_USERFIELD_DETAILS'); ?></legend>
 	<table class="admintable">
-
-		<tr>
-			<td width="110" class="key">
-				<label for="type">
-					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_TYPE') ?>
-				</label>
-			</td>
-			<td>
-				<?php echo $this->lists['type']; ?>
-			</td>
-		</tr>
+		<?php echo VmHTML::row('raw','COM_VIRTUEMART_FIELDMANAGER_TYPE', $this->lists['type'] ); ?>
 
 		<!-- Start Type specific attributes -->
 		<tr>
-			<td colspan="2" style="text-align:left;height: 0px;overflow: auto;">
+			<td colspan="2" style="text-align:left;overflow: auto;" id="toggler">
 				<div id="divText">
 					<fieldset>
 					<legend><?php echo JText::_('COM_VIRTUEMART_TEXTFIELD_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
-							<tr>
-								<td width="110" class="key">
-									<label for="maxlength">
-										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_MAXLENGTH'); ?>
-									</label>
-								</td>
-								<td>
-									<input class="inputbox" type="text" name="maxlength" id="maxlength" size="5" value="<?php echo $this->userField->maxlength; ?>" />
-								</td>
-							</tr>
+							<?php echo VmHTML::row('input','COM_VIRTUEMART_USERFIELDS_MAXLENGTH','maxlength',$this->userField->maxlength,'class="inputbox"','',5); ?>
 						</table>
 					</fieldset>
 				</div>
@@ -68,26 +49,8 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 					<fieldset>
 					<legend><?php echo JText::_('COM_VIRTUEMART_TEXTAREA_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
-							<tr>
-								<td width="110" class="key">
-									<label for="cols">
-										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_COLUMNS'); ?>
-									</label>
-								</td>
-								<td>
-									<input class="inputbox" type="text" name="cols" id="cols" size="5" value="<?php echo $this->userField->cols; ?>" />
-								</td>
-							</tr>
-							<tr>
-								<td width="110" class="key">
-									<label for="rows">
-										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ROWS'); ?>
-									</label>
-								</td>
-								<td>
-									<input class="inputbox" type="text" name="rows" id="rows" size="5" value="<?php echo $this->userField->rows; ?>" />
-								</td>
-							</tr>
+							<?php echo VmHTML::row('input','COM_VIRTUEMART_USERFIELDS_COLUMNS','cols',$this->userField->cols,'class="inputbox"','',5); ?>
+							<?php echo VmHTML::row('input','COM_VIRTUEMART_USERFIELDS_ROWS','rows',$this->userField->rows,'class="inputbox"','',5); ?>
 						</table>
 					</fieldset>
 				</div>
@@ -96,34 +59,16 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 					<fieldset>
 					<legend><?php echo JText::_('COM_VIRTUEMART_FIELDS_EUVATID_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
-							<tr>
-								<td width="110" class="key">
-									<label for="virtuemart_shoppergroup_id">
-										<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_EUVATID_MOVESHOPPER'); ?>
-									</label>
-								</td>
-								<td>
-									<?php echo $this->lists['shoppergroups'];?>
-								</td>
-							</tr>
+							<?php echo VmHTML::row('raw','COM_VIRTUEMART_USERFIELDS_EUVATID_MOVESHOPPER', $this->lists['shoppergroups'] ); ?>
 						</table>
 					</fieldset>
 				</div>
 
-				<div id="divAgeVerification">
+				<div id="divAgeVerification" style="text-align:left;height: 280px;overflow: auto;">
 					<fieldset>
 					<legend><?php echo JText::_('COM_VIRTUEMART_FIELDS_AGEVERIFICATION_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
-							<tr>
-								<td width="110" class="key">
-									<label for="minimum_age">
-										<?php echo JText::_('COM_VIRTUEMART_FIELDS_AGEVERIFICATION_MINIMUM'); ?>
-									</label>
-								</td>
-								<td>
-									<?php echo $this->lists['minimum_age'];?>
-								</td>
-							</tr>
+							<?php echo VmHTML::row('raw','COM_VIRTUEMART_FIELDS_AGEVERIFICATION_MINIMUM', $this->lists['minimum_age'] ); ?>
 						</table>
 					</fieldset>
 				</div>
@@ -132,16 +77,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 					<fieldset>
 					<legend><?php echo JText::_('COM_VIRTUEMART_FIELDS_WEBADDRESS'); ?></legend>
 						<table class="admintable">
-							<tr>
-								<td width="110" class="key">
-									<label for="webaddresstype">
-										<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_TYPE'); ?>:
-									</label>
-								</td>
-								<td>
-									<?php echo $this->lists['webaddresstypes'];?>
-								</td>
-							</tr>
+							<?php echo VmHTML::row('raw','COM_VIRTUEMART_FIELDMANAGER_TYPE', $this->lists['webaddresstypes'] ); ?>
 						</table>
 					</fieldset>
 				</div>
@@ -149,7 +85,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 				<div id="divValues" style="text-align:left;height: 200px;overflow: auto;">
 					<fieldset>
 					<legend><?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ADDVALUES_TIP'); ?></legend>
-						<input type="button" class="button" onclick="insertRow();" value="<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ADDVALUE') ?>" />
+						<input type="button" class="button insertRow" onclick="insertRow();" value="<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ADDVALUE') ?>" />
 						<table align=left id="divFieldValues" cellpadding="4" cellspacing="1" border="0" width="100%" class="admintable">
 							<thead>
 								<tr>
@@ -194,147 +130,33 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 				<input class="inputbox" type="text" name="title" id="title" size="50" value="<?php echo $this->userField->title; ?>" />(<?php echo $text ?>)
 			</td>
 		</tr>
+		<?php echo VmHTML::row('editor','COM_VIRTUEMART_USERFIELDS_DESCRIPTION','description', $this->userField->description,'100%','300', array('image','pagebreak', 'readmore') ); ?>
 
-		<tr>
-			<td width="110" class="key">
-				<label for="description">
-					<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_DESCRIPTION') ?>
-				</label>
-			</td>
-			<td>
-				<?php echo $this->editor->display('description',  $this->userField->description, '100%;', '250', '75', '20', array('image', 'pagebreak', 'readmore') ) ; ?>
-			</td>
-		</tr>
-
-		<tr>
-			<td width="110" class="key">
-				<label for="required">
-					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_REQUIRED') ?>
-				</label>
-			</td>
-			<td>
-				<fieldset class="radio">
-				<?php echo $this->lists['required']; ?>
-				</fieldset>
-			</td>
-		</tr>
-
-		<tr>
-			<td width="110" class="key">
-				<label for="registration">
-					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_REGISTRATION') ?>
-				</label>
-			</td>
-			<td>
-				<fieldset class="radio">
-				<?php echo $this->lists['registration']; ?>
-				</fieldset>
-			</td>
-		</tr>
-
-		<tr>
-			<td width="110" class="key">
-				<label for="account">
-					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_ACCOUNT') ?>
-				</label>
-			</td>
-			<td>
-				<fieldset class="radio">
-				<?php echo $this->lists['account']; ?>
-				</fieldset>
-			</td>
-		</tr>
-
-		<tr>
-			<td width="110" class="key">
-				<label for="shipment">
-					<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_SHIPPING') ?>
-				</label>
-			</td>
-			<td>
-				<fieldset class="radio">
-				<?php echo $this->lists['shipment']; ?>
-				</fieldset>
-			</td>
-		</tr>
-
-		<tr>
-			<td width="110" class="key">
-				<label for="readonly">
-					<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_READONLY') ?>
-				</label>
-			</td>
-			<td>
-				<fieldset class="radio">
-				<?php echo $this->lists['readonly']; ?>
-				</fieldset>
-			</td>
-		</tr>
-
-		<tr>
-			<td width="110" class="key">
-				<label for="published">
-					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED') ?>
-				</label>
-			</td>
-			<td>
-				<fieldset class="radio">
-				<?php echo $this->lists['published']; ?>
-				</fieldset>
-			</td>
-		</tr>
-
-		<tr>
-			<td width="110" class="key">
-				<label for="size">
-					<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_SIZE') ?>
-				</label>
-			</td>
-			<td>
-				<input class="inputbox" type="text" name="size" id="size" size="5" value="<?php echo $this->userField->size; ?>" />
-			</td>
-		</tr>
-
-		<tr>
-		<td width="110" class="key">
-		<label for="size">
-		<?php echo JText::_('COM_VIRTUEMART_ORDERING') ?>
-						</label>
-					</td>
-					<td>
-						<input class="inputbox" type="text" name="size" id="size" size="5" value="<?php echo $this->userField->ordering; ?>" />
-					</td>
-				</tr>
-
-<?php	if(Vmconfig::get('multix','none')!=='none'){ ?>
-		<tr>
-			<td width="110" class="key">
-				<label for="virtuemart_vendor_id">
-					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
-				</label>
-			</td>
-			<td>
-				<?php echo $this->lists['vendors'];?>
-			</td>
-		</tr>
-<?php	} ?>
+		<?php echo $this->lists['required']; ?>
+		<?php echo $this->lists['registration']; ?>
+		<?php echo $this->lists['account']; ?>
+		<?php echo $this->lists['shipping']; ?>
+		<?php echo $this->lists['readonly']; ?>
+		<?php echo $this->lists['published']; ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_USERFIELDS_SIZE','size',$this->userField->size,'class="inputbox"','',5); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_ORDERING','ordering',$this->userField->ordering,'class="inputbox"','',5); ?>
+		<?php if(Vmconfig::get('multix','none')!=='none'){ 
+				echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->lists['vendors'] ); 
+			} ?>
 	</table>
 	</fieldset>
 </div>
-<input type="hidden" name="option" value="com_virtuemart" />
+
 <input type="hidden" name="virtuemart_userfield_id" value="<?php echo $this->userField->virtuemart_userfield_id; ?>" />
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="valueCount" value="<?php echo $this->valueCount; ?>" />
-<input type="hidden" name="controller" value="userfields" />
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo VmHTML::HiddenEdit() ?>
 </form>
 
 <?php
 AdminUIHelper::imitateTabs('end');
 AdminUIHelper::endAdminArea(); ?>
 
-<?php $duration = 500;
+<?php $duration = 650;
 $db = JFactory::getDBO();
 $db->setQuery("SHOW COLUMNS FROM `#__virtuemart_userfields`");
 $existingFields = '"'.implode('","',$db->loadResultArray()).'"';
@@ -350,100 +172,63 @@ function getObject(obj) {
 	}
 	return strObj;
 }
-function insertRow() {
-	var oTable = getObject("fieldValuesBody");
-	var oRow, oCell ,oCellCont, oInput;
-	var i, j;
-	i=document.adminForm.valueCount.value;
-	i++;
-	// Create and insert rows and cells into the first body.
-	oRow = document.createElement("TR");
-	oTable.appendChild(oRow);
 
-	oCell = document.createElement("TD");
-	oInput=document.createElement("INPUT");
-	oInput.name="vNames["+i+"]";
-	oInput.setAttribute('id',"vNames_"+i);
-	oCell.appendChild(oInput);
-	oRow.appendChild(oCell);
+jQuery(".insertRow").click( function() {
+	nr = jQuery('#fieldValuesBody tr').length ;
+	row = '<tr><td><input type="text" readonly="readonly" name="vNames['+nr+']" value="Mr"></td><td><input type="text" name="vValues['+nr+']" value="Mr"></td></tr>';
+	jQuery('#fieldValuesBody').append( row );
+});
 
-	oCell = document.createElement("TD");
-	oInput=document.createElement("INPUT");
-	oInput.name="vValues["+i+"]";
-	oInput.setAttribute('id',"vValues_"+i);
-	oCell.appendChild(oInput);
+jQuery(".readonly").click( function(e) {
+	return false})
 
-	oRow.appendChild(oCell);
-	oInput.focus();
-
-	document.adminForm.valueCount.value=i;
-}
-
-function disableAll() {
-	var elem;
-	try{
-		divValues.slideOut();
-		divColsRows.slideOut();
-		divWeb.slideOut();
-		divShopperGroups.slideOut();
-		divAgeVerification.slideOut();
-		divText.slideOut();
-
-	} catch(e){ }
-	if (elem=getObject('vNames[0]')) {
-		elem.setAttribute('mosReq',0);
-	}
-}
-
-function toggleType( type ) {
-	disableAll();
+jQuery('select#type').chosen().change(function() {
+		selected = jQuery(this).find( 'option:selected').val() ;
+	toggleType(selected)
+})
+function toggleType( sType ) {
+	jQuery('#toggler').children('div').slideUp();
+	jQuery('input[name="vNames[0]"]').attr("mosReq", 0);
 	<?php if (!$this->userField->sys) : ?>
 	prep4SQL (document.adminForm.name);
 	<?php endif; ?>
-	setTimeout ('selType( \'' + type + '\' )', <?php echo ( $duration + 150 ) ?>);
-}
-
-function selType(sType) {
-	var elem;
 	switch (sType) {
 		case 'editorta':
 		case 'textarea':
-			divText.toggle();
-			divColsRows.toggle();
+			jQuery('#divText').slideDown();
+			jQuery('#divColsRows').slideDown();
 		break;
 
 		case 'euvatid':
-			divShopperGroups.toggle();
+			jQuery('#divShopperGroups').slideDown();
 			break;
 		case 'age_verification':
-			divAgeVerification.toggle();
+			jQuery('#divAgeVerification').slideDown();
 			break;
 
 		case 'emailaddress':
 		case 'password':
 		case 'text':
-			divText.toggle();
+			jQuery('#divText').slideDown();
 		break;
 
 		case 'select':
 		case 'multiselect':
-			divValues.toggle();
-			if (elem=getObject('vNames[0]')) {
-				elem.setAttribute('mosReq',1);
-			}
+			jQuery('#divValues').slideDown();
+			jQuery('input[name="vNames[0]"]').attr("mosReq", 1);
+
 		break;
 
 		case 'radio':
 		case 'multicheckbox':
-			divColsRows.toggle();
-			divValues.toggle();
-			if (elem=getObject('vNames[0]')) {
-				elem.setAttribute('mosReq',1);
-			}
+			jQuery('#divColsRows').slideDown();
+			jQuery('#divValues').slideDown();
+			jQuery('input[name="vNames[0]"]').attr("mosReq", 1);
+
 		break;
 
 		case 'webaddress':
-			divWeb.toggle();
+			jQuery('#divWeb').slideDown();
 		break;
 
 		case 'delimiter':
@@ -477,11 +262,5 @@ function prep4SQL(o){
 <?php if($this->userField->virtuemart_userfield_id > 0) : ?>
 document.adminForm.name.readOnly = true;
 <?php endif; ?>
-var divValues = new Fx.Slide('divValues' , {duration: <?php echo $duration;?> });
-var divColsRows = new Fx.Slide('divColsRows' , {duration: <?php echo $duration;?> });
-var divWeb = new Fx.Slide('divWeb' , {duration: <?php echo $duration;?> });
-var divShopperGroups = new Fx.Slide('divShopperGroups' , {duration: <?php echo $duration;?> });
-var divAgeVerification = new Fx.Slide('divAgeVerification' , {duration: <?php echo $duration;?> });
-var divText = new Fx.Slide('divText' , {duration: <?php echo $duration;?> } );
 toggleType('<?php echo $this->userField->type;?>');
 </script>

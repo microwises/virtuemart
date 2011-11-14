@@ -37,6 +37,7 @@ class VirtuemartViewInventory extends JView {
 		$this->loadHelper('adminui');
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 
 		/* Get the data */
 		$model = $this->getModel('product');

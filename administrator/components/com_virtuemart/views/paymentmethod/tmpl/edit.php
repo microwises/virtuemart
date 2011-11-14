@@ -30,12 +30,9 @@ $tabarray['config'] = 'COM_VIRTUEMART_ADMIN_PAYMENT_CONFIGURATION';
 AdminUIHelper::buildTabs ( $tabarray,$this->paym->virtuemart_paymentmethod_id );
 // Loading Templates in Tabs END ?>
 
-<!-- Hidden Fields -->
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="view" value="paymentmethod" />
+
 <input type="hidden" name="virtuemart_paymentmethod_id" value="<?php echo $this->paym->virtuemart_paymentmethod_id; ?>" />
-<?php echo JHTML::_( 'form.token' ); ?>
+<?php echo VmHTML::HiddenEdit() ?>
 </form>
 <?php AdminUIHelper::endAdminArea(); ?>
 

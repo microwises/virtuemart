@@ -37,6 +37,7 @@ class VirtuemartViewRatings extends JView {
 		/* Load helpers */
 		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 
 		/* Get the review IDs to retrieve (input variable may be cid, cid[] or virtuemart_rating_review_id */
 		$cids = JRequest::getVar('cid', 0);

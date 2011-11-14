@@ -32,6 +32,7 @@ class VirtuemartViewProduct extends JView {
 
 	function display($tpl = null) {
 		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 		$mainframe = JFactory::getApplication();
 
 		// Get the task
@@ -41,6 +42,7 @@ class VirtuemartViewProduct extends JView {
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 		$this->loadHelper('html');
 		JView::loadHelper('image');
 

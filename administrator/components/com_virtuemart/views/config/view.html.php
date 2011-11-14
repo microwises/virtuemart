@@ -40,6 +40,7 @@ class VirtuemartViewConfig extends JView {
 		$this->loadHelper('image');
 		$this->loadHelper('html');
 		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 
 		$model = $this->getModel();
 		$usermodel = $this->getModel('user');

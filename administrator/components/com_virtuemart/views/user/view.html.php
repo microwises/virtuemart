@@ -39,7 +39,8 @@ class VirtuemartViewUser extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminui');
-		$this->loadHelper('shopfunctions');
+		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 
 
 		$model = $this->getModel();

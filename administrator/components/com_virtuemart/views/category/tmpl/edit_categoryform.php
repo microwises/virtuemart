@@ -29,20 +29,9 @@ $mainframe = JFactory::getApplication();
 	<tr>
 		<td valign="top" colspan="2">
 		<fieldset>
-		<legend><?php echo JText::_('COM_VIRTUEMART_FORM_GENERAL'); ?></legend>
+			<legend><?php echo JText::_('COM_VIRTUEMART_FORM_GENERAL'); ?></legend>
 			<table width="100%" border="0">
-				<tr>
-					<td class="key" style="width: 150px;">
-						<label for="published">
-							<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
-						</label>
-					</td>
-					<td>
-						<fieldset class="radio">
-						<?php echo JHTML::_('select.booleanlist', 'published', $this->category->published, $this->category->published);?>
-						</fieldset>
-					</td>
-				</tr>
+				<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$this->category->published); ?>
 				<!-- Commented out for future use
 				<tr>
 					<td class="key">
@@ -58,36 +47,9 @@ $mainframe = JFactory::getApplication();
 					</td>
 				</tr>
 				-->
-				<tr>
-					<td class="key">
-						<label for="category_name">
-							<?php echo JText::_('COM_VIRTUEMART_CATEGORY_NAME'); ?>
-						</label>
-					</td>
-					<td>
-						<input type="text" name="category_name" id="category_name" size="60" value="<?php echo $this->category->category_name; ?>" class="inputbox" />
-					</td>
-				</tr>
-				<tr>
-					<td class="key">
-						<label for="slug">
-							<?php echo JText::_('COM_VIRTUEMART_SLUG'); ?>
-						</label>
-					</td>
-					<td>
-						<input type="text" name="slug" id="slug" size="60" value="<?php echo $this->category->slug; ?>" class="inputbox" />
-					</td>
-				</tr>
-				<tr>
-					<td class="key">
-						<label for="category_description">
-							<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
-						</label>
-					</td>
-					<td>
-						<?php echo $editor->display('category_description', $this->category->category_description, '100%', '300', '50', '8', array('pagebreak', 'readmore'));?>
-					</td>
-				</tr>
+				<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_NAME','category_name',$this->manufacturer->category_name); ?>
+				<?php echo VmHTML::row('input','COM_VIRTUEMART_SLUG','slug',$this->manufacturer->slug); ?>
+				<?php echo VmHTML::row('editor','COM_VIRTUEMART_DESCRIPTION','category_description',$this->manufacturer->category_description); ?>
 			</table>
 		</fieldset>
 		</td>
@@ -97,110 +59,21 @@ $mainframe = JFactory::getApplication();
 			<fieldset>
 				<legend><?php echo JText::_('COM_VIRTUEMART_DETAILS'); ?></legend>
 				<table>
-					<tr>
-						<td class="key">
-							<label for="ordering">
-								<?php echo JText::_('COM_VIRTUEMART_ORDERING') ?>
-							</label>
-						</td>
-						<td>
-							<?php echo ShopFunctions::getEnumeratedCategories(true, true, $this->parent->virtuemart_category_id, 'ordering', '', 'ordering', 'category_name', $this->category->ordering); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="key">
-							<label for="category_parent_id">
-								<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_PARENT'); ?>
-							</label>
-						</td>
-						<td>
-							<select name="category_parent_id" id="category_parent_id" class="inputbox">
-								<option value=""><?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL'); ?></option>
-								<?php echo $this->categorylist;?>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="key">
-							<label for="products_per_row">
-								<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_PRODUCTS_PER_ROW'); ?>
-							</label>
-						</td>
-						<td>
-							<input type="text" name="products_per_row" id="products_per_row" size="5" value="<?php echo $this->category->products_per_row; ?>" class="inputbox" />
-						</td>
-					</tr>
-
-					<tr>
-						<td class="key">
-							<label for="limit_list_start">
-								<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_LIMIT_LIST_START'); ?>
-							</label>
-						</td>
-						<td>
-							<input type="text" name="limit_list_start" id="limit_list_start" size="5" value="<?php echo $this->category->limit_list_start; ?>" class="inputbox" />
-						</td>
-					</tr>
-					<tr>
-						<td class="key">
-							<label for="limit_list_step">
-								<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_LIMIT_LIST_STEP'); ?>
-							</label>
-						</td>
-						<td>
-							<input type="text" name="limit_list_step" id="limit_list_step" size="5" value="<?php echo $this->category->limit_list_step; ?>" class="inputbox" />
-						</td>
-					</tr>
-					<tr>
-						<td class="key">
-							<label for="limit_list_max">
-								<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_LIMIT_LIST_MAX'); ?>
-							</label>
-						</td>
-						<td>
-							<input type="text" name="limit_list_max" id="limit_list_max" size="5" value="<?php echo $this->category->limit_list_max; ?>" class="inputbox" />
-						</td>
-					</tr>
-					<tr>
-						<td class="key">
-							<label for="limit_list_initial">
-								<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_INITIAL_DISPLAY_RECORDS'); ?>
-							</label>
-						</td>
-						<td>
-							<input type="text" name="limit_list_initial" id="limit_list_initial" size="5" value="<?php echo $this->category->limit_list_initial; ?>" class="inputbox" />
-						</td>
-					</tr>
-					<tr>
-						<td class="key">
-							<label for="category_template">
-								<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_TEMPLATE'); ?>
-							</label>
-						</td>
-						<td>
-							<?php echo JHTML::_('Select.genericlist', $this->jTemplateList, 'category_template', 'size=1', 'directory', 'name', $this->category->category_template); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="key">
-							<label for="category_layout">
-								<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_BROWSE_LAYOUT'); ?>
-							</label>
-						</td>
-						<td>
-							<?php echo JHTML::_('Select.genericlist', $this->categoryLayouts, 'category_layout', 'size=1', 'value', 'text', $this->category->category_layout); ?>
-						</td>
-					</tr>
-					<tr>
-						<td class="key">
-							<label for="category_product_layout">
-								<?php echo JText::_('COM_VIRTUEMART_CATEGORY_FORM_FLYPAGE'); ?>
-							</label>
-						</td>
-						<td>
-							<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'category_product_layout', 'size=1', 'value', 'text', $this->category->category_product_layout); ?>
-						</td>
-					</tr>
+					<?php echo VmHTML::row('raw','COM_VIRTUEMART_ORDERING', ShopFunctions::getEnumeratedCategories(true, true, $this->parent->virtuemart_category_id, 'ordering', '', 'ordering', 'category_name', $this->category->ordering) ); ?>
+					<?php $categorylist = '
+						<select name="category_parent_id" id="category_parent_id" class="inputbox">
+							<option value="">'.JText::_('COM_VIRTUEMART_CATEGORY_FORM_TOP_LEVEL').'</option>
+							'.$this->categorylist.'
+						</select>';
+						echo VmHTML::row('raw','COM_VIRTUEMART_ORDERING', $categorylist ); ?>
+					<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_FORM_PRODUCTS_PER_ROW','products_per_row',$this->category->products_per_row); ?>
+					<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_FORM_LIMIT_LIST_START','limit_list_start',$this->category->limit_list_start); ?>
+					<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_FORM_LIMIT_LIST_STEP','limit_list_step',$this->category->limit_list_step); ?>
+					<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_FORM_LIMIT_LIST_MAX','limit_list_max',$this->category->limit_list_max); ?>
+					<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_FORM_INITIAL_DISPLAY_RECORDS','limit_list_initial',$this->category->limit_list_initial); ?>
+					<?php echo VmHTML::row('select','COM_VIRTUEMART_CATEGORY_FORM_TEMPLATE', 'category_template', $this->jTemplateList ,$this->category->category_template,'','directory', 'name',false) ; ?>
+					<?php echo VmHTML::row('select','COM_VIRTUEMART_CATEGORY_FORM_BROWSE_LAYOUT', 'category_layout', $this->categoryLayouts ,$this->category->category_layout,'','value', 'text',false) ; ?>
+					<?php echo VmHTML::row('select','COM_VIRTUEMART_CATEGORY_FORM_FLYPAGE', 'category_product_layout', $this->productLayouts ,$this->category->category_product_layout,'','value', 'text',false) ; ?>
 				</table>
 			</fieldset>
 		</td>
@@ -208,46 +81,10 @@ $mainframe = JFactory::getApplication();
 			<fieldset>
 				<legend><?php echo JText::_('COM_VIRTUEMART_META_INFORMATION'); ?></legend>
 				<table>
-					<tr>
-						<td class="key">
-							<label for="metadesc">
-								<?php echo JText::_('COM_VIRTUEMART_META_DESC'); ?>
-							</label>
-						</td>
-						<td>
-							<textarea class="inputbox" name="metadesc" id="metadesc" cols="35" rows="5"><?php echo $this->category->metadesc; ?></textarea>
-						</td>
-					</tr>
-					<tr>
-						<td class="key">
-							<label for="metakey">
-								<?php echo JText::_('COM_VIRTUEMART_META_KEYWORDS'); ?>
-							</label>
-						</td>
-						<td>
-							<textarea class="inputbox" name="metakey" id="metakey" cols="35" rows="5"><?php echo $this->category->metakey; ?></textarea>
-						</td>
-					</tr>
-					<tr>
-						<td class="key">
-							<label for="metarobot">
-								<?php echo JText::_('COM_VIRTUEMART_META_ROBOTS'); ?>
-							</label>
-						</td>
-						<td>
-							<input type="text" name="metarobot" id="metarobot" size="25" value="<?php echo $this->category->metarobot; ?>" class="inputbox" />
-						</td>
-					</tr>
-					<tr>
-						<td class="key">
-							<label for="metaauthor">
-								<?php echo JText::_('COM_VIRTUEMART_METAAUTHOR'); ?>
-							</label>
-						</td>
-						<td>
-							<input type="text" name="metaauthor" id="metaauthor" size="25" value="<?php echo $this->category->metaauthor; ?>" class="inputbox" />
-						</td>
-					</tr>
+					<?php echo VmHTML::row('textarea','COM_VIRTUEMART_META_DESC','metadesc',$this->category->metadesc); ?>
+					<?php echo VmHTML::row('textarea','COM_VIRTUEMART_META_KEYWORDS','metakey',$this->category->metakey); ?>
+					<?php echo VmHTML::row('input','COM_VIRTUEMART_META_ROBOTS','metarobot',$this->category->metarobot); ?>
+					<?php echo VmHTML::row('input','COM_VIRTUEMART_METAAUTHOR','metaauthor',$this->category->metaauthor); ?>
 				</table>
 			</fieldset>
 		</td>

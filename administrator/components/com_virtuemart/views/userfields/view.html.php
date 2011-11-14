@@ -39,7 +39,8 @@ class VirtuemartViewUserfields extends JView {
 
 		// Load the helper(s)
 		$this->loadHelper('adminui');
-      	$this->loadHelper('shopFunctions');
+		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		$model = $this->getModel();
@@ -59,7 +60,7 @@ class VirtuemartViewUserfields extends JView {
 
 				$this->assignRef('ordering', JText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
 				$userFieldValues = array();
-				$attribs = 'onchange="toggleType(this.options[this.selectedIndex].value);"';
+				$attribs = '';
 				$lists['type'] = JHTML::_('select.genericlist', $this->_getTypes(), 'type', $attribs, 'type', 'text', $userField->type);
 			} else { // Update existing userfield
 				// Ordering dropdown
@@ -79,7 +80,7 @@ class VirtuemartViewUserfields extends JView {
 			JToolBarHelper::apply();
 			JToolBarHelper::cancel();
 
-			$notoggle = (in_array($userField->name, $lists['coreFields']) ? 'readonly="readonly"' : '');
+			$notoggle = (in_array($userField->name, $lists['coreFields']) ? 'class="readonly"' : '');
 
 			// Vendor selection
 			if(Vmconfig::get('multix','none')!=='none'){
@@ -129,12 +130,12 @@ class VirtuemartViewUserfields extends JView {
 			$this->assignRef('valueCount', --$i);
 
 			// Toggles
-			$lists['required']     = JHTML::_('select.booleanlist', 'required',     $notoggle, $userField->required,     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-			$lists['published']    = JHTML::_('select.booleanlist', 'published',    $notoggle, $userField->published,    'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-			$lists['registration'] = JHTML::_('select.booleanlist', 'registration', $notoggle, $userField->registration, 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-			$lists['shipment']     = JHTML::_('select.booleanlist', 'shipment',     $notoggle, $userField->shipment,     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-			$lists['account']      = JHTML::_('select.booleanlist', 'account',      $notoggle, $userField->account,      'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-			$lists['readonly']     = JHTML::_('select.booleanlist', 'readonly',     $notoggle, $userField->readonly,     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$lists['required']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_REQUIRED','required',$userField->required,$notoggle);
+			$lists['published']    =  VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$userField->published,$notoggle);
+			$lists['registration'] =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_REGISTRATION','registration',$userField->registration,$notoggle);
+			$lists['shipping']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_SHIPPING','shipping',$userField->shipping,$notoggle);
+			$lists['account']      =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_ACCOUNT','account',$userField->account,$notoggle);
+			$lists['readonly']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_USERFIELDS_READONLY','readonly',$userField->account,$notoggle);
 
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userField', $userField);
@@ -157,8 +158,8 @@ class VirtuemartViewUserfields extends JView {
 //$bar->appendButton( 'publish', 'upload', $alt, '', 550, 400 );
 			JToolBarHelper::custom('toggle.registration.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_REGISTRATION');
 			JToolBarHelper::custom('toggle.registration.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_REGISTRATION');
-			JToolBarHelper::custom('toggle.shipment.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_SHIPPING');
-			JToolBarHelper::custom('toggle.shipment.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_SHIPPING');
+			JToolBarHelper::custom('toggle.shipping.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_SHIPPING');
+			JToolBarHelper::custom('toggle.shipping.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_SHIPPING');
 			JToolBarHelper::custom('toggle.account.1', 'publish','','COM_VIRTUEMART_FIELDMANAGER_SHOW_ACCOUNT');
 			JToolBarHelper::custom('toggle.account.0', 'unpublish','','COM_VIRTUEMART_FIELDMANAGER_HIDE_ACCOUNT');
 			JToolBarHelper::divider();

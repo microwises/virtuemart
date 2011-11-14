@@ -33,12 +33,8 @@ $tabarray['images'] = 'COM_VIRTUEMART_IMAGE_S';
 AdminUIHelper::buildTabs ( $tabarray ,$this->manufacturer->virtuemart_manufacturer_id);
 // Loading Templates in Tabs END ?>
 
-	<input type="hidden" name="option" value="com_virtuemart" />
 	<input type="hidden" name="virtuemart_manufacturer_id" value="<?php echo $this->manufacturer->virtuemart_manufacturer_id; ?>" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="controller" value="manufacturer" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo VmHTML::HiddenEdit() ?>
 </form>
 <script type="text/javascript">
 function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {

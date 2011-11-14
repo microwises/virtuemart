@@ -40,6 +40,7 @@ class VirtuemartViewShipmentmethod extends JView {
 		$this->loadHelper('vmplugin');
 		$this->loadHelper('vmshipmentplugin');
 		$this->loadHelper('shopFunctions');
+		$this->loadHelper('html');
 
 		$model = $this->getModel();
 		$shipment = $model->getShipment();

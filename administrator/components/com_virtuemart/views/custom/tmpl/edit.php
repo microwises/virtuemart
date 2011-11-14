@@ -33,7 +33,7 @@ if ($this->custom->custom_parent_id) $this->customfields->addHidden('custom_pare
 $attribute_id = JRequest::getVar('attribute_id', '');
 if(!empty($attribute_id)) $this->customfields->addHidden('attribute_id',$attribute_id);
 
-echo $this->customfields->displayCustomFields('',$this->custom); ?>
+echo $this->customfields->displayCustomFields($this->custom); ?>
 <table class="adminform" id="custom_plg">
 	<tr>
 		<td class="labelcell"><?php echo JText::_('COM_VIRTUEMART_SELECT_CUSTOM_PLUGIN' ) ."<br /> ". $this->pluginList ?></td>
@@ -46,10 +46,8 @@ echo $this->customfields->displayCustomFields('',$this->custom); ?>
 		<?php
 		if($this->customPlugin->custom_jplugin_id){
 				echo $this->customPlugin->custom_name .'<br />' ;
-	        //$parameters = new vmParameters($this->paym->custom_params, JPATH_PLUGINS.DS.'vmcustom'.DS.basename($this->paym->custom_element).'.xml', 'plugin' );
                 $parameters = new vmParameters($this->customPlugin->custom_params,  $this->customPlugin->custom_element , 'plugin' ,'vmcustom');
-              // vmdebug ( 'csutomplg',$this->customPlugin->custom_element);
-	        echo $rendered = $parameters->render(); ?>
+				echo $rendered = $parameters->render(); ?>
 
 			<?php
         } else { ?>
