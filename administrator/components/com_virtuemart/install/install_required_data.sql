@@ -442,9 +442,9 @@ INSERT INTO `#__virtuemart_customs` ( `virtuemart_custom_id`, `custom_parent_id`
 -- Dumping data for table `#__virtuemart_shoppergroups`
 --
 
-INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`) VALUES
-(NULL, 1, '-default-', 'This is the default shopper group.', 1);
-
+INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`, `shared`) VALUES
+(1, 1, '-anonymous-', 'shopper group for anoymous shoppers', 2, 1);
+(NULL, 1, '-default-', 'This is the default shopper group.', 1, 1);
 --
 -- Dumping data for table `#__virtuemart_states`
 --

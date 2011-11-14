@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo VmHTML::checkbox('price_access_level_published', $this->config->get('price_access_level_published')); ?>
 			    <?php echo JText::_('COM_VIRTUEMART_CFG_ENABLE_FEATURE'); ?>
 			    <br />
-			    <?php
+			    <?php /*
 				if ( VmConfig::isJ15()) {
 					echo JHTML::_('Select.genericlist', $this->aclGroups, 'price_access_level', 'size=5', 'title', 'text', $this->config->get('price_access_level'));
 				} else {
@@ -56,7 +56,7 @@ defined('_JEXEC') or die('Restricted access');
 					$selectOptions['list.select'] = $this->config->get('price_access_level');
 					$selectOptions['option.text.toHtml'] = false;
 					echo JHTML::_('Select.genericlist', $this->aclGroups, 'price_access_level', $selectOptions);
-				} ?>
+				} */ ?>
 			</td>
 		    </tr>
 		    <tr>

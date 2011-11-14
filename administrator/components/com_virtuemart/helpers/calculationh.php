@@ -118,15 +118,20 @@ class calculationHelper {
 			if (!empty($user->id)) {
 				$this->_db->setQuery('SELECT `usgr`.`virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups as `usgr`
  										JOIN `#__virtuemart_shoppergroups` as `sg` ON (`usgr`.`virtuemart_shoppergroup_id`=`sg`.`virtuemart_shoppergroup_id`)
- WHERE `usgr`.`virtuemart_user_id`="' . $user->id . '" AND `sg`.`virtuemart_vendor_id`="' . (int) $vendorId . '" ');
+ 										WHERE `usgr`.`virtuemart_user_id`="' . $user->id . '" AND `sg`.`virtuemart_vendor_id`="' . (int) $vendorId . '" ');
 				$this->_shopperGroupId = $this->_db->loadResultArray();  //todo load as array and test it
+				if (empty($this->_shopperGroupId)) {
+					$this->_db->setQuery('SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
+								WHERE `default`="1" AND `virtuemart_vendor_id`="' . (int) $vendorId . '"');
+					$this->_shopperGroupId = $this->_db->loadResultArray();
+				}
 			}
-			if (empty($this->_shopperGroupId)) {
-				$this->_db->setQuery('SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
-				WHERE `default`="1" AND `virtuemart_vendor_id`="' . (int) $vendorId . '"');
-				//				$this->_db->setQuery( 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_vmuser_shoppergroups
-				//				WHERE `default`="1" AND `virtuemart_vendor_id`="'.$this->productVendorId.'" ');
-				$this->_shopperGroupId = $this->_db->loadResultArray();
+			else if (empty($this->_shopperGroupId)) {
+				//We just define the shoppergroup with id = 1 to anonymous default shoppergroup
+// 				$this->_db->setQuery('SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
+// 				WHERE `default`="2" AND `virtuemart_vendor_id`="' . (int) $vendorId . '"');
+// 				$this->_shopperGroupId = $this->_db->loadResultArray();
+				$this->_shopperGroupId[] = 1;
 			}
 		}
 	}
@@ -180,10 +185,13 @@ class calculationHelper {
 		if (!VmConfig::get('show_prices', 0)) {
 		 return array();
 		}
-/*		if (VmConfig::get('price_access_level_published', 0)) {
-// 		Todo check for ACL groups
-		return array();
-		}*/
+		if (VmConfig::get('price_access_level_published', 0)) {
+			$user = JFactory::getUser();
+			if(empty($user->id)){
+				return array();
+			}
+			//Todo check for virtuemart shoppergroups
+		}
 
 		$costPrice = 0;
 

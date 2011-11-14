@@ -152,8 +152,8 @@
 				</td>
 				<td align="left" ><?php echo $prow->product_sku ?></td>
 				<td align="center" >
-					<?php vmdebug('$prow',$this->cart->pricesUnformatted[$pkey]);
-					if (!empty($this->cart->pricesUnformatted[$pkey]['basePriceWithTax']) && $prow->basePriceWithTax != $prow->salesPrice ) {
+				<?php
+					if (VmConfig::get('checkout_show_origprice',1) && !empty($this->cart->pricesUnformatted[$pkey]['basePriceWithTax']) && $prow->basePriceWithTax != $prow->salesPrice ) {
 						echo '<span style="text-decoration:line-through">'.$prow->basePriceWithTax .'</span><br />' ;
 					}
 					echo $prow->salesPrice ;

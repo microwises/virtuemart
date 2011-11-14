@@ -282,6 +282,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$fields = array('products_per_row'=>' `products_per_row` INT(1) NULL DEFAULT NULL');
 			$this->alterTable('#__virtuemart_categories',$fields);
 
+			$this->changeShoppergroupDataSetAnonShopperToOne();
 			//delete old config file
 			// 			$this->renewConfigManually = !JFile::delete($this->path.DS.'virtuemart.cfg');
 			// 			if(!$this->renewConfigManually){
@@ -514,6 +515,31 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$dimensionUnitMigrateValues = Migrator::getDimensionUnitMigrateValues();
 			return $this->updateUnit(  'product_lwh_uom', $dimensionUnitMigrateValues) ;
 		}
+
+		private function changeShoppergroupDataSetAnonShopperToOne(){
+
+			$q = 'SELECT * FROM `#__virtuemart_shoppergroups` WHERE virtuemart_shoppergroup_id = "1" ';
+			$this->db->setQuery($q);
+			$sgroup = $this->db->loadAssoc();
+
+			if(!$sgroup['default']==2){
+				if(!class_exists('TableShoppergroups')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'shoppergroups.php');
+				$sgroup['virtuemart_shoppergroup_id'] = 0;
+				$table = new TableShoppergroups();
+				$table -> bindChecknStore($sgroup);
+
+				$table = new TableShoppergroups();
+				$sgroup == null;
+				$sgroup = array('virtuemart_vendor_id'	=> 1,
+									'shopper_group_name'		=> '-anonymous-',
+									'shopper_group_desc'		=> 'shopper group for anoymous shoppers',
+									'default'					=> 2,
+									'shared'						=> 1
+				);
+				$table -> bindChecknStore($sgroup);
+			}
+		}
+
 		/**
 		 *
 		 * @author Valérie Isaksen
@@ -595,7 +621,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 		/**
 		 * copy all $src to $dst folder and remove it
-		 * Enter description here ...
+		 *
+		 * @author Max Milbers
 		 * @param String $src path
 		 * @param String $dst path
 		 * @param String $type modules, plugins, languageBE, languageFE

@@ -112,6 +112,8 @@ class VirtueMartViewVirtueMart extends JView {
 			$mainframe->set('setTemplate', $template);
 		}
 
+
+
 		parent::display($tpl);
 
 	}
