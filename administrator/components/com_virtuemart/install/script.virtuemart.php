@@ -305,6 +305,12 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			return true;
 		}
 
+		/**
+		 * @author Max Milbers
+		 * @param unknown_type $tablename
+		 * @param unknown_type $fields
+		 * @param unknown_type $command
+		 */
 		private function alterTable($tablename,$fields,$command='CHANGE'){
 
 			if(empty($this->db)){

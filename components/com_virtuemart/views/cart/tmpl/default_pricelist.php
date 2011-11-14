@@ -152,7 +152,8 @@
 				</td>
 				<td align="left" ><?php echo $prow->product_sku ?></td>
 				<td align="center" >
-					<?php if ($prow->basePriceWithTax != $prow->salesPrice ) {
+					<?php vmdebug('$prow',$this->cart->pricesUnformatted[$pkey]);
+					if (!empty($this->cart->pricesUnformatted[$pkey]['basePriceWithTax']) && $prow->basePriceWithTax != $prow->salesPrice ) {
 						echo '<span style="text-decoration:line-through">'.$prow->basePriceWithTax .'</span><br />' ;
 					}
 					echo $prow->salesPrice ;

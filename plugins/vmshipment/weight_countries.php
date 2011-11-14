@@ -105,6 +105,17 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		, 'null' => false
 		, 'default' =>0
 		)
+		, 'locked_on' => array(
+				'type' => 'DATETIME'
+		, 'null' => false
+		, 'default' =>'0000-00-00 00:00:00'
+		)
+		, 'locked_by' => array(
+				'type' => 'int'
+		, 'length' => 11
+		, 'null' => false
+		, 'default' =>0
+		)
 		);
 		$schemeIdx = array();
 		$scheme->define_scheme($schemeCols);

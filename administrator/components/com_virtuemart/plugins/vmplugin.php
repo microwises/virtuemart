@@ -43,12 +43,14 @@ abstract class vmPlugin extends JPlugin {
 
 		parent::__construct($subject, $config);
 
+		$this->_psType = substr($this->_type, 2);
+
 		$lang = JFactory::getLanguage();
 		$filename = 'plg_' . $this->_type . '_' . $this->_name;
 		$lang->load($filename, JPATH_ADMINISTRATOR);
 		if (!class_exists('JParameter')) require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
 
-		$this->_tablename = '#__virtuemart_'.$this->_type .'_'. $this->_name;
+		$this->_tablename = '#__virtuemart_'.$this->_psType .'_plg_'. $this->_name;
 	}
 
 /**
