@@ -166,16 +166,17 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		$joinShopper = false;
-		if ($app->isSite()) {
-			//Cleanshooter get current user and send it to the next query
+	if ($app->isSite()) {
 			if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 			$usermodel = new VirtueMartModelUser();
 			$currentVMuser = $usermodel->getUser();
-
-			$virtuemart_shoppergroup_id =  $currentVMuser->shopper_groups;
-			if (  $virtuemart_shoppergroup_id){
+			$virtuemart_shoppergroup_ids =  $currentVMuser->shopper_groups;
+			
+			if(is_array($virtuemart_shoppergroup_ids)){
+				foreach ($virtuemart_shoppergroup_ids as $key => $virtuemart_shoppergroup_id){
+					$where[] .= '(s.`virtuemart_shoppergroup_id`= "' . (int) $virtuemart_shoppergroup_id . '" OR' . ' ISNULL(s.`virtuemart_shoppergroup_id`) )';
+				}
 				$joinShopper = true;
-				$where[] .= '(s.`virtuemart_shoppergroup_id`= "' . (int) $virtuemart_shoppergroup_id . '" OR' . ' ISNULL(s.`virtuemart_shoppergroup_id`) )';
 			}
 		}
 
