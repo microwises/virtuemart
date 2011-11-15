@@ -193,13 +193,19 @@ class CurrencyDisplay {
 									'salesPriceWithDiscount','salesPrice','priceWithoutTax',
 									'discountAmount','taxAmount');
 
-		if(!empty($result[0])){
-			$show_prices = $result[0]->get('show_prices',VmConfig::get('show_prices', 0));
-		} else {
-			$show_prices = 1;
+		$custom_price_display = 0;
+		if(!empty($result[1])){
+			$custom_price_display = $result[1];
 		}
 
-		$custom_price_display = $result[1];//->get('custom_price_display',VmConfig::get('custom_price_display', 0));
+		if($custom_price_display && !empty($result[0])){
+			$show_prices = $result[0]->get('show_prices',VmConfig::get('show_prices', 1));
+// 			vmdebug('$result[0]',$result[0],$show_prices);
+		} else {
+			$show_prices = VmConfig::get('show_prices', 1);
+		}
+
+		//->get('custom_price_display',VmConfig::get('custom_price_display', 0));
 
 		if($show_prices==1){
 			foreach($priceFields as $name){
@@ -307,7 +313,7 @@ class CurrencyDisplay {
 			}
 			$descr = '';
 			if($this->_priceConfig[$name][2]) $descr = JText::_($description);
-			vmdebug('createPriceDiv $name '.$name.' '.$product_price[$name]);
+// 			vmdebug('createPriceDiv $name '.$name.' '.$product_price[$name]);
 			return '<div class="Price'.$name.'" style="display : '.$vis.';" >'.$descr.'<span class="Price'.$name.'" >'.$product_price[$name].'</span></div>';
 
 		}

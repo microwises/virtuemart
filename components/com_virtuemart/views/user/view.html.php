@@ -64,7 +64,7 @@ class VirtuemartViewUser extends JView {
 	$this->assignRef('useSSL', $useSSL);
 	$this->assignRef('useXHTML', $useXHTML);
 	$document = JFactory::getDocument();
-	$document->setTitle( JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS') );
+
 	$layoutName = $this->getLayout();
 	if (empty($layoutName)) {
 	    $layoutName = JRequest::getWord('layout', 'default');
@@ -73,13 +73,15 @@ class VirtuemartViewUser extends JView {
 	if (!class_exists('ShopFunctions'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 
-	vmdebug('my layoutname',$layoutName);
+// 	vmdebug('my layoutname',$layoutName);
 	if($layoutName=='login'){
 // 		$true = true;
 // 		$this->assignRef('anonymous',$true);
 		parent::display($tpl);
 		return;
 	}
+
+	$document->setTitle( JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS') );
 
 	if (!class_exists('VirtuemartModelUser'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
