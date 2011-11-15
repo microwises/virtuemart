@@ -41,9 +41,23 @@ class VmTable extends JTable{
 	protected $_slugAutoName = '';
 	protected $_slugName = '';
 	protected $_loggable = false;
+	protected $_translatable = false;
 
 	function __construct( $table, $key, &$db )
 	{
+		// add TAG eg. : fr_ if it's not default lang
+		// TODO STAY it HERE ?
+		$this->_dbLang ='';
+		$lang = JRequest::getvar('lang');
+		$language=& JFactory::getLanguage();
+		if ($language->getDefault() !== $lang ) {
+			if ( $language->exists($lang, JPATH_SITE)){
+			$this->_dbLang= substr($lang,0,2).'_';
+			}
+		}
+
+		// Remove tag if defaut or 
+
 		$this->_tbl		= $table;
 		$this->_tbl_key	= $key;
 		$this->_db		=& $db;
@@ -75,6 +89,11 @@ class VmTable extends JTable{
 		$this->created_by = 0;
 		$this->modified_on = '';
 		$this->modified_by = 0;
+	}
+
+	public function setTranslatable(){
+		$this->_translatable = true;
+
 	}
 
 	public function setLockable(){

@@ -117,6 +117,7 @@ class TableProducts extends VmTable {
 		$this->setPrimaryKey('virtuemart_product_id');
 		$this->setObligatoryKeys('product_name');
 		$this->setLoggable();
+		$this->setTranslatable();
 		$this->setSlug('product_name');
 		$this->setTableShortCut('p');
 

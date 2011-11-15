@@ -18,7 +18,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); ?>
-
+<?php echo $this->langList; ?>
 <div class="col50">
 	<table class="admintable">
 		<tr>

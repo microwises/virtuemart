@@ -65,6 +65,7 @@ class TableVendors extends VmTableData {
 		$this->setUniqueName('vendor_name');
 
 		$this->setLoggable();
+		$this->setTranslatable();
 
 		$varsToPushParam = array(
 		    				'vendor_min_pov'=>array(0.0,'float'),

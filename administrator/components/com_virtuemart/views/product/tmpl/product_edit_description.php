@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');?>
 <fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_S_DESC') ?></legend>		
-	<textarea class="inputbox" name="product_s_desc" id="short_desc" cols="65" rows="3" ><?php echo $this->product->product_s_desc; ?></textarea>
+	<textarea class="inputbox" name="product_s_desc" id="product_s_desc" cols="65" rows="3" ><?php echo $this->product->product_s_desc; ?></textarea>
 </fieldset>
 			
 <fieldset>
@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');?>
 		<tr>
 			<td valign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_METADESC'); ?> </div></td>
 			<td valign="top">
-				<textarea class="inputbox" name="metadesc" id="meta_desc" cols="60" rows="6"><?php echo $this->product->metadesc; ?></textarea>
+				<textarea class="inputbox" name="metadesc" id="metadesc" cols="60" rows="6"><?php echo $this->product->metadesc; ?></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');?>
 				<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_METAKEY'); ?> </div>
 			</td>
 			<td valign="top">
-				<textarea class="inputbox" name="metakey" id="meta_keyword" cols="60" rows="6"><?php echo $this->product->metakey; ?></textarea>
+				<textarea class="inputbox" name="metakey" id="metakey" cols="60" rows="6"><?php echo $this->product->metakey; ?></textarea>
 			</td>
 		</tr>
 		<tr>

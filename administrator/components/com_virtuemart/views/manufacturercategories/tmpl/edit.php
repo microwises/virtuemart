@@ -25,7 +25,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_MANUFACTURER_CATEGORY_DETAILS
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
-
+<?php echo $this->langList; ?>
 <div class="col50">
 	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_CATEGORY_DETAILS'); ?></legend>

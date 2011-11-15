@@ -19,7 +19,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); ?>
-
+<?php echo $this->langList; ?>
 <table class="adminform">
 	<tr>
 		<td valign="top">
@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SKU') ?></div>
 					</td>
 					<td width="79%" height="2">
-						<input type="text" class="inputbox" name="product_sku" value="<?php echo $this->product->product_sku; ?>" size="32" maxlength="64" />
+						<input type="text" class="inputbox" name="product_sku" id="product_sku" value="<?php echo $this->product->product_sku; ?>" size="32" maxlength="64" />
 					</td>
 				</tr>
 				<tr class="row0">
@@ -49,7 +49,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME') ?></div>
 					</td>
 					<td width="79%" height="18" >
-						<input type="text" class="inputbox"  name="product_name" value="<?php echo $this->product->product_name; ?>" size="32" maxlength="255" />
+						<input type="text" class="inputbox"  name="product_name" id="product_name" value="<?php echo $this->product->product_name; ?>" size="32" maxlength="255" />
 					</td>
 				</tr>
 				<tr class="row0">
@@ -57,7 +57,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ALIAS') ?></div>
 					</td>
 					<td width="79%" height="18" >
-						<input type="text" class="inputbox"  name="slug" value="<?php echo $this->product->slug; ?>" size="32" maxlength="255" />
+						<input type="text" class="inputbox"  name="slug" id="slug" value="<?php echo $this->product->slug; ?>" size="32" maxlength="255" />
 					</td>
 				</tr>
 				<tr class="row1">
@@ -65,7 +65,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_URL') ?></div>
 					</td>
 					<td width="79%">
-						<input type="text" class="inputbox"  name="product_url" value="<?php echo $this->product->product_url; ?>" size="32" maxlength="255" />
+						<input type="text" class="inputbox" name="product_url" value="<?php echo $this->product->product_url; ?>" size="32" maxlength="255" />
 					</td>
 				</tr>
 			<?php	if(Vmconfig::get('multix','none')!=='none'){ ?>

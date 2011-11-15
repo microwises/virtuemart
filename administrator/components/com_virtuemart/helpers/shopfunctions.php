@@ -120,6 +120,49 @@ class ShopFunctions {
 		Joomla.submitform(a);
 	};" ;
 		$document->addScriptDeclaration ( $j);
+
+		// LANGUAGE setting //
+		// $config =& JFactory::getConfig();
+		// $config->getValue('config.language');
+		$params = JComponentHelper::getParams('com_languages');
+		$defaultLangue = $params->get('site', 'en-GB');
+		jimport('joomla.language.helper');
+		$jlang = JFactory::getLanguage();
+		//$lang = JRequest::getVar('lang', $jlang->getTag());
+		$lang = JRequest::getVar('lang', $defaultLangue);
+		$languages = JLanguageHelper::createLanguageList($lang, constant('JPATH_SITE'), true);
+		$langList = JHTML::_('select.genericlist',  $languages, 'lang', 'class="inputbox"', 'value', 'text', $lang , 'lang');
+		$this->assignRef('langList',$langList);
+		$this->assignRef('lang',$lang);
+
+		$editView = JRequest::getWord('view',JRequest::getWord('controller','' ) );
+		if ($editView =='user') $editView ='vendor';
+		$id = (int)JRequest::getVar('cid',JRequest::getVar('virtuemart_'.$editView.'_id'));
+		//echo $id.' view '.$editView.'  ';
+		if ($editView and $id) {
+		$token = JUtility::getToken();
+		$j = '
+		jQuery(function($) {
+			$("select#lang").chosen().change(function() {
+				langCode = $(this).find("option:selected").val() ;
+				$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lang="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1" , 
+					function(data) {
+						var items = [];
+
+						if (data.fields !== "error" ) {
+							$.each(data.fields , function(key, val) {
+								cible = $("#"+key) 
+								if (cible.hasClass("mce_editable")) tinyMCE.execInstanceCommand(key,"mceSetContent",false,val);
+								else cible.addClass("translator").val(val);
+							});
+						} else alert(data.msg);
+					}
+				)
+			});
+		})';
+		$document->addScriptDeclaration ( $j);
+		}
+
 	}
 
 	function SetViewTitle($name ='', $msg ='') {

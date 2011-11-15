@@ -21,7 +21,7 @@
 defined('_JEXEC') or die('Restricted access'); 
 
 ?>
-
+<?php echo $this->langList; ?>
 <div class="col50">
 	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_DETAILS'); ?></legend>

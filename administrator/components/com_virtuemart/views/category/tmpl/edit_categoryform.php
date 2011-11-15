@@ -24,7 +24,7 @@ $editor = JFactory::getEditor();
 $mainframe = JFactory::getApplication();
 
 ?>
-
+<?php echo $this->langList; ?>
 <table class="adminform">
 	<tr>
 		<td valign="top" colspan="2">
@@ -47,9 +47,9 @@ $mainframe = JFactory::getApplication();
 					</td>
 				</tr>
 				-->
-				<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_NAME','category_name',$this->manufacturer->category_name); ?>
-				<?php echo VmHTML::row('input','COM_VIRTUEMART_SLUG','slug',$this->manufacturer->slug); ?>
-				<?php echo VmHTML::row('editor','COM_VIRTUEMART_DESCRIPTION','category_description',$this->manufacturer->category_description); ?>
+				<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_NAME','category_name',$this->category->category_name); ?>
+				<?php echo VmHTML::row('input','COM_VIRTUEMART_SLUG','slug',$this->category->slug); ?>
+				<?php echo VmHTML::row('editor','COM_VIRTUEMART_DESCRIPTION','category_description',$this->category->category_description); ?>
 			</table>
 		</fieldset>
 		</td>

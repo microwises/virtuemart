@@ -149,7 +149,7 @@ class VmHTML{
 		}
 
 
-		$html = '<select class="inputbox" name="'.$name.'" size="'.$size.'" '.$multiple.' '.$extra.'>';
+		$html = '<select class="inputbox" id="'.$name.'" name="'.$name.'" size="'.$size.'" '.$multiple.' '.$extra.'>';
 
 		while (list($key, $val) = each($arr)) {
 //		foreach ($arr as $key=>$val){
@@ -293,7 +293,7 @@ class VmHTML{
 	 * @param string $value
 	 */
 	public function input($name,$value,$class='class="inputbox"',$readonly='',$size='37',$maxlength='255'){
-		return '<input type="text" '.$readonly.' '.$class.' name="'.$name.'" size="'.$size.'" $maxlength="'.$maxlength.'" value="'.$value.'" /></td>';
+		return '<input type="text" '.$readonly.' '.$class.' id="'.$name.'" name="'.$name.'" size="'.$size.'" maxlength="'.$maxlength.'" value="'.$value.'" /></td>';
 	}
 
 	/**
@@ -305,7 +305,7 @@ class VmHTML{
 	 * @param string $value
 	 */
 	public function textarea($name,$value,$class='class="inputbox"',$cols='70',$rows="10"){
-		return '<textarea '.$class.' name="'.$name.'" cols="'.$cols.'" rows="'.$rows.'"/>'.$value.'</textarea ></td>';
+		return '<textarea '.$class.' id="'.$name.'" name="'.$name.'" cols="'.$cols.'" rows="'.$rows.'"/>'.$value.'</textarea ></td>';
 	}
 	/**
 	 * render editor code

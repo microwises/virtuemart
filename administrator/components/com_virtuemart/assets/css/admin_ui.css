@@ -75,6 +75,10 @@ dl#system-message dd .vmdebug  { font-size:10px; }
 .virtuemart-admin-area fieldset label, .virtuemart-admin-area fieldset.adminform label, .virtuemart-admin-area fieldset.adminform span.faux-label {float: none;clear: none;display: inline-block;min-width: 0px;}
 textarea {width: 100%;}
 .datepicker{width: 60px;}
+.translator {
+    border-left: 4px solid #1FBE42;
+    padding-left: 8px ;
+}
 /*////////////////////////////////////
 /////////////// Tabs /////////////////
 ////////////////////////////////////*/
