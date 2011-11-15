@@ -182,16 +182,16 @@ class calculationHelper {
 	 */
 	public function getProductPrices($productId, $catIds=0, $variant=0.0, $amount=0, $ignoreAmount=true, $currencydisplay=true) {
 
-		if (!VmConfig::get('show_prices', 0)) {
+/*		if (!VmConfig::get('show_prices', 0)) {
 		 return array();
 		}
-		if (VmConfig::get('price_access_level_published', 0)) {
+/*		if (VmConfig::get('price_access_level_published', 0)) {
 			$user = JFactory::getUser();
 			if(empty($user->id)){
 				return array();
 			}
 			//Todo check for virtuemart shoppergroups
-		}
+		}*/
 
 		$costPrice = 0;
 
@@ -414,20 +414,21 @@ class calculationHelper {
 			$product->prices = $pricesPerId[$cartproductkey] = $this->getProductPrices($product, 0, $variantmod, $product->quantity, true, false);
 			$this->_cartPrices[$cartproductkey] = $product->prices;
 
-			$this->_cartPrices['basePrice'] += $product->prices['basePrice'] * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['basePrice']) $this->_cartPrices['basePrice'] += $product->prices['basePrice'] * $product->quantity;
 			//				$this->_cartPrices['basePriceVariant'] = $this->_cartPrices['basePriceVariant'] + $pricesPerId[$product->virtuemart_product_id]['basePriceVariant']*$product->quantity;
-			$this->_cartPrices['basePriceWithTax'] = $this->_cartPrices['basePriceWithTax'] + $product->prices['basePriceWithTax'] * $product->quantity;
-			$this->_cartPrices['discountedPriceWithoutTax'] = $this->_cartPrices['discountedPriceWithoutTax'] + $product->prices['discountedPriceWithoutTax'] * $product->quantity;
-			$this->_cartPrices['salesPrice'] = $this->_cartPrices['salesPrice'] + $product->prices['salesPrice'] * $product->quantity;
-			$this->_cartPrices['taxAmount'] = $this->_cartPrices['taxAmount'] + $product->prices['taxAmount'] * $product->quantity;
-			$this->_cartPrices['salesPriceWithDiscount'] = $this->_cartPrices['salesPriceWithDiscount'] + $product->prices['salesPriceWithDiscount'] * $product->quantity;
-			$this->_cartPrices['discountAmount'] = $this->_cartPrices['discountAmount'] - $product->prices['discountAmount'] * $product->quantity;
-			$this->_cartPrices['priceWithoutTax'] = $this->_cartPrices['priceWithoutTax'] + $product->prices['priceWithoutTax'] * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['basePriceWithTax']) $this->_cartPrices['basePriceWithTax'] = $this->_cartPrices['basePriceWithTax'] + $product->prices['basePriceWithTax'] * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['discountedPriceWithoutTax']) $this->_cartPrices['discountedPriceWithoutTax'] = $this->_cartPrices['discountedPriceWithoutTax'] + $product->prices['discountedPriceWithoutTax'] * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices['salesPrice'] = $this->_cartPrices['salesPrice'] + $product->prices['salesPrice'] * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cartPrices['taxAmount'] = $this->_cartPrices['taxAmount'] + $product->prices['taxAmount'] * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['salesPriceWithDiscount']) $this->_cartPrices['salesPriceWithDiscount'] = $this->_cartPrices['salesPriceWithDiscount'] + $product->prices['salesPriceWithDiscount'] * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cartPrices['discountAmount'] = $this->_cartPrices['discountAmount'] - $product->prices['discountAmount'] * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['priceWithoutTax']) $this->_cartPrices['priceWithoutTax'] = $this->_cartPrices['priceWithoutTax'] + $product->prices['priceWithoutTax'] * $product->quantity;
 
-			$this->_cartPrices[$cartproductkey]['subtotal'] = $product->prices['basePrice'] * $product->quantity;
-			$this->_cartPrices[$cartproductkey]['subtotal_tax_amount'] = $product->prices['taxAmount'] * $product->quantity;
-			$this->_cartPrices[$cartproductkey]['subtotal_discount'] = - $product->prices['discountAmount'] * $product->quantity;
-			$this->_cartPrices[$cartproductkey]['subtotal_with_tax'] = $product->prices['salesPrice'] * $product->quantity;
+// 			if($this->_currencyDisplay_priceConfig['basePrice']) $this->_cartPrices[$cartproductkey]['subtotal'] = $product->prices['basePrice'] * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['priceWithoutTax']) $this->_cartPrices[$cartproductkey]['subtotal'] = $product->prices['priceWithoutTax'] * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cartPrices[$cartproductkey]['subtotal_tax_amount'] = $product->prices['taxAmount'] * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cartPrices[$cartproductkey]['subtotal_discount'] = - $product->prices['discountAmount'] * $product->quantity;
+			if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices[$cartproductkey]['subtotal_with_tax'] = $product->prices['salesPrice'] * $product->quantity;
 
 			//			if(empty($this->_cartPrices['priceWithoutTax'])){ //before tax
 			//				$this->_cartPrices['subTotalProducts'] += $product->prices['discountedPriceWithoutTax']*$product->quantity;
@@ -470,11 +471,11 @@ class calculationHelper {
 		$this->calculatePaymentPrice($cart, $paymentId);
 
 		//		$sub =!empty($this->_cartPrices['discountedPriceWithoutTax'])? $this->_cartPrices['discountedPriceWithoutTax']:$this->_cartPrices['basePrice'];
-		$this->_cartPrices['billSub'] = $this->_cartPrices['basePrice'] + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'];
+		if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices['billSub'] = $this->_cartPrices['basePrice'] + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'];
 		//		$this->_cartPrices['billSub']  = $sub + $this->_cartPrices['shipmentValue'] + $this->_cartPrices['paymentValue'];
-		$this->_cartPrices['billDiscountAmount'] = $this->_cartPrices['discountAmount']  ;
-		$this->_cartPrices['billTaxAmount'] = $this->_cartPrices['taxAmount'] + $this->_cartPrices['withTax'] - $toTax + $this->_cartPrices['shipmentTax'] + $this->_cartPrices['paymentTax'];
-		$this->_cartPrices['billTotal'] = $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'];
+		if($this->_currencyDisplay->_priceConfig['discountAmount']) $this->_cartPrices['billDiscountAmount'] = $this->_cartPrices['discountAmount']  ;
+		if($this->_currencyDisplay->_priceConfig['taxAmount']) $this->_cartPrices['billTaxAmount'] = $this->_cartPrices['taxAmount'] + $this->_cartPrices['withTax'] - $toTax + $this->_cartPrices['shipmentTax'] + $this->_cartPrices['paymentTax'];
+		if($this->_currencyDisplay->_priceConfig['salesPrice']) $this->_cartPrices['billTotal'] = $this->_cartPrices['salesPricePayment'] + $this->_cartPrices['withTax'];
 
 		// Last step is handling a coupon, if given
 		if (!empty($cart->couponCode)) {

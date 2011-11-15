@@ -77,13 +77,8 @@ class VirtueMartModelShopperGroup extends VmModel {
     function getShopperGroups($onlyPublished=false, $noLimit = false) {
     	$db = JFactory::getDBO();
 
-	    $query = 'SELECT * FROM '
-	      . $db->nameQuote('#__virtuemart_shoppergroups')
-	      . 'ORDER BY '
-	      . $db->nameQuote('virtuemart_vendor_id')
-	      . ','
-	      . $db->nameQuote('shopper_group_name')
-		;
+	    $query = 'SELECT * FROM `#__virtuemart_shoppergroups` ORDER BY `virtuemart_vendor_id`,`shopper_group_name` ';
+
 		if ($noLimit) {
 			$this->_data = $this->_getList($query);
 		}
@@ -100,7 +95,8 @@ class VirtueMartModelShopperGroup extends VmModel {
    										'basePriceWithTax','basePriceWithTax','discountedPriceWithoutTax',
    										'salesPriceWithDiscount','salesPrice','priceWithoutTax',
    										'discountAmount','taxAmount');
-   	$param ='';
+
+   	$param ='show_prices='.$data['show_prices']."\n";
    	foreach($myfields as $fields){
    		$param .= $fields.'='.$data[$fields]."\n";		//attention there must be doublequotes
    		$param .= $fields.'Text='.$data[$fields.'Text']."\n";
@@ -114,16 +110,16 @@ class VirtueMartModelShopperGroup extends VmModel {
    	return parent::store($data);
    }
 
-	function makeDefault($id) {
+	function makeDefault($id,$kind = 1) {
 		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = 0');
 		if (!$this->_db->query()) return ;
-		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = 1 WHERE virtuemart_shoppergroup_id='.(int)$id);
+		$this->_db->setQuery('UPDATE  `#__virtuemart_shoppergroups`  SET `default` = "'.$kind.'" WHERE virtuemart_shoppergroup_id='.(int)$id);
 		if (!$this->_db->query()) return ;
 		return true;
 	}
 
-	function getDefault(){
-		$this->_db->setQuery('SELECT * FROM `#__virtuemart_shoppergroups` WHERE `default` = "1" AND `virtuemart_vendor_id` = "1" ');
+	function getDefault($kind = 1){
+		$this->_db->setQuery('SELECT * FROM `#__virtuemart_shoppergroups` WHERE `default` = "'.$kind.'" AND `virtuemart_vendor_id` = "1" ');
 
 		if(!$res = $this->_db->loadObject()){
 			$app = JFactory::getApplication();
@@ -141,12 +137,21 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 		$table = $this->getTable($this->_maintablename);
 
-		$defaultId = $this->getDefault();
+		$defaultSgId = $this->getDefault();
+		$anonymSgId = $this->getDefault(2);
 
 		foreach($ids as $id){
 
 			//Test if shoppergroup is default
-			if($id === $defaultId->virtuemart_shoppergroup_id){
+			if($id == $defaultId->virtuemart_shoppergroup_id){
+				$this->_db->setQuery('SELECT shopper_group_name FROM `#__virtuemart_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
+				$name = $this->_db->loadResult();
+				$this->setError(JText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_DEFAULT',$name,$id));
+				continue;
+			}
+
+			//Test if shoppergroup is default
+			if($id == $anonymSgId->virtuemart_shoppergroup_id){
 				$this->_db->setQuery('SELECT shopper_group_name FROM `#__virtuemart_shoppergroups`  WHERE `virtuemart_shoppergroup_id` = "'.(int)$id.'"');
 				$name = $this->_db->loadResult();
 				$this->setError(JText::sprintf('COM_VIRTUEMART_SHOPPERGROUP_DELETE_CANT_DEFAULT',$name,$id));

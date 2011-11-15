@@ -264,7 +264,7 @@ class VirtueMartControllerProductdetails extends JController {
 		$prices = $product_model->getPrice($virtuemart_product_id,$customPrices,$quantity);
 		$priceFormated = array();
 		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-		$currency = CurrencyDisplay::getInstance();vmdebug('hmm',$currency);
+		$currency = CurrencyDisplay::getInstance();
 		foreach ( $prices as $name => $product_price  ){
 			$priceFormated[$name] = $currency->createPriceDiv($name,'',$prices,true);
 		}

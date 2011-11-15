@@ -68,9 +68,27 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_SHOPPERGROUP_NAME');
 	</fieldset>
 
 	<fieldset>
-		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES') ?></legend><?php
-		echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_ENABLE_PRICE_DISPLAY');
-		echo VmHTML::checkbox('custom_price_display', $this->shoppergroup->custom_price_display)?>
+		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES') ?></legend>
+
+		<table class="admintable">
+		<tr>
+			<td>
+				<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_ENABLE_PRICE_DISPLAY');  ?>
+			</td>
+			<td>
+				<?php echo VmHTML::checkbox('custom_price_display', $this->shoppergroup->custom_price_display)?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES_EXPLAIN'); ?>">
+				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES');  ?>
+			</td>
+			<td>
+				<?php echo VmHTML::checkbox('show_prices', $this->shoppergroup->price_display->get('show_prices')); ?>
+			</td>
+		</tr>
+
 		<table class="admintable">
 			<tr>
 				<th></th>

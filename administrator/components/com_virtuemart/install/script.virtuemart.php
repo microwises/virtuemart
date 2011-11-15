@@ -182,9 +182,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			// 		$fields = array('calc_amount_cond'=>"`calc_amount_cond_min` float NOT NULL COMMENT 'min number of qualifying products'");
 			// 		$this->alterTable('#__virtuemart_calcs',$fields);
-
-			$this->checkAddFieldToTable('#__virtuemart_calcs','calc_amount_cond_min',"float NOT NULL COMMENT 'min number of qualifying products' AFTER `calc_amount_cond`");
-			$this->checkAddFieldToTable('#__virtuemart_calcs','calc_amount_cond_max',"float NOT NULL COMMENT 'max number of qualifying products' AFTER `calc_amount_cond_min`");
+			$fields = array('calc_amount_cond'=>' ','calc_amount_cond_min'=>' ','calc_amount_cond_max'=>' ');
+			$this->alterTable('#__virtuemart_calcs',$fields,'DROP');
+// 			$this->checkAddFieldToTable('#__virtuemart_calcs','calc_amount_cond_min',"float NOT NULL COMMENT 'min number of qualifying products' AFTER `calc_amount_cond`");
+// 			$this->checkAddFieldToTable('#__virtuemart_calcs','calc_amount_cond_max',"float NOT NULL COMMENT 'max number of qualifying products' AFTER `calc_amount_cond_min`");
 
 			//product tables
 			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','int(11)');
@@ -522,21 +523,25 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->db->setQuery($q);
 			$sgroup = $this->db->loadAssoc();
 
-			if(!$sgroup['default']==2){
+			if($sgroup['default']!=2){
 				if(!class_exists('TableShoppergroups')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'shoppergroups.php');
-				$sgroup['virtuemart_shoppergroup_id'] = 0;
-				$table = new TableShoppergroups();
-				$table -> bindChecknStore($sgroup);
 
 				$table = new TableShoppergroups();
-				$sgroup == null;
-				$sgroup = array('virtuemart_vendor_id'	=> 1,
+				$stdgroup == null;
+				$stdgroup = array('virtuemart_shoppergroup_id' => 1,
+									'virtuemart_vendor_id'	=> 1,
 									'shopper_group_name'		=> '-anonymous-',
 									'shopper_group_desc'		=> 'shopper group for anoymous shoppers',
 									'default'					=> 2,
+									'published'					=> 1,
 									'shared'						=> 1
 				);
+				$table -> bindChecknStore($stdgroup);
+
+				$sgroup['virtuemart_shoppergroup_id'] = 0;
+				$table = new TableShoppergroups();
 				$table -> bindChecknStore($sgroup);
+				vmdebug('changeShoppergroupDataSetAnonShopperToOne $table',$table);
 			}
 		}
 

@@ -33,7 +33,7 @@ class CurrencyDisplay {
 	private $_thousands 		= ' '; 	// Thousands separator ('', ' ', ',')
 	private $_positivePos	= '{number}{symbol}';	// Currency symbol position with Positive values :
 	private $_negativePos	= '{sign}{number}{symbol}';	// Currency symbol position with Negative values :
-	private $_priceConfig	= array();	//holds arrays of 0 and 1 first is if price should be shown, second is rounding
+	var $_priceConfig	= array();	//holds arrays of 0 and 1 first is if price should be shown, second is rounding
 
 	private function __construct ($vendorId = 0){
 
@@ -172,6 +172,17 @@ class CurrencyDisplay {
 
 			$this->_db->setQuery($q);
 			$result = $this->_db->loadRow();
+// 			vmdebug('setPriceArray',$result);
+			if(!empty($result[0])){
+				$result[0] = unserialize($result[0]);
+			}
+		} else {
+			$q = 'SELECT `price_display`,`custom_price_display` FROM `#__virtuemart_shoppergroups` AS `sg`
+					WHERE `sg`.`virtuemart_shoppergroup_id` = "1" ';
+
+			$this->_db->setQuery($q);
+			$result = $this->_db->loadRow();
+// 			vmdebug('setPriceArray',$result);
 			if(!empty($result[0])){
 				$result[0] = unserialize($result[0]);
 			}
@@ -182,28 +193,44 @@ class CurrencyDisplay {
 									'salesPriceWithDiscount','salesPrice','priceWithoutTax',
 									'discountAmount','taxAmount');
 
-		foreach($priceFields as $name){
-			$show = 0;
-			$round = 0;
-			$text = 0;
-			//Here we check special settings of the shoppergroup
-			if(!empty($user->id) && $result && $result[1] === '1'){
-				//$result = unserialize($result);
-				//Todo define what should happen with more than one shoppergroup, now assuming the first is the right
-				$show = (int)$result[0]->get($name);
-				$round = (int)$result[0]->get($name.'Rounding');
-				$text = $result[0]->get($name.'Text');
-			} else {
-				if(VmConfig::get($name) =='1'){
-					$show = 1;
-					$round = (int) VmConfig::get($name.'Rounding',2);
-					$text = (int) VmConfig::get($name.'Text',true);
-				}
-			}
-
-			$this->_priceConfig[$name] = array($show,$round,$text);
+		if(!empty($result[0])){
+			$show_prices = $result[0]->get('show_prices',VmConfig::get('show_prices', 0));
+		} else {
+			$show_prices = 1;
 		}
 
+		$custom_price_display = $result[1];//->get('custom_price_display',VmConfig::get('custom_price_display', 0));
+
+		if($show_prices==1){
+			foreach($priceFields as $name){
+				$show = 0;
+				$round = 0;
+				$text = 0;
+
+				//Here we check special settings of the shoppergroup
+// 				$result = unserialize($result);
+				if($custom_price_display==1){
+					$show = (int)$result[0]->get($name);
+					$round = (int)$result[0]->get($name.'Rounding');
+					$text = $result[0]->get($name.'Text');
+// 					vmdebug('$custom_price_display');
+				} else {
+					$show = VmConfig::get($name,0);
+					$round = VmConfig::get($name.'Rounding',2);
+					$text = VmConfig::get($name.'Text',0);
+// 					vmdebug('$config_price_display');
+				}
+
+
+				$this->_priceConfig[$name] = array($show,$round,$text);
+			}
+		} else {
+			foreach($priceFields as $name){
+				$this->_priceConfig[$name] = array(0,0,0);
+			}
+		}
+
+// 		vmdebug('$this->_priceConfig',$this->_priceConfig);
 	}
 
 	/**
@@ -264,7 +291,7 @@ class CurrencyDisplay {
 		if(empty($product_price)) return '';
 
 		//This could be easily extended by product specific settings
-		//if(VmConfig::get($name) =='1'){
+
 		if(!empty($this->_priceConfig[$name][0])){
 			if(!empty($product_price[$name])){
 				$vis = "block";
@@ -280,7 +307,7 @@ class CurrencyDisplay {
 			}
 			$descr = '';
 			if($this->_priceConfig[$name][2]) $descr = JText::_($description);
-
+			vmdebug('createPriceDiv $name '.$name.' '.$product_price[$name]);
 			return '<div class="Price'.$name.'" style="display : '.$vis.';" >'.$descr.'<span class="Price'.$name.'" >'.$product_price[$name].'</span></div>';
 
 		}

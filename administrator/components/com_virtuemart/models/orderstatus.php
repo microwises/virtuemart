@@ -63,59 +63,31 @@ class VirtueMartModelOrderstatus extends VmModel {
 
 		return $this->_data;
 	}
+
 	function getVMCoreStatusCode(){
 		return array( 'P','S');
 	}
-	/**
-	 * Bind the post data to the order status table and save it
-	 *   This function looks like not working in our patttern.
-	 *
-	 * @return boolean True is the save was successful, false otherwise.
-	 */
-	/*	function store($data){
 
-	$table = $this->getTable('orderstates');
+	public function store(&$data){
 
+		$table = $this->getTable($this->_maintablename);
 
-	// 		$isNew = ($data['virtuemart_orderstate_id'] < 1) ? true : false;
-	// 		if ($isNew) {
-	// 			$reorderRequired = false;
-	// 		} else {
-	// 			$table->load($data['virtuemart_orderstate_id']);
+		$data = $table->bindChecknStore($data,true);
 
-	// 			if ($table->ordering == $data['ordering']) {
-	// 				$reorderRequired = false;
-	// 			} else {
-	// 				$reorderRequired = true;
-	// 			}
-	// 		}
-	// 		if (!$table->bind($data)) { // Bind data
-	// 			$this->setError($table->getError());
-	// 			return false;
-	// 		}
+		$errors = $table->getErrors();
+		foreach($errors as $error){
+			$this->setError( get_class( $this ).'::store '.$error);
+		}
+		if(is_object($data)){
+			$_idName = $this->_idName;
+			return $data->$_idName;
+		} else {
+			return $data[$this->_idName];
+		}
 
-	// 		if (!$table->check()) { // Perform data checks
-	// 			$this->setError($table->getError());
-	// 			return false;
-	// 		}
-
-	if new item, order last in appropriate group
-	// 		if ($isNew) {
-	// 			$table->ordering = $table->getNextOrder();
-	// 		}
-
-	// 		if (!$table->store($data)) { // Write data to the DB
-	// 			$this->setError($table->getError());
-	// 			return false;
-	// 		}
-
-	// 		if ($reorderRequired) {
-	// 			$table->reorder();
-	// 		}
-
-	return $table->virtuemart_orderstate_id;
 	}
-	*/
+
+
 	/**
 	 * Retrieve a list of order statuses from the database.
 	 *

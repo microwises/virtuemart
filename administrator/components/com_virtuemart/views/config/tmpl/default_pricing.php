@@ -28,16 +28,6 @@ defined('_JEXEC') or die('Restricted access');
 		<table class="admintable">
 		    <tr>
 			<td class="key">
-			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES_EXPLAIN'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES') ?>
-			    </span>
-			</td>
-			<td>
-			    <?php echo VmHTML::checkbox('show_prices', $this->config->get('show_prices')); ?>
-			</td>
-		    </tr>
-		    <tr>
-			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ACCESS_LEVEL_TIP'); ?>">
 			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ACCESS_LEVEL') ?>
 			    </span>
@@ -87,6 +77,16 @@ defined('_JEXEC') or die('Restricted access');
 	    <fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES') ?></legend>
 		<table class="admintable">
+			<tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES_EXPLAIN'); ?>">
+			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES') ?>
+			    </span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('show_prices', $this->config->get('show_prices')); ?>
+			</td>
+			</tr>
 			<tr>
 				<th></th>
 				<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_LABEL'); ?></th>
