@@ -45,14 +45,14 @@ class VmTable extends JTable{
 
 	function __construct( $table, $key, &$db )
 	{
-		// add TAG eg. : fr_ if it's not default lang
+		// add TAG eg. : 'fr_' if it's not default lang
 		// TODO STAY it HERE ?
-		$this->_dbLang ='';
+		$this->_dbPrefix ='#__';
 		$lang = JRequest::getvar('lang');
 		$language=& JFactory::getLanguage();
 		if ($language->getDefault() !== $lang ) {
 			if ( $language->exists($lang, JPATH_SITE)){
-			$this->_dbLang= substr($lang,0,2).'_';
+			$this->_dbPrefix = $this->_dbPrefix.substr($lang,0,2).'_';
 			}
 		}
 
@@ -91,9 +91,26 @@ class VmTable extends JTable{
 		$this->modified_by = 0;
 	}
 
+	/** 
+	 * TODO note by patrick Kohl
+	 * -Delete lang row when the main record is deleted
+	 * -save the lang record row when language is not default
+	 *   using the langcode (FR,EN,DE ...) 
+	 *   this use good table but none existing fields give an sql error
+	 * -add a table row creator by lang
+	 *  using an array declaration of fields
+
+	 * The fastest way was to cut the tables 
+	 * One with translatable field and one with 'FIX' field
+	 *  because whe had only to choice the lang 
+	 *  and never to do an overide from main table.
+	 * it's to late to do this now ! :o(
+	 * translated tables  must be
+	 * CATEGORIES,MANUFACTURERCATEGORIES,MANUFACTURERS,PRODUCTS,VENDORS,
+	 */
 	public function setTranslatable(){
 		$this->_translatable = true;
-
+		$this->_tbl = str_replace('#__', $this->_dbPrefix, $this->_tbl);
 	}
 
 	public function setLockable(){

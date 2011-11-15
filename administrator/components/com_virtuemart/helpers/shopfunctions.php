@@ -121,7 +121,15 @@ class ShopFunctions {
 	};" ;
 		$document->addScriptDeclaration ( $j);
 
-		// LANGUAGE setting //
+		// LANGUAGE setting 
+
+		$editView = JRequest::getWord('view',JRequest::getWord('controller','' ) );
+		if ($editView =='user') $editView ='vendor';
+		$id = (int)JRequest::getVar('cid',JRequest::getVar('virtuemart_'.$editView.'_id'));
+
+		// only add if ID and view not null
+		if ($editView and $id) {
+
 		// $config =& JFactory::getConfig();
 		// $config->getValue('config.language');
 		$params = JComponentHelper::getParams('com_languages');
@@ -135,11 +143,8 @@ class ShopFunctions {
 		$this->assignRef('langList',$langList);
 		$this->assignRef('lang',$lang);
 
-		$editView = JRequest::getWord('view',JRequest::getWord('controller','' ) );
-		if ($editView =='user') $editView ='vendor';
-		$id = (int)JRequest::getVar('cid',JRequest::getVar('virtuemart_'.$editView.'_id'));
-		//echo $id.' view '.$editView.'  ';
-		if ($editView and $id) {
+
+
 		$token = JUtility::getToken();
 		$j = '
 		jQuery(function($) {

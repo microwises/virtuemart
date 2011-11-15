@@ -46,6 +46,15 @@ class VirtueMartViewVirtueMart extends JView {
 		$vendorModel->setId(1);
 		$vendor = $vendorModel->getVendor();
 		$this->assignRef('vendor',$vendor);
+	
+/* 	$db =& JFactory::getDBO();
+ 
+	$q ="SELECT * FROM `#__virtuemart_manufacturers`as mf1 left join `#__fr_virtuemart_manufacturers` as mf2 on mf2.`virtuemart_manufacturer_id`=mf1.`virtuemart_manufacturer_id` 
+	where mf1.mf_name LIKE 'Manu%'
+";
+	$db->setQuery($q);
+	$row = $db->loadObjectList();
+	print_r($row); */
 
 		if(!VmConfig::get('shop_is_offline',0)){
 
