@@ -299,6 +299,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->updateAdminMenuEntry();
 
+			//Todo
+			$this->createLanguageTables();
 			if($loadVm) $this->displayFinished(true);
 			// probably should just go to updatesMigration rather than the install success screen
 			// 			include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
@@ -580,6 +582,19 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			}
 			return false;
 		}
+
+		public function createLanguageTables(){
+
+			//todo load published tags
+			//create language tables
+			//load language field of a table
+			//insert them to language table, when empty
+			//test if all inserted
+			//drop table fields
+			//repeat for all tables
+
+		}
+
 		/**
 		 * Uninstall script
 		 * Triggers before database processing

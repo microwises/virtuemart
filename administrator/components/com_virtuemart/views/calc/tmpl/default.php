@@ -49,10 +49,10 @@ $j15 = VmConfig::isJ15();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->calcs); ?>);" />
 			</th>
 			<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_NAME', 'calc_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-			<?php /* if($this->perms->check( 'admin' )){ ?>
+			<?php if((Vmconfig::get('multix','none')!='none') && $this->perms->check( 'admin' )){ ?>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_CALC_VENDOR');  ?>
-			</th><?php } */ ?>
+			</th><?php }  ?>
 			<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_DESCRIPTION', 'calc_descr', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 			<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDERING', 'ordering', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 			<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CALC_KIND', 'calc_kind', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
@@ -95,11 +95,11 @@ $j15 = VmConfig::isJ15();
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo $row->calc_name; ?></a>
 				</td>
-				<?php /* if($this->perms->check( 'admin' )){?>
+				<?php  if((Vmconfig::get('multix','none')!='none') && $this->perms->check( 'admin' )){ ?>
 				<td align="left">
 					<?php echo $row->virtuemart_vendor_id; ?>
 				</td>
-				<?php } */ ?>
+				<?php } ?>
 				<td>
 					<?php echo $row->calc_descr; ?>
 				</td>

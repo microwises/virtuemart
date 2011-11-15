@@ -337,6 +337,28 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customplugins` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The custom plugins for product';
 
 
+-- Table structure for table `#__virtuemart_languages`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_languages` (
+  `virtuemart_language_id` SERIAL,
+  `language_name` varchar(50) DEFAULT NULL,
+  `language_code` char(18) DEFAULT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '0',
+  `installed` tinyint(1) NOT NULL DEFAULT '0',
+  `default` tinyint(1) NOT NULL DEFAULT '0',
+    `published` tinyint(1) NOT NULL DEFAULT '1',
+  `created_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT '0',
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(11) NOT NULL DEFAULT '0',
+   PRIMARY KEY (`virtuemart_language_id`),
+  KEY `idx_language_code` (`language_code`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='language organisation' AUTO_INCREMENT=1 ;
+
+
 -- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_manufacturers`

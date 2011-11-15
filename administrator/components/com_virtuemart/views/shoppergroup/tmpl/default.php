@@ -35,17 +35,19 @@ AdminUIHelper::startAdminArea();
 					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_NAME'); ?>
 				</th>
 				<th>
-					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
-				</th>
-				<th>
 					<?php echo JText::_('COM_VIRTUEMART_SHOPPERGROUP_DESCRIPTION'); ?>
 				</th>
 				<th width="20">
 					<?php echo JText::_('COM_VIRTUEMART_DEFAULT'); ?>
 				</th>
-				<th width="40px" >
+				<th width="30px" >
 					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 				</th>
+				<?php if((Vmconfig::get('multix','none')!='none') && $this->perms->check( 'admin' )){ ?>
+				<th>
+					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
+				</th>
+				<?php } ?>
 		    </tr>
 	    </thead><?php
 
@@ -64,14 +66,11 @@ AdminUIHelper::startAdminArea();
 			      <a href="<?php echo $editlink; ?>"><?php echo $row->shopper_group_name; ?></a>
 			    </td>
 			    <td align="left">
-            <?php echo $row->virtuemart_vendor_id; ?>
-          </td>
-			    <td align="left">
 				    <?php echo $row->shopper_group_desc; ?>
 			    </td>
 			    <td>
 					<?php
-					if ($row->default == 1) { 
+					if ($row->default == 1) {
 						?>
 						<img src="templates/khepri/images/menu/icon-16-default.png" alt="<?php echo JText::_( 'Default' ); ?>" />
 						<?php
@@ -82,6 +81,12 @@ AdminUIHelper::startAdminArea();
 					} ?>
 			    </td>
 				<td><?php echo $published; ?></td>
+				<?php if((Vmconfig::get('multix','none')!='none') && $this->perms->check( 'admin' )){ ?>
+			    <td align="left">
+            <?php echo $row->virtuemart_vendor_id; ?>
+          	</td>
+          	<?php } ?>
+
 	      </tr><?php
 		    $k = 1 - $k;
 	    } ?>
