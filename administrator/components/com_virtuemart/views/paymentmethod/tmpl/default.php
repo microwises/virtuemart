@@ -33,7 +33,7 @@ AdminUIHelper::startAdminArea();
 				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
 			</th>
 			<th width="2">
-				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->payms); ?>);" />
+				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->payments); ?>);" />
 			</th>
 			<th width="60">
 				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_LIST_NAME'); ?>
@@ -64,9 +64,9 @@ AdminUIHelper::startAdminArea();
 		<?php
 		$k = 0;
 
-		for ($i=0, $n=count( $this->payms ); $i < $n; $i++) {
+		for ($i=0, $n=count( $this->payments ); $i < $n; $i++) {
 
-			$row = $this->payms[$i];
+			$row = $this->payments[$i];
 			$checked = JHTML::_('grid.id', $i, $row->virtuemart_paymentmethod_id);
 			$published = JHTML::_('grid.published', $row, $i);
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=paymentmethod&task=edit&cid[]=' . $row->virtuemart_paymentmethod_id);

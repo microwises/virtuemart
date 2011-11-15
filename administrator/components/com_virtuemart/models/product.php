@@ -171,7 +171,7 @@ class VirtueMartModelProduct extends VmModel {
 			$usermodel = new VirtueMartModelUser();
 			$currentVMuser = $usermodel->getUser();
 			$virtuemart_shoppergroup_ids =  $currentVMuser->shopper_groups;
-			
+
 			if(is_array($virtuemart_shoppergroup_ids)){
 				foreach ($virtuemart_shoppergroup_ids as $key => $virtuemart_shoppergroup_id){
 					$where[] .= '(s.`virtuemart_shoppergroup_id`= "' . (int) $virtuemart_shoppergroup_id . '" OR' . ' ISNULL(s.`virtuemart_shoppergroup_id`) )';
@@ -1575,7 +1575,7 @@ class VirtueMartModelProduct extends VmModel {
 		if (!empty($product->product_attribute)) {
 				if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 				$product = VirtueMartModelCustomfields::GetProductStockToUpdate($product);
-				// we can have more then one product in case of pack 
+				// we can have more then one product in case of pack
 				// in case of child, ID must be the child ID
 				if (is_array($product))
 					foreach ($products as $prod ) updateStock($prod, $amount, $signInStoc, $signOrderedStock);
@@ -1606,7 +1606,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			$this->_db->setQuery($q);
 			$this->_db->query();
-			vmdebug('query',$this->_db->q);
+			vmdebug('query',$q);
 
 			if ($signInStoc == '-') {
 				$this->_db->setQuery('SELECT `product_in_stock` < `low_stock_notification` '

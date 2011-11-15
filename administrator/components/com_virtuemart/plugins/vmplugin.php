@@ -86,7 +86,7 @@ abstract class vmPlugin extends JPlugin {
 	 * @param string $tableName When different then the default of the plugin, provid it here
 	 * @param string $tableKey an additionally unique key
 	 */
-	protected function storePluginInternalData(&$values, $primaryKey, $tableName=0){
+	protected function storePluginInternalData(&$values, $primaryKey='', $tableName=0){
 
 		if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 		if(empty($tableName)) $tableName = $this->_tablename;

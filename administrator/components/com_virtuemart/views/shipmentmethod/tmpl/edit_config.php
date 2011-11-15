@@ -19,8 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if ($this->carrier->shipment_name) {
-    $parameters = new vmParameters($this->carrier->shipment_params, $this->carrier->shipment_element, 'plugin', 'vmshipment');
+if ($this->shipment->shipment_name) {
+    $parameters = new vmParameters($this->shipment->shipment_params, $this->shipment->shipment_element, 'plugin', 'vmshipment');
 
     echo $rendered = $parameters->render();
 } else {

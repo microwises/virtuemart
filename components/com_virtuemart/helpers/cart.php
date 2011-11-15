@@ -1015,6 +1015,10 @@ class VirtueMartCart {
 						$this->tosAccepted = false;
 						$this->setCartIntoSession();
 						JRequest::setVar('html' , $html);
+						// payment echos form, but cart should not be emptied, data is valid
+					} elseif ($returnValue == 2 )   {
+					    JRequest::setVar('html' , $html);
+
 					} elseif ($returnValue == 0 )   {
 					    // error while processing the payment
 						$mainframe = JFactory::getApplication();

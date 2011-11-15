@@ -87,15 +87,15 @@ class VirtuemartViewPaymentMethod extends JView {
 			$this->loadHelper('parameterparser');
 			jimport('joomla.html.pane');
 
-			$paym = $model->getPayment();
-			$this->assignRef('paym',	$paym);
-			$this->assignRef('vmPPaymentList', self::renderInstalledPaymentPlugins($paym->payment_jplugin_id));
+			$payment = $model->getPayment();
+			$this->assignRef('payment',	$payment);
+			$this->assignRef('vmPPaymentList', self::renderInstalledPaymentPlugins($payment->payment_jplugin_id));
 //			$this->assignRef('PaymentTypeList',self::renderPaymentRadioList($paym->payment_type));
 
 //			$this->assignRef('creditCardList',self::renderCreditCardRadioList($paym->payment_creditcards));
 //			echo 'humpf <pre>'.print_r($paym).'</pre>' ;
 			//$this->assignRef('creditCardList',ShopFunctions::renderCreditCardList($paym->payment_creditcards,true));
-			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($paym->virtuemart_shoppergroup_ids));
+			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($payment->virtuemart_shoppergroup_ids));
 
 			if(Vmconfig::get('multix','none')!=='none'){
 				$vendorList= ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
@@ -105,8 +105,8 @@ class VirtuemartViewPaymentMethod extends JView {
 			ShopFunctions::addStandardEditViewCommands();
 		} else {
 
-			$payms = $model->getPayments();
-			$this->assignRef('payms',	$payms);
+			$payments = $model->getPayments();
+			$this->assignRef('payments',	$payments);
 
 			ShopFunctions::addStandardDefaultViewCommands();
 			$lists = ShopFunctions::addStandardDefaultViewLists($model);

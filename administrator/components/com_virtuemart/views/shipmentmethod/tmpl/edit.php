@@ -26,13 +26,13 @@ $tabarray = array();
 $tabarray['edit'] = 'COM_VIRTUEMART_ADMIN_SHIPMENT_FORM';
 $tabarray['config'] = 'COM_VIRTUEMART_ADMIN_SHIPMENT_CONFIGURATION';
 
-AdminUIHelper::buildTabs ( $tabarray , $this->carrier->virtuemart_shipmentmethod_id );
+AdminUIHelper::buildTabs ( $tabarray , $this->shipment->virtuemart_shipmentmethod_id );
 // Loading Templates in Tabs END ?>
 
     <!-- Hidden Fields -->
 
 <input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="virtuemart_shipmentmethod_id" value="<?php echo $this->carrier->virtuemart_shipmentmethod_id; ?>" />
+<input type="hidden" name="virtuemart_shipmentmethod_id" value="<?php echo $this->shipment->virtuemart_shipmentmethod_id; ?>" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="xxcontroller" value="shipmentmethod" />

@@ -605,200 +605,202 @@ class VirtueMartModelUserfields extends VmModel {
 		);
 
 // 		vmdebug('my user data in getUserFieldsFilled',$_selection,$_userData);
-		foreach ($_selection as $_fld) {
-			$_return['fields'][$_fld->name] = array(
-					 'name' => $_prefix . $_fld->name
-					,'value' => (($_userData == null || !array_key_exists($_fld->name, $_userData))
-						? $_fld->default
-						: @$_userData->{$_fld->name})
-					,'title' => JText::_($_fld->title)
-					,'type' => $_fld->type
-					,'required' => $_fld->required
-					,'hidden' => false
-			);
+		if (is_array($_selection)) {
+		    foreach ($_selection as $_fld) {
+			    $_return['fields'][$_fld->name] = array(
+					     'name' => $_prefix . $_fld->name
+					    ,'value' => (($_userData == null || !array_key_exists($_fld->name, $_userData))
+						    ? $_fld->default
+						    : @$_userData->{$_fld->name})
+					    ,'title' => JText::_($_fld->title)
+					    ,'type' => $_fld->type
+					    ,'required' => $_fld->required
+					    ,'hidden' => false
+			    );
 
-// 			if($_fld->name==='email') vmdebug('user data email getuserfieldbyuser',$_userData);
-			// First, see if there are predefined fields by checking the name
-			switch( $_fld->name ) {
+    // 			if($_fld->name==='email') vmdebug('user data email getuserfieldbyuser',$_userData);
+			    // First, see if there are predefined fields by checking the name
+			    switch( $_fld->name ) {
 
-// 				case 'email':
-// 					$_return['fields'][$_fld->name]['formcode'] = $_userData->email;
-// 					vmdebug('hm',$_userData);
-// 					break;
-				case 'virtuemart_country_id':
-					$_return['fields'][$_fld->name]['formcode'] =
-							ShopFunctions::renderCountryList($_return['fields'][$_fld->name]['value'], false, array(), $_prefix);
+    // 				case 'email':
+    // 					$_return['fields'][$_fld->name]['formcode'] = $_userData->email;
+    // 					vmdebug('hm',$_userData);
+    // 					break;
+				    case 'virtuemart_country_id':
+					    $_return['fields'][$_fld->name]['formcode'] =
+							    ShopFunctions::renderCountryList($_return['fields'][$_fld->name]['value'], false, array(), $_prefix);
 
-					// Translate the value from ID to name
-					$_return['fields'][$_fld->name]['value'] = shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']);
-					break;
+					    // Translate the value from ID to name
+					    $_return['fields'][$_fld->name]['value'] = shopFunctions::getCountryByID($_return['fields'][$_fld->name]['value']);
+					    break;
 
-				case 'virtuemart_state_id':
+				    case 'virtuemart_state_id':
 
-					$_return['fields'][$_fld->name]['formcode'] =
-					shopFunctions::renderStateList(	$_return['fields'][$_fld->name]['value'],
-													// ShopFunctions::getCountryIDByName($_return['fields']['virtuemart_country_id']['value']),
-													$_prefix,
-													false
-													// $_prefix
-													);
+					    $_return['fields'][$_fld->name]['formcode'] =
+					    shopFunctions::renderStateList(	$_return['fields'][$_fld->name]['value'],
+													    // ShopFunctions::getCountryIDByName($_return['fields']['virtuemart_country_id']['value']),
+													    $_prefix,
+													    false
+													    // $_prefix
+													    );
 
-					$_return['fields'][$_fld->name]['value'] = shopFunctions::getStateByID($_return['fields'][$_fld->name]['value']);
-					break;
-				//case 'agreed':
-				//	$_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" id="'.$_prefix.'agreed_field" name="'.$_prefix.'agreed" value="1" '
-				//		. ($_fld->required ? ' class="required"' : '') . ' />';
-				//	break;
-				case 'password':
-				case 'password2':
-					$_return['fields'][$_fld->name]['formcode'] = '<input type="password" id="' . $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name . '" size="30" class="inputbox" />'."\n";
-					break;
+					    $_return['fields'][$_fld->name]['value'] = shopFunctions::getStateByID($_return['fields'][$_fld->name]['value']);
+					    break;
+				    //case 'agreed':
+				    //	$_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" id="'.$_prefix.'agreed_field" name="'.$_prefix.'agreed" value="1" '
+				    //		. ($_fld->required ? ' class="required"' : '') . ' />';
+				    //	break;
+				    case 'password':
+				    case 'password2':
+					    $_return['fields'][$_fld->name]['formcode'] = '<input type="password" id="' . $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name . '" size="30" class="inputbox" />'."\n";
+					    break;
 
-				// It's not a predefined field, so handle it by it's fieldtype
-				default:
-					switch( $_fld->type ) {
-						case 'hidden':
-							$_return['fields'][$_fld->name]['formcode'] = '<input type="hidden" id="'
-								. $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name.'" size="' . $_fld->size
-								. '" value="' . $_return['fields'][$_fld->name]['value'] .'" '
-								. ($_fld->required ? ' class="required"' : '')
-								. ($_fld->maxlength ? ' maxlength="' . $_fld->maxlength . '"' : '')
-								. ($_fld->readonly ? ' readonly="readonly"' : '') . ' /> ';
-							$_return['fields'][$_fld->name]['hidden'] = true;
-							break;
-						case 'date':
-						case 'age_verification':
-							//echo JHTML::_('behavior.calendar');
-							/*
-							 * TODO We must add the joomla.javascript here that contains the calendar,
-							 * since Joomla does not load it when there's no user logged in.
-							 * Gotta find out why... some security issue or a bug???
-							 * Note by Oscar
-							 */
-							if ($_userData === null) { // Not logged in
-								$_doc = JFactory::getDocument();
-								$_doc->addScript( JURI::root(true).'/includes/js/joomla.javascript.js');
-							}
-							$calendar = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,  $_prefix.$_fld->name . '_field');
-							//$calendar = JHTML::calendar($_return['fields'][$_fld->name]['value'], $_prefix.$_fld->name , $_prefix.$_fld->name . '_field', '%Y-%m-%d', null);
-							// $_return['fields'][$_fld->name]['formcode'] = '<input type="text" id="' . $_prefix.$_fld->name . '_field" name="'
-								// . $_prefix.$_fld->name.'" size="' . $_fld->size . '" value="'. $_return['fields'][$_fld->name]['value'] . '" '
-								// . ($_fld->required ? ' class="required"' : '')
-								// . ($_fld->maxlength ? ' maxlength="' . $_fld->maxlength . '"' : '')
-								// . ($_fld->readonly ? ' readonly="readonly"' : '') . ' /> '."\n"
-								// . '<img class="calendar" src="templates/system/images/calendar.png" alt="calendar" id="'. $_prefix.$_fld->name . '_field_img" />';
-								 $_return['fields'][$_fld->name]['formcode'] = $calendar ;
-							break;
-						case 'emailaddress':
-							if(empty($_return['fields'][$_fld->name]['value'])) $_return['fields'][$_fld->name]['value'] = JFactory::getUser()->email;
-// 							vmdebug('emailaddress',$_fld);
-						case 'text':
-						case 'webaddress':
-						case 'euvatid':
+				    // It's not a predefined field, so handle it by it's fieldtype
+				    default:
+					    switch( $_fld->type ) {
+						    case 'hidden':
+							    $_return['fields'][$_fld->name]['formcode'] = '<input type="hidden" id="'
+								    . $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name.'" size="' . $_fld->size
+								    . '" value="' . $_return['fields'][$_fld->name]['value'] .'" '
+								    . ($_fld->required ? ' class="required"' : '')
+								    . ($_fld->maxlength ? ' maxlength="' . $_fld->maxlength . '"' : '')
+								    . ($_fld->readonly ? ' readonly="readonly"' : '') . ' /> ';
+							    $_return['fields'][$_fld->name]['hidden'] = true;
+							    break;
+						    case 'date':
+						    case 'age_verification':
+							    //echo JHTML::_('behavior.calendar');
+							    /*
+							     * TODO We must add the joomla.javascript here that contains the calendar,
+							     * since Joomla does not load it when there's no user logged in.
+							     * Gotta find out why... some security issue or a bug???
+							     * Note by Oscar
+							     */
+							    if ($_userData === null) { // Not logged in
+								    $_doc = JFactory::getDocument();
+								    $_doc->addScript( JURI::root(true).'/includes/js/joomla.javascript.js');
+							    }
+							    $calendar = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,  $_prefix.$_fld->name . '_field');
+							    //$calendar = JHTML::calendar($_return['fields'][$_fld->name]['value'], $_prefix.$_fld->name , $_prefix.$_fld->name . '_field', '%Y-%m-%d', null);
+							    // $_return['fields'][$_fld->name]['formcode'] = '<input type="text" id="' . $_prefix.$_fld->name . '_field" name="'
+								    // . $_prefix.$_fld->name.'" size="' . $_fld->size . '" value="'. $_return['fields'][$_fld->name]['value'] . '" '
+								    // . ($_fld->required ? ' class="required"' : '')
+								    // . ($_fld->maxlength ? ' maxlength="' . $_fld->maxlength . '"' : '')
+								    // . ($_fld->readonly ? ' readonly="readonly"' : '') . ' /> '."\n"
+								    // . '<img class="calendar" src="templates/system/images/calendar.png" alt="calendar" id="'. $_prefix.$_fld->name . '_field_img" />';
+								     $_return['fields'][$_fld->name]['formcode'] = $calendar ;
+							    break;
+						    case 'emailaddress':
+							    if(empty($_return['fields'][$_fld->name]['value'])) $_return['fields'][$_fld->name]['value'] = JFactory::getUser()->email;
+    // 							vmdebug('emailaddress',$_fld);
+						    case 'text':
+						    case 'webaddress':
+						    case 'euvatid':
 
-							$_return['fields'][$_fld->name]['formcode'] = '<input type="text" id="'
-								. $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name.'" size="' . $_fld->size
-								. '" value="' . $_return['fields'][$_fld->name]['value'] .'" '
-								. ($_fld->required ? ' class="required"' : '')
-								. ($_fld->maxlength ? ' maxlength="' . $_fld->maxlength . '"' : '')
-								. ($_fld->readonly ? ' readonly="readonly"' : '') . ' /> ';
-							break;
-						case 'textarea':
-							$_return['fields'][$_fld->name]['formcode'] = '<textarea id="'
-								. $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name . '" cols="' . $_fld->cols
-								. '" rows="'.$_fld->rows . '" class="inputbox" '
-								. ($_fld->readonly ? ' readonly="readonly"' : '')
-								. $_return['fields'][$_fld->name]['value'] .'</textarea>';
-							break;
-						case 'editorta':
-							jimport( 'joomla.html.editor' );
-							$editor = JFactory::getEditor();
-							$_return['fields'][$_fld->name]['formcode'] = $editor->display($_prefix.$_fld->name, $_return['fields'][$_fld->name]['value'], 300, 150, $_fld->cols, $_fld->rows);
-							break;
-						case 'checkbox':
-							$_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" name="'
-								. $_prefix.$_fld->name . '" id="' . $_prefix.$_fld->name . '_field" value="1" '
-								. ($_return['fields'][$_fld->name]['value'] ? 'checked="checked"' : '') .'/>';
-							break;
-						case 'captcha':
-							// FIXME Implement the new securityimages component
-//							if (file_exists($mosConfig_absolute_path.'/administrator/components/com_securityimages/client.php')) {
-//								include ($mosConfig_absolute_path.'/administrator/components/com_securityimages/client.php');
-//								// Note that this package name must be used on the validation site too! If both are not equal, validation will fail
-//								$packageName = 'securityVMRegistrationCheck';
-//								echo insertSecurityImage($packageName);
-//								echo getSecurityImageText($packageName);
-//							}
-//							break;
-						case 'multicheckbox':
-						case 'select':
-						case 'multiselect':
-						case 'radio':
-							$_qry = 'SELECT fieldtitle, fieldvalue '
-								. 'FROM #__virtuemart_userfield_values '
-								. 'WHERE virtuemart_userfield_id = ' . $_fld->virtuemart_userfield_id
-								. ' ORDER BY ordering ';
-							$_values = $this->_getList($_qry);
-							// We need an extra lok here, especially for the Bank info; the values
-							// must be translated.
-							// Don't check on the field name though, since others might be added in the future :-(
-							foreach ($_values as $_v) {
-								$_v->fieldtitle = JText::_($_v->fieldtitle);
-							}
-							$_attribs = array();
-							if ($_fld->readonly) {
-								$_attribs['readonly'] = 'readonly';
-							}
-							if ($_fld->required) {
-								$_attribs['class'] = 'required';
-							}
+							    $_return['fields'][$_fld->name]['formcode'] = '<input type="text" id="'
+								    . $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name.'" size="' . $_fld->size
+								    . '" value="' . $_return['fields'][$_fld->name]['value'] .'" '
+								    . ($_fld->required ? ' class="required"' : '')
+								    . ($_fld->maxlength ? ' maxlength="' . $_fld->maxlength . '"' : '')
+								    . ($_fld->readonly ? ' readonly="readonly"' : '') . ' /> ';
+							    break;
+						    case 'textarea':
+							    $_return['fields'][$_fld->name]['formcode'] = '<textarea id="'
+								    . $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name . '" cols="' . $_fld->cols
+								    . '" rows="'.$_fld->rows . '" class="inputbox" '
+								    . ($_fld->readonly ? ' readonly="readonly"' : '')
+								    . $_return['fields'][$_fld->name]['value'] .'</textarea>';
+							    break;
+						    case 'editorta':
+							    jimport( 'joomla.html.editor' );
+							    $editor = JFactory::getEditor();
+							    $_return['fields'][$_fld->name]['formcode'] = $editor->display($_prefix.$_fld->name, $_return['fields'][$_fld->name]['value'], 300, 150, $_fld->cols, $_fld->rows);
+							    break;
+						    case 'checkbox':
+							    $_return['fields'][$_fld->name]['formcode'] = '<input type="checkbox" name="'
+								    . $_prefix.$_fld->name . '" id="' . $_prefix.$_fld->name . '_field" value="1" '
+								    . ($_return['fields'][$_fld->name]['value'] ? 'checked="checked"' : '') .'/>';
+							    break;
+						    case 'captcha':
+							    // FIXME Implement the new securityimages component
+    //							if (file_exists($mosConfig_absolute_path.'/administrator/components/com_securityimages/client.php')) {
+    //								include ($mosConfig_absolute_path.'/administrator/components/com_securityimages/client.php');
+    //								// Note that this package name must be used on the validation site too! If both are not equal, validation will fail
+    //								$packageName = 'securityVMRegistrationCheck';
+    //								echo insertSecurityImage($packageName);
+    //								echo getSecurityImageText($packageName);
+    //							}
+    //							break;
+						    case 'multicheckbox':
+						    case 'select':
+						    case 'multiselect':
+						    case 'radio':
+							    $_qry = 'SELECT fieldtitle, fieldvalue '
+								    . 'FROM #__virtuemart_userfield_values '
+								    . 'WHERE virtuemart_userfield_id = ' . $_fld->virtuemart_userfield_id
+								    . ' ORDER BY ordering ';
+							    $_values = $this->_getList($_qry);
+							    // We need an extra lok here, especially for the Bank info; the values
+							    // must be translated.
+							    // Don't check on the field name though, since others might be added in the future :-(
+							    foreach ($_values as $_v) {
+								    $_v->fieldtitle = JText::_($_v->fieldtitle);
+							    }
+							    $_attribs = array();
+							    if ($_fld->readonly) {
+								    $_attribs['readonly'] = 'readonly';
+							    }
+							    if ($_fld->required) {
+								    $_attribs['class'] = 'required';
+							    }
 
-							if ($_fld->type == 'radio') {
-								$_selected = $_return['fields'][$_fld->name]['value'];
-							} else {
-								$_attribs['size'] = $_fld->size; // Use for all but radioselects
-								$_selected = explode("|*|", $_return['fields'][$_fld->name]['value']);
-							}
+							    if ($_fld->type == 'radio') {
+								    $_selected = $_return['fields'][$_fld->name]['value'];
+							    } else {
+								    $_attribs['size'] = $_fld->size; // Use for all but radioselects
+								    $_selected = explode("|*|", $_return['fields'][$_fld->name]['value']);
+							    }
 
-							// Nested switch...
-							switch($_fld->type) {
-								case 'multicheckbox':
-									$_return['fields'][$_fld->name]['formcode'] = '';
-									$_idx = 0;
-									$rows = $_fld->rows;
-									$row = 1;
-									foreach ($_values as $_val) {
-										if 	($row > $rows) { $row = 1;
-											$br = '<br />';
-										} else {
-											$row ++ ;
-											$br = '';
-										}
-										$_return['fields'][$_fld->name]['formcode'] .= '<input type="checkbox" name="'
-											. $_prefix.$_fld->name . '[]" id="' . $_prefix.$_fld->name . '_field' . $_idx . '" value="'. $_val->fieldvalue . '" '
-											. (in_array($_val->fieldvalue, $_selected) ? 'checked="checked"' : '') .'/> ' . JText::_($_val->fieldtitle) . $br;
+							    // Nested switch...
+							    switch($_fld->type) {
+								    case 'multicheckbox':
+									    $_return['fields'][$_fld->name]['formcode'] = '';
+									    $_idx = 0;
+									    $rows = $_fld->rows;
+									    $row = 1;
+									    foreach ($_values as $_val) {
+										    if 	($row > $rows) { $row = 1;
+											    $br = '<br />';
+										    } else {
+											    $row ++ ;
+											    $br = '';
+										    }
+										    $_return['fields'][$_fld->name]['formcode'] .= '<input type="checkbox" name="'
+											    . $_prefix.$_fld->name . '[]" id="' . $_prefix.$_fld->name . '_field' . $_idx . '" value="'. $_val->fieldvalue . '" '
+											    . (in_array($_val->fieldvalue, $_selected) ? 'checked="checked"' : '') .'/> ' . JText::_($_val->fieldtitle) . $br;
 
-										$_idx++;
-									}
-									break;
-								case 'select':
-									$_return['fields'][$_fld->name]['formcode'] = JHTML::_('select.genericlist', $_values, $_prefix.$_fld->name, $_attribs, 'fieldvalue', 'fieldtitle', $_selected[0]);
-									break;
-								case 'multiselect':
-									$_attribs['multiple'] = 'multiple';
-									$_attribs['rows'] = $_fld->rows;
-									$_attribs['cols'] = $_fld->cols;
-									$_return['fields'][$_fld->name]['formcode'] = JHTML::_('select.genericlist', $_values, $_prefix.$_fld->name.'[]', $_attribs, 'fieldvalue', 'fieldtitle', $_selected);
-									break;
-								case 'radio':
-									$_return['fields'][$_fld->name]['formcode'] =  JHTML::_('select.radiolist', $_values, $_prefix.$_fld->name, $_attribs, $_selected, 'fieldvalue', 'fieldtitle');
-									break;
-							}
-							break;
-					}
-					break;
-			}
+										    $_idx++;
+									    }
+									    break;
+								    case 'select':
+									    $_return['fields'][$_fld->name]['formcode'] = JHTML::_('select.genericlist', $_values, $_prefix.$_fld->name, $_attribs, 'fieldvalue', 'fieldtitle', $_selected[0]);
+									    break;
+								    case 'multiselect':
+									    $_attribs['multiple'] = 'multiple';
+									    $_attribs['rows'] = $_fld->rows;
+									    $_attribs['cols'] = $_fld->cols;
+									    $_return['fields'][$_fld->name]['formcode'] = JHTML::_('select.genericlist', $_values, $_prefix.$_fld->name.'[]', $_attribs, 'fieldvalue', 'fieldtitle', $_selected);
+									    break;
+								    case 'radio':
+									    $_return['fields'][$_fld->name]['formcode'] =  JHTML::_('select.radiolist', $_values, $_prefix.$_fld->name, $_attribs, $_selected, 'fieldvalue', 'fieldtitle');
+									    break;
+							    }
+							    break;
+					    }
+					    break;
+			    }
 		}
+	    }
 		return $_return;
 	}
 

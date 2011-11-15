@@ -27,41 +27,19 @@ $tabarray = array();
 $tabarray['edit'] = 'COM_VIRTUEMART_ADMIN_PAYMENT_FORM';
 $tabarray['config'] = 'COM_VIRTUEMART_ADMIN_PAYMENT_CONFIGURATION';
 
-AdminUIHelper::buildTabs ( $tabarray,$this->paym->virtuemart_paymentmethod_id );
+AdminUIHelper::buildTabs ( $tabarray,$this->payment->virtuemart_paymentmethod_id );
 // Loading Templates in Tabs END ?>
 
 
-<input type="hidden" name="virtuemart_paymentmethod_id" value="<?php echo $this->paym->virtuemart_paymentmethod_id; ?>" />
-<?php echo VmHTML::HiddenEdit() ?>
+    <!-- Hidden Fields -->
+
+<input type="hidden" name="option" value="com_virtuemart" />
+<input type="hidden" name="virtuemart_paymentmethod_id" value="<?php echo $this->payment->virtuemart_paymentmethod_id; ?>" />
+<input type="hidden" name="task" value="" />
+<input type="hidden" name="boxchecked" value="0" />
+<input type="hidden" name="xxcontroller" value="paymentmethod" />
+<input type="hidden" name="view" value="paymentmethod" />
+
+<?php echo JHTML::_('form.token'); ?>
 </form>
-<?php AdminUIHelper::endAdminArea(); ?>
-
-<script language="javascript">
-<?php /*TODO BETTER SCRIPT */ ?>
-jQuery(document).ready(function() {
-
-	var toggler = document.getElements('#pam_type_CC_on');
-	for (var i = 0; i < toggler.length; i++) {
-		toggler[i].type='radio';
-		jQuery(toggler[i]).bind('click', show);
-	}
-	var toggler = document.getElements('#pam_type_CC_off');
-	for (var i = 0; i < toggler.length; i++) {
-		toggler[i].type='radio';
-		jQuery(toggler[i]).bind('click', hide);
-	}
-});
-
-function show(){
-	div = jQuery("#creditcardlist");
-	div.show();
-	//alert('show '+div);
-}
-
-function hide(){
-	div = jQuery("#creditcardlist");
-	div.hide();
-}
-
-
-</script>
+    <?php AdminUIHelper::endAdminArea(); ?>

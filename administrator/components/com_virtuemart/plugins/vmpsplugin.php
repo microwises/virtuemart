@@ -276,7 +276,7 @@ abstract class vmPSPlugin extends vmPlugin {
      * @author Max Milbers
      */
     public function plgVmOnCheckoutCheckData($psType, VirtueMartCart $cart) {
-
+ return null;
     }
     /**
      * plgVmConfirmedOrderRenderForm

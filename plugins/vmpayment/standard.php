@@ -111,7 +111,9 @@ class plgVmPaymentStandard extends vmPSPlugin {
      * @author Valérie Isaksen
      */
     function plgVmConfirmedOrderRenderForm($psType, $order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status) {
-
+	if (!$this->selectedThisType($psType)) {
+	    return null;
+	}
 	if (!($payment = $this->getPluginMethod($cart->virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}

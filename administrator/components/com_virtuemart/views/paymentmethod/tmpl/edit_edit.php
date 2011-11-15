@@ -21,13 +21,13 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 <table class="admintable">
- 		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$this->paym->published); ?>
-		<?php echo VmHTML::row('input','COM_VIRTUEMART_PAYMENTMETHOD_FORM_NAME','payment_name',$this->paym->payment_name); ?>
+ 		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$this->payment->published); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_PAYMENTMETHOD_FORM_NAME','payment_name',$this->payment->payment_name); ?>
 		<?php echo VmHTML::row('raw','COM_VIRTUEMART_PAYMENT_CLASS_NAME', $this->vmPPaymentList ); ?>
 		<?php echo VmHTML::row('raw','COM_VIRTUEMART_PAYMENTMETHOD_FORM_SHOPPER_GROUP', $this->shopperGroupList ); ?>
-		<?php echo VmHTML::row('input','COM_VIRTUEMART_LIST_ORDER','ordering',$this->paym->ordering,'class="inputbox"','',4,4); ?>
-		<?php if(Vmconfig::get('multix','none')!=='none'){ 
-				echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->vendorList ); 
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_LIST_ORDER','ordering',$this->payment->ordering,'class="inputbox"','',4,4); ?>
+		<?php if(Vmconfig::get('multix','none')!=='none'){
+				echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->vendorList );
 			} ?>
   </table>
 
