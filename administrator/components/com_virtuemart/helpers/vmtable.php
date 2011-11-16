@@ -43,20 +43,7 @@ class VmTable extends JTable{
 	protected $_loggable = false;
 	protected $_translatable = false;
 
-	function __construct( $table, $key, &$db )
-	{
-		// add TAG eg. : 'fr_' if it's not default lang
-		// TODO STAY it HERE ?
-		$this->_dbPrefix ='#__';
-		$lang = JRequest::getvar('lang');
-		$language=& JFactory::getLanguage();
-		if ($language->getDefault() !== $lang ) {
-			if ( $language->exists($lang, JPATH_SITE)){
-			$this->_dbPrefix = $this->_dbPrefix.substr($lang,0,2).'_';
-			}
-		}
-
-		// Remove tag if defaut or 
+	function __construct( $table, $key, &$db ){
 
 		$this->_tbl		= $table;
 		$this->_tbl_key	= $key;
@@ -91,26 +78,40 @@ class VmTable extends JTable{
 		$this->modified_by = 0;
 	}
 
-	/** 
+	/**
 	 * TODO note by patrick Kohl
 	 * -Delete lang row when the main record is deleted
 	 * -save the lang record row when language is not default
-	 *   using the langcode (FR,EN,DE ...) 
+	 *   using the langcode (FR,EN,DE ...)
 	 *   this use good table but none existing fields give an sql error
 	 * -add a table row creator by lang
 	 *  using an array declaration of fields
 
-	 * The fastest way was to cut the tables 
+	 * The fastest way was to cut the tables
 	 * One with translatable field and one with 'FIX' field
-	 *  because whe had only to choice the lang 
+	 *  because whe had only to choice the lang
 	 *  and never to do an overide from main table.
 	 * it's to late to do this now ! :o(
 	 * translated tables  must be
 	 * CATEGORIES,MANUFACTURERCATEGORIES,MANUFACTURERS,PRODUCTS,VENDORS,
 	 */
-	public function setTranslatable(){
+	public function setTranslatable($langFields){
+
+		$this->_translatableFields = $langFields;
 		$this->_translatable = true;
-		$this->_tbl = str_replace('#__', $this->_dbPrefix, $this->_tbl);
+		$lang = JRequest::getvar('lang');
+		//Todo use virtuemart_languages to get default
+		;
+		if (in_array(VmConfig::get('active_languages',array('en_en')),$lang)){
+			// 			if ( $language->exists($lang, JPATH_SITE)){
+			$this->_langTag = strtolower(str_replace('-','_',$lang));
+		} else {
+			$language=& JFactory::getLanguage();
+			$this->_langTag = str_replace('-','_',$language->getDefault());
+		}
+// 		$this->_tbl = $this->_tbl.$this->_langTag;
+		$this->_tbl_lang = $this->_tbl.$this->_langTag;
+
 	}
 
 	public function setLockable(){
@@ -428,6 +429,61 @@ class VmTable extends JTable{
 					$this->load($data[$tblKey]);
 				}
 			}
+		}
+
+		if($this->_translatable){
+
+			$db = JFactory::getDBO();
+			$langTable = new VmTableData($this->_tbl_lang,$tblKey,$db);
+
+			$langData = array();
+			$langObKeys = array();
+			$langUniqueKeys = array();
+			if(is_object($data)){
+
+				foreach($this->_translatableFields as $name){
+					$langData[$name] = $data->$name;
+					unset($this->$name);
+
+					if(!empty($this->_unique_name[$name])){
+						$langUniqueKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						unset($this->_unique_name[$name]);
+						$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						unset($this->_obkeys[$name]);
+					}
+
+					if(!empty($this->_obkeys[$name])){
+						$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						unset($this->_obkeys[$name]);
+					}
+
+				}
+			} else {
+				foreach($this->_translatableFields as $name){
+					$langData[$name] = $data[$name];
+					unset($this->$name);
+
+					if(!empty($this->_unique_name[$name])){
+						$langUniqueKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						unset($this->_unique_name[$name]);
+						$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						unset($this->_obkeys[$name]);
+					}
+
+					if(!empty($this->_obkeys[$name])){
+						$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+						unset($this->_obkeys[$name]);
+					}
+
+				}
+			}
+
+			$langTable->_unique_name = $langUniqueKeys;
+			$langTable->_obkeys = $langObKeys;
+			$langTable->setProperties($langData);
+
+			$langTable->setObligatoryKeys();
+			$this->bindChecknStore($data,$preload);
 		}
 
 		$ok = true;
