@@ -191,6 +191,22 @@ class VirtueMartModelConfig extends JModel {
 
 		return $db->loadObjectList();
 	}
+	
+	/*
+	 * Get the joomla list of languages
+	 */
+    function getActiveLanguages($active_languages) {
+		
+		$activeLangs = array() ;
+		$language =& JFactory::getLanguage();
+		$jLangs = $language->getKnownLanguages(JPATH_BASE);
+
+		foreach ($jLangs as $jLang) {
+			$activeLangs[] = JHTML::_('select.option', $jLang['tag'], $jLang['name']) ;
+		} 
+		 
+		return JHTML::_('select.genericlist', $activeLangs, 'active_languages[]', 'size=10 multiple="multiple"', 'value', 'text', $active_languages );// $activeLangs;
+	}
 
 	/**
 	 * Retrieve a list of Order By Fields

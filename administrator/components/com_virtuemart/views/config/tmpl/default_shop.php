@@ -146,6 +146,17 @@ defined('_JEXEC') or die('Restricted access');
 			echo VmHTML::checkbox('enable_content_plugin', $this->config->get('enable_content_plugin','0'));
 		?>
 	</td>
+	</tr>	</tr>
+	<td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MULTILANGUE_EXPLAIN'); ?>">
+		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MULTILANGUE') ?>
+		</span>
+		</td>
+		<td>
+		<?php
+			echo $this->activeLanguages ;
+		?>
+	</td>
 	</tr>
 
 	<tr>

@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: translate.php
+* @version $Id: translate.php 
 */
 
 // Check to ensure this file is included in Joomla!
@@ -45,17 +45,6 @@ class VirtuemartControllerTranslate extends VmController {
 
 	public function Translate() {
 
-
-		JRequest::checkToken( 'get' ) or jexit( '{"check":"Invalid Token"}' );
-
-		$lang = JRequest::get('lang');
-		$view = JRequest::getWord('editView');
-		$tables = array ('category' =>'categories','product' =>'products','manufacturer' =>'manufacturers','vendor' =>'vendors');
-		if ( !array_key_exists($view, $tables) ) jExit('{"check":"Invalid view"}');
-		$id = JRequest::getInt('id');
-		$db =& JFactory::getDBO();
-		$db->setQuery($q);
-		jExit();
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
 		$view = $this->getView($this->_cname, $viewType);
@@ -65,17 +54,11 @@ class VirtuemartControllerTranslate extends VmController {
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
-
-		$model1 = $this->getModel('Worldzones');
-		if (!JError::isError($model1)) {
-			$view->setModel($model1, false);
-		}
-
 		parent::display();
 	}
 	/**
 	 * Paste the table  in json format
-	 *
+	 * 
 	 */
 	public function paste() {
 
@@ -96,13 +79,13 @@ class VirtuemartControllerTranslate extends VmController {
 			jexit(  );
 		}
 
-		// Remove tag if defaut or
+		// Remove tag if defaut or 
 		if ($language->getDefault() == $lang ) $dblang ='';
 		else $dblang= substr($lang,0,2).'_';
 		$id = JRequest::getInt('id',0);
 
 		$viewKey = JRequest::getWord('editView');
-		// TODO temp trick for vendor
+		// TODO temp trick for vendor 
 		if ($viewKey == 'vendor') $id = 1 ;
 
 		$tables = array ('category' =>'categories','product' =>'products','manufacturer' =>'manufacturers','vendor' =>'vendors');
@@ -116,15 +99,15 @@ class VirtuemartControllerTranslate extends VmController {
 
 
 		$db =& JFactory::getDBO();
-
+		
 		$q='select * from #__'.$dblang.'virtuemart_'.$tableName.' where virtuemart_'.$viewKey.'_id ='.$id;
 		$db->setQuery($q);
 		if ($json['fields'] = $db->loadAssoc()) {
-			$json['msg'] = jText::_('COM_VIRTUEMART_SELECTED_LANG').':'.$lang;
+			$json['msg'] = jText::_('COM_VRITUEMART_SELECTED_LANG').':'.$lang;
 
 		} else {
 			$json['fields'] = 'error' ;
-			$json['msg'] = jText::_('COM_VIRTUEMART_LANG_IS EMPTY') .$q ;
+			$json['msg'] = jText::_('COM_VRITUEMART_LANG_IS EMPTY') .$q ;
 		}
 		echo json_encode($json);
 		jExit();
@@ -147,7 +130,7 @@ class VirtuemartControllerTranslate extends VmController {
 
 		// parent::display();
 	}
-
+	
 
 }
 
