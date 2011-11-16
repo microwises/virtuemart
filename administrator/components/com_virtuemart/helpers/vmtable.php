@@ -94,6 +94,9 @@ class VmTable extends JTable{
 	 * it's to late to do this now ! :o(
 	 * translated tables  must be
 	 * CATEGORIES,MANUFACTURERCATEGORIES,MANUFACTURERS,PRODUCTS,VENDORS,
+	 *
+	 * @author Patrick Kohl,
+	 * @author Max Milbers
 	 */
 	public function setTranslatable($langFields){
 
@@ -245,7 +248,41 @@ class VmTable extends JTable{
 	 */
 	function load($int=null){
 
+		if($this->_translatable){
+			$langTable = new VmTableData($this->_tbl_lang,$tblKey,$db);
+			$langTable->setPrimaryKey($tblKey);
+			$langData = array();
+			$langObKeys = array();
+			$langUniqueKeys = array();
+
+			foreach($this->_translatableFields as $name){
+				$langData->$name = '';
+				unset($this->$name);
+
+				if(!empty($this->_unique_name[$name])){
+					$langUniqueKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+					unset($this->_unique_name[$name]);
+					$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+					unset($this->_obkeys[$name]);
+				}
+
+				if(!empty($this->_obkeys[$name])){
+					$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
+					unset($this->_obkeys[$name]);
+				}
+
+			}
+
+			$langTable->_unique_name = $langUniqueKeys;
+			$langTable->_obkeys = $langObKeys;
+// 			$langTable->setProperties($langData);
+// 			$langTable->_translatable = false;
+			$langTable->load($int);
+		}
+
 		parent::load($int);
+
+		$this->setProperties($langTable);
 
 		if(!empty($this->_xParams)){
 
@@ -273,6 +310,7 @@ class VmTable extends JTable{
 					$this->$key = $v[0];
 				}
 			}
+
 		}
 
 		return $this;
@@ -436,7 +474,7 @@ class VmTable extends JTable{
 			$db = JFactory::getDBO();
 
 			$langTable = new VmTableData($this->_tbl_lang,$tblKey,$db);
-
+			$langTable->setPrimaryKey($tblKey);
 			$langData = array();
 			$langObKeys = array();
 			$langUniqueKeys = array();
