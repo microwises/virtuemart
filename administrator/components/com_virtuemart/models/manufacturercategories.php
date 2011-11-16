@@ -42,6 +42,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
 	function __construct() {
 		parent::__construct();
 		$this->setMainTable('manufacturercategories');
+		$this->addvalidOrderingFieldName(array('l.mf_category_name'));
 	}
 
     /**
@@ -52,11 +53,15 @@ class VirtuemartModelManufacturercategories extends VmModel {
 
 		$db = JFactory::getDBO();
 
-  		if (empty($this->_data)) {
-   			$this->_data = $this->getTable('manufacturercategories');
-   			$this->_data->load((int)$this->_id);
-  		}
-
+  		// if (empty($this->_data)) {
+   			// $this->_data = $this->getTable('manufacturercategories');
+   			// $this->_data->load((int)$this->_id);
+  		// }
+		$dbTag = vmLang::dbTag();
+		$q ='SELECT * FROM `#__virtuemart_manufacturercategories` as mc
+			LEFT JOIN `#__virtuemart_manufacturercategories_'.$dbTag.'` as l on l.`virtuemart_manufacturercategories_id` = mc.`virtuemart_manufacturercategories_id`';
+		$db->setQuery($q);
+		$this->_data = $db->loadObject() ; 
   		if (!$this->_data) {
    			$this->_data = new stdClass();
    			$this->_id = 0;
@@ -101,8 +106,9 @@ class VirtuemartModelManufacturercategories extends VmModel {
 	{
 		$this->_noLimit = $noLimit;
 
-		$select = ' FROM `#__virtuemart_manufacturercategories` ';
-
+		$select = '* FROM `#__virtuemart_manufacturercategories` as mc';
+		$dbTag = vmLang::dbTag();
+		$joinedTables = ' LEFT JOIN `#__virtuemart_manufacturercategories_'.$dbTag.'` as l on l.`virtuemart_manufacturercategories_id` = mc.`virtuemart_manufacturercategories_id`';
 		$where = array();
 		if ($onlyPublished) {
 			$where[] = ' `#__virtuemart_manufacturercategories`.`published` = 1';
@@ -113,11 +119,11 @@ class VirtuemartModelManufacturercategories extends VmModel {
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 		if ( JRequest::getCmd('view') == 'manufacturercategories') {
-			$ordering = $this->_getOrdering('mf_category_name');
+			$ordering = $this->_getOrdering('l.mf_category_name');
 		} else {
-			$ordering = ' order by mf_category_name DESC';
+			$ordering = ' order by l.mf_category_name DESC';
 		}
-		return $this->_data = $this->exeSortSearchListQuery(0,'*','FROM `#__virtuemart_manufacturercategories`',$whereString,'',$ordering);
+		return $this->_data = $this->exeSortSearchListQuery(0,$select,$whereString,$joinedTables,$ordering);
 
 	}
 

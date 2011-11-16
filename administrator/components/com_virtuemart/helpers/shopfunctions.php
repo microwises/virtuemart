@@ -125,7 +125,7 @@ class ShopFunctions {
 
 		$editView = JRequest::getWord('view',JRequest::getWord('controller','' ) );
 		if ($editView =='user') $editView ='vendor';
-		$id = (int)JRequest::getVar('cid',JRequest::getVar('virtuemart_'.$editView.'_id'));
+		$id = (int)JRequest::getVar('virtuemart_'.$editView.'_id',(int)JRequest::getVar('cid'));
 
 		// only add if ID and view not null
 		if ($editView and $id) {
