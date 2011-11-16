@@ -351,7 +351,7 @@ class VirtueMartModelConfig extends JModel {
 		vmdebug('my langs',$langs);
 		$tables = array('categories'=>'virtuemart_category_id',
 							'manufacturers'=>'virtuemart_manufacturer_id',
-							'manufacturercategories'=>'virtuemart_manufactuercategory_id',
+							'manufacturercategories'=>'virtuemart_manufacturercategory_id',
 							'products'=>'virtuemart_product_id',
 							'vendors'=>'virtuemart_vendor_id'
 		);
