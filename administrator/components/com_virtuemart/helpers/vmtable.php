@@ -41,7 +41,7 @@ class VmTable extends JTable{
 	protected $_slugAutoName = '';
 	protected $_slugName = '';
 	protected $_loggable = false;
-	protected $_translatable = false;
+	var $_translatable = false;
 
 	function __construct( $table, $key, &$db ){
 
@@ -102,15 +102,16 @@ class VmTable extends JTable{
 		$lang = JRequest::getvar('lang');
 		//Todo use virtuemart_languages to get default
 		;
-		if (in_array(VmConfig::get('active_languages',array('en_en')),$lang)){
+		if (!empty($lang) && in_array(VmConfig::get('active_languages',array('en_en')),$lang)){
 			// 			if ( $language->exists($lang, JPATH_SITE)){
 			$this->_langTag = strtolower(str_replace('-','_',$lang));
 		} else {
 			$language=& JFactory::getLanguage();
-			$this->_langTag = str_replace('-','_',$language->getDefault());
+			$this->_langTag = strtolower(str_replace('-','_',$language->getDefault()));
 		}
 // 		$this->_tbl = $this->_tbl.$this->_langTag;
-		$this->_tbl_lang = $this->_tbl.$this->_langTag;
+// 		$tbl_lang = '#__'.$table.'_'.$lang;
+		$this->_tbl_lang = $this->_tbl.'_'.$this->_langTag;
 
 	}
 

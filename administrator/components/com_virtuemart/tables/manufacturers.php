@@ -57,7 +57,7 @@ class TableManufacturers extends VmTable {
 
 		$this->setUniqueName('mf_name');
 		$this->setLoggable();
-		$this->setTranslatable();
+		$this->setTranslatable(array('category_name','slug','category_description','metadesc','metakey'));
 		$this->setSlug('mf_name');
 		$this->setTableShortCut('m');
 	}

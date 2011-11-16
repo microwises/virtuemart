@@ -191,20 +191,20 @@ class VirtueMartModelConfig extends JModel {
 
 		return $db->loadObjectList();
 	}
-	
+
 	/*
 	 * Get the joomla list of languages
 	 */
     function getActiveLanguages($active_languages) {
-		
+
 		$activeLangs = array() ;
 		$language =& JFactory::getLanguage();
 		$jLangs = $language->getKnownLanguages(JPATH_BASE);
 
 		foreach ($jLangs as $jLang) {
 			$activeLangs[] = JHTML::_('select.option', $jLang['tag'], $jLang['name']) ;
-		} 
-		 
+		}
+
 		return JHTML::_('select.genericlist', $activeLangs, 'active_languages[]', 'size=10 multiple="multiple"', 'value', 'text', $active_languages );// $activeLangs;
 	}
 
@@ -328,6 +328,7 @@ class VirtueMartModelConfig extends JModel {
 				}
 		}
 
+
 		$confData['config'] = $config->toString();
 // 		vmdebug('config to store',$confData);
 		$confTable = $this->getTable('configs');
@@ -336,9 +337,66 @@ class VirtueMartModelConfig extends JModel {
 		}
 
 		// Load the newly saved values into the session.
-		VmConfig::loadConfig(true);
+		$config = VmConfig::loadConfig(true);
+
+		$this->checkLanguageTables($config);
 
 		return true;
+	}
+
+	private function checkLanguageTables($config){
+
+		//Todo add the mb_ stuff here
+		$langs = $config->get('active_languages');
+		vmdebug('my langs',$langs);
+		$tables = array('categories'=>'virtuemart_category_id',
+							'manufacturers'=>'virtuemart_manufacturer_id',
+							'manufacturercategories'=>'virtuemart_manufactuercategory_id',
+							'products'=>'virtuemart_product_id',
+							'vendors'=>'virtuemart_vendor_id'
+		);
+
+		foreach($tables as $table=>$tblKey){
+
+			$className = 'Table'.ucfirst ($table);
+			if(!class_exists($className)) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.$table.'.php');
+			$langTable = new $className('#__'.$table,$tblKey,$this->_db) ;//($tbl_lang,$tblKey,$db);
+			if(empty($langTable->_translatableFields)) continue;
+			$lang = strtolower(str_replace('-','_',$lang));
+			$slug = false;
+			foreach($langs as $lang){
+				$tbl_lang = strtolower( '#__'.$table.'_'.$lang);
+				$q = 'CREATE TABLE IF NOT EXISTS '.$tbl_lang.' (';
+				foreach($langTable->_translatableFields as $name){
+					if(strpos($name,'name'!==false)){
+						$fieldstructure = 'varchar(256) NOT NULL DEFAULT "" ';
+					} else if(strpos($name,'meta'!==false)){
+						$fieldstructure = 'varchar(512) NOT NULL DEFAULT "" ';
+					} else if(strpos($name,'slug'!==false)){
+						$fieldstructure = 'varchar(320) NOT NULL DEFAULT "" ';
+						$slug = true;
+					} else if(strpos($name,'desc'!==false) || $name == 'vendor_terms_of_service'){
+						$fieldstructure = 'text NOT NULL DEFAULT "" ';
+					} else{
+						$fieldstructure = 'varchar(256) NOT NULL DEFAULT "" ';
+					}
+
+					$q .= '`'.$name.'` '.$fieldstructure.',';
+				}
+				$q = substr($q,-1);
+				$q .= 'PRIMARY KEY (`'.$tblKey.'`)';
+				if($slug){
+					$q .= ', UNIQUE KEY `slug` (`slug`) )';
+				} else {
+					$q .= ')';
+				}
+				$q .= ' ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT="Language '.$lang.' for '.$table.'" AUTO_INCREMENT=1 ;';
+				$this->_db->setQuery($q);
+				$this->_db->query();
+				vmdebug('checkLanguageTables',$this->_db);
+			}
+		}
+
 	}
 
 	/**

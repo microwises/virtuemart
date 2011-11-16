@@ -359,6 +359,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturers` (
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
+   PRIMARY KEY (`virtuemart_manufacturer_id`),
   UNIQUE KEY `slug` (`slug`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are those who deliver products' AUTO_INCREMENT=1 ;
 
