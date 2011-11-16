@@ -361,24 +361,30 @@ class VirtueMartModelConfig extends JModel {
 			$className = 'Table'.ucfirst ($table);
 			if(!class_exists($className)) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.$table.'.php');
 			$tableName = '#__virtuemart_'.$table;
+			
+			// $this->_db->setQuery('DESCRIBE '.$tableName);
+			// $tableDescribe = $this->_db->query();
+			vmdebug('structure' , $tableDescribe );
+			
 			$langTable = new $className($tableName,$tblKey,$this->_db) ;//($tbl_lang,$tblKey,$db);
 			if(empty($langTable->_translatableFields)) continue;
-			$langTable->_translatableFields[] = $tblKey;
+			// $langTable->_translatableFields[] = $tblKey;
 			$slug = false;
+			
 			foreach($langs as $lang){
 				$lang = strtolower(str_replace('-','_',$lang));
 				$tbl_lang = strtolower($tableName.'_'.$lang);
 				$q = 'CREATE TABLE IF NOT EXISTS '.$tbl_lang.' (';
-
+				$q .= '`'.$tblKey.'` SERIAL ,';
 				foreach($langTable->_translatableFields as $name){
-					if(strpos($name,'name'!==false)){
+					if(strpos($name,'name') !==false ){
 						$fieldstructure = 'varchar(256) NOT NULL DEFAULT "" ';
-					} else if(strpos($name,'meta'!==false)){
+					} else if(strpos($name,'meta')!==false ){
 						$fieldstructure = 'varchar(512) NOT NULL DEFAULT "" ';
-					} else if(strpos($name,'slug'!==false)){
+					} else if(strpos($name,'slug')!==false ){
 						$fieldstructure = 'varchar(320) NOT NULL DEFAULT "" ';
 						$slug = true;
-					} else if(strpos($name,'desc'!==false) || $name == 'vendor_terms_of_service'){
+					} else if(strpos($name,'desc')!==false || $name == 'vendor_terms_of_service'){
 						$fieldstructure = 'text NOT NULL DEFAULT "" ';
 					} else{
 						$fieldstructure = 'varchar(256) NOT NULL DEFAULT "" ';
