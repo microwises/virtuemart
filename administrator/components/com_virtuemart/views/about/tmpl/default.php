@@ -1,4 +1,4 @@
-<!--<?php
+<?php
 /**
 *
 * Description
@@ -21,6 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea();
  
 include(JPATH_VM_ADMINISTRATOR.DS.'COPYRIGHT.php');
+
 AdminUIHelper::endAdminArea();
 
 ?>

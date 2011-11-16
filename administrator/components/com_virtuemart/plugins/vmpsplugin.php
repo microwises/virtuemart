@@ -441,7 +441,7 @@ abstract class vmPSPlugin extends vmPlugin {
      * @author Valerie Isaksen
      *
      */
-    function plgVmOnResponseReceived(&$virtuemart_order_id, &$html) {
+    function plgVmOnResponseReceived($psType, &$virtuemart_order_id, &$html) {
 	    return null;
     }
     function getDebug() {

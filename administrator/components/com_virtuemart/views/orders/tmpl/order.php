@@ -376,6 +376,7 @@ $tt=$this;
 <table width="100%">
 	<tr>
 		<td valign="top"><?php
+		JPluginHelper::importPlugin('vmshipment');
 		$_dispatcher = JDispatcher::getInstance();
 		$returnValues = $_dispatcher->trigger('plgVmOnShowOrderBE',array('shipment', $this->orderID,$this->orderbt->virtuemart_vendor_id,$this->virtuemart_shipmentmethod_id));
 		foreach ($returnValues as $returnValue) {
@@ -386,6 +387,7 @@ $tt=$this;
 		?>
 		</td>
 		<td valign="top"><?php
+		JPluginHelper::importPlugin('vmpayment');
 		$_dispatcher = JDispatcher::getInstance();
 		$_returnValues = $_dispatcher->trigger('plgVmOnShowOrderBE',array('payment', $this->orderID,$this->orderbt->virtuemart_paymentmethod_id));
 		foreach ($_returnValues as $_returnValue) {

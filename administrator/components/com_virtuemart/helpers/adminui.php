@@ -212,11 +212,13 @@ class AdminUIHelper {
 				<ul>
 				<?php
 				foreach ( $item ['items'] as $link ) {
+				    $target='';
 					if ($link ['name'] == '-') {
 						// it was emtpy before
 					} else {
 						if (strncmp ( $link ['link'], 'http', 4 ) === 0) {
 							$url = $link ['link'];
+							$target='TARGET="_blank"';
 						} else {
 							if ($link ['view']) {
 								$url = 'index.php?option=com_virtuemart&view=' . $link ['view'];
@@ -229,7 +231,7 @@ class AdminUIHelper {
 						}
 						?>
 					<li>
-						<a href="<?php echo $url; ?>"><span class="<?php echo $link ['icon_class'] ?>"></span><?php echo JText::_ ( $link ['name'] )?></a>
+						<a href="<?php echo $url; ?>" <?php echo $target; ?>><span class="<?php echo $link ['icon_class'] ?>"></span><?php echo JText::_ ( $link ['name'] )?></a>
 					</li>
 					<?php
 					}
