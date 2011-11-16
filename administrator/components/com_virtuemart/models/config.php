@@ -360,13 +360,16 @@ class VirtueMartModelConfig extends JModel {
 
 			$className = 'Table'.ucfirst ($table);
 			if(!class_exists($className)) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.$table.'.php');
-			$langTable = new $className('#__'.$table,$tblKey,$this->_db) ;//($tbl_lang,$tblKey,$db);
+			$tableName = '#__virtuemart_'.$table;
+			$langTable = new $className($tableName,$tblKey,$this->_db) ;//($tbl_lang,$tblKey,$db);
 			if(empty($langTable->_translatableFields)) continue;
-			$lang = strtolower(str_replace('-','_',$lang));
+			$langTable->_translatableFields[] = $tblKey;
 			$slug = false;
 			foreach($langs as $lang){
-				$tbl_lang = strtolower( '#__'.$table.'_'.$lang);
+				$lang = strtolower(str_replace('-','_',$lang));
+				$tbl_lang = strtolower($tableName.'_'.$lang);
 				$q = 'CREATE TABLE IF NOT EXISTS '.$tbl_lang.' (';
+
 				foreach($langTable->_translatableFields as $name){
 					if(strpos($name,'name'!==false)){
 						$fieldstructure = 'varchar(256) NOT NULL DEFAULT "" ';
@@ -383,7 +386,7 @@ class VirtueMartModelConfig extends JModel {
 
 					$q .= '`'.$name.'` '.$fieldstructure.',';
 				}
-				$q = substr($q,-1);
+// 				$q = substr($q,0,-1);
 				$q .= 'PRIMARY KEY (`'.$tblKey.'`)';
 				if($slug){
 					$q .= ', UNIQUE KEY `slug` (`slug`) )';

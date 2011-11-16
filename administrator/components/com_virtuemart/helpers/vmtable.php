@@ -110,8 +110,6 @@ class VmTable extends JTable{
 			$this->_langTag = strtolower(str_replace('-','_',$language->getDefault()));
 		}
 
-// 		$this->_tbl = $this->_tbl.$this->_langTag;
-// 		$tbl_lang = '#__'.$table.'_'.$lang;
 		$this->_tbl_lang = $this->_tbl.'_'.$this->_langTag;
 
 	}
@@ -484,9 +482,8 @@ class VmTable extends JTable{
 			$langTable->_unique_name = $langUniqueKeys;
 			$langTable->_obkeys = $langObKeys;
 			$langTable->setProperties($langData);
-			// TEMP COMMENTED OUT BY PATRICK KOHL
-			//$langTable->setObligatoryKeys();
-			$this->bindChecknStore($data,$preload);
+			$langTable->_translatable = false;
+			$langTable->bindChecknStore($data,$preload);
 		}
 
 		$ok = true;
