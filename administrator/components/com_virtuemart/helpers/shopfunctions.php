@@ -148,8 +148,10 @@ class ShopFunctions {
 		$token = JUtility::getToken();
 		$j = '
 		jQuery(function($) {
+			var oldflag = "";
 			$("select#lang").chosen().change(function() {
-				langCode = $(this).find("option:selected").val() ;
+				langCode = $(this).find("option:selected").val();
+				flagClass = "flag-"+langCode.substr(0,2) ;
 				$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lang="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1" , 
 					function(data) {
 						var items = [];
@@ -157,9 +159,12 @@ class ShopFunctions {
 						if (data.fields !== "error" ) {
 							$.each(data.fields , function(key, val) {
 								cible = $("#"+key) 
-								if (cible.hasClass("mce_editable")) tinyMCE.execInstanceCommand(key,"mceSetContent",false,val);
-								else cible.addClass("translator").val(val);
-							});
+								if (oldflag !== "") cible.parent().removeClass(oldflag)
+								if (cible.parent().addClass(flagClass).children().hasClass("mce_editable")) tinyMCE.execInstanceCommand(key,"mceSetContent",false,val);
+								else cible.val(val);
+
+							});	
+							oldflag = flagClass ;
 						} else alert(data.msg);
 					}
 				)
