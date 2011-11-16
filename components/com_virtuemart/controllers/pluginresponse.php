@@ -50,8 +50,8 @@ class VirtueMartControllerPluginresponse extends JController {
      */
     function pluginResponseReceived() {
 
-	 PaymentResponseReceived();
-	 ShipmentResponseReceived();
+	 $this->PaymentResponseReceived();
+	 $this->ShipmentResponseReceived();
     }
  /**
      * ResponseReceived()
@@ -62,9 +62,7 @@ class VirtueMartControllerPluginresponse extends JController {
      */
     function PaymentResponseReceived() {
 
-if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');	JPluginHelper::importPlugin('vmpayment');
-	$pm = JRequest::getInt('pm', 0);
-	$pelement = JRequest::getWord('pelement');
+	if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');	JPluginHelper::importPlugin('vmpayment');
 
 	$return_context = "";
 	$dispatcher = JDispatcher::getInstance();
@@ -99,7 +97,7 @@ if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php
 	}
 	JRequest::setVar('paymentResponse', Jtext::_('COM_VIRTUEMART_CART_THANKYOU'));
 	JRequest::setVar('paymentResponseHtml', $html);
-	$view = $this->getView('paymentresponse', 'html');
+	$view = $this->getView('pluginresponse', 'html');
 	$layoutName = JRequest::getVar('layout', 'default');
 	$view->setLayout($layoutName);
 
@@ -185,10 +183,7 @@ if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php
 	JPluginHelper::importPlugin('vmpayment');
 
 	$dispatcher = JDispatcher::getInstance();
-	$returnValues = $dispatcher->trigger('plgVmOnPaymentNotification', array(
-	    'return_context' => &$return_context,
-	    'virtuemart_order_id' => &$virtuemart_order_id,
-	    'new_status' => &$new_status));
+	$returnValues = $dispatcher->trigger('plgVmOnNotification', array('payment',  'return_context' => &$return_context, 'virtuemart_order_id' => &$virtuemart_order_id, 'new_status' => &$new_status));
 
 	foreach ($returnValues as $returnValue) {
 	    if ($returnValue !== null) {
@@ -200,10 +195,8 @@ if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php
 		    $modelOrder = new VirtueMartModelOrders();
 		    $orders[$virtuemart_order_id]['order_status'] = $new_status;
 		    $orders[$virtuemart_order_id]['virtuemart_order_id'] = $virtuemart_order_id;
-		    $customer_notifed[$virtuemart_order_id] = 0;
-		    JRequest::setVar('notify_customer', $customer_notifed);
-		    $comments[$virtuemart_order_id] = 0;
-		    JRequest::setVar('comment', $comments);
+		    $orders[$virtuemart_order_id]['customer_notified']  = 0;
+		     $orders[$virtuemart_order_id]['comments']  = '';
 		    $modelOrder->updateOrderStatus($orders); // take directly the session from the DB
 		    // remove vmcart
 		}
