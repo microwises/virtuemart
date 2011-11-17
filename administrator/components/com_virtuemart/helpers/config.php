@@ -380,7 +380,7 @@ class VmConfig {
 		if (self::$_jpConfig->lang ) echo self::$_jpConfig->lang ;
 		if (self::$_jpConfig->lang ) return self::$_jpConfig->lang;
 		$langs = VmConfig::get('active_languages',array());
-		self::$_jpConfig->lang = JRequest::getVar('lang');
+		self::$_jpConfig->lang = JRequest::getVar('vmlang','en_gb');
 		// user language settings only in FE
 		if (JFactory::getApplication()->isSite()) {
 			$user =& JFactory::getUser();
@@ -391,7 +391,7 @@ class VmConfig {
 
 		if(empty(self::$_jpConfig->lang) || (!in_array(self::$_jpConfig->lang, $langs))){
 			$params = JComponentHelper::getParams('com_languages');
-			$siteLang = $params->get('site', 'en-GB');
+			$siteLang = $params->get('site', 'en_gb');
 			self::$_jpConfig->lang = $siteLang;
  		}
  		self::$_jpConfig->lang =  strtolower(strtr(self::$_jpConfig->lang,'-','_'));

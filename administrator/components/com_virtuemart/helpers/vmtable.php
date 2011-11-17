@@ -104,17 +104,7 @@ class VmTable extends JTable{
 		$this->_translatableFields = $langFields;
 		$this->_translatableFields['slug'] = 'slug';
 		$this->_translatable = true;
-/*		$lang = JRequest::getvar('lang');
-		//Todo use virtuemart_languages to get default
-		;
-		if (!empty($lang) && in_array($lang , VmConfig::get('active_languages',array('en_gb'))) ){
-			// 			if ( $language->exists($lang, JPATH_SITE)){
-			$this->_langTag = strtolower(str_replace('-','_',$lang));
-		} else {
-			$language=& JFactory::getLanguage();
-			$this->_langTag = strtolower(str_replace('-','_',$language->getDefault()));
-		}
-*/
+
 		$this->_langTag = VmConfig::get('vmlang');
 		$this->_tbl_lang = $this->_tbl.'_'.$this->_langTag;
 
@@ -273,7 +263,7 @@ class VmTable extends JTable{
 				unset($this->$name);
 			}
 			$langData = $langTable->load($int);
-			vmdebug('Table load '.$int,$langData);
+// 			vmdebug('Table load '.$int,$langData);
 		}
 
 		parent::load($int);
@@ -527,6 +517,7 @@ class VmTable extends JTable{
 
 			$this->bindChecknStoreNoLang($data,$preload);
 
+			vmdebug('bindchecknstore',$langData,$this);
 			$langTable->$tblKey = !empty($this->$tblKey) ? $this->$tblKey : 0;
 
 			$ok = true;
@@ -575,6 +566,12 @@ class VmTable extends JTable{
 					$this->load($data[$tblKey]);
 				}
 			}
+			if($this->_translatable){
+				foreach( $this->_translatableFields as $name){
+					unset($this->$name);
+				}
+			}
+
 		}
 
 		$ok = true;
