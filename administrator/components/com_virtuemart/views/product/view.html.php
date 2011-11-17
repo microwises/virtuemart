@@ -229,7 +229,7 @@ class VirtuemartViewProduct extends JView {
 				}
 				$viewName = ShopFunctions::SetViewTitle('PRODUCT',$text);
 				$this->assignRef('viewName', $viewName);
-				ShopFunctions::addStandardEditViewCommands ();
+				ShopFunctions::addStandardEditViewCommands ($product->virtuemart_product_id);
 
 				break;
 

@@ -83,7 +83,7 @@ class ShopFunctions {
 		<button onclick="document.getElementById(\'' . $name . '\').value=\'\';this.form.submit();">' . JText::_('COM_VIRTUEMART_RESET') . '</button>';
 	}
 
-	function addStandardEditViewCommands() {
+	function addStandardEditViewCommands($id = 0) {
 
 		JToolBarHelper::divider();
 		JToolBarHelper::save();
@@ -124,14 +124,14 @@ class ShopFunctions {
 		// LANGUAGE setting 
 
 		$editView = JRequest::getWord('view',JRequest::getWord('controller','' ) );
-		if ($editView =='user') $editView ='vendor';
-		$id = (int)JRequest::getVar('virtuemart_'.$editView.'_id',(int)JRequest::getVar('cid'));
+
 		$params = JComponentHelper::getParams('com_languages');
 		//$config =& JFactory::getConfig();$config->getValue('language');
 		$lang = $params->get('site', 'en-GB');
 		// only add if ID and view not null
 		if ($editView and $id) {
-
+			
+			if ($editView =='user') $editView ='vendor';
 			//$params = JComponentHelper::getParams('com_languages');
 			//$defaultLangue = $params->get('site', 'en-GB');
 			jimport('joomla.language.helper');

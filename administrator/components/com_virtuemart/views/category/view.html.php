@@ -82,7 +82,7 @@ class VirtuemartViewCategory extends JView {
 			$this->assignRef('category', $category);
 			$this->assignRef('categorylist', $categorylist);
 
-			ShopFunctions::addStandardEditViewCommands();
+			ShopFunctions::addStandardEditViewCommands($category->virtuemart_category_id);
 		}
 		else {
 			$viewName = ShopFunctions::SetViewTitle('CATEGORY_S');

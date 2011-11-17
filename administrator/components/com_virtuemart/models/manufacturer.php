@@ -157,9 +157,10 @@ class VirtueMartModelManufacturer extends VmModel {
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-		$select = ' m.*,ml.*, mc.`mf_category_name` FROM `#__virtuemart_manufacturers_'.VMLANG.'` as ml ';
+		$select = ' m.*,l.*, mc.`mf_category_name` FROM `#__virtuemart_manufacturers_'.VMLANG.'` as l ';
 
 		$joinedTables = ' JOIN `#__virtuemart_manufacturers` AS m USING (`virtuemart_manufacturer_id`) '; 
+		$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturercategories_'.VMLANG.'` AS mc on  mc.`virtuemart_manufacturercategories_id`= m.`virtuemart_manufacturercategories_id` '; 
 		if($getMedia){
 			$select .= ',mmex.*';
 			$joinedTables .= 'LEFT JOIN `#__virtuemart_manufacturer_medias` as mmex ON  m.`virtuemart_manufacturer_id`= mmex.`virtuemart_manufacturer_id` ';
@@ -175,7 +176,6 @@ class VirtueMartModelManufacturer extends VmModel {
 // 			$app = JFactory::getApplication() ;
 // 			$ordering = ' order by m.`mf_name` '.$app->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', 'DESC', 'cmd' );;
 // 		}
-
 		$ordering = $this->_getOrdering('l.mf_name');
 		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,' ',$ordering );
 

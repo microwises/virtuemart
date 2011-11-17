@@ -382,12 +382,12 @@ class VmConfig {
 		$langs = VmConfig::get('active_languages',array());
 		self::$_jpConfig->lang = JRequest::getVar('lang');
 		// user language settings only in FE
-		// if (JFactory::getApplication()->isSite()) {
+		if (JFactory::getApplication()->isSite()) {
 			$user =& JFactory::getUser();
 			$mainframe =& JFactory::getApplication();
 			self::$_jpConfig->lang = $mainframe->getUserStateFromRequest( "virtuemart.lang", 'lang',JRequest::getVar('lang',$user->getParam('language') ) );
 			$mainframe->setUserState( "virtuemart.lang", self::$_jpConfig->lang );
-		// }
+		}
 
 		if(empty(self::$_jpConfig->lang) || (!in_array(self::$_jpConfig->lang, $langs))){
 			$params = JComponentHelper::getParams('com_languages');

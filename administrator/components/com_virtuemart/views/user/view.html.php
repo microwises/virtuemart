@@ -94,15 +94,17 @@ class VirtuemartViewUser extends JView {
 				} else {
 					$viewName=ShopFunctions::SetViewTitle('STORE',JText::_('COM_VIRTUEMART_NEW_VENDOR') );
 				}
+					$vendorid = $userDetails->virtuemart_vendor_id;
 
 			} else {
+				$vendorid = 0 ;
 				$viewName=ShopFunctions::SetViewTitle('USER',$userDetails->JUser->get('name'));
 			}
 
 
 			$_new = ($userDetails->JUser->get('id') < 1);
 
-			ShopFunctions::addStandardEditViewCommands();
+			ShopFunctions::addStandardEditViewCommands($vendorid);
 
 			// User details
 			$_contactDetails = $model->getContactDetails();

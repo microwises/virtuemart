@@ -64,7 +64,7 @@ class VirtuemartViewManufacturer extends JView {
 			$manufacturerCategories = $categoryModel->getManufacturerCategories(false,true);
 			$this->assignRef('manufacturerCategories',	$manufacturerCategories);
 
-			ShopFunctions::addStandardEditViewCommands();
+			ShopFunctions::addStandardEditViewCommands($manufacturer->virtuemart_manufacturer_id);
 
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 			$virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
