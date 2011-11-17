@@ -460,42 +460,44 @@ if (empty ( $this->product )) {
 		<div class="list-reviews">
 			<?php
 			$i=0;
-			foreach($this->rating_reviews as $review ) {
-				if ($i % 2 == 0) {
-   					$color = 'normal';
-				} else {
-					$color = 'highlight';
+			if ($this->rating_reviews) {
+				foreach($this->rating_reviews as $review ) {
+					if ($i % 2 == 0) {
+						$color = 'normal';
+					} else {
+						$color = 'highlight';
+					}
+
+					/* Check if user already commented */
+	//				if ($review->virtuemart_userid == $this->user->id) {
+	//					$alreadycommented = true;
+	//				} ?>
+
+					<?php // Loop through all reviews
+					if (!empty($this->rating_reviews)) { ?>
+					<div class="<?php echo $color ?>">
+						<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>
+						<blockquote><?php echo $review->comment; ?></blockquote>
+						<span class="bold"><?php echo $review->customer ?></span>
+					</div>
+					<?php
+					}
+					$i++ ;
+					if ( $i == $ratingsShow && !$showall) {
+						/* Show all reviews ? */
+						if ( count($this->rating_reviews) >= $ratingsShow ) {
+							$attribute = array('class'=>'details', 'title'=>JText::_('COM_VIRTUEMART_MORE_REVIEWS'));
+							echo JHTML::link($this->more_reviews, JText::_('COM_VIRTUEMART_MORE_REVIEWS'),$attribute);
+						}
+						break;
+					}
 				}
 
-				/* Check if user already commented */
-//				if ($review->virtuemart_userid == $this->user->id) {
-//					$alreadycommented = true;
-//				} ?>
-
-				<?php // Loop through all reviews
-				if (!empty($this->rating_reviews)) { ?>
-				<div class="<?php echo $color ?>">
-					<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>
-					<blockquote><?php echo $review->comment; ?></blockquote>
-					<span class="bold"><?php echo $review->customer ?></span>
-				</div>
-				<?php
-				}
-				$i++ ;
-				if ( $i == $ratingsShow && !$showall) break;
-			}
-
-			if (count($this->rating_reviews) < 1) {
+			} else {
 				// "There are no reviews for this product" ?>
 				<span class="step"><?php echo JText::_('COM_VIRTUEMART_NO_REVIEWS') ?></span>
 			<?php
-			} else {
-				/* Show all reviews */
-				if (!$showall && count($this->rating_reviews) >= $ratingsShow ) {
-					$attribute = array('class'=>'details', 'title'=>JText::_('COM_VIRTUEMART_MORE_REVIEWS'));
-					echo JHTML::link($this->more_reviews, JText::_('COM_VIRTUEMART_MORE_REVIEWS'),$attribute);
-				}
-			} ?>
+			}  ?>
 		<div class="clear"></div>
 		</div>
 

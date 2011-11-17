@@ -81,7 +81,7 @@ AdminUIHelper::startAdminArea();
 
 			$checked = JHTML::_('grid.id', $i, $cat->virtuemart_category_id);
 			$published = JHTML::_('grid.published', $cat, $i);
-			$editlink = JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&cid[]=' . $cat->virtuemart_category_id);
+			$editlink = JRoute::_('index.php?option=com_virtuemart&view=category&task=edit&virtuemart_category_id=' . $cat->virtuemart_category_id);
 			$statelink	= JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id=' . $cat->virtuemart_category_id);
 			$showProductsLink = JRoute::_('index.php?option=com_virtuemart&view=product&virtuemart_category_id=' . $cat->virtuemart_category_id);
 

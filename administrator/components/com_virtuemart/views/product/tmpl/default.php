@@ -62,7 +62,7 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 
 <div style="text-align: left;">
 <?php
-$this->productlist
+// $this->productlist
 
 ?>
 	<table class="adminlist" cellspacing="0" cellpadding="0">

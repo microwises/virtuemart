@@ -157,7 +157,6 @@ class VirtueMartModelManufacturer extends VmModel {
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-		//$dbTag = vmLang::dbTag();
 		$select = ' m.*,ml.*, mc.`mf_category_name` FROM `#__virtuemart_manufacturers_'.VMLANG.'` as ml ';
 
 		$joinedTables = ' JOIN `#__virtuemart_manufacturers` AS m USING (`virtuemart_manufacturer_id`) '; 
