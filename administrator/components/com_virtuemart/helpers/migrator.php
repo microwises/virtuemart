@@ -1679,7 +1679,6 @@ class Migrator extends VmModel{
 	public function createLanguageTables($langs){
 
 		//Todo add the mb_ stuff here
-
 		vmTime('my langs <pre>'.print_r($langs,1).'</pre>');
 		foreach($this->tables as $table=>$tblKey){
 
@@ -1687,17 +1686,13 @@ class Migrator extends VmModel{
 			if(!class_exists($className)) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.$table.'.php');
 			$tableName = '#__virtuemart_'.$table;
 
-// 			$langTable = new $className($tableName,$tblKey,$this->_db) ;//($tbl_lang,$tblKey,$db);
 			$langTable = $this->getTable($table);
 			$translatableFields = $langTable->getTranslatableFields();
 			if(empty($translatableFields)) continue;
 
-// 			if($langTable->_useSlug){
-// 				$translatableFields[] = 'slug';
-// 			}
 			foreach($langs as $lang){
-				$lang = strtolower(str_replace('-','_',$lang));
-				$tbl_lang = strtolower($tableName.'_'.$lang);
+				$lang = strtr($lang,'-','_');
+				$tbl_lang = $tableName.'_'.$lang;
 				$q = 'CREATE TABLE IF NOT EXISTS '.$tbl_lang.' (';
 				$q .= '`'.$tblKey.'` SERIAL ,';
 				foreach($translatableFields as $name){
@@ -1757,9 +1752,7 @@ class Migrator extends VmModel{
 // 			vmdebug('$portLanguageFields contains language fields ',$columns);
 
 			$translatableFields = $langTable->getTranslatableFields();
-// 			if($langTable->_useSlug){
-// 				$translatableFields[] = 'slug';
-// 			}
+
 			if(in_array($translatableFields[0],$columns)){
 
 
