@@ -382,6 +382,7 @@ class VmModel extends JModel {
 		} else {
 			 $this->ids = $this->_db->loadObjectList();
 		}
+		//print_r( $this->_db->_sql );
 		// 			vmdebug('my $list',$list);
 		if(empty($this->ids)){
 			$errors = $this->_db->getErrorMsg();

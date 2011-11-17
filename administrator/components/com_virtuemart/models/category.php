@@ -103,13 +103,14 @@ class VirtueMartModelCategory extends VmModel {
 	 */
 	public function getChildCategoryList($vendorId, $virtuemart_category_id) {
 
-		$query = 'SELECT `#__virtuemart_categories`.* ';
-		$query .= 'FROM `#__virtuemart_categories`, `#__virtuemart_category_categories` ';
-		$query .= 'WHERE `#__virtuemart_category_categories`.`category_parent_id` = ' . (int)$virtuemart_category_id . ' ';
-		$query .= 'AND `#__virtuemart_categories`.`virtuemart_category_id` = `#__virtuemart_category_categories`.`category_child_id` ';
-		$query .= 'AND `#__virtuemart_categories`.`virtuemart_vendor_id` = ' . (int)$vendorId . ' ';
-		$query .= 'AND `#__virtuemart_categories`.`published` = "1" ';
-		$query .= ' ORDER BY `#__virtuemart_categories`.`ordering`, `#__virtuemart_categories`.`category_name` ASC';
+		$query = 'SELECT C.* FROM `#__virtuemart_categories` as C';
+		$query .= ' JOIN `#__virtuemart_categories_'.VMLANG.'` as L using (`virtuemart_category_id`)';
+		$query .= ' LEFT JOIN `#__virtuemart_category_categories` as CC on CC.`virtuemart_category_id` = C.`category_child_id`';
+		$query .= 'WHERE CC.`category_parent_id` = ' . (int)$virtuemart_category_id . ' ';
+		$query .= 'AND C.`virtuemart_category_id` = `#__virtuemart_category_categories`.`category_child_id` ';
+		$query .= 'AND C.`virtuemart_vendor_id` = ' . (int)$vendorId . ' ';
+		$query .= 'AND C.`published` = 1 ';
+		$query .= ' ORDER BY C.`ordering`, L.`category_name` ASC';
 		$childList = $this->_getList( $query );
 
 		if(!empty($childList)){
@@ -240,9 +241,10 @@ class VirtueMartModelCategory extends VmModel {
 
 		$vendorId = 1;
 
-		$select = ' c.`virtuemart_category_id`, c.`category_description`, c.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared` ';
+		$select = ' c.`virtuemart_category_id`, l.`category_description`, l.`category_name`, c.`ordering`, c.`published`, cx.`category_child_id`, cx.`category_parent_id`, c.`shared` ';
 
 		$joinedTables = ' FROM `#__virtuemart_categories` AS c
+				  JOIN `#__virtuemart_categories_'.VMLANG.'` l using (`virtuemart_category_id`)
 				  LEFT JOIN `#__virtuemart_category_categories` AS cx
 				  ON c.`virtuemart_category_id` = cx.`category_child_id` ';
 
@@ -267,8 +269,8 @@ class VirtueMartModelCategory extends VmModel {
 		if( !empty( $keyword ) ) {
 			$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;
 			//$keyword = $this->_db->Quote($keyword, false);
-			$where[] = ' ( c.`category_name` LIKE '.$keyword.'
-							   OR c.`category_description` LIKE '.$keyword.') ';
+			$where[] = ' ( l.`category_name` LIKE '.$keyword.'
+							   OR l.`category_description` LIKE '.$keyword.') ';
 		}
 
 		$whereString = '';
@@ -282,7 +284,7 @@ class VirtueMartModelCategory extends VmModel {
 		if ( JRequest::getCmd('view') == 'category') {
 			$ordering = $this->_getOrdering();
 		} else {
-			$ordering = $this->_getOrdering('c.category_name','ASC');
+			$ordering = $this->_getOrdering('l.category_name','ASC');
 		}
 
 		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
@@ -596,7 +598,7 @@ class VirtueMartModelCategory extends VmModel {
 				    $this->setError($table->getError());
 				    return false;
 				}
-
+// TODO MULTI LANGUE REMOVE
 				//deleting relations
 				$query = "DELETE FROM `#__virtuemart_product_categories` WHERE `virtuemart_category_id` = ". (int)$cid;
 		    	$this->_db->setQuery($query);
@@ -726,7 +728,7 @@ class VirtueMartModelCategory extends VmModel {
 		$parents_id = array_reverse($this->getCategoryRecurse($virtuemart_category_id,$menuCatid));
 		foreach ($parents_id as $id ) {
 			$q = "SELECT `category_name`,`virtuemart_category_id`
-				FROM  `#__virtuemart_categories`
+				FROM  `#__virtuemart_categories_'.VMLANG.'`
 				WHERE  `virtuemart_category_id`=".(int)$id;
 
 			$db->setQuery($q);
@@ -770,7 +772,7 @@ class VirtueMartModelCategory extends VmModel {
 		static $num = -1 ;
 		$db = & JFactory::getDBO();
 		$q = 'SELECT `category_child_id`,`category_name` FROM `#__virtuemart_category_categories`
-		LEFT JOIN `#__virtuemart_categories` on `#__virtuemart_categories`.`virtuemart_category_id`=`#__virtuemart_category_categories`.`category_child_id`
+		LEFT JOIN `#__virtuemart_categories_'.VMLANG.'` on `#__virtuemart_categories`.`virtuemart_category_id`=`#__virtuemart_category_categories`.`category_child_id`
 		WHERE `category_parent_id`='.(int)$id;
 		$db->setQuery($q);
 		$num ++;
@@ -818,11 +820,13 @@ class VirtueMartModelCategory extends VmModel {
 
 			// Get only published categories
 			$query  = "SELECT `virtuemart_category_id`, `category_description`, `category_name`,`category_child_id`, `category_parent_id`,`#__virtuemart_categories`.`ordering`, `published` as category_publish
-						FROM `#__virtuemart_categories`, `#__virtuemart_category_categories` WHERE ";
+						FROM `#__virtuemart_categories`, `#__virtuemart_category_categories` 
+						JOIN `#__virtuemart_categories_".VMLANG."` using (`virtuemart_category_id`)
+						WHERE ";
 			if( $only_published ) {
 				$query .= "`#__virtuemart_categories`.`published`=1 AND ";
 			}
-			$query .= "`#__virtuemart_categories`.`virtuemart_category_id`=`#__virtuemart_category_categories`.`category_child_id` ";
+			$query .= " `#__virtuemart_categories`.`virtuemart_category_id`=`#__virtuemart_category_categories`.`category_child_id` ";
 
 			if( !empty( $keyword ) ) {
 				$keyword = '"%' . $this->_db->getEscaped( $keyword, true ) . '%"' ;

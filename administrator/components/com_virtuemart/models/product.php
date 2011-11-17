@@ -267,8 +267,7 @@ class VirtueMartModelProduct extends VmModel {
 		// 		$selectFindRows = 'SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_products` ';
 		// 		$selectFindRows = 'SELECT COUNT(*) FROM `#__virtuemart_products` ';
 		$select = ' * FROM `#__virtuemart_products` AS p';
-		$dbTag = vmLang::dbTag();
-		$joinedTables = ' LEFT JOIN `#__virtuemart_products_'.$dbTag.'` as l on l.`virtuemart_product_id` = p.`virtuemart_product_id`';
+		$joinedTables = ' JOIN `#__virtuemart_products_'.VMLANG.'` as l using (`virtuemart_product_id`)';
 		if ($joinCategory == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_categories` ON p.`virtuemart_product_id` = `#__virtuemart_product_categories`.`virtuemart_product_id`
 			 LEFT JOIN `#__virtuemart_categories` as c ON c.`virtuemart_category_id` = `#__virtuemart_product_categories`.`virtuemart_category_id`';
@@ -741,8 +740,9 @@ class VirtueMartModelProduct extends VmModel {
 			$this->_db = JFactory::getDBO();
 			$neighbors = array('previous' => '','next' => '');
 
-			$q = "SELECT pcx.`virtuemart_product_id`, ordering, `p`.product_name
+			$q = "SELECT pcx.`virtuemart_product_id`, ordering, `l`.product_name
 			FROM `#__virtuemart_product_categories` as pcx
+			JOIN `#__virtuemart_products_".VMLANG."` as l using (`virtuemart_product_id`)
 			LEFT JOIN `#__virtuemart_products` as `p`
 			ON `p`.`virtuemart_product_id` = `pcx`.`virtuemart_product_id`
 			WHERE `virtuemart_category_id` = ".(int)$product->virtuemart_category_id." AND `published`= '1'
@@ -950,8 +950,9 @@ class VirtueMartModelProduct extends VmModel {
 	 	$db = JFactory::getDBO();
 	 	$vendorId = 1;
 	 	$childs = count($this->getProductChildIds($id));
-	 	$db->setQuery('SELECT `product_name`,`slug` FROM `#__virtuemart_products` WHERE `virtuemart_product_id`='.(int)$id );
+	 	$db->setQuery('SELECT `product_name`,`slug` FROM `#__virtuemart_products_'.VMLANG.'` WHERE `virtuemart_product_id`='.(int)$id );
 	 	$parent = $db->loadObject();
+		// TODO CHILD CAN'T WORK we must add the default lang (note patrick)
 	 	$q = 'INSERT INTO `#__virtuemart_products` ( `product_name`,`slug` ,`virtuemart_vendor_id`, `product_parent_id`) VALUES ( "'.$parent->product_name.'","P'.$childs.rand(1,9).'-'.$parent->slug.'", '.(int)$vendorId.', '.(int)$id.' )';
 	 	$db->setQuery($q);
 	 	$db->query();
@@ -1633,11 +1634,11 @@ class VirtueMartModelProduct extends VmModel {
 		return $this->hasproductCustoms;
 	}
 
-
+// use lang table only TODO Look if this not cause errors
 	function getProductChilds($product_id ) {
 		if(empty($product_id)) return array();
 		$db = JFactory::getDBO();
-		$db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products` WHERE `product_parent_id` ='.(int)$product_id);
+		$db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products_'.VMLANG.'` WHERE `product_parent_id` ='.(int)$product_id);
 		return $db->loadObjectList();
 
 	}
@@ -1649,12 +1650,12 @@ class VirtueMartModelProduct extends VmModel {
 		return $db->loadResultArray();
 
 	}
-
+// use lang table only TODO Look if this not cause errors
 	function getProductParent($product_parent_id) {
 		if(empty($product_parent_id)) return array();
 		$product_parent_id = (int) $product_parent_id;
 		$db = JFactory::getDBO();
-		$db->setQuery(' SELECT * FROM `#__virtuemart_products` WHERE `virtuemart_product_id` ='.$product_parent_id);
+		$db->setQuery(' SELECT * FROM `#__virtuemart_products_'.VMLANG.'` WHERE `virtuemart_product_id` ='.$product_parent_id);
 		return $db->loadObject();
 	}
 

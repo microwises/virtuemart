@@ -104,7 +104,7 @@ class VirtuemartControllerTranslate extends VmController {
 
 		$db =& JFactory::getDBO();
 		
-		$q='select * '.$tableName.' where virtuemart_'.$viewKey.'_id ='.$id;
+		$q='select * FROM `'.$tableName.'` where `virtuemart_'.$viewKey.'_id` ='.$id;
 		$db->setQuery($q);
 		if ($json['fields'] = $db->loadAssoc()) {
 			$json['structure'] = 'filled' ;

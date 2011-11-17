@@ -660,18 +660,24 @@ class vmRequest{
 }
 class vmLang{
 
- 	function dbTag() {
+	/*
+	 * Set defaut language tag for translatable table
+	 * 
+	 */
+	function setdbLanguageTag() {
 		static $lang = NULL;
 		if ($lang !== NULL ) return $lang;
  		$lang = JRequest::getVar('lang');
 		$langs = VmConfig::get('active_languages',array());
 		if (in_array($lang, $langs) ) $lang = strtolower( $lang);
-		else if ( count($langs) ) $lang = strtolower( $langs[0]);
-		else {
+		else if ( count($langs) ) {
+			$lang = strtolower( $langs[0]);
+		} else {
 			vmWarn('No lang SET ! Plz configure your shop');
 			$lang='';
 		}
-		return strtr($lang,'-','_');
+		$dbLang = strtr($lang,'-','_');
+		define('VMLANG', $dbLang );
  	}
 
 }

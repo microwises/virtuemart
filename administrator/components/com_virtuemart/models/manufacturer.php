@@ -113,7 +113,7 @@ class VirtueMartModelManufacturer extends VmModel {
 	function getManufacturerDropDown() {
 		$db = JFactory::getDBO();
 		$query = "SELECT `virtuemart_manufacturer_id` AS `value`, `mf_name` AS text, '' AS disable
-						FROM `#__virtuemart_manufacturers`";
+						FROM `#__virtuemart_manufacturers_".VMLANG."` ";
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 		array_unshift($options, JHTML::_('select.option',  '0', '- '. JText::_('COM_VIRTUEMART_SELECT_MANUFACTURER') .' -' ));
@@ -157,10 +157,10 @@ class VirtueMartModelManufacturer extends VmModel {
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-		$dbTag = vmLang::dbTag();
-		$select = ' m.*,mc.`mf_category_name`';
+		//$dbTag = vmLang::dbTag();
+		$select = ' m.*,ml.*, mc.`mf_category_name` FROM `#__virtuemart_manufacturers` AS m JOIN `#__virtuemart_manufacturers_'.VMLANG.'` as ml USING (`virtuemart_manufacturer_id`) ';
 
-		$joinedTables = ' FROM `#__virtuemart_manufacturers` AS m LEFT JOIN `#__virtuemart_manufacturercategories_'.$dbTag.'` AS mc on m.`virtuemart_manufacturercategories_id`= mc.`virtuemart_manufacturercategories_id` ';
+		$joinedTables = 'LEFT JOIN `#__virtuemart_manufacturercategories_'.VMLANG.'` as mc ON  m.`virtuemart_manufacturercategories_id`= mc.`virtuemart_manufacturercategories_id` '; 
 		if($getMedia){
 			$select .= ',mmex.*';
 			$joinedTables .= 'LEFT JOIN `#__virtuemart_manufacturer_medias` as mmex ON  m.`virtuemart_manufacturer_id`= mmex.`virtuemart_manufacturer_id` ';
