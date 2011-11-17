@@ -61,7 +61,7 @@ function virtuemartBuildRoute(&$query) {
 			if ( isset($query['start'] ) ) {
 				$start = $query['start'] ;
 				unset($query['start']);
-			} 
+			}
 			if ($start) {
 				$segments[] = $lang['page'] ;
 				$mainframe = Jfactory::getApplication(); ;
@@ -231,10 +231,10 @@ function virtuemartParseRoute($segments) {
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', VmConfig::get('list_limit', 20), 'int');
 		//Pagination has changed, removed the -1 note by Max Milbers NOTE: Works on j1.5, but NOT j1.7
 			$vars['limitstart'] = (array_shift($segments)*$limit);
- 
+
 	} else 	if(version_compare(JVERSION,'1.6.0','ge')) {
 		$vars['limitstart'] = 0 ;
-	} 
+	}
 
 
 	$orderby = explode(',',$segments[0]);
@@ -303,7 +303,7 @@ function virtuemartParseRoute($segments) {
 		$vars['view'] = 'user';
 		if ($view == $lang['user']) {
 			array_shift($segments);
-	
+
 		}
 		if ( isset($segments[0]) ) {
 			if ( $segments[0] == $lang['editaddresscartBT'] ) {
@@ -678,11 +678,11 @@ class vmrouterHelper {
 				'p.virtuemart_product_id'=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_ID'),
 				'p.product_sku'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_SKU'),
 				'p.product_price'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_PRICE'),
-				'c.category_name'		=> JText::_('COM_VIRTUEMART_SEF_BY_CATEGORY_NAME'),
-				'c.category_description'=> JText::_('COM_VIRTUEMART_SEF_BY_CATEGORY_DESCRIPTION'),
+				'l.category_name'		=> JText::_('COM_VIRTUEMART_SEF_BY_CATEGORY_NAME'),
+				'l.category_description'=> JText::_('COM_VIRTUEMART_SEF_BY_CATEGORY_DESCRIPTION'),
 				'm.mf_name' 			=> JText::_('COM_VIRTUEMART_SEF_BY_MF_NAME'),
-				'p.product_s_desc'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_S_DESC'),
-				'p.product_desc'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_DESC'),
+				'l.product_s_desc'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_S_DESC'),
+				'l.product_desc'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_DESC'),
 				'p.product_weight'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_WEIGHT'),
 				'p.product_weight_uom'=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_WEIGHT_UOM'),
 				'p.product_length'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_LENGTH'),

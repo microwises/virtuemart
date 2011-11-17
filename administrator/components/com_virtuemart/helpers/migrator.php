@@ -1652,5 +1652,192 @@ class Migrator extends VmModel{
 		return $return;
 	}
 
+
+	public function portOldLanguageToNewTables($langs){
+
+		//create language tables
+		$this->createLanguageTables($langs);
+
+		$this->portLanguageFields();
+
+
+	}
+
+	var $tables = array('categories'=>'virtuemart_category_id',
+									'manufacturers'=>'virtuemart_manufacturer_id',
+									'manufacturercategories'=>'virtuemart_manufacturercategories_id',
+									'products'=>'virtuemart_product_id',
+									'vendors'=>'virtuemart_vendor_id'
+	);
+
+	/**
+	 *
+	 *
+	 * @author Max Milbers
+	 * @param unknown_type $config
+	 */
+	public function createLanguageTables($langs){
+
+		//Todo add the mb_ stuff here
+
+		vmTime('my langs <pre>'.print_r($langs,1).'</pre>');
+		foreach($this->tables as $table=>$tblKey){
+
+			$className = 'Table'.ucfirst ($table);
+			if(!class_exists($className)) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.$table.'.php');
+			$tableName = '#__virtuemart_'.$table;
+
+// 			$langTable = new $className($tableName,$tblKey,$this->_db) ;//($tbl_lang,$tblKey,$db);
+			$langTable = $this->getTable($table);
+			$translatableFields = $langTable->getTranslatableFields();
+			if(empty($translatableFields)) continue;
+			$slug = false;
+
+			foreach($langs as $lang){
+				$lang = strtolower(str_replace('-','_',$lang));
+				$tbl_lang = strtolower($tableName.'_'.$lang);
+				$q = 'CREATE TABLE IF NOT EXISTS '.$tbl_lang.' (';
+				$q .= '`'.$tblKey.'` SERIAL ,';
+				foreach($translatableFields as $name){
+					if(strpos($name,'name') !==false ){
+						$fieldstructure = 'varchar(256) NOT NULL DEFAULT "" ';
+					} else if(strpos($name,'meta')!==false ){
+						$fieldstructure = 'varchar(512) NOT NULL DEFAULT "" ';
+					} else if(strpos($name,'slug')!==false ){
+						$fieldstructure = 'varchar(320) NOT NULL DEFAULT "" ';
+						$slug = true;
+					} else if(strpos($name,'desc')!==false || $name == 'vendor_terms_of_service'){
+						$fieldstructure = 'text NOT NULL DEFAULT "" ';
+					} else{
+						$fieldstructure = 'varchar(256) NOT NULL DEFAULT "" ';
+					}
+
+					$q .= '`'.$name.'` '.$fieldstructure.',';
+				}
+				// 				$q = substr($q,0,-1);
+				$q .= 'PRIMARY KEY (`'.$tblKey.'`)';
+				if($slug){
+					$q .= ', UNIQUE KEY `slug` (`slug`) )';
+				} else {
+					$q .= ')';
+				}
+				$q .= ' ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT="Language '.$lang.' for '.$table.'" AUTO_INCREMENT=1 ;';
+				$this->_db->setQuery($q);
+				$this->_db->query();
+// 				vmdebug('checkLanguageTables',$this->_db);
+			}
+		}
+		vmTime('done creation of lang tables');
+	}
+
+	private function portLanguageFields(){
+
+		$config = &JFactory::getConfig();
+		$lang = $config->getValue('language');
+
+		$ok = false;
+		foreach($this->tables as $table=>$tblKey){
+			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+				vmWarn('language fields not copied, please rise execution time and do again');
+				return false;
+			}
+			vmdebug('$portLanguageFields $table '.$table);
+			$db = JFactory::getDBO();
+			$tableName = '#__virtuemart_'.$table;
+			$className = 'Table'.ucfirst ($table);
+// 			if(!class_exists($className)) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.$table.'.php');
+			$langTable = $this->getTable($table);
+// 			$langTable = new $className($tableName,$tblKey,$db) ;
+
+			$query = 'SHOW COLUMNS FROM `'.$tableName.'` ';
+			$this->_db->setQuery($query);
+			$columns = $this->_db->loadResultArray(0);
+			vmdebug('$portLanguageFields contains language fields ',$columns);
+
+			$translatableFields = $langTable->getTranslatableFields();
+
+			if(in_array($translatableFields[0],$columns)){
+
+
+				$ok = true;
+				//approximatly 100 products take a 1 MB
+				$maxItems = $this->_getMaxItems('Language '.$table);
+
+				$startLimit = 0;
+				$i = 0;
+				$continue=true;
+				while($continue){
+
+					$q = 'SELECT '.$tblKey.','.implode(',',$translatableFields).' FROM '.$tableName. ' LIMIT '.$startLimit.','.$maxItems;
+					$this->_db->setQuery($q);
+					$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port Language '.$table);
+					$resultList = $res[0];
+					$startLimit = $res[1];
+					$continue = $res[2];
+
+					foreach($resultList as $row){
+
+						if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+							vmWarn('language fields not copied, please rise execution time and do again');
+							return false;
+						}
+
+						$db = JFactory::getDBO();
+// 						$dummy = array($tblKey=>$row[$tblKey]);
+// 						$langTable = new $className($tableName,$tblKey,$db) ;
+						$langTable = $this->getTable($table);
+						$langTable->bindChecknStore($row,true);
+						$errors = $langTable->getErrors();
+						if(!empty($errors)){
+							foreach($errors as $error){
+								$this->setError($error);
+								vmError($error);
+							}
+							$ok = false;
+							break;
+						}
+					}
+				}
+
+				//Okey stuff copied, now lets remove the old fields
+				if($ok){
+					vmdebug('I delete the columns ');
+					foreach($translatableFields as $fieldname){
+						if(in_array($fieldname,$columns)){
+							vmdebug('I delete the column '.$tableName.' '.$fieldname);
+							$this->_db->setQuery('ALTER TABLE `'.$tableName.'` DROP COLUMN `'.$fieldname.'` ');
+							$this->_db->query();
+						}
+					}
+				}
+
+			}
+
+		}
+
+	}
+
+	/*
+	$lang = strtolower(str_replace('-','_',$lang));
+	$tbl_lang = strtolower($tableName.'_'.$lang);
+
+	foreach($resultList as $row){
+	if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+	vmWarn('language fields not copied, please rise execution time and do again');
+	return false;
+	}
+	$langTable->bindChecknStore($row);
+	$errors = $table->getErrors();
+	if(!empty($errors)){
+	foreach($errors as $error){
+	$this->setError($error);
+	vmError($error);
+	}
+	$ok = false;
+	break;
+	}
+	}
+	*/
+
 }
 

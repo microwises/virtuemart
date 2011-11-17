@@ -69,7 +69,7 @@ $this->productlist
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->productlist); ?>')" /></th>
-		<th><?php echo JHTML::_('grid.sort', $col_product_name, 'p.product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo JHTML::_('grid.sort', $col_product_name, 'l.product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 		<?php if (!$product_parent_id ) { ?>
                 <th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILDREN_OF'); ?></th>
                 <?php } ?>

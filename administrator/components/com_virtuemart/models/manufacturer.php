@@ -113,7 +113,7 @@ class VirtueMartModelManufacturer extends VmModel {
 	function getManufacturerDropDown() {
 		$db = JFactory::getDBO();
 		$query = "SELECT `virtuemart_manufacturer_id` AS `value`, `mf_name` AS text, '' AS disable
-				FROM `#__virtuemart_manufacturers`";
+						FROM `#__virtuemart_manufacturers`";
 		$db->setQuery($query);
 		$options = $db->loadObjectList();
 		array_unshift($options, JHTML::_('select.option',  '0', '- '. JText::_('COM_VIRTUEMART_SELECT_MANUFACTURER') .' -' ));
@@ -147,7 +147,7 @@ class VirtueMartModelManufacturer extends VmModel {
 		if ( $search && $search != 'true') {
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			//$search = $this->_db->Quote($search, false);
-			$where[] .= 'LOWER( m.`mf_name` ) LIKE '.$search;
+			$where[] .= 'LOWER( l.`mf_name` ) LIKE '.$search;
 		}
 
 		if ($onlyPublished) {
@@ -177,7 +177,7 @@ class VirtueMartModelManufacturer extends VmModel {
 // 			$ordering = ' order by m.`mf_name` '.$app->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', 'DESC', 'cmd' );;
 // 		}
 
-		$ordering = $this->_getOrdering('m.mf_name');
+		$ordering = $this->_getOrdering('l.mf_name');
 		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,' ',$ordering );
 
 	}

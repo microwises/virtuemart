@@ -390,7 +390,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->checkPermissionForTools();
 
 		$this->storeMigrationOptionsInSession();
-		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->portMedia();
 
@@ -403,7 +403,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->checkPermissionForTools();
 
 		$this->storeMigrationOptionsInSession();
-		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->migrateGeneral();
 		if($result){
@@ -421,7 +421,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->checkPermissionForTools();
 
 		$this->storeMigrationOptionsInSession();
-		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->migrateUsers();
 		if($result){
@@ -440,7 +440,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->checkPermissionForTools();
 
 		$this->storeMigrationOptionsInSession();
-		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->migrateProducts();
 		if($result){
@@ -458,7 +458,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$this->checkPermissionForTools();
 
 		$this->storeMigrationOptionsInSession();
-		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->migrateOrders();
 		if($result){
@@ -487,7 +487,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		}
 
 		$this->storeMigrationOptionsInSession();
-		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->migrateAllInOne();
 		$msg = 'Migration finished';

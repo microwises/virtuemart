@@ -126,7 +126,7 @@ class VirtuemartControllerMedia extends VmController {
 		    $this->setRedirect('index.php?option=com_virtuemart', $msg);
 		}
 
-		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
 		$result = $migrator->portMedia();
 

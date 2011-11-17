@@ -117,6 +117,12 @@ class VmTable extends JTable{
 
 	}
 
+	protected $_translatableFields = array();
+
+	public function getTranslatableFields(){
+		return $this->_translatableFields;
+	}
+
 	public function setLockable(){
 		$this->locked_on = '';
 		$this->locked_by = 0;
@@ -249,14 +255,17 @@ class VmTable extends JTable{
 	function load($int=null){
 
 		if($this->_translatable){
-			$langTable = new VmTableData($this->_tbl_lang,$tblKey,$db);
+			$tblKey = $this->_tbl_key;
+
+			if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
+			$langTable = new VmTableData($this->_tbl_lang,$tblKey,$this->_db);
 			$langTable->setPrimaryKey($tblKey);
 			$langData = array();
 			$langObKeys = array();
 			$langUniqueKeys = array();
 
 			foreach($this->_translatableFields as $name){
-				$langData->$name = '';
+				$langTable->$name = '';
 				unset($this->$name);
 
 				if(!empty($this->_unique_name[$name])){
@@ -282,7 +291,13 @@ class VmTable extends JTable{
 
 		parent::load($int);
 
-		$this->setProperties($langTable);
+		if($this->_translatable){
+			foreach($this->_translatableFields as $name){
+				$this->$name = $langTable->$name;
+			}
+// 			$this->setProperties($langTable);
+		}
+
 
 		if(!empty($this->_xParams)){
 
@@ -364,8 +379,10 @@ class VmTable extends JTable{
 			$slugAutoName = $this->_slugAutoName;
 			$slugName = $this->_slugName;
 			if(empty($this->$slugName)){
+				vmdebug('table check use _slugAutoName '.$slugAutoName.' '.$slugName);
 				$this->$slugName = $this->$slugAutoName;
 			}
+			vmdebug('table check use $this->$slugName '.$this->$slugName);
 			if(VmConfig::isJ15()){
 				$this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
 				if(trim(str_replace('-', '', $this->$slugName)) == ''){
@@ -457,18 +474,6 @@ class VmTable extends JTable{
 
 		$tblKey = $this->_tbl_key;
 
-		if($preload){
-			if(is_object($data)){
-				if(!empty($data->$tblKey)){
-					$this->load($data->$tblKey);
-				}
-			}else {
-				if(!empty($data[$tblKey])){
-					$this->load($data[$tblKey]);
-				}
-			}
-		}
-
 		if($this->_translatable){
 			if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 			$db = JFactory::getDBO();
@@ -497,6 +502,7 @@ class VmTable extends JTable{
 					}
 
 				}
+// 				$langTable->$tblKey = $data->$tblKey;
 			} else {
 				foreach($this->_translatableFields as $name){
 					$langData[$name] = $data[$name];
@@ -515,13 +521,73 @@ class VmTable extends JTable{
 					}
 
 				}
+// 				$langTable->$tblKey = $data[$tblKey];
 			}
 
 			$langTable->_unique_name = $langUniqueKeys;
 			$langTable->_obkeys = $langObKeys;
+
+			$langTable->_slugName = $this->_slugName;
+			unset($this->_slugName);
+			$langTable->_slugAutoName = $this->_slugAutoName;
+			unset($this->_slugAutoName);
+
 			$langTable->setProperties($langData);
 			$langTable->_translatable = false;
-			$langTable->bindChecknStore($data,$preload);
+// 			$dataLang = $data;
+// 			vmdebug('my $dataLang',$langTable,$data);
+// 			vmdebug('my $table $this',$this);
+
+			$this->bindChecknStoreNoLang($data,$preload);
+
+			$langTable->$tblKey = !empty($this->$tblKey) ? $this->$tblKey : 0;
+
+			$ok = true;
+			if($ok){
+				if(!$langTable->check()){
+					$ok = false;
+					$msg .= ' check';
+					vmdebug('Check returned false '.get_class($langTable).' '.$langTable->_db->getErrorMsg());
+				}
+			}
+
+			if($ok){
+				if(!$langTable->store()){
+					$ok = false;
+					$msg .= ' store';
+					vmdebug('Problem in store '.get_class($langTable).' '.$langTable->_db->getErrorMsg());
+				}
+			}
+
+// 			if(is_object($data)){
+// 				$data->$tblKey = !empty($langTable->$tblKey) ? $langTable->$tblKey : 0;
+// 			}else {
+// 				$data[$tblKey] = !empty($langTable->$tblKey) ? $langTable->$tblKey : 0;
+// 			}
+
+// 			$langTable->bindChecknStoreNoLang($data,$preload);
+		} else {
+			$this->bindChecknStoreNoLang($data,$preload);
+		}
+
+		return true;
+	}
+
+
+	function bindChecknStoreNoLang(&$data,$preload=false){
+
+		$tblKey = $this->_tbl_key;
+
+		if($preload){
+			if(is_object($data)){
+				if(!empty($data->$tblKey)){
+					$this->load($data->$tblKey);
+				}
+			}else {
+				if(!empty($data[$tblKey])){
+					$this->load($data[$tblKey]);
+				}
+			}
 		}
 
 		$ok = true;
@@ -530,7 +596,8 @@ class VmTable extends JTable{
 		if(!$this->bind($data)){
 			$ok = false;
 			$msg = 'bind';
-			vmdebug('Problem in bind '.get_class($this).' '.$this->_db->getErrorMsg());
+			// 			vmdebug('Problem in bind '.get_class($this).' '.$this->_db->getErrorMsg());
+			vmdebug('Problem in bind '.get_class($this).' ');
 		}
 
 		if($ok){
@@ -563,7 +630,8 @@ class VmTable extends JTable{
 			$data[$tblKey] = !empty($this->$tblKey) ? $this->$tblKey : 0;
 		}
 
-// 		vmdebug('bindChecknStore '.get_class($this).' '.$this->_db->getErrorMsg());
+		// 		vmdebug('bindChecknStore '.get_class($this).' '.$this->_db->getErrorMsg());
+		//This should return $ok and not the data, because it is already updated due use of reference
 		return $data;
 	}
 

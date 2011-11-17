@@ -221,11 +221,11 @@ class VirtueMartModelConfig extends JModel {
 		$orderByFields = new stdClass();
 		$orderByFields->checkbox ='<div  class="threecols"><ul>';
 
-		$orderByFieldsArray = array('p.virtuemart_product_id', 'p.product_sku','pp.product_price','c.category_name','c.category_description',
-		'm.mf_name', 'p.product_s_desc', 'p.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width',
+		$orderByFieldsArray = array('p.virtuemart_product_id', 'p.product_sku','pp.product_price','l.category_name','l.category_description',
+		'm.mf_name', 'l.product_s_desc', 'p.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width',
 		'p.product_height', 'p.product_lwh_uom', 'p.product_in_stock', 'p.low_stock_notification', 'p.product_available_date',
-		'p.product_availability', 'p.product_special', 'ship_code_id', 'p.created_on', 'p.modified_on', 'p.product_name', 'p.product_sales',
-		'p.product_unit', 'p.product_packaging', 'p.intnotes', 'p.metadesc', 'p.metakey', 'p.metarobot', 'p.metaauthor');
+		'p.product_availability', 'p.product_special', 'ship_code_id', 'p.created_on', 'p.modified_on', 'l.product_name', 'p.product_sales',
+		'p.product_unit', 'p.product_packaging', 'p.intnotes', 'l.metadesc', 'l.metakey', 'p.metarobot', 'p.metaauthor');
 		foreach ($orderByFieldsArray as $key => $field ) {
 			if (!empty($orderByChecked) && in_array($field, $orderByChecked) ) {
 				$checked = 'checked="checked"';
@@ -258,7 +258,7 @@ class VirtueMartModelConfig extends JModel {
 	 */
 	function getSearchFields( $searchChecked ) {
 
-// 		if (empty ($searchChecked)) $searchChecked = array('p.product_sku','c.category_name','c.category_description','m.mf_name','p.product_name', 'p.product_s_desc');
+// 		if (empty ($searchChecked)) $searchChecked = array('p.product_sku','c.category_name','l.category_description','m.mf_name','p.product_name', 'p.product_s_desc');
 // 		else if (!is_array($searchChecked))
 		if (empty ($searchChecked)){
 			$searchChecked = array();
@@ -266,7 +266,7 @@ class VirtueMartModelConfig extends JModel {
 			$searchChecked = array($searchChecked);
 		}
 		$searchFields ='<div  class="threecols"><ul>';
-		$searchFieldsArray = array('p.product_sku','pp.product_price','c.category_name','c.category_description','m.mf_name','p.product_name',
+		$searchFieldsArray = array('p.product_sku','pp.product_price','c.category_name','l.category_description','m.mf_name','l.product_name',
 		'p.product_s_desc', 'p.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width', 'p.product_height',
 		'p.product_lwh_uom', 'p.product_in_stock', 'p.low_stock_notification', 'p.product_available_date', 'p.product_availability', 'p.product_special',
 		'ship_code_id', 'p.created_on', 'p.modified_on',  'p.product_sales','p.product_unit', 'p.product_packaging', 'p.intnotes',
@@ -339,73 +339,12 @@ class VirtueMartModelConfig extends JModel {
 		// Load the newly saved values into the session.
 		$config = VmConfig::loadConfig(true);
 
-		$this->checkLanguageTables($config);
+
+		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		$migrator = new Migrator();
+		$result = $migrator->createLanguageTables($config->get('active_languages'));
 
 		return true;
-	}
-
-	private function checkLanguageTables($config){
-
-		//Todo add the mb_ stuff here
-		$langs = $config->get('active_languages');
-		vmdebug('my langs',$langs);
-		$tables = array('categories'=>'virtuemart_category_id',
-							'manufacturers'=>'virtuemart_manufacturer_id',
-							'manufacturercategories'=>'virtuemart_manufacturercategories_id',
-							'products'=>'virtuemart_product_id',
-							'vendors'=>'virtuemart_vendor_id'
-		);
-
-		foreach($tables as $table=>$tblKey){
-
-			$className = 'Table'.ucfirst ($table);
-			if(!class_exists($className)) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.$table.'.php');
-			$tableName = '#__virtuemart_'.$table;
-			
-			// $this->_db->setQuery('DESCRIBE '.$tableName);
-			// $tableDescribe = $this->_db->query();
-			vmdebug('structure' , $tableDescribe );
-			
-			$langTable = new $className($tableName,$tblKey,$this->_db) ;//($tbl_lang,$tblKey,$db);
-			if(empty($langTable->_translatableFields)) continue;
-			// $langTable->_translatableFields[] = $tblKey;
-			$slug = false;
-			
-			foreach($langs as $lang){
-				$lang = strtolower(str_replace('-','_',$lang));
-				$tbl_lang = strtolower($tableName.'_'.$lang);
-				$q = 'CREATE TABLE IF NOT EXISTS '.$tbl_lang.' (';
-				$q .= '`'.$tblKey.'` SERIAL ,';
-				foreach($langTable->_translatableFields as $name){
-					if(strpos($name,'name') !==false ){
-						$fieldstructure = 'varchar(256) NOT NULL DEFAULT "" ';
-					} else if(strpos($name,'meta')!==false ){
-						$fieldstructure = 'varchar(512) NOT NULL DEFAULT "" ';
-					} else if(strpos($name,'slug')!==false ){
-						$fieldstructure = 'varchar(320) NOT NULL DEFAULT "" ';
-						$slug = true;
-					} else if(strpos($name,'desc')!==false || $name == 'vendor_terms_of_service'){
-						$fieldstructure = 'text NOT NULL DEFAULT "" ';
-					} else{
-						$fieldstructure = 'varchar(256) NOT NULL DEFAULT "" ';
-					}
-
-					$q .= '`'.$name.'` '.$fieldstructure.',';
-				}
-// 				$q = substr($q,0,-1);
-				$q .= 'PRIMARY KEY (`'.$tblKey.'`)';
-				if($slug){
-					$q .= ', UNIQUE KEY `slug` (`slug`) )';
-				} else {
-					$q .= ')';
-				}
-				$q .= ' ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT="Language '.$lang.' for '.$table.'" AUTO_INCREMENT=1 ;';
-				$this->_db->setQuery($q);
-				$this->_db->query();
-				vmdebug('checkLanguageTables',$this->_db);
-			}
-		}
-
 	}
 
 	/**

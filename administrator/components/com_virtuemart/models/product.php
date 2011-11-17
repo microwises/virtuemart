@@ -132,7 +132,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			$searchFields = VmConfig::get('browse_search_fields');
 			foreach ($searchFields as $searchField) {
-				if (($searchField == 'c.category_name') || ($searchField == 'category_name') || ($searchField == 'category_description') || ($searchField == 'c.category_description')) $joinCategory = true ;
+				if (($searchField == 'l.category_name') || ($searchField == 'category_name') || ($searchField == 'category_description') || ($searchField == 'l.category_description')) $joinCategory = true ;
 				if ($searchField == 'm.mf_name' || $searchField == 'mf_name') $joinMf = true ;
 				if ($searchField == 'pp.product_price') $joinPrice = true ;
 
@@ -216,8 +216,8 @@ class VirtueMartModelProduct extends VmModel {
 				$orderBy = ' ORDER BY c.`category_name` ';
 				$joinCategory = true ;
 				break;
-			case 'c.category_description':
-				$orderBy = ' ORDER BY c.`category_description` ';
+			case 'l.category_description':
+				$orderBy = ' ORDER BY l.`category_description` ';
 				$joinCategory = true ;
 				break;
 			case 'm.mf_name':
