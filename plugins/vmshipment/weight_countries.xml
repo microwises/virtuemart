@@ -22,7 +22,6 @@
              	directory="/images/stories/virtuemart/shipment"
              	default="default" hide_default="1" hide_none="1"
              	stripext="0"   exclude="^_" />
-	<param name="shipment_description" type="textarea" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_VIRTUEMART_DESCRIPTION" description="VMSHIPMENT_WEIGHT_COUNTRIES_VIRTUEMART_DESCRIPTION_DESC" rows="5" cols="30" />
 	<param name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_COUNTRIES" description="VMSHIPMENT_WEIGHT_COUNTRIES_COUNTRIES_DESC"/>
 	<param name="zip_start" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_ZIP_START" description="VMSHIPMENT_WEIGHT_COUNTRIES_ZIP_START_DESC"/>
 	<param name="zip_stop" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_ZIP_STOP" description="VMSHIPMENT_WEIGHT_COUNTRIES_ZIP_STOP_DESC"/>
@@ -44,7 +43,6 @@
              	directory="/images/stories/virtuemart/shipment"
              	default="default" hide_default="1" hide_none="1"
              	stripext="0"   exclude="^_" />
-	<field name="shipment_description" type="textarea" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_VIRTUEMART_DESCRIPTION" description="VMSHIPMENT_WEIGHT_COUNTRIES_VIRTUEMART_DESCRIPTION_DESC" rows="5" cols="30" />
 	<field name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_COUNTRIES" description="VMSHIPMENT_WEIGHT_COUNTRIES_COUNTRIES_DESC"/>
 	<field name="zip_start" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_ZIP_START" description="VMSHIPMENT_WEIGHT_COUNTRIES_ZIP_START_DESC"/>
 	<field name="zip_stop" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_ZIP_STOP" description="VMSHIPMENT_WEIGHT_COUNTRIES_ZIP_STOP_DESC"/>

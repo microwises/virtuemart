@@ -51,7 +51,6 @@
              	directory="/images/stories/virtuemart/payment"
              	default="default" hide_default="1" hide_none="1"
              	stripext="0"  exclude="^_" />
-	<param name="payment_description" type="textarea" default="" label="VMPAYMENT_PAYPAL_DESCRIPTION" description="VMPAYMENT_PAYPAL_DESCRIPTION_DESC" rows="5" cols="30" />
 	<param name="debug" type="radio" default="0" label="VMPAYMENT_PAYPAL_DEBUG" description="VMPAYMENT_PAYPAL_DEBUG_DESC" >
 	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
@@ -106,7 +105,6 @@
              	directory="/images/stories/virtuemart/payment"
              	default="default" hide_default="1" hide_none="1"
              	stripext="0"  exclude="^_" />
-	<field name="payment_description" type="textarea" default="" label="VMPAYMENT_PAYPAL_VIRTUEMART_DESCRIPTION" description="VMPAYMENT_PAYPAL_VIRTUEMART_DESCRIPTION_DESC" rows="5" cols="30" />
 	<field name="debug" type="radio" default="0" label="VMPAYMENT_PAYPAL_DEBUG" description="VMPAYMENT_PAYPAL_DEBUG_DESC" >
 	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>

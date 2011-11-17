@@ -37,6 +37,8 @@ class TablePaymentmethods extends VmTable
 	/** @var string Paymentmethod name */
 	var $payment_name           		= '';
 	/** @var string Element of paymentmethod */
+	 /** @var string payment  description*/
+	var $payment_desc	= '';
 	var $payment_element           	= '';
 	///** @var string Shoppergroups allowed to use payment_method */
 	//var $payment_shoppervirtuemart_shoppergroup_id         = '';	  // virtuemart_shoppergroup_id?
@@ -67,7 +69,8 @@ class TablePaymentmethods extends VmTable
 		$this->setUniqueName('payment_name');
 
 		$this->setLoggable();
-
+		$this->setTranslatable(array('payment_name','payment_desc' ));
+		//$this->setSlug('payment_name'); i don't see why
 	}
 
 }

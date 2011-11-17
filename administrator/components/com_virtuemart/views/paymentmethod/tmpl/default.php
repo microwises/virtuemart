@@ -35,23 +35,26 @@ AdminUIHelper::startAdminArea();
 			<th width="2">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->payments); ?>);" />
 			</th>
-			<th width="60">
+			<th >
 				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_LIST_NAME'); ?>
 			</th>
+			 <th>
+				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_LIST_DESCRIPTION_LBL'); ?>
+			</th>
 			<?php if($this->perms->check( 'admin' )){ ?>
-			<th width="20">
+			<th >
 				<?php echo JText::_('COM_VIRTUEMART_VENDOR');  ?>
 			</th><?php }?>
-			<th width="20">
+			<th >
 				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_ELEMENT'); ?>
 			</th>
-			<th width="20">
+			<th  >
 				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_SHOPPERGROUPS'); ?>
 			</th>
-			<th width="20">
+			<th  >
 				<?php echo JText::_('COM_VIRTUEMART_LIST_ORDER'); ?>
 			</th>
-			<th width="10">
+			<th >
 				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 			</th>
 			<?php if(Vmconfig::get('multix','none')!=='none'){ ?>
@@ -80,6 +83,9 @@ AdminUIHelper::startAdminArea();
 				</td>
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo $row->payment_name; ?></a>
+				</td>
+				 <td align="left">
+					<?php echo $row->payment_desc; ?>
 				</td>
 				<?php if($this->perms->check( 'admin' )){?>
 				<td align="left">
