@@ -393,12 +393,12 @@ class VmTable extends JTable{
 				$this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
 				if(trim(str_replace('-', '', $this->$slugName)) == ''){
 					$datenow = JFactory::getDate();
-					$this->$slugName = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
+					$this->$slugName = $datenow->toFormat("%Y-%m-%d-%H-%M-%S").rand(1,9);
 				}
 			} else {
 				$this->$slugName = JApplication::stringURLSafe($this->$slugName);
 				if (trim(str_replace('-','',$this->$slugName)) == '') {
-					$this->$slugName = JFactory::getDate()->format('Y-m-d-H-i-s');
+					$this->$slugName = JFactory::getDate()->format('Y-m-d-H-i-s').rand(1,9);
 				}
 			}
 		}

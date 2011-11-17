@@ -342,7 +342,7 @@ class VirtueMartModelConfig extends JModel {
 
 		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 		$migrator = new Migrator();
-		$result = $migrator->createLanguageTables($config->get('active_languages'));
+		$result = $migrator->createLanguageTables();
 
 		return true;
 	}

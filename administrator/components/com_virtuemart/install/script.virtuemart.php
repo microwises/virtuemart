@@ -124,6 +124,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->recurse_copy($src,$dst);
 
+			if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+			$migrator = new Migrator();
+			$migrator->createLanguageTables();
 
 			$this->displayFinished(false);
 

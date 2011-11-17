@@ -1676,7 +1676,13 @@ class Migrator extends VmModel{
 	 * @author Max Milbers
 	 * @param unknown_type $config
 	 */
-	public function createLanguageTables($langs){
+	public function createLanguageTables(){
+
+		$langs = VmConfig::get('active_languages');
+		if(empty($langs)){
+			$params = JComponentHelper::getParams('com_languages');
+			$langs = (array)$params->get('site', 'en-GB');
+		}
 
 		//Todo add the mb_ stuff here
 		vmTime('my langs <pre>'.print_r($langs,1).'</pre>');
@@ -1691,17 +1697,18 @@ class Migrator extends VmModel{
 			if(empty($translatableFields)) continue;
 
 			foreach($langs as $lang){
-				$lang = strtr($lang,'-','_');
+// 				$lang = strtr($lang,'-','_');
+				$lang = strtolower(strtr($lang,'-','_'));
 				$tbl_lang = $tableName.'_'.$lang;
 				$q = 'CREATE TABLE IF NOT EXISTS '.$tbl_lang.' (';
 				$q .= '`'.$tblKey.'` SERIAL ,';
 				foreach($translatableFields as $name){
 					if(strpos($name,'name') !==false ){
-						$fieldstructure = 'varchar(256) NOT NULL DEFAULT "" ';
+						$fieldstructure = 'varchar(128) NOT NULL DEFAULT "" ';
 					} else if(strpos($name,'meta')!==false ){
-						$fieldstructure = 'varchar(512) NOT NULL DEFAULT "" ';
+						$fieldstructure = 'varchar(128) NOT NULL DEFAULT "" ';
 					} else if(strpos($name,'slug')!==false ){
-						$fieldstructure = 'varchar(320) NOT NULL DEFAULT "" ';
+						$fieldstructure = 'varchar(144) NOT NULL DEFAULT "" ';
 						$slug = true;
 					} else if(strpos($name,'desc')!==false || $name == 'vendor_terms_of_service'){
 						$fieldstructure = 'text NOT NULL DEFAULT "" ';
