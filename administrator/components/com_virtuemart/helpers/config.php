@@ -395,8 +395,8 @@ class VmConfig {
 			$siteLang = $params->get('site', 'en-GB');
 			self::$_jpConfig->lang = $siteLang;
  		}
-//  		self::$_jpConfig->lang =  strtolower(strtr(self::$_jpConfig->lang,'-','_'));
- 		self::$_jpConfig->lang = strtr(self::$_jpConfig->lang,'-','_');
+ 		self::$_jpConfig->lang =  strtolower(strtr(self::$_jpConfig->lang,'-','_'));
+ 		// self::$_jpConfig->lang = strtr(self::$_jpConfig->lang,'-','_');
 
 		define('VMLANG', self::$_jpConfig->lang );
 		return self::$_jpConfig->lang;

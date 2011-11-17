@@ -103,7 +103,6 @@ class VirtuemartModelManufacturercategories extends VmModel {
 	function getManufacturerCategories($onlyPublished=false, $noLimit=false)
 	{
 		$this->_noLimit = $noLimit;
-		//$dbTag = vmLang::dbTag();
 		$select = '* FROM `#__virtuemart_manufacturercategories` as mc';
 		$joinedTables = ' JOIN `#__virtuemart_manufacturercategories_'.VMLANG.'` using (`virtuemart_manufacturercategories_id`)';
 		$where = array();

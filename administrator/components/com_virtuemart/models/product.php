@@ -262,7 +262,7 @@ class VirtueMartModelProduct extends VmModel {
 				$filter_order_Dir = 'DESC';
 			}
 		}
-echo VMLANG;
+
 		//write the query, incldue the tables
 		// 		$selectFindRows = 'SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_products` ';
 		// 		$selectFindRows = 'SELECT COUNT(*) FROM `#__virtuemart_products` ';
@@ -291,7 +291,7 @@ echo VMLANG;
 		} else {
 			$whereString = '';
 		}
-echo  $select, $joinedTables;
+
 		$product_ids =  $this->exeSortSearchListQuery(2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
 
 		// This makes products searchable, we decided that this is not good, because variant childs appear then in lists
