@@ -43,6 +43,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
 		parent::__construct();
 		$this->setMainTable('manufacturercategories');
 		$this->addvalidOrderingFieldName(array('l.mf_category_name'));
+		$config=&JFactory::getConfig();
 	}
 
     /**
@@ -53,13 +54,20 @@ class VirtuemartModelManufacturercategories extends VmModel {
 
 		$db = JFactory::getDBO();
 
-  		// if (empty($this->_data)) {
-   			// $this->_data = $this->getTable('manufacturercategories');
-   			// $this->_data->load((int)$this->_id);
-  		// }
-		$dbTag = vmLang::dbTag();
+  		if (empty($this->_data)) {
+   			$data = $this->getTable('manufacturercategories');
+   			$data->load((int)$this->_id);
+			
+			$dbTag = vmLang::dbTag();
+   			$dataLang = $this->getTable('manufacturercategories_'.$dbTag );
+   			$dataLang->load((int)$this->_id);
+			$this->_data = (object) array_merge((array) $data, (array) $dataLang);
+
+  		}
+
 		$q ='SELECT * FROM `#__virtuemart_manufacturercategories` as mc
-			LEFT JOIN `#__virtuemart_manufacturercategories_'.$dbTag.'` as l on l.`virtuemart_manufacturercategories_id` = mc.`virtuemart_manufacturercategories_id`';
+			LEFT JOIN `#__virtuemart_manufacturercategories_'.$dbTag.'` as l on l.`virtuemart_manufacturercategories_id` = mc.`virtuemart_manufacturercategories_id`
+			W virtuemart_manufacturercategories_id='.$this->_id;
 		$db->setQuery($q);
 		$this->_data = $db->loadObject() ; 
   		if (!$this->_data) {

@@ -66,19 +66,22 @@ class VirtuemartControllerTranslate extends VmController {
 		$json= array();
 		$json['fields'] = 'error' ;
 		$json['msg'] = 'Invalid Token';
+		$json['structure'] = 'empty' ;
 		if (!JRequest::checkToken( 'get' )) {
 			echo json_encode($json) ;
 			jexit(  );
 		}
 
 		$lang = JRequest::getvar('lang');
+		$langs = VmConfig::get('active_languages',array()) ;
 		$language=& JFactory::getLanguage();
-		if ( !$language->exists($lang, JPATH_SITE)){
+		if (!in_array($lang, $langs) ) {
 			$json['msg'] = 'Invalid language ! '.$lang;
+			$json['langs'] = $langs ;
 			echo json_encode($json) ;
-			jexit(  );
+			jexit( );
 		}
-
+		$lang = strtolower( $lang);
 		// Remove tag if defaut or 
 		// if ($language->getDefault() == $lang ) $dblang ='';
 
@@ -96,19 +99,26 @@ class VirtuemartControllerTranslate extends VmController {
 			echo json_encode($json);
 			jExit();
 		}
-		$tableName = $tables[$viewKey];
+		$tableName = '#__virtuemart_'.$tables[$viewKey].'_'.$dblang;
 
 
 		$db =& JFactory::getDBO();
 		
-		$q='select * from #__virtuemart_'.$tableName.'_'.$dblang.' where virtuemart_'.$viewKey.'_id ='.$id;
+		$q='select * '.$tableName.' where virtuemart_'.$viewKey.'_id ='.$id;
 		$db->setQuery($q);
 		if ($json['fields'] = $db->loadAssoc()) {
+			$json['structure'] = 'filled' ;
 			$json['msg'] = jText::_('COM_VRITUEMART_SELECTED_LANG').':'.$lang;
 
 		} else {
-			$json['fields'] = 'error' ;
-			$json['msg'] = jText::_('COM_VRITUEMART_LANG_IS EMPTY') .$q ;
+			$json['structure'] = 'empty' ;
+			$db->setQuery('SHOW COLUMNS FROM '.$tableName);
+			$tableDescribe = $db->loadAssocList();
+			array_shift($tableDescribe);
+			$fields=array();
+			foreach ($tableDescribe as $key =>$val) $fields[$val['Field']] = $val['Field'] ;
+			$json['fields'] = $fields;
+			$json['msg'] = jText::_('COM_VRITUEMART_LANG_IS EMPTY').':'.$q ;
 		}
 		echo json_encode($json);
 		jExit();

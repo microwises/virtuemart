@@ -126,51 +126,61 @@ class ShopFunctions {
 		$editView = JRequest::getWord('view',JRequest::getWord('controller','' ) );
 		if ($editView =='user') $editView ='vendor';
 		$id = (int)JRequest::getVar('virtuemart_'.$editView.'_id',(int)JRequest::getVar('cid'));
-
+		$params = JComponentHelper::getParams('com_languages');
+		//$config =& JFactory::getConfig();$config->getValue('language');
+		$lang = $params->get('site', 'en-GB');
 		// only add if ID and view not null
 		if ($editView and $id) {
 
-		// $config =& JFactory::getConfig();
-		// $config->getValue('config.language');
-		$params = JComponentHelper::getParams('com_languages');
-		$defaultLangue = $params->get('site', 'en-GB');
-		jimport('joomla.language.helper');
-		$jlang = JFactory::getLanguage();
-		//$lang = JRequest::getVar('lang', $jlang->getTag());
-		$lang = JRequest::getVar('lang', $defaultLangue);
-		$languages = JLanguageHelper::createLanguageList($lang, constant('JPATH_SITE'), true);
-		$langList = JHTML::_('select.genericlist',  $languages, 'lang', 'class="inputbox"', 'value', 'text', $lang , 'lang');
-		$this->assignRef('langList',$langList);
-		$this->assignRef('lang',$lang);
+			//$params = JComponentHelper::getParams('com_languages');
+			//$defaultLangue = $params->get('site', 'en-GB');
+			jimport('joomla.language.helper');
+			//$jlang = JFactory::getLanguage();
+			//$lang = JRequest::getVar('lang', $jlang->getTag());
+			$lang = JRequest::getVar('lang', $lang);
+			$languages = JLanguageHelper::createLanguageList($lang, constant('JPATH_SITE'), true);
+			$langList = JHTML::_('select.genericlist',  $languages, 'lang', 'class="inputbox"', 'value', 'text', $lang , 'lang');
+			$this->assignRef('langList',$langList);
+			$this->assignRef('lang',$lang);
 
 
 
-		$token = JUtility::getToken();
-		$j = '
-		jQuery(function($) {
-			var oldflag = "";
-			$("select#lang").chosen().change(function() {
-				langCode = $(this).find("option:selected").val();
-				flagClass = "flag-"+langCode.substr(0,2) ;
-				$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lang="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1" , 
-					function(data) {
-						var items = [];
+			$token = JUtility::getToken();
+			$j = '
+			jQuery(function($) {
+				var oldflag = "";
+				$("select#lang").chosen().change(function() {
+					langCode = $(this).find("option:selected").val();
+					flagClass = "flag-"+langCode.substr(0,2) ;
+					$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lang="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1" , 
+						function(data) {
+							var items = [];
 
-						if (data.fields !== "error" ) {
-							$.each(data.fields , function(key, val) {
-								cible = $("#"+key) 
-								if (oldflag !== "") cible.parent().removeClass(oldflag)
-								if (cible.parent().addClass(flagClass).children().hasClass("mce_editable")) tinyMCE.execInstanceCommand(key,"mceSetContent",false,val);
-								else cible.val(val);
+							if (data.fields !== "error" ) {
+								if (data.structure == "empty") alert(data.msg); 
+								$.each(data.fields , function(key, val) {
+									cible = $("#"+key) 
+									if (oldflag !== "") cible.parent().removeClass(oldflag)
+									if (cible.parent().addClass(flagClass).children().hasClass("mce_editable") && data.structure !== "empty" ) tinyMCE.execInstanceCommand(key,"mceSetContent",false,val);
+									else if (data.structure !== "empty") cible.val(val);
 
-							});	
-							oldflag = flagClass ;
-						} else alert(data.msg);
-					}
-				)
-			});
-		})';
-		$document->addScriptDeclaration ( $j);
+								});	
+								oldflag = flagClass ;
+							} else alert(data.msg);
+						}
+					)
+				});
+			})';
+			$document->addScriptDeclaration ( $j);
+		
+		} else {
+			$jlang = JFactory::getLanguage();
+			$langs = $jlang->getKnownLanguages();
+			$defautName = $langs[$lang]['name'];
+			$flagImg =JURI::root( true ).'/administrator/components/com_virtuemart/assets/images/flag/'.substr($lang,0,2).'.png';
+			$langList = '<input name ="lang" type="hidden" value="'.$lang.'" ><img style="vertical-align: middle;" alt="'.$defautName.'" src="'.$flagImg.'"> <b> '.$defautName.'</b>';
+			$this->assignRef('langList',$langList);
+			$this->assignRef('lang',$lang);
 		}
 
 	}

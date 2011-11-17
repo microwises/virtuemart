@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 	<table class="admintable">
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_MANUFACTURER_NAME','mf_name',$this->manufacturer->mf_name); ?>
 		<?php echo VmHTML::row('input',$this->viewName.' '. JText::_('COM_VIRTUEMART_SLUG'),'slug',$this->manufacturer->slug); ?>
-		<?php echo VmHTML::row('select','COM_VIRTUEMART_MANUFACTURER_NAME','mf_category_name',$this->manufacturerCategories,$this->manufacturer->virtuemart_manufacturercategories_id,'','virtuemart_manufacturercategories_id', 'mf_category_name',false); ?>
+		<?php echo VmHTML::row('select','COM_VIRTUEMART_CATEGORY_NAME','mf_category_name',$this->manufacturerCategories,$this->manufacturer->virtuemart_manufacturercategories_id,'','virtuemart_manufacturercategories_id', 'mf_category_name',false); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_MANUFACTURER_URL','mf_url',$this->manufacturer->mf_url); ?>
 		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$this->manufacturer->published); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_MANUFACTURER_EMAIL','mf_email',$this->manufacturer->mf_email); ?>
