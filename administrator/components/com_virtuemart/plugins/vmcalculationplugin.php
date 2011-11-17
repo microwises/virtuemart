@@ -29,7 +29,8 @@ abstract class vmCalculationPlugin extends vmPlugin {
 		parent::__construct($subject, $config);
 
 		$this->_tablepkey = 'virtuemart_calc_id';
-		$this->_tablename = '#__virtuemart_calc_' . $this->_name;
+		$this->_tablename = '#__virtuemart_calc_plg_'. $this->_name;
+// 		$this->_tablename = '#__virtuemart_calc_' . $this->_name;
 	}
 
 	function plgVmStorePluginInternalDataCalc($data){

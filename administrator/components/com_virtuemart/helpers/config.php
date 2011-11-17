@@ -192,6 +192,8 @@ class VmConfig {
 	public static $_starttime = array();
 	public static $loaded = false;
 
+	var $lang = false;
+
 	var $_params = array();
 	var $_raw = array();
 
@@ -296,8 +298,9 @@ class VmConfig {
 						$params->dateformat = base64_decode($params->dateformat);
 
 						self::$_jpConfig = new VmConfig();
-						self::$_jpConfig->_params = $params;
 
+						self::$_jpConfig->_params = $params;
+						self::setdbLanguageTag();
 						return self::$_jpConfig;
 					}
 				}
@@ -306,6 +309,7 @@ class VmConfig {
 		}
 
 		self::$_jpConfig = new VmConfig();
+
 
 		$db = JFactory::getDBO();
 		$query = 'SHOW TABLES LIKE "%virtuemart_configs%"';
@@ -352,36 +356,44 @@ class VmConfig {
 			}
 
 			self::$_jpConfig->_params = $pair;
-			self::$_jpConfig->setSession();
-			
+
 			self::setdbLanguageTag();
+			self::$_jpConfig->setSession();
 			// 			vmTime('Parsed and in session','loadConfig');
 			return self::$_jpConfig;
 		}
-		
+
 		$app = JFactory::getApplication();
 		$app ->enqueueMessage('Attention config is empty');
 		return 'Was not able to create config';
 	}
 
+
 	/*
 	 * Set defaut language tag for translatable table
-	 * 
+	 *
+	 * @author Patrick Kohl
+	 * @author Max Milbers
+	 *
+	 * @return string valid langtag
 	 */
-	private function setdbLanguageTag() {
-		static $lang = NULL;
-		if ($lang !== NULL ) return $lang;
- 		$lang = JRequest::getVar('lang');
-		$langs = VmConfig::get('active_languages',array());
-		if (in_array($lang, $langs) ) $lang = strtolower( $lang);
-		else if ( count($langs) ) {
-			$lang = strtolower( $langs[0]);
-		} else {
-			vmWarn('No lang SET ! Plz configure your shop');
-			$lang='';
-		}
-		$dbLang = strtr($lang,'-','_');
-		define('VMLANG', $dbLang );
+	public function setdbLanguageTag() {
+
+		if (self::$_jpConfig->lang ) return self::$_jpConfig->lang;
+
+		$params = JComponentHelper::getParams('com_languages');
+		$siteLang = $params->get('site', 'en-GB');
+
+		$lang = JRequest::getVar('lang');
+		self::$_jpConfig->lang = VmConfig::get('active_languages',array());
+ 		if(empty($lang) || (!in_array(self::$_jpConfig->lang, $langs))){
+ 			self::$_jpConfig->lang = $siteLang;
+ 		}
+//  		self::$_jpConfig->lang =  strtolower(strtr(self::$_jpConfig->lang,'-','_'));
+ 		self::$_jpConfig->lang = strtr(self::$_jpConfig->lang,'-','_');
+
+		define('VMLANG', self::$_jpConfig->lang );
+		return self::$_jpConfig->lang;
  	}
 
 	function setSession(){

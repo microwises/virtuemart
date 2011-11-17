@@ -28,6 +28,7 @@ debug_enable=none
 google_jquery=1
 multix=none
 
+
 ##Shopfront
 pdf_button_enable=1
 show_emailfriend=1
