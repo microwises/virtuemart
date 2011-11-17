@@ -23,7 +23,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 
 if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
-vmLang::setdbLanguageTag();
+
 vmRam('Start');
 // vmSetStartTime();
 vmTime('Start');

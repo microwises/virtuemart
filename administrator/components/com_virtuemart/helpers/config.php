@@ -353,15 +353,36 @@ class VmConfig {
 
 			self::$_jpConfig->_params = $pair;
 			self::$_jpConfig->setSession();
-
+			
+			self::setdbLanguageTag();
 			// 			vmTime('Parsed and in session','loadConfig');
 			return self::$_jpConfig;
 		}
+		
 		$app = JFactory::getApplication();
 		$app ->enqueueMessage('Attention config is empty');
 		return 'Was not able to create config';
 	}
 
+	/*
+	 * Set defaut language tag for translatable table
+	 * 
+	 */
+	private function setdbLanguageTag() {
+		static $lang = NULL;
+		if ($lang !== NULL ) return $lang;
+ 		$lang = JRequest::getVar('lang');
+		$langs = VmConfig::get('active_languages',array());
+		if (in_array($lang, $langs) ) $lang = strtolower( $lang);
+		else if ( count($langs) ) {
+			$lang = strtolower( $langs[0]);
+		} else {
+			vmWarn('No lang SET ! Plz configure your shop');
+			$lang='';
+		}
+		$dbLang = strtr($lang,'-','_');
+		define('VMLANG', $dbLang );
+ 	}
 
 	function setSession(){
 		$session = JFactory::getSession();
@@ -655,29 +676,6 @@ class vmRequest{
  		} else {
  			return preg_replace('/[^\w'.preg_quote($custom).']/', '', $source);
  		}
- 	}
-
-}
-class vmLang{
-
-	/*
-	 * Set defaut language tag for translatable table
-	 * 
-	 */
-	function setdbLanguageTag() {
-		static $lang = NULL;
-		if ($lang !== NULL ) return $lang;
- 		$lang = JRequest::getVar('lang');
-		$langs = VmConfig::get('active_languages',array());
-		if (in_array($lang, $langs) ) $lang = strtolower( $lang);
-		else if ( count($langs) ) {
-			$lang = strtolower( $langs[0]);
-		} else {
-			vmWarn('No lang SET ! Plz configure your shop');
-			$lang='';
-		}
-		$dbLang = strtr($lang,'-','_');
-		define('VMLANG', $dbLang );
  	}
 
 }
