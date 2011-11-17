@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: translate.php 
+* @version $Id: translate.php
 */
 
 // Check to ensure this file is included in Joomla!
@@ -58,7 +58,7 @@ class VirtuemartControllerTranslate extends VmController {
 	}
 	/**
 	 * Paste the table  in json format
-	 * 
+	 *
 	 */
 	public function paste() {
 
@@ -82,14 +82,14 @@ class VirtuemartControllerTranslate extends VmController {
 			jexit( );
 		}
 		$lang = strtolower( $lang);
-		// Remove tag if defaut or 
+		// Remove tag if defaut or
 		// if ($language->getDefault() == $lang ) $dblang ='';
 
 		$dblang= strtr($lang,'-','_');
 		$id = JRequest::getInt('id',0);
 
 		$viewKey = JRequest::getWord('editView');
-		// TODO temp trick for vendor 
+		// TODO temp trick for vendor
 		if ($viewKey == 'vendor') $id = 1 ;
 
 		$tables = array ('category' =>'categories','product' =>'products','manufacturer' =>'manufacturers','manufacturercategories' =>'manufacturercategories','vendor' =>'vendors');
@@ -103,12 +103,12 @@ class VirtuemartControllerTranslate extends VmController {
 
 
 		$db =& JFactory::getDBO();
-		
+
 		$q='select * FROM `'.$tableName.'` where `virtuemart_'.$viewKey.'_id` ='.$id;
 		$db->setQuery($q);
 		if ($json['fields'] = $db->loadAssoc()) {
 			$json['structure'] = 'filled' ;
-			$json['msg'] = jText::_('COM_VRITUEMART_SELECTED_LANG').':'.$lang;
+			$json['msg'] = jText::_('COM_VIRTUEMART_SELECTED_LANG').':'.$lang;
 
 		} else {
 			$json['structure'] = 'empty' ;
@@ -118,7 +118,7 @@ class VirtuemartControllerTranslate extends VmController {
 			$fields=array();
 			foreach ($tableDescribe as $key =>$val) $fields[$val['Field']] = $val['Field'] ;
 			$json['fields'] = $fields;
-			$json['msg'] = jText::_('COM_VRITUEMART_LANG_IS EMPTY').':'.$q ;
+			$json['msg'] = jText::_('COM_VIRTUEMART_LANG_IS EMPTY').':'.$q ;
 		}
 		echo json_encode($json);
 		jExit();
@@ -141,7 +141,7 @@ class VirtuemartControllerTranslate extends VmController {
 
 		// parent::display();
 	}
-	
+
 
 }
 
