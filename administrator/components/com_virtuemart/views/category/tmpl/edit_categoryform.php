@@ -31,7 +31,6 @@ $mainframe = JFactory::getApplication();
 		<fieldset>
 			<legend><?php echo JText::_('COM_VIRTUEMART_FORM_GENERAL'); ?></legend>
 			<table width="100%" border="0">
-				<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$this->category->published); ?>
 				<!-- Commented out for future use
 				<tr>
 					<td class="key">
@@ -48,6 +47,7 @@ $mainframe = JFactory::getApplication();
 				</tr>
 				-->
 				<?php echo VmHTML::row('input','COM_VIRTUEMART_CATEGORY_NAME','category_name',$this->category->category_name); ?>
+				<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$this->category->published); ?>
 				<?php echo VmHTML::row('input','COM_VIRTUEMART_SLUG','slug',$this->category->slug); ?>
 				<?php echo VmHTML::row('editor','COM_VIRTUEMART_DESCRIPTION','category_description',$this->category->category_description); ?>
 			</table>
