@@ -1685,7 +1685,7 @@ class Migrator extends VmModel{
 		}
 
 		//Todo add the mb_ stuff here
-		vmTime('my langs <pre>'.print_r($langs,1).'</pre>');
+// 		vmTime('my langs <pre>'.print_r($langs,1).'</pre>');
 		foreach($this->tables as $table=>$tblKey){
 
 			$className = 'Table'.ucfirst ($table);
@@ -1731,7 +1731,7 @@ class Migrator extends VmModel{
 // 				vmdebug('checkLanguageTables',$this->_db);
 			}
 		}
-		vmTime('done creation of lang tables');
+// 		vmTime('done creation of lang tables');
 	}
 
 	private function portLanguageFields(){
@@ -1745,7 +1745,7 @@ class Migrator extends VmModel{
 				vmWarn('language fields not copied, please rise execution time and do again');
 				return false;
 			}
-			vmdebug('$portLanguageFields $table '.$table);
+			vmTime('$portLanguageFields $table '.$table);
 			$db = JFactory::getDBO();
 			$tableName = '#__virtuemart_'.$table;
 			$className = 'Table'.ucfirst ($table);
@@ -1821,7 +1821,7 @@ class Migrator extends VmModel{
 				}
 
 			}
-
+			vmTime('$portLanguageFields $table '.$table);
 		}
 
 	}

@@ -139,7 +139,7 @@ class VmTable extends JTable{
 	}
 
 	function setSlug($slugAutoName, $key = 'slug'){
-// 		$this->_useSlug = true;
+		// 		$this->_useSlug = true;
 		$this->_slugAutoName = $slugAutoName;
 		$this->_slugName = $key;
 		$this->$key = '';
@@ -183,8 +183,8 @@ class VmTable extends JTable{
 	}
 
 	/**
-	* Load the fieldlist
-	*/
+	 * Load the fieldlist
+	 */
 	public function loadFields()
 	{
 		$_fieldlist = array();
@@ -270,37 +270,16 @@ class VmTable extends JTable{
 			foreach($this->_translatableFields as $name){
 				$langTable->$name = '';
 				unset($this->$name);
-
-/*				if(!empty($this->_unique_name[$name])){
-					$langUniqueKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
-					unset($this->_unique_name[$name]);
-					$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
-					unset($this->_obkeys[$name]);
-				}
-
-				if(!empty($this->_obkeys[$name])){
-					$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
-					unset($this->_obkeys[$name]);
-				}*/
 			}
-
-// 			$langTable->_unique_name = $langUniqueKeys;
-// 			$langTable->_obkeys = $langObKeys;
-// 			 print_r($this);
-// 			if($this->_useSlug){
-// 				$slugName = $this->_slugName;
-// 				$langTable->slug = $this->slug;
-// 			}
-// 			$langTable->setProperties($langData);
-// 			$langTable->_translatable = false;
-			$langTable->load($int);
+			$langData = $langTable->load($int);
+			vmdebug('Table load '.$int,$langData);
 		}
 
 		parent::load($int);
 
 		if($this->_translatable){
 			foreach($this->_translatableFields as $name){
-				$this->$name = $langTable->$name;
+				$this->$name = $langData->$name;
 			}
 		}
 
@@ -326,7 +305,6 @@ class VmTable extends JTable{
 			}
 
 			foreach($this->_varsToPushParam as $key=>$v){
-
 				if(!isset($this->$key)){
 					$this->$key = $v[0];
 				}
@@ -335,6 +313,7 @@ class VmTable extends JTable{
 		}
 
 		return $this;
+
 	}
 
 	/**
@@ -508,7 +487,7 @@ class VmTable extends JTable{
 					}
 
 				}
-// 				$langTable->$tblKey = $data->$tblKey;
+				// 				$langTable->$tblKey = $data->$tblKey;
 			} else {
 				foreach($this->_translatableFields as $name){
 					$langData[$name] = $data[$name];
@@ -527,7 +506,7 @@ class VmTable extends JTable{
 					}
 
 				}
-// 				$langTable->$tblKey = $data[$tblKey];
+				// 				$langTable->$tblKey = $data[$tblKey];
 			}
 
 			$langTable->_unique_name = $langUniqueKeys;
@@ -541,9 +520,9 @@ class VmTable extends JTable{
 
 			$langTable->setProperties($langData);
 			$langTable->_translatable = false;
-// 			$dataLang = $data;
-// 			vmdebug('my $dataLang',$langTable,$data);
-// 			vmdebug('my $table $this',$this);
+			// 			$dataLang = $data;
+			// 			vmdebug('my $dataLang',$langTable,$data);
+			// 			vmdebug('my $table $this',$this);
 
 			$this->bindChecknStoreNoLang($data,$preload);
 
@@ -566,13 +545,13 @@ class VmTable extends JTable{
 				}
 			}
 
-// 			if(is_object($data)){
-// 				$data->$tblKey = !empty($langTable->$tblKey) ? $langTable->$tblKey : 0;
-// 			}else {
-// 				$data[$tblKey] = !empty($langTable->$tblKey) ? $langTable->$tblKey : 0;
-// 			}
+			// 			if(is_object($data)){
+			// 				$data->$tblKey = !empty($langTable->$tblKey) ? $langTable->$tblKey : 0;
+			// 			}else {
+			// 				$data[$tblKey] = !empty($langTable->$tblKey) ? $langTable->$tblKey : 0;
+			// 			}
 
-// 			$langTable->bindChecknStoreNoLang($data,$preload);
+			// 			$langTable->bindChecknStoreNoLang($data,$preload);
 		} else {
 			$this->bindChecknStoreNoLang($data,$preload);
 		}
@@ -943,7 +922,7 @@ class VmTable extends JTable{
 		$this->_db->setQuery( $query );
 
 		if ($this->_db->query()){
-                        return parent::delete($oid);
+			return parent::delete($oid);
 		} else {
 			return true;
 		}
