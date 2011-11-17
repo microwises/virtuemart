@@ -512,9 +512,9 @@ class vmrouterHelper {
 		$parents_id = array_reverse($this->getCategoryRecurse($virtuemart_category_id,$catMenuId)) ;
 
 		foreach ($parents_id as $id ) {
-			$q = "SELECT `slug` as name
-					FROM  `#__virtuemart_categories`
-					WHERE  `virtuemart_category_id`=".(int)$id;
+			$q = 'SELECT `slug` as name
+					FROM  `#__virtuemart_categories_'.VMLANG.'`
+					WHERE  `virtuemart_category_id`='.(int)$id;
 
 			$db->setQuery($q);
 			$strings[] = $db->loadResult();
@@ -550,7 +550,7 @@ class vmrouterHelper {
 		if ($virtuemart_category_id == null) $virtuemart_category_id = 0 ;
 		$db = JFactory::getDBO();
 			$q = "SELECT distinct `c`.`virtuemart_category_id`
-				FROM  `#__virtuemart_categories` AS `c` , `#__virtuemart_category_categories` as `xref`";
+				FROM  `#__virtuemart_categories_".VMLANG."` AS `c` , `#__virtuemart_category_categories` as `xref`";
 			$q .=" WHERE `c`.`slug` LIKE '".$db->getEscaped($slug)."' ";
 
 			$db->setQuery($q);
@@ -566,7 +566,7 @@ class vmrouterHelper {
 	public function getProductName($id){
 
 		$db			= JFactory::getDBO();
-		$query = 'SELECT `slug` FROM `#__virtuemart_products`  ' .
+		$query = 'SELECT `slug` FROM `#__virtuemart_products_'.VMLANG.'`  ' .
 		' WHERE `virtuemart_product_id` = ' . (int) $id;
 
 		$db->setQuery($query);
@@ -613,10 +613,10 @@ class vmrouterHelper {
 
 		$product['virtuemart_category_id'] = $this->getCategoryId($categoryName,$virtuemart_category_id ) ;
 		$db = JFactory::getDBO();
-		$q = "SELECT `p`.`virtuemart_product_id`
-			FROM `#__virtuemart_products` AS `p`
+		$q = 'SELECT `p`.`virtuemart_product_id`
+			FROM `#__virtuemart_products_'.VMLANG.'` AS `p`
 			LEFT JOIN `#__virtuemart_product_categories` AS `xref` ON `p`.`virtuemart_product_id` = `xref`.`virtuemart_product_id`
-			WHERE `p`.`slug` LIKE '".$db->getEscaped($productName)."' ";
+			WHERE `p`.`slug` LIKE "'.$db->getEscaped($productName).'" ';
 		//$q .= "	AND `xref`.`virtuemart_category_id` = ".(int)$product['virtuemart_category_id'];
 		$db->setQuery($q);
 		$product['virtuemart_product_id'] = $db->loadResult();
@@ -628,7 +628,7 @@ class vmrouterHelper {
 	/* Get URL safe Manufacturer name */
 	public function getManufacturerName($virtuemart_manufacturer_id ){
 		$db = JFactory::getDBO();
-		$query = 'SELECT `slug` FROM `#__virtuemart_manufacturers` WHERE virtuemart_manufacturer_id='.(int)$virtuemart_manufacturer_id;
+		$query = 'SELECT `slug` FROM `#__virtuemart_manufacturers_'.VMLANG.'` WHERE virtuemart_manufacturer_id='.(int)$virtuemart_manufacturer_id;
 		$db->setQuery($query);
 
 		return $db->loadResult();
@@ -638,7 +638,7 @@ class vmrouterHelper {
 	/* Get Manufacturer id */
 	public function getManufacturerId($slug ){
 		$db = JFactory::getDBO();
-		$query = "SELECT `virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers` WHERE `slug` LIKE '".$db->getEscaped($slug)."' ";
+		$query = "SELECT `virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers_".VMLANG."` WHERE `slug` LIKE '".$db->getEscaped($slug)."' ";
 		$db->setQuery($query);
 
 		return $db->loadResult();
