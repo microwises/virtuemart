@@ -266,8 +266,8 @@ class VirtueMartModelProduct extends VmModel {
 		//write the query, incldue the tables
 		// 		$selectFindRows = 'SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_products` ';
 		// 		$selectFindRows = 'SELECT COUNT(*) FROM `#__virtuemart_products` ';
-		$select = ' * FROM `#__virtuemart_products` AS p';
-		$joinedTables = ' JOIN `#__virtuemart_products_'.VMLANG.'` as l using (`virtuemart_product_id`)';
+		$select = ' * FROM `#__virtuemart_products_'.VMLANG.'` as l';
+		$joinedTables = ' JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)';
 		if ($joinCategory == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_categories` ON p.`virtuemart_product_id` = `#__virtuemart_product_categories`.`virtuemart_product_id`
 			 LEFT JOIN `#__virtuemart_categories` as c ON c.`virtuemart_category_id` = `#__virtuemart_product_categories`.`virtuemart_category_id`';

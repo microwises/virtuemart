@@ -246,7 +246,7 @@ class VirtueMartModelCategory extends VmModel {
 		$joinedTables = ' FROM `#__virtuemart_categories_'.VMLANG.'` l
 				  JOIN `#__virtuemart_categories` AS c using (`virtuemart_category_id`)
 				  LEFT JOIN `#__virtuemart_category_categories` AS cx
-				  ON c.`virtuemart_category_id` = cx.`category_child_id` ';
+				  ON l.`virtuemart_category_id` = cx.`category_child_id` ';
 
 		$where = array();
 
@@ -727,9 +727,9 @@ class VirtueMartModelCategory extends VmModel {
 		if ($menuCatid == $virtuemart_category_id) return ;
 		$parents_id = array_reverse($this->getCategoryRecurse($virtuemart_category_id,$menuCatid));
 		foreach ($parents_id as $id ) {
-			$q = "SELECT `category_name`,`virtuemart_category_id`
+			$q = 'SELECT `category_name`,`virtuemart_category_id`
 				FROM  `#__virtuemart_categories_'.VMLANG.'`
-				WHERE  `virtuemart_category_id`=".(int)$id;
+				WHERE  `virtuemart_category_id`='.(int)$id;
 
 			$db->setQuery($q);
 
