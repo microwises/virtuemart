@@ -1638,7 +1638,9 @@ class VirtueMartModelProduct extends VmModel {
 	function getProductChilds($product_id ) {
 		if(empty($product_id)) return array();
 		$db = JFactory::getDBO();
-		$db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products_'.VMLANG.'` WHERE `product_parent_id` ='.(int)$product_id);
+		$db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products_'.VMLANG.'` 
+			JOIN `#__virtuemart_products` as C using (`virtuemart_product_id`) 
+			WHERE `product_parent_id` ='.(int)$product_id);
 		return $db->loadObjectList();
 
 	}
