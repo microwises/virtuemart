@@ -81,10 +81,11 @@ class TableCategories extends VmTable {
 	public function __construct($db) {
 		parent::__construct('#__virtuemart_categories', 'virtuemart_category_id', $db);
 
-		$this->setPrimaryKey('virtuemart_category_id');
+		//In a VmTable the primary key is the same as the _tbl_key and therefore not needed
+// 		$this->setPrimaryKey('virtuemart_category_id');
 		$this->setObligatoryKeys('category_name');
 		$this->setLoggable();
-		$this->setTranslatable(array('category_name','slug','category_description','metadesc','metakey'));
+		$this->setTranslatable(array('category_name','category_description','metadesc','metakey'));
 		$this->setSlug('category_name');
 		$this->setTableShortCut('c');
 	}

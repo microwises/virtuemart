@@ -302,6 +302,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//load published tags
 // 			$langtags = VmConfig::get('active_languages');
 
+
+			$this->checkAddFieldToTable('#__virtuemart_vendors','slug',' char(10) DEFAULT NULL');
+			$this->checkAddFieldToTable('#__virtuemart_manufacturercategories','slug',' char(10) DEFAULT NULL');
+
 			$config = &JFactory::getConfig();
 			$lang = $config->getValue('language');
 			if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');

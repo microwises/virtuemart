@@ -38,6 +38,7 @@ class VmTable extends JTable{
 	protected $_unique = false;
 	protected $_unique_name = array();
 	protected $_orderingKey = 'ordering';
+	var $_useSlug = false;
 	protected $_slugAutoName = '';
 	protected $_slugName = '';
 	protected $_loggable = false;
@@ -101,6 +102,7 @@ class VmTable extends JTable{
 	public function setTranslatable($langFields){
 
 		$this->_translatableFields = $langFields;
+		$this->_translatableFields['slug'] = 'slug';
 		$this->_translatable = true;
 		$lang = JRequest::getvar('lang');
 		//Todo use virtuemart_languages to get default
@@ -120,6 +122,7 @@ class VmTable extends JTable{
 	protected $_translatableFields = array();
 
 	public function getTranslatableFields(){
+
 		return $this->_translatableFields;
 	}
 
@@ -136,7 +139,7 @@ class VmTable extends JTable{
 	}
 
 	function setSlug($slugAutoName, $key = 'slug'){
-
+// 		$this->_useSlug = true;
 		$this->_slugAutoName = $slugAutoName;
 		$this->_slugName = $key;
 		$this->$key = '';
@@ -268,7 +271,7 @@ class VmTable extends JTable{
 				$langTable->$name = '';
 				unset($this->$name);
 
-				if(!empty($this->_unique_name[$name])){
+/*				if(!empty($this->_unique_name[$name])){
 					$langUniqueKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_NOT_UNIQUE_NAME', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
 					unset($this->_unique_name[$name]);
 					$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
@@ -278,12 +281,16 @@ class VmTable extends JTable{
 				if(!empty($this->_obkeys[$name])){
 					$langObKeys[$name] = JText::sprintf('COM_VIRTUEMART_STRING_ERROR_OBLIGATORY_KEY', JText::_('COM_VIRTUEMART_' . strtoupper($name)));
 					unset($this->_obkeys[$name]);
-				}
-
+				}*/
 			}
 
-			$langTable->_unique_name = $langUniqueKeys;
-			$langTable->_obkeys = $langObKeys;
+// 			$langTable->_unique_name = $langUniqueKeys;
+// 			$langTable->_obkeys = $langObKeys;
+// 			 print_r($this);
+// 			if($this->_useSlug){
+// 				$slugName = $this->_slugName;
+// 				$langTable->slug = $this->slug;
+// 			}
 // 			$langTable->setProperties($langData);
 // 			$langTable->_translatable = false;
 			$langTable->load($int);
@@ -295,7 +302,6 @@ class VmTable extends JTable{
 			foreach($this->_translatableFields as $name){
 				$this->$name = $langTable->$name;
 			}
-// 			$this->setProperties($langTable);
 		}
 
 
@@ -527,10 +533,11 @@ class VmTable extends JTable{
 			$langTable->_unique_name = $langUniqueKeys;
 			$langTable->_obkeys = $langObKeys;
 
-			$langTable->_slugName = $this->_slugName;
-			unset($this->_slugName);
 			$langTable->_slugAutoName = $this->_slugAutoName;
 			unset($this->_slugAutoName);
+
+			$langTable->_slugName = 'slug';
+			unset($this->_slugName);
 
 			$langTable->setProperties($langData);
 			$langTable->_translatable = false;

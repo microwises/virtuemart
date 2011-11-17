@@ -114,10 +114,11 @@ class TableProducts extends VmTable {
 	function __construct($db) {
 		parent::__construct('#__virtuemart_products', 'virtuemart_product_id', $db);
 
-		$this->setPrimaryKey('virtuemart_product_id');
+		//In a VmTable the primary key is the same as the _tbl_key and therefore not needed
+// 		$this->setPrimaryKey('virtuemart_product_id');
 		$this->setObligatoryKeys('product_name');
 		$this->setLoggable();
-		$this->setTranslatable(array('product_name','slug','product_s_desc','product_desc','metadesc','metakey'));
+		$this->setTranslatable(array('product_name','product_s_desc','product_desc','metadesc','metakey'));
 		$this->setSlug('product_name');
 		$this->setTableShortCut('p');
 

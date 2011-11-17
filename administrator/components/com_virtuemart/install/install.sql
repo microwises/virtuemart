@@ -161,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
   KEY `idx_category_virtuemart_vendor_id` (`virtuemart_vendor_id`),
-  UNIQUE KEY `idx_slug` (`slug`,`virtuemart_vendor_id`)
+  UNIQUE KEY `slug` (`slug`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Product Categories are stored here' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------

@@ -1691,8 +1691,10 @@ class Migrator extends VmModel{
 			$langTable = $this->getTable($table);
 			$translatableFields = $langTable->getTranslatableFields();
 			if(empty($translatableFields)) continue;
-			$slug = false;
 
+// 			if($langTable->_useSlug){
+// 				$translatableFields[] = 'slug';
+// 			}
 			foreach($langs as $lang){
 				$lang = strtolower(str_replace('-','_',$lang));
 				$tbl_lang = strtolower($tableName.'_'.$lang);
@@ -1752,10 +1754,12 @@ class Migrator extends VmModel{
 			$query = 'SHOW COLUMNS FROM `'.$tableName.'` ';
 			$this->_db->setQuery($query);
 			$columns = $this->_db->loadResultArray(0);
-			vmdebug('$portLanguageFields contains language fields ',$columns);
+// 			vmdebug('$portLanguageFields contains language fields ',$columns);
 
 			$translatableFields = $langTable->getTranslatableFields();
-
+// 			if($langTable->_useSlug){
+// 				$translatableFields[] = 'slug';
+// 			}
 			if(in_array($translatableFields[0],$columns)){
 
 
@@ -1806,7 +1810,12 @@ class Migrator extends VmModel{
 						if(in_array($fieldname,$columns)){
 							vmdebug('I delete the column '.$tableName.' '.$fieldname);
 							$this->_db->setQuery('ALTER TABLE `'.$tableName.'` DROP COLUMN `'.$fieldname.'` ');
-							$this->_db->query();
+							if(!$this->_db->query()){
+								VmError('Deleting of '.$tableName.' '.$fieldname.' failed. '.$this->_db->getQuery());
+							} else {
+								vmdebug('I deleted the column '.$this->_db->getQuery());
+							}
+
 						}
 					}
 				}
