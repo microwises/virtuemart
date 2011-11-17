@@ -104,7 +104,7 @@ class VmTable extends JTable{
 		$this->_translatableFields = $langFields;
 		$this->_translatableFields['slug'] = 'slug';
 		$this->_translatable = true;
-		$lang = JRequest::getvar('lang');
+/*		$lang = JRequest::getvar('lang');
 		//Todo use virtuemart_languages to get default
 		;
 		if (!empty($lang) && in_array($lang , VmConfig::get('active_languages',array('en_gb'))) ){
@@ -114,7 +114,8 @@ class VmTable extends JTable{
 			$language=& JFactory::getLanguage();
 			$this->_langTag = strtolower(str_replace('-','_',$language->getDefault()));
 		}
-
+*/
+		$this->_langTag = VmConfig::get('vmlang');
 		$this->_tbl_lang = $this->_tbl.'_'.$this->_langTag;
 
 	}

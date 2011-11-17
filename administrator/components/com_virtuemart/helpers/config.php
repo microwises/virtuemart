@@ -298,9 +298,8 @@ class VmConfig {
 						$params->dateformat = base64_decode($params->dateformat);
 
 						self::$_jpConfig = new VmConfig();
-
 						self::$_jpConfig->_params = $params;
-						self::setdbLanguageTag();
+						self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
 						return self::$_jpConfig;
 					}
 				}
@@ -357,7 +356,7 @@ class VmConfig {
 
 			self::$_jpConfig->_params = $pair;
 
-			self::setdbLanguageTag();
+			self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
 			self::$_jpConfig->setSession();
 			// 			vmTime('Parsed and in session','loadConfig');
 			return self::$_jpConfig;
