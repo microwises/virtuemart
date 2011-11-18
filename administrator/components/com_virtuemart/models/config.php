@@ -202,7 +202,8 @@ class VirtueMartModelConfig extends JModel {
 		$jLangs = $language->getKnownLanguages(JPATH_BASE);
 
 		foreach ($jLangs as $jLang) {
-			$activeLangs[] = JHTML::_('select.option', $jLang['tag'], $jLang['name']) ;
+			$jlangTag = strtolower(strtr($jLang['tag'],'-','_'));
+			$activeLangs[] = JHTML::_('select.option', $jlangTag , $jLang['name']) ;
 		}
 
 		return JHTML::_('select.genericlist', $activeLangs, 'active_languages[]', 'size=10 multiple="multiple"', 'value', 'text', $active_languages );// $activeLangs;
