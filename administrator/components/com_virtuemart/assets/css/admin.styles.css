@@ -151,6 +151,11 @@ font-size: 12px;
     vertical-align: middle;
     width: 120px;
 }
+.vm_thumb_image img{
+	/*Ensures that large thumbs are with-in bounding box so remove button is not hidden*/
+	max-height: 90px;
+	max-width: 110px;
+}
 .vm__img_autocrop{
     display: block;
     max-height: 400px;
