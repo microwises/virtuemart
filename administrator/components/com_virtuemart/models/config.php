@@ -203,7 +203,7 @@ class VirtueMartModelConfig extends JModel {
 
 		foreach ($jLangs as $jLang) {
 			$jlangTag = strtolower(strtr($jLang['tag'],'-','_'));
-			$activeLangs[] = JHTML::_('select.option', $jlangTag , $jLang['name']) ;
+			$activeLangs[] = JHTML::_('select.option', $jLang['tag'] , $jLang['name']) ;
 		}
 
 		return JHTML::_('select.genericlist', $activeLangs, 'active_languages[]', 'size=10 multiple="multiple"', 'value', 'text', $active_languages );// $activeLangs;
@@ -306,6 +306,7 @@ class VirtueMartModelConfig extends JModel {
 
 		JRequest::checkToken() or jexit( 'Invalid Token, in store config');
 
+		$data['active_languages'] = strtolower(strtr($data['active_languages'],'-','_'));
 		//ATM we want to ensure that only one config is used
 		$config = VmConfig::loadConfig();
 		$config->setParams($data);

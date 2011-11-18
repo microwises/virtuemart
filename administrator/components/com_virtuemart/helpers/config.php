@@ -381,14 +381,7 @@ class VmConfig {
 		if (self::$_jpConfig->lang ) return self::$_jpConfig->lang;
 
 // 		self::$_jpConfig->lang = JRequest::getVar('vmlang','en_gb');
-		// user language settings only in FE
-
-// 		if ($isSite) {
-// 			$user =& JFactory::getUser();
-// 			$mainframe =& JFactory::getApplication();
-// 			self::$_jpConfig->lang = $mainframe->getUserStateFromRequest( "virtuemart.vmlang", 'vmlang',JRequest::getVar('vmlang',$user->getParam('language') ) );
-// 			vmdebug('setdbLanguageTag getUserStateFromRequest',self::$_jpConfig->lang);
-// 		}
+// 		self::$_jpConfig->lang = $mainframe->getUserStateFromRequest( "virtuemart.vmlang", 'vmlang',JRequest::getVar('vmlang',$user->getParam('language') ) );
 
 		$isBE = !JFactory::getApplication()->isSite();
 
@@ -396,7 +389,6 @@ class VmConfig {
 		if($isBE){
 			$mainframe =& JFactory::getApplication();
 			$vmlang = $mainframe->getUserStateFromRequest( "virtuemart.vmlang", 'vmlang',JRequest::getVar('vmlang',false ) );
-// 		$vmlang = JRequest::getVar('vmlang',false);
 			if($vmlang){
 				$siteLang = $vmlang;
 				vmdebug('setdbLanguageTag $vmlang',$siteLang);
@@ -405,20 +397,21 @@ class VmConfig {
 
 		if (!$siteLang) {
 			$jLang =& JFactory::getLanguage()->getTag();
-			$siteLang = strtolower(strtr($jLang,'-','_'));;
+			$siteLang = $jLang;
 			vmdebug('setdbLanguageTag $jLang',$siteLang);
 		}
 
-		$langs = self::$_jpConfig->get('active_languages',array());
+		$langs = (array)self::$_jpConfig->get('active_languages',array());
+
+		$siteLang = strtolower(strtr($siteLang,'-','_'));
 		if(empty($siteLang) || (!in_array($siteLang, $langs))){
 			$params = JComponentHelper::getParams('com_languages');
 			$jLang = $params->get('site', 'en_gb');
-			$siteLang = strtolower(strtr($jLang,'-','_'));;
+			$siteLang = strtolower(strtr($jLang,'-','_'));
 			vmdebug('setdbLanguageTag $params->get("site", "en_gb");',$siteLang);
  		}
 
  		self::$_jpConfig->lang = $siteLang;
-//  		self::$_jpConfig->lang = strtolower(strtr($siteLang,'-','_'));
 
  		if($isBE){
  			$mainframe->setUserState( "virtuemart.vmlang", self::$_jpConfig->lang );
