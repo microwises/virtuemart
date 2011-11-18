@@ -386,7 +386,7 @@ class VmConfig {
 		if ($isSite) {
 			$user =& JFactory::getUser();
 			$mainframe =& JFactory::getApplication();
-			self::$_jpConfig->lang = $mainframe->getUserStateFromRequest( "virtuemart.lang", 'lang',JRequest::getVar('lang',$user->getParam('language') ) );
+			self::$_jpConfig->lang = $mainframe->getUserStateFromRequest( "virtuemart.vmlang", 'vmlang',JRequest::getVar('vmlang',$user->getParam('language') ) );
 
 		}
 
@@ -399,7 +399,7 @@ class VmConfig {
  		self::$_jpConfig->lang =  strtolower(strtr(self::$_jpConfig->lang,'-','_'));
 
  		if($isSite){
- 			$mainframe->setUserState( "virtuemart.lang", self::$_jpConfig->lang );
+ 			$mainframe->setUserState( "virtuemart.vmlang", self::$_jpConfig->lang );
  		}
 		define('VMLANG', self::$_jpConfig->lang );
 		return self::$_jpConfig->lang;

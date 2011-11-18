@@ -72,7 +72,7 @@ class VirtuemartControllerTranslate extends VmController {
 			jexit(  );
 		}
 
-		$lang = JRequest::getvar('lang');
+		$lang = JRequest::getvar('vmlang');
 		$langs = VmConfig::get('active_languages',array()) ;
 		$language=& JFactory::getLanguage();
 		if (!in_array($lang, $langs) ) {

@@ -137,9 +137,9 @@ class ShopFunctions {
 			jimport('joomla.language.helper');
 			//$jlang = JFactory::getLanguage();
 			//$lang = JRequest::getVar('lang', $jlang->getTag());
-			$lang = JRequest::getVar('lang', $lang);
+			$lang = JRequest::getVar('vmlang', $lang);
 			$languages = JLanguageHelper::createLanguageList($lang, constant('JPATH_SITE'), true);
-			$langList = JHTML::_('select.genericlist',  $languages, 'lang', 'class="inputbox"', 'value', 'text', $lang , 'lang');
+			$langList = JHTML::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox"', 'value', 'text', $lang , 'lang');
 			$this->assignRef('langList',$langList);
 			$this->assignRef('lang',$lang);
 
@@ -178,7 +178,7 @@ class ShopFunctions {
 			$langs = $jlang->getKnownLanguages();
 			$defautName = $langs[$lang]['name'];
 			$flagImg =JURI::root( true ).'/administrator/components/com_virtuemart/assets/images/flag/'.substr($lang,0,2).'.png';
-			$langList = '<input name ="lang" type="hidden" value="'.$lang.'" ><img style="vertical-align: middle;" alt="'.$defautName.'" src="'.$flagImg.'"> <b> '.$defautName.'</b>';
+			$langList = '<input name ="vmlang" type="hidden" value="'.$lang.'" ><img style="vertical-align: middle;" alt="'.$defautName.'" src="'.$flagImg.'"> <b> '.$defautName.'</b>';
 			$this->assignRef('langList',$langList);
 			$this->assignRef('lang',$lang);
 		}
