@@ -355,10 +355,10 @@ class VmTable extends JTable{
 			$slugAutoName = $this->_slugAutoName;
 			$slugName = $this->_slugName;
 			if(empty($this->$slugName)){
-				vmdebug('table check use _slugAutoName '.$slugAutoName.' '.$slugName);
+// 				vmdebug('table check use _slugAutoName '.$slugAutoName.' '.$slugName);
 				$this->$slugName = $this->$slugAutoName;
 			}
-			vmdebug('table check use $this->$slugName '.$this->$slugName);
+// 			vmdebug('table check use $this->$slugName '.$this->$slugName);
 			if(VmConfig::isJ15()){
 				$this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
 				if(trim(str_replace('-', '', $this->$slugName)) == ''){
@@ -908,24 +908,50 @@ class VmTable extends JTable{
 	}
 
 // TODO add Translatable delete  ???
-// VmConfig::get('active_languages',array()) ;
+//
 	function delete( $oid=null ){
 
 		$k = $this->_tbl_key;
+
 		if ($oid) {
 			$this->$k = intval( $oid );
 		}
 
-		$query = 'SELECT '.$this->_tbl_key.' FROM '.$this->_db->nameQuote( $this->_tbl ).
-				' WHERE '.$this->_tbl_key.' = '. $this->_db->Quote($this->$k);
+		$mainTableError = $this->checkAndDelete($this->_tbl);
+
+		if($this->_translatable){
+
+			$langs = VmConfig::get('active_languages',array()) ;
+			if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
+			foreach($langs as $lang){
+				$lang = strtolower(strtr($lang,'-','_'));
+				$langError = $this->checkAndDelete($this->_tbl.'_'.$lang);
+				$mainTableError = max($mainTableError,$langError);
+			}
+		}
+
+		return $mainTableError;
+	}
+
+	function checkAndDelete($table){
+
+		$k = $this->_tbl_key;
+
+		$query = 'SELECT '.$this->_tbl_key.' FROM `'.$table.'` WHERE '.$this->_tbl_key.' = "'. $this->$k.'"';
 		$this->_db->setQuery( $query );
 
 		if ($this->_db->query()){
-			return parent::delete($oid);
-		} else {
-			return true;
+			$query = 'DELETE FROM `'.$table.'` WHERE '.$this->_tbl_key.' = "'.$this->$k.'"';
+			$this->_db->setQuery( $query );
+
+			if ($this->_db->query()){
+				return true;
+			} else {
+// 				$this->setError($this->_db->getErrorMsg());
+				vmError($this->_db->getErrorMsg());
+				return false;
+			}
 		}
 	}
-
 
 }
