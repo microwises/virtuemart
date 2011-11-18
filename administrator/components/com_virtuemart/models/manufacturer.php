@@ -82,7 +82,7 @@ class VirtueMartModelManufacturer extends VmModel {
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		$mediaModel = new VirtueMartModelMedia();
 		$mediaModel->storeMedia($data,'manufacturer');
-	    $errors = $mediaModel->getErrors();
+		$errors = $mediaModel->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);
 		}
@@ -159,8 +159,8 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		$select = ' m.*,l.*, mc.`mf_category_name` FROM `#__virtuemart_manufacturers_'.VMLANG.'` as l ';
 
-		$joinedTables = ' JOIN `#__virtuemart_manufacturers` AS m USING (`virtuemart_manufacturer_id`) '; 
-		$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturercategories_'.VMLANG.'` AS mc on  mc.`virtuemart_manufacturercategories_id`= m.`virtuemart_manufacturercategories_id` '; 
+		$joinedTables = ' JOIN `#__virtuemart_manufacturers` AS m USING (`virtuemart_manufacturer_id`) ';
+		$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturercategories_'.VMLANG.'` AS mc on  mc.`virtuemart_manufacturercategories_id`= m.`virtuemart_manufacturercategories_id` ';
 		if($getMedia){
 			$select .= ',mmex.*';
 			$joinedTables .= 'LEFT JOIN `#__virtuemart_manufacturer_medias` as mmex ON  m.`virtuemart_manufacturer_id`= mmex.`virtuemart_manufacturer_id` ';
