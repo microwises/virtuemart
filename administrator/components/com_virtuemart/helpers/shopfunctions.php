@@ -178,9 +178,12 @@ class ShopFunctions {
 		} else {
 			$jlang = JFactory::getLanguage();
 			$langs = $jlang->getKnownLanguages();
+			/*
 			foreach($langs as){
 
 			}
+			 * */
+			 
 			$defautName = $langs[$lang]['name'];
 			$flagImg =JURI::root( true ).'/administrator/components/com_virtuemart/assets/images/flag/'.substr($lang,0,2).'.png';
 			$langList = '<input name ="vmlang" type="hidden" value="'.$lang.'" ><img style="vertical-align: middle;" alt="'.$defautName.'" src="'.$flagImg.'"> <b> '.$defautName.'</b>';
