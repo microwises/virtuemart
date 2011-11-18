@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>vm2</name>
+	<name>virtuemart1.5</name>
 	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
 		<buildCommand>
-			<name>org.eclipse.wst.validation.validationbuilder</name>
+			<name>net.sourceforge.phpeclipse.parserbuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>org.eclipse.dltk.core.scriptbuilder</name>
+			<name>net.sf.eclipsensis.installoptions.InstallOptionsBuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.eclipse.php.core.PHPNature</nature>
+		<nature>net.sourceforge.phpeclipse.phpnature</nature>
+		<nature>net.sf.eclipsensis.installoptions.InstallOptionsNature</nature>
 	</natures>
 </projectDescription>

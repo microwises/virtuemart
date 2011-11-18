@@ -384,7 +384,7 @@ class VmConfig {
 			$siteLang = JRequest::getVar('vmlang',FALSE );// we must have this for edit form save
 			//Why not using the usterstae?
 		} else {
-			// try to find in session lang 
+			// try to find in session lang
 			// this work with joomfish j1.5 (application.data.lang)
 			// TODO test wiht j1.7
 			$session  =& JFactory::getSession();
@@ -408,6 +408,7 @@ class VmConfig {
 			$siteLang = $params->get('site', 'en-GB');//use default joomla
 		}
 		self::$_jpConfig->lang = strtolower(strtr($siteLang,'-','_'));
+		vmdebug('self::$_jpConfig->lang',self::$_jpConfig->lang);
 		define('VMLANG', self::$_jpConfig->lang );
 		return self::$_jpConfig->lang;
 

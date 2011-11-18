@@ -1706,16 +1706,18 @@ class Migrator extends VmModel{
 				$q .= '`'.$tblKey.'` SERIAL ,';
 				foreach($translatableFields as $name){
 					if(strpos($name,'name') !==false ){
-						$fieldstructure = 'varchar(128) NOT NULL DEFAULT "" ';
+						$fieldstructure = 'char(128) NOT NULL DEFAULT "" ';
 					} else if(strpos($name,'meta')!==false ){
-						$fieldstructure = 'varchar(128) NOT NULL DEFAULT "" ';
+						$fieldstructure = 'char(128) NOT NULL DEFAULT "" ';
 					} else if(strpos($name,'slug')!==false ){
-						$fieldstructure = 'varchar(144) NOT NULL DEFAULT "" ';
+						$fieldstructure = 'char(144) NOT NULL DEFAULT "" ';
 						$slug = true;
 					} else if(strpos($name,'desc')!==false || $name == 'vendor_terms_of_service'){
-						$fieldstructure = 'text NOT NULL DEFAULT "" ';
+						$fieldstructure = 'varchar(2024) NOT NULL DEFAULT "" ';
+					} else if(strpos($name,'phone')!==false) {
+						$fieldstructure = 'char(24) NOT NULL DEFAULT "" ';
 					} else{
-						$fieldstructure = 'varchar(256) NOT NULL DEFAULT "" ';
+						$fieldstructure = 'char(255) NOT NULL DEFAULT "" ';
 					}
 
 					$q .= '`'.$name.'` '.$fieldstructure.',';

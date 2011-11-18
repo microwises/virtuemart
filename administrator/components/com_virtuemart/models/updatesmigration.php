@@ -251,6 +251,10 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_required_data.sql';
 		$this->execSQLFile($filename);
 
+		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
+		$migrator = new Migrator();
+		$migrator->createLanguageTables();
+
 		JPluginHelper::importPlugin('vmextended');
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onVmSqlRestore', $this);

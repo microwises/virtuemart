@@ -33,10 +33,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_adminmenuentries` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
   `virtuemart_calc_id` SERIAL,
   `virtuemart_vendor_id` int(11) NOT NULL COMMENT 'Belongs to vendor',
-  `calc_name` text NOT NULL COMMENT 'Name of the rule',
+  `calc_name` varchar(128) NOT NULL COMMENT 'Name of the rule',
   `calc_descr` text NOT NULL COMMENT 'Description',
-  `calc_kind` text NOT NULL COMMENT 'Discount/Tax/Margin/Commission',
-  `calc_value_mathop` text NOT NULL COMMENT 'the mathematical operation like (+,-,+%,-%)',
+  `calc_kind` char(16) NOT NULL COMMENT 'Discount/Tax/Margin/Commission',
+  `calc_value_mathop` char(8) NOT NULL COMMENT 'the mathematical operation like (+,-,+%,-%)',
   `calc_value` float NOT NULL DEFAULT '0' COMMENT 'The Amount',
   `calc_currency` int(11) NOT NULL DEFAULT '0' COMMENT 'Currency of the Rule',
   `calc_shopper_published` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Visible for Shoppers',
@@ -138,19 +138,19 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `category_name` varchar(128) NOT NULL DEFAULT '',
   `slug` varchar(128) NOT NULL DEFAULT '',
   `category_description` text,
-  `category_template` varchar(255) DEFAULT NULL,
-  `category_layout` varchar(255) DEFAULT NULL,
-  `category_product_layout` varchar(255) DEFAULT NULL,
+  `category_template` varchar(128) DEFAULT NULL,
+  `category_layout` varchar(64) DEFAULT NULL,
+  `category_product_layout` varchar(64) DEFAULT NULL,
   `products_per_row` tinyint(2) DEFAULT NULL,
   `limit_list_start` int(11) DEFAULT NULL,
   `limit_list_step` int(11) DEFAULT NULL,
   `limit_list_max` int(11) DEFAULT NULL,
   `limit_list_initial` int(11) DEFAULT NULL,
   `hits` int(11) unsigned NOT NULL DEFAULT '0',
-  `metadesc` text NOT NULL,
-  `metakey` text NOT NULL,
-  `metarobot` text NOT NULL,
-  `metaauthor` text NOT NULL,
+  `metadesc` varchar(128) NOT NULL,
+  `metakey` varchar(128) NOT NULL,
+  `metarobot` varchar(40) NOT NULL,
+  `metaauthor` varchar(128) NOT NULL,
   `ordering` int(2) NOT NULL DEFAULT '0',
   `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
@@ -199,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_category_medias` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_countries` (
-  `virtuemart_country_id` SERIAL,
+  `virtuemart_country_id` MEDIUMINT NOT NULL AUTO_INCREMENT UNIQUE,
   `virtuemart_worldzone_id` int(11) NOT NULL DEFAULT '1',
   `country_name` varchar(64) DEFAULT NULL,
   `country_3_code` char(3) DEFAULT NULL,
@@ -212,7 +212,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_countries` (
   `modified_by` int(11) NOT NULL DEFAULT 0,
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT 0,
-  KEY `idx_country_name` (`country_name`)
+  KEY `idx_country_3_code` (`country_3_code`),
+  KEY `idx_country_2_code` (`country_2_code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Country records' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------

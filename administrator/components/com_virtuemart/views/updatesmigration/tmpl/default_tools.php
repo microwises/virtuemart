@@ -147,6 +147,11 @@ if(!VmConfig::get('dangeroustools', false)){
     </tr>
 </table>
 </div>
+<div>
+<?php
+ echo $this->analyse;
+?>
+</div>
 <script type="text/javascript">
 <!--
 function confirmation(message, destnUrl) {

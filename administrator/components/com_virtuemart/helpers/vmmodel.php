@@ -105,10 +105,12 @@ class VmModel extends JModel {
 		return $this->_id;
 	}
 
+
 	var $_tablePreFix = '';
 	/**
 	 *
 	 * This function sets the valid ordering fields for this model with the default table attributes
+	 * @author Max Milbers
 	 * @param unknown_type $defaultTable
 	 */
 	function setDefaultValidOrderingFields($defaultTable=null){
@@ -121,8 +123,8 @@ class VmModel extends JModel {
 		$dTableArray = get_object_vars($defaultTable);
 
 		if($defaultTable->_translatable){
-			foreach ($defaultTable->getTranslatableFields() as $k => $v){
-				$this->_validOrderingFieldName[] = 'l.'.$k;
+			foreach ($defaultTable->getTranslatableFields() as $v){
+				$this->_validOrderingFieldName[] = 'l.'.$v;
 				unset($dTableArray[$k]);
 			}
 		}
