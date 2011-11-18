@@ -19,7 +19,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-
+<?php echo $this->langList; ?>
 
 <div class="col50">
     <fieldset>

@@ -20,6 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
+<?php echo $this->langList; ?>
 <table class="admintable">
 
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_PAYMENTMETHOD_FORM_NAME','payment_name',$this->payment->payment_name); ?>
