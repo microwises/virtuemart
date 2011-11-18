@@ -221,7 +221,7 @@ class VirtueMartModelConfig extends JModel {
 		$orderByFields = new stdClass();
 		$orderByFields->checkbox ='<div  class="threecols"><ul>';
 
-		$orderByFieldsArray = array('p.virtuemart_product_id', 'p.product_sku','pp.product_price','l.category_name','l.category_description',
+		$orderByFieldsArray = array('p.virtuemart_product_id', 'p.product_sku','pp.product_price','c.category_name','c.category_description',
 		'm.mf_name', 'l.product_s_desc', 'p.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width',
 		'p.product_height', 'p.product_lwh_uom', 'p.product_in_stock', 'p.low_stock_notification', 'p.product_available_date',
 		'p.product_availability', 'p.product_special', 'ship_code_id', 'p.created_on', 'p.modified_on', 'l.product_name', 'p.product_sales',
@@ -266,11 +266,11 @@ class VirtueMartModelConfig extends JModel {
 			$searchChecked = array($searchChecked);
 		}
 		$searchFields ='<div  class="threecols"><ul>';
-		$searchFieldsArray = array('p.product_sku','pp.product_price','c.category_name','l.category_description','m.mf_name','l.product_name',
-		'p.product_s_desc', 'p.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width', 'p.product_height',
+		$searchFieldsArray = array('p.product_sku','pp.product_price','c.category_name','c.category_description','m.mf_name','l.product_name',
+		'l.product_s_desc', 'l.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width', 'p.product_height',
 		'p.product_lwh_uom', 'p.product_in_stock', 'p.low_stock_notification', 'p.product_available_date', 'p.product_availability', 'p.product_special',
 		'ship_code_id', 'p.created_on', 'p.modified_on',  'p.product_sales','p.product_unit', 'p.product_packaging', 'p.intnotes',
-		'p.metadesc', 'p.metakey', 'p.metarobot', 'p.metaauthor');
+		'l.metadesc', 'l.metakey', 'p.metarobot', 'p.metaauthor');
 		foreach ($searchFieldsArray as $key => $field ) {
 			if (in_array($field, $searchChecked) ) {
 				$checked = 'checked="checked"';

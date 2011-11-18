@@ -132,8 +132,8 @@ class VirtueMartModelProduct extends VmModel {
 
 			$searchFields = VmConfig::get('browse_search_fields');
 			foreach ($searchFields as $searchField) {
-				if (($searchField == 'l.category_name') || ($searchField == 'category_name') || ($searchField == 'category_description') || ($searchField == 'l.category_description')) $joinCategory = true ;
-				if ($searchField == 'm.mf_name' || $searchField == 'mf_name') $joinMf = true ;
+				if ( strpos($searchField ,'category')!== NULL ) $joinCategory = true ;
+				if ( strpos($searchField ,'mf_')!== NULL ) $joinMf = true ;
 				if ($searchField == 'pp.product_price') $joinPrice = true ;
 
 				$filter_search[] = ' '.$searchField.' LIKE '.$keyword;
@@ -144,7 +144,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		} elseif ($search = vmRequest::uword('filter_product', false)){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
-			$where[] = 'p.`product_name` LIKE '.$search;
+			$where[] = 'l.`product_name` LIKE '.$search;
 		}
 
 		if ($searchcustoms = JRequest::getVar('customfields', array(), 'default' ,'array')){
@@ -270,11 +270,11 @@ class VirtueMartModelProduct extends VmModel {
 		$joinedTables = ' JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)';
 		if ($joinCategory == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_categories` ON p.`virtuemart_product_id` = `#__virtuemart_product_categories`.`virtuemart_product_id`
-			 LEFT JOIN `#__virtuemart_categories` as c ON c.`virtuemart_category_id` = `#__virtuemart_product_categories`.`virtuemart_category_id`';
+			 LEFT JOIN `#__virtuemart_categories_'.VMLANG.'` as c ON c.`virtuemart_category_id` = `#__virtuemart_product_categories`.`virtuemart_category_id`';
 		}
 		if ($joinMf == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_manufacturers` ON p.`virtuemart_product_id` = `#__virtuemart_product_manufacturers`.`virtuemart_product_id`
-			 LEFT JOIN `#__virtuemart_manufacturers` as m ON m.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
+			 LEFT JOIN `#__virtuemart_manufacturers_'.VMLANG.'` as m ON m.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
 		}
 		if ($joinShopper == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_shoppergroups` ON p.`virtuemart_product_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_product_id`
@@ -291,7 +291,6 @@ class VirtueMartModelProduct extends VmModel {
 		} else {
 			$whereString = '';
 		}
-
 		$product_ids =  $this->exeSortSearchListQuery(2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
 
 		// This makes products searchable, we decided that this is not good, because variant childs appear then in lists
