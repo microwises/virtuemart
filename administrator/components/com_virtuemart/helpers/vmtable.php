@@ -38,7 +38,7 @@ class VmTable extends JTable{
 	protected $_unique = false;
 	protected $_unique_name = array();
 	protected $_orderingKey = 'ordering';
-	var $_useSlug = false;
+// 	var $_useSlug = false;
 	protected $_slugAutoName = '';
 	protected $_slugName = '';
 	protected $_loggable = false;
@@ -517,7 +517,7 @@ class VmTable extends JTable{
 
 			$this->bindChecknStoreNoLang($data,$preload);
 
-			vmdebug('bindchecknstore',$langData,$this);
+// 			vmdebug('bindchecknstore',$langData,$this);
 			$langTable->$tblKey = !empty($this->$tblKey) ? $this->$tblKey : 0;
 
 			$ok = true;

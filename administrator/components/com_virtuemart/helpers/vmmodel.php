@@ -119,6 +119,13 @@ class VmModel extends JModel {
 
 		$this->_tablePreFix = $defaultTable->_tablePreFix;
 		$dTableArray = get_object_vars($defaultTable);
+
+		if($defaultTable->_translatable){
+			foreach ($defaultTable->getTranslatableFields() as $k => $v){
+				$this->_validOrderingFieldName[] = 'l.'.$k;
+				unset($dTableArray[$k]);
+			}
+		}
 		// Iterate over the object variables to build the query fields and values.
 		foreach ($dTableArray as $k => $v){
 
@@ -129,14 +136,18 @@ class VmModel extends JModel {
 				continue;
 			}
 
-
 			$this->_validOrderingFieldName[] = $this->_tablePreFix.$k;
+
 		}
 
 	}
 
 	function addvalidOrderingFieldName($add){
 		$this->_validOrderingFieldName = array_merge($this->_validOrderingFieldName,$add);
+	}
+
+	function removevalidOrderingFieldName($name){
+		unset($this->_validOrderingFieldName[$name]) ;
 	}
 
 	var $_validFilterDir = array('ASC','DESC');

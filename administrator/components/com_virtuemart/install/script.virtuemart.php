@@ -306,8 +306,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 // 			$langtags = VmConfig::get('active_languages');
 
 
-			$this->checkAddFieldToTable('#__virtuemart_vendors','slug',' char(10) DEFAULT NULL');
-			$this->checkAddFieldToTable('#__virtuemart_manufacturercategories','slug',' char(10) DEFAULT NULL');
+// 			$this->checkAddFieldToTable('#__virtuemart_vendors','slug',' char(10) DEFAULT NULL');
+// 			$this->checkAddFieldToTable('#__virtuemart_manufacturercategories','slug',' char(10) DEFAULT NULL');
 			// RC3
 			$this->checkAddFieldToTable('#__virtuemart_paymentmethods','payment_desc',' text NOT NULL');
 			$this->checkAddFieldToTable('#__virtuemart_paymentmethods','slug',' varchar(128) DEFAULT NULL');
