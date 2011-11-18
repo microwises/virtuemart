@@ -372,30 +372,61 @@ class VmConfig {
 	 * Set defaut language tag for translatable table
 	 *
 	 * @author Patrick Kohl
-	 * @author Max Milbers
-	 *
 	 * @return string valid langtag
 	 */
 	public function setdbLanguageTag($langTag = 0) {
 
+		if (self::$_jpConfig->lang ) return self::$_jpConfig->lang;	
+
+		$langs = (array)self::$_jpConfig->get('active_languages',array());
+		$isBE = !JFactory::getApplication()->isSite();
+		if($isBE){
+			$siteLang = JRequest::getVar('vmlang',FALSE );// we must have this for edit form save
+
+		} else {
+			$lang =& JFactory::getLanguage(); 
+			$siteLang = $lang->getName();// get the user language
+			// Note Patrick, this not switch lang to joomfish lang
+			// but only set the langue to user account defaut lang
+		}
+		
+		if(!in_array($siteLang, $langs)) {
+			$params = JComponentHelper::getParams('com_languages');
+			$siteLang = $params->get('site', 'en-GB');//use default joomla
+		}
+		self::$_jpConfig->lang = strtolower(strtr($siteLang,'-','_'));
+		define('VMLANG', self::$_jpConfig->lang );
+		return self::$_jpConfig->lang;		
+
+ 	}	
+	
+	
+	
+	
+	
+	
+	
+	public function setdbLanguageTagOLD($langTag = 0) {
+
 		if (self::$_jpConfig->lang ) return self::$_jpConfig->lang;
 
-// 		self::$_jpConfig->lang = JRequest::getVar('vmlang','en_gb');
+		$siteLang = JRequest::getVar('vmlang',FALSE );
 // 		self::$_jpConfig->lang = $mainframe->getUserStateFromRequest( "virtuemart.vmlang", 'vmlang',JRequest::getVar('vmlang',$user->getParam('language') ) );
 
 		$isBE = !JFactory::getApplication()->isSite();
-
-		$siteLang = false;
-		if($isBE){
-			$mainframe =& JFactory::getApplication();
-			$vmlang = $mainframe->getUserStateFromRequest( "virtuemart.vmlang", 'vmlang',JRequest::getVar('vmlang',false ) );
-			if($vmlang){
-				$siteLang = $vmlang;
-				vmdebug('setdbLanguageTag $vmlang',$siteLang);
-			}
-		}
-
 		if (!$siteLang) {
+
+			//$siteLang = false;
+			if($isBE){
+				$mainframe =& JFactory::getApplication();
+				$vmlang = $mainframe->getUserStateFromRequest( "virtuemart.vmlang", 'vmlang',JRequest::getVar('vmlang',false ) );
+				if($vmlang){
+					$siteLang = $vmlang;
+					vmdebug('setdbLanguageTag $vmlang',$siteLang);
+				}
+			}
+
+
 			$jLang =& JFactory::getLanguage()->getTag();
 			$siteLang = $jLang;
 			vmdebug('setdbLanguageTag $jLang',$siteLang);

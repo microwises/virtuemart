@@ -907,7 +907,8 @@ class VmTable extends JTable{
 		$this->_errors = array();
 	}
 
-
+// TODO add Translatable delete  ???
+// VmConfig::get('active_languages',array()) ;
 	function delete( $oid=null ){
 
 		$k = $this->_tbl_key;

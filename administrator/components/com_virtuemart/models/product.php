@@ -942,6 +942,7 @@ class VirtueMartModelProduct extends VmModel {
 	 /**
 	  * This function creates a child for a given product id
 	  * @author Max Milbers
+	  * @author Patrick Kohl
 	  * @param int id of parent id
 	  */
 	 public function createChild($id){
@@ -949,13 +950,17 @@ class VirtueMartModelProduct extends VmModel {
 	 	$db = JFactory::getDBO();
 	 	$vendorId = 1;
 	 	$childs = count($this->getProductChildIds($id));
-	 	$db->setQuery('SELECT `product_name`,`slug` FROM `#__virtuemart_products_'.VMLANG.'` WHERE `virtuemart_product_id`='.(int)$id );
+	 	$db->setQuery('SELECT `product_name`,`slug` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_'.VMLANG.'` as l using (`virtuemart_product_id`) WHERE `virtuemart_product_id`='.(int)$id );
 	 	$parent = $db->loadObject();
-		// TODO CHILD CAN'T WORK we must add the default lang (note patrick)
-	 	$q = 'INSERT INTO `#__virtuemart_products` ( `product_name`,`slug` ,`virtuemart_vendor_id`, `product_parent_id`) VALUES ( "'.$parent->product_name.'","P'.$childs.rand(1,9).'-'.$parent->slug.'", '.(int)$vendorId.', '.(int)$id.' )';
+		// TODO Add child multi language ?
+	 	$q = 'INSERT INTO `#__virtuemart_products` ( `virtuemart_vendor_id`, `product_parent_id`) VALUES (  '.(int)$vendorId.', '.(int)$id.' )';
 	 	$db->setQuery($q);
 	 	$db->query();
-	 	return $db->insertid();
+		$id = $db->insertid();
+	 	$q = 'INSERT INTO `#__virtuemart_products_'.VMLANG.'` ( `virtuemart_product_id`,`product_name`,`slug` ) VALUES ( '.$id.',"'.$parent->product_name.'","P'.$childs.rand(1,9).'-'.$parent->slug.'" )';
+	 	$db->setQuery($q);
+	 	$db->query();
+	 	return $id ;
 	 }
 
 	 /**

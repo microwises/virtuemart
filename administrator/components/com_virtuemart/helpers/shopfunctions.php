@@ -131,7 +131,7 @@ class ShopFunctions {
 
 		$lang = strtolower(strtr($lang,'-','_'));
 		// only add if ID and view not null
-		if ($editView and $id) {
+		if ($editView and $id and (count(vmconfig::get('active_languages'))>1) ) {
 
 			if ($editView =='user') $editView ='vendor';
 			//$params = JComponentHelper::getParams('com_languages');
@@ -154,19 +154,18 @@ class ShopFunctions {
 				$("select#lang").chosen().change(function() {
 					langCode = $(this).find("option:selected").val();
 					flagClass = "flag-"+langCode.substr(0,2) ;
-					$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lang="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1" ,
+					$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1" , 
 						function(data) {
 							var items = [];
 
 							if (data.fields !== "error" ) {
-								if (data.structure == "empty") alert(data.msg);
+								if (data.structure == "empty") alert(data.msg); 
 								$.each(data.fields , function(key, val) {
-									cible = $("#"+key)
+									cible = jQuery("#"+key);
 									if (oldflag !== "") cible.parent().removeClass(oldflag)
 									if (cible.parent().addClass(flagClass).children().hasClass("mce_editable") && data.structure !== "empty" ) tinyMCE.execInstanceCommand(key,"mceSetContent",false,val);
 									else if (data.structure !== "empty") cible.val(val);
-
-								});
+									});
 								oldflag = flagClass ;
 							} else alert(data.msg);
 						}
@@ -174,16 +173,11 @@ class ShopFunctions {
 				});
 			})';
 			$document->addScriptDeclaration ( $j);
-
 		} else {
+			$params = JComponentHelper::getParams('com_languages');
+			$lang = $params->get('site', 'en-GB');
 			$jlang = JFactory::getLanguage();
 			$langs = $jlang->getKnownLanguages();
-			/*
-			foreach($langs as){
-
-			}
-			 * */
-			 
 			$defautName = $langs[$lang]['name'];
 			$flagImg =JURI::root( true ).'/administrator/components/com_virtuemart/assets/images/flag/'.substr($lang,0,2).'.png';
 			$langList = '<input name ="vmlang" type="hidden" value="'.$lang.'" ><img style="vertical-align: middle;" alt="'.$defautName.'" src="'.$flagImg.'"> <b> '.$defautName.'</b>';
