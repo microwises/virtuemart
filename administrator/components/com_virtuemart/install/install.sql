@@ -944,7 +944,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shipmentmethods` (
   `shipment_jplugin_id` int(11) NOT NULL,
   `shipment_name` char(200) NOT NULL DEFAULT '',
   `shipment_desc`  text NOT NULL COMMENT 'Description',
-  `slug` varchar(255) NOT NULL DEFAULT '',
+     `slug` varchar(255) NOT NULL DEFAULT '',
   `shipment_element` varchar(50) NOT NULL DEFAULT '',
   `shipment_params` text NOT NULL,
   `shipment_value` decimal(10,2) NOT NULL DEFAULT '0.00',
