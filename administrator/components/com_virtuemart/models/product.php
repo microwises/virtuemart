@@ -952,15 +952,12 @@ class VirtueMartModelProduct extends VmModel {
 	 	$childs = count($this->getProductChildIds($id));
 	 	$db->setQuery('SELECT `product_name`,`slug` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_'.VMLANG.'` as l using (`virtuemart_product_id`) WHERE `virtuemart_product_id`='.(int)$id );
 	 	$parent = $db->loadObject();
-		// TODO Add child multi language ?
-	 	$q = 'INSERT INTO `#__virtuemart_products` ( `virtuemart_vendor_id`, `product_parent_id`) VALUES (  '.(int)$vendorId.', '.(int)$id.' )';
-	 	$db->setQuery($q);
-	 	$db->query();
-		$id = $db->insertid();
-	 	$q = 'INSERT INTO `#__virtuemart_products_'.VMLANG.'` ( `virtuemart_product_id`,`product_name`,`slug` ) VALUES ( '.$id.',"'.$parent->product_name.'","P'.$childs.rand(1,9).'-'.$parent->slug.'" )';
-	 	$db->setQuery($q);
-	 	$db->query();
-	 	return $id ;
+	 	$data = array('product_name' => $parent->product_name,'slug' => $parent->product_name.$id.rand(1,9),'virtuemart_vendor_id' => (int)$vendorId, 'product_parent_id' => (int)$id);
+
+	 	$prodTable = $this->getTable('products');
+	 	$prodTable->bindChecknStore($data);
+
+	 	return $data['virtuemart_product_id'] ;
 	 }
 
 	 /**
@@ -1642,8 +1639,8 @@ class VirtueMartModelProduct extends VmModel {
 	function getProductChilds($product_id ) {
 		if(empty($product_id)) return array();
 		$db = JFactory::getDBO();
-		$db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products_'.VMLANG.'` 
-			JOIN `#__virtuemart_products` as C using (`virtuemart_product_id`) 
+		$db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products_'.VMLANG.'`
+			JOIN `#__virtuemart_products` as C using (`virtuemart_product_id`)
 			WHERE `product_parent_id` ='.(int)$product_id);
 		return $db->loadObjectList();
 
