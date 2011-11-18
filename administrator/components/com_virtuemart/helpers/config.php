@@ -383,13 +383,17 @@ class VmConfig {
 		if($isBE){
 			$siteLang = JRequest::getVar('vmlang',FALSE );// we must have this for edit form save
 			//Why not using the usterstae?
-			//$vmlang = $mainframe->getUserStateFromRequest( "virtuemart.vmlang", 'vmlang',JRequest::getVar('vmlang',false ) );
 		} else {
-			$lang =& JFactory::getLanguage();
-			$siteLang = $lang->getName();// get the user language
-			// Note Patrick, this not switch lang to joomfish lang
-			// but only set the langue to user account defaut lang
-
+			// try to find in session lang 
+			// this work with joomfish j1.5 (application.data.lang)
+			// TODO test wiht j1.7
+			$session  =& JFactory::getSession();
+			$registry =& $session->get('registry');
+			if ( ! $siteLang = $registry->getValue('application.data.lang') ) {
+				// use user default
+				$lang =& JFactory::getLanguage();
+				$siteLang = $lang->getName();
+			}
 			/*//What is the difference of this?
 			$params = JComponentHelper::getParams('com_languages');
 			$siteLang = $params->get('site', 'en_gb');
