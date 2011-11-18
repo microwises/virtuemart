@@ -125,7 +125,7 @@ class VmModel extends JModel {
 		if($defaultTable->_translatable){
 			foreach ($defaultTable->getTranslatableFields() as $v){
 				$this->_validOrderingFieldName[] = 'l.'.$v;
-				unset($dTableArray[$k]);
+				unset($dTableArray[$v]);
 			}
 		}
 		// Iterate over the object variables to build the query fields and values.

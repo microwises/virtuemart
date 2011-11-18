@@ -53,7 +53,7 @@ class VirtuemartViewUpdatesMigration extends JView {
 		parent::display($tpl);
 	}
 
-	function analyseTables() {
+/*	function analyseTables() {
 		$db = JFactory::getDBO();
 		$config = JFactory::getConfig();
 
@@ -71,12 +71,12 @@ class VirtuemartViewUpdatesMigration extends JView {
 			$db->setQuery('SELECT * FROM #__virtuemart_countries PROCEDURE ANALYSE(); ');
 
 			if($db->query()){
-				vmdebug('Analyse '.$table,$db->loadObjectList());
+				vmdebug('Analyse',$db->loadObjectList());
 			} else {
 				$app->enqueueMessage('Error drop virtuemart table ' . $db->getErrorMsg());
 			}
 // 		}
 		return $html.'</pre>';
-	}
+	}*/
 }
 // pure php no closing tag
