@@ -376,80 +376,39 @@ class VmConfig {
 	 */
 	public function setdbLanguageTag($langTag = 0) {
 
-		if (self::$_jpConfig->lang ) return self::$_jpConfig->lang;	
+		if (self::$_jpConfig->lang ) return self::$_jpConfig->lang;
 
 		$langs = (array)self::$_jpConfig->get('active_languages',array());
 		$isBE = !JFactory::getApplication()->isSite();
 		if($isBE){
 			$siteLang = JRequest::getVar('vmlang',FALSE );// we must have this for edit form save
-
+			//Why not using the usterstae?
+			//$vmlang = $mainframe->getUserStateFromRequest( "virtuemart.vmlang", 'vmlang',JRequest::getVar('vmlang',false ) );
 		} else {
-			$lang =& JFactory::getLanguage(); 
+			$lang =& JFactory::getLanguage();
 			$siteLang = $lang->getName();// get the user language
 			// Note Patrick, this not switch lang to joomfish lang
 			// but only set the langue to user account defaut lang
+
+			/*//What is the difference of this?
+			$params = JComponentHelper::getParams('com_languages');
+			$siteLang = $params->get('site', 'en_gb');
+
+			//or this
+			$siteLang =& JFactory::getLanguage()->getTag();
+			*/
 		}
-		
+
 		if(!in_array($siteLang, $langs)) {
 			$params = JComponentHelper::getParams('com_languages');
 			$siteLang = $params->get('site', 'en-GB');//use default joomla
 		}
 		self::$_jpConfig->lang = strtolower(strtr($siteLang,'-','_'));
 		define('VMLANG', self::$_jpConfig->lang );
-		return self::$_jpConfig->lang;		
-
- 	}	
-	
-	
-	
-	
-	
-	
-	
-	public function setdbLanguageTagOLD($langTag = 0) {
-
-		if (self::$_jpConfig->lang ) return self::$_jpConfig->lang;
-
-		$siteLang = JRequest::getVar('vmlang',FALSE );
-// 		self::$_jpConfig->lang = $mainframe->getUserStateFromRequest( "virtuemart.vmlang", 'vmlang',JRequest::getVar('vmlang',$user->getParam('language') ) );
-
-		$isBE = !JFactory::getApplication()->isSite();
-		if (!$siteLang) {
-
-			//$siteLang = false;
-			if($isBE){
-				$mainframe =& JFactory::getApplication();
-				$vmlang = $mainframe->getUserStateFromRequest( "virtuemart.vmlang", 'vmlang',JRequest::getVar('vmlang',false ) );
-				if($vmlang){
-					$siteLang = $vmlang;
-					vmdebug('setdbLanguageTag $vmlang',$siteLang);
-				}
-			}
-
-
-			$jLang =& JFactory::getLanguage()->getTag();
-			$siteLang = $jLang;
-			vmdebug('setdbLanguageTag $jLang',$siteLang);
-		}
-
-		$langs = (array)self::$_jpConfig->get('active_languages',array());
-
-		$siteLang = strtolower(strtr($siteLang,'-','_'));
-		if(empty($siteLang) || (!in_array($siteLang, $langs))){
-			$params = JComponentHelper::getParams('com_languages');
-			$jLang = $params->get('site', 'en_gb');
-			$siteLang = strtolower(strtr($jLang,'-','_'));
-			vmdebug('setdbLanguageTag $params->get("site", "en_gb");',$siteLang);
- 		}
-
- 		self::$_jpConfig->lang = $siteLang;
-
- 		if($isBE){
- 			$mainframe->setUserState( "virtuemart.vmlang", self::$_jpConfig->lang );
- 		}
-		define('VMLANG', self::$_jpConfig->lang );
 		return self::$_jpConfig->lang;
+
  	}
+
 
 	function setSession(){
 		$session = JFactory::getSession();
