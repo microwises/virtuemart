@@ -300,7 +300,7 @@ class VirtueMartModelOrders extends VmModel {
 			$data->order_status = $order_status;
 			//$data->comment = $comment;
 
-			$data = $table->bindChecknStore($data,true);
+			$table->bindChecknStore($data,true);
 		/* Update the order item history */
 			//$this->_updateOrderItemHist($id, $order_status, $customer_notified, $comment);
 			$errors = $table->getErrors();
@@ -1055,7 +1055,8 @@ $_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLine',array('shipment'
 				return;
 			}
 		}
-		return $table->bindChecknStore($data);
+		$table->bindChecknStore($data);
+		return true;
 
 		//		return true;
 	}

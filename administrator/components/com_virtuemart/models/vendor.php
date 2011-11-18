@@ -164,7 +164,7 @@ class VirtueMartModelVendor extends VmModel {
 	    $data['vendor_accepted_currencies'] = implode(',', $data['vendor_accepted_currencies']);
 	}
 
-	$data = $table->bindChecknStore($data);
+	$table->bindChecknStore($data);
    $errors = $table->getErrors();
 	foreach($errors as $error){
 		$this->setError($error);

@@ -77,7 +77,7 @@ class VirtueMartModelCoupon extends VmModel {
 	{
 		$table = $this->getTable('coupons');
 		//$data = JRequest::get('post');
-                $data = $table->bindChecknStore($data);
+      $table->bindChecknStore($data);
 		// Convert selected dates to MySQL format for storing.
 		$startDate = JFactory::getDate($data['coupon_start_date']);
 		$data['coupon_start_date'] = $startDate->toMySQL();

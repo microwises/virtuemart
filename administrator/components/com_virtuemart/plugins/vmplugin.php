@@ -100,9 +100,9 @@ abstract class vmPlugin extends JPlugin {
 
 		if($this->_loggable)	$pluginTable->setLoggable();
 
-		$res = $pluginTable->bindChecknStore($values);
+		$pluginTable->bindChecknStore($values);
 
-		return $res;
+		return $values;
 
 	}
 

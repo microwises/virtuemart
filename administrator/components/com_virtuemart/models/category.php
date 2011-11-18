@@ -549,7 +549,7 @@ class VirtueMartModelCategory extends VmModel {
 		}
 
 // 		vmdebug('category store ',$data);
-		$data = $table->bindChecknStore($data);
+		$table->bindChecknStore($data);
     	$errors = $table->getErrors();
 		foreach($errors as $error){
 			$this->setError($error);
@@ -562,7 +562,7 @@ class VirtueMartModelCategory extends VmModel {
 
     		$table = $this->getTable('category_categories');
 
-			$xdata = $table->bindChecknStore($xdata);
+			$table->bindChecknStore($xdata);
 	    	$errors = $table->getErrors();
 			foreach($errors as $error){
 				$this->setError($error);

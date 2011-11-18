@@ -72,7 +72,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 
 		$table = $this->getTable($this->_maintablename);
 
-		$data = $table->bindChecknStore($data,true);
+		$table->bindChecknStore($data,true);
 
 		$errors = $table->getErrors();
 		foreach($errors as $error){

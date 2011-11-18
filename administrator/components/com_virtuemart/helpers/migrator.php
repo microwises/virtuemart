@@ -403,7 +403,7 @@ class Migrator extends VmModel{
 
 				$table = $this->getTable('shoppergroups');
 
-				$sGroups = $table->bindChecknStore($sGroups);
+				$table->bindChecknStore($sGroups);
 				$errors = $table->getErrors();
 				if(!empty($errors)){
 					foreach($errors as $error){
@@ -727,7 +727,7 @@ class Migrator extends VmModel{
 
 					$table = $this->getTable('category_categories');
 
-					$category = $table->bindChecknStore($category);
+					$table->bindChecknStore($category);
 					$errors = $table->getErrors();
 					if(!empty($errors)){
 						foreach($errors as $error){
@@ -796,7 +796,7 @@ class Migrator extends VmModel{
 
 				$table = $this->getTable('manufacturercategories');
 
-				$mfcategory = $table->bindChecknStore($mfcategory);
+				$table->bindChecknStore($mfcategory);
 				$errors = $table->getErrors();
 				if(!empty($errors)){
 					foreach($errors as $error){
@@ -1179,7 +1179,7 @@ class Migrator extends VmModel{
 					$orderData->modified_on = $this->_changeToStamp($order['mdate']); //we could remove this to set modified_on today
 
 					$orderTable = $this->getTable('orders');
-					$newId = $orderTable->bindChecknStore($orderData);
+					$orderTable->bindChecknStore($orderData);
 					$errors = $orderTable->getErrors();
 					if(!empty($errors)){
 						foreach($errors as $error){

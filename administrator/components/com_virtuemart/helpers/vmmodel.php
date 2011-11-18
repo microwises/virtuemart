@@ -443,7 +443,7 @@ class VmModel extends JModel {
 
 		$table = $this->getTable($this->_maintablename);
 
-		$data = $table->bindChecknStore($data);
+		$table->bindChecknStore($data);
 
 		$errors = $table->getErrors();
 		foreach($errors as $error){

@@ -376,17 +376,18 @@ class VmConfig {
 	 *
 	 * @return string valid langtag
 	 */
-	public function setdbLanguageTag() {
-		if (self::$_jpConfig->lang ) echo self::$_jpConfig->lang ;
+	public function setdbLanguageTag($langTag = 0) {
+
 		if (self::$_jpConfig->lang ) return self::$_jpConfig->lang;
 		$langs = VmConfig::get('active_languages',array());
-		self::$_jpConfig->lang = JRequest::getVar('vmlang','en_gb');
+// 		self::$_jpConfig->lang = JRequest::getVar('vmlang','en_gb');
 		// user language settings only in FE
-		if (JFactory::getApplication()->isSite()) {
+		$isSite = JFactory::getApplication()->isSite();
+		if ($isSite) {
 			$user =& JFactory::getUser();
 			$mainframe =& JFactory::getApplication();
 			self::$_jpConfig->lang = $mainframe->getUserStateFromRequest( "virtuemart.lang", 'lang',JRequest::getVar('lang',$user->getParam('language') ) );
-			$mainframe->setUserState( "virtuemart.lang", self::$_jpConfig->lang );
+
 		}
 
 		if(empty(self::$_jpConfig->lang) || (!in_array(self::$_jpConfig->lang, $langs))){
@@ -394,9 +395,12 @@ class VmConfig {
 			$siteLang = $params->get('site', 'en_gb');
 			self::$_jpConfig->lang = $siteLang;
  		}
- 		self::$_jpConfig->lang =  strtolower(strtr(self::$_jpConfig->lang,'-','_'));
-//  		self::$_jpConfig->lang = strtr(self::$_jpConfig->lang,'-','_');
 
+ 		self::$_jpConfig->lang =  strtolower(strtr(self::$_jpConfig->lang,'-','_'));
+
+ 		if($isSite){
+ 			$mainframe->setUserState( "virtuemart.lang", self::$_jpConfig->lang );
+ 		}
 		define('VMLANG', self::$_jpConfig->lang );
 		return self::$_jpConfig->lang;
  	}

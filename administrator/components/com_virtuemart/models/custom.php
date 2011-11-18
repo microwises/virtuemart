@@ -250,7 +250,7 @@ class VirtueMartModelCustom extends VmModel {
 					}
 
 				}
-				$data = $tableCustomfields->bindChecknStore($fields);
+				$tableCustomfields->bindChecknStore($fields);
 				$errors = $tableCustomfields->getErrors();
 				foreach($errors as $error){
 					$this->setError($error);
@@ -283,7 +283,7 @@ class VirtueMartModelCustom extends VmModel {
 			}
 
 			$tableCustomfields = $this->getTable($table.'_customfields');
-			$data = $tableCustomfields->bindChecknStore($fields);
+			$tableCustomfields->bindChecknStore($fields);
     		$errors = $tableCustomfields->getErrors();
 			foreach($errors as $error){
 				$this->setError($error);
