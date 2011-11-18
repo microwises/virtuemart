@@ -309,7 +309,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->checkAddFieldToTable('#__virtuemart_vendors','slug',' char(10) DEFAULT NULL');
 			$this->checkAddFieldToTable('#__virtuemart_manufacturercategories','slug',' char(10) DEFAULT NULL');
 			// RC3
-			$this->checkAddFieldToTable('#__virtuemart_paymentmethods','payment_desc',' char(10) DEFAULT NULL');
+			$this->checkAddFieldToTable('#__virtuemart_paymentmethods','payment_desc',' text NOT NULL');
+			$this->checkAddFieldToTable('#__virtuemart_paymentmethods','slug',' varchar(128) DEFAULT NULL');
+			$this->checkAddFieldToTable('#__virtuemart_shipmentmethods','slug',' varchar(128) DEFAULT NULL');
 			$config = &JFactory::getConfig();
 			$lang = $config->getValue('language');
 			if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');

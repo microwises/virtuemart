@@ -42,7 +42,7 @@ class VirtuemartViewShipmentmethod extends JView {
 		$this->loadHelper('html');
 
 		$model = $this->getModel();
-		$shipment = $model->getShipment();
+
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		$viewName=ShopFunctions::SetViewTitle();
@@ -50,6 +50,7 @@ class VirtuemartViewShipmentmethod extends JView {
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
+		        $shipment = $model->getShipment();
 			$this->loadHelper('image');
 			$this->loadHelper('html');
 			$this->loadHelper('parameterparser');
@@ -71,7 +72,6 @@ class VirtuemartViewShipmentmethod extends JView {
 			ShopFunctions::addStandardEditViewCommands();
 
 		} else {
-
 
 			$shipments = $model->getShipments();
 			$this->assignRef('shipments', $shipments);

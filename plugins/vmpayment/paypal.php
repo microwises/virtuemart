@@ -194,9 +194,9 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$new_status = '';
 
 	$address = $cart->ST;
-	if (empty($address))
+	if (empty($address)) {
 	    $address = $cart->BT;
-
+	}
 
 	$vendorModel = new VirtueMartModelVendor();
 	$vendorModel->setId(1);

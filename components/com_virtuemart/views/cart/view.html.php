@@ -242,7 +242,8 @@ class VirtueMartViewCart extends JView {
 		$this->assignRef('select_shipment_text',JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD'), JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'));
 		}
 	 */
-
+$shipment_not_found_text = JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');
+		$this->assignRef('shipment_not_found_text', $shipment_not_found_text);
 		$this->assignRef('shipments_shipment_rates', $shipments_shipment_rates);
 		$this->assignRef('found_shipment_method', $found_shipment_method);
 		return;
@@ -258,9 +259,9 @@ class VirtueMartViewCart extends JView {
 	private function lSelectPayment() {
 
 		$payment_not_found_text='';
-		$shipments_payment_rates=array();
+		$payments_payment_rates=array();
 		if (!$this->checkPaymentMethodsConfigured()) {
-			$this->assignRef('paymentplugins_payments', $shipments_payment_rates);
+			$this->assignRef('paymentplugins_payments', $payments_payment_rates);
 			$this->assignRef('found_payment_method', $found_payment_method);
 		}
 

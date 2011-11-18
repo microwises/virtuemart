@@ -45,7 +45,7 @@ class TableShipmentmethods extends VmTable {
 
     /** @var string Shipment  name */
     var $shipment_desc = '';
-
+    var $slug;
     /** @var string Element of shipmentmethod */
     var $shipment_element = '';
 
@@ -74,7 +74,7 @@ class TableShipmentmethods extends VmTable {
 
 	$this->setLoggable();
 	$this->setTranslatable(array('shipment_name', 'shipment_desc'));
-	//$this->setSlug('shipment_name'); i don't see why
+	 $this->setSlug('shipment_name');
     }
 
 }

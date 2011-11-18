@@ -93,7 +93,7 @@ class VirtuemartControllerTranslate extends VmController {
 		// TODO temp trick for vendor
 		if ($viewKey == 'vendor') $id = 1 ;
 
-		$tables = array ('category' =>'categories','product' =>'products','manufacturer' =>'manufacturers','manufacturercategories' =>'manufacturercategories','vendor' =>'vendors');
+		$tables = array ('category' =>'categories','product' =>'products','manufacturer' =>'manufacturers','manufacturercategories' =>'manufacturercategories','vendor' =>'vendors', 'paymentmethod' =>'paymentmethods', 'shipmentmethod' =>'shipmentmethods');
 
 		if ( !array_key_exists($viewKey, $tables) ) {
 			$json['msg'] ="Invalid view ". $viewKey;
