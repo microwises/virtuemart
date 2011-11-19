@@ -400,7 +400,7 @@ class VmModel extends JModel {
 		if(empty($this->ids)){
 			$errors = $this->_db->getErrorMsg();
 			if( !empty( $errors)){
-				vmdebug('exeSortSearchListQuery error in db ',$this->_db->getErrorMsg());
+				vmdebug('exeSortSearchListQuery error in class '.get_class($this).' sql:',$this->_db->getErrorMsg());
 			}
 			if($object == 2 or $object == 1){
 				 $this->ids = array();

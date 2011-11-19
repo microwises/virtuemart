@@ -53,8 +53,8 @@ class VirtuemartViewUpdatesMigration extends JView {
 		parent::display($tpl);
 	}
 
-/*	function analyseTables() {
-		$db = JFactory::getDBO();
+	function analyseTables() {
+/*		$db = JFactory::getDBO();
 		$config = JFactory::getConfig();
 
 		$prefix = $config->getValue('config.dbprefix').'virtuemart_%';
@@ -76,7 +76,7 @@ class VirtuemartViewUpdatesMigration extends JView {
 				$app->enqueueMessage('Error drop virtuemart table ' . $db->getErrorMsg());
 			}
 // 		}
-		return $html.'</pre>';
-	}*/
+		return $html.'</pre>';*/
+	}
 }
 // pure php no closing tag

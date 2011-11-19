@@ -306,8 +306,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 // 			$langtags = VmConfig::get('active_languages');
 
 
-// 			$this->checkAddFieldToTable('#__virtuemart_vendors','slug',' char(10) DEFAULT NULL');
-// 			$this->checkAddFieldToTable('#__virtuemart_manufacturercategories','slug',' char(10) DEFAULT NULL');
+			$this->checkAddFieldToTable('#__virtuemart_vendors','slug',' char(10) DEFAULT NULL');
+			$this->checkAddFieldToTable('#__virtuemart_manufacturercategories','slug',' char(10) DEFAULT NULL');
 			// RC3
 			$this->checkAddFieldToTable('#__virtuemart_paymentmethods','payment_desc',' text NOT NULL');
 			$this->checkAddFieldToTable('#__virtuemart_paymentmethods','slug',' char(128) DEFAULT NULL');
@@ -843,4 +843,44 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 } // if(defined)
 
+class genericTableUpdater{
+
+	public function __construct(){
+
+		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
+
+		$this->_app = JFactory::getApplication();
+		$this->_db = JFactory::getDBO();
+		$this->_oldToNew = new stdClass();
+		$this->starttime = microtime(true);
+
+		$max_execution_time = ini_get('max_execution_time');
+		$jrmax_execution_time= JRequest::getInt('max_execution_time');
+
+		if(!empty($jrmax_execution_time)){
+			// 			vmdebug('$jrmax_execution_time',$jrmax_execution_time);
+			if($max_execution_time!==$jrmax_execution_time) @ini_set( 'max_execution_time', $jrmax_execution_time );
+		}
+
+		$this->maxScriptTime = ini_get('max_execution_time')*0.90-1;	//Lets use 5% of the execution time as reserve to store the progress
+
+
+		$memory_limit = ini_get('memory_limit');
+		if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
+
+		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) * 0.75;
+	}
+
+	public function updateMyVmTables(){
+
+		$file = JPATH_VM_ADMINISTRATOR.DS.'install'.DS.'install.sql';
+		$data = fopen($file, 'r');
+		while ($line = fgets ($data)) {
+			$line = trim($line);
+			if(strpos($line,'CREATE TABLE IF NOT EXISTS')!=false){
+
+			}
+		}
+	}
+}
 // pure php no tag
