@@ -1763,9 +1763,9 @@ class Migrator extends VmModel{
 // 			vmdebug('$portLanguageFields contains language fields ',$columns);
 
 			$translatableFields = $langTable->getTranslatableFields();
-
-			if(in_array($translatableFields[0],$columns)){
-
+			$translatableFields = array_intersect($translatableFields,$columns);
+// 			if(in_array($translatableFields[0],$columns)){
+			if(count($translatableFields)>1){
 
 				$ok = true;
 				//approximatly 100 products take a 1 MB
