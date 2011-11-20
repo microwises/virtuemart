@@ -1296,10 +1296,11 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		if ($mf_virtuemart_product_ids) {
-			$query = 'SELECT DISTINCT `#__virtuemart_manufacturers`.`mf_name`,`#__virtuemart_manufacturers`.`virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers`';
-			$query .= ' LEFT JOIN `#__virtuemart_product_manufacturers` ON `#__virtuemart_manufacturers`.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
+			$query = 'SELECT DISTINCT l.`mf_name`,l.`virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers_'.VMLANG.'` as l';
+			$query .=' JOIN `#__virtuemart_manufacturers` AS p using (`virtuemart_manufacturer_id`)';
+			$query .= ' LEFT JOIN `#__virtuemart_product_manufacturers` ON l.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
 			$query .= ' WHERE `#__virtuemart_product_manufacturers`.`virtuemart_product_id` in ('.implode (',', $mf_virtuemart_product_ids ).') ';
-			$query .= ' ORDER BY `#__virtuemart_manufacturers`.`mf_name`';
+			$query .= ' ORDER BY l.`mf_name`';
 			$this->_db->setQuery($query);
 			$manufacturers = $this->_db->loadObjectList();
 			// 		vmdebug('my manufacturers',$this->_db->getQuery());

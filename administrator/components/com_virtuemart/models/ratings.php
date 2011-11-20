@@ -140,7 +140,7 @@ class VirtueMartModelRatings extends VmModel {
 
        	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`, `u`.`name` AS customer FROM `#__virtuemart_rating_reviews` AS `pr`
 		LEFT JOIN `#__users` AS `u`	ON `pr`.`created_by` = `u`.`id`
-		LEFT JOIN `#__virtuemart_products` AS `p` ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`
+		LEFT JOIN `#__virtuemart_products_'.VMLANG.'` AS `p` ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`
 		LEFT JOIN `#__virtuemart_rating_votes` AS `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`u`.`id`
 		WHERE  `p`.`virtuemart_product_id` = "'.$virtuemart_product_id.'"
 		ORDER BY `pr`.`modified_on` ';
@@ -158,7 +158,7 @@ class VirtueMartModelRatings extends VmModel {
        	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`,CONCAT_WS(" ",`u`.`title`,u.`last_name`,`u`.`first_name`) as customer FROM `#__virtuemart_rating_reviews` AS `pr`
 		LEFT JOIN `#__virtuemart_userinfos` AS `u`
      	ON `pr`.`created_by` = `u`.`virtuemart_user_id`
-		LEFT JOIN `#__virtuemart_products` AS `p`
+		LEFT JOIN `#__virtuemart_products_'.VMLANG.'` AS `p`
      	ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`
 		LEFT JOIN `#__virtuemart_rating_votes` as `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`pr`.`created_by`
       WHERE virtuemart_rating_review_id="'.(int)$cids[0].'" ' ;
