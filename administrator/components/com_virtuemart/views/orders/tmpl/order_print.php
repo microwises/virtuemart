@@ -171,15 +171,7 @@ if (VmConfig::get('coupons_enable') == '1') {
 			<td width="100" align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->priceDisplay($this->orderbt->order_total, '', false); ?></strong>
 			</td>
 		    </tr>
-<?php
-/* Get the tax details, if any */
-//$tax_details = ps_checkout::show_tax_details( $db->f('order_tax_details'), $db->f('order_currency') );
-?>
-		    <?php if (!empty($tax_details)) { ?>
-    		    <tr>
-    			<td colspan="6" align="right"><?php echo $tax_details; ?></td>
-    		    </tr>
-<?php }; ?>
+
 		</table>
 		    <?php //$ps_order_change_html->html_change_add_item(); ?></td>
 	</tr>

@@ -1,6 +1,6 @@
 DROP TABLE
 `#__virtuemart_permgroups`,
-`#__virtuemart_carts`,
+
 `#__virtuemart_categories`,
 `#__virtuemart_category_categories`,
 `#__virtuemart_countries`,

@@ -181,7 +181,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$fields = array('data'=>'`data` LONGTEXT NULL AFTER `time`');
 				$this->alterTable('#__session',$fields);
 			}
-
+// 			drop `#__virtuemart_carts`,
 			/*
 			// 		$fields = array('calc_amount_cond'=>"`calc_amount_cond_min` float NOT NULL COMMENT 'min number of qualifying products'");
 			// 		$this->alterTable('#__virtuemart_calcs',$fields);
@@ -869,7 +869,7 @@ class genericTableUpdater{
 		$this->starttime = microtime(true);
 
 		$max_execution_time = ini_get('max_execution_time');
-		$jrmax_execution_time= JRequest::getInt('max_execution_time');
+		$jrmax_execution_time= JRequest::getInt('max_execution_time',120);
 
 		if(!empty($jrmax_execution_time)){
 			// 			vmdebug('$jrmax_execution_time',$jrmax_execution_time);
@@ -904,14 +904,15 @@ class genericTableUpdater{
 				$fieldLines = array();
 				$tableKeys = array();
 				$start = strpos($line,'`');
+
 				$tablename = trim(substr($line,$start+1,-3));
 // 				vmdebug('my $tablename ',$start,$end,$line);
-			} else if(strpos($line,'KEY')!==false){
+			} else if($tableDefStarted && strpos($line,'KEY')!==false){
 
 				$start = strpos($line,"`");
 				$temp = substr($line,$start+1);
-				$start = strpos($temp,"`");
-				$keyName = substr($temp,0,$start);
+				$end = strpos($temp,"`");
+				$keyName = substr($temp,0,$end);
 
 				if(strrpos($line,',')==strlen($line)-1){
 					$line = substr($line,0,-1);
@@ -925,18 +926,14 @@ class genericTableUpdater{
 
 				$start = strpos($line,"`");
 				$temp = substr($line,$start+1);
-				$start = strpos($temp,"`");
-				$keyName = substr($temp,0,$start);
+				$end = strpos($temp,"`");
+				$keyName = substr($temp,0,$end);
 
-				$line = trim(substr($line,$start+2));
+				$line = trim(substr($line,$end+2));
 				if(strrpos($line,',')==strlen($line)-1){
 					$line = substr($line,0,-1);
 				}
-// 				$tableKeys[$keyName] = $line;
-// 				$end = strrpos($line,'`');
-// 				$fieldname = trim(substr($line,1,$end-1));
-// 				$value = trim(substr($line,$end+1,-1));
-// vmdebug('my key '.$keyName.' and '.$line);
+
 				$fieldLines[$keyName] = $line;
 			}
 		}
@@ -991,17 +988,7 @@ class genericTableUpdater{
 		foreach($eKeys as $eKey){
 			$knownFieldNames[] = $eKey->Key_name;
 		}
-// 		vmdebug('$keys',$eKeys);
 
-/*		foreach($eKeys as $eKey){
-			$query = 'ALTER TABLE `'.$tablename.'` DROP `'.$eKey->Key_name.'` ';
-			$this->_db->setQuery($query);
-			if(!$this->_db->query()){
-				$app = JFactory::getApplication();
-				$app->enqueueMessage('alterKey DROP INDEX '.$eKey->Key_name.': '.$this->_db->getErrorMsg() );
-			}
-		}
-*/
 		foreach($keys as $name =>$value){
 
 			if(strpos($value,'PRIMARY')!==false) continue; //We ignore Primaries
@@ -1023,19 +1010,6 @@ class genericTableUpdater{
 				$app->enqueueMessage('alterKey '.$action.' INDEX '.$key.': '.$this->_db->getErrorMsg() );
 			}
 		}
-		//Maybe the best is just to drop all keys and to write them new
-
-		//ALTER TABLE `jos_virtuemart_calc_countries`  DROP INDEX `i_virtuemart_calc_id`;
-		//ALTER TABLE `jos_virtuemart_userfield_values`  ADD INDEX `test` (`virtuemart_userfield_value_id`);
-// 		PRIMARY KEY (`id`),
-// 		KEY `module_id` (`module_id`)
-// 		KEY (`virtuemart_vendor_id`)
-// 		UNIQUE KEY `i_virtuemart_calc_id` (`virtuemart_calc_id`,`virtuemart_category_id`)
-// 		UNIQUE KEY `i_virtuemart_calc_id` (`virtuemart_calc_id`,`virtuemart_shoppergroup_id`)
-// 		UNIQUE KEY `i_virtuemart_calc_id` (`virtuemart_calc_id`,`virtuemart_country_id`)
-// 		UNIQUE KEY `i_virtuemart_calc_id` (`virtuemart_calc_id`,`virtuemart_state_id`)
-// 		KEY `idx_category_virtuemart_vendor_id` (`virtuemart_vendor_id`),
-
 
 	}
 

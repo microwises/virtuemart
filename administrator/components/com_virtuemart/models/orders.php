@@ -541,7 +541,6 @@ class VirtueMartModelOrders extends VmModel {
 		$_orderData->order_total = $_prices['billTotal'];
 		$_orderData->order_subtotal = $_prices['priceWithoutTax'];
 		$_orderData->order_tax = $_prices['taxAmount'];
-		$_orderData->order_tax_details = null; // TODO What's this?? Which data needs to be serialized?  I dont know also
 		$_orderData->order_shipment = $_prices['shipmentValue'];
 		$_orderData->order_shipment_tax = $_prices['shipmentTax'];
 		$_orderData->order_payment = $_prices['paymentValue'];

@@ -52,6 +52,7 @@ abstract class vmPlugin extends JPlugin {
 
 		$this->_tablename = '#__virtuemart_'.$this->_psType .'_plg_'. $this->_name;
 		$this->_tableChecked = false;
+		$this->_table = null;
 	}
 
 /**
@@ -87,41 +88,49 @@ abstract class vmPlugin extends JPlugin {
 	 * @param string $tableName When different then the default of the plugin, provid it here
 	 * @param string $tableKey an additionally unique key
 	 */
-	protected function storePluginInternalData(&$values, $primaryKey='', $tableName=0){
+	protected function storePluginInternalData(&$values, $primaryKey=''){
 
-		if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
-		if(empty($tableName)) $tableName = $this->_tablename;
+// 		if(empty($tableName)) $tableName = $this->_tablename;
 
-		$db = JFactory::getDBO();
-		$pluginTable = new VmTableData($tableName,'id',$db);
-		$pluginTable -> loadFields();
+		if(!$this->_table){
+			$this->createPluginTable($this->_tablename);
+		}
 
-		if(empty($primaryKey)) $primaryKey = $this->_tablepkey;
-		$pluginTable->setPrimaryKey($primaryKey);
-
-		if($this->_loggable)	$pluginTable->setLoggable();
-
-		$pluginTable->bindChecknStore($values);
-
+		$this->_table->bindChecknStore($values);
+		$errors = $table->getErrors();
+		if(!empty($errors)){
+			foreach($errors as $error){
+				$this->setError($error);
+			}
+			break;
+		}
 		return $values;
 
 	}
 
-	protected function getPluginInternalData($id, $primaryKey=0, $tableName=0){
+	protected function getPluginInternalData($id, $primaryKey=0){
 
-		if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
-		if(empty($tableName)) $tableName = $this->_tablename;
+// 		if(empty($tableName)) $tableName = $this->_tablename;
 
-		$db = JFactory::getDBO();
-		$pluginTable = new VmTableData($tableName,'id',$db);
-		$pluginTable -> loadFields();
+		if(!$this->_table){
+			$this->createPluginTable($this->_tablename);
+		}
 
-		if(empty($primaryKey)) $primaryKey = $this->_tablepkey;
-		$pluginTable->setPrimaryKey($primaryKey);
-
-		if($this->_loggable)	$pluginTable->setLoggable();
-
-		return $pluginTable->load($id);
+		return $this->_table->load($id);
 	}
 
+	protected function createPluginTable($tableName){
+
+		if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
+		$db =& JFactory::getDBO();
+		$this->_table = new VmTableData($tableName,'id',$db);
+		foreach($this->tableFields as $field){
+			$this->_table->$field = 0;
+		}
+// 		$this->_table -> setFields($this->tableFields);
+		if(empty($primaryKey)) $primaryKey = $this->_tablepkey;
+
+		$this->_table->setPrimaryKey($primaryKey);
+		if($this->_loggable)	$this->_table->setLoggable();
+	}
 }

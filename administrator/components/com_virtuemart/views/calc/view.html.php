@@ -201,6 +201,7 @@ class VirtuemartViewCalc extends JView {
 		if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');
 		JPluginHelper::importPlugin('vmcalculation');
 		$dispatcher = JDispatcher::getInstance();
+
 		$answer = $dispatcher->trigger('plgVmAddMathOp', array(&$mathOps));
 
 		$listHTML = JHTML::_('Select.genericlist', $mathOps, 'calc_value_mathop', '', 'calc_value_mathop', 'calc_value_mathop_name', $selected );

@@ -391,12 +391,12 @@ class VmConfig {
 			$session  =& JFactory::getSession();
 			$registry =& $session->get('registry');
 			$siteLang = $registry->getValue('application.data.lang') ;
-			} else  { 
+			} else  {
 			// TODO test wiht j1.7
 			jimport('joomla.language.helper');
 			$languages = JLanguageHelper::getLanguages('lang_code');
 			$siteLang = JFactory::getLanguage()->getTag();
-			} 
+			}
 			if ( ! $siteLang ) {
 				// use user default
 				$lang =& JFactory::getLanguage();
@@ -557,7 +557,7 @@ class VmConfig {
 	function getCreateConfigTableQuery(){
 
 		return "CREATE TABLE IF NOT EXISTS `#__virtuemart_configs` (
-  `virtuemart_config_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `virtuemart_config_id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
   `config` text,
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT 0,
