@@ -28,6 +28,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	$this->_idName = 'virtuemart_' . $this->_psType . 'method_id';
 	$this->_loggable = true;
 	$this->_createTable();
+	$this->_tableChecked = true;
     }
 
     /**

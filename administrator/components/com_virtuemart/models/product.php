@@ -106,6 +106,7 @@ class VirtueMartModelProduct extends VmModel {
 		$joinMf 		= false ;
 		$joinPrice 		= false ;
 		$joinCustom		= false ;
+		$joinLang = false;
 
 		$where = array();
 
@@ -141,10 +142,11 @@ class VirtueMartModelProduct extends VmModel {
 			if(!empty($filter_search)){
 				$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
 			}
-
+			$joinLang = true;
 		} elseif ($search = vmRequest::uword('filter_product', false)){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			$where[] = 'l.`product_name` LIKE '.$search;
+			$joinLang = true;
 		}
 
 		if ($searchcustoms = JRequest::getVar('customfields', array(), 'default' ,'array')){
@@ -213,7 +215,7 @@ class VirtueMartModelProduct extends VmModel {
 				$where[] = ' p.`product_special`="1" ';// TODO Change  to  a  individual button
 				break;
 			case 'c.category_name':
-				$orderBy = ' ORDER BY c.`category_name` ';
+				$orderBy = ' ORDER BY l.`category_name` ';
 				$joinCategory = true ;
 				break;
 			case 'l.category_description':
@@ -221,7 +223,7 @@ class VirtueMartModelProduct extends VmModel {
 				$joinCategory = true ;
 				break;
 			case 'm.mf_name':
-				$orderBy = ' ORDER BY m.`mf_name` ';
+				$orderBy = ' ORDER BY l.`mf_name` ';
 				$joinMf = true ;
 				break;
 			case 'ordering':
@@ -244,6 +246,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		//Group case from the modules
 		if($group){
+
 			$groupBy = 'group by p.`virtuemart_product_id`';
 			switch ($group) {
 				case 'featured':
@@ -261,13 +264,24 @@ class VirtueMartModelProduct extends VmModel {
 				$orderBy = ' ORDER BY product_sales ';//LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
 				$filter_order_Dir = 'DESC';
 			}
+			$joinCategory 	= false ;
+			$joinMf 		= false ;
+			$joinPrice 		= false ;
+			$joinCustom		= false ;
+			$joinLang = false;
 		}
 
 		//write the query, incldue the tables
 		// 		$selectFindRows = 'SELECT SQL_CALC_FOUND_ROWS * FROM `#__virtuemart_products` ';
 		// 		$selectFindRows = 'SELECT COUNT(*) FROM `#__virtuemart_products` ';
-		$select = ' * FROM `#__virtuemart_products_'.VMLANG.'` as l';
-		$joinedTables = ' JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)';
+		if($joinLang){
+			$select = ' * FROM `#__virtuemart_products_'.VMLANG.'` as l';
+			$joinedTables = ' JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)';
+		} else {
+			$select = ' * FROM `#__virtuemart_products` as p';
+			$joinedTables = '';
+		}
+
 		if ($joinCategory == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_categories` ON p.`virtuemart_product_id` = `#__virtuemart_product_categories`.`virtuemart_product_id`
 			 LEFT JOIN `#__virtuemart_categories_'.VMLANG.'` as c ON c.`virtuemart_category_id` = `#__virtuemart_product_categories`.`virtuemart_category_id`';

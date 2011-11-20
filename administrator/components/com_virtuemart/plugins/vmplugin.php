@@ -51,6 +51,7 @@ abstract class vmPlugin extends JPlugin {
 		if (!class_exists('JParameter')) require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
 
 		$this->_tablename = '#__virtuemart_'.$this->_psType .'_plg_'. $this->_name;
+		$this->_tableChecked = false;
 	}
 
 /**

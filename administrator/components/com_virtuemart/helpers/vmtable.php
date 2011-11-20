@@ -246,9 +246,9 @@ class VmTable extends JTable{
 	 * Technic to inject params as table attributes
 	 * @author Max Milbers
 	 */
-	function load($int=null){
+	function load($oid=null){
 
-		if($this->_translatable){
+/*		if($this->_translatable){
 			$tblKey = $this->_tbl_key;
 
 			if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
@@ -272,38 +272,94 @@ class VmTable extends JTable{
 			foreach($this->_translatableFields as $name){
 				$this->$name = $langData->$name;
 			}
+		}/*/
+
+// 		$query = 'SELECT L.* FROM `#__virtuemart_categories_'.VMLANG.'` as L';
+// 		$query .= ' JOIN `#__virtuemart_categories` as C using (`virtuemart_category_id`)';
+		$k = $this->_tbl_key;
+
+		if ($oid !== null) {
+			$this->$k = $oid;
 		}
 
+		$oid = $this->$k;
 
-		if(!empty($this->_xParams)){
+		if ($oid === null) {
+			return false;
+		}
+		$this->reset();
 
-			$paramFieldName = $this->_xParams;
-			$paramFields = $this->$paramFieldName;
-			if(!empty($this->$paramFieldName)){
+		$db =& $this->getDBO();
 
-				$params = explode('|', $this->$paramFieldName);
-				foreach($params as $item){
+/*		//Version load the tables seperated
+ 		$langresult = 0;
+		if($this->_translatable){
+			$query = 'SELECT * FROM '.$this->_tbl.'_'.VMLANG.' WHERE '.$this->_tbl_key.' = "'.$oid.'"';
+			$db->setQuery( $query );
+			if ($langresult = $db->loadAssoc( )) {
 
-					$item = explode('=',$item);
-					if(count($item)===2 && isset($this->_varsToPushParam[$item[0]][1]) ){
-						if($this->_varsToPushParam[$item[0]][1]==='string'){
-							$this->$item[0] = base64_decode(unserialize($item[1]));
-						} else {
-							$this->$item[0] = unserialize($item[1]);
+			}
+		}
+
+		$query = 'SELECT * FROM '.$this->_tbl.' WHERE '.$this->_tbl_key.' = "'.$oid.'"';
+
+		$db->setQuery( $query );
+
+		if ($result = $db->loadAssoc( )) {
+			if($langresult !== 0){
+				$result = array_merge($result,$langresult);
+			}
+
+ */
+		//Version load the tables using JOIN
+		if($this->_translatable){
+			$select = 'SELECT * FROM '.$this->_tbl.'_'.VMLANG.' LEFT JOIN '.$this->_tbl.' using (`'.$this->_tbl_key.'`)';
+		} else {
+			$select = 'SELECT * FROM '.$this->_tbl;
+		}
+		$query = $select.' WHERE '.$this->_tbl_key.' = "'.$oid.'"';
+
+		$db->setQuery( $query );
+
+		if ($result = $db->loadAssoc( )) {
+
+			$this->bind($result);
+			if(!empty($this->_xParams)){
+
+				$paramFieldName = $this->_xParams;
+				$paramFields = $this->$paramFieldName;
+				if(!empty($this->$paramFieldName)){
+
+					$params = explode('|', $this->$paramFieldName);
+					foreach($params as $item){
+
+						$item = explode('=',$item);
+						if(count($item)===2 && isset($this->_varsToPushParam[$item[0]][1]) ){
+							if($this->_varsToPushParam[$item[0]][1]==='string'){
+								$this->$item[0] = base64_decode(unserialize($item[1]));
+							} else {
+								$this->$item[0] = unserialize($item[1]);
+							}
 						}
 					}
 				}
-			}
 
-			foreach($this->_varsToPushParam as $key=>$v){
-				if(!isset($this->$key)){
-					$this->$key = $v[0];
+				foreach($this->_varsToPushParam as $key=>$v){
+					if(!isset($this->$key)){
+						$this->$key = $v[0];
+					}
 				}
-			}
 
+			}
+			return $this;
+		} else {
+			$this->setError( $db->getErrorMsg() );
+			return false;
 		}
 
-		return $this;
+
+
+
 
 	}
 

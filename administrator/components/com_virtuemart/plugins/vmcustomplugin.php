@@ -44,7 +44,7 @@ abstract class vmCustomPlugin extends JPlugin {
 
 		$this->_tablename = '#__virtuemart_product_custom_' . $this->_name;
 		$this->_createTable();
-
+		$this->_tableChecked = true;
 	}
 
     /**
