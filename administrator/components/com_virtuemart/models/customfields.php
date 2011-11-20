@@ -654,7 +654,8 @@ class VirtueMartModelCustomfields extends VmModel {
 				break;
 				/* related */
 				case 'R':
-					$q='SELECT p.`product_name`, p.`product_parent_id` , p.`product_name`, x.`virtuemart_category_id` FROM `#__virtuemart_products` as p
+					$q='SELECT l.`product_name`, l.`product_parent_id` , l.`product_name`, x.`virtuemart_category_id` FROM `#__virtuemart_products_'.VMLANG.'` as l
+					 JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)
 					 LEFT JOIN `#__virtuemart_product_categories` as x on x.`virtuemart_product_id` = p.`virtuemart_product_id`
 					 WHERE p.`published`=1 AND  p.`virtuemart_product_id`= "'.(int)$value.'" ';
 					$this->_db->setQuery($q);
@@ -674,7 +675,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				break;
 				/* categorie */
 				case 'Z':
-					$q='SELECT * FROM `#__virtuemart_categories` WHERE `published`=1 AND `virtuemart_category_id`= "'.(int)$value.'" ';
+					$q='SELECT * FROM `#__virtuemart_categories_'.VMLANG.'` as l JOIN `#__virtuemart_categories` AS c using (`virtuemart_category_id`) WHERE `published`=1 AND l.`virtuemart_category_id`= "'.(int)$value.'" ';
 					$this->_db->setQuery($q);
 					if ($category = $this->_db->loadObject() ) {
 						$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_category_medias`WHERE `virtuemart_category_id`= "'.$category->virtuemart_category_id.'" ';
@@ -697,7 +698,8 @@ class VirtueMartModelCustomfields extends VmModel {
 				case 'R':
 				/* Child product */
 				case 'C':
-					$q='SELECT p.`virtuemart_product_id` ,p.`product_parent_id` , p.`product_name`, x.`virtuemart_category_id` FROM `#__virtuemart_products` as p
+					$q='SELECT p.`virtuemart_product_id` ,p.`product_parent_id` , l.`product_name`, x.`virtuemart_category_id` FROM `#__virtuemart_products` as p
+					FROM `#__virtuemart_products_'.VMLANG.'` as l
 					LEFT JOIN `#__virtuemart_product_categories` as x on x.`virtuemart_product_id` = p.`virtuemart_product_id`
 					WHERE `published`=1 AND p.`virtuemart_product_id`= "'.(int)$value.'" ';
 					$this->_db->setQuery($q);
@@ -924,7 +926,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	}
 	public function getChild($child) {
 		$db = JFactory::getDBO();
-		$db->setQuery('SELECT  `product_sku`, `product_name` FROM `#__virtuemart_products` WHERE virtuemart_product_id='.$child);
+		$db->setQuery('SELECT  `product_sku`, `product_name` FROM `#__virtuemart_products_'.VMLANG.'` WHERE virtuemart_product_id='.$child);
 		return $db->loadObject();
 	}
 }
