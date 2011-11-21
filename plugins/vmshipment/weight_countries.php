@@ -26,6 +26,21 @@ if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 
 class plgVmShipmentWeight_countries extends vmPSPlugin {
 
+	// instance of class
+	public static $_this = false;
+
+	function __construct(& $subject, $config) {
+		if(self::$_this) return self::$_this;
+		parent::__construct($subject, $config);
+
+		$this->_loggable = true;
+		$this->tableFields = array('id','virtuemart_order_id','order_number','shipment_id','shipment_name','order_weight','shipment_weight_unit',
+											'shipment_cost','shipment_package_fee','tax_id');//,'created_on','created_by','modified_on','modified_by','locked_on');
+// 		self::$_this
+		$this->_createTable();
+		self::$_this = $this;
+	}
+
 	/**
 	 * Create the table for this plugin if it does not yet exist.
 	 * @author Oscar van Eijk

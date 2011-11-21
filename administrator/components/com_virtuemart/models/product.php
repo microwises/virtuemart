@@ -264,7 +264,7 @@ class VirtueMartModelProduct extends VmModel {
 				$orderBy = ' ORDER BY product_sales ';//LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
 				$filter_order_Dir = 'DESC';
 			}
-			$joinCategory 	= false ;
+// 			$joinCategory 	= false ;
 			$joinMf 		= false ;
 			$joinPrice 		= false ;
 			$joinCustom		= false ;

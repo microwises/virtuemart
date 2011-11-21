@@ -119,6 +119,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_states` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `virtuemart_category_id` smallint(1) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
   `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `category_name` char(140) DEFAULT NULL,
+  `category_description` varchar(500) DEFAULT NULL,
   `category_template` char(24) DEFAULT NULL,
   `category_layout` char(16) DEFAULT NULL,
   `category_product_layout` char(16) DEFAULT NULL,

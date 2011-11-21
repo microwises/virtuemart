@@ -135,6 +135,7 @@ class VmTable extends JTable{
 		$this->_slugName = $key;
 		$this->$key = '';
 		$this->setUniqueName($key);
+
 	}
 
 	/**
@@ -410,21 +411,41 @@ class VmTable extends JTable{
 		if(!empty($this->_slugAutoName)){
 			$slugAutoName = $this->_slugAutoName;
 			$slugName = $this->_slugName;
+
 			if(empty($this->$slugName)){
 // 				vmdebug('table check use _slugAutoName '.$slugAutoName.' '.$slugName);
 				$this->$slugName = $this->$slugAutoName;
 			}
-// 			vmdebug('table check use $this->$slugName '.$this->$slugName);
-			if(VmConfig::isJ15()){
-				$this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
-				if(trim(str_replace('-', '', $this->$slugName)) == ''){
-					$datenow = JFactory::getDate();
-					$this->$slugName = $datenow->toFormat("%Y-%m-%d-%H-%M-%S").rand(1,9);
+			$used = true;
+			$change = false;
+			while($used && $i<10){
+				$i++;
+	// 			vmdebug('table check use $this->$slugName '.$this->$slugName);
+				if(VmConfig::isJ15()){
+					$this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
+					vmdebug('first created ',$this->$slugName);
+
+					if(trim(str_replace('-', '', $this->$slugName)) == '' || $change){
+						$datenow = JFactory::getDate();
+						$this->$slugName = $this->$slugName . $datenow->toFormat("%Y-%m-%d-%H-%M-%S").rand(1,9);
+						vmdebug('changed ',$this->$slugName);
+					}
+				} else {
+					$this->$slugName = JApplication::stringURLSafe($this->$slugName);
+					if (trim(str_replace('-','',$this->$slugName)) == '' || $change) {
+						$this->$slugName = JFactory::getDate()->format('Y-m-d-H-i-s').rand(1,9);
+					}
 				}
-			} else {
-				$this->$slugName = JApplication::stringURLSafe($this->$slugName);
-				if (trim(str_replace('-','',$this->$slugName)) == '') {
-					$this->$slugName = JFactory::getDate()->format('Y-m-d-H-i-s').rand(1,9);
+
+				$q = 'SELECT `'.$slugName.'` FROM `'.$this->_tbl.'` WHERE `'.$slugName.'` =  "'.$this->$slugName.'" ';
+				$this->_db->setQuery($q);
+				if($existingSlugName =$this->_db->loadResult()){
+
+					$change = true;
+					$used = true;
+				} else {
+					$change = false;
+					$used = false;
 				}
 			}
 		}

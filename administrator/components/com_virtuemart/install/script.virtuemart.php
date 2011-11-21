@@ -175,7 +175,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			if(empty($this->path)) $this->path = JPATH_VM_ADMINISTRATOR;
 			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
-			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
+// 			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
 
 			if(version_compare(JVERSION,'1.6.0','ge')) {
 				$fields = array('data'=>'`data` LONGTEXT NULL AFTER `time`');
@@ -320,7 +320,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//		$parent->getParent()->setRedirectURL('index.php?option=com_virtuemart&view=updatesMigration');
 */
 			$updater = new genericTableUpdater;
-			$updater->updateMyVmTables();
+// 			$updater->updateMyVmTables();
 
 			$config = &JFactory::getConfig();
 			$lang = $config->getValue('language');

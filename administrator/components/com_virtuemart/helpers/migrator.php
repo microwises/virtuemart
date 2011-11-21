@@ -1775,7 +1775,7 @@ class Migrator extends VmModel{
 				$continue=true;
 				while($continue){
 
-					$q = 'SELECT '.$tblKey.','.implode(',',$translatableFields).' FROM '.$tableName. ' LIMIT '.$startLimit.','.$maxItems;
+					$q = 'SELECT * FROM '.$tableName. ' LIMIT '.$startLimit.','.$maxItems;
 					$this->_db->setQuery($q);
 					$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port Language '.$table);
 					$resultList = $res[0];
@@ -1793,12 +1793,13 @@ class Migrator extends VmModel{
 // 						$dummy = array($tblKey=>$row[$tblKey]);
 // 						$langTable = new $className($tableName,$tblKey,$db) ;
 						$langTable = $this->getTable($table);
-						$langTable->bindChecknStore($row,true);
+						$langTable->bindChecknStore($row);
 						$errors = $langTable->getErrors();
 						if(!empty($errors)){
 							foreach($errors as $error){
 								$this->setError($error);
-								vmError($error);
+								vmError('portLanguageFields'.$error);
+								vmdebug('portLanguageFields table',$langTable);
 							}
 							$ok = false;
 							break;
