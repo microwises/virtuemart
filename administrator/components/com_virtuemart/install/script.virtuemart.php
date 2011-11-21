@@ -174,52 +174,18 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->_db = JFactory::getDBO();
 
 			if(empty($this->path)) $this->path = JPATH_VM_ADMINISTRATOR;
-			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
+
+
+// 			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
 // 			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
+// 			$this->displayFinished(true);
+			//return false;
 
 			if(version_compare(JVERSION,'1.6.0','ge')) {
-				$fields = array('data'=>'`data` LONGTEXT NULL AFTER `time`');
+				$fields = array('data'=>'`data` varchar(30480) NULL AFTER `time`');
 				$this->alterTable('#__session',$fields);
 			}
-// 			drop `#__virtuemart_carts`,
-			/*
-			// 		$fields = array('calc_amount_cond'=>"`calc_amount_cond_min` float NOT NULL COMMENT 'min number of qualifying products'");
-			// 		$this->alterTable('#__virtuemart_calcs',$fields);
-			$fields = array('calc_amount_cond'=>' ','calc_amount_cond_min'=>' ','calc_amount_cond_max'=>' ');
-			$this->alterTable('#__virtuemart_calcs',$fields,'DROP');
-// 			$this->checkAddFieldToTable('#__virtuemart_calcs','calc_amount_cond_min',"float NOT NULL COMMENT 'min number of qualifying products' AFTER `calc_amount_cond`");
-// 			$this->checkAddFieldToTable('#__virtuemart_calcs','calc_amount_cond_max',"float NOT NULL COMMENT 'max number of qualifying products' AFTER `calc_amount_cond_min`");
 
-			//product tables
-			$this->checkAddFieldToTable('#__virtuemart_products','product_ordered','int(11)');
-
-			$fields = array('product_order_levels'=>' ');
-			$this->alterTable('#__virtuemart_products',$fields,'DROP');
-
-			// 			$fields = array('product_order_levels'=>' `product_params` text NOT NULL ');
-			$this->checkAddFieldToTable('#__virtuemart_products','product_params','text NOT NULL');
-
-			$fields = array('product_special'=>'`product_special` tinyint(1) DEFAULT "0"');
-			$this->alterTable('#__virtuemart_products',$fields);
-
-			$this->checkAddFieldToTable('#__virtuemart_product_customfields','custom_param',' text COMMENT "Param for Plugins"');
-
-			$fields = array('virtuemart_shoppergroup_id'=>'`virtuemart_shoppergroup_id` int(11) DEFAULT NULL',
-														'product_price'=>'`product_price` decimal(15,5) DEFAULT NULL',
-														'override'=>'`override` tinyint(1) DEFAULT NULL',
-														'product_override_price' => '`product_override_price` decimal(15,5) NULL',
-														'product_tax_id' => '`product_tax_id` int(11) DEFAULT NULL',
-														'product_discount_id' => '`product_discount_id` int(11) DEFAULT NULL',
-														'product_currency' => '`product_currency` int(11) DEFAULT NULL',
-														'product_price_vdate' => '`product_price_vdate` datetime DEFAULT NULL',
-														'product_price_edate' => '`product_price_edate` datetime DEFAULT NULL',
-														'price_quantity_start' => '`price_quantity_start` int(11) unsigned DEFAULT NULL',
-														'price_quantity_end' => '`price_quantity_end` int(11) unsigned DEFAULT NULL'
-			);
-			$this->alterTable('#__virtuemart_product_prices',$fields);
-
-			// payment_discount values
-			$this->alterPaymentMethodsTable();
 
 			//Shipping methods
 			$query = 'SHOW TABLES LIKE "%virtuemart_shippingcarriers%"';
@@ -257,7 +223,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//vmuser:
 			$fields = array('virtuemart_shippingcarrier_id'=>'`virtuemart_shipmentmethod_id` int NOT NULL DEFAULT "0"');
 			$this->alterTable('#__virtuemart_vmusers',$fields);
-			$this->checkAddFieldToTable('#__virtuemart_vmusers','agreed',' tinyint(1) NOT NULL DEFAULT "0"');
 
 			// orders :
 			$fields = array('payment_method_id'=>'`virtuemart_paymentmethod_id` INT(11 ) NOT NULL ',
@@ -267,26 +232,12 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			);
 			$this->alterTable('#__virtuemart_orders',$fields);
 
-			$this->checkAddFieldToTable('#__virtuemart_orders','order_payment',' decimal(10,2) DEFAULT NULL');
-			$this->checkAddFieldToTable('#__virtuemart_orders','order_payment_tax',' decimal(10,5) DEFAULT NULL');
-
-			//alterOrderItemsTable
-			$fields = array('order_item_name'=>'`order_item_name` VARCHAR( 255 )  NOT NULL DEFAULT "" ');
-			$this->alterTable('#__virtuemart_order_items',$fields);
-
-			$this->alterOrderHistoriesTable();
 
 			$this->alterVendorsTable();
 
 			$this->updateWeightUnit();
 			$this->updateDimensionUnit();
 
-			$this->checkAddFieldToTable('#__virtuemart_customs','ordering','INT( 11 ) UNSIGNED NOT NULL  DEFAULT 0');
-
-			$fields = array('products_per_row'=>' `products_per_row` INT(1) NULL DEFAULT NULL');
-			$this->alterTable('#__virtuemart_categories',$fields);
-
-			$this->changeShoppergroupDataSetAnonShopperToOne();
 			//delete old config file
 			// 			$this->renewConfigManually = !JFile::delete($this->path.DS.'virtuemart.cfg');
 			// 			if(!$this->renewConfigManually){
@@ -296,37 +247,23 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			// 				)require($this->path . DS . 'models' . DS . 'config.php');
 			// 				$model -> deleteConfig();
 
-
-			$this->deleteCreditcardsTable(); // for J version
-			$this->removeCreditCardFromAdminMenus(); // remove credit card from the menu
-
-			$this->updateAdminMenuEntry();
-
-			//load published tags
-// 			$langtags = VmConfig::get('active_languages');
-
-
-			$this->checkAddFieldToTable('#__virtuemart_vendors','slug',' char(10) DEFAULT NULL');
-			$this->checkAddFieldToTable('#__virtuemart_manufacturercategories','slug',' char(10) DEFAULT NULL');
-			// RC3
-			$this->checkAddFieldToTable('#__virtuemart_paymentmethods','payment_desc',' text NOT NULL');
-			$this->checkAddFieldToTable('#__virtuemart_paymentmethods','slug',' char(128) DEFAULT NULL');
-			$this->checkAddFieldToTable('#__virtuemart_shipmentmethods','slug',' char(128) DEFAULT NULL');
-
-
-
 			// probably should just go to updatesMigration rather than the install success screen
 			// 			include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
 			//		$parent->getParent()->setRedirectURL('index.php?option=com_virtuemart&view=updatesMigration');
-*/
+
+// 			$tablesToRename = array(  '#__virtuemart_shippingcarrier_shoppergroups' => '#__virtuemart_shipmentmethod_shoppergroups'
+// 									);
+
 			$updater = new genericTableUpdater;
-// 			$updater->updateMyVmTables();
+			$updater->updateMyVmTables();
 
 			$config = &JFactory::getConfig();
 			$lang = $config->getValue('language');
 			if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
-			$migrator = new Migrator();
-			$migrator->portOldLanguageToNewTables((array)$lang);
+// 			$migrator = new Migrator();
+// 			$migrator->portOldLanguageToNewTables((array)$lang);
+
+// 			$this->changeShoppergroupDataSetAnonShopperToOne();
 
 			if($loadVm) $this->displayFinished(true);
 
@@ -391,93 +328,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			return false;
 		}
 
-		private function updateAdminMenuEntry() {
-
-			if(empty($this->_db)){
-				$this->_db = JFactory::getDBO();
-			}
-
-			$query = 'UPDATE `#__virtuemart_adminmenuentries` SET `name`="COM_VIRTUEMART_SHIPMENTMETHOD_S", `view`="shipmentmethod" WHERE `id`="16" LIMIT 1';
-			$this->_db->setQuery($query);
-			$this->_db->query($query);
-		}
-
-
-		/**
-		 *
-		 * @author Max Milbers
-		 */
-		private function alterOrderHistoriesTable(){
-
-			if(empty($this->_db)){
-				$this->_db = JFactory::getDBO();
-			}
-			$query = 'SHOW COLUMNS FROM `#__virtuemart_order_histories` ';
-			$this->_db->setQuery($query);
-			$columns = $this->_db->loadResultArray(0);
-			if(in_array('date_added',$columns)){
-				$query = 'ALTER TABLE `#__virtuemart_order_histories` DROP COLUMN `date_added`;';
-				$this->_db->setQuery($query);
-				return $this->_db->query();
-			}
-			return false;
-
-			;
-		}
-
-		private function alterPaymentMethodsTable() {
-
-			$fields = array('discount' ,
-			    'discount_is_percentage' ,
-			    'discount_max_amount' ,
-			    'discount_min_amount'
-			);
-
-			if(empty($this->_db)){
-				$this->_db = JFactory::getDBO();
-			}
-			$query = 'SHOW COLUMNS FROM `#__virtuemart_paymentmethods` ';
-			$this->_db->setQuery($query);
-			$columns = $this->_db->loadResultArray(0);
-			foreach ( $fields as $field) {
-				if(in_array($field,$columns)){
-					$query = 'ALTER TABLE `#__virtuemart_paymentmethods` DROP COLUMN `'.$field."` ;";
-					$this->_db->setQuery($query);
-					$this->_db->query();
-				}
-			}
-			return true;
-		}
-
-
-		/*
-		 * Credit Card Table delete in J version
-		*/
-		private function deleteCreditcardsTable() {
-
-
-			if(empty($this->_db)){
-				$this->_db = JFactory::getDBO();
-			}
-			$query = 'DROP TABLE  IF EXISTS `#__virtuemart_creditcards` ';
-			$this->_db->setQuery($query);
-			$this->_db->query();
-			$query = 'DROP TABLE  IF EXISTS `#__virtuemart_paymentmethod_creditcards` ';
-			$this->_db->setQuery($query);
-			$this->_db->query();
-
-			return true;
-		}
-		private function  removeCreditCardFromAdminMenus() {
-			if(empty($this->_db)){
-				$this->_db = JFactory::getDBO();
-			}
-			$query = "DELETE FROM  `#__virtuemart_adminmenuentries` WHERE `name` = 'COM_VIRTUEMART_CREDIT_CARD_S'";
-			$this->_db->setQuery($query);
-
-			return $this->_db->query();
-
-		}
 		private function alterVendorsTable(){
 
 			if(empty($this->_db)){
@@ -492,29 +342,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				return $this->_db->query();
 			}
 
-			if(in_array('vendor_min_pov',$columns)){
-				$query = 'ALTER TABLE `#__virtuemart_vendors` DROP COLUMN `vendor_min_pov`  ;';
-				$this->_db->setQuery($query);
-				return $this->_db->query();
-			}
-
-			if(in_array('vendor_freeshipping',$columns)){
-				$query = 'ALTER TABLE `#__virtuemart_vendors` DROP COLUMN `vendor_freeshipping`  ;';
-				$this->_db->setQuery($query);
-				return $this->_db->query();
-			}
-
-			if(in_array('vendor_address_format',$columns)){
-				$query = 'ALTER TABLE `#__virtuemart_vendors` DROP COLUMN `vendor_address_format`  ;';
-				$this->_db->setQuery($query);
-				return $this->_db->query();
-			}
-
-			if(in_array('vendor_date_format',$columns)){
-				$query = 'ALTER TABLE `#__virtuemart_vendors` DROP COLUMN `vendor_date_format`  ;';
-				$this->_db->setQuery($query);
-				return $this->_db->query();
-			}
 
 			return false;
 
@@ -883,6 +710,10 @@ class genericTableUpdater{
 		if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
 
 		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) * 0.85;
+
+		$config = JFactory::getConfig();
+		$this->_prefix = $config->getValue('config.dbprefix');
+
 	}
 
 	public function updateMyVmTables(){
@@ -921,7 +752,13 @@ class genericTableUpdater{
 
 			} else if(strpos($line,'ENGINE')!==false){
 				$tableDefStarted = false;
-				$tables[$tablename] = array($fieldLines, $tableKeys);
+
+				$start = strpos($line,"COMMENT='");
+				$temp = substr($line,$start+9);
+				$end = strpos($temp,"'");
+				$comment = substr($temp,0,$end);
+
+				$tables[$tablename] = array($fieldLines, $tableKeys,$comment);
 			} else if($tableDefStarted){
 
 				$start = strpos($line,"`");
@@ -938,66 +775,149 @@ class genericTableUpdater{
 			}
 		}
 
-// 		vmdebug('Parsed tables',$tables);return;
+// 	vmdebug('Parsed tables',$tables); //return;
 		$this->_db->setQuery('SHOW TABLES LIKE "%_virtuemart_%"');
 		if (!$existingtables = $this->_db->loadResultArray()) {
 			$this->setError = $this->_db->getErrorMsg();
 			return false;
 		}
 
-		$config = JFactory::getConfig();
-		$prefix = $config->getValue('config.dbprefix');
 
+		$demandedTables = array();
+		//TODO ignore admin menu table
 		foreach ($tables as $tablename => $table){
-			$tablename = str_replace('#__',$prefix,$tablename);
+			$tablename = str_replace('#__',$this->_prefix,$tablename);
+			$demandedTables[] = $tablename;
 			if(in_array($tablename,$existingtables)){
 				$this -> compareUpdateTable($tablename,$table);
+// 				unset($todelete[$tablename]);
 			} else {
-				vmdebug('Table does not exist with prefix '.$prefix.' db '.$tablename);
-// 				$this->createTable($tablename,$table);
+				$this->createTable($tablename,$table);
 			}
-
 		}
+
+		$tablesWithLang = array('categories','manufacturercategories','manufacturers','paymentmethods','shipmentmethods','products','vendors');
+		$alangs = VmConfig::get('active_languages');
+		foreach($alangs as $lang){
+			foreach($tablesWithLang as $tablewithlang){
+				$demandedTables[] = $this->_prefix.'virtuemart_'.$tablewithlang.'_'.$lang;
+			}
+		}
+		$demandedTables[] = $this->_prefix.'virtuemart_configs';
+
+		$todelete = array();
+		foreach ($existingtables as $tablename){
+			if(!in_array($tablename,$demandedTables) and strpos($tablename,'_plg_')){
+				$todelete[] = $tablename;
+			}
+		}
+		$this->dropTables($todelete);
+
 	}
 
 	public function compareUpdateTable($tablename,$table){
 
-		$this->alterTable($tablename,$table[0]);
+		$this->alterColumns($tablename,$table[0]);
 
-		$this->alterKey($tablename,$table[1]);
+		reset($table[0]);
+		$first_key = key($table[0]);
+
+// 		$this->alterKey($tablename,$table[1],$first_key);
 
 	}
 
-	private function alterKey($tablename,$keys){
+	public function createTable($tablename,$table){
 
+		$q = 'CREATE TABLE IF NOT EXISTS `'.$tablename.'` (
+				';
+		foreach($table[0] as $fieldname => $alterCommand){
+			$q .= '`'.$fieldname.'` '.$alterCommand.'
+			';
+		}
+
+		foreach($table[1] as $name => $value){
+			$q .= '`'.$name.'` '.$value.',
+						';
+		}
+		$q = substr($q,0,-1);
+
+		$q = ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='".$table[3]."' AUTO_INCREMENT=1 ;";
+
+		$this->_db->setQuery($query);
+		if(!$this->_db->query()){
+			$this->_app->enqueueMessage('createTable ERROR :'.$this->_db->getErrorMsg() );
+		}
+		$this->_app->enqueueMessage($q);
+	}
+
+	public function dropTables($todelete){
+		if(empty($todelete)) return;
+		$q = 'DROP ';// .implode(',',$todelete);
+		foreach($todelete as $tablename){
+			$tablename = str_replace('#__',$this->_prefix,$tablename);
+			$q .= $tablename.', ';
+		}
+		$q = substr($q,0,-1);
+
+// 		$this->_db->setQuery($q);
+// 		if(!$this->_db->query()){
+// 			$this->_app->enqueueMessage('dropTables ERROR :'.$this->_db->getErrorMsg() );
+// 		}
+		$this->_app->enqueueMessage($q);
+	}
+
+
+	private function alterKey($tablename,$keys,$firstField){
+
+		// 		vmdebug('$first_key',$first_key,$table[1]);
 		$demandFieldNames = array();
 		foreach($keys as $i=>$line){
-			$demandFieldNames[] = $i;
+			$demandedFieldNames[] = $i;
 		}
 
 		$query = "SHOW INDEXES  FROM `".$tablename."` ";	//SHOW {INDEX | INDEXES | KEYS}
 		$this->_db->setQuery($query);
 // 		$keys = $this->_db->loadResultArray(0);
 		if(!$eKeys = $this->_db->loadObjectList()){
-			$app = JFactory::getApplication();
-			$app->enqueueMessage('alterKey show index:'.$this->_db->getErrorMsg() );
+			$this->_app->enqueueMessage('alterKey show index:'.$this->_db->getErrorMsg() );
 		}
 		$after ='';
 
 		$knownFieldNames = array();
 		foreach($eKeys as $eKey){
+			if(strpos($eKey->Key_name,'PRIMARY')!==false){
+				continue; //We ignore Primaries
+			}
 			$knownFieldNames[] = $eKey->Key_name;
 		}
-
+// 		vmdebug('$knownKeyNames',$knownFieldNames);
+		$i = 0;
+		$columnsToDelete = $knownFieldNames;
 		foreach($keys as $name =>$value){
 
-			if(strpos($value,'PRIMARY')!==false) continue; //We ignore Primaries
+			if($i===0){
+				$dropit = '';
+				if(in_array('PRIMARY KEY', $knownFieldNames)){
+					$dropit = "DROP PRIMARY KEY , ";
+				}
+				$query = "ALTER TABLE `".$tablename."` ".$dropit." ADD PRIMARY KEY (`".$firstField."`);" ;
 
-			if(!in_array($name,$demandFieldNames)){
-				$query =  "ALTER TABLE `".$tablename."` DROP INDEX ".$name;
-				$action = 'DROP';
-			} else if(in_array($name, $knownFieldNames)){
-				$query = "ALTER TABLE `".$tablename."` DROP INDEX `".$name."` , ADD ".$value ;
+				$action = 'ALTER';
+				$i++;
+			}
+
+			if(strpos($value,'PRIMARY')!==false){
+				continue; //We ignore Primaries
+			}
+
+// 			if(!in_array($name,$demandFieldNames)){
+// 				$query =  "ALTER TABLE `".$tablename."` DROP INDEX ".$name;
+// 				$action = 'DROP';
+// 			} else
+			vmdebug('$name '.$name.' value '.$value);
+			if(in_array($name, $knownFieldNames)){
+				if(strpos($value,'KEY')) $type = 'KEY'; else $type = 'INDEX';
+				$query = "ALTER TABLE `".$tablename."` DROP  ".$type." `".$name."` , ADD ".$value ;
 				$action = 'ALTER';
 			} else {
 				$query = "ALTER TABLE `".$tablename."` ADD ".$value ;
@@ -1006,9 +926,40 @@ class genericTableUpdater{
 
 			$this->_db->setQuery($query);
 			if(!$this->_db->query()){
-				$app = JFactory::getApplication();
-				$app->enqueueMessage('alterKey '.$action.' INDEX '.$key.': '.$this->_db->getErrorMsg() );
+				$this->_app = JFactory::getApplication();
+				$this->_app->enqueueMessage('alterKey '.$action.' INDEX '.$key.': '.$this->_db->getErrorMsg() );
 			}
+		}
+
+		$eKeys = array();
+		$query = "SHOW INDEXES  FROM `".$tablename."` ";	//SHOW {INDEX | INDEXES | KEYS}
+		$this->_db->setQuery($query);
+		if(!$eKeys = $this->_db->loadObjectList()){
+			$this->_app->enqueueMessage('alterKey show index:'.$this->_db->getErrorMsg() );
+		}
+
+		$knownKeyNames = array();
+		foreach($eKeys as $eKey){
+			if(strpos($eKey->Key_name,'PRIMARY')!==false){
+				continue; //We ignore Primaries
+			}
+			$knownKeyNames[] = $eKey->Key_name;
+		}
+
+		vmdebug('$known key Names',$knownKeyNames);
+		foreach($knownFieldNames as $fieldname){
+
+			if(!in_array($fieldname, $demandedFieldNames)){
+				$query = 'ALTER TABLE `'.$tablename.'` DROP `'.$fieldname.'` ';
+				$action = 'DROP';
+				$dropped++;
+
+// 				$this->_db->setQuery($query);
+// 				if(!$this->_db->query()){
+					$this->_app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
+// 				}
+			}
+
 		}
 
 	}
@@ -1019,45 +970,49 @@ class genericTableUpdater{
 	* @param unknown_type $fields
 	* @param unknown_type $command
 	*/
-	private function alterTable($tablename,$fields){
+	private function alterColumns($tablename,$fields){
 
 		$demandFieldNames = array();
 		foreach($fields as $i=>$line){
 			$demandFieldNames[] = $i;
 		}
 
-		$query = 'SHOW  COLUMNS FROM `'.$tablename.'` ';
+		$query = 'SHOW FULL COLUMNS  FROM `'.$tablename.'` ';
 		$this->_db->setQuery($query);
 		$fullColumns = $this->_db->loadObjectList();
 		$columns = $this->_db->loadResultArray(0);
+
+// 		$columnsToDelete = $columns;
 		$after ='';
 		$dropped = 0;
 		$altered = 0;
 		$added = 0;
-		$app = JFactory::getApplication();
+		$this->_app = JFactory::getApplication();
 
 		foreach($fields as $fieldname => $alterCommand){
 // 			vmdebug('$fieldname',$fieldname,$alterCommand);
-			if(!in_array($fieldname,$demandFieldNames)){
-				$query = 'ALTER TABLE `'.$tablename.'` DROP COLUMN `'.$fieldname.'` ';
-				$action = 'DROP';
-				$dropped++;
+// 			if(!in_array($fieldname,$demandFieldNames)){
+
 // 				vmdebug('DROP command '.$fieldname);
-			}
-			else if(empty($alterCommand)){
+// 			}
+			if(empty($alterCommand)){
 				vmdebug('empty alter command '.$fieldname);
 				continue;
 			}
 			else if(in_array($fieldname,$columns)){
 				$query='';
 				$key=array_search($fieldname, $columns);
-				$oldColumn=$fullColumns[$key]->Type.  $this->notnull($fullColumns[$key]->Null).$this->getdefault($fullColumns[$key]->Default).$this->primarykey($fullColumns[$key]->Key);
-				if (strcasecmp( $oldColumn, $alterCommand) ) {
+				$oldColumn = $this->reCreateColumnByTableAttributes($fullColumns[$key]);
+
+				$compare = strcasecmp( $oldColumn, $alterCommand);
+
+				if (!empty($compare)) {
 				    $query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
 				    $action = 'CHANGE';
 				    $altered++;
+				    vmdebug('$fullColumns',$fullColumns[$key]);
+				    vmdebug('Alter field ',$oldColumn,$alterCommand,$compare);
 				}
-
 			}
 			else {
 				$query = 'ALTER TABLE `'.$tablename.'` ADD '.$fieldname.' '.$alterCommand.' '.$after;
@@ -1067,16 +1022,56 @@ class genericTableUpdater{
 			if (!empty($query)) {
 			    $this->_db->setQuery($query);
 			    if(!$this->_db->query()){
-				    $app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
-				    return false;
+				    $this->_app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
 			    }
 			    $after = 'AFTER '.$fieldname;
 			}
 		}
 
-		$app->enqueueMessage('Tablename '.$tablename.' dropped: '.$dropped.' altered: '.$altered.' added: '.$added);
+		foreach($columns as $fieldname){
+
+			if(!in_array($fieldname, $demandFieldNames)){
+				$query = 'ALTER TABLE `'.$tablename.'` DROP COLUMN `'.$fieldname.'` ';
+				$action = 'DROP';
+				$dropped++;
+
+				$this->_db->setQuery($query);
+				if(!$this->_db->query()){
+					$this->_app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
+				}
+			}
+		}
+		$this->_app->enqueueMessage('Tablename '.$tablename.' dropped: '.$dropped.' altered: '.$altered.' added: '.$added);
 
 		return true;
+
+	}
+
+	private function reCreateColumnByTableAttributes($fullColumn){
+
+		$oldColumn = $fullColumn->Type;
+
+		if($this->notnull($fullColumn->Null)){
+
+// 			if(empty($fullColumn->Default)){
+// 				$default = $fullColumn->Extra;
+// 			} else {
+// 				$default = $fullColumn->Default;
+// 			}
+			$oldColumn .= $this->notnull($fullColumn->Null).$this->getdefault($fullColumn->Default);
+		}
+		$oldColumn .= $this->primarykey($fullColumn->Key).$this->formatComment($fullColumn->Comment);
+
+		return $oldColumn;
+	}
+// 	$oldColumn=$fullColumns[$key]->Type.  .$this->primarykey($fullColumns[$key]->Key).$this->formatComment($fullColumns[$key]->Comment);
+
+	private function formatComment($comment){
+		if(!empty($comment)){
+			return ' COMMENT \''.$comment.'\'';
+		} else {
+			return '';
+		}
 
 	}
 	private function notnull($string){
@@ -1094,8 +1089,8 @@ class genericTableUpdater{
 	    }
 	}
 	private function getdefault($string){
-	    if ($string=='0') {
-		return  " DEFAULT '0'";
+	    if (isset($string)) {
+		return  " DEFAULT '".$string."'";
 	    } else {
 		return '';
 	    }

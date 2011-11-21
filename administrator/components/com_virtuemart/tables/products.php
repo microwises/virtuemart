@@ -71,19 +71,11 @@ class TableProducts extends VmTable {
 	var $product_availability	= null;
 	/** @var int File thumbnail image width */
 	var $product_special	= null;
-//	/** @var int File thumbnail image width */
-//	var $product_discount_id	= null;
-	/** @var int File thumbnail image width */
-	var $ship_code_id	= 0;
+
 
 	/** @var int File thumbnail image width */
 	var $product_sales	= 0;
-//	/** @var int File thumbnail image width */
-//	var $attribute	= null;
-//	/** @var int File thumbnail image width */
-//	var $custom_attribute	= 0;
-//	/** @var int File thumbnail image width */
-//	var $product_tax_id	= null;
+
 	/** @var int File thumbnail image width */
 	var $product_unit	= null;
 	/** @var int File thumbnail image width */

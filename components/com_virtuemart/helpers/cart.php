@@ -369,7 +369,6 @@ class VirtueMartCart {
 			$product -> product_ordered = $tmpProduct -> product_ordered;
 			// 			$product -> low_stock_notification = $tmpProduct -> low_stock_notification;
 			// 			$product -> product_available_date = $tmpProduct -> product_available_date;
-			$product -> ship_code_id = $tmpProduct -> ship_code_id;
 			$product -> product_sales = $tmpProduct -> product_sales;
 			$product -> product_unit = $tmpProduct -> product_unit;
 			$product -> product_packaging = $tmpProduct -> product_packaging;
