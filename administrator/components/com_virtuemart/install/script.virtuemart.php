@@ -260,10 +260,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$config = &JFactory::getConfig();
 			$lang = $config->getValue('language');
 			if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
-// 			$migrator = new Migrator();
-// 			$migrator->portOldLanguageToNewTables((array)$lang);
+			$migrator = new Migrator();
+			$migrator->portOldLanguageToNewTables((array)$lang);
 
-// 			$this->changeShoppergroupDataSetAnonShopperToOne();
+			$this->changeShoppergroupDataSetAnonShopperToOne();
 
 			if($loadVm) $this->displayFinished(true);
 
