@@ -146,7 +146,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 *
 		 */
 		public function createIndexFolder($path){
-
+		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 			if(JFolder::create($path)) {
 				if(!JFile::exists($path .DS. 'index.html')){
 					JFile::copy(JPATH_ROOT.DS.'components'.DS.'index.html', $path .DS. 'index.html');
@@ -1026,14 +1026,16 @@ class genericTableUpdater{
 			$demandFieldNames[] = $i;
 		}
 
-		$query = 'SHOW COLUMNS FROM `'.$tablename.'` ';
+		$query = 'SHOW  COLUMNS FROM `'.$tablename.'` ';
 		$this->_db->setQuery($query);
+		$fullColumns = $this->_db->loadObjectList();
 		$columns = $this->_db->loadResultArray(0);
 		$after ='';
 		$dropped = 0;
 		$altered = 0;
 		$added = 0;
 		$app = JFactory::getApplication();
+
 		foreach($fields as $fieldname => $alterCommand){
 // 			vmdebug('$fieldname',$fieldname,$alterCommand);
 			if(!in_array($fieldname,$demandFieldNames)){
@@ -1047,21 +1049,29 @@ class genericTableUpdater{
 				continue;
 			}
 			else if(in_array($fieldname,$columns)){
-				$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
-				$action = 'CHANGE';
-				$altered++;
+				$query='';
+				$key=array_search($fieldname, $columns);
+				$oldColumn=$fullColumns[$key]->Type.  $this->notnull($fullColumns[$key]->Null).$this->getdefault($fullColumns[$key]->Default).$this->primarykey($fullColumns[$key]->Key);
+				if (strcasecmp( $oldColumn, $alterCommand) ) {
+				    $query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
+				    $action = 'CHANGE';
+				    $altered++;
+				}
+
 			}
 			else {
 				$query = 'ALTER TABLE `'.$tablename.'` ADD '.$fieldname.' '.$alterCommand.' '.$after;
 				$action = 'ADD';
 				$added++;
 			}
-			$this->_db->setQuery($query);
-			if(!$this->_db->query()){
-				$app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
-				return false;
+			if (!empty($query)) {
+			    $this->_db->setQuery($query);
+			    if(!$this->_db->query()){
+				    $app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
+				    return false;
+			    }
+			    $after = 'AFTER '.$fieldname;
 			}
-			$after = 'AFTER '.$fieldname;
 		}
 
 		$app->enqueueMessage('Tablename '.$tablename.' dropped: '.$dropped.' altered: '.$altered.' added: '.$added);
@@ -1069,8 +1079,27 @@ class genericTableUpdater{
 		return true;
 
 	}
-
-
+	private function notnull($string){
+	    if ($string=='NO') {
+		return  ' NOT NULL';
+	    } else {
+		return '';
+	    }
+	}
+	private function primarykey($string){
+	    if ($string=='PRI') {
+		return  ' AUTO_INCREMENT';
+	    } else {
+		return '';
+	    }
+	}
+	private function getdefault($string){
+	    if ($string=='0') {
+		return  " DEFAULT '0'";
+	    } else {
+		return '';
+	    }
+	}
 	private function return_bytes($val) {
 		$val = trim($val);
 		$last = strtolower($val[strlen($val)-1]);
