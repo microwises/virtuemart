@@ -103,8 +103,8 @@ class VirtuemartModelManufacturercategories extends VmModel {
 	function getManufacturerCategories($onlyPublished=false, $noLimit=false)
 	{
 		$this->_noLimit = $noLimit;
-		$select = '* FROM `#__virtuemart_manufacturercategories` as mc';
-		$joinedTables = ' JOIN `#__virtuemart_manufacturercategories_'.VMLANG.'` using (`virtuemart_manufacturercategories_id`)';
+		$select = '* FROM `#__virtuemart_manufacturercategories_'.VMLANG.'` as l';
+		$joinedTables = ' JOIN `#__virtuemart_manufacturercategories` as mc using (`virtuemart_manufacturercategories_id`)';
 		$where = array();
 		if ($onlyPublished) {
 			$where[] = ' `#__virtuemart_manufacturercategories`.`published` = 1';
@@ -115,7 +115,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 		if ( JRequest::getCmd('view') == 'manufacturercategories') {
-			$ordering = $this->_getOrdering('mf_category_name');
+			$ordering = $this->_getOrdering('l.mf_category_name');
 		} else {
 			$ordering = ' order by mf_category_name DESC';
 		}
@@ -131,7 +131,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
 	function getCategoryFilter(){
 		$db = JFactory::getDBO();
 		$query = 'SELECT `virtuemart_manufacturercategories_id` as `value`, `mf_category_name` as text'
-				.' FROM #__virtuemart_manufacturercategories';
+				.' FROM #__virtuemart_manufacturercategories_'.VMLANG.'`';
 		$db->setQuery($query);
 
 		$categoryFilter[] = JHTML::_('select.option',  '0', '- '. JText::_('COM_VIRTUEMART_SELECT_MANUFACTURER_CATEGORY') .' -' );

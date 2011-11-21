@@ -106,7 +106,7 @@ class VirtueMartModelProduct extends VmModel {
 		$joinMf 		= false ;
 		$joinPrice 		= false ;
 		$joinCustom		= false ;
-		$joinLang = false;
+		$joinLang = true; // test fix Patrick
 
 		$where = array();
 
@@ -426,9 +426,10 @@ class VirtueMartModelProduct extends VmModel {
 		//		if(empty($this->_data)){
 		if (!empty($this->_id)) {
 
+			$joinIds = array('virtuemart_product_price_id' =>'#__virtuemart_product_prices','virtuemart_manufacturer_id' =>'#__virtuemart_product_manufacturers','virtuemart_customfield_id' =>'#__virtuemart_product_customfields');
 
 			$product = $this->getTable('products');
-			$product->load($this->_id);
+			$product->load($this->_id,$joinIds);
 			//$product = $this->fillVoidProduct($product,$front);
 			/*   			if($onlyPublished){
 			if(empty($product->published)){
@@ -444,10 +445,10 @@ class VirtueMartModelProduct extends VmModel {
 
 			//   		if(!$front){
 			$ppTable = $this->getTable('product_prices');
-			$q = 'SELECT `virtuemart_product_price_id` FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$this->_id.'" ';
-			$this->_db->setQuery($q);
-			$ppId = $this->_db->loadResult();
-			$ppTable->load($ppId);
+			// $q = 'SELECT `virtuemart_product_price_id` FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$this->_id.'" ';
+			// $this->_db->setQuery($q);
+			// $ppId = $this->_db->loadResult();
+			$ppTable->load($product->virtuemart_product_price_id);
 			$product = (object) array_merge((array) $ppTable, (array) $product);
 			//   		}
 
@@ -456,7 +457,7 @@ class VirtueMartModelProduct extends VmModel {
 			$mf_id = $this->_db->loadResult();
 
 			$mfTable = $this->getTable('manufacturers');
-			$mfTable->load((int)$mf_id);
+			$mfTable->load((int)$product->virtuemart_manufacturer_id);
 			$product = (object) array_merge((array) $mfTable, (array) $product);
 
 			/* Load the categories the product is in */
@@ -487,8 +488,8 @@ class VirtueMartModelProduct extends VmModel {
 				$product->category_name ='';
 			}
 
-			$this->productHasCustoms($this->_id);
-			$child = $this->getProductChilds($this->_id);
+			// $this->productHasCustoms($this->_id);
+			
 			if($front){
 
 				// Add the product link  for canonical
@@ -515,7 +516,7 @@ class VirtueMartModelProduct extends VmModel {
 				//				$product->vendor_name = VirtueMartModelVendor::getVendorName($product->virtuemart_vendor_id);
 
 				// set the custom variants
-				if ($this->hasproductCustoms or $child) {
+				if (!empty($product->virtuemart_customfield_id ) ) {
 					if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 					$customfields = new VirtueMartModelCustomfields();
 					// Load the custom product fields
@@ -524,6 +525,7 @@ class VirtueMartModelProduct extends VmModel {
 					$product->customfieldsRelatedProducts = $customfields->getProductCustomsFieldRelatedProducts($product);
 					//  custom product fields for add to cart
 					$product->customfieldsCart = $customfields->getProductCustomsFieldCart($product);
+					$child = $this->getProductChilds($this->_id);
 					$product->customsChilds = $customfields->getProductCustomsChilds($child , $this->_id);
 				}
 
@@ -539,7 +541,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			}
 			else {
-				if ($this->hasproductCustoms) {
+				if (!empty($product->virtuemart_customfield_id ) ){
 					if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 					$customfields = new VirtueMartModelCustomfields();
 					$product->customfields = $customfields->getproductCustomslist($this->_id,'product');

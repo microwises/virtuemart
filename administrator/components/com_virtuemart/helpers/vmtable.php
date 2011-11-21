@@ -246,8 +246,9 @@ class VmTable extends JTable{
 	/**
 	 * Technic to inject params as table attributes
 	 * @author Max Milbers
+	 * $TableJoins array of table names to add and left join to find ID
 	 */
-	function load($oid=null){
+	function load($oid=null,$tableJoins= array()){
 
 /*		if($this->_translatable){
 			$tblKey = $this->_tbl_key;
@@ -314,12 +315,24 @@ class VmTable extends JTable{
  */
 		//Version load the tables using JOIN
 		if($this->_translatable){
-			$select = 'SELECT * FROM '.$this->_tbl.'_'.VMLANG.' LEFT JOIN '.$this->_tbl.' using (`'.$this->_tbl_key.'`)';
+			$mainTable = $this->_tbl.'_'.VMLANG ;
+			$select = 'SELECT `'.$mainTable.'`.* ,`'.$this->_tbl.'`.* ';
+			$from   = ' FROM `'.$mainTable.'` JOIN '.$this->_tbl.' using (`'.$this->_tbl_key.'`)';
 		} else {
-			$select = 'SELECT * FROM '.$this->_tbl;
+			$mainTable = $this->_tbl ;
+			$select = 'SELECT `'.$mainTable.'`.* ';
+			$from = ' FROM `'.$mainTable .'` ';
 		}
-		$query = $select.' WHERE '.$this->_tbl_key.' = "'.$oid.'"';
 
+		if (count($tableJoins)) {
+			foreach ($tableJoins as $tableId => $table) {
+			$select .= ',`'.$table.'`.`'.$tableId.'` ';
+			$from   .= ' LEFT JOIN `'.$table.'` on `'.$table.'`.`'.$this->_tbl_key.'`=`'. $mainTable .'`.`'.$this->_tbl_key.'`';
+			}
+		}
+		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = '.(int)$oid;	
+// echo $query		;
+ // print_r($tableJoins); jExit();
 		$db->setQuery( $query );
 
 		if ($result = $db->loadAssoc( )) {
@@ -352,6 +365,12 @@ class VmTable extends JTable{
 				}
 
 			}
+			if (count($tableJoins)) {
+				foreach ($tableJoins as $tableId => $table) {
+					if(isset( $result[$tableId] )) $this->$tableId = $result[$tableId];
+				}
+			}
+
 			return $this;
 		} else {
 			$this->setError( $db->getErrorMsg() );

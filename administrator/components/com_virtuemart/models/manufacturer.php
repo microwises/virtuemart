@@ -42,6 +42,7 @@ class VirtueMartModelManufacturer extends VmModel {
 	function __construct() {
 		parent::__construct('virtuemart_manufacturer_id');
 		$this->setMainTable('manufacturers');
+		$this->addvalidOrderingFieldName(array('l.mf_name','l.mf_desc','l.mf_category_name','l.mf_url'));
 
 	}
 
