@@ -44,8 +44,8 @@ class Permissions extends JObject{
 	public function __construct() {
 
 		$this->_db = JFactory::getDBO();
-		$this->getUserGroups();
-		$this->doAuthentication();
+// 		$this->getUserGroups();
+// 		$this->doAuthentication();
 
 	}
 
