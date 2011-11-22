@@ -41,19 +41,13 @@ class TablePaymentmethods extends VmTable
 	var $payment_desc	= '';
 	var $slug;
 	var $payment_element           	= '';
-	///** @var string Shoppergroups allowed to use payment_method */
-	//var $payment_shoppervirtuemart_shoppergroup_id         = '';	  // virtuemart_shoppergroup_id?
-
-//	/** @var string Type of the paymentmethod */
-//	var $payment_type       		 	= '';
-/** @var string extra information to hold with the paymentmethod */
 	/** @var string parameter of the paymentmethod*/
 	var $payment_params				= 0;
 
 	/** @var string ordering */
 	var $ordering       	= '';
-   /** @var for all Vendors? */
-   var $shared				= 0;
+       /** @var for all Vendors? */
+       var $shared				= 0;
    ////this must be forbidden to set for normal vendors, that means only setable Administrator permissions or vendorId=1
     /** @var int published or unpublished */
 	var $published 		        = 0;

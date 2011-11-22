@@ -36,7 +36,6 @@
 
     <fieldset addpath="/administrator/components/com_virtuemart/elements">
 	<field type="vmjpluginwarning" />
-	<field type="vmjpluginwarning" />
 	<field type="spacer" default="VMSHIPMENT_WEIGHT_COUNTRIES_PLUGIN" level="level1" />
 	<field	name="shipment_logos" type="vmfiles" label="VMSHIPMENT_WEIGHT_COUNTRIES_LOGOS"
              	description="VMSHIPMENT_WEIGHT_COUNTRIES_LOGOS_DESC"

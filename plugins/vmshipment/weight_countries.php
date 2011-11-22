@@ -37,109 +37,39 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		$this->tableFields = array('id','virtuemart_order_id','order_number','shipment_id','shipment_name','order_weight','shipment_weight_unit',
 											'shipment_cost','shipment_package_fee','tax_id');//,'created_on','created_by','modified_on','modified_by','locked_on');
 // 		self::$_this
-		$this->_createTable();
+		//$this->_createTable();
 		self::$_this = $this;
 	}
 
 	/**
 	 * Create the table for this plugin if it does not yet exist.
-	 * @author Oscar van Eijk
+	 * @author Valérie Isaksen
 	 */
-	protected function _createTable() {
-		$scheme = DbScheme::get_instance();
-		$scheme->create_scheme($this->_tablename);
-		$schemeCols = array(
-	    'id' => array(
-		'type' => 'int'
-		, 'length' => 11
-		, 'auto_inc' => true
-		, 'null' => false
-		)
-		, 'virtuemart_order_id' => array(
-		'type' => 'int'
-		, 'length' => 11
-		, 'null' => false
-		)
-		, 'order_number' => array(
-		'type' => 'varchar'
-		, 'length' => 32
-		, 'null' => false
-		)
-		, 'shipment_id' => array(
-		'type' => 'bigint'
-		, 'length' => 20
-		, 'null' => false
-		)
-		, 'shipment_name' => array(
-		'type' => 'text'
-		, 'null' => false
-		)
-		, 'order_weight' => array(
-		'type' => 'int'
-		, 'length' => 11
-		, 'null' => false
-		)
-		, 'shipment_weight_unit' => array(
-		'type' => 'varchar '
-		, 'length' => 3
-		, 'null' => false
-		)
-		, 'shipment_cost' => array(
-		'type' => 'text'
-		, 'null' => false
-		)
-		, 'shipment_package_fee' => array(
-		'type' => 'int'
-		, 'length' => 11
-		, 'null' => false
-		)
-		, 'tax_id' => array(
-		'type' => 'int'
-		, 'length' => 11
-		, 'null' => false
-		)
-		, 'created_on' => array(
-			'type' => 'DATETIME'
-		, 'null' => false
-		, 'default' =>'0000-00-00 00:00:00'
-		)
-		, 'created_by' => array(
-			'type' => 'int'
-		, 'length' => 11
-		, 'null' => false
-		, 'default' =>0
-		)
-		, 'modified_on' => array(
-			'type' => 'DATETIME'
-		, 'null' => false
-		, 'default' =>'0000-00-00 00:00:00'
-		)
-		, 'modified_by' => array(
-			'type' => 'int'
-		, 'length' => 11
-		, 'null' => false
-		, 'default' =>0
-		)
-		, 'locked_on' => array(
-				'type' => 'DATETIME'
-		, 'null' => false
-		, 'default' =>'0000-00-00 00:00:00'
-		)
-		, 'locked_by' => array(
-				'type' => 'int'
-		, 'length' => 11
-		, 'null' => false
-		, 'default' =>0
-		)
-		);
-		$schemeIdx = array();
-		$scheme->define_scheme($schemeCols);
-		$scheme->define_index($schemeIdx);
-		if (!$scheme->scheme(true)) {
-			JError::raiseWarning(500, 'DbScheme _createTable' . $scheme->get_db_error());
-		}
-		$scheme->reset();
-	}
+
+
+    protected function getTable() {
+	return "CREATE TABLE IF NOT EXISTS `#__virtuemart_shipment_weight_countries` (
+	    `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT UNIQUE,
+	    `virtuemart_order_id` int(11) DEFAULT NULL,
+	    `order_number` char(32) DEFAULT NULL,
+	    `virtuemart_shipmentmethod_id` mediumint(1) UNSIGNED DEFAULT NULL,
+	    `shipment_name` char(255) NOT NULL DEFAULT '',
+	    `order_weight` decimal(10,4) DEFAULT NULL,
+	    `order_weight_uom` char(3) DEFAULT 'KG',
+	    `shipment_cost` decimal(10,2) DEFAULT NULL,
+	    `shipment_package_fee` decimal(10,2) DEFAULT NULL,
+	    `shipment_tax` decimal(10,5) DEFAULT NULL,
+	    `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+	    `created_by` int(11) NOT NULL DEFAULT 0,
+	    `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+	    `modified_by` int(11) NOT NULL DEFAULT 0,
+	    `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+	    `locked_by` int(11) NOT NULL DEFAULT 0
+	) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Weight Countries Table' AUTO_INCREMENT=1 ;";
+
+    }
+
+
 
 	/**
 	 * This method is fired when showing the order details in the frontend.

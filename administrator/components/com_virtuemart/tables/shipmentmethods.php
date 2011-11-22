@@ -54,8 +54,6 @@ class TableShipmentmethods extends VmTable {
 
     /** var float rate value */
     var $shipment_value = 0;
-    var $shipment_package_fee = 0;
-    var $shipment_vat_id = 0;
     var $ordering = 0;
     var $shared = 0;
 
@@ -69,12 +67,12 @@ class TableShipmentmethods extends VmTable {
     function __construct(&$db) {
 	parent::__construct('#__virtuemart_shipmentmethods', 'virtuemart_shipmentmethod_id', $db);
 	// we can have several time the same shipment name. It is the vendor problem to set up correctly his shipment rate.
-	//$this->setUniqueName('shipment_name');
+	// $this->setUniqueName('shipment_name');
 	$this->setObligatoryKeys('shipment_jplugin_id');
-
+	$this->setObligatoryKeys('shipment_name');
 	$this->setLoggable();
 	$this->setTranslatable(array('shipment_name', 'shipment_desc'));
-	 $this->setSlug('shipment_name');
+	$this->setSlug('shipment_name');
     }
 
 }

@@ -16,7 +16,8 @@
  * other free or open source software licenses.
  * @version $Id: vmpaymentplugin.php 4601 2011-11-03 15:50:01Z alatak $
  */
-if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
+if (!class_exists('vmPlugin'))
+    require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
 
 abstract class vmPSPlugin extends vmPlugin {
 
@@ -27,74 +28,45 @@ abstract class vmPSPlugin extends vmPlugin {
 	$this->_tablepkey = 'virtuemart_order_id';
 	$this->_idName = 'virtuemart_' . $this->_psType . 'method_id';
 	$this->_loggable = true;
-	$this->_createTable();
+	//$this->_createTable();
 	$this->_tableChecked = true;
     }
 
     /**
-     * Method to create te plugin specific table; must be reimplemented.
-     * @example
-     * 	$_scheme = DbScheme::get_instance();
-     * 	$_scheme->create_scheme('#__vm_order_payment_'.$this->_name);
-     * 	$_schemeCols = array(
-     *  those fields are REQUIRED
-     * 		 'id' => array (
-     * 				 'type' => 'int'
-     * 				,'length' => 11
-     * 				,'auto_inc' => true
-     * 				,'null' => false
-     * 		)
-     * 		,'virtuemart_order_id' => array (
-     * 				 'type' => 'int'
-     * 				,'length' => 11
-     * 				,'null' => false
-     * 		)
-     * 		,'order_number' => array (
-     * 				 'type' => 'varchar'
-     * 				,'length' => 32
-     * 				,'null' => false
-     * 		)
-     * 		,'payment_method_id' => array (
-     * 				 'type' => 'text'
-     * 				,'null' => false
-     * 		)
-     *
-     * 	);
-     * 	$_schemeIdx = array(
-     * 		 'idx_order_payment' => array(
-     * 				 'columns' => array ('virtuemart_order_id')
-     * 				,'primary' => false
-     * 				,'unique' => false
-     * 				,'type' => null
-     * 		)
-     * 	);
-     * 	$_scheme->define_scheme($_schemeCols);
-     * 	$_scheme->define_index($_schemeIdx);
-     * 	if (!$_scheme->scheme()) {
-     * 		JError::raiseWarning(500, $_scheme->get_db_error());
-     * 	}
-     * 	$_scheme->reset();
-     * @author Oscar van Eijk
-     *
-     * (1) add some fields with specific values for the request
-     *  (2) add some fields for the response: to reuse the predefined functions create those row woth the follong convention:
-     *  'plugin_name'_'response'_'field_name' example: 'paypal_response_payment_status'
-     *  (3) create the language key following this convention
-     *      VMPAYMENT_'plugin_name'_RESPONSE_'field_name'
-     * 	    example:  VMPAYMENT_PAYPAL_RESPONSE_PAYMENT_STATUS="Payment_status"
-     *  (4) if the field is actually a code, and there is a string with this code, add a key following this convention
-     *       VMPAYMENT_PAYPAL_RESPONSE_PAYMENT_STATUS_'code number or letter'
-     *
-     * example:
-     * 'authorizenet_response_response_code' : entry in the table
-     * VMPAYMENT_AUTHORIZENET_RESPONSE_RESPONSE_CODE="Response Code" the language key
-     * VMPAYMENT_AUTHORIZENET_RESPONSE_RESPONSE_CODE_1="This transaction has been approved." : the language key decoded
-     *
-     * @author Valerie Isaksen
-     *
+     * Create the table for this plugin if it does not yet exist.
+     * @author Valérie Isaksen
      */
-    protected function _createTable() {
-	return null;
+    protected function plgVmOnStoreCreatePluginTable($psType, $jplugin_id) {
+	if (!$this->selectedThisType($psType)) {
+	    return null;
+	}
+	if (!($method = $this->getPluginMethodbyJplugin($jplugin_id) )) {
+	    return null;
+	}
+
+	$query = $this->getTable();
+	$db = JFactory::getDBO();
+	$db->setQuery($query);
+	if (!$db->query()) {
+	    JError::raiseWarning(1, 'vmPSPlugin::plgVmOnStoreCreatePluginTable: ' . JText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $_db->stderr(true));
+	    echo 'vmPSPlugin::plgVmOnStoreCreatePluginTable: ' . JText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $_db->stderr(true);
+	}
+    }
+
+    /**
+     * Get Plugin Data for a go given plugin ID
+     * @author Valérie Isaksen
+     * @param int $pluginmethod_id The method ID
+     * @return  method data
+     */
+    final protected function getPluginMethodbyJplugin($plugin_id) {
+	$db = JFactory::getDBO();
+
+	// 		$q = 'SELECT * FROM #__virtuemart_shipmentmethods WHERE `virtuemart_shipmentmethod_id`="' . $shipment_id . '" AND `shipment_element` = "'.$this->_name.'"';
+	$q = 'SELECT * FROM #__virtuemart_' . $this->_psType . 'methods WHERE `' . $this->_psType . '_jplugin_id' . '`="' . $plugin_id . '" AND `' . $this->_psType . '_element`="' . $this->_name . '" ';
+
+	$db->setQuery($q);
+	return $db->loadObject();
     }
 
     /**
@@ -156,11 +128,12 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	return $html;
     }
-/**
- * check if it is the correct type
- * @param string $psType either payment or shipment
- * @return boolean
- */
+
+    /**
+     * check if it is the correct type
+     * @param string $psType either payment or shipment
+     * @return boolean
+     */
     public function selectedThisType($psType) {
 	if ($this->_psType <> $psType) {
 	    return false;
@@ -277,8 +250,9 @@ abstract class vmPSPlugin extends vmPlugin {
      * @author Max Milbers
      */
     public function plgVmOnCheckoutCheckData($psType, VirtueMartCart $cart) {
- return null;
+	return null;
     }
+
     /**
      * plgVmConfirmedOrderRenderForm
      * This event is fired after the order has been created
@@ -293,10 +267,9 @@ abstract class vmPSPlugin extends vmPlugin {
      * @param false if it should not be changed, otherwise new staus
      * @return returns 1 if the Cart should be deleted, and order sent
      */
-     public function plgVmConfirmedOrderRenderForm($psType,$order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status){
-	 return null;
-     }
-
+    public function plgVmConfirmedOrderRenderForm($psType, $order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status) {
+	return null;
+    }
 
     /**
      * This method is fired when showing the order details in the backend.
@@ -427,6 +400,7 @@ abstract class vmPSPlugin extends vmPlugin {
     public function plgVmOnNotification($psType, &$return_context, &$virtuemart_order_id, &$new_status) {
 	return null;
     }
+
     /**
      * plgVmOnResponseReceived
      * This event is fired when the  method returns to the shop after the transaction
@@ -443,8 +417,9 @@ abstract class vmPSPlugin extends vmPlugin {
      *
      */
     function plgVmOnResponseReceived($psType, &$virtuemart_order_id, &$html) {
-	    return null;
+	return null;
     }
+
     function getDebug() {
 	return $this->_debug;
     }
@@ -463,7 +438,10 @@ abstract class vmPSPlugin extends vmPlugin {
 	$db = JFactory::getDBO();
 
 	// 		$q = 'SELECT * FROM #__virtuemart_shipmentmethods WHERE `virtuemart_shipmentmethod_id`="' . $shipment_id . '" AND `shipment_element` = "'.$this->_name.'"';
-	$q = 'SELECT * FROM #__virtuemart_' . $this->_psType . 'methods WHERE `' . $this->_idName . '`="' . $plugin_id . '" AND `' . $this->_psType . '_element`="' . $this->_name . '" ';
+	$q = 'SELECT * FROM
+	      `#__virtuemart_' . $this->_psType . 'methods_'.VMLANG.'` as l
+	      JOIN `#__virtuemart_' . $this->_psType . 'methods` AS v   USING (`virtuemart_' . $this->_psType . 'method_id`)
+	      WHERE `' . $this->_idName . '`="' . $plugin_id . '" AND `' . $this->_psType . '_element`="' . $this->_name . '" ';
 
 	$db->setQuery($q);
 	return $db->loadObject();
@@ -497,10 +475,10 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	$db = JFactory::getDBO();
 
-	$select = 'SELECT v.*,j.*,s.virtuemart_shoppergroup_id ';
+	$select = 'SELECT l.*, v.*, j.*, s.virtuemart_shoppergroup_id ';
 
-	$q = $select . ' FROM   #__virtuemart_' . $this->_psType . 'methods AS v ';
-
+	$q = $select . ' FROM   `#__virtuemart_' . $this->_psType . 'methods_'.VMLANG.'` as l ';
+	$q.= ' JOIN `#__virtuemart_' . $this->_psType . 'methods` AS v   USING (`virtuemart_' . $this->_psType . 'method_id`) ';
 	$q.= ' LEFT JOIN ' . $extPlgTable . ' as j ON j.`' . $extField1 . '` =  v.`' . $this->_psType . '_jplugin_id` ';
 	$q.= ' LEFT OUTER JOIN #__virtuemart_' . $this->_psType . 'method_shoppergroups AS s ON v.`virtuemart_' . $this->_psType . 'method_id` = s.`virtuemart_' . $this->_psType . 'method_id` ';
 	$q.= ' WHERE v.`published` = "1" AND j.`' . $extField2 . '` = "' . $this->_name . '"
@@ -687,7 +665,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	$plugin_name = $this->_psType . '_name';
 // 		$params = new JParameter($plugin->$plugin_params);
 	$logo = $params->get($this->_psType . '_logos');
-	$description =  $this->_psType . '_desc';
+	$description = $this->_psType . '_desc';
 	if (!empty($logo)) {
 	    $return = $this->displayLogos($logo) . ' ';
 	}

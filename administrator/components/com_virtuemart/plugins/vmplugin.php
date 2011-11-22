@@ -97,12 +97,12 @@ abstract class vmPlugin extends JPlugin {
 		}
 
 		$this->_table->bindChecknStore($values);
-		$errors = $table->getErrors();
+		$errors = $this->_table->getErrors();
 		if(!empty($errors)){
 			foreach($errors as $error){
 				$this->setError($error);
 			}
-			break;
+	
 		}
 		return $values;
 

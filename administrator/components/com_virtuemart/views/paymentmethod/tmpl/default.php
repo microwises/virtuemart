@@ -45,11 +45,12 @@ AdminUIHelper::startAdminArea();
 			<th >
 				<?php echo JText::_('COM_VIRTUEMART_VENDOR');  ?>
 			</th><?php }?>
-			<th >
-				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_ELEMENT'); ?>
-			</th>
+
 			<th  >
 				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_SHOPPERGROUPS'); ?>
+			</th>
+			<th >
+				<?php echo JText::_('COM_VIRTUEMART_PAYMENT_ELEMENT'); ?>
 			</th>
 			<th  >
 				<?php echo JText::_('COM_VIRTUEMART_LIST_ORDER'); ?>
@@ -92,11 +93,12 @@ AdminUIHelper::startAdminArea();
 					<?php echo JText::_($row->virtuemart_vendor_id); ?>
 				</td>
 				<?php } ?>
-				<td>
-					<?php echo $row->payment_element; ?>
-				</td>
+
 				<td>
 					<?php echo $row->paymShoppersList; ?>
+				</td>
+				<td>
+					<?php echo $row->payment_element; ?>
 				</td>
 				<td>
 					<?php echo $row->ordering; ?>

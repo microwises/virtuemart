@@ -75,7 +75,7 @@ AdminUIHelper::startAdminArea();
 					<?php echo $row->shipmentShoppersList; ?>
 				</td>
                                 <td align="left">
-					<?php echo JHTML::_('link', $editlink, JText::_($row->shipment_element)); ?>
+					<?php echo $row->shipment_element; //JHTML::_('link', $editlink, JText::_($row->shipment_element)); ?>
 				</td>
 				<td align="left">
 					<?php echo JText::_($row->ordering); ?>
