@@ -69,7 +69,7 @@ class VirtuemartViewShipmentmethod extends JView {
 			$this->assignRef('shipment',	$shipment);
 			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($shipment->virtuemart_shoppergroup_ids,true));
 
-			ShopFunctions::addStandardEditViewCommands();
+			ShopFunctions::addStandardEditViewCommands($shipment->virtuemart_shipmentmethod_id);
 
 		} else {
 
