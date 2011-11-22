@@ -102,7 +102,7 @@ class VirtuemartViewPaymentMethod extends JView {
 				$this->assignRef('vendorList', $vendorList);
 			}
 
-			ShopFunctions::addStandardEditViewCommands();
+			ShopFunctions::addStandardEditViewCommands( $payment->virtuemart_paymentmethod_id);
 		} else {
 
 			$payments = $model->getPayments();
