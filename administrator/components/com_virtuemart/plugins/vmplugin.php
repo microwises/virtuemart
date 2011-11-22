@@ -82,6 +82,14 @@ abstract class vmPlugin extends JPlugin {
 	}
 
 	/**
+	* Create the table for this plugin if it does not yet exist.
+	* @author Valérie Isaksen
+	*/
+	protected function plgVmOnStoreInstallPluginTable($type, $jplugin_id=0) {
+
+	}
+
+	/**
 	 * This stores the data of the plugin, attention NOT the configuration of the pluginmethod
 	 *
 	 * @param array $values array or object with the data to store
@@ -93,7 +101,7 @@ abstract class vmPlugin extends JPlugin {
 // 		if(empty($tableName)) $tableName = $this->_tablename;
 
 		if(!$this->_table){
-			$this->createPluginTable($this->_tablename);
+			$this->createPluginTableObject($this->_tablename);
 		}
 
 		$this->_table->bindChecknStore($values);
@@ -102,7 +110,7 @@ abstract class vmPlugin extends JPlugin {
 			foreach($errors as $error){
 				$this->setError($error);
 			}
-	
+
 		}
 		return $values;
 
@@ -113,13 +121,13 @@ abstract class vmPlugin extends JPlugin {
 // 		if(empty($tableName)) $tableName = $this->_tablename;
 
 		if(!$this->_table){
-			$this->createPluginTable($this->_tablename);
+			$this->createPluginTableObject($this->_tablename);
 		}
 
 		return $this->_table->load($id);
 	}
 
-	protected function createPluginTable($tableName){
+	protected function createPluginTableObject($tableName){
 
 		if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 		$db =& JFactory::getDBO();

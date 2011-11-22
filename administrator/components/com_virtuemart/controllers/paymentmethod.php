@@ -87,7 +87,7 @@ class VirtuemartControllerPaymentmethod extends VmController {
 			JPluginHelper::importPlugin('vmpayment');
 			//Add a hook here for other shipment methods, checking the data of the choosed plugin
 			$dispatcher = JDispatcher::getInstance();
-			$retValues = $dispatcher->trigger('plgVmOnStoreCreatePluginTable', array('payment' , $data['payment_jplugin_id']));
+			$retValues = $dispatcher->trigger('plgVmOnStoreInstallPluginTable', array('payment' , $data['payment_jplugin_id']));
 	}
 
 	/**

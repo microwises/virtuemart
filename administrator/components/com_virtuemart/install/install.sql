@@ -121,8 +121,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calc_states` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `virtuemart_category_id` smallint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
-  `category_name` char(140),
-  `category_description` varchar(500),
   `category_template` char(24),
   `category_layout` char(16),
   `category_product_layout` char(16),
@@ -132,8 +130,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_categories` (
   `limit_list_max` smallint(1) UNSIGNED,
   `limit_list_initial` smallint(1) UNSIGNED,
   `hits` int(1) unsigned NOT NULL DEFAULT '0',
-  `metadesc` char(128) NOT NULL,
-  `metakey` char(128) NOT NULL,
   `metarobot` char(40) NOT NULL,
   `metaauthor` char(64) NOT NULL,
   `ordering` int(2) NOT NULL DEFAULT '0',
@@ -226,7 +222,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_coupons` (
   `modified_by` int(11) NOT NULL DEFAULT '0',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT '0',
-   PRIMARY KEY (`virtuemart_coupon_id`)
+   PRIMARY KEY (`virtuemart_coupon_id`),
+   KEY `idx_coupon_code` (`coupon_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Used to store coupon codes' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -236,8 +233,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_coupons` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_currencies` (
-  `virtuemart_currency_id` smallint(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `virtuemart_vendor_id` smallint(11) UNSIGNED NOT NULL DEFAULT '1',
+  `virtuemart_currency_id` smallint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '1',
   `currency_name` char(64),
   `currency_code_2` char(2),
   `currency_code_3` char(3),
@@ -337,11 +334,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customplugins` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturers` (
   `virtuemart_manufacturer_id` smallint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `mf_name` char(64),
-  `mf_email` char(255),
-  `mf_desc` text,
   `virtuemart_manufacturercategories_id` int(11),
-  `mf_url` char(255) NOT NULL DEFAULT '',
   `hits` int(11) unsigned NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -374,8 +367,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturer_medias` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturercategories` (
   `virtuemart_manufacturercategories_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `mf_category_name` char(64),
-  `mf_category_desc` text,
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
@@ -676,9 +667,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   `product_parent_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `product_sku` char(64) NOT NULL DEFAULT '',
-  `product_name` char(255),
-  `product_s_desc` text,
-  `product_desc` text,
   `product_weight` decimal(10,4),
   `product_weight_uom` char(7) NOT NULL DEFAULT 'KG',
   `product_length` decimal(10,4),
@@ -698,8 +686,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_products` (
   `product_params` text NOT NULL,
   `hits` int(11) unsigned NOT NULL DEFAULT '0',
   `intnotes` text,
-  `metadesc` text NOT NULL,
-  `metakey` text NOT NULL,
   `metarobot` text NOT NULL,
   `metaauthor` text NOT NULL,
   `layout` char(16) NOT NULL,
@@ -1213,12 +1199,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userinfos` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_vendors` (
   `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `vendor_name` char(64),
-  `vendor_phone` char(24),
   `vendor_store_name` char(128) NOT NULL DEFAULT '',
-  `vendor_store_desc` text,
   `vendor_currency` int(11),
-  `vendor_terms_of_service` text NOT NULL,
-  `vendor_url` char(255) NOT NULL DEFAULT '',
   `vendor_accepted_currencies` varchar(1024) NOT NULL,
   `vendor_params` text NOT NULL,
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',

@@ -159,7 +159,8 @@ class VirtueMartModelCategory extends VmModel {
 
 	public function rekurseCats($virtuemart_category_id,$level,$onlyPublished,$keyword,&$sortedCats){
 		$level++;
-		if($this->hasChildren($virtuemart_category_id)){
+		vmSetStartTime('rekurseCats');
+// 		if($this->hasChildren($virtuemart_category_id)){
 			$childCats = self::getCategories($onlyPublished, $virtuemart_category_id, false, $keyword);
 			if(!empty($childCats)){
 				foreach ($childCats as $key => $category) {
@@ -168,8 +169,8 @@ class VirtueMartModelCategory extends VmModel {
 					$this->rekurseCats($category->virtuemart_category_id,$level,$onlyPublished,$keyword,$sortedCats);
 				}
 			}
-		}
-
+// 		}
+		vmTime('rekurseCats','rekurseCats');
 	}
 
 

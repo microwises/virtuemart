@@ -70,7 +70,7 @@ class VirtuemartControllerShipmentmethod extends VmController {
 			JPluginHelper::importPlugin('vmshipment');
 			//Add a hook here for other shipment methods, checking the data of the choosed plugin
 			$dispatcher = JDispatcher::getInstance();
-			$retValues = $dispatcher->trigger('plgVmOnStoreCreatePluginTable', array('shipment' , $data['shipment_jplugin_id']));
+			$retValues = $dispatcher->trigger('plgVmOnStoreInstallPluginTable', array('shipment' , $data['shipment_jplugin_id']));
 
 	}
 
