@@ -357,13 +357,14 @@ class VirtueMartModelMedia extends VmModel {
 		return $table->virtuemart_media_id;
 	}
 
-	public function attachImages($objects,$type,$mime=''){
+	public function attachImages($objects,$type,$mime='',$limit=0){
 		if(!empty($objects)){
 			if(!is_array($objects)) $objects = array($objects);
-			foreach($objects as $object){
+			foreach($objects as $k => $object){
 
 				if(empty($object->virtuemart_media_id)) $virtuemart_media_id = null; else $virtuemart_media_id = $object->virtuemart_media_id;
 				$object->images = $this->createMediaByIds($virtuemart_media_id,$type,$mime);
+				if($limit==$k) break;// never break if $limit = 0
 
 			}
 		}

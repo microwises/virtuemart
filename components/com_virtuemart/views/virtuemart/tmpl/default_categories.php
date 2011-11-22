@@ -47,9 +47,9 @@ foreach ( $this->categories as $category ) {
 					<a href="<?php echo $caturl ?>" title="<?php echo $category->category_name ?>">
 					<?php echo $category->category_name ?>
 					<br />
-					<?php // if ($category->ids) {
+					<?php if (!empty($category->images) ) {
 						echo $category->images[0]->displayMediaThumb("",false);
-					//} ?>
+					} ?>
 					</a>
 				</h2>
 			</div>

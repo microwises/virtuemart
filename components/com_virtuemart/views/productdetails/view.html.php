@@ -132,7 +132,7 @@ class VirtueMartViewProductdetails extends JView {
 
 		if($category_model){
 			$category = $category_model->getCategory($virtuemart_category_id);
-			$category_model->addImages($category);
+			$category_model->addImages($category,1);
 			$this->assignRef('category', $category);
 
 			if ($category->parents) {
@@ -140,7 +140,7 @@ class VirtueMartViewProductdetails extends JView {
 					$pathway->addItem(strip_tags($c->category_name),JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id));
 				}
 			}
-			if($category->children)	$category_model->addImages($category->children);
+			if($category->children)	$category_model->addImages($category->children,1);
 		}
 		$format = JRequest::getCmd('format','html');
 		if ($format=='html') {

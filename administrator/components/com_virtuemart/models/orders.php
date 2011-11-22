@@ -243,7 +243,7 @@ class VirtueMartModelOrders extends VmModel {
 		return ' FROM #__virtuemart_orders as o
 			LEFT JOIN #__virtuemart_order_userinfos as u
 			ON u.virtuemart_order_id = o.virtuemart_order_id AND u.address_type="BT"
-			LEFT JOIN #__virtuemart_paymentmethods as pm
+			LEFT JOIN #__virtuemart_paymentmethods_'.VMLANG.' as pm
 			ON o.virtuemart_paymentmethod_id = pm.virtuemart_paymentmethod_id ';
 	}
 

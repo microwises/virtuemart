@@ -51,10 +51,10 @@ class VirtueMartModelRatings extends VmModel {
      */
     public function getRatings() {
 
-     	$tables = ' FROM `#__virtuemart_ratings` AS `r` JOIN `#__virtuemart_products` AS `p`
-     			ON `r`.`virtuemart_product_id` = `p`.`virtuemart_product_id` ';
+     	$tables = ' FROM `#__virtuemart_ratings` AS `r` JOIN `#__virtuemart_products_'.VMLANG.'` AS `p`
+     			USING (`virtuemart_product_id`) ';
      	$whereString = '';
-     	$this->_data = $this->exeSortSearchListQuery(0,' r.*,p.* ',$tables,$whereString,'',$this->_getOrdering());
+     	$this->_data = $this->exeSortSearchListQuery(0,' r.*,p.`product_name` ',$tables,$whereString,'',$this->_getOrdering());
 // 	    $this->_data = $this->_getList($q, $this->getState('limitstart'), $this->getState('limit'));
 
 		// set total for pagination
@@ -110,7 +110,9 @@ class VirtueMartModelRatings extends VmModel {
 		$ratings_data = $this->getTable('ratings');
 
 		/* Load the rating */
-		if ($cids) $ratings_data->load($cids[0]);
+		$joinValue = array('product_name' =>'#__virtuemart_products');
+
+		if ($cids) $ratings_data->load($cids[0],$joinValue,'virtuemart_product_id');
 
 		/* Add some variables for a new rating */
 		if (JRequest::getWord('task') == 'add') {
@@ -123,10 +125,10 @@ class VirtueMartModelRatings extends VmModel {
 		}
 
 		/* Get the product name */
-		$db = JFactory::getDBO();
-		$q = "SELECT product_name FROM #__virtuemart_products WHERE virtuemart_product_id = ".$ratings_data->virtuemart_product_id;
-		$db->setQuery($q);
-		$ratings_data->product_name = $db->loadResult();
+		// $db = JFactory::getDBO();
+		// $q = "SELECT product_name FROM #__virtuemart_products WHERE virtuemart_product_id = ".$ratings_data->virtuemart_product_id;
+		// $db->setQuery($q);
+		// $ratings_data->product_name = $db->loadResult();
 
 		return $ratings_data;
     }

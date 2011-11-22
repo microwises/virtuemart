@@ -248,7 +248,7 @@ class VmTable extends JTable{
 	 * @author Max Milbers
 	 * $TableJoins array of table names to add and left join to find ID
 	 */
-	function load($oid=null,$tableJoins= array()){
+	function load($oid=null,$tableJoins= array(),$joinKey = 0){
 
 /*		if($this->_translatable){
 			$tblKey = $this->_tbl_key;
@@ -325,9 +325,10 @@ class VmTable extends JTable{
 		}
 
 		if (count($tableJoins)) {
+			if (!$joinKey) $joinKey = $this->_tbl_key ;
 			foreach ($tableJoins as $tableId => $table) {
 			$select .= ',`'.$table.'`.`'.$tableId.'` ';
-			$from   .= ' LEFT JOIN `'.$table.'` on `'.$table.'`.`'.$this->_tbl_key.'`=`'. $mainTable .'`.`'.$this->_tbl_key.'`';
+			$from   .= ' LEFT JOIN `'.$table.'` on `'.$table.'`.`'.$joinKey.'`=`'. $mainTable .'`.`'.$joinKey.'`';
 			}
 		}
 		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = '.(int)$oid;	

@@ -98,7 +98,7 @@ class VirtueMartViewAskquestion extends JView {
 	    return;
 	}
 
-	$product_model->addImages($product);
+	$product_model->addImages($product,1);
 
 
 	/* Get the category ID */

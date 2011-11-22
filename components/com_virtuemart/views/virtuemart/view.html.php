@@ -63,7 +63,7 @@ class VirtueMartViewVirtueMart extends JView {
 			$products = array();
 			$categoryId = JRequest::getInt('catid', 0);
 			$categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
-			$categoryModel->addImages($categoryChildren);
+			$categoryModel->addImages($categoryChildren,1);
 
 			$this->assignRef('categories',	$categoryChildren);
 
@@ -73,17 +73,17 @@ class VirtueMartViewVirtueMart extends JView {
 
 			if (VmConfig::get('show_featured', 1)) {
 				$products['featured'] = $productModel->getProductListing('featured', 5);
-				$productModel->addImages($products['featured']);
+				$productModel->addImages($products['featured'],1);
 			}
 
 			if (VmConfig::get('show_latest', 1)) {
 				$products['latest']= $productModel->getProductListing('latest', 5);
-				$productModel->addImages($products['latest']);
+				$productModel->addImages($products['latest'],1);
 			}
 
 			if (VmConfig::get('show_topTen', 1)) {
 				$products['topten']= $productModel->getProductListing('topten', 5);
-				$productModel->addImages($products['topten']);
+				$productModel->addImages($products['topten'],1);
 			}
 			$this->assignRef('products', $products);
 

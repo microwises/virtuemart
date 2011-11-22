@@ -557,7 +557,7 @@ class VirtueMartCart {
 		$product = $model->getProduct($virtuemart_product_id, true, false);
 
 		if ( VmConfig::get('oncheckout_show_images')){
-			$model->addImages($product);
+			$model->addImages($product,1);
 			// $db =& JFactory::getDBO();
 			// $db->setQuery('SELECT * from #__virtuemart_medias where virtuemart_media_id='. $product->virtuemart_media_id[0] );
 			// $data = $db->loadObject();
@@ -1465,7 +1465,7 @@ class VirtueMartCart {
 		if (!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 		$vendorModel = new VirtueMartModelVendor();
 		$this->vendor = & $vendorModel->getVendor();
-		$vendorModel->addImages($this->vendor);
+		$vendorModel->addImages($this->vendor,1);
 		return $this->vendor;
 	}
 

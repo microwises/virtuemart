@@ -60,7 +60,7 @@ class VirtuemartViewManufacturer extends JView {
 		} else {
 			$document->setTitle(JText::_('COM_VIRTUEMART_MANUFACTURER_PAGE')) ;
 			$manufacturers = $model->getManufacturers(true, true);
-			$model->addImages($manufacturers);
+			$model->addImages($manufacturers,1);
 			$this->assignRef('manufacturers',	$manufacturers);
 		}
 

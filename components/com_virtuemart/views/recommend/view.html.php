@@ -91,7 +91,7 @@ class virtuemartViewrecommend extends JView {
 			return;
 		}
 
-		$product_model->addImages($product);
+		$product_model->addImages($product,1);
 
 
 		/* Load the category */

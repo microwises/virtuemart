@@ -59,7 +59,7 @@ class VirtuemartViewCategories extends JView {
 		//if($category->children)	$categoryModel->addImages($category->children);
 
 		$category->children = $categoryModel->getChildCategoryList($vendorId, $categoryId);
-		$categoryModel->addImages($category->children);
+		$categoryModel->addImages($category->children,1);
 
 	   //Add the category name to the pathway
 		$pathway->addItem(strip_tags($category->category_name)); //Todo what should be shown up?

@@ -598,12 +598,12 @@ class VmModel extends JModel {
 	 * @param object $obj some object with a _medias xref table
 	 */
 
-	public function addImages($obj){
+	public function addImages($obj,$limit=0){
 
 		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
 
-		$this->mediaModel->attachImages($obj,$this->_maintablename,'image');
+		$this->mediaModel->attachImages($obj,$this->_maintablename,'image',$limit);
 
 	}
 

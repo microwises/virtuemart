@@ -86,7 +86,7 @@ class VirtuemartViewCategory extends JView {
 		//if($category->children)	$categoryModel->addImages($category->children);
 
 		$category->children = $categoryModel->getChildCategoryList($vendorId, $categoryId);
-		$categoryModel->addImages($category->children);
+		$categoryModel->addImages($category->children,1);
 
 	   $this->assignRef('category', $category);
 
@@ -121,7 +121,7 @@ class VirtuemartViewCategory extends JView {
 
 	    // Load the products in the given category
 	    $products = $productModel->getProductsInCategory($categoryId);
-	    $productModel->addImages($products);
+	    $productModel->addImages($products,1);
 	    $this->assignRef('products', $products);
 
 		foreach($products as $product){
