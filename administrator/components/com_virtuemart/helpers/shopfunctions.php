@@ -154,12 +154,12 @@ class ShopFunctions {
 				$("select#lang").chosen().change(function() {
 					langCode = $(this).find("option:selected").val();
 					flagClass = "flag-"+langCode.substr(0,2) ;
-					$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1" , 
+					$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1" ,
 						function(data) {
 							var items = [];
 
 							if (data.fields !== "error" ) {
-								if (data.structure == "empty") alert(data.msg); 
+								if (data.structure == "empty") alert(data.msg);
 								$.each(data.fields , function(key, val) {
 									cible = jQuery("#"+key);
 									if (oldflag !== "") cible.parent().removeClass(oldflag)
@@ -549,8 +549,16 @@ class ShopFunctions {
 	function renderWeightUnitList($name, $selected) {
 
 		$weigth_unit_default = self::getWeightUnit();
+		foreach ($weigth_unit_default as  $key => $value) {
+			$wu_list[] = JHTML::_('select.option', $key, $value, $name);
+		}
+		$listHTML = JHTML::_('Select.genericlist', $wu_list, $name, '', $name, 'text', $selected);
+		return $listHTML;
+		/*
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 		return VmHTML::selectList($name, $selected, $weigth_unit_default);
+		 *
+		 */
 	}
 
 	/**
