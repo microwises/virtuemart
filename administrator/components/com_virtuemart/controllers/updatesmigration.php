@@ -332,7 +332,7 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 		$data = JRequest::get('get');
 		JRequest::setVar($data['token'], '1', 'post');
 		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
-		$this->checkPermissionForTools();
+// 		$this->checkPermissionForTools();
 
 		if(!class_exists('com_virtuemartInstallerScript')) require(JPATH_VM_ADMINISTRATOR . DS . 'install' . DS . 'script.virtuemart.php');
 		$updater = new com_virtuemartInstallerScript();

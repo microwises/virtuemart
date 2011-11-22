@@ -176,8 +176,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if(empty($this->path)) $this->path = JPATH_VM_ADMINISTRATOR;
 
 
-// 			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
-// 			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
+			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
+			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
 // 			$this->displayFinished(true);
 			//return false;
 
@@ -254,16 +254,18 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 // 			$tablesToRename = array(  '#__virtuemart_shippingcarrier_shoppergroups' => '#__virtuemart_shipmentmethod_shoppergroups'
 // 									);
 
-			$updater = new genericTableUpdater;
-			$updater->updateMyVmTables();
-
 			$config = &JFactory::getConfig();
 			$lang = $config->getValue('language');
 			if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 			$migrator = new Migrator();
 			$migrator->portOldLanguageToNewTables((array)$lang);
 
+			$updater = new genericTableUpdater;
+			$updater->updateMyVmTables();
+
 			$this->changeShoppergroupDataSetAnonShopperToOne();
+
+			$migrator->portOldLanguageToNewTables((array)$lang);
 
 			if($loadVm) $this->displayFinished(true);
 
@@ -815,16 +817,6 @@ class genericTableUpdater{
 
 	}
 
-	public function compareUpdateTable($tablename,$table){
-
-		$this->alterColumns($tablename,$table[0]);
-
-		reset($table[0]);
-		$first_key = key($table[0]);
-
-// 		$this->alterKey($tablename,$table[1],$first_key);
-
-	}
 
 	public function createTable($tablename,$table){
 
@@ -866,102 +858,123 @@ class genericTableUpdater{
 		$this->_app->enqueueMessage($q);
 	}
 
+	public function compareUpdateTable($tablename,$table){
 
-	private function alterKey($tablename,$keys,$firstField){
+		$this->alterColumns($tablename,$table[0]);
+		$this->alterKey($tablename,$table[1]);
 
-		// 		vmdebug('$first_key',$first_key,$table[1]);
+	}
+
+	private function alterKey($tablename,$keys){
+
 		$demandFieldNames = array();
 		foreach($keys as $i=>$line){
 			$demandedFieldNames[] = $i;
 		}
+// 		vmdebug('                $demandedFieldNames ' ,$demandedFieldNames);
 
 		$query = "SHOW INDEXES  FROM `".$tablename."` ";	//SHOW {INDEX | INDEXES | KEYS}
 		$this->_db->setQuery($query);
-// 		$keys = $this->_db->loadResultArray(0);
-		if(!$eKeys = $this->_db->loadObjectList()){
+		if(!$eKeys = $this->_db->loadObjectList() ){
 			$this->_app->enqueueMessage('alterKey show index:'.$this->_db->getErrorMsg() );
+		} else {
+			$eKeyNames= $this->_db->loadResultArray(2);
 		}
-		$after ='';
 
-		$knownFieldNames = array();
-		foreach($eKeys as $eKey){
-			if(strpos($eKey->Key_name,'PRIMARY')!==false){
-				continue; //We ignore Primaries
+		foreach($eKeyNames as $i => $name){
+			$query = '';
+			if(!in_array($name, $demandedFieldNames)){
+
+				if(strpos($eKeys[$i]->Key_name,'PRIMARY')!==false ||  $name==='virtuemart_order_userinfo_id'){
+// 					$query = 'ALTER TABLE `'.$tablename.'` DROP INDEX `'.$name.'` ';
+				} else {
+					$query = 'ALTER TABLE `'.$tablename.'` DROP INDEX `'.$name.'` ';
+					vmdebug('DROP $eKeyNames '.$name);
+				}
+
+				if(!empty($query)){
+					$this->_db->setQuery($query);
+					if(!$this->_db->query()){
+						$this->_app->enqueueMessage('alterTable DROP '.$tablename.'.'.$name.' :'.$this->_db->getErrorMsg() );
+					} else {
+						$dropped++;
+					}
+				}
+
 			}
-			$knownFieldNames[] = $eKey->Key_name;
 		}
-// 		vmdebug('$knownKeyNames',$knownFieldNames);
-		$i = 0;
-		$columnsToDelete = $knownFieldNames;
+
+		$query = "SHOW INDEXES  FROM `".$tablename."` ";	//SHOW {INDEX | INDEXES | KEYS}
+		$this->_db->setQuery($query);
+		if(!$eKeys = $this->_db->loadObjectList() ){
+			$this->_app->enqueueMessage('alterKey show index:'.$this->_db->getErrorMsg() );
+		} else {
+			$eKeyNames= $this->_db->loadResultArray(2);
+		}
+
+		$showThem = false;
 		foreach($keys as $name =>$value){
 
-			if($i===0){
-				$dropit = '';
-				if(in_array('PRIMARY KEY', $knownFieldNames)){
-					$dropit = "DROP PRIMARY KEY , ";
+			$query = '';
+			$action = '';
+
+			if(in_array($name, $eKeyNames)){
+
+				$key=array_search($name, $eKeyNames);
+// 				vmdebug('hm key id '.$key);
+				$oldColumn = $this->reCreateKeyByTableAttributes($eKeys[$key]);
+
+				$compare = strcasecmp( $oldColumn, $value);
+
+				if (!empty($compare)) {
+					$showThem = true;
+					vmdebug('$oldColumn '.$oldColumn.' $value '.$value);
+					if(strpos($value,'PRIMARY')!==false){
+						$dropit = "DROP PRIMARY KEY , ";
+						$query = "ALTER TABLE `".$tablename."` ".$dropit." ADD PRIMARY KEY (`".$name."`);" ;
+					} else {
+						if(strpos($value,'KEY')) $type = 'KEY'; else $type = 'INDEX';
+						$query = "ALTER TABLE `".$tablename."` DROP  ".$type." `".$name."` , ADD ".$value ;
+						$action = 'ALTER';
+					}
 				}
-				$query = "ALTER TABLE `".$tablename."` ".$dropit." ADD PRIMARY KEY (`".$firstField."`);" ;
-
-				$action = 'ALTER';
-				$i++;
-			}
-
-			if(strpos($value,'PRIMARY')!==false){
-				continue; //We ignore Primaries
-			}
-
-// 			if(!in_array($name,$demandFieldNames)){
-// 				$query =  "ALTER TABLE `".$tablename."` DROP INDEX ".$name;
-// 				$action = 'DROP';
-// 			} else
-			vmdebug('$name '.$name.' value '.$value);
-			if(in_array($name, $knownFieldNames)){
-				if(strpos($value,'KEY')) $type = 'KEY'; else $type = 'INDEX';
-				$query = "ALTER TABLE `".$tablename."` DROP  ".$type." `".$name."` , ADD ".$value ;
-				$action = 'ALTER';
 			} else {
-				$query = "ALTER TABLE `".$tablename."` ADD ".$value ;
-				$action = 'ADD';
+				if(strpos($value,'PRIMARY')===false){
+// 					vmdebug('ADD $eKeyNames '.$name ,$eKeyNames);
+					$query = "ALTER TABLE `".$tablename."` ADD ".$value ;
+					$action = 'ADD';
+				}
+
 			}
 
-			$this->_db->setQuery($query);
-			if(!$this->_db->query()){
-				$this->_app = JFactory::getApplication();
-				$this->_app->enqueueMessage('alterKey '.$action.' INDEX '.$key.': '.$this->_db->getErrorMsg() );
+			if(!empty($query)){
+				$this->_db->setQuery($query);
+				if(!$this->_db->query()){
+					$this->_app = JFactory::getApplication();
+					$this->_app->enqueueMessage('alterKey '.$action.' INDEX '.$name.': '.$this->_db->getErrorMsg() );
+				}
 			}
 		}
 
-		$eKeys = array();
-		$query = "SHOW INDEXES  FROM `".$tablename."` ";	//SHOW {INDEX | INDEXES | KEYS}
-		$this->_db->setQuery($query);
-		if(!$eKeys = $this->_db->loadObjectList()){
-			$this->_app->enqueueMessage('alterKey show index:'.$this->_db->getErrorMsg() );
+// 		if($showThem)vmdebug('$eKeys  ',$eKeys);
+	}
+
+	function reCreateKeyByTableAttributes($keyAttribs){
+
+		$oldkey ='';
+
+
+		if(strpos($keyAttribs->Key_name,'PRIMARY')!==false){
+			$oldkey = 'PRIMARY KEY (`'.$keyAttribs->Column_name.'`)';
+		} else {
+			$oldkey = 'KEY `'.$keyAttribs->Key_name.'` (`'.$keyAttribs->Column_name.'`)';
 		}
 
-		$knownKeyNames = array();
-		foreach($eKeys as $eKey){
-			if(strpos($eKey->Key_name,'PRIMARY')!==false){
-				continue; //We ignore Primaries
-			}
-			$knownKeyNames[] = $eKey->Key_name;
-		}
+// 		if(empty($keyAttribs->Cardinality)){
+// 			vmdebug('Cardinality : '.$keyAttribs->Cardinality.' '.$oldkey);
+// 		}
 
-		vmdebug('$known key Names',$knownKeyNames);
-		foreach($knownFieldNames as $fieldname){
-
-			if(!in_array($fieldname, $demandedFieldNames)){
-				$query = 'ALTER TABLE `'.$tablename.'` DROP `'.$fieldname.'` ';
-				$action = 'DROP';
-				$dropped++;
-
-// 				$this->_db->setQuery($query);
-// 				if(!$this->_db->query()){
-					$this->_app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
-// 				}
-			}
-
-		}
-
+		return $oldkey;
 	}
 
 	/**
@@ -982,6 +995,20 @@ class genericTableUpdater{
 		$fullColumns = $this->_db->loadObjectList();
 		$columns = $this->_db->loadResultArray(0);
 
+		foreach($columns as $fieldname){
+
+			if(!in_array($fieldname, $demandFieldNames)){
+				$query = 'ALTER TABLE `'.$tablename.'` DROP COLUMN `'.$fieldname.'` ';
+				$action = 'DROP';
+				$dropped++;
+
+				$this->_db->setQuery($query);
+				if(!$this->_db->query()){
+					$this->_app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
+				}
+			}
+		}
+
 // 		$columnsToDelete = $columns;
 		$after ='';
 		$dropped = 0;
@@ -990,17 +1017,15 @@ class genericTableUpdater{
 		$this->_app = JFactory::getApplication();
 
 		foreach($fields as $fieldname => $alterCommand){
+			$query='';
+			$action = '';
 // 			vmdebug('$fieldname',$fieldname,$alterCommand);
-// 			if(!in_array($fieldname,$demandFieldNames)){
-
-// 				vmdebug('DROP command '.$fieldname);
-// 			}
 			if(empty($alterCommand)){
 				vmdebug('empty alter command '.$fieldname);
 				continue;
 			}
 			else if(in_array($fieldname,$columns)){
-				$query='';
+
 				$key=array_search($fieldname, $columns);
 				$oldColumn = $this->reCreateColumnByTableAttributes($fullColumns[$key]);
 
@@ -1010,8 +1035,8 @@ class genericTableUpdater{
 				    $query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
 				    $action = 'CHANGE';
 				    $altered++;
-				    vmdebug('$fullColumns',$fullColumns[$key]);
-				    vmdebug('Alter field ',$oldColumn,$alterCommand,$compare);
+// 				    vmdebug('$fullColumns',$fullColumns[$key]);
+// 				    vmdebug('Alter field ',$oldColumn,$alterCommand,$compare);
 				}
 			}
 			else {
@@ -1028,19 +1053,6 @@ class genericTableUpdater{
 			}
 		}
 
-		foreach($columns as $fieldname){
-
-			if(!in_array($fieldname, $demandFieldNames)){
-				$query = 'ALTER TABLE `'.$tablename.'` DROP COLUMN `'.$fieldname.'` ';
-				$action = 'DROP';
-				$dropped++;
-
-				$this->_db->setQuery($query);
-				if(!$this->_db->query()){
-					$this->_app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
-				}
-			}
-		}
 		$this->_app->enqueueMessage('Tablename '.$tablename.' dropped: '.$dropped.' altered: '.$altered.' added: '.$added);
 
 		return true;

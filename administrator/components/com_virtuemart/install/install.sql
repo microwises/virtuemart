@@ -383,8 +383,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_manufacturercategories` (
   `modified_by` int(11) NOT NULL DEFAULT '0',
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`virtuemart_manufacturercategories_id`),
-  KEY `idx_manufacturer_category_category_name` (`mf_category_name`)
+  PRIMARY KEY (`virtuemart_manufacturercategories_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Manufacturers are assigned to these categories' AUTO_INCREMENT=1 ;
 
 
@@ -417,7 +416,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_medias` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_media_id`),
-  KEY (`virtuemart_vendor_id`)
+  KEY `i_virtuemart_vendor_id` (`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Additional Images and Files which are assigned to products' AUTO_INCREMENT=1 ;
 
 
@@ -1220,7 +1219,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_vendors` (
   `vendor_currency` int(11),
   `vendor_terms_of_service` text NOT NULL,
   `vendor_url` char(255) NOT NULL DEFAULT '',
-  `vendor_accepted_currencies` text NOT NULL,
+  `vendor_accepted_currencies` varchar(1024) NOT NULL,
   `vendor_params` text NOT NULL,
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
