@@ -56,7 +56,7 @@ if ($this->show  && $this->JUser->id === 0  ) {
 	    <fieldset class="input">
 	    <LEGEND><?php echo JText::_('COM_VIRTUEMART_ORDER_ANONYMOUS') ?></LEGEND>
 
-	    <form action="<?php echo JRoute::_( 'index.php', true, 0); ?>" method="post" name="com-login" >
+	    <form action="<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart', true, 0); ?>" method="post" name="com-login" >
 
 	    	<div class="width30 floatleft" id="com-form-order">
 	    		<label for="order_number"><?php echo JText::_('COM_VIRTUEMART_ORDER_NUMBER') ?></label><br />
@@ -85,8 +85,8 @@ if ($this->show  && $this->JUser->id === 0  ) {
         <p><?php echo JText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM'); ?></p>
 
         <p class="width30 floatleft" id="com-form-login-username">
-            <input type="text" name="username" size="18" alt="<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>" value="<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>" onblur="if(this.value=='') this.value='<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>';" onfocus="if(this.value=='<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>') this.value='';" />
-        </p>
+            <input type="text" name="username" size="18" alt="<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>" value="<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>" onblur="if(this.value=='') this.value='<?php echo addslashes(JText::_('COM_VIRTUEMART_USERNAME')); ?>';" onfocus="if(this.value=='<?php echo addslashes(JText::_('COM_VIRTUEMART_USERNAME')); ?>') this.value='';" />
+	</p>
 
         <p class="width30 floatleft" id="com-form-login-password">
             <?php if ( VmConfig::isJ15() ) { ?>

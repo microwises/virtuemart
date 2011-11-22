@@ -34,9 +34,39 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	parent::__construct($subject, $config);
 
 	$this->_loggable = true;
-
+	$this->tableFields = array('id',
+	    'virtuemart_order_id',
+	    'order_number',
+	    'virtuemart_paymentmethod_id',
+	    'payment_name',
+	    'cost',
+	    'tax_id',
+	    'paypal_custom',
+	    'paypal_response_mc_gross',
+	    'paypal_response_mc_currency',
+	    'paypal_response_invoice',
+	    'paypal_response_protection_eligibility',
+	    'paypal_response_payer_id',
+	    'paypal_response_tax',
+	    'paypal_response_payment_date',
+	    'paypal_response_payment_status',
+	    'paypal_response_mc_fee',
+	    'paypal_response_payer_email',
+	    'paypal_response_last_name',
+	    'paypal_response_first_name',
+	    'paypal_response_business',
+	    'paypal_response_receiver_email',
+	    'paypal_response_transaction_subject',
+	    'paypal_response_residence_country',
+	    'paypalresponse_raw',
+	    'created_on',
+	    'created_by',
+	    'modified_on',
+	    'modified_by',
+	    'locked_on',
+	    'locked_by'); //,'created_on','created_by','modified_on','modified_by','locked_on');
 // 		self::$_this
-	//$this->_createTable();
+	$this->createPluginTable($this->_tablename);
 	self::$_this = $this;
     }
 
@@ -47,7 +77,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
     protected function getTable() {
 
 
-	return "CREATE TABLE IF NOT EXISTS `#__virtuemart_payment_paypal` (
+	return "CREATE TABLE IF NOT EXISTS `" . $this->_tablename . "` (
 	    `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT UNIQUE,
 	    `virtuemart_order_id` int(11) DEFAULT NULL,
 	    `order_number` char(32) DEFAULT NULL,

@@ -1262,7 +1262,7 @@ class VirtueMartCart {
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelected', array('payment','cart' => $this, $cart_prices));
 			foreach ($returnValues as $returnValue) {
-				if ( is_int($returnValue )) {
+				if ((int) $returnValue ) {
 					$nbPayment ++;
 					if($returnValue) $virtuemart_paymentmethod_id = $returnValue;
 				}

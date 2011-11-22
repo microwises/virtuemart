@@ -31,15 +31,15 @@ class plgVmPaymentStandard extends vmPSPlugin {
     public static $_this = false;
 
     function __construct(& $subject, $config) {
-	if (self::$_this)
-	    return self::$_this;
-	parent::__construct($subject, $config);
+	if(self::$_this) return self::$_this;
+		parent::__construct($subject, $config);
 
-	$this->_loggable = true;
-
+		$this->_loggable = true;
+		$this->tableFields = array('id','virtuemart_order_id','order_number','virtuemart_paymentmethod_id',
+						'payment_name','cost','cost','tax_id');//,'created_on','created_by','modified_on','modified_by','locked_on');
 // 		self::$_this
-	//$this->_createTable();
-	self::$_this = $this;
+		$this->createPluginTable($this->_tablename);
+		self::$_this = $this;
     }
 	 /**
      * Create the table for this plugin if it does not yet exist.
@@ -48,7 +48,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
     protected function getTable() {
 
 
-	return "CREATE TABLE IF NOT EXISTS `#__virtuemart_payment_standard` (
+	return "CREATE TABLE IF NOT EXISTS `".$this->_tablename."` (
 	    `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT UNIQUE,
 	    `virtuemart_order_id` int(11) DEFAULT NULL,
 	    `order_number` char(32) DEFAULT NULL,

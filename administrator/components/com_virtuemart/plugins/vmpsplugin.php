@@ -663,16 +663,18 @@ abstract class vmPSPlugin extends vmPlugin {
     protected function renderPluginName($plugin, $params) {
 	$return = '';
 	$plugin_name = $this->_psType . '_name';
+	$plugin_desc = $this->_psType . '_desc';
+	$description='';
 // 		$params = new JParameter($plugin->$plugin_params);
 	$logo = $params->get($this->_psType . '_logos');
-	$description = $this->_psType . '_desc';
+
 	if (!empty($logo)) {
 	    $return = $this->displayLogos($logo) . ' ';
 	}
-	if (!empty($description)) {
-	    $description = '<span class="' . $this->_type . '_description">' . $description . '</span>';
+	if (!empty($plugin->$plugin_desc)) {
+	    $description = '<span class="' . $this->_type . '_description">' . $plugin->$plugin_desc . '</span>';
 	}
-	return $return . '<span class="' . $this->_type . '_name">' . $plugin->$plugin_name . '</span>' . $description;
+	return $return . '<span class="' . $this->_type . '_name">' . $plugin->$plugin_name . '</span>' .  $description;
     }
 
     protected function getPluginHtml($plugin, $selectedPlugin, $pluginSalesPrice) {
