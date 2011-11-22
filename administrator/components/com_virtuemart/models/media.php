@@ -72,7 +72,7 @@ class VirtueMartModelMedia extends VmModel {
 	 * @param unknown_type $type
 	 * @param unknown_type $mime
 	 */
-	function createMediaByIds($virtuemart_media_ids,$type='',$mime=''){
+	function createMediaByIds($virtuemart_media_ids,$type='',$mime='',$limit=0){
 
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
@@ -84,7 +84,7 @@ class VirtueMartModelMedia extends VmModel {
 			//$virtuemart_media_ids = array_diff($virtuemart_media_ids,array('0',''));
 
 			$data = $this->getTable('medias');
-			foreach($virtuemart_media_ids as $virtuemart_media_id){
+			foreach($virtuemart_media_ids as $k => $virtuemart_media_id){
 				if(is_object($virtuemart_media_id)){
 					$id = $virtuemart_media_id->virtuemart_media_id;
 				} else {
@@ -98,6 +98,8 @@ class VirtueMartModelMedia extends VmModel {
 					if(is_object($virtuemart_media_id) && !empty($virtuemart_media_id->product_name)) $media->product_name = $virtuemart_media_id->product_name;
 					$medias[] = $media;
 				}
+				if($limit==$k) break;// never break if $limit = 0
+
 				/*	    		//$id = is_object($virtuemart_media_id)? $virtuemart_media_id->virtuemart_media_id:$virtuemart_media_id;
 				 $data->load((int)$id);
 				$media = VmMediaHandler::createMedia($data,$data->file_type,$mime);
@@ -363,8 +365,7 @@ class VirtueMartModelMedia extends VmModel {
 			foreach($objects as $k => $object){
 
 				if(empty($object->virtuemart_media_id)) $virtuemart_media_id = null; else $virtuemart_media_id = $object->virtuemart_media_id;
-				$object->images = $this->createMediaByIds($virtuemart_media_id,$type,$mime);
-				if($limit==$k) break;// never break if $limit = 0
+				$object->images = $this->createMediaByIds($virtuemart_media_id,$type,$mime,$limit=0);
 
 			}
 		}
