@@ -146,29 +146,20 @@ class VirtueMartModelCustom extends VmModel {
 	 */
     function getCustoms($custom_parent_id,$search = false){
 
-		$this->_db = JFactory::getDBO();
-		$query='SELECT * FROM `#__virtuemart_customs` WHERE field_type <> "R" AND field_type <> "Z" AND field_type <> "G" ';
+		$query='* FROM `#__virtuemart_customs` WHERE field_type <> "R" AND field_type <> "Z" AND field_type <> "G" ';
 		if($custom_parent_id){
 			$query .= 'AND `custom_parent_id` ='.(int)$custom_parent_id;
 		}
 
 		if($search){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
-			//$search = $this->_db->Quote($search, false);
 			$query .= 'AND `custom_title` LIKE '.$search;
 		}
+		$datas->items = $this->exeSortSearchListQuery(0, $query, '');
 
-		$this->_db->setQuery($query);
-		// set total for pagination
-		$this->_total = $this->_getListCount($query);
-
-		$datas->items = $this->_db->loadObjectList();
-
-//		$data = $this->getTable('customs');
-//   	$data->load($this->virtuemart_custom_id);
 		if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 		$customfields = new VirtueMartModelCustomfields();
-//		$customHandler = VmCustomHandler::createCustom($data);
+
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 		$datas->field_types = $customfields->getField_types() ;
 

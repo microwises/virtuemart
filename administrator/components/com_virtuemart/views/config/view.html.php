@@ -95,10 +95,10 @@ class VirtuemartViewConfig extends JView {
 		$activeLanguages = $model->getActiveLanguages( VmConfig::get('active_languages') );
 		$this->assignRef('activeLanguages', $activeLanguages);
 
-		$orderByFields = $model->getOrderByFields( VmConfig::get('browse_orderby_fields') );
+		$orderByFields = $model->getProductFilterFields('browse_orderby_fields');
 		$this->assignRef('orderByFields', $orderByFields);
 		
-		$searchFields = $model->getSearchFields( VmConfig::get('browse_search_fields') );
+		$searchFields = $model->getProductFilterFields( 'browse_search_fields');
 		$this->assignRef('searchFields', $searchFields);
 
 		$aclGroups = $usermodel->getAclGroupIndentedTree();

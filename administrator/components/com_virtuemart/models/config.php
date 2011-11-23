@@ -208,70 +208,26 @@ class VirtueMartModelConfig extends JModel {
 
 		return JHTML::_('select.genericlist', $activeLangs, 'active_languages[]', 'size=10 multiple="multiple"', 'value', 'text', $active_languages );// $activeLangs;
 	}
+	
 
 	/**
-	 * Retrieve a list of Order By Fields
-	 *
+	 * Retrieve a list of preselected and existing search or order By Fields
+	 * $type = 'browse_search_fields' or 'browse_orderby_fields'
 	 * @author Kohl Patrick
 	 * @return array of order list
 	 */
-	function getOrderByFields( $orderByChecked ) {
-// 		vmdebug('$orderByChecked',$orderByChecked);
-// 		if (empty ($orderByChecked)) $orderByChecked = array('product_sku','category_name','mf_name','product_name');
-// 		else if (!is_array($orderByChecked)) $orderByChecked = array($orderByChecked);
-		$orderByFields = new stdClass();
-		$orderByFields->checkbox ='<div  class="threecols"><ul>';
+	function getProductFilterFields( $type ) {
 
-		$orderByFieldsArray = array('p.virtuemart_product_id', 'p.product_sku','pp.product_price','c.category_name','c.category_description',
-		'm.mf_name', 'l.product_s_desc', 'p.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width',
-		'p.product_height', 'p.product_lwh_uom', 'p.product_in_stock', 'p.low_stock_notification', 'p.product_available_date',
-		'p.product_availability', 'p.product_special', 'p.created_on', 'p.modified_on', 'l.product_name', 'p.product_sales',
-		'p.product_unit', 'p.product_packaging', 'p.intnotes', 'l.metadesc', 'l.metakey', 'p.metarobot', 'p.metaauthor');
-		foreach ($orderByFieldsArray as $key => $field ) {
-			if (!empty($orderByChecked) && in_array($field, $orderByChecked) ) {
-				$checked = 'checked="checked"';
-			}
-			else {
-				$checked = '';
-			}
+		$searchChecked = VmConfig::get($type) ;
 
-			$fieldWithoutPrefix = $field;
-			$dotps = strrpos($fieldWithoutPrefix, '.');
-			if($dotps!==false){
-				$prefix = substr($field, 0,$dotps+1);
-				$fieldWithoutPrefix = substr($field, $dotps+1);
-			}
-
-			$text = JText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
-			$orderByFields->select[] =  JHTML::_('select.option', $field, $text) ;
-			$orderByFields->checkbox.= '<li><label for="' .$field.$key. '">' .$text. '</label><input type="checkbox" id="' .$field.$key. '" name="browse_orderby_fields[]" value="' .$field. '" ' .$checked. ' /></li>';
-
-
+		if (!is_array($searchChecked)) {
+			$searchChecked = (array)$searchChecked;
 		}
-		$orderByFields->checkbox .='</ul></div>';
-		return $orderByFields;
-	}
-	/**
-	 * Retrieve a list of search Fields
-	 *
-	 * @author Kohl Patrick
-	 * @return array of order list
-	 */
-	function getSearchFields( $searchChecked ) {
+		$searchFieldsArray = ShopFunctions::getValidProductFilterArray ();
+		if ($type == 'browse_orderby_fields' ) array_shift($searchFieldsArray);
 
-// 		if (empty ($searchChecked)) $searchChecked = array('p.product_sku','c.category_name','l.category_description','m.mf_name','p.product_name', 'p.product_s_desc');
-// 		else if (!is_array($searchChecked))
-		if (empty ($searchChecked)){
-			$searchChecked = array();
-		} else if (!is_array($searchChecked)) {
-			$searchChecked = array($searchChecked);
-		}
-		$searchFields ='<div  class="threecols"><ul>';
-		$searchFieldsArray = array('p.product_sku','pp.product_price','c.category_name','c.category_description','m.mf_name','l.product_name',
-		'l.product_s_desc', 'l.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width', 'p.product_height',
-		'p.product_lwh_uom', 'p.product_in_stock', 'p.low_stock_notification', 'p.product_available_date', 'p.product_availability', 'p.product_special',
-		'p.created_on', 'p.modified_on',  'p.product_sales','p.product_unit', 'p.product_packaging', 'p.intnotes',
-		'l.metadesc', 'l.metakey', 'p.metarobot', 'p.metaauthor');
+		$searchFields= new stdClass();
+		$searchFields->checkbox ='<div class="threecols"><ul>';
 		foreach ($searchFieldsArray as $key => $field ) {
 			if (in_array($field, $searchChecked) ) {
 				$checked = 'checked="checked"';
@@ -288,13 +244,12 @@ class VirtueMartModelConfig extends JModel {
 			}
 
 			$text = JText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
-
-			$searchFields.= '<li><label for="' .$field.$key. '">' .$text. '</label><input type="checkbox" id="' .$field.$key. '" name="browse_search_fields[]" value="' .$field. '" ' .$checked. ' /></li>';
+			if ($type == 'browse_orderby_fields' ) $searchFields->select[] =  JHTML::_('select.option', $field, $text) ;
+			$searchFields->checkbox .= '<li><label for="' .$type.$fieldWithoutPrefix.$key. '">' .$text. '</label><input type="checkbox" id="' .$type.$fieldWithoutPrefix.$key. '" name="'.$type.'[]" value="' .$field. '" ' .$checked. ' /></li>';
 		}
-		$searchFields .='</ul></div>';
+		$searchFields->checkbox .='</ul></div>';
 		return $searchFields;
 	}
-
 
 	/**
 	 * Save the configuration record

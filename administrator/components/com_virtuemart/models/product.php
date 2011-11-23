@@ -51,13 +51,18 @@ class VirtueMartModelProduct extends VmModel {
 		$this->starttime = microtime(true);
 		$this->maxScriptTime = ini_get('max_execution_time')*0.95-1;
 		// 	$this->addvalidOrderingFieldName(array('m.mf_name','pp.product_price'));
-		$browseOrderByFields = VmConfig::get('browse_orderby_fields');
-		// 	vmdebug('$browseOrderByFields',$browseOrderByFields);
-		$this->addvalidOrderingFieldName((array)$browseOrderByFields);
+
 		$app = JFactory::getApplication();
-		if(!$app->isSite() ){
+		if($app->isSite() ){
+			$browseOrderByFields = VmConfig::get('browse_orderby_fields');
+
+		} else {
+			if(!class_exists('shopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+			$browseOrderByFields = ShopFunctions::getValidProductFilterArray ();
 			$this->addvalidOrderingFieldName(array('pp.product_price'));
+			// 	vmdebug('$browseOrderByFields',$browseOrderByFields);
 		}
+		$this->addvalidOrderingFieldName((array)$browseOrderByFields);	
 		// 	vmdebug('product allows following orderingFields ',$this->_validOrderingFieldName);
 	}
 

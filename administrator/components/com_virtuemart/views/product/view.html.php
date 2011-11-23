@@ -140,7 +140,6 @@ class VirtuemartViewProduct extends JView {
 				$currency = $currency_model->getCurrency($vendor->vendor_currency);
 				$this->assignRef('vendor_currency', $currency->currency_symbol);
 
-				/* Load the manufacturers */
 				/* Load the manufacturers*/
 				$config = VmConfig::loadConfig();
 				$mf_model = $this->getModel('manufacturer');

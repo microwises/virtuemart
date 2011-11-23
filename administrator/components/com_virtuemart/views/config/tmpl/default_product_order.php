@@ -54,7 +54,7 @@ defined('_JEXEC') or die('Restricted access');
 			    </span>
 			</td>
 			<td><fieldset class="checkbox">
-			    <?php echo $this->searchFields ; ?>
+			    <?php echo $this->searchFields->checkbox ; ?>
 			</fieldset></td>
 		    </tr>
 		    <tr>

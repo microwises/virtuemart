@@ -62,7 +62,8 @@ class ShopFunctions {
 
 		$lists[$name] = $mainframe->getUserStateFromRequest($option . '.' . $view . '.'.$name, $name, '', 'string');
 
-		$lists['filter_order'] =  $model->getValidFilterOrdering($default_order);
+		//$lists['filter_order'] = $model->getValidFilterOrdering($default_order); // break the list header column orderby choice
+		$lists['filter_order'] = $mainframe->getUserStateFromRequest( 'com_virtuemart'.$view.'filter_order', 'filter_order', $default_order, 'cmd' );
 
 		$lists['filter_order_Dir'] = $model->getValidFilterDir($default_dir);
 
@@ -1271,7 +1272,20 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 
 		return $html;
 	}
+	
+	function getValidProductFilterArray( ) {
+		static $filterArray;
 
+		if (!isset( $filterArray )) {
+		$filterArray = array('p.virtuemart_product_id', 'p.product_sku','pp.product_price','c.category_name','c.category_description',
+		'm.mf_name', 'l.product_s_desc', 'p.product_desc', 'p.product_weight', 'p.product_weight_uom', 'p.product_length', 'p.product_width',
+		'p.product_height', 'p.product_lwh_uom', 'p.product_in_stock', 'p.low_stock_notification', 'p.product_available_date',
+		'p.product_availability', 'p.product_special', 'p.created_on', 'p.modified_on', 'l.product_name', 'p.product_sales',
+		'p.product_unit', 'p.product_packaging', 'p.intnotes', 'l.metadesc', 'l.metakey', 'p.metarobot', 'p.metaauthor');
+		}
+
+		return $filterArray ;
+	}
 }
 
 //pure php no tag
