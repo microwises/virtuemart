@@ -220,10 +220,16 @@ class ShopFunctions {
 	 * @param $quantity The number of items in the list
 	 * @return List as String
 	 */
-	function renderGuiList($fieldnameXref, $tableXref, $fieldIdXref, $idXref, $fieldname, $table, $fieldId, $view, $quantity=4) {
-
+	function renderGuiList($fieldnameXref, $tableXref, $fieldIdXref, $idXref, $fieldname, $table, $fieldId, $view, $quantity=4,$translate = 1) {
+// 		'virtuemart_category_id','#__virtuemart_calc_categories','virtuemart_calc_id',$data->virtuemart_calc_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category'
 		//Sanitize input
 		$quantity = (int) $quantity;
+
+// 		if (!class_exists('TablePaymentmethods'))
+// 			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'paymentmethods.php');
+
+// 		$table = new TablePaymentmethods($this->_db); /// we need that?
+// 		$table->load($payment_id);
 
 		$db = JFactory::getDBO();
 		$q = 'SELECT ' . $db->getEscaped($fieldnameXref) . ' FROM ' . $db->getEscaped($tableXref) . ' WHERE ' . $db->getEscaped($fieldIdXref) . ' = "' . (int) $idXref . '"';
@@ -235,7 +241,12 @@ class ShopFunctions {
 			$ttip = '';
 			$i = 0;
 			foreach ($tempArray as $value) {
-				$q = 'SELECT ' . $db->getEscaped($fieldname) . ' FROM ' . $db->getEscaped($table) . ' WHERE ' . $db->getEscaped($fieldId) . ' = "' . (int) $value . '"';
+				if($translate){
+					$mainTable = $table.'_'.VMLANG ;
+					$q = 'SELECT ' . $db->getEscaped($fieldname) . ' FROM ' . $db->getEscaped($mainTable) . ' JOIN '.$table.' using (`'.$fieldnameXref.'`) WHERE ' . $db->getEscaped($fieldId) . ' = "' . (int) $value . '"';
+				} else {
+					$q = 'SELECT ' . $db->getEscaped($fieldname) . ' FROM ' . $db->getEscaped($table) . ' WHERE ' . $db->getEscaped($fieldId) . ' = "' . (int) $value . '"';
+				}
 				$db->setQuery($q);
 				$tmp = $db->loadResult();
 				if ($i < $quantity) {

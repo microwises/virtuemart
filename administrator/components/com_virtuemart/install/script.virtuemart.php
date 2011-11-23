@@ -120,9 +120,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->recurse_copy($src,$dst);
 
+			//TODO get default FE joomla language
+			$lang =
 			if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 			$migrator = new Migrator();
-			$migrator->createLanguageTables();
+			$migrator->createLanguageTables(array($lang));
 
 			$this->displayFinished(false);
 
@@ -267,6 +269,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 // 			$tablesToRename = array(  '#__virtuemart_shippingcarrier_shoppergroups' => '#__virtuemart_shipmentmethod_shoppergroups'
 // 									);
 
+			//TODO get default FE joomla language
 			$config = &JFactory::getConfig();
 			$lang = $config->getValue('language');
 			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');

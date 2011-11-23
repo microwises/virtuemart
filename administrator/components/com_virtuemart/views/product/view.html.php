@@ -70,10 +70,10 @@ class VirtuemartViewProduct extends JView {
 				else $category_tree = ShopFunctions::categoryListTree();
 				$this->assignRef('category_tree', $category_tree);
 
-				//Get the shoppergoup list - Cleanshooter Custom Shopper Visibility 
+				//Get the shoppergoup list - Cleanshooter Custom Shopper Visibility
 				if (isset($product->shoppergroups)) $shoppergroupList = ShopFunctions::renderShopperGroupList($product->shoppergroups, true);
 				$this->assignRef('shoppergroupList', $shoppergroupList);
-				
+
 				// Load the product price
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
@@ -109,7 +109,7 @@ class VirtuemartViewProduct extends JView {
 
 				// Load Images
 				$product_model->addImages($product);
-				
+
 				if(is_Dir(VmConfig::get('vmtemplate').DS.'images'.DS.'availability'.DS)){
 					$imagePath = VmConfig::get('vmtemplate').'/images/availability/';
 				} else {
@@ -148,10 +148,10 @@ class VirtuemartViewProduct extends JView {
 				if(count($manufacturers)>1 && $config->get('show_manufacturers')){
 					$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
 				}
-				
+
                 $lists['product_weight_uom'] = ShopFunctions::renderWeightUnitList('product_weight_uom',$task=='add'? $config->get('weight_unit_default'): $product->product_weight_uom);
                 $lists['product_lwh_uom'] = ShopFunctions::renderLWHUnitList('product_lwh_uom', $task=='add'?$config->get('lwh_unit_default') : $product->product_lwh_uom);
-				
+
 				if( empty( $product->product_available_date )) {
 					$product->product_available_date = date("Y-m-d") ;
 				}
@@ -393,9 +393,9 @@ class VirtuemartViewProduct extends JView {
 			<input type="hidden" value="'.$customfield->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
 			<input type="hidden" value="'.$customfield->admin_only.'" checked="checked" name="admin_only" />';
 		return $html;
-			
+
 	}
-	
+
 }
 
 //pure php no closing tag

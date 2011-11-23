@@ -113,7 +113,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 				$data->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
 
 				/* Write the first 5 shoppergroups in the list */
-				$data->shipmentShoppersList = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_shipmentmethod_shoppergroups','virtuemart_shipmentmethod_id',$data->virtuemart_shipmentmethod_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','shoppergroup');
+				$data->shipmentShoppersList = shopfunctions::renderGuiList('virtuemart_shoppergroup_id','#__virtuemart_shipmentmethod_shoppergroups','virtuemart_shipmentmethod_id',$data->virtuemart_shipmentmethod_id,'shopper_group_name','#__virtuemart_shoppergroups','virtuemart_shoppergroup_id','shoppergroup',4,0);
 
 
 			}
@@ -172,7 +172,6 @@ class VirtueMartModelShipmentmethod extends VmModel {
 		foreach($errors as $error){
 			$this->setError($error);
 		}
-
 
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmshipment');

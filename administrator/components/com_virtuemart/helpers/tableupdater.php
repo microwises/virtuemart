@@ -75,12 +75,14 @@ class GenericTableUpdater extends JModel{
 	 * @author Max Milbers
 	 * @param unknown_type $config
 	 */
-	public function createLanguageTables(){
+	public function createLanguageTables($langs=0){
 
-		$langs = VmConfig::get('active_languages');
 		if(empty($langs)){
-			$params = JComponentHelper::getParams('com_languages');
-			$langs = (array)$params->get('site', 'en-GB');
+			$langs = VmConfig::get('active_languages');
+			if(empty($langs)){
+				$params = JComponentHelper::getParams('com_languages');
+				$langs = (array)$params->get('site', 'en-GB');
+			}
 		}
 
 		//Todo add the mb_ stuff here
