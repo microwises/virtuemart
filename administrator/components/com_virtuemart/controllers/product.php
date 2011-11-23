@@ -227,12 +227,10 @@ class VirtuemartControllerProduct extends VmController {
 		$view = $this->getView('product', 'json');
 
 		/* Standard model */
-		//$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
-		$type = JRequest::getWord('type', false);
-		if ($type = 'customfield') {
-			$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
+		if ('customfield' == JRequest::getWord('type', false) ) {
 			$view->setModel( $this->getModel( 'customfields', 'VirtueMartModel' ));
-		} else $view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
+		} 
+		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
 		/* Now display the view. */
 		$view->display(null);
 	}

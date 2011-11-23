@@ -333,7 +333,7 @@ class VmHTML{
 	 */
 	public function select($name, $options, $default = '0',$attrib = "onchange='submit();'",$key ='value' ,$text ='text', $zero=true){
 		if ($zero==true) {
-		$option  = array($key =>null, $text => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
+		$option  = array($key =>"0", $text => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
 		$options = array_merge(array($option), $options);
 		}
 		return JHTML::_('select.genericlist', $options,$name,$attrib,$key,$text,$default,false,true);

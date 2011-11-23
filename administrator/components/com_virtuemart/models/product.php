@@ -125,7 +125,7 @@ class VirtueMartModelProduct extends VmModel {
 			$where[] = ' p.`product_in_stock`>"0" ';
 		}
 
-		if ($keyword = vmRequest::uword('keyword', false, ' ')) {
+		if ($keyword = vmRequest::uword('keyword', false, ' ') and $group ===false) {
 			$groupBy = 'group by p.`virtuemart_product_id`';
 
 			//			$keyword = trim(preg_replace('/\s+/', '%', $keyword), '%');
@@ -290,6 +290,7 @@ class VirtueMartModelProduct extends VmModel {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_manufacturers` ON p.`virtuemart_product_id` = `#__virtuemart_product_manufacturers`.`virtuemart_product_id`
 			 LEFT JOIN `#__virtuemart_manufacturers_'.VMLANG.'` as m ON m.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
 		}
+
 		if ($joinShopper == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_shoppergroups` ON p.`virtuemart_product_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_product_id`
 			 LEFT  OUTER JOIN `#__virtuemart_shoppergroups` as s ON s.`virtuemart_shoppergroup_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_shoppergroup_id`';
@@ -305,6 +306,7 @@ class VirtueMartModelProduct extends VmModel {
 		} else {
 			$whereString = '';
 		}
+		//if ($keyword and !$group) {echo $joinedTables.' joined ? '.$select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir;		/* jexit();  */}
 		$product_ids =  $this->exeSortSearchListQuery(2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
 
 		// This makes products searchable, we decided that this is not good, because variant childs appear then in lists

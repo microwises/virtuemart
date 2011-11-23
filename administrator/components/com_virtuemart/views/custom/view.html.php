@@ -36,7 +36,6 @@ class VirtuemartViewCustom extends JView {
 		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');
-		$this->loadHelper('html');
 		$this->loadHelper('vmcustomplugin');
 		$model = $this->getModel('custom');
 		$this->loadHelper('permissions');

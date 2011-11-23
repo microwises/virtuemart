@@ -292,7 +292,12 @@ class VirtueMartModelCustom extends VmModel {
 
 	}
 	public function store(&$data){
-		$id = parent::store($data);
+		$table = $this->getTable('customs');
+		$id = $table->bindChecknStore($data);
+		if (!$id) {
+			$this->setError($table->getError());
+		}
+		//$id = parent::bindChecknStore($data);
 		if(isset($data['custom_jplugin_id'])){
 		if ($data['custom_jplugin_id'] ) self::saveCustomPlugin($data) ;
 		}

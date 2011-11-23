@@ -27,51 +27,46 @@ defined('_JEXEC') or die('Restricted access');
 			$i=0;
 			$tables= array('categories'=>'','products'=>'','fields'=>'','childs'=>'',);
 			if (isset($this->product->customfields)) {
-				$this->fieldTypes['R']=JTEXT::_('COM_VIRTUEMART_RELATED_PRODUCTS');
-				$this->fieldTypes['Z']=JTEXT::_('COM_VIRTUEMART_RELATED_CATEGORIES');
 				foreach ($this->product->customfields as $customRow) {
 					if ($customRow->is_cart_attribute) $cartIcone=  'default';
 					else  $cartIcone= 'default-off';
 					if ($customRow->field_type == 'Z') {
 
-						$tables['categories'] .=  '<div class="vm_thumb_image">
-							<span>'.$customRow->display.'</span>
-							<input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
-							<input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
-							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
-							<div class="vmicon vmicon-16-remove"></div></div>';
+						$tables['categories'] .=  '
+							<div class="vm_thumb_image">
+								<span>'.$customRow->display.'</span>'.
+								VirtuemartViewProduct::setEditCustomHidden($customRow, $i)
+							  .'<div class="vmicon vmicon-16-remove"></div>
+							</div>';
 
 					} elseif ($customRow->field_type == 'R') {
 
-						$tables['products'] .=  '<div class="vm_thumb_image">
-							<span>'.$customRow->display.'</span>
-							<input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
-							<input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
-							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="admin_only" />
-							<div class="vmicon vmicon-16-remove"></div></div>';
+						$tables['products'] .=  '
+							<div class="vm_thumb_image">
+								<span>'.$customRow->display.'</span>'.
+								VirtuemartViewProduct::setEditCustomHidden($customRow, $i)
+							  .'<div class="vmicon vmicon-16-remove"></div>
+							</div>';
 
 					} elseif ($customRow->field_type == 'G') {
 						// no display (group of) child , handled by plugin;
 					} elseif ($customRow->field_type == 'C' or $customRow->field_type == 'E'){
-//<span>'.JText::_($this->fieldTypes[$customRow->field_type]).'</span>
-						$tables['childs'] .=  '<div class="removable"><div>'.JText::_($customRow->custom_title).'</div>
-							<span>'.$customRow->display.$customRow->custom_tip.'</span>
-
-							<input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
-							<input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
-							<input type="hidden" value="'.$customRow->admin_only.'" name="admin_only" />
-							<span class="vmicon icon-nofloat vmicon-16-'.$cartIcone.'"></span>
-							<span class="vmicon vmicon-16-remove"></span></div>';
+						$tables['childs'] .= '
+							<div class="removable">
+								<div>'.JText::_($customRow->custom_title).'</div>
+								<span>'.$customRow->display.$customRow->custom_tip.'</span>'.
+								VirtuemartViewProduct::setEditCustomHidden($customRow, $i)
+							  .'<span class="vmicon icon-nofloat vmicon-16-'.$cartIcone.'"></span>
+								<span class="vmicon vmicon-16-remove"></span>
+							</div>';
 					} else {
 						$tables['fields'] .= '<tr class="removable">
 							<td>'.JText::_($customRow->custom_title).'</td>
 							<td>'.$customRow->custom_tip.'</td>
 							<td>'.$customRow->display.'</td>
-							<td>'.JText::_($this->fieldTypes[$customRow->field_type]).'
-							<input type="hidden" value="'.$customRow->field_type .'" name="field['.$i .'][field_type]" />
-							<input type="hidden" value="'.$customRow->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
-							<input type="hidden" value="'.$customRow->admin_only.'" checked="checked" name="field['.$i .'][admin_only]" />
-							</td>
+							<td>'.JText::_($this->fieldTypes[$customRow->field_type]).
+							VirtuemartViewProduct::setEditCustomHidden($customRow, $i)
+							.'</td>
 							<td>
 							<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
 							</td>
@@ -151,11 +146,10 @@ defined('_JEXEC') or die('Restricted access');
 			update: function(event, ui) {
 				jQuery(this).find('.ordering').each(function(index,element) {
 					jQuery(element).val(index);
-					console.log(index+' ');
+					//console.log(index+' ');
 
 				});
 
-				//$.get('update-sort.cfm', {fruitOrder:fruitOrder});
 			}
 		});
 

@@ -21,6 +21,8 @@ defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
 jimport( 'joomla.application.component.view');
+		// Load some common models
+if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 
 /**
  * HTML View class for the VirtueMart Component
@@ -30,108 +32,66 @@ jimport( 'joomla.application.component.view');
  */
 class VirtuemartViewProduct extends JView {
 
+	var $json = array();	
+
+	function __construct( ){
+
+		$this->type = JRequest::getWord('type', false);
+		$this->row = JRequest::getInt('row', false);
+		$this->db = & JFactory::getDBO();
+		$this->model = new VirtueMartModelCustomfields() ;
+
+	}	
 	function display($tpl = null) {
 
 		//$this->loadHelper('customhandler');
 
 		$filter = JRequest::getVar('q', JRequest::getVar('term', false) );
-		$type = JRequest::getWord('type', false);
+			
 		$id = JRequest::getInt('id', false);
-		$row = JRequest::getInt('row', false);
 		$product_id = JRequest::getInt('virtuemart_product_id', 0);
-		$model = $this->getModel('customfields');
-		//$customfield = $model->getcustomfield();
-		$db = JFactory::getDBO();
+		//$customfield = $this->model->getcustomfield();
 		/* Get the task */
-		if ($type=='relatedproducts') {
+		if ($this->type=='relatedproducts') {
 			$query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
-				FROM #__virtuemart_products";
-			if ($filter) $query .= " WHERE product_name LIKE '%". $db->getEscaped( $filter, true ) ."%' or product_sku LIKE '%". $db->getEscaped( $filter, true ) ."%' limit 0,10";
-			$db->setQuery($query);
-			$json = $db->loadObjectList();
-				// echo json_encode($db->loadObjectList());
-				// return;
-		//} else if ($type=='products') {
-			$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type ="R" ';
-			$db->setQuery($query);
-			$customs = $db->loadObject();
-			foreach ($json as &$product) {
-
-				$customs->custom_value = $product->id;
-				// $query = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
-					// FROM #__virtuemart_products WHERE virtuemart_product_id =".$id;
-				// $db->setQuery($query);
-				// $field = $db->loadObject();
-				//$html = array ();
-				$display = $model->inputType($customs,$product->id,$row);
-				$html = '<div class="vm_thumb_image">
-					<span>'.$display.'</span>
-					<input type="hidden" value="R" name="field['.$row.'][field_type]" />
-					<input type="hidden" value="'.$customs->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
-
-					<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
-					<div class="vmicon vmicon-16-remove"></div></div>';
-
-					
-				$product->label = $html;
-				
-			}
-		}else if ($type=='relatedcategories') {
+				FROM #__virtuemart_products_".VMLANG."
+				 JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)";
+			if ($filter) $query .= " WHERE product_name LIKE '%". $this->db->getEscaped( $filter, true ) ."%' or product_sku LIKE '%". $this->db->getEscaped( $filter, true ) ."%' limit 0,10";
+			self::setRelatedHtml($query,'R');
+		}else if ($this->type=='relatedcategories') {
 			$query = "SELECT virtuemart_category_id AS id, CONCAT(category_name, '::', virtuemart_category_id) AS value
-				FROM #__virtuemart_categories ";
-			if ($filter) $query .= " WHERE category_name LIKE '%". $db->getEscaped( $filter, true ) ."%' limit 0,10";
-			$db->setQuery($query);
-			$json = $db->loadObjectList();
-			$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type = "Z" ';
-			$db->setQuery($query);
-			$customs = $db->loadObject();
-			foreach ($json as &$category) {
-
-			$customs->custom_value = $category->id;
-
-			// $query = "SELECT virtuemart_category_id AS id, category_name AS value
-				// FROM #__virtuemart_categories WHERE virtuemart_category_id =".$id;
-			// $db->setQuery($query);
-			// $field = $db->loadObject();
-			$display = $model->inputType($customs,$category->id,$row);
-			$html = '<div class="vm_thumb_image">
-				<span>'.$display.'</span>
-				<input type="hidden" value="Z" name="field['.$row.'][field_type]" />
-				<input type="hidden" value="'.$customs->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
-				<input type="hidden" value="0" name="field['.$row.'][admin_only]" />
-				<div class="vmicon vmicon-16-remove"></div></div>';
-				$category->label = $html;
-				
-			}
-		} else if ($type=='custom') {
+				FROM #__virtuemart_categories_".VMLANG;
+			if ($filter) $query .= " WHERE category_name LIKE '%". $this->db->getEscaped( $filter, true ) ."%' limit 0,10";
+			self::setRelatedHtml($query,'Z');
+		} else if ($this->type=='custom') {
 			$query = "SELECT CONCAT(virtuemart_custom_id, '|', custom_value, '|', field_type) AS id, CONCAT(custom_title, '::', custom_tip) AS value
 				FROM #__virtuemart_customs";
 			if ($filter) $query .= " WHERE custom_title LIKE '%".$filter."%' limit 0,50";
-			$db->setQuery($query);
-			$json['value'] = $db->loadObjectList();
-			$json['ok'] = 1 ;
-		} else if ($type=='fields') {
-			$fieldTypes= $model->getField_types() ;
+			$this->db->setQuery($query);
+			$this->json['value'] = $this->db->loadObjectList();
+			$this->json['ok'] = 1 ;
+		} else if ($this->type=='fields') {
+			$fieldTypes= $this->model->getField_types() ;
 
 			$query = "SELECT *,custom_value as value FROM #__virtuemart_customs
 			WHERE (`virtuemart_custom_id`=".$id." or `custom_parent_id`=".$id.")";
 			$query .=" order by custom_parent_id asc";
-			$db->setQuery($query);
-			$rows = $db->loadObjectlist();
+			$this->db->setQuery($query);
+			$rows = $this->db->loadObjectlist();
 			
 			$html = array ();
 			foreach ($rows as $field) {
 				if ($field->field_type =='C' ){
-					$json['table'] = 'childs';
+					$this->json['table'] = 'childs';
 					$q='SELECT `virtuemart_product_id` FROM `#__virtuemart_products` WHERE `published`=1
 					AND `product_parent_id`= '.JRequest::getInt('virtuemart_product_id');
-					//$db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products` WHERE `product_parent_id` ='.(int)$product_id);
-					$db->setQuery($q);
-					if ($childIds = $db->loadResultArray()) {
+					//$this->db->setQuery(' SELECT virtuemart_product_id, product_name FROM `#__virtuemart_products` WHERE `product_parent_id` ='.(int)$product_id);
+					$this->db->setQuery($q);
+					if ($childIds = $this->db->loadResultArray()) {
 					// Get childs
 						foreach ($childIds as $childId) {
 							$field->custom_value = $childId;
-							$display = $model->inputType($field,$childId,$row);
+							$display = $this->model->inputType($field,$childId,$this->row);
 							 if ($field->is_cart_attribute) $cartIcone=  'default';
 							 else  $cartIcone= 'default-off';
 							 $html[] = '<div class="removable">
@@ -139,19 +99,19 @@ class VirtuemartViewProduct extends JView {
 								 <td>'.$display.$field->custom_tip.'
 								 </td>
 								 <td>'.JText::_($fieldTypes[$field->field_type]).'
-									<input type="hidden" value="'.$field->field_type .'" name="field['.$row.'][field_type]" />
-									<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
-									<input type="hidden" value="'.$field->admin_only.'" name="field['.$row.'][admin_only]" />
+									<input type="hidden" value="'.$field->field_type .'" name="field['.$this->row.'][field_type]" />
+									<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$this->row.'][virtuemart_custom_id]" />
+									<input type="hidden" value="'.$field->admin_only.'" name="field['.$this->row.'][admin_only]" />
 								 </td>
 								 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
 								 <td></td>
 								</div>';
-							$row++;
+							$this->row++;
 						}
 					}
 				} elseif ($field->field_type =='E') {
-					$json['table'] = 'childs';
-					$display = $model->inputType($field,$product_id,$row);
+					$this->json['table'] = 'childs';
+					$display = $this->model->inputType($field,$product_id,$this->row);
 					 if ($field->is_cart_attribute) $cartIcone=  'default';
 					 else  $cartIcone= 'default-off';
 					 if (!empty ($field->custom_tip) ) $field->custom_tip = '<span> ('.$field->custom_tip.')</span>';
@@ -159,16 +119,16 @@ class VirtuemartViewProduct extends JView {
 					 $html[] = '<div class="removable">
 						<div>'.$field->custom_title.$field->custom_tip.'</span></div>				
 						<span>'.$display.'</span>
-						<input type="hidden" value="'.$field->field_type .'" name="field['.$row.'][field_type]" />
-						<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
-						<input type="hidden" value="'.$field->admin_only.'" name="field['.$row.'][admin_only]" />
+						<input type="hidden" value="'.$field->field_type .'" name="field['.$this->row.'][field_type]" />
+						<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$this->row.'][virtuemart_custom_id]" />
+						<input type="hidden" value="'.$field->admin_only.'" name="field['.$this->row.'][admin_only]" />
 						 <span class="vmicon vmicon-16-'.$cartIcone.'"></span>
 						<span class="vmicon vmicon-16-remove"></span>'.JTEXT::_('COM_VIRTUEMART_CUSTOM_ACTIVATE_JAVASCRIPT').'</div>';
-					$row++;
+					$this->row++;
 
 				} else {
-				$json['table'] = 'fields';
-				$display = $model->inputType($field,$product_id,$row);
+				$this->json['table'] = 'fields';
+				$display = $this->model->inputType($field,$product_id,$this->row);
 				 if ($field->is_cart_attribute) $cartIcone=  'default';
 				 else  $cartIcone= 'default-off';
 				 $html[] = '<tr class="removable">
@@ -176,27 +136,51 @@ class VirtuemartViewProduct extends JView {
 					<td>'.$field->custom_tip.'</td>
 					 <td>'.$display.'</td>
 					 <td>'.JText::_($fieldTypes[$field->field_type]).'
-						<input type="hidden" value="'.$field->field_type .'" name="field['.$row.'][field_type]" />
-						<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$row.'][virtuemart_custom_id]" />
-						<input type="hidden" value="'.$field->admin_only.'" name="field['.$row.'][admin_only]" />
+						<input type="hidden" value="'.$field->field_type .'" name="field['.$this->row.'][field_type]" />
+						<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="field['.$this->row.'][virtuemart_custom_id]" />
+						<input type="hidden" value="'.$field->admin_only.'" name="field['.$this->row.'][admin_only]" />
 					 </td>
 					 <td><span class="vmicon vmicon-16-'.$cartIcone.'"></span></td>
-					 <td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$row.'" name="field['.$row .'][ordering]" /></td>
+					 <td><span class="vmicon vmicon-16-remove"></span><input class="ordering" type="hidden" value="'.$this->row.'" name="field['.$this->row .'][ordering]" /></td>
 					</tr>';
-				$row++;
+				$this->row++;
 				}
 			}
 
-			$json['value'] = $html;
-			$json['ok'] = 1 ;
-		} else $json['ok'] = 0 ;
-		if ( empty($json)) {
-			$json['value'] = null;
-			$json['ok'] = 1 ;
+			$this->json['value'] = $html;
+			$this->json['ok'] = 1 ;
+		} else $this->json['ok'] = 0 ;
+		if ( empty($this->json)) {
+			$this->json['value'] = null;
+			$this->json['ok'] = 1 ;
 		}
-		echo json_encode($json);
+		echo json_encode($this->json);
 
 
+	}
+	function setRelatedHtml($query,$fieldType) {
+		
+		$this->db->setQuery($query);
+		$this->json = $this->db->loadObjectList();
+		
+		$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type ="'.$fieldType.'" ';
+		$this->db->setQuery($query);
+		$customs = $this->db->loadObject();		
+		foreach ($this->json as &$related) {
+
+			$customs->custom_value = $related->id;
+			$display = $this->model->inputType($customs,$related->id,$this->row);
+			$html = '<div class="vm_thumb_image">
+				<span>'.$display.'</span>
+				<input type="hidden" value="'.$fieldType.'" name="field['.$this->row.'][field_type]" />
+				<input type="hidden" value="'.$customs->virtuemart_custom_id.'" name="field['.$this->row.'][virtuemart_custom_id]" />
+
+				<input type="hidden" value="0" name="field['.$this->row.'][admin_only]" />
+				<div class="vmicon vmicon-16-remove"></div></div>';
+				
+			$related->label = $html;
+			
+		}
 	}
 
 }

@@ -219,7 +219,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		// change input by type
 		$html .= VmHTML::row('input','COM_VIRTUEMART_DEFAULT','custom_value',$datas->custom_value);
 		$html .= VmHTML::row('input','COM_VIRTUEMART_CUSTOM_TIP','custom_tip',$datas->custom_tip);
-		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_PARENT','custom_parent_id',$this->getCustomsList(),  $datas->custom_parent_id,'');
+		$html .= VmHTML::row('select','COM_VIRTUEMART_CUSTOM_PARENT','custom_parent_id',$this->getParentList($datas->virtuemart_custom_id),  $datas->custom_parent_id,'');
+		//$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_PARENT','custom_parent_id',$this->getCustomsList(),  $datas->custom_parent_id,'');
 		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$datas->published);
 		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_ADMIN_ONLY','admin_only',$datas->admin_only);
 		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_IS_LIST','is_list',$datas->is_list);
@@ -260,6 +261,12 @@ class VirtueMartModelCustomfields extends VmModel {
 		return $html;
 	}
 
+	function getParentList($excludedId = 0) {
+
+		$this->_db->setQuery(' SELECT virtuemart_custom_id as value,custom_title as text FROM `#__virtuemart_customs` WHERE `field_type` ="P" and virtuemart_custom_id!='.$excludedId );
+		if ($results =$this->_db->loadObjectList()) return $results ;
+		else return array();
+	}
 	function getProductChildCustomRelation() {
 
 		$this->_db->setQuery(' SELECT virtuemart_custom_id as value,custom_title as text FROM `#__virtuemart_customs` WHERE `field_type` ="C"' );
@@ -385,11 +392,11 @@ class VirtueMartModelCustomfields extends VmModel {
 				/* related category*/
 				case 'Z':
 					if (!$field->custom_value) return '';// special case it's category ID !
-					$q='SELECT * FROM `#__virtuemart_categories` WHERE `published`=1 AND `virtuemart_category_id`= "'.(int)$field->custom_value.'" ';
+					$q='SELECT * FROM `#__virtuemart_categories_'.VMLANG.'` JOIN `#__virtuemart_categories` AS p using (`virtuemart_category_id`) WHERE `published`=1 AND `virtuemart_category_id`= "'.(int)$field->custom_value.'" ';
 					$this->_db->setQuery($q);
 					//echo $this->_db->_sql;
 					if ($category = $this->_db->loadObject() ) {
-						$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_category_medias`WHERE `virtuemart_category_id`= "'.(int)$field->custom_value.'" ';
+						$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_category_medias` WHERE `virtuemart_category_id`= "'.(int)$field->custom_value.'" ';
 						$this->_db->setQuery($q);
 						$thumb ='';
 						if ($media_id = $this->_db->loadResult()) {
@@ -402,7 +409,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				/* related product*/
 				case 'R':
 					if (!$field->custom_value) return '';
-					$q='SELECT `product_name`,`product_sku`,`product_s_desc` FROM `#__virtuemart_products` WHERE `virtuemart_product_id`='.(int)$field->custom_value;
+					$q='SELECT `product_name`,`product_sku`,`product_s_desc` FROM `#__virtuemart_products_'.VMLANG.'` as l JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`) WHERE `virtuemart_product_id`='.(int)$field->custom_value;
 					$this->_db->setQuery($q);
 					$related = $this->_db->loadObject();
 					$display = $related->product_name.'('.$related->product_sku.')';
