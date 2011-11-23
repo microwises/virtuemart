@@ -196,7 +196,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					$this->_db->setQuery($query);
 					$this->_db->query();
 
-					$query = 'ALTER TABLE `jos_virtuemart_shipmentmethods`  DROP INDEX `virtuemart_shippingcarrier_id` ';
+					$query = 'ALTER TABLE `#__virtuemart_shipmentmethods`  DROP INDEX `virtuemart_shippingcarrier_id` ';
 					$this->_db->setQuery($query);
 					$this->_db->query();
 				}
