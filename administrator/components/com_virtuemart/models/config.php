@@ -341,10 +341,9 @@ class VirtueMartModelConfig extends JModel {
 		// Load the newly saved values into the session.
 		$config = VmConfig::loadConfig(true);
 
-
-		if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
-		$migrator = new Migrator();
-		$result = $migrator->createLanguageTables();
+		if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
+		$updater = new GenericTableUpdater();
+		$result = $updater->createLanguageTables();
 
 		return true;
 	}

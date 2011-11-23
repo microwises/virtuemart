@@ -42,10 +42,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$update = false;
 
-			//Execute always the base installation file
-			//			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
-			//			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
-
 			$db = JFactory::getDBO();
 			$q = "SELECT count(id) AS idCount FROM `#__virtuemart_adminmenuentries`";
 			$db->setQuery($q);
@@ -176,8 +172,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if(empty($this->path)) $this->path = JPATH_VM_ADMINISTRATOR;
 
 
-			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
-			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
+// 			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
+// 			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
 // 			$this->displayFinished(true);
 			//return false;
 
@@ -191,34 +187,49 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$query = 'SHOW TABLES LIKE "%virtuemart_shippingcarriers%"';
 			$this->_db->setQuery($query);
 			if($this->_db->loadResult()){
-				$query = 'ALTER TABLE `#__virtuemart_shippingcarriers` RENAME TO `#__virtuemart_shipmentmethods`';
-				$this->_db->setQuery($query);
-				$this->_db->query();
 
-				$fields = array('virtuemart_shippingcarrier_id'=>'`virtuemart_shipmentmethod_id` SERIAL',
-														'shipping_carrier_jplugin_id'=>'`shipment_jplugin_id` int(11) NOT NULL',
-														'shipping_carrier_name'=>"`shipment_name` char(200) NOT NULL DEFAULT ''",
-														'shipping_carrier_desc'=>"`shipment_desc` text NOT NULL COMMENT 'Description'",
-														'shipping_carrier_element'=>"`shipment_element` varchar(50) NOT NULL DEFAULT ''",
-														'shipping_carrier_params'=>' `shipment_params` text NOT NULL',
-														'shipping_carrier_value'=>"`shipment_value` decimal(10,2) NOT NULL DEFAULT '0.00'",
-														'shipping_carrier_package_fee'=>"`shipment_package_fee` decimal(10,2) NOT NULL DEFAULT '0.00'",
-														'shipping_carrier_vat_id'=>"`shipment_vat_id` int(11) NOT NULL DEFAULT '0'"
-				);
-				$this->alterTable('#__virtuemart_shipmentmethods',$fields);
+				$query = 'SHOW TABLES LIKE "%virtuemart_shipmentmethods%"';
+				$this->_db->setQuery($query);
+				$res = $this->_db->loadResult();
+				if(empty($res)){
+					$query = 'ALTER TABLE `#__virtuemart_shippingcarriers` RENAME TO `#__virtuemart_shipmentmethods`';
+					$this->_db->setQuery($query);
+					$this->_db->query();
+
+					$query = 'ALTER TABLE `jos_virtuemart_shipmentmethods`  DROP INDEX `virtuemart_shippingcarrier_id` ';
+					$this->_db->setQuery($query);
+					$this->_db->query();
+				}
 			}
+
+			$fields = array('virtuemart_shippingcarrier_id'=>'`virtuemart_shipmentmethod_id` mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT',
+																	'shipping_carrier_jplugin_id'=>'`shipment_jplugin_id` int(11) NOT NULL',
+																	'shipping_carrier_name'=>"`shipment_name` char(200) NOT NULL DEFAULT ''",
+																	'shipping_carrier_desc'=>"`shipment_desc` text NOT NULL COMMENT 'Description'",
+																	'shipping_carrier_element'=>"`shipment_element` varchar(50) NOT NULL DEFAULT ''",
+																	'shipping_carrier_params'=>' `shipment_params` text NOT NULL',
+																	'shipping_carrier_value'=>"`shipment_value` decimal(10,2) NOT NULL DEFAULT '0.00'",
+																	'shipping_carrier_package_fee'=>"`shipment_package_fee` decimal(10,2) NOT NULL DEFAULT '0.00'",
+																	'shipping_carrier_vat_id'=>"`shipment_vat_id` int(11) NOT NULL DEFAULT '0'"
+			);
+			$this->alterTable('#__virtuemart_shipmentmethods',$fields);
 
 			$query = 'SHOW TABLES LIKE "%virtuemart_shippingcarrier_shoppergroups%"';
 			$this->_db->setQuery($query);
 			if($this->_db->loadResult()){
 
-				$query = 'ALTER TABLE `#__virtuemart_shippingcarrier_shoppergroups` RENAME TO `#__virtuemart_shipmentmethod_shoppergroups`';
+				$query = 'SHOW TABLES LIKE "%virtuemart_shipmentmethod_shoppergroups%"';
 				$this->_db->setQuery($query);
-				$this->_db->query();
-
-				$fields = array('virtuemart_shippingcarrier_id'=>"`virtuemart_shipmentmethod_id` SERIAL ");
-				$this->alterTable('#__virtuemart_shipmentmethod_shoppergroups',$fields);
+				$res = $this->_db->loadResult();
+				if(empty($res)){
+					$query = 'ALTER TABLE `#__virtuemart_shippingcarrier_shoppergroups` RENAME TO `#__virtuemart_shipmentmethod_shoppergroups`';
+					$this->_db->setQuery($query);
+					$this->_db->query();
+				}
 			}
+
+			$fields = array('virtuemart_shippingcarrier_id'=>"`virtuemart_shipmentmethod_id` SERIAL ");
+			$this->alterTable('#__virtuemart_shipmentmethod_shoppergroups',$fields);
 
 			//vmuser:
 			$fields = array('virtuemart_shippingcarrier_id'=>'`virtuemart_shipmentmethod_id` int NOT NULL DEFAULT "0"');
@@ -233,7 +244,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->alterTable('#__virtuemart_orders',$fields);
 
 
-			$this->alterVendorsTable();
+			$fields = array('config'=>'`vendor_params` VARCHAR( 255 )  NOT NULL DEFAULT ""');
+			$this->alterTable('#__virtuemart_vendors',$fields);
+
 
 			$this->updateWeightUnit();
 			$this->updateDimensionUnit();
@@ -326,26 +339,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			return false;
 		}
 
-		private function alterVendorsTable(){
-
-			if(empty($this->_db)){
-				$this->_db = JFactory::getDBO();
-			}
-			$query = 'SHOW COLUMNS FROM `#__virtuemart_vendors` ';
-			$this->_db->setQuery($query);
-			$columns = $this->_db->loadResultArray(0);
-			if(in_array('config',$columns)){
-				$query = 'ALTER TABLE `#__virtuemart_vendors` CHANGE COLUMN `config` `vendor_params` VARCHAR( 255 )  NOT NULL DEFAULT "" ;';
-				$this->_db->setQuery($query);
-				return $this->_db->query();
-			}
-
-
-			return false;
-
-		}
-
-
 		/**
 		 *
 		 * @author Valérie Isaksen
@@ -376,9 +369,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			if($sgroup['default']!=2){
 				if(!class_exists('TableShoppergroups')) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'shoppergroups.php');
-
-				$table = new TableShoppergroups();
-				$stdgroup == null;
+				$db = JFactory::getDBO();
+				$table = new TableShoppergroups($db);
+				$stdgroup = null;
 				$stdgroup = array('virtuemart_shoppergroup_id' => 1,
 									'virtuemart_vendor_id'	=> 1,
 									'shopper_group_name'		=> '-anonymous-',
@@ -390,7 +383,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$table -> bindChecknStore($stdgroup);
 
 				$sgroup['virtuemart_shoppergroup_id'] = 0;
-				$table = new TableShoppergroups();
+				$table = new TableShoppergroups($db);
 				$table -> bindChecknStore($sgroup);
 				vmdebug('changeShoppergroupDataSetAnonShopperToOne $table',$table);
 			}

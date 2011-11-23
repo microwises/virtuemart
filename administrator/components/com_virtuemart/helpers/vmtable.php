@@ -434,6 +434,7 @@ class VmTable extends JTable{
 			}
 			$used = true;
 			$change = false;
+			$i = 0;
 			while($used && $i<10){
 				$i++;
 	// 			vmdebug('table check use $this->$slugName '.$this->$slugName);
@@ -555,7 +556,11 @@ class VmTable extends JTable{
 			if(is_object($data)){
 
 				foreach($this->_translatableFields as $name){
-					$langData[$name] = $data->$name;
+					if(!empty($data->$name)){
+						$langData[$name] = $data->$name;
+					} else {
+						$langData[$name] = '';
+					}
 					unset($this->$name);
 
 					if(!empty($this->_unique_name[$name])){
@@ -574,7 +579,11 @@ class VmTable extends JTable{
 				// 				$langTable->$tblKey = $data->$tblKey;
 			} else {
 				foreach($this->_translatableFields as $name){
-					$langData[$name] = $data[$name];
+					if(!empty($data[$name])){
+						$langData[$name] = $data[$name];
+					} else {
+						$langData[$name] = '';
+					}
 					unset($this->$name);
 
 					if(!empty($this->_unique_name[$name])){

@@ -307,7 +307,7 @@ class VmConfig {
 							vmTime('loadConfig Session','loadConfig');
 							return self::$_jpConfig;
 						} else {
-							VmInfo('empty $params->sctime');
+// 							VmInfo('empty $params->sctime');
 						}
 
 					}

@@ -311,6 +311,7 @@ class GenericTableUpdater extends JModel{
 		$tablesWithLang = array_keys($this->tables); //('categories','manufacturercategories','manufacturers','paymentmethods','shipmentmethods','products','vendors');
 
 		$alangs = VmConfig::get('active_languages');
+		if(empty($alangs)) $alangs = array(VmConfig::setdbLanguageTag());
 		foreach($alangs as $lang){
 			foreach($tablesWithLang as $tablewithlang){
 				$demandedTables[] = $this->_prefix.'virtuemart_'.$tablewithlang.'_'.$lang;
@@ -400,6 +401,7 @@ class GenericTableUpdater extends JModel{
 			$eKeyNames= $this->_db->loadResultArray(2);
 		}
 
+		$dropped = 0;
 		foreach($eKeyNames as $i => $name){
 			$query = '';
 			if(!in_array($name, $demandedFieldNames)){
@@ -504,6 +506,12 @@ class GenericTableUpdater extends JModel{
 	 */
 	private function alterColumns($tablename,$fields){
 
+		$after ='';
+		$dropped = 0;
+		$altered = 0;
+		$added = 0;
+		$this->_app = JFactory::getApplication();
+
 		$demandFieldNames = array();
 		foreach($fields as $i=>$line){
 			$demandFieldNames[] = $i;
@@ -527,13 +535,6 @@ class GenericTableUpdater extends JModel{
 				}
 			}
 		}
-
-		// 		$columnsToDelete = $columns;
-		$after ='';
-		$dropped = 0;
-		$altered = 0;
-		$added = 0;
-		$this->_app = JFactory::getApplication();
 
 		foreach($fields as $fieldname => $alterCommand){
 			$query='';
@@ -605,6 +606,7 @@ class GenericTableUpdater extends JModel{
 		}
 
 	}
+
 	private function notnull($string){
 		if ($string=='NO') {
 			return  ' NOT NULL';
@@ -612,6 +614,7 @@ class GenericTableUpdater extends JModel{
 			return '';
 		}
 	}
+
 	private function primarykey($string){
 		if ($string=='PRI') {
 			return  ' AUTO_INCREMENT';
@@ -619,6 +622,7 @@ class GenericTableUpdater extends JModel{
 			return '';
 		}
 	}
+
 	private function getdefault($string){
 		if (isset($string)) {
 			return  " DEFAULT '".$string."'";
@@ -626,6 +630,7 @@ class GenericTableUpdater extends JModel{
 			return '';
 		}
 	}
+
 	private function return_bytes($val) {
 		$val = trim($val);
 		$last = strtolower($val[strlen($val)-1]);
@@ -642,6 +647,40 @@ class GenericTableUpdater extends JModel{
 		return $val;
 	}
 
+	private function _getMaxItems($name){
+
+		$maxItems = 50;
+		$freeRam =  ($this->maxMemoryLimit - memory_get_usage(true))/(1024 * 1024) ;
+		$maxItems = (int)$freeRam * 100;
+		if($maxItems<=0){
+			$maxItems = 50;
+			vmWarn('Your system is low on RAM! Limit set: '.$this->maxMemoryLimit.' used '.memory_get_usage(true)/(1024 * 1024).' MB and php.ini '.ini_get('memory_limit'));
+		}
+		vmdebug('Migrating '.$name.', free ram left '.$freeRam.' so limit chunk to '.$maxItems);
+		return $maxItems;
+	}
+
+	function loadCountListContinue($q,$startLimit,$maxItems,$msg){
+
+		$continue = true;
+		$this->_db->setQuery($q);
+		if(!$this->_db->query()){
+			vmError($msg.' db error '. $this->_db->getErrorMsg());
+			vmError($msg.' db error '. $this->_db->getQuery());
+			$entries = array();
+			$continue = false;
+		} else {
+			$entries = $this->_db->loadAssocList();
+			$count = count($entries);
+			vmInfo($msg. ' found '.$count.' vm1 entries for migration ');
+			$startLimit += $maxItems;
+			if($count<$maxItems){
+				$continue = false;
+			}
+		}
+
+		return array($entries,$startLimit,$continue);
+	}
 }
 
 
