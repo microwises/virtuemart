@@ -428,6 +428,7 @@ class VmConfig {
 			$params = JComponentHelper::getParams('com_languages');
 			$siteLang = $params->get('site', 'en-GB');//use default joomla
 		}
+
 		self::$_jpConfig->lang = strtolower(strtr($siteLang,'-','_'));
 		vmdebug('self::$_jpConfig->lang',self::$_jpConfig->lang);
 		define('VMLANG', self::$_jpConfig->lang );
