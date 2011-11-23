@@ -38,7 +38,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		$this->tableFields = array('id','virtuemart_order_id','order_number','virtuemart_paymentmethod_id',
 						'payment_name','cost','cost','tax_id');//,'created_on','created_by','modified_on','modified_by','locked_on');
 // 		self::$_this
-// 		$this->createPluginTable($this->_tablename);
+		//$this->createPluginTable($this->_tablename);
 		self::$_this = $this;
     }
 	 /**
@@ -49,8 +49,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 
 
 	return "CREATE TABLE IF NOT EXISTS `".$this->_tablename."` (
-	    `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT UNIQUE,
-	    `virtuemart_order_id` int(11) DEFAULT NULL,
+	    `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
+	    `virtuemart_order_id` int(11) UNSIGNED DEFAULT NULL,
 	    `order_number` char(32) DEFAULT NULL,
 	    `virtuemart_paymentmethod_id` mediumint(1) UNSIGNED DEFAULT NULL,
 	     `payment_name` char(255) NOT NULL DEFAULT '',
@@ -61,7 +61,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	    `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 	    `modified_by` int(11) NOT NULL DEFAULT 0,
 	    `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-	    `locked_by` int(11) NOT NULL DEFAULT 0
+	    `locked_by` int(11) NOT NULL DEFAULT 0,
+	      PRIMARY KEY (`id`)
 	    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Payment standard Table' AUTO_INCREMENT=1 ;";
 
     }
