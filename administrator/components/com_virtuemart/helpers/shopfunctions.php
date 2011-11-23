@@ -724,11 +724,13 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 
 		$virtuemart_vendor_id = 1;
 
+// 		vmSetStartTime('getCategories');
 		$categoryModel = self::getModel('category');
 		$level++;
 
 		$categoryModel->_noLimit = true;
 		$records = $categoryModel->getCategories(true, $cid);
+// 		vmTime('getCategories','getCategories');
 		$selected="";
 		if(!empty($records)){
 			foreach ($records as $key => $category) {

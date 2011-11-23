@@ -19,6 +19,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
 
+vmSetStartTime('test');
+vmTime('Smallest Unit','test');
+
 //This is for akeeba release system, it must be executed before any other task
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 if(JRequest::getCmd('view','') == 'liveupdate') {

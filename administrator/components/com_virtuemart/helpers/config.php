@@ -281,26 +281,35 @@ class VmConfig {
 	 */
 	public function loadConfig($force = false) {
 
-		// 		vmSetStartTime('loadConfig');
-		if(!$force && self::$loaded){
+		vmSetStartTime('loadConfig');
+		if(!$force){
 			if(!empty(self::$_jpConfig) && !empty(self::$_jpConfig->_params)){
-				// 				vmTime('Program Cache','loadConfig');
+				vmTime('loadConfig Program Cache','loadConfig');
+
 				return self::$_jpConfig;
 			} else {
 				$session = JFactory::getSession();
 				$vmConfig = $session->get('vmconfig','','vm');
 				if(!empty($vmConfig)){
-// 					$params = unserialize(base64_decode($vmConfig));
 					$params = unserialize($vmConfig);
 					if(!empty($params)) {
+						//This is our cache valid time, atm I use 5 minutes, that means that for exampel changes at the config
+						//have at least 5 minutes later an effect of a currently logged in user (shopper)
+						//TODO add an explanation about this to the config, so that people understand that it may take up to
+						// 5 minutes until the config settings takes effect for OTHER users.
+						if(!empty($params['sctime']) and (microtime(true) - $params['sctime'])<300) {
+							$params['offline_message'] = base64_decode($params['offline_message']);
+							$params['dateformat'] = base64_decode($params['dateformat']);
 
-						$params->offline_message = base64_decode($params->offline_message);
-						$params->dateformat = base64_decode($params->dateformat);
+							self::$_jpConfig = new VmConfig();
+							self::$_jpConfig->_params = $params;
+							self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
+							vmTime('loadConfig Session','loadConfig');
+							return self::$_jpConfig;
+						} else {
+							VmInfo('empty $params->sctime');
+						}
 
-						self::$_jpConfig = new VmConfig();
-						self::$_jpConfig->_params = $params;
-						self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
-						return self::$_jpConfig;
 					}
 				}
 
@@ -320,12 +329,14 @@ class VmConfig {
 			self::$_jpConfig->installVMconfig();
 		}
 
+		$install = 'no';
 		if(empty(self::$_jpConfig->_raw)){
 			$query = ' SELECT `config` FROM `#__virtuemart_configs` WHERE `virtuemart_config_id` = "1";';
 			$db->setQuery($query);
 			self::$_jpConfig->_raw = $db->loadResult();
 			if(empty(self::$_jpConfig->_raw)){
 				if(self::installVMconfig()){
+					$install = 'yes';
 					$db->setQuery($query);
 					self::$_jpConfig->_raw = $db->loadResult();
 					self::$_jpConfig->_params = null;
@@ -354,11 +365,13 @@ class VmConfig {
 
 			}
 
+// 			$pair['sctime'] = microtime(true);
 			self::$_jpConfig->_params = $pair;
 
+			self::$_jpConfig->set('sctime',microtime(true));
 			self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
 			self::$_jpConfig->setSession();
-			// 			vmTime('Parsed and in session','loadConfig');
+			vmTime('loadConfig parsed and installed '.$install,'loadConfig');
 			return self::$_jpConfig;
 		}
 
@@ -436,6 +449,7 @@ class VmConfig {
 		$params['offline_message'] = base64_encode($params['offline_message']);
 		$params['dateformat'] = base64_encode($params['dateformat']);
 
+		$params['sctime'] = microtime(true);
 		$session->set('vmconfig', serialize($params),'vm');
 		self::$loaded = true;
 	}

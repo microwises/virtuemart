@@ -331,7 +331,7 @@ class VmTable extends JTable{
 			$from   .= ' LEFT JOIN `'.$table.'` on `'.$table.'`.`'.$joinKey.'`=`'. $mainTable .'`.`'.$joinKey.'`';
 			}
 		}
-		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = '.(int)$oid;	
+		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = '.(int)$oid;
 // echo $query		;
  // print_r($tableJoins); jExit();
 		$db->setQuery( $query );
@@ -377,10 +377,6 @@ class VmTable extends JTable{
 			$this->setError( $db->getErrorMsg() );
 			return false;
 		}
-
-
-
-
 
 	}
 

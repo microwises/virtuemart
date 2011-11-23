@@ -66,7 +66,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    'locked_on',
 	    'locked_by'); //,'created_on','created_by','modified_on','modified_by','locked_on');
 // 		self::$_this
-	$this->createPluginTable($this->_tablename);
+// 	$this->createPluginTable($this->_tablename);
 	self::$_this = $this;
     }
 

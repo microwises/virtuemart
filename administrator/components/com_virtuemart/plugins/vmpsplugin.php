@@ -1,5 +1,5 @@
 <?php
-
+defined('_JEXEC') or die('Restricted access');
 /**
  * abstract class for payment/shipment plugins
  *

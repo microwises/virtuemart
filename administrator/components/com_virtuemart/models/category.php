@@ -159,9 +159,11 @@ class VirtueMartModelCategory extends VmModel {
 
 	public function rekurseCats($virtuemart_category_id,$level,$onlyPublished,$keyword,&$sortedCats){
 		$level++;
-		vmSetStartTime('rekurseCats');
-// 		if($this->hasChildren($virtuemart_category_id)){
+
+		if($this->hasChildren($virtuemart_category_id)){
+
 			$childCats = self::getCategories($onlyPublished, $virtuemart_category_id, false, $keyword);
+
 			if(!empty($childCats)){
 				foreach ($childCats as $key => $category) {
 					$category->level = $level;
@@ -169,8 +171,8 @@ class VirtueMartModelCategory extends VmModel {
 					$this->rekurseCats($category->virtuemart_category_id,$level,$onlyPublished,$keyword,$sortedCats);
 				}
 			}
-// 		}
-		vmTime('rekurseCats','rekurseCats');
+		}
+
 	}
 
 
@@ -663,14 +665,21 @@ class VirtueMartModelCategory extends VmModel {
 	* @return boolean true when the category has childs, false when not
 	*/
 	public function hasChildren($virtuemart_category_id) {
+// 		vmSetStartTime('hasChildren');
 		$db = JFactory::getDBO();
 		$q = "SELECT `category_child_id`
 			FROM `#__virtuemart_category_categories`
 			WHERE `category_parent_id` = ".(int)$virtuemart_category_id;
 		$db->setQuery($q);
 		$db->query();
-		if ($db->getAffectedRows() > 0) return true;
-		else return false;
+		if ($db->getAffectedRows() > 0){
+// 			vmTime('hasChildren YES','hasChildren');
+			return true;
+		} else {
+// 			vmTime('hasChildren NO','hasChildren');
+			return false;
+		}
+
 	}
 
 	/**
