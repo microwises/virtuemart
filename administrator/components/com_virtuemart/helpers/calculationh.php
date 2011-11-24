@@ -79,8 +79,37 @@ class calculationHelper {
 		$this->_currencyDisplay = CurrencyDisplay::getInstance();
 		$this->_debug = false;
 
+		if(!empty($this->_currencyDisplay->_vendorCurrency)){
+			$this->vendorCurrency = $this->_currencyDisplay->_vendorCurrency;
+		}
+		else if(VmConfig::get('multix','none')!='none'){
+			$this->_db->setQuery('SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `virtuemart_vendor_id`="1" ');
+			$single = $this->_db->loadResult();
+			$this->vendorCurrency = $single;
+		}
+
 		$this->setShopperGroupIds();
 
+// 		if (!empty($id)) {
+// 			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id` = "' . $id . '" AND `calc_kind`="' . $entrypoint . '" ';
+// 		} else {
+
+		$epoints = array('Marge','Tax','DBTax','DATax');
+		$this->allrules = array();
+		foreach($epoints as $entrypoint){
+			$q = 'SELECT * FROM #__virtuemart_calcs WHERE
+					                    `calc_kind`="' . $entrypoint . '"
+					                     AND `published`="1"
+					                     AND (`virtuemart_vendor_id`="' . $this->productVendorId . '" OR `shared`="1" )
+					                     AND ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
+					                     AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" ) ';
+
+			$this->_db->setQuery($q);
+			$this->allrules[$entrypoint] = $this->_db->loadAssocList();
+
+		}
+
+// 		vmdebug('my rules ',$this->allrules);
 		$this->rules['Marge'] = array();
 		$this->rules['Tax'] 	= array();
 		$this->rules['dBTax'] = array();
@@ -128,9 +157,6 @@ class calculationHelper {
 			}
 			else if (empty($this->_shopperGroupId)) {
 				//We just define the shoppergroup with id = 1 to anonymous default shoppergroup
-// 				$this->_db->setQuery('SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
-// 				WHERE `default`="2" AND `virtuemart_vendor_id`="' . (int) $vendorId . '"');
-// 				$this->_shopperGroupId = $this->_db->loadResultArray();
 				$this->_shopperGroupId[] = 1;
 			}
 		}
@@ -211,7 +237,7 @@ class calculationHelper {
 			$this->_cats = $productId->categories;
 		} //Use it as productId
 		else {
-
+			vmSetStartTime('getProductCalcs');
 			$this->_db->setQuery('SELECT * FROM #__virtuemart_product_prices  WHERE `virtuemart_product_id`="' . $productId . '" ');
 			$row = $this->_db->loadAssoc();
 			if ($row) {
@@ -241,15 +267,17 @@ class calculationHelper {
 			} else {
 				$this->_cats = $catIds;
 			}
+			vmTime('getProductPrices no object given query time','getProductCalcs');
 		}
 
-
-		$this->_db->setQuery('SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `virtuemart_vendor_id`="' . $this->productVendorId . '" ');
-		$single = $this->_db->loadResult();
-		$this->vendorCurrency = $single;
+		if(VmConfig::get('multix','none')!='none' and empty($this->vendorCurrency )){
+			$this->_db->setQuery('SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `virtuemart_vendor_id`="' . $this->productVendorId . '" ');
+			$single = $this->_db->loadResult();
+			$this->vendorCurrency = $single;
+		}
 
 		if (!empty($amount)) {
-						$this->_amount = $amount;
+			$this->_amount = $amount;
 		}
 
 		$this->setCountryState($this->_cart);
@@ -592,6 +620,7 @@ class calculationHelper {
 		$shopperGroup = '';
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
+		/* Lets cache this
 		if (!empty($id)) {
 			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id` = "' . $id . '" AND `calc_kind`="' . $entrypoint . '" ';
 		} else {
@@ -601,52 +630,56 @@ class calculationHelper {
                      AND (`virtuemart_vendor_id`="' . $this->productVendorId . '" OR `shared`="1" )
                      AND ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
                      AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" ) ';
-
-// 			if (!empty($this->_amount)) {
-// 				$q .=' AND (`calc_amount_cond` <= "' . $this->_db->getEscaped($this->_amount) . '" OR calc_amount_cond="0" )';
-// 			}
 		}
-		//		' AND ( calc_amount_cond = "'.$this->_db->getEscaped($this ->_nullDate).'" OR publish_down >= "'.$this->_db->getEscaped($this ->_now).'" ) ';
 
 		$this->_db->setQuery($q);
 		$rules = $this->_db->loadAssocList();
 
+*/
 
 		$testedRules = array();
 		//Cant be done with Leftjoin afaik, because both conditions could be arrays.
-		foreach ($rules as $rule) {
+		foreach ($this->allrules[$entrypoint] as $i => $rule) {
 
-			$q = 'SELECT `virtuemart_category_id` FROM #__virtuemart_calc_categories WHERE `virtuemart_calc_id`="' . $rule['virtuemart_calc_id'] . '"';
-			$this->_db->setQuery($q);
-			$cats = $this->_db->loadResultArray();
+			if(!isset($this->allrules[$entrypoint][$i]['cats'])){
+				$q = 'SELECT `virtuemart_category_id` FROM #__virtuemart_calc_categories WHERE `virtuemart_calc_id`="' . $rule['virtuemart_calc_id'] . '"';
+				$this->_db->setQuery($q);
+				$this->allrules[$entrypoint][$i]['cats'] = $this->_db->loadResultArray();
+			}
 
 			$hitsCategory = true;
 			if (isset($this->_cats)) {
-				$hitsCategory = $this->testRulePartEffecting($cats, $this->_cats);
+				$hitsCategory = $this->testRulePartEffecting($this->allrules[$entrypoint][$i]['cats'], $this->_cats);
 			}
 
-			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_calc_shoppergroups WHERE `virtuemart_calc_id`="' . $rule['virtuemart_calc_id'] . '"';
-			$this->_db->setQuery($q);
-			$shoppergrps = $this->_db->loadResultArray();
+			if(!isset($this->allrules[$entrypoint][$i]['shoppergrps'])){
+				$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_calc_shoppergroups WHERE `virtuemart_calc_id`="' . $rule['virtuemart_calc_id'] . '"';
+				$this->_db->setQuery($q);
+				$this->allrules[$entrypoint][$i]['shoppergrps'] = $this->_db->loadResultArray();
+			}
 
 			$hitsShopper = true;
 			if (isset($this->_shopperGroupId)) {
-				$hitsShopper = $this->testRulePartEffecting($shoppergrps, $this->_shopperGroupId);
+				$hitsShopper = $this->testRulePartEffecting($this->allrules[$entrypoint][$i]['shoppergrps'], $this->_shopperGroupId);
 			}
 
-			$q = 'SELECT `virtuemart_country_id` FROM #__virtuemart_calc_countries WHERE `virtuemart_calc_id`="' . $rule["virtuemart_calc_id"] . '"';
-			$this->_db->setQuery($q);
-			$countries = $this->_db->loadResultArray();
+			if(!isset($this->allrules[$entrypoint][$i]['countries'])){
+				$q = 'SELECT `virtuemart_country_id` FROM #__virtuemart_calc_countries WHERE `virtuemart_calc_id`="' . $rule["virtuemart_calc_id"] . '"';
+				$this->_db->setQuery($q);
+				$this->allrules[$entrypoint][$i]['countries'] = $this->_db->loadResultArray();
+			}
 
-			$q = 'SELECT `virtuemart_state_id` FROM #__virtuemart_calc_states WHERE `virtuemart_calc_id`="' . $rule["virtuemart_calc_id"] . '"';
-			$this->_db->setQuery($q);
-			$states = $this->_db->loadResultArray();
+			if(!isset($this->allrules[$entrypoint][$i]['states'])){
+				$q = 'SELECT `virtuemart_state_id` FROM #__virtuemart_calc_states WHERE `virtuemart_calc_id`="' . $rule["virtuemart_calc_id"] . '"';
+				$this->_db->setQuery($q);
+				$this->allrules[$entrypoint][$i]['states'] = $this->_db->loadResultArray();
+			}
 
 			$hitsDeliveryArea = true;
-			if (!empty($this->_deliveryCountry) && !empty($countries) && empty($states)) {
-				$hitsDeliveryArea = $this->testRulePartEffecting($countries, $this->_deliveryCountry);
-			} else if (!empty($this->_deliveryState) && !empty($states)) {
-				$hitsDeliveryArea = $this->testRulePartEffecting($states, $this->_deliveryState);
+			if (!empty($this->_deliveryCountry) && !empty($this->allrules[$entrypoint][$i]['countries']) && empty($this->allrules[$entrypoint][$i]['states'])) {
+				$hitsDeliveryArea = $this->testRulePartEffecting($this->allrules[$entrypoint][$i]['countries'], $this->_deliveryCountry);
+			} else if (!empty($this->_deliveryState) && !empty($this->allrules[$entrypoint][$i]['states'])) {
+				$hitsDeliveryArea = $this->testRulePartEffecting($this->allrules[$entrypoint][$i]['states'], $this->_deliveryState);
 			}
 
 			$hitsAmount = true;

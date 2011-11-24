@@ -558,7 +558,7 @@ class GenericTableUpdater extends JModel{
 					$action = 'CHANGE';
 					$altered++;
 					// 				    vmdebug('$fullColumns',$fullColumns[$key]);
-					// 				    vmdebug('Alter field ',$oldColumn,$alterCommand,$compare);
+									    vmdebug('Alter field ',$oldColumn,$alterCommand,$compare);
 				}
 			}
 			else {

@@ -430,7 +430,7 @@ class VmConfig {
 		}
 
 		self::$_jpConfig->lang = strtolower(strtr($siteLang,'-','_'));
-		vmdebug('self::$_jpConfig->lang',self::$_jpConfig->lang);
+		vmdebug('self::$_jpConfig->lang '.self::$_jpConfig->lang);
 		define('VMLANG', self::$_jpConfig->lang );
 		return self::$_jpConfig->lang;
 

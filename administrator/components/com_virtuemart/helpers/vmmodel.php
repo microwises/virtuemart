@@ -128,6 +128,7 @@ class VmModel extends JModel {
 				unset($dTableArray[$v]);
 			}
 		}
+
 		// Iterate over the object variables to build the query fields and values.
 		foreach ($dTableArray as $k => $v){
 

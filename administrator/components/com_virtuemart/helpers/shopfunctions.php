@@ -1275,7 +1275,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 
 		return $html;
 	}
-	
+
 	function getValidProductFilterArray( ) {
 		static $filterArray;
 
