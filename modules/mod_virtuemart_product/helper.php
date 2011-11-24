@@ -88,8 +88,6 @@ class mod_virtuemart_product {
                     <input type="hidden" name="view" value="cart" />
                     <noscript><input type="hidden" name="task" value="add" /></noscript>
                     <input type="hidden" name="virtuemart_product_id[]" value="<?php echo $product->virtuemart_product_id ?>" />
-                    <?php /** @todo Handle the manufacturer view */ ?>
-                    <input type="hidden" name="virtuemart_manufacturer_id" value="<?php echo $product->virtuemart_manufacturer_id ?>" />
                     <input type="hidden" name="virtuemart_category_id[]" value="<?php echo $product->virtuemart_category_id ?>" />
                 </form>
 		<div class="clear"></div>
