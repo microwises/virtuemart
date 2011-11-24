@@ -661,7 +661,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				break;
 				/* related */
 				case 'R':
-					$q='SELECT l.`product_name`, l.`product_parent_id` , l.`product_name`, x.`virtuemart_category_id` FROM `#__virtuemart_products_'.VMLANG.'` as l
+					$q='SELECT l.`product_name`, p.`product_parent_id` , l.`product_name`, x.`virtuemart_category_id` FROM `#__virtuemart_products_'.VMLANG.'` as l
 					 JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)
 					 LEFT JOIN `#__virtuemart_product_categories` as x on x.`virtuemart_product_id` = p.`virtuemart_product_id`
 					 WHERE p.`published`=1 AND  p.`virtuemart_product_id`= "'.(int)$value.'" ';
