@@ -956,6 +956,7 @@ class calculationHelper {
 					}
 
 				} else {
+					//TODO Warn for nothing ! if use a simple minus or plus >> - + =
 					VmWarn('Unrecognised mathop '.$mathop.' in calculation rule found, seems you created this rule with plugin not longer accesible (deactivated, uninstalled?)');
 					return $price;
 				}

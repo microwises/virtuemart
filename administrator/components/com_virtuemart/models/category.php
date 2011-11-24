@@ -104,23 +104,31 @@ class VirtueMartModelCategory extends VmModel {
 	 */
 	public function getChildCategoryList($vendorId, $virtuemart_category_id) {
 
-		$query = 'SELECT L.* FROM `#__virtuemart_categories_'.VMLANG.'` as L';
-		$query .= ' JOIN `#__virtuemart_categories` as C using (`virtuemart_category_id`)';
-		$query .= ' LEFT JOIN `#__virtuemart_category_categories` as CC on C.`virtuemart_category_id` = CC.`category_child_id`';
-		$query .= 'WHERE CC.`category_parent_id` = ' . (int)$virtuemart_category_id . ' ';
-		$query .= 'AND C.`virtuemart_category_id` = CC.`category_child_id` ';
-		$query .= 'AND C.`virtuemart_vendor_id` = ' . (int)$vendorId . ' ';
-		$query .= 'AND C.`published` = 1 ';
-		$query .= ' ORDER BY C.`ordering`, L.`category_name` ASC';
-		$childList = $this->_getList( $query );
+		$key = (int)$vendorId.'_'.(int)$virtuemart_category_id ;
+		vmdebug('child key', $key);
+		static $_childCateogryList = array ();
+      if (! array_key_exists ($key,$_childCateogryList)){
+		vmdebug('child instance', $key);
+			$query = 'SELECT L.* FROM `#__virtuemart_categories_'.VMLANG.'` as L';
+			$query .= ' JOIN `#__virtuemart_categories` as C using (`virtuemart_category_id`)';
+			$query .= ' LEFT JOIN `#__virtuemart_category_categories` as CC on C.`virtuemart_category_id` = CC.`category_child_id`';
+			$query .= 'WHERE CC.`category_parent_id` = ' . (int)$virtuemart_category_id . ' ';
+			//$query .= 'AND C.`virtuemart_category_id` = CC.`category_child_id` ';
+			$query .= 'AND C.`virtuemart_vendor_id` = ' . (int)$vendorId . ' ';
+			$query .= 'AND C.`published` = 1 ';
+			$query .= ' ORDER BY C.`ordering`, L.`category_name` ASC';
+			$childList = $this->_getList( $query );
 
-		if(!empty($childList)){
-			foreach($childList as $child){
-				$xrefTable = $this->getTable('category_medias');
-				$child->virtuemart_media_id = $xrefTable->load($child->virtuemart_category_id);
+			if(!empty($childList)){
+				foreach($childList as $child){
+					$xrefTable = $this->getTable('category_medias');
+					$child->virtuemart_media_id = $xrefTable->load($child->virtuemart_category_id);
+				}
 			}
+			// vmdebug('child',$childList);
+			$_childCateogryList[$key]=$childList ;
 		}
-		return $childList;
+		return $_childCateogryList[$key];
 	}
 
 // 	public sortArraysPerXref(){
