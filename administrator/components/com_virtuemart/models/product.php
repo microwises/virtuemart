@@ -344,18 +344,19 @@ class VirtueMartModelProduct extends VmModel {
 	 * @param boolean $withCalc calculate prices?
 	 */
 	public function getProduct($virtuemart_product_id = null,$front=true, $withCalc = true, $onlyPublished = true){
+		
+		if (isset($virtuemart_product_id)) {
+			$virtuemart_product_id = $this->setId($virtuemart_product_id);
+		} else {
+			if(empty($this->_id)){
+				return false;
+			} else {
+				$virtuemart_product_id = $this->_id;
+			}
+		}
 		$productKey = (int)$virtuemart_product_id ;
 		static $_products = array ();
 		if (! array_key_exists ($productKey,$_products)){
-			if (isset($virtuemart_product_id)) {
-				$virtuemart_product_id = $this->setId($virtuemart_product_id);
-			} else {
-				if(empty($this->_id)){
-					return false;
-				} else {
-					$virtuemart_product_id = $this->_id;
-				}
-			}
 
 			$child = $this->getProductSingle($virtuemart_product_id,$front, false,$onlyPublished);
 			if(!$child->published && $onlyPublished) return false;
@@ -422,7 +423,7 @@ class VirtueMartModelProduct extends VmModel {
 				return false;
 			}
 			$_products[$productKey] = $child;
-		} 
+		}
 		return $_products[$productKey];
 	}
 
