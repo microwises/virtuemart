@@ -229,7 +229,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$dbValues['payment_name'] = parent::renderPluginName($payment, $params);
 	$dbValues['virtuemart_paymentmethod_id'] = $cart->virtuemart_paymentmethod_id;
 	$dbValues['paypal_custom'] = $return_context;
-
+	$dbValues['cost'] = $params->get('cost', 0);
+	$dbValues['tax_id'] = $params->get('tax_id', 0);
 	$this->storePluginInternalData($dbValues);
 
 	$url = $this->_getPaypalUrlHttps($params);

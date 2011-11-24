@@ -63,7 +63,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	    `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 	    `locked_by` int(11) NOT NULL DEFAULT 0,
 	      PRIMARY KEY (`id`)
-	    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Payment standard Table' AUTO_INCREMENT=1 ;";
+	    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Payment Standard Table' AUTO_INCREMENT=1 ;";
 
     }
 
@@ -100,6 +100,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$dbValues['payment_name'] = parent::renderPluginName($payment,$params);
 	$dbValues['order_number'] = $order_number;
 	$dbValues['virtuemart_paymentmethod_id'] = $this->_virtuemart_paymentmethod_id;
+	$dbValues['cost'] = $params->get('cost', 0);
+	$dbValues['tax_id'] = $params->get('tax_id', 0);
 	$this->storePluginInternalData($dbValues);
 
 	$html = '<table>' . "\n";
