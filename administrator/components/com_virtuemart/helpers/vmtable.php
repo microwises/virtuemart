@@ -397,9 +397,11 @@ class VmTable extends JTable{
 
 	function storeParams(){
 		if(!empty($this->_xParams)){
+			$paramFieldName = $this->_xParams;
+			$this->$paramFieldName = '';
 			foreach($this->_varsToPushParam as $key=>$v){
 
-				$paramFieldName = $this->_xParams;
+
 				if(isset($this->$key)){
 					if($v[1]==='string'){
 						$this->$paramFieldName .= $key.'='.base64_encode(serialize($this->$key)).'|';
