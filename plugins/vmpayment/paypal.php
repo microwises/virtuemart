@@ -58,13 +58,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    'paypal_response_receiver_email',
 	    'paypal_response_transaction_subject',
 	    'paypal_response_residence_country',
-	    'paypalresponse_raw',
-	    'created_on',
-	    'created_by',
-	    'modified_on',
-	    'modified_by',
-	    'locked_on',
-	    'locked_by'); //,'created_on','created_by','modified_on','modified_by','locked_on');
+	    'paypalresponse_raw'
+); //,'created_on','created_by','modified_on','modified_by','locked_on');
 // 		self::$_this
 	//$this->createPluginTable($this->_tablename);
 	self::$_this = $this;

@@ -98,10 +98,8 @@ abstract class vmPlugin extends JPlugin {
 	 */
 	protected function storePluginInternalData(&$values, $primaryKey=''){
 
-// 		if(empty($tableName)) $tableName = $this->_tablename;
-
 		if(!$this->_table){
-			$this->createPluginTableObject($this->_tablename);
+			$this->_table = $this->createPluginTableObject($this->_tablename,$this->tableFields,$this->_loggable);
 		}
 
 		$this->_table->bindChecknStore($values);
@@ -118,27 +116,26 @@ abstract class vmPlugin extends JPlugin {
 
 	protected function getPluginInternalData($id, $primaryKey=0){
 
-// 		if(empty($tableName)) $tableName = $this->_tablename;
-
 		if(!$this->_table){
-			$this->createPluginTableObject($this->_tablename);
+			$this->_table = $this->createPluginTableObject($this->_tablename,$this->tableFields,$this->_loggable);
 		}
 
 		return $this->_table->load($id);
 	}
 
-	protected function createPluginTableObject($tableName){
+	protected function createPluginTableObject($tableName,$tableFields, $loggable = false){
 
 		if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 		$db =& JFactory::getDBO();
-		$this->_table = new VmTableData($tableName,'id',$db);
+		$table = new VmTableData($tableName,'id',$db);
 		foreach($this->tableFields as $field){
-			$this->_table->$field = 0;
+			$table->$field = 0;
 		}
 // 		$this->_table -> setFields($this->tableFields);
 		if(empty($primaryKey)) $primaryKey = $this->_tablepkey;
 
-		$this->_table->setPrimaryKey($primaryKey);
-		if($this->_loggable)	$this->_table->setLoggable();
+		$table->setPrimaryKey($primaryKey);
+		if($loggable)	$table->setLoggable();
+		return $table;
 	}
 }
