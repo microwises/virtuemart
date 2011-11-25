@@ -440,12 +440,12 @@ class VmTable extends JTable{
 	// 			vmdebug('table check use $this->$slugName '.$this->$slugName);
 				if(VmConfig::isJ15()){
 					$this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
-					vmdebug('first created ',$this->$slugName);
+// 					vmdebug('first created ',$this->$slugName);
 
 					if(trim(str_replace('-', '', $this->$slugName)) == '' || $change){
 						$datenow = JFactory::getDate();
 						$this->$slugName = $this->$slugName . $datenow->toFormat("%Y-%m-%d-%H-%M-%S").rand(1,9);
-						vmdebug('changed ',$this->$slugName);
+// 						vmdebug('changed ',$this->$slugName);
 					}
 				} else {
 					$this->$slugName = JApplication::stringURLSafe($this->$slugName);

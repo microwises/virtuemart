@@ -28,6 +28,7 @@ class Migrator extends VmModel{
 	//Object to hold old against new ids. We wanna port as when it setup fresh, so no importing of old ids!
 
 	private $_test = false;
+	private $_stop = false;
 
 	public function __construct(){
 
@@ -46,13 +47,13 @@ class Migrator extends VmModel{
 			if($max_execution_time!==$jrmax_execution_time) @ini_set( 'max_execution_time', $jrmax_execution_time );
 		}
 
-		$this->maxScriptTime = ini_get('max_execution_time')*0.90-1;	//Lets use 5% of the execution time as reserve to store the progress
+		$this->maxScriptTime = ini_get('max_execution_time')*0.80-1;	//Lets use 5% of the execution time as reserve to store the progress
 
 
 		$memory_limit = ini_get('memory_limit');
 		if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
 
-		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) * 0.75;		//Lets use 25 % as reserve
+		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) * 0.70;		//Lets use 30 % as reserve
 		//$this->maxMemoryLimit = $this -> return_bytes('20M');
 
 		// 		ini_set('memory_limit','35M');
@@ -373,9 +374,18 @@ class Migrator extends VmModel{
 
 	private function portShoppergroups(){
 
-		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+		if($this->_stop || (microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 			return;
 		}
+
+		$query = 'SHOW TABLES LIKE "%vm_shopper_group%"';
+		$this->_db->setQuery($query);
+		if(!$this->_db->loadResult()){
+			vmInfo('No Shoppergroup table found for migration');
+			$this->_stop = true;
+			return false;
+		}
+
 		$ok = true;
 
 		$q = 'SELECT * FROM #__vm_shopper_group';
@@ -407,7 +417,7 @@ class Migrator extends VmModel{
 				$errors = $table->getErrors();
 				if(!empty($errors)){
 					foreach($errors as $error){
-						$this->setError($error);
+						vmError($error);
 					}
 					break;
 				}
@@ -434,8 +444,16 @@ class Migrator extends VmModel{
 
 	private function portUsers(){
 
-		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+		if($this->_stop || (microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 			return;
+		}
+
+		$query = 'SHOW TABLES LIKE "%vm_user_info%"';
+		$this->_db->setQuery($query);
+		if(!$this->_db->loadResult()){
+			vmInfo('No vm_user_info table found for migration');
+			$this->_stop = true;
+			return false;
 		}
 
 		$oldToNewShoppergroups = $this->getMigrationProgress('shoppergroups');
@@ -601,6 +619,14 @@ class Migrator extends VmModel{
 
 	private function portCategories(){
 
+		$query = 'SHOW TABLES LIKE "%vm_category%"';
+		$this->_db->setQuery($query);
+		if(!$this->_db->loadResult()){
+			vmInfo('No vm_category table found for migration');
+			$this->_stop = true;
+			return false;
+		}
+
 		if(!class_exists('VirtueMartModelCategory'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
 		$catModel = new VirtueMartModelCategory();
@@ -629,7 +655,7 @@ class Migrator extends VmModel{
 		foreach($oldCategories as $oldcategory){
 
 			if(!array_key_exists($oldcategory['category_id'],$alreadyKnownIds)){
-				$category = null;
+
 				$category = array();
 				//$category['virtuemart_category_id'] = $oldcategory['category_id'];
 				$category['virtuemart_vendor_id'] = $oldcategory['vendor_id'];
@@ -665,7 +691,7 @@ class Migrator extends VmModel{
 				$errors = $catModel->getErrors();
 				if(!empty($errors)){
 					foreach($errors as $error){
-						$this->setError($error);
+						vmError($error);
 						$ok = false;
 					}
 					break;
@@ -676,7 +702,7 @@ class Migrator extends VmModel{
 // 				$errors = $table->getErrors();
 // 				if(!empty($errors)){
 // 					foreach($errors as $error){
-// 						$this->setError($error);
+// 						vmError($error);
 // 						$ok = false;
 // 					}
 // 					break;
@@ -731,7 +757,7 @@ class Migrator extends VmModel{
 					$errors = $table->getErrors();
 					if(!empty($errors)){
 						foreach($errors as $error){
-							$this->setError($error);
+							vmError($error);
 							$ok = false;
 						}
 						break;
@@ -800,7 +826,7 @@ class Migrator extends VmModel{
 				$errors = $table->getErrors();
 				if(!empty($errors)){
 					foreach($errors as $error){
-						$this->setError($error);
+						vmError($error);
 						$ok = false;
 					}
 					break;
@@ -868,7 +894,7 @@ class Migrator extends VmModel{
 				$errors = $table->getErrors();
 				if(!empty($errors)){
 					foreach($errors as $error){
-						$this->setError($error);
+
 						vmError($error);
 						$ok = false;
 					}

@@ -62,7 +62,7 @@ class VirtueMartModelProduct extends VmModel {
 			$this->addvalidOrderingFieldName(array('pp.product_price'));
 			// 	vmdebug('$browseOrderByFields',$browseOrderByFields);
 		}
-		$this->addvalidOrderingFieldName((array)$browseOrderByFields);	
+		$this->addvalidOrderingFieldName((array)$browseOrderByFields);
 		// 	vmdebug('product allows following orderingFields ',$this->_validOrderingFieldName);
 	}
 
@@ -344,7 +344,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * @param boolean $withCalc calculate prices?
 	 */
 	public function getProduct($virtuemart_product_id = null,$front=true, $withCalc = true, $onlyPublished = true){
-		
+
 		if (isset($virtuemart_product_id)) {
 			$virtuemart_product_id = $this->setId($virtuemart_product_id);
 		} else {
@@ -472,6 +472,9 @@ class VirtueMartModelProduct extends VmModel {
 			$mfTable = $this->getTable('manufacturers');
 			$mfTable->load((int)$product->virtuemart_manufacturer_id);
 			$product = (object) array_merge((array) $mfTable, (array) $product);
+			} else {
+				$product->virtuemart_manufacturer_id = array();
+				$product->mf_name ='';
 			}
 
 			/* Load the categories the product is in */
@@ -503,7 +506,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			// $this->productHasCustoms($this->_id);
-			
+
 			if($front){
 
 				// Add the product link  for canonical
