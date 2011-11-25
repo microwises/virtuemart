@@ -641,7 +641,7 @@ class calculationHelper {
 		//Cant be done with Leftjoin afaik, because both conditions could be arrays.
 		foreach ($this->allrules[$entrypoint] as $i => $rule) {
 
-			if(!empty($id) && $rule->virtuemart_calc_id!==$id){
+			if(!empty($id) && $rule['virtuemart_calc_id']!==$id){
 				continue;
 			}
 			if(!isset($this->allrules[$entrypoint][$i]['cats'])){

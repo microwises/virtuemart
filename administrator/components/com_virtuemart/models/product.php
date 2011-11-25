@@ -475,6 +475,8 @@ class VirtueMartModelProduct extends VmModel {
 			} else {
 				$product->virtuemart_manufacturer_id = array();
 				$product->mf_name ='';
+				$product->mf_desc ='';
+				$product->mf_url ='';
 			}
 
 			/* Load the categories the product is in */

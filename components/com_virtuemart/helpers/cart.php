@@ -334,10 +334,6 @@ class VirtueMartCart {
 			$product -> mf_desc = $tmpProduct -> mf_desc;
 			$product -> mf_url = $tmpProduct -> mf_url;
 			$product -> published = $tmpProduct -> published;
-			// 			$product -> created_on = $tmpProduct -> created_on;
-			// 			$product -> created_by = $tmpProduct -> created_by;
-			// 			$product -> modified_on = $tmpProduct -> modified_on;
-			// 			$product -> modified_by = $tmpProduct -> modified_by;
 
 			$product -> virtuemart_product_price_id = $tmpProduct -> virtuemart_product_price_id;
 			$product -> virtuemart_product_id = $tmpProduct -> virtuemart_product_id;
