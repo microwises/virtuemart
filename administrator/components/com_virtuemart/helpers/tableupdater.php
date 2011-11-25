@@ -230,9 +230,12 @@ class GenericTableUpdater extends JModel{
 
 	}
 
-	public function updateMyVmTables(){
+	public function updateMyVmTables($file = 0, $like ='_virtuemart_'){
 
-		$file = JPATH_VM_ADMINISTRATOR.DS.'install'.DS.'install.sql';
+		if(empty($file)){
+			$file = JPATH_VM_ADMINISTRATOR.DS.'install'.DS.'install.sql';
+		}
+
 		$data = fopen($file, 'r');
 
 		$tables = array();
@@ -290,7 +293,7 @@ class GenericTableUpdater extends JModel{
 		}
 
 		// 	vmdebug('Parsed tables',$tables); //return;
-		$this->_db->setQuery('SHOW TABLES LIKE "%_virtuemart_%"');
+		$this->_db->setQuery('SHOW TABLES LIKE "%'.$like.'%"');
 		if (!$existingtables = $this->_db->loadResultArray()) {
 			$this->setError = $this->_db->getErrorMsg();
 			return false;

@@ -169,7 +169,7 @@ $Browsecellwidth = ' width'.floor ( 100 / $BrowseProducts_per_row );
 // Separator
 $verticalseparator = " vertical-separator";
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$this->category->virtuemart_category_id ); ?>" method="post">
+<form action="<?php echo $this->paginationAction;?>" method="post">
 <div class="browse-view">
 
 	<h1><?php echo $this->category->category_name; ?></h1>

@@ -128,18 +128,10 @@ class VirtuemartViewCategory extends JView {
 			$product->stock = $productModel->getStockIndicator($product);
 		}
 
-// 		vmdebug('my count of products '.count($products) );
-//	    $total = $productModel->getTotalProductsInCategory($categoryId);
-// 	    $total = $categoryModel->countProducts($categoryId);
-// 	    $this->assignRef('total', $total);
-
 
 	    $pagination = $productModel->getPagination(0,0,0,$perRow);
 	    $this->assignRef('vmPagination', $pagination);
-// 	    vmdebug('my $perRow of products '.$perRow.' ... Conf '.VmConfig::get('products_per_row',3) .'... Cat '.$category->products_per_row,$pagination );
-// 	   	if(!class_exists('VmPagination')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
-// 		$vmPagination = new VmPagination($pagination->total, $pagination->limitstart, $pagination->limit, VmConfig::get('products_per_row'));
-// 		$this->assignRef('vmPagination', $vmPagination);
+
 
 	    $orderByList = $productModel->getOrderByList($categoryId);
 	    $this->assignRef('orderByList', $orderByList);
@@ -172,14 +164,12 @@ class VirtuemartViewCategory extends JView {
 		$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
 		$this->assignRef('showBasePrice', $showBasePrice);
 
+		//set this after the $categoryId definition
+		$paginationAction=JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$categoryId );
+		$this->assignRef('paginationAction', $paginationAction);
+
 	    shopFunctionsF::setLastVisitedCategoryId($categoryId);
 
-// 	    if(empty($category->category_template)){
-// 	    	$catTpl = VmConfig::get('categorytemplate');
-// 	    	vmdebug('category_template',$catTpl);
-// 	    } else {
-// 	    	$catTpl = $category->category_template;
-// 	    }
 	    shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
 
 		parent::display($tpl);
