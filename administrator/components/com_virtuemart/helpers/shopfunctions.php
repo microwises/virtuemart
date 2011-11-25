@@ -710,12 +710,12 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	public function categoryListTree($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields=array()) {
 
 		if(empty(self::$categoryTree)){
-// 			vmTime('Start with categoryListTree');
-			$cache = & JFactory::getCache();
+			vmTime('Start with categoryListTree');
+			$cache = & JFactory::getCache('_virtuemart');
 			$cache->setCaching( 1 );
 			self::$categoryTree = $cache->call( array( 'ShopFunctions', 'categoryListTreeLoop' ),$selectedCategories, $cid, $level, $disabledFields );
 			// self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
-// 			vmTime('end loop categoryListTree '.self::$counter);
+			vmTime('end loop categoryListTree '.self::$counter);
 		}
 
 		return self::$categoryTree;
@@ -733,7 +733,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 */
 	public function categoryListTreeLoop($selectedCategories = array(), $cid = 0, $level = 0, $disabledFields=array()) {
 
-// 		self::$counter++;
+		self::$counter++;
 
 		static $categoryTree = '';
 
@@ -1275,7 +1275,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 
 		return $html;
 	}
-
+	
 	function getValidProductFilterArray( ) {
 		static $filterArray;
 

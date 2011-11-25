@@ -83,10 +83,20 @@ class VirtuemartViewCategory extends JView {
 				$pathway->addItem(strip_tags($c->category_name),JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id));
 			}
 		}
+		static $counter = 0;
+		static $counter2 = 0;
 		//if($category->children)	$categoryModel->addImages($category->children);
-
+$profiler = new JProfiler();
+		$cache = & JFactory::getCache();
+		$cache->setCaching( 1 );
+		$category->children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $categoryId );
+		// self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
+		vmTime('end loop categoryListTree '.$counter);
+echo $profiler->mark( ' seconds to do stuff' );
+$profiler2 = new JProfiler();
 		$category->children = $categoryModel->getChildCategoryList($vendorId, $categoryId);
 		$categoryModel->addImages($category->children,1);
+echo $profiler2->mark( ' seconds to do stuff' );
 
 	   $this->assignRef('category', $category);
 
