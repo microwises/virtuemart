@@ -66,7 +66,7 @@ class VirtuemartViewCategory extends JView {
 
 		$category = $categoryModel->getCategory($categoryId);
 		$perRow = empty($category->products_per_row)? VmConfig::get('products_per_row',3):$category->products_per_row;
-		$categoryModel->setPerRow($perRow);
+// 		$categoryModel->setPerRow($perRow);
 		$this->assignRef('perRow', $perRow);
 
 		$search = JRequest::getWord('search') ;
@@ -128,18 +128,19 @@ class VirtuemartViewCategory extends JView {
 			$product->stock = $productModel->getStockIndicator($product);
 		}
 
-		vmdebug('my count of products '.count($products) );
+// 		vmdebug('my count of products '.count($products) );
 //	    $total = $productModel->getTotalProductsInCategory($categoryId);
 // 	    $total = $categoryModel->countProducts($categoryId);
 // 	    $this->assignRef('total', $total);
 
-	    $pagination = $productModel->getPagination();
-	    $this->assignRef('pagination', $pagination);
 
-	   	if(!class_exists('VmPagination')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
-		$vmPagination = new VmPagination($pagination->total, $pagination->limitstart, $pagination->limit, VmConfig::get('products_per_row'));
-		$this->assignRef('vmPagination', $vmPagination);
-	    
+	    $pagination = $productModel->getPagination(0,0,0,$perRow);
+	    $this->assignRef('vmPagination', $pagination);
+// 	    vmdebug('my $perRow of products '.$perRow.' ... Conf '.VmConfig::get('products_per_row',3) .'... Cat '.$category->products_per_row,$pagination );
+// 	   	if(!class_exists('VmPagination')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+// 		$vmPagination = new VmPagination($pagination->total, $pagination->limitstart, $pagination->limit, VmConfig::get('products_per_row'));
+// 		$this->assignRef('vmPagination', $vmPagination);
+
 	    $orderByList = $productModel->getOrderByList($categoryId);
 	    $this->assignRef('orderByList', $orderByList);
 		//$sortOrderButton = $productModel->getsortOrderButton();

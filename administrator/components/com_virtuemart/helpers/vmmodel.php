@@ -36,7 +36,6 @@ class VmModel extends JModel {
 	var $_togglesName	= null;
 	private $_withCount = true;
 	var $_noLimit = false;
-	var $_perRow = 5;
 
 	public function __construct($cidName='cid'){
 		parent::__construct();
@@ -243,17 +242,16 @@ class VmModel extends JModel {
 	}
 
 
-	public function setPerRow($perRow){
-		$this->_perRow;
-	}
 
 	/**
 	 * Loads the pagination
 	 *
 	 * @author Max Milbers
 	 */
-	public function getPagination($total=0,$limitStart=0,$limit=0) {
-		if ($this->_pagination == null) {
+	public function getPagination($total=0,$limitStart=0,$limit=0,$perRow = 5) {
+
+
+		if ($this->_pagination == null || $perRow!==5) {
 
 			if(empty($limit) ){
 				$limits = $this->setPaginationLimits();
@@ -267,14 +265,8 @@ class VmModel extends JModel {
 			}
 			// TODO, this give result when result = 0 >>> if(empty($total)) $total = $this->getTotal();
 
+			$this->_pagination = new VmPagination($total , $limits[0], $limits[1] , $perRow );
 
-			// 			$this->_pagination = new JPagination($total , $this->getState('limitstart'), $this->getState('limit') );
-
-
-			$this->_pagination = new VmPagination($total , $limits[0], $limits[1] , $this->_perRow );
-
-
-			// 			vmdebug('created Pagination',$total, $limits[0], $limits[1] );
 		}
 		// 		vmdebug('my pagination',$this->_pagination);
 		return $this->_pagination;
@@ -621,10 +613,10 @@ class VmPagination extends JPagination {
 	private $_perRow = 5;
 
 	function __construct($total, $limitstart, $limit, $perRow=5){
-		parent::__construct($total, $limitstart, $limit);
-		if($perRow!=1){
+		if($perRow!==0){
 			$this->_perRow = $perRow;
 		}
+		parent::__construct($total, $limitstart, $limit);
 	}
 
 	/** Creates a dropdown box for selecting how many records to show per page.
@@ -648,7 +640,7 @@ class VmPagination extends JPagination {
 
 		// Make the option list
 		//for 3 = 3,6,12,24,60,90 rows, 4 rows, 6 rows
-		$sequence = VmConfig::get('pagination_sequence',0);
+		$sequence = VmConfig::get('pagination_sequence_'.$this->_perRow,0);
 		if(!empty($sequence)){
 			$sequenceArray = explode(',', $sequence);
 			foreach($sequenceArray as $items){
@@ -656,6 +648,7 @@ class VmPagination extends JPagination {
 			}
 
 		} else {
+			if($this->_perRow===1) $this->_perRow = 5;
 			$iterationAmount = 4;
 			for ($i = 1; $i <= $iterationAmount; $i ++) {
 				$limits[] = JHtml::_('select.option', $i*$this->_perRow);
@@ -663,6 +656,7 @@ class VmPagination extends JPagination {
 
 			$limits[] = JHTML::_('select.option', $this->_perRow * 10);
 			$limits[] = JHTML::_('select.option', $this->_perRow * 20);
+// 			vmdebug('getLimitBox',$this->_perRow);
 		}
 
 		$limits[] = JHTML::_('select.option', '0', JText::_('all'));
