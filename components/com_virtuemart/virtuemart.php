@@ -26,7 +26,7 @@ VmConfig::loadConfig();
 
 vmRam('Start');
 // vmSetStartTime();
-vmTime('Start');
+vmSetStartTime('Start');
 if(VmConfig::get('shop_is_offline',0)){
 	$_controller = 'virtuemart';
 	require (JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
@@ -72,8 +72,9 @@ $controller = new $_class();
 /* Perform the Request task */
 $controller->execute(JRequest::getWord('task', JRequest::getWord('view', $_controller)));
 //Console::logSpeed('virtuemart start');
-vmTime($_class.' Finished');
+vmTime($_class.' Finished','Start');
 vmRam('End');
+vmRamPeak('Peak');
 /* Redirect if set by the controller */
 $controller->redirect();
 

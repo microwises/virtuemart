@@ -641,6 +641,9 @@ class calculationHelper {
 		//Cant be done with Leftjoin afaik, because both conditions could be arrays.
 		foreach ($this->allrules[$entrypoint] as $i => $rule) {
 
+			if(!empty($id) && $rule->virtuemart_calc_id!==$id){
+				continue;
+			}
 			if(!isset($this->allrules[$entrypoint][$i]['cats'])){
 				$q = 'SELECT `virtuemart_category_id` FROM #__virtuemart_calc_categories WHERE `virtuemart_calc_id`="' . $rule['virtuemart_calc_id'] . '"';
 				$this->_db->setQuery($q);
