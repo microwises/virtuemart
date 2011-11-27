@@ -89,6 +89,7 @@ class VirtueMartModelCustom extends VmModel {
 
     }
 
+    /*
 	public function getCustomPlugin($virtuemart_custom_id ){
 
   		if (empty($this->plugin)) {
@@ -105,12 +106,12 @@ class VirtueMartModelCustom extends VmModel {
   		}
 
   		if(!empty($this->_id)){
-			// /* Add the paymentmethod shoppergroups */
+			//  Add the paymentmethod shoppergroups
 			// $q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_paymentmethod_shoppergroups WHERE `virtuemart_paymentmethod_id` = "'.$this->_id.'"';
 			// $this->_db->setQuery($q);
 			// $this->plugin->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
 
-			// /* Add the accepted credit cards */
+			// /* Add the accepted credit cards
 			// $q = 'SELECT `virtuemart_creditcard_id` FROM #__virtuemart_paymentmethod_creditcards WHERE `virtuemart_paymentmethod_id` = "'.$this->_id.'"';
 			// $this->_db->setQuery($q);
 			// $this->plugin->payment_creditcards = $this->_db->loadResultArray();

@@ -79,13 +79,13 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		if (!($payment = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
 			return null; // Another method was selected, do nothing
 		}
-		$params = new JParameter($payment->payment_params);
+// 		$params = new JParameter($payment->payment_params);
 		$lang = JFactory::getLanguage();
 		$filename = 'com_virtuemart';
 		$lang->load($filename, JPATH_ADMINISTRATOR);
 		$vendorId = 0;
 
-		$payment_info = $params->get('payment_info');
+		$payment_info = $payment->payment_info;
 
 		$html = "";
 		$new_status = false;
@@ -96,11 +96,11 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		// END printing out HTML Form code (Payment Extra Info)
 
 		$this->_virtuemart_paymentmethod_id = $cart->virtuemart_paymentmethod_id;
-		$dbValues['payment_name'] = parent::renderPluginName($payment,$params);
+		$dbValues['payment_name'] = parent::renderPluginName($payment);
 		$dbValues['order_number'] = $order_number;
 		$dbValues['virtuemart_paymentmethod_id'] = $this->_virtuemart_paymentmethod_id;
-		$dbValues['cost'] = $params->get('cost', 0);
-		$dbValues['tax_id'] = $params->get('tax_id', 0);
+		$dbValues['cost'] = $payment->cost;
+		$dbValues['tax_id'] = $payment->tax_id;
 		$this->storePSPluginInternalData($dbValues);
 
 		$html = '<table>' . "\n";
@@ -142,8 +142,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		$html .= '</table>' . "\n";
 		return $html;
 	}
-	function getCosts($params, $cart_prices) {
-		return $params->get('cost', 0);
+	function getCosts($payment->, $cart_prices) {
+		return $payment->cost;
 	}
 
 	/**
@@ -157,16 +157,16 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 */
 	protected function checkConditions($cart, $payment, $cart_prices) {
 
-		$params = new JParameter($payment->payment_params);
+// 		$params = new JParameter($payment->payment_params);
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
 		$amount = $cart_prices['salesPrice'];
-		$amount_cond = ($amount >= $params->get('min_amount', 0) AND $amount <= $params->get('max_amount', 0)
+		$amount_cond = ($amount >= $payment->min_amount AND $amount <= $payment->max_amount
 		OR
-		($params->get('min_amount', 0) <= $amount AND ($params->get('max_amount', '') == '') ));
+		($payment->min_amount <= $amount AND ($payment->max_amount == '') ));
 
 		$countries = array();
-		$country_list = $params->get('countries');
+		$country_list = $payment->countries;
 		if (!empty($country_list)) {
 			if (!is_array($country_list)) {
 				$countries[0] = $country_list;

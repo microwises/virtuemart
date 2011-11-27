@@ -36,9 +36,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 // 		$this->tableFields = array('id','virtuemart_order_id','order_number','virtuemart_paymentmethod_id',
 // 							'payment_name','cost','cost','tax_id');//,'created_on','created_by','modified_on','modified_by','locked_on');
 
-
-		$varsToPush = array(
-						    		'custom_size'=>array(0.0,'int'),
+		$varsToPush = array(	'custom_size'=>array(0.0,'int'),
 						    		'custom_price_by_letter'=>array(0.0,'bool')
 		);
 

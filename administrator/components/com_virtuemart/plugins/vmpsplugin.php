@@ -41,43 +41,10 @@ abstract class vmPSPlugin extends vmPlugin {
 	* @param pssType : shipment or payment
 	* @author Oscar van Eijk
 	* @return True if the calling plugin has the given method ID, and psType
-	*
+	*@deprecated use directly selectedThisByMethodId ONLY deprecated for vmpsplugin
 	*/
 	protected function selectedThis($psType,$id) {
-
 		return $this->selectedThisByMethodId($psType,$id);
-
-		//Inactive
-/*		if($psType!=$this->_psType) return false;
-		$db = JFactory::getDBO();
-
-		if($id===0){
-			return true;
-		} else {
-			$db = JFactory::getDBO();
-
-			if (VmConfig::isJ15()) {
-				$q = 'SELECT COUNT(*) AS c FROM #__virtuemart_'.$psType.'methods AS vm,
-							#__plugins AS j WHERE vm.virtuemart_'.$psType.'method_id = "'.$id.'"
-							AND vm.'.$psType.'_jplugin_id = j.id
-							AND j.element = "'.$this->_name.'"';
-			} else {
-				//why do we have here this j.`folder` = "'.$this->_type.'"   ?
-				$q = 'SELECT COUNT(*) AS c FROM #__virtuemart_'.$psType.'methods AS vm,
-							#__extensions AS j WHERE vm.virtuemart_'.$psType.'method_id = "'.$id.'" AND j.`folder` = "'.$this->_type.'"
-							AND vm.'.$psType.'_jplugin_id = j.extension_id
-							AND j.element = "'.$this->_name.'"';
-			}
-
-			$db->setQuery($q);
-			if(!$res = $db->loadResult() ){
-				vmError('selectedThis '.$db->getErrorMsg());
-				return false;
-			} else {
-				return $res;
-			}
-		}
-*/
 	}
 
 	/**
@@ -101,34 +68,12 @@ abstract class vmPSPlugin extends vmPlugin {
 	 *
 	 */
 	protected function plgVmOnStoreInstallPluginTable($psType, $jplugin_id) {
-// 		if (!$this->selectedThisType($psType)) {
-// 			return null;
-// 		}
-// 		if (!($method = $this->getPluginMethodbyJplugin($jplugin_id) )) {
-// 			return null;
-// 		}
-
-		if($this->selectedThisByMethodId($psType, $jplugin_id){
+		if($this->selectedThisByMethodId($psType, $jplugin_id)){
 			parent::plgVmOnStoreInstallPluginTable();
 		}
 
 	}
 
-	/**
-	 * Get Plugin Data for a go given plugin ID
-	 * @author Valérie Isaksen
-	 * @param int $pluginmethod_id The method ID
-	 * @return  method data
-	 */
-/*	final protected function getPluginMethodbyJplugin($plugin_id) {
-		$db = JFactory::getDBO();
-
-		// 		$q = 'SELECT * FROM #__virtuemart_shipmentmethods WHERE `virtuemart_shipmentmethod_id`="' . $shipment_id . '" AND `shipment_element` = "'.$this->_name.'"';
-		$q = 'SELECT * FROM #__virtuemart_' . $this->_psType . 'methods WHERE `' . $this->_psType . '_jplugin_id' . '`="' . $plugin_id . '" AND `' . $this->_psType . '_element`="' . $this->_name . '" ';
-
-		$db->setQuery($q);
-		return $db->loadObject();
-	}*/
 
 	/**
 	 * This event is fired after the payment method has been selected. It can be used to store
@@ -143,7 +88,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	public function plgVmOnSelectCheck($psType, VirtueMartCart $cart) {
 		$idName = $this->_idName;
-		if (!$this->selectedThis($psType, $cart->$idName)) {
+		if (!$this->selectedThisByMethodId($psType, $cart->$idName)) {
 			return null; // Another method was selected, do nothing
 		}
 		return true; // this method was selected , and the data is valid by default
@@ -205,7 +150,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	public function plgVmOnSelectedCalculatePrice($psType, VirtueMartCart $cart, array &$cart_prices, $cart_prices_name) {
 		$id = $this->_idName;
-		if (!$this->selectedThis($psType, $cart->$id)) {
+		if (!$this->selectedThisByMethodId($psType, $cart->$id)) {
 			return null; // Another method was selected, do nothing
 		}
 
@@ -284,7 +229,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			return null;
 		}
 		$idName = $this->_idName;
-		if (!($this->selectedThis($pluginInfo->$idName,$this->_name))) {
+		if (!($this->selectedThisByMethodId($pluginInfo->$idName,$this->_name))) {
 			return null;
 		}
 		return $pluginInfo->$idName;
