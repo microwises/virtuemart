@@ -288,6 +288,11 @@ class VirtueMartModelCustom extends VmModel {
 
 	public function store(&$data){
 
+		if(!empty($data['params'])){
+			foreach($data['params'] as $k=>$v){
+				$data[$k] = $v;
+			}
+		}
 		$data['custom_name'] = $data['custom_title'];
 		if(empty($data['virtuemart_vendor_id'])){
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');

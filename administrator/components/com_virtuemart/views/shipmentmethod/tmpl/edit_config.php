@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 if ($this->shipment->shipment_name) {
-    $parameters = new vmParameters($this->shipment->shipment_params, $this->shipment->shipment_element, 'plugin', 'vmshipment');
+    $parameters = new vmParameters($this->shipment, $this->shipment->shipment_element, 'plugin', 'vmshipment');
 
     echo $rendered = $parameters->render();
 } else {
