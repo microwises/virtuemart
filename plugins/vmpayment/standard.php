@@ -38,6 +38,19 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		$this->tableFields = array('id','virtuemart_order_id','order_number','virtuemart_paymentmethod_id',
 						'payment_name','cost','cost','tax_id');//,'created_on','created_by','modified_on','modified_by','locked_on');
 
+		$varsToPush = array('payment_logos'=>array('','string'),
+							  	'countries'=>array(0,'char'),
+							  	'min_amount'=>array(0,'int'),
+								'max_amount'=>array(0,'int'),
+								'cost'=>array(0,'int'),
+								'tax_id'=>array(0,'int'),
+								'payment_info'=>array(0,'istringt')
+	);
+
+	$this->setConfigParameterable($this->_configTableFieldName,$varsToPush);
+
+
+
 		self::$_this = $this;
 	}
 
@@ -143,8 +156,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		return $html;
 	}
 
-	function getCosts($payment, $cart_prices) {
-		return $payment->cost;
+	 function getCosts(VirtueMartCart $cart, $method, $cart_prices) {
+		return $method->cost;
 	}
 
 	/**
@@ -156,19 +169,19 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 * @return true: if the conditions are fulfilled, false otherwise
 	 *
 	 */
-	protected function checkConditions($cart, $payment, $cart_prices) {
+	protected function checkConditions($cart, $method, $cart_prices) {
 
 
 // 		$params = new JParameter($payment->payment_params);
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
 		$amount = $cart_prices['salesPrice'];
-		$amount_cond = ($amount >= $payment->min_amount AND $amount <= $payment->max_amount
+		$amount_cond = ($amount >= $method->min_amount AND $amount <= $method->max_amount
 		OR
-		($payment->min_amount <= $amount AND ($payment->max_amount == '') ));
+		($method->min_amount <= $amount AND ($method->max_amount == '') ));
 
 		$countries = array();
-		$country_list = $payment->countries;
+		$country_list = $method->countries;
 		if (!empty($country_list)) {
 			if (!is_array($country_list)) {
 				$countries[0] = $country_list;

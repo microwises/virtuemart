@@ -62,6 +62,29 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 ); //,'created_on','created_by','modified_on','modified_by','locked_on');
 // 		self::$_this
 	//$this->createPluginTable($this->_tablename);
+
+	    $varsToPush = array('paypal_merchant_email'=>array(0,'char'),
+		    'paypal_verified_only'=>array('','int'),
+		    'sandbox'=>array(0,'int'),
+		    'sandbox_merchant_email'=>array(0,'char'),
+		    'payment_logos'=>array(0,'char'),
+		    'debug'=>array(0,'int'),
+		    'payment_info'=>array(0,'string'),
+		    'status_pending'=>array(0,'char'),
+		    'status_success'=>array(0,'char'),
+		    'status_canceled'=>array(0,'char'),
+		    'countries'=>array(0,'char'),
+		    'min_amount'=>array(0,'int'),
+		    'max_amount'=>array(0,'int'),
+		    'cost'=>array(0,'int'),
+		    'tax_id'=>array(0,'int')
+	    );
+
+	$this->setConfigParameterable($this->_configTableFieldName,$varsToPush);
+
+
+
+
 	self::$_this = $this;
     }
 
@@ -606,8 +629,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	return $html;
     }
 
-    function getCosts($payment, $cart_prices) {
-	return $payment->cost;
+    function getCosts(VirtueMartCart $cart, $method, $cart_prices) {
+	return $method->cost;
     }
 
     /**

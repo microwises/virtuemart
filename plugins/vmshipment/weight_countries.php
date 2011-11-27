@@ -39,12 +39,12 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	    'shipment_cost', 'shipment_package_fee', 'tax_id'); //,'created_on','created_by','modified_on','modified_by','locked_on');
 
 	$varsToPush = array('shipment_logos'=>array('','string'),
-							  	'countries'=>array(0,'int'),
+							  	'countries'=>array(0,'char'),
 							  	'zip_start'=>array(0,'int'),
 								'zip_end'=>array(0,'int'),
 								'weight_start'=>array(0,'int'),
 								'weight_stop'=>array(0,'int'),
-								'weight_unit'=>array(0,'string'),
+								'weight_unit'=>array(0,'char'),
 								'cost'=>array(0,'int'),
 								'package_fee'=>array(0,'int'),
 								'tax_id'=>array(0,'int'),
@@ -204,27 +204,27 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	return $html;
     }
 
-    function getCosts($method, $cart_prices) {
+    function getCosts(VirtueMartCart $cart, $method, $cart_prices) {
 
 	if ($method->free_shipment && $cart_prices['salesPrice'] >= $method->free_shipment) {
 	    return 0;
 	} else {
-	    return $method->cost + $method->package_fee;
+	    $orderWeight = parent::getOrderWeight($cart, $method->weight_unit );
+	    return ($orderWeight*$method->cost) + $method->package_fee;
 	}
     }
 
-    protected function checkConditions($cart, $shipment, $cart_prices) {
+    protected function checkConditions($cart, $method, $cart_prices) {
 
-	$params = new JParameter($shipment->shipment_params);
-	$orderWeight = parent::getOrderWeight($cart, $params->get('weight_unit'));
+
+	$orderWeight = parent::getOrderWeight($cart, $method->weight_unit );
 	$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
 	$nbShipment = 0;
 	$countries = array();
-	if (!class_exists('JParameter'))
-	    require(JPATH_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
 
-	$country_list = $params->get('countries');
+
+	$country_list = $method->countries;
 	if (!empty($country_list)) {
 	    if (!is_array($country_list)) {
 		$countries[0] = $country_list;
@@ -238,10 +238,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	    $address['zip'] = 0;
 	    $address['virtuemart_country_id'] = 0;
 	}
-	$weight_cond = $this->_weightCond($orderWeight, $params);
+	$weight_cond = $this->_weightCond($orderWeight, $method);
 
 	if (isset($address['zip'])) {
-	    $zip_cond = $this->_zipCond($address['zip'], $params);
+	    $zip_cond = $this->_zipCond($address['zip'], $method);
 	} else {
 	    //no zip in address data normally occurs only, when it is removed from the form by the shopowner
 	    //Todo for  valerie, you may take a look, maybe should be false, or configurable.
@@ -259,12 +259,12 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	return false;
     }
 
-    private function _weightCond($orderWeight, $params) {
+    private function _weightCond($orderWeight, $method) {
 	if ($orderWeight) {
 
-	    $weight_cond = ($orderWeight >= $params->get('weight_start', 0) AND $orderWeight <= $params->get('weight_stop', 0)
+	    $weight_cond = ($orderWeight >= $method->weight_start  AND $orderWeight <= $method->weight_stop
 		    OR
-		    ($params->get('weight_start', 0) <= $orderWeight AND ($params->get('weight_stop', '') == '') ));
+		    ($method->weight_start  <= $orderWeight AND ($method->weight_stop == '') ));
 	} else
 	    $weight_cond = true;
 	return $weight_cond;
@@ -277,11 +277,11 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @author Valérie Isaksen
      * @return string if Zip condition is ok or not
      */
-    private function _zipCond($zip, $params) {
+    private function _zipCond($zip, $method) {
 	if (!empty($zip)) {
-	    $zip_cond = (( $zip >= $params->get('zip_start', 0) AND $zip <= $params->get('zip_stop', 0) )
+	    $zip_cond = (( $zip >= $method->zip_start  AND $zip <= $method->zip_stop )
 		    OR
-		    ($params->get('zip_start', 0) <= $zip AND ($params->get('zip_stop', '') == '') ) );
+		    ($method->zip_start <= $zip AND ($method->zip_stop  == '') ));
 	} else {
 	    $zip_cond = true;
 	}

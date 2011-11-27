@@ -159,7 +159,7 @@ abstract class vmPSPlugin extends vmPlugin {
 // 		$params = new JParameter($method->$paramsName);
 		$cart_prices_name = $this->renderPluginName($method);
 
-		$this->setCartPrices($cart_prices, $method);
+		$this->setCartPrices($cart, $cart_prices, $method);
 
 		return true;
 	}
@@ -771,7 +771,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	abstract protected function checkConditions($cart, $method, $cart_prices);
 
-	abstract function getCosts($params, $cart_prices);
+	abstract function getCosts(VirtueMartCart $cart, $method, $cart_prices);
 
 	/*
 	 * displayTaxRule
@@ -802,9 +802,9 @@ abstract class vmPSPlugin extends vmPlugin {
 	* @param $tax_id :  tax id
 	*/
 
-	private function setCartPrices(&$cart_prices, $method) {
+	private function setCartPrices(VirtueMartCart $cart, &$cart_prices, $method) {
 
-		$value = $this->getCosts($method, $cart_prices);
+		$value = $this->getCosts($cart, $method, $cart_prices);
 
 		$_psType = ucfirst($this->_psType);
 		$cart_prices[$this->_psType . 'Value'] = $value;
@@ -837,7 +837,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	protected function calculateSalesPrice($method, $cart_prices) {
 
-		$value = $this->getCosts($method, $cart_prices);
+		$value = $this->getCosts($cart, $method, $cart_prices);
 
 		$tax_id = $method->tax_id;
 
