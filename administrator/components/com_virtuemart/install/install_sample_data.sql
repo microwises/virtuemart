@@ -40,7 +40,7 @@ INSERT INTO `#__virtuemart_categories` (`virtuemart_category_id`, `virtuemart_ve
 (4, 1, 1, NULL, NULL, '', '', '', 1, 4, NULL, NULL, NULL, NULL, '', ''),
 (5, 1, 1, NULL, NULL, '', '', '', 1, 5, NULL, NULL, NULL, NULL, '', '');
 
-INSERT INTO `#__virtuemart_categories_en_gb` (`virtuemart_category_id`, `category_name`, `category_description`, `metadesc`, `metakey`, `slug`) VALUES
+INSERT INTO `#__virtuemart_categories_XLANG` (`virtuemart_category_id`, `category_name`, `category_description`, `metadesc`, `metakey`, `slug`) VALUES
 	(1, 'Hand Tools', 'Hand Tools', '', '', 'handtools'),
 	(2, 'Power Tools', 'Power Tools', '', '', 'powertools'),
 	(3, 'Garden Tools', 'Garden Tools', '', '', 'gardentools'),
@@ -115,7 +115,7 @@ INSERT INTO `#__virtuemart_product_customfields` (`virtuemart_product_id`,`virtu
 INSERT INTO `#__virtuemart_manufacturers` (`virtuemart_manufacturer_id`, `virtuemart_manufacturercategories_id`, `published`) VALUES
 (1, 1, 1);
 
-INSERT INTO `#__virtuemart_manufacturers_en_gb` (`virtuemart_manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `mf_url`, `slug`) VALUES
+INSERT INTO `#__virtuemart_manufacturers_XLANG` (`virtuemart_manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `mf_url`, `slug`) VALUES
 	(1, 'Manufacturer', ' manufacturer@example.org', 'An example for a manufacturer', 'http://www.example.org', 'manufacturer-example');
 
 
@@ -126,7 +126,7 @@ INSERT INTO `#__virtuemart_manufacturers_en_gb` (`virtuemart_manufacturer_id`, `
 INSERT INTO `#__virtuemart_manufacturercategories` (`virtuemart_manufacturercategories_id`, `published`) VALUES
 (1, 1);
 
-INSERT INTO `#__virtuemart_manufacturercategories_en_gb` (`virtuemart_manufacturercategories_id`, `mf_category_name`, `mf_category_desc`, `slug`) VALUES
+INSERT INTO `#__virtuemart_manufacturercategories_XLANG` (`virtuemart_manufacturercategories_id`, `mf_category_name`, `mf_category_desc`, `slug`) VALUES
 	(1, '-default-', 'This is the default manufacturer category', '-default-');
 
 --
@@ -177,7 +177,7 @@ INSERT INTO `#__virtuemart_products` (`virtuemart_product_id`, `virtuemart_vendo
 	(15, 1, 2, 'L02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
 	(16, 1, 2, 'L03', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0);
 
-INSERT INTO `#__virtuemart_products_en_gb` (`virtuemart_product_id`, `product_name`, `product_s_desc`, `product_desc`, `metadesc`, `metakey`, `slug`) VALUES
+INSERT INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_name`, `product_s_desc`, `product_desc`, `metadesc`, `metakey`, `slug`) VALUES
 	(1, 'Hand Shovel', '<p>Nice hand shovel to dig with in the yard.</p>\r\n', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', '', '', 'hand-shovel'),
 	(2, 'Ladder', 'A really long ladder to reach high places.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', '', '', 'ladder'),
 	(3, 'Shovel', 'Nice shovel.  You can dig your way to China with this one.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', '', '', 'shovel'),
