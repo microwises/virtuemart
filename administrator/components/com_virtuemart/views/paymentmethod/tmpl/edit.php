@@ -32,7 +32,6 @@ AdminUIHelper::buildTabs ( $tabarray,$this->payment->virtuemart_paymentmethod_id
 
 
     <!-- Hidden Fields -->
-
 <input type="hidden" name="option" value="com_virtuemart" />
 <input type="hidden" name="virtuemart_paymentmethod_id" value="<?php echo $this->payment->virtuemart_paymentmethod_id; ?>" />
 <input type="hidden" name="task" value="" />

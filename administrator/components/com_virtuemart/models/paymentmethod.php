@@ -79,7 +79,9 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			}
 			$q = 'SELECT `params` FROM `' . $table . '` WHERE `' . $ext_id . '` = "'.$this->_data->payment_jplugin_id.'"';
 			$this->_db->setQuery($q);
+
 			$this->_data->param = $this->_db->loadResult();
+
   		} else {
   			$this->_data->virtuemart_shoppergroup_ids = '';
   			$this->_data->param = '';
@@ -144,12 +146,12 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	{
 		//$data = JRequest::get('post');
 
-		if(isset($data['params'])){
+/*		if(isset($data['params'])){
 			if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 			$params = new JParameter('');
 			$params->bind($data['params']);
 			$data['payment_params'] = $params->toString();
-		}
+		}*/
 
 	  	if(empty($data['virtuemart_vendor_id'])){
 	  	   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
@@ -168,6 +170,24 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		$data['payment_element'] = $this->_db->loadResult();
 
 		$table = $this->getTable('paymentmethods');
+
+
+		if(isset($data['payment_jplugin_id'])){
+
+			JPluginHelper::importPlugin('vmpayment');
+			$dispatcher = JDispatcher::getInstance();
+			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParams',array('payment',0,$data['payment_jplugin_id']));
+
+			if(!empty($varsToPushParam)){
+				vmdebug('hm ',$varsToPushParam);
+				foreach($varsToPushParam as $push){
+					if($push[0]!==0 and $push[1]!==0){
+						$table->setParameterable($push[0],$push[1]);
+					}
+				}
+			}
+		}
+
 		$table->bindChecknStore($data);
 		$errors = $table->getErrors();
 		foreach($errors as $error){

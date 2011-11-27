@@ -237,7 +237,7 @@ abstract class vmPlugin extends JPlugin {
 
 	protected function plgVmGetDeclaredPluginParams($psType,$name,$id){
 		if($this->selectedThis($psType,$name,$id)){
-			vmdebug('plgVmGetDeclaredPluginParams return '.$this->_xParams,$this->_varsToPushParam);
+// 			vmdebug('plgVmGetDeclaredPluginParams return '.$this->_xParams,$this->_varsToPushParam);
 			return array($this->_xParams,$this->_varsToPushParam);
 		} else {
 			return 0;

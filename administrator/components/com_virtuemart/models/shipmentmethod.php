@@ -61,6 +61,20 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			$this->_data = $this->getTable('shipmentmethods');
 			$this->_data->load((int)$this->_id);
 
+			if($this->_data->shipment_jplugin_id){
+				JPluginHelper::importPlugin('vmshipment');
+				$dispatcher = JDispatcher::getInstance();
+				$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParams',array('shipment',$this->_data->shipment_element,$this->_data->shipment_jplugin_id));
+
+				if(!empty($varsToPushParam)){
+					foreach($varsToPushParam as $push){
+						VmTable::bindParameterable($this->_data,$push[0],$push[1]);
+					}
+				}
+
+			}
+			vmdebug('$$this->_data',$this->_data);
+
 			if(empty($this->_data->virtuemart_vendor_id)){
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 				$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();;
@@ -134,13 +148,13 @@ class VirtueMartModelShipmentmethod extends VmModel {
 	{
 		//$data = JRequest::get('post');
 
-		if(isset($data['params'])){
+/*		if(isset($data['params'])){
 			if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 			$params = new JParameter('');
 			$params->bind($data['params']);
 			$data['shipment_params'] = $params->toString();
 		}
-
+*/
 		if(empty($data['virtuemart_vendor_id'])){
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 			$data['virtuemart_vendor_id'] = VirtueMartModelVendor::getLoggedVendor();
@@ -161,6 +175,23 @@ class VirtueMartModelShipmentmethod extends VmModel {
 		$data['shipment_element'] = $this->_db->loadResult();
 
 		$table = $this->getTable('shipmentmethods');
+
+		if(isset($data['shipment_jplugin_id'])){
+
+			JPluginHelper::importPlugin('vmshipment');
+			$dispatcher = JDispatcher::getInstance();
+			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParams',array('shipment',0,$data['shipment_jplugin_id']));
+
+			if(!empty($varsToPushParam)){
+
+				foreach($varsToPushParam as $push){
+					if($push[0]!==0 and $push[1]!==0){
+						$table->setParameterable($push[0],$push[1]);
+					}
+				}
+			}
+		}
+
 		$table->bindChecknStore($data);
 		$errors = $table->getErrors();
 		foreach($errors as $error){

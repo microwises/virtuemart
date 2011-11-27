@@ -329,54 +329,6 @@ class VirtueMartModelCustom extends VmModel {
 		return $table->virtuemart_custom_id ;
 	}
 
-	/**
-	 * Bind the post data to the customPlugin tables
-	 * Save the default personnal setting(original are in joomla plugin Table)
-	 * @author Patrick Kohl
-	 * @return boolean True is the save was successful, false otherwise.
-	 * @deprecated
-	 */
-	public function saveCustomPlugin(&$data)
-	{
-		//$data = JRequest::get('post');
-		//TODO  remove if $data['custom_jplugin_id'] == 0 ; no custom plugin selected
-		$data['custom_name'] = $data['custom_title'];
-		if(isset($data['params'])){
-			if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
-			$params = new JParameter('');
-			$params->bind($data['params']);
-			$data['custom_params'] = $params->toString();
-		}
 
-		if(empty($data['virtuemart_vendor_id'])){
-			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-			$data['virtuemart_vendor_id'] = VirtueMartModelVendor::getLoggedVendor();
-		} else {
-			$data['virtuemart_vendor_id'] = (int) $data['virtuemart_vendor_id'];
-		}
-		// missing string FIX, Bad way ?
-		if (VmConfig::isJ15()) {
-			$tb = '#__plugins';
-			$ext_id = 'id';
-		} else {
-			$tb = '#__extensions';
-			$ext_id = 'extension_id';
-		}
-		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['custom_jplugin_id'].'"';
-		$this->_db->setQuery($q);
-		$data['custom_element'] = $this->_db->loadResult();
-		$table = $this->getTable('customplugins');
-		$table->bindChecknStore($data);
-		$errors = $table->getErrors();
-		foreach($errors as $error){
-			$this->setError($error);
-		}
-
-		JPluginHelper::importPlugin('vmcustom');
-		$dispatcher = JDispatcher::getInstance();
-		$error = $dispatcher->trigger('plgVmOnStoreInstallPluginTable', array('custom' , $data));
-
-		return $table->virtuemart_custom_id;
-	}
 }
 // pure php no closing tag
