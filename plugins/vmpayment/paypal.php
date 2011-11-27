@@ -63,13 +63,12 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 // 		self::$_this
 	//$this->createPluginTable($this->_tablename);
 
-	    $varsToPush = array('paypal_merchant_email'=>array(0,'char'),
+	    $varsToPush = array('paypal_merchant_email'=>array('','char'),
 		    'paypal_verified_only'=>array('','int'),
 		    'sandbox'=>array(0,'int'),
-		    'sandbox_merchant_email'=>array(0,'char'),
-		    'payment_logos'=>array(0,'char'),
+		    'sandbox_merchant_email'=>array('','char'),
+		    'payment_logos'=>array('','char'),
 		    'debug'=>array(0,'int'),
-		    'payment_info'=>array(0,'string'),
 		    'status_pending'=>array(0,'char'),
 		    'status_success'=>array(0,'char'),
 		    'status_canceled'=>array(0,'char'),

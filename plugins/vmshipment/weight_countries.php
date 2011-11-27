@@ -41,7 +41,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	$varsToPush = array('shipment_logos'=>array('','string'),
 							  	'countries'=>array(0,'char'),
 							  	'zip_start'=>array(0,'int'),
-								'zip_end'=>array(0,'int'),
+								'zip_stop'=>array(0,'int'),
 								'weight_start'=>array(0,'int'),
 								'weight_stop'=>array(0,'int'),
 								'weight_unit'=>array(0,'char'),

@@ -44,7 +44,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 								'max_amount'=>array(0,'int'),
 								'cost'=>array(0,'int'),
 								'tax_id'=>array(0,'int'),
-								'payment_info'=>array(0,'istringt')
+								'payment_info'=>array(0,'string')
 	);
 
 	$this->setConfigParameterable($this->_configTableFieldName,$varsToPush);
