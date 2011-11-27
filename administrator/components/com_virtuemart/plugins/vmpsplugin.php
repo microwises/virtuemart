@@ -147,6 +147,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (!($method = $this->getPluginMethod($cart->$id) )) {
 			return null;
 		}
+		if($psType=='shipment')vmdebug('plgVmOnSelectedCalculatePrice',$method);
 
 		$cart_prices_name = '';
 		$cart_prices[$this->_psType . '_tax_id'] = 0;
@@ -484,7 +485,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			VmTable::bindParameterable($method,$this->_xParams,$this->_varsToPushParam);
 		}
 
-		vmdebug('getPluginMethods',$this->methods);
+// 		vmdebug('getPluginMethods',$this->methods);
 		return $this->methods;
 	}
 

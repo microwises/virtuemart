@@ -68,12 +68,13 @@ class VirtueMartModelShipmentmethod extends VmModel {
 
 				if(!empty($varsToPushParam)){
 					foreach($varsToPushParam as $push){
-						VmTable::bindParameterable($this->_data,$push[0],$push[1]);
+					  	if($push!==0 and $push[0]!==0 and $push[1]!==0){
+  							VmTable::bindParameterable($this->_data,$push[0],$push[1]);
+  						}
 					}
 				}
-
 			}
-			vmdebug('$$this->_data',$this->_data);
+// 			vmdebug('$$this->_data getShipment',$this->_data);
 
 			if(empty($this->_data->virtuemart_vendor_id)){
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
@@ -186,7 +187,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			if(!empty($varsToPushParam)){
 
 				foreach($varsToPushParam as $push){
-					if($push[0]!==0 and $push[1]!==0){
+					if($push!==0 and $push[0]!==0 and $push[1]!==0){
 						$table->setParameterable($push[0],$push[1]);
 					}
 				}

@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
     if($this->payment->payment_jplugin_id){
     		vmdebug('my payment ',$this->payment);
 	        //$parameters = new vmParameters($this->paym->payment_params, JPATH_PLUGINS.DS.'vmpayment'.DS.basename($this->paym->payment_element).'.xml', 'plugin' );
-          $parameters = new vmParameters($this->payment->payment_params,  $this->payment->payment_element , 'plugin' ,'vmpayment');
+          $parameters = new vmParameters($this->payment,  $this->payment->payment_element , 'plugin' ,'vmpayment');
 
 	        echo $rendered = $parameters->render();
 

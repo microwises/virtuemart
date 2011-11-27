@@ -39,7 +39,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 						'payment_name','cost','cost','tax_id');//,'created_on','created_by','modified_on','modified_by','locked_on');
 
 		$varsToPush = array('payment_logos'=>array('','char'),
-							  	'countries'=>array(0,'char'),
+							  	'countries'=>array(0,'int'),
 							  	'min_amount'=>array(0,'int'),
 								'max_amount'=>array(0,'int'),
 								'cost'=>array(0,'int'),

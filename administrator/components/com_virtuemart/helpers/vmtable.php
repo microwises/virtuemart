@@ -355,7 +355,7 @@ class VmTable extends JTable{
 	function bindParameterable(&$obj,$xParams,$varsToPushParam){
 		$paramFieldName = $xParams;
 		$paramFields = $obj->$paramFieldName;
-						vmdebug('$obj->_xParams '.$xParams.' $obj->$paramFieldName ',$obj->$paramFieldName);
+// 						vmdebug('$obj->_xParams '.$xParams.' $obj->$paramFieldName ',$obj->$paramFieldName);
 		if(!empty($obj->$paramFieldName)){
 
 			$params = explode('|', $obj->$paramFieldName);

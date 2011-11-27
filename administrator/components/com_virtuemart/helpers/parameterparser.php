@@ -184,7 +184,7 @@ class vmParameters extends JParameter {
 	 */
 	function render($name = 'params', $group = '_default') {
 
-		vmdebug('render',$this);
+// 		vmdebug('render',$this);
 		//             if (version_compare(JVERSION, '1.6.0', 'ge')) {
 		$parameters = $this->vmRender($name, $group);
 		//             } else {
