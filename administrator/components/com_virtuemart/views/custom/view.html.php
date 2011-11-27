@@ -48,7 +48,19 @@ class VirtuemartViewCustom extends JView {
 		if ($layoutName == 'edit') {
 			$this->loadHelper('parameterparser');
 			$custom = $model->getCustom();
-			$customPlugin = $model->getCustomPlugin($custom->virtuemart_custom_id);
+
+// 			vmdebug('VirtuemartViewCustom',$custom);
+			JPluginHelper::importPlugin('vmcustom');
+			$dispatcher = JDispatcher::getInstance();
+			$customPlugins = $dispatcher->trigger('plgVmGetActiveCustomPlugin',array($custom->virtuemart_custom_id));
+			vmdebug('$customPlugins in view getriggered',$customPlugins);
+			foreach($customPlugins as $plugin){
+				if(!empty($plugin)) $customPlugin = $plugin;
+				break;
+			}
+// 			$customPlugin = $customPlugin[0];
+// 			$customPlugin = $model->getCustomPlugin($custom->virtuemart_custom_id);
+
 			$this->assignRef('customPlugin',	$customPlugin);
 			$pluginList = self::renderInstalledCustomPlugins($customPlugin->custom_jplugin_id);
 			$this->assignRef('pluginList',$pluginList);
@@ -100,7 +112,7 @@ class VirtuemartViewCustom extends JView {
         $lang =& JFactory::getLanguage();
 		foreach ($results as &$result) {
         $filename = 'plg_' .strtolower ( $result['name']).'.sys';
-		
+
         $lang->load($filename, JPATH_ADMINISTRATOR);
 		//print_r($lang);
 		}

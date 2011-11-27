@@ -23,12 +23,17 @@ if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
 // Get the plugin library
 jimport('joomla.plugin.plugin');
 
+if (!class_exists('vmPlugin'))
+require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
+
 /**
  * @package	VirtueMart
  * @subpackage Plugins
  * @author Oscar van Eijk
+ * @author Patrick Kohl
+ * @author Max Milbers
  */
-abstract class vmCustomPlugin extends JPlugin {
+abstract class vmCustomPlugin extends VmPlugin {
 
 
     /**
@@ -37,14 +42,46 @@ abstract class vmCustomPlugin extends JPlugin {
      */
     protected $customs;
 
-	function __construct() {
+	function __construct(& $subject, $config) {
 
-		$subject = 'vmcustom';
-//		parent::__construct();
+		parent::__construct($subject, $config);
 
-		$this->_tablename = '#__virtuemart_product_custom_' . $this->_name;
-		$this->_createTable();
-		$this->_tableChecked = true;
+
+// The original name uses this
+// $this->_tablename = '#__virtuemart_'.$this->_psType .'_plg_'. $this->_name; for exampel #__virtuemart_custom_plg_stockable';
+//I suggest to use instead of $this->_tablename = '#__virtuemart_product_custom_' . $this->_name;
+		$this->_tablepkey = 'virtuemart_product_id';
+		$this->_tablename = '#__virtuemart_product_'.$this->_psType .'_plg_'. $this->_name;
+		$this->_idName = 'virtuemart_custom_id';
+
+		$this->_configTable = '#__virtuemart_customs';
+
+// 		$this->_configTableFieldName = '';
+
+// 		$this->_configTableIdName = 'custom_jplugin_id';
+
+	}
+
+	function plgVmGetActiveCustomPlugin($virtuemart_custom_id){
+
+		if($this->plugin = $this->selectedThisByMethodId($this->_psType,$virtuemart_custom_id)){
+
+		if (empty($this->plugin)) {
+			$this->plugin->custom_jplugin_id = null;
+			return $this->plugin ;
+		}
+
+		//Must use here the table to get valid params
+		$this->plugin = $this->getPlugin($this->plugin->virtuemart_custom_id);
+
+  		if(empty($this->plugin->virtuemart_vendor_id)){
+  		   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+   			$this->plugin->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
+  		}
+
+  		return $this->plugin;
+
+		}
 	}
 
     /**
@@ -67,6 +104,18 @@ abstract class vmCustomPlugin extends JPlugin {
 
         return  new JParameter( $plg_params->custom_params );
     }
+
+	/**
+	 * This is the actions which take place, when a product gets stored
+	 *
+	 * @param string $type atm valid 'product'
+	 * @param array $data form data
+	 * @param int $id virtuemart_product_id
+	 */
+    function plgVmOnStoreProduct($type,&$data,$id){
+
+    }
+
 	/**
 	 * render the plugin with param  to display on product edit
 	 * called by customfields inputTypePlugin

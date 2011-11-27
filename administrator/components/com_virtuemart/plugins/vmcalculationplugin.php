@@ -33,8 +33,11 @@ abstract class vmCalculationPlugin extends vmPlugin {
 // 		$this->_tablename = '#__virtuemart_calc_' . $this->_name;
 	}
 
-	function plgVmStorePluginInternalDataCalc($data){
+	function plgVmStorePluginInternalDataCalc(&$data){
+
+// 		$this->plgVmOnStoreInstallPluginTable($this->_psType);
 		$this->storePluginInternalData($data);
+
 	}
 
 	function plgVmGetPluginInternalDataCalc(&$calcData){

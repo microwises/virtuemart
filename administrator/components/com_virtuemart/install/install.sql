@@ -270,7 +270,11 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_currencies` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   `virtuemart_custom_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `custom_parent_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
+  `virtuemart_vendor_id` smallint(11) NOT NULL DEFAULT '1',
+  `custom_jplugin_id` int(11) NOT NULL,
+  `custom_element` char(50) NOT NULL DEFAULT '',
   `admin_only` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1:Display in admin only',
+  `custom_name` char(255) NOT NULL DEFAULT '',
   `custom_title` char(255) NOT NULL COMMENT 'field title',
   `custom_tip` char(255) NOT NULL COMMENT 'tip',
   `custom_value` char(255) COMMENT 'defaut value',
@@ -279,6 +283,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   `is_list` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'list of values',
   `is_hidden` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1:hidden',
   `is_cart_attribute` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Add attributes to cart',
+  `custom_params` text NOT NULL,
+  `shared` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'valide for all vendors?',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
@@ -288,44 +294,11 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_custom_id`),
+    KEY `idx_custom_plugin_virtuemart_vendor_id` (`virtuemart_vendor_id`),
+  KEY `idx_custom_plugin_name` (`custom_name`),
+  KEY `idx_custom_plugin_ordering` (`ordering`),
   KEY `idx_custom_parent_id` (`custom_parent_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields definition' AUTO_INCREMENT=1 ;
-
-
--- --------------------------------------------------------
---
--- Table structure for table `#_virtuemart_customplugins`
---
-
-CREATE TABLE IF NOT EXISTS `#__virtuemart_customplugins` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `virtuemart_custom_id` bigint(20) unsigned NOT NULL,
-  `virtuemart_vendor_id` smallint(11) NOT NULL DEFAULT '1',
-  `custom_jplugin_id` int(11) NOT NULL,
-  `custom_name` char(255) NOT NULL DEFAULT '',
-  `custom_element` char(50) NOT NULL DEFAULT '',
-  `discount` decimal(12,2) NOT NULL DEFAULT '0.00',
-  `discount_is_percentage` tinyint(1) NOT NULL DEFAULT '0',
-  `discount_max_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `discount_min_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `custom_params` text NOT NULL,
-  `shared` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'valide for all vendors?',
-  `ordering` int(2) NOT NULL DEFAULT '0',
-  `published` tinyint(1) NOT NULL DEFAULT '1',
-  `created_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_by` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `virtuemart_custom_id` (`virtuemart_custom_id`),
-  KEY `idx_custom_plugin_virtuemart_vendor_id` (`virtuemart_vendor_id`),
-  KEY `idx_custom_plugin_name` (`custom_name`),
-  KEY `idx_custom_plugin_ordering` (`ordering`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='The custom plugins for product';
-
-
 
 -- --------------------------------------------------------
 --

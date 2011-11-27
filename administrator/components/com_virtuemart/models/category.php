@@ -106,10 +106,10 @@ class VirtueMartModelCategory extends VmModel {
 	public function getChildCategoryList($vendorId, $virtuemart_category_id) {
 
 		$key = (int)$vendorId.'_'.(int)$virtuemart_category_id ;
-		
+
 		static $_childCateogryList = array ();
       if (! array_key_exists ($key,$_childCateogryList)){
-		
+
 			$query = 'SELECT L.* FROM `#__virtuemart_categories_'.VMLANG.'` as L';
 			$query .= ' JOIN `#__virtuemart_categories` as C using (`virtuemart_category_id`)';
 			$query .= ' LEFT JOIN `#__virtuemart_category_categories` as CC on C.`virtuemart_category_id` = CC.`category_child_id`';
@@ -118,11 +118,17 @@ class VirtueMartModelCategory extends VmModel {
 			$query .= 'AND C.`virtuemart_vendor_id` = ' . (int)$vendorId . ' ';
 			$query .= 'AND C.`published` = 1 ';
 			$query .= ' ORDER BY C.`ordering`, L.`category_name` ASC';
-			$childList = $this->_getList( $query );
+
+			$db = JFactory::getDBO();
+			$db->setQuery( $query);
+			$childList = $db->loadObjectList();
+// 			$childList = $this->_getList( $query );
 
 			if(!empty($childList)){
+				if(!class_exists('TableCategory_medias'))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'category_medias.php');
 				foreach($childList as $child){
-					$xrefTable = $this->getTable('category_medias');
+					$xrefTable = new TableCategory_medias($db);
+// 					$xrefTable = $this->getTable('category_medias');
 					$child->virtuemart_media_id = $xrefTable->load($child->virtuemart_category_id);
 				}
 			}

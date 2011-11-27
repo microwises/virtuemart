@@ -30,7 +30,7 @@ abstract class vmCouponPlugin extends vmPlugin {
 		parent::__construct($subject, $config);
 
 		$this->_tablename = '#__virtuemart_coupon_' . $this->_name;
-		$this->_createTable();
+
 	}
 
 

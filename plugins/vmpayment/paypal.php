@@ -65,11 +65,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	self::$_this = $this;
     }
 
-    /**
-     * Create the table for this plugin if it does not yet exist.
-     * @author Oscar van Eijk
-     */
-    protected function getTable() {
+
+    protected function getVmPluginCreateTableSQL() {
 
 
 	return "CREATE TABLE IF NOT EXISTS `" . $this->_tablename . "` (
@@ -226,7 +223,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$dbValues['paypal_custom'] = $return_context;
 	$dbValues['cost'] = $params->get('cost', 0);
 	$dbValues['tax_id'] = $params->get('tax_id', 0);
-	$this->storePluginInternalData($dbValues);
+	$this->storePSPluginInternalData($dbValues);
 
 	$url = $this->_getPaypalUrlHttps($params);
 
@@ -389,7 +386,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 
 	//TODO valerie, the function is now working like the normal tables, $response_fields must be adjusted
 // 		$this->updateData($response_fields, $this->_tablename, 'virtuemart_order_id', $virtuemart_order_id);
-	$this->storePluginInternalData($response_fields);
+	$this->storePSPluginInternalData($response_fields);
 
 	$error_msg = $this->_processIPN($paypal_data, $params);
 	$this->logInfo('process IPN ' . $error_msg, 'message');
@@ -434,7 +431,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      */
     function plgVmOnShowOrderBE($psType, $virtuemart_order_id, $payment_method_id) {
 
-	if (!$this->selectedThis($payment_method_id, $psType)) {
+	if (!$this->selectedThis($psType, $payment_method_id)) {
 	    return null; // Another method was selected, do nothing
 	}
 	$db = JFactory::getDBO();

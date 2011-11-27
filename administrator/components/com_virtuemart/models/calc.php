@@ -81,7 +81,7 @@ class VirtueMartModelCalc extends VmModel {
 				$this->setError(get_class( $this ).' virtuemart_state_ids '.$xrefTable->getError());
 			}
 
-			vmdebug('Trigger now getCalc');
+// 			vmdebug('Trigger now getCalc');
 			JPluginHelper::importPlugin('vmcalculation');
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('plgVmGetPluginInternalDataCalc',array(&$this->_data));

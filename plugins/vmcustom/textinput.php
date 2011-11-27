@@ -20,56 +20,32 @@ defined('_JEXEC') or 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not
  * http://virtuemart.org
  */
 
+if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+
 class plgVmCustomTextinput extends vmCustomPlugin {
 
 
-	/**
-	 * Create the table for this plugin if it does not yet exist.
-	 * @author Patrick Kohl
-	 */
-	protected function _createTable()
-	{
-		$scheme = DbScheme::get_instance();
-		$scheme->create_scheme($this->_tablename);
-		$schemeCols = array(
-			 'id' => array (
-					 'type' => 'int'
-					,'length' => 11
-					,'auto_inc' => true
-					,'null' => false
-			)
-			,'virtuemart_product_id' => array (
-					 'type' => 'int'
-					,'length' => 11
-					,'null' => false
-			)
-			,'virtuemart_custom_id' => array (
-					 'type' => 'text'
-					,'null' => false
-			)
-			,'textinput' => array (
-					 'type' => 'text'
-					,'null' => false
-			)
+	// instance of class
+	public static $_this = false;
+
+	function __construct(& $subject, $config) {
+		if(self::$_this) return self::$_this;
+		parent::__construct($subject, $config);
+
+// 		$this->_loggable = true;
+// 		$this->tableFields = array('id','virtuemart_order_id','order_number','virtuemart_paymentmethod_id',
+// 							'payment_name','cost','cost','tax_id');//,'created_on','created_by','modified_on','modified_by','locked_on');
+
+
+		$varsToPush = array(
+						    		'custom_size'=>array(0.0,'int'),
+						    		'custom_price_by_letter'=>array(0.0,'bool')
 		);
-		$schemeIdx = array(
-			 'idx_order_custom' => array(
-					 'columns' => array ('virtuemart_product_id')
-					,'primary' => false
-					,'unique' => false
-					,'type' => null
-			)
-		);
-		$scheme->define_scheme($schemeCols);
-		$scheme->define_index($schemeIdx);
-		if (!$scheme->scheme(true)) {
-			JError::raiseWarning(500, $scheme->get_db_error());
-		}
-		$scheme->reset();
+
+		$this->setConfigParameterable('custom_params',$varsToPush);
+
+		self::$_this = $this;
 	}
-
-
-
 
 	// get product param for this plugin on edit
 	function onProductEdit($field,$param,$row, $product_id) {

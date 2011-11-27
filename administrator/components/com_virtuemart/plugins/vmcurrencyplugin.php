@@ -28,9 +28,6 @@ abstract class vmCurrencyPlugin extends vmPlugin {
 
 		parent::__construct($subject, $config);
 
-// 		$this->_tablename = '#__virtuemart_currency_' . $this->_name;
-// 		$this->_createTable();
-		$this->_tableChecked = true;
 	}
 
 }

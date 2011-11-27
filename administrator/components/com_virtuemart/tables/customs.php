@@ -37,6 +37,7 @@ class TableCustoms extends VmTable {
 	/** @var int(1)  1= only back-end display*/
 	var $admin_only		= 0;
 
+	var $custom_jplugin_id = 0;
     /** @var string custom field value */
 	var $custom_title	= '';
     /** @var string custom Meta or alt  */
@@ -45,6 +46,9 @@ class TableCustoms extends VmTable {
 	var $custom_value	= '';
     /** @var string custom Meta or alt  */
 	var $custom_field_desc	= '';
+
+	/** @var string parameter of the customplugin*/
+	var $custom_params				= 0;
 	/**
 	 *@var varchar(1)
 	 * Type = S:string,I:int,P:parent, B:bool,D:date,T:time,H:hidden

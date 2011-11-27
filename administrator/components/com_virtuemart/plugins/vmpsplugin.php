@@ -27,14 +27,78 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$this->_tablepkey = 'virtuemart_order_id';
 		$this->_idName = 'virtuemart_' . $this->_psType . 'method_id';
+		$this->_configTable = '#__virtuemart_'.$this->_psType.'methods';
+		$this->_configTableFieldName = $this->_psType.'_params';
+// 		$this->_configTableIdName = $this->_psType.'_jplugin_id';
 		$this->_loggable = true;
-		//$this->_createTable();
+
 		$this->_tableChecked = true;
 	}
 
 	/**
+	* This method checks if the selected method matches the current plugin
+	* @param int $id The method ID
+	* @param pssType : shipment or payment
+	* @author Oscar van Eijk
+	* @return True if the calling plugin has the given method ID, and psType
+	*
+	*/
+	protected function selectedThis($psType,$id) {
+
+		return $this->selectedThisByMethodId($psType,$id);
+
+		//Inactive
+		if($psType!=$this->_psType) return false;
+		$db = JFactory::getDBO();
+
+		if($id===0){
+			return true;
+		} else {
+			$db = JFactory::getDBO();
+
+			if (VmConfig::isJ15()) {
+				$q = 'SELECT COUNT(*) AS c FROM #__virtuemart_'.$psType.'methods AS vm,
+							#__plugins AS j WHERE vm.virtuemart_'.$psType.'method_id = "'.$id.'"
+							AND vm.'.$psType.'_jplugin_id = j.id
+							AND j.element = "'.$this->_name.'"';
+			} else {
+				//why do we have here this j.`folder` = "'.$this->_type.'"   ?
+				$q = 'SELECT COUNT(*) AS c FROM #__virtuemart_'.$psType.'methods AS vm,
+							#__extensions AS j WHERE vm.virtuemart_'.$psType.'method_id = "'.$id.'" AND j.`folder` = "'.$this->_type.'"
+							AND vm.'.$psType.'_jplugin_id = j.extension_id
+							AND j.element = "'.$this->_name.'"';
+			}
+
+			$db->setQuery($q);
+			if(!$res = $db->loadResult() ){
+				vmError('selectedThis '.$db->getErrorMsg());
+				return false;
+			} else {
+				return $res;
+			}
+		}
+
+	}
+
+	/**
+	 * check if it is the correct type
+	 * @param string $psType either payment or shipment
+	 * @return boolean
+	 */
+	public function selectedThisType($psType) {
+		if ($this->_psType <> $psType) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	/**
 	 * Create the table for this plugin if it does not yet exist.
+	 * This functions checks if the called plugin is active one.
+	 * When yes it is calling the standard method to create the tables
 	 * @author Valérie Isaksen
+	 *
 	 */
 	protected function plgVmOnStoreInstallPluginTable($psType, $jplugin_id) {
 		if (!$this->selectedThisType($psType)) {
@@ -44,13 +108,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			return null;
 		}
 
-		$query = $this->getTable();
-		$db = JFactory::getDBO();
-		$db->setQuery($query);
-		if (!$db->query()) {
-			JError::raiseWarning(1, 'vmPSPlugin::plgVmOnStoreInstallPluginTable: ' . JText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $_db->stderr(true));
-			echo 'vmPSPlugin::plgVmOnStoreInstallPluginTable: ' . JText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $_db->stderr(true);
-		}
+		parent::plgVmOnStoreInstallPluginTable();
 	}
 
 	/**
@@ -82,7 +140,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	public function plgVmOnSelectCheck($psType, VirtueMartCart $cart) {
 		$idName = $this->_idName;
-		if (!$this->selectedThis($cart->$idName, $psType)) {
+		if (!$this->selectedThis($psType, $cart->$idName)) {
 			return null; // Another method was selected, do nothing
 		}
 		return true; // this method was selected , and the data is valid by default
@@ -129,19 +187,6 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $html;
 	}
 
-	/**
-	 * check if it is the correct type
-	 * @param string $psType either payment or shipment
-	 * @return boolean
-	 */
-	public function selectedThisType($psType) {
-		if ($this->_psType <> $psType) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
 	/*
 	 * plgVmOnSelectedCalculatePrice
 	* Calculate the price (value, tax_id) of the selected method
@@ -157,7 +202,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	public function plgVmOnSelectedCalculatePrice($psType, VirtueMartCart $cart, array &$cart_prices, $cart_prices_name) {
 		$id = $this->_idName;
-		if (!$this->selectedThis($cart->$id, $psType)) {
+		if (!$this->selectedThis($psType, $cart->$id)) {
 			return null; // Another method was selected, do nothing
 		}
 
@@ -184,7 +229,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	/**
 	 * plgVmOnCheckAutomaticSelected
 	 * Checks how many plugins are available. If only one, the user will not have the choice. Enter edit_xxx page
-	 * The pluhgin must check first if it is the correct type
+	 * The plugin must check first if it is the correct type
 	 * @author Valerie Isaksen
 	 * @param VirtueMartCart cart: the cart object
 	 * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
@@ -236,7 +281,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			return null;
 		}
 		$idName = $this->_idName;
-		if (!($this->selectedThis($this->_name, $pluginInfo->$idName))) {
+		if (!($this->selectedThis($pluginInfo->$idName,$this->_name))) {
 			return null;
 		}
 		return $pluginInfo->$idName;
@@ -577,20 +622,20 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	/**
-	 * Overwrites the standard function in vmplugin. Extendst the input data by virtuemart_order_id
+	 * Extends the standard function in vmplugin. Extendst the input data by virtuemart_order_id
 	 * Calls the parent to execute the write operation
 	 *
 	 * @author Max Milbers
 	 * @param array $_values
 	 * @param string $_table
 	 */
-	protected function storePluginInternalData($values) {
+	protected function storePSPluginInternalData($values) {
 		if (!class_exists('VirtueMartModelOrders'))
 		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 		if (!isset($values['virtuemart_order_id'])) {
 			$values['virtuemart_order_id'] = VirtueMartModelOrders::getOrderIdByOrderNumber($values['order_number']);
 		}
-		parent::storePluginInternalData($values);
+		$this->storePluginInternalData($values);
 	}
 
 	/**

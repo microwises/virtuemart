@@ -221,7 +221,7 @@ class calculationHelper {
 
 		$costPrice = 0;
 
-		//We already have the productobject, no need for extra sql, this idea does not work, because the product object is not completed
+		//We already have the productobject, no need for extra sql
 		if (is_object($productId)) {
 			$costPrice = $productId->product_price;
 			$this->productCurrency = $productId->product_currency;

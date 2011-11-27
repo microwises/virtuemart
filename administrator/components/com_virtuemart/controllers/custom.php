@@ -61,7 +61,7 @@ class VirtuemartControllerCustom extends VmController {
 		$view = $this->getView($this->_cname, $viewType);
 		JRequest::setVar('layout', 'edit');
 		// Pushing default model
-		$view->setModel( $this->getModel( 'custom', 'VirtueMartModel' ), true );
+// 		$view->setModel( $this->getModel( 'custom', 'VirtueMartModel' ), true );
 		$view->setModel( $this->getModel( 'customfields', 'VirtueMartModel' ), false );
 
 		parent::display();
@@ -73,7 +73,7 @@ class VirtuemartControllerCustom extends VmController {
 		$view = $this->getView('custom', 'json');
 
 		/* Standard model */
-		$view->setModel( $this->getModel( 'custom', 'VirtueMartModel' ), true );
+// 		$view->setModel( $this->getModel( 'custom', 'VirtueMartModel' ), true );
 
 		/* Now display the view. */
 		$view->display(null);
@@ -95,7 +95,7 @@ class VirtuemartControllerCustom extends VmController {
 		/* Load the view object */
 		$view = $this->getView('custom', 'html');
 
-		$model = $this->getModel('custom');
+// 		$model = $this->getModel('custom');
 		$msgtype = '';
 		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
 		jimport( 'joomla.utilities.arrayhelper' );

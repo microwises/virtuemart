@@ -46,7 +46,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * Create the table for this plugin if it does not yet exist.
      * @author Valérie Isaksen
      */
-    protected function getTable() {
+    protected function getVmPluginCreateTableSQL() {
 
 	return "CREATE TABLE IF NOT EXISTS `" . $this->_tablename . "` (
 	    `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT ,
@@ -89,7 +89,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	    return '';
 	}
 	$idName = $this->_idName;
-	if (!($this->selectedThis($this->_name, $psType))) {
+	if (!($this->selectedThis($psType, $this->_name))) {
 	    return null;
 	}
 	return $pluginInfo->$idName;
@@ -148,7 +148,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @author Valerie Isaksen
      */
     public function plgVmOnShowOrderBE($psType, $virtuemart_order_id, $virtuemart_shipmentmethod_id) {
-	if (!($this->selectedThis($virtuemart_shipmentmethod_id, $psType))) {
+	if (!($this->selectedThis($psType, $virtuemart_shipmentmethod_id))) {
 	    return null;
 	}
 	$html = $this->getOrderShipmentHtml($virtuemart_order_id);

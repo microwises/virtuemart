@@ -142,8 +142,13 @@ function vmTrace($notice,$force=false){
 
 	if($force || (VMConfig::showDebug() ) ){
 		//$app = JFactory::getApplication();
-		//$app ->enqueueMessage($notice.' '.debug_print_backtrace());
+		//
+		ob_start();
 		debug_print_backtrace();
+		$body = ob_get_contents();
+		ob_end_clean();
+		$app = JFactory::getApplication();
+		$app ->enqueueMessage($notice.' <pre>'.$body.'</pre>');
 	}
 
 }

@@ -29,9 +29,30 @@ abstract class vmPlugin extends JPlugin {
 	// var Must be overriden in every plugin file by adding this code to the constructor:
 	// $this->_name = basename(__FILE, '.php');
 	// just as note: protected can be accessed only within the class itself and by inherited and parent classes
-	protected $_tablename = '';
+
+	//This is normal name of the plugin family, custom, payment
+	protected $_psType = 0;
+
+	//Id of the joomla table where the plugins are registered
+	protected $_jid = 0;
+
+	protected $_vmpItable = 0;
+	//the name of the table to store plugin internal data, like payment logs
+	protected $_tablename = 0;
+	//Name of the primary key of this table, for exampel virtuemart_calc_id or virtuemart_order_id
+	protected $_tablepkey = 0;
+
+	protected $_vmpCtable = 0;
+	//the name of the table which holds the configuration like paymentmethods, shipmentmethods, customs
+	protected $_configTable = 0;
+	//id field of the config table
+	protected $_idName = 0;
+	//Name of the field in the configtable, which holds the parameters of the pluginmethod
+	protected $_configTableFieldName = 0;
+
 	protected $_debug = false;
 	protected $_loggable = false;
+
 	/**
 	 * Constructor
 	 *
@@ -52,90 +73,251 @@ abstract class vmPlugin extends JPlugin {
 
 		$this->_tablename = '#__virtuemart_'.$this->_psType .'_plg_'. $this->_name;
 		$this->_tableChecked = false;
-		$this->_table = null;
+
 	}
 
-/**
-	 * This method checks if the selected method matches the current plugin
-	 * @param int $id The method ID
-	 * @param pssType : shipment or payment
-	 * @author Oscar van Eijk
-	 * @return True if the calling plugin has the given method ID, and psType
-	 *
+	/**
+	 * Checks if this plugin should be active by the trigger
+	 * @author Max Milbers
+	 * @param string $psType shipment,payment,custom
+	 * @param string the name of the plugin for exampel textinput, paypal
+	 * @param int/array $id the registered plugin id(s) of the joomla table
 	 */
-	final protected function selectedThis($id,$psType) {
+	protected function selectedThis($psType,$name=0,$jid=0) {
+
+// 		vmdebug('hmm id '.$jid);
+		if($psType!==0){
+			if($psType!=$this->_psType){
+				vmdebug('selectedThis $psType does not fit');
+				return false;
+			}
+		}
+
+		if($name!==0){
+			if($name!=$this->_name){
+				vmdebug('selectedThis $name '.$name.' does not fit');
+				return false;
+			}
+		}
+
+		if($jid===0){
+			return false;
+		} else {
+			if($this->_jid===0){
+				$this->getJoomlaPluginId();
+			}
+			if(is_array($jid)){
+				if(!in_array($this->_jid,$jid)){
+					vmdebug('selectedThis id '.$jid.' not in array does not fit '.$this->_jid);
+					return false;
+				}
+			} else {
+				if($jid!=$this->_jid){
+					vmdebug('selectedThis $jid '.$jid.' does not fit '.$this->_jid);
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	* Checks if this plugin should be active by the trigger
+	* @author Max Milbers
+	* @author Valérie Isaksen
+	* @param string $psType shipment,payment,custom
+	* @param string the name of the plugin for exampel textinput, paypal
+	* @param int/array $id the registered plugin id(s) of the joomla table
+	*/
+	protected function selectedThisByMethodId($psType, $id='type') {
+
+		if($psType!=$this->_psType) return false;
+
+		$db = JFactory::getDBO();
+
+		if($id==='type'){
+			return true;
+		} else {
+			$db = JFactory::getDBO();
+
+			if (VmConfig::isJ15()) {
+				$q = 'SELECT vm.* FROM `'.$this->_configTable.'` AS vm,
+							#__plugins AS j WHERE vm.`'.$this->_idName.'` = "'.$id.'"
+							AND vm.'.$psType.'_jplugin_id = j.id
+							AND j.element = "'.$this->_name.'"';
+			} else {
+				$q = 'SELECT vm.* FROM `'.$this->_configTable.'` AS vm,
+							#__extensions AS j WHERE vm.`'.$this->_idName.'` = "'.$id.'"
+							AND vm.'.$psType.'_jplugin_id = j.extension_id
+							AND j.element = "'.$this->_name.'"';
+			}
+
+			$db->setQuery($q);
+			if(!$res = $db->loadObject() ){
+// 				vmError('selectedThisByMethodId '.$db->getQuery());
+				return false;
+			} else {
+				return $res;
+			}
+		}
+	}
+
+	/**
+	 * Gets the id of the joomla table where the plugin is registered
+	 * @author Max Milbers
+	 */
+	final protected function getJoomlaPluginId(){
 		$db = JFactory::getDBO();
 
 		if (VmConfig::isJ15()) {
-			$q = 'SELECT COUNT(*) AS c FROM #__virtuemart_'.$psType.'methods AS vm,
-			#__plugins AS j WHERE vm.virtuemart_'.$psType.'method_id = "'.$id.'"
-			AND   vm.'.$psType.'_jplugin_id = j.id
-			AND   j.element = "'.$this->_name.'"';
+			$q = 'SELECT j.`id` AS c FROM #__plugins AS j
+					WHERE j.element = "'.$this->_name.'" AND j.folder = "'.$this->_type.'"';
 		} else {
-			$q = 'SELECT COUNT(*) AS c FROM #__virtuemart_'.$psType.'methods AS vm
-			, #__extensions AS j WHERE j.`folder` = "'.$this->_type.'" AND vm.virtuemart_'.$psType.'method_id = "'.$id.'"
-				AND   vm.'.$psType.'_jplugin_id = j.extension_id AND   j.element = "'.$this->_name.'"';
+			$q = 'SELECT j.`extension_id` AS c FROM #__extensions AS j
+					WHERE j.element = "'.$this->_name.'" AND j.`folder` = "'.$this->_type.'"';
 		}
 
 		$db->setQuery($q);
-		return $db->loadResult(); // TODO Error check
+		$this->_jid = $db->loadResult();
+		if(!$this->_jid){
+			vmError('selectedThis '.$db->getErrorMsg());
+			return false;
+		} else {
+			return $this->_jid;
+		}
 	}
 
 	/**
 	* Create the table for this plugin if it does not yet exist.
 	* @author Valérie Isaksen
+	* @author Max Milbers
 	*/
-	protected function plgVmOnStoreInstallPluginTable($type, $jplugin_id=0) {
+	protected function plgVmOnStoreInstallPluginTable($psType) {
+
+		if($psType==$this->_psType){
+			$query = $this->getVmPluginCreateTableSQL();
+			if($query!==0){
+				$db = JFactory::getDBO();
+				$db->setQuery($query);
+				if (!$db->query()) {
+					JError::raiseWarning(1, $this->_name.'::plgVmOnStoreInstallPluginTable: ' . JText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $_db->stderr(true));
+					echo $this->_name.'::plgVmOnStoreInstallPluginTable: ' . JText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $_db->stderr(true);
+				}
+			}
+		}
 
 	}
 
+	/*
+	 * When a plugin is using an internal Table it must override this function and provide
+	 * a valid sql to create a query
+	 * @author Max Milbers
+	 * @author Valérie Isaksen
+	 */
+	protected function getVmPluginCreateTableSQL(){
+		return 0;
+	}
+
 	/**
-	 * This stores the data of the plugin, attention NOT the configuration of the pluginmethod
+	 * Set with this function the provided plugin parameters
 	 *
+	 * @param string $paramsFieldName
+	 * @param array $varsToPushParam
+	 */
+	function setConfigParameterable($paramsFieldName,$varsToPushParam){
+		$this->_varsToPushParam = $varsToPushParam;
+		$this->_xParams = $paramsFieldName;
+
+	}
+
+	protected function plgVmGetDeclaredPluginParams($psType,$name,$id){
+		if($this->selectedThis($psType,$name,$id)){
+			vmdebug('plgVmGetDeclaredPluginParams return '.$this->_xParams,$this->_varsToPushParam);
+			return array($this->_xParams,$this->_varsToPushParam);
+		} else {
+			return 0;
+		}
+	}
+
+
+	protected function getPlugin($int){
+
+		if($this->_vmpCtable===0){
+			$db = JFactory::getDBO();
+			$tablename = 'Table'.$this->_psType.'s';
+			if(!class_exists($tablename))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.$this->_psType.'s'.'.php');
+			$this->_vmpCtable = new $tablename($db);
+			if($this->_xParams!==0){
+				$this->_vmpCtable->setParameterable($this->_xParams,$this->_varsToPushParam);
+			}
+
+// 			$this->_vmpCtable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$this->_loggable);
+		}
+
+		return $this->_vmpCtable->load($int);
+	}
+
+	/**
+	 * This stores the data of the plugin, attention NOT the configuration of the pluginmethod,
+	 * this function should never be triggered only called from triggered functions.
+	 *
+	 * @author Max Milbers
 	 * @param array $values array or object with the data to store
 	 * @param string $tableName When different then the default of the plugin, provid it here
 	 * @param string $tableKey an additionally unique key
 	 */
-	protected function storePluginInternalData(&$values, $primaryKey=''){
+	protected function storePluginInternalData(&$values, $primaryKey=0){
 
-		if(!$this->_table){
-			$this->_table = $this->createPluginTableObject($this->_tablename,$this->tableFields,$this->_loggable);
+		if($this->_vmpItable===0){
+			$this->_vmpItable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$this->_loggable);
 		}
 
-		$this->_table->bindChecknStore($values);
-		$errors = $this->_table->getErrors();
+		$this->_vmpItable->bindChecknStore($values);
+		$errors = $this->_vmpItable->getErrors();
 		if(!empty($errors)){
 			foreach($errors as $error){
 				$this->setError($error);
 			}
-
 		}
 		return $values;
 
 	}
 
+	/**
+	 * This loads the data stored by the plugin before, NOT the configuration of the method,
+	 * this function should never be triggered only called from triggered functions.
+	 *
+	 * @param int $id
+	 * @param string $primaryKey
+	 */
 	protected function getPluginInternalData($id, $primaryKey=0){
 
-		if(!$this->_table){
-			$this->_table = $this->createPluginTableObject($this->_tablename,$this->tableFields,$this->_loggable);
+		if(!$this->_vmpItable){
+
+			$this->_vmpItable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$this->_tablepkey,$this->_loggable);
 		}
 
-		return $this->_table->load($id);
+		return $this->_vmpItable->load($id);
 	}
 
-	protected function createPluginTableObject($tableName,$tableFields, $loggable = false){
+	protected function createPluginTableObject($tableName,$tableFields, $primaryKey, $loggable = false){
 
 		if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 		$db =& JFactory::getDBO();
 		$table = new VmTableData($tableName,'id',$db);
-		foreach($this->tableFields as $field){
+		foreach($tableFields as $field){
 			$table->$field = 0;
 		}
-// 		$this->_table -> setFields($this->tableFields);
-		if(empty($primaryKey)) $primaryKey = $this->_tablepkey;
 
-		$table->setPrimaryKey($primaryKey);
+		if($primaryKey!==0)$table->setPrimaryKey($primaryKey);
 		if($loggable)	$table->setLoggable();
+
+		if(!$this->_tableChecked){
+			$this->plgVmOnStoreInstallPluginTable($this->_psType);
+			$this->_tableChecked = true;
+		}
+
 		return $table;
 	}
 }

@@ -133,8 +133,6 @@ class VirtueMartModelCustom extends VmModel {
 
   		}
 
-
-
   		return $this->plugin;
 	}
 
@@ -146,6 +144,7 @@ class VirtueMartModelCustom extends VmModel {
 	 */
     function getCustoms($custom_parent_id,$search = false){
 
+    	vmdebug('for model');
 		$query='* FROM `#__virtuemart_customs` WHERE field_type <> "R" AND field_type <> "Z" AND field_type <> "G" ';
 		if($custom_parent_id){
 			$query .= 'AND `custom_parent_id` ='.(int)$custom_parent_id;
@@ -209,6 +208,7 @@ class VirtueMartModelCustom extends VmModel {
 	*/
 	public function saveModelCustomfields($table,$datas, $id) {
 
+		vmdebug('put in plugin');
 		JRequest::checkToken() or jexit( 'Invalid Token, in store customfields');
 		//Sanitize id
 		$id = (int)$id;
@@ -282,18 +282,50 @@ class VirtueMartModelCustom extends VmModel {
 		}
 
 	}
+
+
+
 	public function store(&$data){
-		$table = $this->getTable('customs');
-		$id = $table->bindChecknStore($data);
-		if (!$id) {
-			$this->setError($table->getError());
-		}
-		//$id = parent::bindChecknStore($data);
-		if(isset($data['custom_jplugin_id'])){
-		if ($data['custom_jplugin_id'] ) self::saveCustomPlugin($data) ;
+
+		$data['custom_name'] = $data['custom_title'];
+		if(empty($data['virtuemart_vendor_id'])){
+			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+			$data['virtuemart_vendor_id'] = VirtueMartModelVendor::getLoggedVendor();
+		} else {
+			$data['virtuemart_vendor_id'] = (int) $data['virtuemart_vendor_id'];
 		}
 
-		return $id ;
+		$table = $this->getTable('customs');
+
+		if(isset($data['custom_jplugin_id'])){
+
+			JPluginHelper::importPlugin('vmcustom');
+			$dispatcher = JDispatcher::getInstance();
+			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParams',array('custom',0,$data['custom_jplugin_id']));
+
+			if(!empty($varsToPushParam)){
+				$add = false;
+				foreach($varsToPushParam as $push){
+					if($push[0]!==0 and $push[1]!==0){
+						$table->setParameterable($push[0],$push[1]);
+					}
+				}
+			}
+		}
+
+		$table->bindChecknStore($data);
+		$errors = $table->getErrors();
+		if(!empty($errors)){
+			foreach($errors as $error){
+				vmError($error);
+			}
+		}
+
+		JPluginHelper::importPlugin('vmcustom');
+		$dispatcher = JDispatcher::getInstance();
+		$error = $dispatcher->trigger('plgVmOnStoreInstallPluginTable', array('custom' , $data));
+
+		return $table->virtuemart_custom_id ;
 	}
 
 	/**
@@ -301,8 +333,9 @@ class VirtueMartModelCustom extends VmModel {
 	 * Save the default personnal setting(original are in joomla plugin Table)
 	 * @author Patrick Kohl
 	 * @return boolean True is the save was successful, false otherwise.
+	 * @deprecated
 	 */
-	public function saveCustomPlugin($data)
+	public function saveCustomPlugin(&$data)
 	{
 		//$data = JRequest::get('post');
 		//TODO  remove if $data['custom_jplugin_id'] == 0 ; no custom plugin selected
@@ -337,6 +370,10 @@ class VirtueMartModelCustom extends VmModel {
 		foreach($errors as $error){
 			$this->setError($error);
 		}
+
+		JPluginHelper::importPlugin('vmcustom');
+		$dispatcher = JDispatcher::getInstance();
+		$error = $dispatcher->trigger('plgVmOnStoreInstallPluginTable', array('custom' , $data));
 
 		return $table->virtuemart_custom_id;
 	}

@@ -42,6 +42,8 @@ class VmTable extends JTable{
 	protected $_slugAutoName = '';
 	protected $_slugName = '';
 	protected $_loggable = false;
+	protected $_xParams = 0;
+	protected $_varsToPushParam = array();
 	var $_translatable = false;
 
 	function __construct( $table, $key, &$db ){
@@ -146,27 +148,20 @@ class VmTable extends JTable{
 	 * @param string $paramsFieldName
 	 * @param string $varsToPushParam
 	 */
-	function setParameterable($paramsFieldName,$varsToPushParam){
-		$this->_varsToPushParam = $varsToPushParam;
-		$this->_xParams = $paramsFieldName;
-		foreach($this->_varsToPushParam as $k=>$v){
-			$this->$k = $v[0];
-		}
-	}
+	function setParameterable($paramsFieldName,$varsToPushParam,$overwrite = false){
 
-	/**
-	 * This function helps to define which data fields should use the injection technic of setParameterable
-	 * When you need an exampel for the array look in the vendors table.
-	 * @author Max Milbers
-	 * @param array $arrayToAdd
-	 * @param boolean $overwrite
-	 */
-	function setVarsToPushParam($arrayToAdd,$overwrite=false){
+		if($this->_xParams===0)	$this->_xParams = $paramsFieldName;
+
 		if($overwrite){
-			$this->_varsToPushParam = $arrayToAdd;
+			$this->_varsToPushParam = $varsToPushParam;
 		} else {
-			$this->_varsToPushParam = array_merge($this->_varsToPushParam,$arrayToAdd);
+			$this->_varsToPushParam = array_merge((array)$varsToPushParam,(array)$this->_varsToPushParam);
 		}
+
+		foreach($this->_varsToPushParam as $k=>$v){
+			if(!isset($this->$k))$this->$k = $v[0];
+		}
+// 		vmdebug('setParameterable called '.$this->_xParams,$this->_varsToPushParam);
 	}
 
 	var $_tablePreFix = '';
@@ -343,6 +338,7 @@ class VmTable extends JTable{
 
 				$paramFieldName = $this->_xParams;
 				$paramFields = $this->$paramFieldName;
+				vmdebug('$this->_xParams '.$this->_xParams.' $this->$paramFieldName ',$this->$paramFieldName);
 				if(!empty($this->$paramFieldName)){
 
 					$params = explode('|', $this->$paramFieldName);
@@ -353,6 +349,7 @@ class VmTable extends JTable{
 							if($this->_varsToPushParam[$item[0]][1]==='string'){
 								$this->$item[0] = base64_decode(unserialize($item[1]));
 							} else {
+								vmdebug('my unserialize '.$item[1]);
 								$this->$item[0] = unserialize($item[1]);
 							}
 						}
@@ -400,7 +397,6 @@ class VmTable extends JTable{
 			$paramFieldName = $this->_xParams;
 			$this->$paramFieldName = '';
 			foreach($this->_varsToPushParam as $key=>$v){
-
 
 				if(isset($this->$key)){
 					if($v[1]==='string'){
