@@ -44,7 +44,7 @@ class JElementVmOrderState extends JElement {
         $class = '';
 
 
-        return JHTML::_('select.genericlist', $fields, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
+        return JHTML::_('select.genericlist', $fields, $control_name . '[' . $name . ']', $class, 'value', 'text', $value, $control_name . $name);
     }
 
 }
