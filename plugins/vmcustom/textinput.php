@@ -50,14 +50,18 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	// get product param for this plugin on edit
 	function onProductEdit($field,$param,$row, $product_id) {
 		if ($field->custom_value != $this->_name) return '';
-		$plgParam = $this->getVmCustomParams($field->virtuemart_custom_id);
+// 		$plgParam = $this->getVmCustomParams($field->virtuemart_custom_id);
+
+		$data = $this->getPlugin($field->virtuemart_custom_id);
 		//print_r($plgParam);
-		if (empty($param)) {
-			$param['custom_name']= $plgParam->get('custom_name');
-			$param['custom_size']= $plgParam->get('custom_size');
-		}
-		$html  ='<input type="text" value="'.$param['custom_name'].'" size="10" name="custom_param['.$row.'][custom_name]"> ';
-		$html .='<input type="text" value="'.$param['custom_size'].'" size="10" name="custom_param['.$row.'][custom_size]">';
+// 		if (empty($param)) {
+// 			$param['custom_name']= $plgParam->get('custom_name');
+// 			$param['custom_size']= $plgParam->get('custom_size');
+// 		}
+// 		$html  ='<input type="text" value="'.$param['custom_name'].'" size="10" name="custom_param['.$row.'][custom_name]"> ';
+// 		$html .='<input type="text" value="'.$param['custom_size'].'" size="10" name="custom_param['.$row.'][custom_size]">';
+		$html  ='<input type="text" value="'.$data['custom_name'].'" size="10" name="custom_name['.$row.']"> ';
+		$html .='<input type="text" value="'.$data['custom_size'].'" size="10" name="custom_size['.$row.']">';
 		$html .=JTEXT::_('VMCUSTOM_TEXTINPUT_NO_CHANGES_BE');
 
 		return $html  ;

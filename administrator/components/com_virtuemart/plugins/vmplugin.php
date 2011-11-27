@@ -270,7 +270,7 @@ abstract class vmPlugin extends JPlugin {
 	protected function storePluginInternalData(&$values, $primaryKey=0){
 
 		if($this->_vmpItable===0){
-			$this->_vmpItable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$this->_loggable);
+			$this->_vmpItable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$this->_tablepkey,$this->_loggable);
 		}
 
 		$this->_vmpItable->bindChecknStore($values);
@@ -293,11 +293,11 @@ abstract class vmPlugin extends JPlugin {
 	 */
 	protected function getPluginInternalData($id, $primaryKey=0){
 
-		if(!$this->_vmpItable){
+		if($this->_vmpItable===0){
 
 			$this->_vmpItable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$this->_tablepkey,$this->_loggable);
 		}
-
+// 		vmdebug('getPluginInternalData',$this->_vmpItable);
 		return $this->_vmpItable->load($id);
 	}
 
@@ -320,4 +320,5 @@ abstract class vmPlugin extends JPlugin {
 
 		return $table;
 	}
+
 }

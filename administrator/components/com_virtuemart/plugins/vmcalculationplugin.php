@@ -33,48 +33,50 @@ abstract class vmCalculationPlugin extends vmPlugin {
 // 		$this->_tablename = '#__virtuemart_calc_' . $this->_name;
 	}
 
-	function plgVmStorePluginInternalDataCalc(&$data){
+	protected function plgVmStorePluginInternalDataCalc(&$data){
 
+		vmdebug('plgVmStorePluginInternalDataCalc $data',$data);
 // 		$this->plgVmOnStoreInstallPluginTable($this->_psType);
 		$this->storePluginInternalData($data);
 
 	}
 
-	function plgVmGetPluginInternalDataCalc(&$calcData){
+	protected function plgVmGetPluginInternalDataCalc(&$calcData){
 
 	 	$datas = $this->getPluginInternalData($calcData->virtuemart_calc_id,'virtuemart_calc_id');
+		if($datas){
+			$attribsCalc = get_object_vars($datas);
 
-		$attribsCalc = get_object_vars($datas);
-
-		unset($attribsCalc['virtuemart_calc_id']);
-		foreach($attribsCalc as $k=>$v){
-			$calcData->$k = $v;
+			unset($attribsCalc['virtuemart_calc_id']);
+			foreach($attribsCalc as $k=>$v){
+				$calcData->$k = $v;
+			}
 		}
 
 	}
 
-	function plgVmAddMathOp(&$entryPoints){
+	protected function plgVmAddMathOp(&$entryPoints){
 
 		return ;
 	}
 
-	function plgVmOnDisplayEdit(&$calc){
+	protected function plgVmOnDisplayEdit(&$calc){
 		return $html;
 	}
 
-	function plgVmInGatherEffectRulesProduct(&$calculationHelper,&$rules){
+	protected function plgVmInGatherEffectRulesProduct(&$calculationHelper,&$rules){
 // 		foreach ($rules as $i => $rule) {
 // 			$ruleData = $this -> getPluginInternalData($rule['virtuemart_calc_id'],'virtuemart_calc_id');
 // 		}
 		return false;
 	}
 
-	function plgVmInGatherEffectRulesBill(&$calculationHelper,&$rules){
+	protected function plgVmInGatherEffectRulesBill(&$calculationHelper,&$rules){
 
 		return false;
 	}
 
-	function plgVmExecuteCalculation ($rule, $relateToBaseAmount, $baseprice, &$_cartPrices, &$price){
+	protected function plgVmExecuteCalculation ($rule, $relateToBaseAmount, $baseprice, &$_cartPrices, &$price){
 
 		$calculated = false;
 

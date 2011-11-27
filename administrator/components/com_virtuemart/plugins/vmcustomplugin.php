@@ -91,7 +91,7 @@ abstract class vmCustomPlugin extends VmPlugin {
      *
      * This function sets the custom plugin param
      * @author Patrick Kohl
-     *
+     * @deprecated
      */
 	function getVmCustomParams($virtuemart_custom_id=0,$vendorId=0 ) {
 
@@ -159,14 +159,14 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * display The plugin in Product view FE
 	 * override displayType() customfields.
 	 */
-	 public function displayTypePlugin($field,$product,$row){
+	 public function plgVmOnDisplayTypePlugin($field,$product,$row){
 
-		if (empty($field->custom_value)) return '';
+		if (empty($field->custom_value)) return 0;
 		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
 		else $custom_param = array();
 
-		$plg = self::setClass($field->custom_value) ;
-		return $plg->onDisplayProductFE(  $field,$custom_param, $product, $row);
+// 		$plg = self::setClass($field->custom_value) ;
+		return $this->onDisplayProductFE(  $field,$custom_param, $product, $row);
 	 }
 	 /**
 	 * Calculate the variant price by The plugin
@@ -181,8 +181,8 @@ abstract class vmCustomPlugin extends VmPlugin {
 		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
 		else $custom_param = array();
 
-		$plg = self::setClass($field->custom_value) ;
-		return $plg->modifyPrice( $product, $field,$custom_param,$selected,$row);
+// 		$plg = self::setClass($field->custom_value) ;
+		return $this->modifyPrice( $product, $field,$custom_param,$selected,$row);
 	 }
 
 	 /**
@@ -252,6 +252,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 	/**
 	 * Select the right file and class j1.5/j1.7
 	 * Return new class $plgName
+	 * @deprecated
 	 */
 	 private function setClass($name) {
 		$plgName = 'plgVmCustom'.ucfirst ($name );

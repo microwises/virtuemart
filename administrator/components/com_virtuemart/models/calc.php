@@ -95,6 +95,7 @@ class VirtueMartModelCalc extends VmModel {
 			}
 		}
 
+		vmdebug('my calc',$this->_data);
   		return $this->_data;
 	}
 
@@ -219,9 +220,10 @@ class VirtueMartModelCalc extends VmModel {
 			$this->setError($xrefTable->getError());
 		}
 
+		if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');
 		JPluginHelper::importPlugin('vmcalculation');
 		$dispatcher = JDispatcher::getInstance();
-		$error = $dispatcher->trigger('plgVmStorePluginInternalDataCalc',array($data));
+		$error = $dispatcher->trigger('plgVmStorePluginInternalDataCalc',array(&$data));
 
     	$errMsg = $this->_db->getErrorMsg();
 		$errs = $this->_db->getErrors();

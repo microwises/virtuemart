@@ -713,7 +713,6 @@ class VmConfig {
 
 		fclose ($_data);
 
-
 		if (!$_configData) {
 			return false; // Nothing to do
 		} else {

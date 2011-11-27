@@ -304,7 +304,7 @@ class VirtueMartModelCustom extends VmModel {
 			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParams',array('custom',0,$data['custom_jplugin_id']));
 
 			if(!empty($varsToPushParam)){
-				$add = false;
+
 				foreach($varsToPushParam as $push){
 					if($push[0]!==0 and $push[1]!==0){
 						$table->setParameterable($push[0],$push[1]);

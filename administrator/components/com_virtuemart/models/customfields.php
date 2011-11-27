@@ -476,8 +476,23 @@ class VirtueMartModelCustomfields extends VmModel {
 			$row= 0 ;
 			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 			foreach ($productCustoms as & $field ) {
-				if ($field->field_type == "E") $field->display = vmCustomPlugin::displayTypePlugin($field,$product,$row);
-				else $field->display = $this->displayType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
+				if ($field->field_type == "E"){
+					JPluginHelper::importPlugin('vmcustom');
+					$dispatcher = JDispatcher::getInstance();
+					$ret = $dispatcher->trigger('plgVmOnDisplayTypePlugin',array($field,$product,$row));
+
+					if(!empty($ret)){
+						foreach($ret as $item){
+							if($item!==0){
+								$field->display = $item;
+							}
+						}
+					}
+// 					$field->display = vmCustomPlugin::displayTypePlugin($field,$product,$row);
+				}
+				else {
+					$field->display = $this->displayType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
+				}
 				$row++ ;
 			}
 			return $productCustoms;
@@ -854,7 +869,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		foreach ($product_attributes as $virtuemart_customfield_id=>$param){
  			if ($param) {
 				if ($productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id ) ) {
-					
+
 					if ($productCustom->field_type == "E") {
 
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
@@ -882,14 +897,14 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		return $html.'</div>';
 	}
-	
+
 	/*
 	 * Get product(ID) Stock to change by custom plugin
-	 * $product_id is order item ID 
+	 * $product_id is order item ID
 	 * Only used by plugin for now
 	 */
 	public function GetProductStockToUpdate($item){
-	
+
 		$product_attributes = json_decode($item->product_attribute);
 		foreach ($product_attributes as $virtuemart_customfield_id=>$param){
 			if ($param) {
@@ -907,7 +922,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		}
 		return $item ;
 	}
-	
+
 	/*
 	 * custom fields for cart and cart module
 	 */

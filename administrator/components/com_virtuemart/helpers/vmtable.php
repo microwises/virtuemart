@@ -338,7 +338,7 @@ class VmTable extends JTable{
 
 				$paramFieldName = $this->_xParams;
 				$paramFields = $this->$paramFieldName;
-				vmdebug('$this->_xParams '.$this->_xParams.' $this->$paramFieldName ',$this->$paramFieldName);
+// 				vmdebug('$this->_xParams '.$this->_xParams.' $this->$paramFieldName ',$this->$paramFieldName);
 				if(!empty($this->$paramFieldName)){
 
 					$params = explode('|', $this->$paramFieldName);
@@ -349,7 +349,7 @@ class VmTable extends JTable{
 							if($this->_varsToPushParam[$item[0]][1]==='string'){
 								$this->$item[0] = base64_decode(unserialize($item[1]));
 							} else {
-								vmdebug('my unserialize '.$item[1]);
+// 								vmdebug('my unserialize '.$item[1]);
 								$this->$item[0] = unserialize($item[1]);
 							}
 						}
