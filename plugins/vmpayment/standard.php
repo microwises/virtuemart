@@ -76,7 +76,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		if (!$this->selectedThisType($psType)) {
 			return null;
 		}
-		if (!($payment = $this->getPluginMethod($cart->virtuemart_paymentmethod_id))) {
+		if (!($payment = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
 			return null; // Another method was selected, do nothing
 		}
 		$params = new JParameter($payment->payment_params);

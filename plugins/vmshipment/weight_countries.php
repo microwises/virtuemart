@@ -109,7 +109,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	if (!$this->selectedThisType($psType)) {
 	    return null;
 	}
-	if (!($shipment = $this->getPluginMethod($cart->virtuemart_shipmentmethod_id))) {
+	if (!($shipment = $this->getVmPluginMethod($cart->virtuemart_shipmentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
 	if (!class_exists('JParameter'))
@@ -118,20 +118,22 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
-	$params = new JParameter($shipment->shipment_params);
+// 	$params = new JParameter($shipment->shipment_params);
 
-	$values['order_number'] = VirtueMartModelOrders::getOrderNumber($orderID);
-	$values['virtuemart_order_id'] = $orderID;
-	$values['shipment_id'] = $cart->virtuemart_shipmentmethod_id;
-	$values['shipment_name'] = parent::renderPluginName($shipment, $params);
-	$values['order_weight'] = $this->getOrderWeight($cart, $params->get('weight_unit'));
-	$values['shipment_weight_unit'] = $params->get('weight_unit');
-	$values['shipment_cost'] = $params->get('cost');
-	$values['shipment_package_fee'] = $params->get('package_fee');
-	$values['tax_id'] = $params->get('tax_id');
+// 	$values['order_number'] = VirtueMartModelOrders::getOrderNumber($orderID);
+// 	$values['virtuemart_order_id'] = $orderID;
+// 	$values['shipment_id'] = $cart->virtuemart_shipmentmethod_id;
+// 	$values['shipment_name'] = parent::renderPluginName($shipment, $params);
+// 	$values['order_weight'] = $this->getOrderWeight($cart, $params->get('weight_unit'));
+// 	$values['shipment_weight_unit'] = $params->get('weight_unit');
+// 	$values['shipment_cost'] = $params->get('cost');
+// 	$values['shipment_package_fee'] = $params->get('package_fee');
+// 	$values['tax_id'] = $params->get('tax_id');
 
 // 		$this->writeData($values, $this->_tablename);
-	$this->storePluginInternalData($values);
+
+	$this->storePluginInternalData($shipment);
+// 	$this->storePluginInternalData($values);
 	return true;
     }
 

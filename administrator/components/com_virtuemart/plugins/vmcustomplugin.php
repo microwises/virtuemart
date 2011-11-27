@@ -72,7 +72,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 		}
 
 		//Must use here the table to get valid params
-		$this->plugin = $this->getPlugin($this->plugin->virtuemart_custom_id);
+		$this->plugin = $this->getVmPluginMethod($this->plugin->virtuemart_custom_id);
 
   		if(empty($this->plugin->virtuemart_vendor_id)){
   		   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');

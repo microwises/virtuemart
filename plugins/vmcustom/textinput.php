@@ -52,7 +52,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		if ($field->custom_value != $this->_name) return '';
 // 		$plgParam = $this->getVmCustomParams($field->virtuemart_custom_id);
 
-		$data = $this->getPlugin($field->virtuemart_custom_id);
+		$data = $this->getVmPluginMethod($field->virtuemart_custom_id);
 		//print_r($plgParam);
 // 		if (empty($param)) {
 // 			$param['custom_name']= $plgParam->get('custom_name');

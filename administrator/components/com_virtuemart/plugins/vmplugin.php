@@ -241,7 +241,7 @@ abstract class vmPlugin extends JPlugin {
 	}
 
 
-	protected function getPlugin($int){
+	protected function getVmPluginMethod($int){
 
 		if($this->_vmpCtable===0){
 			$db = JFactory::getDBO();

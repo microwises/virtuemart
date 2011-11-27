@@ -48,7 +48,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $this->selectedThisByMethodId($psType,$id);
 
 		//Inactive
-		if($psType!=$this->_psType) return false;
+/*		if($psType!=$this->_psType) return false;
 		$db = JFactory::getDBO();
 
 		if($id===0){
@@ -77,7 +77,7 @@ abstract class vmPSPlugin extends vmPlugin {
 				return $res;
 			}
 		}
-
+*/
 	}
 
 	/**

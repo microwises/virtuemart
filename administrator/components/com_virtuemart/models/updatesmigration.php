@@ -219,7 +219,9 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		JError::raiseWarning('', JText::_('COM_VIRTUEMART_RAISEWARNING_NOT_ABLE_TO_SAVE_USER_DATA'));
 	}
 
-	$this->installSampleSQL();
+	$params = JComponentHelper::getParams('com_languages');
+	$lang = $params->get('site', 'en-GB');//use default joomla
+	$this->installSampleSQL($lang);
 // 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';
 // 	if(!$this->execSQLFile($filename)){
 // 		$this->setError(JText::_('Problems execution of SQL File '.$filename));
@@ -410,7 +412,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 
 
-   function installSampleSQL(){
+   function installSampleSQL($lang){
 
     	//One idea, install sql, using _virtuemart_sample
     	//then adjust migrator capable of using _virtuemart_sample and to import them
@@ -508,7 +510,7 @@ INSERT INTO `#__virtuemart_categories` (`virtuemart_category_id`, `virtuemart_ve
 (4, 1, 1, NULL, NULL, '', '', '', 1, 4, NULL, NULL, NULL, NULL, '', ''),
 (5, 1, 1, NULL, NULL, '', '', '', 1, 5, NULL, NULL, NULL, NULL, '', '');
 
-INSERT INTO `#__virtuemart_categories_".VMLANG."` (`virtuemart_category_id`, `category_name`, `category_description`, `metadesc`, `metakey`, `slug`) VALUES
+INSERT INTO `#__virtuemart_categories_".$lang."` (`virtuemart_category_id`, `category_name`, `category_description`, `metadesc`, `metakey`, `slug`) VALUES
 (1, 'Hand Tools', 'Hand Tools', '', '', 'handtools'),
 (2, 'Power Tools', 'Power Tools', '', '', 'powertools'),
 (3, 'Garden Tools', 'Garden Tools', '', '', 'gardentools'),
@@ -578,7 +580,7 @@ INSERT INTO `#__virtuemart_product_customfields` (`virtuemart_product_id`,`virtu
 INSERT INTO `#__virtuemart_manufacturers` (`virtuemart_manufacturer_id`, `virtuemart_manufacturercategories_id`, `published`) VALUES
 (1, 1, 1);
 
-INSERT INTO `#__virtuemart_manufacturers_".VMLANG."` (`virtuemart_manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `mf_url`, `slug`) VALUES
+INSERT INTO `#__virtuemart_manufacturers_".$lang."` (`virtuemart_manufacturer_id`, `mf_name`, `mf_email`, `mf_desc`, `mf_url`, `slug`) VALUES
 (1, 'Manufacturer', ' manufacturer@example.org', 'An example for a manufacturer', 'http://www.example.org', 'manufacturer-example');
 
 
@@ -587,7 +589,7 @@ INSERT INTO `#__virtuemart_manufacturers_".VMLANG."` (`virtuemart_manufacturer_i
 INSERT INTO `#__virtuemart_manufacturercategories` (`virtuemart_manufacturercategories_id`, `published`) VALUES
 (1, 1);
 
-INSERT INTO `#__virtuemart_manufacturercategories_".VMLANG."` (`virtuemart_manufacturercategories_id`, `mf_category_name`, `mf_category_desc`, `slug`) VALUES
+INSERT INTO `#__virtuemart_manufacturercategories_".$lang."` (`virtuemart_manufacturercategories_id`, `mf_category_name`, `mf_category_desc`, `slug`) VALUES
 (1, '-default-', 'This is the default manufacturer category', '-default-');
 
 
@@ -598,24 +600,24 @@ INSERT IGNORE INTO `#__virtuemart_manufacturer_medias` (`id`,`virtuemart_manufac
 
 
 INSERT INTO `#__virtuemart_products` (`virtuemart_product_id`, `virtuemart_vendor_id`, `product_parent_id`, `product_sku`, `product_weight`, `product_weight_uom`, `product_length`, `product_width`, `product_height`, `product_lwh_uom`, `product_url`, `product_in_stock`, `product_ordered`, `low_stock_notification`, `product_available_date`, `product_availability`, `product_special`, `product_sales`, `product_unit`, `product_packaging`, `product_params`, `hits`, `intnotes`, `metarobot`, `metaauthor`, `layout`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-(1, 1, 0, 'G01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 10, 0, 5, '2010-02-21 00:00:00', '48h.gif', 1, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
-(2, 1, 0, 'G02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 76, 0, 5, '2010-02-21 00:00:00', '3-5d.gif', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
-(3, 1, 0, 'G03', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 32, 0, 5, '2010-02-21 00:00:00', '7d.gif', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
-(4, 1, 0, 'G04', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 98, 0, 5, '2010-02-21 00:00:00', 'on-order.gif', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
-(5, 1, 0, 'H01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 32, 0, 5, '2010-02-21 00:00:00', '1-4w.gif', 1, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
-(6, 1, 0, 'H02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 500, 0, 5, '2011-12-21 00:00:00', '24h.gif', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
-(7, 1, 0, 'P01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 45, 0, 5, '2011-12-21 00:00:00', '48h.gif', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
-(8, 1, 0, 'P02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 33, 0, 5, '2010-12-21 00:00:00', '3-5d.gif', 1, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
-(9, 1, 0, 'P03', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 3, 0, 5, '2011-07-21 00:00:00', '2-3d.gif', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
-(10, 1, 0, 'P04', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 2, 0, 5, '2010-12-21 00:00:00', '1-2m.gif', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
-(11, 1, 1, 'G01-01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
-(12, 1, 1, 'G01-02', 10.0000, '', 0.0000, 0.0000, 0.0000, '', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
-(13, 1, 1, 'G01-03', 10.0000, '', 0.0000, 0.0000, 0.0000, '', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
-(14, 1, 2, 'L01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 22, 0, 5, '2011-12-21 00:00:00', '', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
-(15, 1, 2, 'L02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
-(16, 1, 2, 'L03', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0);
+(1, 1, 0, 'G01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 10, 0, 5, '2010-02-21 00:00:00', '48h.gif', 1, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
+(2, 1, 0, 'G02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 76, 0, 5, '2010-02-21 00:00:00', '3-5d.gif', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
+(3, 1, 0, 'G03', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 32, 0, 5, '2010-02-21 00:00:00', '7d.gif', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
+(4, 1, 0, 'G04', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 98, 0, 5, '2010-02-21 00:00:00', 'on-order.gif', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
+(5, 1, 0, 'H01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 32, 0, 5, '2010-02-21 00:00:00', '1-4w.gif', 1, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
+(6, 1, 0, 'H02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 500, 0, 5, '2011-12-21 00:00:00', '24h.gif', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
+(7, 1, 0, 'P01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 45, 0, 5, '2011-12-21 00:00:00', '48h.gif', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
+(8, 1, 0, 'P02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 33, 0, 5, '2010-12-21 00:00:00', '3-5d.gif', 1, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
+(9, 1, 0, 'P03', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 3, 0, 5, '2011-07-21 00:00:00', '2-3d.gif', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
+(10, 1, 0, 'P04', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 2, 0, 5, '2010-12-21 00:00:00', '1-2m.gif', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
+(11, 1, 1, 'G01-01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
+(12, 1, 1, 'G01-02', 10.0000, '', 0.0000, 0.0000, 0.0000, '', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
+(13, 1, 1, 'G01-03', 10.0000, '', 0.0000, 0.0000, 0.0000, '', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
+(14, 1, 2, 'L01', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 22, 0, 5, '2011-12-21 00:00:00', '', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
+(15, 1, 2, 'L02', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0),
+(16, 1, 2, 'L03', 10.0000, 'KG', 0.0000, 0.0000, 0.0000, 'M', '', 0, 0, 5, '0000-00-00 00:00:00', '', 0, 0, '', 0, 'min_order_level=d:0;|max_order_level=d:0;|', 0, '', '', '', '', 1, '0000-00-00 00:00:00', 0, '2011-11-22 11:26:51', 62, '0000-00-00 00:00:00', 0);
 
-INSERT INTO `#__virtuemart_products_".VMLANG."` (`virtuemart_product_id`, `product_name`, `product_s_desc`, `product_desc`, `metadesc`, `metakey`, `slug`) VALUES
+INSERT INTO `#__virtuemart_products_".$lang."` (`virtuemart_product_id`, `product_name`, `product_s_desc`, `product_desc`, `metadesc`, `metakey`, `slug`) VALUES
 (1, 'Hand Shovel', '<p>Nice hand shovel to dig with in the yard.</p>\r\n', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5\" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', '', '', 'hand-shovel'),
 (2, 'Ladder', 'A really long ladder to reach high places.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5\" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', '', '', 'ladder'),
 (3, 'Shovel', 'Nice shovel.  You can dig your way to China with this one.', '\r\n<ul>  <li>Hand crafted handle with maximum grip torque  </li><li>Titanium tipped shovel platter  </li><li>Half degree offset for less accidents  </li><li>Includes HowTo Video narrated by Bob Costas  </li></ul>    <b>Specifications</b><br />  5\" Diameter<br />  Tungsten handle tip with 5 point loft<br />\r\n', '', '', 'shovel'),
