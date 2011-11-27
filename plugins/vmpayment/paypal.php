@@ -113,9 +113,9 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    return null; // Another method was selected, do nothing
 	}
 
-	$params = new JParameter($payment->payment_params);
+// 	$params = new JParameter($payment->payment_params);
 
-	$this->_debug = $params->get('debug');
+	$this->_debug = $payment->debug;
 	$this->logInfo('plgVmConfirmedOrderRenderPaymentForm order number: ' . $order_number, 'message');
 
 	if (!class_exists('VirtueMartModelOrders'))
@@ -138,13 +138,13 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$currencyModel = new VirtueMartModelCurrency();
 	$currency = $currencyModel->getCurrency($cart->pricesCurrency);
 
-	$merchant_email = $this->_getMerchantEmail($params);
+	$merchant_email = $this->_getMerchantEmail($payment);
 	if (empty($merchant_email)) {
 	    vmInfo(JText::_('VMPAYMENT_PAYPAL_MERCHANT_EMAIL_NOT_SET'));
 	    return false;
 	}
 
-	$testReq = $params->get('DEBUG') == 1 ? 'YES' : 'NO';
+	$testReq = $payment->debug == 1 ? 'YES' : 'NO';
 	$post_variables = Array(
 	    'cmd' => '_ext-enter',
 	    'redirect_cmd' => '_xclick',
@@ -180,7 +180,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
 	    "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginusercancel&on=' . $order_number . '&pm=' . $cart->virtuemart_paymentmethod_id),
 	    //"undefined_quantity" => "0",
-	    "ipn_test" => $params->get('debug'),
+	    "ipn_test" => $payment->debug,
 	    "pal" => "NRUBJXESJTY24",
 	    // "image_url" => $vendor_image_url, // TO DO
 	    //"no_shipping" => "1",
@@ -218,14 +218,14 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 
 	// Prepare data that should be stored in the database
 	$dbValues['order_number'] = $order_number;
-	$dbValues['payment_name'] = parent::renderPluginName($payment, $params);
+	$dbValues['payment_name'] = parent::renderPluginName($payment);
 	$dbValues['virtuemart_paymentmethod_id'] = $cart->virtuemart_paymentmethod_id;
 	$dbValues['paypal_custom'] = $return_context;
-	$dbValues['cost'] = $params->get('cost', 0);
-	$dbValues['tax_id'] = $params->get('tax_id', 0);
+	$dbValues['cost'] = $payment->cost;
+	$dbValues['tax_id'] = $payment->tax_id;
 	$this->storePSPluginInternalData($dbValues);
 
-	$url = $this->_getPaypalUrlHttps($params);
+	$url = $this->_getPaypalUrlHttps($payment);
 
 	// add spin image
 
@@ -343,10 +343,11 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	}
 	$vendorId = 1;
 	$payment = $this->getDataByOrderId($virtuemart_order_id);
-	$paramstring = $this->getVmParams($vendorId, $payment->virtuemart_paymentmethod_id);
-	$params = new JParameter($paramstring);
+// 	$paramstring = $this->getVmParams($vendorId, $payment->virtuemart_paymentmethod_id);
+// 	$params = new JParameter($paramstring);
+	$method = $this->getVmPluginMethod($payment->virtuemart_paymentmethod_id);
 
-	$this->_debug = $params->get('debug');
+	$this->_debug = $method->debug;
 	if (!$payment) {
 	    $this->logInfo('getDataByOrderId payment not found: exit ', 'ERROR');
 	    return null;
@@ -510,19 +511,19 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	return '';
     }
 
-    function _getMerchantEmail($params) {
-	return $params->get('sandbox') ? $params->get('sandbox_merchant_email') : $params->get('paypal_merchant_email');
+    function _getMerchantEmail($payment) {
+	return $payment->sandbox ? $payment->sandbox_merchant_email : $payment->paypal_merchant_email;
     }
 
-    function _getPaypalUrl($params) {
+    function _getPaypalUrl($payment) {
 
-	$url = $params->get('sandbox') ? 'www.sandbox.paypal.com' : 'www.paypal.com';
+	$url = $payment->sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';
 
 	return $url;
     }
 
-    function _getPaypalUrlHttps($params) {
-	$url = $this->_getPaypalUrl($params);
+    function _getPaypalUrlHttps($payment) {
+	$url = $this->_getPaypalUrl($payment);
 	$url = $url . '/cgi-bin/webscr';
 
 	return $url;
@@ -605,8 +606,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	return $html;
     }
 
-    function getCosts($params, $cart_prices) {
-	return $params->get('cost', 0);
+    function getCosts($payment, $cart_prices) {
+	return $payment->cost;
     }
 
     /**
@@ -620,16 +621,16 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      */
     protected function checkConditions($cart, $payment, $cart_prices) {
 
-	$params = new JParameter($payment->payment_params);
+// 	$params = new JParameter($payment->payment_params);
 	$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
 	$amount = $cart_prices['salesPrice'];
-	$amount_cond = ($amount >= $params->get('min_amount', 0) AND $amount <= $params->get('max_amount', 0)
+	$amount_cond = ($amount >= $payment->min_amount AND $amount <= $payment->max_amount
 		OR
-		($params->get('min_amount', 0) <= $amount AND ($params->get('max_amount', '') == '') ));
+		($payment->min_amount <= $amount AND ($payment->max_amount == '') ));
 
 	$countries = array();
-	$country_list = $params->get('countries');
+	$country_list = $payment->countries;
 	if (!empty($country_list)) {
 	    if (!is_array($country_list)) {
 		$countries[0] = $country_list;

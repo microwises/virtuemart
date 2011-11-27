@@ -101,14 +101,17 @@ abstract class vmPSPlugin extends vmPlugin {
 	 *
 	 */
 	protected function plgVmOnStoreInstallPluginTable($psType, $jplugin_id) {
-		if (!$this->selectedThisType($psType)) {
-			return null;
-		}
-		if (!($method = $this->getPluginMethodbyJplugin($jplugin_id) )) {
-			return null;
+// 		if (!$this->selectedThisType($psType)) {
+// 			return null;
+// 		}
+// 		if (!($method = $this->getPluginMethodbyJplugin($jplugin_id) )) {
+// 			return null;
+// 		}
+
+		if($this->selectedThisByMethodId($psType, $jplugin_id){
+			parent::plgVmOnStoreInstallPluginTable();
 		}
 
-		parent::plgVmOnStoreInstallPluginTable();
 	}
 
 	/**
@@ -117,7 +120,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param int $pluginmethod_id The method ID
 	 * @return  method data
 	 */
-	final protected function getPluginMethodbyJplugin($plugin_id) {
+/*	final protected function getPluginMethodbyJplugin($plugin_id) {
 		$db = JFactory::getDBO();
 
 		// 		$q = 'SELECT * FROM #__virtuemart_shipmentmethods WHERE `virtuemart_shipmentmethod_id`="' . $shipment_id . '" AND `shipment_element` = "'.$this->_name.'"';
@@ -125,7 +128,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$db->setQuery($q);
 		return $db->loadObject();
-	}
+	}*/
 
 	/**
 	 * This event is fired after the payment method has been selected. It can be used to store
@@ -176,10 +179,10 @@ abstract class vmPSPlugin extends vmPlugin {
 		foreach ($this->methods as $method) {
 			if ($this->checkConditions($cart, $method, $cart->pricesUnformatted)) {
 				//vmdebug('plgVmOnSelectPayment', $method->payment_name, $method->payment_params);
-				$paramsName = $this->_psType . '_params';
-				$params = new JParameter($method->$paramsName);
-				$methodSalesPrice = $this->calculateSalesPrice($params, $cart->pricesUnformatted);
-				$method->$method_name = $this->renderPluginName($method, $params);
+// 				$paramsName = $this->_psType . '_params';
+// 				$params = new JParameter($method->$paramsName);
+				$methodSalesPrice = $this->calculateSalesPrice($method, $cart->pricesUnformatted);
+				$method->$method_name = $this->renderPluginName($method);
 				$html [] = $this->getPluginHtml($method, $selected, $methodSalesPrice);
 			}
 		}
@@ -218,10 +221,10 @@ abstract class vmPSPlugin extends vmPlugin {
 			return false;
 		}
 		$paramsName = $this->_psType . '_params';
-		$params = new JParameter($method->$paramsName);
-		$cart_prices_name = $this->renderPluginName($method, $params);
+// 		$params = new JParameter($method->$paramsName);
+		$cart_prices_name = $this->renderPluginName($method);
 
-		$this->setCartPrices($cart_prices, $params);
+		$this->setCartPrices($cart_prices, $method);
 
 		return true;
 	}
@@ -479,8 +482,12 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param int $pluginmethod_id The method ID
 	 * @return  method data
 	 */
-	final protected function getPluginMethod($plugin_id) {
-		$db = JFactory::getDBO();
+	final protected function getPluginMethod($method_id) {
+
+		if(!$this->selectedThisByMethodId($this->_psType,$method_id)) return false;
+		return $this->getVmPluginMethod($method_id);
+
+/*		$db = JFactory::getDBO();
 
 		// 		$q = 'SELECT * FROM #__virtuemart_shipmentmethods WHERE `virtuemart_shipmentmethod_id`="' . $shipment_id . '" AND `shipment_element` = "'.$this->_name.'"';
 		$q = 'SELECT * FROM
@@ -489,7 +496,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	      WHERE `' . $this->_idName . '`="' . $plugin_id . '" AND `' . $this->_psType . '_element`="' . $this->_name . '" ';
 
 		$db->setQuery($q);
-		return $db->loadObject();
+		return $db->loadObject();*/
 	}
 
 	/**
@@ -705,16 +712,17 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param $plugin plugin
 	*/
 
-	protected function renderPluginName($plugin, $params) {
+	protected function renderPluginName($plugin) {
 		$return = '';
 		$plugin_name = $this->_psType . '_name';
 		$plugin_desc = $this->_psType . '_desc';
 		$description='';
-		// 		$params = new JParameter($plugin->$plugin_params);
-		$logo = $params->get($this->_psType . '_logos');
-
-		if (!empty($logo)) {
-			$return = $this->displayLogos($logo) . ' ';
+// 		$params = new JParameter($plugin->$plugin_params);
+// 		$logo = $params->get($this->_psType . '_logos');
+		$logosFieldName = $this->_psType . '_logos';
+		$logos = $plugin->$logosFieldName;
+		if (!empty($logos)) {
+			$return = $this->displayLogos($logos) . ' ';
 		}
 		if (!empty($plugin->$plugin_desc)) {
 			$description = '<span class="' . $this->_type . '_description">' . $plugin->$plugin_desc . '</span>';
@@ -853,18 +861,17 @@ abstract class vmPSPlugin extends vmPlugin {
 	* @param $tax_id :  tax id
 	*/
 
-	private function setCartPrices(&$cart_prices, $params) {
+	private function setCartPrices(&$cart_prices, $method) {
 
-		$value = $this->getCosts($params, $cart_prices);
-		$tax_id = $params->get('tax_id', 0);
+		$value = $this->getCosts($method, $cart_prices);
 
 		$_psType = ucfirst($this->_psType);
 		$cart_prices[$this->_psType . 'Value'] = $value;
 
 		$taxrules = array();
-		if (!empty($tax_id)) {
+		if (!empty($method->tax_id)) {
 			$db = JFactory::getDBO();
-			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $tax_id . '" ';
+			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id`="' . $method->tax_id . '" ';
 			$db->setQuery($q);
 			$taxrules = $db->loadAssocList();
 		}
@@ -887,11 +894,11 @@ abstract class vmPSPlugin extends vmPlugin {
 	* @return $salesPrice
 	*/
 
-	protected function calculateSalesPrice($params, $cart_prices) {
+	protected function calculateSalesPrice($method, $cart_prices) {
 
-		$value = $this->getCosts($params, $cart_prices);
-		;
-		$tax_id = $params->get('tax_id', 0);
+		$value = $this->getCosts($method, $cart_prices);
+
+		$tax_id = $method->tax_id;
 
 		if (!class_exists('calculationHelper'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');

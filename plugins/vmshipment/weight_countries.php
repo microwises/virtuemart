@@ -37,6 +37,22 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	$this->_loggable = true;
 	$this->tableFields = array('id', 'virtuemart_order_id', 'order_number', 'virtuemart_shipmentmethod_id', 'shipment_name', 'order_weight', 'shipment_weight_unit',
 	    'shipment_cost', 'shipment_package_fee', 'tax_id'); //,'created_on','created_by','modified_on','modified_by','locked_on');
+
+	$varsToPush = array('shipment_logos'=>array('','string'),
+							  	'countries'=>array(0,'int'),
+							  	'zip_start'=>array(0,'int'),
+								'zip_end'=>array(0,'int'),
+								'weight_start'=>array(0,'int'),
+								'weight_stop'=>array(0,'int'),
+								'weight_unit'=>array(0,'string'),
+								'cost'=>array(0,'int'),
+								'package_fee'=>array(0,'int'),
+								'tax_id'=>array(0,'int'),
+								'free_shipment'=>array(0,'int')
+	);
+
+	$this->setConfigParameterable($this->_configTableFieldName,$varsToPush);
+
 // 		self::$_this
 	//$this->createPluginTable($this->_tablename);
 	self::$_this = $this;
@@ -112,28 +128,28 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	if (!($shipment = $this->getVmPluginMethod($cart->virtuemart_shipmentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
-	if (!class_exists('JParameter'))
-	    require(JPATH_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
+// 	if (!class_exists('JParameter'))
+// 	    require(JPATH_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
 
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
 // 	$params = new JParameter($shipment->shipment_params);
 
-// 	$values['order_number'] = VirtueMartModelOrders::getOrderNumber($orderID);
-// 	$values['virtuemart_order_id'] = $orderID;
-// 	$values['shipment_id'] = $cart->virtuemart_shipmentmethod_id;
-// 	$values['shipment_name'] = parent::renderPluginName($shipment, $params);
-// 	$values['order_weight'] = $this->getOrderWeight($cart, $params->get('weight_unit'));
-// 	$values['shipment_weight_unit'] = $params->get('weight_unit');
-// 	$values['shipment_cost'] = $params->get('cost');
-// 	$values['shipment_package_fee'] = $params->get('package_fee');
-// 	$values['tax_id'] = $params->get('tax_id');
+	$values['order_number'] = VirtueMartModelOrders::getOrderNumber($orderID);
+	$values['virtuemart_order_id'] = $orderID;
+	$values['shipment_id'] = $cart->virtuemart_shipmentmethod_id;
+	$values['shipment_name'] = parent::renderPluginName($shipment);
+	$values['order_weight'] = $this->getOrderWeight($cart, $shipment->weight_unit);
+	$values['shipment_weight_unit'] = $shipment->weight_unit;
+	$values['shipment_cost'] = $shipment->cost;
+	$values['shipment_package_fee'] = $shipment->package_fee;
+	$values['tax_id'] = $shipment->tax_id;
 
 // 		$this->writeData($values, $this->_tablename);
 
-	$this->storePluginInternalData($shipment);
-// 	$this->storePluginInternalData($values);
+// 	$this->storePluginInternalData($shipment);
+	$this->storePluginInternalData($values);
 	return true;
     }
 
@@ -188,12 +204,12 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	return $html;
     }
 
-    function getCosts($params, $cart_prices) {
-	$free_shipment = $params->get('free_shipment', 0);
-	if ($free_shipment && $cart_prices['salesPrice'] >= $free_shipment) {
+    function getCosts($method, $cart_prices) {
+
+	if ($method->free_shipment && $cart_prices['salesPrice'] >= $method->free_shipment) {
 	    return 0;
 	} else {
-	    return $params->get('cost', 0) + $params->get('package_fee', 0);
+	    return $method->cost + $method->package_fee;
 	}
     }
 
