@@ -245,34 +245,7 @@ class VmTable extends JTable{
 	 */
 	function load($oid=null,$tableJoins= array(),$joinKey = 0){
 
-/*		if($this->_translatable){
-			$tblKey = $this->_tbl_key;
 
-			if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
-			$langTable = new VmTableData($this->_tbl_lang,$tblKey,$this->_db);
-			$langTable->setPrimaryKey($tblKey);
-			$langData = array();
-			$langObKeys = array();
-			$langUniqueKeys = array();
-
-			foreach($this->_translatableFields as $name){
-				$langTable->$name = '';
-				unset($this->$name);
-			}
-			$langData = $langTable->load($int);
-// 			vmdebug('Table load '.$int,$langData);
-		}
-
-		parent::load($int);
-
-		if($this->_translatable){
-			foreach($this->_translatableFields as $name){
-				$this->$name = $langData->$name;
-			}
-		}/*/
-
-// 		$query = 'SELECT L.* FROM `#__virtuemart_categories_'.VMLANG.'` as L';
-// 		$query .= ' JOIN `#__virtuemart_categories` as C using (`virtuemart_category_id`)';
 		$k = $this->_tbl_key;
 
 		if ($oid !== null) {
@@ -335,10 +308,12 @@ class VmTable extends JTable{
 
 			$this->bind($result);
 			if(!empty($this->_xParams)){
+				//Maybe better to use for $this an &
+				self::bindParameterable($this,$this->_xParams,$this->_varsToPushParam);
 
-				$paramFieldName = $this->_xParams;
+/*				$paramFieldName = $this->_xParams;
 				$paramFields = $this->$paramFieldName;
-// 				vmdebug('$this->_xParams '.$this->_xParams.' $this->$paramFieldName ',$this->$paramFieldName);
+				// 				vmdebug('$this->_xParams '.$this->_xParams.' $this->$paramFieldName ',$this->$paramFieldName);
 				if(!empty($this->$paramFieldName)){
 
 					$params = explode('|', $this->$paramFieldName);
@@ -349,7 +324,7 @@ class VmTable extends JTable{
 							if($this->_varsToPushParam[$item[0]][1]==='string'){
 								$this->$item[0] = base64_decode(unserialize($item[1]));
 							} else {
-// 								vmdebug('my unserialize '.$item[1]);
+								// 								vmdebug('my unserialize '.$item[1]);
 								$this->$item[0] = unserialize($item[1]);
 							}
 						}
@@ -360,9 +335,9 @@ class VmTable extends JTable{
 					if(!isset($this->$key)){
 						$this->$key = $v[0];
 					}
-				}
-
+				} */
 			}
+
 			if (count($tableJoins)) {
 				foreach ($tableJoins as $tableId => $table) {
 					if(isset( $result[$tableId] )) $this->$tableId = $result[$tableId];
@@ -377,6 +352,34 @@ class VmTable extends JTable{
 
 	}
 
+	function bindParameterable(&$obj,$xParams,$varsToPushParam){
+		$paramFieldName = $xParams;
+		$paramFields = $obj->$paramFieldName;
+		// 				vmdebug('$this->_xParams '.$this->_xParams.' $this->$paramFieldName ',$this->$paramFieldName);
+		if(!empty($obj->$paramFieldName)){
+
+			$params = explode('|', $obj->$paramFieldName);
+			foreach($params as $item){
+
+				$item = explode('=',$item);
+				if(count($item)===2 && isset($varsToPushParam[$item[0]][1]) ){
+					if($varsToPushParam[$item[0]][1]==='string'){
+						$obj->$item[0] = base64_decode(unserialize($item[1]));
+					} else {
+						// 								vmdebug('my unserialize '.$item[1]);
+						$obj->$item[0] = unserialize($item[1]);
+					}
+				}
+			}
+		}
+
+		foreach($varsToPushParam as $key=>$v){
+			if(!isset($obj->$key)){
+				$obj->$key = $v[0];
+			}
+		}
+
+	}
 	/**
 	 * Technic to inject params as table attributes
 	 * @author Max Milbers

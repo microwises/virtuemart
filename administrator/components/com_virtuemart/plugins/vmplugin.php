@@ -45,6 +45,10 @@ abstract class vmPlugin extends JPlugin {
 	protected $_vmpCtable = 0;
 	//the name of the table which holds the configuration like paymentmethods, shipmentmethods, customs
 	protected $_configTable = 0;
+	protected $_configTableFileName = 0;
+	protected $_configTableClassName = 0;
+	protected $_xParams = 0;
+
 	//id field of the config table
 	protected $_idName = 0;
 	//Name of the field in the configtable, which holds the parameters of the pluginmethod
@@ -245,9 +249,9 @@ abstract class vmPlugin extends JPlugin {
 
 		if($this->_vmpCtable===0){
 			$db = JFactory::getDBO();
-			$tablename = 'Table'.$this->_psType.'s';
-			if(!class_exists($tablename))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.$this->_psType.'s'.'.php');
-			$this->_vmpCtable = new $tablename($db);
+
+			if(!class_exists($this->_configTableClassName))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.$this->_configTableFileName.'.php');
+			$this->_vmpCtable = new $this->_configTableClassName($db);
 			if($this->_xParams!==0){
 				$this->_vmpCtable->setParameterable($this->_xParams,$this->_varsToPushParam);
 			}

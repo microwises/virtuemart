@@ -53,7 +53,8 @@ abstract class vmCustomPlugin extends VmPlugin {
 		$this->_tablepkey = 'virtuemart_product_id';
 		$this->_tablename = '#__virtuemart_product_'.$this->_psType .'_plg_'. $this->_name;
 		$this->_idName = 'virtuemart_custom_id';
-
+		$this->_configTableFileName = $this->_psType.'s';
+		$this->_configTableClassName = 'Table'.ucfirst($this->_psType).'s'; //TablePaymentmethods
 		$this->_configTable = '#__virtuemart_customs';
 
 // 		$this->_configTableFieldName = '';

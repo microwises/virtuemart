@@ -123,7 +123,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderBE()
 	 */
 	function plgVmOnShowOrderBE($psType, $virtuemart_order_id, $virtuemart_payment_id) {
-		if (!$this->selectedThis($psType, $virtuemart_payment_id)) {
+		if (!$this->selectedThisByMethodId($psType, $virtuemart_payment_id)) {
 			return null; // Another method was selected, do nothing
 		}
 		$db = JFactory::getDBO();
@@ -142,7 +142,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		$html .= '</table>' . "\n";
 		return $html;
 	}
-	function getCosts($payment->, $cart_prices) {
+
+	function getCosts($payment, $cart_prices) {
 		return $payment->cost;
 	}
 
@@ -156,6 +157,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 *
 	 */
 	protected function checkConditions($cart, $payment, $cart_prices) {
+
 
 // 		$params = new JParameter($payment->payment_params);
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);

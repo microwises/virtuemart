@@ -432,7 +432,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      */
     function plgVmOnShowOrderBE($psType, $virtuemart_order_id, $payment_method_id) {
 
-	if (!$this->selectedThis($psType, $payment_method_id)) {
+	if (!$this->selectedThisByMethodId($psType, $payment_method_id)) {
 	    return null; // Another method was selected, do nothing
 	}
 	$db = JFactory::getDBO();

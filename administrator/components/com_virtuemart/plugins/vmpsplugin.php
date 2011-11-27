@@ -29,22 +29,12 @@ abstract class vmPSPlugin extends vmPlugin {
 		$this->_idName = 'virtuemart_' . $this->_psType . 'method_id';
 		$this->_configTable = '#__virtuemart_'.$this->_psType.'methods';
 		$this->_configTableFieldName = $this->_psType.'_params';
+		$this->_configTableFileName = $this->_psType.'methods';
+		$this->_configTableClassName = 'Table'.ucfirst($this->_psType).'methods'; //TablePaymentmethods
 // 		$this->_configTableIdName = $this->_psType.'_jplugin_id';
 		$this->_loggable = true;
 
 		$this->_tableChecked = true;
-	}
-
-	/**
-	* This method checks if the selected method matches the current plugin
-	* @param int $id The method ID
-	* @param pssType : shipment or payment
-	* @author Oscar van Eijk
-	* @return True if the calling plugin has the given method ID, and psType
-	*@deprecated use directly selectedThisByMethodId ONLY deprecated for vmpsplugin
-	*/
-	protected function selectedThis($psType,$id) {
-		return $this->selectedThisByMethodId($psType,$id);
 	}
 
 	/**
@@ -87,7 +77,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 *
 	 */
 	public function plgVmOnSelectCheck($psType, VirtueMartCart $cart) {
-		$idName = $this->_idName;
+		$idName = $this->_idName;vmdebug('plgVmOnSelectCheck',$idName);
 		if (!$this->selectedThisByMethodId($psType, $cart->$idName)) {
 			return null; // Another method was selected, do nothing
 		}
@@ -489,6 +479,12 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$db->setQuery($q);
 		$this->methods = $db->loadObjectList();
+
+		foreach($this->methods as $method){
+			VmTable::bindParameterable($method,$this->_xParams,$this->_varsToPushParam);
+		}
+
+		vmdebug('getPluginMethods',$this->methods);
 		return $this->methods;
 	}
 
