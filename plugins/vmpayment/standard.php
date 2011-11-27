@@ -38,7 +38,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		$this->tableFields = array('id','virtuemart_order_id','order_number','virtuemart_paymentmethod_id',
 						'payment_name','cost','cost','tax_id');//,'created_on','created_by','modified_on','modified_by','locked_on');
 
-		$varsToPush = array('payment_logos'=>array('','string'),
+		$varsToPush = array('payment_logos'=>array('','char'),
 							  	'countries'=>array(0,'char'),
 							  	'min_amount'=>array(0,'int'),
 								'max_amount'=>array(0,'int'),

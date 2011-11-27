@@ -38,7 +38,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	$this->tableFields = array('id', 'virtuemart_order_id', 'order_number', 'virtuemart_shipmentmethod_id', 'shipment_name', 'order_weight', 'shipment_weight_unit',
 	    'shipment_cost', 'shipment_package_fee', 'tax_id'); //,'created_on','created_by','modified_on','modified_by','locked_on');
 
-	$varsToPush = array('shipment_logos'=>array('','string'),
+	$varsToPush = array('shipment_logos'=>array('','char'),
 							  	'countries'=>array(0,'char'),
 							  	'zip_start'=>array(0,'int'),
 								'zip_stop'=>array(0,'int'),
