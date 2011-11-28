@@ -199,7 +199,6 @@ class VirtueMartModelPaymentmethod extends VmModel{
 				foreach($varsToPushParam as $push){
 
 					if($push!==0 and $push[0]!==0 and $push[1]!==0){
-						vmdebug('hm $$push',$push);
 						$table->setParameterable($push[0],$push[1]);
 					}
 				}

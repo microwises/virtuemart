@@ -41,7 +41,7 @@ class VirtueMartModelUserfields extends VmModel {
 	var $_params;
 	/** @var array type=>fieldname with formfields that are saved as parameters */
 	var $reqParam;
-	
+
 	// *** code for htmlpurifier ***
 	// var $htmlpurifier = '';
 
@@ -110,19 +110,19 @@ class VirtueMartModelUserfields extends VmModel {
 			// require(JPATH_VM_ADMINISTRATOR.DS.'library'.DS.'htmlpurifier'.DS.'HTMLPurifier.auto.php');
 			// $config = HTMLPurifier_Config::createDefault();
 			// $this->htmlpurifier = new HTMLPurifier($config);
-			// }			
+			// }
 			// $value = $this->htmlpurifier->purify($value);
 			// vmdebug( "purified filter" , $value);
 
 			//$config->set('URI.HostBlacklist', array('google.com'));// set eg .add google.com in black list
-	
-			
- 				// no HTML TAGS but permit all alphabet 
+
+
+ 				// no HTML TAGS but permit all alphabet
 				$value =	preg_replace('@<[\/\!]*?[^<>]*?>@si','',$value);//remove all html tags
 				$value =	(string)preg_replace('#on[a-z](.+?)\)#si','',$value);//replace start of script onclick() onload()...
 				$value = trim(str_replace('"', ' ', $value),"'") ;
 				$value =	(string)preg_replace('#^\'#si','',$value);//replace ' at start
-				//vmdebug( "my filter" , $value); 
+				//vmdebug( "my filter" , $value);
 			break;
 		}
 		return $value;
@@ -645,7 +645,6 @@ class VirtueMartModelUserfields extends VmModel {
 
     // 				case 'email':
     // 					$_return['fields'][$_fld->name]['formcode'] = $_userData->email;
-    // 					vmdebug('hm',$_userData);
     // 					break;
 				    case 'virtuemart_country_id':
 					    $_return['fields'][$_fld->name]['formcode'] =

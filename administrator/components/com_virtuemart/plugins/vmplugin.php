@@ -89,7 +89,6 @@ abstract class vmPlugin extends JPlugin {
 	 */
 	protected function selectedThis($psType,$name=0,$jid=0) {
 
-// 		vmdebug('hmm id '.$jid);
 		if($psType!==0){
 			if($psType!=$this->_psType){
 				vmdebug('selectedThis $psType does not fit');

@@ -329,7 +329,7 @@ class VmConfig {
 		$db->setQuery($query);
 		$configTable = $db->loadResult();
 // 		self::$_debug = true;
-// 		vmdebug('hmm',$configTable);
+
 		if(empty($configTable)){
 			self::$_jpConfig->installVMconfig();
 		}

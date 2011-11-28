@@ -86,7 +86,7 @@ abstract class vmCustomPlugin extends VmPlugin {
      * @author Patrick Kohl
      * @deprecated
      */
-	function getVmCustomParams($virtuemart_custom_id=0,$vendorId=0 ) {
+/*	function getVmCustomParams($virtuemart_custom_id=0,$vendorId=0 ) {
 
 	if (!$vendorId)
             $vendorId = 1;
@@ -97,7 +97,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 
         return  new JParameter( $plg_params->custom_params );
     }
-
+*/
 	/**
 	 * This is the actions which take place, when a product gets stored
 	 *
@@ -154,11 +154,6 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 */
 	 public function plgVmOnDisplayTypePlugin($field,$product,$row){
 
-// 		if (empty($field->custom_value)) return 0;
-// 		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
-// 		else $custom_param = array();
-// 		$plg = self::setClass($field->custom_value) ;
-
 		VmTable::bindParameterable($field,$this->_xParams,$this->_varsToPushParam);
 		return $this->onDisplayProductFE(  $field, $product, $row);
 	 }
@@ -171,12 +166,8 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 */
 	 public function calculatePluginVariant( $product, $field,$selected,$row){
 
-		if (empty($field->custom_value)) return 0 ;
-		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
-		else $custom_param = array();
-
-// 		$plg = self::setClass($field->custom_value) ;
-		return $this->modifyPrice( $product, $field,$custom_param,$selected,$row);
+		VmTable::bindParameterable($field,$this->_xParams,$this->_varsToPushParam);
+		return $this->modifyPrice( $product, $field,$selected,$row);
 	 }
 
 	 /**

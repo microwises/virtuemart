@@ -447,7 +447,7 @@ class GenericTableUpdater extends JModel{
 			if(in_array($name, $eKeyNames)){
 
 				$key=array_search($name, $eKeyNames);
-				// 				vmdebug('hm key id '.$key);
+
 				$oldColumn = $this->reCreateKeyByTableAttributes($eKeys[$key]);
 
 				$compare = strcasecmp( $oldColumn, $value);

@@ -218,7 +218,6 @@ if (VmConfig::get('oncheckout_show_register', 1) && $this->userDetails->JUser->i
             <input type="hidden" name="address_type" value="<?php echo $this->address_type; ?>" />
             <input type="hidden" name="virtuemart_userinfo_id" value="<?php echo $this->virtuemart_userinfo_id ; ?>" />
 <?php echo JHTML::_('form.token');
- ///userinfoid = current($this->userDetails->userInfo);
- //vmdebug('hmm',$userinfoid->virtuemart_userinfo_id);
+
 ?>
 </form>
