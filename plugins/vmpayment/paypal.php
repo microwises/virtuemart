@@ -129,13 +129,14 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	if (!$this->selectedThisType($psType)) {
 	    return null;
 	}
-	if (!($payment = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
+	if (!($method = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
+	if (!$this->selectedThisElement($method->payment_element)) {
+		    return false;
+	}
 
-// 	$params = new JParameter($payment->payment_params);
-
-	$this->_debug = $payment->debug;
+	$this->_debug = $method->debug;
 	$this->logInfo('plgVmConfirmedOrderRenderPaymentForm order number: ' . $order_number, 'message');
 
 	if (!class_exists('VirtueMartModelOrders'))
@@ -158,13 +159,13 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$currencyModel = new VirtueMartModelCurrency();
 	$currency = $currencyModel->getCurrency($cart->pricesCurrency);
 
-	$merchant_email = $this->_getMerchantEmail($payment);
+	$merchant_email = $this->_getMerchantEmail($method);
 	if (empty($merchant_email)) {
 	    vmInfo(JText::_('VMPAYMENT_PAYPAL_MERCHANT_EMAIL_NOT_SET'));
 	    return false;
 	}
 
-	$testReq = $payment->debug == 1 ? 'YES' : 'NO';
+	$testReq = $method->debug == 1 ? 'YES' : 'NO';
 	$post_variables = Array(
 	    'cmd' => '_ext-enter',
 	    'redirect_cmd' => '_xclick',
@@ -200,8 +201,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
 	    "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginusercancel&on=' . $order_number . '&pm=' . $cart->virtuemart_paymentmethod_id),
 	    //"undefined_quantity" => "0",
-	    "ipn_test" => $payment->debug,
-	    "pal" => "NRUBJXESJTY24",
+	    "ipn_test" => $method->debug,
+	    //"pal" => "NRUBJXESJTY24",
 	    // "image_url" => $vendor_image_url, // TO DO
 	    //"no_shipping" => "1",
 	    "no_note" => "1");
@@ -241,11 +242,11 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$dbValues['payment_name'] = parent::renderPluginName($payment);
 	$dbValues['virtuemart_paymentmethod_id'] = $cart->virtuemart_paymentmethod_id;
 	$dbValues['paypal_custom'] = $return_context;
-	$dbValues['cost'] = $payment->cost;
-	$dbValues['tax_id'] = $payment->tax_id;
+	$dbValues['cost'] = $method->cost;
+	$dbValues['tax_id'] = $method->tax_id;
 	$this->storePSPluginInternalData($dbValues);
 
-	$url = $this->_getPaypalUrlHttps($payment);
+	$url = $this->_getPaypalUrlHttps($method);
 
 	// add spin image
 
@@ -287,10 +288,13 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
 
 	$vendorId = 0;
-	if (!($payment = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
+	if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
-	$params = new JParameter($payment->payment_params);
+	if (!$this->selectedThisElement($method->payment_element)) {
+		    return false;
+	}
+
 	$payment_data = JRequest::get('post');
 	vmdebug('plgVmOnResponseReceived', $payment_data);
 	$order_number = $payment_data['invoice'];
@@ -299,7 +303,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
 	$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
-	$payment_name = $this->renderPluginName($payment, $params);
+	$payment_name = $this->renderPluginName($payment, $method);
 	$html = $this->_getPaymentResponseHtml($payment_data, $payment_name);
 
 	return true;
@@ -363,9 +367,11 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	}
 	$vendorId = 1;
 	$payment = $this->getDataByOrderId($virtuemart_order_id);
-// 	$paramstring = $this->getVmParams($vendorId, $payment->virtuemart_paymentmethod_id);
-// 	$params = new JParameter($paramstring);
+
 	$method = $this->getVmPluginMethod($payment->virtuemart_paymentmethod_id);
+	if (!$this->selectedThisElement($method->payment_element)) {
+		    return false;
+	}
 
 	$this->_debug = $method->debug;
 	if (!$payment) {
@@ -409,10 +415,10 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 // 		$this->updateData($response_fields, $this->_tablename, 'virtuemart_order_id', $virtuemart_order_id);
 	$this->storePSPluginInternalData($response_fields);
 
-	$error_msg = $this->_processIPN($paypal_data, $params);
+	$error_msg = $this->_processIPN($paypal_data, $method);
 	$this->logInfo('process IPN ' . $error_msg, 'message');
 	if (!(empty($error_msg) )) {
-	    $new_status = $params->get('status_canceled');
+	    $new_status =$method->status_canceled;
 	    $this->logInfo('process IPN ' . $error_msg . ' ' . $new_status, 'ERROR');
 	} else {
 	    $this->logInfo('process IPN OK, status', 'message');
@@ -438,7 +444,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    }
 	    $paypal_status = $paypal_data['payment_status'];
 	    if (strcmp($paypal_status, 'Completed') == 0) {
-		$new_status = $params->get('status_success');
+		$new_status = $method->status_success;
 	    }
 	}
 
@@ -483,9 +489,9 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      * @return string Empty string if data is valid and an error message otherwise
      * @access protected
      */
-    function _processIPN($paypal_data, $params) {
-	$secure_post = $params->get('secure_post', '0');
-	$paypal_url = $this->_getPaypalURL($params);
+    function _processIPN($paypal_data, $method) {
+	$secure_post = $method->secure_post ;
+	$paypal_url = $this->_getPaypalURL($method);
 	// read the post from PayPal system and add 'cmd'
 	$post_msg = 'cmd=_notify-validate';
 	foreach ($paypal_data as $key => $value) {
@@ -531,19 +537,19 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	return '';
     }
 
-    function _getMerchantEmail($payment) {
-	return $payment->sandbox ? $payment->sandbox_merchant_email : $payment->paypal_merchant_email;
+    function _getMerchantEmail($method) {
+	return $method->sandbox ? $method->sandbox_merchant_email : $method->paypal_merchant_email;
     }
 
-    function _getPaypalUrl($payment) {
+    function _getPaypalUrl($method) {
 
-	$url = $payment->sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';
+	$url = $method->sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';
 
 	return $url;
     }
 
-    function _getPaypalUrlHttps($payment) {
-	$url = $this->_getPaypalUrl($payment);
+    function _getPaypalUrlHttps($method) {
+	$url = $this->_getPaypalUrl($method);
 	$url = $url . '/cgi-bin/webscr';
 
 	return $url;

@@ -128,6 +128,9 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	if (!($shipment = $this->getVmPluginMethod($cart->virtuemart_shipmentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
+	if (!$this->selectedThisElement($shipment->shipment_element)) {
+		    return false;
+		}
 // 	if (!class_exists('JParameter'))
 // 	    require(JPATH_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
 

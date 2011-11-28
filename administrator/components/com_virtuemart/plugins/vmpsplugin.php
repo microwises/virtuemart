@@ -142,7 +142,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			return null; // Another method was selected, do nothing
 		}
 
-		if (!($method = $this->getPluginMethod($cart->$id) )) {
+		if (!($method = $this->getVmPluginMethod($cart->$id) )) {
 			return null;
 		}
 
@@ -253,6 +253,18 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	public function plgVmConfirmedOrderRenderForm($psType, $order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status) {
 		return null;
+	}
+/**
+	 * check if it is the correct element
+	 * @param string $element either standard or paypal
+	 * @return boolean
+	 */
+	public function selectedThisElement($element) {
+		if ($this->_name <> $element) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	/**
@@ -420,7 +432,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	final protected function getPluginMethod($method_id) {
 
-		//if(!$this->selectedThisByMethodId($this->_psType,$method_id)) return false;
+		 if(!$this->selectedThisByMethodId($this->_psType,$method_id)) return false;
 		return $this->getVmPluginMethod($method_id);
 
 /*		$db = JFactory::getDBO();
@@ -490,7 +502,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	/**
-	 * Get Payment Data for a given Payment ID
+	 * Get Method Data for a given Payment ID
 	 * @author Valérie Isaksen
 	 * @param int $virtuemart_payment_id The Payment ID
 

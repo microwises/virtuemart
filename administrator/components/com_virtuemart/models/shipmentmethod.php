@@ -207,10 +207,10 @@ class VirtueMartModelShipmentmethod extends VmModel {
 		}
 
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
-			JPluginHelper::importPlugin('vmshipment');
-			//Add a hook here for other shipment methods, checking the data of the choosed plugin
-			$dispatcher = JDispatcher::getInstance();
-			$retValues = $dispatcher->trigger('plgVmOnStoreInstallPluginTable', array('shipment' , $data['shipment_jplugin_id']));
+		JPluginHelper::importPlugin('vmshipment');
+		//Add a hook here for other shipment methods, checking the data of the choosed plugin
+		$dispatcher = JDispatcher::getInstance();
+		$retValues = $dispatcher->trigger('plgVmOnStoreInstallPluginTable', array('shipment' , $data['shipment_jplugin_id']));
 
 		return $table->virtuemart_shipmentmethod_id;
 	}
