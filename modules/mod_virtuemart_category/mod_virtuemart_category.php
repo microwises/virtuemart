@@ -35,9 +35,7 @@ $moduleclass_sfx = $params->get('moduleclass_sfx','');
 $layout = $params->get('layout','default');
 $active_category_id = JRequest::getInt('virtuemart_category_id', '0');
 $vendorId = '1';
-		//$profiler = new JProfiler();
-		$cache = & JFactory::getCache();
-		$cache->setCaching( 1 );
+		$cache = & JFactory::getCache('com_virtuemart','callback');
 		$categories = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $category_id );
 // $categories = $categoryModel->getChildCategoryList($vendorId, $category_id);
 // We dont use image here 
@@ -48,17 +46,13 @@ if(empty($categories)) return false;
 
 foreach ($categories as $category) {
 
-		$cache = & JFactory::getCache();
-		$cache->setCaching( 1 );
 		$category->childs = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $category->virtuemart_category_id );
    // $category->childs = $categoryModel->getChildCategoryList($vendorId, $category->virtuemart_category_id) ;
 	// No image used here
 	//$categoryModel->addImages($category->childs);
 }
-//echo $profiler->mark( ' seconds to do stuff' );
-// 
-$catTree = $categoryModel->getCategoriesInfo($vendorId=1 );
-echo json_encode($catTree,JSON_FORCE_OBJECT);
+// $catTree = $categoryModel->getCategoriesInfo($vendorId=1 );
+// echo json_encode($catTree,JSON_FORCE_OBJECT);
 $parentCategories = $categoryModel->getCategoryRecurse($active_category_id,0);
 
 

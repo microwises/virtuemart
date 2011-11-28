@@ -63,7 +63,8 @@ class VirtueMartControllerCategory extends JController {
 		$data = JRequest::getInt('error');
 		
 		/* Display it all */
-		$view->display();
+		$safeurlparams = array('virtuemart_category_id'=>'INT','virtuemart_currency_id'=>'INT','return'=>'BASE64','lang'=>'CMD','orderby'=>'CMD','limitstart'=>'CMD','order'=>'CMD','limit'=>'CMD');
+		parent::display(true, $safeurlparams);//$view->display();
 	}
 }
 // pure php no closing tag

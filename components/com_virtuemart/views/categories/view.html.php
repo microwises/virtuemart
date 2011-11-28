@@ -57,8 +57,9 @@ class VirtuemartViewCategories extends JView {
 //		$categoryId = 0;	//The idea is that you can choose a parent catgory, this value should come from the joomla view parameter stuff
 		$category = $categoryModel->getCategory($categoryId);
 		//if($category->children)	$categoryModel->addImages($category->children);
-
-		$category->children = $categoryModel->getChildCategoryList($vendorId, $categoryId);
+		$cache = & JFactory::getCache('com_virtuemart','callback');
+		$$category->children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $category_id );
+		//$category->children = $categoryModel->getChildCategoryList($vendorId, $categoryId);
 		$categoryModel->addImages($category->children,1);
 
 	   //Add the category name to the pathway

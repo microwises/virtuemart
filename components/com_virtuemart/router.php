@@ -463,9 +463,18 @@ class vmrouterHelper {
 		}
 		return self::$_instance;
 	}
-
-	/* Get Joomla menu item and the route for category */
 	public function getCategoryRoute($virtuemart_category_id){
+		
+		$cache = JFactory::getCache('_virtuemart','');
+		$key = $virtuemart_category_id. VMLANG ; // internal cache key
+		if (!($CategoryRoute = $cache->get($key))) {
+			$CategoryRoute = $this->getCategoryRouteNocache($virtuemart_category_id);
+			$cache->store($CategoryRoute, $key);
+		}
+		return $CategoryRoute ;
+	}
+	/* Get Joomla menu item and the route for category */
+	public function getCategoryRouteNocache($virtuemart_category_id){
 		if (! array_key_exists ($virtuemart_category_id, self::$_catRoute)){
 			$category = new stdClass();
 			$category->route = '';

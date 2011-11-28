@@ -87,13 +87,12 @@ class VirtuemartViewCategory extends JView {
 		static $counter2 = 0;
 		//if($category->children)	$categoryModel->addImages($category->children);
 
-		$cache = & JFactory::getCache();
-		$cache->setCaching( 1 );
+		$cache = & JFactory::getCache('com_virtuemart','callback');
 		$category->children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $categoryId );
 		// self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
 		vmTime('end loop categoryListTree '.$counter);
 
-		$category->children = $categoryModel->getChildCategoryList($vendorId, $categoryId);
+		//$category->children = $categoryModel->getChildCategoryList($vendorId, $categoryId);
 		$categoryModel->addImages($category->children,1);
 
 

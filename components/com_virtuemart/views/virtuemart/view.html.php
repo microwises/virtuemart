@@ -62,7 +62,14 @@ class VirtueMartViewVirtueMart extends JView {
 			$productModel = $this->getModel('product');
 			$products = array();
 			$categoryId = JRequest::getInt('catid', 0);
+			$cache = & JFactory::getCache('com_virtuemart','callback');
+
+			$category->children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $categoryId );
+			// self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
+			
 			$categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
+			
+			//$categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
 			$categoryModel->addImages($categoryChildren,1);
 
 			$this->assignRef('categories',	$categoryChildren);

@@ -60,7 +60,8 @@ class VirtueMartControllerCategories extends JController {
 		/* Add the default model */
 		$view->setModel($this->getModel('vendor', 'VirtuemartModel'));
 		/* Display it all */
-		$view->display();
+		$safeurlparams = array('virtuemart_category_id'=>'INT','return'=>'BASE64','lang'=>'CMD');
+		parent::display(true, $safeurlparams);//$view->display();
 	}
 		public function json(){
 

@@ -15,13 +15,7 @@ defined('_JEXEC') or die( 'Direct Access to '.basename(__FILE__).' is not allowe
 *
 * www.virtuemart.net
 */
-/* Load  VM fonction */
-if (!class_exists( 'mod_virtuemart_product' )) require('helper.php');
-
 /* Setting */
-$vendorId = JRequest::getInt('vendorid', 1);
-$productModel = new VirtueMartModelProduct();
-
 $max_items = 		$params->get( 'max_items', 2 ); //maximum number of items to display
 $category_id = 		$params->get( 'virtuemart_category_id', null ); // Display products from this category only
 $filter_category = 	(bool)$params->get( 'filter_category', 0 ); // Filter the category
@@ -32,19 +26,49 @@ $show_addtocart = 	(bool)$params->get( 'show_addtocart', 1 ); // Display the "Ad
 $headerText = 		$params->get( 'headerText', '' ); // Display a Header Text
 $footerText = 		$params->get( 'footerText', ''); // Display a footerText
 $Product_group = 	$params->get( 'product_group', 'featured'); // Display a footerText
-if (!$filter_category ) $category_id = null;
-$products = 		$productModel->getProductListing($Product_group, $max_items);
-$productModel->addImages($products);
 
-$totalProd = 		count( $products);
-if(empty($products)) return false;
-$currency = CurrencyDisplay::getInstance( );
+$mainframe = Jfactory::getApplication();
+$virtuemart_currency_id = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',JRequest::getInt('virtuemart_currency_id',0) );
 
-if ($show_addtocart) {
-	vmJsApi::jQuery();
-	vmJsApi::jPrice();
-	vmJsApi::cssSite();
+
+$cache	= &JFactory::getCache('mod_virtuemart_product', 'output');
+
+$key = 'products'.$category_id.'.'.$max_items.'.'.$filter_category.'.'.$display_style.'.'.$products_per_row.'.'.$show_price.'.'.$show_addtocart.'.'.$Product_group.'.'.$virtuemart_currency_id;
+
+$cache = JFactory::getCache('mod_menu', '');
+if (!($output = $cache->get($key))) {
+	ob_start();
+	// Try to load the data from cache.
+
+
+	/* Load  VM fonction */
+	if (!class_exists( 'mod_virtuemart_product' )) require('helper.php');
+
+
+	 
+	$vendorId = JRequest::getInt('vendorid', 1);
+
+
+
+	if (!$filter_category ) $category_id = null;
+
+	$productModel = new VirtueMartModelProduct();
+	$products = 		$productModel->getProductListing($Product_group, $max_items);
+	$productModel->addImages($products);
+
+	$totalProd = 		count( $products);
+	if(empty($products)) return false;
+	$currency = CurrencyDisplay::getInstance( );
+
+	if ($show_addtocart) {
+		vmJsApi::jQuery();
+		vmJsApi::jPrice();
+		vmJsApi::cssSite();
+	}
+	/* load the template */
+	require(JModuleHelper::getLayoutPath('mod_virtuemart_product'));
+	$output = ob_get_contents();
+	$cache->store($output, $key);
 }
-/* load the template */
-require(JModuleHelper::getLayoutPath('mod_virtuemart_product'));
+echo $output;
 ?>
