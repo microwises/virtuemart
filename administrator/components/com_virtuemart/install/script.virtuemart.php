@@ -145,7 +145,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 *
 		 */
 		public function createIndexFolder($path){
-		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
+			if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 			if(JFolder::create($path)) {
 				if(!JFile::exists($path .DS. 'index.html')){
 					JFile::copy(JPATH_ROOT.DS.'components'.DS.'index.html', $path .DS. 'index.html');
@@ -175,9 +175,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if(empty($this->path)) $this->path = JPATH_VM_ADMINISTRATOR;
 
 
-// 			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
-// 			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
-// 			$this->displayFinished(true);
+			// 			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
+			// 			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
+			// 			$this->displayFinished(true);
 			//return false;
 
 			if(version_compare(JVERSION,'1.6.0','ge')) {
@@ -250,9 +250,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$fields = array('config'=>'`vendor_params` VARCHAR( 255 )  NOT NULL DEFAULT ""');
 			$this->alterTable('#__virtuemart_vendors',$fields);
 
-
 			$this->updateWeightUnit();
 			$this->updateDimensionUnit();
+
+			$tablenames = array('shipment'=>'weight_countries','payment'=>'standard','payment'=>'paypal');
+			$this->renamePsPluginTables($tablenames);
 
 			//delete old config file
 			// 			$this->renewConfigManually = !JFile::delete($this->path.DS.'virtuemart.cfg');
@@ -267,8 +269,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			// 			include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
 			//		$parent->getParent()->setRedirectURL('index.php?option=com_virtuemart&view=updatesMigration');
 
-// 			$tablesToRename = array(  '#__virtuemart_shippingcarrier_shoppergroups' => '#__virtuemart_shipmentmethod_shoppergroups'
-// 									);
+			// 			$tablesToRename = array(  '#__virtuemart_shippingcarrier_shoppergroups' => '#__virtuemart_shipmentmethod_shoppergroups'
+			// 									);
 
 			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();
@@ -281,6 +283,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$updater->updateMyVmTables();
 
 			$this->changeShoppergroupDataSetAnonShopperToOne();
+
+			$this->migrateCustomPluginTableIntoCustoms();
+
+			$this->updateJParamsToVmParams($tablenames);
 
 			if($loadVm) $this->displayFinished(true);
 
@@ -430,6 +436,101 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			return false;
 		}
 
+		private function renamePsPluginTables($tablenames){
+
+			foreach($tablenames as $key => $name){
+				$query = 'SHOW TABLES LIKE "%_virtuemart_order_shipper_'.$name.'%"'; //=>jos_virtuemart_shipment_plg_weight_countries
+				$this->_db->setQuery($query);
+				if($this->_db->loadResult()){
+					$query = 'ALTER TABLE `#__virtuemart_order_shipper_'.$name.'` RENAME TO `#__virtuemart_'.$key.'_plg_'.$name.'`';
+					$this->_db->setQuery($query);
+					$this->_db->query();
+				}
+			}
+
+		}
+
+
+		private function migrateCustomPluginTableIntoCustoms(){
+
+			$error = false;
+			if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
+
+			$q = 'SELECT * FROM `#__virtuemart_customplugins` ';
+			$this->_db->setQuery($q);
+
+			$items = $this->_db->loadAssocList();
+			$db = JFactory::getDBO();
+			foreach($items as $item){
+
+				//getTable
+				if(!class_exists('TableCustoms'))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'customs.php');
+				$table = new TableCustoms($db);
+				$params = new JParameter($item['custom_params']);
+// 				vmdebug('migrateCustomPluginTableIntoCustoms',$params);
+				$str = '';
+				foreach($params->getParams() as $pName => $pValue){
+					vmdebug('migrateCustomPluginTableIntoCustoms '.$pName.' '.$pValue );
+					$str .= $pName.'='.json_encode($pValue).'|';
+				}
+				$item['custom_params'] = $str;
+
+				$table->bindChecknStoreNoLang($item,true);
+				$errors = $table->getErrors();
+				if(!empty($errors)){
+					foreach($errors as $error){
+						vmError($error);
+					}
+					$error = true;
+				}
+			}
+
+			if(!$error){
+				$q = 'DROP TABLE `#__virtuemart_customplugins` ';
+				$this->_db->setQuery($q);
+				$this->_db->query();
+			}
+		}
+
+		/**
+		 *
+		 * Enter description here ...
+		 * @param unknown_type $tablenames
+		 */
+		private function updateJParamsToVmParams(){
+
+			if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
+
+			$tablenames = array('payment','shipment');
+
+			foreach($tablenames as $name){
+				$q = 'SELECT `virtuemart_'.$name.'_id`,`'.$name.'_params` FROM `#__virtuemart_'.$name.'` ';
+
+				$this->_db->setQuery($q);
+				$items = $this->_db->loadAssocList();
+
+				foreach($items as $item){
+					if(strpos("\n",$item[$name.'_params'])!==false and strpos("|",$item[$name.'_params'])===false){
+						vmInfo('Old params format recognised in table '.$name);
+						$params = new JParameter($item[$name.'_params']);
+						$str = '';
+						foreach($params->getParams() as $pName => $pValue){
+							vmdebug('migrateCustomPluginTableIntoCustoms '.$pName.' '.$pValue );
+							$str .= $pName.'='.json_encode($pValue).'|';
+						}
+						$q = 'UPDATE `#__virtuemart_'.$name.'` SET `custom_params`='.$str.' WHERE `virtuemart_'.$name.'_id`="'.$item['virtuemart_'.$name.'_id'].'" ';
+						$this->_db->setQuery($q);
+						if(!$this->_db->query()){
+							vmError('updateJParamsToVmParams '.$this->_db->getErrorMsg());
+						}
+
+					}
+				}
+			}
+
+		}
+
+
 		/**
 		 * Uninstall script
 		 * Triggers before database processing
@@ -546,10 +647,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 
 
+
+
 				<?php echo JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h2>
 			</td>
 			<td>
 				<h2>
+
+
 
 
 
@@ -574,6 +679,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 
 
+
+
 				<?php
 				if(!$update){
 					?>
@@ -586,9 +693,17 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 
 
+
+
+
+
 						<?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
 							</a>
 					</div>
+
+
+
+
 
 
 
@@ -607,10 +722,15 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 
 
+
+
+
+
 			</td>
 		</tr>
 	</table>
 </div>
+
 
 
 <?php

@@ -225,7 +225,7 @@ abstract class vmPlugin extends JPlugin {
 		$db->setQuery($q);
 		$this->_jid = $db->loadResult();
 		if(!$this->_jid){
-			vmError('selectedThis '.$db->getErrorMsg());
+			vmError('getJoomlaPluginId '.$db->getErrorMsg());
 			return false;
 		} else {
 			return $this->_jid;
