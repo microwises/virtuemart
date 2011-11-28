@@ -68,8 +68,8 @@ class VirtuemartViewCustom extends JView {
 			$this->assignRef('customPlugin',	$customPlugin);
 
 			$selected=0;
-			if(!empty($custom->virtuemart_jplugin_id)) {
-				$selected = $custom->virtuemart_jplugin_id;
+			if(!empty($custom->custom_jplugin_id)) {
+				$selected = $custom->custom_jplugin_id;
 			}
 			$pluginList = self::renderInstalledCustomPlugins($selected);
 			$this->assignRef('pluginList',$pluginList);

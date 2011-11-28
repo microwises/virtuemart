@@ -38,6 +38,7 @@ class TableCustoms extends VmTable {
 	var $admin_only		= 0;
 
 	var $custom_jplugin_id = 0;
+	var $custom_element = 0;
     /** @var string custom field value */
 	var $custom_title	= '';
     /** @var string custom Meta or alt  */

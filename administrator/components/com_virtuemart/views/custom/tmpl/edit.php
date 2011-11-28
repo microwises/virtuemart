@@ -44,9 +44,9 @@ echo $this->customfields->displayCustomFields($this->custom); ?>
 		<td>
 		<div id="plugin-Container">
 		<?php
-		if(!empty($this->customPlugin->custom_jplugin_id)){
-				echo $this->customPlugin->custom_name .'<br />' ;
-                $parameters = new vmParameters($this->customPlugin->custom_params,  $this->customPlugin->custom_element , 'plugin' ,'vmcustom');
+		if(!empty($this->customPlugin)){
+				echo $this->customPlugin->custom_title .'<br />' ;
+				$parameters = new vmParameters($this->customPlugin,  $this->customPlugin->custom_element , 'plugin' ,'vmcustom');
 				echo $rendered = $parameters->render(); ?>
 
 			<?php

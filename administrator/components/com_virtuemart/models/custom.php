@@ -55,9 +55,9 @@ class VirtueMartModelCustom extends VmModel {
 
     	//if(empty($this->_db)) $this->_db = JFactory::getDBO();
 		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
-   		$data =& $this->getTable('customs');
-   		$data->load($this->_id);
-
+   		$this->_data =& $this->getTable('customs');
+   		$this->_data->load($this->_id);
+//    		vmdebug('getCustom $data',$this->_data);
    		if(!empty($this->_data->custom_jplugin_id)){
    			JPluginHelper::importPlugin('vmcustom');
    			$dispatcher = JDispatcher::getInstance();
@@ -77,8 +77,8 @@ class VirtueMartModelCustom extends VmModel {
 //  		$custom = VmCustomHandler::createCustom($data);
 		if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 		$customfields = new VirtueMartModelCustomfields();
-		$data->field_types = $customfields->getField_types() ;
-  		return $data;
+		$this->_data->field_types = $customfields->getField_types() ;
+  		return $this->_data;
 
     }
     /**
@@ -316,6 +316,18 @@ class VirtueMartModelCustom extends VmModel {
 			$data['virtuemart_vendor_id'] = (int) $data['virtuemart_vendor_id'];
 		}
 
+		// missing string FIX, Bad way ?
+		if (VmConfig::isJ15()) {
+			$tb = '#__plugins';
+			$ext_id = 'id';
+		} else {
+			$tb = '#__extensions';
+			$ext_id = 'extension_id';
+		}
+		$q = 'SELECT `element` FROM `' . $tb . '` WHERE `' . $ext_id . '` = "'.$data['custom_jplugin_id'].'"';
+		$this->_db->setQuery($q);
+		$data['custom_element'] = $this->_db->loadResult();
+// 		vmdebug('store custom',$data);
 		$table = $this->getTable('customs');
 
 		if(isset($data['custom_jplugin_id'])){
