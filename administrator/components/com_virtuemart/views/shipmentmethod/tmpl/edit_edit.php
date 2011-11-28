@@ -15,12 +15,12 @@
  * other free or open source software licenses.
  * @version $Id: edit_edit.php 3420 2011-06-04 12:37:20Z Electrocity $
  */
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
 
 <?php echo $this->langList; ?>
-
 <div class="col50">
     <fieldset>
         <legend><?php echo JText::_('COM_VIRTUEMART_SHIPMENTMETHOD'); ?></legend>
@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 	    <?php echo VmHTML::row('input', 'COM_VIRTUEMART_LIST_ORDER', 'ordering', $this->shipment->ordering, 'class="inputbox"', '', 4, 4); ?>
 	    <?php
 	    if (Vmconfig::get('multix', 'none') !== 'none') {
-		echo VmHTML::row('raw', 'COM_VIRTUEMART_VENDOR', $this->vendorList);
+			echo VmHTML::row('raw', 'COM_VIRTUEMART_VENDOR', $this->vendorList);
 	    }
 	    ?>
         </table>
