@@ -59,9 +59,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    'paypal_response_transaction_subject',
 	    'paypal_response_residence_country',
 	    'paypalresponse_raw'
-); //,'created_on','created_by','modified_on','modified_by','locked_on');
-// 		self::$_this
-	//$this->createPluginTable($this->_tablename);
+);
 
 	    $varsToPush = array('paypal_merchant_email'=>array('','char'),
 		    'paypal_verified_only'=>array('','int'),
@@ -98,7 +96,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    `virtuemart_paymentmethod_id` mediumint(1) UNSIGNED DEFAULT NULL,
 	    `payment_name` char(255) NOT NULL DEFAULT '',
 	    `cost` decimal(10,2) DEFAULT NULL ,
-	    `tax_id` int(11) DEFAULT NULL,
+	    `tax_id` smallint(1) DEFAULT NULL,
 	    `paypal_custom` varchar(255)  ,
 	    `paypal_response_mc_gross` decimal(10,2) DEFAULT NULL ,
 	    `paypal_response_mc_currency` char(10) DEFAULT NULL,
@@ -641,24 +639,22 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      * @return true: if the conditions are fulfilled, false otherwise
      *
      */
-    protected function checkConditions($cart, $payment, $cart_prices) {
+    protected function checkConditions($cart, $method, $cart_prices) {
 
-    	vmdebug('checkConditions',$method);
-// 	$params = new JParameter($payment->payment_params);
+
 	$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
 	$amount = $cart_prices['salesPrice'];
-	$amount_cond = ($amount >= $payment->min_amount AND $amount <= $payment->max_amount
+	$amount_cond = ($amount >= $method->min_amount AND $amount <= $method->max_amount
 		OR
-		($payment->min_amount <= $amount AND ($payment->max_amount == '') ));
+		($method->min_amount <= $amount AND ($method->max_amount == 0) ));
 
 	$countries = array();
-	$country_list = $payment->countries;
-	if (!empty($country_list)) {
-	    if (!is_array($country_list)) {
-		$countries[0] = $country_list;
+	if (!empty($method->countries)) {
+	    if (!is_array($method->countries)) {
+		$countries[0] = $method->countries;
 	    } else {
-		$countries = $country_list;
+		$countries = $method->countries;
 	    }
 	}
 	// probably did not gave his BT:ST address
@@ -669,7 +665,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 
 	if (!isset($address['virtuemart_country_id']))
 	    $address['virtuemart_country_id'] = 0;
-	if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
+	if (in_array($address['virtuemart_country_id'], $countries) || count( $countries) == 0) {
 	    if ($amount_cond) {
 		return true;
 	    }

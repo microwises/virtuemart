@@ -67,7 +67,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	    `virtuemart_paymentmethod_id` mediumint(1) UNSIGNED DEFAULT NULL,
 	    `payment_name` char(255) NOT NULL DEFAULT '',
 	    `cost` decimal(10,2) DEFAULT NULL ,
-	    `tax_id` int(11) DEFAULT NULL,
+	    `tax_id` smallint(11) DEFAULT NULL,
 	    `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
 	    `created_by` int(11) NOT NULL DEFAULT 0,
 	    `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -171,36 +171,35 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 */
 	 function checkConditions($cart, $method, $cart_prices) {
 
-		vmdebug('checkConditions',$method);
 // 		$params = new JParameter($payment->payment_params);
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
 		$amount = $cart_prices['salesPrice'];
 		$amount_cond = ($amount >= $method->min_amount AND $amount <= $method->max_amount
 		OR
-		($method->min_amount <= $amount AND ($method->max_amount == '') ));
-
-		$countries = array();
-		$country_list = $method->countries;
-		if (!empty($country_list)) {
-			if (!is_array($country_list)) {
-				$countries[0] = $country_list;
-			} else {
-				$countries = $country_list;
-			}
+		($method->min_amount <= $amount AND ($method->max_amount == 0) ));
+		if (!$amount_cond) {
+		    return false;
 		}
+		$countries = array();
+		if (!empty($method->countries)) {
+		    if (!is_array($method->countries)) {
+			$countries[0] = $method->countries;
+		    } else {
+			$countries = $method->countries;
+		    }
+		}
+
 		// probably did not gave his BT:ST address
 		if (!is_array($address)) {
 			$address = array();
 			$address['virtuemart_country_id'] = 0;
 		}
-		vmdebug('checkConditions',$amount_cond,$countries);
+
 		if (!isset($address['virtuemart_country_id']))
 		$address['virtuemart_country_id'] = 0;
-		if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
-			if ($amount_cond) {
+		if (count($countries) == 0  || in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {
 				return true;
-			}
 		}
 
 		return false;

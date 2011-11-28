@@ -74,7 +74,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	    `shipment_weight_unit` char(3) DEFAULT 'KG',
 	    `shipment_cost` decimal(10,2) DEFAULT NULL,
 	    `shipment_package_fee` decimal(10,2) DEFAULT NULL,
-	    `tax_id` decimal(10,5) DEFAULT NULL,
+	    `tax_id` smallint(1) DEFAULT NULL,
 	    `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
 	    `created_by` int(11) NOT NULL DEFAULT 0,
 	    `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -166,7 +166,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @author Valerie Isaksen
      */
     public function plgVmOnShowOrderBE($psType, $virtuemart_order_id, $virtuemart_shipmentmethod_id) {
-	if (!($this->selectedThis($psType, $virtuemart_shipmentmethod_id))) {
+	if (!($this->selectedThisByMethodId($psType,   $virtuemart_shipmentmethod_id))) {
 	    return null;
 	}
 	$html = $this->getOrderShipmentHtml($virtuemart_order_id);
@@ -222,14 +222,11 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	$nbShipment = 0;
 	$countries = array();
-
-
-	$country_list = $method->countries;
-	if (!empty($country_list)) {
-	    if (!is_array($country_list)) {
-		$countries[0] = $country_list;
+	if (!empty($method->countries)) {
+	    if (!is_array($method->countries)) {
+		$countries[0] = $method->countries;
 	    } else {
-		$countries = $country_list;
+		$countries = $method->countries;
 	    }
 	}
 	// probably did not gave his BT:ST address
@@ -255,7 +252,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		return true;
 	    }
 	}
-	vmdebug('checkConditions',$weight_cond,$zip_cond,count($countries));
+
 	return false;
     }
 
@@ -264,7 +261,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	    $weight_cond = ($orderWeight >= $method->weight_start  AND $orderWeight <= $method->weight_stop
 		    OR
-		    ($method->weight_start  <= $orderWeight AND ($method->weight_stop == '') ));
+		    ($method->weight_start  <= $orderWeight AND ($method->weight_stop == 0) ));
 	} else
 	    $weight_cond = true;
 	return $weight_cond;
@@ -281,7 +278,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	if (!empty($zip)) {
 	    $zip_cond = (( $zip >= $method->zip_start  AND $zip <= $method->zip_stop )
 		    OR
-		    ($method->zip_start <= $zip AND ($method->zip_stop  == '') ));
+		    ($method->zip_start <= $zip AND ($method->zip_stop  == 0) ));
 	} else {
 	    $zip_cond = true;
 	}

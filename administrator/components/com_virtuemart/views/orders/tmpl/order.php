@@ -369,7 +369,7 @@ $tt=$this;
 		<td valign="top"><?php
 		JPluginHelper::importPlugin('vmshipment');
 		$_dispatcher = JDispatcher::getInstance();
-		$returnValues = $_dispatcher->trigger('plgVmOnShowOrderBE',array('shipment', $this->orderID,$this->orderbt->virtuemart_vendor_id,$this->virtuemart_shipmentmethod_id));
+		$returnValues = $_dispatcher->trigger('plgVmOnShowOrderBE',array('shipment', $this->orderID,$this->virtuemart_shipmentmethod_id));
 		foreach ($returnValues as $returnValue) {
 			if ($returnValue !== null) {
 				echo $returnValue;

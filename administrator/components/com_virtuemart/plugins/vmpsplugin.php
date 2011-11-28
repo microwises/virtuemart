@@ -58,8 +58,8 @@ abstract class vmPSPlugin extends vmPlugin {
 	 *
 	 */
 	protected function plgVmOnStoreInstallPluginTable($psType, $jplugin_id) {
-		if($this->selectedThisByMethodId($psType, $jplugin_id)){
-			parent::plgVmOnStoreInstallPluginTable();
+		if($this->selectedThisByJPluginId($psType, $jplugin_id)){
+			parent::plgVmOnStoreInstallPluginTable($psType);
 		}
 
 	}
@@ -111,12 +111,9 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 		$html = array();
 		$method_name = $this->_psType . '_name';
-// 		vmdebug('plgVmDisplayListFE',$this->methods);
+
 		foreach ($this->methods as $method) {
 			if ($this->checkConditions($cart, $method, $cart->pricesUnformatted)) {
-// 				vmdebug('plgVmOnSelectPayment', $method->payment_name);
-// 				$paramsName = $this->_psType . '_params';
-// 				$params = new JParameter($method->$paramsName);
 				$methodSalesPrice = $this->calculateSalesPrice($cart, $method, $cart->pricesUnformatted);
 				$method->$method_name = $this->renderPluginName($method);
 				$html [] = $this->getPluginHtml($method, $selected, $methodSalesPrice);
@@ -141,14 +138,16 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	public function plgVmOnSelectedCalculatePrice($psType, VirtueMartCart $cart, array &$cart_prices, $cart_prices_name) {
 		$id = $this->_idName;
-		if (!$this->selectedThisByMethodId($psType, $cart->$id)) {
+		if (!($method =$this->selectedThisByMethodId($psType, $cart->$id))) {
 			return null; // Another method was selected, do nothing
 		}
 
 		if (!($method = $this->getPluginMethod($cart->$id) )) {
 			return null;
 		}
-		if($psType=='shipment')vmdebug('plgVmOnSelectedCalculatePrice',$method);
+
+
+		//if($psType=='shipment')vmdebug('plgVmOnSelectedCalculatePrice',$method);
 
 		$cart_prices_name = '';
 		$cart_prices[$this->_psType . '_tax_id'] = 0;
@@ -182,11 +181,11 @@ abstract class vmPSPlugin extends vmPlugin {
 		$nbPlugin = 0;
 		$virtuemart_pluginmethod_id = 0;
 
-		$nbPlugin = $this->getSelectable($cart, $virtuemart_pluginmethod_id, $cart_prices);
-		if ($nbPlugin == null) {
+		$nbMethod = $this->getSelectable($cart, $virtuemart_pluginmethod_id, $cart_prices);
+		if ($nbMethod == null) {
 			return null;
 		} else {
-			return ($nbPlugin == 1) ? $virtuemart_pluginmethod_id : 0;
+			return ($nbMethod == 1) ? $virtuemart_pluginmethod_id : 0;
 		}
 	}
 
@@ -421,7 +420,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	final protected function getPluginMethod($method_id) {
 
-		if(!$this->selectedThisByMethodId($this->_psType,$method_id)) return false;
+		//if(!$this->selectedThisByMethodId($this->_psType,$method_id)) return false;
 		return $this->getVmPluginMethod($method_id);
 
 /*		$db = JFactory::getDBO();

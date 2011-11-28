@@ -166,6 +166,46 @@ abstract class vmPlugin extends JPlugin {
 			}
 		}
 	}
+/**
+	* Checks if this plugin should be active by the trigger
+	* @author Max Milbers
+	* @author Valérie Isaksen
+	* @param string $psType shipment,payment,custom
+	* @param string the name of the plugin for exampel textinput, paypal
+	* @param int/array $id the registered plugin id(s) of the joomla table
+	*/
+	protected function selectedThisByJPluginId($psType, $jplugin_id='type') {
+
+		if($psType!=$this->_psType) return false;
+
+		$db = JFactory::getDBO();
+
+		if($jplugin_id==='type'){
+			return true;
+		} else {
+			$db = JFactory::getDBO();
+
+			if (VmConfig::isJ15()) {
+				$q = 'SELECT vm.* FROM `'.$this->_configTable.'` AS vm,
+							#__plugins AS j WHERE vm.`'.$psType.'_jplugin_id`  = "'.$jplugin_id.'"
+							AND vm.'.$psType.'_jplugin_id = j.id
+							AND j.`element` = "'.$this->_name.'"';
+			} else {
+				$q = 'SELECT vm.* FROM `'.$this->_configTable.'` AS vm,
+							#__extensions AS j WHERE vm.`'.$psType.'_jplugin_id`  = "'.$jplugin_id.'"
+							AND vm.`'.$psType.'_jplugin_id` = j.extension_id
+							AND j.`element` = "'.$this->_name.'"';
+			}
+
+			$db->setQuery($q);
+			if(!$res = $db->loadObject() ){
+// 				vmError('selectedThisByMethodId '.$db->getQuery());
+				return false;
+			} else {
+				return $res;
+			}
+		}
+	}
 
 	/**
 	 * Gets the id of the joomla table where the plugin is registered
