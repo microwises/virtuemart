@@ -46,20 +46,12 @@ abstract class vmCustomPlugin extends VmPlugin {
 
 		parent::__construct($subject, $config);
 
-
-// The original name uses this
-// $this->_tablename = '#__virtuemart_'.$this->_psType .'_plg_'. $this->_name; for exampel #__virtuemart_custom_plg_stockable';
-//I suggest to use instead of $this->_tablename = '#__virtuemart_product_custom_' . $this->_name;
 		$this->_tablepkey = 'virtuemart_product_id';
 		$this->_tablename = '#__virtuemart_product_'.$this->_psType .'_plg_'. $this->_name;
 		$this->_idName = 'virtuemart_custom_id';
 		$this->_configTableFileName = $this->_psType.'s';
 		$this->_configTableClassName = 'Table'.ucfirst($this->_psType).'s'; //TablePaymentmethods
 		$this->_configTable = '#__virtuemart_customs';
-
-// 		$this->_configTableFieldName = '';
-
-// 		$this->_configTableIdName = 'custom_jplugin_id';
 
 	}
 
@@ -126,7 +118,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 	/**
 	 * display the plugin on product FE
 	 */
-	abstract function onDisplayProductFE( $field, $param, $product, $idx);
+	abstract function onDisplayProductFE( $field, $product, $idx);
 
 	/**
 	 * display the product plugin on cart module
@@ -162,12 +154,13 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 */
 	 public function plgVmOnDisplayTypePlugin($field,$product,$row){
 
-		if (empty($field->custom_value)) return 0;
-		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
-		else $custom_param = array();
-
+// 		if (empty($field->custom_value)) return 0;
+// 		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
+// 		else $custom_param = array();
 // 		$plg = self::setClass($field->custom_value) ;
-		return $this->onDisplayProductFE(  $field,$custom_param, $product, $row);
+
+		VmTable::bindParameterable($field,$this->_xParams,$this->_varsToPushParam);
+		return $this->onDisplayProductFE(  $field, $product, $row);
 	 }
 	 /**
 	 * Calculate the variant price by The plugin
@@ -238,14 +231,14 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * display The plugin in Product edit view BE
 	 * extend customFields inputType
 	 */
-	 public function inputTypePlugin($field,$product_id,$row){
+	 public function plgVmOnDisplayInputTypePlugin($psType,$field,$product_id,$row){
 
+	 	if(!$this->selectedThis($psType,$field->custom_element)) return false;
 		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
 		else $custom_param = array();
 
 		if ($field->custom_value) {
-			$plg = self::setClass($field->custom_value) ;
-			$html = $plg->onProductEdit(  $field,$custom_param, $row, $product_id);
+			$html = $this->onProductEdit(  $field,$custom_param, $row, $product_id);
 		} else return '';
 		return $html;
 	 }
@@ -257,6 +250,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 */
 	 private function setClass($name) {
 		$plgName = 'plgVmCustom'.ucfirst ($name );
+		vmTrace('setClass');
 		if(class_exists($plgName)) return new $plgName;
 		else {
 			if  ( VmConfig::isJ15() ) {

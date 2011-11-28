@@ -23,6 +23,22 @@ defined('_JEXEC') or 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not
 class plgVmCustomStockable extends vmCustomPlugin {
 
 
+	// instance of class
+	public static $_this = false;
+
+	function __construct(& $subject, $config) {
+		if(self::$_this) return self::$_this;
+		parent::__construct($subject, $config);
+
+// 		$varsToPush = array(	'custom_size'=>array(0.0,'int'),
+// 							    		'custom_price_by_letter'=>array(0.0,'bool')
+// 		);
+
+		$this->setConfigParameterable('custom_params',array());
+
+		self::$_this = $this;
+	}
+
 	/**
 	 * Create the table for this plugin if it does not yet exist.
 	 * @author Patrick Kohl
@@ -170,7 +186,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onDisplayProductFE()
 	 * @author Patrick Kohl
 	 */
-	function onDisplayProductFE($field, $param,$product,$idx) {
+	function onDisplayProductFE($field, $product,$idx) {
 		// default return if it's not this plugin
 		if ($field->custom_value != $this->_name) return '';
 		//if (!$childs = $this->getChilds($product_id) ) return ;

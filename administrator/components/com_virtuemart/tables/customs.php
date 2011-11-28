@@ -34,6 +34,9 @@ class TableCustoms extends VmTable {
 	var $virtuemart_custom_id		= 0;
 	/** @var int parent */
 	var $custom_parent_id		= 0;
+
+	var $virtuemart_vendor_id		= 0;
+
 	/** @var int(1)  1= only back-end display*/
 	var $admin_only		= 0;
 

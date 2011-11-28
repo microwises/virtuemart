@@ -48,7 +48,7 @@ abstract class vmPlugin extends JPlugin {
 	protected $_configTableFileName = 0;
 	protected $_configTableClassName = 0;
 	protected $_xParams = 0;
-
+	protected $_varsToPushParam = array();
 	//id field of the config table
 	protected $_idName = 0;
 	//Name of the field in the configtable, which holds the parameters of the pluginmethod

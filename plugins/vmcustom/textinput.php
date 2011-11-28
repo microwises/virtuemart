@@ -68,19 +68,19 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @author Patrick Kohl
 	 * eg. name="customPlugin['.$idx.'][comment] save the comment in the cart & order
 	 */
-	function onDisplayProductFE($field, $param,$product,$idx) {
+	function onDisplayProductFE($field, $product,$idx) {
 		// default return if it's not this plugin
 		if ($field->custom_value != $this->_name) return '';
-		if (!$param) {
-			$param['custom_name']='' ;
-			$param['custom_size']='10';
-		}
+// 		if (!$field->custom_name) {
+// 			$param['custom_name']='' ;
+// 			$param['custom_size']='10';
+// 		}
 
 
 		//echo $plgParam->get('custom_info');
 		// Here the plugin values
-		$html =JTEXT::_($param['custom_name']) ;
-		$html.=': <input class="vmcustom-textinput" type="text" value="" size="'.$param['custom_size'].'" name="customPlugin['.$idx.'][comment]"><br />';
+		$html =JTEXT::_($field->custom_title) ;
+		$html.=': <input class="vmcustom-textinput" type="text" value="" size="'.$field->custom_size.'" name="customPlugin['.$idx.'][comment]"><br />';
 		static $textinputjs;
 		// preventing 2 x load javascript
 		if ($textinputjs) return $html;

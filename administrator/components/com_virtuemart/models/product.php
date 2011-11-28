@@ -509,7 +509,13 @@ class VirtueMartModelProduct extends VmModel {
 
 			// $this->productHasCustoms($this->_id);
 
-			if($front){
+			if(!$front){
+				if (!empty($product->virtuemart_customfield_id ) ){
+					if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
+					$customfields = new VirtueMartModelCustomfields();
+					$product->customfields = $customfields->getproductCustomslist($this->_id,'product');
+				}
+			} else {
 
 				// Add the product link  for canonical
 				$productCategory = empty($product->categories[0])? '':$product->categories[0];
@@ -548,6 +554,7 @@ class VirtueMartModelProduct extends VmModel {
 					$product->customsChilds = $customfields->getProductCustomsChilds($child , $this->_id);
 				}
 
+// 				vmdebug('my product ',$product);
 
 				// Check the stock level
 				if (empty($product->product_in_stock)) $product->product_in_stock = 0;
@@ -558,13 +565,6 @@ class VirtueMartModelProduct extends VmModel {
 				// TODO Get the votes
 				//				$product->votes = $this->getVotes($this->_id);
 
-			}
-			else {
-				if (!empty($product->virtuemart_customfield_id ) ){
-					if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-					$customfields = new VirtueMartModelCustomfields();
-					$product->customfields = $customfields->getproductCustomslist($this->_id,'product');
-				}
 			}
 
 		} else {

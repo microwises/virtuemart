@@ -285,6 +285,7 @@ if (empty ( $this->product )) {
 	</div>
 	<?php } // Product Description END
 
+	vmdebug('hm',$this->product->customfields);
 	if (!empty($this->product->customfields)) { ?>
 	<div class="product-fields">
 	<?php

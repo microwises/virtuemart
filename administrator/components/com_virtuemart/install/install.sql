@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_calcs` (
   `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Startdate if nothing is set = permanent',
   `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Enddate if nothing is set = permanent',
   `for_override` tinyint(1) NOT NULL DEFAULT '0',
+  `calc_params` text NOT NULL,
   `ordering` int(2) NOT NULL DEFAULT '0',
   `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
@@ -274,7 +275,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   `custom_jplugin_id` int(11) NOT NULL,
   `custom_element` char(50) NOT NULL DEFAULT '',
   `admin_only` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1:Display in admin only',
-  `custom_name` char(255) NOT NULL DEFAULT '',
   `custom_title` char(255) NOT NULL COMMENT 'field title',
   `custom_tip` char(255) NOT NULL COMMENT 'tip',
   `custom_value` char(255) COMMENT 'defaut value',
@@ -295,7 +295,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   `locked_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_custom_id`),
     KEY `idx_custom_plugin_virtuemart_vendor_id` (`virtuemart_vendor_id`),
-  KEY `idx_custom_plugin_name` (`custom_name`),
+  KEY `idx_custom_plugin_element` (`custom_element`),
   KEY `idx_custom_plugin_ordering` (`ordering`),
   KEY `idx_custom_parent_id` (`custom_parent_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields definition' AUTO_INCREMENT=1 ;
