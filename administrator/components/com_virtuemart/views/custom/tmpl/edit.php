@@ -44,7 +44,7 @@ echo $this->customfields->displayCustomFields($this->custom); ?>
 		<td>
 		<div id="plugin-Container">
 		<?php
-		if($this->customPlugin->custom_jplugin_id){
+		if(!empty($this->customPlugin->custom_jplugin_id)){
 				echo $this->customPlugin->custom_name .'<br />' ;
                 $parameters = new vmParameters($this->customPlugin->custom_params,  $this->customPlugin->custom_element , 'plugin' ,'vmcustom');
 				echo $rendered = $parameters->render(); ?>
@@ -58,7 +58,7 @@ echo $this->customfields->displayCustomFields($this->custom); ?>
 	</tr>
 </table>
 	</fieldset>
-	<?php if(empty($this->customPlugin->custom_jplugin_id)){ ?>
+	<?php if(!empty($this->customPlugin->custom_jplugin_id)){ ?>
 		<input type="hidden" name="id" value="<?php echo $this->customPlugin->id ?>" >
 	<?php } ?>
 </form>

@@ -279,7 +279,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   `custom_tip` char(255) NOT NULL COMMENT 'tip',
   `custom_value` char(255) COMMENT 'defaut value',
   `custom_field_desc` char(255) COMMENT 'description or unit',
-  `field_type` char(1) NOT NULL DEFAULT 'S' COMMENT 'S:string,I:int,P:parent, B:bool,D:date,T:time,H:hidden',
+  `field_type` char(1) NOT NULL DEFAULT '0' COMMENT 'S:string,I:int,P:parent, B:bool,D:date,T:time,H:hidden',
   `is_list` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'list of values',
   `is_hidden` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1:hidden',
   `is_cart_attribute` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Add attributes to cart',

@@ -56,10 +56,8 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 // 			$param['custom_name']= $plgParam->get('custom_name');
 // 			$param['custom_size']= $plgParam->get('custom_size');
 // 		}
-// 		$html  ='<input type="text" value="'.$param['custom_name'].'" size="10" name="custom_param['.$row.'][custom_name]"> ';
-// 		$html .='<input type="text" value="'.$param['custom_size'].'" size="10" name="custom_param['.$row.'][custom_size]">';
-		$html  ='<input type="text" value="'.$data['custom_name'].'" size="10" name="custom_name['.$row.']"> ';
-		$html .='<input type="text" value="'.$data['custom_size'].'" size="10" name="custom_size['.$row.']">';
+		$html  ='<input type="text" value="'.$data['custom_name'].'" size="10" name="custom_param['.$data.'][custom_name]"> ';
+		$html .='<input type="text" value="'.$data['custom_size'].'" size="10" name="custom_param['.$row.'][custom_size]">';
 		$html .=JTEXT::_('VMCUSTOM_TEXTINPUT_NO_CHANGES_BE');
 
 		return $html  ;
