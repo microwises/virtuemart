@@ -44,7 +44,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 								'max_amount'=>array(0,'int'),
 								'cost'=>array(0,'int'),
 								'tax_id'=>array(0,'int'),
-								'payment_info'=>array(0,'string')
+								'payment_info'=>array('','string')
 	);
 
 	$this->setConfigParameterable($this->_configTableFieldName,$varsToPush);
@@ -169,9 +169,9 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 * @return true: if the conditions are fulfilled, false otherwise
 	 *
 	 */
-	protected function checkConditions($cart, $method, $cart_prices) {
+	 function checkConditions($cart, $method, $cart_prices) {
 
-
+		vmdebug('checkConditions',$method);
 // 		$params = new JParameter($payment->payment_params);
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
@@ -194,7 +194,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 			$address = array();
 			$address['virtuemart_country_id'] = 0;
 		}
-
+		vmdebug('checkConditions',$amount_cond,$countries);
 		if (!isset($address['virtuemart_country_id']))
 		$address['virtuemart_country_id'] = 0;
 		if (in_array($address['virtuemart_country_id'], $countries) || count($countries) == 0) {

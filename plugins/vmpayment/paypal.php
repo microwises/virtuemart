@@ -643,6 +643,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      */
     protected function checkConditions($cart, $payment, $cart_prices) {
 
+    	vmdebug('checkConditions',$method);
 // 	$params = new JParameter($payment->payment_params);
 	$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 

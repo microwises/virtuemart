@@ -111,12 +111,13 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 		$html = array();
 		$method_name = $this->_psType . '_name';
+// 		vmdebug('plgVmDisplayListFE',$this->methods);
 		foreach ($this->methods as $method) {
 			if ($this->checkConditions($cart, $method, $cart->pricesUnformatted)) {
-				//vmdebug('plgVmOnSelectPayment', $method->payment_name, $method->payment_params);
+// 				vmdebug('plgVmOnSelectPayment', $method->payment_name);
 // 				$paramsName = $this->_psType . '_params';
 // 				$params = new JParameter($method->$paramsName);
-				$methodSalesPrice = $this->calculateSalesPrice($method, $cart->pricesUnformatted);
+				$methodSalesPrice = $this->calculateSalesPrice($cart, $method, $cart->pricesUnformatted);
 				$method->$method_name = $this->renderPluginName($method);
 				$html [] = $this->getPluginHtml($method, $selected, $methodSalesPrice);
 			}
@@ -836,7 +837,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	* @return $salesPrice
 	*/
 
-	protected function calculateSalesPrice($method, $cart_prices) {
+	protected function calculateSalesPrice($cart, $method, $cart_prices) {
 
 		$value = $this->getCosts($cart, $method, $cart_prices);
 

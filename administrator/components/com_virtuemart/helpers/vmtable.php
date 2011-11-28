@@ -311,31 +311,6 @@ class VmTable extends JTable{
 				//Maybe better to use for $this an &
 				self::bindParameterable($this,$this->_xParams,$this->_varsToPushParam);
 
-/*				$paramFieldName = $this->_xParams;
-				$paramFields = $this->$paramFieldName;
-				// 				vmdebug('$this->_xParams '.$this->_xParams.' $this->$paramFieldName ',$this->$paramFieldName);
-				if(!empty($this->$paramFieldName)){
-
-					$params = explode('|', $this->$paramFieldName);
-					foreach($params as $item){
-
-						$item = explode('=',$item);
-						if(count($item)===2 && isset($this->_varsToPushParam[$item[0]][1]) ){
-							if($this->_varsToPushParam[$item[0]][1]==='string'){
-								$this->$item[0] = base64_decode(unserialize($item[1]));
-							} else {
-								// 								vmdebug('my unserialize '.$item[1]);
-								$this->$item[0] = unserialize($item[1]);
-							}
-						}
-					}
-				}
-
-				foreach($this->_varsToPushParam as $key=>$v){
-					if(!isset($this->$key)){
-						$this->$key = $v[0];
-					}
-				} */
 			}
 
 			if (count($tableJoins)) {
@@ -358,17 +333,20 @@ class VmTable extends JTable{
 // 						vmdebug('$obj->_xParams '.$xParams.' $obj->$paramFieldName ',$obj->$paramFieldName);
 		if(!empty($obj->$paramFieldName)){
 
+// 			vmdebug('load $varsToPushParam ',$varsToPushParam);
 			$params = explode('|', $obj->$paramFieldName);
 			foreach($params as $item){
 
 				$item = explode('=',$item);
-				if(count($item)===2 && isset($varsToPushParam[$item[0]][1]) ){
-					if($varsToPushParam[$item[0]][1]==='string'){
-						$obj->$item[0] = base64_decode(unserialize($item[1]));
-					} else {
-						// 								vmdebug('my unserialize '.$item[1]);
-						$obj->$item[0] = unserialize($item[1]);
-					}
+				$key = $item[0];
+				unset($item[0]);
+// 				vmdebug('load string $key',$key);
+				$item = implode('=',$item);
+// 				vmdebug('load string ',$item);
+
+				if(!empty($item) && isset($varsToPushParam[$key][1]) ){
+					$obj->$key = json_decode($item);
+
 				}
 			}
 		}
@@ -402,17 +380,19 @@ class VmTable extends JTable{
 			foreach($this->_varsToPushParam as $key=>$v){
 
 				if(isset($this->$key)){
-					if($v[1]==='string'){
-						$this->$paramFieldName .= $key.'='.base64_encode(serialize($this->$key)).'|';
-					} else {
-						$this->$paramFieldName .= $key.'='.serialize($this->$key).'|';
-					}
+// 					if($v[1]==='string'){
+// 						$this->$paramFieldName .= $key.'='.base64_encode(serialize($this->$key)).'|';
+// 					} else {
+// 						$this->$paramFieldName .= $key.'='.serialize($this->$key).'|';
+// 					}
+					$this->$paramFieldName .= $key.'='.json_encode($this->$key).'|';
 				} else {
-					if($v[1]==='string'){
-						$this->$paramFieldName .= $key.'='.base64_encode(serialize($v[0])).'|';
-					} else {
-						$this->$paramFieldName .= $key.'='.serialize($v[0]).'|';
-					}
+// 					if($v[1]==='string'){
+// 						$this->$paramFieldName .= $key.'='.base64_encode(serialize($v[0])).'|';
+// 					} else {
+// 						$this->$paramFieldName .= $key.'='.serialize($v[0]).'|';
+// 					}
+					$this->$paramFieldName .= $key.'='.json_encode($v[0]).'|';
 				}
 				unset($this->$key);
 			}

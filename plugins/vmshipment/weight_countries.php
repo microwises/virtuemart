@@ -255,7 +255,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		return true;
 	    }
 	}
-
+	vmdebug('checkConditions',$weight_cond,$zip_cond,count($countries));
 	return false;
     }
 

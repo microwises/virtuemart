@@ -220,7 +220,7 @@ class VirtueMartViewCart extends JView {
 		$shipments_shipment_rates = $dispatcher->trigger('plgVmDisplayListFE', array('shipment','cart' => $this->cart, 'selectedShipment' => $selectedShipment));
 		// if no shipment rate defined
 		$found_shipment_method = false;
-
+		vmdebug('$shipments_shipment_rates',$shipments_shipment_rates);
 		foreach ($shipments_shipment_rates as $shipment_shipment_rates) {
 			if (is_array($shipment_shipment_rates)) {
 				foreach ($shipment_shipment_rates as $shipment_shipment_rate) {
