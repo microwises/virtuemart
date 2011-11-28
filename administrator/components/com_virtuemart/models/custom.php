@@ -58,7 +58,7 @@ class VirtueMartModelCustom extends VmModel {
    		$data =& $this->getTable('customs');
    		$data->load($this->_id);
 
-   		if($this->_data->custom_jplugin_id){
+   		if(!empty($this->_data->custom_jplugin_id)){
    			JPluginHelper::importPlugin('vmcustom');
    			$dispatcher = JDispatcher::getInstance();
    			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParams',array('custom',$this->_data->custom_element,$this->_data->custom_jplugin_id));

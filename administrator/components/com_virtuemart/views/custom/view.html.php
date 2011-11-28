@@ -46,6 +46,8 @@ class VirtuemartViewCustom extends JView {
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
+
+			$customPlugin = '';
 			$this->loadHelper('parameterparser');
 			$custom = $model->getCustom();
 
@@ -53,16 +55,23 @@ class VirtuemartViewCustom extends JView {
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();
 			$customPlugins = $dispatcher->trigger('plgVmGetActiveCustomPlugin',array($custom->virtuemart_custom_id));
-			vmdebug('$customPlugins in view getriggered',$customPlugins);
+// 			vmdebug('$customPlugins in view getriggered',$customPlugins);
 			foreach($customPlugins as $plugin){
-				if(!empty($plugin)) $customPlugin = $plugin;
+				if(!empty($plugin)){
+					$customPlugin = $plugin;
+				}
 				break;
 			}
 // 			$customPlugin = $customPlugin[0];
 // 			$customPlugin = $model->getCustomPlugin($custom->virtuemart_custom_id);
 
 			$this->assignRef('customPlugin',	$customPlugin);
-			$pluginList = self::renderInstalledCustomPlugins($customPlugin->custom_jplugin_id);
+
+			$selected=0;
+			if(!empty($custom->virtuemart_jplugin_id)) {
+				$selected = $custom->virtuemart_jplugin_id;
+			}
+			$pluginList = self::renderInstalledCustomPlugins($selected);
 			$this->assignRef('pluginList',$pluginList);
 			$customfields = $this->getModel('customfields');
 			$this->assignRef('custom',	$custom);

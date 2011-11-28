@@ -58,7 +58,7 @@ echo $this->customfields->displayCustomFields($this->custom); ?>
 	</tr>
 </table>
 	</fieldset>
-	<?php if($this->customPlugin->custom_jplugin_id){ ?>
+	<?php if(empty($this->customPlugin->custom_jplugin_id)){ ?>
 		<input type="hidden" name="id" value="<?php echo $this->customPlugin->id ?>" >
 	<?php } ?>
 </form>
