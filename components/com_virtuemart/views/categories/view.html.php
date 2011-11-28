@@ -58,7 +58,7 @@ class VirtuemartViewCategories extends JView {
 		$category = $categoryModel->getCategory($categoryId);
 		//if($category->children)	$categoryModel->addImages($category->children);
 		$cache = & JFactory::getCache('com_virtuemart','callback');
-		$$category->children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $category_id );
+		$category->children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $category_id );
 		//$category->children = $categoryModel->getChildCategoryList($vendorId, $categoryId);
 		$categoryModel->addImages($category->children,1);
 

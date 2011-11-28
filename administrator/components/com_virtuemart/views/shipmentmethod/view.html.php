@@ -52,18 +52,18 @@ class VirtuemartViewShipmentmethod extends JView {
 		if ($layoutName == 'edit') {
 		        $shipment = $model->getShipment();
 			$this->loadHelper('image');
-			$this->loadHelper('html');
+			// $this->loadHelper('html');
 			$this->loadHelper('parameterparser');
-			jimport('joomla.html.pane');
-                         if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-                         $vendor_id = 1;
-                         $currency=VirtueMartModelVendor::getVendorCurrency ($vendor_id);
-                         $this->assignRef('vendor_currency', $currency->currency_symbol);
+			// jimport('joomla.html.pane');
+			 if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+			 $vendor_id = 1;
+			 $currency=VirtueMartModelVendor::getVendorCurrency ($vendor_id);
+			 $this->assignRef('vendor_currency', $currency->currency_symbol);
 
-                         if(Vmconfig::get('multix','none')!=='none'){
-                                $vendorList= ShopFunctions::renderVendorList($shipment->virtuemart_vendor_id);
-                                $this->assignRef('vendorList', $vendorList);
-                         }
+			 if(Vmconfig::get('multix','none')!=='none'){
+					$vendorList= ShopFunctions::renderVendorList($shipment->virtuemart_vendor_id);
+					$this->assignRef('vendorList', $vendorList);
+			 }
 
 			$this->assignRef('pluginList', self::renderInstalledShipmentPlugins($shipment->shipment_jplugin_id));
 			$this->assignRef('shipment',	$shipment);

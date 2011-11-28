@@ -84,9 +84,9 @@ class VirtuemartViewPaymentMethod extends JView {
 
 		// Load the helper(s)
 			$this->loadHelper('image');
-			$this->loadHelper('html');
+			// $this->loadHelper('html');
 			$this->loadHelper('parameterparser');
-			jimport('joomla.html.pane');
+			// jimport('joomla.html.pane');
 
 			$payment = $model->getPayment();
 			$this->assignRef('payment',	$payment);
