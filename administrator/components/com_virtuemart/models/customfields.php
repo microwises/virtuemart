@@ -885,8 +885,22 @@ class VirtueMartModelCustomfields extends VmModel {
  				if ($productCustom->field_type == "E") {
 					$product = self::addParam($product);
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+
+					JPluginHelper::importPlugin('vmcustom');
+					$dispatcher = JDispatcher::getInstance();
+					$varsToPushParam = $dispatcher->trigger('plgVmDisplayInCartPlugin',array($product,$productCustom, $row));
+
+					if(!empty($varsToPushParam)){
+
+						foreach($varsToPushParam as $push){
+							if(!empty($push)){
+								$html .= $push;
+							}
+						}
+					}
+					$html .= '</span>';
 					//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
-					$html .= vmCustomPlugin::displayInCartPlugin( $product,$productCustom, $row).'</span>';
+// 					$html .= vmCustomPlugin::displayInCartPlugin( $product,$productCustom, $row).'</span>';
 					// foreach ($product->userfield as $pKey => $puser) {
 						// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
 					// }

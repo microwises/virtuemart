@@ -166,21 +166,12 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * display The plugin in cart
 	 * @ $view is "Module" for see in module, "" for see in cart
 	 */
-	 public function displayInCartPlugin($product,$productCustom, $row ,$view=''){
+	 public function plgVmDisplayInCartPlugin($product,$productCustom, $row ,$view=''){
 		$plgName = $productCustom->value;
 		$plgFunction = 'onViewCart'.$view ;
 
-// 		if ( empty($product->param[$row])) $param = null ;
-// 					else $param = $product->param[$row] ;
-
 		return $this->$plgFunction( $product,$productCustom, $row);
-// 		if ($plgName) {
-// 			$plg = self::setClass($plgName) ;
-// 			$plgFunction = 'onViewCart'.$view ;
-// 			if ( empty($product->param[$row])) $param = null ;
-// 			else $param = $product->param[$row] ;
-// 			return $plg->$plgFunction( $product,$param ,$productCustom, $row);
-// 		} else return '';
+
 	 }
 	 /**
 	 * display The plugin in order view FE/BE

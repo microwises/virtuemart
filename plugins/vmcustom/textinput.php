@@ -110,6 +110,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @author Patrick Kohl
 	 */
 	function onViewCart($product,$productCustom, $row) {
+		vmdebug('onViewCart',$productCustom);
 		$html  = '<div>';
 		$html .='<span>'.$product->comment.'</span>';
 		// $html .='<span>'.$param->Morecomment.'</span>';

@@ -59,7 +59,7 @@ echo $this->customfields->displayCustomFields($this->custom); ?>
 </table>
 	</fieldset>
 	<?php if(!empty($this->customPlugin->custom_jplugin_id)){ ?>
-		<input type="hidden" name="id" value="<?php echo $this->customPlugin->id ?>" >
+		<input type="hidden" name="id" value="<?php echo $this->customPlugin->virtuemart_custom_id ?>" >
 	<?php } ?>
 </form>
 <script type="text/javascript">
