@@ -41,20 +41,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		$this->setMainTable('product_customfields');
 	}
 
-    /**
-     * Gets a single custom by virtuemart_customfield_id
-     * @param string $type
-     * @param string $mime mime type of custom, use for exampel image
-     * @return customobject
-     */
-    function getCustomfields(){
 
-   		$this->data = $this->getTable('product_customfields');
-   		$this->data->load($this->_id);
-
-  		return $this;
-
-    }
     /**
      * Gets a single custom by virtuemart_customfield_id
      * @param string $type
@@ -330,7 +317,7 @@ class VirtueMartModelCustomfields extends VmModel {
      * Load the t the custom fields for a product
      * return Object product type , parameters & value
      */
-     public function getproductCustoms() {
+/*     public function getproductCustoms() {
 		static $productcustomFields ;
 		if ($productcustomFields) return $productcustomFields;
 		$virtuemart_product_id = JRequest::getInt('virtuemart_product_id', false);
@@ -342,7 +329,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			}
 		} else return $productcustomFields;
      }
-
+*/
 /**
  * Formating admin display by roles
  * input Types for product only !
@@ -933,8 +920,15 @@ class VirtueMartModelCustomfields extends VmModel {
 					if ($productCustom->field_type == "E") {
 
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+						if ($productCustomsPrice->field_type =='E') {
+							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+							JPluginHelper::importPlugin('vmcustom');
+							$dispatcher = JDispatcher::getInstance();
+							$dispatcher->trigger('plgVmDisplayInOrderPlugin',array($html, $item, $param,$productCustom,$row,$view));
+						}
+
 						//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
-						$html .= vmCustomPlugin::displayInOrderPlugin( $item,$param,$productCustom, $row,$view);
+// 						$html .= vmCustomPlugin::displayInOrderPlugin( $item,$param,$productCustom, $row,$view);
 						// foreach ($product->userfield as $pKey => $puser) {
 							// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
 						// }

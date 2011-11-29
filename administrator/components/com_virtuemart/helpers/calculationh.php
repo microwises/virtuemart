@@ -1147,8 +1147,7 @@ class calculationHelper {
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 						JPluginHelper::importPlugin('vmcustom');
 						$dispatcher = JDispatcher::getInstance();
-						$varsToPushParam = $dispatcher->trigger('plgVmCalculatePluginVariant',array($product, &$productCustomsPrice,$selected,$row));
-
+						$dispatcher->trigger('plgVmCalculatePluginVariant',array($product, &$productCustomsPrice,$selected,$row));
 					}
 					//$app = JFactory::getApplication();
 					if (!empty($productCustomsPrice->custom_price)) {

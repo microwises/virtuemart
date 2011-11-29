@@ -32,10 +32,6 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		if(self::$_this) return self::$_this;
 		parent::__construct($subject, $config);
 
-// 		$this->_loggable = true;
-// 		$this->tableFields = array('id','virtuemart_order_id','order_number','virtuemart_paymentmethod_id',
-// 							'payment_name','cost','cost','tax_id');//,'created_on','created_by','modified_on','modified_by','locked_on');
-
 		$varsToPush = array(	'custom_size'=>array(0.0,'int'),
 						    		'custom_price_by_letter'=>array(0.0,'bool')
 		);
@@ -45,19 +41,19 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		self::$_this = $this;
 	}
 
-	// get product param for this plugin on edit
+/*	// get product param for this plugin on edit
 	function onProductEdit($field, $product, $row) {
 		if ($field->custom_element != $this->_name) return '';
-
+			echo 'hmm';
 // 		$data = $this->getVmPluginMethod($field->virtuemart_custom_id);
 // 		VmTable::bindParameterable($field,$this->_xParams,$this->_varsToPushParam);
 
-		$html  ='<input type="text" value="'.$field->custom_title.'" size="10" name="custom_param['.$row.'][custom_title]"> ';
-		$html .='<input type="text" value="'.$field->custom_size.'" size="10" name="custom_param['.$row.'][custom_size]">';
+// 		$html  ='<input type="text" value="'.$field->custom_title.'" size="10" name="custom_param['.$row.'][custom_title]"> ';
+		$html ='<input type="text" value="'.$field->custom_size.'" size="10" name="custom_param['.$row.'][custom_size]">';
 		$html .=JTEXT::_('VMCUSTOM_TEXTINPUT_NO_CHANGES_BE');
 // 		$field->display = $html;
 		return $html  ;
-	}
+	}*/
 	/**
 	 * @ idx plugin index
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onDisplayProductFE()
@@ -73,7 +69,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 // 		}
 
 
-		//echo $plgParam->get('custom_info');
+		vmdebug('onDisplayProductFE');
 		// Here the plugin values
 		$html =JTEXT::_($field->custom_title) ;
 		$html.=': <input class="vmcustom-textinput" type="text" value="" size="'.$field->custom_size.'" name="customPlugin['.$idx.'][comment]"><br />';
@@ -169,18 +165,20 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		return $html.'</div>';
     }
 
-	public function modifyPrice( $product, $field,$selected,$row ) {
+	public function modifyPrice( $product, &$field,$selected,$row ) {
+
 		if (!empty($field->custom_price)) {
 			//TODO adding % and more We should use here $this->interpreteMathOp
 			// eg. to calculate the price * comment text length
-			if ($field->custom_price_by_letter ==1) {
-			$pluginFields = JRequest::getVar('customPlugin',null );
-			if ($pluginFields ==  null) $pluginFields = json_decode( $product->customPlugin, true);
-				if ($textinput = $pluginFields[$row]['comment']) {
-					$field->custom_price = strlen ($textinput) *  $field->custom_price ;
-				}
-			}
-			return $field->custom_price;
+// 			if ($field->custom_price_by_letter ==1) {
+				$pluginFields = JRequest::getVar('customPlugin',null );
+				if ($pluginFields ==  null) $pluginFields = json_decode( $product->customPlugin, true);
+					if ($textinput = $pluginFields[$row]['comment']) {
+
+						$field->custom_price = strlen ($textinput) *  $field->custom_price ;
+					}
+// 			}
+// 			return $field->custom_price;
 		}
 	}
 

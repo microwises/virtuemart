@@ -86,7 +86,7 @@ class VirtueMartModelCustom extends VmModel {
      * .
      * @param int $virtuemart_product_id
      * @return customobject
-     */
+     *
     function getProductCustoms($virtuemart_product_id){
 
 		$query='SELECT `virtuemart_customfield_id` FROM `#__virtuemart_product_customfields`
@@ -224,7 +224,7 @@ class VirtueMartModelCustom extends VmModel {
 	*/
 	public function saveModelCustomfields($table,$datas, $id) {
 
-		vmdebug('put in plugin');
+		vmdebug('put in plugin, use internal plugin table instead');
 		JRequest::checkToken() or jexit( 'Invalid Token, in store customfields');
 		//Sanitize id
 		$id = (int)$id;

@@ -88,11 +88,88 @@ abstract class vmCustomPlugin extends VmPlugin {
 
     }
 
+    /**
+    * $type FE or BE
+    */
+    public function plgVmOnDisplayCustoms($FE,&$field,$product,$row){
+
+    	VmTable::bindParameterable($field,'custom_params',$this->_varsToPushParam);
+
+    	if (empty($field->custom_value)) return 0 ;
+    	if (!empty($field->custom_param) && is_string($field->custom_param)) $custom_param = json_decode($field->custom_param);
+    	else $custom_param = array();
+    	$field->custom_param = $custom_param;
+    	foreach($field->custom_param as $k => $v){
+    		if(!empty($v)){
+    			$field->$k = $v;
+    		}
+    	}
+    	vmdebug('my field',$field);
+
+//     	if($FE){
+    		$html = $this->onDisplayProductFE( $field, $product, $row);
+//     	} else {
+//     		$html = $this->onProductEdit( $field, $product, $row);
+//     	}
+
+    	return $html;
+    }
+
+    /**
+    * Calculate the variant price by The plugin
+    * override calculateModificators() in calculatorh.
+    * Eg. recalculate price by a quantity set in the plugin
+    * You must reimplement modifyPrice() in your plugin
+    * or price is returned defaut custom_price
+    */
+    // 	 public function plgVmCalculatePluginVariant( $product, $field,$selected,$row){
+    public function plgVmCalculatePluginVariant($product, &$productCustomsPrice,$selected,$row){
+
+    	return $this->modifyPrice( $product, $productCustomsPrice,$selected,$row);
+    }
+
+    /**
+     * convert param for render and
+     * display The plugin in cart
+     * @ $view is "Module" for see in module, "" for see in cart
+     */
+    public function plgVmDisplayInCartPlugin($product,$productCustom, $row ,$view=''){
+    	$plgName = $productCustom->value;
+    	$plgFunction = 'onViewCart'.$view ;
+
+    	return $this->$plgFunction( $product,$productCustom, $row);
+
+    }
+    /**
+     * display The plugin in order view FE/BE
+     * @ $view is "BE" for see in back-End, default is FE
+     */
+    public function plgVmDisplayInOrderPlugin(&$html,$item,$productCustom, $row ,$view='FE'){
+
+
+    	// defaut render if the plugin is not found/installed
+    	if ($productCustom->value!=$this->_name) {
+    		echo '<div style="color: #CC0000;">plugin <b>'.$productCustom->value.'</b> not found.</div><br/>';
+    		if ($view =='FE') echo implode(',',(array)$param);
+    		else foreach ((array)$param as $key=>$text) echo '<span>parameter : '.$key.' : '.$text. '<span><br/>';
+    		return ;
+    	}
+    	else {
+
+    		$plgFunction = 'onViewOrder'.$view ;
+    		$html = $this->$plgFunction( $item,$param,$productCustom, $row);
+    	}
+
+
+    	return $html;
+    }
+
 	/**
 	 * render the plugin with param  to display on product edit
 	 * called by customfields inputTypePlugin
+	 * @deprecated, it was never used,... it uses the parameter->render !
 	 */
-	abstract function onProductEdit($field, $product, $row);
+// 	abstract function onProductEdit($field, $product, $row);
 
 	/**
 	 * display the plugin on product FE
@@ -127,74 +204,6 @@ abstract class vmCustomPlugin extends VmPlugin {
 		}
 	}
 
-	 /**
-	 * Calculate the variant price by The plugin
-	 * override calculateModificators() in calculatorh.
-	 * Eg. recalculate price by a quantity set in the plugin
-	 * You must reimplement modifyPrice() in your plugin
-	 * or price is returned defaut custom_price
-	 */
-// 	 public function plgVmCalculatePluginVariant( $product, $field,$selected,$row){
-	 public function plgVmCalculatePluginVariant($product, &$productCustomsPrice,$selected,$row){
-
-// 	 	echo '<pre>'.print_r($product,1).'</pre>';
-// 	 	echo '<pre>'.print_r($productCustomsPrice,1).'</pre>';
-// 	 	echo '<pre>'.print_r($selected,1).'</pre>';
-	 	if(!empty($product->virtuemart_product_id)){
-// 	 		VmTable::bindParameterable($field,$this->_xParams,$this->_varsToPushParam);
-
-// 	 		$db = JFactory::getDBO();
-// 	 		$query = 'SELECT  C.* , field.*
-// 	 		 					FROM `#__virtuemart_customs` AS C
-// 	 		 					LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-// 	 		 					WHERE `virtuemart_product_id` =' . $product->virtuemart_product_id;
-// 	 		$query .=' and is_cart_attribute = 1 and field.`virtuemart_customfield_id`=' . $selected;
-// 	 		$db->setQuery($query);
-// 	 		$productCustomsPrice = $db->loadObject();
-// 	 		echo '<pre>'.print_r($productCustomsPrice,1).'</pre>';
-	 		if ($productCustomsPrice->field_type =='E') {
-
-	 		}
-// 	 		return $productCustomsPrice->custom_price;
-	 	}
-
-		return $this->modifyPrice( $product, $productCustomsPrice,$selected,$row);
-	 }
-
-	 /**
-	 * convert param for render and
-	 * display The plugin in cart
-	 * @ $view is "Module" for see in module, "" for see in cart
-	 */
-	 public function plgVmDisplayInCartPlugin($product,$productCustom, $row ,$view=''){
-		$plgName = $productCustom->value;
-		$plgFunction = 'onViewCart'.$view ;
-
-		return $this->$plgFunction( $product,$productCustom, $row);
-
-	 }
-	 /**
-	 * display The plugin in order view FE/BE
-	 * @ $view is "BE" for see in back-End, default is FE
-	 */
-	 public function displayInOrderPlugin($item,$productCustom, $row ,$view='FE'){
-		$plgName = $productCustom->value;
-		$plgPath = JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$plgName.'.php';
-		// defaut render if the plugin is not found/installed
-		if (!file_exists($plgPath)) {
-			echo '<div style="color: #CC0000;">plugin <b>'.$plgName.'</b> not found.</div><br/>';
-			if ($view =='FE') echo implode(',',(array)$param);
-			else foreach ((array)$param as $key=>$text) echo '<span>parameter : '.$key.' : '.$text. '<span><br/>';
-			return ;
-		}
-		if ($plgName) {
-// 			$plg = self::setClass($plgName) ;
-			$plgFunction = 'onViewOrder'.$view ;
-			$html = $this->$plgFunction( $item,$param,$productCustom, $row);
-		} else return '';
-
-		return $html;
-	 }
 	/*
 	 * Default return $item( Object: the product item in cart)
 	 * The plugins can remove or change or adding more virtuemart_product_id eg. to do packs
@@ -207,53 +216,4 @@ abstract class vmCustomPlugin extends VmPlugin {
 		return $item;
 	 }
 
-	 /**
-	  * $type FE or BE
-	  */
-	public function plgVmOnDisplayCustoms($FE,&$field,$product,$row){
-
-	 	VmTable::bindParameterable($field,'custom_params',$this->_varsToPushParam);
-
-	 	if (empty($field->custom_value)) return 0 ;
-	 	if (!empty($field->custom_param) && is_string($field->custom_param)) $custom_param = json_decode($field->custom_param);
-	 	else $custom_param = array();
-	 	$field->custom_param = $custom_param;
-	 	foreach($field->custom_param as $k => $v){
-	 		if(!empty($v)){
-	 			$field->$k = $v;
-	 		}
-	 	}
-	 	vmdebug('my field',$field);
-
-	 	if($FE){
-	 		$html = $this->onDisplayProductFE( $field, $product, $row);
-	 	} else {
-	 		$html = $this->onProductEdit( $field, $product, $row);
-	 	}
-
-	 	return $html;
-	 }
-
-
-	/**
-	 * Select the right file and class j1.5/j1.7
-	 * Return new class $plgName
-	 * @deprecated
-	 */
-	 private function setClass($name) {
-		$plgName = 'plgVmCustom'.ucfirst ($name );
-		vmTrace('setClass');
-		if(class_exists($plgName)) return new $plgName;
-		else {
-			if  ( VmConfig::isJ15() ) {
-				$path = JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$name.'.php';
-			} else {
-				$path = JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$name.DS.$name.'.php';
-			}
-			if (is_file($path)) {
-				require($path);
-				return new $plgName;
-			} else return false ;
-		}
-	 }
 }
