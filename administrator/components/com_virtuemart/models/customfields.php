@@ -891,7 +891,6 @@ class VirtueMartModelCustomfields extends VmModel {
 					$varsToPushParam = $dispatcher->trigger('plgVmDisplayInCartPlugin',array($product,$productCustom, $row));
 
 					if(!empty($varsToPushParam)){
-
 						foreach($varsToPushParam as $push){
 							if(!empty($push)){
 								$html .= $push;

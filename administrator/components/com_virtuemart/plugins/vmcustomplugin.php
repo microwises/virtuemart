@@ -188,9 +188,9 @@ abstract class vmCustomPlugin extends VmPlugin {
 			return ;
 		}
 		if ($plgName) {
-			$plg = self::setClass($plgName) ;
+// 			$plg = self::setClass($plgName) ;
 			$plgFunction = 'onViewOrder'.$view ;
-			$html = $plg->$plgFunction( $item,$param,$productCustom, $row);
+			$html = $this->$plgFunction( $item,$param,$productCustom, $row);
 		} else return '';
 
 		return $html;

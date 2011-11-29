@@ -323,6 +323,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	}
 
 
+	//Notice: We only need to add the events, which should work for the specific plugin, when an event is doing nothing, it should not be added
 
 	/**
 	 * Save updated order data to the method specific table
@@ -331,7 +332,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 * @return mixed, True on success, false on failures (the rest of the save-process will be
 	 * skipped!), or null when this method is not actived.
 	 * @author Oscar van Eijk
-	 */
+	 *
 	public function plgVmOnUpdateOrder($psType, $_formData) {
 		return null;
 	}
@@ -343,7 +344,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 * @return mixed, True on success, false on failures (the rest of the save-process will be
 	 * skipped!), or null when this method is not actived.
 	 * @author Oscar van Eijk
-	 */
+	 *
 	public function plgVmOnUpdateOrderLine($psType, $_formData) {
 		return null;
 	}
@@ -357,7 +358,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 * @param integer $_lineId
 	 * @return mixed Null for method that aren't active, text (HTML) otherwise
 	 * @author Oscar van Eijk
-	 */
+	 *
 	public function plgVmOnEditOrderLineBE($psType, $_orderId, $_lineId) {
 		return null;
 	}
@@ -371,7 +372,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 * @param integer $_lineId
 	 * @return mixed Null for method that aren't active, text (HTML) otherwise
 	 * @author Oscar van Eijk
-	 */
+	 *
 	public function plgVmOnShowOrderLineFE($psType, $_orderId, $_lineId) {
 		return null;
 	}
@@ -392,7 +393,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 *
 	 * @author Valerie Isaksen
 	 *
-	 */
+	 *
 	public function plgVmOnNotification($psType, &$return_context, &$virtuemart_order_id, &$new_status) {
 		return null;
 	}
@@ -411,11 +412,11 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 *
 	 * @author Valerie Isaksen
 	 *
-	 */
+	 *
 	function plgVmOnResponseReceived($psType, &$virtuemart_order_id, &$html) {
 		return null;
 	}
-
+*/
 }
 
 // No closing tag
