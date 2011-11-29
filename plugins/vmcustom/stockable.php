@@ -19,6 +19,7 @@ defined('_JEXEC') or 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not
  *
  * http://virtuemart.org
  */
+if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 
 class plgVmCustomStockable extends vmCustomPlugin {
 
@@ -39,57 +40,11 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		self::$_this = $this;
 	}
 
-	/**
-	 * Create the table for this plugin if it does not yet exist.
-	 * @author Patrick Kohl
-	 */
-	protected function _createTable()
-	{
-		$scheme = DbScheme::get_instance();
-		$scheme->create_scheme($this->_tablename);
-		$schemeCols = array(
-			 'id' => array (
-					 'type' => 'int'
-					,'length' => 11
-					,'auto_inc' => true
-					,'null' => false
-			)
-			,'virtuemart_product_id' => array (
-					 'type' => 'int'
-					,'length' => 11
-					,'null' => false
-			)
-			,'virtuemart_custom_id' => array (
-					 'type' => 'text'
-					,'null' => false
-			)
-			,'stockable' => array (
-					 'type' => 'text'
-					,'null' => false
-			)
-		);
-		$schemeIdx = array(
-			 'idx_order_custom' => array(
-					 'columns' => array ('virtuemart_product_id')
-					,'primary' => false
-					,'unique' => false
-					,'type' => null
-			)
-		);
-		$scheme->define_scheme($schemeCols);
-		$scheme->define_index($schemeIdx);
-		if (!$scheme->scheme(true)) {
-			JError::raiseWarning(500, $scheme->get_db_error());
-		}
-		$scheme->reset();
-	}
-
-
 
 
 	// get product param for this plugin on edit
 	function onProductEdit($field,$param,$row, $product_id) {
-		if ($field->custom_value != $this->_name) return '';
+		if ($field->custom_element != $this->_name) return '';
 		$html ='';
 		if (!$childs = $this->getChilds($product_id) ) $html .='<DIV>'.JTEXT::_('VMCUSTOM_STOCKABLE_NO_CHILD').'</DIV>';
 		$db = JFactory::getDBO();
@@ -188,7 +143,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 */
 	function onDisplayProductFE($field, $product,$idx) {
 		// default return if it's not this plugin
-		if ($field->custom_value != $this->_name) return '';
+		if ($field->custom_element != $this->_name) return '';
 		//if (!$childs = $this->getChilds($product_id) ) return ;
 
 		$plgParam = $this->getVmCustomParams($field->virtuemart_custom_id);

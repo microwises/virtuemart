@@ -47,7 +47,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 	// get product param for this plugin on edit
 	function onProductEdit($field,$param,$row, $product_id) {
-		if ($field->custom_value != $this->_name) return '';
+		if ($field->custom_element != $this->_name) return '';
 
 		$data = $this->getVmPluginMethod($field->virtuemart_custom_id);
 
