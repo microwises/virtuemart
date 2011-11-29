@@ -123,7 +123,7 @@ class VirtueMartModelUser extends VmModel {
 		$this->_data->JUser = JUser::getInstance($this->_id);
 // 		vmdebug('getUser',$this->_data->JUser);
 		if(empty($this->_data->perms)){
-			if(strpos($this->_data->JUser->usertype)!==false){
+			if(strpos($this->_data->JUser->usertype,'Administrator')!==false){
 				$this->_data->perms = 'admin';
 			} else {
 				$this->_data->perms = 'shopper';

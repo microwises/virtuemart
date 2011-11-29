@@ -294,6 +294,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->updateJParamsToVmParams($tablenames);
 
+			$this->updateAdminMenuEntry();
+
 			if($loadVm) $this->displayFinished(true);
 
 			return true;
@@ -440,6 +442,17 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				}
 			}
 			return false;
+		}
+
+		private function updateAdminMenuEntry() {
+
+			if(empty($this->db)){
+				$this->db = JFactory::getDBO();
+			}
+
+			$query = 'UPDATE `#__virtuemart_adminmenuentries` SET `name`="COM_VIRTUEMART_SHIPMENT_S", `view`="shipmentmethod" WHERE `id`="16" LIMIT 1';
+			$this->db->setQuery($query);
+			$this->db->query($query);
 		}
 
 		private function renamePsPluginTables($tablenames){
