@@ -136,7 +136,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	*
 	*/
 
-	public function plgVmOnSelectedCalculatePrice($psType, VirtueMartCart $cart, array &$cart_prices, $cart_prices_name) {
+	public function plgVmOnSelectedCalculatePrice($psType, VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
 		$id = $this->_idName;
 		if (!($method =$this->selectedThisByMethodId($psType, $cart->$id))) {
 			return null; // Another method was selected, do nothing
