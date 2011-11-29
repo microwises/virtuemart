@@ -46,15 +46,16 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	}
 
 	// get product param for this plugin on edit
-	function onProductEdit($field,$param,$row, $product_id) {
+	function onProductEdit($field, $product, $row) {
 		if ($field->custom_element != $this->_name) return '';
 
-		$data = $this->getVmPluginMethod($field->virtuemart_custom_id);
+// 		$data = $this->getVmPluginMethod($field->virtuemart_custom_id);
+// 		VmTable::bindParameterable($field,$this->_xParams,$this->_varsToPushParam);
 
-		$html  ='<input type="text" value="'.$data['custom_name'].'" size="10" name="custom_param['.$row.'][custom_name]"> ';
-		$html .='<input type="text" value="'.$data['custom_size'].'" size="10" name="custom_param['.$row.'][custom_size]">';
+		$html  ='<input type="text" value="'.$field->custom_title.'" size="10" name="custom_param['.$row.'][custom_title]"> ';
+		$html .='<input type="text" value="'.$field->custom_size.'" size="10" name="custom_param['.$row.'][custom_size]">';
 		$html .=JTEXT::_('VMCUSTOM_TEXTINPUT_NO_CHANGES_BE');
-
+// 		$field->display = $html;
 		return $html  ;
 	}
 	/**
@@ -63,7 +64,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @author Patrick Kohl
 	 * eg. name="customPlugin['.$idx.'][comment] save the comment in the cart & order
 	 */
-	function onDisplayProductFE($field, $product,$idx) {
+	function onDisplayProductFE(&$field, $product,$idx) {
 		// default return if it's not this plugin
 		if ($field->custom_value != $this->_name) return '';
 // 		if (!$field->custom_name) {
@@ -91,6 +92,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 			});
 	});
 		');
+		$field->display = $html;
         return $html;
     }
 
@@ -98,7 +100,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCartModule()
 	 * @author Patrick Kohl
 	 */
-	function onViewCartModule( $product,$param,$productCustom, $row) {
+	function onViewCartModule( $product,$productCustom, $row) {
 		if ($param->comment) return 'commented';
 		return 'not commented';
     }
@@ -107,9 +109,9 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCart()
 	 * @author Patrick Kohl
 	 */
-	function onViewCart($product, $param,$productCustom, $row) {
+	function onViewCart($product,$productCustom, $row) {
 		$html  = '<div>';
-		$html .='<span>'.$param->comment.'</span>';
+		$html .='<span>'.$product->comment.'</span>';
 		// $html .='<span>'.$param->Morecomment.'</span>';
 		return $html.'</div>';
     }
@@ -119,22 +121,22 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCart()
 	 * @author Patrick Kohl
 	 */
-	function onViewCartOrder($product, $param,$productCustom, $row) {
+	function onViewCartOrder($product, $productCustom, $row) {
 		// $html  = '<div>';
 		// $html .='<span>'.$param->comment.'</span>';
 		// $html .='<span>'.$param->Morecomment.'</span>';
 		// $html .='</div>';
 		// return $html;
-		return $param;
+// 		return $param;
     }
 
 	/**
 	 *
 	 * vendor order display BE
 	 */
-	function onViewOrderBE($item, $param,$productCustom, $row) {
+	function onViewOrderBE($item,$productCustom, $row) {
 		$html  = '<div>';
-		$html .='<span>'.$param->comment.'</span>';
+		$html .='<span>'.$item->comment.'</span>';
 		// $html .='<span>'.$param->Morecomment.'</span>';
 
 		return $html.'</div>';
@@ -144,14 +146,14 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 *
 	 * shopper order display FE
 	 */
-	function onViewOrderFE($item, $param,$productCustom, $row) {
+	function onViewOrderFE($item,$productCustom, $row) {
 		$html  = '<div>';
 		// if ($item->order_status == 'S' or $item->order_status == 'C' ) {
 			// $html .=' Link to media';
 		// } else {
 			// $html .=' Paiment not confiremed, PLz come back later ';
 		// }
-		$html .='<span>'.$param->comment.'</span>';
+		$html .='<span>'.$item->comment.'</span>';
 		// $html .='<span>'.$param->Morecomment.'</span>';
 
 		return $html.'</div>';

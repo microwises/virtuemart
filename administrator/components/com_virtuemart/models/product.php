@@ -514,6 +514,7 @@ class VirtueMartModelProduct extends VmModel {
 					if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 					$customfields = new VirtueMartModelCustomfields();
 					$product->customfields = $customfields->getproductCustomslist($this->_id,'product');
+
 				}
 			} else {
 

@@ -330,7 +330,7 @@ class VmTable extends JTable{
 	function bindParameterable(&$obj,$xParams,$varsToPushParam){
 
 		$paramFields = $obj->$xParams;
-// 						vmdebug('$obj->_xParams '.$xParams.' $obj->$paramFieldName ',$obj->$paramFieldName);
+// 						vmdebug('$obj->_xParams '.$xParams.' $obj->$xParams ',$paramFields);
 		if(!empty($obj->$xParams)){
 
 // 			vmdebug('load $varsToPushParam ',$varsToPushParam);
@@ -349,6 +349,8 @@ class VmTable extends JTable{
 
 				}
 			}
+		} else {
+			echo 'shit and merde <pre>'.print_r($obj,1).'</pre>';
 		}
 
 		foreach($varsToPushParam as $key=>$v){

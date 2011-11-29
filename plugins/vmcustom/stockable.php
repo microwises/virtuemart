@@ -43,7 +43,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 
 	// get product param for this plugin on edit
-	function onProductEdit($field,$param,$row, $product_id) {
+	function onProductEdit($field,$row, $product_id) {
 		if ($field->custom_element != $this->_name) return '';
 		$html ='';
 		if (!$childs = $this->getChilds($product_id) ) $html .='<DIV>'.JTEXT::_('VMCUSTOM_STOCKABLE_NO_CHILD').'</DIV>';
@@ -141,7 +141,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onDisplayProductFE()
 	 * @author Patrick Kohl
 	 */
-	function onDisplayProductFE($field, $product,$idx) {
+	function onDisplayProductFE(&$field, $product,$idx) {
 		// default return if it's not this plugin
 		if ($field->custom_element != $this->_name) return '';
 		//if (!$childs = $this->getChilds($product_id) ) return ;
@@ -286,7 +286,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCartModule()
 	 * @author Patrick Kohl
 	 */
-	function onViewCartModule( $product,$param,$productCustom, $row) {
+	function onViewCartModule( $product,$productCustom, $row) {
 		// if ($param->comment) return 'commented';
 		// return 'not commented';
 		return '';
@@ -296,7 +296,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCart()
 	 * @author Patrick Kohl
 	 */
-	function onViewCart($product, $param,$productCustom, $row) {
+	function onViewCart($product,$productCustom, $row) {
 		// $html  = '<div>';
 		// $html .='<span>'.$param->comment.'</span>';
 		//$html .='<span>'.$param->Morecomment.'</span>';
@@ -309,7 +309,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCart()
 	 * @author Patrick Kohl
 	 */
-	function onViewCartOrder($product, $param,$productCustom, $row) {
+	function onViewCartOrder($product,$productCustom, $row) {
 		// $html  = '<div>';
 		// $html .='<span>'.$param->comment.'</span>';
 		// $html .='<span>'.$param->Morecomment.'</span>';
@@ -322,7 +322,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 *
 	 * vendor order display BE
 	 */
-	function onViewOrderBE($item, $param,$productCustom, $row) {
+	function onViewOrderBE($item,$productCustom, $row) {
 		// $html  = '<div>';
 		// $html .='<span>'.$param->comment.'</span>';
 		//$html .='<span>'.$param->Morecomment.'</span>';
@@ -335,7 +335,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 *
 	 * shopper order display FE
 	 */
-	function onViewOrderFE($item, $param,$productCustom, $row) {
+	function onViewOrderFE($item,$productCustom, $row) {
 		$html  = '<div>';
 		// if ($item->order_status == 'S' or $item->order_status == 'C' ) {
 			// $html .=' Link to media';

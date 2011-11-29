@@ -559,7 +559,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Max Milbers
 	 *
 	 */
-	protected function getVmParams($vendorId=0, $method_id=0) {
+/*	protected function getVmParams($vendorId=0, $method_id=0) {
 
 		if (!$vendorId)
 		$vendorId = 1;
@@ -569,7 +569,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$db->setQuery($q);
 		return $db->loadResult();
 	}
-
+*/
 	/**
 	 *
 	 * @param int $order_id The order_id being processed

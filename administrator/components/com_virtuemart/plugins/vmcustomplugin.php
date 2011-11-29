@@ -77,27 +77,6 @@ abstract class vmCustomPlugin extends VmPlugin {
 		}
 	}
 
-    /**
-     * This functions gets the used and configured customplugins
-     * virtuemart_custom_id determines the used jplugin.
-     * The right custom_param is determined by the vendor and the jplugin id.
-     *
-     * This function sets the custom plugin param
-     * @author Patrick Kohl
-     * @deprecated
-     */
-/*	function getVmCustomParams($virtuemart_custom_id=0,$vendorId=0 ) {
-
-	if (!$vendorId)
-            $vendorId = 1;
-		$db = JFactory::getDBO();
-		$db->setQuery('SELECT `custom_params`,`custom_element` FROM `#__virtuemart_customplugins` WHERE virtuemart_custom_id =' .(int)$virtuemart_custom_id);
-		$plg_params = $db->loadObject();
-		if (empty($plg_params)) return array();
-
-        return  new JParameter( $plg_params->custom_params );
-    }
-*/
 	/**
 	 * This is the actions which take place, when a product gets stored
 	 *
@@ -113,50 +92,41 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * render the plugin with param  to display on product edit
 	 * called by customfields inputTypePlugin
 	 */
-	abstract function onProductEdit($field,$param,$row, $product_id);
+	abstract function onProductEdit($field, $product, $row);
 
 	/**
 	 * display the plugin on product FE
 	 */
-	abstract function onDisplayProductFE( $field, $product, $idx);
+	abstract function onDisplayProductFE( &$field, $product, $idx);
 
 	/**
 	 * display the product plugin on cart module
 	 */
-	abstract function onViewCartModule( $product,$custom_param,$productCustom, $row);
+	abstract function onViewCartModule( $product,$productCustom, $row);
 
 	/**
 	* display the product plugin on cart
 	 */
-	abstract function onViewCart($product, $param,$productCustom, $row);
+	abstract function onViewCart($product, $productCustom, $row);
 
 	/**
 	 * display the plugin in order
 	 * TODO One for customer and one for vendor
 	 * Get the statut (Eg. payed. >> render only the link for downloadable )
 	 */
-	abstract function onViewOrderBE($product, $param,$productCustom, $row);
+	abstract function onViewOrderBE($product, $productCustom, $row);
 
 	/**
 	 * defaut price modifation if nothing is set in plugin
 	 * you have to rewrite it in your plugin to do other calculations
 	 */
-	public function modifyPrice( $product, $field,$param,$selected ) {
+	public function modifyPrice( $product, $field,$selected ) {
 		if (!empty($field->custom_price)) {
 			//TODO adding % and more We should use here $this->interpreteMathOp
 			return $field->custom_price;
 		}
 	}
 
-	/**
-	 * display The plugin in Product view FE
-	 * override displayType() customfields.
-	 */
-	 public function plgVmOnDisplayTypePlugin($field,$product,$row){
-
-		VmTable::bindParameterable($field,$this->_xParams,$this->_varsToPushParam);
-		return $this->onDisplayProductFE(  $field, $product, $row);
-	 }
 	 /**
 	 * Calculate the variant price by The plugin
 	 * override calculateModificators() in calculatorh.
@@ -164,10 +134,31 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * You must reimplement modifyPrice() in your plugin
 	 * or price is returned defaut custom_price
 	 */
-	 public function calculatePluginVariant( $product, $field,$selected,$row){
+// 	 public function plgVmCalculatePluginVariant( $product, $field,$selected,$row){
+	 public function plgVmCalculatePluginVariant($product, &$productCustomsPrice,$selected,$row){
 
-		VmTable::bindParameterable($field,$this->_xParams,$this->_varsToPushParam);
-		return $this->modifyPrice( $product, $field,$selected,$row);
+// 	 	echo '<pre>'.print_r($product,1).'</pre>';
+// 	 	echo '<pre>'.print_r($productCustomsPrice,1).'</pre>';
+// 	 	echo '<pre>'.print_r($selected,1).'</pre>';
+	 	if(!empty($product->virtuemart_product_id)){
+// 	 		VmTable::bindParameterable($field,$this->_xParams,$this->_varsToPushParam);
+
+// 	 		$db = JFactory::getDBO();
+// 	 		$query = 'SELECT  C.* , field.*
+// 	 		 					FROM `#__virtuemart_customs` AS C
+// 	 		 					LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+// 	 		 					WHERE `virtuemart_product_id` =' . $product->virtuemart_product_id;
+// 	 		$query .=' and is_cart_attribute = 1 and field.`virtuemart_customfield_id`=' . $selected;
+// 	 		$db->setQuery($query);
+// 	 		$productCustomsPrice = $db->loadObject();
+// 	 		echo '<pre>'.print_r($productCustomsPrice,1).'</pre>';
+	 		if ($productCustomsPrice->field_type =='E') {
+
+	 		}
+// 	 		return $productCustomsPrice->custom_price;
+	 	}
+
+		return $this->modifyPrice( $product, $productCustomsPrice,$selected,$row);
 	 }
 
 	 /**
@@ -177,19 +168,25 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 */
 	 public function displayInCartPlugin($product,$productCustom, $row ,$view=''){
 		$plgName = $productCustom->value;
-		if ($plgName) {
-			$plg = self::setClass($plgName) ;
-			$plgFunction = 'onViewCart'.$view ;
-			if ( empty($product->param[$row])) $param = null ;
-			else $param = $product->param[$row] ;
-			return $plg->$plgFunction( $product,$param ,$productCustom, $row);
-		} else return '';
+		$plgFunction = 'onViewCart'.$view ;
+
+// 		if ( empty($product->param[$row])) $param = null ;
+// 					else $param = $product->param[$row] ;
+
+		return $this->$plgFunction( $product,$productCustom, $row);
+// 		if ($plgName) {
+// 			$plg = self::setClass($plgName) ;
+// 			$plgFunction = 'onViewCart'.$view ;
+// 			if ( empty($product->param[$row])) $param = null ;
+// 			else $param = $product->param[$row] ;
+// 			return $plg->$plgFunction( $product,$param ,$productCustom, $row);
+// 		} else return '';
 	 }
 	 /**
 	 * display The plugin in order view FE/BE
 	 * @ $view is "BE" for see in back-End, default is FE
 	 */
-	 public function displayInOrderPlugin($item,$param,$productCustom, $row ,$view='FE'){
+	 public function displayInOrderPlugin($item,$productCustom, $row ,$view='FE'){
 		$plgName = $productCustom->value;
 		$plgPath = JPATH_SITE.DS.'plugins'.DS.'vmcustom'.DS.$plgName.'.php';
 		// defaut render if the plugin is not found/installed
@@ -214,28 +211,38 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * Each item in aray must return $item->virtuemart_product_id
 	 * or an array of Object with $item->virtuemart_product_id in it;
 	 */
-	 public function GetProductStockToUpdateByPlugin($item,$param,$productCustom) {
+	 public function GetProductStockToUpdateByPlugin($item,$productCustom) {
 
 		return $item;
 	 }
-	/**
-	 * display The plugin in Product edit view BE
-	 * extend customFields inputType
-	 */
-	 public function plgVmOnDisplayInputTypePlugin($psType,$field,$product_id,$row){
-		
-	 	if(!$this->selectedThis($psType,$field->custom_element)) return false;
-		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
-		else {
-			// TODO MAX formating here not json or Joomla params;
-			// if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
-			// $custom_param = new JParameter($field->custom_params);
-		}
-		// if ($field->custom_value) {
-			$html = $this->onProductEdit(  $field,$custom_param, $row, $product_id);
-		// } else return '';
-		return $html;
+
+	 /**
+	  * $type FE or BE
+	  */
+	public function plgVmOnDisplayCustoms($FE,&$field,$product,$row){
+
+	 	VmTable::bindParameterable($field,'custom_params',$this->_varsToPushParam);
+
+	 	if (empty($field->custom_value)) return 0 ;
+	 	if (!empty($field->custom_param) && is_string($field->custom_param)) $custom_param = json_decode($field->custom_param);
+	 	else $custom_param = array();
+	 	$field->custom_param = $custom_param;
+	 	foreach($field->custom_param as $k => $v){
+	 		if(!empty($v)){
+	 			$field->$k = $v;
+	 		}
+	 	}
+	 	vmdebug('my field',$field);
+
+	 	if($FE){
+	 		$html = $this->onDisplayProductFE( $field, $product, $row);
+	 	} else {
+	 		$html = $this->onProductEdit( $field, $product, $row);
+	 	}
+
+	 	return $html;
 	 }
+
 
 	/**
 	 * Select the right file and class j1.5/j1.7
