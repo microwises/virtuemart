@@ -50,7 +50,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 
 
-/*	// get product param for this plugin on edit
+	// get product param for this plugin on edit
 	function onProductEdit($field,$row, $product_id) {
 		if ($field->custom_element != $this->_name) return '';
 		$html ='';

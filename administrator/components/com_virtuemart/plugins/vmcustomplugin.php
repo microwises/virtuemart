@@ -91,7 +91,7 @@ abstract class vmCustomPlugin extends VmPlugin {
     /**
     * $type FE or BE
     */
-    public function plgVmOnDisplayCustoms(&$field,$product,$row){
+    public function plgVmOnDisplayCustoms($FE,&$field,$product,$row){
 
     	VmTable::bindParameterable($field,'custom_params',$this->_varsToPushParam);
 
@@ -106,11 +106,11 @@ abstract class vmCustomPlugin extends VmPlugin {
     	}
 //     	vmdebug('my field',$field);
 
-//     	if($FE){
+    	if($FE){
     		$html = $this->onDisplayProductFE( $field, $product, $row);
-//     	} else {
-//     		$html = $this->onProductEdit( $field, $product, $row);
-//     	}
+    	} else {
+    		$html = $this->onProductEdit( $field, $product, $row);
+    	}
 
     	return $html;
     }
@@ -185,9 +185,9 @@ abstract class vmCustomPlugin extends VmPlugin {
 	/**
 	 * render the plugin with param  to display on product edit
 	 * called by customfields inputTypePlugin
-	 * @deprecated, it was never used,... it uses the parameter->render !
+	 *
 	 */
-// 	abstract function onProductEdit($field, $product, $row);
+	abstract function onProductEdit($field, $product, $row);
 
 	/**
 	 * display the plugin on product FE

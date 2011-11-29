@@ -50,7 +50,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 
 
-/*	// get product param for this plugin on edit
+	// get product param for this plugin on edit
 	function onProductEdit($field, $product, $row) {
 		if ($field->custom_element != $this->_name) return '';
 			echo 'hmm';
@@ -62,7 +62,8 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		$html .=JTEXT::_('VMCUSTOM_TEXTINPUT_NO_CHANGES_BE');
 // 		$field->display = $html;
 		return $html  ;
-	}*/
+	}
+
 	/**
 	 * @ idx plugin index
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onDisplayProductFE()
