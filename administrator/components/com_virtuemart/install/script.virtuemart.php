@@ -185,7 +185,13 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->alterTable('#__session',$fields);
 			}
 
-
+			$query = 'ALTER TABLE  `#__virtuemart_categories` DROP INDEX  `idx_slug`';
+			$this->_db->setQuery($query);
+			if(!$this->_db->query()){
+				    VmError('Deleting of #__virtuemart_categories idx_ slug failed '.$this->_db->getErrorMsg());
+			 } else {
+				    vmdebug('I deleted the column '.$this->_db->getQuery());
+			 }
 			//Shipping methods
 			$query = 'SHOW TABLES LIKE "%virtuemart_shippingcarriers%"';
 			$this->_db->setQuery($query);
