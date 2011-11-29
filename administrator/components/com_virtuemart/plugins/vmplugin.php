@@ -211,6 +211,8 @@ abstract class vmPlugin extends JPlugin {
 	 * @author Max Milbers
 	 */
 	final protected function getJoomlaPluginId(){
+
+		if(!empty($this->_jid)) return $this->_jid;
 		$db = JFactory::getDBO();
 
 		if (VmConfig::isJ15()) {

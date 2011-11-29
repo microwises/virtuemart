@@ -91,7 +91,7 @@ abstract class vmCustomPlugin extends VmPlugin {
     /**
     * $type FE or BE
     */
-    public function plgVmOnDisplayCustoms($FE,&$field,$product,$row){
+    public function plgVmOnDisplayCustoms(&$field,$product,$row){
 
     	VmTable::bindParameterable($field,'custom_params',$this->_varsToPushParam);
 
@@ -104,7 +104,7 @@ abstract class vmCustomPlugin extends VmPlugin {
     			$field->$k = $v;
     		}
     	}
-    	vmdebug('my field',$field);
+//     	vmdebug('my field',$field);
 
 //     	if($FE){
     		$html = $this->onDisplayProductFE( $field, $product, $row);
@@ -155,13 +155,31 @@ abstract class vmCustomPlugin extends VmPlugin {
     		return ;
     	}
     	else {
-
     		$plgFunction = 'onViewOrder'.$view ;
     		$html = $this->$plgFunction( $item,$param,$productCustom, $row);
     	}
 
-
     	return $html;
+    }
+
+    /**
+    * (depredicate)
+    */
+    function plgVmOnOrderShowFE($product,$order_item_id) {
+
+    	$db = JFactory::getDBO();
+    	$q = 'SELECT * FROM `#__virtuemart_product_custom_' . $this->_name . '` '
+    	. 'WHERE `virtuemart_product_id` = ' . $virtuemart_product_id;
+    	$db->setQuery($q);
+    	if (!($customs = $db->loadObjectList())) {
+    		JError::raiseWarning(500, $db->getErrorMsg());
+    		return '';
+    	}
+    	$html = '';
+    	foreach ($customs as $custom) {
+    		$html .= '<div>'.$custom.'</div>';
+    	}
+    	return $html ;
     }
 
 	/**

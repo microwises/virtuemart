@@ -41,6 +41,15 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		self::$_this = $this;
 	}
 
+	function plgVmOnOrder($product) {
+
+		$dbValues['virtuemart_product_id'] = $product->virtuemart_product_id;
+		$dbValues['textinput'] = $this->_virtuemart_paymentmethod_id;
+		$this->writeCustomData($dbValues, '#__virtuemart_product_custom_' . $this->_name);
+	}
+
+
+
 /*	// get product param for this plugin on edit
 	function onProductEdit($field, $product, $row) {
 		if ($field->custom_element != $this->_name) return '';
@@ -121,20 +130,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		// $html .='<span>'.$param->Morecomment.'</span>';
 		return $html.'</div>';
     }
-	/**
-	 * Add param as product_attributes
-	 * from cart >>> to order
-	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCart()
-	 * @author Patrick Kohl
-	 */
-	function onViewCartOrder($product, $productCustom, $row) {
-		// $html  = '<div>';
-		// $html .='<span>'.$param->comment.'</span>';
-		// $html .='<span>'.$param->Morecomment.'</span>';
-		// $html .='</div>';
-		// return $html;
-// 		return $param;
-    }
+
 
 	/**
 	 *
@@ -180,36 +176,6 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 // 			}
 // 			return $field->custom_price;
 		}
-	}
-
-	function plgVmOnOrder($product) {
-
-		$dbValues['virtuemart_product_id'] = $product->virtuemart_product_id;
-		$dbValues['textinput'] = $this->_virtuemart_paymentmethod_id;
-		$this->writeCustomData($dbValues, '#__virtuemart_product_custom_' . $this->_name);
-	}
-
-
-	/**
-	 * (depredicate)
-	 */
-	function plgVmOnOrderShowFE($product,$order_item_id) {
-		//$dbValues['virtuemart_product_id'] = $product->virtuemart_product_id;
-		//$dbValues['textinput'] = $this->_virtuemart_paymentmethod_id;
-		//$this->writePaymentData($dbValues, '#__virtuemart_product_custom_' . $this->_name);
-				$db = JFactory::getDBO();
-		$q = 'SELECT * FROM `#__virtuemart_product_custom_' . $this->_name . '` '
-			. 'WHERE `virtuemart_product_id` = ' . $virtuemart_product_id;
-		$db->setQuery($q);
-		if (!($customs = $db->loadObjectList())) {
-			JError::raiseWarning(500, $db->getErrorMsg());
-			return '';
-		}
-		$html = '';
-		foreach ($customs as $custom) {
-			$html .= '<div>'.$custom.'</div>';
-		}
-		return $html ;
 	}
 
 }

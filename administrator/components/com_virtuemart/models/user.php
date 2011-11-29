@@ -120,8 +120,15 @@ class VirtueMartModelUser extends VmModel {
 		$this->_data = $this->getTable('vmusers');
 		$this->_data->load((int)$this->_id);
 
+		$this->_data->JUser = JUser::getInstance($this->_id);
+// 		vmdebug('getUser',$this->_data->JUser);
 		if(empty($this->_data->perms)){
-			$this->_data->perms = 'shopper';
+			if(strpos($this->_data->JUser->usertype)!==false){
+				$this->_data->perms = 'admin';
+			} else {
+				$this->_data->perms = 'shopper';
+			}
+
 		}
 
 		// Add the virtuemart_shoppergroup_ids
@@ -137,7 +144,7 @@ class VirtueMartModelUser extends VmModel {
 			$this->_data->shopper_groups = $this->_defaultShopperGroup ;
 		}
 
-		$this->_data->JUser = JUser::getInstance($this->_id);
+
 
 // 		$_ui = $this->_getList('SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"');
 		$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"';

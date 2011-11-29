@@ -35,7 +35,7 @@ abstract class vmCalculationPlugin extends vmPlugin {
 
 	protected function plgVmStorePluginInternalDataCalc(&$data){
 
-		vmdebug('plgVmStorePluginInternalDataCalc $data',$data);
+// 		vmdebug('plgVmStorePluginInternalDataCalc $data',$data);
 // 		$this->plgVmOnStoreInstallPluginTable($this->_psType);
 		$this->storePluginInternalData($data);
 
@@ -76,10 +76,4 @@ abstract class vmCalculationPlugin extends vmPlugin {
 		return false;
 	}
 
-	protected function plgVmExecuteCalculation ($rule, $relateToBaseAmount, $baseprice, &$_cartPrices, &$price){
-
-		$calculated = false;
-
-		return $calculated;
-	}
 }

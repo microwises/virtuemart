@@ -215,7 +215,7 @@ class GenericTableUpdater extends JModel{
 							vmdebug('I delete the column '.$tableName.' '.$fieldname);
 							$this->_db->setQuery('ALTER TABLE `'.$tableName.'` DROP COLUMN `'.$fieldname.'` ');
 							if(!$this->_db->query()){
-								VmError('Deleting of '.$tableName.' '.$fieldname.' failed. '.$this->_db->getQuery());
+								VmError('portLanguageFields: Deleting of '.$tableName.' '.$fieldname.' failed. '.$this->_db->getQuery());
 							} else {
 								vmdebug('I deleted the column '.$this->_db->getQuery());
 							}
