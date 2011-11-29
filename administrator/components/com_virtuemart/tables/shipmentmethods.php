@@ -52,8 +52,6 @@ class TableShipmentmethods extends VmTable {
     /** @var string parameter of the shipmentmethod */
     var $shipment_params = 0;
 
-    /** var float rate value */
-    var $shipment_value = 0;
     var $ordering = 0;
     var $shared = 0;
 

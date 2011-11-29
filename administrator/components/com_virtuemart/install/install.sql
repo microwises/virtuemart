@@ -908,7 +908,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shipmentmethods` (
   `slug` char(255) NOT NULL DEFAULT '',
   `shipment_element` char(50) NOT NULL DEFAULT '',
   `shipment_params` text NOT NULL,
-  `shipment_value` decimal(10,2) NOT NULL DEFAULT '0.00',
   `ordering` int(2) NOT NULL DEFAULT '0',
   `shared` tinyint(1) NOT NULL,
   `published` tinyint(1) NOT NULL DEFAULT '1',
