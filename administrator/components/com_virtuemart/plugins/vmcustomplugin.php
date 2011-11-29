@@ -223,14 +223,17 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * extend customFields inputType
 	 */
 	 public function plgVmOnDisplayInputTypePlugin($psType,$field,$product_id,$row){
-
+		
 	 	if(!$this->selectedThis($psType,$field->custom_element)) return false;
 		if (!empty($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
-		else $custom_param = array();
-
-		if ($field->custom_value) {
+		else {
+			// TODO MAX formating here not json or Joomla params;
+			// if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
+			// $custom_param = new JParameter($field->custom_params);
+		}
+		// if ($field->custom_value) {
 			$html = $this->onProductEdit(  $field,$custom_param, $row, $product_id);
-		} else return '';
+		// } else return '';
 		return $html;
 	 }
 
