@@ -392,7 +392,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$stdgroup = array('virtuemart_shoppergroup_id' => 1,
 									'virtuemart_vendor_id'	=> 1,
 									'shopper_group_name'		=> '-anonymous-',
-									'shopper_group_desc'		=> 'shopper group for anoymous shoppers',
+									'shopper_group_desc'		=> 'Shopper group for anonymous shoppers',
 									'default'					=> 2,
 									'published'					=> 1,
 									'shared'						=> 1
