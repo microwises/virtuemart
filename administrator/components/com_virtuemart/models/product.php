@@ -1621,10 +1621,12 @@ public function updateStock($product, $amount, $signInStoc, $signOrderedStock){
 		$product = VirtueMartModelCustomfields::GetProductStockToUpdate($product);
 		// we can have more then one product in case of pack
 		// in case of child, ID must be the child ID
-		if (is_array($product))
-			foreach ($product as $prod ) updateStock($prod, $amount, $signInStoc, $signOrderedStock);
-	}
+		// TO DO use $prod->amount change for packs(eg. 1 computer and 2 HDD)
+			foreach ((array)$product as $prod ) $this->updateStockInDB($prod, $amount, $signInStoc, $signOrderedStock);
+	} else $this->updateStockInDB($product, $amount, $signInStoc, $signOrderedStock);
+}
 
+private function updateStockInDB($product, $amount, $signInStoc, $signOrderedStock){
 	vmdebug( 'stockupdate', $product->virtuemart_product_id,$amount, $signInStoc, $signOrderedStock );
 	$validFields = array('=','+','-');
 	if(!in_array($signInStoc,$validFields)){

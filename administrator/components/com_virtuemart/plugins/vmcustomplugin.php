@@ -149,42 +149,53 @@ abstract class vmCustomPlugin extends VmPlugin {
      * display The plugin in order view FE/BE
      * @ $view is "BE" for see in back-End, default is FE
      */
-    public function plgVmDisplayInOrderCustom(&$html,$item,$productCustom, $row ,$view='FE'){
-
+    public function plgVmDisplayInOrderCustom(&$html,$item, $param,$productCustom, $row ,$view='FE'){
+		if ($productCustom->custom_value != $this->_name) return '';
+		$plgFunction = 'onViewOrder'.$view ;
+		//$html ='';
+		$html .= $this->$plgFunction( $item,$productCustom, $row, $param );
 
     	// defaut render if the plugin is not found/installed
-    	if ($productCustom->value!=$this->_name) {
-    		echo '<div style="color: #CC0000;">plugin <b>'.$productCustom->value.'</b> not found.</div><br/>';
-    		if ($view =='FE') echo implode(',',(array)$param);
-    		else foreach ((array)$param as $key=>$text) echo '<span>parameter : '.$key.' : '.$text. '<span><br/>';
-    		return ;
-    	}
-    	else {
-    		$plgFunction = 'onViewOrder'.$view ;
-    		$html = $this->$plgFunction( $item,$param,$productCustom, $row);
-    	}
+    	// if ($productCustom->value!=$this->_name) {
+    		// $html.=  '<div style="color: #CC0000;">plugin <b>'.$productCustom->value.'</b> not found.</div><br/>';
+    		// if ($view =='FE') $html.=  implode(',',(array)$param);
+    		// else foreach ((array)$param as $key=>$text) $html.=  '<span>parameter : '.$key.' : '.$text. '<span><br/>';
+    		// return ;
+    	// }
+    	// else {
+    		
+    		// $html = $this->$plgFunction( $item,$param,$productCustom, $row);
+    	// }
 
     	return $html;
     }
 
-    /**
-    * (depredicate)
-    */
-    function plgVmOnOrderShowFE($product,$order_item_id) {
+	/**
+     * display The plugin in order view FE/BE
+     * @ $view is "BE" for see in back-End, default is FE
+     */
+    public function plgVmCreateOrderLinesCustom(&$html,$item,$productCustom, $row ,$view='FE'){
+		if ($productCustom->custom_value != $this->_name) return '';
+		$plgFunction = 'onViewOrder'.$view ;
+		$html ='';
+		foreach($item->param as $k => $plg){
+			if (key($plg)== $this->_name)
+				$html .= $this->$plgFunction( $item,$productCustom, $row,$plg[$this->_name]);
+		}
 
-    	$db = JFactory::getDBO();
-    	$q = 'SELECT * FROM `#__virtuemart_product_custom_' . $this->_name . '` '
-    	. 'WHERE `virtuemart_product_id` = ' . $virtuemart_product_id;
-    	$db->setQuery($q);
-    	if (!($customs = $db->loadObjectList())) {
-    		JError::raiseWarning(500, $db->getErrorMsg());
-    		return '';
-    	}
-    	$html = '';
-    	foreach ($customs as $custom) {
-    		$html .= '<div>'.$custom.'</div>';
-    	}
-    	return $html ;
+    	// defaut render if the plugin is not found/installed
+    	// if ($productCustom->value!=$this->_name) {
+    		// $html.=  '<div style="color: #CC0000;">plugin <b>'.$productCustom->value.'</b> not found.</div><br/>';
+    		// if ($view =='FE') $html.=  implode(',',(array)$param);
+    		// else foreach ((array)$param as $key=>$text) $html.=  '<span>parameter : '.$key.' : '.$text. '<span><br/>';
+    		// return ;
+    	// }
+    	// else {
+    		
+    		// $html = $this->$plgFunction( $item,$param,$productCustom, $row);
+    	// }
+
+    	return $html;
     }
 
 	/**
@@ -214,7 +225,14 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * TODO One for customer and one for vendor
 	 * Get the statut (Eg. payed. >> render only the link for downloadable )
 	 */
-	abstract function onViewOrderBE($product, $productCustom, $row);
+	abstract function onViewOrderBE($product, $productCustom, $row,$plgParam);
+
+	/**
+	 * display the plugin in order
+	 * TODO One for customer and one for vendor
+	 * Get the statut (Eg. payed. >> render only the link for downloadable )
+	 */
+	abstract function onViewOrderFE($product, $productCustom, $row,$plgParam);
 
 	/**
 	 * defaut price modifation if nothing is set in plugin
@@ -234,7 +252,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * Each item in aray must return $item->virtuemart_product_id
 	 * or an array of Object with $item->virtuemart_product_id in it;
 	 */
-	 public function GetProductStockToUpdateByPlugin($item,$productCustom) {
+	 public function plgVmGetProductStockToUpdateByCustom($item, $productCustom) {
 
 		return $item;
 	 }

@@ -137,11 +137,13 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 *
 	 * vendor order display BE
 	 */
-	function onViewOrderBE($item,$productCustom, $row) {
+	function onViewOrderBE($item,$productCustom, $row,$plgParam) {
+		$comment ='';
+			if(!empty($plgParam['comment']) ){
+				$comment .= ' = '.$plgParam['comment'];
+			}
 		$html  = '<div>';
-		$html .='<span>'.$item->comment.'</span>';
-		// $html .='<span>'.$param->Morecomment.'</span>';
-
+		$html .='<span>'.$comment.'</span>';
 		return $html.'</div>';
     }
 
@@ -149,16 +151,13 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 *
 	 * shopper order display FE
 	 */
-	function onViewOrderFE($item,$productCustom, $row) {
+	function onViewOrderFE($item,$productCustom, $row,$plgParam) {
+		$comment ='';
+			if(!empty($plgParam['comment']) ){
+				$comment .= ' = '.$plgParam['comment'];
+			}
 		$html  = '<div>';
-		// if ($item->order_status == 'S' or $item->order_status == 'C' ) {
-			// $html .=' Link to media';
-		// } else {
-			// $html .=' Paiment not confiremed, PLz come back later ';
-		// }
-		$html .='<span>'.$item->comment.'</span>';
-		// $html .='<span>'.$param->Morecomment.'</span>';
-
+		$html .='<span>'.$comment.'</span>';
 		return $html.'</div>';
     }
 

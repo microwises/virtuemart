@@ -306,10 +306,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @author Patrick Kohl
 	 */
 	function onViewCart($product,$productCustom, $row, $plgParam) {
-		// $html  = '<div>';
-		// $html .='<span>'.$param->comment.'</span>';
-		//$html .='<span>'.$param->Morecomment.'</span>';
-		// return $html.'</div>';
+
 		return '';
     }
 
@@ -317,12 +314,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 *
 	 * vendor order display BE
 	 */
-	function onViewOrderBE($item,$productCustom, $row) {
-		// $html  = '<div>';
-		// $html .='<span>'.$param->comment.'</span>';
-		//$html .='<span>'.$param->Morecomment.'</span>';
+	function onViewOrderBE($item,$productCustom, $row, $plgParam) {
 
-		// return $html.'</div>';
 		return '';
     }
 
@@ -330,17 +323,11 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 *
 	 * shopper order display FE
 	 */
-	function onViewOrderFE($item,$productCustom, $row) {
-		$html  = '<div>';
-		// if ($item->order_status == 'S' or $item->order_status == 'C' ) {
-			// $html .=' Link to media';
-		// } else {
-			// $html .=' Paiment not confiremed, PLz come back later ';
-		// }
-		$html .='<span>'.$param->comment.'</span>';
-		// $html .='<span>'.$param->Morecomment.'</span>';
-
-		return $html.'</div>';
+	function onViewOrderFE($item,$productCustom, $row, $plgParam) {
+		return '';
+		// $html  = '<div>';
+		// $html .='<span>'.$param->comment.'</span>';
+		// return $html.'</div>';
     }
 
 	function getChilds($child_id = null) {

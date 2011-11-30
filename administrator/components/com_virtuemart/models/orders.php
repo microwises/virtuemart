@@ -790,20 +790,18 @@ class VirtueMartModelOrders extends VmModel {
 						if ($productCustom->field_type == "E") {
 
 							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-
-							JPluginHelper::importPlugin('vmcustom');
-							$dispatcher = JDispatcher::getInstance();
-							$html = '';
-							$varsToPushParam = $dispatcher->trigger('plgVmDisplayInOrderCustom',array($html, $_prod,$productCustom, $row));
-							// if(!empty($varsToPushParam)){
-								// $html ='';
-								// foreach($varsToPushParam as $push){
-									// if(!empty($push)){
-										// $html .= $push;
-									// }
-								// }
-							// }
-							$product_attribute[$selected] = $html;
+							
+							$product_attribute[$selected] = $selected;
+							// JPluginHelper::importPlugin('vmcustom');
+							// $dispatcher = JDispatcher::getInstance();
+							// $html = '';
+							// $varsToPushParam = $dispatcher->trigger('plgVmCreateOrderLinesCustom',array(&$html, $_prod,$productCustom, $row));
+							foreach($_prod->param as $k => $plg){
+								if ($k == $variant)
+									$product_attribute[$selected] = $plg ;
+									// $html .= $this->$plgFunction( $item,$productCustom, $row,$plg[$this->_name]);
+							}
+							
 
 						} else {
 

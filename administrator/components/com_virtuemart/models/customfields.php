@@ -921,21 +921,19 @@ class VirtueMartModelCustomfields extends VmModel {
 	 */
 	public function CustomsFieldOrderDisplay($item,$view='FE') {
 		$row = 0 ;
-		$product_attributes = json_decode($item->product_attribute);
+		$product_attributes = json_decode($item->product_attribute,true);
 		$html = '<div class="vm-customfield-cart">';
+		
 		foreach ($product_attributes as $virtuemart_customfield_id=>$param){
  			if ($param) {
 				if ($productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id ) ) {
-
+vmdebug('$param',$param);
 					if ($productCustom->field_type == "E") {
 
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-						if ($productCustomsPrice->field_type =='E') {
-							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-							JPluginHelper::importPlugin('vmcustom');
-							$dispatcher = JDispatcher::getInstance();
-							$dispatcher->trigger('plgVmDisplayInOrderCustom',array($html, $item, $param,$productCustom,$row,$view));
-						}
+						JPluginHelper::importPlugin('vmcustom');
+						$dispatcher = JDispatcher::getInstance();
+						$dispatcher->trigger('plgVmDisplayInOrderCustom',array(&$html, $item, $param[$productCustom->value],$productCustom,$row,$view));
 
 						//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
 // 						$html .= vmCustomPlugin::displayInOrderPlugin( $item,$param,$productCustom, $row,$view);
@@ -943,13 +941,13 @@ class VirtueMartModelCustomfields extends VmModel {
 							// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
 						// }
 					} elseif (($productCustom->field_type == "G")) {
-						$child = self::getChild($productCustom->custom_value);
+						$child = self::getChild($productCustom->value);
 						$html .= ' <span>'.$productCustom->custom_title.' : '.$child->product_name.'</span>';
 					} elseif (($productCustom->field_type == "M")) {
-						$html .= ' <span>'.$productCustom->custom_title.' : '.self::displayCustomMedia($productCustom->custom_value).'</span>';
+						$html .= ' <span>'.$productCustom->custom_title.' : '.self::displayCustomMedia($productCustom->value).'</span>';
 					}  else {
 
-						$html .= '<span>'.$productCustom->custom_title.' : '.$productCustom->custom_value.'</span>';
+						$html .= '<span>'.$productCustom->custom_title.' : '.$productCustom->value.'</span>';
 					}
 				} else {
 					// falldown method if customfield are deleted
@@ -965,7 +963,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	/*
 	 * Get product(ID) Stock to change by custom plugin
 	 * $product_id is order item ID
-	 * Only used by plugin for now
+	 * Only used by plugin for now or child
 	 */
 	public function GetProductStockToUpdate($item){
 
@@ -974,9 +972,13 @@ class VirtueMartModelCustomfields extends VmModel {
 			if ($param) {
 				if ($productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id ) ) {
 					if ($productCustom->field_type == "E") {
-						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-						$item = self::GetProductStockToUpdateByPlugin($item,$param,$productCustom);
-						//$item = self::addParam($item);
+							//$item = self::addParam($item);
+							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+							JPluginHelper::importPlugin('vmcustom');
+							$dispatcher = JDispatcher::getInstance();
+							$item = $dispatcher->trigger('plgVmGetProductStockToUpdateByCustom',array($item, $productCustom));
+						//$item = self::GetProductStockToUpdateByPlugin($item,$param,$productCustom);
+						
 					}
 					if ($productCustom->field_type == "G") {
 						$item->virtuemart_product_id = $productCustom->custom_value ;

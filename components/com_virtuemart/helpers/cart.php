@@ -415,7 +415,7 @@ class VirtueMartCart {
 				if (isset($post['customPrice'])) {
 					$product->customPrices = $post['customPrice'];
 					if (isset($post['customPlugin'])) $product->customPlugin = json_encode($post['customPlugin']);
-					$productKey.= '::';
+					$productKey .= '::';
 					foreach ($product->customPrices as $customPrice) {
 						foreach ($customPrice as $customId => $custom_fieldId) {
 
@@ -457,7 +457,7 @@ class VirtueMartCart {
 					// echo $productKey;
 					// print_r ($this->products);
 				}
-			} else {
+			} else { 
 				$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND', false));
 				return false;
 			}
