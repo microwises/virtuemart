@@ -299,9 +299,14 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		    vmError('No SQL file provided!');
 		    return false;
 		}
-		$params = JComponentHelper::getParams('com_languages');
-		$lang = $params->get('site', 'en-GB');//use default joomla
-		$lang = strtolower(strtr($lang,'-','_'));
+
+		if(!defined(VMLANG)){
+			$params = JComponentHelper::getParams('com_languages');
+			$lang = $params->get('site', 'en-GB');//use default joomla
+			$lang = strtolower(strtr($lang,'-','_'));
+		} else {
+			$lang = VMLANG;
+		}
 
 		// Create an array of queries from the sql file
 		jimport('joomla.installer.helper');
@@ -317,7 +322,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		foreach ($queries as $query) {
 		    $query = trim($query);
 		    if ($query != '' && $query{0} != '#') {
-		    	if(strpos('CREATE')!==false){
+		    	if(strpos('CREATE',$query)!==false){
 		    		$query = str_replace('XLANG',$lang,$query);
 		    	}
 			$db->setQuery($query);

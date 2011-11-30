@@ -41,17 +41,24 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		public function checkIfUpdate(){
 
 			$update = false;
-
 			$db = JFactory::getDBO();
-			$q = "SELECT count(id) AS idCount FROM `#__virtuemart_adminmenuentries`";
+			$q = 'SHOW TABLES LIKE "%virtuemart_adminmenuentries%"'; //=>jos_virtuemart_shipment_plg_weight_countries
 			$db->setQuery($q);
-			$result = $db->loadResult();
+			if($db->loadResult()){
 
-			if (empty($result)) {
-				$update = false;
+				$q = "SELECT count(id) AS idCount FROM `#__virtuemart_adminmenuentries`";
+				$db->setQuery($q);
+				$result = $db->loadResult();
+
+				if (empty($result)) {
+					$update = false;
+				} else {
+					$update = true;
+				}
 			} else {
-				$update = true;
+				$update = false;
 			}
+
 
 			return $update;
 		}
@@ -123,7 +130,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$params = JComponentHelper::getParams('com_languages');
 			$lang = $params->get('site', 'en-GB');//use default joomla
 			$lang = strtolower(strtr($lang,'-','_'));
-				if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
+			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();
 			$updater->createLanguageTables();
 
