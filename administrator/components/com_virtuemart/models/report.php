@@ -130,8 +130,8 @@ class VirtuemartModelReport extends VmModel {
 		if ($orderstates = JRequest::getWord('order_status_code','')) $where[] = 'o.order_status ="'.$orderstates.'"';
 		//getRevenue
 		// select wich table to order sum ordered
-		$filterorders = JRequest::getvar('filter_order','');
-		$orderdir = JRequest::getWord('filter_order_Dir','');
+		$filterorders = JRequest::getvar('filter_order','intervals');
+		$orderdir = JRequest::getWord('filter_order_Dir','DESC');
 		switch ($filterorders ) {
 
 			case 'o.virtuemart_order_id':

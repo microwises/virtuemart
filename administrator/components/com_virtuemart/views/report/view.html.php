@@ -71,18 +71,18 @@ class VirtuemartViewReport extends JView {
 			}
 			$totalReport['revenueTotal'] = $myCurrencyDisplay->priceDisplay($totalReport['revenueTotal'],'',false);
 
-			if ( 'product_quantity'==JRequest::getWord('filter_order')) {
-				foreach ($revenueBasic as $key => $row) {
-					$created_on[] =$row['created_on'];
-					$intervals[] =$row['intervals'];
-					$itemsSold[] =$row['product_quantity'];
-					$number_of_orders[] =$row['count_order_id'];
-					$revenue[] =$row['revenue'];
+			// if ( 'product_quantity'==JRequest::getWord('filter_order')) {
+				// foreach ($revenueBasic as $key => $row) {
+					// $created_on[] =$row['created_on'];
+					// $intervals[] =$row['intervals'];
+					// $itemsSold[] =$row['product_quantity'];
+					// $number_of_orders[] =$row['count_order_id'];
+					// $revenue[] =$row['revenue'];
 
-				}
-				if (JRequest::getWord('filter_order_Dir') == 'desc') array_multisort($itemsSold, SORT_DESC,$revenueBasic);
-				else array_multisort($itemsSold, SORT_ASC,$revenueBasic);
-			}
+				// }
+				// if (JRequest::getWord('filter_order_Dir') == 'desc') array_multisort($itemsSold, SORT_DESC,$revenueBasic);
+				// else array_multisort($itemsSold, SORT_ASC,$revenueBasic);
+			// }
 		}
 		$this->assignRef('report', $revenueBasic);
 		$this->assignRef('totalReport', $totalReport);
