@@ -123,9 +123,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$params = JComponentHelper::getParams('com_languages');
 			$lang = $params->get('site', 'en-GB');//use default joomla
 			$lang = strtolower(strtr($lang,'-','_'));
-			if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
-			$migrator = new Migrator();
-			$migrator->createLanguageTables(array($lang));
+				if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
+			$updater = new GenericTableUpdater();
+			$updater->createLanguageTables();
+
 
 			$this->displayFinished(false);
 
