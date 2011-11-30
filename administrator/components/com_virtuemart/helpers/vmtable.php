@@ -350,7 +350,7 @@ class VmTable extends JTable{
 				}
 			}
 		} else {
-			echo 'shit and merde <pre>'.print_r($obj,1).'</pre>';
+			//echo 'shit and merde <pre>'.print_r($obj,1).'</pre>';
 		}
 
 		foreach($varsToPushParam as $key=>$v){
