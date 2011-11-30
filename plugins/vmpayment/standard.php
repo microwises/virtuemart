@@ -89,10 +89,10 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		if (!$this->selectedThisType($psType)) {
 			return null;
 		}
-		 if (!($payment = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
+		 if (!($method = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
 			return null; // Another method was selected, do nothing
 		}
-		if (!$this->selectedThisElement($payment->payment_element)) {
+		if (!$this->selectedThisElement($method->payment_element)) {
 		    return false;
 		}
 // 		$params = new JParameter($payment->payment_params);
@@ -101,7 +101,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		$lang->load($filename, JPATH_ADMINISTRATOR);
 		$vendorId = 0;
 
-		$payment_info = $payment->payment_info;
+		$payment_info = $method->payment_info;
 
 		$html = "";
 		$new_status = false;
@@ -112,11 +112,11 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		// END printing out HTML Form code (Payment Extra Info)
 
 		$this->_virtuemart_paymentmethod_id = $cart->virtuemart_paymentmethod_id;
-		$dbValues['payment_name'] = parent::renderPluginName($payment);
+		$dbValues['payment_name'] = parent::renderPluginName($method);
 		$dbValues['order_number'] = $order_number;
 		$dbValues['virtuemart_paymentmethod_id'] = $this->_virtuemart_paymentmethod_id;
-		$dbValues['cost'] = $payment->cost;
-		$dbValues['tax_id'] = $payment->tax_id;
+		$dbValues['cost'] = $method->cost;
+		$dbValues['tax_id'] = $method->tax_id;
 		$this->storePSPluginInternalData($dbValues);
 
 		$html = '<table>' . "\n";

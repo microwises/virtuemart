@@ -239,7 +239,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 
 	// Prepare data that should be stored in the database
 	$dbValues['order_number'] = $order_number;
-	$dbValues['payment_name'] = parent::renderPluginName($payment);
+	$dbValues['payment_name'] = parent::renderPluginName($method);
 	$dbValues['virtuemart_paymentmethod_id'] = $cart->virtuemart_paymentmethod_id;
 	$dbValues['paypal_custom'] = $return_context;
 	$dbValues['cost'] = $method->cost;
@@ -303,7 +303,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
 	$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
-	$payment_name = $this->renderPluginName($payment, $method);
+	$payment_name = $this->renderPluginName($method);
 	$html = $this->_getPaymentResponseHtml($payment_data, $payment_name);
 
 	return true;
@@ -393,6 +393,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 		$response_fields[$table_key] = $value;
 	    }
 	}
+	$response_fields['payment_name'] = parent::renderPluginName($method);
 	$response_fields['paypalresponse_raw'] = $return_context = $paypal_data['custom'];
 	$response_fields['order_number'] = $order_number;
 	$response_fields['virtuemart_order_id'] = $virtuemart_order_id;

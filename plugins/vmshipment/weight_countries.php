@@ -125,10 +125,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	if (!$this->selectedThisType($psType)) {
 	    return null;
 	}
-	if (!($shipment = $this->getVmPluginMethod($cart->virtuemart_shipmentmethod_id))) {
+	if (!($method = $this->getVmPluginMethod($cart->virtuemart_shipmentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
-	if (!$this->selectedThisElement($shipment->shipment_element)) {
+	if (!$this->selectedThisElement($method->shipment_element)) {
 		    return false;
 		}
 // 	if (!class_exists('JParameter'))
@@ -142,12 +142,12 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	$values['order_number'] = VirtueMartModelOrders::getOrderNumber($orderID);
 	$values['virtuemart_order_id'] = $orderID;
 	$values['shipment_id'] = $cart->virtuemart_shipmentmethod_id;
-	$values['shipment_name'] = parent::renderPluginName($shipment);
-	$values['order_weight'] = $this->getOrderWeight($cart, $shipment->weight_unit);
-	$values['shipment_weight_unit'] = $shipment->weight_unit;
-	$values['shipment_cost'] = $shipment->cost;
-	$values['shipment_package_fee'] = $shipment->package_fee;
-	$values['tax_id'] = $shipment->tax_id;
+	$values['shipment_name'] = parent::renderPluginName($method);
+	$values['order_weight'] = $this->getOrderWeight($cart, $method->weight_unit);
+	$values['shipment_weight_unit'] = $method->weight_unit;
+	$values['shipment_cost'] = $method->cost;
+	$values['shipment_package_fee'] = $method->package_fee;
+	$values['tax_id'] = $method->tax_id;
 
 // 		$this->writeData($values, $this->_tablename);
 
