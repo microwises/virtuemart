@@ -322,7 +322,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		foreach ($queries as $query) {
 		    $query = trim($query);
 		    if ($query != '' && $query{0} != '#') {
-		    	if(strpos('CREATE',$query)!==false){
+		    	if(strpos('CREATE',$query)!==false or strpos('INSERT INTO',$query)!==false){
 		    		$query = str_replace('XLANG',$lang,$query);
 		    	}
 			$db->setQuery($query);
