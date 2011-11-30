@@ -68,7 +68,12 @@ class VirtuemartViewVirtuemart extends JView {
 		$this->assignRef('recentOrders', $recentOrders);
 		$recentCustomers = $model->getRecentCustomers();
 		$this->assignRef('recentCustomers', $recentCustomers);
-
+		// Options button.
+		if ( !VmConfig::isJ15()) {
+			if (JFactory::getUser()->authorise('core.admin', 'com_virtuemart')) {
+				JToolBarHelper::preferences('com_virtuemart');
+			}
+		}
 		parent::display($tpl);
 	}
 }

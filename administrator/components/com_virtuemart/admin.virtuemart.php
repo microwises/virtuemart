@@ -18,7 +18,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
-
+// Access check.
+if ( !VmConfig::isJ15()) {
+	if (!JFactory::getUser()->authorise('core.manage', 'com_virtuemart')) {
+		return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	}
+}
 // vmSetStartTime('test');
 // vmTime('Smallest Unit','test');
 
