@@ -1003,8 +1003,8 @@ class VirtueMartModelCustomfields extends VmModel {
 	 * add parameter to product definition
 	 */
 	public function addParam($product) {
-			$custom_param = empty($product->custom_param) ? array() : json_decode($product->custom_param);
-			$product_param = empty($product->customPlugin) ? array() : json_decode($product->customPlugin);
+			$custom_param = empty($product->custom_param) ? array() : json_decode($product->custom_param,true);
+			$product_param = empty($product->customPlugin) ? array() : json_decode($product->customPlugin,true);
 			$params = (array)$product_param + (array)$custom_param;
 			foreach ($params as $key => $param )
 				$product->param[$key] = $param ;

@@ -53,7 +53,6 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	// get product param for this plugin on edit
 	function onProductEdit($field, $product, $row) {
 		if ($field->custom_element != $this->_name) return '';
-			echo 'hmm';
 // 		$data = $this->getVmPluginMethod($field->virtuemart_custom_id);
 // 		VmTable::bindParameterable($field,$this->_xParams,$this->_varsToPushParam);
 
@@ -82,7 +81,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		vmdebug('onDisplayProductFE');
 		// Here the plugin values
 		//$html =JTEXT::_($field->custom_title) ;
-		$html=': <input class="vmcustom-textinput" type="text" value="" size="'.$field->custom_size.'" name="customPlugin['.$idx.'][comment]"><br />';
+		$html=': <input class="vmcustom-textinput" type="text" value="" size="'.$field->custom_size.'" name="customPlugin['.$field->virtuemart_custom_id.']['.$this->_name.'][comment]"><br />';
 		static $textinputjs;
 		// preventing 2 x load javascript
 		if ($textinputjs) return $html;
@@ -106,31 +105,26 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCartModule()
 	 * @author Patrick Kohl
 	 */
-	function onViewCartModule( $product,$productCustom, $row) {
-		$comment ='';
-		reset($product->param);
-		foreach($product->param as $k => $item){
-			if(!empty($item->comment)){
-				$comment .= ' '.$item->comment;
-			}
+	function onViewCartModule( $product,$productCustom, $row,$plgParam) {
+		if(!empty($plgParam['comment']) ){
+			return ' = '.$plgParam['comment'];
 		}
-		return $comment;
+		return '';
     }
 
 	/**
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCart()
 	 * @author Patrick Kohl
 	 */
-	function onViewCart($product,$productCustom, $row) {
-		vmdebug('onViewCart',$productCustom,$product);
+	function onViewCart($product,$productCustom, $row,$plgParam) {
+		vmdebug('onViewCart',$plgParam);
 
 		$comment ='';
-		reset($product->param);
-		foreach($product->param as $k => $item){
-			if(!empty($item->comment)){
-				$comment .= ' = '.$item->comment;
+		// foreach($plgParam as $k => $item){
+			if(!empty($plgParam['comment']) ){
+				$comment .= ' = '.$plgParam['comment'];
 			}
-		}
+		// }
 // 		$comment = current($product->param);
 		$html  = '<div>';
 		$html .='<span>'.$comment.'</span>';

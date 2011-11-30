@@ -295,7 +295,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCartModule()
 	 * @author Patrick Kohl
 	 */
-	function onViewCartModule( $product,$productCustom, $row) {
+	function onViewCartModule( $product,$productCustom, $row, $plgParam) {
 		// if ($param->comment) return 'commented';
 		// return 'not commented';
 		return '';
@@ -305,7 +305,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCart()
 	 * @author Patrick Kohl
 	 */
-	function onViewCart($product,$productCustom, $row) {
+	function onViewCart($product,$productCustom, $row, $plgParam) {
 		// $html  = '<div>';
 		// $html .='<span>'.$param->comment.'</span>';
 		//$html .='<span>'.$param->Morecomment.'</span>';

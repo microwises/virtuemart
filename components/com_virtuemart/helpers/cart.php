@@ -360,7 +360,7 @@ class VirtueMartCart {
 			$product -> product_width = $tmpProduct -> product_width;
 			$product -> product_height = $tmpProduct -> product_height;
 			$product -> product_lwh_uom = $tmpProduct -> product_lwh_uom;
-			$product -> product_url = $tmpProduct -> product_url;
+			// $product -> product_url = $tmpProduct -> product_url;
 			$product -> product_in_stock = $tmpProduct -> product_in_stock;
 			$product -> product_ordered = $tmpProduct -> product_ordered;
 			// 			$product -> low_stock_notification = $tmpProduct -> low_stock_notification;
@@ -377,7 +377,7 @@ class VirtueMartCart {
 			$product -> categories = $tmpProduct -> categories;
 			$product -> virtuemart_category_id = $tmpProduct -> virtuemart_category_id;
 			$product -> category_name = $tmpProduct -> category_name;
-			$product -> canonical = $tmpProduct -> canonical;
+			// $product -> canonical = $tmpProduct -> canonical;
 			$product -> link = $tmpProduct -> link;
 			$product -> packaging = $tmpProduct -> packaging;
 			//$product -> customfields = empty($tmpProduct -> customfields)? array():$tmpProduct -> customfields ;
