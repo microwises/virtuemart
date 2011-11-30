@@ -34,16 +34,22 @@ class JElementVmproductsmenu extends JElement {
 
     function fetchElement($name, $value, &$node, $control_name) {
 
-        return JHTML::_('select.genericlist', $this->_getProducts(), $control_name . '[' . $name . ']', '', 'value', 'text', $value, $control_name . $name);
+	return JHTML::_('select.genericlist', $this->_getProducts(), $control_name . '[' . $name . ']', '', 'value', 'text', $value, $control_name . $name);
     }
 
     private function _getProducts() {
 
-        $db = JFactory::getDBO();
-        $query = "SELECT `virtuemart_product_id`  AS value, `product_name`  AS text FROM `#__virtuemart_products` WHERE `published` = 1";
-        $db->setQuery($query);
-        $db->query();
-        return $db->loadObjectList();
+	if (!class_exists('VirtueMartModelProduct'))
+	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
+	$productModel = new VirtueMartModelProduct();
+	$products = $productModel->getProductListing(false, false, false, false, true);
+	$i = 0;
+	foreach ($products as $product) {
+	    $list[$i]['value'] = $product->virtuemart_product_id;
+	    $list[$i]['text'] = $product->product_name. " (". $product->product_sku.")";
+	    $i++;
+	}
+	return $list;
     }
 
 }
