@@ -19,7 +19,9 @@
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 AdminUIHelper::startAdminArea ();
+echo JText::_('COM_VIRTUEMART_ADMIN_CFG_EXPLAIN');
 ?>
+
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 
 <?php // Loading Templates in Tabs

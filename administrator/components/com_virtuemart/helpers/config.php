@@ -28,8 +28,16 @@ if(version_compare(JVERSION,'1.7.0','ge')) {
 	define ('JPATH_VM_LIBRARIES', JPATH_PLATFORM);
 } else {
 	define ('JPATH_VM_LIBRARIES', JPATH_LIBRARIES);
-
 }
+
+/**
+ * The time how long the config in the session is valid.
+ * While configuring the store, you should lower the time to 10 seconds.
+ * Later in a big store it maybe useful to rise this time up to 1 hr.
+ * That would mean that changing something in the config can take up to 1 hour until this change is effecting the shoppers.
+ */
+define( 'VM_CONFIG_SESSION_TIME', 300 );
+
 
 require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 
@@ -289,7 +297,7 @@ class VmConfig {
 		vmSetStartTime('loadConfig');
 		if(!$force){
 			if(!empty(self::$_jpConfig) && !empty(self::$_jpConfig->_params)){
-				vmTime('loadConfig Program Cache','loadConfig');
+// 				vmTime('loadConfig Program Cache','loadConfig');
 
 				return self::$_jpConfig;
 			} else {
@@ -302,14 +310,14 @@ class VmConfig {
 						//have at least 5 minutes later an effect of a currently logged in user (shopper)
 						//TODO add an explanation about this to the config, so that people understand that it may take up to
 						// 5 minutes until the config settings takes effect for OTHER users.
-						if(!empty($params['sctime']) and (microtime(true) - $params['sctime'])<300) {
+						if(!empty($params['sctime']) and (microtime(true) - $params['sctime'])<VM_CONFIG_SESSION_TIME) {
 							$params['offline_message'] = base64_decode($params['offline_message']);
 							$params['dateformat'] = base64_decode($params['dateformat']);
 
 							self::$_jpConfig = new VmConfig();
 							self::$_jpConfig->_params = $params;
 							self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
-							vmTime('loadConfig Session','loadConfig');
+// 							vmTime('loadConfig Session','loadConfig');
 							return self::$_jpConfig;
 						} else {
 // 							VmInfo('empty $params->sctime');
@@ -376,7 +384,7 @@ class VmConfig {
 			self::$_jpConfig->set('sctime',microtime(true));
 			self::$_jpConfig->set('vmlang',self::setdbLanguageTag());
 			self::$_jpConfig->setSession();
-			vmTime('loadConfig parsed and installed '.$install,'loadConfig');
+// 			vmTime('loadConfig parsed and installed '.$install,'loadConfig');
 			return self::$_jpConfig;
 		}
 
