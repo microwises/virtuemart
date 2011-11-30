@@ -317,8 +317,6 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 				}
 			}
 
-
-
 			$this->setDangerousToolsOff();
 		}else {
 			$msg = $this->_getMsgDangerousTools();
@@ -366,8 +364,16 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	 * @author Max Milbers
 	 */
 	function setDangerousToolsOff(){
-		$model = $this->getModel('config');
-		$model->setDangerousToolsOff();
+
+		$db = JFactory::getDBO();
+		$q = 'SHOW TABLES LIKE "%virtuemart_configs%"'; //=>jos_virtuemart_shipment_plg_weight_countries
+		$db->setQuery($q);//vmdebug('$db',$db->loadResult());
+		$res = $db->loadResult();
+		if(!empty($res)){
+			$model = $this->getModel('config');
+			$model->setDangerousToolsOff();
+		}
+
 	}
 
 	/**

@@ -300,7 +300,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		    return false;
 		}
 
-		if(!defined(VMLANG)){
+		if(!defined('VMLANG')){
 			$params = JComponentHelper::getParams('com_languages');
 			$lang = $params->get('site', 'en-GB');//use default joomla
 			$lang = strtolower(strtr($lang,'-','_'));

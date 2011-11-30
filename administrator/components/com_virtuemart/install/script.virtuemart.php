@@ -605,7 +605,11 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->loadVm();
 				// 				VmConfig::loadConfig(true);
 
-				if($this->update){
+				$db = JFactory::getDBO();
+				$q = 'SHOW TABLES LIKE "%virtuemart_configs%"'; //=>jos_virtuemart_shipment_plg_weight_countries
+				$db->setQuery($q);
+				$res = $db->loadResult();
+		if(!empty($res)){
 					JRequest::setVar(JUtility::getToken(), '1', 'post');
 					$config = JModel::getInstance('config', 'VirtueMartModel');
 					$config->setDangerousToolsOff();
