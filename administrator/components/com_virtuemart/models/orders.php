@@ -47,9 +47,9 @@ class VirtueMartModelOrders extends VmModel {
 		$this->addvalidOrderingFieldName(array('order_name','payment_method','virtuemart_order_id' ) );
 
 		//Delete the field so that and push it to the begin of the array so that it is used as default value
-		$key = array_search('o.modified_on',$this->_validOrderingFieldName);
-		unset($this->_validOrderingFieldName[$key]);
-		array_unshift($this->_validOrderingFieldName,'o.modified_on');
+		//$key = array_search('o.modified_on',$this->_validOrderingFieldName);
+		//unset($this->_validOrderingFieldName[$key]);
+		//array_unshift($this->_validOrderingFieldName,'o.modified_on');
 
 	}
 
