@@ -432,7 +432,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$display = $related->product_name.'('.$related->product_sku.')';
 					$display = '<input type="hidden" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" />';
 
-					$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "'.(int)$field->custom_value.'" ';
+					$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "'.(int)$field->custom_value.'" AND (`ordering` = 0 OR `ordering` = 1)';
 					$this->_db->setQuery($q);
 					$thumb ='';
 					if ($media_id = $this->_db->loadResult()) {
@@ -718,7 +718,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$related = $this->_db->loadObject();
 					if(empty ($related)) return '';
 					$thumb = '';
-					$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "'.(int)$value.'" ';
+					$q='SELECT `virtuemart_media_id` FROM `#__virtuemart_product_medias`WHERE `virtuemart_product_id`= "'.(int)$value.'" AND (`ordering` = 0 OR `ordering` = 1)';
 					$this->_db->setQuery($q);
 					if ($media_id = $this->_db->loadResult()) {
 						$thumb = $this->displayCustomMedia($media_id);
