@@ -74,7 +74,7 @@ AdminUIHelper::startAdminArea();
 			<th>
 			<?php echo JHTML::_('grid.sort'
 					, JText::_('COM_VIRTUEMART_SHOPPERGROUP')
-					, 'sg.shopper_group_name'
+					, 'shopper_group_name'
 					, $this->lists['filter_order_Dir']
 					, $this->lists['filter_order']); ?>
 			</th>

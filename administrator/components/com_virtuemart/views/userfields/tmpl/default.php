@@ -40,9 +40,9 @@ $j15 = VmConfig::isJ15();
 		</table>
 	</div>
 	<div id="resultscounter"><?php echo $this->pagination->getResultsCounter();?></div>
-	
+
 	</div>
-	
+
 	<div id="editcell">
 		<table class="adminlist jgrid">
 		<thead>
@@ -99,6 +99,7 @@ $j15 = VmConfig::isJ15();
 		$k = 0;
 		for ($i = 0, $n = count($this->userfieldsList); $i < $n; $i++) {
 			$row = $this->userfieldsList[$i];
+			vmdebug('my rows',$row);
 			$coreField = (in_array($row->name, $this->lists['coreFields']));
 			$image = ($j15) ? 'checked_out.png' : 'admin/checked_out.png';
 			$image = JHtml::_('image.administrator', $image, '/images/', null, null, JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'));
@@ -110,7 +111,7 @@ $j15 = VmConfig::isJ15();
 //			$published = JHTML::_('grid.published', $row, $i);
 			$published = $this->toggle($row->published, $i, 'toggle.published', $coreField);
 			$registration = $this->toggle($row->registration, $i, 'toggle.registration', $coreField);
-			$shipping = $this->toggle($row->shipping, $i, 'toggle.shipping', $coreField);
+			$shipping = $this->toggle($row->shipment, $i, 'toggle.shipping', $coreField);
 			$account = $this->toggle($row->account, $i, 'toggle.account', $coreField);
 			$ordering = ($this->lists['order'] == 'ordering');
 			$disabled = ($ordering ?  '' : 'disabled="disabled"');

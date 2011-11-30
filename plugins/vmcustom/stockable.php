@@ -19,7 +19,7 @@ defined('_JEXEC') or 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not
  *
  * http://virtuemart.org
  */
-if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
+if (!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcustomplugin.php');
 
 class plgVmCustomStockable extends vmCustomPlugin {
 

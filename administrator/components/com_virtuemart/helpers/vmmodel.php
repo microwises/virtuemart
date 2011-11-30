@@ -121,12 +121,12 @@ class VmModel extends JModel {
 		$this->_tablePreFix = $defaultTable->_tablePreFix;
 		$dTableArray = get_object_vars($defaultTable);
 
-		if($defaultTable->_translatable){
-			foreach ($defaultTable->getTranslatableFields() as $v){
-				$this->_validOrderingFieldName[] = 'l.'.$v;
-				unset($dTableArray[$v]);
-			}
-		}
+// 		if($defaultTable->_translatable){
+// 			foreach ($defaultTable->getTranslatableFields() as $v){
+// 				$this->_validOrderingFieldName[] = 'l.'.$v;
+// 				unset($dTableArray[$v]);
+// 			}
+// 		}
 
 		// Iterate over the object variables to build the query fields and values.
 		foreach ($dTableArray as $k => $v){
@@ -138,7 +138,8 @@ class VmModel extends JModel {
 				continue;
 			}
 
-			$this->_validOrderingFieldName[] = $this->_tablePreFix.$k;
+// 			$this->_validOrderingFieldName[] = $this->_tablePreFix.$k;
+			$this->_validOrderingFieldName[] = $k;
 
 		}
 
@@ -204,11 +205,11 @@ class VmModel extends JModel {
 
 		if(!empty($filter_order)){
 			$dotps = strrpos($filter_order, '.');
-			if($dotps===false && !empty($this->_tablePreFix) ){
+/*			if($dotps===false && !empty($this->_tablePreFix) ){
 // 				vmdebug('No dot found '.$filter_order.' add table prefix '.$this->_tablePreFix.'  in class '.get_class($this));
 				$filter_order = $this->_tablePreFix . $filter_order;
 
-			}
+			}*/
 
 			if(!in_array($filter_order, $this->_validOrderingFieldName)){
 

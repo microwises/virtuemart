@@ -53,6 +53,7 @@ class VirtuemartModelReport extends VmModel {
 			$this->setPeriod();
 		}
 
+		$this->addvalidOrderingFieldName(array('product_quantity','o.virtuemart_order_id'));
 		//$this->addvalidOrderingFieldName(array('o.`created_on`','DATE( o.`created_on` )','WEEK( o.`created_on` )', 'MONTH( o.`created_on` )','YEAR( o.`created_on` )','i.product_quantity','order_subtotal' ) );
 		//Delete the field so that and push it to the begin of the array so that it is used as default value
 // 		$key = array_search('o.modified_on',$this->_validOrderingFieldName);
@@ -99,20 +100,20 @@ class VirtuemartModelReport extends VmModel {
 		switch ($intervals) {
 
 			case 'day':
-				$this->intervals= 'DATE( o.`created_on` )';
+				$this->intervals= 'DATE( o.created_on )';
 				break;
 			case 'week':
-				$this->intervals= 'WEEK( o.`created_on` )';
+				$this->intervals= 'WEEK( o.created_on )';
 				break;
 			case 'month':
-				$this->intervals= 'MONTH( o.`created_on` )';
+				$this->intervals= 'MONTH( o.created_on )';
 				break;
 			case 'year':
-				$this->intervals= 'YEAR( o.`created_on` )';
+				$this->intervals= 'YEAR( o.created_on )';
 				break;
 			default:
 				// invidual grouping
-				$this->intervals= '`o`.`created_on`';
+				$this->intervals= 'o.created_on';
 				break;
 		}
 // 		if(!empty($this->intervals)){
@@ -123,7 +124,7 @@ class VirtuemartModelReport extends VmModel {
 
 		//$selectFields[] = 'COUNT(virtuemart_order_id) as number_of_orders';
 		$selectFields[] = 'SUM(order_subtotal) as order_subtotal';
-		$this->dates = ' DATE( o.`created_on` ) BETWEEN "'.$this->from_period.'" AND "'.$this->until_period.'" ';
+		$this->dates = ' DATE( o.created_on ) BETWEEN "'.$this->from_period.'" AND "'.$this->until_period.'" ';
 
 		// Filter by statut
 		if ($orderstates = JRequest::getWord('order_status_code','')) $where[] = 'o.order_status ="'.$orderstates.'"';
@@ -142,7 +143,7 @@ class VirtuemartModelReport extends VmModel {
 				// ORDER BY `product_quantity` ASC
 				$orderBy = ' ORDER by product_quantity '.$orderdir;
 				$groupBy = 'GROUP BY  product_quantity , intervals ';
-				
+
 				//$selectFields['intervals'] = $this->intervals.' AS intervals, i.`created_on` ';
 				break;
 			case 'o.order_subtotal'   :
@@ -153,8 +154,8 @@ class VirtuemartModelReport extends VmModel {
 			default:
 				// invidual grouping
 				//$this->intervals= '`o`.`created_on`';
-				$orderBy = $filterorders.' '.$orderdir;
-				break;		
+				$orderBy = ' ORDER BY '.$filterorders.' '.$orderdir;
+				break;
 		}
 /*		if(!$sold && !$items){
 

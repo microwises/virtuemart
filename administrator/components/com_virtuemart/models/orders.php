@@ -44,7 +44,7 @@ class VirtueMartModelOrders extends VmModel {
 	function __construct() {
 		parent::__construct();
 		$this->setMainTable('orders');
-		$this->addvalidOrderingFieldName(array('o.order_name','pm.payment_method' ) );
+		$this->addvalidOrderingFieldName(array('order_name','payment_method','virtuemart_order_id' ) );
 
 		//Delete the field so that and push it to the begin of the array so that it is used as default value
 		$key = array_search('o.modified_on',$this->_validOrderingFieldName);
@@ -790,7 +790,7 @@ class VirtueMartModelOrders extends VmModel {
 						if ($productCustom->field_type == "E") {
 
 							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-							
+
 							$product_attribute[$selected] = $selected;
 							// JPluginHelper::importPlugin('vmcustom');
 							// $dispatcher = JDispatcher::getInstance();
@@ -801,7 +801,7 @@ class VirtueMartModelOrders extends VmModel {
 									$product_attribute[$selected] = $plg ;
 									// $html .= $this->$plgFunction( $item,$productCustom, $row,$plg[$this->_name]);
 							}
-							
+
 
 						} else {
 

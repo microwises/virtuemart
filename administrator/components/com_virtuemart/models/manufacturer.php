@@ -42,7 +42,7 @@ class VirtueMartModelManufacturer extends VmModel {
 	function __construct() {
 		parent::__construct('virtuemart_manufacturer_id');
 		$this->setMainTable('manufacturers');
-		$this->addvalidOrderingFieldName(array('l.mf_name','l.mf_desc','l.mf_category_name','l.mf_url'));
+		$this->addvalidOrderingFieldName(array('mf_name','mf_desc','mf_category_name','mf_url'));
 
 	}
 
@@ -177,7 +177,7 @@ class VirtueMartModelManufacturer extends VmModel {
 // 			$app = JFactory::getApplication() ;
 // 			$ordering = ' order by m.`mf_name` '.$app->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', 'DESC', 'cmd' );;
 // 		}
-		$ordering = $this->_getOrdering('l.mf_name');
+		$ordering = $this->_getOrdering('mf_name');
 		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,' ',$ordering );
 
 	}

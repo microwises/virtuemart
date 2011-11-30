@@ -303,7 +303,7 @@ class VirtueMartModelCategory extends VmModel {
 		if ( JRequest::getCmd('view') == 'category') {
 			$ordering = $this->_getOrdering();
 		} else {
-			$ordering = $this->_getOrdering('l.category_name','ASC');
+			$ordering = $this->_getOrdering('category_name','ASC');
 		}
 
 		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );

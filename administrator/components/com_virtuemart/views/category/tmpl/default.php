@@ -35,10 +35,10 @@ AdminUIHelper::startAdminArea();
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->categories); ?>);" />
 			</th>
 			<th align="left">
-				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY_NAME', 'l.category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CATEGORY_NAME', 'category_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>
 			<th align="left">
-				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_DESCRIPTION', 'l.category_description', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
+				<?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_DESCRIPTION', 'category_description', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
 			</th>
 			<th align="left" width="11%">
 				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_S'); ?>

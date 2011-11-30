@@ -42,7 +42,7 @@ class VirtueMartModelRatings extends VmModel {
 	function __construct() {
 		parent::__construct();
 		$this->setMainTable('ratings');
-		$this->addvalidOrderingFieldName(array('l.product_name'));
+		$this->addvalidOrderingFieldName(array('product_name'));
 
 	}
 

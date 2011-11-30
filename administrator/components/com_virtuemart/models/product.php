@@ -59,7 +59,7 @@ class VirtueMartModelProduct extends VmModel {
 		} else {
 			if(!class_exists('shopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 			$browseOrderByFields = ShopFunctions::getValidProductFilterArray ();
-			$this->addvalidOrderingFieldName(array('pp.product_price'));
+			$this->addvalidOrderingFieldName(array('product_price'));
 			// 	vmdebug('$browseOrderByFields',$browseOrderByFields);
 		}
 		$this->addvalidOrderingFieldName((array)$browseOrderByFields);
@@ -216,28 +216,28 @@ class VirtueMartModelProduct extends VmModel {
 
 		// special  orders case
 		switch ($filter_order) {
-			case 'p.product_special':
+			case 'product_special':
 				$where[] = ' p.`product_special`="1" ';// TODO Change  to  a  individual button
 				break;
-			case 'c.category_name':
-				$orderBy = ' ORDER BY l.`category_name` ';
+			case 'category_name':
+				$orderBy = ' ORDER BY `category_name` ';
 				$joinCategory = true ;
 				break;
-			case 'l.category_description':
-				$orderBy = ' ORDER BY l.`category_description` ';
+			case 'category_description':
+				$orderBy = ' ORDER BY `category_description` ';
 				$joinCategory = true ;
 				break;
-			case 'm.mf_name':
-				$orderBy = ' ORDER BY l.`mf_name` ';
+			case 'mf_name':
+				$orderBy = ' ORDER BY `mf_name` ';
 				$joinMf = true ;
 				break;
 			case 'ordering':
 				$orderBy = ' ORDER BY `#__virtuemart_product_categories`.`ordering` ';
 				$joinCategory = true ;
 				break;
-			case 'pp.product_price':
+			case 'product_price':
 				//$filters[] = 'p.`virtuemart_product_id` = p.`virtuemart_product_id`';
-				$orderBy = ' ORDER BY pp.`product_price` ';
+				$orderBy = ' ORDER BY `product_price` ';
 				$joinPrice = true ;
 				break;
 			default ;
@@ -273,7 +273,7 @@ class VirtueMartModelProduct extends VmModel {
 			$joinMf 		= false ;
 			$joinPrice 		= false ;
 			$joinCustom		= false ;
-			$joinLang = false;
+// 			$joinLang = false;
 		}
 
 		//write the query, incldue the tables

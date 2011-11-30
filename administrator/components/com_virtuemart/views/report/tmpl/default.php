@@ -61,16 +61,16 @@ if( $this->pagination->limit < $rows ){
             <thead>
                 <tr>
                     <th>
-                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_'.$intervalTitle,'o.created_on',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
+                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_'.$intervalTitle,'created_on',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
                     </th>
                     <th>
                         <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_ORDERS','o.virtuemart_order_id',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
                     </th>
                     <th>
-                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_TOTAL_ITEMS','i.product_quantity',$this->lists['filter_order_Dir'],$this->lists['filter_order']); ?>
+                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_TOTAL_ITEMS','product_quantity',$this->lists['filter_order_Dir'],$this->lists['filter_order']); ?>
                     </th>
                     <th>
-                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_REVENUE','o.order_subtotal',$this->lists['filter_order_Dir'],$this->lists['filter_order']); ?>
+                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_REVENUE','order_subtotal',$this->lists['filter_order_Dir'],$this->lists['filter_order']); ?>
                     </th>
                 </tr>
             </thead>

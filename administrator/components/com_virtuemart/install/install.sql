@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_adminmenuentries` (
   `name` char(64) NOT NULL,
   `link` char(64) NOT NULL,
   `depends` char(64) NOT NULL COMMENT 'Names of the Parameters, this Item depends on',
-  `icon_class` char(32) NOT NULL,
+  `icon_class` char(96) NOT NULL,
   `ordering` int(2) NOT NULL DEFAULT '0',
   `published` tinyint(1) NOT NULL DEFAULT '1',
   `tooltip` char(128) NOT NULL,
