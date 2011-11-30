@@ -292,7 +292,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
      *
      * @author Max Milbers
      */
-    function execSQLFile($sqlfile,$olang = 0) {
+    function execSQLFile($sqlfile ) {
 
 		// Check that sql files exists before reading. Otherwise raise error for rollback
 		if ( !file_exists($sqlfile) ) {
@@ -300,10 +300,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		    return false;
 		}
 
-		if($lang!==0){
-			$lang = $olang;
-		}
-		else if(!defined(VMLANG)){
+		if(!defined(VMLANG)){
 			$params = JComponentHelper::getParams('com_languages');
 			$lang = $params->get('site', 'en-GB');//use default joomla
 			$lang = strtolower(strtr($lang,'-','_'));
