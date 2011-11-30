@@ -59,7 +59,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$update = false;
 			}
 
-
+			$this->update = $update;
 			return $update;
 		}
 
@@ -100,10 +100,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			// install essential and required data
 			// should this be covered in install.sql (or 1.6's JInstaller::parseSchemaUpdates)?
 			//			if(!class_exists('VirtueMartModelUpdatesMigration')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'updatesMigration.php');
+			$params = JComponentHelper::getParams('com_languages');
+			$lang = $params->get('site', 'en-GB');//use default joomla
+			$lang = strtolower(strtr($lang,'-','_'));
+
 			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
-			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
-			$model->execSQLFile($this->path.DS.'install'.DS.'install_essential_data.sql');
-			$model->execSQLFile($this->path.DS.'install'.DS.'install_required_data.sql');
+			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql',$lang);
+			$model->execSQLFile($this->path.DS.'install'.DS.'install_essential_data.sql',$lang);
+			$model->execSQLFile($this->path.DS.'install'.DS.'install_required_data.sql',$lang);
 
 			$id = $model->determineStoreOwner();
 			$model->setStoreOwner($id);
@@ -182,9 +186,12 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			if(empty($this->path)) $this->path = JPATH_VM_ADMINISTRATOR;
 
+			$params = JComponentHelper::getParams('com_languages');
+			$lang = $params->get('site', 'en-GB');//use default joomla
+			$lang = strtolower(strtr($lang,'-','_'));
 
-			// 			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
-			// 			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql');
+			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
+			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql',$lang);
 			// 			$this->displayFinished(true);
 			//return false;
 
@@ -193,13 +200,19 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->alterTable('#__session',$fields);
 			}
 
-			$query = 'ALTER TABLE  `#__virtuemart_categories` DROP INDEX  `idx_slug`';
-			$this->_db->setQuery($query);
-			if(!$this->_db->query()){
-				    VmError('Script.virtuemart update: Deleting of #__virtuemart_categories idx_ slug failed '.$this->_db->getErrorMsg());
-			 } else {
-				    vmdebug('Script.virtuemart update: I deleted the column '.$this->_db->getQuery());
-			 }
+			$q = 'SHOW INDEX FROM `#__virtuemart_categories` WHERE Key_name = "idx_slug"; ';
+			$this->_db->setQuery($q);
+			if($this->_db->loadResult()){
+				$query = 'ALTER TABLE  `#__virtuemart_categories` DROP INDEX  `idx_slug`';
+				$this->_db->setQuery($query);
+				if(!$this->_db->query()){
+					VmError('Script.virtuemart update: Deleting of #__virtuemart_categories idx_ slug failed '.$this->_db->getErrorMsg());
+				} else {
+					vmdebug('Script.virtuemart update: I deleted the column '.$this->_db->getQuery());
+				}
+			}
+
+
 			//Shipping methods
 			$query = 'SHOW TABLES LIKE "%virtuemart_shippingcarriers%"';
 			$this->_db->setQuery($query);
@@ -289,9 +302,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();
 
-			$params = JComponentHelper::getParams('com_languages');
-			$lang = $params->get('site', 'en-GB');//use default joomla
-			$lang = strtolower(strtr($lang,'-','_'));
 			$updater->portOldLanguageToNewTables((array)$lang);
 
 			$updater->updateMyVmTables();
@@ -483,40 +493,45 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$error = false;
 			if(!class_exists('JParameter')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 
-			$q = 'SELECT * FROM `#__virtuemart_customplugins` ';
-			$this->_db->setQuery($q);
-
-			$items = $this->_db->loadAssocList();
-			$db = JFactory::getDBO();
-			foreach($items as $item){
-
-				//getTable
-				if(!class_exists('TableCustoms'))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'customs.php');
-				$table = new TableCustoms($db);
-				$params = new JParameter($item['custom_params']);
-// 				vmdebug('migrateCustomPluginTableIntoCustoms',$params);
-				$str = '';
-				foreach($params->getParams() as $pName => $pValue){
-					vmdebug('migrateCustomPluginTableIntoCustoms '.$pName.' '.$pValue );
-					$str .= $pName.'='.json_encode($pValue).'|';
-				}
-				$item['custom_params'] = $str;
-
-				$table->bindChecknStoreNoLang($item,true);
-				$errors = $table->getErrors();
-				if(!empty($errors)){
-					foreach($errors as $error){
-						vmError($error);
-					}
-					$error = true;
-				}
-			}
-
-			if(!$error){
-				$q = 'DROP TABLE `#__virtuemart_customplugins` ';
+			$query = 'SHOW TABLES LIKE "%virtuemart_customplugins%"';
+			$this->_db->setQuery($query);
+			if($this->_db->loadResult()){
+				$q = 'SELECT * FROM `#__virtuemart_customplugins` ';
 				$this->_db->setQuery($q);
-				$this->_db->query();
+
+				$items = $this->_db->loadAssocList();
+				$db = JFactory::getDBO();
+				foreach($items as $item){
+
+					//getTable
+					if(!class_exists('TableCustoms'))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'customs.php');
+					$table = new TableCustoms($db);
+					$params = new JParameter($item['custom_params']);
+					// 				vmdebug('migrateCustomPluginTableIntoCustoms',$params);
+					$str = '';
+					foreach($params->getParams() as $pName => $pValue){
+						vmdebug('migrateCustomPluginTableIntoCustoms '.$pName.' '.$pValue );
+						$str .= $pName.'='.json_encode($pValue).'|';
+					}
+					$item['custom_params'] = $str;
+
+					$table->bindChecknStoreNoLang($item,true);
+					$errors = $table->getErrors();
+					if(!empty($errors)){
+						foreach($errors as $error){
+							vmError($error);
+						}
+						$error = true;
+					}
+				}
+
+				if(!$error){
+					$q = 'DROP TABLE `#__virtuemart_customplugins` ';
+					$this->_db->setQuery($q);
+					$this->_db->query();
+				}
 			}
+
 		}
 
 		/**
@@ -531,28 +546,33 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$tablenames = array('payment','shipment');
 
 			foreach($tablenames as $name){
-				$q = 'SELECT `virtuemart_'.$name.'_id`,`'.$name.'_params` FROM `#__virtuemart_'.$name.'` ';
+				$query = 'SHOW TABLES LIKE "%virtuemart_'.$name.'methods"';
+				$this->_db->setQuery($query);
+				if($this->_db->loadResult()){
+					$q = 'SELECT `virtuemart_'.$name.'method_id`,`'.$name.'_params` FROM `#__virtuemart_'.$name.'methods` ';
 
-				$this->_db->setQuery($q);
-				$items = $this->_db->loadAssocList();
+					$this->_db->setQuery($q);
+					$items = $this->_db->loadAssocList();
 
-				foreach($items as $item){
-					if(strpos("\n",$item[$name.'_params'])!==false and strpos("|",$item[$name.'_params'])===false){
-						vmInfo('Old params format recognised in table '.$name);
-						$params = new JParameter($item[$name.'_params']);
-						$str = '';
-						foreach($params->getParams() as $pName => $pValue){
-							vmdebug('migrateCustomPluginTableIntoCustoms '.$pName.' '.$pValue );
-							$str .= $pName.'='.json_encode($pValue).'|';
+					foreach($items as $item){
+						if(strpos("\n",$item[$name.'_params'])!==false and strpos("|",$item[$name.'_params'])===false){
+							vmInfo('Old params format recognised in table '.$name);
+							$params = new JParameter($item[$name.'_params']);
+							$str = '';
+							foreach($params->getParams() as $pName => $pValue){
+								vmdebug('migrateCustomPluginTableIntoCustoms '.$pName.' '.$pValue );
+								$str .= $pName.'='.json_encode($pValue).'|';
+							}
+							$q = 'UPDATE `#__virtuemart_'.$name.',methods` SET `'.$name.'_params`='.$str.' WHERE `virtuemart_'.$name.'method_id`="'.$item['virtuemart_'.$name.'method_id'].'" ';
+							$this->_db->setQuery($q);
+							if(!$this->_db->query()){
+								vmError('updateJParamsToVmParams '.$this->_db->getErrorMsg());
+							}
+
 						}
-						$q = 'UPDATE `#__virtuemart_'.$name.'` SET `custom_params`='.$str.' WHERE `virtuemart_'.$name.'_id`="'.$item['virtuemart_'.$name.'_id'].'" ';
-						$this->_db->setQuery($q);
-						if(!$this->_db->query()){
-							vmError('updateJParamsToVmParams '.$this->_db->getErrorMsg());
-						}
-
 					}
 				}
+
 			}
 
 		}
@@ -584,9 +604,13 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 				$this->loadVm();
 				// 				VmConfig::loadConfig(true);
-				JRequest::setVar(JUtility::getToken(), '1', 'post');
-				$config = JModel::getInstance('config', 'VirtueMartModel');
-				$config->setDangerousToolsOff();
+
+				if($this->update){
+					JRequest::setVar(JUtility::getToken(), '1', 'post');
+					$config = JModel::getInstance('config', 'VirtueMartModel');
+					$config->setDangerousToolsOff();
+				}
+
 			}
 
 			//Test if vm1.1 is installed and rename file to avoid conflicts
