@@ -973,6 +973,7 @@ class VmTable extends JTable{
 	 * toggle (0/1) a field
 	 * or invert by $val
 	 * @author impleri
+	 * @author Max Milbers
 	 * @param string $field the field to toggle
 	 * @param boolean $val field value (0/1)
 	 * @todo could make this multi-id as well...

@@ -63,7 +63,9 @@ class VirtueMartModelProduct extends VmModel {
 			// 	vmdebug('$browseOrderByFields',$browseOrderByFields);
 		}
 		$this->addvalidOrderingFieldName((array)$browseOrderByFields);
-		// 	vmdebug('product allows following orderingFields ',$this->_validOrderingFieldName);
+		unset($this->_validOrderingFieldName[0]);//virtuemart_product_id
+		array_unshift($this->_validOrderingFieldName,'p.virtuemart_product_id');
+// 			vmdebug('product allows following orderingFields ',$this->_validOrderingFieldName);
 	}
 
 	/**
@@ -269,8 +271,8 @@ class VirtueMartModelProduct extends VmModel {
 				$orderBy = ' ORDER BY product_sales ';//LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
 				$filter_order_Dir = 'DESC';
 			}
-			// 			$joinCategory 	= false ;
-			$joinMf 		= false ;
+			// 			$joinCategory 	= false ; //creates error
+			// 			$joinMf 		= false ;	//creates error
 			$joinPrice 		= false ;
 			$joinCustom		= false ;
 // 			$joinLang = false;
