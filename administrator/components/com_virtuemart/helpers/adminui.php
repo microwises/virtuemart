@@ -177,12 +177,12 @@ class AdminUIHelper {
 						ORDER BY `jmmod`.`ordering`, `item`.`ordering` ';
 
 		$db->setQuery ( $query );
-		$result = $db->loadObjectList ();
+		$result = $db->loadAssocList ();
 		//		echo '<pre>'.print_r($query,1).'</pre>';
 		for($i = 0, $n = count ( $result ); $i < $n; $i ++) {
 			$row = $result [$i];
-			$menuArr [$row->module_name] ['title'] = 'COM_VIRTUEMART_' . strtoupper ( $row->module_name ) . '_MOD';
-			$menuArr [$row->module_name] ['items'] [] = array ('name' => $row->name, 'link' => $row->link, 'depends' => $row->depends, 'icon_class' => $row->icon_class, 'view' => $row->view, 'task' => $row->task );
+			$menuArr [$row['module_id']] ['title'] = 'COM_VIRTUEMART_' . strtoupper ( $row['module_name'] ) . '_MOD';
+			$menuArr [$row['module_id']] ['items'] [] = $row ;
 		}
 		return $menuArr;
 	}
