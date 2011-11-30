@@ -86,7 +86,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			}
 
 			if(version_compare(JVERSION,'1.6.0','ge')) {
-				$fields = array('data'=>'`data` LONGTEXT NULL AFTER `time`');
+				$fields = array('data'=>'`data` varchar(30480) NULL AFTER `time`');
 				$this->alterTable('#__session',$fields);
 			}
 
@@ -188,9 +188,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$query = 'ALTER TABLE  `#__virtuemart_categories` DROP INDEX  `idx_slug`';
 			$this->_db->setQuery($query);
 			if(!$this->_db->query()){
-				    VmError('Deleting of #__virtuemart_categories idx_ slug failed '.$this->_db->getErrorMsg());
+				    VmError('Script.virtuemart update: Deleting of #__virtuemart_categories idx_ slug failed '.$this->_db->getErrorMsg());
 			 } else {
-				    vmdebug('I deleted the column '.$this->_db->getQuery());
+				    vmdebug('Script.virtuemart update: I deleted the column '.$this->_db->getQuery());
 			 }
 			//Shipping methods
 			$query = 'SHOW TABLES LIKE "%virtuemart_shippingcarriers%"';
@@ -450,7 +450,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->db = JFactory::getDBO();
 			}
 
-			$query = 'UPDATE `#__virtuemart_adminmenuentries` SET `name`="COM_VIRTUEMART_SHIPMENT_S", `view`="shipmentmethod" WHERE `id`="16" LIMIT 1';
+			$query = 'UPDATE `#__virtuemart_adminmenuentries` SET `name`="COM_VIRTUEMART_SHIPMENTMETHOD_S", `view`="shipmentmethod" WHERE `id`="16" LIMIT 1';
 			$this->db->setQuery($query);
 			$this->db->query($query);
 		}

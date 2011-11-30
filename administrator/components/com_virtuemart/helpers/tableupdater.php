@@ -66,8 +66,7 @@ class GenericTableUpdater extends JModel{
 										'products'=>'virtuemart_product_id',
 										'vendors'=>'virtuemart_vendor_id',
 										'paymentmethods'=>'virtuemart_paymentmethod_id',
-										'shipmentmethods'=>'virtuemart_shipmentmethod_id',
-	);
+										'shipmentmethods'=>'virtuemart_shipmentmethod_id');
 
 	/**
 	 *

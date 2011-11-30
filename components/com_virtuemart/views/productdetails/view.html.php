@@ -105,7 +105,7 @@ class VirtueMartViewProductdetails extends JView {
 			array (& $product, & $params, 0));
 			$product->product_desc = $product->text;
 		}
-		$product_model->addImages($product);
+		$product_model->addImages($product); vmdebug('$product',$product);
 		$this->assignRef('product', $product);
 		if (isset($product->min_order_level) && (int) $product->min_order_level > 0) {
 			 $min_order_level= $product->min_order_level;
