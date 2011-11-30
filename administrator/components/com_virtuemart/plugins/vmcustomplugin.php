@@ -123,7 +123,7 @@ abstract class vmCustomPlugin extends VmPlugin {
     * or price is returned defaut custom_price
     */
     // 	 public function plgVmCalculatePluginVariant( $product, $field,$selected,$row){
-    public function plgVmCalculatePluginVariant($product, &$productCustomsPrice,$selected,$row){
+    public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected,$row){
 
     	return $this->modifyPrice( $product, $productCustomsPrice,$selected,$row);
     }
@@ -133,7 +133,7 @@ abstract class vmCustomPlugin extends VmPlugin {
      * display The plugin in cart
      * @ $view is "Module" for see in module, "" for see in cart
      */
-    public function plgVmDisplayInCartPlugin($product,$productCustom, $row ,$view=''){
+    public function plgVmDisplayInCartCustom($product,$productCustom, $row ,$view=''){
     	$plgName = $productCustom->value;
     	$plgFunction = 'onViewCart'.$view ;
 
@@ -144,7 +144,7 @@ abstract class vmCustomPlugin extends VmPlugin {
      * display The plugin in order view FE/BE
      * @ $view is "BE" for see in back-End, default is FE
      */
-    public function plgVmDisplayInOrderPlugin(&$html,$item,$productCustom, $row ,$view='FE'){
+    public function plgVmDisplayInOrderCustom(&$html,$item,$productCustom, $row ,$view='FE'){
 
 
     	// defaut render if the plugin is not found/installed

@@ -81,8 +81,8 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 		vmdebug('onDisplayProductFE');
 		// Here the plugin values
-		$html =JTEXT::_($field->custom_title) ;
-		$html.=': <input class="vmcustom-textinput" type="text" value="" size="'.$field->custom_size.'" name="customPlugin['.$idx.'][comment]"><br />';
+		//$html =JTEXT::_($field->custom_title) ;
+		$html=': <input class="vmcustom-textinput" type="text" value="" size="'.$field->custom_size.'" name="customPlugin['.$idx.'][comment]"><br />';
 		static $textinputjs;
 		// preventing 2 x load javascript
 		if ($textinputjs) return $html;
@@ -107,8 +107,14 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @author Patrick Kohl
 	 */
 	function onViewCartModule( $product,$productCustom, $row) {
-		if ($param->comment) return 'commented';
-		return 'not commented';
+		$comment ='';
+		reset($product->param);
+		foreach($product->param as $k => $item){
+			if(!empty($item->comment)){
+				$comment .= ' '.$item->comment;
+			}
+		}
+		return $comment;
     }
 
 	/**

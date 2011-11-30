@@ -1622,7 +1622,7 @@ public function updateStock($product, $amount, $signInStoc, $signOrderedStock){
 		// we can have more then one product in case of pack
 		// in case of child, ID must be the child ID
 		if (is_array($product))
-		foreach ($products as $prod ) updateStock($prod, $amount, $signInStoc, $signOrderedStock);
+			foreach ($product as $prod ) updateStock($prod, $amount, $signInStoc, $signOrderedStock);
 	}
 
 	vmdebug( 'stockupdate', $product->virtuemart_product_id,$amount, $signInStoc, $signOrderedStock );
