@@ -983,8 +983,11 @@ class VmTable extends JTable{
 		}else {
 			$this->$field = $val;
 		}
+		$k = $this->_tbl_key;
+		$q = 'UPDATE `'.$this->_tbl.'` SET `'.$field.'` = "'.$this->$field.'" WHERE `'.$k.'` = "'.$this->$k.'" ';
+		$this->_db->setQuery($q);
 
-		return ($this->store(true));
+		return ($this->_db->query());
 	}
 
 	public function resetErrors(){
