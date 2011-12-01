@@ -33,10 +33,10 @@ class VirtueMartCart {
 
 	//	var $productIds = array();
 	var $products = array();
-	private $_inCheckOut = false;
-	private $_dataValidated = false;
-	private $_confirmDone = false;
-	private $_lastError = null; // Used to pass errmsg to the cart using addJS()
+	var $_inCheckOut = false;
+	var $_dataValidated = false;
+	var $_confirmDone = false;
+	var $_lastError = null; // Used to pass errmsg to the cart using addJS()
 	//todo multivendor stuff must be set in the add function, first product determins ownership of cart, or a fixed vendor is used
 	var $vendorId = 1;
 	var $lastVisitedCategoryId = 0;
@@ -457,7 +457,7 @@ class VirtueMartCart {
 					// echo $productKey;
 					// print_r ($this->products);
 				}
-			} else { 
+			} else {
 				$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND', false));
 				return false;
 			}
@@ -971,18 +971,19 @@ class VirtueMartCart {
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart') );
 			}
 			$this->virtuemart_order_id = $orderID;
-			$order_number= $order->getOrderNumber($orderID);
-			$cart = $this->getCart();
+// 			$order_number= $order->getOrderNumber($orderID);
+// 			$cart = $this->getCart();
 			$dispatcher = JDispatcher::getInstance();
-			$html="";
+// 			$html="";
 			$session = JFactory::getSession();
 			$return_context = $session->getId();
-			$returnValues = $dispatcher->trigger('plgVmConfirmedOrderRenderForm', array('payment',$order_number, $cart , $return_context, &$html, &$new_status));
+// 			$returnValues = $dispatcher->trigger('plgVmConfirmedOrderRenderForm', array('payment',$order_number, $cart , $return_context, &$html, &$new_status));
+			$returnValues = $dispatcher->trigger('plgVmConfirmedOrder', array('payment',$this, $order, $return_context));
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
 			// 1 = cart should be emptied, 0 cart should not be emptied
 
-			foreach ($returnValues as $returnValue) {
+/*			foreach ($returnValues as $returnValue) {
 				if ($returnValue !== null  ) {
 					if ($returnValue == 1 )   {
 						//We delete the old stuff
@@ -1024,7 +1025,7 @@ class VirtueMartCart {
 					break;
 				}
 				//Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
-			}
+			}*/
 		}
 
 

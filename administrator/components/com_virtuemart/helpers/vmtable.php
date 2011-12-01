@@ -257,30 +257,14 @@ class VmTable extends JTable{
 		if ($oid === null) {
 			return false;
 		}
+// 		else if($oid == 0){
+// 			vmTrace('loading 0?');
+// 		}
+
 		$this->reset();
 
 		$db =& $this->getDBO();
 
-/*		//Version load the tables seperated
- 		$langresult = 0;
-		if($this->_translatable){
-			$query = 'SELECT * FROM '.$this->_tbl.'_'.VMLANG.' WHERE '.$this->_tbl_key.' = "'.$oid.'"';
-			$db->setQuery( $query );
-			if ($langresult = $db->loadAssoc( )) {
-
-			}
-		}
-
-		$query = 'SELECT * FROM '.$this->_tbl.' WHERE '.$this->_tbl_key.' = "'.$oid.'"';
-
-		$db->setQuery( $query );
-
-		if ($result = $db->loadAssoc( )) {
-			if($langresult !== 0){
-				$result = array_merge($result,$langresult);
-			}
-
- */
 		//Version load the tables using JOIN
 		if($this->_translatable){
 			$mainTable = $this->_tbl.'_'.VMLANG ;
@@ -300,8 +284,7 @@ class VmTable extends JTable{
 			}
 		}
 		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = '.(int)$oid;
-// echo $query		;
- // print_r($tableJoins); jExit();
+
 		$db->setQuery( $query );
 
 		if ($result = $db->loadAssoc( )) {
@@ -350,7 +333,9 @@ class VmTable extends JTable{
 				}
 			}
 		} else {
-			//echo 'shit and merde <pre>'.print_r($obj,1).'</pre>';
+			if(empty($xParams)){
+				vmdebug('There are bindParameterables, but $xParams is emtpy, this is a programmers error '.$his->_tbl,$obj);
+			}
 		}
 
 		foreach($varsToPushParam as $key=>$v){

@@ -390,9 +390,9 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	 * @param false if it should not be changed, otherwise new staus
 	 * @return returns 1 if the Cart should be deleted, and order sent
 	 */
-	public function plgVmConfirmedOrderRenderForm($psType, $order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status) {
-		return parent::plgVmConfirmedOrderRenderForm($psType, $order_number,  $cart, $return_context, $html, $new_status);
-	}
+// 	public function plgVmConfirmedOrderRenderForm($psType, $order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status) {
+// 		return parent::plgVmConfirmedOrderRenderForm($psType, $order_number,  $cart, $return_context, $html, $new_status);
+// 	}
 
 
 

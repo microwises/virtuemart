@@ -163,7 +163,7 @@ abstract class vmCustomPlugin extends VmPlugin {
     		// return ;
     	// }
     	// else {
-    		
+
     		// $html = $this->$plgFunction( $item,$param,$productCustom, $row);
     	// }
 
@@ -191,12 +191,13 @@ abstract class vmCustomPlugin extends VmPlugin {
     		// return ;
     	// }
     	// else {
-    		
+
     		// $html = $this->$plgFunction( $item,$param,$productCustom, $row);
     	// }
 
     	return $html;
     }
+
 
 	/**
 	 * render the plugin with param  to display on product edit

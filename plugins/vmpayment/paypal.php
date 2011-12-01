@@ -125,7 +125,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Paypal Table' AUTO_INCREMENT=1 ;";
     }
 
-    function plgVmConfirmedOrderRenderForm($psType, $order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status) {
+    function plgVmConfirmedOrder($psType, VirtueMartCart $cart, $order, $return_context) {
 	if (!$this->selectedThisType($psType)) {
 	    return null;
 	}
@@ -137,6 +137,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	}
 
 	$this->_debug = $method->debug;
+	$order_number= $order->getOrderNumber($cart->virtuemart_order_id);
 	$this->logInfo('plgVmConfirmedOrderRenderPaymentForm order number: ' . $order_number, 'message');
 
 	if (!class_exists('VirtueMartModelOrders'))
@@ -262,7 +263,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$html.= ' document.vm_paypal_form.submit();';
 	$html.= ' </script>';
 	//echo $html;
-	return 2; // don't delete the cart, don't send email and don't redirect
+	return $this->processConfirmedOrderPaymentResponse(2,$cart, $order, $html,$new_status);
+// 	return 2; // don't delete the cart, don't send email and don't redirect
 	//
 	//
 	 /*

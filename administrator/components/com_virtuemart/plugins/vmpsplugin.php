@@ -251,9 +251,14 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param false if it should not be changed, otherwise new staus
 	 * @return returns 1 if the Cart should be deleted, and order sent
 	 */
-	public function plgVmConfirmedOrderRenderForm($psType, $order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status) {
+// 	public function plgVmConfirmedOrderRenderForm($psType, $order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status) {
+// 		return null;
+// 	}
+
+	public function plgVmConfirmedOrder($psType, VirtueMartCart $cart, $order, $return_context) {
 		return null;
 	}
+
 /**
 	 * check if it is the correct element
 	 * @param string $element either standard or paypal
@@ -902,6 +907,52 @@ abstract class vmPSPlugin extends vmPlugin {
 			fclose($fp);
 		}
 	}
+
+
+	public function processConfirmedOrderPaymentResponse($returnValue, $cart, $order, $html,$new_status){
+		if ($returnValue !== null  ) {
+			if ($returnValue == 1 )   {
+				//We delete the old stuff
+
+				$orderID = $cart->virtuemart_order_id;
+				// send the email only if payment has been accepted
+				// update status?
+				if ($new_status) {
+					if (!class_exists('VirtueMartModelOrders'))
+					require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+					$modelOrder = new VirtueMartModelOrders();
+					$orders[$orderID]['order_status'] = $new_status;
+					$orders[$orderID]['virtuemart_order_id'] = $orderID;
+					$orders[$orderID]['customer_notified'] = 0;
+					$orders[$orderID]['comments'] = '';
+					$modelOrder->updateOrderStatus($orders, $orderID); //
+				}
+				$cart->sentOrderConfirmedEmail($order->getOrder($orderID));
+				//We delete the old stuff
+				$cart->products = array();
+				$cart->_inCheckOut = false;
+				$cart->_dataValidated = false;
+				$cart->_confirmDone = false;
+				$cart->customer_comment = '';
+				$cart->couponCode = '';
+				$cart->tosAccepted = false;
+				$cart->setCartIntoSession();
+				JRequest::setVar('html' , $html);
+				// payment echos form, but cart should not be emptied, data is valid
+			} elseif ($returnValue == 2 )   {
+				JRequest::setVar('html' , $html);
+
+			} elseif ($returnValue == 0 )   {
+				// error while processing the payment
+				$mainframe = JFactory::getApplication();
+				$mainframe->enqueueMessage($html);
+				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'),JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
+
+			}
+		}
+		//Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
+	}
+
 
 	/**
 	 * get_passkey

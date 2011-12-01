@@ -85,7 +85,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 *
 	 * @author Valérie Isaksen
 	 */
-	function plgVmConfirmedOrderRenderForm($psType, $order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status) {
+	function plgVmConfirmedOrder($psType,VirtueMartCart $cart, $order, $return_context) {
 		if (!$this->selectedThisType($psType)) {
 			return null;
 		}
@@ -110,6 +110,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
 		// END printing out HTML Form code (Payment Extra Info)
+		$order_number= $order->getOrderNumber($cart->virtuemart_order_id);
 
 		$this->_virtuemart_paymentmethod_id = $cart->virtuemart_paymentmethod_id;
 		$dbValues['payment_name'] = parent::renderPluginName($method);
@@ -131,7 +132,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 
 		$html .= '</table>' . "\n";
 
-		return true;  // empty cart, send order
+		return $this->processConfirmedOrderPaymentResponse(true,$cart, $order, $html,$new_status);
+// 		return true;  // empty cart, send order
 	}
 
 	/**
