@@ -78,11 +78,12 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 // 		}
 
 
-		vmdebug('onDisplayProductFE');
+
 		// Here the plugin values
 		//$html =JTEXT::_($field->custom_title) ;
 		$html=': <input class="vmcustom-textinput" type="text" value="" size="'.$field->custom_size.'" name="customPlugin['.$field->virtuemart_custom_id.']['.$this->_name.'][comment]"><br />';
 		static $textinputjs;
+		$field->display = $html;
 		// preventing 2 x load javascript
 		if ($textinputjs) return $html;
 		$textinputjs = true ;
@@ -97,7 +98,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 			});
 	});
 		');
-		$field->display = $html;
+		
         return $html;
     }
 
@@ -161,19 +162,17 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		return $html.'</div>';
     }
 
-	public function modifyPrice( $product, &$field,$selected,$row ) {
+	public function modifyPrice( $product, &$field,$selected,$customVariant ) {
 
 		if (!empty($field->custom_price)) {
 			//TODO adding % and more We should use here $this->interpreteMathOp
 			// eg. to calculate the price * comment text length
-// 			if ($field->custom_price_by_letter ==1) {
-				$pluginFields = JRequest::getVar('customPlugin',null );
-				if ($pluginFields ==  null) $pluginFields = json_decode( $product->customPlugin, true);
-					if ($textinput = $pluginFields[$row]['comment']) {
+			if ($field->custom_price_by_letter ==1) {
+				if ($textinput = $customVariant['comment']) {
 
-						$field->custom_price = strlen ($textinput) *  $field->custom_price ;
-					}
-// 			}
+					$field->custom_price = strlen ($textinput) *  $field->custom_price ;
+				}
+			}
 // 			return $field->custom_price;
 		}
 	}

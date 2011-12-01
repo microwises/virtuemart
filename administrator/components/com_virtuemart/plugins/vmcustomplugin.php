@@ -124,8 +124,18 @@ abstract class vmCustomPlugin extends VmPlugin {
     */
     // 	 public function plgVmCalculatePluginVariant( $product, $field,$selected,$row){
     public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected,$row){
-
-    	return $this->modifyPrice( $product, $productCustomsPrice,$selected,$row);
+		if ($productCustomsPrice->custom_element !==$this->_name) return ;
+		vmPlugin::plgVmGetDeclaredPluginParams('vmcustom',$productCustomsPrice->custom_element,$productCustomsPrice->custom_jplugin_id);
+		VmTable::bindParameterable($productCustomsPrice,'custom_params',$this->_varsToPushParam);
+		//$product = VirtueMartModelCustomfields::addParam($product);
+		static $pluginFields;
+		if (!isset($pluginFields)) {
+				 $pluginFields = JRequest::getVar('customPlugin',null );
+				// print_r($field);
+				if ($pluginFields ==  null) $pluginFields = json_decode( $product->customPlugin, true);
+		}
+		$customVariant = $pluginFields[$productCustomsPrice->virtuemart_custom_id][$this->_name] ;
+    	return $this->modifyPrice( $product, $productCustomsPrice,$selected,$customVariant);
     }
 
     /**
@@ -239,7 +249,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * defaut price modifation if nothing is set in plugin
 	 * you have to rewrite it in your plugin to do other calculations
 	 */
-	public function modifyPrice( $product, $field,$selected ) {
+	public function modifyPrice( $product, &$field, $selected,$customVariant ) {
 		if (!empty($field->custom_price)) {
 			//TODO adding % and more We should use here $this->interpreteMathOp
 			return $field->custom_price;
