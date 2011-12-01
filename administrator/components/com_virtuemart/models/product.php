@@ -1304,7 +1304,7 @@ function getOrderByList($virtuemart_category_id=false) {
 
 	// 		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0 );
 	$fieldLink = '';
-	if($virtuemart_category_id){
+	if($virtuemart_category_id!==false){
 		$fieldLink = '&virtuemart_category_id='.$virtuemart_category_id;
 	}
 
