@@ -220,6 +220,7 @@ class VirtueMartModelProduct extends VmModel {
 		switch ($filter_order) {
 			case 'product_special':
 				$where[] = ' p.`product_special`="1" ';// TODO Change  to  a  individual button
+				$orderBy = ' ';
 				break;
 			case 'category_name':
 				$orderBy = ' ORDER BY `category_name` ';
@@ -258,6 +259,7 @@ class VirtueMartModelProduct extends VmModel {
 			switch ($group) {
 				case 'featured':
 					$where[] = 'p.`product_special`="1" ';
+					$orderBy = '';
 					break;
 				case 'latest':
 					$date = JFactory::getDate( time()-(60*60*24*7) ); //Set on a week, maybe make that configurable
