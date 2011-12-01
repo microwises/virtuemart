@@ -85,7 +85,7 @@ $root = $u->toString( array( 'scheme', 'host') );
 		  </tr>
 
 		<?php
-		foreach($this->cart->cartData['dBTaxRulesBill'] as $rule){ ?>
+		foreach($this->cart->cartData['DBTaxRulesBill'] as $rule){ ?>
 			<tr class="sectiontableentry<?php $i ?>">
 				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
 
@@ -149,7 +149,7 @@ $root = $u->toString( array( 'scheme', 'host') );
 			if($i) $i=1; else $i=0;
 		}
 
-		foreach($this->cart->cartData['dATaxRulesBill'] as $rule){ ?>
+		foreach($this->cart->cartData['DATaxRulesBill'] as $rule){ ?>
 			<tr class="sectiontableentry<?php $i ?>">
 				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
 				

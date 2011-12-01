@@ -39,6 +39,8 @@ abstract class vmPlugin extends JPlugin {
 	protected $_vmpItable = 0;
 	//the name of the table to store plugin internal data, like payment logs
 	protected $_tablename = 0;
+
+	protected $_tableId = 'id';
 	//Name of the primary key of this table, for exampel virtuemart_calc_id or virtuemart_order_id
 	protected $_tablepkey = 0;
 
@@ -314,8 +316,9 @@ abstract class vmPlugin extends JPlugin {
 	 */
 	protected function storePluginInternalData(&$values, $primaryKey=0){
 
+		if($primaryKey===0) $primaryKey = $this->_tablepkey;
 		if($this->_vmpItable===0){
-			$this->_vmpItable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$this->_tablepkey,$this->_loggable);
+			$this->_vmpItable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$primaryKey,$this->_tableId,$this->_loggable);
 		}
 
 		$this->_vmpItable->bindChecknStore($values);
@@ -338,19 +341,19 @@ abstract class vmPlugin extends JPlugin {
 	 */
 	protected function getPluginInternalData($id, $primaryKey=0){
 
+		if($primaryKey===0) $primaryKey = $this->_tablepkey;
 		if($this->_vmpItable===0){
-
-			$this->_vmpItable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$this->_tablepkey,$this->_loggable);
+			$this->_vmpItable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$primaryKey,$this->_tableId,$this->_loggable);
 		}
-// 		vmdebug('getPluginInternalData',$this->_vmpItable);
+// 		vmdebug('getPluginInternalData $id '.$id,$this->_vmpItable);
 		return $this->_vmpItable->load($id);
 	}
 
-	protected function createPluginTableObject($tableName,$tableFields, $primaryKey, $loggable = false){
+	protected function createPluginTableObject($tableName, $tableFields, $primaryKey, $tableId, $loggable = false){
 
 		if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 		$db =& JFactory::getDBO();
-		$table = new VmTableData($tableName,'id',$db);
+		$table = new VmTableData($tableName,$tableId,$db);
 		foreach($tableFields as $field){
 			$table->$field = 0;
 		}

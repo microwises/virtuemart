@@ -112,8 +112,8 @@ class calculationHelper {
 // 		vmdebug('my rules ',$this->allrules);
 		$this->rules['Marge'] = array();
 		$this->rules['Tax'] 	= array();
-		$this->rules['dBTax'] = array();
-		$this->rules['dATax'] = array();
+		$this->rules['DBTax'] = array();
+		$this->rules['DATax'] = array();
 	}
 
 	public function getInstance() {
@@ -229,7 +229,6 @@ class calculationHelper {
 			$this->product_override_price = $productId->product_override_price;
 			$this->product_tax_id = $productId->product_tax_id;
 			$this->product_discount_id = $productId->product_discount_id;
-
 			$this->productVendorId = $productId->virtuemart_vendor_id;
 			if (empty($this->productVendorId)) {
 				$this->productVendorId = 1;
@@ -283,8 +282,8 @@ class calculationHelper {
 		$this->setCountryState($this->_cart);
 
 		$this->rules['Tax'] = $this->gatherEffectingRulesForProductPrice('Tax', $this->product_tax_id);
-		$this->rules['dBTax'] = $this->gatherEffectingRulesForProductPrice('DBTax', $this->product_discount_id);
-		$this->rules['dATax'] = $this->gatherEffectingRulesForProductPrice('DATax', $this->product_discount_id);
+		$this->rules['DBTax'] = $this->gatherEffectingRulesForProductPrice('DBTax', $this->product_discount_id);
+		$this->rules['DATax'] = $this->gatherEffectingRulesForProductPrice('DATax', $this->product_discount_id);
 
 		$prices['costPrice'] = $costPrice;
 		$basePriceShopCurrency = $this->roundDisplay($this->_currencyDisplay->convertCurrencyTo((int) $this->productCurrency, $costPrice));
@@ -292,7 +291,7 @@ class calculationHelper {
 
 		//For Profit, margin, and so on
 		$this->rules['Marge'] = $this->gatherEffectingRulesForProductPrice('Marge', $this->product_marge_id);
-		//         vmdebug('my rules for marge',$this->rules['Marge']);
+
 		$basePriceMargin = $this->roundDisplay($this->executeCalculation($this->rules['Marge'], $basePriceShopCurrency));
 		$basePriceShopCurrency = $prices['basePrice'] = !empty($basePriceMargin) ? $basePriceMargin : $basePriceShopCurrency;
 
@@ -313,7 +312,7 @@ class calculationHelper {
 
 
 		$prices['basePriceWithTax'] = $this->roundDisplay($this->executeCalculation($this->rules['Tax'], $prices['basePrice'], true));
-		$prices['discountedPriceWithoutTax'] = $this->roundDisplay($this->executeCalculation($this->rules['dBTax'], $prices['basePrice']));
+		$prices['discountedPriceWithoutTax'] = $this->roundDisplay($this->executeCalculation($this->rules['DBTax'], $prices['basePrice']));
 
 		$priceBeforeTax = !empty($prices['discountedPriceWithoutTax']) ? $prices['discountedPriceWithoutTax'] : $prices['basePrice'];
 		$prices['priceBeforeTax'] = $priceBeforeTax;
@@ -323,7 +322,7 @@ class calculationHelper {
 		$prices['salesPriceTemp'] = $salesPrice;
 		$prices['taxAmount'] = $this->roundDisplay($salesPrice - $priceBeforeTax);
 
-		$prices['salesPriceWithDiscount'] = $this->roundDisplay($this->executeCalculation($this->rules['dATax'], $salesPrice));
+		$prices['salesPriceWithDiscount'] = $this->roundDisplay($this->executeCalculation($this->rules['DATax'], $salesPrice));
 
 		$prices['salesPrice'] = !empty($prices['salesPriceWithDiscount']) ? $prices['salesPriceWithDiscount'] : $salesPrice;
 
@@ -465,7 +464,7 @@ class calculationHelper {
 			//			}
 		}
 
-		$this->_cartData['dBTaxRulesBill'] = $dBTaxRules = $this->gatherEffectingRulesForBill('DBTaxBill');
+		$this->_cartData['DBTaxRulesBill'] = $DBTaxRules = $this->gatherEffectingRulesForBill('DBTaxBill');
 		//		$cBRules = $this->gatherEffectingRulesForCoupon($couponId);
 		//
 		$shipment_id = empty($cart->virtuemart_shipmentmethod_id) ? 0 : $cart->virtuemart_shipmentmethod_id;
@@ -475,11 +474,11 @@ class calculationHelper {
 
 		//		$pBRules = $this->gatherEffectingRulesForPayment($paymId);
 		$this->_cartData['taxRulesBill'] = $taxRules = $this->gatherEffectingRulesForBill('TaxBill');
-		$this->_cartData['dATaxRulesBill'] = $dATaxRules = $this->gatherEffectingRulesForBill('DATaxBill');
+		$this->_cartData['DATaxRulesBill'] = $DATaxRules = $this->gatherEffectingRulesForBill('DATaxBill');
 
 		//		$cBRules = $this->gatherEffectingRulesForCoupon();
 
-		$this->_cartPrices['discountBeforeTaxBill'] = $this->roundDisplay($this->executeCalculation($dBTaxRules, $this->_cartPrices['salesPrice']));
+		$this->_cartPrices['discountBeforeTaxBill'] = $this->roundDisplay($this->executeCalculation($DBTaxRules, $this->_cartPrices['salesPrice']));
 		$toTax = !empty($this->_cartPrices['discountBeforeTaxBill']) ? $this->_cartPrices['discountBeforeTaxBill'] : $this->_cartPrices['salesPrice'];
 
 		//We add the price of the Shipment before the tax. The tax per bill is meant for all services. In the other case people should use taxes per
@@ -490,7 +489,7 @@ class calculationHelper {
 		$toDisc = !empty($this->_cartPrices['withTax']) ? $this->_cartPrices['withTax'] : $toTax;
 
 
-		$discountAfterTax = $this->roundDisplay($this->executeCalculation($dATaxRules, $toDisc));
+		$discountAfterTax = $this->roundDisplay($this->executeCalculation($DATaxRules, $toDisc));
 		$this->_cartPrices['withTax'] = $this->_cartPrices['discountAfterTax'] = !empty($discountAfterTax) ? $discountAfterTax : $toDisc;
 
 		$paymentId = empty($cart->virtuemart_paymentmethod_id) ? 0 : $cart->virtuemart_paymentmethod_id;
@@ -618,30 +617,13 @@ class calculationHelper {
 		$countries = '';
 		$states = '';
 		$shopperGroup = '';
-		//Test if calculation affects the current entry point
-		//shared rules counting for every vendor seems to be not necessary
-		/* Lets cache this
-		if (!empty($id)) {
-			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id` = "' . $id . '" AND `calc_kind`="' . $entrypoint . '" ';
-		} else {
-			$q = 'SELECT * FROM #__virtuemart_calcs WHERE
-                    `calc_kind`="' . $entrypoint . '"
-                     AND `published`="1"
-                     AND (`virtuemart_vendor_id`="' . $this->productVendorId . '" OR `shared`="1" )
-                     AND ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
-                     AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" ) ';
-		}
-
-		$this->_db->setQuery($q);
-		$rules = $this->_db->loadAssocList();
-
-*/
 
 		$testedRules = array();
 		//Cant be done with Leftjoin afaik, because both conditions could be arrays.
 		foreach ($this->allrules[$entrypoint] as $i => $rule) {
-
+// 			vmdebug('gatherEffectingRulesForProductPrice '.$entrypoint,$this->allrules[$entrypoint]);
 			if(!empty($id) && $rule['virtuemart_calc_id']!==$id){
+				vmdebug('Price override set '.$id);
 				continue;
 			}
 			if(!isset($this->allrules[$entrypoint][$i]['cats'])){
@@ -689,9 +671,6 @@ class calculationHelper {
 			if (!empty($this->_amount)) {
 				//Test
 			}
-
-			//             vmdebug('tested $hitsCategory '.$rule['calc_name'],$hitsCategory,$hitsShopper,$hitsDeliveryArea);
-			//if ($this -> _debug	) echo '<br/ >foreach '.$rule["virtuemart_calc_id"].' and hitsCat '.$hitsCategory.' and hitsS '.$hitsShopper.' and '.$entrypoint;
 			if ($hitsCategory && $hitsShopper && $hitsDeliveryArea) {
 				if ($this->_debug)
 				echo '<br/ >Add rule ForProductPrice ' . $rule["virtuemart_calc_id"];
@@ -700,6 +679,8 @@ class calculationHelper {
 			}
 		}
 
+// 		vmdebug('$testedRules before plugins',$testedRules);
+
 		//Test rules in plugins
 		if(!empty($testedRules)){
 			JPluginHelper::importPlugin('vmcalculation');
@@ -707,7 +688,7 @@ class calculationHelper {
 			$dispatcher->trigger('plgVmInGatherEffectRulesProduct',array(&$this,&$testedRules));
 		}
 
-// 		vmdebug('$testedRules',$testedRules);
+// 		vmdebug('$testedRules after plugins',$testedRules);
 		return $testedRules;
 	}
 
@@ -722,10 +703,6 @@ class calculationHelper {
 	 */
 	function gatherEffectingRulesForBill($entrypoint, $cartVendorId=1) {
 
-
-		//		$shoppergrps = $this -> writeRulePartEffectingQuery($this->_shopperGroupId,'calc_shopper',true);
-		//		$countries = $this -> writeRulePartEffectingQuery($this->_countries,'virtuemart_country_id',true);
-		//		$states = $this -> writeRulePartEffectingQuery($this->_states,'virtuemart_state_id',true);
 		//Test if calculation affects the current entry point
 		//shared rules counting for every vendor seems to be not necessary
 		$q = 'SELECT * FROM #__virtuemart_calcs WHERE
@@ -969,74 +946,44 @@ class calculationHelper {
 		 */
 		function interpreteMathOp($mathop, $value, $price, $currency='') {
 
-			$sign = substr($mathop, 0, 1);
+			$coreMathOp = array('+','-','+%','-%');
 
-			$calculated = false;
-			if (strlen($mathop) == 2) {
-				$cmd = substr($mathop, 1, 2);
-				if ($cmd == '%') {
-					$calculated = $price * $value / 100.0;
+			if(in_array($mathop,$coreMathOp)){
+				$sign = substr($mathop, 0, 1);
+
+				$calculated = false;
+				if (strlen($mathop) == 2) {
+					$cmd = substr($mathop, 1, 2);
+					if ($cmd == '%') {
+						$calculated = $price * $value / 100.0;
+					}
+				} else if (strlen($mathop) == 1){
+					$calculated = $this->_currencyDisplay->convertCurrencyTo($currency, $value);
 				}
-			} else if (strlen($mathop) == $sign){
-				$calculated = $this->_currencyDisplay->convertCurrencyTo($currency, $value);
-			}
 
-			if(!$calculated){
+				if($sign == '+'){
+					return $price + (float)$calculated;
+				} else if($sign == '-'){
+					return $price - (float)$calculated;
+				} else {
+					VmWarn('Unrecognised mathop '.$mathop.' in calculation rule found');
+					return $price;
+				}
+			} else {
+
 				JPluginHelper::importPlugin('vmcalculation');
 				$dispatcher = JDispatcher::getInstance();
 				$calculated = $dispatcher->trigger('interpreteMathOp', array($this, $mathop, $value, $price, $currency));
 				if($calculated){
-// 					vmdebug('my calculated',$calculated);
 					foreach($calculated as $calc){
 						if($calc) return $calc;
 					}
-
-				}  /*
-				   else {
-
-					//TODO Warn for nothing ! if use a simple minus or plus >> - + =
+				} else {
 					VmWarn('Unrecognised mathop '.$mathop.' in calculation rule found, seems you created this rule with plugin not longer accesible (deactivated, uninstalled?)');
 					return $price;
 				}
-				 * */
-
 			}
 
-			if($sign == '+'){
-				return $price + (float)$calculated;
-			} else if($sign == '-'){
-				return $price - (float)$calculated;
-			} else {
-				VmWarn('Unrecognised mathop '.$mathop.' in calculation rule found, seems you created this rule with plugin not longer accesible (deactivated, uninstalled?)');
-				return $price;
-			}
-
-
-/*			if (!strcmp($sign, '+')) {
-				if (strlen($mathop) > 1) {
-					$second = substr($mathop, 1, 2);
-					if (strcmp($sign, "%")) {
-						return $price * (1 + $value / 100.0);
-					}
-				} else {
-					$value = $this->_currencyDisplay->convertCurrencyTo($currency, $value);
-					return $price + $value;
-				}
-			} else if (!strcmp($sign, '-')) {
-				if (strlen($mathop) > 1) {
-					$second = substr($mathop, 1, 2);
-					if (strcmp($sign, "%")) {
-// 											if($this -> _debug)	echo '"grmbl "'. $price.' * (1-'.$value.'/100.0) '.$price * (1-$value/100.0);
-						return $price * (1 - $value / 100.0);
-					}
-				} else {
-					$value = $this->_currencyDisplay->convertCurrencyTo($currency, $value);
-					return $price - $value;
-				}
-			} else if (!strcmp($sign, '=')) {
-				return $value;
-			}
-			*/
 		}
 
 		/**

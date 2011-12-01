@@ -80,7 +80,7 @@ class VirtuemartViewProduct extends JView {
 				$product->prices = $calculator -> getProductPrices($product);
 
 				$dbTax = JText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
-				foreach($calculator->rules['dBTax'] as $rule){
+				foreach($calculator->rules['DBTax'] as $rule){
 					$dbTax .= $rule['calc_name']. '<br />';
 				}
 				$this->assignRef('dbTaxRules', $dbTax);
@@ -92,7 +92,7 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('taxRules', $tax);
 
 				$daTax = JText::_('COM_VIRTUEMART_RULES_EFFECTING');
-				foreach($calculator->rules['dATax'] as $rule){
+				foreach($calculator->rules['DATax'] as $rule){
 					$daTax .= $rule['calc_name']. '<br />';
 				}
 				$this->assignRef('daTaxRules', $daTax);

@@ -95,7 +95,7 @@ class VirtueMartModelCalc extends VmModel {
 			}
 		}
 
-		vmdebug('my calc',$this->_data);
+// 		vmdebug('my calc',$this->_data);
   		return $this->_data;
 	}
 

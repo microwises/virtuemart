@@ -36,7 +36,7 @@ abstract class vmCalculationPlugin extends vmPlugin {
 	protected function plgVmStorePluginInternalDataCalc(&$data){
 
 // 		vmdebug('plgVmStorePluginInternalDataCalc $data',$data);
-// 		$this->plgVmOnStoreInstallPluginTable($this->_psType);
+// 		parent::plgVmOnStoreInstallPluginTable($this->_psType);
 		$this->storePluginInternalData($data);
 
 	}
@@ -44,6 +44,7 @@ abstract class vmCalculationPlugin extends vmPlugin {
 	protected function plgVmGetPluginInternalDataCalc(&$calcData){
 
 	 	$datas = $this->getPluginInternalData($calcData->virtuemart_calc_id,'virtuemart_calc_id');
+
 		if($datas){
 			$attribsCalc = get_object_vars($datas);
 

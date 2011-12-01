@@ -54,7 +54,7 @@ foreach ($this->cart->products as $prow) {
 echo sprintf("%'-64.64s", '');
 echo "\n";
 //SubTotal, Tax, Shipment, Coupon Discount and Total listing
-foreach ($this->cart->cartData['dBTaxRulesBill'] as $rule) {
+foreach ($this->cart->cartData['DBTaxRulesBill'] as $rule) {
     echo $rule['calc_name'] . ':' . $this->cart->prices[$rule['virtuemart_calc_id'] . 'Diff'];
     echo "\n";
 }
@@ -75,7 +75,7 @@ foreach ($this->cart->cartData['taxRulesBill'] as $rule) {
     echo "\n";
 }
 
-foreach ($this->cart->cartData['dATaxRulesBill'] as $rule) {
+foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
     echo $rule['calc_name'], '-', '-', $this->cart->prices[$rule['virtuemart_calc_id'] . 'Diff'];
     echo "\n";
 }

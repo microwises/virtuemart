@@ -257,9 +257,18 @@ class VmTable extends JTable{
 		if ($oid === null) {
 			return false;
 		}
-// 		else if($oid == 0){
+		else if($oid == 0){
+			if(!empty($this->_xParams)){
+				foreach($this->_varsToPushParam as $key=>$v){
+					if(!isset($obj->$key)){
+						$this->$key = $v[0];
+					}
+				}
+			}
+			vmdebug('Should load '.$this->_tbl.' with id = 0, give back prototype');
+			return $this;
 // 			vmTrace('loading 0?');
-// 		}
+		}
 
 		$this->reset();
 
@@ -286,7 +295,7 @@ class VmTable extends JTable{
 		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = '.(int)$oid;
 
 		$db->setQuery( $query );
-
+// vmdebug('vmtable '.$query);
 		if ($result = $db->loadAssoc( )) {
 
 			$this->bind($result);
