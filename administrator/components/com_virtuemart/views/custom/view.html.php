@@ -59,9 +59,11 @@ class VirtuemartViewCustom extends JView {
 			foreach($customPlugins as $plugin){
 				if(!empty($plugin)){
 					$customPlugin = $plugin;
+					break;
 				}
-				break;
+				
 			}
+			
 // 			$customPlugin = $customPlugin[0];
 // 			$customPlugin = $model->getCustomPlugin($custom->virtuemart_custom_id);
 

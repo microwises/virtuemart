@@ -32,8 +32,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		parent::__construct($subject, $config);
 
 		$varsToPush = array(
-			'selectname1'=>array('','string'),'selectname2'=>array('','string'),'selectname3'=>array('','string'),'selectname4'=>array('','string'),
-			'selectoptions1'=>array('','string'),'selectoptions2'=>array('','string'),'selectoptions3'=>array('','string'),'selectoptions4'=>array('','string')
+			'selectname1'=>array('','char'),'selectname2'=>array('','char'),'selectname3'=>array('','char'),'selectname4'=>array('','char'),
+			'selectoptions1'=>array('','char'),'selectoptions2'=>array('','char'),'selectoptions3'=>array('','char'),'selectoptions4'=>array('','char')
 		);
 
 		$this->setConfigParameterable('custom_params',$varsToPush);
@@ -53,6 +53,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 	// get product param for this plugin on edit
 	function onProductEdit($field, $product_id, $row) {
+
 		if ($field->custom_element != $this->_name) return '';
 		$html ='';
 		if (!$childs = $this->getChilds($product_id) ) $html .='<DIV>'.JTEXT::_('VMCUSTOM_STOCKABLE_NO_CHILD').'</DIV>';
@@ -69,7 +70,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			$html .=' <span style="width:98px; display: inline-block;color:#000;overflow:hidden;">'.JTEXT::_($listname).'</span>';
 		}
 		$html .=' <span style="width:98px; display: inline-block;color:#000;">'. JText::_('COM_VIRTUEMART_CART_PRICE') .'</span>';
-		print_r($field);
+		//print_r($field);
 		foreach ($childs as $child ) {
 			if (!array_key_exists($child->id, (array)$field)) $field[$child->id]['is_variant'] = 1;
 			if ($field[$child->id]['is_variant'] ) $checked='checked';

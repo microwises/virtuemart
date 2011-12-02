@@ -334,12 +334,12 @@ class VirtueMartModelCustom extends VmModel {
 
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();
-			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParams',array('custom',0,$data['custom_jplugin_id']));
+			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParams',array('custom',$data['custom_value'],$data['custom_jplugin_id']));
 
 			if(!empty($varsToPushParam)){
 
 				foreach($varsToPushParam as $push){
-				if($push!==0 and $push[0]!==0 and $push[1]!==0){
+					if($push!==0 and $push[0]!==0 and $push[1]!==0){
 						$table->setParameterable($push[0],$push[1]);
 					}
 				}
