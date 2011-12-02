@@ -609,7 +609,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$q = 'SHOW TABLES LIKE "%virtuemart_configs%"'; //=>jos_virtuemart_shipment_plg_weight_countries
 				$db->setQuery($q);
 				$res = $db->loadResult();
-		if(!empty($res)){
+				if(!empty($res)){
 					JRequest::setVar(JUtility::getToken(), '1', 'post');
 					$config = JModel::getInstance('config', 'VirtueMartModel');
 					$config->setDangerousToolsOff();
@@ -650,8 +650,15 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 							$this->recurse_copy($src .DS. $file,$dst .DS. $file);
 						}
 						else {
-							if(!JFile::exists($dst .DS. $file) && !JFile::move($src .DS. $file,$dst .DS. $file)){
-								vmError('Couldnt move '.$src .DS. $file.' to '.$dst .DS. $file);
+							if(JFile::exists($dst .DS. $file)){
+								if(!JFile::delete($dst .DS. $file)){
+									$app = JFactory::getApplication();
+									$app -> enqueueMessage('Couldnt delete '.$dst .DS. $file);
+								}
+							}
+							if(!JFile::move($src .DS. $file,$dst .DS. $file)){
+								$app = JFactory::getApplication();
+								$app -> enqueueMessage('Couldnt move '.$src .DS. $file.' to '.$dst .DS. $file);
 							}
 						}
 					}
@@ -659,7 +666,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				closedir($dir);
 				if (is_dir($src)) JFolder::delete($src);
 			} else {
-				vmError('Couldnt read dir '.$dir.' source '.$src);
+				$app = JFactory::getApplication();
+				$app -> enqueueMessage('Couldnt read dir '.$dir.' source '.$src);
 			}
 
 		}
@@ -704,10 +712,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 
 
+
+
 				<?php echo JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h2>
 			</td>
 			<td>
 				<h2>
+
+
 
 
 
@@ -736,6 +748,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 
 
+
+
 				<?php
 				if(!$update){
 					?>
@@ -752,9 +766,17 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 
 
+
+
+
+
 						<?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
 							</a>
 					</div>
+
+
+
+
 
 
 
@@ -781,10 +803,15 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 
 
+
+
+
+
 			</td>
 		</tr>
 	</table>
 </div>
+
 
 
 

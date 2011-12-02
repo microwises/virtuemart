@@ -45,6 +45,7 @@ class VmTable extends JTable{
 	protected $_xParams = 0;
 	protected $_varsToPushParam = array();
 	var $_translatable = false;
+	$this->_translatableFields = array();
 
 	function __construct( $table, $key, &$db ){
 
@@ -417,7 +418,7 @@ class VmTable extends JTable{
 	// 			vmdebug('table check use $this->$slugName '.$this->$slugName);
 				if(VmConfig::isJ15()){
 					$this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
-					vmdebug('first created ',$this->$slugName);
+// 					vmdebug('first created ',$this->$slugName);
 
 					if(trim(str_replace('-', '', $this->$slugName)) == '' || $change){
 						$datenow = JFactory::getDate();
@@ -431,15 +432,15 @@ class VmTable extends JTable{
 					}
 				}
 
-				if(in_array($slugAutoName,$this->_translatable)){
+				if(in_array($slugAutoName,$this->_translatableFields)){
 					$checkTable = $this->_tbl.'_'.VM_LANG;
 				} else {
 					$checkTable = $this->_tbl;
 				}
 				$q = 'SELECT `'.$slugName.'`,`'.$this->_tbl_key.'` FROM `'.$checkTable.'` WHERE `'.$slugName.'` =  "'.$this->$slugName.'" ';
 				$this->_db->setQuery($q);
-				$existingSlugName =$this->_db->loadAssoc();vmdebug('$existingSlugName',$existingSlugName,$this->_db);
-				if(count($existingSlugName)>0){
+				$existingSlugName =$this->_db->loadAssoc();
+				if(!empty($existingSlugName)){
 					$tbl_key = $this->_tbl_key;
 // 					vmdebug('hm '.$tbl_key,$existingSlugName,$this->$tbl_key);
 					if($existingSlugName[$this->_tbl_key] == $this->$tbl_key){
