@@ -44,8 +44,8 @@ class VmTable extends JTable{
 	protected $_loggable = false;
 	protected $_xParams = 0;
 	protected $_varsToPushParam = array();
-	var $_translatable = array();
-
+	var $_translatable = false;
+	protected $_translatableFields = array();
 
 	function __construct( $table, $key, &$db ){
 
@@ -112,8 +112,6 @@ class VmTable extends JTable{
 		$this->_tbl_lang = $this->_tbl.'_'.$this->_langTag;
 
 	}
-
-	protected $_translatableFields = array();
 
 	public function getTranslatableFields(){
 
