@@ -45,7 +45,7 @@ class VmTable extends JTable{
 	protected $_xParams = 0;
 	protected $_varsToPushParam = array();
 	var $_translatable = false;
-	$this->_translatableFields = array();
+	 
 
 	function __construct( $table, $key, &$db ){
 
