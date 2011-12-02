@@ -44,8 +44,8 @@ class VmTable extends JTable{
 	protected $_loggable = false;
 	protected $_xParams = 0;
 	protected $_varsToPushParam = array();
-	var $_translatable = false;
-	 
+	var $_translatable = array();
+
 
 	function __construct( $table, $key, &$db ){
 
