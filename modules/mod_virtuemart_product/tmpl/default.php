@@ -12,12 +12,11 @@ if ($display_style =="div") { ?>
 <?php foreach ($products as $product) { ?>
 	<div style="float:left;">
 		<?php
-		if (!empty($product->images[0]) ) {
-			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id),$product->images[0]->displayMediaThumb('class="featuredProductImage" border="0"',$product->product_name));
-		}
-		?>
-			<?php echo JHTML::link(JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id), $product->product_name, array('title' => $product->product_name)); ?>
-		<?php
+		if (!empty($product->images[0]) )
+			$image = $product->images[0]->displayMediaThumb('class="featuredProductImage" border="0"',false) ;
+		else $image = '';
+			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id),$image.'<div>'.$product->product_name.'</div>',array('title' => $product->product_name) );
+
 		if ($show_price) {
 	// 		echo $currency->priceDisplay($product->prices['salesPrice']);
 			if (!empty($product->prices['salesPrice'] ) ) echo $currency->createPriceDiv('salesPrice','',$product->prices,true);
@@ -46,11 +45,11 @@ if ($display_style =="div") { ?>
 <?php foreach ($products as $product) : ?>
 	<li>
 		<?php
-		$productModel->addImages($product);
-		echo $product->images[0]->displayMediaThumb('class="browseProductImage" border="0"');
-		?>
-			<?php echo JHTML::link(JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id), $product->product_name, array('title' => $product->product_name,'rel'=>'facebox')); ?>
-	<?php
+		if (!empty($product->images[0]) )
+			$image = $product->images[0]->displayMediaThumb('class="featuredProductImage" border="0"',false) ;
+		else $image = '';
+			echo JHTML::_('link', JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id),$image.'<div>'.$product->product_name.'</div>',array('title' => $product->product_name) );
+
 		if ($show_price) {
 			echo $currency->createPriceDiv('salesPrice','',$product->prices,true);
 			if ($product->prices['salesPriceWithDiscount']>0) echo $currency->createPriceDiv('salesPriceWithDiscount','',$product->prices,true);
