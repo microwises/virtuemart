@@ -417,12 +417,12 @@ class VmTable extends JTable{
 	// 			vmdebug('table check use $this->$slugName '.$this->$slugName);
 				if(VmConfig::isJ15()){
 					$this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
-// 					vmdebug('first created ',$this->$slugName);
+					vmdebug('first created ',$this->$slugName);
 
 					if(trim(str_replace('-', '', $this->$slugName)) == '' || $change){
 						$datenow = JFactory::getDate();
 						$this->$slugName = $this->$slugName . $datenow->toFormat("%Y-%m-%d-%H-%M-%S").rand(1,9);
-// 						vmdebug('changed ',$this->$slugName);
+						vmdebug('changed ',$this->$slugName);
 					}
 				} else {
 					$this->$slugName = JApplication::stringURLSafe($this->$slugName);
@@ -431,12 +431,24 @@ class VmTable extends JTable{
 					}
 				}
 
-				$q = 'SELECT `'.$slugName.'` FROM `'.$this->_tbl.'` WHERE `'.$slugName.'` =  "'.$this->$slugName.'" ';
+				if(in_array($slugAutoName,$this->_translatable)){
+					$checkTable = $this->_tbl.'_'.VM_LANG;
+				} else {
+					$checkTable = $this->_tbl;
+				}
+				$q = 'SELECT `'.$slugName.'`,`'.$this->_tbl_key.'` FROM `'.$checkTable.'` WHERE `'.$slugName.'` =  "'.$this->$slugName.'" ';
 				$this->_db->setQuery($q);
-				if($existingSlugName =$this->_db->loadResult()){
-
-					$change = true;
-					$used = true;
+				$existingSlugName =$this->_db->loadAssoc();vmdebug('$existingSlugName',$existingSlugName,$this->_db);
+				if(count($existingSlugName)>0){
+					$tbl_key = $this->_tbl_key;
+// 					vmdebug('hm '.$tbl_key,$existingSlugName,$this->$tbl_key);
+					if($existingSlugName[$this->_tbl_key] == $this->$tbl_key){
+						$change = false;
+						$used = false;
+					} else {
+						$change = true;
+						$used = true;
+					}
 				} else {
 					$change = false;
 					$used = false;
