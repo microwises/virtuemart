@@ -339,7 +339,7 @@ class VirtueMartModelCustom extends VmModel {
 			if(!empty($varsToPushParam)){
 
 				foreach($varsToPushParam as $push){
-					if($push[0]!==0 and $push[1]!==0){
+				if($push!==0 and $push[0]!==0 and $push[1]!==0){
 						$table->setParameterable($push[0],$push[1]);
 					}
 				}
