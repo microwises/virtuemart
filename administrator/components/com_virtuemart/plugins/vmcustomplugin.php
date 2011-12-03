@@ -96,7 +96,7 @@ abstract class vmCustomPlugin extends VmPlugin {
     	VmTable::bindParameterable($field,'custom_params',$this->_varsToPushParam);
 
     	if (empty($field->custom_value)) return 0 ;
-    	if (!empty($field->custom_param) && is_string($field->custom_param)) $custom_param = json_decode($field->custom_param);
+    	if (!empty($field->custom_param) && is_string($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
     	else $custom_param = array();
     	$field->custom_param = $custom_param;
     	foreach($field->custom_param as $k => $v){
