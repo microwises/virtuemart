@@ -384,13 +384,14 @@ class VirtueMartModelProduct extends VmModel {
 					break;
 				}
 				$parentProduct = $this->getProductSingle($child->product_parent_id,$front, false,false);
-				$attribs = get_object_vars($parentProduct);
 				if($child->product_parent_id === $parentProduct->product_parent_id) break;
+				$attribs = get_object_vars($parentProduct);
 
 				foreach($attribs as $k=>$v){
 
-					if(empty($child->$k)){
+					if(strpos($k,'_')!==0 && empty($child->$k)){
 						$child->$k = $v;
+						vmdebug('getProduct $k',$k);
 					}
 				}
 				$i++;

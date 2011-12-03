@@ -1167,7 +1167,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userinfos` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_vendors` (
   `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `vendor_name` char(64),
-  `vendor_store_name` char(128) NOT NULL DEFAULT '',
   `vendor_currency` int(11),
   `vendor_accepted_currencies` varchar(1024) NOT NULL,
   `vendor_params` text NOT NULL,
