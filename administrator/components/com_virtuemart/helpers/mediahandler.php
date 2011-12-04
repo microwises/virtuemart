@@ -412,8 +412,12 @@ class VmMediaHandler {
 			}
 
 			$media_path = JPATH_ROOT.DS.str_replace('/',DS,$this->file_url_thumb);
-			$file_alt = $this->file_description ? $this->file_description : $this->file_name;
 
+			if(empty($this->file_meta)){
+				$file_alt = $this->file_description ? $this->file_description : $this->file_name;
+			} else {
+				$file_alt = $this->file_meta;
+			}
 
 			if ((empty($this->file_url_thumb) || !file_exists($media_path)) && is_a($this,'VmImage')) {
 
@@ -468,6 +472,7 @@ class VmMediaHandler {
 
 			if ($withDesc) $desc='<span class="vm-img-desc">'.$withDesc.'</span>';
 			else $desc='';
+// 			vmdebug('displayIt $file_alt'.$file_alt,$imageArgs);
 			if($lightbox){
 				$image = JHTML::image($file_url, $file_alt, $imageArgs);
 				if ($file_alt ) $file_alt = 'title="'.$file_alt.'"';
