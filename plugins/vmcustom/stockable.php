@@ -70,7 +70,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			$html .=' <span style="width:98px; display: inline-block;color:#000;overflow:hidden;">'.JTEXT::_($listname).'</span>';
 		}
 		$html .=' <span style="width:98px; display: inline-block;color:#000;">'. JText::_('COM_VIRTUEMART_CART_PRICE') .'</span>';
-		
+
 		$childList = (array)$field->child;
 		//vmdebug('field',$field);
 		foreach ($childs as $child ) {
@@ -81,7 +81,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				if ($childList[$child->id]['is_variant'] ) $checked='checked';
 				else $checked ='';
 			}
-		//$html .= JHTML::_('select.genericlist', $childlist, 'custom_param['.$row.'][child_id]','','virtuemart_product_id','product_name',$param['child_id'],false,true);
+			//$html .= JHTML::_('select.genericlist', $childlist, 'custom_param['.$row.'][child_id]','','virtuemart_product_id','product_name',$param['child_id'],false,true);
 
 			$html .='<div class="stockable">' ;
 			$html .='	<input type="hidden"  value="0" name="custom_param['.$row.'][child]['.$child->id.'][is_variant]">';
@@ -93,7 +93,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				else  $selectoption = "" ;
 				$option = array();
 				$tmpOptions = str_replace( "\r", "" ,$selectoption);
-				
+
 				if ($listoptions = explode("\n",$tmpOptions ) ) {
 					foreach ($listoptions as $key => $val) $option[] = JHTML::_('select.option',JText::_( $val ) , $val  );
 					if (empty($childList[$child->id][$attributes])) {
@@ -115,7 +115,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			$html .= ' '.$child->product_name.' Stock '.$child->stock.'</div>' ;
 
 		}
-			$html .='
+		$html .='
 				<fieldset style="background-color:#F9F9F9;">
 					<legend>'. JText::_('COM_VIRTUEMART_PRODUCT_FORM_NEW_PRODUCT_LBL').'</legend>
 					<div id="new_stockable">
@@ -182,8 +182,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				unset ($attribut['is_variant']);
 				if ($this->getValideId( $child_id)) {
 
-				$js[]= '"'.$child_id.'" :'.$attribut['custom_price'];
-				unset ($attribut['custom_price']);
+					$js[]= '"'.$child_id.'" :'.$attribut['custom_price'];
+					unset ($attribut['custom_price']);
 
 					//vmdebug('attribut',$attribut);
 					foreach ($attribut as $key => $list) {
@@ -215,7 +215,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			$i++;
 		}
 		static $stockablejs;
-		
+
 		$field->display = $html;
 		// preventing 2 x load javascript
 		if ($stockablejs) return $html;
@@ -308,15 +308,15 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		// 'custom_param['.$keys.']'
 		//print_r($param);
 		//dump($param);
-//"is_variant":"1","attribute1":"Red","attribute2":"20 cm","attribute3":"10","attribute4":"10"
+		//"is_variant":"1","attribute1":"Red","attribute2":"20 cm","attribute3":"10","attribute4":"10"
 
 		//echo $plgParam->get('custom_info');
 		// Here the plugin values
 		//$html =JTEXT::_($param['custom_name']) ;
 		//$html.=': <input type="text" value="" size="'.$param['custom_name'].'" name="customPlugin['.$idx.'][comment]"><br />';
-		
-        return $html;
-    }
+
+		return $html;
+	}
 
 	/**
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCartModule()
@@ -327,7 +327,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';
 		// $html .='<span>'.$param->Morecomment.'</span>';
 		return $html;
-    }
+	}
 
 	/**
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCart()
@@ -339,8 +339,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';
 		// $html .='<span>'.$param->Morecomment.'</span>';
 		return $html.'</div>';
-//vmdebug('stockable attributs',$plgParam);
-    }
+		//vmdebug('stockable attributs',$plgParam);
+	}
 
 	/**
 	 *
@@ -351,7 +351,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';
 		// $html .='<span>'.$param->Morecomment.'</span>';
 		return $html.'</div>';
-    }
+	}
 
 	/**
 	 *
@@ -362,19 +362,19 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';
 		// $html .='<span>'.$param->Morecomment.'</span>';
 		return $html.'</div>';
-    }
+	}
 
 	function getChilds($child_id = null) {
 
 		$db = JFactory::getDBO();
 		$q = 'SELECT CONCAT_WS(" : ",`product_name`,`product_sku`) as product_name,`virtuemart_product_id` as id, `product_in_stock` as stock FROM `#__virtuemart_products_'.VMLANG.'` as l '
-			. ' JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)'
-			. 'WHERE `product_parent_id` ='.(int)$child_id ;
-			$db->setQuery($q);
-			
-			$result = $db->loadObjectList();
+		. ' JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)'
+		. 'WHERE `product_parent_id` ='.(int)$child_id ;
+		$db->setQuery($q);
 
-			if (!($result)) {
+		$result = $db->loadObjectList();
+
+		if (!($result)) {
 			//JError::raiseWarning(500, $db->getErrorMsg());
 			return array();
 		} else return $result ;
@@ -384,9 +384,9 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		$db = JFactory::getDBO();
 		$q = 'SELECT cf.* FROM `#__virtuemart_product_customfields` as cf JOIN `#__virtuemart_customs` as c ON `c`.`virtuemart_custom_id` = cf.`virtuemart_custom_id` AND c.`field_type`="G"
 			WHERE cf.`virtuemart_product_id` ='.(int)$virtuemart_product_id.' and cf.custom_value='.(int)$chil_id ;
-			$db->setQuery($q);
-			$result = $db->loadObject();
-			if (!($result)) {
+		$db->setQuery($q);
+		$result = $db->loadObject();
+		if (!($result)) {
 			//JError::raiseWarning(500, $db->getErrorMsg());
 			return false;
 		} else return $result ;
@@ -395,7 +395,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 		$db = JFactory::getDBO();
 		$q = 'SELECT `product_in_stock` FROM `#__virtuemart_products` WHERE `published`=1 and `virtuemart_product_id` ='.(int)$chil_id ;
-		$db->setQuery($q); 
+		$db->setQuery($q);
 		$stock = $db->loadResult();
 		if (VmConfig::get('show_out_of_stock_products',0) and $stock >0 ) return true ;
 		else if ($stock !==NULL) return true ;
@@ -413,10 +413,11 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				$total = count($customVariant);
 				foreach ( $customVariant as $key => $attribute ) {
 					if  ($child[$key] !== $attribute) {
-						
+
 						break;
-					} else {$count++;}
-					
+					} else {$count++;
+					}
+
 				}
 				// child found
 				if ($total == $count) {
@@ -424,15 +425,15 @@ class plgVmCustomStockable extends vmCustomPlugin {
 					break;
 				}
 			}
-		}					
+		}
 	}
-	 public function plgVmGetProductStockToUpdateByCustom($item, $pluginParam, $productCustom) {
+	public function plgVmGetProductStockToUpdateByCustom($item, $pluginParam, $productCustom) {
 
 		if ($productCustom->custom_element !== $this->_name) return $item ;
 		if ( !empty($productCustom) ) {
 
 			$fields = json_decode($productCustom->custom_param,true);
-			
+
 			// find the selected child
 			foreach ( $fields['child'] as $childId => $child ) {
 				//print_r($child);
@@ -440,23 +441,65 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				$total = count($pluginParam);
 				foreach ( $pluginParam['stockable'] as $key => $attribute ) {
 					if  ($child[$key] !== $attribute) {
-						
+
 						break;
-					} else {$count++;}
-					
+					} else {$count++;
+					}
+
 				}
 				// child found
 				if ($total == $count) {
 					$item->virtuemart_product_id = $childId;
 					vmdebug ('$childId',$childId);
 					return $item ;
-					
+
 				}
 			}
-		}	
+		}
 		return $item ;
 		// echo $item[0]->virtuemart_product_id;jexit();
-	 }	
+	}
+
+	/**
+	 * We must reimplement this triggers for joomla 1.7
+	 * vmplugin triggers note by Max Milbers
+	 */
+	protected function plgVmOnStoreInstallPluginTable($psType) {
+		parent::plgVmOnStoreInstallPluginTable($psType);
+	}
+
+	function plgVmGetDeclaredPluginParams($psType,$name,$id){
+		return parent::plgVmGetDeclaredPluginParams($psType,$name,$id);
+	}
+
+	/**
+	 * Custom triggers note by Max Milbers
+	 */
+	function plgVmGetActiveCustomPlugin($virtuemart_custom_id){
+		parent::plgVmGetActiveCustomPlugin($virtuemart_custom_id);
+	}
+
+	public function plgVmOnDisplayCustoms($FE,&$field,$product,$row){
+		parent::plgVmOnDisplayCustoms($FE,&$field,$product,$row);
+	}
+
+	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected,$row){
+		parent::plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected,$row);
+	}
+
+	public function plgVmDisplayInCartCustom($product,$productCustom, $row ,$view=''){
+		parent::plgVmDisplayInCartCustom($product,$productCustom, $row ,$view);
+	}
+
+	public function plgVmDisplayInOrderCustom(&$html,$item, $param,$productCustom, $row ,$view='FE'){
+		parent::plgVmDisplayInOrderCustom(&$html,$item, $param,$productCustom, $row ,$view);
+	}
+
+	public function plgVmCreateOrderLinesCustom(&$html,$item,$productCustom, $row ){
+		parent::plgVmCreateOrderLinesCustom(&$html,$item,$productCustom, $row );
+	}
+
+
 }
 
 // No closing tag
