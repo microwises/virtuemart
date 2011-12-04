@@ -237,8 +237,14 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</td>
 				<td width="79%">
 					<?php echo $this->lists['discounts']; ?>
-                                    <br />
-                                        <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->dbTaxRules;  ?>
+             		<br />
+						<?php if(!empty($this->DBTaxRules)){
+							echo JText::_('COM_VIRTUEMART_RULES_EFFECTING').$this->DBTaxRules.'<br />';
+						}
+						if(!empty($this->DATaxRules)){
+							echo JText::_('COM_VIRTUEMART_RULES_EFFECTING').$this->DATaxRules;
+						}
+// 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
 				</td>
 			</tr>
 
@@ -248,7 +254,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DBDISCOUNT_TYPE') ?>:</div>
 				</td>
 				<td width="79%">
-					<?php echo $this->lists['dbdiscounts']; echo $this->dbTaxRules;  ?>
+					<?php echo $this->lists['dbdiscounts']; echo $this->DBTaxRules;  ?>
 				</td>
 			</tr>
 			<tr class="row1">
@@ -256,7 +262,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DADISCOUNT_TYPE') ?>:</div>
 				</td>
 				<td width="79%">
-					<?php echo $this->lists['dadiscounts']; echo $this->daTaxRules ?>
+					<?php echo $this->lists['dadiscounts']; echo $this->DATaxRules ?>
 				</td>
 			</tr> */ ?>
 			<tr class="row0">

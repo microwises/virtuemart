@@ -79,11 +79,11 @@ class VirtuemartViewProduct extends JView {
 				$calculator = calculationHelper::getInstance();
 				$product->prices = $calculator -> getProductPrices($product);
 
-				$dbTax = JText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
+				$DBTax = ''; 	//JText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
 				foreach($calculator->rules['DBTax'] as $rule){
-					$dbTax .= $rule['calc_name']. '<br />';
+					$DBTax .= $rule['calc_name']. '<br />';
 				}
-				$this->assignRef('dbTaxRules', $dbTax);
+				$this->assignRef('DBTaxRules', $DBTax);
 
 				$tax = JText::_('COM_VIRTUEMART_TAX_EFFECTING');
 				foreach($calculator->rules['Tax'] as $rule){
@@ -91,11 +91,11 @@ class VirtuemartViewProduct extends JView {
 				}
 				$this->assignRef('taxRules', $tax);
 
-				$daTax = JText::_('COM_VIRTUEMART_RULES_EFFECTING');
+				$DATax = '';//JText::_('COM_VIRTUEMART_RULES_EFFECTING');
 				foreach($calculator->rules['DATax'] as $rule){
-					$daTax .= $rule['calc_name']. '<br />';
+					$DATax .= $rule['calc_name']. '<br />';
 				}
-				$this->assignRef('daTaxRules', $daTax);
+				$this->assignRef('DATaxRules', $DATax);
 
 				$this->assignRef('override', $calculator->override);
 				$this->assignRef('product_override_price', $calculator->product_override_price);

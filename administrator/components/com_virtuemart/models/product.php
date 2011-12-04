@@ -391,7 +391,6 @@ class VirtueMartModelProduct extends VmModel {
 
 					if(strpos($k,'_')!==0 && empty($child->$k)){
 						$child->$k = $v;
-						vmdebug('getProduct $k',$k);
 					}
 				}
 				$i++;
