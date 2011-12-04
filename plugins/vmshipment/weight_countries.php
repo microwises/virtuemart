@@ -35,9 +35,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	parent::__construct($subject, $config);
 
 	$this->_loggable = true;
-	$this->tableFields = array('id', 'virtuemart_order_id', 'order_number', 'virtuemart_shipmentmethod_id', 'shipment_name', 'order_weight', 'shipment_weight_unit',
-	    'shipment_cost', 'shipment_package_fee', 'tax_id'); //,'created_on','created_by','modified_on','modified_by','locked_on');
-
+	$this->tableFields = array_keys($this->getTableSQLFields());
 	$varsToPush = array('shipment_logos'=>array('','char'),
 							  	'countries'=>array(0,'char'),
 							  	'zip_start'=>array(0,'int'),
@@ -64,25 +62,23 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      */
     protected function getVmPluginCreateTableSQL() {
 
-	return "CREATE TABLE IF NOT EXISTS `" . $this->_tablename . "` (
-	    `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT ,
-	    `virtuemart_order_id` int(11) UNSIGNED DEFAULT NULL,
-	    `order_number` char(32) DEFAULT NULL,
-	    `virtuemart_shipmentmethod_id` mediumint(1) UNSIGNED DEFAULT NULL,
-	    `shipment_name` char(255) NOT NULL DEFAULT '',
-	    `order_weight` decimal(10,4) DEFAULT NULL,
-	    `shipment_weight_unit` char(3) DEFAULT 'KG',
-	    `shipment_cost` decimal(10,2) DEFAULT NULL,
-	    `shipment_package_fee` decimal(10,2) DEFAULT NULL,
-	    `tax_id` smallint(1) DEFAULT NULL,
-	    `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-	    `created_by` int(11) NOT NULL DEFAULT 0,
-	    `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-	    `modified_by` int(11) NOT NULL DEFAULT 0,
-	    `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-	    `locked_by` int(11) NOT NULL DEFAULT 0,
-	      PRIMARY KEY (`id`)
-	) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Weight Countries Table' AUTO_INCREMENT=1 ;";
+	return $this->createTableSQL('Shipment Weight Countries Table');
+    }
+
+    function getTableSQLFields() {
+	$SQLfields = array(
+	    'id' =>' tinyint(1) unsigned NOT NULL AUTO_INCREMENT' ,
+	    'virtuemart_order_id'  =>'int(11) UNSIGNED DEFAULT NULL',
+	    'order_number'  =>'char(32) DEFAULT NULL',
+	    'virtuemart_shipmentmethod_id'  =>'mediumint(1) UNSIGNED DEFAULT NULL',
+	    'shipment_name'  =>'char(255) NOT NULL DEFAULT \'\' ',
+	    'order_weight'  =>'decimal(10,4) DEFAULT NULL' ,
+	    'shipment_weight_unit'  =>'char(3) DEFAULT \'KG\' ',
+	    'shipment_cost'  =>'decimal(10,2) DEFAULT NULL',
+	    'shipment_package_fee'  =>'decimal(10,2) DEFAULT NULL',
+	    'tax_id'  =>'smallint(1) DEFAULT NULL'
+	 );
+	return $SQLfields ;
     }
 
     /**

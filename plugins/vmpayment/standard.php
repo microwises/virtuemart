@@ -35,9 +35,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		parent::__construct($subject, $config);
 
 		$this->_loggable = true;
-		$this->tableFields = array('id','virtuemart_order_id','order_number','virtuemart_paymentmethod_id',
-						'payment_name','cost','cost','tax_id');//,'created_on','created_by','modified_on','modified_by','locked_on');
-
+		$this->tableFields = array_keys($this->getTableSQLFields());
 		$varsToPush = array('payment_logos'=>array('','char'),
 							  	'countries'=>array(0,'int'),
 							  	'min_amount'=>array(0,'int'),
@@ -48,9 +46,6 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	);
 
 	$this->setConfigParameterable($this->_configTableFieldName,$varsToPush);
-
-
-
 		self::$_this = $this;
 	}
 
@@ -59,24 +54,21 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 * @author Valérie Isaksen
 	 */
 	protected function getVmPluginCreateTableSQL() {
+	    return $this->createTableSQL('Payment Standard Table');
+	}
 
-		return "CREATE TABLE IF NOT EXISTS `".$this->_tablename."` (
-	    `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
-	    `virtuemart_order_id` int(11) UNSIGNED DEFAULT NULL,
-	    `order_number` char(32) DEFAULT NULL,
-	    `virtuemart_paymentmethod_id` mediumint(1) UNSIGNED DEFAULT NULL,
-	    `payment_name` char(255) NOT NULL DEFAULT '',
-	    `cost` decimal(10,2) DEFAULT NULL ,
-	    `tax_id` smallint(11) DEFAULT NULL,
-	    `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-	    `created_by` int(11) NOT NULL DEFAULT 0,
-	    `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-	    `modified_by` int(11) NOT NULL DEFAULT 0,
-	    `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-	    `locked_by` int(11) NOT NULL DEFAULT 0,
-	      PRIMARY KEY (`id`)
-	    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Payment Standard Table' AUTO_INCREMENT=1 ;";
+	function getTableSQLFields() {
+	    $SQLfields = array(
+	    'id'  => 'tinyint(1) unsigned NOT NULL AUTO_INCREMENT',
+	    'virtuemart_order_id'  => 'int(11) UNSIGNED DEFAULT NULL',
+	    'order_number'  => 'char(32) DEFAULT NULL',
+	    'virtuemart_paymentmethod_id'  => 'mediumint(1) UNSIGNED DEFAULT NULL',
+	    'payment_name'  => 'char(255) NOT NULL DEFAULT \'\' ',
+	    'cost'  => 'decimal(10,2) DEFAULT NULL ',
+	    'tax_id'  => 'smallint(11) DEFAULT NULL'
+		);
 
+	    return $SQLfields;
 	}
 
 

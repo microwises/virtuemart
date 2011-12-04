@@ -265,7 +265,33 @@ abstract class vmPlugin extends JPlugin {
 	protected function getVmPluginCreateTableSQL(){
 		return 0;
 	}
+	function getTableSQLLoggablefields() {
+		return array(
+		    'created_on' => ' datetime NOT NULL default \'0000-00-00 00:00:00\'',
+		    'created_by' => ' int(11) NOT NULL DEFAULT 0',
+		    'modified_on' => ' datetime NOT NULL DEFAULT \'0000-00-00 00:00:00\'',
+		    'modified_by' => ' int(11) NOT NULL DEFAULT 0',
+		    'locked_on' => ' datetime NOT NULL DEFAULT \'0000-00-00 00:00:00\'',
+		    'locked_by' => ' int(11) NOT NULL DEFAULT 0'
+		);
 
+	    }
+
+    protected function  createTableSQL($tableComment) {
+	$SQLfields = $this->getTableSQLFields();
+	$loggablefields = $this->getTableSQLLoggablefields();
+	$query = "CREATE TABLE IF NOT EXISTS `" . $this->_tablename . "` (";
+	foreach ($SQLfields as $fieldname => $fieldtype) {
+	    $query .= '`' . $fieldname . '` ' . $fieldtype . " , ";
+	}
+	foreach ($loggablefields as $fieldname => $fieldtype) {
+	    $query .= '`' . $fieldname . '` ' . $fieldtype . ", ";
+	}
+
+	$query .="	      PRIMARY KEY (`id`)
+	    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='".$tableComment."' AUTO_INCREMENT=1 ;";
+	return $query;
+    }
 	/**
 	 * Set with this function the provided plugin parameters
 	 *
