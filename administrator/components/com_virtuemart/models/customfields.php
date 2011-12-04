@@ -927,7 +927,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		foreach ($product_attributes as $virtuemart_customfield_id=>$param){
  			if ($param) {
 				if ($productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id ) ) {
-vmdebug('$param',$param);
+// vmdebug('$param',$param);
 					if ($productCustom->field_type == "E") {
 
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
@@ -961,40 +961,11 @@ vmdebug('$param',$param);
 	}
 
 	/*
-	 * Get product(ID) Stock to change by custom plugin
-	 * $product_id is order item ID
-	 * Only used by plugin for now or child
-	 */
-	public function GetProductStockToUpdate($item){
-
-		$product_attributes = json_decode($item->product_attribute);
-		foreach ($product_attributes as $virtuemart_customfield_id=>$param){
-			if ($param) {
-				if ($productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id ) ) {
-					if ($productCustom->field_type == "E") {
-							//$item = self::addParam($item);
-							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-							JPluginHelper::importPlugin('vmcustom');
-							$dispatcher = JDispatcher::getInstance();
-							$item = $dispatcher->trigger('plgVmGetProductStockToUpdateByCustom',array($item, $productCustom));
-						//$item = self::GetProductStockToUpdateByPlugin($item,$param,$productCustom);
-						
-					}
-					if ($productCustom->field_type == "G") {
-						$item->virtuemart_product_id = $productCustom->custom_value ;
-					}
-				}
-			}
-		}
-		return $item ;
-	}
-
-	/*
 	 * custom fields for cart and cart module
 	 */
 	public function getProductCustomFieldCart($product_id,$selected) {
 		$db =& JFactory::getDBO();
-		$query='SELECT C.`virtuemart_custom_id` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_cart_attribute` , `is_hidden` , C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`,field.`custom_param`,field.`custom_price`
+		$query='SELECT C.`virtuemart_custom_id` , `custom_element` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_cart_attribute` , `is_hidden` , C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`,field.`custom_param`,field.`custom_price`
 			FROM `#__virtuemart_customs` AS C
 			LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
 			Where `virtuemart_product_id` ='.$product_id.' and `virtuemart_customfield_id` ='.(int)$selected;

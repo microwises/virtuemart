@@ -426,7 +426,37 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			}
 		}					
 	}
-	
+	 public function plgVmGetProductStockToUpdateByCustom($item, $pluginParam, $productCustom) {
+
+		if ($productCustom->custom_element !== $this->_name) return $item ;
+		if ( !empty($productCustom) ) {
+
+			$fields = json_decode($productCustom->custom_param,true);
+			
+			// find the selected child
+			foreach ( $fields['child'] as $childId => $child ) {
+				//print_r($child);
+				$count = 0;
+				$total = count($pluginParam);
+				foreach ( $pluginParam['stockable'] as $key => $attribute ) {
+					if  ($child[$key] !== $attribute) {
+						
+						break;
+					} else {$count++;}
+					
+				}
+				// child found
+				if ($total == $count) {
+					$item->virtuemart_product_id = $childId;
+					vmdebug ('$childId',$childId);
+					return $item ;
+					
+				}
+			}
+		}	
+		return $item ;
+		// echo $item[0]->virtuemart_product_id;jexit();
+	 }	
 }
 
 // No closing tag

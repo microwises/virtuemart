@@ -118,8 +118,6 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @author Patrick Kohl
 	 */
 	function onViewCart($product,$productCustom, $row,$plgParam) {
-		vmdebug('onViewCart',$plgParam);
-
 		$comment ='';
 		// foreach($plgParam as $k => $item){
 			if(!empty($plgParam['comment']) ){
@@ -176,7 +174,9 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 // 			return $field->custom_price;
 		}
 	}
-
+	 public function plgVmGetProductStockToUpdateByCustom($item, $pluginParam, $productCustom) {
+		return $item ;
+	 }
 }
 
 // No closing tag

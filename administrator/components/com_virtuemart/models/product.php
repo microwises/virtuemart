@@ -1623,16 +1623,32 @@ public function updateStock($product, $amount, $signInStoc, $signOrderedStock){
 	// control stock to update Child or packs
 	if (!empty($product->product_attribute)) {
 		if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-		$product = VirtueMartModelCustomfields::GetProductStockToUpdate($product);
+		$virtuemart_product_id = $product->virtuemart_product_id;
+		$product_attributes = json_decode($product->product_attribute,true);
+		foreach ($product_attributes as $virtuemart_customfield_id=>$param){
+			if ($param) {
+				if ($productCustom = VirtueMartModelCustomfields::getProductCustomFieldCart ($virtuemart_product_id,$virtuemart_customfield_id ) ) {
+					if ($productCustom->field_type == "E") {
+							//$product = self::addParam($product);
+							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+							JPluginHelper::importPlugin('vmcustom');
+							$dispatcher = JDispatcher::getInstance();
+							$dispatcher->trigger('plgVmGetProductStockToUpdateByCustom',array($product,$param, $productCustom));
+					}
+				}
+			}
+		}
+		//vmdebug('produit',$product);
 		// we can have more then one product in case of pack
 		// in case of child, ID must be the child ID
 		// TO DO use $prod->amount change for packs(eg. 1 computer and 2 HDD)
-			foreach ((array)$product as $prod ) $this->updateStockInDB($prod, $amount, $signInStoc, $signOrderedStock);
+		if (is_array($product))	foreach ($product as $prod ) $this->updateStockInDB($prod, $amount, $signInStoc, $signOrderedStock);
+		else $this->updateStockInDB($product, $amount, $signInStoc, $signOrderedStock);
 	} else $this->updateStockInDB($product, $amount, $signInStoc, $signOrderedStock);
 }
 
 private function updateStockInDB($product, $amount, $signInStoc, $signOrderedStock){
-	vmdebug( 'stockupdate', $product->virtuemart_product_id,$amount, $signInStoc, $signOrderedStock );
+	vmdebug( 'stockupdate in DB', $product->virtuemart_product_id,$amount, $signInStoc, $signOrderedStock );
 	$validFields = array('=','+','-');
 	if(!in_array($signInStoc,$validFields)){
 		return false;

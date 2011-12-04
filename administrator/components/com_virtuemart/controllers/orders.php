@@ -272,6 +272,7 @@ class VirtuemartControllerOrders extends VmController {
 
 		foreach ($_items as $key=>$value) {
 			//vmdebug('updateOrderItemStatus VAL  ',$value);
+			if (!isset($value['comments'])) $value['comments'] = '';
 			$model->updateSingleItem((int)$key, $value['order_status'],$value['comments'],$_orderID);
 		}
 

@@ -244,7 +244,11 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * Get the statut (Eg. payed. >> render only the link for downloadable )
 	 */
 	abstract function onViewOrderFE($product, $productCustom, $row,$plgParam);
-
+	/**
+	 * StockToUpdate
+	 * can remove or change or adding more virtuemart_product_id eg. to do packs
+	 */
+	abstract function plgVmGetProductStockToUpdateByCustom($item,$pluginParam, $productCustom);
 	/**
 	 * defaut price modifation if nothing is set in plugin
 	 * you have to rewrite it in your plugin to do other calculations
@@ -255,17 +259,5 @@ abstract class vmCustomPlugin extends VmPlugin {
 			return $field->custom_price;
 		}
 	}
-
-	/*
-	 * Default return $item( Object: the product item in cart)
-	 * The plugins can remove or change or adding more virtuemart_product_id eg. to do packs
-	 * can return an array of item or a simple item
-	 * Each item in aray must return $item->virtuemart_product_id
-	 * or an array of Object with $item->virtuemart_product_id in it;
-	 */
-	 public function plgVmGetProductStockToUpdateByCustom($item, $productCustom) {
-
-		return $item;
-	 }
 
 }
