@@ -58,7 +58,7 @@ class VmHTML{
 			return 'UTF-8';
 		}
 	}
-		
+
     /**
      * Generate HTML code for a row using VmHTML function
      *
@@ -256,7 +256,7 @@ class VmHTML{
 				}
 			}
 			$html .= '<input type="radio" name="'.$name.'" id="'.$name.$i.'" value="'.htmlspecialchars($key, ENT_QUOTES).'" '.$checked.' '.$extra." />\n";
-			$html .= '<label for="'.$name.$i++.'">'.$val."</label>\n";
+			$html .= '<label for="'.$name.$i++.'">'.$val."</label><br />\n";
 		}
 
 		return $html;
@@ -361,7 +361,7 @@ class VmHTML{
 		<input type="hidden" name="controller" value="'.$controller.'" />
 		'. JHTML::_( 'form.token' ) ;
 	}
-	
+
 	/**
 	* @author Patrick Kohl
 	* @var $type type of regular Expression to validate

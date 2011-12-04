@@ -652,7 +652,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
     }
 
     /**
-     * Joomla 1.7
+     * We must reimplement this triggers for joomla 1.7
      */
 
     /**

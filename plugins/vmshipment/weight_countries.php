@@ -36,20 +36,20 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	$this->_loggable = true;
 	$this->tableFields = array_keys($this->getTableSQLFields());
-	$varsToPush = array('shipment_logos'=>array('','char'),
-							  	'countries'=>array(0,'char'),
-							  	'zip_start'=>array(0,'int'),
-								'zip_stop'=>array(0,'int'),
-								'weight_start'=>array(0,'int'),
-								'weight_stop'=>array(0,'int'),
-								'weight_unit'=>array(0,'char'),
-								'cost'=>array(0,'int'),
-								'package_fee'=>array(0,'int'),
-								'tax_id'=>array(0,'int'),
-								'free_shipment'=>array(0,'int')
+	$varsToPush = array('shipment_logos' => array('', 'char'),
+	    'countries' => array(0, 'char'),
+	    'zip_start' => array(0, 'int'),
+	    'zip_stop' => array(0, 'int'),
+	    'weight_start' => array(0, 'int'),
+	    'weight_stop' => array(0, 'int'),
+	    'weight_unit' => array(0, 'char'),
+	    'cost' => array(0, 'int'),
+	    'package_fee' => array(0, 'int'),
+	    'tax_id' => array(0, 'int'),
+	    'free_shipment' => array(0, 'int')
 	);
 
-	$this->setConfigParameterable($this->_configTableFieldName,$varsToPush);
+	$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
 
 // 		self::$_this
 	//$this->createPluginTable($this->_tablename);
@@ -67,18 +67,18 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
     function getTableSQLFields() {
 	$SQLfields = array(
-	    'id' =>' tinyint(1) unsigned NOT NULL AUTO_INCREMENT' ,
-	    'virtuemart_order_id'  =>'int(11) UNSIGNED DEFAULT NULL',
-	    'order_number'  =>'char(32) DEFAULT NULL',
-	    'virtuemart_shipmentmethod_id'  =>'mediumint(1) UNSIGNED DEFAULT NULL',
-	    'shipment_name'  =>'char(255) NOT NULL DEFAULT \'\' ',
-	    'order_weight'  =>'decimal(10,4) DEFAULT NULL' ,
-	    'shipment_weight_unit'  =>'char(3) DEFAULT \'KG\' ',
-	    'shipment_cost'  =>'decimal(10,2) DEFAULT NULL',
-	    'shipment_package_fee'  =>'decimal(10,2) DEFAULT NULL',
-	    'tax_id'  =>'smallint(1) DEFAULT NULL'
-	 );
-	return $SQLfields ;
+	    'id' => ' tinyint(1) unsigned NOT NULL AUTO_INCREMENT',
+	    'virtuemart_order_id' => 'int(11) UNSIGNED DEFAULT NULL',
+	    'order_number' => 'char(32) DEFAULT NULL',
+	    'virtuemart_shipmentmethod_id' => 'mediumint(1) UNSIGNED DEFAULT NULL',
+	    'shipment_name' => 'char(255) NOT NULL DEFAULT \'\' ',
+	    'order_weight' => 'decimal(10,4) DEFAULT NULL',
+	    'shipment_weight_unit' => 'char(3) DEFAULT \'KG\' ',
+	    'shipment_cost' => 'decimal(10,2) DEFAULT NULL',
+	    'shipment_package_fee' => 'decimal(10,2) DEFAULT NULL',
+	    'tax_id' => 'smallint(1) DEFAULT NULL'
+	);
+	return $SQLfields;
     }
 
     /**
@@ -125,8 +125,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	    return null; // Another method was selected, do nothing
 	}
 	if (!$this->selectedThisElement($method->shipment_element)) {
-		    return false;
-		}
+	    return false;
+	}
 // 	if (!class_exists('JParameter'))
 // 	    require(JPATH_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
 
@@ -146,7 +146,6 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	$values['tax_id'] = $method->tax_id;
 
 // 		$this->writeData($values, $this->_tablename);
-
 // 	$this->storePluginInternalData($shipment);
 	$this->storePluginInternalData($values);
 	return true;
@@ -165,7 +164,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @author Valerie Isaksen
      */
     public function plgVmOnShowOrderBE($psType, $virtuemart_order_id, $virtuemart_shipmentmethod_id) {
-	if (!($this->selectedThisByMethodId($psType,   $virtuemart_shipmentmethod_id))) {
+	if (!($this->selectedThisByMethodId($psType, $virtuemart_shipmentmethod_id))) {
 	    return null;
 	}
 	$html = $this->getOrderShipmentHtml($virtuemart_order_id);
@@ -208,15 +207,15 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	if ($method->free_shipment && $cart_prices['salesPrice'] >= $method->free_shipment) {
 	    return 0;
 	} else {
-	    $orderWeight = parent::getOrderWeight($cart, $method->weight_unit );
-	    return ($orderWeight*$method->cost) + $method->package_fee;
+	    $orderWeight = parent::getOrderWeight($cart, $method->weight_unit);
+	    return ($orderWeight * $method->cost) + $method->package_fee;
 	}
     }
 
     protected function checkConditions($cart, $method, $cart_prices) {
 
 
-	$orderWeight = parent::getOrderWeight($cart, $method->weight_unit );
+	$orderWeight = parent::getOrderWeight($cart, $method->weight_unit);
 	$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
 	$nbShipment = 0;
@@ -258,9 +257,9 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
     private function _weightCond($orderWeight, $method) {
 	if ($orderWeight) {
 
-	    $weight_cond = ($orderWeight >= $method->weight_start  AND $orderWeight <= $method->weight_stop
+	    $weight_cond = ($orderWeight >= $method->weight_start AND $orderWeight <= $method->weight_stop
 		    OR
-		    ($method->weight_start  <= $orderWeight AND ($method->weight_stop == 0) ));
+		    ($method->weight_start <= $orderWeight AND ($method->weight_stop == 0) ));
 	} else
 	    $weight_cond = true;
 	return $weight_cond;
@@ -275,232 +274,229 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      */
     private function _zipCond($zip, $method) {
 	if (!empty($zip)) {
-	    $zip_cond = (( $zip >= $method->zip_start  AND $zip <= $method->zip_stop )
+	    $zip_cond = (( $zip >= $method->zip_start AND $zip <= $method->zip_stop )
 		    OR
-		    ($method->zip_start <= $zip AND ($method->zip_stop  == 0) ));
+		    ($method->zip_start <= $zip AND ($method->zip_stop == 0) ));
 	} else {
 	    $zip_cond = true;
 	}
 	return $zip_cond;
     }
 
+    /*
+     * We must reimplement this triggers for joomla 1.7
+     */
 
- /**
-	 * Create the table for this plugin if it does not yet exist.
-	 * This functions checks if the called plugin is active one.
-	 * When yes it is calling the standard method to create the tables
-	 * @author Valérie Isaksen
-	 *
-	 */
-
+    /**
+     * Create the table for this plugin if it does not yet exist.
+     * This functions checks if the called plugin is active one.
+     * When yes it is calling the standard method to create the tables
+     * @author Valérie Isaksen
+     *
+     */
     function plgVmOnStoreInstallPluginTable($psType, $jplugin_id) {
-		 return parent::plgVmOnStoreInstallPluginTable($psType, $jplugin_id) ;
-}
+	return parent::plgVmOnStoreInstallPluginTable($psType, $jplugin_id);
+    }
 
+    /**
+     * This event is fired after the payment method has been selected. It can be used to store
+     * additional payment info in the cart.
+     *
+     * @author Max Milbers
+     * @author Valérie isaksen
+     *
+     * @param VirtueMartCart $cart: the actual cart
+     * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
+     *
+     */
+    public function plgVmOnSelectCheck($psType, VirtueMartCart $cart) {
+	return parent::plgVmOnSelectCheck($psType, $cart);
+    }
 
-	/**
-	 * This event is fired after the payment method has been selected. It can be used to store
-	 * additional payment info in the cart.
-	 *
-	 * @author Max Milbers
-	 * @author Valérie isaksen
-	 *
-	 * @param VirtueMartCart $cart: the actual cart
-	 * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
-	 *
-	 */
-	public function plgVmOnSelectCheck($psType, VirtueMartCart $cart) {
-		return parent::plgVmOnSelectCheck($psType,   $cart);
-	}
+    /**
+     * plgVmDisplayListFE
+     * This event is fired to display the pluginmethods in the cart (edit shipment/payment) for exampel
+     *
+     * @param object $cart Cart object
+     * @param integer $selected ID of the method selected
+     * @return boolean True on succes, false on failures, null when this plugin was not selected.
+     * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
+     *
+     * @author Valerie Isaksen
+     * @author Max Milbers
+     */
+    public function plgVmDisplayListFE($psType, VirtueMartCart $cart, $selected = 0) {
+	return parent::plgVmDisplayListFE($psType, $cart, $selected);
+    }
 
-	/**
-	 * plgVmDisplayListFE
-	 * This event is fired to display the pluginmethods in the cart (edit shipment/payment) for exampel
-	 *
-	 * @param object $cart Cart object
-	 * @param integer $selected ID of the method selected
-	 * @return boolean True on succes, false on failures, null when this plugin was not selected.
-	 * On errors, JError::raiseWarning (or JError::raiseError) must be used to set a message.
-	 *
-	 * @author Valerie Isaksen
-	 * @author Max Milbers
-	 */
-	public function plgVmDisplayListFE($psType, VirtueMartCart $cart, $selected = 0) {
-		 return parent::plgVmDisplayListFE($psType,  $cart, $selected );
-	}
+    /*
+     * plgVmOnSelectedCalculatePrice
+     * Calculate the price (value, tax_id) of the selected method
+     * It is called by the calculator
+     * This function does NOT to be reimplemented. If not reimplemented, then the default values from this function are taken.
+     * @author Valerie Isaksen
+     * @cart: VirtueMartCart the current cart
+     * @cart_prices: array the new cart prices
+     * @return null if the method was not selected, false if the shiiping rate is not valid any more, true otherwise
+     *
+     *
+     */
 
-	/*
-	 * plgVmOnSelectedCalculatePrice
-	* Calculate the price (value, tax_id) of the selected method
-	* It is called by the calculator
-	* This function does NOT to be reimplemented. If not reimplemented, then the default values from this function are taken.
-	* @author Valerie Isaksen
-	* @cart: VirtueMartCart the current cart
-	* @cart_prices: array the new cart prices
-	* @return null if the method was not selected, false if the shiiping rate is not valid any more, true otherwise
-	*
-	*
-	*/
+    public function plgVmOnSelectedCalculatePrice($psType, VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
+	return parent::plgVmOnSelectedCalculatePrice($psType, $cart, $cart_prices, $cart_prices_name);
+    }
 
-	public function plgVmOnSelectedCalculatePrice($psType, VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
-		 return parent::plgVmOnSelectedCalculatePrice($psType, $cart,  $cart_prices, $cart_prices_name);
-	}
+    /**
+     * plgVmOnCheckAutomaticSelected
+     * Checks how many plugins are available. If only one, the user will not have the choice. Enter edit_xxx page
+     * The plugin must check first if it is the correct type
+     * @author Valerie Isaksen
+     * @param VirtueMartCart cart: the cart object
+     * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
+     *
+     */
+    function plgVmOnCheckAutomaticSelected($psType, VirtueMartCart $cart, array $cart_prices = array()) {
+	return parent::plgVmOnCheckAutomaticSelected($psType, $cart, $cart_prices);
+    }
 
-	/**
-	 * plgVmOnCheckAutomaticSelected
-	 * Checks how many plugins are available. If only one, the user will not have the choice. Enter edit_xxx page
-	 * The plugin must check first if it is the correct type
-	 * @author Valerie Isaksen
-	 * @param VirtueMartCart cart: the cart object
-	 * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
-	 *
-	 */
-	function plgVmOnCheckAutomaticSelected($psType, VirtueMartCart $cart, array $cart_prices = array()) {
-		 return parent::plgVmOnCheckAutomaticSelected($psType,   $cart,  $cart_prices );
-	}
+    /**
+     * This event is fired during the checkout process. It can be used to validate the
+     * method data as entered by the user.
+     *
+     * @return boolean True when the data was valid, false otherwise. If the plugin is not activated, it should return null.
+     * @author Max Milbers
+     */
+    public function plgVmOnCheckoutCheckData($psType, VirtueMartCart $cart) {
+	return parent::plgVmOnCheckoutCheckData($psType, $cart);
+    }
 
-
-
-	/**
-	 * This event is fired during the checkout process. It can be used to validate the
-	 * method data as entered by the user.
-	 *
-	 * @return boolean True when the data was valid, false otherwise. If the plugin is not activated, it should return null.
-	 * @author Max Milbers
-	 */
-	public function plgVmOnCheckoutCheckData($psType, VirtueMartCart $cart) {
-		return parent::plgVmOnCheckoutCheckData($psType, $cart);
-	}
-
-	/**
-	 * plgVmConfirmedOrderRenderForm
-	 * This event is fired after the order has been created
-	 * All plugins *must* reimplement this method.
-	 * NOTE for Plugin developers:
-	 *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
-	 * @param the actual order number. IT IS THE ORDER NUMBER THAT MuST BE SENT TO THE FORM. DONT PUT virtuemart_order_id which is a primary key for the order table.
-	 * @param orderData
-	 * @param contains the session id. Should be sent to the form. And the payment will sent it back.
-	 *                  Will be used to empty the cart if necessary, and semnd the order email.
-	 * @param the payment form to display. But in some case, the bank can be called directly.
-	 * @param false if it should not be changed, otherwise new staus
-	 * @return returns 1 if the Cart should be deleted, and order sent
-	 */
+    /**
+     * plgVmConfirmedOrderRenderForm
+     * This event is fired after the order has been created
+     * All plugins *must* reimplement this method.
+     * NOTE for Plugin developers:
+     *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
+     * @param the actual order number. IT IS THE ORDER NUMBER THAT MuST BE SENT TO THE FORM. DONT PUT virtuemart_order_id which is a primary key for the order table.
+     * @param orderData
+     * @param contains the session id. Should be sent to the form. And the payment will sent it back.
+     *                  Will be used to empty the cart if necessary, and semnd the order email.
+     * @param the payment form to display. But in some case, the bank can be called directly.
+     * @param false if it should not be changed, otherwise new staus
+     * @return returns 1 if the Cart should be deleted, and order sent
+     */
 // 	public function plgVmConfirmedOrderRenderForm($psType, $order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status) {
 // 		return parent::plgVmConfirmedOrderRenderForm($psType, $order_number,  $cart, $return_context, $html, $new_status);
 // 	}
 
+    /**
+     * This method is fired when showing when priting an Order
+     * It displays the the payment method-specific data.
+     *
+     * @param integer $_virtuemart_order_id The order ID
+     * @param integer $method_id  method used for this order
+     * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
+     * @author Valerie Isaksen
+     */
+    function plgVmOnShowOrderPrint($order_number, $method_id) {
+	return parent::plgVmOnShowOrderPrint($order_number, $method_id);
+    }
 
+    /**
+     * Save updated order data to the method specific table
+     *
+     * @param array $_formData Form data
+     * @return mixed, True on success, false on failures (the rest of the save-process will be
+     * skipped!), or null when this method is not actived.
+     * @author Oscar van Eijk
+     */
+    public function plgVmOnUpdateOrder($psType, $_formData) {
+	return null;
+    }
 
-	/**
-	 * This method is fired when showing when priting an Order
-	 * It displays the the payment method-specific data.
-	 *
-	 * @param integer $_virtuemart_order_id The order ID
-	 * @param integer $method_id  method used for this order
-	 * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
-	 * @author Valerie Isaksen
-	 */
-	function plgVmOnShowOrderPrint($order_number, $method_id) {
-		return parent::plgVmOnShowOrderPrint($order_number, $method_id);
-	}
+    /**
+     * Save updated orderline data to the method specific table
+     *
+     * @param array $_formData Form data
+     * @return mixed, True on success, false on failures (the rest of the save-process will be
+     * skipped!), or null when this method is not actived.
+     * @author Oscar van Eijk
+     */
+    public function plgVmOnUpdateOrderLine($psType, $_formData) {
+	return null;
+    }
 
+    /**
+     * plgVmOnEditOrderLineBE
+     * This method is fired when editing the order line details in the backend.
+     * It can be used to add line specific package codes
+     *
+     * @param integer $_orderId The order ID
+     * @param integer $_lineId
+     * @return mixed Null for method that aren't active, text (HTML) otherwise
+     * @author Oscar van Eijk
+     */
+    public function plgVmOnEditOrderLineBE($psType, $_orderId, $_lineId) {
+	return null;
+    }
 
+    /**
+     * This method is fired when showing the order details in the frontend, for every orderline.
+     * It can be used to display line specific package codes, e.g. with a link to external tracking and
+     * tracing systems
+     *
+     * @param integer $_orderId The order ID
+     * @param integer $_lineId
+     * @return mixed Null for method that aren't active, text (HTML) otherwise
+     * @author Oscar van Eijk
+     */
+    public function plgVmOnShowOrderLineFE($psType, $_orderId, $_lineId) {
+	return null;
+    }
 
-	/**
-	 * Save updated order data to the method specific table
-	 *
-	 * @param array $_formData Form data
-	 * @return mixed, True on success, false on failures (the rest of the save-process will be
-	 * skipped!), or null when this method is not actived.
-	 * @author Oscar van Eijk
-	 */
-	public function plgVmOnUpdateOrder($psType, $_formData) {
-		return null;
-	}
+    /**
+     * This event is fired when the  method notifies you when an event occurs that affects the order.
+     * Typically,  the events  represents for payment authorizations, Fraud Management Filter actions and other actions,
+     * such as refunds, disputes, and chargebacks.
+     *
+     * NOTE for Plugin developers:
+     *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
+     *
+     * @param $return_context: it was given and sent in the payment form. The notification should return it back.
+     * Used to know which cart should be emptied, in case it is still in the session.
+     * @param int $virtuemart_order_id : payment  order id
+     * @param char $new_status : new_status for this order id.
+     * @return mixed Null when this method was not selected, otherwise the true or false
+     *
+     * @author Valerie Isaksen
+     *
+     */
+    public function plgVmOnNotification($psType, &$return_context, &$virtuemart_order_id, &$new_status) {
+	return null;
+    }
 
-	/**
-	 * Save updated orderline data to the method specific table
-	 *
-	 * @param array $_formData Form data
-	 * @return mixed, True on success, false on failures (the rest of the save-process will be
-	 * skipped!), or null when this method is not actived.
-	 * @author Oscar van Eijk
-	 */
-	public function plgVmOnUpdateOrderLine($psType, $_formData) {
-		return null;
-	}
+    /**
+     * plgVmOnResponseReceived
+     * This event is fired when the  method returns to the shop after the transaction
+     *
+     *  the method itself should send in the URL the parameters needed
+     * NOTE for Plugin developers:
+     *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
+     *
+     * @param int $virtuemart_order_id : should return the virtuemart_order_id
+     * @param text $html: the html to display
+     * @return mixed Null when this method was not selected, otherwise the true or false
+     *
+     * @author Valerie Isaksen
+     *
+     */
+    function plgVmOnResponseReceived($psType, &$virtuemart_order_id, &$html) {
+	return null;
+    }
 
-	/**
-	 * plgVmOnEditOrderLineBE
-	 * This method is fired when editing the order line details in the backend.
-	 * It can be used to add line specific package codes
-	 *
-	 * @param integer $_orderId The order ID
-	 * @param integer $_lineId
-	 * @return mixed Null for method that aren't active, text (HTML) otherwise
-	 * @author Oscar van Eijk
-	 */
-	public function plgVmOnEditOrderLineBE($psType, $_orderId, $_lineId) {
-		return null;
-	}
+    function plgVmGetDeclaredPluginParams($psType, $name, $id) {
+	return parent::plgVmGetDeclaredPluginParams($psType, $name, $id);
+    }
 
-	/**
-	 * This method is fired when showing the order details in the frontend, for every orderline.
-	 * It can be used to display line specific package codes, e.g. with a link to external tracking and
-	 * tracing systems
-	 *
-	 * @param integer $_orderId The order ID
-	 * @param integer $_lineId
-	 * @return mixed Null for method that aren't active, text (HTML) otherwise
-	 * @author Oscar van Eijk
-	 */
-	public function plgVmOnShowOrderLineFE($psType, $_orderId, $_lineId) {
-		return null;
-	}
-
-	/**
-	 * This event is fired when the  method notifies you when an event occurs that affects the order.
-	 * Typically,  the events  represents for payment authorizations, Fraud Management Filter actions and other actions,
-	 * such as refunds, disputes, and chargebacks.
-	 *
-	 * NOTE for Plugin developers:
-	 *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
-	 *
-	 * @param $return_context: it was given and sent in the payment form. The notification should return it back.
-	 * Used to know which cart should be emptied, in case it is still in the session.
-	 * @param int $virtuemart_order_id : payment  order id
-	 * @param char $new_status : new_status for this order id.
-	 * @return mixed Null when this method was not selected, otherwise the true or false
-	 *
-	 * @author Valerie Isaksen
-	 *
-	 */
-	public function plgVmOnNotification($psType, &$return_context, &$virtuemart_order_id, &$new_status) {
-		return null;
-	}
-
-	/**
-	 * plgVmOnResponseReceived
-	 * This event is fired when the  method returns to the shop after the transaction
-	 *
-	 *  the method itself should send in the URL the parameters needed
-	 * NOTE for Plugin developers:
-	 *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
-	 *
-	 * @param int $virtuemart_order_id : should return the virtuemart_order_id
-	 * @param text $html: the html to display
-	 * @return mixed Null when this method was not selected, otherwise the true or false
-	 *
-	 * @author Valerie Isaksen
-	 *
-	 */
-	function plgVmOnResponseReceived($psType, &$virtuemart_order_id, &$html) {
-		return null;
-	}
-	function plgVmGetDeclaredPluginParams($psType,$name,$id){
-		 return parent::plgVmGetDeclaredPluginParams($psType,$name,$id);
-	}
 }
 
 // No closing tag
