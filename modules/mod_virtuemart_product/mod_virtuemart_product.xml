@@ -7,7 +7,7 @@
     <authorUrl>http://www.virtuemart.net</authorUrl>
     <copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
-    <version>1.9.8</version>
+    <version>2.0.0RC3</version>
     <description>MOD_VIRTUEMART_PRODUCT_DESC</description>
     <files>
         <filename module="mod_virtuemart_product">mod_virtuemart_product.php</filename>
