@@ -498,7 +498,9 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	function plgVmOnResponseReceived($psType, &$virtuemart_order_id, &$html) {
 		return null;
 	}
-
+	function plgVmGetDeclaredPluginParams($psType,$name,$id){
+		 return parent::plgVmGetDeclaredPluginParams($psType,$name,$id);
+	}
 }
 
 // No closing tag

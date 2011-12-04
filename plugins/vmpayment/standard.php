@@ -166,7 +166,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	 * @return true: if the conditions are fulfilled, false otherwise
 	 *
 	 */
-	 function checkConditions($cart, $method, $cart_prices) {
+	 protected function checkConditions($cart, $method, $cart_prices) {
 
 // 		$params = new JParameter($payment->payment_params);
 		$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
@@ -316,6 +316,9 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		return parent::plgVmOnShowOrderPrint($order_number, $method_id);
 	}
 
+	function plgVmGetDeclaredPluginParams($psType,$name,$id){
+		 return parent::plgVmGetDeclaredPluginParams($psType,$name,$id);
+	}
 
 	//Notice: We only need to add the events, which should work for the specific plugin, when an event is doing nothing, it should not be added
 
