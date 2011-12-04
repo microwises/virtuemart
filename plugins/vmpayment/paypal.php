@@ -816,6 +816,9 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	return null;
     }
 
+    function plgVmGetDeclaredPluginParams($psType,$name,$id){
+		 return parent::plgVmGetDeclaredPluginParams($psType,$name,$id);
+	}
 }
 
 // No closing tag
