@@ -30,7 +30,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CURRENCY_DETAILS');
 	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_CURRENCY_DETAILS'); ?></legend>
 	<table class="admintable">
-		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_NAME','currency_name',$this->calc->currency_name); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_NAME','currency_name',$this->currency->currency_name); ?>
 		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISH','published',$this->currency->published); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_EXCHANGE_RATE','currency_exchange_rate',$this->currency->currency_exchange_rate,'class="inputbox"','',6); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_CODE_2','currency_code_2',$this->currency->currency_code_2,'class="inputbox"','',2,2); ?>
@@ -84,6 +84,6 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CURRENCY_DETAILS');
 </form>
 
 
-<?php 
+<?php
 AdminUIHelper::imitateTabs('end');
 AdminUIHelper::endAdminArea(); ?>

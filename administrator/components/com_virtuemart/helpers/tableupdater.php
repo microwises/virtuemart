@@ -101,7 +101,7 @@ class GenericTableUpdater extends JModel{
 				$lang = strtolower(strtr($lang,'-','_'));
 				$tbl_lang = $tableName.'_'.$lang;
 				$q = 'CREATE TABLE IF NOT EXISTS '.$tbl_lang.' (';
-				$q .= '`'.$tblKey.'` SERIAL ,';
+				$q .= '`'.$tblKey.'` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT ,';
 				foreach($translatableFields as $name){
 					if(strpos($name,'name') !==false ){
 						$fieldstructure = 'char(128) NOT NULL DEFAULT "" ';

@@ -1183,12 +1183,11 @@ class Migrator extends VmModel{
 						$orderData->coupon_discount = $order['coupon_discount'];
 					}
 					$orderData->order_discount = $order['order_discount'];
-					//$orderData->order_currency = null; // TODO; Max: the currency should be in the cart somewhere!
-					//$orderData->order_status = $orderCodeToId[$order['order_status']];
+
 					$orderData->order_status = $order['order_status'];
 
 					if(isset($_cart->virtuemart_currency_id)){
-						$orderData->user_currency_id = $order['order_currency'];
+						$orderData->user_currency_id = $this->getCurrencyIdByCode($order['order_currency']);
 						//$orderData->user_currency_rate = $order['order_status'];
 					}
 					$orderData->virtuemart_paymentmethod_id = $order['payment_method_id'];
@@ -1427,6 +1426,24 @@ class Migrator extends VmModel{
 
 		$q = 'SELECT `virtuemart_state_id` FROM `#__virtuemart_states`
 				WHERE `' . $code . '` = "' . $this->_db->getEscaped($name) . '" ';
+		$this->_db->setQuery($q);
+
+		return $this->_db->loadResult();
+	}
+
+	private function getCurrencyIdByCode($name){
+		if(empty($name)){
+			return 0;
+		}
+
+		if(strlen($name) == 2){
+			$code = 'currency_code_2';
+		}else {
+			$code = 'currency_code_3';
+		}
+
+		$q = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies`
+					WHERE `' . $code . '` = "' . $this->_db->getEscaped($name) . '" ';
 		$this->_db->setQuery($q);
 
 		return $this->_db->loadResult();

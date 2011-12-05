@@ -431,7 +431,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `virtuemart_order_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_user_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
-  `order_number` char(32),
+  `order_number` char(64),
   `order_pass` char(8),
   `virtuemart_userinfo_id` char(32),
   `order_total` decimal(15,5) NOT NULL DEFAULT '0.00000',
