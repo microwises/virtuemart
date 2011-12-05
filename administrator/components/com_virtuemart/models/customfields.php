@@ -371,7 +371,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$dispatcher = JDispatcher::getInstance();
 // 					echo 'vmCustomPlugin <pre>'.print_r($field,1).'</pre>';die;
 // 					vmdebug('vmCustomPlugin',$field);
-					$fieldsToShow = $dispatcher->trigger('plgVmOnDisplayCustoms',array(false,&$field,$product_id,$row));
+					$fieldsToShow = $dispatcher->trigger('plgVmOnProductEdit',array($field,$product_id,$row));
 
 					$retValue = '';
 					if(!empty($fieldsToShow)){
@@ -618,8 +618,9 @@ class VirtueMartModelCustomfields extends VmModel {
 						$dispatcher = JDispatcher::getInstance();
 						// 					echo 'vmCustomPlugin <pre>'.print_r($field,1).'</pre>';die;
 // 											vmdebug('vmCustomPlugin BE ?');
-						$fieldsToShow = $dispatcher->trigger('plgVmOnDisplayCustoms',array(true,&$productCustom,$productCustom,$row));
 
+						$fieldsToShow = $dispatcher->trigger('plgVmOnDisplayProductFE',array($productCustom,$row));
+vmdebug('vmCustomPlugin BE ?',$fieldsToShow);
 						$retValue = '';
 						if(!empty($fieldsToShow)){
 							foreach($fieldsToShow as $push){
@@ -841,13 +842,9 @@ class VirtueMartModelCustomfields extends VmModel {
 							}
 						}
 					}
-					//$html .= vmCustomPlugin::displayInCartPlugin( $product,$productCustom, $row,'Module');
-					// foreach ($product->userfield as $pKey => $puser) {
-						// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
-					// }
+
 				} elseif (($productCustom->field_type == "G")) {
 					$child = self::getChild($productCustom->custom_value);
-					// $html .= ' <span>'.$productCustom->custom_title.' : </span>'.$child->product_name;
 					$html .= '<br/ >'.$child->product_name;
 				} elseif (($productCustom->field_type == "M")) {
 					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.self::displayCustomMedia($productCustom->custom_value);
@@ -882,11 +879,11 @@ class VirtueMartModelCustomfields extends VmModel {
  				if ($productCustom->field_type == "E") {
 					$product = self::addParam($product);
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-
+vmdebug('product',$product);
 					JPluginHelper::importPlugin('vmcustom');
 					$dispatcher = JDispatcher::getInstance();
 					$varsToPushParam = $dispatcher->trigger('plgVmDisplayInCartCustom',array($product,$productCustom, $row));
-
+vmdebug('plugin',$varsToPushParam);
 					if(!empty($varsToPushParam)){
 						foreach($varsToPushParam as $push){
 							if(!empty($push)){

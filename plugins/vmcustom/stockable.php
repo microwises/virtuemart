@@ -52,9 +52,10 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 
 	// get product param for this plugin on edit
-	function onProductEdit($field, $product_id, $row) {
+	function plgVmOnProductEdit($field, $product_id, $row) {
 
 		if ($field->custom_element != $this->_name) return '';
+		$this->parseCustomParams($field);
 		$html ='';
 		if (!$childs = $this->getChilds($product_id) ) $html .='<DIV>'.JTEXT::_('VMCUSTOM_STOCKABLE_NO_CHILD').'</DIV>';
 		$db = JFactory::getDBO();
@@ -166,9 +167,10 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onDisplayProductFE()
 	 * @author Patrick Kohl
 	 */
-	function onDisplayProductFE(&$field, $product,$idx) {
+	function plgVmOnDisplayProductFE($field,$idx) {
 		// default return if it's not this plugin
 		if ($field->custom_element != $this->_name) return '';
+		$this->parseCustomParams($field);
 		//if (!$childs = $this->getChilds($product_id) ) return ;
 
 		$html='<br>';
@@ -401,32 +403,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		else if ($stock !==NULL) return true ;
 		return false ;
 	}
-	public function modifyPrice( $product, &$field,$selected,$customVariant ) {
 
-		if ( !empty($customVariant) ) {
-
-			$fields = json_decode($field->custom_param,true);
-			// find the selected child
-			foreach ( $fields['child'] as $childId => $child ) {
-				//print_r($child);
-				$count = 0;
-				$total = count($customVariant);
-				foreach ( $customVariant as $key => $attribute ) {
-					if  ($child[$key] !== $attribute) {
-
-						break;
-					} else {$count++;
-					}
-
-				}
-				// child found
-				if ($total == $count) {
-					$field->custom_price = $child['custom_price'];
-					break;
-				}
-			}
-		}
-	}
 	public function plgVmGetProductStockToUpdateByCustom($item, $pluginParam, $productCustom) {
 
 		if ($productCustom->custom_element !== $this->_name) return $item ;
@@ -479,12 +456,33 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		parent::plgVmGetActiveCustomPlugin($virtuemart_custom_id);
 	}
 
-	public function plgVmOnDisplayCustoms($FE,&$field,$product,$row){
-		parent::plgVmOnDisplayCustoms($FE,$field,$product,$row);
-	}
-
 	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected,$row){
-		parent::plgVmCalculateCustomVariant($product, $productCustomsPrice,$selected,$row);
+
+		$customVariant = $this->getCustomVariant($product, $productCustomsPrice,$selected,$row);
+
+		if ( !empty($customVariant) ) {
+
+			$fields = json_decode($productCustomsPrice->custom_param,true);
+			// find the selected child
+			foreach ( $fields['child'] as $childId => $child ) {
+				//print_r($child);
+				$count = 0;
+				$total = count($customVariant);
+				foreach ( $customVariant as $key => $attribute ) {
+					if  ($child[$key] !== $attribute) {
+
+						break;
+					} else {$count++;
+					}
+
+				}
+				// child found
+				if ($total == $count) {
+					$field->custom_price = $child['custom_price'];
+					break;
+				}
+			}
+		}
 	}
 
 	public function plgVmDisplayInCartCustom($product,$productCustom, $row ,$view=''){

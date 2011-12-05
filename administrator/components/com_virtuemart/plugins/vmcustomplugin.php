@@ -77,22 +77,12 @@ abstract class vmCustomPlugin extends VmPlugin {
 		}
 	}
 
-	/**
-	 * This is the actions which take place, when a product gets stored
-	 *
-	 * @param string $type atm valid 'product'
-	 * @param array $data form data
-	 * @param int $id virtuemart_product_id
+	/*
+	 * helper to parse plugin parameters as object 
+	 * 
 	 */
-    function plgVmOnStoreProduct($type,&$data,$id){
-
-    }
-
-    /**
-    * $type FE or BE
-    */
-    public function plgVmOnDisplayCustoms($FE,&$field,$product,$row){
-
+	public function parseCustomParams(&$field) {
+		
     	VmTable::bindParameterable($field,'custom_params',$this->_varsToPushParam);
 
     	if (empty($field->custom_value)) return 0 ;
@@ -104,16 +94,46 @@ abstract class vmCustomPlugin extends VmPlugin {
     			$field->$k = $v;
     		}
     	}
-//     	vmdebug('my field',$field);
+		
+	}
+    /**
+    * $type FE or BE
+    */
+    // public function plgVmOnDisplayCustoms($FE,&$field,$product,$row){
 
-    	if($FE){
-    		$html = $this->onDisplayProductFE( $field, $product, $row);
-    	} else {
-    		$html = $this->onProductEdit( $field, $product, $row);
-    	}
+    	// VmTable::bindParameterable($field,'custom_params',$this->_varsToPushParam);
 
-    	return $html;
+    	// if (empty($field->custom_value)) return 0 ;
+    	// if (!empty($field->custom_param) && is_string($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
+    	// else $custom_param = array();
+    	// $field->custom_param = $custom_param;
+    	// foreach($field->custom_param as $k => $v){
+    		// if(!empty($v)){
+    			// $field->$k = $v;
+    		// }
+    	// }
+    	// vmdebug('my field',$field);
+
+    	// if($FE){
+    		// $html = $this->onDisplayProductFE( $field, $product, $row);
+    	// } else {
+    		// $html = $this->onProductEdit( $field, $product, $row);
+    	// }
+
+    	// return $html;
+    // }
+	/**
+	 * This is the actions which take place, when a product gets stored
+	 *
+	 * @param string $type atm valid 'product'
+	 * @param array $data form data
+	 * @param int $id virtuemart_product_id
+	 */
+    function plgVmOnStoreProduct($type,&$data,$id){
+
     }
+
+
 
     /**
     * Calculate the variant price by The plugin
@@ -123,7 +143,7 @@ abstract class vmCustomPlugin extends VmPlugin {
     * or price is returned defaut custom_price
     */
     // 	 public function plgVmCalculatePluginVariant( $product, $field,$selected,$row){
-    public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected,$row){
+    public function getCustomVariant($product, &$productCustomsPrice,$selected,$row){
 		if ($productCustomsPrice->custom_element !==$this->_name) return ;
 		vmPlugin::plgVmGetDeclaredPluginParams('vmcustom',$productCustomsPrice->custom_element,$productCustomsPrice->custom_jplugin_id);
 		VmTable::bindParameterable($productCustomsPrice,'custom_params',$this->_varsToPushParam);
@@ -134,8 +154,8 @@ abstract class vmCustomPlugin extends VmPlugin {
 				// print_r($field);
 				if ($pluginFields ==  null) $pluginFields = json_decode( $product->customPlugin, true);
 		}
-		$customVariant = $pluginFields[$productCustomsPrice->virtuemart_custom_id][$this->_name] ;
-    	return $this->modifyPrice( $product, $productCustomsPrice,$selected,$customVariant);
+		return $pluginFields[$productCustomsPrice->virtuemart_custom_id][$this->_name] ;
+    	 
     }
 
     /**
@@ -148,6 +168,7 @@ abstract class vmCustomPlugin extends VmPlugin {
     	$plgFunction = 'onViewCart'.$view ;
 		if ($productCustom->custom_value != $this->_name) return '';
 		$html ='';
+		echo 'HELLO';
 		foreach($product->param as $k => $plg){
 			if (key($plg)== $this->_name)
 				$html .= $this->$plgFunction( $product,$productCustom, $row,$plg[$this->_name]);
@@ -214,12 +235,12 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * called by customfields inputTypePlugin
 	 *
 	 */
-	abstract function onProductEdit($field, $product, $row);
+	abstract function plgVmOnProductEdit($field, $product, $row);
 
 	/**
 	 * display the plugin on product FE
 	 */
-	abstract function onDisplayProductFE( &$field, $product, $idx);
+	abstract function plgVmOnDisplayProductFE( $field, $idx);
 
 	/**
 	 * display the product plugin on cart module
