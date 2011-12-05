@@ -324,24 +324,26 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCartModule()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCartModule( $product,$productCustom, $row) {
-		if (!$plgParam = $this->GetPluginInCart($product)) return '' ;
-		$html  = '';
+	function plgVmOnViewCartModule( $product,$productCustom, $row,&$html) {
+		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
+// 		$html  = '';
 		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';
 		// $html .='<span>'.$param->Morecomment.'</span>';
-		return $html;
+
+		return true;
 	}
 
 	/**
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCart()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCart($product,$productCustom, $row) {
-		if (!$plgParam = $this->GetPluginInCart($product)) return '' ;
-		$html  = '<div>';
+/*	function plgVmOnViewCart($product,$productCustom, $row,&$html) {
+		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
+		$html  .= '<div>';
 		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';
 		// $html .='<span>'.$param->Morecomment.'</span>';
-		return $html.'</div>';
+		$html.='</div>';
+		return true;
 		//vmdebug('stockable attributs',$plgParam);
 	}
 
@@ -349,7 +351,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 *
 	 * vendor order display BE
 	 */
-	function plgVmDisplayInOrderBE($item,$productCustom, $row, $plgParam) {
+/*	function plgVmDisplayInOrderBE($item,$productCustom, $row, $plgParam) {
 		if ($productCustom->custom_value != $this->_name) return null;
 		$html  = '<div>';
 		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';

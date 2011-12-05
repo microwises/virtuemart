@@ -165,19 +165,19 @@ abstract class vmCustomPlugin extends VmPlugin {
 	/**
 	 * display the product plugin on cart module
 	 */
-	abstract function plgVmOnViewCartModule( $product,$productCustom, $row);
+	abstract function plgVmOnViewCartModule( $product,$productCustom, $row,&html);
 
 	/**
 	* display the product plugin on cart
 	 */
-	abstract function plgVmOnViewCart($product, $productCustom, $row);
+	abstract function plgVmOnViewCart($product, $productCustom, $row,&$html);
 
 	/**
 	 * display the plugin in order
 	 * TODO One for customer and one for vendor
 	 * Get the statut (Eg. payed. >> render only the link for downloadable )
 	 */
-	abstract function plgVmDisplayInOrderBE($item, $productCustom, $row,$plgParam);
+// 	abstract function plgVmDisplayInOrderBE($item, $productCustom, $row,$plgParam);
 
 	/**
 	 * display the plugin in order
