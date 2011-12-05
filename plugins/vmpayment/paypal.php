@@ -93,11 +93,11 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	return $SQLfields;
     }
 
-    function plgVmConfirmedOrder($psType, VirtueMartCart $cart, $orde, $return_context) {
+    function plgVmConfirmedOrder($psType, $cart, $order, $return_context) {
 	if (!$this->selectedThisType($psType)) {
 	    return null;
 	}
-	if (!($method = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
+	if (!($method = $this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
 	if (!$this->selectedThisElement($method->payment_element)) {
@@ -105,28 +105,24 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	}
 
 	$this->_debug = $method->debug;
-	$order_number = $order->getOrderNumber($cart->virtuemart_order_id);
-	$this->logInfo('plgVmConfirmedOrderRenderPaymentForm order number: ' . $order_number, 'message');
+	$this->logInfo('plgVmConfirmedOrderRenderPaymentForm order number: ' . $order['details']['BT']->order_number, 'message');
 
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-	if (!class_exists('VirtueMartModelCurrency')
-	)
+	if (!class_exists('VirtueMartModelCurrency'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 
 	//$usr = & JFactory::getUser();
 	$new_status = '';
 
-	$address = $cart->ST;
-	if (empty($address)) {
-	    $address = $cart->BT;
-	}
+	$usrBT = $order['details']['BT'];
+	$address = ((isset($order['details']['ST'] )) ? $order['details']['ST'] : $order['details']['BT']);
 
 	$vendorModel = new VirtueMartModelVendor();
 	$vendorModel->setId(1);
 	$vendor = $vendorModel->getVendor();
 	$currencyModel = new VirtueMartModelCurrency();
-	$currency = $currencyModel->getCurrency($cart->pricesCurrency);
+	$currency = $currencyModel->getCurrency( $order['details']['BT']->user_currency_id);
 
 	$merchant_email = $this->_getMerchantEmail($method);
 	if (empty($merchant_email)) {
@@ -141,11 +137,11 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    'upload' => '1',
 	    'business' => $merchant_email, //Email address or account ID of the payment recipient (i.e., the merchant).
 	    'receiver_email' => $merchant_email, //Primary email address of the payment recipient (i.e., the merchant
-	    'order_number' => $order_number,
-	    "invoice" => $order_number,
+	    'order_number' => $order['details']['BT']->order_number,
+	    "invoice" => $order['details']['BT']->order_number,
 	    'custom' => $return_context,
-	    'item_name' => JText::_('VMPAYMENT_PAYPAL_ORDER_NUMBER') . ': ' . $order_number,
-	    "amount" => $cart->pricesUnformatted['billTotal'],
+	    'item_name' => JText::_('VMPAYMENT_PAYPAL_ORDER_NUMBER') . ': ' . $order['details']['BT']->order_number,
+	    "amount" => round($order['details']['BT']->order_total, 2),
 	    "currency_code" => $currency->currency_code_3,
 	    /*
 	     * 1 – L'adresse spécifiée dans les variables pré-remplies remplace l'adresse de livraison enregistrée auprès de PayPal.
@@ -155,20 +151,20 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	     * Valeurs autorisées : 0, 1. Valeur par défaut : 0
 	     */
 	    //"address_override" => "1", // 0 ??   Paypal does not allow your country of residence to ship to the country you wish to
-	    "first_name" => $address['first_name'],
-	    "last_name" => $address['last_name'],
-	    "address1" => $address['address_1'],
-	    "address2" => isset($address['address_2']) ? $address['address_2'] : '',
-	    "zip" => $address['zip'],
-	    "city" => $address['city'],
-	    "state" => isset($address['virtuemart_state_id']) ? ShopFunctions::getStateByID($address['virtuemart_state_id']) : '',
-	    "country" => ShopFunctions::getCountryByID($address['virtuemart_country_id'], 'country_3_code'),
-	    "email" => $address['email'],
-	    "night_phone_b" => $address['phone_1'],
-	    "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $cart->virtuemart_paymentmethod_id),
+	    "first_name" => $address->first_name,
+	    "last_name" => $address->last_name,
+	    "address1" => $address->address_1,
+	    "address2" => isset($address->address_2) ? $address->address_2 : '',
+	    "zip" => $address->zip,
+	    "city" => $address->city,
+	    "state" => isset($address->virtuemart_state_id) ? ShopFunctions::getStateByID($address->virtuemart_state_id) : '',
+	    "country" => ShopFunctions::getCountryByID($address->virtuemart_country_id, 'country_3_code'),
+	    "email" => $address->email,
+	    "night_phone_b" => $address->phone_1,
+	    "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id),
 	    //"return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
 	    "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
-	    "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginusercancel&on=' . $order_number . '&pm=' . $cart->virtuemart_paymentmethod_id),
+	    "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginusercancel&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id),
 	    //"undefined_quantity" => "0",
 	    "ipn_test" => $method->debug,
 	    //"pal" => "NRUBJXESJTY24",
@@ -207,7 +203,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 
 
 	// Prepare data that should be stored in the database
-	$dbValues['order_number'] = $order_number;
+	$dbValues['order_number'] = $order['details']['BT']->order_number;
 	$dbValues['payment_name'] = parent::renderPluginName($method);
 	$dbValues['virtuemart_paymentmethod_id'] = $cart->virtuemart_paymentmethod_id;
 	$dbValues['paypal_custom'] = $return_context;
@@ -230,11 +226,10 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$html.= ' <script type="text/javascript">';
 	$html.= ' document.vm_paypal_form.submit();';
 	$html.= ' </script>';
-	//echo $html;
+	// 	2 = don't delete the cart, don't send email and don't redirect
 	return $this->processConfirmedOrderPaymentResponse(2, $cart, $order, $html, $new_status);
-// 	return 2; // don't delete the cart, don't send email and don't redirect
-	//
-	//
+
+
 	 /*
 
 	  $qstring = '?';
@@ -245,9 +240,10 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	  // we can display the logo, or do the redirect
 	  $mainframe = JFactory::getApplication();
 	  $mainframe->redirect("https://" . $url . $qstring);
-	 */
+
 
 	return false; // don't delete the cart, don't send email
+	  */
     }
 
     function plgVmOnResponseReceived($psType, &$virtuemart_order_id, &$html) {

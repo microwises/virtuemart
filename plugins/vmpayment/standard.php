@@ -72,15 +72,15 @@ class plgVmPaymentStandard extends vmPSPlugin {
     }
 
     /**
-     * Reimplementation of vmPaymentPlugin::plgVmConfirmedOrderRenderPaymentForm()
+     * Reimplementation of vmPlugin::plgVmConfirmedOrder()
      *
      * @author Valérie Isaksen
      */
-    function plgVmConfirmedOrder($psType, VirtueMartCart $cart, $order, $return_context) {
+    function plgVmConfirmedOrder($psType,  $cart, $order, $return_context) {
 	if (!$this->selectedThisType($psType)) {
 	    return null;
 	}
-	if (!($method = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
+	if (!($method = $this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
 	if (!$this->selectedThisElement($method->payment_element)) {
@@ -101,11 +101,11 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
 	// END printing out HTML Form code (Payment Extra Info)
-	$order_number = $order->getOrderNumber($cart->virtuemart_order_id);
 
-	$this->_virtuemart_paymentmethod_id = $cart->virtuemart_paymentmethod_id;
+
+	$this->_virtuemart_paymentmethod_id = $order['details']['BT']->virtuemart_paymentmethod_id;
 	$dbValues['payment_name'] = parent::renderPluginName($method);
-	$dbValues['order_number'] = $order_number;
+	$dbValues['order_number'] = $order['details']['BT']->order_number;
 	$dbValues['virtuemart_paymentmethod_id'] = $this->_virtuemart_paymentmethod_id;
 	$dbValues['cost'] = $method->cost;
 	$dbValues['tax_id'] = $method->tax_id;
@@ -117,8 +117,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	    $html .= $this->getHtmlRow('STANDARD_INFO', $payment_info);
 	}
 
-	$html .= $this->getHtmlRow('STANDARD_ORDER_NUMBER', $order_number);
-	$html .= $this->getHtmlRow('STANDARD_AMOUNT', $cart->prices['billTotal']);
+	$html .= $this->getHtmlRow('STANDARD_ORDER_NUMBER', $order['details']['BT']->order_number);
+	$html .= $this->getHtmlRow('STANDARD_AMOUNT', $order->prices['billTotal']);
 
 
 	$html .= '</table>' . "\n";

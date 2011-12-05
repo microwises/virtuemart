@@ -56,13 +56,6 @@ class VirtueMartCart {
 	var $pricesUnformatted = null;
 	var $pricesCurrency = null;
 
-	// card infos
-	var $cc_type = null;
-	var $cc_number	 = null;
-	var $cc_cvv	= null;
-	var $cc_expire_month= null;
-	var $cc_expire_year= null;
-
 	var $STsameAsBT = 0;
 
 	private static $_cart = null;
@@ -121,12 +114,6 @@ class VirtueMartCart {
 				self::$_cart->_dataValidated						= $cartData->_dataValidated;
 				self::$_cart->_confirmDone							= $cartData->_confirmDone;
 				self::$_cart->STsameAsBT							= $cartData->STsameAsBT;
-
-				self::$_cart->cc_type                  =   $cartData->cc_type;
-				self::$_cart->cc_number                =   $cartData->cc_number;
-				self::$_cart->cc_cvv                   =   $cartData->cc_cvv;
-				self::$_cart->cc_expire_month          =   $cartData->cc_expire_month;
-				self::$_cart->cc_expire_year           =   $cartData->cc_expire_year;
 
 
 				// 				vmdebug('my cart generated with CartSessionData ',self::$_cart);
@@ -242,12 +229,6 @@ class VirtueMartCart {
 		$sessionCart->_confirmDone							= $this->_confirmDone;
 		$sessionCart->STsameAsBT							= $this->STsameAsBT;
 
-		// card information
-		$sessionCart->cc_type							= $this->cc_type;
-		$sessionCart->cc_number							= $this->cc_number;
-		$sessionCart->cc_cvv							= $this->cc_cvv;
-		$sessionCart->cc_expire_month						= $this->cc_expire_month;
-		$sessionCart->cc_expire_year						= $this->cc_expire_year;
 		$session->set('vmcart', serialize($sessionCart),'vm');
 
 	}
@@ -964,14 +945,14 @@ class VirtueMartCart {
 			if (!class_exists('VirtueMartModelOrders'))
 			require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
-			$order = new VirtueMartModelOrders();
-			if (($orderID = $order->createOrderFromCart($this)) === false) {
+			$orderModel = new VirtueMartModelOrders();
+			if (($orderID = $orderModel->createOrderFromCart($this)) === false) {
 				$mainframe = JFactory::getApplication();
 				JError::raiseWarning(500, $order->getError());
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart') );
 			}
 			$this->virtuemart_order_id = $orderID;
-// 			$order_number= $order->getOrderNumber($orderID);
+			$order= $orderModel->getOrder($orderID);
 // 			$cart = $this->getCart();
 			$dispatcher = JDispatcher::getInstance();
 // 			$html="";
@@ -1048,11 +1029,6 @@ class VirtueMartCart {
 		$this->customer_comment = '';
 		$this->couponCode = '';
 		$this->tosAccepted = null;
-		$this->cc_type = '';
-		$this->cc_number = '';
-		$this->cc_cvv = '';
-		$this->cc_expire_month = '';
-		$this->cc_expire_year = '';
 
 		$this->setCartIntoSession();
 	}
@@ -1259,10 +1235,10 @@ class VirtueMartCart {
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelected', array('payment','cart' => $this, $cart_prices));
 			foreach ($returnValues as $returnValue) {
-				if ((int) $returnValue ) {
+				//if ((int) $returnValue ) {
 					$nbPayment ++;
 					if($returnValue) $virtuemart_paymentmethod_id = $returnValue;
-				}
+				//}
 			}
 			if ($nbPayment==1 && $virtuemart_paymentmethod_id) {
 				$this->virtuemart_paymentmethod_id = $virtuemart_paymentmethod_id;

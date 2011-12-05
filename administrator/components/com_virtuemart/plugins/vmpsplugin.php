@@ -100,7 +100,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (!$this->selectedThisType($psType)) {
 			return null;
 		}
-		if ($this->getPluginMethods($cart->vendorId) === false) {
+		if ($this->getPluginMethods($cart->vendorId) === 0) {
 			if (empty($this->_name)) {
 				$app = JFactory::getApplication();
 				$app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_' . strtoupper($this->_psType)));
@@ -146,9 +146,6 @@ abstract class vmPSPlugin extends vmPlugin {
 			return null;
 		}
 
-
-		//if($psType=='shipment')vmdebug('plgVmOnSelectedCalculatePrice',$method);
-
 		$cart_prices_name = '';
 		$cart_prices[$this->_psType . '_tax_id'] = 0;
 		$cart_prices['cost'] = 0;
@@ -157,9 +154,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			return false;
 		}
 		$paramsName = $this->_psType . '_params';
-// 		$params = new JParameter($method->$paramsName);
 		$cart_prices_name = $this->renderPluginName($method);
-
 		$this->setCartPrices($cart, $cart_prices, $method);
 
 		return true;
@@ -251,11 +246,8 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param false if it should not be changed, otherwise new staus
 	 * @return returns 1 if the Cart should be deleted, and order sent
 	 */
-// 	public function plgVmConfirmedOrderRenderForm($psType, $order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status) {
-// 		return null;
-// 	}
 
-	public function plgVmConfirmedOrder($psType, VirtueMartCart $cart, $order, $return_context) {
+	public function plgVmConfirmedOrder($psType, $cart, $order, $return_context) {
 		return null;
 	}
 
@@ -503,7 +495,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 // 		vmdebug('getPluginMethods',$this->methods);
-		return $this->methods;
+		return count($this->methods);
 	}
 
 	/**
@@ -671,7 +663,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param $plugin plugin
 	*/
 
-	protected function renderPluginName($plugin) {
+	 protected function renderPluginName($plugin) {
 		$return = '';
 		$plugin_name = $this->_psType . '_name';
 		$plugin_desc = $this->_psType . '_desc';
@@ -686,9 +678,14 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (!empty($plugin->$plugin_desc)) {
 			$description = '<span class="' . $this->_type . '_description">' . $plugin->$plugin_desc . '</span>';
 		}
-		return $return . '<span class="' . $this->_type . '_name">' . $plugin->$plugin_name . '</span>' .  $description;
-	}
+		$extra=$this->getExtraPluginNameInfo($plugin);
+		$pluginName= $return . '<span class="' . $this->_type . '_name">' . $plugin->$plugin_name . '</span>' .  $description. $extra;
+		return $pluginName;
 
+	}
+	public function getExtraPluginNameInfo($plugin){
+	    return '';
+	}
 	protected function getPluginHtml($plugin, $selectedPlugin, $pluginSalesPrice) {
 		$pluginmethod_id = $this->_idName;
 		$pluginName = $this->_psType . '_name';
@@ -738,9 +735,9 @@ abstract class vmPSPlugin extends vmPlugin {
 		$key_text = '';
 		$complete_key = strtoupper($this->_type . '_' . $key);
 		// vmdebug('getHtmlRow',$key,$complete_key);
-		if ($lang->hasKey($complete_key)) {
+		//if ($lang->hasKey($complete_key)) {
 			$key_text = JText::_($complete_key);
-		}
+		//}
 		$more_key = $complete_key . '_' . $value;
 		if ($lang->hasKey($more_key)) {
 			$value .=" (" . JText::_($more_key) . ")";
@@ -763,8 +760,8 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	function getSelectable(VirtueMartCart $cart, &$method_id, $cart_prices) {
 		$nbMethod = 0;
-		$this->methods = $this->getPluginMethods($cart->vendorId);
-		if (empty($this->methods)) {
+
+		if ($this->getPluginMethods($cart->vendorId) === 0) {
 			return false;
 		}
 
@@ -820,9 +817,9 @@ abstract class vmPSPlugin extends vmPlugin {
 	* @param $tax_id :  tax id
 	*/
 
-	private function setCartPrices(VirtueMartCart $cart, &$cart_prices, $method) {
+	 function setCartPrices(VirtueMartCart $cart, &$cart_prices, $method) {
 
-		$value = $this->getCosts($cart, $method, $cart_prices);
+		$value = round($this->getCosts($cart, $method, $cart_prices), 2);
 
 		$_psType = ucfirst($this->_psType);
 		$cart_prices[$this->_psType . 'Value'] = $value;
@@ -914,7 +911,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			if ($returnValue == 1 )   {
 				//We delete the old stuff
 
-				$orderID = $cart->virtuemart_order_id;
+				$orderID = $order['details']['BT']->virtuemart_order_id;
 				// send the email only if payment has been accepted
 				// update status?
 				if ($new_status) {
@@ -927,20 +924,15 @@ abstract class vmPSPlugin extends vmPlugin {
 					$orders[$orderID]['comments'] = '';
 					$modelOrder->updateOrderStatus($orders, $orderID); //
 				}
-				$cart->sentOrderConfirmedEmail($order->getOrder($orderID));
+				$cart->sentOrderConfirmedEmail($order);
 				//We delete the old stuff
-				$cart->products = array();
-				$cart->_inCheckOut = false;
-				$cart->_dataValidated = false;
-				$cart->_confirmDone = false;
-				$cart->customer_comment = '';
-				$cart->couponCode = '';
-				$cart->tosAccepted = false;
-				$cart->setCartIntoSession();
+				$cart->emptyCart();
 				JRequest::setVar('html' , $html);
 				// payment echos form, but cart should not be emptied, data is valid
 			} elseif ($returnValue == 2 )   {
-				JRequest::setVar('html' , $html);
+				$cart->_confirmDone = false;
+			        $cart->setCartIntoSession();
+			        JRequest::setVar('html' , $html);
 
 			} elseif ($returnValue == 0 )   {
 				// error while processing the payment
@@ -950,7 +942,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 			}
 		}
-		//Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
+
 	}
 
 

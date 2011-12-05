@@ -329,7 +329,7 @@ class VirtueMartModelVendor extends VmModel {
 	 * @author Max Milbers
 	 */
 	public function getVendorName($virtuemart_vendor_id=1){
-		$query = 'SELECT `vendor_store_name` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id` = "'.(int)$virtuemart_vendor_id.'" ';
+		$query = 'SELECT `vendor_store_name` FROM `#__virtuemart_vendors_'.VMLANG.'` WHERE `virtuemart_vendor_id` = "'.(int)$virtuemart_vendor_id.'" ';
 		$this->_db->setQuery($query);
 		if($this->_db->query()) return $this->_db->loadResult(); else return '';
 	}
