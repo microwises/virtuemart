@@ -148,58 +148,6 @@ abstract class vmCustomPlugin extends VmPlugin {
     	return null ;
 
     }
-    /**
-     * display The plugin in order view FE/BE
-     * @ $view is "BE" for see in back-End, default is FE
-     */
-    public function plgVmDisplayInOrderCustom(&$html,$item, $param,$productCustom, $row ,$view='FE'){
-		if ($productCustom->custom_value != $this->_name) return '';
-		$plgFunction = 'onViewOrder'.$view ;
-		//$html ='';
-		$html .= $this->$plgFunction( $item,$productCustom, $row, $param );
-
-    	// defaut render if the plugin is not found/installed
-    	// if ($productCustom->value!=$this->_name) {
-    		// $html.=  '<div style="color: #CC0000;">plugin <b>'.$productCustom->value.'</b> not found.</div><br/>';
-    		// if ($view =='FE') $html.=  implode(',',(array)$param);
-    		// else foreach ((array)$param as $key=>$text) $html.=  '<span>parameter : '.$key.' : '.$text. '<span><br/>';
-    		// return ;
-    	// }
-    	// else {
-
-    		// $html = $this->$plgFunction( $item,$param,$productCustom, $row);
-    	// }
-
-    	return $html;
-    }
-
-	/**
-     * display The plugin in order view FE/BE
-     * @ $view is "BE" for see in back-End, default is FE
-     */
-    public function plgVmCreateOrderLinesCustom(&$html,$item,$productCustom, $row ,$view='FE'){
-		if ($productCustom->custom_value != $this->_name) return '';
-		$plgFunction = 'onViewOrder'.$view ;
-		$html ='';
-		foreach($item->param as $k => $plg){
-			if (key($plg)== $this->_name)
-				$html .= $this->$plgFunction( $item,$productCustom, $row,$plg[$this->_name]);
-		}
-
-    	// defaut render if the plugin is not found/installed
-    	// if ($productCustom->value!=$this->_name) {
-    		// $html.=  '<div style="color: #CC0000;">plugin <b>'.$productCustom->value.'</b> not found.</div><br/>';
-    		// if ($view =='FE') $html.=  implode(',',(array)$param);
-    		// else foreach ((array)$param as $key=>$text) $html.=  '<span>parameter : '.$key.' : '.$text. '<span><br/>';
-    		// return ;
-    	// }
-    	// else {
-
-    		// $html = $this->$plgFunction( $item,$param,$productCustom, $row);
-    	// }
-
-    	return $html;
-    }
 
 
 	/**
