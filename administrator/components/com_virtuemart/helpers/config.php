@@ -433,7 +433,7 @@ class VmConfig {
 			if ( ! $siteLang ) {
 				// use user default
 				$lang =& JFactory::getLanguage();
-				$siteLang = $lang->getName();
+				$siteLang = $lang->getTag();
 			}
 			/*//What is the difference of this?
 			$params = JComponentHelper::getParams('com_languages');
@@ -452,6 +452,7 @@ class VmConfig {
 		self::$_jpConfig->lang = strtolower(strtr($siteLang,'-','_'));
 		vmdebug('self::$_jpConfig->lang '.self::$_jpConfig->lang);
 		define('VMLANG', self::$_jpConfig->lang );
+
 		return self::$_jpConfig->lang;
 
  	}
