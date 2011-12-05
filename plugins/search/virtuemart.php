@@ -117,10 +117,10 @@ if(!version_compare(JVERSION,'1.6.0','ge')) {
 					$order = 'a.product_name ASC';
 					break;
 				case 'newest':
-					$order = 'a.created_on DESC';
+					$order = 'p.created_on DESC';
 					break;
 				case 'oldest':
-					$order = 'a.created_on ASC';
+					$order = 'p.created_on ASC';
 					break;
 				default:
 					$order = 'a.product_name DESC';
@@ -129,9 +129,10 @@ if(!version_compare(JVERSION,'1.6.0','ge')) {
 			$text = $db->Quote('%' . $db->getEscaped($text, true) . '%', false);
 			$query = "SELECT DISTINCT CONCAT( a.product_name,' (',a.product_sku,')' ) AS title, a.virtuemart_product_id , b.virtuemart_category_id ,   a.product_s_desc   AS text, b.category_name as section,
 					 a.created_on as created, '2' AS browsernav
-					FROM #__virtuemart_products AS a
+					FROM `#__virtuemart_products_".VMLANG."` as a  AS a
+					JOIN #__virtuemart_products as p using (`virtuemart_product_id`)
 					LEFT JOIN #__virtuemart_product_categories AS xref ON xref.virtuemart_product_id = a.virtuemart_product_id
-					LEFT JOIN #__virtuemart_categories AS b ON b.virtuemart_category_id = xref.virtuemart_category_id"
+					LEFT JOIN #__virtuemart_categories_".VMLANG."` AS b ON b.virtuemart_category_id = xref.virtuemart_category_id"
 			. ' WHERE ' . $where
 			. ' ORDER BY ' . $order
 			;
