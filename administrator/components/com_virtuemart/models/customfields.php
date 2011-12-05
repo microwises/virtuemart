@@ -371,7 +371,8 @@ class VirtueMartModelCustomfields extends VmModel {
 					$dispatcher = JDispatcher::getInstance();
 // 					echo 'vmCustomPlugin <pre>'.print_r($field,1).'</pre>';die;
 // 					vmdebug('vmCustomPlugin',$field);
-					$fieldsToShow = $dispatcher->trigger('plgVmOnProductEdit',array($field,$product_id,$row,$retValue));
+					$retValue ='';
+					$fieldsToShow = $dispatcher->trigger('plgVmOnProductEdit',array($field,$product_id,$row,&$retValue));
 
 // 					$retValue = '';
 // 					if(!empty($fieldsToShow)){
@@ -619,7 +620,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						// 					echo 'vmCustomPlugin <pre>'.print_r($field,1).'</pre>';die;
 // 											vmdebug('vmCustomPlugin BE ?');
 
-						$fieldsToShow = $dispatcher->trigger('plgVmOnDisplayProductFE',array($productCustom,$row,$group));
+						$fieldsToShow = $dispatcher->trigger('plgVmOnDisplayProductFE',array($productCustom,$row,&$group));
 
 // 						$retValue = '';
 // 						if(!empty($fieldsToShow)){

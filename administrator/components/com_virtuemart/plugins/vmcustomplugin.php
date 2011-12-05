@@ -122,7 +122,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 		if ($productCustomsPrice->custom_element !==$this->_name) return ;
 		vmPlugin::plgVmGetDeclaredPluginParams('vmcustom',$productCustomsPrice->custom_element,$productCustomsPrice->custom_jplugin_id);
 		VmTable::bindParameterable($productCustomsPrice,'custom_params',$this->_varsToPushParam);
-		//$product = VirtueMartModelCustomfields::addParam($product);
+
 		static $pluginFields;
 		if (!isset($pluginFields)) {
 				 $pluginFields = JRequest::getVar('customPlugin',null );
@@ -160,7 +160,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 	/**
 	 * display the plugin on product FE
 	 */
-	abstract function plgVmOnDisplayProductFE( $field, $idx,&$gropu);
+	abstract function plgVmOnDisplayProductFE( $field, $idx,&$group);
 
 	/**
 	 * display the product plugin on cart module
@@ -174,17 +174,18 @@ abstract class vmCustomPlugin extends VmPlugin {
 
 	/**
 	 * display the plugin in order
-	 * TODO One for customer and one for vendor
+	 * for vendor
 	 * Get the statut (Eg. payed. >> render only the link for downloadable )
 	 */
 // 	abstract function plgVmDisplayInOrderBE($item, $productCustom, $row,$plgParam);
 
 	/**
 	 * display the plugin in order
-	 * TODO One for customer and one for vendor
+	 * for customer
 	 * Get the statut (Eg. payed. >> render only the link for downloadable )
 	 */
 	abstract function plgVmDisplayInOrderFE($item, $productCustom, $row,$plgParam);
+
 	/**
 	 * StockToUpdate
 	 * can remove or change or adding more virtuemart_product_id eg. to do packs
