@@ -224,7 +224,7 @@ class VirtueMartModelConfig extends JModel {
 			$searchChecked = (array)$searchChecked;
 		}
 		$searchFieldsArray = ShopFunctions::getValidProductFilterArray ();
-		if ($type == 'browse_orderby_fields' ) array_shift($searchFieldsArray);
+		if ($type !== 'browse_orderby_fields' ) array_shift($searchFieldsArray);
 
 		$searchFields= new stdClass();
 		$searchFields->checkbox ='<div class="threecols"><ul>';

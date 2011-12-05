@@ -1288,10 +1288,12 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		'p.product_unit', 'p.product_packaging', 'p.intnotes', 'l.metadesc', 'l.metakey', 'p.metarobot', 'p.metaauthor');
 		}
 */
-		$filterArray = array('p.virtuemart_product_id', 'product_sku','product_price','category_name','category_description',
-				'mf_name', 'product_s_desc', 'product_desc', 'product_weight', 'product_weight_uom', 'product_length', 'product_width',
+		$filterArray = array('p.virtuemart_product_id', 'product_sku','product_name',
+			'product_s_desc', 'product_desc','product_price',
+			'category_name','category_description','mf_name', 
+				 'product_weight', 'product_weight_uom', 'product_length', 'product_width',
 				'product_height', 'product_lwh_uom', 'product_in_stock', 'low_stock_notification', 'product_available_date',
-				'product_availability', 'product_special', 'p.created_on', 'p.modified_on', 'product_name', 'product_sales',
+				'product_availability', 'product_special', 'p.created_on', 'p.modified_on',  'product_sales',
 				'product_unit', 'product_packaging', 'p.intnotes', 'metadesc', 'metakey', 'metarobot', 'metaauthor');
 		}
 

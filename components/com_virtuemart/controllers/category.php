@@ -60,11 +60,12 @@ class VirtueMartControllerCategory extends JController {
 		/* Add the product model */
 		$view->setModel($this->getModel('product', 'VirtuemartModel'));
 		
-		$data = JRequest::getInt('error');
-		
-		/* Display it all */
-		$safeurlparams = array('virtuemart_category_id'=>'INT','virtuemart_currency_id'=>'INT','return'=>'BASE64','lang'=>'CMD','orderby'=>'CMD','limitstart'=>'CMD','order'=>'CMD','limit'=>'CMD');
-		parent::display(true, $safeurlparams);//$view->display();
+		if (JRequest::getvar('search')) $view->display();
+		else {
+			/* Display it all */
+			$safeurlparams = array('virtuemart_category_id'=>'INT','virtuemart_manufacturer_id'=>'INT','virtuemart_currency_id'=>'INT','return'=>'BASE64','lang'=>'CMD','orderby'=>'CMD','limitstart'=>'CMD','order'=>'CMD','limit'=>'CMD');
+			parent::display(true, $safeurlparams);
+		}
 	}
 }
 // pure php no closing tag

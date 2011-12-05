@@ -198,11 +198,11 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	}
 
 	public function plgVmOnDisplayCustoms($FE,&$field,$product,$row){
-		parent::plgVmOnDisplayCustoms($FE,&$field,$product,$row);
+		parent::plgVmOnDisplayCustoms($FE,$field,$product,$row);
 	}
 
 	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected,$row){
-		parent::plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected,$row);
+		parent::plgVmCalculateCustomVariant($product, $productCustomsPrice,$selected,$row);
 	}
 
 	public function plgVmDisplayInCartCustom($product,$productCustom, $row ,$view=''){
@@ -210,11 +210,11 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	}
 
 	public function plgVmDisplayInOrderCustom(&$html,$item, $param,$productCustom, $row ,$view='FE'){
-		parent::plgVmDisplayInOrderCustom(&$html,$item, $param,$productCustom, $row ,$view);
+		parent::plgVmDisplayInOrderCustom($html,$item, $param,$productCustom, $row ,$view);
 	}
 
 	public function plgVmCreateOrderLinesCustom(&$html,$item,$productCustom, $row ){
-		parent::plgVmCreateOrderLinesCustom(&$html,$item,$productCustom, $row );
+		parent::plgVmCreateOrderLinesCustom($html,$item,$productCustom, $row );
 	}
 }
 
