@@ -55,7 +55,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 
 	}
 
-	function plgVmGetActiveCustomPlugin($virtuemart_custom_id){
+	function plgVmGetActiveCustomPlugin($virtuemart_custom_id, &$customPlugin){
 
 		if($this->plugin = $this->selectedThisByMethodId($this->_psType,$virtuemart_custom_id)){
 
@@ -71,18 +71,18 @@ abstract class vmCustomPlugin extends VmPlugin {
   		   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
    			$this->plugin->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
   		}
-
-  		return $this->plugin;
-
+  		$customPlugin = $this->plugin;
+//   		return $this->plugin;
+		return true;
 		}
 	}
 
 	/*
-	 * helper to parse plugin parameters as object 
-	 * 
+	 * helper to parse plugin parameters as object
+	 *
 	 */
 	public function parseCustomParams(&$field) {
-		
+
     	VmTable::bindParameterable($field,'custom_params',$this->_varsToPushParam);
 
     	if (empty($field->custom_value)) return 0 ;
@@ -94,7 +94,7 @@ abstract class vmCustomPlugin extends VmPlugin {
     			$field->$k = $v;
     		}
     	}
-		
+
 	}
 
 	/**
@@ -130,7 +130,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 				if ($pluginFields ==  null) $pluginFields = json_decode( $product->customPlugin, true);
 		}
 		return $pluginFields[$productCustomsPrice->virtuemart_custom_id][$this->_name] ;
-    	 
+
     }
 
     /**
@@ -155,12 +155,12 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * called by customfields inputTypePlugin
 	 *
 	 */
-	abstract function plgVmOnProductEdit($field, $product, $row);
+	abstract function plgVmOnProductEdit($field, $product, $row,&$retValue);
 
 	/**
 	 * display the plugin on product FE
 	 */
-	abstract function plgVmOnDisplayProductFE( $field, $idx);
+	abstract function plgVmOnDisplayProductFE( $field, $idx,&$gropu);
 
 	/**
 	 * display the product plugin on cart module
@@ -191,6 +191,6 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 */
 	abstract function plgVmGetProductStockToUpdateByCustom($item,$pluginParam, $productCustom);
 
-	
+
 
 }

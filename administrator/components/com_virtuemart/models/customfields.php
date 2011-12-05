@@ -371,16 +371,16 @@ class VirtueMartModelCustomfields extends VmModel {
 					$dispatcher = JDispatcher::getInstance();
 // 					echo 'vmCustomPlugin <pre>'.print_r($field,1).'</pre>';die;
 // 					vmdebug('vmCustomPlugin',$field);
-					$fieldsToShow = $dispatcher->trigger('plgVmOnProductEdit',array($field,$product_id,$row));
+					$fieldsToShow = $dispatcher->trigger('plgVmOnProductEdit',array($field,$product_id,$row,$retValue));
 
-					$retValue = '';
-					if(!empty($fieldsToShow)){
-						foreach($fieldsToShow as $push){
-							if(!empty($push)){
-								$retValue .= $push;
-							}
-						}
-					}
+// 					$retValue = '';
+// 					if(!empty($fieldsToShow)){
+// 						foreach($fieldsToShow as $push){
+// 							if(!empty($push)){
+// 								$retValue .= $push;
+// 							}
+// 						}
+// 					}
 
 // 			$retValue = vmCustomPlugin::inputTypePlugin($field, $product_id,$row);
 
@@ -619,16 +619,16 @@ class VirtueMartModelCustomfields extends VmModel {
 						// 					echo 'vmCustomPlugin <pre>'.print_r($field,1).'</pre>';die;
 // 											vmdebug('vmCustomPlugin BE ?');
 
-						$fieldsToShow = $dispatcher->trigger('plgVmOnDisplayProductFE',array($productCustom,$row));
+						$fieldsToShow = $dispatcher->trigger('plgVmOnDisplayProductFE',array($productCustom,$row,$group));
 
-						$retValue = '';
-						if(!empty($fieldsToShow)){
-							foreach($fieldsToShow as $push){
-								if(!empty($push)){
-									$group->display .= $push;
-								}
-							}
-						}
+// 						$retValue = '';
+// 						if(!empty($fieldsToShow)){
+// 							foreach($fieldsToShow as $push){
+// 								if(!empty($push)){
+// 									$group->display .= $push;
+// 								}
+// 							}
+// 						}
 
 // 						$group->display .= vmCustomPlugin::displayTypePlugin($productCustom,$product,$row);
 						$group->display .= '<input type="hidden" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').': '.$price ;
@@ -918,7 +918,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		$row = 0 ;
 		$product_attributes = json_decode($item->product_attribute,true);
 		$html = '<div class="vm-customfield-cart">';
-		
+
 		foreach ($product_attributes as $virtuemart_customfield_id=>$param){
  			if ($param) {
 				if ($productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id ) ) {

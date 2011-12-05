@@ -52,7 +52,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 
 	// get product param for this plugin on edit
-	function plgVmOnProductEdit($field, $product_id, $row) {
+	function plgVmOnProductEdit($field, $product_id, $row,&$retValue) {
 
 		if ($field->custom_element != $this->_name) return '';
 		$this->parseCustomParams($field);
@@ -158,8 +158,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		// $html  ='<input type="text" value="'.$field['custom_name'].'" size="10" name="custom_param['.$row.'][custom_name]"> ';
 		// $html .='<input type="text" value="'.$field['custom_size'].'" size="10" name="custom_param['.$row.'][custom_size]">';
 		//$html .=JTEXT::_('VMCUSTOM_TEXTINPUT_NO_CHANGES_BE');
-
-		return $html ;
+		$retValue .= $html;
+		return true ;
 	}
 
 	/**
@@ -167,7 +167,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onDisplayProductFE()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnDisplayProductFE($field,$idx) {
+	function plgVmOnDisplayProductFE($field,$idx,&$group) {
 		// default return if it's not this plugin
 		if ($field->custom_element != $this->_name) return '';
 		$this->parseCustomParams($field);
@@ -316,8 +316,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		// Here the plugin values
 		//$html =JTEXT::_($param['custom_name']) ;
 		//$html.=': <input type="text" value="" size="'.$param['custom_name'].'" name="customPlugin['.$idx.'][comment]"><br />';
-
-		return $html;
+		$group->display .= $html;
+		return true;
 	}
 
 	/**
@@ -455,8 +455,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	/**
 	 * Custom triggers note by Max Milbers
 	 */
-	function plgVmGetActiveCustomPlugin($virtuemart_custom_id){
-		parent::plgVmGetActiveCustomPlugin($virtuemart_custom_id);
+	function plgVmGetActiveCustomPlugin($virtuemart_custom_id,&$customPlugin){
+		parent::plgVmGetActiveCustomPlugin($virtuemart_custom_id,$customPlugin);
 	}
 
 	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected,$row){
