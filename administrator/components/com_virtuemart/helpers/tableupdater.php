@@ -405,16 +405,21 @@ class GenericTableUpdater extends JModel{
 			$eKeyNames= $this->_db->loadResultArray(2);
 		}
 
+// 		vmdebug('my $eKeys',$eKeys);
 		$dropped = 0;
 		foreach($eKeyNames as $i => $name){
 			$query = '';
-			if(!in_array($name, $demandedFieldNames)){
-
-				if(strpos($eKeys[$i]->Key_name,'PRIMARY')!==false ||  $name==='virtuemart_order_userinfo_id'){
+// 			if(!in_array($name, $demandedFieldNames)){
+			//doubled keys are listed twice, but gets both deleted with one command, so we must check if the key is still there
+			$query = "SHOW INDEXES  FROM `".$tablename."` ";	//SHOW {INDEX | INDEXES | KEYS}
+			$this->_db->setQuery($query);
+			$eKeyNamesNOW= $this->_db->loadResultArray(2);
+// 				vmdebug('DROP $eKeyNames '.$name);
+				if(strpos($eKeys[$i]->Key_name,'PRIMARY')!==false ||  $name==='virtuemart_order_userinfo_id' || !in_array($name,$eKeyNamesNOW)){
 					// 					$query = 'ALTER TABLE `'.$tablename.'` DROP INDEX `'.$name.'` ';
 				} else {
 					$query = 'ALTER TABLE `'.$tablename.'` DROP INDEX `'.$name.'` ';
-					vmdebug('DROP $eKeyNames '.$name);
+
 				}
 
 				if(!empty($query)){
@@ -426,7 +431,8 @@ class GenericTableUpdater extends JModel{
 					}
 				}
 
-			}
+
+// 			}
 		}
 
 		$query = "SHOW INDEXES  FROM `".$tablename."` ";	//SHOW {INDEX | INDEXES | KEYS}
@@ -453,9 +459,14 @@ class GenericTableUpdater extends JModel{
 
 				if (!empty($compare)) {
 					$showThem = true;
-					vmdebug('$oldColumn '.$oldColumn.' $value '.$value);
+					vmdebug('$oldColumn ',$oldColumn,$value);
 					if(strpos($value,'PRIMARY')!==false){
-						$dropit = "DROP PRIMARY KEY , ";
+						if(strpos($oldColumn,'PRIMARY')!==false){
+							$dropit = "DROP PRIMARY KEY , ";
+						} else {
+							$dropit = '';
+						}
+
 						$query = "ALTER TABLE `".$tablename."` ".$dropit." ADD PRIMARY KEY (`".$name."`);" ;
 					} else {
 						if(strpos($value,'KEY')) $type = 'KEY'; else $type = 'INDEX';
@@ -559,8 +570,8 @@ class GenericTableUpdater extends JModel{
 					$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
 					$action = 'CHANGE';
 					$altered++;
-					// 				    vmdebug('$fullColumns',$fullColumns[$key]);
-									    vmdebug('Alter field ',$oldColumn,$alterCommand,$compare);
+					// 				    vmdebug('$fullColumns',);
+									    vmdebug('Alter field ',$oldColumn,$alterCommand,$fullColumns[$key]);
 				}
 			}
 			else {
@@ -585,15 +596,11 @@ class GenericTableUpdater extends JModel{
 
 	private function reCreateColumnByTableAttributes($fullColumn){
 
+
 		$oldColumn = $fullColumn->Type;
 
 		if($this->notnull($fullColumn->Null)){
 
-			// 			if(empty($fullColumn->Default)){
-			// 				$default = $fullColumn->Extra;
-			// 			} else {
-			// 				$default = $fullColumn->Default;
-			// 			}
 			$oldColumn .= $this->notnull($fullColumn->Null).$this->getdefault($fullColumn->Default);
 		}
 		$oldColumn .= $this->primarykey($fullColumn->Key).$this->formatComment($fullColumn->Comment);
