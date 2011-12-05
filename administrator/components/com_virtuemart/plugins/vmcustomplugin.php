@@ -96,32 +96,7 @@ abstract class vmCustomPlugin extends VmPlugin {
     	}
 		
 	}
-    /**
-    * $type FE or BE
-    */
-    // public function plgVmOnDisplayCustoms($FE,&$field,$product,$row){
 
-    	// VmTable::bindParameterable($field,'custom_params',$this->_varsToPushParam);
-
-    	// if (empty($field->custom_value)) return 0 ;
-    	// if (!empty($field->custom_param) && is_string($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
-    	// else $custom_param = array();
-    	// $field->custom_param = $custom_param;
-    	// foreach($field->custom_param as $k => $v){
-    		// if(!empty($v)){
-    			// $field->$k = $v;
-    		// }
-    	// }
-    	// vmdebug('my field',$field);
-
-    	// if($FE){
-    		// $html = $this->onDisplayProductFE( $field, $product, $row);
-    	// } else {
-    		// $html = $this->onProductEdit( $field, $product, $row);
-    	// }
-
-    	// return $html;
-    // }
 	/**
 	 * This is the actions which take place, when a product gets stored
 	 *
@@ -163,17 +138,14 @@ abstract class vmCustomPlugin extends VmPlugin {
      * display The plugin in cart
      * @ $view is "Module" for see in module, "" for see in cart
      */
-    public function plgVmDisplayInCartCustom($product,$productCustom, $row ,$view=''){
+    public function GetPluginInCart($product){
     	//$plgName = $productCustom->value;
-    	$plgFunction = 'onViewCart'.$view ;
-		if ($productCustom->custom_value != $this->_name) return '';
-		$html ='';
-		echo 'HELLO';
+
 		foreach($product->param as $k => $plg){
 			if (key($plg)== $this->_name)
-				$html .= $this->$plgFunction( $product,$productCustom, $row,$plg[$this->_name]);
+			return	$plg[$this->_name];
 		}
-    	return $html ;
+    	return null ;
 
     }
     /**
@@ -245,40 +217,32 @@ abstract class vmCustomPlugin extends VmPlugin {
 	/**
 	 * display the product plugin on cart module
 	 */
-	abstract function onViewCartModule( $product,$productCustom, $row, $plgParam);
+	abstract function plgVmOnViewCartModule( $product,$productCustom, $row);
 
 	/**
 	* display the product plugin on cart
 	 */
-	abstract function onViewCart($product, $productCustom, $row,$plgParam);
+	abstract function plgVmOnViewCart($product, $productCustom, $row);
 
 	/**
 	 * display the plugin in order
 	 * TODO One for customer and one for vendor
 	 * Get the statut (Eg. payed. >> render only the link for downloadable )
 	 */
-	abstract function onViewOrderBE($product, $productCustom, $row,$plgParam);
+	abstract function plgVmDisplayInOrderBE($item, $productCustom, $row,$plgParam);
 
 	/**
 	 * display the plugin in order
 	 * TODO One for customer and one for vendor
 	 * Get the statut (Eg. payed. >> render only the link for downloadable )
 	 */
-	abstract function onViewOrderFE($product, $productCustom, $row,$plgParam);
+	abstract function plgVmDisplayInOrderFE($item, $productCustom, $row,$plgParam);
 	/**
 	 * StockToUpdate
 	 * can remove or change or adding more virtuemart_product_id eg. to do packs
 	 */
 	abstract function plgVmGetProductStockToUpdateByCustom($item,$pluginParam, $productCustom);
-	/**
-	 * defaut price modifation if nothing is set in plugin
-	 * you have to rewrite it in your plugin to do other calculations
-	 */
-	public function modifyPrice( $product, &$field, $selected,$customVariant ) {
-		if (!empty($field->custom_price)) {
-			//TODO adding % and more We should use here $this->interpreteMathOp
-			return $field->custom_price;
-		}
-	}
+
+	
 
 }

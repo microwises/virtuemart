@@ -97,10 +97,11 @@ class plgVmCustomTextinput extends vmCustomPlugin {
     }
 
 	/**
-	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCartModule()
+	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCartModule()
 	 * @author Patrick Kohl
 	 */
-	function onViewCartModule( $product,$productCustom, $row,$plgParam) {
+	function plgVmOnViewCartModule( $product,$productCustom, $row) {
+		if (!$plgParam = $this->GetPluginInCart($product)) return '' ;
 		if(!empty($plgParam['comment']) ){
 			return ' = '.$plgParam['comment'];
 		}
@@ -108,10 +109,11 @@ class plgVmCustomTextinput extends vmCustomPlugin {
     }
 
 	/**
-	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onViewCart()
+	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCart()
 	 * @author Patrick Kohl
 	 */
-	function onViewCart($product,$productCustom, $row,$plgParam) {
+	function plgVmOnViewCart($product,$productCustom, $row) {
+		if (!$plgParam = $this->GetPluginInCart($product)) return '' ;
 		$comment ='';
 		// foreach($plgParam as $k => $item){
 			if(!empty($plgParam['comment']) ){
@@ -130,7 +132,8 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 *
 	 * vendor order display BE
 	 */
-	function onViewOrderBE($item,$productCustom, $row,$plgParam) {
+	function plgVmDisplayInOrderBE($item,$productCustom, $row,$plgParam) {
+		if ($productCustom->custom_value != $this->_name) return null;
 		$comment ='';
 			if(!empty($plgParam['comment']) ){
 				$comment .= ' = '.$plgParam['comment'];
@@ -144,7 +147,8 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 *
 	 * shopper order display FE
 	 */
-	function onViewOrderFE($item,$productCustom, $row,$plgParam) {
+	function plgVmDisplayInOrderFE($item,$productCustom, $row,$plgParam) {
+		if ($productCustom->custom_value != $this->_name) return null;
 		$comment ='';
 			if(!empty($plgParam['comment']) ){
 				$comment .= ' = '.$plgParam['comment'];

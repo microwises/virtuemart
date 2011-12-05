@@ -620,7 +620,7 @@ class VirtueMartModelCustomfields extends VmModel {
 // 											vmdebug('vmCustomPlugin BE ?');
 
 						$fieldsToShow = $dispatcher->trigger('plgVmOnDisplayProductFE',array($productCustom,$row));
-vmdebug('vmCustomPlugin BE ?',$fieldsToShow);
+
 						$retValue = '';
 						if(!empty($fieldsToShow)){
 							foreach($fieldsToShow as $push){
@@ -834,7 +834,7 @@ vmdebug('vmCustomPlugin BE ?',$fieldsToShow);
 
 					JPluginHelper::importPlugin('vmcustom');
 					$dispatcher = JDispatcher::getInstance();
-					$varsToPushParam = $dispatcher->trigger('plgVmDisplayInCartCustom',array($product,$productCustom, $row, "Module"));
+					$varsToPushParam = $dispatcher->trigger('plgVmOnViewCartModule',array($product,$productCustom, $row));
 					if(!empty($varsToPushParam)){
 						foreach($varsToPushParam as $push){
 							if(!empty($push)){
@@ -879,11 +879,9 @@ vmdebug('vmCustomPlugin BE ?',$fieldsToShow);
  				if ($productCustom->field_type == "E") {
 					$product = self::addParam($product);
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-vmdebug('product',$product);
 					JPluginHelper::importPlugin('vmcustom');
 					$dispatcher = JDispatcher::getInstance();
-					$varsToPushParam = $dispatcher->trigger('plgVmDisplayInCartCustom',array($product,$productCustom, $row));
-vmdebug('plugin',$varsToPushParam);
+					$varsToPushParam = $dispatcher->trigger('plgVmOnViewCart',array($product,$productCustom, $row));
 					if(!empty($varsToPushParam)){
 						foreach($varsToPushParam as $push){
 							if(!empty($push)){
@@ -930,13 +928,8 @@ vmdebug('plugin',$varsToPushParam);
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 						JPluginHelper::importPlugin('vmcustom');
 						$dispatcher = JDispatcher::getInstance();
-						$dispatcher->trigger('plgVmDisplayInOrderCustom',array(&$html, $item, $param[$productCustom->value],$productCustom,$row,$view));
-
-						//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
-// 						$html .= vmCustomPlugin::displayInOrderPlugin( $item,$param,$productCustom, $row,$view);
-						// foreach ($product->userfield as $pKey => $puser) {
-							// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
-						// }
+						$plgDisplay = $dispatcher->trigger('plgVmDisplayInOrder'.$view,array( $item, $productCustom,$row, $param[$productCustom->value]));
+						foreach ($plgDisplay as $display) $html.=$display;
 					} elseif (($productCustom->field_type == "G")) {
 						$child = self::getChild($productCustom->value);
 						$html .= ' <span>'.$productCustom->custom_title.' : '.$child->product_name.'</span>';
