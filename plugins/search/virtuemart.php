@@ -60,7 +60,8 @@ if(!version_compare(JVERSION,'1.6.0','ge')) {
 
 			// $limit = $pluginParams->def('search_limit', 50);
 			$limit = $this->params->def('search_limit',		50);
-
+			if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+			VmConfig::loadConfig();
 			/* TO do it work with date
 			 $nullDate		= $db->getNullDate();
 			$date = JFactory::getDate();
@@ -78,7 +79,7 @@ if(!version_compare(JVERSION,'1.6.0','ge')) {
 				case 'exact':
 					$text = $db->Quote('%' . $db->getEscaped($text, true) . '%', false);
 					$wheres2 = array();
-					$wheres2[] = 'a.product_sku LIKE ' . $text;
+					$wheres2[] = 'p.product_sku LIKE ' . $text;
 					$wheres2[] = 'a.product_name LIKE ' . $text;
 					$wheres2[] = 'a.product_s_desc LIKE ' . $text;
 					$wheres2[] = 'a.product_desc LIKE ' . $text;
@@ -94,7 +95,7 @@ if(!version_compare(JVERSION,'1.6.0','ge')) {
 					foreach ($words as $word) {
 						$word = $db->Quote('%' . $db->getEscaped($word, true) . '%', false);
 						$wheres2 = array();
-						$wheres2[] = 'a.product_sku LIKE ' . $word;
+						$wheres2[] = 'p.product_sku LIKE ' . $word;
 						$wheres2[] = 'a.product_name LIKE ' . $word;
 						$wheres2[] = 'a.product_s_desc LIKE ' . $word;
 						$wheres2[] = 'a.product_desc LIKE ' . $word;
@@ -127,16 +128,17 @@ if(!version_compare(JVERSION,'1.6.0','ge')) {
 			}
 			// search product
 			$text = $db->Quote('%' . $db->getEscaped($text, true) . '%', false);
-			$query = "SELECT DISTINCT CONCAT( a.product_name,' (',a.product_sku,')' ) AS title, a.virtuemart_product_id , b.virtuemart_category_id ,   a.product_s_desc   AS text, b.category_name as section,
-					 a.created_on as created, '2' AS browsernav
-					FROM `#__virtuemart_products_".VMLANG."` as a  AS a
+			$query = "SELECT DISTINCT CONCAT( a.product_name,' (',p.product_sku,')' ) AS title, a.virtuemart_product_id , b.virtuemart_category_id ,   a.product_s_desc   AS text, b.category_name as section,
+					 p.created_on as created, '2' AS browsernav
+					FROM `#__virtuemart_products_".VMLANG."` AS a
 					JOIN #__virtuemart_products as p using (`virtuemart_product_id`)
-					LEFT JOIN #__virtuemart_product_categories AS xref ON xref.virtuemart_product_id = a.virtuemart_product_id
-					LEFT JOIN #__virtuemart_categories_".VMLANG."` AS b ON b.virtuemart_category_id = xref.virtuemart_category_id"
-			. ' WHERE ' . $where
+					LEFT JOIN `#__virtuemart_product_categories` AS xref ON xref.`virtuemart_product_id` = a.`virtuemart_product_id`
+					LEFT JOIN `#__virtuemart_categories_".VMLANG."` AS b ON b.`virtuemart_category_id` = xref.`virtuemart_category_id`"
+			. ' WHERE ' . $where . ' and p.published=1 and b.virtuemart_category_id>1 '
 			. ' ORDER BY ' . $order
 			;
 			$db->setQuery($query, 0, $limit);
+
 			$rows = $db->loadObjectList();
 			if ($rows) {
 				foreach ($rows as $key => $row) {
@@ -183,7 +185,9 @@ function plgSearchVirtuemart($text, $phrase='', $ordering='', $areas=null) {
 	// load plugin params info
 	$plugin = & JPluginHelper::getPlugin('search', 'virtuemart');
 	$pluginParams = new JParameter($plugin->params);
-
+	if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
+	VmConfig::loadConfig();
+	
 	$limit = $pluginParams->def('search_limit', 50);
 
 
@@ -198,7 +202,7 @@ function plgSearchVirtuemart($text, $phrase='', $ordering='', $areas=null) {
 		case 'exact':
 			$text = $db->Quote('%' . $db->getEscaped($text, true) . '%', false);
 			$wheres2 = array();
-			$wheres2[] = 'a.product_sku LIKE ' . $text;
+			$wheres2[] = 'p.product_sku LIKE ' . $text;
 			$wheres2[] = 'a.product_name LIKE ' . $text;
 			$wheres2[] = 'a.product_s_desc LIKE ' . $text;
 			$wheres2[] = 'a.product_desc LIKE ' . $text;
@@ -214,7 +218,7 @@ function plgSearchVirtuemart($text, $phrase='', $ordering='', $areas=null) {
 			foreach ($words as $word) {
 				$word = $db->Quote('%' . $db->getEscaped($word, true) . '%', false);
 				$wheres2 = array();
-				$wheres2[] = 'a.product_sku LIKE ' . $word;
+				$wheres2[] = 'p.product_sku LIKE ' . $word;
 				$wheres2[] = 'a.product_name LIKE ' . $word;
 				$wheres2[] = 'a.product_s_desc LIKE ' . $word;
 				$wheres2[] = 'a.product_desc LIKE ' . $word;
@@ -237,22 +241,23 @@ function plgSearchVirtuemart($text, $phrase='', $ordering='', $areas=null) {
 			$order = 'a.product_name ASC';
 			break;
 		case 'newest':
-			$order = 'a.created_on DESC';
+			$order = 'p.created_on DESC';
 			break;
 		case 'oldest':
-			$order = 'a.created_on ASC';
+			$order = 'p.created_on ASC';
 			break;
 		default:
 			$order = 'a.product_name DESC';
 	}
 
 	$text = $db->Quote('%' . $db->getEscaped($text, true) . '%', false);
-	$query = "SELECT DISTINCT CONCAT( a.product_name,' (',a.product_sku,')' ) AS title, a.virtuemart_product_id , b.virtuemart_category_id ,   a.product_s_desc   AS text, b.category_name as section,
-		 a.created_on as created, '2' AS browsernav
-		FROM #__virtuemart_products AS a
-		LEFT JOIN #__virtuemart_product_categories AS xref ON xref.virtuemart_product_id = a.virtuemart_product_id
-		LEFT JOIN #__virtuemart_categories AS b ON b.virtuemart_category_id = xref.virtuemart_category_id"
-	. ' WHERE ' . $where
+	$query = "SELECT DISTINCT CONCAT( a.product_name,' (',p.product_sku,')' ) AS title, a.virtuemart_product_id , b.virtuemart_category_id ,   a.product_s_desc   AS text, b.category_name as section,
+		 p.created_on as created, '2' AS browsernav
+		FROM `#__virtuemart_products_".VMLANG."` AS a
+		JOIN `#__virtuemart_products` as p using (`virtuemart_product_id`)
+		LEFT JOIN `#__virtuemart_product_categories` AS xref ON xref.virtuemart_product_id = a.virtuemart_product_id
+		LEFT JOIN `#__virtuemart_categories_".VMLANG."` AS b ON b.virtuemart_category_id = xref.virtuemart_category_id"
+	. ' WHERE ' . $where . ' and p.published=1 and b.virtuemart_category_id>1 '
 	. ' ORDER BY ' . $order
 	;
 	$db->setQuery($query, 0, $limit);

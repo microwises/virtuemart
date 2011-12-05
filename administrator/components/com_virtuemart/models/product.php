@@ -315,7 +315,7 @@ class VirtueMartModelProduct extends VmModel {
 		} else {
 			$whereString = '';
 		}
-		if ($keyword and !$group) {echo $joinedTables.' joined ? '.$select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir;		/* jexit();  */}
+		// if ($keyword and !$group) {echo $joinedTables.' joined ? '.$select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir;		/* jexit();  */}
 		$product_ids =  $this->exeSortSearchListQuery(2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
 
 		// This makes products searchable, we decided that this is not good, because variant childs appear then in lists
