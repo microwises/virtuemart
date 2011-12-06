@@ -27,6 +27,10 @@ if ($this->fTask === 'savecartuser') {
 } else {
 	$rtask = 'registercheckoutuser';
 }
+
+echo shopFunctionsF::getLoginForm(false);
+
+
 ?>
 <script language="javascript">
     function myValidator(f, t)
