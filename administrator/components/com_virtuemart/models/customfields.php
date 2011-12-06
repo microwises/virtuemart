@@ -592,18 +592,18 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				$this->_db->setQuery($query);
 				$options = $this->_db->loadObjectList(); //vmdebug('getProductCustomsFieldCart',$this->_db);
-				print_r($options);
 				$group->options = array();
 				foreach ( $options as $option){
-				
+					$group->options[$option->value] = $option;
 				}
 
 				if ($group->field_type == 'V'){
 					$default = current($group->options);
-					foreach ($group->options as $productCustom) {
+					foreach ($group->options as &$productCustom) {
 						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)) ;
 						else  $price = $free ;
 						$productCustom->text =  $productCustom->custom_value.' : '.$price;
+						
 					}
 					$group->display = VmHTML::select('customPrice['.$row.']['.$group->virtuemart_custom_id.']',$group->options,$default->custom_value,'','value','text',false);
 				} else if ($group->field_type == 'G'){
