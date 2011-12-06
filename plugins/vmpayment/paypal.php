@@ -122,8 +122,12 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$vendorModel = new VirtueMartModelVendor();
 	$vendorModel->setId(1);
 	$vendor = $vendorModel->getVendor();
-	$currencyModel = new VirtueMartModelCurrency();
-	$currency = $currencyModel->getCurrency($order['details']['BT']->user_currency_id);
+
+		$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `currency_numeric_code`="'.$order['details']['BT']->order_currency.'" ';
+		$db = &JFactory::getDBO();
+		$db->setQuery($q);
+		$currency_code_3= $db->loadResult();
+
 
 	$merchant_email = $this->_getMerchantEmail($method);
 	if (empty($merchant_email)) {
@@ -143,7 +147,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    'custom' => $return_context,
 	    'item_name' => JText::_('VMPAYMENT_PAYPAL_ORDER_NUMBER') . ': ' . $order['details']['BT']->order_number,
 	    "amount" => round($order['details']['BT']->order_total, 2),
-	    "currency_code" => $currency->currency_code_3,
+	    "currency_code" => $currency_code_3,
 	    /*
 	     * 1 – L'adresse spécifiée dans les variables pré-remplies remplace l'adresse de livraison enregistrée auprès de PayPal.
 	     * Le payeur voit l'adresse qui est transmise mais ne peut pas la modifier.
@@ -225,7 +229,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 
 
 	$html.= ' <script type="text/javascript">';
-	//$html.= ' document.vm_paypal_form.submit();';
+	$html.= ' document.vm_paypal_form.submit();';
 	$html.= ' </script>';
 	// 	2 = don't delete the cart, don't send email and don't redirect
 	return $this->processConfirmedOrderPaymentResponse(2, $cart, $order, $html, $new_status);
@@ -421,7 +425,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 
     function emptyCart($session_name) {
 
-	
+
     }
 
     /**

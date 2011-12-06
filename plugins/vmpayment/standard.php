@@ -114,7 +114,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$html = '<table>' . "\n";
 	$html .= $this->getHtmlRow('STANDARD_PAYMENT_INFO', $dbValues['payment_name']);
 	if (!empty($payment_info)) {
-	    $html .= $this->getHtmlRow('STANDARD_INFO', $payment_info);
+	    $html .= $this->getHtmlRow('STANDARD_PAYMENTINFO', $payment_info);
 	}
 
 	$html .= $this->getHtmlRow('STANDARD_ORDER_NUMBER', $order['details']['BT']->order_number);
