@@ -794,6 +794,11 @@ class VirtueMartModelCustomfields extends VmModel {
 				$selected->fields[$selected->virtuemart_custom_id] = $this->_db->loadObjectList();
 			}
 		}
+		// add search for declared plugins
+		JPluginHelper::importPlugin('vmcustom');
+		$dispatcher = JDispatcher::getInstance();
+		$plgDisplay = $dispatcher->trigger('plgVmSelectSearchableCustom',array( &$this->searchCustom->selectList,$this->searchCustom->custom_parent_id ) );
+
 		return $this->searchCustom;
 	}
 	function displayCustomMedia($media_id,$table='product'){

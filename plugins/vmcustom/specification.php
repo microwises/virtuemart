@@ -66,6 +66,28 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	return $SQLfields;
     }
 
+	public function plgVmSelectSearchableCustom(&$selectList,$virtuemart_custom_id)
+	{
+		$db =&JFactory::getDBO();
+		$db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE `custom_element` ="'.$this->_name.'"');
+		$selectedPlugin = $db->loadAssocList();
+		//vmdebug('selectedPlugin',$selectedPlugin);
+		if ($selectedPlugin) $selectList = array_merge($selectedPlugin,$selectList);
+		return true;
+	}
+	
+	public function plgVmAddSearch(&$where,&$PluginJoinTables,$custom_id)
+	{	
+		$search = 'sho';
+		$db = & JFactory::getDBO(); 
+		if ($this->_name != $this->GetNameByCustomId($custom_id)) return;
+		$search = '"%' . $db->getEscaped( $search, true ) . '%"' ;
+		$where[] = 'l.`product_name` LIKE '.$search;
+		$PluginJoinTables[] = $this->_name ;
+		
+	
+	}
+	
 	// get product param for this plugin on edit
 	function plgVmOnProductEdit($field, $product, &$row,&$retValue) { 
 		if ($field->custom_element != $this->_name) return '';
@@ -96,7 +118,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	 */
 	function plgVmOnDisplayProductFE($product,&$idx,&$group) {
 		// default return if it's not this plugin
-		vmdebug('fields',$group);
+		
 		if ($group->custom_value != $this->_name) return '';
 		$this->parseCustomParams($group);
 		$this->plgVmGetPluginInternalDataCustom($group);
@@ -197,8 +219,8 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	/**
 	 * Custom triggers note by Max Milbers
 	 */
-	function plgVmGetActiveCustomPlugin($virtuemart_custom_id){
-		parent::plgVmGetActiveCustomPlugin($virtuemart_custom_id);
+	function plgVmGetActiveCustomPlugin($virtuemart_custom_id,&$customPlugin){
+		parent::plgVmGetActiveCustomPlugin($virtuemart_custom_id,$customPlugin);
 	}
 	/*
 	 * No price modification

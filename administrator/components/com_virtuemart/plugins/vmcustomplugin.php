@@ -174,6 +174,43 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * called by customfields inputTypePlugin
 	 *
 	 */
+	public function plgVmSelectSearchableCustom(&$selectList)
+	{
+		return null;
+	}
+
+	/**
+	 * render the plugin with param  to display on product edit
+	 * called by customfields inputTypePlugin
+	 *
+	 */
+	public function plgVmAddSearch(&$where,$searchplugin)
+	{
+		
+	}
+
+	/**
+	 * render the plugin with param  to display on product edit
+	 * called by customfields inputTypePlugin
+	 *
+	 */
+	public function GetNameByCustomId($custom_id)
+	{
+		static $custom_element ;
+		if (isset($custom_element)) return $custom_element;
+		$db = & JFactory::getDBO();
+		$q = 'SELECT `custom_element` FROM `#__virtuemart_customs` WHERE `virtuemart_custom_id`='.(int)$custom_id;
+		$db->setQuery($q);
+		$custom_element = $db->loadResult();
+		return $custom_element;
+		
+	}
+
+	/**
+	 * render the plugin with param  to display on product edit
+	 * called by customfields inputTypePlugin
+	 *
+	 */
 	abstract function plgVmOnProductEdit($field, $product, &$row,&$retValue);
 
 	/**

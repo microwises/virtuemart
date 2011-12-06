@@ -131,8 +131,8 @@ class VirtueMartModelProduct extends VmModel {
 		if($app->isSite() && !VmConfig::get('use_as_catalog',0) && !VmConfig::get('show_out_of_stock_products',0) ){
 			$where[] = ' p.`product_in_stock`>"0" ';
 		}
-
-		if ($keyword = vmRequest::uword('keyword', false, ' ') and $group ===false) {
+		$keyword = vmRequest::uword('keyword', null, ' ');
+		if ( $keyword !== null and $group ===false) {
 			$groupBy = 'group by p.`virtuemart_product_id`';
 
 			//			$keyword = trim(preg_replace('/\s+/', '%', $keyword), '%');
@@ -160,9 +160,15 @@ class VirtueMartModelProduct extends VmModel {
 
 			$joinCustom = true ;
 			foreach ($searchcustoms as $key => $searchcustom) {
-				$custom_search[] = '(`#__virtuemart_product_customfields`.`virtuemart_custom_id`="'.(int)$key.'" and `#__virtuemart_product_customfields`.`custom_value` like "%' . $this->_db->getEscaped( $searchcustom, true ) . '%")';
+				$custom_search[] = '(pf.`virtuemart_custom_id`="'.(int)$key.'" and pf.`custom_value` like "%' . $this->_db->getEscaped( $searchcustom, true ) . '%")';
 			}
 			$where[] = " ( ".implode(' OR ', $custom_search )." ) ";
+		}
+		if ($searchplugin = JRequest::getVar('custom_parent_id',0)){
+			JPluginHelper::importPlugin('vmcustom');
+			$dispatcher = JDispatcher::getInstance();
+			$PluginJoinTables = array();
+			$dispatcher->trigger('plgVmAddSearch',array(&$where, &$PluginJoinTables, $searchplugin));
 		}
 
 		if ($virtuemart_category_id>0){
@@ -300,16 +306,24 @@ class VirtueMartModelProduct extends VmModel {
 			 LEFT JOIN `#__virtuemart_manufacturers_'.VMLANG.'` as m ON m.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
 		}
 
+
+		if ($joinPrice == true) {
+			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_prices` as pp ON p.`virtuemart_product_id` = pp.`virtuemart_product_id` ';
+		}
+		if ($searchcustoms) {
+			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_customfields` as pf ON p.`virtuemart_product_id` = pf.`virtuemart_product_id` ';
+		}
+		if ($searchplugin) {
+			if (!empty( $PluginJoinTables) ) {
+				$plgName = $PluginJoinTables[0] ;
+				$joinedTables .= ' LEFT JOIN `#__virtuemart_product_custom_plg_'.$plgName.'` as '.$plgName.' ON '.$plgName.'.`virtuemart_product_id` = p.`virtuemart_product_id` ' ;
+			}
+		}
 		if ($joinShopper == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_shoppergroups` ON p.`virtuemart_product_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_product_id`
 			 LEFT  OUTER JOIN `#__virtuemart_shoppergroups` as s ON s.`virtuemart_shoppergroup_id` = `#__virtuemart_product_shoppergroups`.`virtuemart_shoppergroup_id`';
 		}
-		if ($joinPrice == true) {
-			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_prices` as pp ON p.`virtuemart_product_id` = pp.`virtuemart_product_id` ';
-		}
-		if ($joinCustom == true) {
-			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_customfields` ON p.`virtuemart_product_id` = `#__virtuemart_product_customfields`.`virtuemart_product_id` ';
-		}
+
 		if(count($where)>0){
 			$whereString = ' WHERE ('.implode(' AND ', $where ).') ';
 		} else {
