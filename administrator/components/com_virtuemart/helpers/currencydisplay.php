@@ -34,6 +34,7 @@ class CurrencyDisplay {
 	private $_positivePos	= '{number}{symbol}';	// Currency symbol position with Positive values :
 	private $_negativePos	= '{sign}{number}{symbol}';	// Currency symbol position with Negative values :
 	var $_priceConfig	= array();	//holds arrays of 0 and 1 first is if price should be shown, second is rounding
+	var $exchangeRateShopper = 1.0;
 
 	private function __construct ($vendorId = 0){
 
@@ -337,7 +338,7 @@ class CurrencyDisplay {
 			return $price;
 		}
 
-		if($shop){
+/*		if($shop){
 			// TODO optimize this... the exchangeRate cant be cached, there are more than one currency possible
 			//			$exchangeRate = &$this->exchangeRateVendor;
 			$exchangeRate = 0;
@@ -345,11 +346,12 @@ class CurrencyDisplay {
 			//caches the exchangeRate between shopper and vendor
 			$exchangeRate = &$this->exchangeRateShopper;
 		}
-
+*/
 		if(empty($exchangeRate)){
 
 			if(is_Object($currency)){
 				$exchangeRate = $currency->_vendorCurrency;
+				vmdebug('convertCurrencyTo OBJECT '.$exchangeRate);
 			}
 			else {
 				//				$this->_db = JFactory::getDBO();
@@ -363,16 +365,30 @@ class CurrencyDisplay {
 				}
 			}
 		}
-
+		$this->exchangeRateShopper = $exchangeRate;
+// 		vmdebug('convertCurrencyTo my currency ',$exchangeRate,$currency);
 		if(!empty($exchangeRate) && $exchangeRate!=FALSE){
 			$price = $price * $exchangeRate;
 		} else {
+			$currencyCode = self::ensureUsingCurrencyCode($currency);
+			$vendorCurrencyCode = self::ensureUsingCurrencyCode($this->_vendorCurrency);
+			$globalCurrencyConverter=JRequest::getVar('globalCurrencyConverter');
 			if($shop){
-				$price = $this ->_currencyConverter->convert( $price, self::ensureUsingCurrencyCode($currency),self::ensureUsingCurrencyCode($this->_vendorCurrency));
+				$price = $this ->_currencyConverter->convert( $price, $currencyCode, $vendorCurrencyCode);
+				if(!empty($globalCurrencyConverter[$currencyCode])){
+					$this->exchangeRateShopper = $globalCurrencyConverter[$vendorCurrencyCode]/$globalCurrencyConverter[$currencyCode];
+				} else {
+					$this->exchangeRateShopper = 1;
+				}
 			} else {
-				$price = $this ->_currencyConverter->convert( $price , self::ensureUsingCurrencyCode($this->_vendorCurrency),  self::ensureUsingCurrencyCode($currency));
+				$price = $this ->_currencyConverter->convert( $price , $vendorCurrencyCode, $currencyCode);
+				if(!empty($globalCurrencyConverter[$vendorCurrencyCode])){
+					$this->exchangeRateShopper = $globalCurrencyConverter[$currencyCode]/$globalCurrencyConverter[$vendorCurrencyCode];
+				} else {
+					$this->exchangeRateShopper = 1;
+				}
 			}
-
+// 			vmdebug('convertCurrencyTo my currency ',$this->exchangeRateShopper);
 		}
 
 		return $price;
