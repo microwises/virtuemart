@@ -96,7 +96,20 @@ abstract class vmCustomPlugin extends VmPlugin {
     	}
 
 	}
+	protected function plgVmGetPluginInternalDataCustom(&$field){
 
+	 	$datas = $this->getPluginInternalData($field->virtuemart_custom_id,'virtuemart_custom_id');
+
+		if($datas){
+			$attribsCalc = get_object_vars($datas);
+
+			unset($attribsCalc['virtuemart_calc_id']);
+			foreach($attribsCalc as $k=>$v){
+				$calcData->$k = $v;
+			}
+		}
+
+	} 
 	/**
 	 * This is the actions which take place, when a product gets stored
 	 *
@@ -104,7 +117,13 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * @param array $data form data
 	 * @param int $id virtuemart_product_id
 	 */
-    function plgVmOnStoreProduct($type,&$data,$id){
+    function plgVmOnStoreProduct($data,$plugin_param){
+		
+		if (key($plugin_param)!==$this->_name) return ;
+		$key = key($plugin_param) ;
+		$plugin_param[$key]['virtuemart_product_id'] = $data['virtuemart_product_id'];
+		vmdebug('plgData',$plugin_param[$key]);
+		$this->storePluginInternalData($plugin_param[$key]);
 
     }
 
@@ -155,17 +174,21 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * called by customfields inputTypePlugin
 	 *
 	 */
-	abstract function plgVmOnProductEdit($field, $product, $row,&$retValue);
+	abstract function plgVmOnProductEdit($field, $product, &$row,&$retValue);
 
 	/**
 	 * display the plugin on product FE
 	 */
-	abstract function plgVmOnDisplayProductFE( $field, $idx,&$group);
+	abstract function plgVmOnDisplayProductFE( $product, &$idx,&$group);	/**
+
+	* display the plugin on product FE
+	 */
+	abstract function plgVmOnDisplayProductVariantFE( $field, &$idx,&$group);
 
 	/**
 	 * display the product plugin on cart module
 	 */
-	abstract function plgVmOnViewCartModule( $product,$productCustom, $row,&html);
+	abstract function plgVmOnViewCartModule( $product,$productCustom, $row,&$html);
 
 	/**
 	* display the product plugin on cart

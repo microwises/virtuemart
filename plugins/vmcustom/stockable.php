@@ -52,9 +52,10 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 
 	// get product param for this plugin on edit
-	function plgVmOnProductEdit($field, $product_id, $row,&$retValue) {
+	function plgVmOnProductEdit($field, $product_id, &$row,&$retValue) {
 
 		if ($field->custom_element != $this->_name) return '';
+		
 		$this->parseCustomParams($field);
 		$html ='';
 		if (!$childs = $this->getChilds($product_id) ) $html .='<DIV>'.JTEXT::_('VMCUSTOM_STOCKABLE_NO_CHILD').'</DIV>';
@@ -167,7 +168,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onDisplayProductFE()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnDisplayProductFE($field,$idx,&$group) {
+	function plgVmOnDisplayProductVariantFE($field,&$row,&$group) {
 		// default return if it's not this plugin
 		if ($field->custom_element != $this->_name) return '';
 		$this->parseCustomParams($field);
@@ -220,7 +221,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 		$field->display = $html;
 		// preventing 2 x load javascript
-		if ($stockablejs) return $html;
+		
+		if ($stockablejs) return $row++;
 		$stockablejs = true ;
 		// TODO ONE PARAM IS MISSING
 		$document = JFactory::getDocument();
@@ -301,7 +303,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				formProduct = Opt.parents(".productdetails-view").find(".product");
 				virtuemart_product_id = formProduct.find(\'input[name="virtuemart_product_id[]"]\').val();
 				//formProduct.find("#stockableChild").remove();
-				//formProduct.append(\'<input id="stockableChild" type="hidden" value="\'+customfield_id[found_id]+\'" name="customPrice['.$idx.'][\'+found_id+\']">\');
+				//formProduct.append(\'<input id="stockableChild" type="hidden" value="\'+customfield_id[found_id]+\'" name="customPrice['.$row.'][\'+found_id+\']">\');
 				$.setproducttype(formProduct,virtuemart_product_id);
 			}
 		});
@@ -315,11 +317,13 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		//echo $plgParam->get('custom_info');
 		// Here the plugin values
 		//$html =JTEXT::_($param['custom_name']) ;
-		//$html.=': <input type="text" value="" size="'.$param['custom_name'].'" name="customPlugin['.$idx.'][comment]"><br />';
-		$group->display .= $html;
+		//$html.=': <input type="text" value="" size="'.$param['custom_name'].'" name="customPlugin['.$row.'][comment]"><br />';
+		
+		$row++;
 		return true;
 	}
 
+	function plgVmOnDisplayProductFE( $product, &$idx,&$group){}
 	/**
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCartModule()
 	 * @author Patrick Kohl
@@ -337,7 +341,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCart()
 	 * @author Patrick Kohl
 	 */
-/*	function plgVmOnViewCart($product,$productCustom, $row,&$html) {
+	function plgVmOnViewCart($product,$productCustom, $row,&$html) {
 		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
 		$html  .= '<div>';
 		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';
@@ -351,7 +355,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 *
 	 * vendor order display BE
 	 */
-/*	function plgVmDisplayInOrderBE($item,$productCustom, $row, $plgParam) {
+	function plgVmDisplayInOrderBE($item,$productCustom, $row, $plgParam) {
 		if ($productCustom->custom_value != $this->_name) return null;
 		$html  = '<div>';
 		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';

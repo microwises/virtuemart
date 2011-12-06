@@ -51,8 +51,9 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 
 	// get product param for this plugin on edit
-	function plgVmOnProductEdit($field, $product, $row,&$retValue) {
+	function plgVmOnProductEdit($field, $product, &$row,&$retValue) {
 		if ($field->custom_element != $this->_name) return '';
+		
 		$this->parseCustomParams($field);
 // 		$data = $this->getVmPluginMethod($field->virtuemart_custom_id);
 // 		VmTable::bindParameterable($field,$this->_xParams,$this->_varsToPushParam);
@@ -62,6 +63,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		$html .=JTEXT::_('VMCUSTOM_TEXTINPUT_NO_CHANGES_BE');
 // 		$field->display = $html;
 		$retValue .= $html;
+		$row++;
 		return true ;
 	}
 
@@ -71,7 +73,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @author Patrick Kohl
 	 * eg. name="customPlugin['.$idx.'][comment] save the comment in the cart & order
 	 */
-	function plgVmOnDisplayProductFE($field,$idx,&$group) {
+	function plgVmOnDisplayProductVariantFE($field,&$idx,&$group) {
 		// default return if it's not this plugin
 		if ($field->custom_value != $this->_name) return '';
 		$this->parseCustomParams($field);
@@ -97,7 +99,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		return true;
 //         return $html;
     }
-
+	function plgVmOnDisplayProductFE( $product, &$idx,&$group){}
 	/**
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCartModule()
 	 * @author Patrick Kohl
@@ -114,7 +116,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCart()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCart($product,$productCustom, $row,&html) {
+	function plgVmOnViewCart($product,$productCustom, $row,&$html) {
 		if (!$plgParam = $this->GetPluginInCart($product)) return '' ;
 		$comment ='';
 		// foreach($plgParam as $k => $item){

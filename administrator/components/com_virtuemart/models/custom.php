@@ -239,7 +239,9 @@ class VirtueMartModelCustom extends VmModel {
 			$this->setError('Error in saveModelCustomfields '); //.$this->_db->getQuery()); Dont give hackers too much info
 		}
 		 if (isset ( $datas['custom_param'] )) $params = true ;
+		 else $params = false ;
 		if (array_key_exists('field', $datas)) {
+			vmdebug('datas save',$datas);
 			$customfieldIds = array();
 			foreach($datas['field'] as $key => $fields){
 				$fields['virtuemart_'.$table.'_id'] =$id;
@@ -256,7 +258,7 @@ class VirtueMartModelCustom extends VmModel {
 
 					}
 
-				}
+				} else $fields['custom_param'] = '';
 				$tableCustomfields->bindChecknStore($fields);
 				$errors = $tableCustomfields->getErrors();
 				foreach($errors as $error){
@@ -264,6 +266,9 @@ class VirtueMartModelCustom extends VmModel {
 				}
 			}
 		}
+		JPluginHelper::importPlugin('vmcustom');
+		$dispatcher = JDispatcher::getInstance();
+		foreach ($datas['plugin_param'] as $key => $plugin_param ) $dispatcher->trigger('plgVmOnStoreProduct', array($datas, $plugin_param ));
 
 	}
 

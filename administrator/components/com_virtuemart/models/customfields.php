@@ -372,7 +372,7 @@ class VirtueMartModelCustomfields extends VmModel {
 // 					echo 'vmCustomPlugin <pre>'.print_r($field,1).'</pre>';die;
 // 					vmdebug('vmCustomPlugin',$field);
 					$retValue ='';
-					$fieldsToShow = $dispatcher->trigger('plgVmOnProductEdit',array($field,$product_id,$row,&$retValue));
+					$fieldsToShow = $dispatcher->trigger('plgVmOnProductEdit',array($field,$product_id,&$row,&$retValue));
 
 // 					$retValue = '';
 // 					if(!empty($fieldsToShow)){
@@ -491,13 +491,14 @@ class VirtueMartModelCustomfields extends VmModel {
 		$query .=' and is_cart_attribute = 0 order by field.`ordering`,virtuemart_custom_id' ;
 		$this->_db->setQuery($query);
 		if ($productCustoms = $this->_db->loadObjectList()) {
+
 			$row= 0 ;
 			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 			foreach ($productCustoms as $field ) {
 				if ($field->field_type == "E"){
 					JPluginHelper::importPlugin('vmcustom');
 					$dispatcher = JDispatcher::getInstance();
-					$ret = $dispatcher->trigger('plgVmOnDisplayCustoms',array(true,&$field,$product,$row));
+					$ret = $dispatcher->trigger('plgVmOnDisplayProductFE',array($product,&$row,&$field,));
 
 // 					if(!empty($ret)){
 // 						foreach($ret as $item){
@@ -591,9 +592,10 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				$this->_db->setQuery($query);
 				$options = $this->_db->loadObjectList(); //vmdebug('getProductCustomsFieldCart',$this->_db);
+				print_r($options);
 				$group->options = array();
 				foreach ( $options as $option){
-					$group->options[$option->value] = $option;
+				
 				}
 
 				if ($group->field_type == 'V'){
@@ -617,10 +619,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 						JPluginHelper::importPlugin('vmcustom');
 						$dispatcher = JDispatcher::getInstance();
-						// 					echo 'vmCustomPlugin <pre>'.print_r($field,1).'</pre>';die;
-// 											vmdebug('vmCustomPlugin BE ?');
-
-						$fieldsToShow = $dispatcher->trigger('plgVmOnDisplayProductFE',array($productCustom,$row,&$group));
+						$fieldsToShow = $dispatcher->trigger('plgVmOnDisplayProductFE',array($productCustom,&$row,&$group));
 
 // 						$retValue = '';
 // 						if(!empty($fieldsToShow)){

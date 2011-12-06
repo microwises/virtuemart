@@ -54,9 +54,9 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	
     function getTableSQLFields() {
 	$SQLfields = array(
-	    'id' => 'tinyint(1) unsigned NOT NULL AUTO_INCREMENT',
+	    'id' => 'int(11) unsigned NOT NULL AUTO_INCREMENT',
 	    'virtuemart_product_id' => 'int(11) UNSIGNED DEFAULT NULL',
-	    'virtuemart_customfield_id' => 'int(11) UNSIGNED DEFAULT NULL',
+	    'virtuemart_custom_id' => 'int(11) UNSIGNED DEFAULT NULL',
 	    'custom_specification_name1' => 'char(128) NOT NULL DEFAULT \'\' ',
 	    'custom_specification_default1' => 'varchar(1024) NOT NULL DEFAULT \'\' ',
 	    'custom_specification_name2' => 'char(128) NOT NULL DEFAULT \'\' ',
@@ -67,8 +67,9 @@ class plgVmCustomSpecification extends vmCustomPlugin {
     }
 
 	// get product param for this plugin on edit
-	function plgVmOnProductEdit($field, $product, $row,&$retValue) { 
+	function plgVmOnProductEdit($field, $product, &$row,&$retValue) { 
 		if ($field->custom_element != $this->_name) return '';
+		
 		$this->parseCustomParams($field);
 // 		$data = $this->getVmPluginMethod($field->virtuemart_custom_id);
 // 		VmTable::bindParameterable($field,$this->_xParams,$this->_varsToPushParam);
@@ -76,14 +77,15 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 // 		$html  ='<input type="text" value="'.$field->custom_title.'" size="10" name="custom_param['.$row.'][custom_title]"> ';
 		$html ='<div>';
 		$html .='<div>'.$field->custom_specification_name1.'</div>';
-		$html .='<input type="text" value="'.$field->custom_specification_default1.'" size="10" name="custom_param['.$row.'][custom_specification_default1]">';
+		$html .='<input type="text" value="'.$field->custom_specification_default1.'" size="10" name="plugin_param['.$row.']['.$this->_name.'][custom_specification_default1]">';
 		$html .='<div>'.$field->custom_specification_name2.'</div>';
-		$html .='<input type="text" value="'.$field->custom_specification_default2.'" size="10" name="custom_param['.$row.'][custom_specification_default2]">';
-		$html .=JTEXT::_('VMCUSTOM_TEXTINPUT_NO_CHANGES_BE');
+		$html .='<input type="text" value="'.$field->custom_specification_default2.'" size="10" name="plugin_param['.$row.']['.$this->_name.'][custom_specification_default2]">';
+		$html .='<input type="hidden" value="'.$field->virtuemart_custom_id.'" name="plugin_param['.$row.']['.$this->_name.'][virtuemart_custom_id]">';
 		$html .='</div>';
 // 		$field->display = 
-		$retValue = $html  ;
-		return $html  ;
+		$retValue .= $html  ;
+		$row++;
+		return true  ;
 	}
 
 	/**
@@ -92,38 +94,34 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	 * @author Patrick Kohl
 	 * eg. name="customPlugin['.$idx.'][comment] save the comment in the cart & order
 	 */
-	function plgVmOnDisplayProductFE($field,$idx,&$group) {
+	function plgVmOnDisplayProductFE($product,&$idx,&$group) {
 		// default return if it's not this plugin
-		if ($field->custom_value != $this->_name) return '';
-		$this->parseCustomParams($field);
+		vmdebug('fields',$group);
+		if ($group->custom_value != $this->_name) return '';
+		$this->parseCustomParams($group);
+		$this->plgVmGetPluginInternalDataCustom($group);
+		
 		// Here the plugin values
-		//$html =JTEXT::_($field->custom_title) ;
-		$html=': <input class="vmcustom-specification" type="text" value="" size="'.$field->custom_size.'" name="customPlugin['.$field->virtuemart_custom_id.']['.$this->_name.'][comment]"><br />';
-		static $specificationjs;
-		$field->display = $html;
+		//$html =JTEXT::_($group->custom_title) ;
+		$html ='<div>';
+		$html .='<div class="product-fields-title">'.$group->custom_specification_name1.'</div>';
+		$html .='<div>'.$group->custom_specification_default1.'</div>';
+		$html .='<div class="product-fields-title">'.$group->custom_specification_name2.'</div>';
+		$html .='<div>'.$group->custom_specification_default2.'</div>';
+		$html .='</div>';
+		$group->display .= $html;
 		// preventing 2 x load javascript
-		if ($specificationjs) return $html;
-		$specificationjs = true ;
-		//javascript to update price
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration('
-	jQuery( function($) {
-		jQuery(".vmcustom-specification").keyup(function() {
-				formProduct = $(".productdetails-view").find(".product");
-				virtuemart_product_id = formProduct.find(\'input[name="virtuemart_product_id[]"]\').val();
-			$.setproducttype(formProduct,virtuemart_product_id);
-			});
-	});
-		');
 
-        return $html;
+
+        return true;
     }
 
+	function plgVmOnDisplayProductVariantFE($field,&$idx,&$group) {}
 	/**
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCartModule()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCartModule( $product,$productCustom, $row) {
+	function plgVmOnViewCartModule( $product,$productCustom, $row,&$html) {
 		if (!$plgParam = $this->GetPluginInCart($product)) return '' ;		
 		if(!empty($plgParam['comment']) ){
 			return ' = '.$plgParam['comment'];
@@ -135,7 +133,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmplgVmOnViewCart()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCart($product,$productCustom, $row) {
+	function plgVmOnViewCart($product,$productCustom, $row,&$html) {
 		$comment ='';
 		// foreach($plgParam as $k => $item){
 			if(!empty($plgParam['comment']) ){
