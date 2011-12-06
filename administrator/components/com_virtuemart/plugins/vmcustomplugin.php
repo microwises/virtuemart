@@ -145,7 +145,6 @@ abstract class vmCustomPlugin extends VmPlugin {
 		static $pluginFields;
 		if (!isset($pluginFields)) {
 				 $pluginFields = JRequest::getVar('customPlugin',null );
-				// print_r($field);
 				if ($pluginFields ==  null) $pluginFields = json_decode( $product->customPlugin, true);
 		}
 		return $pluginFields[$productCustomsPrice->virtuemart_custom_id][$this->_name] ;
@@ -184,7 +183,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * called by customfields inputTypePlugin
 	 *
 	 */
-	public function plgVmAddSearch(&$where,$searchplugin)
+	public function plgVmAddToSearch(&$where,$searchplugin)
 	{
 		
 	}
@@ -205,53 +204,5 @@ abstract class vmCustomPlugin extends VmPlugin {
 		return $custom_element;
 		
 	}
-
-	/**
-	 * render the plugin with param  to display on product edit
-	 * called by customfields inputTypePlugin
-	 *
-	 */
-	abstract function plgVmOnProductEdit($field, $product, &$row,&$retValue);
-
-	/**
-	 * display the plugin on product FE
-	 */
-	abstract function plgVmOnDisplayProductFE( $product, &$idx,&$group);	/**
-
-	* display the plugin on product FE
-	 */
-	abstract function plgVmOnDisplayProductVariantFE( $field, &$idx,&$group);
-
-	/**
-	 * display the product plugin on cart module
-	 */
-	abstract function plgVmOnViewCartModule( $product,$productCustom, $row,&$html);
-
-	/**
-	* display the product plugin on cart
-	 */
-	abstract function plgVmOnViewCart($product, $productCustom, $row,&$html);
-
-	/**
-	 * display the plugin in order
-	 * for vendor
-	 * Get the statut (Eg. payed. >> render only the link for downloadable )
-	 */
-// 	abstract function plgVmDisplayInOrderBE($item, $productCustom, $row,$plgParam);
-
-	/**
-	 * display the plugin in order
-	 * for customer
-	 * Get the statut (Eg. payed. >> render only the link for downloadable )
-	 */
-	abstract function plgVmDisplayInOrderFE($item, $productCustom, $row,$plgParam);
-
-	/**
-	 * StockToUpdate
-	 * can remove or change or adding more virtuemart_product_id eg. to do packs
-	 */
-	abstract function plgVmGetProductStockToUpdateByCustom($item,$pluginParam, $productCustom);
-
-
 
 }

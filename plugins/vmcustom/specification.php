@@ -70,19 +70,27 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	{
 		$db =&JFactory::getDBO();
 		$db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE `custom_element` ="'.$this->_name.'"');
-		$selectedPlugin = $db->loadAssocList();
-		//vmdebug('selectedPlugin',$selectedPlugin);
-		if ($selectedPlugin) $selectList = array_merge($selectedPlugin,$selectList);
+		if ($this->selectedPlugin->selectList = $db->loadAssocList() ) {
+		//vmdebug('$this->selectedPlugin',$this->selectedPlugin);
+			if ($virtuemart_custom_id) {
+				$db->setQuery('SELECT custom_specification_default1 FROM `#__virtuemart_product_custom_plg_'.$this->_name.'` WHERE custom_parent_id='.$virtuemart_custom_id);
+				$this->selectedPlugin->virtuemart_custom_id=$virtuemart_custom_id;
+				$this->selectedPlugin->custom_title='plugin';
+				$db->setQuery('SELECT `custom_specification_default1`,`custom_value` as title FROM `#__virtuemart_product_customfields` WHERE virtuemart_custom_id='.$virtuemart_custom_id);
+				$this->selectedPlugin->selected->fields[$virtuemart_custom_id] = $db->loadObjectList();
+			}
+		$selectList = array_merge((array)$this->selectedPlugin,$selectList);
+		}
 		return true;
 	}
 	
-	public function plgVmAddSearch(&$where,&$PluginJoinTables,$custom_id)
+	public function plgVmAddToSearch(&$where,&$PluginJoinTables,$custom_id)
 	{	
-		$search = 'sho';
+		$keyword = vmRequest::uword('keyword', null, ' ');
 		$db = & JFactory::getDBO(); 
 		if ($this->_name != $this->GetNameByCustomId($custom_id)) return;
-		$search = '"%' . $db->getEscaped( $search, true ) . '%"' ;
-		$where[] = 'l.`product_name` LIKE '.$search;
+		$keyword = '"%' . $db->getEscaped( $keyword, true ) . '%"' ;
+		$where[] = $this->_name .'.`custom_specification_default1` LIKE '.$keyword;
 		$PluginJoinTables[] = $this->_name ;
 		
 	
@@ -95,7 +103,6 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 		$this->parseCustomParams($field);
 // 		$data = $this->getVmPluginMethod($field->virtuemart_custom_id);
 // 		VmTable::bindParameterable($field,$this->_xParams,$this->_varsToPushParam);
-//print_r($field);
 // 		$html  ='<input type="text" value="'.$field->custom_title.'" size="10" name="custom_param['.$row.'][custom_title]"> ';
 		$html ='<div>';
 		$html .='<div>'.$field->custom_specification_name1.'</div>';

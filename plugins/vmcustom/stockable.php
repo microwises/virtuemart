@@ -63,7 +63,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		$db->setQuery('SELECT `virtuemart_custom_id` FROM `#__virtuemart_customs` WHERE field_type="G" ');
 		$group_custom_id = $db->loadResult();
 		// $plgParam = $this->getVmCustomParams($field->virtuemart_custom_id);
-		//print_r($plgParam);
+
 		$html .='<span style="width:20px; display: inline-block;"> </span>';
 
 		for ($i = 1; $i<5 ;$i++) {
@@ -77,7 +77,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		//vmdebug('field',$field);
 		foreach ($childs as $child ) {
 			$checked ='';
-			//print_r($childList[$child->id]);
+
 			if(!empty($childList)) {
 				if (!array_key_exists($child->id, $childList) ) $childList[$child->id]['is_variant'] = 1;
 				if ($childList[$child->id]['is_variant'] ) $checked='checked';
@@ -310,7 +310,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		');
 
 		// 'custom_param['.$keys.']'
-		//print_r($param);
+
 		//dump($param);
 		//"is_variant":"1","attribute1":"Red","attribute2":"20 cm","attribute3":"10","attribute4":"10"
 
@@ -422,7 +422,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 			// find the selected child
 			foreach ( $fields['child'] as $childId => $child ) {
-				//print_r($child);
+
 				$count = 0;
 				$total = count($pluginParam);
 				foreach ( $pluginParam['stockable'] as $key => $attribute ) {
@@ -474,7 +474,6 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			$fields = json_decode($productCustomsPrice->custom_param,true);
 			// find the selected child
 			foreach ( $fields['child'] as $childId => $child ) {
-				//print_r($child);
 				$count = 0;
 				$total = count($customVariant);
 				foreach ( $customVariant as $key => $attribute ) {
