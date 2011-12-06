@@ -561,8 +561,9 @@ class VirtueMartModelOrders extends VmModel {
 			} else {
 				$_orderData->user_currency_rate = 1.0;
 			}
-
 		}
+		$_orderData->order_currency = $this->getVendorCurrency($_orderData->virtuemart_vendor_id);
+
 		$_orderData->virtuemart_paymentmethod_id = $_cart->virtuemart_paymentmethod_id;
 		$_orderData->virtuemart_shipmentmethod_id = $_cart->virtuemart_shipmentmethod_id;
 
@@ -591,11 +592,19 @@ class VirtueMartModelOrders extends VmModel {
 	}
 
 
-	private getCurrencyIsoCode($vmCode){
-
-		$q = 'SELECT * `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$vmCode.'" ';
+	private getVendorCurrencyIsoCode($vendorId){
+		$q = 'SELECT `vendor_currency` `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`="'.$vendorId.'" ';
 		$db = &JFactory::getDBO();
-		$db->setQuery('');
+		$db->setQuery($q);
+		$vendorCurrency =  $db->loadResult();
+		return $this->getCurrencyIsoCode($vendorCurrency);
+	}
+
+	private getCurrencyIsoCode($vmCode){
+		$q = 'SELECT `currency_numeric_code` `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$vmCode.'" ';
+		$db = &JFactory::getDBO();
+		$db->setQuery($q);
+		return $db->loadResult();
 	}
 
 	/**
