@@ -96,31 +96,33 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Valerie Isaksen
 	 * @author Max Milbers
 	 */
-	public function plgVmDisplayListFE($psType, VirtueMartCart $cart, $selected = 0) {
+	public function plgVmDisplayListFE($psType, VirtueMartCart $cart, $selected = 0,&$htmlIn) {
 		if (!$this->selectedThisType($psType)) {
-			return null;
+			return false;
 		}
 		if ($this->getPluginMethods($cart->vendorId) === 0) {
 			if (empty($this->_name)) {
 				$app = JFactory::getApplication();
 				$app->enqueueMessage(JText::_('COM_VIRTUEMART_CART_NO_' . strtoupper($this->_psType)));
-				return;
+				return false;
 			} else {
-				return;
+				return false;
 			}
 		}
+
 		$html = array();
 		$method_name = $this->_psType . '_name';
-
 		foreach ($this->methods as $method) {
 			if ($this->checkConditions($cart, $method, $cart->pricesUnformatted)) {
 				$methodSalesPrice = $this->calculateSalesPrice($cart, $method, $cart->pricesUnformatted);
 				$method->$method_name = $this->renderPluginName($method);
 				$html [] = $this->getPluginHtml($method, $selected, $methodSalesPrice);
+
 			}
 		}
+		$htmlIn[] = $html;
 
-		return $html;
+		return true;
 	}
 
 	/*
@@ -663,7 +665,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @param $plugin plugin
 	*/
 
-	 protected function renderPluginName($plugin) {
+	protected function renderPluginName($plugin) {
 		$return = '';
 		$plugin_name = $this->_psType . '_name';
 		$plugin_desc = $this->_psType . '_desc';
@@ -932,7 +934,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			} elseif ($returnValue == 2 )   {
 				$cart->_confirmDone = false;
 			        $cart->setCartIntoSession();
-			        JRequest::setVar('html' , $html);
+				JRequest::setVar('html' , $html);
 
 			} elseif ($returnValue == 0 )   {
 				// error while processing the payment

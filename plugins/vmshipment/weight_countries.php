@@ -325,8 +325,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @author Valerie Isaksen
      * @author Max Milbers
      */
-    public function plgVmDisplayListFE($psType, VirtueMartCart $cart, $selected = 0) {
-	return parent::plgVmDisplayListFE($psType, $cart, $selected);
+    public function plgVmDisplayListFE($psType, VirtueMartCart $cart, $selected = 0,&$htmlIn) {
+	return parent::plgVmDisplayListFE($psType, $cart, $selected,$htmlIn);
     }
 
     /*

@@ -215,21 +215,23 @@ class VirtueMartViewCart extends JView {
 			return;
 		}
 		$selectedShipment = (empty($this->cart->virtuemart_shipmentmethod_id) ? 0 : $this->cart->virtuemart_shipmentmethod_id);
+
+		$shipments_shipment_rates = array();
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
 		$dispatcher = JDispatcher::getInstance();
-		$shipments_shipment_rates = $dispatcher->trigger('plgVmDisplayListFE', array('shipment','cart' => $this->cart, 'selectedShipment' => $selectedShipment));
+		$shipments_shipment_rates = $dispatcher->trigger('plgVmDisplayListFE', array('shipment',$this->cart, $selectedShipment, &$shipments_shipment_rates));
 		// if no shipment rate defined
 		$found_shipment_method = false;
-		vmdebug('$shipments_shipment_rates',$shipments_shipment_rates);
-		foreach ($shipments_shipment_rates as $shipment_shipment_rates) {
-			if (is_array($shipment_shipment_rates)) {
-				foreach ($shipment_shipment_rates as $shipment_shipment_rate) {
-					$found_shipment_method = true;
-					break;
-				}
-			}
-		}
+// 		vmdebug('$shipments_shipment_rates',$shipments_shipment_rates);
+// 		foreach ($shipments_shipment_rates as $shipment_shipment_rates) {
+// 			if (is_array($shipment_shipment_rates)) {
+// 				foreach ($shipment_shipment_rates as $shipment_shipment_rate) {
+// 					$found_shipment_method = true;
+// 					break;
+// 				}
+// 			}
+// 		}
 /*		if (!$found_shipment_method) {
 // 			$link=''; // todo
 // 			$admintext = ('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_FITTING_ADMIN', '<a href="'.$link.'">'.$link.'</a>')
@@ -268,18 +270,22 @@ $shipment_not_found_text = JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBL
 
 		$selectedPayment = empty($this->cart->virtuemart_paymentmethod_id) ? 0 : $this->cart->virtuemart_paymentmethod_id;
 
+		$paymentplugins_payments = array();
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
-		$paymentplugins_payments = $dispatcher->trigger('plgVmDisplayListFE', array('payment','cart' => $this->cart, 'checked' => $selectedPayment));
+		$paymentplugins_return = $dispatcher->trigger('plgVmDisplayListFE', array('payment',$this->cart, $selectedPayment, &$paymentplugins_payments));
+// 		vmdebug('$paymentplugins_payments',$paymentplugins_payments);
 		// if no payment defined
 
-		$found_payment_method = false;
-		foreach ($paymentplugins_payments as $paymentplugin_payments) {
+// 		$found_payment_method = false;
+		foreach ($paymentplugins_return as $paymentplugin_payments) {
 			if (is_array($paymentplugin_payments)) {
 				foreach ($paymentplugin_payments as $paymentplugin_payment) {
-					$found_payment_method = true;
-					break;
+					if($paymentplugin_payment){
+						$found_payment_method = true;
+						break;
+					}
 				}
 			}
 		}
@@ -288,6 +294,7 @@ $shipment_not_found_text = JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBL
 		    $link=''; // todo
 		    $payment_not_found_text = JText::sprintf('COM_VIRTUEMART_CART_NO_PAYMENT_METHOD_PUBLIC', '<a href="'.$link.'">'.$link.'</a>');
 		}
+
 		$this->assignRef('payment_not_found_text', $payment_not_found_text);
 		$this->assignRef('paymentplugins_payments', $paymentplugins_payments);
 		$this->assignRef('found_payment_method', $found_payment_method);
