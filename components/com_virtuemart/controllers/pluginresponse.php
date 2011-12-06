@@ -183,43 +183,12 @@ if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php
 	JPluginHelper::importPlugin('vmpayment');
 
 	$dispatcher = JDispatcher::getInstance();
-	$returnValues = $dispatcher->trigger('plgVmOnNotification', array('payment',  'return_context' => &$return_context, 'virtuemart_order_id' => &$virtuemart_order_id, 'new_status' => &$new_status));
+	$returnValues = $dispatcher->trigger('plgVmOnNotification', array('payment'));
 
-	foreach ($returnValues as $returnValue) {
-	    if ($returnValue !== null) {
-		$this->emptyCart($return_context);
-		if ($virtuemart_order_id) {
-		    // send the email only if payment has been accepted
-		    if (!class_exists('VirtueMartModelOrders'))
-			require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-		    $modelOrder = new VirtueMartModelOrders();
-		    $orders[$virtuemart_order_id]['order_status'] = $new_status;
-		    $orders[$virtuemart_order_id]['virtuemart_order_id'] = $virtuemart_order_id;
-		    $orders[$virtuemart_order_id]['customer_notified']  = 0;
-		     $orders[$virtuemart_order_id]['comments']  = '';
-		    $modelOrder->updateOrderStatus($orders); // take directly the session from the DB
-		    // remove vmcart
-		}
-		break; // This was the active plugin, so there's nothing left to do here.
-	    }
-	}
 	// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
     }
 
-    function emptyCart($session_name) {
 
-	$sessionDatabase = new JSessionStorageDatabase();
-	if (!$sessionDatabase->read($session_name)) {
-	    // session does not exist, should not be created
-	    return false;
-	}
-
-	$options['name'] = $session_name;
-	//$session = JFactory::getSession($options);
-	$cart = VirtueMartCart::getCart($options);
-	$cart->emptyCart();
-	return true;
-    }
 
 }
 

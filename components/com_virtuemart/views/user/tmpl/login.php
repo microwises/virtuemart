@@ -56,7 +56,7 @@ if ($this->show  && $this->JUser->id === 0  ) {
 	    <fieldset class="input">
 	    <LEGEND><?php echo JText::_('COM_VIRTUEMART_ORDER_ANONYMOUS') ?></LEGEND>
 
-	    <form action="<?php echo JRoute::_( 'index.php?option=com_virtuemart&view=cart', true, 0); ?>" method="post" name="com-login" >
+	    <form action="<?php echo JRoute::_( 'index.php', true, 0); ?>" method="post" name="com-login" >
 
 	    	<div class="width30 floatleft" id="com-form-order">
 	    		<label for="order_number"><?php echo JText::_('COM_VIRTUEMART_ORDER_NUMBER') ?></label><br />
@@ -81,7 +81,7 @@ if ($this->show  && $this->JUser->id === 0  ) {
 
 <?php   }
 ?>
-    <form action="<?php echo JRoute::_('index.php', true, 0); ?>" method="post" name="com-login" >
+    <form action="index.php" method="post" name="com-login" >
         <p><?php echo JText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM'); ?></p>
 
         <p class="width30 floatleft" id="com-form-login-username">

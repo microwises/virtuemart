@@ -512,10 +512,10 @@ class VirtueMartCart {
 	 * @param array $cart the cart to get the products for
 	 * @return array of product objects
 	 */
-	public function getCartPrices() {
+	public function getCartPrices($checkAutomaticSelected=true) {
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
-		$prices = $calculator->getCheckoutPrices($this);
+		$prices = $calculator->getCheckoutPrices($this, $checkAutomaticSelected);
 
 		return $prices;
 	}
@@ -783,7 +783,7 @@ class VirtueMartCart {
 			JPluginHelper::importPlugin('vmshipment');
 			//Add a hook here for other shipment methods, checking the data of the choosed plugin
 			$dispatcher = JDispatcher::getInstance();
-			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckData', array('shipment','cart' => $this));
+			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckData', array('shipment', $this));
 
 			foreach ($retValues as $retVal) {
 				if ($retVal === true) {
@@ -804,7 +804,7 @@ class VirtueMartCart {
 			JPluginHelper::importPlugin('vmpayment');
 			//Add a hook here for other payment methods, checking the data of the choosed plugin
 			$dispatcher = JDispatcher::getInstance();
-			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckData', array('payment','cart' => $this));
+			$retValues = $dispatcher->trigger('plgVmOnCheckoutCheckData', array('payment', $this));
 
 			foreach ($retValues as $retVal) {
 				if ($retVal === true) {
@@ -959,54 +959,12 @@ class VirtueMartCart {
 			$session = JFactory::getSession();
 			$return_context = $session->getId();
 // 			$returnValues = $dispatcher->trigger('plgVmConfirmedOrderRenderForm', array('payment',$order_number, $cart , $return_context, &$html, &$new_status));
-			$returnValues = $dispatcher->trigger('plgVmConfirmedOrder', array('payment',$this, $order, $return_context));
+			$returnValues = $dispatcher->trigger('plgVmConfirmedOrder', array('payment',$this, $order));
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
 			// 1 = cart should be emptied, 0 cart should not be emptied
 
-/*			foreach ($returnValues as $returnValue) {
-				if ($returnValue !== null  ) {
-					if ($returnValue == 1 )   {
-						//We delete the old stuff
 
-						 // send the email only if payment has been accepted
-						// update status?
-						if ($new_status) {
-						    if (!class_exists('VirtueMartModelOrders'))
-							require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-						    $modelOrder = new VirtueMartModelOrders();
-						    $orders[$orderID]['order_status'] = $new_status;
-						    $orders[$orderID]['virtuemart_order_id'] = $orderID;
-						    $orders[$orderID]['customer_notified'] = 0;
-						    $orders[$orderID]['comments'] = '';
-						    $modelOrder->updateOrderStatus($orders, $orderID); //
-						}
-						 $this->sentOrderConfirmedEmail($order->getOrder($orderID));
-							 //We delete the old stuff
-						$this->products = array();
-						$this->_inCheckOut = false;
-						$this->_dataValidated = false;
-						$this->_confirmDone = false;
-						$this->customer_comment = '';
-						$this->couponCode = '';
-						$this->tosAccepted = false;
-						$this->setCartIntoSession();
-						JRequest::setVar('html' , $html);
-						// payment echos form, but cart should not be emptied, data is valid
-					} elseif ($returnValue == 2 )   {
-					    JRequest::setVar('html' , $html);
-
-					} elseif ($returnValue == 0 )   {
-					    // error while processing the payment
-						$mainframe = JFactory::getApplication();
-						$mainframe->enqueueMessage($html);
-						$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'),JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
-
-					}
-					break;
-				}
-				//Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
-			}*/
 		}
 
 
@@ -1083,11 +1041,11 @@ class VirtueMartCart {
 	 * @author Max Milbers
 	 * @access public
 	 */
-	public function prepareCartData(){
+	public function prepareCartData($checkAutomaticSelected=true){
 
 		/* Get the products for the cart */
 		$prices = array();
-		$product_prices = $this->getCartPrices();
+		$product_prices = $this->getCartPrices($checkAutomaticSelected);
 		if (empty($product_prices)) return;
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
@@ -1186,16 +1144,16 @@ class VirtueMartCart {
 	*
 	* @author Valérie Isaksen
 	*/
-	function CheckAutomaticSelectedShipment($cart_prices) {
+	function CheckAutomaticSelectedShipment($cart_prices, $checkAutomaticSelected ) {
 
 		$nbShipment = 0;
 		$virtuemart_shipmentmethod_id=0;
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
 		JPluginHelper::importPlugin('vmshipment');
-		if (VmConfig::get('automatic_shipment',1) ) {
+		if (VmConfig::get('automatic_shipment',1) && $checkAutomaticSelected) {
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelected', array('shipment','cart' => $this,$cart_prices));
+			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelected', array('shipment',  $this,$cart_prices));
 			foreach ($returnValues as $returnValue) {
 				if ((int) $returnValue ) {
 					$nbShipment ++;
@@ -1225,20 +1183,20 @@ class VirtueMartCart {
 	*
 	* @author Valérie Isaksen
 	*/
-	function CheckAutomaticSelectedPayment($cart_prices) {
+	function CheckAutomaticSelectedPayment($cart_prices,  $checkAutomaticSelected=true) {
 
 		$nbPayment = 0;
 		$virtuemart_paymentmethod_id=0;
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
-		if (VmConfig::get('automatic_payment',1) ) {
+		if (VmConfig::get('automatic_payment',1) && $checkAutomaticSelected ) {
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelected', array('payment','cart' => $this, $cart_prices));
+			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelected', array('payment', $this, $cart_prices));
 			foreach ($returnValues as $returnValue) {
-				//if ((int) $returnValue ) {
+				 if ((int) $returnValue ) {
 					$nbPayment ++;
 					if($returnValue) $virtuemart_paymentmethod_id = $returnValue;
-				//}
+				 }
 			}
 			if ($nbPayment==1 && $virtuemart_paymentmethod_id) {
 				$this->virtuemart_paymentmethod_id = $virtuemart_paymentmethod_id;
@@ -1270,7 +1228,7 @@ class VirtueMartCart {
 
 		JPluginHelper::importPlugin('vmshipment');
 		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnCheckShipmentIsValid', array('cart' => $this));
+		$returnValues = $dispatcher->trigger('plgVmOnCheckShipmentIsValid', array( $this));
 		foreach ($returnValues as $returnValue) {
 			$shipmentValid += $returnValue;
 		}
@@ -1446,7 +1404,7 @@ class VirtueMartCart {
 	function prepareAjaxData(){
 		// Added for the zone shipment module
 		//$vars["zone_qty"] = 0;
-		$this->prepareCartData();
+		$this->prepareCartData(false);
 		$weight_total = 0;
 		$weight_subtotal = 0;
 

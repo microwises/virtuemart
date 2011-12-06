@@ -76,7 +76,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      *
      * @author Valérie Isaksen
      */
-    function plgVmConfirmedOrder($psType,  $cart, $order, $return_context) {
+    function plgVmConfirmedOrder($psType,  $cart, $order) {
 	if (!$this->selectedThisType($psType)) {
 	    return null;
 	}
@@ -213,7 +213,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      *
      */
     function plgVmOnStoreInstallPluginTable($psType, $jplugin_id) {
-	return parent::plgVmOnStoreInstallPluginTable($psType, $jplugin_id);
+	return parent::OnStoreInstallPluginTable($psType, $jplugin_id);
     }
 
     /**
@@ -228,7 +228,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      *
      */
     public function plgVmOnSelectCheck($psType, VirtueMartCart $cart) {
-	return parent::plgVmOnSelectCheck($psType, $cart);
+	return parent::OnSelectCheck($psType, $cart);
     }
 
     /**
@@ -244,7 +244,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      * @author Max Milbers
      */
     public function plgVmDisplayListFE($psType, VirtueMartCart $cart, $selected = 0,&$htmlIn) {
-	return parent::plgVmDisplayListFE($psType, $cart, $selected,$htmlIn);
+	return parent::DisplayListFE($psType, $cart, $selected,$htmlIn);
     }
 
     /*
@@ -261,7 +261,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      */
 
     public function plgVmOnSelectedCalculatePrice($psType, VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
-	return parent::plgVmOnSelectedCalculatePrice($psType, $cart, $cart_prices, $cart_prices_name);
+	return parent::OnSelectedCalculatePrice($psType, $cart, $cart_prices, $cart_prices_name);
     }
 
     /**
@@ -274,7 +274,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      *
      */
     function plgVmOnCheckAutomaticSelected($psType, VirtueMartCart $cart, array $cart_prices = array()) {
-	return parent::plgVmOnCheckAutomaticSelected($psType, $cart, $cart_prices);
+	return parent::OnCheckAutomaticSelected($psType, $cart, $cart_prices);
     }
 
     /**
@@ -287,7 +287,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      * @author Valerie Isaksen
      */
     protected function plgVmOnShowOrderFE($psType, $virtuemart_order_id) {
-	return parent::plgVmOnShowOrderFE($psType, $virtuemart_order_id);
+	return parent::nShowOrderFE($psType, $virtuemart_order_id);
     }
 
     /**
@@ -296,11 +296,11 @@ class plgVmPaymentStandard extends vmPSPlugin {
      *
      * @return boolean True when the data was valid, false otherwise. If the plugin is not activated, it should return null.
      * @author Max Milbers
-     */
-    public function plgVmOnCheckoutCheckData($psType, VirtueMartCart $cart) {
-	return parent::plgVmOnCheckoutCheckData($psType, $cart);
-    }
 
+    public function plgVmOnCheckoutCheckData($psType, VirtueMartCart $cart) {
+	return null;
+    }
+ */
     /**
      * This method is fired when showing when priting an Order
      * It displays the the payment method-specific data.
@@ -311,11 +311,11 @@ class plgVmPaymentStandard extends vmPSPlugin {
      * @author Valerie Isaksen
      */
     function plgVmOnShowOrderPrint($order_number, $method_id) {
-	return parent::plgVmOnShowOrderPrint($order_number, $method_id);
+	return parent::nShowOrderPrint($order_number, $method_id);
     }
 
     function plgVmGetDeclaredPluginParams($psType, $name, $id) {
-	return parent::plgVmGetDeclaredPluginParams($psType, $name, $id);
+	return parent::GetDeclaredPluginParams($psType, $name, $id);
     }
 
     //Notice: We only need to add the events, which should work for the specific plugin, when an event is doing nothing, it should not be added
@@ -389,7 +389,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      * @author Valerie Isaksen
      *
      *
-      public function plgVmOnNotification($psType, &$return_context, &$virtuemart_order_id, &$new_status) {
+      public function plgVmOnNotification($psType) {
       return null;
       }
 

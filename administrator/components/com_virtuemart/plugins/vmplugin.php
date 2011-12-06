@@ -240,7 +240,7 @@ abstract class vmPlugin extends JPlugin {
 	* @author Valérie Isaksen
 	* @author Max Milbers
 	*/
-	protected function plgVmOnStoreInstallPluginTable($psType) {
+	protected function OnStoreInstallPluginTable($psType) {
 
 		if($psType==$this->_psType){
 			$query = $this->getVmPluginCreateTableSQL();
@@ -248,8 +248,8 @@ abstract class vmPlugin extends JPlugin {
 				$db = JFactory::getDBO();
 				$db->setQuery($query);
 				if (!$db->query()) {
-					JError::raiseWarning(1, $this->_name.'::plgVmOnStoreInstallPluginTable: ' . JText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $_db->stderr(true));
-					echo $this->_name.'::plgVmOnStoreInstallPluginTable: ' . JText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $_db->stderr(true);
+					JError::raiseWarning(1, $this->_name.'::OnStoreInstallPluginTable: ' . JText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $_db->stderr(true));
+					echo $this->_name.'::OnStoreInstallPluginTable: ' . JText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $_db->stderr(true);
 				}
 			}
 		}
@@ -304,9 +304,9 @@ abstract class vmPlugin extends JPlugin {
 
 	}
 
-	protected function plgVmGetDeclaredPluginParams($psType,$name,$id){
+	protected function GetDeclaredPluginParams($psType,$name,$id){
 		if($this->selectedThis($psType,$name,$id)){
-// 			vmdebug('plgVmGetDeclaredPluginParams return '.$this->_xParams,$this->_varsToPushParam);
+// 			vmdebug('GetDeclaredPluginParams return '.$this->_xParams,$this->_varsToPushParam);
 			return array($this->_xParams,$this->_varsToPushParam);
 		} else {
 			return 0;
@@ -388,7 +388,7 @@ abstract class vmPlugin extends JPlugin {
 		if($loggable)	$table->setLoggable();
 
 		if(!$this->_tableChecked){
-			$this->plgVmOnStoreInstallPluginTable($this->_psType);
+			$this->OnStoreInstallPluginTable($this->_psType);
 			$this->_tableChecked = true;
 		}
 

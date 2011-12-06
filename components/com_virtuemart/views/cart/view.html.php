@@ -220,32 +220,16 @@ class VirtueMartViewCart extends JView {
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
 		$dispatcher = JDispatcher::getInstance();
-		$shipments_shipment_rates = $dispatcher->trigger('plgVmDisplayListFE', array('shipment',$this->cart, $selectedShipment, &$shipments_shipment_rates));
+		$returnValues = $dispatcher->trigger('plgVmDisplayListFE', array('shipment',$this->cart, $selectedShipment, &$shipments_shipment_rates));
 		// if no shipment rate defined
 		$found_shipment_method = false;
-// 		vmdebug('$shipments_shipment_rates',$shipments_shipment_rates);
-// 		foreach ($shipments_shipment_rates as $shipment_shipment_rates) {
-// 			if (is_array($shipment_shipment_rates)) {
-// 				foreach ($shipment_shipment_rates as $shipment_shipment_rate) {
-// 					$found_shipment_method = true;
-// 					break;
-// 				}
-// 			}
-// 		}
-/*		if (!$found_shipment_method) {
-// 			$link=''; // todo
-// 			$admintext = ('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_FITTING_ADMIN', '<a href="'.$link.'">'.$link.'</a>')
-			$shipment_not_found_text = vmInfo($admintext,'COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');;
-		}*/
-		/*
-	  $layoutName='select_shipment'; // by dafault should be the same
-		if (!$found_shipment_method) {
-		//  change the view?
-		$layoutName='default';
-		$this->assignRef('select_shipment_text',JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD'), JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC'));
+		foreach ($returnValues as $returnValue) {
+		    if($returnValue){
+			    $found_shipment_method = true;
+			    break;
+		    }
 		}
-	 */
-$shipment_not_found_text = JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');
+		$shipment_not_found_text = JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');
 		$this->assignRef('shipment_not_found_text', $shipment_not_found_text);
 		$this->assignRef('shipments_shipment_rates', $shipments_shipment_rates);
 		$this->assignRef('found_shipment_method', $found_shipment_method);
@@ -274,20 +258,14 @@ $shipment_not_found_text = JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBL
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
-		$paymentplugins_return = $dispatcher->trigger('plgVmDisplayListFE', array('payment',$this->cart, $selectedPayment, &$paymentplugins_payments));
-// 		vmdebug('$paymentplugins_payments',$paymentplugins_payments);
+		$returnValues = $dispatcher->trigger('plgVmDisplayListFE', array('payment',$this->cart, $selectedPayment, &$paymentplugins_payments));
 		// if no payment defined
-
-// 		$found_payment_method = false;
-		foreach ($paymentplugins_return as $paymentplugin_payments) {
-			if (is_array($paymentplugin_payments)) {
-				foreach ($paymentplugin_payments as $paymentplugin_payment) {
-					if($paymentplugin_payment){
-						$found_payment_method = true;
-						break;
-					}
-				}
-			}
+ 		$found_payment_method = false;
+		foreach ($returnValues as $returnValue) {
+		    if($returnValue){
+			    $found_payment_method = true;
+			    break;
+		    }
 		}
 
 		if (!$found_payment_method) {
