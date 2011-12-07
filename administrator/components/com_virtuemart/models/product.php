@@ -131,8 +131,8 @@ class VirtueMartModelProduct extends VmModel {
 		if($app->isSite() && !VmConfig::get('use_as_catalog',0) && !VmConfig::get('show_out_of_stock_products',0) ){
 			$where[] = ' p.`product_in_stock`>"0" ';
 		}
-		$keyword = vmRequest::uword('keyword', null, ' ');
-		if ( $keyword !== null and $group ===false) {
+		$keyword = vmRequest::uword('keyword', 0, ' ');
+		if ( $keyword !== "0" and $group ===false) {
 			$groupBy = 'group by p.`virtuemart_product_id`';
 
 			//			$keyword = trim(preg_replace('/\s+/', '%', $keyword), '%');
@@ -329,7 +329,7 @@ class VirtueMartModelProduct extends VmModel {
 		} else {
 			$whereString = '';
 		}
-		// echo $joinedTables.' joined ? '.$select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir;		/* jexit();  */
+		echo $joinedTables.' joined ? '.$select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir;		/* jexit();  */
 		$product_ids =  $this->exeSortSearchListQuery(2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
 
 		// This makes products searchable, we decided that this is not good, because variant childs appear then in lists
