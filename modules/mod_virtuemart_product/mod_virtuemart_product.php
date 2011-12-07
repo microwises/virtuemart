@@ -67,7 +67,7 @@ if (!($output = $cache->get($key))) {
 	}
 	/* load the template */
 	require(JModuleHelper::getLayoutPath('mod_virtuemart_product'));
-	$output = ob_get_contents();
+	$output = ob_get_clean();
 	$cache->store($output, $key);
 }
 echo $output;

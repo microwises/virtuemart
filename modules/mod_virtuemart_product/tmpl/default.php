@@ -23,7 +23,7 @@ if ($display_style =="div") { ?>
 	// 		if ($product->prices['salesPriceWithDiscount']>0) echo $currency->priceDisplay($product->prices['salesPriceWithDiscount']);
 			if (!empty($product->prices['salesPriceWithDiscount']) ) echo $currency->createPriceDiv('salesPriceWithDiscount','',$product->prices,true);
 		}
-
+		if ($show_addtocart) echo mod_virtuemart_product::addtocart($product);
 		?>
 	</div>
 	<?php
