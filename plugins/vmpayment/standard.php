@@ -72,11 +72,11 @@ class plgVmPaymentStandard extends vmPSPlugin {
     }
 
     /**
-     * Reimplementation of vmPlugin::plgVmConfirmedOrderPayment()
+     * Reimplementation of vmPlugin::plgVmConfirmedOrder()
      *
      * @author Valérie Isaksen
      */
-    function plgVmConfirmedOrderPayment($cart, $order) {
+    function plgVmConfirmedOrder($cart, $order) {
 
 	if (!($method = $this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
@@ -93,7 +93,6 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$payment_info = $method->payment_info;
 
 	$html = "";
-	$new_status = false;
 
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
@@ -123,7 +122,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 
 	$html .= '</table>' . "\n";
 
-	return $this->processConfirmedOrderPaymentResponse(true, $cart, $order, $html, $new_status);
+	return $this->processConfirmedOrderPaymentResponse(true, $cart, $order, $html);
 // 		return true;  // empty cart, send order
     }
 
@@ -131,10 +130,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
      * Display stored payment data for an order
      * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderBEPayment()
      */
-    function plgVmOnShowOrderBEPayment($psType, $virtuemart_order_id, $virtuemart_payment_id) {
-	if (!$this->selectedThisByMethodId($psType, $virtuemart_payment_id)) {
-	    return null; // Another method was selected, do nothing
-	}
+    function plgVmOnShowOrderBEPayment( $virtuemart_order_id, $virtuemart_payment_id) {
+	
 	$db = JFactory::getDBO();
 	$q = 'SELECT * FROM `' . $this->_tablename . '` '
 		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;

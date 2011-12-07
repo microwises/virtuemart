@@ -93,7 +93,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	return $SQLfields;
     }
 
-    function plgVmConfirmedOrderPayment(  $cart, $order) {
+    function plgVmConfirmedOrder (  $cart, $order) {
 
 	if (!($method = $this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
@@ -104,7 +104,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$session = JFactory::getSession();
 	$return_context = $session->getId();
 	$this->_debug = $method->debug;
-	$this->logInfo('plgVmConfirmedOrderPaymentRenderPaymentForm order number: ' . $order['details']['BT']->order_number, 'message');
+	$this->logInfo('plgVmConfirmedOrder order number: ' . $order['details']['BT']->order_number, 'message');
 
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );

@@ -115,26 +115,16 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @return mixed Null when this method was not selected, otherwise true
      * @author Valerie Isaksen
      */
-    function plgVmOnConfirmedOrderStoreData($psType, $orderID, VirtueMartCart $cart, $priceData) {
-	if (!$this->selectedThisType($psType)) {
-	    return null;
-	}
+    function plgVmConfirmedOrder(   VirtueMartCart $cart, $order) {
+
 	if (!($method = $this->getVmPluginMethod($cart->virtuemart_shipmentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
 	if (!$this->selectedThisElement($method->shipment_element)) {
 	    return false;
 	}
-// 	if (!class_exists('JParameter'))
-// 	    require(JPATH_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
 
-	if (!class_exists('VirtueMartModelOrders'))
-	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-
-// 	$params = new JParameter($shipment->shipment_params);
-
-	$values['order_number'] = VirtueMartModelOrders::getOrderNumber($orderID);
-	$values['virtuemart_order_id'] = $orderID;
+	$values['order_number'] = $order['details']['BT']->order_number;
 	$values['shipment_id'] = $cart->virtuemart_shipmentmethod_id;
 	$values['shipment_name'] = parent::renderPluginName($method);
 	$values['order_weight'] = $this->getOrderWeight($cart, $method->weight_unit);
@@ -142,10 +132,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	$values['shipment_cost'] = $method->cost;
 	$values['shipment_package_fee'] = $method->package_fee;
 	$values['tax_id'] = $method->tax_id;
+	$this->storePSPluginInternalData($values);
 
-// 		$this->writeData($values, $this->_tablename);
-// 	$this->storePluginInternalData($shipment);
-	$this->storePluginInternalData($values);
 	return true;
     }
 
@@ -368,23 +356,6 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	return null;
     }
 */
-    /**
-     * plgVmConfirmedOrderRenderForm
-     * This event is fired after the order has been created
-     * All plugins *must* reimplement this method.
-     * NOTE for Plugin developers:
-     *  If the plugin is NOT actually executed (not the selected payment method), this method must return NULL
-     * @param the actual order number. IT IS THE ORDER NUMBER THAT MuST BE SENT TO THE FORM. DONT PUT virtuemart_order_id which is a primary key for the order table.
-     * @param orderData
-     * @param contains the session id. Should be sent to the form. And the payment will sent it back.
-     *                  Will be used to empty the cart if necessary, and semnd the order email.
-     * @param the payment form to display. But in some case, the bank can be called directly.
-     * @param false if it should not be changed, otherwise new staus
-     * @return returns 1 if the Cart should be deleted, and order sent
-     */
-// 	public function plgVmConfirmedOrderRenderForm($psType, $order_number, VirtueMartCart $cart, $return_context, &$html, &$new_status) {
-// 		return parent::ConfirmedOrderRenderForm($psType, $order_number,  $cart, $return_context, $html, $new_status);
-// 	}
 
     /**
      * This method is fired when showing when priting an Order

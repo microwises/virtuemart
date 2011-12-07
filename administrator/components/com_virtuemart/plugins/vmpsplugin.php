@@ -540,18 +540,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		return $db->loadResult();
 	}
 */
-	/**
-	 *
-	 * @param int $order_id The order_id being processed
-	 * @param object $cart  the cart
-	 * @param array $priceData Price information for this order
-	 * @return mixed Null when this method was not selected, otherwise true
-	 *
 
-	function OnConfirmedOrderStoreData($psType, $orderID, $cart, $priceData) {
-		return null;
-	}
-*/
 	/**
 	 * Extends the standard function in vmplugin. Extendst the input data by virtuemart_order_id
 	 * Calls the parent to execute the write operation
@@ -883,7 +872,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 
-	public function processConfirmedOrderPaymentResponse($returnValue, $cart, $order, $html,$new_status){
+	public function processConfirmedOrderPaymentResponse($returnValue, $cart, $order, $html,$new_status='P'){
 		if ($returnValue !== null  ) {
 			if ($returnValue == 1 )   {
 				//We delete the old stuff
@@ -901,6 +890,7 @@ abstract class vmPSPlugin extends vmPlugin {
 					$orders[$orderID]['comments'] = '';
 					$modelOrder->updateOrderStatus($orders, $orderID); //
 				}
+
 				$cart->sentOrderConfirmedEmail($order);
 				//We delete the old stuff
 				$cart->emptyCart();

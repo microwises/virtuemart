@@ -541,7 +541,7 @@ class VirtueMartModelOrders extends VmModel {
 		$_orderData->order_status = 'P';
 // 		if (isset($_cart->virtuemart_currency_id)) {
 		if (isset($_cart->pricesCurrency)) {
-			$_orderData->user_currency_id = $_cart->pricesCurrency //$this->getCurrencyIsoCode($_cart->pricesCurrency);
+			$_orderData->user_currency_id = $_cart->pricesCurrency ;//$this->getCurrencyIsoCode($_cart->pricesCurrency);
 			$currency = CurrencyDisplay::getInstance();
 			if(!empty($currency->exchangeRateShopper)){
 				$_orderData->user_currency_rate = $currency->exchangeRateShopper;
@@ -696,20 +696,23 @@ class VirtueMartModelOrders extends VmModel {
 */
 
 	function handleStockAfterStatusChanged($newState,$products,$oldState = 'P'){
-// after cart
-		foreach ($products as $prod) {
-			$this->handleStockAfterStatusChangedPerProduct($newState,$oldState,$prod,$prod->quantity);
+	    if (VmConfig::get('check_stock', true)) {
+		    foreach ($products as $prod) {
+			    $this->handleStockAfterStatusChangedPerProduct($newState,$oldState,$prod,$prod->quantity);
+		    }
 		}
 	}
 
 
 
 	function handleStockAfterStatusChangedPerProduct($newState, $oldState,$product, $quantity) {
-
+		if (VmConfig::get('check_stock', false)) {
+		    return;
+		}
 		if($newState == $oldState) return;
 		$StatutWhiteList = array('P','C','X','R','S','N');
 		if(!in_array($oldState,$StatutWhiteList) or !in_array($newState,$StatutWhiteList)) {
-			vmError('The workflow for '.$newState.' or  '.$oldState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Cant process workflow, contact the shopowner status '.$newState);
+			vmError('The workflow for '.$newState.' or  '.$oldState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Can\'t process workflow, contact the shopowner. Status is'.$newState);
 			return ;
 			}
 		//vmdebug( 'updatestock qt :' , $quantity.' id :'.$productId);
@@ -718,7 +721,7 @@ class VirtueMartModelOrders extends VmModel {
 		// X 	Cancelled
 		// R 	Refunded
 		// S 	Shipped
-		// N 	New or comming from cart
+		// N 	New or coming from cart
 		//  TO have no product setted as ordered when added to cart simply delete 'P' FROM array Reserved
 		// don't set same values in the 2 arrays !!!
 		// stockOut is in normal case shipped product

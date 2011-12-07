@@ -68,10 +68,8 @@ class VirtueMartModelPaymentmethod extends VmModel{
   			JPluginHelper::importPlugin('vmpayment');
   			$dispatcher = JDispatcher::getInstance();
   			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsPayment',array($this->_data->payment_element,$this->_data->payment_jplugin_id,$this->_data));
-
+		}
   		if(!empty($this->_id)){
-
-
 
 			/* Add the paymentmethod shoppergroups */
 			$q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_paymentmethod_shoppergroups WHERE `virtuemart_paymentmethod_id` = "'.$this->_id.'"';
@@ -107,9 +105,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
      * @param string $noLimit True if no record count limit is used, false otherwise
 	 * @return object List of calculation rule objects
 	 */
-	public function getPayments($onlyPublished=false, $noLimit=false){
-
-
+	public function getPayments($onlyPublished=false, $noLimit=false) {
 		$where = array();
 		if ($onlyPublished) {
 			$where[] = ' `#__virtuemart_paymentmethods`.`published` = 1';
