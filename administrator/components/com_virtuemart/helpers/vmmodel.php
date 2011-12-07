@@ -641,7 +641,7 @@ class VmPagination extends JPagination {
 
 		// Make the option list
 		//for 3 = 3,6,12,24,60,90 rows, 4 rows, 6 rows
-		$sequence = VmConfig::get('pagination_sequence_'.$this->_perRow,0);
+		$sequence = VmConfig::get('pagination_sequence',0);
 		if(!empty($sequence)){
 			$sequenceArray = explode(',', $sequence);
 			foreach($sequenceArray as $items){
