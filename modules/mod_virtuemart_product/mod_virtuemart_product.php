@@ -50,10 +50,11 @@ if (!($output = $cache->get($key))) {
 
 
 
-	if (!$filter_category ) $category_id = null;
+	if ($filter_category ) $filter_category = TRUE;
 
 	$productModel = new VirtueMartModelProduct();
-	$products = 		$productModel->getProductListing($Product_group, $max_items);
+
+	$products = $productModel->getProductListing($Product_group, $max_items, $show_price, true, false,$filter_category);
 	$productModel->addImages($products);
 
 	$totalProd = 		count( $products);

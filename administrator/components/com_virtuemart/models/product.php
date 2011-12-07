@@ -703,7 +703,7 @@ class VirtueMartModelProduct extends VmModel {
 	 *
 	 * @author Max Milbers
 	 */
-	public function getProductListing($group = false, $nbrReturnProducts = false, $withCalc = true, $onlyPublished = true, $single = false){
+	public function getProductListing($group = false, $nbrReturnProducts = false, $withCalc = true, $onlyPublished = true, $single = false,$filterCategory= true){
 
 		$app = JFactory::getApplication();
 		if($app->isSite() ){
@@ -719,7 +719,8 @@ class VirtueMartModelProduct extends VmModel {
 			$front = false;
 		}
 
-		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', false );
+		if ( $filterCategory=== true) $virtuemart_category_id = JRequest::getInt('virtuemart_category_id', false );
+		else $virtuemart_category_id = false;
 		$ids = $this->sortSearchListQuery($onlyPublished, $virtuemart_category_id, $group, $nbrReturnProducts);
 
 		$products = $this->getProducts($ids, $front, $withCalc, $onlyPublished,$single);
