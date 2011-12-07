@@ -163,27 +163,23 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		return $html.'</div>';
     }
 
-	 public function plgVmGetProductStockToUpdateByCustom($item, $pluginParam, $productCustom) {
-		return $item ;
-	 }
-
 	/**
 	 * We must reimplement this triggers for joomla 1.7
 	 * vmplugin triggers note by Max Milbers
 	 */
 	protected function plgVmOnStoreInstallPluginTable($psType) {
-		parent::plgVmOnStoreInstallPluginTable($psType);
+		return parent::OnStoreInstallPluginTable($psType);
 	}
 
 	function plgVmGetDeclaredPluginParams($psType,$name,$id){
-		return parent::plgVmGetDeclaredPluginParams($psType,$name,$id);
+		return parent::GetDeclaredPluginParams($psType, $name, $id);
 	}
 
 	/**
 	 * Custom triggers note by Max Milbers
 	 */
 	function plgVmGetActiveCustomPlugin($virtuemart_custom_id,&$customPlugin){
-		parent::plgVmGetActiveCustomPlugin($virtuemart_custom_id,$customPlugin);
+		return parent::getActiveCustomPlugin($virtuemart_custom_id,$customPlugin);
 	}
 
 	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected,$row){
@@ -201,16 +197,12 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		}
 	}
 
-	public function plgVmDisplayInCartCustom($product,$productCustom, $row ,$view=''){
-		parent::plgVmDisplayInCartCustom($product,$productCustom, $row ,$view);
-	}
-
 	public function plgVmDisplayInOrderCustom(&$html,$item, $param,$productCustom, $row ,$view='FE'){
 		parent::plgVmDisplayInOrderCustom($html,$item, $param,$productCustom, $row ,$view);
 	}
 
 	public function plgVmCreateOrderLinesCustom(&$html,$item,$productCustom, $row ){
-		parent::plgVmCreateOrderLinesCustom($html,$item,$productCustom, $row );
+		parent:createOrderLinesCustom($html,$item,$productCustom, $row );
 	}
 }
 

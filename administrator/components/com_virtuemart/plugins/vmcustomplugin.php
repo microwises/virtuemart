@@ -55,7 +55,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 
 	}
 
-	function plgVmGetActiveCustomPlugin($virtuemart_custom_id, &$customPlugin){
+	function getActiveCustomPlugin($virtuemart_custom_id, &$customPlugin){
 
 		if($this->plugin = $this->selectedThisByMethodId($this->_psType,$virtuemart_custom_id)){
 
@@ -117,7 +117,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * @param array $data form data
 	 * @param int $id virtuemart_product_id
 	 */
-    function plgVmOnStoreProduct($data,$plugin_param){
+    function OnStoreProduct($data,$plugin_param){
 		
 		if (key($plugin_param)!==$this->_name) return ;
 		$key = key($plugin_param) ;
