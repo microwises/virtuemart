@@ -121,7 +121,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	 * @ idx plugin index
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::onDisplayProductFE()
 	 * @author Patrick Kohl
-	 * eg. name="customPlugin['.$idx.'][comment] save the comment in the cart & order
+	 *  Display product
 	 */
 	function plgVmOnDisplayProductFE($product,&$idx,&$group) {
 		// default return if it's not this plugin
@@ -139,72 +139,8 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 		$html .='<div>'.$group->custom_specification_default2.'</div>';
 		$html .='</div>';
 		$group->display .= $html;
-		// preventing 2 x load javascript
-
 
         return true;
-    }
-
-	function plgVmOnDisplayProductVariantFE($field,&$idx,&$group) {}
-	/**
-	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCartModule()
-	 * @author Patrick Kohl
-	 */
-	function plgVmOnViewCartModule( $product,$productCustom, $row,&$html) {
-		if (!$plgParam = $this->GetPluginInCart($product)) return '' ;		
-		if(!empty($plgParam['comment']) ){
-			return ' = '.$plgParam['comment'];
-		}
-		return '';
-    }
-
-	/**
-	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmplgVmOnViewCart()
-	 * @author Patrick Kohl
-	 */
-	function plgVmOnViewCart($product,$productCustom, $row,&$html) {
-		$comment ='';
-		// foreach($plgParam as $k => $item){
-			if(!empty($plgParam['comment']) ){
-				$comment .= ' = '.$plgParam['comment'];
-			}
-		// }
-// 		$comment = current($product->param);
-		$html  = '<div>';
-		$html .='<span>'.$comment.'</span>';
-		// $html .='<span>'.$param->Morecomment.'</span>';
-		return $html.'</div>';
-    }
-
-
-	/**
-	 *
-	 * vendor order display BE
-	 */
-	function plgVmDisplayInOrderBE($item,$productCustom, $row,$plgParam) {
-		if ($productCustom->custom_value != $this->_name) return '';
-		$comment ='';
-			if(!empty($plgParam['comment']) ){
-				$comment .= ' = '.$plgParam['comment'];
-			}
-		$html  = '<div>';
-		$html .='<span>'.$comment.'</span>';
-		return $html.'</div>';
-    }
-
-	/**
-	 *
-	 * shopper order display FE
-	 */
-	function plgVmDisplayInOrderFE($item,$productCustom, $row,$plgParam) {
-		if ($productCustom->custom_value != $this->_name) return '';
-		$comment ='';
-			if(!empty($plgParam['comment']) ){
-				$comment .= ' = '.$plgParam['comment'];
-			}
-		$html  = '<div>';
-		$html .='<span>'.$comment.'</span>';
-		return $html.'</div>';
     }
 
     function plgVmOnStoreProduct($data,$plugin_param){
@@ -228,16 +164,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	function plgVmGetActiveCustomPlugin($virtuemart_custom_id,&$customPlugin){
 		return parent::getActiveCustomPlugin($virtuemart_custom_id,$customPlugin);
 	}
-	/*
-	 * No price modification
-	 */
-	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected,$row){
-		return ;
-	}
 
-	public function plgVmCreateOrderLinesCustom(&$html,$item,$productCustom, $row ){
-		parent:createOrderLinesCustom($html,$item,$productCustom, $row );
-	}
 }
 
 // No closing tag

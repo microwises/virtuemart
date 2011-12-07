@@ -41,12 +41,12 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		self::$_this = $this;
 	}
 
-	function plgVmOnOrder($product) {
+	// function plgVmOnOrder($product) {
 
-		$dbValues['virtuemart_product_id'] = $product->virtuemart_product_id;
-		$dbValues['stockable'] = $this->_virtuemart_paymentmethod_id;
-		$this->writeCustomData($dbValues, '#__virtuemart_product_custom_' . $this->_name);
-	}
+		// $dbValues['virtuemart_product_id'] = $product->virtuemart_product_id;
+		// $dbValues['stockable'] = $this->_virtuemart_paymentmethod_id;
+		// $this->writeCustomData($dbValues, '#__virtuemart_product_custom_' . $this->_name);
+	// }
 
 
 
