@@ -57,7 +57,8 @@ abstract class vmCustomPlugin extends VmPlugin {
 
 	function getActiveCustomPlugin($virtuemart_custom_id, &$customPlugin){
 
-		if($this->plugin = $this->selectedThisByMethodId($this->_psType,$virtuemart_custom_id)){
+		//if($this->plugin = $this->selectedThisByMethodId($this->_psType,$virtuemart_custom_id)){
+		if($this->plugin = $this->selectedThisByMethodId( $virtuemart_custom_id)){
 
 		if (empty($this->plugin)) {
 			$this->plugin->custom_jplugin_id = null;
@@ -109,7 +110,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 			}
 		}
 
-	} 
+	}
 	/**
 	 * This is the actions which take place, when a product gets stored
 	 *
@@ -118,7 +119,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * @param int $id virtuemart_product_id
 	 */
     function OnStoreProduct($data,$plugin_param){
-		
+
 		if (key($plugin_param)!==$this->_name) return ;
 		$key = key($plugin_param) ;
 		$plugin_param[$key]['virtuemart_product_id'] = $data['virtuemart_product_id'];
@@ -185,7 +186,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 */
 	public function plgVmAddToSearch(&$where,$searchplugin)
 	{
-		
+
 	}
 
 	/**
@@ -202,7 +203,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 		$db->setQuery($q);
 		$custom_element = $db->loadResult();
 		return $custom_element;
-		
+
 	}
 
 }

@@ -48,7 +48,7 @@ abstract class vmShopperPlugin extends JPlugin
 	 * @return string HTML code (might contain form data_
 	 * @author Oscar van Eijk
 	 */
-	abstract public function plgVmOnUpdateOrderBE($_orderID);
+	abstract public function plgVmOnUpdateOrderBEShopper($_orderID);
 
 
 	public function plgVmOnUserStore($data){

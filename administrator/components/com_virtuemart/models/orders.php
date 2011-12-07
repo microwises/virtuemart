@@ -383,7 +383,7 @@ class VirtueMartModelOrders extends VmModel {
 				if( ($order_status_code == "P" || $order_status_code == "C") && $order['order_status'] == "S") {
 					JPluginHelper::importPlugin('vmpayment');
 					$_dispatcher = JDispatcher::getInstance();
-					$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrder',array('payment',$virtuemart_order_id));
+					$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderPayment',array($virtuemart_order_id));
 					foreach ($_returnValues as $_returnValue) {
 						if ($_returnValue === true) {
 							break; // Plugin was successfull
@@ -400,13 +400,7 @@ class VirtueMartModelOrders extends VmModel {
 				 */
 				if ($order['order_status'] == "X") {
 					JPluginHelper::importPlugin('vmpayment');
-					$_dispatcher = JDispatcher::getInstance();
-					$_dispatcher->trigger('plgVmOnCancelPayment',array(
-					$virtuemart_order_id
-					,$order_status_code
-					,$order['order_status']
-					)
-					);
+					$_dispatcher = JDispatcher::getInstance();$_dispatcher->trigger('plgVmOnCancelPayment',array($virtuemart_order_id,$order_status_code,$order['order_status']));
 				}
 
 
@@ -691,7 +685,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreData',array('payment',$order_number,$cart,$prices));
+		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreDataPayment',array($order_number,$cart,$prices));
 
 		foreach ($returnValues as $returnValue) {
 			if ($returnValue !== null) {
@@ -773,7 +767,7 @@ class VirtueMartModelOrders extends VmModel {
 	{
 		JPluginHelper::importPlugin('vmshipment');
 		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreData',array('shipment',$orderID,$cart,$prices));
+		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreDataShipment',array( $orderID,$cart,$prices));
 
 
 	}
@@ -1066,14 +1060,16 @@ class VirtueMartModelOrders extends VmModel {
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
 		$_dispatcher = JDispatcher::getInstance();
-		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLine',array('shipment',$data));
+		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLineShipment',array( $data));
 		foreach ($_returnValues as $_retVal) {
 			if ($_retVal === false) {
 				// Stop as soon as the first active plugin returned a failure status
 				return;
 			}
 		}
-$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLine',array('shipment',$data));
+		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+		JPluginHelper::importPlugin('vmpayment');
+		$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderLinePayment',array( $data));
 		foreach ($_returnValues as $_retVal) {
 			if ($_retVal === false) {
 				// Stop as soon as the first active plugin returned a failure status

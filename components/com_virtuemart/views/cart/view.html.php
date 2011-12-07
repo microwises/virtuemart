@@ -220,7 +220,7 @@ class VirtueMartViewCart extends JView {
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
 		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmDisplayListFE', array('shipment',$this->cart, $selectedShipment, &$shipments_shipment_rates));
+		$returnValues = $dispatcher->trigger('plgVmDisplayListFEShipment', array( $this->cart, $selectedShipment, &$shipments_shipment_rates));
 		// if no shipment rate defined
 		$found_shipment_method = false;
 		foreach ($returnValues as $returnValue) {
@@ -258,7 +258,7 @@ class VirtueMartViewCart extends JView {
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmDisplayListFE', array('payment',$this->cart, $selectedPayment, &$paymentplugins_payments));
+		$returnValues = $dispatcher->trigger('plgVmDisplayListFEPayment', array($this->cart, $selectedPayment, &$paymentplugins_payments));
 		// if no payment defined
  		$found_payment_method = false;
 		foreach ($returnValues as $returnValue) {

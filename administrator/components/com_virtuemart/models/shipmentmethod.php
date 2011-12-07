@@ -64,7 +64,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			if($this->_data->shipment_jplugin_id){
 				JPluginHelper::importPlugin('vmshipment');
 				$dispatcher = JDispatcher::getInstance();
-				$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParams',array('shipment',$this->_data->shipment_element,$this->_data->shipment_jplugin_id));
+				$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParamsShipment',array( $this->_data->shipment_element,$this->_data->shipment_jplugin_id));
 
 				if(!empty($varsToPushParam)){
 					foreach($varsToPushParam as $push){
@@ -182,7 +182,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 
 			JPluginHelper::importPlugin('vmshipment');
 			$dispatcher = JDispatcher::getInstance();
-			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParams',array('shipment',0,$data['shipment_jplugin_id']));
+			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParamsShipment',array( 0,$data['shipment_jplugin_id']));
 
 			if(!empty($varsToPushParam)){
 
@@ -210,7 +210,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 		JPluginHelper::importPlugin('vmshipment');
 		//Add a hook here for other shipment methods, checking the data of the choosed plugin
 		$dispatcher = JDispatcher::getInstance();
-		$retValues = $dispatcher->trigger('plgVmOnStoreInstallPluginTable', array('shipment' , $data['shipment_jplugin_id']));
+		$retValues = $dispatcher->trigger('plgVmOnStoreInstallShipmentPluginTable', array(  $data['shipment_jplugin_id']));
 
 		return $table->virtuemart_shipmentmethod_id;
 	}

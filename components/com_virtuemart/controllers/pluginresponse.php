@@ -67,7 +67,7 @@ class VirtueMartControllerPluginresponse extends JController {
 	$return_context = "";
 	$dispatcher = JDispatcher::getInstance();
 	$html = "";
-	$returnValues = $dispatcher->trigger('plgVmOnResponseReceived', array('payment',  'virtuemart_order_id' => &$virtuemart_order_id, 'html' => &$html));
+	$returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived', array(  'virtuemart_order_id' => &$virtuemart_order_id, 'html' => &$html));
 
 
 	foreach ($returnValues as $returnValue) {
@@ -115,7 +115,7 @@ class VirtueMartControllerPluginresponse extends JController {
      * @author Valerie Isaksen
      *
      */
-    function pluginUserCancel() {
+    function pluginUserPaymentCancel() {
 
 	if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
@@ -123,15 +123,9 @@ class VirtueMartControllerPluginresponse extends JController {
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 
 	JPluginHelper::importPlugin('vmpayment');
-/*
-	if (!JFactory::getSession(array('id' => $return_context))) {
-	    return false;
-	}
- * */
 
 	$dispatcher = JDispatcher::getInstance();
-	$returnValues = $dispatcher->trigger('plgVmOnPaymentUserCancel', array(
-	    'virtuemart_order_id' => &$virtuemart_order_id));
+	$returnValues = $dispatcher->trigger('plgVmOnUserPaymentCancel', array('virtuemart_order_id' => &$virtuemart_order_id));
 
 	foreach ($returnValues as $returnValue) {
 	    if ($returnValue !== null) {
@@ -183,7 +177,7 @@ if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php
 	JPluginHelper::importPlugin('vmpayment');
 
 	$dispatcher = JDispatcher::getInstance();
-	$returnValues = $dispatcher->trigger('plgVmOnNotification', array('payment'));
+	$returnValues = $dispatcher->trigger('plgVmOnPaymentNotification', array());
 
 	// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
     }

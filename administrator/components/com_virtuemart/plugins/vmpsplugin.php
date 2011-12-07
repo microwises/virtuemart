@@ -57,9 +57,9 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Valérie Isaksen
 	 *
 	 */
-	protected function OnStoreInstallPluginTable($psType, $jplugin_id) {
-		if($this->selectedThisByJPluginId($psType, $jplugin_id)){
-			parent::OnStoreInstallPluginTable($psType);
+	protected function onStoreInstallPluginTable(  $jplugin_id) {
+		if($this->selectedThisByJPluginId(  $jplugin_id)){
+			parent::onStoreInstallPluginTable($this->_psType);
 		}
 
 	}
@@ -76,16 +76,16 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
 	 *
 	 */
-	public function OnSelectCheck($psType, VirtueMartCart $cart) {
+	public function onSelectCheck(  VirtueMartCart $cart) {
 		$idName = $this->_idName;vmdebug('OnSelectCheck',$idName);
-		if (!$this->selectedThisByMethodId($psType, $cart->$idName)) {
+		if (!$this->selectedThisByMethodId(  $cart->$idName)) {
 			return null; // Another method was selected, do nothing
 		}
 		return true; // this method was selected , and the data is valid by default
 	}
 
 	/**
-	 * DisplayListFE
+	 * displayListFE
 	 * This event is fired to display the pluginmethods in the cart (edit shipment/payment) for exampel
 	 *
 	 * @param object $cart Cart object
@@ -96,10 +96,8 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Valerie Isaksen
 	 * @author Max Milbers
 	 */
-	public function DisplayListFE($psType, VirtueMartCart $cart, $selected = 0,&$htmlIn) {
-		if (!$this->selectedThisType($psType)) {
-			return false;
-		}
+	public function displayListFE(  VirtueMartCart $cart, $selected = 0,&$htmlIn) {
+
 		if ($this->getPluginMethods($cart->vendorId) === 0) {
 			if (empty($this->_name)) {
 				$app = JFactory::getApplication();
@@ -126,7 +124,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	/*
-	 * OnSelectedCalculatePrice
+	 * onSelectedCalculatePrice
 	* Calculate the price (value, tax_id) of the selected method
 	* It is called by the calculator
 	* This function does NOT to be reimplemented. If not reimplemented, then the default values from this function are taken.
@@ -138,9 +136,9 @@ abstract class vmPSPlugin extends vmPlugin {
 	*
 	*/
 
-	public function OnSelectedCalculatePrice($psType, VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
+	public function onSelectedCalculatePrice(  VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
 		$id = $this->_idName;
-		if (!($method =$this->selectedThisByMethodId($psType, $cart->$id))) {
+		if (!($method =$this->selectedThisByMethodId(  $cart->$id))) {
 			return null; // Another method was selected, do nothing
 		}
 
@@ -163,7 +161,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	/**
-	 * OnCheckAutomaticSelected
+	 * onCheckAutomaticSelected
 	 * Checks how many plugins are available. If only one, the user will not have the choice. Enter edit_xxx page
 	 * The plugin must check first if it is the correct type
 	 * @author Valerie Isaksen
@@ -171,10 +169,8 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
 	 *
 	 */
-	function OnCheckAutomaticSelected($psType, VirtueMartCart $cart, array $cart_prices = array()) {
-		if (!$this->selectedThisType($psType)) {
-			return null;
-		}
+	function onCheckAutomaticSelected( VirtueMartCart $cart, array $cart_prices = array()) {
+
 		$nbPlugin = 0;
 		$virtuemart_pluginmethod_id = 0;
 
@@ -195,7 +191,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Max Milbers
 	 * @author Valerie Isaksen
 	 */
-	protected function OnShowOrderFE($psType, $virtuemart_order_id) {
+	protected function onShowOrderFE(  $virtuemart_order_id) {
 		return $this->getOrderPluginNamebyOrderId($virtuemart_order_id);
 	}
 
@@ -250,7 +246,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Max Milbers
 	 * @author Valerie Isaksen
 	 */
-	function OnShowOrderBE($psType, $_virtuemart_order_id, $_method_id){
+	function onShowOrderBE(  $_virtuemart_order_id, $_method_id){
 	    return null;
 	}
 
@@ -263,7 +259,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
 	 * @author Valerie Isaksen
 	 */
-	function OnShowOrderPrint($order_number, $method_id) {
+	function onShowOrderPrint($order_number, $method_id) {
 		if (!($order_name = $this->getOrderPluginName($order_number, $method_id))) {
 			return null;
 		}
@@ -306,7 +302,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * skipped!), or null when this method is not actived.
 	 * @author Oscar van Eijk
 	 */
-	public function OnUpdateOrder($psType, $_formData) {
+	public function onUpdateOrder(  $formData) {
 		return null;
 	}
 
@@ -318,7 +314,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * skipped!), or null when this method is not actived.
 	 * @author Oscar van Eijk
 	 */
-	public function OnUpdateOrderLine($psType, $_formData) {
+	public function onUpdateOrderLine(  $formData) {
 		return null;
 	}
 
@@ -332,7 +328,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @return mixed Null for method that aren't active, text (HTML) otherwise
 	 * @author Oscar van Eijk
 	 */
-	public function OnEditOrderLineBE($psType, $_orderId, $_lineId) {
+	public function onEditOrderLineBE(  $orderId, $lineId) {
 		return null;
 	}
 
@@ -346,7 +342,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @return mixed Null for method that aren't active, text (HTML) otherwise
 	 * @author Oscar van Eijk
 	 */
-	public function OnShowOrderLineFE($psType, $_orderId, $_lineId) {
+	public function onShowOrderLineFE( $orderId, $lineId) {
 		return null;
 	}
 
@@ -367,7 +363,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Valerie Isaksen
 	 *
 	 */
-	public function OnNotification($psType, &$return_context, &$virtuemart_order_id, &$new_status) {
+	public function onNotification(   ) {
 		return null;
 	}
 
@@ -386,7 +382,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Valerie Isaksen
 	 *
 	 */
-	function OnResponseReceived($psType, &$virtuemart_order_id, &$html) {
+	function onResponseReceived( &$virtuemart_order_id, &$html) {
 		return null;
 	}
 

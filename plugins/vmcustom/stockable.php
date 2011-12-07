@@ -55,7 +55,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	function plgVmOnProductEdit($field, $product_id, &$row,&$retValue) {
 
 		if ($field->custom_element != $this->_name) return '';
-		
+
 		$this->parseCustomParams($field);
 		$html ='';
 		if (!$childs = $this->getChilds($product_id) ) $html .='<DIV>'.JTEXT::_('VMCUSTOM_STOCKABLE_NO_CHILD').'</DIV>';
@@ -221,7 +221,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 		$field->display = $html;
 		// preventing 2 x load javascript
-		
+
 		if ($stockablejs) return $row++;
 		$stockablejs = true ;
 		// TODO ONE PARAM IS MISSING
@@ -318,7 +318,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		// Here the plugin values
 		//$html =JTEXT::_($param['custom_name']) ;
 		//$html.=': <input type="text" value="" size="'.$param['custom_name'].'" name="customPlugin['.$row.'][comment]"><br />';
-		
+
 		$row++;
 		return true;
 	}
@@ -451,11 +451,11 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * vmplugin triggers note by Max Milbers
 	 */
 	protected function plgVmOnStoreInstallPluginTable($psType) {
-		return parent::OnStoreInstallPluginTable($psType);
+		return parent::onStoreInstallPluginTable($psType);
 	}
 
 	function plgVmGetDeclaredPluginParams($psType,$name,$id){
-		return parent::GetDeclaredPluginParams($psType, $name, $id);
+		return parent::getDeclaredPluginParams($psType, $name, $id);
 	}
 
 	/**
@@ -498,7 +498,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	}
 
 	public function plgVmCreateOrderLinesCustom(&$html,$item,$productCustom, $row ){
-		parent:createOrderLinesCustom($html,$item,$productCustom, $row );
+		parent::createOrderLinesCustom($html,$item,$productCustom, $row );
 	}
 
 

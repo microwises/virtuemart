@@ -135,9 +135,9 @@ abstract class vmPlugin extends JPlugin {
 	* @param string the name of the plugin for exampel textinput, paypal
 	* @param int/array $id the registered plugin id(s) of the joomla table
 	*/
-	protected function selectedThisByMethodId($psType, $id='type') {
+	protected function selectedThisByMethodId(  $id='type') {
 
-		if($psType!=$this->_psType) return false;
+		//if($psType!=$this->_psType) return false;
 
 		$db = JFactory::getDBO();
 
@@ -149,12 +149,12 @@ abstract class vmPlugin extends JPlugin {
 			if (VmConfig::isJ15()) {
 				$q = 'SELECT vm.* FROM `'.$this->_configTable.'` AS vm,
 							#__plugins AS j WHERE vm.`'.$this->_idName.'` = "'.$id.'"
-							AND vm.'.$psType.'_jplugin_id = j.id
+							AND vm.'.$this->_psType.'_jplugin_id = j.id
 							AND j.element = "'.$this->_name.'"';
 			} else {
 				$q = 'SELECT vm.* FROM `'.$this->_configTable.'` AS vm,
 							#__extensions AS j WHERE vm.`'.$this->_idName.'` = "'.$id.'"
-							AND vm.'.$psType.'_jplugin_id = j.extension_id
+							AND vm.'.$this->_psType.'_jplugin_id = j.extension_id
 							AND j.element = "'.$this->_name.'"';
 			}
 
@@ -171,13 +171,10 @@ abstract class vmPlugin extends JPlugin {
 	* Checks if this plugin should be active by the trigger
 	* @author Max Milbers
 	* @author Valérie Isaksen
-	* @param string $psType shipment,payment,custom
 	* @param string the name of the plugin for exampel textinput, paypal
 	* @param int/array $id the registered plugin id(s) of the joomla table
 	*/
-	protected function selectedThisByJPluginId($psType, $jplugin_id='type') {
-
-		if($psType!=$this->_psType) return false;
+	protected function selectedThisByJPluginId(  $jplugin_id='type') {
 
 		$db = JFactory::getDBO();
 
@@ -188,13 +185,13 @@ abstract class vmPlugin extends JPlugin {
 
 			if (VmConfig::isJ15()) {
 				$q = 'SELECT vm.* FROM `'.$this->_configTable.'` AS vm,
-							#__plugins AS j WHERE vm.`'.$psType.'_jplugin_id`  = "'.$jplugin_id.'"
-							AND vm.'.$psType.'_jplugin_id = j.id
+							#__plugins AS j WHERE vm.`'.$this->_psType.'_jplugin_id`  = "'.$jplugin_id.'"
+							AND vm.'.$this->_psType.'_jplugin_id = j.id
 							AND j.`element` = "'.$this->_name.'"';
 			} else {
 				$q = 'SELECT vm.* FROM `'.$this->_configTable.'` AS vm,
-							#__extensions AS j WHERE vm.`'.$psType.'_jplugin_id`  = "'.$jplugin_id.'"
-							AND vm.`'.$psType.'_jplugin_id` = j.extension_id
+							#__extensions AS j WHERE vm.`'.$this->_psType.'_jplugin_id`  = "'.$jplugin_id.'"
+							AND vm.`'.$this->_psType.'_jplugin_id` = j.extension_id
 							AND j.`element` = "'.$this->_name.'"';
 			}
 
@@ -240,7 +237,7 @@ abstract class vmPlugin extends JPlugin {
 	* @author Valérie Isaksen
 	* @author Max Milbers
 	*/
-	protected function OnStoreInstallPluginTable($psType) {
+	protected function onStoreInstallPluginTable($psType) {
 
 		if($psType==$this->_psType){
 			$query = $this->getVmPluginCreateTableSQL();
@@ -248,8 +245,8 @@ abstract class vmPlugin extends JPlugin {
 				$db = JFactory::getDBO();
 				$db->setQuery($query);
 				if (!$db->query()) {
-					JError::raiseWarning(1, $this->_name.'::OnStoreInstallPluginTable: ' . JText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $_db->stderr(true));
-					echo $this->_name.'::OnStoreInstallPluginTable: ' . JText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $_db->stderr(true);
+					JError::raiseWarning(1, $this->_name.'::onStoreInstallPluginTable: ' . JText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $_db->stderr(true));
+					echo $this->_name.'::onStoreInstallPluginTable: ' . JText::_('COM_VIRTUEMART_SQL_ERROR') . ' ' . $_db->stderr(true);
 				}
 			}
 		}
@@ -304,9 +301,9 @@ abstract class vmPlugin extends JPlugin {
 
 	}
 
-	protected function GetDeclaredPluginParams($psType,$name,$id){
+	protected function getDeclaredPluginParams($psType,$name,$id){
 		if($this->selectedThis($psType,$name,$id)){
-// 			vmdebug('GetDeclaredPluginParams return '.$this->_xParams,$this->_varsToPushParam);
+// 			vmdebug('getDeclaredPluginParams return '.$this->_xParams,$this->_varsToPushParam);
 			return array($this->_xParams,$this->_varsToPushParam);
 		} else {
 			return 0;
@@ -388,7 +385,7 @@ abstract class vmPlugin extends JPlugin {
 		if($loggable)	$table->setLoggable();
 
 		if(!$this->_tableChecked){
-			$this->OnStoreInstallPluginTable($this->_psType);
+			$this->onStoreInstallPluginTable($this->_psType);
 			$this->_tableChecked = true;
 		}
 

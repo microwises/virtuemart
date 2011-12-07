@@ -67,7 +67,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
   		if($this->_data->payment_jplugin_id){
   			JPluginHelper::importPlugin('vmpayment');
   			$dispatcher = JDispatcher::getInstance();
-  			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParams',array('payment',$this->_data->payment_element,$this->_data->payment_jplugin_id));
+  			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParamsPayment',array($this->_data->payment_element,$this->_data->payment_jplugin_id));
 
   			if(!empty($varsToPushParam)){
   				foreach($varsToPushParam as $push){
@@ -192,7 +192,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
-			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParams',array('payment',$data['payment_element'],$data['payment_jplugin_id']));
+			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParamsPayment',array( $data['payment_element'],$data['payment_jplugin_id']));
 
 			if(!empty($varsToPushParam)){
 
@@ -222,7 +222,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			JPluginHelper::importPlugin('vmpayment');
 			//Add a hook here for other shipment methods, checking the data of the choosed plugin
 			$dispatcher = JDispatcher::getInstance();
-			$retValues = $dispatcher->trigger('plgVmOnStoreInstallPluginTable', array('payment' , $data['payment_jplugin_id']));
+			$retValues = $dispatcher->trigger('plgVmOnStoreInstallPaymentPluginTable', array(  $data['payment_jplugin_id']));
 
 		return $table->virtuemart_paymentmethod_id;
 	}

@@ -46,7 +46,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	}
     /**
      * Create the table for this plugin if it does not yet exist.
-     * @author Valérie Isaksen
+     * @author Valï¿½rie Isaksen
      */
     protected function getVmPluginCreateTableSQL() {
 	return $this->createTableSQL('Product Specification Table');
@@ -151,11 +151,11 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	 * vmplugin triggers note by Max Milbers
 	 */
 	protected function plgVmOnStoreInstallPluginTable($psType) {
-		return parent::OnStoreInstallPluginTable($psType);
+		return parent::onStoreInstallPluginTable($psType);
 	}
 
 	function plgVmGetDeclaredPluginParams($psType,$name,$id){
-	return parent::GetDeclaredPluginParams($psType, $name, $id);
+	return parent::getDeclaredPluginParams($psType, $name, $id);
 	}
 
 	/**

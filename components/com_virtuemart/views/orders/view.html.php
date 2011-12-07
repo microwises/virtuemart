@@ -76,7 +76,7 @@ class VirtuemartViewOrders extends JView {
 			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmshipment');
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnShowOrderFE',array('shipment',$orderDetails['details']['BT']->virtuemart_order_id));
+			$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEShipment',array( $orderDetails['details']['BT']->virtuemart_order_id));
 			foreach ($returnValues as $returnValue) {
 				if ($returnValue !== null) {
 					$shipment = $returnValue;
@@ -87,7 +87,7 @@ class VirtuemartViewOrders extends JView {
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnShowOrderFE',array('payment', $orderDetails['details']['BT']->virtuemart_order_id));
+			$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array( $orderDetails['details']['BT']->virtuemart_order_id));
 			foreach ($returnValues as $returnValue) {
 				if ($returnValue !== null) {
 					$payment= $returnValue;

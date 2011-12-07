@@ -93,10 +93,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	return $SQLfields;
     }
 
-    function plgVmConfirmedOrder($psType, $cart, $order) {
-	if (!$this->selectedThisType($psType)) {
-	    return null;
-	}
+    function plgVmConfirmedOrderPayment(  $cart, $order) {
+
 	if (!($method = $this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
@@ -106,7 +104,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$session = JFactory::getSession();
 	$return_context = $session->getId();
 	$this->_debug = $method->debug;
-	$this->logInfo('plgVmConfirmedOrderRenderPaymentForm order number: ' . $order['details']['BT']->order_number, 'message');
+	$this->logInfo('plgVmConfirmedOrderPaymentRenderPaymentForm order number: ' . $order['details']['BT']->order_number, 'message');
 
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
@@ -169,7 +167,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id),
 	    //"return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
 	    "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
-	    "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginusercancel&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id),
+	    "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id),
 	    //"undefined_quantity" => "0",
 	    "ipn_test" => $method->debug,
 	    //"pal" => "NRUBJXESJTY24",
@@ -251,10 +249,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	 */
     }
 
-    function plgVmOnResponseReceived($psType, &$virtuemart_order_id, &$html) {
-	if (!$this->selectedThisType($psType)) {
-	    return null;
-	}
+    function plgVmOnPaymentResponseReceived(  &$virtuemart_order_id, &$html) {
+
 // the payment itself should send the parameter needed.
 	$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
 
@@ -267,7 +263,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	}
 
 	$payment_data = JRequest::get('post');
-	vmdebug('plgVmOnResponseReceived', $payment_data);
+	vmdebug('plgVmOnPaymentResponseReceived', $payment_data);
 	$order_number = $payment_data['invoice'];
 	$return_context = $payment_data['custom'];
 	if (!class_exists('VirtueMartModelOrders'))
@@ -280,10 +276,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	return true;
     }
 
-    function plgVmOnUserCancel($psType, &$virtuemart_order_id) {
-	if (!$this->selectedThisType($psType)) {
-	    return null;
-	}
+    function plgVmOnUserPaymentCancel(  &$virtuemart_order_id) {
+
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
@@ -308,29 +302,26 @@ class plgVMPaymentPaypal extends vmPSPlugin {
     }
 
     /*
-     *   plgVmOnNotification() - This event is fired by Offline Payment. It can be used to validate the payment data as entered by the user.
+     *   plgVmOnPaymentNotification() - This event is fired by Offline Payment. It can be used to validate the payment data as entered by the user.
      * Return:
      * Parameters:
      *  None
      *  @author Valerie Isaksen
      */
 
-    function plgVmOnNotification($psType) {
+    function plgVmOnPaymentNotification() {
 
-	if (!$this->selectedThisType($psType)) {
-	    return null;
-	}
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 	$paypal_data = JRequest::get('post');
 	//$this->_debug = true;
 	$order_number = $paypal_data['invoice'];
 	$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($paypal_data['invoice']);
-	$this->logInfo('plgVmOnNotification: virtuemart_order_id  found ' . $virtuemart_order_id, 'message');
+	$this->logInfo('plgVmOnPaymentNotification: virtuemart_order_id  found ' . $virtuemart_order_id, 'message');
 
 	if (!$virtuemart_order_id) {
 	    $this->_debug = true; // force debug here
-	    $this->logInfo('plgVmOnNotification: virtuemart_order_id not found ', 'ERROR');
+	    $this->logInfo('plgVmOnPaymentNotification: virtuemart_order_id not found ', 'ERROR');
 	    // send an email to admin, and ofc not update the order status: exit  is fine
 	    $this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_PAYPAL_ERROR_EMAIL_SUBJECT'), JText::_('VMPAYMENT_PAYPAL_UNKNOW_ORDER_ID'));
 	    exit;
@@ -404,7 +395,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    }
 	}
 
-	$this->logInfo('plgVmOnNotification return new_status' . $new_status, 'message');
+	$this->logInfo('plgVmOnPaymentNotification return new_status' . $new_status, 'message');
 
 	$this->emptyCart($return_context);
 	if ($virtuemart_order_id) {
@@ -430,11 +421,11 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 
     /**
      * Display stored payment data for an order
-     * @see components/com_virtuemart/helpers/vmPSPlugin::plgVmOnShowOrderBE()
+     * @see components/com_virtuemart/helpers/vmPSPlugin::plgVmOnShowOrderBEPayment()
      */
-    function plgVmOnShowOrderBE($psType, $virtuemart_order_id, $payment_method_id) {
+    function plgVmOnShowOrderBEPayment(  $virtuemart_order_id, $payment_method_id) {
 
-	if (!$this->selectedThisByMethodId($psType, $payment_method_id)) {
+	if (!$this->selectedThisByMethodId(  $payment_method_id)) {
 	    return null; // Another method was selected, do nothing
 	}
 	$db = JFactory::getDBO();
@@ -667,8 +658,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      * @author Valérie Isaksen
      *
      */
-    function plgVmOnStoreInstallPluginTable($psType, $jplugin_id) {
-	return parent::OnStoreInstallPluginTable($psType, $jplugin_id);
+    function plgVmOnStoreInstallPaymentPluginTable( $jplugin_id) {
+	return parent::onStoreInstallPluginTable('payment', $jplugin_id);
     }
 
     /**
@@ -682,12 +673,12 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
      *
      */
-    public function plgVmOnSelectCheck($psType, VirtueMartCart $cart) {
-	return parent::OnSelectCheck($psType, $cart);
+    public function plgVmOnSelectCheckPayment(  VirtueMartCart $cart) {
+	return parent::OnSelectCheck(  $cart);
     }
 
     /**
-     * plgVmDisplayListFE
+     * plgVmDisplayListFEPayment
      * This event is fired to display the pluginmethods in the cart (edit shipment/payment) for exampel
      *
      * @param object $cart Cart object
@@ -698,12 +689,12 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      * @author Valerie Isaksen
      * @author Max Milbers
      */
-    public function plgVmDisplayListFE($psType, VirtueMartCart $cart, $selected = 0, &$htmlIn) {
-	return parent::DisplayListFE($psType, $cart, $selected, $htmlIn);
+    public function plgVmDisplayListFEPayment( VirtueMartCart $cart, $selected = 0, &$htmlIn) {
+	return parent::displayListFE( $cart, $selected, $htmlIn);
     }
 
     /*
-     * plgVmOnSelectedCalculatePrice
+     * plgVmonSelectedCalculatePricePayment
      * Calculate the price (value, tax_id) of the selected method
      * It is called by the calculator
      * This function does NOT to be reimplemented. If not reimplemented, then the default values from this function are taken.
@@ -715,12 +706,12 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      *
      */
 
-    public function plgVmOnSelectedCalculatePrice($psType, VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
-	return parent::OnSelectedCalculatePrice($psType, $cart, $cart_prices, $cart_prices_name);
+    public function plgVmonSelectedCalculatePricePayment(  VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
+	return parent::onSelectedCalculatePrice(  $cart, $cart_prices, $cart_prices_name);
     }
 
     /**
-     * plgVmOnCheckAutomaticSelected
+     * plgVmOnCheckAutomaticSelectedPayment
      * Checks how many plugins are available. If only one, the user will not have the choice. Enter edit_xxx page
      * The plugin must check first if it is the correct type
      * @author Valerie Isaksen
@@ -728,8 +719,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
      *
      */
-    function plgVmOnCheckAutomaticSelected($psType, VirtueMartCart $cart, array $cart_prices = array()) {
-	return parent::OnCheckAutomaticSelected($psType, $cart, $cart_prices);
+    function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart, array $cart_prices = array()) {
+	return parent::onCheckAutomaticSelected( $cart, $cart_prices);
     }
 
     /**
@@ -741,8 +732,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      * @author Max Milbers
      * @author Valerie Isaksen
      */
-    protected function plgVmOnShowOrderFE($psType, $virtuemart_order_id) {
-	return parent::OnShowOrderFE($psType, $virtuemart_order_id);
+    protected function plgVmOnShowOrderFEPayment(  $virtuemart_order_id) {
+	return parent::onShowOrderFE( $virtuemart_order_id);
     }
 
     /**
@@ -752,7 +743,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      * @return boolean True when the data was valid, false otherwise. If the plugin is not activated, it should return null.
      * @author Max Milbers
 
-      public function plgVmOnCheckoutCheckData($psType, VirtueMartCart $cart) {
+      public function plgVmOnCheckoutCheckDataPayment($psType, VirtueMartCart $cart) {
       return null;
       }
      */
@@ -766,8 +757,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
      * @author Valerie Isaksen
      */
-    function plgVmOnShowOrderPrint($order_number, $method_id) {
-	return parent::OnShowOrderPrint($order_number, $method_id);
+    function plgVmonShowOrderPrintPayment($order_number, $method_id) {
+	return parent::onShowOrderPrint($order_number, $method_id);
     }
 
     /**
@@ -778,7 +769,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      * skipped!), or null when this method is not actived.
      * @author Oscar van Eijk
 
-      public function plgVmOnUpdateOrder($psType, $_formData) {
+      public function plgVmOnUpdateOrderPayment(  $_formData) {
       return null;
       }
      */
@@ -790,7 +781,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      * skipped!), or null when this method is not actived.
      * @author Oscar van Eijk
 
-      public function plgVmOnUpdateOrderLine($psType, $_formData) {
+      public function plgVmOnUpdateOrderLine(  $_formData) {
       return null;
       }
      */
@@ -804,7 +795,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      * @return mixed Null for method that aren't active, text (HTML) otherwise
      * @author Oscar van Eijk
 
-      public function plgVmOnEditOrderLineBE($psType, $_orderId, $_lineId) {
+      public function plgVmOnEditOrderLineBE(  $_orderId, $_lineId) {
       return null;
       }
      */
@@ -819,12 +810,12 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      * @return mixed Null for method that aren't active, text (HTML) otherwise
      * @author Oscar van Eijk
 
-      public function plgVmOnShowOrderLineFE($psType, $_orderId, $_lineId) {
+      public function plgVmOnShowOrderLineFE(  $_orderId, $_lineId) {
       return null;
       }
      */
-    function plgVmGetDeclaredPluginParams($psType, $name, $id) {
-	return parent::GetDeclaredPluginParams($psType, $name, $id);
+    function plgVmGetDeclaredPluginParamsPayment( $name, $id) {
+	return parent::getDeclaredPluginParams('payment', $name, $id);
     }
 
 }

@@ -60,7 +60,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * Create the table for this plugin if it does not yet exist.
      * @author Valérie Isaksen
      */
-    protected function getVmPluginCreateTableSQL() {
+    protected function getVmPluginShipmentCreateTableSQL() {
 
 	return $this->createTableSQL('Shipment Weight Countries Table');
     }
@@ -90,7 +90,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @author Valérie Isaksen
      * @author Max Milbers
      */
-    public function plgVmOnShowOrderFE($psType, $virtuemart_order_id) {
+    public function plgVmOnShowOrderFEShipment(  $virtuemart_order_id) {
 
 	$db = JFactory::getDBO();
 	$q = 'SELECT * FROM `' . $this->_tablename . '` '
@@ -101,9 +101,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	    return '';
 	}
 	$idName = $this->_idName;
-	if (!($this->selectedThis($psType, $this->_name))) {
-	    return null;
-	}
+
 	return $pluginInfo->$idName;
     }
 
@@ -163,8 +161,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @return mixed Null for shipments that aren't active, text (HTML) otherwise
      * @author Valerie Isaksen
      */
-    public function plgVmOnShowOrderBE($psType, $virtuemart_order_id, $virtuemart_shipmentmethod_id) {
-	if (!($this->selectedThisByMethodId($psType, $virtuemart_shipmentmethod_id))) {
+    public function plgVmOnShowOrderBEShipment(  $virtuemart_order_id, $virtuemart_shipmentmethod_id) {
+	if (!($this->selectedThisByMethodId(  $virtuemart_shipmentmethod_id))) {
 	    return null;
 	}
 	$html = $this->getOrderShipmentHtml($virtuemart_order_id);
@@ -294,8 +292,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @author Valérie Isaksen
      *
      */
-    function plgVmOnStoreInstallPluginTable($psType, $jplugin_id) {
-	return parent::OnStoreInstallPluginTable($psType, $jplugin_id);
+    function plgVmOnStoreInstallShipmentPluginTable(  $jplugin_id) {
+	return parent::onStoreInstallPluginTable('shipment', $jplugin_id);
     }
 
     /**
@@ -325,12 +323,12 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @author Valerie Isaksen
      * @author Max Milbers
      */
-    public function plgVmDisplayListFE($psType, VirtueMartCart $cart, $selected = 0,&$htmlIn) {
-	return parent::DisplayListFE($psType, $cart, $selected,$htmlIn);
+    public function plgVmDisplayListFEShipment( VirtueMartCart $cart, $selected = 0,&$htmlIn) {
+	return parent::displayListFE(  $cart, $selected,$htmlIn);
     }
 
     /*
-     * plgVmOnSelectedCalculatePrice
+     * plgVmonSelectedCalculatePrice
      * Calculate the price (value, tax_id) of the selected method
      * It is called by the calculator
      * This function does NOT to be reimplemented. If not reimplemented, then the default values from this function are taken.
@@ -342,8 +340,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      *
      */
 
-    public function plgVmOnSelectedCalculatePrice($psType, VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
-	return parent::OnSelectedCalculatePrice($psType, $cart, $cart_prices, $cart_prices_name);
+    public function plgVmonSelectedCalculatePriceShipment(  VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
+	return parent::onSelectedCalculatePrice(  $cart, $cart_prices, $cart_prices_name);
     }
 
     /**
@@ -355,8 +353,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
      *
      */
-    function plgVmOnCheckAutomaticSelected($psType, VirtueMartCart $cart, array $cart_prices = array()) {
-	return parent::OnCheckAutomaticSelected($psType, $cart, $cart_prices);
+    function plgVmOnCheckAutomaticSelectedShipment( VirtueMartCart $cart, array $cart_prices = array()) {
+	return parent::onCheckAutomaticSelected( $cart, $cart_prices);
     }
 
     /**
@@ -397,8 +395,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @return mixed Null when for payment methods that were not selected, text (HTML) otherwise
      * @author Valerie Isaksen
      */
-    function plgVmOnShowOrderPrint($order_number, $method_id) {
-	return parent::OnShowOrderPrint($order_number, $method_id);
+    function plgVmonShowOrderPrint($order_number, $method_id) {
+	return parent::onShowOrderPrint($order_number, $method_id);
     }
 
     /**
@@ -473,8 +471,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	return null;
     }
 */
-    function plgVmGetDeclaredPluginParams($psType, $name, $id) {
-	return parent::GetDeclaredPluginParams($psType, $name, $id);
+    function plgVmGetDeclaredPluginParamsShipment(  $name, $id) {
+	return parent::getDeclaredPluginParams('shipment', $name, $id);
     }
 
 }
