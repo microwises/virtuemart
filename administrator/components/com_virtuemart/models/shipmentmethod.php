@@ -66,13 +66,6 @@ class VirtueMartModelShipmentmethod extends VmModel {
 				$dispatcher = JDispatcher::getInstance();
 				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsShipment',array( $this->_data->shipment_element,$this->_data->shipment_jplugin_id,$this->_data));
 
-// 				if(!empty($varsToPushParam)){
-// 					foreach($varsToPushParam as $push){
-// 					  	if($push!==0 and $push[0]!==0 and $push[1]!==0){
-//   							VmTable::bindParameterable($this->_data,$push[0],$push[1]);
-//   						}
-// 					}
-// 				}
 			}
 // 			vmdebug('$$this->_data getShipment',$this->_data);
 
@@ -184,13 +177,6 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			$dispatcher = JDispatcher::getInstance();
 			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsShipment',array( 0,$data['shipment_jplugin_id'],$data));
 
-// 			if(!empty($varsToPushParam)){
-// 				foreach($varsToPushParam as $push){
-// 					if($push!==0 and $push[0]!==0 and $push[1]!==0){
-// 						$table->setParameterable($push[0],$push[1]);
-// 					}
-// 				}
-// 			}
 		}
 
 		$table->bindChecknStore($data);

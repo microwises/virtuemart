@@ -64,18 +64,8 @@ class VirtueMartModelCustom extends VmModel {
 //    			$varsToPushParam = $dispatcher->trigger('plgVmDeclarePluginParams',array('custom',$this->_data->custom_element,$this->_data->custom_jplugin_id));
    			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsCustom',array('custom',$this->_data->custom_element,$this->_data->custom_jplugin_id,&$this->_data));
 
-//    			if(!empty($varsToPushParam)){
-//    				foreach($varsToPushParam as $push){
-//    				  	if($push!==0 and $push[0]!==0 and $push[1]!==0){
-//   							VmTable::bindParameterable($this->_data,$push[0],$push[1]);
-//   						}
-//    				}
-//    			}
    		}
 
-//		if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-//
-//  		$custom = VmCustomHandler::createCustom($data);
 		if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 		$customfields = new VirtueMartModelCustomfields();
 		$this->_data->field_types = $customfields->getField_types() ;
@@ -273,13 +263,6 @@ class VirtueMartModelCustom extends VmModel {
 			$dispatcher = JDispatcher::getInstance();
 			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsCustoms',array('custom',$data['custom_value'],$data['custom_jplugin_id'],$data));
 
-// 			if(!empty($varsToPushParam)){
-// 				foreach($varsToPushParam as $push){
-// 					if($push!==0 and $push[0]!==0 and $push[1]!==0){
-// 						$table->setParameterable($push[0],$push[1]);
-// 					}
-// 				}
-// 			}
 		}
 
 		$table->bindChecknStore($data);
