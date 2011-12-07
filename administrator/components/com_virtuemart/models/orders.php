@@ -255,15 +255,6 @@ class VirtueMartModelOrders extends VmModel {
 	public function updateSingleItem($virtuemart_order_item_id, $order_status, $comment,$virtuemart_order_id)
 	{
 
-		/*		$item = JRequest::getInt('virtuemart_order_item_id', '');
-		 $table->load($item);
-		$table->order_status = JRequest::getWord('order_status_'.$item, '');
-		$table->product_quantity = JRequest::getVar('product_quantity_'.$item, '');
-		$table->product_item_price = JRequest::getVar('product_item_price_'.$item, '');
-		$table->product_final_price = JRequest::getVar('product_final_price_'.$item, '');*/
-
-		//vmdebug('updateSingleItem',$virtuemart_order_item_id,$order_status);
-
 		// Update order item status
 		if(empty($virtuemart_order_item_id)){
 
@@ -344,11 +335,6 @@ class VirtueMartModelOrders extends VmModel {
 		if(!is_array($orders)){
 			$orders = array($orders);
 		}
-		// TODO This is not the most logical place for these plugins (or better; the method updateStatus() must be renamed....)
-		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
-		JPluginHelper::importPlugin('vmshipment');
-		$_dispatcher = JDispatcher::getInstance();
-		$_returnValues = $_dispatcher->trigger('plgVmOnSaveOrderShipmentBE',array(JRequest::get('post')));
 
 
 		/* Process the orders to update */
@@ -359,90 +345,97 @@ class VirtueMartModelOrders extends VmModel {
 			// $comments = JRequest::getVar('comments', array()); // ???
 			foreach ($orders as $virtuemart_order_id => $order) {
 				if  ($order_id >0) $virtuemart_order_id= $order_id;
-				/* Get customer notification */
-				//$customer_notified = (@$notify[$virtuemart_order_id] == 1) ? 1 : 0;
-				/* Get the comments */
-				//$comment = (array_key_exists($virtuemart_order_id, $comments)) ? $comments[$virtuemart_order_id] : '';
-
-				/* Update the order */
-				$data = $this->getTable('orders');
-				$data->load($virtuemart_order_id);
-				$order_status_code = $data->order_status;
-				$data->bind($order);
-				// Order updates can be ignored if we're updating only lines
-				//$order->order_status = $new_status;
-
-				/* When the order is set to "shipped", we can capture the payment */
-				if( ($order_status_code == "P" || $order_status_code == "C") && $order['order_status'] == "S") {
-					JPluginHelper::importPlugin('vmpayment');
-					$_dispatcher = JDispatcher::getInstance();
-					$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderPayment',array($virtuemart_order_id));
-					foreach ($_returnValues as $_returnValue) {
-						if ($_returnValue === true) {
-							break; // Plugin was successfull
-						} elseif ($_returnValue === false) {
-							return false; // Plugin failed
-						}
-						// Ignore null status and look for the next returnValue
-					}
-				}
-
-				/**
-				 * If an order gets cancelled, fire a plugin event, perhaps
-				 * some authorization needs to be voided
-				 */
-				if ($order['order_status'] == "X") {
-					JPluginHelper::importPlugin('vmpayment');
-					$_dispatcher = JDispatcher::getInstance();$_dispatcher->trigger('plgVmOnCancelPayment',array($virtuemart_order_id,$order_status_code,$order['order_status']));
-				}
-
-
-				if ($data->store()) {
-					$q = 'SELECT virtuemart_order_item_id
-										FROM #__virtuemart_order_items
-										WHERE virtuemart_order_id="'.$virtuemart_order_id.'"';
-					$db = JFactory::getDBO();
-					$db->setQuery($q);
-					$order_items = $db->loadObjectList();
-					if ($order_items) {
-						foreach ($order_items as $order_item) {
-						$this->updateSingleItem($order_item->virtuemart_order_item_id, $order['order_status'], $order['comments'] , $virtuemart_order_id);
-						}
-					}
-					/* Update the order history */
-					$this->_updateOrderHist($virtuemart_order_id, $order['order_status'], $order['customer_notified'], $order['comments']);
-
-					// Send a download ID */
-					//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($virtuemart_order_id);
-
-					// Check if the customer needs to be informed */
-					if ($order['customer_notified']) {
-						$order['virtuemart_order_id'] =$virtuemart_order_id ;
-						$this->notifyCustomer($order,  $order['comments'],  $order['customer_notified']);
-					}
-
-					JPluginHelper::importPlugin('vmcoupon');
-					$dispatcher = JDispatcher::getInstance();
-					$returnValues = $dispatcher->trigger('plgVmCouponUpdateOrderStatus', array($data, $order_status_code));
-					if(!empty($returnValues)){
-						foreach ($returnValues as $returnValue) {
-							if ($returnValue !== null  ) {
-								//Take a look on this seyi, I am not sure about that, but it should work at least simular note by Max
-								//$couponData = $returnValue;
-								return $returnValue;
-							}
-						}
-					}
-					$updated ++;
-				} else {
-					$error++;
-				}
-
+				$this->updateStatusForOneOrder($virtuemart_order_id,$order);
 			}
 		}
 		$result = array( 'updated' => $updated , 'error' =>$error , 'total' => $total ) ;
 		return $result ;
 
+	}
+
+	function updateStatusForOneOrder($virtuemart_order_id,$order,$useTriggers=true){
+
+		/* Update the order */
+		$data = $this->getTable('orders');
+		$data->load($virtuemart_order_id);
+		$old_order_status = $data->order_status;
+		$data->bind($order);
+
+		//First we must call the payment, the payment manipulates the result of the order_status
+		if($useTriggers){
+			/* When the order is set to "shipped", we can capture the payment */
+			if( ($old_order_status == "P" || $old_order_status == "C") && $order['order_status'] == "S") {
+				JPluginHelper::importPlugin('vmpayment');
+				$_dispatcher = JDispatcher::getInstance();
+				$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderPayment',array(&$order,$old_order_status));
+				foreach ($_returnValues as $_returnValue) {
+					if ($_returnValue === true) {
+						break; // Plugin was successfull
+					} elseif ($_returnValue === false) {
+						return false; // Plugin failed
+					}
+					// Ignore null status and look for the next returnValue
+				}
+			}
+
+			// TODO This is not the most logical place for these plugins (or better; the method updateStatus() must be renamed....)
+			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+			JPluginHelper::importPlugin('vmshipment');
+			$_dispatcher = JDispatcher::getInstance();
+			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderShipment',array(&$order,$old_order_status));
+
+
+			/**
+			* If an order gets cancelled, fire a plugin event, perhaps
+			* some authorization needs to be voided
+			*/
+			if ($order['order_status'] == "X") {
+				JPluginHelper::importPlugin('vmpayment');
+				$_dispatcher = JDispatcher::getInstance();$_dispatcher->trigger('plgVmOnCancelPayment',array(&$order,$old_order_status));
+			}
+		}
+
+
+		if ($data->store()) {
+			$q = 'SELECT virtuemart_order_item_id
+												FROM #__virtuemart_order_items
+												WHERE virtuemart_order_id="'.$virtuemart_order_id.'"';
+			$db = JFactory::getDBO();
+			$db->setQuery($q);
+			$order_items = $db->loadObjectList();
+			if ($order_items) {
+				foreach ($order_items as $order_item) {
+					$this->updateSingleItem($order_item->virtuemart_order_item_id, $order['order_status'], $order['comments'] , $virtuemart_order_id);
+				}
+			}
+			/* Update the order history */
+			$this->_updateOrderHist($virtuemart_order_id, $order['order_status'], $order['customer_notified'], $order['comments']);
+
+			// Send a download ID */
+			//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($virtuemart_order_id);
+
+			// Check if the customer needs to be informed */
+			if ($order['customer_notified']) {
+				$order['virtuemart_order_id'] =$virtuemart_order_id ;
+				$this->notifyCustomer($order,  $order['comments'],  $order['customer_notified']);
+			}
+
+			JPluginHelper::importPlugin('vmcoupon');
+			$dispatcher = JDispatcher::getInstance();
+			$returnValues = $dispatcher->trigger('plgVmCouponUpdateOrderStatus', array($data, $old_order_status));
+			if(!empty($returnValues)){
+				foreach ($returnValues as $returnValue) {
+					if ($returnValue !== null  ) {
+						//Take a look on this seyi, I am not sure about that, but it should work at least simular note by Max
+						//$couponData = $returnValue;
+						return $returnValue;
+					}
+				}
+			}
+			$updated ++;
+		} else {
+			$error++;
+		}
 	}
 
 	/**
@@ -485,8 +478,6 @@ class VirtueMartModelOrders extends VmModel {
 			vmError('Couldn\'t create order history','Couldn\'t create order history');
 			return false;
 		}
-// 		$this->_handlePayment($orderID, $cart, $prices);
-// 		$this->_handleShipment($orderID, $cart, $prices);
 
 		return $orderID;
 	}
@@ -663,47 +654,6 @@ class VirtueMartModelOrders extends VmModel {
 		return true;
 	}
 
-	/**
-	 * Handle the selected payment method. If triggered to do so, this method will also
-	 * take care of the stock updates.
-	 *
-	 * @author Oscar van Eijk
-	 * @param int $_orderID Order ID
-	 * @param object $_cart Cart object
-	 * @param array $_prices Price data
-	 */
-/*	private function _handlePayment($orderID, $cart, $prices)
-	{
-
-		$order_number = $this->getOrderNumber($orderID);
-
-		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmConfirmedOrder',array($order_number,$cart,$prices,&$this));
-
-/*		foreach ($returnValues as $returnValue) {
-			if ($returnValue !== null) {
-			    if ($returnValue ) {
-				// i have some infos to display ??
-				$this->handleStockAfterStatusChanged('P',$cart->products,'N');
-				break; // This was the active plugin, so there's nothing left to do here.
-			    }
-			}
-			// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
-		}
-
-	}
-*/
-
-	function handleStockAfterStatusChanged($newState,$products,$oldState = 'P'){
-	    if (VmConfig::get('check_stock', true)) {
-		    foreach ($products as $prod) {
-			    $this->handleStockAfterStatusChangedPerProduct($newState,$oldState,$prod,$prod->quantity);
-		    }
-		}
-	}
-
-
 
 	function handleStockAfterStatusChangedPerProduct($newState, $oldState,$product, $quantity) {
 		if (VmConfig::get('check_stock', false)) {
@@ -711,6 +661,7 @@ class VirtueMartModelOrders extends VmModel {
 		}
 		if($newState == $oldState) return;
 		$StatutWhiteList = array('P','C','X','R','S','N');
+
 		if(!in_array($oldState,$StatutWhiteList) or !in_array($newState,$StatutWhiteList)) {
 			vmError('The workflow for '.$newState.' or  '.$oldState.' is unknown, take a look on model/orders function handleStockAfterStatusChanged','Can\'t process workflow, contact the shopowner. Status is'.$newState);
 			return ;
@@ -751,24 +702,6 @@ class VirtueMartModelOrders extends VmModel {
 		$productModel->updateStock ($product, $quantity,$product_in_stock,$product_ordered);
 
 	}
-
-	/**
-	 * Handle the selected shipment method. If triggered to do so, this method will also
-	 * take care of the stock updates.
-	 *
-	 * @author Valérie Isaksen
-	 * @param int $orderID Order ID
-	 * @param object $_cart Cart object
-	 * @param array $prices Price data
-	 */
-/*	private function _handleShipment($orderID, $cart, $prices)
-	{
-		JPluginHelper::importPlugin('vmshipment');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreDataShipment',array( $orderID,$cart,$prices));
-
-
-	}*/
 
 	/**
 	 * Create the ordered item records
@@ -1081,21 +1014,7 @@ class VirtueMartModelOrders extends VmModel {
 		//		return true;
 	}
 
-	/**
-	 * Remove an order
-	 *
-	 * @author Oscar van Eijk
-	 * @return boolean True of remove was successful, false otherwise
-	 */
-	// old remove
-	// function remove($cids) {
-		// vmdebug('remove', $cids);
-		// foreach($cids as $_id) {
-			// $this->removeOrderItems ($_id);
-		// }
 
-		// parent::remove($cids);
-	// }
 	/*
 	 *remove product from order item table
 	*@var $virtuemart_order_id Order to clear
@@ -1163,25 +1082,6 @@ class VirtueMartModelOrders extends VmModel {
 		return true;
 	}
 
-
-
-
-	/**
-	 *  Create a list of products for JSON return
-	 *
-	 * TODO sanitize variables Very unsecure
-	 * identical with function in orders?
-	 * disabled to unsecure written
-	 */
-	/*	public function getProductListJson() {
-		$db = JFactory::getDBO();
-	$filter = JRequest::getVar('q', false);
-	$q = "SELECT virtuemart_product_id AS id, CONCAT(product_name, '::', product_sku) AS value
-	FROM #__virtuemart_products";
-	if ($filter) $q .= " WHERE product_name LIKE '%".$filter."%'";
-	$db->setQuery($q);
-	return $db->loadObjectList();
-	}*/
 }
 
 
