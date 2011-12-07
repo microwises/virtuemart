@@ -171,7 +171,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		return parent::onStoreInstallPluginTable($psType);
 	}
 
-	function plgVmgetDeclaredPluginParams($psType,$name,$id){
+	function plgVmGetDeclaredPluginParams($psType,$name,$id){
 		return parent::getDeclaredPluginParams($psType, $name, $id);
 	}
 
