@@ -54,7 +54,7 @@ class VirtuemartViewCustom extends JView {
 // 			vmdebug('VirtuemartViewCustom',$custom);
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();
-			$customPlugins = $dispatcher->trigger('plgVmGetActiveCustomPlugin',array($custom->virtuemart_custom_id,&$customPlugin));
+			$retValue = $dispatcher->trigger('plgVmOnDisplayEdit',array($custom->virtuemart_custom_id,&$customPlugin));
 // 			vmdebug('$customPlugins in view getriggered',$customPlugins);
 // 			foreach($customPlugins as $plugin){
 // 				if(!empty($plugin)){

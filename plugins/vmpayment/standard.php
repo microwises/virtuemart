@@ -315,8 +315,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	return parent::onShowOrderPrint($order_number, $method_id);
     }
 
-    function plgVmGetDeclaredPluginParamsPayment($name, $id) {
-	return parent::getDeclaredPluginParams('payment', $name, $id);
+    function plgVmDeclarePluginParamsPayment($name, $id, &$data) {
+	return parent::declarePluginParams('payment', $name, $id, $data);
     }
 
     //Notice: We only need to add the events, which should work for the specific plugin, when an event is doing nothing, it should not be added

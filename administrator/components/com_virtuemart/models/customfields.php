@@ -295,15 +295,15 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				JPluginHelper::importPlugin('vmcustom');
 				$dispatcher = JDispatcher::getInstance();
-				$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParams',array('custom',$field->custom_element,$field->custom_jplugin_id));
+				$retValue = $dispatcher->trigger('plgVmDeclarePluginParams',array('custom',$field->custom_element,$field->custom_jplugin_id,$field));
 
-				if(!empty($varsToPushParam)){
-					foreach($varsToPushParam as $push){
-						if($push!==0 and $push[0]!==0 and $push[1]!==0){
-							VmTable::bindParameterable($field,$push[0],$push[1]);
-						}
-					}
-				}
+// 				if(!empty($varsToPushParam)){
+// 					foreach($varsToPushParam as $push){
+// 						if($push!==0 and $push[0]!==0 and $push[1]!==0){
+// 							VmTable::bindParameterable($field,$push[0],$push[1]);
+// 						}
+// 					}
+// 				}
 			}
 			//vmdebug('fields',$field);
 			$field->display = $this->inputType($field,$virtuemart_product_id,$row); //custom_param without S !!!
@@ -603,7 +603,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)) ;
 						else  $price = $free ;
 						$productCustom->text =  $productCustom->custom_value.' : '.$price;
-						
+
 					}
 					$group->display = VmHTML::select('customPrice['.$row.']['.$group->virtuemart_custom_id.']',$group->options,$default->custom_value,'','value','text',false);
 				} else if ($group->field_type == 'G'){

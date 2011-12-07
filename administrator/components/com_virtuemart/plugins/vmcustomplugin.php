@@ -55,7 +55,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 
 	}
 
-	function getActiveCustomPlugin($virtuemart_custom_id, &$customPlugin){
+	function onDisplayEditBECustom($virtuemart_custom_id, &$customPlugin){
 
 		//if($this->plugin = $this->selectedThisByMethodId($this->_psType,$virtuemart_custom_id)){
 		if($this->plugin = $this->selectedThisByMethodId( $virtuemart_custom_id)){
@@ -140,8 +140,8 @@ abstract class vmCustomPlugin extends VmPlugin {
     // 	 public function plgVmCalculatePluginVariant( $product, $field,$selected,$row){
     public function getCustomVariant($product, &$productCustomsPrice,$selected,$row){
 		if ($productCustomsPrice->custom_element !==$this->_name) return ;
-		vmPlugin::plgVmGetDeclaredPluginParams('vmcustom',$productCustomsPrice->custom_element,$productCustomsPrice->custom_jplugin_id);
-		VmTable::bindParameterable($productCustomsPrice,'custom_params',$this->_varsToPushParam);
+		vmPlugin::declarePluginParams('vmcustom',$productCustomsPrice->custom_element,$productCustomsPrice->custom_jplugin_id,$productCustomsPrice);
+// 		VmTable::bindParameterable($productCustomsPrice,'custom_params',$this->_varsToPushParam);
 
 		static $pluginFields;
 		if (!isset($pluginFields)) {
@@ -205,5 +205,6 @@ abstract class vmCustomPlugin extends VmPlugin {
 		return $custom_element;
 
 	}
+
 
 }

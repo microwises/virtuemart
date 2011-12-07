@@ -454,15 +454,15 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		return parent::onStoreInstallPluginTable($psType);
 	}
 
-	function plgVmGetDeclaredPluginParams($psType,$name,$id){
-		return parent::getDeclaredPluginParams($psType, $name, $id);
+	function plgVmDeclarePluginParamsCustom($psType,$name,$id, &$data){
+		return parent::declarePluginParams($psType, $name, $id, $data);
 	}
 
 	/**
 	 * Custom triggers note by Max Milbers
 	 */
-	function plgVmGetActiveCustomPlugin($virtuemart_custom_id,&$customPlugin){
-		return parent::getActiveCustomPlugin($virtuemart_custom_id,$customPlugin);
+	function plgVmOnDisplayEdit($virtuemart_custom_id,&$customPlugin){
+		return parent::onDisplayEditBECustom($virtuemart_custom_id,$customPlugin);
 	}
 
 	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected,$row){

@@ -301,12 +301,13 @@ abstract class vmPlugin extends JPlugin {
 
 	}
 
-	protected function getDeclaredPluginParams($psType,$name,$id){
+	protected function declarePluginParams($psType,$name,$id,&$data){
 		if($this->selectedThis($psType,$name,$id)){
 // 			vmdebug('getDeclaredPluginParams return '.$this->_xParams,$this->_varsToPushParam);
+			VmTable::bindParameterable($data,$this->_xParams,$this->_varsToPushParam);
 			return array($this->_xParams,$this->_varsToPushParam);
 		} else {
-			return 0;
+			return false;
 		}
 	}
 

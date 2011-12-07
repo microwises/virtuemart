@@ -814,8 +814,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
       return null;
       }
      */
-    function plgVmGetDeclaredPluginParamsPayment( $name, $id) {
-	return parent::getDeclaredPluginParams('payment', $name, $id);
+    function plgVmDeclarePluginParamsPayment( $name, $id, &$data) {
+	return parent::declarePluginParams('payment', $name, $id, $data);
     }
 
 }

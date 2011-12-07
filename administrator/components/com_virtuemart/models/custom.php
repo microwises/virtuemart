@@ -61,15 +61,16 @@ class VirtueMartModelCustom extends VmModel {
    		if(!empty($this->_data->custom_jplugin_id)){
    			JPluginHelper::importPlugin('vmcustom');
    			$dispatcher = JDispatcher::getInstance();
-   			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParams',array('custom',$this->_data->custom_element,$this->_data->custom_jplugin_id));
+//    			$varsToPushParam = $dispatcher->trigger('plgVmDeclarePluginParams',array('custom',$this->_data->custom_element,$this->_data->custom_jplugin_id));
+   			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsCustom',array('custom',&$this->_data));
 
-   			if(!empty($varsToPushParam)){
-   				foreach($varsToPushParam as $push){
-   				  	if($push!==0 and $push[0]!==0 and $push[1]!==0){
-  							VmTable::bindParameterable($this->_data,$push[0],$push[1]);
-  						}
-   				}
-   			}
+//    			if(!empty($varsToPushParam)){
+//    				foreach($varsToPushParam as $push){
+//    				  	if($push!==0 and $push[0]!==0 and $push[1]!==0){
+//   							VmTable::bindParameterable($this->_data,$push[0],$push[1]);
+//   						}
+//    				}
+//    			}
    		}
 
 //		if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
@@ -81,76 +82,7 @@ class VirtueMartModelCustom extends VmModel {
   		return $this->_data;
 
     }
-    /**
-     * Gets a single custom by virtuemart_custom_id
-     * .
-     * @param int $virtuemart_product_id
-     * @return customobject
-     *
-    function getProductCustoms($virtuemart_product_id){
 
-		$query='SELECT `virtuemart_customfield_id` FROM `#__virtuemart_product_customfields`
-			WHERE `virtuemart_product_id`='.(int)$virtuemart_product_id;
-		$this->_db->setQuery($query);
-		$ids = $this->_db->loadResultArray();
-
-		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
-   		$data =& $this->getTable('customs');
-		foreach ($ids as $id) $this->_data->productCustoms[] = $data->load($id);
-
-		$this->_data->customFields = self::getCustoms() ;
-
-  		return $this->_data;
-
-    }
-
-    /*
-	public function getCustomPlugin($virtuemart_custom_id ){
-
-  		if (empty($this->plugin)) {
-			$this->_db->setQuery('SELECT * FROM `#__virtuemart_customplugins` WHERE virtuemart_custom_id =' .(int)$virtuemart_custom_id);
-			$this->plugin = $this->_db->loadObject();
-  		}
-		if (empty($this->plugin)) {
-			$this->plugin->custom_jplugin_id = null;
-			return $this->plugin ;
-		}
-  		if(empty($this->plugin->virtuemart_vendor_id)){
-  		   	if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-   			$this->plugin->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
-  		}
-
-  		if(!empty($this->_id)){
-			//  Add the paymentmethod shoppergroups
-			// $q = 'SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_paymentmethod_shoppergroups WHERE `virtuemart_paymentmethod_id` = "'.$this->_id.'"';
-			// $this->_db->setQuery($q);
-			// $this->plugin->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
-
-			// /* Add the accepted credit cards
-			// $q = 'SELECT `virtuemart_creditcard_id` FROM #__virtuemart_paymentmethod_creditcards WHERE `virtuemart_paymentmethod_id` = "'.$this->_id.'"';
-			// $this->_db->setQuery($q);
-			// $this->plugin->payment_creditcards = $this->_db->loadResultArray();
-
-
-			if (VmConfig::isJ15()) {
-				$table = '#__plugins';
-				$ext_id = 'id';
-			} else {
-				$table = '#__extensions';
-				$ext_id = 'extension_id';
-			}
-			$q = 'SELECT `params` FROM `' . $table . '` WHERE `' . $ext_id . '` = "'.$this->plugin->custom_jplugin_id.'"';
-			$this->_db->setQuery($q);
-			$this->plugin->param = $this->_db->loadResult();
-  		} else {
-  			// $this->plugin->virtuemart_shoppergroup_ids = '';
-  			// $this->plugin->payment_creditcards = '';
-  			$this->plugin->param = '';
-
-  		}
-
-  		return $this->plugin;
-	}
 
     /**
 	 * Retireve a list of customs from the database. This is meant only for backend use
@@ -339,16 +271,15 @@ class VirtueMartModelCustom extends VmModel {
 
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();
-			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParams',array('custom',$data['custom_value'],$data['custom_jplugin_id']));
+			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsCustoms',array('custom',$data['custom_value'],$data['custom_jplugin_id'],$data));
 
-			if(!empty($varsToPushParam)){
-
-				foreach($varsToPushParam as $push){
-					if($push!==0 and $push[0]!==0 and $push[1]!==0){
-						$table->setParameterable($push[0],$push[1]);
-					}
-				}
-			}
+// 			if(!empty($varsToPushParam)){
+// 				foreach($varsToPushParam as $push){
+// 					if($push!==0 and $push[0]!==0 and $push[1]!==0){
+// 						$table->setParameterable($push[0],$push[1]);
+// 					}
+// 				}
+// 			}
 		}
 
 		$table->bindChecknStore($data);

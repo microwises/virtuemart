@@ -310,8 +310,8 @@ class GenericTableUpdater extends JModel{
 			} else {
 				$this->createTable($tablename,$table);
 			}
-			$this->_db->setQuery('OPTIMIZE '.$tablename);
-			$this->_db->query();
+// 			$this->_db->setQuery('OPTIMIZE '.$tablename);
+// 			$this->_db->query();
 
 		}
 

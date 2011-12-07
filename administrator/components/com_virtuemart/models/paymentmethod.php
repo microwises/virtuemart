@@ -67,9 +67,9 @@ class VirtueMartModelPaymentmethod extends VmModel{
   		if($this->_data->payment_jplugin_id){
   			JPluginHelper::importPlugin('vmpayment');
   			$dispatcher = JDispatcher::getInstance();
-  			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParamsPayment',array($this->_data->payment_element,$this->_data->payment_jplugin_id));
+  			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsPayment',array($this->_data->payment_element,$this->_data->payment_jplugin_id,$this->_data));
 
-  			if(!empty($varsToPushParam)){
+/*  			if(!empty($varsToPushParam)){
   				foreach($varsToPushParam as $push){
 //   					vmdebug('vars to push',$push);
   					if($push!==0 and $push[0]!==0 and $push[1]!==0){
@@ -77,7 +77,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
   					}
   				}
   			}
-  		}
+  		}*/
 
   		if(!empty($this->_id)){
 
@@ -192,17 +192,15 @@ class VirtueMartModelPaymentmethod extends VmModel{
 
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
-			$varsToPushParam = $dispatcher->trigger('plgVmGetDeclaredPluginParamsPayment',array( $data['payment_element'],$data['payment_jplugin_id']));
+			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsPayment',array( $data['payment_element'],$data['payment_jplugin_id'],$data));
 
-			if(!empty($varsToPushParam)){
-
-				foreach($varsToPushParam as $push){
-
-					if($push!==0 and $push[0]!==0 and $push[1]!==0){
-						$table->setParameterable($push[0],$push[1]);
-					}
-				}
-			}
+// 			if(!empty($varsToPushParam)){
+// 				foreach($varsToPushParam as $push){
+// 					if($push!==0 and $push[0]!==0 and $push[1]!==0){
+// 						$table->setParameterable($push[0],$push[1]);
+// 					}
+// 				}
+// 			}
 		}
 
 		$table->bindChecknStore($data);

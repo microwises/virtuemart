@@ -135,13 +135,13 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 		<?php echo $this->lists['required']; ?>
 		<?php echo $this->lists['registration']; ?>
 		<?php echo $this->lists['account']; ?>
-		<?php echo $this->lists['shipping']; ?>
+		<?php echo $this->lists['shipment']; ?>
 		<?php echo $this->lists['readonly']; ?>
 		<?php echo $this->lists['published']; ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_USERFIELDS_SIZE','size',$this->userField->size,'class="inputbox"','',5); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_ORDERING','ordering',$this->userField->ordering,'class="inputbox"','',5); ?>
-		<?php if(Vmconfig::get('multix','none')!=='none'){ 
-				echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->lists['vendors'] ); 
+		<?php if(Vmconfig::get('multix','none')!=='none'){
+				echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->lists['vendors'] );
 			} ?>
 	</table>
 	</fieldset>
