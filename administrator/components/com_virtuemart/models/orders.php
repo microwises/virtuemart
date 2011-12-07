@@ -485,8 +485,8 @@ class VirtueMartModelOrders extends VmModel {
 			vmError('Couldn\'t create order history','Couldn\'t create order history');
 			return false;
 		}
-		$this->_handlePayment($orderID, $cart, $prices);
-		$this->_handleShipment($orderID, $cart, $prices);
+// 		$this->_handlePayment($orderID, $cart, $prices);
+// 		$this->_handleShipment($orderID, $cart, $prices);
 
 		return $orderID;
 	}
@@ -541,7 +541,7 @@ class VirtueMartModelOrders extends VmModel {
 		$_orderData->order_status = 'P';
 // 		if (isset($_cart->virtuemart_currency_id)) {
 		if (isset($_cart->pricesCurrency)) {
-			$_orderData->user_currency_id = $this->getCurrencyIsoCode($_cart->pricesCurrency);
+			$_orderData->user_currency_id = $_cart->pricesCurrency //$this->getCurrencyIsoCode($_cart->pricesCurrency);
 			$currency = CurrencyDisplay::getInstance();
 			if(!empty($currency->exchangeRateShopper)){
 				$_orderData->user_currency_rate = $currency->exchangeRateShopper;
@@ -549,7 +549,7 @@ class VirtueMartModelOrders extends VmModel {
 				$_orderData->user_currency_rate = 1.0;
 			}
 		}
-		$_orderData->order_currency = $this->getVendorCurrencyIsoCode($_orderData->virtuemart_vendor_id);
+		$_orderData->order_currency = $this->getVendorCurrencyId($_orderData->virtuemart_vendor_id);
 
 		$_orderData->virtuemart_paymentmethod_id = $_cart->virtuemart_paymentmethod_id;
 		$_orderData->virtuemart_shipmentmethod_id = $_cart->virtuemart_shipmentmethod_id;
@@ -579,12 +579,13 @@ class VirtueMartModelOrders extends VmModel {
 	}
 
 
-	private function getVendorCurrencyIsoCode($vendorId){
+	private function getVendorCurrencyId($vendorId){
 		$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`="'.$vendorId.'" ';
 		$db = &JFactory::getDBO();
 		$db->setQuery($q);
 		$vendorCurrency =  $db->loadResult();
-		return $this->getCurrencyIsoCode($vendorCurrency);
+		return $vendorCurrency;
+// 		return $this->getCurrencyIsoCode($vendorCurrency);
 	}
 
 	private function getCurrencyIsoCode($vmCode){
@@ -671,16 +672,16 @@ class VirtueMartModelOrders extends VmModel {
 	 * @param object $_cart Cart object
 	 * @param array $_prices Price data
 	 */
-	private function _handlePayment($orderID, $cart, $prices)
+/*	private function _handlePayment($orderID, $cart, $prices)
 	{
 
 		$order_number = $this->getOrderNumber($orderID);
 
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreDataPayment',array($order_number,$cart,$prices));
+		$returnValues = $dispatcher->trigger('plgVmConfirmedOrder',array($order_number,$cart,$prices,&$this));
 
-		foreach ($returnValues as $returnValue) {
+/*		foreach ($returnValues as $returnValue) {
 			if ($returnValue !== null) {
 			    if ($returnValue ) {
 				// i have some infos to display ??
@@ -689,9 +690,10 @@ class VirtueMartModelOrders extends VmModel {
 			    }
 			}
 			// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
-
 		}
+
 	}
+*/
 
 	function handleStockAfterStatusChanged($newState,$products,$oldState = 'P'){
 // after cart
@@ -756,14 +758,15 @@ class VirtueMartModelOrders extends VmModel {
 	 * @param object $_cart Cart object
 	 * @param array $prices Price data
 	 */
-	private function _handleShipment($orderID, $cart, $prices)
+/*	private function _handleShipment($orderID, $cart, $prices)
 	{
 		JPluginHelper::importPlugin('vmshipment');
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmOnConfirmedOrderStoreDataShipment',array( $orderID,$cart,$prices));
 
 
-	}
+	}*/
+
 	/**
 	 * Create the ordered item records
 	 *

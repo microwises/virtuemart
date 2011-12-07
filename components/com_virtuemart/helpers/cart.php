@@ -956,13 +956,15 @@ class VirtueMartCart {
 // 			$cart = $this->getCart();
 			$dispatcher = JDispatcher::getInstance();
 // 			$html="";
+			JPluginHelper::importPlugin('vmshipment');
+			JPluginHelper::importPlugin('vmcustom');
+			JPluginHelper::importPlugin('vmpayment');
 			$session = JFactory::getSession();
 			$return_context = $session->getId();
-			$returnValues = $dispatcher->trigger('plgVmConfirmedOrderPayment', array($this, $order));
+			$returnValues = $dispatcher->trigger('plgVmConfirmedOrder', array($this, $order));
 			// may be redirect is done by the payment plugin (eg: paypal)
 			// if payment plugin echos a form, false = nothing happen, true= echo form ,
 			// 1 = cart should be emptied, 0 cart should not be emptied
-
 
 		}
 
@@ -988,30 +990,6 @@ class VirtueMartCart {
 		$this->tosAccepted = null;
 
 		$this->setCartIntoSession();
-	}
-
-	/**
-	 * Used for new payment handling, not implemented yet. Idea is to use the token and the stored session to refer
-	 * to a cart and so not to create an order for payment attempts
-	 *
-	 * @author Valerie
-	 * @author Max Milbers
-	 * @deprecated
-	 */
-	public function executeConfirmedOrder(){
-
-		VmError('Deprecated function executeConfirmedOrder called');
-		$order = new VirtueMartModelOrders();
-		if (($orderID = $order->createOrderFromCart($this)) === false) {
-			$mainframe = JFactory::getApplication();
-			JError::raiseWarning(500, $order->getError());
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
-		}
-
-		$this->virtuemart_order_id = $orderID;
-		$this->sentOrderConfirmedEmail($order->getOrder($orderID));
-
-		$this->emptyCart();
 	}
 
 	/**
