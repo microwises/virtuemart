@@ -97,6 +97,7 @@ abstract class vmCustomPlugin extends VmPlugin {
     	}
 
 	}
+
 	protected function plgVmGetPluginInternalDataCustom(&$field){
 
 	 	$datas = $this->getPluginInternalData($field->virtuemart_custom_id,'virtuemart_custom_id');
