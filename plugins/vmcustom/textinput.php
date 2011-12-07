@@ -53,7 +53,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	// get product param for this plugin on edit
 	function plgVmOnProductEdit($field, $product, &$row,&$retValue) {
 		if ($field->custom_element != $this->_name) return '';
-		
+
 		$this->parseCustomParams($field);
 // 		$data = $this->getVmPluginMethod($field->virtuemart_custom_id);
 // 		VmTable::bindParameterable($field,$this->_xParams,$this->_varsToPushParam);
@@ -168,11 +168,11 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * vmplugin triggers note by Max Milbers
 	 */
 	protected function plgVmOnStoreInstallPluginTable($psType) {
-		return parent::OnStoreInstallPluginTable($psType);
+		return parent::onStoreInstallPluginTable($psType);
 	}
 
-	function plgVmGetDeclaredPluginParams($psType,$name,$id){
-		return parent::GetDeclaredPluginParams($psType, $name, $id);
+	function plgVmgetDeclaredPluginParams($psType,$name,$id){
+		return parent::getDeclaredPluginParams($psType, $name, $id);
 	}
 
 	/**
@@ -202,7 +202,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	}
 
 	public function plgVmCreateOrderLinesCustom(&$html,$item,$productCustom, $row ){
-		parent:createOrderLinesCustom($html,$item,$productCustom, $row );
+		parent::createOrderLinesCustom($html,$item,$productCustom, $row );
 	}
 }
 
