@@ -40,10 +40,7 @@ if ($this->search) { ?>
 <!--BEGIN Search Box -->
 <form action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=category&search=true&limitstart=0&virtuemart_category_id='.$this->category->virtuemart_category_id ); ?>" method="post">
 <div class="virtuemart_search">
-<?php
-$option  = array('virtuemart_custom_id' =>null, 'custom_title' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
-$options = array_merge(array($option), $this->searchcustom->selectList);
-echo JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE').' '.JHTML::_('select.genericlist', $options, 'custom_parent_id', 'class="inputbox"', 'virtuemart_custom_id', 'custom_title', $this->searchcustom->custom_parent_id); ?>
+<?php echo $this->searchcustom ?>
 <br />
 <?php if ($this->searchcustom->custom_parent_id) {
 	foreach ($this->searchcustom->selected as $key =>$custom){

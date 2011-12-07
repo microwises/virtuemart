@@ -726,28 +726,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			}
 		}
 	}
-	/*
-	 * generate custom fields list to display as search in FE
-	 */
-	public function getSearchCustom() {
 
-		$this->_db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE `field_type` ="P"');
-		$this->searchCustom->selectList = $this->_db->loadAssocList();
-		if ($this->searchCustom->custom_parent_id = JRequest::getInt('custom_parent_id', 0)) {
-			$this->_db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE custom_parent_id='.$this->searchCustom->custom_parent_id);
-			$this->searchCustom->selected = $this->_db->loadObjectList();
-			foreach ($this->searchCustom->selected as &$selected) {
-				$this->_db->setQuery('SELECT `custom_value`,`custom_value` as title FROM `#__virtuemart_product_customfields` WHERE virtuemart_custom_id='.$selected->virtuemart_custom_id);
-				$selected->fields[$selected->virtuemart_custom_id] = $this->_db->loadObjectList();
-			}
-		}
-		// add search for declared plugins
-		JPluginHelper::importPlugin('vmcustom');
-		$dispatcher = JDispatcher::getInstance();
-		$plgDisplay = $dispatcher->trigger('plgVmSelectSearchableCustom',array( &$this->searchCustom->selectList,$this->searchCustom->custom_parent_id ) );
-
-		return $this->searchCustom;
-	}
 	function displayCustomMedia($media_id,$table='product'){
 
 			if (!class_exists('TableMedias'))

@@ -70,16 +70,18 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	{
 		$db =&JFactory::getDBO();
 		$db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE `custom_element` ="'.$this->_name.'"');
-		if ($this->selectedPlugin->selectList = $db->loadAssocList() ) {
+		if ($this->selectList = $db->loadAssocList() ) {
 		//vmdebug('$this->selectedPlugin',$this->selectedPlugin);
 			if ($virtuemart_custom_id) {
-				$db->setQuery('SELECT custom_specification_default1 FROM `#__virtuemart_product_custom_plg_'.$this->_name.'` WHERE custom_parent_id='.$virtuemart_custom_id);
-				$this->selectedPlugin->virtuemart_custom_id=$virtuemart_custom_id;
-				$this->selectedPlugin->custom_title='plugin';
-				$db->setQuery('SELECT `custom_specification_default1`,`custom_value` as title FROM `#__virtuemart_product_customfields` WHERE virtuemart_custom_id='.$virtuemart_custom_id);
+				$db->setQuery('SELECT custom_specification_default1 as custom_value, custom_specification_default1 as title FROM `#__virtuemart_product_custom_plg_'.$this->_name.'` WHERE custom_parent_id='.$virtuemart_custom_id);
+				// $this->selectedPlugin->selected = $db->loadObjectList();
+				// $this->selectedPlugin->selected->virtuemart_custom_id=$virtuemart_custom_id;
+				// $this->selectedPlugin->selected->custom_title='plugin';
+				// $db->setQuery('SELECT `custom_specification_default1`,`custom_value` as title FROM `#__virtuemart_product_customfields` WHERE virtuemart_custom_id='.$virtuemart_custom_id);
 				$this->selectedPlugin->selected->fields[$virtuemart_custom_id] = $db->loadObjectList();
 			}
-		$selectList = array_merge((array)$this->selectedPlugin,$selectList);
+
+		$selectList = array_merge((array)$this->selectList,$selectList);
 		}
 		return true;
 	}

@@ -175,7 +175,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * called by customfields inputTypePlugin
 	 *
 	 */
-	public function plgVmSelectSearchableCustom(&$selectList)
+	public function selectSearchableCustom(&$selectList)
 	{
 		return null;
 	}

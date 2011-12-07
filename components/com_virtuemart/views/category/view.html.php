@@ -119,10 +119,7 @@ class VirtuemartViewCategory extends JView {
 			$document->setTitle( $categoryStripped.' '.$keyword);
 		}
 		if ($search = JRequest::getWord('search', '')) {
-			if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-			$modelCustomfields = new VirtueMartModelCustomfields();
-			$searchcustom = $modelCustomfields->getSearchCustom();
-			$this->assignRef('searchcustom', $searchcustom);
+			$searchcustom = $this->getSearchCustom();
 		}
 		$this->assignRef('keyword', $keyword);
 		$this->assignRef('search', $search);
@@ -181,6 +178,41 @@ class VirtuemartViewCategory extends JView {
 	    shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
 
 		parent::display($tpl);
+	}
+	/*
+	 * generate custom fields list to display as search in FE
+	 */
+	public function getSearchCustom() {
+		
+		$emptyOption  = array('virtuemart_custom_id' =>0, 'custom_title' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
+		$this->_db =&JFactory::getDBO();
+		$this->_db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE `field_type` ="P"');
+		$this->options = $this->_db->loadAssocList();
+		
+		if ($this->custom_parent_id = JRequest::getInt('custom_parent_id', 0)) {
+			$this->_db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE custom_parent_id='.$this->custom_parent_id);
+			$this->selected = $this->_db->loadObjectList();
+			$this->searchCustomValues ='';
+			foreach ($this->selected as $selected) {
+				$this->_db->setQuery('SELECT `custom_value` as virtuemart_custom_id,`custom_value` as custom_title FROM `#__virtuemart_product_customfields` WHERE virtuemart_custom_id='.$selected->virtuemart_custom_id);
+				 $valueOptions= $this->_db->loadAssocList();
+				 $valueOptions = array_merge(array($emptyOption), $valueOptions);
+				$this->searchCustomValues .= JText::_($selected->custom_title).' '.JHTML::_('select.genericlist', $valueOptions, 'customfields['.$selected->virtuemart_custom_id.']', 'class="inputbox"', 'virtuemart_custom_id', 'custom_title', 0);
+			}
+		}
+		
+		
+		// add search for declared plugins
+		JPluginHelper::importPlugin('vmcustom');
+		$dispatcher = JDispatcher::getInstance();
+		$plgDisplay = $dispatcher->trigger('plgVmSelectSearchableCustom',array( &$this->options,$this->custom_parent_id ) );
+		
+
+		$this->options = array_merge(array($emptyOption), $this->options);
+		// render List of available groups
+		$this->searchCustomList = JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE').' '.JHTML::_('select.genericlist',$this->options, 'custom_parent_id', 'class="inputbox"', 'virtuemart_custom_id', 'custom_title', $this->custom_parent_id);
+		$this->assignRef('searchcustom', $this->searchCustomList);
+		$this->assignRef('searchcustomvalues', $this->searchCustomValues);
 	}
 }
 
