@@ -623,7 +623,7 @@ class calculationHelper {
 		foreach ($this->allrules[$entrypoint] as $i => $rule) {
 // 			vmdebug('gatherEffectingRulesForProductPrice '.$entrypoint,$this->allrules[$entrypoint]);
 			if(!empty($id) && $rule['virtuemart_calc_id']!==$id){
-				vmdebug('Price override set '.$id);
+// 				vmdebug('Price override set '.$id);
 				continue;
 			}
 			if(!isset($this->allrules[$entrypoint][$i]['cats'])){

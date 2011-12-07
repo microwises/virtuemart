@@ -310,6 +310,9 @@ class GenericTableUpdater extends JModel{
 			} else {
 				$this->createTable($tablename,$table);
 			}
+			$this->_db->setQuery('OPTIMIZE '.$tablename);
+			$this->_db->query();
+
 		}
 
 		$tablesWithLang = array_keys($this->tables); //('categories','manufacturercategories','manufacturers','paymentmethods','shipmentmethods','products','vendors');
@@ -459,17 +462,22 @@ class GenericTableUpdater extends JModel{
 
 				if (!empty($compare)) {
 					$showThem = true;
-					vmdebug('$oldColumn ',$oldColumn,$value);
-					if(strpos($value,'PRIMARY')!==false){
+					vmdebug('$oldColumn ',$name,$oldColumn,$value);
+					if(strpos($value,'PRIMARY')!==false ){
 						if(strpos($oldColumn,'PRIMARY')!==false){
 							$dropit = "DROP PRIMARY KEY , ";
+							continue; //lets not change primaries
+						} else if(strpos($oldColumn,'KEY')!==false){
+							$dropit = "DROP INDEX `".$name."`, ";
+						} else if(strpos($oldColumn,'INDEX')!==false){
+							$dropit = "DROP INDEX `".$name."`, ";
 						} else {
 							$dropit = '';
 						}
-
+						vmdebug('$$dropit ',$dropit,strpos($oldColumn,'KEY'));
 						$query = "ALTER TABLE `".$tablename."` ".$dropit." ADD PRIMARY KEY (`".$name."`);" ;
 					} else {
-						if(strpos($value,'KEY')) $type = 'KEY'; else $type = 'INDEX';
+						if(strpos($value,'KEY')!==false ) $type = 'KEY'; else $type = 'INDEX';
 						$query = "ALTER TABLE `".$tablename."` DROP  ".$type." `".$name."` , ADD ".$value ;
 						$action = 'ALTER';
 					}
@@ -566,13 +574,13 @@ class GenericTableUpdater extends JModel{
 
 				$compare = strcasecmp( $oldColumn, $alterCommand);
 
-				if (!empty($compare)) {
+				if (!empty($compare) && $fieldname!=='virtuemart_userinfo_id') {		//We need that, because virtuemart_userinfo_id is not autoincrement, but primary
 					$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
 					$action = 'CHANGE';
 					$altered++;
 					// 				    vmdebug('$fullColumns',);
 					vmdebug($tablename.' Alter field old column',$oldColumn);
-					vmdebug('Alter field new colusmn',$alterCommand); //,$fullColumns[$key]);
+					vmdebug('Alter field new column',$alterCommand); //,$fullColumns[$key]);
 				}
 			}
 			else {
