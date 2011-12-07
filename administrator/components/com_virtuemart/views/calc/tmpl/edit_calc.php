@@ -62,16 +62,16 @@ vmJsApi::jDate();
 
 		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_VISIBLE_FOR_SHOPPER','calc_shopper_published',$this->calc->calc_shopper_published); ?>
 		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_VISIBLE_FOR_VENDOR','calc_vendor_published',$this->calc->calc_vendor_published); ?>
-		<?php $startDate = JFactory::getDate($this->calc->publish_up,$this->tzoffset);
-			echo VmHTML::row('raw','COM_VIRTUEMART_START_DATE', vmJsApi::jDate($startDate->toFormat($this->dateformat), 'publish_up') ); ?>
+		<?php //$startDate = JFactory::getDate($this->calc->publish_up,$this->tzoffset);
+			echo VmHTML::row('raw','COM_VIRTUEMART_START_DATE', vmJsApi::jDate($this->calc->publish_up, 'publish_up') ); ?>
 		<?php 
-			if (empty($this->calc->publish_down) || !strcmp($this->calc->publish_down,'0000-00-00 00:00:00')  ) {
-				$endDate = '';//JText::_('COM_VIRTUEMART_NEVER');
-			} else {
-				$date = JFactory::getDate($this->calc->publish_down,$this->tzoffset);
-				$endDate = $date->toFormat($this->dateformat);
-			}
-			echo VmHTML::row('raw','COM_VIRTUEMART_END_DATE',  vmJsApi::jDate($endDate, 'publish_down') ); ?>
+			// if (empty($this->calc->publish_down) || !strcmp($this->calc->publish_down,'0000-00-00 00:00:00')  ) {
+				// $endDate = '';//JText::_('COM_VIRTUEMART_NEVER');
+			// } else {
+				// $date = JFactory::getDate($this->calc->publish_down,$this->tzoffset);
+				// $endDate = $date->toFormat($this->dateformat);
+			// }
+			echo VmHTML::row('raw','COM_VIRTUEMART_END_DATE',  vmJsApi::jDate($this->calc->publish_down, 'publish_down') ); ?>
 		<?php
 		if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');
 		JPluginHelper::importPlugin('vmcalculation');

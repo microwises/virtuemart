@@ -137,21 +137,21 @@ $j15 = VmConfig::isJ15();
 				<td>
 					<?php
 					$publish_up ='';
-					if(strcmp($row->publish_up,'0000-00-00 00:00:00')){
-						$date = JFactory::getDate($row->publish_up, $this->tzoffset);
-						$publish_up = $date->toFormat($this->dateformat);
+					if (!strcmp($row->publish_up,'0000-00-00 00:00:00')) {
+						echo JText::_('COM_VIRTUEMART_NEVER');
+					} else {
+						echo vmJsApi::date( $row->publish_up, 'LC4',true);
 					}
-					echo $publish_up = JText::_('COM_VIRTUEMART_NEVER');?>
+					?>
 				</td>
 				<td>
 					<?php
 						if (!strcmp($row->publish_down,'0000-00-00 00:00:00')) {
-							$endDate = JText::_('COM_VIRTUEMART_NEVER');
+							echo JText::_('COM_VIRTUEMART_NEVER');
 						} else {
-							$date = JFactory::getDate($row->publish_down,$this->tzoffset);
-							$endDate = $date->toFormat($this->dateformat);
+							echo vmJsApi::date( $row->publish_down, 'LC4',true);
 						}
-					echo $endDate?>
+					?>
 				</td>
 <?php /*				<td>
 					<?php echo $row->calc_amount_cond; ?>
