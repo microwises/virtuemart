@@ -63,7 +63,21 @@ class VirtuemartViewCategories extends JView {
 		$categoryModel->addImages($category->children,1);
 
 	   //Add the category name to the pathway
-		$pathway->addItem(strip_tags($category->category_name)); //Todo what should be shown up?
+// 		$pathway->addItem(strip_tags($category->category_name)); //Todo what should be shown up?
+		// Add the category name to the pathway
+		if ($category->parents) {
+			foreach ($category->parents as $c){
+				$pathway->addItem(strip_tags($c->category_name),JRoute::_('index.php?option=com_virtuemart&view=categories&virtuemart_category_id='.$c->virtuemart_category_id));
+			}
+		} else {
+			if(!empty($category->category_name)){
+				$pathway->addItem(strip_tags($category->category_name,JRoute::_('index.php?option=com_virtuemart&view=categories&virtuemart_category_id='.$category->virtuemart_category_id)));
+			} else {
+				$pathway->addItem(strip_tags(JText::_('COM_VIRTUEMART_CATEGORY_TOP_LEVEL'),JRoute::_('index.php?option=com_virtuemart&view=categories&virtuemart_category_id='.$category->virtuemart_category_id)));
+			}
+
+		}
+
 	   $this->assignRef('category', $category);
 
 	    /* Set the titles */

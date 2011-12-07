@@ -686,6 +686,7 @@ class VmTable extends JTable{
 				$ok = false;
 				$msg .= ' check';
 				vmdebug('Check returned false '.get_class($this).' '.$this->_db->getErrorMsg());
+				return false;
 			}
 		}
 
