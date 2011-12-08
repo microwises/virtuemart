@@ -158,25 +158,25 @@ class plgVmCustomSpecification extends vmCustomPlugin {
     }
 
     function plgVmOnStoreProduct($data,$plugin_param){
-		return parent::OnStoreProduct($data,$plugin_param);
+		return $this->OnStoreProduct($data,$plugin_param);
 	}
 	/**
 	 * We must reimplement this triggers for joomla 1.7
 	 * vmplugin triggers note by Max Milbers
 	 */
 	protected function plgVmOnStoreInstallPluginTable($psType) {
-		return parent::onStoreInstallPluginTable($psType);
+		return $this->onStoreInstallPluginTable($psType);
 	}
 
 	function plgVmDeclarePluginParamsCustom($psType,$name,$id, &$data){
-	return parent::declarePluginParams($psType, $name, $id, $data);
+	return $this->declarePluginParams($psType, $name, $id, $data);
 	}
 
 	/**
 	 * Custom triggers note by Max Milbers
 	 */
 	function plgVmOnDisplayEdit($virtuemart_custom_id,&$customPlugin){
-		return parent::onDisplayEditBECustom($virtuemart_custom_id,$customPlugin);
+		return $this->onDisplayEditBECustom($virtuemart_custom_id,$customPlugin);
 	}
 
 }

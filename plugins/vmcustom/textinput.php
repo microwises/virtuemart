@@ -168,18 +168,22 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * vmplugin triggers note by Max Milbers
 	 */
 	protected function plgVmOnStoreInstallPluginTable($psType) {
-		return parent::onStoreInstallPluginTable($psType);
+		return $this->onStoreInstallPluginTable($psType);
 	}
 
 	function plgVmDeclarePluginParamsCustom($psType,$name,$id, &$data){
-		return parent::declarePluginParams($psType, $name, $id, $data);
+		return $this->declarePluginParams($psType, $name, $id, $data);
+	}
+
+	function plgVmSetOnTablePluginParamsCustom($name, $id, &$table){
+		return $this->setOnTablePluginParams($table);
 	}
 
 	/**
 	 * Custom triggers note by Max Milbers
 	 */
 	function plgVmOnDisplayEdit($virtuemart_custom_id,&$customPlugin){
-		return parent::onDisplayEditBECustom($virtuemart_custom_id,$customPlugin);
+		return $this->onDisplayEditBECustom($virtuemart_custom_id,$customPlugin);
 	}
 
 	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected,$row){
@@ -198,11 +202,11 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	}
 
 	public function plgVmDisplayInOrderCustom(&$html,$item, $param,$productCustom, $row ,$view='FE'){
-		parent::plgVmDisplayInOrderCustom($html,$item, $param,$productCustom, $row ,$view);
+		$this->plgVmDisplayInOrderCustom($html,$item, $param,$productCustom, $row ,$view);
 	}
 
 	public function plgVmCreateOrderLinesCustom(&$html,$item,$productCustom, $row ){
-		parent::createOrderLinesCustom($html,$item,$productCustom, $row );
+		$this->createOrderLinesCustom($html,$item,$productCustom, $row );
 	}
 }
 

@@ -64,7 +64,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 			if($this->_data->shipment_jplugin_id){
 				JPluginHelper::importPlugin('vmshipment');
 				$dispatcher = JDispatcher::getInstance();
-				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsShipment',array( $this->_data->shipment_element,$this->_data->shipment_jplugin_id,$this->_data));
+				$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsShipment',array( $this->_data->shipment_element,$this->_data->shipment_jplugin_id,&$this->_data));
 
 			}
 // 			vmdebug('$$this->_data getShipment',$this->_data);
@@ -175,7 +175,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 
 			JPluginHelper::importPlugin('vmshipment');
 			$dispatcher = JDispatcher::getInstance();
-			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsShipment',array( 0,$data['shipment_jplugin_id'],$data));
+			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsShipment',array( $data['shipment_element'],$data['shipment_jplugin_id'],&$table));
 
 		}
 

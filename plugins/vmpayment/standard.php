@@ -101,7 +101,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 
 
 	$this->_virtuemart_paymentmethod_id = $order['details']['BT']->virtuemart_paymentmethod_id;
-	$dbValues['payment_name'] = parent::renderPluginName($method);
+	$dbValues['payment_name'] = $this->renderPluginName($method);
 	$dbValues['order_number'] = $order['details']['BT']->order_number;
 	$dbValues['virtuemart_paymentmethod_id'] = $this->_virtuemart_paymentmethod_id;
 	$dbValues['cost'] = $method->cost;
@@ -131,7 +131,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderBEPayment()
      */
     function plgVmOnShowOrderBEPayment( $virtuemart_order_id, $virtuemart_payment_id) {
-	
+
 	$db = JFactory::getDBO();
 	$q = 'SELECT * FROM `' . $this->_tablename . '` '
 		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
@@ -210,7 +210,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      *
      */
     function plgVmOnStoreInstallPaymentPluginTable($jplugin_id) {
-	return parent::onStoreInstallPluginTable($psType, $jplugin_id);
+	return $this->onStoreInstallPluginTable($psType, $jplugin_id);
     }
 
     /**
@@ -225,7 +225,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      *
      */
     public function plgVmOnSelectCheckPayment(VirtueMartCart $cart) {
-	return parent::OnSelectCheck($cart);
+	return $this->OnSelectCheck($cart);
     }
 
     /**
@@ -241,7 +241,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      * @author Max Milbers
      */
     public function plgVmDisplayListFEPayment(VirtueMartCart $cart, $selected = 0, &$htmlIn) {
-	return parent::displayListFE($cart, $selected, $htmlIn);
+	return $this->displayListFE($cart, $selected, $htmlIn);
     }
 
     /*
@@ -258,7 +258,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      */
 
     public function plgVmonSelectedCalculatePricePayment(VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
-	return parent::onSelectedCalculatePrice($cart, $cart_prices, $cart_prices_name);
+	return $this->onSelectedCalculatePrice($cart, $cart_prices, $cart_prices_name);
     }
 
     /**
@@ -271,7 +271,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      *
      */
     function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart, array $cart_prices = array()) {
-	return parent::onCheckAutomaticSelected($cart, $cart_prices);
+	return $this->onCheckAutomaticSelected($cart, $cart_prices);
     }
 
     /**
@@ -284,7 +284,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      * @author Valerie Isaksen
      */
     protected function plgVmOnShowOrderFEPayment($virtuemart_order_id) {
-	return parent::onShowOrderFE($virtuemart_order_id);
+	return $this->onShowOrderFE($virtuemart_order_id);
     }
 
     /**
@@ -309,11 +309,15 @@ class plgVmPaymentStandard extends vmPSPlugin {
      * @author Valerie Isaksen
      */
     function plgVmonShowOrderPrintPayment($order_number, $method_id) {
-	return parent::onShowOrderPrint($order_number, $method_id);
+	return $this->onShowOrderPrint($order_number, $method_id);
     }
 
     function plgVmDeclarePluginParamsPayment($name, $id, &$data) {
-	return parent::declarePluginParams('payment', $name, $id, $data);
+	return $this->declarePluginParams('payment', $name, $id, $data);
+    }
+
+    function plgVmSetOnTablePluginParamsPayment($name, $id, &$table){
+    	return $this->setOnTablePluginParams($table);
     }
 
     //Notice: We only need to add the events, which should work for the specific plugin, when an event is doing nothing, it should not be added

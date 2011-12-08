@@ -443,7 +443,12 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
     }
 */
     function plgVmDeclarePluginParamsShipment( $name, $id, &$data) {
+
 	return parent::declarePluginParams('shipment', $name, $id, $data);
+    }
+
+    function plgVmSetOnTablePluginParamsShipment($name, $id, &$table){
+    	return $this->setOnTablePluginParams($table);
     }
 
 }

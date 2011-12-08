@@ -207,7 +207,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 
 	// Prepare data that should be stored in the database
 	$dbValues['order_number'] = $order['details']['BT']->order_number;
-	$dbValues['payment_name'] = parent::renderPluginName($method);
+	$dbValues['payment_name'] = $this->renderPluginName($method);
 	$dbValues['virtuemart_paymentmethod_id'] = $cart->virtuemart_paymentmethod_id;
 	$dbValues['paypal_custom'] = $return_context;
 	$dbValues['cost'] = $method->cost;
@@ -354,7 +354,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 		$response_fields[$table_key] = $value;
 	    }
 	}
-	$response_fields['payment_name'] = parent::renderPluginName($method);
+	$response_fields['payment_name'] = $this->renderPluginName($method);
 	$response_fields['paypalresponse_raw'] = $post_msg;
 	$return_context = $paypal_data['custom'];
 	$response_fields['order_number'] = $order_number;
@@ -659,7 +659,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      *
      */
     function plgVmOnStoreInstallPaymentPluginTable( $jplugin_id) {
-	return parent::onStoreInstallPluginTable('payment', $jplugin_id);
+	return $this->onStoreInstallPluginTable('payment', $jplugin_id);
     }
 
     /**
@@ -674,7 +674,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      *
      */
     public function plgVmOnSelectCheckPayment(  VirtueMartCart $cart) {
-	return parent::OnSelectCheck(  $cart);
+	return $this->OnSelectCheck(  $cart);
     }
 
     /**
@@ -690,7 +690,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      * @author Max Milbers
      */
     public function plgVmDisplayListFEPayment( VirtueMartCart $cart, $selected = 0, &$htmlIn) {
-	return parent::displayListFE( $cart, $selected, $htmlIn);
+	return $this->displayListFE( $cart, $selected, $htmlIn);
     }
 
     /*
@@ -707,7 +707,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      */
 
     public function plgVmonSelectedCalculatePricePayment(  VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
-	return parent::onSelectedCalculatePrice(  $cart, $cart_prices, $cart_prices_name);
+	return $this->onSelectedCalculatePrice(  $cart, $cart_prices, $cart_prices_name);
     }
 
     /**
@@ -720,7 +720,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      *
      */
     function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart, array $cart_prices = array()) {
-	return parent::onCheckAutomaticSelected( $cart, $cart_prices);
+	return $this->onCheckAutomaticSelected( $cart, $cart_prices);
     }
 
     /**
@@ -733,7 +733,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      * @author Valerie Isaksen
      */
     protected function plgVmOnShowOrderFEPayment(  $virtuemart_order_id) {
-	return parent::onShowOrderFE( $virtuemart_order_id);
+	return $this->onShowOrderFE( $virtuemart_order_id);
     }
 
     /**
@@ -758,7 +758,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      * @author Valerie Isaksen
      */
     function plgVmonShowOrderPrintPayment($order_number, $method_id) {
-	return parent::onShowOrderPrint($order_number, $method_id);
+	return $this->onShowOrderPrint($order_number, $method_id);
     }
 
     /**
@@ -815,7 +815,11 @@ class plgVMPaymentPaypal extends vmPSPlugin {
       }
      */
     function plgVmDeclarePluginParamsPayment( $name, $id, &$data) {
-	return parent::declarePluginParams('payment', $name, $id, $data);
+	return $this->declarePluginParams('payment', $name, $id, $data);
+    }
+
+    function plgVmSetOnTablePluginParamsPayment($name, $id, &$table){
+    	return $this->setOnTablePluginParams($table);
     }
 
 }
