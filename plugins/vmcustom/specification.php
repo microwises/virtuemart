@@ -66,35 +66,47 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	return $SQLfields;
     }
 
-	public function plgVmSelectSearchableCustom(&$selectList,$virtuemart_custom_id)
+	/*
+	 * (only to add if you want Searchable Plugin)
+	 * 
+	 * Render the search in category
+	 * @ $selectList the list contain all the possible plugin(+customparent_id)
+	 * @ &$searchCustomValues The HTML to render as search fields 
+	 * 
+	 */
+	public function plgVmSelectSearchableCustom(&$selectList,&$searchCustomValues,$virtuemart_custom_id)
 	{
 		$db =&JFactory::getDBO();
 		$db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE `custom_element` ="'.$this->_name.'"');
 		if ($this->selectList = $db->loadAssocList() ) {
 		//vmdebug('$this->selectedPlugin',$this->selectedPlugin);
-			if ($virtuemart_custom_id) {
-				$db->setQuery('SELECT custom_specification_default1 as custom_value, custom_specification_default1 as title FROM `#__virtuemart_product_custom_plg_'.$this->_name.'` WHERE custom_parent_id='.$virtuemart_custom_id);
-				// $this->selectedPlugin->selected = $db->loadObjectList();
-				// $this->selectedPlugin->selected->virtuemart_custom_id=$virtuemart_custom_id;
-				// $this->selectedPlugin->selected->custom_title='plugin';
-				// $db->setQuery('SELECT `custom_specification_default1`,`custom_value` as title FROM `#__virtuemart_product_customfields` WHERE virtuemart_custom_id='.$virtuemart_custom_id);
-				$this->selectedPlugin->selected->fields[$virtuemart_custom_id] = $db->loadObjectList();
+			foreach ($this->selectList as $selected_custom_id) {
+				if ($virtuemart_custom_id == $selected_custom_id['virtuemart_custom_id']) {
+					$searchCustomValues.='<input type="text" value="" size="20" class="inputbox" name="custom_specification_name1" style="height:16px;vertical-align :middle;">';
+				}
 			}
 
 		$selectList = array_merge((array)$this->selectList,$selectList);
 		}
 		return true;
 	}
-
+	/*
+	 * (only to add if you want Searchable Plugin)
+	 * 
+	 * Extend the search in category
+	 * @ $where the list contain all the possible plugin(+customparent_id)
+	 * @ $PluginJoinTables The plg_name table to join on the search
+	 * (in normal case must be = to $this->_name)
+	 */
 	public function plgVmAddToSearch(&$where,&$PluginJoinTables,$custom_id)
 	{
-		$keyword = vmRequest::uword('keyword', null, ' ');
-		$db = & JFactory::getDBO();
-		if ($this->_name != $this->GetNameByCustomId($custom_id)) return;
-		$keyword = '"%' . $db->getEscaped( $keyword, true ) . '%"' ;
-		$where[] = $this->_name .'.`custom_specification_default1` LIKE '.$keyword;
-		$PluginJoinTables[] = $this->_name ;
-
+		if ($keyword = vmRequest::uword('custom_specification_name1', null, ' ')) {
+			$db = & JFactory::getDBO();
+			if ($this->_name != $this->GetNameByCustomId($custom_id)) return;
+			$keyword = '"%' . $db->getEscaped( $keyword, true ) . '%"' ;
+			$where[] = $this->_name .'.`custom_specification_default1` LIKE '.$keyword;
+			$PluginJoinTables[] = $this->_name ;
+		}
 
 	}
 

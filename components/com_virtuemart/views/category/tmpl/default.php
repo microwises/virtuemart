@@ -42,13 +42,7 @@ if ($this->search) { ?>
 <div class="virtuemart_search">
 <?php echo $this->searchcustom ?>
 <br />
-<?php if ($this->searchcustom->custom_parent_id) {
-	foreach ($this->searchcustom->selected as $key =>$custom){
-		$option  = array('custom_value' =>null, 'title' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
-		$options = array_merge(array($option), $custom->fields[$custom->virtuemart_custom_id]);
-		echo JText::_('COM_VIRTUEMART_SET_PRODUCT_TYPE').' '.JHTML::_('select.genericlist', $options, 'customfields['.$custom->virtuemart_custom_id.']', 'class="inputbox"', 'custom_value', 'title', 0);
-	}
-} ?>
+<?php echo $this->searchcustomvalues ?>
 <input style="height:16px;vertical-align :middle;" name="keyword" class="inputbox" type="text" size="20" value="<?php echo $this->keyword ?>" />
 <input type="submit" value="<?php echo JText::_('COM_VIRTUEMART_SEARCH') ?>" class="button" onclick="this.form.keyword.focus();"/>
 </div>

@@ -205,7 +205,7 @@ class VirtuemartViewCategory extends JView {
 		// add search for declared plugins
 		JPluginHelper::importPlugin('vmcustom');
 		$dispatcher = JDispatcher::getInstance();
-		$plgDisplay = $dispatcher->trigger('plgVmSelectSearchableCustom',array( &$this->options,$this->custom_parent_id ) );
+		$plgDisplay = $dispatcher->trigger('plgVmSelectSearchableCustom',array( &$this->options,&$this->searchCustomValues,$this->custom_parent_id ) );
 		
 
 		$this->options = array_merge(array($emptyOption), $this->options);
