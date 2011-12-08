@@ -46,38 +46,28 @@ class VirtuemartViewCustom extends JView {
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
-
+			ShopFunctions::addStandardEditViewCommands();
 			$customPlugin = '';
 			$this->loadHelper('parameterparser');
 			$custom = $model->getCustom();
-
+			$customfields = $this->getModel('customfields');
 // 			vmdebug('VirtuemartViewCustom',$custom);
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();
 			$retValue = $dispatcher->trigger('plgVmOnDisplayEdit',array($custom->virtuemart_custom_id,&$customPlugin));
-// 			vmdebug('$customPlugins in view getriggered',$customPlugins);
-// 			foreach($customPlugins as $plugin){
-// 				if(!empty($plugin)){
-// 					$customPlugin = $plugin;
-// 					break;
-// 				}
-// 			}
 
-// 			$customPlugin = $customPlugin[0];
-// 			$customPlugin = $model->getCustomPlugin($custom->virtuemart_custom_id);
-
-			$this->assignRef('customPlugin',	$customPlugin);
+			$viewName=ShopFunctions::SetViewTitle('PRODUCT_CUSTOM_FIELD', $custom->custom_title);
 
 			$selected=0;
 			if(!empty($custom->custom_jplugin_id)) {
 				$selected = $custom->custom_jplugin_id;
 			}
 			$pluginList = self::renderInstalledCustomPlugins($selected);
+			$this->assignRef('customPlugin',	$customPlugin);
+			$this->assignRef('viewName',$viewName);
 			$this->assignRef('pluginList',$pluginList);
-			$customfields = $this->getModel('customfields');
 			$this->assignRef('custom',	$custom);
 			$this->assignRef('customfields',	$customfields);
-			ShopFunctions::addStandardEditViewCommands();
 
         }
         else {

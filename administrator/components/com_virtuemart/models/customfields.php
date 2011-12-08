@@ -193,8 +193,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		if ($datas->field_type) $this->addHidden('field_type',$datas->field_type);
 		$this->addHiddenByType($datas);
 
-		$html = '<div id="custom_title">'.$datas->custom_title.'</div>';
-		$html .= ' <table class="admintable"> ';
+		//$html = '<div id="custom_title">'.$datas->custom_title.'</div>';
+		$html = ' <table class="admintable"> ';
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!Permissions::getInstance()->check('admin') ) $readonly='readonly'; else $readonly ='';
