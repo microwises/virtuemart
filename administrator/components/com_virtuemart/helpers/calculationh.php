@@ -223,13 +223,13 @@ class calculationHelper {
 
 		//We already have the productobject, no need for extra sql
 		if (is_object($productId)) {
-			$costPrice = $productId->product_price;
-			$this->productCurrency = $productId->product_currency;
-			$this->override = $productId->override;
-			$this->product_override_price = $productId->product_override_price;
-			$this->product_tax_id = $productId->product_tax_id;
-			$this->product_discount_id = $productId->product_discount_id;
-			$this->productVendorId = $productId->virtuemart_vendor_id;
+			$costPrice = isset($productId->product_price)? $productId->product_price:0;
+			$this->productCurrency = isset($productId->product_currency)? $productId->product_currency:0;
+			$this->override = isset($productId->override)? $productId->override:0;
+			$this->product_override_price = isset($productId->product_override_price)? $productId->product_override_price:0;
+			$this->product_tax_id = isset($productId->product_tax_id)? $productId->product_tax_id:0;
+			$this->product_discount_id = isset($productId->product_discount_id)? $productId->product_discount_id:0;
+			$this->productVendorId = isset($productId->virtuemart_vendor_id)? $productId->virtuemart_vendor_id:1;
 			if (empty($this->productVendorId)) {
 				$this->productVendorId = 1;
 			}

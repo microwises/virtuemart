@@ -100,7 +100,13 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('override', $calculator->override);
 				$this->assignRef('product_override_price', $calculator->product_override_price);
 
+				if(!isset($product->product_tax_id)){
+					$product->product_tax_id=0;
+				}
 				$lists['taxrates'] = ShopFunctions::renderTaxList($product->product_tax_id,'product_tax_id');
+				if(!isset($product->product_discount_id)){
+					$product->product_discount_id=0;
+				}
 				$lists['discounts'] = $this -> renderDiscountList($product->product_discount_id);
 
 				if(!class_exists('VirtueMartModelConfig')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'config.php');
@@ -287,7 +293,9 @@ class VirtuemartViewProduct extends JView {
 
 				$currencyDisplay = CurrencyDisplay::getInstance($vendor->vendor_currency,$vendor->virtuemart_vendor_id);
 
-				$product->product_price_display = $currencyDisplay->priceDisplay($product->product_price,(int)$product->product_currency,true);
+				if(!empty($product->product_price) && !empty($product->product_currency) ){
+					$product->product_price_display = $currencyDisplay->priceDisplay($product->product_price,(int)$product->product_currency,true);
+				}
 
 				/* Write the first 5 categories in the list */
 				if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');

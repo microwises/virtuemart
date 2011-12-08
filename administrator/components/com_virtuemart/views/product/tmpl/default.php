@@ -142,7 +142,7 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 				<!-- Product SKU -->
 				<td><?php echo $product->product_sku; ?></td>
 				<!-- Product price -->
-				<td><?php echo $product->product_price_display; ?></td>
+				<td><?php echo isset($product->product_price_display)? $product->product_price_display:JText::_('COM_VIRTUEMART_NO_PRICE_SET') ?></td>
 				<!-- Category name -->
 				<td><?php //echo JHTML::_('link', JRoute::_('index.php?view=category&task=edit&virtuemart_category_id='.$product->virtuemart_category_id.'&option=com_virtuemart'), $product->category_name);
 					echo $product->categoriesList;

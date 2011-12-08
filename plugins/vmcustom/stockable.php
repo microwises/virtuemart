@@ -452,7 +452,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * vmplugin triggers note by Max Milbers
 	 */
 	protected function plgVmOnStoreInstallPluginTable($psType) {
-		return $this->onStoreInstallPluginTable($psType);
+
+// 		return $this->onStoreInstallPluginTable($psType);
 	}
 
 	function plgVmDeclarePluginParamsCustom($psType,$name,$id, &$data){

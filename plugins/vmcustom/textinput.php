@@ -168,15 +168,13 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * vmplugin triggers note by Max Milbers
 	 */
 	protected function plgVmOnStoreInstallPluginTable($psType) {
-		return $this->onStoreInstallPluginTable($psType);
+		//Should the textinput use an own internal variable or store it in the params?
+		//Here is no getVmPluginCreateTableSQL defined
+// 		return $this->onStoreInstallPluginTable($psType);
 	}
 
 	function plgVmDeclarePluginParamsCustom($psType,$name,$id, &$data){
 		return $this->declarePluginParams($psType, $name, $id, $data);
-	}
-
-	function plgVmSetOnTablePluginParamsCustom($name, $id, &$table){
-		return $this->setOnTablePluginParams($table);
 	}
 
 	/**

@@ -261,7 +261,7 @@ class VirtueMartModelCustom extends VmModel {
 
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();
-			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsCustom',array('custom',$data['custom_value'],$data['custom_jplugin_id'],&$table));
+			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsCustom',array($data['custom_value'],$data['custom_jplugin_id'],&$table));
 
 		}
 
