@@ -153,9 +153,9 @@ class VirtueMartModelProduct extends VmModel {
 		} elseif ($search = vmRequest::uword('filter_product', false, ' ')){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			$searchFields = VmConfig::get('browse_search_fields');
-			
+
 			foreach ($searchFields as $searchField) {
-				if($searchField == 'product_name' || $searchField == 'product_s_desc'|| $searchField == 'product_desc' || 
+				if($searchField == 'product_name' || $searchField == 'product_s_desc'|| $searchField == 'product_desc' ||
 				$searchField == 'metadesc' || $searchField == 'metakey'){
 					$filter_search[] = 'l.`'.$searchField.'` LIKE '.$search;
 				}else if($searchField == 'category_name' || $searchField == 'category_description'){
@@ -175,7 +175,7 @@ class VirtueMartModelProduct extends VmModel {
 					$filter_search[] = 'p.`'.$searchField.'` LIKE '.$search;
 				}
 			}
-			
+
 			if(!empty($filter_search)){
 				$where[] = implode(' OR ', $filter_search );
 			} else {
@@ -229,8 +229,6 @@ class VirtueMartModelProduct extends VmModel {
 			$joinMf = true ;
 			$where[] = ' `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` = '.$virtuemart_manufacturer_id;
 		}
-
-
 
 		// Time filter
 		if (JRequest::getVar('search_type', '') != '') {
@@ -1693,7 +1691,7 @@ public function updateStock($product, $amount, $signInStoc, $signOrderedStock){
 }
 
 private function updateStockInDB($product, $amount, $signInStoc, $signOrderedStock){
-	vmdebug( 'stockupdate in DB', $product->virtuemart_product_id,$amount, $signInStoc, $signOrderedStock );
+// 	vmdebug( 'stockupdate in DB', $product->virtuemart_product_id,$amount, $signInStoc, $signOrderedStock );
 	$validFields = array('=','+','-');
 	if(!in_array($signInStoc,$validFields)){
 		return false;

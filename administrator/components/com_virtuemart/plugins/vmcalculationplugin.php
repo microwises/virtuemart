@@ -33,15 +33,14 @@ abstract class vmCalculationPlugin extends vmPlugin {
 // 		$this->_tablename = '#__virtuemart_calc_' . $this->_name;
 	}
 
-	protected function plgVmStorePluginInternalDataCalc(&$data){
+/*	protected function storePluginInternalDataCalc(&$data){
 
 // 		vmdebug('plgVmStorePluginInternalDataCalc $data',$data);
 // 		parent::plgVmOnStoreInstallPluginTable($this->_psType);
 		$this->storePluginInternalData($data);
-
 	}
-
-	protected function plgVmGetPluginInternalDataCalc(&$calcData){
+*/
+	protected function getPluginInternalDataCalc(&$calcData){
 
 	 	$datas = $this->getPluginInternalData($calcData->virtuemart_calc_id,'virtuemart_calc_id');
 
@@ -56,16 +55,16 @@ abstract class vmCalculationPlugin extends vmPlugin {
 
 	}
 
-	protected function plgVmAddMathOp(&$entryPoints){
+/*	protected function plgVmAddMathOp(&$entryPoints){
 
 		return ;
 	}
-
-	protected function plgVmOnDisplayEdit(&$calc){
+*/
+/*	protected function plgVmOnDisplayEdit(&$calc){
 		return $html;
-	}
+	}*/
 
-	protected function plgVmInGatherEffectRulesProduct(&$calculationHelper,&$rules){
+/*	protected function plgVmInGatherEffectRulesProduct(&$calculationHelper,&$rules){
 // 		foreach ($rules as $i => $rule) {
 // 			$ruleData = $this -> getPluginInternalData($rule['virtuemart_calc_id'],'virtuemart_calc_id');
 // 		}
@@ -76,5 +75,5 @@ abstract class vmCalculationPlugin extends vmPlugin {
 
 		return false;
 	}
-
+*/
 }

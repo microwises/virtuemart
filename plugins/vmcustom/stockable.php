@@ -461,7 +461,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	}
 
 	function plgVmSetOnTablePluginParamsCustom($name, $id, &$table){
-		return $this->setOnTablePluginParams($table);
+		return $this->setOnTablePluginParams($name, $id, $table);
 	}
 
 	/**

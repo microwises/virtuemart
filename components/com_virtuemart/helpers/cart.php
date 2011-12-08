@@ -1003,7 +1003,7 @@ class VirtueMartCart {
 	 */
 	function sentOrderConfirmedEmail ($order) {
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-		vmdebug('sentOrderConfirmedEmail my order',$order);
+// 		vmdebug('sentOrderConfirmedEmail my order',$order);
 		$vars = array('order' => $order);
 		$vars['shopperName'] =  $order['details']['BT']->title.' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name;
 

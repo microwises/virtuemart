@@ -325,8 +325,9 @@ class plgVmPaymentStandard extends vmPSPlugin {
     }
 
     function plgVmSetOnTablePluginParamsPayment($name, $id, &$table){
-    	return $this->setOnTablePluginParams($table);
+    	return $this->setOnTablePluginParams($name, $id, $table);
     }
+
 
     //Notice: We only need to add the events, which should work for the specific plugin, when an event is doing nothing, it should not be added
 

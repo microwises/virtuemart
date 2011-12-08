@@ -64,7 +64,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	return $this->createTableSQL('Shipment Weight Countries Table');
     }
- 
+
     function getTableSQLFields() {
 	$SQLfields = array(
 	    'id' => ' tinyint(1) unsigned NOT NULL AUTO_INCREMENT',
@@ -126,7 +126,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	$values['order_number'] = $order['details']['BT']->order_number;
 	$values['shipment_id'] = $cart->virtuemart_shipmentmethod_id;
-	$values['shipment_name'] = parent::renderPluginName($method);
+	$values['shipment_name'] = $this->renderPluginName($method);
 	$values['order_weight'] = $this->getOrderWeight($cart, $method->weight_unit);
 	$values['shipment_weight_unit'] = $method->weight_unit;
 	$values['shipment_cost'] = $method->cost;
@@ -193,7 +193,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	if ($method->free_shipment && $cart_prices['salesPrice'] >= $method->free_shipment) {
 	    return 0;
 	} else {
-	    $orderWeight = parent::getOrderWeight($cart, $method->weight_unit);
+	    $orderWeight = $this->getOrderWeight($cart, $method->weight_unit);
 	    return ($orderWeight * $method->cost) + $method->package_fee;
 	}
     }
@@ -201,7 +201,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
     protected function checkConditions($cart, $method, $cart_prices) {
 
 
-	$orderWeight = parent::getOrderWeight($cart, $method->weight_unit);
+	$orderWeight = $this->getOrderWeight($cart, $method->weight_unit);
 	$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
 
 	$nbShipment = 0;
@@ -281,7 +281,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      *
      */
     function plgVmOnStoreInstallShipmentPluginTable(  $jplugin_id) {
-	return parent::onStoreInstallPluginTable('shipment', $jplugin_id);
+	return $this->onStoreInstallPluginTable('shipment', $jplugin_id);
     }
 
     /**
@@ -296,7 +296,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      *
      */
     public function plgVmOnSelectCheck($psType, VirtueMartCart $cart) {
-	return parent::OnSelectCheck($psType, $cart);
+	return $this->OnSelectCheck($psType, $cart);
     }
 
     /**
@@ -312,7 +312,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @author Max Milbers
      */
     public function plgVmDisplayListFEShipment( VirtueMartCart $cart, $selected = 0,&$htmlIn) {
-	return parent::displayListFE(  $cart, $selected,$htmlIn);
+	return $this->displayListFE(  $cart, $selected,$htmlIn);
     }
 
     /*
@@ -329,7 +329,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      */
 
     public function plgVmonSelectedCalculatePriceShipment(  VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
-	return parent::onSelectedCalculatePrice(  $cart, $cart_prices, $cart_prices_name);
+	return $this->onSelectedCalculatePrice(  $cart, $cart_prices, $cart_prices_name);
     }
 
     /**
@@ -342,7 +342,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      *
      */
     function plgVmOnCheckAutomaticSelectedShipment( VirtueMartCart $cart, array $cart_prices = array()) {
-	return parent::onCheckAutomaticSelected( $cart, $cart_prices);
+	return $this->onCheckAutomaticSelected( $cart, $cart_prices);
     }
 
     /**
@@ -367,7 +367,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @author Valerie Isaksen
      */
     function plgVmonShowOrderPrint($order_number, $method_id) {
-	return parent::onShowOrderPrint($order_number, $method_id);
+	return $this->onShowOrderPrint($order_number, $method_id);
     }
 
     /**
@@ -444,11 +444,11 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 */
     function plgVmDeclarePluginParamsShipment( $name, $id, &$data) {
 
-	return parent::declarePluginParams('shipment', $name, $id, $data);
+	return $this->declarePluginParams('shipment', $name, $id, $data);
     }
 
     function plgVmSetOnTablePluginParamsShipment($name, $jplugin_id, &$table){
-    	return $this->onStoreInstallPluginTable( $jplugin_id);
+    	return $this->setOnTablePluginParams($name, $id, $table);
     }
 
 }

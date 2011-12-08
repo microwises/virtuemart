@@ -828,9 +828,10 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	return $this->declarePluginParams(  'payment',$name, $id, $data);
     }
 
-    function plgVmSetOnTablePluginParamsPayment($name, $jplugin_id, &$table){
-    	return $this->onStoreInstallPluginTable($jplugin_id);
+    function plgVmSetOnTablePluginParamsPayment($name, $id, &$table){
+    	return $this->setOnTablePluginParams($name, $id, $table);
     }
+
 
 }
 

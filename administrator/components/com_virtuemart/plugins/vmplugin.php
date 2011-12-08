@@ -253,7 +253,7 @@ abstract class vmPlugin extends JPlugin {
 
 	}
 
-	
+
 	function getTableSQLLoggablefields() {
 		return array(
 		    'created_on' => ' datetime NOT NULL default \'0000-00-00 00:00:00\'',
@@ -293,9 +293,14 @@ abstract class vmPlugin extends JPlugin {
 
 	}
 
-	protected function setOnTablePluginParams(&$table){
+	protected function setOnTablePluginParams($name,$id,&$table){
 
-		$table->setParameterable($this->_xParams,$this->_varsToPushParam);
+		if($this->selectedThis($this->_psType,$name,$id)){
+			$table->setParameterable($this->_xParams,$this->_varsToPushParam);
+			return true;
+		} else {
+			return false;
+		}
 
 	}
 

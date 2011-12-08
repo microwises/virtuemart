@@ -700,6 +700,7 @@ class VirtueMartModelOrders extends VmModel {
 		else if (!$isReserved && $wasReserved ) $product_ordered = '-';
 		else $product_ordered = '=';
 
+		//Here trigger plgVmGetProductStockToUpdateByCustom
 
 		if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
 		$productModel = new VirtueMartModelProduct();
@@ -734,7 +735,7 @@ class VirtueMartModelOrders extends VmModel {
 					if ($selected) {
 						if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 						$productCustom = VirtueMartModelCustomfields::getProductCustomFieldCart ($product_id,$selected );
-						vmdebug('$_prod,$productCustom',$_prod,$productCustom );
+// 						vmdebug('$_prod,$productCustom',$_prod,$productCustom );
 						if ($productCustom->field_type == "E") {
 
 							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
