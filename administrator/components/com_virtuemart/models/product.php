@@ -150,7 +150,7 @@ class VirtueMartModelProduct extends VmModel {
 				$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
 			}
 			$joinLang = true;
-		} elseif ($search = vmRequest::uword('filter_product', false)){
+		} elseif ($search = vmRequest::uword('filter_product', false, ' ')){
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			$where[] = 'l.`product_name` LIKE '.$search;
 			$joinLang = true;
