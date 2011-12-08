@@ -414,7 +414,13 @@ class VmMediaHandler {
 			$media_path = JPATH_ROOT.DS.str_replace('/',DS,$this->file_url_thumb);
 
 			if(empty($this->file_meta)){
-				$file_alt = $this->file_description ? $this->file_description : $this->file_name;
+				if(!empty($this->file_description)){
+					$file_alt = $this->file_description;
+				} else if(!empty($this->file_name)) {
+					$file_alt = $this->file_name;
+				} else {
+					$file_alt = '';
+				}
 			} else {
 				$file_alt = $this->file_meta;
 			}
