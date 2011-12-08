@@ -884,7 +884,7 @@ abstract class vmPSPlugin extends vmPlugin {
 					$order['virtuemart_order_id'] = $orderID;
 					$order['customer_notified'] = 0;
 					$order['comments'] = '';
-					$modelOrder->updateStatusForOneOrder($orderID,$order,$useTriggers=true);
+					$modelOrder->updateStatusForOneOrder($orderID,$order,true);
 				}
 
 				$cart->sentOrderConfirmedEmail($order);
