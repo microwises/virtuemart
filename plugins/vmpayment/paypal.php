@@ -38,6 +38,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 
 	$varsToPush = array('paypal_merchant_email' => array('', 'char'),
 	    'paypal_verified_only' => array('', 'int'),
+	    'payment_currency'  => array(0, 'char'),
 	    'sandbox' => array(0, 'int'),
 	    'sandbox_merchant_email' => array('', 'char'),
 	    'payment_logos' => array('', 'char'),
@@ -48,7 +49,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    'countries' => array(0, 'char'),
 	    'min_amount' => array(0, 'int'),
 	    'max_amount' => array(0, 'int'),
-	    'cost' => array(0, 'int'),
+	    'cost_per_transaction' => array(0, 'int'),
+	    'cost_percent_total' => array(0, 'int'),
 	    'tax_id' => array(0, 'int')
 	);
 
@@ -69,7 +71,9 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    'order_number' => ' char(32) DEFAULT NULL',
 	    'virtuemart_paymentmethod_id' => ' mediumint(1) UNSIGNED DEFAULT NULL',
 	    'payment_name' => ' char(255) NOT NULL DEFAULT \'\' ',
-	    'cost' => ' decimal(10,2) DEFAULT NULL ',
+	       'payment_currency' => 'varchar(1024) DEFAULT \'\' ',
+	    'cost_per_transaction' => ' decimal(10,2) DEFAULT NULL ',
+	    'cost_percent_total' => ' decimal(10,2) DEFAULT NULL ',
 	    'tax_id' => ' smallint(1) DEFAULT NULL',
 	    'paypal_custom' => ' varchar(255)  ',
 	    'paypal_response_mc_gross' => ' decimal(10,2) DEFAULT NULL ',
@@ -210,7 +214,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$dbValues['payment_name'] = $this->renderPluginName($method);
 	$dbValues['virtuemart_paymentmethod_id'] = $cart->virtuemart_paymentmethod_id;
 	$dbValues['paypal_custom'] = $return_context;
-	$dbValues['cost'] = $method->cost;
+	$dbValues['cost_per_transaction'] = $method->cost_per_transction;
+	$dbValues['cost_percent_total'] = $method->cost_percent_total;
 	$dbValues['tax_id'] = $method->tax_id;
 	$this->storePSPluginInternalData($dbValues);
 
@@ -600,7 +605,12 @@ class plgVMPaymentPaypal extends vmPSPlugin {
     }
 
     function getCosts(VirtueMartCart $cart, $method, $cart_prices) {
-	return $method->cost;
+	if (preg_match('/%$/', $method->cost_percent_total)) {
+	    $cost_percent_total = substr($method->cost_percent_total, 0, -1);
+	} else {
+	    $cost_percent_total = $method->cost_percent_total;
+	}
+	return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
     }
 
     /**
@@ -815,11 +825,11 @@ class plgVMPaymentPaypal extends vmPSPlugin {
       }
      */
     function plgVmDeclarePluginParamsPayment( $name, $id, &$data) {
-	return $this->declarePluginParams('payment', $name, $id, $data);
+	return $this->declarePluginParams(  'payment',$name, $id, $data);
     }
 
-    function plgVmSetOnTablePluginParamsPayment($name, $id, &$table){
-    	return $this->setOnTablePluginParams($table);
+    function plgVmSetOnTablePluginParamsPayment($name, $jplugin_id, &$table){
+    	return $this->onStoreInstallPluginTable($jplugin_id);
     }
 
 }

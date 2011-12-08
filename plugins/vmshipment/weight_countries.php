@@ -60,11 +60,11 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * Create the table for this plugin if it does not yet exist.
      * @author Valérie Isaksen
      */
-    protected function getVmPluginShipmentCreateTableSQL() {
+    protected function getVmPluginCreateTableSQL() {
 
 	return $this->createTableSQL('Shipment Weight Countries Table');
     }
-
+ 
     function getTableSQLFields() {
 	$SQLfields = array(
 	    'id' => ' tinyint(1) unsigned NOT NULL AUTO_INCREMENT',
@@ -447,8 +447,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	return parent::declarePluginParams('shipment', $name, $id, $data);
     }
 
-    function plgVmSetOnTablePluginParamsShipment($name, $id, &$table){
-    	return $this->setOnTablePluginParams($table);
+    function plgVmSetOnTablePluginParamsShipment($name, $jplugin_id, &$table){
+    	return $this->onStoreInstallPluginTable( $jplugin_id);
     }
 
 }

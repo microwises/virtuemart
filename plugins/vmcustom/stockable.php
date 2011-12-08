@@ -6,9 +6,9 @@ defined('_JEXEC') or 	die( 'Direct Access to ' . basename( __FILE__ ) . ' is not
  * a special type of 'cash on delivey':
  * its fee depend on total sum
  * @author Max Milbers
- * @version $Id: standard.php 3681 2011-07-08 12:27:36Z alatak $
+ * @version $Id: stockable.php 3681 2011-07-08 12:27:36Z alatak $
  * @package VirtueMart
- * @subpackage payment
+ * @subpackage vmcustom
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  * VirtueMart is free software. This version may have been modified pursuant
@@ -429,7 +429,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 					if  ($child[$key] !== $attribute) {
 
 						break;
-					} else {$count++;
+					} else {
+					    $count++;
 					}
 
 				}

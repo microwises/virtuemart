@@ -38,9 +38,11 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$this->tableFields = array_keys($this->getTableSQLFields());
 	$varsToPush = array('payment_logos' => array('', 'char'),
 	    'countries' => array(0, 'int'),
+	    'payment_currency'  => array(0, 'char'),
 	    'min_amount' => array(0, 'int'),
 	    'max_amount' => array(0, 'int'),
-	    'cost' => array(0, 'int'),
+	    'cost_per_transaction' => array(0, 'int'),
+	    'cost_percent_total' => array(0, 'int'),
 	    'tax_id' => array(0, 'int'),
 	    'payment_info' => array('', 'string')
 	);
@@ -64,7 +66,9 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	    'order_number' => 'char(32) DEFAULT NULL',
 	    'virtuemart_paymentmethod_id' => 'mediumint(1) UNSIGNED DEFAULT NULL',
 	    'payment_name' => 'char(255) NOT NULL DEFAULT \'\' ',
-	    'cost' => 'decimal(10,2) DEFAULT NULL ',
+	    'payment_currency' => 'varchar(1024) DEFAULT \'\' ',
+	    'cost_per_transaction' => ' decimal(10,2) DEFAULT NULL ',
+	    'cost_percent_total' => ' decimal(10,2) DEFAULT NULL ',
 	    'tax_id' => 'smallint(11) DEFAULT NULL'
 	);
 
@@ -118,8 +122,6 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$currency = CurrencyDisplay::getInstance('', $order['details']['BT']->virtuemart_vendor_id);
 	$html .= $this->getHtmlRow('STANDARD_ORDER_NUMBER', $order['details']['BT']->order_number);
 	$html .= $this->getHtmlRow('STANDARD_AMOUNT', $currency->priceDisplay($order['details']['BT']->order_total));
-
-
 	$html .= '</table>' . "\n";
 
 	return $this->processConfirmedOrderPaymentResponse(true, $cart, $order, $html);
@@ -150,8 +152,14 @@ class plgVmPaymentStandard extends vmPSPlugin {
     }
 
     function getCosts(VirtueMartCart $cart, $method, $cart_prices) {
-	return $method->cost;
+	if (preg_match('/%$/', $method->cost_percent_total)) {
+	    $cost_percent_total = substr($method->cost_percent_total, 0, -1);
+	} else {
+	    $cost_percent_total = $method->cost_percent_total;
+	}
+	return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
     }
+
 
     /**
      * Check if the payment conditions are fulfilled for this payment method
@@ -210,7 +218,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      *
      */
     function plgVmOnStoreInstallPaymentPluginTable($jplugin_id) {
-	return $this->onStoreInstallPluginTable($psType, $jplugin_id);
+	return $this->onStoreInstallPluginTable(  $jplugin_id);
     }
 
     /**

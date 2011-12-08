@@ -253,15 +253,7 @@ abstract class vmPlugin extends JPlugin {
 
 	}
 
-	/*
-	 * When a plugin is using an internal Table it must override this function and provide
-	 * a valid sql to create a query
-	 * @author Max Milbers
-	 * @author Valérie Isaksen
-	 */
-	protected function getVmPluginCreateTableSQL(){
-		return 0;
-	}
+	
 	function getTableSQLLoggablefields() {
 		return array(
 		    'created_on' => ' datetime NOT NULL default \'0000-00-00 00:00:00\'',
