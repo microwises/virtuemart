@@ -161,10 +161,13 @@ abstract class vmCustomPlugin extends VmPlugin {
     public function GetPluginInCart($product){
     	//$plgName = $productCustom->value;
 
-		foreach($product->param as $k => $plg){
-			if (key($plg)== $this->_name)
-			return	$plg[$this->_name];
-		}
+    	if(!empty($product->param)){
+    		foreach($product->param as $k => $plg){
+    			if (key($plg)== $this->_name)
+    			return	$plg[$this->_name];
+    		}
+    	}
+
     	return null ;
 
     }
