@@ -660,16 +660,12 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (!class_exists('CurrencyDisplay'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
-		/*
-	  $html = '<input type="radio" name="virtuemart_paymentmethod_id" id="payment_id_' . $payment->virtuemart_paymentmethod_id . '" value="' . $payment->virtuemart_paymentmethod_id . '" ' . $checked . '>'
-		. '<label for="payment_id_' . $payment->virtuemart_paymentmethod_id . '">' .'<span class="vmpayment">'. $payment->payment_name . '<span class="vmpayment_cost">(' . $paymentCostDisplay . ")</span></span></label>\n";
-		$html .="\n";
-	 */
-
 
 		$costDisplay = $currency->priceDisplay($pluginSalesPrice);
 		$html = '<input type="radio" name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id"  " value="' . $plugin->$pluginmethod_id . '" ' . $checked . '>'
 		. '<label for="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '">' . '<span class="' . $this->_type . '">' . $plugin->$pluginName . '<span class="' . $this->_type . '_cost"> (' . $costDisplay . ")</span></span></label>\n";
+
+
 		return $html;
 	}
 
@@ -884,11 +880,11 @@ abstract class vmPSPlugin extends vmPlugin {
 					if (!class_exists('VirtueMartModelOrders'))
 					require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 					$modelOrder = new VirtueMartModelOrders();
-					$orders[$orderID]['order_status'] = $new_status;
-					$orders[$orderID]['virtuemart_order_id'] = $orderID;
-					$orders[$orderID]['customer_notified'] = 0;
-					$orders[$orderID]['comments'] = '';
-					$modelOrder->updateOrderStatus($orders, $orderID); //
+					$order['order_status'] = $new_status;
+					$order['virtuemart_order_id'] = $orderID;
+					$order['customer_notified'] = 0;
+					$order['comments'] = '';
+					$modelOrder->updateStatusForOneOrder($orderID,$order,$useTriggers=true);
 				}
 
 				$cart->sentOrderConfirmedEmail($order);
