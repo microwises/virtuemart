@@ -291,7 +291,8 @@ class VmTable extends JTable{
 			$from   .= ' LEFT JOIN `'.$table.'` on `'.$table.'`.`'.$joinKey.'`=`'. $mainTable .'`.`'.$joinKey.'`';
 			}
 		}
-		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = '.(int)$oid;
+		//the cast to int here destroyed the query for keys like virtuemart_userinfo_id, so no cast on $oid
+		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = "'.$oid.'"';
 
 		$db->setQuery( $query );
 // vmdebug('vmtable '.$query);

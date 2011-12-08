@@ -681,13 +681,15 @@ class VirtueMartModelUser extends VmModel {
 			$preFix = '';
 		}
 
+// 		if(!$cart && empty($uid)) $uid = $this->_id;
 		$userFields = array();
 		if(!empty($uid)){
-			vmdebug(' user data with infoid',$uid);
+
 			$this->_data->userInfo[$uid] = $this->getTable('userinfos');
 			$this->_data->userInfo[$uid]->load($uid);
 
 			$data = $this->_data->userInfo[$uid];
+// 			vmdebug(' user data with infoid  '.$uid,$this->_data->userInfo[$uid]);
 		}
 		else {
 			//New Address is filled here with the data of the cart (we are in the userview)
@@ -760,6 +762,7 @@ class VirtueMartModelUser extends VmModel {
 
 // 		vmdebug('$userdata',$userdata);
 		$found = false;
+
 		//Non anonymous case
 		if(!$cart && !empty($id) && !empty($userdata->userInfo) && count($userdata->userInfo)>0) {
 

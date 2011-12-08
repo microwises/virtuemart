@@ -192,7 +192,7 @@ class VirtuemartControllerOrders extends VmController {
 		else if ($result['error'] == 0)
 			 $msg .= JText::_('COM_VIRTUEMART_ORDER_NOT_UPDATED');
 		if ($result['error'] > 0)
-		    $msg .= JText::sprintf('COM_VIRTUEMART_ORDER_NOT_UPDATED_SUCCESSFULLY', $result['error'] , $result['total']); 
+		    $msg .= JText::sprintf('COM_VIRTUEMART_ORDER_NOT_UPDATED_SUCCESSFULLY', $result['error'] , $result['total']);
 		if ('updatestatus'== $lastTask ) {
 			$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$virtuemart_order_id , $msg);
 		}
@@ -281,16 +281,16 @@ class VirtuemartControllerOrders extends VmController {
 
 	/**
 	 * Update a single order item
-	 */
+
 	public function updateOrderItem()
 	{
 		//vmdebug('updateOrderItem');
 		$mainframe = Jfactory::getApplication();
 		$model = $this->getModel('orders');
-		$model->updateSingleItem();
+	//	$model->updateSingleItem();
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.JRequest::getInt('virtuemart_order_id', ''));
 	}
-
+ */
 	/**
 	* Save the given order item
 	*/

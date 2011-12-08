@@ -345,7 +345,12 @@ class VirtueMartModelOrders extends VmModel {
 			// $comments = JRequest::getVar('comments', array()); // ???
 			foreach ($orders as $virtuemart_order_id => $order) {
 				if  ($order_id >0) $virtuemart_order_id= $order_id;
-				$this->updateStatusForOneOrder($virtuemart_order_id,$order);
+
+				if($this->updateStatusForOneOrder($virtuemart_order_id,$order)){
+					$updated ++;
+				} else {
+					$error++;
+				}
 			}
 		}
 		$result = array( 'updated' => $updated , 'error' =>$error , 'total' => $total ) ;
@@ -432,9 +437,9 @@ class VirtueMartModelOrders extends VmModel {
 					}
 				}
 			}
-			$updated ++;
+			return true;
 		} else {
-			$error++;
+			return false;
 		}
 	}
 
