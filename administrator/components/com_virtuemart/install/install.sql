@@ -582,7 +582,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_userinfos` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_order_userinfo_id`),
-  KEY `idx_virtuemart_order_id` (`virtuemart_order_id`)
+  KEY `i_virtuemart_order_id` (`virtuemart_order_id`),
+  KEY `i_virtuemart_user_id` (`virtuemart_user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Stores the BillTo and ShipTo Information at order time' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
