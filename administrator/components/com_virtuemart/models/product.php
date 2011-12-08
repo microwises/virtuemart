@@ -159,11 +159,13 @@ class VirtueMartModelProduct extends VmModel {
 				$searchField == 'metadesc' || $searchField == 'metakey'){
 					$filter_search[] = 'l.`'.$searchField.'` LIKE '.$search;
 				}else if($searchField == 'category_name' || $searchField == 'category_description'){
-					$joinCategory = true;
-					$filter_search[] = 'c.`'.$searchField.'` LIKE '.$search;
+					//$joinCategory = true;
+					//$filter_search[] = 'c.`'.$searchField.'` LIKE '.$search;
+					//This join causes multi product to disply in results...
 				}else if($searchField == 'mf_name'){
-					$joinMf = true;
-					$filter_search[] = 'm.`'.$searchField.'` LIKE '.$search;
+					//$joinMf = true;
+					//$filter_search[] = 'm.`'.$searchField.'` LIKE '.$search;
+					//This join causes multi product to disply in results...
 				}else if($searchField == 'product_price'){
 					$joinPrice = true;
 					$filter_search[] = 'pp.`'.$searchField.'` LIKE '.$search;
