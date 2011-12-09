@@ -66,6 +66,93 @@ class VirtueMartModelProduct extends VmModel {
 		unset($this->_validOrderingFieldName[0]);//virtuemart_product_id
 		array_unshift($this->_validOrderingFieldName,'p.virtuemart_product_id');
 // 			vmdebug('product allows following orderingFields ',$this->_validOrderingFieldName);
+
+		$this->initialiseRequests();
+
+		//This is just done now for the moment for developing, the idea is of course todo this only when needed.
+		$this->updateRequests();
+	}
+
+
+	var $keyword 							= "0";
+	var $product_parent_id 				= false;
+	var $virtuemart_manufacturer_id	= false;
+	var $search_type						= '';
+	var $searchcustoms					= false;
+	var $searchplugin						= 0;
+	var $filter_order 					= 'p.virtuemart_product_id';
+	var $filter_order_Dir 				= 'DESC';
+
+	/**
+	 * This function resets the variables holding request depended data to the initial values
+	 *
+	 * @author Max Milbers
+	 */
+	function initialiseRequests(){
+
+		$this->keyword 							= "0";
+		$this->product_parent_id 				= false;
+		$this->virtuemart_manufacturer_id	= false;
+		$this->search_type						= '';
+		$this->searchcustoms					= false;
+		$this->searchplugin						= 0;
+		$this->filter_order 					= 'p.virtuemart_product_id';
+		$this->filter_order_Dir 				= 'DESC';
+
+	}
+
+	/**
+	 * This functions updates the variables of the model which are used in the sortSearchListQuery
+	 *  with the variables from the Request
+	 *
+	 * @author Max Milbers
+	 */
+	function updateRequests(){
+		//hmm how to trigger that in the module or so?
+		$this->keyword = vmRequest::uword('keyword', "0", ' ');
+		if($this->keyword ="0"){
+			$this->keyword = vmRequest::uword('filter_product', "0", ' ');
+		}
+
+		$app = &JFactory::getApplication();
+		$option = 'com_virtuemart';
+		$view = 'product';
+
+		//Filter order and dir  This is unecessary complex and maybe even wrong, but atm it seems to work
+		if($app->isSite()){
+			$filter_order = JRequest::getString('orderby', VmConfig::get('browse_orderby_field','p.virtuemart_product_id'));
+			$filter_order     = $this->getValidFilterOrdering($filter_order);
+
+			$filter_order_Dir 	= strtoupper(JRequest::getWord('order', 'ASC'));
+		} else {
+			$filter_order     = $this->getValidFilterOrdering();
+			$filter_order_Dir = strtoupper($app->getUserStateFromRequest( $option.'.'.$view.'.filter_order_Dir', 'filter_order_Dir', '', 'word' ));
+		}
+		$filter_order_Dir = $this->getValidFilterDir($filter_order_Dir);
+
+		$this->filter_order = $filter_order;
+		$this->filter_order_Dir = $filter_order_Dir;
+
+
+		$this->product_parent_id= JRequest::getInt('product_parent_id', false );
+
+		$this->virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', false );
+
+		$this->search_type = JRequest::getVar('search_type', '');
+
+		$this->searchcustoms = JRequest::getVar('customfields', array(), 'default' ,'array');
+
+		$this->searchplugin = JRequest::getVar('custom_parent_id',0);
+
+	}
+
+	/**
+	 * Sets the keyword variable for the search
+	 *
+	 * @param string $keyword
+	 */
+	function setKeyWord($keyword){
+		$this->keyword = $keyword;
 	}
 
 	/**
@@ -75,38 +162,9 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	function sortSearchListQuery($onlyPublished=true,$virtuemart_category_id = false, $group=false,$nbrReturnProducts=false){
 
-		$app = JFactory::getApplication() ;
+		$app = &JFactory::getApplication() ;
 
-		$option = 'com_virtuemart';
-		$view = 'product';
-		$default_order = 'product_name';
-		$order_dir = '';
 		$groupBy = '';
-
-		//First setup the variables for filtering
-		if($app->isSite()){
-			$filter_order = JRequest::getString('orderby', VmConfig::get('browse_orderby_field','p.virtuemart_product_id'));
-			// 			vmdebug('getProduct sortSearchListQuery '.$filter_order);
-			// sanitize $filter_order and dir
-			$filter_order     = $this->getValidFilterOrdering($filter_order);
-
-			$filter_order_Dir 	= strtoupper(JRequest::getWord('order', 'ASC'));
-			//sanitize Direction
-			if($filter_order_Dir!='ASC' && $filter_order_Dir!='DESC'){
-				$filter_order_Dir ='';
-			}
-		} else {
-
-			$filter_order_Dir = strtoupper($app->getUserStateFromRequest( $option.'.'.$view.'.filter_order_Dir', 'filter_order_Dir', $order_dir, 'word' ));
-			$filter_order_Dir = $this->getValidFilterDir();
-			// 			$filter_order     = $app->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', $default_order, 'cmd' );
-			$filter_order     = $this->getValidFilterOrdering();
-		}
-
-
-
-		$search 				= JRequest::getString('search', false );
-		// 		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0 );
 
 		//administrative variables to organize the joining of tables
 		$joinCategory 	= false ;
@@ -131,14 +189,15 @@ class VirtueMartModelProduct extends VmModel {
 		if($app->isSite() && !VmConfig::get('use_as_catalog',0) && !VmConfig::get('show_out_of_stock_products',0) ){
 			$where[] = ' p.`product_in_stock`>"0" ';
 		}
-		$keyword = vmRequest::uword('keyword', 0, ' ');
-		if ( $keyword !== "0" and $group ===false) {
+
+		if ( $this->keyword !== "0" and $group ===false) {
 			$groupBy = 'group by p.`virtuemart_product_id`';
 
 			//			$keyword = trim(preg_replace('/\s+/', '%', $keyword), '%');
-			$keyword = '"%' . $this->_db->getEscaped($keyword, true) . '%"';
+			$keyword = '"%' . $this->_db->getEscaped($this->keyword, true) . '%"';
 
-			$searchFields = VmConfig::get('browse_search_fields');
+			//Old version by Patrick
+/*			$searchFields = VmConfig::get('browse_search_fields');
 			foreach ($searchFields as $searchField) {
 				if ( strpos($searchField ,'category')!== NULL ) $joinCategory = true ;
 				if ( strpos($searchField ,'mf_')!== NULL ) $joinMf = true ;
@@ -148,12 +207,15 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			if(!empty($filter_search)){
 				$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
-			}
-			$joinLang = true;
-		} elseif ($search = vmRequest::uword('filter_product', false, ' ')){
-			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
-			$searchFields = VmConfig::get('browse_search_fields');
+			}*/
 
+			//We should use here only one if
+// 			$joinLang = true;
+// 		} elseif ($search = vmRequest::uword('filter_product', false, ' ')){
+// 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+// 			$searchFields = VmConfig::get('browse_search_fields');
+
+			//new version of joe
 			foreach ($searchFields as $searchField) {
 				if($searchField == 'product_name' || $searchField == 'product_s_desc'|| $searchField == 'product_desc' ||
 				$searchField == 'metadesc' || $searchField == 'metakey'){
@@ -185,15 +247,16 @@ class VirtueMartModelProduct extends VmModel {
 			$joinLang = true;
 		}
 
-		if ($searchcustoms = JRequest::getVar('customfields', array(), 'default' ,'array')){
-
+// 		vmdebug('my $this->searchcustoms ',$this->searchcustoms);
+		if (!empty($this->searchcustoms)){
 			$joinCustom = true ;
-			foreach ($searchcustoms as $key => $searchcustom) {
+			foreach ($this->searchcustoms as $key => $searchcustom) {
 				$custom_search[] = '(pf.`virtuemart_custom_id`="'.(int)$key.'" and pf.`custom_value` like "%' . $this->_db->getEscaped( $searchcustom, true ) . '%")';
 			}
 			$where[] = " ( ".implode(' OR ', $custom_search )." ) ";
 		}
-		if ($searchplugin = JRequest::getVar('custom_parent_id',0)){
+
+		if ($this->searchplugin !== 0){
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();
 			$PluginJoinTables = array();
@@ -204,9 +267,9 @@ class VirtueMartModelProduct extends VmModel {
 			$joinCategory = true ;
 			$where[] = ' `#__virtuemart_product_categories`.`virtuemart_category_id` = '.$virtuemart_category_id;
 		}
-		$product_parent_id= JRequest::getInt('product_parent_id', false );
-		if ($product_parent_id){
-			$where[] = ' p.`product_parent_id` = '.$product_parent_id;
+
+		if ($this->product_parent_id){
+			$where[] = ' p.`product_parent_id` = '.$this->product_parent_id;
 		}
 
 		$joinShopper = false;
@@ -224,16 +287,16 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', false );
-		if ($virtuemart_manufacturer_id) {
+
+		if ($this->virtuemart_manufacturer_id) {
 			$joinMf = true ;
-			$where[] = ' `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` = '.$virtuemart_manufacturer_id;
+			$where[] = ' `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` = '.$this->virtuemart_manufacturer_id;
 		}
 
 		// Time filter
-		if (JRequest::getVar('search_type', '') != '') {
+		if ($this->search_type != '') {
 			$search_order = $this->_db->getEscaped(JRequest::getWord('search_order') == 'bf' ? '<' : '>');
-			switch (JRequest::getVar('search_type')) {
+			switch ($this->search_type) {
 				case 'product':
 					$where[] = 'p.`modified_on` '.$search_order.' "'.$this->_db->getEscaped(JRequest::getVar('search_date')).'"';
 					break;
@@ -250,7 +313,7 @@ class VirtueMartModelProduct extends VmModel {
 
 
 		// special  orders case
-		switch ($filter_order) {
+		switch ($this->filter_order) {
 			case 'product_special':
 				$where[] = ' p.`product_special`="1" ';// TODO Change  to  a  individual button
 				$orderBy = ' ';
@@ -277,14 +340,15 @@ class VirtueMartModelProduct extends VmModel {
 				$joinPrice = true ;
 				break;
 			default ;
-			if(!empty($filter_order)){
-				$orderBy = ' ORDER BY '.$this->_db->getEscaped($filter_order).' ';
+			if(!empty($this->filter_order)){
+				$orderBy = ' ORDER BY '.$this->_db->getEscaped($this->filter_order).' ';
 			} else {
-				$filter_order_Dir = '';
+				$this->filter_order_Dir = '';
 				$orderBy='';
 			}
 			break;
 		}
+
 		//Group case from the modules
 		if($group){
 
@@ -304,7 +368,7 @@ class VirtueMartModelProduct extends VmModel {
 					break;
 				case 'topten';
 				$orderBy = ' ORDER BY product_sales ';//LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
-				$filter_order_Dir = 'DESC';
+				$this->filter_order_Dir = 'DESC';
 			}
 			// 			$joinCategory 	= false ; //creates error
 			// 			$joinMf 		= false ;	//creates error
@@ -337,10 +401,10 @@ class VirtueMartModelProduct extends VmModel {
 		if ($joinPrice == true) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_prices` as pp ON p.`virtuemart_product_id` = pp.`virtuemart_product_id` ';
 		}
-		if ($searchcustoms) {
+		if ($this->searchcustoms) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_customfields` as pf ON p.`virtuemart_product_id` = pf.`virtuemart_product_id` ';
 		}
-		if ($searchplugin) {
+		if ($this->searchplugin) {
 			if (!empty( $PluginJoinTables) ) {
 				$plgName = $PluginJoinTables[0] ;
 				$joinedTables .= ' LEFT JOIN `#__virtuemart_product_custom_plg_'.$plgName.'` as '.$plgName.' ON '.$plgName.'.`virtuemart_product_id` = p.`virtuemart_product_id` ' ;
@@ -357,7 +421,7 @@ class VirtueMartModelProduct extends VmModel {
 			$whereString = '';
 		}
 		// echo $joinedTables.' joined ? '.$select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir;		/* jexit();  */
-		$product_ids =  $this->exeSortSearchListQuery(2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir, $nbrReturnProducts);
+		$product_ids =  $this->exeSortSearchListQuery(2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir, $nbrReturnProducts);
 
 		// This makes products searchable, we decided that this is not good, because variant childs appear then in lists
 		//So the new convention is that products which should be shown on a category or a manufacturer page should have entered this data

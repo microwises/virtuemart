@@ -636,7 +636,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				case 'V':
 					if ($price == 0 ) $price = JText::_('COM_VIRTUEMART_CART_PRICE_FREE') ;
 					/* Loads the product price details */
-					return '<input type="text" value="'.JText::_($value).'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').' : '.$price .' ';
+					return '<input type="text" value="'.JText::_($value).'" name="field['.$row.'][custom_value]" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').$price .' ';
 					break;
 				/*Date variant*/
 				case 'D':
