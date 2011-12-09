@@ -72,7 +72,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    'virtuemart_paymentmethod_id' => ' mediumint(1) UNSIGNED DEFAULT NULL',
 	    'payment_name' => ' char(255) NOT NULL DEFAULT \'\' ',
 	    'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\' ',
-	    'payment_currency' => 'smallint(1) ',
+	    'payment_currency' => 'char(3) ',
 	    'cost_per_transaction' => ' decimal(10,2) DEFAULT NULL ',
 	    'cost_percent_total' => ' decimal(10,2) DEFAULT NULL ',
 	    'tax_id' => ' smallint(1) DEFAULT NULL',
@@ -126,16 +126,15 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$vendorModel->setId(1);
 	$vendor = $vendorModel->getVendor();
 
-	$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $order['details']['BT']->user_currency_id . '" ';
+	$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $method->payment_currency . '" ';
 	$db = &JFactory::getDBO();
 	$db->setQuery($q);
 	$currency_code_3 = $db->loadResult();
 
-	$paymentCurrency = CurrencyDisplay::getInstance($model->payment_currency);
-	$totalInPaymentCurrency = $paymentCurrency->priceDisplay($this->cart->pricesUnformatted['billTotal'], $model->payment_currency);
-	$cd = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
-	$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($model->payment_currency, $order['details']['BT']->order_total), 2);
+	$paymentCurrency = CurrencyDisplay::getInstance($method->payment_currency);
 
+	$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($method->payment_currency, $order['details']['BT']->order_total), 2);
+	$cd = CurrencyDisplay::getInstance($cart->pricesCurrency);
 
 	$merchant_email = $this->_getMerchantEmail($method);
 	if (empty($merchant_email)) {
@@ -237,9 +236,9 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    $html.= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
 	}
 	$html.= '</form>';
-	CurrencyDisplay::getInstance($cart->pricesCurrency);
+
 	$html.= ' <script type="text/javascript">';
-	//$html.= ' document.vm_paypal_form.submit();';
+	$html.= ' document.vm_paypal_form.submit();';
 	$html.= ' </script>';
 	// 	2 = don't delete the cart, don't send email and don't redirect
 	return $this->processConfirmedOrderPaymentResponse(2, $cart, $order, $html, $new_status);
