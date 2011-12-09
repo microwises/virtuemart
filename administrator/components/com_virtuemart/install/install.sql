@@ -444,7 +444,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `coupon_discount` decimal(12,2) NOT NULL DEFAULT '0.00',
   `coupon_code` char(32),
   `order_discount` decimal(12,2) NOT NULL DEFAULT '0.00',
-  `order_currency` char(4),
+  `order_currency` smallint(1),
   `order_status` char(1),
   `user_currency_id` char(4),
   `user_currency_rate` DECIMAL(10,5) NOT NULL DEFAULT '1.00000',

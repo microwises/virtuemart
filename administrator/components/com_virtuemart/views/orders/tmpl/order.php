@@ -359,19 +359,7 @@ $tt=$this;
 				<td   align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->priceDisplay($this->orderbt->order_total,'',false); ?></strong>
 				</td>
 			</tr>
-			<?php
-			if ($this->orderbt->order_currency  <> $this->orderbt->user_currency_id) {
-				    $order_total_payment = "<br />".$this->currencyPayment->priceDisplay($this->orderbt->order_total*$this->orderbt->user_currency_rate,$this->orderbt->user_currency_id );
-				 ?>
-
-			<tr>
-				<td align="right" colspan="7"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL_PAYMENT') ?>:</strong></td>
-				<td   align="right" style="padding-right: 5px;"><strong><?php echo $order_total_payment; ?></strong>
-				</td>
-			</tr>
-			<?php
-			}
-				 ?>
+			
 		</table>
 		</td>
 	</tr>

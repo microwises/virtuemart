@@ -71,7 +71,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    'order_number' => ' char(32) DEFAULT NULL',
 	    'virtuemart_paymentmethod_id' => ' mediumint(1) UNSIGNED DEFAULT NULL',
 	    'payment_name' => ' char(255) NOT NULL DEFAULT \'\' ',
-	    'payment_currency' => 'varchar(1024) DEFAULT \'\' ',
+	    'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\' ',
+	    'payment_currency' => 'smallint(1) ',
 	    'cost_per_transaction' => ' decimal(10,2) DEFAULT NULL ',
 	    'cost_percent_total' => ' decimal(10,2) DEFAULT NULL ',
 	    'tax_id' => ' smallint(1) DEFAULT NULL',
@@ -129,9 +130,11 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$db = &JFactory::getDBO();
 	$db->setQuery($q);
 	$currency_code_3 = $db->loadResult();
-	$paymentCurrency = CurrencyDisplay::getInstance($order['details']['BT']->user_currency_id);
 
-	$totalInPaymentCurrency =round($paymentCurrency->convertCurrencyTo($order['details']['BT']->user_currency_id, $order['details']['BT']->order_total),2) ;
+	$paymentCurrency = CurrencyDisplay::getInstance($model->payment_currency);
+	$totalInPaymentCurrency = $paymentCurrency->priceDisplay($this->cart->pricesUnformatted['billTotal'], $model->payment_currency);
+	$cd = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
+	$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($model->payment_currency, $order['details']['BT']->order_total), 2);
 
 
 	$merchant_email = $this->_getMerchantEmail($method);
@@ -219,6 +222,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$dbValues['paypal_custom'] = $return_context;
 	$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
 	$dbValues['cost_percent_total'] = $method->cost_percent_total;
+	$dbValues['payment_currency'] = $currency_code_3;
+	$dbValues['payment_order_total'] = $totalInPaymentCurrency;
 	$dbValues['tax_id'] = $method->tax_id;
 	$this->storePSPluginInternalData($dbValues);
 
@@ -255,16 +260,18 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	  return false; // don't delete the cart, don't send email
 	 */
     }
-    function plgVmgetPaymentCurrency(  $virtuemart_paymentmethod_id, &$paymentCurrencyId) {
 
-	    if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
-		return null; // Another method was selected, do nothing
-	    }
-	    if (!$this->selectedThisElement($method->payment_element)) {
-		return false;
-	    }
-	    $paymentCurrencyId= $method->payment_currency;
+    function plgVmgetPaymentCurrency($virtuemart_paymentmethod_id, &$paymentCurrencyId) {
+
+	if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
+	    return null; // Another method was selected, do nothing
+	}
+	if (!$this->selectedThisElement($method->payment_element)) {
+	    return false;
+	}
+	$paymentCurrencyId = $method->payment_currency;
     }
+
     function plgVmOnPaymentResponseReceived(&$virtuemart_order_id, &$html) {
 
 // the payment itself should send the parameter needed.
@@ -454,6 +461,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$html = '<table class="admintable">' . "\n";
 	$html .=$this->getHtmlHeaderBE();
 	$html .= $this->getHtmlRowBE('PAYPAL_PAYMENT_NAME', $paymentTable->payment_name);
+	$html .= $this->getHtmlRowBE('PAYPAL_PAYMENT_TOTAL_CURRENCY', $paymentTable->payment_order_total.' '.$paymentTable->payment_currency);
 	$code = "paypal_response_";
 	foreach ($paymentTable as $key => $value) {
 	    if (substr($key, 0, strlen($code)) == $code) {
@@ -712,8 +720,6 @@ class plgVMPaymentPaypal extends vmPSPlugin {
     public function plgVmDisplayListFEPayment(VirtueMartCart $cart, $selected = 0, &$htmlIn) {
 	return $this->displayListFE($cart, $selected, $htmlIn);
     }
-
-
 
     /*
      * plgVmonSelectedCalculatePricePayment
