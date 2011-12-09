@@ -99,6 +99,7 @@ class VirtueMartViewCart extends JView {
 
 			$this->prepareContinueLink();
 			$this->lSelectCoupon();
+			$totalInPaymentCurrency =$this->getTotalInPaymentCurrency();
 			if ($cart->getDataValidated()) {
 				$pathway->addItem(JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
 				$document->setTitle(JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
@@ -136,6 +137,7 @@ class VirtueMartViewCart extends JView {
 		$useXHTML = true;
 		$this->assignRef('useSSL', $useSSL);
 		$this->assignRef('useXHTML', $useXHTML);
+		$this->assignRef('totalInPaymentCurrency', $totalInPaymentCurrency);
 
 		// @max: quicknirty
 		$cart->setCartIntoSession();
@@ -277,7 +279,19 @@ class VirtueMartViewCart extends JView {
 		$this->assignRef('paymentplugins_payments', $paymentplugins_payments);
 		$this->assignRef('found_payment_method', $found_payment_method);
 	}
+	  private function getTotalInPaymentCurrency() {
 
+		if (empty($this->cart->virtuemart_paymentmethod_id)) {
+		    return null;
+		}
+
+		if (!$this->cart->paymentCurrency or ($this->cart->paymentCurrency==$this->cart->pricesCurrency)) {
+		    return null;
+		}
+		$paymentCurrency = CurrencyDisplay::getInstance($this->cart->paymentCurrency);
+		$totalInPaymentCurrency =$paymentCurrency->priceDisplay( $this->cart->pricesUnformatted['billTotal'],$this->cart->paymentCurrency) ;
+		return $totalInPaymentCurrency;
+	}
 	private function lOrderDone() {
 		$html = JRequest::getVar('html', JText::_('COM_VIRTUEMART_ORDER_PROCESSED'), 'post', 'STRING', JREQUEST_ALLOWRAW);
 		$this->assignRef('html', $html);

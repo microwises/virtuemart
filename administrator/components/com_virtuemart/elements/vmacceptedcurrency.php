@@ -23,7 +23,7 @@ if (!class_exists('VmConfig'))
  * Those plugins cannot be configured througth the Plugin Manager anyway.
  */
 
-class JElementVmAcceptedCurrencies extends JElement {
+class JElementVmAcceptedCurrency extends JElement {
 
     /**
      * Element name
@@ -31,7 +31,7 @@ class JElementVmAcceptedCurrencies extends JElement {
      * @access	protected
      * @var		string
      */
-    var $_name = 'AcceptedCurrencies';
+    var $_name = 'AcceptedCurrency';
 
     function fetchElement($name, $value, &$node, $control_name) {
 	if (!class_exists('VirtueMartModelVendor'))
@@ -51,8 +51,8 @@ class JElementVmAcceptedCurrencies extends JElement {
 	if (empty($value)) {
 	    $value = $vendor_currency['vendor_currency'];
 	}
-	$class = 'multiple="true" size="10"';
-	return JHTML::_('select.genericlist', $currencies, $control_name . '[' . $name . '][]', $class, 'value', 'text', $value, $control_name . $name);
+
+	return JHTML::_('select.genericlist', $currencies, $control_name . '[' . $name . ']', '', 'value', 'text', $value, $control_name . $name);
     }
 
 }

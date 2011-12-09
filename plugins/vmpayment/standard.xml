@@ -22,7 +22,7 @@
 		default="default" hide_default="1" hide_none="1"
 		stripext="0"   exclude="^_" />
 	<param name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMPAYMENT_STANDARD_COUNTRIES" description="VMPAYMENT_STANDARD_COUNTRIES_DESC"/>
-        <!-- param name="payment_currency" type="vmacceptedcurrencies" default="" label="VMPAYMENT_STANDARD_CURRENCY" description="VMPAYMENT_STANDARD_CURRENCY_DESC" / -->
+        <param name="payment_currency" type="vmacceptedcurrencies" default="" label="VMPAYMENT_STANDARD_CURRENCY" description="VMPAYMENT_STANDARD_CURRENCY_DESC" />
 
 	<param name="min_amount" type="text"  label="VMPAYMENT_STANDARD_MIN_AMOUNT" description="VMPAYMENT_STANDARD_MIN_AMOUNT_EXPLAIN" />
 	<param name="max_amount" type="text"  label="VMPAYMENT_STANDARD_MAX_AMOUNT" description="VMPAYMENT_STANDARD_MAX_AMOUNT_EXPLAIN" />

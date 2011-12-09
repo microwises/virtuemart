@@ -113,7 +113,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		foreach ($this->methods as $method) {
 			if ($this->checkConditions($cart, $method, $cart->pricesUnformatted)) {
 				$methodSalesPrice = $this->calculateSalesPrice($cart, $method, $cart->pricesUnformatted);
-				$method->$method_name = $this->renderPluginName($method);
+				$method->$method_name = $this->renderPluginName($method ) ;
 				$html [] = $this->getPluginHtml($method, $selected, $methodSalesPrice);
 
 			}
@@ -640,14 +640,11 @@ abstract class vmPSPlugin extends vmPlugin {
 		if (!empty($plugin->$plugin_desc)) {
 			$description = '<span class="' . $this->_type . '_description">' . $plugin->$plugin_desc . '</span>';
 		}
-		$extra=$this->getExtraPluginNameInfo($plugin);
-		$pluginName= $return . '<span class="' . $this->_type . '_name">' . $plugin->$plugin_name . '</span>' .  $description. $extra;
+		$pluginName= $return . '<span class="' . $this->_type . '_name">' . $plugin->$plugin_name . '</span>' .  $description ;
 		return $pluginName;
 
 	}
-	public function getExtraPluginNameInfo($plugin){
-	    return '';
-	}
+
 	protected function getPluginHtml($plugin, $selectedPlugin, $pluginSalesPrice) {
 		$pluginmethod_id = $this->_idName;
 		$pluginName = $this->_psType . '_name';

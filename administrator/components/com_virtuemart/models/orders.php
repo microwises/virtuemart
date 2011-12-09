@@ -536,6 +536,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		$_orderData->order_status = 'P';
 // 		if (isset($_cart->virtuemart_currency_id)) {
+		/*
 		if (isset($_cart->pricesCurrency)) {
 			$_orderData->user_currency_id = $_cart->pricesCurrency ;//$this->getCurrencyIsoCode($_cart->pricesCurrency);
 			$currency = CurrencyDisplay::getInstance();
@@ -545,6 +546,17 @@ class VirtueMartModelOrders extends VmModel {
 				$_orderData->user_currency_rate = 1.0;
 			}
 		}
+		 * */
+
+
+		$_orderData->user_currency_id = $_cart->paymentCurrency ;//$this->getCurrencyIsoCode($_cart->pricesCurrency);
+		$paymentCurrency = CurrencyDisplay::getInstance($_cart->paymentCurrency);
+		if(!empty($paymentCurrency->exchangeRateShopper)){
+			$_orderData->user_currency_rate = $paymentCurrency->exchangeRateShopper;
+		} else {
+			$_orderData->user_currency_rate = 1.0;
+		}
+
 		$_orderData->order_currency = $this->getVendorCurrencyId($_orderData->virtuemart_vendor_id);
 
 		$_orderData->virtuemart_paymentmethod_id = $_cart->virtuemart_paymentmethod_id;

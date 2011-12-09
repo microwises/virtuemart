@@ -40,7 +40,6 @@ class VirtuemartViewOrders extends JView {
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');
-		$this->loadHelper('html');
 
 //		require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php'); Obsolete now??
 		//if(!class_exists('vmOrderPlugin')) require(JPATH_VM_PLUGINS.DS.'vmorderplugin.php');
@@ -69,8 +68,9 @@ class VirtuemartViewOrders extends JView {
 			$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
 
 			$currency = CurrencyDisplay::getInstance('',$order['details']['BT']->virtuemart_vendor_id);
+			$currencyPayment = CurrencyDisplay::getInstance('',$order['details']['BT']->user_currency_id);
 			$this->assignRef('currency', $currency);
-
+			$this->assignRef('currencyPayment', $currencyPayment);
 			$_userFields = $userFieldsModel->getUserFields(
 					 'account'
 					, array('captcha' => true, 'delimiters' => true) // Ignore these types
@@ -167,8 +167,12 @@ class VirtuemartViewOrders extends JView {
 				//This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
 				if (!array_key_exists('v'.$order->virtuemart_vendor_id, $_currencies)) {
 					$_currencies['v'.$order->virtuemart_vendor_id] = CurrencyDisplay::getInstance('',$order->virtuemart_vendor_id);
+					$_currencies['u'.$order->user_currency_id] = CurrencyDisplay::getInstance($order->user_currency_id);
 				}
 				$order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->priceDisplay($order->order_total,'',false);
+				if ($order->order_currency  <> $order->user_currency_id) {
+				    $order->order_total .= "<br />".$_currencies['u'.$order->user_currency_id]->priceDisplay($order->order_total*$order->user_currency_rate,$order->user_currency_id );
+				}
 			}
 
 			/*

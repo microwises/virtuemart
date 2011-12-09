@@ -65,7 +65,7 @@ class CurrencyDisplay {
 
 	/**
 	 *
-	 * Gives back the formate of the currency, gets $style if none is set, with the currency Id, when nothing is found it tries the vendorId.
+	 * Gives back the format of the currency, gets $style if none is set, with the currency Id, when nothing is found it tries the vendorId.
 	 * When no param is set, you get the format of the mainvendor
 	 *
 	 * @author Max Milbers
@@ -85,12 +85,15 @@ class CurrencyDisplay {
 	 * @return string
 	 */
 	public function getInstance($currencyId=0,$vendorId=0){
-
+$tt=self::$_instance;
+$i=empty(self::$_instance);
+$s=empty(self::$_instance->_currency_id);
+$t=($currencyId!=self::$_instance->_currency_id && !empty($currencyId)) ;
 		if(empty(self::$_instance) || empty(self::$_instance->_currency_id) || ($currencyId!=self::$_instance->_currency_id && !empty($currencyId)) ){
 
 			self::$_instance = new CurrencyDisplay($vendorId);
 
-			if(empty($currencyid)){
+			if(empty($currencyId)){
 
 				if(self::$_instance->_app->isSite()){
 					$this->_currency_id = self::$_instance->_app->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',JRequest::getInt('virtuemart_currency_id', 0));

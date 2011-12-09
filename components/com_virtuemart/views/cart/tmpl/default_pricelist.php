@@ -318,7 +318,7 @@
 			<td colspan="<?php echo $colspan ?>"><hr /></td>
 		  </tr>
 		  <tr class="sectiontableentry2">
-			<td colspan="4" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?>: </td>
+			<td colspan="4" align="right"><?php echo JText::_('COM_VIRTUEMART_CART_TOTAL') ?>: </td>
 
                         <?php if ( VmConfig::get('show_tax')) { ?>
 			<td align="right"> <?php echo "<span  style='color:gray'>".$this->cart->prices['billTaxAmount']."</span>" ?> </td>
@@ -326,7 +326,22 @@
 			<td align="right"> <?php echo "<span  style='color:gray'>".$this->cart->prices['billDiscountAmount']."</span>" ?> </td>
 			<td align="right"><strong><?php echo $this->cart->prices['billTotal'] ?></strong></td>
 		  </tr>
+		    <?php
+		    if ( $this->totalInPaymentCurrency) {
+			?>
 
+		       <tr class="sectiontableentry2">
+					    <td colspan="4" align="right"><?php echo JText::_('COM_VIRTUEMART_CART_TOTAL_PAYMENT') ?>: </td>
+
+					    <?php if ( VmConfig::get('show_tax')) { ?>
+					    <td align="right">  </td>
+					    <?php } ?>
+					    <td align="right">  </td>
+					    <td align="right"><strong><?php echo $this->totalInPaymentCurrency ?></strong></td>
+				      </tr>
+				      <?php
+		    }
+		    ?>
 
 
 	</table>

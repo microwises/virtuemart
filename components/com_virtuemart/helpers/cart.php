@@ -55,7 +55,7 @@ class VirtueMartCart {
 	var $prices = null;
 	var $pricesUnformatted = null;
 	var $pricesCurrency = null;
-
+	var $paymentCurrency = null;
 	var $STsameAsBT = 0;
 
 	private static $_cart = null;
@@ -110,6 +110,8 @@ class VirtueMartCart {
 				self::$_cart->prices 								= $cartData->prices;
 				self::$_cart->pricesUnformatted					= $cartData->pricesUnformatted;
 				self::$_cart->pricesCurrency						= $cartData->pricesCurrency;
+				self::$_cart->paymentCurrency						= $cartData->paymentCurrency;
+
 				self::$_cart->_inCheckOut 							= $cartData->_inCheckOut;
 				self::$_cart->_dataValidated						= $cartData->_dataValidated;
 				self::$_cart->_confirmDone							= $cartData->_confirmDone;
@@ -222,6 +224,7 @@ class VirtueMartCart {
 		$sessionCart->prices 								= $this->prices;
 		$sessionCart->pricesUnformatted					= $this->pricesUnformatted;
 		$sessionCart->pricesCurrency						= $this->pricesCurrency;
+		$sessionCart->paymentCurrency						= $this->paymentCurrency;
 
 		//private variables
 		$sessionCart->_inCheckOut 							= $this->_inCheckOut;
@@ -1051,12 +1054,16 @@ class VirtueMartCart {
 		$this->prices = $prices;
 		$this->pricesCurrency = $currency->getCurrencyDisplay();
 
+		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+		JPluginHelper::importPlugin('vmpayment');
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$this->paymentCurrency));
+
 		$cartData = $calculator->getCartData();
 
 		$this->setCartIntoSession();
 		return $cartData ;
 	}
-
 
 	function saveAddressInCart($data, $type, $putIntoSession = true) {
 
