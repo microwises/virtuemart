@@ -143,7 +143,7 @@ class VirtueMartViewCart extends JView {
 		$cart->setCartIntoSession();
 		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
 
-// 		vmdebug('my cart',$cart);
+		// 		vmdebug('my cart',$cart);
 		parent::display($tpl);
 	}
 
@@ -226,10 +226,10 @@ class VirtueMartViewCart extends JView {
 		// if no shipment rate defined
 		$found_shipment_method = false;
 		foreach ($returnValues as $returnValue) {
-		    if($returnValue){
-			    $found_shipment_method = true;
-			    break;
-		    }
+			if($returnValue){
+				$found_shipment_method = true;
+				break;
+			}
 		}
 		$shipment_not_found_text = JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');
 		$this->assignRef('shipment_not_found_text', $shipment_not_found_text);
@@ -262,36 +262,44 @@ class VirtueMartViewCart extends JView {
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmDisplayListFEPayment', array($this->cart, $selectedPayment, &$paymentplugins_payments));
 		// if no payment defined
- 		$found_payment_method = false;
+		$found_payment_method = false;
 		foreach ($returnValues as $returnValue) {
-		    if($returnValue){
-			    $found_payment_method = true;
-			    break;
-		    }
+			if($returnValue){
+				$found_payment_method = true;
+				break;
+			}
 		}
 
 		if (!$found_payment_method) {
-		    $link=''; // todo
-		    $payment_not_found_text = JText::sprintf('COM_VIRTUEMART_CART_NO_PAYMENT_METHOD_PUBLIC', '<a href="'.$link.'">'.$link.'</a>');
+			$link=''; // todo
+			$payment_not_found_text = JText::sprintf('COM_VIRTUEMART_CART_NO_PAYMENT_METHOD_PUBLIC', '<a href="'.$link.'">'.$link.'</a>');
 		}
 
 		$this->assignRef('payment_not_found_text', $payment_not_found_text);
 		$this->assignRef('paymentplugins_payments', $paymentplugins_payments);
 		$this->assignRef('found_payment_method', $found_payment_method);
 	}
-	  private function getTotalInPaymentCurrency() {
+
+	private function getTotalInPaymentCurrency() {
 
 		if (empty($this->cart->virtuemart_paymentmethod_id)) {
-		    return null;
+			return null;
 		}
 
 		if (!$this->cart->paymentCurrency or ($this->cart->paymentCurrency==$this->cart->pricesCurrency)) {
-		    return null;
+			return null;
 		}
+
 		$paymentCurrency = CurrencyDisplay::getInstance($this->cart->paymentCurrency);
-		$totalInPaymentCurrency =$paymentCurrency->priceDisplay( $this->cart->pricesUnformatted['billTotal'],$this->cart->paymentCurrency) ;
+
+		$totalInPaymentCurrency = $paymentCurrency->priceDisplay( $this->cart->pricesUnformatted['billTotal'],$this->cart->paymentCurrency) ;
+
+		$cd = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
+
+
 		return $totalInPaymentCurrency;
 	}
+
 	private function lOrderDone() {
 		$html = JRequest::getVar('html', JText::_('COM_VIRTUEMART_ORDER_PROCESSED'), 'post', 'STRING', JREQUEST_ALLOWRAW);
 		$this->assignRef('html', $html);

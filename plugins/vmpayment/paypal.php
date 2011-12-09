@@ -133,6 +133,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 
 	$totalInPaymentCurrency =round($paymentCurrency->convertCurrencyTo($order['details']['BT']->user_currency_id, $order['details']['BT']->order_total),2) ;
 
+
 	$merchant_email = $this->_getMerchantEmail($method);
 	if (empty($merchant_email)) {
 	    vmInfo(JText::_('VMPAYMENT_PAYPAL_MERCHANT_EMAIL_NOT_SET'));
@@ -231,8 +232,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    $html.= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
 	}
 	$html.= '</form>';
-
-
+	CurrencyDisplay::getInstance($cart->pricesCurrency);
 	$html.= ' <script type="text/javascript">';
 	//$html.= ' document.vm_paypal_form.submit();';
 	$html.= ' </script>';

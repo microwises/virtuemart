@@ -205,45 +205,38 @@ class VirtueMartModelProduct extends VmModel {
 
 				$filter_search[] = ' '.$searchField.' LIKE '.$keyword;
 			}
-			if(!empty($filter_search)){
-				$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
-			} //*/
-
-			//We should use here only one if
-// 			$joinLang = true;
-// 		} elseif ($search = vmRequest::uword('filter_product', false, ' ')){
-// 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
-// 			$searchFields = VmConfig::get('browse_search_fields');
 
 			//new version of joe
-	/*		foreach ($searchFields as $searchField) {
-				if($searchField == 'product_name' || $searchField == 'product_s_desc'|| $searchField == 'product_desc' ||
-				$searchField == 'metadesc' || $searchField == 'metakey'){
-					$filter_search[] = 'l.`'.$searchField.'` LIKE '.$search;
-				}else if($searchField == 'category_name' || $searchField == 'category_description'){
-					//$joinCategory = true;
-					//$filter_search[] = 'c.`'.$searchField.'` LIKE '.$search;
-					//This join causes multi product to disply in results...
-				}else if($searchField == 'mf_name'){
-					//$joinMf = true;
-					//$filter_search[] = 'm.`'.$searchField.'` LIKE '.$search;
-					//This join causes multi product to disply in results...
-				}else if($searchField == 'product_price'){
-					$joinPrice = true;
-					$filter_search[] = 'pp.`'.$searchField.'` LIKE '.$search;
-				}else if(strpos($searchField, '.')== 1){
-					$filter_search[] = 'p.`'.substr($searchField, 2, (strlen($searchField))).'` LIKE '.$search;
-				}else{
-					$filter_search[] = 'p.`'.$searchField.'` LIKE '.$search;
-				}
+			/*		foreach ($searchFields as $searchField) {
+			 if($searchField == 'product_name' || $searchField == 'product_s_desc'|| $searchField == 'product_desc' ||
+			$searchField == 'metadesc' || $searchField == 'metakey'){
+			$filter_search[] = 'l.`'.$searchField.'` LIKE '.$search;
+			}else if($searchField == 'category_name' || $searchField == 'category_description'){
+			//$joinCategory = true;
+			//$filter_search[] = 'c.`'.$searchField.'` LIKE '.$search;
+			//This join causes multi product to disply in results...
+			}else if($searchField == 'mf_name'){
+			//$joinMf = true;
+			//$filter_search[] = 'm.`'.$searchField.'` LIKE '.$search;
+			//This join causes multi product to disply in results...
+			}else if($searchField == 'product_price'){
+			$joinPrice = true;
+			$filter_search[] = 'pp.`'.$searchField.'` LIKE '.$search;
+			}else if(strpos($searchField, '.')== 1){
+			$filter_search[] = 'p.`'.substr($searchField, 2, (strlen($searchField))).'` LIKE '.$search;
+			}else{
+			$filter_search[] = 'p.`'.$searchField.'` LIKE '.$search;
+			}
 			}//*/
 
 			if(!empty($filter_search)){
-				$where[] = implode(' OR ', $filter_search );
+				$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
 			} else {
-				$where[] = 'l.`product_name` LIKE '.$search;
+				$where[] = '
+				`product_name` LIKE '.$search;
 				//If they have no check boxes selected it will default to product name at least.
-			}
+			}//*/
+
 			$joinLang = true;
 		}
 
