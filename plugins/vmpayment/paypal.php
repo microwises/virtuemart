@@ -687,7 +687,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
      *
      */
     function plgVmOnStoreInstallPaymentPluginTable($jplugin_id) {
-	return $this->onStoreInstallPluginTable('payment', $jplugin_id);
+
+	return $this->onStoreInstallPluginTable($jplugin_id);
     }
 
     /**

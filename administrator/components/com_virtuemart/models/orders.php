@@ -431,8 +431,6 @@ class VirtueMartModelOrders extends VmModel {
 			if(!empty($returnValues)){
 				foreach ($returnValues as $returnValue) {
 					if ($returnValue !== null  ) {
-						//Take a look on this seyi, I am not sure about that, but it should work at least simular note by Max
-						//$couponData = $returnValue;
 						return $returnValue;
 					}
 				}
