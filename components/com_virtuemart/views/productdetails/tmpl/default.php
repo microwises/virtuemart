@@ -226,7 +226,7 @@ if (empty ( $this->product )) {
 					</div>
 
 					<?php // Display the add to cart button END ?>
-					<input type="hidden" class="pname" value="<?php echo $this->product->product_name ?>">
+					<input type="hidden" class="pname" value="<?php echo $this->product->product_name ?>" />
 					<input type="hidden" name="option" value="com_virtuemart" />
 					<input type="hidden" name="view" value="cart" />
 					<noscript><input type="hidden" name="task" value="add" /></noscript>

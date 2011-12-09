@@ -197,7 +197,7 @@ class VirtueMartModelProduct extends VmModel {
 			$keyword = '"%' . $this->_db->getEscaped($this->keyword, true) . '%"';
 
 			//Old version by Patrick
-/*			$searchFields = VmConfig::get('browse_search_fields');
+			$searchFields = VmConfig::get('browse_search_fields');
 			foreach ($searchFields as $searchField) {
 				if ( strpos($searchField ,'category')!== NULL ) $joinCategory = true ;
 				if ( strpos($searchField ,'mf_')!== NULL ) $joinMf = true ;
@@ -207,7 +207,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			if(!empty($filter_search)){
 				$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
-			}*/
+			} //*/
 
 			//We should use here only one if
 // 			$joinLang = true;
@@ -216,7 +216,7 @@ class VirtueMartModelProduct extends VmModel {
 // 			$searchFields = VmConfig::get('browse_search_fields');
 
 			//new version of joe
-			foreach ($searchFields as $searchField) {
+	/*		foreach ($searchFields as $searchField) {
 				if($searchField == 'product_name' || $searchField == 'product_s_desc'|| $searchField == 'product_desc' ||
 				$searchField == 'metadesc' || $searchField == 'metakey'){
 					$filter_search[] = 'l.`'.$searchField.'` LIKE '.$search;
@@ -236,7 +236,7 @@ class VirtueMartModelProduct extends VmModel {
 				}else{
 					$filter_search[] = 'p.`'.$searchField.'` LIKE '.$search;
 				}
-			}
+			}//*/
 
 			if(!empty($filter_search)){
 				$where[] = implode(' OR ', $filter_search );
