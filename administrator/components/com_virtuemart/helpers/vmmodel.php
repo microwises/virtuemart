@@ -380,24 +380,12 @@ class VmModel extends JModel {
 
 // 		vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q ',$this->_db->getQuery() );
 
-
 		if($object == 2){
 			 $this->ids = $this->_db->loadResultArray();
 		} else if($object == 1 ){
 			 $this->ids = $this->_db->loadAssocList();
 		} else {
 			 $this->ids = $this->_db->loadObjectList();
-		}
-		//print_r( $this->_db->_sql );
-		// 			vmdebug('my $list',$list);
-		if(empty($this->ids)){
-			$errors = $this->_db->getErrorMsg();
-			if( !empty( $errors)){
-				vmdebug('exeSortSearchListQuery error in class '.get_class($this).' sql:',$this->_db->getErrorMsg());
-			}
-			if($object == 2 or $object == 1){
-				 $this->ids = array();
-			}
 		}
 
 		if($this->_withCount){
@@ -411,11 +399,31 @@ class VmModel extends JModel {
 			$this->_total = $count;
 			if($limitStart>$count){
 				$limitStart = floor($count/$limit);
+				$this->_db->setQuery($q,$limitStart,$limit);
+				if($object == 2){
+					$this->ids = $this->_db->loadResultArray();
+				} else if($object == 1 ){
+					$this->ids = $this->_db->loadAssocList();
+				} else {
+					$this->ids = $this->_db->loadObjectList();
+				}
 			}
 			$this->getPagination($count,$limitStart,$limit);
 
 		} else {
 			$this->_withCount = true;
+		}
+
+		//print_r( $this->_db->_sql );
+		// 			vmdebug('my $list',$list);
+		if(empty($this->ids)){
+			$errors = $this->_db->getErrorMsg();
+			if( !empty( $errors)){
+				vmdebug('exeSortSearchListQuery error in class '.get_class($this).' sql:',$this->_db->getErrorMsg());
+			}
+			if($object == 2 or $object == 1){
+				$this->ids = array();
+			}
 		}
 		// 			vmTime('exeSortSearchListQuery SQL_CALC_FOUND_ROWS','exe');
 		return $this->ids;
