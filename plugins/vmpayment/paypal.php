@@ -133,7 +133,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 
 	$paymentCurrency = CurrencyDisplay::getInstance($method->payment_currency);
 
-	$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($method->payment_currency, $order['details']['BT']->order_total), 2);
+	$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($method->payment_currency, $order['details']['BT']->order_total,false), 2);
 	$cd = CurrencyDisplay::getInstance($cart->pricesCurrency);
 
 	$merchant_email = $this->_getMerchantEmail($method);
