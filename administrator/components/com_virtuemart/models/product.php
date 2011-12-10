@@ -1401,7 +1401,15 @@ function getOrderByList($virtuemart_category_id=false) {
 	//$mainframe = Jfactory::getApplication();
 	//$option = JRequest::getWord('option');
 	//$order	= $mainframe->getUserStateFromRequest( $option.'order'  , 'order' ,''	,'word' );
-
+	$getArray = (JRequest::get( 'get' ));
+	$fieldLink = '';
+	// remove setted variable
+	if (array_key_exists('globalCurrencyConverter', $getArray)) unset ($getArray['globalCurrencyConverter']);
+	if (array_key_exists('order', $getArray)) unset ($getArray['order']);
+	if (array_key_exists('orderby', $getArray)) unset ($getArray['orderby']);
+	if (array_key_exists('virtuemart_manufacturer_id', $getArray)) unset ($getArray['virtuemart_manufacturer_id']);
+	foreach ($getArray as $key => $value )
+		$fieldLink .= '&'.$key.'='.$value;
 	$orderTxt ='';
 
 	$order = JRequest::getWord('order', 'ASC');
@@ -1413,13 +1421,13 @@ function getOrderByList($virtuemart_category_id=false) {
 	if ($orderby != '' && $orderby != $orderbyCfg ) $orderbyTxt = '&orderby='.$orderby;
 
 	// 		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0 );
-	$fieldLink = '';
-	if($virtuemart_category_id!==false){
-		$fieldLink = '&virtuemart_category_id='.$virtuemart_category_id;
-	}
+	
+	// if($virtuemart_category_id!==false){
+		// $fieldLink = '&virtuemart_category_id='.$virtuemart_category_id;
+	// }
 
-	$search = JRequest::getWord('search', '' );
-	if ($search != '' ) $fieldLink .= '&search=true&keyword='.JRequest::getWord('keyword', '' );
+	// $search = JRequest::getWord('search', '' );
+	// if ($search != '' ) $fieldLink .= '&search=true&keyword='.JRequest::getWord('keyword', '' );
 
 
 	/* Collect the product IDS for manufacturer list */
