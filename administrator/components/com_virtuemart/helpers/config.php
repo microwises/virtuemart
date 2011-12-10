@@ -837,47 +837,6 @@ class vmJsApi{
 		return true;
 	}
 
-	// Virtuemart Datepicker script
-	function jDate($value='',$name="date",$id=null) {
-		if ($value == "0000-00-00 00:00:00") $value= date("Y-m-d") ;
-		if (empty($id)) $id = $name ;
-		if ( !VmConfig::isJ15()) $J16 = "_J16"; else $J16 ="";
-		static $jDate;
-		$displayDate = self::date($value,'INPUT');
-		$display= '<input id="'.$id.'_text" class="datepicker" type="date" name="'.$name.'" value="'.$displayDate.'" />';
-		$display.= '<input id="'.$id.'" type="hidden" name="'.$name.'" value="'.$value.'" />';
-
-		// If exist exit
-		if ($jDate) return $display;
-		$front = JURI::root(true).'/components/com_virtuemart/assets/';
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration('
-		jQuery(document).ready( function() {
-			jQuery("#adminForm").delegate(".datepicker","focus", function() {
-				jQuery( this ).datepicker({
-					changeMonth: true,
-					changeYear: true,
-					dateFormat:"'.JText::_('COM_VIRTUEMART_DATE_FORMAT_INPUT_JS').'",
-					altField: jQuery(this).next("input"),
-					altFormat: "yy-mm-dd"
-				});
-			});
-
-		});
-		');
-		//$document->addScript($front.'js/jquery.ui.core.min.js');
-		//$document->addScript($front.'js/jquery.ui.datepicker.min.js');
-		$document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
-		$lg = &JFactory::getLanguage();
-		$lang = substr($lg->getTag(), 0, 2);
-		$existingLang = array("af","ar","ar-DZ","az","bg","bs","ca","cs","da","de","el","en-AU","en-GB","en-NZ","eo","es","et","eu","fa","fi","fo","fr","fr-CH","gl","he","hr","hu","hy","id","is","it","ja","ko","kz","lt","lv","ml","ms","nl","no","pl","pt","pt-BR","rm","ro","ru","sk","sl","sq","sr","sr-SR","sv","ta","th","tj","tr","uk","vi","zh-CN","zh-HK","zh-TW");
-		if (!in_array($lang, $existingLang)) $lang ="en-GB";
-		$document->addScript($front.'js/i18n/jquery.ui.datepicker-'.$lang.'.js');
-
-		$jDate = true;
-		return $display;
-	}
-
 	function JcountryStateList($stateIds) {
 		static $JcountryStateList;
 		// If exist exit
@@ -976,6 +935,52 @@ class vmJsApi{
 		return true;
 	}
 
+	// Virtuemart Datepicker script
+	function jDate($date='',$name="date",$id=null,$resetBt = true) {
+		if ($date == "0000-00-00 00:00:00") $date= 0 ;
+		if (empty($id)) $id = $name ;
+		if ( !VmConfig::isJ15()) $J16 = "_J16"; else $J16 ="";
+		static $jDate;
+		if ($date) $displayDate = self::date($date,'INPUT');
+		else $displayDate = JText::_('COM_VIRTUEMART_NEVER');
+		$display= '<input id="'.$id.'_text" class="datepicker" type="date" name="'.$name.'" value="'.$displayDate.'" /><span class="vmicon vmicon-16-logout icon-nofloat js-date-reset"></span>';
+		$display.= '<input id="'.$id.'" type="hidden" name="'.$name.'" value="'.$date.'" />';
+
+		// If exist exit
+		if ($jDate) return $display;
+		$front = JURI::root(true).'/components/com_virtuemart/assets/';
+		$document = JFactory::getDocument();
+		$document->addScriptDeclaration('
+		jQuery(document).ready( function($) {
+			$("#adminForm").delegate(".datepicker","focus", function() {
+				$( this ).datepicker({
+					changeMonth: true,
+					changeYear: true,
+					dateFormat:"'.JText::_('COM_VIRTUEMART_DATE_FORMAT_INPUT_JS').'",
+					altField: $(this).next("input"),
+					altFormat: "yy-mm-dd"
+				});
+			});
+			$(".js-date-reset").click(function() {
+				$(this).prev("input").val("'.JText::_('COM_VIRTUEMART_NEVER').'");
+				$(this).next("input").val("0");
+			});
+		});
+		');
+		//$document->addScript($front.'js/jquery.ui.core.min.js');
+		//$document->addScript($front.'js/jquery.ui.datepicker.min.js');
+		$document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
+		$lg = &JFactory::getLanguage();
+		$lang = substr($lg->getTag(), 0, 2);
+		$existingLang = array("af","ar","ar-DZ","az","bg","bs","ca","cs","da","de","el","en-AU","en-GB","en-NZ","eo","es","et","eu","fa","fi","fo","fr","fr-CH","gl","he","hr","hu","hy","id","is","it","ja","ko","kz","lt","lv","ml","ms","nl","no","pl","pt","pt-BR","rm","ro","ru","sk","sl","sq","sr","sr-SR","sv","ta","th","tj","tr","uk","vi","zh-CN","zh-HK","zh-TW");
+		if (!in_array($lang, $existingLang)) $lang ="en-GB";
+		$document->addScript($front.'js/i18n/jquery.ui.datepicker-'.$lang.'.js');
+
+		$jDate = true;
+		return $display;
+	}
+	
+	
 	/*
 	 * Convert formated date;
 	 * @ $date the date to convert
