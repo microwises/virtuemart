@@ -91,8 +91,9 @@ class VirtueMartModelProduct extends VmModel {
 	function initialiseRequests(){
 
 		$this->keyword 							= "0";
+		$this->valid_search_fields 				= array('product_name');
 		$this->product_parent_id 				= false;
-		$this->virtuemart_manufacturer_id	= false;
+		$this->virtuemart_manufacturer_id		= false;
 		$this->search_type						= '';
 		$this->searchcustoms					= false;
 		$this->searchplugin						= 0;
@@ -110,7 +111,7 @@ class VirtueMartModelProduct extends VmModel {
 	function updateRequests(){
 		//hmm how to trigger that in the module or so?
 		$this->keyword = vmRequest::uword('keyword', "0", ' ');
-		if($this->keyword ="0"){
+		if($this->keyword =="0"){
 			$this->keyword = vmRequest::uword('filter_product', "0", ' ');
 		}
 
@@ -124,14 +125,18 @@ class VirtueMartModelProduct extends VmModel {
 			$filter_order     = $this->getValidFilterOrdering($filter_order);
 
 			$filter_order_Dir 	= strtoupper(JRequest::getWord('order', 'ASC'));
+			$valid_search_fields = VmConfig::get('browse_search_fields');
 		} else {
 			$filter_order     = $this->getValidFilterOrdering();
 			$filter_order_Dir = strtoupper($app->getUserStateFromRequest( $option.'.'.$view.'.filter_order_Dir', 'filter_order_Dir', '', 'word' ));
+			$valid_search_fields = array('product_name');
 		}
 		$filter_order_Dir = $this->getValidFilterDir($filter_order_Dir);
 
 		$this->filter_order = $filter_order;
 		$this->filter_order_Dir = $filter_order_Dir;
+		$this->filter_order_Dir = $filter_order_Dir;
+		$this->valid_search_fields = $valid_search_fields;
 
 
 		$this->product_parent_id= JRequest::getInt('product_parent_id', false );
@@ -142,7 +147,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$this->searchcustoms = JRequest::getVar('customfields', array(), 'default' ,'array');
 
-		$this->searchplugin = JRequest::getVar('custom_parent_id',0);
+		$this->searchplugin = JRequest::getInt('custom_parent_id',0);
 
 	}
 
@@ -197,46 +202,47 @@ class VirtueMartModelProduct extends VmModel {
 			$keyword = '"%' . $this->_db->getEscaped($this->keyword, true) . '%"';
 
 			//Old version by Patrick
-			$searchFields = VmConfig::get('browse_search_fields');
-			foreach ($searchFields as $searchField) {
-				if ( strpos($searchField ,'category')!== NULL ) $joinCategory = true ;
-				if ( strpos($searchField ,'mf_')!== NULL ) $joinMf = true ;
-				if ($searchField == 'pp.product_price') $joinPrice = true ;
+		// $searchFields = VmConfig::get('browse_search_fields');
+			// foreach ($searchFields as $searchField) {
+				// if ( strpos($searchField ,'category')!== NULL ) $joinCategory = true ;
+				// if ( strpos($searchField ,'mf_')!== NULL ) $joinMf = true ;
+				// if ($searchField == 'pp.product_price') $joinPrice = true ;
 
-				$filter_search[] = ' '.$searchField.' LIKE '.$keyword;
-			}
+				// $filter_search[] = ' '.$searchField.' LIKE '.$keyword;
+			// }
+			// if(!empty($filter_search)){
+				// $where[] = " ( ".implode(' OR ', $filter_search )." ) ";
+			// }/*	*/
+
+			//We should use here only one if
+// 			$joinLang = true;
+// 		} elseif ($search = vmRequest::uword('filter_product', false, ' ')){
+// 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+// 			$searchFields = VmConfig::get('browse_search_fields');
 
 			//new version of joe
-			/*		foreach ($searchFields as $searchField) {
-			 if($searchField == 'product_name' || $searchField == 'product_s_desc'|| $searchField == 'product_desc' ||
-			$searchField == 'metadesc' || $searchField == 'metakey'){
-			$filter_search[] = 'l.`'.$searchField.'` LIKE '.$search;
-			}else if($searchField == 'category_name' || $searchField == 'category_description'){
-			//$joinCategory = true;
-			//$filter_search[] = 'c.`'.$searchField.'` LIKE '.$search;
-			//This join causes multi product to disply in results...
-			}else if($searchField == 'mf_name'){
-			//$joinMf = true;
-			//$filter_search[] = 'm.`'.$searchField.'` LIKE '.$search;
-			//This join causes multi product to disply in results...
-			}else if($searchField == 'product_price'){
-			$joinPrice = true;
-			$filter_search[] = 'pp.`'.$searchField.'` LIKE '.$search;
-			}else if(strpos($searchField, '.')== 1){
-			$filter_search[] = 'p.`'.substr($searchField, 2, (strlen($searchField))).'` LIKE '.$search;
-			}else{
-			$filter_search[] = 'p.`'.$searchField.'` LIKE '.$search;
+			// modified by Patrick Kohl
+			 
+
+			foreach ($this->valid_search_fields as $searchField) {
+				if($searchField == 'category_name' || $searchField == 'category_description'){
+					$joinCategory = true;
+				}else if($searchField == 'mf_name'){
+					$joinMf = true;
+				}else if($searchField == 'product_price'){
+					$joinPrice = true;
+				}else if(strpos($searchField, '.')== 1){
+					$searchField = 'p`.`'.substr($searchField, 2, (strlen($searchField))).'`' ;
+				}
+				$filter_search[] = '`'.$searchField.'` LIKE '.$keyword;
+				
 			}
-			}//*/
-
 			if(!empty($filter_search)){
-				$where[] = " ( ".implode(' OR ', $filter_search )." ) ";
+				$where[] = implode(' OR ', $filter_search );
 			} else {
-				$where[] = '
-				`product_name` LIKE '.$search;
+				$where[] = '`product_name` LIKE '.$search;
 				//If they have no check boxes selected it will default to product name at least.
-			}//*/
-
+			}
 			$joinLang = true;
 		}
 
@@ -250,10 +256,11 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		if ($this->searchplugin !== 0){
+
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();
 			$PluginJoinTables = array();
-			$dispatcher->trigger('plgVmAddToSearch',array(&$where, &$PluginJoinTables, $searchplugin));
+			$dispatcher->trigger('plgVmAddToSearch',array(&$where, &$PluginJoinTables, $this->searchplugin));
 		}
 
 		if ($virtuemart_category_id>0){
@@ -365,8 +372,8 @@ class VirtueMartModelProduct extends VmModel {
 			}
 			// 			$joinCategory 	= false ; //creates error
 			// 			$joinMf 		= false ;	//creates error
-			$joinPrice 		= false ;
-			$joinCustom		= false ;
+			$joinPrice 		= true ;
+			$this->searchplugin	= false ;
 // 			$joinLang = false;
 		}
 
@@ -413,7 +420,7 @@ class VirtueMartModelProduct extends VmModel {
 		} else {
 			$whereString = '';
 		}
-		// echo $joinedTables.' joined ? '.$select, $joinedTables, $whereString, $groupBy, $orderBy, $filter_order_Dir;		/* jexit();  */
+		//vmdebug ( $joinedTables.' joined ? ',$select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir );		/* jexit();  */
 		$product_ids =  $this->exeSortSearchListQuery(2, $select, $joinedTables, $whereString, $groupBy, $orderBy, $this->filter_order_Dir, $nbrReturnProducts);
 
 		// This makes products searchable, we decided that this is not good, because variant childs appear then in lists
@@ -1717,35 +1724,6 @@ private function _updateStock($_id, $_amount, $_sign){
 	}
 }
 
-public function updateStock($product, $amount, $signInStoc, $signOrderedStock){
-
-
-	// control stock to update Child or packs
-	if (!empty($product->product_attribute)) {
-		if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-		$virtuemart_product_id = $product->virtuemart_product_id;
-		$product_attributes = json_decode($product->product_attribute,true);
-		foreach ($product_attributes as $virtuemart_customfield_id=>$param){
-			if ($param) {
-				if ($productCustom = VirtueMartModelCustomfields::getProductCustomFieldCart ($virtuemart_product_id,$virtuemart_customfield_id ) ) {
-					if ($productCustom->field_type == "E") {
-							//$product = self::addParam($product);
-							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-							JPluginHelper::importPlugin('vmcustom');
-							$dispatcher = JDispatcher::getInstance();
-							$dispatcher->trigger('plgVmGetProductStockToUpdateByCustom',array($product,$param, $productCustom));
-					}
-				}
-			}
-		}
-		//vmdebug('produit',$product);
-		// we can have more then one product in case of pack
-		// in case of child, ID must be the child ID
-		// TO DO use $prod->amount change for packs(eg. 1 computer and 2 HDD)
-		if (is_array($product))	foreach ($product as $prod ) $this->updateStockInDB($prod, $amount, $signInStoc, $signOrderedStock);
-		else $this->updateStockInDB($product, $amount, $signInStoc, $signOrderedStock);
-	} else $this->updateStockInDB($product, $amount, $signInStoc, $signOrderedStock);
-}
 
 private function updateStockInDB($product, $amount, $signInStoc, $signOrderedStock){
 // 	vmdebug( 'stockupdate in DB', $product->virtuemart_product_id,$amount, $signInStoc, $signOrderedStock );

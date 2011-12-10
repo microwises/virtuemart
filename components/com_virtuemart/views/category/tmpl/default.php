@@ -36,23 +36,7 @@ jQuery(document).ready(function () {
 
 $document = JFactory::getDocument();
 $document->addScriptDeclaration($js);
-if ($this->search) { ?>
-<!--BEGIN Search Box -->
-<form action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=category&search=true&limitstart=0&virtuemart_category_id='.$this->category->virtuemart_category_id ); ?>" method="post">
-<div class="virtuemart_search">
-<?php echo $this->searchcustom ?>
-<br />
-<?php echo $this->searchcustomvalues ?>
-<input style="height:16px;vertical-align :middle;" name="keyword" class="inputbox" type="text" size="20" value="<?php echo $this->keyword ?>" />
-<input type="submit" value="<?php echo JText::_('COM_VIRTUEMART_SEARCH') ?>" class="button" onclick="this.form.keyword.focus();"/>
-</div>
-		<input type="hidden" name="search" value="true" />
-		<input type="hidden" name="category" value="0" />
-		<input type="hidden" name="view" value="category" />
-</form>
-
-<!-- End Search Box -->
-<?php } ?>
+?>
 
 <div class="category_description">
 	<?php echo $this->category->category_description ; ?>
@@ -140,9 +124,7 @@ if ( VmConfig::get('showCategory',1) ) {
 
 // Show child categories
 if (!empty($this->products)) {
-	$search='';
 	if (!empty($this->keyword)) {
-		$search ='&search=true&keyword='.$this->keyword;
 		?>
 		<h3><?php echo $this->keyword; ?></h3>
 		<?php
@@ -160,11 +142,25 @@ $Browsecellwidth = ' width'.floor ( 100 / $BrowseProducts_per_row );
 // Separator
 $verticalseparator = " vertical-separator";
 ?>
-<form action="<?php echo $this->paginationAction;?>" method="post">
+
 <div class="browse-view">
 
 	<h1><?php echo $this->category->category_name; ?></h1>
+		<form action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=category&limitstart=0&virtuemart_category_id='.$this->category->virtuemart_category_id ); ?>" method="get">
+		<?php if ($this->search) { ?>
+		<!--BEGIN Search Box --><div class="virtuemart_search">
+		<?php echo $this->searchcustom ?>
+		<br />
+		<?php echo $this->searchcustomvalues ?>
+		<input style="height:16px;vertical-align :middle;" name="keyword" class="inputbox" type="text" size="20" value="<?php echo $this->keyword ?>" />
+		<input type="submit" value="<?php echo JText::_('COM_VIRTUEMART_SEARCH') ?>" class="button" onclick="this.form.keyword.focus();"/>
+		</div>
+				<input type="hidden" name="search" value="true" />
+				<input type="hidden" name="view" value="category" />
+		</form>
 
+		<!-- End Search Box -->
+		<?php } ?>
 	<div class="orderby-displaynumber">
 		<div class="width70 floatleft">
 			<?php echo $this->orderByList; ?>
