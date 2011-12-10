@@ -139,7 +139,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
 	$db->setQuery($q);
 	if (!($paymentTable = $db->loadObject())) {
-	    JError::raiseWarning(500, $db->getErrorMsg());
+//	    JError::raiseWarning(500, $db->getErrorMsg());
 	    return '';
 	}
 
