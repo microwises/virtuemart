@@ -318,7 +318,7 @@ class VmConfig {
 
 						if(!empty($cacheenabled) and !empty($params['sctime']) and (microtime(true) - $params['sctime'])<$cachetime) {
 							$params['offline_message'] = base64_decode($params['offline_message']);
-							$params['dateformat'] = base64_decode($params['dateformat']);
+							// $params['dateformat'] = base64_decode($params['dateformat']);
 
 							self::$_jpConfig = new VmConfig();
 							self::$_jpConfig->_params = $params;
@@ -373,7 +373,8 @@ class VmConfig {
 			foreach($config as $item){
 				$item = explode('=',$item);
 				if(!empty($item[1])){
-					if($item[0]!=='offline_message' && $item[0]!=='dateformat' ){
+					// if($item[0]!=='offline_message' && $item[0]!=='dateformat' ){
+					if($item[0]!=='offline_message' ){
 						$pair[$item[0]] = unserialize($item[1] );
 					} else {
 						$pair[$item[0]] = unserialize(base64_decode($item[1]) );
@@ -469,7 +470,7 @@ class VmConfig {
 		//We must use base64 for text fields
 		$params = self::$_jpConfig->_params;
 		$params['offline_message'] = base64_encode($params['offline_message']);
-		$params['dateformat'] = base64_encode($params['dateformat']);
+		// $params['dateformat'] = base64_encode($params['dateformat']);
 
 		$params['sctime'] = microtime(true);
 		$session->set('vmconfig', serialize($params),'vm');
@@ -545,7 +546,8 @@ class VmConfig {
 
 			//Texts get broken, when serialized, therefore we do a simple encoding,
 			//btw we need serialize for storing arrays   note by Max Milbers
-			if($paramkey!=='offline_message' && $paramkey!=='dateformat'){
+//			if($paramkey!=='offline_message' && $paramkey!=='dateformat'){
+			if($paramkey!=='offline_message'){
 				$raw .= $paramkey.'='.serialize($value).'|';
 			} else {
 				$raw .= $paramkey.'='.base64_encode(serialize($value)).'|';
@@ -707,7 +709,8 @@ class VmConfig {
 						$pair[1] = substr($pair[1],6);
 						$pair[1] = explode('|',$pair[1]);
 					}
-					if($pair[0]!=='offline_message' && $pair[0]!=='dateformat'){
+					// if($pair[0]!=='offline_message' && $pair[0]!=='dateformat'){
+					if($pair[0]!=='offline_message'){
 						$_line = $pair[0].'='.serialize($pair[1]);
 					} else {
 						$_line = $pair[0].'='.base64_encode(serialize($pair[1]));

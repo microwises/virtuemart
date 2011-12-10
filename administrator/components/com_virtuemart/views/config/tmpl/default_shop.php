@@ -76,7 +76,7 @@ defined('_JEXEC') or die('Restricted access');
 		</select>
 	    </td>
 	</tr>
-	<tr>
+<?php	/* <tr>
 	<td class="key">
 		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT_EXPLAIN'); ?>">
 		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DATEFORMAT') ?>
@@ -85,7 +85,7 @@ defined('_JEXEC') or die('Restricted access');
 		<td>
 		<input type="text" name="dateformat" class="inputbox" value="<?php echo $this->config->get('dateformat') ?>" />
 	</td>
-	</tr>
+	</tr> */ ?>
 	<tr>
 	<td class="key">
 		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SSL_EXPLAIN'); ?>">

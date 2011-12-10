@@ -40,21 +40,9 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_COUPON_DETAILS');
 				$listOptions[] = JHTML::_('select.option', 'gift', JText::_('COM_VIRTUEMART_COUPON_TYPE_GIFT'));
 				 echo VmHTML::row('select','COM_VIRTUEMART_COUPON_TYPE', 'coupon_type', $listOptions ,$this->coupon->coupon_type,'','value', 'text',false) ; ?>
 			<?php echo VmHTML::row('input','COM_VIRTUEMART_VALUE','coupon_value',$this->coupon->coupon_value,'class="inputbox"','',10,32); ?>
-			<tr>
-				<td width="110" class="key">
-					<label for="coupon_value_valid">
-						<?php echo JText::_('COM_VIRTUEMART_COUPON_VALUE_VALID_AT'); ?>
-					</label>
-				</td>
-				<td>
-					<input class="inputbox" type="text" name="coupon_value_valid" id="coupon_value_valid" size="10" value="<?php echo $this->coupon->coupon_value_valid; ?>" /><?php echo " " . $this->vendor_currency; ?>
-				</td>
-			</tr>
-			<?php $mydate = JFactory::getDate($this->coupon->coupon_start_date);
-			echo VmHTML::row('raw','COM_VIRTUEMART_COUPON_START',  vmJsApi::jDate($mydate->toFormat($this->dateformat), 'coupon_start_date') ); ?>
-			<?php
-			$expireDate = JFactory::getDate($this->coupon->coupon_expiry_date);
-			echo VmHTML::row('raw','COM_VIRTUEMART_COUPON_EXPIRY',  vmJsApi::jDate($expireDate->toFormat($this->dateformat), 'coupon_expiry_date') ); ?>
+			<?php echo VmHTML::row('input','COM_VIRTUEMART_COUPON_VALUE_VALID_AT','coupon_value_valid', $this->coupon->coupon_value_valid, 'class="inputbox"','',10,255,' ' . $this->vendor_currency ); ?>
+			<?php echo VmHTML::row('raw','COM_VIRTUEMART_COUPON_START',  vmJsApi::jDate($this->coupon->coupon_start_date , 'coupon_start_date') ); ?>
+			<?php echo VmHTML::row('raw','COM_VIRTUEMART_COUPON_EXPIRY', vmJsApi::jDate($this->coupon->coupon_expiry_date,'coupon_expiry_date') ); ?>
 	    </table>
 	</fieldset>
     <input type="hidden" name="virtuemart_coupon_id" value="<?php echo $this->coupon->virtuemart_coupon_id; ?>" />

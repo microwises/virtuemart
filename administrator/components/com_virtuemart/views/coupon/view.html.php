@@ -111,11 +111,6 @@ class VirtuemartViewCoupon extends JView {
 			$this->assignRef('lists', $lists);
 		}
 
-		$dateformat = VmConfig::get('dateformat');
-		$this->assignRef('dateformat',	$dateformat);
-
-
-
 		parent::display($tpl);
 	}
 

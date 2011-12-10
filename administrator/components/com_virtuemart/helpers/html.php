@@ -292,8 +292,8 @@ class VmHTML{
 	 * @param string $name
 	 * @param string $value
 	 */
-	public function input($name,$value,$class='class="inputbox"',$readonly='',$size='37',$maxlength='255'){
-		return '<input type="text" '.$readonly.' '.$class.' id="'.$name.'" name="'.$name.'" size="'.$size.'" maxlength="'.$maxlength.'" value="'.$value.'" /></td>';
+	public function input($name,$value,$class='class="inputbox"',$readonly='',$size='37',$maxlength='255',$more=''){
+		return '<input type="text" '.$readonly.' '.$class.' id="'.$name.'" name="'.$name.'" size="'.$size.'" maxlength="'.$maxlength.'" value="'.$value.'" />'.$more.'</td>';
 	}
 
 	/**

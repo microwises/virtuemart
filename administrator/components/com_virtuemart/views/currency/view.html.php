@@ -43,13 +43,6 @@ class VirtuemartViewCurrency extends JView {
 
 		$db = JFactory::getDBO();
 		$config = JFactory::getConfig();
-		$tzoffset = $config->getValue('config.offset');
-		$this->assignRef('tzoffset',	$tzoffset);
-
-		$dateformat = VmConfig::get('dateformat');
-		$this->assignRef('dateformat',	$dateformat);
-
-
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 			$cid	= JRequest::getVar( 'cid' );
@@ -64,14 +57,12 @@ class VirtuemartViewCurrency extends JView {
 
 			$model->setId($cid);
 			$currency = $model->getCurrency();
-			$this->assignRef('dateformat',	$dateformat);
 			$viewName=ShopFunctions::SetViewTitle('',$currency->currency_name);
 			$this->assignRef('currency',	$currency);
 
 			ShopFunctions::addStandardEditViewCommands();
 
 		} else {
-			$this->assignRef('dateformat',	$dateformat);
 
 			$viewName=ShopFunctions::SetViewTitle();
 			ShopFunctions::addStandardDefaultViewCommands();

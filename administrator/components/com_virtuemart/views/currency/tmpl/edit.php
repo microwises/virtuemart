@@ -36,36 +36,6 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CURRENCY_DETAILS');
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_CODE_2','currency_code_2',$this->currency->currency_code_2,'class="inputbox"','',2,2); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_CODE_3','currency_code_3',$this->currency->currency_code_3,'class="inputbox"','',3,3); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_NUMERIC_CODE','currency_numeric_code',$this->currency->currency_numeric_code,'class="inputbox"','',3,3); ?>
-<?php /*		<tr>
-		<td width="110" class="key">
-				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_START_DATE'); ?>
-				</label>
-			</td>
-			<td>
-				<?php
-					$startDate = JFactory::getDate($this->currency->publish_up,$this->tzoffset);
-					echo JHTML::_('calendar', $startDate->toFormat($this->dateformat), "publish_up", "publish_up", $this->dateformat);
- 				?>
-			</td>
-		</tr>
-		<tr>
-			<td width="110" class="key">
-				<label for="title">
-					<?php echo JText::_('COM_VIRTUEMART_END_DATE'); ?>
-				</label>
-			</td>
-			<td>
-				<?php $endDate;
-				if (empty($this->currency->publish_down) || !strcmp($this->currency->publish_down,'0000-00-00 00:00:00')  ) {
-					$endDate = JText::_('COM_VIRTUEMART_NEVER');
-				} else {
-					$date = JFactory::getDate($this->currency->publish_down,$this->tzoffset);
-					$endDate = $date->toFormat($this->dateformat);
-				}
-				echo JHTML::_('calendar', $endDate, "publish_down", "publish_down", $this->dateformat,array('class'=>'inputbox', 'size'=>'25',  'maxlength'=>'19')); ?>
-			</td>
-		</tr> */ ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_SYMBOL','currency_symbol',$this->currency->currency_symbol,'class="inputbox"','',20,20); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_DECIMALS','currency_decimal_place',$this->currency->currency_decimal_place,'class="inputbox"','',20,20); ?>
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_CURRENCY_DECIMALSYMBOL','currency_decimal_symbol',$this->currency->currency_decimal_symbol,'class="inputbox"','',10,10); ?>

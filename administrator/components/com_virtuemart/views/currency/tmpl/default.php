@@ -101,25 +101,6 @@ AdminUIHelper::startAdminArea();
         <td align="left">
 			<?php echo $row->currency_numeric_code; ?>
 		</td>
-<?php /*		<td>
-			<?php
-			$publish_up ='';
-			if(strcmp($row->publish_up,'0000-00-00 00:00:00')){
-				$date = JFactory::getDate($row->publish_up, $this->tzoffset);
-				$publish_up = $date->toFormat($this->dateformat);
-			}
-			echo $publish_up = JText::_('COM_VIRTUEMART_NEVER');?>
-		</td>
-		<td>
-			<?php
-				if (!strcmp($row->publish_down,'0000-00-00 00:00:00')) {
-					$endDate = JText::_('COM_VIRTUEMART_NEVER');
-				} else {
-					$date = JFactory::getDate($row->publish_down,$this->tzoffset);
-					$endDate = $date->toFormat($this->dateformat);
-				}
-			echo $endDate
-		</td> */ ?>
 		<td align="center">
 			<?php echo $published; ?>
 		</td>
