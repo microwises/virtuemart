@@ -160,7 +160,7 @@ if (empty ( $this->product )) {
 				if (!VmConfig::get('use_as_catalog',0)) { ?>
 				<div class="addtocart-area">
 
-					<form method="post" class="product js-recalculate" action="index.php" id="addtocartproduct<?php echo $this->product->virtuemart_product_id ?>">
+					<form method="post" class="product js-recalculate" action="index.php" >
 					<?php // Product custom_fields
 					if (!empty($this->product->customfieldsCart)) {  ?>
 					<div class="product-fields">

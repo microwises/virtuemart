@@ -140,7 +140,7 @@ class convertECB {
 				JError::raiseWarning(1, 'Failed to retrieve the Currency Converter XML document.');
 				return $amountA;
 			}
-			JRequest::setVar('globalCurrencyConverter',$globalCurrencyConverter);
+			// JRequest::setVar('globalCurrencyConverter',$globalCurrencyConverter,'POST');
 		}
 		$valA = isset( $globalCurrencyConverter[$currA] ) ? $globalCurrencyConverter[$currA] : 1;
 		$valB = isset( $globalCurrencyConverter[$currB] ) ? $globalCurrencyConverter[$currB] : 1;

@@ -33,7 +33,7 @@ class mod_virtuemart_product {
             if (!VmConfig::get('use_as_catalog',0)) { ?>
                 <div class="addtocart-area">
                     
-		<form method="post" class="product" action="index.php" id="addtocartproduct<?php echo $product->virtuemart_product_id ?>">
+		<form method="post" class="product" action="index.php">
                     <?php 
                     // Product custom_fields
                     if (!empty($product->customfieldsCart)) {  ?>
