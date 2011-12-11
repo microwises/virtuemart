@@ -134,7 +134,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderBEPayment()
      */
     function plgVmOnShowOrderBEPayment( $virtuemart_order_id, $virtuemart_payment_id) {
-	if (!$this->selectedThisByMethodId($payment_method_id)) {
+	if (!$this->selectedThisByMethodId($virtuemart_payment_id)) {
 	    return null; // Another method was selected, do nothing
 	}
 
