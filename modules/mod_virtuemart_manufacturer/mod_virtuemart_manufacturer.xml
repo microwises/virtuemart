@@ -32,7 +32,7 @@
         </param>
         <param name="manufacturers_per_row" type="text" default=""
 			label="MOD_VIRTUEMART_MANUFACTURER_ROW"
-			description="MOD_VIRTUEMART_MANUFACTURER_ROW_DESC " />
+			description="MOD_VIRTUEMART_MANUFACTURER_ROW_DESC" />
         <param name="@spacer" type="spacer" default="" label="" description="" />
         <param name="headerText" type="textarea" cols="40" rows="3" default=""
 			label="MOD_VIRTUEMART_MANUFACTURER_HEADER_TEXT"
@@ -74,7 +74,7 @@
                 </field>
                 <field name="manufacturers_per_row" type="text" default=""
 			label="MOD_VIRTUEMART_MANUFACTURER_ROW"
-			description="MOD_VIRTUEMART_MANUFACTURER_ROW_DESC " />
+			description="MOD_VIRTUEMART_MANUFACTURER_ROW_DESC" />
                 <field name="@spacer" type="spacer" default="" label="" description="" />
                 <field name="headerText" type="textarea" cols="40" rows="3" default=""
 			label="MOD_VIRTUEMART_MANUFACTURER_HEADER_TEXT"

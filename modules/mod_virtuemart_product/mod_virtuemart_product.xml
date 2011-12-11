@@ -50,10 +50,10 @@
             <option value="0">No</option>
         </param>
         <param name="@spacer" type="spacer" default="" label="" description="" />
-        <param name="headerText" type="text" default=""
+        <param name="headerText" type="textarea" cols="40" rows="3" default=""
 			label="MOD_VIRTUEMART_PRODUCT_HEADER_TEXT"
 			description="MOD_VIRTUEMART_PRODUCT_HEADER_TEXT_DESC" />
-        <param name="footerText" type="text" default=""
+        <param name="footerText" type="textarea" cols="40" rows="3" default=""
 			label="MOD_VIRTUEMART_PRODUCT_FOOTER_TEXT"
 			description="MOD_VIRTUEMART_PRODUCT_FOOTER_TEXT_DESC" />
         <param name="filter_category" type="list" default="0"
@@ -62,7 +62,7 @@
             <option value="1">Yes</option>
             <option value="0">No</option>
         </param>
-        <param name="virtuemart_category_id" type="vmcategories"  value_field="category_name" label="MOD_VIRTUEMART_PRODUCT_CATEGORY_ID" description="MOD_VIRTUEMART_PRODUCT_CHOOSE." />
+        <param name="virtuemart_category_id" type="vmcategories"  value_field="category_name" label="MOD_VIRTUEMART_PRODUCT_CATEGORY_ID" description="MOD_VIRTUEMART_PRODUCT_CATEGORY_ID_DESC" />
 
     </params>
     <params group="advanced">
@@ -111,7 +111,7 @@
                 </field>
                 <field name="show_addtocart" type="list" default="1"
 			label="MOD_VIRTUEMART_PRODUCT_SHOW_ADDTOCART"
-			description="MOD_VIRTUEMART_PRODUCT_SHOW_ADDTOCART_DES">
+			description="MOD_VIRTUEMART_PRODUCT_SHOW_ADDTOCART_DESC">
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
                 </field>
@@ -128,7 +128,7 @@
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
                 </field>
-                <field name="virtuemart_category_id" type="vmcategories"  value_field="category_name" label="MOD_VIRTUEMART_PRODUCT_CATEGORY_ID" description="MOD_VIRTUEMART_PRODUCT_CHOOSE." />
+                <field name="virtuemart_category_id" type="vmcategories"  value_field="category_name" label="MOD_VIRTUEMART_PRODUCT_CATEGORY_ID" description="MOD_VIRTUEMART_PRODUCT_CATEGORY_ID_DESC" />
 
             </fieldset>
             <fieldset name="advanced">
