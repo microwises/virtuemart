@@ -70,7 +70,7 @@ class VirtuemartViewOrders extends JView {
 			$currency = CurrencyDisplay::getInstance('',$order['details']['BT']->virtuemart_vendor_id);
 
 			$this->assignRef('currency', $currency);
-			 
+
 			$_userFields = $userFieldsModel->getUserFields(
 					 'account'
 					, array('captcha' => true, 'delimiters' => true) // Ignore these types
@@ -162,16 +162,17 @@ class VirtuemartViewOrders extends JView {
 
 			/* Apply currency This must be done per order since it's vendor specific */
 			$_currencies = array(); // Save the currency data during this loop for performance reasons
-			foreach ($orderslist as $virtuemart_order_id => $order) {
+			if ($orderslist) {
+			    foreach ($orderslist as $virtuemart_order_id => $order) {
 
-				//This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
-				if (!array_key_exists('v'.$order->virtuemart_vendor_id, $_currencies)) {
-					$_currencies['v'.$order->virtuemart_vendor_id] = CurrencyDisplay::getInstance('',$order->virtuemart_vendor_id);
-				}
-				$order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->priceDisplay($order->order_total,'',false);
+				    //This is really interesting for multi-X, but I avoid to support it now already, lets stay it in the code
+				    if (!array_key_exists('v'.$order->virtuemart_vendor_id, $_currencies)) {
+					    $_currencies['v'.$order->virtuemart_vendor_id] = CurrencyDisplay::getInstance('',$order->virtuemart_vendor_id);
+				    }
+				    $order->order_total = $_currencies['v'.$order->virtuemart_vendor_id]->priceDisplay($order->order_total,'',false);
 
+			    }
 			}
-
 			/*
 			 * UpdateStatus removed from the toolbar; don't understand how this was intented to work but
 			 * the order ID's aren't properly passed. Might be readded later; the controller needs to handle

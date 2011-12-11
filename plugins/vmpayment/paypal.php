@@ -449,6 +449,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	if (!$this->selectedThisByMethodId($payment_method_id)) {
 	    return null; // Another method was selected, do nothing
 	}
+
 	$db = JFactory::getDBO();
 	$q = 'SELECT * FROM `' . $this->_tablename . '` '
 		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
