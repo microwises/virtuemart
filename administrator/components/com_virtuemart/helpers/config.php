@@ -943,8 +943,9 @@ class vmJsApi{
 		static $jDate;
 		if ($date) $displayDate = self::date($date,'INPUT');
 		else $displayDate = JText::_('COM_VIRTUEMART_NEVER');
-		$display= '<input id="'.$id.'_text" class="datepicker" type="date" name="'.$name.'" value="'.$displayDate.'" /><span class="vmicon vmicon-16-logout icon-nofloat js-date-reset"></span>';
-		$display.= '<input id="'.$id.'" type="hidden" name="'.$name.'" value="'.$date.'" />';
+		$display= '<input id="'.$id.'_text" class="datepicker" type="date" name="'.$name.'_text" value="'.$displayDate.'" />';
+		if ($resetBt) $display.='<span class="vmicon vmicon-16-logout icon-nofloat js-date-reset"></span>';
+		$display.= '<input class="datepicker-db" id="'.$id.'" type="hidden" name="'.$name.'" value="'.$date.'" />';
 
 		// If exist exit
 		if ($jDate) return $display;
@@ -957,7 +958,7 @@ class vmJsApi{
 					changeMonth: true,
 					changeYear: true,
 					dateFormat:"'.JText::_('COM_VIRTUEMART_DATE_FORMAT_INPUT_JS').'",
-					altField: $(this).next("input"),
+					altField: $(this).siblings(".datepicker-db"),
 					altFormat: "yy-mm-dd"
 				});
 			});
