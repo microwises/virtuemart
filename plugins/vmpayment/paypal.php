@@ -458,7 +458,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	   // JError::raiseWarning(500, $db->getErrorMsg());
 	    return '';
 	}
-	$html = '<table class="admintable">' . "\n";
+	$html = '<table class="adminlist">' . "\n";
 	$html .=$this->getHtmlHeaderBE();
 	$html .= $this->getHtmlRowBE('PAYPAL_PAYMENT_NAME', $paymentTable->payment_name);
 	$html .= $this->getHtmlRowBE('PAYPAL_PAYMENT_TOTAL_CURRENCY', $paymentTable->payment_order_total.' '.$paymentTable->payment_currency);

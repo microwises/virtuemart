@@ -695,7 +695,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$class = "class='key'";
 		$html = ' 	<thead>' . "\n"
 		. '		<tr>' . "\n"
-		. '			<td ' . $class . ' style="text-align: center;" colspan="2">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_' . $this->_psType . '_LBL') . '</td>' . "\n"
+		. '			<th ' . $class . ' style="text-align: center;" colspan="2">' . JText::_('COM_VIRTUEMART_ORDER_PRINT_' . $this->_psType . '_LBL') . '</th>' . "\n"
 		. '		</tr>' . "\n"
 		. '	</thead>' . "\n";
 

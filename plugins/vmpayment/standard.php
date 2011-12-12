@@ -158,7 +158,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	    return '';
 	}
 
-	$html = '<table class="admintable">' . "\n";
+	$html = '<table class="adminlist">' . "\n";
 	$html .=$this->getHtmlHeaderBE();
 	$html .= $this->getHtmlRowBE('STANDARD_PAYMENT_NAME', $paymentTable->payment_name);
 	$html .= $this->getHtmlRowBE('STANDARD_PAYMENT_TOTAL_CURRENCY', $paymentTable->payment_order_total.' '.$paymentTable->payment_currency);

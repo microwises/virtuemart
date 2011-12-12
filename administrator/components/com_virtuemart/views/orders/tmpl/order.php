@@ -128,10 +128,10 @@ $tt=$this;
 <table width="100%">
 	<tr>
 		<td width="50%" valign="top">
-		<table class="admintable" width="100%">
+		<table class="adminlist" width="100%">
 			<thead>
 				<tr>
-					<td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_BILL_TO_LBL') ?></td>
+					<th  style="text-align: center;" colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_BILL_TO_LBL') ?></th>
 				</tr>
 			</thead>
 
@@ -151,10 +151,10 @@ $tt=$this;
 		</table>
 		</td>
 		<td width="50%" valign="top">
-		<table class="admintable" width="100%">
+		<table class="adminlist" width="100%">
 			<thead>
 				<tr>
-					<td class="key" style="text-align: center;" colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIP_TO_LBL') ?></td>
+					<th   style="text-align: center;" colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIP_TO_LBL') ?></th>
 				</tr>
 			</thead>
 
@@ -359,7 +359,7 @@ $tt=$this;
 				<td   align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->priceDisplay($this->orderbt->order_total,'',false); ?></strong>
 				</td>
 			</tr>
-			
+
 		</table>
 		</td>
 	</tr>
