@@ -43,7 +43,7 @@ AdminUIHelper::startAdminArea();
 				<th width="30px" >
 					<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 				</th>
-				<?php if((Vmconfig::get('multix','none')!='none') && $this->perms->check( 'admin' )){ ?>
+				<?php if((Vmconfig::get('multix','none')!='none') && $this->showVendors){ ?>
 				<th>
 					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
 				</th>
@@ -81,7 +81,7 @@ AdminUIHelper::startAdminArea();
 					} ?>
 			    </td>
 				<td><?php echo $published; ?></td>
-				<?php if((Vmconfig::get('multix','none')!='none') && $this->perms->check( 'admin' )){ ?>
+				<?php if((Vmconfig::get('multix','none')!='none') && $this->showVendors){ ?>
 			    <td align="left">
             <?php echo $row->virtuemart_vendor_id; ?>
           	</td>

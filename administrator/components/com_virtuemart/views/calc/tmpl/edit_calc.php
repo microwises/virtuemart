@@ -62,9 +62,9 @@ vmJsApi::jDate();
 
 		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_VISIBLE_FOR_SHOPPER','calc_shopper_published',$this->calc->calc_shopper_published); ?>
 		<?php echo VmHTML::row('booleanlist','COM_VIRTUEMART_VISIBLE_FOR_VENDOR','calc_vendor_published',$this->calc->calc_vendor_published); ?>
-		<?php 
+		<?php
 			echo VmHTML::row('raw','COM_VIRTUEMART_START_DATE', vmJsApi::jDate($this->calc->publish_up, 'publish_up') ); ?>
-		<?php 
+		<?php
 			echo VmHTML::row('raw','COM_VIRTUEMART_END_DATE',  vmJsApi::jDate($this->calc->publish_down, 'publish_down') ); ?>
 		<?php
 		if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');

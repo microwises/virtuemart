@@ -54,19 +54,15 @@ class VirtuemartViewCoupon extends JView {
 		$layoutName = JRequest::getWord('layout', 'default');
 
 
-		if(Vmconfig::get('multix','none')!=='none'){
-				$vendorList= ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
-				$this->assignRef('vendorList', $vendorList);
-			}
+// 		if(Vmconfig::get('multix','none')!=='none'){
+// 				$vendorList= ShopFunctions::renderVendorList($coupon->virtuemart_vendor_id);
+// 				$this->assignRef('vendorList', $vendorList);
+// 		}
 
-			 $vendorModel = new VirtueMartModelVendor();
-
-	     if (Vmconfig::get('multix', 'none') !== 'none') {
-		$vendorList = ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
-		$this->assignRef('vendorList', $vendorList);
-	    }
+		 $vendorModel = new VirtueMartModelVendor();
 	    $vendorModel->setId(1);
 	    $vendor = $vendorModel->getVendor();
+
 	    $currencyModel = new VirtueMartModelCurrency();
 	    $currencyModel = $currencyModel->getCurrency($vendor->vendor_currency);
 	    $this->assignRef('vendor_currency', $currencyModel->currency_symbol);

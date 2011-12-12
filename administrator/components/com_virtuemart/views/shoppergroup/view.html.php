@@ -37,7 +37,7 @@ class VirtuemartViewShopperGroup extends JView {
 		$this->loadHelper('shopFunctions');
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 
-		//		$this->assignRef('perms', Permissions::getInstance());
+// 		$this->assignRef('perms', Permissions::getInstance());
 
 		$model = $this->getModel();
 
@@ -64,7 +64,7 @@ class VirtuemartViewShopperGroup extends JView {
 			$this->assignRef('shoppergroups',	$shoppergroups);
 
 			$this->loadHelper('permissions');
-			$this->assignRef('showVendors',Permissions::getInstance()->check('admin,storeadmin'));
+			$this->assignRef('showVendors',Permissions::getInstance()->check('admin'));
 
 			ShopFunctions::addStandardDefaultViewCommands();
 			$lists = ShopFunctions::addStandardDefaultViewLists($model);

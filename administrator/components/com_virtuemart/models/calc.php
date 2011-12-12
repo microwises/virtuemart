@@ -160,7 +160,7 @@ class VirtueMartModelCalc extends VmModel {
 
 			JPluginHelper::importPlugin('vmcalculation');
 			$dispatcher = JDispatcher::getInstance();
-			$error = $dispatcher->trigger('GetPluginInternalDataCalc',$data);
+			$error = $dispatcher->trigger('GetPluginInternalDataCalc',array(&$data));
 		}
 
 		return $this->_data;
