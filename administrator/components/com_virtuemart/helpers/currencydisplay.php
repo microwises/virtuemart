@@ -93,17 +93,17 @@ class CurrencyDisplay {
 			if(empty($currencyId)){
 
 				if(self::$_instance->_app->isSite()){
-					$this->_currency_id = self::$_instance->_app->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',JRequest::getInt('virtuemart_currency_id', 0));
+					self::$_instance->_currency_id = self::$_instance->_app->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',JRequest::getInt('virtuemart_currency_id', 0));
 				}
 				if(empty($this->_currency_id)){
-					$this->_currency_id = self::$_instance->_vendorCurrency;
+					self::$_instance->_currency_id = self::$_instance->_vendorCurrency;
 				}
 
 			} else {
-				$this->_currency_id = $currencyId;
+				self::$_instance->_currency_id = $currencyId;
 			}
 
-			$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.(int)$this->_currency_id.'"';
+			$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.(int)self::$_instance->_currency_id.'"';
 			self::$_instance->_db->setQuery($q);
 			$style = self::$_instance->_db->loadObject();
 
@@ -112,12 +112,12 @@ class CurrencyDisplay {
 			} else {
 				$uri = JFactory::getURI();
 
-				if(empty($currencyId)){
+				if(empty(self::$_instance->_currency_id)){
 					$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=user&task=editshop';
 					JError::raiseWarning('1', JText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_CURRENCY_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
 				} else{
 					if(JRequest::getWord('view')!='currency'){
-						$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.$currencyId;
+						$link = $uri->root().'administrator/index.php?option=com_virtuemart&view=currency&task=edit&cid[]='.self::$_instance->_currency_id;
 						JError::raiseWarning('1', JText::sprintf('COM_VIRTUEMART_CONF_WARN_NO_FORMAT_DEFINED','<a href="'.$link.'">'.$link.'</a>'));
 					}
 				}
