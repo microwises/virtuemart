@@ -63,14 +63,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	return $this->createTableSQL('Shipment Weight Countries Table');
     }
-    /**
-     * Create the table for this plugin if it does not yet exist.
-     * @author Valérie Isaksen
-     */
-    protected function getVmPluginCreateTableSQL() {
-
-	return $this->createTableSQL('Shipment Weight Countries Table');
-    }
+   
 
     function getTableSQLFields() {
 	$SQLfields = array(
@@ -171,7 +164,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	$taxDisplay = is_array($tax) ? $tax['calc_value'] . ' ' . $tax['calc_value_mathop'] : $shipinfo->tax_id;
 	$taxDisplay = ($taxDisplay == -1 ) ? JText::_('COM_VIRTUEMART_PRODUCT_TAX_NONE') : $taxDisplay;
 
-	$html = '<table class="admintable">' . "\n";
+	$html = '<table class="adminlist">' . "\n";
 	$html .=$this->getHtmlHeaderBE();
 	$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_SHIPPING_NAME', $shipinfo->shipment_name);
 	$html .= $this->getHtmlRowBE('WEIGHT_COUNTRIES_WEIGHT', $shipinfo->order_weight . ' ' . ShopFunctions::renderWeightUnit($shipinfo->shipment_weight_unit));
