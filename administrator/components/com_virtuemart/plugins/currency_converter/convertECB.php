@@ -42,7 +42,31 @@ class convertECB {
 	 */
 	function convert( $amountA, $currA='', $currB='' ) {
 
-		if(!$globalCurrencyConverter = convertECB::getSetExchangeRates($this->document_address)){
+		// cache subfolder(group) 'convertECB', cache method: callback
+		$cache= & JFactory::getCache('convertECB','callback');
+		 
+		// save configured lifetime
+		@$lifetime=$cache->lifetime;
+		 
+		$cache->setLifeTime(86400/4); // check twice per day
+		
+		// save cache conf
+		
+		$conf =& JFactory::getConfig();
+		 
+		// check if cache is enabled in configuration
+		 
+		$cacheactive = $conf->getValue('config.caching');
+		
+		$cache->setCaching(1); //enable caching
+		 
+		$globalCurrencyConverter = $cache->call( array( 'convertECB', 'getSetExchangeRates' ),$this->document_address );
+		 
+		// revert configuration
+		 
+		$cache->setCaching($cacheactive);
+		
+		if(!$globalCurrencyConverter ){
 			return $amountA;
 		} else {
 			$valA = isset( $globalCurrencyConverter[$currA] ) ? $globalCurrencyConverter[$currA] : 1;
@@ -91,8 +115,8 @@ class convertECB {
 				}
 				else {
 					$curr_filename = $archivefile_name;
-					$this->last_updated = $file_datestamp;
-					$this->archive = false;
+					$last_updated = $file_datestamp;
+					$archive = false;
 				}
 			}
 			else {
@@ -100,7 +124,7 @@ class convertECB {
 			}
 
 			if( !is_writable( $store_path )) {
-				$this->archive = false;
+				$archive = false;
 				JError::raiseWarning(1, "The file $archivefile_name can't be created. The directory $store_path is not writable" );
 			}
 			//			JError::raiseNotice(1, "The file $archivefile_name should be in the directory $store_path " );
@@ -109,14 +133,14 @@ class convertECB {
 				if(!class_exists('VmConnector')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
 				//				JError::raiseNotice(1, "Updating currency " );
 				$contents = VmConnector::handleCommunication( $curr_filename );
-				$this->last_updated = date('Ymd');
+				$last_updated = date('Ymd');
 			}
 			else {
 				$contents = @file_get_contents( $curr_filename );
 			}
 			if( $contents ) {
 				// if archivefile does not exist
-				if( $this->archive ) {
+				if( $archive ) {
 					// now write new file
 					file_put_contents( $archivefile_name, $contents );
 				}
