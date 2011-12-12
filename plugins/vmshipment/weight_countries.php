@@ -90,19 +90,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @author Valérie Isaksen
      * @author Max Milbers
      */
-    public function plgVmOnShowOrderFEShipment(  $virtuemart_order_id) {
-
-	$db = JFactory::getDBO();
-	$q = 'SELECT * FROM `' . $this->_tablename . '` '
-		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
-	$db->setQuery($q);
-	if (!($pluginInfo = $db->loadObject())) {
-	    vmWarn(500, $q . " " . $db->getErrorMsg());
-	    return '';
-	}
-	$idName = $this->_idName;
-
-	return $pluginInfo->$idName;
+    public function plgVmOnShowOrderFEShipment(  $virtuemart_order_id, $virtuemart_shipmentmethod_id, &$shipment_name) {
+	  $this->onShowOrderFE($virtuemart_order_id, $virtuemart_shipmentmethod_id, $shipment_name);
     }
 
     /**

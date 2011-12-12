@@ -191,10 +191,33 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Max Milbers
 	 * @author Valerie Isaksen
 	 */
-	protected function onShowOrderFE(  $virtuemart_order_id) {
-		return $this->getOrderPluginNamebyOrderId($virtuemart_order_id);
+	protected function onShowOrderFE(  $virtuemart_order_id,$virtuemart_method_id , &$method_info) {
+	    if (!($this->selectedThisByMethodId(  $virtuemart_method_id))) {
+	    return null;
+	    }
+	  $method_info = $this->getOrderMethodNamebyOrderId($virtuemart_order_id );
 	}
+/**
+	 *
+	 * @author Valerie Isaksen
+	 * @author Max Milbers
+	 * @param int $virtuemart_order_id
+	 * @return string pluginName from the plugin table
+	 */
+	private function getOrderMethodNamebyOrderId($virtuemart_order_id) {
 
+		$db = JFactory::getDBO();
+		$q = 'SELECT * FROM `' . $this->_tablename . '` '
+		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
+		$db->setQuery($q);
+		if (!($pluginInfo = $db->loadObject())) {
+			vmWarn(500, $q . " " . $db->getErrorMsg());
+			return null;
+		}
+		$idName = $this->_psType.'_name';
+
+		return $pluginInfo->$idName;
+	}
 	/**
 	 *
 	 * @author Valerie Isaksen
@@ -208,14 +231,12 @@ abstract class vmPSPlugin extends vmPlugin {
 		$q = 'SELECT * FROM `' . $this->_tablename . '` '
 		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
 		$db->setQuery($q);
-		if (!($order_plugin = $db->loadObject())) {
+		if (!($pluginInfo = $db->loadObject())) {
 			vmWarn(500, $q . " " . $db->getErrorMsg());
 			return null;
 		}
 		$idName = $this->_idName;
-		if (!($this->selectedThisByMethodId($pluginInfo->$idName,$this->_name))) {
-			return null;
-		}
+
 		return $pluginInfo->$idName;
 	}
 

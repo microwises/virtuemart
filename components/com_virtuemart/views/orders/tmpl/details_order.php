@@ -42,12 +42,12 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPMENT_LBL') ?></td>
 		<td align="left"><?php
-		echo $this->shipment;
+		echo $this->shipment_name;
 		?></td>
 	</tr>
 	<tr>
 		<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL') ?></td>
-		<td align="left"><?php echo $this->payment; ?>
+		<td align="left"><?php echo $this->payment_name; ?>
 		</td>
 	</tr>
 

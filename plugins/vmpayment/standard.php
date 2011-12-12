@@ -38,7 +38,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$this->tableFields = array_keys($this->getTableSQLFields());
 	$varsToPush = array('payment_logos' => array('', 'char'),
 	    'countries' => array(0, 'int'),
-	    'payment_currency'  => array(0, 'char'),
+	    'payment_currency' => array(0, 'char'),
 	    'min_amount' => array(0, 'int'),
 	    'max_amount' => array(0, 'int'),
 	    'cost_per_transaction' => array(0, 'int'),
@@ -82,12 +82,12 @@ class plgVmPaymentStandard extends vmPSPlugin {
      */
     function plgVmConfirmedOrder($cart, $order) {
 
-	if (!($method = $this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) {
-	    return null; // Another method was selected, do nothing
-	}
-	if (!$this->selectedThisElement($method->payment_element)) {
-	    return false;
-	}
+	  if (!($method = $this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) {
+	  return null; // Another method was selected, do nothing
+	  }
+	  if (!$this->selectedThisElement($method->payment_element)) {
+	  return false;
+	  }
 // 		$params = new JParameter($payment->payment_params);
 	$lang = JFactory::getLanguage();
 	$filename = 'com_virtuemart';
@@ -133,7 +133,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      * Display stored payment data for an order
      * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderBEPayment()
      */
-    function plgVmOnShowOrderBEPayment( $virtuemart_order_id, $virtuemart_payment_id) {
+    function plgVmOnShowOrderBEPayment($virtuemart_order_id, $virtuemart_payment_id) {
 	if (!$this->selectedThisByMethodId($virtuemart_payment_id)) {
 	    return null; // Another method was selected, do nothing
 	}
@@ -163,7 +163,6 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	}
 	return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
     }
-
 
     /**
      * Check if the payment conditions are fulfilled for this payment method
@@ -222,7 +221,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      *
      */
     function plgVmOnStoreInstallPaymentPluginTable($jplugin_id) {
-	return $this->onStoreInstallPluginTable(  $jplugin_id);
+	return $this->onStoreInstallPluginTable($jplugin_id);
     }
 
     /**
@@ -295,8 +294,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
      * @author Max Milbers
      * @author Valerie Isaksen
      */
-    protected function plgVmOnShowOrderFEPayment($virtuemart_order_id) {
-	return $this->onShowOrderFE($virtuemart_order_id);
+    protected function plgVmOnShowOrderFEPayment($virtuemart_order_id,   $virtuemart_paymentmethod_id, &$payment_name) {
+	  $this->onShowOrderFE($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
     }
 
     /**
@@ -328,10 +327,9 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	return $this->declarePluginParams('payment', $name, $id, $data);
     }
 
-    function plgVmSetOnTablePluginParamsPayment($name, $id, &$table){
-    	return $this->setOnTablePluginParams($name, $id, $table);
+    function plgVmSetOnTablePluginParamsPayment($name, $id, &$table) {
+	return $this->setOnTablePluginParams($name, $id, $table);
     }
-
 
     //Notice: We only need to add the events, which should work for the specific plugin, when an event is doing nothing, it should not be added
 
