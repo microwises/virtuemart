@@ -126,8 +126,8 @@ if (empty ( $this->product )) {
 
 				<?php
 				if($this->showRating){
-					$rating = empty($this->rating)? JText::_('COM_VIRTUEMART_UNRATED'):$this->rating->rating;
-					echo JText::_('COM_VIRTUEMART_RATING') . round($rating, 2);
+					$rating = empty($this->rating)? JText::_('COM_VIRTUEMART_UNRATED'):JText::_('COM_VIRTUEMART_RATING') . round($this->rating->rating, 2) ;
+					echo JText::_('COM_VIRTUEMART_RATING') . $rating;
 				}
 
 				// Product Price
