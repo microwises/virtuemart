@@ -41,27 +41,28 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		self::$_this = $this;
 	}
 
-	function plgVmOnOrder($product) {
+	// function plgVmOnOrder($product) {
 
-		$dbValues['virtuemart_product_id'] = $product->virtuemart_product_id;
-		$dbValues['textinput'] = $this->_virtuemart_paymentmethod_id;
-		$this->writeCustomData($dbValues, '#__virtuemart_product_custom_' . $this->_name);
-	}
+		// $dbValues['virtuemart_product_id'] = $product->virtuemart_product_id;
+		// $dbValues['textinput'] = $this->_virtuemart_paymentmethod_id;
+		// $this->writeCustomData($dbValues, '#__virtuemart_product_custom_' . $this->_name);
+	// }
 
 
 
 	// get product param for this plugin on edit
 	function plgVmOnProductEdit($field, $product, &$row,&$retValue) {
 		if ($field->custom_element != $this->_name) return '';
-
+		// $html .='<input type="text" value="'.$field->custom_size.'" size="10" name="custom_param['.$row.'][custom_size]">';
 		$this->parseCustomParams($field);
-// 		$data = $this->getVmPluginMethod($field->virtuemart_custom_id);
-// 		VmTable::bindParameterable($field,$this->_xParams,$this->_varsToPushParam);
-
-// 		$html  ='<input type="text" value="'.$field->custom_title.'" size="10" name="custom_param['.$row.'][custom_title]"> ';
-		$html ='<input type="text" value="'.$field->custom_size.'" size="10" name="custom_param['.$row.'][custom_size]">';
-		$html .=JTEXT::_('VMCUSTOM_TEXTINPUT_NO_CHANGES_BE');
-// 		$field->display = $html;
+		
+		$html ='
+			<fieldset>
+				<legend>'. JText::_('VMCUSTOM_TEXTINPUT') .'</legend>
+				<table class="admintable">
+					'.VmHTML::row('input','VMCUSTOM_TEXTINPUT_SIZE','custom_param['.$row.'][custom_size]',$field->custom_size).'
+				</table>
+			</fieldset>';
 		$retValue .= $html;
 		$row++;
 		return true ;

@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			<?php
 			$i=0;
-			$tables= array('categories'=>'','products'=>'','fields'=>'','childs'=>'',);
+			$tables= array('categories'=>'','products'=>'','fields'=>'','customPlugins'=>'',);
 			if (isset($this->product->customfields)) {
 				foreach ($this->product->customfields as $customRow) {
 					if ($customRow->is_cart_attribute) $cartIcone=  'default';
@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 						$tables['categories'] .=  '
 							<div class="vm_thumb_image">
 								<span>'.$customRow->display.'</span>'.
-								VirtuemartViewProduct::setEditCustomHidden($customRow, $i)
+								VirtueMartModelCustomfields::setEditCustomHidden($customRow, $i)
 							  .'<div class="vmicon vmicon-16-remove"></div>
 							</div>';
 
@@ -44,28 +44,28 @@ defined('_JEXEC') or die('Restricted access');
 						$tables['products'] .=  '
 							<div class="vm_thumb_image">
 								<span>'.$customRow->display.'</span>'.
-								VirtuemartViewProduct::setEditCustomHidden($customRow, $i)
+								VirtueMartModelCustomfields::setEditCustomHidden($customRow, $i)
 							  .'<div class="vmicon vmicon-16-remove"></div>
 							</div>';
 
 					} elseif ($customRow->field_type == 'G') {
 						// no display (group of) child , handled by plugin;
-					} elseif ($customRow->field_type == 'C' or $customRow->field_type == 'E'){
-						$tables['childs'] .= '
-							<div class="removable">
-								<div>'.JText::_($customRow->custom_title).'</div>
+					} elseif ($customRow->field_type == 'E'){
+						$tables['customPlugins'] .= '
+							<fieldset class="removable">
+								<legend>'.JText::_($customRow->custom_title).'</legend>
 								<span>'.$customRow->display.$customRow->custom_tip.'</span>'.
-								VirtuemartViewProduct::setEditCustomHidden($customRow, $i)
+								VirtueMartModelCustomfields::setEditCustomHidden($customRow, $i)
 							  .'<span class="vmicon icon-nofloat vmicon-16-'.$cartIcone.'"></span>
 								<span class="vmicon vmicon-16-remove"></span>
-							</div>';
+							</fieldset>';
 					} else {
 						$tables['fields'] .= '<tr class="removable">
 							<td>'.JText::_($customRow->custom_title).'</td>
 							<td>'.$customRow->custom_tip.'</td>
 							<td>'.$customRow->display.'</td>
 							<td>'.JText::_($this->fieldTypes[$customRow->field_type]).
-							VirtuemartViewProduct::setEditCustomHidden($customRow, $i)
+							VirtueMartModelCustomfields::setEditCustomHidden($customRow, $i)
 							.'</td>
 							<td>
 							<span class="vmicon vmicon-16-'.$cartIcone.'"></span>
@@ -128,7 +128,7 @@ defined('_JEXEC') or die('Restricted access');
 			</fieldset>
 			<fieldset style="background-color:#F9F9F9;">
 				<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM_EXTENSION'); ?></legend>
-				<div id="custom_childs"><?php echo  $tables['childs']; ?></div>
+				<div id="custom_customPlugins"><?php echo  $tables['customPlugins']; ?></div>
 			</fieldset>
 		</td>
 
@@ -184,7 +184,7 @@ defined('_JEXEC') or die('Restricted access');
 			jQuery("#custom_categories").append(ui.item.label);
 			nextCustom++;
 			jQuery(this).autocomplete( "option" , 'source' , 'index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
-			jQuery('input#relatedproductsSearch').autocomplete( "option" , 'source' , 'index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts&row='+nextCustom )
+			jQuery('input#relatedcategoriesSearch').autocomplete( "option" , 'source' , 'index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedproducts&row='+nextCustom )
 		},
 		minLength:1,
 		html: true

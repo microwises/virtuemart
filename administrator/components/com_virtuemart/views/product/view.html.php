@@ -393,15 +393,6 @@ class VirtuemartViewProduct extends JView {
 		}
 	}
 
-	function setEditCustomHidden($customfield,$i) {
-		$html = '
-			<input type="hidden" value="'.$customfield->field_type .'" name="field['.$i .'][field_type]" />
-			<input type="hidden" value="'.$customfield->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
-			<input type="hidden" value="'.$customfield->admin_only.'" checked="checked" name="admin_only" />';
-		return $html;
-
-	}
-
 }
 
 //pure php no closing tag

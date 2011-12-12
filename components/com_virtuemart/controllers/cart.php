@@ -147,7 +147,7 @@ class VirtueMartControllerCart extends JController {
 	    } else {
 		$this->json->msg = '<p>' . $cart->getError() . '</p>';
 		$this->json->msg .= '<a class="' . $continue_link . '" href="#" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
-		$this->json->stat = '1';
+		$this->json->stat = '2';
 	    }
 	} else {
 	    $this->json->msg = '<a href="' . JRoute::_('index.php?option=com_virtuemart') . '" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';

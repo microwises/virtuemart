@@ -48,7 +48,7 @@ class convertECB {
 		// save configured lifetime
 		@$lifetime=$cache->lifetime;
 		 
-		$cache->setLifeTime(86400/4); // check twice per day
+		$cache->setLifeTime(86400/4); // check 4 time per day
 		
 		// save cache conf
 		
@@ -59,9 +59,9 @@ class convertECB {
 		$cacheactive = $conf->getValue('config.caching');
 		
 		$cache->setCaching(1); //enable caching
-		 
+		
 		$globalCurrencyConverter = $cache->call( array( 'convertECB', 'getSetExchangeRates' ),$this->document_address );
-		 
+		
 		// revert configuration
 		 
 		$cache->setCaching($cacheactive);
@@ -80,6 +80,7 @@ class convertECB {
 
 	function getSetExchangeRates($ecb_filename){
 
+			$archive = true;
 			setlocale(LC_TIME, "en-GB");
 			$now = time() + 3600; // Time in ECB (Germany) is GMT + 1 hour (3600 seconds)
 			if (date("I")) {

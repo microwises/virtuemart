@@ -528,7 +528,8 @@ class VirtueMartModelProduct extends VmModel {
 
 			$app = JFactory::getApplication() ;
 			// 		if($app->isSite() && !VmConfig::get('use_as_catalog',0) && !VmConfig::get('show_out_of_stock_products',0) ){
-			if($app->isSite() && !VmConfig::get('use_as_catalog',0) && !VmConfig::get('show_out_of_stock_products',0) && $child->product_in_stock<=0){
+			if($app->isSite() && !VmConfig::get('show_out_of_stock_products',0) && $child->product_in_stock<=0){
+				vmdebug('STOCK 0',VmConfig::get('use_as_catalog',0), VmConfig::get('show_out_of_stock_products',0) , $child->product_in_stock);
 				return false;
 			}
 			$_products[$productKey] = $child;
