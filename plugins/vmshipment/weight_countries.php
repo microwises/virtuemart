@@ -116,8 +116,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @author Valerie Isaksen
      */
     function plgVmConfirmedOrder(   VirtueMartCart $cart, $order) {
-
-	if (!($method = $this->getVmPluginMethod($cart->virtuemart_shipmentmethod_id))) {
+	if (!($method = $this->getVmPluginMethod($order['details']['BT']->virtuemart_shipmentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
 	if (!$this->selectedThisElement($method->shipment_element)) {
@@ -125,7 +124,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	}
 
 	$values['order_number'] = $order['details']['BT']->order_number;
-	$values['shipment_id'] = $cart->virtuemart_shipmentmethod_id;
+	$values['shipment_id'] = $order['details']['BT']->virtuemart_shipmentmethod_id;
 	$values['shipment_name'] = $this->renderPluginName($method);
 	$values['order_weight'] = $this->getOrderWeight($cart, $method->weight_unit);
 	$values['shipment_weight_unit'] = $method->weight_unit;
