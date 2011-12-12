@@ -60,9 +60,9 @@ $last = count($products)-1;
 	</li>
 <?php
 	if ($col == $products_per_row && $products_per_row && $last ) {
-		echo "
+		echo '
 		</ul>
-		<ul>";
+		<ul  class="vmproduct'.$params->get('moduleclass_sfx')  .'">';
 		$col= 1 ;
 	} else {
 		$col++;

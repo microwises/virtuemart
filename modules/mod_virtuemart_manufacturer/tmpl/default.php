@@ -62,7 +62,7 @@ foreach ($manufacturers as $manufacturer) {
 	</li>
 	<?php
 	if ($col == $manufacturers_per_row && $manufacturers_per_row && $last) {
-		echo "</ul><ul>";
+		echo '</ul><ul class="vmmanufacturer'.$params->get('moduleclass_sfx').'">';
 		$col= 1 ;
 	} else {
 		$col++;
