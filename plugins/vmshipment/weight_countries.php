@@ -97,7 +97,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
 	$db->setQuery($q);
 	if (!($pluginInfo = $db->loadObject())) {
-	    JError::raiseWarning(500, $q . " " . $db->getErrorMsg());
+	    vmWarn(500, $q . " " . $db->getErrorMsg());
 	    return '';
 	}
 	$idName = $this->_idName;
@@ -164,7 +164,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
 	$db->setQuery($q);
 	if (!($shipinfo = $db->loadObject())) {
-	    JError::raiseWarning(500, $q . " " . $db->getErrorMsg());
+	   vmWarn(500, $q . " " . $db->getErrorMsg());
 	    return '';
 	}
 
