@@ -15,6 +15,8 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.model');
 
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+
 // hack to prevent defining these twice in 1.6 installation
 if (!defined('_VM_SCRIPT_INCLUDED')) {
 	define('_VM_SCRIPT_INCLUDED', true);

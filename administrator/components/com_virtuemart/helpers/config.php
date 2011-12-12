@@ -30,6 +30,7 @@ if(version_compare(JVERSION,'1.7.0','ge')) {
 	define ('JPATH_VM_LIBRARIES', JPATH_LIBRARIES);
 }
 
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 
 require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 
@@ -980,8 +981,8 @@ class vmJsApi{
 		$jDate = true;
 		return $display;
 	}
-	
-	
+
+
 	/*
 	 * Convert formated date;
 	 * @ $date the date to convert

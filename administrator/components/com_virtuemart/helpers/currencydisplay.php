@@ -86,6 +86,7 @@ class CurrencyDisplay {
 	 */
 	public function getInstance($currencyId=0,$vendorId=0){
 
+// 		vmdebug('hmmmmm getInstance given $currencyId '.$currencyId,self::$_instance->_currency_id);
 		if(empty(self::$_instance) || empty(self::$_instance->_currency_id) || ($currencyId!=self::$_instance->_currency_id && !empty($currencyId)) ){
 
 			self::$_instance = new CurrencyDisplay($vendorId);
@@ -95,7 +96,7 @@ class CurrencyDisplay {
 				if(self::$_instance->_app->isSite()){
 					self::$_instance->_currency_id = self::$_instance->_app->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',JRequest::getInt('virtuemart_currency_id', 0));
 				}
-				if(empty($this->_currency_id)){
+				if(empty(self::$_instance->_currency_id)){
 					self::$_instance->_currency_id = self::$_instance->_vendorCurrency;
 				}
 
@@ -107,7 +108,7 @@ class CurrencyDisplay {
 			$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.(int)self::$_instance->_currency_id.'"';
 			self::$_instance->_db->setQuery($q);
 			$style = self::$_instance->_db->loadObject();
-			vmdebug('hmmmmm getInstance',self::$_instance->_currency_id);
+
 			if(!empty($style)){
 				self::$_instance->setCurrencyDisplayToStyleStr($style);
 			} else {
