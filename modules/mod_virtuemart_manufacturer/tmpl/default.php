@@ -39,6 +39,7 @@ if ($display_style =="div") { ?>
 
 <?php
 } else {
+	$last = count($manufacturers)-1;
 ?>
 
 <ul class="vmmanufacturer<?php echo $params->get('moduleclass_sfx'); ?>">
@@ -60,12 +61,13 @@ foreach ($manufacturers as $manufacturer) {
 		</a>
 	</li>
 	<?php
-	if ($col == $manufacturers_per_row) {
+	if ($col == $manufacturers_per_row && $manufacturers_per_row && $last) {
 		echo "</ul><ul>";
 		$col= 1 ;
 	} else {
 		$col++;
 	}
+	$last--;
 } ?>
 </ul>
 
