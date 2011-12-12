@@ -63,7 +63,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	return $this->createTableSQL('Shipment Weight Countries Table');
     }
-   
+
 
     function getTableSQLFields() {
 	$SQLfields = array(
@@ -268,7 +268,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      *
      */
     function plgVmOnStoreInstallShipmentPluginTable(  $jplugin_id) {
-	return $this->onStoreInstallPluginTable('shipment', $jplugin_id);
+	return $this->onStoreInstallPluginTable( $jplugin_id);
     }
 
     /**
