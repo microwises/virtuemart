@@ -55,7 +55,14 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	//$this->createPluginTable($this->_tablename);
 	self::$_this = $this;
     }
+  /**
+     * Create the table for this plugin if it does not yet exist.
+     * @author Valérie Isaksen
+     */
+    protected function getVmPluginCreateTableSQL() {
 
+	return $this->createTableSQL('Shipment Weight Countries Table');
+    }
     /**
      * Create the table for this plugin if it does not yet exist.
      * @author Valérie Isaksen
