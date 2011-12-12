@@ -69,10 +69,10 @@ class convertECB {
 		if(!$globalCurrencyConverter ){
 			return $amountA;
 		} else {
-			$valA = isset( $globalCurrencyConverter[$currA] ) ? $globalCurrencyConverter[$currA] : 1;
-			$valB = isset( $globalCurrencyConverter[$currB] ) ? $globalCurrencyConverter[$currB] : 1;
+			$valA = isset( $globalCurrencyConverter[$currA] ) ? $globalCurrencyConverter[$currA] : 1.0;
+			$valB = isset( $globalCurrencyConverter[$currB] ) ? $globalCurrencyConverter[$currB] : 1.0;
 
-			$val = $amountA * $valB / $valA;
+			$val = (float)$amountA * (float)$valB / (float)$valA;
 
 			return $val;
 		}

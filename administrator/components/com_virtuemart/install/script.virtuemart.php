@@ -16,10 +16,12 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model');
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+defined('JPATH_VM_ADMINISTRATOR') or define('JPATH_VM_ADMINISTRATOR', JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart');
 
 // hack to prevent defining these twice in 1.6 installation
 if (!defined('_VM_SCRIPT_INCLUDED')) {
 	define('_VM_SCRIPT_INCLUDED', true);
+
 
 	/**
 	 * VirtueMart custom installer class
@@ -34,6 +36,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		public function loadVm() {
 			$this->path = JInstaller::getInstance()->getPath('extension_administrator');
 
+			if(empty($this->path)){
+				$this->path = JPATH_VM_ADMINISTRATOR;
+			}
 			require_once($this->path.DS.'helpers'.DS.'config.php');
 			JTable::addIncludePath($this->path.DS.'tables');
 			JModel::addIncludePath($this->path.DS.'models');
@@ -192,7 +197,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$lang = $params->get('site', 'en-GB');//use default joomla
 			$lang = strtolower(strtr($lang,'-','_'));
 
-			$model = JModel::getInstance('updatesmigration', 'VirtueMartModel');
+			if(!class_exists('VirtueMartModelUpdatesMigration')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'updatesmigration.php');
+			$model = new VirtueMartModelUpdatesMigration(); //JModel::getInstance('updatesmigration', 'VirtueMartModel');
 			$model->execSQLFile($this->path.DS.'install'.DS.'install.sql',$lang);
 			// 			$this->displayFinished(true);
 			//return false;
