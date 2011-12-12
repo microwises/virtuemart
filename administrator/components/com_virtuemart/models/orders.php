@@ -725,8 +725,8 @@ class VirtueMartModelOrders extends VmModel {
 			// we can have more then one product in case of pack
 			// in case of child, ID must be the child ID
 			// TO DO use $prod->amount change for packs(eg. 1 computer and 2 HDD)
-			if (is_array($product))	foreach ($product as $prod ) $productModel->updateStockInDB($prod, $amount, $signInStoc, $signOrderedStock);
-			else $productModel->updateStockInDB($product, $amount, $signInStoc, $signOrderedStock);
+			if (is_array($product))	foreach ($product as $prod ) $productModel->updateStockInDB($prod, $quantity,$product_in_stock,$product_ordered);
+			else $productModel->updateStockInDB($product, $quantity,$product_in_stock,$product_ordered);
 		}
 		$productModel->updateStockInDB ($product, $quantity,$product_in_stock,$product_ordered);
 

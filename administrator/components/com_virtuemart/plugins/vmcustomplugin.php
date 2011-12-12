@@ -141,6 +141,7 @@ abstract class vmCustomPlugin extends VmPlugin {
     // 	 public function plgVmCalculatePluginVariant( $product, $field,$selected,$row){
     public function getCustomVariant($product, &$productCustomsPrice,$selected,$row){
 		if ($productCustomsPrice->custom_element !==$this->_name) return ;
+
 		vmPlugin::declarePluginParams('vmcustom',$productCustomsPrice->custom_element,$productCustomsPrice->custom_jplugin_id,$productCustomsPrice);
 // 		VmTable::bindParameterable($productCustomsPrice,'custom_params',$this->_varsToPushParam);
 
@@ -156,7 +157,6 @@ abstract class vmCustomPlugin extends VmPlugin {
     /**
      * convert param for render and
      * display The plugin in cart
-     * @ $view is "Module" for see in module, "" for see in cart
      */
     public function GetPluginInCart($product){
     	//$plgName = $productCustom->value;

@@ -191,13 +191,13 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected,$row){
 		$customVariant = $this->getCustomVariant($product, $productCustomsPrice,$selected,$row);
-		if (!empty($field->custom_price)) {
+		if (!empty($productCustomsPrice->custom_price)) {
 			//TODO adding % and more We should use here $this->interpreteMathOp
 			// eg. to calculate the price * comment text length
-			if ($field->custom_price_by_letter ==1) {
+			if ($productCustomsPrice->custom_price_by_letter ==1) {
 				if ($textinput = $customVariant['comment']) {
 
-					$field->custom_price = strlen ($textinput) *  $field->custom_price ;
+					$productCustomsPrice->custom_price = strlen ($textinput) *  $productCustomsPrice->custom_price ;
 				}
 			}
 // 			return $field->custom_price;

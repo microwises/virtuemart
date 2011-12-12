@@ -1733,7 +1733,7 @@ private function _updateStock($_id, $_amount, $_sign){
 }
 
 
-private function updateStockInDB($product, $amount, $signInStoc, $signOrderedStock){
+public function updateStockInDB($product, $amount, $signInStoc, $signOrderedStock){
 // 	vmdebug( 'stockupdate in DB', $product->virtuemart_product_id,$amount, $signInStoc, $signOrderedStock );
 	$validFields = array('=','+','-');
 	if(!in_array($signInStoc,$validFields)){
