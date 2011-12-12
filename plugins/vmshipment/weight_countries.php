@@ -181,8 +181,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	if ($method->free_shipment && $cart_prices['salesPrice'] >= $method->free_shipment) {
 	    return 0;
 	} else {
-	    $orderWeight = $this->getOrderWeight($cart, $method->weight_unit);
-	    return ($orderWeight * $method->cost) + $method->package_fee;
+	    return  $method->cost + $method->package_fee;
 	}
     }
 

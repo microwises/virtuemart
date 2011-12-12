@@ -38,7 +38,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$this->tableFields = array_keys($this->getTableSQLFields());
 	$varsToPush = array('payment_logos' => array('', 'char'),
 	    'countries' => array(0, 'int'),
-	    'payment_currency' => array(0, 'char'),
+	    'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\' ',
+	    'payment_currency' => 'char(3) ',
 	    'min_amount' => array(0, 'int'),
 	    'max_amount' => array(0, 'int'),
 	    'cost_per_transaction' => array(0, 'int'),
@@ -66,7 +67,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	    'order_number' => 'char(32) DEFAULT NULL',
 	    'virtuemart_paymentmethod_id' => 'mediumint(1) UNSIGNED DEFAULT NULL',
 	    'payment_name' => 'char(255) NOT NULL DEFAULT \'\' ',
-	    'payment_currency' => 'varchar(1024) DEFAULT \'\' ',
+	     'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\' ',
+	    'payment_currency' => 'char(3) ',
 	    'cost_per_transaction' => ' decimal(10,2) DEFAULT NULL ',
 	    'cost_percent_total' => ' decimal(10,2) DEFAULT NULL ',
 	    'tax_id' => 'smallint(11) DEFAULT NULL'
@@ -82,12 +84,12 @@ class plgVmPaymentStandard extends vmPSPlugin {
      */
     function plgVmConfirmedOrder($cart, $order) {
 
-	  if (!($method = $this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) {
-	  return null; // Another method was selected, do nothing
-	  }
-	  if (!$this->selectedThisElement($method->payment_element)) {
-	  return false;
-	  }
+	if (!($method = $this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) {
+	    return null; // Another method was selected, do nothing
+	}
+	if (!$this->selectedThisElement($method->payment_element)) {
+	    return false;
+	}
 // 		$params = new JParameter($payment->payment_params);
 	$lang = JFactory::getLanguage();
 	$filename = 'com_virtuemart';
@@ -102,6 +104,13 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
 	// END printing out HTML Form code (Payment Extra Info)
+	$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $method->payment_currency . '" ';
+	$db = &JFactory::getDBO();
+	$db->setQuery($q);
+	$currency_code_3 = $db->loadResult();
+	$paymentCurrency = CurrencyDisplay::getInstance($method->payment_currency);
+	$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($method->payment_currency, $order['details']['BT']->order_total, false), 2);
+	$cd = CurrencyDisplay::getInstance($cart->pricesCurrency);
 
 
 	$this->_virtuemart_paymentmethod_id = $order['details']['BT']->virtuemart_paymentmethod_id;
@@ -110,6 +119,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$dbValues['virtuemart_paymentmethod_id'] = $this->_virtuemart_paymentmethod_id;
 	$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
 	$dbValues['cost_percent_total'] = $method->cost_percent_total;
+	$dbValues['payment_currency'] = $currency_code_3;
+	$dbValues['payment_order_total'] = $totalInPaymentCurrency;
 	$dbValues['tax_id'] = $method->tax_id;
 	$this->storePSPluginInternalData($dbValues);
 
@@ -150,7 +161,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$html = '<table class="admintable">' . "\n";
 	$html .=$this->getHtmlHeaderBE();
 	$html .= $this->getHtmlRowBE('STANDARD_PAYMENT_NAME', $paymentTable->payment_name);
-
+	$html .= $this->getHtmlRowBE('STANDARD_PAYMENT_TOTAL_CURRENCY', $paymentTable->payment_order_total.' '.$paymentTable->payment_currency);
 	$html .= '</table>' . "\n";
 	return $html;
     }
@@ -272,6 +283,17 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	return $this->onSelectedCalculatePrice($cart, $cart_prices, $cart_prices_name);
     }
 
+    function plgVmgetPaymentCurrency($virtuemart_paymentmethod_id, &$paymentCurrencyId) {
+
+	if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
+	    return null; // Another method was selected, do nothing
+	}
+	if (!$this->selectedThisElement($method->payment_element)) {
+	    return false;
+	}
+	$paymentCurrencyId = $method->payment_currency;
+    }
+
     /**
      * plgVmOnCheckAutomaticSelectedPayment
      * Checks how many plugins are available. If only one, the user will not have the choice. Enter edit_xxx page
@@ -294,8 +316,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
      * @author Max Milbers
      * @author Valerie Isaksen
      */
-    protected function plgVmOnShowOrderFEPayment($virtuemart_order_id,   $virtuemart_paymentmethod_id, &$payment_name) {
-	  $this->onShowOrderFE($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
+    protected function plgVmOnShowOrderFEPayment($virtuemart_order_id, $virtuemart_paymentmethod_id, &$payment_name) {
+	$this->onShowOrderFE($virtuemart_order_id, $virtuemart_paymentmethod_id, $payment_name);
     }
 
     /**

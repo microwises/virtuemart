@@ -77,7 +77,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 *
 	 */
 	public function onSelectCheck(  VirtueMartCart $cart) {
-		$idName = $this->_idName;vmdebug('OnSelectCheck',$idName);
+		$idName = $this->_idName;//vmdebug('OnSelectCheck',$idName);
 		if (!$this->selectedThisByMethodId(  $cart->$idName)) {
 			return null; // Another method was selected, do nothing
 		}
