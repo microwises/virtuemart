@@ -23,8 +23,8 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
  */
 class convertECB {
 
-	var $archive = true;
-	var $last_updated = '';
+// 	var $archive = true;
+// 	var $last_updated = '';
 
 	var $document_address = 'http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml';
 
@@ -42,8 +42,20 @@ class convertECB {
 	 */
 	function convert( $amountA, $currA='', $currB='' ) {
 
-		$globalCurrencyConverter=JRequest::getVar('globalCurrencyConverter');
-		if( empty($globalCurrencyConverter)) {
+		if(!$globalCurrencyConverter = convertECB::getSetExchangeRates($this->document_address)){
+			return $amountA;
+		} else {
+			$valA = isset( $globalCurrencyConverter[$currA] ) ? $globalCurrencyConverter[$currA] : 1;
+			$valB = isset( $globalCurrencyConverter[$currB] ) ? $globalCurrencyConverter[$currB] : 1;
+
+			$val = $amountA * $valB / $valA;
+
+			return $val;
+		}
+	}
+
+	function getSetExchangeRates($ecb_filename){
+
 			setlocale(LC_TIME, "en-GB");
 			$now = time() + 3600; // Time in ECB (Germany) is GMT + 1 hour (3600 seconds)
 			if (date("I")) {
@@ -61,41 +73,41 @@ class convertECB {
 			}
 
 			$archivefile_name = $store_path.'/daily.xml';
-			$ecb_filename = $this->document_address;
+
 			$val = '';
 
 
 			if(file_exists($archivefile_name) && filesize( $archivefile_name ) > 0 ) {
-			  	// timestamp for the Filename
-			  	$file_datestamp = date('Ymd', filemtime($archivefile_name));
+				// timestamp for the Filename
+				$file_datestamp = date('Ymd', filemtime($archivefile_name));
 
-		    	// check if today is a weekday - no updates on weekends
-		    	if( date( 'w' ) > 0 && date( 'w' ) < 6
-		    		// compare filedate and actual date
-		    		&& $file_datestamp != $date_now_local
-		    		// if localtime is greater then ecb-update-time go on to update and write files
-		    		&& $time_now_local > $time_ecb_update) {
-		    		$curr_filename = $ecb_filename;
-		    	}
-		    	else {
-				  	$curr_filename = $archivefile_name;
-		    		$this->last_updated = $file_datestamp;
-				  	$this->archive = false;
-		    	}
+				// check if today is a weekday - no updates on weekends
+				if( date( 'w' ) > 0 && date( 'w' ) < 6
+				// compare filedate and actual date
+				&& $file_datestamp != $date_now_local
+				// if localtime is greater then ecb-update-time go on to update and write files
+				&& $time_now_local > $time_ecb_update) {
+					$curr_filename = $ecb_filename;
+				}
+				else {
+					$curr_filename = $archivefile_name;
+					$this->last_updated = $file_datestamp;
+					$this->archive = false;
+				}
 			}
 			else {
 				$curr_filename = $ecb_filename;
 			}
 
 			if( !is_writable( $store_path )) {
-			  $this->archive = false;
-			  JError::raiseWarning(1, "The file $archivefile_name can't be created. The directory $store_path is not writable" );
+				$this->archive = false;
+				JError::raiseWarning(1, "The file $archivefile_name can't be created. The directory $store_path is not writable" );
 			}
-//			JError::raiseNotice(1, "The file $archivefile_name should be in the directory $store_path " );
+			//			JError::raiseNotice(1, "The file $archivefile_name should be in the directory $store_path " );
 			if( $curr_filename == $ecb_filename ) {
 				// Fetch the file from the internet
 				if(!class_exists('VmConnector')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
-//				JError::raiseNotice(1, "Updating currency " );
+				//				JError::raiseNotice(1, "Updating currency " );
 				$contents = VmConnector::handleCommunication( $curr_filename );
 				$this->last_updated = date('Ymd');
 			}
@@ -118,8 +130,8 @@ class convertECB {
 					//todo
 					JError::raiseWarning(1,  'Failed to parse the Currency Converter XML document.');
 					JError::raiseWarning(1,  'The content: '.$contents);
-//					$GLOBALS['product_currency'] = $vendor_currency;
-					return $amountA;
+					//					$GLOBALS['product_currency'] = $vendor_currency;
+					return false;
 				}
 
 				$currency_list = $xmlDoc->getElementsByTagName( "Cube" );
@@ -136,22 +148,13 @@ class convertECB {
 				$globalCurrencyConverter = $currency;
 			}
 			else {
-				$globalCurrencyConverter = -1;
+				$globalCurrencyConverter = false;
 				JError::raiseWarning(1, 'Failed to retrieve the Currency Converter XML document.');
-				return $amountA;
+// 				return false;
 			}
-			// JRequest::setVar('globalCurrencyConverter',$globalCurrencyConverter,'POST');
-		}
-		$valA = isset( $globalCurrencyConverter[$currA] ) ? $globalCurrencyConverter[$currA] : 1;
-		$valB = isset( $globalCurrencyConverter[$currB] ) ? $globalCurrencyConverter[$currB] : 1;
 
-		$val = $amountA * $valB / $valA;
-		//todo
-		//$vmLogger->debug('Converted '.$amountA.' '.$currA.' to '.$val.' '.$currB);
-
-		return $val;
-	} // end function convertecb
-
+			return $globalCurrencyConverter;
+	}
 
 }
 // pure php no closing tag

@@ -103,10 +103,11 @@ class CurrencyDisplay {
 				self::$_instance->_currency_id = $currencyId;
 			}
 
+
 			$q = 'SELECT * FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.(int)self::$_instance->_currency_id.'"';
 			self::$_instance->_db->setQuery($q);
 			$style = self::$_instance->_db->loadObject();
-
+			vmdebug('hmmmmm getInstance',self::$_instance->_currency_id);
 			if(!empty($style)){
 				self::$_instance->setCurrencyDisplayToStyleStr($style);
 			} else {
