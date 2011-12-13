@@ -29,8 +29,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
     public static $_this = false;
 
     function __construct(& $subject, $config) {
-	if (self::$_this)
-	    return self::$_this;
+	//if (self::$_this)
+	 //   return self::$_this;
 	parent::__construct($subject, $config);
 
 	$this->_loggable = true;
@@ -56,7 +56,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 
 	$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
 
-	self::$_this = $this;
+	//self::$_this = $this;
     }
 
     protected function getVmPluginCreateTableSQL() {
@@ -130,7 +130,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$db = &JFactory::getDBO();
 	$db->setQuery($q);
 	$currency_code_3 = $db->loadResult();
-
+	$this->getPaymentCurrency($method);
 	$paymentCurrency = CurrencyDisplay::getInstance($method->payment_currency);
 
 	$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($method->payment_currency, $order['details']['BT']->order_total,false), 2);
@@ -268,6 +268,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	if (!$this->selectedThisElement($method->payment_element)) {
 	    return false;
 	}
+	 $this->getPaymentCurrency($method);
 	$paymentCurrencyId = $method->payment_currency;
     }
 
@@ -458,6 +459,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	   // JError::raiseWarning(500, $db->getErrorMsg());
 	    return '';
 	}
+	$this->getPaymentCurrency($paymentTable);
 	$html = '<table class="adminlist">' . "\n";
 	$html .=$this->getHtmlHeaderBE();
 	$html .= $this->getHtmlRowBE('PAYPAL_PAYMENT_NAME', $paymentTable->payment_name);

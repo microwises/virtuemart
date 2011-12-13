@@ -42,17 +42,22 @@ class JElementVmAcceptedCurrency extends JElement {
 	$q = 'SELECT `vendor_accepted_currencies`, `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`=' . $vendorId;
 	$db->setQuery($q);
 	$vendor_currency = $db->loadAssoc();
+
 	if (!$vendor_currency['vendor_accepted_currencies']) {
 	    $vendor_currency['vendor_accepted_currencies'] = $vendor_currency['vendor_currency'];
 	}
+	
 	$q = 'SELECT `virtuemart_currency_id` AS value ,CONCAT_WS(" ",`currency_name`,`currency_symbol`) as text FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` IN (' . $vendor_currency['vendor_accepted_currencies'] . ') and (`virtuemart_vendor_id` = "' . $vendorId . '" OR `shared`="1") AND published = "1" ORDER BY `ordering`,`currency_name`';
 	$db->setQuery($q);
 	$currencies = $db->loadObjectList();
-	if (empty($value)) {
-	    $value = $vendor_currency['vendor_currency'];
-	}
+	$options = array();
+	$options[] = array( 'value' => 0 ,'text' =>JTExt::_('COM_VIRTUEMART_DEFAULT_VENDOR_CURRENCY'));
+	foreach ($currencies  as $currency){
+				$options[] = array( 'value' => $currency->value ,'text' =>$currency->text);
+			}
 
-	return JHTML::_('select.genericlist', $currencies, $control_name . '[' . $name . ']', '', 'value', 'text', $value, $control_name . $name);
+
+	return JHTML::_('select.genericlist', $options, $control_name . '[' . $name . ']', '', 'value', 'text', $value, $control_name . $name);
     }
 
 }

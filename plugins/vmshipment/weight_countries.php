@@ -30,8 +30,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
     public static $_this = false;
 
     function __construct(& $subject, $config) {
-	if (self::$_this)
-	    return self::$_this;
+	//if (self::$_this)
+	 //   return self::$_this;
 	parent::__construct($subject, $config);
 
 	$this->_loggable = true;
@@ -53,7 +53,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 // 		self::$_this
 	//$this->createPluginTable($this->_tablename);
-	self::$_this = $this;
+	//self::$_this = $this;
     }
   /**
      * Create the table for this plugin if it does not yet exist.

@@ -767,7 +767,19 @@ abstract class vmPSPlugin extends vmPlugin {
 	function getCosts(VirtueMartCart $cart, $method, $cart_prices){
 	    return 0;
 	}
+	function getPaymentCurrency(&$method) {
+	    if (!$method->payment_currency) {
+		if (!class_exists('VirtueMartModelVendor'))
+		    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+		$vendorId = VirtueMartModelVendor::getLoggedVendor();
+		$db = JFactory::getDBO();
 
+		$q = 'SELECT   `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`=' . $vendorId;
+		$db->setQuery($q);
+		$method->payment_currency = $db->loadResult();
+	    }
+	       
+	}
 	/*
 	 * displayTaxRule
 	* @param int $tax_id
