@@ -31,6 +31,15 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<input type="text" class="inputbox"  name="product_in_stock" value="<?php echo $this->product->product_in_stock; ?>" size="10" />
 					</td>
 				</tr>
+				<tr class="row0">
+					<td width="21%">
+						<div style="text-align:right;font-weight:bold;">
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ORDERED_STOCK') ?></div>
+					</td>
+					<td width="79%">
+						<input type="text" class="inputbox"  name="product_ordered" value="<?php echo $this->product->product_ordered; ?>" size="10" />
+					</td>
+				</tr>
 				<!-- low stock notification -->
 				<tr class="row1">
 					<td width="21%">
