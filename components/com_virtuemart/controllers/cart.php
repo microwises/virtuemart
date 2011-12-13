@@ -139,8 +139,9 @@ class VirtueMartControllerCart extends JController {
 	    } else
 		$categoryLink = '';
 	    $continue_link = JRoute::_('index.php?option=com_virtuemart' . $categoryLink);
-
-	    if ($cart->add()) {
+	    $virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
+	    $success = true;
+	    if ($cart->add($virtuemart_product_ids,$success)) {
 		$this->json->msg = '<a class="continue" href="' . $continue_link . '" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 		$this->json->msg .= '<a style ="float:right;" href="' . JRoute::_("index.php?option=com_virtuemart&view=cart") . '">' . JText::_('COM_VIRTUEMART_CART_SHOW') . '</a>';
 		$this->json->stat = '1';

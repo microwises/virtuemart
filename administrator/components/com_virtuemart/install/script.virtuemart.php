@@ -508,37 +508,40 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->_db->setQuery($q);
 
 				$items = $this->_db->loadAssocList();
-				$db = JFactory::getDBO();
-				foreach($items as $item){
+				if(!empty($items) and count($items)>0){
+					$db = JFactory::getDBO();
+					foreach($items as $item){
 
-					//getTable
-					if(!class_exists('TableCustoms'))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'customs.php');
-					$table = new TableCustoms($db);
-					$params = new JParameter($item['custom_params']);
-					// 				vmdebug('migrateCustomPluginTableIntoCustoms',$params);
-					$str = '';
-					foreach($params->getParams() as $pName => $pValue){
-						vmdebug('migrateCustomPluginTableIntoCustoms '.$pName.' '.$pValue );
-						$str .= $pName.'='.json_encode($pValue).'|';
-					}
-					$item['custom_params'] = $str;
-
-					$table->bindChecknStoreNoLang($item,true);
-					$errors = $table->getErrors();
-					if(!empty($errors)){
-						foreach($errors as $error){
-							vmError($error);
+						//getTable
+						if(!class_exists('TableCustoms'))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'customs.php');
+						$table = new TableCustoms($db);
+						$params = new JParameter($item['custom_params']);
+						// 				vmdebug('migrateCustomPluginTableIntoCustoms',$params);
+						$str = '';
+						foreach($params->getParams() as $pName => $pValue){
+							vmdebug('migrateCustomPluginTableIntoCustoms '.$pName.' '.$pValue );
+							$str .= $pName.'='.json_encode($pValue).'|';
 						}
-						$error = true;
-					}
-				}
+						$item['custom_params'] = $str;
 
-				if(!$error){
-					$q = 'DROP TABLE `#__virtuemart_customplugins` ';
-					$this->_db->setQuery($q);
-					$this->_db->query();
+						$table->bindChecknStoreNoLang($item,true);
+						$errors = $table->getErrors();
+						if(!empty($errors)){
+							foreach($errors as $error){
+								vmError($error);
+							}
+							$error = true;
+						}
+					}
+
+					if(!$error){
+						$q = 'DROP TABLE `#__virtuemart_customplugins` ';
+						$this->_db->setQuery($q);
+						$this->_db->query();
+					}
 				}
 			}
+
 
 		}
 
@@ -715,10 +718,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					src="components/com_virtuemart/assets/images/vm_menulogo.png"
 					alt="Cart" /> </a> <br /> <br />
 				<h2>
+
+
 				<?php echo JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h2>
 			</td>
 			<td>
 				<h2>
+
+
 				<?php
 				if($update){
 					echo JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
@@ -736,6 +743,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				</h2> <br />
 
 				<div id="cpanel">
+
+
 				<?php
 				if(!$update){
 					?>
@@ -744,9 +753,17 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 							href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JUtility::getToken()) ?>">
 							<span class="vmicon48 vm_install_48"></span> <br />
 
+
+
+
+
 						<?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
 							</a>
 					</div>
+
+
+
+
 
 		<?php } ?>
 
@@ -756,10 +773,15 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					<br /><?php echo JText::_('COM_VIRTUEMART_INSTALL_GO_SHOP') ?>
 				</a>
 				</div>
+
+
+
+
 			</td>
 		</tr>
 	</table>
 </div>
+
 
 
 
