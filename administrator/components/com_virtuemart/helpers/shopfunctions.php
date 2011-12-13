@@ -1294,7 +1294,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 				 'product_weight', 'product_weight_uom', 'product_length', 'product_width',
 				'product_height', 'product_lwh_uom', 'product_in_stock', 'low_stock_notification', 'product_available_date',
 				'product_availability', 'product_special', 'p.created_on', 'p.modified_on',  'product_sales',
-				'product_unit', 'product_packaging', 'p.intnotes', 'metadesc', 'metakey', 'metarobot', 'metaauthor');
+				'product_unit', 'product_packaging', 'p.intnotes', 'l.metadesc', 'l.metakey', 'l.metarobot', 'l.metaauthor');
 		}
 
 		return $filterArray ;

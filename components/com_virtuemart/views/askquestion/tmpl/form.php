@@ -29,7 +29,7 @@ $document->addScriptDeclaration('
 		askForm.validation();
 		askForm.find(".highlight-button").click(function() {
 			if(!askForm.validate()) {
-				alert("'.JText::_('COM_VIRTUEMART_COMMENT_NOT_VALID').'");
+				alert("'.addslashes(JText::_('COM_VIRTUEMART_COMMENT_NOT_VALID_JS') ).'");
 				return false;
 			}
 		});

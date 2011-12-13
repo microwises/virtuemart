@@ -59,7 +59,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	if(!empty($this->manufacturer->virtuemart_manufacturer_id)) { ?>
 		<div class="manufacturer-product-link">
-			<a href="<?php echo $manufacturerProductsURL; ?>"><?php echo JText::sprintf('COM_VIRTUEMART_PRODUCT_FROM_MF',$this->manufacturer->mf_name); ?></a>
+			<a target="_top" href="<?php echo $manufacturerProductsURL; ?>"><?php echo JText::sprintf('COM_VIRTUEMART_PRODUCT_FROM_MF',$this->manufacturer->mf_name); ?></a>
 		</div>
 	<?php } ?>
 
