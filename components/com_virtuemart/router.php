@@ -283,7 +283,7 @@ function virtuemartParseRoute($segments) {
 		// $vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
 		if (empty($segments)) return $vars;
 	}
-	if (end($segments) == 'detail') {
+	if (end($segments) == 'modal') {
 		$vars['tmpl'] = 'component';
 		array_pop($segments);
 
@@ -349,7 +349,7 @@ function virtuemartParseRoute($segments) {
 			$vars['virtuemart_manufacturer_id'] =  $helper->getManufacturerId($segments[0]);
 			array_shift($segments);
 		}
-		if ( isset($segments[0]) && $segments[0] == 'detail') {
+		if ( isset($segments[0]) && $segments[0] == 'modal') {
 			$vars['tmpl'] = 'component';
 			array_shift($segments);
 		}
