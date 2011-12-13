@@ -25,10 +25,10 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 
 	// instance of class
-	public static $_this = false;
+// 	public static $_this = false;
 
 	function __construct(& $subject, $config) {
-		if(self::$_this) return self::$_this;
+// 		if(self::$_this) return self::$_this;
 		parent::__construct($subject, $config);
 
 		$varsToPush = array(
@@ -38,7 +38,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 		$this->setConfigParameterable('custom_params',$varsToPush);
 
-		self::$_this = $this;
+// 		self::$_this = $this;
 	}
 
 	// function plgVmOnOrder($product) {
@@ -110,7 +110,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			$html .='<input  type="hidden" name="field[c'.$child->id.'][custom_value]" value="'.$child->id.'">';
 			// if (!$customfield = $this->getFieldId($product_id, $child->id) ) $price ='' ;
 			// else
-			
+
 			$html .='<input style="width:98px; display: inline-block;" type="text" name="custom_param['.$row.'][child]['.$child->id.'][custom_price]" value="'.$price.'">';
 			// $html .='<input type="hidden" name="custom_param[c'.$child->id.'][field_type]" value="G">';
 			// $html .='<input type="hidden" name="field[c'.$child->id.'][virtuemart_custom_id]" value="'.$group_custom_id.'">';

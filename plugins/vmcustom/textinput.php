@@ -26,10 +26,10 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 
 	// instance of class
-	public static $_this = false;
+// 	public static $_this = false;
 
 	function __construct(& $subject, $config) {
-		if(self::$_this) return self::$_this;
+// 		if(self::$_this) return self::$_this;
 		parent::__construct($subject, $config);
 
 		$varsToPush = array(	'custom_size'=>array(0.0,'int'),
@@ -38,7 +38,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 		$this->setConfigParameterable('custom_params',$varsToPush);
 
-		self::$_this = $this;
+// 		self::$_this = $this;
 	}
 
 	// function plgVmOnOrder($product) {
@@ -55,7 +55,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		if ($field->custom_element != $this->_name) return '';
 		// $html .='<input type="text" value="'.$field->custom_size.'" size="10" name="custom_param['.$row.'][custom_size]">';
 		$this->parseCustomParams($field);
-		
+
 		$html ='
 			<fieldset>
 				<legend>'. JText::_('VMCUSTOM_TEXTINPUT') .'</legend>

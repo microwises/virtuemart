@@ -29,7 +29,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	public static $_this = false;
 
 	function __construct(& $subject, $config) {
-		if(self::$_this) return self::$_this;
+// 		if(self::$_this) return self::$_this;
 		parent::__construct($subject, $config);
 		$this->tableFields = array_keys($this->getTableSQLFields());
 		$varsToPush = array(
@@ -42,7 +42,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 
 		$this->setConfigParameterable('custom_params',$varsToPush);
 
-		self::$_this = $this;
+// 		self::$_this = $this;
 	}
 	/**
 	 * Create the table for this plugin if it does not yet exist.

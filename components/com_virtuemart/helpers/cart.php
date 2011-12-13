@@ -420,30 +420,34 @@ class VirtueMartCart {
 				// jExit();
 
 				if (array_key_exists($productKey, $this->products) && (empty($product->customPlugin)) ) {
-					$this->products[$productKey]->quantity += $quantityPost;
+
 					if ($this->checkForQuantities($product, $this->products[$productKey]->quantity)) {
+						$this->products[$productKey]->quantity += $quantityPost;
 						$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_UPDATED'));
 					} else {
-						return false;
+						continue;
+// 						return false;
 					}
 				}  else {
 					if ( !empty($product->customPlugin)) {
 						$productKey .= count($this->products);
 						//print_r($product);
 					}
-					$this->products[$productKey] = $product;
-					$product->quantity = $quantityPost;
 					if ($this->checkForQuantities($product, $quantityPost)) {
+						$this->products[$productKey] = $product;
+						$product->quantity = $quantityPost;
 						$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED'));
 					} else {
-						return false;
+						continue;
+// 						return false;
 					}
 					// echo $productKey;
 					// print_r ($this->products);
 				}
 			} else {
 				$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND', false));
-				return false;
+				continue;
+				//return false;
 			}
 		}
 
