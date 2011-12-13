@@ -37,9 +37,10 @@
 		});
 
 		function sendtocart(form){
-
+			
+			$.ajaxSetup({ cache: false })
 			var datas = form.serialize();
-			$.getJSON(siteurl+'index.php?option=com_virtuemart&nosef=1view=cart&task=addJS&format=json',encodeURIComponent(datas),
+			$.getJSON(siteurl+'index.php?option=com_virtuemart&nosef=1&view=cart&task=addJS&format=json',encodeURIComponent(datas),
 				function(datas, textStatus) {
 					if(datas.stat ==1){
 						var value = form.find('.quantity-input').val() ;
@@ -62,10 +63,10 @@
 						$.facebox({ text: "<H4>"+vmCartError+"</H4>"+datas.msg }, 'my-groovy-style');
 					}
 					if ($(".vmCartModule")[0]) {
-						$.ajaxSetup({ cache: false })
 						$(".vmCartModule").productUpdate();
 					}
 				});
+				$.ajaxSetup({ cache: true });
 		};
 
 
@@ -103,7 +104,6 @@
 					mod.find(".show_cart").html(datas.cart_show);
 				}
 				mod.find(".total_products").html(datas.totalProductTxt);
-				$.ajaxSetup({ cache: true });
 			}
 		);
 	}
