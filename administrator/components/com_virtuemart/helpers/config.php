@@ -941,11 +941,23 @@ class vmJsApi{
 	function jDate($date='',$name="date",$id=null,$resetBt = true) {
 		if ($date == "0000-00-00 00:00:00") $date= 0 ;
 		if (empty($id)) $id = $name ;
-		if ( !VmConfig::isJ15()) $J16 = "_J16"; else $J16 ="";
 		static $jDate;
-		if ($date) $displayDate = self::date($date,'INPUT');
-		else $displayDate = JText::_('COM_VIRTUEMART_NEVER');
-		$display= '<input id="'.$id.'_text" class="datepicker" type="date" name="'.$name.'_text" value="'.$displayDate.'" />';
+
+		$dateFormat = JText::_('COM_VIRTUEMART_DATE_FORMAT_INPUT_J16');//="m/d/y"
+		$search  = array('m', 'd');
+		$replace = array('mm', 'dd');
+		$jsDateFormat = str_replace($search, $replace, $dateFormat);
+
+		if ($date) {
+			if ( VmConfig::isJ15()) {
+				$search  = array('m', 'd', 'y');
+				$replace = array('%m', '%d', '%y');
+				$dateFormat = str_replace($search, $replace, $dateFormat);
+			}
+			$formatedDate = JHTML::_('date', $date, $dateFormat );
+		}
+		else $formatedDate = JText::_('COM_VIRTUEMART_NEVER');
+		$display= '<input id="'.$id.'_text" class="datepicker" type="date" name="'.$name.'_text" value="'.$formatedDate.'" />';
 		if ($resetBt) $display.='<span class="vmicon vmicon-16-logout icon-nofloat js-date-reset"></span>';
 		$display.= '<input class="datepicker-db" id="'.$id.'" type="hidden" name="'.$name.'" value="'.$date.'" />';
 
@@ -959,7 +971,7 @@ class vmJsApi{
 				$( this ).datepicker({
 					changeMonth: true,
 					changeYear: true,
-					dateFormat:"'.JText::_('COM_VIRTUEMART_DATE_FORMAT_INPUT_JS').'",
+					dateFormat:"'.$jsDateFormat.'",
 					altField: $(this).siblings(".datepicker-db"),
 					altFormat: "yy-mm-dd"
 				});

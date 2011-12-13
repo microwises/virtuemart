@@ -41,14 +41,14 @@
 			var datas = form.serialize();
 			$.getJSON(siteurl+'index.php?option=com_virtuemart&nosef=1view=cart&task=addJS&format=json',encodeURIComponent(datas),
 				function(datas, textStatus) {
-					if(datas.stat =1){
+					if(datas.stat ==1){
 						var value = form.find('.quantity-input').val() ;
 						var txt = value+" "+form.find(".pname").val()+' '+vmCartText;
                                                 $.facebox.settings.closeImage = closeImage;
                                                 $.facebox.settings.loadingImage = loadingImage;
                                                 $.facebox.settings.faceboxHtml = faceboxHtml;
 						$.facebox({ text: datas.msg +"<H4>"+txt+"</H4>" }, 'my-groovy-style');
-					} else if(datas.stat =2){
+					} else if(datas.stat ==2){
 						var value = form.find('.quantity-input').val() ;
 						var txt = form.find(".pname").val();
                                                 $.facebox.settings.closeImage = closeImage;

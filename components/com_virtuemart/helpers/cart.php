@@ -286,9 +286,9 @@ class VirtueMartCart {
 	 * @author Max Milbers
 	 * @access public
 	 */
-	public function add($virtuemart_product_ids=null,&$success=true) {
+	public function add($virtuemart_product_ids=null,&$successMsg='') {
 		$mainframe = JFactory::getApplication();
-
+		$success = false;
 		$post = JRequest::get('default');
 		//$total_quantity = 0;
 		//$total_updated = 0;
@@ -423,7 +423,7 @@ class VirtueMartCart {
 						$this->products[$productKey]->quantity += $quantityPost;
 						$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_UPDATED'));
 					} else {
-						$success = false;
+						$successMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
 						continue;
 					}
 				}  else {
@@ -436,19 +436,20 @@ class VirtueMartCart {
 						$product->quantity = $quantityPost;
 						$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED'));
 					} else {
-						$success = false;
+						$successMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
 						continue;
 					}
 					// echo $productKey;
 					// print_r ($this->products);
 				}
+				$success = true;
 			} else {
 				$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND', false));
 // 				continue;
 				return false;
 			}
 		}
-
+		if ($success== false) return false ;
 		// End Iteration through Prod id's
 		$this->setCartIntoSession();
 		return true;
