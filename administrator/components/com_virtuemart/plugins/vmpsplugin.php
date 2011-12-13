@@ -680,7 +680,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$currency = CurrencyDisplay::getInstance();
 
 		$costDisplay = $currency->priceDisplay($pluginSalesPrice);
-		$html = '<input type="radio" name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id"  " value="' . $plugin->$pluginmethod_id . '" ' . $checked . '>'
+		$html = '<input type="radio" name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id"   value="' . $plugin->$pluginmethod_id . '" ' . $checked . '>'
 		. '<label for="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '">' . '<span class="' . $this->_type . '">' . $plugin->$pluginName . '<span class="' . $this->_type . '_cost"> (' . $costDisplay . ")</span></span></label>\n";
 
 
