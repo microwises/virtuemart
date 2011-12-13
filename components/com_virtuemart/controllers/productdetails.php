@@ -71,7 +71,14 @@ class VirtueMartControllerProductdetails extends JController {
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
 		$vars = array();
-
+		$min = VmConfig::get('vm_asks_minimum_comment_length', 50)+1;
+		$max = VmConfig::get('vm_asks_maximum_comment_length', 2000)-1 ;
+		$commentSize = mb_strlen( JRequest::getString('comment') );
+		$validMail = filter_var(JRequest::getVar('email'), FILTER_VALIDATE_EMAIL);
+		if ( $commentSize<$min || $commentSize>$max || !$validMail ) {
+				$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id='.JRequest::getInt('virtuemart_product_id',0) ),JText::_('COM_VIRTUEMART_COMMENT_NOT_VALID_JS'));
+				return ;
+		}
 		$this->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
 		$productModel = $this->getModel('product');
 
@@ -153,7 +160,8 @@ class VirtueMartControllerProductdetails extends JController {
 	 */
 	public function MailForm(){
 
-		/* Create the view */
+
+
 		if (JRequest::getCmd('task') == 'recommend' ) {
 			$user = JFactory::getUser();
 			if (empty($user->id)) {
