@@ -771,14 +771,14 @@ abstract class vmPSPlugin extends vmPlugin {
 	    if (!$method->payment_currency) {
 		if (!class_exists('VirtueMartModelVendor'))
 		    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-		$vendorId = VirtueMartModelVendor::getLoggedVendor();
+		$vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
 		$db = JFactory::getDBO();
 
 		$q = 'SELECT   `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`=' . $vendorId;
 		$db->setQuery($q);
 		$method->payment_currency = $db->loadResult();
 	    }
-	       
+
 	}
 	/*
 	 * displayTaxRule
@@ -924,6 +924,7 @@ abstract class vmPSPlugin extends vmPlugin {
 				// payment echos form, but cart should not be emptied, data is valid
 			} elseif ($returnValue == 2 )   {
 				$cart->_confirmDone = false;
+				$cart->_dataValidated=false;
 			        $cart->setCartIntoSession();
 				JRequest::setVar('html' , $html);
 

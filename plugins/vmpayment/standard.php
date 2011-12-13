@@ -50,7 +50,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 
 	    $this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
 	   // self::$_this = $this;
-	
+
     }
 
     /**
@@ -120,7 +120,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$dbValues['virtuemart_paymentmethod_id'] = $this->_virtuemart_paymentmethod_id;
 	$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
 	$dbValues['cost_percent_total'] = $method->cost_percent_total;
-	$dbValues['payment_currency'] = $currency_code_3;
+	$dbValues['payment_currency'] = $currency_code_3 ;
 	$dbValues['payment_order_total'] = $totalInPaymentCurrency;
 	$dbValues['tax_id'] = $method->tax_id;
 	$this->storePSPluginInternalData($dbValues);
@@ -135,6 +135,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$currency = CurrencyDisplay::getInstance('', $order['details']['BT']->virtuemart_vendor_id);
 	$html .= $this->getHtmlRow('STANDARD_ORDER_NUMBER', $order['details']['BT']->order_number);
 	$html .= $this->getHtmlRow('STANDARD_AMOUNT', $currency->priceDisplay($order['details']['BT']->order_total));
+	//$html .= $this->getHtmlRow('STANDARD_AMOUNT', $totalInPaymentCurrency.' '.$currency_code_3);
 	$html .= '</table>' . "\n";
 
 	return $this->processConfirmedOrderPaymentResponse(true, $cart, $order, $html);
@@ -159,6 +160,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	    return '';
 	}
 	$this->getPaymentCurrency($paymentTable);
+
 	$html = '<table class="adminlist">' . "\n";
 	$html .=$this->getHtmlHeaderBE();
 	$html .= $this->getHtmlRowBE('STANDARD_PAYMENT_NAME', $paymentTable->payment_name);

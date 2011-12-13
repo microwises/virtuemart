@@ -1143,7 +1143,7 @@ class VirtueMartCart {
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedShipment', array(  $this,$cart_prices));
 			foreach ($returnValues as $returnValue) {
-				if ((int) $returnValue ) {
+				 if ( !is_null($returnValue )) {
 					$nbShipment ++;
 					if ($returnValue) $virtuemart_shipmentmethod_id = $returnValue;
 				}
@@ -1180,12 +1180,13 @@ class VirtueMartCart {
 		if (VmConfig::get('automatic_payment',1) && $checkAutomaticSelected ) {
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnCheckAutomaticSelectedPayment', array( $this, $cart_prices));
-			foreach ($returnValues as $returnValue) {
-				 if ((int) $returnValue ) {
-					$nbPayment ++;
-					if($returnValue) $virtuemart_paymentmethod_id = $returnValue;
-				 }
-			}
+			    foreach ($returnValues as $returnValue) {
+				     if ( !is_null($returnValue )) {
+					 $nbPayment++;
+					    if($returnValue) $virtuemart_paymentmethod_id = $returnValue;
+				     }
+			    }
+
 			if ($nbPayment==1 && $virtuemart_paymentmethod_id) {
 				$this->virtuemart_paymentmethod_id = $virtuemart_paymentmethod_id;
 				$cart->automaticSelectedPayment=true;
