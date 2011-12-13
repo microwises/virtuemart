@@ -126,8 +126,9 @@ if (empty ( $this->product )) {
 
 				<?php
 				if($this->showRating){
-					$rating = empty($this->rating)? JText::_('COM_VIRTUEMART_UNRATED'):JText::_('COM_VIRTUEMART_RATING') . round($this->rating->rating, 2) ;
-					echo JText::_('COM_VIRTUEMART_RATING') . $rating;
+				    $maxrating = VmConfig::get('vm_maximum_rating_scale',5);
+					$rating = empty($this->rating)? JText::_('COM_VIRTUEMART_RATING').' '.JText::_('COM_VIRTUEMART_UNRATED'):JText::_('COM_VIRTUEMART_RATING') . round($this->rating->rating, 2) . '/'. $maxrating;
+					echo   $rating;
 				}
 
 				// Product Price
@@ -511,9 +512,12 @@ if (empty ( $this->product )) {
 				var form = document.getElementById('reviewform');
 
 				var ausgewaehlt = false;
-				for (var i=0; i<form.user_rating.length; i++)
-					if (form.user_rating[i].checked)
+
+				for (var i=0; i<form.vote.length; i++) {
+					if (form.vote[i].checked) {
 						ausgewaehlt = true;
+					}
+				}
 					if (!ausgewaehlt)  {
 						alert('".JText::_('COM_VIRTUEMART_REVIEW_ERR_RATE',false)."');
 						return false;
