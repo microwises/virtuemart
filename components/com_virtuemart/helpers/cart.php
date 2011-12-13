@@ -417,8 +417,6 @@ class VirtueMartCart {
 
 				}
 
-				// jExit();
-
 				if (array_key_exists($productKey, $this->products) && (empty($product->customPlugin)) ) {
 
 					if ($this->checkForQuantities($product, $this->products[$productKey]->quantity)) {
@@ -426,7 +424,6 @@ class VirtueMartCart {
 						$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_UPDATED'));
 					} else {
 						continue;
-// 						return false;
 					}
 				}  else {
 					if ( !empty($product->customPlugin)) {
@@ -439,7 +436,6 @@ class VirtueMartCart {
 						$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED'));
 					} else {
 						continue;
-// 						return false;
 					}
 					// echo $productKey;
 					// print_r ($this->products);

@@ -1,21 +1,21 @@
 <?php
 /**
-*
-* Calc View
-*
-* @package	VirtueMart
-* @subpackage Payment Method
-* @author Max Milbers
+ *
+ * Calc View
+ *
+ * @package	VirtueMart
+ * @subpackage Payment Method
+ * @author Max Milbers
  * @author valérie isaksen
-* @link http://www.virtuemart.net
-* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* @version $Id$
-*/
+ * @link http://www.virtuemart.net
+ * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * VirtueMart is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * @version $Id$
+ */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -30,9 +30,9 @@ jimport( 'joomla.application.component.view');
  * @author valérie isaksen
  */
 if (!class_exists('VirtueMartModelCurrency'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
+require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 if (!class_exists('VirtueMartModelVendor'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 
 class VirtuemartViewPaymentMethod extends JView {
 
@@ -55,34 +55,25 @@ class VirtuemartViewPaymentMethod extends JView {
 		$model = $this->getModel('paymentmethod');
 
 		//@todo should be depended by loggedVendor
-//		$vendorId=1;
-//		$this->assignRef('vendorId', $vendorId);
+		//		$vendorId=1;
+		//		$this->assignRef('vendorId', $vendorId);
 		// TODO logo
 		$viewName=ShopFunctions::SetViewTitle();
 		$this->assignRef('viewName',$viewName);
 
 		$layoutName = JRequest::getWord('layout', 'default');
 
-		if(Vmconfig::get('multix','none')!=='none'){
-				$vendorList= ShopFunctions::renderVendorList($payment->virtuemart_vendor_id);
-				$this->assignRef('vendorList', $vendorList);
-			}
+		$vendorModel = new VirtueMartModelVendor();
 
-			 $vendorModel = new VirtueMartModelVendor();
-
-	     if (Vmconfig::get('multix', 'none') !== 'none') {
-		$vendorList = ShopFunctions::renderVendorList($payment->virtuemart_vendor_id);
-		$this->assignRef('vendorList', $vendorList);
-	    }
-	    $vendorModel->setId(1);
-	    $vendor = $vendorModel->getVendor();
-	    $currencyModel = new VirtueMartModelCurrency();
-	    $currencyModel = $currencyModel->getCurrency($vendor->vendor_currency);
-	    $this->assignRef('vendor_currency', $currencyModel->currency_symbol);
+		$vendorModel->setId(1);
+		$vendor = $vendorModel->getVendor();
+		$currencyModel = new VirtueMartModelCurrency();
+		$currencyModel = $currencyModel->getCurrency($vendor->vendor_currency);
+		$this->assignRef('vendor_currency', $currencyModel->currency_symbol);
 
 		if ($layoutName == 'edit') {
 
-		// Load the helper(s)
+			// Load the helper(s)
 			$this->loadHelper('image');
 			// $this->loadHelper('html');
 			$this->loadHelper('parameterparser');
@@ -91,15 +82,15 @@ class VirtuemartViewPaymentMethod extends JView {
 			$payment = $model->getPayment();
 			$this->assignRef('payment',	$payment);
 			$this->assignRef('vmPPaymentList', self::renderInstalledPaymentPlugins($payment->payment_jplugin_id));
-//			$this->assignRef('PaymentTypeList',self::renderPaymentRadioList($paym->payment_type));
+			//			$this->assignRef('PaymentTypeList',self::renderPaymentRadioList($paym->payment_type));
 
-//			$this->assignRef('creditCardList',self::renderCreditCardRadioList($paym->payment_creditcards));
-//			echo 'humpf <pre>'.print_r($paym).'</pre>' ;
+			//			$this->assignRef('creditCardList',self::renderCreditCardRadioList($paym->payment_creditcards));
+			//			echo 'humpf <pre>'.print_r($paym).'</pre>' ;
 			//$this->assignRef('creditCardList',ShopFunctions::renderCreditCardList($paym->payment_creditcards,true));
 			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($payment->virtuemart_shoppergroup_ids));
 
 			if(Vmconfig::get('multix','none')!=='none'){
-				$vendorList= ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
+				$vendorList= ShopFunctions::renderVendorList($payment->virtuemart_vendor_id);
 				$this->assignRef('vendorList', $vendorList);
 			}
 
@@ -143,8 +134,8 @@ class VirtuemartViewPaymentMethod extends JView {
 	}
 	/*
 	 *
-	 * @deprecated
-	 */
+	* @deprecated
+	*/
 	function renderPaymentRadioList($selected){
 
 		$list = array(
@@ -179,8 +170,8 @@ class VirtuemartViewPaymentMethod extends JView {
 
 		$db = JFactory::getDBO();
 		//Todo speed optimize that, on the other hand this function is NOT often used and then only by the vendors
-//		$q = 'SELECT * FROM #__plugins as pl JOIN `#__virtuemart_payment_method` AS pm ON `pl`.`id`=`pm`.`payment_jplugin_id` WHERE `folder` = "vmpayment" AND `published`="1" ';
-//		$q = 'SELECT * FROM #__plugins as pl,#__virtuemart_payment_method as pm  WHERE `folder` = "vmpayment" AND `published`="1" AND pl.id=pm.payment_jplugin_id';
+		//		$q = 'SELECT * FROM #__plugins as pl JOIN `#__virtuemart_payment_method` AS pm ON `pl`.`id`=`pm`.`payment_jplugin_id` WHERE `folder` = "vmpayment" AND `published`="1" ';
+		//		$q = 'SELECT * FROM #__plugins as pl,#__virtuemart_payment_method as pm  WHERE `folder` = "vmpayment" AND `published`="1" AND pl.id=pm.payment_jplugin_id';
 		$q = 'SELECT * FROM `'.$table.'` WHERE `folder` = "vmpayment" AND `'.$enable.'`="1" ';
 		$db->setQuery($q);
 		$result = $db->loadAssocList($ext_id);
