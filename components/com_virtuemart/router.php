@@ -198,7 +198,7 @@ function virtuemartBuildRoute(&$query) {
 	}
 	// sef the slimbox View
 	if (isset($query['tmpl'])) {
-		if ( $query['tmpl'] = 'component') $segments[] = 'detail' ;
+		if ( $query['tmpl'] = 'component') $segments[] = 'modal' ;
 		unset($query['tmpl']);
 	}
 	if (empty ($query['Itemid']) && isset($jmenu['virtuemart'][0])) $query['Itemid'] = $jmenu['virtuemart'][0] ;
