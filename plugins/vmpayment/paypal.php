@@ -237,7 +237,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$html.= '</form>';
 
 	$html.= ' <script type="text/javascript">';
-	//$html.= ' document.vm_paypal_form.submit();';
+	$html.= ' document.vm_paypal_form.submit();';
 	$html.= ' </script>';
 	// 	2 = don't delete the cart, don't send email and don't redirect
 	return $this->processConfirmedOrderPaymentResponse(2, $cart, $order, $html, $new_status);
