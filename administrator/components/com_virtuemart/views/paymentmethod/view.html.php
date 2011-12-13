@@ -64,14 +64,14 @@ class VirtuemartViewPaymentMethod extends JView {
 		$layoutName = JRequest::getWord('layout', 'default');
 
 		if(Vmconfig::get('multix','none')!=='none'){
-				$vendorList= ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
+				$vendorList= ShopFunctions::renderVendorList($payment->virtuemart_vendor_id);
 				$this->assignRef('vendorList', $vendorList);
 			}
 
 			 $vendorModel = new VirtueMartModelVendor();
 
 	     if (Vmconfig::get('multix', 'none') !== 'none') {
-		$vendorList = ShopFunctions::renderVendorList($paym->virtuemart_vendor_id);
+		$vendorList = ShopFunctions::renderVendorList($payment->virtuemart_vendor_id);
 		$this->assignRef('vendorList', $vendorList);
 	    }
 	    $vendorModel->setId(1);
