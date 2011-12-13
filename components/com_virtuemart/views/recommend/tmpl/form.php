@@ -21,31 +21,16 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 $min = VmConfig::get('vm_asks_minimum_comment_length', 50);
 $max = VmConfig::get('vm_asks_maximum_comment_length', 2000);
+vmJsApi::JvalideForm();
 $document = JFactory::getDocument();
-$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.validation.js');
+// $document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.validation.js');
 $document->addScriptDeclaration('
 	jQuery(function($){
-		var askForm = $("#askform");
-		askForm.validation();
-		askForm.find(".highlight-button").click(function() {
-			if(!askForm.validate()) {
-				alert("'.addslashes( JText::_('COM_VIRTUEMART_COMMENT_NOT_VALID_JS') ).'");
-				return false;
-			}
-		});
-		$.Validation.addRule("range",{
-			check: function(value) {
-			   if(value)
-				   return (value.length >= '.$min.' && value.length <= '.$max.' );
-			   return false;
-			},
-			msg : "'.addslashes( JText::sprintf('COM_VIRTUEMART_COMMENT_MIN_MAX_JS',$min, $max) ).'"
-		});
-
-		$("#comment").keyup( function () {
-			var result = $(this).val();
-				$("#counter").val( result.length );
-		});
+			$("#askform").validationEngine("attach");
+			$("#comment").keyup( function () {
+				var result = $(this).val();
+					$("#counter").val( result.length );
+			});
 	});
 ');
 /* Let's see if we found the product */
@@ -86,14 +71,14 @@ if (empty ( $this->product )) {
 	<div class="form-field">
 
 		<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component') ; ?>" name="askform" id="askform" >
-			<label><?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : <input type="text" value="" name="email" id="email" size="30"  class="required validate-email"/></label>
+			<label><?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : <input type="text" value="" name="email" id="email" size="30" class="validate[required,custom[email]]"/></label>
 				<br />
 			<label>
 				<?php
 				$ask_comment = JText::sprintf('COM_VIRTUEMART_COMMENT', VmConfig::get('vm_asks_minimum_comment_length', 50), VmConfig::get('vm_asks_maximum_comment_length', 2000));
 				echo $ask_comment;
 				?>
-				<textarea title="<?php echo $ask_comment ?>" class="field" id="comment" name="comment" rows="10" validation="range"></textarea>
+				<textarea title="<?php echo $ask_comment ?>" class="validate[required,minSize[<?php echo $min ?>],maxSize[<?php echo $max ?>]] field" id="comment" name="comment" rows="10"></textarea>
 			</label>
 
 				<div class="submit">
