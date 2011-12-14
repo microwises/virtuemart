@@ -24,7 +24,7 @@ $iColumn = 1;
 $iManufacturer = 1;
 
 // Calculating Categories Per Row
-$manufacturerPerRow = VmConfig::get ( 'manufacturer_per_row', 3 );
+$manufacturerPerRow = 3;
 if ($manufacturerPerRow != 1) {
 	$manufacturerCellWidth = ' width'.floor ( 100 / $manufacturerPerRow );
 } else {
@@ -44,7 +44,7 @@ if (!empty($this->manufacturers)) { ?>
 	foreach ( $this->manufacturers as $manufacturer ) {
 
 		// Show the horizontal seperator
-		if ($iColumn == 1 && $iManufacturer > $manufacturerPerRow) { 
+		if ($iColumn == 1 && $iManufacturer > $manufacturerPerRow) {
 			echo $horizontalSeparator;
 		}
 
@@ -64,7 +64,7 @@ if (!empty($this->manufacturers)) { ?>
 		$manufacturerURL = JROUTE::_('index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id=' . $manufacturer->virtuemart_manufacturer_id);
 		$manufacturerIncludedProductsURL = JROUTE::_('index.php?option=com_virtuemart&view=category&virtuemart_manufacturer_id=' . $manufacturer->virtuemart_manufacturer_id);
 		$manufacturerImage = $manufacturer->images[0]->displayMediaThumb("",false);
-		
+
 		// Show Category ?>
 		<div class="manufacturer floatleft<?php echo $manufacturerCellWidth . $showVerticalSeparator ?>">
 			<div class="spacer">
@@ -76,9 +76,9 @@ if (!empty($this->manufacturers)) { ?>
 		</div>
 		<?php
 		$iManufacturer ++;
-	
+
 		// Do we need to close the current row now?
-		if ($iColumn == $manufacturerPerRow) { 
+		if ($iColumn == $manufacturerPerRow) {
 			echo '<div class="clear"></div></div>';
 			$iColumn = 1;
 		} else {
@@ -93,6 +93,6 @@ if (!empty($this->manufacturers)) { ?>
 	<?php } ?>
 
 </div>
-<?php 
+<?php
 }
 ?>

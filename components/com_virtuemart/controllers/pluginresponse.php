@@ -138,8 +138,16 @@ class VirtueMartControllerPluginresponse extends JController {
 			// send the email only if payment has been accepted
 			if (!class_exists('VirtueMartModelOrders'))
 			    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-			$order = new VirtueMartModelOrders();
-			$order->remove(array('virtuemart_order_id' => $virtuemart_order_id));
+
+			if (!class_exists('VirtueMartModelOrders'))
+					require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+			$modelOrder = new VirtueMartModelOrders();
+			$order['order_status'] = 'X';
+			$order['virtuemart_order_id'] = $virtuemart_order_id;
+			$order['customer_notified'] = 0;
+			$order['comments'] = '';
+			$modelOrder->updateStatusForOneOrder($virtuemart_order_id,$order,true);
+			$modelOrder->remove(array('virtuemart_order_id' => $virtuemart_order_id));
 		    }
 		    break; // This was the active plugin, so there's nothing left to do here.
 		}

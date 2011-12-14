@@ -660,9 +660,7 @@ class VirtueMartModelOrders extends VmModel {
 
 
 	function handleStockAfterStatusChangedPerProduct($newState, $oldState,$product, $quantity) {
-		if (VmConfig::get('check_stock', false)) {
-		    return;
-		}
+		
 		if($newState == $oldState) return;
 		$StatutWhiteList = array('P','C','X','R','S','N');
 
