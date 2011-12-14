@@ -423,7 +423,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	 */
 	final protected function getPluginMethod($method_id) {
 
-		 if(!$this->selectedThisByMethodId($this->_psType,$method_id)) return false;
+		 if(!$this->selectedThisByMethodId($method_id)) return false;
 		return $this->getVmPluginMethod($method_id);
 
 /*		$db = JFactory::getDBO();
