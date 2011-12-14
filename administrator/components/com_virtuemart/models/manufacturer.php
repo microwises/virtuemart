@@ -142,29 +142,29 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		$where = array();
 		if ($virtuemart_manufacturercategories_id > 0) {
-			$where[] .= 'm.`virtuemart_manufacturercategories_id` = '. $virtuemart_manufacturercategories_id;
+			$where[] .= ' `#__virtuemart_manufacturers`.`virtuemart_manufacturercategories_id` = '. $virtuemart_manufacturercategories_id;
 		}
 
 		if ( $search && $search != 'true') {
 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
 			//$search = $this->_db->Quote($search, false);
-			$where[] .= 'LOWER( l.`mf_name` ) LIKE '.$search;
+			$where[] .= 'LOWER( `mf_name` ) LIKE '.$search;
 		}
 
 		if ($onlyPublished) {
-			$where[] .= 'm.`published` = 1';
+			$where[] .= '`#__virtuemart_manufacturers`.`published` = 1';
 		}
 
 		$whereString = '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-		$select = ' m.*,l.*, mc.`mf_category_name` ';
+		$select = ' `#__virtuemart_manufacturers`.*,`#__virtuemart_manufacturers_'.VMLANG.'`.*, mc.`mf_category_name` ';
 
-		$joinedTables = 'FROM `#__virtuemart_manufacturers_'.VMLANG.'` as l JOIN `#__virtuemart_manufacturers` AS m USING (`virtuemart_manufacturer_id`) ';
-		$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturercategories_'.VMLANG.'` AS mc on  mc.`virtuemart_manufacturercategories_id`= m.`virtuemart_manufacturercategories_id` ';
+		$joinedTables = 'FROM `#__virtuemart_manufacturers_'.VMLANG.'` JOIN `#__virtuemart_manufacturers` USING (`virtuemart_manufacturer_id`) ';
+		$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturercategories_'.VMLANG.'` AS mc on  mc.`virtuemart_manufacturercategories_id`= `#__virtuemart_manufacturers`.`virtuemart_manufacturercategories_id` ';
 		if($getMedia){
-			$select .= ',mmex.* ';
-			$joinedTables .= 'LEFT JOIN `#__virtuemart_manufacturer_medias` as mmex ON  m.`virtuemart_manufacturer_id`= mmex.`virtuemart_manufacturer_id` ';
+			$select .= ',mmex.virtuemart_media_id ';
+			$joinedTables .= 'RIGHT JOIN `#__virtuemart_manufacturer_medias` as mmex ON `#__virtuemart_manufacturers`.`virtuemart_manufacturer_id`= mmex.`virtuemart_manufacturer_id` ';
 		}
 		$whereString = ' ';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where).' ' ;
