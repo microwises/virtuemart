@@ -281,6 +281,9 @@ abstract class vmPSPlugin extends vmPlugin {
 	 * @author Valerie Isaksen
 	 */
 	function onShowOrderPrint($order_number, $method_id) {
+	    if (!$this->selectedThisByMethodId($method_id)) {
+		return null; // Another method was selected, do nothing
+	    }
 		if (!($order_name = $this->getOrderPluginName($order_number, $method_id))) {
 			return null;
 		}
@@ -305,7 +308,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 		$db = JFactory::getDBO();
 		$q = 'SELECT * FROM `' . $this->_tablename . '` WHERE `order_number` = "' . $order_number . '"
-		AND `' . $this->_psType . '_id` =' . $pluginmethod_id;
+		AND `' . $this->_idName . '` =' . $pluginmethod_id;
 		$db->setQuery($q);
 		if (!($order = $db->loadObject())) {
 			return null;
