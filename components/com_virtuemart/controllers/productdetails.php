@@ -68,6 +68,8 @@ class VirtueMartControllerProductdetails extends JController {
 	 * @author Kohl Patrick, Christopher Roussel
 	 */
 	public function mailAskquestion () {
+
+		JRequest::checkToken() or jexit( 'Invalid Token' );
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
 		$vars = array();
@@ -122,6 +124,9 @@ class VirtueMartControllerProductdetails extends JController {
 	 * @author Kohl Patrick,
 	 */
 	public function mailRecommend () {
+
+		JRequest::checkToken() or jexit( 'Invalid Token' );
+
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
 		$vars = array();

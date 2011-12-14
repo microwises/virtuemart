@@ -98,16 +98,20 @@ abstract class vmCustomPlugin extends VmPlugin {
 
 	}
 
-	protected function plgVmGetPluginInternalDataCustom(&$field){
+	protected function getPluginProductDataCustom(&$field,$product_id){
+		$db = & JFactory::getDBO();
+		$q = 'SELECT `id` FROM `#__virtuemart_product_custom_plg_'.$this->_name.'` WHERE `virtuemart_product_id`='.$product_id.' and `virtuemart_custom_id`='.(int)$field->virtuemart_custom_id;
+		$db->setQuery($q);
+		$id = $db->loadResult();
 
-	 	$datas = $this->getPluginInternalData($field->virtuemart_custom_id,'virtuemart_custom_id');
-
+	 	$datas = $this->getPluginInternalData($id,'id');
 		if($datas){
-			$attribsCalc = get_object_vars($datas);
-
-			unset($attribsCalc['virtuemart_calc_id']);
-			foreach($attribsCalc as $k=>$v){
-				$calcData->$k = $v;
+			$fields = get_object_vars($datas);
+			unset($fields['id']);
+			unset($fields['virtuemart_custom_id']);
+			unset($fields['virtuemart_product_id']);
+			foreach($fields as $k=>$v){
+				$field->$k = $v;
 			}
 		}
 
@@ -126,7 +130,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 		$plugin_param[$key]['virtuemart_product_id'] = $data['virtuemart_product_id'];
 		vmdebug('plgData',$plugin_param[$key]);
 		$this->storePluginInternalData($plugin_param[$key]);
-
+	
     }
 
 
