@@ -96,7 +96,9 @@ class VirtueMartControllerCart extends JController {
 	}
 	$cart = VirtueMartCart::getCart();
 	if ($cart) {
-	    if ($cart->add()) {
+		$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
+		$success = true;
+	    if ($cart->add($virtuemart_product_ids,$success)) {
 		$msg = JText::_('COM_VIRTUEMART_PRODUCT_ADDED_SUCCESSFULLY');
 		$mainframe->enqueueMessage($msg);
 		$type = '';
