@@ -28,7 +28,7 @@ span.title{font-weight:700;display:block;border-bottom:solid #CAC9C9 1px;font-si
 .list-reviews .normal blockquote,.list-reviews .highlight blockquote{margin-top:12px;font-size:12px;word-wrap:break-word;}
 .list-reviews .normal blockquote:before,.list-reviews .highlight blockquote:before{content:open-quote;font-weight:700;font-size:24px;padding-right:6px;}
 .list-reviews .normal blockquote:after,.list-reviews .highlight blockquote:after{content:close-quote;font-weight:700;font-size:24px;padding-left:6px;}
-.list-reviews .highlight{background:#f7f6f6;}
+.list-reviews .highlight{background:#f7f6f6;border:solid #CAC9C9 1px;margin-bottom:8px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;padding:12px;}
 .list-reviews span.date{float:right;display:block;color:#777;border-left:solid #CAC9C9 1px;border-bottom:solid #CAC9C9 1px;position:relative;top:-12px;right:-12px;font-size:10px;-moz-border-radius-bottomleft:4px;-webkit-border-bottom-left-radius:4px;padding:4px 6px 2px;}
 span.variant-dropdown{width:150px;float:left;display:block;margin-bottom:5px;}
 span.variant-dropdown select{width:150px;}
