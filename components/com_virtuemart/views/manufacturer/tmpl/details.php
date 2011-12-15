@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 	<?php // Manufacturer URL
 	if(!empty($this->manufacturer->mf_url)) { ?>
 		<div class="manufacturer-url">
-			<a href="<?php echo $this->manufacturer->mf_url ?>"><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_PAGE') ?></a>
+			<a target="_blank" href="<?php echo $this->manufacturer->mf_url ?>"><?php echo JText::_('COM_VIRTUEMART_MANUFACTURER_PAGE') ?></a>
 		</div>
 	<?php } ?>
 
