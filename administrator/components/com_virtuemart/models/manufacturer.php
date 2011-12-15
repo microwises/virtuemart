@@ -164,7 +164,7 @@ class VirtueMartModelManufacturer extends VmModel {
 		$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturercategories_'.VMLANG.'` AS mc on  mc.`virtuemart_manufacturercategories_id`= `#__virtuemart_manufacturers`.`virtuemart_manufacturercategories_id` ';
 		if($getMedia){
 			$select .= ',mmex.virtuemart_media_id ';
-			$joinedTables .= 'RIGHT JOIN `#__virtuemart_manufacturer_medias` as mmex ON `#__virtuemart_manufacturers`.`virtuemart_manufacturer_id`= mmex.`virtuemart_manufacturer_id` ';
+			$joinedTables .= 'LEFT JOIN `#__virtuemart_manufacturer_medias` as mmex ON `#__virtuemart_manufacturers`.`virtuemart_manufacturer_id`= mmex.`virtuemart_manufacturer_id` ';
 		}
 		$whereString = ' ';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where).' ' ;
