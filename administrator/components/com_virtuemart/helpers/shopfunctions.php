@@ -128,7 +128,7 @@ class ShopFunctions {
 
 		$params = JComponentHelper::getParams('com_languages');
 		//$config =& JFactory::getConfig();$config->getValue('language');
-		$selectedLangue = $params->get('site', 'en_gb');
+		$selectedLangue = $params->get('site', 'en-GB');
 
 		$lang = strtolower(strtr($selectedLangue,'-','_'));
 		// only add if ID and view not null
@@ -137,10 +137,13 @@ class ShopFunctions {
 			if ($editView =='user') $editView ='vendor';
 			//$params = JComponentHelper::getParams('com_languages');
 			jimport('joomla.language.helper');
-			//$jlang = JFactory::getLanguage();
-			//$lang = JRequest::getVar('lang', $jlang->getTag());
 			$lang = JRequest::getVar('vmlang', $lang);
 			$languages = JLanguageHelper::createLanguageList($selectedLangue, constant('JPATH_SITE'), true);
+			$activeVmLangs = (vmconfig::get('active_languages') );
+
+			foreach ($languages as $k => &$joomlaLang) { 
+				if (!in_array($joomlaLang['value'], $activeVmLangs) )  unset($languages[$k] ); 
+			}
 			$langList = JHTML::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox"', 'value', 'text', $selectedLangue , 'vmlang');
 			$this->assignRef('langList',$langList);
 			$this->assignRef('lang',$lang);
