@@ -612,8 +612,9 @@ class VirtueMartCart {
 		if ($stockhandle!='none' && $stockhandle!='risetime') {
 
 			$productsleft = $product->product_in_stock - $product->product_ordered;
+			// TODO $productsleft = $product->product_in_stock - $product->product_ordered - $quantityincart ;
 			if ($quantity > $productsleft ){
-				if($productsleft>0 and $stockhandle!='disableadd'){
+				if($productsleft>0 and $stockhandle='disableadd'){
 					$quantity = $productsleft;
 					$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_QUANTITY',$quantity);
 					$this->setError($errorMsg);

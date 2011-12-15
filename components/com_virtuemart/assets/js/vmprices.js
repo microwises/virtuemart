@@ -43,8 +43,8 @@
 			$.getJSON(siteurl+'index.php?option=com_virtuemart&nosef=1&view=cart&task=addJS&format=json',encodeURIComponent(datas),
 				function(datas, textStatus) {
 					if(datas.stat ==1){
-						var value = form.find('.quantity-input').val() ;
-						var txt = value+" "+form.find(".pname").val()+' '+vmCartText;
+						//var value = form.find('.quantity-input').val() ;
+						var txt = form.find(".pname").val()+' '+vmCartText;
                                                 $.facebox.settings.closeImage = closeImage;
                                                 $.facebox.settings.loadingImage = loadingImage;
                                                 $.facebox.settings.faceboxHtml = faceboxHtml;
