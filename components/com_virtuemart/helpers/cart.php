@@ -1024,11 +1024,11 @@ class VirtueMartCart {
 	 * @author Max Milbers
 	 * @access public
 	 */
-	public function prepareCartData($checkAutomaticSelected=true){
+	public function prepareCartData($fromModuleCart=true){
 
 		/* Get the products for the cart */
 		$prices = array();
-		$product_prices = $this->getCartPrices($checkAutomaticSelected);
+		$product_prices = $this->getCartPrices($fromModuleCart);
 		if (empty($product_prices)) return;
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
@@ -1056,12 +1056,12 @@ class VirtueMartCart {
 		$this->pricesUnformatted = $product_prices;
 		$this->prices = $prices;
 		$this->pricesCurrency = $currency->getCurrencyDisplay();
-
-		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
-		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$this->paymentCurrency));
-
+		if ($fromModuleCart) {
+		    if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+		    JPluginHelper::importPlugin('vmpayment');
+		    $dispatcher = JDispatcher::getInstance();
+		    $returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$this->paymentCurrency));
+		}
 		$cartData = $calculator->getCartData();
 
 		$this->setCartIntoSession();

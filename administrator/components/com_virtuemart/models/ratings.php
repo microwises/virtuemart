@@ -140,11 +140,11 @@ class VirtueMartModelRatings extends VmModel {
      	/* Pagination */
      	$this->getPagination();
 
-       	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`, `u`.`name` AS customer FROM `#__virtuemart_rating_reviews` AS `pr`
+       	$q = 'SELECT `u`.*,`pr`.*,`p`.`product_name`,`rv`.`vote`, `u`.`name` AS customer, `pr`.`published` FROM `#__virtuemart_rating_reviews` AS `pr`
 		LEFT JOIN `#__users` AS `u`	ON `pr`.`created_by` = `u`.`id`
 		LEFT JOIN `#__virtuemart_products_'.VMLANG.'` AS `p` ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`
 		LEFT JOIN `#__virtuemart_rating_votes` AS `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`u`.`id`
-		WHERE  `p`.`virtuemart_product_id` = "'.$virtuemart_product_id.'" AND `p`.`virtuemart_product_id` = "1"
+		WHERE  `p`.`virtuemart_product_id` = "'.$virtuemart_product_id.'"
 		ORDER BY `pr`.`modified_on` ';
      	$this->_db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
 
@@ -328,9 +328,9 @@ class VirtueMartModelRatings extends VmModel {
 				$review = $this->getReviewByProduct($data['virtuemart_product_id'],$userId);
 
 				if(!empty($review->review_rates)){
-					$data['review_rates'] = $review->review_rates + $data['review_vote'];
+					$data['review_rates'] = $review->review_rates + $data['vote'];
 				} else {
-					$data['review_rates'] = $data['review_vote'];
+					$data['review_rates'] = $data['vote'];
 				}
 
 				if(!empty($review->review_ratingcount)){

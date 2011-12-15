@@ -462,6 +462,7 @@ if (empty ( $this->product )) {
 			<?php
 			$i=0;
 			$review_editable=true;
+			$reviews_published=0;
 			if ($this->rating_reviews) {
 				foreach($this->rating_reviews as $review ) {
 					if ($i % 2 == 0) {
@@ -478,9 +479,12 @@ if (empty ( $this->product )) {
 					?>
 
 					<?php // Loop through all reviews
-					if (!empty($this->rating_reviews)) { ?>
+					if (!empty($this->rating_reviews) && $review->published) {
+					    $reviews_published++;
+					    ?>
 					<div class="<?php echo $color ?>">
 						<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>
+						<span class="vote"><?php echo JText::_('COM_VIRTUEMART_RATING')." ".$review->review_rates; ?></span>
 						<blockquote><?php echo $review->comment; ?></blockquote>
 						<span class="bold"><?php echo $review->customer ?></span>
 					</div>
@@ -489,7 +493,7 @@ if (empty ( $this->product )) {
 					$i++ ;
 					if ( $i == $ratingsShow && !$showall) {
 						/* Show all reviews ? */
-						if ( count($this->rating_reviews) >= $ratingsShow ) {
+						if ( $reviews_published >= $ratingsShow ) {
 							$attribute = array('class'=>'details', 'title'=>JText::_('COM_VIRTUEMART_MORE_REVIEWS'));
 							echo JHTML::link($this->more_reviews, JText::_('COM_VIRTUEMART_MORE_REVIEWS'),$attribute);
 						}
