@@ -130,8 +130,8 @@ abstract class vmCustomPlugin extends VmPlugin {
 		$key = key($plugin_param) ;
 		$plugin_param[$key]['virtuemart_product_id'] = $data['virtuemart_product_id'];
 		vmdebug('plgData',$plugin_param[$key]);
-		$this->_tableId = $this->getIdForCustomIdProduct($data['virtuemart_product_id'],$plugin_param[$key]['virtuemart_custom_id']);
-		$this->id = $this->_tableId ;
+		$this->id = $this->getIdForCustomIdProduct($data['virtuemart_product_id'],$plugin_param[$key]['virtuemart_custom_id']);
+		$this->_tableId ='id';
 		$this->storePluginInternalData($plugin_param[$key],'id');
     }
 

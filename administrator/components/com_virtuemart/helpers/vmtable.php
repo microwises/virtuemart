@@ -432,7 +432,7 @@ class VmTable extends JTable{
 				}
 
 				if(in_array($slugAutoName,$this->_translatableFields)){
-					$checkTable = $this->_tbl.'_'.VM_LANG;
+					$checkTable = $this->_tbl.'_'.VMLANG;
 				} else {
 					$checkTable = $this->_tbl;
 				}

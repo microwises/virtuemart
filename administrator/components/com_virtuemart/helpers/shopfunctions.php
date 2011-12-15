@@ -177,13 +177,13 @@ class ShopFunctions {
 			})';
 			$document->addScriptDeclaration ( $j);
 		} else {
-			$params = JComponentHelper::getParams('com_languages');
-			$lang = $params->get('site', 'en-GB');
+			// $params = JComponentHelper::getParams('com_languages');
+			// $lang = $params->get('site', 'en-GB');
 			$jlang = JFactory::getLanguage();
 			$langs = $jlang->getKnownLanguages();
-			$defautName = $langs[$lang]['name'];
+			$defautName = $langs[$selectedLangue]['name'];
 			$flagImg =JURI::root( true ).'/administrator/components/com_virtuemart/assets/images/flag/'.substr($lang,0,2).'.png';
-			$langList = '<input name ="vmlang" type="hidden" value="'.$lang.'" ><img style="vertical-align: middle;" alt="'.$defautName.'" src="'.$flagImg.'"> <b> '.$defautName.'</b>';
+			$langList = '<input name ="vmlang" type="hidden" value="'.$selectedLangue.'" ><img style="vertical-align: middle;" alt="'.$defautName.'" src="'.$flagImg.'"> <b> '.$defautName.'</b>';
 			$this->assignRef('langList',$langList);
 			$this->assignRef('lang',$lang);
 		}

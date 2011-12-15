@@ -245,8 +245,8 @@ function virtuemartParseRoute($segments) {
 			array_shift($segments);
 		}
 		if (empty($segments)) {
-			// $vars['view'] = 'category';
-			// $vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+			$vars['view'] = 'category';
+			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
 			return $vars;
 		}
 	}
@@ -254,8 +254,8 @@ function virtuemartParseRoute($segments) {
 		$vars['order'] ='DESC' ;
 		array_shift($segments);
 		if (empty($segments)) {
-			// $vars['view'] = 'category';
-			// $vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+			$vars['view'] = 'category';
+			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
 			return $vars;
 		}
 	}
@@ -266,8 +266,8 @@ function virtuemartParseRoute($segments) {
 		array_shift($segments);
 		$vars['search'] = 'true';
 		if (empty($segments)) {
-			// $vars['view'] = 'category';
-			// $vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+			$vars['view'] = 'category';
+			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
 			return $vars;
 		}
 
@@ -279,8 +279,8 @@ function virtuemartParseRoute($segments) {
 			$vars['keyword'] = array_shift($segments);
 
 		}
-		// $vars['view'] = 'category';
-		// $vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+		$vars['view'] = 'category';
+		$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
 		if (empty($segments)) return $vars;
 	}
 	if (end($segments) == 'modal') {
