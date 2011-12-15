@@ -47,7 +47,7 @@ class VmTableData extends VmTable {
 				$this->_db->setQuery($_qry);
 				$id = $this->_db->loadResult();
 			}
-		if (!$id) $id = $this->_tbl_key ; // added by patrick kohl to set the $id external
+		//if (!$id) $id = $this->_tbl_key ; // added by patrick kohl to set the $id external
 //		$this->setError($_qry,'$_qry');
 
         if ( !empty($id) ) {
