@@ -253,7 +253,7 @@ if (empty ( $this->product )) {
 					$stockhandle = VmConfig::get('stockhandle','none');
 					if($stockhandle=='risetime' and ($this->product->product_in_stock - $this->product->product_ordered)<1){
 					?>	<div class="availability">
-						<?php echo JHTML::image(JURI::root().VmConfig::get('assets_general_path').'images/availability/'.VmConfig::get('risedavalaibility','7d.gif'), VmConfig::get('risedavalaibility','7d.gif'), array('class' => 'availability')); ?>
+						<?php echo JHTML::image(JURI::root().VmConfig::get('assets_general_path').'images/availability/'.VmConfig::get('rised_availability','7d.gif'), VmConfig::get('rised_availability','7d.gif'), array('class' => 'availability')); ?>
 					</div>
 				<?php	} else {
 					?>

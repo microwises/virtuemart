@@ -97,16 +97,16 @@ defined('_JEXEC') or die('Restricted access');
 						</div>
 					</td>
 					<td width="79%" >
-						<input type="text" class="inputbox" id="product_availability" name="product_availability" value="<?php echo $this->config->get('product_availability'); ?>" />
+						<input type="text" class="inputbox" id="product_availability" name="rised_availability" value="<?php echo $this->config->get('rised_availability'); ?>" />
 						<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>'.JText::_('COM_VIRTUEMART_AVAILABILITY').'</b><br/ >'.JText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP1') ?>"></span>
 
-						<?php echo JHTML::_('list.images', 'image', $this->config->get('product_availability'), " ", $this->imagePath); ?>
+						<?php echo JHTML::_('list.images', 'image', $this->config->get('rised_availability'), " ", $this->imagePath); ?>
 						<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>'.JText::_('COM_VIRTUEMART_AVAILABILITY').'</b><br/ >'.JText::sprintf('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP2',  $this->imagePath ) ?>"></span>
 					</td>
 				</tr>
 				<tr>
 					<td width="21%">&nbsp;</td>
-					<td width="79%"><img border="0" id="imagelib" alt="<?php echo JText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php if ($this->config->get('product_availability')) echo JURI::root(true).$this->imagePath.$this->config->get('product_availability');?>"/></td>
+					<td width="79%"><img border="0" id="imagelib" alt="<?php echo JText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php if ($this->config->get('rised_availability')) echo JURI::root(true).$this->imagePath.$this->config->get('rised_availability');?>"/></td>
 				</tr>
 
 			<tr>
