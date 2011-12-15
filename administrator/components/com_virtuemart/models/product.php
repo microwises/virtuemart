@@ -184,45 +184,15 @@ class VirtueMartModelProduct extends VmModel {
 			$where[] = ' p.`published`="1" ';
 		}
 
-		//Worked for me that way, but others got problems that the products where not shown up in the category list
-		// the check_stock is only meant for the cart, so I removed it. note by Max Milbers
-		// 		if ($app->isSite() && VmConfig::get('check_stock') && Vmconfig::get('show_out_of_stock_products') != 1){
-		// 		if ($app->isSite() && Vmconfig::get('show_out_of_stock_products') != 1){
-		// 			$where[] = ' `product_in_stock` > 0 ';
-		// 		}
-
-		if($app->isSite() && !VmConfig::get('use_as_catalog',0) && !VmConfig::get('show_out_of_stock_products',0) ){
+		if($app->isSite() && !VmConfig::get('use_as_catalog',0) && VmConfig::get('stockhandle','none')=='disableit' ){
 			$where[] = ' p.`product_in_stock`>"0" ';
 		}
 
 		if ( $this->keyword !== "0" and $group ===false) {
 			$groupBy = 'group by p.`virtuemart_product_id`';
 
-			//			$keyword = trim(preg_replace('/\s+/', '%', $keyword), '%');
+			//		$keyword = trim(preg_replace('/\s+/', '%', $keyword), '%');
 			$keyword = '"%' . $this->_db->getEscaped($this->keyword, true) . '%"';
-
-			//Old version by Patrick
-		// $searchFields = VmConfig::get('browse_search_fields');
-			// foreach ($searchFields as $searchField) {
-				// if ( strpos($searchField ,'category')!== NULL ) $joinCategory = true ;
-				// if ( strpos($searchField ,'mf_')!== NULL ) $joinMf = true ;
-				// if ($searchField == 'pp.product_price') $joinPrice = true ;
-
-				// $filter_search[] = ' '.$searchField.' LIKE '.$keyword;
-			// }
-			// if(!empty($filter_search)){
-				// $where[] = " ( ".implode(' OR ', $filter_search )." ) ";
-			// }/*	*/
-
-			//We should use here only one if
-// 			$joinLang = true;
-// 		} elseif ($search = vmRequest::uword('filter_product', false, ' ')){
-// 			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
-// 			$searchFields = VmConfig::get('browse_search_fields');
-
-			//new version of joe
-			// modified by Patrick Kohl
-			 
 
 			foreach ($this->valid_search_fields as $searchField) {
 				if($searchField == 'category_name' || $searchField == 'category_description'){
@@ -235,7 +205,7 @@ class VirtueMartModelProduct extends VmModel {
 					$searchField = 'p`.`'.substr($searchField, 2, (strlen($searchField))).'`' ;
 				}
 				$filter_search[] = '`'.$searchField.'` LIKE '.$keyword;
-				
+
 			}
 			if(!empty($filter_search)){
 				$where[] = implode(' OR ', $filter_search );
@@ -527,9 +497,8 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			$app = JFactory::getApplication() ;
-			// 		if($app->isSite() && !VmConfig::get('use_as_catalog',0) && !VmConfig::get('show_out_of_stock_products',0) ){
-			if($app->isSite() && !VmConfig::get('show_out_of_stock_products',0) && $child->product_in_stock<=0){
-				vmdebug('STOCK 0',VmConfig::get('use_as_catalog',0), VmConfig::get('show_out_of_stock_products',0) , $child->product_in_stock);
+			if($app->isSite() && VmConfig::get('stockhandle','none')=='disableit' && ($child->product_in_stock-$child->product_ordered)<=0){
+				vmdebug('STOCK 0',VmConfig::get('use_as_catalog',0), VmConfig::get('stockhandle','none') , $child->product_in_stock);
 				return false;
 			}
 			$_products[$productKey] = $child;
@@ -1422,7 +1391,7 @@ function getOrderByList($virtuemart_category_id=false) {
 	if ($orderby != '' && $orderby != $orderbyCfg ) $orderbyTxt = '&orderby='.$orderby;
 
 	// 		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0 );
-	
+
 	// if($virtuemart_category_id!==false){
 		// $fieldLink = '&virtuemart_category_id='.$virtuemart_category_id;
 	// }

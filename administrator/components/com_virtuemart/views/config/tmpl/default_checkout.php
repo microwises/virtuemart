@@ -22,17 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 			<fieldset>
 				<legend><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECKOUT_SETTINGS') ?></legend>
 				<table class="admintable">
+
 					<tr>
-						<td class="key">
-							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECK_STOCK_EXPLAIN'); ?>">
-								<label for="check_stock"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_CHECK_STOCK') ?></label>
-							</span>
-						</td>
-						<td>
-							<?php echo VmHTML::checkbox('check_stock', $this->config->get('check_stock')); ?>
-						</td>
-					</tr>
-                                        <tr>
 						<td class="key">
 							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT_EXPLAIN'); ?>">
 								<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT') ?>

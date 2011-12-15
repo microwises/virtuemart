@@ -62,35 +62,6 @@ class VirtueMartModelState extends VmModel {
 	}
 
 
-    /**
-     * Retreive a state record given a state code.
-     *
-     * @author RickG
-     * @param string $code State code to lookup
-     * @return object State object from database
-     */
-    function getStateByCode($code)
-    {
-		$db = JFactory::getDBO();
-
-		$stateCodeLength = strlen($code);
-		switch ($stateCodeLength) {
-			case 2:
-				$stateCodeFieldname = 'state_2_code';
-				break;
-			case 3:
-				$stateCodeFieldname = 'state_3_code';
-				break;
-			default:
-				return false;
-		}
-
-		$query = 'SELECT * FROM `#__virtuemart_states` WHERE `' . $stateCodeFieldname . '` = ' . (int)$code;
-		$db->setQuery($query);
-
-        return $db->loadObject();
-	}
-
 	/**
 	 * Retireve a list of countries from the database.
 	 *
@@ -99,20 +70,20 @@ class VirtueMartModelState extends VmModel {
 	 */
 	public function getStates($countryId, $noLimit=false)
 	{
-		$quer= 'SELECT * FROM `#__virtuemart_states`  WHERE `virtuemart_country_id`= "'.(int)$countryId.'" 
+		$quer= 'SELECT * FROM `#__virtuemart_states`  WHERE `virtuemart_country_id`= "'.(int)$countryId.'"
 				ORDER BY `#__virtuemart_states`.`state_name`';
-		
+
 		if ($noLimit) {
 		    $this->_data = $this->_getList($quer);
 		}
 		else {
 		    $this->_data = $this->_getList($quer, $this->getState('limitstart'), $this->getState('limit'));
 		}
-		
+
 		if(count($this->_data) >0){
 			$this->_total = $this->_getListCount($quer);
 		}
-		
+
 		return $this->_data;
 	}
 
@@ -124,10 +95,10 @@ class VirtueMartModelState extends VmModel {
 	 */
 	public function testStateCountry($countryId,$stateId)
 	{
-		
+
 		$countryId = (int)$countryId;
 		$stateId = (int)$stateId;
-		
+
 		$db = JFactory::getDBO();
 		$q = 'SELECT * FROM `#__virtuemart_countries` WHERE `virtuemart_country_id`= "'.$countryId.'" AND `published`="1"';
 		$db->setQuery($q);

@@ -143,14 +143,17 @@ class VirtueMartControllerCart extends JController {
 	    $continue_link = JRoute::_('index.php?option=com_virtuemart' . $categoryLink);
 	    $virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
 	    $successMsg = JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING');
-	    if ($cart->add($virtuemart_product_ids,$success)) {
+		$errorMsg ='OK';
+	    if ($cart->add($virtuemart_product_ids, $errorMsg )) {
+			
 		$this->json->msg = '<a class="continue" href="' . $continue_link . '" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 		$this->json->msg .= '<a style ="float:right;" href="' . JRoute::_("index.php?option=com_virtuemart&view=cart") . '">' . JText::_('COM_VIRTUEMART_CART_SHOW') . '</a>';
+		if ($errorMsg) $this->json->msg .= '<div>'.$errorMsg.'</div>';
 		$this->json->stat = '1';
 	    } else {
 		// $this->json->msg = '<p>' . $cart->getError() . '</p>';
 		$this->json->msg = '<a class="continue" href="' . $continue_link . '" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
-		$this->json->msg .= '<div>'.$success.'</div>';
+		$this->json->msg .= '<div>'.$errorMsg.'</div>';
 		$this->json->stat = '2';
 	    }
 	} else {

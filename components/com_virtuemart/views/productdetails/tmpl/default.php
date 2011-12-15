@@ -212,15 +212,19 @@ if (empty ( $this->product )) {
 
 						<?php // Add the button
 						$button_lbl = JText::_('COM_VIRTUEMART_CART_ADD_TO');
-						$button_cls = ''; //$button_cls = 'addtocart_button';
-						if (VmConfig::get('check_stock') == '1' && !$this->product->product_in_stock) {
+						$button_cls = 'addtocart-button'; //$button_cls = 'addtocart_button';
+
+
+						// Display the add to cart button
+						$stockhandle = VmConfig::get('stockhandle','none');
+						if(($stockhandle=='disableit' or $stockhandle=='disableadd') and ($this->product->product_in_stock - $this->product->product_ordered)<1){
 							$button_lbl = JText::_('COM_VIRTUEMART_CART_NOTIFY');
 							$button_cls = 'notify-button';
-						} ?>
-
-						<?php // Display the add to cart button ?>
+						}
+						vmdebug('$stockhandle '.$stockhandle.' and stock '.$this->product->product_in_stock.' ordered '.$this->product->product_ordered);
+						?>
 						<span class="addtocart-button">
-							<input type="submit" name="addtocart"  class="addtocart-button" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
+							<input type="submit" name="addtocart"  class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
 						</span>
 
 					<div class="clear"></div>
@@ -243,11 +247,19 @@ if (empty ( $this->product )) {
 
 				<?php // Availability Image
 				/* TO DO add width and height to the image */
-				if (!empty($this->product->product_availability)) { ?>
+				if (!empty($this->product->product_availability)) {
+					$stockhandle = VmConfig::get('stockhandle','none');
+					if($stockhandle=='risetime' and ($this->product->product_in_stock - $this->product->product_ordered)<1){
+					?>	<div class="availability">
+						<?php echo JHTML::image(JURI::root().VmConfig::get('assets_general_path').'images/availability/'.VmConfig::get('risedavalaibility','7d.gif'), VmConfig::get('risedavalaibility','7d.gif'), array('class' => 'availability')); ?>
+					</div>
+				<?php	} else {
+					?>
 					<div class="availability">
 						<?php echo JHTML::image(JURI::root().VmConfig::get('assets_general_path').'images/availability/'.$this->product->product_availability, $this->product->product_availability, array('class' => 'availability')); ?>
 					</div>
 				<?php }
+				}
 
 				// Ask a question about this product ?>
 

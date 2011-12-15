@@ -286,7 +286,7 @@ class VirtueMartCart {
 	 * @author Max Milbers
 	 * @access public
 	 */
-	public function add($virtuemart_product_ids=null,&$successMsg='') {
+	public function add($virtuemart_product_ids=null,&$errorMsg='') {
 		$mainframe = JFactory::getApplication();
 		$success = false;
 		$post = JRequest::get('default');
@@ -419,11 +419,11 @@ class VirtueMartCart {
 
 				if (array_key_exists($productKey, $this->products) && (empty($product->customPlugin)) ) {
 
-					if ($this->checkForQuantities($product, $this->products[$productKey]->quantity)) {
+					if ($this->checkForQuantities($product, $this->products[$productKey]->quantity,$errorMsg)) {
 						$this->products[$productKey]->quantity += $quantityPost;
 						$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_UPDATED'));
 					} else {
-						$successMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
+						$errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
 						continue;
 					}
 				}  else {
@@ -431,12 +431,12 @@ class VirtueMartCart {
 						$productKey .= count($this->products);
 						//print_r($product);
 					}
-					if ($this->checkForQuantities($product, $quantityPost)) {
+					if ($this->checkForQuantities($product, $quantityPost,$errorMsg)) {
 						$this->products[$productKey] = $product;
 						$product->quantity = $quantityPost;
 						$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED'));
 					} else {
-						$successMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
+						$errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
 						continue;
 					}
 					// echo $productKey;
@@ -587,37 +587,44 @@ class VirtueMartCart {
 	 *
 	 * @author Max Milbers
 	 */
-	private function checkForQuantities($product, $quantity=0) {
+	private function checkForQuantities($product, &$quantity=0,&$errorMsg ='') {
 
+		$stockhandle = VmConfig::get('stockhandle','none');
 		$mainframe = JFactory::getApplication();
 		/* Check for a valid quantity */
-		if (!preg_match("/^[0-9]*$/", $quantity)) {
-			$error = JText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
+		if (!is_int( $quantity)) {
+			$errorMsg = JText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
 			//			$this->_error[] = 'Quantity was not a number';
-			$this->setError($error);
-			$mainframe->enqueueMessage();
+			$this->setError($errorMsg);
+			$mainframe->enqueueMessage($errorMsg);
 			return false;
 		}
-
 		/* Check for negative quantity */
 		if ($quantity < 0) {
 			//			$this->_error[] = 'Quantity under zero';
-			$error = JText::_('COM_VIRTUEMART_CART_ERROR_NO_NEGATIVE', false);
-			$this->setError($error);
-			$mainframe->enqueueMessage($error);
+			$errorMsg = JText::_('COM_VIRTUEMART_CART_ERROR_NO_NEGATIVE', false);
+			$this->setError($errorMsg);
+			$mainframe->enqueueMessage($errorMsg);
 			return false;
 		}
 
 		// Check to see if checking stock quantity
-		if (VmConfig::get('check_stock', false)) {
-			$request_stock = array();
+		if ($stockhandle!='none' && $stockhandle!='risetime') {
+
 			$productsleft = $product->product_in_stock - $product->product_ordered;
 			if ($quantity > $productsleft ){
-
-				$error = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
-				$this->setError($error); // Private error retrieved with getError is used only by addJS, so only the latest is fine
-				vmInfo($error,$product->product_name,$productsleft);
-				return false;
+				if($productsleft>0 and $stockhandle!='disableadd'){
+					$quantity = $productsleft;
+					$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_QUANTITY',$quantity);
+					$this->setError($errorMsg);
+					$mainframe->enqueueMessage($errorMsg);
+				} else {
+					$errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
+					$this->setError($errorMsg); // Private error retrieved with getError is used only by addJS, so only the latest is fine
+					vmInfo($error,$product->product_name,$productsleft);
+					$mainframe->enqueueMessage($errorMsg);
+					return false;
+				}
 			}
 		}
 
@@ -627,20 +634,18 @@ class VirtueMartCart {
 		$max = $product->max_order_level;
 		if ($min != 0 && $quantity < $min) {
 			//			$this->_error[] = 'Quantity reached not minimum';
-			$error = JText::sprintf('COM_VIRTUEMART_CART_MIN_ORDER', $min);
-			$this->setError($error);
-			$mainframe->enqueueMessage($error, 'error');
+			$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_MIN_ORDER', $min);
+			$this->setError($errorMsg);
+			$mainframe->enqueueMessage($errorMsg, 'error');
 			return false;
 		}
 		if ($max != 0 && $quantity > $max) {
 			//			$this->_error[] = 'Quantity reached over maximum';
-			$error = JText::sprintf('COM_VIRTUEMART_CART_MAX_ORDER', $max);
-			$this->setError($error);
-			$mainframe->enqueueMessage($error, 'error');
+			$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_MAX_ORDER', $max);
+			$this->setError($errorMsg);
+			$mainframe->enqueueMessage($errorMsg, 'error');
 			return false;
 		}
-
-
 
 		return true;
 	}
@@ -1024,11 +1029,11 @@ class VirtueMartCart {
 	 * @author Max Milbers
 	 * @access public
 	 */
-	public function prepareCartData($fromModuleCart=true){
+	public function prepareCartData($checkAutomaticSelected=true){
 
 		/* Get the products for the cart */
 		$prices = array();
-		$product_prices = $this->getCartPrices($fromModuleCart);
+		$product_prices = $this->getCartPrices($checkAutomaticSelected);
 		if (empty($product_prices)) return;
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
@@ -1056,12 +1061,12 @@ class VirtueMartCart {
 		$this->pricesUnformatted = $product_prices;
 		$this->prices = $prices;
 		$this->pricesCurrency = $currency->getCurrencyDisplay();
-		if ($fromModuleCart) {
-		    if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
-		    JPluginHelper::importPlugin('vmpayment');
-		    $dispatcher = JDispatcher::getInstance();
-		    $returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$this->paymentCurrency));
-		}
+
+		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+		JPluginHelper::importPlugin('vmpayment');
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$this->paymentCurrency));
+
 		$cartData = $calculator->getCartData();
 
 		$this->setCartIntoSession();

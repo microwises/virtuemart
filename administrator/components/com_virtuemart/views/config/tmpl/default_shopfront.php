@@ -63,16 +63,31 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo VmHTML::checkbox('show_printicon', $this->config->get('show_printicon')); ?>
 						</td>
 					</tr>
-			<tr>
+<?php	/*		<tr>
 	    	<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS_EXPLAIN'); ?>">
-				<label for="show_out_of_stock_products"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS') ?></label>
+				<label for="show_products_out_of_stock"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_OUT_OF_STOCK_PRODUCTS') ?></label>
 				</span>
 	    	</td>
 	    	<td valign="top">
-				<?php echo VmHTML::checkbox('show_out_of_stock_products', $this->config->get('show_out_of_stock_products')); ?>
+				<?php echo VmHTML::checkbox('show_products_out_of_stock', $this->config->get('show_products_out_of_stock')); ?>
 	    	</td>
 			</tr>
+			<tr> */?>
+	    	<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_POOS_ENABLE_EXPLAIN'); ?>">
+				<label for="stockhandle"><?php echo JText::_('COM_VIRTUEMART_CFG_POOS_ENABLE') ?></label>
+				</span>
+	   	 	</td>
+	    	<td>
+<?php		$options = array(
+				'none'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_NONE'),
+				'risetime'	=> JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_RISE_AVATIME'),
+				'disableadd'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_ADD'),
+				'disableit'	=>	JText::_('COM_VIRTUEMART_ADMIN_CFG_POOS_DISABLE_IT')
+			);
+			echo VmHTML::radioList('stockhandle', $this->config->get('stockhandle','none'),$options);
+			?>
 			<tr>
 	    	<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_ENABLE_EXPLAIN'); ?>">
