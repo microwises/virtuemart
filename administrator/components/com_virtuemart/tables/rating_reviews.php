@@ -44,7 +44,7 @@ class TableRating_reviews extends VmTable {
 	var $review_rates         			= null;
 	var $review_ratingcount      		= null;
 	var $review_rating      			= null;
-
+	var $review_editable		   = 1;
 	var $lastip      		= null;
 
 	/** @var int State of the review */

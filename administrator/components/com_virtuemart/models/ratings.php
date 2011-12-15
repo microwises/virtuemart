@@ -303,7 +303,7 @@ class VirtueMartModelRatings extends VmModel {
 			vmdebug('saveRating $data',$data);
 			$rating = $this->getTable('ratings');
 			$rating->bindChecknStore($data,true);
-	    	$errors = $rating->getErrors();
+			$errors = $rating->getErrors();
 			foreach($errors as $error){
 				$this->setError(get_class( $this ).'::Error store rating '.$error);
 			}
@@ -313,7 +313,7 @@ class VirtueMartModelRatings extends VmModel {
 				//set to defaut value not used (prevent hack)
 				$data['review_ok'] = 0;
 				$data['review_rating'] = 0;
-
+				$data['review_editable'] = 0;
 				// Check if ratings are auto-published (set to 0 prevent injected by user)
 				//
 				$app = JFactory::getApplication();

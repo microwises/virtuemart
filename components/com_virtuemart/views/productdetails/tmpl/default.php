@@ -454,13 +454,14 @@ if (empty ( $this->product )) {
 	}
 
 	if($this->showReview) {
-		$alreadycommented = false;
+
 		?>
 		<h4><?php echo JText::_('COM_VIRTUEMART_REVIEWS') ?></h4>
 
 		<div class="list-reviews">
 			<?php
 			$i=0;
+			$review_editable=true;
 			if ($this->rating_reviews) {
 				foreach($this->rating_reviews as $review ) {
 					if ($i % 2 == 0) {
@@ -470,9 +471,11 @@ if (empty ( $this->product )) {
 					}
 
 					/* Check if user already commented */
-	//				if ($review->virtuemart_userid == $this->user->id) {
-	//					$alreadycommented = true;
-	//				} ?>
+	 				// if ($review->virtuemart_userid == $this->user->id ) {
+					if ($review->created_by == $this->user->id && !$review->review_editable) {
+	 					$review_editable = false;
+	 				}
+					?>
 
 					<?php // Loop through all reviews
 					if (!empty($this->rating_reviews)) { ?>
@@ -503,7 +506,7 @@ if (empty ( $this->product )) {
 		</div>
 
 		<?php // Writing A Review
-		if($this->allowReview && !$alreadycommented) { ?>
+		if($this->allowReview ) { ?>
 		<div class="write-reviews">
 
 			<?php // Show Review Length While Your Are Writing
@@ -543,7 +546,7 @@ if (empty ( $this->product )) {
 			$document->addScriptDeclaration($reviewJavascript);
 
 			if($this->showRating) {
-				if($this->allowRating) { ?>
+				if($this->allowRating && $review_editable) { ?>
 					<h4><?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW')  ?><span><?php echo JText::_('COM_VIRTUEMART_WRITE_FIRST_REVIEW') ?></span></h4>
 					<span class="step"><?php echo JText::_('COM_VIRTUEMART_RATING_FIRST_RATE') ?></span>
 					<ul class="rating">
@@ -566,25 +569,25 @@ if (empty ( $this->product )) {
 					<?php
 
 				}
-			} ?>
-
-			<span class="step"><?php echo JText::sprintf('COM_VIRTUEMART_REVIEW_COMMENT', VmConfig::get('reviews_minimum_comment_length', 100), VmConfig::get('reviews_maximum_comment_length', 2000)); ?></span>
-			<br />
-			<textarea class="virtuemart" title="<?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW') ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeyup="refresh_counter();" name="comment" rows="5" cols="60"><?php if(!empty($this->review->comment))echo $this->review->comment; ?></textarea>
-			<br />
-			<span><?php echo JText::_('COM_VIRTUEMART_REVIEW_COUNT') ?>
-			<input type="text" value="0" size="4" class="vm-default" name="counter" maxlength="4" readonly="readonly" />
-			</span>
-			<br /><br />
-			<input class="highlight-button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo JText::_('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" />
-		</div>
-		<?php
+			}
+			if($review_editable ) { ?>
+				<span class="step"><?php echo JText::sprintf('COM_VIRTUEMART_REVIEW_COMMENT', VmConfig::get('reviews_minimum_comment_length', 100), VmConfig::get('reviews_maximum_comment_length', 2000)); ?></span>
+				<br />
+				<textarea class="virtuemart" title="<?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW') ?>" class="inputbox" id="comment" onblur="refresh_counter();" onfocus="refresh_counter();" onkeyup="refresh_counter();" name="comment" rows="5" cols="60"><?php if(!empty($this->review->comment))echo $this->review->comment; ?></textarea>
+				<br />
+				<span><?php echo JText::_('COM_VIRTUEMART_REVIEW_COUNT') ?>
+				<input type="text" value="0" size="4" class="vm-default" name="counter" maxlength="4" readonly="readonly" />
+				</span>
+				<br /><br />
+				<input class="highlight-button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo JText::_('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" />
+			</div>
+			<?php
+			} else {
+				echo '<strong>'.JText::_('COM_VIRTUEMART_DEAR').$this->user->name.',</strong><br />' ;
+				echo JText::_('COM_VIRTUEMART_REVIEW_ALREADYDONE');
+			}
 		}
 	}
-//					} else {
-//						echo '<strong>'.JText::_('COM_VIRTUEMART_DEAR').$this->user->name.',</strong><br />' ;
-//						echo JText::_('COM_VIRTUEMART_REVIEW_ALREADYDONE');
-//					}
 
 	if($this->allowRating || $this->showReview) {
 	?>
