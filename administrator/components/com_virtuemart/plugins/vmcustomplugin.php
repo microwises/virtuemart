@@ -88,10 +88,11 @@ abstract class vmCustomPlugin extends VmPlugin {
 
     	if (empty($field->custom_value)) return 0 ;
     	if (!empty($field->custom_param) && is_string($field->custom_param)) $custom_param = json_decode($field->custom_param,true);
-    	else $custom_param = array();
-    	$field->custom_param = $custom_param;
-    	foreach($field->custom_param as $k => $v){
+    	else return ;
+    	//$field->custom_param = $custom_param;
+    	foreach($custom_param as $k => $v){
     		if(!empty($v)){
+				//echo ' $k:'.$k.' $v:'.$v;
     			$field->$k = $v;
     		}
     	}
@@ -99,18 +100,17 @@ abstract class vmCustomPlugin extends VmPlugin {
 	}
 
 	protected function getPluginProductDataCustom(&$field,$product_id){
-		$db = & JFactory::getDBO();
-		$q = 'SELECT `id` FROM `#__virtuemart_product_custom_plg_'.$this->_name.'` WHERE `virtuemart_product_id`='.$product_id.' and `virtuemart_custom_id`='.(int)$field->virtuemart_custom_id;
-		$db->setQuery($q);
-		$id = $db->loadResult();
 
-	 	$datas = $this->getPluginInternalData($id,'id');
+		$id = $this->getIdForCustomIdProduct( $product_id,$field->virtuemart_custom_id) ;
+
+	 	$datas = $this->getPluginInternalData($id);
 		if($datas){
 			$fields = get_object_vars($datas);
 			unset($fields['id']);
 			unset($fields['virtuemart_custom_id']);
 			unset($fields['virtuemart_product_id']);
 			foreach($fields as $k=>$v){
+				// if (is_string($v)) echo ' $k:'.$k.' $v:'.$v;
 				$field->$k = $v;
 			}
 		}
@@ -126,11 +126,13 @@ abstract class vmCustomPlugin extends VmPlugin {
     function OnStoreProduct($data,$plugin_param){
 
 		if (key($plugin_param)!==$this->_name) return ;
+
 		$key = key($plugin_param) ;
 		$plugin_param[$key]['virtuemart_product_id'] = $data['virtuemart_product_id'];
 		vmdebug('plgData',$plugin_param[$key]);
-		$this->storePluginInternalData($plugin_param[$key]);
-	
+		$this->_tableId = $this->getIdForCustomIdProduct($data['virtuemart_product_id'],$plugin_param[$key]['virtuemart_custom_id']);
+		$this->id = $this->_tableId ;
+		$this->storePluginInternalData($plugin_param[$key],'id');
     }
 
 
@@ -214,5 +216,17 @@ abstract class vmCustomPlugin extends VmPlugin {
 
 	}
 
+	/**
+	 * render the plugin with param  to display on product edit
+	 * called by customfields inputTypePlugin
+	 *
+	 */
+	public function getIdForCustomIdProduct($product_id,$custom_id)
+	{
+		$db = & JFactory::getDBO();
+		$q = 'SELECT `id` FROM `#__virtuemart_product_custom_plg_'.$this->_name.'` WHERE `virtuemart_product_id`='.(int)$product_id.' and `virtuemart_custom_id`='.(int)$custom_id;
+		$db->setQuery($q);
+		return $db->loadResult();
+	}
 
 }

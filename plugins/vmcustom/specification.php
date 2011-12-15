@@ -31,6 +31,8 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	function __construct(& $subject, $config) {
 // 		if(self::$_this) return self::$_this;
 		parent::__construct($subject, $config);
+		
+		$this->_tablepkey = 'id';
 		$this->tableFields = array_keys($this->getTableSQLFields());
 		$varsToPush = array(
 			'custom_specification_name1'=> array('', 'char'),
@@ -113,11 +115,10 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	// get product param for this plugin on edit
 	function plgVmOnProductEdit($field, $product_id, &$row,&$retValue) {
 		if ($field->custom_element != $this->_name) return '';
-		$this->tableFields = array ('custom_specification_default1' => 'varchar(1024) NOT NULL DEFAULT \'\' ',
-	    'custom_specification_default2' => 'varchar(1024) NOT NULL DEFAULT \'\' '
-		);
+		$this->tableFields = array ( 'id', 'virtuemart_custom_id', 'custom_specification_default1', 'custom_specification_default2' );
 		$this->parseCustomParams($field);
 		$this->getPluginProductDataCustom($field, $product_id);
+
 		// 		$data = $this->getVmPluginMethod($field->virtuemart_custom_id);
 		// 		VmTable::bindParameterable($field,$this->_xParams,$this->_varsToPushParam);
 		// 		$html  ='<input type="text" value="'.$field->custom_title.'" size="10" name="custom_param['.$row.'][custom_title]"> ';
@@ -142,11 +143,11 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	 */
 	function plgVmOnDisplayProductFE($product,&$idx,&$group) {
 		// default return if it's not this plugin
-		$this->_tableChecked = true;
-		$this->tableFields = array ('custom_specification_default1' => 'varchar(1024) NOT NULL DEFAULT \'\' ',
-	    'custom_specification_default2' => 'varchar(1024) NOT NULL DEFAULT \'\' '
-		);
 		if ($group->custom_value != $this->_name) return '';
+		
+		$this->_tableChecked = true;
+		$this->tableFields = array ( 'id', 'virtuemart_custom_id', 'custom_specification_default1', 'custom_specification_default2' );
+
 		$this->parseCustomParams($group);
 		$this->getPluginProductDataCustom($group, $product->virtuemart_product_id);
 
@@ -164,6 +165,8 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	}
 
 	function plgVmOnStoreProduct($data,$plugin_param){
+		$this->tableFields = array ( 'id', 'virtuemart_product_id', 'virtuemart_custom_id', 'custom_specification_default1', 'custom_specification_default2' );
+
 		return $this->OnStoreProduct($data,$plugin_param);
 	}
 	/**

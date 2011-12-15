@@ -128,21 +128,20 @@ class ShopFunctions {
 
 		$params = JComponentHelper::getParams('com_languages');
 		//$config =& JFactory::getConfig();$config->getValue('language');
-		$lang = $params->get('site', 'en_gb');
+		$selectedLangue = $params->get('site', 'en_gb');
 
-		$lang = strtolower(strtr($lang,'-','_'));
+		$lang = strtolower(strtr($selectedLangue,'-','_'));
 		// only add if ID and view not null
 		if ($editView and $id and (count(vmconfig::get('active_languages'))>1) ) {
 
 			if ($editView =='user') $editView ='vendor';
 			//$params = JComponentHelper::getParams('com_languages');
-			//$defaultLangue = $params->get('site', 'en-GB');
 			jimport('joomla.language.helper');
 			//$jlang = JFactory::getLanguage();
 			//$lang = JRequest::getVar('lang', $jlang->getTag());
 			$lang = JRequest::getVar('vmlang', $lang);
-			$languages = JLanguageHelper::createLanguageList($lang, constant('JPATH_SITE'), true);
-			$langList = JHTML::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox"', 'value', 'text', $lang , 'lang');
+			$languages = JLanguageHelper::createLanguageList($selectedLangue, constant('JPATH_SITE'), true);
+			$langList = JHTML::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox"', 'value', 'text', $selectedLangue , 'vmlang');
 			$this->assignRef('langList',$langList);
 			$this->assignRef('lang',$lang);
 
@@ -152,7 +151,7 @@ class ShopFunctions {
 			$j = '
 			jQuery(function($) {
 				var oldflag = "";
-				$("select#lang").chosen().change(function() {
+				$("select#vmlang").chosen().change(function() {
 					langCode = $(this).find("option:selected").val();
 					flagClass = "flag-"+langCode.substr(0,2) ;
 					$.getJSON( "index.php?option=com_virtuemart&view=translate&task=paste&format=json&lg="+langCode+"&id='.$id.'&editView='.$editView.'&'.$token.'=1" ,

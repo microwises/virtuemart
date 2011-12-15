@@ -40,13 +40,14 @@ class VmTableData extends VmTable {
 
     	$id = 0;
     	$pKey = $this->_pkey;
-    	if(!empty($this->$pKey)){
-	        $_qry = 'SELECT `'.$this->_tbl_key.'` '
-	                . 'FROM `'.$this->_tbl.'` '
-	                . 'WHERE `'.$this->_pkey.'` = "' . $this->$pKey.'" ';
-	        $this->_db->setQuery($_qry);
-	        $id = $this->_db->loadResult();
-    	}
+			if(!empty($this->$pKey)){
+				$_qry = 'SELECT `'.$this->_tbl_key.'` '
+						. 'FROM `'.$this->_tbl.'` '
+						. 'WHERE `'.$this->_pkey.'` = "' . $this->$pKey.'" ';
+				$this->_db->setQuery($_qry);
+				$id = $this->_db->loadResult();
+			}
+		if (!$id) $id = $this->_tbl_key ; // added by patrick kohl to set the $id external
 //		$this->setError($_qry,'$_qry');
 
         if ( !empty($id) ) {
