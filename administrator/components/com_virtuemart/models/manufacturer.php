@@ -162,9 +162,12 @@ class VirtueMartModelManufacturer extends VmModel {
 
 		$joinedTables = 'FROM `#__virtuemart_manufacturers_'.VMLANG.'` JOIN `#__virtuemart_manufacturers` USING (`virtuemart_manufacturer_id`) ';
 		$joinedTables .= ' LEFT JOIN `#__virtuemart_manufacturercategories_'.VMLANG.'` AS mc on  mc.`virtuemart_manufacturercategories_id`= `#__virtuemart_manufacturers`.`virtuemart_manufacturercategories_id` ';
+		$groupBy=' ';
 		if($getMedia){
 			$select .= ',mmex.virtuemart_media_id ';
 			$joinedTables .= 'LEFT JOIN `#__virtuemart_manufacturer_medias` as mmex ON `#__virtuemart_manufacturers`.`virtuemart_manufacturer_id`= mmex.`virtuemart_manufacturer_id` ';
+			$groupBy=' GROUP BY `#__virtuemart_manufacturers`.`virtuemart_manufacturer_id` ';
+
 		}
 		$whereString = ' ';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where).' ' ;
@@ -178,7 +181,7 @@ class VirtueMartModelManufacturer extends VmModel {
 // 			$ordering = ' order by m.`mf_name` '.$app->getUserStateFromRequest( $option.'.'.$view.'.filter_order', 'filter_order', 'DESC', 'cmd' );;
 // 		}
 		$ordering = $this->_getOrdering('mf_name');
-		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,' ',$ordering );
+		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,$groupBy,$ordering );
 
 	}
 
