@@ -144,7 +144,7 @@ class VirtueMartModelRatings extends VmModel {
 		LEFT JOIN `#__users` AS `u`	ON `pr`.`created_by` = `u`.`id`
 		LEFT JOIN `#__virtuemart_products_'.VMLANG.'` AS `p` ON `p`.`virtuemart_product_id` = `pr`.`virtuemart_product_id`
 		LEFT JOIN `#__virtuemart_rating_votes` AS `rv` on `rv`.`virtuemart_product_id`=`pr`.`virtuemart_product_id` and `rv`.`created_by`=`u`.`id`
-		WHERE  `p`.`virtuemart_product_id` = "'.$virtuemart_product_id.'"
+		WHERE  `p`.`virtuemart_product_id` = "'.$virtuemart_product_id.'" AND `p`.`virtuemart_product_id` = "1"
 		ORDER BY `pr`.`modified_on` ';
      	$this->_db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
 
