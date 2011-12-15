@@ -41,7 +41,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_REVIEW_DETAILS');
 		<?php
 		$rating_options = array();
 		for ($i=0;$i<=$this->max_rating;$i++) {
-			$text = JHTML::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.$i.'.gif','');
+			// $text = JHTML::_('image', JURI::root().'/components/com_virtuemart/assets/images/stars/'.$i.'.gif','');
 
                         $title = (JText::_("COM_VIRTUEMART_RATING_TITLE").' : '. $i . '/' . $this->max_rating) ;
 			$stars  = '<span class="floatleft vmiconFE vm2-stars'.$i.'" title="'.$title.'"></span>';

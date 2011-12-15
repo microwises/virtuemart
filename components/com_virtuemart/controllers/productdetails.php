@@ -230,7 +230,7 @@ class VirtueMartControllerProductdetails extends JController {
 //			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_NOT_SAVED_SUCCESSFULLY') );
 //		}
 
-		$this->setRedirect('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$data['virtuemart_product_id'], $msg);
+		$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$data['virtuemart_product_id']), $msg);
 		/* Display it all */
 //		$view->display();
 	}

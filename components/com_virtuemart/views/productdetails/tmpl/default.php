@@ -213,6 +213,7 @@ if (empty ( $this->product )) {
 						<?php // Add the button
 						$button_lbl = JText::_('COM_VIRTUEMART_CART_ADD_TO');
 						$button_cls = 'addtocart-button'; //$button_cls = 'addtocart_button';
+						$button_name = 'addtocart'; //$button_cls = 'addtocart_button';
 
 
 						// Display the add to cart button
@@ -220,11 +221,12 @@ if (empty ( $this->product )) {
 						if(($stockhandle=='disableit' or $stockhandle=='disableadd') and ($this->product->product_in_stock - $this->product->product_ordered)<1){
 							$button_lbl = JText::_('COM_VIRTUEMART_CART_NOTIFY');
 							$button_cls = 'notify-button';
+							$button_name = 'notifycustomer';
 						}
 						vmdebug('$stockhandle '.$stockhandle.' and stock '.$this->product->product_in_stock.' ordered '.$this->product->product_ordered);
 						?>
 						<span class="addtocart-button">
-							<input type="submit" name="addtocart"  class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
+							<input type="submit" name="<?php echo $button_name ?>"  class="<?php echo $button_cls ?>" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
 						</span>
 
 					<div class="clear"></div>

@@ -621,7 +621,7 @@ class VirtueMartCart {
 				} else {
 					$errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
 					$this->setError($errorMsg); // Private error retrieved with getError is used only by addJS, so only the latest is fine
-					vmInfo($error,$product->product_name,$productsleft);
+					vmInfo($errorMsg,$product->product_name,$productsleft);
 					$mainframe->enqueueMessage($errorMsg);
 					return false;
 				}
