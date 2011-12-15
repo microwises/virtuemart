@@ -74,6 +74,7 @@ defined('_JEXEC') or die('Restricted access');
 	    	</td>
 			</tr>
 			<tr> */?>
+			<tr>
 	    	<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_CFG_POOS_ENABLE_EXPLAIN'); ?>">
 				<label for="stockhandle"><?php echo JText::_('COM_VIRTUEMART_CFG_POOS_ENABLE') ?></label>
@@ -88,6 +89,26 @@ defined('_JEXEC') or die('Restricted access');
 			);
 			echo VmHTML::radioList('stockhandle', $this->config->get('stockhandle','none'),$options);
 			?>
+			</tr>
+				<tr>
+					<td valign="top" width="21%" >
+						<div style="text-align:right;font-weight:bold;">
+							<?php echo JText::_('COM_VIRTUEMART_AVAILABILITY') ?>
+						</div>
+					</td>
+					<td width="79%" >
+						<input type="text" class="inputbox" id="product_availability" name="product_availability" value="<?php echo $this->config->get('product_availability'); ?>" />
+						<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>'.JText::_('COM_VIRTUEMART_AVAILABILITY').'</b><br/ >'.JText::_('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP1') ?>"></span>
+
+						<?php echo JHTML::_('list.images', 'image', $this->config->get('product_availability'), " ", $this->imagePath); ?>
+						<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>'.JText::_('COM_VIRTUEMART_AVAILABILITY').'</b><br/ >'.JText::sprintf('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP2',  $this->imagePath ) ?>"></span>
+					</td>
+				</tr>
+				<tr>
+					<td width="21%">&nbsp;</td>
+					<td width="79%"><img border="0" id="imagelib" alt="<?php echo JText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php if ($this->config->get('product_availability')) echo JURI::root(true).$this->imagePath.$this->config->get('product_availability');?>"/></td>
+				</tr>
+
 			<tr>
 	    	<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_ENABLE_EXPLAIN'); ?>">

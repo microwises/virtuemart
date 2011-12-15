@@ -97,12 +97,19 @@ class VirtuemartViewConfig extends JView {
 
 		$orderByFields = $model->getProductFilterFields('browse_orderby_fields');
 		$this->assignRef('orderByFields', $orderByFields);
-		
+
 		$searchFields = $model->getProductFilterFields( 'browse_search_fields');
 		$this->assignRef('searchFields', $searchFields);
 
 		$aclGroups = $usermodel->getAclGroupIndentedTree();
 		$this->assignRef('aclGroups', $aclGroups);
+
+		if(is_Dir(VmConfig::get('vmtemplate').DS.'images'.DS.'availability'.DS)){
+			$imagePath = VmConfig::get('vmtemplate').'/images/availability/';
+		} else {
+			$imagePath = '/components/com_virtuemart/assets/images/availability/';
+		}
+		$this->assignRef('imagePath', $imagePath);
 
 		parent::display($tpl);
 	}
