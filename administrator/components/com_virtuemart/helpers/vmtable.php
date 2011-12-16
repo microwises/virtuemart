@@ -245,6 +245,7 @@ class VmTable extends JTable{
 	function load($oid=null,$tableJoins= array(),$joinKey = 0){
 
 
+		vmdebug('load '.$oid);
 		$k = $this->_tbl_key;
 
 		if ($oid !== null) {
@@ -252,11 +253,11 @@ class VmTable extends JTable{
 		}
 
 		$oid = $this->$k;
-
+		vmdebug('load hm '.$oid);
 		if ($oid === null) {
 			return false;
 		}
-		else if($oid == 0){
+		else if(empty($oid)){
 			if(!empty($this->_xParams)){
 				foreach($this->_varsToPushParam as $key=>$v){
 					if(!isset($obj->$key)){
@@ -264,7 +265,9 @@ class VmTable extends JTable{
 					}
 				}
 			}
+
 			vmdebug('Should load '.$this->_tbl.' with id = 0, give back prototype');
+			vmTrace('loading 0?');
 			return $this;
 // 			vmTrace('loading 0?');
 		}
