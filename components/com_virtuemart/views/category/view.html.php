@@ -69,7 +69,6 @@ class VirtuemartViewCategory extends JView {
 // 		$categoryModel->setPerRow($perRow);
 		$this->assignRef('perRow', $perRow);
 
-		$search = JRequest::getWord('search') ;
 
 		//No redirect here, category id = 0 means show ALL categories! note by Max Milbers
 /*		if(empty($category->virtuemart_vendor_id) && $search == null ) {
@@ -83,14 +82,14 @@ class VirtuemartViewCategory extends JView {
 				$pathway->addItem(strip_tags($c->category_name),JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id));
 			}
 		}
-		static $counter = 0;
-		static $counter2 = 0;
+// 		static $counter = 0;
+// 		static $counter2 = 0;
 		//if($category->children)	$categoryModel->addImages($category->children);
 
 		$cache = & JFactory::getCache('com_virtuemart','callback');
 		$category->children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $categoryId );
 		// self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
-		vmTime('end loop categoryListTree '.$counter);
+// 		vmTime('end loop categoryListTree '.$counter);
 
 		//$category->children = $categoryModel->getChildCategoryList($vendorId, $categoryId);
 		$categoryModel->addImages($category->children,1);
@@ -183,12 +182,12 @@ class VirtuemartViewCategory extends JView {
 	 * generate custom fields list to display as search in FE
 	 */
 	public function getSearchCustom() {
-		
+
 		$emptyOption  = array('virtuemart_custom_id' =>0, 'custom_title' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
 		$this->_db =&JFactory::getDBO();
 		$this->_db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE `field_type` ="P"');
 		$this->options = $this->_db->loadAssocList();
-		
+
 		if ($this->custom_parent_id = JRequest::getInt('custom_parent_id', 0)) {
 			$this->_db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE custom_parent_id='.$this->custom_parent_id);
 			$this->selected = $this->_db->loadObjectList();
@@ -200,13 +199,13 @@ class VirtuemartViewCategory extends JView {
 				$this->searchCustomValues .= JText::_($selected->custom_title).' '.JHTML::_('select.genericlist', $valueOptions, 'customfields['.$selected->virtuemart_custom_id.']', 'class="inputbox"', 'virtuemart_custom_id', 'custom_title', 0);
 			}
 		}
-		
-		
+
+
 		// add search for declared plugins
 		JPluginHelper::importPlugin('vmcustom');
 		$dispatcher = JDispatcher::getInstance();
 		$plgDisplay = $dispatcher->trigger('plgVmSelectSearchableCustom',array( &$this->options,&$this->searchCustomValues,$this->custom_parent_id ) );
-		
+
 
 		$this->options = array_merge(array($emptyOption), $this->options);
 		// render List of available groups

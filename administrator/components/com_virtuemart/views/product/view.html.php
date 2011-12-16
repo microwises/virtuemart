@@ -151,7 +151,7 @@ class VirtuemartViewProduct extends JView {
 				$mf_model = $this->getModel('manufacturer');
 				$manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
 
-				if(count($manufacturers)>0 && VmConfig::get('show_manufacturers',true)){
+				if(count($manufacturers)>0 ){
 					$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
 				}
 

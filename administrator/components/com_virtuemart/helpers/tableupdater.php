@@ -104,14 +104,14 @@ class GenericTableUpdater extends JModel{
 				$q .= '`'.$tblKey.'` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT ,';
 				foreach($translatableFields as $name){
 					if(strpos($name,'name') !==false ){
-						$fieldstructure = 'char(128) NOT NULL DEFAULT "" ';
+						$fieldstructure = 'char(180) NOT NULL DEFAULT "" ';
 					} else if(strpos($name,'meta')!==false ){
 						$fieldstructure = 'char(128) NOT NULL DEFAULT "" ';
 					} else if(strpos($name,'slug')!==false ){
-						$fieldstructure = 'char(144) NOT NULL DEFAULT "" ';
+						$fieldstructure = 'char(192) NOT NULL DEFAULT "" ';
 						$slug = true;
 					} else if(strpos($name,'desc')!==false || $name == 'vendor_terms_of_service'){
-						$fieldstructure = 'varchar(2024) NOT NULL DEFAULT "" ';
+						$fieldstructure = 'varchar(65536) NOT NULL DEFAULT "" ';
 					} else if(strpos($name,'phone')!==false) {
 						$fieldstructure = 'char(24) NOT NULL DEFAULT "" ';
 					} else{
