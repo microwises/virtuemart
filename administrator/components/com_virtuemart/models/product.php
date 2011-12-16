@@ -1520,7 +1520,7 @@ function getOrderByList($virtuemart_category_id=false) {
 
 	}
 
-	return array($orderByList,$manuList) ;
+	return array('orderby'=>$orderByList,'manufacturer'=>$manuList) ;
 }
 
 

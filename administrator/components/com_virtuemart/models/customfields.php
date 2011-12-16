@@ -314,21 +314,23 @@ class VirtueMartModelCustomfields extends VmModel {
 	public function inputType($field,$product_id,$row){
 
 		$field->custom_value = empty($field->custom_value) ? $field->value : $field->custom_value ;
-		//echo $field->custom_value;
+
+		if ($field->is_cart_attribute)  $priceInput = '<input type="text" value="'.(isset($field->custom_price)?$field->custom_price: '0').'" name="field['.$row.'][custom_price]" />';
+		else $priceInput = ' ';
+
 		if ($field->is_list) {
 			$options = array();
 			$values = explode(';',$field->custom_value);
 
 			foreach ($values as $key => $val)
 				$options[] = array( 'value' => $val ,'text' =>$val);
-			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]');
+			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]').$priceInput;
 		} else {
-			if ($field->is_cart_attribute)  $priceInput = '<input type="text" value="'.(isset($field->custom_price)?$field->custom_price: '0').'" name="field['.$row.'][custom_price]" />';
-			else $priceInput = ' ';
+
 			switch ($field->field_type) {
 				/* variants*/
 				case 'V':
-				return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" /></td><td>'.$priceInput;
+					return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" /></td><td>'.$priceInput;
 				break;
 				/*
 				 * Stockable (group of) child variants
@@ -370,7 +372,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				break;
 				/* parent */
 				case 'P':
-					return $field->custom_value.'<input type="hidden" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" /><td></td>';
+					return $field->custom_value.'<input type="hidden" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" /></td><td>';
 				break;
 				/* related category*/
 				case 'Z':

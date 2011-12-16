@@ -41,6 +41,7 @@ class VirtueMartModelCategory extends VmModel {
 	function __construct() {
 		parent::__construct();
 		$this->setMainTable('categories');
+		$this->addvalidOrderingFieldName(array('category_name','category_description','c.ordering','cx.category_shared','c.published'));
 	}
 
 
@@ -483,7 +484,7 @@ class VirtueMartModelCategory extends VmModel {
 			$groupings[] = $parent->category_parent_id;
 			if ($row->ordering != $order[$i]) {
 				$row->ordering = $order[$i];
-				if (!$row->store()) {
+				if (!$row->toggle('ordering',$row->ordering)) {
 					$this->setError($row->getError());
 					return false;
 				}
