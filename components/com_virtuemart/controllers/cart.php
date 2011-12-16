@@ -142,8 +142,7 @@ class VirtueMartControllerCart extends JController {
 		$categoryLink = '';
 	    $continue_link = JRoute::_('index.php?option=com_virtuemart' . $categoryLink);
 	    $virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
-	    $successMsg = JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING');
-		$errorMsg ='OK';
+	    $errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED');
 	    if ($cart->add($virtuemart_product_ids, $errorMsg )) {
 			
 		$this->json->msg = '<a class="continue" href="' . $continue_link . '" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';

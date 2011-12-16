@@ -419,11 +419,14 @@ class VirtueMartCart {
 
 				if (array_key_exists($productKey, $this->products) && (empty($product->customPlugin)) ) {
 
-					if ($this->checkForQuantities($product, $this->products[$productKey]->quantity,$errorMsg)) {
-						$this->products[$productKey]->quantity += $quantityPost;
-						$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_UPDATED'));
+					$errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_UPDATED');
+					$totalQuantity = $this->products[$productKey]->quantity+ $quantityPost;
+					if ($this->checkForQuantities($product,$totalQuantity ,$errorMsg)) {
+						$this->products[$productKey]->quantity = $totalQuantity;
+						
+						//$mainframe->enqueueMessage($errorMsg);
 					} else {
-						$errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
+						// $errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
 						continue;
 					}
 				}  else {
@@ -434,9 +437,9 @@ class VirtueMartCart {
 					if ($this->checkForQuantities($product, $quantityPost,$errorMsg)) {
 						$this->products[$productKey] = $product;
 						$product->quantity = $quantityPost;
-						$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED'));
+						//$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED'));
 					} else {
-						$errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
+						// $errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
 						continue;
 					}
 					// echo $productKey;
@@ -596,15 +599,17 @@ class VirtueMartCart {
 			$errorMsg = JText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
 			//			$this->_error[] = 'Quantity was not a number';
 			$this->setError($errorMsg);
-			$mainframe->enqueueMessage($errorMsg);
+			vmInfo($errorMsg,$product->product_name);
+			// $mainframe->enqueueMessage($errorMsg);
 			return false;
 		}
 		/* Check for negative quantity */
-		if ($quantity < 0) {
+		if ($quantity < 1) {
 			//			$this->_error[] = 'Quantity under zero';
-			$errorMsg = JText::_('COM_VIRTUEMART_CART_ERROR_NO_NEGATIVE', false);
+			$errorMsg = JText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
 			$this->setError($errorMsg);
-			$mainframe->enqueueMessage($errorMsg);
+			vmInfo($errorMsg,$product->product_name);
+			// $mainframe->enqueueMessage($errorMsg);
 			return false;
 		}
 
@@ -618,12 +623,13 @@ class VirtueMartCart {
 					$quantity = $productsleft;
 					$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_QUANTITY',$quantity);
 					$this->setError($errorMsg);
-					$mainframe->enqueueMessage($errorMsg);
+					vmInfo($errorMsg,$product->product_name);
+					// $mainframe->enqueueMessage($errorMsg);
 				} else {
 					$errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
 					$this->setError($errorMsg); // Private error retrieved with getError is used only by addJS, so only the latest is fine
 					vmInfo($errorMsg,$product->product_name,$productsleft);
-					$mainframe->enqueueMessage($errorMsg);
+					// $mainframe->enqueueMessage($errorMsg);
 					return false;
 				}
 			}
@@ -637,14 +643,16 @@ class VirtueMartCart {
 			//			$this->_error[] = 'Quantity reached not minimum';
 			$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_MIN_ORDER', $min);
 			$this->setError($errorMsg);
-			$mainframe->enqueueMessage($errorMsg, 'error');
+			vmInfo($errorMsg,$product->product_name);
+			// $mainframe->enqueueMessage($errorMsg, 'error');
 			return false;
 		}
 		if ($max != 0 && $quantity > $max) {
 			//			$this->_error[] = 'Quantity reached over maximum';
 			$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_MAX_ORDER', $max);
 			$this->setError($errorMsg);
-			$mainframe->enqueueMessage($errorMsg, 'error');
+			vmInfo($errorMsg,$product->product_name);
+			// $mainframe->enqueueMessage($errorMsg, 'error');
 			return false;
 		}
 
