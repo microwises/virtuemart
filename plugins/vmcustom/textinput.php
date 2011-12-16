@@ -78,12 +78,13 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		// default return if it's not this plugin
 		if ($field->custom_value != $this->_name) return '';
 		$this->parseCustomParams($field);
-
-		$html=': <input class="vmcustom-textinput" type="text" value="" size="'.$field->custom_size.'" name="customPlugin['.$field->virtuemart_custom_id.']['.$this->_name.'][comment]"><br />';
+		$class='';
+		if ($field->custom_price_by_letter) $class='vmcustom-textinput';
+		$html=': <input class="'.$class.'" type="text" value="" size="'.$field->custom_size.'" name="customPlugin['.$field->virtuemart_custom_id.']['.$this->_name.'][comment]"><br />';
 		static $textinputjs;
-		//$field->display = $html;
+		$group->display .= $html;
 		// preventing 2 x load javascript
-		if ($textinputjs) return $html;
+		if ($textinputjs) return true;
 		$textinputjs = true ;
 		//javascript to update price
 		$document = JFactory::getDocument();
@@ -96,7 +97,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 			});
 	});
 		');
-		$group->display .= $html;
+		
 		return true;
 //         return $html;
     }
