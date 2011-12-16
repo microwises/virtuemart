@@ -163,7 +163,8 @@ $verticalseparator = " vertical-separator";
 		<?php } ?>
 	<div class="orderby-displaynumber">
 		<div class="width70 floatleft">
-			<?php echo $this->orderByList; ?>
+			<?php echo $this->orderByList[0]; ?>
+			<?php echo $this->orderByList[1]; ?>
 		</div>
 		<div class="width30 floatright display-number"><?php echo $this->vmPagination->getResultsCounter();?><br/><?php echo $this->vmPagination->getLimitBox(); ?></div>
 <div id="bottom-pagination"><?php echo $this->vmPagination->getPagesLinks(); ?><span style="float:right"><?php echo $this->vmPagination->getPagesCounter(); ?></span></div>

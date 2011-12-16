@@ -139,6 +139,10 @@ class VirtuemartViewCategory extends JView {
 
 	    $orderByList = $productModel->getOrderByList($categoryId);
 	    $this->assignRef('orderByList', $orderByList);
+
+// 	    $productRelatedManufacturerList = $productModel->getProductRelatedManufacturerList($categoryId);
+// 	    $this->assignRef('productRelatedManufacturerList', $productRelatedManufacturerList);
+
 		//$sortOrderButton = $productModel->getsortOrderButton();
 		//$this->assignRef('sortOrder', $sortOrderButton);
 

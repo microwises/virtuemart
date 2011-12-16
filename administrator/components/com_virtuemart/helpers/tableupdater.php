@@ -111,7 +111,13 @@ class GenericTableUpdater extends JModel{
 						$fieldstructure = 'char(192) NOT NULL DEFAULT "" ';
 						$slug = true;
 					} else if(strpos($name,'desc')!==false || $name == 'vendor_terms_of_service'){
-						$fieldstructure = 'varchar(65536) NOT NULL DEFAULT "" ';
+						if(strpos($name,'s_desc')!==false){
+							$fieldstructure = 'varchar(2048) NOT NULL DEFAULT "" ';
+						} else {
+							$fieldstructure = 'varchar(21000) NOT NULL DEFAULT "" ';
+						}
+
+
 					} else if(strpos($name,'phone')!==false) {
 						$fieldstructure = 'char(24) NOT NULL DEFAULT "" ';
 					} else{
