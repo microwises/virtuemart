@@ -595,7 +595,7 @@ class VirtueMartCart {
 		$stockhandle = VmConfig::get('stockhandle','none');
 		$mainframe = JFactory::getApplication();
 		/* Check for a valid quantity */
-		if (!is_int( $quantity)) {
+		if (!is_numeric( $quantity)) {
 			$errorMsg = JText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
 			//			$this->_error[] = 'Quantity was not a number';
 			$this->setError($errorMsg);
@@ -1426,7 +1426,7 @@ class VirtueMartCart {
 			$this->data->products[$i]['product_name'] = JHTML::link($url, $product->product_name);
 
 			// Add the variants
-			if (!is_int($priceKey)) {
+			if (!is_numeric($priceKey)) {
 				if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 				//  custom product fields display for cart
 				$this->data->products[$i]['product_attributes'] = VirtueMartModelCustomfields::CustomsFieldCartModDisplay($priceKey,$product);

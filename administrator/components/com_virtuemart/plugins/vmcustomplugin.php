@@ -105,12 +105,11 @@ abstract class vmCustomPlugin extends VmPlugin {
 
 	 	$datas = $this->getPluginInternalData($id);
 		if($datas){
-			$fields = get_object_vars($datas);
-			unset($fields['id']);
-			unset($fields['virtuemart_custom_id']);
-			unset($fields['virtuemart_product_id']);
-			foreach($fields as $k=>$v){
-				// if (is_string($v)) echo ' $k:'.$k.' $v:'.$v;
+			//$fields = get_object_vars($datas);
+			vmdebug('datas',$datas);
+			foreach($datas as $k=>$v){
+				if (!is_string($v) ) continue ;// Only get real Table variable
+				if (isset($field->$k) && $v===0) continue ;
 				$field->$k = $v;
 			}
 		}
@@ -131,8 +130,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 		$plugin_param[$key]['virtuemart_product_id'] = $data['virtuemart_product_id'];
 		vmdebug('plgData',$plugin_param[$key]);
 		$this->id = $this->getIdForCustomIdProduct($data['virtuemart_product_id'],$plugin_param[$key]['virtuemart_custom_id']);
-		$this->_tableId ='id';
-		$this->storePluginInternalData($plugin_param[$key],'id');
+		$this->storePluginInternalData($plugin_param[$key],'id',$this->id);
     }
 
 

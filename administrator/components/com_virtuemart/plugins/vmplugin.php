@@ -342,15 +342,14 @@ abstract class vmPlugin extends JPlugin {
 	 * @param string $tableName When different then the default of the plugin, provid it here
 	 * @param string $tableKey an additionally unique key
 	 */
-	protected function storePluginInternalData(&$values, $primaryKey=0){
+	protected function storePluginInternalData(&$values, $primaryKey=0, $id = 0 ){
 
 		if($primaryKey===0) $primaryKey = $this->_tablepkey;
 		if($this->_vmpItable===0){
 			$this->_vmpItable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$primaryKey,$this->_tableId,$this->_loggable);
-			$this->_vmpItable->$primaryKey = $this->_tableId;
 		}
-
-		vmdebug('storePluginInternalData',$value);
+		if($id) $this->_vmpItable->_id = $id ;// added by patrick kohl to set the $id by plugin
+		//vmdebug('storePluginInternalData',$value);
 		$this->_vmpItable->bindChecknStore($values);
 		$errors = $this->_vmpItable->getErrors();
 		if(!empty($errors)){
