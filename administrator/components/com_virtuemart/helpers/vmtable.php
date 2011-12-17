@@ -253,7 +253,7 @@ class VmTable extends JTable{
 		}
 
 		$oid = $this->$k;
-		//vmdebug('load hm '.$oid);
+		vmdebug('load hm '.$oid);
 		if ($oid === null) {
 			return false;
 		}
@@ -298,27 +298,28 @@ class VmTable extends JTable{
 		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = "'.$oid.'"';
 
 		$db->setQuery( $query );
-// vmdebug('vmtable '.$query);
-		if ($result = $db->loadAssoc( )) {
 
-			$this->bind($result);
-			if(!empty($this->_xParams)){
-				//Maybe better to use for $this an &
-				self::bindParameterable($this,$this->_xParams,$this->_varsToPushParam);
-
-			}
-
-			if (count($tableJoins)) {
-				foreach ($tableJoins as $tableId => $table) {
-					if(isset( $result[$tableId] )) $this->$tableId = $result[$tableId];
-				}
-			}
-
-			return $this;
-		} else {
-			$this->setError( $db->getErrorMsg() );
+		$result = $db->loadAssoc( );
+		$error = $db->getErrorMsg();
+		if(!empty($error )){
+			vmError('vmTable load' . $db->getErrorMsg() );
 			return false;
 		}
+
+		$this->bind($result);
+		if(!empty($this->_xParams)){
+			//Maybe better to use for $this an &
+			self::bindParameterable($this,$this->_xParams,$this->_varsToPushParam);
+
+		}
+
+		if (count($tableJoins)) {
+			foreach ($tableJoins as $tableId => $table) {
+				if(isset( $result[$tableId] )) $this->$tableId = $result[$tableId];
+			}
+		}
+
+		return $this;
 
 	}
 

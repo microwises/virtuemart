@@ -71,9 +71,8 @@ vmJsApi::jDate();
 		JPluginHelper::importPlugin('vmcalculation');
 		$dispatcher = JDispatcher::getInstance();
 		$html ='';
-		$returnValues = $dispatcher->trigger('plgVmOnDisplayEdit', array(&$this->calc));
-		foreach ($returnValues as $html) echo $html;
-// 		vmdebug('pluginstuff',$returnValues);
+		$returnValues = $dispatcher->trigger('plgVmOnDisplayEdit', array(&$this->calc,&$html));
+		echo $html;
 
 		if(Vmconfig::get('multix','none')!=='none' && $this->perms->check('admin') ){
 			echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->vendorList );
