@@ -253,9 +253,9 @@ class VmTable extends JTable{
 		}
 
 		$oid = $this->$k;
-		vmdebug('load hm '.$oid);
+// 		vmdebug('load '.$oid);
 		if ($oid === null) {
-			return false;
+			$oid = 0;
 		}
 		else if(empty($oid)){
 			if(!empty($this->_xParams)){

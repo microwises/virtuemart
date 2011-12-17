@@ -97,7 +97,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 			});
 	});
 		');
-		
+
 		return true;
 //         return $html;
     }
@@ -169,7 +169,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * We must reimplement this triggers for joomla 1.7
 	 * vmplugin triggers note by Max Milbers
 	 */
-	protected function plgVmOnStoreInstallPluginTable($psType) {
+	public function plgVmOnStoreInstallPluginTable($psType) {
 		//Should the textinput use an own internal variable or store it in the params?
 		//Here is no getVmPluginCreateTableSQL defined
 // 		return $this->onStoreInstallPluginTable($psType);
