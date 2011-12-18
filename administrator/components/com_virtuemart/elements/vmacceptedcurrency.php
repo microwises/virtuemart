@@ -36,7 +36,7 @@ class JElementVmAcceptedCurrency extends JElement {
     function fetchElement($name, $value, &$node, $control_name) {
 	if (!class_exists('VirtueMartModelVendor'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-	$vendorId = VirtueMartModelVendor::getLoggedVendor();
+	$vendorId = 1;//VirtueMartModelVendor::getLoggedVendor();
 	$db = JFactory::getDBO();
 
 	$q = 'SELECT `vendor_accepted_currencies`, `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`=' . $vendorId;
@@ -46,12 +46,15 @@ class JElementVmAcceptedCurrency extends JElement {
 	if (!$vendor_currency['vendor_accepted_currencies']) {
 	    $vendor_currency['vendor_accepted_currencies'] = $vendor_currency['vendor_currency'];
 	}
-	
+
 	$q = 'SELECT `virtuemart_currency_id` AS value ,CONCAT_WS(" ",`currency_name`,`currency_symbol`) as text FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` IN (' . $vendor_currency['vendor_accepted_currencies'] . ') and (`virtuemart_vendor_id` = "' . $vendorId . '" OR `shared`="1") AND published = "1" ORDER BY `ordering`,`currency_name`';
 	$db->setQuery($q);
 	$currencies = $db->loadObjectList();
 	$options = array();
 	$options[] = array( 'value' => 0 ,'text' =>JTExt::_('COM_VIRTUEMART_DEFAULT_VENDOR_CURRENCY'));
+	if (!is_array($currencies)) {
+	    $currencies=(array)$currencies;
+	}
 	foreach ($currencies  as $currency){
 				$options[] = array( 'value' => $currency->value ,'text' =>$currency->text);
 			}
