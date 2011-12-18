@@ -44,7 +44,7 @@ abstract class vmCalculationPlugin extends vmPlugin {
 
 	 	$datas = $this->getPluginInternalData($calcData->virtuemart_calc_id,'virtuemart_calc_id');
 
-	 	vmdebug('getPluginInternalDataCalc',$datas);
+// 	 	vmdebug('getPluginInternalDataCalc',$datas);
 		if($datas){
 			$attribsCalc = get_object_vars($datas);
 

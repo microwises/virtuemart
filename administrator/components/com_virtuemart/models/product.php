@@ -63,7 +63,7 @@ class VirtueMartModelProduct extends VmModel {
 			// 	vmdebug('$browseOrderByFields',$browseOrderByFields);
 		}
 		$this->addvalidOrderingFieldName((array)$browseOrderByFields);
-		unset($this->_validOrderingFieldName[0]);//virtuemart_product_id
+		//unset($this->_validOrderingFieldName[0]);//virtuemart_product_id
 		array_unshift($this->_validOrderingFieldName,'p.virtuemart_product_id');
 // 			vmdebug('product allows following orderingFields ',$this->_validOrderingFieldName);
 

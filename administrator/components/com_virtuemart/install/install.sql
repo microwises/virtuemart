@@ -433,7 +433,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '0',
   `order_number` char(64),
   `order_pass` char(8),
-  `virtuemart_userinfo_id` char(32),
   `order_total` decimal(15,5) NOT NULL DEFAULT '0.00000',
   `order_subtotal` decimal(15,5),
   `order_tax` decimal(10,5),
@@ -462,7 +461,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   KEY `idx_orders_virtuemart_user_id` (`virtuemart_user_id`),
   KEY `idx_orders_virtuemart_vendor_id` (`virtuemart_vendor_id`),
   KEY `idx_orders_order_number` (`order_number`),
-  KEY `idx_orders_virtuemart_userinfo_id` (`virtuemart_userinfo_id`),
   KEY `idx_orders_virtuemart_paymentmethod_id` (`virtuemart_paymentmethod_id`),
   KEY `idx_orders_virtuemart_shipmentmethod_id` (`virtuemart_shipmentmethod_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Used to store all orders' AUTO_INCREMENT=1 ;
@@ -498,7 +496,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_histories` (
 CREATE TABLE IF NOT EXISTS `#__virtuemart_order_items` (
   `virtuemart_order_item_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_order_id` int(11),
-  `virtuemart_userinfo_id` char(32),
   `virtuemart_vendor_id` smallint(11) NOT NULL DEFAULT '1',
   `virtuemart_product_id` int(11),
   `order_item_sku` char(64) NOT NULL DEFAULT '',
@@ -518,7 +515,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_items` (
   PRIMARY KEY (`virtuemart_order_item_id`),
   KEY `virtuemart_product_id` (`virtuemart_product_id`),
   KEY `idx_order_item_virtuemart_order_id` (`virtuemart_order_id`),
-  KEY `idx_order_item_virtuemart_userinfo_id` (`virtuemart_userinfo_id`),
   KEY `idx_order_item_virtuemart_vendor_id` (`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Stores all items (products) which are part of an order' AUTO_INCREMENT=1 ;
 

@@ -141,8 +141,8 @@ class ShopFunctions {
 			$languages = JLanguageHelper::createLanguageList($selectedLangue, constant('JPATH_SITE'), true);
 			$activeVmLangs = (vmconfig::get('active_languages') );
 
-			foreach ($languages as $k => &$joomlaLang) { 
-				if (!in_array($joomlaLang['value'], $activeVmLangs) )  unset($languages[$k] ); 
+			foreach ($languages as $k => &$joomlaLang) {
+				if (!in_array($joomlaLang['value'], $activeVmLangs) )  unset($languages[$k] );
 			}
 			$langList = JHTML::_('select.genericlist',  $languages, 'vmlang', 'class="inputbox"', 'value', 'text', $selectedLangue , 'vmlang');
 			$this->assignRef('langList',$langList);
@@ -1290,14 +1290,22 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		'p.product_unit', 'p.product_packaging', 'p.intnotes', 'l.metadesc', 'l.metakey', 'p.metarobot', 'p.metaauthor');
 		}
 */
-		$filterArray = array('p.virtuemart_product_id', 'product_sku','product_name',
-			'product_s_desc', 'product_desc','product_price',
-			'category_name','category_description','mf_name', 
-				 'product_weight', 'product_weight_uom', 'product_length', 'product_width',
-				'product_height', 'product_lwh_uom', 'product_in_stock', 'low_stock_notification', 'product_available_date',
-				'product_availability', 'product_special', 'p.created_on', 'p.modified_on',  'product_sales',
-				'product_unit', 'product_packaging', 'p.intnotes', 'l.metadesc', 'l.metakey', 'l.metarobot', 'l.metaauthor');
+		$filterArray = array('product_name', 'created_on', 'product_sku',
+			'product_s_desc', 'product_desc',
+			'category_name', 'category_description','mf_name',
+			'product_price', 'product_special', 'product_sales', 'product_availability', 'product_available_date',
+			'product_height', 'product_width', 'product_length', 'product_lwh_uom',
+			'product_weight', 'product_weight_uom', 'product_in_stock', 'low_stock_notification',
+			 'p.modified_on',
+			'product_unit', 'product_packaging', 'p.virtuemart_product_id',);
+		//other possible fields
+		//'p.intnotes',		this is maybe interesting, but then only for admins or special shoppergroups
+
+		// this fields leads to trouble, because we have this fields in product, category and manufacturer,
+		// they are anyway making not a lot sense for orderby or search.
+		//'l.metadesc', 'l.metakey', 'l.metarobot', 'l.metaauthor'
 		}
+
 
 		return $filterArray ;
 	}

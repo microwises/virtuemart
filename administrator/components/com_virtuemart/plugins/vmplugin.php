@@ -373,7 +373,7 @@ abstract class vmPlugin extends JPlugin {
 		if($this->_vmpItable===0){
 			$this->_vmpItable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$primaryKey,$this->_tableId,$this->_loggable);
 		}
-		vmdebug('getPluginInternalData $id '.$id);
+// 		vmdebug('getPluginInternalData $id '.$id);
 		return $this->_vmpItable->load($id);
 	}
 

@@ -208,7 +208,7 @@ class VirtueMartModelConfig extends JModel {
 
 		return JHTML::_('select.genericlist', $activeLangs, 'active_languages[]', 'size=10 multiple="multiple"', 'value', 'text', $active_languages );// $activeLangs;
 	}
-	
+
 
 	/**
 	 * Retrieve a list of preselected and existing search or order By Fields
@@ -224,7 +224,7 @@ class VirtueMartModelConfig extends JModel {
 			$searchChecked = (array)$searchChecked;
 		}
 		$searchFieldsArray = ShopFunctions::getValidProductFilterArray ();
-		if ($type !== 'browse_orderby_fields' ) array_shift($searchFieldsArray);
+// 		if ($type !== 'browse_orderby_fields' ) array_shift($searchFieldsArray);
 
 		$searchFields= new stdClass();
 		$searchFields->checkbox ='<div class="threecols"><ul>';
