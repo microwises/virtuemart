@@ -50,10 +50,11 @@ class VirtueMartControllerPluginresponse extends JController {
      */
     function pluginResponseReceived() {
 
-	 $this->PaymentResponseReceived();
-	 $this->ShipmentResponseReceived();
+	$this->PaymentResponseReceived();
+	$this->ShipmentResponseReceived();
     }
- /**
+
+    /**
      * ResponseReceived()
      * From the payment page, the user returns to the shop. The order email is sent, and the cart emptied.
      *
@@ -62,12 +63,13 @@ class VirtueMartControllerPluginresponse extends JController {
      */
     function PaymentResponseReceived() {
 
-	if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');	JPluginHelper::importPlugin('vmpayment');
+	if (!class_exists('vmPSPlugin'))
+	    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php'); JPluginHelper::importPlugin('vmpayment');
 
 	$return_context = "";
 	$dispatcher = JDispatcher::getInstance();
 	$html = "";
-	$returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived', array(  'virtuemart_order_id' => &$virtuemart_order_id, 'html' => &$html));
+	$returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived', array('virtuemart_order_id' => &$virtuemart_order_id, 'html' => &$html));
 
 
 	foreach ($returnValues as $returnValue) {
@@ -104,9 +106,11 @@ class VirtueMartControllerPluginresponse extends JController {
 	/* Display it all */
 	$view->display();
     }
+
     function ShipmentResponseReceived() {
 
     }
+
     /**
      * PaymentUserCancel()
      * From the payment page, the user has cancelled the order. The order previousy created is deleted.
@@ -117,49 +121,20 @@ class VirtueMartControllerPluginresponse extends JController {
      */
     function pluginUserPaymentCancel() {
 
-	if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+	if (!class_exists('vmPSPlugin'))
+	    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
 	if (!class_exists('VirtueMartCart'))
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 
 	JPluginHelper::importPlugin('vmpayment');
-
 	$dispatcher = JDispatcher::getInstance();
-	$returnValues = $dispatcher->trigger('plgVmOnUserPaymentCancel', array('virtuemart_order_id' => &$virtuemart_order_id));
+	$returnValues = $dispatcher->trigger('plgVmOnUserPaymentCancel', array());
 
-	foreach ($returnValues as $returnValue) {
-	    if ($returnValue !== null) {
-		if ($returnValue == 1) {
-		    // $returnValue[]
-		    JRequest::setVar('paymentResponse', $returnValue);
-		    if (!class_exists('VirtueMartCart'))
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-		    if ($virtuemart_order_id) {
-			// send the email only if payment has been accepted
-			if (!class_exists('VirtueMartModelOrders'))
-			    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-
-			if (!class_exists('VirtueMartModelOrders'))
-					require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-			$modelOrder = new VirtueMartModelOrders();
-			$order['order_status'] = 'X';
-			$order['virtuemart_order_id'] = $virtuemart_order_id;
-			$order['customer_notified'] = 0;
-			$order['comments'] = '';
-			$modelOrder->updateStatusForOneOrder($virtuemart_order_id,$order,true);
-			$modelOrder->remove(array('virtuemart_order_id' => $virtuemart_order_id));
-		    }
-		    break; // This was the active plugin, so there's nothing left to do here.
-		}
-	    }
-	    // Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
-	}
-
-
+	// return to cart view
 	$view = $this->getView('cart', 'html');
 	$layoutName = JRequest::getWord('layout', 'default');
 	$view->setLayout($layoutName);
-	JRequest::setVar('paymentResponse', Jtext::_('COM_VIRTUEMART_PAYMENT_USER_CANCEL'));
 
 	/* Display it all */
 	$view->display();
@@ -173,8 +148,8 @@ class VirtueMartControllerPluginresponse extends JController {
      */
     function pluginNotification() {
 
-
-if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+	if (!class_exists('vmPSPlugin'))
+	    require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
 	if (!class_exists('VirtueMartCart'))
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
@@ -187,10 +162,7 @@ if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php
 	$dispatcher = JDispatcher::getInstance();
 	$returnValues = $dispatcher->trigger('plgVmOnPaymentNotification', array());
 
-	// Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
     }
-
-
 
 }
 

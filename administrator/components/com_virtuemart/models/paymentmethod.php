@@ -328,41 +328,4 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		return $listHTML;
 	}
 
-	/**
-	 * Gets the ids of accepted creditcards
-	 *
-	 * @return ids of Creditcards
-	 * @deprecated
-	 */
-	function getPaymentAcceptedCreditCards(){
-
-		$data = array(0);
-		if(empty($this->_db))  $this->_db = JFactory::getDBO();
-
-		$query = 'SELECT `virtuemart_creditcard_id` FROM `#__virtuemart_paymentmethod_creditcards` ';
-		$query .= 'WHERE `virtuemart_paymentmethod_id` = "'.$this->_id.'"';
-
-		$this->_db->setQuery($query);
-		$data = $this->_db->loadResultArray();
-
-		return $data;
-	}
-
-	/**
-	 * Check if the current payment method accepts credit cards
-	 *
-	 * @author Max Milbers
-	 * @author Oscar van Eijk
-	 *
-	 * @param integer $virtuemart_paymentmethod_id Payment method ID
-	 * @return boolean
-	 */
-	function hasCreditCard($virtuemart_paymentmethod_id)
-	{
-		$query = 'SELECT COUNT(*) AS c FROM `#__virtuemart_paymentmethod_creditcards` WHERE `virtuemart_paymentmethod_id`="'.(int)$virtuemart_paymentmethod_id.'"';
-		if(empty($this->_db))  $this->_db = JFactory::getDBO();
-		$this->_db->setQuery($query);
-		$_r = $this->_db->loadAssoc();
-		return ($_r['c'] > 0);
-	}
 }

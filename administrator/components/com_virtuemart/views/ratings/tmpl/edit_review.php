@@ -66,7 +66,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_REVIEW_DETAILS');
 		<td width="24%" align="left" valign="top"> &nbsp; </td>
 		<td width="76%" align="left">
 	        <div align="left"><i><?php echo JText::_('COM_VIRTUEMART_REVIEW_COUNT') ?></i>
-                	<input type="text" value="150" size="4" class="inputbox" name="counter" maxlength="4" readonly="readonly" />
+                	<input type="text" value="150" size="4" class="inputbox readonly" name="counter" maxlength="4" readonly="readonly" />
             	</div>
 		</td>
 	</tr>

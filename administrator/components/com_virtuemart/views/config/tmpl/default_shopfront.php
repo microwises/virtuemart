@@ -102,7 +102,7 @@ defined('_JEXEC') or die('Restricted access');
 
 						<?php echo JHTML::_('list.images', 'image', $this->config->get('rised_availability'), " ", $this->imagePath); ?>
 						<span class="icon-nofloat vmicon vmicon-16-info tooltip" title="<?php echo '<b>'.JText::_('COM_VIRTUEMART_AVAILABILITY').'</b><br/ >'.JText::sprintf('COM_VIRTUEMART_PRODUCT_FORM_AVAILABILITY_TOOLTIP2',  $this->imagePath ) ?>"></span>
-					
+
 					<img border="0" id="imagelib" alt="<?php echo JText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php if ($this->config->get('rised_availability')) echo JURI::root(true).$this->imagePath.$this->config->get('rised_availability');?>"/></td>
 				</tr>
 

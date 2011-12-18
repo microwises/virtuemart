@@ -21,6 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea();
 AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDERSTATUS_DETAILS');
+$j15 = VmConfig::isJ15();
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -36,7 +37,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDERSTATUS_DETAILS');
 	<table class="admintable">
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_ORDER_STATUS_NAME','order_status_name',$this->orderStatus->order_status_name,'class="inputbox"','',50,50); ?>
 
-		<?php echo VmHTML::row('input','COM_VIRTUEMART_ORDER_STATUS_CODE','order_status_code',$this->orderStatus->order_status_code,'class="inputbox" readonly','',3,1); ?>
+		<?php echo VmHTML::row('input','COM_VIRTUEMART_ORDER_STATUS_CODE','order_status_code',$this->orderStatus->order_status_code,'class="inputbox readonly" readonly','',3,1); ?>
 		<tr>
 			<td width="110" class="key">
 				<label for="order_status_description">

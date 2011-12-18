@@ -61,7 +61,7 @@ fieldset input, fieldset textarea, fieldset select, fieldset img, fieldset butto
     margin: 5px 5px 5px 0;
     width: auto;
 }
-
+input.readonly{  border: 0 none;}
 /* vmdebug */
 .vmdebug pre{ padding-left: 32px;}
 

@@ -43,9 +43,9 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    'sandbox_merchant_email' => array('', 'char'),
 	    'payment_logos' => array('', 'char'),
 	    'debug' => array(0, 'int'),
-	    'status_pending' => array(0, 'char'),
-	    'status_success' => array(0, 'char'),
-	    'status_canceled' => array(0, 'char'),
+	    'status_pending' => array('', 'char'),
+	    'status_success' => array('', 'char'),
+	    'status_canceled' => array('', 'char'),
 	    'countries' => array(0, 'char'),
 	    'min_amount' => array(0, 'int'),
 	    'max_amount' => array(0, 'int'),
@@ -298,28 +298,26 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	return true;
     }
 
-    function plgVmOnUserPaymentCancel(&$virtuemart_order_id) {
+    function plgVmOnUserPaymentCancel() {
 
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
 	$order_number = JRequest::getVar('on');
-	$payment_method_id = JRequest::getVar('pm');
 	if (!$order_number)
 	    return false;
 	$db = JFactory::getDBO();
-	$query = 'SELECT ' . $this->_tablename . '.`virtuemart_order_id` FROM ' . $this->_tablename
-		. " WHERE  `order_number`= '" . $order_number . "'"
-		. ' AND  `virtuemart_paymentmethod_id` = ' . $payment_method_id;
+	$query = 'SELECT ' . $this->_tablename . '.`virtuemart_order_id` FROM ' . $this->_tablename. " WHERE  `order_number`= '" . $order_number . "'";
+
 	$db->setQuery($query);
 	$virtuemart_order_id = $db->loadResult();
 
-	//fwrite($fp, "order" . $virtuemart_order_id);
 	if (!$virtuemart_order_id) {
 	    return null;
 	}
+	$this->handlePaymentUserCancel($virtuemart_order_id);
 
-
+	//JRequest::setVar('paymentResponse', $returnValue);
 	return true;
     }
 
@@ -425,19 +423,15 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    if (!class_exists('VirtueMartModelOrders'))
 		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 	    $modelOrder = new VirtueMartModelOrders();
-	    $orders[$virtuemart_order_id]['order_status'] = $new_status;
-	    $orders[$virtuemart_order_id]['virtuemart_order_id'] = $virtuemart_order_id;
-	    $orders[$virtuemart_order_id]['customer_notified'] = 0;
-	    $orders[$virtuemart_order_id]['comments'] = '';
-	    $modelOrder->updateOrderStatus($orders); // take directly the session from the DB
+	    $order['order_status'] = $new_status;
+	    $order['virtuemart_order_id'] = $virtuemart_order_id;
+	    $order['customer_notified'] = 0;
+	    $order['comments'] = '';
+	    $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 	    // remove vmcart
 	}
 
 	return true;
-    }
-
-    function emptyCart($session_name) {
-
     }
 
     /**

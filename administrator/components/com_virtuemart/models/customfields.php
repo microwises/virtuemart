@@ -243,7 +243,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	private function displayRow($descr, $name,$readonly=''){
 		$html = '<tr>
 		<td class="labelcell">'.JText::_($descr).'</td>
-		<td> <input type="text" '.$readonly.'class="inputbox" name="'.$name.'" size="70" value="'.$this->$name.'" /></td>
+		<td> <input type="text" '.$readonly.'class="inputbox '.$readonly.'" name="'.$name.'" size="70" value="'.$this->$name.'" /></td>
 	</tr>';
 		return $html;
 	}

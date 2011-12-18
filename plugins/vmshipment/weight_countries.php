@@ -31,7 +31,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
     function __construct(& $subject, $config) {
 	//if (self::$_this)
-	 //   return self::$_this;
+	//   return self::$_this;
 	parent::__construct($subject, $config);
 
 	$this->_loggable = true;
@@ -49,13 +49,16 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	    'free_shipment' => array(0, 'int')
 	);
 
+
+
 	$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
 
 // 		self::$_this
 	//$this->createPluginTable($this->_tablename);
 	//self::$_this = $this;
     }
-  /**
+
+    /**
      * Create the table for this plugin if it does not yet exist.
      * @author Valérie Isaksen
      */
@@ -63,7 +66,6 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	return $this->createTableSQL('Shipment Weight Countries Table');
     }
-
 
     function getTableSQLFields() {
 	$SQLfields = array(
@@ -90,8 +92,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @author Valérie Isaksen
      * @author Max Milbers
      */
-    public function plgVmOnShowOrderFEShipment(  $virtuemart_order_id, $virtuemart_shipmentmethod_id, &$shipment_name) {
-	  $this->onShowOrderFE($virtuemart_order_id, $virtuemart_shipmentmethod_id, $shipment_name);
+    public function plgVmOnShowOrderFEShipment($virtuemart_order_id, $virtuemart_shipmentmethod_id, &$shipment_name) {
+	$this->onShowOrderFE($virtuemart_order_id, $virtuemart_shipmentmethod_id, $shipment_name);
     }
 
     /**
@@ -104,7 +106,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @return mixed Null when this method was not selected, otherwise true
      * @author Valerie Isaksen
      */
-    function plgVmConfirmedOrder(   VirtueMartCart $cart, $order) {
+    function plgVmConfirmedOrder(VirtueMartCart $cart, $order) {
 	if (!($method = $this->getVmPluginMethod($order['details']['BT']->virtuemart_shipmentmethod_id))) {
 	    return null; // Another method was selected, do nothing
 	}
@@ -137,8 +139,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @return mixed Null for shipments that aren't active, text (HTML) otherwise
      * @author Valerie Isaksen
      */
-    public function plgVmOnShowOrderBEShipment(  $virtuemart_order_id, $virtuemart_shipmentmethod_id) {
-	if (!($this->selectedThisByMethodId(  $virtuemart_shipmentmethod_id))) {
+    public function plgVmOnShowOrderBEShipment($virtuemart_order_id, $virtuemart_shipmentmethod_id) {
+	if (!($this->selectedThisByMethodId($virtuemart_shipmentmethod_id))) {
 	    return null;
 	}
 	$html = $this->getOrderShipmentHtml($virtuemart_order_id);
@@ -152,7 +154,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
 	$db->setQuery($q);
 	if (!($shipinfo = $db->loadObject())) {
-	   vmWarn(500, $q . " " . $db->getErrorMsg());
+	    vmWarn(500, $q . " " . $db->getErrorMsg());
 	    return '';
 	}
 
@@ -181,7 +183,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	if ($method->free_shipment && $cart_prices['salesPrice'] >= $method->free_shipment) {
 	    return 0;
 	} else {
-	    return  $method->cost + $method->package_fee;
+	    return $method->cost + $method->package_fee;
 	}
     }
 
@@ -267,12 +269,12 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @author Valérie Isaksen
      *
      */
-    function plgVmOnStoreInstallShipmentPluginTable(  $jplugin_id) {
-	return $this->onStoreInstallPluginTable( $jplugin_id);
+    function plgVmOnStoreInstallShipmentPluginTable($jplugin_id) {
+	return $this->onStoreInstallPluginTable($jplugin_id);
     }
 
     /**
-     * This event is fired after the payment method has been selected. It can be used to store
+     * This event is fired after the shipment method has been selected. It can be used to store
      * additional payment info in the cart.
      *
      * @author Max Milbers
@@ -298,8 +300,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @author Valerie Isaksen
      * @author Max Milbers
      */
-    public function plgVmDisplayListFEShipment( VirtueMartCart $cart, $selected = 0,&$htmlIn) {
-	return $this->displayListFE(  $cart, $selected,$htmlIn);
+    public function plgVmDisplayListFEShipment(VirtueMartCart $cart, $selected = 0, &$htmlIn) {
+	return $this->displayListFE($cart, $selected, $htmlIn);
     }
 
     /*
@@ -315,8 +317,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      *
      */
 
-    public function plgVmonSelectedCalculatePriceShipment(  VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
-	return $this->onSelectedCalculatePrice(  $cart, $cart_prices, $cart_prices_name);
+    public function plgVmonSelectedCalculatePriceShipment(VirtueMartCart $cart, array &$cart_prices, &$cart_prices_name) {
+	return $this->onSelectedCalculatePrice($cart, $cart_prices, $cart_prices_name);
     }
 
     /**
@@ -328,8 +330,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @return null if no plugin was found, 0 if more then one plugin was found,  virtuemart_xxx_id if only one plugin is found
      *
      */
-    function plgVmOnCheckAutomaticSelectedShipment( VirtueMartCart $cart, array $cart_prices = array()) {
-	return $this->onCheckAutomaticSelected( $cart, $cart_prices);
+    function plgVmOnCheckAutomaticSelectedShipment(VirtueMartCart $cart, array $cart_prices = array()) {
+	return $this->onCheckAutomaticSelected($cart, $cart_prices);
     }
 
     /**
@@ -339,10 +341,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @return boolean True when the data was valid, false otherwise. If the plugin is not activated, it should return null.
      * @author Max Milbers
 
-    public function plgVmOnCheckoutCheckData($psType, VirtueMartCart $cart) {
-	return null;
-    }
-*/
+      public function plgVmOnCheckoutCheckData($psType, VirtueMartCart $cart) {
+      return null;
+      }
+     */
 
     /**
      * This method is fired when showing when priting an Order
@@ -365,10 +367,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * skipped!), or null when this method is not actived.
      * @author Oscar van Eijk
 
-    public function plgVmOnUpdateOrder($psType, $_formData) {
-	return null;
-    }
- */
+      public function plgVmOnUpdateOrder($psType, $_formData) {
+      return null;
+      }
+     */
     /**
      * Save updated orderline data to the method specific table
      *
@@ -377,10 +379,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * skipped!), or null when this method is not actived.
      * @author Oscar van Eijk
 
-    public function plgVmOnUpdateOrderLine($psType, $_formData) {
-	return null;
-    }
- */
+      public function plgVmOnUpdateOrderLine($psType, $_formData) {
+      return null;
+      }
+     */
     /**
      * plgVmOnEditOrderLineBE
      * This method is fired when editing the order line details in the backend.
@@ -391,10 +393,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @return mixed Null for method that aren't active, text (HTML) otherwise
      * @author Oscar van Eijk
 
-    public function plgVmOnEditOrderLineBE($psType, $_orderId, $_lineId) {
-	return null;
-    }
-*/
+      public function plgVmOnEditOrderLineBE($psType, $_orderId, $_lineId) {
+      return null;
+      }
+     */
     /**
      * This method is fired when showing the order details in the frontend, for every orderline.
      * It can be used to display line specific package codes, e.g. with a link to external tracking and
@@ -405,10 +407,10 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @return mixed Null for method that aren't active, text (HTML) otherwise
      * @author Oscar van Eijk
 
-    public function plgVmOnShowOrderLineFE($psType, $_orderId, $_lineId) {
-	return null;
-    }
-*/
+      public function plgVmOnShowOrderLineFE($psType, $_orderId, $_lineId) {
+      return null;
+      }
+     */
 
     /**
      * plgVmOnResponseReceived
@@ -425,17 +427,17 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @author Valerie Isaksen
      *
 
-    function plgVmOnResponseReceived($psType, &$virtuemart_order_id, &$html) {
-	return null;
-    }
-*/
-    function plgVmDeclarePluginParamsShipment( $name, $id, &$data) {
+      function plgVmOnResponseReceived($psType, &$virtuemart_order_id, &$html) {
+      return null;
+      }
+     */
+    function plgVmDeclarePluginParamsShipment($name, $id, &$data) {
 
 	return $this->declarePluginParams('shipment', $name, $id, $data);
     }
 
-    function plgVmSetOnTablePluginParamsShipment($name, $id, &$table){
-    	return $this->setOnTablePluginParams($name, $id, $table);
+    function plgVmSetOnTablePluginParamsShipment($name, $id, &$table) {
+	return $this->setOnTablePluginParams($name, $id, $table);
     }
 
 }

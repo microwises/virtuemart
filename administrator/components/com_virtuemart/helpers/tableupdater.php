@@ -114,7 +114,11 @@ class GenericTableUpdater extends JModel{
 						if(strpos($name,'s_desc')!==false){
 							$fieldstructure = 'varchar(2048) NOT NULL DEFAULT "" ';
 						} else {
-							$fieldstructure = 'varchar(21000) NOT NULL DEFAULT "" ';
+						    if (strcmp($table,'vendors') != 0) {
+							$fieldstructure = 'varchar(19000) NOT NULL DEFAULT "" ';
+						    } else {
+							$fieldstructure = 'varchar(10500) NOT NULL DEFAULT "" ';
+						    }
 						}
 
 

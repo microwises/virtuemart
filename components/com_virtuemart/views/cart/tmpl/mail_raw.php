@@ -39,9 +39,7 @@ echo $this->loadTemplate($this->recipient);
 echo $this->loadTemplate('shopperadresses');
 // render price list
 echo  $this->loadTemplate('pricelist');
-//dump($salesPriceShipment , 'rawmail');
-// more infos
-//echo $this->loadTemplate($this->recipient.'_more');
+ 
 // end of mail
 echo $this->loadTemplate('footer');
 ?>
