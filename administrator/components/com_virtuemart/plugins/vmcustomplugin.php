@@ -129,11 +129,91 @@ abstract class vmCustomPlugin extends VmPlugin {
 		$key = key($plugin_param) ;
 		$plugin_param[$key]['virtuemart_product_id'] = $data['virtuemart_product_id'];
 		vmdebug('plgData',$plugin_param[$key]);
-		$this->id = $this->getIdForCustomIdProduct($data['virtuemart_product_id'],$plugin_param[$key]['virtuemart_custom_id']);
-		$this->storePluginInternalData($plugin_param[$key],'id',$this->id);
+		// $this->id = $this->getIdForCustomIdProduct($data['virtuemart_product_id'],$plugin_param[$key]['virtuemart_custom_id']);
+		$this->storePluginInternalDataProduct($plugin_param[$key],'id',$data['virtuemart_product_id']);
     }
 
+	/**
+	 * This stores the data of the plugin, attention NOT the configuration of the pluginmethod,
+	 * this function should never be triggered only called from triggered functions.
+	 *
+	 * @author Max Milbers
+	 * @param array $values array or object with the data to store
+	 * @param string $tableName When different then the default of the plugin, provid it here
+	 * @param string $tableKey an additionally unique key
+	 */
+	protected function storePluginInternalDataProduct(&$values, $primaryKey=0, $product_id = 0 ){
 
+		if($primaryKey===0) $primaryKey = $this->_tablepkey;
+		if($this->_vmpItable===0){
+			$this->_vmpItable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$primaryKey,$this->_tableId,$this->_loggable);
+		}
+		//vmdebug('storePluginInternalData',$value);
+		$ok = true;
+		$msg = '';
+
+		if(!$this->_vmpItable->bind($values)){
+			$ok = false;
+			$msg = 'bind';
+			// 			vmdebug('Problem in bind '.get_class($this).' '.$this->_db->getErrorMsg());
+			vmdebug('Problem in bind '.get_class($this).' ');
+		}
+
+		if($ok){
+			if(!$this->_vmpItable->checkDataContainsTableFields($values)){
+				$ok = false;
+				//    			$msg .= ' developer notice:: checkDataContainsTableFields';
+			}
+		}
+
+		if($ok){
+			if(!$this->_vmpItable->check()){
+				$ok = false;
+				$msg .= ' check';
+				vmdebug('Check returned false '.get_class($this).' '.$this->_vmpItable->_db->getErrorMsg());
+				return false;
+			}
+		}
+
+		if($ok){
+			$this->_vmpItable->setLoggableFieldsForStore();
+
+			$this->_vmpItable->storeParams();
+
+			$id = 0;
+			$custom_id = $values['virtuemart_custom_id'];
+				if( !empty($custom_id) && !empty($product_id) ){
+					$_qry = 'SELECT `id` FROM `#__virtuemart_product_custom_plg_'.$this->_name.'` WHERE `virtuemart_product_id`='.(int)$product_id.' and `virtuemart_custom_id`='.(int)$custom_id ;
+					$this->_vmpItable->_db->setQuery($_qry);
+					$id = $this->_vmpItable->_db->loadResult();
+				}
+
+	//		$this->_vmpItable->setError($_qry,'$_qry');
+
+			if ( !empty($id) ) {
+				$this->_vmpItable->id = $id;
+				$returnCode = $this->_vmpItable->_db->updateObject($this->_vmpItable->_tbl, $this->_vmpItable, 'id', false);
+			} else {
+				$returnCode = $this->_vmpItable->_db->insertObject($this->_vmpItable->_tbl, $this->_vmpItable, 'id');
+			}
+
+			if (!$returnCode) {
+				$this->_vmpItable->setError(get_class($this) . '::store failed - ' . $this->_vmpItable->_db->getErrorMsg());
+				return false;
+			}
+			else
+				return true;
+		}
+		// $this->_vmpItable->bindChecknStore($values);
+		$errors = $this->_vmpItable->getErrors();
+		if(!empty($errors)){
+			foreach($errors as $error){
+				$this->setError($error);
+			}
+		}
+		return $values;
+
+	}
 
     /**
     * Calculate the variant price by The plugin

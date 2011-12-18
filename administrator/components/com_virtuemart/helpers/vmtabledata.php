@@ -46,7 +46,7 @@ class VmTableData extends VmTable {
 						. 'WHERE `'.$this->_pkey.'` = "' . $this->$pKey.'" ';
 				$this->_db->setQuery($_qry);
 				$id = $this->_db->loadResult();
-			} elseif ($this->_id) $id = $this->_id ;// added by patrick kohl to set the $id external
+			}
 
 //		$this->setError($_qry,'$_qry');
 
