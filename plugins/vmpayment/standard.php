@@ -39,7 +39,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	    $varsToPush = array('payment_logos' => array('', 'char'),
 		'countries' => array(0, 'int'),
 		'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\' ',
-		'payment_currency' => 'char(3) ',
+		'payment_currency' =>  array(0, 'int'),
 		'min_amount' => array(0, 'int'),
 		'max_amount' => array(0, 'int'),
 		'cost_per_transaction' => array(0, 'int'),

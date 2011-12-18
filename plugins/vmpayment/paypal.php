@@ -38,7 +38,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 
 	$varsToPush = array('paypal_merchant_email' => array('', 'char'),
 	    'paypal_verified_only' => array('', 'int'),
-	    'payment_currency' => array(0, 'char'),
+	    'payment_currency' => array(0, 'int'),
 	    'sandbox' => array(0, 'int'),
 	    'sandbox_merchant_email' => array('', 'char'),
 	    'payment_logos' => array('', 'char'),
