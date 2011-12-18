@@ -1372,7 +1372,8 @@ function getOrderByList($virtuemart_category_id=false) {
 	//$option = JRequest::getWord('option');
 	//$order	= $mainframe->getUserStateFromRequest( $option.'order'  , 'order' ,''	,'word' );
 	$getArray = (JRequest::get( 'get' ));
-	$fieldLink = '';
+	$link = '';
+	$fieldLink ='';
 	// remove setted variable
 	if (array_key_exists('globalCurrencyConverter', $getArray)) unset ($getArray['globalCurrencyConverter']);
 	if (array_key_exists('order', $getArray)) unset ($getArray['order']);
@@ -1380,6 +1381,8 @@ function getOrderByList($virtuemart_category_id=false) {
 	if (array_key_exists('virtuemart_manufacturer_id', $getArray)) unset ($getArray['virtuemart_manufacturer_id']);
 	foreach ($getArray as $key => $value )
 		$fieldLink .= '&'.$key.'='.$value;
+	$fieldLink[0] = "?";
+	$fieldLink = 'index.php'.$fieldLink ;
 	$orderTxt ='';
 
 	$order = JRequest::getWord('order', 'ASC');
@@ -1441,10 +1444,10 @@ function getOrderByList($virtuemart_category_id=false) {
 			$manufacturerLink='';
 			if (count($manufacturers)>0) {
 				$manufacturerLink ='<div class="orderlist">';
-				if ($virtuemart_manufacturer_id > 0) $manufacturerLink .='<div><a title="" href="'.JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$orderTxt.$orderbyTxt ) .'">'.JText::_('COM_VIRTUEMART_SEARCH_SELECT_ALL_MANUFACTURER').'</a></div>';
+				if ($virtuemart_manufacturer_id > 0) $manufacturerLink .='<div><a title="" href="'.JRoute::_($fieldLink.$orderTxt.$orderbyTxt ) .'">'.JText::_('COM_VIRTUEMART_SEARCH_SELECT_ALL_MANUFACTURER').'</a></div>';
 				if (count($manufacturers)>1) {
 					foreach ($manufacturers as $mf) {
-						$link = JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_manufacturer_id='.$mf->virtuemart_manufacturer_id.$fieldLink.$orderTxt.$orderbyTxt ) ;
+						$link = JRoute::_($fieldLink.'&virtuemart_manufacturer_id='.$mf->virtuemart_manufacturer_id.$orderTxt.$orderbyTxt ) ;
 						if ($mf->virtuemart_manufacturer_id != $virtuemart_manufacturer_id) {
 							$manufacturerLink .='<div><a title="'.$mf->mf_name.'" href="'.$link.'">'.$mf->mf_name.'</a></div>';
 						}
@@ -1477,8 +1480,8 @@ function getOrderByList($virtuemart_category_id=false) {
 
 				$text = JText::_('COM_VIRTUEMART_'.strtoupper($fieldWithoutPrefix)) ;
 
-				if ($field == $orderbyCfg) $link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$manufacturerTxt ) ;
-				else $link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$manufacturerTxt.'&orderby='.$field ) ;
+				if ($field == $orderbyCfg) $link = JRoute::_($fieldLink.$manufacturerTxt ) ;
+				else $link = JRoute::_($fieldLink.$manufacturerTxt.'&orderby='.$field ) ;
 				$orderByLink .='<div><a title="'.$text.'" href="'.$link.'">'.$text.'</a></div>';
 			}
 		}
@@ -1497,7 +1500,7 @@ function getOrderByList($virtuemart_category_id=false) {
 	/* full string list */
 	if ($orderby=='') $orderby=$orderbyCfg;
 	$orderby=strtoupper($orderby);
-	$link = JRoute::_('index.php?option=com_virtuemart&view=category'.$fieldLink.$orderlink.$orderbyTxt.$manufacturerTxt) ;
+	$link = JRoute::_($fieldLink.$orderlink.$orderbyTxt.$manufacturerTxt) ;
 
 	$dotps = strrpos($orderby, '.');
 	if($dotps!==false){

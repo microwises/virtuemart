@@ -157,21 +157,24 @@ $verticalseparator = " vertical-separator";
 		</div>
 				<input type="hidden" name="search" value="true" />
 				<input type="hidden" name="view" value="category" />
-		</form>
+
 
 		<!-- End Search Box -->
 		<?php } ?>
-	<div class="orderby-displaynumber">
-		<div class="width70 floatleft">
-			<?php echo $this->orderByList['orderby']; ?>
-			<?php echo $this->orderByList['manufacturer']; ?>
-		</div>
-		<div class="width30 floatright display-number"><?php echo $this->vmPagination->getResultsCounter();?><br/><?php echo $this->vmPagination->getLimitBox(); ?></div>
-<div id="bottom-pagination"><?php echo $this->vmPagination->getPagesLinks(); ?><span style="float:right"><?php echo $this->vmPagination->getPagesCounter(); ?></span></div>
+			<div class="orderby-displaynumber">
+				<div class="width70 floatleft">
+					<?php echo $this->orderByList['orderby']; ?>
+					<?php echo $this->orderByList['manufacturer']; ?>
+				</div>
+				<div class="width30 floatright display-number"><?php echo $this->vmPagination->getResultsCounter();?><br/><?php echo $this->vmPagination->getLimitBox(); ?></div>
+				<div id="bottom-pagination">
+					<?php echo $this->vmPagination->getPagesLinks(); ?>
+					<span style="float:right"><?php echo $this->vmPagination->getPagesCounter(); ?></span>
+				</div>
 
-	<div class="clear"></div>
-	</div>
-</form>
+			<div class="clear"></div>
+			</div>
+		</form>
 <?php // Start the Output
 foreach ( $this->products as $product ) {
 

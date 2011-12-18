@@ -651,33 +651,60 @@ class VmPagination extends JPagination {
 		// Make the option list
 		//for 3 = 3,6,12,24,60,90 rows, 4 rows, 6 rows
 		$sequence = VmConfig::get('pagination_sequence',0);
-		if(!empty($sequence)){
-			$sequenceArray = explode(',', $sequence);
-			foreach($sequenceArray as $items){
-				$limits[]=JHtml::_('select.option', $items);
-			}
 
-		} else {
-			if($this->_perRow===1) $this->_perRow = 5;
-			$iterationAmount = 4;
-			for ($i = 1; $i <= $iterationAmount; $i ++) {
-				$limits[] = JHtml::_('select.option', $i*$this->_perRow);
-			}
-
-			$limits[] = JHTML::_('select.option', $this->_perRow * 10);
-			$limits[] = JHTML::_('select.option', $this->_perRow * 20);
-// 			vmdebug('getLimitBox',$this->_perRow);
-		}
 
 		$limits[] = JHTML::_('select.option', '0', JText::_('all'));
 
 		$selected = $this->_viewall ? 0 : $this->limit;
-
 		// Build the select list
 		if ($app->isAdmin()) {
+			if(!empty($sequence)){
+				$sequenceArray = explode(',', $sequence);
+				foreach($sequenceArray as $items){
+					$limits[]=JHtml::_('select.option', $items);
+				}
+
+			} else {
+				if($this->_perRow===1) $this->_perRow = 5;
+				$iterationAmount = 4;
+				for ($i = 1; $i <= $iterationAmount; $i ++) {
+					$limits[] = JHtml::_('select.option', $i*$this->_perRow);
+				}
+
+				$limits[] = JHTML::_('select.option', $this->_perRow * 10);
+				$limits[] = JHTML::_('select.option', $this->_perRow * 20);
+	// 			vmdebug('getLimitBox',$this->_perRow);
+			}
 			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="submitform();"', 'value', 'text', $selected);
 		} else {
-			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="this.form.submit()"', 'value', 'text', $selected);
+			$getArray = (JRequest::get( 'get' ));
+			$link ='';
+			if (array_key_exists('limit', $getArray)) unset ($getArray['limit']);
+			
+			foreach ($getArray as $key => $value ) $link .= '&'.$key.'='.$value;
+			$link[0] = "?";
+			$link = 'index.php'.$link ;
+			if(!empty($sequence)){
+				$sequenceArray = explode(',', $sequence);
+				foreach($sequenceArray as $items){
+					$limits[]=JHtml::_('select.option', JRoute::_( $link.'&limit='. $items), $items);
+				}
+
+			} else {
+				if($this->_perRow===1) $this->_perRow = 5;
+				$iterationAmount = 4;
+				for ($i = 1; $i <= $iterationAmount; $i ++) {
+					$limits[] = JHtml::_('select.option',JRoute::_( $link.'&limit='. $i*$this->_perRow) ,$i*$this->_perRow );
+				}
+
+				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 10) , $this->_perRow * 10 );
+				$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit='. $this->_perRow * 20) , $this->_perRow * 20 );
+	// 			vmdebug('getLimitBox',$this->_perRow);
+			}
+			$selected= JRoute::_( $link.'&limit='. $selected) ;
+			$js = 'onchange="window.top.location.href=this.options[this.selectedIndex].value">';
+			
+			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" '.$js , 'value', 'text', $selected);
 		}
 		return $html;
 	}

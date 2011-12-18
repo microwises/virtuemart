@@ -108,9 +108,11 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 */
 	function plgVmOnViewCartModule( $product,$productCustom, $row,&$html) {
 		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
-		if(!empty($plgParam['comment']) ){
-			$html = ' = '.$plgParam['comment'];
-		}
+		foreach($plgParam as $k => $item){
+			if(!empty($item['comment']) ){
+				$html .='<span>'.$item['comment'].'</span>';
+			}
+		 }
 		return true;
     }
 
@@ -120,17 +122,15 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 */
 	function plgVmOnViewCart($product,$productCustom, $row,&$html) {
 		if (!$plgParam = $this->GetPluginInCart($product)) return '' ;
-		$comment ='';
-		// foreach($plgParam as $k => $item){
-			if(!empty($plgParam['comment']) ){
-				$comment .= ' = '.$plgParam['comment'];
-			}
-		// }
-// 		$comment = current($product->param);
+
 		$html  .= '<div>';
-		$html .='<span>'.$comment.'</span>';
-		// $html .='<span>'.$param->Morecomment.'</span>';
+		foreach($plgParam as $k => $item){
+			if(!empty($item['comment']) ){
+				$html .='<span>'.$item['comment'].'</span>';
+			}
+		 }
 		$html .='</div>';
+
 		return true;
     }
 

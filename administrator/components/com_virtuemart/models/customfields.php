@@ -804,13 +804,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				$productCustom = self::getProductCustomFieldCart ($product_id,$selected );
 				$html .= ' <span class="product-field-type-'.$productCustom->field_type.'">';
  				if ($productCustom->field_type == "E") {
-					$product = self::addParam($product);
-					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-					JPluginHelper::importPlugin('vmcustom');
-					$dispatcher = JDispatcher::getInstance();
-					$varsToPushParam = $dispatcher->trigger('plgVmOnViewCart',array($product,$productCustom, $row,&$html));
 
-					$html .= '</span>';
 					//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
 // 					$html .= vmCustomPlugin::displayInCartPlugin( $product,$productCustom, $row).'</span>';
 					// foreach ($product->userfield as $pKey => $puser) {
@@ -828,7 +822,15 @@ class VirtueMartModelCustomfields extends VmModel {
 			}
 			$row++;
 		}
+		if ($variantmods ) {
+			$product = self::addParam($product);
+			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+			JPluginHelper::importPlugin('vmcustom');
+			$dispatcher = JDispatcher::getInstance();
+			$varsToPushParam = $dispatcher->trigger('plgVmOnViewCart',array($product,$productCustom, $row,&$html));
 
+			$html .= '</span>';
+		}
 		return $html.'</div>';
 	}
 

@@ -1297,7 +1297,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 			'product_height', 'product_width', 'product_length', 'product_lwh_uom',
 			'product_weight', 'product_weight_uom', 'product_in_stock', 'low_stock_notification',
 			 'p.modified_on',
-			'product_unit', 'product_packaging', 'p.virtuemart_product_id',);
+			'product_unit', 'product_packaging', 'p.virtuemart_product_id');
 		//other possible fields
 		//'p.intnotes',		this is maybe interesting, but then only for admins or special shoppergroups
 
