@@ -937,6 +937,9 @@ abstract class vmPSPlugin extends vmPlugin {
     }
 
     function emptyCart($session_id) {
+	if (!class_exists('VirtueMartCart'))
+			    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+	 $this->logInfo('Notification: emptyCart '.$session_id, 'message');
 	if ($session_id != null) {
 	    $session = & JFactory::getSession();
 	    $session->close();

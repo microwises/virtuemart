@@ -271,7 +271,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$paymentCurrencyId = $method->payment_currency;
     }
 
-    function plgVmOnPaymentResponseReceived(&$virtuemart_order_id, &$html) {
+    function plgVmOnPaymentResponseReceived(  &$html) {
 
 // the payment itself should send the parameter needed.
 	$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
@@ -294,6 +294,24 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
 	$payment_name = $this->renderPluginName($method);
 	$html = $this->_getPaymentResponseHtml($payment_data, $payment_name);
+
+		    if ($virtuemart_order_id) {
+			if (!class_exists('VirtueMartCart'))
+			    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+			// get the correct cart / session
+			$cart = VirtueMartCart::getCart();
+
+			// send the email ONLY if payment has been accepted
+			if (!class_exists('VirtueMartModelOrders'))
+			    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+			$order = new VirtueMartModelOrders();
+			$orderitems = $order->getOrder($virtuemart_order_id);
+			//vmdebug('PaymentResponseReceived CART', $orderitems);
+			$cart->sentOrderConfirmedEmail($orderitems);
+			//We delete the old stuff
+
+			$cart->emptyCart();
+		    }
 
 	return true;
     }

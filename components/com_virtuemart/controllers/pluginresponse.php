@@ -69,34 +69,8 @@ class VirtueMartControllerPluginresponse extends JController {
 	$return_context = "";
 	$dispatcher = JDispatcher::getInstance();
 	$html = "";
-	$returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived', array('virtuemart_order_id' => &$virtuemart_order_id, 'html' => &$html));
+	$returnValues = $dispatcher->trigger('plgVmOnPaymentResponseReceived', array( 'html' => &$html));
 
-
-	foreach ($returnValues as $returnValue) {
-	    if ($returnValue !== null) {
-		if ($returnValue) {
-		    if ($virtuemart_order_id) {
-			if (!class_exists('VirtueMartCart'))
-			    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-			// get the correct cart / session
-			$cart = VirtueMartCart::getCart();
-
-			// send the email ONLY if payment has been accepted
-			if (!class_exists('VirtueMartModelOrders'))
-			    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-			$order = new VirtueMartModelOrders();
-			$orderitems = $order->getOrder($virtuemart_order_id);
-			//vmdebug('PaymentResponseReceived CART', $orderitems);
-			$cart->sentOrderConfirmedEmail($orderitems);
-			//We delete the old stuff
-
-			$cart->emptyCart();
-			break; // This was the active plugin, so there's nothing left to do here.
-		    }
-		}
-	    }
-	    // Returnvalue 'null' must be ignored; it's an inactive plugin so look for the next one
-	}
 	JRequest::setVar('paymentResponse', Jtext::_('COM_VIRTUEMART_CART_THANKYOU'));
 	JRequest::setVar('paymentResponseHtml', $html);
 	$view = $this->getView('pluginresponse', 'html');
