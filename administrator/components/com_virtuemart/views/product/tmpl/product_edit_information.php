@@ -199,7 +199,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 				</td>
 				<td width="71%">
-					<input type="text" readonly class="inputbox" name="basePrice" size="10" value="<?php echo $this->product->prices['basePrice']; ?>" />
+					<input type="text" readonly class="inputbox readonly" name="basePrice" size="10" value="<?php echo $this->product->prices['basePrice']; ?>" />
 					<?php echo $this->vendor_currency;   ?>
 				</td>
 			</tr>
@@ -212,7 +212,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
                                      </div>
 				</td>
 				<td width="71%">
-					<input type="text" readonly class="inputbox" name="product_price_incl_tax" size="10" value="<?php echo $this->product->prices['salesPrice']; ?>" />
+					<input type="text" readonly class="inputbox readonly" name="product_price_incl_tax" size="10" value="<?php echo $this->product->prices['salesPrice']; ?>" />
 					<?php echo $this->vendor_currency;   ?>
 				</td>
 			</tr>

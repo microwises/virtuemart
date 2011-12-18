@@ -108,7 +108,7 @@ span.tos{display:inline-block;margin-right:15px;}
 table.cart-summary tr th{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border-bottom:solid #E9E8E8 1px;padding:6px 0 3px;}
 .customer-comment{text-align:center;border-top:solid #E9E8E8 1px;margin:10px 0 0;padding:10px 0 0;}
 textarea.customer-comment{background:#fff;border:solid #ccc 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;color:#777;margin-bottom:2px;text-align:left;padding:5px 5px 4px;}
-div.terms-of-service{border-top:solid #E9E8E8 1px;border-bottom:solid #E9E8E8 1px;margin:10px 0 0;padding:10px 0 15px;}
+div.terms-of-service{border-top:solid #E9E8E8 1px;border-bottom:solid #E9E8E8 1px;margin:10px 0 0;padding:10px 0 15px;heigth:20px;overflow:auto;}
 .terms-of-service h5{background:#7C1E21;color:rgba(255, 255, 255, 0.9);font-size:14px;text-align:center;border-radius:6px;-moz-border-radius:6px;-webkit-border-radius:6px;font-weight:400;margin:0;padding:15px;}
 .terms-of-service h5 a,.terms-of-service h5 a:visited{color:#fff;text-transform:uppercase;}
 .vm-button-correct,.vm-button-correct:hover,.vm-button-correct:visited{font-size:12px;font-weight:700;display:inline-block;text-decoration:none;color:#777;}
