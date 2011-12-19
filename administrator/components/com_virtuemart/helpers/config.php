@@ -302,7 +302,7 @@ class VmConfig {
 		vmSetStartTime('loadConfig');
 		if(!$force){
 			if(!empty(self::$_jpConfig) && !empty(self::$_jpConfig->_params)){
-				vmTime('loadConfig Program Cache','loadConfig');
+// 				vmTime('loadConfig Program Cache','loadConfig');
 
 				return self::$_jpConfig;
 			} else {

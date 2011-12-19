@@ -840,6 +840,7 @@ class VirtueMartModelUserfields extends VmModel {
 		if(!empty($error)){
 			vmError('userfields getIfRequired '.$error,'Programmer used an unknown userfield '.$fieldname);
 		}
+
 		return $result;
 
 	}

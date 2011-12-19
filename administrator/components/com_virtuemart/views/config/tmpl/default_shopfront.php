@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MORE_CORE_SETTINGS') ?></legend>
 				<table class="admintable">
 
-					<tr>
+	<?php /*				<tr>
 						<td class="key"><span
 							class="hasTip"
 							title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PDF_BUTTON_EXPLAIN'); ?>">
@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 						<td>
 						<?php echo VmHTML::checkbox('pdf_button_enable', $this->config->get('pdf_button_enable')); ?>
 						</td>
-					</tr>
+					</tr>  */ ?>
 					<tr>
 						<td class="key"><span
 							class="hasTip"

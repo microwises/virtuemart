@@ -423,7 +423,7 @@ class VirtueMartCart {
 					$totalQuantity = $this->products[$productKey]->quantity+ $quantityPost;
 					if ($this->checkForQuantities($product,$totalQuantity ,$errorMsg)) {
 						$this->products[$productKey]->quantity = $totalQuantity;
-						
+
 						//$mainframe->enqueueMessage($errorMsg);
 					} else {
 						// $errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
@@ -673,7 +673,8 @@ class VirtueMartCart {
 
 	function checkout() {
 
-		if ($this->checkoutData()) {
+		$this->checkoutData();
+		if ($this->_dataValidated) {
 			$mainframe = JFactory::getApplication();
 			//This is dangerous, we may add it as option, direclty calling the confirm is in most countries illegal and can lead to confusion. notice by Max
 			// 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=confirm'), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
@@ -838,12 +839,14 @@ class VirtueMartCart {
 		}
 
 
-		if ($this->tosAccepted !== 1) {
+		if (empty($this->tosAccepted)) {
+			vmdebug('checkoutData');
 			if (!class_exists('VirtueMartModelUserfields')){
 				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
 			}
 			$userFieldsModel = new VirtueMartModelUserfields();
-			if(!$userFieldsModel->getIfRequired('agreed')){
+			$required = $userFieldsModel->getIfRequired('agreed');
+			if(!empty($required)){
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS'));
 			}
 		}
@@ -854,6 +857,7 @@ class VirtueMartCart {
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), JText::_('COM_VIRTUEMART_CART_ONLY_REGISTERED') );
 			}
 		 }
+
 
 		//Show cart and checkout data overview
 		$this->_inCheckOut = false;
