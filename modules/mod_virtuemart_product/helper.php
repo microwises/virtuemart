@@ -73,8 +73,15 @@ class mod_virtuemart_product {
 /*			if (VmConfig::get('show_products_out_of_stock') == '1' && !$product->product_in_stock) {
 				$button_lbl = JText::_('COM_VIRTUEMART_CART_NOTIFY');
 				$button_cls = 'notify-button';
-			} */ ?>
-
+			} */
+// Display the add to cart button
+			$stockhandle = VmConfig::get('stockhandle','none');
+			if(($stockhandle=='disableit' or $stockhandle=='disableadd') and ($product->product_in_stock - $product->product_ordered)<1){
+				$button_lbl = JText::_('COM_VIRTUEMART_CART_NOTIFY');
+				$button_cls = 'notify-button';
+				$button_name = 'notifycustomer';
+			}
+			?>
 			<?php // Display the add to cart button ?>
 			<span class="addtocart-button">
 				<input type="submit" name="addtocart"  class="addtocart-button" value="<?php echo $button_lbl ?>" title="<?php echo $button_lbl ?>" />
