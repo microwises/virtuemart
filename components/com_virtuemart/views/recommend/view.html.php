@@ -62,9 +62,11 @@ class virtuemartViewrecommend extends JView {
 
 		/* Load the product */
 //		$product = $this->get('product');
-		$product_model = $this->getModel('product');
+		if (!class_exists('VirtueMartModelProduct'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
+		$product_model = new VirtueMartModelProduct;
 
-		$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id',0);
+	$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id',0);
 		if(is_array($virtuemart_product_idArray)){
 			$virtuemart_product_id=$virtuemart_product_idArray[0];
 		} else {
@@ -143,10 +145,10 @@ class virtuemartViewrecommend extends JView {
 		parent::display($tpl);
 	}
 
-	function renderMailLayout() {
+	function renderMailLayout($vendor, $recipient) {
 		$this->setLayout('mail_html');
 		$this->comment = JRequest::getString('comment');
-	 	$this->subject = Jtext::_('COM_VIRTUEMART_QUESTION_ABOUT').$this->product->product_name;
+	 	$this->subject = JText::sprintf('COM_VIRTUEMART_RECOMMEND_PRODUCT',$recipient, $this->product->product_name);
 	 	parent::display();
 	}
 

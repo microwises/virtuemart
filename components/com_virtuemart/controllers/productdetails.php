@@ -142,9 +142,13 @@ class VirtueMartControllerProductdetails extends JController {
 			$fromName = $user->name;
 		$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
 
+	 	$vendorModel = $this->getModel('vendor');
+		$VendorEmail = $vendorModel->getVendorEmail($vars['product']->virtuemart_vendor_id);
+		$vars['vendor'] = array('vendor_store_name' => $fromName );
+
 		$TOMail = JRequest::getVar('email');	//is sanitized then
 		$TOMail = str_replace(array('\'','"',',','%','*','/','\\','?','^','`','{','}','|','~'),array(''),$TOMail);
-		if (shopFunctionsF::renderMail('recommend', $TOMail, $vars,'productdetails')) {
+		if (shopFunctionsF::renderMail('recommend', $TOMail, $vars,'productdetails',true)) {
 			$string = 'COM_VIRTUEMART_MAIL_SEND_SUCCESSFULLY';
 		}
 		else {

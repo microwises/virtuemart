@@ -292,7 +292,7 @@ class shopFunctionsF {
 	 * @param string $recipient shopper@whatever.com
 	 * @param array $vars variables to assign to the view
 	 */
-	public function renderMail ($viewName, $recipient, $vars=array(),$controllerName = null) {
+	public function renderMail ($viewName, $recipient, $vars=array(),$controllerName = null,$noVendorMail = false) {
 		if(!class_exists('VirtueMartControllerVirtuemart')) require(JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
 		$format = (VmConfig::get('order_html_email',1)) ? 'html' : 'raw';
 
@@ -315,8 +315,8 @@ class shopFunctionsF {
 		foreach ($vars as $key => $val) {
 			$view->$key = $val;
 		}
-		$user= self::sendVmMail($view, $recipient);
-		if (isset($view->doVendor)) {
+		$user= self::sendVmMail($view, $recipient,$noVendorMail);
+		if (isset($view->doVendor) && !$noVendorMail) {
 			self::sendVmMail($view, $view->vendorEmail, true);
 		}
 		return $user ;
@@ -336,7 +336,7 @@ class shopFunctionsF {
 	private function sendVmMail (&$view, $recipient, $vendor=false) {
 
 		ob_start();
-		$view->renderMailLayout($vendor);
+		$view->renderMailLayout($vendor, $recipient);
 		$body = ob_get_contents();
 		ob_end_clean();
 
