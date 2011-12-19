@@ -176,7 +176,7 @@ function getObject(obj) {
 
 jQuery(".insertRow").click( function() {
 	nr = jQuery('#fieldValuesBody tr').length ;
-	row = '<tr><td><input type="text" readonly="readonly" name="vNames['+nr+']" value="Mr"></td><td><input type="text" name="vValues['+nr+']" value="Mr"></td></tr>';
+	row = '<tr><td><input type="text" readonly="readonly" class="readonly" name="vNames['+nr+']" value="Mr"></td><td><input type="text" name="vValues['+nr+']" value="Mr"></td></tr>';
 	jQuery('#fieldValuesBody').append( row );
 });
 

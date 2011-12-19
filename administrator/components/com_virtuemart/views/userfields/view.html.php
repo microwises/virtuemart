@@ -122,7 +122,7 @@ class VirtuemartViewUserfields extends JView {
 				for ($i = 0; $i < $n; $i++) {
 					$lists['userfield_values'] .=
 						 '<tr>'
-						.'<td><input type="text" value="'.$userFieldValues[$i]->fieldtitle.'" name="vNames['.$i.']" readonly="readonly" /></td>'
+						.'<td><input type="text" value="'.$userFieldValues[$i]->fieldtitle.'" name="vNames['.$i.']" readonly="readonly"  class="readonly"/></td>'
 						.'<td><input type="text" value="'.$userFieldValues[$i]->fieldvalue.'" name="vValues['.$i.']" /></td>'
 						.'</tr>';
 				}
