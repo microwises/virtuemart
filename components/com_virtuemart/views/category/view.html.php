@@ -92,6 +92,7 @@ class VirtuemartViewCategory extends JView {
 // 		vmTime('end loop categoryListTree '.$counter);
 
 		//$category->children = $categoryModel->getChildCategoryList($vendorId, $categoryId);
+		vmdebug('children', $category->children);
 		$categoryModel->addImages($category->children,1);
 
 

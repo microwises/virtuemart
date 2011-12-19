@@ -140,7 +140,10 @@ class VirtueMartViewProductdetails extends JView {
 					$pathway->addItem(strip_tags($c->category_name),JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$c->virtuemart_category_id));
 				}
 			}
-			if($category->children)	$category_model->addImages($category->children,1);
+			vmdebug('children', $category->children);
+			if($category->children)	{
+			    $category_model->addImages($category->children,1);
+			}
 		}
 		$format = JRequest::getCmd('format','html');
 		if ($format=='html') {

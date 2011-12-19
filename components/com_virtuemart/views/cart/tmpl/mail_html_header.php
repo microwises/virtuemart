@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="html-email">
     <td colspan="3">
-	<img src="<?php echo JURI::root() . $this->cart->vendor->images[0]->file_url ?>">
+	<img src="<?php echo JURI::root() . $this->cart->vendor->images[0]->file_url_thumb ?>">
 	<br/>
 	<strong><?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_NAME', $this->shopperName); ?></strong><br/>
     </td>
