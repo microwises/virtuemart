@@ -115,9 +115,9 @@ class GenericTableUpdater extends JModel{
 							$fieldstructure = 'varchar(2048) NOT NULL DEFAULT "" ';
 						} else {
 						    if (strcmp($table,'vendors') != 0) {
-							$fieldstructure = 'varchar(19000) NOT NULL DEFAULT "" ';
+								$fieldstructure = 'varchar(19000) NOT NULL DEFAULT "" ';
 						    } else {
-							$fieldstructure = 'varchar(10500) NOT NULL DEFAULT "" ';
+								$fieldstructure = 'varchar(10500) NOT NULL DEFAULT "" ';
 						    }
 						}
 
@@ -140,7 +140,12 @@ class GenericTableUpdater extends JModel{
 				$q .= ' ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT="Language '.$lang.' for '.$table.'" AUTO_INCREMENT=1 ;';
 				$this->_db->setQuery($q);
 				$this->_db->query();
-				// 				vmdebug('checkLanguageTables',$this->_db);
+
+				$err = $this->_db->getErrorMsg();
+				if(!empty($err)){
+					vmError('createLanguageTables '.$err.' '.$this->_db->getQuery());
+				}
+// 					vmdebug('checkLanguageTables',$this->_db);
 			}
 		}
 		// 		vmTime('done creation of lang tables');

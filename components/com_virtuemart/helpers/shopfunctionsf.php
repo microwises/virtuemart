@@ -139,9 +139,10 @@ class shopFunctionsF {
 	 * @author RolandD, Christopher Roussel
 	 * @param string $link
 	 * @param boolean $use_icon
+	 * @deprecated
 	 */
 	function PdfIcon( $link, $use_icon=true ) {
-		if (VmConfig::get('pdf_button_enable', 1) == '1' && !JRequest::getVar('pop')) {
+/*		if (VmConfig::get('pdf_button_enable', 1) == '1' && !JRequest::getVar('pop')) {
 
 			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 			//$link .= '&amp;pop=1';
@@ -151,7 +152,7 @@ class shopFunctionsF {
 				$text = JText::_('COM_VIRTUEMART_PDF') .'&nbsp;';
 			}
 			return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('COM_VIRTUEMART_PDF'));
-		}
+		}*/
 	}
 
 	/**

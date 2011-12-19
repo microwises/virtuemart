@@ -78,7 +78,7 @@ if (empty ( $this->product )) {
 		<?php $link = (VmConfig::isJ15()) ? 'index2.php' : 'index.php';
 		$link .= '?tmpl=component&option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id;
 		$pdflink= JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&format=pdf');
-		echo shopFunctionsF::PdfIcon($pdflink );
+// 		echo shopFunctionsF::PdfIcon($pdflink );
 		echo shopFunctionsF::PrintIcon($link.'&print=1');
 		echo shopFunctionsF::EmailIcon($this->product->virtuemart_product_id); ?>
 	<div class="clear"></div>
