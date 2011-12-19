@@ -172,8 +172,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    "country" => ShopFunctions::getCountryByID($address->virtuemart_country_id, 'country_3_code'),
 	    "email" => $address->email,
 	    "night_phone_b" => $address->phone_1,
-	    "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id),
-	    //"return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
+	    //"return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id),
+	    "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
 	    "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
 	    "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id),
 	    //"undefined_quantity" => "0",
@@ -433,9 +433,9 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    }
 	}
 
-	$this->logInfo('plgVmOnPaymentNotification return new_status' . $new_status, 'message');
+	$this->logInfo('plgVmOnPaymentNotification return new_status:' . $new_status, 'message');
 
-	$this->emptyCart($return_context);
+
 	if ($virtuemart_order_id) {
 	    // send the email only if payment has been accepted
 	    if (!class_exists('VirtueMartModelOrders'))
@@ -448,7 +448,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 	    // remove vmcart
 	}
-
+	$this->emptyCart($return_context);
 	return true;
     }
 
