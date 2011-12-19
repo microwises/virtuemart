@@ -190,7 +190,11 @@ class VirtueMartModelCustom extends VmModel {
 		}
 		JPluginHelper::importPlugin('vmcustom');
 		$dispatcher = JDispatcher::getInstance();
-		foreach ($datas['plugin_param'] as $key => $plugin_param ) $dispatcher->trigger('plgVmOnStoreProduct', array($datas, $plugin_param ));
+		if (is_array($datas['plugin_param'])) {
+		    foreach ($datas['plugin_param'] as $key => $plugin_param ) {
+			$dispatcher->trigger('plgVmOnStoreProduct', array($datas, $plugin_param ));
+		    }
+		}
 
 	}
 
