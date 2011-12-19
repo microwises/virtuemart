@@ -83,10 +83,10 @@ $tt=$this;
 				echo "<tr>";
 				echo "<td>". vmJsApi::date($this->orderbt_event->created_on,'LC2',true) ."</td>\n";
 				if ($this->orderbt_event->customer_notified == 1) {
-					echo '<td align="center">Yes</td>';
+					echo '<td align="center">'.JText::_('COM_VIRTUEMART_YES').'</td>';
 				}
 				else {
-					echo '<td align="center">No</td>';
+					echo '<td align="center">'.JText::_('COM_VIRTUEMART_NO').'</td>';
 				}
 				echo '<td align="center">'.$this->orderstatuslist[$this->orderbt_event->order_status_code].'</td>';
 				echo "<td>".$this->orderbt_event->comments."</td>\n";
@@ -95,7 +95,7 @@ $tt=$this;
 			?>
 			<tr>
 				<td colspan="4">
-				<a href="#" class="show_element"><span class="vmicon vmicon-16-editadd"></span> Update Status </a>
+				<a href="#" class="show_element"><span class="vmicon vmicon-16-editadd"></span><?php echo JText::_('COM_VIRTUEMART_ORDER_UPDATE_STATUS') ?></a>
 				<div style="display: none; background: white;"
 					class="element-hidden vm-absolute"
 					id="updateOrderStatus"><?php echo $this->loadTemplate('editstatus'); ?>
