@@ -40,8 +40,7 @@ class TableOrders extends VmTable {
 	/** @var int Order number */
 	var $order_number = NULL;
 	var $order_pass = NULL;
-	/** @var int User info ID */
-	var $virtuemart_userinfo_id = NULL;
+
 	/** @var decimal Order total */
 	var $order_total = 0.00000;
 	/** @var decimal Order subtotal */
@@ -91,7 +90,6 @@ class TableOrders extends VmTable {
 		parent::__construct('#__virtuemart_orders', 'virtuemart_order_id', $db);
 
 		$this->setUniqueName('order_number');
-//		$this->setObligatoryKeys('virtuemart_userinfo_id');
 		$this->setLoggable();
 
 		$this->setTableShortCut('o');
@@ -117,7 +115,7 @@ class TableOrders extends VmTable {
 		$this->_db->setQuery( 'SELECT `payment_element` FROM `#__virtuemart_paymentmethods` , `#__virtuemart_orders`
 			WHERE `#__virtuemart_paymentmethods`.`virtuemart_paymentmethod_id` = `#__virtuemart_orders`.`virtuemart_paymentmethod_id` AND `virtuemart_order_id` = ' . $id );
 		$paymentTable = '#__virtuemart_payment_plg_'. $this->_db->loadResult();
-		 
+
 		$this->_db->setQuery('DELETE from `'.$paymentTable.'` WHERE `virtuemart_order_id` = ' . $id);
 		if ($this->_db->query() === false) {
 			$this->setError($this->_db->getError());

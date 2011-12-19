@@ -114,9 +114,11 @@ class VirtuemartViewUser extends JView {
 	    $new = true;
 	}
 
-	$virtuemart_userinfo_id = JRequest::getString('virtuemart_userinfo_id', '0', '');
+
 	if ($new) {
-	    $virtuemart_userinfo_id = 0;
+		$virtuemart_userinfo_id = 0;
+	} else {
+		$virtuemart_userinfo_id = JRequest::getString('virtuemart_userinfo_id', '0', '');
 	}
 
 	$this->assignRef('virtuemart_userinfo_id', $virtuemart_userinfo_id);

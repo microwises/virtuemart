@@ -660,7 +660,7 @@ class VirtueMartModelOrders extends VmModel {
 
 
 	function handleStockAfterStatusChangedPerProduct($newState, $oldState,$product, $quantity) {
-		
+
 		if($newState == $oldState) return;
 		$StatutWhiteList = array('P','C','X','R','S','N');
 
@@ -801,7 +801,7 @@ class VirtueMartModelOrders extends VmModel {
 			//    * [double] variantModification = 0
 			$_orderItems->virtuemart_order_item_id = null;
 			$_orderItems->virtuemart_order_id = $_id;
-			$_orderItems->virtuemart_userinfo_id = 'TODO'; //$_cart['BT']['virtuemart_userinfo_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
+// 			$_orderItems->virtuemart_userinfo_id = 'TODO'; //$_cart['BT']['virtuemart_userinfo_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
 			$_orderItems->virtuemart_vendor_id = $_prod->virtuemart_vendor_id;
 			$_orderItems->virtuemart_product_id = $_prod->virtuemart_product_id;
 			$_orderItems->order_item_sku = $_prod->product_sku;

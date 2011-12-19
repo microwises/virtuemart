@@ -34,8 +34,7 @@ class TableOrder_items extends VmTable {
 	var $virtuemart_order_item_id = 0;
 	/** @var int User ID */
 	var $virtuemart_order_id = NULL;
-	/** @var int User info ID */
-	var $virtuemart_userinfo_id = NULL;
+
 	/** @var int Vendor ID */
 	var $virtuemart_vendor_id = NULL;
 	/** @var int Product ID */

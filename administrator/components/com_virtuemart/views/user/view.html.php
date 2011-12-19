@@ -101,7 +101,6 @@ class VirtuemartViewUser extends JView {
 				$viewName=ShopFunctions::SetViewTitle('USER',$userDetails->JUser->get('name'));
 			}
 
-
 			$_new = ($userDetails->JUser->get('id') < 1);
 
 			ShopFunctions::addStandardEditViewCommands($vendorid);
@@ -134,12 +133,6 @@ class VirtuemartViewUser extends JView {
 			if(JRequest::getInt('new','0')===1){
 				$new = true;
 			}
-
-// 			vmdebug('$virtuemart_userinfo_id',$virtuemart_userinfo_id);
-// 			$addressType = 'BT';
-// 			if($layoutName == 'edit_shipto'){
-// 				$addressType = 'ST';
-// 			}
 
 			$virtuemart_userinfo_id_BT = $model->getBTuserinfo_id();
 			$userFieldsArray = $model->getUserInfoInUserFields($layoutName,'BT',$virtuemart_userinfo_id_BT,false);
@@ -182,8 +175,6 @@ class VirtuemartViewUser extends JView {
 			$this->assignRef('shipToFields', $userFieldsST);
 			$this->assignRef('shipToId', $virtuemart_userinfo_id);
 			$this->assignRef('new', $new);
-// 				$this->assignRef('shipToID', $virtuemart_userinfo_id);
-
 
 			if (!$_new) {
 				// Check for existing orders for this user
@@ -218,9 +209,6 @@ class VirtuemartViewUser extends JView {
 			$this->assignRef('lists', $lists);
 			$this->assignRef('userDetails', $userDetails);
 
-// 			$this->assignRef('userFields', $userFields);
-// 			$this->assignRef('userInfoID', $virtuemart_userinfo_id);
-			//			$this->assignRef('vendor', $vendor);
 			$this->assignRef('orderlist', $orderList);
 			$this->assignRef('contactDetails', $_contactDetails);
 			$this->assignRef('editor', $editor);
