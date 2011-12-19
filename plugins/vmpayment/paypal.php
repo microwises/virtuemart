@@ -443,8 +443,8 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	    $modelOrder = new VirtueMartModelOrders();
 	    $order['order_status'] = $new_status;
 	    $order['virtuemart_order_id'] = $virtuemart_order_id;
-	    $order['customer_notified'] = 0;
-	    $order['comments'] = '';
+	    $order['customer_notified'] = 1;
+	    $order['comments'] = JTExt::sprintf('VMPAYMENT_PAYPAL_PAYMENT_CONFIRMED', $order_number);
 	    $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 	    // remove vmcart
 	}
