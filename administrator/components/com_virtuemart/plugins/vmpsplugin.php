@@ -680,7 +680,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	$currency = CurrencyDisplay::getInstance();
 
 	$costDisplay = $currency->priceDisplay($pluginSalesPrice);
-	$html = '<input type="radio" name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id"   value="' . $plugin->$pluginmethod_id . '" ' . $checked . '>'
+	$html = '<input type="radio" name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '"   value="' . $plugin->$pluginmethod_id . '" ' . $checked . '>'
 		. '<label for="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '">' . '<span class="' . $this->_type . '">' . $plugin->$pluginName . '<span class="' . $this->_type . '_cost"> (' . $costDisplay . ")</span></span></label>\n";
 
 
@@ -769,7 +769,7 @@ abstract class vmPSPlugin extends vmPlugin {
     }
 
     function getPaymentCurrency(&$method) {
-	if (!$method->payment_currency) {
+	if (!isset($method->payment_currency) or !empty($method->payment_currency) or (!$method->payment_currency)) {
 	    if (!class_exists('VirtueMartModelVendor'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 	    $vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
