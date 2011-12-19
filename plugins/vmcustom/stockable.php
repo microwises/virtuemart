@@ -329,7 +329,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCartModule()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCartModule( $product,$productCustom, $row,&$html) {
+	function plgVmOnViewCartModule( $product, $row,&$html) {
 		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
 // 		$html  = '';
 		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';
@@ -342,7 +342,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCart()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCart($product,$productCustom, $row,&$html) {
+	function plgVmOnViewCart($product, $row,&$html) {
 		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
 		$html  .= '<div>';
 		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';
@@ -356,24 +356,26 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 *
 	 * vendor order display BE
 	 */
-	function plgVmDisplayInOrderBE($item,$productCustom, $row, $plgParam) {
-		if ($productCustom->custom_value != $this->_name) return null;
+	function plgVmDisplayInOrderBE($item, $row,&$html) {
+		if (!$plgParam = $this->GetPluginInCart($item)) return false ;
 		$html  = '<div>';
 		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';
 		// $html .='<span>'.$param->Morecomment.'</span>';
-		return $html.'</div>';
+		$html.='</div>';
+		return true;
 	}
 
 	/**
 	 *
 	 * shopper order display FE
 	 */
-	function plgVmDisplayInOrderFE($item,$productCustom, $row, $plgParam) {
-		if ($productCustom->custom_value != $this->_name) return null;
+	function plgVmDisplayInOrderFE($item, $row,&$html) {
+		if (!$plgParam = $this->GetPluginInCart($item)) return false ;
 		$html  = '<div>';
 		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';
 		// $html .='<span>'.$param->Morecomment.'</span>';
-		return $html.'</div>';
+		$html.='</div>';
+		return true;
 	}
 
 	function getChilds($child_id = null) {

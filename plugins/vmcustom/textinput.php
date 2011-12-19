@@ -106,7 +106,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCartModule()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCartModule( $product,$productCustom, $row,&$html) {
+	function plgVmOnViewCartModule( $product,$row,&$html) {
 		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
 		foreach($plgParam as $k => $item){
 			if(!empty($item['comment']) ){
@@ -120,7 +120,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCart()
 	 * @author Patrick Kohl
 	 */
-	function plgVmOnViewCart($product,$productCustom, $row,&$html) {
+	function plgVmOnViewCart($product,$row,&$html) {
 		if (!$plgParam = $this->GetPluginInCart($product)) return '' ;
 
 		$html  .= '<div>';
@@ -139,30 +139,16 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 *
 	 * vendor order display BE
 	 */
-	function plgVmDisplayInOrderBE($item,$productCustom, $row,$plgParam) {
-		if ($productCustom->custom_value != $this->_name) return null;
-		$comment ='';
-			if(!empty($plgParam['comment']) ){
-				$comment .= ' = '.$plgParam['comment'];
-			}
-		$html  = '<div>';
-		$html .='<span>'.$comment.'</span>';
-		return $html.'</div>';
+	function plgVmDisplayInOrderBE($item, $row, &$html) {
+		$this->plgVmOnViewCart($item,$row,$html); //same render as cart
     }
 
 	/**
 	 *
 	 * shopper order display FE
 	 */
-	function plgVmDisplayInOrderFE($item,$productCustom, $row,$plgParam) {
-		if ($productCustom->custom_value != $this->_name) return null;
-		$comment ='';
-			if(!empty($plgParam['comment']) ){
-				$comment .= ' = '.$plgParam['comment'];
-			}
-		$html  = '<div>';
-		$html .='<span>'.$comment.'</span>';
-		return $html.'</div>';
+	function plgVmDisplayInOrderFE($item, $row, &$html) {
+		$this->plgVmOnViewCart($item,$row,$html); //same render as cart
     }
 
 	/**

@@ -762,12 +762,6 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				$productCustom = self::getProductCustomFieldCart ($product_id,$selected );
  				if ($productCustom->field_type == "E") {
-					$product = self::addParam($product);
-					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-
-					JPluginHelper::importPlugin('vmcustom');
-					$dispatcher = JDispatcher::getInstance();
-					$varsToPushParam = $dispatcher->trigger('plgVmOnViewCartModule',array($product,$productCustom, $row,&$html));
 
 
 				} elseif (($productCustom->field_type == "G")) {
@@ -782,7 +776,14 @@ class VirtueMartModelCustomfields extends VmModel {
 			}
 			$row++;
 		}
+		if ($variantmods) {
+			$product = self::addParam($product);
+			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 
+			JPluginHelper::importPlugin('vmcustom');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('plgVmOnViewCartModule',array($product, $row,&$html));
+		}
 		return $html.'</div>';
 	}
 
@@ -805,11 +806,6 @@ class VirtueMartModelCustomfields extends VmModel {
 				$html .= ' <span class="product-field-type-'.$productCustom->field_type.'">';
  				if ($productCustom->field_type == "E") {
 
-					//$html ='<input type="hidden" value="'.$field->custom_value.'" name="customPrice['.$row.']['.$field->virtuemart_custom_id.']">';
-// 					$html .= vmCustomPlugin::displayInCartPlugin( $product,$productCustom, $row).'</span>';
-					// foreach ($product->userfield as $pKey => $puser) {
-						// $this->data->products[$i]['customfieldsCart'] .= '<br/ > <b>'.$product->customfieldsCart[$row]->custom_title.' : </b>'.$puser.' '.$product->customfieldsCart[$row]->custom_field_desc;
-					// }
 				} elseif (($productCustom->field_type == "G")) {
 					$child = self::getChild($productCustom->custom_value);
 					$html .= $productCustom->custom_title.' : '.$child->product_name.'</span>';
@@ -827,7 +823,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();
-			$varsToPushParam = $dispatcher->trigger('plgVmOnViewCart',array($product,$productCustom, $row,&$html));
+			$dispatcher->trigger('plgVmOnViewCart',array($product, $row,&$html));
 
 			$html .= '</span>';
 		}
@@ -839,20 +835,16 @@ class VirtueMartModelCustomfields extends VmModel {
 	 */
 	public function CustomsFieldOrderDisplay($item,$view='FE') {
 		$row = 0 ;
-		$product_attributes = json_decode($item->product_attribute,true);
+		$item->param = json_decode($item->product_attribute,true);
 		$html = '<div class="vm-customfield-cart">';
 
-		foreach ($product_attributes as $virtuemart_customfield_id=>$param){
+		foreach ($item->param as $virtuemart_customfield_id=>$param){
  			if ($param) {
 				if ($productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id ) ) {
 // vmdebug('$param',$param);
 					if ($productCustom->field_type == "E") {
+ 
 
-						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
-						JPluginHelper::importPlugin('vmcustom');
-						$dispatcher = JDispatcher::getInstance();
-						$plgDisplay = $dispatcher->trigger('plgVmDisplayInOrder'.$view,array( $item, $productCustom,$row, $param[$productCustom->value]));
-						foreach ($plgDisplay as $display) $html.=$display;
 					} elseif (($productCustom->field_type == "G")) {
 						$child = self::getChild($productCustom->value);
 						$html .= ' <span>'.$productCustom->custom_title.' : '.$child->product_name.'</span>';
@@ -869,7 +861,14 @@ class VirtueMartModelCustomfields extends VmModel {
 			}
 			$row++;
 		}
+		if ($item->param) {
+			// $item = self::addParam($item);
+			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+			JPluginHelper::importPlugin('vmcustom');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('plgVmDisplayInOrder'.$view,array( $item, $row, &$html));
 
+		}
 		return $html.'</div>';
 	}
 
