@@ -44,6 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 	    .html-email th { background: #ccc;margin: 0px;padding: 10px;}
 	    .sectiontableentry2, .html-email th, .cart-summary th{ background: #ccc;margin: 0px;padding: 10px;}
 	    .sectiontableentry1, .html-email td, .cart-summary td {background: #fff;margin: 0px;padding: 10px;}
+	    .vmpayment_description, .vmshipment_description{ margin-left: 2px;}
 	</style>
 
     </head>
