@@ -652,12 +652,10 @@ class VmPagination extends JPagination {
 		//for 3 = 3,6,12,24,60,90 rows, 4 rows, 6 rows
 		$sequence = VmConfig::get('pagination_sequence',0);
 
-
-		$limits[] = JHTML::_('select.option', '0', JText::_('all'));
-
 		$selected = $this->_viewall ? 0 : $this->limit;
 		// Build the select list
 		if ($app->isAdmin()) {
+			$limits[] = JHTML::_('select.option', '0', JText::_('all'));
 			if(!empty($sequence)){
 				$sequenceArray = explode(',', $sequence);
 				foreach($sequenceArray as $items){
@@ -677,6 +675,7 @@ class VmPagination extends JPagination {
 			}
 			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="submitform();"', 'value', 'text', $selected);
 		} else {
+
 			$getArray = (JRequest::get( 'get' ));
 			$link ='';
 			if (array_key_exists('limit', $getArray)) unset ($getArray['limit']);
@@ -684,6 +683,8 @@ class VmPagination extends JPagination {
 			foreach ($getArray as $key => $value ) $link .= '&'.$key.'='.$value;
 			$link[0] = "?";
 			$link = 'index.php'.$link ;
+			$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit=0'), JText::_('all'));
+
 			if(!empty($sequence)){
 				$sequenceArray = explode(',', $sequence);
 				foreach($sequenceArray as $items){
