@@ -1,4 +1,4 @@
-﻿<?php // no direct access
+<?php // no direct access
 defined('_JEXEC') or die('Restricted access');
 $col= 1 ;
 $pwidth= ' width'.floor ( 100 / $products_per_row );
@@ -13,7 +13,7 @@ else {$float="center";}
 if ($display_style =="div") { ?>
 <div class="vmproduct<?php echo $params->get('moduleclass_sfx'); ?>">
 <?php foreach ($products as $product) { ?>
-	<div style="<?php echo $float ?>" class="<?php echo $pwidth ?>"><div class="spacer">
+	<div class="<?php echo $pwidth ?> <?php echo $float ?>"><div class="spacer">
 <?php
  if (!empty($product->images[0]) )
  $image = $product->images[0]->displayMediaThumb('class="featuredProductImage" border="0"',false) ;
