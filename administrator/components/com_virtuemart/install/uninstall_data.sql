@@ -20,7 +20,7 @@ DELETE FROM `#__virtuemart_order_histories`;
 DELETE FROM `#__virtuemart_order_items`;
 DELETE FROM `#__virtuemart_order_userinfos`;
 DELETE FROM `#__virtuemart_paymentmethods`;
-DELETE FROM `#__virtuemart_paymentmethod_creditcards`;
+DELETE FROM `#__virtuemart_paymentmethod_creditcards` IF EXISTS;
 DELETE FROM `#__virtuemart_paymentmethod_shoppergroups`;
 DELETE FROM `#__virtuemart_products`;
 DELETE FROM `#__virtuemart_product_categories`;
