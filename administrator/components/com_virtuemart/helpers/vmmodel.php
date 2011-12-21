@@ -318,6 +318,7 @@ class VmModel extends JModel {
 
 		$this->setState('limitstart', $limitStart);
 
+// 		vmdebug('limitstart',$limitStart, $limit);
 		return array($limitStart,$limit);
 	}
 
@@ -679,7 +680,7 @@ class VmPagination extends JPagination {
 			$getArray = (JRequest::get( 'get' ));
 			$link ='';
 			if (array_key_exists('limit', $getArray)) unset ($getArray['limit']);
-			
+
 			foreach ($getArray as $key => $value ) $link .= '&'.$key.'='.$value;
 			$link[0] = "?";
 			$link = 'index.php'.$link ;
@@ -704,7 +705,7 @@ class VmPagination extends JPagination {
 			}
 			$selected= JRoute::_( $link.'&limit='. $selected) ;
 			$js = 'onchange="window.top.location.href=this.options[this.selectedIndex].value">';
-			
+
 			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" '.$js , 'value', 'text', $selected);
 		}
 		return $html;
