@@ -303,7 +303,7 @@ defined('_JEXEC') or die('Restricted access');
 				</tr>
 				<tr>
 					<td class="key">
-						<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOWVM_VERSION_EXPLAIN'); ?>">
+						<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_HEIGHT_TIP'); ?>">
 						<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_THUMBNAIL_HEIGHT') ?>
 						</span>
 					</td>
