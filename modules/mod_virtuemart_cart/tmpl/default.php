@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 // ALL THE DISPLAY IS Done by Ajax using "hiddencontainer" ?>
 
 <!-- Virtuemart 2 Ajax Card -->
-<div class="vmCartModule <?php echo $params->get('moduleclass_sfx'); ?>">
+<div class="vmCartModule <?php echo $params->get('moduleclass_sfx'); ?>" id="vmCartModule">
 <?php
 if ($show_product_list) {
 	?>

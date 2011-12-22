@@ -1415,11 +1415,11 @@ function getOrderByList($virtuemart_category_id=false) {
 		$tmp = $this->_noLimit;
 		$this->_noLimit = true;
 
-		if(!empty($this->ids)){
-			$mf_virtuemart_product_ids = $this->ids;
-		} else {
-			$mf_virtuemart_product_ids = $this->sortSearchListQuery(true,$virtuemart_category_id);
-		}
+		// if(!empty($this->ids)){
+			// $mf_virtuemart_product_ids = $this->ids;
+		// } else {
+			// $mf_virtuemart_product_ids = $this->sortSearchListQuery(true,$virtuemart_category_id);
+		// }
 
 		$this->_noLimit = $tmp;
 		//$mf_virtuemart_product_ids = array();
@@ -1432,11 +1432,13 @@ function getOrderByList($virtuemart_category_id=false) {
 			$manufacturerTxt ='&virtuemart_manufacturer_id='.$virtuemart_manufacturer_id;
 		}
 
-		if ($mf_virtuemart_product_ids) {
+		// if ($mf_virtuemart_product_ids) {
 			$query = 'SELECT DISTINCT l.`mf_name`,l.`virtuemart_manufacturer_id` FROM `#__virtuemart_manufacturers_'.VMLANG.'` as l';
-			$query .=' JOIN `#__virtuemart_manufacturers` AS p using (`virtuemart_manufacturer_id`)';
-			$query .= ' LEFT JOIN `#__virtuemart_product_manufacturers` ON l.`virtuemart_manufacturer_id` = `#__virtuemart_product_manufacturers`.`virtuemart_manufacturer_id` ';
-			$query .= ' WHERE `#__virtuemart_product_manufacturers`.`virtuemart_product_id` in ('.implode (',', $mf_virtuemart_product_ids ).') ';
+			$query .=' JOIN `#__virtuemart_product_manufacturers` AS pm using (`virtuemart_manufacturer_id`)';
+			$query .= ' LEFT JOIN `#__virtuemart_products` as p ON p.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
+			$query .= ' LEFT JOIN `#__virtuemart_product_categories` as c ON c.`virtuemart_product_id` = pm.`virtuemart_product_id` ';
+			$query .= ' WHERE p.`published` =1';
+			if ($virtuemart_category_id) $query .= ' AND c.`virtuemart_category_id` ='.(int)$virtuemart_category_id;
 			$query .= ' ORDER BY l.`mf_name`';
 			$this->_db->setQuery($query);
 			$manufacturers = $this->_db->loadObjectList();
@@ -1457,7 +1459,7 @@ function getOrderByList($virtuemart_category_id=false) {
 				else $currentManufacturerLink ='<div class="title">'.JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_MANUFACTURER_LBL').'</div><div class="Order"> '.$manufacturers[0]->mf_name.'</div>';
 				$manufacturerLink .='</div>';
 			}
-		}
+		// }
 	}
 
 	/* order by link list*/

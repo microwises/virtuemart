@@ -185,8 +185,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			if ($attribut['is_variant']==1) {
 				unset ($attribut['is_variant']);
 				if ($this->getValideId( $child_id)) {
-
-					$js[]= '"'.$child_id.'" :'.$attribut['custom_price'];
+					if ($attribut['custom_price'])
+						$js[]= '"'.$child_id.'" :'.$attribut['custom_price'];
 					unset ($attribut['custom_price']);
 
 					//vmdebug('attribut',$attribut);

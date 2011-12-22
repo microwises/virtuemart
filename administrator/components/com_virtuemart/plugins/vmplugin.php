@@ -306,6 +306,7 @@ abstract class vmPlugin extends JPlugin {
 
 	protected function declarePluginParams($psType,$name,$id,&$data){
 // 		if($this->selectedThis($psType,$name,$id)){
+	if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helper'.DS.'vmtable.php');
 			VmTable::bindParameterable($data,$this->_xParams,$this->_varsToPushParam);
 			return true;
 // 			vmdebug('getDeclaredPluginParams return '.$this->_xParams);
