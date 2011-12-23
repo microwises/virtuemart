@@ -1375,10 +1375,10 @@ function getOrderByList($virtuemart_category_id=false) {
 	$link = '';
 	$fieldLink ='';
 	// remove setted variable
-	if (array_key_exists('globalCurrencyConverter', $getArray)) unset ($getArray['globalCurrencyConverter']);
-	if (array_key_exists('order', $getArray)) unset ($getArray['order']);
-	if (array_key_exists('orderby', $getArray)) unset ($getArray['orderby']);
-	if (array_key_exists('virtuemart_manufacturer_id', $getArray)) unset ($getArray['virtuemart_manufacturer_id']);
+	unset ($getArray['globalCurrencyConverter'],$getArray['virtuemart_manufacturer_id'],$getArray['order'],$getArray['orderby'],$getArray['orderby']);
+	// if (array_key_exists('order', $getArray)) unset ($getArray['order']);
+	// if (array_key_exists('orderby', $getArray)) unset ($getArray['orderby']);
+	// if (array_key_exists('virtuemart_manufacturer_id', $getArray)) unset ($getArray['virtuemart_manufacturer_id']);
 	foreach ($getArray as $key => $value )
 		$fieldLink .= '&'.$key.'='.$value;
 	$fieldLink[0] = "?";

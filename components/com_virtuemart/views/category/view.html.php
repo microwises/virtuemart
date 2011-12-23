@@ -118,7 +118,8 @@ class VirtuemartViewCategory extends JView {
 			$pathway->addItem($keyword);
 			$document->setTitle( $categoryStripped.' '.$keyword);
 		}
-		if ($search = JRequest::getWord('search', '')) {
+		$search = JRequest::getvar('keyword', null);
+		if ($search !==null) {
 			$searchcustom = $this->getSearchCustom();
 		}
 		$this->assignRef('keyword', $keyword);
