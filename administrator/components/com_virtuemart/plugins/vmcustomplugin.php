@@ -247,6 +247,7 @@ abstract class vmCustomPlugin extends VmPlugin {
     	//$plgName = $productCustom->value;
 
     	if(!empty($product->param)){
+			if (!is_array($product->param)) return false ;
 			$param = array() ;
 			
     		foreach($product->param as $k => $plg){
