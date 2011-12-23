@@ -49,7 +49,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME') ?></div>
 					</td>
 					<td width="79%" height="18" >
-						<input type="text" class="inputbox"  name="product_name" id="product_name" value="<?php echo $this->product->product_name; ?>" size="32" maxlength="255" />
+						<input type="text" class="inputbox"  name="product_name" id="product_name" value="<?php echo htmlspecialchars($this->product->product_name); ?>" size="32" maxlength="255" />
 					</td>
 				</tr>
 				<tr class="row0">
