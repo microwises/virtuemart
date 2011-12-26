@@ -854,7 +854,7 @@ class VmMediaHandler {
 				<input class="ordering" type="hidden" name="mediaordering['.$image->virtuemart_media_id.']" value="'.$key.'">
 			<a class="vm_thumb" rel="group1" title ="'.$image->file_title.'"href="'.JURI::root(true).'/'.$image->file_url.'" >
 			'.JHTML::image($image->file_url_thumb, $image->file_title, '').'
-			</a><div class="vmicon vmicon-16-remove" title="remove image"></div><div class="edit-24-grey" title="edit image information"></div></div>';
+			</a><div class="vmicon vmicon-16-remove" title="'.JText::_('COM_VIRTUEMART_IMAGE_REMOVE').'"></div><div class="edit-24-grey" title="'.JText::_('COM_VIRTUEMART_IMAGE_EDIT_INFO').'"></div></div>';
 			} else {
 				$fileTitle = empty($image->file_title)? 'no  title':$image->file_title;
 				return  '<div  class="vm_thumb_image"><b>'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b><br />'.$fileTitle.'</div>';
