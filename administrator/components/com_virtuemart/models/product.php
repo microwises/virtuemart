@@ -1172,6 +1172,11 @@ class VirtueMartModelProduct extends VmModel {
 				$this->setError($review->getError());
 				$ok = false;
 			}
+			// delete plugin on product delete
+			// $ok must be set to false if an error occurs
+			JPluginHelper::importPlugin('vmcustom');
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger('plgVmOnDeleteProduct', array($id , &$ok));
 		}
 
 		return $ok;
