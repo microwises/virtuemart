@@ -464,7 +464,7 @@ class vmrouterHelper {
 		return self::$_instance;
 	}
 	public function getCategoryRoute($virtuemart_category_id){
-		
+
 		$cache = JFactory::getCache('_virtuemart','');
 		$key = $virtuemart_category_id. VMLANG ; // internal cache key
 		if (!($CategoryRoute = $cache->get($key))) {
@@ -784,7 +784,7 @@ class vmrouterHelper {
 		else $items = $menus->getItems('component_id', $component->id);
 
 		if(empty($items)){
-			vmWarn('Assign virtuemart to a menu item');
+			vmWarn(JText::_('COM_VIRTUEMART_ASSIGN_VM_TO_MENU'));
 		} else {
 			// Search  Virtuemart itemID in joomla menu
 			foreach ($items as $item)	{

@@ -71,9 +71,13 @@ AdminUIHelper::startAdminArea();
 			    <td>
 					<?php
 					if ($row->default == 1) {
+					    if (VmConfig::isJ15()) {
 						?>
-						<img src="templates/khepri/images/menu/icon-16-default.png" alt="<?php echo JText::_( 'Default' ); ?>" />
+						<img src="templates/khepri/images/menu/icon-16-default.png" alt="<?php echo JText::_( 'COM_VIRTUEMART_SHOPPERGROUP_DEFAULT' ); ?>" />
 						<?php
+					    }  else {
+						echo JHtml::_('image','menu/icon-16-default.png', JText::_('COM_VIRTUEMART_SHOPPERGROUP_DEFAULT'), NULL, true);
+						}
 					} else {
 						?>
 						&nbsp;

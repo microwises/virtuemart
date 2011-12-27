@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?> 
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/module-install.dtd">
 <install type="module" version="1.5.0">
     <name>VirtueMart Shopping Cart</name>
@@ -42,14 +42,14 @@
                 <field name="show_price" type="list" default="1"
 			label="MOD_VIRTUEMART_CART_SHOW_PRICE"
 			description="MOD_VIRTUEMART_CART_SHOW_PRICE_DESC">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
+                    <option value="1">JYes</option>
+                    <option value="0">JNo</option>
                 </field>
                 <field name="show_product_list" type="list" default="1"
 			label="MOD_VIRTUEMART_CART_SHOW_LIST"
 			description="MOD_VIRTUEMART_CART_SHOW_LIST_DESC">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
+                    <option value="1">JYES</option>
+                    <option value="0">JNo</option>
                 </field>
             </fieldset>
         </fields>
