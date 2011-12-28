@@ -140,7 +140,9 @@ if (empty ( $this->product )) {
 				} else {
 					echo "<strong>" . JText::_ ( 'COM_VIRTUEMART_CART_PRICE' ) . "</strong>";
 				}
-
+				if(empty($this->product->prices)){  ?>
+<a class="ask-a-question bold" href="<?php echo $url ?>" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ASKPRICE') ?></a>
+<?php }
 				if ($this->showBasePrice) {
 					echo $this->currency->createPriceDiv ( 'basePrice', 'COM_VIRTUEMART_PRODUCT_BASEPRICE', $this->product->prices );
 					echo $this->currency->createPriceDiv ( 'basePriceVariant', 'COM_VIRTUEMART_PRODUCT_BASEPRICE_VARIANT', $this->product->prices );
@@ -155,7 +157,8 @@ if (empty ( $this->product )) {
 				echo $this->currency->createPriceDiv ( 'discountAmount', 'COM_VIRTUEMART_PRODUCT_DISCOUNT_AMOUNT', $this->product->prices );
 				echo $this->currency->createPriceDiv ( 'taxAmount', 'COM_VIRTUEMART_PRODUCT_TAX_AMOUNT', $this->product->prices ); ?>
 				</div>
-				<?php } ?>
+				<?php } 
+?>
 
 				<?php // Add To Cart Button
 				if (!VmConfig::get('use_as_catalog',0)) { ?>
