@@ -1037,22 +1037,6 @@ class VmTable extends JTable{
 	function checkAndDelete($table,$where = 0){
 		$ok = true;
 		$k = $this->_tbl_key;
-/*		if($where!==0){
-			$query = 'SELECT `'.$this->_tbl_key.'` FROM `'.$table.'` WHERE '.$this->_pkey.' = "'. $this->$k.'"';
-			$this->_db->setQuery( $query );
-			$v = $this->_db->loadResult();
-			vmdebug('checkAndDelete $where!==0',$query);
-// 			$v = $this->$where;
-		} else {
-
-			$v = $this->$k;
-// 		}
-
-// 		if(empty($v)) return true;
-
-// 		$query = 'SELECT '.$this->_tbl_key.' FROM `'.$table.'` WHERE '.$this->_tbl_key.' = "'. $this->$k.'"';
-// 		$query = 'SELECT * FROM `'.$table.'` WHERE '.$this->_tbl_key.' = "'. $this->$k.'"';
- * */
 
 		if($where!==0){
 			$whereKey = $where;
@@ -1080,18 +1064,7 @@ class VmTable extends JTable{
 			}
 			return $ok;
 		}
-/*		if ($this->_db->query()){
-			$query = 'DELETE FROM `'.$table.'` WHERE '.$this->_tbl_key.' = "'.$this->$k.'"';
-			$this->_db->setQuery( $query );
 
-			if ($this->_db->query()){
-				return true;
-			} else {
-// 				$this->setError($this->_db->getErrorMsg());
-				vmError($this->_db->getErrorMsg());
-				return false;
-			}
-		}*/
 	}
 
 }

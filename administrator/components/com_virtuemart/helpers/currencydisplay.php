@@ -41,8 +41,7 @@ class CurrencyDisplay {
 		$converterFile  = VmConfig::get('currency_converter_module');
 
 		if (file_exists( JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile )) {
-			$module_filename = $converterFile;
-			$module_filename=substr($converterFile, 0, strlen($converterFile)-4);
+			$module_filename=substr($converterFile, 0, -4);
 			require_once(JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile);
 			if( class_exists( $module_filename )) {
 				$this->_currencyConverter = new $module_filename();

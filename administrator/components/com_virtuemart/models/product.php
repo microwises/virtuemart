@@ -592,8 +592,9 @@ class VirtueMartModelProduct extends VmModel {
 				if (!empty($product->virtuemart_customfield_id ) ){
 					if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 					$customfields = new VirtueMartModelCustomfields();
-					$product->customfields = $customfields->getproductCustomslist($this->_id,'product');
-
+					$product->customfields = $customfields->getproductCustomslist($this->_id);
+					vmdebug('$product->customfields',$product->customfields);
+// 					$product->customfields = $customfields->getproductCustomslist($product);
 				}
 			} else {
 
@@ -811,14 +812,10 @@ class VirtueMartModelProduct extends VmModel {
 			foreach($productIds as $id){
 				$i = 0;
 				if($product = $this->getProductSingle((int)$id,$front, $withCalc, $onlyPublished)){
-					// 					if($onlyPublished && $product->published){
+
 					$products[] = $product;
 					$i++;
-					// 					}
-					// 					if(!$onlyPublished){
-					// 						$products[] = $product;
-					// 						$i++;
-					// 					}
+
 				}
 				if($i>$maxNumber){
 					vmdebug('Better not to display more than '.$maxNumber.' products');
@@ -1092,11 +1089,17 @@ class VirtueMartModelProduct extends VmModel {
 
 	public function createClone($id){
 		//	if (is_array($cids)) $cids = array($cids);
-		$product = $this->getProduct($id);
-		vmdebug('createClone',$product);
-		$product->virtuemart_product_id = $product->virtuemart_product_price_id = 0;
+		$product = $this->getProduct($id,false);
+
+		$product->virtuemart_customfield_id = $product->virtuemart_product_id = $product->virtuemart_product_price_id = 0;
 		$product->slug = $product->slug.'-'.$id;
 
+		if(!empty($product->customfields)){
+			foreach($product->customfields as $cfield){
+				$cfield->virtuemart_customfield_id = 0;
+			}
+		}
+		vmdebug('createClone',$product);
 		$this->store($product);
 		return $this->_id;
 	}
