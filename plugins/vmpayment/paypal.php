@@ -358,11 +358,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	$this->logInfo('plgVmOnPaymentNotification: virtuemart_order_id  found ' . $virtuemart_order_id, 'message');
 
 	if (!$virtuemart_order_id) {
-	    $this->_debug = true; // force debug here
-	    $this->logInfo('plgVmOnPaymentNotification: virtuemart_order_id not found ', 'ERROR');
-	    // send an email to admin, and ofc not update the order status: exit  is fine
-	    $this->sendEmailToVendorAndAdmins(JText::_('VMPAYMENT_PAYPAL_ERROR_EMAIL_SUBJECT'), JText::_('VMPAYMENT_PAYPAL_UNKNOW_ORDER_ID'));
-	    exit;
+	   return;
 	}
 	$vendorId = 0;
 	$payment = $this->getDataByOrderId($virtuemart_order_id);

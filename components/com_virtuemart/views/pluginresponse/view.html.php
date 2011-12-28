@@ -37,7 +37,7 @@ class VirtueMartViewPluginresponse extends JView {
 		$document = JFactory::getDocument();
                 $paymentResponse = JRequest::getVar('paymentResponse', '');
 
-                  $paymentResponseHtml = JRequest::getVar('paymentResponseHtml','','post','STRING',JREQUEST_ALLOWRAW);
+                   $paymentResponseHtml = JRequest::getVar('paymentResponseHtml','','default','STRING',JREQUEST_ALLOWRAW);
 		$layoutName = $this->getLayout();
 
                 $this->assignRef('paymentResponse', $paymentResponse);
