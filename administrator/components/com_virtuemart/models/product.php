@@ -1093,6 +1093,7 @@ class VirtueMartModelProduct extends VmModel {
 	public function createClone($id){
 		//	if (is_array($cids)) $cids = array($cids);
 		$product = $this->getProduct($id);
+		vmdebug('createClone',$product);
 		$product->virtuemart_product_id = $product->virtuemart_product_price_id = 0;
 		$product->slug = $product->slug.'-'.$id;
 
@@ -1138,7 +1139,7 @@ class VirtueMartModelProduct extends VmModel {
 				$ok = false;
 			}
 
-			if (!$customs->delete($id)) {
+			if (!$customs->delete($id,'virtuemart_product_id')) {
 				$this->setError($customs->getError());
 				$ok = false;
 			}
@@ -1163,7 +1164,7 @@ class VirtueMartModelProduct extends VmModel {
 				$ok = false;
 			}
 
-			if (!$rating->delete($id)) {
+			if (!$rating->delete($id,'virtuemart_product_id')) {
 				$this->setError($rating->getError());
 				$ok = false;
 			}
