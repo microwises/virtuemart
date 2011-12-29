@@ -592,9 +592,8 @@ class VirtueMartModelProduct extends VmModel {
 				if (!empty($product->virtuemart_customfield_id ) ){
 					if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 					$customfields = new VirtueMartModelCustomfields();
-					$product->customfields = $customfields->getproductCustomslist($this->_id);
-					vmdebug('$product->customfields',$product->customfields);
-// 					$product->customfields = $customfields->getproductCustomslist($product);
+					$product->customfields = $customfields->getproductCustomslist($this->_id,'product');
+
 				}
 			} else {
 
@@ -812,10 +811,14 @@ class VirtueMartModelProduct extends VmModel {
 			foreach($productIds as $id){
 				$i = 0;
 				if($product = $this->getProductSingle((int)$id,$front, $withCalc, $onlyPublished)){
-
+					// 					if($onlyPublished && $product->published){
 					$products[] = $product;
 					$i++;
-
+					// 					}
+					// 					if(!$onlyPublished){
+					// 						$products[] = $product;
+					// 						$i++;
+					// 					}
 				}
 				if($i>$maxNumber){
 					vmdebug('Better not to display more than '.$maxNumber.' products');
@@ -1089,17 +1092,11 @@ class VirtueMartModelProduct extends VmModel {
 
 	public function createClone($id){
 		//	if (is_array($cids)) $cids = array($cids);
-		$product = $this->getProduct($id,false);
-
-		$product->virtuemart_customfield_id = $product->virtuemart_product_id = $product->virtuemart_product_price_id = 0;
+		$product = $this->getProduct($id);
+		$product->field = $this->productCustomsfieldsClone($id);
+		$product->virtuemart_product_id = $product->virtuemart_product_price_id = 0;
 		$product->slug = $product->slug.'-'.$id;
 
-		if(!empty($product->customfields)){
-			foreach($product->customfields as $cfield){
-				$cfield->virtuemart_customfield_id = 0;
-			}
-		}
-		vmdebug('createClone',$product);
 		$this->store($product);
 		return $this->_id;
 	}
@@ -1142,7 +1139,7 @@ class VirtueMartModelProduct extends VmModel {
 				$ok = false;
 			}
 
-			if (!$customs->delete($id,'virtuemart_product_id')) {
+			if (!$customs->delete($id)) {
 				$this->setError($customs->getError());
 				$ok = false;
 			}
@@ -1770,13 +1767,15 @@ public function updateStockInDB($product, $amount, $signInStoc, $signOrderedStoc
 }
 
 /* look if whe have a product type */
-private function productHasCustoms($virtuemart_product_id) {
-	if (isset($this->hasproductCustoms)) return $this->hasproductCustoms;
+private function productCustomsfieldsClone($virtuemart_product_id) {
 	$this->_db = JFactory::getDBO();
-	$q = "SELECT `virtuemart_product_id` FROM `#__virtuemart_product_customfields` WHERE `virtuemart_product_id` = ".$virtuemart_product_id." limit 0,1";
+	$q = "SELECT * FROM `#__virtuemart_product_customfields` WHERE `virtuemart_product_id` = ".$virtuemart_product_id ;
 	$this->_db->setQuery($q);
-	$this->hasproductCustoms = $this->_db->loadResult();
-	return $this->hasproductCustoms;
+	if ($customfields = $this->_db->loadAssocList() ) {
+		foreach ($customfields as &$customfield) unset($customfield['virtuemart_product_id'],$customfield['virtuemart_customfield_id']);
+		return $customfields;
+	}
+	else return null;
 }
 
 // use lang table only TODO Look if this not cause errors
