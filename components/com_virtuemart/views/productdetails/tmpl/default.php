@@ -22,8 +22,8 @@
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 // addon for joomla modal Box
-JHTML::_ ( 'behavior.modal' );
-JHTML::_('behavior.tooltip');
+// JHTML::_ ( 'behavior.modal' );
+// JHTML::_('behavior.tooltip');
 $url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component');
 $document = &JFactory::getDocument();
 $document->addScriptDeclaration("
@@ -34,6 +34,10 @@ $document->addScriptDeclaration("
 				rev: 'iframe|550|550'
 			});
 			return false ;
+		});
+		$('.additional-images .product-image').mouseover(function() {
+			himg = this.src ;
+			$('.main-image img').attr('src',himg );
 		});
 	});
 ");
@@ -99,12 +103,13 @@ if (empty ( $this->product )) {
 		<?php // Product Main Image
 		if (!empty($this->product->images[0])) { ?>
 			<div class="main-image">
-			<?php echo $this->product->images[0]->displayMediaFull('class="product-image"',false,"class='modal'",true); ?>
+			<?php echo $this->product->images[0]->displayMediaFull('class="medium-image" id="medium-image"',false,"class='modal'",true); ?>
 			</div>
 		<?php } // Product Main Image END ?>
 
 		<?php // Showing The Additional Images
-		if(!empty($this->product->images) && count($this->product->images)>1) { ?>
+		// if(!empty($this->product->images) && count($this->product->images)>1) { 
+		if(!empty($this->product->images) ) { ?>
 			<div class="additional-images">
 			<?php // List all Images
 			foreach ($this->product->images as $image) {

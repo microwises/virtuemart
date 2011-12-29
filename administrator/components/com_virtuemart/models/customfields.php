@@ -902,10 +902,12 @@ class VirtueMartModelCustomfields extends VmModel {
 	}
 
 	public function setEditCustomHidden($customfield,$i) {
+		if (!isset($customfield->virtuemart_customfield_id) ) $customfield->virtuemart_customfield_id = '0';
 		$html = '
 			<input type="hidden" value="'.$customfield->field_type .'" name="field['.$i .'][field_type]" />
 			<input type="hidden" value="'.$customfield->virtuemart_custom_id.'" name="field['.$i .'][virtuemart_custom_id]" />
-			<input type="hidden" value="'.$customfield->admin_only.'" checked="checked" name="admin_only" />';
+			<input type="hidden" value="'.$customfield->virtuemart_customfield_id.'" name="field['.$i .'][virtuemart_customfield_id]" />
+			<input type="hidden" value="'.$customfield->admin_only.'" checked="checked" name="field['.$i .'][admin_only]" />';
 		return $html;
 
 	}

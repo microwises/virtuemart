@@ -155,20 +155,24 @@ class VirtueMartModelCustom extends VmModel {
 		$tableWhiteList = array('product','category','manufacturer');
 		if(!in_array($table,$tableWhiteList)) return false;
 
-		// delete existings from modelXref and table customfields
-		$this->_db->setQuery( 'DELETE PC.* FROM `#__virtuemart_'.$table.'_customfields` as `PC` , `#__virtuemart_customs` as C WHERE `PC`.`virtuemart_custom_id` = `C`.`virtuemart_custom_id` AND  `PC`.virtuemart_'.$table.'_id ='.$id );
-		if(!$this->_db->query()){
-			$this->setError('Error in saveModelCustomfields '); //.$this->_db->getQuery()); Dont give hackers too much info
-		}
+
+		// Get old IDS
+		$this->_db->setQuery( 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_'.$table.'_customfields` as `PC` WHERE `PC`.virtuemart_'.$table.'_id ='.$id );
+		$old_customfield_ids = $this->_db->loadResultArray();
+		
+
 		 if (isset ( $datas['custom_param'] )) $params = true ;
 		 else $params = false ;
 		if (array_key_exists('field', $datas)) {
-			vmdebug('datas save',$datas);
+			//vmdebug('datas save',$datas);
 			$customfieldIds = array();
+
+
 			foreach($datas['field'] as $key => $fields){
 				$fields['virtuemart_'.$table.'_id'] =$id;
 				$tableCustomfields = $this->getTable($table.'_customfields');
-				if ( $params  ) {
+				$tableCustomfields->setPrimaryKey('virtuemart_product_id');
+				if ( $params and !isset($datas['clone']) ) {
 					if (array_key_exists( $key,$datas['custom_param'])) {
 
 						$fields['custom_param'] = json_encode($datas['custom_param'][$key]);
@@ -183,11 +187,24 @@ class VirtueMartModelCustom extends VmModel {
 				} else $fields['custom_param'] = '';
 				$tableCustomfields->bindChecknStore($fields);
 				$errors = $tableCustomfields->getErrors();
+
 				foreach($errors as $error){
 					$this->setError($error);
 				}
+				$key = array_search($fields['virtuemart_customfield_id'], $old_customfield_ids );
+				if ($key !== false ) unset( $old_customfield_ids[ $key ] );
+				vmdebug('datas clone',$old_customfield_ids,$fields);
 			}
+
 		}
+
+		if ( count($old_customfield_ids) ) {
+		// delete old unused Customfields
+		$this->_db->setQuery( 'DELETE FROM `#__virtuemart_'.$table.'_customfields` WHERE `virtuemart_customfield_id` in ("'.implode('","', $old_customfield_ids ).'") ');
+		$this->_db->query();
+		}
+
+		
 		JPluginHelper::importPlugin('vmcustom');
 		$dispatcher = JDispatcher::getInstance();
 		if (is_array($datas['plugin_param'])) {
