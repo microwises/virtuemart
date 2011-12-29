@@ -461,18 +461,37 @@ class shopFunctionsF {
 		}
 	}
 
+	/**
+	 *
+	 * Enter description here ...
+	 * @author Max Milbers
+	 * @author Iysov
+	 * @param string $string
+	 * @param int $maxlength
+	 * @param string $suffix
+	 */
 	public function limitStringByWord($string, $maxlength, $suffix=''){
-
-		if(strlen($string)<=$maxlength) return $string;
-		$string = substr($string,0,$maxlength);
-		$index = strrpos($string, ' ');
-		if($index===FALSE){
-			return $string;
-		} else{
-			return substr($string,0,$index).$suffix;
+		if(function_exists('mb_strlen')) {
+			/* use multibyte functions by Iysov*/
+			if(mb_strlen($string)<=$maxlength) return $string;
+			$string = mb_substr($string,0,$maxlength);
+			$index = mb_strrpos($string, ' ');
+			if($index===FALSE) {
+				return $string;
+			} else {
+				return mb_substr($string,0,$index).$suffix;
+			}
+		} else { /* original code here */
+			if(strlen($string)<=$maxlength) return $string;
+			$string = substr($string,0,$maxlength);
+			$index = strrpos($string, ' ');
+			if($index===FALSE) {
+				return $string;
+			} else {
+				return substr($string,0,$index).$suffix;
+			}
 		}
 	}
-
 
 	/**
 	 * Admin UI Tabs

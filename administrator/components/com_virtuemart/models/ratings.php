@@ -358,26 +358,43 @@ class VirtueMartModelRatings extends VmModel {
 
     }
 
- /*   function saveRating($data){
+    /**
+    * removes a product and related table entries
+    *
+    * @author Max Milberes
+    */
+    public function remove($ids) {
 
-    	//Check user_rating
-    	$maxrating = VmConfig::get('vm_maximum_rating_scale',5);
-    	$user = JFactory::getUser();
-    	$userId = $user->id;
-    	if ( !empty($data['virtuemart_product_id']) && !empty($userId)){
+    	$rating = $this->getTable($this->_maintablename);
+    	$review = $this->getTable('rating_reviews');
+    	$votes = $this->getTable('rating_votes');
 
-    		//sanitize input
-    		$data['virtuemart_product_id'] = (int)$data['virtuemart_product_id'];
-    		//normalize the rating
-    		if ($data['vote'] < 0 ) $data['vote'] = 0 ;
-    		if ($data['vote'] > ($maxrating+1) ) $data['vote'] = $maxrating;
+    	$ok = true;
+    	foreach($ids as $id) {
 
-    		$data['lastip'] = $_SERVER['REMOTE_ADDR'];
+    		$rating->load($id);
+    		$prod_id = $rating->virtuemart_product_id;
 
+    		if (!$rating->delete($id)) {
+    			$this->setError($rating->getError());
+    			$ok = false;
+    		}
 
+    		if (!$review->delete($prod_id,'virtuemart_product_id')) {
+    			$this->setError($review->getError());
+    			$ok = false;
+    		}
 
+    		if (!$votes->delete($prod_id,'virtuemart_product_id')) {
+    			$this->setError($votes->getError());
+    			$ok = false;
+    		}
     	}
-    }*/
+
+    	return $ok;
+
+    }
+
 
 
     /**

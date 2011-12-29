@@ -1119,6 +1119,7 @@ class VirtueMartModelProduct extends VmModel {
 		$shop = $this->getTable('product_shoppergroups');
 		$rating = $this->getTable('ratings');
 		$review = $this->getTable('rating_reviews');
+		$votes = $this->getTable('rating_votes');
 
 		$ok = true;
 		foreach($ids as $id) {
@@ -1169,10 +1170,15 @@ class VirtueMartModelProduct extends VmModel {
 				$ok = false;
 			}
 
-			if (!$review->delete($id)) {
+			if (!$review->delete($id,'virtuemart_product_id')) {
 				$this->setError($review->getError());
 				$ok = false;
 			}
+			if (!$votes->delete($id,'virtuemart_product_id')) {
+				$this->setError($votes->getError());
+				$ok = false;
+			}
+
 			// delete plugin on product delete
 			// $ok must be set to false if an error occurs
 			JPluginHelper::importPlugin('vmcustom');

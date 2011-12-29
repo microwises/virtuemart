@@ -24,6 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.application.component.model');
 
 if(!class_exists('VmModel'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+if(!class_exists('TableUsergroups'))require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.'usergroups.php');
 
 /**
  * Model class for shop Currencies
