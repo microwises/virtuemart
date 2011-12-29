@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
  * a special type of 'paypal ':
  * @author Max Milbers
  * @author Valérie Isaksen
- * @version $Id$
+ * @version $Id: paypal.php 5177 2011-12-28 18:44:10Z alatak $
  * @package VirtueMart
  * @subpackage payment
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.

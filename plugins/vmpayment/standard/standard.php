@@ -8,7 +8,7 @@ if (!defined('_VALID_MOS') && !defined('_JEXEC'))
  *
  * a special type of 'cash on delivey':
  * @author Max Milbers, Valérie Isaksen
- * @version $Id$
+ * @version $Id: standard.php 5122 2011-12-18 22:24:49Z alatak $
  * @package VirtueMart
  * @subpackage payment
  * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
