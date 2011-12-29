@@ -183,6 +183,27 @@ echo ShopFunctions::renderLWHUnitList('lwh_unit_default', $this->config->get('lw
 
 				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_TITLE') ?></legend>
 				<table class="admintable">
+				    <tr>
+						<td class="key"><span
+							class="hasTip"
+							title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
+								<label><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW') ?>
+							</label> </span>
+						</td>
+						<td><fieldset class="checkboxes">
+
+
+
+
+						<?php
+						$showReviewFor = array('none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_NONE'),
+				 						'bought' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_BOUGHT_PRODUCT'),
+				 						'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_REGISTERED'),
+						//	3 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_ALL')
+						);
+						echo VmHTML::radioList('reviewMode', $this->config->get('reviewMode',2),$showReviewFor); ?>
+							</fieldset></td>
+					</tr>
 					<tr>
 						<td class="key"><span
 							class="hasTip"
@@ -204,27 +225,7 @@ echo ShopFunctions::renderLWHUnitList('lwh_unit_default', $this->config->get('lw
 
 							</fieldset></td>
 					</tr>
-					<tr>
-						<td class="key"><span
-							class="hasTip"
-							title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_EXPLAIN'); ?>">
-								<label><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW') ?>
-							</label> </span>
-						</td>
-						<td><fieldset class="checkboxes">
 
-
-
-
-						<?php
-						$showReviewFor = array('none' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_NONE'),
-				 						'bought' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_BOUGHT_PRODUCT'),
-				 						'registered' => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_REGISTERED'),
-						//	3 => JText::_('COM_VIRTUEMART_ADMIN_CFG_REVIEW_MODE_ALL')
-						);
-						echo VmHTML::radioList('reviewMode', $this->config->get('reviewMode',2),$showReviewFor); ?>
-							</fieldset></td>
-					</tr>
 					<tr>
 						<td class="key"><span
 							class="hasTip"
