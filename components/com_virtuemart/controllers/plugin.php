@@ -47,11 +47,22 @@ class VirtuemartControllerPlugin extends JController
 		// or $render is an array of code to echo as html or json Objects!
 		$render = null ;
 		$dispatcher->trigger('plgVmOnSelfCallFE',array($type, $name, &$render));
-		if ($render !=null) {
-			$format = JRequest::getCmd('format', 'json');
-			if ($format == 'json') echo json_encode($render);
+		if ( $render ) {
+			// Get the document object.
+			$document =& JFactory::getDocument();
+			if (JRequest::getWord('cache') == 'no') {
+				JResponse::setHeader('Cache-Control','no-cache, must-revalidate');
+				JResponse::setHeader('Expires','Mon, 6 Jul 2000 10:00:00 GMT');
+			}
+			$format = JRequest::getWord('format', 'json');
+			if ($format == 'json') {
+				$document->setMimeEncoding('application/json');
+				// Change the suggested filename.
+
+				JResponse::setHeader('Content-Disposition','attachment;filename="'.$type.'".json"');
+				echo json_encode($render);
+			}
 			else echo $render;
 		}
-		jexit();
 	}
 }
