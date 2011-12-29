@@ -307,18 +307,21 @@ class VmTable extends JTable{
 			return false;
 		}
 
-		$this->bind($result);
-		if(!empty($this->_xParams)){
-			//Maybe better to use for $this an &
-			self::bindParameterable($this,$this->_xParams,$this->_varsToPushParam);
+		if($result){
+			$this->bind($result);
+			if(!empty($this->_xParams)){
+				//Maybe better to use for $this an &
+				self::bindParameterable($this,$this->_xParams,$this->_varsToPushParam);
 
-		}
+			}
 
-		if (count($tableJoins)) {
-			foreach ($tableJoins as $tableId => $table) {
-				if(isset( $result[$tableId] )) $this->$tableId = $result[$tableId];
+			if (count($tableJoins)) {
+				foreach ($tableJoins as $tableId => $table) {
+					if(isset( $result[$tableId] )) $this->$tableId = $result[$tableId];
+				}
 			}
 		}
+
 
 		return $this;
 

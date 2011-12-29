@@ -108,8 +108,8 @@ class calculationHelper {
 			$this->allrules[$entrypoint] = $this->_db->loadAssocList();
 
 		}
-
 // 		vmdebug('my rules ',$this->allrules);
+
 		$this->rules['Marge'] = array();
 		$this->rules['Tax'] 	= array();
 		$this->rules['DBTax'] = array();
