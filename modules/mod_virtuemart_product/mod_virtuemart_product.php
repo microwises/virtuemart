@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 defined('_JEXEC') or die( 'Direct Access to '.basename(__FILE__).' is not allowed.' );
 /*
 * featured/Latest/Topten/Random Products Module
@@ -17,6 +17,7 @@ defined('_JEXEC') or die( 'Direct Access to '.basename(__FILE__).' is not allowe
 */
 /* Setting */
 $max_items = 		$params->get( 'max_items', 2 ); //maximum number of items to display
+$layout = $params->get('layout','default');
 $category_id = 		$params->get( 'virtuemart_category_id', null ); // Display products from this category only
 $filter_category = 	(bool)$params->get( 'filter_category', 0 ); // Filter the category
 $display_style = 	$params->get( 'display_style', "div" ); // Display Style
@@ -66,8 +67,8 @@ if (!($output = $cache->get($key))) {
 		vmJsApi::jPrice();
 		vmJsApi::cssSite();
 	}
-	/* load the template */
-	require(JModuleHelper::getLayoutPath('mod_virtuemart_product'));
+	/* Load tmpl default */
+require(JModuleHelper::getLayoutPath('mod_virtuemart_product',$layout));
 	$output = ob_get_clean();
 	$cache->store($output, $key);
 }
