@@ -35,7 +35,12 @@ $j15 = VmConfig::isJ15();
           $orderStatusCodeTip = ($editcoreStatus) ? 'COM_VIRTUEMART_ORDER_STATUS_CODE_CORE':'COM_VIRTUEMART_ORDER_STATUS_CODE_TIP';
                             ?>
 	<table class="admintable">
-		<?php echo VmHTML::row('input','COM_VIRTUEMART_ORDER_STATUS_NAME','order_status_name',$this->orderStatus->order_status_name,'class="inputbox"','',50,50); ?>
+		<?php
+
+                            $lang = JFactory::getLanguage();
+                            $text = $lang->hasKey($this->orderStatus->order_status_name) ? ' ('.JText::_($this->orderStatus->order_status_name).')' : ' ';
+
+		echo VmHTML::row('input','COM_VIRTUEMART_ORDER_STATUS_NAME','order_status_name',$this->orderStatus->order_status_name,'class="inputbox"','',50,50, $text)  ; ?>
 
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_ORDER_STATUS_CODE','order_status_code',$this->orderStatus->order_status_code,'class="inputbox readonly" readonly','',3,1); ?>
 		<tr>

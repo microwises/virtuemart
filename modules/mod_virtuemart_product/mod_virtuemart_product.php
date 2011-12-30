@@ -46,7 +46,7 @@ if (!($output = $cache->get($key))) {
 	if (!class_exists( 'mod_virtuemart_product' )) require('helper.php');
 
 
-	 
+
 	$vendorId = JRequest::getInt('vendorid', 1);
 
 
@@ -55,7 +55,7 @@ if (!($output = $cache->get($key))) {
 
 	$productModel = new VirtueMartModelProduct();
 
-	$products = $productModel->getProductListing($Product_group, $max_items, $show_price, true, false,$filter_category);
+	$products = $productModel->getProductListing($Product_group, $max_items, $show_price, true, false,$filter_category, $category_id);
 	$productModel->addImages($products);
 
 	$totalProd = 		count( $products);
