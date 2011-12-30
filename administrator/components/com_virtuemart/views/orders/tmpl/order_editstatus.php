@@ -21,7 +21,7 @@
 <table class="admintable" width="100%">
 	<tr>
 		<td align="center" colspan="2">
-		<h1><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_ITEMEDIT_LBL') ?></h1>
+		<h1><?php echo JText::_('COM_VIRTUEMART_ORDER_UPDATE_STATUS') ?></h1>
 		</td>
 	</tr>
 	<tr>
@@ -58,7 +58,7 @@
 		<a href="#" title="<?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?>" onClick="javascript:document.orderStatForm.reset();" class="show_element[updateOrderStatus]">
 			<span class="icon-nofloat vmicon vmicon-16-remove"></span>&nbsp;<?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></a>
 		</td>
-<!-- 
+<!--
 		<input type="submit" value="<?php echo JText::_('COM_VIRTUEMART_SAVE');?>" style="font-size: 10px" />
 		<input type="button"
 			onclick="javascript: window.parent.document.getElementById( 'sbox-window' ).close();"
