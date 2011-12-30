@@ -137,7 +137,7 @@ class VmConnector {
 	    curl_close( $CR );
 
 	    if( !empty( $error )) {
-			JError::raiseError(1, $error );
+			//JError::raiseError(1, $error );
 			return false;
 	    } else {
 			return $result;

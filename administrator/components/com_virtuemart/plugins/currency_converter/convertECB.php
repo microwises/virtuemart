@@ -133,8 +133,12 @@ class convertECB {
 				// Fetch the file from the internet
 				if(!class_exists('VmConnector')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'connection.php');
 				//				JError::raiseNotice(1, "Updating currency " );
-				$contents = VmConnector::handleCommunication( $curr_filename );
-				$last_updated = date('Ymd');
+				if (!$contents = VmConnector::handleCommunication( $curr_filename )) {
+					if (isset($file_datestamp)) {
+						$contents = @file_get_contents( $curr_filename );
+					}
+				} else $last_updated = date('Ymd');
+				
 			}
 			else {
 				$contents = @file_get_contents( $curr_filename );
