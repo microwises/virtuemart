@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/module-install.dtd">
 <install type="module" version="1.5.0">
     <name>mod_virtuemart_product</name>
@@ -19,13 +19,12 @@
 	<filename>tmpl/index.html</filename>
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements">
-	<param name="layout" type="list" default="default"
-			label="MOD_VIRTUEMART_PRODUCT_LAYOUT"
-			description="MOD_VIRTUEMART_PRODUCT_LAYOUT_DESC">
-	    <option value="default">MOD_VIRTUEMART_PRODUCT_DEFAULT_LAYOUT</option>
-	    <option value="default2">MOD_VIRTUEMART_PRODUCT_ALTERNATIVE_LAYOUT</option>
-	    <option value="default3">MOD_VIRTUEMART_PRODUCT_ALTERNATIVE2_LAYOUT</option>
-	</param>
+	<param	name="layout" type="filelist" label="MOD_VIRTUEMART_PRODUCT_LAYOUT"
+             	description="MOD_VIRTUEMART_PRODUCT_LAYOUT_DESC"
+             	directory="/modules/mod_virtuemart_product/tmpl"
+             	default="default" hide_default="1" hide_none="1"
+             	stripext="1" filter="\.php$" exclude="^_" />
+
 	<param name="product_group" type="list" default="featured"
 			label="MOD_VIRTUEMART_PRODUCT_DISPLAY"
 			description="MOD_VIRTUEMART_PRODUCT_DISPLAY_DESC">
@@ -92,11 +91,11 @@
     <config>
 	<fields name="params">
 	    <fieldset name="basic" addfieldpath="/administrator/components/com_virtuemart/elements">
-<field name="layout" type="radio" default="default" label="MOD_VIRTUEMART_PRODUCT_LAYOUT" description="MOD_VIRTUEMART_PRODUCT_LAYOUT_DESC">
-		    <option value="default">MOD_VIRTUEMART_PRODUCT_DEFAULT_LAYOUT</option>
-		    <option value="default2">MOD_VIRTUEMART_PRODUCT_ALTERNATIVE_LAYOUT</option>
-		<option value="default3">MOD_VIRTUEMART_PRODUCT_ALTERNATIVE2_LAYOUT</option>
-		</field>
+		<field	name="layout" type="filelist" label="MOD_VIRTUEMART_PRODUCT_LAYOUT"
+             	description="MOD_VIRTUEMART_PRODUCT_LAYOUT_DESC"
+             	directory="/modules/mod_virtuemart_product/tmpl"
+             	default="default" hide_default="1" hide_none="1"
+             	stripext="1" filter="\.php$" exclude="^_" />
 		<field name="product_group" type="list" default="featured"
 			label="MOD_VIRTUEMART_PRODUCT_DISPLAY"
 			description="MOD_VIRTUEMART_PRODUCT_DISPLAY_DESC">

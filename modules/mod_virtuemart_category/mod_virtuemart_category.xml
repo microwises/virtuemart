@@ -25,12 +25,11 @@
     </languages>
     <params addpath="/administrator/components/com_virtuemart/elements">
 	<param name="Parent_Category_id" type="vmcategories"  value_field="category_name" label="MOD_VIRTUEMART_CATEGORY_PARENT_CATEGORY" description="MOD_VIRTUEMART_CATEGORY_PARENT_CATEGORY_DESC" />
-
-	<param name="layout" type="radio" default="default" label="MOD_VIRTUEMART_CATEGORY_CHILD_CAT_MENU_TYPE" description="MOD_VIRTUEMART_CATEGORY_CHILD_CAT_MENU_TYPE_DESC">
-	    <option value="current">MOD_VIRTUEMART_CATEGORY_CURRENT</option>
-	    <option value="default">MOD_VIRTUEMART_CATEGORY_ACCORDEON</option>
-	    <option value="all">MOD_VIRTUEMART_CATEGORY_ALL_CHILD</option>
-	</param>
+	<param	name="layout" type="filelist" label="MOD_VIRTUEMART_CATEGORY_CHILD_CAT_MENU_TYPE"
+             	description="MOD_VIRTUEMART_CATEGORY_CHILD_CAT_MENU_TYPE_DESC"
+             	directory="/modules/mod_virtuemart_category/tmpl"
+             	default="default" hide_default="1" hide_none="1"
+             	stripext="1" filter="\.php$" exclude="^_" />
 	<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
 	    <option value="0">No</option>
 	    <option value="1">Yes</option>
@@ -42,13 +41,12 @@
     <config>
 	<fields name = "params">
 	    <fieldset name="basic" addfieldpath="/administrator/components/com_virtuemart/elements">
-		<field name="Parent_Category_id" type="vmcategories"  value_field="category_name" label="MOD_VIRTUEMART_CATEGORY_PARENT_CATEGORY_ID" description="MOD_VIRTUEMART_PRODUCT_CHOOSE." />
-
-		<field name="layout" type="radio" default="default" label="MOD_VIRTUEMART_CATEGORY_CHILD_CAT_MENU_TYPE" description="MOD_VIRTUEMART_CATEGORY_CHILD_CAT_MENU_TYPE_DESC">
-		    <option value="current">MOD_VIRTUEMART_CATEGORY_CURRENT</option>
-		    <option value="default">MOD_VIRTUEMART_CATEGORY_ACCORDEON</option>
-		    <option value="all">MOD_VIRTUEMART_CATEGORY_ALL_CHILD</option>
-		</field>
+		<field name="Parent_Category_id" type="vmcategories"  value_field="category_name" label="MOD_VIRTUEMART_CATEGORY_PARENT_CATEGORY" description="MOD_VIRTUEMART_CATEGORY_PARENT_CATEGORY_DESC" />
+		<field	name="layout" type="filelist" label="MOD_VIRTUEMART_CATEGORY_CHILD_CAT_MENU_TYPE"
+             	description="MOD_VIRTUEMART_CATEGORY_CHILD_CAT_MENU_TYPE_DESC"
+             	directory="/modules/mod_virtuemart_category/tmpl"
+             	default="default" hide_default="1" hide_none="1"
+             	stripext="1" filter="\.php$" exclude="^_" />
 		<field name="cache" type="list"
 					default="1"
 					label="COM_MODULES_FIELD_CACHING_LABEL"
