@@ -159,7 +159,7 @@ if (!empty($this->products)) {
 
 			<div class="clear"></div>
 			</div>
-		
+
 <h1><?php echo $this->category->category_name; ?></h1>
 
 <?php
@@ -213,7 +213,8 @@ foreach ( $this->products as $product ) {
 						// echo JText::_('COM_VIRTUEMART_TOTAL_VOTES').": ". $product->votes->allvotes; ?>
 						<?php } ?>
 
-						<?php if (!VmConfig::get('use_as_catalog')){?>
+						<?php  
+						if (!VmConfig::get('use_as_catalog') and !(VmConfig::get('stockhandle','none')=='none')){?>
 						<div class="paddingtop8">
 							<span class="vmicon vm2-<?php echo $product->stock->stock_level ?>" title="<?php echo $product->stock->stock_tip ?>"></span>
 							<span class="stock-level"><?php echo JText::_('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_TITLE_TIP') ?></span>
@@ -288,5 +289,5 @@ if ($iBrowseCol != 1) { ?>
 </div>
 	<div id="bottom-pagination"><?php echo $this->vmPagination->getPagesLinks(); ?><span style="float:right"><?php echo $this->vmPagination->getPagesCounter(); ?></span></div>
 </div>
-<?php } elseif ($this->search !==null ) echo JText::_('COM_VIRTUEMART_NO_RESULT').($this->keyword? ' : ('. $this->keyword. ')' : '') 
+<?php } elseif ($this->search !==null ) echo JText::_('COM_VIRTUEMART_NO_RESULT').($this->keyword? ' : ('. $this->keyword. ')' : '')
 ?>

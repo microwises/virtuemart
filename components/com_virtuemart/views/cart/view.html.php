@@ -301,7 +301,7 @@ class VirtueMartViewCart extends JView {
 	}
 
 	private function lOrderDone() {
-		$html = JRequest::getVar('html', JText::_('COM_VIRTUEMART_ORDER_PROCESSED'), 'post', 'STRING', JREQUEST_ALLOWRAW);
+		$html = JRequest::getVar('html', JText::_('COM_VIRTUEMART_ORDER_PROCESSED'), 'default', 'STRING', JREQUEST_ALLOWRAW);
 		$this->assignRef('html', $html);
 
 		//Show Thank you page or error due payment plugins like paypal express
