@@ -404,11 +404,11 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			return array();
 		} else return $result ;
 	}
-	function getFieldId($virtuemart_product_id, $chil_id ) {
+	function getFieldId($virtuemart_product_id, $child_id ) {
 
 		$db = JFactory::getDBO();
 		$q = 'SELECT cf.* FROM `#__virtuemart_product_customfields` as cf JOIN `#__virtuemart_customs` as c ON `c`.`virtuemart_custom_id` = cf.`virtuemart_custom_id` AND c.`field_type`="G"
-			WHERE cf.`virtuemart_product_id` ='.(int)$virtuemart_product_id.' and cf.custom_value='.(int)$chil_id ;
+			WHERE cf.`virtuemart_product_id` ='.(int)$virtuemart_product_id.' and cf.custom_value='.(int)$child_id ;
 		$db->setQuery($q);
 		$result = $db->loadObject();
 		if (!($result)) {
@@ -416,9 +416,9 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			return false;
 		} else return $result ;
 	}
-	function getValideId($chil_id ) {
+	function getValideId($child_id ) {
 		$db = JFactory::getDBO();
-		$q = 'SELECT * FROM `#__virtuemart_products` WHERE `published`=1 and `virtuemart_product_id` ='.(int)$chil_id ;
+		$q = 'SELECT * FROM `#__virtuemart_products` WHERE `published`=1 and `virtuemart_product_id` ='.(int)$child_id ;
 		$db->setQuery($q);
 		$child = $db->loadObject();
 		if ($child) {
@@ -431,37 +431,12 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		return false ;
 	}
 
-	public function plgVmGetProductStockToUpdateByCustom($item, $pluginParam, $productCustom) {
+	public function plgVmGetProductStockToUpdateByCustom(&$item, $pluginParam, $productCustom) {
 
-		if ($productCustom->custom_element !== $this->_name) return $item ;
-		if ( !empty($productCustom) ) {
-
-			$fields = json_decode($productCustom->custom_param,true);
-
-			// find the selected child
-			foreach ( $fields['child'] as $childId => $child ) {
-
-				$count = 0;
-				$total = count($pluginParam);
-				foreach ( $pluginParam['stockable'] as $key => $attribute ) {
-					if  ($child[$key] !== $attribute) {
-
-						break;
-					} else {
-					    $count++;
-					}
-
-				}
-				// child found
-				if ($total == $count) {
-					$item->virtuemart_product_id = $childId;
-					vmdebug ('$childId',$childId);
-					return $item ;
-
-				}
-			}
-		}
-		return $item ;
+		if ($productCustom->custom_element !== $this->_name) return false ;
+//vmdebug('$pluginParam',$pluginParam[$this->_name]);
+		$item->virtuemart_product_id = (int)$pluginParam[$this->_name]['child_id'];
+		return true ;
 		// echo $item[0]->virtuemart_product_id;jexit();
 	}
 
@@ -492,9 +467,13 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	public function plgVmCalculateCustomVariant(&$product, &$productCustomsPrice,$selected){
 
 		if ($productCustomsPrice->custom_value != $this->_name) return false;
-		$param = json_decode($productCustomsPrice->custom_param,true);
-		$customPlugin = JRequest::getVar('customPlugin',0);
+
+		if (!$customPlugin = JRequest::getVar('customPlugin',0)) {
+			$customPlugin = json_decode($product->customPlugin,true);
+		}
 		$selected = $customPlugin[$productCustomsPrice->virtuemart_custom_id]['stockable']['child_id'];
+
+		$param = json_decode($productCustomsPrice->custom_param,true);
 		if ($this->getValideId($selected)) {
 			if ($param['child'][$selected]['custom_price'] !=='') {
 				$productCustomsPrice->custom_price = (float)$param['child'][$selected]['custom_price'];
