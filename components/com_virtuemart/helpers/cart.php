@@ -399,6 +399,8 @@ class VirtueMartCart {
 				if (isset($post['customPrice'])) {
 					$product->customPrices = $post['customPrice'];
 					if (isset($post['customPlugin'])) $product->customPlugin = json_encode($post['customPlugin']);
+
+
 					$productKey .= '::';
 					foreach ($product->customPrices as $customPrice) {
 						foreach ($customPrice as $customId => $custom_fieldId) {
@@ -416,6 +418,11 @@ class VirtueMartCart {
 					}
 
 				}
+
+				if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+				JPluginHelper::importPlugin('vmcustom');
+				$dispatcher = JDispatcher::getInstance();
+				$dispatcher->trigger('plgVmOnAddToCart',array(&$product));
 
 				if (array_key_exists($productKey, $this->products) && (empty($product->customPlugin)) ) {
 

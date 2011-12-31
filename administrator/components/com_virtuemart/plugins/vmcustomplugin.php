@@ -223,7 +223,7 @@ abstract class vmCustomPlugin extends VmPlugin {
     * or price is returned defaut custom_price
     */
     // 	 public function plgVmCalculatePluginVariant( $product, $field,$selected,$row){
-    public function getCustomVariant($product, &$productCustomsPrice,$selected,$row){
+    public function getCustomVariant($product, &$productCustomsPrice,$selected){
 		if ($productCustomsPrice->custom_element !==$this->_name) return ;
 
 		vmPlugin::declarePluginParams('vmcustom',$productCustomsPrice->custom_element,$productCustomsPrice->custom_jplugin_id,$productCustomsPrice);

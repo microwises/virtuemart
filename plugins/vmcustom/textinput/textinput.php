@@ -183,8 +183,8 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		return $this->onDisplayEditBECustom($virtuemart_custom_id,$customPlugin);
 	}
 
-	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected,$row){
-		$customVariant = $this->getCustomVariant($product, $productCustomsPrice,$selected,$row);
+	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected){
+		$customVariant = $this->getCustomVariant($product, $productCustomsPrice,$selected);
 		if (!empty($productCustomsPrice->custom_price)) {
 			//TODO adding % and more We should use here $this->interpreteMathOp
 			// eg. to calculate the price * comment text length

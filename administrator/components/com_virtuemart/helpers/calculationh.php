@@ -1077,10 +1077,9 @@ class calculationHelper {
 		 * @param array $variantnames the value of the variant
 		 * @return array The adjusted price modificator
 		 */
-		public function calculateModificators($product, $variants) {
+		public function calculateModificators(&$product, $variants) {
 
 			$modificatorSum = 0.0;
-			$row = 0;
 			foreach ($variants as $variant => $selected) {
 				if (!empty($selected)) {
 					$query = 'SELECT  C.* , field.*
@@ -1094,14 +1093,13 @@ class calculationHelper {
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 						JPluginHelper::importPlugin('vmcustom');
 						$dispatcher = JDispatcher::getInstance();
-						$dispatcher->trigger('plgVmCalculateCustomVariant',array($product, &$productCustomsPrice,$selected,$row));
+						$dispatcher->trigger('plgVmCalculateCustomVariant',array(&$product, &$productCustomsPrice,$selected));
 					}
 					//$app = JFactory::getApplication();
 					if (!empty($productCustomsPrice->custom_price)) {
 						//TODO adding % and more We should use here $this->interpreteMathOp
 						$modificatorSum = $modificatorSum + $productCustomsPrice->custom_price;
 					}
-					$row++;
 				}
 			}
 			return $modificatorSum;

@@ -152,7 +152,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 					//});
 				});
 		});
-	});
+	}); 
 	";
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($script);
@@ -171,6 +171,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	function plgVmOnDisplayProductVariantFE($field,&$row,&$group) {
 		// default return if it's not this plugin
 		if ($field->custom_element != $this->_name) return '';
+		$row++;
 		$this->parseCustomParams($field);
 		//if (!$childs = $this->getChilds($product_id) ) return ;
 		$stockhandle = VmConfig::get('stockhandle','none');
@@ -214,17 +215,18 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				foreach ($options as $key => $val) if (!empty($val)) $option[] = JHTML::_('select.option',JText::_( $val ) , $val  );
 				if (!empty($option)) {
 					$html .='<div style="width:200px;"><span style="vertical-align: top;width:98px; display: inline-block;color:#000;">'.JTEXT::_($listname).'</span>';
-					$html .= JHTML::_('select.genericlist', $option,$optionName ,'class="attribute_list" style="width:100px !important;"','text','value',reset($options),false,true)."</div>\n";
+					$html .= JHTML::_('select.genericlist', $option,$optionName ,'class="attribute_list" style="width:100px !important;"','text','value',reset($options),'selectoptions'.$i,true)."</div>\n";
 				} else $html .='<input id="'.$keys.'" class="attribute_list" type="hidden" value="'.$val.'" name="'.$optionName.'">' ;
 			}
 			$i++;
 		}
 		static $stockablejs;
 
-		$group->display = $html;
+		$group->display = $html.'
+				<input type="hidden" value="'.$child_id.'" name="customPlugin['.$field->virtuemart_custom_id.']['.$this->_name.'][child_id]">';
 		// preventing 2 x load javascript
 
-		if ($stockablejs) return $row++;
+		if ($stockablejs) return;
 		$stockablejs = true ;
 		// TODO ONE PARAM IS MISSING
 		$document = JFactory::getDocument();
@@ -242,8 +244,9 @@ class plgVmCustomStockable extends vmCustomPlugin {
 						return [[ idx.value ,idx.text ]];
 					});
 			});
-			//console.log(stockable) ;
-			if ( $("#attribute1").length ) recalculate($("#attribute1"));
+
+			if ( $("#selectoptions1").length ) recalculate($("#selectoptions1"));
+			$(".attribute_list").unbind("change");
 			$(".attribute_list").change(function(){
 				recalculate($(this));
 
@@ -251,13 +254,14 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			function recalculate(Opt){
 				var listIndex = $(".attribute_list").index(Opt) +2 ;
 				choix = Opt.attr("id") ; valeur = Opt.val() ;
-				//console.log (choix , valeur);
+				 // console.log (choix , valeur);
 				var selection = new Object() ;
-				for(var i=listIndex; i<totalattribut; i++){ selection["attribute"+i] =[] ; }
+				for(var i=listIndex; i<totalattribut; i++){ selection["selectoptions"+i] =[] ; }
 				var j=0;
 
 				// set the option to show
 				$.each(stockable, function(child_id, child_attrib) {
+					// console.log(child_attrib,choix,valeur) ;
 					// find all  matrix with an invalid "stockable" child
 					if (child_attrib[choix] == valeur ) {
 						$.each(child_attrib, function(index, value) {
@@ -267,15 +271,14 @@ class plgVmCustomStockable extends vmCustomPlugin {
 						});
 					j++;
 					}
-
 				});
 
 				// unset invalid option
-				// regenerate the option by selected val() after last index attribute
+				// regenerate the option by selected val() after last index selectoptions
 				for(var i=listIndex; i<totalattribut; i++){
-					selectlist = $("#attribute"+i) ;
-					orgOptions = original["attribute"+i];
-					selectedOptions =$.unique(selection["attribute"+i]) ;
+					selectlist = $("#selectoptions"+i) ;
+					orgOptions = original["selectoptions"+i];
+					selectedOptions =$.unique(selection["selectoptions"+i]) ;
 					var auxArr = [];
 					$.each(selectedOptions, function( index, orgtext){ auxArr[index] = "<option value=\'" + orgtext+ "\'>" + orgtext + "</option>"; });
 					selectlist.empty().append(auxArr.join(\'\'))
@@ -283,19 +286,19 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				}
 				// get the selected valid values
 				for(var i=1 ; i<totalattribut; i++){
-					selecteds["attribute"+i] = $("#attribute"+i).val();
+					selecteds["selectoptions"+i] = $("#selectoptions"+i).val();
 				}
 				// find the product child id
 				 $.each(stockable, function(child_id, attribut) {
 					 atrID = (listIndex-1) ;
-					if (attribut[ "attribute"+ atrID  ] == valeur ) {
+					if (attribut[ "selectoptions"+ atrID  ] == valeur ) {
 						var i=j=1;
 						for(i ; i<totalattribut; i++){
-							if (attribut["attribute"+i] != selecteds["attribute"+i]){
+							if (attribut["selectoptions"+i] != selecteds["selectoptions"+i]){
 								break;
 							}
 							j++;
-							//console.log(selecteds["attribute"+i],attribut["attribute"+i]);
+							//console.log(selecteds["selectoptions"+i],attribut["selectoptions"+i]);
 						}
 						if (j>totalattribut-2) { found_id = child_id; return } // we have found the selected child
 					}
@@ -304,8 +307,11 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				// recalculate the price by found product child id;
 				formProduct = Opt.parents(".productdetails-view").find(".product");
 				virtuemart_product_id = formProduct.find(\'input[name="virtuemart_product_id[]"]\').val();
-				//formProduct.find("#stockableChild").remove();
+				//formProduct.find("#selectedStockable").remove();
 				//formProduct.append(\'<input id="stockableChild" type="hidden" value="\'+customfield_id[found_id]+\'" name="customPrice['.$row.'][\'+found_id+\']">\');
+				formProduct.find(\'input[name*="customPlugin['.$field->virtuemart_custom_id.']['.$this->_name.'][child_id]"]\').val(found_id);
+				
+				//(\'<input id="stockableChild" type="hidden" value="\'+customfield_id[found_id]+\'" name="customPrice['.$row.'][\'+found_id+\']">\');
 				$.setproducttype(formProduct,virtuemart_product_id);
 			}
 		});
@@ -321,7 +327,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		//$html =JTEXT::_($param['custom_name']) ;
 		//$html.=': <input type="text" value="" size="'.$param['custom_name'].'" name="customPlugin['.$row.'][comment]"><br />';
 
-		$row++;
+		
 		return true;
 	}
 
@@ -332,10 +338,11 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 */
 	function plgVmOnViewCartModule( $product, $row,&$html) {
 		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
-// 		$html  = '';
-		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';
-		// $html .='<span>'.$param->Morecomment.'</span>';
-
+		foreach ($plgParam as $attributes) {
+			foreach ($attributes as $attribute) {
+				$html .='<span> '.$attribute.' </span>';
+			}
+		}
 		return true;
 	}
 
@@ -346,8 +353,11 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	function plgVmOnViewCart($product, $row,&$html) {
 		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
 		$html  .= '<div>';
-		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';
-		// $html .='<span>'.$param->Morecomment.'</span>';
+		foreach ($plgParam as $attributes) {
+			foreach ($attributes as $attribute) {
+				$html .='<span> '.$attribute.' </span>';
+			}
+		}		// $html .='<span>'.$param->Morecomment.'</span>';
 		$html.='</div>';
 		return true;
 		//vmdebug('stockable attributs',$plgParam);
@@ -479,33 +489,46 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		return $this->onDisplayEditBECustom($virtuemart_custom_id,$customPlugin);
 	}
 
-	public function plgVmCalculateCustomVariant($product, &$productCustomsPrice,$selected,$row){
+	public function plgVmCalculateCustomVariant(&$product, &$productCustomsPrice,$selected){
 
-		$customVariant = $this->getCustomVariant($product, $productCustomsPrice,$selected,$row);
-// print_r($productCustomsPrice);
-// print_r($selected,$row);
-// print_r($row);
+		if ($productCustomsPrice->custom_value != $this->_name) return false;
+		$param = json_decode($productCustomsPrice->custom_param,true);
+		$customPlugin = JRequest::getVar('customPlugin',0);
+		$selected = $customPlugin[$productCustomsPrice->virtuemart_custom_id]['stockable']['child_id'];
+		if ($this->getValideId($selected)) {
+			if ($param['child'][$selected]['custom_price'] !=='') {
+				$productCustomsPrice->custom_price = (float)$param['child'][$selected]['custom_price'];
+			} else {
+				$db = JFactory::getDBO();
+				$db->setQuery('SELECT `product_price` FROM `#__virtuemart_product_prices`  WHERE `virtuemart_product_id`="' . (int)$selected . '" ');
+				if ($price = $db->loadResult()) $product->product_price = (float)$price;
+			}
+			return true;
+		}
+		else return false;
+		// find the selected child
 
-		if ( !empty($customVariant) ) {
+	}
+	public function plgVmOnAddToCart(&$product){
+		$customPlugin = JRequest::getVar('customPlugin',0);
 
-			$fields = json_decode($productCustomsPrice->custom_param,true);
-			// find the selected child
-			foreach ( $fields['child'] as $childId => $child ) {
-				$count = 0;
-				$total = count($customVariant);
-				foreach ( $customVariant as $key => $attribute ) {
-					if  ($child[$key] !== $attribute) {
+		if ($customPlugin) {
+			$db = JFactory::getDBO();
+			$query = 'SELECT  C.* , field.*
+				FROM `#__virtuemart_customs` AS C
+				LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
+				WHERE `virtuemart_product_id` =' . $product->virtuemart_product_id.' and `custom_element`="'.$this->_name.'"';
+			$query .=' and is_cart_attribute = 1';
+			$db->setQuery($query);
+			$productCustomsPrice = $db->loadObject();
 
-						break;
-					} else {$count++;
-					}
+			// if ( !in_array($this->_name,$customPlugin[$productCustomsPrice->virtuemart_custom_id]) ) return false;
+			$selected = $customPlugin[$productCustomsPrice->virtuemart_custom_id]['stockable']['child_id'];
 
-				}
-				// child found
-				if ($total == $count) {
-					$field->custom_price = $child['custom_price'];
-					break;
-				}
+			$this->plgVmCalculateCustomVariant($product, $productCustomsPrice,$selected);
+			if (!empty($productCustomsPrice->custom_price)) {
+				//TODO adding % and more We should use here $this->interpreteMathOp
+				$product->product_price +=(float)$productCustomsPrice->custom_price;
 			}
 		}
 	}
