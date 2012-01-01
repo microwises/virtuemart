@@ -370,7 +370,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * vendor order display BE
 	 */
 	function plgVmDisplayInOrderBE($item, $row,&$html) {
-		return $this->plgVmOnViewCart($item, $row,&$html);
+		return $this->plgVmOnViewCart($item, $row,$html);
 	}
 
 	/**
@@ -378,7 +378,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * shopper order display FE
 	 */
 	function plgVmDisplayInOrderFE($item, $row,&$html) {
-		return $this->plgVmOnViewCart($item, $row,&$html);
+		return $this->plgVmOnViewCart($item, $row,$html);
 	}
 
 	function getChilds($child_id = null) {
@@ -417,6 +417,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			if ($this->verifyStock ) {
 				$stock = $child->product_in_stock - $child->product_ordered ;
 				if ($stock>0)return $child ;
+				else return false ;
 			}
 			else return $child ;
 		}
@@ -492,11 +493,11 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			$query .=' and is_cart_attribute = 1';
 			$db->setQuery($query);
 			$productCustomsPrice = $db->loadObject();
-
+			if (!$productCustomsPrice) return null;
 			// if ( !in_array($this->_name,$customPlugin[$productCustomsPrice->virtuemart_custom_id]) ) return false;
 			$selected = $customPlugin[$productCustomsPrice->virtuemart_custom_id]['stockable']['child_id'];
 
-			$child = $this->plgVmCalculateCustomVariant($product, $productCustomsPrice,$selected);
+			if (!$child = $this->plgVmCalculateCustomVariant($product, $productCustomsPrice,$selected) ) return false;
 			if (!empty($productCustomsPrice->custom_price)) {
 				//TODO adding % and more We should use here $this->interpreteMathOp
 				$product->product_price +=(float)$productCustomsPrice->custom_price;
