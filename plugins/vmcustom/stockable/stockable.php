@@ -185,7 +185,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 
 			if ($attribut['is_variant']==1) {
 				unset ($attribut['is_variant']);
-				if ($this->getValideId( $child_id)) {
+				if ($this->getValideChild( $child_id)) {
 					if ($attribut['custom_price'])
 						$js[]= '"'.$child_id.'" :'.$attribut['custom_price'];
 					unset ($attribut['custom_price']);
@@ -338,8 +338,9 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 */
 	function plgVmOnViewCartModule( $product, $row,&$html) {
 		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
-		foreach ($plgParam as $attributes) {
-			foreach ($attributes as $attribute) {
+		foreach ($plgParam as $k => $attributes) {
+			foreach ($attributes as $k => $attribute) {
+				if ($k =='child_id') continue;
 				$html .='<span> '.$attribute.' </span>';
 			}
 		}
@@ -354,7 +355,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		if (!$plgParam = $this->GetPluginInCart($product)) return false ;
 		$html  .= '<div>';
 		foreach ($plgParam as $attributes) {
-			foreach ($attributes as $attribute) {
+			foreach ($attributes as $k => $attribute) {
+				if ($k =='child_id') continue;
 				$html .='<span> '.$attribute.' </span>';
 			}
 		}		// $html .='<span>'.$param->Morecomment.'</span>';
@@ -368,12 +370,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * vendor order display BE
 	 */
 	function plgVmDisplayInOrderBE($item, $row,&$html) {
-		if (!$plgParam = $this->GetPluginInCart($item)) return false ;
-		$html  = '<div>';
-		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';
-		// $html .='<span>'.$param->Morecomment.'</span>';
-		$html.='</div>';
-		return true;
+		return $this->plgVmOnViewCart($item, $row,&$html);
 	}
 
 	/**
@@ -381,12 +378,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * shopper order display FE
 	 */
 	function plgVmDisplayInOrderFE($item, $row,&$html) {
-		if (!$plgParam = $this->GetPluginInCart($item)) return false ;
-		$html  = '<div>';
-		foreach ($plgParam as $attributes) $html .='<span>'.$attributes.'</span>';
-		// $html .='<span>'.$param->Morecomment.'</span>';
-		$html.='</div>';
-		return true;
+		return $this->plgVmOnViewCart($item, $row,&$html);
 	}
 
 	function getChilds($child_id = null) {
@@ -416,17 +408,17 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			return false;
 		} else return $result ;
 	}
-	function getValideId($child_id ) {
+	function getValideChild($child_id ) {
 		$db = JFactory::getDBO();
-		$q = 'SELECT * FROM `#__virtuemart_products` WHERE `published`=1 and `virtuemart_product_id` ='.(int)$child_id ;
+		$q = 'SELECT `product_sku`,`product_name`,`product_in_stock`,`product_ordered` FROM `#__virtuemart_products` JOIN `#__virtuemart_products_'.VMLANG.'` as l using (`virtuemart_product_id`) WHERE `published`=1 and `virtuemart_product_id` ='.(int)$child_id ;
 		$db->setQuery($q);
 		$child = $db->loadObject();
 		if ($child) {
 			if ($this->verifyStock ) {
 				$stock = $child->product_in_stock - $child->product_ordered ;
-				if ($stock>0)return true ;
+				if ($stock>0)return $child ;
 			}
-			else return true ;
+			else return $child ;
 		}
 		return false ;
 	}
@@ -474,7 +466,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		$selected = $customPlugin[$productCustomsPrice->virtuemart_custom_id]['stockable']['child_id'];
 
 		$param = json_decode($productCustomsPrice->custom_param,true);
-		if ($this->getValideId($selected)) {
+		if ($child = $this->getValideChild($selected)) {
 			if ($param['child'][$selected]['custom_price'] !=='') {
 				$productCustomsPrice->custom_price = (float)$param['child'][$selected]['custom_price'];
 			} else {
@@ -482,7 +474,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				$db->setQuery('SELECT `product_price` FROM `#__virtuemart_product_prices`  WHERE `virtuemart_product_id`="' . (int)$selected . '" ');
 				if ($price = $db->loadResult()) $product->product_price = (float)$price;
 			}
-			return true;
+			return $child;
 		}
 		else return false;
 		// find the selected child
@@ -504,11 +496,16 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			// if ( !in_array($this->_name,$customPlugin[$productCustomsPrice->virtuemart_custom_id]) ) return false;
 			$selected = $customPlugin[$productCustomsPrice->virtuemart_custom_id]['stockable']['child_id'];
 
-			$this->plgVmCalculateCustomVariant($product, $productCustomsPrice,$selected);
+			$child = $this->plgVmCalculateCustomVariant($product, $productCustomsPrice,$selected);
 			if (!empty($productCustomsPrice->custom_price)) {
 				//TODO adding % and more We should use here $this->interpreteMathOp
 				$product->product_price +=(float)$productCustomsPrice->custom_price;
+				
 			}
+			if ($child->product_sku)
+				$product->product_sku = $child->product_sku;
+			if ($child->product_name)
+				$product->product_name = $child->product_name;
 		}
 	}
 

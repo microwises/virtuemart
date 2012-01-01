@@ -252,7 +252,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 			
     		foreach($product->param as $k => $plg){
     			if (key($plg)== $this->_name)
-    			$param[]= $plg[$this->_name];
+    			$param[$k]= $plg[$this->_name];
     		}
 			if ($param ) return $param ;
     	}
