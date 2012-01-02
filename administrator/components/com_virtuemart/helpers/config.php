@@ -937,8 +937,10 @@ class vmJsApi{
 		return true;
 	}
 
+	// $yearRange format >> 1980:2010 
 	// Virtuemart Datepicker script
-	function jDate($date='',$name="date",$id=null,$resetBt = true) {
+	function jDate($date='',$name="date",$id=null,$resetBt = true, $yearRange='') {
+		if ($yearRange) $yearRange='yearRange: "'.$yearRange.'",';
 		if ($date == "0000-00-00 00:00:00") $date= 0 ;
 		if (empty($id)) $id = $name ;
 		static $jDate;
@@ -971,6 +973,7 @@ class vmJsApi{
 				$( this ).datepicker({
 					changeMonth: true,
 					changeYear: true,
+					'.$yearRange.'
 					dateFormat:"'.$jsDateFormat.'",
 					altField: $(this).siblings(".datepicker-db"),
 					altFormat: "yy-mm-dd"
