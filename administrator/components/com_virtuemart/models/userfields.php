@@ -723,7 +723,7 @@ class VirtueMartModelUserfields extends VmModel {
 								    . $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name . '" cols="' . $_fld->cols
 								    . '" rows="'.$_fld->rows . '" class="inputbox" '
 								    . ($_fld->readonly ? ' readonly="readonly"' : '')
-								    . $_return['fields'][$_fld->name]['value'] .'</textarea>';
+								    . $_return['fields'][$_fld->name]['value'] .'></textarea>';
 							    break;
 						    case 'editorta':
 							    jimport( 'joomla.html.editor' );
