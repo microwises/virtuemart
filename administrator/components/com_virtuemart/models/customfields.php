@@ -287,7 +287,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			Where `virtuemart_product_id` ='.$virtuemart_product_id.' order by field.`ordering` ASC';
 		$this->_db->setQuery($query);
 		$productCustoms = $this->_db->loadObjectList();
-		if (!$productCustoms ) return array();
+		if (!$productCustoms ) return ;
 		$row= 0 ;
 		foreach ($productCustoms as $field ) {
 
@@ -844,7 +844,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				if ($productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id ) ) {
 // vmdebug('$param',$param);
 					if ($productCustom->field_type == "E") {
- 
+
 
 					} elseif (($productCustom->field_type == "G")) {
 						$child = self::getChild($productCustom->value);

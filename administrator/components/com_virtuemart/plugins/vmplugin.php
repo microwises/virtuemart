@@ -18,8 +18,8 @@ defined('_JEXEC') or die('Restricted access');
 // Load the helper functions that are needed by all plugins
 if (!class_exists('ShopFunctions'))
 require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
-if (!class_exists('DbScheme'))
-require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'dbscheme.php');
+// if (!class_exists('DbScheme'))
+// require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'dbscheme.php');
 
 // Get the plugin library
 jimport('joomla.plugin.plugin');
@@ -374,7 +374,7 @@ abstract class vmPlugin extends JPlugin {
 		if($this->_vmpItable===0){
 			$this->_vmpItable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$primaryKey,$this->_tableId,$this->_loggable);
 		}
-// 		vmdebug('getPluginInternalData $id '.$id);
+// 		vmdebug('getPluginInternalData $id '.$id.' and $primaryKey '.$primaryKey);
 		return $this->_vmpItable->load($id);
 	}
 
@@ -397,6 +397,15 @@ abstract class vmPlugin extends JPlugin {
 		}
 
 		return $table;
+	}
+
+	protected function removePluginInternalData($id,$primaryKey=0){
+		if($primaryKey===0) $primaryKey = $this->_tablepkey;
+		if($this->_vmpItable===0){
+			$this->_vmpItable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$primaryKey,$this->_tableId,$this->_loggable);
+		}
+		vmdebug('removePluginInternalData $id '.$id.' and $primaryKey '.$primaryKey);
+		return $this->_vmpItable->delete($id);
 	}
 
 }

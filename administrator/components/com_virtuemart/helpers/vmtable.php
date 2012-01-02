@@ -267,10 +267,9 @@ class VmTable extends JTable{
 				}
 			}
 
-			vmdebug('Should load '.$this->_tbl.' with id = 0, give back prototype');
+// 			vmdebug('Should load '.$this->_tbl.' with id = 0, give back prototype');
 // 			vmTrace('loading 0?');
 			return $this;
-// 			vmTrace('loading 0?');
 		}
 
 		$this->reset();

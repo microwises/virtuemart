@@ -77,7 +77,7 @@ class VirtueMartModelConfig extends JModel {
 			if ($handle = opendir($dir)) {
 				while (false !== ($file = readdir($handle))) {
 
-					if(!empty($file) && strpos($file,'.')!==0 && $file != 'index.html'){
+					if(!empty($file) and strpos($file,'.')!==0 and $file != 'index.html' and !is_Dir($file)){
 						//Handling directly for extension is much cleaner
 						$path_info = pathinfo($file);
 						if(empty($path_info['extension'])){

@@ -61,6 +61,7 @@ class calculationHelper {
 	 *
 	 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
 	 * @author Max Milbers
+	 * @author Geraint
 	 */
 	private function __construct() {
 		$this->_db = JFactory::getDBO();
@@ -90,24 +91,24 @@ class calculationHelper {
 
 		$this->setShopperGroupIds();
 
-// 		if (!empty($id)) {
-// 			$q = 'SELECT * FROM #__virtuemart_calcs WHERE `virtuemart_calc_id` = "' . $id . '" AND `calc_kind`="' . $entrypoint . '" ';
-// 		} else {
-
-		$epoints = array('Marge','Tax','DBTax','DATax');
+		$epoints = array("'Marge'","'Tax'","'DBTax'","'DATax'");
 		$this->allrules = array();
-		foreach($epoints as $entrypoint){
-			$q = 'SELECT * FROM #__virtuemart_calcs WHERE
-					                    `calc_kind`="' . $entrypoint . '"
-					                     AND `published`="1"
-					                     AND (`virtuemart_vendor_id`="' . $this->productVendorId . '" OR `shared`="1" )
-					                     AND ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
-					                     AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" ) ';
-
-			$this->_db->setQuery($q);
-			$this->allrules[$entrypoint] = $this->_db->loadAssocList();
-
+		$this->allrules['Marge'] = array();
+		$this->allrules['Tax'] 	= array();
+		$this->allrules['DBTax'] = array();
+		$this->allrules['DATax'] = array();
+		$q = 'SELECT * FROM #__virtuemart_calcs WHERE
+						                    `calc_kind` IN (' . implode(",",$epoints). ' )
+						                     AND `published`="1"
+						                     AND (`virtuemart_vendor_id`="' . $this->productVendorId . '" OR `shared`="1" )
+						                     AND ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
+						                     AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" ) ';
+		$this->_db->setQuery($q);
+		$allrules = $this->_db->loadAssocList();
+		foreach ($allrules as $rule){
+			$this->allrules[$rule["calc_kind"]][] = $rule;
 		}
+
 // 		vmdebug('my rules ',$this->allrules);
 
 		$this->rules['Marge'] = array();
@@ -218,6 +219,11 @@ class calculationHelper {
 			}
 			//Todo check for virtuemart shoppergroups
 		}*/
+// 		vmdebug('getProductPrices '.$productId->virtuemart_product_id);
+// 		vmdebug('getProductPrices '.$productId);
+// 		if((int)$productId->virtuemart_product_id!=1){
+// 			echo ' <pre>'.debug_print_backtrace().'</pre></br>';
+// 		}
 
 		$costPrice = 0;
 

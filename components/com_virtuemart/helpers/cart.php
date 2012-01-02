@@ -425,7 +425,7 @@ class VirtueMartCart {
 				// on returning false the product have not to be added to cart
 				if ( $dispatcher->trigger('plgVmOnAddToCart',array(&$product)) === false )
 					continue;
-				
+
 
 				if (array_key_exists($productKey, $this->products) && (empty($product->customPlugin)) ) {
 
@@ -523,6 +523,7 @@ class VirtueMartCart {
 		return false;
 	}
 
+
 	/**
 	 * Function Description
 	 *
@@ -531,12 +532,17 @@ class VirtueMartCart {
 	 * @param array $cart the cart to get the products for
 	 * @return array of product objects
 	 */
+// 	$this->pricesUnformatted = $product_prices;
+
 	public function getCartPrices($checkAutomaticSelected=true) {
+
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
-		$prices = $calculator->getCheckoutPrices($this, $checkAutomaticSelected);
 
-		return $prices;
+		$this->pricesUnformatted = $calculator->getCheckoutPrices($this, $checkAutomaticSelected);
+// 		vmdebug('Calling getCartPrices',$this->pricesUnformatted);
+
+		return $this->pricesUnformatted;
 	}
 
 	/**
@@ -1081,7 +1087,6 @@ class VirtueMartCart {
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 
-		$this->pricesUnformatted = $product_prices;
 		$this->prices = $prices;
 		$this->pricesCurrency = $currency->getCurrencyDisplay();
 

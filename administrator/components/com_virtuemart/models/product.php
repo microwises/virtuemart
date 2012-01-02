@@ -466,6 +466,7 @@ class VirtueMartModelProduct extends VmModel {
 
 					if(strpos($k,'_')!==0 && empty($child->$k)){
 						$child->$k = $v;
+// 						vmdebug($child->product_parent_id.' $child->$k',$child->$k);
 					}
 				}
 				$i++;
@@ -485,6 +486,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			if ($withCalc) {
 				$child->prices = $this->getPrice($child,array(),1);
+// 				vmError('deprecated use of $child->prices = $this->getPrice($child,array(),1)');
 			}
 
 			if(empty($child->product_template)){
@@ -589,12 +591,16 @@ class VirtueMartModelProduct extends VmModel {
 			// $this->productHasCustoms($this->_id);
 
 			if(!$front){
-				if (!empty($product->virtuemart_customfield_id ) ){
+// 				if (!empty($product->virtuemart_customfield_id ) ){
 					if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 					$customfields = new VirtueMartModelCustomfields();
 					$product->customfields = $customfields->getproductCustomslist($this->_id,'product');
+					if(empty($product->customfields) and !empty($product->product_parent_id) ){
+						$product->customfields = $customfields->getproductCustomslist($product->product_parent_id,'product');
 
-				}
+					}
+
+				vmdebug('$product->customfields',$product->customfields);
 			} else {
 
 				// Add the product link  for canonical
@@ -1331,7 +1337,9 @@ public function getPrice($product,$customVariant,$quantity){
 	$this->_db = JFactory::getDBO();
 	// 		vmdebug('strange',$product);
 	if(!is_object($product)){
+// 		vmError('deprecated use of getPrice');
 		$product = $this->getProduct($product,true,false,true);
+// 		return false;
 	}
 
 	// Loads the product price details

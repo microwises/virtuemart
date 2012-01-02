@@ -147,7 +147,7 @@ class VirtueMartViewProductdetails extends JView {
 			    $vendorId = 1;
 			    $category->children = $category_model->getChildCategoryList($vendorId, $virtuemart_category_id);
 			    $category_model->addImages($category->children,1);
-			 
+
 		}
 		$format = JRequest::getCmd('format','html');
 		if ($format=='html') {
@@ -249,6 +249,7 @@ class VirtueMartViewProductdetails extends JView {
 		$currency = CurrencyDisplay::getInstance( );
 		$this->assignRef('currency', $currency);
 
+// 		vmdebug('my productdetails data',$this);
 		parent::display($tpl);
 	}
 
