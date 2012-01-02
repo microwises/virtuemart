@@ -22,7 +22,7 @@
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 // addon for joomla modal Box
-// JHTML::_ ( 'behavior.modal' );
+JHTML::_ ( 'behavior.modal' );
 // JHTML::_('behavior.tooltip');
 $url = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=askquestion&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component');
 $document = &JFactory::getDocument();
@@ -113,8 +113,9 @@ if (empty ( $this->product )) {
 			<div class="additional-images">
 			<?php // List all Images
 			foreach ($this->product->images as $image) {
-				echo $image->displayMediaThumb('class="product-image"',true,'class="modal"',true,true); //'class="modal"'
+				echo '<div class="floatleft">'.$image->displayMediaThumb('class="product-image"',true,'class="modal"',true,true).'</div>'; //'class="modal"'
 			} ?>
+			<div class="clear"></div>
 			</div>
 		<?php } // Showing The Additional Images END ?>
 
@@ -173,8 +174,8 @@ if (empty ( $this->product )) {
 					<?php // Product custom_fields
 					if (!empty($this->product->customfieldsCart)) {  ?>
 					<div class="product-fields">
-						<?php foreach ($this->product->customfieldsCart as $field)
-						{ ?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
+						<?php foreach ($this->product->customfieldsCart as $field) { ?>
+							<div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
 							<span class="product-fields-title" ><b><?php echo  JText::_($field->custom_title) ?></b></span>
 							<?php if ($field->custom_tip) echo JHTML::tooltip($field->custom_tip,  JText::_($field->custom_title), 'tooltip.png'); ?>
 							<span class="product-field-display"><?php echo $field->display ?></span>
@@ -313,16 +314,18 @@ if (empty ( $this->product )) {
 	<?php
 	$custom_title = null ;
 	foreach ($this->product->customfields as $field){
-		?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
-		<?php if ($field->custom_title != $custom_title) { ?>
-			<span class="product-fields-title" ><?php echo JText::_($field->custom_title); ?></span>
-			<?php if ($field->custom_tip) echo JHTML::tooltip($field->custom_tip,  JText::_($field->custom_title), 'tooltip.png');
-		} ?>
-		<span class="product-field-display"><?php echo $field->display ?></span>
-		<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?></span>
-		</div>
-		<?php
-		$custom_title = $field->custom_title;
+		if ($field->display) {
+			?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
+			<?php if ($field->custom_title != $custom_title) { ?>
+				<span class="product-fields-title" ><?php echo JText::_($field->custom_title); ?></span>
+				<?php if ($field->custom_tip) echo JHTML::tooltip($field->custom_tip,  JText::_($field->custom_title), 'tooltip.png');
+			} ?>
+			<span class="product-field-display"><?php echo $field->display ?></span>
+			<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?></span>
+			</div>
+			<?php
+			$custom_title = $field->custom_title;
+		}
 	} ?>
 	</div>
 	<?php

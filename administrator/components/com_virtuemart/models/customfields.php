@@ -463,9 +463,10 @@ class VirtueMartModelCustomfields extends VmModel {
 			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 			foreach ($productCustoms as $field ) {
 				if ($field->field_type == "E"){
+					$field->display ='';
 					JPluginHelper::importPlugin('vmcustom');
 					$dispatcher = JDispatcher::getInstance();
-					$ret = $dispatcher->trigger('plgVmOnDisplayProductFE',array($product,&$row,&$field,));
+					$ret = $dispatcher->trigger('plgVmOnDisplayProductFE',array($product,&$row,&$field));
 
 				}
 				else {

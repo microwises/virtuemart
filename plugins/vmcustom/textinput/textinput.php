@@ -82,7 +82,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		if ($field->custom_price_by_letter) $class='vmcustom-textinput';
 		$html=': <input class="'.$class.'" type="text" value="" size="'.$field->custom_size.'" name="customPlugin['.$field->virtuemart_custom_id.']['.$this->_name.'][comment]"><br />';
 		static $textinputjs;
-		$group->display .= $html.'<span class="selfcall">PUSHME</span>';
+		$group->display .= $html;
 		// preventing 2 x load javascript
 		if ($textinputjs) return true;
 		$textinputjs = true ;
@@ -107,7 +107,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 		return true;
 //         return $html;
     }
-	function plgVmOnDisplayProductFE( $product, &$idx,&$group){}
+	//function plgVmOnDisplayProductFE( $product, &$idx,&$group){}
 	/**
 	 * @see components/com_virtuemart/helpers/vmCustomPlugin::plgVmOnViewCartModule()
 	 * @author Patrick Kohl
