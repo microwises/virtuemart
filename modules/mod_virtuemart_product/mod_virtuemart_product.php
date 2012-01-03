@@ -32,11 +32,9 @@ $mainframe = Jfactory::getApplication();
 $virtuemart_currency_id = $mainframe->getUserStateFromRequest( "virtuemart_currency_id", 'virtuemart_currency_id',JRequest::getInt('virtuemart_currency_id',0) );
 
 
-$cache	= &JFactory::getCache('mod_virtuemart_product', 'output');
-
 $key = 'products'.$category_id.'.'.$max_items.'.'.$filter_category.'.'.$display_style.'.'.$products_per_row.'.'.$show_price.'.'.$show_addtocart.'.'.$Product_group.'.'.$virtuemart_currency_id;
 
-$cache = JFactory::getCache('mod_menu', '');
+$cache	= &JFactory::getCache('mod_virtuemart_product', 'output');
 if (!($output = $cache->get($key))) {
 	ob_start();
 	// Try to load the data from cache.

@@ -287,6 +287,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			Where `virtuemart_product_id` ='.$virtuemart_product_id.' order by field.`ordering` ASC';
 		$this->_db->setQuery($query);
 		$productCustoms = $this->_db->loadObjectList();
+		//if (!$productCustoms ) return array();
 		if (!$productCustoms ) return ;
 		$row= 0 ;
 		foreach ($productCustoms as $field ) {
@@ -841,19 +842,19 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		foreach ($item->param as $virtuemart_customfield_id=>$param){
  			if ($param) {
-				if ($productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id ) ) {
+				if ($item->productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id ) ) {
 // vmdebug('$param',$param);
-					if ($productCustom->field_type == "E") {
+					if ($item->productCustom->field_type == "E") {
+ 
 
-
-					} elseif (($productCustom->field_type == "G")) {
-						$child = self::getChild($productCustom->value);
-						$html .= ' <span>'.$productCustom->custom_title.' : '.$child->product_name.'</span>';
-					} elseif (($productCustom->field_type == "M")) {
-						$html .= ' <span>'.$productCustom->custom_title.' : '.self::displayCustomMedia($productCustom->value).'</span>';
+					} elseif (($item->productCustom->field_type == "G")) {
+						$child = self::getChild($item->productCustom->value);
+						$html .= ' <span>'.$item->productCustom->custom_title.' : '.$child->product_name.'</span>';
+					} elseif (($item->productCustom->field_type == "M")) {
+						$html .= ' <span>'.$item->productCustom->custom_title.' : '.self::displayCustomMedia($item->productCustom->value).'</span>';
 					}  else {
 
-						$html .= '<span>'.$productCustom->custom_title.' : '.$productCustom->value.'</span>';
+						$html .= '<span>'.$item->productCustom->custom_title.' : '.$item->productCustom->value.'</span>';
 					}
 				} else {
 					// falldown method if customfield are deleted
@@ -864,7 +865,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		}
 		if ($item->param) {
 			// $item = self::addParam($item);
-			if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
+			//if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();
 			$dispatcher->trigger('plgVmDisplayInOrder'.$view,array( $item, $row, &$html));

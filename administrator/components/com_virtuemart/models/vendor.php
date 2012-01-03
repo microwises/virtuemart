@@ -106,8 +106,8 @@ class VirtueMartModelVendor extends VmModel {
 	*/
 	public function getVendors() {
 		$this->setId(0);	//This is important ! notice by Max Milbers
-		$query = 'SELECT * FROM `#__virtuemart_vendors` ';
-		$query .= ' ORDER BY `#__virtuemart_vendors`.`virtuemart_vendor_id`';
+		$query = 'SELECT * FROM `#__virtuemart_vendors_'.VMLANG.'` as l JOIN `#__virtuemart_vendors` as v using (`virtuemart_vendor_id`)';
+		$query .= ' ORDER BY l.`virtuemart_vendor_id`';
 		$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		return $this->_data;
 	}
