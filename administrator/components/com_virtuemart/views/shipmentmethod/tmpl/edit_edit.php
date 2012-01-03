@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
         <table class="admintable">
 	    <?php echo VmHTML::row('input', 'COM_VIRTUEMART_SHIPPING_FORM_NAME', 'shipment_name', $this->shipment->shipment_name); ?>
 	    <?php echo VmHTML::row('booleanlist', 'COM_VIRTUEMART_PUBLISH', 'published', $this->shipment->published); ?>
-	    <?php echo VmHTML::row('input', 'COM_VIRTUEMART_SHIPPING_FORM_DESCRIPTION', 'shipment_desc', $this->shipment->shipment_desc); ?>
+	    <?php echo VmHTML::row('textarea', 'COM_VIRTUEMART_SHIPPING_FORM_DESCRIPTION', 'shipment_desc', $this->shipment->shipment_desc); ?>
 	    <?php echo VmHTML::row('raw', 'COM_VIRTUEMART_SHIPPING_CLASS_NAME', $this->pluginList); ?>
 	    <?php echo VmHTML::row('raw', 'COM_VIRTUEMART_SHIPPING_FORM_SHOPPER_GROUP', $this->shopperGroupList); ?>
 	    <?php echo VmHTML::row('input', 'COM_VIRTUEMART_LIST_ORDER', 'ordering', $this->shipment->ordering, 'class="inputbox"', '', 4, 4); ?>

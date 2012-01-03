@@ -50,13 +50,6 @@ class JFormFieldManufacturer extends JFormField
 	$manufacturers = $model->getManufacturers(true, true, false);
         return JHTML::_('select.genericlist', $manufacturers, $this->name, 'class="inputbox"  size="1"', 'virtuemart_manufacturer_id', 'mf_name', $this->value, $this->id);
     }
- private function _getManufacturers() {
-
-        $db = JFactory::getDBO();
-        $query = "SELECT `virtuemart_manufacturer_id`  AS value, `mf_name`  AS text FROM `#__virtuemart_manufacturers` WHERE `published` = 1";
-        $db->setQuery($query);
-        $db->query();
-        return $db->loadObjectList();
-    }
+ 
 
 }

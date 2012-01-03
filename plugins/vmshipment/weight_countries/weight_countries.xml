@@ -29,31 +29,15 @@
 	<param name="weight_start" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_START" description="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_START_DESC"/>
 	<param name="weight_stop" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_STOP" description="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_STOP_DESC"/>
 	<param name="weight_unit" type="vmweightunit" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_UNIT" description="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_UNIT_DESC"/>
+	<param name="nbproducts_start" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_NBPRODUCTS_START" description="VMSHIPMENT_WEIGHT_COUNTRIES_NBPRODUCTS_START_DESC"/>
+	<param name="nbproducts_stop" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_NBPRODUCTS_STOP" description="VMSHIPMENT_WEIGHT_COUNTRIES_NBPRODUCTS_STOP_DESC"/>
+	<param name="orderamount_start" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_ORDERAMOUNT_START" description="VMSHIPMENT_WEIGHT_COUNTRIES_ORDERAMOUNT_START_DESC"/>
+	<param name="orderamount_stop" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_ORDERAMOUNT_STOP" description="VMSHIPMENT_WEIGHT_COUNTRIES_ORDERAMOUNT_STOP_DESC"/>
+
 	<param name="cost" type="text"   label="VMSHIPMENT_WEIGHT_COUNTRIES_COST" description="VMSHIPMENT_WEIGHT_COUNTRIES_COST_DESC" />
 	<param name="package_fee" type="text"   label="VMSHIPMENT_WEIGHT_COUNTRIES_PACKAGE_FEE" description="VMSHIPMENT_WEIGHT_COUNTRIES_PACKAGE_FEE_DESC" />
 	<param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPMENT_WEIGHT_COUNTRIES_TAX" description="VMSHIPMENT_WEIGHT_COUNTRIES_TAX_DESC" />
 	<param name="free_shipment" type="text"    label="VMSHIPMENT_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT" description="VMSHIPMENT_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT_DESC" />
     </params>
 
-    <fieldset addpath="/administrator/components/com_virtuemart/elements">
-	<field type="vmjpluginwarning" />
-	<field type="spacer" default="VMSHIPMENT_WEIGHT_COUNTRIES_PLUGIN" level="level1" />
-	<field	name="shipment_logos" type="vmfiles" label="VMSHIPMENT_WEIGHT_COUNTRIES_LOGOS"
-             	description="VMSHIPMENT_WEIGHT_COUNTRIES_LOGOS_DESC"
-             	directory="/images/stories/virtuemart/shipment"
-             	default="default" hide_default="1" hide_none="1"
-             	stripext="0"   exclude="^_" />
-	<field name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_COUNTRIES" description="VMSHIPMENT_WEIGHT_COUNTRIES_COUNTRIES_DESC"/>
-	<field name="zip_start" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_ZIP_START" description="VMSHIPMENT_WEIGHT_COUNTRIES_ZIP_START_DESC"/>
-	<field name="zip_stop" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_ZIP_STOP" description="VMSHIPMENT_WEIGHT_COUNTRIES_ZIP_STOP_DESC"/>
-	<field name="weight_start" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_START" description="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_START_DESC"/>
-	<field name="weight_stop" type="text" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_STOP" description="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_STOP_DESC"/>
-	<field name="weight_unit" type="vmweightunit" size="10" default="" label="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_UNIT" description="VMSHIPMENT_WEIGHT_COUNTRIES_WEIGHT_UNIT_DESC"/>
-	<field name="cost" type="text"   label="VMSHIPMENT_WEIGHT_COUNTRIES_COST" description="VMSHIPMENT_WEIGHT_COUNTRIES_COST_DESC" />
-	<field name="package_fee" type="text"   label="VMSHIPMENT_WEIGHT_COUNTRIES_PACKAGE_FEE" description="VMSHIPMENT_WEIGHT_COUNTRIES_PACKAGE_FEE_DESC" />
-	<field name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMSHIPMENT_WEIGHT_COUNTRIES_TAX" description="VMSHIPMENT_WEIGHT_COUNTRIES_TAX_DESC" />
-	<field name="free_shipment" type="text"    label="VMSHIPMENT_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT" description="VMSHIPMENT_WEIGHT_COUNTRIES_FREE_SHIPPING_AMOUNT_DESC" />
-
-
-    </fieldset>
 </install>

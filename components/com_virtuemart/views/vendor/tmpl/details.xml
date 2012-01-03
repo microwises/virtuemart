@@ -8,7 +8,7 @@
         <name>COM_VIRTUEMART_VENDOR_VIEW_DETAILS_TITLE</name>
         <description><![CDATA[COM_VIRTUEMART_VENDOR_VIEW_DETAILS_DESC]]></description>
         <url addpath="/administrator/components/com_virtuemart/elements">
-            <param name="virtuemart_vendor_id" section="com_virtuemart" type="vmvendorsmenu"  value_field="mf_name" label="COM_VIRTUEMART_VENDOR_FIELD_SELECT_TITLE" description="COM_VIRTUEMART_VENDOR_FIELD_SELECT_TITLE_DESC" />
+            <param name="virtuemart_vendor_id" section="com_virtuemart" type="vmvendormenu"  value_field="vendor_name" label="COM_VIRTUEMART_VENDOR_FIELD_SELECT_TITLE" description="COM_VIRTUEMART_VENDOR_FIELD_SELECT_TITLE_DESC" />
         </url>
     </state>
 

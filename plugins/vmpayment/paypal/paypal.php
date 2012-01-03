@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
 if (!class_exists('vmPSPlugin'))
     require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
-class plgVMPaymentPaypal extends vmPSPlugin {
+class plgVmpaymentPaypal extends vmPSPlugin {
 
     // instance of class
     public static $_this = false;
@@ -355,7 +355,7 @@ class plgVMPaymentPaypal extends vmPSPlugin {
 	//$this->_debug = true;
 	$order_number = $paypal_data['invoice'];
 	$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($paypal_data['invoice']);
-	$this->logInfo('plgVmOnPaymentNotification: virtuemart_order_id  found ' . $virtuemart_order_id, 'message');
+	//$this->logInfo('plgVmOnPaymentNotification: virtuemart_order_id  found ' . $virtuemart_order_id, 'message');
 
 	if (!$virtuemart_order_id) {
 	   return;
