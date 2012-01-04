@@ -594,9 +594,11 @@ class VirtueMartModelProduct extends VmModel {
 // 				if (!empty($product->virtuemart_customfield_id ) ){
 					if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 					$customfields = new VirtueMartModelCustomfields();
-					$product->customfields = $customfields->getproductCustomslist($this->_id,'product');
+					$product->customfields = $customfields->getproductCustomslist($this->_id);
 					if(empty($product->customfields) and !empty($product->product_parent_id) ){
-						$product->customfields = $customfields->getproductCustomslist($product->product_parent_id,'product');
+						//$product->customfields = $this->productCustomsfieldsClone($product->product_parent_id,true) ;
+						$product->customfields = $customfields->getproductCustomslist($product->product_parent_id,$this->_id);
+						$product->customfields_parent_id = $product->product_parent_id ;
 
 					}
 
@@ -1023,15 +1025,10 @@ class VirtueMartModelProduct extends VmModel {
 		// 	 	$dispatcher = JDispatcher::getInstance();
 		// 	 	$error = $dispatcher->trigger('plgVmOnStoreProduct', array('product',$data,$product_data->virtuemart_product_id));
 
-
-		if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
-		VirtueMartModelCustom::saveModelCustomfields('product',$data,$product_data->virtuemart_product_id);
-
-		if (array_key_exists('ChildCustomRelation', $data)) {
+		if (isset($data['save_customfields']) ){
 			if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'custom.php');
-			VirtueMartModelCustom::saveChildCustomRelation('product',$data['ChildCustomRelation'],$product_data->virtuemart_product_id);
+			VirtueMartModelCustom::saveModelCustomfields('product',$data,$product_data->virtuemart_product_id);
 		}
-
 		$data = $this->updateXrefAndChildTables($data,'product_shoppergroups');
 
 		$data = $this->updateXrefAndChildTables($data, 'product_prices');
@@ -1790,9 +1787,11 @@ public function updateStockInDB($product, $amount, $signInStoc, $signOrderedStoc
 /* look if whe have a product type */
 private function productCustomsfieldsClone($virtuemart_product_id) {
 	$this->_db = JFactory::getDBO();
-	$q = "SELECT * FROM `#__virtuemart_product_customfields` WHERE `virtuemart_product_id` = ".$virtuemart_product_id ;
+	$q  = "SELECT * FROM `#__virtuemart_product_customfields`";
+	$q .=" WHERE `virtuemart_product_id` = ".$virtuemart_product_id ;
 	$this->_db->setQuery($q);
-	if ($customfields = $this->_db->loadAssocList() ) {
+	$customfields = $this->_db->loadAssocList();
+	if ($customfields) {
 		foreach ($customfields as &$customfield) unset($customfield['virtuemart_product_id'],$customfield['virtuemart_customfield_id']);
 		return $customfields;
 	}

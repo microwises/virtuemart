@@ -18,12 +18,16 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-?>
-<table width="100%">
+if (isset($this->product->customfields_parent_id)) { ?>
+	<label><?php echo JText::_('COM_VIRTUEMART_CUSTOM_SAVE_FROM_CHILD');?><input type="checkbox" name="save_customfields" value="1" /></label>
+<?php } else {?>
+	<input type="hidden" name="save_customfields" value="1" />
+<?php }  ?>
+<table id="customfieldsTable" width="100%">
 	<tr>
 		<td valign="top" width="%100">
 
-			<?php
+		<?php
 			$i=0;
 			$tables= array('categories'=>'','products'=>'','fields'=>'','customPlugins'=>'',);
 			if (isset($this->product->customfields)) {
@@ -135,8 +139,9 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 </table>
 
+
 <div style="clear:both;"></div>
-<div style="display:none;" class="customDelete remove"><span class="vmicon vmicon-16-trash"></span><?php echo JText::_('COM_VIRTUEMART_DELETE'); ?></div>
+
 
 <script type="text/javascript">
 	nextCustom = <?php echo $i ?>;
@@ -189,5 +194,49 @@ defined('_JEXEC') or die('Restricted access');
 		minLength:1,
 		html: true
 	});
+	// jQuery('#customfieldsTable').delegate('td','click', function() {
+		// jQuery('#customfieldsParent').remove();
+		// jQuery(this).undelegate('td','click');
+	// });
+	// jQuery.each(jQuery('#customfieldsTable').filter(":input").data('events'), function(i, event) {
+		// jQuery.each(event, function(i, handler){
+		// console.log(handler);
+	  // });
+	// });
+	
+
+eventNames = "click.remove keydown.remove change.remove focus.remove"; // all events you wish to bind to
+
+function removeParent() {jQuery('#customfieldsParent').remove();console.log($(this));//jQuery('#customfieldsTable input').unbind(eventNames, removeParent)
+ };
+
+// jQuery('#customfieldsTable input').bind(eventNames, removeParent);
+
+  // jQuery('#customfieldsTable').delegate('*',eventNames,function(event) {
+    // var $thisCell, $tgt = jQuery(event.target);
+	// console.log (event);
+	// });
+		jQuery('#customfieldsTable').find('input').each(function(i){
+			current = jQuery(this);
+        // var dEvents = curent.data('events');
+        // if (!dEvents) {return;}
+
+		current.click(function(){
+				jQuery('#customfieldsParent').remove();
+			});
+		//console.log (curent);
+        // jQuery.each(dEvents, function(name, handler){
+            // if((new RegExp('^(' + (events === '*' ? '.+' : events.replace(',','|').replace(/^on/i,'')) + ')$' ,'i')).test(name)) {
+               // jQuery.each(handler, function(i,handler){
+                   // outputFunction(elem, '\n' + i + ': [' + name + '] : ' + handler );
+				   
+				   
+               // });
+           // }
+        // });
+    });
+
+	
+	//onsole.log(jQuery('#customfieldsTable').data('events'));
 
 </script>

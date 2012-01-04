@@ -101,22 +101,17 @@ class VirtuemartViewCategory extends JView {
 		// Set Canonic link
 		$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$categoryId) , 'canonical', 'rel', '' );
 
-		$categoryStripped = strip_tags($category->category_name);
 	    // Set the titles
+		$title = strip_tags($category->category_name);
+
 	  	if(JRequest::getInt('error')){
-			$head = $document->getHeadData();
-			$head['title'] = JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
-
-			$document->setHeadData($head);
-
-		} else {
-			$document->setTitle($categoryStripped);
+			$title .=' '.JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
 		}
 
 		// set search and keyword
 		if ($keyword = vmRequest::uword('keyword', '', ' ')) {
 			$pathway->addItem($keyword);
-			$document->setTitle( $categoryStripped.' '.$keyword);
+			$title .=' ('.$keyword.')';
 		}
 		$search = JRequest::getvar('keyword', null);
 		if ($search !==null) {
@@ -133,7 +128,8 @@ class VirtuemartViewCategory extends JView {
 		foreach($products as $product){
 			$product->stock = $productModel->getStockIndicator($product);
 		}
-
+		if (JRequest::getInt('virtuemart_manufacturer_id' ) ) $title .=' '.$products[0]->mf_name ;
+		$document->setTitle( $title );
 
 	    $pagination = $productModel->getPagination(0,0,0,$perRow);
 	    $this->assignRef('vmPagination', $pagination);
@@ -159,7 +155,7 @@ class VirtuemartViewCategory extends JView {
 		}
 
 		if ($mainframe->getCfg('MetaTitle') == '1') {
-			$document->setMetaData('title',  $categoryStripped);
+			$document->setMetaData('title',  $title);
 
 		}
 		if ($mainframe->getCfg('MetaAuthor') == '1') {

@@ -279,7 +279,7 @@ class VirtueMartModelCustomfields extends VmModel {
      * Load all custom fields for a Single product
      * return custom fields value and definition
      */
-     public function getproductCustomslist($virtuemart_product_id) {
+     public function getproductCustomslist($virtuemart_product_id,$parent_id = null) {
 
 		$query='SELECT C.`virtuemart_custom_id` , `custom_element`, `custom_jplugin_id`, `custom_params`, `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_cart_attribute` , `is_hidden` , C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`,field.`custom_param`,field.`custom_price`,field.`ordering`
 			FROM `#__virtuemart_customs` AS C
@@ -290,8 +290,12 @@ class VirtueMartModelCustomfields extends VmModel {
 		//if (!$productCustoms ) return array();
 		if (!$productCustoms ) return ;
 		$row= 0 ;
-		foreach ($productCustoms as $field ) {
-
+		foreach ($productCustoms as &$field ) {
+			if ($parent_id) { $field->custom_value ="";
+				$field->virtuemart_customfield_id="";
+				$field->custom_param=null;
+				$virtuemart_product_id = $parent_id;
+			}
 			if($field->field_type =='E') {
 
 				JPluginHelper::importPlugin('vmcustom');

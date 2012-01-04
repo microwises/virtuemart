@@ -73,7 +73,8 @@ class plgVmCustomStockable extends vmCustomPlugin {
 		}
 		$html .=' <span style="width:98px; display: inline-block;color:#000;">'. JText::_('COM_VIRTUEMART_CART_PRICE') .'</span>';
 		// $param = json_decode($field->custom_param,true);
-		$childList = $field->child;
+		if (isset($field->child)) $childList = $field->child;
+		else $childList = array();
 		foreach ($childs as $child ) {
 			$checked ='';
 			$price = null;
