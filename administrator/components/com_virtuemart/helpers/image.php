@@ -25,14 +25,14 @@ class VmImage extends VmMediaHandler {
 		}
 	}
 
-	function addMediaAttributesByType(){
+/*	function addMediaAttributesByType(){
 
 		parent::addMediaAttributesByType();
 		if(!$this->setRole){
-			//This attribute indicates, that the FileHandler should show the file as image, other files will only show a thumbnail
-			$this->addMediaAttributes('file_is_product_image','COM_VIRTUEMART_FORM_MEDIA_PRODUCT_IMAGE');
+// 			This attribute indicates, that the FileHandler should show the file as image, other files will only show a thumbnail
+// 			$this->addMediaAttributes('file_is_product_image','COM_VIRTUEMART_FORM_MEDIA_PRODUCT_IMAGE');
 		}
-	}
+	}*/
 
 	function processAction($data){
 
@@ -67,24 +67,30 @@ class VmImage extends VmMediaHandler {
 
 	function displayMediaFull($imageArgs='',$lightbox=true,$effect ="class='modal'",$description = true ){
 
-		// Remote image URL
-		if( substr( $this->file_url, 0, 4) == "http" ) {
-			$file_url = $this->file_url;
-			$file_alt = $this->file_title;
-		} else {
-			$rel_path = str_replace('/',DS,$this->file_url_folder);
-			$fullSizeFilenamePath = JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
-			if (!file_exists($fullSizeFilenamePath)) {
-				$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
-				$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_FOUND').' '.$this->file_description;
-			} else {
+		if(!$this->file_is_forSale){
+			// Remote image URL
+			if( substr( $this->file_url, 0, 4) == "http" ) {
 				$file_url = $this->file_url;
-				$file_alt = $this->file_meta;
+				$file_alt = $this->file_title;
+			} else {
+				$rel_path = str_replace('/',DS,$this->file_url_folder);
+				$fullSizeFilenamePath = JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
+				if (!file_exists($fullSizeFilenamePath)) {
+					$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
+					$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_FOUND').' '.$this->file_description;
+				} else {
+					$file_url = $this->file_url;
+					$file_alt = $this->file_meta;
+				}
 			}
+			$postText = '';
+			if($description) $postText = $this->file_description;
+			return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox,'',$postText);
+		} else {
+			//Media which should be sold, show them only as thumb (works as preview)
+			return $this->displayMediaThumb('id="vm_display_image"',false);
 		}
-		$postText = '';
-		if($description) $postText = $this->file_description;
-		return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox,'',$postText);
+
 
 	}
 

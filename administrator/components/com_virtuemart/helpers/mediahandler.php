@@ -227,9 +227,15 @@ class VmMediaHandler {
 
 		}
 
-		if($this->file_is_product_image) $this->media_attributes = 'file_is_product_image';
-		if($this->file_is_downloadable) $this->media_attributes = 'file_is_downloadable';
-		if($this->file_is_forSale) $this->media_attributes = 'file_is_forSale';
+// 		$this->media_role
+// 		if($this->file_is_product_image) $this->media_attributes = 'file_is_displayable';
+// 		if($this->file_is_downloadable) $this->media_attributes = 'file_is_downloadable';
+// 		if($this->file_is_forSale) $this->media_attributes = 'file_is_forSale';
+// 		if(empty($this->media_attributes)) $this->media_attributes = 'file_is_displayable';
+		if($this->file_is_downloadable) $this->media_role = 'file_is_downloadable';
+		if($this->file_is_forSale) $this->media_role = 'file_is_forSale';
+		if(empty($this->media_role)) $this->media_role = 'file_is_displayable';
+		vmdebug('$this->media_role',$this->media_role);
 
 		$this->determineFoldersToTest();
 
@@ -630,25 +636,26 @@ class VmMediaHandler {
 		 */
 		function processAttributes($data){
 
-			if(empty($data['media_attributes'])) return $data;
-			if($data['media_attributes'] == 'file_is_product_image'){
+			$this->file_is_product_image = 0;
+			$this->file_is_downloadable = 0;
+			$this->file_is_forSale = 0;
 
-				$this->file_is_product_image = 1;
-				$this->file_is_downloadable = 0;
-				$this->file_is_forSale = 0;
-			}
-			else if($data['media_attributes'] == 'file_is_downloadable'){
+			if(empty($data['media_roles'])) return $data;
+
+			if($data['media_roles'] == 'file_is_downloadable'){
 				$this->file_is_downloadable = 1;
 				$this->file_is_forSale = 0;
+// 				$this->media_role = 'downloadable';
 			}
-			else if($data['media_attributes'] == 'file_is_forSale'){
-				$this->file_is_product_image = 0;
+			else if($data['media_roles'] == 'file_is_forSale'){
+// 				$this->file_is_product_image = 0;
 				$this->file_is_downloadable = 0;
 				$this->file_is_forSale = 1;
+// 				$this->media_role = 'file_is_forSale';
 			}
 
 			if($this->setRole){
-				$this->file_url_folder = $this->getMediaUrlByView($data['media_attributes']);
+				$this->file_url_folder = $this->getMediaUrlByView($data['media_roles']);
 				$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
 			}
 
@@ -699,7 +706,7 @@ class VmMediaHandler {
 		}
 
 
-		private $_attributes = array();
+		private $_mLocation = array();
 
 		/**
 		 * This method can be used to add extra attributes to the media
@@ -709,7 +716,7 @@ class VmMediaHandler {
 		 * @param string $langkey the langkey used
 		 */
 		public function addMediaAttributes($optionName,$langkey=''){
-			$this->_attributes[$optionName] = $langkey ;
+			$this->_mLocation[$optionName] = $langkey ;
 		}
 
 		/**
@@ -722,16 +729,21 @@ class VmMediaHandler {
 
 			if($this->setRole){
 // 				$this->addMediaAttributes('file_is_product_image','COM_VIRTUEMART_FORM_MEDIA_SET_PRODUCT');
-				$this->addMediaAttributes('product','COM_VIRTUEMART_FORM_MEDIA_SET_PRODUCT');
+				$this->addMediaAttributes('product','COM_VIRTUEMART_FORM_MEDIA_SET_PRODUCT'); // => file_is_displayable  =>location
 				$this->addMediaAttributes('category','COM_VIRTUEMART_FORM_MEDIA_SET_CATEGORY');
 				$this->addMediaAttributes('manufacturer','COM_VIRTUEMART_FORM_MEDIA_SET_MANUFACTURER');
 				$this->addMediaAttributes('vendor','COM_VIRTUEMART_FORM_MEDIA_SET_VENDOR');
-				$this->addMediaAttributes('file_is_forSale','COM_VIRTUEMART_FORM_MEDIA_SET_FOR_SALE');
+// 				$this->addMediaAttributes('forSale','COM_VIRTUEMART_FORM_MEDIA_SET_FOR_SALE'); //  =>location
+// 				$this->addMediaAttributes('file_is_downloadable','COM_VIRTUEMART_FORM_MEDIA_DOWNLOADABLE');
+				$this->_mRoles['file_is_displayable'] = 'COM_VIRTUEMART_FORM_MEDIA_DISPLAYABLE' ;
+				$this->_mRoles['file_is_downloadable'] = 'COM_VIRTUEMART_FORM_MEDIA_DOWNLOADABLE' ;
+				$this->_mRoles['file_is_forSale'] = 'COM_VIRTUEMART_FORM_MEDIA_SET_FOR_SALE' ;
 			} else {
-				$this->addMediaAttributes(0,'COM_VIRTUEMART_FORM_MEDIA_NO_ATTRIB');
-				//Every media can be free for download. This attribute indicate if there should be a link to be created
-				$this->addMediaAttributes('file_is_downloadable','COM_VIRTUEMART_FORM_MEDIA_DOWNLOADABLE');
 
+// 				$this->addMediaAttributes($this->file_type,'COM_VIRTUEMART_FORM_MEDIA_SET_'.strtoupper($this->file_type));
+
+				$this->_mRoles['file_is_displayable'] = 'COM_VIRTUEMART_FORM_MEDIA_DISPLAYABLE' ;
+				$this->_mRoles['file_is_downloadable'] = 'COM_VIRTUEMART_FORM_MEDIA_DOWNLOADABLE' ;
 			}
 
 		}
@@ -1003,10 +1015,24 @@ class VmMediaHandler {
 			$html .= $this->displayRow('COM_VIRTUEMART_FILES_FORM_FILE_URL_THUMB','file_url_thumb',$readonly);
 
 			$this->addMediaAttributesByType();
-			$html .= '<tr>
-		<td class="labelcell">'.JText::_('COM_VIRTUEMART_FILES_FORM_ROLE').'</td>
-		<td><fieldset class="checkboxes">'.JHTML::_('select.radiolist', $this->getOptions($this->_attributes), 'media_attributes'.$identify, '', 'value', 'text', $this->media_attributes).'</fieldset></td></tr>';
 
+			$html .= '<tr>
+					<td class="labelcell">'.JText::_('COM_VIRTUEMART_FILES_FORM_ROLE').'</td>
+					<td><fieldset class="checkboxes">'.JHTML::_('select.radiolist', $this->getOptions($this->_mRoles), 'media_roles'.$identify, '', 'value', 'text', $this->media_role).'</fieldset></td></tr>';
+
+// 			$html .= '<tr><td class="labelcell">'.VmHTML::checkbox('file_is_forSale', $this->file_is_forSale);
+// 			$html .= VmHTML::checkbox('file_is_downloadable', $this->file_is_downloadable);
+
+			if(!empty($this->file_type)){
+
+				$html .= '<tr>
+						<td class="labelcell">'.JText::_('COM_VIRTUEMART_FILES_FORM_LOCATION').'</td>
+						<td><fieldset class="checkboxes">'.JText::_('COM_VIRTUEMART_FORM_MEDIA_SET_'.strtoupper($this->file_type)).'</fieldset></td></tr>';
+			} else {
+				$html .= '<tr>
+						<td class="labelcell">'.JText::_('COM_VIRTUEMART_FILES_FORM_LOCATION').'</td>
+						<td><fieldset class="checkboxes">'.JHTML::_('select.radiolist', $this->getOptions($this->_mLocation), 'media_attributes'.$identify, '', 'value', 'text', $this->media_attributes).'</fieldset></td></tr>';
+			}
 			$html .= '</table>';
                         $html .='<br /></fieldset>';
 			$this->addMediaActionByType();

@@ -333,7 +333,7 @@ class VirtueMartModelMedia extends VmModel {
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
 		$table = $this->getTable('medias');
-		//		if($table->checkDataContainsTableFields($data,array('file_url','media_action','media_attributes','file_is_product_image','virtuemart_media_id','virtuemart_vendor_id'))){
+
 		$table->bind($data);
 		$data = VmMediaHandler::prepareStoreMedia($table,$data,$type); //this does not store the media, it process the actions and prepares data
 
