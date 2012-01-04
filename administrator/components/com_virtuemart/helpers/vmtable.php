@@ -247,7 +247,8 @@ class VmTable extends JTable{
 
 
 // 		vmdebug('load '.$oid);
-		$k = $this->_tbl_key;
+// 		$k = $this->_tbl_key;
+		$k = $this->_pkey;
 
 		if ($oid !== null) {
 			$this->$k = $oid;
@@ -295,7 +296,8 @@ class VmTable extends JTable{
 			}
 		}
 		//the cast to int here destroyed the query for keys like virtuemart_userinfo_id, so no cast on $oid
-		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = "'.$oid.'"';
+// 		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = "'.$oid.'"';
+		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_pkey.'` = "'.$oid.'"';
 
 		$db->setQuery( $query );
 

@@ -276,6 +276,61 @@ class VirtueMartModelCalc extends VmModel {
   		return $data;
 	}
 
+	/**
+	* Delete all calcs selected
+	*
+	* @author Max Milbers
+	* @param  array $cids categories to remove
+	* @return boolean if the item remove was successful
+	*/
+	public function remove($cids) {
+
+		JRequest::checkToken() or jexit( 'Invalid Token, in remove category');
+
+		$table = $this->getTable($this->_maintablename);
+		$cat = $this->getTable('calc_categories');
+		$sgrp = $this->getTable('calc_shoppergroups');
+		$countries = $this->getTable('calc_countries');
+		$states = $this->getTable('calc_states');
+
+		$ok = true;
+		foreach($ids as $id) {
+			$id = (int)$id;
+			if (!$table->delete()) {
+				$this->setError(get_class( $this ).'::remove '.$id.' '.$table->getError());
+				$ok = false;
+			}
+
+			if (!$cat->delete($id)) {
+				$this->setError(get_class( $this ).'::remove '.$id.' '.$cat->getError());
+				$ok = false;
+			}
+
+			if (!$sgrp->delete($id)) {
+				$this->setError(get_class( $this ).'::remove '.$id.' '.$sgrp->getError());
+				$ok = false;
+			}
+
+			if (!$countries->delete($id)) {
+				$this->setError(get_class( $this ).'::remove '.$id.' '.$countries->getError());
+				$ok = false;
+			}
+
+			if (!$states->delete($id)) {
+				$this->setError(get_class( $this ).'::remove '.$id.' '.$states->getError());
+				$ok = false;
+			}
+
+// 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+			JPluginHelper::importPlugin('vmcalculation');
+			$dispatcher = JDispatcher::getInstance();
+			$returnValues = $dispatcher->trigger('plgVmDeleteCalculationRow', array( $id));
+
+		}
+
+		return $ok;
+	}
+
 	function getTaxes() {
 
 		return self::getRule(array('TAX','TaxBill'));
