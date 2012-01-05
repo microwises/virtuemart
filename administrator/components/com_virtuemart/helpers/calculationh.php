@@ -653,10 +653,12 @@ class calculationHelper {
 		$testedRules = array();
 
 // 		vmdebug('$this->allrules[$this->productVendorId]',$this->allrules[$this->productVendorId]);
-		$allRules = $this->allrules[$this->productVendorId][$entrypoint];
+
 		if(empty($this->allrules[$this->productVendorId][$entrypoint])){
-			vmdebug('$this->allrules',$this->productVendorId,$entrypoint);
+// 			vmdebug('$this->allrules',$this->productVendorId,$entrypoint);
+			return $testedRules;
 		}
+		$allRules = $this->allrules[$this->productVendorId][$entrypoint];
 		//Cant be done with Leftjoin afaik, because both conditions could be arrays.
 		foreach ($allRules as $i => $rule) {
 // 			vmdebug('gatherEffectingRulesForProductPrice '.$entrypoint,$this->allrules[$entrypoint]);
