@@ -33,7 +33,7 @@ class VirtuemartViewOrders extends JView {
 
 		$mainframe = JFactory::getApplication();
 		$option = JRequest::getWord('option');
-		$lists = array();
+// 		$lists = array();
 
 		/* Load helpers */
 		$this->loadHelper('adminui');

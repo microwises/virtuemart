@@ -227,24 +227,16 @@ class VmMediaHandler {
 
 		}
 
-// 		$this->media_role
-// 		if($this->file_is_product_image) $this->media_attributes = 'file_is_displayable';
-// 		if($this->file_is_downloadable) $this->media_attributes = 'file_is_downloadable';
-// 		if($this->file_is_forSale) $this->media_attributes = 'file_is_forSale';
-// 		if(empty($this->media_attributes)) $this->media_attributes = 'file_is_displayable';
 		if($this->file_is_downloadable) $this->media_role = 'file_is_downloadable';
 		if($this->file_is_forSale) $this->media_role = 'file_is_forSale';
 		if(empty($this->media_role)) $this->media_role = 'file_is_displayable';
-		vmdebug('$this->media_role',$this->media_role);
+// 		vmdebug('$this->media_role',$this->media_role);
 
 		$this->determineFoldersToTest();
 
 		if(!empty($this->file_url) && empty($this->file_url_thumb)){
 			$this->displayMediaThumb('',true,'',false);
 		}
-// 		$this->file_name_thumb = $this->createThumbName();
-// 		$this->file_url_thumb = $this->file_url_folder_thumb.$this->file_name_thumb.'.'.$this->file_extension;
-
 
 	}
 
@@ -645,13 +637,10 @@ class VmMediaHandler {
 			if($data['media_roles'] == 'file_is_downloadable'){
 				$this->file_is_downloadable = 1;
 				$this->file_is_forSale = 0;
-// 				$this->media_role = 'downloadable';
 			}
 			else if($data['media_roles'] == 'file_is_forSale'){
-// 				$this->file_is_product_image = 0;
 				$this->file_is_downloadable = 0;
 				$this->file_is_forSale = 1;
-// 				$this->media_role = 'file_is_forSale';
 			}
 
 			if($this->setRole){

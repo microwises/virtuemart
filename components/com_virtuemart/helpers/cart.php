@@ -50,7 +50,7 @@ class VirtueMartCart {
 	var $customer_comment = '';
 	var $couponCode = '';
 	var $cartData = null;
-	var $lists = null;
+// 	var $lists = null;
 	// 	var $user = null;
 	var $prices = null;
 	var $pricesUnformatted = null;

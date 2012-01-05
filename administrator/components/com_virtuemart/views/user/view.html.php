@@ -232,8 +232,6 @@ class VirtuemartViewUser extends VmView {
 
 			$this->addStandardDefaultViewLists($model,'ju.id');
 
-
-
 			$shoppergroupmodel = $this->getModel('shopperGroup');
 			$defaultShopperGroup = $shoppergroupmodel->getDefault()->shopper_group_name;
 			$this->assignRef('defaultShopperGroup', $defaultShopperGroup);

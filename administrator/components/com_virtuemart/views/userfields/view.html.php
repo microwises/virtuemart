@@ -180,7 +180,8 @@ class VirtuemartViewUserfields extends VmView {
 			// Get the ordering
 			$lists['order']     = $mainframe->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'ordering', 'cmd' );
 			$lists['order_Dir'] = $mainframe->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', '', 'word' );
-
+			$this->assignRef('lists', $lists);
+// 			$this->lists = array_merge ($lists ,$this->lists);
 		}
 
 		parent::display($tpl);

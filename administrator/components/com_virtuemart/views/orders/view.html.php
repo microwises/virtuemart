@@ -33,7 +33,7 @@ class VirtuemartViewOrders extends VmView {
 
 		$mainframe = JFactory::getApplication();
 		$option = JRequest::getWord('option');
-		$lists = array();
+// 		$lists = array();
 
 		/* Load helpers */
 		$this->loadHelper('adminui');
@@ -56,7 +56,7 @@ class VirtuemartViewOrders extends VmView {
 		if ($curTask == 'edit') {
 
 			// Load addl models
-			
+
 			$userFieldsModel = $this->getModel('userfields');
 			$productModel = $this->getModel('product');
 

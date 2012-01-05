@@ -85,7 +85,7 @@ class VirtuemartViewMedia extends VmView {
 				'manufacturer' => JText::_('COM_VIRTUEMART_MANUFACTURER'),
 				'vendor' => JText::_('COM_VIRTUEMART_VENDOR')
 				);
-			$lists['search_type'] = VmHTML::selectList('search_type', JRequest::getVar('search_type'),$options,1,'','onchange="this.form.submit();"');
+			$this->lists['search_type'] = VmHTML::selectList('search_type', JRequest::getVar('search_type'),$options,1,'','onchange="this.form.submit();"');
 
 
 		}
