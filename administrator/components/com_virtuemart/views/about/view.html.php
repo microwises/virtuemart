@@ -32,7 +32,7 @@ jimport('joomla.html.pane');
 class VirtuemartViewAbout extends VmView {
 
 	function display($tpl = null) {
-		$this->loadHelper('adminui');
+
 		$this->loadHelper('adminMenu');
                 JToolBarHelper::title(JText::_('COM_VIRTUEMART_ABOUT')."::".JText::_('COM_VIRTUEMART_CONTROL_PANEL'), 'vm_store_48');
 

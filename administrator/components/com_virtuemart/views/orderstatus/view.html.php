@@ -33,12 +33,9 @@ class VirtuemartViewOrderstatus extends VmView {
 
 	function display($tpl = null) {
 
-		$option = JRequest::getCmd( 'option');
-		$mainframe = JFactory::getApplication() ;
-
 		// Load the helper(s)
-		$this->loadHelper('adminui');
-		$this->loadHelper('shopFunctions');
+
+
 		$this->loadHelper('html');
 
 		$model = $this->getModel();
@@ -51,8 +48,6 @@ class VirtuemartViewOrderstatus extends VmView {
 
                
 		if ($layoutName == 'edit') {
-			$editor = JFactory::getEditor();
-
 			if ($orderStatus->virtuemart_orderstate_id < 1) {
 
 				$this->assignRef('ordering', JText::_('COM_VIRTUEMART_NEW_ITEMS_PLACE'));
@@ -75,7 +70,6 @@ class VirtuemartViewOrderstatus extends VmView {
 
                      
 			$this->assignRef('orderStatus', $orderStatus);
-			$this->assignRef('editor', $editor);
 			$this->assignRef('lists', $lists);
 
 			$this->addStandardEditViewCommands();

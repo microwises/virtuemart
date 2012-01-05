@@ -35,10 +35,10 @@ class VirtuemartViewShipmentmethod extends VmView {
 
 		// Load the helper(s)
 		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
-		$this->loadHelper('adminui');
+
 		$this->loadHelper('permissions');
 		$this->loadHelper('vmpsplugin');
-		$this->loadHelper('shopFunctions');
+
 		$this->loadHelper('html');
 
 		$model = $this->getModel();

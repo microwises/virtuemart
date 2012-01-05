@@ -33,8 +33,8 @@ class VirtuemartViewUsergroups extends VmView {
 
 	function display( $tpl = null ){
 
-		$this->loadHelper('adminui');
-		$this->loadHelper('shopFunctions');
+
+
 		$this->loadHelper('html');
 
 		$model = $this->getModel();

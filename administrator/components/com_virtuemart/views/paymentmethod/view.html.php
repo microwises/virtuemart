@@ -39,9 +39,9 @@ class VirtuemartViewPaymentMethod extends VmView {
 		// Load the helper(s)
 		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 
-		$this->loadHelper('adminui');
+
 		$this->loadHelper('permissions');
-		$this->loadHelper('shopFunctions');
+
 		$this->loadHelper('html');
 
 		$this->addHelperPath(JPATH_VM_PLUGINS);

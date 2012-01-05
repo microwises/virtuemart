@@ -34,9 +34,9 @@ class VirtuemartViewReport extends VmView {
 	function display($tpl = null){
 
 		// Load the helper(s)
-		$this->loadHelper('adminui');
+
 		$this->loadHelper('html');
-		$this->loadHelper('shopFunctions');
+
 		$this->loadHelper('html');
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('reportFunctions');

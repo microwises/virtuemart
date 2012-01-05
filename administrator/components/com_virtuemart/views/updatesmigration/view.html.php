@@ -33,7 +33,7 @@ class VirtuemartViewUpdatesMigration extends VmView {
 
 	function display($tpl = null) {
 
-		$this->loadHelper('adminui');
+
 		$latestVersion = JRequest::getVar('latestverison', '');
 
 		JToolBarHelper::title(JTEXT::_('COM_VIRTUEMART_UPDATE_MIGRATION'), 'head vm_config_48');

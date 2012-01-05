@@ -36,8 +36,8 @@ class VirtuemartViewCategory extends VmView {
 	function display($tpl = null) {
 
 		// Load the helper(s)
-		$this->loadHelper('adminui');
-		$this->loadHelper('shopFunctions');
+
+
 		$this->loadHelper('html');
 		//		$this->loadHelper('image');
 

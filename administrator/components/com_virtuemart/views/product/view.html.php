@@ -36,8 +36,8 @@ class VirtuemartViewProduct extends VmView {
 
 		// Load helpers
 		$this->loadHelper('currencydisplay');
-		$this->loadHelper('adminui');
-		$this->loadHelper('shopFunctions');
+
+
 		$this->loadHelper('html');
 		$this->loadHelper('image');
 
@@ -290,25 +290,24 @@ class VirtuemartViewProduct extends VmView {
 				}
 
 				/* Write the first 5 categories in the list */
-				if(!class_exists('shopfunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 				$product->categoriesList = shopfunctions::renderGuiList('virtuemart_category_id','#__virtuemart_product_categories','virtuemart_product_id',$product->virtuemart_product_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category');
 
 			}
-
-			/* Create filter */
+			$this->addStandardDefaultViewLists($model,'product_name');
+			/* add Search filter in lists*/
 			/* Search type */
 			$options = array( '' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'),
 		    				'product' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRODUCT'),
 							'price' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_PRICE'),
 							'withoutprice' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_TYPE_WITHOUTPRICE')
 			);
-			$lists['search_type'] = VmHTML::selectList('search_type', JRequest::getVar('search_type'),$options);
+			$this->lists['search_type'] = VmHTML::selectList('search_type', JRequest::getVar('search_type'),$options);
 
 			/* Search order */
 			$options = array( 'bf' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_BEFORE'),
 								  'af' => JText::_('COM_VIRTUEMART_PRODUCT_LIST_SEARCH_BY_DATE_AFTER')
 			);
-			$lists['search_order'] = VmHTML::selectList('search_order', JRequest::getVar('search_order'),$options);
+			$this->lists['search_order'] = VmHTML::selectList('search_order', JRequest::getVar('search_order'),$options);
 
 			/* Toolbar */
 
@@ -316,8 +315,8 @@ class VirtuemartViewProduct extends VmView {
 			JToolBarHelper::custom('cloneproduct', 'copy', 'copy', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
 			JToolBarHelper::custom('addrating', 'default', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);
 			$this->addStandardDefaultViewCommands();
-			$this->addStandardDefaultViewLists($model,'product_name');
-			$this->lists = array_merge($lists , $this->lists);
+
+
 
 
 			/* Assign the data */

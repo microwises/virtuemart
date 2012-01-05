@@ -36,9 +36,9 @@ class VirtuemartViewOrders extends VmView {
 // 		$lists = array();
 
 		/* Load helpers */
-		$this->loadHelper('adminui');
+
 		$this->loadHelper('currencydisplay');
-		$this->loadHelper('shopFunctions');
+
 		$this->loadHelper('html');
 
 //		require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php'); Obsolete now??

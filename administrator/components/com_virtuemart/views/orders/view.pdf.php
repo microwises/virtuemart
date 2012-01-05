@@ -34,22 +34,22 @@ class VirtuemartViewOrders extends JView {
 	function display($tpl = null) {
 
 		$mainframe = JFactory::getApplication();
-// 		$lists = array();
 
 		/* Load helpers */
-		$this->loadHelper('adminui');
+
 		$this->loadHelper('currencydisplay');
-		$this->loadHelper('shopFunctions');
+
 		$this->loadHelper('html');
 
 //		require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
-		if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
+
 
 		// Load addl models
 		$orderModel = $this->getModel('orders');
 		$userFieldsModel = $this->getModel('userfields');
 		$productModel = $this->getModel('product');
+		$orderStatusModel = $this->getModel('orderstatus');
 
 		/* Get the data */
 
@@ -83,7 +83,6 @@ class VirtuemartViewOrders extends JView {
 
 		// Create an array to allow orderlinestatuses to be translated
 		// We'll probably want to put this somewhere in ShopFunctions...
-        $orderStatusModel=new VirtueMartModelOrderstatus();
 		$_orderStats = $orderStatusModel->getOrderStatusList();
 		$_orderStatusList = array();
 

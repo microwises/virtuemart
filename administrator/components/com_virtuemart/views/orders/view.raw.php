@@ -27,24 +27,22 @@ jimport( 'joomla.application.component.view');
  * @package		VirtueMart
  * @author
  */
-class VirtuemartViewOrders extends JView {
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
+ 
+class VirtuemartViewOrders extends VmView {
 
 	function display($tpl = null) {
 
-		$mainframe = JFactory::getApplication();
-		$option = JRequest::getWord('option');
-// 		$lists = array();
-
 		/* Load helpers */
-		$this->loadHelper('adminui');
+
 		$this->loadHelper('currencydisplay');
-		$this->loadHelper('shopFunctions');
+
 		$this->loadHelper('html');
 
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 
 		// Load addl models
-		$orderModel = $this->getModel('orders');
+		$orderModel = $this->getModel();
 		$userFieldsModel = $this->getModel('userfields');
 		$productModel = $this->getModel('product');
 

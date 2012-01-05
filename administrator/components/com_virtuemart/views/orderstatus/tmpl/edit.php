@@ -43,16 +43,7 @@ $j15 = VmConfig::isJ15();
 		echo VmHTML::row('input','COM_VIRTUEMART_ORDER_STATUS_NAME','order_status_name',$this->orderStatus->order_status_name,'class="inputbox"','',50,50, $text)  ; ?>
 
 		<?php echo VmHTML::row('input','COM_VIRTUEMART_ORDER_STATUS_CODE','order_status_code',$this->orderStatus->order_status_code,'class="inputbox readonly" readonly','',3,1); ?>
-		<tr>
-			<td width="110" class="key">
-				<label for="order_status_description">
-					<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>:
-				</label>
-			</td>
-			<td>
-				<?php echo $this->editor->display('order_status_description',  $this->orderStatus->order_status_description, '100%;', '250', '75', '20', array('image', 'pagebreak', 'readmore') ) ; ?>
-			</td>
-		</tr>
+		<?php echo VmHTML::row('editor','COM_VIRTUEMART_DESCRIPTION','order_status_description',$this->orderStatus->order_status_description,'100%;', '250',array('image', 'pagebreak', 'readmore')); ?>
 		<?php echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->lists['vendors'] ); ?>
 		<?php echo VmHTML::row('raw','COM_VIRTUEMART_ORDERING', $this->ordering); ?>
 

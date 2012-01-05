@@ -33,8 +33,8 @@ class VirtuemartViewShopperGroup extends VmView {
 
 	function display($tpl = null) {
 		// Load the helper(s)
-		$this->loadHelper('adminui');
-		$this->loadHelper('shopFunctions');
+
+
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 
 // 		$this->assignRef('perms', Permissions::getInstance());
