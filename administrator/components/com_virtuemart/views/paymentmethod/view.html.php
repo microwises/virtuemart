@@ -21,7 +21,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * Description
@@ -31,10 +31,8 @@ jimport( 'joomla.application.component.view');
  */
 if (!class_exists('VirtueMartModelCurrency'))
 require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
-if (!class_exists('VirtueMartModelVendor'))
-require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 
-class VirtuemartViewPaymentMethod extends JView {
+class VirtuemartViewPaymentMethod extends VmView {
 
 	function display($tpl = null) {
 
@@ -58,16 +56,16 @@ class VirtuemartViewPaymentMethod extends JView {
 		//		$vendorId=1;
 		//		$this->assignRef('vendorId', $vendorId);
 		// TODO logo
-		$viewName=ShopFunctions::SetViewTitle();
-		$this->assignRef('viewName',$viewName);
+		$this->SetViewTitle();
+
 
 		$layoutName = JRequest::getWord('layout', 'default');
 
-		$vendorModel = new VirtueMartModelVendor();
+		$vendorModel = $this->getModel('vendor');
 
 		$vendorModel->setId(1);
 		$vendor = $vendorModel->getVendor();
-		$currencyModel = new VirtueMartModelCurrency();
+		$currencyModel = $this->getModel('currency');
 		$currencyModel = $currencyModel->getCurrency($vendor->vendor_currency);
 		$this->assignRef('vendor_currency', $currencyModel->currency_symbol);
 
@@ -94,14 +92,14 @@ class VirtuemartViewPaymentMethod extends JView {
 				$this->assignRef('vendorList', $vendorList);
 			}
 
-			ShopFunctions::addStandardEditViewCommands( $payment->virtuemart_paymentmethod_id);
+			$this->addStandardEditViewCommands( $payment->virtuemart_paymentmethod_id);
 		} else {
 
 			$payments = $model->getPayments();
 			$this->assignRef('payments',	$payments);
 
-			ShopFunctions::addStandardDefaultViewCommands();
-			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model);
 
 		}
 

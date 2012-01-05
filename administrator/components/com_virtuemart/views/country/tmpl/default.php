@@ -46,20 +46,16 @@ $states = JText::_('COM_VIRTUEMART_STATE_S');
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->countries); ?>);" />
 			</th>
 			<th>
-				<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_COUNTRY_NAME')
-					, 'country_name'
-					, $this->lists['filter_order_Dir']
-					, $this->lists['filter_order']); ?>
+				<?php echo $this->sort('country_name') ?>
 		    </th>
 				<?php /* TODO not implemented				    <th>
 				<?php echo JText::_('COM_VIRTUEMART_ZONE_ASSIGN_CURRENT_LBL'); ?>
 				</th> */ ?>
 		    <th>
-				<?php echo JText::_('COM_VIRTUEMART_COUNTRY_2_CODE'); ?>
+				<?php echo $this->sort('country_2_code') ?>
 		    </th>
 		    <th>
-				<?php echo JText::_('COM_VIRTUEMART_COUNTRY_3_CODE'); ?>
+				<?php echo $this->sort('country_3_code') ?>
 		    </th>
 		    <th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>

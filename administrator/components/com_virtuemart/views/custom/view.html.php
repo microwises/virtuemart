@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for the VirtueMart Component
@@ -28,7 +28,7 @@ jimport( 'joomla.application.component.view');
  * @package		VirtueMart
  * @author
  */
-class VirtuemartViewCustom extends JView {
+class VirtuemartViewCustom extends VmView {
 
 	function display($tpl = null) {
 
@@ -37,16 +37,16 @@ class VirtuemartViewCustom extends JView {
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');
 		$this->loadHelper('vmcustomplugin');
-		$model = $this->getModel('custom');
+		$model = $this->getModel();
 		$this->loadHelper('permissions');
 		// TODO Make an Icon for custom
-		$viewName=ShopFunctions::SetViewTitle('PRODUCT_CUSTOM_FIELD');
+		$this->SetViewTitle('PRODUCT_CUSTOM_FIELD');
 
-		$this->assignRef('viewName',$viewName);
+
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
-			ShopFunctions::addStandardEditViewCommands();
+			$this->addStandardEditViewCommands();
 			$customPlugin = '';
 			$this->loadHelper('parameterparser');
 			$custom = $model->getCustom();
@@ -56,7 +56,7 @@ class VirtuemartViewCustom extends JView {
 			$dispatcher = JDispatcher::getInstance();
 			$retValue = $dispatcher->trigger('plgVmOnDisplayEdit',array($custom->virtuemart_custom_id,&$customPlugin));
 
-			$viewName=ShopFunctions::SetViewTitle('PRODUCT_CUSTOM_FIELD', $custom->custom_title);
+			$this->SetViewTitle('PRODUCT_CUSTOM_FIELD', $custom->custom_title);
 
 			$selected=0;
 			if(!empty($custom->custom_jplugin_id)) {
@@ -64,7 +64,7 @@ class VirtuemartViewCustom extends JView {
 			}
 			$pluginList = self::renderInstalledCustomPlugins($selected);
 			$this->assignRef('customPlugin',	$customPlugin);
-			$this->assignRef('viewName',$viewName);
+	
 			$this->assignRef('pluginList',$pluginList);
 			$this->assignRef('custom',	$custom);
 			$this->assignRef('customfields',	$customfields);
@@ -81,9 +81,9 @@ class VirtuemartViewCustom extends JView {
 			$customs = $model->getCustoms(JRequest::getInt('custom_parent_id'),JRequest::getWord('keyword'));
 			$this->assignRef('customs',	$customs);
 
-			ShopFunctions::addStandardDefaultViewCommands();
-			$lists = ShopFunctions::addStandardDefaultViewLists($model);
-			$this->assignRef('lists', $lists);
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model);
+
 
 
 		}

@@ -20,13 +20,13 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for ratings (and customer reviews)
  *
  */
-class VirtuemartViewRatings extends JView {
+class VirtuemartViewRatings extends VmView {
 	public $max_rating;
 
 	function display($tpl = null) {
@@ -55,8 +55,8 @@ class VirtuemartViewRatings extends JView {
 		$this->assignRef('max_rating', $this->max_rating);
 
 		$model = $this->getModel();
-		$viewName=ShopFunctions::SetViewTitle('REVIEW_RATE' );
-		$this->assignRef('viewName',$viewName);
+		$this->SetViewTitle('REVIEW_RATE' );
+
 
 		/* Get the task */
 		$task = JRequest::getWord('task');
@@ -75,13 +75,13 @@ class VirtuemartViewRatings extends JView {
 				/* Assign the data */
 				$this->assignRef('reviewslist', $reviewslist);
 				$this->assignRef('pagination',	$pagination);
-				$this->assignRef('lists',	$lists);
+
 				break;
 
 			case 'edit':
 				/* Get the data */
 				$rating = $model->getRating($cids);
-				ShopFunctions::addStandardEditViewCommands();
+				$this->addStandardEditViewCommands();
 
 				/* Assign the data */
 				$this->assignRef('rating', $rating);
@@ -94,16 +94,16 @@ class VirtuemartViewRatings extends JView {
 				/* Get the data */
 				$rating = $model->getReview($cids);
 				if(!empty($rating)){
-					$viewName=ShopFunctions::SetViewTitle('REVIEW_RATE',$rating->product_name." (". $rating->customer.")" );
+					$this->SetViewTitle('REVIEW_RATE',$rating->product_name." (". $rating->customer.")" );
 
 					JToolBarHelper::customX('saveReview', 'save', 'save',  JText::_('COM_VIRTUEMART_SAVE'), false);
 					JToolBarHelper::customX('applyReview', 'apply', 'apply',  JText::_('COM_VIRTUEMART_APPLY'), false);
 
 				} else {
-					$viewName=ShopFunctions::SetViewTitle('REVIEW_RATE','ERROR' );
+					$this->SetViewTitle('REVIEW_RATE','ERROR' );
 				}
 
-				$this->assignRef('viewName',$viewName);
+		
 
 				JToolBarHelper::customX('cancelEditReview', 'cancel', 'cancel',  JText::_('COM_VIRTUEMART_CANCEL'), false);
 
@@ -119,9 +119,9 @@ class VirtuemartViewRatings extends JView {
 //				$this->preprocess($ratingslist);
 				$this->assignRef('ratingslist', $ratingslist);
 
-				ShopFunctions::addStandardDefaultViewCommands(false, true);
-				$lists = ShopFunctions::addStandardDefaultViewLists($model);
-				$this->assignRef('lists', $lists);
+				$this->addStandardDefaultViewCommands(false, true);
+				$this->addStandardDefaultViewLists($model);
+	
 
 				break;
 		}

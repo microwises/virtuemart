@@ -19,7 +19,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for the VirtueMart Component
@@ -27,7 +27,7 @@ jimport( 'joomla.application.component.view');
  * @package		VirtueMart
  * @author
  */
-class VirtuemartViewOrders extends JView {
+class VirtuemartViewOrders extends VmView {
 
 	function display($tpl = null) {
 
@@ -45,18 +45,18 @@ class VirtuemartViewOrders extends JView {
 		//if(!class_exists('vmOrderPlugin')) require(JPATH_VM_PLUGINS.DS.'vmorderplugin.php');
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 
-		if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
-		$orderStatusModel=new VirtueMartModelOrderstatus();
+		$orderStatusModel=$this->getModel('orderstatus');
 		$orderStates = $orderStatusModel->getOrderStatusList();
 
-		$viewName=ShopFunctions::SetViewTitle( 'ORDER');
-		$this->assignRef('viewName',$viewName);
+		$this->SetViewTitle( 'ORDER');
+
+		$orderModel = $this->getModel();
 
 		$curTask = JRequest::getWord('task');
 		if ($curTask == 'edit') {
 
 			// Load addl models
-			$orderModel = $this->getModel('orders');
+			
 			$userFieldsModel = $this->getModel('userfields');
 			$productModel = $this->getModel('product');
 
@@ -187,9 +187,8 @@ class VirtuemartViewOrders extends JView {
 			$this->assignRef('orderslist', $orderslist);
 
 		/* Assign general statuses */
-			$model = $this->getModel();
-			$lists = ShopFunctions::addStandardDefaultViewLists($model);
-            $this->assignRef('lists', $lists);
+			$this->addStandardDefaultViewLists($orderModel);
+
 		}
 		parent::display($tpl);
 	}
@@ -199,8 +198,8 @@ class VirtuemartViewOrders extends JView {
 		$this->setLayout($tpl);
 		$vendorModel = $this->getModel('vendor');
 		$virtuemart_vendor_id = $vendorModel->getVendorId('order', $this->order['virtuemart_order_id']);
-		if(!class_exists('VirtueMartModelOrders')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orders.php');
-		$orderModel=new VirtueMartModelOrders();
+
+		$orderModel=$this->getModel();
 		$this->orderdata = $orderModel->getOrder($this->order['virtuemart_order_id']);
 		$vendorModel->setId($virtuemart_vendor_id);
 		$this->vendor = $vendorModel->getVendor();

@@ -25,12 +25,12 @@ class AdminUIHelper {
      * in the left column and the content in the right column.  This function sets up the table and
      * displayes the admin menu in the left column.
      */
-    function startAdminArea() {
+    function startAdminArea($backEnd=true) {
 
     	if(self::$vmAdminAreaStarted) return;
     	self::$vmAdminAreaStarted = true;
 		$front = JURI::root(true).'/components/com_virtuemart/assets/';
-		$admin = JURI::base().'components/com_virtuemart/assets/';
+		$admin = JURI::root(true).'/administrator/components/com_virtuemart/assets/';
 		$document = JFactory::getDocument();
 
 		//loading defaut admin CSS
@@ -64,6 +64,7 @@ class AdminUIHelper {
 		<div class="virtuemart-admin-area">
 		<?php
 		// Include ALU System
+		if ($backEnd) {
 		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 		?>
 
@@ -79,7 +80,7 @@ class AdminUIHelper {
 				</div>
 
 			</div>
-
+		<?php } ?>
 			<div id="admin-content-wrapper">
 			<div class="toggler vmicon-show"></div>
 				<div id="admin-content" class="admin-content">

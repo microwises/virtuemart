@@ -169,7 +169,6 @@ class VirtuemartControllerOrders extends VmController {
 		$view = $this->getView('orders', 'html');
 
 		/* Load the helper */
-		$view->loadHelper('shopFunctions');
 		$view->loadHelper('vendorHelper');
 
 		/* Update the statuses */
@@ -214,11 +213,10 @@ class VirtuemartControllerOrders extends VmController {
 	    $view = $this->getView('orders', 'html');
 
 	    /* Load the helper */
-	    $view->loadHelper('shopFunctions');
 	    $view->loadHelper('vendorHelper');
 
 	    $data = JRequest::get('post');
-	    $model = $this->getModel('orders');
+	    $model = $this->getModel();
 	    $model->updateItemStatus(JArrayHelper::toObject($data), $data['new_status']);
 
 	    $mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$data['virtuemart_order_id']);
@@ -248,7 +246,7 @@ class VirtuemartControllerOrders extends VmController {
 		$view = $this->getView('orders', 'json');
 
 		/* Default model */
-		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
+		// $view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
 
 		$view->setLayout('orders_editorderitem');
 
@@ -264,7 +262,7 @@ class VirtuemartControllerOrders extends VmController {
 	{
 		//vmdebug('updateOrderItemStatus');
 		$mainframe = Jfactory::getApplication();
-		$model = $this->getModel('orders');
+		$model = $this->getModel();
 		$_items = JRequest::getVar('item_id',  0, '', 'array');
 		//JArrayHelper::toInteger($_items);
 
@@ -297,7 +295,7 @@ class VirtuemartControllerOrders extends VmController {
 	public function saveOrderItem() {
 		//vmdebug('saveOrderItem');
 	    $orderId = JRequest::getInt('virtuemart_order_id', '');
-	    $model = $this->getModel('orders');
+	    $model = $this->getModel();
 	    $msg = '';
 	    $data = JRequest::get('post');
 	    if (!$model->saveOrderLineItem()) {
@@ -314,7 +312,7 @@ class VirtuemartControllerOrders extends VmController {
 	*/
 	public function removeOrderItem() {
 		//vmdebug('removeOrderItem');
-	    $model = $this->getModel('orders');
+	    $model = $this->getModel();
 	    $msg = '';
 	    $orderId = JRequest::getInt('orderId', '');
 		// TODO $orderLineItem as int ???

@@ -19,21 +19,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Load the view framework
-jimport( 'joomla.application.component.view');
-
 /**
  * HTML View class for the VirtueMart Component
  *
  * @package		VirtueMart
  * @author RolandD,Max Milbers
  */
-class VirtuemartViewProduct extends JView {
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
+ 
+class VirtuemartViewProduct extends VmView {
 
 	function display($tpl = null) {
-		$this->loadHelper('shopFunctions');
-		$this->loadHelper('html');
-		$mainframe = JFactory::getApplication();
 
 		// Get the task
 		$task = JRequest::getWord('task');
@@ -43,27 +39,27 @@ class VirtuemartViewProduct extends JView {
 		$this->loadHelper('adminui');
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');
-		JView::loadHelper('image');
+		$this->loadHelper('image');
 
 		// Load some common models
-		if(!class_exists('VirtueMartModelCategory')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'category.php');
-		$category_model = new VirtueMartModelCategory();
-		// 		$category_model = $this->getModel('category');
 
+
+		//$category_model = $this->getModel('category');
+		$model = $this->getModel();
 		// Handle any publish/unpublish
 		switch ($task) {
 			case 'add':
 			case 'edit':
 
-				$viewName = ShopFunctions::SetViewTitle();
+				$this->SetViewTitle();
 				/* Load the product */
-				$product_model = $this->getModel('product');
+				
 
 				$virtuemart_product_id = JRequest::getInt('virtuemart_product_id', array());
 				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0) $virtuemart_product_id = $virtuemart_product_id[0];
-				$product = $product_model->getProductSingle($virtuemart_product_id,false);
-				$product_child = $product_model->getProductChilds($virtuemart_product_id);
-				$product_parent= $product_model->getProductParent($product->product_parent_id);
+				$product = $model->getProductSingle($virtuemart_product_id,false);
+				$product_child = $model->getProductChilds($virtuemart_product_id);
+				$product_parent= $model->getProductParent($product->product_parent_id);
 
 				// Get the category tree
 				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
@@ -114,7 +110,7 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('productLayouts', $productLayouts);
 
 				// Load Images
-				$product_model->addImages($product);
+				$model->addImages($product);
 
 				if(is_Dir(VmConfig::get('vmtemplate').DS.'images'.DS.'availability'.DS)){
 					$imagePath = VmConfig::get('vmtemplate').'/images/availability/';
@@ -166,8 +162,8 @@ class VirtuemartViewProduct extends JView {
 				if ($product->virtuemart_product_id) {
 					//$waitinglist = $this->get('waitingusers', 'waitinglist');
 
-					if(!class_exists('VirtueMartModelWaitingList')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'waitinglist.php');
-					$waitinglistmodel = new VirtueMartModelWaitingList();
+
+					$waitinglistmodel = $this->getModel('waitinglist');
 					$waitinglist = $waitinglistmodel->getWaitingusers($product->virtuemart_product_id);
 					$this->assignRef('waitinglist', $waitinglist);
 				}
@@ -210,7 +206,7 @@ class VirtuemartViewProduct extends JView {
 				// Assign the values
 				$this->assignRef('pane', $pane);
 				$this->assignRef('editor', $editor);
-				$this->assignRef('lists', $lists);
+	
 				$this->assignRef('product', $product);
 				$this->assignRef('currencies', $currencies);
 				$this->assignRef('manufacturers', $manufacturers);
@@ -225,21 +221,20 @@ class VirtuemartViewProduct extends JView {
 				$this->assignRef('dim_weight_label', $dim_weight_label);
 				$this->assignRef('images_label', $images_label);
 				$this->assignRef('delete_message', $delete_message);
-
+				$this->assignRef('lists', $lists);
 				// Toolbar
 				$text="";
 				if ($task == 'edit') {
 					if ($product->product_sku) $sku=' ('.$product->product_sku.')'; else $sku="";
 					$text =  $product->product_name.$sku;
 				}
-				$viewName = ShopFunctions::SetViewTitle('PRODUCT',$text);
-				$this->assignRef('viewName', $viewName);
-				ShopFunctions::addStandardEditViewCommands ($product->virtuemart_product_id);
+				$this->SetViewTitle('PRODUCT',$text);
+		
+				$this->addStandardEditViewCommands ($product->virtuemart_product_id);
 
 				break;
 
 			default:
-				$model = $this->getModel();
 			if ($product_parent_id=JRequest::getInt('product_parent_id',false) ) {
 				$product_parent= $model->getProduct($product_parent_id);
 				$title='PRODUCT_CHILDREN_LIST' ;
@@ -251,9 +246,8 @@ class VirtuemartViewProduct extends JView {
 			}
 			$this->db = JFactory::getDBO();
 
-			$viewName = ShopFunctions::SetViewTitle($title, $msg );
+			$this->SetViewTitle($title, $msg );
 			/* Start model */
-			$model = $this->getModel();
 
 			/* Get the list of products */
 			$productlist = $model->getProductListing(false,false,false,false,true);
@@ -272,17 +266,15 @@ class VirtuemartViewProduct extends JView {
 			//				}
 
 			// Check for Media Items and Reviews, set the price
-			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-			$media = new VirtueMartModelMedia();
 
-			if(!class_exists('VirtueMartModelRatings')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'ratings.php');
-			$productreviews = new VirtueMartModelRatings();
+			$media = $this->getModel('media');
+
+			$productreviews = $this->getModel('ratings');
 
 			/* Load the product price */
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 
-			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-			$vendor_model = new VirtueMartModelVendor();
+			$vendor_model = $this->getModel('vendor');
 
 			foreach ($productlist as $virtuemart_product_id => $product) {
 				$product->mediaitems = count($product->virtuemart_media_id);
@@ -323,14 +315,15 @@ class VirtuemartViewProduct extends JView {
 			JToolBarHelper::custom('createchild', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_CHILD'), true);
 			JToolBarHelper::custom('cloneproduct', 'copy', 'copy', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
 			JToolBarHelper::custom('addrating', 'default', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);
-			ShopFunctions::addStandardDefaultViewCommands();
-			$lists = array_merge($lists , ShopFunctions::addStandardDefaultViewLists($model,'product_name'));
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model,'product_name');
+			$this->lists = array_merge($lists , $this->lists);
 
 
 			/* Assign the data */
-			$this->assignRef('viewName', $viewName);
+	
 			$this->assignRef('productlist', $productlist);
-			$this->assignRef('lists', $lists);
+
 			break;
 		}
 

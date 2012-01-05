@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for maintaining the list of shipment
@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage Shipment
  * @author RickG
  */
-class VirtuemartViewShipmentmethod extends JView {
+class VirtuemartViewShipmentmethod extends VmView {
 
 	function display($tpl = null) {
 
@@ -45,8 +45,8 @@ class VirtuemartViewShipmentmethod extends JView {
 
 
 		$layoutName = JRequest::getWord('layout', 'default');
-		$viewName=ShopFunctions::SetViewTitle();
-		$this->assignRef('viewName',$viewName);
+		$this->SetViewTitle();
+
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
@@ -69,16 +69,16 @@ class VirtuemartViewShipmentmethod extends JView {
 			$this->assignRef('shipment',	$shipment);
 			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($shipment->virtuemart_shoppergroup_ids,true));
 
-			ShopFunctions::addStandardEditViewCommands($shipment->virtuemart_shipmentmethod_id);
+			$this->addStandardEditViewCommands($shipment->virtuemart_shipmentmethod_id);
 
 		} else {
 
 			$shipments = $model->getShipments();
 			$this->assignRef('shipments', $shipments);
 
-			ShopFunctions::addStandardDefaultViewCommands();
-			$lists = ShopFunctions::addStandardDefaultViewLists($model);
-			$this->assignRef('lists', $lists);
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model);
+
 
 		}
 

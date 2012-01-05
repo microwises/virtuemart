@@ -48,17 +48,17 @@ $j15 = VmConfig::isJ15();
 			<th>
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->calcs); ?>);" />
 			</th>
-			<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_NAME', 'calc_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+			<th><?php echo $this->sort('calc_name', 'COM_VIRTUEMART_NAME') ; ?></th>
 			<?php if((Vmconfig::get('multix','none')!='none') && $this->perms->check( 'admin' )){ ?>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_CALC_VENDOR');  ?>
 			</th><?php }  ?>
-			<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_DESCRIPTION', 'calc_descr', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-			<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDERING', 'ordering', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-			<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CALC_KIND', 'calc_kind', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+			<th><?php echo $this->sort('calc_descr' , 'COM_VIRTUEMART_DESCRIPTION'); ?></th>
+			<th><?php echo $this->sort('ordering') ; ?></th>
+			<th><?php echo $this->sort('calc_kind') ; ?></th>
 			<th><?php echo JText::_('COM_VIRTUEMART_CALC_VALUE_MATHOP'); ?></th>
-			<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_VALUE', 'calc_value', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-			<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_CURRENCY', 'calc_currency', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+			<th><?php echo $this->sort('calc_value' , 'COM_VIRTUEMART_VALUE'); ?></th>
+			<th><?php echo $this->sort('calc_currency' , 'COM_VIRTUEMART_CURRENCY'); ?></th>
 			<th><?php echo JText::_('COM_VIRTUEMART_CATEGORY_S'); ?></th>
 			<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_SHOPPERGROUP_IDS', 'calc_currency', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
 			<th><?php echo JText::_('COM_VIRTUEMART_CALC_VIS_SHOPPER'); ?></th>

@@ -50,10 +50,10 @@ class VirtuemartControllerTranslate extends VmController {
 		$view = $this->getView($this->_cname, $viewType);
 
 		// Pushing default model
-		$model = $this->getModel();
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}
+		// $model = $this->getModel();
+		// if (!JError::isError($model)) {
+			// $view->setModel($model, true);
+		// }
 		parent::display();
 	}
 	/**

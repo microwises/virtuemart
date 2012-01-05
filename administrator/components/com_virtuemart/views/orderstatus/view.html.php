@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for maintaining the list of order types
@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage OrderStatus
  * @author Oscar van Eijk
  */
-class VirtuemartViewOrderstatus extends JView {
+class VirtuemartViewOrderstatus extends VmView {
 
 	function display($tpl = null) {
 
@@ -44,8 +44,8 @@ class VirtuemartViewOrderstatus extends JView {
 		$model = $this->getModel();
 		$orderStatus = $model->getOrderStatus();
 
-		$viewName=ShopFunctions::SetViewTitle('',JText::_($orderStatus->order_status_name) );
-		$this->assignRef('viewName',$viewName);
+		$this->SetViewTitle('',JText::_($orderStatus->order_status_name) );
+
 
 		$layoutName = JRequest::getWord('layout', 'default');
 
@@ -67,7 +67,7 @@ class VirtuemartViewOrderstatus extends JView {
 
 			}
                            $lists['vmCoreStatusCode'] = $model->getVMCoreStatusCode();
-			$this->assignRef('lists', $lists);
+
 			// Vendor selection
 			$vendor_model = $this->getModel('vendor');
 			$vendor_list = $vendor_model->getVendors();
@@ -76,17 +76,18 @@ class VirtuemartViewOrderstatus extends JView {
                      
 			$this->assignRef('orderStatus', $orderStatus);
 			$this->assignRef('editor', $editor);
+			$this->assignRef('lists', $lists);
 
-			ShopFunctions::addStandardEditViewCommands();
+			$this->addStandardEditViewCommands();
 		} else {
 
 			$orderStatusList = $model->getOrderStatusList();
 			$this->assignRef('orderStatusList', $orderStatusList);
 
-			ShopFunctions::addStandardDefaultViewCommands();
-			$lists = ShopFunctions::addStandardDefaultViewLists($model);
-                        $lists['vmCoreStatusCode'] = $model->getVMCoreStatusCode();
-			$this->assignRef('lists', $lists);
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model);
+            $this->lists['vmCoreStatusCode'] = $model->getVMCoreStatusCode();
+
 		}
 
 		parent::display($tpl);

@@ -49,7 +49,7 @@ class VirtuemartControllerMedia extends VmController {
 		$view = $this->getView('media', 'html');
 
 		/* Default model */
-		$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ), true );
+		//$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ), true );
 
 		parent::display();
 	}
@@ -64,7 +64,7 @@ class VirtuemartControllerMedia extends VmController {
 //		/* Default model */
 //		$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ), true );
 
-		$view->setModel( $this->getModel( 'user', 'VirtueMartModel' ), false );
+		// $view->setModel( $this->getModel( 'user', 'VirtueMartModel' ), false );
 
 
 		/* Now display the view. */
@@ -79,7 +79,7 @@ class VirtuemartControllerMedia extends VmController {
 		$view = $this->getView('media', 'json');
 
 		/* Standard model */
-		$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ), true );
+		// $view->setModel( $this->getModel( 'media', 'VirtueMartModel' ), true );
 
 		/* Now display the view. */
 		$view->display(null);

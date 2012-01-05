@@ -60,11 +60,7 @@ $pagination = $this->pagination;
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_ADMIN_ONLY'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_CUSTOM_IS_HIDDEN'); ?></th>
 		<th>
-		<?php echo JHTML::_('grid.sort'
-				, JText::_('COM_VIRTUEMART_ORDERING')
-				, 'ordering'
-				, $this->lists['filter_order_Dir']
-				, $this->lists['filter_order']); ?>
+		<?php echo $this->sort('ordering') ?>
 		<?php echo JHTML::_('grid.order',  $customs ); ?>
 		</th>
 		<th><?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?></th>

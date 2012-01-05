@@ -40,7 +40,7 @@ class VirtuemartControllerCountry extends VmController {
 
 	}
 
-	public function Country() {
+/* 	public function Country() {
 
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
@@ -69,7 +69,7 @@ class VirtuemartControllerCountry extends VmController {
 		$view->setModel( $this->getModel( 'WorldZones', 'VirtueMartModel' ));
 
 		parent::edit();
-	}
+	} */
 }
 
 //pure php no tag

@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for maintaining the list of currencies
@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage Currency
  * @author RickG, Max Milbers
  */
-class VirtuemartViewCurrency extends JView {
+class VirtuemartViewCurrency extends VmView {
 
 	function display($tpl = null) {
 
@@ -57,21 +57,21 @@ class VirtuemartViewCurrency extends JView {
 
 			$model->setId($cid);
 			$currency = $model->getCurrency();
-			$viewName=ShopFunctions::SetViewTitle('',$currency->currency_name);
+			$this->SetViewTitle('',$currency->currency_name);
 			$this->assignRef('currency',	$currency);
 
-			ShopFunctions::addStandardEditViewCommands();
+			$this->addStandardEditViewCommands();
 
 		} else {
 
-			$viewName=ShopFunctions::SetViewTitle();
-			ShopFunctions::addStandardDefaultViewCommands();
+			$this->SetViewTitle();
+			$this->addStandardDefaultViewCommands();
 
 			$currencies = $model->getCurrenciesList(JRequest::getWord('search', false));
 			$this->assignRef('currencies',	$currencies);
 
-			$lists = ShopFunctions::addStandardDefaultViewLists($model);
-			$this->assignRef('lists', $lists);
+			$this->addStandardDefaultViewLists($model);
+
 
 
 		}

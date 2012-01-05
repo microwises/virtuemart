@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 jimport('joomla.html.pane');
 /**
  * HTML View class for maintaining the list of manufacturers
@@ -29,7 +29,7 @@ jimport('joomla.html.pane');
  * @subpackage Manufacturer
  * @author Patrick Kohl
  */
-class VirtuemartViewManufacturer extends JView {
+class VirtuemartViewManufacturer extends VmView {
 
 	function display($tpl = null) {
 
@@ -43,8 +43,8 @@ class VirtuemartViewManufacturer extends JView {
 		$model = $this->getModel();
 		$categoryModel = $this->getModel('manufacturercategories');
 
-		$viewName=ShopFunctions::SetViewTitle();
-		$this->assignRef('viewName',$viewName);
+		$this->SetViewTitle();
+
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
@@ -56,15 +56,14 @@ class VirtuemartViewManufacturer extends JView {
 			$this->assignRef('manufacturer',	$manufacturer);
 
 			/* Process the images */
-			if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-			$mediaModel = new VirtueMartModelMedia();
+			$mediaModel = $this->getModel('media');
 			$mediaModel -> setId($manufacturer->virtuemart_media_id);
 			$image = $mediaModel->getFile('manufacturer','image');
 
 			$manufacturerCategories = $categoryModel->getManufacturerCategories(false,true);
 			$this->assignRef('manufacturerCategories',	$manufacturerCategories);
 
-			ShopFunctions::addStandardEditViewCommands($manufacturer->virtuemart_manufacturer_id);
+			$this->addStandardEditViewCommands($manufacturer->virtuemart_manufacturer_id);
 
 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 			$virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
@@ -81,12 +80,12 @@ class VirtuemartViewManufacturer extends JView {
 			$manufacturers = $model->getManufacturers();
 			$this->assignRef('manufacturers',	$manufacturers);
 
-			ShopFunctions::addStandardDefaultViewCommands();
-			$lists = ShopFunctions::addStandardDefaultViewLists($model,'mf_name');
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model,'mf_name');
 
 			$virtuemart_manufacturercategories_id	= $mainframe->getUserStateFromRequest( 'com_virtuemart.virtuemart_manufacturercategories_id', 'virtuemart_manufacturercategories_id', 0, 'int' );
 			$lists['virtuemart_manufacturercategories_id'] =  JHTML::_('select.genericlist',   $categoryFilter, 'virtuemart_manufacturercategories_id', 'class="inputbox" onchange="this.form.submit()"', 'value', 'text', $virtuemart_manufacturercategories_id );
-			$this->assignRef('lists', $lists);
+
 
 		}
 

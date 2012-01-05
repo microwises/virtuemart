@@ -40,6 +40,7 @@ class VirtueMartModelInventory extends VmModel {
 	function __construct() {
 		parent::__construct('virtuemart_product_id');
 		$this->setMainTable('products');
+		$this->addvalidOrderingFieldName(array('product_name','product_sku','product_in_stock','product_price','product_weight','published'));
 	}
 
     /**

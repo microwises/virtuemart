@@ -19,9 +19,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// Load the controller framework
-jimport('joomla.application.component.controller');
-
 if(!class_exists('VmController'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmcontroller.php');
 
 
@@ -50,17 +47,6 @@ class VirtuemartControllerProduct extends VmController {
 		/* Create the view object */
 		$view = $this->getView('product', 'html');
 
-		/* Default model */
-		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
-		/* Media files functions */
-		$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ));
-		/* Product reviews functions */
-		$view->setModel( $this->getModel( 'ratings', 'VirtueMartModel' ));
-		/* Product category functions */
-		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
-		/* Vendor functions */
-		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
-
 		/* Set the layout */
 		$view->setLayout('default');
 
@@ -74,31 +60,10 @@ class VirtuemartControllerProduct extends VmController {
 	 */
 	public function edit() {
 		/* Create the view object */
+		$this->addViewPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'views');
 		$view = $this->getView('product', 'html');
+		$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
 
-		/* Default model */
-		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
-		/* Media files functions */
-		$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ));
-		/* Product category functions */
-		$view->setModel( $this->getModel( 'category', 'VirtueMartModel' ));
-		/* Product category functions Cleanshooter*/
-		$view->setModel( $this->getModel( 'shoppergroup', 'VirtueMartModel' ));
-		/* Product user functions Cleanshooter*/
-		$view->setModel( $this->getModel( 'user', 'VirtueMartModel' ));
-		/* Vendor functions */
-		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
-		/* Manufacturer functions */
-		$view->setModel( $this->getModel( 'manufacturer', 'VirtueMartModel' ));
-		/* Currency functions */
-		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
-		/* Waitinglist functions */
-		$view->setModel( $this->getModel( 'waitinglist', 'VirtueMartModel' ));
-		/* custom functions */
-		$view->setModel( $this->getModel( 'custom', 'VirtueMartModel' ));
-		/* custom functions */
-		$view->setModel( $this->getModel( 'customfields', 'VirtueMartModel' ));
-		/* Set the layout */
 		$view->setLayout('product_edit');
 
 		/* Now display the view. */

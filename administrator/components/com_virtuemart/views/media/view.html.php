@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for the VirtueMart Component
@@ -28,7 +28,7 @@ jimport( 'joomla.application.component.view');
  * @package		VirtueMart
  * @author
  */
-class VirtuemartViewMedia extends JView {
+class VirtuemartViewMedia extends VmView {
 
 	function display($tpl = null) {
 
@@ -43,10 +43,10 @@ class VirtuemartViewMedia extends JView {
 		$this->assignRef('vendorId', $vendorId);
 
 		// TODO add icon for media view
-		$viewName=ShopFunctions::SetViewTitle();
-		$this->assignRef('viewName',$viewName);
+		$this->SetViewTitle();
 
-		$model = $this->getModel('media');
+
+		$model = $this->getModel();
 		$this->assignRef('perms', Permissions::getInstance());
 
 		$layoutName = JRequest::getWord('layout', 'default');
@@ -57,7 +57,7 @@ class VirtuemartViewMedia extends JView {
 
 			$isNew = ($media->virtuemart_media_id < 1);
 			if ($isNew) {
-				$usermodel = $this->getModel('user', 'VirtuemartModel');
+				$usermodel = $this->getModel('user');
 				$usermodel->setCurrent();
 				$userDetails = $usermodel->getUser();
 				if(empty($userDetails->virtuemart_vendor_id)){
@@ -66,7 +66,7 @@ class VirtuemartViewMedia extends JView {
 				if(empty($media->virtuemart_vendor_id))$media->virtuemart_vendor_id = $userDetails->virtuemart_vendor_id;
 			}
 
-			ShopFunctions::addStandardEditViewCommands();
+			$this->addStandardEditViewCommands();
 
         }
         else {
@@ -77,8 +77,8 @@ class VirtuemartViewMedia extends JView {
 			$this->assignRef('files',	$files);
 
 			JToolBarHelper::customX('synchronizeMedia', 'new', 'new', JText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'),false);
-			ShopFunctions::addStandardDefaultViewCommands(false);
-			$lists = ShopFunctions::addStandardDefaultViewLists($model,null,null,'searchMedia');
+			$this->addStandardDefaultViewCommands(false);
+			$this->addStandardDefaultViewLists($model,null,null,'searchMedia');
 			$options = array( '' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'),
 				'product' => JText::_('COM_VIRTUEMART_PRODUCT'),
 				'category' => JText::_('COM_VIRTUEMART_CATEGORY'),
@@ -86,7 +86,7 @@ class VirtuemartViewMedia extends JView {
 				'vendor' => JText::_('COM_VIRTUEMART_VENDOR')
 				);
 			$lists['search_type'] = VmHTML::selectList('search_type', JRequest::getVar('search_type'),$options,1,'','onchange="this.form.submit();"');
-			$this->assignRef('lists', $lists);
+
 
 		}
 		parent::display($tpl);

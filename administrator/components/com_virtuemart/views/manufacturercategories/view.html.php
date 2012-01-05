@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for maintaining the list of manufacturer categories
@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage Manufacturer Categories
  * @author Patrick Kohl
  */
-class VirtuemartViewManufacturercategories extends JView {
+class VirtuemartViewManufacturercategories extends VmView {
 
 	function display($tpl = null) {
 
@@ -41,8 +41,8 @@ class VirtuemartViewManufacturercategories extends JView {
 		// get necessary model
 		$model = $this->getModel();
 
-		$viewName=ShopFunctions::SetViewTitle('MANUFACTURER_CATEGORY');
-		$this->assignRef('viewName',$viewName);
+		$this->SetViewTitle('MANUFACTURER_CATEGORY');
+
 
                 $layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
@@ -50,7 +50,7 @@ class VirtuemartViewManufacturercategories extends JView {
 			$manufacturerCategory = $model->getManufacturerCategory();
 			$this->assignRef('manufacturerCategory',	$manufacturerCategory);
 
-			ShopFunctions::addStandardEditViewCommands($manufacturerCategory->virtuemart_manufacturercategories_id);
+			$this->addStandardEditViewCommands($manufacturerCategory->virtuemart_manufacturercategories_id);
 
 
         }
@@ -59,8 +59,8 @@ class VirtuemartViewManufacturercategories extends JView {
 			$manufacturerCategories = $model->getManufacturerCategories();
 			$this->assignRef('manufacturerCategories',	$manufacturerCategories);
 
-			ShopFunctions::addStandardDefaultViewCommands();
-			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model);
 
 		}
 		parent::display($tpl);

@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 jimport('joomla.version');
 
 /**
@@ -30,7 +30,7 @@ jimport('joomla.version');
  * @subpackage Userfields
  * @author Oscar van Eijk
  */
-class VirtuemartViewUserfields extends JView {
+class VirtuemartViewUserfields extends VmView {
 
 	function display($tpl = null) {
 
@@ -53,7 +53,7 @@ class VirtuemartViewUserfields extends JView {
 			$editor = JFactory::getEditor();
 
 			$userField = $model->getUserfield();
-                        $viewName=ShopFunctions::SetViewTitle('USERFIELD',$userField->name );
+                        $this->SetViewTitle('USERFIELD',$userField->name );
                                 $this->assignRef('viewName',$viewName);
 			if ($userField->virtuemart_userfield_id < 1) { // Insert new userfield
 
@@ -138,7 +138,7 @@ class VirtuemartViewUserfields extends JView {
 			$lists['account']      =  VmHTML::row('booleanlist','COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_ACCOUNT','account',$userField->account,$notoggle);
 			$lists['readonly']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_USERFIELDS_READONLY','readonly',$userField->account,$notoggle);
 
-			$this->assignRef('lists', $lists);
+
 			$this->assignRef('userField', $userField);
 			$this->assignRef('userFieldValues', $userFieldValues);
 			$this->assignRef('editor', $editor);
@@ -180,7 +180,7 @@ class VirtuemartViewUserfields extends JView {
 			// Get the ordering
 			$lists['order']     = $mainframe->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'ordering', 'cmd' );
 			$lists['order_Dir'] = $mainframe->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', '', 'word' );
-			$this->assignRef('lists', $lists);
+
 		}
 
 		parent::display($tpl);

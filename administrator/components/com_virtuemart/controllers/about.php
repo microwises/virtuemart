@@ -30,14 +30,14 @@ class VirtuemartControllerAbout extends JController
 	 *
 	 * @access	public
 	 */
-	function display()
-	{
+	// function display()
+	// {
 
-		$document = JFactory::getDocument();
-		$viewName = JRequest::getWord('view', '');
-		$viewType = $document->getType();
-		$view = $this->getView($viewName, $viewType);
+		// $document = JFactory::getDocument();
+		// $viewName = JRequest::getWord('view', '');
+		// $viewType = $document->getType();
+		// $view = $this->getView($viewName, $viewType);
 
-		parent::display();
-	}
+		// parent::display();
+	// }
 }

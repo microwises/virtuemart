@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 jimport('joomla.version');
 
 /**
@@ -30,7 +30,7 @@ jimport('joomla.version');
  * @subpackage User
  * @author Oscar van Eijk
  */
-class VirtuemartViewUser extends JView {
+class VirtuemartViewUser extends VmView {
 
 	function display($tpl = null) {
 
@@ -58,15 +58,15 @@ class VirtuemartViewUser extends JView {
 				$userId = VirtueMartModelVendor::getUserIdByVendorId(1);
 				$model->setId($userId);
 			}
-			$viewName=ShopFunctions::SetViewTitle('STORE'  );
+			$this->SetViewTitle('STORE'  );
 		} else if ($task == 'add'){
 			$model->setUserId(0);
 		} else {
-			$viewName=ShopFunctions::SetViewTitle('USER');
+			$this->SetViewTitle('USER');
 		}
 
 
-		$this->assignRef('viewName',$viewName);
+
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		$layoutName = $this->getLayout();
@@ -90,20 +90,20 @@ class VirtuemartViewUser extends JView {
 			if($task == 'editshop' && $userDetails->user_is_vendor){
 				$model->setCurrent();
 				if(!empty($userDetails->vendor->vendor_store_name)){
-					$viewName=ShopFunctions::SetViewTitle('STORE',$userDetails->vendor->vendor_store_name );
+					$this->SetViewTitle('STORE',$userDetails->vendor->vendor_store_name );
 				} else {
-					$viewName=ShopFunctions::SetViewTitle('STORE',JText::_('COM_VIRTUEMART_NEW_VENDOR') );
+					$this->SetViewTitle('STORE',JText::_('COM_VIRTUEMART_NEW_VENDOR') );
 				}
 					$vendorid = $userDetails->virtuemart_vendor_id;
 
 			} else {
 				$vendorid = 0 ;
-				$viewName=ShopFunctions::SetViewTitle('USER',$userDetails->JUser->get('name'));
+				$this->SetViewTitle('USER',$userDetails->JUser->get('name'));
 			}
 
 			$_new = ($userDetails->JUser->get('id') < 1);
 
-			ShopFunctions::addStandardEditViewCommands($vendorid);
+			$this->addStandardEditViewCommands($vendorid);
 
 			// User details
 			$_contactDetails = $model->getContactDetails();
@@ -178,7 +178,7 @@ class VirtuemartViewUser extends JView {
 
 			if (!$_new) {
 				// Check for existing orders for this user
-				$orders = new VirtueMartModelOrders();
+				$orders = $this->getModel('orders');
 				$orderList = $orders->getOrdersList($userDetails->JUser->get('id'), true);
 			} else {
 				$orderList = null;
@@ -206,7 +206,7 @@ class VirtuemartViewUser extends JView {
 			}
 
 
-			$this->assignRef('lists', $lists);
+
 			$this->assignRef('userDetails', $userDetails);
 
 			$this->assignRef('orderlist', $orderList);
@@ -230,12 +230,11 @@ class VirtuemartViewUser extends JView {
 			$pagination = $model->getPagination();
 			$this->assignRef('pagination', $pagination);
 
-			$lists = ShopFunctions::addStandardDefaultViewLists($model,'ju.id');
+			$this->addStandardDefaultViewLists($model,'ju.id');
 
-			$this->assignRef('lists', $lists);
 
-			if(!class_exists('VirtueMartModelShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shoppergroup.php');
-			$shoppergroupmodel = new VirtueMartModelShopperGroup();
+
+			$shoppergroupmodel = $this->getModel('shopperGroup');
 			$defaultShopperGroup = $shoppergroupmodel->getDefault()->shopper_group_name;
 			$this->assignRef('defaultShopperGroup', $defaultShopperGroup);
 		}

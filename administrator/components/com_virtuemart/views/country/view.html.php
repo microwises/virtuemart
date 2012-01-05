@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for maintaining the list of countries
@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage Country
  * @author RickG
  */
-class VirtuemartViewCountry extends JView {
+class VirtuemartViewCountry extends VmView {
 
     function display($tpl = null) {
 
@@ -39,13 +39,11 @@ class VirtuemartViewCountry extends JView {
 		$this->loadHelper('html');
 
 
-		$model = $this->getModel();
-		if(!class_exists('VirtueMartModelWorldzones'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'worldzones.php');
-		$zoneModel = new VirtueMartModelWorldzones();
-//		$zoneModel = $this->getModel('Worldzones');
+		$model = $this->getModel('country');
+		$zoneModel = $this->getModel('worldzones');
 
-		$viewName=ShopFunctions::SetViewTitle();
-		$this->assignRef('viewName',$viewName);
+		$this->SetViewTitle();
+
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
@@ -54,7 +52,7 @@ class VirtuemartViewCountry extends JView {
 		    $this->assignRef('country',	$country);
 		    $this->assignRef('worldZones',	$zoneModel->getWorldZonesSelectList());
 
-			ShopFunctions::addStandardEditViewCommands();
+			$this->addStandardEditViewCommands();
 
 		}
 		else {
@@ -62,9 +60,9 @@ class VirtuemartViewCountry extends JView {
 			$countries = $model->getCountries(false, false, $filter_country);
 			$this->assignRef('countries',	$countries);
 
-			ShopFunctions::addStandardDefaultViewCommands(true,false);
-			$lists = ShopFunctions::addStandardDefaultViewLists($model);
-			$this->assignRef('lists', $lists);
+			$this->addStandardDefaultViewCommands(true,false);
+			$this->addStandardDefaultViewLists($model);
+
 
 		}
 

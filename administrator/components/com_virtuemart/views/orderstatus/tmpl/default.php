@@ -34,28 +34,16 @@ $j15 = VmConfig::isJ15();
 				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
 			</th>
 			<th>
-			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_ORDER_STATUS_NAME')
-					, 'order_status_name'
-					, $this->lists['filter_order_Dir']
-					, $this->lists['filter_order']); ?>
+			<?php echo $this->sort('order_status_name') ?>
 			</th>
 			<th>
-			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE')
-					, 'order_status_code'
-					, $this->lists['filter_order_Dir']
-					, $this->lists['filter_order']); ?>
+			<?php echo $this->sort('order_status_code') ?>
 			</th>
 			<th>
 				<?php echo JText::_('COM_VIRTUEMART_DESCRIPTION'); ?>
 			</th>
 			<th>
-			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_ORDERING')
-					, 'ordering'
-					, $this->lists['filter_order_Dir']
-					, $this->lists['filter_order']); ?>
+			<?php  echo $this->sort('ordering')  ?>
 			<?php echo JHTML::_('grid.order',  $this->orderStatusList ); ?>
 			</th>
 			<th width="20">

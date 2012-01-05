@@ -17,7 +17,7 @@ if( !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not 
 * http://virtuemart.org
 */
 
-jimport('joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * Report View class
@@ -26,7 +26,7 @@ jimport('joomla.application.component.view');
  * @subpackage Report
  * @author Wicksj
  */
-class VirtuemartViewReport extends JView {
+class VirtuemartViewReport extends VmView {
 
 	/**
 	 * Render the view
@@ -48,8 +48,8 @@ class VirtuemartViewReport extends JView {
 		// set period
 		//$date_presets = $model->getDatePresets();
 
-		$viewName = ShopFunctions::SetViewTitle('REPORT');
-		$this->assignRef('viewName', $viewName);
+		$this->SetViewTitle('REPORT');
+
 
 		$lists['select_date'] = $model->renderDateSelectList();
 		$lists['state_list'] = $model->renderOrderstatesList();
@@ -94,8 +94,7 @@ class VirtuemartViewReport extends JView {
 		// $productList = $model->getOrderItems();
 		// $this->assignRef('productList', $productList);
 
-		$lists = array_merge ($lists ,ShopFunctions::addStandardDefaultViewLists($model));
-		$this->assignRef('lists', $lists);
+		$lists = array_merge ($lists ,$this->addStandardDefaultViewLists($model));
 
 		$this->assignRef('from_period', $model->from_period);
 		$this->assignRef('until_period', $model->until_period);

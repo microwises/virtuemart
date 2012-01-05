@@ -42,17 +42,6 @@ class VirtuemartControllerCustom extends VmController {
 	function __construct() {
 		parent::__construct('virtuemart_custom_id');
 
-//		$this->setMainLangKey('CUSTOM');
-		$document = JFactory::getDocument();
-		$viewType	= $document->getType();
-		$view = $this->getView('custom', $viewType);
-
-		// Push a model into the view
-		$model = $this->getModel('custom');
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}
-
 	}
 	public function edit(){
 
@@ -62,7 +51,7 @@ class VirtuemartControllerCustom extends VmController {
 		JRequest::setVar('layout', 'edit');
 		// Pushing default model
 // 		$view->setModel( $this->getModel( 'custom', 'VirtueMartModel' ), true );
-		$view->setModel( $this->getModel( 'customfields', 'VirtueMartModel' ), false );
+		// $view->setModel( $this->getModel( 'customfields' ), false );
 
 		parent::display();
 	}

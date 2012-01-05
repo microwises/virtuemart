@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 jimport('joomla.html.pane');
 
 /**
@@ -29,7 +29,7 @@ jimport('joomla.html.pane');
  * @package		VirtueMart
  * @author
  */
-class VirtuemartViewVirtuemart extends JView {
+class VirtuemartViewVirtuemart extends VmView {
 
 	function display($tpl = null) {
 

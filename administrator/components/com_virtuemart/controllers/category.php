@@ -38,20 +38,20 @@ class VirtuemartControllerCategory extends VmController {
 
 	}
 
-	public function Category(){
+	// public function Category(){
 
-		$document = JFactory::getDocument();
-		$viewType	= $document->getType();
-		$view = $this->getView($this->_cname, $viewType);
+		// $document = JFactory::getDocument();
+		// $viewType	= $document->getType();
+		// $view = $this->getView($this->_cname, $viewType);
 
 		// Pushing default model
-		$model = $this->getModel();
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}
+		// $model = $this->getModel();
+		// if (!JError::isError($model)) {
+			// $view->setModel($model, true);
+		// }
 
-		parent::display();
-	}
+		// parent::display();
+	// }
 
 	/**
 	 * We want to allow html so we need to overwrite some request data

@@ -44,7 +44,7 @@ class VirtuemartControllerPaymentmethod extends VmController {
 
 	}
 
-	public function Paymentmethod () {
+/* 	public function Paymentmethod () {
 
 		$document = JFactory::getDocument();
 
@@ -58,14 +58,14 @@ class VirtuemartControllerPaymentmethod extends VmController {
 		}
 
 		parent::display();
-	}
+	}*/
 
 	/**
 	 * Handle the edit task
 	 *
      * @author Max Milbers
 	 */
-	public function edit(){
+/* 	public function edit(){
 
 		$document = JFactory::getDocument();
 		$viewType	= $document->getType();
@@ -73,7 +73,7 @@ class VirtuemartControllerPaymentmethod extends VmController {
 		//$view->setModel($paymModel = $this->getModel('creditcard'));
 
 		parent::edit();
-	}
+	}  */
 
 	function save(){
 		$data = JRequest::get('post');
@@ -91,12 +91,12 @@ class VirtuemartControllerPaymentmethod extends VmController {
 	*
 	* @author jseros
 	*/
-	public function orderUp()
+/* 	public function orderUp()
 	{
 		// Check token
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		//capturing virtuemart_paymentmethod_id
+		// capturing virtuemart_paymentmethod_id
 		$id = 0;
 		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);
@@ -108,7 +108,7 @@ class VirtuemartControllerPaymentmethod extends VmController {
 			return false;
 		}
 
-		//getting the model
+		// getting the model
 		$model = $this->getModel('paymentmethod');
 
 		if ($model->orderCalc($id, -1)) {
@@ -118,7 +118,7 @@ class VirtuemartControllerPaymentmethod extends VmController {
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', $msg );
-	}
+	} */
 
 
 	/**
@@ -126,12 +126,12 @@ class VirtuemartControllerPaymentmethod extends VmController {
 	*
 	* @author jseros
 	*/
-	public function orderDown()
+/* 	public function orderDown()
 	{
 		// Check token
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		//capturing virtuemart_calc_id
+		// capturing virtuemart_calc_id
 		$id = 0;
 		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);
@@ -143,7 +143,7 @@ class VirtuemartControllerPaymentmethod extends VmController {
 			return false;
 		}
 
-		//getting the model
+		// getting the model
 		$model = $this->getModel('paymentmethod');
 
 		if ($model->orderCalc($id, 1)) {
@@ -153,13 +153,13 @@ class VirtuemartControllerPaymentmethod extends VmController {
 		}
 
 		$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', $msg );
-	}
+	} */
 
 
 	/**
 	* Save the categories order
 	*/
-	public function saveOrder()
+/* 	public function saveOrder()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
@@ -178,7 +178,7 @@ class VirtuemartControllerPaymentmethod extends VmController {
 			$msg = $model->getError();
 		}
 		$this->setRedirect('index.php?option=com_virtuemart&view=paymentmethod', $msg );
-	}
+	} */
 
 }
 // pure php no closing tag

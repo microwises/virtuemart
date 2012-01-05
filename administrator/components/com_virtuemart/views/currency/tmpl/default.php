@@ -39,10 +39,10 @@ AdminUIHelper::startAdminArea();
 			<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->currencies); ?>);" />
 		    </th>
 		    <th >
-				<?php echo JHTML::_('grid.sort', JText::_('COM_VIRTUEMART_CURRENCY')." ".JText::_('COM_VIRTUEMART_NAME'), 'currency_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?>
+				<?php  echo $this->sort('currency_name','COM_VIRTUEMART_CURRENCY') ; ?>
 		    </th>
 		    <th width="80">
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_EXCHANGE_RATE'); ?>
+			<?php echo $this->sort('currency_exchange_rate') ?>
 		    </th>
 		    <th width="20">
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_SYMBOL'); ?>
@@ -51,7 +51,7 @@ AdminUIHelper::startAdminArea();
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_LIST_CODE_2'); ?>
 		    </th> */?>
 		    <th width="20">
-			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_CODE_3'); ?>
+			<?php  echo $this->sort('currency_code_3') ?>
 		    </th>
              <th width="20">
 			<?php echo JText::_('COM_VIRTUEMART_CURRENCY_NUMERIC_CODE'); ?>

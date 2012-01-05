@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport('joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for maintaining the list of shopper groups
@@ -29,7 +29,7 @@ jimport('joomla.application.component.view');
  * @subpackage ShopperGroup
  * @author Markus �hler
  */
-class VirtuemartViewShopperGroup extends JView {
+class VirtuemartViewShopperGroup extends VmView {
 
 	function display($tpl = null) {
 		// Load the helper(s)
@@ -44,20 +44,20 @@ class VirtuemartViewShopperGroup extends JView {
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 			$shoppergroup = $model->getShopperGroup();
-			$viewName=ShopFunctions::SetViewTitle('SHOPPERGROUP',$shoppergroup->shopper_group_name);
-			$this->assignRef('viewName',$viewName);
+			$this->SetViewTitle('SHOPPERGROUP',$shoppergroup->shopper_group_name);
+	
 
 			$vendors = ShopFunctions::renderVendorList($shoppergroup->virtuemart_vendor_id);
 			$this->assignRef('vendorList',	$vendors);
 
 			$this->assignRef('shoppergroup',	$shoppergroup);
 
-			ShopFunctions::addStandardEditViewCommands();
+			$this->addStandardEditViewCommands();
 
 
 		} else {
-			$viewName=ShopFunctions::SetViewTitle();
-			$this->assignRef('viewName',$viewName);
+			$this->SetViewTitle();
+	
 			JToolBarHelper::makeDefault();
 			$shoppergroups = $model->getShopperGroups(false, true);
 
@@ -66,9 +66,9 @@ class VirtuemartViewShopperGroup extends JView {
 			$this->loadHelper('permissions');
 			$this->assignRef('showVendors',Permissions::getInstance()->check('admin'));
 
-			ShopFunctions::addStandardDefaultViewCommands();
-			$lists = ShopFunctions::addStandardDefaultViewLists($model);
-			$this->assignRef('lists', $lists);
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model);
+
 
 		}
 		parent::display($tpl);

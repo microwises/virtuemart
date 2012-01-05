@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for the VirtueMart Component
@@ -28,7 +28,7 @@ jimport( 'joomla.application.component.view');
  * @package		VirtueMart
  * @author
  */
-class VirtuemartViewInventory extends JView {
+class VirtuemartViewInventory extends VmView {
 
 	function display($tpl = null) {
 
@@ -53,7 +53,7 @@ class VirtuemartViewInventory extends JView {
 		$this->assignRef('inventorylist', $inventorylist);
 
 		/* Create filter */
-		$lists = ShopFunctions::addStandardDefaultViewLists($model);
+		$this->addStandardDefaultViewLists($model);
 
 		$options = array();
 		$options[] = JHTML::_('select.option', '', JText::_('COM_VIRTUEMART_SELECT'));
@@ -64,7 +64,7 @@ class VirtuemartViewInventory extends JView {
 		$this->assignRef('lists', $lists);
 
 		/* Toolbar */
-		ShopFunctions::SetViewTitle('PRODUCT_INVENTORY');
+		$this->SetViewTitle('PRODUCT_INVENTORY');
 		JToolBarHelper::publish();
 		JToolBarHelper::unpublish();
 

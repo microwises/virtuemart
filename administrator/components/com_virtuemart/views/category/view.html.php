@@ -21,7 +21,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 jimport('joomla.html.pane');
 
 /**
@@ -31,7 +31,7 @@ jimport('joomla.html.pane');
  * @subpackage Category
  * @author RickG, jseros
  */
-class VirtuemartViewCategory extends JView {
+class VirtuemartViewCategory extends VmView {
 
 	function display($tpl = null) {
 
@@ -49,12 +49,12 @@ class VirtuemartViewCategory extends JView {
 			$category = $model->getCategory('',false);
 
 			if (isset($category->category_name)) $name = $category->category_name; else $name ='';
-			$viewName=ShopFunctions::SetViewTitle('CATEGORY',$name);
-			$this->assignRef('viewName', $viewName);
+			$this->SetViewTitle('CATEGORY',$name);
+	
 
 
 
-			$this->assignRef('viewName',$viewName);
+	
 			$model->addImages($category);
 
 			if ( $category->virtuemart_category_id > 1 ) {
@@ -82,11 +82,10 @@ class VirtuemartViewCategory extends JView {
 			$this->assignRef('category', $category);
 			$this->assignRef('categorylist', $categorylist);
 
-			ShopFunctions::addStandardEditViewCommands($category->virtuemart_category_id);
+			$this->addStandardEditViewCommands($category->virtuemart_category_id);
 		}
 		else {
-			$viewName = ShopFunctions::SetViewTitle('CATEGORY_S');
-			$this->assignRef('viewName', $viewName);
+			$this->SetViewTitle('CATEGORY_S');
 
 			/**
 			 * Commented out for future use
@@ -103,9 +102,9 @@ class VirtuemartViewCategory extends JView {
 			$this->assignRef('model',	$model);
 
 
-			ShopFunctions::addStandardDefaultViewCommands();
-			$lists = ShopFunctions::addStandardDefaultViewLists($model);
-			$this->assignRef('lists', $lists);
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model);
+
 		}
 
 		parent::display($tpl);

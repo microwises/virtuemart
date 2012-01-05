@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for maintaining the list of extensions
@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage Extensions
  * @author Max Milbers
  */
-class VirtuemartViewUsergroups extends JView {
+class VirtuemartViewUsergroups extends VmView {
 
 	function display( $tpl = null ){
 
@@ -39,8 +39,8 @@ class VirtuemartViewUsergroups extends JView {
 
 		$model = $this->getModel();
 		// TODO icon for this view
-		$viewName=ShopFunctions::SetViewTitle();
-		$this->assignRef('viewName',$viewName);
+		$this->SetViewTitle();
+
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
@@ -48,16 +48,16 @@ class VirtuemartViewUsergroups extends JView {
 			$usergroup = $model->getUsergroup();
 			$this->assignRef('usergroup',	$usergroup);
 
-			ShopFunctions::addStandardEditViewCommands();
+			$this->addStandardEditViewCommands();
 
 		} else {
 
 			$ugroups = $model->getUsergroups(false,true);
 			$this->assignRef('usergroups',	$ugroups);
 
-			ShopFunctions::addStandardDefaultViewCommands();
-			$lists = ShopFunctions::addStandardDefaultViewLists($model);
-			$this->assignRef('lists', $lists);
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model);
+
 
 		}
 

@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport('joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for maintaining the list of modules
@@ -29,7 +29,7 @@ jimport('joomla.application.component.view');
  * @subpackage Module
  * @author Markus Öhler
  */
-class VirtuemartViewModule extends JView {
+class VirtuemartViewModule extends VmView {
 
   function display($tpl = null) {
 		// Load the helper(s)
@@ -42,8 +42,8 @@ class VirtuemartViewModule extends JView {
 
 		$module = $model->getModule();
 
-		$viewName=ShopFunctions::SetViewTitle();
-		$this->assignRef('viewName',$viewName);
+		$this->SetViewTitle();
+
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
@@ -52,7 +52,7 @@ class VirtuemartViewModule extends JView {
 
 		  //$this->assignRef('vendors',	$zoneModel->getWorldZonesSelectList());
 
-			ShopFunctions::addStandardEditViewCommands();
+			$this->addStandardEditViewCommands();
 
 		} else {
 
@@ -60,8 +60,8 @@ class VirtuemartViewModule extends JView {
 			//$vendors = $vendorModel->getVendors());
 			$this->assignRef('modules',	$modules);
 			//$this->assignRef('vendors', $vendors);
-			ShopFunctions::addStandardDefaultViewCommands(false);
-			$lists = ShopFunctions::addStandardDefaultViewLists($model);
+			$this->addStandardDefaultViewCommands(false);
+			$this->addStandardDefaultViewLists($model);
 
 		}
 		parent::display($tpl);

@@ -47,7 +47,7 @@ if (isset($this->waitinglist) && count($this->waitinglist) > 0) {
 	$tabarray['waitinglist'] = 'COM_VIRTUEMART_PRODUCT_WAITING_LIST_TAB';
 }
 
-AdminUIHelper::buildTabs ( $tabarray, $this->_models['product']->_id );
+AdminUIHelper::buildTabs ( $tabarray, $this->product->virtuemart_product_id );
 // Loading Templates in Tabs END ?>
 
 

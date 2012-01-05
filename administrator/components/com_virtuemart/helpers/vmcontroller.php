@@ -18,6 +18,8 @@
  *
  * http://virtuemart.net
  */
+jimport('joomla.application.component.controller');
+if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
 class VmController extends JController{
 
@@ -246,6 +248,8 @@ class VmController extends JController{
 		$this->setRedirect( $this->redirectPath, $msg);
 	}
 
-
+	function getModel($model=null){
+		return ShopFunctions::getModel($model);
+	}
 
 }

@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for maintaining the list of states
@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage State
  * @author Max Milbers
  */
-class VirtuemartViewState extends JView {
+class VirtuemartViewState extends VmView {
 
 	function display($tpl = null) {
 
@@ -38,8 +38,8 @@ class VirtuemartViewState extends JView {
 		$this->loadHelper('shopFunctions');
 		$this->loadHelper('html');
 
-		$viewName=ShopFunctions::SetViewTitle();
-		$this->assignRef('viewName',$viewName);
+		$this->SetViewTitle();
+
 
 		$model = $this->getModel();
 
@@ -72,16 +72,16 @@ class VirtuemartViewState extends JView {
 			$zoneModel = $this->getModel('Worldzones');
 			$this->assignRef('worldZones', $zoneModel->getWorldZonesSelectList());
 
-			ShopFunctions::addStandardEditViewCommands();
+			$this->addStandardEditViewCommands();
 
 		} else {
 
 			$states = $model->getStates($countryId);
 			$this->assignRef('states',	$states);
 
-			ShopFunctions::addStandardDefaultViewCommands();
-			$lists = ShopFunctions::addStandardDefaultViewLists($model);
-			$this->assignRef('lists', $lists);
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model);
+
 		}
 
 		parent::display($tpl);

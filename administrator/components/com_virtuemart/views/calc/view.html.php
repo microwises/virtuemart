@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * Description
@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * @author
  */
 
-class VirtuemartViewCalc extends JView {
+class VirtuemartViewCalc extends VmView {
 
 	function display($tpl = null) {
 
@@ -48,8 +48,8 @@ class VirtuemartViewCalc extends JView {
 
 		$db = JFactory::getDBO();
 
-		$viewName=ShopFunctions::SetViewTitle();
-		$this->assignRef('viewName',$viewName);
+		$this->SetViewTitle();
+
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
@@ -76,7 +76,7 @@ class VirtuemartViewCalc extends JView {
 					$calc->calc_currency = $currency;
 				}
 
-				$usermodel = $this->getModel('user', 'VirtuemartModel');
+				$usermodel = $this->getModel('user');
 				$usermodel->setCurrent();
 				$userDetails = $usermodel->getUser();
 				if(empty($userDetails->virtuemart_vendor_id)){
@@ -119,7 +119,7 @@ class VirtuemartViewCalc extends JView {
 				$this->assignRef('vendorList', $vendorList);
 			}
 
-			ShopFunctions::addStandardEditViewCommands();
+			$this->addStandardEditViewCommands();
 
         } else {
 			JToolBarHelper::custom('toggle.calc_shopper_published.0', 'unpublish', 'no', JText::_('COM_VIRTUEMART_CALC_SHOPPER_PUBLISH_TOGGLE_OFF'), true);
@@ -131,9 +131,9 @@ class VirtuemartViewCalc extends JView {
 			$calcs = $model->getCalcs(false, false, $search);
 			$this->assignRef('calcs',	$calcs);
 
-			ShopFunctions::addStandardDefaultViewCommands();
-			$lists = ShopFunctions::addStandardDefaultViewLists($model);
-			$this->assignRef('lists', $lists);
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model);
+
 
 		}
 

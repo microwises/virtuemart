@@ -21,7 +21,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for maintaining the list of Coupons
@@ -32,11 +32,8 @@ jimport( 'joomla.application.component.view');
  * @author Valerie Isaksen
  */
 
-if (!class_exists('VirtueMartModelCurrency'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
-if (!class_exists('VirtueMartModelVendor'))
-    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-class VirtuemartViewCoupon extends JView {
+
+class VirtuemartViewCoupon extends VmView {
 
 	function display($tpl = null) {
 
@@ -48,8 +45,8 @@ class VirtuemartViewCoupon extends JView {
 		$model = $this->getModel();
 
 		$coupon = $model->getCoupon();
-		$viewName=ShopFunctions::SetViewTitle('', $coupon->coupon_code);
-		$this->assignRef('viewName',$viewName);
+		$this->SetViewTitle('', $coupon->coupon_code);
+
 
 		$layoutName = JRequest::getWord('layout', 'default');
 
@@ -59,11 +56,11 @@ class VirtuemartViewCoupon extends JView {
 // 				$this->assignRef('vendorList', $vendorList);
 // 		}
 
-		 $vendorModel = new VirtueMartModelVendor();
+		 $vendorModel = $this->getModel('Vendor');
 	    $vendorModel->setId(1);
 	    $vendor = $vendorModel->getVendor();
 
-	    $currencyModel = new VirtueMartModelCurrency();
+	    $currencyModel = $this->getModel('Currency');
 	    $currencyModel = $currencyModel->getCurrency($vendor->vendor_currency);
 	    $this->assignRef('vendor_currency', $currencyModel->currency_symbol);
 
@@ -97,14 +94,14 @@ class VirtuemartViewCoupon extends JView {
 
 			$this->assignRef('coupon',	$coupon);
 
-			ShopFunctions::addStandardEditViewCommands();
+			$this->addStandardEditViewCommands();
         } else {
 
 			$coupons = $model->getCoupons();
 			$this->assignRef('coupons',	$coupons);
-			ShopFunctions::addStandardDefaultViewCommands();
-			$lists = ShopFunctions::addStandardDefaultViewLists($model);
-			$this->assignRef('lists', $lists);
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model);
+
 		}
 
 		parent::display($tpl);

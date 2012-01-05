@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
 jimport('joomla.html.pane');
 jimport('joomla.version');
 
@@ -31,7 +31,7 @@ jimport('joomla.version');
  * @subpackage 	Config
  * @author 		RickG
  */
-class VirtuemartViewConfig extends JView {
+class VirtuemartViewConfig extends VmView {
 
 	function display($tpl = null) {
 
@@ -47,7 +47,7 @@ class VirtuemartViewConfig extends JView {
 
 		 JToolBarHelper::title( JText::_('COM_VIRTUEMART_CONFIG') , 'head vm_config_48');
 
-		shopFunctions::addStandardEditViewCommands();
+		$this->addStandardEditViewCommands();
 
 		$config = VmConfig::loadConfig();
 
