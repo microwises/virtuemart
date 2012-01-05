@@ -294,9 +294,11 @@ class VirtueMartModelCalc extends VmModel {
 		$states = $this->getTable('calc_states');
 
 		$ok = true;
-		foreach($ids as $id) {
+
+		foreach($cids as $id) {
 			$id = (int)$id;
-			if (!$table->delete()) {
+			vmdebug('remove '.$id);
+			if (!$table->delete($id)) {
 				$this->setError(get_class( $this ).'::remove '.$id.' '.$table->getError());
 				$ok = false;
 			}

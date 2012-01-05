@@ -91,10 +91,7 @@ class VirtuemartViewCategory extends JView {
 		// self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
 // 		vmTime('end loop categoryListTree '.$counter);
 
-		//$category->children = $categoryModel->getChildCategoryList($vendorId, $categoryId);
-// 		vmdebug('children', $category->children);
 		$categoryModel->addImages($category->children,1);
-
 
 	   $this->assignRef('category', $category);
 
