@@ -602,7 +602,7 @@ class VirtueMartModelProduct extends VmModel {
 
 					}
 
-				vmdebug('$product->customfields',$product->customfields);
+// 				vmdebug('$product->customfields',$product->customfields);
 			} else {
 
 				// Add the product link  for canonical

@@ -32,8 +32,9 @@ class VmView extends JView{
 		// parent::construct();
 	// }
 
-	function getModel($model=null){
-		return shopfunctions::getModel($model);
+	function getModel($name=null){
+		if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		return ShopFunctions::getModel($name);
 	}
 
 
@@ -79,6 +80,7 @@ class VmView extends JView{
 		$lists['filter_order_Dir'] = $model->getValidFilterDir($default_dir);
 
 		$this->assignRef('lists', $lists);
+
 	}
 
 	/*
@@ -220,6 +222,6 @@ class VmView extends JView{
 	function sort($orderby ,$name=null ){
 		if (!$name) $name= 'COM_VIRTUEMART_'.strtoupper ($orderby);
 		return JHTML::_('grid.sort' , JText::_($name) , $orderby , $this->lists['filter_order_Dir'] , $this->lists['filter_order']);
-		
+
 	}
 }

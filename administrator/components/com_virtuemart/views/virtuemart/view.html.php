@@ -37,7 +37,7 @@ class VirtuemartViewVirtuemart extends VmView {
 		$this->loadHelper('adminui');
 		$this->loadHelper('image');
 
-		$model = $this->getModel();
+		$model = $this->getModel('virtuemart');
 
 		$nbrCustomers = $model->getTotalCustomers();
 		$this->assignRef('nbrCustomers', $nbrCustomers);

@@ -249,6 +249,8 @@ class VmController extends JController{
 	}
 
 	function getModel($model=null){
+		if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+// 		return VmView::getModel($model);
 		return ShopFunctions::getModel($model);
 	}
 

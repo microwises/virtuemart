@@ -777,11 +777,13 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 */
 	public function getModel($name = null){
 
+// 		if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
+// 		return VmView::getModel($name);
 		if (!$name) $name = JRequest::getCmd('view');
 		$name = strtolower($name);
 		$className = ucfirst($name);
 
-		//retrieving model
+// 		retrieving model
 		if( !class_exists('VirtueMartModel'.$className) ){
 
 			$modelPath = JPATH_VM_ADMINISTRATOR.DS."models".DS.$name.".php";
@@ -797,7 +799,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		}
 
 		$className = 'VirtueMartModel'.$className;
-		//instancing the object
+// 		instancing the object
 		$model = new $className();
 
 		if(empty($model)){
