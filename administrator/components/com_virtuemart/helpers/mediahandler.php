@@ -817,7 +817,8 @@ class VmMediaHandler {
 			$html='';
 			$html .= '<fieldset class="checkboxes">' ;
 			$html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGES').'</legend>';
-			$html .=  JText::_('COM_VIRTUEMART_FILTER') . ' ' . JText::_('COM_VIRTUEMART_IMAGES') . ':
+		        $html .=  '<span class="hasTip" title="'.JText::_('COM_VIRTUEMART_SEARCH_TITLE_TIP').'">'.JText::_('COM_VIRTUEMART_SEARCH_TITLE') . ' ' . JText::_('COM_VIRTUEMART_IMAGES') . '</span>';
+			$html .=   ':
 					<input type="text" name="searchMedia" id="searchMedia" value="' .JRequest::getString('searchMedia') . '" class="text_area" />
 					<button class="reset-value">'.JText::_('COM_VIRTUEMART_RESET') .'</button>';
 			//$result = $this->getImagesList($type);
@@ -917,7 +918,7 @@ class VmMediaHandler {
 				$errMsg = $this->_db->getErrorMsg();
 				$errs = $this->_db->getErrors();
 
-				if(!class_exists('VirtueMartModelMedia'))require(JPATH_VM_ADMINISTRATOR.DS.'model'.DS.'media.php');
+				if(!class_exists('VirtueMartModelMedia'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
 				$model = new VirtueMartModelMedia ;
 				$this->_db->setQuery('SELECT FOUND_ROWS()');
 				$list['total'] = $this->_db->loadResult();
