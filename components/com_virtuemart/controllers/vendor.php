@@ -42,6 +42,7 @@ class VirtueMartControllerVendor extends JController
 		/* Set the layout */
 		$task = JRequest::getWord('task');
 		if ($task == 'tos') $view->setLayout('tos');
+		elseif ($task == 'contact') $view->setLayout('contact');
 		elseif (JRequest::getInt('virtuemart_vendor_id')) $view->setLayout('details');
 		else $view->setLayout('default');
 			
@@ -49,6 +50,9 @@ class VirtueMartControllerVendor extends JController
 		$view->display();
 	}
 	function tos() {
+		$this->vendor();
+	}
+	function contact() {
 		$this->vendor();
 	}
 }

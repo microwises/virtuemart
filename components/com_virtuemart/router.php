@@ -174,6 +174,17 @@ function virtuemartBuildRoute(&$query) {
 				unset ($query['task'] , $query['addrtype']);
 			}
 		break;
+		case 'vendor';
+			if ( isset($jmenu['virtuemart_vendor']) ) $query['Itemid'] = $jmenu['virtuemart_vendor'];
+			else {
+				$segments[] = $lang['vendor'] ;
+				$query['Itemid'] = $jmenu['virtuemart'][0] ;
+			}
+			if (isset($query['virtuemart_vendor_id'])) {
+				$segments[] = $query['virtuemart_vendor_id'];
+				unset ($query['virtuemart_vendor_id']);
+			}
+		break;
 		case 'cart';
 			if ( isset($jmenu['virtuemart_cart']) ) $query['Itemid'] = $jmenu['virtuemart_cart'];
 			else {
@@ -186,7 +197,7 @@ function virtuemartBuildRoute(&$query) {
 			if ( isset($jmenu['virtuemart_orders']) ) $query['Itemid'] = $jmenu['virtuemart_orders'];
 			else {
 				$segments[] = $lang['orders'] ;
-				$query['Itemid'] = $jmenu['virtuemart'][0] ;
+				$query['Itemid'] = $jmenu['virtuemart'][0];
 			}
 
 		break;
@@ -327,6 +338,19 @@ function virtuemartParseRoute($segments) {
 				$vars['task'] = 'editaddresscart' ;
 				} else $vars['task'] = $segments[0] ;
 		}
+		return $vars;
+	}
+	else if ($view == $lang['vendor'] || $helper->activeMenu->view == 'vendor') {
+		$vars['view'] = 'vendor';
+		if ($view == $lang['vendor']) {
+			array_shift($segments);
+			if (empty($segments)) return $vars;
+		}
+		$vars['virtuemart_vendor_id'] = array_shift($segments);
+		if(!$segments) return $vars;
+		if ($segments[0] == $lang['contact'] ) $vars['task'] = 'contact' ;
+		elseif ($segments[0] == $lang['tos'] ) $vars['task'] = 'tos' ;
+		
 		return $vars;
 	}
 	else if ($view == $lang['cart'] || $helper->activeMenu->view == 'cart') {
@@ -677,6 +701,9 @@ class vmrouterHelper {
 			$base_dir = JPATH_SITE;
 			$lang->load($extension, $base_dir);
 			$this->lang = array(
+				'tos' 				=> JText::_('COM_VIRTUEMART_SEF_TOS'),
+				'vendor' 			=> JText::_('COM_VIRTUEMART_SEF_VENDOR'),
+				'contact' 			=> JText::_('COM_VIRTUEMART_SEF_CONTACT'),
 				'edit_shipment'		=> JText::_('COM_VIRTUEMART_SEF_EDITSHIPPING'),
 				'manufacturer'		=> JText::_('COM_VIRTUEMART_SEF_MANUFACTURER'),
 				'manufacturers'		=> JText::_('COM_VIRTUEMART_SEF_MANUFACTURERS'),
@@ -732,6 +759,9 @@ class vmrouterHelper {
 		} else {
 			/* use default */
 			$this->lang = array(
+				'tos' => 'tos',
+				'vendor' => 'vendor',
+				'contact' => 'contact',
 				'edit_shipment' => 'edit_shipment',
 				'manufacturers' => 'manufacturers',
 				'manufacturer' => 'manufacturer',
