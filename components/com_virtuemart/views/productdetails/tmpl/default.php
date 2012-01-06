@@ -79,8 +79,8 @@ if (empty ( $this->product )) {
 	<?php // PDF - Print - Email Icon
 	if ( VmConfig::get('show_emailfriend', 1) == '1' || VmConfig::get('show_printicon', 1) == '1') { ?>
 	<div class="icons">
-		<?php $link = (VmConfig::isJ15()) ? 'index2.php' : 'index.php';
-		$link .= '?tmpl=component&option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id;
+		<?php //$link = (VmConfig::isJ15()) ? 'index2.php' : 'index.php';
+		$link = 'index.php?tmpl=component&option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id;
 		$pdflink= JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&format=pdf');
 // 		echo shopFunctionsF::PdfIcon($pdflink );
 		echo shopFunctionsF::PrintIcon($link.'&print=1');

@@ -93,7 +93,7 @@ AdminUIHelper::startAdminArea();
 </div>
 
 	<input type="hidden" name="virtuemart_shoppergroup_id" value="<?php echo $this->shoppergroup->virtuemart_shoppergroup_id; ?>" />
-	<?php echo VmHTML::HiddenEdit('module') ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 
 <?php AdminUIHelper::endAdminArea(); ?> 

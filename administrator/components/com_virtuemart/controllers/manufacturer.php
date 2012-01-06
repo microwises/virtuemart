@@ -44,19 +44,6 @@ class VirtuemartControllerManufacturer extends VmController {
 	function __construct() {
 		parent::__construct('virtuemart_manufacturer_id');
 
-		$document = JFactory::getDocument();
-		$viewType	= $document->getType();
-		$view = $this->getView('manufacturer', $viewType);
-
-		// Push a model into the view
-		$model = $this->getModel('manufacturer');
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}
-		$model1 = $this->getModel('manufacturercategories');
-		if (!JError::isError($model1)) {
-			$view->setModel($model1, false);
-		}
 	}
 
 	/**

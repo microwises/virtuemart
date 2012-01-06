@@ -83,6 +83,6 @@ vmJsApi::jDate();
 
 	<input type="hidden" name="virtuemart_calc_id" value="<?php echo $this->calc->virtuemart_calc_id; ?>" />
 	<input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->vendorId; ?>" />
-	<?php echo VmHTML::HiddenEdit() ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 
 </form>

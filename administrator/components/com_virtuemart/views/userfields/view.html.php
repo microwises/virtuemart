@@ -139,6 +139,7 @@ class VirtuemartViewUserfields extends VmView {
 			$lists['readonly']     =  VmHTML::row('booleanlist','COM_VIRTUEMART_USERFIELDS_READONLY','readonly',$userField->account,$notoggle);
 
 
+			$this->assignRef('lists', $lists);
 			$this->assignRef('userField', $userField);
 			$this->assignRef('userFieldValues', $userFieldValues);
 			$this->assignRef('editor', $editor);
@@ -169,21 +170,13 @@ class VirtuemartViewUserfields extends VmView {
 			$userfieldsList = $model->getUserfieldsList();
 			$this->assignRef('userfieldsList', $userfieldsList);
 
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
-
+			$this->addStandardDefaultViewLists($model);
 			// search filter
 			$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string');
 			$search = JString::strtolower( $search );
-			$lists['search']= $search;
-
-			// Get the ordering
-			$lists['order']     = $mainframe->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'ordering', 'cmd' );
-			$lists['order_Dir'] = $mainframe->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', '', 'word' );
-			$this->assignRef('lists', $lists);
-// 			$this->lists = array_merge ($lists ,$this->lists);
+			$this->lists['search']= $search;
 		}
-
+		$this->lists['coreFields'] = $lists['coreFields'];
 		parent::display($tpl);
 	}
 

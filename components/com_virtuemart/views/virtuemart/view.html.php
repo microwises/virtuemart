@@ -133,6 +133,9 @@ class VirtueMartViewVirtueMart extends JView {
 		parent::display($tpl);
 
 	}
-
+	function getModel($name=null){
+		if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
+		return ShopFunctions::getModel($name);
+	}
 }
 # pure php no closing tag

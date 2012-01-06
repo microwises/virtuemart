@@ -113,14 +113,7 @@ $j15 = VmConfig::isJ15();
 	</table>
 </div>
 
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
-	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="controller" value="orderstatus" />
-	<input type="hidden" name="view" value="orderstatus" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 
 <?php AdminUIHelper::endAdminArea(); ?>

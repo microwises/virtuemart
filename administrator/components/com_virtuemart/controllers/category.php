@@ -37,7 +37,20 @@ class VirtuemartControllerCategory extends VmController {
 		parent::__construct();
 
 	}
+	/**
+	 * Shows the product add/edit screen
+	 */
+	public function edit() {
+		/* Create the view object */
+		$this->addViewPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'views');
+		$view = $this->getView('category', 'html');
+		//$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
 
+		$view->setLayout('edit');
+print_r($view);
+		/* Now display the view. */
+		$view->display();
+	}
 	// public function Category(){
 
 		// $document = JFactory::getDocument();

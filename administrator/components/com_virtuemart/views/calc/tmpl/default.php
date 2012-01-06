@@ -30,7 +30,7 @@ $j15 = VmConfig::isJ15();
 		<table>
 		  <tr>
 			 <td align="left">
-				<?php echo ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_NAME',$this->lists['search']) ?>
+				<?php echo $this->displayDefaultViewSearch() ?>
 			 </td>
 		  </tr>
 		</table>
@@ -186,14 +186,7 @@ $j15 = VmConfig::isJ15();
 		</tfoot>
 	</table>
 </div>
-	<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
-	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="controller" value="calc" />
-	<input type="hidden" name="view" value="calc" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 
 

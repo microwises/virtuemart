@@ -348,18 +348,6 @@ class VmHTML{
 			$html .= '<input type="hidden" name="'.$k.'" value="'.$v.'" />';
 		}
 		return $html;
-	}	/**
-	 * renders the Edit Form hidden default input
-	 * @author Patrick Kohl
-	 */
-	public function HiddenEdit($controller=0, $task=''){
-		if (!$controller)	$controller = JRequest::getCmd('view');
-		return '
-		<input type="hidden" name="task" value="'.$task.'" />
-		<input type="hidden" name="option" value="com_virtuemart" />
-		<input type="hidden" name="boxchecked" value="0" />
-		<input type="hidden" name="controller" value="'.$controller.'" />
-		'. JHTML::_( 'form.token' ) ;
 	}
 
 	/**

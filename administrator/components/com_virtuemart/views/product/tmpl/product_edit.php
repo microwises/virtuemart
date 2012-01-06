@@ -29,7 +29,7 @@ $document = JFactory::getDocument();
 //$document->addStyleSheet(JURI::base().'components/com_virtuemart/assets/css/jquery.autocomplete.css');
 vmJsApi::JvalideForm();
 $this->editor = JFactory::getEditor();
-
+//print_r(JRequest::get('GET'));
 ?>
 <form method="post" name="adminForm" action="index.php" enctype="multipart/form-data" ID="adminForm">
 
@@ -52,13 +52,8 @@ AdminUIHelper::buildTabs ( $tabarray, $this->product->virtuemart_product_id );
 
 
 <!-- Hidden Fields -->
-<input type="hidden" name="task" value="" />
-<input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="view" value="product" />
-<input type="hidden" name="controller" value="product" />
+	<?php echo $this->addStandardHiddenToForm(); ?>
 <input type="hidden" name="virtuemart_product_id" value="<?php echo $this->product->virtuemart_product_id; ?>" />
 <input type="hidden" name="product_parent_id" value="<?php echo JRequest::getInt('product_parent_id', $this->product->product_parent_id); ?>" />
-<?php echo JHTML::_( 'form.token' ); ?>
 </form>
 <?php AdminUIHelper::endAdminArea(); ?>

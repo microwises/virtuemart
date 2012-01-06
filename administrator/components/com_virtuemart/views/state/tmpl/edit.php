@@ -89,7 +89,7 @@ AdminUIHelper::startAdminArea();
 	<input type="hidden" name="virtuemart_country_id" value="<?php echo $this->virtuemart_country_id; ?>" />
 	<input type="hidden" name="virtuemart_state_id" value="<?php echo $this->state->virtuemart_state_id; ?>" />
 
-	<?php echo VmHTML::HiddenEdit() ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 
 

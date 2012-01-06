@@ -112,7 +112,7 @@ echo ShopFunctions::writePriceConfigLine($this->shoppergroup->price_display, 'ta
 
     <input type="hidden" name="default" value="<?php echo $this->shoppergroup->default ?>" />
     <input type="hidden" name="virtuemart_shoppergroup_id" value="<?php echo $this->shoppergroup->virtuemart_shoppergroup_id; ?>" />
-<?php echo VmHTML::HiddenEdit() ?>
+<?php echo $this->addStandardHiddenToForm(); ?>
 
 </form>
 

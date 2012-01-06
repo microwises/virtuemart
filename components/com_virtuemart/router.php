@@ -20,6 +20,8 @@ if(  !defined( '_JEXEC' ) ) die( 'Direct Access to '.basename(__FILE__).' is not
 function virtuemartBuildRoute(&$query) {
 
 	$segments = array();
+
+
 	$helper = vmrouterHelper::getInstance();
 	/* simple route , no work , for very slow server or test purpose */
 	if ($helper->router_disabled) {
@@ -34,6 +36,9 @@ function virtuemartBuildRoute(&$query) {
 		}
 		return $segments;
 	}
+
+		if ($helper->edit) return $segments;
+	
 	/* Full route , heavy work*/
 	$lang = &$helper->lang ;
 	$view = '';
@@ -260,6 +265,13 @@ function virtuemartParseRoute($segments) {
 		}
 	}
 
+	if ( $segments[0] == 'product') {
+		$vars['view'] = 'product';
+		$vars['task'] = $segments[1];
+		$vars['tmpl'] = 'component';
+		return $vars;
+		}
+
 	if ( $segments[0] == $lang['manufacturer']) {
 		array_shift($segments);
 		$vars['virtuemart_manufacturer_id'] =  $helper->getManufacturerId($segments[0]);
@@ -452,6 +464,7 @@ class vmrouterHelper {
 
 			$this->seo_sufix = VmConfig::get('seo_sufix', '-detail');
 			$this->seo_sufix_size = strlen($this->seo_sufix) ;
+			$this->edit = ('edit' == JRequest::getCmd('task') );
 		}
 
 	}

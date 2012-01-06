@@ -183,15 +183,8 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 	</table>
 </div>
 <!-- Hidden Fields -->
-<input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="view" value="product" />
-<input type="hidden" name="task" value="" />
 <input type="hidden" name="product_parent_id" value="<?php echo JRequest::getInt('product_parent_id', 0); ?>" />
-<?php /*<input type="hidden" name="virtuemart_product_price_id" value="<?php echo $this->virtuemart_product_price_id; ?>" /> */ ?>
-<input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
-<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 
 <?php AdminUIHelper::endAdminArea(); ?>

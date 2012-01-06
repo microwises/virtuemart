@@ -44,7 +44,7 @@ if(!Permissions::getInstance()->check('admin','storeowner')){
 	die( 'Access restricted to Vendor and Administrator only' );
 }*/
 /* Require specific controller if requested */
-if($_controller = JRequest::getWord('controller', JRequest::getWord('view', 'virtuemart'))) {
+if($_controller = JRequest::getWord('view', JRequest::getWord('controller', 'virtuemart'))) {
 	if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php')) {
 		// Only if the file exists, since it might be a Joomla view we're requesting...
 		require (JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php');

@@ -51,9 +51,7 @@ class VirtuemartViewReport extends VmView {
 		$this->SetViewTitle('REPORT');
 
 
-		$lists['select_date'] = $model->renderDateSelectList();
-		$lists['state_list'] = $model->renderOrderstatesList();
-		$lists['intervals'] = $model->renderIntervalsList();
+
 
 		$myCurrencyDisplay = CurrencyDisplay::getInstance();
 
@@ -94,8 +92,10 @@ class VirtuemartViewReport extends VmView {
 		// $productList = $model->getOrderItems();
 		// $this->assignRef('productList', $productList);
 
-		$lists = array_merge ($lists ,$this->addStandardDefaultViewLists($model));
-
+		$this->addStandardDefaultViewLists($model);
+		$this->lists['select_date'] = $model->renderDateSelectList();
+		$this->lists['state_list'] = $model->renderOrderstatesList();
+		$this->lists['intervals'] = $model->renderIntervalsList();
 		$this->assignRef('from_period', $model->from_period);
 		$this->assignRef('until_period', $model->until_period);
 

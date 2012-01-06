@@ -50,7 +50,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_CURRENCY_DETAILS');
 </div>
 	<input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->currency->virtuemart_vendor_id; ?>" />
 	<input type="hidden" name="virtuemart_currency_id" value="<?php echo $this->currency->virtuemart_currency_id; ?>" />
-	<?php echo VmHTML::HiddenEdit('currency') ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 
 

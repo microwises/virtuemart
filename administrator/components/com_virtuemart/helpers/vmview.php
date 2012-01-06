@@ -23,7 +23,7 @@ jimport( 'joomla.application.component.view');
 // Load default helpers
 if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 if (!class_exists('AdminUIHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'adminui.php');
-
+if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php'); 
 class VmView extends JView{
 
 	/**
@@ -34,6 +34,7 @@ class VmView extends JView{
 	// public function __construct() {
 		// parent::construct();
 	// }
+	var $lists = array();
 
 	function getModel($name=null){
 		if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
@@ -93,9 +94,9 @@ class VmView extends JView{
 	* ??JText::_('COM_VIRTUEMART_NAME')
 	*/
 
-	function displayDefaultViewSearch($searchLabel, $value, $name ='search') {
+	function displayDefaultViewSearch($searchLabel='COM_VIRTUEMART_NAME',$name ='search') {
 		return JText::_('COM_VIRTUEMART_FILTER') . ' ' . JText::_($searchLabel) . ':
-		<input type="text" name="' . $name . '" id="' . $name . '" value="' .$value . '" class="text_area" />
+		<input type="text" name="' . $name . '" id="' . $name . '" value="' .$this->lists[$name] . '" class="text_area" />
 		<button onclick="this.form.submit();">' . JText::_('COM_VIRTUEMART_GO') . '</button>
 		<button onclick="document.getElementById(\'' . $name . '\').value=\'\';this.form.submit();">' . JText::_('COM_VIRTUEMART_RESET') . '</button>';
 	}
@@ -225,6 +226,51 @@ class VmView extends JView{
 	function sort($orderby ,$name=null ){
 		if (!$name) $name= 'COM_VIRTUEMART_'.strtoupper ($orderby);
 		return JHTML::_('grid.sort' , JText::_($name) , $orderby , $this->lists['filter_order_Dir'] , $this->lists['filter_order']);
-
+	}
+	public function addStandardHiddenToForm($controller=null, $task=''){
+		if (!$controller)	$controller = JRequest::getCmd('view');
+		$option = JRequest::getCmd('option','com_virtuemart' );
+		$hidden ='';
+		if (array_key_exists('filter_order',$this->lists)) $hidden ='
+			<input type="hidden" name="filter_order" value="'.$this->lists['filter_order'].'" />
+			<input type="hidden" name="filter_order_Dir" value="'.$this->lists['filter_order_Dir'].'" />';
+		return  $hidden.'
+		<input type="hidden" name="task" value="'.$task.'" />
+		<input type="hidden" name="option" value="'.$option.'" />
+		<input type="hidden" name="boxchecked" value="0" />
+		<input type="hidden" name="controller" value="'.$controller.'" />
+		<input type="hidden" name="view" value="'.$controller.'" />
+		'. JHTML::_( 'form.token' );
+	}
+	function getToolbar() {
+		
+		// add required stylesheets from admin template
+		$document    = & JFactory::getDocument();
+		$document->addStyleSheet('administrator/templates/system/css/system.css');
+		//now we add the necessary stylesheets from the administrator template
+		//in this case i make reference to the bluestork default administrator template in joomla 1.6
+		$document->addCustomTag(
+			'<link href="administrator/templates/bluestork/css/template.css" rel="stylesheet" type="text/css" />'."\n\n".
+			'<!--[if IE 7]>'."\n".
+			'<link href="administrator/templates/bluestork/css/ie7.css" rel="stylesheet" type="text/css" />'."\n".
+			'<![endif]-->'."\n".
+			'<!--[if gte IE 8]>'."\n\n".
+			'<link href="administrator/templates/bluestork/css/ie8.css" rel="stylesheet" type="text/css" />'."\n".
+			'<![endif]-->'."\n".
+			'<link rel="stylesheet" href="administrator/templates/bluestork/css/rounded.css" type="text/css" />'."\n"
+			);
+		//load the JToolBar library and create a toolbar
+		jimport('joomla.html.toolbar');
+		JToolBarHelper::divider();
+		JToolBarHelper::save();
+		JToolBarHelper::apply();
+		JToolBarHelper::cancel();
+		$bar = new JToolBar( 'toolbar' );
+		//and make whatever calls you require
+		$bar->appendButton( 'Standard', 'save', 'Save', 'save', false );
+		$bar->appendButton( 'Separator' );
+		$bar->appendButton( 'Standard', 'cancel', 'Cancel', 'cancel', false );
+		//generate the html and return
+		return $bar->render();
 	}
 }

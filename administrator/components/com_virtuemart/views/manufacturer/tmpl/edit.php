@@ -34,7 +34,7 @@ AdminUIHelper::buildTabs ( $tabarray ,$this->manufacturer->virtuemart_manufactur
 // Loading Templates in Tabs END ?>
 
 	<input type="hidden" name="virtuemart_manufacturer_id" value="<?php echo $this->manufacturer->virtuemart_manufacturer_id; ?>" />
-	<?php echo VmHTML::HiddenEdit() ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 <script type="text/javascript">
 function toggleDisable( elementOnChecked, elementDisable, disableOnChecked ) {

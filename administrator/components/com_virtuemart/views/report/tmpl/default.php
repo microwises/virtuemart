@@ -61,16 +61,16 @@ if( $this->pagination->limit < $rows ){
             <thead>
                 <tr>
                     <th>
-                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_'.$intervalTitle,'created_on',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
+                        <?php echo $this->sort('created_on', 'COM_VIRTUEMART_'.$intervalTitle); ?>
                     </th>
                     <th>
-                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_ORDERS','o.virtuemart_order_id',$this->lists['filter_order_Dir'], $this->lists['filter_order']); ?>
+                        <?php echo $this->sort('o.virtuemart_order_id', 'COM_VIRTUEMART_REPORT_BASIC_ORDERS') ; ?>
                     </th>
                     <th>
-                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_TOTAL_ITEMS','product_quantity',$this->lists['filter_order_Dir'],$this->lists['filter_order']); ?>
+                        <?php echo $this->sort('product_quantity', 'COM_VIRTUEMART_REPORT_BASIC_TOTAL_ITEMS') ; ?>
                     </th>
                     <th>
-                        <?php echo JHTML::_('grid.sort','COM_VIRTUEMART_REPORT_BASIC_REVENUE','order_subtotal',$this->lists['filter_order_Dir'],$this->lists['filter_order']); ?>
+                        <?php echo $this->sort('order_subtotal', 'COM_VIRTUEMART_REPORT_BASIC_REVENUE') ; ?>
                     </th>
                 </tr>
             </thead>
@@ -123,14 +123,7 @@ if( $this->pagination->limit < $rows ){
         </table>
     </div>
 
-    <input type="hidden" name="option" value="com_virtuemart" />
-    <input type="hidden" name="controller" value="report" />
-    <input type="hidden" name="view" value="report" />
-    <input type="hidden" name="task" value="" />
-	<input type="hidden" name="task" value="" />
-    <input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
-    <input type="hidden" name="filter_order_Dir" value=""<?php echo $this->lists['filter_order_Dir']; ?>" />
-    <?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 
 <?php AdminUIHelper::endAdminArea(); ?>

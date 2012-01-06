@@ -93,14 +93,8 @@ AdminUIHelper::startAdminArea();
 	    </tfoot>
 	</table>
     </div>
-
-    <input type="hidden" name="option" value="com_virtuemart" />
-    <input type="hidden" name="controller" value="state" />
-    <input type="hidden" name="view" value="state" />
-    <input type="hidden" name="task" value="" />
-    <input type="hidden" name="boxchecked" value="0" />
     <input type="hidden" name="virtuemart_country_id" value="<?php echo $this->virtuemart_country_id; ?>" />
-    <?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 
 

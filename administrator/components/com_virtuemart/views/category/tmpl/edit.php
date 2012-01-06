@@ -33,7 +33,7 @@ AdminUIHelper::buildTabs ( array (	'categoryform' 	=> 	'COM_VIRTUEMART_CATEGORY_
 ?>
 	<input type="hidden" name="virtuemart_category_id" value="<?php echo $this->category->virtuemart_category_id; ?>" />
 
-	<?php echo VmHTML::HiddenEdit() ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 
 </form>
 

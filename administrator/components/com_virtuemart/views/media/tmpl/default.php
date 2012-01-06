@@ -30,7 +30,7 @@ $option = JRequest::getWord('option');
 		<table>
 		  <tr>
 			 <td align="left" width="100%">
-				<?php echo ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_NAME',$this->lists['searchMedia'],'searchMedia') .' '. $this->lists['search_type']; ?>
+				<?php echo $this->displayDefaultViewSearch('COM_VIRTUEMART_NAME','searchMedia') .' '. $this->lists['search_type']; ?>
 			 </td>
 		  </tr>
 		</table>
@@ -46,8 +46,8 @@ $productfileslist = $this->files;
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($productfileslist ); ?>')" /></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME'); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_FILES_LIST_FILETITLE', 'file_title', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_FILES_LIST_ROLE', 'file_type', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo $this->sort('file_title', 'COM_VIRTUEMART_FILES_LIST_FILETITLE') ?></th>
+		<th><?php echo $this->sort('file_type', 'COM_VIRTUEMART_FILES_LIST_ROLE') ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_VIEW'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILENAME'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILETYPE'); ?></th>
@@ -121,11 +121,6 @@ $productfileslist = $this->files;
 <?php if (JRequest::getInt('virtuemart_product_id', false)) { ?>
 	<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
 <?php } ?>
-<input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="view" value="media" />
-<input type="hidden" name="boxchecked" value="0" />
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
-<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 <?php AdminUIHelper::endAdminArea(); ?>

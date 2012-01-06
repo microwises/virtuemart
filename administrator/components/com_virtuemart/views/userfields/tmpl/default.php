@@ -54,21 +54,13 @@ $j15 = VmConfig::isJ15();
 				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
 			</th>
 			<th>
-			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_FIELDMANAGER_NAME')
-					, 'name'
-					, $this->lists['order_Dir']
-					, $this->lists['order']); ?>
+			<?php  echo $this->sort('name','COM_VIRTUEMART_FIELDMANAGER_NAME')  ?>
 			</th>
 			<th>
 			<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_TITLE'); ?>
 			</th>
 			<th>
-			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_FIELDMANAGER_TYPE')
-					, 'type'
-					, $this->lists['order_Dir']
-					, $this->lists['order']); ?>
+			<?php echo $this->sort('type','COM_VIRTUEMART_FIELDMANAGER_TYPE') ?>
 			</th>
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_REQUIRED'); ?>
@@ -86,11 +78,7 @@ $j15 = VmConfig::isJ15();
 				<?php echo JText::_('COM_VIRTUEMART_FIELDMANAGER_SHOW_ON_ACCOUNT'); ?>
 			</th>
 			<th>
-			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_FIELDMANAGER_REORDER')
-					, 'ordering'
-					, $this->lists['order_Dir']
-					, $this->lists['order']); ?>
+			<?php echo $this->sort('ordering','COM_VIRTUEMART_FIELDMANAGER_REORDER') ?>
 			<?php echo JHTML::_('grid.order',  $this->userfieldsList ); ?>
 			</th>
 		</tr>
@@ -113,7 +101,7 @@ $j15 = VmConfig::isJ15();
 			$registration = $this->toggle($row->registration, $i, 'toggle.registration', $coreField);
 			$shipment = $this->toggle($row->shipment, $i, 'toggle.shipment', $coreField);
 			$account = $this->toggle($row->account, $i, 'toggle.account', $coreField);
-			$ordering = ($this->lists['order'] == 'ordering');
+			$ordering = ($this->lists['filter_order'] == 'ordering');
 			$disabled = ($ordering ?  '' : 'disabled="disabled"');
 		?>
 			<tr class="row<?php echo $k ; ?>">
@@ -167,10 +155,7 @@ $j15 = VmConfig::isJ15();
 	</table>
 </div>
 
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-	<input type="hidden" name="view" value="userfields" />
-	<?php echo VmHTML::HiddenEdit() ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 
 <?php AdminUIHelper::endAdminArea(); ?>

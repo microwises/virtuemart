@@ -20,6 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea();
 
 $j15 = VmConfig::isJ15();
+
 ?>
 
 
@@ -29,7 +30,7 @@ $j15 = VmConfig::isJ15();
 	    <table>
 		<tr>
 		    <td align="left" width="100%">
-<?php echo ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_ORDER_PRINT_NAME',$this->lists['search']); ?>
+<?php echo $this->displayDefaultViewSearch('COM_VIRTUEMART_ORDER_PRINT_NAME'); ?>
 		    </td>
 		</tr>
 	    </table>
@@ -40,16 +41,16 @@ $j15 = VmConfig::isJ15();
 	<thead>
 	    <tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->orderslist); ?>')" /></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_NUMBER', 'order_number', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_NAME', 'order_name', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL', 'payment_method', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
+		<th><?php echo $this->sort('order_number', 'COM_VIRTUEMART_ORDER_LIST_NUMBER')  ?></th>
+		<th><?php echo $this->sort('order_name', 'COM_VIRTUEMART_ORDER_PRINT_NAME')  ?></th>
+		<th><?php echo $this->sort('payment_method', 'COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL')  ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_PRINT_VIEW'); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_CDATE', 'created_on', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_MDATE', 'modified_on', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_STATUS', 'order_status', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
+		<th><?php echo $this->sort('created_on', 'COM_VIRTUEMART_ORDER_CDATE')  ?></th>
+		<th><?php echo $this->sort('modified_on', 'COM_VIRTUEMART_ORDER_LIST_MDATE')  ?></th>
+		<th><?php echo $this->sort('order_status', 'COM_VIRTUEMART_STATUS')  ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_TOTAL', 'order_total', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_ORDER_LIST_ID', 'virtuemart_order_id', $this->lists['filter_order_Dir'], $this->lists['filter_order']); ?></th>
+		<th><?php echo $this->sort('order_total', 'COM_VIRTUEMART_TOTAL')  ?></th>
+		<th><?php echo $this->sort('virtuemart_order_id', 'COM_VIRTUEMART_ORDER_LIST_ID')  ?></th>
 
 	    </tr>
 	</thead>
@@ -123,13 +124,7 @@ if (count($this->orderslist) > 0) {
 	</tfoot>
     </table>
     <!-- Hidden Fields -->
-    <input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
-    <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
-    <input type="hidden" name="task" value="" />
-    <input type="hidden" name="option" value="com_virtuemart" />
-    <input type="hidden" name="view" value="orders" />
-    <input type="hidden" name="boxchecked" value="0" />
-<?php echo JHTML::_('form.token'); ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
     <?php AdminUIHelper::endAdminArea(); ?>
 <script type="text/javascript">

@@ -30,7 +30,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 <div class="col50">
 	<fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_USERFIELD_DETAILS'); ?></legend>
-	<table class="admintable">
+	<table class="admintable" width="100%">
 		<?php echo VmHTML::row('raw','COM_VIRTUEMART_FIELDMANAGER_TYPE', $this->lists['type'] ); ?>
 
 		<!-- Start Type specific attributes -->
@@ -85,7 +85,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 				<div id="divValues" style="text-align:left;height: 200px;overflow: auto;">
 					<fieldset>
 					<legend><?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ADDVALUES_TIP'); ?></legend>
-						<input type="button" class="button insertRow" onclick="insertRow();" value="<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ADDVALUE') ?>" />
+						<input type="button" class="button insertRow" value="<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ADDVALUE') ?>" />
 						<table align=left id="divFieldValues" cellpadding="4" cellspacing="1" border="0" width="100%" class="admintable">
 							<thead>
 								<tr>
@@ -150,7 +150,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 
 <input type="hidden" name="virtuemart_userfield_id" value="<?php echo $this->userField->virtuemart_userfield_id; ?>" />
 <input type="hidden" name="valueCount" value="<?php echo $this->valueCount; ?>" />
-<?php echo VmHTML::HiddenEdit() ?>
+<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 
 <?php
@@ -176,7 +176,7 @@ function getObject(obj) {
 
 jQuery(".insertRow").click( function() {
 	nr = jQuery('#fieldValuesBody tr').length ;
-	row = '<tr><td><input type="text" readonly="readonly" class="readonly" name="vNames['+nr+']" value="Mr"></td><td><input type="text" name="vValues['+nr+']" value="Mr"></td></tr>';
+	row = '<tr><td><input type="text" name="vNames['+nr+']" value="Mr"></td><td><input type="text" name="vValues['+nr+']" value="Mr"></td></tr>';
 	jQuery('#fieldValuesBody').append( row );
 });
 

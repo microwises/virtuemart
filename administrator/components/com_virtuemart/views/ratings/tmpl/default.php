@@ -48,10 +48,10 @@ $option = JRequest::getWord('option');
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->ratingslist); ?>')" /></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_DATE', 'created_on', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_NAME', 'product_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_RATE_NOM', 'rating', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
-		<th width="20"><?php echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PUBLISHED', 'published', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+		<th><?php echo $this->sort('created_on', 'COM_VIRTUEMART_DATE') ; ?></th>
+		<th><?php echo $this->sort('product_name') ; ?></th>
+		<th><?php echo $this->sort('rating', 'COM_VIRTUEMART_RATE_NOM') ; ?></th>
+		<th width="20"><?php echo $this->sort('published') ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -97,13 +97,7 @@ $option = JRequest::getWord('option');
 	</table>
 </div>
 <!-- Hidden Fields -->
-<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
-<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
-<input type="hidden" name="task" value="ratings" />
-<input type="hidden" name="option" value="com_virtuemart" />
-<input type="hidden" name="view" value="ratings" />
-<input type="hidden" name="boxchecked" value="0" />
-<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 <?php AdminUIHelper::endAdminArea(); ?>
 

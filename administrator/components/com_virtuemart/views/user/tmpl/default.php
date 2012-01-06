@@ -45,39 +45,15 @@ AdminUIHelper::startAdminArea();
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->userList); ?>);" />
 			</th>
-			<th width="10">
-				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
-			</th>
-			<th>
-			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_USERNAME')
-					, 'ju.username'
-					, $this->lists['filter_order_Dir']
-					, $this->lists['filter_order']); ?>
-			</th>
-			<th>
-			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_USER_DISPLAYED_NAME')
-					, 'ju.name'
-					, $this->lists['filter_order_Dir']
-					, $this->lists['filter_order']); ?>
-			</th>
-<?php		if(Vmconfig::get('multix','none')!=='none'){ ?>
-		<th width="80">
-			<?php echo JText::_('COM_VIRTUEMART_USER_IS_VENDOR'); ?>
-			</th>
-	<?php } ?>
-
-			<th>
-			<?php echo JText::_('COM_VIRTUEMART_USER_GROUP'); ?>
-			</th>
-			<th>
-			<?php echo JHTML::_('grid.sort'
-					, JText::_('COM_VIRTUEMART_SHOPPERGROUP')
-					, 'shopper_group_name'
-					, $this->lists['filter_order_Dir']
-					, $this->lists['filter_order']); ?>
-			</th>
+			<th width="10"><?php echo JText::_('COM_VIRTUEMART_#'); ?></th>
+			<th><?php echo $this->sort('ju.username', 'COM_VIRTUEMART_USERNAME')  ?></th>
+			<th><?php echo $this->sort('ju.name', 'COM_VIRTUEMART_USER_DISPLAYED_NAME')  ?></th>
+			<?php		if(Vmconfig::get('multix','none')!=='none'){ ?>
+				<th width="80"><?php echo JText::_('COM_VIRTUEMART_USER_IS_VENDOR'); ?></th>
+			<?php } ?>
+			<th><?php echo JText::_('COM_VIRTUEMART_USER_GROUP'); ?></th>
+			<th><?php echo $this->sort('shopper_group_name', 'COM_VIRTUEMART_SHOPPERGROUP')  ?></th>
+		</tr>
 		</thead>
 		<?php
 		$k = 0;
@@ -132,14 +108,7 @@ AdminUIHelper::startAdminArea();
 	</table>
 </div>
 
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['filter_order_Dir']; ?>" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->lists['filter_order']; ?>" />
-	<input type="hidden" name="option" value="com_virtuemart" />
-	<input type="hidden" name="controller" value="user" />
-	<input type="hidden" name="view" value="user" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 
 <?php AdminUIHelper::endAdminArea(); ?>

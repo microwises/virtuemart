@@ -109,25 +109,25 @@ class VirtuemartViewUser extends VmView {
 			$_contactDetails = $model->getContactDetails();
 			$_groupList = $model->getGroupList();
 			if (!is_array($_groupList)) {
-				$lists['gid'] = '<input type="hidden" name="gid" value="'. $userDetails->JUser->get('gid') .'" /><strong>'. JText::_($_groupList) .'</strong>';
+				$this->lists['gid'] = '<input type="hidden" name="gid" value="'. $userDetails->JUser->get('gid') .'" /><strong>'. JText::_($_groupList) .'</strong>';
 			} else {
-				$lists['gid'] 	= JHTML::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $userDetails->JUser->get('gid'));
+				$this->lists['gid'] 	= JHTML::_('select.genericlist', $_groupList, 'gid', 'size="10"', 'value', 'text', $userDetails->JUser->get('gid'));
 			}
 
-			$lists['canBlock'] = ($currentUser->authorize('com_users', 'block user')
+			$this->lists['canBlock'] = ($currentUser->authorize('com_users', 'block user')
 			&& ($userDetails->JUser->get('id') != $currentUser->get('id'))); // Can't block myself
-			$lists['canSetMailopt'] = $currentUser->authorize('workflow', 'email_events');
-			$lists['block'] = JHTML::_('select.booleanlist', 'block',      'class="inputbox"', $userDetails->JUser->get('block'),     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-			$lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail',  'class="inputbox"', $userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
-			$lists['params'] = $userDetails->JUser->getParameters(true);
+			$this->lists['canSetMailopt'] = $currentUser->authorize('workflow', 'email_events');
+			$this->lists['block'] = JHTML::_('select.booleanlist', 'block',      'class="inputbox"', $userDetails->JUser->get('block'),     'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$this->lists['sendEmail'] = JHTML::_('select.booleanlist', 'sendEmail',  'class="inputbox"', $userDetails->JUser->get('sendEmail'), 'COM_VIRTUEMART_YES', 'COM_VIRTUEMART_NO');
+			$this->lists['params'] = $userDetails->JUser->getParameters(true);
 
 			// Shopper info
-			$lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($userDetails->shopper_groups);
-			$lists['vendors'] = ShopFunctions::renderVendorList($userDetails->virtuemart_vendor_id);
-			$lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
+			$this->lists['shoppergroups'] = ShopFunctions::renderShopperGroupList($userDetails->shopper_groups);
+			$this->lists['vendors'] = ShopFunctions::renderVendorList($userDetails->virtuemart_vendor_id);
+			$this->lists['custnumber'] = $model->getCustomerNumberById($userDetails->JUser->get('id'));
 
 			// Shipment address(es)
-			$lists['shipTo'] = ShopFunctions::generateStAddressList($model,'addST');
+			$this->lists['shipTo'] = ShopFunctions::generateStAddressList($model,'addST');
 
 			$new = false;
 			if(JRequest::getInt('new','0')===1){
@@ -139,7 +139,7 @@ class VirtuemartViewUser extends VmView {
 			$userFieldsBT = $userFieldsArray[$virtuemart_userinfo_id_BT];
 
 
-			$lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $userDetails->perms);
+			$this->lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $userDetails->perms);
 
 			// Load the required scripts
 			if (count($userFieldsBT['scripts']) > 0) {
@@ -226,9 +226,6 @@ class VirtuemartViewUser extends VmView {
 			//JToolBarHelper::addNewX();
 			$userList = $model->getUserList();
 			$this->assignRef('userList', $userList);
-
-			$pagination = $model->getPagination();
-			$this->assignRef('pagination', $pagination);
 
 			$this->addStandardDefaultViewLists($model,'ju.id');
 

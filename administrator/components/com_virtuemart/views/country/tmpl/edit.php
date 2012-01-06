@@ -50,7 +50,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_COUNTRY_DETAILS');
 
 	<input type="hidden" name="virtuemart_country_id" value="<?php echo $this->country->virtuemart_country_id; ?>" />
 
-	<?php echo VmHTML::HiddenEdit('country') ?>
+	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 
 <?php 

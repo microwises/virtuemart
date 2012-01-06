@@ -58,7 +58,7 @@ AdminUIHelper::buildTabs ( $tabarray,'vm-user' );
 
 ?>
 
-<?php echo VmHTML::HiddenEdit() ?>
+<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 <script language="javascript">
 function myValidator(f) {

@@ -48,7 +48,7 @@ AdminUIHelper::imitateTabs('start', 'COM_VIRTUEMART_COUPON_DETAILS');
 	</fieldset>
     <input type="hidden" name="virtuemart_coupon_id" value="<?php echo $this->coupon->virtuemart_coupon_id; ?>" />
 
- 	<?php echo VmHTML::HiddenEdit() ?>
+ 	<?php echo $this->addStandardHiddenToForm(); ?>
 </form>
 
 
