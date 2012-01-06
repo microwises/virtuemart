@@ -19,14 +19,16 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access'); ?>
-<?php echo $this->langList; ?>
+<?php echo $this->langList;
+$i=0;
+?>
 <table class="adminform">
 	<tr>
 		<td valign="top">
                     <fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_INFORMATION'); ?></legend>
-			<table width="100%" border="0">
-				<tr class="row0">
+			<table class="adminform">
+				<tr class="row<?php echo $i?>">
 					<td  width="21%" ><div style="text-align:right;font-weight:bold;">
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PUBLISH') ?></div>
 					</td>
@@ -36,7 +38,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						</fieldset>
 					</td>
 				</tr>
-				<tr class="row1">
+				<?php $i = 1 - $i; ?>
+				<tr class="row<?php echo $i?>">
 					<td width="21%" >
 						<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SKU') ?></div>
 					</td>
@@ -44,7 +47,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<input type="text" class="inputbox" name="product_sku" id="product_sku" value="<?php echo $this->product->product_sku; ?>" size="32" maxlength="64" />
 					</td>
 				</tr>
-				<tr class="row0">
+				<?php $i = 1 - $i; ?>
+				<tr class="row<?php echo $i?>">
 					<td width="21%" height="18"><div style="text-align:right;font-weight:bold;">
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME') ?></div>
 					</td>
@@ -52,7 +56,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<input type="text" class="inputbox"  name="product_name" id="product_name" value="<?php echo htmlspecialchars($this->product->product_name); ?>" size="32" maxlength="255" />
 					</td>
 				</tr>
-				<tr class="row0">
+				<?php $i = 1 - $i; ?>
+				<tr class="row<?php echo $i?>">
 					<td width="21%" height="18"><div style="text-align:right;font-weight:bold;">
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_ALIAS') ?></div>
 					</td>
@@ -60,7 +65,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<input type="text" class="inputbox"  name="slug" id="slug" value="<?php echo $this->product->slug; ?>" size="32" maxlength="255" />
 					</td>
 				</tr>
-				<tr class="row1">
+				<?php $i = 1 - $i; ?>
+				<tr class="row<?php echo $i?>">
 					<td width="21%"><div style="text-align:right;font-weight:bold;">
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_URL') ?></div>
 					</td>
@@ -68,29 +74,35 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<input type="text" class="inputbox" name="product_url" value="<?php echo $this->product->product_url; ?>" size="32" maxlength="255" />
 					</td>
 				</tr>
+						<?php $i = 1 - $i; ?>
 			<?php	if(Vmconfig::get('multix','none')!=='none'){ ?>
-				<tr class="row0">
+				<tr class="row<?php echo $i?>">
 					<td width="21%"><div style="text-align:right;font-weight:bold;">
 						<?php echo JText::_('COM_VIRTUEMART_VENDOR') ?></div>
 					</td>
 				<td width="79%">
 					<?php echo $this->lists['vendors'];?>
 				</td>
+				</tr>
+				<?php $i = 1 - $i; ?>
 			<?php } ?>
-			</tr>
+
+
 			<?php if(isset($this->lists['manufacturers'])){?>
-			<tr class="row1">
+			<tr class="row<?php echo $i?>">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">
 					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER') ?></div>
 				</td>
 				<td width="79%">
 					<?php echo $this->lists['manufacturers'];?>
 				</td>
+			</tr>
+			<?php $i = 1 - $i; ?>
 			<?php }?>
-			<tr class="row0">
+			<tr class="row<?php echo $i?>">
 				<td width="29%" valign="top">
 					<div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_CATEGORY_S') ?>:</div>
+					<?php echo JText::_('COM_VIRTUEMART_CATEGORY_S') ?></div>
 				</td>
 				<td width="71%" >
 					<select class="inputbox" id="categories" name="categories[]" multiple="multiple" size="10">
@@ -99,15 +111,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					</select>
 				</td>
 			</tr>
-			<tr class="row1">
-				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_PAGE') ?></div>
-				</td>
-				<td width="79%">
-					<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'value', 'text', $this->product->layout); ?>
-				</td>
-			</tr>
-			<tr class="row1">
+<?php $i = 1 - $i; ?>
+			<tr class="row<?php echo $i?>">
 				<td width="21%" ><div style="text-align:right;font-weight:bold;">
 					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP') ?></div>
 				</td>
@@ -115,7 +120,17 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					<?php echo $this->shoppergroupList; ?>
 				</td>
 			</tr>
-			<tr class="row0">
+<?php $i = 1 - $i; ?>
+			<tr class="row<?php echo $i?>">
+				<td width="21%" ><div style="text-align:right;font-weight:bold;">
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_PAGE') ?></div>
+				</td>
+				<td width="79%">
+					<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'value', 'text', $this->product->layout); ?>
+				</td>
+			</tr>
+			<?php $i = 1 - $i; ?>
+			<tr class="row<?php echo $i?>">
 				<td width="21%" >
 
 				</td>
@@ -131,7 +146,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<fieldset>
 		<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CHILD_PARENT'); ?></legend>
 		<table class="adminform">
-			<tr class="row0">
+			<tr class="row<?php echo $i?>">
 				<td width="29%" ><div style="text-align:right;font-weight:bold;">
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PARENT') ?></div>
 				</td>
@@ -144,7 +159,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
                 ?>
 				</td>
 			</tr>
-			<tr class="row1">
+			<?php $i = 1 - $i; ?>
+			<tr class="row<?php echo $i?>">
 				<td width="21%" valign="top"><div style="text-align:right;font-weight:bold;">
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILD') ?></div>
 				</td>
