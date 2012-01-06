@@ -419,51 +419,53 @@ class VmTable extends JTable{
 				$this->$slugName = $this->$slugAutoName;
 			}
 			$used = true;
-			$change = false;
 			$i = 0;
+			$this->$slugName = JApplication::stringURLSafe($this->$slugName);
+			if (!$this->$slugName = trim(str_replace('-','',$this->$slugName)) );
+			$tbl_key = $this->_tbl_key;
 			while($used && $i<10){
 				$i++;
-	// 			vmdebug('table check use $this->$slugName '.$this->$slugName);
-				if(VmConfig::isJ15()){
-					$this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
-// 					vmdebug('first created ',$this->$slugName);
+			// while($used && $i<10){
+				// $i++;
+				// //vmdebug('table check use $this->$slugName '.$this->$slugName);
+				// if(VmConfig::isJ15()){
+					// $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
+					// //vmdebug('first created ',$this->$slugName);
 
-					if(trim(str_replace('-', '', $this->$slugName)) == '' || $change){
-						$datenow = JFactory::getDate();
-						$this->$slugName = $this->$slugName . $datenow->toFormat("%Y-%m-%d-%H-%M-%S").rand(1,9);
-						vmdebug('changed ',$this->$slugName);
-					}
-				} else {
-					$this->$slugName = JApplication::stringURLSafe($this->$slugName);
-					if (trim(str_replace('-','',$this->$slugName)) == '' || $change) {
-						$this->$slugName = JFactory::getDate()->format('Y-m-d-H-i-s').rand(1,9);
-					}
+					// if(trim(str_replace('-', '', $this->$slugName)) == '' || $change){
+						// $datenow = JFactory::getDate();
+						// $this->$slugName = $this->$slugName . $datenow->toFormat("%Y-%m-%d-%H-%M-%S").rand(1,9);
+						// vmdebug('changed ',$this->$slugName);
+					// }
+				// } else {
+					// $this->$slugName = JApplication::stringURLSafe($this->$slugName);
+					// if (trim(str_replace('-','',$this->$slugName)) == '' || $change) {
+						// $this->$slugName = JFactory::getDate()->format('Y-m-d-H-i-s').rand(1,9);
+					// }
+				// }
+				if( $used && $i==10){
+					if(VmConfig::isJ15()) $this->$slugName = $this->$slugName . $datenow->toFormat("%Y-%m-%d-%H-%M-%S").rand(1,9);
+					else $this->$slugName = $this->$slugName . JFactory::getDate()->format('Y-m-d-H-i-s').rand(1,9);
 				}
-
 				if(in_array($slugAutoName,$this->_translatableFields)){
 					$checkTable = $this->_tbl.'_'.VMLANG;
 				} else {
 					$checkTable = $this->_tbl;
 				}
-				$q = 'SELECT `'.$slugName.'`,`'.$this->_tbl_key.'` FROM `'.$checkTable.'` WHERE `'.$slugName.'` =  "'.$this->$slugName.'" ';
+				$q = 'SELECT `'.$slugName.'` FROM `'.$checkTable.'` WHERE `'.$slugName.'` =  "'.$this->$slugName.'"  AND `'.$this->_tbl_key.'`!='.$this->$tbl_key ;
 				$this->_db->setQuery($q);
-				$existingSlugName =$this->_db->loadAssoc();
+				$existingSlugName =$this->_db->loadResult();
 				if(!empty($existingSlugName)){
-					$tbl_key = $this->_tbl_key;
-// 					vmdebug('hm '.$tbl_key,$existingSlugName,$this->$tbl_key);
-					if($existingSlugName[$this->_tbl_key] == $this->$tbl_key){
-						$change = false;
-						$used = false;
-					} else {
-						$change = true;
-						$used = true;
-					}
+					$this->$slugName = $this->$slugName.rand(1,9);
+					$used = true;
+					$this->setError(get_class($this).' ');
 				} else {
-					$change = false;
 					$used = false;
 				}
 			}
+			if ($used) $this->setError(get_class($this).' slug changed to '.$this->$slugName);
 		}
+
 
 		foreach($this->_obkeys as $obkeys => $error){
 			if(empty($this->$obkeys)){
@@ -1027,6 +1029,7 @@ class VmTable extends JTable{
 		if($this->_translatable){
 
 			$langs = VmConfig::get('active_languages',array()) ;
+			if (!$langs) $langs[]= VMLANG;
 			if(!class_exists('VmTableData'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtabledata.php');
 			foreach($langs as $lang){
 				$lang = strtolower(strtr($lang,'-','_'));
