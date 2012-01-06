@@ -136,8 +136,8 @@ $j15 = VmConfig::isJ15();
 					<?php echo $account; ?>
 				</td>
 				<td class="order">
-					<span><?php echo $this->pagination->orderUpIcon( $i, true, 'orderup', 'Move Up', $ordering ); ?></span>
-					<span><?php echo $this->pagination->orderDownIcon( $i, $n, true, 'orderdown', 'Move Down', $ordering ); ?></span>
+					<span><?php echo $this->pagination->orderUpIcon( $i, true, 'orderup', JText::_('COM_VIRTUEMART_MOVE_UP'), $ordering ); ?></span>
+					<span><?php echo $this->pagination->orderDownIcon( $i, $n, true, 'orderdown', JText::_('COM_VIRTUEMART_MOVE_DOWN'), $ordering ); ?></span>
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 			</td>
 			</tr>

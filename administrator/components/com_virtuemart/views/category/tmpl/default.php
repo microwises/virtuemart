@@ -124,8 +124,8 @@ AdminUIHelper::startAdminArea();
 				*/
 ?>
 				<td align="center" class="order">
-					<span><?php echo $this->pagination->orderUpIcon( $i, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i - 1]]->category_parent_id), 'orderUp', 'Move Up'); ?></span>
-					<span><?php echo $this->pagination->orderDownIcon( $i, $nrows, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i + 1]]->category_parent_id), 'orderDown', 'Move Down'); ?></span>
+					<span><?php echo $this->pagination->orderUpIcon( $i, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i - 1]]->category_parent_id), 'orderUp', JText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
+					<span><?php echo $this->pagination->orderDownIcon( $i, $nrows, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i + 1]]->category_parent_id), 'orderDown', JText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
 					<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $cat->ordering; ?>" style="text-align: center" />
 				</td>
 			</tr>

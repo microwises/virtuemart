@@ -15,12 +15,12 @@
 * other free or open source software licenses.
 * @version $Id$
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');?>
    <table class="adminform">
    <tbody>
-       
+
     <tr class="row1">
       <td width="21%" valign="top" >
         <div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_LENGTH') ?></div>
@@ -42,24 +42,20 @@ defined('_JEXEC') or die('Restricted access');?>
         <div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_HEIGHT') ?></div>
       </td>
       <td width="79%" >
-        <input type="text" class="inputbox"  name="product_height" value="<?php echo $this->product->product_height; ?>" size="15" maxlength="15" /> 
+        <input type="text" class="inputbox"  name="product_height" value="<?php echo $this->product->product_height; ?>" size="15" maxlength="15" />
       </td>
     </tr>
    
-    <tr class="row1">
-      <td width="21%" valign="top" >&nbsp;</td>
-      <td width="79%" >&nbsp;</td>
-    </tr>
     <tr class="row0">
       <td width="21%" valign="top" >
         <div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_WEIGHT') ?></div>
       </td>
       <td width="79%" >
-        <input type="text" class="inputbox"  name="product_weight" size="15" maxlength="15" value="<?php echo $this->product->product_weight; ?>" /> 
+        <input type="text" class="inputbox"  name="product_weight" size="15" maxlength="15" value="<?php echo $this->product->product_weight; ?>" />
         <?php echo " ".$this->lists['product_weight_uom'];?>
       </td>
     </tr>
-    
+
 
     <!-- Changed Packaging - Begin -->
     <tr class="row1">
@@ -79,7 +75,7 @@ defined('_JEXEC') or die('Restricted access');?>
             </strong></div>
       </td>
       <td width="21%" >
-        <input type="text" class="inputbox"  name="product_packaging" value="<?php echo $this->product->product_packaging & 0xFFFF; ?>" size="8" maxlength="32" />&nbsp;<?php       
+        <input type="text" class="inputbox"  name="product_packaging" value="<?php echo $this->product->product_packaging & 0xFFFF; ?>" size="8" maxlength="32" />&nbsp;<?php
         ?>
       </td>
     </tr>
@@ -91,7 +87,7 @@ defined('_JEXEC') or die('Restricted access');?>
                 </span></strong></div>
       </td>
       <td width="21%" >
-        <input type="text" class="inputbox"  name="product_box" value="<?php echo ($this->product->product_packaging>>16)&0xFFFF; ?>" size="8" maxlength="32" />&nbsp; 
+        <input type="text" class="inputbox"  name="product_box" value="<?php echo ($this->product->product_packaging>>16)&0xFFFF; ?>" size="8" maxlength="32" />&nbsp;
       </td>
     </tr>
     <!-- Changed Packaging - End -->

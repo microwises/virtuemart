@@ -150,8 +150,8 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 				<!-- Reorder only when category ID is present -->
 				<?php if( $virtuemart_category_id ) { ?>
 					<td class="order">
-						<span><?php echo $this->pagination->orderUpIcon( $i, true, 'orderup', 'Move Up', $product->ordering ); ?></span>
-						<span><?php echo $this->pagination->orderDownIcon( $i, $total , true, 'orderdown', 'Move Down', $product->ordering ); ?></span>
+						<span><?php echo $this->pagination->orderUpIcon( $i, true, 'orderup', JText::_('COM_VIRTUEMART_MOVE_UP'), $product->ordering ); ?></span>
+						<span><?php echo $this->pagination->orderDownIcon( $i, $total , true, 'orderdown', JText::_('COM_VIRTUEMART_MOVE_DOWN'), $product->ordering ); ?></span>
 						<input class="ordering" type="text" name="order[<?php echo $product->id?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $product->ordering; ?>" style="text-align: center" />
 						<?php // echo vmCommonHTML::getOrderingField( $product->ordering ); ?>
 					</td>

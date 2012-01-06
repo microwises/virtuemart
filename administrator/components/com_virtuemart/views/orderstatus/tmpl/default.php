@@ -88,8 +88,8 @@ $j15 = VmConfig::isJ15();
 					<?php echo JText::_($row->order_status_description); ?>
 				</td>
 				<td align="center" class="order">
-					<span><?php echo $this->pagination->orderUpIcon($i, true, 'orderUp', 'Move Up'); ?></span>
-					<span><?php echo $this->pagination->orderDownIcon( $i, $n, true, 'orderDown', 'Move Down'); ?></span>
+					<span><?php echo $this->pagination->orderUpIcon($i, true, 'orderUp', JText::_('COM_VIRTUEMART_MOVE_UP')); ?></span>
+					<span><?php echo $this->pagination->orderDownIcon( $i, $n, true, 'orderDown', JText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
 					<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $row->ordering; ?>" style="text-align: center" />
 				</td>
 				<td align="center"><?php echo $published; ?></td>
