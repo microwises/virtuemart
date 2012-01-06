@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 					<tr>
 						<td class="key">
 							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT_EXPLAIN'); ?>">
-								<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT') ?>
+								<label for="automatic_shipment"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_SHIPMENT') ?></span>
 							</span>
 						</td>
 						<td>
@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
                                          <tr>
 						<td class="key">
 							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_PAYMENT_EXPLAIN'); ?>">
-								<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_PAYMENt') ?>
+								<label for="automatic_payment"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AUTOMATIC_PAYMENT') ?></span>
 							</span>
 						</td>
 						<td>
@@ -46,7 +46,7 @@ defined('_JEXEC') or die('Restricted access');
 					<tr>
 						<td class="key">
 							<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER_EXPLAIN'); ?>">
-								<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER') ?>
+								<label for="agree_to_tos_onorder"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_AGREE_TERMS_ONORDER') ?></span>
 							</span>
 						</td>
 						<td>

@@ -131,12 +131,12 @@ $i=0;
 			</tr>
 			<?php $i = 1 - $i; ?>
 			<tr class="row<?php echo $i?>">
-				<td width="21%" >
+				<td width="21%" ><div style="text-align:right;font-weight:bold;">
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?></span>
 
 				</td>
 				<td width="79%" >
-					<span style="font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?></span>
+
 					<?php echo VmHTML::checkbox('product_special', $this->product->product_special); ?>
 				</td>
 			</tr>

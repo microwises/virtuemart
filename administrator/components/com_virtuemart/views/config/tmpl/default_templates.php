@@ -357,7 +357,7 @@ defined('_JEXEC') or die('Restricted access');
 			<tr>
 			<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS_TIP'); ?>">
-				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS') ?>
+				<label for="css"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_CSS') ?></label>
 				</span>
 			</td>
 			<td>
@@ -367,7 +367,7 @@ defined('_JEXEC') or die('Restricted access');
 			<tr>
 			<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JQUERY_TIP'); ?>">
-				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JQUERY') ?>
+				<label for="jquery"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JQUERY') ?></label>
 				</span>
 			</td>
 			<td>
@@ -377,7 +377,7 @@ defined('_JEXEC') or die('Restricted access');
 			<tr>
 			<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JPRICE_TIP'); ?>">
-				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JPRICE') ?>
+				<label for="jprice"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JPRICE') ?></label>
 				</span>
 			</td>
 			<td>
@@ -387,7 +387,7 @@ defined('_JEXEC') or die('Restricted access');
 			<tr>
 			<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JSITE_TIP'); ?>">
-				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JSITE') ?>
+				<label for="jsite"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_FRONT_JSITE') ?></label>
 				</span>
 			</td>
 			<td>

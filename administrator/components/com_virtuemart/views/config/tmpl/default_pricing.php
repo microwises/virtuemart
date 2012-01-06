@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ACCESS_LEVEL_TIP'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ACCESS_LEVEL') ?>
+			    <label for="price_access_level_published"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ACCESS_LEVEL') ?></label>
 			    </span>
 			</td>
 			<td>
@@ -52,7 +52,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL_TIP'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL'); ?>
+			    <label for="price_show_packaging_pricelabel"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_PACKAGING_PRICELABEL'); ?>
 			    </span>
 			</td>
 			<td>
@@ -62,7 +62,7 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_TAX_TIP'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_TAX'); ?>
+			    <label for="show_tax"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_SHOW_TAX'); ?>
 			    </span>
 			</td>
 			<td>
@@ -80,7 +80,7 @@ defined('_JEXEC') or die('Restricted access');
 			<tr>
 			<td class="key">
 			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES_EXPLAIN'); ?>">
-			    <?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES') ?>
+			    <label for="show_prices"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOW_PRICES') ?></label>
 			    </span>
 			</td>
 			<td>

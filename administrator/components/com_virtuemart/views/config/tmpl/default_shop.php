@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 	    <td class="key">
 		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE_TIP'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE',false); ?>
+		<label for="shop_is_offline"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SHOP_OFFLINE',false); ?></span>
 		</span>
 	    </td>
 	    <td>
@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 	    <td class="key">
 		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_USE_ONLY_AS_CATALOGUE_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_USE_ONLY_AS_CATALOGUE') ?>
+		<label for="use_as_catalog"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_USE_ONLY_AS_CATALOGUE') ?>
 		</span>
 	    </td>
 	    <td>
@@ -89,7 +89,7 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 	<td class="key">
 		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SSL_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SSL') ?>
+		<label for="useSSL"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_SSL') ?></span>
 		</span>
 		</td>
 		<td>
@@ -110,7 +110,7 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 	<td class="key">
 		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS') ?>
+		<label for="dangeroustools"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS') ?></span>
 		</span>
 		</td>
 		<td>
@@ -138,7 +138,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<td class="key">
 		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_GOOGLE_JQUERY_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_GOOGLE_JQUERY') ?>
+		<label for="google_jquery"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_GOOGLE_JQUERY') ?></span>
 		</span>
 		</td>
 		<td>
@@ -149,7 +149,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<td class="key">
 		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_CONTENT_PLUGIN_EXPLAIN'); ?>">
-		<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_CONTENT_PLUGIN') ?>
+		<label for="enable_content_plugin"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_CONTENT_PLUGIN') ?></span>
 		</span>
 		</td>
 		<td>
