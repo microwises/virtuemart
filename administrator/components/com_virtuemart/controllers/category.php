@@ -47,7 +47,7 @@ class VirtuemartControllerCategory extends VmController {
 		//$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
 
 		$view->setLayout('edit');
-print_r($view);
+
 		/* Now display the view. */
 		$view->display();
 	}

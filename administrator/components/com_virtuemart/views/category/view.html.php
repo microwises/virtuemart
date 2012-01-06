@@ -35,14 +35,10 @@ class VirtuemartViewCategory extends VmView {
 
 	function display($tpl = null) {
 
-		// Load the helper(s)
-
-
 		$this->loadHelper('html');
-		//		$this->loadHelper('image');
 
 		$model = $this->getModel();
-		$layoutName = JRequest::getWord('layout', 'default');
+		$layoutName = $this->getLayout();
 
 		if ($layoutName == 'edit') {
 
@@ -50,11 +46,8 @@ class VirtuemartViewCategory extends VmView {
 
 			if (isset($category->category_name)) $name = $category->category_name; else $name ='';
 			$this->SetViewTitle('CATEGORY',$name);
-	
 
 
-
-	
 			$model->addImages($category);
 
 			if ( $category->virtuemart_category_id > 1 ) {
@@ -87,16 +80,9 @@ class VirtuemartViewCategory extends VmView {
 		else {
 			$this->SetViewTitle('CATEGORY_S');
 
-			/**
-			 * Commented out for future use
-			 JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('COM_VIRTUEMART_CATEGORY_SHARE'), true);
-			 JToolBarHelper::custom('toggleShared', 'icon-32-new', '', JText::_('COM_VIRTUEMART_CATEGORY_UNSHARE'), true);
-			 */
-
-// 			$keyWord = JRequest::
 			$keyWord ='';
 			$categories = $model->getCategoryTree(0,0,false);
-// 			vmdebug('$categories',$categories);
+
 			$this->assignRef('categories', $categories);
 
 			$this->assignRef('model',	$model);

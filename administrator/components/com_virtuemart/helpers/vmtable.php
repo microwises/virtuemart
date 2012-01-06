@@ -1050,9 +1050,9 @@ class VmTable extends JTable{
 
 		$query = 'SELECT `'.$this->_tbl_key.'` FROM `'.$table.'` WHERE '.$whereKey.' = "' .$this->$k . '"';
 		$this->_db->setQuery( $query );
-		vmdebug('checkAndDelete',$query);
+// 		vmdebug('checkAndDelete',$query);
 		$list = $this->_db->loadResultArray();
-		vmdebug('checkAndDelete',$list);
+// 		vmdebug('checkAndDelete',$list);
 		if($list){
 
 			foreach($list as $row){

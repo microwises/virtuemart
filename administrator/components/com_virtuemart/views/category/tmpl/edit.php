@@ -29,7 +29,7 @@ $editor = JFactory::getEditor();
 <?php // Loading Templates in Tabs
 AdminUIHelper::buildTabs ( array (	'categoryform' 	=> 	'COM_VIRTUEMART_CATEGORY_FORM_LBL',
 									'images' 	=> 	'COM_VIRTUEMART_IMAGE_S'
-									 ),$this->_models['category']->_id );
+									 ),$this->category->virtuemart_category_id );
 ?>
 	<input type="hidden" name="virtuemart_category_id" value="<?php echo $this->category->virtuemart_category_id; ?>" />
 
