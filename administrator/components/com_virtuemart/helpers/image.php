@@ -17,22 +17,6 @@ if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'
 
 class VmImage extends VmMediaHandler {
 
-	function addMediaActionByType(){
-
-		parent::addMediaActionByType();
-		if( function_exists('imagecreatefromjpeg')){
-			$this->addMediaAction('create_thumb','COM_VIRTUEMART_FORM_MEDIA_CREATE_THUMBNAIL');
-		}
-	}
-
-/*	function addMediaAttributesByType(){
-
-		parent::addMediaAttributesByType();
-		if(!$this->setRole){
-// 			This attribute indicates, that the FileHandler should show the file as image, other files will only show a thumbnail
-// 			$this->addMediaAttributes('file_is_product_image','COM_VIRTUEMART_FORM_MEDIA_PRODUCT_IMAGE');
-		}
-	}*/
 
 	function processAction($data){
 
@@ -185,21 +169,4 @@ class VmImage extends VmMediaHandler {
 	}
 
 }
-
-/**
-*
-* @version $Id$
-* @package VirtueMart
-* @subpackage classes
-* @copyright Copyright (C) 2004-2007 soeren - All rights reserved.
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
-* VirtueMart is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
-*
-* http://virtuemart.org
-*/
-
 

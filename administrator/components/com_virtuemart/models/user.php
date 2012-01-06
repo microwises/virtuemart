@@ -54,6 +54,8 @@ class VirtueMartModelUser extends VmModel {
 		$this->setToggleName('user_is_vendor');
 		$this->addvalidOrderingFieldName(array('ju.username','ju.name','sg.virtuemart_shoppergroup_id','shopper_group_name','shopper_group_desc') );
 		array_unshift($this->_validOrderingFieldName,'ju.id');
+		$user = JFactory::getUser();
+		$this->_id = $user->id;
 	}
 
 	/**
@@ -93,10 +95,14 @@ class VirtueMartModelUser extends VmModel {
 
 	public function setUserId($id){
 
-	    if($this->_id!=$id){
-			$this->_id = (int)$id;
-			$this->_data = null;
-    	}
+		$app = JFactory::getApplication();
+		if($app->isAdmin()){
+			if($this->_id!=$id){
+				$this->_id = (int)$id;
+				$this->_data = null;
+			}
+		}
+
 	}
 
 	/**
@@ -653,11 +659,12 @@ class VirtueMartModelUser extends VmModel {
 		return $data;
 	}
 
-	function getBTuserinfo_id(){
+	function getBTuserinfo_id($id = 0){
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
-		$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'" AND `address_type`="BT" ';
-		$this->_db->setQuery($q);
+		if($id == 0) $id = $this->_id;
+		$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' .(int)$id .'" AND `address_type`="BT" ';
+		$this->_db->setQuery($q);vmdebug('getBTuserinfo_id '.$q);
 		return $this->_db->loadResult();
 	}
 

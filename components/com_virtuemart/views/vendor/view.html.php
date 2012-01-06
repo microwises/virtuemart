@@ -37,14 +37,6 @@ define('__VM_USER_USE_SLIDERS', 0);
  */
 class VirtuemartViewVendor extends JView {
 
-    private $_model;
-    private $_currentUser = 0;
-    private $_cuid = 0;
-    private $_userDetails = 0;
-    private $_userFieldsModel = 0;
-    private $_userInfoID = 0;
-    private $_list = 0;
-
     /**
      * Displays the view, collects needed data for the different layouts
      *
@@ -60,24 +52,78 @@ class VirtuemartViewVendor extends JView {
 		$document = JFactory::getDocument();
 
 		$layoutName = $this->getLayout();
-		$task = JRequest::getWord('task');
-
-
-
+// 		$task = JRequest::getWord('task');
+		vmdebug('Huhuh',$layoutName);
 		if (!class_exists('VirtuemartModelVendor'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 		$model = new VirtuemartModelVendor();
+		$virtuemart_vendor_id = JRequest::getInt('virtuemart_vendor_id');
 
-		if ($task == 'default' or !JRequest::getInt('virtuemart_vendor_id') ) { // tos or details
+		if ($layoutName == 'default' or !$virtuemart_vendor_id ) { // tos or details
 			$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_LIST') );
 			$vendors = $model->getVendors();
 			$this->assignRef('vendors', $vendors);
 
-		} else { //list
-		
+		} else if ($layoutName=='tos') {
+			$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_TOS') );
+
 			$vendor = $model->getVendor();
-			$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_DETAILS') );
+			$model->addImages($vendor);
+
 			$this->assignRef('vendor', $vendor);
+
+			$userId = $model->getUserIdByVendorId($virtuemart_vendor_id);
+			vmdebug('$vendorDetails',$userId);
+
+			if (!class_exists('VirtuemartModelser')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
+			$usermodel = new VirtuemartModelUser();
+
+			$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);vmdebug('$virtuemart_userinfo_id',$virtuemart_userinfo_id);
+			$userFields = $usermodel->getUserInfoInUserFields($layoutName, 'BT', $virtuemart_userinfo_id);
+			$this->assignRef('userFields', $userFields);
+
+		} else if ($layoutName=='contact') {
+			$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_DETAILS') );
+
+			$vendor = $model->getVendor();
+			$model->addImages($vendor);
+
+			$this->assignRef('vendor', $vendor);
+
+			$userId = $model->getUserIdByVendorId($virtuemart_vendor_id);
+			vmdebug('$vendorDetails',$userId);
+
+			if (!class_exists('VirtuemartModelser')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
+			$usermodel = new VirtuemartModelUser();
+
+			$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);vmdebug('$virtuemart_userinfo_id',$virtuemart_userinfo_id);
+			$userFields = $usermodel->getUserInfoInUserFields($layoutName, 'BT', $virtuemart_userinfo_id);
+			$this->assignRef('userFields', $userFields);
+
+// 			if ($userDetails->user_is_vendor) {
+// 				$currencymodel = $this->getModel('currency', 'VirtuemartModel');
+// 				$currencies = $currencymodel->getCurrencies();
+// 				$this->assignRef('currencies', $currencies);
+// 			}
+
+		}  else if ($layoutName=='details') {
+
+			$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_DETAILS') );
+
+			$vendor = $model->getVendor();
+			$model->addImages($vendor);
+
+			$this->assignRef('vendor', $vendor);
+
+			$userId = $model->getUserIdByVendorId($virtuemart_vendor_id);
+			vmdebug('$vendorDetails',$userId);
+
+			if (!class_exists('VirtuemartModelser')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
+			$usermodel = new VirtuemartModelUser();
+
+			$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);vmdebug('$virtuemart_userinfo_id',$virtuemart_userinfo_id);
+			$userFields = $usermodel->getUserInfoInUserFields($layoutName, 'BT', $virtuemart_userinfo_id);
+			$this->assignRef('userFields', $userFields);
 		}
 
 		parent::display($tpl);

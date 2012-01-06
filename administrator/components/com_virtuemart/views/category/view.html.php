@@ -47,7 +47,6 @@ class VirtuemartViewCategory extends VmView {
 			if (isset($category->category_name)) $name = $category->category_name; else $name ='';
 			$this->SetViewTitle('CATEGORY',$name);
 
-
 			$model->addImages($category);
 
 			if ( $category->virtuemart_category_id > 1 ) {

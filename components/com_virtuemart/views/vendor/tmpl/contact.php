@@ -32,10 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="vendor-image">
 		<?php echo $this->vendorImage; ?>
 		</div>
-	<?php
-	}
-
- echo $this->vendor->vendor_store_desc;
+	<?php }
 
 	foreach($this->userFields as $userfields){
 
@@ -53,7 +50,16 @@ defined('_JEXEC') or die('Restricted access');
 			}
 		}
 	}
-	?>
+
+		$link = JROUTE::_('index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id);
+
+		?>
+		<a href="<?php echo $link;  ?>">
+		<?php echo JText::_('MOD_VIRTUEMART_VENDOR_DETAIL');
+
+				echo $this->vendor->images[0]->displayMediaThumb('',false);
+		?>
+			</a>
 
 	<br style='clear:both;' />
 
