@@ -78,9 +78,19 @@ class VirtueMartViewProductdetails extends JView {
 
 		$product = $product_model->getProduct($virtuemart_product_id);
 
-		foreach($product->customfields as $custom){
-			vmdebug('my product $custom layout_pos',$custom->layout_pos);
+// 		vmSetStartTime('customs');
+// 		for($k=0;$k<count($product->customfields);$k++){
+// 			$custom = $product->customfields[$k];
+		foreach($product->customfields as $k =>$custom){
+			if(!empty($custom->layout_pos)){
+				$product->customfieldsSorted[$custom->layout_pos][] = $custom;
+				unset($product->customfields[$k]);
+			}
 		}
+		$product->customfieldsSorted['normal'] = $product->customfields;
+		unset($product->customfields);
+// 		vmTime('Customs','customs');
+// 		vmdebug('my second $product->customfields',$product->customfields);
 
 		if(empty($product->slug)){
 

@@ -95,7 +95,29 @@ if (empty ( $this->product )) {
 		<?php /** @todo Test if content plugins modify the product description */
 		echo $this->product->product_s_desc; ?>
 	</div>
-	<?php } // Product Short Description END ?>
+	<?php } // Product Short Description END
+
+
+	if (!empty($this->product->customfieldsSorted['ontop'])) { ?>
+	<div class="product-fields">
+	<?php
+	$custom_title = null ;
+	foreach ($this->product->customfieldsSorted['ontop'] as $field){
+		if ($field->display) {
+			?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
+			<?php if ($field->custom_title != $custom_title) { ?>
+				<span class="product-fields-title" ><?php echo JText::_($field->custom_title); ?></span>
+				<?php if ($field->custom_tip) echo JHTML::tooltip($field->custom_tip,  JText::_($field->custom_title), 'tooltip.png');
+			} ?>
+			<span class="product-field-display"><?php echo $field->display ?></span>
+			<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?></span>
+			</div>
+			<?php
+			$custom_title = $field->custom_title;
+		}
+	} ?>
+	</div>
+<?php } // Product Custom ontop end ?>
 
 	<div>
 		<div class="width50 floatleft">
@@ -108,7 +130,7 @@ if (empty ( $this->product )) {
 		<?php } // Product Main Image END ?>
 
 		<?php // Showing The Additional Images
-		// if(!empty($this->product->images) && count($this->product->images)>1) { 
+		// if(!empty($this->product->images) && count($this->product->images)>1) {
 		if(!empty($this->product->images) ) { ?>
 			<div class="additional-images">
 			<?php // List all Images
@@ -163,7 +185,7 @@ if (empty ( $this->product )) {
 				echo $this->currency->createPriceDiv ( 'discountAmount', 'COM_VIRTUEMART_PRODUCT_DISCOUNT_AMOUNT', $this->product->prices );
 				echo $this->currency->createPriceDiv ( 'taxAmount', 'COM_VIRTUEMART_PRODUCT_TAX_AMOUNT', $this->product->prices ); ?>
 				</div>
-				<?php } 
+				<?php }
 ?>
 
 				<?php // Add To Cart Button
@@ -309,11 +331,11 @@ if (empty ( $this->product )) {
 	</div>
 	<?php } // Product Description END
 
-	if (!empty($this->product->customfields)) { ?>
+	if (!empty($this->product->customfieldsSorted['normal'])) { ?>
 	<div class="product-fields">
 	<?php
 	$custom_title = null ;
-	foreach ($this->product->customfields as $field){
+	foreach ($this->product->customfieldsSorted['normal'] as $field){
 		if ($field->display) {
 			?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
 			<?php if ($field->custom_title != $custom_title) { ?>
