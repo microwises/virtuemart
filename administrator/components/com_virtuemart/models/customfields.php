@@ -206,6 +206,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		// change input by type
 		$html .= VmHTML::row('input','COM_VIRTUEMART_DEFAULT','custom_value',$datas->custom_value);
 		$html .= VmHTML::row('input','COM_VIRTUEMART_CUSTOM_TIP','custom_tip',$datas->custom_tip);
+		$html .= VmHTML::row('input','COM_VIRTUEMART_LAYOUT_POS','layout_pos',$datas->layout_pos);
+
 		$html .= VmHTML::row('select','COM_VIRTUEMART_CUSTOM_PARENT','custom_parent_id',$this->getParentList($datas->virtuemart_custom_id),  $datas->custom_parent_id,'');
 		//$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_PARENT','custom_parent_id',$this->getCustomsList(),  $datas->custom_parent_id,'');
 		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$datas->published);
@@ -456,7 +458,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	}
      public function getProductCustomsField($product) {
 
-		$query='SELECT C.`virtuemart_custom_id` , `custom_element`, `custom_params`, `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden` , C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`, field.`custom_param`, field.`custom_price`, field.`ordering`
+		$query='SELECT C.`virtuemart_custom_id` , `custom_element`, `custom_params`, `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_hidden`, `layout_pos`, C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`, field.`custom_param`, field.`custom_price`, field.`ordering`
 			FROM `#__virtuemart_customs` AS C
 			LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
 			Where `virtuemart_product_id` ='.(int)$product->virtuemart_product_id.' and `field_type` != "G" and `field_type` != "R" and `field_type` != "Z"';
@@ -475,7 +477,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 				}
 				else {
-					$field->display = $this->displayType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
+					$field->display = $this->displayType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row,0,$field->virtuemart_custom_id);
 				}
 				$row++ ;
 			}
@@ -494,7 +496,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		if ($productCustoms = $this->_db->loadObjectList()) {
 			$row= 0 ;
 			foreach ($productCustoms as & $field ) {
-				$field->display = $this->displayType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
+				$field->display = $this->displayType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row,0);
 				$row++ ;
 			}
 			return $productCustoms;
@@ -512,7 +514,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		if ($productCustoms = $this->_db->loadObjectList()) {
 			$row= 0 ;
 			foreach ($productCustoms as & $field ) {
-				$field->display = $this->displayType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row);
+				$field->display = $this->displayType($field->custom_value,$field->field_type,$field->is_list,$field->custom_price,$row,0);
 				$row++ ;
 			}
 			return $productCustoms;
@@ -604,7 +606,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					foreach ($group->options as $productCustom) {
 						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
 						else  $price = $free ;
-						$group->display .= '<input id="'.$productCustom->value.'" '.$checked.' type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($productCustom->custom_value,$group->field_type,0,'',$row).': '.$price.'</label>' ;
+						$group->display .= '<input id="'.$productCustom->value.'" '.$checked.' type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($productCustom->custom_value,$group->field_type,0,'',$row,1).': '.$price.'</label>' ;
 						$checked ='';
 					}
 				}
@@ -619,20 +621,30 @@ class VirtueMartModelCustomfields extends VmModel {
   * Formating front display by roles
   *  for product only !
   */
-	public function displayType($value,$type,$is_list=0,$price = 0,$row=''){
+	public function displayType($value,$type,$is_list=0,$price = 0,$row='',$is_cart = 0,$virtuemart_custom_id = 0){
 
-			if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-			$currency = CurrencyDisplay::getInstance();
+		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+		$currency = CurrencyDisplay::getInstance();
 
-			if ($is_list>0) {
-			$options = array();
+		if ($is_list>0) {
 			$values = explode(';',$value);
+			if($is_cart!=0){
+				$options = array();
 
-			foreach ($values as $key => $val){
-				$options[] = array( 'value' => $val ,'text' =>$val);
+
+				foreach ($values as $key => $val){
+					$options[] = array( 'value' => $val ,'text' =>$val);
+				}
+				return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]',null,'value','text',false,true);
+			} else {
+				$html = '';
+				foreach ($values as $key => $val){
+					$html .= '<div id="custom_'.$virtuemart_custom_id.'_'.$val.'" >'.$val.'</div>';
+				}
+				$html .= '<br />';
+				return $html;
 			}
 
-			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]',null,'value','text',false,true);
 		} else {
 			if ($price > 0){
 
@@ -849,7 +861,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				if ($item->productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id ) ) {
 // vmdebug('$param',$param);
 					if ($item->productCustom->field_type == "E") {
- 
+
 
 					} elseif (($item->productCustom->field_type == "G")) {
 						$child = self::getChild($item->productCustom->value);

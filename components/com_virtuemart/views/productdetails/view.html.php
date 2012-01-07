@@ -78,6 +78,10 @@ class VirtueMartViewProductdetails extends JView {
 
 		$product = $product_model->getProduct($virtuemart_product_id);
 
+		foreach($product->customfields as $custom){
+			vmdebug('my product $custom layout_pos',$custom->layout_pos);
+		}
+
 		if(empty($product->slug)){
 
 			//Todo this should be redesigned to fit better for SEO

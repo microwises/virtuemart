@@ -283,6 +283,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   `is_list` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'list of values',
   `is_hidden` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1:hidden',
   `is_cart_attribute` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Add attributes to cart',
+  `layout_pos` char(24) COMMENT 'Layout Position',
   `custom_params` text,
   `shared` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'valide for all vendors?',
   `published` tinyint(1) NOT NULL DEFAULT '1',
@@ -294,7 +295,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_custom_id`),
-    KEY `idx_custom_plugin_virtuemart_vendor_id` (`virtuemart_vendor_id`),
+	KEY `idx_custom_plugin_virtuemart_vendor_id` (`virtuemart_vendor_id`),
   KEY `idx_custom_plugin_element` (`custom_element`),
   KEY `idx_custom_plugin_ordering` (`ordering`),
   KEY `idx_custom_parent_id` (`custom_parent_id`)
