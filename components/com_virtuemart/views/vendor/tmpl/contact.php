@@ -97,7 +97,7 @@ defined('_JEXEC') or die('Restricted access');
 				</div>
 
 				<input type="hidden" name="tmpl" value="component" />
-				<input type="hidden" name="view" value="productdetails" />
+				<input type="hidden" name="view" value="vendor" />
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="hidden" name="task" value="mailAskquestion" />
 				<?php echo JHTML::_( 'form.token' ); ?>

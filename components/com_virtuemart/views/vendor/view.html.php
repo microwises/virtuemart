@@ -63,7 +63,8 @@ class VirtuemartViewVendor extends JView {
 			$this->assignRef('vendors', $vendors);
 
 		} else {
-			$vendor = $model->getVendor();
+
+			$vendor = $model->getVendor($virtuemart_vendor_id);
 			$model->addImages($vendor);
 
 			$this->assignRef('vendor', $vendor);
