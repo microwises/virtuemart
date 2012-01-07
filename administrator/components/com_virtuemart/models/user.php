@@ -54,8 +54,8 @@ class VirtueMartModelUser extends VmModel {
 		$this->setToggleName('user_is_vendor');
 		$this->addvalidOrderingFieldName(array('ju.username','ju.name','sg.virtuemart_shoppergroup_id','shopper_group_name','shopper_group_desc') );
 		array_unshift($this->_validOrderingFieldName,'ju.id');
-		$user = JFactory::getUser();
-		$this->_id = $user->id;
+// 		$user = JFactory::getUser();
+// 		$this->_id = $user->id;
 	}
 
 	/**

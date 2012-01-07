@@ -21,10 +21,15 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <div class="vendor-details-view">
-	<h1><?php echo $this->vendor->vendor_store_name; ?></h1>
-	<h3><?php echo $this->vendor->vendor_name; ?></h3>
+	<h1><?php echo $this->vendor->vendor_store_name;
+	if (!empty($this->vendor->images[0])) { ?>
+		<div class="vendor-image">
+		<?php echo $this->vendor->images[0]->displayMediaThumb('',false); ?>
+		</div>
+	<?php
+	}
+?>	</h1></div>
 
-	<div class="spacer">
 
 	<?php // vendor Description
 	if(!empty($this->vendor->vendor_terms_of_service  )) { ?>
@@ -34,28 +39,15 @@ defined('_JEXEC') or die('Restricted access');
 	<?php } ?>
 
 	<div class="clear"></div>
-	</div>
-</div>
 
-	<?php
-		$link = JROUTE::_('index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id);
-
-		?>
-		<a href="<?php echo $link;  ?>">
-		<?php echo JText::_('MOD_VIRTUEMART_VENDOR_DETAIL');
-
-				echo $this->vendor->images[0]->displayMediaThumb('',false);
-		?>
-			</a>
 
 	<br style='clear:both;' />
+	<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=vendor&task=details&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id);  ?>">
+	<?php echo JText::_('MOD_VIRTUEMART_VENDOR_DETAIL');  ?>
+	</a>
+	<br style='clear:both;' />
 
-	<?php
-		$link = JROUTE::_('index.php?option=com_virtuemart&view=vendor&task=contact&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id);
-		?>
-			<a href="<?php echo $link; ?>"><?php echo JText::_('MOD_VIRTUEMART_VENDOR_CONTACT'); ?>	</a>
-
-		<?php
-	?>
-
+	<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=vendor&task=contact&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id);  ?>">
+	<?php echo JText::_('MOD_VIRTUEMART_VENDOR_CONTACT'); ?>
+	</a>
 	<br style='clear:both;' />

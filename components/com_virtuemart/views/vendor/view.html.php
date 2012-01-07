@@ -63,15 +63,6 @@ class VirtuemartViewVendor extends JView {
 			$this->assignRef('vendors', $vendors);
 
 		} else {
-			if ($layoutName=='tos') {
-				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_TOS') );
-			}
-			if ($layoutName=='contact') {
-				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_CONTACT') );
-			}
-			if ($layoutName=='details') {
-				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_DETAILS') );
-			}
 			$vendor = $model->getVendor();
 			$model->addImages($vendor);
 
@@ -82,9 +73,23 @@ class VirtuemartViewVendor extends JView {
 			if (!class_exists('VirtuemartModelser')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
 			$usermodel = new VirtuemartModelUser();
 
-			$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);vmdebug('$virtuemart_userinfo_id',$virtuemart_userinfo_id);
+			$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
 			$userFields = $usermodel->getUserInfoInUserFields($layoutName, 'BT', $virtuemart_userinfo_id);
 			$this->assignRef('userFields', $userFields);
+
+			if ($layoutName=='tos') {
+				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_TOS') );
+			}
+			if ($layoutName=='contact') {
+				$user = JFactory::getUser();
+				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_CONTACT') );
+				$this->assignRef('user', $user);
+
+			}
+			if ($layoutName=='details') {
+				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_DETAILS') );
+			}
+
 
 		}
 

@@ -22,19 +22,16 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <div class="vendor-details-view">
-	<h1><?php echo $this->vendor->vendor_store_name; ?></h1>
-	<h3><?php echo $this->vendor->vendor_name; ?></h3>
-
-	<div class="spacer">
-
-	<?php // vendor Image
-	if (!empty($this->vendorImage)) { ?>
+	<h1><?php echo $this->vendor->vendor_store_name;
+	if (!empty($this->vendor->images[0])) { ?>
 		<div class="vendor-image">
-		<?php echo $this->vendorImage; ?>
+		<?php echo $this->vendor->images[0]->displayMediaThumb('',false); ?>
 		</div>
-	<?php }
+	<?php
+	}
+?>	</h1></div>
 
-	foreach($this->userFields as $userfields){
+<?php	foreach($this->userFields as $userfields){
 
 		foreach($userfields['fields'] as $item){
 			if(!empty($item['value'])){
@@ -51,24 +48,75 @@ defined('_JEXEC') or die('Restricted access');
 		}
 	}
 
-		$link = JROUTE::_('index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id);
 
-		?>
-		<a href="<?php echo $link;  ?>">
-		<?php echo JText::_('MOD_VIRTUEMART_VENDOR_DETAIL');
 
-				echo $this->vendor->images[0]->displayMediaThumb('',false);
-		?>
-			</a>
 
+	$min = VmConfig::get('vm_asks_minimum_comment_length', 50);
+	$max = VmConfig::get('vm_asks_maximum_comment_length', 2000) ;
+	vmJsApi::JvalideForm();
+	$document = JFactory::getDocument();
+	// $document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery.validation.js');
+	$document->addScriptDeclaration('
+		jQuery(function($){
+				$("#askform").validationEngine("attach");
+				$("#comment").keyup( function () {
+					var result = $(this).val();
+						$("#counter").val( result.length );
+				});
+		});
+	');
+?>
+
+		<h3><?php echo JText::_('COM_VIRTUEMART_VENDOR_ASK_QUESTION')  ?></h3>
+
+		<div class="clear"></div>
+
+		<div class="form-field">
+
+			<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id='.$this->vendor->virtuemart_vendor_id.'&tmpl=component') ; ?>" name="askform" id="askform">
+
+				<label><?php echo JText::_('COM_VIRTUEMART_USER_FORM_NAME')  ?> : <input type="text" class="validate[required,minSize[4],maxSize[64]]" value="<?php echo $this->user->name ?>" name="name" id="name" size="30"  validation="required name"/></label>
+				<br />
+				<label><?php echo JText::_('COM_VIRTUEMART_USER_FORM_EMAIL')  ?> : <input type="text" class="validate[required,custom[email]]" value="<?php echo $this->user->email ?>" name="email" id="email" size="30"  validation="required email"/></label>
+				<br/>
+				<label>
+					<?php
+					$ask_comment = JText::sprintf('COM_VIRTUEMART_ASK_COMMENT', $min, $max);
+					echo $ask_comment;
+					?>
+					<br />
+					<textarea title="<?php echo $ask_comment ?>" class="validate[required,minSize[<?php echo $min ?>],maxSize[<?php echo $max ?>]] field" id="comment" name="comment" rows="10"></textarea>
+				</label>
+				<div class="submit">
+					<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo JText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" />
+
+					<div class="width50 floatright right paddingtop">
+						<?php echo JText::_('COM_VIRTUEMART_ASK_COUNT')  ?>
+						<input type="text" value="0" size="4" class="counter" ID="counter" name="counter" maxlength="4" readonly="readonly" />
+					</div>
+				</div>
+
+				<input type="hidden" name="tmpl" value="component" />
+				<input type="hidden" name="view" value="productdetails" />
+				<input type="hidden" name="option" value="com_virtuemart" />
+				<input type="hidden" name="task" value="mailAskquestion" />
+				<?php echo JHTML::_( 'form.token' ); ?>
+			</form>
+
+		</div>
+
+	</div>
+
+
+
+ <?php //Standard Links ?>
+	<br style='clear:both;' />
+	<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=vendor&task=details&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id);  ?>">
+	<?php echo JText::_('MOD_VIRTUEMART_VENDOR_DETAIL');  ?>
+	</a>
 	<br style='clear:both;' />
 
-	<?php
-		$link = JROUTE::_('index.php?option=com_virtuemart&view=vendor&task=contact&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id);
-		?>
-			<a href="<?php echo $link; ?>"><?php echo JText::_('MOD_VIRTUEMART_VENDOR_CONTACT'); ?>	</a>
-
-		<?php
-	?>
-
+	<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=vendor&task=tos&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id);  ?>">
+	<?php echo JText::_('MOD_VIRTUEMART_VENDOR_TOS'); ?>
+	</a>
 	<br style='clear:both;' />
