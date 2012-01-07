@@ -117,7 +117,6 @@ $productfileslist = $this->files;
 	</tfoot>
 	</table>
 <!-- Hidden Fields -->
-<input type="hidden" name="task" value="" />
 <?php if (JRequest::getInt('virtuemart_product_id', false)) { ?>
 	<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
 <?php } ?>
