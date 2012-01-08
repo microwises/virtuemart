@@ -76,7 +76,7 @@ class VirtuemartViewMedia extends VmView {
 			$this->assignRef('files',	$files);
 
 			JToolBarHelper::customX('synchronizeMedia', 'new', 'new', JText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'),false);
-			$this->addStandardDefaultViewCommands(false);
+			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model,null,null,'searchMedia');
 			$options = array( '' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'),
 				'product' => JText::_('COM_VIRTUEMART_PRODUCT'),

@@ -116,8 +116,15 @@ class VmImage extends VmMediaHandler {
 		$bggreen = 255;
 		$bgblue = 255;
 
-		$rel_path = str_replace('/',DS,$this->file_url_folder);
-		$fullSizeFilenamePath = JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
+		$root = '';
+		if($this->file_is_forSale==0){
+
+			$rel_path = str_replace('/',DS,$this->file_url_folder);
+			$fullSizeFilenamePath = JPATH_ROOT.DS.$rel_path.$this->file_name.'.'.$this->file_extension;
+		} else {
+			$rel_path = str_replace('/',DS,$this->file_url_folder);
+			$fullSizeFilenamePath = $this->file_url_folder.$this->file_name.'.'.$this->file_extension;
+		}
 
 		$this->file_name_thumb = $this->createThumbName();
 		$file_path_thumb = str_replace('/',DS,$this->file_url_folder_thumb);

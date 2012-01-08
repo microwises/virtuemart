@@ -96,13 +96,16 @@ class VmMediaHandler {
 			//$relUrl = VmConfig::get('media_path');
 			$relUrl = 'images/stories/virtuemart/';
 			$this->setRole=true;
-		} else if(!$choosed && empty($relUrl)){
+// 		} else if(!$choosed and empty($relUrl) and $this->file_is_forSale==0){
+		} else if(!$choosed and empty($relUrl) ){
 			vmError('Ignore this message, when it appears while the media synchronisation process, else report to http://forum.virtuemart.net/index.php?board=127.0 : cant create media of unknown type, a programmers error, used type ',$type);
 
 			//$relUrl = VmConfig::get('media_path');
 			$relUrl = 'images/stories/virtuemart/';
 			$this->setRole=true;
 
+		} else if( $this->file_is_forSale==0){
+			$relUrl = '';
 		}
 
 		return $relUrl;
@@ -191,9 +194,17 @@ class VmMediaHandler {
 	 */
 	function setFileInfo($type=0){
 
-		$this->file_url_folder = $this->getMediaUrlByView($type);
-		$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
-		$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
+		if($this->file_is_forSale==0){
+			$this->file_url_folder = $this->getMediaUrlByView($type);
+			$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
+			$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
+
+		} else {
+			$this->file_path_folder = VmConfig::get('forSale_path');
+			$this->file_url_folder = $this->file_path_folder;//str_replace(DS,'/',$this->file_path_folder);
+			$this->file_url_folder_thumb = VmConfig::get('forSale_path_thumb');
+
+		}
 
 		//Clean from possible injection
 		while(strpos($this->file_path_folder,'..')!==false){
@@ -201,6 +212,7 @@ class VmMediaHandler {
 		};
 		$this->file_path_folder  = preg_replace('#[/\\\\]+#', DS, $this->file_path_folder);
 
+		vmdebug('setFileInfo',$this->file_url,$this->file_url_folder);
 		if(empty($this->file_url)){
 			$this->file_url = $this->file_url_folder;
 			$this->file_name = '';
@@ -216,7 +228,12 @@ class VmMediaHandler {
 				$this->file_name = JFile::stripExt($name);
 
 				//Ensure using right directory
-				$file_url = $this->getMediaUrlByView($type).$this->file_name;
+				if($this->file_is_forSale==0){
+					$file_url = $this->getMediaUrlByView($type).$this->file_name;
+				} else {
+					$file_url = vmConfig::get('forSale_path');
+				}
+
 				if(JFile::exists($file_url)){
 					$this->file_url = $file_url;
 				}
@@ -518,7 +535,11 @@ class VmMediaHandler {
 					}
 
 					$media['name'] = $this->file_name =$mediaPure.$mediaExtension;
-					JFile::upload($media['tmp_name'],JPATH_ROOT.DS.$path_folder.$media['name']);
+					if($this->file_is_forSale==0){
+						JFile::upload($media['tmp_name'],JPATH_ROOT.DS.$path_folder.$media['name']);
+					} else {
+						JFile::upload($media['tmp_name'],$path_folder.$media['name']);
+					}
 
 					$this->file_mimetype = $media['type'];
 					$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_UPLOAD_OK',JPATH_ROOT.DS.$path_folder.$media['name']));
@@ -641,6 +662,10 @@ class VmMediaHandler {
 			else if($data['media_roles'] == 'file_is_forSale'){
 				$this->file_is_downloadable = 0;
 				$this->file_is_forSale = 1;
+				$this->file_url_folder = VmConfig::get('forSale_path');
+				$this->file_url_folder_thumb = VmConfig::get('forSale_path_thumb');
+
+				$this->setRole = false;
 			}
 
 			if($this->setRole){
