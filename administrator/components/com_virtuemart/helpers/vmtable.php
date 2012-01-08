@@ -424,46 +424,31 @@ class VmTable extends JTable{
 			if (!$this->$slugName = trim(str_replace('-','',$this->$slugName)) );
 			$tbl_key = $this->_tbl_key;
 			while($used && $i<10){
-				$i++;
-			// while($used && $i<10){
-				// $i++;
-				// //vmdebug('table check use $this->$slugName '.$this->$slugName);
-				// if(VmConfig::isJ15()){
-					// $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
-					// //vmdebug('first created ',$this->$slugName);
 
-					// if(trim(str_replace('-', '', $this->$slugName)) == '' || $change){
-						// $datenow = JFactory::getDate();
-						// $this->$slugName = $this->$slugName . $datenow->toFormat("%Y-%m-%d-%H-%M-%S").rand(1,9);
-						// vmdebug('changed ',$this->$slugName);
-					// }
-				// } else {
-					// $this->$slugName = JApplication::stringURLSafe($this->$slugName);
-					// if (trim(str_replace('-','',$this->$slugName)) == '' || $change) {
-						// $this->$slugName = JFactory::getDate()->format('Y-m-d-H-i-s').rand(1,9);
-					// }
-				// }
-				if( $used && $i==10){
-					if(VmConfig::isJ15()) $this->$slugName = $this->$slugName . $datenow->toFormat("%Y-%m-%d-%H-%M-%S").rand(1,9);
-					else $this->$slugName = $this->$slugName . JFactory::getDate()->format('Y-m-d-H-i-s').rand(1,9);
-				}
 				if(in_array($slugAutoName,$this->_translatableFields)){
 					$checkTable = $this->_tbl.'_'.VMLANG;
 				} else {
 					$checkTable = $this->_tbl;
 				}
+
 				$q = 'SELECT `'.$slugName.'` FROM `'.$checkTable.'` WHERE `'.$slugName.'` =  "'.$this->$slugName.'"  AND `'.$this->_tbl_key.'`!='.$this->$tbl_key ;
 				$this->_db->setQuery($q);
 				$existingSlugName =$this->_db->loadResult();
+
 				if(!empty($existingSlugName)){
-					$this->$slugName = $this->$slugName.rand(1,9);
+					if($i==0){
+						if(VmConfig::isJ15()) $this->$slugName = $this->$slugName . $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
+						else $this->$slugName = $this->$slugName . JFactory::getDate()->format('Y-m-d-H-i-s').'_';
+					} else{
+						$this->$slugName = $this->$slugName.rand(1,9);
+					}
 					$used = true;
 					$this->setError(get_class($this).' ');
 				} else {
 					$used = false;
 				}
+				$i++;
 			}
-			if ($used) $this->setError(get_class($this).' slug changed to '.$this->$slugName);
 		}
 
 

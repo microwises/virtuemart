@@ -112,11 +112,11 @@ defined('_JEXEC') or die('Restricted access');
  <?php //Standard Links ?>
 	<br style='clear:both;' />
 	<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=vendor&task=details&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id);  ?>">
-	<?php echo JText::_('MOD_VIRTUEMART_VENDOR_DETAIL');  ?>
+	<?php echo JText::_('COM_VIRTUEMART_VENDOR_DETAILS');  ?>
 	</a>
 	<br style='clear:both;' />
 
 	<a href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=vendor&task=tos&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id);  ?>">
-	<?php echo JText::_('MOD_VIRTUEMART_VENDOR_TOS'); ?>
+	<?php echo JText::_('COM_VIRTUEMART_VENDOR_TOS'); ?>
 	</a>
 	<br style='clear:both;' />

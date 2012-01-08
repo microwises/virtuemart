@@ -664,7 +664,7 @@ class VirtueMartModelUser extends VmModel {
 
 		if($id == 0) $id = $this->_id;
 		$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' .(int)$id .'" AND `address_type`="BT" ';
-		$this->_db->setQuery($q);vmdebug('getBTuserinfo_id '.$q);
+		$this->_db->setQuery($q);
 		return $this->_db->loadResult();
 	}
 

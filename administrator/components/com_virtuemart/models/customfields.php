@@ -206,7 +206,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		// change input by type
 		$html .= VmHTML::row('input','COM_VIRTUEMART_DEFAULT','custom_value',$datas->custom_value);
 		$html .= VmHTML::row('input','COM_VIRTUEMART_CUSTOM_TIP','custom_tip',$datas->custom_tip);
-		$html .= VmHTML::row('input','COM_VIRTUEMART_LAYOUT_POS','layout_pos',$datas->layout_pos);
+		$html .= VmHTML::row('input','COM_VIRTUEMART_CUSTOM_LAYOUT_POS','layout_pos',$datas->layout_pos);
 
 		$html .= VmHTML::row('select','COM_VIRTUEMART_CUSTOM_PARENT','custom_parent_id',$this->getParentList($datas->virtuemart_custom_id),  $datas->custom_parent_id,'');
 		//$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_PARENT','custom_parent_id',$this->getCustomsList(),  $datas->custom_parent_id,'');
