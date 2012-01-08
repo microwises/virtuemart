@@ -38,10 +38,13 @@ class shopFunctionsF {
 		$show=true;
 		if($cart){
 			$show = VmConfig::get('oncheckout_show_register', 1);
-			$user = $cart->userDetails->JUser;
-		} else {
-			$user = JFactory::getUser();
+// 			$user = $cart->userDetails->JUser;	//Makes not really sense, because this information in not updated in the cart
+
 		}
+// 		else {
+
+// 		}
+		$user = JFactory::getUser();
 		$view->assignRef('JUser',$user);
 
 		$view->assignRef('show',$show);

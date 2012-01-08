@@ -19,18 +19,23 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+$comUserOption=shopfunctionsF::getComUserOption();
+
+// vmdebug('$this->show ',$this);
+if ($this->show and $this->JUser->id == 0  ) {
 JHtml::_('behavior.formvalidation');
 JHTML::_ ( 'behavior.modal' );
 // vmdebug('cart',$this->cart);
 
-if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-$comUserOption=shopfunctionsF::getComUserOption();
+
 
 $uri = JFactory::getURI();
 $url = $uri->toString(array('path', 'query', 'fragment'));
 
 // 	Hmmmm	$this->cart->userDetails->JUser->id === 0
-if ($this->show  && $this->JUser->id === 0  ) {
+
 
 	//Extra login stuff, systems like openId and plugins HERE
     if (JPluginHelper::isEnabled('authentication', 'openid')) {
