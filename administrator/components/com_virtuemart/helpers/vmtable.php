@@ -303,6 +303,7 @@ class VmTable extends JTable{
 
 		$result = $db->loadAssoc( );
 		$error = $db->getErrorMsg();
+// 		vmdebug('vmtable load '.$db->getQuery(),$result);
 		if(!empty($error )){
 			vmError('vmTable load' . $db->getErrorMsg() );
 			return false;
@@ -411,6 +412,7 @@ class VmTable extends JTable{
 	function check(){
 
 		if(!empty($this->_slugAutoName)){
+
 			$slugAutoName = $this->_slugAutoName;
 			$slugName = $this->_slugName;
 
@@ -420,8 +422,10 @@ class VmTable extends JTable{
 			}
 			$used = true;
 			$i = 0;
+
 			$this->$slugName = JApplication::stringURLSafe($this->$slugName);
 			if (!$this->$slugName = trim(str_replace('-','',$this->$slugName)) );
+
 			$tbl_key = $this->_tbl_key;
 			while($used && $i<10){
 
@@ -612,7 +616,7 @@ class VmTable extends JTable{
 				if(!$langTable->check()){
 					$ok = false;
 					$msg .= ' check';
-					vmdebug('Check returned false '.get_class($langTable).' '.$langTable->_db->getErrorMsg());
+					vmdebug('Check returned false '.get_class($langTable).' '.$this->_tbl.' '.$langTable->_db->getErrorMsg());
 				}
 			}
 

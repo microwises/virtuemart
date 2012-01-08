@@ -63,7 +63,7 @@ class TableVendors extends VmTableData {
 		parent::__construct('#__virtuemart_vendors', 'virtuemart_vendor_id', $db);
 		$this->setPrimaryKey('virtuemart_vendor_id');
 		$this->setUniqueName('vendor_name');
-		$this->setSlug('vendor_name');
+		$this->setSlug('vendor_store_name'); //Attention the slug autoname MUST be also in the translatable, if existing
 		$this->setLoggable();
 		$this->setTranslatable(array('vendor_store_name','vendor_phone','vendor_store_desc','vendor_terms_of_service','vendor_url'));
 
@@ -77,6 +77,7 @@ class TableVendors extends VmTableData {
 		$this->setParameterable('vendor_params',$varsToPushParam);
 
 		$this->setTableShortCut('v');
+// 		vmdebug('myvendor table',$this);
     }
 
 }

@@ -66,8 +66,6 @@ class VirtuemartViewUser extends VmView {
 		}
 
 
-
-
 		$layoutName = JRequest::getWord('layout', 'default');
 		$layoutName = $this->getLayout();
 
@@ -191,10 +189,12 @@ class VirtuemartViewUser extends VmView {
 				$this->assignRef('currency',$currency);
 			}
 
+// 			vmdebug('user $userDetails ',	$userDetails 	);
 			if (!empty($userDetails->user_is_vendor)) {
 
 				$vendorModel = $this->getModel('vendor');
 				$vendorModel->setId($userDetails->virtuemart_vendor_id);
+
 
 				$vendorModel->addImages($userDetails->vendor);
 				$this->assignRef('vendor', $userDetails->vendor);
@@ -204,7 +204,6 @@ class VirtuemartViewUser extends VmView {
 				$this->assignRef('currencies', $_currencies);
 
 			}
-
 
 
 			$this->assignRef('userDetails', $userDetails);

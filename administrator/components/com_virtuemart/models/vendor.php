@@ -79,7 +79,7 @@ class VirtueMartModelVendor extends VmModel {
 
 	    	$this->_data = $this->getTable('vendors');
    			$this->_data->load($this->_id);
-
+// 			vmdebug('getVendor',$this->_id,$this->_data);
 		    // Convert ; separated string into array
 		    if ($this->_data->vendor_accepted_currencies) {
 				$this->_data->vendor_accepted_currencies = explode(',', $this->_data->vendor_accepted_currencies);

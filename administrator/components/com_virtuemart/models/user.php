@@ -662,7 +662,11 @@ class VirtueMartModelUser extends VmModel {
 	function getBTuserinfo_id($id = 0){
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
-		if($id == 0) $id = $this->_id;
+		if($id == 0){
+			$id = $this->_id;
+			vmdebug('getBTuserinfo_id is '.$this->_id);
+		}
+
 		$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' .(int)$id .'" AND `address_type`="BT" ';
 		$this->_db->setQuery($q);
 		return $this->_db->loadResult();

@@ -142,13 +142,11 @@ class TableUserinfos extends VmTableData {
 
 		if (count($total) > 0) {
 			$this->virtuemart_userinfo_id = $total[0];
-			return parent::check();
 		} else {
-			$this->virtuemart_userinfo_id = md5(uniqid($this->virtuemart_user_id));
-//			$this->created_on = time();
-			return parent::check();
+			$this->virtuemart_userinfo_id = 0;//md5(uniqid($this->virtuemart_user_id));
 		}
 
+		return parent::check();
 
 	}
 

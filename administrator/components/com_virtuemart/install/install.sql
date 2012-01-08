@@ -1128,7 +1128,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_userfield_values` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_userinfos` (
-  `virtuemart_userinfo_id` char(32) NOT NULL DEFAULT '',
+  `virtuemart_userinfo_id` int(1) UNSIGNED NOT NULL AUTO_INCREMENT,
   `virtuemart_user_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `address_type` char(2) NOT NULL DEFAULT '',
   `address_type_name` char(32) NOT NULL DEFAULT '',

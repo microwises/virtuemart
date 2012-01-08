@@ -104,8 +104,9 @@ class VmMediaHandler {
 			$relUrl = 'images/stories/virtuemart/';
 			$this->setRole=true;
 
-		} else if( $this->file_is_forSale==0){
+		} else if( $this->file_is_forSale==1){
 			$relUrl = '';
+			$this->setRole=false;
 		}
 
 		return $relUrl;
@@ -212,7 +213,6 @@ class VmMediaHandler {
 		};
 		$this->file_path_folder  = preg_replace('#[/\\\\]+#', DS, $this->file_path_folder);
 
-		vmdebug('setFileInfo',$this->file_url,$this->file_url_folder);
 		if(empty($this->file_url)){
 			$this->file_url = $this->file_url_folder;
 			$this->file_name = '';
@@ -755,9 +755,13 @@ class VmMediaHandler {
 			} else {
 
 // 				$this->addMediaAttributes($this->file_type,'COM_VIRTUEMART_FORM_MEDIA_SET_'.strtoupper($this->file_type));
+				if($this->file_is_forSale=1){
+					$this->_mRoles['file_is_forSale'] = 'COM_VIRTUEMART_FORM_MEDIA_SET_FOR_SALE' ;
+				} else {
+					$this->_mRoles['file_is_displayable'] = 'COM_VIRTUEMART_FORM_MEDIA_DISPLAYABLE' ;
+					$this->_mRoles['file_is_downloadable'] = 'COM_VIRTUEMART_FORM_MEDIA_DOWNLOADABLE' ;
 
-				$this->_mRoles['file_is_displayable'] = 'COM_VIRTUEMART_FORM_MEDIA_DISPLAYABLE' ;
-				$this->_mRoles['file_is_downloadable'] = 'COM_VIRTUEMART_FORM_MEDIA_DOWNLOADABLE' ;
+				}
 			}
 
 		}
