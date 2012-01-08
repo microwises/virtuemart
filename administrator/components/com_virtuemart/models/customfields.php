@@ -631,17 +631,24 @@ class VirtueMartModelCustomfields extends VmModel {
 			if($is_cart!=0){
 				$options = array();
 
-
 				foreach ($values as $key => $val){
 					$options[] = array( 'value' => $val ,'text' =>$val);
 				}
+
 				return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]',null,'value','text',false,true);
 			} else {
 				$html = '';
-				foreach ($values as $key => $val){
-					$html .= '<div id="custom_'.$virtuemart_custom_id.'_'.$val.'" >'.$val.'</div>';
-				}
-				$html .= '<br />';
+// 				if($type=='M'){
+// 					foreach ($values as $key => $val){
+// 						$html .= '<div id="custom_'.$virtuemart_custom_id.'_'.$val.'" >'.$this->displayCustomMedia($val).'</div>';
+// 					}
+
+// 				} else {
+// 					foreach ($values as $key => $val){
+						$html .= '<div id="custom_'.$virtuemart_custom_id.'_'.$value.'" >'.$value.'</div>';
+// 					}
+// 				}
+
 				return $html;
 			}
 
