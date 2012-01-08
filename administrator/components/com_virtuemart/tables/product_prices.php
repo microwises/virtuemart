@@ -63,7 +63,7 @@ class TableProduct_prices extends VmTableData {
     function __construct(&$db) {
         parent::__construct('#__virtuemart_product_prices', 'virtuemart_product_price_id', $db);
 
-        $this->setPrimaryKey('virtuemart_product_id');
+//       $this->setPrimaryKey('virtuemart_product_id');
 		$this->setLoggable();
 		$this->setTableShortCut('pp');
     }
