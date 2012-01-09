@@ -126,10 +126,12 @@ if ( VmConfig::get('showCategory',1) ) {
 		</div>
 	<?php } ?>
 </div>
-<div class="browse-view">
+
 <?php }
 }
-
+?>
+<div class="browse-view">
+    <?php
 if (!empty($this->keyword)) {
 	?>
 	<h3><?php echo $this->keyword; ?></h3>
@@ -167,7 +169,7 @@ if (!empty($this->products)) {
 				</div>
 
 			<div class="clear"></div>
-			</div>
+			</div> <!-- end of orderby-displaynumber -->
 
 <h1><?php echo $this->category->category_name; ?></h1>
 
@@ -273,21 +275,21 @@ foreach ( $this->products as $product ) {
 
 				</div>
 			<div class="clear"></div>
-			</div>
-		</div>
+			</div><!-- end of spacer -->
+		</div> <!-- end of product -->
 	<?php
 	$iBrowseProduct ++;
 
 	// Do we need to close the current row now?
 	if ($iBrowseCol == $BrowseProducts_per_row) { ?>
 	<div class="clear"></div>
-	</div>
+	</div> <!-- end of row -->
 		<?php
 		$iBrowseCol = 1;
 	} else {
 		$iBrowseCol ++;
 	}
-}
+} // end of foreach ( $this->products as $product )
 // Do we need a final closing row tag?
 if ($iBrowseCol != 1) { ?>
 	<div class="clear"></div>
@@ -295,9 +297,9 @@ if ($iBrowseCol != 1) { ?>
 <?php
 }
 ?>
-</div>
+<!-- /div removed valerie -->
 	<div id="bottom-pagination"><?php echo $this->vmPagination->getPagesLinks(); ?><span style="float:right"><?php echo $this->vmPagination->getPagesCounter(); ?></span></div>
-</div>
+<!-- /div removed valerie -->
 <?php } elseif ($this->search !==null ) echo JText::_('COM_VIRTUEMART_NO_RESULT').($this->keyword? ' : ('. $this->keyword. ')' : '')
 ?>
 </div><!-- end browse-view -->
