@@ -146,10 +146,11 @@ if (!empty($this->keyword)) {
 		</div>
 				<input type="hidden" name="search" value="true" />
 				<input type="hidden" name="view" value="category" />
-		</form>
+
 
 		<!-- End Search Box -->
 		<?php } ?>
+		</form>
 <?php // Show child categories
 if (!empty($this->products)) {
 ?>
@@ -220,7 +221,7 @@ foreach ( $this->products as $product ) {
 						// echo JText::_('COM_VIRTUEMART_TOTAL_VOTES').": ". $product->votes->allvotes; ?>
 						<?php } ?>
 
-						<?php  
+						<?php
 						if (!VmConfig::get('use_as_catalog') and !(VmConfig::get('stockhandle','none')=='none')){?>
 						<div class="paddingtop8">
 							<span class="vmicon vm2-<?php echo $product->stock->stock_level ?>" title="<?php echo $product->stock->stock_tip ?>"></span>
@@ -240,7 +241,7 @@ foreach ( $this->products as $product ) {
 						</p>
 						<?php } ?>
 
-					<div class="product-price marginbottom12" id="productPrice<?php echo $product->virtuemart_product_id ?>"> 
+					<div class="product-price marginbottom12" id="productPrice<?php echo $product->virtuemart_product_id ?>">
 					<?php
 					if ($this->show_prices == '1') {
 						if( $product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
@@ -298,3 +299,4 @@ if ($iBrowseCol != 1) { ?>
 </div>
 <?php } elseif ($this->search !==null ) echo JText::_('COM_VIRTUEMART_NO_RESULT').($this->keyword? ' : ('. $this->keyword. ')' : '')
 ?>
+</div><!-- end browse-view -->
