@@ -18,7 +18,6 @@
  */
 // Load the helper functions that are needed by all plugins
 if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
-if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
 
 // Get the plugin library
 jimport('joomla.plugin.plugin');
@@ -143,74 +142,17 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 * @param string $tableKey an additionally unique key
 	 */
 	protected function storePluginInternalDataProduct(&$values, $primaryKey=0, $product_id = 0 ){
-
-		if($primaryKey===0) $primaryKey = $this->_tablepkey;
-		if($this->_vmpItable===0){
-			$this->_vmpItable = $this->createPluginTableObject($this->_tablename,$this->tableFields,$primaryKey,$this->_tableId,$this->_loggable);
-		}
-		//vmdebug('storePluginInternalData',$value);
-		$ok = true;
-		$msg = '';
-
-		if(!$this->_vmpItable->bind($values)){
-			$ok = false;
-			$msg = 'bind';
-			// 			vmdebug('Problem in bind '.get_class($this).' '.$this->_db->getErrorMsg());
-			vmdebug('Problem in bind '.get_class($this).' ');
-		}
-
-		if($ok){
-			if(!$this->_vmpItable->checkDataContainsTableFields($values)){
-				$ok = false;
-				//    			$msg .= ' developer notice:: checkDataContainsTableFields';
-			}
-		}
-
-		if($ok){
-			if(!$this->_vmpItable->check()){
-				$ok = false;
-				$msg .= ' check';
-				vmdebug('Check returned false '.get_class($this).' '.$this->_vmpItable->_db->getErrorMsg());
-				return false;
-			}
-		}
-
-		if($ok){
-			$this->_vmpItable->setLoggableFieldsForStore();
-
-			$this->_vmpItable->storeParams();
-
-			$id = 0;
-			$custom_id = $values['virtuemart_custom_id'];
-				if( !empty($custom_id) && !empty($product_id) ){
-					$_qry = 'SELECT `id` FROM `#__virtuemart_product_custom_plg_'.$this->_name.'` WHERE `virtuemart_product_id`='.(int)$product_id.' and `virtuemart_custom_id`='.(int)$custom_id ;
-					$this->_vmpItable->_db->setQuery($_qry);
-					$id = $this->_vmpItable->_db->loadResult();
+		$custom_id = $values['virtuemart_custom_id'];
+		$db = JFactory::getDBO();
+		if( !empty($custom_id) && !empty($product_id) ){
+			$_qry = 'SELECT `id` FROM `#__virtuemart_product_custom_plg_'.$this->_name.'` WHERE `virtuemart_product_id`='.(int)$product_id.' and `virtuemart_custom_id`='.(int)$custom_id ;
+			$db->setQuery($_qry);
+			$id = $db->loadResult();
 				}
+		$values['id'] = $id ;
+		// vmdebug('$value',$values, $id);
+		$this->storePluginInternalData($values) ;
 
-	//		$this->_vmpItable->setError($_qry,'$_qry');
-
-			if ( !empty($id) ) {
-				$this->_vmpItable->id = $id;
-				$returnCode = $this->_vmpItable->_db->updateObject($this->_vmpItable->_tbl, $this->_vmpItable, 'id', false);
-			} else {
-				$returnCode = $this->_vmpItable->_db->insertObject($this->_vmpItable->_tbl, $this->_vmpItable, 'id');
-			}
-
-			if (!$returnCode) {
-				$this->_vmpItable->setError(get_class($this) . '::store failed - ' . $this->_vmpItable->_db->getErrorMsg());
-				return false;
-			}
-			else
-				return true;
-		}
-		// $this->_vmpItable->bindChecknStore($values);
-		$errors = $this->_vmpItable->getErrors();
-		if(!empty($errors)){
-			foreach($errors as $error){
-				$this->setError($error);
-			}
-		}
 		return $values;
 
 	}

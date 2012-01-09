@@ -108,7 +108,8 @@ class VmHTML{
      * @param mixed Value to assign when checkbox is not checked
      * @return string HTML code for checkbox
      */
-    function checkbox($name, $value, $checkedValue=1, $uncheckedValue=0, $extraAttribs = '') {
+    function checkbox($name, $value, $checkedValue=1, $uncheckedValue=0, $extraAttribs = '', $id = null) {
+		if (!$id) $id=$name ;
 	if ($value == $checkedValue) {
 	    $checked = 'checked="checked"';
 	}
@@ -116,7 +117,7 @@ class VmHTML{
 	    $checked = '';
 	}
 	$htmlcode = '<input type="hidden" name="' . $name . '" value="' . $uncheckedValue . '">';
-	$htmlcode .= '<input '.$extraAttribs.' id="' . $name . '" type="checkbox" name="' . $name . '" value="' . $checkedValue . '" ' . $checked . ' />';
+	$htmlcode .= '<input '.$extraAttribs.' id="' . $id . '" type="checkbox" name="' . $name . '" value="' . $checkedValue . '" ' . $checked . ' />';
 	return $htmlcode;
     }
 

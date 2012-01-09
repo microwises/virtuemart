@@ -57,7 +57,7 @@ class VirtuemartViewVendor extends JView {
 		$model = new VirtuemartModelVendor();
 		$virtuemart_vendor_id = JRequest::getInt('virtuemart_vendor_id');
 
-		if ($layoutName == 'default' or !$virtuemart_vendor_id ) { // tos or details
+		if (!$virtuemart_vendor_id ) {
 			$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_LIST') );
 			$vendors = $model->getVendors();
 			$this->assignRef('vendors', $vendors);
@@ -81,15 +81,13 @@ class VirtuemartViewVendor extends JView {
 			if ($layoutName=='tos') {
 				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_TOS') );
 			}
-			if ($layoutName=='contact') {
+			elseif ($layoutName=='contact') {
 				$user = JFactory::getUser();
 				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_CONTACT') );
 				$this->assignRef('user', $user);
 
 			}
-			if ($layoutName=='details') {
-				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_DETAILS') );
-			}
+			else $document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_DETAILS') );
 
 
 		}

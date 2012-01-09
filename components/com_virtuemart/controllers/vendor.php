@@ -34,19 +34,8 @@ class VirtueMartControllerVendor extends JController
 
 		parent::__construct();
 
-		$view = $this->getView('vendor', 'html');
-		$view->setLayout('default');
-		/* Load the backend models */
-		/* Push a model into the view */
-// 		$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
-		/*Vendor functions */
-// 		$view->setModel( $this->getModel( 'vendor', 'VirtuemartModel',true ));
-
-		/* Display it all */
-// 		$view->display();
 
 
-// 		$this->registerTask('browse','category');
 	}
 
 	function tos() {
@@ -65,10 +54,10 @@ class VirtueMartControllerVendor extends JController
 		$view->display();
 	}
 
-	function details(){
+	function display(){
 		$view = $this->getView('vendor', 'html');
-		$view->setLayout('details');
-
+		if (JRequest::getInt('virtuemart_vendor_id') ) $view->setLayout('details');
+		else $view->setLayout('default');
 		/* Display it all */
 		$view->display();
 	}
