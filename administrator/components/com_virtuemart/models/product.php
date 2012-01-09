@@ -522,7 +522,7 @@ class VirtueMartModelProduct extends VmModel {
 			$joinIds = array('virtuemart_manufacturer_id' =>'#__virtuemart_product_manufacturers','virtuemart_customfield_id' =>'#__virtuemart_product_customfields');
 
 			$product = $this->getTable('products');
-			$product->load($this->_id,$joinIds);
+			$product->load($this->_id,0,0,$joinIds);
 			//$product = $this->fillVoidProduct($product,$front);
 			/*   			if($onlyPublished){
 			if(empty($product->published)){
@@ -542,7 +542,7 @@ class VirtueMartModelProduct extends VmModel {
 				// $q = 'SELECT `virtuemart_product_price_id` FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$this->_id.'" ';
 				// $this->_db->setQuery($q);
 				// $ppId = $this->_db->loadResult();
-// 				$ppTable->load($product->virtuemart_product_price_id);
+// 				$ppTable->load($product->virtuemart_product_price_id,'virtuemart_product_price_id');
 				$ppTable->load($this->_id);
 				$product = (object) array_merge((array) $ppTable, (array) $product);
 				//   		}

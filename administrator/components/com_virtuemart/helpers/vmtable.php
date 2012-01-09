@@ -243,18 +243,24 @@ class VmTable extends JTable{
 	 * @author Max Milbers
 	 * $TableJoins array of table names to add and left join to find ID
 	 */
-	function load($oid=null,$tableJoins= array(),$joinKey = 0){
+	function load($oid=null,$overWriteLoadName=0,$andWhere=0,$tableJoins= array(),$joinKey = 0){
 
 
 // 		vmdebug('load '.$oid);
 // 		$k = $this->_tbl_key;
-		$k = $this->_pkey;
+		if($overWriteLoadName!=0){
+			$k = $overWriteLoadName;
+		} else {
+			$k = $this->_pkey;
+		}
+
 
 		if ($oid !== null) {
 			$this->$k = $oid;
+		} else {
+			$oid = $this->$k;
 		}
 
-		$oid = $this->$k;
 // 		vmdebug('load '.$oid);
 		if ($oid === null) {
 			$oid = 0;
@@ -297,7 +303,7 @@ class VmTable extends JTable{
 		}
 		//the cast to int here destroyed the query for keys like virtuemart_userinfo_id, so no cast on $oid
 // 		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = "'.$oid.'"';
-		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_pkey.'` = "'.$oid.'"';
+		$query = $select.$from.' WHERE '. $mainTable .'.`'.$k.'` = "'.$oid.'"';
 
 		$db->setQuery( $query );
 
