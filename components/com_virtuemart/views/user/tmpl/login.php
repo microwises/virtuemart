@@ -22,7 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 
 if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 $comUserOption=shopfunctionsF::getComUserOption();
-
+$uri = JFactory::getURI();
+$url = $uri->toString(array('path', 'query', 'fragment'));
 // vmdebug('$this->show ',$this);
 if ($this->show and $this->JUser->id == 0  ) {
 JHtml::_('behavior.formvalidation');
@@ -33,7 +34,7 @@ JHTML::_ ( 'behavior.modal' );
 
 $uri = JFactory::getURI();
 $url = $uri->toString(array('path', 'query', 'fragment'));
-
+ vmdebug('my url loginform '.$url);
 // 	Hmmmm	$this->cart->userDetails->JUser->id === 0
 
 
