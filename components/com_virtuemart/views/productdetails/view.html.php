@@ -81,14 +81,17 @@ class VirtueMartViewProductdetails extends JView {
 // 		vmSetStartTime('customs');
 // 		for($k=0;$k<count($product->customfields);$k++){
 // 			$custom = $product->customfields[$k];
-		foreach($product->customfields as $k =>$custom){
-			if(!empty($custom->layout_pos)){
-				$product->customfieldsSorted[$custom->layout_pos][] = $custom;
-				unset($product->customfields[$k]);
+		if(!empty($product->customfields )){
+			foreach($product->customfields as $k =>$custom){
+				if(!empty($custom->layout_pos)){
+					$product->customfieldsSorted[$custom->layout_pos][] = $custom;
+					unset($product->customfields[$k]);
+				}
 			}
+			$product->customfieldsSorted['normal'] = $product->customfields;
+			unset($product->customfields);
 		}
-		$product->customfieldsSorted['normal'] = $product->customfields;
-		unset($product->customfields);
+
 // 		vmTime('Customs','customs');
 // 		vmdebug('my second $product->customfields',$product->customfields);
 

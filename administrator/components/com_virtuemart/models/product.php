@@ -518,7 +518,8 @@ class VirtueMartModelProduct extends VmModel {
 		//		if(empty($this->_data)){
 		if (!empty($this->_id)) {
 
-			$joinIds = array('virtuemart_product_price_id' =>'#__virtuemart_product_prices','virtuemart_manufacturer_id' =>'#__virtuemart_product_manufacturers','virtuemart_customfield_id' =>'#__virtuemart_product_customfields');
+// 			$joinIds = array('virtuemart_product_price_id' =>'#__virtuemart_product_prices','virtuemart_manufacturer_id' =>'#__virtuemart_product_manufacturers','virtuemart_customfield_id' =>'#__virtuemart_product_customfields');
+			$joinIds = array('virtuemart_manufacturer_id' =>'#__virtuemart_product_manufacturers','virtuemart_customfield_id' =>'#__virtuemart_product_customfields');
 
 			$product = $this->getTable('products');
 			$product->load($this->_id,$joinIds);
@@ -536,15 +537,16 @@ class VirtueMartModelProduct extends VmModel {
 			$product->shoppergroups = $this->getProductShoppergroups($this->_id);
 
 			//   		if(!$front){
-			if (!empty($product->virtuemart_product_price_id)) {
+// 			if (!empty($product->virtuemart_product_price_id)) {
 				$ppTable = $this->getTable('product_prices');
 				// $q = 'SELECT `virtuemart_product_price_id` FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$this->_id.'" ';
 				// $this->_db->setQuery($q);
 				// $ppId = $this->_db->loadResult();
-				$ppTable->load($product->virtuemart_product_price_id);
+// 				$ppTable->load($product->virtuemart_product_price_id);
+				$ppTable->load($this->_id);
 				$product = (object) array_merge((array) $ppTable, (array) $product);
 				//   		}
-			}
+// 			}
 
 			// $q = 'SELECT `virtuemart_manufacturer_id` FROM `#__virtuemart_product_manufacturers` WHERE `virtuemart_product_id` = "'.$this->_id.'" ';
 			// $this->_db->setQuery($q);
