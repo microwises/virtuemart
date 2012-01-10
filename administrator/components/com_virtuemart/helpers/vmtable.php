@@ -521,6 +521,17 @@ class VmTable extends JTable{
 				} else {
 					$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 0;
 				}
+			} elseif (isset($this->_checkForVendor)) {
+				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+				$vendor_id = VirtueMartModelVendor::getLoggedVendor();
+				$tbl_key = $this->_tbl_key ;
+				$q = 'SELECT `virtuemart_vendor_id` FROM `' . $this->_tbl . '` ';
+				$q .= 'WHERE `' . $this->_tbl_key.'`='.$this->$tbl_key;
+				$this->_db->setQuery($q);
+				$virtuemart_vendor_id = $this->_db->loadResult();
+				if ($vendor_id == $virtuemart_vendor_id ) return true;
+				vmWarn('COM_VIRTUEMART_NOT_SAME_VENDOR',$virtuemart_vendor_id,$virtuemart_vendor_id,$virtuemart_vendor_id);
+				return false ;
 			}
 		}
 

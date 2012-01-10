@@ -44,22 +44,22 @@ class VirtuemartControllerMedia extends VmController {
 
 	}
 
-	function Media(){
+	// function Media(){
 		/* Create the view object */
-		$view = $this->getView('media', 'html');
+		// $view = $this->getView('media', 'html');
 
 		/* Default model */
 		//$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ), true );
 
-		parent::display();
-	}
+		// parent::display();
+	// }
 
 	/**
 	 * Shows the product files list screen
 	 */
-	function edit() {
+	// function edit() {
 		/* Create the view object */
-		$view = $this->getView('media', 'html');
+		// $view = $this->getView('media', 'html');
 
 //		/* Default model */
 //		$view->setModel( $this->getModel( 'media', 'VirtueMartModel' ), true );
@@ -68,8 +68,8 @@ class VirtuemartControllerMedia extends VmController {
 
 
 		/* Now display the view. */
-		parent::edit();
-	}
+		// parent::edit();
+	// }
 	/**
 	 * for ajax call media
 	 */

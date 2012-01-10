@@ -74,7 +74,7 @@ class VirtuemartViewCategory extends VmView {
 			$this->assignRef('category', $category);
 			$this->assignRef('categorylist', $categorylist);
 
-			$this->addStandardEditViewCommands($category->virtuemart_category_id);
+			$this->addStandardEditViewCommands($category->virtuemart_category_id,$category);
 		}
 		else {
 			$this->SetViewTitle('CATEGORY_S');

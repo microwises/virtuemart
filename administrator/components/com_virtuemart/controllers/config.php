@@ -43,20 +43,20 @@ class VirtuemartControllerConfig extends VmController {
 	function __construct() {
 		parent::__construct();
 
-//		$this->setMainLangKey('CONFIG');
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
-		$view = $this->getView('config', $viewType);
+		// $this->setMainLangKey('CONFIG');
+		// $document = JFactory::getDocument();
+		// $viewType = $document->getType();
+		// $view = $this->getView('config', $viewType);
 
-		// Push a model into the view
-		$model = $this->getModel('config');
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}
-		$model = $this->getModel('user');
-		if (!JError::isError($model)) {
-			$view->setModel($model, false);
-		}
+		// //Push a model into the view
+		// $model = $this->getModel('config');
+		// if (!JError::isError($model)) {
+			// $view->setModel($model, true);
+		// }
+		// $model = $this->getModel('user');
+		// if (!JError::isError($model)) {
+			// $view->setModel($model, false);
+		// }
 	}
 
 
@@ -96,32 +96,6 @@ class VirtuemartControllerConfig extends VmController {
 
 
 	}
-
-
-	/**
-	 * Handle the apply task
-	 *
-	 * @author RickG
-	 */
-//	function apply(){
-//
-//		JRequest::checkToken() or jexit( 'Invalid Token' );
-//		$model = $this->getModel('config');
-//
-//		$data = JRequest::get('post');
-//		$data['offline_message'] = JRequest::getVar('offline_message','','post','STRING',JREQUEST_ALLOWHTML);
-//
-//		if ($model->store($data)) {
-//			$msg = JText::_('COM_VIRTUEMART_CONFIG_SAVED');
-//			// Load the newly saved values into the session.
-//			VmConfig::getInstance();
-//		}
-//		else {
-//			$msg = JText::_($model->getError());
-//		}
-//
-//		$this->setRedirect('index.php?option=com_virtuemart&view=config', $msg);
-//	}
 
 
 	/**

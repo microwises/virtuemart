@@ -19,12 +19,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$editor = JFactory::getEditor();
 
 $mainframe = JFactory::getApplication();
-
-?>
-<?php echo $this->langList; ?>
+ echo $this->langList .' '. $this->vendorList ; ?>
 <table class="adminform">
 	<tr>
 		<td valign="top" colspan="2">

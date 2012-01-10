@@ -40,36 +40,6 @@ class VirtuemartControllerCountry extends VmController {
 
 	}
 
-/* 	public function Country() {
-
-		$document = JFactory::getDocument();
-		$viewType	= $document->getType();
-		$view = $this->getView($this->_cname, $viewType);
-
-		// Pushing default model
-		$model = $this->getModel();
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}
-
-		$model1 = $this->getModel('Worldzones');
-		if (!JError::isError($model1)) {
-			$view->setModel($model1, false);
-		}
-
-		parent::display();
-	}
-
-	function edit(){
-
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
-		$view = $this->getView($this->_cname, $viewType);
-
-		$view->setModel( $this->getModel( 'WorldZones', 'VirtueMartModel' ));
-
-		parent::edit();
-	} */
 }
 
 //pure php no tag

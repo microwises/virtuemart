@@ -100,12 +100,16 @@ class VmView extends JView{
 		<button onclick="this.form.submit();">' . JText::_('COM_VIRTUEMART_GO') . '</button>
 		<button onclick="document.getElementById(\'' . $name . '\').value=\'\';this.form.submit();">' . JText::_('COM_VIRTUEMART_RESET') . '</button>';
 	}
-	function addStandardEditViewCommands($id = 0) {
-
+	function addStandardEditViewCommands($id = 0,$object = null) {
+		if (JRequest::getCmd('tmpl') =='component' ) {
+			if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php'); 
+		} else {
+		
 		JToolBarHelper::divider();
 		JToolBarHelper::save();
 		JToolBarHelper::apply();
 		JToolBarHelper::cancel();
+		}
 		// javascript for cookies setting in case of press "APPLY"
 		$document = JFactory::getDocument();
 				$isJ15 = VmConfig::isJ15();
@@ -202,6 +206,19 @@ class VmView extends JView{
 			$langList = '<input name ="vmlang" type="hidden" value="'.$selectedLangue.'" ><img style="vertical-align: middle;" alt="'.$defautName.'" src="'.$flagImg.'"> <b> '.$defautName.'</b>';
 			$this->assignRef('langList',$langList);
 			$this->assignRef('lang',$lang);
+		}
+		if ($object) {
+		   if(Vmconfig::get('multix','none')!=='none'){
+			if(!Permissions::getInstance()->check('admin')) {
+				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+				$vendor_id = VirtueMartModelVendor::getLoggedVendor();
+				$vendorList = '<input type="hidden" name="virtuemart_vendor_id" value="'.$vendor_id.'" />';
+			} else 	$vendorList= ShopFunctions::renderVendorList($object->virtuemart_vendor_id,false);
+			$this->assignRef('vendorList', $vendorList);
+		   } else {
+				$vendorList = '<input type="hidden" name="virtuemart_vendor_id" value="1" />';
+		   }
+		   $this->assignRef('vendorList', $vendorList);
 		}
 
 	}

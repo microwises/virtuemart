@@ -447,7 +447,7 @@ class VmModel extends JModel {
 			//just an idea
 			if(isset($this->_data->virtuemart_vendor_id) && empty($this->_data->virtuemart_vendor_id)){
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-				$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();;
+				$this->_data->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
 			}
 		}
 
