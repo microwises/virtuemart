@@ -428,8 +428,8 @@ class VmTable extends JTable{
 			}
 			$used = true;
 			$i = 0;
-
-			$this->$slugName = JApplication::stringURLSafe($this->$slugName);
+			if(VmConfig::isJ15()) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
+			else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
 			if (!$this->$slugName = trim(str_replace('-','',$this->$slugName)) );
 
 			$tbl_key = $this->_tbl_key;
