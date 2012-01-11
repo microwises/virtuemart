@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport('joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
 
 /**
  * Product details
@@ -29,7 +29,7 @@ jimport('joomla.application.component.view');
  * @author RolandD
  * @author Max Milbers
  */
-class VirtueMartViewAskquestion extends JView {
+class VirtueMartViewAskquestion extends VmView {
 
     /**
      * Collect all data to show on the template

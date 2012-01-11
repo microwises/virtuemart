@@ -105,7 +105,7 @@ abstract class vmCustomPlugin extends VmPlugin {
 	 	$datas = $this->getPluginInternalData($id);
 		if($datas){
 			//$fields = get_object_vars($datas);
-			vmdebug('datas',$datas);
+			// vmdebug('datas',$datas);
 			foreach($datas as $k=>$v){
 				if (!is_string($v) ) continue ;// Only get real Table variable
 				if (isset($field->$k) && $v===0) continue ;

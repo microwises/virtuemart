@@ -20,15 +20,13 @@
 defined('_JEXEC') or die('Restricted access');
 
 # Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
 
 /**
  * Default HTML View class for the VirtueMart Component
  * @todo Find out how to use the front-end models instead of the backend models
  */
-class VirtueMartViewVirtueMart extends JView {
-
-	var $mediaModel = null;
+class VirtueMartViewVirtueMart extends VmView {
 
 	public function display($tpl = null) {
 
@@ -132,10 +130,6 @@ class VirtueMartViewVirtueMart extends JView {
 
 		parent::display($tpl);
 
-	}
-	function getModel($name=null){
-		if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-		return ShopFunctions::getModel($name);
 	}
 }
 # pure php no closing tag

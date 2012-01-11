@@ -55,13 +55,14 @@ if (empty ( $this->product )) {
 	if (VmConfig::get ( 'product_navigation', 1 )) { ?>
 		<div class="product-neighbours">
 		<?php
-		if (! empty ( $this->product->neighbours ['previous'] )) {
-			$prev_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['previous'] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id );
-			echo JHTML::_ ( 'link', $prev_link, $this->product->neighbours ['previous'] ['product_name'], array ('class' => 'previous-page' ) );
+		if (! empty ( $this->product->neighbours ['previous'][0] )) {
+			$prev_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['previous'][0] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id );
+			echo JHTML::_ ( 'link', $prev_link, $this->product->neighbours ['previous'][0]
+			['product_name'], array ('class' => 'previous-page' ) );
 		}
-		if (! empty ( $this->product->neighbours ['next'] )) {
-			$next_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['next'] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id );
-			echo JHTML::_ ( 'link', $next_link, $this->product->neighbours ['next'] ['product_name'], array ('class' => 'next-page' ) );
+		if (! empty ( $this->product->neighbours ['next'][0] )) {
+			$next_link = JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['next'][0] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id );
+			echo JHTML::_ ( 'link', $next_link, $this->product->neighbours ['next'][0] ['product_name'], array ('class' => 'next-page' ) );
 		}
 		?>
 		<div class="clear"></div>
@@ -93,7 +94,7 @@ if (empty ( $this->product )) {
 	if (!empty($this->product->product_s_desc)) { ?>
 	<div class="product-short-description">
 		<?php /** @todo Test if content plugins modify the product description */
-		echo $this->product->product_s_desc; ?>
+		echo nl2br($this->product->product_s_desc) ; ?>
 	</div>
 	<?php } // Product Short Description END
 

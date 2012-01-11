@@ -21,7 +21,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport('joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
 
 // Set to '0' to use tabs i.s.o. sliders
 // Might be a config option later on, now just here for testing.
@@ -35,7 +35,7 @@ define('__VM_USER_USE_SLIDERS', 0);
  * @author Oscar van Eijk
  * @author Max Milbers
  */
-class VirtuemartViewUser extends JView {
+class VirtuemartViewUser extends VmView {
 
     private $_model;
     private $_currentUser = 0;

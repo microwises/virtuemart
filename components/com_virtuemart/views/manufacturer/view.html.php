@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for maintaining the list of manufacturers
@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage Manufacturer
  * @author Kohl Patrick
  */
-class VirtuemartViewManufacturer extends JView {
+class VirtuemartViewManufacturer extends VmView {
 
 	function display($tpl = null) {
 
@@ -43,7 +43,7 @@ class VirtuemartViewManufacturer extends JView {
 		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', 0);
 		$mf_category_id = JRequest::getInt('mf_category_id', 0);
 		// get necessary models
-		$model = & $this->getModel('manufacturer');
+		$model = $this->getModel('manufacturer');
 		if ($virtuemart_manufacturer_id ) {
 			$manufacturer = $model->getManufacturer();
 			$model->addImages($manufacturer,1);

@@ -20,14 +20,14 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
 
 /**
 * View for the shopping cart
 * @package VirtueMart
 * @author Valérie Isaksen
 */
-class VirtueMartViewPluginresponse extends JView {
+class VirtueMartViewPluginresponse extends VmView {
 
 
 

@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport('joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
 
 /**
 * Handle the category view
@@ -29,7 +29,7 @@ jimport('joomla.application.component.view');
 * @author Max Milbers
 * @todo add full path to breadcrumb
 */
-class VirtuemartViewCategories extends JView {
+class VirtuemartViewCategories extends VmView {
 
 	public function display($tpl = null) {
 

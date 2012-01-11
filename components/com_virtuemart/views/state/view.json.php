@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport( 'joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
 
 /**
  * HTML View class for maintaining the state
@@ -29,7 +29,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage State
  * @author RolandD, jseros
  */
-//class VirtuemartViewState extends JView {
+//class VirtuemartViewState extends VmView {
 //
 //	function display($tpl = null) {
 //		$stateModel = $this->getModel();

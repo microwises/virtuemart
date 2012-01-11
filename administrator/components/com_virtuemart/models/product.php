@@ -868,34 +868,27 @@ class VirtueMartModelProduct extends VmModel {
 	 * @param object $product The product to find the neighours of
 	 * @return array
 	 */
-	public function getNeighborProducts($product) {
+	public function getNeighborProducts($product ,$onlyPublished = true, $max=1) {
 		$this->_db = JFactory::getDBO();
 		$neighbors = array('previous' => '','next' => '');
-
-		$q = "SELECT pcx.`virtuemart_product_id`, ordering, `l`.product_name
-			FROM `#__virtuemart_product_categories` as pcx
-			JOIN `#__virtuemart_products_".VMLANG."` as l using (`virtuemart_product_id`)
-			LEFT JOIN `#__virtuemart_products` as `p`
-			ON `p`.`virtuemart_product_id` = `pcx`.`virtuemart_product_id`
-			WHERE `virtuemart_category_id` = ".(int)$product->virtuemart_category_id." AND `published`= '1'
-			ORDER BY `ordering`, `pcx`.`virtuemart_product_id`";
-		$this->_db->setQuery($q);
-		$products = $this->_db->loadAssocList('virtuemart_product_id');
-
-		/* Move the internal pointer to the current product */
-		if(!empty($products)){
-			foreach ($products as $virtuemart_product_id => $xref) {
-				if ($virtuemart_product_id == $product->virtuemart_product_id) break;
-			}
-			/* Get the neighbours */
-			$neighbours['next'] = current($products);
-			if (!$neighbours['next']) end($products);
-			else prev($products);
-			$neighbours['previous'] = prev($products);
-			return $neighbours;
+		$direction = 'ASC' ;
+		$op='>';
+		foreach ($neighbors as &$neighbor) {
+			
+			$q = 'SELECT `l`.`virtuemart_product_id`, `l`.`product_name`
+				FROM `#__virtuemart_products` as `p`
+				JOIN `#__virtuemart_products_'.VMLANG.'` as `l` using (`virtuemart_product_id`)
+				JOIN `#__virtuemart_product_categories` as `pc` using (`virtuemart_product_id`)
+				WHERE `virtuemart_category_id` = '.(int)$product->virtuemart_category_id;
+			$q .= ' and `slug` '.$op.' "'.$product->slug.'" ' ;
+			if ($onlyPublished) $q .= ' AND p.`published`= 1';
+			$q .=' ORDER BY `slug` '.$direction.' LIMIT 1,'.(int)$max;
+			$this->_db->setQuery($q);
+			if ($result = $this->_db->loadAssocList()) $neighbor = $result;
+			$direction = 'DESC';
+			$op='<';
 		}
-
-		return false;
+		return $neighbors;
 	}
 
 

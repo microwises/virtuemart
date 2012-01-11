@@ -209,12 +209,14 @@ class VmView extends JView{
 		}
 		if ($object) {
 		   if(Vmconfig::get('multix','none')!=='none'){
-			if(!Permissions::getInstance()->check('admin')) {
-				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-				$vendor_id = VirtueMartModelVendor::getLoggedVendor();
-				$vendorList = '<input type="hidden" name="virtuemart_vendor_id" value="'.$vendor_id.'" />';
-			} else 	$vendorList= ShopFunctions::renderVendorList($object->virtuemart_vendor_id,false);
-			$this->assignRef('vendorList', $vendorList);
+				$this->loadHelper('permissions');
+				if(!Permissions::getInstance()->check('admin')) {
+					if (!$object->virtuemart_vendor_id) {
+						if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+						$object->virtuemart_vendor_id = VirtueMartModelVendor::getLoggedVendor();
+					}
+					$vendorList = '<input type="hidden" name="virtuemart_vendor_id" value="'.$object->virtuemart_vendor_id.'" />';
+				} else 	$vendorList= ShopFunctions::renderVendorList($object->virtuemart_vendor_id,false);
 		   } else {
 				$vendorList = '<input type="hidden" name="virtuemart_vendor_id" value="1" />';
 		   }

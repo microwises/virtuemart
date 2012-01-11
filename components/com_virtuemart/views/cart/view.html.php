@@ -22,7 +22,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Load the view framework
-jimport('joomla.application.component.view');
+if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
 
 /**
  * View for the shopping cart
@@ -30,7 +30,7 @@ jimport('joomla.application.component.view');
  * @author Max Milbers
  * @author Patrick Kohl
  */
-class VirtueMartViewCart extends JView {
+class VirtueMartViewCart extends VmView {
 
 	public function display($tpl = null) {
 		$mainframe = JFactory::getApplication();

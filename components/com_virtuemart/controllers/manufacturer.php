@@ -27,32 +27,18 @@ jimport('joomla.application.component.controller');
  *
  * @package		VirtueMart
  */
+
 class VirtueMartControllerManufacturer extends JController
 {
 
-	function Manufacturer() {
-		$view = $this->getView(JRequest::getWord('view', 'manufacturer'), 'html');
-		
-		/* Load the backend models */
-		/* Push a model into the view */		
-		$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
-		/*Manufacturer functions */
-		$view->setModel( $this->getModel( 'manufacturer', 'VirtuemartModel',true ));
-		
-		/* Vendor functions */
-		$view->setModel( $this->getModel( 'vendor', 'VirtuemartModel' ));
-		
-		/* Product functions */
-		$view->setModel( $this->getModel( 'product', 'VirtuemartModel' ));
-		
-		/* Set the layout */
-		$view->setLayout(JRequest::getWord('layout','default'));
+	function manufacturer() {
+		$view = $this->getView('manufacturer', 'html');
 		if (JRequest::getInt('virtuemart_manufacturer_id')) {
 			/* link in product details to display a specific manufacturer */
 			$view->setLayout('details');
 		} else {
 			/* view all manufacturer */
-			$view->setLayout(JRequest::getWord('layout','default'));
+			$view->setLayout('default');
 		}
 			
 		/* Display it all */
