@@ -29,7 +29,7 @@
 	<param name="cost_per_transaction" type="text"  label="VMPAYMENT_STANDARD_COST_PER_TRANSACTION" description="VMPAYMENT_STANDARD_COST_PER_TRANSACTION_EXPLAIN" />
 	<param name="cost_percent_total" type="text"  label="VMPAYMENT_STANDARD_COST_PERCENT_TOTAL" description="VMPAYMENT_STANDARD_COST_PERCENT_TOTAL_EXPLAIN" />
 	<param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_STANDARD_TAX" description="VMPAYMENT_STANDARD_TAX_DESC" />
-	<param name="payment_info" type="textarea" cols="60" rows="30" default="VMPAYMENT_STANDARD_PAYMENT_INFO_TEXT" label="VMPAYMENT_STANDARD_PAYMENTINFO" description="VMPAYMENT_STANDARD_PAYMENTINFO_EXPLAIN" />
+	<param name="payment_info" type="textarea" cols="60" rows="30" default="add a message to display with the order" label="VMPAYMENT_STANDARD_PAYMENTINFO" description="VMPAYMENT_STANDARD_PAYMENTINFO_EXPLAIN" />
     </params>
 
 

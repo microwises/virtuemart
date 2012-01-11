@@ -106,7 +106,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$cd = CurrencyDisplay::getInstance($cart->pricesCurrency);
 
 	$this->_virtuemart_paymentmethod_id = $order['details']['BT']->virtuemart_paymentmethod_id;
-	$dbValues['payment_name'] = $this->renderPluginName($method);
+	$dbValues['payment_name'] = $this->renderPluginName($method).'<br />'.$method->payment_info;
 	$dbValues['order_number'] = $order['details']['BT']->order_number;
 	$dbValues['virtuemart_paymentmethod_id'] = $this->_virtuemart_paymentmethod_id;
 	$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
@@ -132,6 +132,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$currency = CurrencyDisplay::getInstance('', $order['details']['BT']->virtuemart_vendor_id);
 	$html .= $this->getHtmlRow('STANDARD_ORDER_NUMBER', $order['details']['BT']->order_number);
 	$html .= $this->getHtmlRow('STANDARD_AMOUNT', $currency->priceDisplay($order['details']['BT']->order_total));
+	$html .= $this->getHtmlRow('STANDARD_INFO', $method->payment_info);
 	//$html .= $this->getHtmlRow('STANDARD_AMOUNT', $totalInPaymentCurrency.' '.$currency_code_3);
 	$html .= '</table>' . "\n";
 
