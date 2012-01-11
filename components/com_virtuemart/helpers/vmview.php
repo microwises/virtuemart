@@ -41,7 +41,7 @@ class VmView extends JView{
 		$className = 'VirtueMartModel'.ucfirst($name);
 
 // 		retrieving model
-		if( !class_exists('VirtueMartModel'.$className) ){
+		if( !class_exists($className) ){
 
 			$modelPath = JPATH_VM_ADMINISTRATOR.DS."models".DS.$name.".php";
 

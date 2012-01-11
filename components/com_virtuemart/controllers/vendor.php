@@ -69,8 +69,10 @@ class VirtueMartControllerVendor extends JController
 	public function mailAskquestion () {
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-
+		
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		$this->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
+		$model = $this->getModel('vendor');
 		$mainframe = JFactory::getApplication();
 		$vars = array();
 		$min = VmConfig::get('vm_asks_minimum_comment_length', 50)+1;
@@ -103,8 +105,7 @@ class VirtueMartControllerVendor extends JController
 		}
 		$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
 
-		$vendorModel = $this->getModel('vendor');
-		$VendorEmail = $vendorModel->getVendorEmail($virtuemart_vendor_id);
+		$VendorEmail = $model->getVendorEmail($virtuemart_vendor_id);
 		$vars['vendor'] = array('vendor_store_name' => $fromName );
 
 		if (shopFunctionsF::renderMail('askquestion', $VendorEmail, $vars,'productdetails')) {
