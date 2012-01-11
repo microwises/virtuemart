@@ -58,8 +58,8 @@ defined('_JEXEC') or die('Restricted access');
     <tr>
 	<td colspan="2"> &nbsp;</td>
     </tr>
-    <tr>
-	<td ><strong>
+    <tr  >
+	<td valign="top"><strong>
 	    <?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_BILL_TO_LBL') ?></strong> <br/>
 	    <table border="0"><?php
 	    foreach ($this->userfields['fields'] as $field) {
@@ -70,7 +70,7 @@ defined('_JEXEC') or die('Restricted access');
 	    }
 	    ?></table>
 	</td>
-	<td ><strong>
+	<td valign="top" ><strong>
 	    <?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIP_TO_LBL') ?></strong><br/>
 	    <table border="0"><?php
 	    foreach ($this->shipmentfields['fields'] as $field) {

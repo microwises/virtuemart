@@ -134,7 +134,6 @@ class VirtueMartModelOrders extends VmModel {
 
 		// Get the order details
 		$q = "SELECT  u.*,o.*,
-				IF(isempty(coupon_code), '-', coupon_code) AS coupon_code,
 				s.order_status_name
 			FROM #__virtuemart_orders o
 			LEFT JOIN #__virtuemart_orderstates s

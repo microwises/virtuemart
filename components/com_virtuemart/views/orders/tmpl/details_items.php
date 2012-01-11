@@ -112,15 +112,17 @@ defined('_JEXEC') or die('Restricted access');
                                 <?php } ?>
 		<td align="right"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_discount); ?></td>
 	</tr>
-<?php if (VmConfig::get('coupons_enable',0)=='1') { ?>
+<?php if (VmConfig::get('coupons_enable',0)=='1') {
+    $coupon_code=$this->orderdetails['details']['BT']->coupon_code?' ('.$this->orderdetails['details']['BT']->coupon_code.')':'';
+	?>
 	<tr>
-		<td align="right" style="padding-right: 10px;" colspan="5"><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT').' '.$this->orderdetails['details']['BT']->coupon_code ?></td>
+		<td align="right" style="padding-right: 10px;" colspan="5"><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT').$coupon_code ?></td>
 			<td align="right">&nbsp;</td>
 
 			<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right">&nbsp;</td>
                                 <?php } ?>
-		<td align="right"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->coupon_discount); ?></td>
+		<td align="right"><?php echo '- '.$this->currency->priceDisplay($this->orderdetails['details']['BT']->coupon_discount); ?></td>
 	</tr>
 <?php  } ?>
 

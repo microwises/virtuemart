@@ -45,10 +45,10 @@ defined('_JEXEC') or die('Restricted access');
 			<td><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?>:</strong></td>
 			<td><?php echo JText::_($this->orderbt->order_status_name); ?></td>
 		    </tr>
-<?php if (VmConfig::get('enable_coupons') == '1') { ?>
+<?php if (VmConfig::get('coupons_enable') == '1') { ?>
     		    <tr>
     			<td><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_CODE') ?>:</strong></td>
-    			<td><?php echo $this->orderbt->coupon_code; ?></td>
+    			<td><?php echo $this->orderbt->used_coupon_code; ?></td>
     		    </tr>
 <?php } ?>
 		</table>

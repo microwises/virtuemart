@@ -60,7 +60,7 @@ $tt=$this;
 				<td><?php echo $this->orderbt->ip_address; ?></td>
 			</tr>
 			<?php
-			if (VmConfig::get('enable_coupons') == '1') { ?>
+			if (VmConfig::get('coupons_enable') == '1') { ?>
 			<tr>
 				<td class="key"><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_CODE') ?></strong></td>
 				<td><?php echo $this->orderbt->coupon_code; ?></td>

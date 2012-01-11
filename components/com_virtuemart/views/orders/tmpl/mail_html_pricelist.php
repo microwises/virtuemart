@@ -133,9 +133,11 @@ $i = 1 ? 2 : 1;
 <?php
 $i = 1 ? 2 : 1;
 ?>
-    <?php if (VmConfig::get('coupons_enable', 0) == '1') { ?>
+    <?php if (VmConfig::get('coupons_enable', 0) == '1') {
+	    $coupon_code=$this->order['details']['BT']['coupon_code']?' ('.$this->order['details']['BT']['coupon_code'].')':'';
+?>
         <tr   class="sectiontableentry<?php echo $i ?>">
-    	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT') ?></td>
+    	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT').$coupon_code?></td>
     	<td align="right">&nbsp;</td>
 
     <?php if (VmConfig::get('show_tax')) { ?>

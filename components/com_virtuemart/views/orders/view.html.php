@@ -181,7 +181,7 @@ class VirtuemartViewOrders extends VmView {
 
 		$currency = CurrencyDisplay::getInstance();
 
-		    $userFieldsModel = $this->getModel('userfields');
+		     $userFieldsModel = $this->getModel('userfields');
 		       $userFields = $userFieldsModel->getUserFields(
 				     'account'
 				    , array('captcha' => true, 'delimiters' => true) // Ignore these types
