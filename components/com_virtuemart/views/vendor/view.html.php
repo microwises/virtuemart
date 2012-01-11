@@ -53,11 +53,10 @@ class VirtuemartViewVendor extends VmView {
 
 		$layoutName = $this->getLayout();
 
-		if (!class_exists('VirtuemartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-		$model = new VirtuemartModelVendor();
+		$model = $this->getModel();
 		$virtuemart_vendor_id = JRequest::getInt('virtuemart_vendor_id');
-
-		if (!$virtuemart_vendor_id ) {
+		$get = JRequest::get('GET');
+		if (empty($virtuemart_vendor_id )) {
 			$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_LIST') );
 			$vendors = $model->getVendors();
 			$this->assignRef('vendors', $vendors);

@@ -73,8 +73,8 @@ class VirtueMartModelVendor extends VmModel {
 	* @author Max Milbers
 	* @return object Vendor details
 	*/
-	function getVendor() {
-
+	function getVendor($vendor_id=null) {
+		if ( $vendor_id) $this->_id =  $vendor_id;
         if (empty($this->_data)) {
 
 	    	$this->_data = $this->getTable('vendors');
