@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php if (VmConfig::get('coupons_enable') == '1') { ?>
     		    <tr>
     			<td><strong><?php echo JText::_('COM_VIRTUEMART_COUPON_CODE') ?>:</strong></td>
-    			<td><?php echo $this->orderbt->used_coupon_code; ?></td>
+    			<td><?php echo $this->orderbt->coupon_code; ?></td>
     		    </tr>
 <?php } ?>
 		</table>
