@@ -40,24 +40,9 @@ class VirtueMartControllerVirtuemart extends JController
 	    }
 	}
 
-	function Virtuemart() {
+	function virtuemart() {
 
 		$view = $this->getView(JRequest::getWord('view', 'virtuemart'), 'html');
-
-		/* Load the backend models */
-		/* Push a model into the view */
-		$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
-		/* Category functions */
-		$view->setModel( $this->getModel( 'category', 'VirtuemartModel' ));
-
-		/* Vendor functions */
-		$view->setModel( $this->getModel( 'vendor', 'VirtuemartModel' ));
-
-		/* Product functions */
-		$view->setModel( $this->getModel( 'product', 'VirtuemartModel' ));
-
-		/* Set the layout */
-		$view->setLayout(JRequest::getWord('layout','default'));
 
 		/* Display it all */
 		$safeurlparams = array('virtuemart_category_id'=>'INT','virtuemart_currency_id'=>'INT','return'=>'BASE64','lang'=>'CMD');
