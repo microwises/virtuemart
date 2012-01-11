@@ -150,7 +150,7 @@
 					<?php echo JHTML::link($prow->url, $prow->product_name).$prow->customfields; ?>
 
 				</td>
-				<td align="left" ><?php echo $prow->product_sku ?></td>
+				<td align="left" ><?php  echo $prow->product_sku ?></td>
 				<td align="center" >
 				<?php
 					if (VmConfig::get('checkout_show_origprice',1) && !empty($this->cart->pricesUnformatted[$pkey]['basePriceWithTax']) && $prow->basePriceWithTax != $prow->salesPrice ) {
@@ -306,7 +306,7 @@
 				<td align="right"><?php  ?> </td>
                                 <?php } ?>
 				<td align="right"><?php echo  $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
-				<td align="right"><?php echo "KKK".$this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
+				<td align="right"><?php echo $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
 			</tr>
 			<?php
 			if($i) $i=1; else $i=0;

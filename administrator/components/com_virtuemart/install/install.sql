@@ -503,6 +503,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_items` (
   `order_item_name` char(255) NOT NULL DEFAULT '',
   `product_quantity` int(11),
   `product_item_price` decimal(15,5),
+  `product_tax` decimal(15,5),
   `product_final_price` decimal(15,5) NOT NULL DEFAULT '0.00000',
   `order_item_currency` INT(11),
   `order_status` char(1),

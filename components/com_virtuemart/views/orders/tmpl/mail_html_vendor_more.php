@@ -1,10 +1,10 @@
 <?php
 /**
 *
-* Template for the shopping cart More info
-* Eg. adding some promote
+* Template for the order email
+*
 * @package	VirtueMart
-* @subpackage Cart
+* @subpackage Order
 * @author Max Milbers
 *
 * @link http://www.virtuemart.net
@@ -17,4 +17,4 @@
 */
 ?>
 
-<?php //echo JText::_('COM_VIRTUEMART_SHOPPER_MORE'); ?>
+<?php //echo JText::_('COM_VIRTUEMART_VENDOR_MORE'); ?>

@@ -1039,15 +1039,16 @@ class VirtueMartCart {
 	 * @author Christopher Roussel
 	 *
 	 * @param int $orderID
+	 * @deprecated moved to shopfunctionsf: Valérie
 	 *
 	 */
 	function sentOrderConfirmedEmail ($order) {
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 // 		vmdebug('sentOrderConfirmedEmail my order',$order);
 		$vars = array('order' => $order);
-		$vars['shopperName'] =  $order['details']['BT']->title.' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name;
+		$vars['shopperName'] =  $order['details']['BT']['title'].' '.$order['details']['BT']['first_name'].' '.$order['details']['BT']['last_name'];
 
-		return shopFunctionsF::renderMail('cart', $order['details']['BT']->email, $vars);
+		return shopFunctionsF::renderMail('cart', $order['details']['BT']['email'], $vars);
 	}
 
 
@@ -1404,6 +1405,10 @@ class VirtueMartCart {
 		$this->lists['billTo'] = empty($addressList[0]->virtuemart_userinfo_id)? 0 : $addressList[0]->virtuemart_userinfo_id;
 
 	}
+	/**
+	 * moved to shopfunctionf
+	 * @deprecated
+	 */
 	function prepareMailData(){
 
 		if(empty($this->vendor)) $this->prepareVendor();
@@ -1411,7 +1416,10 @@ class VirtueMartCart {
 		//TODO add registering userdata
 		// In general we need for every mail the shopperdata (with group), the vendor data, shopperemail, shopperusername, and so on
 	}
-
+/**
+	 * moved to shopfunctionf
+	 * @deprecated
+	 */
 	// add vendor for cart
 	function prepareVendor(){
 		if (!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');

@@ -59,6 +59,7 @@ class VirtueMartControllerOrders extends JController
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
 		$view->setModel( $this->getModel('orderstatus', 'VirtuemartModel'));
+		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
 		$view->setLayout('details');
 
 		/* Display it all */

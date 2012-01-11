@@ -26,7 +26,7 @@ if (count($this->orderlist) == 0) {
 } else {
  ?>
 <div id="editcell">
-	<table class="adminlist">
+	<table class="adminlist" width="80%">
 	<thead>
 	<tr>
 		<th>
@@ -35,9 +35,9 @@ if (count($this->orderlist) == 0) {
 		<th>
 			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_CDATE'); ?>
 		</th>
-		<th>
-			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_MDATE'); ?>
-		</th>
+		<!--th>
+			<?php //echo JText::_('COM_VIRTUEMART_ORDER_LIST_MDATE'); ?>
+		</th -->
 		<th>
 			<?php echo JText::_('COM_VIRTUEMART_ORDER_LIST_STATUS'); ?>
 		</th>
@@ -55,11 +55,11 @@ if (count($this->orderlist) == 0) {
 					<a href="<?php echo $editlink; ?>"><?php echo $row->order_number; ?></a>
 				</td>
 				<td align="left">
-					<?php echo vmJsApi::date($row->created_on,'LC2',true); ?>
+					<?php echo vmJsApi::date($row->created_on,'LC4',true); ?>
 				</td>
-				<td align="left">
-					<?php echo vmJsApi::date($row->modified_on,'LC2',true); ?>
-				</td>
+				<!--td align="left">
+					<?php //echo vmJsApi::date($row->modified_on,'LC3',true); ?>
+				</td -->
 				<td align="left">
 					<?php echo ShopFunctions::getOrderStatusName($row->order_status); ?>
 				</td>

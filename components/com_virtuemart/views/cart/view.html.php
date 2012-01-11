@@ -147,35 +147,7 @@ class VirtueMartViewCart extends VmView {
 		parent::display($tpl);
 	}
 
-	public function renderMailLayout($doVendor=false) {
-		if (!class_exists('VirtueMartCart'))
-		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 
-		$cart = VirtueMartCart::getCart(false);
-		$this->assignRef('cart', $cart);
-		$cart->prepareCartViewData();
-		$cart->prepareMailData();
-
-		if ($doVendor) {
-			$this->subject = JText::sprintf('COM_VIRTUEMART_VENDOR_NEW_ORDER_CONFIRMED', $this->shopperName, $this->cart->prices['billTotal'], $this->order['details']['BT']->order_number);
-			$recipient = 'vendor';
-		} else {
-			$this->subject = JText::sprintf('COM_VIRTUEMART_SHOPPER_NEW_ORDER_CONFIRMED', $this->cart->vendor->vendor_store_name, $this->cart->prices['billTotal'], $this->order['details']['BT']->order_number, $this->order['details']['BT']->order_pass);
-			$recipient = 'shopper';
-		}
-		$this->doVendor = true;
-		if (VmConfig::get('order_mail_html'))
-		$tpl = 'mail_html';
-		else
-		$tpl = 'mail_raw';
-		$this->assignRef('recipient', $recipient);
-
-		$vendorModel = $this->getModel('vendor');
-		$this->vendorEmail = $vendorModel->getVendorEmail($cart->vendor->virtuemart_vendor_id);
-		$this->layoutName = $tpl;
-		$this->setLayout($tpl);
-		parent::display();
-	}
 
 	private function prepareContinueLink() {
 		// Get a continue link */

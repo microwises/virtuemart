@@ -22,15 +22,15 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="html-email">
     <td colspan="3">
-	<img src="<?php echo JURI::root() . $this->cart->vendor->images[0]->file_url_thumb ?>">
+	<img src="<?php  echo JURI::root() . $this-> vendor->images[0]->file_url ?>">
 	<br/>
 	<strong><?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_NAME', $this->shopperName); ?></strong><br/>
     </td>
     <tr>
 	<td colspan="2">
-		<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_SUMMARY', $this->cart->vendor->vendor_store_name); ?>
+		<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_SUMMARY', $this->vendor->vendor_store_name); ?>
 
 	</td>
-	<td align="right"><span class="date"><?php echo $this->order['details']['BT']->created_on ?></span><br/></td>
+	<td align="right"><span class="date"><?php echo $this->order['details']['BT']['created_on'] ?></span><br/></td>
     </tr>
 </table>

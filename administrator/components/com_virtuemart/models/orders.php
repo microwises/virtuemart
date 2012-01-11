@@ -102,7 +102,7 @@ class VirtueMartModelOrders extends VmModel {
 	 *
 	 */
 
-	public function GetOrderId($direction ='DESC', $order_id) {
+	public function getOrderId($direction ='DESC', $order_id) {
 
 		if ($direction == 'ASC') {
 			$arrow ='>';
@@ -156,7 +156,7 @@ class VirtueMartModelOrders extends VmModel {
 		// Get the order items
 		$q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				order_item_sku, i.virtuemart_product_id, product_item_price,
-				product_final_price, product_attribute, order_status,
+				product_final_price, product_tax, product_attribute, order_status,
 				intnotes
 			FROM #__virtuemart_order_items i
 			LEFT JOIN #__virtuemart_products p
@@ -808,6 +808,7 @@ class VirtueMartModelOrders extends VmModel {
 			$_orderItems->order_item_name = $_prod->product_name; //TODO Patrick
 			$_orderItems->product_quantity = $_prod->quantity;
 			$_orderItems->product_item_price = $_cart->pricesUnformatted[$priceKey]['basePrice'];
+			$_orderItems->product_tax = $_cart->pricesUnformatted[$priceKey]['subtotal_tax_amount'];
 			$_orderItems->product_final_price = $_cart->pricesUnformatted[$priceKey]['salesPrice'];
 			//			$_orderItems->order_item_currency = $_prices[$_lineCount]['']; // TODO Currency
 			$_orderItems->order_status = 'P';
@@ -839,7 +840,7 @@ class VirtueMartModelOrders extends VmModel {
 	 * @param $_notified 1 (default) if the customer was notified, 0 otherwise
 	 * @param $_comment (Customer) comment, default empty
 	 */
-	private function _updateOrderHist($_id, $_status = 'P', $_notified = 1, $_comment = '')
+	private function _updateOrderHist($_id, $_status = 'P', $_notified = 0, $_comment = '')
 	{
 		$_orderHist = $this->getTable('order_histories');
 		$_orderHist->virtuemart_order_id = $_id;

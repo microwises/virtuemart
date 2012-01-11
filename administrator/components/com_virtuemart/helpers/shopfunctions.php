@@ -1063,7 +1063,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 * @return	string	Either the icon to move an item up or a space
 	 * @since	1.0
 	 */
-	function orderUpIcon($i, $condition = true, $task = 'orderup', $alt = 'Move Up', $enabled = true)
+	function orderUpIcon($i, $condition = true, $task = 'orderup', $alt = 'COM_VIRTUEMART_MOVE_UP', $enabled = true)
 	{
 		$alt = JText::_($alt);
 

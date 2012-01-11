@@ -118,9 +118,15 @@ JHTML::_ ( 'behavior.modal' );
 			}
 			$userFieldsModel = new VirtueMartModelUserfields();
 			if($userFieldsModel->getIfRequired('agreed')){
+			    ?>
+			    <label for ="tosAccepted">
+			    <?php
 				if(!class_exists('VmHtml'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 				echo VmHtml::checkbox('tosAccepted',$this->cart->tosAccepted,1,0,'class="terms-of-service"');
 				echo '<span class="tos">'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
+				?>
+			    </label>
+		    <?php
 			}
 
 			echo $this->checkout_link_html;

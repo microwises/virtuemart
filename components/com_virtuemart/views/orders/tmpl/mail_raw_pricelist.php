@@ -44,9 +44,9 @@ $p = array();
 echo strip_tags(JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_TOTAL_ORDER', $this->cart->prices['billTotal'])) . "\n";
 echo sprintf("%'-64.64s", '') . "\n";
 echo JText::_('COM_VIRTUEMART_ORDER_ITEM') . "\n";
-foreach ($this->cart->products as $prow) {
+foreach ($this->order['items'] as $item) {
     echo "\n";
-    echo $prow->quantity . ' X ' . $prow->product_name . '(' . strtoupper(JText::_('COM_VIRTUEMART_CART_SKU')) . $prow->product_sku . ')' . "\n";
+    echo $item['product_quantity'] . ' X ' . $item['order_item_name'] . '(' . strtoupper(JText::_('COM_VIRTUEMART_CART_SKU')) . $item['order_item_sku']. ')' . "\n";
     echo JText::_('COM_VIRTUEMART_CART_PRICE')   . $prow->salesPrice . "\n";
     echo JText::_('COM_VIRTUEMART_CART_TOTAL') . $prow->subtotal_with_tax . ' (' . JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') . ':' . $prow->subtotal_tax_amount . ')';
     echo "\n";
@@ -54,7 +54,7 @@ foreach ($this->cart->products as $prow) {
 echo sprintf("%'-64.64s", '');
 echo "\n";
 //SubTotal, Tax, Shipment, Coupon Discount and Total listing
-foreach ($this->cart->cartData['DBTaxRulesBill'] as $rule) {
+foreach ($this->cart->cartData['dBTaxRulesBill'] as $rule) {
     echo $rule['calc_name'] . ':' . $this->cart->prices[$rule['virtuemart_calc_id'] . 'Diff'];
     echo "\n";
 }
@@ -75,7 +75,7 @@ foreach ($this->cart->cartData['taxRulesBill'] as $rule) {
     echo "\n";
 }
 
-foreach ($this->cart->cartData['DATaxRulesBill'] as $rule) {
+foreach ($this->cart->cartData['dATaxRulesBill'] as $rule) {
     echo $rule['calc_name'], '-', '-', $this->cart->prices[$rule['virtuemart_calc_id'] . 'Diff'];
     echo "\n";
 }

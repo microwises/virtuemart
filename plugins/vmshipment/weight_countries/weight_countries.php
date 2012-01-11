@@ -36,25 +36,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
 	$this->_loggable = true;
 	$this->tableFields = array_keys($this->getTableSQLFields());
-	$varsToPush = array('shipment_logos' => array('', 'char'),
-	    'countries' => array(0, 'char'),
-	    'zip_start' => array(0, 'int'),
-	    'zip_stop' => array(0, 'int'),
-	     'nbproducts_start' => array(0, 'int'),
-	    'nbproducts_stop' => array(0, 'int'),
-	     'orderamount_start' => array(0, 'int'),
-	    'orderamount_stop' => array(0, 'int'),
-	    'weight_start' => array(0, 'int'),
-	    'weight_stop' => array(0, 'int'),
-	    'weight_unit' => array(0, 'char'),
-	    'cost' => array(0, 'int'),
-	    'package_fee' => array(0, 'int'),
-	    'tax_id' => array(0, 'int'),
-	    'free_shipment' => array(0, 'int')
-	);
-
-
-
+	$varsToPush = $this->getVarsToPush();
 	$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
 
 // 		self::$_this

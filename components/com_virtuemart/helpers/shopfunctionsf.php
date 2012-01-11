@@ -365,6 +365,36 @@ class shopFunctionsF {
 
 		return $mailer->Send();
 	}
+/**
+	 * Prepares the body for shopper and vendor, renders them and sends directly the emails
+	 *
+	 * @author Max Milbers
+	 * @author Christopher Roussel
+	 *
+	 * @param int $orderID
+	 *
+	 */
+	function sentOrderConfirmedEmail ($order) {
+	    if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+// 		vmdebug('sentOrderConfirmedEmail my order',$order);
+
+	    foreach ($order['items'] as $k => $item) {
+		$order['items'][$k]=(array)$item;
+	    }
+	    $order['details']['BT'] =(array)$order['details']['BT'];
+	    $order['details']['ST']=(array)((isset(  $order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
+
+	    $shipment_name='';
+	    if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+	    JPluginHelper::importPlugin('vmshipment');
+	    $dispatcher = JDispatcher::getInstance();
+	    $returnValues = $dispatcher->trigger('plgVmOnShowOrderFEShipment',array(  $order['details']['BT']['virtuemart_order_id'], $order['details']['BT']['virtuemart_shipmentmethod_id'], &$shipment_name));
+	    $order['shipmentName']=$shipment_name;
+	    $vars['order']=$order;
+	    $vars['shopperName'] =  $order['details']['BT']['title'].' '.$order['details']['BT']['first_name'].' '.$order['details']['BT']['last_name'];
+	    return shopFunctionsF::renderMail('orders', $order['details']['BT']['email'], $vars);
+	}
+
 
 
 

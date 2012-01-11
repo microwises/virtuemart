@@ -50,7 +50,7 @@ class VirtuemartControllerCoupon extends VmController {
 		// $viewType = $document->getType();
 		// $view = $this->getView($this->_cname, $viewType);
 
-		Push a model into the view
+		//Push a model into the view
 		// $model = $this->getModel($this->_cname);
 		// if (!JError::isError($model)) {
 			// $view->setModel($model, true);

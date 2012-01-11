@@ -26,7 +26,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	parent::__construct($subject, $config);
 
-	$this->_tablepkey = 'virtuemart_order_id';
+	$this->_tablepkey = 'id';//virtuemart_order_id';
 	$this->_idName = 'virtuemart_' . $this->_psType . 'method_id';
 	$this->_configTable = '#__virtuemart_' . $this->_psType . 'methods';
 	$this->_configTableFieldName = $this->_psType . '_params';
@@ -37,7 +37,35 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	$this->_tableChecked = true;
     }
+    public  function getVarsToPush( ) {
+	    $black_list = array('spacer');
+	    $data = array();
+	    $filename = JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '/' . $this->_name.'.xml';
+	    // Check of the xml file exists
+	    $filePath = JPath::clean($filename);
+	    if (is_file($filePath)) {
+		$xml = JFactory::getXMLParser('simple');
+		$result = $xml->loadFile($filename);
+		if ($result) {
+		    if ($params = $xml->document->params) {
+			foreach ($params as $param) {
+			    if ($param->_name = "params") {
+				if ($children = $param->_children) {
+				    foreach ($children as $child) {
+					if (isset($child->_attributes['name'] )) {
+					$data[$child->_attributes['name']] = array('', 'char');
+					$result = true;
+					}
+				    }
+				}
+			    }
+			}
+		    }
+		}
+	    }
 
+	    return $data;
+	}
     /**
      * check if it is the correct type
      * @param string $psType either payment or shipment
@@ -571,13 +599,13 @@ abstract class vmPSPlugin extends vmPlugin {
      * @param array $_values
      * @param string $_table
      */
-    protected function storePSPluginInternalData($values) {
+    protected function storePSPluginInternalData($values, $primaryKey=0,   $preload=false) {
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 	if (!isset($values['virtuemart_order_id'])) {
 	    $values['virtuemart_order_id'] = VirtueMartModelOrders::getOrderIdByOrderNumber($values['order_number']);
 	}
-	$this->storePluginInternalData($values);
+	$this->storePluginInternalData($values, $primaryKey , 0,  $preload );
     }
 
     /**
@@ -768,8 +796,8 @@ abstract class vmPSPlugin extends vmPlugin {
 	return 0;
     }
 
-    function getPaymentCurrency(&$method) {
-	if (!isset($method->payment_currency) or !empty($method->payment_currency) or (!$method->payment_currency)) {
+    function getPaymentCurrency(&$method, $getCurrency=false) {
+	if ((!isset($method->payment_currency) AND !empty($method->payment_currency) AND (!$method->payment_currency)) OR $getCurrency) {
 	    if (!class_exists('VirtueMartModelVendor'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 	    $vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
@@ -847,7 +875,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	$value = $this->getCosts($cart, $method, $cart_prices);
 
-	$tax_id = $method->tax_id;
+	$tax_id = @$method->tax_id;
 
 	if (!class_exists('calculationHelper'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
@@ -898,7 +926,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
     }
 
-    public function processConfirmedOrderPaymentResponse($returnValue, $cart, $order, $html, $new_status='P') {
+    public function processConfirmedOrderPaymentResponse($returnValue, $cart, $order, $html,  $payment_name, $new_status='P') {
 	if ($returnValue !== null) {
 	    if ($returnValue == 1) {
 		//We delete the old stuff
@@ -916,8 +944,9 @@ abstract class vmPSPlugin extends vmPlugin {
 		    $order['comments'] = '';
 		    $modelOrder->updateStatusForOneOrder($orderID, $order, true);
 		}
-
-		$cart->sentOrderConfirmedEmail($order);
+		 $order['paymentName']= $payment_name;
+		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		shopFunctionsF::sentOrderConfirmedEmail($order);
 		//We delete the old stuff
 		$cart->emptyCart();
 		JRequest::setVar('html', $html);

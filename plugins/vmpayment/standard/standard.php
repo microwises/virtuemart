@@ -31,26 +31,15 @@ class plgVmPaymentStandard extends vmPSPlugin {
 
     function __construct(& $subject, $config) {
 	//if (self::$_this)
-	 //   return self::$_this;
+	//   return self::$_this;
 	parent::__construct($subject, $config);
 
-	    $this->_loggable = true;
-	    $this->tableFields = array_keys($this->getTableSQLFields());
-	    $varsToPush = array('payment_logos' => array('', 'char'),
-		'countries' => array(0, 'int'),
-		'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\' ',
-		'payment_currency' =>  array(0, 'int'),
-		'min_amount' => array(0, 'int'),
-		'max_amount' => array(0, 'int'),
-		'cost_per_transaction' => array(0, 'int'),
-		'cost_percent_total' => array(0, 'int'),
-		'tax_id' => array(0, 'int'),
-		'payment_info' => array('', 'string')
-	    );
+	$this->_loggable = true;
+	$this->tableFields = array_keys($this->getTableSQLFields());
 
-	    $this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
-	   // self::$_this = $this;
-
+	$varsToPush = $this->getVarsToPush();
+	$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
+	// self::$_this = $this;
     }
 
     /**
@@ -60,6 +49,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
     protected function getVmPluginCreateTableSQL() {
 	return $this->createTableSQL('Payment Standard Table');
     }
+
     /**
      * Fields to create the payment table
      * @return string SQL Fileds
@@ -104,7 +94,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
 
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-	$this->getPaymentCurrency($method);
+	$this->getPaymentCurrency($method, true);
+
 	// END printing out HTML Form code (Payment Extra Info)
 	$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $method->payment_currency . '" ';
 	$db = &JFactory::getDBO();
@@ -114,14 +105,13 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$totalInPaymentCurrency = round($paymentCurrency->convertCurrencyTo($method->payment_currency, $order['details']['BT']->order_total, false), 2);
 	$cd = CurrencyDisplay::getInstance($cart->pricesCurrency);
 
-
 	$this->_virtuemart_paymentmethod_id = $order['details']['BT']->virtuemart_paymentmethod_id;
 	$dbValues['payment_name'] = $this->renderPluginName($method);
 	$dbValues['order_number'] = $order['details']['BT']->order_number;
 	$dbValues['virtuemart_paymentmethod_id'] = $this->_virtuemart_paymentmethod_id;
 	$dbValues['cost_per_transaction'] = $method->cost_per_transaction;
 	$dbValues['cost_percent_total'] = $method->cost_percent_total;
-	$dbValues['payment_currency'] = $currency_code_3 ;
+	$dbValues['payment_currency'] = $currency_code_3;
 	$dbValues['payment_order_total'] = $totalInPaymentCurrency;
 	$dbValues['tax_id'] = $method->tax_id;
 	$this->storePSPluginInternalData($dbValues);
@@ -130,11 +120,11 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$html .= $this->getHtmlRow('STANDARD_PAYMENT_INFO', $dbValues['payment_name']);
 	if (!empty($payment_info)) {
 	    $lang = & JFactory::getLanguage();
-	   if ($lang->hasKey($method->payment_info)) {
-	    $payment_info = JTExt::_($method->payment_info);
-	   } else {
-	        $payment_info =  $method->payment_info;
-	   }
+	    if ($lang->hasKey($method->payment_info)) {
+		$payment_info = JTExt::_($method->payment_info);
+	    } else {
+		$payment_info = $method->payment_info;
+	    }
 	    $html .= $this->getHtmlRow('STANDARD_PAYMENTINFO', $payment_info);
 	}
 	if (!class_exists('VirtueMartModelCurrency'))
@@ -145,7 +135,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	//$html .= $this->getHtmlRow('STANDARD_AMOUNT', $totalInPaymentCurrency.' '.$currency_code_3);
 	$html .= '</table>' . "\n";
 
-	return $this->processConfirmedOrderPaymentResponse(true, $cart, $order, $html);
+	return $this->processConfirmedOrderPaymentResponse(true, $cart, $order, $html, $dbValues['payment_name']);
 // 		return true;  // empty cart, send order
     }
 
@@ -166,12 +156,12 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	    vmWarn(500, $q . " " . $db->getErrorMsg());
 	    return '';
 	}
-	$this->getPaymentCurrency($paymentTable);
+	//$this->getPaymentCurrency($paymentTable);
 
 	$html = '<table class="adminlist">' . "\n";
 	$html .=$this->getHtmlHeaderBE();
 	$html .= $this->getHtmlRowBE('STANDARD_PAYMENT_NAME', $paymentTable->payment_name);
-	$html .= $this->getHtmlRowBE('STANDARD_PAYMENT_TOTAL_CURRENCY', $paymentTable->payment_order_total.' '.$paymentTable->payment_currency);
+	$html .= $this->getHtmlRowBE('STANDARD_PAYMENT_TOTAL_CURRENCY', $paymentTable->payment_order_total. ' '.$paymentTable->payment_currency);
 	$html .= '</table>' . "\n";
 	return $html;
     }
@@ -301,7 +291,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	if (!$this->selectedThisElement($method->payment_element)) {
 	    return false;
 	}
-	 $this->getPaymentCurrency($method);
+	$this->getPaymentCurrency($method);
 
 	$paymentCurrencyId = $method->payment_currency;
     }

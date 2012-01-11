@@ -4,7 +4,7 @@
 * Layout for the shopping cart, look in mailshopper for more details
 *
 * @package	VirtueMart
-* @subpackage Cart
+* @subpackage Order
 * @author Max Milbers
 *
 * @link http://www.virtuemart.net
@@ -25,10 +25,10 @@ defined('_JEXEC') or die('Restricted access');
     <td>
 <?php
 //	echo JText::_('COM_VIRTUEMART_CART_MAIL_VENDOR_TITLE').$this->vendor->vendor_name.'<br/>';
-	echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_CONTENT',$this->vendor->vendor_store_name,$this->shopperName,$this->cart->prices['billTotal'],$this->order['details']['BT']->order_number);
+	echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_CONTENT',$this->vendor->vendor_store_name,$this->shopperName,$this->currency->priceDisplay($this->order['details']['BT']['order_total']),$this->order['details']['BT']['order_number']);
 
-if(!empty($this->order['details']['BT']->customer_note)){
-	echo '<br /><br />'.JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_SHOPPER_QUESTION',$this->order['details']['BT']->customer_note).'<br />';
+if(!empty($this->order['details']['BT']['customer_note'])){
+	echo '<br /><br />'.JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_SHOPPER_QUESTION',$this->order['details']['BT']['customer_note']).'<br />';
 }
 
 	?>

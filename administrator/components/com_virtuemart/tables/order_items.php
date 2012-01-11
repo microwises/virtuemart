@@ -48,6 +48,8 @@ class TableOrder_items extends VmTable {
 	/** @var decimal Product item price */
 	var $product_item_price = 0.00000;
 	/** @var decimal Product final price */
+	var $product_tax = 0.00000;
+	/** @var decimal Product final price */
 	var $product_final_price = 0.00000;
 	/** @var string Order item currency */
 	var $order_item_currency = NULL;

@@ -19,100 +19,54 @@
     </languages>
     <params addpath="/administrator/components/com_virtuemart/elements">
 	<param type="vmjpluginwarning" />
-	<param   type="spacer" default="VMPAYMENT_PAYPAL_PARAMS" level="level1" />
-	<param type="text" name="paypal_merchant_email"  size="50" label="VMPAYMENT_PAYPAL_EMAIL"
-             default="username@email.com" description="VMPAYMENT_PAYPAL_EMAIL_DESC" />
+	<param type="spacer" default="VMPAYMENT_PAYPAL_PAYMENT_TITLE" level="level1" />
 
-        <!-- BY DEFAULT paypal currency= vendor currency -->
-	<param name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_PAYPAL_CURRENCY" description="VMPAYMENT_PAYPAL_CURRENCY_DESC" />
-
-	<param name="paypal_verified_only" type="radio" default="0" label="VMPAYMENT_PAYPAL_ONLYVERIFIED" description="VMPAYMENT_PAYPAL_ONLYVERIFIED_EXPLAIN">
-	    <option value="0">COM_VIRTUEMART_NO</option>
-	    <option value="1">COM_VIRTUEMART_YES</option>
-	</param>
-
-	<param   type="spacer" default="VMPAYMENT_PAYPAL_SANDBOX_PARAMS" level="level1" />
-
-	<param name="sandbox" type="radio" default="1" label="VMPAYMENT_PAYPAL_SANDBOX" description="VMPAYMENT_PAYPAL_SANDBOX_DESC" >
-	    <option value="0">COM_VIRTUEMART_NO</option>
-	    <option value="1">COM_VIRTUEMART_YES</option>
-	</param>
-	<param name="sandbox_merchant_email" type="text" size="50" default="" label="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT" description="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT_DESC" />
-	<param   type="spacer" default="VMPAYMENT_PAYPAL_VIRTUEMART_PARAMS" level="level1" />
+	<param type="spacer" default="" level="level1" />
+	<param type="spacer" default="VMPAYMENT_PAYPAL_PAYMENT_SETTINGS" level="level1" />
 	<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_PAYPAL_LOGOS"
              	description="VMPAYMENT_PAYPAL_LOGOS_DESC"
              	directory="/images/stories/virtuemart/payment"
              	default="default" hide_default="1" hide_none="1"
              	stripext="0"  exclude="^_" />
-	<param name="debug" type="radio" default="0" label="VMPAYMENT_PAYPAL_DEBUG" description="VMPAYMENT_PAYPAL_DEBUG_DESC" >
+
+	<param type="spacer" default="" level="level1" />
+	<param   type="spacer" default="VMPAYMENT_PAYPAL_PARAMS" level="level1" />
+	<param type="text" name="paypal_merchant_email"  size="50" label="VMPAYMENT_PAYPAL_EMAIL"
+             default="username@email.com" description="VMPAYMENT_PAYPAL_EMAIL_DESC" />
+
+	<param name="paypal_verified_only" type="radio" default="0" label="VMPAYMENT_PAYPAL_ONLYVERIFIED" description="VMPAYMENT_PAYPAL_ONLYVERIFIED_EXPLAIN">
 	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
 	</param>
-	<param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="P" label="VMPAYMENT_PAYPAL_STATUS_PENDING" description="VMPAYMENT_PAYPAL_STATUS_PENDING_EXPLAIN" />
-	<param name="status_success" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_PAYPAL_STATUS_SUCCESS" description="VMPAYMENT_PAYPAL_STATUS_SUCCESS_EXPLAIN" />
-	<param name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_PAYPAL_STATUS_FAILED" description="VMPAYMENT_PAYPAL_STATUS_FAILED_EXPLAIN" />
+	<param name="sandbox_merchant_email" type="text" size="50" default="" label="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT" description="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT_DESC" />
+	<param name="sandbox" type="radio" default="1" label="VMPAYMENT_PAYPAL_SANDBOX" description="VMPAYMENT_PAYPAL_SANDBOX_DESC" >
+	    <option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="1">COM_VIRTUEMART_YES</option>
+	</param>
+
+	<param type="spacer" default="" level="level1" />
+	<param type="spacer" default="VMPAYMENT_PAYPAL_RESTRICTIONS" level="level1" />
+	     <!-- BY DEFAULT paypal currency= vendor currency -->
+	<param name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_PAYPAL_CURRENCY" description="VMPAYMENT_PAYPAL_CURRENCY_DESC" />
+
 	<param name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMPAYMENT_PAYPAL_COUNTRIES" description="VMPAYMENT_PAYPAL_COUNTRIES_DESC"/>
 	<param name="min_amount" type="text"  label="VMPAYMENT_PAYPAL_MIN_AMOUNT" description="VMPAYMENT_PAYPAL_MIN_AMOUNT_EXPLAIN" />
 	<param name="max_amount" type="text"  label="VMPAYMENT_PAYPAL_MAX_AMOUNT" description="VMPAYMENT_PAYPAL_MAX_AMOUNT_EXPLAIN" />
 	<param name="cost_per_transaction" type="text"  label="VMPAYMENT_PAYPAL_COST_PER_TRANSACTION" description="VMPAYMENT_PAYPAL_COST_PER_TRANSACTION_EXPLAIN" />
 	<param name="cost_percent_total" type="text"  label="VMPAYMENT_PAYPAL_COST_PERCENT_TOTAL" description="VMPAYMENT_PAYPAL_COST_PERCENT_TOTAL_EXPLAIN" />
 	<param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_PAYPAL_TAX" description="VMPAYMENT_PAYPAL_TAX_EXPLAIN" />
+	<param type="spacer" default="" level="level1" />
+	<param type="spacer" default="VMPAYMENT_PAYPAL_PAYMENT_PAGE" level="level1" />
+	<param name="status_pending" type="vmorderstate" scope="com_virtuemart" default="P" label="VMPAYMENT_PAYPAL_STATUS_PENDING" description="VMPAYMENT_PAYPAL_STATUS_PENDING_EXPLAIN" />
+	<param name="status_success" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_PAYPAL_STATUS_SUCCESS" description="VMPAYMENT_PAYPAL_STATUS_SUCCESS_EXPLAIN" />
+	<param name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_PAYPAL_STATUS_FAILED" description="VMPAYMENT_PAYPAL_STATUS_FAILED_EXPLAIN" />
+	<param type="spacer" default="" level="level1" />
+	<param name="debug" type="radio" default="0" label="VMPAYMENT_PAYPAL_DEBUG" description="VMPAYMENT_PAYPAL_DEBUG_DESC" >
+	    <option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="1">COM_VIRTUEMART_YES</option>
+	</param>
+
     </params>
 
-    <fieldset addpath="/administrator/components/com_virtuemart/elements">
-	<field type="vmjpluginwarning" />
-	<field type="spacer" default="VMPAYMENT_PAYPAL_FIELDS" level="level1" />
-	<field type="text" name="paypal_merchant_email"  size="50" label="VMPAYMENT_PAYPAL_EMAIL"
-             default="username@email.com" description="VMPAYMENT_PAYPAL_EMAIL_DESC" />
 
-        <!-- BY DEFAULT paypal currency= vendor currency
-        field name="currency" type="radio" default="1" label="VMPAYMENT_PAYPAL_CURRENCY" description="VMPAYMENT_PAYPAL_SANDBOX_DESC">
-            <option value="AUD">Australian Dollar </option>
-            <option value="CAD">Canadian Dollar </option>
-            <option value="EUR">Euro</option>
-            <option value="GBP">Pound sterling</option>
-            <option value="JPY">Yen japonais</option>
-            <option value="USD">US Dollar</option>
-        </field -->
-
-	<field name="PAYPAL_VERIFIED_ONLY" type="radio" default="0" label="VMPAYMENT_PAYPAL_ONLYVERIFIED" description="VMPAYMENT_PAYPAL_ONLYVERIFIED_EXPLAIN">
-	    <option value="0">COM_VIRTUEMART_NO</option>
-	    <option value="1">COM_VIRTUEMART_YES</option>
-	</field>
-	<field	name="payment_logos" type="vmfiles" label="VMPAYMENT_PAYPAL_LOGOS"
-             	description="VMPAYMENT_PAYPAL_LOGOS_DESC"
-             	directory="/images/stories/virtuemart/payment"
-             	default="default" hide_default="1" hide_none="1"
-             	stripext="0"  exclude="^_" />
-
-	<field   type="spacer" default="VMPAYMENT_PAYPAL_SANDBOX_FIELDS" level="level1" />
-
-	<field name="sandbox" type="radio" default="1" label="VMPAYMENT_PAYPAL_SANDBOX" description="VMPAYMENT_PAYPAL_SANDBOX_DESC" >
-	    <option value="0">COM_VIRTUEMART_NO</option>
-	    <option value="1">COM_VIRTUEMART_YES</option>
-	</field>
-	<field name="sandbox_merchant_email" type="text" size="50" default="" label="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT" description="VMPAYMENT_PAYPAL_SANDBOX_MERCHANT_DESC" />
-
-	<field   type="spacer" default="VMPAYMENT_PAYPAL_VIRTUEMART_fieldS" level="level1" />
-	<field	name="payment_logos" type="vmfiles" label="VMPAYMENT_PAYPAL_LOGOS"
-             	description="VMPAYMENT_PAYPAL_LOGOS_DESC"
-             	directory="/images/stories/virtuemart/payment"
-             	default="default" hide_default="1" hide_none="1"
-             	stripext="0"  exclude="^_" />
-	<field name="debug" type="radio" default="0" label="VMPAYMENT_PAYPAL_DEBUG" description="VMPAYMENT_PAYPAL_DEBUG_DESC" >
-	    <option value="0">COM_VIRTUEMART_NO</option>
-	    <option value="1">COM_VIRTUEMART_YES</option>
-	</field>
-	<field name="status_pending" type="vmorderstate" scope="com_virtuemart" default="P" label="VMPAYMENT_PAYPAL_STATUS_PENDING" description="VMPAYMENT_PAYPAL_STATUS_PENDING_EXPLAIN" />
-	<field name="status_success" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_PAYPAL_STATUS_SUCCESS" description="VMPAYMENT_PAYPAL_STATUS_SUCCESS_EXPLAIN" />
-	<field name="status_canceled" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_PAYPAL_STATUS_FAILED" description="VMPAYMENT_PAYPAL_STATUS_FAILED_EXPLAIN" />
-	<field name="countries" type="vmcountries"  scope="com_virtuemart" default="" label="VMPAYMENT_PAYPAL_COUNTRIES" description="VMPAYMENT_PAYPAL_COUNTRIES_DESC"/>
-
-	<field name="min_amount" type="text"  label="VMPAYMENT_PAYPAL_MIN_AMOUNT" description="VMPAYMENT_PAYPAL_MIN_AMOUNT_EXPLAIN" />
-	<field name="max_amount" type="text"  label="VMPAYMENT_PAYPAL_MAX_AMOUNT" description="VMPAYMENT_PAYPAL_MAX_AMOUNT_EXPLAIN" />
-	<field name="cost" type="text"  label="VMPAYMENT_PAYPAL_FEE" description="VMPAYMENT_PAYPAL_FEE_EXPLAIN" />
-	<field name="payment_tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_PAYPAL_TAX" description="VMPAYMENT_PAYPAL_TAX_EXPLAIN" />
-
-
-    </fieldset>
 </install>

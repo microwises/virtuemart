@@ -74,7 +74,7 @@ class VirtuemartControllerOrders extends VmController {
 		/* Additional models */
 		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
-
+		$view->setModel( $this->getModel( 'orderstatus', 'VirtueMartModel' ));
 		/* Set the layout */
 		$view->setLayout('order_print');
 
@@ -95,7 +95,7 @@ class VirtuemartControllerOrders extends VmController {
 		/* Additional models */
 		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
-
+		$view->setModel( $this->getModel( 'orderstatus', 'VirtueMartModel' ));
 		/* Set the layout */
 		$view->setLayout('order');
 
@@ -111,7 +111,7 @@ class VirtuemartControllerOrders extends VmController {
 	public function next($dir = 'ASC'){
 		$model = $this->getModel('orders');
 		$id = JRequest::getInt('virtuemart_order_id');
-		if (!$order_id = $model->GetOrderId($dir,$id)) {
+		if (!$order_id = $model->getOrderId($dir,$id)) {
 			$order_id  = $id;
 			$msg = JText::_('COM_VIRTUEMART_NO_MORE_ORDERS');
 		} else {

@@ -202,6 +202,9 @@ class VirtueMartModelCustomfields extends VmModel {
 		if ($datas->field_type) $html .= VmHTML::row('value','COM_VIRTUEMART_CUSTOM_FIELD_TYPE', $datas->field_types[$datas->field_type] ) ;
 		else $html .= VmHTML::row('select','COM_VIRTUEMART_CUSTOM_FIELD_TYPE', 'field_type', $this->getOptions($datas->field_types) , $datas->field_type,VmHTML::validate('R')) ;
 		$html .= VmHTML::row('input','COM_VIRTUEMART_TITLE','custom_title',$datas->custom_title,VmHTML::validate('S'));
+		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$datas->published);
+		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE','is_cart_attribute',$datas->is_cart_attribute);
+
 		$html .= VmHTML::row('input','COM_VIRTUEMART_DESCRIPTION','custom_field_desc',$datas->custom_field_desc);
 		// change input by type
 		$html .= VmHTML::row('input','COM_VIRTUEMART_DEFAULT','custom_value',$datas->custom_value);
@@ -210,11 +213,9 @@ class VirtueMartModelCustomfields extends VmModel {
 
 		$html .= VmHTML::row('select','COM_VIRTUEMART_CUSTOM_PARENT','custom_parent_id',$this->getParentList($datas->virtuemart_custom_id),  $datas->custom_parent_id,'');
 		//$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_PARENT','custom_parent_id',$this->getCustomsList(),  $datas->custom_parent_id,'');
-		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_PUBLISHED','published',$datas->published);
 		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_ADMIN_ONLY','admin_only',$datas->admin_only);
 		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_IS_LIST','is_list',$datas->is_list);
 		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_IS_HIDDEN','is_hidden',$datas->is_hidden);
-		$html .= VmHTML::row('booleanlist','COM_VIRTUEMART_CUSTOM_IS_CART_ATTRIBUTE','is_cart_attribute',$datas->is_cart_attribute);
 
 		$html .= '</table>';
 		$html .= VmHTML::inputHidden($this->_hidden);
@@ -331,7 +332,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 			foreach ($values as $key => $val)
 				$options[] = array( 'value' => $val ,'text' =>$val);
-			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]').$priceInput;
+			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]').'</td><td>'.$priceInput;
 		} else {
 
 			switch ($field->field_type) {
