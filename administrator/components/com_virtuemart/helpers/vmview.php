@@ -23,7 +23,7 @@ jimport( 'joomla.application.component.view');
 // Load default helpers
 if (!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 if (!class_exists('AdminUIHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'adminui.php');
-if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php'); 
+if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
 class VmView extends JView{
 
 	/**
@@ -100,11 +100,12 @@ class VmView extends JView{
 		<button onclick="this.form.submit();">' . JText::_('COM_VIRTUEMART_GO') . '</button>
 		<button onclick="document.getElementById(\'' . $name . '\').value=\'\';this.form.submit();">' . JText::_('COM_VIRTUEMART_RESET') . '</button>';
 	}
+
 	function addStandardEditViewCommands($id = 0,$object = null) {
 		if (JRequest::getCmd('tmpl') =='component' ) {
-			if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php'); 
+			if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
 		} else {
-		
+
 		JToolBarHelper::divider();
 		JToolBarHelper::save();
 		JToolBarHelper::apply();
@@ -207,7 +208,9 @@ class VmView extends JView{
 			$this->assignRef('langList',$langList);
 			$this->assignRef('lang',$lang);
 		}
-		if ($object) {
+
+		//I absolutly do not understand for that should be for, note by Max
+/*		if ($object) {
 		   if(Vmconfig::get('multix','none')!=='none'){
 				$this->loadHelper('permissions');
 				if(!Permissions::getInstance()->check('admin')) {
@@ -221,7 +224,7 @@ class VmView extends JView{
 				$vendorList = '<input type="hidden" name="virtuemart_vendor_id" value="1" />';
 		   }
 		   $this->assignRef('vendorList', $vendorList);
-		}
+		}*/
 
 	}
 
@@ -262,7 +265,7 @@ class VmView extends JView{
 		'. JHTML::_( 'form.token' );
 	}
 	function getToolbar() {
-		
+
 		// add required stylesheets from admin template
 		$document    = & JFactory::getDocument();
 		$document->addStyleSheet('administrator/templates/system/css/system.css');

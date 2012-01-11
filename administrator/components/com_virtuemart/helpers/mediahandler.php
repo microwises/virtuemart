@@ -195,16 +195,20 @@ class VmMediaHandler {
 	 */
 	function setFileInfo($type=0){
 
-		if($this->file_is_forSale==0){
-			$this->file_url_folder = $this->getMediaUrlByView($type);
-			$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
-			$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
+		$this->file_url_folder = '';
+		$this->file_path_folder = '';
+		$this->file_url_folder_thumb = '';
 
+		if($this->file_is_forSale==0){
+			if(!empty($type)){
+				$this->file_url_folder = $this->getMediaUrlByView($type);
+				$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
+				$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
+			}
 		} else {
 			$this->file_path_folder = VmConfig::get('forSale_path');
 			$this->file_url_folder = $this->file_path_folder;//str_replace(DS,'/',$this->file_path_folder);
 			$this->file_url_folder_thumb = VmConfig::get('forSale_path_thumb');
-
 		}
 
 		//Clean from possible injection

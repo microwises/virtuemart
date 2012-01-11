@@ -71,9 +71,7 @@ class TableCategories extends VmTable {
 	var $metaauthor	= '';
         /** @var integer Category publish or not */
 	var $published			= 1;
- 
- /** @var boolean Check for the vendor */
-	var  $_checkForVendor = true ;
+
 	/**
 	 * Class contructor
 	 *

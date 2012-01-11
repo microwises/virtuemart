@@ -512,8 +512,9 @@ class VmTable extends JTable{
 		}
 
 
-		if(isset($this->virtuemart_vendor_id )){
-			if(Vmconfig::get('multix','none') ==='none'){
+			if(isset($this->virtuemart_vendor_id )){
+			$multix = Vmconfig::get('multix','none');
+			if( $multix == 'none'){
 				if(!isset($this->user_is_vendor)){
 					$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 1;
 				} else if($this->user_is_vendor){
@@ -521,8 +522,14 @@ class VmTable extends JTable{
 				} else {
 					$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 0;
 				}
-			} elseif (isset($this->_checkForVendor)) {
-				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+			} else if($multix == 'administrated'){
+
+				if(empty($this->virtuemart_vendor_id)){
+					vmError('Multivendor id missing for '.$this->_tbl_key);
+					$this->virtuemart_vendor_id = 1;
+				}
+			}
+/*				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 				$vendor_id = VirtueMartModelVendor::getLoggedVendor();
 				$tbl_key = $this->_tbl_key ;
 				$q = 'SELECT `virtuemart_vendor_id` FROM `' . $this->_tbl . '` ';
@@ -532,7 +539,7 @@ class VmTable extends JTable{
 				if ($vendor_id == $virtuemart_vendor_id ) return true;
 				vmWarn('COM_VIRTUEMART_NOT_SAME_VENDOR',$virtuemart_vendor_id,$virtuemart_vendor_id,$virtuemart_vendor_id);
 				return false ;
-			}
+			}*/
 		}
 
 		return true;
