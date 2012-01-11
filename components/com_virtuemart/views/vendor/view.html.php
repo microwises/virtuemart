@@ -70,7 +70,7 @@ class VirtuemartViewVendor extends VmView {
 
 			$userId = $model->getUserIdByVendorId($virtuemart_vendor_id);
 
-			if (!class_exists('VirtuemartModelser')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
+			if (!class_exists('VirtuemartModeluser')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
 			$usermodel = new VirtuemartModelUser();
 
 			$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
@@ -94,7 +94,25 @@ class VirtuemartViewVendor extends VmView {
 		parent::display($tpl);
 
     }
+	function renderMailLayout() {
+		$this->setLayout('mail_html_question');
+		$this->comment = JRequest::getString('comment');
+		$virtuemart_vendor_id = JRequest::getInt('virtuemart_vendor_id');
 
+		$vendorModel = $this->getModel('vendor');
+		$this->vendor = $vendorModel->getVendor($virtuemart_vendor_id);
+
+		$this->subject = Jtext::_('COM_VIRTUEMART_VENDOR_CONTACT') .' '.$this->vendor->vendor_store_name;
+		$this->vendorEmail= $this->user['email'];
+		//$this->vendorName= $this->user['email'];
+		if (VmConfig::get('order_mail_html')) {
+			$tpl = 'mail_html_question';
+		} else {
+			$tpl = 'mail_raw_question';
+		}
+		$this->setLayout($tpl);
+		parent::display( );
+	}
 }
 
 //No Closing Tag

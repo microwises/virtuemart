@@ -18,9 +18,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined ( '_JEXEC' ) or die ( 'Restricted access' );
-/* thank you for the ask question mail  */ ?>
+/* thank you for the ask question mail  */
+
+
+ ?>
 
 <div class="productdetails-view">
-	<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_THANK_YOU'); ?>
-	<button onclick="parent.jQuery.facebox.close();" type="button"><?php echo JText::_('COM_VIRTUEMART_CLOSE'); ?></button>
+	<div><?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_THANK_YOU'); ?></div><br />
+	<div><a class="general-bg" href="<?php echo JRoute::_('index.php?option=com_virtuemart') ?>" /><?php echo JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') ?></a></div>
 </div>

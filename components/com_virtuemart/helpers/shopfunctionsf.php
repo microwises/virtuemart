@@ -297,7 +297,7 @@ class shopFunctionsF {
 		$format = (VmConfig::get('order_html_email',1)) ? 'html' : 'raw';
 
 		$controller = new VirtueMartControllerVirtuemart();
-		$controller->addModelPath(JPATH_VM_SITE.DS.'models');
+		//$controller->addModelPath(JPATH_VM_SITE.DS.'models');
 		$controller->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
 
 		$view = $controller->getView($viewName, $format);

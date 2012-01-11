@@ -88,7 +88,7 @@ class VirtueMartControllerVendor extends JController
 		$vendorUser = JFactory::getUser($userId);
 
 		if ( $commentSize<$min || $commentSize>$max || !$validMail ) {
-			$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&tmpl=component&view=vendor&task=tos&virtuemart_vendor_id=' . $virtuemart_vendor_id ),JText::_('COM_VIRTUEMART_COMMENT_NOT_VALID_JS'));
+			$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=vendor&task=contact&virtuemart_vendor_id=' . $virtuemart_vendor_id ),JText::_('COM_VIRTUEMART_COMMENT_NOT_VALID_JS'));
 			return ;
 		}
 
@@ -108,7 +108,7 @@ class VirtueMartControllerVendor extends JController
 		$VendorEmail = $model->getVendorEmail($virtuemart_vendor_id);
 		$vars['vendor'] = array('vendor_store_name' => $fromName );
 
-		if (shopFunctionsF::renderMail('askquestion', $VendorEmail, $vars,'productdetails')) {
+		if (shopFunctionsF::renderMail('vendor', $VendorEmail, $vars,'vendor')) {
 			$string = 'COM_VIRTUEMART_MAIL_SEND_SUCCESSFULLY';
 		}
 		else {
@@ -117,7 +117,7 @@ class VirtueMartControllerVendor extends JController
 		$mainframe->enqueueMessage(JText::_($string));
 
 		/* Display it all */
-		$view = $this->getView('askquestion', 'html');
+		$view = $this->getView('vendor', 'html');
 // 		$view->setModel($this->getModel('category', 'VirtuemartModel'));
 		$view->setLayout('mail_confirmed');
 		$view->display();

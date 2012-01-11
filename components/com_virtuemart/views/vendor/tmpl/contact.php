@@ -73,7 +73,7 @@ defined('_JEXEC') or die('Restricted access');
 
 		<div class="form-field">
 
-			<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id='.$this->vendor->virtuemart_vendor_id.'&tmpl=component') ; ?>" name="askform" id="askform">
+			<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php') ; ?>" name="askform" id="askform">
 
 				<label><?php echo JText::_('COM_VIRTUEMART_USER_FORM_NAME')  ?> : <input type="text" class="validate[required,minSize[4],maxSize[64]]" value="<?php echo $this->user->name ?>" name="name" id="name" size="30"  validation="required name"/></label>
 				<br />
@@ -96,8 +96,8 @@ defined('_JEXEC') or die('Restricted access');
 					</div>
 				</div>
 
-				<input type="hidden" name="tmpl" value="component" />
 				<input type="hidden" name="view" value="vendor" />
+				<input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->vendor->virtuemart_vendor_id ?>" />
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="hidden" name="task" value="mailAskquestion" />
 				<?php echo JHTML::_( 'form.token' ); ?>
