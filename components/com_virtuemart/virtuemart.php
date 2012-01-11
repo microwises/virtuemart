@@ -49,7 +49,7 @@ if(VmConfig::get('shop_is_offline',0)){
 	vmJsApi::jSite();
 	vmJsApi::cssSite();
 	$_controller = JRequest::getWord('view', JRequest::getWord('controller', 'virtuemart')) ;
-	$task = JRequest::getWord('task',$_controller) ;
+	$task = JRequest::getWord('task',JRequest::getWord('layout',$_controller) );
 
 	if (($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit') ) {
 		$app = JFactory::getApplication();
