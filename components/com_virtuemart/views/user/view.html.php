@@ -97,10 +97,9 @@ class VirtuemartViewUser extends VmView {
 	$this->assignRef('userId', $this->_cuid);
 
 	if(empty($this->_cuid)){
-		$layout = 'default';
+// 		$layout = 'default';
 		$this->setLayout('default');
-// 		$true = true;
-// 		$this->assignRef('anonymous',$true);
+
 	}
 
 	$this->_userDetails = $this->_model->getUser();
@@ -140,8 +139,8 @@ class VirtuemartViewUser extends VmView {
 	} else {
 	    $userFields = $this->_model->getUserInfoInUserFields($layoutName, $type, $virtuemart_userinfo_id);
 	    if (!$new && empty($userFields[$virtuemart_userinfo_id])) {
-		$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
-		vmdebug('Try to get $virtuemart_userinfo_id by type BT', $virtuemart_userinfo_id);
+			$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
+			vmdebug('Try to get $virtuemart_userinfo_id by type BT', $virtuemart_userinfo_id);
 	    }
 	    $userFields = $userFields[$virtuemart_userinfo_id];
 	    $task = 'editAddressSt';

@@ -49,7 +49,8 @@ if(VmConfig::get('shop_is_offline',0)){
 	vmJsApi::jSite();
 	vmJsApi::cssSite();
 	$_controller = JRequest::getWord('view', JRequest::getWord('controller', 'virtuemart')) ;
-	$task = JRequest::getWord('task',JRequest::getWord('layout',$_controller) );
+// 	$task = JRequest::getWord('task',JRequest::getWord('layout',$_controller) );		$this makes trouble!
+	$task = JRequest::getWord('task',$_controller) ;
 
 	if (($_controller == 'product' || $_controller == 'category') && ($task == 'save' || $task == 'edit') ) {
 		$app = JFactory::getApplication();
@@ -60,16 +61,16 @@ if(VmConfig::get('shop_is_offline',0)){
 			if	(Permissions::getInstance()->check("admin,storeadmin")) {
 				 $jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true);
 				require (JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php');
-				//require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php'); 
+				//require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
-			} else { 
+			} else {
 				$app->redirect('index.php?option=com_virtuemart', jText::_('COM_VIRTUEMART_RESTRICTED_ACCESS') );
 			}
 		}
 
-	
+
 	/* Require specific controller if requested */
-	} elseif($_controller) { 
+	} elseif($_controller) {
 		if (file_exists(JPATH_VM_SITE.DS.'controllers'.DS.$_controller.'.php')) {
 			// Only if the file exists, since it might be a Joomla view we're requesting...
 			require (JPATH_VM_SITE.DS.'controllers'.DS.$_controller.'.php');
@@ -91,7 +92,7 @@ $controller = new $_class();
 /* Perform the Request task */
 $controller->execute($task);
 //Console::logSpeed('virtuemart start');
-vmTime($_class.' Finished','Start');
+vmTime($_class.' Finished task '.$task,'Start');
 vmRam('End');
 vmRamPeak('Peak');
 /* Redirect if set by the controller */

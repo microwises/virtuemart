@@ -58,7 +58,7 @@ class VirtuemartViewMedia extends VmView {
 			if ($isNew) {
 				if(!Permissions::getInstance()->check('admin')) {
 					$usermodel = $this->getModel('user');
-					$usermodel->setCurrent();
+// 					$usermodel->setCurrent();
 					$userDetails = $usermodel->getUser();
 					if(empty($userDetails->virtuemart_vendor_id)){
 						JError::raiseError(403,'Forbidden for non vendors');

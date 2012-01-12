@@ -76,7 +76,7 @@ class VirtueMartModelUser extends VmModel {
 			//not anonymous, but no cid means already registered user edit own data
 			if(empty($cid)){
 				$this->setUserId($user->id);
-				//				echo($user->id,'cid was null, therefore user->id is used');
+// 				vmdebug('setId setCurrent $user',$user->get('id'));
 			} else {
 				if($cid != $user->id){
 					if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
@@ -96,17 +96,17 @@ class VirtueMartModelUser extends VmModel {
 	public function setUserId($id){
 
 		$app = JFactory::getApplication();
-		if($app->isAdmin()){
+// 		if($app->isAdmin()){
 			if($this->_id!=$id){
 				$this->_id = (int)$id;
 				$this->_data = null;
 			}
-		}
-
+// 		}
 	}
 
 	/**
 	 * Set the ID to the current user
+	 * @deprecated, use setId instead
 	 */
 	function setCurrent()
 	{
@@ -123,6 +123,7 @@ class VirtueMartModelUser extends VmModel {
 
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
+// 		vmdebug('getUser id',$this->_id);
 		$this->_data = $this->getTable('vmusers');
 		$this->_data->load((int)$this->_id);
 
@@ -192,6 +193,7 @@ class VirtueMartModelUser extends VmModel {
 			$vendorModel->setId($this->_data->virtuemart_vendor_id);
 			$this->_data->vendor = $vendorModel->getVendor();
 		}
+
 
 		return $this->_data;
 	}

@@ -147,9 +147,10 @@ class VirtueMartCart {
 		if (!class_exists('VirtueMartModelUser'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
 		$usermodel = new VirtueMartModelUser();
-		$usermodel->setCurrent();
-		$user = $usermodel->getUser();
+// 		$usermodel->setCurrent();
 
+		$user = $usermodel->getUser();
+// 		vmdebug('setPreferred $user',$user);
 		if (empty($this->BT) || (!empty($this->BT) && count($this->BT) <=1) ) {
 			foreach ($user->userInfo as $address) {
 				if ($address->address_type == 'BT') {
@@ -1308,9 +1309,11 @@ class VirtueMartCart {
 		if(!class_exists('VirtuemartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
 		$userFieldsModel =new VirtueMartModelUserfields;
 
-		$data = (object)$this->$type;
+
 		if($new){
 			$data = null;
+		} else {
+			$data = (object)$this->$type;
 		}
 
 		if($type=='ST'){
@@ -1319,6 +1322,7 @@ class VirtueMartCart {
 			$preFix = '';
 		}
 
+// 		vmdebug('prepareAddressDataInCart',$data);
 		$addresstype = $type.'address';
 		$userFieldsBT = $userFieldsModel->getUserFieldsFor('cart',$type);
 		$this->$addresstype = $userFieldsModel->getUserFieldsFilled(
@@ -1347,7 +1351,7 @@ class VirtueMartCart {
 		//Just in case
 		if(!class_exists('VirtuemartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 		$this->user = new VirtueMartModelUser;
-		$this->user->setCurrent();
+// 		$this->user->setCurrent();
 		$this->userDetails = $this->user->getUser();
 
 		// Shipment address(es)

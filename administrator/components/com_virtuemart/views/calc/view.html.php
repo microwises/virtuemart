@@ -77,7 +77,7 @@ class VirtuemartViewCalc extends VmView {
 				}
 
 				$usermodel = $this->getModel('user');
-				$usermodel->setCurrent();
+// 				$usermodel->setCurrent();
 				$userDetails = $usermodel->getUser();
 				if(empty($userDetails->virtuemart_vendor_id)){
 					JError::raiseError(403,'Forbidden for non vendors');

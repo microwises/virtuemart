@@ -52,7 +52,7 @@ class VirtuemartViewUser extends VmView {
 		if($task == 'editshop'){
 
 			if(Vmconfig::get('multix','none') !=='none'){
-				$model->setCurrent();
+// 				$model->setCurrent();
 			} else {
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 				$userId = VirtueMartModelVendor::getUserIdByVendorId(1);
@@ -86,7 +86,7 @@ class VirtuemartViewUser extends VmView {
 			$userDetails = $model->getUser();
 
 			if($task == 'editshop' && $userDetails->user_is_vendor){
-				$model->setCurrent();
+// 				$model->setCurrent();
 				if(!empty($userDetails->vendor->vendor_store_name)){
 					$this->SetViewTitle('STORE',$userDetails->vendor->vendor_store_name );
 				} else {
