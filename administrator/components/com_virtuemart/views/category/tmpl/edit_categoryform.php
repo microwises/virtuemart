@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 
 $mainframe = JFactory::getApplication();
- echo $this->langList .' '. $this->vendorList ; ?>
+ echo $this->langList ?>
 <table class="adminform">
 	<tr>
 		<td valign="top" colspan="2">
@@ -85,5 +85,10 @@ $mainframe = JFactory::getApplication();
 				</table>
 			</fieldset>
 		</td>
-	</tr>
+		</tr>
+		<tr>
+		<?php if(Vmconfig::get('multix','none')!=='none' && $this->perms->check('admin') ){
+			echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->vendorList );
+		} ?>
+		</tr>
 </table>

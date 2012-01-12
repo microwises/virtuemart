@@ -76,13 +76,15 @@ vmJsApi::jDate();
 
 		if(Vmconfig::get('multix','none')!=='none' && $this->perms->check('admin') ){
 			echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->vendorList );
+		} else {
+// 			echo '<input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->vendorId; ?>" />';
 		} ?>
 	</table>
 	</fieldset>
 </div>
 
 	<input type="hidden" name="virtuemart_calc_id" value="<?php echo $this->calc->virtuemart_calc_id; ?>" />
-	<input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->vendorId; ?>" />
+
 	<?php echo $this->addStandardHiddenToForm(); ?>
 
 </form>

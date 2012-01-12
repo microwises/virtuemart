@@ -71,6 +71,14 @@ class VirtuemartViewCategory extends VmView {
 
 			$categorylist = ShopFunctions::categoryListTree(array($parent->virtuemart_category_id));
 
+			$this->loadHelper('permissions');
+			$this->assignRef('perms', Permissions::getInstance());
+
+			if(Vmconfig::get('multix','none')!=='none'){
+				$vendorList= ShopFunctions::renderVendorList($category->virtuemart_vendor_id,false);
+				$this->assignRef('vendorList', $vendorList);
+			}
+
 			$this->assignRef('category', $category);
 			$this->assignRef('categorylist', $categorylist);
 

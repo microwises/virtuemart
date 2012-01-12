@@ -751,15 +751,13 @@ class VmMediaHandler {
 				$this->addMediaAttributes('category','COM_VIRTUEMART_FORM_MEDIA_SET_CATEGORY');
 				$this->addMediaAttributes('manufacturer','COM_VIRTUEMART_FORM_MEDIA_SET_MANUFACTURER');
 				$this->addMediaAttributes('vendor','COM_VIRTUEMART_FORM_MEDIA_SET_VENDOR');
-// 				$this->addMediaAttributes('forSale','COM_VIRTUEMART_FORM_MEDIA_SET_FOR_SALE'); //  =>location
-// 				$this->addMediaAttributes('file_is_downloadable','COM_VIRTUEMART_FORM_MEDIA_DOWNLOADABLE');
+
 				$this->_mRoles['file_is_displayable'] = 'COM_VIRTUEMART_FORM_MEDIA_DISPLAYABLE' ;
 				$this->_mRoles['file_is_downloadable'] = 'COM_VIRTUEMART_FORM_MEDIA_DOWNLOADABLE' ;
 				$this->_mRoles['file_is_forSale'] = 'COM_VIRTUEMART_FORM_MEDIA_SET_FOR_SALE' ;
 			} else {
 
-// 				$this->addMediaAttributes($this->file_type,'COM_VIRTUEMART_FORM_MEDIA_SET_'.strtoupper($this->file_type));
-				if($this->file_is_forSale=1){
+				if($this->file_is_forSale==1){
 					$this->_mRoles['file_is_forSale'] = 'COM_VIRTUEMART_FORM_MEDIA_SET_FOR_SALE' ;
 				} else {
 					$this->_mRoles['file_is_displayable'] = 'COM_VIRTUEMART_FORM_MEDIA_DISPLAYABLE' ;
