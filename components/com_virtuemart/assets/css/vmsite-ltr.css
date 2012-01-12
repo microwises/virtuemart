@@ -191,3 +191,9 @@ td.orders-key{font-weight: bold; text-align: left; }
 .vmpayment_name, .vmpayment_cost, .vmshipment_name, .vmshipment_cost{padding:0 2px;}
 .vmpayment_description,.vmshipment_description {color:gray;font-size:9px;padding:0 2px;}
 .vmpayment_cardinfo {color:gray;font-size:9px;}
+
+/* Custom Field Images */
+.product-fields .product-field {width:100%;float:left;}
+.product-fields .product-field label {width:25%;float:left;position:relative;top:20px;left:-18px;margin-bottom:27px;text-align:center;}  /* For 4 images across use width:17% */
+.product-fields .product-field input {width:5%;float:left;position:relative;left:33px;}
+.product-fields .product-field .vm-img-desc {font-size:9px;}
