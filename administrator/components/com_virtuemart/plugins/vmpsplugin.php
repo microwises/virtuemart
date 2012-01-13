@@ -797,8 +797,7 @@ abstract class vmPSPlugin extends vmPlugin {
     }
 
     function getPaymentCurrency(&$method, $getCurrency=false) {
-	if ((!isset($method->payment_currency) AND !empty($method->payment_currency) AND (!$method->payment_currency)) OR $getCurrency) {
-	    if (!class_exists('VirtueMartModelVendor'))
+	if (!isset($method->payment_currency) or empty($method->payment_currency) or !$method->payment_currency or $getCurrency) {	    if (!class_exists('VirtueMartModelVendor'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 	    $vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
 	    $db = JFactory::getDBO();
