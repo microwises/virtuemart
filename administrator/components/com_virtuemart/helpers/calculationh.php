@@ -92,25 +92,6 @@ class calculationHelper {
 		$this->setShopperGroupIds();
 
 		$this->setVendorId($this->productVendorId);
-/*		$epoints = array("'Marge'","'Tax'","'DBTax'","'DATax'");
-		$this->allrules = array();
-		$this->allrules['Marge'] = array();
-		$this->allrules['Tax'] 	= array();
-		$this->allrules['DBTax'] = array();
-		$this->allrules['DATax'] = array();
-		$q = 'SELECT * FROM #__virtuemart_calcs WHERE
-						                    `calc_kind` IN (' . implode(",",$epoints). ' )
-						                     AND `published`="1"
-						                     AND (`virtuemart_vendor_id`="' . $this->productVendorId . '" OR `shared`="1" )
-						                     AND ( publish_up = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_up <= "' . $this->_db->getEscaped($this->_now) . '" )
-						                     AND ( publish_down = "' . $this->_db->getEscaped($this->_nullDate) . '" OR publish_down >= "' . $this->_db->getEscaped($this->_now) . '" ) ';
-		$this->_db->setQuery($q);
-		$allrules = $this->_db->loadAssocList();
-		foreach ($allrules as $rule){
-			$this->allrules[$this->productVendorId][$rule["calc_kind"]][] = $rule;
-		}
-*/
-// 		vmdebug('my rules ',$this->allrules);
 
 		$this->rules['Marge'] = array();
 		$this->rules['Tax'] 	= array();

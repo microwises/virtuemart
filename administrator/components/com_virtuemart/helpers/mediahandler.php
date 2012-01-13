@@ -204,6 +204,8 @@ class VmMediaHandler {
 				$this->file_url_folder = $this->getMediaUrlByView($type);
 				$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
 				$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
+			} else {
+				$this->setRole=1;
 			}
 		} else {
 			$this->file_path_folder = VmConfig::get('forSale_path');
@@ -477,10 +479,16 @@ class VmMediaHandler {
 		 * @param boolean $lightbox
 		 */
 		function getIcon($imageArgs,$lightbox,$return=false){
-			//we can later add here icons for different types
-			$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
-			$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_FOUND').' '.$this->file_description;
+
+			if(!empty($this->file_extension)){
+				$file_url = $this->theme_url.'assets/images/vmgeneral/'.$this->file_extension.'.png';
+				$file_alt = $this->file_description;
+			} else {
+				$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
+				$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_FOUND').' '.$this->file_description;
+			}
 			if($return)return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox);
+
 		}
 
 		/**

@@ -38,7 +38,7 @@ function virtuemartBuildRoute(&$query) {
 	}
 
 		if ($helper->edit) return $segments;
-	
+
 	/* Full route , heavy work*/
 	$lang = &$helper->lang ;
 	$view = '';
@@ -350,7 +350,7 @@ function virtuemartParseRoute($segments) {
 		if(!$segments) return $vars;
 		if ($segments[0] == $lang['contact'] ) $vars['task'] = 'contact' ;
 		elseif ($segments[0] == $lang['tos'] ) $vars['task'] = 'tos' ;
-		
+
 		return $vars;
 	}
 	else if ($view == $lang['cart'] || $helper->activeMenu->view == 'cart') {
@@ -566,7 +566,12 @@ class vmrouterHelper {
 			$strings[] = $db->loadResult();
 		}
 
-		return strtolower(implode ('/', $strings ) );
+		if(function_exists('mb_strtolower')){
+			return mb_strtolower(implode ('/', $strings ) );
+		} else {
+			return strtolower(implode ('/', $strings ) );
+		}
+
 
 	}
 	/* Get parents of category*/

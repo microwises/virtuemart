@@ -34,15 +34,13 @@ class VirtueMartControllerVendor extends JController
 
 		parent::__construct();
 
-
-
 	}
 
-	function tos() {
+/*	function tos() {
 		$view = $this->getView('vendor', 'html');
 		$view->setLayout('tos');
 
-		/* Display it all */
+
 		$view->display();
 	}
 
@@ -50,17 +48,20 @@ class VirtueMartControllerVendor extends JController
 		$view = $this->getView('vendor', 'html');
 		$view->setLayout('contact');
 
-		/* Display it all */
+
 		$view->display();
 	}
 
 	function display(){
 		$view = $this->getView('vendor', 'html');
-		if (JRequest::getInt('virtuemart_vendor_id') ) $view->setLayout('details');
-		else $view->setLayout('default');
-		/* Display it all */
+
+		$layout = JRequest::getWord('layout','default');
+		if (JRequest::getInt('virtuemart_vendor_id') ) $layout = 'details';
+		$view->setLayout($layout);
+
 		$view->display();
 	}
+*/
 
 	/**
 	* Send the ask question email.
@@ -69,7 +70,7 @@ class VirtueMartControllerVendor extends JController
 	public function mailAskquestion () {
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		
+
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$this->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
 		$model = $this->getModel('vendor');

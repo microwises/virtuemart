@@ -37,17 +37,17 @@ define('__VM_USER_USE_SLIDERS', 0);
  */
 class VirtuemartViewVendor extends VmView {
 
-    /**
-     * Displays the view, collects needed data for the different layouts
-     *
-     * Okey I try now a completly new idea.
-     * We make a function for every tab and the display is getting the right tabs by an own function
-     * putting that in an array and after that we call the preparedataforlayoutBlub
-     *
-     * @author Oscar van Eijk
-     * @author Max Milbers
-     */
-    function display($tpl = null) {
+	/**
+	 * Displays the view, collects needed data for the different layouts
+	 *
+	 * Okey I try now a completly new idea.
+	 * We make a function for every tab and the display is getting the right tabs by an own function
+	 * putting that in an array and after that we call the preparedataforlayoutBlub
+	 *
+	 * @author Oscar van Eijk
+	 * @author Max Milbers
+	 */
+	function display($tpl = null) {
 
 		$document = JFactory::getDocument();
 
@@ -55,7 +55,7 @@ class VirtuemartViewVendor extends VmView {
 
 		$model = $this->getModel();
 		$virtuemart_vendor_id = JRequest::getInt('virtuemart_vendor_id');
-		$get = JRequest::get('GET');
+
 		if (empty($virtuemart_vendor_id )) {
 			$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_LIST') );
 			$vendors = $model->getVendors();
@@ -85,15 +85,29 @@ class VirtuemartViewVendor extends VmView {
 				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_CONTACT') );
 				$this->assignRef('user', $user);
 
+			} else {
+				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_DETAILS') );
+				$this->setLayout('details');
 			}
-			else $document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_DETAILS') );
 
 
 		}
 
+		$linkdetails = '<a href="'.JROUTE::_('index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id).'">'.JText::_('COM_VIRTUEMART_VENDOR_DETAILS').'</a>';
+
+		$linkcontact = '<a href="'.JROUTE::_('index.php?option=com_virtuemart&view=vendor&layout=contact&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id).'">'.JText::_('COM_VIRTUEMART_VENDOR_CONTACT').'</a>';
+
+		$linktos = '<a href="'.JROUTE::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id).'">'.JText::_('COM_VIRTUEMART_VENDOR_TOS').'</a>';
+
+		$this->assignRef('linkdetails', $linkdetails);
+		$this->assignRef('linkcontact', $linkcontact);
+		$this->assignRef('linktos', $linktos);
+
 		parent::display($tpl);
 
-    }
+	}
+
+
 	function renderMailLayout() {
 		$this->setLayout('mail_html_question');
 		$this->comment = JRequest::getString('comment');
@@ -113,6 +127,7 @@ class VirtuemartViewVendor extends VmView {
 		$this->setLayout($tpl);
 		parent::display( );
 	}
+
 }
 
 //No Closing Tag

@@ -482,7 +482,7 @@ class VmTable extends JTable{
 				if(empty($this->$obkeys)){
 					// 					$this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE_KEY',$this->$obkeys));
 					$this->setError($error);
-					vmError($error);
+					vmError('Non unique '.$this->_unique_name.' '.$error);
 					return false;
 				} else {
 					$q = 'SELECT `' . $this->_tbl_key . '`,`' . $this->_db->getEscaped($obkeys) . '` FROM `' . $this->_tbl . '` ';
@@ -1078,7 +1078,7 @@ class VmTable extends JTable{
 
 				if (!$this->_db->query()){
 					$this->setError($this->_db->getErrorMsg());
-					vmError($this->_db->getErrorMsg());
+					vmError('checkAndDelete '.$this->_db->getErrorMsg());
 					$ok = false;
 				}
 			}
