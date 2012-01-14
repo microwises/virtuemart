@@ -135,9 +135,12 @@ if (empty ( $this->product )) {
 		if(!empty($this->product->images) ) { ?>
 			<div class="additional-images">
 			<?php // List all Images
-			foreach ($this->product->images as $image) {
-				echo '<div class="floatleft">'.$image->displayMediaThumb('class="product-image"',true,'class="modal"',true,true).'</div>'; //'class="modal"'
-			} ?>
+			if(count($this->product->images) >0){
+				foreach ($this->product->images as $image) {
+					echo '<div class="floatleft">'.$image->displayMediaThumb('class="product-image"',true,'class="modal"',true,true).'</div>'; //'class="modal"'
+				}
+			}
+ ?>
 			<div class="clear"></div>
 			</div>
 		<?php } // Showing The Additional Images END ?>
@@ -161,7 +164,7 @@ if (empty ( $this->product )) {
 				}
 
 				// Product Price
-				if ($this->show_prices) { ?>
+				if ($this->show_prices and (empty($this->product->images[0]) or $this->product->images[0]->file_is_downloadable==0) ){ ?>
 				<div class="product-price" id="productPrice<?php echo $this->product->virtuemart_product_id ?>">
 				<?php
 				if ($this->product->product_unit && VmConfig::get ( 'price_show_packaging_pricelabel' )) {
@@ -169,7 +172,7 @@ if (empty ( $this->product )) {
 				} else {
 					echo "<strong>" . JText::_ ( 'COM_VIRTUEMART_CART_PRICE' ) . "</strong>";
 				}
-				if(empty($this->product->prices)){  ?>
+				if(empty($this->product->prices) and VmConfig::get('callfprice',1)  ){ ?>
 <a class="ask-a-question bold" href="<?php echo $url ?>" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ASKPRICE') ?></a>
 <?php }
 				if ($this->showBasePrice) {
@@ -189,8 +192,9 @@ if (empty ( $this->product )) {
 				<?php }
 ?>
 
-				<?php // Add To Cart Button
-				if (!VmConfig::get('use_as_catalog',0)) { ?>
+			<?php // Add To Cart Button
+// 			if (!empty($this->product->prices) and !empty($this->product->images[0]) and $this->product->images[0]->file_is_downloadable==0 ) {
+				if (!VmConfig::get('use_as_catalog',0) and !empty($this->product->prices) ) { ?>
 				<div class="addtocart-area">
 
 					<form method="post" class="product js-recalculate" action="index.php" >

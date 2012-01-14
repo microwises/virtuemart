@@ -536,21 +536,10 @@ class VirtueMartModelProduct extends VmModel {
 			// Load the shoppers the product is available to for Custom Shopper Visibility
 			$product->shoppergroups = $this->getProductShoppergroups($this->_id);
 
-			//   		if(!$front){
-// 			if (!empty($product->virtuemart_product_price_id)) {
-				$ppTable = $this->getTable('product_prices');
-				// $q = 'SELECT `virtuemart_product_price_id` FROM `#__virtuemart_product_prices` WHERE `virtuemart_product_id` = "'.$this->_id.'" ';
-				// $this->_db->setQuery($q);
-				// $ppId = $this->_db->loadResult();
-// 				$ppTable->load($product->virtuemart_product_price_id,'virtuemart_product_price_id');
-				$ppTable->load($this->_id);
-				$product = (object) array_merge((array) $ppTable, (array) $product);
-				//   		}
-// 			}
+			$ppTable = $this->getTable('product_prices');
+			$ppTable->load($this->_id);
+			$product = (object) array_merge((array) $ppTable, (array) $product);
 
-			// $q = 'SELECT `virtuemart_manufacturer_id` FROM `#__virtuemart_product_manufacturers` WHERE `virtuemart_product_id` = "'.$this->_id.'" ';
-			// $this->_db->setQuery($q);
-			// $mf_id = $this->_db->loadResult();
 			if (!empty($product->virtuemart_manufacturer_id)) {
 				$mfTable = $this->getTable('manufacturers');
 				$mfTable->load((int)$product->virtuemart_manufacturer_id);
@@ -874,7 +863,7 @@ class VirtueMartModelProduct extends VmModel {
 		$direction = 'ASC' ;
 		$op='>';
 		foreach ($neighbors as &$neighbor) {
-			
+
 			$q = 'SELECT `l`.`virtuemart_product_id`, `l`.`product_name`
 				FROM `#__virtuemart_products` as `p`
 				JOIN `#__virtuemart_products_'.VMLANG.'` as `l` using (`virtuemart_product_id`)

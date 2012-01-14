@@ -57,7 +57,6 @@ class VirtueMartModelCategory extends VmModel {
   		if (empty($this->_data)) {
    			$this->_data = $this->getTable('categories');
    			$this->_data->load((int)$this->_id);
-   			vmdebug('getCategory my id '.$this->_id);
   		}
 
 		$xrefTable = $this->getTable('category_medias');

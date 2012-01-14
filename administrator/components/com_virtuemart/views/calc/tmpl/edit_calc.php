@@ -74,11 +74,10 @@ vmJsApi::jDate();
 		$returnValues = $dispatcher->trigger('plgVmOnDisplayEdit', array(&$this->calc,&$html));
 		echo $html;
 
-		if(Vmconfig::get('multix','none')!=='none' && $this->perms->check('admin') ){
+		if(Vmconfig::get('multix','none')!=='none' and $this->perms->check('admin') ){
 			echo VmHTML::row('raw','COM_VIRTUEMART_VENDOR', $this->vendorList );
-		} else {
-// 			echo '<input type="hidden" name="virtuemart_vendor_id" value="<?php echo $this->vendorId; ?>" />';
-		} ?>
+		}
+		?>
 	</table>
 	</fieldset>
 </div>

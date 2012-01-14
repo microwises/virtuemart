@@ -76,6 +76,7 @@ class VirtueMartModelMedia extends VmModel {
 
 		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
+		$app = JFactory::getApplication();
 		$medias = array();
 		if(!empty($virtuemart_media_ids)){
 			if(!is_array($virtuemart_media_ids)) $virtuemart_media_ids = explode(',',$virtuemart_media_ids);
@@ -93,6 +94,11 @@ class VirtueMartModelMedia extends VmModel {
 				}
 				if(!empty($id)){
 					$data->load((int)$id);
+					if($app->isSite()){
+						if($data->published==0){
+							continue;
+						}
+					}
 					$file_type 	= empty($data->file_type)? $type:$data->file_type;
 					$mime		= empty($data->file_mimetype)? $mime:$data->file_mimetype;
 					$media = VmMediaHandler::createMedia($data,$file_type,$mime);

@@ -250,7 +250,9 @@ foreach ( $this->products as $product ) {
 						if( $product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
 							echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE_PER_UNIT').' ('.$product->product_unit."):</strong>";
 						}
-						if(empty($product->prices)){ echo JText::_('COM_VIRTUEMART_PRODUCT_ASKPRICE');}
+						if(empty($this->product->prices) and VmConfig::get('callfprice',1) and empty($this->product->images[0]->file_is_downloadable) ){
+							echo JText::_('COM_VIRTUEMART_PRODUCT_ASKPRICE');
+						}
 						//todo add config settings
 						if( $this->showBasePrice){
 							echo $this->currency->createPriceDiv('basePrice','COM_VIRTUEMART_PRODUCT_BASEPRICE',$product->prices);

@@ -30,39 +30,6 @@ jimport('joomla.application.component.controller');
 class VirtueMartControllerVendor extends JController
 {
 
-	function __construct() {
-
-		parent::__construct();
-
-	}
-
-/*	function tos() {
-		$view = $this->getView('vendor', 'html');
-		$view->setLayout('tos');
-
-
-		$view->display();
-	}
-
-	public function contact() {
-		$view = $this->getView('vendor', 'html');
-		$view->setLayout('contact');
-
-
-		$view->display();
-	}
-
-	function display(){
-		$view = $this->getView('vendor', 'html');
-
-		$layout = JRequest::getWord('layout','default');
-		if (JRequest::getInt('virtuemart_vendor_id') ) $layout = 'details';
-		$view->setLayout($layout);
-
-		$view->display();
-	}
-*/
-
 	/**
 	* Send the ask question email.
 	* @author Kohl Patrick, Christopher Roussel
@@ -117,7 +84,7 @@ class VirtueMartControllerVendor extends JController
 		}
 		$mainframe->enqueueMessage(JText::_($string));
 
-		/* Display it all */
+		// Display it all
 		$view = $this->getView('vendor', 'html');
 // 		$view->setModel($this->getModel('category', 'VirtuemartModel'));
 		$view->setLayout('mail_confirmed');

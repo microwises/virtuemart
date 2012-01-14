@@ -90,13 +90,10 @@ class VirtuemartViewVendor extends VmView {
 				$this->setLayout('details');
 			}
 
-
 		}
 
 		$linkdetails = '<a href="'.JROUTE::_('index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id).'">'.JText::_('COM_VIRTUEMART_VENDOR_DETAILS').'</a>';
-
 		$linkcontact = '<a href="'.JROUTE::_('index.php?option=com_virtuemart&view=vendor&layout=contact&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id).'">'.JText::_('COM_VIRTUEMART_VENDOR_CONTACT').'</a>';
-
 		$linktos = '<a href="'.JROUTE::_('index.php?option=com_virtuemart&view=vendor&layout=tos&virtuemart_vendor_id=' . $this->vendor->virtuemart_vendor_id).'">'.JText::_('COM_VIRTUEMART_VENDOR_TOS').'</a>';
 
 		$this->assignRef('linkdetails', $linkdetails);

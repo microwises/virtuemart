@@ -404,8 +404,6 @@ class VmMediaHandler {
 		 * @author Max Milbers
 		 */
 		function displayMediaFull(){
-
-// 			return 'No display full media function defined for this media, this is a developer error';
 			return $this->displayMediaThumb('id="vm_display_image"',false);
 		}
 
@@ -423,9 +421,18 @@ class VmMediaHandler {
 		function displayMediaThumb($imageArgs='',$lightbox=true,$effect="class='modal' rel='group'",$return = true,$withDescr = false){
 
 			if(empty($this->file_name)){
-				$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
-				$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_SET').' '.$this->file_description;
-				if($return) return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox);
+
+				if($return){
+					if($this->file_is_downloadable){
+						$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('downloadable','zip.png');
+						$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_SET').' '.$this->file_description;
+						return $this->displayIt($file_url, $file_alt, '',true,$withDescr);
+					} else {
+						$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_set');
+						$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_SET').' '.$this->file_description;
+						return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox);
+					}
+				}
 			}
 
 			if(!empty($this->file_url_thumb)){
@@ -460,12 +467,11 @@ class VmMediaHandler {
 				$this->_db->query();
 			}
 
+			if($withDescr) $withDescr = $this->file_description;
 			if (empty($this->file_url_thumb) || !file_exists($media_path)) {
-				return $this->getIcon($imageArgs,$lightbox,$return);
+				return $this->getIcon($imageArgs,$lightbox,$return,$withDescr);
 			}
 
-
-			if($withDescr) $withDescr = $this->file_description;
 			if($return) return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox,$effect,$withDescr);
 
 		}
@@ -478,7 +484,7 @@ class VmMediaHandler {
 		 * @param string $imageArgs
 		 * @param boolean $lightbox
 		 */
-		function getIcon($imageArgs,$lightbox,$return=false){
+		function getIcon($imageArgs,$lightbox,$return=false,$withDescr=false){
 
 			if(!empty($this->file_extension)){
 				$file_url = $this->theme_url.'assets/images/vmgeneral/'.$this->file_extension.'.png';
@@ -487,7 +493,13 @@ class VmMediaHandler {
 				$file_url = $this->theme_url.'assets/images/vmgeneral/'.VmConfig::get('no_image_found');
 				$file_alt = JText::_('COM_VIRTUEMART_NO_IMAGE_FOUND').' '.$this->file_description;
 			}
-			if($return)return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox);
+			if($return){
+				if($this->file_is_downloadable){
+					return $this->displayIt($file_url, $file_alt, '',true,$withDescr);
+				} else {
+					return $this->displayIt($file_url, $file_alt, $imageArgs,$lightbox,$withDescr);
+				}
+			}
 
 		}
 
@@ -845,6 +857,7 @@ class VmMediaHandler {
 			return $html;
 		}
 
+
 		/**
 		 * Displays a possibility to select already uploaded media
 		 * the getImagesList must be adjusted to have more search functions
@@ -882,6 +895,7 @@ class VmMediaHandler {
 			return $html.'</fieldset><div class="clear"></div>';
 		}
 
+
 		function displayImage($virtuemart_media_id ,$key) {
 
 			$db = JFactory::getDBO();
@@ -902,8 +916,9 @@ class VmMediaHandler {
 			}
 
 		}
-		function displayImages($types ='',$page=0 ) {
 
+
+		function displayImages($types ='',$page=0 ) {
 
 			$images = array();
 			$list = VmMediaHandler::getImagesList($types,$page);
@@ -926,6 +941,8 @@ class VmMediaHandler {
 			//$list['htmlImages'] = $htmlImages;
 			return $Images;
 		}
+
+
 		/**
 		 * Retrieve a list of layouts from the default and choosen templates directory.
 		 *
@@ -981,6 +998,8 @@ class VmMediaHandler {
 			}
 			else return array();
 		}
+
+
 		/**
 		 * This displays a media handler. It displays the full and the thumb (icon) of the media.
 		 * It also gives a possibility to upload/change/thumbnail media
