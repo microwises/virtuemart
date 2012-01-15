@@ -927,7 +927,7 @@ class VirtueMartModelProduct extends VmModel {
 					SET `ordering` = '. $i.'
 					WHERE `id` = ' . (int)$key . ' ');
 				if (! $this->_db->query()){
-					$this->setError($this->_db->getErrorMsg());
+					vmError($this->_db->getErrorMsg());
 					return false;
 				}
 				$ordered ++ ;
@@ -990,7 +990,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$errors = $product_data->getErrors();
 		foreach($errors as $error){
-			$this->setError($error);
+			vmError($error);
 			return false;
 		}
 
@@ -1037,7 +1037,7 @@ class VirtueMartModelProduct extends VmModel {
 		$mediaModel->storeMedia($data,'product');
 		$errors = $mediaModel->getErrors();
 		foreach($errors as $error){
-			$this->setError($error);
+			vmError($error);
 		}
 
 		return $product_data->virtuemart_product_id;
@@ -1050,7 +1050,7 @@ class VirtueMartModelProduct extends VmModel {
 		$product_table_Parent->bindChecknStore($data);
 		$errors = $product_table_Parent->getErrors();
 		foreach($errors as $error){
-			$this->setError($error);
+			vmError($error);
 		}
 		return $data;
 
@@ -1119,57 +1119,57 @@ class VirtueMartModelProduct extends VmModel {
 		foreach($ids as $id) {
 
 			if(!$this->checkChildProducts($id)){
-				$this->setError(JText::_('COM_VIRTUEMART_PRODUCT_CANT_DELETE_CHILD'));
+				vmError(JText::_('COM_VIRTUEMART_PRODUCT_CANT_DELETE_CHILD'));
 				$ok = false;
 				continue;
 			}
 
 			if (!$table->delete($id)) {
-				$this->setError($table->getError());
+				vmError($table->getError());
 				$ok = false;
 			}
 
 			if (!$cats->delete($id)) {
-				$this->setError($cats->getError());
+				vmError($cats->getError());
 				$ok = false;
 			}
 
 			if (!$customs->delete($id)) {
-				$this->setError($customs->getError());
+				vmError($customs->getError());
 				$ok = false;
 			}
 
 			if (!$manufacturers->delete($id)) {
-				$this->setError($manufacturers->getError());
+				vmError($manufacturers->getError());
 				$ok = false;
 			}
 
 			if (!$medias->delete($id)) {
-				$this->setError($medias->getError());
+				vmError($medias->getError());
 				$ok = false;
 			}
 
 			if (!$prices->delete($id)) {
-				$this->setError($prices->getError());
+				vmError($prices->getError());
 				$ok = false;
 			}
 
 			if (!$shop->delete($id)) {
-				$this->setError($shop->getError());
+				vmError($shop->getError());
 				$ok = false;
 			}
 
 			if (!$rating->delete($id,'virtuemart_product_id')) {
-				$this->setError($rating->getError());
+				vmError($rating->getError());
 				$ok = false;
 			}
 
 			if (!$review->delete($id,'virtuemart_product_id')) {
-				$this->setError($review->getError());
+				vmError($review->getError());
 				$ok = false;
 			}
 			if (!$votes->delete($id,'virtuemart_product_id')) {
-				$this->setError($votes->getError());
+				vmError($votes->getError());
 				$ok = false;
 			}
 

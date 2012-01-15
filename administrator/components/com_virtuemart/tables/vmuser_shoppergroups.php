@@ -72,7 +72,7 @@ if(!class_exists('VmTableXarray'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS
 //		}
 //
 //		if (!$returnCode){
-//			$this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
+//			vmError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
 //			return false;
 //		}
 //		else return true;

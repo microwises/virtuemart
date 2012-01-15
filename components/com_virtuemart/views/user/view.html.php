@@ -205,69 +205,6 @@ class VirtuemartViewUser extends VmView {
 	parent::display($tpl);
     }
 
-    /**
-     * For the edit_shipto layout
-     *
-     */
-    /* 	function lshipto($staddress){
-
-      // The ShipTo address if selected
-      $virtuemart_userinfo_id = JRequest::getInt('virtuemart_userinfo_id', 0);
-
-      $this->assignRef('virtuemart_userinfo_id', $virtuemart_userinfo_id);
-      // 		vmdebug('lshipto $virtuemart_userinfo_id',$virtuemart_userinfo_id);
-
-      $new = false;
-      $new = JRequest::getVar('new', '0','','int');
-      if(!empty($new)){
-      $new = true;
-      }
-
-
-      if(!class_exists('VirtuemartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
-      $this->_userFieldsModel = new VirtuemartModelUserfields();
-
-      $_shiptoFields = $this->_userFieldsModel->getUserFields(
-      'shipment'
-      ,array() // Default toggles
-      );
-
-
-      $_userDetailsList = null;
-
-      if(!empty($virtuemart_userinfo_id)){
-      // Contains 0 for new, otherwise a virtuemart_userinfo_id
-      $_shipto = $this->_model->getUserAddressList($this->_model->getId(), 'ST', $_shipto_id);
-      $this->_openTab = 3;
-
-      // Find the correct record
-      $_userDetailsList = current($this->_userDetails->userInfo);
-      for ($_i = 0; $_i < count($this->_userDetails->userInfo); $_i++) {
-      if ($_userDetailsList->virtuemart_userinfo_id == $virtuemart_userinfo_id) {
-      reset($this->_userDetails->userInfo);
-      break;
-      }
-      $_userDetailsList = next($this->_userDetails->userInfo);
-
-      }
-      //			}
-      } else {
-      if(!empty($staddress)){
-      $_userDetailsList = (object)$staddress;
-      $this->_openTab = 3;
-      }
-      }
-
-      $shipToFields = $this->_userFieldsModel->getUserFieldsFilled(
-      $_shiptoFields
-      ,$_userDetailsList
-      ,'shipto_'
-      );
-
-      $this->assignRef('shipToFields', $shipToFields);
-
-      } */
-
 
     function payment() {
 

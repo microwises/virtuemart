@@ -76,7 +76,7 @@ class VirtueMartModelManufacturer extends VmModel {
 		$table->bindChecknStore($data);
 		$errors = $table->getErrors();
 		foreach($errors as $error){
-			$this->setError($error);
+			vmError($error);
 		}
 
 		// Process the images //
@@ -85,7 +85,7 @@ class VirtueMartModelManufacturer extends VmModel {
 		$mediaModel->storeMedia($data,'manufacturer');
 		$errors = $mediaModel->getErrors();
 		foreach($errors as $error){
-			$this->setError($error);
+			vmError($error);
 		}
 		return $table->virtuemart_manufacturer_id;
 	}

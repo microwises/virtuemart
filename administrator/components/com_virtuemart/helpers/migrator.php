@@ -519,7 +519,8 @@ class Migrator extends VmModel{
 				//}
 
 				$user['virtuemart_user_id'] = $user['id'];
-				$userModel->setUserId($user['id']);
+				//$userModel->setUserId($user['id']);
+				$userModel->setId($user['id']);		//Should work with setId, because only administrators are allowed todo the migration
 
 				//Save the VM user stuff
 				if(!$user=$userModel->saveUserData($user)){
@@ -1674,7 +1675,7 @@ class Migrator extends VmModel{
 
 					// Check for errors.
 					if ($this->_db->getErrorNum()) {
-						$this->setError($this->_db->getErrorMsg());
+						vmError($this->_db->getErrorMsg());
 						$return = false;
 					}
 
@@ -1684,7 +1685,7 @@ class Migrator extends VmModel{
 
 					// Check for errors.
 					if ($this->_db->getErrorNum()) {
-						$this->setError($this->_db->getErrorMsg());
+						vmError($this->_db->getErrorMsg());
 						$return = false;
 					}
 				}

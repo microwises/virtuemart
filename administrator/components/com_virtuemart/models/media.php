@@ -320,7 +320,7 @@ class VirtueMartModelMedia extends VmModel {
 		$table->bindChecknStore($data);
 		$errors = $table->getErrors();
 		foreach($errors as $error){
-			$this->setError($error);
+			vmError($error);
 		}
 
 		return $table->virtuemart_media_id;
@@ -353,7 +353,7 @@ class VirtueMartModelMedia extends VmModel {
 		$table->bindChecknStore($data);
 		$errors = $table->getErrors();
 		foreach($errors as $error){
-			$this->setError('store medias '.$error);
+			vmError('store medias '.$error);
 		}
 // 		vmdebug('store media $table->virtuemart_media_id '.$table->virtuemart_media_id);
 		return $table->virtuemart_media_id;

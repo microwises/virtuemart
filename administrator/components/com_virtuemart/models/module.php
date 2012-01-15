@@ -146,19 +146,19 @@
 //
 //	    // Bind the form fields to the module table
 //	    if (!$table->bind($data)) {
-//	      $this->setError($table->getError());
+//	      vmError($table->getError());
 //	      return false;
 //	    }
 //
 //	    // Make sure the module record is valid
 //	    if (!$table->check()) {
-//	      $this->setError($table->getError());
+//	      vmError($table->getError());
 //	      return false;
 //	    }
 //
 //	    // Save the module record to the database
 //	    if (!$table->store()) {
-//	      $this->setError($table->getError());
+//	      vmError($table->getError());
 //	      return false;
 //	    }
 //
@@ -178,7 +178,7 @@
 //
 //	    foreach($ids as $id) {
 //		    if (!$table->remove($id)) {
-//		       $this->setError($table->getError());
+//		       vmError($table->getError());
 //		       return false;
 //		    }
 //	    }

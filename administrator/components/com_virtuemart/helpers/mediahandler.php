@@ -98,10 +98,11 @@ class VmMediaHandler {
 			$this->setRole=true;
 // 		} else if(!$choosed and empty($relUrl) and $this->file_is_forSale==0){
 		} else if(!$choosed and empty($relUrl) ){
-			vmError('Ignore this message, when it appears while the media synchronisation process, else report to http://forum.virtuemart.net/index.php?board=127.0 : cant create media of unknown type, a programmers error, used type ',$type);
 
+			vmWarn('COM_VIRTUEMART_MEDIA_CHOOSE_TYPE',$this->file_title );
+// 			vmError('Ignore this message, when it appears while the media synchronisation process, else report to http://forum.virtuemart.net/index.php?board=127.0 : cant create media of unknown type, a programmers error, used type ',$type);
 			//$relUrl = VmConfig::get('media_path');
-			$relUrl = 'images/stories/virtuemart/';
+			$relUrl = 'images/stories/virtuemart/typeless/';
 			$this->setRole=true;
 
 		} else if( $this->file_is_forSale==1){
@@ -200,13 +201,10 @@ class VmMediaHandler {
 		$this->file_url_folder_thumb = '';
 
 		if($this->file_is_forSale==0){
-			if(!empty($type)){
-				$this->file_url_folder = $this->getMediaUrlByView($type);
-				$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
-				$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
-			} else {
-				$this->setRole=1;
-			}
+
+			$this->file_url_folder = $this->getMediaUrlByView($type);
+			$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
+			$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
 		} else {
 			$this->file_path_folder = VmConfig::get('forSale_path');
 			$this->file_url_folder = $this->file_path_folder;//str_replace(DS,'/',$this->file_path_folder);
@@ -260,6 +258,7 @@ class VmMediaHandler {
 		if(!empty($this->file_url) && empty($this->file_url_thumb)){
 			$this->displayMediaThumb('',true,'',false);
 		}
+
 
 	}
 
@@ -566,6 +565,7 @@ class VmMediaHandler {
 					}
 
 					$this->file_mimetype = $media['type'];
+					$this->media_published = 1;
 					$app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_FILE_UPLOAD_OK',JPATH_ROOT.DS.$path_folder.$media['name']));
 					return $media['name'];
 
@@ -616,7 +616,7 @@ class VmMediaHandler {
 		function processAction($data){
 
 			if(empty($data['media_action'])) return $data;
-			$data['published'] = 1;
+// 			$data['published'] = 1;
 			if( $data['media_action'] == 'upload' ){
 
 				$this->virtuemart_media_id=0;
@@ -654,9 +654,7 @@ class VmMediaHandler {
 				unset($data['active_media_id']);
 
 			}
-			//		else{
-			//
-			//		}
+
 
 			if(empty($this->file_title) && !empty($file_name)) $this->file_title = $file_name;
 			//		if(empty($this->file_title) && !empty($file_name)) $data['file_title'] = $file_name;
@@ -692,10 +690,20 @@ class VmMediaHandler {
 				$this->setRole = false;
 			}
 
-			if($this->setRole){
-				$this->file_url_folder = $this->getMediaUrlByView($data['media_roles']);
+			if($this->setRole and $data['media_roles'] != 'file_is_forSale'){
+
+				$this->file_url_folder = $this->getMediaUrlByView($data['media_attributes']);	//media_roles
 				$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
+
+				$typelessUrl = 'images/stories/virtuemart/typeless/'.$this->file_name;
+				vmdebug('die Urls',$data['media_roles'],$typelessUrl,$this->file_url_folder.$this->file_name);
+				if(!file_exists($this->file_url_folder.$this->file_name) and file_exists($typelessUrl)){
+					vmdebug('Execute move');
+					JFile::move($typelessUrl, $this->file_url_folder.$this->file_name);
+				}
 			}
+
+
 
 			return $data;
 		}
@@ -1035,14 +1043,15 @@ class VmMediaHandler {
 
 			$html .= '<tr>';
 //  The following was removed bacause the check box (publish/unpublish) was not functioning...
-//	<td class="labelcell">
-//		<label for="published">'. JText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>
-//	</td>
-//	<td>
-//		<input type="checkbox" class="inputbox" id="published" name="media_published'.$identify.'" '.$checked.' size="16" value="1" />
-//	</td>';
+// 			$this->media_published = $this->published;
+$html .= '<td class="labelcell">
+		<label for="published">'. JText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>
+	</td>
+	<td>
+		<input type="checkbox" class="inputbox" id="media_published'.$identify.'" name="media_published'.$identify.'" '.$checked.' size="16" value="1" />
+	</td>';
 			$html .= '<td rowspan = "8">';
-					$html .= JHTML::image($this->file_url_thumb, 'thumbnail', 'id="vm_thumb_image" style="overflow: auto; float: right;"');
+			$html .= JHTML::image($this->file_url_thumb, 'thumbnail', 'id="vm_thumb_image" style="overflow: auto; float: right;"');
 			// $html .= $this->displayMediaThumb('',false,'id="vm_thumb_image" style="overflow: auto; float: right;"');
 			$html .= '</td>';
 

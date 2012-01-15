@@ -59,7 +59,7 @@ class VmTableXarray extends VmTable {
 	function move($direction) {
 
     	if(empty($this->_skey) ) {
-    		$this->setError( 'No secondary keys defined in VmTableXarray '.$this->_tbl );
+    		vmError( 'No secondary keys defined in VmTableXarray '.$this->_tbl );
     		return false;
     	}
 		$skeyId = JRequest::getInt($this->_skey, 0);
@@ -101,7 +101,7 @@ class VmTableXarray extends VmTable {
     function load($id=0){
 
     	if(empty($this->_skey) ) {
-    		$this->setError( 'No secondary keys defined in VmTableXarray '.$this->_tbl );
+    		vmError( 'No secondary keys defined in VmTableXarray '.$this->_tbl );
     		return false;
     	}
 
@@ -120,7 +120,7 @@ class VmTableXarray extends VmTable {
 
 		$error = $this->_db->getErrorMsg();
 		if(!empty($error)){
-			$this->setError( $error );
+			vmError( $error );
 			return false;
 		} else {
 			if(empty($result)) return array();
@@ -221,7 +221,7 @@ class VmTableXarray extends VmTable {
             $this->_db->setQuery($q);
             if(!$this->_db->Query()){
                 $returnCode = false;
-                $this->setError(get_class( $this ).':: store'.$this->_db->getErrorMsg());
+                vmError(get_class( $this ).':: store'.$this->_db->getErrorMsg());
             }
         }
 
@@ -238,7 +238,7 @@ class VmTableXarray extends VmTable {
                     $this->_db->setQuery($q);
                     if(!$this->_db->Query()){
                         $returnCode = false;
-                        $this->setError(get_class( $this ).':: store'.$this->_db->getErrorMsg());
+                        vmError(get_class( $this ).':: store'.$this->_db->getErrorMsg());
                     }
                 }
              }

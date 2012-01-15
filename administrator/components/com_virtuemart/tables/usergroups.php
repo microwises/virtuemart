@@ -57,12 +57,12 @@ class TableUsergroups extends VmTable {
 	function check($nrOfValues){
 
 //		if (!$this->group_name) {
-//			$this->setError(JText::_('COM_VIRTUEMART_PERMISSION_GROUP_MUST_HAVE_NAME'));
+//			vmError(JText::_('COM_VIRTUEMART_PERMISSION_GROUP_MUST_HAVE_NAME'));
 //			return false;
 //		}
 
 		if (preg_match('/[^a-z0-9\._\-]/i', $this->group_name) > 0) {
-			$this->setError(JText::_('COM_VIRTUEMART_PERMISSION_GROUP_NAME_INVALID_CHARACTERS'));
+			vmError(JText::_('COM_VIRTUEMART_PERMISSION_GROUP_NAME_INVALID_CHARACTERS'));
 			return false;
 		}
 

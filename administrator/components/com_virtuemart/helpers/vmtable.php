@@ -194,7 +194,7 @@ class VmTable extends JTable{
 		$fromObject = is_object($from);
 
 		if(!$fromArray && !$fromObject){
-			$this->setError(get_class($this) . '::check if data contains table fields failed. Invalid from argument <pre>' . print_r($from, 1) . '</pre>');
+			vmError(get_class($this) . '::check if data contains table fields failed. Invalid from argument <pre>' . print_r($from, 1) . '</pre>');
 			return false;
 		}
 		if(!is_array($ignore)){
@@ -430,7 +430,9 @@ class VmTable extends JTable{
 			$i = 0;
 			if(VmConfig::isJ15()) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
 			else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
-			if (!$this->$slugName = trim(str_replace('-','',$this->$slugName)) );
+			if (!$this->$slugName){
+				$this->$slugName = trim(str_replace('-',' ',$this->$slugName) );
+			}
 
 			$tbl_key = $this->_tbl_key;
 			while($used && $i<10){
@@ -453,7 +455,7 @@ class VmTable extends JTable{
 						$this->$slugName = $this->$slugName.rand(1,9);
 					}
 					$used = true;
-					$this->setError(get_class($this).' ');
+					vmError(get_class($this).' ');
 				} else {
 					$used = false;
 				}
@@ -480,7 +482,7 @@ class VmTable extends JTable{
 			foreach($this->_unique_name as $obkeys => $error){
 
 				if(empty($this->$obkeys)){
-					// 					$this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE_KEY',$this->$obkeys));
+					// 					vmError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE_KEY',$this->$obkeys));
 					$this->setError($error);
 					vmError('Non unique '.$this->_unique_name.' '.$error);
 					return false;
@@ -503,9 +505,9 @@ class VmTable extends JTable{
 				}
 
 				/* if(empty($error)){
-				 $this->setError(JText::_($error));
+				 vmError(JText::_($error));
 				}else {
-				$this->setError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE', $this->_tbl, $obkeys . ': ' . $this->$obkeys));
+				vmError(JText::sprintf('COM_VIRTUEMART_NON_UNIQUE', $this->_tbl, $obkeys . ': ' . $this->$obkeys));
 				}*/
 				//return false;
 			}
@@ -749,7 +751,7 @@ class VmTable extends JTable{
 		$this->_orderingKey = $orderingkey;
 
 		if(!in_array($this->_orderingKey, array_keys($this->getProperties()))){
-			$this->setError(get_class($this) . ' does not support ordering');
+			vmError(get_class($this) . ' does not support ordering');
 			return false;
 		}
 
@@ -831,7 +833,7 @@ class VmTable extends JTable{
 		if(!empty($orderingkey))
 		$this->_orderingKey = $orderingkey;
 		if(!in_array($this->_orderingKey, array_keys($this->getProperties()))){
-			$this->setError(get_class($this) . ' does not support ordering');
+			vmError(get_class($this) . ' does not support ordering');
 			return false;
 		}
 
@@ -843,7 +845,7 @@ class VmTable extends JTable{
 		$maxord = $this->_db->loadResult();
 
 		if($this->_db->getErrorNum()){
-			$this->setError(get_class($this) . ' getNextOrder ' . $this->_db->getErrorMsg());
+			vmError(get_class($this) . ' getNextOrder ' . $this->_db->getErrorMsg());
 			return false;
 		}
 		return $maxord + 1;
@@ -865,7 +867,7 @@ class VmTable extends JTable{
 		$k = $this->_tbl_key;
 
 		if(!in_array($this->_orderingKey, array_keys($this->getProperties()))){
-			$this->setError(get_class($this) . ' does not support ordering');
+			vmError(get_class($this) . ' does not support ordering');
 			return false;
 		}
 
@@ -882,7 +884,7 @@ class VmTable extends JTable{
 		;
 		$this->_db->setQuery($query);
 		if(!($orders = $this->_db->loadObjectList())){
-			$this->setError(get_class($this) . ' reorder ' . $this->_db->getErrorMsg());
+			vmError(get_class($this) . ' reorder ' . $this->_db->getErrorMsg());
 			return false;
 		}
 		$orderingKey = $this->_orderingKey;

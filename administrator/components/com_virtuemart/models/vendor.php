@@ -205,7 +205,7 @@ class VirtueMartModelVendor extends VmModel {
 	$mediaModel->storeMedia($data,'vendor');
     $errors = $mediaModel->getErrors();
 	foreach($errors as $error){
-		$this->setError($error);
+		vmError($error);
 	}
 
 

@@ -140,7 +140,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		if (!$result) {
 			$errors = $usersTable->getErrors();
 			foreach($errors as $error) {
-				$this->setError(get_class( $this ).'::setUserToPermissionGroup user '.$error);
+				vmError(get_class( $this ).'::setUserToPermissionGroup user '.$error);
 			}
 			return false;
 		}
@@ -154,7 +154,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 			if (!$xrefTable->save($data)) {
 				$errors = $xrefTable->getErrors();
 				foreach($errors as $error){
-					$this->setError(get_class( $this ).'::setUserToPermissionGroup xref '.$error);
+					vmError(get_class( $this ).'::setUserToPermissionGroup xref '.$error);
 				}
 				return false;
 			}
@@ -215,7 +215,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 	//Save the VM user stuff
 	if(!$usermodel->store($fields)){
-		$this->setError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA')  );
+		vmError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA')  );
 		JError::raiseWarning('', JText::_('COM_VIRTUEMART_RAISEWARNING_NOT_ABLE_TO_SAVE_USER_DATA'));
 	}
 
@@ -224,9 +224,9 @@ class VirtueMartModelUpdatesMigration extends JModel {
 // 	$this->installSampleSQL($lang);
 	$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'install_sample_data.sql';
 	if(!$this->execSQLFile($filename)){
-		$this->setError(JText::_('Problems execution of SQL File '.$filename));
+		vmError(JText::_('Problems execution of SQL File '.$filename));
 	} else {
-		$this->setError(JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED'));
+		vmError(JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED'));
 	}
 
 	return true;
@@ -348,7 +348,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$prefix = $config->getValue('config.dbprefix').'virtuemart_%';
 		$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
 		if (!$tables = $db->loadResultArray()) {
-		    $this->setError = $db->getErrorMsg();
+		    vmError = $db->getErrorMsg();
 		    return false;
 		}
 

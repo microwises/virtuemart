@@ -285,7 +285,7 @@ class VmModel extends JModel {
 			$query = 'SELECT `'.$this->_db->getEscaped($this->_idName).'` FROM `'.$this->_db->getEscaped($this->_maintable).'`';;
 			$this->_db->setQuery( $query );
 			if(!$this->_db->query()){
-				if(empty($this->_maintable)) $this->setError('Model '.get_class( $this ).' has no maintable set');
+				if(empty($this->_maintable)) vmError('Model '.get_class( $this ).' has no maintable set');
 				$this->_total = 0;
 			} else {
 				$this->_total = $this->_db->getNumRows();
@@ -463,7 +463,7 @@ class VmModel extends JModel {
 
 		$errors = $table->getErrors();
 		foreach($errors as $error){
-			$this->setError( get_class( $this ).'::store '.$error);
+			vmError( get_class( $this ).'::store '.$error);
 		}
 		if(is_object($data)){
 			$_idName = $this->_idName;
@@ -485,7 +485,7 @@ class VmModel extends JModel {
 		$table = $this->getTable($this->_maintablename);
 		foreach($ids as $id) {
 			if (!$table->delete((int)$id)) {
-				$this->setError(get_class( $this ).'::remove '.$id.' '.$table->getError());
+				vmError(get_class( $this ).'::remove '.$id.' '.$table->getError());
 				return false;
 			}
 		}
@@ -539,12 +539,12 @@ class VmModel extends JModel {
 	{
 		$table = $this->getTable($this->_maintablename);
 		if (!$table->load($this->_id)) {
-			$this->setError($this->_db->getErrorMsg());
+			vmError($this->_db->getErrorMsg());
 			return false;
 		}
 		if ($filter) ' '.$filter.' = '.(int) $table->$filter.' AND published >= 0 ';
 		if (!$table->move( $direction, $filter )) {
-			$this->setError($this->_db->getErrorMsg());
+			vmError($this->_db->getErrorMsg());
 			return false;
 		}
 
@@ -574,7 +574,7 @@ class VmModel extends JModel {
 			{
 				$table->ordering = $order[$i];
 				if (!$table->store()) {
-					$this->setError($this->_db->getErrorMsg());
+					vmError($this->_db->getErrorMsg());
 					return false;
 				}
 			}

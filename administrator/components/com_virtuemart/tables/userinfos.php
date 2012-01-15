@@ -113,7 +113,7 @@ class TableUserinfos extends VmTableData {
 		$this->_db->setQuery($_sql);
 		$this->_db->query();
 		if ($this->_db->getErrorNum() != 0) {
-			$this->setError(get_class( $this ).'::modify table - '.$this->_db->getErrorMsg());
+			vmError(get_class( $this ).'::modify table - '.$this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
@@ -165,7 +165,7 @@ class TableUserinfos extends VmTableData {
 		// Implicit else
 		$this->_db->setQuery('DELETE from `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = ' . $id);
 		if ($this->_db->query() === false) {
-			$this->setError($this->_db->getError());
+			vmError($this->_db->getError());
 			return false;
 		}
 		return true;

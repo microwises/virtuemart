@@ -69,11 +69,11 @@ class TableOrderstates extends VmTable {
 	function check()
 	{
 //        if (empty($this->order_status_code)) {
-//			$this->setError(JText::_('COM_VIRTUEMART_ORDER_TABLE_ERROR_CODE'));
+//			vmError(JText::_('COM_VIRTUEMART_ORDER_TABLE_ERROR_CODE'));
 //			return false;
 //		}
 //		if (empty($this->order_status_name)) {
-//			$this->setError(JText::_('COM_VIRTUEMART_ORDER_TABLE_ERROR_NAME'));
+//			vmError(JText::_('COM_VIRTUEMART_ORDER_TABLE_ERROR_NAME'));
 //			return false;
 //		}
 
@@ -86,7 +86,7 @@ class TableOrderstates extends VmTable {
 		if(is_array($row)){
 			if($row[0]>0){
 				if($row[1] != $this->virtuemart_orderstate_id){
-					$this->setError(JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_EXISTS'));
+					vmError(JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_EXISTS'));
 					return false;
 				}
 			}

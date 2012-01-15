@@ -194,8 +194,6 @@ function vmTime($descr,$name='current'){
 * That would mean that changing something in the config can take up to 1 hour until this change is effecting the shoppers.
 */
 
-define( 'VM_CONFIG_SESSION_TIME', 300);
-
 /**
  * We use this Class STATIC not dynamically !
  */
@@ -938,7 +936,7 @@ class vmJsApi{
 		return true;
 	}
 
-	// $yearRange format >> 1980:2010 
+	// $yearRange format >> 1980:2010
 	// Virtuemart Datepicker script
 	function jDate($date='',$name="date",$id=null,$resetBt = true, $yearRange='') {
 		if ($yearRange) $yearRange='yearRange: "'.$yearRange.'",';

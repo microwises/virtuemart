@@ -290,7 +290,7 @@ class VirtueMartModelConfig extends JModel {
 // 		vmdebug('config to store',$confData);
 		$confTable = $this->getTable('configs');
 		if (!$confTable->bindChecknStore($confData)) {
-			$this->setError($confTable->getError());
+			vmError($confTable->getError());
 		}
 
 		// Load the newly saved values into the session.

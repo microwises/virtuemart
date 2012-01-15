@@ -85,20 +85,25 @@ class TableMedias extends VmTable {
       $ok = true;
       $notice = true;
 
+      if(empty($this->file_type) and empty($this->file_is_forSale) ){
+      	$ok = false;
+      	vmError( JText::sprintf('COM_VIRTUEMART_MEDIA_NO_TYPE'), $this->file_name);
+      }
+
       if(!empty($this->file_url)){
       	if(function_exists('mb_strlen') ){
       		if(mb_strlen($this->file_url)>254){
-      			$this->setError(JText::sprintf('COM_VIRTUEMART_URL_TOO_LONG',mb_strlen($this->file_url) ) );
+      			vmError(JText::sprintf('COM_VIRTUEMART_URL_TOO_LONG',mb_strlen($this->file_url) ) );
       		}
       	} else {
       		if(strlen($this->file_url)>254){
-      			$this->setError(JText::sprintf('COM_VIRTUEMART_URL_TOO_LONG',strlen($this->file_url) ) );
+      			vmError(JText::sprintf('COM_VIRTUEMART_URL_TOO_LONG',strlen($this->file_url) ) );
       		}
       	}
 
       	if(strpos($this->file_url,'..')!==false){
       		$ok = false;
-      		$this->setError(JText::sprintf('COM_VIRTUEMART_URL_NOT_VALID',$this->file_url ) );
+      		vmError(JText::sprintf('COM_VIRTUEMART_URL_NOT_VALID',$this->file_url ) );
       	}
 
       	if(empty($this->virtuemart_media_id)){
@@ -117,7 +122,7 @@ class TableMedias extends VmTable {
 							$ok = false;
 	      			}
 	      		} else {
-	//      			$this->setError(JText::_('COM_VIRTUEMART_MEDIA_IS_DOUBLED_IN_DB'));
+	//      			vmError(JText::_('COM_VIRTUEMART_MEDIA_IS_DOUBLED_IN_DB'));
 	      			vmError(JText::_('COM_VIRTUEMART_MEDIA_IS_DOUBLED_IN_DB'));
 						$ok = false;
 	      		}
@@ -125,7 +130,7 @@ class TableMedias extends VmTable {
       	}
 
       } else{
-      	$this->setError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_URL'));
+      	vmError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_URL'));
       	$ok = false;
       }
 
@@ -134,7 +139,7 @@ class TableMedias extends VmTable {
 
       if(!empty($this->file_title)){
 			if(strlen($this->file_title)>126){
-				$this->setError(JText::sprintf('COM_VIRTUEMART_TITLE_TOO_LONG',strlen($this->file_title) ) );
+				vmError(JText::sprintf('COM_VIRTUEMART_TITLE_TOO_LONG',strlen($this->file_title) ) );
 			}
 
 			$q = 'SELECT * FROM `'.$this->_tbl.'` ';
@@ -159,19 +164,19 @@ class TableMedias extends VmTable {
 				}
 			}
       }else{
-				$this->setError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_TITLE'));
+				vmError(JText::_('COM_VIRTUEMART_MEDIA_MUST_HAVE_TITLE'));
 				$ok = false;
       }
 
 		if(!empty($this->file_description)){
 			if(strlen($this->file_description)>254){
-				$this->setError(JText::sprintf('COM_VIRTUEMART_DESCRIPTION_TOO_LONG',strlen($this->file_description) ) );
+				vmError(JText::sprintf('COM_VIRTUEMART_DESCRIPTION_TOO_LONG',strlen($this->file_description) ) );
 			}
 		}
 
 //		$app = JFactory::getApplication();
 
- 	//$this->setError('Checking '.$this->file_url);
+ 	//vmError('Checking '.$this->file_url);
 
 
 		if(empty($this->file_mimetype)){
@@ -192,14 +197,14 @@ class TableMedias extends VmTable {
 							vmError('cant store this media, Document corrupt: Cannot read summary info '.$rel_path);
 							return false;
 						}
-						//$this->setError('file_mime '.$this->file_mimetype.' for '.$rel_path);
+						//vmError('file_mime '.$this->file_mimetype.' for '.$rel_path);
 					} else {
 						vmError('Couldnt resolve mime '.$rel_path);
 						return false;
 					}
-// 				     $this->setError('mime'.$this->file_mimetype);
+// 				     vmError('mime'.$this->file_mimetype);
 // 				     if($this->file_mimetype == 'directory'){
-// 				     		$this->setError('Couldnt resolve mime, because it is a '.$rel_path);
+// 				     		vmError('Couldnt resolve mime, because it is a '.$rel_path);
 // 					     return false;
 // 				     }
 // 				} catch (ErrorException $e){
@@ -217,7 +222,7 @@ class TableMedias extends VmTable {
 			     $name = substr($this->file_url,$lastIndexOfSlash+1);
 			     $file_extension = strtolower(JFile::getExt($name));
 			     if( empty($name) ){
-				     $this->setError(JText::_('COM_VIRTUEMART_NO_MEDIA'));
+				     vmError(JText::_('COM_VIRTUEMART_NO_MEDIA'));
 			     }
 
 			     //images
@@ -231,7 +236,7 @@ class TableMedias extends VmTable {
 				     $this->file_mimetype = 'image/png';
 			     }
 			     elseif($file_extension === 'bmp'){
-				     $this->setError(JText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_NOT_BMP',$name));
+				     vmError(JText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_NOT_BMP',$name));
 				     $notice = true;
 			     }
 
@@ -257,7 +262,7 @@ class TableMedias extends VmTable {
 			     	$this->file_mimetype = 'application/x-gzip';
 			     }
 			     else{
-				     $this->setError(JText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE',$name));
+				     vmError(JText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE',$name));
 				     $notice = true;
 			     }
 		     }

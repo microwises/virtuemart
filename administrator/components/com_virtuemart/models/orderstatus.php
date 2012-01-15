@@ -76,7 +76,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 
 		$errors = $table->getErrors();
 		foreach($errors as $error){
-			$this->setError( get_class( $this ).'::store '.$error);
+			vmError( get_class( $this ).'::store '.$error);
 		}
 		if(is_object($data)){
 			$_idName = $this->_idName;
@@ -114,11 +114,11 @@ class VirtueMartModelOrderstatus extends VmModel {
 	{
 		$table = $this->getTable('orderstates');
 		if (!$table->load($this->_id)) {
-			$this->setError($this->_db->getErrorMsg());
+			vmError($this->_db->getErrorMsg());
 			return false;
 		}
 		if (!$table->move($direction)){
-			$this->setError($this->_db->getErrorMsg());
+			vmError($this->_db->getErrorMsg());
 			return false;
 		}
 
@@ -172,7 +172,7 @@ class VirtueMartModelOrderstatus extends VmModel {
 			{
 				$table->ordering = $order[$i];
 				if (!$table->store()) {
-					$this->setError($this->_db->getErrorMsg());
+					vmError($this->_db->getErrorMsg());
 					return false;
 				}
 			}

@@ -93,7 +93,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 	}
 
-	public function setUserId($id){
+	private function setUserId($id){
 
 		$app = JFactory::getApplication();
 // 		if($app->isAdmin()){
@@ -114,6 +114,12 @@ class VirtueMartModelUser extends VmModel {
 		$this->setId($user->get('id'));
 	}
 
+
+	public function getCurrentUser(){
+		$user = JFactory::getUser();
+		$this->setUserId($user->id);
+		return $this->getUser();
+	}
 
 	private $_defaultShopperGroup = 0;
 	/**
@@ -358,7 +364,7 @@ class VirtueMartModelUser extends VmModel {
 		if (!$user->bind($data)) {
 
 			foreach($user->getErrors() as $error) {
-// 				$this->setError('user bind '.$error);
+// 				vmError('user bind '.$error);
 				vmError('user bind '.$error,'Couldnt store user '.$error);
 			}
 			$message = 'Couldnt bind data to joomla user';
@@ -588,7 +594,7 @@ class VirtueMartModelUser extends VmModel {
 			$vendorModel->setId($data['virtuemart_vendor_id']);
 
 			if (!$vendorModel->store($data)) {
-				$this->setError($vendorModel->getError());
+				vmError($vendorModel->getError());
 				vmdebug('Error storing vendor',$vendorModel);
 				return false;
 			}
@@ -625,7 +631,7 @@ class VirtueMartModelUser extends VmModel {
 		$userfielddata = self::_prepareUserFields($data, $data['address_type']);
 		$userinfo   = $this->getTable('userinfos');
     	if (!$userinfo->bindChecknStore($userfielddata)) {
-			$this->setError($userinfo->getError());
+			vmError($userinfo->getError());
 		}
 		return $userinfo->virtuemart_userinfo_id;
 	}
@@ -926,29 +932,29 @@ class VirtueMartModelUser extends VmModel {
 	 			// Prevent deletion of the only Super Admin
 	 			$_u = JUser::getInstance($userId);
 	 			if ($_u->get('gid') == __SUPER_ADMIN_GID) {
-	 				$this->setError(JText::_('COM_VIRTUEMART_USER_ERR_LASTSUPERADMIN'));
+	 				vmError(JText::_('COM_VIRTUEMART_USER_ERR_LASTSUPERADMIN'));
 	 				$_status = false;
 	 				continue;
 	 			}
 	 		}
 
 	 		if (!$userInfo->delete($userId)) {
-	 			$this->setError($userInfo->getError());
+	 			vmError($userInfo->getError());
 	 			return false;
 	 		}
 	 		if (!$vm_shoppergroup_xref->delete($userId)) {
-	 			$this->setError($vm_shoppergroup_xref->getError()); // Signal but continue
+	 			vmError($vm_shoppergroup_xref->getError()); // Signal but continue
 	 			$_status = false;
 	 			continue;
 	 		}
 			if (!$vmusers->delete($userId)) {
-	 			$this->setError($vmusers->getError()); // Signal but continue
+	 			vmError($vmusers->getError()); // Signal but continue
 	 			$_status = false;
 	 			continue;
 	 		}
 	 		$_JUser = JUser::getInstance($userId);
 	 		if (!$_JUser->delete()) {
-	 			$this->setError($jUser->getError());
+	 			vmError($jUser->getError());
 	 			return false;
 	 		}
 	 	}

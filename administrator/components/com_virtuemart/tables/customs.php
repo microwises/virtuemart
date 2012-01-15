@@ -99,7 +99,7 @@ class TableCustoms extends VmTable {
 	// function check(){
 
 		// if( $this->virtuemart_custom_id > 0  && $this->virtuemart_custom_id==$this->custom_parent_id ) {
-			// $this->setError(JText::_('COM_VIRTUEMART_CUSTOM_CANNOT_PARENT'));
+			// vmError(JText::_('COM_VIRTUEMART_CUSTOM_CANNOT_PARENT'));
 			// return false ;
 		// }
 
@@ -120,7 +120,7 @@ class TableCustoms extends VmTable {
 			LEFT JOIN  `#__virtuemart_product_customfields` AS X ON  X.`virtuemart_custom_id` = C.`virtuemart_custom_id`
 			WHERE C.`virtuemart_custom_id`=' . $id);
 		if ($this->_db->query() === false) {
-			$this->setError($this->_db->getError());
+			vmError($this->_db->getError());
 			return false;
 		}
 		return true;

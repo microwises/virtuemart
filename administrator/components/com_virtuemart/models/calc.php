@@ -60,25 +60,25 @@ class VirtueMartModelCalc extends VmModel {
 			$xrefTable = $this->getTable('calc_categories');
 			$this->_data->calc_categories = $xrefTable->load($this->_id);
 			if ( $xrefTable->getError() ) {
-				$this->setError(get_class( $this ).' calc_categories '.$xrefTable->getError());
+				vmError(get_class( $this ).' calc_categories '.$xrefTable->getError());
 			}
 
 			$xrefTable = $this->getTable('calc_shoppergroups');
 			$this->_data->virtuemart_shoppergroup_ids = $xrefTable->load($this->_id);
 			if ( $xrefTable->getError() ) {
-				$this->setError(get_class( $this ).' calc_shoppergroups '.$xrefTable->getError());
+				vmError(get_class( $this ).' calc_shoppergroups '.$xrefTable->getError());
 			}
 
 			$xrefTable = $this->getTable('calc_countries');
 			$this->_data->calc_countries = $xrefTable->load($this->_id);
 			if ( $xrefTable->getError() ) {
-				$this->setError(get_class( $this ).' calc_countries '.$xrefTable->getError());
+				vmError(get_class( $this ).' calc_countries '.$xrefTable->getError());
 			}
 
 			$xrefTable = $this->getTable('calc_states');
 			$this->_data->virtuemart_state_ids = $xrefTable->load($this->_id);
 			if ( $xrefTable->getError() ) {
-				$this->setError(get_class( $this ).' virtuemart_state_ids '.$xrefTable->getError());
+				vmError(get_class( $this ).' virtuemart_state_ids '.$xrefTable->getError());
 			}
 
 			JPluginHelper::importPlugin('vmcalculation');
@@ -191,32 +191,32 @@ class VirtueMartModelCalc extends VmModel {
 
 		$table->bindChecknStore($data);
 		if($table->getError()){
-			$this->setError($table->getError());
+			vmError($table->getError());
 			return false;
 		}
 
     	$xrefTable = $this->getTable('calc_categories');
     	$xrefTable->bindChecknStore($data);
     	if($xrefTable->getError()){
-			$this->setError($xrefTable->getError());
+			vmError($xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_shoppergroups');
     	$xrefTable->bindChecknStore($data);
     	if($xrefTable->getError()){
-			$this->setError($xrefTable->getError());
+			vmError($xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_countries');
     	$xrefTable->bindChecknStore($data);
     	if($xrefTable->getError()){
-			$this->setError($xrefTable->getError());
+			vmError($xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_states');
     	$xrefTable->bindChecknStore($data);
     	if($xrefTable->getError()){
-			$this->setError($xrefTable->getError());
+			vmError($xrefTable->getError());
 		}
 
 		if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');
@@ -230,12 +230,12 @@ class VirtueMartModelCalc extends VmModel {
 		if(!empty($errMsg)){
 
 			$errNum = $this->_db->getErrorNum();
-			$this->setError('SQL-Error: '.$errNum.' '.$errMsg.' <br /> used query '.$this->_db->getQuery());
+			vmError('SQL-Error: '.$errNum.' '.$errMsg.' <br /> used query '.$this->_db->getQuery());
 		}
 
 		if(!empty($errs)){
 			foreach($errs as $err){
-				if(!empty($err)) $this->setError($err);
+				if(!empty($err)) vmError($err);
 			}
 		}
 
@@ -299,27 +299,27 @@ class VirtueMartModelCalc extends VmModel {
 			$id = (int)$id;
 			vmdebug('remove '.$id);
 			if (!$table->delete($id)) {
-				$this->setError(get_class( $this ).'::remove '.$id.' '.$table->getError());
+				vmError(get_class( $this ).'::remove '.$id.' '.$table->getError());
 				$ok = false;
 			}
 
 			if (!$cat->delete($id)) {
-				$this->setError(get_class( $this ).'::remove '.$id.' '.$cat->getError());
+				vmError(get_class( $this ).'::remove '.$id.' '.$cat->getError());
 				$ok = false;
 			}
 
 			if (!$sgrp->delete($id)) {
-				$this->setError(get_class( $this ).'::remove '.$id.' '.$sgrp->getError());
+				vmError(get_class( $this ).'::remove '.$id.' '.$sgrp->getError());
 				$ok = false;
 			}
 
 			if (!$countries->delete($id)) {
-				$this->setError(get_class( $this ).'::remove '.$id.' '.$countries->getError());
+				vmError(get_class( $this ).'::remove '.$id.' '.$countries->getError());
 				$ok = false;
 			}
 
 			if (!$states->delete($id)) {
-				$this->setError(get_class( $this ).'::remove '.$id.' '.$states->getError());
+				vmError(get_class( $this ).'::remove '.$id.' '.$states->getError());
 				$ok = false;
 			}
 

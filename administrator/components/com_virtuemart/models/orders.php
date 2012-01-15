@@ -295,7 +295,7 @@ class VirtueMartModelOrders extends VmModel {
 			//$this->_updateOrderItemHist($id, $order_status, $customer_notified, $comment);
 			$errors = $table->getErrors();
 			foreach($errors as $error){
-				$this->setError( get_class( $this ).'::store '.$error);
+				vmError( get_class( $this ).'::store '.$error);
 			}
 
 			// 		$this->handleStockAfterStatusChanged($order_status,array($product),$table->order_status);
@@ -556,7 +556,7 @@ class VirtueMartModelOrders extends VmModel {
 		$orderTable -> bindChecknStore($_orderData);
 		$errors = $orderTable->getErrors();
 		foreach($errors as $error){
-			$this->setError($error);
+			vmError($error);
 		}
 
 		$db = JFactory::getDBO();
@@ -814,13 +814,13 @@ class VirtueMartModelOrders extends VmModel {
 
 
 			if (!$_orderItems->check()) {
-				$this->setError($this->getError());
+				vmError($this->getError());
 				return false;
 			}
 
 			// Save the record to the database
 			if (!$_orderItems->store()) {
-				$this->setError($this->getError());
+				vmError($this->getError());
 				return false;
 			}
 			$this->handleStockAfterStatusChangedPerProduct( $_orderItems->order_status,'N',$_orderItems,$_orderItems->product_quantity);
@@ -1051,7 +1051,7 @@ class VirtueMartModelOrders extends VmModel {
 		$this->_db->setQuery($q);
 
 		if ($this->_db->query() === false) {
-			$this->setError($this->_db->getError());
+			vmError($this->_db->getError());
 			return false;
 		}
 		return true;
@@ -1067,7 +1067,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		$item = $this->getTable('order_items');
 		if (!$item->load($orderLineId)) {
-			$this->setError($item->getError());
+			vmError($item->getError());
 			return false;
 		}
 		$this->handleStockAfterStatusChangedPerProduct('C', $item->order_status,$item, $item->product_quantity);
@@ -1075,7 +1075,7 @@ class VirtueMartModelOrders extends VmModel {
 			return true;
 		}
 		else {
-			$this->setError($item->getError());
+			vmError($item->getError());
 			return false;
 		}
 	}
@@ -1101,7 +1101,7 @@ class VirtueMartModelOrders extends VmModel {
 			foreach( $item_ids as $item_id ) $this->removeOrderLineItem($item_id);
 
 			if (!$table->delete((int)$id)) {
-				$this->setError(get_class( $this ).'::remove '.$id.' '.$table->getError());
+				vmError(get_class( $this ).'::remove '.$id.' '.$table->getError());
 				return false;
 			}
 		}

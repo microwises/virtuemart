@@ -82,7 +82,7 @@ class TableOrder_userinfos extends VmTable {
 		$this->_db->setQuery($_sql);
 		$this->_db->query();
 		if ($this->_db->getErrorNum() != 0) {
-			$this->setError(get_class( $this ).'::modify table - '.$this->_db->getErrorMsg());
+			vmError(get_class( $this ).'::modify table - '.$this->_db->getErrorMsg());
 			return false;
 		}
 		return true;

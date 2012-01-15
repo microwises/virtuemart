@@ -102,20 +102,20 @@ class TableUserfields extends VmTable {
 	function check($nrOfValues)
 	{
 //		if (!$this->name) {
-//			$this->setError(JText::_('COM_VIRTUEMART_USERFIELD_MUST_HAVE_NAME'));
+//			vmError(JText::_('COM_VIRTUEMART_USERFIELD_MUST_HAVE_NAME'));
 //			return false;
 //		}
 //		if (!$this->title) {
-//			$this->setError(JText::_('COM_VIRTUEMART_USERFIELD_MUST_HAVE_TITLE'));
+//			vmError(JText::_('COM_VIRTUEMART_USERFIELD_MUST_HAVE_TITLE'));
 //			return false;
 //		}
 		if (preg_match('/[^a-z0-9\._\-]/i', $this->name) > 0) {
-			$this->setError(JText::_('COM_VIRTUEMART_NAME_OF_USERFIELD_CONTAINS_INVALID_CHARACTERS'));
+			vmError(JText::_('COM_VIRTUEMART_NAME_OF_USERFIELD_CONTAINS_INVALID_CHARACTERS'));
 			return false;
 		}
 		$reqValues = array('select', 'multiselect', 'radio', 'multicheckbox');
 		if (in_array($this->type, $reqValues) && $nrOfValues == 0) {
-			$this->setError(JText::_('COM_VIRTUEMART_VALUES_ARE_REQUIRED_FOR_THIS_TYPE'));
+			vmError(JText::_('COM_VIRTUEMART_VALUES_ARE_REQUIRED_FOR_THIS_TYPE'));
 			return false;
 		}
 /**		if ($this->virtuemart_userfield_id == 0) {
@@ -127,7 +127,7 @@ class TableUserfields extends VmTable {
 			$_c = $this->_db->loadResultArray();
 
 			if ($_c[0] > 0) {
-				$this->setError(JText::_('COM_VIRTUEMART_USERFIELD_ERR_ALREADY', $this->name));
+				vmError(JText::_('COM_VIRTUEMART_USERFIELD_ERR_ALREADY', $this->name));
 				return false;
 			}
 		}*/
@@ -183,7 +183,7 @@ class TableUserfields extends VmTable {
 	{
 		$isNew = ($this->virtuemart_userfield_id == 0);
 		if (!parent::store()) { // Write data to the DB
-			$this->setError($this->getError());
+			vmError($this->getError());
 			return false;
 		} else {
 			return $this->virtuemart_userfield_id;

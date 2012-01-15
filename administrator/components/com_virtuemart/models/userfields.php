@@ -184,7 +184,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 		$coreFields = $this->getCoreFields();
 		if(in_array($data['name'],$coreFields)){
-			//$this->setError('Cant store/update core field. They belong to joomla');
+			//vmError('Cant store/update core field. They belong to joomla');
 			//return false;
 		} else {
 			if ($isNew) {
@@ -212,12 +212,12 @@ class VirtueMartModelUserfields extends VmModel {
 		$fieldValues = $this->postData2FieldValues($data['vNames'], $data['vValues'], $data['virtuemart_userfield_id']);
 
 		if (!$field->bind($data)) { // Bind data
-			$this->setError($field->getError());
+			vmError($field->getError());
 			return false;
 		}
 
 		if (!$field->check(count($fieldValues))) { // Perform data checks
-			$this->setError($field->getError());
+			vmError($field->getError());
 			return false;
 		}
 
@@ -229,13 +229,13 @@ class VirtueMartModelUserfields extends VmModel {
 
 			// Alter the user_info table
 			if (!$userinfo->_modifyColumn ($_action, $data['name'], $_fieldType)) {
-				$this->setError($userinfo->getError());
+				vmError($userinfo->getError());
 				return false;
 			}
 
 			// Alter the order_userinfo table
 			if (!$orderinfo->_modifyColumn ($_action, $data['name'], $_fieldType)) {
-				$this->setError($orderinfo->getError());
+				vmError($orderinfo->getError());
 				return false;
 			}
 		}
@@ -247,7 +247,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 		$_id = $field->store();
 		if ($_id === false) { // Write data to the DB
-			$this->setError($field->getError());
+			vmError($field->getError());
 			return false;
 		}
 
@@ -285,17 +285,17 @@ class VirtueMartModelUserfields extends VmModel {
 			}
 
 			if (!$fieldvalue->bind($_values[$i])) { // Bind data
-				$this->setError($fieldvalue->getError());
+				vmError($fieldvalue->getError());
 				return false;
 			}
 
 			if (!$fieldvalue->check()) { // Perform data checks
-				$this->setError($fieldvalue->getError());
+				vmError($fieldvalue->getError());
 				return false;
 			}
 
 			if (!$fieldvalue->store()) { // Write data to the DB
-				$this->setError($fieldvalue->getError());
+				vmError($fieldvalue->getError());
 				return false;
 			}
 		}
@@ -900,23 +900,23 @@ class VirtueMartModelUserfields extends VmModel {
 			if ($field->type != 'delimiter') {
 				// Alter the user_info table
 				if (!$userinfo->_modifyColumn ('DROP', $_fieldName)) {
-					$this->setError($userinfo->getError());
+					vmError($userinfo->getError());
 					return false;
 				}
 
 				// Alter the order_userinfo table
 				if (!$orderinfo->_modifyColumn ('DROP', $_fieldName)) {
-					$this->setError($orderinfo->getError());
+					vmError($orderinfo->getError());
 					return false;
 				}
 			}
 
 			if (!$field->delete($fieldId)) {
-				$this->setError($field->getError());
+				vmError($field->getError());
 				return false;
 			}
 			if (!$value->delete($fieldId)) {
-				$this->setError($field->getError());
+				vmError($field->getError());
 				return false;
 			}
 		}

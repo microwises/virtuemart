@@ -103,7 +103,7 @@ class TableCategories extends VmTable {
 	{
 		if (!in_array( 'ordering',  array_keys($this->getProperties())))
 		{
-			$this->setError( get_class( $this ).' does not support ordering' );
+			vmError( get_class( $this ).' does not support ordering' );
 			return false;
 		}
 
@@ -199,7 +199,7 @@ class TableCategories extends VmTable {
 
 		if (!in_array( 'ordering', array_keys($this->getProperties() ) ))
 		{
-			$this->setError( get_class( $this ).' does not support ordering');
+			vmError( get_class( $this ).' does not support ordering');
 			return false;
 		}
 
@@ -214,7 +214,7 @@ class TableCategories extends VmTable {
 		$this->_db->setQuery( $query );
 		if (!($orders = $this->_db->loadObjectList()))
 		{
-			$this->setError($this->_db->getErrorMsg());
+			vmError($this->_db->getErrorMsg());
 			return false;
 		}
 		// compact the ordering numbers

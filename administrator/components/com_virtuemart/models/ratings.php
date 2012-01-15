@@ -149,7 +149,7 @@ class VirtueMartModelRatings extends VmModel {
      	$this->_db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
 
      	if(!$result = $this->_db->loadObjectList()){
-     		$this->setError($this->_db->getErrorMsg());
+     		vmError($this->_db->getErrorMsg());
      	}
 
      	return $result;
@@ -278,7 +278,7 @@ class VirtueMartModelRatings extends VmModel {
 		      $votesTable->bindChecknStore($data,true);
 		    	$errors = $votesTable->getErrors();
 				foreach($errors as $error){
-					$this->setError(get_class( $this ).'::Error store votes '.$error);
+					vmError(get_class( $this ).'::Error store votes '.$error);
 				}
 			}
 
@@ -305,7 +305,7 @@ class VirtueMartModelRatings extends VmModel {
 			$rating->bindChecknStore($data,true);
 			$errors = $rating->getErrors();
 			foreach($errors as $error){
-				$this->setError(get_class( $this ).'::Error store rating '.$error);
+				vmError(get_class( $this ).'::Error store rating '.$error);
 			}
 
 			if(!empty($data['comment'])){
@@ -347,12 +347,12 @@ class VirtueMartModelRatings extends VmModel {
 		      $reviewTable->bindChecknStore($data,true);
 				$errors = $reviewTable->getErrors();
 				foreach($errors as $error){
-					$this->setError(get_class( $this ).'::Error store review '.$error);
+					vmError(get_class( $this ).'::Error store review '.$error);
 				}
 			}
 			return $data['virtuemart_rating_review_id'];
 		} else{
-			$this->setError('Cant save rating/review/vote without vote/product_id');
+			vmError('Cant save rating/review/vote without vote/product_id');
 			return false;
 		}
 
@@ -376,17 +376,17 @@ class VirtueMartModelRatings extends VmModel {
     		$prod_id = $rating->virtuemart_product_id;
 
     		if (!$rating->delete($id)) {
-    			$this->setError($rating->getError());
+    			vmError($rating->getError());
     			$ok = false;
     		}
 
     		if (!$review->delete($prod_id,'virtuemart_product_id')) {
-    			$this->setError($review->getError());
+    			vmError($review->getError());
     			$ok = false;
     		}
 
     		if (!$votes->delete($prod_id,'virtuemart_product_id')) {
-    			$this->setError($votes->getError());
+    			vmError($votes->getError());
     			$ok = false;
     		}
     	}

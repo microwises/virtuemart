@@ -189,7 +189,7 @@ class VirtueMartModelCustom extends VmModel {
 				$errors = $tableCustomfields->getErrors();
 
 				foreach($errors as $error){
-					$this->setError($error);
+					vmError($error);
 				}
 				$key = array_search($fields['virtuemart_customfield_id'], $old_customfield_ids );
 				if ($key !== false ) unset( $old_customfield_ids[ $key ] );
@@ -234,14 +234,14 @@ class VirtueMartModelCustom extends VmModel {
 			$fields['virtuemart_'.$table.'_id']=$child_id;
 			$this->_db->setQuery( 'DELETE PC FROM `#__virtuemart_'.$table.'_customfields` as `PC`, `#__virtuemart_customs` as `C` WHERE `PC`.`virtuemart_custom_id` = `C`.`virtuemart_custom_id` AND field_type="C" and virtuemart_'.$table.'_id ='.$child_id );
 			if(!$this->_db->query()){
-				$this->setError('Error in deleting child relation '); //.$this->_db->getQuery()); Dont give hackers too much info
+				vmError('Error in deleting child relation '); //.$this->_db->getQuery()); Dont give hackers too much info
 			}
 
 			$tableCustomfields = $this->getTable($table.'_customfields');
 			$tableCustomfields->bindChecknStore($fields);
     		$errors = $tableCustomfields->getErrors();
 			foreach($errors as $error){
-				$this->setError($error);
+				vmError($error);
 			}
 		}
 

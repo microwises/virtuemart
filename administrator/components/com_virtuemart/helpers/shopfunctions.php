@@ -578,7 +578,8 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		$level++;
 
 		$categoryModel->_noLimit = true;
-		$records = $categoryModel->getCategories(true, $cid);
+		$app = JFactory::getApplication();
+		$records = $categoryModel->getCategories($app->isSite(), $cid);
 // 		vmTime('getCategories','getCategories');
 		$selected="";
 		if(!empty($records)){

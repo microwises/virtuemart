@@ -62,7 +62,7 @@ class VirtueMartModelCategory extends VmModel {
 		$xrefTable = $this->getTable('category_medias');
 		$this->_data->virtuemart_media_id = $xrefTable->load((int)$this->_id);
 
-		if($xrefTable->getError()) $this->setError($xrefTable->getError());
+		if($xrefTable->getError()) vmError($xrefTable->getError());
 
 		if(empty($this->_data->category_template)){
 			$this->_data->category_template = VmConfig::get('categorytemplate');
@@ -448,7 +448,7 @@ class VirtueMartModelCategory extends VmModel {
 		$parent = $this->_db->loadObject();
 
 		if (!$row->move( $movement, $parent->category_parent_id)) {
-			$this->setError($row->getError());
+			vmError($row->getError());
 			return false;
 		}
 
@@ -484,7 +484,7 @@ class VirtueMartModelCategory extends VmModel {
 			if ($row->ordering != $order[$i]) {
 				$row->ordering = $order[$i];
 				if (!$row->toggle('ordering',$row->ordering)) {
-					$this->setError($row->getError());
+					vmError($row->getError());
 					return false;
 				}
 			}
@@ -570,7 +570,7 @@ class VirtueMartModelCategory extends VmModel {
 		$table->bindChecknStore($data);
     	$errors = $table->getErrors();
 		foreach($errors as $error){
-			$this->setError($error);
+			vmError($error);
 		}
 
 		if(!empty($data['virtuemart_category_id'])){
@@ -583,7 +583,7 @@ class VirtueMartModelCategory extends VmModel {
 			$table->bindChecknStore($xdata);
 	    	$errors = $table->getErrors();
 			foreach($errors as $error){
-				$this->setError($error);
+				vmError($error);
 			}
 		}
 
@@ -593,7 +593,7 @@ class VirtueMartModelCategory extends VmModel {
 		$file_id = $mediaModel->storeMedia($data,'category');
       $errors = $mediaModel->getErrors();
 		foreach($errors as $error){
-			$this->setError($error);
+			vmError($error);
 		}
 		if ($this->_cleanCache === true) {
 			$cache = & JFactory::getCache();
@@ -620,7 +620,7 @@ class VirtueMartModelCategory extends VmModel {
 		foreach($cids as $cid) {
 		    if( $this->clearProducts($cid) ) {
 				if (!$table->delete($cid)) {
-				    $this->setError($table->getError());
+				    vmError($table->getError());
 				    return false;
 				}
 // TODO MULTI LANGUE REMOVE
@@ -629,7 +629,7 @@ class VirtueMartModelCategory extends VmModel {
 		    	$this->_db->setQuery($query);
 
 		    	if(!$this->_db->query()){
-		    		$this->setError( $this->_db->getErrorMsg() );
+		    		vmError( $this->_db->getErrorMsg() );
 		    	}
 
 		    	//updating parent relations
@@ -637,11 +637,11 @@ class VirtueMartModelCategory extends VmModel {
 		    	$this->_db->setQuery($query);
 
 		    	if(!$this->_db->query()){
-		    		$this->setError( $this->_db->getErrorMsg() );
+		    		vmError( $this->_db->getErrorMsg() );
 		    	}
 		    }
 		    else {
-				$this->setError('Could not clear category products');
+				vmError('Could not clear category products');
 				return false;
 		    }
 		}

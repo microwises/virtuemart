@@ -65,7 +65,7 @@ class TableUserfield_values extends VmTable {
 	function check()
 	{
 		if (preg_match('/[^a-z0-9\._\-]/i', $this->fieldtitle) > 0) {
-			$this->setError(JText::_('COM_VIRTUEMART_TITLE_IN_FIELDVALUES_CONTAINS_INVALID_CHARACTERS'));
+			vmError(JText::_('COM_VIRTUEMART_TITLE_IN_FIELDVALUES_CONTAINS_INVALID_CHARACTERS'));
 			return false;
 		}
 
@@ -93,7 +93,7 @@ class TableUserfield_values extends VmTable {
 		$db = JFactory::getDBO();
 		$db->setQuery('DELETE from `#__virtuemart_userfield_values` WHERE `virtuemart_userfield_id` = ' . $virtuemart_userfield_id);
 		if ($db->query() === false) {
-			$this->setError($db->getError());
+			vmError($db->getError());
 			return false;
 		}
 		return true;

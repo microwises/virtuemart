@@ -213,6 +213,26 @@ class Permissions extends JObject{
 	}
 
 	/**
+	 * Checks if user is Superadmin or has vendorId=1,
+	 * in the other case the vendorId should be matched with the one of the first parameter
+	 *
+	 * @author Mattheo Vicini
+	 * @author Max Milbers
+	 */
+
+	public function isSuperVendor($vendorId){
+
+
+		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
+
+		$userModel = new VirtueMartModelUser();
+
+		$user = $userModel->getCurrentUser();
+		vmdebug('myUser in isSuperVendor');
+
+	}
+
+	/**
 	 * Checks if the user has higher permissions than $perm
 	 * does not work properly, do not use or correct it
 	 * @param string $perm

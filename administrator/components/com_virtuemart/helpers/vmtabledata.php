@@ -49,7 +49,7 @@ class VmTableData extends VmTable {
 			$this->$tblKey = $this->_db->loadResult();
 		}
 // 		vmdebug('$_qry',$_qry,$pKey,$tblKey, $this->$tblKey);
-//		$this->setError($_qry,'$_qry');
+//		vmError($_qry,'$_qry');
 
         if ( !empty($this->$tblKey) ) {
             $returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, false);
@@ -58,7 +58,7 @@ class VmTableData extends VmTable {
         }
 
         if (!$returnCode) {
-            $this->setError(get_class($this) . '::store failed - ' . $this->_db->getErrorMsg());
+            vmError(get_class($this) . '::store failed - ' . $this->_db->getErrorMsg());
             return false;
         }
         else

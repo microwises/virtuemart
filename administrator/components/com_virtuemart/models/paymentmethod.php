@@ -185,14 +185,14 @@ class VirtueMartModelPaymentmethod extends VmModel{
 		$table->bindChecknStore($data);
 		$errors = $table->getErrors();
 		foreach($errors as $error){
-				$this->setError($error);
+				vmError($error);
 			}
 
 		$xrefTable = $this->getTable('paymentmethod_shoppergroups');
 		$xrefTable->bindChecknStore($data);
 		$errors = $xrefTable->getErrors();
 		foreach($errors as $error){
-			$this->setError($error);
+			vmError($error);
 		}
 
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
@@ -256,7 +256,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			$this->_db->setQuery($query);
 
 			if( !$this->_db->query() ){
-				$this->setError( $this->_db->getErrorMsg() );
+				vmError( $this->_db->getErrorMsg() );
 				return false;
 			}
 

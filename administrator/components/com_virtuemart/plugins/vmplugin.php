@@ -354,7 +354,7 @@ abstract class vmPlugin extends JPlugin {
 		$errors = $this->_vmpItable->getErrors();
 		if(!empty($errors)){
 			foreach($errors as $error){
-				$this->setError($error);
+				vmError($error);
 			}
 		}
 		return $values;
