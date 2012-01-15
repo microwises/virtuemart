@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <div class="vendor-details-view">
-	<h1><?php echo JTextx::_('COM_VIRTUEMART_VENDOR_TOS').$this->vendor->vendor_store_name;
+	<h1><?php echo JText::_('COM_VIRTUEMART_VENDOR_TOS').$this->vendor->vendor_store_name;
 	if (!empty($this->vendor->images[0])) { ?>
 		<div class="vendor-image">
 		<?php echo $this->vendor->images[0]->displayMediaThumb('',false); ?>
