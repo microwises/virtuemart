@@ -24,6 +24,8 @@ defined('_JEXEC') or die('Restricted access');
  */
 class GenericTableUpdater extends JModel{
 
+	private $_reCreatePrimary = false;
+
 	public function __construct(){
 
 		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
@@ -53,102 +55,16 @@ class GenericTableUpdater extends JModel{
 
 	}
 
+	/**
+	 *
+	 * @deprecated since 2.0.0
+	 * @param unknown_type $langs
+	 */
 	public function portOldLanguageToNewTables($langs){
 
 		//create language tables
-		$this->createLanguageTables($langs);
-		$this->portLanguageFields();
-	}
-
-	var $tables = array('categories'=>'virtuemart_category_id',
-										'manufacturers'=>'virtuemart_manufacturer_id',
-										'manufacturercategories'=>'virtuemart_manufacturercategories_id',
-										'products'=>'virtuemart_product_id',
-										'vendors'=>'virtuemart_vendor_id',
-										'paymentmethods'=>'virtuemart_paymentmethod_id',
-										'shipmentmethods'=>'virtuemart_shipmentmethod_id');
-
-	/**
-	 *
-	 *
-	 * @author Max Milbers
-	 * @param unknown_type $config
-	 */
-	public function createLanguageTables($langs=0){
-
-		if(empty($langs)){
-			$langs = VmConfig::get('active_languages');
-			if(empty($langs)){
-				$params = JComponentHelper::getParams('com_languages');
-				$langs = (array)$params->get('site', 'en-GB');
-			}
-		}
-
-		//Todo add the mb_ stuff here
-		// 		vmTime('my langs <pre>'.print_r($langs,1).'</pre>');
-		foreach($this->tables as $table=>$tblKey){
-
-			$className = 'Table'.ucfirst ($table);
-			if(!class_exists($className)) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.$table.'.php');
-			$tableName = '#__virtuemart_'.$table;
-
-			$langTable = $this->getTable($table);
-			$translatableFields = $langTable->getTranslatableFields();
-			if(empty($translatableFields)) continue;
-
-			foreach($langs as $lang){
-				// 				$lang = strtr($lang,'-','_');
-				$lang = strtolower(strtr($lang,'-','_'));
-				$tbl_lang = $tableName.'_'.$lang;
-				$q = 'CREATE TABLE IF NOT EXISTS '.$tbl_lang.' (';
-				$q .= '`'.$tblKey.'` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT ,';
-				foreach($translatableFields as $name){
-					if(strpos($name,'name') !==false ){
-						$fieldstructure = 'char(180) NOT NULL DEFAULT "" ';
-					} else if(strpos($name,'meta')!==false ){
-						$fieldstructure = 'char(128) NOT NULL DEFAULT "" ';
-					} else if(strpos($name,'slug')!==false ){
-						$fieldstructure = 'char(192) NOT NULL DEFAULT "" ';
-						$slug = true;
-					} else if(strpos($name,'desc')!==false || $name == 'vendor_terms_of_service'){
-						if(strpos($name,'s_desc')!==false){
-							$fieldstructure = 'varchar(2048) NOT NULL DEFAULT "" ';
-						} else {
-						    if (strcmp($table,'vendors') != 0) {
-								$fieldstructure = 'varchar(19000) NOT NULL DEFAULT "" ';
-						    } else {
-								$fieldstructure = 'varchar(10500) NOT NULL DEFAULT "" ';
-						    }
-						}
-
-
-					} else if(strpos($name,'phone')!==false) {
-						$fieldstructure = 'char(24) NOT NULL DEFAULT "" ';
-					} else{
-						$fieldstructure = 'char(255) NOT NULL DEFAULT "" ';
-					}
-
-					$q .= '`'.$name.'` '.$fieldstructure.',';
-				}
-				// 				$q = substr($q,0,-1);
-				$q .= 'PRIMARY KEY (`'.$tblKey.'`)';
-				if($slug){
-					$q .= ', UNIQUE KEY `slug` (`slug`) )';
-				} else {
-					$q .= ')';
-				}
-				$q .= ' ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT="Language '.$lang.' for '.$table.'" AUTO_INCREMENT=1 ;';
-				$this->_db->setQuery($q);
-				$this->_db->query();
-
-				$err = $this->_db->getErrorMsg();
-				if(!empty($err)){
-					vmError('createLanguageTables '.$err.' '.$this->_db->getQuery());
-				}
-// 					vmdebug('checkLanguageTables',$this->_db);
-			}
-		}
-		// 		vmTime('done creation of lang tables');
+		// 		$this->createLanguageTables($langs);
+		// 		$this->portLanguageFields();
 	}
 
 	private function portLanguageFields(){
@@ -241,6 +157,129 @@ class GenericTableUpdater extends JModel{
 			}
 			vmTime('$portLanguageFields $table '.$table);
 		}
+	}
+
+	var $tables = array( 	'products'=>'virtuemart_product_id',
+									'vendors'=>'virtuemart_vendor_id',
+									'categories'=>'virtuemart_category_id',
+									'manufacturers'=>'virtuemart_manufacturer_id',
+									'manufacturercategories'=>'virtuemart_manufacturercategories_id',
+
+									'paymentmethods'=>'virtuemart_paymentmethod_id',
+									'shipmentmethods'=>'virtuemart_shipmentmethod_id');
+
+	/**
+	 *
+	 *
+	 * @author Max Milbers
+	 * @param unknown_type $config
+	 */
+	public function createLanguageTables($langs=0){
+
+		if(empty($langs)){
+			$langs = VmConfig::get('active_languages');
+			if(empty($langs)){
+				$params = JComponentHelper::getParams('com_languages');
+				$langs = (array)$params->get('site', 'en-GB');
+			}
+		}
+
+		$langTables = array();
+		//Todo add the mb_ stuff here
+		// 		vmTime('my langs <pre>'.print_r($langs,1).'</pre>');
+		$i = 0;
+		foreach($this->tables as $table=>$tblKey){
+
+// 			if($i>1) continue;
+			$className = 'Table'.ucfirst ($table);
+			if(!class_exists($className)) require(JPATH_VM_ADMINISTRATOR.DS.'tables'.DS.$table.'.php');
+			$tableName = '#__virtuemart_'.$table;
+
+			$langTable = $this->getTable($table);
+			$translatableFields = $langTable->getTranslatableFields();
+			if(empty($translatableFields)) continue;
+
+			$fields = array();
+			$lines = array();
+			$linedefault = "NOT NULL DEFAULT ''";
+
+			$fields[$tblKey] = 'int(1) UNSIGNED NOT NULL AUTO_INCREMENT';
+// 			vmdebug('createLanguageTables ',$translatableFields);
+			//set exceptions from normal shema here !
+			//Be aware that you can use this config settings, when declaring them in the virtuemart.cfg
+			if(VmConfig::get('dblayoutstrict',true)){
+				if($table=='products'){
+					$fields['product_s_desc'] = 'varchar('.VmConfig::get('dbpsdescsize',2000).') '.$linedefault;
+					$fields['product_desc'] = 'varchar('.VmConfig::get('dbpdescsize',19000).') '.$linedefault;
+
+					$key = array_search('product_desc', $translatableFields);
+					unset($translatableFields[$key]);
+
+					$key = array_search('product_s_desc', $translatableFields);
+					unset($translatableFields[$key]);
+
+				} else if($table=='vendors'){
+					$fields['vendor_store_desc'] = 'varchar('.VmConfig::get('dbvdescsize',2000).') '.$linedefault;
+					$fields['vendor_terms_of_service'] = 'varchar('.VmConfig::get('dbtossize',19000).') '.$linedefault;
+
+					$key = array_search('vendor_store_desc', $translatableFields);
+					unset($translatableFields[$key]);
+
+					$key = array_search('vendor_terms_of_service', $translatableFields);
+					unset($translatableFields[$key]);
+				}
+			} else {
+				$fields['vendor_terms_of_service'] = 'text '.$linedefault;
+
+				$key = array_search('vendor_store_desc', $translatableFields);
+				unset($translatableFields[$key]);
+			}
+
+// 		vmdebug('createLanguageTables ',$translatableFields);
+			foreach($translatableFields as $k => $name){
+				if(strpos($name,'name') !==false ){
+					$fields[$name] = 'char('.VmConfig::get('dbnamesize',180).') '.$linedefault;
+				} else if(strpos($name,'meta')!==false ){
+					$fields[$name] = 'char('.VmConfig::get('dbmetasize',192).') '.$linedefault;
+				} else if(strpos($name,'slug')!==false ){
+					$fields[$name] = 'char('.VmConfig::get('dbslugsize',192).') '.$linedefault;
+					$slug = true;
+				}else if(strpos($name,'phone')!==false) {
+					$fields[$name] = 'char(26) '.$linedefault;
+				}else if(strpos($name,'desc')!==false) {
+					if(VmConfig::get('dblayoutstrict',true)){
+						$fields[$name] = 'varchar('.VmConfig::get('dbdescsize',20000).') '.$linedefault;
+					} else {
+						$fields[$name] = 'text '.$linedefault;
+					}
+
+				} else {
+					$fields[$name] = 'char(255) '.$linedefault;
+				}
+
+			}
+			$lines[0] =	$fields;
+
+			$lines[1][$tblKey] = 'PRIMARY KEY (`'.$tblKey.'`)';
+			if($slug){
+				$lines[1]['slug'] = 'UNIQUE KEY `slug` (`slug`)';
+			}
+
+			$table[3] = '';
+			foreach($langs as $lang){
+				// 				$lang = strtr($lang,'-','_');
+				$lang = strtolower(strtr($lang,'-','_'));
+				$tbl_lang = $tableName.'_'.$lang;
+				$langTables[$tbl_lang] = $lines;
+			}
+
+			$i++;
+
+		}
+
+		$ret = $this->updateMyVmTables($langTables);
+		// 		vmTime('done creation of lang tables');
+		return $ret;
 
 	}
 
@@ -250,62 +289,68 @@ class GenericTableUpdater extends JModel{
 			$file = JPATH_VM_ADMINISTRATOR.DS.'install'.DS.'install.sql';
 		}
 
-		$data = fopen($file, 'r');
+		if(is_array($file)){
+			$tables = $file;
+		} else {
 
-		$tables = array();
-		$tableDefStarted = false;
-		while ($line = fgets ($data)) {
-			$line = trim($line);
-			if (empty($line)) continue; // Empty line
+			$data = fopen($file, 'r');
 
-			if (strpos($line, '#') === 0) continue; // Commentline
-			if (strpos($line, '--') === 0) continue; // Commentline
+			$tables = array();
+			$tableDefStarted = false;
+			while ($line = fgets ($data)) {
+				$line = trim($line);
+				if (empty($line)) continue; // Empty line
 
-			if(strpos($line,'CREATE TABLE IF NOT EXISTS')!==false){
-				$tableDefStarted = true;
-				$fieldLines = array();
-				$tableKeys = array();
-				$start = strpos($line,'`');
+				if (strpos($line, '#') === 0) continue; // Commentline
+				if (strpos($line, '--') === 0) continue; // Commentline
 
-				$tablename = trim(substr($line,$start+1,-3));
-				// 				vmdebug('my $tablename ',$start,$end,$line);
-			} else if($tableDefStarted && strpos($line,'KEY')!==false){
+				if(strpos($line,'CREATE TABLE IF NOT EXISTS')!==false){
+					$tableDefStarted = true;
+					$fieldLines = array();
+					$tableKeys = array();
+					$start = strpos($line,'`');
 
-				$start = strpos($line,"`");
-				$temp = substr($line,$start+1);
-				$end = strpos($temp,"`");
-				$keyName = substr($temp,0,$end);
+					$tablename = trim(substr($line,$start+1,-3));
+					// 				vmdebug('my $tablename ',$start,$end,$line);
+				} else if($tableDefStarted && strpos($line,'KEY')!==false){
 
-				if(strrpos($line,',')==strlen($line)-1){
-					$line = substr($line,0,-1);
+					$start = strpos($line,"`");
+					$temp = substr($line,$start+1);
+					$end = strpos($temp,"`");
+					$keyName = substr($temp,0,$end);
+
+					if(strrpos($line,',')==strlen($line)-1){
+						$line = substr($line,0,-1);
+					}
+					$tableKeys[$keyName] = $line;
+
+				} else if(strpos($line,'ENGINE')!==false){
+					$tableDefStarted = false;
+
+					$start = strpos($line,"COMMENT='");
+					$temp = substr($line,$start+9);
+					$end = strpos($temp,"'");
+					$comment = substr($temp,0,$end);
+
+					$tables[$tablename] = array($fieldLines, $tableKeys,$comment);
+				} else if($tableDefStarted){
+
+					$start = strpos($line,"`");
+					$temp = substr($line,$start+1);
+					$end = strpos($temp,"`");
+					$keyName = substr($temp,0,$end);
+
+					$line = trim(substr($line,$end+2));
+					if(strrpos($line,',')==strlen($line)-1){
+						$line = substr($line,0,-1);
+					}
+
+					$fieldLines[$keyName] = $line;
 				}
-				$tableKeys[$keyName] = $line;
-
-			} else if(strpos($line,'ENGINE')!==false){
-				$tableDefStarted = false;
-
-				$start = strpos($line,"COMMENT='");
-				$temp = substr($line,$start+9);
-				$end = strpos($temp,"'");
-				$comment = substr($temp,0,$end);
-
-				$tables[$tablename] = array($fieldLines, $tableKeys,$comment);
-			} else if($tableDefStarted){
-
-				$start = strpos($line,"`");
-				$temp = substr($line,$start+1);
-				$end = strpos($temp,"`");
-				$keyName = substr($temp,0,$end);
-
-				$line = trim(substr($line,$end+2));
-				if(strrpos($line,',')==strlen($line)-1){
-					$line = substr($line,0,-1);
-				}
-
-				$fieldLines[$keyName] = $line;
 			}
 		}
 
+// 		vmdebug('updateMyVmTables $tables',$tables); return false;
 		// 	vmdebug('Parsed tables',$tables); //return;
 		$this->_db->setQuery('SHOW TABLES LIKE "%'.$like.'%"');
 		if (!$existingtables = $this->_db->loadResultArray()) {
@@ -320,60 +365,77 @@ class GenericTableUpdater extends JModel{
 			$tablename = str_replace('#__',$this->_prefix,$tablename);
 			$demandedTables[] = $tablename;
 			if(in_array($tablename,$existingtables)){
-				$this -> compareUpdateTable($tablename,$table);
+
+				$this->_reCreatePrimary = true;
+				$this->alterColumns($tablename,$table[0]);
+				$this->alterKey($tablename,$table[1]);
+
+				$this->_reCreatePrimary = false;
+				$this->alterColumns($tablename,$table[0]);
+// 				$this -> compareUpdateTable($tablename,$table);
 				// 				unset($todelete[$tablename]);
 			} else {
+
 				$this->createTable($tablename,$table);
 			}
-// 			$this->_db->setQuery('OPTIMIZE '.$tablename);
-// 			$this->_db->query();
+			// 			$this->_db->setQuery('OPTIMIZE '.$tablename);
+			// 			$this->_db->query();
 
 		}
 
-		$tablesWithLang = array_keys($this->tables); //('categories','manufacturercategories','manufacturers','paymentmethods','shipmentmethods','products','vendors');
+		//We need first a method here to register valid plugin tables
+/* 		$tablesWithLang = array_keys($this->tables); //('categories','manufacturercategories','manufacturers','paymentmethods','shipmentmethods','products','vendors');
 
-		$alangs = VmConfig::get('active_languages');
-		if(empty($alangs)) $alangs = array(VmConfig::setdbLanguageTag());
-		foreach($alangs as $lang){
-			foreach($tablesWithLang as $tablewithlang){
-				$demandedTables[] = $this->_prefix.'virtuemart_'.$tablewithlang.'_'.$lang;
-			}
-		}
-		$demandedTables[] = $this->_prefix.'virtuemart_configs';
+// 		$alangs = VmConfig::get('active_languages');
+// 		if(empty($alangs)) $alangs = array(VmConfig::setdbLanguageTag());
+// 		foreach($alangs as $lang){
+// 			foreach($tablesWithLang as $tablewithlang){
+// 				$demandedTables[] = $this->_prefix.'virtuemart_'.$tablewithlang.'_'.$lang;
+// 			}
+// 		}
+// 		$demandedTables[] = $this->_prefix.'virtuemart_configs';
 
-		$todelete = array();
-		foreach ($existingtables as $tablename){
-			if(!in_array($tablename,$demandedTables) and strpos($tablename,'_plg_')===false){
-				$todelete[] = $tablename;
-			}
-		}
-		$this->dropTables($todelete);
 
+// 		$todelete = array();
+// 		foreach ($existingtables as $tablename){
+// 			if(!in_array($tablename,$demandedTables) and strpos($tablename,'_plg_')===false){
+// 				$todelete[] = $tablename;
+// 			}
+// 		}
+// 		$this->dropTables($todelete);
+*/
 	}
 
 
 	public function createTable($tablename,$table){
 
+// 		vmdebug('hmm create table '.$tablename,$table);
 		$q = 'CREATE TABLE IF NOT EXISTS `'.$tablename.'` (
 				';
 		foreach($table[0] as $fieldname => $alterCommand){
-			$q .= '`'.$fieldname.'` '.$alterCommand.'
+			$q .= '`'.$fieldname.'` '.$alterCommand.',
 			';
 		}
 
 		foreach($table[1] as $name => $value){
-			$q .= '`'.$name.'` '.$value.',
+				$q .= $value.',
 						';
 		}
-		$q = substr($q,0,-1);
 
-		$q = ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='".$table[3]."' AUTO_INCREMENT=1 ;";
+		$q = substr(trim($q),0,-1);
+		$comment = '';
+		if(!empty($table[3])){
+			$comment = " COMMENT='".$table[3]."'";
+		}
+		$q .= ") ENGINE=MyISAM  DEFAULT CHARSET=utf8".$comment." AUTO_INCREMENT=1 ;";
 
-		$this->_db->setQuery($query);
+		$this->_db->setQuery($q);
 		if(!$this->_db->query()){
 			$this->_app->enqueueMessage('createTable ERROR :'.$this->_db->getErrorMsg() );
+		} else {
+			$this->_app->enqueueMessage('created table '.$tablename);
 		}
-		$this->_app->enqueueMessage($q);
+// 		$this->_app->enqueueMessage($q);
 	}
 
 	public function dropTables($todelete){
@@ -392,16 +454,18 @@ class GenericTableUpdater extends JModel{
 		$this->_app->enqueueMessage($q);
 	}
 
-	public function compareUpdateTable($tablename,$table){
+/*	public function compareUpdateTable($tablename,$table){
 
 		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 			vmWarn('compareUpdateTable not finished, please rise execution time and update tables again');
 			return false;
 		}
 		$this->alterColumns($tablename,$table[0]);
-		$this->alterKey($tablename,$table[1]);
+		if($this->_reCreatePrimary){
+			$this->alterKey($tablename,$table[1]);
+		}
 
-	}
+	}*/
 
 	private function alterKey($tablename,$keys){
 
@@ -423,94 +487,106 @@ class GenericTableUpdater extends JModel{
 			$eKeyNames= $this->_db->loadResultArray(2);
 		}
 
-// 		vmdebug('my $eKeys',$eKeys);
+		// 		vmdebug('my $eKeys',$eKeys);
 		$dropped = 0;
 		foreach($eKeyNames as $i => $name){
 			$query = '';
-// 			if(!in_array($name, $demandedFieldNames)){
+			// 			if(!in_array($name, $demandedFieldNames)){
 			//doubled keys are listed twice, but gets both deleted with one command, so we must check if the key is still there
-			$query = "SHOW INDEXES  FROM `".$tablename."` ";	//SHOW {INDEX | INDEXES | KEYS}
-			$this->_db->setQuery($query);
+			$this->_db->setQuery("SHOW INDEXES  FROM `".$tablename."` "); //SHOW {INDEX | INDEXES | KEYS}
 			$eKeyNamesNOW= $this->_db->loadResultArray(2);
-// 				vmdebug('DROP $eKeyNames '.$name);
-				if(strpos($eKeys[$i]->Key_name,'PRIMARY')!==false ||  $name==='virtuemart_order_userinfo_id' || !in_array($name,$eKeyNamesNOW)){
-					// 					$query = 'ALTER TABLE `'.$tablename.'` DROP INDEX `'.$name.'` ';
-				} else {
-					$query = 'ALTER TABLE `'.$tablename.'` DROP INDEX `'.$name.'` ';
-
-				}
-
-				if(!empty($query)){
-					$this->_db->setQuery($query);
-					if(!$this->_db->query()){
-						$this->_app->enqueueMessage('alterTable DROP '.$tablename.'.'.$name.' :'.$this->_db->getErrorMsg() );
-					} else {
-						$dropped++;
-					}
-				}
-
-
-// 			}
-		}
-
-		$query = "SHOW INDEXES  FROM `".$tablename."` ";	//SHOW {INDEX | INDEXES | KEYS}
-		$this->_db->setQuery($query);
-		if(!$eKeys = $this->_db->loadObjectList() ){
-			$this->_app->enqueueMessage('alterKey show index:'.$this->_db->getErrorMsg() );
-		} else {
-			$eKeyNames= $this->_db->loadResultArray(2);
-		}
-
-		$showThem = false;
-		foreach($keys as $name =>$value){
-
-			$query = '';
-			$action = '';
-
-			if(in_array($name, $eKeyNames)){
-
-				$key=array_search($name, $eKeyNames);
-
-				$oldColumn = $this->reCreateKeyByTableAttributes($eKeys[$key]);
-
-				$compare = strcasecmp( $oldColumn, $value);
-
-				if (!empty($compare)) {
-					$showThem = true;
-					vmdebug('$oldColumn ',$name,$oldColumn,$value);
-					if(strpos($value,'PRIMARY')!==false ){
-						if(strpos($oldColumn,'PRIMARY')!==false){
-							$dropit = "DROP PRIMARY KEY , ";
-							continue; //lets not change primaries
-						} else if(strpos($oldColumn,'KEY')!==false){
-							$dropit = "DROP INDEX `".$name."`, ";
-						} else if(strpos($oldColumn,'INDEX')!==false){
-							$dropit = "DROP INDEX `".$name."`, ";
-						} else {
-							$dropit = '';
-						}
-						vmdebug('$$dropit ',$dropit,strpos($oldColumn,'KEY'));
-						$query = "ALTER TABLE `".$tablename."` ".$dropit." ADD PRIMARY KEY (`".$name."`);" ;
-					} else {
-						if(strpos($value,'KEY')!==false ) $type = 'KEY'; else $type = 'INDEX';
-						$query = "ALTER TABLE `".$tablename."` DROP  ".$type." `".$name."` , ADD ".$value ;
-						$action = 'ALTER';
-					}
-				}
+			// 				vmdebug('DROP $eKeyNames '.$name);
+// 			if(strpos($eKeys[$i]->Key_name,'PRIMARY')!==false || !in_array($name,$eKeyNamesNOW)){
+			if(!in_array($name,$eKeyNamesNOW)){
+				// 					$query = 'ALTER TABLE `'.$tablename.'` DROP INDEX `'.$name.'` ';
 			} else {
-				if(strpos($value,'PRIMARY')===false){
-					// 					vmdebug('ADD $eKeyNames '.$name ,$eKeyNames);
-					$query = "ALTER TABLE `".$tablename."` ADD ".$value ;
-					$action = 'ADD';
-				}
+				$query = 'ALTER TABLE `'.$tablename.'` DROP INDEX `'.$name.'` ';
 
 			}
 
 			if(!empty($query)){
 				$this->_db->setQuery($query);
 				if(!$this->_db->query()){
+					$this->_app->enqueueMessage('alterTable DROP '.$tablename.'.'.$name.' :'.$this->_db->getErrorMsg() );
+				} else {
+					$dropped++;
+// 					vmdebug('alterKey: Dropped KEY `'.$name.'` in table `'.$tablename.'`');
+				}
+
+			}
+			// 			}
+		}
+
+/*		$query = "SHOW INDEXES  FROM `".$tablename."` ";	//SHOW {INDEX | INDEXES | KEYS}
+		$this->_db->setQuery($query);
+		if(!$eKeys = $this->_db->loadObjectList() ){
+// 			$this->_app->enqueueMessage('alterKey show index:'.$this->_db->getErrorMsg() );
+		} else {
+			$eKeyNames= $this->_db->loadResultArray(2);
+		}
+*/
+// 		$showThem = false;
+		foreach($keys as $name =>$value){
+
+			$query = '';
+			$action = '';
+
+/*			if(in_array($name, $eKeyNames)){
+
+				$key=array_search($name, $eKeyNames);
+
+				$oldColumn = '';
+				if(!empty($eKeys[$key])){
+					$oldColumn = $this->reCreateKeyByTableAttributes($eKeys[$key]);
+				}
+
+
+				$compare = strcasecmp( $oldColumn, $value);
+
+/*				if (!empty($compare)) {
+// 					vmdebug('alterKey: Differenz of KEYS',$oldColumn,$value);
+// 					$showThem = true;
+// 					vmdebug('alterKey: $tablename '.$tablename.' Different KEY: '.$name.' value '.$value.', oldkey: '.$oldColumn);
+// 					vmdebug('$oldColumn ',$name,$oldColumn,$value);
+/*					if(strpos($value,'PRIMARY')!==false ){
+						if(strpos($oldColumn,'PRIMARY')!==false){
+							vmdebug('alterKey: $tablename '.$tablename.' Different Primary, PRIMARY Key `'.$oldColumn.'` found in table ');
+							$dropit = "DROP PRIMARY KEY , ";
+// 							continue; //lets not change primaries
+						} else if(strpos($oldColumn,'KEY')!==false){
+							$dropit = "DROP INDEX `".$name."`, ";
+							vmdebug('alterKey: $tablename '.$tablename.' Different Primary, Key `'.$oldColumn.'` found in table ');
+						} else if(strpos($oldColumn,'INDEX')!==false){
+							$dropit = "DROP INDEX `".$name."`, ";
+							vmdebug('alterKey: $tablename '.$tablename.' Different Primary, Index `'.$oldColumn.'` found in table ');
+						} else {
+							$dropit = '';
+						}
+						vmdebug('alterKey: $tablename '.$tablename.' $$dropit ',$dropit,strpos($oldColumn,'KEY'));
+						$query = "ALTER TABLE `".$tablename."` ".$dropit." ADD PRIMARY KEY (`".$name."`);" ;
+					} else {
+// 						vmdebug('alterKey: $tablename '.$tablename.' $$dropit ',$dropit,strpos($oldColumn,'KEY'));
+						if(strpos($value,'KEY')!==false ) $type = 'KEY'; else $type = 'INDEX';
+						$query = "ALTER TABLE `".$tablename."` DROP  ".$type." `".$name."` , ADD ".$value ;
+						$action = 'ALTER';
+// 					}
+				}
+			} else { */
+// 				if(strpos($value,'PRIMARY')===false){
+// 					vmdebug('ADD $eKeyNames '.$name ,$eKeyNames);
+
+					$query = "ALTER TABLE `".$tablename."` ADD ".$value ;
+					$action = 'ADD';
+// 				}
+// 			}
+
+			if(!empty($query)){
+				$this->_db->setQuery($query);
+				if(!$this->_db->query()){
 					$this->_app = JFactory::getApplication();
 					$this->_app->enqueueMessage('alterKey '.$action.' INDEX '.$name.': '.$this->_db->getErrorMsg() );
+				} else {
+					vmdebug('alterKey: a:'.$action.' KEY `'.$name.'` in table `'.$tablename.'` '.$this->_db->getQuery());
 				}
 			}
 		}
@@ -522,11 +598,14 @@ class GenericTableUpdater extends JModel{
 
 		$oldkey ='';
 
-
-		if(strpos($keyAttribs->Key_name,'PRIMARY')!==false){
-			$oldkey = 'PRIMARY KEY (`'.$keyAttribs->Column_name.'`)';
+		if(!empty($keyAttribs->Key_name) && !empty($keyAttribs->Column_name) ){
+			if(strpos($keyAttribs->Key_name,'PRIMARY')!==false){
+				$oldkey = 'PRIMARY KEY (`'.$keyAttribs->Column_name.'`)';
+			} else {
+				$oldkey = 'KEY `'.$keyAttribs->Key_name.'` (`'.$keyAttribs->Column_name.'`)';
+			}
 		} else {
-			$oldkey = 'KEY `'.$keyAttribs->Key_name.'` (`'.$keyAttribs->Column_name.'`)';
+			vmdebug('reCreateKeyByTableAttributes $keyAttribs empty?',$keyAttribs);
 		}
 
 		// 		if(empty($keyAttribs->Cardinality)){
@@ -589,13 +668,17 @@ class GenericTableUpdater extends JModel{
 
 				$compare = strcasecmp( $oldColumn, $alterCommand);
 
-				if (!empty($compare) && $fieldname!=='virtuemart_userinfo_id') {		//We need that, because virtuemart_userinfo_id is not autoincrement, but primary
+// 				if (!empty($compare) && $fieldname!=='virtuemart_userinfo_id') {
+					//We need that, because virtuemart_userinfo_id is not autoincrement, but primary
+				if (!empty($compare)) {
+					if($this->_reCreatePrimary){
+						$alterCommand = str_replace('AUTO_INCREMENT', '',$alterCommand);
+					}
 					$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
 					$action = 'CHANGE';
 					$altered++;
-					// 				    vmdebug('$fullColumns',);
-					vmdebug($tablename.' Alter field old column',$oldColumn);
-					vmdebug('Alter field new column',$alterCommand); //,$fullColumns[$key]);
+// 					vmdebug($tablename.' Alter field '.$fieldname.' old column',$oldColumn);
+// 					vmdebug('Alter field new column',$alterCommand); //,$fullColumns[$key]);
 				}
 			}
 			else {
@@ -651,6 +734,9 @@ class GenericTableUpdater extends JModel{
 	}
 
 	private function primarykey($string){
+		if($this->_reCreatePrimary){
+			return '';
+		}
 		if ($string=='PRI') {
 			return  ' AUTO_INCREMENT';
 		} else {

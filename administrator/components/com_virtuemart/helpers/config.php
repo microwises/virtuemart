@@ -27,8 +27,13 @@ define( 'JPATH_VM_PLUGINS', JPATH_VM_ADMINISTRATOR.DS.'plugins' );
 
 if(version_compare(JVERSION,'1.7.0','ge')) {
 	define ('JPATH_VM_LIBRARIES', JPATH_PLATFORM);
+	define ('JVM_VERSION', 2);
+} else if (version_compare(JVERSION,'1.6.0','ge')){
+	define ('JPATH_VM_LIBRARIES', JPATH_LIBRARIES);
+	define ('JVM_VERSION', 2);
 } else {
 	define ('JPATH_VM_LIBRARIES', JPATH_LIBRARIES);
+	define ('JVM_VERSION', 1);
 }
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);

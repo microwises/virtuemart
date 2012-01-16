@@ -212,7 +212,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->alterTable('#__session',$fields);
 			}
 
-			$q = 'SHOW INDEX FROM `#__virtuemart_categories` WHERE Key_name = "idx_slug"; ';
+/*			$q = 'SHOW INDEX FROM `#__virtuemart_categories` WHERE Key_name = "idx_slug"; ';
 			$this->_db->setQuery($q);
 			if($this->_db->loadResult()){
 				$query = 'ALTER TABLE  `#__virtuemart_categories` DROP INDEX  `idx_slug`';
@@ -314,7 +314,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();
 
-			$updater->portOldLanguageToNewTables((array)$lang);
+/*			$updater->portOldLanguageToNewTables((array)$lang);
 
 			$updater->updateMyVmTables();
 
@@ -325,6 +325,19 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->updateJParamsToVmParams($tablenames);
 
 			$this->updateAdminMenuEntry();
+*/
+
+			$fields = array('virtuemart_userinfo_id'=>'');
+			$this->alterTable('#__virtuemart_userinfos',$fields,'DROP');
+
+			$this->checkAddFieldToTable('#__virtuemart_userinfos','virtuemart_userinfo_id',"INT(1) UNSIGNED NOT NULL FIRST");
+
+
+			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
+			$updater = new GenericTableUpdater();
+			$updater->updateMyVmTables();
+
+			$result = $updater->createLanguageTables();
 
 			if($loadVm) $this->displayFinished(true);
 
@@ -352,7 +365,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					$query = 'ALTER TABLE `'.$tablename.'` '.$command.' COLUMN `'.$fieldname.'` '.$alterCommand;
 
 					$this->_db->setQuery($query);
-					$this->_db->query();
+					if(!$this->_db->query()){
+						$app = JFactory::getApplication();
+						$app->enqueueMessage('Error: Install alterTable '.$this->_db->getErrorMsg() );
+					}
 				}
 			}
 
@@ -379,7 +395,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->_db->setQuery($query);
 				if(!$this->_db->query()){
 					$app = JFactory::getApplication();
-					$app->enqueueMessage('Install checkAddFieldToTable '.$this->_db->getErrorMsg() );
+					$app->enqueueMessage('Error: Install checkAddFieldToTable '.$this->_db->getErrorMsg() );
 					return false;
 				} else {
 					return true;
