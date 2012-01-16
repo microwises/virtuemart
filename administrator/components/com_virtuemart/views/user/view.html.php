@@ -60,7 +60,7 @@ class VirtuemartViewUser extends VmView {
 			}
 			$this->SetViewTitle('STORE'  );
 		} else if ($task == 'add'){
-			$model->setUserId(0);
+			$model->setId(0);
 		} else {
 			$this->SetViewTitle('USER');
 		}
@@ -106,6 +106,7 @@ class VirtuemartViewUser extends VmView {
 			// User details
 			$_contactDetails = $model->getContactDetails();
 			$_groupList = $model->getGroupList();
+
 			if (!is_array($_groupList)) {
 				$this->lists['gid'] = '<input type="hidden" name="gid" value="'. $userDetails->JUser->get('gid') .'" /><strong>'. JText::_($_groupList) .'</strong>';
 			} else {

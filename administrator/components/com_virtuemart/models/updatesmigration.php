@@ -348,7 +348,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 		$prefix = $config->getValue('config.dbprefix').'virtuemart_%';
 		$db->setQuery('SHOW TABLES LIKE "'.$prefix.'"');
 		if (!$tables = $db->loadResultArray()) {
-		    vmError = $db->getErrorMsg();
+		    vmError ($db->getErrorMsg());
 		    return false;
 		}
 

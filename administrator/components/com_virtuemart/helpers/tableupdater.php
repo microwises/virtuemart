@@ -309,7 +309,7 @@ class GenericTableUpdater extends JModel{
 		// 	vmdebug('Parsed tables',$tables); //return;
 		$this->_db->setQuery('SHOW TABLES LIKE "%'.$like.'%"');
 		if (!$existingtables = $this->_db->loadResultArray()) {
-			vmError = $this->_db->getErrorMsg();
+			vmError($this->_db->getErrorMsg());
 			return false;
 		}
 

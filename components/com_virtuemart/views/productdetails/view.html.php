@@ -119,8 +119,13 @@ class VirtueMartViewProductdetails extends VmView {
 			$product->text = $product->product_desc;
 			$params = "";
 
-			$results = $dispatcher->trigger('onPrepareContent',
-			array (& $product, & $params, 0));
+			if(version_compare( JVERSION, '1.6.0', 'ge' )) {
+				$results = $dispatcher->trigger('onPrepareContent', array ('com_virtuemart.productdetails',& $product, & $params, 0));
+			}
+			else {
+				$results = $dispatcher->trigger('onPrepareContent', array (& $product, & $params, 0));
+			}
+
 			$product->product_desc = $product->text;
 		}
 		$product_model->addImages($product);

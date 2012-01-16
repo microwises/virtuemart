@@ -656,7 +656,7 @@ class VmPagination extends JPagination {
 		$selected = $this->_viewall ? 0 : $this->limit;
 		// Build the select list
 		if ($app->isAdmin()) {
-			$limits[] = JHTML::_('select.option', '0', JText::_('all'));
+			$limits[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_ALL'));
 			if(!empty($sequence)){
 				$sequenceArray = explode(',', $sequence);
 				foreach($sequenceArray as $items){

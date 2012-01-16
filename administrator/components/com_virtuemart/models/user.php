@@ -222,6 +222,310 @@ class VirtueMartModelUser extends VmModel {
 		return null;
 	}
 
+
+	/**
+	 * Functions belonging to get_groups_below_me Taken with correspondence from CommunityBuilder
+	 * adjusted to the our needs
+	* @version $Id$
+	* @package Community Builder
+	* @subpackage cb.acl.php
+	* @author Beat and mambojoe
+	* @author Max Milbers
+	* @copyright (C) Beat, www.joomlapolis.com
+	* @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
+	*/
+	function get_groups_below_me() {
+
+		static $gids			=	array();
+
+		$myId					=	JUser::getInstance()->id;
+		$this->_acl = JFactory::getACL();
+		if ( ! isset( $gids[$myId] ) ) {
+			if ( version_compare(JVERSION,'1.6.0','ge') ) {
+				$my_groups		=	$this->get_object_groups( $myId );
+			} else {
+				$aro_id			=	$this->get_object_id( 'users', $myId, 'ARO' );
+				$my_groups		=	$this->get_object_groups( $aro_id, 'ARO' );
+			}
+
+			$my_gids			=	array();
+
+			if ( $my_groups ) foreach ( $my_groups as $gid ) {
+				$my_gids		=	array_unique( array_merge( $my_gids, $this->get_group_children_ids( $gid ) ) );
+
+				if ( version_compare(JVERSION,'1.6.0','ge') ) {
+					$my_gids	=	array_unique( array_merge( $my_gids, $this->get_object_groups( $myId, null, 'RECURSE' ) ) );
+				}
+			}
+
+			if ( ( ! is_array( $my_gids ) ) || empty( $my_gids ) ) {
+				$my_gids		=	array();
+			} else {
+				JArrayHelper::toInteger($my_gids);//ArrayToInts( $my_gids );
+			}
+
+			$groups				=	$this->get_group_children_tree( null, 'USERS', false );
+
+			if ( $groups ) {
+				foreach ( $groups as $k => $v ) {
+					if ( ! in_array( (int) $v->value, $my_gids ) ) {
+						unset( $groups[$k] );
+					}
+				}
+			}
+			$gids[$myId]		=	array_values( $groups );
+			vmdebug('get_groups_below_me ',$gids);
+		}
+
+		return $gids[$myId];
+	}
+
+	/**
+	* Functions belonging to get_groups_below_me Taken with correspondence from CommunityBuilder
+	* adjusted to the our needs
+	* @version $Id$
+	* @package Community Builder
+	* @subpackage cb.acl.php
+	* @author Beat and mambojoe
+	* @author Max Milbers
+	* @copyright (C) Beat, www.joomlapolis.com
+	* @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
+	*/
+
+	function get_object_id( $var_1 = null, $var_2 = null, $var_3 = null ) {
+		if ( version_compare(JVERSION,'1.6.0','ge')) {
+			$return		=	$var_2;
+		} else {
+			$return		=	$this->_acl->get_object_id( $var_1, $var_2, $var_3 );
+		}
+
+		return $return;
+	}
+
+	/**
+	*  Taken with correspondence from CommunityBuilder
+	* adjusted to the our needs
+	* @version $Id$
+	* @package Community Builder
+	* @subpackage cb.acl.php
+	* @author Beat and mambojoe
+	* @author Max Milbers
+	* @copyright (C) Beat, www.joomlapolis.com
+	* @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
+	*/
+
+	function get_object_groups( $var_1 = null, $var_2 = null, $var_3 = null ) {
+		if ( version_compare(JVERSION,'1.6.0','ge') ) {
+			$user_id	=	( is_integer( $var_1 ) ? $var_1 : $var_2 );
+			$recurse	=	( $var_3 == 'RECURSE' ? true : false );
+			$return		=	$this->_acl->getGroupsByUser( $user_id, $recurse );
+		} else {
+			if ( ! $var_2 ) {
+				$var_2	=	'ARO';
+			}
+
+			if ( ! $var_3 ) {
+				$var_3	=	'NO_RECURSE';
+			}
+
+			$return		=	$this->_acl->get_object_groups( $var_1, $var_2, $var_3 );
+		}
+
+		return $return;
+	}
+
+
+	function get_group_children_ids( $gid ) {
+
+		$_CB_database = &$this->getDbo();
+
+		static $gids			=	array();
+
+		$gid					=	(int) $gid;
+
+		if ( ! isset( $gids[$gid] ) ) {
+			if ( version_compare(JVERSION,'1.6.0','ge') ) {
+				static $grps				=	null;
+				static $paths				=	null;
+
+				if ( ! isset( $grps ) ) {
+					$query					=	'SELECT *'
+					.	"\n FROM " . $_CB_database->NameQuote( '#__usergroups' )
+					.	"\n ORDER BY " . $_CB_database->NameQuote( 'lft' );
+					$_CB_database->setQuery( $query );
+					$grps					=	$_CB_database->loadObjectList( 'id' );
+				}
+
+				if ( ! array_key_exists( $gid, $grps ) ) {
+					return array();
+				}
+
+				if ( ! isset( $paths[$gid] ) ) {
+					$paths[$gid]			=	array();
+
+					foreach( $grps as $grp ) {
+						if ( ( $grp->lft <= $grps[$gid]->lft ) && ( $grp->rgt >= $grps[$gid]->rgt ) ) {
+							$paths[$gid][]	=	$grp->id;
+						}
+					}
+				}
+
+				$type						=	$this->get_parent_container( $grps[$gid], $grps );
+
+				if ( in_array( $type, array( 2, 3 ) ) ) {
+					$paths[$gid]			=	array_merge( $paths[$gid], array_diff( $this->get_group_parent_ids( 2 ), $this->get_group_parent_ids( $gid ) ) );
+				}
+
+				$paths[$gid]				=	array_unique( $paths[$gid] );
+
+				sort( $paths[$gid], SORT_NUMERIC );
+
+				$groups						=	$paths[$gid];
+			} else {
+				$query			=	'SELECT g1.' . $_CB_database->NameQuote( 'id' ) . ' AS group_id'
+				.	', g1.' . $_CB_database->NameQuote( 'name' )
+				.	"\n FROM " . $_CB_database->NameQuote( '#__core_acl_aro_groups' ) . " AS g1"
+				.	"\n LEFT JOIN " . $_CB_database->NameQuote( '#__core_acl_aro_groups' ) . " AS g2"
+				.	' ON g2.' . $_CB_database->NameQuote( 'lft' ) . ' >= g1.' . $_CB_database->NameQuote( 'lft' )
+				.	"\n WHERE g2." . $_CB_database->NameQuote( 'id' ) . " = " . (int) $gid
+				.	"\n ORDER BY g1." . $_CB_database->NameQuote( 'name' );
+				$_CB_database->setQuery( $query );
+				$groups			=	$_CB_database->loadResultArray();
+			}
+			for ( $i = 0, $n = count( $groups ); $i < $n; $i++ ) {
+				$groups[$i]		=	(int) $groups[$i];
+			}
+
+			$standardlist		=	array( -2 );
+
+			if ( $gid && ( $gid != $this->mapGroupNamesToValues( 'Public' ) ) ) {
+				$standardlist[]	=	-1;
+			}
+
+			$groups				=	array_merge( $groups, $standardlist );
+
+			$gids[$gid]			=	$groups;
+		}
+
+		return $gids[$gid];
+	}
+
+	function get_parent_container( $grp, $groups ) {
+		if ( $grp && $groups ) {
+			foreach ( $groups as $group ) {
+				$id			=	(int) $grp->id;
+				$parent		=	(int) $grp->parent_id;
+				$grps		=	array( $parent, $id );
+
+				// Go no further if group has no parent:
+				if ( $parent ) {
+					// Determine Joomla version:
+					if ( version_compare(JVERSION,'1.6.0','ge') ) {
+						if ( in_array( 2, $grps ) ) {
+							return 1; // Registered
+						} elseif ( in_array( 6, $grps ) ) {
+							return 2; // Manager
+						} elseif ( in_array( 8, $grps ) ) {
+							return 3; // Super Administrator
+						}
+					} else {
+						if ( in_array( 29, $grps ) ) {
+							return 1; // Public Frontend
+						} elseif ( in_array( 30, $grps ) ) {
+							return 2; // Public Backend
+						}
+					}
+
+					// Loop through for deep groups:
+					return $this->get_parent_container( $groups[$parent], $groups );
+				} else {
+					return 0; // Root
+				}
+			}
+		}
+
+		return null; // Unknown
+	}
+
+	/**	 * Remap literal groups (such as in default values) to the hardcoded CMS values
+	*
+	* @param  string|array  $name  of int|string
+	* @return int|array of int
+	*/
+	function mapGroupNamesToValues( $name ) {
+		static $ps						=	null;
+
+		$selected						=	(array) $name;
+		foreach ( $selected as $k => $v ) {
+			if ( ! is_numeric( $v ) ) {
+				if ( ! $ps ) {
+					if ( version_compare(JVERSION,'1.6.0','ge') ) {
+						$ps				=	array( 'Root' => 0 , 'Users' => 0 , 'Public' =>  1, 'Registered' =>  2, 'Author' =>  3, 'Editor' =>  4, 'Publisher' =>  5, 'Backend' => 0 , 'Manager' =>  6, 'Administrator' =>  7, 'Superadministrator' =>  8 );
+					} else {
+						$ps				=	array( 'Root' => 17, 'Users' => 28, 'Public' => 29, 'Registered' => 18, 'Author' => 19, 'Editor' => 20, 'Publisher' => 21, 'Backend' => 30, 'Manager' => 23, 'Administrator' => 24, 'Superadministrator' => 25 );
+					}
+				}
+				if ( array_key_exists( $v, $ps ) ) {
+					if ( $ps[$v] != 0 ) {
+						$selected[$k]	=	$ps[$v];
+					} else {
+						unset( $selected[$k] );
+					}
+				} else {
+					$selected[$k]		=	(int) $v;
+				}
+			}
+		}
+		if ( ! is_array( $name ) ) {
+			$selected					=	$selected[0];
+		}
+		return $selected;
+	}
+
+	function get_group_children_tree( $var_1 = null, $var_2 = null, $var_3 = null, $var_4 = null ) {
+		$_CB_database = &$this->getDbo();
+
+		if ( ! $var_4 ) {
+			$var_4						=	true;
+		}
+
+		if ( version_compare(JVERSION,'1.6.0','ge') ) {
+			$query						=	'SELECT a.' . $_CB_database->NameQuote( 'id' ) . ' AS value'
+			.	', a.' . $_CB_database->NameQuote( 'title' ) . ' AS text'
+			.	', COUNT( DISTINCT b.' . $_CB_database->NameQuote( 'id' ) . ' ) AS level'
+			.	"\n FROM " . $_CB_database->NameQuote( '#__usergroups' ) . " AS a"
+			.	"\n LEFT JOIN " . $_CB_database->NameQuote( '#__usergroups' ) . " AS b"
+			.	' ON a.' . $_CB_database->NameQuote( 'lft' ) . ' > b.' . $_CB_database->NameQuote( 'lft' )
+			.	' AND a.' . $_CB_database->NameQuote( 'rgt' ) . ' < b.' . $_CB_database->NameQuote( 'rgt' )
+			.	"\n GROUP BY a." . $_CB_database->NameQuote( 'id' )
+			.	"\n ORDER BY a." . $_CB_database->NameQuote( 'lft' ) . " ASC";
+			$_CB_database->setQuery( $query );
+			$groups						=	$_CB_database->loadObjectList();
+
+			$user_groups				=	array();
+
+			for ( $i = 0, $n = count( $groups ); $i < $n; $i++ ) {
+				$groups[$i]->text		=	str_repeat( '- ', $groups[$i]->level ) . JText::_( $groups[$i]->text );
+
+				if ( $var_4 ) {
+					$user_groups[$i]	=	JHtml::_( 'select.option', $groups[$i]->value, $groups[$i]->text );
+				} else {
+					$user_groups[$i]	=	array( 'value' => $groups[$i]->value, 'text' => $groups[$i]->text );
+				}
+			}
+
+			$return						=	$user_groups;
+		} else {
+			if ( ! $var_3 ) {
+				$var_3					=	true;
+			}
+
+			$return						=	$this->_acl->get_group_children_tree( $var_1, $var_2, $var_3, $var_4 );
+		}
+
+		return $return;
+	}
+
 	/**
 	 * Return a list with groups that can be set by the current user
 	 *
@@ -229,6 +533,48 @@ class VirtueMartModelUser extends VmModel {
 	 */
 	function getGroupList()
 	{
+
+		if(version_compare( JVERSION, '1.6.0', 'ge' )) {
+
+			//hm CB thing also not help
+// 			$_grpList = $this->get_groups_below_me();
+// 			return $_grpList;
+
+
+/*			if(!class_exists('UsersModelUser')) require(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_users'.DS.'models'.DS.'user.php');
+			$jUserModel = new UsersModelUser();
+			$list = $jUserModel->getGroups();
+
+			$user = JFactory::getUser();
+			if ($user->authorise('core.edit', 'com_users') && $user->authorise('core.manage', 'com_users'))
+			{
+				$model = JModel::getInstance('Groups', 'UsersModel', array('ignore_request' => true));
+				return $model->getItems();
+			}
+			else
+			{
+				return null;
+			}*/
+			$user = JFactory::getUser();
+			$authGroups = JAccess::getGroupsByUser($user->id);
+// 			$authGroups = $user->getAuthorisedGroups();
+// 			vmdebug('getGroupList j17',$authGroups);
+
+			$db		= &$this->getDbo();
+			$where = implode($authGroups,'" OR `id` = "').'"';
+			$q = 'SELECT `id` as value,`title` as text FROM #__usergroups WHERE `id` = "'.$where;
+
+			$db->setQuery($q);
+			$list = $db->loadAssocList();
+
+// 			foreach($list as $item){
+// 				vmdebug('getGroupList $item ',$item);
+// 			}
+
+// 			vmdebug('getGroupList $q '.$list);
+			return $list;
+		} else {
+
 		$_aclObject = JFactory::getACL();
 
 		if(empty($this->_data)) $this->getUser();
@@ -277,6 +623,7 @@ class VirtueMartModelUser extends VmModel {
 			}
 
 			return $_grpList;
+		}
 		}
 	}
 
@@ -1093,7 +1440,9 @@ class VirtueMartModelUser extends VmModel {
 	 	$this->_db->setQuery($query);
 		//$app = JFactory::getApplication();
 		//$app -> enqueueMessage($this->_db->getQuery());
-	 	return $this->_db->loadObjectList();
+	 	$objlist = $this->_db->loadObjectList();
+		vmdebug('getAclGroupIndentedTree',$objlist);
+	 	return $objlist;
 	 }
 }
 
