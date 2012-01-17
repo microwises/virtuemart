@@ -19,7 +19,7 @@
  */
 // if(!class_exists('JFakeElementBase')) {
 jimport('joomla.form.formfield');
-if (version_compare(JVERSION, '1.6.0', 'ge')) {
+if (JVM_VERSION === 2) {
 
     class VmElements extends JFormField {
 

@@ -69,7 +69,8 @@ class VirtuemartViewCategory extends VmView {
 			$productLayouts = VirtueMartModelConfig::getLayoutList('productdetails');
 			$this->assignRef('productLayouts', $productLayouts);
 
-			$categorylist = ShopFunctions::categoryListTree(array($parent->virtuemart_category_id));
+			//Nice fix by Joe, the 4. param prevents setting an category itself as child
+			$categorylist = ShopFunctions::categoryListTree(array($parent->virtuemart_category_id), 0, 0, (array) $category->virtuemart_category_id);
 
 			$this->loadHelper('permissions');
 			$this->assignRef('perms', Permissions::getInstance());

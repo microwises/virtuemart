@@ -248,7 +248,7 @@ function virtuemartParseRoute($segments) {
 		//Pagination has changed, removed the -1 note by Max Milbers NOTE: Works on j1.5, but NOT j1.7
 			$vars['limitstart'] = (array_shift($segments)*$limit);
 
-	} else 	if(version_compare(JVERSION,'1.6.0','ge')) {
+	} else 	if(JVM_VERSION === 2) {
 		$vars['limitstart'] = 0 ;
 	}
 

@@ -366,13 +366,19 @@ class GenericTableUpdater extends JModel{
 			$demandedTables[] = $tablename;
 			if(in_array($tablename,$existingtables)){
 
-				$this->_reCreatePrimary = true;
-				$this->alterColumns($tablename,$table[0]);
-				$this->alterKey($tablename,$table[1]);
+				if(VmConfig::get('reCreaPri',true)){
+					$this->alterColumns($tablename,$table[0],true);
+					$this->alterKey($tablename,$table[1],true);
+					$this->alterColumns($tablename,$table[0],false);
+				} else {
+					$this->alterColumns($tablename,$table[0],false);
+					if(VmConfig::get('reCreaKey',true)){
+						$this->alterKey($tablename,$table[1],false);
+					}
+				}
 
-				$this->_reCreatePrimary = false;
-				$this->alterColumns($tablename,$table[0]);
-// 				$this -> compareUpdateTable($tablename,$table);
+
+
 				// 				unset($todelete[$tablename]);
 			} else {
 
@@ -454,25 +460,14 @@ class GenericTableUpdater extends JModel{
 		$this->_app->enqueueMessage($q);
 	}
 
-/*	public function compareUpdateTable($tablename,$table){
 
-		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
-			vmWarn('compareUpdateTable not finished, please rise execution time and update tables again');
-			return false;
-		}
-		$this->alterColumns($tablename,$table[0]);
-		if($this->_reCreatePrimary){
-			$this->alterKey($tablename,$table[1]);
-		}
-
-	}*/
-
-	private function alterKey($tablename,$keys){
+	private function alterKey($tablename,$keys,$reCreatePrimary){
 
 		if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 			vmWarn('compareUpdateTable alterKey not finished, please rise execution time and update tables again');
 			return false;
 		}
+
 		$demandFieldNames = array();
 		foreach($keys as $i=>$line){
 			$demandedFieldNames[] = $i;
@@ -497,8 +492,16 @@ class GenericTableUpdater extends JModel{
 			$eKeyNamesNOW= $this->_db->loadResultArray(2);
 			// 				vmdebug('DROP $eKeyNames '.$name);
 // 			if(strpos($eKeys[$i]->Key_name,'PRIMARY')!==false || !in_array($name,$eKeyNamesNOW)){
-			if(!in_array($name,$eKeyNamesNOW)){
-				// 					$query = 'ALTER TABLE `'.$tablename.'` DROP INDEX `'.$name.'` ';
+
+			$isPrim = false;
+			if(!$reCreatePrimary){
+				if(strpos($eKeys[$i]->Key_name,'PRIMARY')!==false){
+					$isPrim = true;
+				}
+			}
+
+			if(!in_array($name,$eKeyNamesNOW) or $isPrim){
+				continue;
 			} else {
 				$query = 'ALTER TABLE `'.$tablename.'` DROP INDEX `'.$name.'` ';
 
@@ -514,71 +517,24 @@ class GenericTableUpdater extends JModel{
 				}
 
 			}
-			// 			}
+
 		}
 
-/*		$query = "SHOW INDEXES  FROM `".$tablename."` ";	//SHOW {INDEX | INDEXES | KEYS}
-		$this->_db->setQuery($query);
-		if(!$eKeys = $this->_db->loadObjectList() ){
-// 			$this->_app->enqueueMessage('alterKey show index:'.$this->_db->getErrorMsg() );
-		} else {
-			$eKeyNames= $this->_db->loadResultArray(2);
-		}
-*/
-// 		$showThem = false;
 		foreach($keys as $name =>$value){
+
+			if(!$reCreatePrimary){
+				if(strpos($value,'PRIMARY')!==false){
+					continue;
+				}
+			}
 
 			$query = '';
 			$action = '';
 
-/*			if(in_array($name, $eKeyNames)){
 
-				$key=array_search($name, $eKeyNames);
-
-				$oldColumn = '';
-				if(!empty($eKeys[$key])){
-					$oldColumn = $this->reCreateKeyByTableAttributes($eKeys[$key]);
-				}
-
-
-				$compare = strcasecmp( $oldColumn, $value);
-
-/*				if (!empty($compare)) {
-// 					vmdebug('alterKey: Differenz of KEYS',$oldColumn,$value);
-// 					$showThem = true;
-// 					vmdebug('alterKey: $tablename '.$tablename.' Different KEY: '.$name.' value '.$value.', oldkey: '.$oldColumn);
-// 					vmdebug('$oldColumn ',$name,$oldColumn,$value);
-/*					if(strpos($value,'PRIMARY')!==false ){
-						if(strpos($oldColumn,'PRIMARY')!==false){
-							vmdebug('alterKey: $tablename '.$tablename.' Different Primary, PRIMARY Key `'.$oldColumn.'` found in table ');
-							$dropit = "DROP PRIMARY KEY , ";
-// 							continue; //lets not change primaries
-						} else if(strpos($oldColumn,'KEY')!==false){
-							$dropit = "DROP INDEX `".$name."`, ";
-							vmdebug('alterKey: $tablename '.$tablename.' Different Primary, Key `'.$oldColumn.'` found in table ');
-						} else if(strpos($oldColumn,'INDEX')!==false){
-							$dropit = "DROP INDEX `".$name."`, ";
-							vmdebug('alterKey: $tablename '.$tablename.' Different Primary, Index `'.$oldColumn.'` found in table ');
-						} else {
-							$dropit = '';
-						}
-						vmdebug('alterKey: $tablename '.$tablename.' $$dropit ',$dropit,strpos($oldColumn,'KEY'));
-						$query = "ALTER TABLE `".$tablename."` ".$dropit." ADD PRIMARY KEY (`".$name."`);" ;
-					} else {
-// 						vmdebug('alterKey: $tablename '.$tablename.' $$dropit ',$dropit,strpos($oldColumn,'KEY'));
-						if(strpos($value,'KEY')!==false ) $type = 'KEY'; else $type = 'INDEX';
-						$query = "ALTER TABLE `".$tablename."` DROP  ".$type." `".$name."` , ADD ".$value ;
-						$action = 'ALTER';
-// 					}
-				}
-			} else { */
-// 				if(strpos($value,'PRIMARY')===false){
-// 					vmdebug('ADD $eKeyNames '.$name ,$eKeyNames);
-
-					$query = "ALTER TABLE `".$tablename."` ADD ".$value ;
-					$action = 'ADD';
-// 				}
-// 			}
+			$query = "ALTER TABLE `".$tablename."` ADD ".$value ;
+			$action = 'ADD';
+// 			vmdebug('Die alter query ',$query);
 
 			if(!empty($query)){
 				$this->_db->setQuery($query);
@@ -586,12 +542,11 @@ class GenericTableUpdater extends JModel{
 					$this->_app = JFactory::getApplication();
 					$this->_app->enqueueMessage('alterKey '.$action.' INDEX '.$name.': '.$this->_db->getErrorMsg() );
 				} else {
-					vmdebug('alterKey: a:'.$action.' KEY `'.$name.'` in table `'.$tablename.'` '.$this->_db->getQuery());
+// 					vmdebug('alterKey: a:'.$action.' KEY `'.$name.'` in table `'.$tablename.'` '.$this->_db->getQuery());
 				}
 			}
 		}
 
-		// 		if($showThem)vmdebug('$eKeys  ',$eKeys);
 	}
 
 	function reCreateKeyByTableAttributes($keyAttribs){
@@ -621,7 +576,8 @@ class GenericTableUpdater extends JModel{
 	 * @param unknown_type $fields
 	 * @param unknown_type $command
 	 */
-	private function alterColumns($tablename,$fields){
+	private function alterColumns($tablename,$fields,$reCreatePrimary){
+
 
 		$after ='';
 		$dropped = 0;
@@ -654,9 +610,14 @@ class GenericTableUpdater extends JModel{
 		}
 
 		foreach($fields as $fieldname => $alterCommand){
+
+			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+				vmWarn('alterColumns alterKey not finished, please rise execution time and update tables again');
+				return false;
+			}
 			$query='';
 			$action = '';
-			// 			vmdebug('$fieldname',$fieldname,$alterCommand);
+
 			if(empty($alterCommand)){
 				vmdebug('empty alter command '.$fieldname);
 				continue;
@@ -666,20 +627,38 @@ class GenericTableUpdater extends JModel{
 				$key=array_search($fieldname, $columns);
 				$oldColumn = $this->reCreateColumnByTableAttributes($fullColumns[$key]);
 
-				$compare = strcasecmp( $oldColumn, $alterCommand);
-
-// 				if (!empty($compare) && $fieldname!=='virtuemart_userinfo_id') {
-					//We need that, because virtuemart_userinfo_id is not autoincrement, but primary
-				if (!empty($compare)) {
-					if($this->_reCreatePrimary){
+				//Attention, we give for a primary the auto_increment back, so we cant decide if a key is used as primary,
+				//but has no auto increment, so wie alter it anytime
+				if(strpos($alterCommand,'AUTO_INCREMENT')!==false) {
+					//This is the loop we remove the auto_increment, to be free to set the primary key
+					if($reCreatePrimary){
 						$alterCommand = str_replace('AUTO_INCREMENT', '',$alterCommand);
+						$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
+						$action = 'CHANGE';
+						$altered++;
+					} else {
+						$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
+						$action = 'CHANGE';
+						$altered++;
+
 					}
-					$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
-					$action = 'CHANGE';
-					$altered++;
-// 					vmdebug($tablename.' Alter field '.$fieldname.' old column',$oldColumn);
-// 					vmdebug('Alter field new column',$alterCommand); //,$fullColumns[$key]);
+
+// 					vmdebug('$fieldname just auto '.$fieldname,$alterCommand,$oldColumn);
+				} else {
+
+					$compare = strcasecmp( $oldColumn, $alterCommand);
+
+					if (!empty($compare)) {
+
+						$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
+						$action = 'CHANGE';
+						$altered++;
+						// 					vmdebug($tablename.' Alter field '.$fieldname.'$alterCommand '.$alterCommand);
+						// 					vmdebug('Alter field new column',$alterCommand); //,$fullColumns[$key]);
+					}
 				}
+
+
 			}
 			else {
 				$query = 'ALTER TABLE `'.$tablename.'` ADD '.$fieldname.' '.$alterCommand.' '.$after;
@@ -734,9 +713,7 @@ class GenericTableUpdater extends JModel{
 	}
 
 	private function primarykey($string){
-		if($this->_reCreatePrimary){
-			return '';
-		}
+
 		if ($string=='PRI') {
 			return  ' AUTO_INCREMENT';
 		} else {

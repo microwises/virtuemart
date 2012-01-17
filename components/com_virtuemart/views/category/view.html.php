@@ -125,7 +125,7 @@ class VirtuemartViewCategory extends VmView {
 		foreach($products as $product){
 			$product->stock = $productModel->getStockIndicator($product);
 		}
-		if (JRequest::getInt('virtuemart_manufacturer_id' ) ) $title .=' '.$products[0]->mf_name ;
+		if (JRequest::getInt('virtuemart_manufacturer_id' ) and !empty($products[0])) $title .=' '.$products[0]->mf_name ;
 		$document->setTitle( $title );
 
 	    $pagination = $productModel->getPagination(0,0,0,$perRow);

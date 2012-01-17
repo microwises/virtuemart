@@ -241,7 +241,7 @@ class VirtueMartModelUser extends VmModel {
 		$myId					=	JUser::getInstance()->id;
 		$this->_acl = JFactory::getACL();
 		if ( ! isset( $gids[$myId] ) ) {
-			if ( version_compare(JVERSION,'1.6.0','ge') ) {
+			if ( JVM_VERSION === 2 ) {
 				$my_groups		=	$this->get_object_groups( $myId );
 			} else {
 				$aro_id			=	$this->get_object_id( 'users', $myId, 'ARO' );
@@ -253,7 +253,7 @@ class VirtueMartModelUser extends VmModel {
 			if ( $my_groups ) foreach ( $my_groups as $gid ) {
 				$my_gids		=	array_unique( array_merge( $my_gids, $this->get_group_children_ids( $gid ) ) );
 
-				if ( version_compare(JVERSION,'1.6.0','ge') ) {
+				if ( JVM_VERSION === 2 ) {
 					$my_gids	=	array_unique( array_merge( $my_gids, $this->get_object_groups( $myId, null, 'RECURSE' ) ) );
 				}
 			}
@@ -293,7 +293,7 @@ class VirtueMartModelUser extends VmModel {
 	*/
 
 	function get_object_id( $var_1 = null, $var_2 = null, $var_3 = null ) {
-		if ( version_compare(JVERSION,'1.6.0','ge')) {
+		if ( JVM_VERSION === 2) {
 			$return		=	$var_2;
 		} else {
 			$return		=	$this->_acl->get_object_id( $var_1, $var_2, $var_3 );
@@ -344,7 +344,7 @@ class VirtueMartModelUser extends VmModel {
 		$gid					=	(int) $gid;
 
 		if ( ! isset( $gids[$gid] ) ) {
-			if ( version_compare(JVERSION,'1.6.0','ge') ) {
+			if ( JVM_VERSION === 2) {
 				static $grps				=	null;
 				static $paths				=	null;
 
@@ -420,7 +420,7 @@ class VirtueMartModelUser extends VmModel {
 				// Go no further if group has no parent:
 				if ( $parent ) {
 					// Determine Joomla version:
-					if ( version_compare(JVERSION,'1.6.0','ge') ) {
+					if (JVM_VERSION === 2 ) {
 						if ( in_array( 2, $grps ) ) {
 							return 1; // Registered
 						} elseif ( in_array( 6, $grps ) ) {
@@ -459,7 +459,7 @@ class VirtueMartModelUser extends VmModel {
 		foreach ( $selected as $k => $v ) {
 			if ( ! is_numeric( $v ) ) {
 				if ( ! $ps ) {
-					if ( version_compare(JVERSION,'1.6.0','ge') ) {
+					if ( JVM_VERSION === 2 ) {
 						$ps				=	array( 'Root' => 0 , 'Users' => 0 , 'Public' =>  1, 'Registered' =>  2, 'Author' =>  3, 'Editor' =>  4, 'Publisher' =>  5, 'Backend' => 0 , 'Manager' =>  6, 'Administrator' =>  7, 'Superadministrator' =>  8 );
 					} else {
 						$ps				=	array( 'Root' => 17, 'Users' => 28, 'Public' => 29, 'Registered' => 18, 'Author' => 19, 'Editor' => 20, 'Publisher' => 21, 'Backend' => 30, 'Manager' => 23, 'Administrator' => 24, 'Superadministrator' => 25 );
@@ -489,7 +489,7 @@ class VirtueMartModelUser extends VmModel {
 			$var_4						=	true;
 		}
 
-		if ( version_compare(JVERSION,'1.6.0','ge') ) {
+		if ( JVM_VERSION === 2 ) {
 			$query						=	'SELECT a.' . $_CB_database->NameQuote( 'id' ) . ' AS value'
 			.	', a.' . $_CB_database->NameQuote( 'title' ) . ' AS text'
 			.	', COUNT( DISTINCT b.' . $_CB_database->NameQuote( 'id' ) . ' ) AS level'
@@ -534,7 +534,7 @@ class VirtueMartModelUser extends VmModel {
 	function getGroupList()
 	{
 
-		if(version_compare( JVERSION, '1.6.0', 'ge' )) {
+		if(JVM_VERSION === 2) {
 
 			//hm CB thing also not help
 // 			$_grpList = $this->get_groups_below_me();
@@ -1227,7 +1227,7 @@ class VirtueMartModelUser extends VmModel {
 
 		if ($doUserActivation) {
 			jimport('joomla.user.helper');
-			if(version_compare(JVERSION,'1.6.0','ge')) {
+			if(JVM_VERSION === 2) {
 				$com_users = 'com_users';
 				$activationLink = 'index.php?option='.$com_users.'&task=registration.activate&token='.$user->get('activation');
 			} else {

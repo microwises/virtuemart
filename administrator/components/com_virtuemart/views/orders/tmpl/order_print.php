@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 <head>
     <?php
     echo '<link rel="stylesheet" href="' . 'templates' . DS . 'system' . DS . 'css' . DS . 'system.css' . '" type="text/css" />' . "\n";
-    if (version_compare(JVERSION, '1.6.0', 'ge')) {
+    if (JVM_VERSION === 2) {
 	echo '<link rel="stylesheet" href="' . 'templates' . DS . 'bluestork' . DS . 'css' . DS . 'template.css' . '" type="text/css" />' . "\n";
     } else {
 	echo '<link rel="stylesheet" href="' . 'templates' . DS . 'khepri' . DS . 'css' . DS . 'template.css' . '" type="text/css" />' . "\n";

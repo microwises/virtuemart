@@ -304,7 +304,7 @@ class VmModel extends JModel {
 
 		$limit = $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit',  VmConfig::get('list_limit',10), 'int');
 		$this->setState('limit', $limit);
-		if(version_compare(JVERSION,'1.6.0','ge')) {
+		if(JVM_VERSION === 2) {
 			$limitStart = $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.limitstart', 'limitstart',  0, 'int');
 		} else {
 			$limitStart = JRequest::getInt('limitstart',0);

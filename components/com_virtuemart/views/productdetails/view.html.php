@@ -112,6 +112,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 			return;
 		}
+
 		if ( VmConfig::get('enable_content_plugin',0)) {
 			// add content plugin //
 			$dispatcher	=& JDispatcher::getInstance();
@@ -119,7 +120,7 @@ class VirtueMartViewProductdetails extends VmView {
 			$product->text = $product->product_desc;
 			$params = "";
 
-			if(version_compare( JVERSION, '1.6.0', 'ge' )) {
+			if(JVM_VERSION === 2 ) {
 				$results = $dispatcher->trigger('onPrepareContent', array ('com_virtuemart.productdetails',& $product, & $params, 0));
 			}
 			else {

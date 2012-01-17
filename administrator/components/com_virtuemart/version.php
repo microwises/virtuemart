@@ -31,13 +31,13 @@ class vmVersion {
 	/** @var string Product */
 	static $PRODUCT = 'VirtueMart';
 	/** @var int Release Number */
-	static $RELEASE = '2.0.0';
+	static $RELEASE = '2.0.1';
 	/** @var string Development Status */
-	static $DEV_STATUS = 'Final';
+	static $DEV_STATUS = 'RC';
 	/** @var string Codename */
-	static $CODENAME = 'TakeOff';
+	static $CODENAME = 'grounded';
 	/** @var string Date */
-	static $RELDATE = 'December 19, 2011';
+	static $RELDATE = 'January 16, 2011';
 	/** @var string Time */
 	static $RELTIME = '21:30';
 	/** @var string Timezone */

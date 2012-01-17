@@ -49,12 +49,12 @@ class VirtueMartControllerUser extends JController
 		$view = $this->getView('user', 'html');
 
 		/* Add the default model */
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'vendor', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'currency', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
+// 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
+// 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
+// 		$view->setModel( $this->getModel( 'vendor', 'VirtuemartModel' ), true );
+// 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
+// 		$view->setModel( $this->getModel( 'currency', 'VirtuemartModel' ), true );
+// 		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
 
 		$cid = JRequest::getVar('cid',null);
 		if(!isset($cid)){
@@ -178,7 +178,6 @@ class VirtueMartControllerUser extends JController
 	}
 
 	function registerCartuser(){
-
 		$msg = $this->saveData(true, true);
 		$this->setRedirect(JRoute::_('index.php?option=com_virtuemart&view=cart') , $msg);
 	}

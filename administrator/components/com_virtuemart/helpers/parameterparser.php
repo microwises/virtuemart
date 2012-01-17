@@ -158,14 +158,14 @@ class vmParameters extends JParameter {
 	 */
 	function __construct($data, $element = '', $type='component', $pluginfolder ) {
 		JPlugin::loadLanguage('plg_'.$pluginfolder.'_' . $element);
-		if (version_compare(JVERSION, '1.6.0', 'ge')) {
+		if (JVM_VERSION === 2) {
 			$path = JPATH_PLUGINS . DS . $pluginfolder . DS . basename($element). DS . basename($element) . '.xml';
 		} else {
 			$path = JPATH_PLUGINS . DS . $pluginfolder . DS . basename($element) . '.xml';
 		}
 		parent::__construct($element, $path);
 		$this->_type = $type;
-		if (version_compare(JVERSION, '1.6.0', 'ge')) {
+		if (JVM_VERSION === 2) {
 
 		} else {
 
@@ -185,7 +185,7 @@ class vmParameters extends JParameter {
 	function render($name = 'params', $group = '_default') {
 
 // 		vmdebug('render',$this);
-		//             if (version_compare(JVERSION, '1.6.0', 'ge')) {
+		//             if (JVM_VERSION === 2) {
 		$parameters = $this->vmRender($name, $group);
 		//             } else {
 		//                 $parameters = parent::render($name, $group);
