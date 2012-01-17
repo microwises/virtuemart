@@ -20,12 +20,15 @@
 				var Qtt = parseInt(quantity.val());
 				if (Qtt != NaN) {
 					quantity.val(Qtt + 1);
+				$.setproducttype(cart,virtuemart_product_id);
 				}
+				
 			});
 			minus.click(function() {
 				var Qtt = parseInt(quantity.val());
 				if (Qtt != NaN && Qtt>0) {
 					quantity.val(Qtt - 1);
+				$.setproducttype(cart,virtuemart_product_id);
 				}
 			});
 			select.change(function() {

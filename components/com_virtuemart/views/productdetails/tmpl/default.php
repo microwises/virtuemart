@@ -240,7 +240,7 @@ if (empty ( $this->product )) {
 						<span class="quantity-box">
 							<input type="text" class="quantity-input js-recalculate" name="quantity[]" value="<?php if(isset($this->product->min_order_level) && (int) $this->product->min_order_level > 0){echo $this->product->min_order_level;} else{ echo '1'; } ?>" />
 						</span>
-						<span class="quantity-controls">
+						<span class="quantity-controls js-recalculate">
 							<input type="button" class="quantity-controls quantity-plus" />
 							<input type="button" class="quantity-controls quantity-minus" />
 						</span>
