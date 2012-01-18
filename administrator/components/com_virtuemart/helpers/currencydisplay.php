@@ -181,7 +181,7 @@ class CurrencyDisplay {
 			}
 		} else {
 			$q = 'SELECT `price_display`,`custom_price_display` FROM `#__virtuemart_shoppergroups` AS `sg`
-					WHERE `sg`.`virtuemart_shoppergroup_id` = "1" ';
+					WHERE `sg`.`default` = "2" ';
 
 			$this->_db->setQuery($q);
 			$result = $this->_db->loadRow();

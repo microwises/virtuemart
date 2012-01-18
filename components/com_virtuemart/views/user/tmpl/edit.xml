@@ -8,7 +8,7 @@
 		<description><![CDATA[COM_VIRTUEMART_USER_VIEW_DEFAULT_DESC]]></description>
 
 		<url addpath="/administrator/components/com_virtuemart/elements">
-			<param name="layout" section="com_virtuemart" type="vmuserlayoutmenu"
+			<param name="layout" section="com_virtuemart" type="usermenu"
 				value_field="layout_name" label="COM_VIRTUEMART_USER_FIELD_SELECT_LAYOUT"
 				description="COM_VIRTUEMART_USER_FIELD_SELECT_LAYOUT_DESC" />
 		</url>
@@ -17,7 +17,7 @@
 	<fields name="request">
 		<fieldset name="request"
 			addfieldpath="/administrator/components/com_virtuemart/models/fields">
-			<field name="layout" type="vmuserlayout"
+			<field name="layout" type="user"
 				label="COM_VIRTUEMART_USER_FIELD_SELECT_LAYOUT" required="true"
 				description="COM_VIRTUEMART_USER_FIELD_SELECT_LAYOUT_DESC" />
 		</fieldset>

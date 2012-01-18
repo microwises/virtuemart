@@ -89,6 +89,7 @@ if( strpos($this->fTask,'cart') || strpos($this->fTask,'checkout') ){
 } else {
 	$rview = 'user';
 }
+// echo 'rview = '.$rview;
 
 if( strpos($this->fTask,'checkout') || $this->address_type=='ST' ){
 	$buttonclass = 'default';
@@ -97,10 +98,12 @@ if( strpos($this->fTask,'checkout') || $this->address_type=='ST' ){
 }
 
 
-if (VmConfig::get('oncheckout_show_register', 1) && $this->userId == 0 && !VmConfig::get('oncheckout_only_registered',0) && $this->address_type=='BT') {
+if (VmConfig::get('oncheckout_show_register', 1) && $this->userId == 0 && !VmConfig::get('oncheckout_only_registered',0) && $this->address_type=='BT' and $rview=='cart') {
 	echo JText::sprintf('COM_VIRTUEMART_ONCHECKOUT_DEFAULT_TEXT_REGISTER', JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'), JText::_('COM_VIRTUEMART_CHECKOUT_AS_GUEST'));
+} else {
+	echo JText::_('COM_VIRTUEMART_REGISTER_ACCOUNT');
 }
-if (VmConfig::get('oncheckout_show_register', 1) && $this->userId == 0 && $this->address_type=='BT') {
+if (VmConfig::get('oncheckout_show_register', 1) && $this->userId == 0 && $this->address_type=='BT' and $rview=='cart') {
 ?>
 
 <button class="<?php echo $buttonclass ?>" type="submit" onclick="javascript:return callValidatorForRegister(userForm);" title="<?php echo JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?>"><?php echo JText::_('COM_VIRTUEMART_REGISTER_AND_CHECKOUT'); ?></button>

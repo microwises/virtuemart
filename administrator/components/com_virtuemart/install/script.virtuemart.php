@@ -212,16 +212,16 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->alterTable('#__session',$fields);
 			}
 
-/*			$q = 'SHOW INDEX FROM `#__virtuemart_categories` WHERE Key_name = "idx_slug"; ';
-			$this->_db->setQuery($q);
+			/*			$q = 'SHOW INDEX FROM `#__virtuemart_categories` WHERE Key_name = "idx_slug"; ';
+			 $this->_db->setQuery($q);
 			if($this->_db->loadResult()){
-				$query = 'ALTER TABLE  `#__virtuemart_categories` DROP INDEX  `idx_slug`';
-				$this->_db->setQuery($query);
-				if(!$this->_db->query()){
-					VmError('Script.virtuemart update: Deleting of #__virtuemart_categories idx_ slug failed '.$this->_db->getErrorMsg());
-				} else {
-					vmdebug('Script.virtuemart update: I deleted the column '.$this->_db->getQuery());
-				}
+			$query = 'ALTER TABLE  `#__virtuemart_categories` DROP INDEX  `idx_slug`';
+			$this->_db->setQuery($query);
+			if(!$this->_db->query()){
+			VmError('Script.virtuemart update: Deleting of #__virtuemart_categories idx_ slug failed '.$this->_db->getErrorMsg());
+			} else {
+			vmdebug('Script.virtuemart update: I deleted the column '.$this->_db->getQuery());
+			}
 			}
 
 
@@ -230,29 +230,29 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->_db->setQuery($query);
 			if($this->_db->loadResult()){
 
-				$query = 'SHOW TABLES LIKE "%virtuemart_shipmentmethods%"';
-				$this->_db->setQuery($query);
-				$res = $this->_db->loadResult();
-				if(empty($res)){
-					$query = 'ALTER TABLE `#__virtuemart_shippingcarriers` RENAME TO `#__virtuemart_shipmentmethods`';
-					$this->_db->setQuery($query);
-					$this->_db->query();
+			$query = 'SHOW TABLES LIKE "%virtuemart_shipmentmethods%"';
+			$this->_db->setQuery($query);
+			$res = $this->_db->loadResult();
+			if(empty($res)){
+			$query = 'ALTER TABLE `#__virtuemart_shippingcarriers` RENAME TO `#__virtuemart_shipmentmethods`';
+			$this->_db->setQuery($query);
+			$this->_db->query();
 
-					$query = 'ALTER TABLE `#__virtuemart_shipmentmethods`  DROP INDEX `virtuemart_shippingcarrier_id` ';
-					$this->_db->setQuery($query);
-					$this->_db->query();
-				}
+			$query = 'ALTER TABLE `#__virtuemart_shipmentmethods`  DROP INDEX `virtuemart_shippingcarrier_id` ';
+			$this->_db->setQuery($query);
+			$this->_db->query();
+			}
 			}
 
 			$fields = array('virtuemart_shippingcarrier_id'=>'`virtuemart_shipmentmethod_id` mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT',
-																	'shipping_carrier_jplugin_id'=>'`shipment_jplugin_id` int(11) NOT NULL',
-																	'shipping_carrier_name'=>"`shipment_name` char(200) NOT NULL DEFAULT ''",
-																	'shipping_carrier_desc'=>"`shipment_desc` text NOT NULL COMMENT 'Description'",
-																	'shipping_carrier_element'=>"`shipment_element` varchar(50) NOT NULL DEFAULT ''",
-																	'shipping_carrier_params'=>' `shipment_params` text NOT NULL',
-																	'shipping_carrier_value'=>"`shipment_value` decimal(10,2) NOT NULL DEFAULT '0.00'",
-																	'shipping_carrier_package_fee'=>"`shipment_package_fee` decimal(10,2) NOT NULL DEFAULT '0.00'",
-																	'shipping_carrier_vat_id'=>"`shipment_vat_id` int(11) NOT NULL DEFAULT '0'"
+			'shipping_carrier_jplugin_id'=>'`shipment_jplugin_id` int(11) NOT NULL',
+			'shipping_carrier_name'=>"`shipment_name` char(200) NOT NULL DEFAULT ''",
+			'shipping_carrier_desc'=>"`shipment_desc` text NOT NULL COMMENT 'Description'",
+			'shipping_carrier_element'=>"`shipment_element` varchar(50) NOT NULL DEFAULT ''",
+			'shipping_carrier_params'=>' `shipment_params` text NOT NULL',
+			'shipping_carrier_value'=>"`shipment_value` decimal(10,2) NOT NULL DEFAULT '0.00'",
+			'shipping_carrier_package_fee'=>"`shipment_package_fee` decimal(10,2) NOT NULL DEFAULT '0.00'",
+			'shipping_carrier_vat_id'=>"`shipment_vat_id` int(11) NOT NULL DEFAULT '0'"
 			);
 			$this->alterTable('#__virtuemart_shipmentmethods',$fields);
 
@@ -260,14 +260,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->_db->setQuery($query);
 			if($this->_db->loadResult()){
 
-				$query = 'SHOW TABLES LIKE "%virtuemart_shipmentmethod_shoppergroups%"';
-				$this->_db->setQuery($query);
-				$res = $this->_db->loadResult();
-				if(empty($res)){
-					$query = 'ALTER TABLE `#__virtuemart_shippingcarrier_shoppergroups` RENAME TO `#__virtuemart_shipmentmethod_shoppergroups`';
-					$this->_db->setQuery($query);
-					$this->_db->query();
-				}
+			$query = 'SHOW TABLES LIKE "%virtuemart_shipmentmethod_shoppergroups%"';
+			$this->_db->setQuery($query);
+			$res = $this->_db->loadResult();
+			if(empty($res)){
+			$query = 'ALTER TABLE `#__virtuemart_shippingcarrier_shoppergroups` RENAME TO `#__virtuemart_shipmentmethod_shoppergroups`';
+			$this->_db->setQuery($query);
+			$this->_db->query();
+			}
 			}
 
 			$fields = array('virtuemart_shippingcarrier_id'=>"`virtuemart_shipmentmethod_id` SERIAL ");
@@ -279,9 +279,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			// orders :
 			$fields = array('payment_method_id'=>'`virtuemart_paymentmethod_id` INT(11 ) NOT NULL ',
-					'ship_method_id'=>'`virtuemart_shipmentmethod_id` INT(11 ) NOT NULL ',
-					'order_shipping'=>'`order_shipment` decimal(10,2) DEFAULT NULL ',
-					'order_shipping_tax'=>'`order_shipment_tax` decimal(10,2) DEFAULT NULL ',
+			'ship_method_id'=>'`virtuemart_shipmentmethod_id` INT(11 ) NOT NULL ',
+			'order_shipping'=>'`order_shipment` decimal(10,2) DEFAULT NULL ',
+			'order_shipping_tax'=>'`order_shipment_tax` decimal(10,2) DEFAULT NULL ',
 			);
 			$this->alterTable('#__virtuemart_orders',$fields);
 
@@ -314,7 +314,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();
 
-/*			$updater->portOldLanguageToNewTables((array)$lang);
+			/*			$updater->portOldLanguageToNewTables((array)$lang);
 
 			$updater->updateMyVmTables();
 
@@ -330,51 +330,25 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$fields = array('virtuemart_userinfo_id'=>'`virtuemart_userinfo_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT FIRST');
 			$this->alterTable('#__virtuemart_userinfos',$fields);
 
-*/
+			*/
 
 			//Strange, I cant add a new primary to a table this way.
-// 			ALTER TABLE `j7uy8_virtuemart_userinfos`  DROP COLUMN `virtuemart_userinfo_id`;
-// 			ALTER TABLE `j7uy8_virtuemart_userinfos`  ADD COLUMN `virtuemart_userinfo_id` INT(1) UNSIGNED NOT NULL FIRST;
-// 			ALTER TABLE `j7uy8_virtuemart_userinfos`  ADD PRIMARY KEY (`virtuemart_userinfo_id`);
+			// 			ALTER TABLE `j7uy8_virtuemart_userinfos`  DROP COLUMN `virtuemart_userinfo_id`;
+			// 			ALTER TABLE `j7uy8_virtuemart_userinfos`  ADD COLUMN `virtuemart_userinfo_id` INT(1) UNSIGNED NOT NULL FIRST;
+			// 			ALTER TABLE `j7uy8_virtuemart_userinfos`  ADD PRIMARY KEY (`virtuemart_userinfo_id`);
 
-/*			$q = "ALTER TABLE `#__virtuemart_userinfos` ADD PRIMARY KEY (`virtuemart_userinfo_id`)";
-			$this->_db->setQuery($q);
+			/*			$q = "ALTER TABLE `#__virtuemart_userinfos` ADD PRIMARY KEY (`virtuemart_userinfo_id`)";
+			 $this->_db->setQuery($q);
 			if(!$this->_db->query()){
-				$app = JFactory::getApplication();
-				$app->enqueueMessage('Error: Update Ignore it '.$this->_db->getErrorMsg() );
+			$app = JFactory::getApplication();
+			$app->enqueueMessage('Error: Update Ignore it '.$this->_db->getErrorMsg() );
 			}
 
 			$added = false;
-			$fields = array('virtuemart_userinfo_id'=>'');
 
-			// Yes, I know, it looks senselesss to create a field without autoincrement, to add a key and then the autoincrement and then they key again.
-			// But seems the only method to create  primary
-*/			if($this->alterTable('#__virtuemart_userinfos',$fields,'DROP')){
+			//*/
 
-				$added = $this->checkAddFieldToTable('#__virtuemart_userinfos','virtuemart_userinfo_id',"INT(1) UNSIGNED FIRST");
-
-				if($added){
-					$q = "ALTER TABLE `#__virtuemart_userinfos` ADD PRIMARY KEY (`virtuemart_userinfo_id`)";
-					$this->_db->setQuery($q);
-					if(!$this->_db->query()){
-						$app = JFactory::getApplication();
-						$app->enqueueMessage('Error: Update '.$this->_db->getErrorMsg() );
-					}
-
-					$fields = array('virtuemart_userinfo_id'=>'`virtuemart_userinfo_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT FIRST');
-					$this->alterTable('#__virtuemart_userinfos',$fields);
-
-					$q = "ALTER TABLE `#__virtuemart_userinfos` ADD PRIMARY KEY (`virtuemart_userinfo_id`)";
-					$this->_db->setQuery($q);
-					if(!$this->_db->query()){
-						$app = JFactory::getApplication();
-						$app->enqueueMessage('Error: Update '.$this->_db->getErrorMsg() );
-					}
-				}
-
-			}
-
-//*/
+			$this->deleteReCreatePrimaryKey('#__virtuemart_userinfos','virtuemart_userinfo_id');
 
 			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();
@@ -382,15 +356,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$updater->updateMyVmTables();
 			$result = $updater->createLanguageTables();
 
-/*			if($added){
-				$q = "ALTER TABLE `#__virtuemart_userinfos` ADD PRIMARY KEY (`virtuemart_userinfo_id`)";
-				$this->_db->setQuery($q);
-				if(!$this->_db->query()){
-					$app = JFactory::getApplication();
-					$app->enqueueMessage('Error: Update '.$this->_db->getErrorMsg() );
-				}
-			}
-*/
+
 			if($loadVm) $this->displayFinished(true);
 
 			return true;
@@ -454,10 +420,76 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					$app->enqueueMessage('Error: Install checkAddFieldToTable '.$this->_db->getErrorMsg() );
 					return false;
 				} else {
+					vmdebug('checkAddFieldToTable added '.$field);
 					return true;
 				}
 			}
 			return false;
+		}
+
+		private function deleteReCreatePrimaryKey($tablename,$fieldname){
+
+			//Does not work, the keys must be regenerated
+// 			$query = 'ALTER TABLE `#__virtuemart_userinfos`  CHANGE COLUMN `virtuemart_userinfo_id` `virtuemart_userinfo_id` INT(1) NOT NULL AUTO_INCREMENT FIRST';
+// 			$this->_db->setQuery($query);
+// 			if(!$this->_db->query()){
+
+// 			} else {
+// 				$query = 'ALTER TABLE `#__virtuemart_userinfos` AUTO_INCREMENT = 1';
+// 				$this->_db->setQuery($query);
+// 			}
+
+
+			$query = 'SHOW FULL COLUMNS  FROM `'.$tablename.'` ';
+			$this->_db->setQuery($query);
+			$fullColumns = $this->_db->loadObjectList();
+
+			$force = true;
+			if($force or $fullColumns[0]->Field==$fieldname and strpos($fullColumns[0]->Type,'char')!==false){
+				vmdebug('Old key found, recreate');
+
+				// Yes, I know, it looks senselesss to create a field without autoincrement, to add a key and then the autoincrement and then they key again.
+				// But seems the only method to drop and recreate primary, which has already data in it
+				//First drop it
+				$fields = array($fieldname => '');
+				if($this->alterTable($tablename,$fields,'DROP')){
+
+					//Now make the field, nothing must be entered
+					$added = $this->checkAddFieldToTable($tablename,$fieldname,"INT(1) UNSIGNED NOT NULL FIRST");
+
+					if($added){
+						//Yes it should be primary, ohh it gets sorted, great
+						$q = 'ALTER TABLE `'.$tablename.'` ADD KEY (`'.$fieldname.'`)';
+						$this->_db->setQuery($q);
+						if(!$this->_db->query()){
+							$app = JFactory::getApplication();
+							$app->enqueueMessage('Error: deleteReCreatePrimaryKey add KEY '.$this->_db->getErrorMsg() );
+						}
+
+						//ahh, now we can make it auto_increment
+						$fields = array($fieldname => '`'.$fieldname.'` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT FIRST');
+						$this->alterTable($tablename,$fields);
+
+						//Great, now it actually takes the attribute being a primary
+						$q = 'ALTER TABLE `'.$tablename.'` ADD PRIMARY KEY (`'.$fieldname.'`)';
+						$this->_db->setQuery($q);
+						if(!$this->_db->query()){
+							$app = JFactory::getApplication();
+							$app->enqueueMessage('Error: deleteReCreatePrimaryKey final add Primary '.$this->_db->getErrorMsg() );
+						} else {
+							$q = 'ALTER TABLE `'.$tablename.'`  DROP INDEX `'.$fieldname.'`';
+							$this->_db->setQuery($q);
+							if(!$this->_db->query()){
+								$app->enqueueMessage('Error: deleteReCreatePrimaryKey final add Primary '.$this->_db->getErrorMsg() );
+							}
+						}
+ 					}
+				}
+
+ 			}
+
+
+
 		}
 
 		/**
@@ -807,10 +839,14 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				<h2>
 
 
+
+
 				<?php echo JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h2>
 			</td>
 			<td>
 				<h2>
+
+
 
 
 				<?php
@@ -832,6 +868,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				<div id="cpanel">
 
 
+
+
 				<?php
 				if(!$update){
 					?>
@@ -844,9 +882,17 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 
 
+
+
+
+
 						<?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
 							</a>
 					</div>
+
+
+
+
 
 
 
@@ -864,10 +910,15 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 
 
+
+
+
+
 			</td>
 		</tr>
 	</table>
 </div>
+
 
 
 

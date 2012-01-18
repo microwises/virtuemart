@@ -53,6 +53,8 @@ class GenericTableUpdater extends JModel{
 		$config = JFactory::getConfig();
 		$this->_prefix = $config->getValue('config.dbprefix');
 
+		$this->reCreaPri = VmConfig::get('reCreaPri',0);
+		$this->reCreaKey = VmConfig::get('reCreaKey',1);
 	}
 
 	/**
@@ -369,13 +371,13 @@ class GenericTableUpdater extends JModel{
 			$demandedTables[] = $tablename;
 			if(in_array($tablename,$existingtables)){
 // 			if($tablename==$this->_prefix.'virtuemart_userinfos'){
-				if(VmConfig::get('reCreaPri',true)){
+				if($this->reCreaPri!=0){
 					$this->alterColumns($tablename,$table[0],true);
 					$this->alterKey($tablename,$table[1],true);
 					$this->alterColumns($tablename,$table[0],false);
 				} else {
 					$this->alterColumns($tablename,$table[0],false);
-					if(VmConfig::get('reCreaKey',true)){
+					if($this->reCreaKey!=0){
 						$this->alterKey($tablename,$table[1],false);
 					}
 				}

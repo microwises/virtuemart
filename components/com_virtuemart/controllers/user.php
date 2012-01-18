@@ -64,7 +64,8 @@ class VirtueMartControllerUser extends JController
 // 			$view->setLayout('edit');
 		}
 
-		$view->setLayout('edit');
+		$layout = JRequest::getWord('layout','edit');
+		$view->setLayout($layout);
 
 		//Important! sanitize array to int
 		jimport( 'joomla.utilities.arrayhelper' );

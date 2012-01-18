@@ -1441,7 +1441,7 @@ class VirtueMartModelUser extends VmModel {
 		//$app = JFactory::getApplication();
 		//$app -> enqueueMessage($this->_db->getQuery());
 	 	$objlist = $this->_db->loadObjectList();
-		vmdebug('getAclGroupIndentedTree',$objlist);
+// 		vmdebug('getAclGroupIndentedTree',$objlist);
 	 	return $objlist;
 	 }
 }
