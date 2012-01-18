@@ -325,27 +325,33 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->updateJParamsToVmParams($tablenames);
 
 			$this->updateAdminMenuEntry();
+
+
+			$fields = array('virtuemart_userinfo_id'=>'`virtuemart_userinfo_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT FIRST');
+			$this->alterTable('#__virtuemart_userinfos',$fields);
+
 */
 
+			//Strange, I cant add a new primary to a table this way.
+// 			ALTER TABLE `j7uy8_virtuemart_userinfos`  DROP COLUMN `virtuemart_userinfo_id`;
+// 			ALTER TABLE `j7uy8_virtuemart_userinfos`  ADD COLUMN `virtuemart_userinfo_id` INT(1) UNSIGNED NOT NULL FIRST;
+// 			ALTER TABLE `j7uy8_virtuemart_userinfos`  ADD PRIMARY KEY (`virtuemart_userinfo_id`);
+
+/*			$q = "ALTER TABLE `#__virtuemart_userinfos` ADD PRIMARY KEY (`virtuemart_userinfo_id`)";
+			$this->_db->setQuery($q);
+			if(!$this->_db->query()){
+				$app = JFactory::getApplication();
+				$app->enqueueMessage('Error: Update Ignore it '.$this->_db->getErrorMsg() );
+			}
+
+			$added = false;
 			$fields = array('virtuemart_userinfo_id'=>'');
-			if($this->alterTable('#__virtuemart_userinfos',$fields,'DROP')){
 
-/*				$this->_db->setQuery("SHOW KEYS FROM `#__virtuemart_userinfos` "); //SHOW {INDEX | INDEXES | KEYS}
-// 				$allkeys= $this->_db->loadResultArray();
+			// Yes, I know, it looks senselesss to create a field without autoincrement, to add a key and then the autoincrement and then they key again.
+			// But seems the only method to create  primary
+*/			if($this->alterTable('#__virtuemart_userinfos',$fields,'DROP')){
 
-				$keys= $this->_db->loadResultArray(2);
-
-// 				vmdebug('my keys ',$allkeys,$keys);
-				if(in_array($fieldname,$keys)){
-					$q = 'ALTER TABLE `#__virtuemart_userinfos` DROP INDEX `virtuemart_userinfo_id` ';
-					$this->_db->setQuery($q);
-					if(!$this->_db->query()){
-						$app = JFactory::getApplication();
-						$app->enqueueMessage('Error: Update alterTable '.$this->_db->getErrorMsg() );
-					}
-				}
-*/
-				$added = $this->checkAddFieldToTable('#__virtuemart_userinfos','virtuemart_userinfo_id',"INT(1) UNSIGNED NOT NULL FIRST");
+				$added = $this->checkAddFieldToTable('#__virtuemart_userinfos','virtuemart_userinfo_id',"INT(1) UNSIGNED FIRST");
 
 				if($added){
 					$q = "ALTER TABLE `#__virtuemart_userinfos` ADD PRIMARY KEY (`virtuemart_userinfo_id`)";
@@ -354,20 +360,37 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 						$app = JFactory::getApplication();
 						$app->enqueueMessage('Error: Update '.$this->_db->getErrorMsg() );
 					}
+
+					$fields = array('virtuemart_userinfo_id'=>'`virtuemart_userinfo_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT FIRST');
+					$this->alterTable('#__virtuemart_userinfos',$fields);
+
+					$q = "ALTER TABLE `#__virtuemart_userinfos` ADD PRIMARY KEY (`virtuemart_userinfo_id`)";
+					$this->_db->setQuery($q);
+					if(!$this->_db->query()){
+						$app = JFactory::getApplication();
+						$app->enqueueMessage('Error: Update '.$this->_db->getErrorMsg() );
+					}
 				}
 
-				$fields = array('virtuemart_userinfo_id'=>'`virtuemart_userinfo_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT');
-				$this->alterTable('#__virtuemart_userinfos',$fields);
 			}
 
-
+//*/
 
 			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();
-			$updater->updateMyVmTables();
 
-			$result = $updater->createLanguageTables();
+// 			$updater->updateMyVmTables();
+// 			$result = $updater->createLanguageTables();
 
+/*			if($added){
+				$q = "ALTER TABLE `#__virtuemart_userinfos` ADD PRIMARY KEY (`virtuemart_userinfo_id`)";
+				$this->_db->setQuery($q);
+				if(!$this->_db->query()){
+					$app = JFactory::getApplication();
+					$app->enqueueMessage('Error: Update '.$this->_db->getErrorMsg() );
+				}
+			}
+*/
 			if($loadVm) $this->displayFinished(true);
 
 			return true;

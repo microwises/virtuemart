@@ -358,14 +358,17 @@ class GenericTableUpdater extends JModel{
 			return false;
 		}
 
-
+		$i = 0;
 		$demandedTables = array();
 		//TODO ignore admin menu table
 		foreach ($tables as $tablename => $table){
+
+// 			if($i>1) continue;
+
 			$tablename = str_replace('#__',$this->_prefix,$tablename);
 			$demandedTables[] = $tablename;
 			if(in_array($tablename,$existingtables)){
-
+// 			if($tablename==$this->_prefix.'virtuemart_userinfos'){
 				if(VmConfig::get('reCreaPri',true)){
 					$this->alterColumns($tablename,$table[0],true);
 					$this->alterKey($tablename,$table[1],true);
@@ -377,8 +380,6 @@ class GenericTableUpdater extends JModel{
 					}
 				}
 
-
-
 				// 				unset($todelete[$tablename]);
 			} else {
 
@@ -386,6 +387,7 @@ class GenericTableUpdater extends JModel{
 			}
 			// 			$this->_db->setQuery('OPTIMIZE '.$tablename);
 			// 			$this->_db->query();
+			$i++;
 
 		}
 
@@ -579,7 +581,7 @@ class GenericTableUpdater extends JModel{
 	private function alterColumns($tablename,$fields,$reCreatePrimary){
 
 
-		$after ='';
+		$after ='FIRST';
 		$dropped = 0;
 		$altered = 0;
 		$added = 0;
@@ -609,6 +611,8 @@ class GenericTableUpdater extends JModel{
 			}
 		}
 
+// 		vmdebug('$$columns ',$columns);
+
 		foreach($fields as $fieldname => $alterCommand){
 
 			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
@@ -622,7 +626,12 @@ class GenericTableUpdater extends JModel{
 				vmdebug('empty alter command '.$fieldname);
 				continue;
 			}
-			else if(in_array($fieldname,$columns)){
+			// we remove the auto_increment, to be free to set the primary key
+			if(strpos($alterCommand,'AUTO_INCREMENT')!==false and $reCreatePrimary){
+				$alterCommand = str_replace('AUTO_INCREMENT', '',$alterCommand);
+			}
+
+			if(in_array($fieldname,$columns)){
 
 				$key=array_search($fieldname, $columns);
 				$oldColumn = $this->reCreateColumnByTableAttributes($fullColumns[$key]);
@@ -630,19 +639,10 @@ class GenericTableUpdater extends JModel{
 				//Attention, we give for a primary the auto_increment back, so we cant decide if a key is used as primary,
 				//but has no auto increment, so wie alter it anytime
 				if(strpos($alterCommand,'AUTO_INCREMENT')!==false) {
-					//This is the loop we remove the auto_increment, to be free to set the primary key
-					if($reCreatePrimary){
-						$alterCommand = str_replace('AUTO_INCREMENT', '',$alterCommand);
-						$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
-						$action = 'CHANGE';
-						$altered++;
-					} else {
-						$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
-						$action = 'CHANGE';
-						$altered++;
 
-					}
-
+					$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
+					$action = 'CHANGE';
+					$altered++;
 // 					vmdebug('$fieldname just auto '.$fieldname,$alterCommand,$oldColumn);
 				} else {
 
@@ -657,13 +657,12 @@ class GenericTableUpdater extends JModel{
 						// 					vmdebug('Alter field new column',$alterCommand); //,$fullColumns[$key]);
 					}
 				}
-
-
 			}
 			else {
 				$query = 'ALTER TABLE `'.$tablename.'` ADD '.$fieldname.' '.$alterCommand.' '.$after;
 				$action = 'ADD';
 				$added++;
+// 				vmdebug('$fieldname '.$fieldname);
 			}
 			if (!empty($query)) {
 				$this->_db->setQuery($query);
