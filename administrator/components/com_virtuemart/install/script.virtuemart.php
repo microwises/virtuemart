@@ -379,8 +379,8 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
 			$updater = new GenericTableUpdater();
 
-// 			$updater->updateMyVmTables();
-// 			$result = $updater->createLanguageTables();
+			$updater->updateMyVmTables();
+			$result = $updater->createLanguageTables();
 
 /*			if($added){
 				$q = "ALTER TABLE `#__virtuemart_userinfos` ADD PRIMARY KEY (`virtuemart_userinfo_id`)";

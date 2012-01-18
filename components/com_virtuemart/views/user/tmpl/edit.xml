@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
 	<layout title="COM_VIRTUEMART_USER_VIEW_DEFAULT_TITLE">
-            <message><![CDATA[COM_VIRTUEMART_USER_VIEW_DEFAULT_DESC]]></message>
+		<message><![CDATA[COM_VIRTUEMART_USER_VIEW_DEFAULT_DESC]]></message>
 	</layout>
 	<state>
 		<name>COM_VIRTUEMART_USER_VIEW_DEFAULT_TITLE</name>
 		<description><![CDATA[COM_VIRTUEMART_USER_VIEW_DEFAULT_DESC]]></description>
+
+		<url addpath="/administrator/components/com_virtuemart/elements">
+			<param name="layout" section="com_virtuemart" type="vmuserlayoutmenu"
+				value_field="layout_name" label="COM_VIRTUEMART_USER_FIELD_SELECT_LAYOUT"
+				description="COM_VIRTUEMART_USER_FIELD_SELECT_LAYOUT_DESC" />
+		</url>
 	</state>
+
+	<fields name="request">
+		<fieldset name="request"
+			addfieldpath="/administrator/components/com_virtuemart/models/fields">
+			<field name="layout" type="vmuserlayout"
+				label="COM_VIRTUEMART_USER_FIELD_SELECT_LAYOUT" required="true"
+				description="COM_VIRTUEMART_USER_FIELD_SELECT_LAYOUT_DESC" />
+		</fieldset>
+	</fields>
 </metadata>
