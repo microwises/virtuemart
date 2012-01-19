@@ -18,13 +18,13 @@
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />
 		<param   type="spacer" default="VMCUSTOM_STOCKABLE_DESC" level="level1" />
-        <param name="selectname1" type="text"  size="30"  default="VMCUSTOM_STOCKABLE_SIZE" label="VMCUSTOM_STOCKABLE_SELECTNAME" description="VMCUSTOM_STOCKABLE_SELECTNAME_DESC" />
+        <param name="selectname1" type="text"  size="30"  default="" label="VMCUSTOM_STOCKABLE_SELECTNAME" description="VMCUSTOM_STOCKABLE_SELECTNAME_DESC" />
         <param name="selectoptions1" type="textarea"  rows="10" cols="5" label="VMCUSTOM_STOCKABLE_SELECTOPTIONS" description="VMCUSTOM_STOCKABLE_SELECTOPTIONS_DESC" />
-        <param name="selectname2" type="text"  size="30"  default="COM_VIRTUEMART_PRODUCT_WIDTH" label="VMCUSTOM_STOCKABLE_SELECTNAME" description="VMCUSTOM_STOCKABLE_SELECTNAME_DESC" />
+        <param name="selectname2" type="text"  size="30"  default="" label="VMCUSTOM_STOCKABLE_SELECTNAME" description="VMCUSTOM_STOCKABLE_SELECTNAME_DESC" />
         <param name="selectoptions2" type="textarea"  rows="10" cols="5" label="VMCUSTOM_STOCKABLE_SELECTOPTIONS" description="VMCUSTOM_STOCKABLE_SELECTOPTIONS_DESC" />
-        <param name="selectname3" type="text"  size="30"  default="COM_VIRTUEMART_PRODUCT_LENGTH" label="VMCUSTOM_STOCKABLE_SELECTNAME" description="VMCUSTOM_STOCKABLE_SELECTNAME_DESC" />
+        <param name="selectname3" type="text"  size="30"  default="" label="VMCUSTOM_STOCKABLE_SELECTNAME" description="VMCUSTOM_STOCKABLE_SELECTNAME_DESC" />
         <param name="selectoptions3" type="textarea"  rows="10" cols="5" label="VMCUSTOM_STOCKABLE_SELECTOPTIONS" description="VMCUSTOM_STOCKABLE_SELECTOPTIONS_DESC" />
-        <param name="selectname4" type="text"  size="30"  default="COM_VIRTUEMART_PRODUCT_HEIGHT" label="VMCUSTOM_STOCKABLE_SELECTNAME" description="VMCUSTOM_STOCKABLE_SELECTNAME_DESC" />
+        <param name="selectname4" type="text"  size="30"  default="" label="VMCUSTOM_STOCKABLE_SELECTNAME" description="VMCUSTOM_STOCKABLE_SELECTNAME_DESC" />
         <param name="selectoptions4" type="textarea"  rows="10" cols="5" label="VMCUSTOM_STOCKABLE_SELECTOPTIONS" description="VMCUSTOM_STOCKABLE_SELECTOPTIONS_DESC" />
     </params>
 </install>
