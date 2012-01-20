@@ -121,7 +121,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	if (!empty($payment_info)) {
 	    $lang = & JFactory::getLanguage();
 	    if ($lang->hasKey($method->payment_info)) {
-		$payment_info = JTExt::_($method->payment_info);
+		$payment_info = JText::_($method->payment_info);
 	    } else {
 		$payment_info = $method->payment_info;
 	    }

@@ -179,16 +179,22 @@ class VirtueMartModelProduct extends VmModel {
 		$joinLang = true; // test fix Patrick
 
 		$where = array();
-
-		if($onlyPublished){
-			$where[] = ' p.`published`="1" ';
+		$useCore = true;
+		if ($this->searchplugin !== 0){
+			//reset generic filters ! Why? the plugin can do it, if it wishes it.
+			// 			if ($this->keyword ==='') $where=array();
+			JPluginHelper::importPlugin('vmcustom');
+			$dispatcher = JDispatcher::getInstance();
+			$PluginJoinTables = array();
+			$ret = $dispatcher->trigger('plgVmAddToSearch',array(&$where, &$PluginJoinTables, $this->searchplugin));
+			foreach($ret as $r){
+				if(!$r) $useCore = false;
+			}
 		}
 
-		if($app->isSite() && !VmConfig::get('use_as_catalog',0) && VmConfig::get('stockhandle','none')=='disableit' ){
-			$where[] = ' p.`product_in_stock`>"0" ';
-		}
-
-		if ( $this->keyword !== "0" and $group ===false) {
+		if($useCore){
+// 		if ( $this->keyword !== "0" and $group ===false) {
+		if ( !empty($this->keyword) and $this->keyword !=='' and $group ===false) {
 			$groupBy = 'group by p.`virtuemart_product_id`';
 
 			//		$keyword = trim(preg_replace('/\s+/', '%', $keyword), '%');
@@ -225,14 +231,16 @@ class VirtueMartModelProduct extends VmModel {
 			$where[] = " ( ".implode(' OR ', $custom_search )." ) ";
 		}
 
-		if ($this->searchplugin !== 0){
-			//reset generic filters !
-			if ($this->keyword ==='') $where=array();
-			JPluginHelper::importPlugin('vmcustom');
-			$dispatcher = JDispatcher::getInstance();
-			$PluginJoinTables = array();
-			$dispatcher->trigger('plgVmAddToSearch',array(&$where, &$PluginJoinTables, $this->searchplugin));
+
+
+		if($onlyPublished){
+			$where[] = ' p.`published`="1" ';
 		}
+
+		if($app->isSite() && !VmConfig::get('use_as_catalog',0) && VmConfig::get('stockhandle','none')=='disableit' ){
+			$where[] = ' p.`product_in_stock`>"0" ';
+		}
+
 
 		if ($virtuemart_category_id>0){
 			$joinCategory = true ;
@@ -346,6 +354,7 @@ class VirtueMartModelProduct extends VmModel {
 			$joinPrice 		= true ;
 			$this->searchplugin	= false ;
 // 			$joinLang = false;
+		}
 		}
 
 		//write the query, incldue the tables

@@ -51,7 +51,7 @@ class JElementVmAcceptedCurrency extends JElement {
 	$db->setQuery($q);
 	$currencies = $db->loadObjectList();
 	$options = array();
-	$options[] = array( 'value' => 0 ,'text' =>JTExt::_('COM_VIRTUEMART_DEFAULT_VENDOR_CURRENCY'));
+	$options[] = array( 'value' => 0 ,'text' =>JText::_('COM_VIRTUEMART_DEFAULT_VENDOR_CURRENCY'));
 	if (!is_array($currencies)) {
 	    $currencies=(array)$currencies;
 	}

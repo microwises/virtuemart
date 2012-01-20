@@ -49,20 +49,20 @@ class VirtuemartControllerRatings extends VmController {
 	 * @author Max Milbers
 	 *
 	function edit(){
-		
-		// Get the review IDs to retrieve (input variable may be cid, cid[] or virtuemart_rating_review_id 
-		$cids = JRequest::getVar('cid', array());		
+
+		// Get the review IDs to retrieve (input variable may be cid, cid[] or virtuemart_rating_review_id
+		$cids = JRequest::getVar('cid', array());
 		if (empty($cids)) {
 			$cids= JRequest::getVar('virtuemart_rating_review_id',false);
 		}
 		if ($cids && !is_array($cids)) $cids = array($cids);
-		
+
 		jimport( 'joomla.utilities.arrayhelper' );
 		JArrayHelper::toInteger($cids);
-		
+
 		parent::edit();
 	}*/
-	
+
 	/**
 	 * Generic edit task
 	 *
@@ -73,7 +73,7 @@ class VirtuemartControllerRatings extends VmController {
 		JRequest::setVar('controller', $this->_cname);
 		JRequest::setVar('view', $this->_cname);
 		JRequest::setVar('layout', 'edit_review');
-		JRequest::setVar('hidemenu', 1);
+// 		JRequest::setVar('hidemenu', 1);
 
 		if(empty($view)){
 			$document = JFactory::getDocument();
@@ -85,7 +85,7 @@ class VirtuemartControllerRatings extends VmController {
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
 		}
-				
+
 		parent::display();
 	}
 
@@ -107,21 +107,21 @@ class VirtuemartControllerRatings extends VmController {
 
 	/**
 	 * Save task for review
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	function saveReview(){
-		
+
 		$this->storeReview(false);
 	}
 
 	/**
 	 * Save task for review
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	function applyReview(){
-		
+
 		$this->storeReview(true);
 	}
 
@@ -147,19 +147,19 @@ class VirtuemartControllerRatings extends VmController {
 			$redir = 'index.php?option=com_virtuemart&view=ratings&task=listreviews&virtuemart_product_id='.$virtuemart_product_id;
 		}
 
-		$this->setRedirect($redir, $msg);			
+		$this->setRedirect($redir, $msg);
 	}
 	/**
 	 * Save task for review
-	 * 
+	 *
 	 * @author Max Milbers
 	 */
 	function cancelEditReview(){
 
 		$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
 		$msg = JText::sprintf('COM_VIRTUEMART_STRING_CANCELLED',$this->mainLangKey); //'COM_VIRTUEMART_OPERATION_CANCELED'
-		$this->setRedirect('index.php?option=com_virtuemart&view=ratings&task=listreviews&virtuemart_product_id='.$virtuemart_product_id, $msg);	
+		$this->setRedirect('index.php?option=com_virtuemart&view=ratings&task=listreviews&virtuemart_product_id='.$virtuemart_product_id, $msg);
 	}
-	
+
 }
 // pure php no closing tag

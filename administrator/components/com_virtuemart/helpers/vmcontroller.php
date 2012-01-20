@@ -69,10 +69,18 @@ class VmController extends JController{
 	{
 		$document	= JFactory::getDocument();
 		$viewType	= $document->getType();
-		$viewName	= JRequest::getCmd('view', $this->default_view);
-		$viewLayout	= JRequest::getCmd('layout', 'default');
+		if(JVM_VERSION==2){
+			$viewName	= JRequest::getCmd('view', $this->default_view);
+			$viewLayout	= JRequest::getCmd('layout', 'default');
 
-		$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath));
+			$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath));
+		} else {
+			$viewName	= JRequest::getCmd('view', '');
+			$viewLayout	= JRequest::getCmd('layout', 'default');
+
+			$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->_basePath));
+		}
+
 
 /*		// Get/Create the model
 		if ($model = $this->getModel($viewName)) {
@@ -131,7 +139,7 @@ class VmController extends JController{
 		JRequest::setVar('controller', $this->_cname);
 		JRequest::setVar('view', $this->_cname);
 		JRequest::setVar('layout', $layout);
-		JRequest::setVar('hidemenu', 1);
+// 		JRequest::setVar('hidemenu', 1);
 
 		if(empty($view)){
 			$document = JFactory::getDocument();

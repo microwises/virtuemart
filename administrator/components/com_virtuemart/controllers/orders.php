@@ -229,7 +229,7 @@ class VirtuemartControllerOrders extends VmController {
 	public function editOrderItem() {
 		//vmdebug('editOrderItem');
 	    JRequest::setVar('layout', 'orders_editorderitem');
-	    JRequest::setVar('hidemenu', 1);
+// 	    JRequest::setVar('hidemenu', 1);
 
 	    parent::display();
 	}

@@ -55,7 +55,7 @@ class VirtuemartViewMedia extends VmView {
 			$this->assignRef('media',	$media);
 
 			$isNew = ($media->virtuemart_media_id < 1);
-			if ($isNew) {
+/*			if ($isNew) {
 				if(!Permissions::getInstance()->check('admin')) {
 					$usermodel = $this->getModel('user');
 // 					$usermodel->setCurrent();
@@ -66,7 +66,7 @@ class VirtuemartViewMedia extends VmView {
 				} else $media->virtuemart_vendor_id = 1;
 				if(empty($media->virtuemart_vendor_id))$media->virtuemart_vendor_id = $userDetails->virtuemart_vendor_id;
 			}
-
+*/
 			$this->addStandardEditViewCommands();
 
         }

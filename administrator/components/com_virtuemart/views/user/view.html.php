@@ -38,8 +38,6 @@ class VirtuemartViewUser extends VmView {
 		$mainframe = JFactory::getApplication() ;
 
 		// Load the helper(s)
-
-
 		$this->loadHelper('html');
 
 
@@ -54,6 +52,7 @@ class VirtuemartViewUser extends VmView {
 			if(Vmconfig::get('multix','none') !=='none'){
 // 				$model->setCurrent();
 			} else {
+
 				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
 				$userId = VirtueMartModelVendor::getUserIdByVendorId(1);
 				$model->setId($userId);

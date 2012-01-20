@@ -37,7 +37,7 @@ class JElementVMFiles extends JElement {
 		$exclude	= $node->attributes('exclude');
 		$stripExt	= $node->attributes('stripext');
                 if (!JFolder::exists($path)) {
-                    return  JTExt::sprintf('COM_VIRTUEMART_FOLDER_NOT_EXIST', $node->attributes('directory'));
+                    return  JText::sprintf('COM_VIRTUEMART_FOLDER_NOT_EXIST', $node->attributes('directory'));
                 }
 		$files		= JFolder::files($path, $filter);
 

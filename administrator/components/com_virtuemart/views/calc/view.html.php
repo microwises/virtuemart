@@ -76,13 +76,6 @@ class VirtuemartViewCalc extends VmView {
 					$calc->calc_currency = $currency;
 				}
 
-				$usermodel = $this->getModel('user');
-// 				$usermodel->setCurrent();
-				$userDetails = $usermodel->getUser();
-				if(empty($userDetails->virtuemart_vendor_id)){
-					JError::raiseError(403,'Forbidden for non vendors');
-				}
-				if(empty($calc->virtuemart_vendor_id))$calc->virtuemart_vendor_id = $userDetails->virtuemart_vendor_id;
 			}
 
 			$this->assignRef('entryPointsList',self::renderEntryPointsList($calc->calc_kind));

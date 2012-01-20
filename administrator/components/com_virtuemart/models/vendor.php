@@ -193,7 +193,6 @@ class VirtueMartModelVendor extends VmModel {
 		foreach($errors as $error){
 			$this->setError($error);
 			vmError('Store vendor '.$error);
-			vmdebug('Store vendor '.$error);
 		}
 
 	}

@@ -36,7 +36,7 @@ class JElementVmjpluginwarning extends JElement {
 	if ($option == 'com_virtuemart')
 	    return null;
 	else
-	    return JTExt::_('COM_VIRTUEMART_PLUGIN_WARNING');
+	    return JText::_('COM_VIRTUEMART_PLUGIN_WARNING');
     }
 
 }

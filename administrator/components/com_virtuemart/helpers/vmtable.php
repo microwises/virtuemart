@@ -517,13 +517,55 @@ class VmTable extends JTable{
 			if(isset($this->virtuemart_vendor_id )){
 			$multix = Vmconfig::get('multix','none');
 			if( $multix == 'none'){
-				if(!isset($this->user_is_vendor)){
+
+				//Lets check if the user is admin or the mainvendor
+				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+				$loggedVendorId = Permissions::getInstance()->isSuperVendor();
+				if($loggedVendorId !== 0){
+					$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 1;
+				} else {
+					//We are in the user table
+					if(isset($this->user_is_vendor)){
+						if($this->user_is_vendor==0){
+							$this->virtuemart_vendor_id = 0;
+						} else {
+							$app = JFactory::getApplication();
+							if($app->isSite()){
+
+								$tbl_key = $this->_tbl_key ;
+								$q = 'SELECT `virtuemart_vendor_id` FROM `' . $this->_tbl . '` ';
+								$q .= 'WHERE `' . $this->_tbl_key.'`='.$this->$tbl_key;
+								$this->_db->setQuery($q);
+								$virtuemart_vendor_id = $this->_db->loadResult();
+								if(!empty($virtuemart_vendor_id) and $loggedVendorId!=$virtuemart_vendor_id){
+// 									vmWarn('COM_VIRTUEMART_NOT_SAME_VENDOR',$loggedVendorId,$virtuemart_vendor_id
+									vmWarn('Stop try to hack this store, you got logged');
+									vmdebug('Hacking attempt stopped, logged vendor '.$loggedVendorId.' but data belongs to '.$virtuemart_vendor_id);
+									return false;
+								}
+
+							}
+						}
+					} else {
+						//Allow storing for the orders table
+						if(get_class($this)!='TableOrders'){
+							vmError('Coding error, vmtable isSuperSuper gives back false, but you are admin',JText::sprintf('COM_VIRTUEMART_STRING_FORBIDDEN_FOR_NON_VENDORS',$this->_tbl));
+							return false;
+						} else {
+							$this->virtuemart_vendor_id = 1;
+						}
+
+					}
+
+				}
+
+/*				if(!isset($this->user_is_vendor)){
 					$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 1;
 				} else if($this->user_is_vendor){
 					$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 1;
 				} else {
 					$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 0;
-				}
+				}*/
 			} else if($multix == 'administrated'){
 
 				if(empty($this->virtuemart_vendor_id)){

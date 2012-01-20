@@ -109,7 +109,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 			$where[] = $this->_name .'.`custom_specification_default1` LIKE '.$keyword;
 			$PluginJoinTables[] = $this->_name ;
 		}
-
+		return true;
 	}
 
 	// get product param for this plugin on edit

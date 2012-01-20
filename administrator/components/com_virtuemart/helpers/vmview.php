@@ -105,7 +105,7 @@ class VmView extends JView{
 		if (JRequest::getCmd('tmpl') =='component' ) {
 			if (!class_exists('JToolBarHelper')) require(JPATH_ADMINISTRATOR.DS.'includes'.DS.'toolbar.php');
 		} else {
-		JRequest::setVar('hidemainmenu', true);
+// 		JRequest::setVar('hidemainmenu', true);
 		JToolBarHelper::divider();
 		JToolBarHelper::save();
 		JToolBarHelper::apply();

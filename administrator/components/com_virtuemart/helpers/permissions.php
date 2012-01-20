@@ -35,9 +35,12 @@ class Permissions extends JObject{
 
 	var $_db;
 
-	var $_perms;
+	private $_perms;
 
 	var $_is_registered_customer;
+
+	private $_vendorId = false;
+
 
 	static $_instance;
 
@@ -165,12 +168,40 @@ class Permissions extends JObject{
 			//We must prevent that Administrators or Managers are 'just' shoppers
 			//TODO rewrite it working correctly with jooomla ACL
 			//if ($this->_perms == "shopper") {
-				if (stristr($user->usertype,"Administrator")) {
+// 			vmdebug('my user in perms',$user);
+
+			if(JVM_VERSION === 2 ){
+
+				if($user->groups){
+					if($user->authorise('core.admin')){
+						$this->_perms  = 'admin';
+
+					} else if($user->authorise('core.manage')){
+						$this->_perms  = 'storeadmin';
+					} else {
+						$this->_perms  = 'shopper';
+					}
+
+				}
+
+			} else {
+				if(strpos($user->usertype,'Administrator')!== false){
+					$this->_perms  = "admin";
+				} else if(strpos($user->usertype,'Manager')!== false){
+					$this->_perms  = "storeadmin";
+				} else {
+					$this->_perms  = "shopper";
+				}
+/*				if (stristr($user->usertype,"Administrator")) {
 					$this->_perms  = "admin";
 				}
 				elseif (stristr($user->usertype,"Manager")) {
 					$this->_perms  = "storeadmin";
-				}
+				}		*/
+
+			}
+			vmdebug('$user->authorise perms '.$this->_perms);
+
 			//}
 			$this->_is_registered_customer = true;
 		} else {
@@ -213,22 +244,50 @@ class Permissions extends JObject{
 	}
 
 	/**
-	 * Checks if user is Superadmin or has vendorId=1,
-	 * in the other case the vendorId should be matched with the one of the first parameter
+	 * Checks if user is admin or has vendorId=1,
+	 * if superadmin, but not a vendor it gives back vendorId=1 (single vendor, but multiuser administrated)
 	 *
 	 * @author Mattheo Vicini
 	 * @author Max Milbers
 	 */
 
-	public function isSuperVendor($vendorId){
+	public function isSuperVendor(){
 
 
-		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
+		if(!$this->_vendorId){
+// 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
+// 			$vendorModel = new VirtueMartModelVendor();
+// 			$this->_vendorId = $vendorModel->getLoggedVendor();
+			$user = JFactory::getUser();
 
-		$userModel = new VirtueMartModelUser();
+			if(!empty( $user->id)){
+				$q = 'SELECT `virtuemart_vendor_id`
+							FROM `#__virtuemart_vmusers` `au`
+							LEFT JOIN `#__virtuemart_userinfos` `u`
+							ON (au.virtuemart_user_id = u.virtuemart_user_id)
+							WHERE `u`.`virtuemart_user_id`="' .$user->id.'" AND `u`.`user_is_vendor` = "1" ';
+				$db= JFactory::getDbo();
+				$db->setQuery($q);
+				$virtuemart_vendor_id = $db->loadResult();
+				if ($virtuemart_vendor_id) $this->_vendorId = $virtuemart_vendor_id;
+			} else {
+				return false;
+			}
 
-		$user = $userModel->getCurrentUser();
-		vmdebug('myUser in isSuperVendor');
+		}
+
+		if($this->_vendorId!=0){
+			vmdebug('Perm->isSuperVendor, user is a vendor');
+			return $this->_vendorId;
+		} else {
+			if($this->check('admin') ){
+				$this->_vendorId = 1;
+				vmdebug('Perm->isSuperVendor, user is an admin');
+				return $this->_vendorId;
+			} else {
+				return false;
+			}
+		}
 
 	}
 

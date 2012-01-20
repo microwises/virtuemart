@@ -59,8 +59,8 @@ class VirtueMartModelUser extends VmModel {
 	}
 
 	/**
-	 * Resets the user id and data, you should avoid external use of this function
-	 * I set it now to private.
+	 * public function Resets the user id and data
+	 *
 	 *
 	 * @author Max Milbers
 	 */
@@ -76,14 +76,15 @@ class VirtueMartModelUser extends VmModel {
 			//not anonymous, but no cid means already registered user edit own data
 			if(empty($cid)){
 				$this->setUserId($user->id);
-// 				vmdebug('setId setCurrent $user',$user->get('id'));
+				vmdebug('setId setCurrent $user',$user->get('id'));
 			} else {
 				if($cid != $user->id){
 					if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-					if(Permissions::getInstance()->check("admin,storeadmin")) {
+					if(Permissions::getInstance()->check("admin")) {
 						$this->setUserId($cid);
+						vmdebug('setId $user '.$cid);
 					} else {
-//						JError::raiseWarning(1,'Hacking attempt');
+						JError::raiseWarning(1,'Hacking attempt');
 						$this->setUserId($user->id);
 					}
 				}else {
@@ -93,6 +94,11 @@ class VirtueMartModelUser extends VmModel {
 		}
 	}
 
+	/**
+	 * Internal function
+	 *
+	 * @param unknown_type $id
+	 */
 	private function setUserId($id){
 
 		$app = JFactory::getApplication();
@@ -102,16 +108,6 @@ class VirtueMartModelUser extends VmModel {
 				$this->_data = null;
 			}
 // 		}
-	}
-
-	/**
-	 * Set the ID to the current user
-	 * @deprecated, use setId instead
-	 */
-	function setCurrent()
-	{
-		$user = JFactory::getUser();
-		$this->setId($user->get('id'));
 	}
 
 
