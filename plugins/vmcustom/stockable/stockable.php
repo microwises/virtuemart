@@ -73,7 +73,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 			$html .=' <span style="width:98px; display: inline-block;color:#000;overflow:hidden;">'.JTEXT::_($listname).'</span>';
 			}
 		}
-		$html .=' <span style="width:98px; display: inline-block;color:#000;">'. JText::_('COM_VIRTUEMART_CART_PRICE') .'</span>';
+		$html .=' <span style="width:98px; display: inline-block;color:#000;">'. JText::_('VMCUSTOM_STOCKABLE_PRICE') .'</span>';
 		// $param = json_decode($field->custom_param,true);
 		if (isset($field->child)) $childList = $field->child;
 		else $childList = array();
@@ -124,10 +124,10 @@ class plgVmCustomStockable extends vmCustomPlugin {
 				<fieldset style="background-color:#F9F9F9;">
 					<legend>'. JText::_('COM_VIRTUEMART_PRODUCT_FORM_NEW_PRODUCT_LBL').'</legend>
 					<div id="new_stockable">
-						<span>'. JText::_('COM_VIRTUEMART_PRODUCT_SKU').' : <input value="" name="stockable[product_sku]" type="text"></span>
-						<span>'. JText::_('COM_VIRTUEMART_PRODUCT_NAME').' : <input value="" name="stockable[product_name]" type="text"></span>
-						<span>'. JText::_('COM_VIRTUEMART_PRODUCT_PRICE').' : <input value="" name="stockable[product_price]" type="text"></span>
-						<span>'. JText::_('COM_VIRTUEMART_PRODUCT_IN_STOCK').' : <input value="" name="stockable[product_in_stock]" type="text"></span>
+						<span>'. JText::_('COM_VIRTUEMART_PRODUCT_SKU').'</span> <span><input value="" name="stockable[product_sku]" type="text"></span>
+						<span>'. JText::_('COM_VIRTUEMART_PRODUCT_NAME').'</span> <span><input value="" name="stockable[product_name]" type="text"></span>
+						<span>'. JText::_('VMCUSTOM_STOCKABLE_PRICE').'</span> <span><input value="" name="stockable[product_price]" type="text"></span>
+						<span>'. JText::_('COM_VIRTUEMART_PRODUCT_IN_STOCK').'</span> <span><input value="" name="stockable[product_in_stock]" type="text"></span>
 
 						<span id="new_stockable_product"><span class="icon-nofloat vmicon vmicon-16-new"></span>'. JText::_('COM_VIRTUEMART_ADD').'</span>
 					</div>

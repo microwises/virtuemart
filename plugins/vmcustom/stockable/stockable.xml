@@ -7,7 +7,7 @@
     <copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
     <version>1.9.8</version>
-    <description>Stockable product variant selector plugin</description>
+    <description>VMCUSTOM_STOCKABLE_DESC</description>
     <languages>
         <language tag="en-GB">en-GB.plg_vmcustom_stockable.ini</language>
         <language tag="fr-FR">fr-FR.plg_vmcustom_stockable.ini</language>
@@ -17,7 +17,6 @@
     </files>
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />
-		<param   type="spacer" default="VMCUSTOM_STOCKABLE_DESC" level="level1" />
         <param name="selectname1" type="text"  size="30"  default="" label="VMCUSTOM_STOCKABLE_SELECTNAME" description="VMCUSTOM_STOCKABLE_SELECTNAME_DESC" />
         <param name="selectoptions1" type="textarea"  rows="10" cols="25" label="VMCUSTOM_STOCKABLE_SELECTOPTIONS" description="VMCUSTOM_STOCKABLE_SELECTOPTIONS_DESC" />
         <param name="selectname2" type="text"  size="30"  default="" label="VMCUSTOM_STOCKABLE_SELECTNAME" description="VMCUSTOM_STOCKABLE_SELECTNAME_DESC" />

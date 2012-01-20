@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<install version="1.5" type="plugin" group="vmcustom" >	
+<install version="1.5" type="plugin" group="vmcustom" >
     <name>VMCustom - specification</name>
     <creationDate>June 2011</creationDate>
     <author>The VirtueMart Development Team</author>
@@ -18,8 +18,8 @@
     <params addpath="/administrator/components/com_virtuemart/elements">
         <param type="vmjpluginwarning" />
         <param name="custom_specification_name1" type="text" size="64"  default="" label="VMCUSTOM_SPECIFICATION_NAME_INFO" description="" />
-        <param name="custom_specification_default1" type="text"  size="128"  default="" label="VMCUSTOM_SPECIFICATION_DEFAULT_INFO" description="VMCUSTOM_SPECIFICATION_DEFAULT_INFO_DESC" />
+        <param name="custom_specification_default1" type="text"  size="64"  default="" label="VMCUSTOM_SPECIFICATION_DEFAULT_INFO" description="VMCUSTOM_SPECIFICATION_DEFAULT_INFO_DESC" />
         <param name="custom_specification_name2" type="text" size="64"  default="" label="VMCUSTOM_SPECIFICATION_NAME_INFO" description="VMCUSTOM_SPECIFICATION_NAME_INFO_DESC" />
-        <param name="custom_specification_default2" type="text"  size="128"  default="" label="VMCUSTOM_SPECIFICATION_DEFAULT_INFO" description="VMCUSTOM_SPECIFICATION_DEFAULT_INFO_DESC" />
+        <param name="custom_specification_default2" type="text"  size="64"  default="" label="VMCUSTOM_SPECIFICATION_DEFAULT_INFO" description="VMCUSTOM_SPECIFICATION_DEFAULT_INFO_DESC" />
     </params>
 </install>

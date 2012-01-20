@@ -32,7 +32,7 @@ class VirtuemartViewCustom extends JView {
 
 	/* json object */
 	private $json = null;
-	
+
 	function display($tpl = null) {
 			$db = JFactory::getDBO();
 		if ( $virtuemart_media_id = JRequest::getInt('virtuemart_media_id') ) {
@@ -40,7 +40,7 @@ class VirtuemartViewCustom extends JView {
 			$query='SELECT `file_url`,`file_title` FROM `#__virtuemart_medias` where `virtuemart_media_id`='.$virtuemart_media_id;
 			$db->setQuery( $query );
 			$json = $db->loadObject();
-			if (isset($json->file_url)) { 
+			if (isset($json->file_url)) {
 				$json->file_url = JURI::root().$json->file_url;
 				$json->msg =  'OK';
 				echo json_encode($json);
@@ -48,7 +48,7 @@ class VirtuemartViewCustom extends JView {
 				$json->msg =  '<b>'.JText::_('COM_VIRTUEMART_NO_IMAGE_SET').'</b>';
 				echo json_encode($json);
 			}
-		} 
+		}
 		elseif ( $custom_jplugin_id = JRequest::getInt('custom_jplugin_id') ) {
 			if (VmConfig::isJ15()) {
 				$table = '#__plugins';
@@ -61,11 +61,11 @@ class VirtuemartViewCustom extends JView {
 			$db ->setQuery($q);
 			$this->plugin = $db ->loadObject();
 			$this->loadHelper('parameterparser');
-                $parameters = new vmParameters($this->plugin->params,  $this->plugin->element , 'plugin' ,'vmcustom');
+			$parameters = new vmParameters($this->plugin->params,  $this->plugin->element , 'plugin' ,'vmcustom');
 			$lang = JFactory::getLanguage();
 			$filename = 'plg_vmcustom_' .  $this->plugin->element;
 			$lang->load($filename, JPATH_ADMINISTRATOR);
-	        echo $parameters->render(); 
+			echo $parameters->render();
 			echo '<input type="hidden" value="'.$this->plugin->element.'" name="custom_value">';
 			jExit();
 		}

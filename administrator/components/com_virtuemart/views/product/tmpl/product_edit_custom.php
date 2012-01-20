@@ -128,7 +128,7 @@ if (isset($this->product->customfields_parent_id)) { ?>
 						else echo $emptyTable;
 						?>
 					</tbody>
-				</table>
+				</table><!-- custom_fields -->
 			</fieldset>
 			<fieldset style="background-color:#F9F9F9;">
 				<legend><?php echo JText::_('COM_VIRTUEMART_CUSTOM_EXTENSION'); ?></legend>
@@ -203,7 +203,7 @@ if (isset($this->product->customfields_parent_id)) { ?>
 		// console.log(handler);
 	  // });
 	// });
-	
+
 
 eventNames = "click.remove keydown.remove change.remove focus.remove"; // all events you wish to bind to
 
@@ -229,14 +229,14 @@ function removeParent() {jQuery('#customfieldsParent').remove();console.log($(th
             // if((new RegExp('^(' + (events === '*' ? '.+' : events.replace(',','|').replace(/^on/i,'')) + ')$' ,'i')).test(name)) {
                // jQuery.each(handler, function(i,handler){
                    // outputFunction(elem, '\n' + i + ': [' + name + '] : ' + handler );
-				   
-				   
+
+
                // });
            // }
         // });
     });
 
-	
+
 	//onsole.log(jQuery('#customfieldsTable').data('events'));
 
 </script>

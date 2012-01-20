@@ -183,3 +183,4 @@ table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}*
 .vmpayment_description, .vmshipment_description{
     margin-left: 2px;
 }
+#plugin-Container{display:table;}
