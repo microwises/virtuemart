@@ -94,16 +94,17 @@ defined('_JEXEC') or die('Restricted access');
 				<th><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICES_ROUNDING'); ?></th>
 			</tr>
 			<?php
+
 			echo ShopFunctions::writePriceConfigLine($this->config,'basePrice','COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE');
 			echo ShopFunctions::writePriceConfigLine($this->config,'variantModification','COM_VIRTUEMART_ADMIN_CFG_PRICE_VARMOD');
 			echo ShopFunctions::writePriceConfigLine($this->config,'basePriceVariant','COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_VAR');
 			echo ShopFunctions::writePriceConfigLine($this->config,'basePriceWithTax','COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_WTAX');
 			echo ShopFunctions::writePriceConfigLine($this->config,'discountedPriceWithoutTax','COM_VIRTUEMART_ADMIN_CFG_PRICE_DISCPRICE_WOTAX');
-			echo ShopFunctions::writePriceConfigLine($this->config,'salesPriceWithDiscount','COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WD');
-			echo ShopFunctions::writePriceConfigLine($this->config,'salesPrice','COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE');
 			echo ShopFunctions::writePriceConfigLine($this->config,'priceWithoutTax','COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WOTAX');
-			echo ShopFunctions::writePriceConfigLine($this->config,'discountAmount','COM_VIRTUEMART_ADMIN_CFG_PRICE_DISC_AMOUNT');
 			echo ShopFunctions::writePriceConfigLine($this->config,'taxAmount','COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT');
+			echo ShopFunctions::writePriceConfigLine($this->config,'salesPrice','COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE');
+			echo ShopFunctions::writePriceConfigLine($this->config,'salesPriceWithDiscount','COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WD');
+			echo ShopFunctions::writePriceConfigLine($this->config,'discountAmount','COM_VIRTUEMART_ADMIN_CFG_PRICE_DISC_AMOUNT');
 			?>
 		</table>
 	    </fieldset>
