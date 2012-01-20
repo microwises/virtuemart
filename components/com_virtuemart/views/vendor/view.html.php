@@ -54,15 +54,16 @@ class VirtuemartViewVendor extends VmView {
 		$layoutName = $this->getLayout();
 
 		$model = $this->getModel();
-		$virtuemart_vendor_id = JRequest::getInt('virtuemart_vendor_id');
 
-		if (empty($virtuemart_vendor_id )) {
+
+		if ($layoutName=='default') {
 			$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_LIST') );
 			$vendors = $model->getVendors();
 			$this->assignRef('vendors', $vendors);
 
 		} else {
 
+			$virtuemart_vendor_id = JRequest::getInt('virtuemart_vendor_id');
 			$vendor = $model->getVendor($virtuemart_vendor_id);
 			$model->addImages($vendor);
 
@@ -70,8 +71,7 @@ class VirtuemartViewVendor extends VmView {
 
 			$userId = $model->getUserIdByVendorId($virtuemart_vendor_id);
 
-			if (!class_exists('VirtuemartModeluser')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
-			$usermodel = new VirtuemartModelUser();
+			$usermodel = $this->getModel('user');
 
 			$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
 			$userFields = $usermodel->getUserInfoInUserFields($layoutName, 'BT', $virtuemart_userinfo_id);

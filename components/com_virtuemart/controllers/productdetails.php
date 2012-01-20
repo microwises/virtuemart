@@ -264,7 +264,6 @@ class VirtueMartControllerProductdetails extends JController {
 				$customPrices[$priceVariant]=$selected;
 			}
 		}
-
 		jimport( 'joomla.utilities.arrayhelper' );
 		$quantityArray = JRequest::getVar('quantity',array());	//is sanitized then
 		JArrayHelper::toInteger($quantityArray);
@@ -288,13 +287,14 @@ class VirtueMartControllerProductdetails extends JController {
 
 		// Get the document object.
 		$document = JFactory::getDocument();
-
+		$document->setName('recalculate');
+		JResponse::setHeader('Cache-Control','no-cache, must-revalidate');
+		JResponse::setHeader('Expires','Mon, 6 Jul 2000 10:00:00 GMT');
 		// Set the MIME type for JSON output.
 		$document->setMimeEncoding( 'application/json' );
-
+				JResponse::setHeader('Content-Disposition','attachment;filename="recalculate.json"', true);
+				JResponse::sendHeaders(); 
 		echo json_encode ($priceFormated);
-		jexit();
-		die;
 
 	}
 

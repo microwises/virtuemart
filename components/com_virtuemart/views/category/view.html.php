@@ -53,14 +53,14 @@ class VirtuemartViewCategory extends VmView {
 
 		/* Load helpers */
 		$this->loadHelper('image');
-		if (!class_exists('VirtueMartModelCategory')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
-		$categoryModel = new VirtueMartModelCategory();
+		// if (!class_exists('VirtueMartModelCategory')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
+		// $categoryModel = new VirtueMartModelCategory();
 
 
-		if (!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
-		$productModel = new VirtueMartModelProduct();
-		//$categoryModel = $this->getModel('category');
-		//$productModel = $this->getModel('product');
+		// if (!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
+		// $productModel = new VirtueMartModelProduct();
+		$categoryModel = $this->getModel('category');
+		$productModel = $this->getModel('product');
 		$categoryId = JRequest::getInt('virtuemart_category_id', false);
 		$vendorId = 1;
 
@@ -130,7 +130,6 @@ class VirtuemartViewCategory extends VmView {
 
 	    $pagination = $productModel->getPagination(0,0,0,$perRow);
 	    $this->assignRef('vmPagination', $pagination);
-
 
 	    $orderByList = $productModel->getOrderByList($categoryId);
 	    $this->assignRef('orderByList', $orderByList);

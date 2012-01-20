@@ -226,7 +226,8 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		if ($this->searchplugin !== 0){
-
+			//reset generic filters !
+			if ($this->keyword ==='') $where=array();
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();
 			$PluginJoinTables = array();
@@ -374,7 +375,7 @@ class VirtueMartModelProduct extends VmModel {
 		if ($this->searchcustoms) {
 			$joinedTables .= ' LEFT JOIN `#__virtuemart_product_customfields` as pf ON p.`virtuemart_product_id` = pf.`virtuemart_product_id` ';
 		}
-		if ($this->searchplugin) {
+		if ($this->searchplugin!==0) {
 			if (!empty( $PluginJoinTables) ) {
 				$plgName = $PluginJoinTables[0] ;
 				$joinedTables .= ' LEFT JOIN `#__virtuemart_product_custom_plg_'.$plgName.'` as '.$plgName.' ON '.$plgName.'.`virtuemart_product_id` = p.`virtuemart_product_id` ' ;

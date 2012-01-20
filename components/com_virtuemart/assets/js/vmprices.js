@@ -37,6 +37,9 @@
 			radio.change(function() {
 				$.setproducttype(cart,virtuemart_product_id);
 			});
+			quantity.keyup(function() {
+				$.setproducttype(cart,virtuemart_product_id);
+			});
 		});
 
 		function sendtocart(form){
@@ -75,9 +78,10 @@
 
 	}
 	$.setproducttype = function(form,id){
-
+		form.view = null ;
 		var datas = form.serialize(),
 		prices = $("#productPrice"+id);
+		datas = datas.replace("&view=cart", "");
 		prices.fadeTo("fast", 0.75);
 		$.getJSON(vmSiteurl+'index.php?option=com_virtuemart&nosef=1&view=productdetails&task=recalculate&format=json'+vmLang,encodeURIComponent(datas),
 			function(datas, textStatus) {
