@@ -29,23 +29,28 @@ class VirtuemartControllerPlugin extends JController
 	/**
 	 * Method to render the plugin datas
 	 * this is an entry point to plugin to easy renders json or html
-	 *  
+	 *
 	 *
 	 * @access	public
 	 */
 	function display()
-	{ 
-			
+	{
+
+		if(!class_exists('Permissions'))
+				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+		if(!Permissions::getInstance()->check('admin')){
+			return false;
+		}
+
 		$type = JRequest::getWord('type', 'vmcustom');
-		$typeWhiteList = array('vmcustom','vmcalculation','vmpayment','vmshipper');
+		$typeWhiteList = array('vmcustom','vmcalculation');
 		if(!in_array($type,$typeWhiteList)) return false;
 
 		if(!$name = JRequest::getCmd('name', null) ) return $name;
-		
 
 		JPluginHelper::importPlugin($type, $name);
 		$dispatcher = JDispatcher::getInstance();
-		// if you want only one render simple in the plugin use jExit(); 
+		// if you want only one render simple in the plugin use jExit();
 		// or $render is an array of code to echo as html or json Objects!
 		$render = null ;
 		$dispatcher->trigger('plgVmOnSelfCallFE',array($type, $name, &$render));

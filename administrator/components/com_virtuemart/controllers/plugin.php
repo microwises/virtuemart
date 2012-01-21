@@ -16,6 +16,7 @@ defined('_JEXEC') or die();
 * other free or open source software licenses.
 * @version $Id: plugin.php 2641 2010-11-09 19:25:13Z milbo $
 */
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
@@ -29,22 +30,28 @@ class VirtuemartControllerPlugin extends JController
 	/**
 	 * Method to render the plugin datas
 	 * this is an entry point to plugin to easy renders json or html
-	 *  
+	 *
 	 *
 	 * @access	public
 	 */
 	function Plugin()
-	{ 
+	{
+
 		$type = JRequest::getWord('type', 'vmcustom');
 		$typeWhiteList = array('vmcustom','vmcalculation','vmpayment','vmshipper');
 		if(!in_array($type,$typeWhiteList)) return false;
 
-		$name = JRequest::getCmd('name', null);
+		$name = JRequest::getCmd('name', 'none');
 
+		$nameBlackList = array('plgVmValidateCouponCode','plgVmRemoveCoupon','none');
+		if(in_array($name,$nameBlackList)){
+			echo 'You got logged';
+			return false;
+		}
 
 		JPluginHelper::importPlugin($type, $name);
 		$dispatcher = JDispatcher::getInstance();
-		// if you want only one render simple in the plugin use jExit(); 
+		// if you want only one render simple in the plugin use jExit();
 		// or $render is an array of code to echo as html or json Object!
 		$render = null ;
 
