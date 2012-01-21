@@ -1,4 +1,6 @@
 <?php
+defined('_JEXEC') or die('');
+
 
 /**
  * Renders the email for the user send in the registration process

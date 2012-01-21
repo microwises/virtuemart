@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* product_medias table ( for media)
+* product_shoppergroups table ( for media)
 *
 * @package	VirtueMart
 * @subpackage Calculation tool
@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: calc.php 3002 2011-04-08 12:35:45Z alatak $
+* @version $Id: product_shoppergroups.php 3002 2011-04-08 12:35:45Z alatak $
 */
 
 defined('_JEXEC') or die();

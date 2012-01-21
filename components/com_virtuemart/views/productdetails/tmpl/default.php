@@ -35,9 +35,13 @@ $document->addScriptDeclaration("
 			});
 			return false ;
 		});
-		$('.additional-images .product-image').mouseover(function() {
-			himg = this.src ;
-			$('.main-image img').attr('src',himg );
+		$('.additional-images a').mouseover(function() {
+			var himg = this.href ;
+			var extension=himg.substring(himg.lastIndexOf('.')+1);
+			if (extension =='png' || extension =='jpg' || extension =='gif') {
+				$('.main-image img').attr('src',himg );
+			}
+			console.log(extension)
 		});
 	});
 ");

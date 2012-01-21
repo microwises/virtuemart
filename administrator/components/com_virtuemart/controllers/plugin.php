@@ -1,4 +1,5 @@
 <?php
+defined('_JEXEC') or die();
 /**
 *
 * Base controller
@@ -13,7 +14,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id: calc.php 2641 2010-11-09 19:25:13Z milbo $
+* @version $Id: plugin.php 2641 2010-11-09 19:25:13Z milbo $
 */
 
 jimport('joomla.application.component.controller');

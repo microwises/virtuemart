@@ -1,4 +1,6 @@
 <?php
+defined('_JEXEC') or die('');
+
 /**
  * Renders the email for the vendor send in the registration process
  * @package	VirtueMart
