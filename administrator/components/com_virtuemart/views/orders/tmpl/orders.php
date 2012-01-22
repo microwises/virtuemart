@@ -97,7 +97,7 @@ if (count($this->orderslist) > 0) {
 	<?php echo JHTML::_('link', '#', JText::_('COM_VIRTUEMART_ADD_COMMENT'), array('class' => 'show_comment')); ?>
 			</td>
 			<!-- Update -->
-			<td><?php echo VmHTML::checkbox('orders['.$order->virtuemart_order_id.'][customer_notified]', 0 ) . JText::_('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?>
+			<td><?php echo VmHTML::checkbox('orders['.$order->virtuemart_order_id.'][customer_notified]', 1 ) . JText::_('COM_VIRTUEMART_ORDER_LIST_NOTIFY'); ?>
 			    <br />
 			    &nbsp;&nbsp;&nbsp;<?php echo VmHTML::checkbox('orders['.$order->virtuemart_order_id.'][customer_send_comment]', 1 ) . JText::_('COM_VIRTUEMART_ORDER_HISTORY_INCLUDE_COMMENT'); ?>
 			    <br />

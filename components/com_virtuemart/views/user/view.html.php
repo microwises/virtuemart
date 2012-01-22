@@ -70,6 +70,12 @@ class VirtuemartViewUser extends VmView {
 	    $layoutName = JRequest::getWord('layout', 'default');
 	}
 
+	if(empty($this->ftask)){
+		$ftask ='saveUser';
+		$this->assignRef('fTask', $ftask);
+	}
+
+
 	if (!class_exists('ShopFunctions'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
 
