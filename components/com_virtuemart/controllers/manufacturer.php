@@ -15,7 +15,7 @@
 * other free or open source software licenses.
 * @version $Id: manufacturer.php 2420 2010-06-01 21:12:57Z oscar $
 */
- 
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -31,19 +31,19 @@ jimport('joomla.application.component.controller');
 class VirtueMartControllerManufacturer extends JController
 {
 
-	function manufacturer() {
+/*	function Manufacturer() {
 		$view = $this->getView('manufacturer', 'html');
 		if (JRequest::getInt('virtuemart_manufacturer_id')) {
-			/* link in product details to display a specific manufacturer */
+			// link in product details to display a specific manufacturer
 			$view->setLayout('details');
 		} else {
-			/* view all manufacturer */
+			// view all manufacturer
 			$view->setLayout('default');
 		}
-			
-		/* Display it all */
+
+		// Display it all
 		$view->display();
-	}
+	}*/
 }
 
 // No closing tag

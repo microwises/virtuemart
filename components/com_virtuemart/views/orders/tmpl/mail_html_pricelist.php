@@ -96,7 +96,6 @@ $root = $u->toString(array('scheme', 'host'));
 ?>
     <tr  class="sectiontableentry<?php echo $i ?>">
 	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?></td>
-	<td align="right">&nbsp;</td>
 
 <?php if (VmConfig::get('show_tax')) { ?>
     	<td align="right"><?php echo "<span  style='color:gray'>" . $this->currency->priceDisplay($this->order['details']['BT']['order_shipment_tax']) . "</span>" ?></td>
@@ -109,7 +108,7 @@ $i = 1 ? 2 : 1;
 ?>
     <tr   class="sectiontableentry<?php echo $i ?>">
 	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT') ?></td>
-	 
+
 
 <?php if (VmConfig::get('show_tax')) { ?>
     	<td align="right"><?php echo "<span  style='color:gray'>" . $this->currency->priceDisplay($this->order['details']['BT']['order_payment_tax']) . "</span>" ?></td>

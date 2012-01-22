@@ -42,9 +42,11 @@ class VirtuemartViewManufacturer extends VmView {
 
 		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id', 0);
 		$mf_category_id = JRequest::getInt('mf_category_id', 0);
+
 		// get necessary models
 		$model = $this->getModel('manufacturer');
-		if ($virtuemart_manufacturer_id ) {
+		if ($virtuemart_manufacturer_id !=0 ) {
+
 			$manufacturer = $model->getManufacturer();
 			$model->addImages($manufacturer,1);
 
@@ -57,13 +59,15 @@ class VirtuemartViewManufacturer extends VmView {
 			$this->assignRef('manufacturer',	$manufacturer);
 			$pathway->addItem(strip_tags($manufacturer->mf_name));
 
+			$this->setLayout('details');
+// 			vmdebug('$manufacturer',$manufacturer);
 		} else {
 			$document->setTitle(JText::_('COM_VIRTUEMART_MANUFACTURER_PAGE')) ;
 			$manufacturers = $model->getManufacturers(true, true,  true);
 			$model->addImages($manufacturers,1);
 			$this->assignRef('manufacturers',	$manufacturers);
+			$this->setLayout('default');
 		}
-
 
 		parent::display($tpl);
 	}
