@@ -36,17 +36,21 @@ class VirtuemartControllerPlugin extends JController
 	function display()
 	{
 
-		if(!class_exists('Permissions'))
-				require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-		if(!Permissions::getInstance()->check('admin')){
-			return false;
-		}
+
 
 		$type = JRequest::getWord('type', 'vmcustom');
 		$typeWhiteList = array('vmcustom','vmcalculation');
 		if(!in_array($type,$typeWhiteList)) return false;
 
-		if(!$name = JRequest::getCmd('name', null) ) return $name;
+// 		if(!$name = JRequest::getCmd('name', null) ) return $name;
+
+		$name = JRequest::getCmd('name', 'none');
+
+		$nameBlackList = array('plgVmValidateCouponCode','plgVmRemoveCoupon','none');
+		if(in_array($name,$nameBlackList)){
+			echo 'You got logged';
+			return false;
+		}
 
 		JPluginHelper::importPlugin($type, $name);
 		$dispatcher = JDispatcher::getInstance();
