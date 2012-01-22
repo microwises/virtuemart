@@ -810,7 +810,7 @@ class calculationHelper {
 		/**
 		 * Calculates the effecting Shipment prices for the calculation
 		 * @todo
-		 * @copyright Copyright (c) 2009 VirtueMart Team. All rights reserved.
+		 * @copyright (c) 2009 VirtueMart Team. All rights reserved.
 		 * @author Max Milbers
 		 * @author Valerie Isaksen
 		 * @param 	$code 	The Id of the coupon

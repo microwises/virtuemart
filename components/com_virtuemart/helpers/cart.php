@@ -59,13 +59,14 @@ class VirtueMartCart {
 	var $STsameAsBT = 0;
 
 	private static $_cart = null;
-	private static $_triesValidateCoupon = 0;
+	private static $_triesValidateCoupon;
 	var $useSSL = 1;
 	// 	static $first = true;
 
 	private function __construct() {
 		$this->useSSL = VmConfig::get('useSSL',0);
 		$this->useXHTML = true;
+		self::$_triesValidateCoupon=0;
 	}
 
 	/**
@@ -799,18 +800,19 @@ class VirtueMartCart {
 		}
 
 
+
 		// Test Coupon
 		if (!empty($this->couponCode)) {
 			$prices = $this->getCartPrices();
 			if (!class_exists('CouponHelper')) {
 				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'coupon.php');
 			}
-			if(self::_triesValidateCoupon<5){
+			if(self::$_triesValidateCoupon<8){
 				$redirectMsg = CouponHelper::ValidateCouponCode($this->couponCode, $prices['salesPrice']);
 			} else{
 				$redirectMsg = JText::_('COM_VIRTUEMART_CART_COUPON_TOO_MANY_TRIES');
 			}
-			self::_triesValidateCoupon++;
+			self::$_triesValidateCoupon++;// = self::$_triesValidateCoupon + 1;
 			if (!empty($redirectMsg)) {
 
 				$this->couponCode = '';
