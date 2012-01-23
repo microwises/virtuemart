@@ -44,36 +44,39 @@ class convertECB {
 
 		// cache subfolder(group) 'convertECB', cache method: callback
 		$cache= & JFactory::getCache('convertECB','callback');
-		 
+
 		// save configured lifetime
 		@$lifetime=$cache->lifetime;
-		 
+
 		$cache->setLifeTime(86400/4); // check 4 time per day
-		
+
 		// save cache conf
-		
+
 		$conf =& JFactory::getConfig();
-		 
+
 		// check if cache is enabled in configuration
-		 
+
 		$cacheactive = $conf->getValue('config.caching');
-		
+
 		$cache->setCaching(1); //enable caching
-		
+
 		$globalCurrencyConverter = $cache->call( array( 'convertECB', 'getSetExchangeRates' ),$this->document_address );
-		
+
 		// revert configuration
-		 
+
 		$cache->setCaching($cacheactive);
-		
+
+
 		if(!$globalCurrencyConverter ){
+			vmdebug('convert convert No $globalCurrencyConverter convert '.$amountA);
 			return $amountA;
 		} else {
 			$valA = isset( $globalCurrencyConverter[$currA] ) ? $globalCurrencyConverter[$currA] : 1.0;
 			$valB = isset( $globalCurrencyConverter[$currB] ) ? $globalCurrencyConverter[$currB] : 1.0;
 
 			$val = (float)$amountA * (float)$valB / (float)$valA;
-
+// 			$val = $amountA * $valB / $valA;
+// 			vmdebug('convert convert in: '.$amountA.'  out: '.$val);
 			return $val;
 		}
 	}
@@ -138,7 +141,7 @@ class convertECB {
 						$contents = @file_get_contents( $curr_filename );
 					}
 				} else $last_updated = date('Ymd');
-				
+
 			}
 			else {
 				$contents = @file_get_contents( $curr_filename );

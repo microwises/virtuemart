@@ -331,12 +331,15 @@ class CurrencyDisplay {
 	 */
 	function convertCurrencyTo($currency,$price,$shop=true){
 
+
 		if(empty($currency)){
+// 			vmdebug('empty  $currency ',$price);
 			return $price;
 		}
 
 		// If both currency codes match, do nothing
 		if( $currency == $this->_vendorCurrency ) {
+// 			vmdebug('  $currency == $this->_vendorCurrency ',$price);
 			return $price;
 		}
 
@@ -350,7 +353,6 @@ class CurrencyDisplay {
 		}
 */
 		if(empty($exchangeRate)){
-
 			if(is_Object($currency)){
 				$exchangeRate = $currency->_vendorCurrency;
 				vmdebug('convertCurrencyTo OBJECT '.$exchangeRate);
@@ -360,8 +362,10 @@ class CurrencyDisplay {
 				$q = 'SELECT `currency_exchange_rate`
 				FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.(int)$currency.'" ';
 				$this->_db->setQuery($q);
-				if(	$exch = $this->_db->loadResult()){
-					$exchangeRate = $this->_db->loadResult();
+				$exch = $this->_db->loadResult();
+// 				vmdebug('begin convertCurrencyTo '.$exch);
+				if(!empty($exch) and $exch !== '0.00000'){
+					$exchangeRate = $exch;
 				} else {
 					$exchangeRate = FALSE;
 				}
@@ -371,6 +375,7 @@ class CurrencyDisplay {
 // 		vmdebug('convertCurrencyTo my currency ',$exchangeRate,$currency);
 		if(!empty($exchangeRate) && $exchangeRate!=FALSE){
 			$price = $price * $exchangeRate;
+// 			vmdebug('!empty($exchangeRate) && $exchangeRate!=FALSE '.$price.' '.$exchangeRate);
 		} else {
 			$currencyCode = self::ensureUsingCurrencyCode($currency);
 			$vendorCurrencyCode = self::ensureUsingCurrencyCode($this->_vendorCurrency);

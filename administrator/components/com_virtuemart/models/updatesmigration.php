@@ -226,7 +226,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	if(!$this->execSQLFile($filename)){
 		vmError(JText::_('Problems execution of SQL File '.$filename));
 	} else {
-		vmError(JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED'));
+		vmInfo(JText::_('COM_VIRTUEMART_SAMPLE_DATA_INSTALLED'));
 	}
 
 	return true;
