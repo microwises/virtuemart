@@ -202,9 +202,9 @@
 				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
 
                                    <?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"> </td>
-                                <?php } ?>
 				<td align="right"><?php echo $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];  ?> </td>
+                                <?php } ?>
+				<td align="right"> </td>
 				<td align="right"><?php echo $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
 			</tr>
 			<?php
@@ -290,7 +290,9 @@
 		foreach($this->cart->cartData['taxRulesBill'] as $rule){ ?>
 			<tr class="sectiontableentry<?php $i ?>">
 				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
+				<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"><?php echo $this->cart->prices[$rule['virtuemart_calc_id'].'Diff']; ?> </td>
+				 <?php } ?>
 				<td align="right"><?php    ?> </td>
 				<td align="right"><?php echo $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
 			</tr>
@@ -303,9 +305,10 @@
 				<td colspan="4" align="right"><?php echo   $rule['calc_name'] ?> </td>
 
                                      <?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php  ?> </td>
-                                <?php } ?>
 				<td align="right"><?php echo  $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
+
+                                <?php } ?>
+				<td align="right"><?php  ?> </td>
 				<td align="right"><?php echo $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
 			</tr>
 			<?php

@@ -76,10 +76,10 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 */
 	function plgVmOnDisplayProductVariantFE($field,&$idx,&$group) {
 		// default return if it's not this plugin
-		if ($field->custom_value != $this->_name) return '';
+		 if ($field->custom_value != $this->_name) return '';
 		$this->parseCustomParams($field);
 		$class='';
-		if ($field->custom_price_by_letter) $class='vmcustom-textinput';
+		//if ($field->custom_price_by_letter) $class='vmcustom-textinput';
 		$html=': <input class="'.$class.'" type="text" value="" size="'.$field->custom_size.'" name="customPlugin['.$field->virtuemart_custom_id.']['.$this->_name.'][comment]"><br />';
 		static $textinputjs;
 		$group->display .= $html;
