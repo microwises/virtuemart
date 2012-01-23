@@ -33,9 +33,17 @@ class VirtuemartViewOrders extends VmView {
 
 	public function display($tpl = null)
 	{
-//		$mainframe = JFactory::getApplication();
-//		$pathway = $mainframe->getPathway();
+		//		$mainframe = JFactory::getApplication();
+		//		$pathway = $mainframe->getPathway();
 		$task = JRequest::getWord('task', 'list');
+
+// 		$layoutName = $this->getLayout();
+// 		vmdebug('layout by view '.$layoutName);
+// 		if (empty($layoutName) or $layoutName=='default') {
+			$layoutName = JRequest::getWord('layout', 'list');
+// 			vmdebug('layout by post '.$layoutName);
+			$this->setLayout($layoutName);
+// 		}
 
 		$_currentUser = JFactory::getUser();
 		$document = JFactory::getDocument();
@@ -43,7 +51,8 @@ class VirtuemartViewOrders extends VmView {
 		if (!class_exists('VirtueMartModelOrders')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		$orderModel = new VirtueMartModelOrders();
 
-		if ($task == 'details') {
+
+		if ($layoutName == 'details') {
 
 			$cuid = $_currentUser->get('id');
 			if(!empty($cuid)){
@@ -62,33 +71,30 @@ class VirtuemartViewOrders extends VmView {
 					}
 				}
 				$userFieldsModel = $this->getModel('userfields');
-			   $_userFields = $userFieldsModel->getUserFields(
+				$_userFields = $userFieldsModel->getUserFields(
 					 'account'
-					, array('captcha' => true, 'delimiters' => true) // Ignore these types
-					, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
-			);
-			$orderbt = $orderDetails['details']['BT'];
-			$orderst = (array_key_exists('ST', $orderDetails['details'])) ? $orderDetails['details']['ST'] : $orderbt;
-			$userfields = $userFieldsModel->getUserFieldsFilled(
-					 $_userFields
-					,$orderbt
-			);
+				, array('captcha' => true, 'delimiters' => true) // Ignore these types
+				, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
+				);
+				$orderbt = $orderDetails['details']['BT'];
+				$orderst = (array_key_exists('ST', $orderDetails['details'])) ? $orderDetails['details']['ST'] : $orderbt;
+				$userfields = $userFieldsModel->getUserFieldsFilled(
+				$_userFields
+				,$orderbt
+				);
 
-			$_userFields = $userFieldsModel->getUserFields(
+				$_userFields = $userFieldsModel->getUserFields(
 					 'shipment'
-					, array() // Default switches
-					, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
-			);
+				, array() // Default switches
+				, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
+				);
 
-			$shipmentfields = $userFieldsModel->getUserFieldsFilled(
-					 $_userFields
-					,$orderst
-			);
-
-
-
-
+				$shipmentfields = $userFieldsModel->getUserFieldsFilled(
+				$_userFields
+				,$orderst
+				);
 			}
+
 			if ($orderPass = JRequest::getString('order_pass',false)){
 				$orderNumber = JRequest::getString('order_number',false);
 				$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
@@ -151,9 +157,7 @@ class VirtuemartViewOrders extends VmView {
 		}
 
 
-
 		$this->assignRef('orderstatuses', $orderstatuses);
-
 
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
@@ -162,48 +166,49 @@ class VirtuemartViewOrders extends VmView {
 
 		parent::display($tpl);
 	}
+
 	public function renderMailLayout($doVendor=false) {
 
 		/*
-		$cart = VirtueMartCart::getCart(false);
+		 $cart = VirtueMartCart::getCart(false);
 		$this->assignRef('cart', $cart);
 		$cart->prepareCartViewData();
 		$cart->prepareMailData();
 	 */
-	    // don't need to get the payment name, the Order is sent from the payment trigger
-	   if (VmConfig::get('order_mail_html'))
+		// don't need to get the payment name, the Order is sent from the payment trigger
+		if (VmConfig::get('order_mail_html'))
 		$tpl = 'mail_html';
 		else
 		$tpl = 'mail_raw';
 
-	     if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-	     if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 
 		$currency = CurrencyDisplay::getInstance();
 
-		     $userFieldsModel = $this->getModel('userfields');
-		       $userFields = $userFieldsModel->getUserFields(
+		$userFieldsModel = $this->getModel('userfields');
+		$userFields = $userFieldsModel->getUserFields(
 				     'account'
-				    , array('captcha' => true, 'delimiters' => true) // Ignore these types
-				    , array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
-		    );
-		    $orderbt = $this->order['details']['BT'];
-		    $orderst = (array_key_exists('ST', $this->order['details'])) ? $this->order['details']['ST'] : $orderbt;
-		    $billfields = $userFieldsModel->getUserFieldsFilled(
-				     $userFields
-				    ,$orderbt
-		    );
+		, array('captcha' => true, 'delimiters' => true) // Ignore these types
+		, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
+		);
+		$orderbt = $this->order['details']['BT'];
+		$orderst = (array_key_exists('ST', $this->order['details'])) ? $this->order['details']['ST'] : $orderbt;
+		$billfields = $userFieldsModel->getUserFieldsFilled(
+		$userFields
+		,$orderbt
+		);
 
-		    $userFields = $userFieldsModel->getUserFields(
+		$userFields = $userFieldsModel->getUserFields(
 				     'shipment'
-				    , array() // Default switches
-				    , array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
-		    );
+		, array() // Default switches
+		, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
+		);
 
-		    $shipmentfields = $userFieldsModel->getUserFieldsFilled(
-				     $userFields
-				    ,$orderst
-		    );
+		$shipmentfields = $userFieldsModel->getUserFieldsFilled(
+		$userFields
+		,$orderst
+		);
 
 		if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
 		$this->prepareMailData();
@@ -230,7 +235,7 @@ class VirtuemartViewOrders extends VmView {
 
 	function prepareMailData(){
 
-	    if(!isset($this->vendor)) $this->prepareVendor();
+		if(!isset($this->vendor)) $this->prepareVendor();
 
 
 		//TODO add orders, for the orderId

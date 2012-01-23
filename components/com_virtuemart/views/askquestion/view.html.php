@@ -180,7 +180,7 @@ class VirtueMartViewAskquestion extends VmView {
 
 	$continue_link_html = '<a href="' . $continue_link . '" />' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 	$this->assignRef('continue_link_html', $continue_link_html);
-	/* Display it all */
+	// Display it all
 	parent::display($tpl);
     }
 

@@ -77,7 +77,7 @@ class VirtueMartControllerPluginresponse extends JController {
 	$layoutName = JRequest::getVar('layout', 'default');
 	$view->setLayout($layoutName);
 
-	/* Display it all */
+	// Display it all
 	$view->display();
     }
 
@@ -110,7 +110,7 @@ class VirtueMartControllerPluginresponse extends JController {
 	$layoutName = JRequest::getWord('layout', 'default');
 	$view->setLayout($layoutName);
 
-	/* Display it all */
+	// Display it all
 	$view->display();
     }
 

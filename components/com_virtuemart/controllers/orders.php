@@ -37,7 +37,7 @@ class VirtueMartControllerOrders extends JController
 	/**
 	* Display the order listing
 	*/
-	public function orders()
+/*	public function orders()
 	{
 		$view = $this->getView('orders', 'html');
 
@@ -45,13 +45,13 @@ class VirtueMartControllerOrders extends JController
 		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
 		$view->setLayout('list');
 
-		/* Display it all */
+		// Display it all
 		$view->display();
 	}
 
 	/**
 	* Display the order details
-	*/
+	*
 	public function details()
 	{
 		$view = $this->getView('orders', 'html');
@@ -62,8 +62,8 @@ class VirtueMartControllerOrders extends JController
 		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
 		$view->setLayout('details');
 
-		/* Display it all */
+		// Display it all
 		$view->display();
-	}
+	}//*/
 }
 // No closing tag

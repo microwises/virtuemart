@@ -59,7 +59,7 @@ class VirtueMartControllerCategories extends JController {
 
 		/* Add the default model */
 		$view->setModel($this->getModel('vendor', 'VirtuemartModel'));
-		/* Display it all */
+		// Display it all
 		$safeurlparams = array('virtuemart_category_id'=>'INT','return'=>'BASE64','lang'=>'CMD');
 		parent::display(true, $safeurlparams);//$view->display();
 	}
@@ -75,7 +75,7 @@ class VirtueMartControllerCategories extends JController {
 		$layoutName = JRequest::getWord('layout', 'default');
 		$view->setLayout($layoutName);
 
-		/* Display it all */
+		// Display it all
 		$view->display();
 
 	}

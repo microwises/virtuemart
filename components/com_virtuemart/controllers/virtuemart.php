@@ -44,7 +44,7 @@ class VirtueMartControllerVirtuemart extends JController
 
 		$view = $this->getView(JRequest::getWord('view', 'virtuemart'), 'html');
 
-		/* Display it all */
+		// Display it all
 		$safeurlparams = array('virtuemart_category_id'=>'INT','virtuemart_currency_id'=>'INT','return'=>'BASE64','lang'=>'CMD');
 		parent::display(true, $safeurlparams);//$view->display();
 	}

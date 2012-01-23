@@ -35,6 +35,8 @@ class VirtueMartControllerUser extends JController
 		parent::__construct();
 		$this->useSSL = VmConfig::get('useSSL',0);
 		$this->useXHTML = true;
+		vmdebug('VirtueMartControllerUser');
+
 	}
 
 	/**
@@ -42,13 +44,13 @@ class VirtueMartControllerUser extends JController
 	 * It redirects automatically to the task register for anonymous users.
 	 *
 	 */
-	public function User(){
+/*	public function User(){
 
 		//We just setup a new task for non registered users
 		$user = JFactory::getUser();
 		$view = $this->getView('user', 'html');
 
-		/* Add the default model */
+		// Add the default model
 // 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 // 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
 // 		$view->setModel( $this->getModel( 'vendor', 'VirtuemartModel' ), true );
@@ -65,6 +67,7 @@ class VirtueMartControllerUser extends JController
 		}
 
 		$layout = JRequest::getWord('layout','edit');
+		vmdebug('$layout USER CALLED USER CALLLED         HUHUUHU '.$layout);
 		$view->setLayout($layout);
 
 		//Important! sanitize array to int
@@ -74,10 +77,11 @@ class VirtueMartControllerUser extends JController
 		$ftask ='saveUser';
 		$view->assignRef('fTask', $ftask);
 
-		/* Display it all */
+		// Display it all
 		$view->display();
 
 	}
+*/
 
 	function edit(){
 
@@ -94,7 +98,7 @@ class VirtueMartControllerUser extends JController
 
 		$ftask ='saveUser';
 		$view->assignRef('fTask', $ftask);
-		/* Display it all */
+		// Display it all
 		$view->display();
 
 	}
@@ -119,7 +123,7 @@ class VirtueMartControllerUser extends JController
 		$ftask ='savecartuser';
 		$view->assignRef('fTask', $ftask);
 
-		/* Display it all */
+		// Display it all
 		$view->display();
 
 	}
@@ -143,7 +147,7 @@ class VirtueMartControllerUser extends JController
 		$ftask ='savecheckoutuser';
 		$view->assignRef('fTask', $ftask);
 
-		/* Display it all */
+		// Display it all
 		$view->display();
 	}
 

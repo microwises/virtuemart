@@ -76,7 +76,7 @@ class VirtueMartControllerCart extends JController {
 	$layoutName = JRequest::getWord('layout', 'default');
 	$view->setLayout($layoutName);
 
-	/* Display it all */
+	// Display it all
 	$view->display();
     }
 
@@ -211,7 +211,7 @@ class VirtueMartControllerCart extends JController {
 	$this->addModelPath(JPATH_VM_ADMINISTRATOR . DS . 'models');
 	$view->setModel($this->getModel('coupon', 'VirtuemartModel'), true);
 
-	/* Display it all */
+	// Display it all
 	$view->display();
     }
 
@@ -258,7 +258,7 @@ class VirtueMartControllerCart extends JController {
 // 	$view->setModel($this->getModel('user', 'VirtuemartModel'), false);
 	$view->setModel($this->getModel('userfields', 'VirtuemartModel'), true);
 
-	/* Display it all */
+	// Display it all
 	$view->display();
     }
 
@@ -315,7 +315,7 @@ class VirtueMartControllerCart extends JController {
 	$this->addModelPath(JPATH_VM_ADMINISTRATOR . DS . 'models');
 	$view->setModel($this->getModel('paymentmethod', 'VirtuemartModel'), true);
 
-	/* Display it all */
+	// Display it all
 	$view->display();
     }
 
@@ -430,7 +430,7 @@ class VirtueMartControllerCart extends JController {
 	    $cart->confirmDone();
 	    $view = $this->getView('cart', 'html');
 	    $view->setLayout('order_done');
-	    /* Display it all */
+	    // Display it all
 	    $view->display();
 	} else {
 	    $mainframe = JFactory::getApplication();

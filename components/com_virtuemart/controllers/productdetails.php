@@ -58,7 +58,7 @@ class VirtueMartControllerProductdetails extends JController {
 
 			$view->setModel($this->getModel( 'ratings', 'VirtuemartModel'));
 
-			/* Display it all */
+			// Display it all
 			$view->display();
 //		}
 	}
@@ -112,7 +112,7 @@ class VirtueMartControllerProductdetails extends JController {
 		}
 		$mainframe->enqueueMessage(JText::_($string));
 
-		/* Display it all */
+		// Display it all
 		$view = $this->getView('askquestion', 'html');
 		$view->setModel($this->getModel('category', 'VirtuemartModel'));
 		$view->setLayout('mail_confirmed');
@@ -156,7 +156,7 @@ class VirtueMartControllerProductdetails extends JController {
 		}
 		$mainframe->enqueueMessage(JText::_($string));
 
-		/* Display it all */
+		// Display it all
 		$view = $this->getView('recommend', 'html');
 		$view->setModel($this->getModel('category', 'VirtuemartModel'));
 		$view->setLayout('mail_confirmed');
@@ -193,7 +193,7 @@ class VirtueMartControllerProductdetails extends JController {
 		/* Set the layout */
 		$view->setLayout('form');
 
-		/* Display it all */
+		// Display it all
 		$view->display();
 	}
 
@@ -235,7 +235,7 @@ class VirtueMartControllerProductdetails extends JController {
 //		}
 
 		$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$data['virtuemart_product_id']), $msg);
-		/* Display it all */
+		// Display it all
 //		$view->display();
 	}
 
