@@ -40,7 +40,11 @@ abstract class vmPSPlugin extends vmPlugin {
     public  function getVarsToPush( ) {
 	    $black_list = array('spacer');
 	    $data = array();
-	    $filename = JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '/' . $this->_name.'.xml';
+	    if(JVM_VERSION === 2 ){
+		$filename = JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '/' . $this->_name.'.xml';
+	    } else {
+		$filename = JPATH_SITE . '/plugins/' . $this->_type  . '/' . $this->_name.'.xml';
+	    }
 	    // Check of the xml file exists
 	    $filePath = JPath::clean($filename);
 	    if (is_file($filePath)) {
