@@ -51,7 +51,7 @@ class VirtuemartViewCategory extends VmView {
 		/* Set the helper path */
 		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 
-		/* Load helpers */
+		//Load helpers
 		$this->loadHelper('image');
 		// if (!class_exists('VirtueMartModelCategory')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
 		// $categoryModel = new VirtueMartModelCategory();

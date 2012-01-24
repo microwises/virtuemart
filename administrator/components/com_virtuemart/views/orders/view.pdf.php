@@ -35,7 +35,7 @@ class VirtuemartViewOrders extends JView {
 
 		$mainframe = JFactory::getApplication();
 
-		/* Load helpers */
+		//Load helpers
 
 		$this->loadHelper('currencydisplay');
 

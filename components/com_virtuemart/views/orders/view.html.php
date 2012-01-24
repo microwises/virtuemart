@@ -37,13 +37,10 @@ class VirtuemartViewOrders extends VmView {
 		//		$pathway = $mainframe->getPathway();
 		$task = JRequest::getWord('task', 'list');
 
-// 		$layoutName = $this->getLayout();
-// 		vmdebug('layout by view '.$layoutName);
-// 		if (empty($layoutName) or $layoutName=='default') {
-			$layoutName = JRequest::getWord('layout', 'list');
-// 			vmdebug('layout by post '.$layoutName);
-			$this->setLayout($layoutName);
-// 		}
+		$layoutName = JRequest::getWord('layout', 'list');
+
+		$this->setLayout($layoutName);
+
 
 		$_currentUser = JFactory::getUser();
 		$document = JFactory::getDocument();
@@ -61,6 +58,10 @@ class VirtuemartViewOrders extends VmView {
 					$virtuemart_order_id = $orderModel->getOrderIdByOrderNumber(JRequest::getString('order_number'));
 				}
 				$orderDetails = $orderModel->getOrder($virtuemart_order_id);
+				if(empty($orderDetails['details'])){
+					echo JText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
+					return;
+				}
 				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 				if(!Permissions::getInstance()->check("admin")) {
 					if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
@@ -122,6 +123,13 @@ class VirtuemartViewOrders extends VmView {
 			$this->assignRef('shipment_name', $shipment_name);
 			$this->assignRef('payment_name', $payment_name);
 			$this->assignRef('orderdetails', $orderDetails);
+
+			$tmpl = JRequest::getWord('tmpl');
+			$print = false;
+			if($tmpl){
+				$print = true;
+			}
+			$this->assignRef('print', $print);
 
 			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
 			// In tmpl/edit.php, this is the 4th tab (0-based, so set to 3 above)

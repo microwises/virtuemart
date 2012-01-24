@@ -79,7 +79,7 @@ if (count($this->orderslist) > 0) {
 			<!-- Print view -->
 	<?php
 	/* Print view URL */
-	$details_url = JURI::base() . "?option=com_virtuemart&view=orders&task=orderPrint&format=raw&virtuemart_order_id=" . $order->virtuemart_order_id;
+	$details_url = juri::root().'index.php?option=com_virtuemart&view=orders&layout=details&tmpl=component&virtuemart_order_id=' . $order->virtuemart_order_id;
 	$details_link = "<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\"  >";
 	$details_link .= '<span class="hasTip print_32" title="' . JText::_('COM_VIRTUEMART_PRINT') . '">&nbsp;</span></a>';
 	?>

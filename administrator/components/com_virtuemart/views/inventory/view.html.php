@@ -33,7 +33,7 @@ class VirtuemartViewInventory extends VmView {
 	function display($tpl = null) {
 
 
-		/* Load helpers */
+		//Load helpers
 
 		$this->loadHelper('currencydisplay');
 

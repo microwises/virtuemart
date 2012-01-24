@@ -55,6 +55,7 @@ class TableVendors extends VmTableData {
 
     var $vendor_params = '';
 
+    var $vendor_legal_info = '';
 
     /* @author RickG, Max Milbers
      * @param $db A database connector object
@@ -65,7 +66,7 @@ class TableVendors extends VmTableData {
 		$this->setUniqueName('vendor_name');
 		$this->setSlug('vendor_store_name'); //Attention the slug autoname MUST be also in the translatable, if existing
 		$this->setLoggable();
-		$this->setTranslatable(array('vendor_store_name','vendor_phone','vendor_store_desc','vendor_terms_of_service','vendor_url'));
+		$this->setTranslatable(array('vendor_store_name','vendor_phone','vendor_store_desc','vendor_terms_of_service','vendor_legal_info','vendor_url'));
 
 		$varsToPushParam = array(
 		    				'vendor_min_pov'=>array(0.0,'float'),

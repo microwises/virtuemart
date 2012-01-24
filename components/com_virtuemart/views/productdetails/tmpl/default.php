@@ -35,14 +35,14 @@ $document->addScriptDeclaration("
 			});
 			return false ;
 		});
-		$('.additional-images a').mouseover(function() {
+	/*	$('.additional-images a').mouseover(function() {
 			var himg = this.href ;
 			var extension=himg.substring(himg.lastIndexOf('.')+1);
 			if (extension =='png' || extension =='jpg' || extension =='gif') {
 				$('.main-image img').attr('src',himg );
 			}
 			console.log(extension)
-		});
+		});*/
 	});
 ");
 /* Let's see if we found the product */

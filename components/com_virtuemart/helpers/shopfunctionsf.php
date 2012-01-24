@@ -184,7 +184,7 @@ class shopFunctionsF {
 		global  $cur_template, $Itemid;
 		if (VmConfig::get('show_printicon', 1) == '1') {
 
-			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
+			$folder = (JVM_VERSION==1) ? '/images/M_images/' : '/media/system/images/';
 			if( !$link ) {
 				//Todo this is old stuff and must be adjusted and looks dangerous
 /*				$query_string = str_replace( 'only_page=1', 'only_page=0', JRequest::getVar('QUERY_STRING'));

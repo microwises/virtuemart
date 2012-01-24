@@ -34,7 +34,7 @@ class VirtuemartViewRatings extends VmView {
 		$mainframe = Jfactory::getApplication();
 		$option = JRequest::getWord('option');
 
-		/* Load helpers */
+		//Load helpers
 
 
 		$this->loadHelper('html');

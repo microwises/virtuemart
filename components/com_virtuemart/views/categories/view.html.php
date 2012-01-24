@@ -41,7 +41,7 @@ class VirtuemartViewCategories extends VmView {
 		/* Set the helper path */
 		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 
-		/* Load helpers */
+		//Load helpers
 		$this->loadHelper('image');
 		$vendorId = JRequest::getInt('vendorid', 1);
 

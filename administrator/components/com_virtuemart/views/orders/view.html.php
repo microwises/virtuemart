@@ -35,7 +35,7 @@ class VirtuemartViewOrders extends VmView {
 		$option = JRequest::getWord('option');
 // 		$lists = array();
 
-		/* Load helpers */
+		//Load helpers
 
 		$this->loadHelper('currencydisplay');
 
@@ -51,6 +51,11 @@ class VirtuemartViewOrders extends VmView {
 		$this->SetViewTitle( 'ORDER');
 
 		$orderModel = $this->getModel();
+
+		JToolBarHelper::custom( 'print', 'print','','COM_VIRTUEMART_PRINT',false);
+
+// 		JToolBarHelper::deleteListX();
+
 
 		$curTask = JRequest::getWord('task');
 		if ($curTask == 'edit') {

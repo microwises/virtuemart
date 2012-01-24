@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>	</h1></div>
 
 <div class="vendor-description">
-<?php echo $this->vendor->vendor_store_desc;
+<?php echo $this->vendor->vendor_store_desc.'<br>';
 
 	foreach($this->userFields as $userfields){
 
@@ -52,6 +52,8 @@ defined('_JEXEC') or die('Restricted access');
 	}
 
 	?></div>
+
+<?php	echo $this->vendor->vendor_legal_info; ?>
 
 	<br style='clear:both;' />
 	<?php echo $this->linktos ?>

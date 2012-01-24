@@ -60,7 +60,7 @@ class VirtueMartViewProductdetails extends VmView {
 		/* Set the helper path */
 		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
 
-		/* Load helpers */
+		//Load helpers
 		$this->loadHelper('image');
 
 

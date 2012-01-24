@@ -95,7 +95,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			'D'=>'COM_VIRTUEMART_DATE',
 			'T'=>'COM_VIRTUEMART_TIME',
 			'M'=>'COM_VIRTUEMART_IMAGE',
-			'V'=>'COM_VIRTUEMART_CUSTOM_CART_VARIANT',
+// 			'V'=>'COM_VIRTUEMART_CUSTOM_CART_VARIANT',
 			'E'=>'COM_VIRTUEMART_CUSTOM_EXTENSION'
 			);
 
@@ -331,7 +331,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 			foreach ($values as $key => $val)
 				$options[] = array( 'value' => $val ,'text' =>$val);
-			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]').'</td><td>'.$priceInput;
+// 			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]').'</td><td>'.$priceInput;
 		} else {
 
 			switch ($field->field_type) {
@@ -521,8 +521,14 @@ class VirtueMartModelCustomfields extends VmModel {
 		} else return array();
      }
 
-	 // temp function TODO better one
-     public function getProductCustomsFieldCart($product) {
+	/**
+	 * Display for the cart
+	 *
+	 * @author Patrick Kohl
+	 * @param obj $product product object
+	 * @return html code
+	 */
+	public function getProductCustomsFieldCart($product) {
 
 			// group by virtuemart_custom_id
 			$query='SELECT C.`virtuemart_custom_id`, `custom_title`, C.`custom_value`,`custom_field_desc` ,`custom_tip`,`field_type`,field.`virtuemart_customfield_id`,`is_hidden`
@@ -554,8 +560,8 @@ class VirtueMartModelCustomfields extends VmModel {
 					Where `virtuemart_product_id` ='.(int)$product->virtuemart_product_id;
 				$query .=' and is_cart_attribute = 1 and C.`virtuemart_custom_id`='.(int)$group->virtuemart_custom_id ;
 
-                                // We want the field to be ordered as the user defined
-                                $query .=' ORDER BY field.`ordering`';
+				// We want the field to be ordered as the user defined
+				$query .=' ORDER BY field.`ordering`';
 
 				$this->_db->setQuery($query);
 				$options = $this->_db->loadObjectList(); //vmdebug('getProductCustomsFieldCart',$this->_db);
@@ -569,7 +575,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					foreach ($group->options as &$productCustom) {
 						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)) ;
 						else  $price = $free ;
-						$productCustom->text =  $productCustom->custom_value.' : '.$price;
+						$productCustom->text =  $productCustom->custom_value.' '.$price;
 
 					}
 					$group->display = VmHTML::select('customPrice['.$row.']['.$group->virtuemart_custom_id.']',$group->options,$default->custom_value,'','value','text',false);
@@ -581,7 +587,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					foreach ($group->options as $productCustom) {
 						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
 						else  $price = $free ;
-						$productCustom->text =  $productCustom->custom_value.' : '.$price;
+						$productCustom->text =  $productCustom->custom_value.' '.$price;
 //// plugin
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 						JPluginHelper::importPlugin('vmcustom');
@@ -596,7 +602,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					foreach ($group->options as $productCustom) {
 						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
 						else  $price = $free ;
-						$productCustom->text =  $productCustom->custom_value.' : '.$price;
+						$productCustom->text =  $productCustom->custom_value.' '.$price;
 
 					$group->display .= '<input type="text" value="'.JText::_($productCustom->custom_value).'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']['.$productCustom->value.']" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').': '.$price ;
 					}
@@ -606,7 +612,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					foreach ($group->options as $productCustom) {
 						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
 						else  $price = $free ;
-						$group->display .= '<input id="'.$productCustom->value.'" '.$checked.' type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($productCustom->custom_value,$group->field_type,0,'',$row,1).': '.$price.'</label>' ;
+						$group->display .= '<input id="'.$productCustom->value.'" '.$checked.' type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($productCustom->custom_value,$group->field_type,0,'',$row,1).' '.$price.'</label>' ;
 						$checked ='';
 					}
 				}

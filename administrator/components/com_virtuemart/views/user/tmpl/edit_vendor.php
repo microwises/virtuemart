@@ -60,7 +60,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								<input class="inputbox" type="text" name="vendor_min_pov" id="vendor_min_pov" size="10" value="<?php echo $this->vendor->vendor_min_pov; ?>" />
 							</td>
 						</tr>
-						 
+
 					</table>
 				</fieldset>
 			</td>
@@ -123,6 +123,16 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_TOS');?>
 					</legend>
 					<?php echo $this->editor->display('vendor_terms_of_service', $this->vendor->vendor_terms_of_service, '100%', 220, 70, 15)?>
+				</fieldset>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<fieldset>
+					<legend>
+						<?php echo JText::_('COM_VIRTUEMART_STORE_FORM_LEGAL');?>
+					</legend>
+					<?php echo $this->editor->display('vendor_legal_info', $this->vendor->vendor_legal_info, '100%', 220, 70, 15)?>
 				</fieldset>
 			</td>
 		</tr>
