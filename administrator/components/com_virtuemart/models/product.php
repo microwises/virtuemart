@@ -173,10 +173,11 @@ class VirtueMartModelProduct extends VmModel {
 
 		//administrative variables to organize the joining of tables
 		$joinCategory 	= false ;
-		$joinMf 		= false ;
+		$joinMf 			= false ;
 		$joinPrice 		= false ;
 		$joinCustom		= false ;
-		$joinLang = true; // test fix Patrick
+		$joinShopper 	= false;
+		$joinLang 		= true; // test fix Patrick
 
 		$where = array();
 		$useCore = true;
@@ -251,7 +252,7 @@ class VirtueMartModelProduct extends VmModel {
 			$where[] = ' p.`product_parent_id` = '.$this->product_parent_id;
 		}
 
-		$joinShopper = false;
+
 		if ($app->isSite()) {
 			if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 			$usermodel = new VirtueMartModelUser();

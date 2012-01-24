@@ -18,10 +18,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if(empty($this->orderdetails['details'])){
-	echo JText::_('COM_VIRTUEMART_ORDER_WRONG_ID');
-	return;
-}
 ?>
 
 <table width="100%" cellspacing="0" cellpadding="0" border="0">

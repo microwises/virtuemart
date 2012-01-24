@@ -36,6 +36,6 @@ $link='<b>'.JHTML::_('link', $link, $this->vendor->vendor_name).'</b> ';
 /* GENERAL FOOTER FOR ALL MAILS */
 	echo JText::_('COM_VIRTUEMART_CART_MAIL_FOOTER' ) . $link;
         echo '<br/>';
-	echo $this->vendor->vendor_name .'<br/>'.$this->vendor->vendor_phone .' '.$this->vendor->vendor_store_name .'<br/ > '.$this->vendor->vendor_store_desc;
+	echo $this->vendor->vendor_name .'<br />'.$this->vendor->vendor_phone .' '.$this->vendor->vendor_store_name .'<br /> '.$this->vendor->vendor_store_desc.'<br />'.$this->vendor->vendor_legal_info;
 
 	?>
