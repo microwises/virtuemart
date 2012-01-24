@@ -207,7 +207,10 @@ class VirtuemartViewUser extends VmView {
 			$vendor = $vendorModel->getVendor();
 			$this->assignRef('vendor', $vendor);
 		}
-
+		if($layoutName=='editaddress'){
+		    $layoutName='edit_address';
+			$this->setLayout($layoutName);
+		}
 		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
 
 		parent::display($tpl);
