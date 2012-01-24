@@ -186,7 +186,10 @@ function virtuemartBuildRoute(&$query) {
 			else {
 				$segments[] = $lang['orders'] ;
 			}
-
+			if ( isset($query['virtuemart_order_id']) ) {
+				$segments[] = $query['virtuemart_order_id'];
+				unset ($query['virtuemart_order_id'],$query['layout']);
+			}
 		break;
 
 		// sef only view
@@ -361,8 +364,8 @@ function virtuemartParseRoute($segments) {
 			array_shift($segments);
 			if (empty($segments)) return $vars;
 		}
-		if ($segments[0] == $lang['list'] ) $vars['task'] = 'list' ;
-		elseif ($segments[0] == $lang['details'] ) $vars['task'] = 'details' ;
+			$vars['virtuemart_order_id'] = $segments[0] ;
+			$vars['layout'] = 'details';
 		return $vars;
 	}
 	else if ($view == $lang['manufacturers'] || $helper->activeMenu->view == 'manufacturer') {
@@ -466,7 +469,7 @@ class vmrouterHelper {
 	private static $_catRoute = array ();
 
 	public $CategoryName = array();
-	private $dbview = array('vendor' =>'vendor','category' =>'category','virtuemart' =>'virtuemart','productdetails' =>'product','user' =>'user','orders' =>'order','cart' => 'cart','manufacturer' => 'manufacturer');
+	private $dbview = array('vendor' =>'vendor','category' =>'category','virtuemart' =>'virtuemart','productdetails' =>'product','cart' => 'cart','manufacturer' => 'manufacturer');
 
 	private function __construct($instanceKey,$query) {
 
@@ -868,9 +871,10 @@ class vmrouterHelper {
 				}
 				//vmDebug('menu view link',$link);
 				$view = $link['view'] ;
-				$dbKey = $this->dbview[$view];
-				if ( isset($link['virtuemart_'.$dbKey.'_id']) )
-					$this->menu['virtuemart_'.$dbKey.'_id'][ $link['virtuemart_'.$dbKey.'_id'] ] = $item->id;
+				if (array_key_exists($view,$this->dbview) ) $dbKey = $this->dbview[$view];
+				else $dbKey = false ;
+					if ( isset($link['virtuemart_'.$dbKey.'_id']) && $dbKey )
+						$this->menu['virtuemart_'.$dbKey.'_id'][ $link['virtuemart_'.$dbKey.'_id'] ] = $item->id;
 				elseif ($home == $view ) continue;
 				else $this->menu[$view]= $item->id ;
 
