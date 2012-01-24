@@ -48,7 +48,6 @@ class VirtueMartControllerVendor extends JController
 		$commentSize = mb_strlen( JRequest::getString('comment') );
 		$validMail = filter_var(JRequest::getVar('email'), FILTER_VALIDATE_EMAIL);
 
-
 		$virtuemart_vendor_id = JRequest::getInt('virtuemart_vendor_id');
 
 		$userId = $model->getUserIdByVendorId($virtuemart_vendor_id);

@@ -34,36 +34,6 @@ class VirtueMartControllerOrders extends JController
 		parent::__construct();
 	}
 
-	/**
-	* Display the order listing
-	*/
-/*	public function orders()
-	{
-		$view = $this->getView('orders', 'html');
 
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
-		$view->setLayout('list');
-
-		// Display it all
-		$view->display();
-	}
-
-	/**
-	* Display the order details
-	*
-	public function details()
-	{
-		$view = $this->getView('orders', 'html');
-
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel('orderstatus', 'VirtuemartModel'));
-		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
-		$view->setLayout('details');
-
-		// Display it all
-		$view->display();
-	}//*/
 }
 // No closing tag

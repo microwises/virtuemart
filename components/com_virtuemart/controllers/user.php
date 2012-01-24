@@ -39,49 +39,6 @@ class VirtueMartControllerUser extends JController
 
 	}
 
-	/**
-	 * The general user/account maintance view for editing userdata.
-	 * It redirects automatically to the task register for anonymous users.
-	 *
-	 */
-/*	public function User(){
-
-		//We just setup a new task for non registered users
-		$user = JFactory::getUser();
-		$view = $this->getView('user', 'html');
-
-		// Add the default model
-// 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-// 		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
-// 		$view->setModel( $this->getModel( 'vendor', 'VirtuemartModel' ), true );
-// 		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
-// 		$view->setModel( $this->getModel( 'currency', 'VirtuemartModel' ), true );
-// 		$view->setModel( $this->getModel( 'orders', 'VirtuemartModel' ), true );
-
-		$cid = JRequest::getVar('cid',null);
-		if(!isset($cid)){
-			JRequest::setVar('cid', (int)0);
-// 			$view->setLayout('default');
-		} else {
-// 			$view->setLayout('edit');
-		}
-
-		$layout = JRequest::getWord('layout','edit');
-		vmdebug('$layout USER CALLED USER CALLLED         HUHUUHU '.$layout);
-		$view->setLayout($layout);
-
-		//Important! sanitize array to int
-		jimport( 'joomla.utilities.arrayhelper' );
-		JArrayHelper::toInteger($cid);
-
-		$ftask ='saveUser';
-		$view->assignRef('fTask', $ftask);
-
-		// Display it all
-		$view->display();
-
-	}
-*/
 
 	function edit(){
 
