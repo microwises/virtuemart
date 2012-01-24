@@ -178,6 +178,7 @@ class VirtueMartModelProduct extends VmModel {
 		$joinCustom		= false ;
 		$joinShopper 	= false;
 		$joinLang 		= true; // test fix Patrick
+		$orderBy = ' ';
 
 		$where = array();
 		$useCore = true;
