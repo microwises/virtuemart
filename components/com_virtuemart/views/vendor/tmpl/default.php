@@ -38,7 +38,7 @@ $horizontalSeparator = '<div class="horizontal-separator"></div>';
 // Lets output the categories, if there are some
 if (!empty($this->vendors)) { ?>
 
-<div class="manufacturer-view-default">
+<div class="vendor-view-default">
 
 	<?php // Start the Output
 	foreach ( $this->vendors as $vendor ) {
