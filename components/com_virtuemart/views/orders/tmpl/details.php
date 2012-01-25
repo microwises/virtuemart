@@ -23,7 +23,7 @@ JHTML::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets
 if($this->print){
 	?>
 
-		<body onload="javascript:print();">';
+		<body onload="javascript:print();">
 		<h1><?php echo JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'); ?></h1>
 
 		<div style="padding: 0px; margin: 5px; spacing: 0px;">

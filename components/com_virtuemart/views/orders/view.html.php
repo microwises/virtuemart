@@ -129,6 +129,7 @@ class VirtuemartViewOrders extends VmView {
 			if($tmpl){
 				$print = true;
 			}
+			$this->prepareVendor();
 			$this->assignRef('print', $print);
 
 			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
@@ -255,9 +256,10 @@ class VirtuemartViewOrders extends VmView {
 	function prepareVendor(){
 		if (!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 		$vendorModel = new VirtueMartModelVendor();
-		$this->vendor = & $vendorModel->getVendor();
+		$vendor = & $vendorModel->getVendor();
+		$this->assignRef('vendor', $vendor);
 		$vendorModel->addImages($this->vendor,1);
-		return $this->vendor;
+		
 	}
 
 }

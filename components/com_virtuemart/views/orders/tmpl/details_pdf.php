@@ -1,25 +1,41 @@
 <?php
 /**
- *
- * Order detail view
- *
- * @package	VirtueMart
- * @subpackage Orders
- * @author Oscar van Eijk
- * @link http://www.virtuemart.net
- * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * VirtueMart is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * @version $Id$
- */
+*
+* Order detail view
+*
+* @package	VirtueMart
+* @subpackage Orders
+* @author Oscar van Eijk
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id: details.php 5314 2012-01-24 15:23:17Z Milbo $
+*/
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+		$document = &JFactory::getDocument();
+			$document->setTitle(JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER').' '.$this->orderdetails['details']['BT']->order_number.' '.$this->vendor->vendor_store_name);
+			$document->setName( JText::_('COM_VIRTUEMART_ACC_ORDER_INFO').' '.$this->orderdetails['details']['BT']->order_number);
+			$document->setDescription( JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER').' '.$this->orderdetails['details']['BT']->order_number);
 
-?>
+$this->setLayout('details'); ?>
+<style>
+	th, .orders-key{font-weight:bold;}
+	td.key{font-weight:bold;}
+</style>
 
+		<h1><?php echo JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'); ?></h1>
+
+		<div style="padding: 0px; margin: 5px; spacing: 0px;">
+		<?php
+		// echo $this->loadTemplate('order');
+		
+		?>
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
     <tr>
 	<td   class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></td>
@@ -65,9 +81,12 @@ defined('_JEXEC') or die('Restricted access');
 	<td colspan="2"> &nbsp;</td>
     </tr>
     <tr>
-	<td valign="top"><strong>
-	    <?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_BILL_TO_LBL') ?></strong> <br/>
-	    <table border="0"><?php
+	<td valign="top">
+	    <table border="0">
+			 <tr>
+				<th class="orders-key"width="100%" colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_BILL_TO_LBL') ?></th>
+			</tr>
+		<?php
 	    foreach ($this->userfields['fields'] as $field) {
 		if (!empty($field['value'])) {
 		    echo '<tr><td class="key">' . $field['title'] . '</td>'
@@ -76,16 +95,27 @@ defined('_JEXEC') or die('Restricted access');
 	    }
 	    ?></table>
 	</td>
-	<td valign="top" ><strong>
-	    <?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIP_TO_LBL') ?></strong><br/>
-	    <table border="0"><?php
-	    foreach ($this->shipmentfields['fields'] as $field) {
-		if (!empty($field['value'])) {
-		    echo '<tr><td class="key">' . $field['title'] . '</td>'
-		    . '<td>' . $field['value'] . '</td></tr>';
-		}
-	    }
-	    ?></table>
+	<td valign="top" >
+		<table border="0">
+			 <tr>
+				<th class="orders-key"width="100%" colspan="2"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIP_TO_LBL') ?></th>
+			</tr>
+			<?php
+			foreach ($this->shipmentfields['fields'] as $field) {
+			if (!empty($field['value'])) {
+				echo '<tr><td class="key">' . $field['title'] . '</td>'
+				. '<td>' . $field['value'] . '</td></tr>';
+			}
+			}
+			?>
+		</table>
 	</td>
     </tr>
 </table>
+		</div>
+
+		<div style="padding: 0px; margin: 0px; spacing: 0px;">
+		<?php echo $this->loadTemplate('items');
+		?>
+		</div>
+		<?php	echo $this->vendor->vendor_legal_info; ?>

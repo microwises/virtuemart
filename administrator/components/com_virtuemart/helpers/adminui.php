@@ -26,7 +26,7 @@ class AdminUIHelper {
      * displayes the admin menu in the left column.
      */
     function startAdminArea($backEnd=true) {
-
+		if (JRequest::getWord ( 'format') =='pdf') return;
     	if(self::$vmAdminAreaStarted) return;
     	self::$vmAdminAreaStarted = true;
 		$front = JURI::root(true).'/components/com_virtuemart/assets/';

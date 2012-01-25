@@ -83,14 +83,18 @@ if (empty ( $this->product )) {
 	// Product Edit Link END ?>
 
 	<?php // PDF - Print - Email Icon
-	if ( VmConfig::get('show_emailfriend', 1) == '1' || VmConfig::get('show_printicon', 1) == '1') { ?>
+	if ( VmConfig::get('show_emailfriend')  || VmConfig::get('show_printicon')  || VmConfig::get('pdf_button_enable') ) { ?>
 	<div class="icons">
 		<?php //$link = (VmConfig::isJ15()) ? 'index2.php' : 'index.php';
 		$link = 'index.php?tmpl=component&option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id;
-		$pdflink= JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&format=pdf');
-// 		echo shopFunctionsF::PdfIcon($pdflink );
-		echo shopFunctionsF::PrintIcon($link.'&print=1');
-		echo shopFunctionsF::EmailIcon($this->product->virtuemart_product_id); ?>
+		$MailLink = 'index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component';
+
+		echo $this->linkIcon($link.'&format=pdf','COM_VIRTUEMART_PDF','pdf_','pdf_button_enable',false);
+		echo $this->linkIcon($link.'&print=1','COM_VIRTUEMART_PRINT','print','show_printicon');
+		echo $this->linkIcon($MailLink,'COM_VIRTUEMART_EMAIL','email','show_emailfriend');
+		// echo shopFunctionsF::PrintIcon($link.'&print=1');
+		// echo shopFunctionsF::EmailIcon($this->product);
+		?>
 	<div class="clear"></div>
 	</div>
 	<?php } // PDF - Print - Email Icon END ?>

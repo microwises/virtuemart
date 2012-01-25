@@ -29,7 +29,33 @@ jimport('joomla.application.component.controller');
  */
 class VirtueMartControllerOrders extends JController
 {
+	public function display() {
 
+//		$cart = JRequest::getVar('cart',false,'post');
+//		if($cart){
+//			require(JPATH_VM_SITE.DS.'controllers'.DS.'cart.php');
+//			$controller= new VirtueMartControllerCart();
+//			$controller->add();
+//		}else{
+			$format = JRequest::getWord('format','html');
+			if  ($format == 'pdf') $viewName= 'pdf';
+			else $viewName='orders';
+			$view = $this->getView($viewName, $format);
+			//if  ($format == 'pdf') $view->setLayout('pdf');
+
+			$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
+
+			// $view->setModel($this->getModel('cart','VirtuemartModel'), true);
+
+
+			// $view->setModel($this->getModel('category', 'VirtuemartModel'));
+
+			// $view->setModel($this->getModel( 'ratings', 'VirtuemartModel'));
+
+			// Display it all
+			$view->display();
+//		}
+	}
 
 }
 // No closing tag

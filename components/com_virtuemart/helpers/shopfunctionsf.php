@@ -141,18 +141,18 @@ class shopFunctionsF {
 	 * @param boolean $use_icon
 	 * @deprecated
 	 */
-	function PdfIcon( $link, $use_icon=true ) {
-/*		if (VmConfig::get('pdf_button_enable', 1) == '1' && !JRequest::getVar('pop')) {
+	function PdfIcon( $product, $use_icon=true ) {
+		if (VmConfig::get('pdf_button_enable', 1) == '1' && !JRequest::getVar('pop')) {
 
 			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
-			//$link .= '&amp;pop=1';
-			if ( $use_icon ) {
+			// $link .= '&amp;pop=1';
+			$link= JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component&format=pdf');			if ( $use_icon ) {
 				$text = JHtml::_('image.site', 'pdf_button.png', $folder, null, null, JText::_('COM_VIRTUEMART_PDF'));
 			} else {
 				$text = JText::_('COM_VIRTUEMART_PDF') .'&nbsp;';
 			}
 			return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('COM_VIRTUEMART_PDF'));
-		}*/
+		}
 	}
 
 	/**
@@ -161,13 +161,13 @@ class shopFunctionsF {
 	 * @param string $link
 	 * @param boolean $use_icon
 	 */
-	function EmailIcon( $virtuemart_product_id, $use_icon=true ) {
-		if (VmConfig::get('show_emailfriend', 1) == '1' && !JRequest::getVar('pop') && $virtuemart_product_id > 0  ) {
+	function EmailIcon($product, $use_icon=true ) {
+		if (VmConfig::get('show_emailfriend', 1) == '1' && !JRequest::getVar('pop') && $product->virtuemart_product_id > 0  ) {
 
 			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
 
 			//Todo this is old stuff and must be adjusted
-			$link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component&pop=1');
+			$link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id.'&tmpl=component&pop=1');
 			if ( $use_icon ) {
 				$text = JHtml::_('image.site', 'emailButton.png', $folder, null, null, JText::_('COM_VIRTUEMART_EMAIL'));
 			} else {

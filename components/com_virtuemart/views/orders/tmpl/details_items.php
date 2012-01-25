@@ -21,15 +21,15 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
 	<tr align="left" class="sectiontableheader">
-		<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></th>
-		<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></th>
-		<th align="left" colspan="2"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></th>
-		<th align="center" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_STATUS') ?></th>
-		<th align="right" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRICE') ?></th>
+		<th align="left" width="5%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></th>
+		<th align="left" width="5%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></th>
+		<th align="left" colspan="2" width="49%" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></th>
+		<th align="center" width="10%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_STATUS') ?></th>
+		<th align="right" width="10%" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRICE') ?></th>
 		<?php if ( VmConfig::get('show_tax')) { ?>
-		<th align="right" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_TAX') ?></th>
+		<th align="right" width="10%" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_TAX') ?></th>
 		  <?php } ?>
-		<th align="right" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></th>
+		<th align="right" width="10%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></th>
 
 	</tr>
 <?php
@@ -37,35 +37,32 @@ defined('_JEXEC') or die('Restricted access');
 		$_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $item->virtuemart_product_id);
 ?>
 		<tr valign="top">
-			<td align="left" >
+			<td align="left" width="5%">
 				<?php echo $item->order_item_sku; ?>
 			</td>
-			<td align="left" >
+			<td align="left" width="5%">
 				<?php echo $item->product_quantity; ?>
 			</td>
-			<td align="left" >
+			<td align="left" width="49%" colspan="2" >
 				<a href="<?php echo $_link; ?>"><?php echo $item->order_item_name; ?></a>
-			</td>
-
-			<td align="left" >
 				<?php
 					if (!empty($item->product_attribute)) {
 							if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 							$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item);
-						echo '<div>'.$product_attribute.'</div>';
+						echo $product_attribute;
 					}
 				?>
 			</td>
-			<td align="center" >
+			<td align="center" width="10%">
 				<?php echo $this->orderstatuses[$item->order_status]; ?>
 			</td>
-			<td align="right" >
+			<td align="right" width="10%">
 				<?php echo $this->currency->priceDisplay($item->product_final_price); ?>
 			</td>
 			<?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo "<span  style='color:gray'>".$this->currency->priceDisplay($item->product_tax)."</span>" ?></td>
+				<td align="right" width="10%"><?php echo "<span  style='color:gray'>".$this->currency->priceDisplay($item->product_tax)."</span>" ?></td>
                                 <?php } ?>
-			<td align="right" >
+			<td align="right" width="10%">
 				<?php echo $this->currency->priceDisplay($item->product_quantity * $item->product_final_price); ?>
 			</td>
 
@@ -76,7 +73,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 		<?php if (false) { ?>
 		<tr>
-		<td align="right" style="padding-right: 10px;" colspan="3"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL') ?></td>
+		<td align="right" style="padding-right: 10px;" colspan="6"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL') ?></td>
 		<td align="right"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_subtotal); ?></td>
 	</tr>
 <?php } ?>
