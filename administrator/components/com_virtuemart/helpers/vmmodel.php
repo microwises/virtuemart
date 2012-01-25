@@ -539,12 +539,12 @@ class VmModel extends JModel {
 	{
 		$table = $this->getTable($this->_maintablename);
 		if (!$table->load($this->_id)) {
-			vmError($this->_db->getErrorMsg());
+			vmError('VmModel move '.$this->_db->getErrorMsg());
 			return false;
 		}
 		if ($filter) ' '.$filter.' = '.(int) $table->$filter.' AND published >= 0 ';
 		if (!$table->move( $direction, $filter )) {
-			vmError($this->_db->getErrorMsg());
+			vmError('VmModel move '.$this->_db->getErrorMsg());
 			return false;
 		}
 
@@ -574,7 +574,7 @@ class VmModel extends JModel {
 			{
 				$table->ordering = $order[$i];
 				if (!$table->store()) {
-					vmError($this->_db->getErrorMsg());
+					vmError('VmModel saveorder '.$this->_db->getErrorMsg());
 					return false;
 				}
 			}

@@ -31,7 +31,6 @@ jimport('joomla.application.component.controller');
 class VirtueMartControllerManufacturer extends JController
 {
 
-
 }
 
 // No closing tag

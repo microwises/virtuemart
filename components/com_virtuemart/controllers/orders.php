@@ -29,10 +29,6 @@ jimport('joomla.application.component.controller');
  */
 class VirtueMartControllerOrders extends JController
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
 
 
 }

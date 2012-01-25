@@ -455,6 +455,9 @@ class ShopFunctions {
 	 * @author Valérie Isaksen
 	 */
 	function renderLWHUnitList($name, $selected) {
+
+		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
+
 		$lwh_unit_default = array(   'M' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_NAME_M')
 		,'CM' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_NAME_CM')
 		,'MM' =>  JText::_('COM_VIRTUEMART_LWH_UNIT_NAME_MM')

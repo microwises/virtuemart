@@ -48,7 +48,7 @@ class VirtuemartControllerProduct extends VmController {
 		/* Create the view object */
 		$view = $this->getView('product', 'html');
 
-		/* Set the layout */
+		
 		$view->setLayout('default');
 
 		/* Now display the view. */

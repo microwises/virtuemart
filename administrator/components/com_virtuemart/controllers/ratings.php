@@ -99,7 +99,7 @@ class VirtuemartControllerRatings extends VmController {
 		$view = $this->getView('ratings', 'html');
 
 		$view->setModel( $this->getModel( 'ratings', 'VirtueMartModel' ), true );
-		/* Set the layout */
+		
 		$view->setLayout('list_reviews');
 
 		$view->display();

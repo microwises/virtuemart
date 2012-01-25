@@ -120,7 +120,7 @@ class VmTableXarray extends VmTable {
 
 		$error = $this->_db->getErrorMsg();
 		if(!empty($error)){
-			vmError( $error );
+			vmError(get_class( $this ).':: load'.$error  );
 			return false;
 		} else {
 			if(empty($result)) return array();

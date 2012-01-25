@@ -30,48 +30,29 @@ jimport('joomla.application.component.controller');
 */
 class VirtueMartControllerCategories extends JController {
 
-    /**
-    * Method Description
-    *
-    * @access public
-    * @author RolandD
-    */
-    public function __construct() {
-     	 parent::__construct();
-   	}
 
-	/**
-	* Function Description
-	*
-	* @author Max Milbers
-	* @access public
-	*/
+/*
 	public function Categories() {
-		/* Create the view */
-		$view = $this->getView('categories', 'html');
 
-		$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
-		/* Add the default model */
-		$view->setModel($this->getModel('category', 'VirtuemartModel'), true);
-
-		/* Set the layout */
-		//$view->setLayout('category');
-
-		/* Add the default model */
-		$view->setModel($this->getModel('vendor', 'VirtuemartModel'));
-		// Display it all
+	// Display it all
 		$safeurlparams = array('virtuemart_category_id'=>'INT','return'=>'BASE64','lang'=>'CMD');
 		parent::display(true, $safeurlparams);//$view->display();
-	}
-		public function json(){
+	} */
 
-		/* Create the view */
+	public function display(){
+		$safeurlparams = array('virtuemart_category_id'=>'INT','return'=>'BASE64','lang'=>'CMD');
+		parent::display(true, $safeurlparams);
+	}
+
+	public function json(){
+
+
 		$view = $this->getView('categories', 'json');
-		/* Add the default model */
+
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 		$view->setModel($this->getModel('category', 'VirtuemartModel'), true);
 
-		/* Set the layout */
+
 		$layoutName = JRequest::getWord('layout', 'default');
 		$view->setLayout($layoutName);
 

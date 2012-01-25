@@ -54,7 +54,7 @@ class VirtuemartControllerOrders extends VmController {
 		/* Default model */
 		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ), true );
 
-		/* Set the layout */
+		
 		$view->setLayout('orders');
 
 		/* Now display the view. */
@@ -75,7 +75,7 @@ class VirtuemartControllerOrders extends VmController {
 		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'orderstatus', 'VirtueMartModel' ));
-		/* Set the layout */
+		
 		$view->setLayout('order_print');
 
 		/* Now display the view. */
@@ -96,7 +96,7 @@ class VirtuemartControllerOrders extends VmController {
 		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
 		$view->setModel( $this->getModel( 'orderstatus', 'VirtueMartModel' ));
-		/* Set the layout */
+		
 		$view->setLayout('order');
 
 		/* Now display the view. */

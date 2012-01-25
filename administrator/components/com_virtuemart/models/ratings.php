@@ -149,7 +149,11 @@ class VirtueMartModelRatings extends VmModel {
      	$this->_db->setQuery($q, $this->_pagination->limitstart, $this->_pagination->limit);
 
      	if(!$result = $this->_db->loadObjectList()){
-     		vmError($this->_db->getErrorMsg());
+     		$err = $this->_db->getErrorMsg();
+     		if(!empty($err)){
+     			vmError('Error getReviews '.$err);
+     		}
+
      	}
 
      	return $result;
@@ -376,17 +380,17 @@ class VirtueMartModelRatings extends VmModel {
     		$prod_id = $rating->virtuemart_product_id;
 
     		if (!$rating->delete($id)) {
-    			vmError($rating->getError());
+    			vmError(get_class( $this ).'::Error deleting ratings '.$rating->getError());
     			$ok = false;
     		}
 
     		if (!$review->delete($prod_id,'virtuemart_product_id')) {
-    			vmError($review->getError());
+    			vmError(get_class( $this ).'::Error deleting review '.$review->getError());
     			$ok = false;
     		}
 
     		if (!$votes->delete($prod_id,'virtuemart_product_id')) {
-    			vmError($votes->getError());
+    			vmError(get_class( $this ).'::Error deleting votes '.$votes->getError());
     			$ok = false;
     		}
     	}

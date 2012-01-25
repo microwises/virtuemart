@@ -61,10 +61,10 @@ class VirtueMartControllerCart extends JController {
      * @author RolandD
      * @access public
      */
-    public function Cart() {
-	/* Create the view */
+/*   public function Cart() {
+
 	$view = $this->getView('cart', 'html');
-	/* Add the default model */
+
 	$this->addModelPath(JPATH_VM_ADMINISTRATOR . DS . 'models');
 	$view->setModel($this->getModel('user', 'VirtuemartModel'), false);
 	$view->setModel($this->getModel('vendor', 'VirtuemartModel'), false);
@@ -72,13 +72,13 @@ class VirtueMartControllerCart extends JController {
 	$view->setModel($this->getModel('country', 'VirtuemartModel'), true);
 	$view->setModel($this->getModel('state', 'VirtuemartModel'), true);
 
-	/* Set the layout */
+
 	$layoutName = JRequest::getWord('layout', 'default');
 	$view->setLayout($layoutName);
 
 	// Display it all
 	$view->display();
-    }
+    }/*
 
     /**
      * Add the product to the cart
@@ -144,7 +144,7 @@ class VirtueMartControllerCart extends JController {
 	    $virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
 	    $errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_ADDED');
 	    if ($cart->add($virtuemart_product_ids, $errorMsg )) {
-			
+
 		$this->json->msg = '<a class="continue" href="' . $continue_link . '" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
 		$this->json->msg .= '<a style ="float:right;" href="' . JRoute::_("index.php?option=com_virtuemart&view=cart") . '">' . JText::_('COM_VIRTUEMART_CART_SHOW') . '</a>';
 		if ($errorMsg) $this->json->msg .= '<div>'.$errorMsg.'</div>';
@@ -204,7 +204,7 @@ class VirtueMartControllerCart extends JController {
      * @author Max Milbers
      */
     public function edit_coupon() {
-	/* Create the view */
+
 	$view = $this->getView('cart', 'html');
 	$view->setLayout('edit_coupon');
 
@@ -248,7 +248,7 @@ class VirtueMartControllerCart extends JController {
      */
     public function edit_shipment() {
 
-	/* Create the view */
+
 	$view = $this->getView('cart', 'html');
 	$view->setLayout('select_shipment');
 
@@ -308,7 +308,7 @@ class VirtueMartControllerCart extends JController {
      * @author Max Milbers
      */
     public function editpayment() {
-	/* Create the view */
+
 	$view = $this->getView('cart', 'html');
 	$view->setLayout('select_payment');
 

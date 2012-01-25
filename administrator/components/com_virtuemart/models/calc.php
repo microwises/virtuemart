@@ -192,32 +192,32 @@ class VirtueMartModelCalc extends VmModel {
 
 		$table->bindChecknStore($data);
 		if($table->getError()){
-			vmError($table->getError());
+			vmError('Calculation store '.$table->getError());
 			return false;
 		}
 
     	$xrefTable = $this->getTable('calc_categories');
     	$xrefTable->bindChecknStore($data);
     	if($xrefTable->getError()){
-			vmError($xrefTable->getError());
+			vmError('Calculation store '.$xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_shoppergroups');
     	$xrefTable->bindChecknStore($data);
     	if($xrefTable->getError()){
-			vmError($xrefTable->getError());
+			vmError('Calculation store '.$xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_countries');
     	$xrefTable->bindChecknStore($data);
     	if($xrefTable->getError()){
-			vmError($xrefTable->getError());
+			vmError('Calculation store '.$xrefTable->getError());
 		}
 
 		$xrefTable = $this->getTable('calc_states');
     	$xrefTable->bindChecknStore($data);
     	if($xrefTable->getError()){
-			vmError($xrefTable->getError());
+			vmError('Calculation store '.$xrefTable->getError());
 		}
 
 		if (!class_exists('vmCalculationPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmcalculationplugin.php');
@@ -236,14 +236,7 @@ class VirtueMartModelCalc extends VmModel {
 
 		if(!empty($errs)){
 			foreach($errs as $err){
-				if(!empty($err)) vmError($err);
-			}
-		}
-
-		if($errs = $this->getErrors()){
-			$app = JFactory::getApplication();
-			foreach($errs as $err){
-				$app->enqueueMessage($err);
+				if(!empty($err)) vmError('Calculation store '.$err);
 			}
 		}
 

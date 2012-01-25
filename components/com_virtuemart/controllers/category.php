@@ -48,18 +48,8 @@ class VirtueMartControllerCategory extends JController {
 	* @author RolandD
 	* @access public
 	*/
-	public function Category() {
-	
-		/* Create the view */
-		$view = $this->getView('category', 'html');
+	public function display() {
 
-		$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
-		/* Add the default model */
-		$view->setModel($this->getModel('category', 'VirtuemartModel'), true);
-
-		/* Add the product model */
-		$view->setModel($this->getModel('product', 'VirtuemartModel'));
-		
 		if (JRequest::getvar('search')) $view->display();
 		else {
 			// Display it all

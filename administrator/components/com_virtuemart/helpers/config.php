@@ -96,6 +96,7 @@ function vmWarn($publicdescr,$value=null){
  * @author Max Milbers
  */
 function vmError($descr,$publicdescr=''){
+	if(empty($descr)) vmTrace('vmError message empty');
 	$lang = JFactory::getLanguage();
 	if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 	if(Permissions::getInstance()->check('admin')){

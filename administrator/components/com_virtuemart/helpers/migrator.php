@@ -417,7 +417,7 @@ class Migrator extends VmModel{
 				$errors = $table->getErrors();
 				if(!empty($errors)){
 					foreach($errors as $error){
-						vmError($error);
+						vmError('Migrator portShoppergroups '.$error);
 					}
 					break;
 				}
@@ -529,12 +529,12 @@ class Migrator extends VmModel{
 
 				$userinfo   = $this->getTable('userinfos');
 				if (!$userinfo->bindChecknStore($user)) {
-					vmError($userinfo->getError());
+					vmError('Migrator portUsers '.$userinfo->getError());
 				}
 
 				if(!empty($user['user_is_vendor']) && $user['user_is_vendor'] === 1){
 					if (!$userModel->storeVendorData($user)){
-						vmError($userModel->getError());
+						vmError('Migrator portUsers '.$userModel->getError());
 					}
 				}
 
@@ -551,7 +551,7 @@ class Migrator extends VmModel{
 				$errors = $userModel->getErrors();
 				if(!empty($errors)){
 					foreach($errors as $error){
-						vmError($error);
+						vmError('Migrator portUsers '.$error);
 					}
 					$userModel->resetErrors();
 					$continue = false;
@@ -692,7 +692,7 @@ class Migrator extends VmModel{
 				$errors = $catModel->getErrors();
 				if(!empty($errors)){
 					foreach($errors as $error){
-						vmError($error);
+						vmError(vmError('Migrator portCategories '.$error);
 						$ok = false;
 					}
 					break;
@@ -758,7 +758,7 @@ class Migrator extends VmModel{
 					$errors = $table->getErrors();
 					if(!empty($errors)){
 						foreach($errors as $error){
-							vmError($error);
+							vmError('Migrator portCategories ref '.$error);
 							$ok = false;
 						}
 						break;
@@ -827,7 +827,7 @@ class Migrator extends VmModel{
 				$errors = $table->getErrors();
 				if(!empty($errors)){
 					foreach($errors as $error){
-						vmError($error);
+						vmError('Migrator portManufacturerCategories '.$error);
 						$ok = false;
 					}
 					break;
@@ -896,7 +896,7 @@ class Migrator extends VmModel{
 				if(!empty($errors)){
 					foreach($errors as $error){
 
-						vmError($error);
+						vmError('Migrator portManufacturers '.$error);
 						$ok = false;
 					}
 					break;
@@ -1675,7 +1675,7 @@ class Migrator extends VmModel{
 
 					// Check for errors.
 					if ($this->_db->getErrorNum()) {
-						vmError($this->_db->getErrorMsg());
+						vmError('Migrator restoreDatabase '.$this->_db->getErrorMsg());
 						$return = false;
 					}
 
@@ -1685,7 +1685,7 @@ class Migrator extends VmModel{
 
 					// Check for errors.
 					if ($this->_db->getErrorNum()) {
-						vmError($this->_db->getErrorMsg());
+						vmError('Migrator restoreDatabase '.$this->_db->getErrorMsg());
 						$return = false;
 					}
 				}

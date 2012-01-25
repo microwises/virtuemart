@@ -276,7 +276,6 @@ class VirtueMartViewProductdetails extends VmView {
 		$currency = CurrencyDisplay::getInstance( );
 		$this->assignRef('currency', $currency);
 
-// 		vmdebug('my productdetails data',$this);
 		parent::display($tpl);
 	}
 
