@@ -626,13 +626,14 @@ class VirtueMartModelUserfields extends VmModel {
 		);
 
 // 		vmdebug('my user data in getUserFieldsFilled',$_selection,$_userData);
+ 		$_userData=(array)($_userData);
 		if (is_array($_selection)) {
 		    foreach ($_selection as $_fld) {
 			    $_return['fields'][$_fld->name] = array(
 					     'name' => $_prefix . $_fld->name
 					    ,'value' => (($_userData == null || !array_key_exists($_fld->name, $_userData))
 						    ? $_fld->default
-						    : @$_userData->{$_fld->name})
+						    : @$_userData[$_fld->name])
 					    ,'title' => JText::_($_fld->title)
 					    ,'type' => $_fld->type
 					    ,'required' => $_fld->required
