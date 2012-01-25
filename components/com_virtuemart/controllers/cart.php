@@ -54,31 +54,6 @@ class VirtueMartControllerCart extends JController {
 	$this->useXHTML = true;
     }
 
-    /**
-     * Show the main page for the cart
-     *
-     * @author Max Milbers
-     * @author RolandD
-     * @access public
-     */
-/*   public function Cart() {
-
-	$view = $this->getView('cart', 'html');
-
-	$this->addModelPath(JPATH_VM_ADMINISTRATOR . DS . 'models');
-	$view->setModel($this->getModel('user', 'VirtuemartModel'), false);
-	$view->setModel($this->getModel('vendor', 'VirtuemartModel'), false);
-	$view->setModel($this->getModel('userfields', 'VirtuemartModel'), true);
-	$view->setModel($this->getModel('country', 'VirtuemartModel'), true);
-	$view->setModel($this->getModel('state', 'VirtuemartModel'), true);
-
-
-	$layoutName = JRequest::getWord('layout', 'default');
-	$view->setLayout($layoutName);
-
-	// Display it all
-	$view->display();
-    }/*
 
     /**
      * Add the product to the cart
@@ -238,7 +213,8 @@ class VirtueMartControllerCart extends JController {
 		}
 	    }
 	}
-	self::Cart();
+	parent::display();
+// 	self::Cart();
     }
 
     /**
@@ -299,7 +275,8 @@ class VirtueMartControllerCart extends JController {
 		}
 	    }
 	}
-	self::Cart();
+// 	self::Cart();
+	parent::display();
     }
 
     /**
@@ -359,7 +336,8 @@ class VirtueMartControllerCart extends JController {
 		$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout', $msg);
 	    }
 	}
-	self::Cart();
+// 	self::Cart();
+	parent::display();
     }
 
     /**
