@@ -466,7 +466,7 @@ class VirtueMartModelOrders extends VmModel {
 		}
 
 		$usr = JFactory::getUser();
-		$prices = $cart->getCartPrices();
+		$prices = $cart->getCartPrices(false);
 		if (($orderID = $this->_createOrder($cart, $usr, $prices)) == 0) {
 			vmError('Couldn\'t create order','Couldn\'t create order');
 			return false;

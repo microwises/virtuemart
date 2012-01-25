@@ -692,7 +692,7 @@ class Migrator extends VmModel{
 				$errors = $catModel->getErrors();
 				if(!empty($errors)){
 					foreach($errors as $error){
-						vmError(vmError('Migrator portCategories '.$error);
+						vmError('Migrator portCategories '.$error);
 						$ok = false;
 					}
 					break;
