@@ -50,7 +50,7 @@ class VirtuemartViewCustom extends JView {
 			}
 		}
 		elseif ( $custom_jplugin_id = JRequest::getInt('custom_jplugin_id') ) {
-			if (VmConfig::isJ15()) {
+			if (JVM_VERSION===1) {
 				$table = '#__plugins';
 				$ext_id = 'id';
 			} else {

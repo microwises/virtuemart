@@ -19,8 +19,6 @@
 defined('_JEXEC') or die('Restricted access');
 AdminUIHelper::startAdminArea();
 
-$j15 = VmConfig::isJ15();
-
 ?>
 
 

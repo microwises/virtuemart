@@ -21,8 +21,6 @@ defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea();
 
-$j15 = VmConfig::isJ15();
-
 ?>
 
 <form action="<?php echo JRoute::_( 'index.php' );?>" method="post" name="adminForm" id="adminForm">
@@ -89,7 +87,7 @@ $j15 = VmConfig::isJ15();
 			$row = $this->userfieldsList[$i];
 // 			vmdebug('my rows',$row);
 			$coreField = (in_array($row->name, $this->lists['coreFields']));
-			$image = ($j15) ? 'checked_out.png' : 'admin/checked_out.png';
+			$image = (JVM_VERSION===1) ? 'checked_out.png' : 'admin/checked_out.png';
 			$image = JHtml::_('image.administrator', $image, '/images/', null, null, JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD'));
 			$checked = ($coreField) ?
 				'<span class="hasTip" title="'. JText::_('COM_VIRTUEMART_FIELDMANAGER_COREFIELD').'">'. $image .'</span>' :

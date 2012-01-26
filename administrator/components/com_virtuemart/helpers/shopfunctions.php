@@ -333,9 +333,7 @@ class ShopFunctions {
 			$defaulttemplate[0]->value = 'default';
 		}
 
-		$isJ15 = VmConfig::isJ15();
-
-		if ($isJ15) {
+		if (JVM_VERSION===1) {
 			if (!class_exists('TemplatesHelper'))
 			require (JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_templates' . DS . 'helpers' . DS . 'template.php');
 			$jtemplates = TemplatesHelper::parseXMLTemplateFiles(JPATH_SITE . DS . 'templates');
@@ -348,7 +346,7 @@ class ShopFunctions {
 
 		foreach ($jtemplates as $key => $template) {
 			$template->value = $template->name;
-			if (!$isJ15) {
+			if (JVM_VERSION===2) {
 				if ($template->client_id == '0') {
 					$template->directory = $template->element;
 				} else {

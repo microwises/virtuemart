@@ -424,7 +424,7 @@ class VmConfig {
 			$siteLang = JRequest::getVar('vmlang',FALSE );// we must have this for edit form save
 			//Why not using the usterstae?
 		} else {
-			if ( self::isJ15() ) {
+			if ( JVM_VERSION===1 ) {
 			// try to find in session lang
 			// this work with joomfish j1.5 (application.data.lang)
 
@@ -592,6 +592,7 @@ class VmConfig {
 
 	/**
 	 * Return if the used joomla function is j15
+	 * @deprecated use JVM_VERSION instead
 	 */
 	function isJ15(){
 		return (strpos(JVERSION,'1.5') === 0);
@@ -956,7 +957,7 @@ class vmJsApi{
 		$jsDateFormat = str_replace($search, $replace, $dateFormat);
 
 		if ($date) {
-			if ( VmConfig::isJ15()) {
+			if ( JVM_VERSION===1) {
 				$search  = array('m', 'd', 'y');
 				$replace = array('%m', '%d', '%y');
 				$dateFormat = str_replace($search, $replace, $dateFormat);
@@ -1015,7 +1016,7 @@ class vmJsApi{
 		If ($joomla) {
 			$formatedDate = JHTML::_('date', $date, JText::_('DATE_FORMAT_'.$format));
 		} else {
-			if ( !VmConfig::isJ15()) $J16 = "_J16"; else $J16 ="";
+			if ( !JVM_VERSION===1) $J16 = "_J16"; else $J16 ="";
 			$formatedDate = JHTML::_('date', $date, JText::_('COM_VIRTUEMART_DATE_FORMAT_'.$format.$J16));
 		}
 		return $formatedDate;

@@ -475,7 +475,7 @@ class vmrouterHelper {
 
 		if (!$this->router_disabled = VmConfig::get('seo_disabled', false)) {
 			$this->setLangs($instanceKey);
-			if ( VmConfig::isJ15() ) $this->setMenuItemId();
+			if ( JVM_VERSION===1 ) $this->setMenuItemId();
 			else $this->setMenuItemIdJ17();
 			$this->setActiveMenu();
 			$this->use_id = VmConfig::get('seo_use_id', false);

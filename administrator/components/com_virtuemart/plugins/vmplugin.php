@@ -146,7 +146,7 @@ abstract class vmPlugin extends JPlugin {
 		} else {
 			$db = JFactory::getDBO();
 
-			if (VmConfig::isJ15()) {
+			if (JVM_VERSION===1) {
 				$q = 'SELECT vm.* FROM `'.$this->_configTable.'` AS vm,
 							#__plugins AS j WHERE vm.`'.$this->_idName.'` = "'.$id.'"
 							AND vm.'.$this->_psType.'_jplugin_id = j.id
@@ -183,7 +183,7 @@ abstract class vmPlugin extends JPlugin {
 		} else {
 			$db = JFactory::getDBO();
 
-			if (VmConfig::isJ15()) {
+			if (JVM_VERSION===1) {
 				$q = 'SELECT vm.* FROM `'.$this->_configTable.'` AS vm,
 							#__plugins AS j WHERE vm.`'.$this->_psType.'_jplugin_id`  = "'.$jplugin_id.'"
 							AND vm.'.$this->_psType.'_jplugin_id = j.id
@@ -214,7 +214,7 @@ abstract class vmPlugin extends JPlugin {
 		if(!empty($this->_jid)) return $this->_jid;
 		$db = JFactory::getDBO();
 
-		if (VmConfig::isJ15()) {
+		if (JVM_VERSION===1) {
 			$q = 'SELECT j.`id` AS c FROM #__plugins AS j
 					WHERE j.element = "'.$this->_name.'" AND j.folder = "'.$this->_type.'"';
 		} else {

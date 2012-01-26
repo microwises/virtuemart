@@ -16,10 +16,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 * http://virtuemart.net
 */
 
-if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
-VmConfig::loadConfig();
+
 // Access check.
-// if ( !VmConfig::isJ15()) {
+// if ( !JVM_VERSION===1) {
 	// if (!JFactory::getUser()->authorise('core.manage', 'com_virtuemart')) {
 		// return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 	// }
@@ -34,6 +33,8 @@ if(JRequest::getCmd('view','') == 'liveupdate') {
     return;
 }
 
+if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
+VmConfig::loadConfig();
 
 vmJsApi::jQuery();
 vmJsApi::jSite();

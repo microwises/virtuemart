@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo JText::_('COM_VIRTUEMART_CFG_ENABLE_FEATURE'); ?>
 			    <br />
 			    <?php /*
-				if ( VmConfig::isJ15()) {
+				if ( JVM_VERSION===1) {
 					echo JHTML::_('Select.genericlist', $this->aclGroups, 'price_access_level', 'size=5', 'title', 'text', $this->config->get('price_access_level'));
 				} else {
 					$selectOptions['list.attr'] = 'size=5';

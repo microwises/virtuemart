@@ -487,41 +487,49 @@ class GenericTableUpdater extends JModel{
 			$eKeyNames= $this->_db->loadResultArray(2);
 		}
 
-		// 		vmdebug('my $eKeys',$eKeys);
+// 				vmdebug('my $eKeys',$eKeys);
+
 		$dropped = 0;
 		foreach($eKeyNames as $i => $name){
+
 			$query = '';
-			// 			if(!in_array($name, $demandedFieldNames)){
+
 			//doubled keys are listed twice, but gets both deleted with one command, so we must check if the key is still there
 			$this->_db->setQuery("SHOW INDEXES  FROM `".$tablename."` "); //SHOW {INDEX | INDEXES | KEYS}
 			$eKeyNamesNOW= $this->_db->loadResultArray(2);
-			// 				vmdebug('DROP $eKeyNames '.$name);
-// 			if(strpos($eKeys[$i]->Key_name,'PRIMARY')!==false || !in_array($name,$eKeyNamesNOW)){
+
+			$oldcolum = $this->reCreateKeyByTableAttributes($eKeys[$i]);
+
+
+			if(!in_array($oldcolum,$keys)){
+				if(!$reCreatePrimary){
+					if(strpos($eKeys[$i]->Key_name,'PRIMARY')!==false){
+						$isPrim = true;
+					}
+				}
+
+				if(!in_array($name,$eKeyNamesNOW) or $isPrim){
+					continue;
+				} else {
+					$query = 'ALTER TABLE `'.$tablename.'` DROP INDEX `'.$name.'` ';
+				}
+
+				if(!empty($query)){
+					$this->_db->setQuery($query);
+					if(!$this->_db->query()){
+						$this->_app->enqueueMessage('alterTable DROP '.$tablename.'.'.$name.' :'.$this->_db->getErrorMsg() );
+					} else {
+						$dropped++;
+						// 					vmdebug('alterKey: Dropped KEY `'.$name.'` in table `'.$tablename.'`');
+					}
+				}
+			} else {
+
+				$existing[] = $name;
+
+			}
 
 			$isPrim = false;
-			if(!$reCreatePrimary){
-				if(strpos($eKeys[$i]->Key_name,'PRIMARY')!==false){
-					$isPrim = true;
-				}
-			}
-
-			if(!in_array($name,$eKeyNamesNOW) or $isPrim){
-				continue;
-			} else {
-				$query = 'ALTER TABLE `'.$tablename.'` DROP INDEX `'.$name.'` ';
-
-			}
-
-			if(!empty($query)){
-				$this->_db->setQuery($query);
-				if(!$this->_db->query()){
-					$this->_app->enqueueMessage('alterTable DROP '.$tablename.'.'.$name.' :'.$this->_db->getErrorMsg() );
-				} else {
-					$dropped++;
-// 					vmdebug('alterKey: Dropped KEY `'.$name.'` in table `'.$tablename.'`');
-				}
-
-			}
 
 		}
 
@@ -533,13 +541,15 @@ class GenericTableUpdater extends JModel{
 				}
 			}
 
+			if(in_array($name,$existing)){
+				continue;
+			}
 			$query = '';
 			$action = '';
 
 
 			$query = "ALTER TABLE `".$tablename."` ADD ".$value ;
 			$action = 'ADD';
-// 			vmdebug('Die alter query ',$query);
 
 			if(!empty($query)){
 				$this->_db->setQuery($query);

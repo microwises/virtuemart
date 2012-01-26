@@ -487,7 +487,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	$user = $usermodel->getUser();
 	$user->shopper_groups = (array) $user->shopper_groups;
 
-	if (VmConfig::isJ15()) {
+	if (JVM_VERSION===1) {
 	    $extPlgTable = '#__plugins';
 	    $extField1 = 'id';
 	    $extField2 = 'element';
@@ -626,7 +626,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	$vendorEmail = $vendorModel->getVendorEmail($vendorId);
 	$vendorName = $vendorModel->getVendorName($vendorId);
 	JUtility::sendMail($vendorEmail, $vendorName, $vendorEmail, $subject, $message);
-	if (VmConfig::isJ15()) {
+	if (JVM_VERSION===1) {
 	    //get all super administrator
 	    $query = 'SELECT name, email, sendEmail' .
 		    ' FROM #__users' .
@@ -1023,7 +1023,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	$_db = JFactory::getDBO();
 
-	if (VmConfig::isJ15()) {
+	if (JVM_VERSION===1) {
 	    $_q = 'SELECT 1 '
 		    . 'FROM   #__virtuemart_' . $this->_psType . 'methods v '
 		    . ',      #__plugins             j '

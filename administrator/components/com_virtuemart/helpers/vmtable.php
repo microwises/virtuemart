@@ -428,7 +428,7 @@ class VmTable extends JTable{
 			}
 			$used = true;
 			$i = 0;
-			if(VmConfig::isJ15()) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
+			if(JVM_VERSION===1) $this->$slugName = JFilterOutput::stringURLSafe($this->$slugName);
 			else $this->$slugName = JApplication::stringURLSafe($this->$slugName);
 			if (!$this->$slugName){
 				$this->$slugName = trim(str_replace('-',' ',$this->$slugName) );
@@ -449,7 +449,7 @@ class VmTable extends JTable{
 
 				if(!empty($existingSlugName)){
 					if($i==0){
-						if(VmConfig::isJ15()) $this->$slugName = $this->$slugName . $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
+						if(JVM_VERSION===1) $this->$slugName = $this->$slugName . $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
 						else $this->$slugName = $this->$slugName . JFactory::getDate()->format('Y-m-d-H-i-s').'_';
 					} else{
 						$this->$slugName = $this->$slugName.rand(1,9);

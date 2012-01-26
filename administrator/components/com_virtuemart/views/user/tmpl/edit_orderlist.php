@@ -19,7 +19,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$j15 = VmConfig::isJ15();
 ?>
 
 <div id="editcell">
@@ -56,7 +55,7 @@ $j15 = VmConfig::isJ15();
 
 			$print_url = JURI::base().'?option=com_virtuemart&view=orders&task=orderPrint&virtuemart_order_id='.$row->virtuemart_order_id.'&format=raw';
 			$print_link = "&nbsp;<a href=\"javascript:void window.open('$print_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\">"
-				. JHTML::_('image.site', 'printButton.png', ($j15 ? '/images/M_images/' : '/images/system/'), null, null, JText::_('COM_VIRTUEMART_PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
+				. JHTML::_('image.site', 'printButton.png', ((JVM_VERSION===1) ? '/images/M_images/' : '/images/system/'), null, null, JText::_('COM_VIRTUEMART_PRINT'), array('align' => 'center', 'height'=> '16',  'width' => '16', 'border' => '0')).'</a>';
 
 			?>
 			<tr class="row<?php echo $k ; ?>">

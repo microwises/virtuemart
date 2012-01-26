@@ -92,7 +92,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 	 * @return object List of shipment  objects
 	 */
 	public function getShipments() {
-		if (VmConfig::isJ15()) {
+		if (JVM_VERSION===1) {
 			$table = '#__plugins';
 			$enable = 'published';
 			$ext_id = 'id';
@@ -158,7 +158,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 		}
 
 		// missing string FIX, Bad way ?
-		if (VmConfig::isJ15()) {
+		if (JVM_VERSION===1) {
 			$tb = '#__plugins';
 			$ext_id = 'id';
 		} else {

@@ -95,7 +95,7 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
 	</p>
 
         <p class="width30 floatleft" id="com-form-login-password">
-            <?php if ( VmConfig::isJ15() ) { ?>
+            <?php if ( JVM_VERSION===1 ) { ?>
             <input type="password" id="passwd" name="passwd" class="inputbox" size="18" alt="password" />
             <?php } else { ?>
             <input id="modlgn-passwd" type="password" name="password" class="inputbox" size="18"  />
@@ -105,7 +105,7 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
         <p class="width30 floatleft" id="com-form-login-remember">
             <input type="submit" name="Submit" class="default" value="<?php echo JText::_('COM_VIRTUEMART_LOGIN') ?>" />
             <?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
-            <label for="remember"><?php echo $remember_me = VmConfig::isJ15()? JText::_('Remember me') : JText::_('JGLOBAL_REMEMBER_ME') ?></label>
+            <label for="remember"><?php echo $remember_me = JVM_VERSION===1? JText::_('Remember me') : JText::_('JGLOBAL_REMEMBER_ME') ?></label>
             <input type="checkbox" id="remember" name="remember" class="inputbox" value="yes" alt="Remember Me" />
             <?php endif; ?>
         </p>
@@ -134,7 +134,7 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
         <div class="clr"></div>
 
 
-        <?php if ( VmConfig::isJ15() ) { ?>
+        <?php if ( JVM_VERSION===1 ) { ?>
         <input type="hidden" name="task" value="login" />
         <?php } else { ?>
 	<input type="hidden" name="task" value="user.login" />
@@ -150,7 +150,7 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
         <?php echo JText::sprintf( 'COM_VIRTUEMART_HINAME', $this->JUser->name ); ?>
 	<input type="submit" name="Submit" class="button" value="<?php echo JText::_( 'COM_VIRTUEMART_BUTTON_LOGOUT'); ?>" />
         <input type="hidden" name="option" value="<?php echo $comUserOption ?>" />
-        <?php if ( VmConfig::isJ15() ) { ?>
+        <?php if ( JVM_VERSION===1 ) { ?>
             <input type="hidden" name="task" value="logout" />
         <?php } else { ?>
             <input type="hidden" name="task" value="user.logout" />

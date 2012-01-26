@@ -95,7 +95,7 @@ class VirtuemartViewCustom extends VmView {
 	{
 		$db = JFactory::getDBO();
 
-		if (VmConfig::isJ15()) {
+		if (JVM_VERSION===1) {
 			$table = '#__plugins';
 			$enable = 'published';
 			$ext_id = 'id';

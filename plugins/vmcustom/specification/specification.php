@@ -50,7 +50,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	 * Create the table for this plugin if it does not yet exist.
 	 * @author Val�rie Isaksen
 	 */
-	protected function getVmPluginCreateTableSQL() {
+	public function getVmPluginCreateTableSQL() {
 		return $this->createTableSQL('Product Specification Table');
 	}
 

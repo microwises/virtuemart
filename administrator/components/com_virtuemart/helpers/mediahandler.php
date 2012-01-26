@@ -837,8 +837,8 @@ class VmMediaHandler {
 			$this->_db->setQuery('SELECT FOUND_ROWS()');
 			$imagetotal = $this->_db->loadResult();
 			//vmJsApi::jQuery(array('easing-1.3.pack','mousewheel-3.0.4.pack','fancybox-1.3.4.pack'),'','fancybox');
-			$isJ15 = VmConfig::isJ15();
-			if ($isJ15) {
+
+			if (JVM_VERSION===1) {
 				$j = "
 			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','0') }); " ;
 			}

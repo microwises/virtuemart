@@ -33,7 +33,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	//if (self::$_this)
 	//   return self::$_this;
 	parent::__construct($subject, $config);
-
+// 		vmdebug('Plugin stuff',$subject, $config);
 	$this->_loggable = true;
 	$this->tableFields = array_keys($this->getTableSQLFields());
 
@@ -46,7 +46,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
      * Create the table for this plugin if it does not yet exist.
      * @author Valérie Isaksen
      */
-    protected function getVmPluginCreateTableSQL() {
+    public function getVmPluginCreateTableSQL() {
 	return $this->createTableSQL('Payment Standard Table');
     }
 

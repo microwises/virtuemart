@@ -729,7 +729,7 @@ class VirtueMartModelUser extends VmModel {
 			// Initialize new usertype setting
 			$newUsertype = $usersConfig->get( 'new_usertype' );
 			if (!$newUsertype) {
-			    if ( VmConfig::isJ15()){
+			    if ( JVM_VERSION===1){
 				$newUsertype = 'Registered';
 
 			    } else {
@@ -739,7 +739,7 @@ class VirtueMartModelUser extends VmModel {
 			// Set some initial user values
 			$user->set('usertype', $newUsertype);
 
-			if ( VmConfig::isJ15()){
+			if ( JVM_VERSION===1){
 				$user->set('gid', $authorize->get_group_id( '', $newUsertype, 'ARO' ));
 			} else {
 			    	$user->groups[] = $newUsertype;
@@ -751,7 +751,7 @@ class VirtueMartModelUser extends VmModel {
 			// If user activation is turned on, we need to set the activation information
 			$useractivation = $usersConfig->get( 'useractivation' );
 			$doUserActivation=false;
-			if ( VmConfig::isJ15()){
+			if ( JVM_VERSION===1){
 			    if ($useractivation == '1' ) {
 				$doUserActivation=true;
 			    }
@@ -1413,7 +1413,7 @@ class VirtueMartModelUser extends VmModel {
 	 {
 
 	 	//TODO check this out
-	 	if (VmConfig::isJ15()) {
+	 	if (JVM_VERSION===1) {
 			$name = 'name';
 			$as = '` AS `title`';
 			$table = '#__core_acl_aro_groups';

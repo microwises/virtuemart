@@ -66,7 +66,7 @@ endif;
 	</p>
 	<p class="width30 floatleft" id="com-form-login-password">
 		<label for="passwd"><?php echo JText::_('COM_VIRTUEMART_PASSWORD') ?></label><br />
-		<?php if ( VmConfig::isJ15() ) { ?>
+		<?php if ( JVM_VERSION===1 ) { ?>
 			<input type="password" id="passwd" name="passwd" class="inputbox" size="18" alt="password" />
 		<?php } else { ?>
 			<input id="modlgn-passwd" type="password" name="password" class="inputbox" size="18"  />
@@ -76,7 +76,7 @@ endif;
 		<input type="submit" name="Submit" class="button" value="<?php echo JText::_('LOGIN') ?>" />
 		<?php if(JPluginHelper::isEnabled('system', 'remember')) : ?>
 		<br/ >
-			<label for="remember"><?php echo $remember_me = VmConfig::isJ15()? JText::_('Remember me') : JText::_('JGLOBAL_REMEMBER_ME') ?></label>
+			<label for="remember"><?php echo $remember_me = JVM_VERSION===1? JText::_('Remember me') : JText::_('JGLOBAL_REMEMBER_ME') ?></label>
 		<input type="checkbox" id="remember" name="remember" class="inputbox" value="yes" alt="Remember Me" />
 	</p>
 	<?php endif; ?>
@@ -100,7 +100,7 @@ endif;
 	<div class="clr"></div>
 </fieldset>
 
-<?php if ( VmConfig::isJ15() ) { ?>
+<?php if ( JVM_VERSION===1 ) { ?>
 	<input type="hidden" name="option" value="com_user" />
 	<input type="hidden" name="task" value="login" />
 <?php } else { ?>

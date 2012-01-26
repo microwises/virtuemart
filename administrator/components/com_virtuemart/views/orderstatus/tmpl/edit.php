@@ -21,7 +21,6 @@ defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea();
 AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_ORDERSTATUS_DETAILS');
-$j15 = VmConfig::isJ15();
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">

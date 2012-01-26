@@ -113,8 +113,8 @@ class VmView extends JView{
 		}
 		// javascript for cookies setting in case of press "APPLY"
 		$document = JFactory::getDocument();
-				$isJ15 = VmConfig::isJ15();
-		if ($isJ15) {
+
+		if (JVM_VERSION===1) {
 			$j = "
 	function submitbutton(pressbutton) {
 
@@ -245,10 +245,12 @@ class VmView extends JView{
 		JToolBarHelper::title($viewText . ' ' . $taskName . $msg, 'head vm_' . $view . '_48');
 		$this->assignRef('viewName',$viewName);
 	}
+
 	function sort($orderby ,$name=null ){
 		if (!$name) $name= 'COM_VIRTUEMART_'.strtoupper ($orderby);
 		return JHTML::_('grid.sort' , JText::_($name) , $orderby , $this->lists['filter_order_Dir'] , $this->lists['filter_order']);
 	}
+
 	public function addStandardHiddenToForm($controller=null, $task=''){
 		if (!$controller)	$controller = JRequest::getCmd('view');
 		$option = JRequest::getCmd('option','com_virtuemart' );

@@ -208,7 +208,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			//return false;
 
 			if(version_compare(JVERSION,'1.6.0','ge')) {
-				$fields = array('data'=>'`data` varchar(30480) NULL AFTER `time`');
+				$fields = array('data'=>'`data` text NULL AFTER `time`');
 				$this->alterTable('#__session',$fields);
 			}
 
@@ -444,7 +444,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$this->_db->setQuery($query);
 			$fullColumns = $this->_db->loadObjectList();
 
-			$force = true;
+			$force = false;
 			if($force or $fullColumns[0]->Field==$fieldname and strpos($fullColumns[0]->Type,'char')!==false){
 				vmdebug('Old key found, recreate');
 
@@ -948,7 +948,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$vmInstall->postflight($method);
 		}
 
-		/*		if ((VmConfig::isJ15())) {
+		/*		if ((JVM_VERSION===1)) {
 			$method = ($upgrade) ? 'update' : 'install';
 		$vmInstall->$method();
 		$vmInstall->postflight($method);
@@ -974,7 +974,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$vmInstall->postflight('uninstall');
 		}
 
-		/*		if (VmConfig::isJ15()) {
+		/*		if (JVM_VERSION===1) {
 			$vmInstall->uninstall();
 		$vmInstall->postflight('uninstall');
 		}*/

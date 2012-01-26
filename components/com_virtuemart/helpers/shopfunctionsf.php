@@ -144,7 +144,7 @@ class shopFunctionsF {
 	function PdfIcon( $product, $use_icon=true ) {
 		if (VmConfig::get('pdf_button_enable', 1) == '1' && !JRequest::getVar('pop')) {
 
-			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
+			$folder = (JVM_VERSION===1) ? '/images/M_images/' : '/media/system/images/';
 			// $link .= '&amp;pop=1';
 			$link= JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component&format=pdf');			if ( $use_icon ) {
 				$text = JHtml::_('image.site', 'pdf_button.png', $folder, null, null, JText::_('COM_VIRTUEMART_PDF'));
@@ -160,11 +160,12 @@ class shopFunctionsF {
 	 * @author RolandD, Christopher Roussel
 	 * @param string $link
 	 * @param boolean $use_icon
+	 * @deprecated
 	 */
 	function EmailIcon($product, $use_icon=true ) {
 		if (VmConfig::get('show_emailfriend', 1) == '1' && !JRequest::getVar('pop') && $product->virtuemart_product_id > 0  ) {
 
-			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
+			$folder = (JVM_VERSION===1) ? '/images/M_images/' : '/media/system/images/';
 
 			//Todo this is old stuff and must be adjusted
 			$link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id.'&tmpl=component&pop=1');
@@ -179,6 +180,7 @@ class shopFunctionsF {
 
 	/**
 	 * @author RolandD, Christopher Roussel
+	 * @deprecated
 	 */
 	function PrintIcon( $link='', $use_icon=true, $add_text='' ) {
 		global  $cur_template, $Itemid;
@@ -188,7 +190,7 @@ class shopFunctionsF {
 			if( !$link ) {
 				//Todo this is old stuff and must be adjusted and looks dangerous
 /*				$query_string = str_replace( 'only_page=1', 'only_page=0', JRequest::getVar('QUERY_STRING'));
-				$link = (VmConfig::isJ15()) ? 'index2.php' : 'index.php';
+				$link = (JVM_VERSION===1) ? 'index2.php' : 'index.php';
 				$link .= '?tmpl=component&amp;'.$query_string.'&amp;pop=1';*/
 			}
 			// checks template image directory for image, if non found default are loaded
@@ -236,53 +238,6 @@ class shopFunctionsF {
 
 	}
 
-	/**
-	 * //Todo this is old stuff and must be adjusted
-	* Checks to see if an image exists in the current templates image directory
- 	* if it does it loads this image.  Otherwise the default image is loaded.
-	* Also can be used in conjunction with the menulist param to create the chosen image
-	* load the default or use no image
-	* @deprecated
-	*/
-	function ImageCheck( $file, $directory='/images/M_images/', $param=NULL, $param_directory='/images/M_images/', $alt=NULL, $name=NULL, $type=1, $align='middle', $title=NULL, $admin=NULL ) {
-		$mainframe = JFactory::getApplication();
-		$cur_template = $mainframe->getTemplate();
-
-		$name 	= ( $name 	? ' name="'. $name .'"' 	: '' );
-		$title 	= ( $title 	? ' title="'. $title .'"' 	: '' );
-		$alt 	= ( $alt 	? ' alt="'. $alt .'"' 		: ' alt=""' );
-		$align 	= ( $align 	? ' align="'. $align .'"' 	: '' );
-
-		// change directory path from frontend or backend
-		if ($admin) {
-			$path 	= '/administrator/templates/'. $cur_template .'/images/';
-		} else {
-			$path 	= '/templates/'. $cur_template .'/images/';
-		}
-
-		if ( $param ) {
-			$image = JURI::base(). $param_directory . $param;
-			if ( $type ) {
-				$image = '<img src="'. $image .'" '. $alt . $name . $align .' border="0" />';
-			}
-		} else if ( $param == -1 ) {
-			$image = '';
-		} else {
-			if ( file_exists( JPATH_SITE . $path . $file ) ) {
-				$image = JURI::base() . $path . $file;
-			} else {
-				// outputs only path to image
-				$image = JURI::base(). $directory . $file;
-			}
-
-			// outputs actual html <img> tag
-			if ( $type ) {
-				$image = '<img src="'. $image .'" '. $alt . $name . $title . $align .' border="0" />';
-			}
-		}
-
-		return $image;
-	}
 
 	/**
 	 * Prepares a view for rendering email, then renders and sends
@@ -564,7 +519,7 @@ class shopFunctionsF {
 
 	}
 	function getComUserOption() {
-	 if ( VmConfig::isJ15() ) {
+	 if ( JVM_VERSION===1 ) {
 		return 'com_user';
 	    } else {
 		return 'com_users';

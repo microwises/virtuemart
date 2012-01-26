@@ -539,7 +539,7 @@ class DbScheme
 	private function _table_exists($tablename)
 	{
 
-		if(VmConfig::isJ15()){
+		if(JVM_VERSION===1){
 			$qry = "SHOW TABLES LIKE '".$this->db->replacePrefix($tablename)."'";
 		} else {
 			$realTableName = str_replace('#__', $this->db->getPrefix(),$tablename);

@@ -76,7 +76,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			$this->_db->setQuery($q);
 			$this->_data->virtuemart_shoppergroup_ids = $this->_db->loadResultArray();
 
-			if (VmConfig::isJ15()) {
+			if (JVM_VERSION===1) {
 				$table = '#__plugins';
 				$ext_id = 'id';
 			} else {
@@ -160,7 +160,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 	   		$data['virtuemart_vendor_id'] = VirtueMartModelVendor::getLoggedVendor();
 	  	}
 		// missing string FIX, Bad way ?
-		if (VmConfig::isJ15()) {
+		if (JVM_VERSION===1) {
 			$tb = '#__plugins';
 			$ext_id = 'id';
 		} else {

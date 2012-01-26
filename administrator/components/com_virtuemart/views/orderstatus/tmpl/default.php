@@ -20,7 +20,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 AdminUIHelper::startAdminArea();
-$j15 = VmConfig::isJ15();
+
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<div id="editcell">
@@ -61,7 +61,7 @@ $j15 = VmConfig::isJ15();
 			$checked = JHTML::_('grid.id', $i, $row->virtuemart_orderstate_id);
 
                         $coreStatus = (in_array($row->order_status_code, $this->lists['vmCoreStatusCode']));
-			$image = ($j15) ? 'checked_out.png' : 'admin/checked_out.png';
+			$image = ((JVM_VERSION===1)) ? 'checked_out.png' : 'admin/checked_out.png';
 			$image = JHtml::_('image.administrator', $image, '/images/', null, null, JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_CORE'));
 			$checked = ($coreStatus) ?
 				'<span class="hasTip" title="'. JText::_('COM_VIRTUEMART_ORDER_STATUS_CODE_CORE').'">'. $image .'</span>' :

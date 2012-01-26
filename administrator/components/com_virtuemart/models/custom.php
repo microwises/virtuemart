@@ -265,7 +265,7 @@ class VirtueMartModelCustom extends VmModel {
 		}
 
 		// missing string FIX, Bad way ?
-		if (VmConfig::isJ15()) {
+		if (JVM_VERSION===1) {
 			$tb = '#__plugins';
 			$ext_id = 'id';
 		} else {

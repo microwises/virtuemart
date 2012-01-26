@@ -62,7 +62,7 @@ class plgVmpaymentPaypal extends vmPSPlugin {
 	//self::$_this = $this;
     }
 
-    protected function getVmPluginCreateTableSQL() {
+    public function getVmPluginCreateTableSQL() {
 
 	return $this->createTableSQL('Payment Paypal Table');
     }

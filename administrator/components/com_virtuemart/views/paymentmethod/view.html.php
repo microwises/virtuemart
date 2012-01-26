@@ -156,7 +156,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 
 	function renderInstalledPaymentPlugins($selected){
 
-		if ( VmConfig::isJ15()) {
+		if ( JVM_VERSION===1) {
 			$table = '#__plugins';
 			$ext_id = 'id';
 			$enable = 'published';

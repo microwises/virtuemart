@@ -69,7 +69,7 @@ class VmView extends JView{
 		if ($verifyConfigValue) {
 			if ( !VmConfig::get($verifyConfigValue, 0) ) return;
 		}
-		$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
+		$folder = (JVM_VERSION===1) ? '/images/M_images/' : '/media/system/images/';
 		$text='';
 		if ( $use_icon ) $text .= JHtml::_('image.site', $boutonName.'Button.png', $folder, null, null, JText::_($altText));
 		if ( $use_text ) $text .= '&nbsp;'. JText::_($altText);
