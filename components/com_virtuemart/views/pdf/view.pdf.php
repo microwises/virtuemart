@@ -1,12 +1,19 @@
 <?php
-/*
- * @package		Joomla.Framework
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- *
- * @component Phoca Component
- * @copyright Copyright (C) Jan Pavelka www.phoca.cz
- * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
+/**
+*
+* Description
+*
+* @package	VirtueMart
+* @subpackage
+* @author P.Kohl 
+* @link http://www.virtuemart.net
+* @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
+* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+* VirtueMart is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* @version $Id: view.pdf.php 5320 2012-01-25 14:28:40Z Electrocity $
  */
 defined('_JEXEC') or die;
 
@@ -25,6 +32,5 @@ class VirtueMartViewPdf extends VmView
 
 		$view->display($tpl);
 	}
-
 
 }
