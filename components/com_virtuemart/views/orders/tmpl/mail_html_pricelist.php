@@ -119,6 +119,7 @@ $i = 1 ? 2 : 1;
     </tr>
 <?php
 $i = 1 ? 2 : 1;
+if (fal)
 ?>
     <tr   class="sectiontableentry<?php echo $i ?>">
 	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo JText::_('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></td>

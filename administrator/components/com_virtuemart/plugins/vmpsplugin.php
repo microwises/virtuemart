@@ -774,8 +774,8 @@ abstract class vmPSPlugin extends vmPlugin {
 	}
 
 	foreach ($this->methods as $method) {
-	    if ($this->checkConditions($cart, $method, $cart_prices)) {
-		$nbMethod++;
+	    if ($nb=(int)$this->checkConditions($cart, $method, $cart_prices)) {
+		$nbMethod =$nbMethod+$nb;
 		$idName = $this->_idName;
 		$method_id = $method->$idName;
 	    }

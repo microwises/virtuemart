@@ -33,23 +33,23 @@ defined('_JEXEC') or die('Restricted access');
 	<td valign="top" width="50%">
 
 	    <?php
-	    if (false) {
-		foreach ($this->cart->BTaddress['fields'] as $item) {
-		    if (!empty($item['value'])) {
-			?><!-- span class="titles"><?php echo $item['title'] ?></span -->
-	    	    <span class="values vm2<?php echo '-' . $item['name'] ?>" ><?php echo $this->escape($item['value']) ?></span>
-			<?php if ($item['name'] != 'title' and $item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') { ?>
+
+	    foreach ($this->billfields['fields'] as $field) {
+		if (!empty($field['value'])) {
+			?><!-- span class="titles"><?php echo $field['title'] ?></span -->
+	    	    <span class="values vm2<?php echo '-' . $field['name'] ?>" ><?php echo $this->escape($field['value']) ?></span>
+			<?php if ($field['name'] != 'title' and $field['name'] != 'first_name' and $field['name'] != 'middle_name' and $field['name'] != 'zip') { ?>
 			    <br class="clear" />
 			    <?php
 			}
 		    }
-		}
-	    }
-	    foreach ($this->billfields['fields'] as $field) {
+		    /*
 		if (!empty($field['value'])) {
 		    echo '<tr><td class="key">' . $field['title'] . '</td>'
 		    . '<td>' . $field['value'] . '</td></tr>';
 		}
+		     * */
+
 	    }
 	    ?>
 
@@ -57,36 +57,17 @@ defined('_JEXEC') or die('Restricted access');
 	<td valign="top" width="50%">
 	    <?php
 	    foreach ($this->shipmentfields['fields'] as $field) {
+
 		if (!empty($field['value'])) {
-		    echo '<tr><td class="key">' . $field['title'] . '</td>'
-		    . '<td>' . $field['value'] . '</td></tr>';
-		}
-	    }
-	    if (false) {
-		if (!empty($this->cart->STaddress['fields'])) {
-		    foreach ($this->cart->STaddress['fields'] as $item) {
-			if (!empty($item['value'])) {
-			    ?><!-- span class="titles"><?php echo $item['title'] ?></span -->
-			    <span class="values vm2<?php echo '-' . $item['name'] ?>" ><?php echo $this->escape($item['value']) ?></span>
-			    <?php if ($item['name'] != 'title' and $item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') { ?>
+			    ?><!-- span class="titles"><?php echo $field['title'] ?></span -->
+			    <span class="values vm2<?php echo '-' . $field['name'] ?>" ><?php echo $this->escape($field['value']) ?></span>
+			    <?php if ($field['name'] != 'title' and $field['name'] != 'first_name' and $field['name'] != 'middle_name' and $field['name'] != 'zip') { ?>
 		    	    <br class="clear" />
 				<?php
 			    }
 			}
-		    }
-		} else {
-		    foreach ($this->cart->BTaddress['fields'] as $item) {
-			if (!empty($item['value'])) {
-			    ?><!-- span class="titles"><?php echo $item['title'] ?></span -->
-			    <span class="values vm2<?php echo '-' . $item['name'] ?>" ><?php echo $this->escape($item['value']) ?></span>
-			    <?php if ($item['name'] != 'title' and $item['name'] != 'first_name' and $item['name'] != 'middle_name' and $item['name'] != 'zip') { ?>
-		    	    <br class="clear" />
-				<?php
-			    }
-			}
-		    }
-		}
 	    }
+
 	    ?>
 	</td>
     </tr>

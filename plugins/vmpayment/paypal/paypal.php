@@ -35,8 +35,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 	$this->_loggable = true;
 	$this->tableFields = array_keys($this->getTableSQLFields());
-	$this->_tablepkey = 'id';//virtuemart_paypal_id';
-	$this->_tableId = 'id';//'virtuemart_paypal_id';
+	$this->_tablepkey = 'id'; //virtuemart_paypal_id';
+	$this->_tableId = 'id'; //'virtuemart_paypal_id';
 	$varsToPush = array('paypal_merchant_email' => array('', 'char'),
 	    'paypal_verified_only' => array('', 'int'),
 	    'payment_currency' => array('', 'int'),
@@ -165,7 +165,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	     * (par exemple si des champs requis, tel que le pays, sont manquants) ou pas incluse.
 	     * Valeurs autorisées : 0, 1. Valeur par défaut : 0
 	     */
-	    //"address_override" => "1", // 0 ??   Paypal does not allow your country of residence to ship to the country you wish to
+	    "address_override" => "1", // 0 ??   Paypal does not allow your country of residence to ship to the country you wish to
 	    "first_name" => $address->first_name,
 	    "last_name" => $address->last_name,
 	    "address1" => $address->address_1,
@@ -234,7 +234,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	// add spin image
 	$html = '<html><head><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
 	$html .= '<form action="' . "https://" . $url . '" method="post" name="vm_paypal_form" >';
-	$html.= '<input type="image" name="submit" src="http://www.paypal.com/en_US/i/btn/x-click-but6.gif" alt="Click to pay with PayPal - it is fast, free and secure!" />';
+	$html.= '<input type="image" name="submit" src="http://www.paypal.com/en_US/i/btn/x-click-but6.gif" alt="' . JText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />';
 	foreach ($post_variables as $name => $value) {
 	    $html.= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
 	}
@@ -244,7 +244,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	$html.= ' </script></body></html>';
 
 	// 	2 = don't delete the cart, don't send email and don't redirect
-	return $this->processConfirmedOrderPaymentResponse(2, $cart, $order, $html,$dbValues['payment_name'], $new_status);
+	return $this->processConfirmedOrderPaymentResponse(2, $cart, $order, $html, $dbValues['payment_name'], $new_status);
 
 
 
@@ -290,35 +290,51 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	}
 
 	$payment_data = JRequest::get('post');
-	vmdebug('plgVmOnPaymentResponseReceived', $payment_data);
-	$order_number = $payment_data['invoice'];
-	$return_context = $payment_data['custom'];
-	if (!class_exists('VirtueMartModelOrders'))
-	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-
-	$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
 	$payment_name = $this->renderPluginName($method);
 	$html = $this->_getPaymentResponseHtml($payment_data, $payment_name);
 
-	if ($virtuemart_order_id) {
-	    if (!class_exists('VirtueMartCart'))
-		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-	    // get the correct cart / session
-	    $cart = VirtueMartCart::getCart();
-
-	    // send the email ONLY if payment has been accepted
+	if (!empty($payment_data)) {
+	    vmdebug('plgVmOnPaymentResponseReceived', $payment_data);
+	    $order_number = $payment_data['invoice'];
+	    $return_context = $payment_data['custom'];
 	    if (!class_exists('VirtueMartModelOrders'))
 		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-	    $order = new VirtueMartModelOrders();
-	    $orderitems = $order->getOrder($virtuemart_order_id);
-	    //vmdebug('PaymentResponseReceived CART', $orderitems);
-	    if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-	    shopFunctionsF::sentOrderConfirmedEmail($orderitems);
-	    //We delete the old stuff
 
-	    $cart->emptyCart();
+	    $virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
+	    $payment_name = $this->renderPluginName($method);
+	    $html = $this->_getPaymentResponseHtml($payment_data, $payment_name);
+
+	    if ($virtuemart_order_id) {
+		if (!class_exists('VirtueMartCart'))
+		    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+		// send the email ONLY if payment has been accepted
+		if (!class_exists('VirtueMartModelOrders'))
+		    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+
+		$modelOrder = new VirtueMartModelOrders();
+		$orderitems = $modelOrder->getOrder($virtuemart_order_id);
+		$nb_history = count($orderitems['history']);
+		//vmdebug('history', $orderitems);
+		if (!class_exists('shopFunctionsF'))
+		    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+		if ($nb_history == 1) {
+		    if (!class_exists('shopFunctionsF'))
+			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+		    shopFunctionsF::sentOrderConfirmedEmail($orderitems);
+		    $this->logInfo('plgVmOnPaymentResponseReceived, sentOrderConfirmedEmail ' . $order_number, 'message');
+		    $order['order_status'] = $orderitems['items'][$nb_history - 1]->order_status;
+		    $order['virtuemart_order_id'] = $virtuemart_order_id;
+		    $order['customer_notified'] = 0;
+		    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
+		    $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
+		}
+	    }
 	}
-
+	$cart = VirtueMartCart::getCart();
+	//We delete the old stuff
+	// get the correct cart / session
+	$cart = VirtueMartCart::getCart();
+	$cart->emptyCart();
 	return true;
     }
 
@@ -445,15 +461,28 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    if (!class_exists('VirtueMartModelOrders'))
 		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 	    $modelOrder = new VirtueMartModelOrders();
+	    $orderitems = $modelOrder->getOrder($virtuemart_order_id);
+	    $nb_history = count($orderitems['history']);
 	    $order['order_status'] = $new_status;
 	    $order['virtuemart_order_id'] = $virtuemart_order_id;
-	    $order['customer_notified'] = 0;
 	    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_CONFIRMED', $order_number);
+	    if ($nb_history == 1) {
+		$order['comments'] .= "<br />" . JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
+		$order['customer_notified'] = 0;
+	    } else {
+		$order['customer_notified'] = 1;
+	    }
 	    $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
-	    // remove vmcart
+	    if ($nb_history == 1) {
+		if (!class_exists('shopFunctionsF'))
+		    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+		shopFunctionsF::sentOrderConfirmedEmail($orderitems);
+		$this->logInfo('Notification, sentOrderConfirmedEmail ' . $order_number, 'message');
+	    }
 	}
+	//// remove vmcart
 	$this->emptyCart($return_context);
-	return true;
+	//die();
     }
 
     function _getTablepkeyValue($virtuemart_order_id) {
@@ -648,9 +677,10 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 	$html = '<table>' . "\n";
 	$html .= $this->getHtmlRow('PAYPAL_PAYMENT_NAME', $payment_name);
-	$html .= $this->getHtmlRow('PAYPAL_ORDER_NUMBER', $paypal_data['invoice']);
-	$html .= $this->getHtmlRow('PAYPAL_AMOUNT', $paypal_data['mc_gross'] . " " . $paypal_data['mc_currency']);
-
+	if (!empty($paypal)) {
+	    $html .= $this->getHtmlRow('PAYPAL_ORDER_NUMBER', $paypal_data['invoice']);
+	    $html .= $this->getHtmlRow('PAYPAL_AMOUNT', $paypal_data['mc_gross'] . " " . $paypal_data['mc_currency']);
+	}
 	$html .= '</table>' . "\n";
 
 	return $html;
