@@ -133,7 +133,7 @@ class VirtueMartModelCustom extends VmModel {
 		$row->custom_title = $row->custom_title.' Copy';
 
 		if (!$clone = $row->store()) {
-			JError::raiseError(500, $row->getError() );
+			JError::raiseError(500, 'createClone '. $row->getError() );
 		}
 		return $clone;
 	}
@@ -159,7 +159,7 @@ class VirtueMartModelCustom extends VmModel {
 		// Get old IDS
 		$this->_db->setQuery( 'SELECT `virtuemart_customfield_id` FROM `#__virtuemart_'.$table.'_customfields` as `PC` WHERE `PC`.virtuemart_'.$table.'_id ='.$id );
 		$old_customfield_ids = $this->_db->loadResultArray();
-		
+
 
 		 if (isset ( $datas['custom_param'] )) $params = true ;
 		 else $params = false ;
@@ -204,7 +204,7 @@ class VirtueMartModelCustom extends VmModel {
 		$this->_db->query();
 		}
 
-		
+
 		JPluginHelper::importPlugin('vmcustom');
 		$dispatcher = JDispatcher::getInstance();
 		if (is_array($datas['plugin_param'])) {

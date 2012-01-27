@@ -88,7 +88,7 @@ class VmTableXarray extends VmTable {
 			if (!$this->_db->query())
 			{
 				$err = $this->_db->getErrorMsg();
-				JError::raiseError( 500, $err );
+				JError::raiseError( 500, get_class( $this ).':: move '. $err );
 			}
 		}
 	}

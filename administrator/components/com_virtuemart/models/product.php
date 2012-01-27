@@ -823,7 +823,7 @@ class VirtueMartModelProduct extends VmModel {
 			return array();
 		}
 
-		$maxNumber = VmConfig::get('absoluteMaxNumberOfProducts',500);
+		$maxNumber = VmConfig::get('absoluteMaxNumberOfProducts',700);
 		$products=array();
 		if($single){
 			foreach($productIds as $id){

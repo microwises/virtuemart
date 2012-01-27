@@ -831,7 +831,7 @@ class VmTable extends JTable{
 
 			if(!$this->_db->query()){
 				$err = $this->_db->getErrorMsg();
-				JError::raiseError(500, $err);
+				JError::raiseError(500, get_class( $this ).':: move isset row $this->$k'.$err);
 			}
 
 			$query = 'UPDATE ' . $this->_tbl
@@ -842,7 +842,7 @@ class VmTable extends JTable{
 
 			if(!$this->_db->query()){
 				$err = $this->_db->getErrorMsg();
-				JError::raiseError(500, $err);
+				JError::raiseError(500, get_class( $this ).':: move isset row $row->$k'.$err);
 			}
 
 			$this->ordering = $row->ordering;
@@ -855,7 +855,7 @@ class VmTable extends JTable{
 
 			if(!$this->_db->query()){
 				$err = $this->_db->getErrorMsg();
-				JError::raiseError(500, $err);
+				JError::raiseError(500,  get_class( $this ).':: move update $this->$k'. $err);
 			}
 		}
 		return true;
