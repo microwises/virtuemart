@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
 if (!class_exists('vmPSPlugin'))
     require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
-class plgVmpaymentPaypal extends vmPSPlugin {
+class plgVmPaymentPaypal extends vmPSPlugin {
 
     // instance of class
     public static $_this = false;

@@ -22,6 +22,8 @@ defined('_JEXEC') or die('Restricted access');
  * @author Milbo
  *
  */
+if(!class_exists('JModel')) require(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'application'.DS.'component'.DS.'model.php');
+
 class GenericTableUpdater extends JModel{
 
 	private $_reCreatePrimary = false;
@@ -651,7 +653,7 @@ class GenericTableUpdater extends JModel{
 
 				//Attention, we give for a primary the auto_increment back, so we cant decide if a key is used as primary,
 				//but has no auto increment, so wie alter it anytime
-				if(strpos($alterCommand,'AUTO_INCREMENT')!==false) {
+				if(strpos($alterCommand,'AUTO_INCREMENT')!==false and $reCreatePrimary) {
 
 					$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
 					$action = 'CHANGE';
@@ -666,7 +668,7 @@ class GenericTableUpdater extends JModel{
 						$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
 						$action = 'CHANGE';
 						$altered++;
-						// 					vmdebug($tablename.' Alter field '.$fieldname.'$alterCommand '.$alterCommand);
+						vmdebug($tablename.' Alter field '.$fieldname.' oldcolumn '.$oldColumn.'  $alterCommand '.$alterCommand);
 						// 					vmdebug('Alter field new column',$alterCommand); //,$fullColumns[$key]);
 					}
 				}

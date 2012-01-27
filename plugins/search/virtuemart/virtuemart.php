@@ -31,6 +31,11 @@ if(!version_compare(JVERSION,'1.6.0','ge')) {
 			return $areas;
 		}
 
+		function getTableSQLFields() {
+
+			return array();
+		}
+
 		/**
 		 * virtuemart Products Search method
 		 *
@@ -187,7 +192,7 @@ function plgSearchVirtuemart($text, $phrase='', $ordering='', $areas=null) {
 	$pluginParams = new JParameter($plugin->params);
 	if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'config.php');
 	VmConfig::loadConfig();
-	
+
 	$limit = $pluginParams->def('search_limit', 50);
 
 

@@ -82,6 +82,11 @@ abstract class vmPlugin extends JPlugin {
 
 	}
 
+	function getTableSQLFields() {
+
+		return array();
+	}
+
 	/**
 	 * Checks if this plugin should be active by the trigger
 	 * @author Max Milbers
