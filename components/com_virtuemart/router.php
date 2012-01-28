@@ -153,7 +153,7 @@ function virtuemartBuildRoute(&$query) {
 			}
 		break;
 		case 'user';
-			if ( isset($jmenu['user']) ) $query['Itemid'] = $jmenu['virtuemart_user'];
+			if ( isset($jmenu['user']) ) $query['Itemid'] = $jmenu['user'];
 			else {
 				$segments[] = $lang['user'] ;
 			}
