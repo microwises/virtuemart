@@ -158,8 +158,8 @@ class VirtuemartViewOrders extends VmView {
 		else {
 			$this->setLayout('orders');
 
-			/* Get the data */
-			$orderslist = $this->get('OrdersList');
+			$model = $this->getModel();
+			$orderslist = $model->getOrdersList();
 
 			$this->assignRef('orderstatuses', $orderStates);
 

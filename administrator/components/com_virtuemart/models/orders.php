@@ -175,7 +175,7 @@ class VirtueMartModelOrders extends VmModel {
 	 */
 	public function getOrdersList($uid = 0, $noLimit = false)
 	{
-
+		vmdebug('getOrdersList');
 		$this->_noLimit = $noLimit;
 		$selecct = " o.*, CONCAT_WS(' ',u.first_name,u.middle_name,u.last_name) AS order_name "
 		.',pm.payment_name AS payment_method ';
