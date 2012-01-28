@@ -95,7 +95,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			'D'=>'COM_VIRTUEMART_DATE',
 			'T'=>'COM_VIRTUEMART_TIME',
 			'M'=>'COM_VIRTUEMART_IMAGE',
-// 			'V'=>'COM_VIRTUEMART_CUSTOM_CART_VARIANT',
+			'V'=>'COM_VIRTUEMART_CUSTOM_CART_VARIANT',
 			'E'=>'COM_VIRTUEMART_CUSTOM_EXTENSION'
 			);
 
@@ -761,7 +761,7 @@ class VirtueMartModelCustomfields extends VmModel {
 		}
 	}
 
-	function displayCustomMedia($media_id,$table='product'){
+	function displayCustomMedia($media_id,$table='product',$absUrl=false){
 
 			if (!class_exists('TableMedias'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'medias.php');
@@ -773,7 +773,7 @@ class VirtueMartModelCustomfields extends VmModel {
   		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
   		$media = VmMediaHandler::createMedia($data,$table);
 
-		return $media->displayMediaThumb('',false,'',true,true);
+		return $media->displayMediaThumb('',false,'',true,true,$absUrl);
 
 	}
 
@@ -865,7 +865,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	/*
 	 * render custom fields display order BE/FE
 	 */
-	public function CustomsFieldOrderDisplay($item,$view='FE') {
+	public function CustomsFieldOrderDisplay($item,$view='FE',$absUrl = false) {
 		$row = 0 ;
 		$item->param = json_decode($item->product_attribute,true);
 		$html = '<div class="vm-customfield-cart">';
@@ -881,7 +881,7 @@ class VirtueMartModelCustomfields extends VmModel {
 						$child = self::getChild($item->productCustom->custom_value);
 						$html .= ' <span>'.$item->productCustom->custom_title.' : '.$child->product_name.'</span>';
 					} elseif (($item->productCustom->field_type == "M")) {
-						$html .= ' <span>'.$item->productCustom->custom_title.' : '.self::displayCustomMedia($item->productCustom->custom_value).'</span>';
+						$html .= ' <span>'.$item->productCustom->custom_title.' : '.self::displayCustomMedia($item->productCustom->custom_value,$absUrl).'</span>';
 					}  else {
 
 						$html .= '<span>'.$item->productCustom->custom_title.' : '.$item->productCustom->custom_value.'</span>';
