@@ -46,12 +46,15 @@ class VirtueMartControllerCategory extends JController {
 	* Function Description
 	*
 	* @author RolandD
+	* @author George
 	* @access public
 	*/
 	public function display() {
 
-		if (JRequest::getvar('search')) $view->display();
-		else {
+		if (JRequest::getvar('search')) {
+			$view = $this->getView('category', 'html');
+			$view->display();
+		} else {
 			// Display it all
 			$safeurlparams = array('virtuemart_category_id'=>'INT','virtuemart_manufacturer_id'=>'INT','virtuemart_currency_id'=>'INT','return'=>'BASE64','lang'=>'CMD','orderby'=>'CMD','limitstart'=>'CMD','order'=>'CMD','limit'=>'CMD');
 			parent::display(true, $safeurlparams);

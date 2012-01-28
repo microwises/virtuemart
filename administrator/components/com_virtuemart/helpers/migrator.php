@@ -44,16 +44,21 @@ class Migrator extends VmModel{
 
 		if(!empty($jrmax_execution_time)){
 // 			vmdebug('$jrmax_execution_time',$jrmax_execution_time);
-			if($max_execution_time!==$jrmax_execution_time) @ini_set( 'max_execution_time', $jrmax_execution_time );
+			if($max_execution_time!=$jrmax_execution_time) @ini_set( 'max_execution_time', $jrmax_execution_time );
 		}
 
 		$this->maxScriptTime = ini_get('max_execution_time')*0.80-1;	//Lets use 5% of the execution time as reserve to store the progress
 
+		$jrmemory_limit= JRequest::getInt('memory_limit');
+		if(!empty($jrmemory_limit)){
+			@ini_set( 'memory_limit', $jrmemory_limit.'M' );
+		} else {
+			$memory_limit = ini_get('memory_limit');
+			if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
+		}
 
-		$memory_limit = ini_get('memory_limit');
-		if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
-
-		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) * 0.70;		//Lets use 30 % as reserve
+		$this->maxMemoryLimit = ($this->return_bytes(ini_get('memory_limit')) - 10485760)  ;		//Lets use 10MB for joomla
+// 		vmdebug('$this->maxMemoryLimit',$this->maxMemoryLimit); //134217728
 		//$this->maxMemoryLimit = $this -> return_bytes('20M');
 
 		// 		ini_set('memory_limit','35M');
@@ -503,7 +508,7 @@ class Migrator extends VmModel{
 				}
 
 				//Solution takes vm1 original values, but is not tested (does not set mainvendor)
-				//if(!empty($user['group_name'])){
+/*				//if(!empty($user['group_name'])){
 				//    $user['perms'] = $user['group_name'];
 				//
 				//} else {
@@ -516,7 +521,7 @@ class Migrator extends VmModel{
 				}else {
 					$user['perms'] = 'shopper';
 				}
-				//}
+				//}*/
 
 				$user['virtuemart_user_id'] = $user['id'];
 				//$userModel->setUserId($user['id']);
