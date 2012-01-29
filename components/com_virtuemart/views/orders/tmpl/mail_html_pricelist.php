@@ -73,7 +73,7 @@ $root = $u->toString(array('scheme', 'host'));
 		<?php echo $this->currency->priceDisplay($item['product_final_price']); ?>
     	</td>
 	    <?php if (VmConfig::get('show_tax')) { ?>
-		<td align="right"><?php echo "<span  style='color:gray'>" . $this->currency->priceDisplay($item['product_tax']) . "</span>" ?></td>
+		<td align="right"><?php echo "<span class='priceColor2'>" . $this->currency->priceDisplay($item['product_tax']) . "</span>" ?></td>
 	    <?php } ?>
     	<td align="right" >
 		<?php echo $this->currency->priceDisplay($item['product_quantity'] * $item['product_final_price']); ?>
@@ -98,7 +98,7 @@ $root = $u->toString(array('scheme', 'host'));
 	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?></td>
 
 <?php if (VmConfig::get('show_tax')) { ?>
-    	<td align="right"><?php echo "<span  style='color:gray'>" . $this->currency->priceDisplay($this->order['details']['BT']['order_shipment_tax']) . "</span>" ?></td>
+    	<td align="right"><?php echo "<span class='priceColor2'>" . $this->currency->priceDisplay($this->order['details']['BT']['order_shipment_tax']) . "</span>" ?></td>
 	<?php } ?>
 	<td align="right"><?php echo $this->currency->priceDisplay($this->order['details']['BT']['order_shipment'] + $this->order['details']['BT']['order_shipment_tax']); ?></td>
 
@@ -111,7 +111,7 @@ $i = 1 ? 2 : 1;
 
 
 <?php if (VmConfig::get('show_tax')) { ?>
-    	<td align="right"><?php echo "<span  style='color:gray'>" . $this->currency->priceDisplay($this->order['details']['BT']['order_payment_tax']) . "</span>" ?></td>
+    	<td align="right"><?php echo "<span class='priceColor2'>" . $this->currency->priceDisplay($this->order['details']['BT']['order_payment_tax']) . "</span>" ?></td>
 	<?php } ?>
 	<td align="right"><?php echo $this->currency->priceDisplay($this->order['details']['BT']['order_payment'] + $this->order['details']['BT']['order_payment_tax']); ?></td>
 
@@ -154,7 +154,7 @@ $i = 1 ? 2 : 1;
 	<td align="right" style="padding-right: 10px;" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></strong></td>
 
 <?php if (VmConfig::get('show_tax')) { ?>
-    	<td align="right"><span  style='color:gray'><?php echo $this->currency->priceDisplay($this->order['details']['BT']['order_tax']); ?></span></td>
+    	<td align="right"><span class='priceColor2'><?php echo $this->currency->priceDisplay($this->order['details']['BT']['order_tax']); ?></span></td>
 	<?php } ?>
 	<td align="right"><strong><?php echo $this->currency->priceDisplay($this->order['details']['BT']['order_total']); ?></strong></td>
     </tr>

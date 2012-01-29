@@ -223,12 +223,10 @@ class VirtueMartViewProductdetails extends VmView {
 		// @todo build edit page
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if (Permissions::getInstance()->check("admin,storeadmin")) {
-			$edit_link = '<a href="'.JURI::root().'index.php?option=com_virtuemart&tmpl=component&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id.'">
-				'.JHTML::_('image', 'images/M_images/edit.png', JText::_('COM_VIRTUEMART_PRODUCT_FORM_EDIT_PRODUCT'), array('width' => 16, 'height' => 16, 'border' => 0)).'</a>';
-// <img width="16" height="16" border="0" alt="Modifier ce produit" src="/Joomla1.7.3/">
-// </a>
-			// $url = 'index.php?option=com_virtuemart&tmpl=component&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id;
-			// $edit_link = JHTML::_('link', $url, JHTML::_('image', 'images/M_images/edit.png', JText::_('COM_VIRTUEMART_PRODUCT_FORM_EDIT_PRODUCT'), array('width' => 16, 'height' => 16, 'border' => 0)));
+			// $edit_link = '<a href="'.JURI::root().'index.php?option=com_virtuemart&tmpl=component&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id.'">
+				// '.JHTML::_('image', 'images/M_images/edit.png', JText::_('COM_VIRTUEMART_PRODUCT_FORM_EDIT_PRODUCT'), array('width' => 16, 'height' => 16, 'border' => 0)).'</a>';
+			$edit_link = JURI::root().'index.php?option=com_virtuemart&tmpl=component&view=product&task=edit&virtuemart_product_id='.$product->virtuemart_product_id ;
+			$edit_link = $this->linkIcon($edit_link,'COM_VIRTUEMART_PRODUCT_FORM_EDIT_PRODUCT','edit',false,false);
 		}
 		else {
 			$edit_link = "";

@@ -121,7 +121,7 @@ class VirtueMartControllerCart extends JController {
 	    if ($cart->add($virtuemart_product_ids, $errorMsg )) {
 
 		$this->json->msg = '<a class="continue" href="' . $continue_link . '" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
-		$this->json->msg .= '<a style ="float:right;" href="' . JRoute::_("index.php?option=com_virtuemart&view=cart") . '">' . JText::_('COM_VIRTUEMART_CART_SHOW') . '</a>';
+		$this->json->msg .= '<a class="floatright" href="' . JRoute::_("index.php?option=com_virtuemart&view=cart") . '">' . JText::_('COM_VIRTUEMART_CART_SHOW') . '</a>';
 		if ($errorMsg) $this->json->msg .= '<div>'.$errorMsg.'</div>';
 		$this->json->stat = '1';
 	    } else {
@@ -167,7 +167,7 @@ class VirtueMartControllerCart extends JController {
 	    $taskRoute = '';
 	    $linkName = JText::_('COM_VIRTUEMART_CART_SHOW');
 	}
-	$this->data->cart_show = '<a style ="float:right;" href="' . JRoute::_("index.php?option=com_virtuemart&view=cart" . $taskRoute, $this->useXHTML, $this->useSSL) . '">' . $linkName . '</a>';
+	$this->data->cart_show = '<a class="floatright" href="' . JRoute::_("index.php?option=com_virtuemart&view=cart" . $taskRoute, $this->useXHTML, $this->useSSL) . '">' . $linkName . '</a>';
 	$this->data->billTotal = $lang->_('COM_VIRTUEMART_CART_TOTAL') . ' : <strong>' . $this->data->billTotal . '</strong>';
 	echo json_encode($this->data);
 	Jexit();

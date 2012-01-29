@@ -122,9 +122,9 @@
 
 
                                         <?php if ( VmConfig::get('show_tax')) { ?>
-                                <th align="right" width="60px"><?php  echo "<span  style='color:gray'>".JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') ?></th>
+                                <th align="right" width="60px"><?php  echo "<span  class='priceColor2'>".JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') ?></th>
 				<?php } ?>
-                                <th align="right" width="60px"><?php echo "<span  style='color:gray'>".JText::_('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></th>
+                                <th align="right" width="60px"><?php echo "<span  class='priceColor2'>".JText::_('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></th>
 				<th align="right" width="70px"><?php echo JText::_('COM_VIRTUEMART_CART_TOTAL') ?></th>
 			</tr>
 
@@ -154,12 +154,12 @@
 				<td align="center" >
 				<?php
 					if (VmConfig::get('checkout_show_origprice',1) && !empty($this->cart->pricesUnformatted[$pkey]['basePriceWithTax']) && $prow->basePriceWithTax != $prow->salesPrice ) {
-						echo '<span style="text-decoration:line-through">'.$prow->basePriceWithTax .'</span><br />' ;
+						echo '<span class=".line-through>'.$prow->basePriceWithTax .'</span><br />' ;
 					}
 					echo $prow->salesPrice ;
 					?>
 				</td>
-				<td align="right" ><form action="index.php" method="post" style="display: inline;">
+				<td align="right" ><form action="index.php" method="post" class="inline">
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="text" title="<?php echo  JText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="inputbox" size="3" maxlength="4" name="quantity" value="<?php echo $prow->quantity ?>" />
 				<input type="hidden" name="view" value="cart" />
@@ -171,9 +171,9 @@
 				</td>
 
 				<?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo "<span  style='color:gray'>".$prow->subtotal_tax_amount."</span>" ?></td>
+				<td align="right"><?php echo "<span  class='priceColor2'>".$prow->subtotal_tax_amount."</span>" ?></td>
                                 <?php } ?>
-				<td align="right"><?php echo "<span  style='color:gray'>".$prow->subtotal_discount."</span>" ?></td>
+				<td align="right"><?php echo "<span  class='priceColor2'>".$prow->subtotal_discount."</span>" ?></td>
 				<td colspan="1" align="right"><?php echo $prow->subtotal_with_tax ?></td>
 			</tr>
 		<?php
@@ -190,9 +190,9 @@
 			<td colspan="4" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_PRICES_TOTAL'); ?></td>
 
                         <?php if ( VmConfig::get('show_tax')) { ?>
-			<td align="right"><?php echo "<span  style='color:gray'>".$this->cart->prices['taxAmount']."</span>" ?></td>
+			<td align="right"><?php echo "<span  class='priceColor2'>".$this->cart->prices['taxAmount']."</span>" ?></td>
                         <?php } ?>
-			<td align="right"><?php echo "<span  style='color:gray'>".$this->cart->prices['discountAmount']."</span>" ?></td>
+			<td align="right"><?php echo "<span  class='priceColor2'>".$this->cart->prices['discountAmount']."</span>" ?></td>
 			<td align="right"><?php echo $this->cart->prices['salesPrice'] ?></td>
 		  </tr>
 
@@ -261,7 +261,7 @@
                                  <?php } ?>
 
                                      <?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo "<span  style='color:gray'>".$this->cart->prices['shipmentTax']."</span>"; ?> </td>
+				<td align="right"><?php echo "<span  class='priceColor2'>".$this->cart->prices['shipmentTax']."</span>"; ?> </td>
                                 <?php } ?>
 				<td></td>
 				<td align="right"><?php echo $this->cart->prices['salesPriceShipment']; ?> </td>
@@ -280,9 +280,9 @@
                                     <td colspan="4" align="left"><?php echo $this->cart->cartData['paymentName']; ?> </td>
                                  <?php } ?>
                                      <?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo "<span  style='color:gray'>".$this->cart->prices['paymentTax']."</span>"; ?> </td>
+				<td align="right"><?php echo "<span  class='priceColor2'>".$this->cart->prices['paymentTax']."</span>"; ?> </td>
                                 <?php } ?>
-				<td align="right"><?php //echo "<span  style='color:gray'>".$this->cart->prices['paymentDiscount']."</span>"; ?></td>
+				<td align="right"><?php //echo "<span  class='priceColor2'>".$this->cart->prices['paymentDiscount']."</span>"; ?></td>
 				<td align="right"><?php  echo $this->cart->prices['salesPricePayment']; ?> </td>
 			</tr>
 		<?php
@@ -323,9 +323,9 @@
 			<td colspan="4" align="right"><?php echo JText::_('COM_VIRTUEMART_CART_TOTAL') ?>: </td>
 
                         <?php if ( VmConfig::get('show_tax')) { ?>
-			<td align="right"> <?php echo "<span  style='color:gray'>".$this->cart->prices['billTaxAmount']."</span>" ?> </td>
+			<td align="right"> <?php echo "<span  class='priceColor2'>".$this->cart->prices['billTaxAmount']."</span>" ?> </td>
                         <?php } ?>
-			<td align="right"> <?php echo "<span  style='color:gray'>".$this->cart->prices['billDiscountAmount']."</span>" ?> </td>
+			<td align="right"> <?php echo "<span  class='priceColor2'>".$this->cart->prices['billDiscountAmount']."</span>" ?> </td>
 			<td align="right"><strong><?php echo $this->cart->prices['billTotal'] ?></strong></td>
 		  </tr>
 		    <?php

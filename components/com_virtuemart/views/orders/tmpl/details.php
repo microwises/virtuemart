@@ -26,13 +26,13 @@ if($this->print){
 		<body onload="javascript:print();">
 		<h1><?php echo JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'); ?></h1>
 
-		<div style="padding: 0px; margin: 5px; spacing: 0px;">
+		<div class='spaceStyle'>
 		<?php
 		echo $this->loadTemplate('order');
 		?>
 		</div>
 
-		<div style="padding: 0px; margin: 0px; spacing: 0px;">
+		<div class='spaceStyle'>
 		<?php
 		echo $this->loadTemplate('items');
 		?>
@@ -56,13 +56,13 @@ if($this->print){
 
 	echo $details_link; ?>
 
-	</h1><div style="padding: 0px; margin: 5px; spacing: 0px;">
+	</h1><div class='spaceStyle'>
 	<?php
 	echo $this->loadTemplate('order');
 	?>
 	</div>
 
-	<div style="padding: 0px; margin: 0px; spacing: 0px;">
+	<div class='spaceStyle'>
 	<?php
 
 	$tabarray = array();

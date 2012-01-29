@@ -109,11 +109,11 @@ defined('_JEXEC') or die('Restricted access');
 
 
 
-	<br style='clear:both;' />
+	<br class="clear" />
 	<?php echo $this->linkdetails ?>
 
-	<br style='clear:both;' />
+	<br class="clear" />
 
 	<?php echo $this->linktos ?>
 
-	<br style='clear:both;' />
+	<br class="clear" />

@@ -55,11 +55,11 @@ defined('_JEXEC') or die('Restricted access');
 
 <?php	echo $this->vendor->vendor_legal_info; ?>
 
-	<br style='clear:both;' />
+	<br class="clear" />
 	<?php echo $this->linktos ?>
 
-	<br style='clear:both;' />
+	<br class="clear" />
 
 	<?php echo $this->linkcontact ?>
 
-	<br style='clear:both;' />
+	<br class="clear" />

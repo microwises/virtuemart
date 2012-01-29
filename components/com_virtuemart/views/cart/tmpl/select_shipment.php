@@ -66,7 +66,7 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 		$buttonclass = 'default';
 	}
 	?>
-	<div style="text-align: right; width: 100%;">
+	<div class="buttonBar-right">
 
 	        <button class="<?php echo $buttonclass ?>" type="submit" ><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>  &nbsp;
 	<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>

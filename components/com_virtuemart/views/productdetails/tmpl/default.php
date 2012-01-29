@@ -89,9 +89,9 @@ if (empty ( $this->product )) {
 		$link = 'index.php?tmpl=component&option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id;
 		$MailLink = 'index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component';
 
-		echo $this->linkIcon($link.'&format=pdf','COM_VIRTUEMART_PDF','pdf_','pdf_button_enable',false);
-		echo $this->linkIcon($link.'&print=1','COM_VIRTUEMART_PRINT','print','show_printicon');
-		echo $this->linkIcon($MailLink,'COM_VIRTUEMART_EMAIL','email','show_emailfriend');
+		echo $this->linkIcon($link.'&format=pdf','COM_VIRTUEMART_PDF','pdf_Button','pdf_button_enable',false);
+		echo $this->linkIcon($link.'&print=1','COM_VIRTUEMART_PRINT','printButton','show_printicon');
+		echo $this->linkIcon($MailLink,'COM_VIRTUEMART_EMAIL','emailButton','show_emailfriend');
 		// echo shopFunctionsF::PrintIcon($link.'&print=1');
 		// echo shopFunctionsF::EmailIcon($this->product);
 		?>
@@ -212,7 +212,7 @@ if (empty ( $this->product )) {
 					if (!empty($this->product->customfieldsCart)) {  ?>
 					<div class="product-fields">
 						<?php foreach ($this->product->customfieldsCart as $field) { ?>
-							<div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
+							<div class="product-field product-field-type-<?php echo $field->field_type ?>">
 							<span class="product-fields-title" ><b><?php echo  JText::_($field->custom_title) ?></b></span>
 							<?php if ($field->custom_tip) echo JHTML::tooltip($field->custom_tip,  JText::_($field->custom_title), 'tooltip.png'); ?>
 							<span class="product-field-display"><?php echo $field->display ?></span>
@@ -232,7 +232,7 @@ if (empty ( $this->product )) {
 					if (!empty($this->product->customsChilds)) {  ?>
 						<div class="product-fields">
 							<?php foreach ($this->product->customsChilds as $field) {  ?>
-								<div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field->field_type ?>">
+								<div class="product-field product-field-type-<?php echo $field->field->field_type ?>">
 								<span class="product-fields-title" ><b><?php echo JText::_($field->field->custom_title) ?></b></span>
 								<span class="product-field-desc"><?php echo JText::_($field->field->custom_value) ?></span>
 								<span class="product-field-display"><?php echo $field->display ?></span>
@@ -400,7 +400,7 @@ if (empty ( $this->product )) {
 
 		<?php
 		foreach ($this->product->customfieldsRelatedProducts as $field){
-			?><div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
+			?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
 			<span class="product-field-display"><?php echo $field->display ?></span>
 			<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?></span>
 			</div>
@@ -414,7 +414,7 @@ if (empty ( $this->product )) {
 	<div class="product-related-categories">
 		<h4><?php echo JText::_('COM_VIRTUEMART_RELATED_CATEGORIES'); ?></h4>
 		<?php foreach ($this->product->customfieldsRelatedCategories as $field){ ?>
-			<div style="display:inline-block;" class="product-field product-field-type-<?php echo $field->field_type ?>">
+			<div class="product-field product-field-type-<?php echo $field->field_type ?>">
 			<span class="product-field-display"><?php echo $field->display ?></span>
 			<span class="product-field-desc"><?php echo jText::_($field->custom_field_desc) ?></span>
 			</div>

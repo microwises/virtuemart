@@ -859,7 +859,7 @@ class vmrouterHelper {
 			vmWarn(JText::_('COM_VIRTUEMART_ASSIGN_VM_TO_MENU'));
 		} else {
 
-
+			$homeid =0;
 			// Search  Virtuemart itemID in joomla menu
 			foreach ($this->menuVmitems as $item)	{
 				$linkToSplit= explode ('&',$item->link);
@@ -891,7 +891,7 @@ class vmrouterHelper {
 		if ( !isset( $this->menu['virtuemart']) ) {
 			if (isset ($this->menu['virtuemart_category_id'][0]) ) {
 				$this->menu['virtuemart'] = $this->menu['virtuemart_category_id'][0] ;
-			} else $this->menu['virtuemart'] = null;
+			}else $this->menu['virtuemart'] = $homeid;
 		}
 		// if ( !isset( $this->menu['manufacturer']) ) {
 			// $this->menu['manufacturer'] = $this->menu['virtuemart'] ;
