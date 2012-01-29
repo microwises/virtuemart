@@ -39,15 +39,20 @@ class VmTableData extends VmTable {
 		$this->storeParams();
 
     	$id = 0;
+		
     	$tblKey = $this->_tbl_key;
     	$pKey = $this->_pkey;
-		if(!empty($this->$pKey)){
-			$_qry = 'SELECT `'.$this->_tbl_key.'` '
-					. 'FROM `'.$this->_tbl.'` '
-					. 'WHERE `'.$this->_pkey.'` = "' . $this->$pKey.'" ';
-			$this->_db->setQuery($_qry);
-			$this->$tblKey = $this->_db->loadResult();
-		}
+		  if(!empty($this->$pKey)){
+		   
+		   $_qry = 'SELECT `'.$this->_tbl_key.'` '
+			 . 'FROM `'.$this->_tbl.'` '
+			 . 'WHERE `'.$this->_pkey.'` = "' . $this->$pKey.'" ';
+		   $this->_db->setQuery($_qry);
+		   $res = $this->_db->loadResult();
+		   if($res){
+			$this->$tblKey = $res;
+		   }
+		  }
 // 		vmdebug('$_qry',$_qry,$pKey,$tblKey, $this->$tblKey);
 //		vmError($_qry,'$_qry');
 
