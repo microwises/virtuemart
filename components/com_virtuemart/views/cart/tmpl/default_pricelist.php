@@ -154,7 +154,7 @@
 				<td align="center" >
 				<?php
 					if (VmConfig::get('checkout_show_origprice',1) && !empty($this->cart->pricesUnformatted[$pkey]['basePriceWithTax']) && $prow->basePriceWithTax != $prow->salesPrice ) {
-						echo '<span class=".line-through>'.$prow->basePriceWithTax .'</span><br />' ;
+						echo '<span class="line-through">'.$prow->basePriceWithTax .'</span><br />' ;
 					}
 					echo $prow->salesPrice ;
 					?>
@@ -196,21 +196,7 @@
 			<td align="right"><?php echo $this->cart->prices['salesPrice'] ?></td>
 		  </tr>
 
-		<?php
-		foreach($this->cart->cartData['DBTaxRulesBill'] as $rule){ ?>
-			<tr class="sectiontableentry<?php $i ?>">
-				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
-
-                                   <?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];  ?> </td>
-                                <?php } ?>
-				<td align="right"> </td>
-				<td align="right"><?php echo $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
-			</tr>
 			<?php
-			if($i) $i=1; else $i=0;
-		} ?>
-		<?php
 		if (VmConfig::get('coupons_enable')) {
 		?>
 			<tr class="sectiontableentry2">
@@ -241,7 +227,55 @@
 				?>
 			</tr>
 		<?php } ?>
-		<tr class="sectiontableentry1">
+
+
+		<?php
+		foreach($this->cart->cartData['DBTaxRulesBill'] as $rule){ ?>
+			<tr class="sectiontableentry<?php $i ?>">
+				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
+
+                                   <?php if ( VmConfig::get('show_tax')) { ?>
+				<td align="right"> </td>
+                                <?php } ?>
+				<td align="right"> <?php echo $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];  ?></td>
+				<td align="right"><?php echo $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
+			</tr>
+			<?php
+			if($i) $i=1; else $i=0;
+		} ?>
+
+		<?php
+
+		foreach($this->cart->cartData['taxRulesBill'] as $rule){ ?>
+			<tr class="sectiontableentry<?php $i ?>">
+				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
+				<?php if ( VmConfig::get('show_tax')) { ?>
+				<td align="right"><?php echo $this->cart->prices[$rule['virtuemart_calc_id'].'Diff']; ?> </td>
+				 <?php } ?>
+				<td align="right"><?php    ?> </td>
+				<td align="right"><?php echo $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
+			</tr>
+			<?php
+			if($i) $i=1; else $i=0;
+		}
+
+		foreach($this->cart->cartData['DATaxRulesBill'] as $rule){ ?>
+			<tr class="sectiontableentry<?php $i ?>">
+				<td colspan="4" align="right"><?php echo   $rule['calc_name'] ?> </td>
+
+                                     <?php if ( VmConfig::get('show_tax')) { ?>
+				<td align="right"> </td>
+
+                                <?php } ?>
+				<td align="right"><?php  echo  $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];   ?>  </td>
+				<td align="right"><?php echo $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
+			</tr>
+			<?php
+			if($i) $i=1; else $i=0;
+		} ?>
+
+
+	<tr class="sectiontableentry1">
                     <?php if (!$this->cart->automaticSelectedShipment) { ?>
 
 		<?php	/*	<td colspan="2" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING'); ?> </td> */?>
@@ -285,36 +319,6 @@
 				<td align="right"><?php //echo "<span  class='priceColor2'>".$this->cart->prices['paymentDiscount']."</span>"; ?></td>
 				<td align="right"><?php  echo $this->cart->prices['salesPricePayment']; ?> </td>
 			</tr>
-		<?php
-
-		foreach($this->cart->cartData['taxRulesBill'] as $rule){ ?>
-			<tr class="sectiontableentry<?php $i ?>">
-				<td colspan="4" align="right"><?php echo $rule['calc_name'] ?> </td>
-				<?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo $this->cart->prices[$rule['virtuemart_calc_id'].'Diff']; ?> </td>
-				 <?php } ?>
-				<td align="right"><?php    ?> </td>
-				<td align="right"><?php echo $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
-			</tr>
-			<?php
-			if($i) $i=1; else $i=0;
-		}
-
-		foreach($this->cart->cartData['DATaxRulesBill'] as $rule){ ?>
-			<tr class="sectiontableentry<?php $i ?>">
-				<td colspan="4" align="right"><?php echo   $rule['calc_name'] ?> </td>
-
-                                     <?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo  $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
-
-                                <?php } ?>
-				<td align="right"><?php  ?> </td>
-				<td align="right"><?php echo $this->cart->prices[$rule['virtuemart_calc_id'].'Diff'];   ?> </td>
-			</tr>
-			<?php
-			if($i) $i=1; else $i=0;
-		} ?>
-
 		  <tr>
 			<td colspan="4">&nbsp;</td>
 			<td colspan="<?php echo $colspan ?>"><hr /></td>

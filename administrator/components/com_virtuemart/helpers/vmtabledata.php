@@ -39,28 +39,42 @@ class VmTableData extends VmTable {
 		$this->storeParams();
 
     	$id = 0;
-		
+
     	$tblKey = $this->_tbl_key;
     	$pKey = $this->_pkey;
-		  if(!empty($this->$pKey)){
-		   
-		   $_qry = 'SELECT `'.$this->_tbl_key.'` '
-			 . 'FROM `'.$this->_tbl.'` '
-			 . 'WHERE `'.$this->_pkey.'` = "' . $this->$pKey.'" ';
-		   $this->_db->setQuery($_qry);
-		   $res = $this->_db->loadResult();
-		   if($res){
-			$this->$tblKey = $res;
-		   }
-		  }
+
+    	if($tblKey == $pKey){
+    		if(!empty($this->$tblKey)){
+    			$_qry = 'SELECT `'.$this->_tbl_key.'` '
+    			. 'FROM `'.$this->_tbl.'` '
+    			. 'WHERE `'.$this->_tbl_key.'` = "' . $this->$tblKey.'" ';
+    			$this->_db->setQuery($_qry);
+    			$res = $this->_db->loadResult();
+    			if($res){
+    				$returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, false);
+    			} else {
+    				$returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+    			}
+    		}
+    	} else {
+    		if(!empty($this->$pKey)){
+
+    			$_qry = 'SELECT `'.$this->_tbl_key.'` '
+    			. 'FROM `'.$this->_tbl.'` '
+    			. 'WHERE `'.$this->_pkey.'` = "' . $this->$pKey.'" ';
+    			$this->_db->setQuery($_qry);
+    			$this->$tblKey = $this->_db->loadResult();
+
+    			if ( !empty($this->$tblKey) ) {
+    				$returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, false);
+    			} else {
+    				$returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+    			}
+    		}
+    	}
+
 // 		vmdebug('$_qry',$_qry,$pKey,$tblKey, $this->$tblKey);
 //		vmError($_qry,'$_qry');
-
-        if ( !empty($this->$tblKey) ) {
-            $returnCode = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, false);
-        } else {
-            $returnCode = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
-        }
 
         if (!$returnCode) {
             vmError(get_class($this) . '::store failed - ' . $this->_db->getErrorMsg());

@@ -200,7 +200,7 @@ class Permissions extends JObject{
 				}		*/
 
 			}
-			vmdebug('$user->authorise perms '.$this->_perms);
+// 			vmdebug('$user->authorise perms '.$this->_perms);
 
 			//}
 			$this->_is_registered_customer = true;

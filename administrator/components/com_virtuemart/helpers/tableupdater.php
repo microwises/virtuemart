@@ -612,19 +612,23 @@ class GenericTableUpdater extends JModel{
 		$fullColumns = $this->_db->loadObjectList();
 		$columns = $this->_db->loadResultArray(0);
 
-		foreach($columns as $fieldname){
+		//Attention user_infos is not in here, because it an contain customised fields.
+		if($tablename!='#__virtuemart_userinfos'){
+			foreach($columns as $fieldname){
 
-			if(!in_array($fieldname, $demandFieldNames)){
-				$query = 'ALTER TABLE `'.$tablename.'` DROP COLUMN `'.$fieldname.'` ';
-				$action = 'DROP';
-				$dropped++;
+				if(!in_array($fieldname, $demandFieldNames)){
+					$query = 'ALTER TABLE `'.$tablename.'` DROP COLUMN `'.$fieldname.'` ';
+					$action = 'DROP';
+					$dropped++;
 
-				$this->_db->setQuery($query);
-				if(!$this->_db->query()){
-					$this->_app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
+					$this->_db->setQuery($query);
+					if(!$this->_db->query()){
+						$this->_app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
+					}
 				}
 			}
 		}
+
 
 // 		vmdebug('$$columns ',$columns);
 
