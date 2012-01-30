@@ -70,7 +70,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
     function getTableSQLFields() {
 
 	$SQLfields = array(
-	    'id' => ' tinyint(1) unsigned NOT NULL AUTO_INCREMENT ',
+	    'id' => ' int(1) unsigned NOT NULL AUTO_INCREMENT ',
 	    'virtuemart_order_id' => ' int(11) UNSIGNED DEFAULT NULL',
 	    'order_number' => ' char(32) DEFAULT NULL',
 	    'virtuemart_paymentmethod_id' => ' mediumint(1) UNSIGNED DEFAULT NULL',
@@ -411,14 +411,16 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    }
 	}
 
-	$response_fields[$this->_tablepkey] = $this->_getTablepkeyValue($virtuemart_order_id);
+// 	$response_fields[$this->_tablepkey] = $this->_getTablepkeyValue($virtuemart_order_id);
 	$response_fields['payment_name'] = $this->renderPluginName($method);
 	$response_fields['paypalresponse_raw'] = $post_msg;
 	$return_context = $paypal_data['custom'];
 	$response_fields['order_number'] = $order_number;
 	$response_fields['virtuemart_order_id'] = $virtuemart_order_id;
 //$preload=true   preload the data here too preserve not updated data
-	$this->storePSPluginInternalData($response_fields, $this->_tablepkey, true);
+// 	$this->storePSPluginInternalData($response_fields, $this->_tablepkey, true);
+	$this->storePSPluginInternalData($response_fields, 'virtuemart_order_id', true);
+
 
 	$error_msg = $this->_processIPN($paypal_data, $method);
 	$this->logInfo('process IPN ' . $error_msg, 'message');

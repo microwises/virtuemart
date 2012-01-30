@@ -56,8 +56,8 @@ class plgVmPaymentStandard extends vmPSPlugin {
      */
     function getTableSQLFields() {
 	$SQLfields = array(
-	    'id' => 'tinyint(1) unsigned NOT NULL AUTO_INCREMENT',
-	    'virtuemart_order_id' => 'int(11) UNSIGNED DEFAULT NULL',
+	    'id' => 'int(1) unsigned NOT NULL AUTO_INCREMENT',
+	    'virtuemart_order_id' => 'int(1) UNSIGNED DEFAULT NULL',
 	    'order_number' => 'char(32) DEFAULT NULL',
 	    'virtuemart_paymentmethod_id' => 'mediumint(1) UNSIGNED DEFAULT NULL',
 	    'payment_name' => 'char(255) NOT NULL DEFAULT \'\' ',
