@@ -853,7 +853,7 @@ class vmrouterHelper {
 		$db			= JFactory::getDBO();
 		$query = 'SELECT * FROM `#__menu`  where `link` like "index.php?option=com_virtuemart%" and client_id=0 and (language="*" or language="'.$this->langTag.'")'  ;
 		$db->setQuery($query);
-		vmdebug('q',$query);
+// 		vmdebug('setMenuItemIdJ17 q',$query);
 		$this->menuVmitems= $db->loadObjectList();
 		if(empty($this->menuVmitems)){
 			vmWarn(JText::_('COM_VIRTUEMART_ASSIGN_VM_TO_MENU'));
