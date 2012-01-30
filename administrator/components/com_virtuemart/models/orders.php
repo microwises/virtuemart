@@ -155,7 +155,7 @@ class VirtueMartModelOrders extends VmModel {
 		// Get the order items
 		$q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				order_item_sku, i.virtuemart_product_id, product_item_price,
-				product_final_price, product_tax, product_attribute, order_status,
+				product_final_price, product_basePriceWithTax, product_subtotal_with_tax, product_subtotal_discount, product_tax, product_attribute, order_status,
 				intnotes
 			FROM #__virtuemart_order_items i
 			LEFT JOIN #__virtuemart_products p
@@ -163,7 +163,12 @@ class VirtueMartModelOrders extends VmModel {
 			WHERE virtuemart_order_id=".$virtuemart_order_id;
 		$db->setQuery($q);
 		$order['items'] = $db->loadObjectList();
-
+// Get the order items
+		$q = "SELECT  *
+			FROM #__virtuemart_order_calc_rules AS z
+			WHERE  virtuemart_order_id=".$virtuemart_order_id;
+		$db->setQuery($q);
+		$order['calc_rules'] = $db->loadObjectList();
 		//vmdebug('getOrder my order',$order);
 		return $order;
 	}
@@ -475,6 +480,10 @@ class VirtueMartModelOrders extends VmModel {
 			vmError('Couldn\'t create order items','Couldn\'t create order items');
 			return false;
 		}
+		if (!$this-> _createOrderCalcRules($orderID, $cart) ) {
+			vmError('Couldn\'t create order items','Couldn\'t create order items');
+			return false;
+		}
 		$this->_updateOrderHist($orderID);
 		if (!$this->_writeUserInfo($orderID, $usr, $cart)) {
 			vmError('Couldn\'t create order history','Couldn\'t create order history');
@@ -519,17 +528,23 @@ class VirtueMartModelOrders extends VmModel {
 		//the saved order should be an snapshot with plain data written in it.
 		//		$_orderData->virtuemart_userinfo_id = 'TODO'; // $_cart['BT']['virtuemart_userinfo_id']; // TODO; Add it in the cart... but where is this used? Obsolete?
 		$_orderData->order_total = $_prices['billTotal'];
+		$_orderData->order_salesPrice = $_prices['salesPrice'];
+		$_orderData->order_billTaxAmount = $_prices['billTaxAmount'];
+		$_orderData->order_billDiscountAmount = $_prices['billDiscountAmount'];
+		$_orderData->order_discountAmount = $_prices['discountAmount'];
 		$_orderData->order_subtotal = $_prices['priceWithoutTax'];
 		$_orderData->order_tax = $_prices['taxAmount'];
 		$_orderData->order_shipment = $_prices['shipmentValue'];
 		$_orderData->order_shipment_tax = $_prices['shipmentTax'];
 		$_orderData->order_payment = $_prices['paymentValue'];
 		$_orderData->order_payment_tax = $_prices['paymentTax'];
+
 		if (!empty($_cart->couponCode)) {
 			$_orderData->coupon_code = $_cart->couponCode;
 			$_orderData->coupon_discount = $_prices['salesPriceCoupon'];
 		}
-		$_orderData->order_discount = $_prices['discountAmount'];
+		$_orderData->order_discount = $_prices['discountAmount'];  // discount order_items
+
 
 		$_orderData->order_status = 'P';
 
@@ -807,8 +822,11 @@ class VirtueMartModelOrders extends VmModel {
 			$_orderItems->order_item_name = $_prod->product_name; //TODO Patrick
 			$_orderItems->product_quantity = $_prod->quantity;
 			$_orderItems->product_item_price = $_cart->pricesUnformatted[$priceKey]['basePrice'];
+			$_orderItems->product_basePriceWithTax = $_cart->pricesUnformatted[$priceKey]['basePriceWithTax'];
 			$_orderItems->product_tax = $_cart->pricesUnformatted[$priceKey]['subtotal_tax_amount'];
 			$_orderItems->product_final_price = $_cart->pricesUnformatted[$priceKey]['salesPrice'];
+			$_orderItems->product_subtotal_discount = $_cart->pricesUnformatted[$priceKey]['subtotal_discount'];
+			$_orderItems->product_subtotal_with_tax = $_cart->pricesUnformatted[$priceKey]['subtotal_with_tax'];
 			//			$_orderItems->order_item_currency = $_prices[$_lineCount]['']; // TODO Currency
 			$_orderItems->order_status = 'P';
 
@@ -826,6 +844,44 @@ class VirtueMartModelOrders extends VmModel {
 			$this->handleStockAfterStatusChangedPerProduct( $_orderItems->order_status,'N',$_orderItems,$_orderItems->product_quantity);
 
 		}
+		//jExit();
+		return true;
+	}
+/**
+	 * Create the ordered item records
+	 *
+	 * @author Oscar van Eijk
+	 * @author Kohl Patrick
+	 * @param integer $_id integer Order ID
+	 * @param object $_cart array The cart data
+	 * @return boolean True on success
+	 */
+	private function _createOrderCalcRules($order_id, $_cart)
+	{
+		$orderCalcRules = $this->getTable('order_calc_rules');
+		$calculation_kinds=array('DBTaxRulesBill', 'taxRulesBill', 'DATaxRulesBill');
+		foreach($calculation_kinds as $calculation_kind) {
+		    foreach($_cart->cartData[$calculation_kind] as $rule){
+			     $orderCalcRules->virtuemart_order_calc_rule_id= null;
+			     $orderCalcRules->calc_rule_name= $rule['calc_name'];
+			     $orderCalcRules->calc_amount =  $_cart->pricesUnformatted[$rule['virtuemart_calc_id'].'Diff'];
+			     $orderCalcRules->calc_kind=$calculation_kind;
+			     $orderCalcRules->virtuemart_order_id=$order_id;
+			     if (!$orderCalcRules->check()) {
+				    vmError($this->getError());
+				    return false;
+			    }
+
+			    // Save the record to the database
+			    if (!$orderCalcRules->store()) {
+				    vmError($this->getError());
+				    return false;
+			    }
+		    }
+		}
+
+
+
 		//jExit();
 		return true;
 	}

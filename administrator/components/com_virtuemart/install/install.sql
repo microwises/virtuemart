@@ -435,6 +435,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_orders` (
   `order_number` char(64),
   `order_pass` char(8),
   `order_total` decimal(15,5) NOT NULL DEFAULT '0.00000',
+  `order_salesPrice` decimal(15,5) NOT NULL DEFAULT '0.00000',
+  `order_billTaxAmount` decimal(15,5) NOT NULL DEFAULT '0.00000',
+  `order_billDiscountAmount` decimal(15,5) NOT NULL DEFAULT '0.00000',
+  `order_discountAmount` decimal(15,5) NOT NULL DEFAULT '0.00000',
   `order_subtotal` decimal(15,5),
   `order_tax` decimal(10,5),
   `order_shipment` decimal(10,2),
@@ -504,7 +508,10 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_items` (
   `product_quantity` int(11),
   `product_item_price` decimal(15,5),
   `product_tax` decimal(15,5),
+  `product_basePriceWithTax` decimal(15,5),
   `product_final_price` decimal(15,5) NOT NULL DEFAULT '0.00000',
+  `product_subtotal_discount` decimal(15,5) NOT NULL DEFAULT '0.00000',
+  `product_subtotal_with_tax` decimal(15,5) NOT NULL DEFAULT '0.00000',
   `order_item_currency` INT(11),
   `order_status` char(1),
   `product_attribute` text,
@@ -519,6 +526,27 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_order_items` (
   KEY `idx_order_item_virtuemart_order_id` (`virtuemart_order_id`),
   KEY `idx_order_item_virtuemart_vendor_id` (`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Stores all items (products) which are part of an order' AUTO_INCREMENT=1 ;
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__virtuemart_order_items`
+--
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_order_calc_rules` (
+  `virtuemart_order_calc_rule_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_order_id` int(11),
+  `virtuemart_vendor_id` smallint(11) NOT NULL DEFAULT '1',
+  `calc_rule_name`  char(64) NOT NULL DEFAULT '' COMMENT 'Name of the rule',
+  `calc_kind` char(16) NOT NULL DEFAULT '' COMMENT 'Discount/Tax/Margin/Commission',
+  `calc_amount` decimal(15,5) NOT NULL DEFAULT '0.00000',
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT '0',
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`virtuemart_order_calc_rule_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Stores all calculation rules which are part of an order' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

@@ -242,7 +242,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
 	$db->setQuery($q);
 	if (!($pluginInfo = $db->loadObject())) {
-	    vmWarn(500, $q . " getOrderMethodNamebyOrderId " . $db->getErrorMsg());
+	    vmWarn( $q . " getOrderMethodNamebyOrderId " . $db->getErrorMsg());
 	    return null;
 	}
 	$idName = $this->_psType . '_name';

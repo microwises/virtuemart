@@ -500,11 +500,11 @@ class calculationHelper {
 
 		$this->_cartPrices['withTax'] = $discountWithTax = $this->roundDisplay($this->executeCalculation($taxRules, $toTax, true));
 		$toDisc = !empty($this->_cartPrices['withTax']) ? $this->_cartPrices['withTax'] : $toTax;
-		$cartTax = $toDisc - $toTax;
+		$cartTax = !empty($toDisc) ? $toDisc - $toTax : 0;
 
 		$discountAfterTax = $this->roundDisplay($this->executeCalculation($DATaxRules, $toDisc));
 		$this->_cartPrices['withTax'] = $this->_cartPrices['discountAfterTax'] = !empty($discountAfterTax) ? $discountAfterTax : $toDisc;
-		$cartdiscountAfterTax = $discountAfterTax - $toDisc;
+		$cartdiscountAfterTax = !empty($discountAfterTax) ? $discountAfterTax- $toDisc : 0;
 
 		$paymentId = empty($cart->virtuemart_paymentmethod_id) ? 0 : $cart->virtuemart_paymentmethod_id;
 		//$creditId = empty($cart->virtuemart_creditcard_id) ? 0 : $cart->virtuemart_creditcard_id;

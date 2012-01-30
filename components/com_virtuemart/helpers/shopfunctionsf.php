@@ -336,6 +336,9 @@ class shopFunctionsF {
 	    foreach ($order['items'] as $k => $item) {
 		$order['items'][$k]=(array)$item;
 	    }
+	     foreach ($order['calc_rules'] as $k => $calc_rule) {
+		$order['calc_rules'][$k]=(array)$calc_rule;
+	    }
 	    $order['details']['BT'] =(array)$order['details']['BT'];
 	    $order['details']['ST']=(array)((isset(  $order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
 

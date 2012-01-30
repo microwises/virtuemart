@@ -37,52 +37,68 @@ defined('_JEXEC') or die('Restricted access');
 // $viewEscape = new JView();
 // $viewEscape->setEscape('htmlspecialchars');
 // TODO Temp fix !!!!! *********************************>>>
-$this->cart->cartData['paymentDiscount'] = $this->cart->cartData['shipmentTax'] = '';
 //$skuPrint = echo sprintf( "%64.64s",strtoupper (JText::_('COM_VIRTUEMART_CART_SKU') ) ) ;
 $p = array();
 // Head of table
-echo strip_tags(JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_TOTAL_ORDER', $this->cart->prices['billTotal'])) . "\n";
+echo strip_tags(JText::sprintf('COM_VIRTUEMART_ORDER_PRINT_TOTAL', $this->currency->priceDisplay($this->order['details']['BT']['order_total']))) . "\n";
 echo sprintf("%'-64.64s", '') . "\n";
 echo JText::_('COM_VIRTUEMART_ORDER_ITEM') . "\n";
 foreach ($this->order['items'] as $item) {
     echo "\n";
-    echo $item['product_quantity'] . ' X ' . $item['order_item_name'] . '(' . strtoupper(JText::_('COM_VIRTUEMART_CART_SKU')) . $item['order_item_sku']. ')' . "\n";
-    echo JText::_('COM_VIRTUEMART_CART_PRICE')   . $prow->salesPrice . "\n";
-    echo JText::_('COM_VIRTUEMART_CART_TOTAL') . $prow->subtotal_with_tax . ' (' . JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') . ':' . $prow->subtotal_tax_amount . ')';
+    echo $item['product_quantity'] . ' X ' . $item['order_item_name'] . ' (' . strtoupper(JText::_('COM_VIRTUEMART_CART_SKU')) . $item['order_item_sku'] . ')' . "\n";
+
+    if (!empty($item['basePriceWithTax']) && $item['basePriceWithTax'] != $item['product_final_price']) {
+	echo $item['product_basePriceWithTax'] . "\n";
+    }
+
+    echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') . $item['product_final_price'];
+    if (VmConfig::get('show_tax')) {
+	echo ' (' . JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_TAX') . ':' . $this->currency->priceDisplay($item['product_tax']) . ') \n';
+    }
     echo "\n";
 }
 echo sprintf("%'-64.64s", '');
 echo "\n";
-//SubTotal, Tax, Shipment, Coupon Discount and Total listing
-foreach ($this->cart->cartData['dBTaxRulesBill'] as $rule) {
-    echo $rule['calc_name'] . ':' . $this->cart->prices[$rule['virtuemart_calc_id'] . 'Diff'];
-    echo "\n";
-}
+
 // Coupon
-if (!empty($this->cart->cartData['couponCode'])) {
-    echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT') . ':' . $this->cart->cartData['couponCode'] . ' : ' . $this->cart->cartData['couponDescr'] . ' ' . JText::_('COM_VIRTUEMART_CART_PRICE') . ':' . $this->cart->cartData['salesPriceCoupon'] . '(' . $this->cart->cartData['couponTax'] . ')';
+if (!empty($this->order['details']['BT']['coupon_code'])) {
+    echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT') . ':' . $this->order['details']['BT']['coupon_code'] . ' ' . JText::_('COM_VIRTUEMART_CART_PRICE') . ':' . $this->currency->priceDisplay($this->order['details']['BT']['coupon_discount']);
     echo "\n";
 }
 
-echo strtoupper(JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING_MODE_LBL')) . ' (' . strip_tags($this->cart->cartData['shipmentName']) . ' ) ' . "\n";
-echo JText::_('COM_VIRTUEMART_CART_PRICE') . ':' . $this->cart->prices['salesPriceShipment'] . '(' . JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') . $this->cart->prices['shipmentTax'] . ')';
-echo "\n";
-echo strtoupper(JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT_LBL')) . ' (' . strip_tags($this->cart->cartData['paymentName']) . ' ) ' . "\n";
-echo JText::_('COM_VIRTUEMART_CART_PRICE') . ':' . $this->cart->prices['salesPricePayment'] . '(' . JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') . ':' . $this->cart->prices['paymentDiscount'] . ')';
-echo "\n";
-foreach ($this->cart->cartData['taxRulesBill'] as $rule) {
-    echo $rule['calc_name'], '-', '-', $this->cart->prices[$rule['virtuemart_calc_id'] . 'Diff'];
-    echo "\n";
+
+
+foreach ($this->order['calc_rules'] as $rule) {
+    if ($rule['calc_kind'] == 'DBTaxRulesBill') {
+	echo $rule['calc_rule_name'] . $this->currency->priceDisplay($rule['calc_amount']) . '\n';
+    } elseif ($rule['calc_kind'] == 'taxRulesBill') {
+	echo $rule['calc_rule_name'] . ' ' . $this->currency->priceDisplay($rule['calc_amount']) . '\n';
+    } elseif ($rule['calc_kind'] == 'DATaxRulesBill') {
+	echo $rule['calc_rule_name'] . ' ' . $this->currency->priceDisplay($rule['calc_amount']) . '\n';
+    }
 }
 
-foreach ($this->cart->cartData['dATaxRulesBill'] as $rule) {
-    echo $rule['calc_name'], '-', '-', $this->cart->prices[$rule['virtuemart_calc_id'] . 'Diff'];
-    echo "\n";
+
+echo strtoupper(JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING')) . ' (' . strip_tags($this->shipment_name) . ' ) ' . "\n";
+echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') . ':' . $this->currency->priceDisplay($this->order['details']['BT']['order_shipment']);
+if (VmConfig::get('show_tax')) {
+    echo ' (' . JText::_('COM_VIRTUEMART_ORDER_PRINT_TAX') . $this->currency->priceDisplay($this->order['details']['BT']['order_shipment_tax']) . ')';
 }
+echo "\n";
+echo strtoupper(JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT')) . ' (' . strip_tags($this->payment_name ) . ' ) ' . "\n";
+echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') . ':' . $this->currency->priceDisplay($this->order['details']['BT']['order_payment']);
+if (VmConfig::get('show_tax')) {
+    echo ' (' . JText::_('COM_VIRTUEMART_ORDER_PRINT_TAX') . ':' . $this->currency->priceDisplay($this->order['details']['BT']['order_payment_tax']) . ')';
+}
+echo "\n";
+
 echo sprintf("%'-64.64s", '') . "\n";
 // total order
-echo JText::_('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') . ' : ' . $this->cart->prices['billDiscountAmount'] . '(' . JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') . ':' . $this->cart->prices['billTaxAmount'] . ')' . "\n";
+echo JText::_('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') . ' : ' . $this->currency->priceDisplay($this->order['details']['BT']['order_billDiscountAmount']) . "\n";
 
-echo strtoupper(JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL')) . ' : ' . $this->cart->prices['billTotal'];
+echo strtoupper(JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL')) . ' : ' . $this->currency->priceDisplay($this->order['details']['BT']['order_total']);
+if (VmConfig::get('show_tax')) {
+    echo ' (' . JText::_('COM_VIRTUEMART_ORDER_PRINT_TAX') . ':' . $this->currency->priceDisplay($this->order['details']['BT']['order_billTaxAmount']) . ')';
+}
 echo "\n";
 ?>

@@ -202,6 +202,7 @@ td.orders-key{font-weight: bold; text-align: left; }
 .line-through{text-decoration:line-through}
 .inline{display: inline;}
 td.pricePad{padding-right: 10px;}
+td.priceCol{white-space:nowrap;}
 div.spaceStyle{padding: 0px; margin: 5px; spacing: 0px;}
 .vm-notice{color: #CC0000;}
-.buttonBar-right{style="text-align: right; width: 100%;"}
+.buttonBar-right{text-align: right; width: 100%;}

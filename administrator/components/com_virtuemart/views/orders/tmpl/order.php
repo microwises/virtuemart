@@ -190,6 +190,7 @@ $tt=$this;
 					<th class="title" width="10%" align="left"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></th>
 					<th class="title" width="10%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?></th>
 					<th class="title" width="50"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_NET') ?></th>
+					<th class="title" width="50"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASEWITHTAX') ?></th>
 					<th class="title" width="50"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_GROSS') ?></th>
 					<th class="title" width="50"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_TAX') ?></th>
 					<th class="title" width="5%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></th>
@@ -248,13 +249,16 @@ $tt=$this;
 					<?php echo $this->currency->priceDisplay($item->product_item_price,'',false); ?>
 				</td>
 				<td align="right" style="padding-right: 5px;">
+					<?php echo $this->currency->priceDisplay($item->product_basePriceWithTax,'',false); ?>
+				</td>
+				<td align="right" style="padding-right: 5px;">
 					<?php echo $this->currency->priceDisplay($item->product_final_price,'',false); ?>
 				</td>
 				<td align="right" style="padding-right: 5px;">
-					<?php echo $this->currency->priceDisplay( $item->product_quantity *$item->product_tax,'',false); ?>
+					<?php echo $this->currency->priceDisplay( $item->product_tax,'',false); ?>
 				</td>
 				<td align="right" style="padding-right: 5px;">
-					<?php echo $this->currency->priceDisplay($item->product_quantity * $item->product_final_price,'',false); ?>
+					<?php echo $this->currency->priceDisplay($item->product_subtotal_with_tax,'',false); ?>
 				</td>
 			</tr>
 			<!-- TODO updating all correctly on do a new Cart<tr>
@@ -299,7 +303,7 @@ $tt=$this;
 					</td>
 
 
-					<td colspan="4">
+					<td colspan="5">
 						<?php // echo JHTML::_('image',  'administrator/components/com_virtuemart/assets/images/vm_witharrow.png', 'With selected'); $this->orderStatSelect; ?>
 						&nbsp;&nbsp;&nbsp;
 
@@ -321,10 +325,11 @@ $tt=$this;
 				<div align="right"><strong> <?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL') ?>:
 				</strong></div>
 				</td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_subtotal,'',false); ?></td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td   align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_tax,'',false); ?></td>
-				<td width="15%" align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_subtotal,'',false); ?></td>
+				<td width="15%" align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_salesPrice,'',false); ?></td>
 			</tr>
 			<?php
 			/* COUPON DISCOUNT */
@@ -337,15 +342,59 @@ $tt=$this;
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
+				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td   align="right" style="padding-right: 5px;"><?php
 				echo "- ".$this->currency->priceDisplay($this->orderbt->coupon_discount,'',false);  ?></td>
 			</tr>
 			<?php
 				//}
 			}?>
+
+
+
+	<?php
+		foreach($this->order['calc_rules'] as $rule){
+			if ($rule->calc_kind== 'DBTaxRulesBill') { ?>
+			<tr >
+				<td colspan="5"  align="right"  ><?php echo $rule->calc_rule_name ?> </td>
+				<td align="right" colspan="3" > </td>
+
+				<td align="right"> </td>
+
+				<td align="right"  style="padding-right: 5px;"><?php echo  $this->currency->priceDisplay($rule->calc_amount);  ?> </td>
+			</tr>
+			<?php
+			} elseif ($rule->calc_kind == 'taxRulesBill') { ?>
+			<tr >
+				<td colspan="5"  align="right"  ><?php echo $rule->calc_rule_name ?> </td>
+				<td align="right" colspan="3" > </td>
+
+				<td align="right"><?php    ?> </td>
+				<td align="right"  style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($rule->calc_amount);   ?> </td>
+			</tr>
+			<?php
+			 } elseif ($rule->calc_kind == 'DATaxRulesBill') { ?>
+			<tr >
+				<td colspan="5"   align="right"  ><?php echo $rule->calc_rule_name ?> </td>
+				<td align="right" colspan="3" > </td>
+
+				<td align="right"> </td>
+
+				<td align="right"  style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($rule->calc_amount);  ?> </td>
+			</tr>
+
+			<?php
+			 }
+
+		}
+		?>
+
+
+
 			<tr>
 				<td align="right" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING') ?>:</strong></td>
 				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment,'',false); ?></td>
+				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment_tax,'',false); ?></td>
 				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_shipment+$this->orderbt->order_shipment_tax,'',false); ?></td>
@@ -355,23 +404,19 @@ $tt=$this;
 				<td align="right" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT') ?>:</strong></td>
 				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment,'',false); ?></td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
+				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment_tax,'',false); ?></td>
 				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_payment+$this->orderbt->order_payment_tax,'',false); ?></td>
 
 			 </tr>
-			<tr>
-				<td align="right" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL_TAX') ?>:</strong></td>
-				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
-				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
-				<td   align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_tax+$this->orderbt->order_payment_tax+$this->orderbt->order_shipment_tax,'',false); ?></td>
-				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
-			</tr>
+
 
 			<tr>
 				<td align="right" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?>:</strong></td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
 				<td  align="right" style="padding-right: 5px;">&nbsp;</td>
+				<td  align="right" style="padding-right: 5px;"><?php echo $this->currency->priceDisplay($this->orderbt->order_billTaxAmount,'',false); ?></td>
 				<td   align="right" style="padding-right: 5px;"><strong><?php echo $this->currency->priceDisplay($this->orderbt->order_total,'',false); ?></strong>
 				</td>
 			</tr>

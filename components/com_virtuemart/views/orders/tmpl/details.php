@@ -50,10 +50,9 @@ if($this->print){
 	$details_url = juri::root().'index.php?option=com_virtuemart&view=orders&layout=details&tmpl=component&virtuemart_order_id=' . $this->orderdetails['details']['BT']->virtuemart_order_id;
 	$details_link = "<a href=\"javascript:void window.open('$details_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\"  >";
 	//$details_link .= '<span class="hasTip print_32" title="' . JText::_('COM_VIRTUEMART_PRINT') . '">&nbsp;</span></a>';
-	$folder = (JVM_VERSION==1) ? '/images/M_images/' : '/media/system/images/';
-	$details_link .= '<img alt="Email" src="'.$folder.'printButton.png"></a>';
-
-
+	$button = (JVM_VERSION==1) ? '/images/M_images/printButton.png' : 'system/printButton.png';
+	$details_link .= JHtml::_('image',$button, JText::_('COM_VIRTUEMART_PRINT'), NULL, true);
+	$details_link  .=  '</a>';
 	echo $details_link; ?>
 
 	</h1><div class='spaceStyle'>

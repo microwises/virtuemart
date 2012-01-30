@@ -114,24 +114,12 @@
 				/ <?php echo JText::_('COM_VIRTUEMART_CART_ACTION') ?></th>
 
 
-
-
-
-
-
-
-
                                         <?php if ( VmConfig::get('show_tax')) { ?>
                                 <th align="right" width="60px"><?php  echo "<span  class='priceColor2'>".JText::_('COM_VIRTUEMART_CART_SUBTOTAL_TAX_AMOUNT') ?></th>
 				<?php } ?>
                                 <th align="right" width="60px"><?php echo "<span  class='priceColor2'>".JText::_('COM_VIRTUEMART_CART_SUBTOTAL_DISCOUNT_AMOUNT') ?></th>
 				<th align="right" width="70px"><?php echo JText::_('COM_VIRTUEMART_CART_TOTAL') ?></th>
 			</tr>
-
-
-
-
-
 
 
 
@@ -215,9 +203,9 @@
 
 				</td>
 
-              <?php if ( VmConfig::get('show_tax')) { ?>
+					 <?php if ( VmConfig::get('show_tax')) { ?>
 					<td align="right"><?php echo $this->cart->prices['couponTax']; ?> </td>
-                                        <?php } ?>
+					 <?php } ?>
 					<td align="right">&nbsp;</td>
 					<td align="right"><?php echo $this->cart->prices['salesPriceCoupon']; ?> </td>
 				<?php } else { ?>

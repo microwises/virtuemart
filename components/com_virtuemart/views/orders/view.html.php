@@ -178,12 +178,7 @@ class VirtuemartViewOrders extends VmView {
 
 	public function renderMailLayout($doVendor=false) {
 
-		/*
-		 $cart = VirtueMartCart::getCart(false);
-		$this->assignRef('cart', $cart);
-		$cart->prepareCartViewData();
-		$cart->prepareMailData();
-	 */
+	
 		// don't need to get the payment name, the Order is sent from the payment trigger
 		if (VmConfig::get('order_mail_html'))
 		$tpl = 'mail_html';
@@ -259,7 +254,7 @@ class VirtuemartViewOrders extends VmView {
 		$vendor = & $vendorModel->getVendor();
 		$this->assignRef('vendor', $vendor);
 		$vendorModel->addImages($this->vendor,1);
-		
+
 	}
 
 }

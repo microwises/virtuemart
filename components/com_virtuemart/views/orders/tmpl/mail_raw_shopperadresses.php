@@ -22,29 +22,24 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
  echo "\n";
- echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'). "\n"; 
+ echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'). "\n";
 echo sprintf("%'-64.64s",'');
  echo "\n";
- foreach($this->cart->BTaddress as $item){
-	if(!empty($item['value'])){
-		echo $item['title'].': '.$this->escape($item['value'])."\n";
+  foreach ($this->billfields['fields'] as $field) {
+		if(!empty($field['value'])){
+			echo $field['title'].': '.$this->escape($field['value'])."\n";
+		}
 	}
- } 
  echo "\n";
-echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'). "\n"; 
+echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'). "\n";
 echo sprintf("%'-64.64s",'');
  echo "\n";
-if(!empty($this->cart->STaddress)){ 
-	foreach($this->cart->STaddress as $item){
-		if(!empty($item['value'])){
-			echo $item['title'].': '.$this->escape($item['value'])."\n";
+  
+
+	 foreach ($this->shipmentfields['fields'] as $field) {
+		if(!empty($field['value'])){
+			echo $field['title'].': '.$this->escape($field['value'])."\n";
 		}
 	}
-} else {
-	foreach($this->cart->BTaddress as $item){
-		if(!empty($item['value'])){
-			echo $item['title'].': '.$this->escape($item['value'])."\n";
-		}
-	}
-} 
+
  echo "\n";
