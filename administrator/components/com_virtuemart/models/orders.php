@@ -850,8 +850,7 @@ class VirtueMartModelOrders extends VmModel {
 /**
 	 * Create the ordered item records
 	 *
-	 * @author Oscar van Eijk
-	 * @author Kohl Patrick
+	 * @author Valerie Isaksen
 	 * @param integer $_id integer Order ID
 	 * @param object $_cart array The cart data
 	 * @return boolean True on success

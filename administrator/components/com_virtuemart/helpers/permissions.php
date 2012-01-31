@@ -277,12 +277,12 @@ class Permissions extends JObject{
 		}
 
 		if($this->_vendorId!=0){
-			vmdebug('Perm->isSuperVendor, user is a vendor');
+// 			vmdebug('Perm->isSuperVendor, user is a vendor');
 			return $this->_vendorId;
 		} else {
 			if($this->check('admin') ){
 				$this->_vendorId = 1;
-				vmdebug('Perm->isSuperVendor, user is an admin');
+// 				vmdebug('Perm->isSuperVendor, user is an admin');
 				return $this->_vendorId;
 			} else {
 				return false;

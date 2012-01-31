@@ -57,7 +57,7 @@ class Migrator extends VmModel{
 			if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
 		}
 
-		$this->maxMemoryLimit = ($this->return_bytes(ini_get('memory_limit')) - 10485760)  ;		//Lets use 10MB for joomla
+		$this->maxMemoryLimit = ($this->return_bytes(ini_get('memory_limit')) - 12085760)  ;		//Lets use 10MB for joomla
 // 		vmdebug('$this->maxMemoryLimit',$this->maxMemoryLimit); //134217728
 		//$this->maxMemoryLimit = $this -> return_bytes('20M');
 
@@ -74,6 +74,7 @@ class Migrator extends VmModel{
 			$this->_app->enqueueMessage('Found prior migration process, resume migration maxScriptTime '.$this->maxScriptTime.' maxMemoryLimit '.$this->maxMemoryLimit/(1024*1024));
 		}
 
+		JRequest::setVar('synchronise',true);
 	}
 
 	private function return_bytes($val) {

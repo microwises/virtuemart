@@ -492,6 +492,7 @@ class GenericTableUpdater extends JModel{
 // 				vmdebug('my $eKeys',$eKeys);
 
 		$dropped = 0;
+		$existing = array();
 		foreach($eKeyNames as $i => $name){
 
 			$query = '';

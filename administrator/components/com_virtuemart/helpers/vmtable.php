@@ -455,7 +455,8 @@ class VmTable extends JTable{
 						$this->$slugName = $this->$slugName.rand(1,9);
 					}
 					$used = true;
-					vmError(get_class($this).' ');
+
+// 					vmError(get_class($this).' ');
 				} else {
 					$used = false;
 				}
