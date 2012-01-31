@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted access');
  *
  * @package	VirtueMart
  * @subpackage Cart
- * @author Max Milbers
+ * @author Max Milbers, Valerie Isaksen
  *
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.

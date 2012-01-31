@@ -26,7 +26,7 @@ if(!class_exists('VmTable'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmta
  * The class is is used to manage the order items in the shop.
  *
  * @package	VirtueMart
- * @author RolandD
+ * @author Valerie Isaksen
  */
 class TableOrder_calc_rules extends VmTable {
 

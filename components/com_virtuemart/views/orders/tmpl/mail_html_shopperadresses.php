@@ -7,7 +7,7 @@
  *
  * @package	VirtueMart
  * @subpackage Order
- * @author Max Milbers, Valerie
+ * @author Max Milbers,   Valerie Isaksen
  *
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.

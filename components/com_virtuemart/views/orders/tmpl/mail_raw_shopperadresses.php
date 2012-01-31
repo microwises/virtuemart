@@ -7,7 +7,7 @@
 *
 * @package	VirtueMart
 * @subpackage Cart
-* @author Max Milbers
+* @author Max Milbers, Valerie Isaksen
 *
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -34,7 +34,7 @@ echo sprintf("%'-64.64s",'');
 echo JText::_('COM_VIRTUEMART_USER_FORM_SHIPTO_LBL'). "\n";
 echo sprintf("%'-64.64s",'');
  echo "\n";
-  
+
 
 	 foreach ($this->shipmentfields['fields'] as $field) {
 		if(!empty($field['value'])){
