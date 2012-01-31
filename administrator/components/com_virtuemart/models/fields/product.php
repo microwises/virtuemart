@@ -49,8 +49,11 @@ class JFormFieldProduct extends JFormField
 	if (!class_exists('VirtueMartModelProduct'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
 	$productModel = new VirtueMartModelProduct();
-	$products = $productModel->getProductListing(false, false, false, false, true);
+	$productModel->_noLimit = true;
+	$products = $productModel->getProductListing(false, false, false, false, true,false);
+	$productModel->_noLimit = false;
 	$i = 0;
+	$list = array();
 	foreach ($products as $product) {
 	    $list[$i]['value'] = $product->virtuemart_product_id;
 	    $list[$i]['text'] = $product->product_name. " (". $product->product_sku.")";

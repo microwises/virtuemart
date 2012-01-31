@@ -437,7 +437,6 @@ class Migrator extends VmModel{
 				$oldtoNewShoppergroups[$oldgroup['shopper_group_id']] = $alreadyKnownIds[$oldgroup['shopper_group_id']];
 			}
 
-
 			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 				break;
 			}
@@ -667,7 +666,7 @@ class Migrator extends VmModel{
 		$catModel = new VirtueMartModelCategory();
 
 		$default_category_browse = JRequest::getString('migration_default_category_browse','');
-		vmdebug('migration_default_category_browse '.$default_category_browse);
+// 		vmdebug('migration_default_category_browse '.$default_category_browse);
 
 		$default_category_fly = JRequest::getString('migration_default_category_fly','');
 
