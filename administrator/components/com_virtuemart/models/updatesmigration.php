@@ -390,7 +390,20 @@ class VirtueMartModelUpdatesMigration extends JModel {
 
 		$filename = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'install'.DS.'uninstall_data.sql';
 		$this->execSQLFile($filename);
-
+		$tables = array('products','categories','manufacturers','manufacturercategories');
+		$prefix = $this->_db->getPrefix();
+		foreach ($tables as $table) {
+			$query = 'SHOW TABLES LIKE "'.$prefix.'virtuemart_'.$table.'_%"';
+			$this->_db->setQuery($query);
+			if($translatedTables= $this->_db->loadResultArray()) {
+				foreach ($translatedTables as $translatedTable) {
+					$this->_db->setQuery('TRUNCATE TABLE `'.$translatedTable.'`');
+					if($this->_db->query()) vmInfo( $translatedTable.' empty');
+					else vmError($translatedTable.' language table Cannot be deleted');
+				}
+			} else vmInfo('No '.$table.' language table found to delete '.$query);
+		}
+		//"TRUNCATE TABLE IS FASTER and reset the primary Keys;
 		return true;
     }
 

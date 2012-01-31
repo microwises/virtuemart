@@ -57,7 +57,7 @@ class Migrator extends VmModel{
 			if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
 		}
 
-		$this->maxMemoryLimit = ($this->return_bytes(ini_get('memory_limit')) - 12085760)  ;		//Lets use 10MB for joomla
+		$this->maxMemoryLimit = ($this->return_bytes(ini_get('memory_limit')) - 10485760)  ;		//Lets use 10MB for joomla
 // 		vmdebug('$this->maxMemoryLimit',$this->maxMemoryLimit); //134217728
 		//$this->maxMemoryLimit = $this -> return_bytes('20M');
 
@@ -116,6 +116,7 @@ class Migrator extends VmModel{
 
 		//$q = 'UPDATE `#__virtuemart_migration_oldtonew_ids` SET `'.$group.'`="'.implode(',',$array).'" WHERE `id` = "1"';
 		$q = 'UPDATE `#__virtuemart_migration_oldtonew_ids` SET `'.$group.'`="'.serialize($array).'" WHERE `id` = "1"';
+
 
 		$this->_db->setQuery($q);
 		if(!$this->_db->query()){
@@ -190,6 +191,7 @@ class Migrator extends VmModel{
 
 		$result = $this->portShoppergroups();
 		$result = $this->portUsers();
+		$result = $this->portVendor();
 
 		$result = $this->portCategories();
 		$result = $this->portManufacturerCategories();
@@ -623,6 +625,32 @@ class Migrator extends VmModel{
 		vmInfo('Processed '.$i.' vm1 users ST adresses time: '.$time);
 		return $ok;
 	}
+	private function portVendor(){
+
+		if($this->_stop || (microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+			return;
+		}
+
+		$query = 'SHOW TABLES LIKE "%_vm_vendor"';
+		$this->_db->setQuery($query);
+		if(!$this->_db->loadResult()){
+			vmInfo('No vm_vendor table found for migration');
+			$this->_stop = true;
+			return false;
+		}
+		$this->_db->setQuery( 'SELECT *, vendor_id as virtuemart_vendor_id FROM `#__vm_vendor`' );
+		$vendor = $this->_db->loadAssoc() ;
+		$currency_code_3 = explode( ',', $vendor['vendor_accepted_currencies'] );//EUR,USD
+		$this->_db->query( 'SELECT currency_id FROM `#__virtuemart_currencies` WHERE `currency_code_3` IN ( "'.implode('","',$currency_code_3).'" ) ' );
+		$vendor['vendor_accepted_currencies'] = $this->_db->loadResultArray();
+
+		if(!class_exists('VirtueMartModelVendor'))
+		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+		$vendorModel = new VirtueMartModelVendor();
+		$vendorId = $vendorModel->store($vendor);
+		vmInfo('vendor '.$vendorId.' Stored');
+		return true;
+	}
 
 	private function portCategories(){
 
@@ -715,7 +743,7 @@ class Migrator extends VmModel{
 // 					break;
 // 				}
 
-				$oldtonewCats[$oldcategory['category_id']] = $category_id;
+				$alreadyKnownIds[$oldcategory['category_id']] = $category_id;
 				unset($category['virtuemart_category_id']);
 				$i++;
 			} else {
@@ -727,8 +755,8 @@ class Migrator extends VmModel{
 			}
 
 		}
-
-		$this->storeMigrationProgress('cats',$oldtonewCats);
+// here all categories NEW/OLD are Know
+		$this->storeMigrationProgress('cats',$alreadyKnownIds);
 		if($ok)
 		$msg = 'Looks everything worked correct, migrated ' . $i . ' categories ';
 		else {
@@ -744,20 +772,33 @@ class Migrator extends VmModel{
 		$this->_db->setQuery($q);
 		$oldCategoriesX = $this->_db->loadAssocList();
 
-		$alreadyKnownIds = $this->getMigrationProgress('catsxref');
-		$category = array();
+		// $alreadyKnownIds = $this->getMigrationProgress('catsxref');
+
 		$new_id = 0;
 		$oldtonewCatsXref = array();
 		$i = 0;
+		$j = 0;
+		$ok = true ;
 		if(!empty($oldCategoriesX)){
 			foreach($oldCategoriesX as $oldcategoryX){
-				if(!array_key_exists($oldcategoryX['category_parent_id'],$alreadyKnownIds)){
-					$new_id = $oldtonewCats[$oldcategoryX['category_parent_id']];
-					$category['category_parent_id'] = $new_id;
-
-					$new_id = $oldtonewCats[$oldcategoryX['category_child_id']];
-					$category['category_child_id'] = $new_id;
-
+				$category = array();
+				if(array_key_exists($oldcategoryX['category_parent_id'],$alreadyKnownIds)){
+					$category['category_parent_id'] = $alreadyKnownIds[$oldcategoryX['category_parent_id']];
+				} else {
+					vmError('Port Categories Xref unknow : ID '.$oldcategoryX['category_parent_id']);
+					$ok = false ;
+					$j++;
+					continue ;
+				}
+				if(array_key_exists($oldcategoryX['category_child_id'],$alreadyKnownIds)){
+					$category['category_child_id'] = $alreadyKnownIds[$oldcategoryX['category_child_id']];
+				} else {
+					vmError('Port Categories Xref unknow : ID '.$oldcategoryX['category_child_id']);
+					$ok = false ;
+					$j++;
+					continue ;
+				}
+				if (ok == true) {
 					$table = $this->getTable('category_categories');
 
 					$table->bindChecknStore($category);
@@ -770,23 +811,20 @@ class Migrator extends VmModel{
 						break;
 					}
 
-					$oldtonewCatsXref[$oldcategoryX['category_parent_id']] = $category['virtuemart_category_id'];
-					unset($category['virtuemart_category_id']);
+					
 					$i++;
-				} else {
-					$oldtonewCatsXref[$oldcategoryX['category_parent_id']] = $alreadyKnownIds[$oldcategoryX['category_parent_id']];
-				}
+				} 
 
 				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 					break;
 				}
 			}
 
-			$this->storeMigrationProgress('catsxref',$oldtonewCatsXref);
+			//$this->storeMigrationProgress('catsxref',$oldtonewCatsXref);
 			if($ok)
 			$msg = 'Looks everything worked correct, migrated ' . $i . ' categories xref ';
 			else {
-				$msg = 'Seems there was an error porting ' . $i . ' categories xref ';
+				$msg = 'Seems there was an error porting ' . $j . ' of '. $i.' categories xref ';
 				foreach($this->getErrors() as $error){
 					$msg .= '<br />' . $error;
 				}
@@ -948,9 +986,10 @@ class Migrator extends VmModel{
 		$continue = true;
 		while($continue){
 
-			$q = 'SELECT * FROM #__vm_product AS `p`
-					LEFT JOIN #__vm_product_price ON #__vm_product_price.product_id = `p`.product_id
-					LEFT JOIN #__vm_product_mf_xref ON #__vm_product_mf_xref.product_id = `p`.product_id LIMIT '.$startLimit.','.$maxItems;
+			$q = 'SELECT * FROM `#__vm_product` AS `p`
+					LEFT JOIN `#__vm_product_price` ON `#__vm_product_price`.`product_id` = `p`.`product_id`
+					LEFT JOIN `#__vm_product_mf_xref` ON `#__vm_product_mf_xref`.`product_id` = `p`.`product_id`
+					LIMIT '.$startLimit.','.$maxItems;
 			$this->_db->setQuery($q);
 			$oldProducts = $this->_db->loadAssocList();
 			if(empty($oldProducts)){
@@ -989,7 +1028,7 @@ class Migrator extends VmModel{
 			$oldToNewCats = $this->getMigrationProgress('cats');
 			$user = JFactory::getUser();
 
-			$oldtonewProducts = array();
+			//$oldtonewProducts = array();
 			$oldtonewManus = $this->getMigrationProgress('manus');
 
 
@@ -1024,7 +1063,34 @@ class Migrator extends VmModel{
 							}
 						}
 					}
+					// if(!empty($alreadyKnownIds[$product['product_id']])){
+						// $product_parent_id = $alreadyKnownIds[$product['product_id']];
+					// }
+					// Converting Attributes from parent product to customfields Cart variant
+					// $q = 'SELECT * FROM `#__vm_product_attribute` WHERE `#__vm_product_attribute`.`product_id` ="'.$product['product_id'].'" ';
+					// $this->_db->setQuery($q);
+					// if(!empty($productAttributes = $this->_db->loadAssocList()) {
+						
+						// foreach($productAttributes as $attrib){ 
+							// //custom select or create it
+							// $q = 'SELECT `virtuemart_custom_id` FROM `#__virtuemart_customs` as c WHERE c.field_type ="V" and c.`custom_title` ="'.$attrib['attribute_name'].'" ';
+							// $this->_db->setQuery($q);
+							// if (!$virtuemart_custom_id = $this->_db->loadResult()) {
+								// if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'custom.php');
+								// $customModel = new VirtueMartModelCustom();
+								// $attrib['custom_title'] = $attrib['attribute_name'];
+								// $attrib['custom_value'] = $attrib['attribute_value'];
+								// $attrib['is_cart_attribute'] = '1';
+								
+								// $customModel->store($attrib);
+							// }
 
+							
+							
+						// }
+					// }
+					
+					// Attributes End
 					$product['categories'] = $productcategories;
 
 					$product['published'] = $product['product_publish'] == 'Y' ? 1 : 0;
@@ -1058,8 +1124,9 @@ class Migrator extends VmModel{
 						$product['virtuemart_media_id'] = $this->_getMediaIdByName($product['product_full_image'],'product');
 					}
 
-					if(!empty($alreadyKnownIds[$product['product_id']])){
-						$product['product_parent_id'] = $alreadyKnownIds[$product['product_id']];
+					if(!empty($alreadyKnownIds[$product['product_parent_id']])){
+						$product['product_parent_id'] = $alreadyKnownIds[$product['product_parent_id']];
+						vmInfo('new parent id : '. $product['product_parent_id']);
 					} else {
 						$product['product_parent_id'] = 0;
 					}
@@ -1078,10 +1145,10 @@ class Migrator extends VmModel{
 					}
 					$i++;
 
-					$oldtonewProducts[$product['product_id']] = $product['virtuemart_product_id'];
+					$alreadyKnownIds[$product['product_id']] = $product['virtuemart_product_id'];
 
 				} else {
-					$oldtonewProducts[$product['product_id']] = $alreadyKnownIds[$product['product_id']];
+					//$oldtonewProducts[$product['product_id']] = $alreadyKnownIds[$product['product_id']];
 				}
 // 				unset($product['virtuemart_product_id']);
 				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
@@ -1093,7 +1160,7 @@ class Migrator extends VmModel{
 			}
 		}
 
-		$this->storeMigrationProgress('products',$oldtonewProducts);
+		$this->storeMigrationProgress('products',$alreadyKnownIds);
 		vmInfo('Migration: '.$i.' products processed ');
 
 		return $ok;
@@ -1230,8 +1297,9 @@ class Migrator extends VmModel{
 						$item['virtuemart_order_id'] = $newId;
 						$item['product_id'] = $newproductIds[$item['product_id']];
 						//$item['order_status'] = $orderCodeToId[$item['order_status']];
-						$product['created_on'] = $this->_changeToStamp($item['cdate']);
-						$product['modified_on'] = $this->_changeToStamp($item['mdate']); //we could remove this to set modified_on today
+						$item['created_on'] = $this->_changeToStamp($item['cdate']);
+						$item['modified_on'] = $this->_changeToStamp($item['mdate']); //we could remove this to set modified_on today
+						$item['product_attribute'] = $this->_attributesToJson($item['product_attribute']); //we could remove this to set modified_on today
 
 						$orderItemsTable = $this->getTable('order_items');
 						$orderItemsTable->bindChecknStore($item);
@@ -1701,6 +1769,18 @@ class Migrator extends VmModel{
 		return $return;
 	}
 
-
+	private function _attributesToJson($attributes){
+			if ( !trim($attributes) ) return '';
+			$attributesArray = explode(";", $attributes);
+			foreach ($attributesArray as $valueKey) {
+				// do the array
+				$tmp = explode(":", $valueKey);
+				if ( count($tmp) == 2 ) {
+					if ($pos = strpos($tmp[1], '[')) $tmp[1] = substr($tmp[1], 0, $pos) ; // remove price
+					$newAttributes['attributs'][$tmp[0]] = $tmp[1];
+				}
+			}
+			return json_encode($newAttributes,JSON_FORCE_OBJECT);
+	}
 }
 
