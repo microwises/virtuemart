@@ -199,7 +199,11 @@ class VirtuemartViewOrders extends VmView {
 	}
 
 	function renderMailLayout () {
-		$tpl = isset($this->layoutName) ? 'mail_html_' . $this->layoutName : 'mail_html_updorder';
+	    if (VmConfig::get('order_mail_html')) {
+		$tpl = 'mail_html_updorder';
+	    } else {
+		$tpl = 'mail_raw_updorder';
+	    }
 		$this->setLayout($tpl);
 		$vendorModel = $this->getModel('vendor');
 		$virtuemart_vendor_id = $vendorModel->getVendorId('order', $this->order['virtuemart_order_id']);

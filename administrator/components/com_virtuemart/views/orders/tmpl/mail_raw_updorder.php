@@ -1,17 +1,15 @@
 <?php
 
 echo JText::_('COM_VIRTUEMART_HI') . ' ' . $this->user->full_name . "\n\n";
-echo JText::sprintf('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_1', $this->order->virtuemart_order_id) . "\n" . "\n";
+echo JText::sprintf('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_1', $this->orderdata['details']['BT']->order_number) . "\n" . "\n";
 
 
 if ($this->includeComments) {
-    echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_COMMENT_EMAIL') . ":" . '\n';
-    echo $this->comments . '\n';
-    echo '\n';
+    echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_COMMENT_EMAIL') . " : " . "\n";
+    echo $this->comments . "\n";
+   echo "\n";
 }
-echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_2');
-
-echo $this->user->order_status_name . "\n" . "\n";
+echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_2'). " : " .$this->user->order_status_name . "\n" . "\n";
 
 if (VmConfig::get('vm_registration_type') != 'NO_REGISTRATION') {
     echo "\n";
