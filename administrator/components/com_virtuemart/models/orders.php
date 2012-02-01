@@ -739,8 +739,7 @@ class VirtueMartModelOrders extends VmModel {
 			// TO DO use $prod->amount change for packs(eg. 1 computer and 2 HDD)
 			if (is_array($product))	foreach ($product as $prod ) $productModel->updateStockInDB($prod, $quantity,$product_in_stock,$product_ordered);
 			else $productModel->updateStockInDB($product, $quantity,$product_in_stock,$product_ordered);
-		}
-		$productModel->updateStockInDB ($product, $quantity,$product_in_stock,$product_ordered);
+		} else $productModel->updateStockInDB ($product, $quantity,$product_in_stock,$product_ordered);
 
 	}
 
