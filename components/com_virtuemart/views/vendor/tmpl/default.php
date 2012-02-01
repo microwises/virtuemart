@@ -61,8 +61,8 @@ if (!empty($this->vendors)) { ?>
 		}
 
 		// vendor Elements
-		$vendorsLink = JROUTE::_('index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id=' . $vendor->virtuemart_vendor_id);
-		$vendorIncludedProductsURL = JROUTE::_('index.php?option=com_virtuemart&view=category&virtuemart_vendor_id=' . $vendor->virtuemart_vendor_id);
+		$vendorsLink = JRoute::_('index.php?option=com_virtuemart&view=vendor&virtuemart_vendor_id=' . $vendor->virtuemart_vendor_id);
+		$vendorIncludedProductsURL = JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_vendor_id=' . $vendor->virtuemart_vendor_id);
 		//$vendorImage = $vendor->images[0]->displayMediaThumb("",false);
 
 		// Show Category ?>
