@@ -33,8 +33,8 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 
 	$this->_loggable = true;
 	$this->tableFields = array_keys($this->getTableSQLFields());
-	$this->_tablepkey = 'id';//virtuemart_payzen_id';
-	$this->_tableId = 'id';//'virtuemart_payzen_id';
+	$this->_tablepkey = 'id'; //virtuemart_payzen_id';
+	$this->_tableId = 'id'; //'virtuemart_payzen_id';
 	$varsToPush = array('developed_by' => array('', 'char'),
 	    'contact_email' => array('', 'char'),
 	    'contrib_version' => array('', 'char'),
@@ -98,13 +98,12 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	    'payzen_response_auth_number' => ' char(10) NOT NULL DEFAULT \'\' ',
 	    'payzen_response_payment_mean' => ' char(255) NOT NULL DEFAULT \'\' ',
 	    'payzen_response_payment_date' => ' char(20) NOT NULL DEFAULT \'\' ',
-	    'payzen_response_payment_status'=> ' char(3) DEFAULT NULL',
-	    'payzen_response_payment_message'=> ' char(255) DEFAULT NULL',
+	    'payzen_response_payment_status' => ' char(3) DEFAULT NULL',
+	    'payzen_response_payment_message' => ' char(255) DEFAULT NULL',
 	    'payzen_response_card_number' => ' char(50) DEFAULT NULL',
 	    'payzen_response_trans_id' => ' char(6) DEFAULT NULL',
 	    'payzen_response_expiry_month' => ' char(2) DEFAULT NULL',
 	    'payzen_response_expiry_year' => ' char(4) DEFAULT NULL',
-
 	);
 	return $SQLfields;
     }
@@ -381,7 +380,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	if (!$order_number)
 	    return false;
 	$db = JFactory::getDBO();
-	$query = 'SELECT ' . $this->_tablename . '.`virtuemart_order_id` FROM ' . $this->_tablename. " WHERE  `order_number`= '" . $order_number . "'";
+	$query = 'SELECT ' . $this->_tablename . '.`virtuemart_order_id` FROM ' . $this->_tablename . " WHERE  `order_number`= '" . $order_number . "'";
 
 	$db->setQuery($query);
 	$virtuemart_order_id = $db->loadResult();
@@ -393,7 +392,6 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 
 	//JRequest::setVar('paymentResponse', $returnValue);
 	return true;
-
     }
 
     /**
@@ -578,9 +576,10 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	$response['payzen_response_expiry_year'] = $resp->get('expiry_year');
 	$this->storePSPluginInternalData($response, $this->_tablepkey, true);
     }
+
     function _getTablepkeyValue($virtuemart_order_id) {
 	$db = JFactory::getDBO();
-	$q = 'SELECT '.$this->_tablepkey.' FROM `' . $this->_tablename . '` '
+	$q = 'SELECT ' . $this->_tablepkey . ' FROM `' . $this->_tablename . '` '
 		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
 	$db->setQuery($q);
 
@@ -590,6 +589,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	}
 	return $pkey;
     }
+
     function emptyCart($session_id) {
 	if ($session_id != null) {
 	    $session = & JFactory::getSession();
@@ -619,7 +619,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	$order['customer_notified'] = 0;
 	$date = JFactory::getDate();
 	$order['comments'] = JText::sprintf('VMPAYMENT_PAYZEN_NOTIFICATION_RECEVEIVED', $date->toFormat('%Y-%m-%d %H:%M:%S'));
-vmDebug('managePaymentResponse', $order);
+	vmDebug('managePaymentResponse', $order);
 	$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 
 	if (!class_exists('VirtueMartCart')) {
@@ -629,7 +629,9 @@ vmDebug('managePaymentResponse', $order);
 	if ($resp->isAcceptedPayment()) {
 	    // Send order mail notification
 	    $orderitems = $modelOrder->getOrder($virtuemart_order_id);
-	    if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+	    $orderitems['paymentName'] = parent::renderPluginName($method);
+	    if (!class_exists('shopFunctionsF'))
+		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 	    shopFunctionsF::sentOrderConfirmedEmail($orderitems);
 
 	    // Empty cart in session
