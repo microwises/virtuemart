@@ -18,10 +18,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-		$document = &JFactory::getDocument();
+			if (isset($this->type)) {
+			$document = &JFactory::getDocument();
 			$document->setTitle(JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER').' '.$this->orderdetails['details']['BT']->order_number.' '.$this->vendor->vendor_store_name);
 			$document->setName( JText::_('COM_VIRTUEMART_ACC_ORDER_INFO').' '.$this->orderdetails['details']['BT']->order_number);
 			$document->setDescription( JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER').' '.$this->orderdetails['details']['BT']->order_number);
+			}
 
 $this->setLayout('details'); ?>
 <style>
