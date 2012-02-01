@@ -89,7 +89,7 @@ if (empty ( $this->product )) {
 		$link = 'index.php?tmpl=component&option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id;
 		$MailLink = 'index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component';
 
-		echo $this->linkIcon($link.'&format=pdf','COM_VIRTUEMART_PDF','pdf_Button','pdf_button_enable',false);
+		if (VmConfig::get('pdf_icon', 1) == '1') echo $this->linkIcon($link.'&format=pdf','COM_VIRTUEMART_PDF','pdf_Button','pdf_button_enable',false);
 		echo $this->linkIcon($link.'&print=1','COM_VIRTUEMART_PRINT','printButton','show_printicon');
 		echo $this->linkIcon($MailLink,'COM_VIRTUEMART_EMAIL','emailButton','show_emailfriend');
 		// echo shopFunctionsF::PrintIcon($link.'&print=1');
@@ -307,14 +307,15 @@ if (empty ( $this->product )) {
 						<?php echo JHTML::image(JURI::root().VmConfig::get('assets_general_path').'images/availability/'.$this->product->product_availability, $this->product->product_availability, array('class' => 'availability')); ?>
 					</div>
 				<?php }
-				}
+				} ?>
 
-				// Ask a question about this product ?>
-
+				<?php // Ask a question about this product
+				if (VmConfig::get('ask_question', 1) == '1') { ?>
 				<div class="ask-a-question">
 				<a class="ask-a-question" href="<?php echo $url ?>" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
 				<!--<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $url ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>-->
 				</div>
+				<?php } ?>
 
 				<?php // Manufacturer of the Product
 				if(VmConfig::get('show_manufacturers', 1) && !empty($this->product->virtuemart_manufacturer_id)) { ?>

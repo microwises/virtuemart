@@ -57,7 +57,7 @@ class Migrator extends VmModel{
 			if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
 		}
 
-		$this->maxMemoryLimit = ($this->return_bytes(ini_get('memory_limit')) - 10485760)  ;		//Lets use 10MB for joomla
+		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) - (11 * 1024 * 1024)  ;		//Lets use 11MB for joomla
 // 		vmdebug('$this->maxMemoryLimit',$this->maxMemoryLimit); //134217728
 		//$this->maxMemoryLimit = $this -> return_bytes('20M');
 
@@ -810,9 +810,9 @@ class Migrator extends VmModel{
 						break;
 					}
 
-					
+
 					$i++;
-				} 
+				}
 
 				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 					break;
@@ -1069,8 +1069,8 @@ class Migrator extends VmModel{
 					// $q = 'SELECT * FROM `#__vm_product_attribute` WHERE `#__vm_product_attribute`.`product_id` ="'.$product['product_id'].'" ';
 					// $this->_db->setQuery($q);
 					// if(!empty($productAttributes = $this->_db->loadAssocList()) {
-						
-						// foreach($productAttributes as $attrib){ 
+
+						// foreach($productAttributes as $attrib){
 							// //custom select or create it
 							// $q = 'SELECT `virtuemart_custom_id` FROM `#__virtuemart_customs` as c WHERE c.field_type ="V" and c.`custom_title` ="'.$attrib['attribute_name'].'" ';
 							// $this->_db->setQuery($q);
@@ -1080,15 +1080,15 @@ class Migrator extends VmModel{
 								// $attrib['custom_title'] = $attrib['attribute_name'];
 								// $attrib['custom_value'] = $attrib['attribute_value'];
 								// $attrib['is_cart_attribute'] = '1';
-								
+
 								// $customModel->store($attrib);
 							// }
 
-							
-							
+
+
 						// }
 					// }
-					
+
 					// Attributes End
 					$product['categories'] = $productcategories;
 

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment" >
     <name>VMPAYMENT_AUTHORIZENET_AIM</name>
-   <copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
+    <creationDate>November 2011</creationDate>
+    <author>The VirtueMart Development Team</author>
+    <authorUrl>http://www.virtuemart.net</authorUrl>
+    <copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
+    <version>2.0.1</version>
     <element>authorizenet</element>
     <files>
 	<filename plugin="authorizenet">authorizenet.php</filename>

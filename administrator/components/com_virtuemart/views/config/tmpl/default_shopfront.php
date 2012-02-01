@@ -29,18 +29,6 @@ defined('_JEXEC') or die('Restricted access');
 
 				<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_MORE_CORE_SETTINGS') ?></legend>
 				<table class="admintable">
-
-	<?php /*				<tr>
-						<td class="key"><span
-							class="hasTip"
-							title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PDF_BUTTON_EXPLAIN'); ?>">
-								<label for="pdf_button_enable"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PDF_BUTTON') ?>
-							</label> </span>
-						</td>
-						<td>
-						<?php echo VmHTML::checkbox('pdf_button_enable', $this->config->get('pdf_button_enable')); ?>
-						</td>
-					</tr>  */ ?>
 					<tr>
 						<td class="key"><span
 							class="hasTip"
@@ -61,6 +49,28 @@ defined('_JEXEC') or die('Restricted access');
 						</td>
 						<td>
 						<?php echo VmHTML::checkbox('show_printicon', $this->config->get('show_printicon')); ?>
+						</td>
+					</tr>
+					<tr>
+						<td class="key"><span
+							class="hasTip"
+							title="<?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_SHOW_EXPLAIN'); ?>">
+								<label for="ask_question"><?php echo JText::_('COM_VIRTUEMART_ASK_QUESTION_SHOW') ?>
+							</label> </span>
+						</td>
+						<td>
+						<?php echo VmHTML::checkbox('ask_question', $this->config->get('ask_question')); ?>
+						</td>
+					</tr>
+					<tr>
+						<td class="key"><span
+							class="hasTip"
+							title="<?php echo JText::_('COM_VIRTUEMART_PDF_ICON_SHOW_EXPLAIN'); ?>">
+								<label for="pdf_icon"><?php echo JText::_('COM_VIRTUEMART_PDF_ICON_SHOW') ?>
+							</label> </span>
+						</td>
+						<td>
+						<?php echo VmHTML::checkbox('pdf_icon', $this->config->get('pdf_icon')); ?>
 						</td>
 					</tr>
 					<tr>

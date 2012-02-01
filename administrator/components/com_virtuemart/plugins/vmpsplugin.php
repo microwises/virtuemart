@@ -499,12 +499,14 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	$db = JFactory::getDBO();
 
-	$select = 'SELECT l.*, v.*, j.*, s.virtuemart_shoppergroup_id ';
+	$select = 'SELECT l.*, v.*,
+	j.`extension_id`,j.`name`, j.`type`, j.`element`, j.`folder`, j.`client_id`, j.`enabled`, j.`access`, j.`protected`, j.`manifest_cache`,
+	j.`params`, j.`custom_data`, j.`system_data`, j.`checked_out`, j.`checked_out_time`, j.`state`,  s.virtuemart_shoppergroup_id ';
 
 	$q = $select . ' FROM   `#__virtuemart_' . $this->_psType . 'methods_' . VMLANG . '` as l ';
 	$q.= ' JOIN `#__virtuemart_' . $this->_psType . 'methods` AS v   USING (`virtuemart_' . $this->_psType . 'method_id`) ';
-	$q.= ' LEFT JOIN ' . $extPlgTable . ' as j ON j.`' . $extField1 . '` =  v.`' . $this->_psType . '_jplugin_id` ';
-	$q.= ' LEFT OUTER JOIN #__virtuemart_' . $this->_psType . 'method_shoppergroups AS s ON v.`virtuemart_' . $this->_psType . 'method_id` = s.`virtuemart_' . $this->_psType . 'method_id` ';
+	$q.= ' LEFT JOIN `' . $extPlgTable . '` as j ON j.`' . $extField1 . '` =  v.`' . $this->_psType . '_jplugin_id` ';
+	$q.= ' LEFT OUTER JOIN `#__virtuemart_' . $this->_psType . 'method_shoppergroups` AS s ON v.`virtuemart_' . $this->_psType . 'method_id` = s.`virtuemart_' . $this->_psType . 'method_id` ';
 	$q.= ' WHERE v.`published` = "1" AND j.`' . $extField2 . '` = "' . $this->_name . '"
 	    						AND  (v.`virtuemart_vendor_id` = "' . $vendorId . '" OR   v.`virtuemart_vendor_id` = "0")
 	    						AND  (';
@@ -516,7 +518,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 	$db->setQuery($q);
 	$this->methods = $db->loadObjectList();
-
+// 	vmdebug('getPluginMethods query '. $db->getQuery(),$this->methods);
 	foreach ($this->methods as $method) {
 	    VmTable::bindParameterable($method, $this->_xParams, $this->_varsToPushParam);
 	}

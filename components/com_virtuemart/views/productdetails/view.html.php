@@ -121,7 +121,7 @@ class VirtueMartViewProductdetails extends VmView {
 			$params = "";
 
 			if(JVM_VERSION === 2 ) {
-				$results = $dispatcher->trigger('onPrepareContent', array ('com_virtuemart.productdetails',& $product, & $params, 0));
+				$results = $dispatcher->trigger('onContentPrepare', array ('com_virtuemart.productdetails',& $product, & $params, 0));
 			}
 			else {
 				$results = $dispatcher->trigger('onPrepareContent', array (& $product, & $params, 0));

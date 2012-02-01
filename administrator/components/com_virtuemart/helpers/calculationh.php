@@ -358,6 +358,27 @@ class calculationHelper {
 
 		$prices['variantModification'] = $variant;
 
+		$prices['DBTax'] = array();
+		foreach($this->rules['DBTax'] as $dbtax){
+			$prices['DBTax'][] = $dbtax['calc_name'];
+		}
+
+		$prices['Tax'] = array();
+		foreach($this->rules['Tax'] as $tax){
+			$prices['Tax'][] = $tax['calc_name'];
+		}
+
+		$prices['DATax'] = array();
+		foreach($this->rules['DATax'] as $datax){
+			$prices['DATax'][] = $datax['calc_name'];
+		}
+
+// 		$prices['DBTax'] =
+// 		$prices['DBTax'] = $this->rules['DBTax'];
+// 		$prices['Tax'] = $this->rules['Tax'];
+// 		$prices['DATax'] = $this->rules['DATax'];
+
+
 		return $prices;
 	}
 

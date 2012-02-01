@@ -693,7 +693,9 @@ class GenericTableUpdater extends JModel{
 			}
 		}
 
-		$this->_app->enqueueMessage('Tablename '.$tablename.' dropped: '.$dropped.' altered: '.$altered.' added: '.$added);
+		if($dropped != 0 or $altered !=0 or $added!=0){
+			$this->_app->enqueueMessage('Table updated: Tablename '.$tablename.' dropped: '.$dropped.' altered: '.$altered.' added: '.$added);
+		}
 
 		return true;
 
