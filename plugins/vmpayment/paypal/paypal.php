@@ -97,7 +97,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    'paypal_response_receiver_email' => '  char(128) DEFAULT NULL',
 	    'paypal_response_transaction_subject' => ' char(128) DEFAULT NULL',
 	    'paypal_response_residence_country' => ' char(2) DEFAULT NULL',
-	    'paypalresponse_raw' => ' char(512) DEFAULT NULL'
+	    'paypalresponse_raw' => ' varchar(512) DEFAULT NULL'
 	);
 	return $SQLfields;
     }
