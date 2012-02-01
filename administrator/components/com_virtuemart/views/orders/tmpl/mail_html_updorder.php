@@ -59,7 +59,7 @@ $li = '<br />';
 				<td valign="top" width="100%">
 				    <?php
 				    if ($this->includeComments) {
-					echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_COMMENT_EMAIL') . ":" . '<br/>';
+					echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_COMMENT_EMAIL')  . '<br/>';
 					echo  $this->comments . '<br/>';
 					echo '<br/>';
 				    }
