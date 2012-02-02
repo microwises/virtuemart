@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <install version="1.5" type="plugin" group="vmpayment" >
-    <name>VMPAYMENT_AUTHORIZENET_AIM</name>
+    <name>VM Payment - authorize.net AIM</name>
     <creationDate>November 2011</creationDate>
     <author>The VirtueMart Development Team</author>
     <authorUrl>http://www.virtuemart.net</authorUrl>
