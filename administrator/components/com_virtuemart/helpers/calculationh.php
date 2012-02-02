@@ -360,24 +360,18 @@ class calculationHelper {
 
 		$prices['DBTax'] = array();
 		foreach($this->rules['DBTax'] as $dbtax){
-			$prices['DBTax'][] = $dbtax['calc_name'];
+			$prices['DBTax'][] = array($dbtax['calc_name'],$dbtax['calc_value'],$dbtax['calc_value_mathop'],$dbtax['calc_shopper_published']);
 		}
 
 		$prices['Tax'] = array();
 		foreach($this->rules['Tax'] as $tax){
-			$prices['Tax'][] = $tax['calc_name'];
+			$prices['Tax'][] =  array($tax['calc_name'],$tax['calc_value'],$tax['calc_value_mathop'],$tax['calc_shopper_published']);
 		}
 
 		$prices['DATax'] = array();
 		foreach($this->rules['DATax'] as $datax){
-			$prices['DATax'][] = $datax['calc_name'];
+			$prices['DATax'][] =  array($datax['calc_name'],$datax['calc_value'],$datax['calc_value_mathop'],$datax['calc_shopper_published']);
 		}
-
-// 		$prices['DBTax'] =
-// 		$prices['DBTax'] = $this->rules['DBTax'];
-// 		$prices['Tax'] = $this->rules['Tax'];
-// 		$prices['DATax'] = $this->rules['DATax'];
-
 
 		return $prices;
 	}

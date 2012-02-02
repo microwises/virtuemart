@@ -656,7 +656,7 @@ class VmPagination extends JPagination {
 		$selected = $this->_viewall ? 0 : $this->limit;
 		// Build the select list
 		if ($app->isAdmin()) {
-			$limits[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_ALL'));
+// 			$limits[] = JHTML::_('select.option', '0', JText::_('COM_VIRTUEMART_ALL'));
 			if(!empty($sequence)){
 				$sequenceArray = explode(',', $sequence);
 				foreach($sequenceArray as $items){
@@ -672,6 +672,7 @@ class VmPagination extends JPagination {
 
 				$limits[] = JHTML::_('select.option', $this->_perRow * 10);
 				$limits[] = JHTML::_('select.option', $this->_perRow * 20);
+				$limits[] = JHTML::_('select.option', $this->_perRow * 40);
 	// 			vmdebug('getLimitBox',$this->_perRow);
 			}
 			$html = JHTML::_('select.genericlist',  $limits, 'limit', 'class="inputbox" size="1" onchange="submitform();"', 'value', 'text', $selected);
@@ -684,7 +685,7 @@ class VmPagination extends JPagination {
 			foreach ($getArray as $key => $value ) $link .= '&'.$key.'='.$value;
 			$link[0] = "?";
 			$link = 'index.php'.$link ;
-			$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit=0'), JText::_('all'));
+// 			$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit=0'), JText::_('all'));
 
 			if(!empty($sequence)){
 				$sequenceArray = explode(',', $sequence);

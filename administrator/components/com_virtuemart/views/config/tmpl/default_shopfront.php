@@ -124,7 +124,16 @@ defined('_JEXEC') or die('Restricted access');
 					<img border="0" id="imagelib" alt="<?php echo JText::_('COM_VIRTUEMART_PREVIEW'); ?>" name="imagelib" src="<?php if ($this->config->get('rised_availability')) echo JURI::root(true).$this->imagePath.$this->config->get('rised_availability');?>"/>
 			</fieldset></td>
 			</tr>
-
+				<tr>
+	    	<td class="key">
+				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_DISPLAY_STOCK_EXPLAIN'); ?>">
+				<label for="display_stock"><?php echo JText::_('COM_VIRTUEMART_DISPLAY_STOCK') ?></label>
+				</span>
+	   	 	</td>
+	    	<td>
+				<?php echo VmHTML::checkbox('display_stock', $this->config->get('display_stock')); ?>
+	    	</td>
+			</tr>
 			<tr>
 	    	<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_COUPONS_ENABLE_EXPLAIN'); ?>">

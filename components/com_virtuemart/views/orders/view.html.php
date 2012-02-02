@@ -52,60 +52,67 @@ class VirtuemartViewOrders extends VmView {
 		if ($layoutName == 'details') {
 
 			$cuid = $_currentUser->get('id');
-			if(!empty($cuid)){
-				$virtuemart_order_id = JRequest::getInt('virtuemart_order_id',0) ;
-				if (!$virtuemart_order_id) {
-					$virtuemart_order_id = $orderModel->getOrderIdByOrderNumber(JRequest::getString('order_number'));
-				}
-				$orderDetails = $orderModel->getOrder($virtuemart_order_id);
-				if(empty($orderDetails['details'])){
-					echo JText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
-					return;
-				}
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-				if(!Permissions::getInstance()->check("admin")) {
-					if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
-						if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
-							echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
-							return;
-						}
-					}
-				}
-				$userFieldsModel = $this->getModel('userfields');
-				$_userFields = $userFieldsModel->getUserFields(
-					 'account'
-				, array('captcha' => true, 'delimiters' => true) // Ignore these types
-				, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
-				);
-				$orderbt = $orderDetails['details']['BT'];
-				$orderst = (array_key_exists('ST', $orderDetails['details'])) ? $orderDetails['details']['ST'] : $orderbt;
-				$userfields = $userFieldsModel->getUserFieldsFilled(
-				$_userFields
-				,$orderbt
-				);
-
-				$_userFields = $userFieldsModel->getUserFields(
-					 'shipment'
-				, array() // Default switches
-				, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
-				);
-
-				$shipmentfields = $userFieldsModel->getUserFieldsFilled(
-				$_userFields
-				,$orderst
-				);
-			}
-
-			if ($orderPass = JRequest::getString('order_pass',false)){
-				$orderNumber = JRequest::getString('order_number',false);
-				$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
-				if(empty($orderId)){
+                        
+                        if(empty($cuid)){
+                            // If the user is not logged in, we will check the order number and order pass
+                            if ($orderPass = JRequest::getString('order_pass',false)){
+                                    $orderNumber = JRequest::getString('order_number',false);
+                                    $orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
+                                    if(empty($orderId)){
 					echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
 					return;
-				}
-				$orderDetails = $orderModel->getOrder($orderId);
+                                    }
+                                    $orderDetails = $orderModel->getOrder($orderId);
+                            }
+                        }
+                        else {
+                            // If the user is logged in, we will check if the order belongs to him
+                            $virtuemart_order_id = JRequest::getInt('virtuemart_order_id',0) ;
+                            if (!$virtuemart_order_id) {
+                                $virtuemart_order_id = $orderModel->getOrderIdByOrderNumber(JRequest::getString('order_number'));
+                            }
+                            $orderDetails = $orderModel->getOrder($virtuemart_order_id);
 
+                            if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+                            if(!Permissions::getInstance()->check("admin")) {
+                                if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
+                                    if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
+                                        echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+					return;
+                                    }
+				}
+                            }
+                                
+                        }
+                            
+			if(empty($orderDetails['details'])){
+                            echo JText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
+                            return;
 			}
+				
+			$userFieldsModel = $this->getModel('userfields');
+			$_userFields = $userFieldsModel->getUserFields(
+				 'account'
+			, array('captcha' => true, 'delimiters' => true) // Ignore these types
+			, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
+			);
+			$orderbt = $orderDetails['details']['BT'];
+			$orderst = (array_key_exists('ST', $orderDetails['details'])) ? $orderDetails['details']['ST'] : $orderbt;
+			$userfields = $userFieldsModel->getUserFieldsFilled(
+			$_userFields
+			,$orderbt
+			);
+			$_userFields = $userFieldsModel->getUserFields(
+				 'shipment'
+			, array() // Default switches
+			, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
+			);
+
+			$shipmentfields = $userFieldsModel->getUserFieldsFilled(
+			$_userFields
+			,$orderst
+			);
+
 			$shipment_name='';
 			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmshipment');
