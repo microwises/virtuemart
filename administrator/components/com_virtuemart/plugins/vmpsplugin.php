@@ -712,10 +712,14 @@ abstract class vmPSPlugin extends vmPlugin {
 	if (!class_exists('CurrencyDisplay'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 	$currency = CurrencyDisplay::getInstance();
-
+	$costDisplay="";
+if ($pluginSalesPrice) {
 	$costDisplay = $currency->priceDisplay($pluginSalesPrice);
+	$costDisplay ='<span class="' . $this->_type . '_cost"> (' . JText::_('COM_VIRTUEMART_PLUGIN_COST_DISPLAY').$costDisplay . ")</span>";
+}
+
 	$html = '<input type="radio" name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '"   value="' . $plugin->$pluginmethod_id . '" ' . $checked . '>'
-		. '<label for="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '">' . '<span class="' . $this->_type . '">' . $plugin->$pluginName . '<span class="' . $this->_type . '_cost"> (' . $costDisplay . ")</span></span></label>\n";
+		. '<label for="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '">' . '<span class="' . $this->_type . '">' . $plugin->$pluginName . $costDisplay."</span></label>\n";
 
 
 	return $html;
