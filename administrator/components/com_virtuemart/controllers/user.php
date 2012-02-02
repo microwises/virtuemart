@@ -75,30 +75,11 @@ class VirtuemartControllerUser extends VmController {
 		$cid = JRequest::getVar('cid');
 		if(!isset($cid)) JRequest::setVar('cid', (int)0);
 
-		if(empty($view)){
-			$document = JFactory::getDocument();
-			$viewType = $document->getType();
-			$view = $this->getView('user', $viewType);
-			$view->setLayout('edit');
-		}
-
-		// Load the additional models
-		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
-		$view->setModel( $this->getModel( 'shoppergroup', 'VirtueMartModel' ));
-		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
-		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ));
-		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
-
-		parent::edit($view->getLayout());
+		parent::edit('edit');
 	}
 
 	function addST(){
 
-// 		$document = JFactory::getDocument();
-// 		$viewType = $document->getType();
-// 		$view = $this->getView('user', 'html');
-// 		$view->setLayout('edit_shipto');
-// 		vmJsApi::jQuery();
 		$this->edit();
 	}
 

@@ -41,33 +41,11 @@ class VirtuemartControllerProduct extends VmController {
 		$this->addViewPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'views');
 	}
 
-	/**
-	 * Shows the product list screen
-	 */
-/*	public function Product() {
-
-		$view = $this->getView('product', 'html');
-
-
-		$view->setLayout('default');
-
-
-		$view->display();
-	}
-*/
 
 	/**
 	 * Shows the product add/edit screen
 	 */
 	public function edit() {
-		/* Create the view object */
-// 		$this->addViewPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'views');
-// 		$view = $this->getView('product', 'html');
-		//$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
-// 		$view->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product'.DS.'tmpl');
-// 		$view->setLayout('product_edit');
-		/* Now display the view. */
-// 		$view->display();
 		parent::edit('product_edit');
 	}
 

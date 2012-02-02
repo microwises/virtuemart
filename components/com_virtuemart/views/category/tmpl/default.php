@@ -250,7 +250,7 @@ foreach ( $this->products as $product ) {
 						if( $product->product_unit && VmConfig::get('vm_price_show_packaging_pricelabel')) {
 							echo "<strong>". JText::_('COM_VIRTUEMART_CART_PRICE_PER_UNIT').' ('.$product->product_unit."):</strong>";
 						}
-						if(empty($product->prices) and VmConfig::get('callfprice',1) and empty($product->images[0]->file_is_downloadable) ){
+						if(empty($product->prices) and VmConfig::get('askprice',1) and empty($product->images[0]->file_is_downloadable) ){
 							echo JText::_('COM_VIRTUEMART_PRODUCT_ASKPRICE');
 						}
 						//todo add config settings

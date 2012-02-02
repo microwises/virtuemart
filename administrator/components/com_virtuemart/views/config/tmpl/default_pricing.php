@@ -69,6 +69,16 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php echo VmHTML::checkbox('show_tax', $this->config->get('show_tax')); ?>
 			</td>
 		    </tr>
+		   <tr>
+			<td class="key">
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ASKPRICE_TIP'); ?>">
+			    <label for="show_tax"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_PRICE_ASKPRICE'); ?>
+			    </span>
+			</td>
+			<td>
+			    <?php echo VmHTML::checkbox('askprice', $this->config->get('askprice')); ?>
+			</td>
+		    </tr>
 		</table>
 	    </fieldset>
 

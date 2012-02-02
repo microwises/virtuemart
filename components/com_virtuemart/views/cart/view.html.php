@@ -143,7 +143,7 @@ class VirtueMartViewCart extends VmView {
 		$cart->setCartIntoSession();
 		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
 
-		// 		vmdebug('my cart',$cart);
+		vmdebug('my cart ',$cart);
 		parent::display($tpl);
 	}
 

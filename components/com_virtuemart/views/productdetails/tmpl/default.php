@@ -182,7 +182,7 @@ if (empty ( $this->product )) {
 					echo "<strong>" . JText::_ ( 'COM_VIRTUEMART_CART_PRICE' ) . "</strong>";
 				}
 
-				if(empty($this->product->prices) and VmConfig::get('callfprice',1)  ){ ?>
+				if(empty($this->product->prices) and VmConfig::get('askprice',1)  ){ ?>
 <a class="ask-a-question bold" href="<?php echo $url ?>" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ASKPRICE') ?></a>
 <?php }
 				if ($this->showBasePrice) {

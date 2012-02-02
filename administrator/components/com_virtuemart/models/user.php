@@ -887,7 +887,7 @@ class VirtueMartModelUser extends VmModel {
 
 		}
 
-// 		vmdebug('I store the data',$data);
+		vmdebug('I store the $data["virtuemart_vendor_id"]',$data['virtuemart_vendor_id']);
 		$usertable -> bindChecknStore($data);
 		$errors = $usertable->getErrors();
 		foreach($errors as $error){

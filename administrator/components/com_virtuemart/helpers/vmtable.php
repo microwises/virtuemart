@@ -522,11 +522,14 @@ class VmTable extends JTable{
 				//Lets check if the user is admin or the mainvendor
 				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 				$loggedVendorId = Permissions::getInstance()->isSuperVendor();
-				if($loggedVendorId !== 0){
+
+				if($loggedVendorId){
 					$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 1;
 				} else {
+
 					//We are in the user table
 					if(isset($this->user_is_vendor)){
+
 						if($this->user_is_vendor==0){
 							$this->virtuemart_vendor_id = 0;
 						} else {
