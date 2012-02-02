@@ -330,9 +330,11 @@ class VirtueMartModelCustomfields extends VmModel {
 			$options = array();
 			$values = explode(';',$field->custom_value);
 
-			foreach ($values as $key => $val)
+			foreach ($values as $key => $val){
 				$options[] = array( 'value' => $val ,'text' =>$val);
-// 			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]').'</td><td>'.$priceInput;
+			}
+
+			return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]').'</td><td>'.$priceInput;
 		} else {
 
 			switch ($field->field_type) {

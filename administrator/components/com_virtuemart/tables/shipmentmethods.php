@@ -71,7 +71,7 @@ class TableShipmentmethods extends VmTable {
 	$this->setLoggable();
 	$this->setTranslatable(array('shipment_name', 'shipment_desc'));
 	$this->setSlug('shipment_name');
-	$this->setUniqueName('ordering');
+// 	$this->setUniqueName('ordering');
     }
 
 }
