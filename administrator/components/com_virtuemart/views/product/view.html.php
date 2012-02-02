@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
  * @author RolandD,Max Milbers
  */
 if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
- 
+
 class VirtuemartViewProduct extends VmView {
 
 	function display($tpl = null) {
@@ -41,8 +41,6 @@ class VirtuemartViewProduct extends VmView {
 		$this->loadHelper('html');
 		$this->loadHelper('image');
 
-		// Load some common models
-
 
 		//$category_model = $this->getModel('category');
 		$model = $this->getModel();
@@ -52,8 +50,9 @@ class VirtuemartViewProduct extends VmView {
 			case 'edit':
 
 				$this->SetViewTitle();
-				/* Load the product */
-				
+
+				//this was in the controller for the edit tasks, I dont know if it is still needed,
+				$this->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product'.DS.'tmpl');
 
 				$virtuemart_product_id = JRequest::getInt('virtuemart_product_id', array());
 				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0) $virtuemart_product_id = $virtuemart_product_id[0];
@@ -206,7 +205,7 @@ class VirtuemartViewProduct extends VmView {
 				// Assign the values
 				$this->assignRef('pane', $pane);
 				$this->assignRef('editor', $editor);
-	
+
 				$this->assignRef('product', $product);
 				$this->assignRef('currencies', $currencies);
 				$this->assignRef('manufacturers', $manufacturers);
@@ -229,7 +228,7 @@ class VirtuemartViewProduct extends VmView {
 					$text =  $product->product_name.$sku;
 				}
 				$this->SetViewTitle('PRODUCT',$text);
-		
+
 				$this->addStandardEditViewCommands ($product->virtuemart_product_id);
 
 				break;
@@ -320,7 +319,7 @@ class VirtuemartViewProduct extends VmView {
 
 
 			/* Assign the data */
-	
+
 			$this->assignRef('productlist', $productlist);
 
 			break;

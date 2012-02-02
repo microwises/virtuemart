@@ -48,7 +48,7 @@ class VirtuemartControllerCalc extends VmController {
 	 *
      * @author Max Milbers
 	 */
-	public function edit(){
+/*	public function edit(){
 
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
@@ -60,7 +60,7 @@ class VirtuemartControllerCalc extends VmController {
 		parent::edit();
 
 	}
-
+*/
 
 	/**
 	 * We want to allow html so we need to overwrite some request data

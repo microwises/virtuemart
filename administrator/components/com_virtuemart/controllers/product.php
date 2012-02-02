@@ -44,30 +44,31 @@ class VirtuemartControllerProduct extends VmController {
 	/**
 	 * Shows the product list screen
 	 */
-	public function Product() {
-		/* Create the view object */
+/*	public function Product() {
+
 		$view = $this->getView('product', 'html');
 
-		
+
 		$view->setLayout('default');
 
-		/* Now display the view. */
+
 		$view->display();
 	}
-
+*/
 
 	/**
 	 * Shows the product add/edit screen
 	 */
 	public function edit() {
 		/* Create the view object */
-		$this->addViewPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'views');
-		$view = $this->getView('product', 'html');
+// 		$this->addViewPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'views');
+// 		$view = $this->getView('product', 'html');
 		//$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
-		$view->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product'.DS.'tmpl'); 
-		$view->setLayout('product_edit');
+// 		$view->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product'.DS.'tmpl');
+// 		$view->setLayout('product_edit');
 		/* Now display the view. */
-		$view->display();
+// 		$view->display();
+		parent::edit('product_edit');
 	}
 
 	/**
@@ -112,11 +113,11 @@ class VirtuemartControllerProduct extends VmController {
 			$json['ok'] = 1 ;
 		} else {
 			$json['ok'] = 0 ;
-			
+
 		}
 		echo json_encode($json);
 		jExit();
-	
+
 	}
 	/**
 	 * This task creates a child by a given product id
@@ -194,7 +195,7 @@ class VirtuemartControllerProduct extends VmController {
 		/* Standard model */
 		if ('customfield' == JRequest::getWord('type', false) ) {
 			$view->setModel( $this->getModel( 'customfields', 'VirtueMartModel' ));
-		} 
+		}
 		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
 		/* Now display the view. */
 		$view->display(null);

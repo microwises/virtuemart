@@ -221,7 +221,7 @@ class Permissions extends JObject{
 	 * @example $perm->check( 'admin,storeadmin' );
 	 * 			returns true when the user is admin or storeadmin
 	 */
-	public function check($perms) {
+	public function check($perms,$acl=0) {
 		/* Set the authorization for use */
 
 		// Parse all permissions in argument, comma separated
@@ -281,7 +281,7 @@ class Permissions extends JObject{
 			return $this->_vendorId;
 		} else {
 			if($this->check('admin') ){
-				$this->_vendorId = 1;
+				if(!$this->_vendorId) $this->_vendorId = 1;
 // 				vmdebug('Perm->isSuperVendor, user is an admin');
 				return $this->_vendorId;
 			} else {

@@ -57,14 +57,5 @@ class VirtuemartControllerModule extends JController
 		}
 	}
 
-	/**
-	 * Display the shopper group view
-	 *
-	 * @author Markus Öhler
-	 */
-	function display() {
-		parent::display();
-	}
-
 }
 // pure php no closing tag

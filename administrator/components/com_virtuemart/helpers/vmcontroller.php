@@ -142,17 +142,20 @@ class VmController extends JController{
 // 		JRequest::setVar('hidemenu', 1);
 
 		if(empty($view)){
+			$this->addViewPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'views');
 			$document = JFactory::getDocument();
 			$viewType = $document->getType();
 			$view = $this->getView($this->_cname, $viewType);
 		}
 
-		$model = $this->getModel($this->_cname, 'VirtueMartModel');
+/*		$model = $this->getModel($this->_cname, 'VirtueMartModel');
 		if (!JError::isError($model)) {
 			$view->setModel($model, true);
-		}
+		}*/
 
-		parent::display();
+		$view->setLayout($layout);
+
+		$this->display();
 	}
 
 	/**
