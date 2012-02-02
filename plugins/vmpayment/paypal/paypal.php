@@ -684,7 +684,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 	$html = '<table>' . "\n";
 	$html .= $this->getHtmlRow('PAYPAL_PAYMENT_NAME', $payment_name);
-	if (!empty($paypal)) {
+	if (!empty($paypal_data)) {
 	    $html .= $this->getHtmlRow('PAYPAL_ORDER_NUMBER', $paypal_data['invoice']);
 	    $html .= $this->getHtmlRow('PAYPAL_AMOUNT', $paypal_data['mc_gross'] . " " . $paypal_data['mc_currency']);
 	}
