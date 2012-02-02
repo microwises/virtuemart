@@ -148,6 +148,7 @@ span.bold{font-weight:700;}
 .vm2-nostock{background-position:0 -1179px;width:62px;height:15px;display:block;}
 .vm2-normalstock{background-position:0 -1244px;width:62px;height:15px;display:block;}
 .vm2-termsofservice-icon{background-position:0 -1309px;height:24px;margin-right:6px;vertical-align:middle;width:24px;display:inline-block;}
+.vm2-modallink{height:16px;margin-left: 3px;vertical-align:top;width:16px;display:inline-block; background: url("../images/icon_external_link.gif") no-repeat scroll left top transparent;}
 .vm2-warning{background-position:0 -1383px;width:50px;height:40px;}
 .vendor-store-desc,.category-view,.featured-view,.latest-view,.topten-view,.related-products-view,.browse-view,.order-view{margin-bottom:25px;}
 .main-image,.featured-view .product,.latest-view .product,.topten-view .product,.related-products-view .product,.center,span.center{text-align:center;}

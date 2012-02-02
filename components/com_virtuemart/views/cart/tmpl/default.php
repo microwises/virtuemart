@@ -19,8 +19,21 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+JHTML::script('facebox.js', 'components/com_virtuemart/assets/js/', false);
+JHTML::stylesheet('facebox.css', 'components/com_virtuemart/assets/css/', false);
+
 JHtml::_('behavior.formvalidation');
-JHTML::_ ( 'behavior.modal' );
+$document = &JFactory::getDocument();
+$document->addScriptDeclaration("
+	jQuery(document).ready(function($) {
+		$('div#full-tos').hide();
+		$('span.terms-of-service').click( function(){
+			//$.facebox({ span: '#full-tos' });
+			$.facebox( { div: '#full-tos' }, 'my-groovy-style');
+		});
+	});
+");
+$document->addStyleDeclaration('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
 // vmdebug('cart',$this->cart);
 ?>
 
@@ -100,10 +113,11 @@ JHTML::_ ( 'behavior.modal' );
 		if(VmConfig::get('oncheckout_show_legal_info',1)){
 		?>
 		<div class="terms-of-service">
-			<span class="terms-of-service"><span class="vmicon vm2-termsofservice-icon"></span><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?></span>
-			<div>
+			<span class="terms-of-service" rel="facebox"><span class="vmicon vm2-termsofservice-icon"></span><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?><span class="vm2-modallink"></span></span>
+			<div id="full-tos">
 			<?php
 			echo $this->cart->vendor->vendor_terms_of_service;?>
+
 			</div>
 		</div>
 		<?php
