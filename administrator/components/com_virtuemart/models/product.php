@@ -1388,19 +1388,23 @@ public function getProductReviews($virtuemart_product_id) {
  **/
 function getOrderByList($virtuemart_category_id=false) {
 
-	//$mainframe = Jfactory::getApplication();
-	//$option = JRequest::getWord('option');
-	//$order	= $mainframe->getUserStateFromRequest( $option.'order'  , 'order' ,''	,'word' );
 	$getArray = (JRequest::get( 'get' ));
 	$link = '';
 	$fieldLink ='';
 	// remove setted variable
-	unset ($getArray['globalCurrencyConverter'],$getArray['virtuemart_manufacturer_id'],$getArray['order'],$getArray['orderby'],$getArray['orderby']);
-	// if (array_key_exists('order', $getArray)) unset ($getArray['order']);
-	// if (array_key_exists('orderby', $getArray)) unset ($getArray['orderby']);
-	// if (array_key_exists('virtuemart_manufacturer_id', $getArray)) unset ($getArray['virtuemart_manufacturer_id']);
-	foreach ($getArray as $key => $value )
-		$fieldLink .= '&'.$key.'='.$value;
+	unset ($getArray['globalCurrencyConverter'],$getArray['virtuemart_manufacturer_id'],$getArray['order'],$getArray['orderby']);
+
+	// foreach ($getArray as $key => $value )
+		// $fieldLink .= '&'.$key.'='.$value;
+	foreach ($getArray as $key => $value ){
+		if (is_array($value)){
+			foreach ($value as $k => $v ){
+				$fieldLink .= '&'.$key.'['.$k.']'.'='.$v;
+			}
+		} else {
+			$fieldLink .= '&'.$key.'='.$value;
+		}
+	}
 	$fieldLink[0] = "?";
 	$fieldLink = 'index.php'.$fieldLink ;
 	$orderTxt ='';

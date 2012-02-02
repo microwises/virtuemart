@@ -682,10 +682,19 @@ class VmPagination extends JPagination {
 			$link ='';
 			unset ($getArray['limit']);
 
-			foreach ($getArray as $key => $value ) $link .= '&'.$key.'='.$value;
+			// foreach ($getArray as $key => $value ) $link .= '&'.$key.'='.$value;
+			foreach ($getArray as $key => $value ){
+				if (is_array($value)){
+					foreach ($value as $k => $v ){
+						$link .= '&'.$key.'['.$k.']'.'='.$v;
+					}
+				} else {
+					$link .= '&'.$key.'='.$value;
+				}
+			}
 			$link[0] = "?";
 			$link = 'index.php'.$link ;
-// 			$limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit=0'), JText::_('all'));
+			// $limits[] = JHTML::_('select.option',JRoute::_( $link.'&limit=0'), JText::_('all'));
 
 			if(!empty($sequence)){
 				$sequenceArray = explode(',', $sequence);
