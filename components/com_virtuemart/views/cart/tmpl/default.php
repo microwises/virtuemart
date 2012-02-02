@@ -115,8 +115,8 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 		<div class="terms-of-service">
 			<span class="terms-of-service" rel="facebox"><span class="vmicon vm2-termsofservice-icon"></span><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?><span class="vm2-modallink"></span></span>
 			<div id="full-tos">
-			<?php
-			echo $this->cart->vendor->vendor_terms_of_service;?>
+				<h2><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?></h2>
+				<?php echo $this->cart->vendor->vendor_terms_of_service;?>
 
 			</div>
 		</div>
