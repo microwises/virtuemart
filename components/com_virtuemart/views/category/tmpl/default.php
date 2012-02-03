@@ -185,6 +185,12 @@ $Browsecellwidth = ' width'.floor ( 100 / $BrowseProducts_per_row );
 // Separator
 $verticalseparator = " vertical-separator";
 
+// Count products
+$BrowseTotalProducts = 0;
+foreach ( $this->products as $product ) {
+   $BrowseTotalProducts ++;
+}
+
 // Start the Output
 foreach ( $this->products as $product ) {
 
@@ -215,7 +221,7 @@ foreach ( $this->products as $product ) {
 
 
 						<!-- The "Average Customer Rating" Part -->
-						<?php if (VmConfig::get('pshop_allow_reviews') == 1) { ?>
+						<?php if ($this->showRating) { ?>
 						<span class="contentpagetitle"><?php echo JText::_('COM_VIRTUEMART_CUSTOMER_RATING') ?>:</span>
 						<br />
 						<?php
@@ -226,6 +232,7 @@ foreach ( $this->products as $product ) {
 
 						<?php
 						if (!VmConfig::get('use_as_catalog') and !(VmConfig::get('stockhandle','none')=='none') && (VmConfig::get ( 'display_stock', 1 )) ){?>
+<!-- 						if (!VmConfig::get('use_as_catalog') and !(VmConfig::get('stockhandle','none')=='none')){?> -->
 						<div class="paddingtop8">
 							<span class="vmicon vm2-<?php echo $product->stock->stock_level ?>" title="<?php echo $product->stock->stock_tip ?>"></span>
 							<span class="stock-level"><?php echo JText::_('COM_VIRTUEMART_STOCK_LEVEL_DISPLAY_TITLE_TIP') ?></span>
@@ -280,17 +287,18 @@ foreach ( $this->products as $product ) {
 			</div><!-- end of spacer -->
 		</div> <!-- end of product -->
 	<?php
-	$iBrowseProduct ++;
 
-	// Do we need to close the current row now?
-	if ($iBrowseCol == $BrowseProducts_per_row) { ?>
-	<div class="clear"></div>
-	</div> <!-- end of row -->
-		<?php
-		$iBrowseCol = 1;
-	} else {
-		$iBrowseCol ++;
-	}
+   // Do we need to close the current row now?
+   if ($iBrowseCol == $BrowseProducts_per_row || $iBrowseProduct == $BrowseTotalProducts) {?>
+   <div class="clear"></div>
+   </div> <!-- end of row -->
+      <?php
+      $iBrowseCol = 1;
+   } else {
+      $iBrowseCol ++;
+   }
+
+   $iBrowseProduct ++;
 } // end of foreach ( $this->products as $product )
 // Do we need a final closing row tag?
 if ($iBrowseCol != 1) { ?>

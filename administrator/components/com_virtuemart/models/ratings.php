@@ -423,9 +423,9 @@ class VirtueMartModelRatings extends VmModel {
 		return $this->show($product_id, VmConfig::get('showReviewFor','all'));
 	}
 
-	public function showRating($product_id){
+	public function showRating(){
 
-		return $this->show($product_id, VmConfig::get('showRatingFor','all'));
+		return $this->show(0, VmConfig::get('showRatingFor','all'));
 	}
 
 	public function allowReview($product_id){

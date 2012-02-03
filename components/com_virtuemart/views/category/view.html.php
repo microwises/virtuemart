@@ -56,7 +56,6 @@ class VirtuemartViewCategory extends VmView {
 		// if (!class_exists('VirtueMartModelCategory')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
 		// $categoryModel = new VirtueMartModelCategory();
 
-
 		// if (!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
 		// $productModel = new VirtueMartModelProduct();
 		$categoryModel = $this->getModel('category');
@@ -125,6 +124,11 @@ class VirtuemartViewCategory extends VmView {
 		foreach($products as $product){
 			$product->stock = $productModel->getStockIndicator($product);
 		}
+
+		$ratingModel = $this->getModel('ratings');
+		$showRating = $ratingModel->showRating();
+		$this->assignRef('showRating', $showRating);
+
 		if (JRequest::getInt('virtuemart_manufacturer_id' ) and !empty($products[0])) $title .=' '.$products[0]->mf_name ;
 		$document->setTitle( $title );
 

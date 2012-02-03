@@ -258,8 +258,8 @@ class VirtueMartModelProduct extends VmModel {
 			if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
 			$usermodel = new VirtueMartModelUser();
 			$currentVMuser = $usermodel->getUser();
-			$virtuemart_shoppergroup_ids =  $currentVMuser->shopper_groups;
-
+			$virtuemart_shoppergroup_ids =  (array)$currentVMuser->shopper_groups;
+			vmdebug('my shoppergroups ',$virtuemart_shoppergroup_ids);
 			if(is_array($virtuemart_shoppergroup_ids)){
 				foreach ($virtuemart_shoppergroup_ids as $key => $virtuemart_shoppergroup_id){
 					$where[] .= '(s.`virtuemart_shoppergroup_id`= "' . (int) $virtuemart_shoppergroup_id . '" OR' . ' ISNULL(s.`virtuemart_shoppergroup_id`) )';
@@ -343,6 +343,7 @@ class VirtueMartModelProduct extends VmModel {
 					$date = JFactory::getDate( time()-(60*60*24*7) ); //Set on a week, maybe make that configurable
 					$dateSql = $date->toMySQL();
 					$where[] = 'p.`modified_on` > "'.$dateSql.'" ';
+					$this->filter_order_Dir = 'DESC';
 					break;
 				case 'random':
 					$orderBy = ' ORDER BY RAND() ';//LIMIT 0, '.(int)$nbrReturnProducts ; //TODO set limit LIMIT 0, '.(int)$nbrReturnProducts;
