@@ -73,7 +73,7 @@ defined('_JEXEC') or die('Restricted access');
 	</table>
 </fieldset>
 
-
+<?php echo $this->loadTemplate('user'); ?>
 
 <fieldset>
 	<legend>

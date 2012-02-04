@@ -1095,7 +1095,7 @@ class VmTable extends JTable{
 			foreach($langs as $lang){
 				$lang = strtolower(strtr($lang,'-','_'));
 				$langError = $this->checkAndDelete($this->_tbl.'_'.$lang);
-				$mainTableError = max($mainTableError,$langError);
+				$mainTableError = min($mainTableError,$langError);
 			}
 		}
 
@@ -1103,7 +1103,7 @@ class VmTable extends JTable{
 	}
 
 	function checkAndDelete($table,$where = 0){
-		$ok = true;
+		$ok = 1;
 		$k = $this->_tbl_key;
 
 		if($where!==0){
@@ -1120,19 +1120,19 @@ class VmTable extends JTable{
 		if($list){
 
 			foreach($list as $row){
-
+				$ok = $row;
 				$query = 'DELETE FROM `'.$table.'` WHERE '.$this->_tbl_key.' = "'.$row.'"';
 				$this->_db->setQuery( $query );
 
 				if (!$this->_db->query()){
 					$this->setError($this->_db->getErrorMsg());
 					vmError('checkAndDelete '.$this->_db->getErrorMsg());
-					$ok = false;
+					$ok = 0;
 				}
 			}
-			return $ok;
-		}
 
+		}
+		return $ok;
 	}
 
 }

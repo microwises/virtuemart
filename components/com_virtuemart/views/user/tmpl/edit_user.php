@@ -90,6 +90,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			</td>
 		</tr>
 
+<?php
+if(Permissions::getInstance()->check('admin')) { ?>
 		<tr>
 			<td valign="top" class="key">
 				<label for="gid">
@@ -124,7 +126,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 		<?php else : ?>
 			<input type="hidden" name="sendEmail" value="0" />
-		<?php endif; ?>
+		<?php endif;
+			}
+		?>
 
 		<?php if( $this->userDetails->JUser ) : ?>
 		<tr>
@@ -149,6 +153,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</table>
 </fieldset>
 
+<?php if(Permissions::getInstance()->check('admin')) { ?>
 <fieldset class="adminform">
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_USER_FORM_LEGEND_PARAMETERS'); ?>
@@ -165,6 +170,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 	</table>
 </fieldset>
+<?php } ?>
 
 <input type="hidden" name="my_virtuemart_user_id" value="<?php echo $this->lists['current_id']; ?>" />
 <input type="hidden" name="virtuemart_user_id" value="<?php echo $this->userDetails->JUser->get('id'); ?>" />

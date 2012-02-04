@@ -1138,51 +1138,51 @@ class VirtueMartModelProduct extends VmModel {
 			}
 
 			if (!$table->delete($id)) {
-				vmError($table->getError());
+				vmError('Product delete '.$table->getError());
 				$ok = false;
 			}
 
 			if (!$cats->delete($id)) {
-				vmError($cats->getError());
+				vmError('Product delete categories '.$cats->getError());
 				$ok = false;
 			}
 
 			if (!$customs->delete($id)) {
-				vmError($customs->getError());
+				vmError('Product delete customs '.$customs->getError());
 				$ok = false;
 			}
 
 			if (!$manufacturers->delete($id)) {
-				vmError($manufacturers->getError());
+				vmError('Product delete manufacturer '.$manufacturers->getError());
 				$ok = false;
 			}
 
 			if (!$medias->delete($id)) {
-				vmError($medias->getError());
+				vmError('Product delete medias '.$medias->getError());
 				$ok = false;
 			}
 
 			if (!$prices->delete($id)) {
-				vmError($prices->getError());
+				vmError('Product delete prices '.$prices->getError());
 				$ok = false;
 			}
 
 			if (!$shop->delete($id)) {
-				vmError($shop->getError());
+				vmError('Product delete shoppergroups '.$shop->getError());
 				$ok = false;
 			}
 
 			if (!$rating->delete($id,'virtuemart_product_id')) {
-				vmError($rating->getError());
+				vmError('Product delete rating '.$rating->getError());
 				$ok = false;
 			}
 
 			if (!$review->delete($id,'virtuemart_product_id')) {
-				vmError($review->getError());
+				vmError('Product delete reviews '.$review->getError());
 				$ok = false;
 			}
 			if (!$votes->delete($id,'virtuemart_product_id')) {
-				vmError($votes->getError());
+				vmError('Product delete votes '.$votes->getError());
 				$ok = false;
 			}
 

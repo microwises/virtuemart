@@ -31,9 +31,9 @@ class vmVersion {
 	/** @var string Product */
 	static $PRODUCT = 'VirtueMart';
 	/** @var int Release Number */
-	static $RELEASE = '2.0.1';
+	static $RELEASE = '2.0.2';
 	/** @var string Development Status */
-	static $DEV_STATUS = 'RC';
+	static $DEV_STATUS = 'Final';
 	/** @var string Codename */
 	static $CODENAME = 'grounded';
 	/** @var string Date */
@@ -43,7 +43,7 @@ class vmVersion {
 	/** @var string Timezone */
 	static $RELTZ = 'GMT';
 	/** @var string Revision */
-	static $REVISION = 'Revision: 5155';
+	static $REVISION = 'Revision: 5378';
 	/** @var string Copyright Text */
 	static $COPYRIGHT = 'Copyright (C) 2005-2011 VirtueMart Development Team  - All rights reserved.';
 	/** @var string URL */

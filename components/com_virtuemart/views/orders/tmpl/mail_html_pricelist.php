@@ -63,7 +63,7 @@ $root = $u->toString(array('scheme', 'host'));
 		if (!empty($item['product_attribute'])) {
 		    if (!class_exists('VirtueMartModelCustomfields'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'customfields.php');
-		    $product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,true);
+		    $product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,'FE');
 		    echo '<div>' . $product_attribute . '</div>';
 		}
 		?>

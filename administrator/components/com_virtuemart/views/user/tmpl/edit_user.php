@@ -91,6 +91,7 @@ function gotocontact(id) {
 			</td>
 		</tr>
 
+<?php /*
 		<tr>
 			<td valign="top" class="key">
 				<label for="gid">
@@ -101,7 +102,7 @@ function gotocontact(id) {
 				<?php echo $this->lists['gid']; ?>
 			</td>
 		</tr>
-
+ */ ?>
 		<?php if ($this->lists['canBlock']) : ?>
 		<tr>
 			<td class="key">
@@ -150,6 +151,7 @@ function gotocontact(id) {
 		<?php endif; ?>
 	</table>
 </fieldset>
+
 
 <fieldset>
 	<legend>

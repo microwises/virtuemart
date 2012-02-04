@@ -193,7 +193,7 @@ class VirtueMartModelCustom extends VmModel {
 				}
 				$key = array_search($fields['virtuemart_customfield_id'], $old_customfield_ids );
 				if ($key !== false ) unset( $old_customfield_ids[ $key ] );
-				vmdebug('datas clone',$old_customfield_ids,$fields);
+// 				vmdebug('datas clone',$old_customfield_ids,$fields);
 			}
 
 		}

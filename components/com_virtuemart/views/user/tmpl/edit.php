@@ -72,7 +72,7 @@ if($this->userDetails->user_is_vendor){
 	$tabarray['vendor'] = 'COM_VIRTUEMART_VENDOR';
 }
 $tabarray['shopper'] = 'COM_VIRTUEMART_SHOPPER_FORM_LBL';
-$tabarray['user'] = 'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO';
+//$tabarray['user'] = 'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO';
 if (!empty($this->shipto)) {
 	$tabarray['shipto'] = 'COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL';
 }
