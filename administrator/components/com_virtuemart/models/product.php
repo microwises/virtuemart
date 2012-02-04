@@ -259,7 +259,7 @@ class VirtueMartModelProduct extends VmModel {
 			$usermodel = new VirtueMartModelUser();
 			$currentVMuser = $usermodel->getUser();
 			$virtuemart_shoppergroup_ids =  (array)$currentVMuser->shopper_groups;
-			vmdebug('my shoppergroups ',$virtuemart_shoppergroup_ids);
+
 			if(is_array($virtuemart_shoppergroup_ids)){
 				foreach ($virtuemart_shoppergroup_ids as $key => $virtuemart_shoppergroup_id){
 					$where[] .= '(s.`virtuemart_shoppergroup_id`= "' . (int) $virtuemart_shoppergroup_id . '" OR' . ' ISNULL(s.`virtuemart_shoppergroup_id`) )';

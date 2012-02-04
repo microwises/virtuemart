@@ -869,7 +869,7 @@ class VirtueMartModelCustomfields extends VmModel {
 	 */
 	public function CustomsFieldOrderDisplay($item,$view='FE',$absUrl = false) {
 		$row = 0 ;
-		if (!empty($item->product_attribut)) {
+		if (!empty($item->product_attribute)) {
 			$item->param = json_decode($item->product_attribute,true);
 			$html = '<div class="vm-customfield-cart">';
 
@@ -905,6 +905,8 @@ class VirtueMartModelCustomfields extends VmModel {
 
 			}
 			return $html.'</div> ';
+		} else {
+			vmTrace('$item->product_attribut is empty');
 		}
 		return '';
 	}

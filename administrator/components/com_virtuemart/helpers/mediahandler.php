@@ -263,7 +263,7 @@ class VmMediaHandler {
 	}
 
 	public function getUrl(){
-		return $this->file_url_folder.$this->file_name.$this->file_extension;
+		return $this->file_url_folder.$this->file_name.'.'.$this->file_extension;
 	}
 
 	public function getThumbUrl(){
