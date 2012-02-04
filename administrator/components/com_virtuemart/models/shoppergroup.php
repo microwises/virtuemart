@@ -118,7 +118,14 @@ class VirtueMartModelShopperGroup extends VmModel {
 		return true;
 	}
 
+	/**
+	 *
+	 * Get default shoppergroup for anonymous and non anonymous
+	 * @param unknown_type $kind
+	 */
 	function getDefault($kind = 1){
+
+		$kind = $kind + 1;
 		$this->_db->setQuery('SELECT * FROM `#__virtuemart_shoppergroups` WHERE `default` = "'.$kind.'" AND `virtuemart_vendor_id` = "1" ');
 
 		if(!$res = $this->_db->loadObject()){
@@ -137,8 +144,8 @@ class VirtueMartModelShopperGroup extends VmModel {
 
 		$table = $this->getTable($this->_maintablename);
 
-		$defaultSgId = $this->getDefault();
-		$anonymSgId = $this->getDefault(2);
+		$defaultSgId = $this->getDefault(0);
+		$anonymSgId = $this->getDefault(1);
 
 		foreach($ids as $id){
 
@@ -196,8 +203,9 @@ class VirtueMartModelShopperGroup extends VmModel {
       		$q .= '`#__virtuemart_shoppergroups`.`virtuemart_shoppergroup_id`=`#__virtuemart_vmuser_shoppergroups`.`virtuemart_shoppergroup_id`';
     	}
     	else {
-    		$q .= ' WHERE `#__virtuemart_shoppergroups`.`virtuemart_vendor_id`="'.(int)$virtuemart_vendor_id.'" AND `default`="1"';
+    		$q .= ' WHERE `#__virtuemart_shoppergroups`.`virtuemart_vendor_id`="'.(int)$virtuemart_vendor_id.'" AND `default`="2"';
     	}
+
     	$db->setQuery($q);
     	return $db->loadAssoc();
   	}

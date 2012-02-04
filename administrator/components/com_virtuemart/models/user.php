@@ -130,13 +130,11 @@ class VirtueMartModelUser extends VmModel {
 		$this->_data->load((int)$this->_id);
 
 		$this->_data->JUser = JUser::getInstance($this->_id);
-// 		vmdebug('getUser',$this->_data->JUser);
+
 		if(empty($this->_data->perms)){
-			if(strpos($this->_data->JUser->usertype,'Administrator')!==false){
-				$this->_data->perms = 'admin';
-			} else {
-				$this->_data->perms = 'shopper';
-			}
+
+			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+			$this->_data->perms = Permissions::getInstance()->getPermissions((int)$this->_id);
 
 		}
 
@@ -145,12 +143,15 @@ class VirtueMartModelUser extends VmModel {
 		$this->_data->shopper_groups = $xrefTable->load($this->_id);
 		if(empty($this->_data->shopper_groups)){
 
-			if(empty($this->_defaultShopperGroup)){
+// 			if(empty($this->_defaultShopperGroup)){
 				if(!class_exists('VirtueMartModelShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shoppergroup.php');
 				$shoppergroupmodel = new VirtueMartModelShopperGroup();
-				$this->_defaultShopperGroup = $shoppergroupmodel->getDefault()->virtuemart_shoppergroup_id;
-			}
-			$this->_data->shopper_groups = $this->_defaultShopperGroup ;
+
+				$this->_defaultShopperGroup = $shoppergroupmodel->getDefault($this->_data->JUser->guest);
+// 				vmdebug('$this->_defaultShopperGroup ',$this->_defaultShopperGroup);
+// 			}
+			$this->_data->shopper_groups = $this->_defaultShopperGroup->virtuemart_shoppergroup_id ;
+
 		}
 
 
@@ -895,12 +896,6 @@ class VirtueMartModelUser extends VmModel {
 			vmError('storing user adress data'.$error);
 		}
 
-/*		if(empty($data['virtuemart_shoppergroup_id'])){
-			if(!class_exists('VirtueMartModelShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shoppergroup.php');
-			$shoppergroupmodel = new VirtueMartModelShopperGroup();
-			$defaultShopperGroup = $shoppergroupmodel->getDefault();
-			$data['virtuemart_shoppergroup_id'] = $defaultShopperGroup->virtuemart_shoppergroup_id;
-		}*/
 
 		// Bind the form fields to the auth_user_group table
 		if(!empty($data['virtuemart_shoppergroup_id'])){
@@ -1380,7 +1375,7 @@ class VirtueMartModelUser extends VmModel {
 			if(!empty($_r[0])){
 				return $_r[0]->customer_number;
 			}else {
-				return 0;
+				return false;
 			}
 
 	 }

@@ -874,7 +874,7 @@ class VirtueMartModelProduct extends VmModel {
 		$this->_db = JFactory::getDBO();
 		$neighbors = array('previous' => '','next' => '');
 		$direction = 'ASC' ;
-		$op='>';
+		$op='<';
 		foreach ($neighbors as &$neighbor) {
 
 			$q = 'SELECT `l`.`virtuemart_product_id`, `l`.`product_name`
@@ -884,11 +884,12 @@ class VirtueMartModelProduct extends VmModel {
 				WHERE `virtuemart_category_id` = '.(int)$product->virtuemart_category_id;
 			$q .= ' and `slug` '.$op.' "'.$product->slug.'" ' ;
 			if ($onlyPublished) $q .= ' AND p.`published`= 1';
-			$q .=' ORDER BY `slug` '.$direction.' LIMIT 1,'.(int)$max;
+			$q .=' ORDER BY `slug` '.$direction.' LIMIT 0,'.(int)$max;
+
 			$this->_db->setQuery($q);
 			if ($result = $this->_db->loadAssocList()) $neighbor = $result;
 			$direction = 'DESC';
-			$op='<';
+			$op='>';
 		}
 		return $neighbors;
 	}
