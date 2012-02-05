@@ -167,10 +167,8 @@ class Permissions extends JObject{
 
 			//We must prevent that Administrators or Managers are 'just' shoppers
 			//TODO rewrite it working correctly with jooomla ACL
-			//if ($this->_perms == "shopper") {
-// 			vmdebug('my user in perms',$user);
 
-			if(!$this->_perms){
+			if(empty($this->_perms)){
 				if(JVM_VERSION === 2 ){
 
 					if($user->groups){
@@ -182,7 +180,8 @@ class Permissions extends JObject{
 						} else {
 							$this->_perms  = 'shopper';
 						}
-
+					} else {
+						$this->_perms  = 'shopper';
 					}
 
 				} else {
@@ -223,12 +222,9 @@ class Permissions extends JObject{
 
 		// Parse all permissions in argument, comma separated
 		// It is assumed auth_user only has one group per user.
-		if ($perms == "none") {
-			return true;
-		}
-		else {
 			$p1 = explode(",", $this->_perms);
 			$p2 = explode(",", $perms);
+			vmdebug('check '.$perms,$p1,$p2);
 			while (list($key1, $value1) = each($p1)) {
 				while (list($key2, $value2) = each($p2)) {
 					if ($value1 == $value2) {
@@ -236,7 +232,7 @@ class Permissions extends JObject{
 					}
 				}
 			}
-		}
+
 		return false;
 	}
 
@@ -275,10 +271,9 @@ class Permissions extends JObject{
 		}
 
 		if($this->_vendorId!=0){
-// 			vmdebug('Perm->isSuperVendor, user is a vendor');
 			return $this->_vendorId;
 		} else {
-			if($this->check('admin','storeadmin') ){
+			if($this->check('admin,storeadmin') ){
 				$this->_vendorId = 1;
 				return $this->_vendorId;
 			} else {
