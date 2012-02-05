@@ -372,8 +372,7 @@ class VirtueMartModelOrders extends VmModel {
 
 		//First we must call the payment, the payment manipulates the result of the order_status
 		if($useTriggers){
-			/* When the order is set to "shipped", we can capture the payment */
-			if( ($old_order_status == "P" || $old_order_status == "C") && $order['order_status'] == "S") {
+			/* Payment decides what to do when order status is updated */
 				JPluginHelper::importPlugin('vmpayment');
 				$_dispatcher = JDispatcher::getInstance();
 				$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderPayment',array(&$order,$old_order_status));
@@ -385,7 +384,6 @@ class VirtueMartModelOrders extends VmModel {
 					}
 					// Ignore null status and look for the next returnValue
 				}
-			}
 
 			// TODO This is not the most logical place for these plugins (or better; the method updateStatus() must be renamed....)
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
