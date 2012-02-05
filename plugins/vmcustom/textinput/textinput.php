@@ -155,7 +155,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	 * shopper order display FE
 	 */
 	function plgVmDisplayInOrderFE($item, $row, &$html) {
-		if ($item->productCustom->custom_value != $this->_name) return '';
+		if (!empty($item->productCustom->custom_value) and $item->productCustom->custom_value != $this->_name) return '';
 		$this->plgVmOnViewCart($item,$row,$html); //same render as cart
     }
 

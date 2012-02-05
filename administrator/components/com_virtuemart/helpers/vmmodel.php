@@ -37,8 +37,8 @@ class VmModel extends JModel {
 	private $_withCount = true;
 	var $_noLimit = false;
 
-	public function __construct($cidName='cid'){
-		parent::__construct();
+	public function __construct($cidName='cid', $config=array()){
+		parent::__construct($config);
 
 		$this->_cidName = $cidName;
 

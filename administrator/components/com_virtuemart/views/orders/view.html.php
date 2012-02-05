@@ -52,7 +52,8 @@ class VirtuemartViewOrders extends VmView {
 
 		$orderModel = $this->getModel();
 
-		JToolBarHelper::custom( 'print', 'print','','COM_VIRTUEMART_PRINT',false);
+// 		JToolBarHelper::custom( 'orderPrint', 'print','','COM_VIRTUEMART_PRINT',false);
+// 		JToolBarHelper::custom( 'invoice', 'invoice','','COM_VIRTUEMART_INVOICE',false);
 
 // 		JToolBarHelper::deleteListX();
 

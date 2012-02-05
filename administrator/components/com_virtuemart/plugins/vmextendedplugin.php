@@ -17,13 +17,15 @@ abstract class vmExtendedPlugin extends JPlugin {
 	 * @var string path to this plugin's directory
 	 * @access protected
 	 */
-	abstract protected $_path = '';
+	//abstract protected $_path = '';
+	protected $_path = '';
 
 	/**
 	 * @var string plugin name
 	 * @access private
 	 */
-	protected $_name = '';
+	//protected $_name = '';
+	public $_name = '';
 
 	/**
 	 * Method to get the plugin name

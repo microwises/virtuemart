@@ -45,61 +45,11 @@ class VirtuemartControllerOrders extends VmController {
 	}
 
 	/**
-	* Shows the product list screen
-	*/
-	public function Orders() {
-		/* Create the view object */
-		$view = $this->getView('orders', 'html');
-
-		/* Default model */
-		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ), true );
-
-
-		$view->setLayout('orders');
-
-		/* Now display the view. */
-		$view->display();
-	}
-
-	/**
-	* Print the order details
-	*/
-	public function orderPrint()
-	{
-		/* Create the view object */
-		$view = $this->getView('orders', 'pdf');
-
-		/* Default model */
-		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ), true );
-		/* Additional models */
-		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
-		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
-		$view->setModel( $this->getModel( 'orderstatus', 'VirtueMartModel' ));
-
-		$view->setLayout('order_print');
-
-		/* Now display the view. */
-		$view->display();
-	}
-
-	/**
 	* Shows the order details
 	*/
 	public function edit()
 	{
-		/* Create the view object */
-// 		$view = $this->getView('orders', 'html');
 
-/*
-		$view->setModel( $this->getModel( 'orders', 'VirtueMartModel' ), true );
-		//Additional models
-		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
-		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ));
-		$view->setModel( $this->getModel( 'orderstatus', 'VirtueMartModel' ));
-		*/
-// 		$view->setLayout('order');
-
-		/* Now display the view. */
 		parent::edit('order');
 	}
 

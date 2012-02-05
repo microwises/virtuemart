@@ -28,7 +28,7 @@ jimport( 'joomla.application.component.view');
  * @author
  */
 if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
- 
+
 class VirtuemartViewOrders extends VmView {
 
 	function display($tpl = null) {
@@ -57,6 +57,7 @@ class VirtuemartViewOrders extends VmView {
 
 		$currency = CurrencyDisplay::getInstance('',$order['details']['BT']->virtuemart_vendor_id);
 		$this->assignRef('currency', $currency);
+
 
 		$_userFields = $userFieldsModel->getUserFields(
 				 'registration'

@@ -31,8 +31,8 @@ class VmController extends JController{
 	 *
 	 * @author Max Milbers
 	 */
-	public function __construct($cidName='cid') {
-		parent::__construct();
+	public function __construct($cidName='cid', $config=array()) {
+		parent::__construct($config);
 
 		 $this->_cidName = $cidName;
 

@@ -301,6 +301,25 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
   KEY `idx_custom_parent_id` (`custom_parent_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields definition' AUTO_INCREMENT=1 ;
 
+
+CREATE TABLE IF NOT EXISTS `#__virtuemart_invoices` (
+  `virtuemart_invoice_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_order_id` int(1) UNSIGNED,
+  `invoice_number` char(64),
+  `order_status` char(2),
+  `xhtml` text,
+  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT '0',
+  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `locked_by` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`virtuemart_custom_id`),
+  KEY `idx_virtuemart_order_id` (`virtuemart_order_id`)
+  UNIQUE KEY `idx_invoice_number` (`invoice_number`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields definition' AUTO_INCREMENT=1 ;
+
+  
 -- --------------------------------------------------------
 --
 -- Table structure for table `#__virtuemart_manufacturers`

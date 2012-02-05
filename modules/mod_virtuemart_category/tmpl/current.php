@@ -19,7 +19,7 @@ $ID = str_replace('.', '_', substr(microtime(true), -8, 8));
 		<?php echo JHTML::link($caturl, $cattext);
 		if ($category->childs) {
 			?>
-			<span class="VmArrowdown"> <span>
+			<span class="VmArrowdown"> </span>
 			<?php
 		}
 		?>
