@@ -153,14 +153,16 @@ class VirtueMartModelOrders extends VmModel {
 		$order['history'] = $db->loadObjectList();
 
 		// Get the order items
-		$q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
-				order_item_sku, i.virtuemart_product_id, product_item_price,
-				product_final_price, product_basePriceWithTax, product_subtotal_with_tax, product_subtotal_discount, product_tax, product_attribute, order_status,
-				intnotes
-			FROM #__virtuemart_order_items i
-			LEFT JOIN #__virtuemart_products p
-			ON p.virtuemart_product_id = i.virtuemart_product_id
-			WHERE virtuemart_order_id=".$virtuemart_order_id;
+$q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
+    order_item_sku, i.virtuemart_product_id, product_item_price,
+    product_final_price, product_basePriceWithTax, product_subtotal_with_tax, product_subtotal_discount, product_tax, product_attribute, order_status,
+    intnotes, virtuemart_category_id
+   FROM (#__virtuemart_order_items i
+   LEFT JOIN #__virtuemart_products p
+   ON p.virtuemart_product_id = i.virtuemart_product_id)
+                        LEFT JOIN #__virtuemart_product_categories c
+                        ON p.virtuemart_product_id = c.virtuemart_product_id
+   WHERE virtuemart_order_id=".$virtuemart_order_id;
 		$db->setQuery($q);
 		$order['items'] = $db->loadObjectList();
 // Get the order items

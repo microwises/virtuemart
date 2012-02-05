@@ -315,7 +315,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_invoices` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_invoice_id`),
-  KEY `idx_virtuemart_order_id` (`virtuemart_order_id`)
+  KEY `idx_virtuemart_order_id` (`virtuemart_order_id`),
   UNIQUE KEY `idx_invoice_number` (`invoice_number`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields definition' AUTO_INCREMENT=1 ;
 
