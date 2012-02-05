@@ -1102,13 +1102,27 @@ class VirtueMartModelProduct extends VmModel {
 		//	if (is_array($cids)) $cids = array($cids);
 		$product = $this->getProduct($id);
 		$product->field = $this->productCustomsfieldsClone($id);
+// 		vmdebug('$product->field',$product->field);
 		$product->virtuemart_product_id = $product->virtuemart_product_price_id = 0;
 		$product->slug = $product->slug.'-'.$id;
-
+		$product->save_customfields = 1;
 		$this->store($product);
 		return $this->_id;
 	}
 
+	/* look if whe have a product type */
+	private function productCustomsfieldsClone($virtuemart_product_id) {
+		$this->_db = JFactory::getDBO();
+		$q  = "SELECT * FROM `#__virtuemart_product_customfields`";
+		$q .=" WHERE `virtuemart_product_id` = ".$virtuemart_product_id ;
+		$this->_db->setQuery($q);
+		$customfields = $this->_db->loadAssocList();
+		if ($customfields) {
+			foreach ($customfields as &$customfield) unset($customfield['virtuemart_product_id'],$customfield['virtuemart_customfield_id']);
+			return $customfields;
+		}
+		else return null;
+	}
 
 	/**
 	 * removes a product and related table entries
@@ -1784,20 +1798,6 @@ public function updateStockInDB($product, $amount, $signInStoc, $signOrderedStoc
 	}
 
 
-}
-
-/* look if whe have a product type */
-private function productCustomsfieldsClone($virtuemart_product_id) {
-	$this->_db = JFactory::getDBO();
-	$q  = "SELECT * FROM `#__virtuemart_product_customfields`";
-	$q .=" WHERE `virtuemart_product_id` = ".$virtuemart_product_id ;
-	$this->_db->setQuery($q);
-	$customfields = $this->_db->loadAssocList();
-	if ($customfields) {
-		foreach ($customfields as &$customfield) unset($customfield['virtuemart_product_id'],$customfield['virtuemart_customfield_id']);
-		return $customfields;
-	}
-	else return null;
 }
 
 // use lang table only TODO Look if this not cause errors

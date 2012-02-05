@@ -224,7 +224,7 @@ class Permissions extends JObject{
 		// It is assumed auth_user only has one group per user.
 			$p1 = explode(",", $this->_perms);
 			$p2 = explode(",", $perms);
-			vmdebug('check '.$perms,$p1,$p2);
+// 			vmdebug('check '.$perms,$p1,$p2);
 			while (list($key1, $value1) = each($p1)) {
 				while (list($key2, $value2) = each($p2)) {
 					if ($value1 == $value2) {

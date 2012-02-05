@@ -151,6 +151,7 @@ class VirtueMartModelCustom extends VmModel {
 		//Sanitize id
 		$id = (int)$id;
 
+
 		//Table whitelist
 		$tableWhiteList = array('product','category','manufacturer');
 		if(!in_array($table,$tableWhiteList)) return false;
@@ -185,6 +186,8 @@ class VirtueMartModelCustom extends VmModel {
 					}
 
 				} else $fields['custom_param'] = '';
+
+				vmdebug('saveModelCustomfields',$fields);
 				$tableCustomfields->bindChecknStore($fields);
 				$errors = $tableCustomfields->getErrors();
 

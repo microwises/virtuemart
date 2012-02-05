@@ -49,7 +49,7 @@ class VirtuemartViewProduct extends VmView {
 			case 'add':
 			case 'edit':
 
-				$this->SetViewTitle();
+
 
 				//this was in the controller for the edit tasks, I dont know if it is still needed,
 				$this->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product'.DS.'tmpl');
@@ -225,11 +225,17 @@ class VirtuemartViewProduct extends VmView {
 				$text="";
 				if ($task == 'edit') {
 					if ($product->product_sku) $sku=' ('.$product->product_sku.')'; else $sku="";
-					$text =  $product->product_name.$sku;
+
+					if(!empty($product->virtuemart_product_id)){
+						$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'" target="_blank" >'. $product->product_name.$sku.'</a>';
+					} else {
+						$text = $product->product_name.$sku;
+					}
 				}
 				$this->SetViewTitle('PRODUCT',$text);
 
 				$this->addStandardEditViewCommands ($product->virtuemart_product_id);
+
 
 				break;
 
