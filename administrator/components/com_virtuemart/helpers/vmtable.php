@@ -523,7 +523,7 @@ class VmTable extends JTable{
 				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 				$loggedVendorId = Permissions::getInstance()->isSuperVendor();
 
-				if($loggedVendorId){
+				if($loggedVendorId and $loggedVendorId !== 0){
 					$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 1;
 				} else {
 

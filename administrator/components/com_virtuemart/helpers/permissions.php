@@ -170,36 +170,33 @@ class Permissions extends JObject{
 			//if ($this->_perms == "shopper") {
 // 			vmdebug('my user in perms',$user);
 
-			if(JVM_VERSION === 2 ){
+			if(!$this->_perms){
+				if(JVM_VERSION === 2 ){
 
-				if($user->groups){
-					if($user->authorise('core.admin')){
-						$this->_perms  = 'admin';
+					if($user->groups){
+						if($user->authorise('core.admin')){
+							$this->_perms  = 'admin';
 
-					} else if($user->authorise('core.manage')){
-						$this->_perms  = 'storeadmin';
+						} else if($user->authorise('core.manage')){
+							$this->_perms  = 'storeadmin';
+						} else {
+							$this->_perms  = 'shopper';
+						}
+
+					}
+
+				} else {
+					if(strpos($user->usertype,'Administrator')!== false){
+						$this->_perms  = "admin";
+					} else if(strpos($user->usertype,'Manager')!== false){
+						$this->_perms  = "storeadmin";
 					} else {
-						$this->_perms  = 'shopper';
+						$this->_perms  = "shopper";
 					}
 
 				}
-
-			} else {
-				if(strpos($user->usertype,'Administrator')!== false){
-					$this->_perms  = "admin";
-				} else if(strpos($user->usertype,'Manager')!== false){
-					$this->_perms  = "storeadmin";
-				} else {
-					$this->_perms  = "shopper";
-				}
-/*				if (stristr($user->usertype,"Administrator")) {
-					$this->_perms  = "admin";
-				}
-				elseif (stristr($user->usertype,"Manager")) {
-					$this->_perms  = "storeadmin";
-				}		*/
-
 			}
+
 // 			vmdebug('$user->authorise perms '.$this->_perms);
 
 			//}
@@ -255,9 +252,6 @@ class Permissions extends JObject{
 
 
 		if(!$this->_vendorId){
-// 			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-// 			$vendorModel = new VirtueMartModelVendor();
-// 			$this->_vendorId = $vendorModel->getLoggedVendor();
 			$user = JFactory::getUser();
 
 			if(!empty( $user->id)){
@@ -269,7 +263,11 @@ class Permissions extends JObject{
 				$db= JFactory::getDbo();
 				$db->setQuery($q);
 				$virtuemart_vendor_id = $db->loadResult();
-				if ($virtuemart_vendor_id) $this->_vendorId = $virtuemart_vendor_id;
+				if ($virtuemart_vendor_id) {
+					$this->_vendorId = $virtuemart_vendor_id;
+				} else {
+					$this->_vendorId = 0;
+				}
 			} else {
 				return false;
 			}
@@ -280,15 +278,14 @@ class Permissions extends JObject{
 // 			vmdebug('Perm->isSuperVendor, user is a vendor');
 			return $this->_vendorId;
 		} else {
-			if($this->check('admin') ){
-				if(!$this->_vendorId) $this->_vendorId = 1;
-// 				vmdebug('Perm->isSuperVendor, user is an admin');
+			if($this->check('admin','storeadmin') ){
+				$this->_vendorId = 1;
 				return $this->_vendorId;
 			} else {
 				return false;
 			}
 		}
-
+		return false;
 	}
 
 	/**

@@ -517,10 +517,13 @@ abstract class vmPSPlugin extends vmPlugin {
 	$q .= ' ISNULL(s.`virtuemart_shoppergroup_id`) ) ORDER BY v.`ordering`';
 
 	$db->setQuery($q);
+	// 	vmdebug('getPluginMethods query '. $db->getQuery(),$this->methods);
+
 	$this->methods = $db->loadObjectList();
-// 	vmdebug('getPluginMethods query '. $db->getQuery(),$this->methods);
-	foreach ($this->methods as $method) {
-	    VmTable::bindParameterable($method, $this->_xParams, $this->_varsToPushParam);
+	if($this->methods){
+		foreach ($this->methods as $method) {
+			VmTable::bindParameterable($method, $this->_xParams, $this->_varsToPushParam);
+		}
 	}
 
 // 		vmdebug('getPluginMethods',$this->methods);
