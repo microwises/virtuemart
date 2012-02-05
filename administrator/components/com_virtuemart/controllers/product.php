@@ -155,7 +155,7 @@ class VirtuemartControllerProduct extends VmController {
 			}
 		}
 
-		$mainframe->redirect('index.php?option=com_virtuemart&view=product&task=product&product_parent_id='.JRequest::getInt('product_parent_id'), $msg, $msgtype);
+		$mainframe->redirect('index.php?option=com_virtuemart&view=product', $msg, $msgtype);
 	}
 
 

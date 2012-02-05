@@ -848,18 +848,36 @@ class VmMediaHandler {
 			jQuery(document).ready(function(){ jQuery('#ImagesContainer').vm2admin('media','".$type."','0') }); " ;
 
 			$j .="
-			jQuery(document).ready(function(){
-			jQuery('input#searchMedia').autocomplete({
+			jQuery(document).ready(function($){
+			var medialink = 'index.php?option=com_virtuemart&view=media&task=viewJson&format=json&mediatype=".$type."';
+			var media = $('#searchMedia').data();
+			var searchMedia = $('input#searchMedia');
+			searchMedia.click(function () { 
+				if (media.start>0) media.start=0;
+			});
+			searchMedia.autocomplete({
 
-				source: 'index.php?option=com_virtuemart&view=media&task=viewJson&format=json&mediatype=".$type."',
+				source: medialink,
 				select: function(event, ui){
-					jQuery('#ImagesContainer').append(ui.item.label);
-					//jQuery(this).autocomplete( 'option' , 'source' , 'index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
+					$('#ImagesContainer').append(ui.item.label);
+					//$(this).autocomplete( 'option' , 'source' , 'index.php?option=com_virtuemart&view=product&task=getData&format=json&type=relatedcategories&row='+nextCustom )
 
 				},
 				minLength:1,
 				html: true
 			});
+			 $('.js-pages').click(function (e) { 
+				e.preventDefault();
+				if (searchMedia.val() =='') {
+					searchMedia.val(' ');
+					media.start = 0;
+				} else if ($(this).hasClass('js-next')) media.start = media.start+16 ;
+				else if (media.start > 0) media.start = media.start-16 ;
+				
+				searchMedia.autocomplete( 'option' , 'source' , medialink+'&start='+media.start );
+				searchMedia.autocomplete( 'search');
+			});
+			
 		}); ";
 
 			$document = JFactory::getDocument ();
@@ -879,10 +897,14 @@ class VmMediaHandler {
 			$html='';
 			$html .= '<fieldset class="checkboxes">' ;
 			$html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGES').'</legend>';
-		        $html .=  '<span class="hasTip" title="'.JText::_('COM_VIRTUEMART_SEARCH_TITLE_TIP').'">'.JText::_('COM_VIRTUEMART_SEARCH_TITLE') . ' ' . JText::_('COM_VIRTUEMART_IMAGES') . '</span>';
-			$html .=   ':
-					<input type="text" name="searchMedia" id="searchMedia" value="' .JRequest::getString('searchMedia') . '" class="text_area" />
-					<button class="reset-value">'.JText::_('COM_VIRTUEMART_RESET') .'</button>';
+		        $html .=  '<span class="hasTip always-left" title="'.JText::_('COM_VIRTUEMART_SEARCH_TITLE_TIP').'">'.JText::_('COM_VIRTUEMART_SEARCH_TITLE') . ' ' . JText::_('COM_VIRTUEMART_IMAGES') . ' :</span>';
+			$html .=   '
+					<input type="text" name="searchMedia" id="searchMedia" data-start="0" value="' .JRequest::getString('searchMedia') . '" class="text_area always-left" />
+					<button class="reset-value fg-button">'.JText::_('COM_VIRTUEMART_RESET') .'</button>
+					<a class="js-pages js-previous fg-button ui-state-default fg-button-icon-left ui-corner-all" ><span class="ui-icon ui-icon-circle-minus" style="display:inline-block;"></span> 16 </a>
+					<a class="js-pages js-next fg-button ui-state-default fg-button-icon-right ui-corner-all"> 16 <span class="ui-icon ui-icon-circle-plus" style="display:inline-block;"></span></a>
+					<br class="clear"/>';
+					;
 			//$result = $this->getImagesList($type);
 			$html .= '<div id="ImagesContainer">';
 
@@ -928,10 +950,10 @@ class VmMediaHandler {
 		}
 
 
-		function displayImages($types ='',$page=0 ) {
+		function displayImages($types ='',$page=0,$max=16 ) {
 
 			$images = array();
-			$list = VmMediaHandler::getImagesList($types,$page);
+			$list = VmMediaHandler::getImagesList($types,$page,$max);
 			if (empty($list['images'])) return JText::_('COM_VIRTUEMART_ADMIN_CFG_NOIMAGEFOUND');
 
 			foreach ($list['images'] as $key =>$image) {
@@ -961,7 +983,7 @@ class VmMediaHandler {
 		 * @param name of the view
 		 * @return object List of flypage objects
 		 */
-		function getImagesList($type = '',$page=0,$max=24) {
+		function getImagesList($type = '',$page=0, $max=16) {
 
 			if(empty($this->_db)) $this->_db = JFactory::getDBO();
 			$list = array();

@@ -278,3 +278,22 @@ div.threecols ul   {
 .datepicker {
     text-align: center;
 }
+a.fg-button, .always-left{
+    float: left !important;
+}
+.fg-button-icon-left {
+    /* padding-left: 2.1em; */
+}
+.fg-button {
+    cursor: pointer;
+    margin: 0 4px 0 0;
+    outline: 0 none;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    text-decoration: none !important;
+}
+.fg-button-icon-right {
+/*     padding-right: 2.1em; */
+}
+#searchMedia{margin:0;padding:0; }

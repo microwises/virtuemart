@@ -38,7 +38,13 @@
   top:5px;
   right:5px;
   padding:2px;
-  background:#fff;
+  width:8px;
+  height:8px;
+  background:url(../images/facebox/closelabel.png) no-repeat #FFF;
+  opacity:0.3;
+}
+#facebox .close:hover{
+  opacity:1.0;
 }
 #facebox .close img{
   opacity:0.3;
