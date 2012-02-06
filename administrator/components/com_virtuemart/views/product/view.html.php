@@ -227,7 +227,7 @@ class VirtuemartViewProduct extends VmView {
 					if ($product->product_sku) $sku=' ('.$product->product_sku.')'; else $sku="";
 
 					if(!empty($product->virtuemart_product_id)){
-						$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'" target="_blank" >'. $product->product_name.$sku.'</a>';
+						$text = '<a href="'.juri::root().'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$product->virtuemart_product_id.'" target="_blank" >'. $product->product_name.$sku.'<span class="vm2-modallink"></span></a>';
 					} else {
 						$text = $product->product_name.$sku;
 					}

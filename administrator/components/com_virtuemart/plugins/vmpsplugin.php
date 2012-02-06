@@ -525,7 +525,6 @@ abstract class vmPSPlugin extends vmPlugin {
 			VmTable::bindParameterable($method, $this->_xParams, $this->_varsToPushParam);
 		}
 	}
-
 // 		vmdebug('getPluginMethods',$this->methods);
 	return count($this->methods);
     }
@@ -938,7 +937,7 @@ if ($pluginSalesPrice) {
 	}
     }
 
-    public function processConfirmedOrderPaymentResponse($returnValue, $cart, $order, $html,  $payment_name, $new_status='P') {
+    public function processConfirmedOrderPaymentResponse($returnValue, $cart, $order, $html,  $payment_name, $new_status='') {
 	if ($returnValue !== null) {
 	    if ($returnValue == 1) {
 		//We delete the old stuff

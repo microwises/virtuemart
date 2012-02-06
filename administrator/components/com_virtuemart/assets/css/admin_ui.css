@@ -184,3 +184,5 @@ table.admin-table tr.row1 {background: #f7f7f7;text-shadow: 0px -1px 1px #fff;}*
     margin-left: 2px;
 }
 #plugin-Container{display:table;}
+.vm2-modallink{height:16px;margin-left: 3px;width:16px;display:inline-block; background: url("../images/admin_ui/icon_external_link.gif") no-repeat scroll left top transparent;}
+
