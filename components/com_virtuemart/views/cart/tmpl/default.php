@@ -109,19 +109,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 		</div>
 		<?php // Leave A Comment Field END ?>
 
-		<?php // Terms Of Service
-		if(VmConfig::get('oncheckout_show_legal_info',1)){
-		?>
-		<div class="terms-of-service">
-			<span class="terms-of-service" rel="facebox"><span class="vmicon vm2-termsofservice-icon"></span><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?><span class="vm2-modallink"></span></span>
-			<div id="full-tos">
-				<h2><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?></h2>
-				<?php echo $this->cart->vendor->vendor_terms_of_service;?>
 
-			</div>
-		</div>
-		<?php
-		} // Terms Of Service END ?>
 
 		<?php // Continue and Checkout Button ?>
 		<div class="checkout-button-top">
@@ -137,7 +125,20 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 			    <?php
 				if(!class_exists('VmHtml'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 				echo VmHtml::checkbox('tosAccepted',$this->cart->tosAccepted,1,0,'class="terms-of-service"');
-				echo '<span class="tos">'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
+
+		if(VmConfig::get('oncheckout_show_legal_info',1)){
+		?>
+		<div class="terms-of-service">
+			<span class="terms-of-service" rel="facebox"><span class="vmicon vm2-termsofservice-icon"></span><?php echo JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED'); ?><span class="vm2-modallink"></span></span>
+			<div id="full-tos">
+				<h2><?php echo JText::_('COM_VIRTUEMART_CART_TOS'); ?></h2>
+				<?php echo $this->cart->vendor->vendor_terms_of_service;?>
+
+			</div>
+		</div>
+		<?php
+		} // VmConfig::get('oncheckout_show_legal_info',1)
+				//echo '<span class="tos">'. JText::_('COM_VIRTUEMART_CART_TOS_READ_AND_ACCEPTED').'</span>';
 				?>
 			    </label>
 		    <?php
