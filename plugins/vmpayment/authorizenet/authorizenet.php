@@ -368,7 +368,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	//$cart->creditcard_id = JRequest::getVar('creditcard', '0');
 	$this->_cc_type = JRequest::getVar('cc_type_' . $cart->virtuemart_paymentmethod_id, '');
 	$this->_cc_name = JRequest::getVar('cc_name_' . $cart->virtuemart_paymentmethod_id, '');
-	$this->_cc_number = JRequest::getVar('cc_number_' . $cart->virtuemart_paymentmethod_id, '');
+	$this->_cc_number = str_replace(" ","",JRequest::getVar('cc_number_' . $cart->virtuemart_paymentmethod_id, ''));
 	$this->_cc_cvv = JRequest::getVar('cc_cvv_' . $cart->virtuemart_paymentmethod_id, '');
 	$this->_cc_expire_month = JRequest::getVar('cc_expire_month_' . $cart->virtuemart_paymentmethod_id, '');
 	$this->_cc_expire_year = JRequest::getVar('cc_expire_year_' . $cart->virtuemart_paymentmethod_id, '');
