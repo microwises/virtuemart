@@ -44,7 +44,17 @@ class VirtuemartViewOrders extends VmView {
 
 		$_currentUser = JFactory::getUser();
 		$document = JFactory::getDocument();
-		$document->setTitle( JText::_('COM_VIRTUEMART_ACC_ORDER_INFO') );
+
+		$format = JRequest::getWord('format', 'html');
+		if($format=='pdf'){
+			$document->setTitle( JText::_('COM_VIRTUEMART_INVOICE') );
+
+			//PDF needs more RAM than usual
+			@ini_set( 'max_execution_time', '24M' );
+		} else {
+			$document->setTitle( JText::_('COM_VIRTUEMART_ACC_ORDER_INFO') );
+		}
+
 		if (!class_exists('VirtueMartModelOrders')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
 		$orderModel = new VirtueMartModelOrders();
 
@@ -52,44 +62,44 @@ class VirtuemartViewOrders extends VmView {
 		if ($layoutName == 'details') {
 
 			$cuid = $_currentUser->get('id');
-                        
-                        if(empty($cuid)){
-                            // If the user is not logged in, we will check the order number and order pass
-                            if ($orderPass = JRequest::getString('order_pass',false)){
-                                    $orderNumber = JRequest::getString('order_number',false);
-                                    $orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
-                                    if(empty($orderId)){
-					echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
-					return;
-                                    }
-                                    $orderDetails = $orderModel->getOrder($orderId);
-                            }
-                        }
-                        else {
-                            // If the user is logged in, we will check if the order belongs to him
-                            $virtuemart_order_id = JRequest::getInt('virtuemart_order_id',0) ;
-                            if (!$virtuemart_order_id) {
-                                $virtuemart_order_id = $orderModel->getOrderIdByOrderNumber(JRequest::getString('order_number'));
-                            }
-                            $orderDetails = $orderModel->getOrder($virtuemart_order_id);
 
-                            if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-                            if(!Permissions::getInstance()->check("admin")) {
-                                if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
-                                    if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
-                                        echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
-					return;
-                                    }
+			if(empty($cuid)){
+				// If the user is not logged in, we will check the order number and order pass
+				if ($orderPass = JRequest::getString('order_pass',false)){
+					$orderNumber = JRequest::getString('order_number',false);
+					$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
+					if(empty($orderId)){
+						echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+						return;
+					}
+					$orderDetails = $orderModel->getOrder($orderId);
 				}
-                            }
-                                
-                        }
-                            
-			if(empty($orderDetails['details'])){
-                            echo JText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
-                            return;
 			}
-				
+			else {
+				// If the user is logged in, we will check if the order belongs to him
+				$virtuemart_order_id = JRequest::getInt('virtuemart_order_id',0) ;
+				if (!$virtuemart_order_id) {
+					$virtuemart_order_id = $orderModel->getOrderIdByOrderNumber(JRequest::getString('order_number'));
+				}
+				$orderDetails = $orderModel->getOrder($virtuemart_order_id);
+
+				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+				if(!Permissions::getInstance()->check("admin")) {
+					if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
+						if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
+							echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+							return;
+						}
+					}
+				}
+
+			}
+
+			if(empty($orderDetails['details'])){
+				echo JText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
+				return;
+			}
+
 			$userFieldsModel = $this->getModel('userfields');
 			$_userFields = $userFieldsModel->getUserFields(
 				 'account'
@@ -124,6 +134,14 @@ class VirtuemartViewOrders extends VmView {
 			JPluginHelper::importPlugin('vmpayment');
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array( $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_paymentmethod_id,  &$payment_name));
+
+			if($format=='pdf'){
+
+				$invoice_number = $orderModel->createInvoiceNumber($orderDetails['details']['BT']);
+
+				$this->assignRef('invoice_number', $invoice_number);
+
+			}
 
 			$this->assignRef('userfields', $userfields);
 			$this->assignRef('shipmentfields', $shipmentfields);
@@ -185,7 +203,7 @@ class VirtuemartViewOrders extends VmView {
 
 	public function renderMailLayout($doVendor=false) {
 
-	
+
 		// don't need to get the payment name, the Order is sent from the payment trigger
 		if (VmConfig::get('order_mail_html'))
 		$tpl = 'mail_html';
@@ -263,5 +281,7 @@ class VirtuemartViewOrders extends VmView {
 		$vendorModel->addImages($this->vendor,1);
 
 	}
+
+
 
 }

@@ -521,8 +521,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_orderData->virtuemart_order_id = null;
 		$_orderData->virtuemart_user_id = $_usr->get('id');
 		$_orderData->virtuemart_vendor_id = $_cart->vendorId;
-		$_orderData->order_number = $this->generateOrderNumber($_usr->get('id'),8);
-		$_orderData->order_pass = 'p_'.$this->generateOrderNumber($_orderData->order_number, 6);
+
 		//Note as long we do not have an extra table only storing addresses, the virtuemart_userinfo_id is not needed.
 		//The virtuemart_userinfo_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.
 		//the saved order should be an snapshot with plain data written in it.
@@ -566,6 +565,20 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_filter = JFilterInput::getInstance (array('br', 'i', 'em', 'b', 'strong'), array(), 0, 0, 1);
 		$_orderData->customer_note = $_filter->clean($_cart->customer_comment);
 		$_orderData->ip_address = $_SERVER['REMOTE_ADDR'];
+
+		$_orderData->order_number ='';
+		JPluginHelper::importPlugin('vmshopper');
+		$dispatcher = JDispatcher::getInstance();
+		$plg_datas = $dispatcher->trigger('plgVmOnUserOrder',$_orderData);
+		foreach($plg_datas as $plg_data){
+			// 				$data = array_merge($plg_data,$data);
+		}
+		if(empty($_orderData->order_number)){
+			$_orderData->order_number = $this->generateOrderNumber($_usr->get('id'),8);
+		}
+		if(empty($_orderData->order_pass)){
+			$_orderData->order_pass = 'p_'.$this->generateOrderNumber($_orderData->order_number, 6);
+		}
 
 		$orderTable =  $this->getTable('orders');
 		$orderTable -> bindChecknStore($_orderData);
@@ -934,12 +947,51 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 */
 	private function generateOrderNumber($uid = 0,$length=10)
 	{
-		return substr( md5( session_id().(string)time().(string)$uid )
-		,0
-		,$length
-		);
+
+			$data = substr( md5( session_id().(string)time().(string)$uid )
+			,0
+			,$length
+			);
+
+		return $data;
 	}
 
+
+	function createInvoiceNumber($orderDetails){
+
+		$db = JFactory::getDBO();
+		$q = 'SELECT * FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$orderDetails->virtuemart_order_id.'" AND `order_status` = "'.$orderDetails->order_status.'" ';
+
+		$db->setQuery($q);
+		$result = $db->loadResultArray();
+		if(!$result or empty($result['invoice_number']) ){
+
+			$data['virtuemart_order_id'] = $orderDetails->virtuemart_order_id;
+
+			$data['order_status'] = $orderDetails->order_status;
+
+			JPluginHelper::importPlugin('vmshopper');
+			$dispatcher = JDispatcher::getInstance();
+			$plg_datas = $dispatcher->trigger('plgVmOnUserInvoice',$orderDetails,$data);
+			foreach($plg_datas as $plg_data){
+// 				$data = array_merge($plg_data,$data);
+			}
+
+			if(empty($data['invoice_number'])) {
+				$data['invoice_number'] = substr(md5($orderDetails->order_number.$orderDetails->order_status),0,8);
+			}
+
+			$table = $this->getTable('invoices');
+
+			$table->bindChecknStore($data);
+
+			return $data['invoice_number'];
+
+		} else {
+			return $result['invoice_number'];
+		}
+
+	}
 
 	/**
 	 * E-mails the Download-ID to the customer

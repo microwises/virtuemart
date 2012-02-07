@@ -854,13 +854,6 @@ class VirtueMartModelUser extends VmModel {
 			vmError( 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones');
 		}
 
-		JPluginHelper::importPlugin('vmshopper');
-		$dispatcher = JDispatcher::getInstance();
-  		$plg_datas = $dispatcher->trigger('plgVmOnUserStore',$data);
-		foreach($plg_datas as $plg_data){
-			$data = array_merge($plg_data,$data);
-		}
-
 		if(empty($data['customer_number'])){
 			//if(!class_exists('vmUserPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmuserplugin.php');
   			///if(!$returnValues){
@@ -888,7 +881,14 @@ class VirtueMartModelUser extends VmModel {
 
 		}
 
-		vmdebug('I store the $data["virtuemart_vendor_id"]',$data['virtuemart_vendor_id']);
+		JPluginHelper::importPlugin('vmshopper');
+		$dispatcher = JDispatcher::getInstance();
+		//Todo to adjust to new pattern, using &
+		$plg_datas = $dispatcher->trigger('plgVmOnUserStore',$data);
+		foreach($plg_datas as $plg_data){
+// 			$data = array_merge($plg_data,$data);
+		}
+
 		$usertable -> bindChecknStore($data);
 		$errors = $usertable->getErrors();
 		foreach($errors as $error){

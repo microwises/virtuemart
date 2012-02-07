@@ -36,13 +36,19 @@ $this->setLayout('details'); ?>
 		<div style="padding: 0px; margin: 5px; spacing: 0px;">
 		<?php
 		// echo $this->loadTemplate('order');
-		
+
 		?>
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
     <tr>
 	<td   class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></td>
 	<td class="orders-key" align="left">
 	    <?php echo $this->orderdetails['details']['BT']->order_number; ?>
+	</td>
+    </tr>
+    <tr>
+	<td   class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_INV_NUMBER') ?></td>
+	<td class="orders-key" align="left">
+	    <?php echo $this->invoice_number; ?>
 	</td>
     </tr>
     <tr>

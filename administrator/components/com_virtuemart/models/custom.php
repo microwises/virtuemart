@@ -282,11 +282,11 @@ class VirtueMartModelCustom extends VmModel {
 		$table = $this->getTable('customs');
 
 		if(isset($data['custom_jplugin_id'])){
-
+			vmdebug('$data store custom',$data);
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();
+// 			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsCustom',array($data['custom_value'],$data['custom_jplugin_id'],&$table));
 			$retValue = $dispatcher->trigger('plgVmSetOnTablePluginParamsCustom',array($data['custom_element'],$data['custom_jplugin_id'],&$table));
-
 		}
 
 		$table->bindChecknStore($data);
