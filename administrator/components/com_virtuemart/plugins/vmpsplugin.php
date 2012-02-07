@@ -720,7 +720,7 @@ if ($pluginSalesPrice) {
 	$costDisplay ='<span class="' . $this->_type . '_cost"> (' . JText::_('COM_VIRTUEMART_PLUGIN_COST_DISPLAY').$costDisplay . ")</span>";
 }
 
-	$html = '<input type="radio" name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '"   value="' . $plugin->$pluginmethod_id . '" ' . $checked . '>'
+	$html = '<input type="radio" name="' . $pluginmethod_id . '" id="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '"   value="' . $plugin->$pluginmethod_id . '" ' . $checked . ">\n"
 		. '<label for="' . $this->_psType . '_id_' . $plugin->$pluginmethod_id . '">' . '<span class="' . $this->_type . '">' . $plugin->$pluginName . $costDisplay."</span></label>\n";
 
 
@@ -809,8 +809,8 @@ if ($pluginSalesPrice) {
     }
 
     function getPaymentCurrency(&$method, $getCurrency=false) {
-	if (!isset($method->payment_currency) or empty($method->payment_currency) or !$method->payment_currency or $getCurrency) {	    if (!class_exists('VirtueMartModelVendor'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+	if (!isset($method->payment_currency) or empty($method->payment_currency) or !$method->payment_currency or $getCurrency) {
+	    if (!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
 	    $vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
 	    $db = JFactory::getDBO();
 

@@ -80,7 +80,7 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 	    foreach ($this->shipments_shipment_rates as $shipment_shipment_rates) {
 		if (is_array($shipment_shipment_rates)) {
 		    foreach ($shipment_shipment_rates as $shipment_shipment_rate) {
-			echo $shipment_shipment_rate.'<br />';
+			echo $shipment_shipment_rate."<br />\n";
 		    }
 		}
 	    }

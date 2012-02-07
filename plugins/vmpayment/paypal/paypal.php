@@ -125,10 +125,13 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 	$usrBT = $order['details']['BT'];
 	$address = ((isset($order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
+		if (!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
+if(!class_exists('TableVendors'))require(JPATH_VM_ADMINISTRATOR.DS.'table'.DS.'vendors.php');
 
 	$vendorModel = new VirtueMartModelVendor();
 	$vendorModel->setId(1);
 	$vendor = $vendorModel->getVendor();
+$vendorModel->addImages($vendor,1);
 	$this->getPaymentCurrency($method);
 	$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $method->payment_currency . '" ';
 	$db = &JFactory::getDBO();
@@ -183,7 +186,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    //"undefined_quantity" => "0",
 	    "ipn_test" => $method->debug,
 	    //"pal" => "NRUBJXESJTY24",
-	    // "image_url" => $vendor_image_url, // TO DO
+	     "image_url" =>  JURI::root() . $vendor->images[0]->file_url, // TO DO
 	    //"no_shipping" => "1",
 	    "no_note" => "1");
 

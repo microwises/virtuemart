@@ -131,7 +131,6 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
     /**
      * This shows the plugin for choosing in the payment list of the checkout process.
      *
-     * @author Max Milbers
      * @author Valerie Cartan Isaksen
      */
     function plgVmDisplayListFEPayment(VirtueMartCart $cart, $selected=0, &$htmlIn) {
@@ -325,7 +324,6 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
     /**
      * This is for checking the input data of the payment method within the checkout
      *
-     * @author Max Milbers
      * @author Valerie Cartan Isaksen
      */
     function plgVmOnCheckoutCheckDataPayment(VirtueMartCart $cart) {
@@ -351,8 +349,6 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
     /**
      * This is for adding the input data of the payment method to the cart, after selecting
      *
-     * @author Max Milbers
-     * @author Oscar van Eijk
      * @author Valerie Isaksen
      *
      * @param VirtueMartCart $cart
@@ -1000,7 +996,6 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
      *
      * @param integer $order_id The order ID
      * @return mixed Null for methods that aren't active, text (HTML) otherwise
-     * @author Max Milbers
      * @author Valerie Isaksen
      */
     protected function plgVmOnShowOrderFEPayment($virtuemart_order_id, $virtuemart_paymentmethod_id, &$payment_name) {
@@ -1026,7 +1021,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
      * @param array $_formData Form data
      * @return mixed, True on success, false on failures (the rest of the save-process will be
      * skipped!), or null when this method is not actived.
-     * @author Oscar van Eijk
+
 
       public function plgVmOnUpdateOrderPayment(  $_formData) {
       return null;
@@ -1038,7 +1033,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
      * @param array $_formData Form data
      * @return mixed, True on success, false on failures (the rest of the save-process will be
      * skipped!), or null when this method is not actived.
-     * @author Oscar van Eijk
+
 
       public function plgVmOnUpdateOrderLine(  $_formData) {
       return null;
@@ -1052,7 +1047,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
      * @param integer $_orderId The order ID
      * @param integer $_lineId
      * @return mixed Null for method that aren't active, text (HTML) otherwise
-     * @author Oscar van Eijk
+
 
       public function plgVmOnEditOrderLineBE(  $_orderId, $_lineId) {
       return null;
@@ -1067,7 +1062,6 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
      * @param integer $_orderId The order ID
      * @param integer $_lineId
      * @return mixed Null for method that aren't active, text (HTML) otherwise
-     * @author Oscar van Eijk
 
       public function plgVmOnShowOrderLineFE(  $_orderId, $_lineId) {
       return null;

@@ -41,7 +41,7 @@
 	<param name="cms_version" type="payzenlabel" label="VMPAYMENT_PAYZEN_CMS_VERSION" default="VirtueMart 2.0"/>
 
 	<param type="spacer" default="VMPAYMENT_PAYZEN_PAYMENT_MODULE_SETTINGS" level="level1" />
-	<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_PAYZEN_LOGOS"
+	<param	name="logos" type="vmfiles" label="VMPAYMENT_PAYZEN_LOGOS"
              	description="VMPAYMENT_PAYZEN_LOGOS_DESC"
              	directory="/images/stories/virtuemart/payment"
              	default="PayZen.jpg" hide_default="1" hide_none="1"
