@@ -20,13 +20,21 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-
+<?php if(!$this->userDetails->user_is_vendor){ ?>
+<div class="buttonBar-right">
+	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'saveuser');" ><?php echo $this->button_lbl ?></button>
+	&nbsp;
+	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
+</div>
+<?php } ?>
+<?php if( $this->userDetails->virtuemart_user_id!=0)  { ?>
 <fieldset>
 	<legend>
 		<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_LBL') ?>
 	</legend>
 	<table class="adminform">
 <?php	if(Vmconfig::get('multix','none')!=='none'){ ?>
+
 		<tr>
 			<td class="key">
 				<label for="virtuemart_vendor_id">
@@ -76,7 +84,7 @@ defined('_JEXEC') or die('Restricted access');
 		</tr>
 	</table>
 </fieldset>
-
+<?php } ?>
 <?php echo $this->loadTemplate('user'); ?>
 
 <fieldset>

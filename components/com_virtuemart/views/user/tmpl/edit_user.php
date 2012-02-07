@@ -130,7 +130,7 @@ if(Permissions::getInstance()->check('admin')) { ?>
 			}
 		?>
 
-		<?php if( $this->userDetails->JUser ) : ?>
+		<?php if( $this->userDetails->virtuemart_user_id!=0)  { ?>
 		<tr>
 			<td class="key">
 				<?php echo JText::_('COM_VIRTUEMART_USER_FORM_REGISTERDATE'); ?>
@@ -148,7 +148,7 @@ if(Permissions::getInstance()->check('admin')) { ?>
 				<?php echo $this->userDetails->JUser->get('lastvisitDate'); ?>
 			</td>
 		</tr>
-		<?php endif; ?>
+		<?php }?>
 
 	</table>
 </fieldset>

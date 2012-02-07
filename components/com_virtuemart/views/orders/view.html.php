@@ -33,8 +33,8 @@ class VirtuemartViewOrders extends VmView {
 
 	public function display($tpl = null)
 	{
-		//		$mainframe = JFactory::getApplication();
-		//		$pathway = $mainframe->getPathway();
+		$mainframe = JFactory::getApplication();
+		$pathway = $mainframe->getPathway();
 		$task = JRequest::getWord('task', 'list');
 
 		$layoutName = JRequest::getWord('layout', 'list');
@@ -53,6 +53,7 @@ class VirtuemartViewOrders extends VmView {
 			@ini_set( 'max_execution_time', '24M' );
 		} else {
 			$document->setTitle( JText::_('COM_VIRTUEMART_ACC_ORDER_INFO') );
+			$pathway->additem(JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'));
 		}
 
 		if (!class_exists('VirtueMartModelOrders')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');

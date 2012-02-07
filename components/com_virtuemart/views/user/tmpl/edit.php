@@ -64,28 +64,34 @@ function myValidator(f, t)
 	echo JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_REG');
 }?></h1>
 <form method="post" id="adminForm" name="userForm" action="<?php echo JRoute::_('index.php?view=user',$this->useXHTML,$this->useSSL) ?>" class="form-validate">
-<div class="buttonBar-right">
+<?php if($this->userDetails->user_is_vendor){ ?>
+    <div class="buttonBar-right">
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'saveuser');" ><?php echo $this->button_lbl ?></button>
 	&nbsp;
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
 </div>
+    <?php } ?>
 <?php // Loading Templates in Tabs
+if($this->userDetails->virtuemart_user_id!=0) {
+    $tabarray = array();
+    if($this->userDetails->user_is_vendor){
+	    $tabarray['vendor'] = 'COM_VIRTUEMART_VENDOR';
+    }
+    $tabarray['shopper'] = 'COM_VIRTUEMART_SHOPPER_FORM_LBL';
+    //$tabarray['user'] = 'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO';
+    if (!empty($this->shipto)) {
+	    $tabarray['shipto'] = 'COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL';
+    }
+    if (($_ordcnt = count($this->orderlist)) > 0) {
+	    $tabarray['orderlist'] = 'COM_VIRTUEMART_YOUR_ORDERS';
+    }
 
-$tabarray = array();
-if($this->userDetails->user_is_vendor){
-	$tabarray['vendor'] = 'COM_VIRTUEMART_VENDOR';
-}
-$tabarray['shopper'] = 'COM_VIRTUEMART_SHOPPER_FORM_LBL';
-//$tabarray['user'] = 'COM_VIRTUEMART_USER_FORM_TAB_GENERALINFO';
-if (!empty($this->shipto)) {
-	$tabarray['shipto'] = 'COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL';
-}
-if (($_ordcnt = count($this->orderlist)) > 0) {
-	$tabarray['orderlist'] = 'COM_VIRTUEMART_YOUR_ORDERS';
-}
 
+    shopFunctionsF::buildTabs ($tabarray);
 
-shopFunctionsF::buildTabs ($tabarray);
+ } else {
+    echo $this->loadTemplate ( 'shopper' );
+ }
 
 /*
  * TODO this Stuff should be converted in a payment module. But the idea to show already saved payment information to the user is a good one

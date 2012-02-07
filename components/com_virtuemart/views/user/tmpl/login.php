@@ -87,9 +87,16 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
 
 <?php   }
 ?>
-    <form action="index.php" method="post" name="com-login" >
-        <p><?php echo JText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM'); ?></p>
 
+    <form action="index.php" method="post" name="com-login" >
+	<?php if (!$this->from_cart ) { ?>
+<div  >
+		<h1><?php echo JText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM'); ?></h1>
+	</div>
+<div class="clear"></div>
+<?php } else { ?>
+        <p><?php echo JText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM'); ?></p>
+<?php }   ?>
         <p class="width30 floatleft" id="com-form-login-username">
             <input type="text" name="username" size="18" alt="<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>" value="<?php echo JText::_('COM_VIRTUEMART_USERNAME'); ?>" onblur="if(this.value=='') this.value='<?php echo addslashes(JText::_('COM_VIRTUEMART_USERNAME')); ?>';" onfocus="if(this.value=='<?php echo addslashes(JText::_('COM_VIRTUEMART_USERNAME')); ?>') this.value='';" />
 	</p>
