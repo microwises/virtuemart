@@ -85,7 +85,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 			//			$this->assignRef('creditCardList',self::renderCreditCardRadioList($paym->payment_creditcards));
 			//			echo 'humpf <pre>'.print_r($paym).'</pre>' ;
 			//$this->assignRef('creditCardList',ShopFunctions::renderCreditCardList($paym->payment_creditcards,true));
-			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($payment->virtuemart_shoppergroup_ids));
+			$this->assignRef('shopperGroupList', ShopFunctions::renderShopperGroupList($payment->virtuemart_shoppergroup_ids, true));
 
 			if(Vmconfig::get('multix','none')!=='none'){
 				$vendorList= ShopFunctions::renderVendorList($payment->virtuemart_vendor_id);
