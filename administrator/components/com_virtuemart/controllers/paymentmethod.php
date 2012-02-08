@@ -44,36 +44,6 @@ class VirtuemartControllerPaymentmethod extends VmController {
 
 	}
 
-/* 	public function Paymentmethod () {
-
-		$document = JFactory::getDocument();
-
-		$viewType	= $document->getType();
-		$view = $this->getView($this->_cname, $viewType);
-
-		// Pushing default model
-		$paymModel = $this->getModel($this->_cname);
-		if (!JError::isError($paymModel)) {
-			$view->setModel($paymModel, true);
-		}
-
-		parent::display();
-	}*/
-
-	/**
-	 * Handle the edit task
-	 *
-     * @author Max Milbers
-	 */
-/* 	public function edit(){
-
-		$document = JFactory::getDocument();
-		$viewType	= $document->getType();
-		$view = $this->getView($this->_cname, $viewType);
-		//$view->setModel($paymModel = $this->getModel('creditcard'));
-
-		parent::edit();
-	}  */
 
 	function save(){
 		$data = JRequest::get('post');
@@ -82,103 +52,7 @@ class VirtuemartControllerPaymentmethod extends VmController {
 		$data['payment_desc'] = JRequest::getVar('payment_desc','','post','STRING',JREQUEST_ALLOWHTML);
 
 		parent::save($data);
-
-
 	}
-
-	/**
-	* Save the payment order
-	*
-	* @author jseros
-	*/
-/* 	public function orderUp()
-	{
-		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		// capturing virtuemart_paymentmethod_id
-		$id = 0;
-		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger($cid);
-
-		if (isset($cid[0]) && $cid[0]) {
-			$id = $cid[0];
-		} else {
-			$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', JText::_('COM_VIRTUEMART_NO_ITEMS_SELECTED') );
-			return false;
-		}
-
-		// getting the model
-		$model = $this->getModel('paymentmethod');
-
-		if ($model->orderCalc($id, -1)) {
-			$msg = JText::_('COM_VIRTUEMART_ITEM_MOVED_UP');
-		} else {
-			$msg = $model->getError();
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', $msg );
-	} */
-
-
-	/**
-	* Save the calc order
-	*
-	* @author jseros
-	*/
-/* 	public function orderDown()
-	{
-		// Check token
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		// capturing virtuemart_calc_id
-		$id = 0;
-		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger($cid);
-
-		if (isset($cid[0]) && $cid[0]) {
-			$id = $cid[0];
-		} else {
-			$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', JText::_('COM_VIRTUEMART_NO_ITEMS_SELECTED') );
-			return false;
-		}
-
-		// getting the model
-		$model = $this->getModel('paymentmethod');
-
-		if ($model->orderCalc($id, 1)) {
-			$msg = JText::_('COM_VIRTUEMART_ITEM_MOVED_DOWN');
-		} else {
-			$msg = $model->getError();
-		}
-
-		$this->setRedirect( 'index.php?option=com_virtuemart&view=paymentmethod', $msg );
-	} */
-
-
-	/**
-	* Save the categories order
-	*/
-/* 	public function saveOrder()
-	{
-		// Check for request forgeries
-		JRequest::checkToken() or jexit( 'Invalid Token' );
-
-		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
-		JArrayHelper::toInteger($cid);
-
-		$model = $this->getModel('paymentmethod');
-
-		$order	= JRequest::getVar('order', array(), 'post', 'array');
-		JArrayHelper::toInteger($order);
-
-		if ($model->setOrder($cid,$order)) {
-			$msg = JText::_('COM_VIRTUEMART_NEW_ORDERING_SAVED');
-		} else {
-			$msg = $model->getError();
-		}
-		$this->setRedirect('index.php?option=com_virtuemart&view=paymentmethod', $msg );
-	} */
 
 }
 // pure php no closing tag

@@ -37,34 +37,6 @@ class VirtuemartControllerCategory extends VmController {
 		parent::__construct();
 
 	}
-	/**
-	 * Shows the product add/edit screen
-	 */
-/*	public function edit() {
-		// Create the view object
-		$this->addViewPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'views');
-		$view = $this->getView('category', 'html');
-		//$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
-
-		$view->setLayout('edit');
-
-		// Now display the view.
-		$view->display();
-	}
-	// public function Category(){
-
-		// $document = JFactory::getDocument();
-		// $viewType	= $document->getType();
-		// $view = $this->getView($this->_cname, $viewType);
-
-		// Pushing default model
-		// $model = $this->getModel();
-		// if (!JError::isError($model)) {
-			// $view->setModel($model, true);
-		// }
-
-		// parent::display();
-	// }
 
 	/**
 	 * We want to allow html so we need to overwrite some request data

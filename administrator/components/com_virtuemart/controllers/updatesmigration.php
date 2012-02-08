@@ -44,16 +44,6 @@ class VirtuemartControllerUpdatesMigration extends VmController{
 	function __construct(){
 		parent::__construct();
 
-		// $this->setMainLangKey('MIGRATION');
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
-		$view = $this->getView('updatesMigration', $viewType);
-
-		// Push a model into the view
-		$model = $this->getModel('updatesMigration');
-		if(!JError::isError($model)){
-			$view->setModel($model, true);
-		}
 	}
 
 	/**

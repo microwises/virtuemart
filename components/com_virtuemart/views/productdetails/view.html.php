@@ -66,8 +66,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 		/* Load the product */
 //		$product = $this->get('product');	//Why it is sensefull to use this construction? Imho it makes it just harder
-		if (!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
-		$product_model = new VirtueMartModelProduct();
+		$product_model = VmModel::getModel('product');
 
 		$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id',0);
 		if(is_array($virtuemart_product_idArray)){
@@ -145,8 +144,7 @@ class VirtueMartViewProductdetails extends VmView {
 //		if(!empty($product->related) && is_array($product->related) && !empty($product->related[0]))$product_model->addImages($product->related);
 
 		// Load the category
-		if (!class_exists('VirtueMartModelCategory')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
-		$category_model = new VirtueMartModelCategory();
+		$category_model = VmModel::getModel('category');
 		// Get the category ID
 		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
 		if ($virtuemart_category_id == 0 && !empty($product)) {
@@ -185,9 +183,8 @@ class VirtueMartViewProductdetails extends VmView {
 		$uri = JURI::getInstance();
 		//$pathway->addItem(JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
 		$pathway->addItem(strip_tags($product->product_name));
-		if (!class_exists('VirtueMartModelRatings')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'ratings.php');
-		$ratingModel = new VirtueMartModelRatings();
 
+		$ratingModel = VmModel::getModel('ratings');
 		$allowReview = $ratingModel->allowReview($product->virtuemart_product_id);
 		$this->assignRef('allowReview', $allowReview);
 

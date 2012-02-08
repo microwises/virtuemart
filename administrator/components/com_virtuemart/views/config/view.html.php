@@ -79,8 +79,8 @@ class VirtuemartViewConfig extends VmView {
 		$noimagelist = $model->getNoImageList();
 		$this->assignRef('noimagelist', $noimagelist);
 
-/*		if(!class_exists('VirtueMartModelOrderstatus'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
-		$oderstatusModel = new VirtueMartModelOrderstatus();
+/*
+		$oderstatusModel = VmModel::getModel('Orderstatus');
 		$orderStatusList = $oderstatusModel->getOrderStatusList();
 		$this->assignRef('orderStatusList', $orderStatusList);
 */

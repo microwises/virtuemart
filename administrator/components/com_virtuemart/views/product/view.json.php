@@ -32,22 +32,22 @@ if(!class_exists('VirtueMartModelCustomfields')) require(JPATH_VM_ADMINISTRATOR.
  */
 class VirtuemartViewProduct extends JView {
 
-	var $json = array();	
+	var $json = array();
 
 	function __construct( ){
 
 		$this->type = JRequest::getWord('type', false);
 		$this->row = JRequest::getInt('row', false);
 		$this->db = & JFactory::getDBO();
-		$this->model = new VirtueMartModelCustomfields() ;
+		$this->model = VmModel::getModel('Customfields') ;
 
-	}	
+	}
 	function display($tpl = null) {
 
 		//$this->loadHelper('customhandler');
 
 		$filter = JRequest::getVar('q', JRequest::getVar('term', false) );
-			
+
 		$id = JRequest::getInt('id', false);
 		$product_id = JRequest::getInt('virtuemart_product_id', 0);
 		//$customfield = $this->model->getcustomfield();
@@ -58,15 +58,15 @@ class VirtuemartViewProduct extends JView {
 				 JOIN `#__virtuemart_products` AS p using (`virtuemart_product_id`)";
 			if ($filter) $query .= " WHERE product_name LIKE '%". $this->db->getEscaped( $filter, true ) ."%' or product_sku LIKE '%". $this->db->getEscaped( $filter, true ) ."%' limit 0,10";
 			self::setRelatedHtml($query,'R');
-		} 
-		else if ($this->type=='relatedcategories') 
+		}
+		else if ($this->type=='relatedcategories')
 		{
 			$query = "SELECT virtuemart_category_id AS id, CONCAT(category_name, '::', virtuemart_category_id) AS value
 				FROM #__virtuemart_categories_".VMLANG;
 			if ($filter) $query .= " WHERE category_name LIKE '%". $this->db->getEscaped( $filter, true ) ."%' limit 0,10";
 			self::setRelatedHtml($query,'Z');
 		}
-		else if ($this->type=='custom') 
+		else if ($this->type=='custom')
 		{
 			$query = "SELECT CONCAT(virtuemart_custom_id, '|', custom_value, '|', field_type) AS id, CONCAT(custom_title, '::', custom_tip) AS value
 				FROM #__virtuemart_customs";
@@ -74,8 +74,8 @@ class VirtuemartViewProduct extends JView {
 			$this->db->setQuery($query);
 			$this->json['value'] = $this->db->loadObjectList();
 			$this->json['ok'] = 1 ;
-		} 
-		else if ($this->type=='fields') 
+		}
+		else if ($this->type=='fields')
 		{
 			$fieldTypes= $this->model->getField_types() ;
 
@@ -84,7 +84,7 @@ class VirtuemartViewProduct extends JView {
 			$query .=" order by custom_parent_id asc";
 			$this->db->setQuery($query);
 			$rows = $this->db->loadObjectlist();
-			
+
 			$html = array ();
 			foreach ($rows as $field) {
 				if ($field->field_type =='C' ){
@@ -167,10 +167,10 @@ class VirtuemartViewProduct extends JView {
 
 		$this->db->setQuery($query);
 		$this->json = $this->db->loadObjectList();
-		
+
 		$query = 'SELECT * FROM `#__virtuemart_customs` WHERE field_type ="'.$fieldType.'" ';
 		$this->db->setQuery($query);
-		$customs = $this->db->loadObject();		
+		$customs = $this->db->loadObject();
 		foreach ($this->json as &$related) {
 
 			$customs->custom_value = $related->id;
@@ -179,9 +179,9 @@ class VirtuemartViewProduct extends JView {
 				<span>'.$display.'</span>
 				'.$this->model->setEditCustomHidden($customs, $this->row).'
 				<div class="vmicon vmicon-16-remove"></div></div>';
-				
+
 			$related->label = $html;
-			
+
 		}
 	}
 

@@ -45,13 +45,13 @@ class VirtuemartViewCategories extends VmView {
 		$this->loadHelper('image');
 		$vendorId = JRequest::getInt('vendorid', 1);
 
-		$vendorModel = $this->getModel('vendor');
+		$vendorModel = VmModel::getModel('vendor');
 
 		$vendorModel->setId(1);
 		$vendor = $vendorModel->getVendor();
 		//$this->assignRef('vendor',$vendor);
 
-		$categoryModel = $this->getModel('category');
+		$categoryModel = VmModel::getModel('category');
 	    $categoryId = JRequest::getInt('virtuemart_category_id', 0);
 		$this->assignRef('categoryModel', $categoryModel);
 //		$categoryId = 0;	//The idea is that you can choose a parent catgory, this value should come from the joomla view parameter stuff

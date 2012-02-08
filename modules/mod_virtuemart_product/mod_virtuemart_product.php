@@ -51,7 +51,7 @@ if (!($output = $cache->get($key))) {
 
 	if ($filter_category ) $filter_category = TRUE;
 
-	$productModel = new VirtueMartModelProduct();
+	$productModel = VmModel::getModel('Product');
 
 	$products = $productModel->getProductListing($Product_group, $max_items, $show_price, true, false,$filter_category, $category_id);
 	$productModel->addImages($products);

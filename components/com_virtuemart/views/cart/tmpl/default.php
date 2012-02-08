@@ -118,7 +118,7 @@ $document->addStyleDeclaration('#facebox .content {display: block !important; he
 			if (!class_exists('VirtueMartModelUserfields')){
 				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
 			}
-			$userFieldsModel = new VirtueMartModelUserfields();
+			$userFieldsModel = VmModel::getModel('userfields');
 			if($userFieldsModel->getIfRequired('agreed')){
 			    ?>
 			    <label for ="tosAccepted">

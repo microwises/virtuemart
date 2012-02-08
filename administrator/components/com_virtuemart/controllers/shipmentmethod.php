@@ -41,16 +41,6 @@ class VirtuemartControllerShipmentmethod extends VmController {
 	 */
 	function __construct() {
 		parent::__construct();
-
-/* 		$document = JFactory::getDocument();
-		$viewType	= $document->getType();
-		$view = $this->getView('shipmentmethod', $viewType);
-
-		// Push a model into the view
-		$model = $this->getModel('shipmentmethod');
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		} */
 	}
 
 	/**

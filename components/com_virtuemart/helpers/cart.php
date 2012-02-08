@@ -145,10 +145,7 @@ class VirtueMartCart {
 	*/
 	public function setPreferred() {
 
-		if (!class_exists('VirtueMartModelUser'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
-		$usermodel = new VirtueMartModelUser();
-// 		$usermodel->setCurrent();
+		$usermodel = VmModel::getModel('user');
 
 		$user = $usermodel->getUser();
 // 		vmdebug('setPreferred $user',$user);
@@ -866,10 +863,11 @@ class VirtueMartCart {
 
 		if (empty($this->tosAccepted)) {
 			vmdebug('checkoutData');
-			if (!class_exists('VirtueMartModelUserfields')){
-				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
-			}
-			$userFieldsModel = new VirtueMartModelUserfields();
+// 			if (!class_exists('VirtueMartModelUserfields')){
+// 				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
+// 			}
+			$userFieldsModel = VmModel::getModel('Userfields');
+
 			$required = $userFieldsModel->getIfRequired('agreed');
 			if(!empty($required)){
 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS'));
@@ -900,9 +898,8 @@ class VirtueMartCart {
 	 * @return An error message when a minimum value was set that was not eached, null otherwise
 	 */
 	private function checkPurchaseValue() {
-		if (!class_exists('VirtueMartModelVendor'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-		$vendor = new VirtueMartModelVendor();
+
+		$vendor = VmModel::getModel('vendor');
 		$vendor->setId($this->vendorId);
 		$store = $vendor->getVendor();
 		if ($store->vendor_min_pov > 0) {
@@ -930,7 +927,7 @@ class VirtueMartCart {
 
 		if (!class_exists('VirtueMartModelUserfields'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
-		$userFieldsModel = new VirtueMartModelUserfields();
+		$userFieldsModel = VmModel::getModel('userfields');
 
 		if ($type == 'BT')
 		$fieldtype = 'account'; else
@@ -991,10 +988,9 @@ class VirtueMartCart {
 
 		//Just to prevent direct call
 		if ($this->_dataValidated && $this->_confirmDone) {
-			if (!class_exists('VirtueMartModelOrders'))
-			require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
-			$orderModel = new VirtueMartModelOrders();
+			$orderModel = VmModel::getModel('orders');
+
 			if (($orderID = $orderModel->createOrderFromCart($this)) === false) {
 				$mainframe = JFactory::getApplication();
 				JError::raiseWarning(500, 'No order created '.$orderModel->getError());
@@ -1115,7 +1111,7 @@ class VirtueMartCart {
 
 		// VirtueMartModelUserfields::getUserFields() won't work
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
-		$userFieldsModel = new VirtueMartModelUserfields();
+		$userFieldsModel = VmModel::getModel('userfields');
 		$prefix = '';
 
 		$prepareUserFields = $userFieldsModel->getUserFieldsFor('cart',$type);
@@ -1314,9 +1310,7 @@ class VirtueMartCart {
 
 	function prepareAddressDataInCart($type='BT',$new = false){
 
-		if(!class_exists('VirtuemartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php');
-		$userFieldsModel =new VirtueMartModelUserfields;
-
+		$userFieldsModel =VmModel::getModel('Userfields');
 
 		if($new){
 			$data = null;
@@ -1357,9 +1351,8 @@ class VirtueMartCart {
 	function prepareAddressRadioSelection(){
 
 		//Just in case
-		if(!class_exists('VirtuemartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
-		$this->user = new VirtueMartModelUser;
-// 		$this->user->setCurrent();
+		$this->user = VmModel::getModel('user');
+
 		$this->userDetails = $this->user->getUser();
 
 		// Shipment address(es)
@@ -1434,8 +1427,8 @@ class VirtueMartCart {
 	 */
 	// add vendor for cart
 	function prepareVendor(){
-		if (!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-		$vendorModel = new VirtueMartModelVendor();
+
+		$vendorModel = VmModel::getModel('vendor');
 		$this->vendor = & $vendorModel->getVendor();
 		$vendorModel->addImages($this->vendor,1);
 		return $this->vendor;

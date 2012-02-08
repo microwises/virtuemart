@@ -38,7 +38,7 @@ class VmTable extends JTable{
 	protected $_unique = false;
 	protected $_unique_name = array();
 	protected $_orderingKey = 'ordering';
-// 	var $_useSlug = false;
+	// 	var $_useSlug = false;
 	protected $_slugAutoName = '';
 	protected $_slugName = '';
 	protected $_loggable = false;
@@ -161,7 +161,7 @@ class VmTable extends JTable{
 		foreach($this->_varsToPushParam as $k=>$v){
 			if(!isset($this->$k))$this->$k = $v[0];
 		}
-// 		vmdebug('setParameterable called '.$this->_xParams,$this->_varsToPushParam);
+		// 		vmdebug('setParameterable called '.$this->_xParams,$this->_varsToPushParam);
 	}
 
 	var $_tablePreFix = '';
@@ -246,8 +246,8 @@ class VmTable extends JTable{
 	function load($oid=null,$overWriteLoadName=0,$andWhere=0,$tableJoins= array(),$joinKey = 0){
 
 
-// 		vmdebug('load '.$oid);
-// 		$k = $this->_tbl_key;
+		// 		vmdebug('load '.$oid);
+		// 		$k = $this->_tbl_key;
 		if($overWriteLoadName!=0){
 			$k = $overWriteLoadName;
 		} else {
@@ -261,7 +261,7 @@ class VmTable extends JTable{
 			$oid = $this->$k;
 		}
 
-// 		vmdebug('load '.$oid);
+		// 		vmdebug('load '.$oid);
 		if ($oid === null) {
 			$oid = 0;
 		}
@@ -274,8 +274,8 @@ class VmTable extends JTable{
 				}
 			}
 
-// 			vmdebug('Should load '.$this->_tbl.' with id = 0, give back prototype');
-// 			vmTrace('loading 0?');
+			// 			vmdebug('Should load '.$this->_tbl.' with id = 0, give back prototype');
+			// 			vmTrace('loading 0?');
 			return $this;
 		}
 
@@ -297,19 +297,19 @@ class VmTable extends JTable{
 		if (count($tableJoins)) {
 			if (!$joinKey) $joinKey = $this->_tbl_key ;
 			foreach ($tableJoins as $tableId => $table) {
-			$select .= ',`'.$table.'`.`'.$tableId.'` ';
-			$from   .= ' LEFT JOIN `'.$table.'` on `'.$table.'`.`'.$joinKey.'`=`'. $mainTable .'`.`'.$joinKey.'`';
+				$select .= ',`'.$table.'`.`'.$tableId.'` ';
+				$from   .= ' LEFT JOIN `'.$table.'` on `'.$table.'`.`'.$joinKey.'`=`'. $mainTable .'`.`'.$joinKey.'`';
 			}
 		}
 		//the cast to int here destroyed the query for keys like virtuemart_userinfo_id, so no cast on $oid
-// 		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = "'.$oid.'"';
+		// 		$query = $select.$from.' WHERE '. $mainTable .'.`'.$this->_tbl_key.'` = "'.$oid.'"';
 		$query = $select.$from.' WHERE '. $mainTable .'.`'.$k.'` = "'.$oid.'"';
 
 		$db->setQuery( $query );
 
 		$result = $db->loadAssoc( );
 		$error = $db->getErrorMsg();
-// 		vmdebug('vmtable load '.$db->getQuery(),$result);
+		// 		vmdebug('vmtable load '.$db->getQuery(),$result);
 		if(!empty($error )){
 			vmError('vmTable load' . $db->getErrorMsg() );
 			return false;
@@ -338,19 +338,19 @@ class VmTable extends JTable{
 	function bindParameterable(&$obj,$xParams,$varsToPushParam){
 
 		$paramFields = $obj->$xParams;
-// 						vmdebug('$obj->_xParams '.$xParams.' $obj->$xParams ',$paramFields);
+		// 						vmdebug('$obj->_xParams '.$xParams.' $obj->$xParams ',$paramFields);
 		if(!empty($obj->$xParams)){
 
-// 			vmdebug('load $varsToPushParam ',$varsToPushParam);
+			// 			vmdebug('load $varsToPushParam ',$varsToPushParam);
 			$params = explode('|', $obj->$xParams);
 			foreach($params as $item){
 
 				$item = explode('=',$item);
 				$key = $item[0];
 				unset($item[0]);
-// 				vmdebug('load string $key',$key);
+				// 				vmdebug('load string $key',$key);
 				$item = implode('=',$item);
-// 				vmdebug('load string ',$item);
+				// 				vmdebug('load string ',$item);
 
 				if(!empty($item) && isset($varsToPushParam[$key][1]) ){
 					$obj->$key = json_decode($item);
@@ -392,18 +392,18 @@ class VmTable extends JTable{
 			foreach($this->_varsToPushParam as $key=>$v){
 
 				if(isset($this->$key)){
-// 					if($v[1]==='string'){
-// 						$this->$paramFieldName .= $key.'='.base64_encode(serialize($this->$key)).'|';
-// 					} else {
-// 						$this->$paramFieldName .= $key.'='.serialize($this->$key).'|';
-// 					}
+					// 					if($v[1]==='string'){
+					// 						$this->$paramFieldName .= $key.'='.base64_encode(serialize($this->$key)).'|';
+					// 					} else {
+					// 						$this->$paramFieldName .= $key.'='.serialize($this->$key).'|';
+					// 					}
 					$this->$paramFieldName .= $key.'='.json_encode($this->$key).'|';
 				} else {
-// 					if($v[1]==='string'){
-// 						$this->$paramFieldName .= $key.'='.base64_encode(serialize($v[0])).'|';
-// 					} else {
-// 						$this->$paramFieldName .= $key.'='.serialize($v[0]).'|';
-// 					}
+					// 					if($v[1]==='string'){
+					// 						$this->$paramFieldName .= $key.'='.base64_encode(serialize($v[0])).'|';
+					// 					} else {
+					// 						$this->$paramFieldName .= $key.'='.serialize($v[0]).'|';
+					// 					}
 					$this->$paramFieldName .= $key.'='.json_encode($v[0]).'|';
 				}
 				unset($this->$key);
@@ -423,7 +423,7 @@ class VmTable extends JTable{
 			$slugName = $this->_slugName;
 
 			if(empty($this->$slugName)){
-// 				vmdebug('table check use _slugAutoName '.$slugAutoName.' '.$slugName);
+				// 				vmdebug('table check use _slugAutoName '.$slugAutoName.' '.$slugName);
 				$this->$slugName = $this->$slugAutoName;
 			}
 			$used = true;
@@ -456,7 +456,7 @@ class VmTable extends JTable{
 					}
 					$used = true;
 
-// 					vmError(get_class($this).' ');
+					// 					vmError(get_class($this).' ');
 				} else {
 					$used = false;
 				}
@@ -515,7 +515,8 @@ class VmTable extends JTable{
 		}
 
 
-			if(isset($this->virtuemart_vendor_id )){
+		if(isset($this->virtuemart_vendor_id )){
+
 			$multix = Vmconfig::get('multix','none');
 			if( $multix == 'none'){
 
@@ -542,7 +543,7 @@ class VmTable extends JTable{
 								$this->_db->setQuery($q);
 								$virtuemart_vendor_id = $this->_db->loadResult();
 								if(!empty($virtuemart_vendor_id) and $loggedVendorId!=$virtuemart_vendor_id){
-// 									vmWarn('COM_VIRTUEMART_NOT_SAME_VENDOR',$loggedVendorId,$virtuemart_vendor_id
+									// 									vmWarn('COM_VIRTUEMART_NOT_SAME_VENDOR',$loggedVendorId,$virtuemart_vendor_id
 									vmWarn('Stop try to hack this store, you got logged');
 									vmdebug('Hacking attempt stopped, logged vendor '.$loggedVendorId.' but data belongs to '.$virtuemart_vendor_id);
 									return false;
@@ -563,13 +564,6 @@ class VmTable extends JTable{
 
 				}
 
-/*				if(!isset($this->user_is_vendor)){
-					$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 1;
-				} else if($this->user_is_vendor){
-					$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 1;
-				} else {
-					$this->virtuemart_vendor_id = $data['virtuemart_vendor_id'] = 0;
-				}*/
 			} else if($multix == 'administrated'){
 
 				if(empty($this->virtuemart_vendor_id)){
@@ -577,17 +571,7 @@ class VmTable extends JTable{
 					$this->virtuemart_vendor_id = 1;
 				}
 			}
-/*				if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-				$vendor_id = VirtueMartModelVendor::getLoggedVendor();
-				$tbl_key = $this->_tbl_key ;
-				$q = 'SELECT `virtuemart_vendor_id` FROM `' . $this->_tbl . '` ';
-				$q .= 'WHERE `' . $this->_tbl_key.'`='.$this->$tbl_key;
-				$this->_db->setQuery($q);
-				$virtuemart_vendor_id = $this->_db->loadResult();
-				if ($vendor_id == $virtuemart_vendor_id ) return true;
-				vmWarn('COM_VIRTUEMART_NOT_SAME_VENDOR',$virtuemart_vendor_id,$virtuemart_vendor_id,$virtuemart_vendor_id);
-				return false ;
-			}*/
+
 		}
 
 		return true;
@@ -680,7 +664,7 @@ class VmTable extends JTable{
 
 			$this->bindChecknStoreNoLang($data,$preload);
 
-// 			vmdebug('bindchecknstore',$langData,$this);
+			// 			vmdebug('bindchecknstore',$langData,$this);
 			$langTable->$tblKey = !empty($this->$tblKey) ? $this->$tblKey : 0;
 
 			$ok = true;
@@ -1075,8 +1059,8 @@ class VmTable extends JTable{
 		$this->_errors = array();
 	}
 
-// TODO add Translatable delete  ???
-//
+	// TODO add Translatable delete  ???
+	//
 	function delete( $oid=null , $where = 0 ){
 
 		$k = $this->_tbl_key;
@@ -1114,9 +1098,9 @@ class VmTable extends JTable{
 
 		$query = 'SELECT `'.$this->_tbl_key.'` FROM `'.$table.'` WHERE '.$whereKey.' = "' .$this->$k . '"';
 		$this->_db->setQuery( $query );
-// 		vmdebug('checkAndDelete',$query);
+		// 		vmdebug('checkAndDelete',$query);
 		$list = $this->_db->loadResultArray();
-// 		vmdebug('checkAndDelete',$list);
+		// 		vmdebug('checkAndDelete',$list);
 		if($list){
 
 			foreach($list as $row){

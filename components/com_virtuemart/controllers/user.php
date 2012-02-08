@@ -48,9 +48,6 @@ class VirtueMartControllerUser extends JController
 
 		$view = $this->getView('user', 'html');
 
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
 		$view->setLayout('edit_address');
 
 		$ftask ='saveUser';
@@ -72,9 +69,6 @@ class VirtueMartControllerUser extends JController
 
 		$view = $this->getView('user', 'html');
 
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
 		$view->setLayout('edit_address');
 
 		$ftask ='savecartuser';
@@ -96,9 +90,6 @@ class VirtueMartControllerUser extends JController
 
 		$view = $this->getView('user', 'html');
 
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$view->setModel( $this->getModel( 'user', 'VirtuemartModel' ), true );
-		$view->setModel( $this->getModel( 'userfields', 'VirtuemartModel' ), true );
 		$view->setLayout('edit_address');
 
 		$ftask ='savecheckoutuser';

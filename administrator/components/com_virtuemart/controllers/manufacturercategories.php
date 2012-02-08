@@ -45,20 +45,6 @@ class VirtuemartControllermanufacturercategories extends VmController {
 
 	}
 
-	// function Manufacturercategories () {
-
-		// $document = JFactory::getDocument();
-		// $viewType = $document->getType();
-		// $view = $this->getView($this->_cname, $viewType);
-
-		// //Push a model into the view
-		// $model = $this->getModel( 'manufacturercategories' );
-		// if (!JError::isError($model)) {
-			// $view->setModel($model, true);
-		// }
-		// parent::display();
-	// }
-
 
 }
 // pure php no closing tag

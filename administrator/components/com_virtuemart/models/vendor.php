@@ -197,10 +197,8 @@ class VirtueMartModelVendor extends VmModel {
 
 	}
 
-	/* Process the images */
-	if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-//	$xrefTable = $this->getTable('vendor_medias');
-	$mediaModel = new VirtueMartModelMedia();
+	// Process the images
+	$mediaModel = VmModel::getModel('Media');
 	$mediaModel->storeMedia($data,'vendor');
     $errors = $mediaModel->getErrors();
 	foreach($errors as $error){

@@ -43,19 +43,7 @@ class VirtuemartControllerTranslate extends VmController {
 
 	}
 
-	public function Translate() {
 
-		$document = JFactory::getDocument();
-		$viewType	= $document->getType();
-		$view = $this->getView($this->_cname, $viewType);
-
-		// Pushing default model
-		// $model = $this->getModel();
-		// if (!JError::isError($model)) {
-			// $view->setModel($model, true);
-		// }
-		parent::display();
-	}
 	/**
 	 * Paste the table  in json format
 	 *
@@ -124,23 +112,6 @@ class VirtuemartControllerTranslate extends VmController {
 		echo json_encode($json);
 		jExit();
 
-
-		// $document = JFactory::getDocument();
-		// $viewType	= $document->getType();
-		// $view = $this->getView($this->_cname, $viewType);
-
-		// //Pushing default model
-		// $model = $this->getModel();
-		// if (!JError::isError($model)) {
-			// $view->setModel($model, true);
-		// }
-
-		// $model1 = $this->getModel('Worldzones');
-		// if (!JError::isError($model1)) {
-			// $view->setModel($model1, false);
-		// }
-
-		// parent::display();
 	}
 
 

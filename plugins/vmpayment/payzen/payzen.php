@@ -190,10 +190,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	$api->set('language', $language);
 
 	// Set currency
-	if (!class_exists('VirtueMartModelCurrency')) {
-	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
-	}
-	$currencyModel = new VirtueMartModelCurrency();
+	$currencyModel = VmModel::getModel('Currency');
 	$currencyObj = $currencyModel->getCurrency($order['details']['BT']->order_currency);
 
 	$currency = $api->findCurrencyByNumCode($currencyObj->currency_numeric_code);
@@ -373,6 +370,8 @@ class plgVMPaymentPayzen extends vmPSPlugin {
      * @return
      */
     function plgVmOnPaymentUserCancel(&$virtuemart_order_id) {
+
+    	//TODO why we have this include here? by Max
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
@@ -416,8 +415,6 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	if (!class_exists('VirtueMartModelOrders')) {
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 	}
-
-
 
 	$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($data['vads_order_id']);
 	// Order not found
@@ -609,11 +606,8 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	// Save platform response data
 	$this->savePaymentData($virtuemart_order_id, $resp);
 
-	if (!class_exists('VirtueMartModelOrders')) {
-	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-	}
 	// save order data
-	$modelOrder = new VirtueMartModelOrders();
+	$modelOrder = VmModel::getModel('orders');
 	$order['order_status'] = $new_status;
 	$order['virtuemart_order_id'] = $virtuemart_order_id;
 	$order['customer_notified'] = 0;

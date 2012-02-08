@@ -259,13 +259,13 @@ class shopFunctionsF {
 		if (!$controllerName) $controllerName = $viewName;
 		$modelName = 'VirtueMartController'.ucfirst ($controllerName) ;
 		if (!class_exists($modelName)) require(JPATH_VM_SITE.DS.'controllers'.DS.$controllerName.'.php');
-		$model = new $modelName;
+/*		$model = new $modelName;
 		if ($model) {
 			$view->setModel($model);
 		}
 		$view->setModel($controller->getModel('user'));
 		$view->setModel($controller->getModel('vendor'));
-		$view->setModel($controller->getModel('userfields'));
+		$view->setModel($controller->getModel('userfields'));*/
 
 		foreach ($vars as $key => $val) {
 			$view->$key = $val;
@@ -278,7 +278,6 @@ class shopFunctionsF {
 
 	}
 
-	// VirtueMartViewUser: registerUser,
 
 	/**
 	 * With this function you can use a view to sent it by email.

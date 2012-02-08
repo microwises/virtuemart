@@ -39,7 +39,7 @@ class VirtueMartViewVirtueMart extends VmView {
 
 		$vendorId = JRequest::getInt('vendorid', 1);
 
-		$vendorModel = $this->getModel('vendor');
+		$vendorModel = VmModel::getModel('vendor');
 
 		$vendorModel->setId(1);
 		$vendor = $vendorModel->getVendor();
@@ -56,8 +56,8 @@ class VirtueMartViewVirtueMart extends VmView {
 
 		if(!VmConfig::get('shop_is_offline',0)){
 
-			$categoryModel = $this->getModel('category');
-			$productModel = $this->getModel('product');
+			$categoryModel = VmModel::getModel('category');
+			$productModel = VmModel::getModel('product');
 			$products = array();
 			$categoryId = JRequest::getInt('catid', 0);
 			$cache = & JFactory::getCache('com_virtuemart','callback');

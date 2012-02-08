@@ -21,6 +21,8 @@ defined('_JEXEC') or die();
 
 define('USE_SQL_CALC_FOUND_ROWS' , true);
 
+if(!class_exists('JModel')) require JPATH_VM_LIBRARIES.DS.'joomla'.DS.'application'.DS.'component'.DS.'model.php';
+
 class VmModel extends JModel {
 
 	var $_id 			= 0;
@@ -57,6 +59,43 @@ class VmModel extends JModel {
 			// Get the id or array of ids.
 			$idArray = JRequest::getVar($this->_cidName,  0, '', 'array');
 			$this->setId((int)$idArray[0]);
+		}
+
+	}
+
+	static private $_vmmodels = array();
+
+	/**
+	 *
+	 * @author Patrick Kohl
+	 * @author Max Milbers
+	 */
+	static function getModel($name=false){
+
+		if (!$name) $name = JRequest::getCmd('view');
+		$name = strtolower($name);
+		$className = 'VirtueMartModel'.ucfirst($name);
+
+		if(empty(self::$_vmmodels[strtolower($className)])){
+			if( !class_exists($className) ){
+
+				$modelPath = JPATH_VM_ADMINISTRATOR.DS."models".DS.$name.".php";
+
+				if( file_exists($modelPath) ){
+					require( $modelPath );
+				}
+				else{
+					JError::raiseWarning( 0, 'Model '. $name .' not found.' );
+					echo 'File for Model '. $name .' not found.';
+					return false;
+				}
+			}
+
+			vmdebug('created new instance of model '.$className);
+			return self::$_vmmodels[strtolower($className)] = new $className();
+		} else {
+			vmdebug('Use instance of model '.$className);
+			return self::$_vmmodels[strtolower($className)];
 		}
 
 	}
@@ -603,8 +642,7 @@ class VmModel extends JModel {
 
 	public function addImages($obj,$limit=0){
 
-		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-		if(empty($this->mediaModel))$this->mediaModel = new VirtueMartModelMedia();
+		if(empty($this->mediaModel))$this->mediaModel = VmModel::getModel('Media');
 
 		$this->mediaModel->attachImages($obj,$this->_maintablename,'image',$limit);
 

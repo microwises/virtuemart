@@ -31,14 +31,6 @@ jimport('joomla.application.component.controller');
 class VirtueMartControllerCategories extends JController {
 
 
-/*
-	public function Categories() {
-
-	// Display it all
-		$safeurlparams = array('virtuemart_category_id'=>'INT','return'=>'BASE64','lang'=>'CMD');
-		parent::display(true, $safeurlparams);//$view->display();
-	} */
-
 	public function display(){
 		$safeurlparams = array('virtuemart_category_id'=>'INT','return'=>'BASE64','lang'=>'CMD');
 		parent::display(true, $safeurlparams);
@@ -48,10 +40,6 @@ class VirtueMartControllerCategories extends JController {
 
 
 		$view = $this->getView('categories', 'json');
-
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$view->setModel($this->getModel('category', 'VirtuemartModel'), true);
-
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		$view->setLayout($layoutName);

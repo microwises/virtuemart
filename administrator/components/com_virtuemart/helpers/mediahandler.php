@@ -852,7 +852,7 @@ class VmMediaHandler {
 			var medialink = 'index.php?option=com_virtuemart&view=media&task=viewJson&format=json&mediatype=".$type."';
 			var media = $('#searchMedia').data();
 			var searchMedia = $('input#searchMedia');
-			searchMedia.click(function () { 
+			searchMedia.click(function () {
 				if (media.start>0) media.start=0;
 			});
 			searchMedia.autocomplete({
@@ -866,18 +866,18 @@ class VmMediaHandler {
 				minLength:1,
 				html: true
 			});
-			 $('.js-pages').click(function (e) { 
+			 $('.js-pages').click(function (e) {
 				e.preventDefault();
 				if (searchMedia.val() =='') {
 					searchMedia.val(' ');
 					media.start = 0;
 				} else if ($(this).hasClass('js-next')) media.start = media.start+16 ;
 				else if (media.start > 0) media.start = media.start-16 ;
-				
+
 				searchMedia.autocomplete( 'option' , 'source' , medialink+'&start='+media.start );
 				searchMedia.autocomplete( 'search');
 			});
-			
+
 		}); ";
 
 			$document = JFactory::getDocument ();
@@ -1006,8 +1006,8 @@ class VmMediaHandler {
 				$errMsg = $this->_db->getErrorMsg();
 				$errs = $this->_db->getErrors();
 
-				if(!class_exists('VirtueMartModelMedia'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-				$model = new VirtueMartModelMedia ;
+				$model = VmModel::getModel('Media');
+
 				$this->_db->setQuery('SELECT FOUND_ROWS()');
 				$list['total'] = $this->_db->loadResult();
 

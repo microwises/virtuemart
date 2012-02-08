@@ -53,13 +53,8 @@ class VirtuemartViewCategory extends VmView {
 
 		//Load helpers
 		$this->loadHelper('image');
-		// if (!class_exists('VirtueMartModelCategory')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
-		// $categoryModel = new VirtueMartModelCategory();
-
-		// if (!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
-		// $productModel = new VirtueMartModelProduct();
-		$categoryModel = $this->getModel('category');
-		$productModel = $this->getModel('product');
+		$categoryModel = VmModel::getModel('category');
+		$productModel = VmModel::getModel('product');
 		$categoryId = JRequest::getInt('virtuemart_category_id', false);
 		$vendorId = 1;
 
@@ -125,7 +120,7 @@ class VirtuemartViewCategory extends VmView {
 			$product->stock = $productModel->getStockIndicator($product);
 		}
 
-		$ratingModel = $this->getModel('ratings');
+		$ratingModel = VmModel::getModel('ratings');
 		$showRating = $ratingModel->showRating();
 		$this->assignRef('showRating', $showRating);
 

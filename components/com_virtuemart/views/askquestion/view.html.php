@@ -62,13 +62,9 @@ class VirtueMartViewAskquestion extends VmView {
 
 
 	// Load the product
-//		$product = $this->get('product');
-	if (!class_exists('VirtueMartModelProduct'))
-	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
-	$product_model = new VirtueMartModelProduct;
-	if (!class_exists('VirtueMartModelCategory'))
-	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
-	$category_model = new VirtueMartModelCategory;
+	$product_model = VmModel::getModel('product');
+	$category_model = VmModel::getModel('Category');
+
 	$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id', 0);
 	if (is_array($virtuemart_product_idArray)) {
 	    $virtuemart_product_id = $virtuemart_product_idArray[0];
@@ -122,12 +118,6 @@ class VirtueMartViewAskquestion extends VmView {
 	// for askquestion
 	$pathway->addItem(JText::_('COM_VIRTUEMART_PRODUCT_ASK_QUESTION'));
 
-
-	// Load the user details
-// 		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
-// 		$user_model = new VirtueMartModelUser ;
-// 		$user = $user_model->getUser();
-
 	$this->assignRef('user', JFactory::getUser());
 
 	if ($product->metadesc) {
@@ -155,7 +145,7 @@ class VirtueMartViewAskquestion extends VmView {
 	$this->setLayout('mail_html_question');
 	$this->comment = JRequest::getString('comment');
 
-	$vendorModel = $this->getModel('vendor');
+	$vendorModel = VmModel::getModel('vendor');
 	$this->vendor = $vendorModel->getVendor();
 
 	$this->subject = Jtext::_('COM_VIRTUEMART_QUESTION_ABOUT') . $this->product->product_name;

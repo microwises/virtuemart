@@ -44,19 +44,6 @@ class VirtuemartControllerCoupon extends VmController {
 		parent::__construct();
 	}
 
-	// function Coupon () {
-
-		// $document = JFactory::getDocument();
-		// $viewType = $document->getType();
-		// $view = $this->getView($this->_cname, $viewType);
-
-// 		Push a model into the view
-		// $model = $this->getModel($this->_cname);
-		// if (!JError::isError($model)) {
-			// $view->setModel($model, true);
-		// }
-		// parent::display();
-	// }
 
 }
 // pure php no closing tag

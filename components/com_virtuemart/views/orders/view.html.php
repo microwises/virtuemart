@@ -56,9 +56,7 @@ class VirtuemartViewOrders extends VmView {
 			$pathway->additem(JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'));
 		}
 
-		if (!class_exists('VirtueMartModelOrders')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php');
-		$orderModel = new VirtueMartModelOrders();
-
+		$orderModel = VmModel::getModel('orders');
 
 		if ($layoutName == 'details') {
 
@@ -101,7 +99,7 @@ class VirtuemartViewOrders extends VmView {
 				return;
 			}
 
-			$userFieldsModel = $this->getModel('userfields');
+			$userFieldsModel = VmModel::getModel('userfields');
 			$_userFields = $userFieldsModel->getUserFields(
 				 'account'
 			, array('captcha' => true, 'delimiters' => true) // Ignore these types
@@ -180,9 +178,9 @@ class VirtuemartViewOrders extends VmView {
 
 		$currency = CurrencyDisplay::getInstance();
 		$this->assignRef('currency', $currency);
-		if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
-		// Create a simple indexed array woth ordertatuses
-		$orderStatusModel = new VirtueMartModelOrderstatus();
+
+		$orderStatusModel = VmModel::getModel('orderstatus');
+
 		$_orderstatuses = $orderStatusModel->getOrderStatusList();
 		$orderstatuses = array();
 		foreach ($_orderstatuses as $_ordstat) {
@@ -214,7 +212,7 @@ class VirtuemartViewOrders extends VmView {
 
 		$currency = CurrencyDisplay::getInstance();
 
-		$userFieldsModel = $this->getModel('userfields');
+		$userFieldsModel = VmModel::getModel('userfields');
 		$userFields = $userFieldsModel->getUserFields(
 				     'account'
 		, array('captcha' => true, 'delimiters' => true) // Ignore these types
@@ -254,7 +252,7 @@ class VirtuemartViewOrders extends VmView {
 		$this->assignRef('payment_name', $this->order['paymentName']);
 		$this->assignRef('billfields', $billfields);
 		$this->assignRef('shipmentfields', $shipmentfields);
-		$vendorModel = $this->getModel('vendor');
+		$vendorModel = VmModel::getModel('vendor');
 		$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
 		$this->layoutName = $tpl;
 		$this->setLayout($tpl);
@@ -273,8 +271,8 @@ class VirtuemartViewOrders extends VmView {
 
 	// add vendor for cart
 	function prepareVendor(){
-		if (!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-		$vendorModel = new VirtueMartModelVendor();
+
+		$vendorModel = VmModel::getModel('vendor');
 		$vendor = & $vendorModel->getVendor();
 		$this->assignRef('vendor', $vendor);
 		$vendorModel->addImages($this->vendor,1);

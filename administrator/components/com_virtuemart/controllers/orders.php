@@ -195,9 +195,6 @@ class VirtuemartControllerOrders extends VmController {
 		/* Create the view object */
 		$view = $this->getView('orders', 'json');
 
-		/* Default model */
-		// $view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
-
 		$view->setLayout('orders_editorderitem');
 
 		/* Now display the view. */

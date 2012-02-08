@@ -32,7 +32,7 @@ if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
 //class VirtuemartViewState extends VmView {
 //
 //	function display($tpl = null) {
-//		$stateModel = $this->getModel();
+//		$stateModel = VmModel::getModel();
 //		$states = array();
 //
 //		//retrieving countries id

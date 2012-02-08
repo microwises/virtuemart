@@ -125,10 +125,10 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 	$usrBT = $order['details']['BT'];
 	$address = ((isset($order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
-		if (!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-if(!class_exists('TableVendors'))require(JPATH_VM_ADMINISTRATOR.DS.'table'.DS.'vendors.php');
 
-	$vendorModel = new VirtueMartModelVendor();
+
+if(!class_exists('TableVendors'))require(JPATH_VM_ADMINISTRATOR.DS.'table'.DS.'vendors.php');
+	$vendorModel = VmModel::getModel('Vendor');
 	$vendorModel->setId(1);
 	$vendor = $vendorModel->getVendor();
 $vendorModel->addImages($vendor,1);
@@ -311,10 +311,7 @@ $vendorModel->addImages($vendor,1);
 	    if ($virtuemart_order_id) {
 
 		// send the email ONLY if payment has been accepted
-		if (!class_exists('VirtueMartModelOrders'))
-		    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-
-		$modelOrder = new VirtueMartModelOrders();
+		$modelOrder = VmModel::getModel('orders');
 		$orderitems = $modelOrder->getOrder($virtuemart_order_id);
 		$nb_history = count($orderitems['history']);
 		//vmdebug('history', $orderitems);
@@ -468,9 +465,7 @@ $vendorModel->addImages($vendor,1);
 
 	if ($virtuemart_order_id) {
 	    // send the email only if payment has been accepted
-	    if (!class_exists('VirtueMartModelOrders'))
-		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-	    $modelOrder = new VirtueMartModelOrders();
+	    $modelOrder = VmModel::getModel('orders');
 	    $orderitems = $modelOrder->getOrder($virtuemart_order_id);
 	    $nb_history = count($orderitems['history']);
 	    $order['order_status'] = $new_status;

@@ -183,9 +183,6 @@ class VirtueMartControllerCart extends JController {
 	$view = $this->getView('cart', 'html');
 	$view->setLayout('edit_coupon');
 
-	$this->addModelPath(JPATH_VM_ADMINISTRATOR . DS . 'models');
-	$view->setModel($this->getModel('coupon', 'VirtuemartModel'), true);
-
 	// Display it all
 	$view->display();
     }
@@ -227,12 +224,6 @@ class VirtueMartControllerCart extends JController {
 
 	$view = $this->getView('cart', 'html');
 	$view->setLayout('select_shipment');
-
-	$this->addModelPath(JPATH_VM_ADMINISTRATOR . DS . 'models');
-	$view->setModel($this->getModel('shipmentmethod', 'VirtuemartModel'), true);
-
-// 	$view->setModel($this->getModel('user', 'VirtuemartModel'), false);
-	$view->setModel($this->getModel('userfields', 'VirtuemartModel'), true);
 
 	// Display it all
 	$view->display();
@@ -288,9 +279,6 @@ class VirtueMartControllerCart extends JController {
 
 	$view = $this->getView('cart', 'html');
 	$view->setLayout('select_payment');
-
-	$this->addModelPath(JPATH_VM_ADMINISTRATOR . DS . 'models');
-	$view->setModel($this->getModel('paymentmethod', 'VirtuemartModel'), true);
 
 	// Display it all
 	$view->display();

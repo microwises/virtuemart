@@ -210,7 +210,7 @@ class VirtueMartModelUpdatesMigration extends JModel {
 	$fields['perms']='admin';
 	$fields['vendor_legal_info']="VAT-ID: XYZ-DEMO<br />Reg.Nr: DEMONUMBER";
 	if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
-	$usermodel = new VirtueMartModelUser();
+	$usermodel = VmModel::getModel('user');
 	$usermodel->setId($userId);
 
 	//Save the VM user stuff

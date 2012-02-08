@@ -218,7 +218,7 @@ class Migrator extends VmModel{
 
 		if(!class_exists('VirtueMartModelMedia'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'media.php');
-		$this->mediaModel = new VirtueMartModelMedia();
+		$this->mediaModel = VmModel::getModel('Media');
 		//First lets read which files are already stored
 		$this->storedMedias = $this->mediaModel->getFiles(false, true);
 
@@ -470,7 +470,7 @@ class Migrator extends VmModel{
 		}
 
 		if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
-		$userModel = new VirtueMartModelUser();
+		$userModel = VmModel::getModel('user');
 
 		$ok = true;
 		$continue = true;
@@ -643,9 +643,7 @@ class Migrator extends VmModel{
 		$this->_db->query( 'SELECT currency_id FROM `#__virtuemart_currencies` WHERE `currency_code_3` IN ( "'.implode('","',$currency_code_3).'" ) ' );
 		$vendor['vendor_accepted_currencies'] = $this->_db->loadResultArray();
 
-		if(!class_exists('VirtueMartModelVendor'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'vendor.php');
-		$vendorModel = new VirtueMartModelVendor();
+		$vendorModel = VmModel::getModel('vendor');
 		$vendorId = $vendorModel->store($vendor);
 		vmInfo('vendor '.$vendorId.' Stored');
 		return true;
@@ -661,9 +659,7 @@ class Migrator extends VmModel{
 			return false;
 		}
 
-		if(!class_exists('VirtueMartModelCategory'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
-		$catModel = new VirtueMartModelCategory();
+		$catModel = VmModel::getModel('Category');
 
 		$default_category_browse = JRequest::getString('migration_default_category_browse','');
 // 		vmdebug('migration_default_category_browse '.$default_category_browse);
@@ -1005,10 +1001,7 @@ class Migrator extends VmModel{
 
 			//vmdebug('in product migrate $oldProducts ',$oldProducts);
 
-			if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
-
-			$productModel = new VirtueMartModelProduct();
-
+			$productModel = VmModel::getModel('product');
 
 			/* Not in VM1
 			 slug low_stock_notification intnotes metadesc metakey metarobot metaauthor layout published
@@ -1075,8 +1068,7 @@ class Migrator extends VmModel{
 							// $q = 'SELECT `virtuemart_custom_id` FROM `#__virtuemart_customs` as c WHERE c.field_type ="V" and c.`custom_title` ="'.$attrib['attribute_name'].'" ';
 							// $this->_db->setQuery($q);
 							// if (!$virtuemart_custom_id = $this->_db->loadResult()) {
-								// if(!class_exists('VirtueMartModelCustom')) require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'custom.php');
-								// $customModel = new VirtueMartModelCustom();
+								// $customModel = VmModel::getModel('Custom');
 								// $attrib['custom_title'] = $attrib['attribute_name'];
 								// $attrib['custom_value'] = $attrib['attribute_value'];
 								// $attrib['is_cart_attribute'] = '1';
@@ -1380,9 +1372,7 @@ class Migrator extends VmModel{
 		$this->_db->setQuery($q);
 		$oldOrderStatus = $this->_db->loadAssocList();
 
-		if(!class_exists('VirtueMartModelOrderstatus'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orderstatus.php');
-		$orderstatusModel = new VirtueMartModelOrderstatus();
+		$orderstatusModel = VmModel::getModel('Orderstatus');
 		$oldtonewOrderstates = array();
 		//$alreadyKnownIds = $this->getMigrationProgress('orderstates');
 		$i = 0;

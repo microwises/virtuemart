@@ -308,8 +308,7 @@ class VirtueMartModelPaymentmethod extends VmModel{
 			$creditcardIds = self::getPaymentAcceptedCreditCards();
 		}
 
-		if(!class_exists('VirtueMartModelCreditcard')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'creditcard.php');
-		$creditcardModel = new VirtueMartModelCreditcard();
+		$creditcardModel = VmModel::getModel('Creditcard');
 
 		$listHTML='';
 

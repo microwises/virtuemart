@@ -46,25 +46,6 @@ class VirtuemartControllerUser extends VmController {
 
 	}
 
-	function User(){
-
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
-		$view = $this->getView('user', $viewType);
-		$view->setLayout('default');
-
-		// Push a model into the view
-		$model = $this->getModel('user');
-
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}else{
-			echo 'Couldnt load backend model in VirtuemartControllerUser';
-		}
-		parent::display();
-	}
-
-
 	/**
 	 * Handle the edit task
 	 */
@@ -108,7 +89,6 @@ class VirtuemartControllerUser extends VmController {
 		$document = JFactory::getDocument();
 		$viewType = $document->getType();
 		$view = $this->getView('user', $viewType);
-		$view->setModel( $this->getModel( 'userfields', 'VirtueMartModel' ));
 
 		$_currentUser = JFactory::getUser();
 // TODO sortout which check is correctt.....

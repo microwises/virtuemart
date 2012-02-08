@@ -46,34 +46,6 @@ class VirtuemartControllerOrderstatus extends VmController {
 
 	}
 
-	function Orderstatus () {
-
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
-		$view = $this->getView($this->_cname, $viewType);
-
-		// Push a model into the view
-		$model = $this->getModel($this->_cname);
-
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}
-
-		parent::display();
-	}
-
-	/**
-	 * Handle the edit task
-	 */
-/*	function edit(){
-
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
-		$view = $this->getView($this->_cname, $viewType);
-		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
-
-		parent::edit();
-	}*/
 
 }
 

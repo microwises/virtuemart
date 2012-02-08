@@ -44,7 +44,7 @@ class VirtuemartViewManufacturer extends VmView {
 		$mf_category_id = JRequest::getInt('mf_category_id', 0);
 
 		// get necessary models
-		$model = $this->getModel('manufacturer');
+		$model = VmModel::getModel('manufacturer');
 		if ($virtuemart_manufacturer_id !=0 ) {
 
 			$manufacturer = $model->getManufacturer();

@@ -38,14 +38,6 @@ class VirtuemartControllerReport extends VmController {
 	function __constuct(){
 		parent::__construct();
 
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
-		$view = $this->getView('report', $viewType);
-
-		$model = $this->getModel('report');
-		if(!JError::isError($model)){
-			$view->setModel($model, true);
-		}
 	}
 
 

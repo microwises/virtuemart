@@ -81,10 +81,6 @@ class VirtuemartControllerRatings extends VmController {
 			$view = $this->getView($this->_cname, $viewType);
 		}
 
-		$model = $this->getModel($this->_cname, 'VirtueMartModel');
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}
 
 		parent::display();
 	}
@@ -98,8 +94,6 @@ class VirtuemartControllerRatings extends VmController {
 		/* Create the view object */
 		$view = $this->getView('ratings', 'html');
 
-		$view->setModel( $this->getModel( 'ratings', 'VirtueMartModel' ), true );
-		
 		$view->setLayout('list_reviews');
 
 		$view->display();

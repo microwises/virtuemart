@@ -44,23 +44,6 @@ class VirtuemartControllerInventory extends VmController {
 
 	}
 
-	/**
-	 * Shows the product list screen
-	 */
-	public function display() {
-		/* Create the view object */
-		$view = $this->getView($this->_cname, 'html');
-
-		/* Default model */
-		//$view->setModel( $this->getModel( $this->_cname, 'VirtueMartModel' ), true );
-
-		/* Product model */
-		$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ),true);
-
-
-		/* Now display the view. */
-		parent::display();
-	}
 
 }
 // pure php no closing tag

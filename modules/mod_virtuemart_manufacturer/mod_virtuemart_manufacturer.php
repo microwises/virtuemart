@@ -23,7 +23,7 @@ if (!class_exists( 'VirtueMartModelManufacturer' ))
 
 /* Setting */
 $vendorId = JRequest::getInt('vendorid', 1);
-$model = new VirtueMartModelManufacturer();
+$model = VmModel::getModel('Manufacturer');
 
 $display_style = 	$params->get( 'display_style', "div" ); // Display Style
 $manufacturers_per_row = $params->get( 'manufacturers_per_row', 1 ); // Display X manufacturers per Row

@@ -25,42 +25,39 @@ jimport( 'joomla.application.component.view');
 
 class VmView extends JView{
 
+// 	static private $_models = array();
+
 	/**
-	 * Sets automatically the shortcut for the language and the redirect path
-	 *
-	 * @author Max Milbers
+	 * (non-PHPdoc)
+	 * @see JView::getModel()
+	 * @deprecated
 	 */
-	// public function __construct() {
-		// parent::construct();
-	// }
 	function getModel($name=null){
 
-// 		if(!class_exists('VmView'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmview.php');
-// 		return VmView::getModel($name);
 		if (!$name) $name = JRequest::getCmd('view');
 		$name = strtolower($name);
 		$className = 'VirtueMartModel'.ucfirst($name);
 
-// 		retrieving model
-		if( !class_exists($className) ){
+		if(empty($this->_models[strtolower($className)])){
+			if( !class_exists($className) ){
 
-			$modelPath = JPATH_VM_ADMINISTRATOR.DS."models".DS.$name.".php";
+				$modelPath = JPATH_VM_ADMINISTRATOR.DS."models".DS.$name.".php";
 
-			if( file_exists($modelPath) ){
-				require( $modelPath );
+				if( file_exists($modelPath) ){
+					require( $modelPath );
+				}
+				else{
+					JError::raiseWarning( 0, 'Model '. $name .' not found.' );
+					echo 'File for Model '. $name .' not found.';
+					return false;
+				}
 			}
-			else{
-				JError::raiseWarning( 0, 'Model '. $name .' not found.' );
-				echo 'Model '. $name .' not found.';die;
-				return false;
-			}
-		}
-		$model = new $className();
-		if(empty($name)){
-			JError::raiseWarning( 0, 'Model '. $name .' not created.' );
-			echo 'Model '. $name .' not created.';
-		}else {
-			return $model;
+
+			vmdebug('created new instance of model '.$className);
+			return $this->_models[strtolower($className)] = new $className();
+		} else {
+			vmdebug('Use instance of model');
+			return $this->_models[strtolower($className)];
 		}
 
 	}

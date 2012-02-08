@@ -105,7 +105,7 @@ abstract class vmPlugin extends JPlugin {
 
 		if($name!==0){
 			if($name!=$this->_name){
-// 				vmdebug('selectedThis $name '.$name.' does not fit pluginname '.$this->_name);
+				vmdebug('selectedThis $name '.$name.' does not fit pluginname '.$this->_name);
 				return false;
 			}
 		}

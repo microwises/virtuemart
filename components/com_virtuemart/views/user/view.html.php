@@ -96,7 +96,7 @@ class VirtuemartViewUser extends VmView {
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
 		$this->_model = new VirtuemartModelUser();
 
-		//$this->_model = $this->getModel('user', 'VirtuemartModel');
+		//$this->_model = VmModel::getModel('user', 'VirtuemartModel');
 		//		$this->_model->setCurrent(); //without this, the administrator can edit users in the FE, permission is handled in the usermodel, but maybe unsecure?
 		$editor = JFactory::getEditor();
 
@@ -202,7 +202,7 @@ class VirtuemartViewUser extends VmView {
 		$this->assignRef('pane', $pane);
 
 		if ($layoutName == 'mailregisteruser') {
-			$vendorModel = $this->getModel('vendor');
+			$vendorModel = VmModel::getModel('vendor');
 			//			$vendorModel->setId($this->_userDetails->virtuemart_vendor_id);
 			$vendor = $vendorModel->getVendor();
 			$this->assignRef('vendor', $vendor);
@@ -223,7 +223,7 @@ class VirtuemartViewUser extends VmView {
 
 	function lOrderlist() {
 		// Check for existing orders for this user
-		$orders = $this->getModel('orders');
+		$orders = VmModel::getModel('orders');
 
 		if ($this->_model->getId() == 0) {
 			// getOrdersList() returns all orders when no userID is set (admin function),
@@ -347,7 +347,7 @@ class VirtuemartViewUser extends VmView {
 			// If the current user is a vendor, load the store data
 			if ($this->_userDetails->user_is_vendor) {
 
-				$currencymodel = $this->getModel('currency', 'VirtuemartModel');
+				$currencymodel = VmModel::getModel('currency', 'VirtuemartModel');
 				$currencies = $currencymodel->getCurrencies();
 				$this->assignRef('currencies', $currencies);
 
@@ -355,7 +355,7 @@ class VirtuemartViewUser extends VmView {
 					$this->lOrderlist();
 				}
 
-				$vendorModel = $this->getModel('vendor');
+				$vendorModel = VmModel::getModel('vendor');
 
 				if (Vmconfig::get('multix', 'none') === 'none') {
 					$vendorModel->setId(1);
@@ -381,10 +381,10 @@ class VirtuemartViewUser extends VmView {
 			$useXHTML = true;
 			$this->assignRef('useSSL', $useSSL);
 			$this->assignRef('useXHTML', $useXHTML);
-			$userFieldsModel = $this->getModel('UserFields');
+			$userFieldsModel = VmModel::getModel('UserFields');
 			$userFields = $userFieldsModel->getUserFields();
 			$this->userFields = $userFieldsModel->getUserFieldsFilled($userFields, $this->user);
-			$vendorModel = $this->getModel('vendor');
+			$vendorModel = VmModel::getModel('vendor');
 			$this->vendor = $vendorModel->getVendor();
 			if (VmConfig::get('order_mail_html')) {
 				$mailFormat = 'html';

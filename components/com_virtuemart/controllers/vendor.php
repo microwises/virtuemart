@@ -85,7 +85,7 @@ class VirtueMartControllerVendor extends JController
 
 		// Display it all
 		$view = $this->getView('vendor', 'html');
-// 		$view->setModel($this->getModel('category', 'VirtuemartModel'));
+
 		$view->setLayout('mail_confirmed');
 		$view->display();
 	}

@@ -21,7 +21,7 @@
 defined('_JEXEC') or die('Restricted access');
 /* TODO Chnage the footer place in helper or assets ???*/
 if (empty($this->vendor)) {
-		$vendorModel = $this->getModel('vendor');
+		$vendorModel = VmModel::getModel('vendor');
 		$this->vendor = $vendorModel->getVendor();
 }
 

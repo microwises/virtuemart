@@ -81,13 +81,6 @@ class VmController extends JController{
 			$view = $this->getView($viewName, $viewType, '', array('base_path' => $this->_basePath));
 		}
 
-
-/*		// Get/Create the model
-		if ($model = $this->getModel($viewName)) {
-			// Push the model into the view (as default)
-			$view->setModel($model, true);
-		}*/
-
 		// Set the layout
 		$view->setLayout($viewLayout);
 
@@ -147,11 +140,6 @@ class VmController extends JController{
 			$viewType = $document->getType();
 			$view = $this->getView($this->_cname, $viewType);
 		}
-
-/*		$model = $this->getModel($this->_cname, 'VirtueMartModel');
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}*/
 
 		$view->setLayout($layout);
 

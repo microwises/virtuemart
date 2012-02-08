@@ -47,20 +47,11 @@ class VirtueMartControllerProductdetails extends JController {
 			$format = JRequest::getWord('format','html');
 			if ($format=='pdf') {
 				$viewName='Pdf';
-				
+
 			}
 			else $viewName='Productdetails';
 
 			$view = $this->getView($viewName, $format);
-			// if  ($format == 'pdf') $view->setLayout('pdf');
-			$this->addModelPath(JPATH_VM_ADMINISTRATOR . DS . 'models');
-			/* Add the default model */
-			$view->setModel($this->getModel('product','VirtuemartModel'), true);
-
-			/* Add the category model */
-			$view->setModel($this->getModel('category', 'VirtuemartModel'));
-
-			$view->setModel($this->getModel( 'ratings', 'VirtuemartModel'));
 
 			// Display it all
 			$view->display();
@@ -118,7 +109,6 @@ class VirtueMartControllerProductdetails extends JController {
 
 		// Display it all
 		$view = $this->getView('askquestion', 'html');
-		$view->setModel($this->getModel('category', 'VirtuemartModel'));
 		$view->setLayout('mail_confirmed');
 		$view->display();
 	}
@@ -162,7 +152,7 @@ class VirtueMartControllerProductdetails extends JController {
 
 		// Display it all
 		$view = $this->getView('recommend', 'html');
-		$view->setModel($this->getModel('category', 'VirtuemartModel'));
+
 		$view->setLayout('mail_confirmed');
 		$view->display();
 	}
@@ -188,12 +178,6 @@ class VirtueMartControllerProductdetails extends JController {
 
 		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 
-		/* Add the default model */
-		$view->setModel($this->getModel('product','VirtuemartModel'), true);
-
-		/* Add the category model */
-		$view->setModel($this->getModel('category', 'VirtuemartModel'));
-
 		/* Set the layout */
 		$view->setLayout('form');
 
@@ -212,14 +196,6 @@ class VirtueMartControllerProductdetails extends JController {
 
 		/* Create the view */
 		$view = $this->getView('productdetails', 'html');
-
-		/* Add the default model */
-		$view->setModel($this->getModel('product','VirtuemartModel'), true);
-
-		/* Add the category model */
-		$view->setModel($this->getModel('category', 'VirtuemartModel'));
-
-		$view->setModel($model = $this->getModel( 'ratings', 'VirtuemartModel' ));
 
 		/* Get the posted data */
 		$data = JRequest::get('post');
@@ -297,28 +273,15 @@ class VirtueMartControllerProductdetails extends JController {
 		// Set the MIME type for JSON output.
 		$document->setMimeEncoding( 'application/json' );
 				JResponse::setHeader('Content-Disposition','attachment;filename="recalculate.json"', true);
-				JResponse::sendHeaders(); 
+				JResponse::sendHeaders();
 		echo json_encode ($priceFormated);
 
 	}
 
-/*	public function getData() {
-
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-
-
-		// Standard model
-		//$view->setModel( $this->getModel( 'product', 'VirtueMartModel' ), true );
-		$type = JRequest::getWord('type', false);
-		// Now display the view.
-
-	}*/
-
 	public function getJsonChild() {
 
 	$view = $this->getView('productdetails', 'json');
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$view->setModel( $this->getModel('product'));
+
 		$view->display(null);
 	}
 }

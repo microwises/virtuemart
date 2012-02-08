@@ -123,9 +123,11 @@ class VirtueMartModelUser extends VmModel {
 	 */
 	function getUser(){
 
+		if(!empty($this->_data)) return $this->_data;
+
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
-// 		vmdebug('getUser id',$this->_id);
+		vmdebug('getUser id',$this->_id);
 		$this->_data = $this->getTable('vmusers');
 		$this->_data->load((int)$this->_id);
 
@@ -144,8 +146,7 @@ class VirtueMartModelUser extends VmModel {
 		if(empty($this->_data->shopper_groups)){
 
 // 			if(empty($this->_defaultShopperGroup)){
-				if(!class_exists('VirtueMartModelShopperGroup')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'shoppergroup.php');
-				$shoppergroupmodel = new VirtueMartModelShopperGroup();
+				$shoppergroupmodel = VmModel::getModel('ShopperGroup');
 
 				$this->_defaultShopperGroup = $shoppergroupmodel->getDefault($this->_data->JUser->guest);
 // 				vmdebug('$this->_defaultShopperGroup ',$this->_defaultShopperGroup);
@@ -186,10 +187,7 @@ class VirtueMartModelUser extends VmModel {
 // 		vmdebug('user_is_vendor ?',$this->_data->user_is_vendor);
 		if($this->_data->user_is_vendor){
 
-			// 				$this->_data->userInfo[$_ui_id]->user_is_vendor = $this->_data->user_is_vendor;
-			// 				$this->_data->userInfo[$_ui_id]->name = $this->_data->JUser->name;
-			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php' );
-			$vendorModel = new VirtueMartModelVendor();
+			$vendorModel = VmModel::getModel('vendor');
 			if(Vmconfig::get('multix','none')==='none'){
 				$this->_data->virtuemart_vendor_id = 1;
 			}
@@ -920,9 +918,7 @@ class VirtueMartModelUser extends VmModel {
 
 		if($data['user_is_vendor']){
 
-			//	$data['virtuemart_vendor_id'] = $data['my_virtuemart_vendor_id'];
-			if(!class_exists('VirtueMartModelVendor')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'vendor.php');
-			$vendorModel = new VirtueMartModelVendor();
+			$vendorModel = VmModel::getModel('vendor');
 
 			//TODO Attention this is set now to virtuemart_vendor_id=1, because using a vendor with different id then 1 is not completly supported and can lead to bugs
 			//So we disable the possibility to store vendors not with virtuemart_vendor_id = 1
@@ -980,7 +976,7 @@ class VirtueMartModelUser extends VmModel {
 	function _prepareUserFields($data, $type)
 	{
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
-		$userFieldsModel = new VirtueMartModelUserfields();
+		$userFieldsModel = VmModel::getModel('userfields');
 
 		if ($type == 'ST') {
 			$prepareUserFields = $userFieldsModel->getUserFields(
@@ -1176,7 +1172,7 @@ class VirtueMartModelUser extends VmModel {
 	function storeUserDataByFields($data,$type, $toggles, $skips){
 
 		if(!class_exists('VirtueMartModelUserfields')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'userfields.php' );
-        $userFieldsModel = new VirtueMartModelUserfields();
+        $userFieldsModel = VmModel::getModel('userfields');
 
 		$prepareUserFields = $userFieldsModel->getUserFields(
                             $type,

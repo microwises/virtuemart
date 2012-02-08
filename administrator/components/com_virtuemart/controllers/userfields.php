@@ -52,32 +52,9 @@ class VirtuemartControllerUserfields extends VmController {
 		$view = $this->getView('userfields', $viewType);
 		$view->loadHelper('paramhelper');
 
-		// Push a model into the view
-		$model = $this->getModel('userfields');
-
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}
 		parent::display();
 	}
 
-
-	/**
-	 * Handle the edit task
-	 */
-	function edit(){
-
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
-		$view = $this->getView('userfields', $viewType);
-
-		// Load the additional models
-		$view->setModel( $this->getModel( 'vendor', 'VirtueMartModel' ));
-		$view->setModel( $this->getModel( 'shoppergroup', 'VirtueMartModel' ));
-
-		
-		parent::edit();
-	}
 
 }
 

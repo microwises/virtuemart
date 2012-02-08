@@ -53,7 +53,7 @@ class VirtuemartViewVendor extends VmView {
 
 		$layoutName = $this->getLayout();
 
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 
 		$virtuemart_vendor_id = JRequest::getInt('virtuemart_vendor_id');
 
@@ -72,7 +72,7 @@ class VirtuemartViewVendor extends VmView {
 
 			$userId = $model->getUserIdByVendorId($virtuemart_vendor_id);
 
-			$usermodel = $this->getModel('user');
+			$usermodel = VmModel::getModel('user');
 
 			$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
 			$userFields = $usermodel->getUserInfoInUserFields($layoutName, 'BT', $virtuemart_userinfo_id);
@@ -110,7 +110,7 @@ class VirtuemartViewVendor extends VmView {
 		$this->comment = JRequest::getString('comment');
 		$virtuemart_vendor_id = JRequest::getInt('virtuemart_vendor_id');
 
-		$vendorModel = $this->getModel('vendor');
+		$vendorModel = VmModel::getModel('vendor');
 		$this->vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 
 		$this->subject = Jtext::_('COM_VIRTUEMART_VENDOR_CONTACT') .' '.$this->vendor->vendor_store_name;

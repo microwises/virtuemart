@@ -50,11 +50,6 @@ class VirtuemartControllerModule extends JController
 		$viewType	= $document->getType();
 		$view = $this->getView('module', $viewType);
 
-		// Push a model into the view
-		$model = $this->getModel('module');
-		if (!JError::isError($model)) {
-			$view->setModel($model, true);
-		}
 	}
 
 }

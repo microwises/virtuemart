@@ -28,7 +28,7 @@ vmJsApi::jQuery();
 vmJsApi::cssSite();
 
 /* Setting */
-$categoryModel = new VirtueMartModelCategory();
+$categoryModel = VmModel::getModel('Category');
 $category_id = $params->get('Parent_Category_id', 0);
 $class_sfx = $params->get('class_sfx', '');
 $moduleclass_sfx = $params->get('moduleclass_sfx','');
@@ -38,7 +38,7 @@ $vendorId = '1';
 		$cache = & JFactory::getCache('com_virtuemart','callback');
 		$categories = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $category_id );
 // $categories = $categoryModel->getChildCategoryList($vendorId, $category_id);
-// We dont use image here 
+// We dont use image here
 //$categoryModel->addImages($categories);
 
 if(empty($categories)) return false;

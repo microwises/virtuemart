@@ -634,7 +634,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		//if(!class_exists('shopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
-		$_userFieldsModel = new VirtueMartModelUserfields();
+		$_userFieldsModel = VmModel::getModel('userfields');
 		$_userFieldsBT = $_userFieldsModel->getUserFields('account'
 		, array('delimiters'=>true, 'captcha'=>true)
 		, array('username', 'password', 'password2', 'user_is_vendor')
@@ -725,9 +725,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		else $product_ordered = '=';
 
 		//Here trigger plgVmGetProductStockToUpdateByCustom
-
-		if(!class_exists('VirtueMartModelProduct')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'product.php');
-		$productModel = new VirtueMartModelProduct();
+		$productModel = VmModel::getModel('product');
 
 		if (!empty($product->product_attribute)) {
 			if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');

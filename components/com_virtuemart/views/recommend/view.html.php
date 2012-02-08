@@ -60,11 +60,8 @@ class virtuemartViewrecommend extends VmView {
 		$this->loadHelper('addtocart');
 
 
-		/* Load the product */
-//		$product = $this->get('product');
-		if (!class_exists('VirtueMartModelProduct'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'product.php');
-		$product_model = new VirtueMartModelProduct;
+		// Load the product
+		$product_model = VmModel::getModel('product');
 
 	$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id',0);
 		if(is_array($virtuemart_product_idArray)){
@@ -97,7 +94,7 @@ class virtuemartViewrecommend extends VmView {
 
 
 		/* Load the category */
-		$category_model = $this->getModel('category');
+		$category_model = VmModel::getModel('category');
 		/* Get the category ID */
 		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
 		if ($virtuemart_category_id == 0 && !empty($product)) {

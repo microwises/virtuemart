@@ -35,8 +35,7 @@ class VirtueMartControllerState extends JController
 	public function __construct() {
 		parent::__construct();
 
-		$stateModel = new VirtueMartModelState();
-
+		$stateModel = VmModel::getModel('state');
 		$states = array();
 
 		//retrieving countries id

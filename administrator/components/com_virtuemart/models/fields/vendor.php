@@ -50,7 +50,8 @@ class JFormFieldVendor extends JFormField
         JPlugin::loadLanguage('com_virtuemart', JPATH_ADMINISTRATOR);
          $key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
         $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
-	$model = new VirtueMartModelVendor();
+        $model = VmModel::getModel('vendor');
+
 	$vendors = $model->getVendors(true, true, false);
         return JHTML::_('select.genericlist', $vendors, $this->name, 'class="inputbox"  size="1"', 'virtuemart_vendor_id', 'vendor_name', $this->value, $this->id);
     }

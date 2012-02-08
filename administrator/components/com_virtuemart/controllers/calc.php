@@ -43,24 +43,7 @@ class VirtuemartControllerCalc extends VmController {
 
 	}
 
-	/**
-	 * Handle the edit task
-	 *
-     * @author Max Milbers
-	 */
-/*	public function edit(){
 
-		$document = JFactory::getDocument();
-		$viewType = $document->getType();
-		$view = $this->getView($this->_cname, $viewType);
-
-		$view->setModel( $this->getModel( 'currency', 'VirtueMartModel' ));
-		$view->setModel( $this->getModel( 'user', 'VirtueMartModel' ));
-
-		parent::edit();
-
-	}
-*/
 
 	/**
 	 * We want to allow html so we need to overwrite some request data

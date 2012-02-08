@@ -42,8 +42,6 @@ class VirtueMartViewCart extends VmView {
 		$layoutName = JRequest::getWord('layout', 'default');
 		$this->assignRef('layoutName', $layoutName);
 		$format = JRequest::getWord('format');
-		// if(!class_exists('virtueMartModelCart')) require(JPATH_VM_SITE.DS.'models'.DS.'cart.php');
-		// $model = new VirtueMartModelCart;
 
 		if (!class_exists('VirtueMartCart'))
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
@@ -78,7 +76,7 @@ class VirtueMartViewCart extends VmView {
 		} else if ($layoutName == 'select_payment') {
 
 			/* Load the cart helper */
-			//			$cartModel = $this->getModel('cart');
+			//			$cartModel = VmModel::getModel('cart');
 
 			$this->lSelectPayment();
 
@@ -280,10 +278,9 @@ class VirtueMartViewCart extends VmView {
 	}
 
 	private function checkPaymentMethodsConfigured() {
-		if (!class_exists('VirtueMartModelPaymentmethod'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'paymentmethod.php');
+
 		//For the selection of the payment method we need the total amount to pay.
-		$paymentModel = new VirtueMartModelPaymentmethod();
+		$paymentModel = VmModel::getModel('Paymentmethod');
 		$payments = $paymentModel->getPayments(true, false);
 		if (empty($payments)) {
 
@@ -307,10 +304,9 @@ class VirtueMartViewCart extends VmView {
 	}
 
 	private function checkShipmentMethodsConfigured() {
-		if (!class_exists('VirtueMartModelShipmentMethod'))
-		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'shipmentmethod.php');
+
 		//For the selection of the shipment method we need the total amount to pay.
-		$shipmentModel = new VirtueMartModelShipmentmethod();
+		$shipmentModel = VmModel::getModel('Shipmentmethod');
 		$shipments = $shipmentModel->getShipments();
 		if (empty($shipments)) {
 

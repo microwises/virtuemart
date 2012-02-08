@@ -938,9 +938,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 
 	$this->storePSPluginInternalData($response_fields, 'virtuemart_order_id', true);
 
-	if (!class_exists('VirtueMartModelCurrency'))
-	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
-	$currencyModel = new VirtueMartModelCurrency();
+	$currencyModel = VmModel::getModel('Currency');
 	$currency = $currencyModel->getCurrency($order['details']['BT']->user_currency_id);
 
 	$html = '<table>' . "\n";

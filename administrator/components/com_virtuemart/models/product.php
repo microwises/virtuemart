@@ -256,7 +256,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		if ($app->isSite()) {
 			if(!class_exists('VirtueMartModelUser')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'user.php');
-			$usermodel = new VirtueMartModelUser();
+			$usermodel = VmModel::getModel('user');
 			$currentVMuser = $usermodel->getUser();
 			$virtuemart_shoppergroup_ids =  (array)$currentVMuser->shopper_groups;
 
@@ -596,8 +596,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			if(!$front){
 // 				if (!empty($product->virtuemart_customfield_id ) ){
-					if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-					$customfields = new VirtueMartModelCustomfields();
+					$customfields = VmModel::getModel('Customfields');
 					$product->customfields = $customfields->getproductCustomslist($this->_id);
 					if(empty($product->customfields) and !empty($product->product_parent_id) ){
 						//$product->customfields = $this->productCustomsfieldsClone($product->product_parent_id,true) ;
@@ -634,8 +633,8 @@ class VirtueMartModelProduct extends VmModel {
 
 				// set the custom variants
 				if (!empty($product->virtuemart_customfield_id ) ) {
-					if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-					$customfields = new VirtueMartModelCustomfields();
+
+					$customfields = VmModel::getModel('Customfields');
 					// Load the custom product fields
 					$product->customfields = $customfields->getProductCustomsField($product);
 					$product->customfieldsRelatedCategories = $customfields->getProductCustomsFieldRelatedCategories($product);
@@ -1039,14 +1038,13 @@ class VirtueMartModelProduct extends VmModel {
 		// Update waiting list
 		if(!empty($data['notify_users'])){
 			if ($data['product_in_stock'] > 0 && $data['notify_users'] == '1' ) {
-				$waitinglist = new VirtueMartModelWaitingList();
+				$waitinglist = VmModel::getModel('Waitinglist');
 				$waitinglist->notifyList($data['virtuemart_product_id']);
 			}
 		}
 
 		// Process the images
-		if(!class_exists('VirtueMartModelMedia')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'media.php');
-		$mediaModel = new VirtueMartModelMedia();
+		$mediaModel = VmModel::getModel('Media');
 
 		$mediaModel->storeMedia($data,'product');
 		$errors = $mediaModel->getErrors();

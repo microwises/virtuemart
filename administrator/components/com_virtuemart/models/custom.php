@@ -66,8 +66,7 @@ class VirtueMartModelCustom extends VmModel {
 
    		}
 
-		if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-		$customfields = new VirtueMartModelCustomfields();
+		$customfields = VmModel::getModel('Customfields');
 		$this->_data->field_types = $customfields->getField_types() ;
   		return $this->_data;
 
@@ -94,8 +93,7 @@ class VirtueMartModelCustom extends VmModel {
 		}
 		$datas->items = $this->exeSortSearchListQuery(0, $query, '');
 
-		if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
-		$customfields = new VirtueMartModelCustomfields();
+		$customfields = VmModel::getModel('Customfields');
 
 		if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'html.php');
 		$datas->field_types = $customfields->getField_types() ;

@@ -43,6 +43,7 @@ if(VmConfig::get('shop_is_offline',0)){
 	/* Front-end helpers */
 	require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'image.php'); //dont remove that file it is actually in every view except the state view
 	require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php'); //dont remove that file it is actually in every view
+	require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 
 	/* Loading jQuery and VM scripts. */
 	vmJsApi::jQuery();
