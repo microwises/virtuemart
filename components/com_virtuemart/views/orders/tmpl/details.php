@@ -25,7 +25,6 @@ if($this->print){
 
 		<body onload="javascript:print();">
 		<h1><?php echo JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'); ?></h1>
-
 		<div class='spaceStyle'>
 		<?php
 		echo $this->loadTemplate('order');
@@ -44,6 +43,7 @@ if($this->print){
 
 	?>
 	<h1><?php echo JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'); ?>
+
 	<?php
 
 	/* Print view URL */
@@ -54,8 +54,11 @@ if($this->print){
 	$details_link .= JHtml::_('image',$button, JText::_('COM_VIRTUEMART_PRINT'), NULL, true);
 	$details_link  .=  '</a>';
 	echo $details_link; ?>
-
-	</h1><div class='spaceStyle'>
+</h1>
+	<div class='spaceStyle'>
+	    <div class="floatright"> <a href="<?php echo $this->order_list_link ?>"><?php echo JText::_('COM_VIRTUEMART_ORDERS_VIEW_DEFAULT_TITLE'); ?></a></div>
+	    <div class="clear"></div>
+<div class='spaceStyle'>
 	<?php
 	echo $this->loadTemplate('order');
 	?>

@@ -50,7 +50,7 @@ class VirtuemartViewVendor extends VmView {
 	function display($tpl = null) {
 
 		$document = JFactory::getDocument();
-
+		$pathway = $mainframe->getPathway();
 		$layoutName = $this->getLayout();
 
 		$model = VmModel::getModel();
@@ -60,6 +60,8 @@ class VirtuemartViewVendor extends VmView {
 // 		if ($layoutName=='default') {
 		if (empty($virtuemart_vendor_id)) {
 			$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_LIST') );
+			$pathway->addItem(JText::_('COM_VIRTUEMART_VENDOR_LIST'));
+
 			$vendors = $model->getVendors();
 			$this->assignRef('vendors', $vendors);
 
@@ -80,14 +82,17 @@ class VirtuemartViewVendor extends VmView {
 
 			if ($layoutName=='tos') {
 				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_TOS') );
+				$pathway->addItem(JText::_('COM_VIRTUEMART_VENDOR_TOS'));
 			}
 			elseif ($layoutName=='contact') {
 				$user = JFactory::getUser();
 				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_CONTACT') );
+				$pathway->addItem(JText::_('COM_VIRTUEMART_VENDOR_CONTACT'));
 				$this->assignRef('user', $user);
 
 			} else {
 				$document->setTitle( JText::_('COM_VIRTUEMART_VENDOR_DETAILS') );
+				$pathway->addItem(JText::_('COM_VIRTUEMART_VENDOR_DETAILS'));
 				$this->setLayout('details');
 			}
 
