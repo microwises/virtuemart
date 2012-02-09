@@ -55,14 +55,14 @@ function myValidator(f, t)
 	return false;
 }
 </script>
-
+<h1><?php echo $this->page_title ?></h1>
 <?php echo shopFunctionsF::getLoginForm(false); ?>
 
-<h1><?php if($this->userDetails->virtuemart_user_id!=0) {
+<h2><?php if($this->userDetails->virtuemart_user_id!=0) {
 	echo JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS');
 } else {
 	echo JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_REG');
-}?></h1>
+}?></h2>
 <form method="post" id="adminForm" name="userForm" action="<?php echo JRoute::_('index.php?view=user',$this->useXHTML,$this->useSSL) ?>" class="form-validate">
 <?php if($this->userDetails->user_is_vendor){ ?>
     <div class="buttonBar-right">

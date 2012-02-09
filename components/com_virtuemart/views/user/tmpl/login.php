@@ -92,7 +92,7 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
     <form action="index.php" method="post" name="com-login" >
 	<?php if (!$this->from_cart ) { ?>
 	<div>
-		<h1><?php echo JText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM'); ?></h1>
+		<h2><?php echo JText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM'); ?></h2>
 	</div>
 <div class="clear"></div>
 <?php } else { ?>
@@ -168,6 +168,6 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
     </form>
 
 <?php }
- 
+
 ?>
 
