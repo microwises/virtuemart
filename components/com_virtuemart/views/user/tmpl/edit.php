@@ -42,7 +42,7 @@ function myValidator(f, t)
 	f.task.value=t;
 
 	if (f.task.value=='cancel') {
-		f.submit();
+		//f.submit();
 		return true;
 	}
 	if (document.formvalidator.isValid(f)) {
@@ -58,9 +58,7 @@ function myValidator(f, t)
 <h1><?php echo $this->page_title ?></h1>
 <?php echo shopFunctionsF::getLoginForm(false); ?>
 
-<h2><?php if($this->userDetails->virtuemart_user_id!=0) {
-	echo JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS');
-} else {
+<h2><?php if($this->userDetails->virtuemart_user_id==0) {
 	echo JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_REG');
 }?></h2>
 <form method="post" id="adminForm" name="userForm" action="<?php echo JRoute::_('index.php?view=user',$this->useXHTML,$this->useSSL) ?>" class="form-validate">
@@ -68,8 +66,7 @@ function myValidator(f, t)
     <div class="buttonBar-right">
 	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'saveuser');" ><?php echo $this->button_lbl ?></button>
 	&nbsp;
-	<button class="button" type="submit" onclick="javascript:return myValidator(userForm, 'cancel');" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
-</div>
+<button class="button" type="button" onclick="document.adminForm.submit()" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button></div>
     <?php } ?>
 <?php // Loading Templates in Tabs
 if($this->userDetails->virtuemart_user_id!=0) {

@@ -20,6 +20,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+?>
+<h1><?php echo JText::_('COM_VIRTUEMART_ORDERS_VIEW_DEFAULT_TITLE'); ?></h1>
+<?php
 if (count($this->orderlist) == 0) {
 	//echo JText::_('COM_VIRTUEMART_ACC_NO_ORDER');
 	 echo shopFunctionsF::getLoginForm(false,true);

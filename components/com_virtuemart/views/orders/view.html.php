@@ -51,8 +51,13 @@ class VirtuemartViewOrders extends VmView {
 			//PDF needs more RAM than usual
 			@ini_set( 'max_execution_time', '24M' );
 		} else {
+		    if ($layoutName == 'details') {
 			$document->setTitle( JText::_('COM_VIRTUEMART_ACC_ORDER_INFO') );
 			$pathway->additem(JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'));
+		    } else {
+			$document->setTitle( JText::_('COM_VIRTUEMART_ORDERS_VIEW_DEFAULT_TITLE') );
+			$pathway->additem(JText::_('COM_VIRTUEMART_ORDERS_VIEW_DEFAULT_TITLE'));
+		    }
 		}
 
 		$orderModel = VmModel::getModel('orders');
