@@ -48,6 +48,8 @@ if(!Permissions::getInstance()->isSuperVendor()){
 	$app->redirect('index.php');
 }
 
+require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+
 /* Require specific controller if requested */
 if($_controller = JRequest::getWord('view', JRequest::getWord('controller', 'virtuemart'))) {
 	if (file_exists(JPATH_VM_ADMINISTRATOR.DS.'controllers'.DS.$_controller.'.php')) {

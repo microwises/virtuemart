@@ -37,7 +37,7 @@ class VirtuemartViewVirtuemart extends VmView {
 
 		$this->loadHelper('image');
 
-		$model = $this->getModel('virtuemart');
+		$model = VmModel::getModel('virtuemart');
 
 		$nbrCustomers = $model->getTotalCustomers();
 		$this->assignRef('nbrCustomers', $nbrCustomers);

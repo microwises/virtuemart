@@ -50,7 +50,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 
 		$this->assignRef('perms', Permissions::getInstance());
 
-		$model = $this->getModel('paymentmethod');
+		$model = VmModel::getModel('paymentmethod');
 
 		//@todo should be depended by loggedVendor
 		//		$vendorId=1;
@@ -61,11 +61,11 @@ class VirtuemartViewPaymentMethod extends VmView {
 
 		$layoutName = JRequest::getWord('layout', 'default');
 
-		$vendorModel = $this->getModel('vendor');
+		$vendorModel = VmModel::getModel('vendor');
 
 		$vendorModel->setId(1);
 		$vendor = $vendorModel->getVendor();
-		$currencyModel = $this->getModel('currency');
+		$currencyModel = VmModel::getModel('currency');
 		$currencyModel = $currencyModel->getCurrency($vendor->vendor_currency);
 		$this->assignRef('vendor_currency', $currencyModel->currency_symbol);
 

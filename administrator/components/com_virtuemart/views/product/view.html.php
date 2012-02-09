@@ -42,8 +42,8 @@ class VirtuemartViewProduct extends VmView {
 		$this->loadHelper('image');
 
 
-		//$category_model = $this->getModel('category');
-		$model = $this->getModel();
+		//$category_model = VmModel::getModel('category');
+		$model = VmModel::getModel();
 		// Handle any publish/unpublish
 		switch ($task) {
 			case 'add':
@@ -119,7 +119,7 @@ class VirtuemartViewProduct extends VmView {
 				$this->assignRef('imagePath', $imagePath);
 
 				// Load the vendors
-				$vendor_model = $this->getModel('vendor');
+				$vendor_model = VmModel::getModel('vendor');
 
 				// 				$vendors = $vendor_model->getVendors();
 				// 				$lists['vendors'] = JHTML::_('select.genericlist', $vendors, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $product->virtuemart_vendor_id);
@@ -128,7 +128,7 @@ class VirtuemartViewProduct extends VmView {
 					$lists['vendors'] = Shopfunctions::renderVendorList($product->virtuemart_vendor_id);
 				}
 				// Load the currencies
-				$currency_model = $this->getModel('currency');
+				$currency_model = VmModel::getModel('currency');
 
 				$vendor_model->setId(1);
 				$vendor = $vendor_model->getVendor();
@@ -143,7 +143,7 @@ class VirtuemartViewProduct extends VmView {
 
 				/* Load the manufacturers*/
 // 				$config = VmConfig::loadConfig();
-				$mf_model = $this->getModel('manufacturer');
+				$mf_model = VmModel::getModel('manufacturer');
 				$manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
 
 				if(count($manufacturers)>0 ){
@@ -162,11 +162,11 @@ class VirtuemartViewProduct extends VmView {
 					//$waitinglist = $this->get('waitingusers', 'waitinglist');
 
 
-					$waitinglistmodel = $this->getModel('waitinglist');
+					$waitinglistmodel = VmModel::getModel('waitinglist');
 					$waitinglist = $waitinglistmodel->getWaitingusers($product->virtuemart_product_id);
 					$this->assignRef('waitinglist', $waitinglist);
 				}
-				$field_model = $this->getModel('customfields');
+				$field_model = VmModel::getModel('customfields');
 				$fieldTypes = $field_model->getField_types();
 				$this->assignRef('fieldTypes', $fieldTypes);
 
@@ -272,14 +272,14 @@ class VirtuemartViewProduct extends VmView {
 
 			// Check for Media Items and Reviews, set the price
 
-			$media = $this->getModel('media');
+			$media = VmModel::getModel('media');
 
-			$productreviews = $this->getModel('ratings');
+			$productreviews = VmModel::getModel('ratings');
 
 			/* Load the product price */
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 
-			$vendor_model = $this->getModel('vendor');
+			$vendor_model = VmModel::getModel('vendor');
 
 			foreach ($productlist as $virtuemart_product_id => $product) {
 				$product->mediaitems = count($product->virtuemart_media_id);

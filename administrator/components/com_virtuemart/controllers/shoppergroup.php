@@ -50,7 +50,7 @@ class VirtuemartControllerShopperGroup extends VmController
 		/* Load the view object */
 		$view = $this->getView('shoppergroup', 'html');
 
-		$model = $this->getModel('shoppergroup');
+		$model = VmModel::getModel('shoppergroup');
 		$msgtype = '';
 		$cids = JRequest::getVar('virtuemart_shoppergroup_id',array());
 		if ($model->makeDefault((int)$cids[0])) $msg = JText::_('COM_VIRTUEMART_SET_TO_DEFAUT_SUCCESSFULLY');
@@ -58,7 +58,7 @@ class VirtuemartControllerShopperGroup extends VmController
 			$msg = JText::_('COM_VIRTUEMART_SET_TO_DEFAUT_ERROR');
 			$msgtype = 'error';
 		}
-		$mainframe->redirect('index.php?option=com_virtuemart&view=shoppergroup', $msg, $msgtype);		
+		$mainframe->redirect('index.php?option=com_virtuemart&view=shoppergroup', $msg, $msgtype);
 	}
 }
 // pure php no closing tag

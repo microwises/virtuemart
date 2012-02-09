@@ -43,7 +43,7 @@ class VirtuemartViewUserfields extends VmView {
 		$this->loadHelper('html');
 
 		$layoutName = JRequest::getWord('layout', 'default');
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 
 		// The list of fields which can't be toggled
 		//$lists['coreFields']= array( 'name','username', 'email', 'password', 'password2' );
@@ -86,12 +86,12 @@ class VirtuemartViewUserfields extends VmView {
 			if(Vmconfig::get('multix','none')!=='none'){
 				$lists['vendors']= ShopFunctions::renderVendorList($userField->virtuemart_vendor_id);
 			}
-// 			$vendor_model = $this->getModel('vendor');
+// 			$vendor_model = VmModel::getModel('vendor');
 // 			$vendor_list = $vendor_model->getVendors();
 // 			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $userField->virtuemart_vendor_id);
 
 			// Shopper groups for EU VAT Id
-			$shoppergroup_model = $this->getModel('shoppergroup');
+			$shoppergroup_model = VmModel::getModel('shoppergroup');
 			$shoppergroup_list = $shoppergroup_model->getShopperGroups(true);
 			$lists['shoppergroups'] = JHTML::_('select.genericlist', $shoppergroup_list, 'virtuemart_shoppergroup_id', '', 'virtuemart_shoppergroup_id', 'shopper_group_name', $model->_params->get('virtuemart_shoppergroup_id'));
 

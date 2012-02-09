@@ -42,7 +42,7 @@ class VirtuemartViewCoupon extends VmView {
 
 		$this->loadHelper('html');
 
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 
 		$coupon = $model->getCoupon();
 		$this->SetViewTitle('', $coupon->coupon_code);
@@ -56,11 +56,11 @@ class VirtuemartViewCoupon extends VmView {
 // 				$this->assignRef('vendorList', $vendorList);
 // 		}
 
-		 $vendorModel = $this->getModel('Vendor');
+		 $vendorModel = VmModel::getModel('Vendor');
 	    $vendorModel->setId(1);
 	    $vendor = $vendorModel->getVendor();
 
-	    $currencyModel = $this->getModel('Currency');
+	    $currencyModel = VmModel::getModel('Currency');
 	    $currencyModel = $currencyModel->getCurrency($vendor->vendor_currency);
 	    $this->assignRef('vendor_currency', $currencyModel->currency_symbol);
 

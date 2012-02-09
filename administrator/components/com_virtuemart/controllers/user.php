@@ -96,7 +96,7 @@ class VirtuemartControllerUser extends VmController {
 		if (!$_currentUser->authorize('com_users', 'manage')) {
 			$msg = JText::_(_NOT_AUTH);
 		} else {
-			$model = $this->getModel('user');
+			$model = VmModel::getModel('user');
 
 			$data = JRequest::get('post');
 

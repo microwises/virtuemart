@@ -170,7 +170,7 @@ class VirtueMartControllerUser extends JController
 // 		vmdebug('$currentUser',$currentUser);
 		if($currentUser->id!=0 || $register){
 			$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-			$userModel = $this->getModel('user');
+			$userModel = VmModel::getModel('user');
 
 			if(!$cart){
 				// Store multiple selectlist entries as a ; separated string

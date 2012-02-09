@@ -45,7 +45,7 @@ class VirtuemartViewMedia extends VmView {
 		$this->SetViewTitle();
 
 
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 		$this->assignRef('perms', Permissions::getInstance());
 
 		$layoutName = JRequest::getWord('layout', 'default');
@@ -57,7 +57,7 @@ class VirtuemartViewMedia extends VmView {
 			$isNew = ($media->virtuemart_media_id < 1);
 /*			if ($isNew) {
 				if(!Permissions::getInstance()->check('admin')) {
-					$usermodel = $this->getModel('user');
+					$usermodel = VmModel::getModel('user');
 // 					$usermodel->setCurrent();
 					$userDetails = $usermodel->getUser();
 					if(empty($userDetails->virtuemart_vendor_id)){

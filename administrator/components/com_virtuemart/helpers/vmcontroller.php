@@ -158,7 +158,7 @@ class VmController extends JController{
 
 		if(empty($data))$data = JRequest::get('post');
 
-		$model = $this->getModel($this->_cname);
+		$model = VmModel::getModel($this->_cname);
 		$id = $model->store($data);
 
 		$errors = $model->getErrors();
@@ -196,7 +196,7 @@ class VmController extends JController{
 			$msg = JText::_('COM_VIRTUEMART_SELECT_ITEM_TO_DELETE');
 			$type = 'notice';
 		} else {
-			$model = $this->getModel($this->_cname);
+			$model = VmModel::getModel($this->_cname);
 			$model->remove($ids);
 			$errors = $model->getErrors();
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_DELETED',$this->mainLangKey);
@@ -233,7 +233,7 @@ class VmController extends JController{
 	public function toggle($field,$val=null){
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		$model = $this->getModel($this->_cname);
+		$model = VmModel::getModel($this->_cname);
 		if (!$model->toggle($field,$val,$this->cidName)) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_TOGGLE_ERROR',$this->mainLangKey);
 		} else{
@@ -252,7 +252,7 @@ class VmController extends JController{
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$model = $this->getModel($this->_cname);
+		$model = VmModel::getModel($this->_cname);
 		if (!$model->toggle('published',1)) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_PUBLISHED_ERROR',$this->mainLangKey);
 		} else{
@@ -272,7 +272,7 @@ class VmController extends JController{
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$model = $this->getModel($this->_cname);
+		$model = VmModel::getModel($this->_cname);
 		if (!$model->toggle('published',0)) {
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_UNPUBLISHED_ERROR',$this->mainLangKey);
 		} else{
@@ -286,7 +286,7 @@ class VmController extends JController{
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$model = $this->getModel($this->_cname);
+		$model = VmModel::getModel($this->_cname);
 		$model->move(-1);
 		$msg = JText::sprintf('COM_VIRTUEMART_STRING_ORDER_UP_SUCCESS',$this->mainLangKey);
 		$this->setRedirect( $this->redirectPath, $msg);
@@ -296,7 +296,7 @@ class VmController extends JController{
 
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
-		$model = $this->getModel($this->_cname);
+		$model = VmModel::getModel($this->_cname);
 		$model->move(1);
 		$msg = JText::sprintf('COM_VIRTUEMART_STRING_ORDER_DOWN_SUCCESS',$this->mainLangKey);
 		$this->setRedirect( $this->redirectPath, $msg);
@@ -311,7 +311,7 @@ class VmController extends JController{
 		JArrayHelper::toInteger($cid);
 		JArrayHelper::toInteger($order);
 
-		$model = $this->getModel($this->_cname);
+		$model = VmModel::getModel($this->_cname);
 		if (!$model->saveorder($cid, $order)) $msg = 'error';
 		else $msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVE_ORDER_SUCCESS',$this->mainLangKey);
 		$this->setRedirect( $this->redirectPath, $msg);

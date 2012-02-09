@@ -124,7 +124,7 @@ class VirtuemartControllerRatings extends VmController {
 
 		if(empty($data))$data = JRequest::get('post');
 
-		$model = $this->getModel($this->_cname);
+		$model = VmModel::getModel($this->_cname);
 		$id = $model->saveRating($data);
 
 		$errors = $model->getErrors();

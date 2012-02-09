@@ -38,7 +38,7 @@ class VirtuemartViewCalc extends VmView {
 
 		$this->loadHelper('html');
 
-		$model = $this->getModel('calc');
+		$model = VmModel::getModel('calc');
 		$this->loadHelper('permissions');
 		$this->assignRef('perms', Permissions::getInstance());
 
@@ -54,8 +54,6 @@ class VirtuemartViewCalc extends VmView {
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 
-// 			$calcId = JRequest::getInt('cid[]');
-// 			$model->setId($calcId);
 			$calc = $model->getCalc();
 			$this->assignRef('calc',	$calc);
 
@@ -93,7 +91,7 @@ class VirtuemartViewCalc extends VmView {
 			$this->assignRef('categoryTree', $categoryTree);
 
 
-			$currencyModel = $this->getModel('currency');
+			$currencyModel = VmModel::getModel('currency');
 			$_currencies = $currencyModel->getCurrencies();
 			$this->assignRef('currencies', $_currencies);
 
@@ -126,7 +124,6 @@ class VirtuemartViewCalc extends VmView {
 
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
-
 
 		}
 

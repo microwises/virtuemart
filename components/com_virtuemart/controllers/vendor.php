@@ -40,7 +40,7 @@ class VirtueMartControllerVendor extends JController
 
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$this->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
-		$model = $this->getModel('vendor');
+		$model = VmModel::getModel('vendor');
 		$mainframe = JFactory::getApplication();
 		$vars = array();
 		$min = VmConfig::get('vm_asks_minimum_comment_length', 50)+1;

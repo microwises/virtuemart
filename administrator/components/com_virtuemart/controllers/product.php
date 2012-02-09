@@ -72,7 +72,7 @@ class VirtuemartControllerProduct extends VmController {
 		JRequest::setVar($data['token'], '1', 'post');
 
 		JRequest::checkToken() or jexit( 'Invalid Token save' );
-		$model = $this->getModel($this->_cname);
+		$model = VmModel::getModel($this->_cname);
 		$id = $model->store($data);
 
 		$errors = $model->getErrors();
@@ -108,7 +108,7 @@ class VirtuemartControllerProduct extends VmController {
 		/* Load the view object */
 		$view = $this->getView('product', 'html');
 
-		$model = $this->getModel('product');
+		$model = VmModel::getModel('product');
 
 		//$cids = JRequest::getVar('cid');
 		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');
@@ -140,7 +140,7 @@ class VirtuemartControllerProduct extends VmController {
 		/* Load the view object */
 		$view = $this->getView('product', 'html');
 
-		$model = $this->getModel('product');
+		$model = VmModel::getModel('product');
 		$msgtype = '';
 		//$cids = JRequest::getInt('virtuemart_product_id',0);
 		$cids = JRequest::getVar($this->_cidName, JRequest::getVar('virtuemart_product_id',array(),'', 'ARRAY'), '', 'ARRAY');

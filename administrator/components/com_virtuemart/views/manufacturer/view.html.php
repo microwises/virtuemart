@@ -40,8 +40,8 @@ class VirtuemartViewManufacturer extends VmView {
 
 
 		// get necessary models
-		$model = $this->getModel();
-		$categoryModel = $this->getModel('manufacturercategories');
+		$model = VmModel::getModel();
+		$categoryModel = VmModel::getModel('manufacturercategories');
 
 		$this->SetViewTitle();
 
@@ -56,7 +56,7 @@ class VirtuemartViewManufacturer extends VmView {
 			$this->assignRef('manufacturer',	$manufacturer);
 
 			/* Process the images */
-			$mediaModel = $this->getModel('media');
+			$mediaModel = VmModel::getModel('media');
 			$mediaModel -> setId($manufacturer->virtuemart_media_id);
 			$image = $mediaModel->getFile('manufacturer','image');
 

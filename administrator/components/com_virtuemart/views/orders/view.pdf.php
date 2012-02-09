@@ -46,10 +46,10 @@ class VirtuemartViewOrders extends JView {
 
 
 		// Load addl models
-		$orderModel = $this->getModel('orders');
-		$userFieldsModel = $this->getModel('userfields');
-		$productModel = $this->getModel('product');
-		$orderStatusModel = $this->getModel('orderstatus');
+		$orderModel = VmModel::getModel('orders');
+		$userFieldsModel = VmModel::getModel('userfields');
+		$productModel = VmModel::getModel('product');
+		$orderStatusModel = VmModel::getModel('orderstatus');
 
 		/* Get the data */
 

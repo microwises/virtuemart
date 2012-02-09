@@ -37,7 +37,7 @@ class VirtuemartViewCategory extends VmView {
 
 		$this->loadHelper('html');
 
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 		$layoutName = $this->getLayout();
 
 		if ($layoutName == 'edit') {

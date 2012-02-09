@@ -41,7 +41,7 @@ class VirtuemartViewReport extends VmView {
 		$this->loadHelper('currencydisplay');
 		$this->loadHelper('reportFunctions');
 
-		$model		= $this->getModel();
+		$model		= VmModel::getModel();
 		// $config		= JFactory::getConfig();
 		// $tzoffset	= $config->getValue('config.offset');
 		JRequest::setvar('task','');

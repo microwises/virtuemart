@@ -42,9 +42,9 @@ class VirtuemartViewOrders extends VmView {
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 
 		// Load addl models
-		$orderModel = $this->getModel();
-		$userFieldsModel = $this->getModel('userfields');
-		$productModel = $this->getModel('product');
+		$orderModel = VmModel::getModel();
+		$userFieldsModel = VmModel::getModel('userfields');
+		$productModel = VmModel::getModel('product');
 
 		/* Get the data */
 

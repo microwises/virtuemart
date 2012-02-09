@@ -38,7 +38,7 @@ class VirtuemartViewOrderstatus extends VmView {
 
 		$this->loadHelper('html');
 
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 		$orderStatus = $model->getOrderStatus();
 
 		$this->SetViewTitle('',JText::_($orderStatus->order_status_name) );
@@ -64,7 +64,7 @@ class VirtuemartViewOrderstatus extends VmView {
                            $lists['vmCoreStatusCode'] = $model->getVMCoreStatusCode();
 
 			// Vendor selection
-			$vendor_model = $this->getModel('vendor');
+			$vendor_model = VmModel::getModel('vendor');
 			$vendor_list = $vendor_model->getVendors();
 			$lists['vendors'] = JHTML::_('select.genericlist', $vendor_list, 'virtuemart_vendor_id', '', 'virtuemart_vendor_id', 'vendor_name', $orderStatus->virtuemart_vendor_id);
 

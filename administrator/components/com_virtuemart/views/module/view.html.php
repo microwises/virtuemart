@@ -37,8 +37,8 @@ class VirtuemartViewModule extends VmView {
 
 		$this->loadHelper('html');
 
-		$model = $this->getModel();
-		//$vendorModel = $this->getModel('Vendor');
+		$model = VmModel::getModel();
+		//$vendorModel = VmModel::getModel('Vendor');
 
 		$module = $model->getModule();
 

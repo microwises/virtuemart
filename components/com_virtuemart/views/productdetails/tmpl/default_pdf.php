@@ -114,7 +114,7 @@ if (empty ( $this->product )) {
 				</div>
 
 				<?php // Manufacturer of the Product
-				if(VmConfig::get('show_manufacturer', 1) && !empty($this->product->virtuemart_manufacturer_id)) { ?>
+				if(VmConfig::get('show_manufacturers', 1) && !empty($this->product->virtuemart_manufacturer_id)) { ?>
 				<div class="manufacturer">
 				<?php
 					$link = JRoute::_(juri::root().'index.php?option=com_virtuemart&view=manufacturer&virtuemart_manufacturer_id='.$this->product->virtuemart_manufacturer_id.'&tmpl=component');

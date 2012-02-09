@@ -41,7 +41,7 @@ class VirtuemartViewUser extends VmView {
 		$this->loadHelper('html');
 
 
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 
 		$currentUser = JFactory::getUser();
 
@@ -79,8 +79,8 @@ class VirtuemartViewUser extends VmView {
 // 			$this->loadHelper('currencydisplay');
 			$this->loadHelper('image');
 
-			$userFieldsModel = $this->getModel('userfields');
-			//			$orderModel = $this->getModel('orders');
+			$userFieldsModel = VmModel::getModel('userfields');
+			//			$orderModel = VmModel::getModel('orders');
 
 			$userDetails = $model->getUser();
 
@@ -176,7 +176,7 @@ class VirtuemartViewUser extends VmView {
 
 			if (!$_new) {
 				// Check for existing orders for this user
-				$orders = $this->getModel('orders');
+				$orders = VmModel::getModel('orders');
 				$orderList = $orders->getOrdersList($userDetails->JUser->get('id'), true);
 			} else {
 				$orderList = null;
@@ -192,14 +192,14 @@ class VirtuemartViewUser extends VmView {
 // 			vmdebug('user $userDetails ',	$userDetails 	);
 			if (!empty($userDetails->user_is_vendor)) {
 
-				$vendorModel = $this->getModel('vendor');
+				$vendorModel = VmModel::getModel('vendor');
 				$vendorModel->setId($userDetails->virtuemart_vendor_id);
 
 
 				$vendorModel->addImages($userDetails->vendor);
 				$this->assignRef('vendor', $userDetails->vendor);
 
-				$currencyModel = $this->getModel('currency');
+				$currencyModel = VmModel::getModel('currency');
 				$_currencies = $currencyModel->getCurrencies();
 				$this->assignRef('currencies', $_currencies);
 
@@ -228,7 +228,7 @@ class VirtuemartViewUser extends VmView {
 
 			$this->addStandardDefaultViewLists($model,'ju.id');
 
-			$shoppergroupmodel = $this->getModel('shopperGroup');
+			$shoppergroupmodel = VmModel::getModel('shopperGroup');
 			$defaultShopperGroup = $shoppergroupmodel->getDefault()->shopper_group_name;
 			$this->assignRef('defaultShopperGroup', $defaultShopperGroup);
 		}
@@ -245,7 +245,7 @@ class VirtuemartViewUser extends VmView {
 		$tpl = ($doVendor) ? 'mail_html_regvendor' : 'mail_html_reguser';
 		$this->setLayout($tpl);
 
-		$vendorModel = $this->getModel('vendor');
+		$vendorModel = VmModel::getModel('vendor');
 		$vendorId = 1;
 		$vendorModel->setId($vendorId);
 		$vendor = $vendorModel->getVendor();

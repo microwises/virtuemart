@@ -37,7 +37,7 @@ class VirtuemartViewUsergroups extends VmView {
 
 		$this->loadHelper('html');
 
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 		// TODO icon for this view
 		$this->SetViewTitle();
 

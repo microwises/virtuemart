@@ -40,8 +40,8 @@ class VirtuemartViewConfig extends VmView {
 		$this->loadHelper('image');
 		$this->loadHelper('html');
 
-		$model = $this->getModel();
-		$usermodel = $this->getModel('user');
+		$model = VmModel::getModel();
+		$usermodel = VmModel::getModel('user');
 
 		 JToolBarHelper::title( JText::_('COM_VIRTUEMART_CONFIG') , 'head vm_config_48');
 

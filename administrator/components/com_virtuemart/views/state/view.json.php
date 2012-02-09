@@ -34,7 +34,7 @@ class VirtuemartViewState extends JView {
 	function display($tpl = null) {
 
 
-		$stateModel = $this->getModel('state');
+		$stateModel = VmModel::getModel('state');
 		$states = array();
 		$db = JFactory::getDBO();
 		//retrieving countries id

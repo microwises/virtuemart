@@ -41,7 +41,7 @@ class VirtuemartViewShipmentmethod extends VmView {
 
 		$this->loadHelper('html');
 
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 
 
 		$layoutName = JRequest::getWord('layout', 'default');

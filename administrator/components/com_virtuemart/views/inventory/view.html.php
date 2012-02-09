@@ -40,7 +40,7 @@ class VirtuemartViewInventory extends VmView {
 		$this->loadHelper('html');
 
 		/* Get the data */
-		$model = $this->getModel('product');
+		$model = VmModel::getModel('product');
 		$inventorylist = $model->getProductListing(false,false);
 
 		/* Apply currency */

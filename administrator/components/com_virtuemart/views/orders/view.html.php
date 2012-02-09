@@ -45,12 +45,12 @@ class VirtuemartViewOrders extends VmView {
 		//if(!class_exists('vmOrderPlugin')) require(JPATH_VM_PLUGINS.DS.'vmorderplugin.php');
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 
-		$orderStatusModel=$this->getModel('orderstatus');
+		$orderStatusModel=VmModel::getModel('orderstatus');
 		$orderStates = $orderStatusModel->getOrderStatusList();
 
 		$this->SetViewTitle( 'ORDER');
 
-		$orderModel = $this->getModel();
+		$orderModel = VmModel::getModel();
 
 // 		JToolBarHelper::custom( 'orderPrint', 'print','','COM_VIRTUEMART_PRINT',false);
 // 		JToolBarHelper::custom( 'invoice', 'invoice','','COM_VIRTUEMART_INVOICE',false);
@@ -63,8 +63,8 @@ class VirtuemartViewOrders extends VmView {
 
 			// Load addl models
 
-			$userFieldsModel = $this->getModel('userfields');
-			$productModel = $this->getModel('product');
+			$userFieldsModel = VmModel::getModel('userfields');
+			$productModel = VmModel::getModel('product');
 
 			// Get the data
 			$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
@@ -147,7 +147,7 @@ class VirtuemartViewOrders extends VmView {
 
 			$this->assignRef('orderstatuses', $orderStates);
 
-			$model = $this->getModel();
+			$model = VmModel::getModel();
 			$orderId = JRequest::getString('orderId', '');
 			$orderLineItem = JRequest::getVar('orderLineId', '');
 			$this->assignRef('virtuemart_order_id', $orderId);
@@ -159,7 +159,7 @@ class VirtuemartViewOrders extends VmView {
 		else {
 			$this->setLayout('orders');
 
-			$model = $this->getModel();
+			$model = VmModel::getModel();
 			$orderslist = $model->getOrdersList();
 
 			$this->assignRef('orderstatuses', $orderStates);
@@ -206,10 +206,10 @@ class VirtuemartViewOrders extends VmView {
 		$tpl = 'mail_raw_updorder';
 	    }
 		$this->setLayout($tpl);
-		$vendorModel = $this->getModel('vendor');
+		$vendorModel = VmModel::getModel('vendor');
 		$virtuemart_vendor_id = $vendorModel->getVendorId('order', $this->order['virtuemart_order_id']);
 
-		$orderModel=$this->getModel();
+		$orderModel=VmModel::getModel();
 		$this->orderdata = $orderModel->getOrder($this->order['virtuemart_order_id']);
 		$vendorModel->setId($virtuemart_vendor_id);
 		$this->vendor = $vendorModel->getVendor();

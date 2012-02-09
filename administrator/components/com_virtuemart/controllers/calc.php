@@ -84,7 +84,7 @@ class VirtuemartControllerCalc extends VmController {
 		}
 
 		//getting the model
-		$model = $this->getModel('calc');
+		$model = VmModel::getModel('calc');
 
 		if ($model->orderCalc($id, -1)) {
 			$msg = JText::_('COM_VIRTUEMART_ITEM_MOVED_UP');
@@ -119,7 +119,7 @@ class VirtuemartControllerCalc extends VmController {
 		}
 
 		//getting the model
-		$model = $this->getModel('calc');
+		$model = VmModel::getModel('calc');
 
 		if ($model->orderCalc($id, 1)) {
 			$msg = JText::_('COM_VIRTUEMART_ITEM_MOVED_DOWN');
@@ -142,7 +142,7 @@ class VirtuemartControllerCalc extends VmController {
 		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger($cid);
 
-		$model = $this->getModel('calc');
+		$model = VmModel::getModel('calc');
 
 		$order	= JRequest::getVar('order', array(), 'post', 'array');
 		JArrayHelper::toInteger($order);

@@ -76,8 +76,8 @@ class VirtueMartControllerProductdetails extends JController {
 				$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&tmpl=component&view=productdetails&task=askquestion&virtuemart_product_id='.JRequest::getInt('virtuemart_product_id',0) ),JText::_('COM_VIRTUEMART_COMMENT_NOT_VALID_JS'));
 				return ;
 		}
-		$this->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
-		$productModel = $this->getModel('product');
+
+		$productModel = VmModel::getModel('product');
 
 		$cids = JRequest::getVar('cid');
 		$vars['product'] = $productModel->getProduct((int)$cids[0]);
@@ -95,7 +95,7 @@ class VirtueMartControllerProductdetails extends JController {
 	 	}
 	 	$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
 
-	 	$vendorModel = $this->getModel('vendor');
+	 	$vendorModel = VmModel::getModel('vendor');
 		$VendorEmail = $vendorModel->getVendorEmail($vars['product']->virtuemart_vendor_id);
 		$vars['vendor'] = array('vendor_store_name' => $fromName );
 
@@ -125,8 +125,7 @@ class VirtueMartControllerProductdetails extends JController {
 		$mainframe = JFactory::getApplication();
 		$vars = array();
 
-		$this->addModelPath(JPATH_VM_ADMINISTRATOR.DS.'models');
-		$productModel = $this->getModel('product');
+		$productModel = VmModel::getModel('product');
 
 		$cids = JRequest::getVar('cid');
 		$vars['product'] = $productModel->getProduct((int)$cids[0]);
@@ -136,7 +135,7 @@ class VirtueMartControllerProductdetails extends JController {
 			$fromName = $user->name;
 		$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
 
-	 	$vendorModel = $this->getModel('vendor');
+	 	$vendorModel = VmModel::getModel('vendor');
 		$VendorEmail = $vendorModel->getVendorEmail($vars['product']->virtuemart_vendor_id);
 		$vars['vendor'] = array('vendor_store_name' => $fromName );
 
@@ -163,8 +162,6 @@ class VirtueMartControllerProductdetails extends JController {
 	 */
 	public function MailForm(){
 
-
-
 		if (JRequest::getCmd('task') == 'recommend' ) {
 			$user = JFactory::getUser();
 			if (empty($user->id)) {
@@ -175,8 +172,6 @@ class VirtueMartControllerProductdetails extends JController {
 		} else {
 			$view = $this->getView('askquestion', 'html');
 		}
-
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 
 		/* Set the layout */
 		$view->setLayout('form');
@@ -189,17 +184,9 @@ class VirtueMartControllerProductdetails extends JController {
 	 TODO  control and update in database the review */
 	public function review(){
 
-		$mainframe = JFactory::getApplication();
-		// add the ratings admin model
-
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-
-		/* Create the view */
-		$view = $this->getView('productdetails', 'html');
-
-		/* Get the posted data */
 		$data = JRequest::get('post');
 
+		$model = VmModel::getModel('ratings');
 		$model->saveRating($data);
 		$errors = $model->getErrors();
 		if(empty($errors)) $msg = JText::sprintf('COM_VIRTUEMART_STRING_SAVED',JText::_('COM_VIRTUEMART_REVIEW') );
@@ -207,16 +194,8 @@ class VirtueMartControllerProductdetails extends JController {
 			$msg = ($error).'<br />';
 		}
 
-//		$msgtype = '';
-//		if ($model->saveRating($data)) $mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_SAVED_SUCCESSFULLY') );
-//		else {
-//			$mainframe->enqueueMessage($model->getError());
-//			$mainframe->enqueueMessage( JText::_('COM_VIRTUEMART_RATING_NOT_SAVED_SUCCESSFULLY') );
-//		}
-
 		$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$data['virtuemart_product_id']), $msg);
-		// Display it all
-//		$view->display();
+
 	}
 
 	/**
@@ -252,10 +231,8 @@ class VirtueMartControllerProductdetails extends JController {
 		if(!empty($quantityArray[0])){
 			$quantity = $quantityArray[0];
 		}
-		//echo '<pre>'.print_r($quantityArray,1).' and $quantity '.$quantity.'</pre>';
 
-		$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
-		$product_model = $this->getModel('product');
+		$product_model = VmModel::getModel('product');
 
 		$prices = $product_model->getPrice($virtuemart_product_id,$customPrices,$quantity);
 		$priceFormated = array();

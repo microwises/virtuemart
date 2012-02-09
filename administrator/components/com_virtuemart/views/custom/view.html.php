@@ -37,7 +37,7 @@ class VirtuemartViewCustom extends VmView {
 
 		$this->loadHelper('html');
 		$this->loadHelper('vmcustomplugin');
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 		$this->loadHelper('permissions');
 		// TODO Make an Icon for custom
 		$this->SetViewTitle('PRODUCT_CUSTOM_FIELD');
@@ -50,7 +50,7 @@ class VirtuemartViewCustom extends VmView {
 			$customPlugin = '';
 			$this->loadHelper('parameterparser');
 			$custom = $model->getCustom();
-			$customfields = $this->getModel('customfields');
+			$customfields = VmModel::getModel('customfields');
 // 			vmdebug('VirtuemartViewCustom',$custom);
 			JPluginHelper::importPlugin('vmcustom');
 			$dispatcher = JDispatcher::getInstance();

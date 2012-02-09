@@ -39,8 +39,8 @@ class VirtuemartViewCountry extends VmView {
 		$this->loadHelper('html');
 
 
-		$model = $this->getModel('country');
-		$zoneModel = $this->getModel('worldzones');
+		$model = VmModel::getModel('country');
+		$zoneModel = VmModel::getModel('worldzones');
 
 		$this->SetViewTitle();
 

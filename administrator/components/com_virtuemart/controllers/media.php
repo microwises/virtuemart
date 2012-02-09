@@ -59,7 +59,7 @@ class VirtuemartControllerMedia extends VmController {
 
 	function save(){
 
-		$fileModel = $this->getModel('media');
+		$fileModel = VmModel::getModel('media');
 
 		//Now we try to determine to which this media should be long to
 		$data = JRequest::get('post');

@@ -41,7 +41,7 @@ class VirtuemartViewState extends VmView {
 		$this->SetViewTitle();
 
 
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 
 //		$stateId = JRequest::getVar('virtuemart_state_id');
 //		$model->setId($stateId);
@@ -58,7 +58,7 @@ class VirtuemartViewState extends VmView {
 			return false;
 		}
 
-		$country = $this->getModel('country');
+		$country = VmModel::getModel('country');
 		$country->setId($countryId);
 		$this->assignRef('country_name', $country->getData()->country_name);
 
@@ -69,7 +69,7 @@ class VirtuemartViewState extends VmView {
 
 			$this->assignRef('state', $state);
 
-			$zoneModel = $this->getModel('Worldzones');
+			$zoneModel = VmModel::getModel('Worldzones');
 			$this->assignRef('worldZones', $zoneModel->getWorldZonesSelectList());
 
 			$this->addStandardEditViewCommands();

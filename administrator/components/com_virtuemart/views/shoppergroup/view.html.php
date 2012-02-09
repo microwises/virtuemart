@@ -39,7 +39,7 @@ class VirtuemartViewShopperGroup extends VmView {
 
 // 		$this->assignRef('perms', Permissions::getInstance());
 
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {

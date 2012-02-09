@@ -54,7 +54,7 @@ class VirtuemartViewRatings extends VmView {
 		$this->max_rating = VmConfig::get('vm_maximum_rating_scale',5);
 		$this->assignRef('max_rating', $this->max_rating);
 
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 		$this->SetViewTitle('REVIEW_RATE' );
 
 
@@ -66,15 +66,12 @@ class VirtuemartViewRatings extends VmView {
 				$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
 				$reviewslist = $model->getReviews($virtuemart_product_id);
 
-				/* Get the pagination */
-				$pagination = $this->get('Pagination');
+				$this->addStandardDefaultViewLists($model);
 				$lists = array();
 				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
 				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
-				/* Assign the data */
 				$this->assignRef('reviewslist', $reviewslist);
-				$this->assignRef('pagination',	$pagination);
 
 				break;
 
@@ -103,7 +100,7 @@ class VirtuemartViewRatings extends VmView {
 					$this->SetViewTitle('REVIEW_RATE','ERROR' );
 				}
 
-		
+
 
 				JToolBarHelper::customX('cancelEditReview', 'cancel', 'cancel',  JText::_('COM_VIRTUEMART_CANCEL'), false);
 
@@ -121,7 +118,7 @@ class VirtuemartViewRatings extends VmView {
 
 				$this->addStandardDefaultViewCommands(false, true);
 				$this->addStandardDefaultViewLists($model);
-	
+
 
 				break;
 		}

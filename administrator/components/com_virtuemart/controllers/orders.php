@@ -59,7 +59,7 @@ class VirtuemartControllerOrders extends VmController {
 	 * @author Kohl Patrick
 	 */
 	public function next($dir = 'ASC'){
-		$model = $this->getModel('orders');
+		$model = VmModel::getModel('orders');
 		$id = JRequest::getInt('virtuemart_order_id');
 		if (!$order_id = $model->getOrderId($dir,$id)) {
 			$order_id  = $id;
@@ -98,7 +98,7 @@ class VirtuemartControllerOrders extends VmController {
 		$view = $this->getView('orders', 'html');
 
 		/* Default model */
-		$model = $this->getModel('orders');
+		$model = VmModel::getModel('orders');
 		$model->updateOrderStatus();
 		/* Now display the view. */
 		$view->display();
@@ -122,7 +122,7 @@ class VirtuemartControllerOrders extends VmController {
 		$view->loadHelper('vendorHelper');
 
 		/* Update the statuses */
-		$model = $this->getModel('orders');
+		$model = VmModel::getModel('orders');
 
 		if ($lastTask == 'updatestatus') {
 			// single order is in POST but we need an array
@@ -166,7 +166,7 @@ class VirtuemartControllerOrders extends VmController {
 	    $view->loadHelper('vendorHelper');
 
 	    $data = JRequest::get('post');
-	    $model = $this->getModel();
+	    $model = VmModel::getModel();
 	    $model->updateItemStatus(JArrayHelper::toObject($data), $data['new_status']);
 
 	    $mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.$data['virtuemart_order_id']);
@@ -209,7 +209,7 @@ class VirtuemartControllerOrders extends VmController {
 	{
 		//vmdebug('updateOrderItemStatus');
 		$mainframe = Jfactory::getApplication();
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 		$_items = JRequest::getVar('item_id',  0, '', 'array');
 		//JArrayHelper::toInteger($_items);
 
@@ -231,7 +231,7 @@ class VirtuemartControllerOrders extends VmController {
 	{
 		//vmdebug('updateOrderItem');
 		$mainframe = Jfactory::getApplication();
-		$model = $this->getModel('orders');
+		$model = VmModel::getModel('orders');
 	//	$model->updateSingleItem();
 		$mainframe->redirect('index.php?option=com_virtuemart&view=orders&task=edit&virtuemart_order_id='.JRequest::getInt('virtuemart_order_id', ''));
 	}
@@ -242,7 +242,7 @@ class VirtuemartControllerOrders extends VmController {
 	public function saveOrderItem() {
 		//vmdebug('saveOrderItem');
 	    $orderId = JRequest::getInt('virtuemart_order_id', '');
-	    $model = $this->getModel();
+	    $model = VmModel::getModel();
 	    $msg = '';
 	    $data = JRequest::get('post');
 	    if (!$model->saveOrderLineItem()) {
@@ -259,7 +259,7 @@ class VirtuemartControllerOrders extends VmController {
 	*/
 	public function removeOrderItem() {
 		//vmdebug('removeOrderItem');
-	    $model = $this->getModel();
+	    $model = VmModel::getModel();
 	    $msg = '';
 	    $orderId = JRequest::getInt('orderId', '');
 		// TODO $orderLineItem as int ???

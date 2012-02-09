@@ -41,7 +41,7 @@ class VirtuemartViewUpdatesMigration extends VmView {
 // 		$this->loadHelper('connection');
 		$this->loadHelper('image');
 		$this->loadHelper('html');
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 
 		$this->assignRef('checkbutton_style', $checkbutton_style);
 		$this->assignRef('downloadbutton_style', $downloadbutton_style);

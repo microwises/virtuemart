@@ -78,7 +78,7 @@ class VirtuemartControllerCategory extends VmController {
 			$mainframe->redirect('index.php?option=com_virtuemart&view=category', $msg, 'error');
 		}
 
-		$categoryModel = $this->getModel('category');
+		$categoryModel = VmModel::getModel('category');
 		$status = $categoryModel->share($cid);
 
 		if( $status == 1 ){
@@ -115,7 +115,7 @@ class VirtuemartControllerCategory extends VmController {
 		}
 
 		//getting the model
-		$model = $this->getModel('category');
+		$model = VmModel::getModel('category');
 
 		if ($model->orderCategory($id, -1)) {
 			$msg = JText::_('COM_VIRTUEMART_ITEM_MOVED_UP');
@@ -150,7 +150,7 @@ class VirtuemartControllerCategory extends VmController {
 		}
 
 		//getting the model
-		$model = $this->getModel('category');
+		$model = VmModel::getModel('category');
 
 		if ($model->orderCategory($id, 1)) {
 			$msg = JText::_('COM_VIRTUEMART_ITEM_MOVED_DOWN');
@@ -173,7 +173,7 @@ class VirtuemartControllerCategory extends VmController {
 		$cid	= JRequest::getVar( 'cid', array(), 'post', 'array' );	//is sanitized
 		JArrayHelper::toInteger($cid);
 
-		$model = $this->getModel('category');
+		$model = VmModel::getModel('category');
 
 		$order	= JRequest::getVar('order', array(), 'post', 'array');
 		JArrayHelper::toInteger($order);

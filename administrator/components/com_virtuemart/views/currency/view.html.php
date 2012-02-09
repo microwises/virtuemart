@@ -38,7 +38,7 @@ class VirtuemartViewCurrency extends VmView {
 
 		$this->loadHelper('html');
 
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 
 
 		$db = JFactory::getDBO();

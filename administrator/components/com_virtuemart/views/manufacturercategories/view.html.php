@@ -39,7 +39,7 @@ class VirtuemartViewManufacturercategories extends VmView {
 		$this->loadHelper('html');
 
 		// get necessary model
-		$model = $this->getModel();
+		$model = VmModel::getModel();
 
 		$this->SetViewTitle('MANUFACTURER_CATEGORY');
 
