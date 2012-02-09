@@ -23,7 +23,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 <div class="product-fields">
 	    <?php
 	    $custom_title = null;
-	    foreach ($this->product->customfieldsSorted['normal'] as $field) {
+	    foreach ($this->product->customfieldsSorted[$this->position] as $field) {
 		if ($field->display) {
 		    ?><div class="product-field product-field-type-<?php echo $field->field_type ?>">
 		    <?php if ($field->custom_title != $custom_title) { ?>

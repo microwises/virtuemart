@@ -130,7 +130,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 					var form = document.getElementById('reviewform');
 					form.counter.value= form.comment.value.length;
 				}";
-
+			$document = &JFactory::getDocument();
 			$document->addScriptDeclaration($reviewJavascript);
 
 			if($this->showRating) {

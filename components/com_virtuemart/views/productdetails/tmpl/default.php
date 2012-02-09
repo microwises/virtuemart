@@ -56,9 +56,22 @@ if (empty($this->product)) {
 
     <?php
     // Product Navigation
-    if (VmConfig::get('product_navigation', 1)) {
-	echo $this->loadTemplate('navigation');
-    } // Product Navigation END
+    if (VmConfig::get('product_navigation', 1)) { ?>
+	 <div class="product-neighbours">
+	    <?php
+	    if (!empty($this->product->neighbours ['previous'][0])) {
+		$prev_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['previous'][0] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id);
+		echo JHTML::_('link', $prev_link, $this->product->neighbours ['previous'][0]
+			['product_name'], array('class' => 'previous-page'));
+	    }
+	    if (!empty($this->product->neighbours ['next'][0])) {
+		$next_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['next'][0] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id);
+		echo JHTML::_('link', $next_link, $this->product->neighbours ['next'][0] ['product_name'], array('class' => 'next-page'));
+	    }
+	    ?>
+    	<div class="clear"></div>
+        </div>
+    <?php } // Product Navigation END
     ?>
 
     <?php // Product Title  ?>
@@ -72,8 +85,26 @@ if (empty($this->product)) {
     ?>
 
     <?php // PDF - Print - Email Icon
-    if (VmConfig::get('show_emailfriend') || VmConfig::get('show_printicon') || VmConfig::get('pdf_button_enable')) {
-	echo $this->loadTemplate('icons'); } // PDF - Print - Email Icon END  ?>
+    if (VmConfig::get('show_emailfriend') || VmConfig::get('show_printicon') || VmConfig::get('pdf_button_enable')) { ?>
+	 <div class="icons">
+	    <?php
+	    //$link = (JVM_VERSION===1) ? 'index2.php' : 'index.php';
+	    $link = 'index.php?tmpl=component&option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->virtuemart_product_id;
+	    $MailLink = 'index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id=' . $this->product->virtuemart_product_id . '&virtuemart_category_id=' . $this->product->virtuemart_category_id . '&tmpl=component';
+
+	    if (VmConfig::get('pdf_icon', 1) == '1') {
+		echo $this->linkIcon($link . '&format=pdf', 'COM_VIRTUEMART_PDF', 'pdf_button', 'pdf_button_enable', false);
+	    }
+	    echo $this->linkIcon($link . '&print=1', 'COM_VIRTUEMART_PRINT', 'printButton', 'show_printicon');
+	    echo $this->linkIcon($MailLink, 'COM_VIRTUEMART_EMAIL', 'emailButton', 'show_emailfriend');
+	    // echo shopFunctionsF::PrintIcon($link.'&print=1');
+	    // echo shopFunctionsF::EmailIcon($this->product);
+	    ?>
+    	<div class="clear"></div>
+        </div>
+	<?php
+
+	} // PDF - Print - Email Icon END  ?>
 
     <?php // Product Short Description
     if (!empty($this->product->product_s_desc)) { ?>
@@ -86,7 +117,8 @@ if (empty($this->product)) {
 
 
     if (!empty($this->product->customfieldsSorted['ontop'])) {
-	echo $this->loadTemplate('customfieldstop');
+	$this->position='ontop';
+	echo $this->loadTemplate('customfields');
     } // Product Custom ontop end
     ?>
 
@@ -108,7 +140,9 @@ echo $this->loadTemplate('images');
 
 		<?php
 		if ($this->showRating) {
-		    echo $this->loadTemplate('showratings');
+		    $maxrating = VmConfig::get('vm_maximum_rating_scale',5);
+					$rating = empty($this->rating)? JText::_('COM_VIRTUEMART_RATING').' '.JText::_('COM_VIRTUEMART_UNRATED'):JText::_('COM_VIRTUEMART_RATING') . round($this->rating->rating, 2) . '/'. $maxrating;
+					echo   $rating;
 		}
 
 		// Product Price
@@ -129,15 +163,29 @@ echo $this->loadTemplate('images');
 		// Availability Image
 		/* TO DO add width and height to the image */
 		if (!empty($this->product->product_availability)) {
-		    echo $this->loadTemplate('availability');
+		   $stockhandle = VmConfig::get('stockhandle', 'none');
+if ($stockhandle == 'risetime' and ($this->product->product_in_stock - $this->product->product_ordered) < 1) {
+    ?>	<div class="availability">
+    <?php echo JHTML::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability', '7d.gif'), VmConfig::get('rised_availability', '7d.gif'), array('class' => 'availability')); ?>
+    </div>
+<?php } else {
+    ?>
+    <div class="availability">
+	<?php echo JHTML::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . $this->product->product_availability, $this->product->product_availability, array('class' => 'availability')); ?>
+    </div>
+<?php
+}
 		}
 		?>
 
 		<?php
 		// Ask a question about this product
-		if (VmConfig::get('ask_question', 1) == '1') {
-		    echo $this->loadTemplate('askquestion');
-		}
+		if (VmConfig::get('ask_question', 1) == '1') { ?>
+		   <div class="ask-a-question">
+				<a class="ask-a-question" href="<?php echo $url ?>" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
+				<!--<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $url ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>-->
+				</div>
+		<?php }
 		?>
 
 		<?php
@@ -163,13 +211,26 @@ echo $this->loadTemplate('images');
     } // Product Description END
 
     if (!empty($this->product->customfieldsSorted['normal'])) {
-	echo $this->loadTemplate('customfieldsnormal');
+	$this->position='normal';
+	echo $this->loadTemplate('customfields');
     } // Product custom_fields END
     // Product Packaging
     $product_packaging = '';
-    if ($this->product->packaging || $this->product->box) {
-	echo $this->loadTemplate('packaging');
-    } // Product Packaging END
+    if ($this->product->packaging || $this->product->box) { ?>
+	  <div class="product-packaging">
+
+	    <?php
+	    if ($this->product->packaging) {
+		$product_packaging .= JText::_('COM_VIRTUEMART_PRODUCT_PACKAGING1') . $this->product->packaging;
+		if ($this->product->box)
+		    $product_packaging .= '<br />';
+	    }
+	    if ($this->product->box)
+		$product_packaging .= JText::_('COM_VIRTUEMART_PRODUCT_PACKAGING2') . $this->product->box;
+	    echo str_replace("{unit}", $this->product->product_unit ? $this->product->product_unit : JText::_('COM_VIRTUEMART_PRODUCT_FORM_UNIT_DEFAULT'), $product_packaging);
+	    ?>
+        </div>
+   <?php } // Product Packaging END
     ?>
 
     <?php
