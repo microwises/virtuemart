@@ -283,7 +283,7 @@ $vendorModel->addImages($vendor,1);
 
 // the payment itself should send the parameter needed.
 	$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
-
+$order_number = JRequest::getInt('on', 0);
 	$vendorId = 0;
 	if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
@@ -293,23 +293,21 @@ $vendorModel->addImages($vendor,1);
 	}
 	if (!class_exists('VirtueMartCart'))
 		    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-	$payment_data = JRequest::get('post');
+	$paypal_data = JRequest::get('post');
 	$payment_name = $this->renderPluginName($method);
-	$html = $this->_getPaymentResponseHtml($payment_data, $payment_name);
 
-	if (!empty($payment_data)) {
+	if (!empty($paypal_data)) {
 	    vmdebug('plgVmOnPaymentResponseReceived', $payment_data);
-	    $order_number = $payment_data['invoice'];
-	    $return_context = $payment_data['custom'];
+	    $order_number = $paypal_data['invoice'];
+	    $return_context = $paypal_data['custom'];
 	    if (!class_exists('VirtueMartModelOrders'))
 		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
 	    $virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
 	    $payment_name = $this->renderPluginName($method);
-	    $html = $this->_getPaymentResponseHtml($payment_data, $payment_name);
 
 	    if ($virtuemart_order_id) {
-
+		$this->_storePaypalnfos($method, $paypal_data);
 		// send the email ONLY if payment has been accepted
 		$modelOrder = VmModel::getModel('orders');
 		$orderitems = $modelOrder->getOrder($virtuemart_order_id);
@@ -330,7 +328,12 @@ $vendorModel->addImages($vendor,1);
 		}
 	    }
 	}
-	$cart = VirtueMartCart::getCart();
+	if (!($paymentTable = $this->_getPaypalInternalData($virtuemart_order_id, $order_number) )) {
+	    // JError::raiseWarning(500, $db->getErrorMsg());
+	    return '';
+	}
+	$html = $this->_getPaymentResponseHtml($payment_data, $payment_name);
+
 	//We delete the old stuff
 	// get the correct cart / session
 	$cart = VirtueMartCart::getCart();
@@ -399,30 +402,9 @@ $vendorModel->addImages($vendor,1);
 	}
 	$this->logInfo('paypal_data ' . implode('   ', $paypal_data), 'message');
 
-	// get all know columns of the table
-	$db = JFactory::getDBO();
-	$query = 'SHOW COLUMNS FROM `' . $this->_tablename . '` ';
-	$db->setQuery($query);
-	$columns = $db->loadResultArray(0);
-	$post_msg = '';
-	foreach ($paypal_data as $key => $value) {
-	    $post_msg .= $key . "=" . $value . "<br />";
-	    $table_key = 'paypal_response_' . $key;
-	    if (in_array($table_key, $columns)) {
-		$response_fields[$table_key] = $value;
-	    }
-	}
+	$this->_storePaypalnfos($method, $paypal_data);
 
-	//$response_fields[$this->_tablepkey] = $this->_getTablepkeyValue($virtuemart_order_id);
-	$response_fields['payment_name'] = $this->renderPluginName($method);
-	$response_fields['paypalresponse_raw'] = $post_msg;
-	$return_context = $paypal_data['custom'];
-	$response_fields['order_number'] = $order_number;
-	$response_fields['virtuemart_order_id'] = $virtuemart_order_id;
-//$preload=true   preload the data here too preserve not updated data
- 	$this->storePSPluginInternalData($response_fields, 'virtuemart_order_id', true);
-
-	$error_msg = $this->_processIPN($paypal_data, $method);
+	$error_msg = $this->_processIPN($paypal_data, $method, $virtuemart_order_id);
 	$this->logInfo('process IPN ' . $error_msg, 'message');
 	if (!(empty($error_msg) )) {
 	    $new_status = $method->status_canceled;
@@ -489,7 +471,31 @@ $vendorModel->addImages($vendor,1);
 	$this->emptyCart($return_context);
 	//die();
     }
+function _storePaypalInternalData($method, $paypal_data, $virtuemart_order_id){
 
+	// get all know columns of the table
+	$db = JFactory::getDBO();
+	$query = 'SHOW COLUMNS FROM `' . $this->_tablename . '` ';
+	$db->setQuery($query);
+	$columns = $db->loadResultArray(0);
+	$post_msg = '';
+	foreach ($paypal_data as $key => $value) {
+	    $post_msg .= $key . "=" . $value . "<br />";
+	    $table_key = 'paypal_response_' . $key;
+	    if (in_array($table_key, $columns)) {
+		$response_fields[$table_key] = $value;
+	    }
+	}
+
+	//$response_fields[$this->_tablepkey] = $this->_getTablepkeyValue($virtuemart_order_id);
+	$response_fields['payment_name'] = $this->renderPluginName($method);
+	$response_fields['paypalresponse_raw'] = $post_msg;
+	$return_context = $paypal_data['custom'];
+	$response_fields['order_number'] = $paypal_data['invoice'];
+	$response_fields['virtuemart_order_id'] = $virtuemart_order_id;
+//$preload=true   preload the data here too preserve not updated data
+ 	$this->storePSPluginInternalData($response_fields, 'virtuemart_order_id', true);
+}
     function _getTablepkeyValue($virtuemart_order_id) {
 	$db = JFactory::getDBO();
 	$q = 'SELECT ' . $this->_tablepkey . ' FROM `' . $this->_tablename . '` '
@@ -513,11 +519,8 @@ $vendorModel->addImages($vendor,1);
 	    return null; // Another method was selected, do nothing
 	}
 
-	$db = JFactory::getDBO();
-	$q = 'SELECT * FROM `' . $this->_tablename . '` '
-		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
-	$db->setQuery($q);
-	if (!($paymentTable = $db->loadObject())) {
+
+	if (!($paymentTable = $this->_getPaypalInternalData($virtuemart_order_id) )) {
 	    // JError::raiseWarning(500, $db->getErrorMsg());
 	    return '';
 	}
@@ -538,6 +541,23 @@ $vendorModel->addImages($vendor,1);
 	}
 	$html .= '</table>' . "\n";
 	return $html;
+    }
+
+    function _getPaypalInternalData($virtuemart_order_id, $order_number='') {
+	$db = JFactory::getDBO();
+	$q = 'SELECT * FROM `' . $this->_tablename . '` WHERE ';
+	if ($order_number) {
+	     $q .= "WHERE `order_number` = '" . $order_number."'";
+	} else {
+	    $q .= 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
+	}
+
+	$db->setQuery($q);
+	if (!($paymentTable = $db->loadObject())) {
+	    // JError::raiseWarning(500, $db->getErrorMsg());
+	    return '';
+	}
+	return $paymentTable;
     }
 
     /**

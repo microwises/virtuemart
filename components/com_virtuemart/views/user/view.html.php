@@ -64,7 +64,8 @@ class VirtuemartViewUser extends VmView {
 		$this->assignRef('useSSL', $useSSL);
 		$this->assignRef('useXHTML', $useXHTML);
 		$document = JFactory::getDocument();
-
+		$mainframe = JFactory::getApplication();
+		$pathway = $mainframe->getPathway();
 		$layoutName = $this->getLayout();
 		// 	vmdebug('layout by view '.$layoutName);
 		if (empty($layoutName) or $layoutName=='default') {
@@ -90,8 +91,6 @@ class VirtuemartViewUser extends VmView {
 			return;
 		}
 
-		$document->setTitle( JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS') );
-
 		if (!class_exists('VirtuemartModelUser'))
 		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'user.php');
 		$this->_model = new VirtuemartModelUser();
@@ -111,10 +110,11 @@ class VirtuemartViewUser extends VmView {
 		}
 
 		$this->_userDetails = $this->_model->getUser();
+
 		$this->assignRef('userDetails', $this->_userDetails);
 
-		$type = JRequest::getWord('addrtype', 'BT');
-		$this->assignRef('address_type', $type);
+		$address_type = JRequest::getWord('addrtype', 'BT');
+		$this->assignRef('address_type', $address_type);
 
 		$new = false;
 		if (JRequest::getInt('new', '0') === 1) {
@@ -138,14 +138,14 @@ class VirtuemartViewUser extends VmView {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 			$cart = VirtueMartCart::getCart();
 
-			$fieldtype = $type . 'address';
-			$cart->prepareAddressDataInCart($type, $new);
+			$fieldtype = $address_type . 'address';
+			$cart->prepareAddressDataInCart($address_type, $new);
 
 			$userFields = $cart->$fieldtype;
 
 			$task = JRequest::getWord('task', '');
 		} else {
-			$userFields = $this->_model->getUserInfoInUserFields($layoutName, $type, $virtuemart_userinfo_id);
+			$userFields = $this->_model->getUserInfoInUserFields($layoutName, $address_type, $virtuemart_userinfo_id);
 			if (!$new && empty($userFields[$virtuemart_userinfo_id])) {
 				$virtuemart_userinfo_id = $this->_model->getBTuserinfo_id();
 				vmdebug('Try to get $virtuemart_userinfo_id by type BT', $virtuemart_userinfo_id);
@@ -211,6 +211,43 @@ class VirtuemartViewUser extends VmView {
 		    $layoutName='edit_address';
 			$this->setLayout($layoutName);
 		}
+
+		if (!$this->userDetails->JUser->get('id')  ) {
+		     $corefield_title = JText::_('COM_VIRTUEMART_USER_CART_INFO_CREATE_ACCOUNT')  ;
+		} else {
+		     $corefield_title = JText::_('COM_VIRTUEMART_YOUR_ACCOUNT_DETAILS')  ;
+		}
+		    if (!$this->userDetails->JUser->get('id')  ) {
+			if ( (strpos($this->fTask, 'cart') || strpos($this->fTask, 'checkout') )) {
+			    if ($address_type == 'BT') {
+				$vmfield_title = JText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL');
+			    } else {
+				$vmfield_title = JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
+			    }
+			} else {
+			    if ($address_type == 'BT') {
+				$vmfield_title = JText::_('COM_VIRTUEMART_USER_FORM_EDIT_BILLTO_LBL');
+				$title= JText::_('COM_VIRTUEMART_REGISTER');
+			    } else {
+				$vmfield_title = JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
+			    }
+			}
+		    } else {
+
+			    if ($address_type == 'BT') {
+				$vmfield_title = JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_INFORMATION');
+			    } else {
+				$vmfield_title = JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
+			    }
+
+		    }
+		    if (empty($title)) {
+			$title=$vmfield_title;
+		    }
+		   $document->setTitle( $title );
+		    $pathway->additem($title);
+		$this->assignRef('corefield_title', $corefield_title);
+		$this->assignRef('vmfield_title', $vmfield_title);
 		shopFunctionsF::setVmTemplate($this, 0, 0, $layoutName);
 
 		parent::display($tpl);
@@ -267,48 +304,48 @@ class VirtuemartViewUser extends VmView {
 			// 			if(empty($this->_lists['shoppergroups'])){
 			// 				$this->_lists['shoppergroups']='unregistered';
 				// 			} else {
-				$this->_lists['shoppergroups'] .= '<input type="hidden" name="virtuemart_shoppergroup_id" value = "' . $_shoppergroup['virtuemart_shoppergroup_id'] . '" />';
-				// 			}
+			$this->_lists['shoppergroups'] .= '<input type="hidden" name="virtuemart_shoppergroup_id" value = "' . $_shoppergroup['virtuemart_shoppergroup_id'] . '" />';
+			// 			}
 
-				if (!empty($this->_userDetails->virtuemart_vendor_id)) {
-					$this->_lists['vendors'] = $this->_userDetails->virtuemart_vendor_id;
-				}
+			if (!empty($this->_userDetails->virtuemart_vendor_id)) {
+				$this->_lists['vendors'] = $this->_userDetails->virtuemart_vendor_id;
+			}
 
-				if (empty($this->_lists['vendors'])) {
-					$this->_lists['vendors'] = JText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR'); // . $_setVendor;
-				}
-				}
-
-				//todo here is something broken we use $_userDetailsList->perms and $this->_userDetailsList->perms and perms seems not longer to exist
-				if (Permissions::getInstance()->check("admin,storeadmin")) {
-	    $this->_lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $this->_userDetails->perms);
-				} else {
-	    if (!empty($this->_userDetails->perms)) {
-	    	$this->_lists['perms'] = $this->_userDetails->perms;
-
-	    	/* This now done in the model, so it is unnecessary here, notice by Max Milbers
-	    	 if(empty($this->_lists['perms'])){
-	    	$this->_lists['perms'] = 'shopper'; // TODO Make this default configurable
-	    	}
-	    	*/
-	    	$_hiddenInfo = '<input type="hidden" name="perms" value = "' . $this->_lists['perms'] . '" />';
-	    	$this->_lists['perms'] .= $_hiddenInfo;
-	    }
-				}
-
-				// Load the required scripts
-				if (count($userFields['scripts']) > 0) {
-	    foreach ($userFields['scripts'] as $_script => $_path) {
-	    	JHTML::script($_script, $_path);
-	    }
-				}
-				// Load the required styresheets
-				if (count($userFields['links']) > 0) {
-	    foreach ($userFields['links'] as $_link => $_path) {
-	    	JHTML::stylesheet($_link, $_path);
-	    }
-				}
+			if (empty($this->_lists['vendors'])) {
+				$this->_lists['vendors'] = JText::_('COM_VIRTUEMART_USER_NOT_A_VENDOR'); // . $_setVendor;
+			}
 		}
+
+		//todo here is something broken we use $_userDetailsList->perms and $this->_userDetailsList->perms and perms seems not longer to exist
+		if (Permissions::getInstance()->check("admin,storeadmin")) {
+		    $this->_lists['perms'] = JHTML::_('select.genericlist', Permissions::getUserGroups(), 'perms', '', 'group_name', 'group_name', $this->_userDetails->perms);
+		} else {
+		    if (!empty($this->_userDetails->perms)) {
+			$this->_lists['perms'] = $this->_userDetails->perms;
+
+			/* This now done in the model, so it is unnecessary here, notice by Max Milbers
+			 if(empty($this->_lists['perms'])){
+			$this->_lists['perms'] = 'shopper'; // TODO Make this default configurable
+			}
+			*/
+			$_hiddenInfo = '<input type="hidden" name="perms" value = "' . $this->_lists['perms'] . '" />';
+			$this->_lists['perms'] .= $_hiddenInfo;
+		    }
+		}
+
+		// Load the required scripts
+		if (count($userFields['scripts']) > 0) {
+		    foreach ($userFields['scripts'] as $_script => $_path) {
+			JHTML::script($_script, $_path);
+		    }
+		}
+		// Load the required styresheets
+		if (count($userFields['links']) > 0) {
+		    foreach ($userFields['links'] as $_link => $_path) {
+			JHTML::stylesheet($_link, $_path);
+		    }
+		}
+	}
 
 		function lUser() {
 

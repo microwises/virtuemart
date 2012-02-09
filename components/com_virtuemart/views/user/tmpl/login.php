@@ -59,8 +59,8 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
     	?>
 
 	    <div class="order-view">
-	    <fieldset class="input">
-	    <LEGEND><?php echo JText::_('COM_VIRTUEMART_ORDER_ANONYMOUS') ?></LEGEND>
+
+	    <h1><?php echo JText::_('COM_VIRTUEMART_ORDER_ANONYMOUS') ?></h1>
 
 	    <form action="<?php echo JRoute::_( 'index.php', true, 0); ?>" method="post" name="com-login" >
 
@@ -82,15 +82,16 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
 	    	<input type="hidden" name="return" value="" />
 
 	    </form>
-	    </fieldset>
+
 	    </div>
 
 <?php   }
-?>
 
+
+    ?>
     <form action="index.php" method="post" name="com-login" >
 	<?php if (!$this->from_cart ) { ?>
-<div  >
+	<div>
 		<h1><?php echo JText::_('COM_VIRTUEMART_ORDER_CONNECT_FORM'); ?></h1>
 	</div>
 <div class="clear"></div>
@@ -166,5 +167,7 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
 	<input type="hidden" name="return" value="<?php echo base64_encode($url) ?>" />
     </form>
 
-<?php } ?>
+<?php }
+ 
+?>
 

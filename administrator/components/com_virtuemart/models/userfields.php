@@ -336,7 +336,8 @@ class VirtueMartModelUserfields extends VmModel {
 
 		} else if ($layoutName=='cart' && !$register){
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'name', 'password', 'password2', 'address_type', 'bank','user_is_vendor');
-
+		} else if ($layoutName=='edit' && $type='BT'){
+			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','user_is_vendor');
 		} else {
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'name','username', 'password', 'password2'
 						, 'address_type', 'bank','email','user_is_vendor');

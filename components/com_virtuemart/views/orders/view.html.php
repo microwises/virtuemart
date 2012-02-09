@@ -41,7 +41,6 @@ class VirtuemartViewOrders extends VmView {
 
 		$this->setLayout($layoutName);
 
-
 		$_currentUser = JFactory::getUser();
 		$document = JFactory::getDocument();
 

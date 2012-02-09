@@ -20,6 +20,7 @@
     <params addpath="/administrator/components/com_virtuemart/elements">
 	<param type="vmjpluginwarning" />
 	<param type="spacer" default="VMPAYMENT_PAYPAL_PAYMENT_TITLE" level="level1" />
+	<param type="spacer" default="VMPAYMENT_PAYPAL_PAYMENT_WARNING"   />
 
 	<param type="spacer" default="" level="level1" />
 	<param type="spacer" default="VMPAYMENT_PAYPAL_PAYMENT_SETTINGS" level="level1" />

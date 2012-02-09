@@ -93,9 +93,10 @@ span.stock-level{font-size:10px;color:#7d7b7b;}
 .invalid{background-color:#ffd;color:#000;border-color:red;}
 .page-results{margin-top:25px;text-align:right;}
 .control-buttons button.default{margin-left:8px;}
-table.user-details input{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border:solid #ccc 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;color:#777;margin-bottom:2px;padding:5px 5px 4px;}
+table.user-details input{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border:solid #ccc 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;color:#777;margin-bottom:2px;padding:5px 5px 4px; width:200px}
 table.user-details input.invalid{background:#e8e8e8 url(../images/vmgeneral/backgrounds.png) top repeat-x;border:solid red 1px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;color:#777;margin-bottom:2px;padding:5px 5px 4px;}
-td.key{padding:0 6px;}
+table.user-details{width: 450px;margin-bottom:25px;}
+td.key{padding:0 6px; width: 150px;}
 .cart-view h1{font-size:20px;margin:0;padding:0 0 10px;}
 .cart-view h2{font-size:12px;margin:0;padding:0;}
 .checkout-button-top{text-align:right;border-top:solid #E9E8E8 1px;padding:10px 0 0;}
@@ -207,3 +208,4 @@ td.priceCol{white-space:nowrap;}
 div.spaceStyle{padding: 0px; margin: 5px; spacing: 0px;}
 .vm-notice{color: #CC0000;}
 .buttonBar-right{text-align: right; width: 100%;}
+.userfields_info{font-weight: bold;}
