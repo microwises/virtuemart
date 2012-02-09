@@ -466,7 +466,7 @@ class VirtueMartModelProduct extends VmModel {
 					vmdebug('Max execution time reached in model product getProduct() ',$child);
 					vmError('Max execution time reached in model product getProduct() '.$child->product_parent_id);
 					break;
-				} else if($i>2){
+				} else if($i>10){
 					vmdebug('Time: '.$runtime.' Too many child products in getProduct() ',$child);
 					vmError('Time: '.$runtime.' Too many child products in getProduct() '.$child->product_parent_id);
 					break;

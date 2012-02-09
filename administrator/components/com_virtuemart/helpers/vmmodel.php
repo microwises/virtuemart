@@ -58,6 +58,7 @@ class VmModel extends JModel {
 		if($task!=='add'){
 			// Get the id or array of ids.
 			$idArray = JRequest::getVar($this->_cidName,  0, '', 'array');
+			if(empty($idArray[0])) $idArray[0] = 0;
 			$this->setId((int)$idArray[0]);
 		}
 

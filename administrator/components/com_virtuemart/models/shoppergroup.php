@@ -50,9 +50,8 @@ class VirtueMartModelShopperGroup extends VmModel {
      * @author Markus Öhler
      */
     function getShopperGroup() {
-	    $db = JFactory::getDBO();
 
-	    if (empty($_data)) {
+	    if (empty($this->_data)) {
 	      $this->_data = $this->getTable('shoppergroups');
 	      $this->_data->load((int) $this->_id);
 	      if(!empty($this->_data->price_display)){

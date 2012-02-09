@@ -51,16 +51,17 @@ class VirtueMartModelMedia extends VmModel {
 	 */
 	function getFile($type=0,$mime=0){
 
-		if(empty($this->_db)) $this->_db = JFactory::getDBO();
+		if (empty($this->_data)) {
 
-		$data = $this->getTable('medias');
-		$data->load((int)$this->_id);
+			$data = $this->getTable('medias');
+			$data->load((int)$this->_id);
 
-		if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
+			if (!class_exists('VmMediaHandler')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'mediahandler.php');
 
-		$media = VmMediaHandler::createMedia($data,$type,$mime);
+			$this->_data = VmMediaHandler::createMedia($data,$type,$mime);
+		}
 
-		return $media;
+		return $this->_data;
 
 	}
 

@@ -53,21 +53,24 @@ class VirtueMartModelCustom extends VmModel {
      */
     function getCustom(){
 
-    	//if(empty($this->_db)) $this->_db = JFactory::getDBO();
-		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
-   		$this->_data =& $this->getTable('customs');
-   		$this->_data->load($this->_id);
-//    		vmdebug('getCustom $data',$this->_data);
-   		if(!empty($this->_data->custom_jplugin_id)){
-   			JPluginHelper::importPlugin('vmcustom');
-   			$dispatcher = JDispatcher::getInstance();
-//    			$varsToPushParam = $dispatcher->trigger('plgVmDeclarePluginParams',array('custom',$this->_data->custom_element,$this->_data->custom_jplugin_id));
-   			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsCustom',array('custom',$this->_data->custom_element,$this->_data->custom_jplugin_id,&$this->_data));
+    	if(empty($this->_data)){
 
-   		}
+    		JTable::addIncludePath(JPATH_VM_ADMINISTRATOR.DS.'tables');
+    		$this->_data =& $this->getTable('customs');
+    		$this->_data->load($this->_id);
+    		//    		vmdebug('getCustom $data',$this->_data);
+    		if(!empty($this->_data->custom_jplugin_id)){
+    			JPluginHelper::importPlugin('vmcustom');
+    			$dispatcher = JDispatcher::getInstance();
+    			//    			$varsToPushParam = $dispatcher->trigger('plgVmDeclarePluginParams',array('custom',$this->_data->custom_element,$this->_data->custom_jplugin_id));
+    			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsCustom',array('custom',$this->_data->custom_element,$this->_data->custom_jplugin_id,&$this->_data));
 
-		$customfields = VmModel::getModel('Customfields');
-		$this->_data->field_types = $customfields->getField_types() ;
+    		}
+
+    		$customfields = VmModel::getModel('Customfields');
+    		$this->_data->field_types = $customfields->getField_types() ;
+    	}
+
   		return $this->_data;
 
     }

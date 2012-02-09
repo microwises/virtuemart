@@ -52,9 +52,10 @@ class VirtueMartModelCalc extends VmModel {
      * @author Max Milbers
      */
 	public function getCalc(){
-		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
   		if (empty($this->_data)) {
+  			if(empty($this->_db)) $this->_db = JFactory::getDBO();
+
    		$this->_data = $this->getTable('calcs');
    		$this->_data->load((int)$this->_id);
 
@@ -88,12 +89,12 @@ class VirtueMartModelCalc extends VmModel {
 
   		}
 
-		if($errs = $this->getErrors()){
-			$app = JFactory::getApplication();
-			foreach($errs as $err){
-				$app->enqueueMessage($err);
-			}
-		}
+// 		if($errs = $this->getErrors()){
+// 			$app = JFactory::getApplication();
+// 			foreach($errs as $err){
+// 				$app->enqueueMessage($err);
+// 			}
+// 		}
 
 // 		vmdebug('my calc',$this->_data);
   		return $this->_data;
@@ -109,33 +110,20 @@ class VirtueMartModelCalc extends VmModel {
 	 */
 	public function getCalcs($onlyPublished=false, $noLimit=false, $search=false){
 
-		if(empty($this->_db)) $this->_db = JFactory::getDBO();
-
 		$where = array();
 		$this->_noLimit = $noLimit;
-// 		$query = 'SELECT * FROM `#__virtuemart_calcs` ';
-		/* add filters */
+
+		// add filters
 		if ($onlyPublished) $where[] = '`published` = 1';
-		//if (JRequest::getWord('search', false)) $where[] = '`calc_name` LIKE '.$this->_db->Quote('%'.JRequest::getWord('search').'%');
+
 		if($search){
-			$search = '"%' . $this->_db->getEscaped( $search, true ) . '%"' ;
+			$db = JFactory::getDBO();
+			$search = '"%' . $db->getEscaped( $search, true ) . '%"' ;
 			$where[] = ' `calc_name` LIKE '.$search.' OR `calc_descr` LIKE '.$search.' OR `calc_value` LIKE '.$search.' ';
 		}
 
 		$whereString= '';
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
-// 		$this->_query .= $this->_getOrdering('calc_name');
-// 		if ($noLimit) {
-// 			$this->_data = $this->_getList($this->_query);
-// 		}
-// 	 	else {
-// 			$this->_data = $this->_getList($this->_query, $this->getState('limitstart'), $this->getState('limit'));
-// 		}
-
-// 		if(count($this->_data) >0){
-// 			$this->_total = $this->_getListCount($this->_query);
-// 		}
-		//$this->_total = $this->_getListCount($this->_query) ;
 
 		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_calcs`',$whereString,'',$this->_getOrdering());
 

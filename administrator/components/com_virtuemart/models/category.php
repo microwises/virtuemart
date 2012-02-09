@@ -57,42 +57,44 @@ class VirtueMartModelCategory extends VmModel {
   		if (empty($this->_data)) {
    			$this->_data = $this->getTable('categories');
    			$this->_data->load((int)$this->_id);
+
+   			$xrefTable = $this->getTable('category_medias');
+   			$this->_data->virtuemart_media_id = $xrefTable->load((int)$this->_id);
+
+   			if($xrefTable->getError()) vmError($xrefTable->getError());
+
+   			if(empty($this->_data->category_template)){
+   				$this->_data->category_template = VmConfig::get('categorytemplate');
+   			}
+
+   			if(empty($this->_data->category_layout)){
+   				$this->_data->category_layout = VmConfig::get('categorylayout');
+   			}
+
+   			if($childs){
+   				$this->_data->haschildren = $this->hasChildren($this->_id);
+
+   				/* Get children if they exist */
+   				if ($this->_data->haschildren) $this->_data->children = $this->getCategories(true,$this->_id);
+   				else $this->_data->children = null;
+
+   				/* Get the product count */
+   				$this->_data->productcount = $this->countProducts($this->_id);
+
+   				/* Get parent for breatcrumb */
+   				$this->_data->parents = $this->getParentsList($this->_id);
+
+   			}
+
+   			if($errs = $this->getErrors()){
+   				$app = JFactory::getApplication();
+   				foreach($errs as $err){
+   					$app->enqueueMessage($err);
+   				}
+   			}
   		}
 
-		$xrefTable = $this->getTable('category_medias');
-		$this->_data->virtuemart_media_id = $xrefTable->load((int)$this->_id);
 
-		if($xrefTable->getError()) vmError($xrefTable->getError());
-
-		if(empty($this->_data->category_template)){
-			$this->_data->category_template = VmConfig::get('categorytemplate');
-		}
-
-		if(empty($this->_data->category_layout)){
-			$this->_data->category_layout = VmConfig::get('categorylayout');
-		}
-
-  		if($childs){
-  			$this->_data->haschildren = $this->hasChildren($this->_id);
-
-  			/* Get children if they exist */
-			if ($this->_data->haschildren) $this->_data->children = $this->getCategories(true,$this->_id);
-			else $this->_data->children = null;
-
-			/* Get the product count */
-			$this->_data->productcount = $this->countProducts($this->_id);
-
-			/* Get parent for breatcrumb */
-			$this->_data->parents = $this->getParentsList($this->_id);
-
-  		}
-
-		if($errs = $this->getErrors()){
-			$app = JFactory::getApplication();
-			foreach($errs as $err){
-				$app->enqueueMessage($err);
-			}
-		}
   		return $this->_data;
 
 	}
