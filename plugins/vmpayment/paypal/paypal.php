@@ -547,9 +547,9 @@ function _storePaypalInternalData($method, $paypal_data, $virtuemart_order_id){
 	$db = JFactory::getDBO();
 	$q = 'SELECT * FROM `' . $this->_tablename . '` WHERE ';
 	if ($order_number) {
-	     $q .= "WHERE `order_number` = '" . $order_number."'";
+	     $q .= " `order_number` = '" . $order_number."'";
 	} else {
-	    $q .= 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
+	    $q .= ' `virtuemart_order_id` = ' . $virtuemart_order_id;
 	}
 
 	$db->setQuery($q);
