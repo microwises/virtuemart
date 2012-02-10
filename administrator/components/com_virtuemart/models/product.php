@@ -653,9 +653,6 @@ class VirtueMartModelProduct extends VmModel {
 				// Get stock indicator
 				//				$product->stock = $this->getStockIndicator($product);
 
-				// TODO Get the votes
-				//				$product->votes = $this->getVotes($this->_id);
-
 			}
 
 		} else {
@@ -870,9 +867,9 @@ class VirtueMartModelProduct extends VmModel {
 	 * @return array
 	 */
 	public function getNeighborProducts($product ,$onlyPublished = true, $max=1) {
-		$this->_db = JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$neighbors = array('previous' => '','next' => '');
-		$direction = 'ASC' ;
+		$direction = 'DESC' ;
 		$op='<';
 		foreach ($neighbors as &$neighbor) {
 
@@ -885,11 +882,13 @@ class VirtueMartModelProduct extends VmModel {
 			if ($onlyPublished) $q .= ' AND p.`published`= 1';
 			$q .=' ORDER BY `slug` '.$direction.' LIMIT 0,'.(int)$max;
 
-			$this->_db->setQuery($q);
-			if ($result = $this->_db->loadAssocList()) $neighbor = $result;
-			$direction = 'DESC';
+			$db->setQuery($q);
+			if ($result = $db->loadAssocList()) $neighbor = $result;
+			$direction = 'ASC';
 			$op='>';
+			vmdebug('getNeighborProducts '.$db->getQuery());
 		}
+
 		return $neighbors;
 	}
 
@@ -1209,130 +1208,6 @@ class VirtueMartModelProduct extends VmModel {
 		return $ok;
 	}
 
-	/**
-	 * Remove a product
-	 * @author RolandD
-	 * @todo Add sanity checks, so long made private
-	 */
-	private function removeProduct($old_virtuemart_product_id=false) {
-		//		$this->_db = JFactory::getDBO();
-
-		/* Get the product IDs to remove */
-		$cids = array();
-		// 		if (!$old_virtuemart_product_id) {
-		//$cids = JRequest::getVar('cid');
-		//if (!is_array($cids)) $cids = array($cids);
-		// 		}
-		// 		else $cids[] = $old_virtuemart_product_id;
-		$cids[] = $old_virtuemart_product_id;
-
-		/* Start removing */
-		foreach ($cids as $key => $virtuemart_product_id) {
-			/* First copy the product in the product table */
-			$product_data = $this->getTable('products');
-
-			/* Load the product details */
-			$product_data->load($virtuemart_product_id);
-
-			/* Delete all children if needed */
-			if ($product_data->product_parent_id == 0) {
-				/* Delete all children */
-				/* Get a list of child products */
-				$q = "SELECT virtuemart_product_id FROM #__virtuemart_products WHERE product_parent_id = ".$virtuemart_product_id;
-				$this->_db->setQuery($q);
-				$children = $this->_db->loadResultArray();
-				foreach ($children as $child_key => $child_id) {
-					$this->removeProduct($child_id);
-				}
-			}
-
-
-			/* Delete categories xref */
-			$q  = "DELETE FROM #__virtuemart_product_categories WHERE virtuemart_product_id = ".$virtuemart_product_id;
-			$this->_db->setQuery($q);
-			$this->_db->query();
-
-			/* Delete shoppers xref */
-			$q  = "DELETE FROM #__virtuemart_product_shoppergroups WHERE virtuemart_product_id = ".$virtuemart_product_id;
-			$this->_db->setQuery($q);
-			$this->_db->query();
-
-			/* Delete product - manufacturer xref */
-			$q = "DELETE FROM #__virtuemart_product_manufacturers WHERE virtuemart_product_id = ".$virtuemart_product_id;
-			$this->_db->setQuery($q);
-			$this->_db->query();
-
-			/* Delete Product - ProductType Relations */
-			$q  = "DELETE FROM #__virtuemart_product_producttypes WHERE virtuemart_product_id = ".$virtuemart_product_id;
-			$this->_db->setQuery($q);
-			$this->_db->query();
-
-			/* Delete product votes */
-			$q  = "DELETE FROM #__virtuemart_rating_reviews WHERE virtuemart_product_id = ".$virtuemart_product_id;
-			$this->_db->setQuery($q);
-			$this->_db->query();
-
-			/* Delete product reviews */
-			$q = "DELETE FROM #__virtuemart_ratings WHERE virtuemart_product_id = ".$virtuemart_product_id;
-			$this->_db->setQuery($q);
-			$this->_db->query();
-
-			/* Delete Product Relations */
-			$q  = "DELETE FROM #__virtuemart_product_relations WHERE virtuemart_product_id = ".$virtuemart_product_id;
-			$this->_db->setQuery($q); $this->_db->query();
-
-			/* find and remove Product Types */
-			$q = "SELECT virtuemart_producttype_id FROM #__virtuemart_product_producttypes WHERE virtuemart_product_id = ".$virtuemart_product_id;
-			$this->_db->setQuery($q);
-			/* TODO the product is not removed from this tables !!*/
-			$virtuemart_producttype_ids = $this->_db->loadResultArray();
-			foreach ($virtuemart_producttype_ids as $virtuemart_producttype_id)
-			$q  = "DELETE FROM #__virtuemart_producttypes_".$virtuemart_producttype_id." WHERE virtuemart_product_id = ".$virtuemart_product_id;
-			$this->_db->setQuery($q); $this->_db->query();
-
-			/* Delete Product Types xref */
-			$q  = "DELETE FROM #__virtuemart_product_producttypes WHERE virtuemart_product_id = ".$virtuemart_product_id;
-			$this->_db->setQuery($q); $this->_db->query();
-
-			/* remove Product custom fields */
-			$q = "DELETE `#__virtuemart_product_customfields` FROM  `#__virtuemart_product_customfields`
-				WHERE `#__virtuemart_product_customfields`.`virtuemart_product_id` =".$virtuemart_product_id;
-			$this->_db->setQuery($q); $this->_db->query();
-
-
-			/* Delete Prices */
-			$q  = "DELETE FROM #__virtuemart_product_prices WHERE virtuemart_product_id = ".$virtuemart_product_id;
-			$this->_db->setQuery($q);
-			$this->_db->query();
-
-			/* Delete the product itself */
-			$product_data->delete($virtuemart_product_id);
-		}
-		return true;
-}
-
-
-
-/**
- * Function Description
- *
- * @author RolandD
- * @todo
- * @see
- * @access public
- * @return array list of files
- */
-public function getTemplatesList() {
-	jimport('joomla.filesystem.folder');
-	$path = JPATH_VM_SITE.DS.'views'.DS.'productdetails'.DS.'tmpl';
-	$files = JFolder::files($path, '.', false, false, array('index.html'));
-	$options = array();
-	foreach ($files AS $file) {
-		$file = str_ireplace('.php', '', $file);
-		$options[] = JHTML::_('select.option',  $file, $file);
-	}
-	return $options;
-}
 
 /**
  * Gets the price for a variant
@@ -1362,33 +1237,6 @@ public function getPrice($product,$customVariant,$quantity){
 
 }
 
-
-/**
- * Load the product reviews for the given product
- *
- * @author RolandD
- *
- * @todo Make number of reviews configurable
- * @param int $virtuemart_product_id the product ID to get the reviews for
- * @return array of objects with product reviews
- */
-public function getProductReviews($virtuemart_product_id) {
-	$this->_db = JFactory::getDBO();
-	$showall = JRequest::getBool('showall', 0);
-
-	$q = 'SELECT `comment`, `created_on`, `virtuemart_user_id`, `user_rating`, `username`, `name`
-			FROM `#__virtuemart_rating_reviews` `r`
-			LEFT JOIN `#__users` `u`
-			ON `u`.`id` = `r`.`virtuemart_user_id`
-			WHERE `virtuemart_product_id` = "'.(int)$virtuemart_product_id.'"
-			AND published = "1"
-			ORDER BY `created_on` DESC ';
-	if (!$showall) $q .= ' LIMIT 0, 5';
-	$this->_db->setQuery($q);
-	$array = $this->_db->loadObjectList();
-	if(empty($array)) $array = array();
-	return $array;
-}
 
 /**
  * Get the Order By Select List
@@ -1431,21 +1279,6 @@ function getOrderByList($virtuemart_category_id=false) {
 	$orderbyCfg 	= VmConfig::get('browse_orderby_field');
 	if ($orderby != '' && $orderby != $orderbyCfg ) $orderbyTxt = '&orderby='.$orderby;
 
-	// 		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0 );
-
-	// if($virtuemart_category_id!==false){
-		// $fieldLink = '&virtuemart_category_id='.$virtuemart_category_id;
-	// }
-
-	// $search = JRequest::getWord('search', '' );
-	// if ($search != '' ) $fieldLink .= '&search=true&keyword='.JRequest::getWord('keyword', '' );
-
-
-	/* Collect the product IDS for manufacturer list */
-	/*	$db = JFactory::getDBO();
-	 if (empty($this->_query)) $this->_query = $this->_buildQuery();
-	$db->setQuery($this->_query);
-	$mf_virtuemart_product_ids = $db->loadResultArray();*/
 
 	$manufacturerTxt ='';
 	$manufacturerLink = '';
@@ -1453,17 +1286,9 @@ function getOrderByList($virtuemart_category_id=false) {
 		$tmp = $this->_noLimit;
 		$this->_noLimit = true;
 
-		// if(!empty($this->ids)){
-			// $mf_virtuemart_product_ids = $this->ids;
-		// } else {
-			// $mf_virtuemart_product_ids = $this->sortSearchListQuery(true,$virtuemart_category_id);
-		// }
-
 		$this->_noLimit = $tmp;
-		//$mf_virtuemart_product_ids = array();
-		//foreach ($virtuemart_product_ids as $virtuemart_product_id) $mf_virtuemart_product_ids[] = $virtuemart_product_id->virtuemart_product_id ;
 
-		/* manufacturer link list*/
+		// manufacturer link list
 
 		$virtuemart_manufacturer_id = JRequest::getInt('virtuemart_manufacturer_id',0);
 		if ($virtuemart_manufacturer_id != '' ){
@@ -1567,32 +1392,6 @@ function getOrderByList($virtuemart_category_id=false) {
 }
 
 
-/**
- * Get the votes for a given product
- *
- * @author RolandD
- * @todo Figure out how this really is supposed to work
- * @access public
- * @param int $virtuemart_product_id the product ID to get reviews for
- * @return array containing review data
- */
-public function getVotes($virtuemart_product_id) {
-	$result = array();
-	if (VmConfig::get('allow_reviews', 0) == '1') {
-		$this->_db = JFactory::getDBO();
-
-		$q = "SELECT `votes`, `allvotes`, `rating`
-				FROM `#__virtuemart_ratings`
-				WHERE `virtuemart_product_id` = ".(int)$virtuemart_product_id;
-		$this->_db->setQuery($q);
-		$result = $this->_db->loadObject();
-	}
-	return $result;
-}
-
-
-
-
 // **************************************************
 //Stocks
 //
@@ -1626,74 +1425,6 @@ public function getStockIndicator($product) {
 	return $stock;
 }
 
-/**
- * Decrease the stock for a given product and increase the sales amount
- *
- * @author Oscar van Eijk
- * @param $_id integer Product ID
- * @param $_amount integer Amount sold
- * @access public
- */
-public function decreaseStockAfterSales ($_id, $_amount)
-{
-	//sanitize fields
-	$_id = (int) $_id;
-	$_amount = (float) $_amount;
-
-	$this->decreaseStock($_id, $_amount);
-	$this->_db->setQuery('UPDATE `#__virtuemart_products` '
-	. 'SET `product_sales` = `product_sales` + ' . $_amount . ' '
-	. 'WHERE `virtuemart_product_id` = ' . $_id
-	);
-	$this->_db->query();
-}
-
-/**
- * Increase the stock for a given product after an order was cancelled
- * and decrease the sales amount
- *
- * @author Oscar van Eijk
- * @param $_id integer Product ID
- * @param $_amount integer Amount sold
- * @access public
- */
-public function increaseStockAfterCancel ($_id, $_amount){
-
-	//sanitize fields
-	$_id = (int) $_id;
-	$_amount = (float) $_amount;
-
-	$this->increaseStock($_id, $_amount);
-	$this->_db->setQuery('UPDATE `#__virtuemart_products` '
-	. 'SET `product_sales` = `product_sales` - ' . $_amount . ' '
-	. 'WHERE `virtuemart_product_id` = ' . $_id
-	);
-	$this->_db->query();
-}
-
-/**
- * Increase the stock for a given product and decrease the sales amount
- * after an order cancellation
- *
- * @author Oscar van Eijk
- * @author Max Milbers
- * @param $_id integer Product ID
- * @param $_amount integer Original amount sold
- * @access public
- */
-public function revertStockAfterCancellation ($_id, $_amount){
-
-	//sanitize fields
-	$_id = (int) $_id;
-	$_amount = (float) $_amount;
-
-	$this->increaseStock($_id, $_amount);
-	$this->_db->setQuery('UPDATE `#__virtuemart_products` '
-	. 'SET `product_sales` = `product_sales` - ' . $_amount . ' '
-	. 'WHERE `virtuemart_product_id` = ' . $_id
-	);
-	$this->_db->query();
-}
 
 /**
  * Decrease the stock for a given product, calls _updateStock

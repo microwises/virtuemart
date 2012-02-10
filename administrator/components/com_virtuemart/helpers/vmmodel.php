@@ -92,10 +92,10 @@ class VmModel extends JModel {
 				}
 			}
 
-			vmdebug('created new instance of model '.$className);
+// 			vmdebug('created new instance of model '.$className);
 			return self::$_vmmodels[strtolower($className)] = new $className();
 		} else {
-			vmdebug('Use instance of model '.$className);
+// 			vmdebug('Use instance of model '.$className);
 			return self::$_vmmodels[strtolower($className)];
 		}
 
