@@ -50,6 +50,7 @@ class VirtuemartViewVendor extends VmView {
 	function display($tpl = null) {
 
 		$document = JFactory::getDocument();
+		$mainframe = JFactory::getApplication();
 		$pathway = $mainframe->getPathway();
 		$layoutName = $this->getLayout();
 
