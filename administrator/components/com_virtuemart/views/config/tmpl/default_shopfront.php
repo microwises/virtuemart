@@ -51,6 +51,18 @@ defined('_JEXEC') or die('Restricted access');
 						<?php echo VmHTML::checkbox('show_printicon', $this->config->get('show_printicon')); ?>
 						</td>
 					</tr>
+
+					<tr>
+						<td class="key"><span
+							class="hasTip"
+							title="<?php echo JText::_('COM_VIRTUEMART_PDF_ICON_SHOW_EXPLAIN'); ?>">
+								<label for="pdf_icon"><?php echo JText::_('COM_VIRTUEMART_PDF_ICON_SHOW') ?>
+							</label> </span>
+						</td>
+						<td>
+						<?php echo VmHTML::checkbox('pdf_icon', $this->config->get('pdf_icon')); ?>
+						</td>
+					</tr>
 					<tr>
 						<td class="key"><span
 							class="hasTip"
@@ -65,12 +77,12 @@ defined('_JEXEC') or die('Restricted access');
 					<tr>
 						<td class="key"><span
 							class="hasTip"
-							title="<?php echo JText::_('COM_VIRTUEMART_PDF_ICON_SHOW_EXPLAIN'); ?>">
-								<label for="pdf_icon"><?php echo JText::_('COM_VIRTUEMART_PDF_ICON_SHOW') ?>
+							title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAVIGATION_SHOW_EXPLAIN'); ?>">
+								<label for="product_navigation"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAVIGATION_SHOW') ?>
 							</label> </span>
 						</td>
 						<td>
-						<?php echo VmHTML::checkbox('pdf_icon', $this->config->get('pdf_icon')); ?>
+						<?php echo VmHTML::checkbox('product_navigation', $this->config->get('product_navigation')); ?>
 						</td>
 					</tr>
 					<tr>
