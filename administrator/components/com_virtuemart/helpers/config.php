@@ -829,9 +829,10 @@ class vmJsApi{
 
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($jsVars);
-		JHTML::script('jquery.colorbox-min.js', 'components/com_virtuemart/assets/js/', false);
+		JHTML::script('facebox.js', 'components/com_virtuemart/assets/js/', false);
 		JHTML::script('vmprices.js', 'components/com_virtuemart/assets/js/', false);
-		JHTML::stylesheet('colorbox.css', 'components/com_virtuemart/assets/css/', false);
+		JHTML::stylesheet('facebox.css', 'components/com_virtuemart/assets/css/', false);
+
 		$jPrice = true;
 		return true;
 	}
