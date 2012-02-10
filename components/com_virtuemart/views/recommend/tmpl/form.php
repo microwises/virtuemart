@@ -82,10 +82,10 @@ if (empty ( $this->product )) {
 			</label>
 
 				<div class="submit">
-					<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo JText::_('COM_VIRTUEMART_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_SUBMIT')  ?>" />
+					<input class="highlight-button" type="submit" name="submit_ask" title="<?php echo JText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_ASK_SUBMIT')  ?>" />
 
 					<div class="width50 floatright right paddingtop">
-						<?php echo JText::_('COM_VIRTUEMART_COUNT')  ?>
+						<?php echo JText::_('COM_VIRTUEMART_ASK_COUNT')  ?>
 						<input type="text" value="0" size="4" class="counter" ID="counter" name="counter" maxlength="4" readonly="readonly" />
 					</div>
 				</div>
