@@ -795,6 +795,7 @@ class vmJsApi{
 			$document->addScript(JURI::root(true).'/components/com_virtuemart/assets/js/jquery-ui.min.js');
 		}
 		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.ui.autocomplete.html.js');
+		$document->addScript(JURI::base().'components/com_virtuemart/assets/js/jquery.noConflict.js');
 
 		//JHTML::script('jquery.min.js', '//ajax.googleapis.com/ajax/libs/jquery/1.6.1/', false);
 		/*$document = JFactory::getDocument();
@@ -825,11 +826,12 @@ class vmJsApi{
 		$jsVars .= "closeImage = '".$closeimage."' ; \n";
 		// $jsVars .= 'faceboxHtml = \'<div id="facebox" style="display:none;"><div class="popup"><div class="content"></div> <a href="#" class="close"><img src="'.$closeimage.'" title="close" alt="X" class="close_image" /></a></div></div>\' '."\n";
 		$jsVars .= 'faceboxHtml = \'<div id="facebox" style="display:none;"><div class="popup"><div class="content"></div> <a href="#" class="close"></a></div></div>\' '."\n";
+
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($jsVars);
-		JHTML::script('facebox.js', 'components/com_virtuemart/assets/js/', false);
+		JHTML::script('jquery.colorbox-min.js', 'components/com_virtuemart/assets/js/', false);
 		JHTML::script('vmprices.js', 'components/com_virtuemart/assets/js/', false);
-		JHTML::stylesheet('facebox.css', 'components/com_virtuemart/assets/css/', false);
+		JHTML::stylesheet('colorbox.css', 'components/com_virtuemart/assets/css/', false);
 		$jPrice = true;
 		return true;
 	}
