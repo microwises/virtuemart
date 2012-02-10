@@ -262,14 +262,6 @@ class VirtuemartViewProduct extends VmView {
 			$category_tree = ShopFunctions::categoryListTree(array($categoryId));
 			$this->assignRef('category_tree', $category_tree);
 
-
-			/* Check for child products if it is a parent item */
-			//				if (JRequest::getInt('product_parent_id', 0) == 0) {
-			//					foreach ($productlist as $virtuemart_product_id => $product) {
-			//						$product->haschildren = $model->checkChildProducts($virtuemart_product_id);
-			//					}
-			//				}
-
 			// Check for Media Items and Reviews, set the price
 
 			$media = VmModel::getModel('media');

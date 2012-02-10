@@ -40,16 +40,17 @@ class VirtuemartViewManufacturer extends VmView {
 
 
 		// get necessary models
-		$model = VmModel::getModel();
+		$model = VmModel::getModel('manufacturer');
+
 		$categoryModel = VmModel::getModel('manufacturercategories');
 
 		$this->SetViewTitle();
-
 
 		$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 
 			$manufacturer = $model->getManufacturer();
+
 			$isNew = ($manufacturer->virtuemart_manufacturer_id < 1);
 
 			$model->addImages($manufacturer);

@@ -52,7 +52,7 @@ class VirtueMartModelManufacturer extends VmModel {
      */
      public function getManufacturer() {
 
-     	if(!empty($this->_data)){
+     	if(empty($this->_data)){
      		$this->_data = $this->getTable('manufacturers');
      		$this->_data->load($this->_id);
 

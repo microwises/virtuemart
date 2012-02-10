@@ -3,7 +3,7 @@
 
 <install method="upgrade" type="component" version="1.5.0">
 
-	<name>VirtueMart</name>
+	<name>COM_VIRTUEMART</name>
 
 	<creationDate>February 2012</creationDate>
 	<author>The VirtueMart Development Team</author>

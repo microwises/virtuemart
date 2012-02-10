@@ -438,13 +438,7 @@ INSERT INTO `#__virtuemart_customs` ( `virtuemart_custom_id`, `custom_parent_id`
 (1,0, 0, 'COM_VIRTUEMART_RELATED_PRODUCTS', 'COM_VIRTUEMART_RELATED_PRODUCTS_TIP', '', 'COM_VIRTUEMART_RELATED_PRODUCTS_DESC', 'R', 0, 0, 0, 1, '2011-05-25 21:52:43', 62, '2011-05-25 21:52:43', 62, '0000-00-00 00:00:00', 0),
 (2,0, 0, 'COM_VIRTUEMART_RELATED_CATEGORIES', 'COM_VIRTUEMART_RELATED_CATEGORIES_TIP', NULL, 'COM_VIRTUEMART_RELATED_CATEGORIES_DESC', 'Z', 0, 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0);
 
---
--- Dumping data for table `#__virtuemart_shoppergroups`
---
 
-INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`, `shared`) VALUES
-(1, 1, '-anonymous-', 'Shopper group for anonymous shoppers', 2, 1),
-(NULL, 1, '-default-', 'This is the default shopper group.', 1, 1);
 --
 -- Dumping data for table `#__virtuemart_states`
 --

@@ -886,7 +886,7 @@ class VirtueMartModelProduct extends VmModel {
 			if ($result = $db->loadAssocList()) $neighbor = $result;
 			$direction = 'ASC';
 			$op='>';
-			vmdebug('getNeighborProducts '.$db->getQuery());
+// 			vmdebug('getNeighborProducts '.$db->getQuery());
 		}
 
 		return $neighbors;
@@ -897,7 +897,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * Check if the product has any children
 	 *
 	 * @author RolandD
-	 * @author MaxMilbers
+	 * @author Max Milbers
 	 * @param int $virtuemart_product_id Product ID
 	 * @return bool True if there are child products, false if there are no child products
 	 */
@@ -1143,7 +1143,8 @@ class VirtueMartModelProduct extends VmModel {
 		$ok = true;
 		foreach($ids as $id) {
 
-			if(!$this->checkChildProducts($id)){
+			$childIds = $this->getProductChildIds($id);
+			if(!empty($childIds)){
 				vmError(JText::_('COM_VIRTUEMART_PRODUCT_CANT_DELETE_CHILD'));
 				$ok = false;
 				continue;

@@ -73,9 +73,13 @@ class VmModel extends JModel {
 	 */
 	static function getModel($name=false){
 
-		if (!$name) $name = JRequest::getCmd('view');
+		if (!$name){
+			$name = JRequest::getCmd('view');
+// 			vmdebug('Get standard model of the view');
+		}
 		$name = strtolower($name);
 		$className = 'VirtueMartModel'.ucfirst($name);
+
 
 		if(empty(self::$_vmmodels[strtolower($className)])){
 			if( !class_exists($className) ){

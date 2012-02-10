@@ -197,10 +197,10 @@ class VmController extends JController{
 			$type = 'notice';
 		} else {
 			$model = VmModel::getModel($this->_cname);
-			$model->remove($ids);
+			$ret = $model->remove($ids);
 			$errors = $model->getErrors();
 			$msg = JText::sprintf('COM_VIRTUEMART_STRING_DELETED',$this->mainLangKey);
-			if(!empty($errors)) {
+			if(!empty($errors) or $ret==false) {
 				$msg = JText::sprintf('COM_VIRTUEMART_STRING_COULD_NOT_BE_DELETED',$this->mainLangKey);
 						$type = 'error';
 			}

@@ -110,7 +110,6 @@ class VirtueMartModelUser extends VmModel {
 // 		}
 	}
 
-
 	public function getCurrentUser(){
 		$user = JFactory::getUser();
 		$this->setUserId($user->id);
@@ -127,7 +126,6 @@ class VirtueMartModelUser extends VmModel {
 
 		if(empty($this->_db)) $this->_db = JFactory::getDBO();
 
-		vmdebug('getUser id',$this->_id);
 		$this->_data = $this->getTable('vmusers');
 		$this->_data->load((int)$this->_id);
 

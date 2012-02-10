@@ -78,10 +78,23 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * @param object JInstallerComponent parent
 		 * @return boolean True if VM exists, null otherwise
 		 */
-		/*		public function preflight ($type, $parent=null) {
+		public function preflight ($type, $parent=null) {
 
+			if(version_compare(JVERSION,'1.6.0','ge')) {
 
-		}*/
+				$q = 'DELETE FROM `#__menu` WHERE `menutype` = "main" AND
+						(`link`="index.php?option=com_virtuemart" OR `alias`="virtuemart" )';
+				$db = JFactory::getDbo();
+				$db -> setQuery($q);
+				$db -> query();
+				$error = $db->getErrorMsg();
+				if(!empty($error)){
+					$app = JFactory::getApplication();
+					$app ->enqueueMessage('Error deleting old vm admin menu (BE) '.$error);
+				}
+			}
+
+		}
 
 
 		/**
@@ -149,6 +162,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$updater = new GenericTableUpdater();
 			$updater->createLanguageTables();
 
+			$this->checkAddDefaultShoppergroups();
 
 			$this->displayFinished(false);
 
@@ -356,6 +370,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			$updater->updateMyVmTables();
 			$result = $updater->createLanguageTables();
 
+			$this->checkAddDefaultShoppergroups();
 
 			if($loadVm) $this->displayFinished(true);
 
@@ -488,7 +503,40 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
  			}
 
+		}
 
+		/**
+		 * Checks if both types of default shoppergroups are set
+		 * @author Max Milbers
+		 */
+
+		private function checkAddDefaultShoppergroups(){
+
+			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default` = "1" ';
+
+			$db = JFactory::getDbo();
+
+			$db->setQuery($q);
+
+			$res = $db ->loadResult();
+
+			if(empty($res)){
+				$q = "INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`, `shared`) VALUES
+						(NULL, 1, '-default-', 'This is the default shopper group.', 1, 1);";
+				$db->query($q);
+			}
+
+			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default` = "2" ';
+
+			$db = JFactory::getDbo();
+			$db->setQuery($q);
+			$res = $db ->loadResult();
+
+			if(empty($res)){
+				$q = "INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`, `shared`) VALUES
+						(NULL, 1, '-anonymous-', 'Shopper group for anonymous shoppers', 2, 1);";
+				$db->query($q);
+			}
 
 		}
 
