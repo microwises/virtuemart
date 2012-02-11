@@ -44,7 +44,10 @@
 	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
 	</param>
-
+	<param name="no_shipping" type="list" default="0" label="VMPAYMENT_PAYPAL_NO_SHIPPING" description="VMPAYMENT_PAYPAL_NO_SHIPPING_DESC" >
+	    <option value="0">VMPAYMENT_PAYPAL_NO_SHIPPING_PROMPT</option>
+	    <option value="1">VMPAYMENT_PAYPAL_NO_SHIPPING_DO_NOT_PROMPT</option>
+	</param>
 	<param type="spacer" default="" level="level1" />
 	<param type="spacer" default="VMPAYMENT_PAYPAL_RESTRICTIONS" level="level1" />
 	     <!-- BY DEFAULT paypal currency= vendor currency -->

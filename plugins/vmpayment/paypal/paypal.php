@@ -52,6 +52,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    'max_amount' => array('', 'int'),
 	    'secure_post' => array('', 'int'),
 	    'ipn_test' => array('', 'int'),
+	    'no_shipping' => array('', 'int'),
 	    'cost_per_transaction' => array('', 'int'),
 	    'cost_percent_total' => array('', 'int'),
 	    'tax_id' => array(0, 'int')
@@ -187,7 +188,7 @@ $vendorModel->addImages($vendor,1);
 	    "ipn_test" => $method->debug,
 	    //"pal" => "NRUBJXESJTY24",
 	     "image_url" =>  JURI::root() . $vendor->images[0]->file_url, // TO DO
-	    //"no_shipping" => "1",
+	    "no_shipping" => isset($method->no_shipping)?$method->no_shipping:0,
 	    "no_note" => "1");
 
 	/*
@@ -243,7 +244,7 @@ $vendorModel->addImages($vendor,1);
 	}
 	$html.= '</form></div>';
 	$html.= ' <script type="text/javascript">';
-	$html.= ' document.vm_paypal_form.submit();';
+	//$html.= ' document.vm_paypal_form.submit();';
 	$html.= ' </script></body></html>';
 
 	// 	2 = don't delete the cart, don't send email and don't redirect
