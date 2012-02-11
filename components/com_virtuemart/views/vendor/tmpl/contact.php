@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted access');
 		</div>
 	<?php
 	}
-?>	</h1></div>
+?>	</h1>
 
 <?php	foreach($this->userFields as $userfields){
 
@@ -105,9 +105,6 @@ defined('_JEXEC') or die('Restricted access');
 
 		</div>
 
-	</div>
-
-
 
 	<br class="clear" />
 	<?php echo $this->linkdetails ?>
@@ -117,3 +114,4 @@ defined('_JEXEC') or die('Restricted access');
 	<?php echo $this->linktos ?>
 
 	<br class="clear" />
+</div>

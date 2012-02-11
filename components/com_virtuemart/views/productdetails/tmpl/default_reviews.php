@@ -68,7 +68,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 					    ?>
 					<div class="<?php echo $color ?>">
 						<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>
-						<span class="vote"><?php echo JText::_('COM_VIRTUEMART_RATING')." ".$review->review_rates; ?></span>
+						<span class="vote"><?php echo JText::_('COM_VIRTUEMART_RATING'); ?><span title=" <?php echo (JText::_("COM_VIRTUEMART_RATING_TITLE") . $review->review_rates . '/' . $maxrating) ?>" class="vmicon vm2-stars<?php echo $review->review_rates; ?>" style="display:inline-block;"></span></span>
 						<blockquote><?php echo $review->comment; ?></blockquote>
 						<span class="bold"><?php echo $review->customer ?></span>
 					</div>
@@ -168,12 +168,12 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 				</span>
 				<br /><br />
 				<input class="highlight-button" type="submit" onclick="return( check_reviewform());" name="submit_review" title="<?php echo JText::_('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" value="<?php echo JText::_('COM_VIRTUEMART_REVIEW_SUBMIT')  ?>" />
-			</div>
 			<?php
 			} else {
 				echo '<strong>'.JText::_('COM_VIRTUEMART_DEAR').$this->user->name.',</strong><br />' ;
 				echo JText::_('COM_VIRTUEMART_REVIEW_ALREADYDONE');
 			}
+			?></div><?php
 		}
 	}
 
