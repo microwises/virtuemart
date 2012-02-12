@@ -139,7 +139,7 @@ if(!version_compare(JVERSION,'1.6.0','ge')) {
 					JOIN #__virtuemart_products as p using (`virtuemart_product_id`)
 					LEFT JOIN `#__virtuemart_product_categories` AS xref ON xref.`virtuemart_product_id` = a.`virtuemart_product_id`
 					LEFT JOIN `#__virtuemart_categories_".VMLANG."` AS b ON b.`virtuemart_category_id` = xref.`virtuemart_category_id`"
-			. ' WHERE ' . $where . ' and p.published=1 and b.virtuemart_category_id>1 '
+			. ' WHERE ' . $where . ' and p.published=1 and b.virtuemart_category_id>0 '
 			. ' ORDER BY ' . $order
 			;
 			$db->setQuery($query, 0, $limit);
