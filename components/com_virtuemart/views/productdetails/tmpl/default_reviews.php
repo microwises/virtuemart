@@ -121,7 +121,8 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 						// alert('".JText::_('COM_VIRTUEMART_REVIEW_ERR_RATE',false)."');
 						// return false;
 					// }
-					else if (form.comment.value.length < ". VmConfig::get('reviews_minimum_comment_length', 100).") {
+					//else 
+					if (form.comment.value.length < ". VmConfig::get('reviews_minimum_comment_length', 100).") {
 						alert('". addslashes( JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT1_JS', VmConfig::get('reviews_minimum_comment_length', 100)) )."');
 						return false;
 					}
