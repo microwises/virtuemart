@@ -27,6 +27,13 @@ VmConfig::loadConfig();
 vmRam('Start');
 // vmSetStartTime();
 vmSetStartTime('Start');
+
+if(VmConfig::get('enableEnglish', 1)){
+    $jlang =& JFactory::getLanguage();
+    $jlang->load('com_virtuemart', JPATH_SITE, 'en-GB', true);
+    $jlang->load('com_virtuemart', JPATH_SITE, $jlang->getDefault(), true);
+    $jlang->load('com_virtuemart', JPATH_SITE, null, true);
+}
 if(VmConfig::get('shop_is_offline',0)){
 	$_controller = 'virtuemart';
 	require (JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');

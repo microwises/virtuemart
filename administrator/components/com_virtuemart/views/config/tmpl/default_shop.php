@@ -110,6 +110,18 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 	<td class="key">
+		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_ENGLISH_EXPLAIN'); ?>">
+		<label for="enableEnglish"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_ENABLE_ENGLISH') ?></span>
+		</span>
+		</td>
+		<td>
+		<?php
+			echo VmHTML::checkbox('enableEnglish', $this->config->get('enableEnglish','1'));
+		?>
+	</td>
+	</tr>
+	<tr>
+	<td class="key">
 		<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS_EXPLAIN'); ?>">
 		<label for="dangeroustools"><?php echo JText::_('COM_VIRTUEMART_ADMIN_CFG_DANGEROUS_TOOLS') ?></span>
 		</span>

@@ -35,10 +35,12 @@ if(JRequest::getCmd('view','') == 'liveupdate') {
 
 if (!class_exists( 'VmConfig' )) require(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'config.php');
 VmConfig::loadConfig();
-$jlang =& JFactory::getLanguage();
-$jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, 'en-GB', true);
-$jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
-$jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true);
+if(VmConfig::get('enableEnglish', 1)){
+    $jlang =& JFactory::getLanguage();
+    $jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, 'en-GB', true);
+    $jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
+    $jlang->load('com_virtuemart', JPATH_ADMINISTRATOR, null, true);
+}
 vmJsApi::jQuery();
 vmJsApi::jSite();
 // check for permission Only vendor and Admin can use VM2 BE
