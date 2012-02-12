@@ -18,7 +18,8 @@
 
 #facebox .content {
   display:table;
-  width: 370px;
+/*  width: 370px; */
+  width: auto;
   padding: 10px;
   background: #fff;
   -webkit-border-radius:4px;

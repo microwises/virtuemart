@@ -209,3 +209,22 @@ div.spaceStyle{padding: 0px; margin: 5px; spacing: 0px;}
 .vm-notice{color: #CC0000;}
 .buttonBar-right{text-align: right; width: 100%;}
 .userfields_info{font-weight: bold;}
+.ratingbox {
+	position:relative;
+	display:block;
+	width:120px;
+	height:24px;
+	background:url("../images/color-stars.png") repeat-x scroll 0 bottom transparent;
+}
+.ratingbox span {
+	background:url(../images/color-stars.png) repeat-x;
+	display:block;
+	width:1%;
+	height:24px;
+	position:absolute;
+}
+.stars-orange{background-position:0 0 !important;}
+.stars-red{background-position:0 -54px !important;}
+.stars-green{background-position:0 -108px !important; }
+.stars-blue{background-position:0 -162px !important;}
+.stars-purple{background-position:0 -216px !important;}
