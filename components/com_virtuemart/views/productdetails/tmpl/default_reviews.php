@@ -27,10 +27,18 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 		//$starsPath = JURI::root().VmConfig::get('assets_general_path').'images/stars/';
 		$stars = array();
 		$showall = JRequest::getBool('showall', false);
+		$ratingWidth = $maxrating*24;
 		for ($num=0 ; $num <= $maxrating; $num++  ) {
-			$title = (JText::_("COM_VIRTUEMART_RATING_TITLE") . $num . '/' . $maxrating) ;
-			$stars[] = '<span class="vmicon vm2-stars'.$num.'" title="'.$title.'"></span>';
+			$stars[]='
+				<span title="'.(JText::_("COM_VIRTUEMART_RATING_TITLE") . $num . '/' . $maxrating).'" class="vmicon ratingbox" style="display:inline-block;width:'. 24 * $maxrating .'px;">
+					<span class="stars-orange" style="width:'. (24 * $num).'px">
+					</span>
+				</span>';
 		} ?>
+
+
+					
+					
 
 	<div class="customer-reviews">
 		<form method="post" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id) ; ?>" name="reviewForm" id="reviewform">
@@ -68,7 +76,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 					    ?>
 					<div class="<?php echo $color ?>">
 						<span class="date"><?php echo JHTML::date($review->created_on, JText::_('DATE_FORMAT_LC')); ?></span>
-						<span class="vote"><?php echo JText::_('COM_VIRTUEMART_RATING'); ?><span title=" <?php echo (JText::_("COM_VIRTUEMART_RATING_TITLE") . $review->review_rates . '/' . $maxrating) ?>" class="vmicon vm2-stars<?php echo $review->review_rates; ?>" style="display:inline-block;"></span></span>
+						<span class="vote"><?php echo $stars[$review->vote] ?></span>
 						<blockquote><?php echo $review->comment; ?></blockquote>
 						<span class="bold"><?php echo $review->customer ?></span>
 					</div>
@@ -104,15 +112,15 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 				var ausgewaehlt = false;
 
-				for (var i=0; i<form.vote.length; i++) {
-					if (form.vote[i].checked) {
-						ausgewaehlt = true;
-					}
-				}
-					if (!ausgewaehlt)  {
-						alert('".JText::_('COM_VIRTUEMART_REVIEW_ERR_RATE',false)."');
-						return false;
-					}
+				// for (var i=0; i<form.vote.length; i++) {
+					// if (form.vote[i].checked) {
+						// ausgewaehlt = true;
+					// }
+				// }
+					// if (!ausgewaehlt)  {
+						// alert('".JText::_('COM_VIRTUEMART_REVIEW_ERR_RATE',false)."');
+						// return false;
+					// }
 					else if (form.comment.value.length < ". VmConfig::get('reviews_minimum_comment_length', 100).") {
 						alert('". addslashes( JText::sprintf('COM_VIRTUEMART_REVIEW_ERR_COMMENT1_JS', VmConfig::get('reviews_minimum_comment_length', 100)) )."');
 						return false;
@@ -129,7 +137,26 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 				function refresh_counter() {
 					var form = document.getElementById('reviewform');
 					form.counter.value= form.comment.value.length;
-				}";
+				}
+				jQuery(function($) {
+					var steps = ".$maxrating.";
+					var parentPos= $('.write-reviews .ratingbox').position();
+					var boxWidth = $('.write-reviews .ratingbox').width();// nbr of total pixels
+					var starSize = (boxWidth/steps);
+					var ratingboxPos= $('.write-reviews .ratingbox').offset();
+					
+					$('.write-reviews .ratingbox').mousemove( function(e){
+						var span = $(this).children();
+						var dif = e.pageX-ratingboxPos.left; // nbr of pixels
+						difRatio = Math.floor(dif/boxWidth* steps )+1; //step
+						span.width(difRatio*starSize);
+						$('#vote').val(difRatio);
+						//console.log('note = ', difRatio);
+					});
+				});
+				
+				
+				";
 			$document = &JFactory::getDocument();
 			$document->addScriptDeclaration($reviewJavascript);
 
@@ -137,22 +164,10 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 				if($this->allowRating && $review_editable) { ?>
 					<h4><?php echo JText::_('COM_VIRTUEMART_WRITE_REVIEW')  ?><span><?php echo JText::_('COM_VIRTUEMART_WRITE_FIRST_REVIEW') ?></span></h4>
 					<span class="step"><?php echo JText::_('COM_VIRTUEMART_RATING_FIRST_RATE') ?></span>
-					<ul class="rating">
-
-					<?php // Print The Rating Stars + Checkboxes
-					for ($num=0 ; $num<=$maxrating;  $num++ ) { ?>
-						<li id="<?php echo $num ?>_stars">
-							<label for="vote<?php echo $num ?>"><?php echo $stars[ $num ]; ?></label>
-							<?php
-							if ($num == 5) {
-								$selected = ' checked="checked"';
-							} else {
-								$selected = '';
-							} ?>
-							<input<?php echo $selected ?> id="vote<?php echo $num ?>" type="radio" value="<?php echo $num ?>" name="vote">
-						</li>
-					<?php } ?>
-					</ul>
+					<div class="rating">
+							<label for="vote"><?php echo $stars[ $maxrating ]; ?></label>
+							<input type="hidden" id="vote" value="<?php echo $maxrating ?>" name="vote">
+					</div>
 
 					<?php
 

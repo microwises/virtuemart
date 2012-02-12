@@ -22,7 +22,7 @@ span.title{font-weight:700;display:block;border-bottom:solid #CAC9C9 1px;font-si
 .write-reviews span.step{font-weight:700;display:inline-block;margin:0 0 8px;}
 .write-reviews ul.rating{text-align:center;margin:0 0 20px;padding:0;}
 .write-reviews ul.rating li{display:inline-block;list-style:none;text-align:center;padding:0 5px;}
-.write-reviews ul.rating li span{display:block;padding-bottom:5px;}
+.write-reviews ul.rating li span{display:block;}
 .write-reviews textarea.virtuemart{margin-bottom:6px;display:inline-block;}
 .list-reviews .normal{border:solid #CAC9C9 1px;margin-bottom:8px;border-radius:4px;-webkit-border-radius:4px;-moz-border-radius:4px;padding:12px;}
 .list-reviews .normal blockquote,.list-reviews .highlight blockquote{margin-top:12px;font-size:12px;word-wrap:break-word;}

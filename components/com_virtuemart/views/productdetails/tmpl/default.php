@@ -145,7 +145,15 @@ echo $this->loadTemplate('images');
 					//$rating = empty($this->rating)? JText::_('COM_VIRTUEMART_RATING').' '.JText::_('COM_VIRTUEMART_UNRATED'):JText::_('COM_VIRTUEMART_RATING') . round($this->rating->rating, 2) . '/'. $maxrating;
 					//echo   $rating;
 					$ratingwidth = ( $this->rating->rating * 100 ) / $maxrating;//I don't use round as percetntage with works perfect, as for me
-					?><span class="vote"><?php echo JText::_('COM_VIRTUEMART_RATING').' '.round($this->rating->rating, 2) . '/'. $maxrating; ?><br/><span title=" <?php echo (JText::_("COM_VIRTUEMART_RATING_TITLE") . $this->rating->rating . '/' . $maxrating) ?>" class="vmicon ratingbox" style="display:inline-block;"><span class="stars-orange" style="width:<?php echo $ratingwidth;?>%"></span></span></span><?php
+					?>
+					<span class="vote">
+						<?php echo JText::_('COM_VIRTUEMART_RATING').' '.round($this->rating->rating, 2) . '/'. $maxrating; ?><br/>
+						<span title=" <?php echo (JText::_("COM_VIRTUEMART_RATING_TITLE") . $this->rating->rating . '/' . $maxrating) ?>" class="vmicon ratingbox" style="display:inline-block;">
+							<span class="stars-orange" style="width:<?php echo $ratingwidth;?>%">
+							</span>
+						</span>
+					</span>
+				<?php
 		}
 
 		// Product Price
