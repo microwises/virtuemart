@@ -505,40 +505,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 		}
 
-		/**
-		 * Checks if both types of default shoppergroups are set
-		 * @author Max Milbers
-		 */
 
-		private function checkAddDefaultShoppergroups(){
-
-			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default` = "1" ';
-
-			$db = JFactory::getDbo();
-
-			$db->setQuery($q);
-
-			$res = $db ->loadResult();
-
-			if(empty($res)){
-				$q = "INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`, `shared`) VALUES
-						(NULL, 1, '-default-', 'This is the default shopper group.', 1, 1);";
-				$db->query($q);
-			}
-
-			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default` = "2" ';
-
-			$db = JFactory::getDbo();
-			$db->setQuery($q);
-			$res = $db ->loadResult();
-
-			if(empty($res)){
-				$q = "INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`, `shared`) VALUES
-						(NULL, 1, '-anonymous-', 'Shopper group for anonymous shoppers', 2, 1);";
-				$db->query($q);
-			}
-
-		}
 
 		/**
 		 *
@@ -560,6 +527,40 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 			if(!class_exists('Migrator')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'migrator.php');
 			$dimensionUnitMigrateValues = Migrator::getDimensionUnitMigrateValues();
 			return $this->updateUnit(  'product_lwh_uom', $dimensionUnitMigrateValues) ;
+		}
+
+		/**
+		* Checks if both types of default shoppergroups are set
+		* @author Max Milbers
+		*/
+
+		private function checkAddDefaultShoppergroups(){
+
+			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default` = "1" ';
+
+			$db = JFactory::getDbo();
+			$db->setQuery($q);
+			$res = $db ->loadResult();
+
+			if(empty($res)){
+				$q = "INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`, `shared`) VALUES
+								(NULL, 1, '-default-', 'This is the default shopper group.', 1, 1);";
+				$db->setQuery($q);
+				$db->query();
+			}
+
+			$q = 'SELECT `virtuemart_shoppergroup_id` FROM `#__virtuemart_shoppergroups` WHERE `default` = "2" ';
+
+			$db->setQuery($q);
+			$res = $db ->loadResult();
+
+			if(empty($res)){
+				$q = "INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`, `shared`) VALUES
+								(NULL, 1, '-anonymous-', 'Shopper group for anonymous shoppers', 2, 1);";
+				$db->setQuery($q);
+				$db->query();
+			}
+
 		}
 
 		private function changeShoppergroupDataSetAnonShopperToOne(){

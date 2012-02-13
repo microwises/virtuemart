@@ -870,18 +870,31 @@ class vmrouterHelper {
 					$link[ (substr($tosplit, 0, $splitpos) ) ] = substr($tosplit, $splitpos+1);
 				}
 				//vmDebug('menu view link',$link);
-				$view = $link['view'] ;
-				if (array_key_exists($view,$this->dbview) ) $dbKey = $this->dbview[$view];
-				else $dbKey = false ;
-					if ( isset($link['virtuemart_'.$dbKey.'_id']) && $dbKey )
-						$this->menu['virtuemart_'.$dbKey.'_id'][ $link['virtuemart_'.$dbKey.'_id'] ] = $item->id;
-				elseif ($home == $view ) continue;
-				else $this->menu[$view]= $item->id ;
 
-				if ($item->home === 1) {
-					$home = $view;
-					$homeid = $item->id;
+				//This is fix to prevent entries in the errorlog.
+				if(!empty($link['view'])){
+					$view = $link['view'] ;
+					if (array_key_exists($view,$this->dbview) ){
+						$dbKey = $this->dbview[$view];
+					}
+					else {
+						$dbKey = false ;
+					}
+
+					if ( isset($link['virtuemart_'.$dbKey.'_id']) && $dbKey ){
+						$this->menu['virtuemart_'.$dbKey.'_id'][ $link['virtuemart_'.$dbKey.'_id'] ] = $item->id;
+					}
+					elseif ($home == $view ) continue;
+					else $this->menu[$view]= $item->id ;
+
+					if ($item->home === 1) {
+						$home = $view;
+						$homeid = $item->id;
+					}
+				} else {
+					vmError('$link["view"] is empty');
 				}
+
 			}
 		}
 
