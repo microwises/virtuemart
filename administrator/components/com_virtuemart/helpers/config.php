@@ -40,6 +40,7 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 
 require(JPATH_VM_ADMINISTRATOR.DS.'version.php');
 
+if (!class_exists( 'VmModel' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
 // if(!class_exists('VmTable')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmtable.php');
 
 /**

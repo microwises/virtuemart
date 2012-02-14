@@ -258,7 +258,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * Update an order item status
 	 * @author Max Milbers
 	 */
-	public function updateSingleItem($virtuemart_order_item_id, $order_status, $comment,$virtuemart_order_id)
+	public function updateSingleItem($virtuemart_order_item_id, $order_status, &$comment,$virtuemart_order_id,$order_pass)
 	{
 
 		// Update order item status
@@ -295,7 +295,13 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$oldOrderStatus = $table->order_status;
 
 			$data->order_status = $order_status;
+
 			//$data->comment = $comment;
+
+			JPluginHelper::importPlugin('vmcustom');
+			$_dispatcher = JDispatcher::getInstance();
+			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateSingleItem',array(&$comment,$table,$order_status,$order_pass));
+
 
 			$table->bindChecknStore($data,true);
 		/* Update the order item history */
@@ -374,9 +380,10 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		//First we must call the payment, the payment manipulates the result of the order_status
 		if($useTriggers){
-			/* Payment decides what to do when order status is updated */
+				if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+				// Payment decides what to do when order status is updated
 				JPluginHelper::importPlugin('vmpayment');
-				$_dispatcher = JDispatcher::getInstance();
+				$_dispatcher = JDispatcher::getInstance();										//Todo  I think $order should be $data
 				$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderPayment',array(&$order,$old_order_status));
 				foreach ($_returnValues as $_returnValue) {
 					if ($_returnValue === true) {
@@ -388,10 +395,9 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				}
 
 			// TODO This is not the most logical place for these plugins (or better; the method updateStatus() must be renamed....)
-			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmshipment');
 			$_dispatcher = JDispatcher::getInstance();
-			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderShipment',array(&$order,$old_order_status));
+			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderShipment',array(&$data,$old_order_status));
 
 
 			/**
@@ -400,7 +406,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			*/
 			if ($order['order_status'] == "X") {
 				JPluginHelper::importPlugin('vmpayment');
-				$_dispatcher = JDispatcher::getInstance();$_dispatcher->trigger('plgVmOnCancelPayment',array(&$order,$old_order_status));
+				$_dispatcher = JDispatcher::getInstance();$_dispatcher->trigger('plgVmOnCancelPayment',array(&$data,$old_order_status));
 			}
 		}
 
@@ -414,7 +420,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$order_items = $db->loadObjectList();
 			if ($order_items) {
 				foreach ($order_items as $order_item) {
-					$this->updateSingleItem($order_item->virtuemart_order_item_id, $order['order_status'], $order['comments'] , $virtuemart_order_id);
+					$this->updateSingleItem($order_item->virtuemart_order_item_id, $data->order_status, $order['comments'] , $virtuemart_order_id, $data->order_pass);
 				}
 			}
 			/* Update the order history */
@@ -793,11 +799,12 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 							vmdebug('_createOrderLines E ',$productCustom,$variant,$selected);
 
 							$product_attribute[$selected] = $selected;
-							JPluginHelper::importPlugin('vmcustom');
-							$dispatcher = JDispatcher::getInstance();
-							$html = '';
-							$varsToPushParam = $dispatcher->trigger('plgVmCreateOrderLinesCustom',array(&$html, $_prod,$productCustom, $row));
-							$product_attribute[$selected] = $html;
+// 							$product_attribute[$variant] = $selected;
+// 							JPluginHelper::importPlugin('vmcustom');
+// 							$dispatcher = JDispatcher::getInstance();
+// 							$html = '';
+// 							$varsToPushParam = $dispatcher->trigger('plgVmCreateOrderLinesCustom',array(&$html, $_prod,$productCustom, $row));
+// 							$product_attribute[$selected] = $html;
 
 /*						foreach($productCustom->custom_param as $k => $plg){
 // 							foreach($_prod->param as $k => $plg){

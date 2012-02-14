@@ -205,7 +205,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	}
 
 	public function plgVmCreateOrderLinesCustom(&$html,$item,$productCustom, $row ){
-		$this->createOrderLinesCustom($html,$item,$productCustom, $row );
+// 		$this->createOrderLinesCustom($html,$item,$productCustom, $row );
 	}
 	function plgVmOnSelfCallFE($type,$name,&$render) {
 		$render->html = 'test';

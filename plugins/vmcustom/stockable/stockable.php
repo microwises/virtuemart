@@ -520,7 +520,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	}
 
 	public function plgVmCreateOrderLinesCustom(&$html,$item,$productCustom, $row ){
-		$this->createOrderLinesCustom($html,$item,$productCustom, $row );
+// 		$this->createOrderLinesCustom($html,$item,$productCustom, $row );
 	}
 
 

@@ -34,7 +34,7 @@ $document->addScriptDeclaration("
 	});
 ");
 $document->addStyleDeclaration('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
-// vmdebug('cart',$this->cart);
+//  vmdebug('cart',$this->cart);
 ?>
 
 <div class="cart-view">

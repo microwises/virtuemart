@@ -37,15 +37,15 @@ class vmVersion {
 	/** @var string Codename */
 	static $CODENAME = 'grounded';
 	/** @var string Date */
-	static $RELDATE = 'January 16, 2011';
+	static $RELDATE = 'February 14, 2012';
 	/** @var string Time */
 	static $RELTIME = '21:30';
 	/** @var string Timezone */
 	static $RELTZ = 'GMT';
 	/** @var string Revision */
-	static $REVISION = 'Revision: 5378';
+	static $REVISION = 'Revision: 5435';
 	/** @var string Copyright Text */
-	static $COPYRIGHT = 'Copyright (C) 2005-2011 VirtueMart Development Team  - All rights reserved.';
+	static $COPYRIGHT = 'Copyright (C) 2005-2012 VirtueMart Development Team  - All rights reserved.';
 	/** @var string URL */
 	static $URL = '<a href="http://virtuemart.net">VirtueMart</a> is a Free Component for Joomla! released under the GNU/GPL2 License.';
 }

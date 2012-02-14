@@ -189,7 +189,12 @@ function virtuemartBuildRoute(&$query) {
 			if ( isset($query['order_number']) ) {
 				$segments[] = $query['order_number'];
 				unset ($query['order_number'],$query['layout']);
-			} else unset ($query['layout']);
+			} else if ( isset($query['virtuemart_order_id']) ) {
+				$segments[] = $query['virtuemart_order_id'];
+				unset ($query['virtuemart_order_id'],$query['layout']);
+			}
+
+			//else unset ($query['layout']);
 		break;
 
 		// sef only view
@@ -328,7 +333,7 @@ function virtuemartParseRoute($segments) {
 			$vars['order_number'] = $segments[0] ;
 			$vars['layout'] = 'details';
 		}
-		return $vars; 
+		return $vars;
 	}
 	else if ($view == $lang['user'] || $helper->activeMenu->view == 'user') {
 		$vars['view'] = 'user';
