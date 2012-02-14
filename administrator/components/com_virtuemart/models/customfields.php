@@ -873,6 +873,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			$item->param = json_decode($item->product_attribute,true);
 			$html = '<div class="vm-customfield-cart">';
 
+// 			vmdebug('CustomsFieldOrderDisplay',$item->param);
 			foreach ($item->param as $virtuemart_customfield_id=>$param){
 				if ($param) {
 					if ($item->productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id ) ) {
@@ -882,21 +883,22 @@ class VirtueMartModelCustomfields extends VmModel {
 
 						} elseif (($item->productCustom->field_type == "G")) {
 							$child = self::getChild($item->productCustom->custom_value);
-							$html .= ' <span>'.$item->productCustom->custom_title.' : '.$child->product_name.'</span>';
+							$html .= ' <span>'.$item->productCustom->custom_title.' '.$child->product_name.'</span>';
 						} elseif (($item->productCustom->field_type == "M")) {
-							$html .= ' <span>'.$item->productCustom->custom_title.' : '.self::displayCustomMedia($item->productCustom->custom_value,$absUrl).'</span>';
+							$html .= ' <span>'.$item->productCustom->custom_title.' '.self::displayCustomMedia($item->productCustom->custom_value,$absUrl).'</span>';
 						}  else {
 
-							$html .= '<span>'.$item->productCustom->custom_title.' : '.$item->productCustom->custom_value.'</span>';
+							$html .= '<span>'.$item->productCustom->custom_title.' '.$item->productCustom->custom_value.'</span>';
 						}
 					} else {
 						// falldown method if customfield are deleted
-						foreach((array)$param as $key => $value) $html .= '<br/ >'.($key?'<span>'.$key.' : </span>':'').$value;
+						foreach((array)$param as $key => $value) $html .= '<br/ >'.($key?'<span>'.$key.' </span>':'').$value;
 					}
 				}
 				$row++;
 			}
-			if (!empty($item->param) and !empty($item->custom_value)) {
+// 			if (!empty($item->param) and !empty($item->custom_value)) {
+			if (!empty($item->param) ) {
 				if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 				JPluginHelper::importPlugin('vmcustom');
 				$dispatcher = JDispatcher::getInstance();

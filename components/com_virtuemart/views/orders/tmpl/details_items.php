@@ -18,18 +18,27 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+if($this->format == 'pdf'){
+	$widthTable = '100';
+	$widtTitle = '27';
+} else {
+	$widthTable = '100';
+	$widtTitle = '49';
+}
+
 ?>
-<table width="100%" cellspacing="0" cellpadding="0" border="0">
+<table width="<?php echo $widthTable ?>%" cellspacing="0" cellpadding="0" border="0">
 	<tr align="left" class="sectiontableheader">
 		<th align="left" width="5%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></th>
 		<th align="left" width="5%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></th>
-		<th align="left" colspan="2" width="49%" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></th>
+		<th align="left" colspan="2" width="<?php echo $widtTitle ?>%" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></th>
 		<th align="center" width="10%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_STATUS') ?></th>
 		<th align="right" width="10%" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRICE') ?></th>
 		<?php if ( VmConfig::get('show_tax')) { ?>
 		<th align="right" width="10%" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_TAX') ?></th>
 		  <?php } ?>
-		<th align="right" width="10%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL_DISCOUNT_AMOUNT') ?></th>
+		<th align="right" width="11%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL_DISCOUNT_AMOUNT') ?></th>
 		<th align="right" width="10%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></th>
 	</tr>
 <?php
@@ -37,15 +46,16 @@ defined('_JEXEC') or die('Restricted access');
 		$_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $item->virtuemart_category_id . '&virtuemart_product_id=' . $item->virtuemart_product_id);
 ?>
 		<tr valign="top">
-			<td align="left" width="5%">
+			<td align="left">
 				<?php echo $item->order_item_sku; ?>
 			</td>
-			<td align="left" width="5%">
+			<td align="left">
 				<?php echo $item->product_quantity; ?>
 			</td>
-			<td align="left" width="29%" colspan="2" >
+			<td align="left" colspan="2" >
 				<a href="<?php echo $_link; ?>"><?php echo $item->order_item_name; ?></a>
 				<?php
+				vmdebug('$item',$item);
 					if (!empty($item->product_attribute)) {
 							if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 							$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,'FE');
@@ -53,7 +63,7 @@ defined('_JEXEC') or die('Restricted access');
 					}
 				?>
 			</td>
-			<td align="center" width="10%">
+			<td align="center">
 				<?php echo $this->orderstatuses[$item->order_status]; ?>
 			</td>
 			<td align="right"   class="priceCol" >
@@ -177,9 +187,5 @@ if ($this->orderdetails['details']['BT']->coupon_discount <> 0.00) {
 		<td align="right"><span  class='priceColor2'><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_billDiscountAmount); ?></span></td>
 		<td align="right"><strong><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_total); ?></strong></td>
 	</tr>
-
-
-
-
 
 </table>

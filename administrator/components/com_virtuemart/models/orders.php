@@ -772,9 +772,11 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		//		$_lineCount = 0;
 		foreach ($_cart->products as $priceKey=>$_prod) {
 			if (!is_int($priceKey)) {
+
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 				$variantmods = $calculator->parseModifier($priceKey);
+				vmdebug('_createOrderLines '.$priceKey,$_prod,$variantmods);
 				$row=0 ;
 				$product_id = (int)$priceKey;
 				$_prod->product_attribute = '';
@@ -788,16 +790,21 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 
+							vmdebug('_createOrderLines E ',$productCustom,$variant,$selected);
+
 							$product_attribute[$selected] = $selected;
-							// JPluginHelper::importPlugin('vmcustom');
-							// $dispatcher = JDispatcher::getInstance();
-							// $html = '';
-							// $varsToPushParam = $dispatcher->trigger('plgVmCreateOrderLinesCustom',array(&$html, $_prod,$productCustom, $row));
-							foreach($_prod->param as $k => $plg){
+							JPluginHelper::importPlugin('vmcustom');
+							$dispatcher = JDispatcher::getInstance();
+							$html = '';
+							$varsToPushParam = $dispatcher->trigger('plgVmCreateOrderLinesCustom',array(&$html, $_prod,$productCustom, $row));
+							$product_attribute[$selected] = $html;
+
+/*						foreach($productCustom->custom_param as $k => $plg){
+// 							foreach($_prod->param as $k => $plg){
 								if ($k == $variant)
 									$product_attribute[$selected] = $plg ;
 									// $html .= $this->$plgFunction( $item,$productCustom, $row,$plg[$this->_name]);
-							}
+							}*/
 
 
 						} else {
@@ -958,7 +965,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	function createInvoiceNumber($orderDetails){
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT * FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$orderDetails->virtuemart_order_id.'" AND `order_status` = "'.$orderDetails->order_status.'" ';
+		$q = 'SELECT * FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$orderDetails->virtuemart_order_id.'" '; // AND `order_status` = "'.$orderDetails->order_status.'" ';
 
 		$db->setQuery($q);
 		$result = $db->loadResultArray();

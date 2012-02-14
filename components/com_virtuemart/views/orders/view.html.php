@@ -44,12 +44,18 @@ class VirtuemartViewOrders extends VmView {
 		$_currentUser = JFactory::getUser();
 		$document = JFactory::getDocument();
 
-		$format = JRequest::getWord('format', 'html');
+		if(!empty($tpl)){
+			$format = $tpl;
+		} else {
+			$format = JRequest::getWord('format', 'html');
+		}
+		$this->assignRef('format', $format);
+
 		if($format=='pdf'){
 			$document->setTitle( JText::_('COM_VIRTUEMART_INVOICE') );
 
 			//PDF needs more RAM than usual
-			@ini_set( 'max_execution_time', '24M' );
+			@ini_set( 'memory_limit', '25M' );
 		} else {
 		    if ($layoutName == 'details') {
 			$document->setTitle( JText::_('COM_VIRTUEMART_ACC_ORDER_INFO') );

@@ -170,7 +170,12 @@ class VirtueMartViewProductdetails extends VmView {
 			    $category_model->addImages($category->children,1);
 
 		}
-		$format = JRequest::getCmd('format','html');
+	//	$format = JRequest::getCmd('format','html');
+		if(!empty($tpl)){
+			$format = $tpl;
+		} else {
+			$format = JRequest::getWord('format', 'html');
+		}
 		if ($format=='html') {
 			// Set Canonic link
 			$document->addHeadLink( JRoute::_( $product->canonical ,true,-1 ), 'canonical', 'rel', '' );

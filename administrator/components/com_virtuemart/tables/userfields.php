@@ -156,6 +156,7 @@ class TableUserfields extends VmTable {
 			case 'yanc_subscription':
 			case 'anjel_subscription':
 			case 'ccnewsletter_subscription':
+				//TODO $this->params exists?
 				$this->params = 'newsletter='.substr($this->type,0,strpos($this->type, '_') )."\n";
 				$this->type = 'checkbox';
 			case 'checkbox':

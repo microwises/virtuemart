@@ -143,7 +143,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	 */
 	function plgVmOnDisplayProductFE($product,&$idx,&$group) {
 		// default return if it's not this plugin
-		if ($group->custom_value != $this->_name) return '';
+		if ($group->custom_element != $this->_name) return '';
 
 		$this->_tableChecked = true;
 		//$this->tableFields = array ( 'id', 'virtuemart_custom_id', 'custom_specification_default1', 'custom_specification_default2' );

@@ -26,7 +26,7 @@ defined('_JEXEC') or die('Restricted access');
 			}
 
 $this->setLayout('details'); ?>
-<style>
+<style >
 	th, .orders-key{font-weight:bold;}
 	td.key{font-weight:bold;}
 </style>
@@ -126,4 +126,4 @@ $this->setLayout('details'); ?>
 		<?php echo $this->loadTemplate('items');
 		?>
 		</div>
-		<?php	echo $this->vendor->vendor_legal_info; ?>
+		<?php	//echo $this->vendor->vendor_legal_info; ?>
