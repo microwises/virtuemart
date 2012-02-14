@@ -461,7 +461,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    $nb_history = count($orderitems['history']);
 	    $order['order_status'] = $new_status;
 	    $order['virtuemart_order_id'] = $virtuemart_order_id;
-	    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_CONFIRMED', $order_number);
+	    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $order_number);
 	    if ($nb_history == 1) {
 		$order['comments'] .= "<br />" . JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
 		$order['customer_notified'] = 0;
