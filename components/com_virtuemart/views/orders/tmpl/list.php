@@ -51,7 +51,7 @@ if (count($this->orderlist) == 0) {
 	<?php
 		$k = 0;
 		foreach ($this->orderlist as $row) {
-			$editlink = JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&virtuemart_order_id=' . $row->virtuemart_order_id);
+			$editlink = JRoute::_('index.php?option=com_virtuemart&view=orders&layout=details&order_number=' . $row->order_number);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td align="left">

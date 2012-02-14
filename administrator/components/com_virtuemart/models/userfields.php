@@ -698,10 +698,10 @@ class VirtueMartModelUserfields extends VmModel {
 							     * Gotta find out why... some security issue or a bug???
 							     * Note by Oscar
 							     */
-							    if ($_userData === null) { // Not logged in
-								    $_doc = JFactory::getDocument();
-								    $_doc->addScript( JURI::root(true).'/includes/js/joomla.javascript.js');
-							    }
+							    // if ($_userData === null) { // Not logged in
+								    // $_doc = JFactory::getDocument();
+								    // $_doc->addScript( JURI::root(true).'/includes/js/joomla.javascript.js');
+							    // }
 								$currentYear= date('Y');
 							    $calendar = vmJsApi::jDate($_return['fields'][$_fld->name]['value'],  $_prefix.$_fld->name,  $_prefix.$_fld->name . '_field',false,($currentYear-100).':'.$currentYear);
 								$_return['fields'][$_fld->name]['formcode'] = $calendar ;
@@ -724,7 +724,7 @@ class VirtueMartModelUserfields extends VmModel {
 							    $_return['fields'][$_fld->name]['formcode'] = '<textarea id="'
 								    . $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name . '" cols="' . $_fld->cols
 								    . '" rows="'.$_fld->rows . '" class="inputbox" '
-								    . ($_fld->readonly ? ' readonly="readonly"' : '') . '>'
+								    . ($_fld->readonly ? ' readonly="readonly"' : '')
 								    . $_return['fields'][$_fld->name]['value'] .'></textarea>';
 							    break;
 						    case 'editorta':

@@ -186,10 +186,10 @@ function virtuemartBuildRoute(&$query) {
 			else {
 				$segments[] = $lang['orders'] ;
 			}
-			if ( isset($query['virtuemart_order_id']) ) {
-				$segments[] = $query['virtuemart_order_id'];
-				unset ($query['virtuemart_order_id'],$query['layout']);
-			}
+			if ( isset($query['order_number']) ) {
+				$segments[] = $query['order_number'];
+				unset ($query['order_number'],$query['layout']);
+			} else unset ($query['layout']);
 		break;
 
 		// sef only view
@@ -315,7 +315,22 @@ function virtuemartParseRoute($segments) {
 
 	if (empty($segments)) return $vars ;
 	else $view = $segments[0];
-	if ($view == $lang['user'] || $helper->activeMenu->view == 'user') {
+	if ($view == $lang['orders'] || $helper->activeMenu->view == 'orders') {
+		$vars['view'] = 'orders';
+		if ($view == $lang['orders']) {
+			array_shift($segments);
+
+		}
+		if (empty($segments)) {
+			$vars['layout'] = 'list';
+		}
+		if ( !empty($segments) ) {
+			$vars['order_number'] = $segments[0] ;
+			$vars['layout'] = 'details';
+		}
+		return $vars; 
+	}
+	else if ($view == $lang['user'] || $helper->activeMenu->view == 'user') {
 		$vars['view'] = 'user';
 		if ($view == $lang['user']) {
 			array_shift($segments);
@@ -358,16 +373,7 @@ function virtuemartParseRoute($segments) {
 		elseif ($segments[0] == $lang['delete'] ) $vars['task'] = 'delete' ;
 		return $vars;
 	}
-	else if ($view == $lang['orders'] || $helper->activeMenu->view == 'orders') {
-		$vars['view'] = 'orders';
-		if ($view == $lang['orders']) {
-			array_shift($segments);
-			if (empty($segments)) return $vars;
-		}
-			$vars['virtuemart_order_id'] = $segments[0] ;
-			$vars['layout'] = 'details';
-		return $vars;
-	}
+
 	else if ($view == $lang['manufacturers'] || $helper->activeMenu->view == 'manufacturer') {
 		$vars['view'] = 'manufacturer';
 
@@ -855,11 +861,12 @@ class vmrouterHelper {
 		$db->setQuery($query);
 // 		vmdebug('setMenuItemIdJ17 q',$query);
 		$this->menuVmitems= $db->loadObjectList();
+		$homeid =0;
 		if(empty($this->menuVmitems)){
 			vmWarn(JText::_('COM_VIRTUEMART_ASSIGN_VM_TO_MENU'));
 		} else {
 
-			$homeid =0;
+
 			// Search  Virtuemart itemID in joomla menu
 			foreach ($this->menuVmitems as $item)	{
 				$linkToSplit= explode ('&',$item->link);
