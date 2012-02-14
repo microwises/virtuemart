@@ -962,7 +962,7 @@ class VirtueMartModelUser extends VmModel {
 
 		$userfielddata = self::_prepareUserFields($data, $data['address_type']);
 		$userinfo   = $this->getTable('userinfos');
-    	if (!$userinfo->bindChecknStore($userfielddata)) {
+		if (!$userinfo->bindChecknStore($userfielddata)) {
 			vmError($userinfo->getError());
 		}
 		return $userinfo->virtuemart_userinfo_id;
