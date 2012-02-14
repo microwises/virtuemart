@@ -74,7 +74,13 @@ abstract class vmPlugin extends JPlugin {
 
 		$lang = JFactory::getLanguage();
 		$filename = 'plg_' . $this->_type . '_' . $this->_name;
+
+		if(VmConfig::get('enableEnglish', 1)){
+		    $lang->load($filename, JPATH_ADMINISTRATOR, 'en-GB', true);
+		    $lang->load($filename, JPATH_ADMINISTRATOR, $lang->getDefault(), true);
+		}
 		$lang->load($filename, JPATH_ADMINISTRATOR);
+
 		if (!class_exists('JParameter')) require(JPATH_VM_LIBRARIES . DS . 'joomla' . DS . 'html' . DS . 'parameter.php' );
 
 		$this->_tablename = '#__virtuemart_'.$this->_psType .'_plg_'. $this->_name;

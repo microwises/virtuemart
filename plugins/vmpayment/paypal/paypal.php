@@ -53,6 +53,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    'secure_post' => array('', 'int'),
 	    'ipn_test' => array('', 'int'),
 	    'no_shipping' => array('', 'int'),
+	    'address_override' => array('', 'int'),
 	    'cost_per_transaction' => array('', 'int'),
 	    'cost_percent_total' => array('', 'int'),
 	    'tax_id' => array(0, 'int')
@@ -128,11 +129,12 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	$address = ((isset($order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
 
 
-if(!class_exists('TableVendors'))require(JPATH_VM_ADMINISTRATOR.DS.'table'.DS.'vendors.php');
+	if (!class_exists('TableVendors'))
+	    require(JPATH_VM_ADMINISTRATOR . DS . 'table' . DS . 'vendors.php');
 	$vendorModel = VmModel::getModel('Vendor');
 	$vendorModel->setId(1);
 	$vendor = $vendorModel->getVendor();
-$vendorModel->addImages($vendor,1);
+	$vendorModel->addImages($vendor, 1);
 	$this->getPaymentCurrency($method);
 	$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $method->payment_currency . '" ';
 	$db = &JFactory::getDBO();
@@ -153,7 +155,7 @@ $vendorModel->addImages($vendor,1);
 	$post_variables = Array(
 	    'cmd' => '_ext-enter',
 	    'redirect_cmd' => '_xclick',
-	    'upload' => '1',
+	    'upload' => '1', //Indicates the use of third-party shopping cart
 	    'business' => $merchant_email, //Email address or account ID of the payment recipient (i.e., the merchant).
 	    'receiver_email' => $merchant_email, //Primary email address of the payment recipient (i.e., the merchant
 	    'order_number' => $order['details']['BT']->order_number,
@@ -169,7 +171,7 @@ $vendorModel->addImages($vendor,1);
 	     * (par exemple si des champs requis, tel que le pays, sont manquants) ou pas incluse.
 	     * Valeurs autorisées : 0, 1. Valeur par défaut : 0
 	     */
-	    "address_override" => "1", // 0 ??   Paypal does not allow your country of residence to ship to the country you wish to
+	    "address_override" => isset($method->address_override) ? $method->address_override : 0, // 0 ??   Paypal does not allow your country of residence to ship to the country you wish to
 	    "first_name" => $address->first_name,
 	    "last_name" => $address->last_name,
 	    "address1" => $address->address_1,
@@ -180,15 +182,15 @@ $vendorModel->addImages($vendor,1);
 	    "country" => ShopFunctions::getCountryByID($address->virtuemart_country_id, 'country_3_code'),
 	    "email" => $order['details']['BT']->email,
 	    "night_phone_b" => $address->phone_1,
-	    "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id),
+	    "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id),
 	    //"return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
 	    "notify_url" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component'),
 	    "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id),
 	    //"undefined_quantity" => "0",
 	    "ipn_test" => $method->debug,
 	    //"pal" => "NRUBJXESJTY24",
-	     "image_url" =>  JURI::root() . $vendor->images[0]->file_url, // TO DO
-	    "no_shipping" => isset($method->no_shipping)?$method->no_shipping:0,
+	    "image_url" => JURI::root() . $vendor->images[0]->file_url,
+	    "no_shipping" => isset($method->no_shipping) ? $method->no_shipping : 0,
 	    "no_note" => "1");
 
 	/*
@@ -244,7 +246,7 @@ $vendorModel->addImages($vendor,1);
 	}
 	$html.= '</form></div>';
 	$html.= ' <script type="text/javascript">';
-	//$html.= ' document.vm_paypal_form.submit();';
+	$html.= ' document.vm_paypal_form.submit();';
 	$html.= ' </script></body></html>';
 
 	// 	2 = don't delete the cart, don't send email and don't redirect
@@ -284,7 +286,7 @@ $vendorModel->addImages($vendor,1);
 
 // the payment itself should send the parameter needed.
 	$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
-$order_number = JRequest::getInt('on', 0);
+	$order_number = JRequest::getVar('on', 0);
 	$vendorId = 0;
 	if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
@@ -293,7 +295,12 @@ $order_number = JRequest::getInt('on', 0);
 	    return false;
 	}
 	if (!class_exists('VirtueMartCart'))
-		    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+	if (!class_exists('shopFunctionsF'))
+	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+	if (!class_exists('VirtueMartModelOrders'))
+	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+
 	$paypal_data = JRequest::get('post');
 	$payment_name = $this->renderPluginName($method);
 
@@ -303,22 +310,18 @@ $order_number = JRequest::getInt('on', 0);
 	    $return_context = $paypal_data['custom'];
 	    if (!class_exists('VirtueMartModelOrders'))
 		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-
 	    $virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
 	    $payment_name = $this->renderPluginName($method);
-
 	    if ($virtuemart_order_id) {
-		$this->_storePaypalnfos($method, $paypal_data);
+		$this->_storePaypalInternalData($method, $paypal_data, $virtuemart_order_id);
 		// send the email ONLY if payment has been accepted
 		$modelOrder = VmModel::getModel('orders');
 		$orderitems = $modelOrder->getOrder($virtuemart_order_id);
 		$nb_history = count($orderitems['history']);
 		//vmdebug('history', $orderitems);
-		if (!class_exists('shopFunctionsF'))
-		    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+
 		if ($nb_history == 1) {
-		    if (!class_exists('shopFunctionsF'))
-			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+
 		    shopFunctionsF::sentOrderConfirmedEmail($orderitems);
 		    $this->logInfo('plgVmOnPaymentResponseReceived, sentOrderConfirmedEmail ' . $order_number, 'message');
 		    $order['order_status'] = $orderitems['items'][$nb_history - 1]->order_status;
@@ -327,13 +330,18 @@ $order_number = JRequest::getInt('on', 0);
 		    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
 		    $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 		}
+	    } else {
+		vmError('Paypal data received, but no order number');
+		return;
 	    }
+	} else {
+	    $virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
 	}
 	if (!($paymentTable = $this->_getPaypalInternalData($virtuemart_order_id, $order_number) )) {
 	    // JError::raiseWarning(500, $db->getErrorMsg());
 	    return '';
 	}
-	$html = $this->_getPaymentResponseHtml($payment_data, $payment_name);
+	$html = $this->_getPaymentResponseHtml($paymentTable, $payment_name);
 
 	//We delete the old stuff
 	// get the correct cart / session
@@ -403,7 +411,7 @@ $order_number = JRequest::getInt('on', 0);
 	}
 	$this->logInfo('paypal_data ' . implode('   ', $paypal_data), 'message');
 
-	$this->_storePaypalnfos($method, $paypal_data);
+	$this->_storePaypalInternalData($method, $paypal_data, $virtuemart_order_id);
 
 	$error_msg = $this->_processIPN($paypal_data, $method, $virtuemart_order_id);
 	$this->logInfo('process IPN ' . $error_msg, 'message');
@@ -413,33 +421,33 @@ $order_number = JRequest::getInt('on', 0);
 	} else {
 	    $this->logInfo('process IPN OK', 'message');
 	}
-	    /*
-	     * https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_IPNandPDTVariables
-	     * The status of the payment:
-	     * Canceled_Reversal: A reversal has been canceled. For example, you won a dispute with the customer, and the funds for the transaction that was reversed have been returned to you.
-	     * Completed: The payment has been completed, and the funds have been added successfully to your account balance.
-	     * Created: A German ELV payment is made using Express Checkout.
-	     * Denied: You denied the payment. This happens only if the payment was previously pending because of possible reasons described for the pending_reason variable or the Fraud_Management_Filters_x variable.
-	     * Expired: This authorization has expired and cannot be captured.
-	     * Failed: The payment has failed. This happens only if the payment was made from your customer’s bank account.
-	     * Pending: The payment is pending. See pending_reason for more information.
-	     * Refunded: You refunded the payment.
-	     * Reversed: A payment was reversed due to a chargeback or other type of reversal. The funds have been removed from your account balance and returned to the buyer. The reason for the reversal is specified in the ReasonCode element.
-	     * Processed: A payment has been accepted.
-	     * Voided: This authorization has been voided.
-	     *
-	     */
-	    if (empty($paypal_data['payment_status']) || ($paypal_data['payment_status'] != 'Completed' && $paypal_data['payment_status'] != 'Pending')) {
-		//return false;
-	    }
-	    $paypal_status = $paypal_data['payment_status'];
-	    if (strcmp($paypal_status, 'Completed') == 0) {
-		$new_status = $method->status_success;
-	    }   elseif (strcmp($paypal_status, 'Pending') == 0) {
-		$new_status = $method->status_pending;
-	    } else {
-		 $new_status = $method->status_canceled;
-	    }
+	/*
+	 * https://cms.paypal.com/us/cgi-bin/?cmd=_render-content&content_ID=developer/e_howto_html_IPNandPDTVariables
+	 * The status of the payment:
+	 * Canceled_Reversal: A reversal has been canceled. For example, you won a dispute with the customer, and the funds for the transaction that was reversed have been returned to you.
+	 * Completed: The payment has been completed, and the funds have been added successfully to your account balance.
+	 * Created: A German ELV payment is made using Express Checkout.
+	 * Denied: You denied the payment. This happens only if the payment was previously pending because of possible reasons described for the pending_reason variable or the Fraud_Management_Filters_x variable.
+	 * Expired: This authorization has expired and cannot be captured.
+	 * Failed: The payment has failed. This happens only if the payment was made from your customer’s bank account.
+	 * Pending: The payment is pending. See pending_reason for more information.
+	 * Refunded: You refunded the payment.
+	 * Reversed: A payment was reversed due to a chargeback or other type of reversal. The funds have been removed from your account balance and returned to the buyer. The reason for the reversal is specified in the ReasonCode element.
+	 * Processed: A payment has been accepted.
+	 * Voided: This authorization has been voided.
+	 *
+	 */
+	if (empty($paypal_data['payment_status']) || ($paypal_data['payment_status'] != 'Completed' && $paypal_data['payment_status'] != 'Pending')) {
+	    //return false;
+	}
+	$paypal_status = $paypal_data['payment_status'];
+	if (strcmp($paypal_status, 'Completed') == 0) {
+	    $new_status = $method->status_success;
+	} elseif (strcmp($paypal_status, 'Pending') == 0) {
+	    $new_status = $method->status_pending;
+	} else {
+	    $new_status = $method->status_canceled;
+	}
 
 
 
@@ -465,14 +473,15 @@ $order_number = JRequest::getInt('on', 0);
 		if (!class_exists('shopFunctionsF'))
 		    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 		shopFunctionsF::sentOrderConfirmedEmail($orderitems);
-		$this->logInfo('Notification, sentOrderConfirmedEmail ' . $order_number. ' '. $new_status, 'message');
+		$this->logInfo('Notification, sentOrderConfirmedEmail ' . $order_number . ' ' . $new_status, 'message');
 	    }
 	}
 	//// remove vmcart
 	$this->emptyCart($return_context);
 	//die();
     }
-function _storePaypalInternalData($method, $paypal_data, $virtuemart_order_id){
+
+    function _storePaypalInternalData($method, $paypal_data, $virtuemart_order_id) {
 
 	// get all know columns of the table
 	$db = JFactory::getDBO();
@@ -495,8 +504,9 @@ function _storePaypalInternalData($method, $paypal_data, $virtuemart_order_id){
 	$response_fields['order_number'] = $paypal_data['invoice'];
 	$response_fields['virtuemart_order_id'] = $virtuemart_order_id;
 //$preload=true   preload the data here too preserve not updated data
- 	$this->storePSPluginInternalData($response_fields, 'virtuemart_order_id', true);
-}
+	$this->storePSPluginInternalData($response_fields, 'virtuemart_order_id', true);
+    }
+
     function _getTablepkeyValue($virtuemart_order_id) {
 	$db = JFactory::getDBO();
 	$q = 'SELECT ' . $this->_tablepkey . ' FROM `' . $this->_tablename . '` '
@@ -548,7 +558,7 @@ function _storePaypalInternalData($method, $paypal_data, $virtuemart_order_id){
 	$db = JFactory::getDBO();
 	$q = 'SELECT * FROM `' . $this->_tablename . '` WHERE ';
 	if ($order_number) {
-	     $q .= " `order_number` = '" . $order_number."'";
+	    $q .= " `order_number` = '" . $order_number . "'";
 	} else {
 	    $q .= ' `virtuemart_order_id` = ' . $virtuemart_order_id;
 	}
@@ -698,14 +708,13 @@ function _storePaypalInternalData($method, $paypal_data, $virtuemart_order_id){
 	}
     }
 
-    function _getPaymentResponseHtml($paypal_data, $payment_name) {
-	vmdebug('paypal response', $paypal_data);
+    function _getPaymentResponseHtml($paypalTable, $payment_name) {
 
 	$html = '<table>' . "\n";
 	$html .= $this->getHtmlRow('PAYPAL_PAYMENT_NAME', $payment_name);
-	if (!empty($paypal_data)) {
-	    $html .= $this->getHtmlRow('PAYPAL_ORDER_NUMBER', $paypal_data['invoice']);
-	    $html .= $this->getHtmlRow('PAYPAL_AMOUNT', $paypal_data['mc_gross'] . " " . $paypal_data['mc_currency']);
+	if (!empty($paypalTable)) {
+	    $html .= $this->getHtmlRow('PAYPAL_ORDER_NUMBER', $paypalTable->order_number);
+	    //$html .= $this->getHtmlRow('PAYPAL_AMOUNT', $paypalTable->payment_order_total. " " . $paypalTable->payment_currency);
 	}
 	$html .= '</table>' . "\n";
 

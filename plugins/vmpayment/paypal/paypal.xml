@@ -44,12 +44,19 @@
 	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
 	</param>
+
+	<param type="spacer" default="VMPAYMENT_PAYPAL_AUTOMATIC_FILLOUT" level="level1" />
+	<param name="address_override" type="list" default="0" label="VMPAYMENT_PAYPAL_ADDRESS_OVERRIDE" description="VMPAYMENT_PAYPAL_ADDRESS_OVERRIDE_DESC" >
+	     <option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="1">COM_VIRTUEMART_YES</option>
+	</param>
 	<param name="no_shipping" type="list" default="0" label="VMPAYMENT_PAYPAL_NO_SHIPPING" description="VMPAYMENT_PAYPAL_NO_SHIPPING_DESC" >
 	    <option value="0">VMPAYMENT_PAYPAL_NO_SHIPPING_PROMPT</option>
 	    <option value="1">VMPAYMENT_PAYPAL_NO_SHIPPING_DO_NOT_PROMPT</option>
+	     <option value="2">VMPAYMENT_PAYPAL_NO_SHIPPING_PROMPT_REQUIRE</option>
 	</param>
 	<param type="spacer" default="" level="level1" />
-	<param type="spacer" default="VMPAYMENT_PAYPAL_RESTRICTIONS" level="level1" />
+		<param type="spacer" default="VMPAYMENT_PAYPAL_RESTRICTIONS" level="level1" />
 	     <!-- BY DEFAULT paypal currency= vendor currency -->
 	<param name="payment_currency" type="vmacceptedcurrency" default="" label="VMPAYMENT_PAYPAL_CURRENCY" description="VMPAYMENT_PAYPAL_CURRENCY_DESC" />
 
