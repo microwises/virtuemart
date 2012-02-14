@@ -13,7 +13,7 @@
 * to the GNU General Public License, and as distributed it includes or
 * is derivative of works licensed under the GNU General Public License or
 * other free or open source software licenses.
-* @version $Id$
+* @version $Id: details_items.php 5432 2012-02-14 02:20:35Z Milbo $
 */
 
 // Check to ensure this file is included in Joomla!
@@ -55,7 +55,7 @@ if($this->format == 'pdf'){
 			<td align="left" colspan="2" >
 				<a href="<?php echo $_link; ?>"><?php echo $item->order_item_name; ?></a>
 				<?php
-// 				vmdebug('tmpl details_item $item',$item);
+// 				vmdebug('$item',$item);
 					if (!empty($item->product_attribute)) {
 							if(!class_exists('VirtueMartModelCustomfields'))require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'customfields.php');
 							$product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,'FE');

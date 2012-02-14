@@ -218,6 +218,20 @@ class VirtuemartViewOrders extends VmView {
 		$this->vendorEmail = $this->vendor->email ;
 		$this->subject = JText::sprintf('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_SUBJ',$this->orderdata['details']['BT']->order_number);
 		$this->doVendor = true;
+
+
+		$path = VmConfig::get('forSale_path',0);
+		if($this->order['order_status'] == 'C' and $path!==0){
+
+			if(!class_exists('VirtueMartControllerPdfs')) require_once( JPATH_VM_SITE.DS.'controllers'.DS.'pdf.php' );
+			$controller = new VirtueMartControllerPdfs( array(
+					  'model_path' => JPATH_VM_SITE.DS.'models',
+					  'view_path' => JPATH_VM_SITE.DS.'views'
+			));
+
+			$this->mediaToSend[] = $controller->checkStoreInvoice($this->orderdata);
+		}
+
 		parent::display();
 	}
 

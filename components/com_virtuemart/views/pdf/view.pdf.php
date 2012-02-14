@@ -22,6 +22,15 @@ if(!class_exists('VmView'))require(JPATH_VM_SITE.DS.'helpers'.DS.'vmview.php');
 class VirtueMartViewPdf extends VmView
 {
 
+	function __construct( $config = array() ) {
+
+		$config['base_path'] = JPATH_COMPONENT_SITE;
+
+		parent::__construct( $config );
+
+	}
+
+
 	function display($tpl = 'pdf')
 	{
 

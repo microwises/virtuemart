@@ -162,7 +162,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
    ON p.virtuemart_product_id = i.virtuemart_product_id)
                         LEFT JOIN #__virtuemart_product_categories c
                         ON p.virtuemart_product_id = c.virtuemart_product_id
-   WHERE virtuemart_order_id=".$virtuemart_order_id;
+   WHERE virtuemart_order_id=".$virtuemart_order_id." group by p.virtuemart_product_id";
 		$db->setQuery($q);
 		$order['items'] = $db->loadObjectList();
 // Get the order items
@@ -975,7 +975,8 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$q = 'SELECT * FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$orderDetails->virtuemart_order_id.'" '; // AND `order_status` = "'.$orderDetails->order_status.'" ';
 
 		$db->setQuery($q);
-		$result = $db->loadResultArray();
+		$result = $db->loadAssoc();
+// 		vmdebug('my createInvoiceNumber $q '.$q,$result);
 		if(!$result or empty($result['invoice_number']) ){
 
 			$data['virtuemart_order_id'] = $orderDetails->virtuemart_order_id;
@@ -1231,6 +1232,5 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	}
 
 }
-
 
 // No closing tag
