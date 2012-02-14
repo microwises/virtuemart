@@ -56,8 +56,11 @@ if($this->print){
 	echo $details_link; ?>
 </h1>
 	<div class='spaceStyle'>
-	    <div class="floatright"> <a href="<?php echo $this->order_list_link ?>"><?php echo JText::_('COM_VIRTUEMART_ORDERS_VIEW_DEFAULT_TITLE'); ?></a></div>
+	    <div class="floatright">
+		<a href="<?php echo $this->order_list_link ?>"><?php echo JText::_('COM_VIRTUEMART_ORDERS_VIEW_DEFAULT_TITLE'); ?></a>
+	    </div>
 	    <div class="clear"></div>
+	</div>
 <div class='spaceStyle'>
 	<?php
 	echo $this->loadTemplate('order');
@@ -72,8 +75,10 @@ if($this->print){
 	$tabarray['items'] = 'COM_VIRTUEMART_ORDER_ITEM';
 	$tabarray['history'] = 'COM_VIRTUEMART_ORDER_HISTORY';
 
-	shopFunctionsF::buildTabs ($tabarray);
-	echo '</div><br clear="all"/><br/>';
+	shopFunctionsF::buildTabs ($tabarray); ?>
+	 </div>
+	    <br clear="all"/><br/>
+	<?php
 }
 
 ?>
