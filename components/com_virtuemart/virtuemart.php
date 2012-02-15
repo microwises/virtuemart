@@ -96,14 +96,20 @@ if(VmConfig::get('shop_is_offline',0)){
 
 /* Create the controller */
 $_class = 'VirtuemartController'.ucfirst($_controller);
-$controller = new $_class();
+if (class_exists($_class)) {
+    $controller = new $_class();
 
-/* Perform the Request task */
-$controller->execute($task);
-//Console::logSpeed('virtuemart start');
-vmTime($_class.' Finished task '.$task,'Start');
-vmRam('End');
-vmRamPeak('Peak');
-/* Redirect if set by the controller */
-$controller->redirect();
+    /* Perform the Request task */
+    $controller->execute($task);
 
+    //Console::logSpeed('virtuemart start');
+    vmTime($_class.' Finished task '.$task,'Start');
+    vmRam('End');
+    vmRamPeak('Peak');
+    /* Redirect if set by the controller */
+    $controller->redirect();
+} else {
+    vmDebug('VirtueMart controller not found: '. $_class);
+    $mainframe = Jfactory::getApplication();
+    $mainframe->redirect('index.php?option=com_virtuemart');
+}
