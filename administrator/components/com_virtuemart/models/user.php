@@ -128,9 +128,9 @@ class VirtueMartModelUser extends VmModel {
 
 		$this->_data = $this->getTable('vmusers');
 		$this->_data->load((int)$this->_id);
-		vmdebug('$this->_data->vmusers',$this->_data);
+// 		vmdebug('$this->_data->vmusers',$this->_data);
 		$this->_data->JUser = JUser::getInstance($this->_id);
-		vmdebug('$this->_data->JUser',$this->_data->JUser);
+// 		vmdebug('$this->_data->JUser',$this->_data->JUser);
 
 		if(empty($this->_data->perms)){
 
@@ -154,9 +154,6 @@ class VirtueMartModelUser extends VmModel {
 
 		}
 
-
-
-// 		$_ui = $this->_getList('SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"');
 		$q = 'SELECT `virtuemart_userinfo_id` FROM `#__virtuemart_userinfos` WHERE `virtuemart_user_id` = "' . (int)$this->_id.'"';
 		$this->_db->setQuery($q);
 		$userInfo_ids = $this->_db->loadResultArray(0);
@@ -165,8 +162,7 @@ class VirtueMartModelUser extends VmModel {
 		$this->_data->userInfo = array ();
 
 		$BTuid = 0;
-		//$userinfo = $this->getTable('userinfos');
-// 		for ($i = 0, $n = count($_ui); $i < $n; $i++) {
+
 		foreach($userInfo_ids as $uid){
 
 			$this->_data->userInfo[$uid] = $this->getTable('userinfos');
@@ -181,7 +177,6 @@ class VirtueMartModelUser extends VmModel {
 				$this->_data->userInfo[$BTuid]->address_type = 'BT';
 // 				vmdebug('$this->_data->vmusers',$this->_data);
 			}
-
 		}
 
 // 		vmdebug('user_is_vendor ?',$this->_data->user_is_vendor);
@@ -1034,27 +1029,29 @@ class VirtueMartModelUser extends VmModel {
 			$preFix = '';
 		}
 
-// 		if(!$cart && empty($uid)) $uid = $this->_id;
+		if(!empty($this->_data->JUser)){
+			$JUser = $this->_data->JUser;
+		} else {
+			$JUser = JUser::getInstance($this->_id);
+		}
+
 
 		$userFields = array();
 		if(!empty($uid)){
 
-			$this->_data->userInfo[$uid] = $this->getTable('userinfos');
-			$this->_data->userInfo[$uid]->load($uid);
+			$data = $this->getTable('userinfos');
+			$data->load($uid);
 
-			$data = $this->_data->userInfo[$uid];
-
-			if ($this->_data->userInfo[$uid]->address_type == 'BT') {
+			if ($data->address_type != 'ST' ) {
 				$BTuid = $uid;
 
-				$this->_data->userInfo[$BTuid]->name = $this->_data->JUser->name;
-				$this->_data->userInfo[$BTuid]->email = $this->_data->JUser->email;
-				$this->_data->userInfo[$BTuid]->username = $this->_data->JUser->username;
-				$this->_data->userInfo[$BTuid]->address_type = 'BT';
-// 				vmdebug('$this->_data->vmusers',$this->_data);
-			}
+				$data->name = $JUser->name;
+				$data->email = $JUser->email;
+				$data->username = $JUser->username;
+				$data->address_type = 'BT';
 
-// 			vmdebug(' user data with infoid  '.$uid,$this->_data->userInfo[$uid]);
+			}
+			vmdebug(' user data with infoid  '.$uid,$data);
 		}
 		else {
 			//New Address is filled here with the data of the cart (we are in the userview)
