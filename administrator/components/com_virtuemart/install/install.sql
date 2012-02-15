@@ -304,6 +304,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_customs` (
 
 CREATE TABLE IF NOT EXISTS `#__virtuemart_invoices` (
   `virtuemart_invoice_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `virtuemart_vendor_id` smallint(1) UNSIGNED NOT NULL DEFAULT '1',
   `virtuemart_order_id` int(1) UNSIGNED,
   `invoice_number` char(64),
   `order_status` char(2),
@@ -316,7 +317,8 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_invoices` (
   `locked_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_invoice_id`),
   KEY `idx_virtuemart_order_id` (`virtuemart_order_id`),
-  UNIQUE KEY `idx_invoice_number` (`invoice_number`)
+  KEY `idx_virtuemart_vendor_id` (`virtuemart_vendor_id`),
+  UNIQUE KEY `idx_invoice_number` (`invoice_number`,`virtuemart_vendor_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields definition' AUTO_INCREMENT=1 ;
 
   

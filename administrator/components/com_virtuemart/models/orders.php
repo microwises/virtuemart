@@ -581,10 +581,10 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			// 				$data = array_merge($plg_data,$data);
 		}
 		if(empty($_orderData->order_number)){
-			$_orderData->order_number = $this->generateOrderNumber($_usr->get('id'),8);
+			$_orderData->order_number = $this->generateOrderNumber($_usr->get('id'),4);
 		}
 		if(empty($_orderData->order_pass)){
-			$_orderData->order_pass = 'p_'.$this->generateOrderNumber($_orderData->order_number, 6);
+			$_orderData->order_pass = 'p_'.$this->generateOrderNumber(substr( md5((string)time().$_orderData->order_number ), 0, 5));
 		}
 
 		$orderTable =  $this->getTable('orders');
@@ -961,10 +961,20 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	private function generateOrderNumber($uid = 0,$length=10)
 	{
 
-			$data = substr( md5( session_id().(string)time().(string)$uid )
-			,0
-			,$length
-			);
+		$db = JFactory::getDBO();
+		$q = 'SELECT SQL_CALC_FOUND_ROWS, * FROM #__virtuemart_orders WHERE `virtuemart_vendor_id`="'.$virtuemart_vendor_id.'"';
+		$db->setQuery($q);
+		$db->query();
+
+		$this->_db->setQuery('SELECT FOUND_ROWS()');
+
+		//We can use that here, because the order_number is free to set, the invoice_number must often follow special rules
+		$count = $this->_db->loadResult();+VM_ORDER_OFFSET;
+// 		$variable_fixed=sprintf("%06s",$num_rows);
+		$data = substr( md5( session_id().(string)time().(string)$uid )
+		,0
+		,$length
+		).'0'.$count;
 
 		return $data;
 	}
@@ -984,6 +994,8 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			$data['order_status'] = $orderDetails->order_status;
 
+			$data['virtuemart_vendor_id'] = $orderDetails->virtuemart_vendor_id;
+
 			JPluginHelper::importPlugin('vmshopper');
 			$dispatcher = JDispatcher::getInstance();
 			$plg_datas = $dispatcher->trigger('plgVmOnUserInvoice',$orderDetails,$data);
@@ -991,15 +1003,22 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 // 				$data = array_merge($plg_data,$data);
 			}
 
+			$q = 'SELECT SQL_CALC_FOUND_ROWS, * FROM `#__virtuemart_invoices` WHERE `virtuemart_vendor_id`= "'.$orderDetails->virtuemart_vendor_id.'" '; // AND `order_status` = "'.$orderDetails->order_status.'" ';
+			$db->setQuery($q);
+			$db->query();
+			$this->_db->setQuery('SELECT FOUND_ROWS()');
+			$count = $this->_db->loadResult()+1;
+
 			if(empty($data['invoice_number'])) {
-				$data['invoice_number'] = substr(md5($orderDetails->order_number.$orderDetails->order_status),0,8);
+				//$variable_fixed=sprintf("%05s",$num_rows);
+				$data['invoice_number'] = str_replace('-', '', substr(JFactory::getDate(),2,8)).substr(md5($orderDetails->order_number.$orderDetails->order_status),0,3).'0'.$count;
 			}
 
 			$table = $this->getTable('invoices');
 
 			$table->bindChecknStore($data);
 
-			return $data['invoice_number'];
+			return $table->invoice_number;
 
 		} else {
 			return $result['invoice_number'];

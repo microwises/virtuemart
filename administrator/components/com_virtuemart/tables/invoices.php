@@ -33,6 +33,8 @@ class TableInvoices extends VmTable {
 	/** @var int Primary key */
 	var $virtuemart_invoice_id = 0;
 
+	var $virtuemart_vendor_id = 0;
+
 	var $virtuemart_order_id = 0;
 
 	var $invoice_number = '';
