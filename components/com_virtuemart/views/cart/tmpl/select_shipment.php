@@ -19,38 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.formvalidation');
-JHTML::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/assets/css/');
 ?>
-<style type="text/css">
-    .invalid {
-        border-color: #f00;
-        background-color: #ffd;
-        color: #000;
-    }
-    label.invalid {
-        background-color: #fff;
-        color: #f00;
-    }
-</style>
-<script language="javascript">
-    function myValidator(f, t)
-    {
-        f.task.value=t;
-        if (f.task.value=='cancel') {
-            f.submit();
-            return true;
-        }
-        if (document.formvalidator.isValid(f)) {
-            f.submit();
-            return true;
-        } else {
-            var msg = '<?php echo addslashes( JText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_JS') ); ?>';
-            alert (msg);
-        }
-        return false;
-    }
-</script>
+
 <?php
 if (VmConfig::get('oncheckout_show_steps', 1)) {
     echo '<div class="checkoutStep" id="checkoutStep2">' . JText::_('COM_VIRTUEMART_USER_FORM_CART_STEP2') . '</div>';

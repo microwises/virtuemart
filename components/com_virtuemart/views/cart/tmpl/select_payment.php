@@ -19,39 +19,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.formvalidation');
-JHTML::stylesheet('vmpanels.css', JURI::root() . 'components/com_virtuemart/assets/css/');
 ?>
-<style type="text/css">
-    .invalid {
-	border-color: #f00;
-	background-color: #ffd;
-	color: #000;
-    }
-    label.invalid {
-	background-color: #fff;
-	color: #f00;
-    }
-</style>
-<script language="javascript">
-    function myValidator(f, t)
-    {
-	f.task.value=t;
-	if (f.task.value=='cancel') {
-	    f.submit();
-	    return true;
-	}
-	if (document.formvalidator.isValid(f)) {
-	    f.submit();
-	    return true;
-	} else {
-	    var msg = '<?php echo addslashes( JText::_('COM_VIRTUEMART_USER_FORM_MISSING_REQUIRED_JS') ); ?>';
-	    alert (msg);
-	}
-	return false;
-    }
 
-</script>
 <?php
 if (VmConfig::get('oncheckout_show_steps', 1)) {
     echo '<div class="checkoutStep" id="checkoutStep3">' . JText::_('COM_VIRTUEMART_USER_FORM_CART_STEP3') . '</div>';
@@ -69,13 +38,13 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 <div class="buttonBar-right">
 <button class="<?php echo $buttonclass ?>" type="submit"><?php echo JText::_('COM_VIRTUEMART_SAVE'); ?></button>
      &nbsp;
-	<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
+<button class="<?php echo $buttonclass ?>" type="reset" onClick="window.location.href='<?php echo JRoute::_('index.php?option=com_virtuemart&view=cart'); ?>'" ><?php echo JText::_('COM_VIRTUEMART_CANCEL'); ?></button>
     </div>
 <?php
      if ($this->found_payment_method) {
 
 
-    echo "<fieldset>\n";
+    echo "<fieldset>";
 		foreach ($this->paymentplugins_payments as $paymentplugin_payments) {
 		    if (is_array($paymentplugin_payments)) {
 			foreach ($paymentplugin_payments as $paymentplugin_payment) {
@@ -83,7 +52,7 @@ if (VmConfig::get('oncheckout_show_steps', 1)) {
 			}
 		    }
 		}
-    echo "</fieldset>\n";
+    echo "</fieldset>";
 
     } else {
 	 echo "<h1>".$this->payment_not_found_text."</h1>";
