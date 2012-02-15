@@ -600,7 +600,7 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 						//IE7 suffers from a bug, which makes disabled option fields selectable
 					}
 					else{
-						$categoryTree .= '<option '. $selected .' '. $disabled .' value="'. $childId .'">'."\n";
+						$categoryTree .= '<option '. $selected .' '. $disabled .' value="'. $childId .'">';
 						$categoryTree .= str_repeat(' - ', ($level-1) );
 
 						$categoryTree .= $category->category_name .'</option>';

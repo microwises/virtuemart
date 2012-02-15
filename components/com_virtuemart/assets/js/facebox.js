@@ -320,5 +320,19 @@ function fillFaceboxFromIframe(href, klass, height, width) {
     hideOverlay()
   })
 
+	$(document).bind('afterReveal.facebox', function() {
+		var windowHeight = $(window).height();
+		var faceboxHeight = $('#facebox').height();
+		if(faceboxHeight < windowHeight) {
+			var scrolltop = $(window).scrollTop();
+			var top = Math.floor((windowHeight - faceboxHeight) / 2) + scrolltop;
+			$('#facebox').css('top', (top));
+		}
+	else {
+		$('#facebox').css('top',$(window).scrollTop() );
+	}
+	});
+
+
 })(jQuery);
 

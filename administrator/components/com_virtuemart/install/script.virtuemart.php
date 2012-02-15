@@ -226,141 +226,17 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->alterTable('#__session',$fields);
 			}
 
-			/*			$q = 'SHOW INDEX FROM `#__virtuemart_categories` WHERE Key_name = "idx_slug"; ';
-			 $this->_db->setQuery($q);
-			if($this->_db->loadResult()){
-			$query = 'ALTER TABLE  `#__virtuemart_categories` DROP INDEX  `idx_slug`';
-			$this->_db->setQuery($query);
-			if(!$this->_db->query()){
-			VmError('Script.virtuemart update: Deleting of #__virtuemart_categories idx_ slug failed '.$this->_db->getErrorMsg());
-			} else {
-			vmdebug('Script.virtuemart update: I deleted the column '.$this->_db->getQuery());
-			}
-			}
+/*			$table = '#__virtuemart_customs';
+			$fieldname = 'field_type';
+			$fieldvalue = 'G';
+			$this->addToRequired($table,$fieldname,$fieldvalue,"INSERT INTO `#__virtuemart_customs`
+					(`custom_parent_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`,
+					 `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `published`) VALUES
+						(0, 0, 'COM_VIRTUEMART_STOCKABLE_PRODUCT', 'COM_VIRTUEMART_STOCKABLE_PRODUCT_TIP', NULL,
+					'COM_VIRTUEMART_STOCKABLE_PRODUCT_DESC', 'G', 0, 0, 0, 1 );");
+*/
 
 
-			//Shipping methods
-			$query = 'SHOW TABLES LIKE "%virtuemart_shippingcarriers%"';
-			$this->_db->setQuery($query);
-			if($this->_db->loadResult()){
-
-			$query = 'SHOW TABLES LIKE "%virtuemart_shipmentmethods%"';
-			$this->_db->setQuery($query);
-			$res = $this->_db->loadResult();
-			if(empty($res)){
-			$query = 'ALTER TABLE `#__virtuemart_shippingcarriers` RENAME TO `#__virtuemart_shipmentmethods`';
-			$this->_db->setQuery($query);
-			$this->_db->query();
-
-			$query = 'ALTER TABLE `#__virtuemart_shipmentmethods`  DROP INDEX `virtuemart_shippingcarrier_id` ';
-			$this->_db->setQuery($query);
-			$this->_db->query();
-			}
-			}
-
-			$fields = array('virtuemart_shippingcarrier_id'=>'`virtuemart_shipmentmethod_id` mediumint(1) UNSIGNED NOT NULL AUTO_INCREMENT',
-			'shipping_carrier_jplugin_id'=>'`shipment_jplugin_id` int(11) NOT NULL',
-			'shipping_carrier_name'=>"`shipment_name` char(200) NOT NULL DEFAULT ''",
-			'shipping_carrier_desc'=>"`shipment_desc` text NOT NULL COMMENT 'Description'",
-			'shipping_carrier_element'=>"`shipment_element` varchar(50) NOT NULL DEFAULT ''",
-			'shipping_carrier_params'=>' `shipment_params` text NOT NULL',
-			'shipping_carrier_value'=>"`shipment_value` decimal(10,2) NOT NULL DEFAULT '0.00'",
-			'shipping_carrier_package_fee'=>"`shipment_package_fee` decimal(10,2) NOT NULL DEFAULT '0.00'",
-			'shipping_carrier_vat_id'=>"`shipment_vat_id` int(11) NOT NULL DEFAULT '0'"
-			);
-			$this->alterTable('#__virtuemart_shipmentmethods',$fields);
-
-			$query = 'SHOW TABLES LIKE "%virtuemart_shippingcarrier_shoppergroups%"';
-			$this->_db->setQuery($query);
-			if($this->_db->loadResult()){
-
-			$query = 'SHOW TABLES LIKE "%virtuemart_shipmentmethod_shoppergroups%"';
-			$this->_db->setQuery($query);
-			$res = $this->_db->loadResult();
-			if(empty($res)){
-			$query = 'ALTER TABLE `#__virtuemart_shippingcarrier_shoppergroups` RENAME TO `#__virtuemart_shipmentmethod_shoppergroups`';
-			$this->_db->setQuery($query);
-			$this->_db->query();
-			}
-			}
-
-			$fields = array('virtuemart_shippingcarrier_id'=>"`virtuemart_shipmentmethod_id` SERIAL ");
-			$this->alterTable('#__virtuemart_shipmentmethod_shoppergroups',$fields);
-
-			//vmuser:
-			$fields = array('virtuemart_shippingcarrier_id'=>'`virtuemart_shipmentmethod_id` int NOT NULL DEFAULT "0"');
-			$this->alterTable('#__virtuemart_vmusers',$fields);
-
-			// orders :
-			$fields = array('payment_method_id'=>'`virtuemart_paymentmethod_id` INT(11 ) NOT NULL ',
-			'ship_method_id'=>'`virtuemart_shipmentmethod_id` INT(11 ) NOT NULL ',
-			'order_shipping'=>'`order_shipment` decimal(10,2) DEFAULT NULL ',
-			'order_shipping_tax'=>'`order_shipment_tax` decimal(10,2) DEFAULT NULL ',
-			);
-			$this->alterTable('#__virtuemart_orders',$fields);
-
-
-			$fields = array('config'=>'`vendor_params` VARCHAR( 255 )  NOT NULL DEFAULT ""');
-			$this->alterTable('#__virtuemart_vendors',$fields);
-
-			$this->updateWeightUnit();
-			$this->updateDimensionUnit();
-
-			$tablenames = array('shipment'=>'weight_countries','payment'=>'standard','payment'=>'paypal');
-			$this->renamePsPluginTables($tablenames);
-
-			//delete old config file
-			// 			$this->renewConfigManually = !JFile::delete($this->path.DS.'virtuemart.cfg');
-			// 			if(!$this->renewConfigManually){
-
-			// 				$model = JModel::getInstance('config', 'VirtueMartModel');
-			// 				if (!class_exists('VirtueMartModelConfig')
-			// 				)require($this->path . DS . 'models' . DS . 'config.php');
-			// 				$model -> deleteConfig();
-
-			// probably should just go to updatesMigration rather than the install success screen
-			// 			include($this->path.DS.'install'.DS.'install.virtuemart.html.php');
-			//		$parent->getParent()->setRedirectURL('index.php?option=com_virtuemart&view=updatesMigration');
-
-			// 			$tablesToRename = array(  '#__virtuemart_shippingcarrier_shoppergroups' => '#__virtuemart_shipmentmethod_shoppergroups'
-			// 									);
-
-			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
-			$updater = new GenericTableUpdater();
-
-			/*			$updater->portOldLanguageToNewTables((array)$lang);
-
-			$updater->updateMyVmTables();
-
-			$this->changeShoppergroupDataSetAnonShopperToOne();
-
-			$this->migrateCustomPluginTableIntoCustoms();
-
-			$this->updateJParamsToVmParams($tablenames);
-
-			$this->updateAdminMenuEntry();
-
-
-			$fields = array('virtuemart_userinfo_id'=>'`virtuemart_userinfo_id` INT(1) UNSIGNED NOT NULL AUTO_INCREMENT FIRST');
-			$this->alterTable('#__virtuemart_userinfos',$fields);
-
-			*/
-
-			//Strange, I cant add a new primary to a table this way.
-			// 			ALTER TABLE `j7uy8_virtuemart_userinfos`  DROP COLUMN `virtuemart_userinfo_id`;
-			// 			ALTER TABLE `j7uy8_virtuemart_userinfos`  ADD COLUMN `virtuemart_userinfo_id` INT(1) UNSIGNED NOT NULL FIRST;
-			// 			ALTER TABLE `j7uy8_virtuemart_userinfos`  ADD PRIMARY KEY (`virtuemart_userinfo_id`);
-
-			/*			$q = "ALTER TABLE `#__virtuemart_userinfos` ADD PRIMARY KEY (`virtuemart_userinfo_id`)";
-			 $this->_db->setQuery($q);
-			if(!$this->_db->query()){
-			$app = JFactory::getApplication();
-			$app->enqueueMessage('Error: Update Ignore it '.$this->_db->getErrorMsg() );
-			}
-
-			$added = false;
-
-			//*/
 
 			$this->deleteReCreatePrimaryKey('#__virtuemart_userinfos','virtuemart_userinfo_id');
 
@@ -440,6 +316,23 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				}
 			}
 			return false;
+		}
+
+		private function addToRequired($table,$fieldname,$fieldvalue,$insert){
+			if(empty($this->db)){
+				$this->db = JFactory::getDBO();
+			}
+
+			$query = 'SELECT * FROM `'.$table.'` WHERE '.$fieldname.' = "'.$fieldvalue.'" ';
+			$this->db->setQuery($query);
+			$result = $this->db->loadResult();
+			if(empty($result) || !$result ){
+				$this->db->setQuery($insert);
+				if(!$this->db->query()){
+					$app = JFactory::getApplication();
+					$app->enqueueMessage('Install addToRequired '.$this->db->getErrorMsg() );
+				}
+			}
 		}
 
 		private function deleteReCreatePrimaryKey($tablename,$fieldname){

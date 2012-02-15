@@ -70,7 +70,7 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
 	    	</div>
 	    	<div class="width30 floatleft" id="com-form-order">
 	    		<label for="order_pass"><?php echo JText::_('COM_VIRTUEMART_ORDER_PASS') ?></label><br />
-	    		<input type="text" id="order_pass" name="order_pass" class="inputbox" size="18" alt="order_pass" value="P_"/>
+	    		<input type="text" id="order_pass" name="order_pass" class="inputbox" size="18" alt="order_pass" value="p_"/>
 	    	</div>
 	    	<div class="width30 floatleft" id="com-form-order">
 	    		<input type="submit" name="Submitbuton" class="button" value="<?php echo JText::_('COM_VIRTUEMART_ORDER_BUTTON_VIEW') ?>" />
@@ -78,7 +78,7 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
 	    	<div class="clr"></div>
 	    	<input type="hidden" name="option" value="com_virtuemart" />
 	    	<input type="hidden" name="view" value="orders" />
-	    	<input type="hidden" name="task" value="details" />
+	    	<input type="hidden" name="layout" value="details" />
 	    	<input type="hidden" name="return" value="" />
 
 	    </form>

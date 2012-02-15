@@ -1,5 +1,5 @@
 #facebox {
-  position: fixed;
+  position: absolute;
   z-index: 65560;
   text-align: left;
 }

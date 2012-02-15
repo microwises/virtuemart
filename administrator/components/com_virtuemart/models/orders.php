@@ -64,6 +64,7 @@ class VirtueMartModelOrders extends VmModel {
 		$db->setQuery($q);
 		$orderId = $db->loadResult();
 
+// 		vmdebug('getOrderIdByOrderPass '.$orderId);
 		return $orderId;
 
 	}

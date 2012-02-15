@@ -29,6 +29,11 @@ jimport('joomla.application.component.controller');
  */
 class VirtueMartControllerOrders extends JController
 {
+
+	/**
+	 * Todo do we need that anylonger? that way.
+	 * @see JController::display()
+	 */
 	public function display() {
 
 		$format = JRequest::getWord('format','html');
@@ -36,10 +41,11 @@ class VirtueMartControllerOrders extends JController
 		else $viewName='orders';
 		$view = $this->getView($viewName, $format);
 
+		$this->addModelPath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart' . DS . 'models');
+
 		// Display it all
 		$view->display();
 	}
-
 
 }
 

@@ -97,8 +97,6 @@ if (empty($this->product)) {
 	    }
 	    echo $this->linkIcon($link . '&print=1', 'COM_VIRTUEMART_PRINT', 'printButton', 'show_printicon');
 	    echo $this->linkIcon($MailLink, 'COM_VIRTUEMART_EMAIL', 'emailButton', 'show_emailfriend');
-	    // echo shopFunctionsF::PrintIcon($link.'&print=1');
-	    // echo shopFunctionsF::EmailIcon($this->product);
 	    ?>
     	<div class="clear"></div>
         </div>
@@ -141,7 +139,7 @@ echo $this->loadTemplate('images');
 		<?php
 		if ($this->showRating) {
 		    $maxrating = VmConfig::get('vm_maximum_rating_scale',5);
-				
+
 				if (empty($this->rating)) { ?>
 					<span class="vote"><?php echo JText::_('COM_VIRTUEMART_RATING').' '.JText::_('COM_VIRTUEMART_UNRATED') ?></span>
 				<?php } else {

@@ -24,7 +24,7 @@ if($this->print){
 	?>
 
 		<body onload="javascript:print();">
-		<h1><?php echo JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'); ?> I USE layout details, no pdf stuff</h1>
+		<h1><?php echo JText::_('COM_VIRTUEMART_ACC_ORDER_INFO'); ?> </h1>
 		<div class='spaceStyle'>
 		<?php
 		echo $this->loadTemplate('order');

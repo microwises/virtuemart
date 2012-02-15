@@ -108,7 +108,6 @@ class shopFunctionsF {
 	}
 
 
-
 	/**
 	* function to create a hyperlink
 	*
@@ -132,89 +131,6 @@ class shopFunctionsF {
 			$options = array_merge($options, $attributes);
 		}
 		return JHTML::_('link', $link, $text, $options);
-	}
-
-	/**
-	 * Writes a PDF icon
-	 * @author RolandD, Christopher Roussel
-	 * @param string $link
-	 * @param boolean $use_icon
-	 * @deprecated
-	 */
-	function PdfIcon( $product, $use_icon=true ) {
-		if (VmConfig::get('pdf_button_enable', 1) == '1' && !JRequest::getVar('pop')) {
-
-			$folder = (JVM_VERSION===1) ? '/images/M_images/' : '/media/system/images/';
-			// $link .= '&amp;pop=1';
-			$link= JRoute::_ ('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component&format=pdf');			if ( $use_icon ) {
-				$text = JHtml::_('image.site', 'pdf_button.png', $folder, null, null, JText::_('COM_VIRTUEMART_PDF'));
-			} else {
-				$text = JText::_('COM_VIRTUEMART_PDF') .'&nbsp;';
-			}
-			return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('COM_VIRTUEMART_PDF'));
-		}
-	}
-
-	/**
-	 * Writes an Email icon
-	 * @author RolandD, Christopher Roussel
-	 * @param string $link
-	 * @param boolean $use_icon
-	 * @deprecated
-	 */
-	function EmailIcon($product, $use_icon=true ) {
-		if (VmConfig::get('show_emailfriend', 1) == '1' && !JRequest::getVar('pop') && $product->virtuemart_product_id > 0  ) {
-
-			$folder = (JVM_VERSION===1) ? '/images/M_images/' : '/media/system/images/';
-
-			//Todo this is old stuff and must be adjusted
-			$link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id='.$product->virtuemart_product_id.'&virtuemart_category_id='.$product->virtuemart_category_id.'&tmpl=component&pop=1');
-			if ( $use_icon ) {
-				$text = JHtml::_('image.site', 'emailButton.png', $folder, null, null, JText::_('COM_VIRTUEMART_EMAIL'));
-			} else {
-				$text = '&nbsp;'. JText::_('COM_VIRTUEMART_EMAIL');
-			}
-			return '<a class="modal" rel="{handler: \'iframe\', size: {x: 700, y: 550}}" href="'.$link.'">'.$text.'</a>';
-		}
-	}
-
-	/**
-	 * @author RolandD, Christopher Roussel
-	 * @deprecated
-	 */
-	function PrintIcon( $link='', $use_icon=true, $add_text='' ) {
-		global  $cur_template, $Itemid;
-		if (VmConfig::get('show_printicon', 1) == '1') {
-
-			$folder = (JVM_VERSION==1) ? '/images/M_images/' : '/media/system/images/';
-			if( !$link ) {
-				//Todo this is old stuff and must be adjusted and looks dangerous
-/*				$query_string = str_replace( 'only_page=1', 'only_page=0', JRequest::getVar('QUERY_STRING'));
-				$link = (JVM_VERSION===1) ? 'index2.php' : 'index.php';
-				$link .= '?tmpl=component&amp;'.$query_string.'&amp;pop=1';*/
-			}
-			// checks template image directory for image, if non found default are loaded
-			if ( $use_icon ) {
-				$filter = JFilterInput::getInstance();
-				$text = JHtml::_('image.site', 'printButton.png', $folder, null, null, JText::_('COM_VIRTUEMART_PRINT'));
-				$text .= $filter->clean($add_text);
-			} else {
-				$text = '|&nbsp;'. JText::_('COM_VIRTUEMART_PRINT'). '&nbsp;|';
-			}
-			$isPopup = JRequest::getVar( 'pop' );
-			if ( $isPopup ) {
-				// Print Preview button - used when viewing page
-				$html = '<span class="vmNoPrint">
-				<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'. JText::_('COM_VIRTUEMART_PRINT').'">
-				'. $text .'
-				</a></span>';
-				return $html;
-			} else {
-				// Print Button - used in pop-up window
-				return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('COM_VIRTUEMART_PRINT'));
-			}
-		}
-
 	}
 
 	/**
@@ -252,18 +168,17 @@ class shopFunctionsF {
 		$format = (VmConfig::get('order_html_email',1)) ? 'html' : 'raw';
 
 		$controller = new VirtueMartControllerVirtuemart();
+		//Todo, do we need that? refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
+// 		$controller->addViewPath(JPATH_VM_ADMINISTRATOR.DS.'views');
 
 		$view = $controller->getView($viewName, $format);
 		if (!$controllerName) $controllerName = $viewName;
-		$modelName = 'VirtueMartController'.ucfirst ($controllerName) ;
-		if (!class_exists($modelName)) require(JPATH_VM_SITE.DS.'controllers'.DS.$controllerName.'.php');
-/*		$model = new $modelName;
-		if ($model) {
-			$view->setModel($model);
-		}
-		$view->setModel($controller->getModel('user'));
-		$view->setModel($controller->getModel('vendor'));
-		$view->setModel($controller->getModel('userfields'));*/
+		$controllerClassName = 'VirtueMartController'.ucfirst ($controllerName) ;
+		if (!class_exists($controllerClassName)) require(JPATH_VM_SITE.DS.'controllers'.DS.$controllerName.'.php');
+
+		//Todo, do we need that? refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
+//		$view->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.'/views/'.$viewName.'/tmpl');
+
 
 		foreach ($vars as $key => $val) {
 			$view->$key = $val;
