@@ -27,7 +27,7 @@ jimport('joomla.application.component.controller');
  *
  * @package		VirtueMart
  */
-class VirtueMartControllerPdfs extends JController
+class VirtueMartControllerInvoice extends JController
 {
 
 	function checkStoreInvoice($orderDetails = 0){
@@ -157,6 +157,7 @@ class VirtueMartControllerPdfs extends JController
 			$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 			//set some language-dependent strings
+
 			$pdf->setLanguageArray($l);
 
 

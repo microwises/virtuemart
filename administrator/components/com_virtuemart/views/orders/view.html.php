@@ -223,8 +223,8 @@ class VirtuemartViewOrders extends VmView {
 		$path = VmConfig::get('forSale_path',0);
 		if($this->order['order_status'] == 'C' and $path!==0){
 
-			if(!class_exists('VirtueMartControllerPdfs')) require_once( JPATH_VM_SITE.DS.'controllers'.DS.'pdf.php' );
-			$controller = new VirtueMartControllerPdfs( array(
+			if(!class_exists('VirtueMartControllerInvoice')) require_once( JPATH_VM_SITE.DS.'controllers'.DS.'invoice.php' );
+			$controller = new VirtueMartControllerInvoice( array(
 					  'model_path' => JPATH_VM_SITE.DS.'models',
 					  'view_path' => JPATH_VM_SITE.DS.'views'
 			));
