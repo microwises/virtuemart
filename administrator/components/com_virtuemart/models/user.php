@@ -128,8 +128,9 @@ class VirtueMartModelUser extends VmModel {
 
 		$this->_data = $this->getTable('vmusers');
 		$this->_data->load((int)$this->_id);
-
+		vmdebug('$this->_data->vmusers',$this->_data);
 		$this->_data->JUser = JUser::getInstance($this->_id);
+		vmdebug('$this->_data->JUser',$this->_data->JUser);
 
 		if(empty($this->_data->perms)){
 
@@ -178,6 +179,7 @@ class VirtueMartModelUser extends VmModel {
 				$this->_data->userInfo[$BTuid]->email = $this->_data->JUser->email;
 				$this->_data->userInfo[$BTuid]->username = $this->_data->JUser->username;
 				$this->_data->userInfo[$BTuid]->address_type = 'BT';
+// 				vmdebug('$this->_data->vmusers',$this->_data);
 			}
 
 		}
@@ -1033,6 +1035,7 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 // 		if(!$cart && empty($uid)) $uid = $this->_id;
+
 		$userFields = array();
 		if(!empty($uid)){
 
@@ -1040,6 +1043,17 @@ class VirtueMartModelUser extends VmModel {
 			$this->_data->userInfo[$uid]->load($uid);
 
 			$data = $this->_data->userInfo[$uid];
+
+			if ($this->_data->userInfo[$uid]->address_type == 'BT') {
+				$BTuid = $uid;
+
+				$this->_data->userInfo[$BTuid]->name = $this->_data->JUser->name;
+				$this->_data->userInfo[$BTuid]->email = $this->_data->JUser->email;
+				$this->_data->userInfo[$BTuid]->username = $this->_data->JUser->username;
+				$this->_data->userInfo[$BTuid]->address_type = 'BT';
+// 				vmdebug('$this->_data->vmusers',$this->_data);
+			}
+
 // 			vmdebug(' user data with infoid  '.$uid,$this->_data->userInfo[$uid]);
 		}
 		else {
@@ -1053,16 +1067,16 @@ class VirtueMartModelUser extends VmModel {
 				if(empty($cart->$adType)){
 					$data = $cart->$type;
 					if(empty($data)) $data = array();
-					$jUser = JUser::getInstance($this->_id);
+
 					if($jUser){
 						if(empty($data['name'])){
-							$data['name'] = $jUser->name;
+							$data['name'] = $this->_data->jUser->name;
 						}
 						if(empty($data['email'])){
-							$data['email'] = $jUser->email;
+							$data['email'] = $this->_data->jUser->email;
 						}
 						if(empty($data['username'])){
-							$data['username'] = $jUser->username;
+							$data['username'] = $this->_data->jUser->username;
 						}
 					}
 				}
