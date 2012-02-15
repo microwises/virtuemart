@@ -88,6 +88,11 @@ class VirtueMartControllerInvoice extends JController
 
 // 			$app = JFactory::getApplication('site');
 
+			//We come from the be, so we need to load the FE langauge
+			$jlang =& JFactory::getLanguage();
+			$jlang->load('com_virtuemart', JPATH_SITE, 'en-GB', true);
+			$jlang->load('com_virtuemart', JPATH_SITE, $jlang->getDefault(), true);
+			$jlang->load('com_virtuemart', JPATH_SITE, null, true);
 
 			$this->addViewPath( JPATH_VM_SITE.DS.'views' );
 			$format = 'html';
@@ -111,7 +116,7 @@ class VirtueMartControllerInvoice extends JController
 // 			vmdebug('$vendor',$vendor);
 
 
-			require_once(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'config'.DS.'lang'.DS.'eng.php');
+			require(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'config'.DS.'lang'.DS.'eng.php');
 			// create new PDF document
 			$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
