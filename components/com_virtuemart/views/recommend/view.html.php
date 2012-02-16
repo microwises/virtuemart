@@ -63,11 +63,11 @@ class virtuemartViewrecommend extends VmView {
 		// Load the product
 		$product_model = VmModel::getModel('product');
 
-	$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id',0);
+		$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id',0);
 		if(is_array($virtuemart_product_idArray)){
-			$virtuemart_product_id=$virtuemart_product_idArray[0];
+			$virtuemart_product_id=(int)$virtuemart_product_idArray[0];
 		} else {
-			$virtuemart_product_id=$virtuemart_product_idArray;
+			$virtuemart_product_id=(int)$virtuemart_product_idArray;
 		}
 
 		if(empty($virtuemart_product_id)){

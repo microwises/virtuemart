@@ -63,11 +63,6 @@ if (empty ( $this->product )) {
 	<div class="clear"></div>
 	</div>
 
-	<?php // Get User
-	if (!empty($this->user->id)) {
-		$user = JFactory::getUser();
-	} ?>
-
 	<div class="form-field">
 
 		<form method="post" class="form-validate" action="<?php echo JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component') ; ?>" name="askform" id="askform" >
@@ -90,7 +85,6 @@ if (empty ( $this->product )) {
 					</div>
 				</div>
 
-				<input type="hidden" name="cid[]" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
 				<input type="hidden" name="virtuemart_product_id" value="<?php echo JRequest::getInt('virtuemart_product_id',0); ?>" />
 				<input type="hidden" name="tmpl" value="component" />
 				<input type="hidden" name="view" value="productdetails" />

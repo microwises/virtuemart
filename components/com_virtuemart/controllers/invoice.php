@@ -170,6 +170,8 @@ class VirtueMartControllerInvoice extends JController
 				} else {
 					vmError('Vendor image missing '.$imagePath);
 				}
+			} else {
+				vmError('Vendor image given path empty ');
 			}
 
 		}

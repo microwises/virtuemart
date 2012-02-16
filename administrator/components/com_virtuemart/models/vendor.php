@@ -128,6 +128,10 @@ class VirtueMartModelVendor extends VmModel {
 			$query = 'SELECT `virtuemart_user_id` FROM `#__virtuemart_vmusers` WHERE `virtuemart_vendor_id`=' . (int)$vendorId  ;
 			$db->setQuery($query);
 			$result = $db->loadResult();
+			$err = $db->getErrorMsg();
+			if(!empty($err)){
+				vmError('getUserIdByVendorId '.$err,'Failed to retrieve user id by vendor');
+			}
 			return (isset($result) ? $result : 0);
 		}
 	}

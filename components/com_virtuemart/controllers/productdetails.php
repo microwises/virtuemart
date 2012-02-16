@@ -77,10 +77,15 @@ class VirtueMartControllerProductdetails extends JController {
 				return ;
 		}
 
+		$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id',0);
+		if(is_array($virtuemart_product_idArray)){
+			$virtuemart_product_id=(int)$virtuemart_product_idArray[0];
+		} else {
+			$virtuemart_product_id=(int)$virtuemart_product_idArray;
+		}
 		$productModel = VmModel::getModel('product');
 
-		$cids = JRequest::getVar('cid');
-		$vars['product'] = $productModel->getProduct((int)$cids[0]);
+		$vars['product'] = $productModel->getProduct($virtuemart_product_id);
 
 		$user = JFactory::getUser();
 		if (empty($user->id)) {
@@ -125,14 +130,19 @@ class VirtueMartControllerProductdetails extends JController {
 		$mainframe = JFactory::getApplication();
 		$vars = array();
 
+		$virtuemart_product_idArray = JRequest::getInt('virtuemart_product_id',0);
+		if(is_array($virtuemart_product_idArray)){
+			$virtuemart_product_id=(int)$virtuemart_product_idArray[0];
+		} else {
+			$virtuemart_product_id=(int)$virtuemart_product_idArray;
+		}
 		$productModel = VmModel::getModel('product');
 
-		$cids = JRequest::getVar('cid');
-		$vars['product'] = $productModel->getProduct((int)$cids[0]);
+		$vars['product'] = $productModel->getProduct($virtuemart_product_id);
 
 		$user = JFactory::getUser();
-			$fromMail = $user->email;
-			$fromName = $user->name;
+		$fromMail = $user->email;
+		$fromName = $user->name;
 		$vars['user'] = array('name' => $fromName, 'email' => $fromMail);
 
 	 	$vendorModel = VmModel::getModel('vendor');
@@ -149,6 +159,7 @@ class VirtueMartControllerProductdetails extends JController {
 		}
 		$mainframe->enqueueMessage(JText::_($string));
 
+// 		vmdebug('my email vars ',$vars,$TOMail);
 		// Display it all
 		$view = $this->getView('recommend', 'html');
 
