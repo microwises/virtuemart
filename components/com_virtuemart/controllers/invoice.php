@@ -34,7 +34,7 @@ class VirtueMartControllerInvoice extends JController
 
 		$force = true;
 
-	//	@ini_set( 'max_execution_time', 5 );
+		//	@ini_set( 'max_execution_time', 5 );
 
 		$path = VmConfig::get('forSale_path',0);
 		if($path===0 ){
@@ -147,35 +147,21 @@ class VirtueMartControllerInvoice extends JController
 		$pdf->SetSubject(JText::sprintf('COM_VIRTUEMART_INVOICE_SUBJ',$vendor->vendor_store_name));
 		$pdf->SetKeywords('Invoice by Virtuemart 2');
 
-		// 			vmdebug('PDF_HEADER_LOGO ',PDF_HEADER_LOGO);
-		// 			vmdebug('PDF_HEADER_LOGO_WIDTH ',PDF_HEADER_LOGO_WIDTH);
-		// 			vmdebug('PDF_HEADER_TITLE ',PDF_HEADER_TITLE);
-		// 			vmdebug('PDF_HEADER_STRING ',PDF_HEADER_STRING);
-		// 			vmdebug('PDF_FONT_SIZE_MAIN ',PDF_FONT_SIZE_MAIN);
-		// 			vmdebug('PDF_FONT_SIZE_DATA ',PDF_FONT_SIZE_DATA);
-
-		// 			define ('K_PATH_IMAGES', JPATH_VM_SITE);
-
 		//virtuemart.cloudaccess.net/index.php?option=com_virtuemart&view=invoice&layout=details&virtuemart_order_id=18&order_number=6e074d9b&order_pass=p_9cb9e2&task=checkStoreInvoice
-		if(!empty($vendor->images[0])){
-
-			if(!empty($vendor->images[0]->file_url_folder) and !empty($vendor->images[0]->file_name) ){
-				$imagePath = DS. str_replace('/',DS, $vendor->images[0]->file_url_folder.$vendor->images[0]->file_name.'.'.$vendor->images[0]->file_extension);
-				// 				$imagePath = JPATH_ROOT.DS.$imagePath;
-
-				if(file_exists(JPATH_ROOT.$imagePath)){
-
-					// 			$pdf->SetHeaderData($image, 60, JText::_('COM_VIRTUEMART_INVOICE_TITLE'), JText::sprintf('COM_VIRTUEMART_INVOICE_SUBJ',$vendor->vendor_store_name));
-					$pdf->SetHeaderData($imagePath, 60, $vendor->vendor_store_name, '');
-				} else {
-					vmError('Vendor image missing '.$imagePath);
-				}
+		if(empty($vendor->images[0])){
+			vmError('Vendor image given path empty ');
+		} else if(empty($vendor->images[0]->file_url_folder) or empty($vendor->images[0]->file_name) or empty($vendor->images[0]->file_extension) ){
+			vmError('Vendor image given image is not complete '.$vendor->images[0]->file_url_folder.$vendor->images[0]->file_name.'.'.$vendor->images[0]->file_extension);
+		} else if(!empty($vendor->images[0]->file_extension) and strtolower($vendor->images[0]->file_extension)=='png'){
+			vmError('Warning extension of the image is a png, tpcdf has problems with that in the header, choose a jpg or gif');
+		} else {
+			$imagePath = DS. str_replace('/',DS, $vendor->images[0]->file_url_folder.$vendor->images[0]->file_name.'.'.$vendor->images[0]->file_extension);
+			if(!file_exists(JPATH_ROOT.$imagePath)){
+				vmError('Vendor image missing '.$imagePath);
 			} else {
-				vmError('Vendor image given path empty ');
+				$pdf->SetHeaderData($imagePath, 60, $vendor->vendor_store_name, '');
 			}
-
 		}
-		// 			vmdebug(' Image path '.$imagePath);
 
 		// set header and footer fonts
 		$pdf->setHeaderFont(Array('helvetica', '', 10));
@@ -198,7 +184,6 @@ class VirtueMartControllerInvoice extends JController
 		//set some language-dependent strings
 
 		$pdf->setLanguageArray($l);
-
 
 		// set default font subsetting mode
 		$pdf->setFontSubsetting(true);

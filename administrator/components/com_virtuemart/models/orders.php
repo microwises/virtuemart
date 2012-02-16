@@ -581,10 +581,10 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			// 				$data = array_merge($plg_data,$data);
 		}
 		if(empty($_orderData->order_number)){
-			$_orderData->order_number = $this->generateOrderNumber($_usr->get('id'),4);
+			$_orderData->order_number = $this->generateOrderNumber($_usr->get('id'),4,$_orderData->virtuemart_vendor_id);
 		}
 		if(empty($_orderData->order_pass)){
-			$_orderData->order_pass = 'p_'.$this->generateOrderNumber(substr( md5((string)time().$_orderData->order_number ), 0, 5));
+			$_orderData->order_pass = 'p_'.substr( md5((string)time().$_orderData->order_number ), 0, 5);
 		}
 
 		$orderTable =  $this->getTable('orders');
@@ -958,7 +958,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @param integer $uid The user ID. Defaults to 0 for guests
 	 * @return string A unique ordernumber
 	 */
-	private function generateOrderNumber($uid = 0,$length=10)
+	private function generateOrderNumber($uid = 0,$length=10, $virtuemart_vendor_id)
 	{
 
 		$db = JFactory::getDBO();
