@@ -1067,13 +1067,13 @@ class VirtueMartModelUser extends VmModel {
 
 					if($jUser){
 						if(empty($data['name'])){
-							$data['name'] = $this->_data->jUser->name;
+							$data['name'] = $JUser->name;
 						}
 						if(empty($data['email'])){
-							$data['email'] = $this->_data->jUser->email;
+							$data['email'] = $JUser->email;
 						}
 						if(empty($data['username'])){
-							$data['username'] = $this->_data->jUser->username;
+							$data['username'] = $JUser->username;
 						}
 					}
 				}
