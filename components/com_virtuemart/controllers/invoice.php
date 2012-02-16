@@ -34,7 +34,7 @@ class VirtueMartControllerInvoice extends JController
 
 		$force = true;
 
-		@ini_set( 'max_execution_time', 5 );
+	//	@ini_set( 'max_execution_time', 5 );
 
 		$path = VmConfig::get('forSale_path',0);
 		if($path===0 ){
@@ -169,8 +169,8 @@ class VirtueMartControllerInvoice extends JController
 		// 			vmdebug(' Image path '.$imagePath);
 
 		// set header and footer fonts
-		$pdf->setHeaderFont(Array('Helvetica', '', 10));
-		$pdf->setFooterFont(Array('Helvetica', '', 10));
+		$pdf->setHeaderFont(Array('helvetica', '', 10));
+		$pdf->setFooterFont(Array('helvetica', '', 10));
 
 		// set default monospaced font
 		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
@@ -198,7 +198,7 @@ class VirtueMartControllerInvoice extends JController
 		// dejavusans is a UTF-8 Unicode font, if you only need to
 		// print standard ASCII chars, you can use core fonts like
 		// helvetica or times to reduce file size.
-		$pdf->SetFont('Helvetica', '', 8, '', true);
+		$pdf->SetFont('helvetica', '', 8, '', true);
 
 		// Add a page
 		// This method has several options, check the source code documentation for more information.
