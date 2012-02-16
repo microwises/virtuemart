@@ -17,6 +17,7 @@ defined ( '_JEXEC' ) or die ();
 class AdminUIHelper {
 
 	public static $vmAdminAreaStarted = false;
+	public static $backEnd = true;
 
    /**
      * Start the administrator area table
@@ -27,6 +28,7 @@ class AdminUIHelper {
      */
     function startAdminArea($backEnd=true) {
 		if (JRequest::getWord ( 'format') =='pdf') return;
+		if (JRequest::getWord ( 'tmpl') =='component') self::$backEnd=false;
     	if(self::$vmAdminAreaStarted) return;
     	self::$vmAdminAreaStarted = true;
 		$front = JURI::root(true).'/components/com_virtuemart/assets/';
@@ -60,12 +62,12 @@ class AdminUIHelper {
 		var vm2string ={".$vm2string."} ;
 		");
 		?>
-
+		<?php if (!self::$backEnd) echo '<div class="toolbar" style="height: 84px;position: relative;">'.vmView::getToolbar().'</div>'; ?>
 		<div class="virtuemart-admin-area">
 		<?php
 		// Include ALU System
-		if ($backEnd) {
-		require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
+		if (self::$backEnd) {
+		require_once JPATH_VM_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 		?>
 
 			<div class="menu-wrapper">
@@ -92,6 +94,7 @@ class AdminUIHelper {
 	 * @author RickG, Max Milbers
 	 */
 	function endAdminArea() {
+		if (!self::$backEnd) return;
 		self::$vmAdminAreaStarted = false;
 		if (VmConfig::get('debug') == '1') {
 		//TODO maybe add debuggin again here
@@ -221,14 +224,10 @@ class AdminUIHelper {
 							$url = $link ['link'];
 							$target='TARGET="_blank"';
 						} else {
-							if ($link ['view']) {
-								$url = 'index.php?option=com_virtuemart&view=' . $link ['view'];
-								$url .= $link ['task'] ? "&task=" . $link ['task'] : '';
-								// $url .= $link['extra'] ? $link['extra'] : '';
-								$url = strncmp ( $link ['view'], 'http', 4 ) === 0 ? $link ['view'] : $url;
-							} else {
-								//							    $url = 'index2.php?option=com_virtuemart&'.$link['link'];
-							}
+							$url = ($link ['link'] === '') ? 'index.php?option=com_virtuemart' :$link ['link'] ;
+							$url .= $link ['view'] ? "&view=" . $link ['view'] : '';
+							$url .= $link ['task'] ? "&task=" . $link ['task'] : '';
+							// $url .= $link['extra'] ? $link['extra'] : '';
 						}
 						?>
 					<li>
