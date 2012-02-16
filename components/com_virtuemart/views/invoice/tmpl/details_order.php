@@ -20,24 +20,20 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<h1><?php echo JText::_('COM_VIRTUEMART_INVOICE'); ?></h1>
+<h1><?php echo JText::_('COM_VIRTUEMART_INVOICE').' '.$this->invoice_number;; ?></h1>
 
-<h2><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER').' '.$this->orderdetails['details']['BT']->order_number ?></h2>
+
 
 
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
     <tr>
-	<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></td>
-	<td class="orders-key" align="left">
+	<td ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></td>
+	<td align="left"><strong>
 	    <?php echo $this->orderdetails['details']['BT']->order_number; ?>
+		</strong>
 	</td>
     </tr>
-    <tr>
-	<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_INV_NUMBER') ?></td>
-	<td class="orders-key" align="left">
-	    <?php echo $this->invoice_number; ?>
-	</td>
-    </tr>
+
     <tr>
 	<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?></td>
 	<td align="left"><?php echo vmJsApi::date($this->orderdetails['details']['BT']->created_on, 'LC4', true); ?></td>
@@ -45,10 +41,6 @@ defined('_JEXEC') or die('Restricted access');
     <tr>
 	<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?></td>
 	<td align="left"><?php echo $this->orderstatuses[$this->orderdetails['details']['BT']->order_status]; ?></td>
-    </tr>
-    <tr>
-	<td class=""><?php echo JText::_('COM_VIRTUEMART_LAST_UPDATED') ?></td>
-	<td align="left"><?php echo vmJsApi::date($this->orderdetails['details']['BT']->modified_on, 'LC4', true); ?></td>
     </tr>
     <tr>
 	<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPMENT_LBL') ?></td>
@@ -61,15 +53,16 @@ defined('_JEXEC') or die('Restricted access');
 	<td align="left"><?php echo $this->payment_name; ?>
 	</td>
     </tr>
-
+<?php if ($this->orderdetails['details']['BT']->customer_note) { ?>
 	 <tr>
     <td><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_CUSTOMER_NOTE') ?></td>
     <td valign="top" align="left" width="50%"><?php echo $this->orderdetails['details']['BT']->customer_note; ?></td>
 </tr>
+<?php } ?>
 
      <tr>
-	<td class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></td>
-	<td class="orders-key" align="left"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_total); ?></td>
+	<td class="orders-key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></strong></td>
+	<td class="orders-key" align="left"><strong><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_total); ?><:strong></td>
     </tr>
 
     <tr>

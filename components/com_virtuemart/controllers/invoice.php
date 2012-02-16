@@ -132,9 +132,18 @@ class VirtueMartControllerInvoice extends JController
 		// 		$this->assignRef('vendor', $vendor);
 		$vendorModel->addImages($vendor,1);
 		// 			vmdebug('$vendor',$vendor);
+		$userId = $vendorModel->getUserIdByVendorId(1);
 
+		$usermodel = VmModel::getModel('user');
+		$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
+		$userFields = $usermodel->getUserInfoInUserFields('invoice', 'BT', $virtuemart_userinfo_id);
+		$address=$userFields[1]['fields']['address_1']['value'];
+		if ($userFields[1]['fields']['address_2']['value']) {
+		    $address.="\n".$userFields[1]['fields']['address_2']['value'];
+		}
+		$address.="\n".$userFields[1]['fields']['zip']['value']." ".$userFields[1]['fields']['city']['value'];
+		$address.="\n".$userFields[1]['fields']['virtuemart_country_id']['value'];
 
-		require(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'config'.DS.'lang'.DS.'eng.php');
 		// create new PDF document
 		$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -159,12 +168,12 @@ class VirtueMartControllerInvoice extends JController
 			if(!file_exists(JPATH_ROOT.$imagePath)){
 				vmError('Vendor image missing '.$imagePath);
 			} else {
-				$pdf->SetHeaderData($imagePath, 60, $vendor->vendor_store_name, '');
+				$pdf->SetHeaderData($imagePath, 60, $vendor->vendor_store_name, $address);
 			}
 		}
 
 		// set header and footer fonts
-		$pdf->setHeaderFont(Array('helvetica', '', 10));
+		$pdf->setHeaderFont(Array('helvetica', '', 8));
 		$pdf->setFooterFont(Array('helvetica', '', 10));
 
 		// set default monospaced font
@@ -182,7 +191,7 @@ class VirtueMartControllerInvoice extends JController
 		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 		//set some language-dependent strings
-
+		$l='';
 		$pdf->setLanguageArray($l);
 
 		// set default font subsetting mode
