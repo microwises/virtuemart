@@ -165,7 +165,7 @@ class VirtueMartControllerProductdetails extends JController {
 		if (JRequest::getCmd('task') == 'recommend' ) {
 			$user = JFactory::getUser();
 			if (empty($user->id)) {
-				$this->setRedirect(JRoute::_ ( 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.JRequest::getInt('virtuemart_product_id',0) ),JText::_('YOU MUST LOGIN FIRST'));
+				VmInfo(JText::_('YOU MUST LOGIN FIRST'));
 				return ;
 			}
 			$view = $this->getView('recommend', 'html');

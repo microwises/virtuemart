@@ -378,7 +378,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$data->load($virtuemart_order_id);
 		$old_order_status = $data->order_status;
 		$data->bind($order);
-
+		$order['virtuemart_order_id']= $virtuemart_order_id;
 		//First we must call the payment, the payment manipulates the result of the order_status
 		if($useTriggers){
 				if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
