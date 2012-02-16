@@ -48,7 +48,7 @@ abstract class CouponHelper
 			$_db = JFactory::getDBO();
 			$_q = 'SELECT IF( NOW() >= `coupon_start_date` , 1, 0 ) AS started '
 			. ', `coupon_start_date` '
-			. ', IF( NOW() > `coupon_expiry_date`, 1, 0 ) AS ended '
+			. ', IFNULL( 0, IF( NOW() > `coupon_expiry_date`, 1, 0 )) AS ended '
 			. ', `coupon_value_valid` '
 			. 'FROM `#__virtuemart_coupons` '
 			. 'WHERE `coupon_code` = "' . $_db->getEscaped($_code) . '"';
