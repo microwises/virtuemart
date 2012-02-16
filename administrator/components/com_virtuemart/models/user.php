@@ -1065,7 +1065,7 @@ class VirtueMartModelUser extends VmModel {
 					$data = $cart->$type;
 					if(empty($data)) $data = array();
 
-					if($jUser){
+					if($JUser){
 						if(empty($data['name'])){
 							$data['name'] = $JUser->name;
 						}

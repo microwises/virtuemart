@@ -86,7 +86,7 @@ function virtuemartBuildRoute(&$query) {
 					// $prefix = '';
 					// $fieldWithoutPrefix = $query['orderby'];
 				// }
-				$segments[] = $lang['orderby'].','.$lang[ $query['orderby'] ] ;
+				$segments[] = $lang['orderby'].','.isset($lang[ $query['orderby'] ]) ? $lang[ $query['orderby'] ] : $query['orderby'] ;
 				unset($query['orderby']);
 			}
 			if ( isset($query['order']) ) {
@@ -204,11 +204,11 @@ function virtuemartBuildRoute(&$query) {
 
 	}
 	if (isset($query['task'])) {
-		$segments[] = $lang[$query['task']] ;
+		$segments[] = isset($lang[$query['task']]) ? $lang[$query['task']] : $query['task'] ;
 		unset($query['task']);
 	}
 	if (isset($query['layout'])) {
-		$segments[] = $lang[$query['layout']] ;
+		$segments[] = isset($lang[$query['layout']]) ? $lang[$query['layout']] : $query['layout'] ;
 		unset($query['layout']);
 	}
 	// sef the slimbox View
