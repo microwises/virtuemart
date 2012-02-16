@@ -553,7 +553,7 @@ class VmTable extends JTable{
 						}
 					} else {
 						//Allow storing for the orders table
-						if(get_class($this)!== 'TableOrders' and get_class($this)!== 'TableOrder_items'){
+						if(get_class($this)!== 'TableOrders' and get_class($this)!== 'TableInvoices' and get_class($this)!== 'TableOrder_items'){
 							vmError('Coding error, vmtable isSuperSuper gives back false, but you are admin',JText::sprintf('COM_VIRTUEMART_STRING_FORBIDDEN_FOR_NON_VENDORS',$this->_tbl));
 							return false;
 						} else {

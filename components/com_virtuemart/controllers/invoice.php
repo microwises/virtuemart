@@ -93,6 +93,10 @@ class VirtueMartControllerInvoice extends JController
 		// 			vmdebug('$orderDetails in my pdf controller ',$orderDetails['details']['BT']);
 		$invoiceNumber = $orderModel->createInvoiceNumber($orderDetails['details']['BT']);
 
+		if(!$invoiceNumber or empty($invoiceNumber)){
+			vmError('Cant create pdf, createInvoiceNumber failed');;
+			return 0;
+		}
 		$path .= 'vminvoice_'.$invoiceNumber.'.pdf';
 
 
@@ -155,16 +159,19 @@ class VirtueMartControllerInvoice extends JController
 		//virtuemart.cloudaccess.net/index.php?option=com_virtuemart&view=invoice&layout=details&virtuemart_order_id=18&order_number=6e074d9b&order_pass=p_9cb9e2&task=checkStoreInvoice
 		if(!empty($vendor->images[0])){
 
-			$imagePath = DS. str_replace('/',DS, $vendor->images[0]->file_url_folder.$vendor->images[0]->file_name.'.'.$vendor->images[0]->file_extension);
-			// 				$imagePath = JPATH_ROOT.DS.$imagePath;
+			if(!empty($vendor->images[0]->file_url_folder) and !empty($vendor->images[0]->file_name) ){
+				$imagePath = DS. str_replace('/',DS, $vendor->images[0]->file_url_folder.$vendor->images[0]->file_name.'.'.$vendor->images[0]->file_extension);
+				// 				$imagePath = JPATH_ROOT.DS.$imagePath;
 
-			if(file_exists(JPATH_ROOT.$imagePath)){
+				if(file_exists(JPATH_ROOT.$imagePath)){
 
-				// 			$pdf->SetHeaderData($image, 60, JText::_('COM_VIRTUEMART_INVOICE_TITLE'), JText::sprintf('COM_VIRTUEMART_INVOICE_SUBJ',$vendor->vendor_store_name));
-				$pdf->SetHeaderData($imagePath, 60, $vendor->vendor_store_name, '');
-			} else {
-				vmError('Vendor image missing '.$imagePath);
+					// 			$pdf->SetHeaderData($image, 60, JText::_('COM_VIRTUEMART_INVOICE_TITLE'), JText::sprintf('COM_VIRTUEMART_INVOICE_SUBJ',$vendor->vendor_store_name));
+					$pdf->SetHeaderData($imagePath, 60, $vendor->vendor_store_name, '');
+				} else {
+					vmError('Vendor image missing '.$imagePath);
+				}
 			}
+
 		}
 		// 			vmdebug(' Image path '.$imagePath);
 

@@ -378,14 +378,14 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$data->load($virtuemart_order_id);
 		$old_order_status = $data->order_status;
 		$data->bind($order);
-		$order['virtuemart_order_id']= $virtuemart_order_id;
+		//$order['virtuemart_order_id']= $virtuemart_order_id;
 		//First we must call the payment, the payment manipulates the result of the order_status
 		if($useTriggers){
 				if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 				// Payment decides what to do when order status is updated
 				JPluginHelper::importPlugin('vmpayment');
 				$_dispatcher = JDispatcher::getInstance();										//Todo  I think $order should be $data
-				$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderPayment',array(&$order,$old_order_status));
+				$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderPayment',array(&$data,$old_order_status));
 				foreach ($_returnValues as $_returnValue) {
 					if ($_returnValue === true) {
 						break; // Plugin was successfull
@@ -405,7 +405,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			* If an order gets cancelled, fire a plugin event, perhaps
 			* some authorization needs to be voided
 			*/
-			if ($order['order_status'] == "X") {
+			if ($data->order_status == "X") {
 				JPluginHelper::importPlugin('vmpayment');
 				$_dispatcher = JDispatcher::getInstance();$_dispatcher->trigger('plgVmOnCancelPayment',array(&$data,$old_order_status));
 			}
@@ -425,14 +425,14 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				}
 			}
 			/* Update the order history */
-			$this->_updateOrderHist($virtuemart_order_id, $order['order_status'], $order['customer_notified'], $order['comments']);
+			$this->_updateOrderHist($virtuemart_order_id, $data->order_status, $order['customer_notified'], $order['comments']);
 
 			// Send a download ID */
 			//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($virtuemart_order_id);
 
 			// Check if the customer needs to be informed */
 			if ($order['customer_notified']) {
-				$order['virtuemart_order_id'] =$virtuemart_order_id ;
+				$order['virtuemart_order_id'] = $virtuemart_order_id ;
 				$this->notifyCustomer($order,  $order['comments'],  $order['customer_notified']);
 			}
 
