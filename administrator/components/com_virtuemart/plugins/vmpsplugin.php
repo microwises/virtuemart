@@ -487,21 +487,25 @@ abstract class vmPSPlugin extends vmPlugin {
 		$user = $usermodel->getUser();
 		$user->shopper_groups = (array) $user->shopper_groups;
 
+		$db = JFactory::getDBO();
+
+		$select = 'SELECT l.*, v.*, ';
+
 		if (JVM_VERSION===1) {
 			$extPlgTable = '#__plugins';
 			$extField1 = 'id';
 			$extField2 = 'element';
+
+				$select .= 'j.`'.$extField1.'`, j.`name`, j.`element`, j.`folder`, j.`client_id`, j.`access`,
+				j.`params`,  j.`checked_out`, j.`checked_out_time`,  s.virtuemart_shoppergroup_id ';
 		} else {
 			$extPlgTable = '#__extensions';
 			$extField1 = 'extension_id';
 			$extField2 = 'element';
+
+			$select .= 'j.`'.$extField1.'`,j.`name`, j.`type`, j.`element`, j.`folder`, j.`client_id`, j.`enabled`, j.`access`, j.`protected`, j.`manifest_cache`,
+				j.`params`, j.`custom_data`, j.`system_data`, j.`checked_out`, j.`checked_out_time`, j.`state`,  s.virtuemart_shoppergroup_id ';
 		}
-
-		$db = JFactory::getDBO();
-
-		$select = 'SELECT l.*, v.*,
-	j.`extension_id`,j.`name`, j.`type`, j.`element`, j.`folder`, j.`client_id`, j.`enabled`, j.`access`, j.`protected`, j.`manifest_cache`,
-	j.`params`, j.`custom_data`, j.`system_data`, j.`checked_out`, j.`checked_out_time`, j.`state`,  s.virtuemart_shoppergroup_id ';
 
 		$q = $select . ' FROM   `#__virtuemart_' . $this->_psType . 'methods_' . VMLANG . '` as l ';
 		$q.= ' JOIN `#__virtuemart_' . $this->_psType . 'methods` AS v   USING (`virtuemart_' . $this->_psType . 'method_id`) ';
@@ -517,9 +521,14 @@ abstract class vmPSPlugin extends vmPlugin {
 		$q .= ' ISNULL(s.`virtuemart_shoppergroup_id`) ) ORDER BY v.`ordering`';
 
 		$db->setQuery($q);
-		// 	vmdebug('getPluginMethods query '. $db->getQuery(),$this->methods);
+
 
 		$this->methods = $db->loadObjectList();
+
+		$err = $db->getErrorMsg();
+		if(!empty($err)){
+			vmError('Error reading getPluginMethods '.$err);
+		}
 		if($this->methods){
 			foreach ($this->methods as $method) {
 				VmTable::bindParameterable($method, $this->_xParams, $this->_varsToPushParam);
