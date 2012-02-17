@@ -305,7 +305,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	$payment_name = $this->renderPluginName($method);
 
 	if (!empty($paypal_data)) {
-	    vmdebug('plgVmOnPaymentResponseReceived', $payment_data);
+	    vmdebug('plgVmOnPaymentResponseReceived', $paypal_data);
 	    $order_number = $paypal_data['invoice'];
 	    $return_context = $paypal_data['custom'];
 	    if (!class_exists('VirtueMartModelOrders'))
