@@ -127,13 +127,16 @@ class VirtueMartControllerInvoice extends JController
 		$html = ob_get_contents();
 		ob_end_clean();
 
+		$vendorId = 1;
 		$vendorModel = VmModel::getModel('vendor');
-		$vendor = &$vendorModel->getVendor(1);
+		$vendorModel->setId($vendorId);
+		$vendor = $vendorModel->getVendor();
 		// 		$this->assignRef('vendor', $vendor);
-		$vendorModel->addImages($vendor,1);
+		$vendorModel->addImages($vendor,$vendorId);
 		// 			vmdebug('$vendor',$vendor);
-		$userId = $vendorModel->getUserIdByVendorId(1);
 
+		//TODO use the new function vendorData = $usermodel->getVendor($vendorId); instead
+		$userId = $vendorModel->getUserIdByVendorId(1);
 		$usermodel = VmModel::getModel('user');
 		$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
 		$userFields = $usermodel->getUserInfoInUserFields('invoice', 'BT', $virtuemart_userinfo_id);

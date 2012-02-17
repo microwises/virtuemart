@@ -175,6 +175,7 @@ class VirtueMartControllerProductdetails extends JController {
 
 		if (JRequest::getCmd('task') == 'recommend' ) {
 			$user = JFactory::getUser();
+			//Todo, maybe allow ask a question also for anonymous users?
 			if (empty($user->id)) {
 				VmInfo(JText::_('YOU MUST LOGIN FIRST'));
 				return ;
