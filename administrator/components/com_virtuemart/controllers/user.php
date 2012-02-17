@@ -108,6 +108,7 @@ class VirtuemartControllerUser extends VmController {
 			$data['vendor_store_name'] = JRequest::getVar('vendor_store_name','','post','STRING',JREQUEST_ALLOWHTML);
 			$data['vendor_store_desc'] = JRequest::getVar('vendor_store_desc','','post','STRING',JREQUEST_ALLOWHTML);
 			$data['vendor_terms_of_service'] = JRequest::getVar('vendor_terms_of_service','','post','STRING',JREQUEST_ALLOWHTML);
+			$data['vendor_legal_info'] = JRequest::getVar('vendor_legal_info','','post','STRING',JREQUEST_ALLOWHTML);
 
 			$ret=$model->store($data);
 			if(!$ret){

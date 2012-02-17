@@ -258,8 +258,8 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	/**
 	 * Update an order item status
 	 * @author Max Milbers
-	 */
-	public function updateSingleItem($virtuemart_order_item_id, $order_status, &$comment,$virtuemart_order_id,$order_pass)
+	 */										//$order_status, &$comment, $virtuemart_order_id,$order_pass
+	public function updateSingleItem($virtuemart_order_item_id, &$orderdata)
 	{
 
 		// Update order item status
@@ -268,7 +268,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 // 			if (!empty($update_lines[$virtuemart_order_id])) {
 				$q = 'SELECT virtuemart_order_item_id
 						FROM #__virtuemart_order_items
-						WHERE virtuemart_order_id="'.(int)$virtuemart_order_id.'"';
+						WHERE virtuemart_order_id="'.(int)$orderdata->virtuemart_order_id.'"';
 				$db = JFactory::getDBO();
 				$db->setQuery($q);
 				$virtuemart_order_item_ids = $db->loadResultArray();
@@ -295,13 +295,14 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$table->load($id);
 			$oldOrderStatus = $table->order_status;
 
-			$data->order_status = $order_status;
+			$data->order_status = $orderdata->order_status;
 
 			//$data->comment = $comment;
 
 			JPluginHelper::importPlugin('vmcustom');
 			$_dispatcher = JDispatcher::getInstance();
-			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateSingleItem',array(&$comment,$table,$order_status,$order_pass));
+// 			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateSingleItem',array(&$comment,$table,$order_status,$order_pass));
+			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateSingleItem',array($table,&$data,&$orderdata));
 
 
 			$table->bindChecknStore($data,true);
@@ -313,7 +314,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 
 			// 		$this->handleStockAfterStatusChanged($order_status,array($product),$table->order_status);
-			$this->handleStockAfterStatusChangedPerProduct($order_status, $oldOrderStatus, $table,$table->product_quantity);
+			$this->handleStockAfterStatusChangedPerProduct($orderdata->order_status, $oldOrderStatus, $table,$table->product_quantity);
 
 		}
 
@@ -378,6 +379,8 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$data->load($virtuemart_order_id);
 		$old_order_status = $data->order_status;
 		$data->bind($order);
+		$data->_customer_notified = $order['customer_notified'];
+		$data->_comments = $order['comments'];
 		//$order['virtuemart_order_id']= $virtuemart_order_id;
 		//First we must call the payment, the payment manipulates the result of the order_status
 		if($useTriggers){
@@ -421,19 +424,21 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$order_items = $db->loadObjectList();
 			if ($order_items) {
 				foreach ($order_items as $order_item) {
-					$this->updateSingleItem($order_item->virtuemart_order_item_id, $data->order_status, $order['comments'] , $virtuemart_order_id, $data->order_pass);
+					//$this->updateSingleItem($order_item->virtuemart_order_item_id, $data->order_status, $order['comments'] , $virtuemart_order_id, $data->order_pass);
+					$this->updateSingleItem($order_item->virtuemart_order_item_id, $data);
 				}
 			}
 			/* Update the order history */
-			$this->_updateOrderHist($virtuemart_order_id, $data->order_status, $order['customer_notified'], $order['comments']);
+			$this->_updateOrderHist($virtuemart_order_id, $data->order_status, $data->_customer_notified, $data->_comments);
 
 			// Send a download ID */
 			//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($virtuemart_order_id);
 
+			vmdebug('Should customer be notified? ',$data);
 			// Check if the customer needs to be informed */
-			if ($order['customer_notified']) {
-				$order['virtuemart_order_id'] = $virtuemart_order_id ;
-				$this->notifyCustomer($order,  $order['comments'],  $order['customer_notified']);
+			if ($data->_customer_notified) {
+// 				$order['virtuemart_order_id'] = $virtuemart_order_id ;
+				$this->notifyCustomer($order,  $data->_comments,  $data->_customer_notified);
 			}
 
 			JPluginHelper::importPlugin('vmcoupon');
@@ -783,7 +788,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 				$calculator = calculationHelper::getInstance();
 				$variantmods = $calculator->parseModifier($priceKey);
-				vmdebug('_createOrderLines '.$priceKey,$_prod,$variantmods);
+// 				vmdebug('_createOrderLines '.$priceKey,$_prod,$variantmods);
 				$row=0 ;
 				$product_id = (int)$priceKey;
 				$_prod->product_attribute = '';
@@ -797,7 +802,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 							if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 
-							vmdebug('_createOrderLines E ',$productCustom,$variant,$selected);
+// 							vmdebug('_createOrderLines E ',$productCustom,$variant,$selected);
 
 							$product_attribute[$selected] = $selected;
 // 							$product_attribute[$variant] = $selected;

@@ -161,6 +161,7 @@ class VirtueMartControllerInvoice extends JController
 			vmError('Vendor image given path empty ');
 		} else if(empty($vendor->images[0]->file_url_folder) or empty($vendor->images[0]->file_name) or empty($vendor->images[0]->file_extension) ){
 			vmError('Vendor image given image is not complete '.$vendor->images[0]->file_url_folder.$vendor->images[0]->file_name.'.'.$vendor->images[0]->file_extension);
+			vmdebug('Vendor image given image is not complete, the given media',$vendor->images[0]);
 		} else if(!empty($vendor->images[0]->file_extension) and strtolower($vendor->images[0]->file_extension)=='png'){
 			vmError('Warning extension of the image is a png, tpcdf has problems with that in the header, choose a jpg or gif');
 		} else {

@@ -71,10 +71,15 @@ class VirtuemartViewOrders extends VmView {
 		$orderModel = VmModel::getModel('orders');
 
 		if ($layoutName == 'details') {
-		$order_list_link = JRoute::_('index.php?option=com_virtuemart&view=orders&layout=list');
-$this->assignRef('order_list_link', $order_list_link);
-			$cuid = $_currentUser->get('id');
-
+			$order_list_link = false;
+// 			$cuid = $_currentUser->get('id');
+// 			if(!empty($cuid)){
+				$order_list_link = JRoute::_('index.php?option=com_virtuemart&view=orders&layout=list');
+// 			} else {
+// 				$order_list_link = false;
+// 				$order_list_link = JRoute::_('index.php?option=com_virtuemart&view=orders');;
+// 			}
+			$this->assignRef('order_list_link', $order_list_link);
 			if(empty($cuid)){
 				// If the user is not logged in, we will check the order number and order pass
 				if ($orderPass = JRequest::getString('order_pass',false)){

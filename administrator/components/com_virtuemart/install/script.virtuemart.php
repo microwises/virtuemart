@@ -34,7 +34,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 		 * Sets the paths and loads VMFramework config
 		 */
 		public function loadVm() {
-			$this->path = JInstaller::getInstance()->getPath('extension_administrator');
+// 			$this->path = JInstaller::getInstance()->getPath('extension_administrator');
 
 			if(empty($this->path)){
 				$this->path = JPATH_VM_ADMINISTRATOR;
