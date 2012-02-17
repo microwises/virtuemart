@@ -182,15 +182,16 @@ function virtuemartBuildRoute(&$query) {
 
 		break;
 		case 'orders';
+
 			if ( isset($jmenu['orders']) ) $query['Itemid'] = $jmenu['orders'];
 			else {
 				$segments[] = $lang['orders'] ;
 			}
 			if ( isset($query['order_number']) ) {
-				$segments[] = $query['order_number'];
+				$segments[] = 'number/'.$query['order_number'];
 				unset ($query['order_number'],$query['layout']);
 			} else if ( isset($query['virtuemart_order_id']) ) {
-				$segments[] = $query['virtuemart_order_id'];
+				$segments[] = 'id/'.$query['virtuemart_order_id'];
 				unset ($query['virtuemart_order_id'],$query['layout']);
 			}
 
@@ -327,10 +328,17 @@ function virtuemartParseRoute($segments) {
 
 		}
 		if (empty($segments)) {
-			$vars['layout'] = 'list';
+			$vars['layout'] = $lang['list'];
+			
+		} else if ($segments[0] == $lang['list']) {
+			$vars['layout'] = $lang['list'];
+			array_shift($segments);
 		}
+		
 		if ( !empty($segments) ) {
-			$vars['order_number'] = $segments[0] ;
+			if ($segments[0] ='number')
+			$vars['order_number'] = $segments[1] ;
+			else $vars['virtuemart_order_id'] = $segments[1] ;
 			$vars['layout'] = 'details';
 		}
 		return $vars;
