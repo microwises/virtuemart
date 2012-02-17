@@ -1097,7 +1097,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	function notifyCustomer($order  ) {
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
-		$vars = array('order' => $order,  'includeComments' => $includeComments);
+		$vars = array('order' => $order );
 		//$vars['includeComments'] = JRequest::getVar('customer_notified', array());
 
 		//$url = VmConfig::get('secureurl')."index.php?option=com_virtuemart&page=account.order_details&virtuemart_order_id=".$order->virtuemart_order_id.'&Itemid='.$sess->getShopItemid();

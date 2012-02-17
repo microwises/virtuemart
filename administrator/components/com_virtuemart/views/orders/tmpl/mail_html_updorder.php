@@ -58,7 +58,7 @@ $li = '<br />';
 			    <tr>
 				<td valign="top" width="100%">
 				    <?php
-				    if ($this->includeComments) {
+				    if ($this->order->_customer_notified) {
 					echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_COMMENT_EMAIL')  . '<br/>';
 					echo  $this->order->_comments . '<br/>';
 					echo '<br/>';

@@ -4,7 +4,7 @@ echo JText::_('COM_VIRTUEMART_HI') . ' ' . $this->user->full_name . "\n\n";
 echo JText::sprintf('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_1', $this->orderdata['details']['BT']->order_number) . "\n" . "\n";
 
 
-if ($this->includeComments) {
+if ($this->order->_customer_notified) {
     echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_COMMENT_EMAIL') .   "\n";
     echo $this->order->_comments . "\n";
    echo "\n";
