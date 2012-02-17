@@ -208,10 +208,10 @@ class VirtuemartViewOrders extends VmView {
 	    }
 		$this->setLayout($tpl);
 		$vendorModel = VmModel::getModel('vendor');
-		$virtuemart_vendor_id = $vendorModel->getVendorId('order', $this->order['virtuemart_order_id']);
+		$virtuemart_vendor_id = $vendorModel->getVendorId('order', $this->order->virtuemart_order_id);
 
 		$orderModel=VmModel::getModel();
-		$this->orderdata = $orderModel->getOrder($this->order['virtuemart_order_id']);
+		$this->orderdata = $orderModel->getOrder($this->order->virtuemart_order_id);
 		$vendorModel->setId($virtuemart_vendor_id);
 		$this->vendor = $vendorModel->getVendor();
 		$this->vendor->email = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
@@ -221,7 +221,7 @@ class VirtuemartViewOrders extends VmView {
 
 
 		$path = VmConfig::get('forSale_path',0);
-		if($this->order['order_status'] == 'C' and $path!==0){
+		if($this->order->order_status  == 'C' and $path!==0){
 
 			if(!class_exists('VirtueMartControllerInvoice')) require_once( JPATH_VM_SITE.DS.'controllers'.DS.'invoice.php' );
 			$controller = new VirtueMartControllerInvoice( array(

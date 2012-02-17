@@ -2,7 +2,7 @@
 #####################################################################################################
 #
 #					Module pour la plateforme de paiement PayZen
-#						Version : 1.0 (révision 31249)
+#						Version : 1.1 (révision 33267)
 #									########################
 #					Développé pour VirtueMart
 #						Version : 2.0
@@ -10,7 +10,7 @@
 #									########################
 #					Développé par Lyra Network
 #						http://www.lyra-network.com/
-#						27/11/2011
+#						16/02/2012
 #						Contact : support@payzen.eu
 #
 #####################################################################################################
@@ -228,6 +228,9 @@ class VadsApi {
 						"#^[01]?$#", false, 1);
 		$this->_addRequestField('vads_version', 'Gateway version', "#^V2$#", true,
 						2);
+		
+		// Enable / disable 3D Secure 
+		$this->_addRequestField('vads_threeds_mpi', 'Enable / disable 3D Secure', '#^[0-2]$#', false);
 		
 		// Declaration of parameters for Oney payment
 		$this->_addRequestField('vads_cust_first_name', 'Customer first name', $an63, false, 63);

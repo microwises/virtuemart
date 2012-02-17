@@ -438,7 +438,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			// Check if the customer needs to be informed */
 			if ($data->_customer_notified) {
 // 				$order['virtuemart_order_id'] = $virtuemart_order_id ;
-				$this->notifyCustomer($order,  $data->_comments,  $data->_customer_notified);
+				$this->notifyCustomer($data );
 			}
 
 			JPluginHelper::importPlugin('vmcoupon');
@@ -1094,10 +1094,10 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @author RolandD, Christopher Roussel
 	 * @todo: Fix URL when we have front-end done
 	 */
-	function notifyCustomer($order, $comments,$includeComments ) {
+	function notifyCustomer($order  ) {
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
-		$vars = array('order' => $order, 'comments' => $comments, 'includeComments' => $includeComments);
+		$vars = array('order' => $order,  'includeComments' => $includeComments);
 		//$vars['includeComments'] = JRequest::getVar('customer_notified', array());
 
 		//$url = VmConfig::get('secureurl')."index.php?option=com_virtuemart&page=account.order_details&virtuemart_order_id=".$order->virtuemart_order_id.'&Itemid='.$sess->getShopItemid();
@@ -1110,7 +1110,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			ON #__virtuemart_orders.virtuemart_user_id = #__virtuemart_order_userinfos.virtuemart_user_id
 			LEFT JOIN #__virtuemart_orderstates
 			ON #__virtuemart_orderstates.order_status_code = #__virtuemart_orders.order_status
-			WHERE #__virtuemart_orders.virtuemart_order_id = '".$order['virtuemart_order_id']."'
+			WHERE #__virtuemart_orders.virtuemart_order_id = '".$order->virtuemart_order_id."'
 			AND #__virtuemart_orders.virtuemart_order_id = #__virtuemart_order_userinfos.virtuemart_order_id";
 		$db->setQuery($q);
 		$db->query();

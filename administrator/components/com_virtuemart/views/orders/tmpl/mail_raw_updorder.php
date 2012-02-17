@@ -6,7 +6,7 @@ echo JText::sprintf('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_1', $this->orde
 
 if ($this->includeComments) {
     echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_COMMENT_EMAIL') .   "\n";
-    echo $this->comments . "\n";
+    echo $this->order->_comments . "\n";
    echo "\n";
 }
 echo JText::_('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_MSG_2').  $this->user->order_status_name . "\n" . "\n";

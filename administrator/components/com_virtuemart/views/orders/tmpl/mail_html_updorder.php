@@ -60,7 +60,7 @@ $li = '<br />';
 				    <?php
 				    if ($this->includeComments) {
 					echo JText::_('COM_VIRTUEMART_ORDER_HISTORY_COMMENT_EMAIL')  . '<br/>';
-					echo  $this->comments . '<br/>';
+					echo  $this->order->_comments . '<br/>';
 					echo '<br/>';
 				    }
 
