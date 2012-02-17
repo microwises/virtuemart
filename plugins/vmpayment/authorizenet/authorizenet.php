@@ -712,8 +712,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	    'x_company' => isset($usrBT->company) ? $this->_getField($usrBT->company, 50) : '',
 	    'x_address' => isset($usrBT->address_1) ? $this->_getField($usrBT->address_1, 60) : '',
 	    'x_city' => isset($usrBT->city) ? $this->_getField($usrBT->city, 40) : '',
-	    'x_state' => isset($usrBT->state) ? $this->_getField($usrBT->state, 40) : '',
-	    'x_zip' => isset($usrBT->virtuemart_state_id) ? $this->_getField(ShopFunctions::getStateByID($usrBT->virtuemart_state_id), 20) : '',
+	    'x_zip' => isset($usrBT->zip) ? $this->_getField($usrBT->zip, 40) : '',
+	    'x_state' => isset($usrBT->virtuemart_state_id) ? $this->_getField(ShopFunctions::getStateByID($usrBT->virtuemart_state_id), 20) : '',
 	    'x_country' => isset($usrBT->virtuemart_country_id) ? $this->_getField(ShopFunctions::getCountryByID($usrBT->virtuemart_country_id), 60) : '',
 	    'x_phone' => isset($usrBT->phone_1) ? $this->_getField($usrBT->phone_1, 25) : '',
 	    'x_fax' => isset($usrBT->fax) ? $this->_getField($usrBT->fax, 25) : ''
