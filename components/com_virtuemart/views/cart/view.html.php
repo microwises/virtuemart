@@ -98,6 +98,11 @@ class VirtueMartViewCart extends VmView {
 			$this->prepareContinueLink();
 			$this->lSelectCoupon();
 			$totalInPaymentCurrency =$this->getTotalInPaymentCurrency();
+
+			if ($cart && !VmConfig::get('use_as_catalog', 0)) {
+				$cart->checkout(false);
+			}
+
 			if ($cart->getDataValidated()) {
 				$pathway->addItem(JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));
 				$document->setTitle(JText::_('COM_VIRTUEMART_ORDER_CONFIRM_MNU'));

@@ -906,7 +906,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			}
 			return $html.'</div> ';
 		} else {
-			vmTrace('$item->product_attribut is empty');
+// 			vmTrace('$item->product_attribut is empty');
 		}
 		return '';
 	}

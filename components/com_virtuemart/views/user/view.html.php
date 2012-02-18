@@ -137,7 +137,7 @@ class VirtuemartViewUser extends VmView {
 	    //New Address is filled here with the data of the cart (we are in the cart)
 	    if (!class_exists('VirtueMartCart'))
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-	    $cart = VirtueMartCart::getCart();
+	    $cart = VirtueMartCart::getCart(false);
 
 	    $fieldtype = $address_type . 'address';
 	    $cart->prepareAddressDataInCart($address_type, $new);
@@ -248,7 +248,7 @@ class VirtuemartViewUser extends VmView {
 		$vmfield_title = JText::_('COM_VIRTUEMART_USER_FORM_ADD_SHIPTO_LBL');
 	    }
 	}
-	
+
 	$document->setTitle($pathway_text);
 	$pathway->additem($pathway_text);
 	$this->assignRef('page_title', $pathway_text);

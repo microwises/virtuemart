@@ -51,18 +51,21 @@ defined('_JEXEC') or die();
 		<h3><?php echo JText::_('LIVEUPDATE_'.strtoupper($class).'_HEAD') ?></h3>
 		<div class="liveupdate-infotable">
 			<div class="liveupdate-row row0">
+				<span ><?php echo JText::_('LIVEUPDATE_CONSIDER_COMPATIBILITY') ?></span>
+			</div>
+			<div class="liveupdate-row row1">
 				<span class="liveupdate-label"><?php echo JText::_('LIVEUPDATE_CURRENTVERSION') ?></span>
 				<span class="liveupdate-data"><?php echo $this->updateInfo->extInfo->version ?></span>
 			</div>
-			<div class="liveupdate-row row1">
+			<div class="liveupdate-row row0">
 				<span class="liveupdate-label"><?php echo JText::_('LIVEUPDATE_LATESTVERSION') ?></span>
 				<span class="liveupdate-data"><?php echo $this->updateInfo->version ?></span>
 			</div>
-			<div class="liveupdate-row row0">
+			<div class="liveupdate-row row1">
 				<span class="liveupdate-label"><?php echo JText::_('LIVEUPDATE_LATESTRELEASED') ?></span>
 				<span class="liveupdate-data"><?php echo $this->updateInfo->date ?></span>
 			</div>
-			<div class="liveupdate-row row1">
+			<div class="liveupdate-row row0">
 				<span class="liveupdate-label"><?php echo JText::_('LIVEUPDATE_DOWNLOADURL') ?></span>
 				<span class="liveupdate-data"><a href="<?php echo $this->updateInfo->downloadURL.$auth?>"><?php echo $this->escape($this->updateInfo->downloadURL)?></a></span>
 			</div>

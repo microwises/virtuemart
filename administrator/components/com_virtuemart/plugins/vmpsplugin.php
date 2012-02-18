@@ -994,7 +994,7 @@ abstract class vmPSPlugin extends vmPlugin {
 				session_start();
 			}
 
-			$cart = VirtueMartCart::getCart();
+			$cart = VirtueMartCart::getCart(true);
 			$cart->emptyCart();
 			return true;
 		}

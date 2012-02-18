@@ -76,7 +76,7 @@ class VirtueMartCart {
 	 * @access public
 	 * @param array $cart the cart to store in the session
 	 */
-	public static function getCart($deleteValidation=true,$setCart=true, $options = array()) {
+	public static function getCart($deleteValidation,$setCart=true, $options = array()) {
 
 		//What does this here? for json stuff?
 		if (!class_exists('JTable')
@@ -686,10 +686,10 @@ class VirtueMartCart {
 		}
 	}
 
-	function checkout() {
+	function checkout($redirect=true) {
 
-		$this->checkoutData();
-		if ($this->_dataValidated) {
+		$this->checkoutData($redirect);
+		if ($this->_dataValidated && $redirect) {
 			$mainframe = JFactory::getApplication();
 			//This is dangerous, we may add it as option, direclty calling the confirm is in most countries illegal and can lead to confusion. notice by Max
 			// 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=confirm'), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
@@ -738,8 +738,19 @@ class VirtueMartCart {
 		$this->setCartIntoSession();
 	}
 
-	private function checkoutData() {
+	private function redirecter($relUrl,$redirectMsg){
 
+		$app = JFactory::getApplication();
+		if($this->_redirect){
+			$app->redirect(JRoute::_($relUrl,$this->useXHTML,$this->useSSL), $redirectMsg);
+		} else {
+			return false;
+		}
+	}
+
+	private function checkoutData($redirect = true) {
+
+		$this->_redirect = $redirect;
 		$this->_inCheckOut = true;
 
 		$this->tosAccepted = JRequest::getInt('tosAccepted', $this->tosAccepted);
@@ -757,29 +768,34 @@ class VirtueMartCart {
 
 		$mainframe = JFactory::getApplication();
 		if (count($this->products) == 0) {
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart'), JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
+// 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart'), JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
+			return $this->redirecter('index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
 		} else {
 			foreach ($this->products as $product) {
 				$redirectMsg = $this->checkForQuantities($product, $product->quantity);
 				if (!$redirectMsg) {
+					return $this->redirecter('index.php?option=com_virtuemart&view=cart', $redirectMsg);
 					//					$this->setCartIntoSession();
-					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), $redirectMsg);
+// 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), $redirectMsg);
 				}
 			}
 		}
 
 		// Check if a minimun purchase value is set
 		if (($msg = $this->checkPurchaseValue()) != null) {
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), $msg);
+// 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), $msg);
+			return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
 		}
 
 		//But we check the data again to be sure
 		if (empty($this->BT)) {
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT') );
+// 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT') );
+			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , $redirectMsg);
 		} else {
 			$redirectMsg = self::validateUserData();
 			if ($redirectMsg) {
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $redirectMsg);
+				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , $redirectMsg);
+// 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $redirectMsg);
 			}
 		}
 
@@ -791,7 +807,8 @@ class VirtueMartCart {
 				$redirectMsg = self::validateUserData('ST');
 				if ($redirectMsg) {
 					//				$this->setCartIntoSession();
-					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST'), $redirectMsg);
+					return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST' , $redirectMsg);
+// 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST'), $redirectMsg);
 				}
 			}
 		}
@@ -814,13 +831,15 @@ class VirtueMartCart {
 
 				$this->couponCode = '';
 				//				$this->setCartIntoSession();
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_coupon',$this->useXHTML,$this->useSSL), $redirectMsg);
+				return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=edit_coupon' , $redirectMsg);
+// 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_coupon',$this->useXHTML,$this->useSSL), $redirectMsg);
 			}
 		}
 
 		//Test Shipment and show shipment plugin
 		if (empty($this->virtuemart_shipmentmethod_id)) {
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $redirectMsg);
+// 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $redirectMsg);
+			return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=edit_shipment' , $redirectMsg);
 		} else {
 			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmshipment');
@@ -833,7 +852,8 @@ class VirtueMartCart {
 					break; // Plugin completed succesful; nothing else to do
 				} elseif ($retVal === false) {
 					// Missing data, ask for it (again)
-					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $redirectMsg);
+					return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=edit_shipment' , $redirectMsg);
+// 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_shipment',$this->useXHTML,$this->useSSL), $redirectMsg);
 					// 	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
 				}
 			}
@@ -841,7 +861,8 @@ class VirtueMartCart {
 		//echo 'hier ';
 		//Test Payment and show payment plugin
 		if (empty($this->virtuemart_paymentmethod_id)) {
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $redirectMsg);
+// 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $redirectMsg);
+			return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=editpayment' , $redirectMsg);
 		} else {
 			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 			JPluginHelper::importPlugin('vmpayment');
@@ -854,7 +875,8 @@ class VirtueMartCart {
 					break; // Plugin completed succesful; nothing else to do
 				} elseif ($retVal === false) {
 					// Missing data, ask for it (again)
-					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $redirectMsg);
+					return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=editpayment' , $redirectMsg);
+// 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment',$this->useXHTML,$this->useSSL), $redirectMsg);
 					// 	NOTE: inactive plugins will always return null, so that value cannot be used for anything else!
 				}
 			}
@@ -870,14 +892,16 @@ class VirtueMartCart {
 
 			$required = $userFieldsModel->getIfRequired('agreed');
 			if(!empty($required)){
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS'));
+				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
+// 			7	$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS'));
 			}
 		}
 
 		if(VmConfig::get('oncheckout_only_registered',0)) {
 			$currentUser = JFactory::getUser();
 			if(empty($currentUser->id)){
-				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), JText::_('COM_VIRTUEMART_CART_ONLY_REGISTERED') );
+				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , $redirectMsg);
+// 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), JText::_('COM_VIRTUEMART_CART_ONLY_REGISTERED') );
 			}
 		 }
 
@@ -998,9 +1022,9 @@ class VirtueMartCart {
 			}
 			$this->virtuemart_order_id = $orderID;
 			$order= $orderModel->getOrder($orderID);
-// 			$cart = $this->getCart();
+
 			$dispatcher = JDispatcher::getInstance();
-// 			$html="";
+
 			JPluginHelper::importPlugin('vmshipment');
 			JPluginHelper::importPlugin('vmcustom');
 			JPluginHelper::importPlugin('vmpayment');

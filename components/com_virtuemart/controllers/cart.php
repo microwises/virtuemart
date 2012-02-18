@@ -69,7 +69,7 @@ class VirtueMartControllerCart extends JController {
 	    $type = 'error';
 	    $mainframe->redirect('index.php', $msg, $type);
 	}
-	$cart = VirtueMartCart::getCart();
+	$cart = VirtueMartCart::getCart(false);
 	if ($cart) {
 		$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array');
 		$success = true;
@@ -107,7 +107,7 @@ class VirtueMartControllerCart extends JController {
 	/* Load the cart helper */
 	//require_once(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
 	$this->json = null;
-	$cart = VirtueMartCart::getCart(true, false);
+	$cart = VirtueMartCart::getCart(false, false);
 	if ($cart) {
 	    // Get a continue link */
 	    $virtuemart_category_id = shopFunctionsF::getLastVisitedCategoryId();
@@ -197,7 +197,7 @@ class VirtueMartControllerCart extends JController {
 	$coupon_code = JRequest::getVar('coupon_code', ''); //TODO VAR OR INT OR WORD?
 	if ($coupon_code) {
 
-	    $cart = VirtueMartCart::getCart();
+	    $cart = VirtueMartCart::getCart(false);
 	    if ($cart) {
 		$msg = $cart->setCouponCode($coupon_code);
 		if (!empty($msg)) {
@@ -240,7 +240,7 @@ class VirtueMartControllerCart extends JController {
 	$virtuemart_shipmentmethod_id = JRequest::getInt('virtuemart_shipmentmethod_id', '0');
 	if ($virtuemart_shipmentmethod_id) {
 	    //Now set the shipment ID into the cart
-	    $cart = VirtueMartCart::getCart();
+	    $cart = VirtueMartCart::getCart(false);
 	    if ($cart) {
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
@@ -295,7 +295,7 @@ class VirtueMartControllerCart extends JController {
 
 	/* Get the payment id of the cart */
 	//Now set the payment rate into the cart
-	$cart = VirtueMartCart::getCart();
+	$cart = VirtueMartCart::getCart(false);
 	if ($cart) {
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 	    JPluginHelper::importPlugin('vmpayment');
@@ -337,7 +337,7 @@ class VirtueMartControllerCart extends JController {
     public function delete() {
 	$mainframe = JFactory::getApplication();
 	/* Load the cart helper */
-	$cart = VirtueMartCart::getCart();
+	$cart = VirtueMartCart::getCart(false);
 	if ($cart->removeProductCart())
 	    $mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_REMOVED_SUCCESSFULLY'));
 	else
@@ -355,7 +355,7 @@ class VirtueMartControllerCart extends JController {
     public function update() {
 	$mainframe = JFactory::getApplication();
 	/* Load the cart helper */
-	$cartModel = VirtueMartCart::getCart();
+	$cartModel = VirtueMartCart::getCart(false);
 	if ($cartModel->updateProductCart())
 	    $mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_UPDATED_SUCCESSFULLY'));
 	else
@@ -374,7 +374,7 @@ class VirtueMartControllerCart extends JController {
     public function checkout() {
 	//Tests step for step for the necessary data, redirects to it, when something is lacking
 
-	$cart = VirtueMartCart::getCart();
+	$cart = VirtueMartCart::getCart(true);
 	if ($cart && !VmConfig::get('use_as_catalog', 0)) {
 	    $cart->checkout();
 	}

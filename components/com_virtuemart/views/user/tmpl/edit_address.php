@@ -125,10 +125,6 @@ if ($this->address_type == 'BT') {
 	    <?php
 	    if (!class_exists('VirtueMartCart'))
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-//             $cart = VirtueMartCart::getCart();
-//             $cart->prepareAddressDataInCart();
-//             $this->assignRef('cart', $cart);
-// 				vmdebug('my cart in edit_adress',$cart->BTaddress);
 
 	    if (count($this->userFields['functions']) > 0) {
 		echo '<script language="javascript">' . "\n";

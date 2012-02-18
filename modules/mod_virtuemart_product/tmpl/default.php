@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 $col= 1 ;
 $pwidth= ' width'.floor ( 100 / $products_per_row );
-if ($products_per_row > 1) { $float= "floatleft";}
+if ($products_per_row > 1) { $float= "float:left";}
 else {$float="center";}
 ?>
 <div class="vmgroup<?php echo $params->get( 'moduleclass_sfx' ) ?>">

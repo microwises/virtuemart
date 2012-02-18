@@ -216,7 +216,7 @@ class VirtueMartControllerUser extends JController
 	private function saveToCart($data){
 
 		if(!class_exists('VirtueMartCart')) require(JPATH_VM_SITE.DS.'helpers'.DS.'cart.php');
-		$cart = VirtueMartCart::getCart();
+		$cart = VirtueMartCart::getCart(false);
 		$cart->saveAddressInCart($data, $data['address_type']);
 
 	}

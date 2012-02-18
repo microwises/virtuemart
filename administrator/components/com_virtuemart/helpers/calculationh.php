@@ -178,7 +178,7 @@ class calculationHelper {
 		if (empty($cart)) {
 			if (!class_exists('VirtueMartCart'))
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-			$cart = VirtueMartCart::getCart();
+			$cart = VirtueMartCart::getCart(false);
 		}
 		$this->_cart = $cart;
 
