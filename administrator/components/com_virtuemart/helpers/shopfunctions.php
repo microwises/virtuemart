@@ -1004,10 +1004,42 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 	 * @param string $euvat EU-vat number to validate
 	 * @return boolean The result of the validation
 	 */
-	public function validateEUVat($euvat) {
-		if(!class_exists('VmEUVatCheck')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'euvatcheck.php');
-		$vatcheck = new VmEUVatCheck($euvat);
-		return $vatcheck->validvatid;
+	// public function validateEUVat($euvat) {
+		// if(!class_exists('VmEUVatCheck')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'euvatcheck.php');
+		// $vatcheck = new VmEUVatCheck($euvat);
+		// return $vatcheck->validvatid;
+	
+	/*
+	 * 
+	 *$return = validateEUVat(array(‘vatnumber’ => ‘BE0123456789′, ‘country’ => ‘BE’));
+	 */
+	
+	function validateEUVat($args = array()) {
+		if ( '' != $args['vatnumber'] ) {
+			$vat_number 	= str_replace(array(' ', '.', '-', ',', ', '), '', $args['vatnumber']);
+			$countryCode 	= substr($vat_number, 0, 2);
+			$vatNumber 		= substr($vat_number, 2);
+	 
+			if ( strlen($countryCode) != 2 || is_numeric(substr($countryCode, 0, 1)) || is_numeric(substr($countryCode, 1, 2)) ) {
+				return false;//format error 'message' => 'Your VAT Number syntax is not correct. You should have something like this: BE805670816B01'
+			}
+	 
+			if ( $args['country'] != $countryCode ) {
+				return false;//'message' => 'Your VAT Number is not valid for the selected country.'
+			}
+	 
+			$client = new SoapClient("http://ec.europa.eu/taxation_customs/vies/services/checkVatService.wsdl");
+			$params = array('countryCode' => $countryCode, 'vatNumber' => $vatNumber);
+	 
+			$result = $client->checkVat($params);
+	 
+			if ( !$result->valid ) {
+				return false ;// 'message' => sprintf('Invalid VAT Number. Check the validity on the customer VAT Number via <a href="%s">Europa VAT Number validation webservice</a>', 'http://ec.europa.eu/taxation_customs/vies/lang.do?fromWhichPage=vieshome'));
+			} else {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
