@@ -72,7 +72,7 @@ class VirtuemartViewOrders extends VmView {
 
 		if ($layoutName == 'details') {
 			$order_list_link = false;
-// 			$cuid = $_currentUser->get('id');
+ 			$cuid = $_currentUser->get('id');
 // 			if(!empty($cuid)){
 				$order_list_link = JRoute::_('index.php?option=com_virtuemart&view=orders&layout=list');
 // 			} else {
