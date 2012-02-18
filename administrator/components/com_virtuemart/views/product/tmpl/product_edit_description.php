@@ -31,6 +31,14 @@ defined('_JEXEC') or die('Restricted access');?>
 <fieldset>
 	<legend><?php echo JText::_('COM_VIRTUEMART_META_INFORMATION') ?></legend>
 	<table valign="top">
+<tr>
+			<td >
+				<div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_CUSTOM_PAGE_TITLE'); ?> </div>
+			</td>
+			<td valign="top">
+				<input type="text" class="inputbox" size="70" name="customtitle" value="<?php echo $this->product->customtitle ?>" />
+			</td>
+		</tr>
 		<tr>
 			<td valign="top"><div style="text-align:right;font-weight:bold;"><?php echo JText::_('COM_VIRTUEMART_METADESC'); ?> </div></td>
 			<td valign="top">

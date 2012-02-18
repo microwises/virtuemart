@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
 *
 * Product table
@@ -63,6 +63,8 @@ class TableCategories extends VmTable {
 	var $limit_list_initial	= 10;
 	/** @var string Meta description */
 	var $metadesc	= '';
+	/** @var string custom title */
+	var $customtitle	= '';
 	/** @var string Meta keys */
 	var $metakey	= '';
 	/** @var string Meta robot */
@@ -85,7 +87,7 @@ class TableCategories extends VmTable {
 // 		$this->setPrimaryKey('virtuemart_category_id');
 		$this->setObligatoryKeys('category_name');
 		$this->setLoggable();
-		$this->setTranslatable(array('category_name','category_description','metadesc','metakey'));
+		$this->setTranslatable(array('category_name','category_description','metadesc','metakey','customtitle'));
 		$this->setSlug('category_name');
 		$this->setTableShortCut('c');
 	}

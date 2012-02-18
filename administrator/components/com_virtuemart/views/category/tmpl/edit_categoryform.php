@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
 *
 * Description
@@ -78,6 +78,7 @@ $mainframe = JFactory::getApplication();
 			<fieldset>
 				<legend><?php echo JText::_('COM_VIRTUEMART_META_INFORMATION'); ?></legend>
 				<table>
+<?php echo VmHTML::row('input','COM_VIRTUEMART_CUSTOM_PAGE_TITLE','customtitle',$this->category->customtitle); ?>
 					<?php echo VmHTML::row('textarea','COM_VIRTUEMART_META_DESC','metadesc',$this->category->metadesc); ?>
 					<?php echo VmHTML::row('textarea','COM_VIRTUEMART_META_KEYWORDS','metakey',$this->category->metakey); ?>
 					<?php echo VmHTML::row('input','COM_VIRTUEMART_META_ROBOTS','metarobot',$this->category->metarobot); ?>

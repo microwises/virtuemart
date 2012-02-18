@@ -137,7 +137,7 @@ browse_search_fields=array:product_sku|category_name|category_description|mf_nam
 ##Check stock
     check_stock=0
     automatic_payment=1
-    automatic_shipping=1
+    automatic_shipment=1
     agree_to_tos_onorder=0
     oncheckout_show_legal_info=1
     oncheckout_show_register=1

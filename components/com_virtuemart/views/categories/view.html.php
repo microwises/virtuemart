@@ -114,11 +114,15 @@ class VirtuemartViewCategories extends VmView {
 			$document->setMetaData('author', $category->metaauthor);
 		}
 
-// 	    if(empty($category->category_template)){
-// 	    	$catTpl = VmConfig::get('categorytemplate');
-// 	    }else {
-// 	    	$catTpl = $category->category_template;
-// 	    }
+		if ($category->customtitle) {
+			$title = strip_tags($category->customtitle);
+		} else {
+			$title = strip_tags($category->category_name);
+		}
+
+		 if(empty($category->category_template)){
+	    	$category->category_template = VmConfig::get('categorytemplate');
+	    }
 
 	    shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
 

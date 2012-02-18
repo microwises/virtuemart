@@ -145,6 +145,7 @@ class VirtueMartViewProductdetails extends VmView {
 
 		// Load the category
 		$category_model = VmModel::getModel('category');
+
 		// Get the category ID
 		$virtuemart_category_id = JRequest::getInt('virtuemart_category_id');
 		if ($virtuemart_category_id == 0 && !empty($product)) {
@@ -170,7 +171,7 @@ class VirtueMartViewProductdetails extends VmView {
 			    $category_model->addImages($category->children,1);
 
 		}
-	//	$format = JRequest::getCmd('format','html');
+		$format = JRequest::getCmd('format','html');
 		if(!empty($tpl)){
 			$format = $tpl;
 		} else {
@@ -183,7 +184,11 @@ class VirtueMartViewProductdetails extends VmView {
 
 
 		// Set the titles
-		$document->setTitle( strip_tags(($category->category_name?($category->category_name.' : '):'').$product->product_name));
+		if ($product->customtitle) {
+       		$document->setTitle( strip_tags($product->customtitle));
+      		} else {
+     		 $document->setTitle( strip_tags(($category->category_name?($category->category_name.' : '):'').$product->product_name)); }
+
 
 		$uri = JURI::getInstance();
 		//$pathway->addItem(JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));

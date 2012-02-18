@@ -55,6 +55,8 @@ class VirtuemartViewCategory extends VmView {
 		$this->loadHelper('image');
 		$categoryModel = VmModel::getModel('category');
 		$productModel = VmModel::getModel('product');
+
+
 		$categoryId = JRequest::getInt('virtuemart_category_id', false);
 		$vendorId = 1;
 
@@ -93,7 +95,11 @@ class VirtuemartViewCategory extends VmView {
 		$document->addHeadLink( JRoute::_('index.php?option=com_virtuemart&view=category&virtuemart_category_id='.$categoryId) , 'canonical', 'rel', '' );
 
 	    // Set the titles
-		$title = strip_tags($category->category_name);
+		if ($category->customtitle) {
+        	 $title = strip_tags($category->customtitle);
+     		 } else {
+     		 $title = strip_tags($category->category_name);
+     		 }
 
 	  	if(JRequest::getInt('error')){
 			$title .=' '.JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');

@@ -742,6 +742,9 @@ class VirtueMartCart {
 
 		$app = JFactory::getApplication();
 		if($this->_redirect){
+
+			$this->_dataValidated = false;
+			$this->setCartIntoSession();
 			$app->redirect(JRoute::_($relUrl,$this->useXHTML,$this->useSSL), $redirectMsg);
 		} else {
 			return false;

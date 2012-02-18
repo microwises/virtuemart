@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
 *
 * Product table
@@ -84,6 +84,8 @@ class TableProducts extends VmTable {
 	var $product_params	= null;
 	/** @var string Internal note for product */
 	var $intnotes = '';
+	/** @var string custom title */
+	var $customtitle	= '';
 	/** @var string Meta description */
 	var $metadesc	= '';
 	/** @var string Meta keys */
@@ -110,7 +112,7 @@ class TableProducts extends VmTable {
 // 		$this->setPrimaryKey('virtuemart_product_id');
 		$this->setObligatoryKeys('product_name');
 		$this->setLoggable();
-		$this->setTranslatable(array('product_name','product_s_desc','product_desc','metadesc','metakey'));
+		$this->setTranslatable(array('product_name','product_s_desc','product_desc','metadesc','metakey','customtitle'));
 		$this->setSlug('product_name');
 		$this->setTableShortCut('p');
 
