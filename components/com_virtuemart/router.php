@@ -37,19 +37,20 @@ function virtuemartBuildRoute(&$query) {
 	}
 
 		if ($helper->edit) return $segments;
-
+// print_r($query);
 	/* Full route , heavy work*/
-	$lang = &$helper->lang ;
+	// $lang = &$helper->lang ;
 	$view = '';
 
 	$jmenu = & $helper->menu ;
-	if (empty($query['Itemid'])) $query['Itemid'] = $jmenu['virtuemart'];
+	if (empty($query['Itemid'])) 
+		$query['Itemid'] = $jmenu['virtuemart'];
 	if(isset($query['langswitch'])) unset($query['langswitch']);
 
 	if(isset($query['view'])){
 		$view = $query['view'];
 		unset($query['view']);
-	}
+	} else $view ='virtuemart';
 	switch ($view) {
 		case 'virtuemart';
 			$query['Itemid'] = $jmenu['virtuemart'] ;
@@ -59,16 +60,18 @@ function virtuemartBuildRoute(&$query) {
 		 because is the biggest and more used */
 		case 'category';
 			 $start = null;
+			// echo '<br>Query Cat '.$view.' : '; print_r($query);
+			 if ( isset($jmenu['category']) ) $query['Itemid'] = $jmenu['category'];
 			if 	( isset($query['limitstart'] ) ) {
 				$start = $query['limitstart'] ;
-
+				unset($query['limitstart']);
 			}
 			if ( isset($query['start'] ) ) {
 				$start = $query['start'] ;
 				unset($query['start']);
 			}
 			if ($start) {
-				$segments[] = $lang['page'] ;
+				$segments[] = $helper->lang('page') ;
 				$mainframe = Jfactory::getApplication(); ;
 				$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', VmConfig::get('list_limit', 20), 'int');
 
@@ -77,29 +80,20 @@ function virtuemartBuildRoute(&$query) {
 			}
 			if ( isset($query['orderby']) ) {
 
-				// $dotps = strrpos($query['orderby'], '.');
-				// if($dotps!==false){
-					// $prefix = substr($query['orderby'], 0,$dotps).'_';
-					// $fieldWithoutPrefix = substr($query['orderby'], $dotps+1);
-									//vmdebug('Found dot '.$dotps.' $prefix '.$prefix.'  $fieldWithoutPrefix '.$fieldWithoutPrefix);
-				// } else {
-					// $prefix = '';
-					// $fieldWithoutPrefix = $query['orderby'];
-				// }
-				$segments[] = $lang['orderby'].','.isset($lang[ $query['orderby'] ]) ? $lang[ $query['orderby'] ] : $query['orderby'] ;
+				$segments[] = $helper->lang('by').','.$helper->lang( $query['orderby']) ;
 				unset($query['orderby']);
 			}
 			if ( isset($query['order']) ) {
-				if ($query['order'] =='DESC') $segments[] = $lang['orderDesc'] ;
-				unset($query['orderDesc']);
+				if ($query['order'] =='DESC') $segments[] = $helper->lang('orderDesc') ;
+				unset($query['order']);
 			}
 			if ( isset($query['virtuemart_manufacturer_id'])  ) {
-				$segments[] = $lang['manufacturer'].'/'.$helper->getManufacturerName($query['virtuemart_manufacturer_id']) ;
+				$segments[] = $helper->lang('manufacturer').'/'.$helper->getManufacturerName($query['virtuemart_manufacturer_id']) ;
 				unset($query['virtuemart_manufacturer_id']);
 
 			}
 			if ( isset($query['search'])  ) {
-				$segments[] = $lang['search'] ;
+				$segments[] = $helper->lang('search') ;
 				unset($query['search']);
 			}
 			if ( isset($query['keyword'] )) {
@@ -116,7 +110,7 @@ function virtuemartBuildRoute(&$query) {
 				}
 				unset($query['virtuemart_category_id']);
 			}
-
+			// echo ' CATEGORY' ; print_r($segments);
 		break;
 		/* Shop product details view  */
 		case 'productdetails';
@@ -146,20 +140,20 @@ function virtuemartBuildRoute(&$query) {
 		case 'manufacturer';
 			if ( isset($jmenu['manufacturer']) ) $query['Itemid'] = $jmenu['manufacturer'];
 			if(isset($query['virtuemart_manufacturer_id'])) {
-				if (isset($jmenu['virtuemart_manufacturer_id'][ $query['virtuemart_manufacturer_id'] ] ) )
-				$query['Itemid'] = $jmenu['virtuemart_manufacturer_id'][$query['virtuemart_manufacturer_id']];
-				else $segments[] = $lang['manufacturers'].'/'.$helper->getManufacturerName($query['virtuemart_manufacturer_id']) ;
+				if (isset($jmenu['virtuemart_manufacturer_id'][ $query['virtuemart_manufacturer_id'] ] ) ) {
+					$query['Itemid'] = $jmenu['virtuemart_manufacturer_id'][$query['virtuemart_manufacturer_id']];
+				} else $segments[] = $helper->lang('manufacturers').'/'.$helper->getManufacturerName($query['virtuemart_manufacturer_id']) ;
 				unset($query['virtuemart_manufacturer_id']);
 			}
 		break;
 		case 'user';
 			if ( isset($jmenu['user']) ) $query['Itemid'] = $jmenu['user'];
 			else {
-				$segments[] = $lang['user'] ;
+				$segments[] = $helper->lang('user') ;
 			}
 			if (isset($query['task'])) {
-				if ($query['addrtype'] == 'BT' && $query['task']='editaddresscart') $segments[] = $lang['editaddresscartBT'] ;
-				elseif ($query['addrtype'] == 'ST' && $query['task']='editaddresscart') $segments[] = $lang['editaddresscartST'] ;
+				if ($query['addrtype'] == 'BT' && $query['task']='editaddresscart') $segments[] = $helper->lang('editaddresscartBT') ;
+				elseif ($query['addrtype'] == 'ST' && $query['task']='editaddresscart') $segments[] = $helper->lang('editaddresscartST') ;
 				else $segments[] = $query['task'] ;
 				unset ($query['task'] , $query['addrtype']);
 			}
@@ -167,7 +161,7 @@ function virtuemartBuildRoute(&$query) {
 		case 'vendor';
 			if ( isset($jmenu['vendor']) ) $query['Itemid'] = $jmenu['vendor'];
 			else {
-				$segments[] = $lang['vendor'] ;
+				$segments[] = $helper->lang('vendor') ;
 			}
 			if (isset($query['virtuemart_vendor_id'])) {
 				$segments[] = $query['virtuemart_vendor_id'];
@@ -177,15 +171,14 @@ function virtuemartBuildRoute(&$query) {
 		case 'cart';
 			if ( isset($jmenu['cart']) ) $query['Itemid'] = $jmenu['cart'];
 			else {
-				$segments[] = $lang['cart'] ;
+				$segments[] = $helper->lang('cart') ;
 			}
 
 		break;
 		case 'orders';
-
 			if ( isset($jmenu['orders']) ) $query['Itemid'] = $jmenu['orders'];
 			else {
-				$segments[] = $lang['orders'] ;
+				$segments[] = $helper->lang('orders') ;
 			}
 			if ( isset($query['order_number']) ) {
 				$segments[] = 'number/'.$query['order_number'];
@@ -205,11 +198,11 @@ function virtuemartBuildRoute(&$query) {
 
 	}
 	if (isset($query['task'])) {
-		$segments[] = isset($lang[$query['task']]) ? $lang[$query['task']] : $query['task'] ;
+		$segments[] = $helper->lang($query['task']);
 		unset($query['task']);
 	}
 	if (isset($query['layout'])) {
-		$segments[] = isset($lang[$query['layout']]) ? $lang[$query['layout']] : $query['layout'] ;
+		$segments[] = $helper->lang($query['layout']) ;
 		unset($query['layout']);
 	}
 	// sef the slimbox View
@@ -234,34 +227,32 @@ function virtuemartParseRoute($segments) {
 		return $vars;
 	}
 
-	$lang = &$helper->lang ;
+	//$lang = &$helper->lang ;
 	// revert '-' (Joomla change - to :) //
 	foreach  ($segments as &$value) {
 		$value = str_replace(':', '-', $value);
 	}
 
-	if ($segments[0] == $lang['page']) {
+	if ( $helper->compareKey($segments[0] ,'page')){
 		array_shift($segments);
 
 		$mainframe = Jfactory::getApplication();
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', VmConfig::get('list_limit', 20), 'int');
 		//Pagination has changed, removed the -1 note by Max Milbers NOTE: Works on j1.5, but NOT j1.7
-			$vars['limitstart'] = (array_shift($segments)*$limit);
+			$vars['limitstart'] = $vars['start'] = (array_shift($segments)*$limit);
 
-	} else 	if(JVM_VERSION === 2) {
-		$vars['limitstart'] = 0 ;
+	} else {
+		$vars['limitstart'] = $vars['start'] = 0 ;
+
 	}
 
 
 	$orderby = explode(',',$segments[0]);
-	if ( $orderby[0] == $lang['orderby'] ) {
-		$key = array_search($orderby[1],$lang );
-		if ( $key ) {
-			$vars['orderby'] =$key ;
-			array_shift($segments);
-		}
+	if (  $helper->compareKey($orderby[0] , 'by') ) {
+		$vars['orderby'] =$helper->getOrderingKey($orderby[1]) ;
+		array_shift($segments);
 		if ( !empty($segments)) {
-			if ( $segments[0] == $lang['orderDesc'] ) {
+			if (  $helper->compareKey($segments[0] ,'orderDesc') ){
 				$vars['order'] ='DESC' ;
 				array_shift($segments);
 			}
@@ -281,7 +272,7 @@ function virtuemartParseRoute($segments) {
 		return $vars;
 		}
 
-	if ( $segments[0] == $lang['manufacturer']) {
+	if (  $helper->compareKey($segments[0] ,'manufacturer') ) {
 		array_shift($segments);
 		$vars['virtuemart_manufacturer_id'] =  $helper->getManufacturerId($segments[0]);
 		array_shift($segments);
@@ -293,7 +284,7 @@ function virtuemartParseRoute($segments) {
 		}
 
 	}
-	if ($segments[0] == $lang['search']) {
+	if ( $helper->compareKey($segments[0] ,'search') ) {
 		$vars['search'] = 'true';
 		array_shift($segments);
 		if ( !empty ($segments) ) {
@@ -309,11 +300,11 @@ function virtuemartParseRoute($segments) {
 		array_pop($segments);
 
 	}
-	if (end($segments) == $lang['askquestion']) {
+	if ( $helper->compareKey(end($segments) ,'askquestion') ) {
 		$vars['task'] = 'askquestion';
 		array_pop($segments);
 
-	} elseif (end($segments) == $lang['recommend']) {
+	} elseif ( $helper->compareKey(end($segments) ,'recommend') ) {
 		$vars['task'] = 'recommend';
 		array_pop($segments);
 
@@ -321,20 +312,19 @@ function virtuemartParseRoute($segments) {
 
 	if (empty($segments)) return $vars ;
 	else $view = $segments[0];
-	if ($view == $lang['orders'] || $helper->activeMenu->view == 'orders') {
+	if ( $helper->compareKey($view,'orders') || $helper->activeMenu->view == 'orders') {
 		$vars['view'] = 'orders';
-		if ($view == $lang['orders']) {
+		if ( $helper->compareKey($view,'orders')){
 			array_shift($segments);
 
 		}
 		if (empty($segments)) {
-			$vars['layout'] = $lang['list'];
-			
-		} else if ($segments[0] == $lang['list']) {
-			$vars['layout'] = $lang['list'];
+			$vars['layout'] = 'list';
+		}
+		 else if ($helper->compareKey($segments[0],'list') ) {
+			$vars['layout'] = 'list';
 			array_shift($segments);
 		}
-		
 		if ( !empty($segments) ) {
 			if ($segments[0] ='number')
 			$vars['order_number'] = $segments[1] ;
@@ -343,54 +333,54 @@ function virtuemartParseRoute($segments) {
 		}
 		return $vars;
 	}
-	else if ($view == $lang['user'] || $helper->activeMenu->view == 'user') {
+	else if ( $helper->compareKey($view,'user') || $helper->activeMenu->view == 'user') {
 		$vars['view'] = 'user';
-		if ($view == $lang['user']) {
+		if ( $helper->compareKey($view,'user') ) {
 			array_shift($segments);
 		}
 
 		if ( !empty($segments) ) {
-			if ( $segments[0] == $lang['editaddresscartBT'] ) {
+			if (  $helper->compareKey($segments[0] ,'editaddresscartBT') ) {
 				$vars['addrtype'] = 'BT' ;
 				$vars['task'] = 'editaddresscart' ;
 			}
-			elseif ( $segments[0] == $lang['editaddresscartST'] ) {
+			elseif (  $helper->compareKey($segments[0] ,'editaddresscartST') ) {
 				$vars['addrtype'] = 'ST' ;
 				$vars['task'] = 'editaddresscart' ;
 				} else $vars['task'] = $segments[0] ;
 		}
 		return $vars;
 	}
-	else if ($view == $lang['vendor'] || $helper->activeMenu->view == 'vendor') {
+	else if ( $helper->compareKey($view,'vendor') || $helper->activeMenu->view == 'vendor') {
 		$vars['view'] = 'vendor';
-		if ($view == $lang['vendor']) {
+		if ( $helper->compareKey($view,'vendor') ) {
 			array_shift($segments);
 			if (empty($segments)) return $vars;
 		}
 		$vars['virtuemart_vendor_id'] = array_shift($segments);
 		if(!empty($segments)) {
-		if ($segments[0] == $lang['contact'] ) $vars['layout'] = 'contact' ;
-		elseif ($segments[0] == $lang['tos'] ) $vars['layout'] = 'tos' ;
+		if ( $helper->compareKey($segments[0] ,'contact') ) $vars['layout'] = 'contact' ;
+		elseif ( $helper->compareKey($segments[0] ,'tos') ) $vars['layout'] = 'tos' ;
 		} else $vars['layout'] = 'details' ;
 
 		return $vars;
 	}
-	else if ($view == $lang['cart'] || $helper->activeMenu->view == 'cart') {
+	else if ( $helper->compareKey($view,'cart') || $helper->activeMenu->view == 'cart') {
 		$vars['view'] = 'cart';
-		if ($view == $lang['cart']) {
+		if ( $helper->compareKey($view,'cart') ) {
 			array_shift($segments);
 			if (empty($segments)) return $vars;
 		}
-		if ($segments[0] == $lang['edit_shipment'] ) $vars['task'] = 'edit_shipment' ;
-		elseif ($segments[0] == $lang['editpayment'] ) $vars['task'] = 'editpayment' ;
-		elseif ($segments[0] == $lang['delete'] ) $vars['task'] = 'delete' ;
+		if ( $helper->compareKey($segments[0] ,'edit_shipment') ) $vars['task'] = 'edit_shipment' ;
+		elseif ( $helper->compareKey($segments[0] ,'editpayment') ) $vars['task'] = 'editpayment' ;
+		elseif ( $helper->compareKey($segments[0] ,'delete') ) $vars['task'] = 'delete' ;
 		return $vars;
 	}
 
-	else if ($view == $lang['manufacturers'] || $helper->activeMenu->view == 'manufacturer') {
+	else if ( $helper->compareKey($view,'manufacturers') || $helper->activeMenu->view == 'manufacturer') {
 		$vars['view'] = 'manufacturer';
 
-		if ($view == $lang['manufacturers'] ) {
+		if ( $helper->compareKey($view,'manufacturers') ) {
 			array_shift($segments);
 		}
 
@@ -476,6 +466,9 @@ class vmrouterHelper {
 	  * Use the Id's of categorie and product or not
 	  */
 	public $use_id = false ;
+	public $seo_translate = false ;
+	private $orderings = null ;
+
 	/*
 	  * $router_disabled type boolean
 	  * true  = don't Use the router
@@ -493,12 +486,13 @@ class vmrouterHelper {
 	private function __construct($instanceKey,$query) {
 
 		if (!$this->router_disabled = VmConfig::get('seo_disabled', false)) {
+
+			$this->seo_translate = VmConfig::get('seo_translate', false);
 			$this->setLangs($instanceKey);
 			if ( JVM_VERSION===1 ) $this->setMenuItemId();
 			else $this->setMenuItemIdJ17();
 			$this->setActiveMenu();
 			$this->use_id = VmConfig::get('seo_use_id', false);
-
 			$this->seo_sufix = VmConfig::get('seo_sufix', '-detail');
 			$this->seo_sufix_size = strlen($this->seo_sufix) ;
 			$this->edit = ('edit' == JRequest::getCmd('task') );
@@ -737,126 +731,13 @@ class vmrouterHelper {
 	/* Set $this-lang (Translator for language from virtuemart string) to load only once*/
 	private function setLang($instanceKey){
 
-		if ( VmConfig::get('seo_translate', false) ) {
+		if ( $this->seo_translate ) {
 			/* use translator */
-			$lang = JFactory::getLanguage();
+			$lang =& JFactory::getLanguage();
 			$extension = 'com_virtuemart.sef';
 			$base_dir = JPATH_SITE;
 			$lang->load($extension, $base_dir);
-			$this->lang = array(
-				'tos' 				=> JText::_('COM_VIRTUEMART_SEF_TOS'),
-				'vendor' 			=> JText::_('COM_VIRTUEMART_SEF_VENDOR'),
-				'contact' 			=> JText::_('COM_VIRTUEMART_SEF_CONTACT'),
-				'edit_shipment'		=> JText::_('COM_VIRTUEMART_SEF_EDITSHIPPING'),
-				'manufacturer'		=> JText::_('COM_VIRTUEMART_SEF_MANUFACTURER'),
-				'manufacturers'		=> JText::_('COM_VIRTUEMART_SEF_MANUFACTURERS'),
-				'askquestion'		=> JText::_('COM_VIRTUEMART_SEF_ASKQUESTION'),
-				'editpayment'		=> JText::_('COM_VIRTUEMART_SEF_EDITPAYMENT'),
-				'user'				=> JText::_('COM_VIRTUEMART_SEF_USER'),
-				'orders'			=> JText::_('COM_VIRTUEMART_SEF_ORDERS'),
-				'list'				=> JText::_('COM_VIRTUEMART_SEF_LIST'),
-				'cart'				=> JText::_('COM_VIRTUEMART_SEF_CART'),
-				'delete'			=> JText::_('COM_VIRTUEMART_SEF_DELETE'),
-				'confirm'			=> JText::_('COM_VIRTUEMART_SEF_CONFIRM'),
-				'checkout'			=> JText::_('COM_VIRTUEMART_SEF_CHECKOUT'),
-				'edit'				=> JText::_('COM_VIRTUEMART_SEF_EDIT'),
-				'editaddresscartBT'	=> JText::_('COM_VIRTUEMART_SEF_EDITADRESSCART_BILL'),
-				'editaddresscartST'	=> JText::_('COM_VIRTUEMART_SEF_EDITADRESSCART_SHIP'),
-				'details'			=> JText::_('COM_VIRTUEMART_SEF_DETAILS'),
-				'search'			=> JText::_('COM_VIRTUEMART_SEF_SEARCH'),
-				'page'				=> JText::_('COM_VIRTUEMART_SEF_PAGE'),
-				'orderDesc'			=> JText::_('COM_VIRTUEMART_SEF_ORDER_DESC'),
-				'orderby'			=> JText::_('COM_VIRTUEMART_SEF_BY'),
-				'p.virtuemart_product_id'=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_ID'),
-				'product_sku'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_SKU'),
-				'product_price'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_PRICE'),
-				'category_name'		=> JText::_('COM_VIRTUEMART_SEF_BY_CATEGORY_NAME'),
-				'category_description'=> JText::_('COM_VIRTUEMART_SEF_BY_CATEGORY_DESCRIPTION'),
-				'mf_name' 			=> JText::_('COM_VIRTUEMART_SEF_BY_MF_NAME'),
-				'product_s_desc'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_S_DESC'),
-				'product_desc'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_DESC'),
-				'product_weight'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_WEIGHT'),
-				'product_weight_uom'=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_WEIGHT_UOM'),
-				'product_length'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_LENGTH'),
-				'product_width'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_WIDTH'),
-				'product_height'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_HEIGHT'),
-				'product_lwh_uom'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_LWH_UOM'),
-				'product_in_stock'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_IN_STOCK'),
-				'low_stock_notification'=> JText::_('COM_VIRTUEMART_SEF_BY_LOW_STOCK_NOTIFICATION'),
-				'product_available_date'=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_AVAILABLE_DATE'),
-				'product_availability'  => JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_AVAILABILITY'),
-				'product_special'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_SPECIAL'),
-				'created_on' 		=> JText::_('COM_VIRTUEMART_SEF_BY_MDATE'),
-				// 'p.modified_on' 		=> JText::_('COM_VIRTUEMART_SEF_BY_MDATE'),
-				'product_name'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_NAME'),
-				'product_sales'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_SALES'),
-				'product_unit'		=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_UNIT'),
-				'product_packaging'	=> JText::_('COM_VIRTUEMART_SEF_BY_PRODUCT_PACKAGING'),
-				'p.intnotes'			=> JText::_('COM_VIRTUEMART_SEF_BY_INTNOTES'),
-				// 'metadesc'			=> JText::_('COM_VIRTUEMART_SEF_BY_METADESC'),
-				// 'metakey'			=> JText::_('COM_VIRTUEMART_SEF_BY_METAKEY'),
-				// 'metarobot'			=> JText::_('COM_VIRTUEMART_SEF_BY_METAROBOT'),
-				// 'metaauthor'		=> JText::_('COM_VIRTUEMART_SEF_BY_METAAUTHOR'),
-				'recommend'			=> JText::_('COM_VIRTUEMART_SEF_RECOMMEND')
-			);
-		} else {
-			/* use default */
-			$this->lang = array(
-				'tos' => 'tos',
-				'vendor' => 'vendor',
-				'contact' => 'contact',
-				'edit_shipment' => 'edit_shipment',
-				'manufacturers' => 'manufacturers',
-				'manufacturer' => 'manufacturer',
-				'askquestion' => 'askquestion',
-				'editpayment' => 'editpayment',
-				'user' => 'user',
-				'orders' => 'orders',
-				'list' => 'list',
-				'cart' => 'cart',
-				'delete' => 'delete',
-				'checkout' => 'checkout',
-				'confirm' => 'confirm',
-				'edit' => 'edit',
-				'editaddresscartBT' => 'edit_cart_bill_to',
-				'editaddresscartST' => 'edit_cart_ship_to',
-				'details' => 'details',
-				'search' => 'search',
-				'page' => 'page',
-				'orderDesc' => 'desc',
-				'p.virtuemart_product_id' => 'id',
-				'product_sku' => 'sku',
-				'product_price' => 'price',
-				'orderby' => 'by',
-				'category_name' => 'category',
-				'category_description' => 'category_description',
-				'mf_name' => 'manufacturer',
-				'product_s_desc' => 'short_desc',
-				'product_desc' => 'desc',
-				'product_weight' => 'weight',
-				'product_weight_uom' => 'product_weight_uom',
-				'product_length' => 'length',
-				'product_width' => 'width',
-				'product_height' => 'height',
-				'product_lwh_uom' => 'product_lwh_uom',
-				'product_in_stock' => 'stock',
-				'low_stock_notification' => 'low_stock',
-				'product_available_date' => 'available_date',
-				'product_availability' => 'availability',
-				'product_special' => 'product_special',
-				'created_on' => 'created_on',
-				// 'p.modified_on' => 'modified_on',
-				'product_name' => 'name',
-				'product_sales' => 'sales',
-				'product_packaging' => 'packaging',
-				'product_unit' => 'product_unit',
-				'p.intnotes' => 'intnotes',
-				// 'metadesc' => 'metadesc',
-				// 'metakey' => 'metakey',
-				// 'metarobot' => 'metarobot',
-				// 'metaauthor' => 'metaauthor',
-				'recommend' => 'recommend'
-			);
+			
 		}
 	}
 
@@ -983,7 +864,76 @@ class vmrouterHelper {
 		$this->activeMenu->Component	= (empty($menuItem->component)) ? null : $menuItem->component;
 
 	}
-
+	/*
+	 * Get language key or use $key in route
+	 */
+	public function lang($key) {
+		if ($this->seo_translate ) {
+			$jtext = (strtoupper( $key ) );
+			if (jText::_('COM_VIRTUEMART_SEF_'.$jtext) != 'COM_VIRTUEMART_SEF_'.$jtext )
+				return JText::_('COM_VIRTUEMART_SEF_'.$jtext);
+		}
+		// if (isset($this->lang[$key])) {
+			// return $this->lang[$key];
+		// }
+		//falldown
+		return $key;
+	}
+	/*
+	 * revert key or use $key in route
+	 */
+	public function getOrderingKey($key) {
+		if ($this->seo_translate ) {
+			if ($this->orderings == null) {
+				$this->orderings = array(
+					'p.virtuemart_product_id'=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_ID'),
+					'product_sku'		=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_SKU'),
+					'product_price'		=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_PRICE'),
+					'category_name'		=> JText::_('COM_VIRTUEMART_SEF_CATEGORY_NAME'),
+					'category_description'=> JText::_('COM_VIRTUEMART_SEF_CATEGORY_DESCRIPTION'),
+					'mf_name' 			=> JText::_('COM_VIRTUEMART_SEF_MF_NAME'),
+					'product_s_desc'	=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_S_DESC'),
+					'product_desc'		=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_DESC'),
+					'product_weight'	=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_WEIGHT'),
+					'product_weight_uom'=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_WEIGHT_UOM'),
+					'product_length'	=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_LENGTH'),
+					'product_width'		=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_WIDTH'),
+					'product_height'	=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_HEIGHT'),
+					'product_lwh_uom'	=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_LWH_UOM'),
+					'product_in_stock'	=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_IN_STOCK'),
+					'low_stock_notification'=> JText::_('COM_VIRTUEMART_SEF_LOW_STOCK_NOTIFICATION'),
+					'product_available_date'=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_AVAILABLE_DATE'),
+					'product_availability'  => JText::_('COM_VIRTUEMART_SEF_PRODUCT_AVAILABILITY'),
+					'product_special'	=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_SPECIAL'),
+					'created_on' 		=> JText::_('COM_VIRTUEMART_SEF_CREATED_ON'),
+					// 'p.modified_on' 		=> JText::_('COM_VIRTUEMART_SEF_MDATE'),
+					'product_name'		=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_NAME'),
+					'product_sales'		=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_SALES'),
+					'product_unit'		=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_UNIT'),
+					'product_packaging'	=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_PACKAGING'),
+					'p.intnotes'			=> JText::_('COM_VIRTUEMART_SEF_INTNOTES')
+				);
+			}
+			if ($result = array_search($key,$this->orderings )) {
+				return $result;
+			}
+		}
+		return $key;
+	}
+	/*
+	 * revert string key or use $key in route
+	 */
+	public function compareKey($string, $key) {
+		if ($this->seo_translate ) {
+			if (JText::_('COM_VIRTUEMART_SEF_'.$key) == $string )
+			{
+				return true;
+			}
+				
+		}
+		if ($string == $key) return true;
+		return false;
+	}
 }
 
 // pure php no closing tag

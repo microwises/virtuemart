@@ -185,7 +185,7 @@ class VirtuemartViewPaymentMethod extends VmView {
 			// Get plugin info
 			$pType = $params->getValue('pType');
 			if($pType=='Y' || $pType=='C') $id = 'pam_type_CC_on'; else $id='pam_type_CC_off';
-			$listHTML .= '<option id="'.$id.'" '.$checked.' value="'.$paym[$ext_id].'">'.$paym['name'].'</option>';
+			$listHTML .= '<option id="'.$id.'" '.$checked.' value="'.$paym[$ext_id].'">'.JText::_($paym['name']).'</option>';
 
 		}
 		$listHTML .= '</select>';
