@@ -214,7 +214,7 @@ class GenericTableUpdater extends JModel{
 			if(VmConfig::get('dblayoutstrict',true)){
 				if($table=='products'){
 					$fields['product_s_desc'] = 'varchar('.VmConfig::get('dbpsdescsize',2000).') '.$linedefault;
-					$fields['product_desc'] = 'varchar('.VmConfig::get('dbpdescsize',19000).') '.$linedefault;
+					$fields['product_desc'] = 'varchar('.VmConfig::get('dbpdescsize',18500).') '.$linedefault;
 
 					$key = array_search('product_desc', $translatableFields);
 					unset($translatableFields[$key]);

@@ -177,6 +177,10 @@ class VirtuemartViewCategory extends VmView {
 
 	    shopFunctionsF::setLastVisitedCategoryId($categoryId);
 
+	    if(empty($category->category_template)){
+	    	$category->category_template = VmConfig::get('categorytemplate');
+	    }
+
 	    shopFunctionsF::setVmTemplate($this,$category->category_template,0,$category->category_layout);
 
 		parent::display($tpl);
