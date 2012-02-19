@@ -530,7 +530,22 @@ class VirtueMartCart {
 
 
 	/**
-	 * Checks if the quantity is correct
+	/**
+
+	* Get the category ID from a product ID
+	*
+	* @author RolandD, Patrick Kohl
+	* @access public
+	* @return mixed if found the category ID else null
+	*/
+	public function getCardCategoryId($virtuemart_product_id) {
+		$db = JFactory::getDBO();
+		$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `virtuemart_product_id` = ' . (int) $virtuemart_product_id . ' LIMIT 1';
+		$db->setQuery($q);
+		return $db->loadResult();
+	}
+
+	 /* Checks if the quantity is correct
 	 *
 	 * @author Max Milbers
 	 */
