@@ -96,6 +96,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			'T'=>'COM_VIRTUEMART_TIME',
 			'M'=>'COM_VIRTUEMART_IMAGE',
 			'V'=>'COM_VIRTUEMART_CUSTOM_CART_VARIANT',
+			'A'=>'COM_VIRTUEMART_CHILD_GENERIC_VARIANT',
 			'E'=>'COM_VIRTUEMART_CUSTOM_EXTENSION'
 			);
 
@@ -338,7 +339,11 @@ class VirtueMartModelCustomfields extends VmModel {
 		} else {
 
 			switch ($field->field_type) {
-				/* variants*/
+
+				case 'A':
+					return 'Automatic Childvariant creation (later you can choose here attributes to show, now product name) </td><td>';
+					break;
+				// variants
 				case 'V':
 					return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" /></td><td>'.$priceInput;
 				break;
@@ -435,7 +440,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				case 'G':
 				break;
 				/* Child product */
-				case 'C':
+/*				case 'C':
 					if (empty($product)){
 						$virtuemart_product_id = JRequest::getInt('virtuemart_product_id', 0);
 					} else {
@@ -454,7 +459,7 @@ class VirtueMartModelCustomfields extends VmModel {
 //					return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" />';
 					}
 					else return JText::_('COM_VIRTUEMART_CUSTOM_NO_CHILD_PRODUCT');
-				break;
+				break;*/
 			}
 
 		}
@@ -668,6 +673,22 @@ class VirtueMartModelCustomfields extends VmModel {
 			}
 			switch ($type) {
 
+				case 'A':
+
+					$options = array();
+					$uncatChildren = VmModel::getModel('product')->getUncategorizedChildren();
+					$session = JFactory::getSession();
+					$virtuemart_category_id = $session->get('vmlastvisitedcategoryid', 0, 'vm');
+					$selected = JRequest::getInt('virtuemart_product_id');
+
+					foreach($uncatChildren as $k => $child){
+						$options[] = array( 'value' => JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id='.$virtuemart_category_id.'&virtuemart_product_id='.$child['virtuemart_product_id']) ,'text' =>$child['product_name']);
+					}
+
+					return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]','onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="inputbox"', "value","text",
+					JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id='.$virtuemart_category_id.'&virtuemart_product_id='.$selected));
+
+					break;
 				/* variants*/
 				case 'V':
 					if ($price == 0 ) $price = JText::_('COM_VIRTUEMART_CART_PRICE_FREE') ;
@@ -737,7 +758,7 @@ class VirtueMartModelCustomfields extends VmModel {
 				/* related */
 				case 'R':
 				/* Child product */
-				case 'C':
+// 				case 'C':
 					$q='SELECT p.`virtuemart_product_id` ,p.`product_parent_id` , l.`product_name`, x.`virtuemart_category_id` FROM `#__virtuemart_products_'.VMLANG.'` as l
 					JOIN `#__virtuemart_products` as p  using (`virtuemart_product_id`)
 					LEFT JOIN `#__virtuemart_product_categories` as x on x.`virtuemart_product_id` = p.`virtuemart_product_id`

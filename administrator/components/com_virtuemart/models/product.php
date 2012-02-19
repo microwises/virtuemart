@@ -763,6 +763,7 @@ class VirtueMartModelProduct extends VmModel {
 		return $this->products;
 	}
 
+
 	/**
 	 * Loads different kind of product lists.
 	 * you can load them with calculation or only published onces, very intersting is the loading of groups
@@ -893,22 +894,7 @@ class VirtueMartModelProduct extends VmModel {
 	}
 
 
-	/**
-	 * Check if the product has any children
-	 *
-	 * @author RolandD
-	 * @author Max Milbers
-	 * @param int $virtuemart_product_id Product ID
-	 * @return bool True if there are child products, false if there are no child products
-	 */
-	public function checkChildProducts($virtuemart_product_id) {
 
-		$q  = 'SELECT IF(COUNT(virtuemart_product_id) > 0, "0", "1") FROM `#__virtuemart_products` WHERE `product_parent_id` = "'.(int)$virtuemart_product_id.'"';
-		$this->_db->setQuery($q);
-
-		return $this->_db->loadResult();
-
-	}
 
 
 
@@ -1527,6 +1513,45 @@ public function updateStockInDB($product, $amount, $signInStoc, $signOrderedStoc
 		}
 	}
 
+
+}
+
+
+public function getUncategorizedChildren(){
+
+	$q = 'SELECT * FROM `#__virtuemart_products` as p
+			LEFT JOIN `#__virtuemart_products_'.VMLANG.'` as pl
+			USING (`virtuemart_product_id`)
+			LEFT JOIN `#__virtuemart_product_categories` as pc
+			USING (`virtuemart_product_id`)
+			WHERE `product_parent_id` = "'.$this->_id.'" AND ISNULL (pc.`virtuemart_category_id`)';
+	$this->_db->setQuery($q);
+	$res = $this->_db->loadAssocList() ;
+	$err = $this->_db->getErrorMsg();
+	if(!empty($err)){
+		vmError('getUncategorizedChildren sql error '.$err);
+		return false;
+	} else {
+// 		vmdebug('getUncategorizedChildren',$res);
+		return $res;
+	}
+
+}
+
+/**
+* Check if the product has any children
+*
+* @author RolandD
+* @author Max Milbers
+* @param int $virtuemart_product_id Product ID
+* @return bool True if there are child products, false if there are no child products
+*/
+public function checkChildProducts($virtuemart_product_id) {
+
+	$q  = 'SELECT IF(COUNT(virtuemart_product_id) > 0, "0", "1") FROM `#__virtuemart_products` WHERE `product_parent_id` = "'.(int)$virtuemart_product_id.'"';
+	$this->_db->setQuery($q);
+
+	return $this->_db->loadResult();
 
 }
 
