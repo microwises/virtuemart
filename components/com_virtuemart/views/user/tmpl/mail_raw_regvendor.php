@@ -25,7 +25,7 @@ $li = "\n";
 <?php echo JText::_('COM_VIRTUEMART_VENDOR_REGISTRATION_DATA') . " " . $li; ?>
 <?php echo JText::_('COM_VIRTUEMART_LOGINAME')   . $this->user->username . $li; ?>
 <?php echo JText::_('COM_VIRTUEMART_DISPLAYED_NAME')   . $this->user->name . $li. $li; ?>
-<?php echo JText::_('COM_VIRTUEMART_ENTERED_ADRESS')   . $li ?>
+<?php echo JText::_('COM_VIRTUEMART_ENTERED_ADDRESS')   . $li ?>
 
 
 <?php
