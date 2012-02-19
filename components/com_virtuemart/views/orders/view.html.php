@@ -220,11 +220,11 @@ class VirtuemartViewOrders extends VmView {
 
 
 		// don't need to get the payment name, the Order is sent from the payment trigger
-		if (VmConfig::get('order_mail_html'))
-		$tpl = 'mail_html';
-		else
-		$tpl = 'mail_raw';
-
+		if (VmConfig::get('order_mail_html')) {
+		    $tpl = 'mail_html';
+		} else {
+		    $tpl = 'mail_raw';
+		}
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 

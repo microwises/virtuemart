@@ -29,10 +29,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-echo strip_tags( JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_ORDER' ) ). "\n" . "\n";
-echo strip_tags( JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_SUMMARY',$this->vendor->vendor_store_name) ). "\n" . "\n";
+echo strip_tags( JText::_('COM_VIRTUEMART_MAIL_SHOPPER_YOUR_ORDER' ) ). "\n" . "\n";
+echo strip_tags( JText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_SUMMARY',$this->vendor->vendor_store_name) ). "\n" . "\n";
 
-echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_CONTENT',
+echo JText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_CONTENT',
 						$this->shopperName,
 						$this->vendor->vendor_store_name,
 						$this->order['details']['BT']['order_total'],
@@ -40,17 +40,17 @@ echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_CONTENT',
 						$this->order['details']['BT']['order_pass'],
 						$this->order['details']['BT']['created_on']) . "\n" . "\n";
 
-	echo "\n" . strip_tags(JText::sprintf('COM_VIRTUEMART_CART_MAIL_ORDER_STATUS',$this->order['history']['order_status_name'] ));
+	echo "\n" . strip_tags(JText::sprintf('COM_VIRTUEMART_MAIL_ORDER_STATUS',$this->order['history']['order_status_name'] ));
 
 echo "\n\n";
 if(!empty($this->order['history']['customer_notified'])){
 	echo "\n" . strip_tags(JText::_($this->order['history']['comments']));
 }
 echo "\n\n";
-echo JText::_('COM_VIRTUEMART_CART_MAIL_SHOPPER_YOUR_ORDER_LINK') .' : '.   JURI::root() .'index.php?option=com_virtuemart&view=orders&layout=details&order_number=' . $this->order['details']['BT']['order_number'] . '&order_pass=' . $this->order['details']['BT']['order_pass']  . "\n";
+echo JText::_('COM_VIRTUEMART_MAIL_SHOPPER_YOUR_ORDER_LINK') .' : '.   JURI::root() .'index.php?option=com_virtuemart&view=orders&layout=details&order_number=' . $this->order['details']['BT']['order_number'] . '&order_pass=' . $this->order['details']['BT']['order_pass']  . "\n";
 
 if(!empty($this->order['details']['BT']->customer_note)){
-	echo "\n" . strip_tags(JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_QUESTION',$this->order['details']['BT']['customer_note']));
+	echo "\n" . strip_tags(JText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_QUESTION',$this->order['details']['BT']['customer_note']));
 }
 echo "\n\n";
 

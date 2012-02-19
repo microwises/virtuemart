@@ -951,14 +951,14 @@ abstract class vmPSPlugin extends vmPlugin {
 
 					$orderID = $order['details']['BT']->virtuemart_order_id;
 					// send the email only if payment has been accepted
-					// update status?
+					// update status
 					if ($new_status) {
-		    $modelOrder = VmModel::getModel('orders');
-		    $order['order_status'] = $new_status;
-		    $order['virtuemart_order_id'] = $orderID;
-		    $order['customer_notified'] = 0;
-		    $order['comments'] = '';
-		    $modelOrder->updateStatusForOneOrder($orderID, $order, true);
+					    $modelOrder = VmModel::getModel('orders');
+					    $order['order_status'] = $new_status;
+					    $order['virtuemart_order_id'] = $orderID;
+					    $order['customer_notified'] = 0;
+					    $order['comments'] = '';
+					    $modelOrder->updateStatusForOneOrder($orderID, $order, true);
 					}
 					$order['paymentName']= $payment_name;
 					if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');

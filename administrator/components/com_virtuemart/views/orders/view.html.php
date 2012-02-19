@@ -200,39 +200,68 @@ class VirtuemartViewOrders extends VmView {
 		parent::display($tpl);
 	}
 
-	function renderMailLayout () {
-	    if (VmConfig::get('order_mail_html')) {
-		$tpl = 'mail_html_updorder';
-	    } else {
-		$tpl = 'mail_raw_updorder';
-	    }
-		$this->setLayout($tpl);
+	function renderMailLayout ($vendor, $recipient) {
+
+
+		// don't need to get the payment name, the Order is sent from the payment trigger
+		$tpl = (VmConfig::get('order_html_email',1)) ? 'mail_html' : 'mail_raw';
+
+		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
+
+		$currency = CurrencyDisplay::getInstance();
+
+		$userFieldsModel = VmModel::getModel('userfields');
+		$userFields = $userFieldsModel->getUserFields(
+				     'account'
+		, array('captcha' => true, 'delimiters' => true) // Ignore these types
+		, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
+		);
+
+		//$orderModel=VmModel::getModel();
+		//$this->order = $orderModel->getOrder($this->order->virtuemart_order_id);
+
+		$orderbt = $this->order['details']['BT'];
+		$orderst = (array_key_exists('ST', $this->order['details'])) ? $this->order['details']['ST'] : $orderbt;
+		$billfields = $userFieldsModel->getUserFieldsFilled(
+		$userFields
+		,$orderbt
+		);
+
+		$userFields = $userFieldsModel->getUserFields(
+				     'shipment'
+		, array() // Default switches
+		, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
+		);
+
+		$shipmentfields = $userFieldsModel->getUserFieldsFilled(
+		$userFields
+		,$orderst
+		);
+
+		if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
+		$this->prepareMailData();
+
+		$this->subject = JText::sprintf('COM_VIRTUEMART_SHOPPER_NEW_ORDER_CONFIRMED', $this->vendor->vendor_store_name, $currency->priceDisplay($this->order['details']['BT']['order_total']), $this->order['details']['BT']['order_number'], $this->order['details']['BT']['order_pass'] );
+		$recipient = 'shopper';
+
+		$this->assignRef('recipient', $recipient);
+		$this->assignRef('currency', $currency);
+		$this->assignRef('shipment_name', $this->order['shipmentName']);
+		$this->assignRef('payment_name', $this->order['paymentName']);
+		$this->assignRef('billfields', $billfields);
+		$this->assignRef('shipmentfields', $shipmentfields);
 		$vendorModel = VmModel::getModel('vendor');
-		$virtuemart_vendor_id = $vendorModel->getVendorId('order', $this->order->virtuemart_order_id);
-
-		$orderModel=VmModel::getModel();
-		$this->orderdata = $orderModel->getOrder($this->order->virtuemart_order_id);
-		$vendorModel->setId($virtuemart_vendor_id);
-		$this->vendor = $vendorModel->getVendor();
-		$this->vendor->email = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
-		$this->vendorEmail = $this->vendor->email ;
-		$this->subject = JText::sprintf('COM_VIRTUEMART_ORDER_STATUS_CHANGE_SEND_SUBJ',$this->orderdata['details']['BT']->order_number);
-		$this->doVendor = true;
-
-
-		$path = VmConfig::get('forSale_path',0);
-		if($this->order->order_status  == 'C' and $path!==0){
-
-			if(!class_exists('VirtueMartControllerInvoice')) require_once( JPATH_VM_SITE.DS.'controllers'.DS.'invoice.php' );
-			$controller = new VirtueMartControllerInvoice( array(
-					  'model_path' => JPATH_VM_SITE.DS.'models',
-					  'view_path' => JPATH_VM_SITE.DS.'views'
-			));
-
-			$this->mediaToSend[] = $controller->checkStoreInvoice($this->orderdata);
-		}
-
+		$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
+		$this->layoutName = $tpl;
+		$this->setLayout($tpl);
 		parent::display();
+	}
+	function prepareMailData(){
+	    $vendorModel = VmModel::getModel('vendor');
+		$vendor = & $vendorModel->getVendor();
+		$this->assignRef('vendor', $vendor);
+		$vendorModel->addImages($this->vendor,1);
 	}
 
 }

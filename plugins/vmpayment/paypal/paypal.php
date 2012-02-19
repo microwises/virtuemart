@@ -321,12 +321,11 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		//vmdebug('history', $orderitems);
 
 		if ($nb_history == 1) {
-
 		    shopFunctionsF::sentOrderConfirmedEmail($orderitems);
 		    $this->logInfo('plgVmOnPaymentResponseReceived, sentOrderConfirmedEmail ' . $order_number, 'message');
 		    $order['order_status'] = $orderitems['items'][$nb_history - 1]->order_status;
 		    $order['virtuemart_order_id'] = $virtuemart_order_id;
-		    $order['customer_notified'] = 0;
+		    $order['customer_notified'] = 1;
 		    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
 		    $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 		}
@@ -464,10 +463,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $order_number);
 	    if ($nb_history == 1) {
 		$order['comments'] .= "<br />" . JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
-		$order['customer_notified'] = 0;
-	    } else {
-		$order['customer_notified'] = 1;
 	    }
+	    $order['customer_notified'] = 1;
 	    $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 	    if ($nb_history == 1) {
 		if (!class_exists('shopFunctionsF'))

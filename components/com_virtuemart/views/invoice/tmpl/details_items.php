@@ -5,7 +5,7 @@
 *
 * @package	VirtueMart
 * @subpackage Orders
-* @author Oscar van Eijk, Valerie Isaksen
+* @author Max Milbers, Valerie Isaksen
 * @link http://www.virtuemart.net
 * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
 * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
@@ -34,16 +34,16 @@ if($this->format == 'pdf'){
 ?>
 <table width="<?php echo $widthTable ?>%" cellspacing="0" cellpadding="0" border="0">
 	<tr align="left" class="sectiontableheader">
-		<th align="left" width="5%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></strong></th>
-		<th align="left" width="5%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></strong></th>
-		<th align="left" colspan="2" width="<?php echo $widtTitle ?>%" ><strong><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></strong></th>
-		<th align="center" width="10%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_STATUS') ?></strong></th>
-		<th align="right" width="10%" ><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRICE') ?></strong></th>
+		<td align="left" width="5%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></strong></td>
+		<td align="left" width="5%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></strong></td>
+		<td align="left" colspan="2" width="<?php echo $widtTitle ?>%" ><strong><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></strong></td>
+		<td align="center" width="10%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_STATUS') ?></strong></td>
+		<td align="right" width="10%" ><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRICE') ?></strong></td>
 		<?php if ( VmConfig::get('show_tax')) { ?>
-		<th align="right" width="10%" ><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_TAX') ?></strong></th>
+		<td align="right" width="10%" ><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_TAX') ?></strong></td>
 		  <?php } ?>
-		<th align="right" width="11%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL_DISCOUNT_AMOUNT') ?></strong></th>
-		<th align="right" width="10%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></strong></th>
+		<td align="right" width="11%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SUBTOTAL_DISCOUNT_AMOUNT') ?></strong></td>
+		<td align="right" width="10%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></strong></td>
 	</tr>
 
 <?php

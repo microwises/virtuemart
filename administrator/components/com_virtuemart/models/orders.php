@@ -1071,10 +1071,10 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				$vars['layoutName'] = 'download';
 
 				if (shopFunctionsF::renderMail('orders', $user->email, $vars)) {
-					$string = 'COM_VIRTUEMART_DOWNLOADS_SEND_MSG';
+					$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_SEND_MSG';
 				}
 				else {
-					$string = 'COM_VIRTUEMART_DOWNLOADS_ERR_SEND';
+					$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
 				}
 				$mainframe->enqueueMessage(JText::_($string,false). " ". $user->full_name. ' '.$user->email);
 			}
@@ -1091,40 +1091,55 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	/**
 	 * Notifies the customer that the Order Status has been changed
 	 *
-	 * @author RolandD, Christopher Roussel
+	 * @author RolandD, Christopher Roussel, Valérie Isaksen
 	 * @todo: Fix URL when we have front-end done
 	 */
 	function notifyCustomer($order  ) {
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
-		$vars = array('order' => $order );
+
+		$orderModel=VmModel::getModel('orders');
+		$orderitems = $orderModel->getOrder($order->virtuemart_order_id);
+		foreach ($orderitems['items'] as $k => $item) {
+		    $orderitems['items'][$k]=(array)$item;
+		}
+		 foreach ($orderitems['calc_rules'] as $k => $calc_rule) {
+		    $orderitems['calc_rules'][$k]=(array)$calc_rule;
+		}
+		$orderitems['details']['BT'] =(array)$orderitems['details']['BT'];
+		$orderitems['details']['ST']=(array)((isset(  $orderitems['details']['ST'])) ? $orderitems['details']['ST'] : $orderitems['details']['BT']);
+
+		$nb_history = count($orderitems['history']);
+		$orderitems['history'] = (array)$orderitems['history'][$nb_history-1] ;
+		$orderitems['history']['order_status_name']=ShopFunctions::getOrderStatusName($orderitems['history']['order_status_code']);
+		$vars['shopperName'] =  $orderitems['details']['BT']['title'].' '.$orderitems['details']['BT']['first_name'].' '.$orderitems['details']['BT']['last_name'];
+
+		$payment_name = $shipment_name='';
+		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+		JPluginHelper::importPlugin('vmshipment');
+		JPluginHelper::importPlugin('vmpayment');
+		$dispatcher = JDispatcher::getInstance();
+		$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEShipment',array(  $orderitems['details']['BT']['virtuemart_order_id'], $orderitems['details']['BT']['virtuemart_shipmentmethod_id'], &$shipment_name));
+		$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array(  $orderitems['details']['BT']['virtuemart_order_id'], $orderitems['details']['BT']['virtuemart_paymentmethod_id'], &$payment_name));
+		$orderitems['shipmentName']=$shipment_name;
+		$orderitems['paymentName']=$payment_name;
+		$vars['order']=$orderitems;
+
+
 		//$vars['includeComments'] = JRequest::getVar('customer_notified', array());
 
 		//$url = VmConfig::get('secureurl')."index.php?option=com_virtuemart&page=account.order_details&virtuemart_order_id=".$order->virtuemart_order_id.'&Itemid='.$sess->getShopItemid();
 		$vars['url'] = 'url';
 		$vars['doVendor']=false;
-		$db = JFactory::getDBO();
-		$q = "SELECT CONCAT_WS(' ',first_name, middle_name , last_name) AS full_name, email, order_status_name
-			FROM #__virtuemart_order_userinfos
-			LEFT JOIN #__virtuemart_orders
-			ON #__virtuemart_orders.virtuemart_user_id = #__virtuemart_order_userinfos.virtuemart_user_id
-			LEFT JOIN #__virtuemart_orderstates
-			ON #__virtuemart_orderstates.order_status_code = #__virtuemart_orders.order_status
-			WHERE #__virtuemart_orders.virtuemart_order_id = '".$order->virtuemart_order_id."'
-			AND #__virtuemart_orders.virtuemart_order_id = #__virtuemart_order_userinfos.virtuemart_order_id";
-		$db->setQuery($q);
-		$db->query();
-		$user = $db->loadObject();
-		$vars['user'] = $user;
 
 		/* Send the email */
-		if (shopFunctionsF::renderMail('orders', $user->email, $vars)) {
-			$string = 'COM_VIRTUEMART_DOWNLOADS_SEND_MSG';
+		if (shopFunctionsF::renderMail('orders', $orderitems['details']['BT']['email'], $vars, null,true)) {
+			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_SEND_MSG';
 		}
 		else {
-			$string = 'COM_VIRTUEMART_DOWNLOADS_ERR_SEND';
+			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
 		}
-		$mainframe->enqueueMessage( JText::_($string,false).' '.$user->full_name. ', '.$user->email);
+		$mainframe->enqueueMessage( JText::_($string,false).' '.$orderitems['details']['BT']['first_name'].' '.$orderitems['details']['BT']['last_name']. ', '.$orderitems['details']['BT']['email']);
 	}
 
 
