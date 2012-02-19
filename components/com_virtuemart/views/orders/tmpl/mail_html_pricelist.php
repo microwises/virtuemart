@@ -63,15 +63,15 @@ $root = $u->toString(array('scheme', 'host'));
 		if (!empty($item['product_attribute'])) {
 		    if (!class_exists('VirtueMartModelCustomfields'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'customfields.php');
-		    $product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,'FE');
-		    echo '<div>' . $product_attribute . '</div>';
+		        $product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,'FE');
+			echo '<div>' . $product_attribute . '</div>';
 		}
 		?>
     	</td>
 
     	<td align="right" >
 	    <?php
-	    if ( !empty($item['basePriceWithTax'] ) && $item['basePriceWithTax'] != $item['product_final_price'] ) {
+	    if ( !empty($item['product_basePriceWithTax'] ) && $item['product_basePriceWithTax'] != $item['product_final_price'] ) {
 			echo '<span class="line-through">'.$item['product_basePriceWithTax'] .'</span><br />' ;
 		}
 		?>

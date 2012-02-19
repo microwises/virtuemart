@@ -48,7 +48,7 @@ foreach ($this->order['items'] as $item) {
     echo $item['product_quantity'] . ' X ' . $item['order_item_name'] . ' (' . strtoupper(JText::_('COM_VIRTUEMART_SKU')) . $item['order_item_sku'] . ')' ."\n";
   $product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,'FE');
 		    echo   "\n".$product_attribute . "\n";
-    if (!empty($item['basePriceWithTax']) && $item['basePriceWithTax'] != $item['product_final_price']) {
+    if (!empty($item['product_basePriceWithTax']) && $item['product_basePriceWithTax'] != $item['product_final_price']) {
 	echo $item['product_basePriceWithTax'] . "\n";
     }
 

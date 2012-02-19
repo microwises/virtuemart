@@ -60,7 +60,7 @@ defined('_JEXEC') or die('Restricted access');
 // Message for shopper or vendor
 			echo $this->loadTemplate($this->recipient);
 // render shipto billto adresses
-			echo $this->loadTemplate('shopperadresses');
+			echo $this->loadTemplate('shopperaddresses');
 // render price list
 			echo $this->loadTemplate('pricelist');
 // more infos

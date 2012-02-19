@@ -71,7 +71,7 @@ $root = $u->toString(array('scheme', 'host'));
 
     	<td align="right" >
 	    <?php
-	    if ( !empty($item['basePriceWithTax'] ) && $item['basePriceWithTax'] != $item['product_final_price'] ) {
+	    if ( !empty($item['product_basePriceWithTax'] ) && $item['product_basePriceWithTax'] != $item['product_final_price'] ) {
 			echo '<span class="line-through">'.$item['product_basePriceWithTax'] .'</span><br />' ;
 		}
 		?>

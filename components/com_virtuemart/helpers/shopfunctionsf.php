@@ -255,7 +255,7 @@ class shopFunctionsF {
 	    $order['details']['ST']=(array)((isset(  $order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
 	    $nb_history = count($order['history']);
 	    $order['history']['order_status_name']=ShopFunctions::getOrderStatusName($order['history'][$nb_history-1]->order_status_code);
-
+	    $order['history']=(array)$order['history'][$nb_history-1];
 	    $shipment_name='';
 	    if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 	    JPluginHelper::importPlugin('vmshipment');
