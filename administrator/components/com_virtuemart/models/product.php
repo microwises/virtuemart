@@ -1517,22 +1517,23 @@ public function updateStockInDB($product, $amount, $signInStoc, $signOrderedStoc
 }
 
 
-public function getUncategorizedChildren(){
+public function getUncategorizedChildren($selected){
 
 	$q = 'SELECT * FROM `#__virtuemart_products` as p
 			LEFT JOIN `#__virtuemart_products_'.VMLANG.'` as pl
 			USING (`virtuemart_product_id`)
 			LEFT JOIN `#__virtuemart_product_categories` as pc
 			USING (`virtuemart_product_id`)
-			WHERE `product_parent_id` = "'.$this->_id.'" AND ISNULL (pc.`virtuemart_category_id`)';
+			WHERE (`product_parent_id` = "'.$this->_id.'" AND ISNULL (pc.`virtuemart_category_id`) ) OR (`virtuemart_product_id` = "'.$this->_id.'" ) ';
 	$this->_db->setQuery($q);
 	$res = $this->_db->loadAssocList() ;
 	$err = $this->_db->getErrorMsg();
 	if(!empty($err)){
-		vmError('getUncategorizedChildren sql error '.$err);
+		vmError('getUncategorizedChildren sql error '.$err,'getUncategorizedChildren sql error');
+		vmdebug('ERRROR getUncategorizedChildren '.$q);
 		return false;
 	} else {
-// 		vmdebug('getUncategorizedChildren',$res);
+		vmdebug('getUncategorizedChildren '.$this->_db->getQuery());
 		return $res;
 	}
 

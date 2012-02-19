@@ -361,11 +361,8 @@ class VirtueMartModelCustomfields extends VmModel {
 					if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 					JPluginHelper::importPlugin('vmcustom');
 					$dispatcher = JDispatcher::getInstance();
-// 					echo 'vmCustomPlugin <pre>'.print_r($field,1).'</pre>';die;
-// 					vmdebug('vmCustomPlugin',$field);
 
 					$retValues = $dispatcher->trigger('plgVmOnProductEdit',array($field,$product_id,&$row,&$retValue));
-
 
 					return $html.$retValue.$priceInput;
 				break;
@@ -676,19 +673,38 @@ class VirtueMartModelCustomfields extends VmModel {
 				case 'A':
 
 					$options = array();
-					$uncatChildren = VmModel::getModel('product')->getUncategorizedChildren();
+
 					$session = JFactory::getSession();
 					$virtuemart_category_id = $session->get('vmlastvisitedcategoryid', 0, 'vm');
+
+					$productModel = VmModel::getModel('product');
+
 					$selected = JRequest::getInt('virtuemart_product_id');
 
+
+// 					$product = $productModel->getProductSingle($selected);
+
+// 					if($product->product_parent_id == 0){
+
+// 						$options[] = array( 'value' => JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id='.$virtuemart_category_id.'&virtuemart_product_id='.$product->virtuemart_product_id) ,'text' =>$product->product_name);
+						$uncatChildren = $productModel->getUncategorizedChildren($selected);
+// 					} else {
+// 						$parent = $productModel->getProductSingle($product->virtuemart_parent_id);
+
+// 						$options[] = array( 'value' => JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id='.$virtuemart_category_id.'&virtuemart_product_id='.$parent->virtuemart_product_id) ,'text' =>$parent->product_name);
+// 						$uncatChildren = $productModel->getUncategorizedChildren($product->virtuemart_parent_id);
+
+// 					}
+
 					foreach($uncatChildren as $k => $child){
-						$options[] = array( 'value' => JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id='.$virtuemart_category_id.'&virtuemart_product_id='.$child['virtuemart_product_id']) ,'text' =>$child['product_name']);
+		$options[] = array( 'value' => JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id='.$virtuemart_category_id.'&virtuemart_product_id='.$child['virtuemart_product_id']) ,'text' =>$child['product_name']);
 					}
 
 					return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]','onchange="window.top.location.href=this.options[this.selectedIndex].value" size="1" class="inputbox"', "value","text",
 					JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id='.$virtuemart_category_id.'&virtuemart_product_id='.$selected));
 
 					break;
+
 				/* variants*/
 				case 'V':
 					if ($price == 0 ) $price = JText::_('COM_VIRTUEMART_CART_PRICE_FREE') ;

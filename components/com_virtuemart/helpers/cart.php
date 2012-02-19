@@ -530,8 +530,6 @@ class VirtueMartCart {
 
 
 	/**
-	/**
-
 	* Get the category ID from a product ID
 	*
 	* @author RolandD, Patrick Kohl
@@ -545,7 +543,7 @@ class VirtueMartCart {
 		return $db->loadResult();
 	}
 
-	 /* Checks if the quantity is correct
+	/** Checks if the quantity is correct
 	 *
 	 * @author Max Milbers
 	 */
@@ -553,22 +551,20 @@ class VirtueMartCart {
 
 		$stockhandle = VmConfig::get('stockhandle','none');
 		$mainframe = JFactory::getApplication();
-		/* Check for a valid quantity */
+		// Check for a valid quantity
 		if (!is_numeric( $quantity)) {
 			$errorMsg = JText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
 			//			$this->_error[] = 'Quantity was not a number';
 			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);
-			// $mainframe->enqueueMessage($errorMsg);
 			return false;
 		}
-		/* Check for negative quantity */
+		// Check for negative quantity
 		if ($quantity < 1) {
 			//			$this->_error[] = 'Quantity under zero';
 			$errorMsg = JText::_('COM_VIRTUEMART_CART_ERROR_NO_VALID_QUANTITY', false);
 			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);
-			// $mainframe->enqueueMessage($errorMsg);
 			return false;
 		}
 
@@ -594,8 +590,7 @@ class VirtueMartCart {
 			}
 		}
 
-		/* Check for the minimum and maximum quantities */
-		// 		list($min, $max) = explode(',', $product->product_order_levels);
+		// Check for the minimum and maximum quantities
 		$min = $product->min_order_level;
 		$max = $product->max_order_level;
 		if ($min != 0 && $quantity < $min) {
@@ -603,7 +598,6 @@ class VirtueMartCart {
 			$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_MIN_ORDER', $min);
 			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);
-			// $mainframe->enqueueMessage($errorMsg, 'error');
 			return false;
 		}
 		if ($max != 0 && $quantity > $max) {
@@ -611,7 +605,6 @@ class VirtueMartCart {
 			$errorMsg = JText::sprintf('COM_VIRTUEMART_CART_MAX_ORDER', $max);
 			$this->setError($errorMsg);
 			vmInfo($errorMsg,$product->product_name);
-			// $mainframe->enqueueMessage($errorMsg, 'error');
 			return false;
 		}
 
@@ -635,8 +628,6 @@ class VirtueMartCart {
 		$this->checkoutData($redirect);
 		if ($this->_dataValidated && $redirect) {
 			$mainframe = JFactory::getApplication();
-			//This is dangerous, we may add it as option, direclty calling the confirm is in most countries illegal and can lead to confusion. notice by Max
-			// 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=confirm'), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
 		}
 	}
