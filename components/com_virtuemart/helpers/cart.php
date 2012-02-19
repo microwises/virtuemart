@@ -76,7 +76,7 @@ class VirtueMartCart {
 	 * @access public
 	 * @param array $cart the cart to store in the session
 	 */
-	public static function getCart($deleteValidation,$setCart=true, $options = array()) {
+	public static function getCart($setCart=true, $options = array()) {
 
 		//What does this here? for json stuff?
 		if (!class_exists('JTable')
@@ -121,9 +121,9 @@ class VirtueMartCart {
 
 				// 				vmdebug('my cart generated with CartSessionData ',self::$_cart);
 				//$cart = unserialize($cartTemp);
-				if (!empty(self::$_cart) && $deleteValidation) {
-					self::$_cart->setDataValidation();
-				}
+// 				if (!empty(self::$_cart) && $deleteValidation) {
+// 					self::$_cart->setDataValidation();
+// 				}
 			}
 
 		}
@@ -740,10 +740,9 @@ class VirtueMartCart {
 
 	private function redirecter($relUrl,$redirectMsg){
 
+		$this->_dataValidated = false;
 		$app = JFactory::getApplication();
 		if($this->_redirect){
-
-			$this->_dataValidated = false;
 			$this->setCartIntoSession();
 			$app->redirect(JRoute::_($relUrl,$this->useXHTML,$this->useSSL), $redirectMsg);
 		} else {

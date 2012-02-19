@@ -605,7 +605,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 			session_start();
 		}
 
-		$cart = VirtueMartCart::getCart(true);
+		$cart = VirtueMartCart::getCart();
 		$cart->emptyCart();
 		return true;
 	}

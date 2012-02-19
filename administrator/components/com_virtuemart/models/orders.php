@@ -483,7 +483,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 
 		$usr = JFactory::getUser();
-		$prices = $cart->getCartPrices(false);
+		$prices = $cart->getCartPrices();
 		if (($orderID = $this->_createOrder($cart, $usr, $prices)) == 0) {
 			vmError('Couldn\'t create order','Couldn\'t create order');
 			return false;

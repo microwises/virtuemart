@@ -345,7 +345,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 	//We delete the old stuff
 	// get the correct cart / session
-	$cart = VirtueMartCart::getCart(true);
+	$cart = VirtueMartCart::getCart();
 	$cart->emptyCart();
 	return true;
     }

@@ -45,7 +45,7 @@ class VirtueMartViewCart extends VmView {
 
 		if (!class_exists('VirtueMartCart'))
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-		$cart = VirtueMartCart::getCart(false);
+		$cart = VirtueMartCart::getCart();
 		$this->assignRef('cart', $cart);
 
 		//Why is this here, when we have view.raw.php

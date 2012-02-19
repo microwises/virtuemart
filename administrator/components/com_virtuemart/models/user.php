@@ -1077,7 +1077,7 @@ class VirtueMartModelUser extends VmModel {
 			if($cart){
 				if (!class_exists('VirtueMartCart'))
 				require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-				$cart = VirtueMartCart::getCart(false);
+				$cart = VirtueMartCart::getCart();
 				$adType = $type.'address';
 
 				if(empty($cart->$adType)){
@@ -1174,7 +1174,7 @@ class VirtueMartModelUser extends VmModel {
 			//New Address is filled here with the data of the cart (we are in the userview)
 			if (!class_exists('VirtueMartCart'))
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-			$cart = VirtueMartCart::getCart(false);
+			$cart = VirtueMartCart::getCart();
 			$adType = $type.'address';
 			if(empty($cart->$adType)){
 				$cart->$adType = $userFieldsModel->getUserFieldsFilled(

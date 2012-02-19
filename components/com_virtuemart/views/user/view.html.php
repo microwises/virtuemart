@@ -137,7 +137,7 @@ class VirtuemartViewUser extends VmView {
 	    //New Address is filled here with the data of the cart (we are in the cart)
 	    if (!class_exists('VirtueMartCart'))
 		require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-	    $cart = VirtueMartCart::getCart(false);
+	    $cart = VirtueMartCart::getCart();
 
 	    $fieldtype = $address_type . 'address';
 	    $cart->prepareAddressDataInCart($address_type, $new);
