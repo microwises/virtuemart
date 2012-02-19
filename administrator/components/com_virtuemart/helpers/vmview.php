@@ -36,11 +36,6 @@ class VmView extends JView{
 	// }
 	var $lists = array();
 
-	function getModel($name=null){
-		if(!class_exists('ShopFunctions'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
-		return ShopFunctions::getModel($name);
-	}
-
 
 	/*
 	 * set all commands and options for BE default.php views

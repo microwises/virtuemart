@@ -93,7 +93,6 @@ class VirtueMartCart {
 				self::$_cart = new VirtueMartCart;
 
 				self::$_cart->products = $cartData->products;
-				// 		echo '<pre>'.print_r($products,1).'</pre>';die;
 				self::$_cart->vendorId	 							= $cartData->vendorId;
 				self::$_cart->lastVisitedCategoryId	 			= $cartData->lastVisitedCategoryId;
 				self::$_cart->virtuemart_shipmentmethod_id	= $cartData->virtuemart_shipmentmethod_id;
@@ -118,12 +117,6 @@ class VirtueMartCart {
 				self::$_cart->_confirmDone							= $cartData->_confirmDone;
 				self::$_cart->STsameAsBT							= $cartData->STsameAsBT;
 
-
-				// 				vmdebug('my cart generated with CartSessionData ',self::$_cart);
-				//$cart = unserialize($cartTemp);
-// 				if (!empty(self::$_cart) && $deleteValidation) {
-// 					self::$_cart->setDataValidation();
-// 				}
 			}
 
 		}
@@ -146,9 +139,8 @@ class VirtueMartCart {
 	public function setPreferred() {
 
 		$usermodel = VmModel::getModel('user');
-
 		$user = $usermodel->getUser();
-// 		vmdebug('setPreferred $user',$user);
+
 		if (empty($this->BT) || (!empty($this->BT) && count($this->BT) <=1) ) {
 			foreach ($user->userInfo as $address) {
 				if ($address->address_type == 'BT') {
@@ -166,18 +158,8 @@ class VirtueMartCart {
 		}
 
 		//$this->tosAccepted is due session stuff always set to 0, so testing for null does not work
-		// 		if(isset($user->agreed) && !VmConfig::get('agree_to_tos_onorder',0) && $this->tosAccepted===null){
-// 		vmdebug('cart',isset($user->agreed),$this->BT['agreed'],VmConfig::get('agree_to_tos_onorder',0),$this->tosAccepted);
 		if((!empty($user->agreed) || !empty($this->BT['agreed'])) && !VmConfig::get('agree_to_tos_onorder',0) ){
-// 			if(isset($user->agreed)){
-// 				vmdebug('go for user');
 				$this->tosAccepted = 1;
-// 			}
-// 			else {
-// 				vmdebug('go for BT');
-// 				$this->tosAccepted = $this->BT['agreed'];
-// 			}
-
 		}
 	}
 
@@ -289,9 +271,7 @@ class VirtueMartCart {
 		$mainframe = JFactory::getApplication();
 		$success = false;
 		$post = JRequest::get('default');
-		//$total_quantity = 0;
-		//$total_updated = 0;
-		//$total_deleted = 0;
+
 		if(empty($virtuemart_product_ids)){
 			$virtuemart_product_ids = JRequest::getVar('virtuemart_product_id', array(), 'default', 'array'); //is sanitized then
 		}
@@ -301,9 +281,6 @@ class VirtueMartCart {
 			return false;
 		}
 
-		// 		if (!class_exists('calculationHelper')
-		// 		)require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
-		//  if (empty ($this->cartData->products))$this->cartData->products = array();
 		//Iterate through the prod_id's and perform an add to cart for each one
 		foreach ($virtuemart_product_ids as $p_key => $virtuemart_product_id) {
 
@@ -335,7 +312,6 @@ class VirtueMartCart {
 			$product -> product_sku = $tmpProduct -> product_sku;
 			$product -> product_name = $tmpProduct -> product_name;
 			$product -> product_s_desc = $tmpProduct -> product_s_desc;
-			//			$product -> product_desc = $tmpProduct -> product_desc;
 
 			$product -> product_weight = $tmpProduct -> product_weight;
 			$product -> product_weight_uom = $tmpProduct -> product_weight_uom;
@@ -343,11 +319,10 @@ class VirtueMartCart {
 			$product -> product_width = $tmpProduct -> product_width;
 			$product -> product_height = $tmpProduct -> product_height;
 			$product -> product_lwh_uom = $tmpProduct -> product_lwh_uom;
-			// $product -> product_url = $tmpProduct -> product_url;
+
 			$product -> product_in_stock = $tmpProduct -> product_in_stock;
 			$product -> product_ordered = $tmpProduct -> product_ordered;
-			// 			$product -> low_stock_notification = $tmpProduct -> low_stock_notification;
-			// 			$product -> product_available_date = $tmpProduct -> product_available_date;
+
 			$product -> product_sales = $tmpProduct -> product_sales;
 			$product -> product_unit = $tmpProduct -> product_unit;
 			$product -> product_packaging = $tmpProduct -> product_packaging;
@@ -360,17 +335,13 @@ class VirtueMartCart {
 			$product -> categories = $tmpProduct -> categories;
 			$product -> virtuemart_category_id = $tmpProduct -> virtuemart_category_id;
 			$product -> category_name = $tmpProduct -> category_name;
-			// $product -> canonical = $tmpProduct -> canonical;
+
 			$product -> link = $tmpProduct -> link;
 			$product -> packaging = $tmpProduct -> packaging;
 			//$product -> customfields = empty($tmpProduct -> customfields)? array():$tmpProduct -> customfields ;
 			//$product -> customfieldsCart = empty($tmpProduct -> customfieldsCart)? array(): $tmpProduct -> customfieldsCart;
 			if (!empty($tmpProduct -> customfieldsCart) ) $product -> customfieldsCart = true;
 			//$product -> customsChilds = empty($tmpProduct -> customsChilds)? array(): $tmpProduct -> customsChilds;
-
-			//			echo '<pre>'.print_r($tmpProduct,1).'<pre>';
-			//			die;
-			//			$product = $tmpProduct;
 
 			//			vmdebug('my product add to cart after',$product);
 			//Why reloading the product wiht same name $product ?
@@ -388,9 +359,6 @@ class VirtueMartCart {
 					$virtuemart_category_idPost = (int) $post['virtuemart_category_id'][$p_key];
 					$product->virtuemart_category_id = $virtuemart_category_idPost;
 				}
-
-				// $virtuemart_category_idPost = (int) $post['virtuemart_category_id'][$p_key];
-
 
 				$productKey = $product->virtuemart_product_id;
 				// INDEX NOT FOUND IN JSON HERE
@@ -433,15 +401,14 @@ class VirtueMartCart {
 					if ($this->checkForQuantities($product,$totalQuantity ,$errorMsg)) {
 						$this->products[$productKey]->quantity = $totalQuantity;
 
-						//$mainframe->enqueueMessage($errorMsg);
 					} else {
-						// $errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
+
 						continue;
 					}
 				}  else {
 					if ( !empty($product->customPlugin)) {
 						$productKey .= count($this->products);
-						//print_r($product);
+
 					}
 					if ($this->checkForQuantities($product, $quantityPost,$errorMsg)) {
 						$this->products[$productKey] = $product;
@@ -451,13 +418,10 @@ class VirtueMartCart {
 						// $errorMsg = JText::_('COM_VIRTUEMART_CART_PRODUCT_OUT_OF_STOCK');
 						continue;
 					}
-					// echo $productKey;
-					// print_r ($this->products);
 				}
 				$success = true;
 			} else {
 				$mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND', false));
-// 				continue;
 				return false;
 			}
 		}
@@ -559,46 +523,11 @@ class VirtueMartCart {
 
 		if ( VmConfig::get('oncheckout_show_images')){
 			$model->addImages($product,1);
-			// $db =& JFactory::getDBO();
-			// $db->setQuery('SELECT * from #__virtuemart_medias where virtuemart_media_id='. $product->virtuemart_media_id[0] );
-			// $data = $db->loadObject();
-			// $product->image = VmMediaHandler::createMedia($data,'product');
 
 		}
 		return $product;
 	}
 
-
-	/**
-	 * Get the category ID from a product ID
-	 *
-	 * @author RolandD
-	 * @access public
-	 * @return mixed if found the category ID else null
-	 * @deprecated
-	 */
-	public function getCategoryId() {
-		$db = JFactory::getDBO();
-		$virtuemart_product_id = JRequest::getInt('virtuemart_product_id', 0);
-		$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `virtuemart_product_id` = ' . (int) $virtuemart_product_id . ' LIMIT 1';
-		$db->setQuery($q);
-		return $db->loadResult();
-	}
-
-	/**
-
-	* Get the category ID from a product ID
-	*
-	* @author Patrick Kohl
-	* @access public
-	* @return mixed if found the category ID else null
-	*/
-	public function getCardCategoryId($virtuemart_product_id) {
-		$db = JFactory::getDBO();
-		$q = 'SELECT `virtuemart_category_id` FROM `#__virtuemart_product_categories` WHERE `virtuemart_product_id` = ' . (int) $virtuemart_product_id . ' LIMIT 1';
-		$db->setQuery($q);
-		return $db->loadResult();
-	}
 
 	/**
 	 * Checks if the quantity is correct
@@ -744,8 +673,11 @@ class VirtueMartCart {
 		$app = JFactory::getApplication();
 		if($this->_redirect){
 			$this->setCartIntoSession();
+			vmdebug('Should redirect '.$redirectMsg);
 			$app->redirect(JRoute::_($relUrl,$this->useXHTML,$this->useSSL), $redirectMsg);
 		} else {
+			$this->_redirect = true;
+			$this->setCartIntoSession();
 			return false;
 		}
 	}
@@ -770,34 +702,29 @@ class VirtueMartCart {
 
 		$mainframe = JFactory::getApplication();
 		if (count($this->products) == 0) {
-// 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart'), JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
 			return $this->redirecter('index.php?option=com_virtuemart', JText::_('COM_VIRTUEMART_CART_NO_PRODUCT'));
 		} else {
 			foreach ($this->products as $product) {
 				$redirectMsg = $this->checkForQuantities($product, $product->quantity);
 				if (!$redirectMsg) {
 					return $this->redirecter('index.php?option=com_virtuemart&view=cart', $redirectMsg);
-					//					$this->setCartIntoSession();
-// 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), $redirectMsg);
 				}
 			}
 		}
 
 		// Check if a minimun purchase value is set
-		if (($msg = $this->checkPurchaseValue()) != null) {
-// 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), $msg);
+		if (($redirectMsg = $this->checkPurchaseValue()) != null) {
 			return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
 		}
 
 		//But we check the data again to be sure
 		if (empty($this->BT)) {
-// 			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT') );
+			$redirectMsg = '';
 			return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , $redirectMsg);
 		} else {
 			$redirectMsg = self::validateUserData();
 			if ($redirectMsg) {
 				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , $redirectMsg);
-// 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), $redirectMsg);
 			}
 		}
 
@@ -808,9 +735,7 @@ class VirtueMartCart {
 			if (!empty($this->ST)) {
 				$redirectMsg = self::validateUserData('ST');
 				if ($redirectMsg) {
-					//				$this->setCartIntoSession();
 					return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST' , $redirectMsg);
-// 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=ST'), $redirectMsg);
 				}
 			}
 		}
@@ -832,7 +757,6 @@ class VirtueMartCart {
 			if (!empty($redirectMsg)) {
 
 				$this->couponCode = '';
-				//				$this->setCartIntoSession();
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart&task=edit_coupon' , $redirectMsg);
 // 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=edit_coupon',$this->useXHTML,$this->useSSL), $redirectMsg);
 			}
@@ -887,26 +811,23 @@ class VirtueMartCart {
 
 		if (empty($this->tosAccepted)) {
 			vmdebug('checkoutData');
-// 			if (!class_exists('VirtueMartModelUserfields')){
-// 				require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'userfields.php');
-// 			}
+
 			$userFieldsModel = VmModel::getModel('Userfields');
 
 			$required = $userFieldsModel->getIfRequired('agreed');
 			if(!empty($required)){
+				$redirectMsg = JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS');
 				return $this->redirecter('index.php?option=com_virtuemart&view=cart' , $redirectMsg);
-// 			7	$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_PLEASE_ACCEPT_TOS'));
 			}
 		}
 
 		if(VmConfig::get('oncheckout_only_registered',0)) {
 			$currentUser = JFactory::getUser();
 			if(empty($currentUser->id)){
+				$redirectMsg = JText::_('COM_VIRTUEMART_CART_ONLY_REGISTERED');
 				return $this->redirecter('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT' , $redirectMsg);
-// 				$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=user&task=editaddresscheckout&addrtype=BT'), JText::_('COM_VIRTUEMART_CART_ONLY_REGISTERED') );
 			}
 		 }
-
 
 		//Show cart and checkout data overview
 		$this->_inCheckOut = false;
@@ -967,10 +888,6 @@ class VirtueMartCart {
 		$redirectMsg = false;
 
 		$i = 0 ;
-
-		/*		if(empty($obj)){
-		 $obj = $this->$type;
-		}*/
 
 		foreach ($neededFields as $field) {
 

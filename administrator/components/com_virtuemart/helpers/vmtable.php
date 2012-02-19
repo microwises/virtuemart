@@ -84,21 +84,6 @@ class VmTable extends JTable{
 	}
 
 	/**
-	 * TODO note by patrick Kohl
-	 * -Delete lang row when the main record is deleted
-	 * -save the lang record row when language is not default
-	 *   using the langcode (FR,EN,DE ...)
-	 *   this use good table but none existing fields give an sql error
-	 * -add a table row creator by lang
-	 *  using an array declaration of fields
-
-	 * The fastest way was to cut the tables
-	 * One with translatable field and one with 'FIX' field
-	 *  because whe had only to choice the lang
-	 *  and never to do an overide from main table.
-	 * it's to late to do this now ! :o(
-	 * translated tables  must be
-	 * CATEGORIES,MANUFACTURERCATEGORIES,MANUFACTURERS,PRODUCTS,VENDORS,
 	 *
 	 * @author Patrick Kohl,
 	 * @author Max Milbers
@@ -245,9 +230,6 @@ class VmTable extends JTable{
 	 */
 	function load($oid=null,$overWriteLoadName=0,$andWhere=0,$tableJoins= array(),$joinKey = 0){
 
-
-		// 		vmdebug('load '.$oid);
-		// 		$k = $this->_tbl_key;
 		if($overWriteLoadName!=0){
 			$k = $overWriteLoadName;
 		} else {
@@ -273,9 +255,6 @@ class VmTable extends JTable{
 					}
 				}
 			}
-
-			// 			vmdebug('Should load '.$this->_tbl.' with id = 0, give back prototype');
-			// 			vmTrace('loading 0?');
 			return $this;
 		}
 
@@ -341,16 +320,14 @@ class VmTable extends JTable{
 		// 						vmdebug('$obj->_xParams '.$xParams.' $obj->$xParams ',$paramFields);
 		if(!empty($obj->$xParams)){
 
-			// 			vmdebug('load $varsToPushParam ',$varsToPushParam);
 			$params = explode('|', $obj->$xParams);
 			foreach($params as $item){
 
 				$item = explode('=',$item);
 				$key = $item[0];
 				unset($item[0]);
-				// 				vmdebug('load string $key',$key);
+
 				$item = implode('=',$item);
-				// 				vmdebug('load string ',$item);
 
 				if(!empty($item) && isset($varsToPushParam[$key][1]) ){
 					$obj->$key = json_decode($item);
@@ -392,18 +369,8 @@ class VmTable extends JTable{
 			foreach($this->_varsToPushParam as $key=>$v){
 
 				if(isset($this->$key)){
-					// 					if($v[1]==='string'){
-					// 						$this->$paramFieldName .= $key.'='.base64_encode(serialize($this->$key)).'|';
-					// 					} else {
-					// 						$this->$paramFieldName .= $key.'='.serialize($this->$key).'|';
-					// 					}
 					$this->$paramFieldName .= $key.'='.json_encode($this->$key).'|';
 				} else {
-					// 					if($v[1]==='string'){
-					// 						$this->$paramFieldName .= $key.'='.base64_encode(serialize($v[0])).'|';
-					// 					} else {
-					// 						$this->$paramFieldName .= $key.'='.serialize($v[0]).'|';
-					// 					}
 					$this->$paramFieldName .= $key.'='.json_encode($v[0]).'|';
 				}
 				unset($this->$key);

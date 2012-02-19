@@ -25,43 +25,6 @@ jimport( 'joomla.application.component.view');
 
 class VmView extends JView{
 
-// 	static private $_models = array();
-
-	/**
-	 * (non-PHPdoc)
-	 * @see JView::getModel()
-	 * @deprecated
-	 */
-	function getModel($name=null){
-
-		if (!$name) $name = JRequest::getCmd('view');
-		$name = strtolower($name);
-		$className = 'VirtueMartModel'.ucfirst($name);
-
-		if(empty($this->_models[strtolower($className)])){
-			if( !class_exists($className) ){
-
-				$modelPath = JPATH_VM_ADMINISTRATOR.DS."models".DS.$name.".php";
-
-				if( file_exists($modelPath) ){
-					require( $modelPath );
-				}
-				else{
-					JError::raiseWarning( 0, 'Model '. $name .' not found.' );
-					echo 'File for Model '. $name .' not found.';
-					return false;
-				}
-			}
-
-			vmdebug('created new instance of model '.$className);
-			return $this->_models[strtolower($className)] = new $className();
-		} else {
-			vmdebug('Use instance of model');
-			return $this->_models[strtolower($className)];
-		}
-
-	}
-
 	function linkIcon($link,$altText ='',$boutonName,$verifyConfigValue=false, $modal = true, $use_icon=true,$use_text=false){
 		if ($verifyConfigValue) {
 			if ( !VmConfig::get($verifyConfigValue, 0) ) return '';
