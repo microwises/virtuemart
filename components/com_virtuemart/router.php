@@ -43,26 +43,25 @@ function virtuemartBuildRoute(&$query) {
 	$view = '';
 
 	$jmenu = & $helper->menu ;
-	if (empty($query['Itemid'])) 
-		$query['Itemid'] = $jmenu['virtuemart'];
+
 	if(isset($query['langswitch'])) unset($query['langswitch']);
 
 	if(isset($query['view'])){
 		$view = $query['view'];
 		unset($query['view']);
-	} else $view ='virtuemart';
+	}
 	switch ($view) {
 		case 'virtuemart';
 			$query['Itemid'] = $jmenu['virtuemart'] ;
-			break;
+		break;
 		/* Shop category or virtuemart view
 		 All ideas are wellcome to improve this
 		 because is the biggest and more used */
 		case 'category';
 			 $start = null;
-			// echo '<br>Query Cat '.$view.' : '; print_r($query);
+
 			 if ( isset($jmenu['category']) ) $query['Itemid'] = $jmenu['category'];
-			if 	( isset($query['limitstart'] ) ) {
+			 if ( isset($query['limitstart'] ) ) {
 				$start = $query['limitstart'] ;
 				unset($query['limitstart']);
 			}
@@ -110,7 +109,7 @@ function virtuemartBuildRoute(&$query) {
 				}
 				unset($query['virtuemart_category_id']);
 			}
-			// echo ' CATEGORY' ; print_r($segments);
+			return $segments;
 		break;
 		/* Shop product details view  */
 		case 'productdetails';
@@ -136,20 +135,29 @@ function virtuemartBuildRoute(&$query) {
 				if($virtuemart_product_id)
 					$segments[] = $helper->getProductName($virtuemart_product_id);
 			}
+			return $segments;
 		break;
 		case 'manufacturer';
-			if ( isset($jmenu['manufacturer']) ) $query['Itemid'] = $jmenu['manufacturer'];
+			
 			if(isset($query['virtuemart_manufacturer_id'])) {
 				if (isset($jmenu['virtuemart_manufacturer_id'][ $query['virtuemart_manufacturer_id'] ] ) ) {
 					$query['Itemid'] = $jmenu['virtuemart_manufacturer_id'][$query['virtuemart_manufacturer_id']];
-				} else $segments[] = $helper->lang('manufacturers').'/'.$helper->getManufacturerName($query['virtuemart_manufacturer_id']) ;
+				} else {
+					$segments[] = $helper->lang('manufacturers').'/'.$helper->getManufacturerName($query['virtuemart_manufacturer_id']) ;
+					if ( isset($jmenu['manufacturer']) ) $query['Itemid'] = $jmenu['manufacturer'];
+					else $query['Itemid'] = $jmenu['virtuemart'];
+				}
 				unset($query['virtuemart_manufacturer_id']);
+			} else { 
+				if ( isset($jmenu['manufacturer']) ) $query['Itemid'] = $jmenu['manufacturer'];
+				else $query['Itemid'] = $jmenu['virtuemart'];
 			}
 		break;
 		case 'user';
 			if ( isset($jmenu['user']) ) $query['Itemid'] = $jmenu['user'];
 			else {
 				$segments[] = $helper->lang('user') ;
+				$query['Itemid'] = $jmenu['virtuemart'];
 			}
 			if (isset($query['task'])) {
 				if ($query['addrtype'] == 'BT' && $query['task']='editaddresscart') $segments[] = $helper->lang('editaddresscartBT') ;
@@ -159,19 +167,34 @@ function virtuemartBuildRoute(&$query) {
 			}
 		break;
 		case 'vendor';
-			if ( isset($jmenu['vendor']) ) $query['Itemid'] = $jmenu['vendor'];
-			else {
+			if(isset($query['virtuemart_vendor_id'])) {
+				if (isset($jmenu['virtuemart_vendor_id'][ $query['virtuemart_vendor_id'] ] ) ) {
+					$query['Itemid'] = $jmenu['virtuemart_vendor_id'][$query['virtuemart_vendor_id']];
+				} else {
+					$virtuemart_vendor_id = $query['virtuemart_vendor_id'];
+					if ( isset($jmenu['vendor']) ) {
+						$query['Itemid'] = $jmenu['vendor'];
+					} else {
+						$segments[] = $helper->lang('vendor') ;
+						$query['Itemid'] = $jmenu['virtuemart'];
+					}
+				}
+			} else if ( isset($jmenu['vendor']) ) {
+				$query['Itemid'] = $jmenu['vendor'];
+			} else {
 				$segments[] = $helper->lang('vendor') ;
+				$query['Itemid'] = $jmenu['virtuemart'];
 			}
-			if (isset($query['virtuemart_vendor_id'])) {
-				$segments[] = $query['virtuemart_vendor_id'];
-				unset ($query['virtuemart_vendor_id']);
-			}
+			if (isset($virtuemart_vendor_id)) {
+				$segments[] = $virtuemart_vendor_id;
+				unset ($query['virtuemart_vendor_id'] );
+			} 
 		break;
 		case 'cart';
 			if ( isset($jmenu['cart']) ) $query['Itemid'] = $jmenu['cart'];
 			else {
 				$segments[] = $helper->lang('cart') ;
+				$query['Itemid'] = $jmenu['virtuemart'];
 			}
 
 		break;
@@ -179,6 +202,7 @@ function virtuemartBuildRoute(&$query) {
 			if ( isset($jmenu['orders']) ) $query['Itemid'] = $jmenu['orders'];
 			else {
 				$segments[] = $helper->lang('orders') ;
+				$query['Itemid'] = $jmenu['virtuemart'];
 			}
 			if ( isset($query['order_number']) ) {
 				$segments[] = 'number/'.$query['order_number'];
@@ -210,7 +234,6 @@ function virtuemartBuildRoute(&$query) {
 		if ( $query['tmpl'] = 'component') $segments[] = 'modal' ;
 		unset($query['tmpl']);
 	}
-
 	return $segments;
 }
 
@@ -311,7 +334,9 @@ function virtuemartParseRoute($segments) {
 	}
 
 	if (empty($segments)) return $vars ;
-	else $view = $segments[0];
+	
+	// View is first segment now
+	$view = $segments[0]; 
 	if ( $helper->compareKey($view,'orders') || $helper->activeMenu->view == 'orders') {
 		$vars['view'] = 'orders';
 		if ( $helper->compareKey($view,'orders')){
@@ -410,7 +435,7 @@ function virtuemartParseRoute($segments) {
 			$vars['virtuemart_product_id'] = $product['virtuemart_product_id'];
 			$vars['virtuemart_category_id'] = $product['virtuemart_category_id'];
 		}
-		elseif (ctype_digit ($segments[1])){
+		elseif (isset($segments[1]) ){
 			$vars['virtuemart_product_id'] = $segments[0];
 			$vars['virtuemart_category_id'] = $segments[1];
 		} else {
@@ -751,7 +776,7 @@ class vmrouterHelper {
 		//get all vm menus
 
 		$db			= JFactory::getDBO();
-		$query = 'SELECT * FROM `#__menu`  where `link` like "index.php?option=com_virtuemart%" and client_id=0 and (language="*" or language="'.$this->langTag.'")'  ;
+		$query = 'SELECT * FROM `#__menu`  where `link` like "index.php?option=com_virtuemart%" and client_id=0 and published=1 and (language="*" or language="'.$this->langTag.'")'  ;
 		$db->setQuery($query);
 // 		vmdebug('setMenuItemIdJ17 q',$query);
 		$this->menuVmitems= $db->loadObjectList();
