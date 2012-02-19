@@ -270,7 +270,7 @@ function virtuemartParseRoute($segments) {
 	}
 
 
-	$orderby = explode(',',$segments[0]);
+	$orderby = explode(',',$segments[0],2);
 	if (  $helper->compareKey($orderby[0] , 'by') ) {
 		$vars['orderby'] =$helper->getOrderingKey($orderby[1]) ;
 		array_shift($segments);
