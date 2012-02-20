@@ -124,7 +124,7 @@ class VirtueMartControllerInvoice extends JController
 		$view->addTemplatePath( JPATH_VM_SITE.DS.'views'.DS.'invoice'.DS.'tmpl' );
 
 		$view->invoiceNumber = $invoiceNumber;
-		$view->orderDetails = $orderDetails;
+		$view->order = $orderDetails;
 
 		ob_start();
 		$view->display();

@@ -47,7 +47,7 @@ class VirtuemartViewInvoice extends VmView {
 
 		$orderModel = VmModel::getModel('orders');
 
-		$orderDetails = $this->orderDetails;
+		$orderDetails = $this->order;
 
 			if(empty($orderDetails['details'])){
 				echo JText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
@@ -107,9 +107,12 @@ class VirtuemartViewInvoice extends VmView {
 				$print = true;
 			}
 
+			//Todo multix
+			$vendorId=1;
 		$vendorModel = VmModel::getModel('vendor');
+		$vendorModel->setId($vendorId);
 		$vendor = $vendorModel->getVendor();
-		$vendorModel->addImages($this->vendor,1);
+		$vendorModel->addImages($vendor,1);
 		$this->assignRef('vendor', $vendor);
 			$this->assignRef('print', $print);
 
@@ -147,8 +150,9 @@ class VirtuemartViewInvoice extends VmView {
 	// FE public function renderMailLayout($doVendor=false)
 	function renderMailLayout ($doVendor, $recipient) {
 
+		$this->display();
 		// don't need to get the payment name, the Order is sent from the payment trigger
-		$tpl = (VmConfig::get('order_html_email',1)) ? 'mail_html' : 'mail_raw';
+/*		$tpl = (VmConfig::get('order_html_email',1)) ? 'mail_html' : 'mail_raw';
 
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
@@ -183,7 +187,7 @@ class VirtuemartViewInvoice extends VmView {
 		if(!class_exists('VirtueMartModelOrderstatus')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orderstatus.php');
 		$vendorModel = VmModel::getModel('vendor');
 		$vendor = $vendorModel->getVendor();
-		$vendorModel->addImages($this->vendor,1);
+		$vendorModel->addImages($vendor,1);
 		$this->assignRef('vendor', $vendor);
 
 		//From FE
@@ -229,7 +233,7 @@ class VirtuemartViewInvoice extends VmView {
 			$this->mediaToSend[] = $controller->checkStoreInvoice($this->order);
 		}
 
-		parent::display();
+		parent::display();*/
 	}
 
 
