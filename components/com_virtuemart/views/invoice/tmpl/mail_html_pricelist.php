@@ -167,7 +167,7 @@ $root = $u->toString(array('scheme', 'host'));
 
 
     <tr  class="sectiontableentry<?php echo $i ?>">
-	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo $this->shipment_name ?></td>
+	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo $this->order['shipmentName'] ?></td>
 
 <?php if (VmConfig::get('show_tax')) { ?>
     	<td align="right"><?php echo "<span class='priceColor2'>" . $this->currency->priceDisplay($this->order['details']['BT']['order_shipment_tax']) . "</span>" ?></td>
@@ -180,7 +180,7 @@ $root = $u->toString(array('scheme', 'host'));
 $i = 1 ? 2 : 1;
 ?>
     <tr   class="sectiontableentry<?php echo $i ?>">
-	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo $this->payment_name  ?></td>
+	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo $this->order['shipmentName']  ?></td>
 
 
 <?php if (VmConfig::get('show_tax')) { ?>

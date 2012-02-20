@@ -34,7 +34,7 @@ class VirtueMartControllerInvoice extends JController
 
 		vmdebug('checkStoreInvoice start');
 		//Test
-		return false;
+		//return false;
 
 		$force = true;
 
@@ -157,7 +157,6 @@ class VirtueMartControllerInvoice extends JController
 		// set document information
 		$pdf->SetCreator('Invoice by Virtuemart 2, used library tcpdf');
 		$pdf->SetAuthor($vendor->vendor_name);
-
 
 		$pdf->SetTitle(JText::_('COM_VIRTUEMART_INVOICE_TITLE'));
 		$pdf->SetSubject(JText::sprintf('COM_VIRTUEMART_INVOICE_SUBJ',$vendor->vendor_store_name));

@@ -49,56 +49,59 @@ class VirtuemartViewInvoice extends VmView {
 
 		$orderDetails = $this->order;
 
-			if(empty($orderDetails['details'])){
-				echo JText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
-				return;
-			}
+		if(empty($orderDetails['details'])){
+			echo JText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
+			return;
+		}
 
-			$userFieldsModel = VmModel::getModel('userfields');
-			$_userFields = $userFieldsModel->getUserFields(
-				 'account'
-			, array('captcha' => true, 'delimiters' => true) // Ignore these types
-			, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
-			);
-			$orderbt = $orderDetails['details']['BT'];
-			$orderst = (array_key_exists('ST', $orderDetails['details'])) ? $orderDetails['details']['ST'] : $orderbt;
-			$userfields = $userFieldsModel->getUserFieldsFilled(
-			$_userFields
-			,$orderbt
-			);
-			$_userFields = $userFieldsModel->getUserFields(
-				 'shipment'
-			, array() // Default switches
-			, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
-			);
+		$userFieldsModel = VmModel::getModel('userfields');
+		$_userFields = $userFieldsModel->getUserFields(
+			 'account'
+		, array('captcha' => true, 'delimiters' => true) // Ignore these types
+		, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
+		);
+		$orderbt = $orderDetails['details']['BT'];
+		$orderst = (array_key_exists('ST', $orderDetails['details'])) ? $orderDetails['details']['ST'] : $orderbt;
+		$userfields = $userFieldsModel->getUserFieldsFilled(
+		$_userFields
+		,$orderbt
+		);
+		$_userFields = $userFieldsModel->getUserFields(
+			 'shipment'
+		, array() // Default switches
+		, array('delimiter_userinfo', 'username', 'email', 'password', 'password2', 'agreed', 'address_type') // Skips
+		);
 
-			$shipmentfields = $userFieldsModel->getUserFieldsFilled(
-			$_userFields
-			,$orderst
-			);
+		$shipmentfields = $userFieldsModel->getUserFieldsFilled(
+		$_userFields
+		,$orderst
+		);
 
-			$shipment_name='';
-			if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
-			JPluginHelper::importPlugin('vmshipment');
-			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEShipment',array(  $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_shipmentmethod_id, &$shipment_name));
 
-			$payment_name='';
-			if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
-			JPluginHelper::importPlugin('vmpayment');
-			$dispatcher = JDispatcher::getInstance();
-			$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array( $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_paymentmethod_id,  &$payment_name));
+		if (empty($orderDetails['shipmentName']) ) {
+		    if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+		    JPluginHelper::importPlugin('vmshipment');
+		    $dispatcher = JDispatcher::getInstance();
+		    $returnValues = $dispatcher->trigger('plgVmOnShowOrderFEShipment',array(  $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_shipmentmethod_id, &$orderDetails['shipmentName']));
+		 }
+		 if (empty($orderDetails['paymentName']) ) {
+
+		    if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
+		    JPluginHelper::importPlugin('vmpayment');
+		    $dispatcher = JDispatcher::getInstance();
+		    $returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array( $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_paymentmethod_id,  &$orderDetails['paymentName']));
+		 }
 
 // 			if($format=='pdf'){
 
-				$invoice_number = $orderModel->createInvoiceNumber($orderDetails['details']['BT']);
-				$this->assignRef('invoice_number', $invoice_number);
+		$invoice_number = $orderModel->createInvoiceNumber($orderDetails['details']['BT']);
+		$this->assignRef('invoice_number', $invoice_number);
 // 			}
 
 			$this->assignRef('userfields', $userfields);
 			$this->assignRef('shipmentfields', $shipmentfields);
-			$this->assignRef('shipment_name', $shipment_name);
-			$this->assignRef('payment_name', $payment_name);
+			//$this->assignRef('shipment_name', $shipment_name);
+			//$this->assignRef('payment_name', $payment_name);
 			$this->assignRef('orderdetails', $orderDetails);
 
 			$tmpl = JRequest::getWord('tmpl');
@@ -109,11 +112,13 @@ class VirtuemartViewInvoice extends VmView {
 
 			//Todo multix
 			$vendorId=1;
-		$vendorModel = VmModel::getModel('vendor');
-		$vendorModel->setId($vendorId);
-		$vendor = $vendorModel->getVendor();
-		$vendorModel->addImages($vendor,1);
-		$this->assignRef('vendor', $vendor);
+			$vendorModel = VmModel::getModel('vendor');
+			$vendorModel->setId($vendorId);
+			$vendor = $vendorModel->getVendor();
+			$vendorModel->addImages($vendor,1);
+
+			$this->vendorEmail = $vendorModel->getVendorEmail($vendor->virtuemart_vendor_id);
+			$this->assignRef('vendor', $vendor);
 			$this->assignRef('print', $print);
 
 			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.

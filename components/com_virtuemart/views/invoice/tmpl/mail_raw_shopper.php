@@ -40,7 +40,7 @@ echo JText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_CONTENT',
 						$this->order['details']['BT']['order_pass'],
 						$this->order['details']['BT']['created_on']) . "\n" . "\n";
 
-	echo "\n" . strip_tags(JText::sprintf('COM_VIRTUEMART_MAIL_ORDER_STATUS',$this->order['history']['order_status_name'] ));
+	echo "\n" . strip_tags(JText::sprintf('COM_VIRTUEMART_MAIL_ORDER_STATUS',$this->order['details']['BT']['order_status_name'] ));
 
 echo "\n\n";
 if(!empty($this->order['history']['customer_notified'])){
