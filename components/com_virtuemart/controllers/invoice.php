@@ -33,8 +33,6 @@ class VirtueMartControllerInvoice extends JController
 	function checkStoreInvoice($orderDetails = 0){
 
 		vmdebug('checkStoreInvoice start');
-		//Test
-		//return false;
 
 		$force = true;
 
@@ -152,32 +150,32 @@ class VirtueMartControllerInvoice extends JController
 		}
 		$address.="\n".$userFields[1]['fields']['zip']['value']." ".$userFields[1]['fields']['city']['value'];
 		$address.="\n".$userFields[1]['fields']['virtuemart_country_id']['value'];*/
-/*
+
 		// create new PDF document
 		$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 		// set document information
 		$pdf->SetCreator('Invoice by Virtuemart 2, used library tcpdf');
-		$pdf->SetAuthor($vendor->vendor_name);
+		$pdf->SetAuthor($view->vendor->vendor_name);
 
 		$pdf->SetTitle(JText::_('COM_VIRTUEMART_INVOICE_TITLE'));
-		$pdf->SetSubject(JText::sprintf('COM_VIRTUEMART_INVOICE_SUBJ',$vendor->vendor_store_name));
+		$pdf->SetSubject(JText::sprintf('COM_VIRTUEMART_INVOICE_SUBJ',$view->vendor->vendor_store_name));
 		$pdf->SetKeywords('Invoice by Virtuemart 2');
 
 		//virtuemart.cloudaccess.net/index.php?option=com_virtuemart&view=invoice&layout=details&virtuemart_order_id=18&order_number=6e074d9b&order_pass=p_9cb9e2&task=checkStoreInvoice
-		if(empty($vendor->images[0])){
+		if(empty($view->vendor->images[0])){
 			vmError('Vendor image given path empty ');
-		} else if(empty($vendor->images[0]->file_url_folder) or empty($vendor->images[0]->file_name) or empty($vendor->images[0]->file_extension) ){
-			vmError('Vendor image given image is not complete '.$vendor->images[0]->file_url_folder.$vendor->images[0]->file_name.'.'.$vendor->images[0]->file_extension);
-			vmdebug('Vendor image given image is not complete, the given media',$vendor->images[0]);
-		} else if(!empty($vendor->images[0]->file_extension) and strtolower($vendor->images[0]->file_extension)=='png'){
+		} else if(empty($view->vendor->images[0]->file_url_folder) or empty($view->vendor->images[0]->file_name) or empty($view->vendor->images[0]->file_extension) ){
+			vmError('Vendor image given image is not complete '.$view->vendor->images[0]->file_url_folder.$view->vendor->images[0]->file_name.'.'.$view->vendor->images[0]->file_extension);
+			vmdebug('Vendor image given image is not complete, the given media',$view->vendor->images[0]);
+		} else if(!empty($view->vendor->images[0]->file_extension) and strtolower($view->vendor->images[0]->file_extension)=='png'){
 			vmError('Warning extension of the image is a png, tpcdf has problems with that in the header, choose a jpg or gif');
 		} else {
-			$imagePath = DS. str_replace('/',DS, $vendor->images[0]->file_url_folder.$vendor->images[0]->file_name.'.'.$vendor->images[0]->file_extension);
+			$imagePath = DS. str_replace('/',DS, $view->vendor->images[0]->file_url_folder.$view->vendor->images[0]->file_name.'.'.$view->vendor->images[0]->file_extension);
 			if(!file_exists(JPATH_ROOT.$imagePath)){
 				vmError('Vendor image missing '.$imagePath);
 			} else {
-				$pdf->SetHeaderData($imagePath, 60, $vendor->vendor_store_name, $address);
+				$pdf->SetHeaderData($imagePath, 60, $view->vendor->vendor_store_name, $address);
 			}
 		}
 
@@ -229,7 +227,7 @@ class VirtueMartControllerInvoice extends JController
 		// 			vmdebug('Pdf object ',$pdf);
 		vmdebug('checkStoreInvoice start');
 		return $path;
-		*/
+
 	}
 }
 
