@@ -376,7 +376,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 				// Payment decides what to do when order status is updated
 				JPluginHelper::importPlugin('vmpayment');
-				$_dispatcher = JDispatcher::getInstance();										//Todo  I think $order should be $data
+				$_dispatcher = JDispatcher::getInstance();
 				$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderPayment',array(&$data,$old_order_status));
 				foreach ($_returnValues as $_returnValue) {
 					if ($_returnValue === true) {
@@ -420,7 +420,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			/* Update the order history */
 			$this->_updateOrderHist($virtuemart_order_id, $data->order_status, $data->_customer_notified, $data->_comments);
 
-			vmdebug('Should customer be notified? ',$data);
+// 			vmdebug('Should customer be notified? ',$data);
 			// Check if the customer needs to be informed */
 			if ($data->_customer_notified) {
 // 				$order['virtuemart_order_id'] = $virtuemart_order_id ;
@@ -1021,15 +1021,18 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @author RolandD, Christopher Roussel, Valérie Isaksen
 	 * @todo: Fix URL when we have front-end done
 	 */
-	function notifyCustomer($order  ) {
+	function notifyCustomer($orderdata  ) {
 
 		vmdebug('notifyCustomer');
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
 
 		$orderModel=VmModel::getModel('orders');
-		$orderitems = $orderModel->getOrder($order->virtuemart_order_id);
-		foreach ($orderitems['items'] as $k => $item) {
+		$order = $orderModel->getOrder($orderdata->virtuemart_order_id);
+
+		shopFunctionsF::sentOrderConfirmedEmail($order,$orderdata);
+
+/*		foreach ($orderitems['items'] as $k => $item) {
 		    $orderitems['items'][$k]=(array)$item;
 		}
 		 foreach ($orderitems['calc_rules'] as $k => $calc_rule) {
@@ -1067,7 +1070,9 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		else {
 			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
 		}
-		$mainframe->enqueueMessage( JText::_($string,false).' '.$orderitems['details']['BT']['first_name'].' '.$orderitems['details']['BT']['last_name']. ', '.$orderitems['details']['BT']['email']);
+		*/
+
+// 		$mainframe->enqueueMessage( JText::_($string,false).' '.$orderitems['details']['BT']['first_name'].' '.$orderitems['details']['BT']['last_name']. ', '.$orderitems['details']['BT']['email']);
 	}
 
 

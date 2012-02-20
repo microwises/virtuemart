@@ -216,7 +216,7 @@ class VirtuemartViewOrders extends VmView {
 		parent::display($tpl);
 	}
 
-	public function renderMailLayout($doVendor=false) {
+/*	public function renderMailLayout($doVendor=false) {
 
 
 		// don't need to get the payment name, the Order is sent from the payment trigger
@@ -277,7 +277,7 @@ class VirtuemartViewOrders extends VmView {
 
 		$path = VmConfig::get('forSale_path',0);
 
-		vmdebug('renderMailLayout Frontend '.date(),$this->order);
+		vmdebug('renderMailLayout Frontend '.date('H:i:s'),$this->order);
 
 		if($this->order['details']['BT']['order_status']  == 'C' and $path!==0){
 
@@ -293,7 +293,7 @@ class VirtuemartViewOrders extends VmView {
 		parent::display();
 	}
 
-	function prepareMailData(){
+/*	function prepareMailData(){
 
 		if(!isset($this->vendor)) $this->prepareVendor();
 
@@ -301,7 +301,7 @@ class VirtuemartViewOrders extends VmView {
 		//TODO add orders, for the orderId
 		//TODO add registering userdata
 		// In general we need for every mail the shopperdata (with group), the vendor data, shopperemail, shopperusername, and so on
-	}
+	}*/
 
 	// add vendor for cart
 	function prepareVendor(){

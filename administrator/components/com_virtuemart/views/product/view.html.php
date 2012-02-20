@@ -306,17 +306,12 @@ class VirtuemartViewProduct extends VmView {
 			);
 			$this->lists['search_order'] = VmHTML::selectList('search_order', JRequest::getVar('search_order'),$options);
 
-			/* Toolbar */
-
+			// Toolbar
 			JToolBarHelper::custom('createchild', 'new', 'new', JText::_('COM_VIRTUEMART_PRODUCT_CHILD'), true);
 			JToolBarHelper::custom('cloneproduct', 'copy', 'copy', JText::_('COM_VIRTUEMART_PRODUCT_CLONE'), true);
 			JToolBarHelper::custom('addrating', 'default', '', JText::_('COM_VIRTUEMART_ADD_RATING'), true);
 			$this->addStandardDefaultViewCommands();
 
-
-
-
-			/* Assign the data */
 
 			$this->assignRef('productlist', $productlist);
 
@@ -326,6 +321,10 @@ class VirtuemartViewProduct extends VmView {
 		parent::display($tpl);
 	}
 
+	/**
+	 * This is wrong
+	 *@deprecated
+	 */
 	function renderMail() {
 		$this->setLayout('mail_html_waitlist');
 		$this->subject = JText::sprintf('COM_VIRTUEMART_PRODUCT_WAITING_LIST_EMAIL_SUBJECT', $this->productName);

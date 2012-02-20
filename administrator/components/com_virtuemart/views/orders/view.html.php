@@ -258,7 +258,7 @@ class VirtuemartViewOrders extends VmView {
 
 		$path = VmConfig::get('forSale_path',0);
 
-		vmdebug('renderMailLayout Frontend '.date('H:i:s'),$this->order);
+		vmdebug('renderMailLayout Backend '.date('H:i:s'),$this->order);
 
 		if($this->order['details']['BT']['order_status']  == 'C' and $path!==0){
 
