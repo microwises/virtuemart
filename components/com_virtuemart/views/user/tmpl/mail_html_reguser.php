@@ -76,12 +76,7 @@ $li = '<br />';
 				    foreach ($this->userFields['fields'] as $userField) {
 					if (!empty($userField['value']) && $userField['type'] != 'delimiter' && $userField['type'] != 'BT' && $userField['type'] != 'hidden') {
 					    echo $userField['title'] . ': ' . $userField['value'] . $li;
-					    ?>
-					    <span class="values vm2<?php echo '-' . $userField['name'] ?>" ><?php echo $this->escape($userField['value']) ?></span>
-					    <?php if ($userField['name'] != 'title' and $userField['name'] != 'first_name' and $userField['name'] != 'middle_name' and $userField['name'] != 'zip') { ?>
-	    				    <br class="clear" />
-						<?php
-					    }
+					    
 					}
 				    }
 				    ?>

@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	    <?php
 
-	    foreach ($this->billfields['fields'] as $field) {
+	    foreach ($this->userfields['fields'] as $field) {
 		if (!empty($field['value'])) {
 			?><!-- span class="titles"><?php echo $field['title'] ?></span -->
 	    	    <span class="values vm2<?php echo '-' . $field['name'] ?>" ><?php echo $this->escape($field['value']) ?></span>
@@ -43,13 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 			    <?php
 			}
 		    }
-		    /*
-		if (!empty($field['value'])) {
-		    echo '<tr><td class="key">' . $field['title'] . '</td>'
-		    . '<td>' . $field['value'] . '</td></tr>';
-		}
-		     * */
-
+		 
 	    }
 	    ?>
 

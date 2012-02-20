@@ -69,10 +69,9 @@ $root = $u->toString(array('scheme', 'host'));
     	<td align="right" >
 	    <?php
 	    if ( !empty($item->product_basePriceWithTax ) && $item->product_basePriceWithTax != $item->product_final_price ) {
-			echo '<span class="line-through">'.$item['product_basePriceWithTax'] .'</span><br />' ;
+			echo '<span class="line-through">'.$this->currency->priceDisplay($item->product_basePriceWithTax ) .'</span><br />' ;
 		}
 		?>
-		<?php echo '<span class="line-through">'.$this->currency->priceDisplay($item->product_basePriceWithTax ).'</span><br />' ?>
 		<?php echo $this->currency->priceDisplay($item->product_final_price); ?>
     	</td>
 	    <?php if (VmConfig::get('show_tax')) { ?>
