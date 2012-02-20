@@ -34,8 +34,15 @@ class VirtuemartViewInvoice extends VmView {
 	public function display($tpl = null)
 	{
 		$mainframe = JFactory::getApplication();
-
-		$this->setLayout('details');
+		if  ($this->fromPdf){
+				$this->setLayout('pdf');
+		} else {
+		    if (VmConfig::get('order_mail_html')) {
+			   $this->setLayout('mail_html');
+			} else {
+			   $this->setLayout('mail_raw');
+			}
+		}
 
 		$document = JFactory::getDocument();
 
@@ -91,34 +98,34 @@ class VirtuemartViewInvoice extends VmView {
 		$this->assignRef('invoice_number', $invoice_number);
 // 			}
 
-			$this->assignRef('userfields', $userfields);
-			$this->assignRef('shipmentfields', $shipmentfields);
-			//$this->assignRef('shipment_name', $shipment_name);
-			//$this->assignRef('payment_name', $payment_name);
-			$this->assignRef('orderdetails', $orderDetails);
+		$this->assignRef('userfields', $userfields);
+		$this->assignRef('shipmentfields', $shipmentfields);
+		//$this->assignRef('shipment_name', $shipment_name);
+		//$this->assignRef('payment_name', $payment_name);
+		$this->assignRef('orderdetails', $orderDetails);
 
-			$tmpl = JRequest::getWord('tmpl');
-			$print = false;
-			if($tmpl){
-				$print = true;
-			}
+		$tmpl = JRequest::getWord('tmpl');
+		$print = false;
+		if($tmpl){
+			$print = true;
+		}
 
-			//Todo multix
-			$vendorId=1;
-			$vendorModel = VmModel::getModel('vendor');
-			$vendorModel->setId($vendorId);
-			$vendor = $vendorModel->getVendor();
-			$vendorModel->addImages($vendor,1);
+		//Todo multix
+		$vendorId=1;
+		$vendorModel = VmModel::getModel('vendor');
+		$vendorModel->setId($vendorId);
+		$vendor = $vendorModel->getVendor();
+		$vendorModel->addImages($vendor,1);
 
-			$this->vendorEmail = $vendorModel->getVendorEmail($vendor->virtuemart_vendor_id);
-			$this->assignRef('vendor', $vendor);
-			$this->assignRef('print', $print);
+		$this->vendorEmail = $vendorModel->getVendorEmail($vendor->virtuemart_vendor_id);
+		$this->assignRef('vendor', $vendor);
+		$this->assignRef('print', $print);
 
-			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
-			// In tmpl/edit.php, this is the 4th tab (0-based, so set to 3 above)
-			// jimport('joomla.html.pane');
-			// $pane = JPane::getInstance((__VM_ORDER_USE_SLIDERS?'Sliders':'Tabs'));
-			// $this->assignRef('pane', $pane);
+		// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
+		// In tmpl/edit.php, this is the 4th tab (0-based, so set to 3 above)
+		// jimport('joomla.html.pane');
+		// $pane = JPane::getInstance((__VM_ORDER_USE_SLIDERS?'Sliders':'Tabs'));
+		// $this->assignRef('pane', $pane);
 
 
 		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
@@ -150,6 +157,7 @@ class VirtuemartViewInvoice extends VmView {
 			$this->subject = JText::sprintf('COM_VIRTUEMART_SHOPPER_NEW_ORDER_CONFIRMED', $vendor->vendor_store_name, $currency->priceDisplay($orderDetails['details']['BT']->order_total), $orderDetails['details']['BT']->order_number, $orderDetails['details']['BT']->order_pass );
 			$recipient = 'shopper';
 		}
+		$this->assignRef('recipient', $recipient);
 
 		$pdf = 'pdf';
 		$this->assignRef('format', $pdf);

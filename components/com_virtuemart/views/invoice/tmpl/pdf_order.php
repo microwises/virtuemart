@@ -23,8 +23,6 @@ defined('_JEXEC') or die('Restricted access');
 <h1><?php echo JText::_('COM_VIRTUEMART_INVOICE').' '.$this->invoice_number; ?></h1>
 
 
-
-
 <table width="100%" cellspacing="0" cellpadding="0" border="0">
     <tr>
 	<td ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></td>
