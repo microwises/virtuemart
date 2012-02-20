@@ -282,9 +282,9 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$table->load($id);
 			$oldOrderStatus = $table->order_status;
 
-			JPluginHelper::importPlugin('vmcustom');
-			$_dispatcher = JDispatcher::getInstance();
-			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateSingleItem',array($table,&$orderdata));
+// 			JPluginHelper::importPlugin('vmcustom');
+// 			$_dispatcher = JDispatcher::getInstance();
+// 			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateSingleItem',array($table,&$orderdata));
 
 
 			$table->bindChecknStore($orderdata,true);
@@ -356,6 +356,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	// IMPORTANT: The $inputOrder can contain extra data by plugins			//also strange $useTriggers is always activated?
 	function updateStatusForOneOrder($virtuemart_order_id,$inputOrder,$useTriggers=true){
 
+		vmdebug('updateStatusForOneOrder');
 		/* Update the order */
 		$data = $this->getTable('orders');
 		$data->load($virtuemart_order_id);
@@ -409,7 +410,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 
 			/* Update the order history */
-			$this->_updateOrderHist($virtuemart_order_id, $data->order_status, $data->_customer_notified, $data->_comments);
+			$this->_updateOrderHist($virtuemart_order_id, $data->order_status, $inputOrder['customer_notified'], $inputOrder['comments']);
 
 			// When the plugins did not already notified the user, do it here (the normal way)
 			//Attention the ! prevents at the moment that an email is sent. But it should used that way.
@@ -962,6 +963,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	function createInvoiceNumber($orderDetails){
 
 		$db = JFactory::getDBO();
+		if(!isset($orderDetails->virtuemart_order_id)) vmWarn('createInvoiceNumber $orderDetails has no virtuemart_order_id ',$orderDetails);
 		$q = 'SELECT * FROM `#__virtuemart_invoices` WHERE `virtuemart_order_id`= "'.$orderDetails->virtuemart_order_id.'" '; // AND `order_status` = "'.$orderDetails->order_status.'" ';
 
 		$db->setQuery($q);
@@ -1015,7 +1017,6 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		vmdebug('notifyCustomer');
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-		$mainframe = JFactory::getApplication();
 
 		//Important, the data of the order update mails, payments and invoice should
 		//always be in the database, so using getOrder is the right method
@@ -1068,15 +1069,17 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 
 		// Send the email
-		if (shopFunctionsF::renderMail('invoice', $orderitems['details']['BT']['email'], $vars, null,$vars['doVendor'])) {
+		if (shopFunctionsF::renderMail('invoice', $order['details']['BT']['email'], $vars, null,$vars['doVendor'])) {
 			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_SEND_MSG';
 		}
 		else {
 			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
 		}
-		return shopFunctionsF::renderMail('orders', $order['details']['BT']['email'], $vars);
+// 		return shopFunctionsF::renderMail('orders', $order['details']['BT']['email'], $vars);
 
-		$mainframe->enqueueMessage( JText::_($string,false).' '.$orderitems['details']['BT']['first_name'].' '.$orderitems['details']['BT']['last_name']. ', '.$orderitems['details']['BT']['email']);
+		vmInfo( JText::_($string,false).' '.$orderitems['details']['BT']['first_name'].' '.$orderitems['details']['BT']['last_name']. ', '.$orderitems['details']['BT']['email']);
+
+		return true;
 	}
 
 

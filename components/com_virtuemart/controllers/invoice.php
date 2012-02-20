@@ -33,6 +33,9 @@ class VirtueMartControllerInvoice extends JController
 	function checkStoreInvoice($orderDetails = 0){
 
 		vmdebug('checkStoreInvoice start');
+		//Test
+		return false;
+
 		$force = true;
 
 		//	@ini_set( 'max_execution_time', 5 );

@@ -326,7 +326,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		    $order['virtuemart_order_id'] = $virtuemart_order_id;
 
-		    $order['comments'] .= JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
+		    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
 		    $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 		}
 	    } else {

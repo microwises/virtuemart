@@ -106,7 +106,11 @@ class VirtuemartViewInvoice extends VmView {
 			if($tmpl){
 				$print = true;
 			}
-			$this->prepareVendor();
+
+		$vendorModel = VmModel::getModel('vendor');
+		$vendor = $vendorModel->getVendor();
+		$vendorModel->addImages($this->vendor,1);
+		$this->assignRef('vendor', $vendor);
 			$this->assignRef('print', $print);
 
 			// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
@@ -141,7 +145,7 @@ class VirtuemartViewInvoice extends VmView {
 	}
 
 	// FE public function renderMailLayout($doVendor=false)
-	function renderMailLayout ($vendor, $recipient) {
+	function renderMailLayout ($doVendor, $recipient) {
 
 		// don't need to get the payment name, the Order is sent from the payment trigger
 		$tpl = (VmConfig::get('order_html_email',1)) ? 'mail_html' : 'mail_raw';
@@ -204,8 +208,9 @@ class VirtuemartViewInvoice extends VmView {
 		$this->assignRef('payment_name', $this->order['paymentName']);
 		$this->assignRef('billfields', $billfields);
 		$this->assignRef('shipmentfields', $shipmentfields);
-		$vendorModel = VmModel::getModel('vendor');
+
 		$this->vendorEmail = $vendorModel->getVendorEmail($this->vendor->virtuemart_vendor_id);
+
 		$this->layoutName = $tpl;
 		$this->setLayout($tpl);
 
