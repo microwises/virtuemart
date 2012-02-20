@@ -154,53 +154,6 @@ class shopFunctionsF {
 
 	}
 
-	/**
-	* Prepares the body for shopper and vendor, renders them and sends directly the emails
-	*
-	* @author Max Milbers
-	* @author Christopher Roussel
-	*
-	* @param array what you get, when you use$orderModel->getOrder
-	* @param object what you get, when you use $data = $this->getTable('orders')->load();
-	*
-	*/
-/*function sentOrderConfirmedEmail ($order,$orderdata=0) {
-
-
-		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-		// 		vmdebug('sentOrderConfirmedEmail my order',$order);
-
-		foreach ($order['items'] as $k => $item) {
-			$order['items'][$k]=(array)$item;
-		}
-		foreach ($order['calc_rules'] as $k => $calc_rule) {
-			$order['calc_rules'][$k]=(array)$calc_rule;
-		}
-		$order['details']['BT'] =(array)$order['details']['BT'];
-		$order['details']['ST']=(array)((isset(  $order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
-
-		//Is this really needed todo it that way? This breaks other stuff note by Max
-		/*	    $nb_history = count($order['history']);
-		 $order['history']['order_status_name']=ShopFunctions::getOrderStatusName($order['history'][$nb_history-1]->order_status_code);
-		$order['history']=(array)$order['history'][$nb_history-1];*/
-
-/*	$payment_name = $shipment_name='';
-		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
-
-		JPluginHelper::importPlugin('vmshipment');
-		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEShipment',array(  $order['details']['BT']['virtuemart_order_id'], $order['details']['BT']['virtuemart_shipmentmethod_id'], &$shipment_name));
-		$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array(  $order['details']['BT']['virtuemart_order_id'], $order['details']['BT']['virtuemart_paymentmethod_id'], &$payment_name));
-		$order['shipmentName']=$shipment_name;
-		$order['paymentName']=$payment_name;
-		if($orderdata!=0){
-			$vars['ordertable'] = (array)$orderdata;
-		}
-		$vars['order']=$order;
-		$vars['shopperName'] =  $order['details']['BT']['title'].' '.$order['details']['BT']['first_name'].' '.$order['details']['BT']['last_name'];
-		return shopFunctionsF::renderMail('orders', $order['details']['BT']['email'], $vars);
-	}*/
 
 	/**
 	 * Prepares a view for rendering email, then renders and sends

@@ -27,9 +27,6 @@ $root = $u->toString(array('scheme', 'host'));
 ?>
 
 
-
-
-
 <table class="cart-summary" cellspacing="0" cellpadding="0" border="0" width="100%">
     <tr align="left" class="sectiontableheader">
 	<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></th>
@@ -45,22 +42,22 @@ $root = $u->toString(array('scheme', 'host'));
     <?php
     $i=1;
     foreach ($this->order['items'] as $item) {
-	$_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $item['virtuemart_product_id']);
+	$_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $item->virtuemart_product_id);
 	?>
         <tr valign="top" class="sectiontableentry<?php echo $i ?>">
     	<td align="left" >
-		<?php echo $item['order_item_sku']; ?>
+		<?php echo $item->order_item_sku; ?>
     	</td>
     	<td align="left" >
-		<?php echo $item['product_quantity']; ?>
+		<?php echo $item->product_quantity; ?>
     	</td>
     	<td align="left" >
-    	    <a href="<?php echo $_link; ?>"><?php echo $item['order_item_name']; ?></a>
+    	    <a href="<?php echo $_link; ?>"><?php echo $item->order_item_name; ?></a>
     	</td>
 
     	<td align="left" >
 		<?php
-		if (!empty($item['product_attribute'])) {
+		if (!empty($item->product_attribute)) {
 		    if (!class_exists('VirtueMartModelCustomfields'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'customfields.php');
 		    $product_attribute = VirtueMartModelCustomfields::CustomsFieldOrderDisplay($item,'FE');
@@ -71,21 +68,21 @@ $root = $u->toString(array('scheme', 'host'));
 
     	<td align="right" >
 	    <?php
-	    if ( !empty($item['product_basePriceWithTax'] ) && $item['product_basePriceWithTax'] != $item['product_final_price'] ) {
+	    if ( !empty($item->product_basePriceWithTax ) && $item->product_basePriceWithTax != $item->product_final_price ) {
 			echo '<span class="line-through">'.$item['product_basePriceWithTax'] .'</span><br />' ;
 		}
 		?>
-		<?php echo '<span class="line-through">'.$this->currency->priceDisplay($item['product_basePriceWithTax'] ).'</span><br />' ?>
-		<?php echo $this->currency->priceDisplay($item['product_final_price']); ?>
+		<?php echo '<span class="line-through">'.$this->currency->priceDisplay($item->product_basePriceWithTax ).'</span><br />' ?>
+		<?php echo $this->currency->priceDisplay($item->product_final_price); ?>
     	</td>
 	    <?php if (VmConfig::get('show_tax')) { ?>
-		<td align="right"><?php echo "<span class='priceColor2'>" . $this->currency->priceDisplay( $item['product_tax']  ) . "</span>" ?></td>
+		<td align="right"><?php echo "<span class='priceColor2'>" . $this->currency->priceDisplay( $item->product_tax  ) . "</span>" ?></td>
 	    <?php } ?>
     	<td align="right" >
-		<?php echo $this->currency->priceDisplay(  $item['product_subtotal_discount']); ?>
+		<?php echo $this->currency->priceDisplay(  $item->product_subtotal_discount); ?>
     	</td>
 	<td align="right" >
-		<?php echo $this->currency->priceDisplay($item['product_subtotal_with_tax']  ); ?>
+		<?php echo $this->currency->priceDisplay($item->product_subtotal_with_tax  ); ?>
     	</td>
 
         </tr>
@@ -98,13 +95,13 @@ $root = $u->toString(array('scheme', 'host'));
 			<td colspan="5" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_PRICES_TOTAL'); ?></td>
 
                         <?php if ( VmConfig::get('show_tax')) { ?>
-			<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->order['details']['BT']['order_tax'])."</span>" ?></td>
+			<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->order['details']['BT']->order_tax)."</span>" ?></td>
                         <?php } ?>
-			<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->order['details']['BT']['order_discountAmount'] )."</span>" ?></td>
-			<td align="right"><?php echo $this->currency->priceDisplay($this->order['details']['BT']['order_salesPrice']) ?></td>
+			<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->order['details']['BT']->order_discountAmount )."</span>" ?></td>
+			<td align="right"><?php echo $this->currency->priceDisplay($this->order['details']['BT']->order_salesPrice) ?></td>
 		  </tr>
 <?php if ($this->order['details']['BT']['coupon_code']) {
-	    $coupon_code=$this->order['details']['BT']['coupon_code']?' ('.$this->order['details']['BT']['coupon_code'].')':'';
+	    $coupon_code=$this->order['details']['BT']['coupon_code']?' ('.$this->order['details']['BT']->coupon_code.')':'';
 ?>
         <tr   class="sectiontableentry<?php echo $i ?>">
     	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT').$coupon_code?></td>
@@ -113,7 +110,7 @@ $root = $u->toString(array('scheme', 'host'));
     <?php if (VmConfig::get('show_tax')) { ?>
 		<td align="right">&nbsp;</td>
 	    <?php } ?>
-    	<td align="right"><?php echo $this->currency->priceDisplay($this->order['details']['BT']['coupon_discount']); ?></td>
+    	<td align="right"><?php echo $this->currency->priceDisplay($this->order['details']['BT']->coupon_discount); ?></td>
 	<td align="right">&nbsp;</td>
         </tr>
     <?php
@@ -170,10 +167,10 @@ $root = $u->toString(array('scheme', 'host'));
 	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo $this->order['shipmentName'] ?></td>
 
 <?php if (VmConfig::get('show_tax')) { ?>
-    	<td align="right"><?php echo "<span class='priceColor2'>" . $this->currency->priceDisplay($this->order['details']['BT']['order_shipment_tax']) . "</span>" ?></td>
+    	<td align="right"><?php echo "<span class='priceColor2'>" . $this->currency->priceDisplay($this->order['details']['BT']->order_shipment_tax) . "</span>" ?></td>
 	<?php } ?>
 	<td align="right"><?php    ?> </td>
-	<td align="right"><?php echo $this->currency->priceDisplay($this->order['details']['BT']['order_shipment'] + $this->order['details']['BT']['order_shipment_tax']); ?></td>
+	<td align="right"><?php echo $this->currency->priceDisplay($this->order['details']['BT']->order_shipment + $this->order['details']['BT']->order_shipment_tax); ?></td>
 
     </tr>
 <?php
@@ -184,10 +181,10 @@ $i = 1 ? 2 : 1;
 
 
 <?php if (VmConfig::get('show_tax')) { ?>
-    	<td align="right"><?php echo "<span class='priceColor2'>" . $this->currency->priceDisplay($this->order['details']['BT']['order_payment_tax']) . "</span>" ?></td>
+    	<td align="right"><?php echo "<span class='priceColor2'>" . $this->currency->priceDisplay($this->order['details']['BT']->order_payment_tax) . "</span>" ?></td>
 	<?php } ?>
 	<td align="right"><?php    ?> </td>
-	<td align="right"><?php echo $this->currency->priceDisplay($this->order['details']['BT']['order_payment'] + $this->order['details']['BT']['order_payment_tax']); ?></td>
+	<td align="right"><?php echo $this->currency->priceDisplay($this->order['details']['BT']->order_payment + $this->order['details']['BT']->order_payment_tax); ?></td>
 
 
     </tr>
@@ -202,10 +199,10 @@ $i = 1 ? 2 : 1;
 	<td align="right" style="padding-right: 10px;" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></strong></td>
 
 <?php if (VmConfig::get('show_tax')) { ?>
-    	<td align="right"><span class='priceColor2'><?php echo $this->currency->priceDisplay($this->order['details']['BT']['order_billTaxAmount']); ?></span></td>
+    	<td align="right"><span class='priceColor2'><?php echo $this->currency->priceDisplay($this->order['details']['BT']->order_billTaxAmount); ?></span></td>
 	<?php } ?>
-	<td align="right"><?php   echo $this->currency->priceDisplay($this->order['details']['BT']['order_billDiscountAmount']); ?> </td>
-	<td align="right"><strong><?php echo $this->currency->priceDisplay($this->order['details']['BT']['order_total']); ?></strong></td>
+	<td align="right"><?php   echo $this->currency->priceDisplay($this->order['details']['BT']->order_billDiscountAmount); ?> </td>
+	<td align="right"><strong><?php echo $this->currency->priceDisplay($this->order['details']['BT']->order_total); ?></strong></td>
     </tr>
 
 </table>

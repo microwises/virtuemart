@@ -35,38 +35,38 @@ defined('_JEXEC') or die('Restricted access'); ?>
   <tr>
     <td width="30%">
 		<?php echo JText::_('COM_VIRTUEMART_MAIL_SHOPPER_YOUR_ORDER'); ?><br />
-		<b><?php echo $this->order['details']['BT']['order_number'] ?></b>
+		<b><?php echo $this->order['details']['BT']->order_number ?></b>
 
 	</td>
     <td width="30%">
 		<?php echo JText::_('COM_VIRTUEMART_MAIL_SHOPPER_YOUR_PASSWORD'); ?><br />
-		<b><?php echo $this->order['details']['BT']['order_pass'] ?></b>
+		<b><?php echo $this->order['details']['BT']->order_pass ?></b>
 	</td>
     <td width="40%">
     	<p>
-			<a class="default" title="<?php echo $this->vendor->vendor_store_name ?>" href="<?php echo JURI::root().'index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$this->order['details']['BT']['order_number'].'&order_pass='.$this->order['details']['BT']['order_pass']; ?>">
+			<a class="default" title="<?php echo $this->vendor->vendor_store_name ?>" href="<?php echo JURI::root().'index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$this->order['details']['BT']->order_number.'&order_pass='.$this->order['details']['BT']->order_pass; ?>">
 			<?php echo JText::_('COM_VIRTUEMART_MAIL_SHOPPER_YOUR_ORDER_LINK'); ?></a>
 		</p>
 	</td>
   </tr>
   <tr>
     <td colspan="3"><p>
-				<?php echo JText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_TOTAL_ORDER',$this->currency->priceDisplay($this->order['details']['BT']['order_total']) ); ?></p></td>
+				<?php echo JText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_TOTAL_ORDER',$this->currency->priceDisplay($this->order['details']['BT']->order_total) ); ?></p></td>
   </tr>
   <td colspan="3"><p>
-				<?php echo JText::sprintf('COM_VIRTUEMART_MAIL_ORDER_STATUS',$this->order['details']['BT']['order_status_name']) ; ?></p></td>
+				<?php echo JText::sprintf('COM_VIRTUEMART_MAIL_ORDER_STATUS',$this->order['details']['BT']->order_status_name) ; ?></p></td>
   </tr>
-  <?php if($this->order['history']['customer_notified'] && !(empty($this->order['history']['comments']))) { ?>
+  <?php if($this->order['history']->customer_notified && !(empty($this->order['history']->comments))) { ?>
   <tr>
     <td colspan="3">
-		<?php echo JText::_($this->order['history']['comments']); ?>
+		<?php echo JText::_($this->order['history']->comments); ?>
 	</td>
   </tr>
   <?php } ?>
-  <?php if(!empty($this->order['details']['BT']['customer_note'])){ ?>
+  <?php if(!empty($this->order['details']['BT']->customer_note)){ ?>
   <tr>
     <td colspan="3">
-		<?php echo JText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_QUESTION',$this->order['details']['BT']['customer_note']) ?>
+		<?php echo JText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_QUESTION',$this->order['details']['BT']->customer_note) ?>
 
 	</td>
   </tr>

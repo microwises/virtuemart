@@ -1027,14 +1027,14 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 // 		shopFunctionsF::sentOrderConfirmedEmail($order,$orderdata);
 		// 		vmdebug('sentOrderConfirmedEmail my order',$order);
 
-		foreach ($order['items'] as $k => $item) {
+/*		foreach ($order['items'] as $k => $item) {
 			$order['items'][$k]=(array)$item;
 		}
 		foreach ($order['calc_rules'] as $k => $calc_rule) {
 			$order['calc_rules'][$k]=(array)$calc_rule;
 		}
 		$order['details']['BT'] =(array)$order['details']['BT'];
-		$order['details']['ST']=(array)((isset(  $order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
+		$order['details']['ST']=(array)((isset(  $order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);*/
 
 		//Is this really needed todo it that way? This breaks other stuff note by Max
 		/*	    $nb_history = count($order['history']);
@@ -1047,15 +1047,15 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		JPluginHelper::importPlugin('vmshipment');
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEShipment',array(  $order['details']['BT']['virtuemart_order_id'], $order['details']['BT']['virtuemart_shipmentmethod_id'], &$shipment_name));
-		$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array(  $order['details']['BT']['virtuemart_order_id'], $order['details']['BT']['virtuemart_paymentmethod_id'], &$payment_name));
+		$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEShipment',array(  $order['details']['BT']->virtuemart_order_id, $order['details']['BT']->virtuemart_shipmentmethod_id, &$shipment_name));
+		$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array(  $order['details']['BT']->virtuemart_order_id, $order['details']['BT']->virtuemart_paymentmethod_id, &$payment_name));
 		$order['shipmentName']=$shipment_name;
 		$order['paymentName']=$payment_name;
 		if($newOrderData!=0){	//We do not really need that
 			$vars['newOrderData'] = (array)$newOrderData;
 		}
 		$vars['order']=$order;
-		$vars['shopperName'] =  $order['details']['BT']['title'].' '.$order['details']['BT']['first_name'].' '.$order['details']['BT']['last_name'];
+		$vars['shopperName'] =  $order['details']['BT']->title.' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name;
 
 
 		//$vars['includeComments'] = JRequest::getVar('customer_notified', array());
@@ -1069,8 +1069,21 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 
 
+		$path = VmConfig::get('forSale_path',0);
+
+		if($order['details']['BT']->order_status  == 'C' and $path!==0 and !$this->fromPdf){
+
+			if(!class_exists('VirtueMartControllerInvoice')) require_once( JPATH_VM_SITE.DS.'controllers'.DS.'invoice.php' );
+			$controller = new VirtueMartControllerInvoice( array(
+													  'model_path' => JPATH_VM_SITE.DS.'models',
+													  'view_path' => JPATH_VM_SITE.DS.'views'
+			));
+
+			$vars['mediaToSend'][] = $controller->checkStoreInvoice($order);
+		}
+
 		// Send the email
-		if (shopFunctionsF::renderMail('invoice', $order['details']['BT']['email'], $vars, null,$vars['doVendor'])) {
+		if (shopFunctionsF::renderMail('invoice', $order['details']['BT']->email, $vars, null,$vars['doVendor'])) {
 			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_SEND_MSG';
 		}
 		else {
@@ -1078,7 +1091,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 // 		return shopFunctionsF::renderMail('orders', $order['details']['BT']['email'], $vars);
 
-		vmInfo( JText::_($string,false).' '.$order['details']['BT']['first_name'].' '.$order['details']['BT']['last_name']. ', '.$order['details']['BT']['email']);
+		vmInfo( JText::_($string,false).' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name. ', '.$order['details']['BT']->email);
 
 		return true;
 	}

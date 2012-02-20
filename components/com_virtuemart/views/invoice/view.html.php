@@ -39,12 +39,6 @@ class VirtuemartViewInvoice extends VmView {
 
 		$document = JFactory::getDocument();
 
-		$pdf = 'pdf';
-		$this->assignRef('format', $pdf);
-
-
-		$document->setTitle( JText::_('COM_VIRTUEMART_INVOICE') );
-
 		$orderModel = VmModel::getModel('orders');
 
 		$orderDetails = $this->order;
@@ -148,24 +142,24 @@ class VirtuemartViewInvoice extends VmView {
 		//shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 
 		//vmdebug('renderMailLayout invoice '.date('H:i:s'),$this->order);
-		$path = VmConfig::get('forSale_path',0);
-		if($this->order['details']['BT']['order_status']  == 'C' and $path!==0 and !$this->fromPdf){
 
-			if(!class_exists('VirtueMartControllerInvoice')) require_once( JPATH_VM_SITE.DS.'controllers'.DS.'invoice.php' );
-			$controller = new VirtueMartControllerInvoice( array(
-											  'model_path' => JPATH_VM_SITE.DS.'models',
-											  'view_path' => JPATH_VM_SITE.DS.'views'
-			));
-
-			$this->mediaToSend[] = $controller->checkStoreInvoice($this->order);
-		}
 		if ($this->doVendor) {
-			$this->subject = JText::sprintf('COM_VIRTUEMART_VENDOR_NEW_ORDER_CONFIRMED', $this->shopperName, $currency->priceDisplay($orderDetails['details']['BT']['order_total']), $orderDetails['details']['BT']['order_number']);
+			$this->subject = JText::sprintf('COM_VIRTUEMART_VENDOR_NEW_ORDER_CONFIRMED', $this->shopperName, $currency->priceDisplay($orderDetails['details']['BT']->order_total), $orderDetails['details']['BT']->order_number);
 			$recipient = 'vendor';
 		} else {
-			$this->subject = JText::sprintf('COM_VIRTUEMART_SHOPPER_NEW_ORDER_CONFIRMED', $this->vendor->vendor_store_name, $currency->priceDisplay($orderDetails['details']['BT']['order_total']), $orderDetails['details']['BT']['order_number'], $orderDetails['details']['BT']['order_pass'] );
+			$this->subject = JText::sprintf('COM_VIRTUEMART_SHOPPER_NEW_ORDER_CONFIRMED', $vendor->vendor_store_name, $currency->priceDisplay($orderDetails['details']['BT']->order_total), $orderDetails['details']['BT']->order_number, $orderDetails['details']['BT']->order_pass );
 			$recipient = 'shopper';
 		}
+
+		$pdf = 'pdf';
+		$this->assignRef('format', $pdf);
+
+		if($this->fromPdf){
+			$document->setTitle( JText::_('COM_VIRTUEMART_INVOICE') );
+		}
+
+
+
 		parent::display($tpl);
 	}
 

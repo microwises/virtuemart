@@ -29,18 +29,18 @@ defined('_JEXEC') or die('Restricted access');
     <tr>
 	<td ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_NUMBER') ?></td>
 	<td align="left"><strong>
-	    <?php echo $this->orderdetails['details']['BT']['order_number']; ?>
+	    <?php echo $this->orderdetails['details']['BT']->order_number; ?>
 		</strong>
 	</td>
     </tr>
 
     <tr>
 	<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_DATE') ?></td>
-	<td align="left"><?php echo vmJsApi::date($this->orderdetails['details']['BT']['created_on'], 'LC4', true); ?></td>
+	<td align="left"><?php echo vmJsApi::date($this->orderdetails['details']['BT']->created_on, 'LC4', true); ?></td>
     </tr>
     <tr>
 	<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PO_STATUS') ?></td>
-	<td align="left"><?php echo $this->orderstatuses[$this->orderdetails['details']['BT']['order_status']]; ?></td>
+	<td align="left"><?php echo $this->orderstatuses[$this->orderdetails['details']['BT']->order_status]; ?></td>
     </tr>
     <tr>
 	<td class=""><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPMENT_LBL') ?></td>
@@ -53,16 +53,16 @@ defined('_JEXEC') or die('Restricted access');
 	<td align="left"><?php echo $this->orderdetails['paymentName']; ?>
 	</td>
     </tr>
-<?php if ($this->orderdetails['details']['BT']['customer_note']) { ?>
+<?php if ($this->orderdetails['details']['BT']->customer_note) { ?>
 	 <tr>
     <td><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_CUSTOMER_NOTE') ?></td>
-    <td valign="top" align="left" width="50%"><?php echo $this->orderdetails['details']['BT']['customer_note']; ?></td>
+    <td valign="top" align="left" width="50%"><?php echo $this->orderdetails['details']['BT']->customer_note; ?></td>
 </tr>
 <?php } ?>
 
      <tr>
 	<td class="orders-key"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></strong></td>
-	<td class="orders-key" align="left"><strong><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']['order_total']); ?></strong></td>
+	<td class="orders-key" align="left"><strong><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_total); ?></strong></td>
     </tr>
 
     <tr>
