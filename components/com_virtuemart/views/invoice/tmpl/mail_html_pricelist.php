@@ -100,8 +100,8 @@ $root = $u->toString(array('scheme', 'host'));
 			<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->order['details']['BT']->order_discountAmount )."</span>" ?></td>
 			<td align="right"><?php echo $this->currency->priceDisplay($this->order['details']['BT']->order_salesPrice) ?></td>
 		  </tr>
-<?php if ($this->order['details']['BT']['coupon_code']) {
-	    $coupon_code=$this->order['details']['BT']['coupon_code']?' ('.$this->order['details']['BT']->coupon_code.')':'';
+<?php if ($this->order['details']['BT']->coupon_code) {
+	    $coupon_code=$this->order['details']['BT']->coupon_code?' ('.$this->order['details']['BT']->coupon_code.')':'';
 ?>
         <tr   class="sectiontableentry<?php echo $i ?>">
     	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT').$coupon_code?></td>

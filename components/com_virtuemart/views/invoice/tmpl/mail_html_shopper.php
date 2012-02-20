@@ -56,10 +56,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
   <td colspan="3"><p>
 				<?php echo JText::sprintf('COM_VIRTUEMART_MAIL_ORDER_STATUS',$this->order['details']['BT']->order_status_name) ; ?></p></td>
   </tr>
-  <?php if($this->order['history']->customer_notified && !(empty($this->order['history']->comments))) { ?>
+  <?php if($this->order['history']['customer_notified'] && !(empty($this->order['history']['comments']))) { ?>
   <tr>
     <td colspan="3">
-		<?php echo JText::_($this->order['history']->comments); ?>
+		<?php echo JText::_($this->order['history']['comments']); ?>
 	</td>
   </tr>
   <?php } ?>
