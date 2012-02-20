@@ -265,30 +265,19 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		// Update order item status
 		if(empty($virtuemart_order_item_id)){
 
-// 			if (!empty($update_lines[$virtuemart_order_id])) {
+
 				$q = 'SELECT virtuemart_order_item_id
 						FROM #__virtuemart_order_items
 						WHERE virtuemart_order_id="'.(int)$orderdata->virtuemart_order_id.'"';
 				$db = JFactory::getDBO();
 				$db->setQuery($q);
 				$virtuemart_order_item_ids = $db->loadResultArray();
-// 				if ($order_items) {
-// 					foreach ($order_items as $key => $order_item) {
-// 						$this->updateSingleItem($order_item->virtuemart_order_item_id, $new_status);
-// 					}
-// 				}
-// 			}
+
 		}else {
 			if(!is_array($virtuemart_order_item_id)) $virtuemart_order_item_ids = array($virtuemart_order_item_id);
 		}
 
 
-		/* Send a download ID */
-		//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($virtuemart_order_id);
-
-		/* Check if the customer needs to be informed */
-		//if (!empty($notify[$virtuemart_order_id])) $this->notifyCustomer($order, $comments,$includeComments);
-		//$updated++;
 
 		foreach($virtuemart_order_item_ids as $id){
 			$table = $this->getTable('order_items');
@@ -430,9 +419,6 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			}
 			/* Update the order history */
 			$this->_updateOrderHist($virtuemart_order_id, $data->order_status, $data->_customer_notified, $data->_comments);
-
-			// Send a download ID */
-			//if (VmConfig::get('enable_downloads') == '1') $this->mailDownloadId($virtuemart_order_id);
 
 			vmdebug('Should customer be notified? ',$data);
 			// Check if the customer needs to be informed */
@@ -912,8 +898,6 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		    }
 		}
 
-
-
 		//jExit();
 		return true;
 	}
@@ -967,14 +951,14 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	{
 
 		$db = JFactory::getDBO();
-		$q = 'SELECT SQL_CALC_FOUND_ROWS, * FROM #__virtuemart_orders WHERE `virtuemart_vendor_id`="'.$virtuemart_vendor_id.'"';
-		$db->setQuery($q);
-		$db->query();
 
-		$this->_db->setQuery('SELECT FOUND_ROWS()');
+		$q = 'SELECT COUNT(1) FROM #__virtuemart_orders WHERE `virtuemart_vendor_id`="'.$virtuemart_vendor_id.'"';
+		$db->setQuery($q);
 
 		//We can use that here, because the order_number is free to set, the invoice_number must often follow special rules
-		$count = $this->_db->loadResult();+VM_ORDER_OFFSET;
+		$count = $db->loadResult();
+		$count = $count + (int)VM_ORDER_OFFSET;
+// 		vmdebug('my db creating ordernumber VM_ORDER_OFFSET '.VM_ORDER_OFFSET.' $count '.$count, $this->_db);
 // 		$variable_fixed=sprintf("%06s",$num_rows);
 		$data = substr( md5( session_id().(string)time().(string)$uid )
 		,0
@@ -1008,11 +992,10 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 // 				$data = array_merge($plg_data,$data);
 			}
 
-			$q = 'SELECT SQL_CALC_FOUND_ROWS, * FROM `#__virtuemart_invoices` WHERE `virtuemart_vendor_id`= "'.$orderDetails->virtuemart_vendor_id.'" '; // AND `order_status` = "'.$orderDetails->order_status.'" ';
+			$q = 'SELECT COUNT(1) FROM `#__virtuemart_invoices` WHERE `virtuemart_vendor_id`= "'.$orderDetails->virtuemart_vendor_id.'" '; // AND `order_status` = "'.$orderDetails->order_status.'" ';
 			$db->setQuery($q);
-			$db->query();
-			$this->_db->setQuery('SELECT FOUND_ROWS()');
-			$count = $this->_db->loadResult()+1;
+
+			$count = $db->loadResult()+1;
 
 			if(empty($data['invoice_number'])) {
 				//$variable_fixed=sprintf("%05s",$num_rows);
@@ -1031,62 +1014,6 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 	}
 
-	/**
-	 * E-mails the Download-ID to the customer
-	 * or removes the Download-ID from the product_downloads table
-	 *
-	 * @author ?, Christopher Roussel
-	 * @return boolean
-	 */
-	function mailDownloadId ($virtuemart_order_id) {
-		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-		$mainframe = JFactory::getApplication();
-		$vars = array('orderID' => $virtuemart_order_id);
-
-		//TODO, mail download  this url is old
-		//$vars['url'] = VmConfig::get('url')."index.php?option=com_virtuemart&page=shop.downloads&Itemid=".$sess->getShopItemid();
-
-		$db = JFactory::getDBO();
-		$db->setQuery('SELECT order_status FROM #__virtuemart_orders WHERE virtuemart_order_id='.$virtuemart_order_id);
-		$order_status = $db->loadResult();
-
-		if ($order_status == VmConfig::get('enable_download_status')) {
-			$q = 'SELECT * '; //virtuemart_order_id,virtuemart_user_id,download_id,file_name
-			$q .= 'FROM #__virtuemart_product_downloads
-				WHERE virtuemart_order_id = "'.$virtuemart_order_id.'"';
-			$db->setQuery($q);
-			$downloads = $db->loadObjectList();
-			if ($downloads) {
-				$q = "SELECT CONCAT_WS(' ',first_name, middle_name , last_name) AS full_name, email
-					FROM #__virtuemart_userinfos
-					LEFT JOIN #__users ju
-					ON (ju.id = u.virtuemart_user_id)
-					WHERE virtuemart_user_id = '".$downloads[0]->virtuemart_user_id."'
-					AND address_type='BT'
-					LIMIT 1";
-				$db->setQuery($q);
-				$user = $db->loadObject();
-				$vars['downloads'] = $downloads;
-				$vars['user'] = $user;
-				$vars['layoutName'] = 'download';
-
-				if (shopFunctionsF::renderMail('orders', $user->email, $vars)) {
-					$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_SEND_MSG';
-				}
-				else {
-					$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
-				}
-				$mainframe->enqueueMessage(JText::_($string,false). " ". $user->full_name. ' '.$user->email);
-			}
-		}
-		else if ($order_status == VmConfig::get('disable_download_status')) {
-			$q = "DELETE FROM #__virtuemart_product_downloads WHERE virtuemart_order_id=".$virtuemart_order_id;
-			$db->setQuery($q);
-			$db->query();
-		}
-
-		return true;
-	}
 
 	/**
 	 * Notifies the customer that the Order Status has been changed
@@ -1095,6 +1022,8 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @todo: Fix URL when we have front-end done
 	 */
 	function notifyCustomer($order  ) {
+
+		vmdebug('notifyCustomer');
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
 
@@ -1128,11 +1057,10 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		//$vars['includeComments'] = JRequest::getVar('customer_notified', array());
 
-		//$url = VmConfig::get('secureurl')."index.php?option=com_virtuemart&page=account.order_details&virtuemart_order_id=".$order->virtuemart_order_id.'&Itemid='.$sess->getShopItemid();
 		$vars['url'] = 'url';
 		$vars['doVendor']=false;
 
-		/* Send the email */
+		// Send the email
 		if (shopFunctionsF::renderMail('orders', $orderitems['details']['BT']['email'], $vars, null,true)) {
 			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_SEND_MSG';
 		}

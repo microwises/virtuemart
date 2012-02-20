@@ -986,25 +986,6 @@ class VirtueMartCart {
 		$this->setCartIntoSession();
 	}
 
-	/**
-	 * Prepares the body for shopper and vendor, renders them and sends directly the emails
-	 *
-	 * @author Max Milbers
-	 * @author Christopher Roussel
-	 *
-	 * @param int $orderID
-	 * @deprecated moved to shopfunctionsf: Valérie
-	 *
-	 */
-	function sentOrderConfirmedEmail ($order) {
-		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-// 		vmdebug('sentOrderConfirmedEmail my order',$order);
-		$vars = array('order' => $order);
-		$vars['shopperName'] =  $order['details']['BT']['title'].' '.$order['details']['BT']['first_name'].' '.$order['details']['BT']['last_name'];
-
-		return shopFunctionsF::renderMail('cart', $order['details']['BT']['email'], $vars);
-	}
-
 
 	/**
 	 * prepare display of cart

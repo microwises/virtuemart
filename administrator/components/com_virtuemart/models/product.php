@@ -1530,10 +1530,8 @@ public function getUncategorizedChildren($selected){
 	$err = $this->_db->getErrorMsg();
 	if(!empty($err)){
 		vmError('getUncategorizedChildren sql error '.$err,'getUncategorizedChildren sql error');
-		vmdebug('ERRROR getUncategorizedChildren '.$q);
 		return false;
 	} else {
-		vmdebug('getUncategorizedChildren '.$this->_db->getQuery());
 		return $res;
 	}
 

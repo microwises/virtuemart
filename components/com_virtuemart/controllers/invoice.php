@@ -32,6 +32,7 @@ class VirtueMartControllerInvoice extends JController
 
 	function checkStoreInvoice($orderDetails = 0){
 
+		vmdebug('checkStoreInvoice start');
 		$force = true;
 
 		//	@ini_set( 'max_execution_time', 5 );
@@ -222,6 +223,7 @@ class VirtueMartControllerInvoice extends JController
 		// This method has several options, check the source code documentation for more information.
 		$pdf->Output($path, 'F');
 		// 			vmdebug('Pdf object ',$pdf);
+		vmdebug('checkStoreInvoice start');
 		return $path;
 	}
 }
