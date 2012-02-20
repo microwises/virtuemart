@@ -149,6 +149,19 @@ class VirtuemartViewInvoice extends VmView {
 		// this is no setting in BE to change the layout !
 		//shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 
+		vmdebug('renderMailLayout invoice '.date('H:i:s'),$this->order);
+		$path = VmConfig::get('forSale_path',0);
+		if($this->order['details']['BT']['order_status']  == 'C' and $path!==0){
+
+			if(!class_exists('VirtueMartControllerInvoice')) require_once( JPATH_VM_SITE.DS.'controllers'.DS.'invoice.php' );
+			$controller = new VirtueMartControllerInvoice( array(
+											  'model_path' => JPATH_VM_SITE.DS.'models',
+											  'view_path' => JPATH_VM_SITE.DS.'views'
+			));
+
+			$this->mediaToSend[] = $controller->checkStoreInvoice($this->order);
+		}
+
 		parent::display($tpl);
 	}
 
