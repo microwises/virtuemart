@@ -315,18 +315,18 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    if ($virtuemart_order_id) {
 		$this->_storePaypalInternalData($method, $paypal_data, $virtuemart_order_id);
 		// send the email ONLY if payment has been accepted
-		$modelOrder = VmModel::getModel('orders');
-		$orderitems = $modelOrder->getOrder($virtuemart_order_id);
-		$nb_history = count($orderitems['history']);
+// 		$modelOrder = VmModel::getModel('orders');
+// 		$orderitems = $modelOrder->getOrder($virtuemart_order_id);
+// 		$nb_history = count($orderitems['history']);
 		//vmdebug('history', $orderitems);
 
 		if ($nb_history == 1) {
-		    $order['customer_notified'] = shopFunctionsF::sentOrderConfirmedEmail($orderitems);
+
 		    $this->logInfo('plgVmOnPaymentResponseReceived, sentOrderConfirmedEmail ' . $order_number, 'message');
-		    $order['order_status'] = $orderitems['items'][$nb_history - 1]->order_status;
+
 		    $order['virtuemart_order_id'] = $virtuemart_order_id;
-// 		    $order['customer_notified'] = 1;
-		    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
+
+		    $order['comments'] .= JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
 		    $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 		}
 	    } else {

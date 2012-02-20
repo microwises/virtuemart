@@ -1049,12 +1049,12 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array(  $order['details']['BT']['virtuemart_order_id'], $order['details']['BT']['virtuemart_paymentmethod_id'], &$payment_name));
 		$order['shipmentName']=$shipment_name;
 		$order['paymentName']=$payment_name;
-		if($newOrderData!=0){
+		if($newOrderData!=0){	//We do not really need that
 			$vars['newOrderData'] = (array)$newOrderData;
 		}
 		$vars['order']=$order;
 		$vars['shopperName'] =  $order['details']['BT']['title'].' '.$order['details']['BT']['first_name'].' '.$order['details']['BT']['last_name'];
-		return shopFunctionsF::renderMail('orders', $order['details']['BT']['email'], $vars);
+
 
 		//$vars['includeComments'] = JRequest::getVar('customer_notified', array());
 
@@ -1074,6 +1074,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		else {
 			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
 		}
+		return shopFunctionsF::renderMail('orders', $order['details']['BT']['email'], $vars);
 
 		$mainframe->enqueueMessage( JText::_($string,false).' '.$orderitems['details']['BT']['first_name'].' '.$orderitems['details']['BT']['last_name']. ', '.$orderitems['details']['BT']['email']);
 	}
