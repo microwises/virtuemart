@@ -182,18 +182,16 @@ class VirtueMartViewProductdetails extends VmView {
 			$document->addHeadLink( JRoute::_( $product->canonical ,true,-1 ), 'canonical', 'rel', '' );
 		}
 
-
-		// Set the titles
-		if ($product->customtitle) {
-       		$document->setTitle( strip_tags($product->customtitle));
-      		} else {
-     		 $document->setTitle( strip_tags(($category->category_name?($category->category_name.' : '):'').$product->product_name)); }
-
-
 		$uri = JURI::getInstance();
 		//$pathway->addItem(JText::_('COM_VIRTUEMART_PRODUCT_DETAILS'), $uri->toString(array('path', 'query', 'fragment')));
 		$pathway->addItem(strip_tags($product->product_name));
-
+		// Set the titles
+		// $document->setTitle should be after the additem pathway
+		if ($product->customtitle) {
+		    $document->setTitle( strip_tags($product->customtitle));
+      		} else {
+		     $document->setTitle( strip_tags(($category->category_name?($category->category_name.' : '):'').$product->product_name));
+		 }
 		$ratingModel = VmModel::getModel('ratings');
 		$allowReview = $ratingModel->allowReview($product->virtuemart_product_id);
 		$this->assignRef('allowReview', $allowReview);

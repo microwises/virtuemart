@@ -240,7 +240,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	// add spin image
 	$html = '<html><head><title>Redirection</title></head><body><div style="margin: auto; text-align: center;">';
 	$html .= '<form action="' . "https://" . $url . '" method="post" name="vm_paypal_form" >';
-	$html.= '<input type="image" name="submit" src="http://www.paypal.com/en_US/i/btn/x-click-but6.gif" alt="' . JText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />';
+	$html.= '<input type="submit"  value="' . JText::_('VMPAYMENT_PAYPAL_REDIRECT_MESSAGE') . '" />';
 	foreach ($post_variables as $name => $value) {
 	    $html.= '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '" />';
 	}
@@ -313,19 +313,17 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    $virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
 	    $payment_name = $this->renderPluginName($method);
 	    if ($virtuemart_order_id) {
-		$this->_storePaypalInternalData($method, $paypal_data, $virtuemart_order_id);
+
+		$order['order_status'] = $this->_getPaymentStatus($method, $paypal_data['payment_status']);
+		$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $order_number);
 		// send the email ONLY if payment has been accepted
-// 		$modelOrder = VmModel::getModel('orders');
-// 		$orderitems = $modelOrder->getOrder($virtuemart_order_id);
-// 		$nb_history = count($orderitems['history']);
-		//vmdebug('history', $orderitems);
-
-		if ($nb_history == 1) {
-
+		$modelOrder = VmModel::getModel('orders');
+		$orderitems = $modelOrder->getOrder($virtuemart_order_id);
+		$nb_history = count($orderitems['history']);
+		if ($orderitems['history'][$nb_history - 1]->order_status_code != $order['order_status']) {
+		    $this->_storePaypalInternalData($method, $paypal_data, $virtuemart_order_id);
 		    $this->logInfo('plgVmOnPaymentResponseReceived, sentOrderConfirmedEmail ' . $order_number, 'message');
-
 		    $order['virtuemart_order_id'] = $virtuemart_order_id;
-
 		    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
 		    $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 		}
@@ -439,39 +437,31 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	if (empty($paypal_data['payment_status']) || ($paypal_data['payment_status'] != 'Completed' && $paypal_data['payment_status'] != 'Pending')) {
 	    //return false;
 	}
-	$paypal_status = $paypal_data['payment_status'];
-	if (strcmp($paypal_status, 'Completed') == 0) {
-	    $new_status = $method->status_success;
-	} elseif (strcmp($paypal_status, 'Pending') == 0) {
-	    $new_status = $method->status_pending;
-	} else {
-	    $new_status = $method->status_canceled;
-	}
 
-
+	$new_status = $this->_getPaymentStatus($method, $paypal_data['payment_status']);
 
 	$this->logInfo('plgVmOnPaymentNotification return new_status:' . $new_status, 'message');
 
 
 // 	if ($virtuemart_order_id) {
-	    // send the email only if payment has been accepted
+	// send the email only if payment has been accepted
 // 	    $modelOrder = VmModel::getModel('orders');
 // 	    $orderitems = $modelOrder->getOrder($virtuemart_order_id);
 // 	    $nb_history = count($orderitems['history']);
-		$order = array();
-	   $order['order_status'] = $new_status;
+	$order = array();
+	$order['order_status'] = $new_status;
 // 	   $order['virtuemart_order_id'] = $virtuemart_order_id;
-	   $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $order_number);
+	$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $order_number);
 // 	   if ($nb_history == 1) {
 // 			$order['comments'] .= "<br />" . JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
 // 	    }
 // 	    $order['customer_notified'] = 1;
-	    $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
+	$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 // 	    if ($nb_history == 1) {
 // 		if (!class_exists('shopFunctionsF'))
 // 		    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 // 		shopFunctionsF::sentOrderConfirmedEmail($orderitems);
-		$this->logInfo('Notification, sentOrderConfirmedEmail ' . $order_number . ' ' . $new_status, 'message');
+	$this->logInfo('Notification, sentOrderConfirmedEmail ' . $order_number . ' ' . $new_status, 'message');
 // 	    }
 // 	}
 	//// remove vmcart
@@ -516,6 +506,18 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    return '';
 	}
 	return $pkey;
+    }
+
+    function _getPaymentStatus($method, $paypal_status) {
+	$new_status = '';
+	if (strcmp($paypal_status, 'Completed') == 0) {
+	    $new_status = $method->status_success;
+	} elseif (strcmp($paypal_status, 'Pending') == 0) {
+	    $new_status = $method->status_pending;
+	} else {
+	    $new_status = $method->status_canceled;
+	}
+	return $new_status;
     }
 
     /**

@@ -945,21 +945,19 @@ abstract class vmPSPlugin extends vmPlugin {
 		}
 
 		public function processConfirmedOrderPaymentResponse($returnValue, $cart, $order, $html,  $payment_name, $new_status='') {
-			if ($returnValue !== null) {
+
 				if ($returnValue == 1) {
 					//We delete the old stuff
 
-					$orderID = $order['details']['BT']->virtuemart_order_id;
 					// send the email only if payment has been accepted
 					// update status
-					if ($new_status) {
+
 					    $modelOrder = VmModel::getModel('orders');
 					    $order['order_status'] = $new_status;
-					    $order['virtuemart_order_id'] = $orderID;
 					    $order['customer_notified'] = 0;
 					    $order['comments'] = '';
-					    $modelOrder->updateStatusForOneOrder($orderID, $order, true);
-					}
+					    $modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order, true);
+
 					$order['paymentName']= $payment_name;
 // 					if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 // 					shopFunctionsF::sentOrderConfirmedEmail($order);
@@ -978,7 +976,7 @@ abstract class vmPSPlugin extends vmPlugin {
 					$mainframe->enqueueMessage($html);
 					$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
 				}
-			}
+
 		}
 
 		function emptyCart($session_id) {

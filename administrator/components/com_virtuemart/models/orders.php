@@ -415,7 +415,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			// When the plugins did not already notified the user, do it here (the normal way)
 			//Attention the ! prevents at the moment that an email is sent. But it should used that way.
 // 			if (!$inputOrder['customer_notified']) {
-				$this->notifyCustomer( $data->virtuemart_order_id , $inputOrder );
+			$this->notifyCustomer( $data->virtuemart_order_id , $inputOrder );
 // 			}
 
 			JPluginHelper::importPlugin('vmcoupon');
@@ -1077,7 +1077,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		}
 // 		return shopFunctionsF::renderMail('orders', $order['details']['BT']['email'], $vars);
 
-		vmInfo( JText::_($string,false).' '.$orderitems['details']['BT']['first_name'].' '.$orderitems['details']['BT']['last_name']. ', '.$orderitems['details']['BT']['email']);
+		vmInfo( JText::_($string,false).' '.$order['details']['BT']['first_name'].' '.$order['details']['BT']['last_name']. ', '.$order['details']['BT']['email']);
 
 		return true;
 	}

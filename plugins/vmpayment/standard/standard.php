@@ -136,7 +136,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	//$html .= $this->getHtmlRow('STANDARD_AMOUNT', $totalInPaymentCurrency.' '.$currency_code_3);
 	$html .= '</table>' . "\n";
 
-	return $this->processConfirmedOrderPaymentResponse(true, $cart, $order, $html, $dbValues['payment_name']);
+	return $this->processConfirmedOrderPaymentResponse(true, $cart, $order, $html, $dbValues['payment_name'],'P');
 // 		return true;  // empty cart, send order
     }
 
