@@ -353,7 +353,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 	}
 
-	// IMPORTANT: The $inputOrder can contain extra data by plugins
+	// IMPORTANT: The $inputOrder can contain extra data by plugins			//also strange $useTriggers is always activated?
 	function updateStatusForOneOrder($virtuemart_order_id,$inputOrder,$useTriggers=true){
 
 		/* Update the order */
@@ -361,9 +361,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$data->load($virtuemart_order_id);
 		$old_order_status = $data->order_status;
 		$data->bind($inputOrder);
-// 		$data->_customer_notified = $inputOrder['customer_notified'];
-// 		$data->_comments = $inputOrder['comments'];
-		//$order['virtuemart_order_id']= $virtuemart_order_id;
+
 		//First we must call the payment, the payment manipulates the result of the order_status
 		if($useTriggers){
 				if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
@@ -413,10 +411,10 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			/* Update the order history */
 			$this->_updateOrderHist($virtuemart_order_id, $data->order_status, $data->_customer_notified, $data->_comments);
 
-// 			vmdebug('Should customer be notified? ',$inputOrder['customer_notified']);
 			// When the plugins did not already notified the user, do it here (the normal way)
+			//Attention the ! prevents at the moment that an email is sent. But it should used that way.
 			if (!$inputOrder['customer_notified']) {
-				$this->notifyCustomer($inputOrder, $data );
+				$this->notifyCustomer( $data->virtuemart_order_id , $inputOrder );
 			}
 
 			JPluginHelper::importPlugin('vmcoupon');
@@ -1010,17 +1008,19 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	/**
 	 * Notifies the customer that the Order Status has been changed
 	 *
-	 * @author RolandD, Christopher Roussel, Valérie Isaksen
-	 * @todo: Fix URL when we have front-end done
+	 * @author RolandD, Christopher Roussel, Valérie Isaksen, Max Milbers
+	 *
 	 */
-	function notifyCustomer($newOrderData, $orderTableData  ) {
+	private function notifyCustomer($virtuemart_order_id, $newOrderData = 0 ) {
 
 		vmdebug('notifyCustomer');
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
 
+		//Important, the data of the order update mails, payments and invoice should
+		//always be in the database, so using getOrder is the right method
 		$orderModel=VmModel::getModel('orders');
-		$order = $orderModel->getOrder($orderTableData->virtuemart_order_id);
+		$order = $orderModel->getOrder($virtuemart_order_id);
 
 // 		shopFunctionsF::sentOrderConfirmedEmail($order,$orderdata);
 		// 		vmdebug('sentOrderConfirmedEmail my order',$order);
@@ -1049,7 +1049,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array(  $order['details']['BT']['virtuemart_order_id'], $order['details']['BT']['virtuemart_paymentmethod_id'], &$payment_name));
 		$order['shipmentName']=$shipment_name;
 		$order['paymentName']=$payment_name;
-		if($orderdata!=0){
+		if($newOrderData!=0){
 			$vars['newOrderData'] = (array)$newOrderData;
 		}
 		$vars['order']=$order;
@@ -1062,7 +1062,10 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		//Using this function garantue us that it is always there. If the vendor should be informed should be done by the plugins
 		//We may add later something to the method, defining this better
 		$vars['url'] = 'url';
-		if(!isset($vars['doVendor'])) $vars['doVendor'] = false;
+		if(!isset($vars['doVendor'])){
+			if(!isset($newOrderData['doVendor'])) $vars['doVendor'] = false; else $vars['doVendor'] = $newOrderData['doVendor'];
+		}
+
 
 		// Send the email
 		if (shopFunctionsF::renderMail('invoice', $orderitems['details']['BT']['email'], $vars, null,$vars['doVendor'])) {

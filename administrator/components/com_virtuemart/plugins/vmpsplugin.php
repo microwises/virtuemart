@@ -961,8 +961,8 @@ abstract class vmPSPlugin extends vmPlugin {
 					    $modelOrder->updateStatusForOneOrder($orderID, $order, true);
 					}
 					$order['paymentName']= $payment_name;
-					if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
-					shopFunctionsF::sentOrderConfirmedEmail($order);
+// 					if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
+// 					shopFunctionsF::sentOrderConfirmedEmail($order);
 					//We delete the old stuff
 					$cart->emptyCart();
 					JRequest::setVar('html', $html);
