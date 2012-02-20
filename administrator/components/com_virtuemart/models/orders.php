@@ -378,7 +378,6 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					// Ignore null status and look for the next returnValue
 				}
 
-			// TODO This is not the most logical place for these plugins (or better; the method updateStatus() must be renamed....)
 			JPluginHelper::importPlugin('vmshipment');
 			$_dispatcher = JDispatcher::getInstance();											//Should we add this? $inputOrder
 			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderShipment',array(&$data,$old_order_status));
@@ -408,14 +407,15 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 					$this->updateSingleItem($order_item->virtuemart_order_item_id, $data);
 				}
 			}
+
 			/* Update the order history */
 			$this->_updateOrderHist($virtuemart_order_id, $data->order_status, $data->_customer_notified, $data->_comments);
 
 			// When the plugins did not already notified the user, do it here (the normal way)
 			//Attention the ! prevents at the moment that an email is sent. But it should used that way.
-			if (!$inputOrder['customer_notified']) {
+// 			if (!$inputOrder['customer_notified']) {
 				$this->notifyCustomer( $data->virtuemart_order_id , $inputOrder );
-			}
+// 			}
 
 			JPluginHelper::importPlugin('vmcoupon');
 			$dispatcher = JDispatcher::getInstance();

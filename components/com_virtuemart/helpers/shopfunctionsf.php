@@ -216,7 +216,7 @@ class shopFunctionsF {
 
 		$controller = new VirtueMartControllerVirtuemart();
 		//Todo, do we need that? refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
-		$controller->addViewPath(JPATH_VM_ADMINISTRATOR.DS.'views');
+		$controller->addViewPath(JPATH_VM_SITE.DS.'views');
 
 		$view = $controller->getView($viewName, $format);
 		if (!$controllerName) $controllerName = $viewName;
@@ -224,7 +224,7 @@ class shopFunctionsF {
 		if (!class_exists($controllerClassName)) require(JPATH_VM_SITE.DS.'controllers'.DS.$controllerName.'.php');
 
 		//Todo, do we need that? refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
-		$view->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.'/views/'.$viewName.'/tmpl');
+		$view->addTemplatePath(JPATH_VM_SITE.'/views/'.$viewName.'/tmpl');
 
 		vmdebug('renderMail my vars for the view',$vars);
 		foreach ($vars as $key => $val) {

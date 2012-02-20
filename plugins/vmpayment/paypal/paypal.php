@@ -321,11 +321,11 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		//vmdebug('history', $orderitems);
 
 		if ($nb_history == 1) {
-		    shopFunctionsF::sentOrderConfirmedEmail($orderitems);
+		    $order['customer_notified'] = shopFunctionsF::sentOrderConfirmedEmail($orderitems);
 		    $this->logInfo('plgVmOnPaymentResponseReceived, sentOrderConfirmedEmail ' . $order_number, 'message');
 		    $order['order_status'] = $orderitems['items'][$nb_history - 1]->order_status;
 		    $order['virtuemart_order_id'] = $virtuemart_order_id;
-		    $order['customer_notified'] = 1;
+// 		    $order['customer_notified'] = 1;
 		    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
 		    $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 		}
@@ -453,26 +453,27 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	$this->logInfo('plgVmOnPaymentNotification return new_status:' . $new_status, 'message');
 
 
-	if ($virtuemart_order_id) {
+// 	if ($virtuemart_order_id) {
 	    // send the email only if payment has been accepted
-	    $modelOrder = VmModel::getModel('orders');
-	    $orderitems = $modelOrder->getOrder($virtuemart_order_id);
-	    $nb_history = count($orderitems['history']);
-	    $order['order_status'] = $new_status;
-	    $order['virtuemart_order_id'] = $virtuemart_order_id;
-	    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $order_number);
-	    if ($nb_history == 1) {
-		$order['comments'] .= "<br />" . JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
-	    }
-	    $order['customer_notified'] = 1;
+// 	    $modelOrder = VmModel::getModel('orders');
+// 	    $orderitems = $modelOrder->getOrder($virtuemart_order_id);
+// 	    $nb_history = count($orderitems['history']);
+		$order = array();
+	   $order['order_status'] = $new_status;
+// 	   $order['virtuemart_order_id'] = $virtuemart_order_id;
+	   $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $order_number);
+// 	   if ($nb_history == 1) {
+// 			$order['comments'] .= "<br />" . JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
+// 	    }
+// 	    $order['customer_notified'] = 1;
 	    $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
-	    if ($nb_history == 1) {
-		if (!class_exists('shopFunctionsF'))
-		    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-		shopFunctionsF::sentOrderConfirmedEmail($orderitems);
+// 	    if ($nb_history == 1) {
+// 		if (!class_exists('shopFunctionsF'))
+// 		    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+// 		shopFunctionsF::sentOrderConfirmedEmail($orderitems);
 		$this->logInfo('Notification, sentOrderConfirmedEmail ' . $order_number . ' ' . $new_status, 'message');
-	    }
-	}
+// 	    }
+// 	}
 	//// remove vmcart
 	$this->emptyCart($return_context);
 	//die();
