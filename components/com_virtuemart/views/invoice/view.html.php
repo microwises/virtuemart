@@ -85,7 +85,6 @@ class VirtuemartViewInvoice extends VmView {
 		    $returnValues = $dispatcher->trigger('plgVmOnShowOrderFEShipment',array(  $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_shipmentmethod_id, &$orderDetails['shipmentName']));
 		 }
 		 if (empty($orderDetails['paymentName']) ) {
-
 		    if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		    JPluginHelper::importPlugin('vmpayment');
 		    $dispatcher = JDispatcher::getInstance();
@@ -141,7 +140,6 @@ class VirtuemartViewInvoice extends VmView {
 			$orderstatuses[$_ordstat->order_status_code] = JText::_($_ordstat->order_status_name);
 		}
 
-
 		$this->assignRef('orderstatuses', $orderstatuses);
 
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
@@ -149,9 +147,9 @@ class VirtuemartViewInvoice extends VmView {
 		// this is no setting in BE to change the layout !
 		//shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 
-		vmdebug('renderMailLayout invoice '.date('H:i:s'),$this->order);
+		//vmdebug('renderMailLayout invoice '.date('H:i:s'),$this->order);
 		$path = VmConfig::get('forSale_path',0);
-		if($this->order['details']['BT']['order_status']  == 'C' and $path!==0){
+		if($this->order['details']['BT']['order_status']  == 'C' and $path!==0 and !$this->fromPdf){
 
 			if(!class_exists('VirtueMartControllerInvoice')) require_once( JPATH_VM_SITE.DS.'controllers'.DS.'invoice.php' );
 			$controller = new VirtueMartControllerInvoice( array(
@@ -161,13 +159,21 @@ class VirtuemartViewInvoice extends VmView {
 
 			$this->mediaToSend[] = $controller->checkStoreInvoice($this->order);
 		}
-
+		if ($this->doVendor) {
+			$this->subject = JText::sprintf('COM_VIRTUEMART_VENDOR_NEW_ORDER_CONFIRMED', $this->shopperName, $currency->priceDisplay($orderDetails['details']['BT']['order_total']), $orderDetails['details']['BT']['order_number']);
+			$recipient = 'vendor';
+		} else {
+			$this->subject = JText::sprintf('COM_VIRTUEMART_SHOPPER_NEW_ORDER_CONFIRMED', $this->vendor->vendor_store_name, $currency->priceDisplay($orderDetails['details']['BT']['order_total']), $orderDetails['details']['BT']['order_number'], $orderDetails['details']['BT']['order_pass'] );
+			$recipient = 'shopper';
+		}
 		parent::display($tpl);
 	}
 
 	// FE public function renderMailLayout($doVendor=false)
 	function renderMailLayout ($doVendor, $recipient) {
 
+		$this->doVendor=$doVendor;
+		$this->fromPdf=false;
 		$this->display();
 		// don't need to get the payment name, the Order is sent from the payment trigger
 /*		$tpl = (VmConfig::get('order_html_email',1)) ? 'mail_html' : 'mail_raw';

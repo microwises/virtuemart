@@ -21,11 +21,13 @@ defined('_JEXEC') or die('Restricted access');
 /* TODO Change the header place in helper or assets ??? */
 ?>
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="html-email">
+    <tr>
     <td colspan="3">
 	<img src="<?php  echo JURI::root() . $this-> vendor->images[0]->file_url ?>">
 	<br/>
 	<strong><?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_NAME', $this->shopperName); ?></strong><br/>
     </td>
+    </tr>
     <tr>
 	<td colspan="2">
 		<?php echo JText::sprintf('COM_VIRTUEMART_CART_MAIL_SHOPPER_SUMMARY', $this->vendor->vendor_store_name); ?>
