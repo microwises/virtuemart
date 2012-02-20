@@ -277,24 +277,17 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			if(!is_array($virtuemart_order_item_id)) $virtuemart_order_item_ids = array($virtuemart_order_item_id);
 		}
 
-
-
 		foreach($virtuemart_order_item_ids as $id){
 			$table = $this->getTable('order_items');
 			$table->load($id);
 			$oldOrderStatus = $table->order_status;
 
-			$data->order_status = $orderdata->order_status;
-
-			//$data->comment = $comment;
-
 			JPluginHelper::importPlugin('vmcustom');
 			$_dispatcher = JDispatcher::getInstance();
-// 			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateSingleItem',array(&$comment,$table,$order_status,$order_pass));
-			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateSingleItem',array($table,&$data,&$orderdata));
+			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateSingleItem',array($table,&$orderdata));
 
 
-			$table->bindChecknStore($data,true);
+			$table->bindChecknStore($orderdata,true);
 		/* Update the order item history */
 			//$this->_updateOrderItemHist($id, $order_status, $customer_notified, $comment);
 			$errors = $table->getErrors();
@@ -302,7 +295,6 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				vmError( get_class( $this ).'::store '.$error);
 			}
 
-			// 		$this->handleStockAfterStatusChanged($order_status,array($product),$table->order_status);
 			$this->handleStockAfterStatusChangedPerProduct($orderdata->order_status, $oldOrderStatus, $table,$table->product_quantity);
 
 		}
@@ -361,22 +353,23 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 	}
 
-	function updateStatusForOneOrder($virtuemart_order_id,$order,$useTriggers=true){
+	// IMPORTANT: The $inputOrder can contain extra data by plugins
+	function updateStatusForOneOrder($virtuemart_order_id,$inputOrder,$useTriggers=true){
 
 		/* Update the order */
 		$data = $this->getTable('orders');
 		$data->load($virtuemart_order_id);
 		$old_order_status = $data->order_status;
-		$data->bind($order);
-		$data->_customer_notified = $order['customer_notified'];
-		$data->_comments = $order['comments'];
+		$data->bind($inputOrder);
+// 		$data->_customer_notified = $inputOrder['customer_notified'];
+// 		$data->_comments = $inputOrder['comments'];
 		//$order['virtuemart_order_id']= $virtuemart_order_id;
 		//First we must call the payment, the payment manipulates the result of the order_status
 		if($useTriggers){
 				if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 				// Payment decides what to do when order status is updated
 				JPluginHelper::importPlugin('vmpayment');
-				$_dispatcher = JDispatcher::getInstance();
+				$_dispatcher = JDispatcher::getInstance();											//Should we add this? $inputOrder
 				$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderPayment',array(&$data,$old_order_status));
 				foreach ($_returnValues as $_returnValue) {
 					if ($_returnValue === true) {
@@ -389,7 +382,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			// TODO This is not the most logical place for these plugins (or better; the method updateStatus() must be renamed....)
 			JPluginHelper::importPlugin('vmshipment');
-			$_dispatcher = JDispatcher::getInstance();
+			$_dispatcher = JDispatcher::getInstance();											//Should we add this? $inputOrder
 			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateOrderShipment',array(&$data,$old_order_status));
 
 
@@ -398,7 +391,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			* some authorization needs to be voided
 			*/
 			if ($data->order_status == "X") {
-				JPluginHelper::importPlugin('vmpayment');
+				JPluginHelper::importPlugin('vmpayment');																			//Should we add this? $inputOrder
 				$_dispatcher = JDispatcher::getInstance();$_dispatcher->trigger('plgVmOnCancelPayment',array(&$data,$old_order_status));
 			}
 		}
@@ -420,11 +413,10 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			/* Update the order history */
 			$this->_updateOrderHist($virtuemart_order_id, $data->order_status, $data->_customer_notified, $data->_comments);
 
-// 			vmdebug('Should customer be notified? ',$data);
-			// Check if the customer needs to be informed */
-			if ($data->_customer_notified) {
-// 				$order['virtuemart_order_id'] = $virtuemart_order_id ;
-				$this->notifyCustomer($data );
+// 			vmdebug('Should customer be notified? ',$inputOrder['customer_notified']);
+			// When the plugins did not already notified the user, do it here (the normal way)
+			if (!$inputOrder['customer_notified']) {
+				$this->notifyCustomer($inputOrder, $data );
 			}
 
 			JPluginHelper::importPlugin('vmcoupon');
@@ -1021,58 +1013,66 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @author RolandD, Christopher Roussel, Valérie Isaksen
 	 * @todo: Fix URL when we have front-end done
 	 */
-	function notifyCustomer($orderdata  ) {
+	function notifyCustomer($newOrderData, $orderTableData  ) {
 
 		vmdebug('notifyCustomer');
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 		$mainframe = JFactory::getApplication();
 
 		$orderModel=VmModel::getModel('orders');
-		$order = $orderModel->getOrder($orderdata->virtuemart_order_id);
+		$order = $orderModel->getOrder($orderTableData->virtuemart_order_id);
 
-		shopFunctionsF::sentOrderConfirmedEmail($order,$orderdata);
+// 		shopFunctionsF::sentOrderConfirmedEmail($order,$orderdata);
+		// 		vmdebug('sentOrderConfirmedEmail my order',$order);
 
-/*		foreach ($orderitems['items'] as $k => $item) {
-		    $orderitems['items'][$k]=(array)$item;
+		foreach ($order['items'] as $k => $item) {
+			$order['items'][$k]=(array)$item;
 		}
-		 foreach ($orderitems['calc_rules'] as $k => $calc_rule) {
-		    $orderitems['calc_rules'][$k]=(array)$calc_rule;
+		foreach ($order['calc_rules'] as $k => $calc_rule) {
+			$order['calc_rules'][$k]=(array)$calc_rule;
 		}
-		$orderitems['details']['BT'] =(array)$orderitems['details']['BT'];
-		$orderitems['details']['ST']=(array)((isset(  $orderitems['details']['ST'])) ? $orderitems['details']['ST'] : $orderitems['details']['BT']);
+		$order['details']['BT'] =(array)$order['details']['BT'];
+		$order['details']['ST']=(array)((isset(  $order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
 
-		$nb_history = count($orderitems['history']);
-		$orderitems['history'] = (array)$orderitems['history'][$nb_history-1] ;
-		$orderitems['history']['order_status_name']=ShopFunctions::getOrderStatusName($orderitems['history']['order_status_code']);
-		$vars['shopperName'] =  $orderitems['details']['BT']['title'].' '.$orderitems['details']['BT']['first_name'].' '.$orderitems['details']['BT']['last_name'];
+		//Is this really needed todo it that way? This breaks other stuff note by Max
+		/*	    $nb_history = count($order['history']);
+		 $order['history']['order_status_name']=ShopFunctions::getOrderStatusName($order['history'][$nb_history-1]->order_status_code);
+		$order['history']=(array)$order['history'][$nb_history-1];*/
 
 		$payment_name = $shipment_name='';
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
+
 		JPluginHelper::importPlugin('vmshipment');
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEShipment',array(  $orderitems['details']['BT']['virtuemart_order_id'], $orderitems['details']['BT']['virtuemart_shipmentmethod_id'], &$shipment_name));
-		$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array(  $orderitems['details']['BT']['virtuemart_order_id'], $orderitems['details']['BT']['virtuemart_paymentmethod_id'], &$payment_name));
-		$orderitems['shipmentName']=$shipment_name;
-		$orderitems['paymentName']=$payment_name;
-		$vars['order']=$orderitems;
-
+		$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEShipment',array(  $order['details']['BT']['virtuemart_order_id'], $order['details']['BT']['virtuemart_shipmentmethod_id'], &$shipment_name));
+		$returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array(  $order['details']['BT']['virtuemart_order_id'], $order['details']['BT']['virtuemart_paymentmethod_id'], &$payment_name));
+		$order['shipmentName']=$shipment_name;
+		$order['paymentName']=$payment_name;
+		if($orderdata!=0){
+			$vars['newOrderData'] = (array)$newOrderData;
+		}
+		$vars['order']=$order;
+		$vars['shopperName'] =  $order['details']['BT']['title'].' '.$order['details']['BT']['first_name'].' '.$order['details']['BT']['last_name'];
+		return shopFunctionsF::renderMail('orders', $order['details']['BT']['email'], $vars);
 
 		//$vars['includeComments'] = JRequest::getVar('customer_notified', array());
 
+		//I think this is misleading, I think it should always ask for example $vars['newOrderData']['doVendor'] directly
+		//Using this function garantue us that it is always there. If the vendor should be informed should be done by the plugins
+		//We may add later something to the method, defining this better
 		$vars['url'] = 'url';
-		$vars['doVendor']=false;
+		if(!isset($vars['doVendor'])) $vars['doVendor'] = false;
 
 		// Send the email
-		if (shopFunctionsF::renderMail('orders', $orderitems['details']['BT']['email'], $vars, null,true)) {
+		if (shopFunctionsF::renderMail('invoice', $orderitems['details']['BT']['email'], $vars, null,$vars['doVendor'])) {
 			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_SEND_MSG';
 		}
 		else {
 			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
 		}
-		*/
 
-// 		$mainframe->enqueueMessage( JText::_($string,false).' '.$orderitems['details']['BT']['first_name'].' '.$orderitems['details']['BT']['last_name']. ', '.$orderitems['details']['BT']['email']);
+		$mainframe->enqueueMessage( JText::_($string,false).' '.$orderitems['details']['BT']['first_name'].' '.$orderitems['details']['BT']['last_name']. ', '.$orderitems['details']['BT']['email']);
 	}
 
 

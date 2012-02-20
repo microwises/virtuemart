@@ -164,7 +164,7 @@ class shopFunctionsF {
 	* @param object what you get, when you use $data = $this->getTable('orders')->load();
 	*
 	*/
-	function sentOrderConfirmedEmail ($order,$orderdata=0) {
+/*function sentOrderConfirmedEmail ($order,$orderdata=0) {
 
 
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
@@ -184,7 +184,7 @@ class shopFunctionsF {
 		 $order['history']['order_status_name']=ShopFunctions::getOrderStatusName($order['history'][$nb_history-1]->order_status_code);
 		$order['history']=(array)$order['history'][$nb_history-1];*/
 
-		$payment_name = $shipment_name='';
+/*	$payment_name = $shipment_name='';
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
 		JPluginHelper::importPlugin('vmshipment');
@@ -200,7 +200,7 @@ class shopFunctionsF {
 		$vars['order']=$order;
 		$vars['shopperName'] =  $order['details']['BT']['title'].' '.$order['details']['BT']['first_name'].' '.$order['details']['BT']['last_name'];
 		return shopFunctionsF::renderMail('orders', $order['details']['BT']['email'], $vars);
-	}
+	}*/
 
 	/**
 	 * Prepares a view for rendering email, then renders and sends
@@ -216,7 +216,7 @@ class shopFunctionsF {
 
 		$controller = new VirtueMartControllerVirtuemart();
 		//Todo, do we need that? refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
-// 		$controller->addViewPath(JPATH_VM_ADMINISTRATOR.DS.'views');
+		$controller->addViewPath(JPATH_VM_ADMINISTRATOR.DS.'views');
 
 		$view = $controller->getView($viewName, $format);
 		if (!$controllerName) $controllerName = $viewName;
@@ -224,7 +224,7 @@ class shopFunctionsF {
 		if (!class_exists($controllerClassName)) require(JPATH_VM_SITE.DS.'controllers'.DS.$controllerName.'.php');
 
 		//Todo, do we need that? refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
-//		$view->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.'/views/'.$viewName.'/tmpl');
+		$view->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.'/views/'.$viewName.'/tmpl');
 
 		vmdebug('renderMail my vars for the view',$vars);
 		foreach ($vars as $key => $val) {
