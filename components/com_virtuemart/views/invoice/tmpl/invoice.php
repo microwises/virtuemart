@@ -30,7 +30,7 @@ if($this->print){
 	?>
 
 		<body onload="javascript:print();">
-		<h1><?php echo JText::_('COM_VIRTUEMART_INVOICE'); ?> </h1>
+		
 		<div class='spaceStyle'>
 		<?php
 		echo $this->loadTemplate('order');

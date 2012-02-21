@@ -207,7 +207,7 @@ class VirtuemartViewInvoice extends VmView {
 		    if (!empty($field['value'])) {
 			     $vendorAddress.= $field['value'];
 			    if ($field['name'] != 'title' and $field['name'] != 'first_name' and $field['name'] != 'middle_name' and $field['name'] != 'zip') {
-			       $vendorAddress.= "<br />";
+			       $vendorAddress.= "\n";
 			    } else {
 				$vendorAddress.=' ';
 			    }
