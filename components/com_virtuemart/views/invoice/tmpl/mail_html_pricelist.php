@@ -121,35 +121,35 @@ $root = $u->toString(array('scheme', 'host'));
 
 	<?php
 		foreach($this->order['calc_rules'] as $rule){
-			if ($rule['calc_kind'] == 'DBTaxRulesBill') { ?>
+			if ($rule->calc_kind == 'DBTaxRulesBill') { ?>
 			<tr class="sectiontableentry<?php $i ?>">
-				<td colspan="5" align="right"><?php echo $rule['calc_rule_name'] ?> </td>
+				<td colspan="5" align="right"><?php echo $rule->calc_rule_name ?> </td>
 
                                    <?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"> </td>
                                 <?php } ?>
-				<td align="right"> <?php echo  $this->currency->priceDisplay($rule['calc_amount']);  ?></td>
-				<td align="right"><?php echo  $this->currency->priceDisplay($rule['calc_amount']);  ?> </td>
+				<td align="right"> <?php echo  $this->currency->priceDisplay($rule->calc_amount);  ?></td>
+				<td align="right"><?php echo  $this->currency->priceDisplay($rule->calc_amount);  ?> </td>
 			</tr>
 			<?php
-			} elseif ($rule['calc_kind'] == 'taxRulesBill') { ?>
+			} elseif ($rule->calc_kind == 'taxRulesBill') { ?>
 			<tr class="sectiontableentry<?php $i ?>">
-				<td colspan="5" align="right"><?php echo $rule['calc_rule_name'] ?> </td>
+				<td colspan="5" align="right"><?php echo $rule->calc_rule_name ?> </td>
 				<?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo $this->currency->priceDisplay($rule['calc_amount']); ?> </td>
+				<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount); ?> </td>
 				 <?php } ?>
 				<td align="right"><?php    ?> </td>
-				<td align="right"><?php echo $this->currency->priceDisplay($rule['calc_amount']);   ?> </td>
+				<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount);   ?> </td>
 			</tr>
 			<?php
-			 } elseif ($rule['calc_kind'] == 'DATaxRulesBill') { ?>
+			 } elseif ($rule->calc_kind == 'DATaxRulesBill') { ?>
 			<tr class="sectiontableentry<?php $i ?>">
-				<td colspan="5" align="right"><?php echo $rule['calc_rule_name'] ?> </td>
+				<td colspan="5" align="right"><?php echo $rule->calc_rule_name ?> </td>
 				<?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo   $this->currency->priceDisplay($rule['calc_amount']); ?> </td>
+				<td align="right"><?php echo   $this->currency->priceDisplay($rule->calc_amount); ?> </td>
 				 <?php } ?>
 				<td align="right"><?php    ?> </td>
-				<td align="right"><?php echo $this->currency->priceDisplay($rule['calc_amount']);  ?> </td>
+				<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount);  ?> </td>
 			</tr>
 
 			<?php

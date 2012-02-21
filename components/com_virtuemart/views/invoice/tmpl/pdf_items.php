@@ -124,33 +124,33 @@ if ($this->orderdetails['details']['BT']->coupon_discount <> 0.00) {
 		foreach($this->orderdetails['calc_rules'] as $rule){
 			if ($rule->calc_kind== 'DBTaxRulesBill') { ?>
 			<tr >
-				<td colspan="6"  align="right" class="pricePad"><?php echo $rule['calc_rule_name'] ?> </td>
+				<td colspan="6"  align="right" class="pricePad"><?php echo $rule->calc_rule_name ?> </td>
 
                                    <?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"> </td>
                                 <?php } ?>
-				<td align="right"> <?php echo  $this->currency->priceDisplay($rule['calc_amount']);  ?></td>
-				<td align="right"><?php echo  $this->currency->priceDisplay($rule['calc_amount']);  ?> </td>
+				<td align="right"> <?php echo  $this->currency->priceDisplay($rule->calc_amount);  ?></td>
+				<td align="right"><?php echo  $this->currency->priceDisplay($rule->calc_amount);  ?> </td>
 			</tr>
 			<?php
 			} elseif ($rule->calc_kind == 'taxRulesBill') { ?>
 			<tr >
-				<td colspan="6"  align="right" class="pricePad"><?php echo $rule['calc_rule_name'] ?> </td>
+				<td colspan="6"  align="right" class="pricePad"><?php echo $rule->calc_rule_name ?> </td>
 				<?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo $this->currency->priceDisplay($rule['calc_amount']); ?> </td>
+				<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount); ?> </td>
 				 <?php } ?>
 				<td align="right"><?php    ?> </td>
-				<td align="right"><?php echo $this->currency->priceDisplay($rule['calc_amount']);   ?> </td>
+				<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount);   ?> </td>
 			</tr>
 			<?php
 			 } elseif ($rule->calc_kind == 'DATaxRulesBill') { ?>
 			<tr >
-				<td colspan="6"   align="right" class="pricePad"><?php echo $rule['calc_rule_name'] ?> </td>
+				<td colspan="6"   align="right" class="pricePad"><?php echo $rule->calc_rule_name ?> </td>
 				<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"> </td>
 				 <?php } ?>
-				<td align="right"><?php  echo   $this->currency->priceDisplay($rule['calc_amount']);  ?> </td>
-				<td align="right"><?php echo $this->currency->priceDisplay($rule['calc_amount']);  ?> </td>
+				<td align="right"><?php  echo   $this->currency->priceDisplay($rule->calc_amount);  ?> </td>
+				<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount);  ?> </td>
 			</tr>
 
 			<?php

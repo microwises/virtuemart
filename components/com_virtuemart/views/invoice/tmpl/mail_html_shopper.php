@@ -60,7 +60,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
   if($this->order['history'][$nb-1]->customer_notified && !(empty($this->order['history'][$nb-1]->comments))) { ?>
   <tr>
     <td colspan="3">
-		<?php echo JText::_($this->order['history']['comments']); ?>
+		<?php echo  $this->order['history'][$nb-1]->comments; ?>
 	</td>
   </tr>
   <?php } ?>
