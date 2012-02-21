@@ -16,5 +16,5 @@ defined('_JEXEC') or die('Restricted access');
 * other free or open source software licenses.
 * @version $Id: details.php 5314 2012-01-24 15:23:17Z Milbo $
 */
-echo 'old layout used FE/orders/tmpl/details_pdf.php'
+echo 'old layout used FE/orders/tmpl/details_pdf.php' ?>
 

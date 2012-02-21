@@ -44,15 +44,15 @@ class VirtuemartViewInvoice extends VmView {
 
 		if(empty($this->uselayout)){
 			$layout = JRequest::getWord('layout','mail');
-			if($layout == 'mail'){
-				if (VmConfig::get('order_mail_html')) {
-					$layout = 'mail_html';
-				} else {
-					$layout = 'mail_raw';
-				}
-			}
 		} else {
 			$layout = $this->uselayout;
+		}
+		if($layout == 'mail'){
+			if (VmConfig::get('order_mail_html')) {
+				$layout = 'mail_html';
+			} else {
+				$layout = 'mail_raw';
+			}
 		}
 		$this->setLayout($layout);
 
@@ -192,7 +192,7 @@ class VirtuemartViewInvoice extends VmView {
 		$vendorModel->addImages($vendor);
 		$this->assignRef('vendor', $vendor);
 
-		vmdebug('vendor', $vendor);
+// 		vmdebug('vendor', $vendor);
 		$userId = $vendorModel->getUserIdByVendorId($virtuemart_vendor_id);
 
 		$usermodel = VmModel::getModel('user');
@@ -234,6 +234,8 @@ class VirtuemartViewInvoice extends VmView {
 
 		$tpl = null;
 
+		vmdebug('my view data',$this);
+// 		return false;
 		parent::display($tpl);
 	}
 
@@ -242,6 +244,7 @@ class VirtuemartViewInvoice extends VmView {
 
 		$this->doVendor=$doVendor;
 		$this->fromPdf=false;
+		$view->uselayout = 'mail';
 		$this->display();
 		// don't need to get the payment name, the Order is sent from the payment trigger
 /*		$tpl = (VmConfig::get('order_html_email',1)) ? 'mail_html' : 'mail_raw';

@@ -165,13 +165,13 @@ class shopFunctionsF {
 	 */
 	public function renderMail ($viewName, $recipient, $vars=array(),$controllerName = null,$noVendorMail = false) {
 		if(!class_exists('VirtueMartControllerVirtuemart')) require(JPATH_VM_SITE.DS.'controllers'.DS.'virtuemart.php');
-		$format = (VmConfig::get('order_html_email',1)) ? 'html' : 'raw';
+// 		$format = (VmConfig::get('order_html_email',1)) ? 'html' : 'raw';
 
 		$controller = new VirtueMartControllerVirtuemart();
 		//Todo, do we need that? refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
 		$controller->addViewPath(JPATH_VM_SITE.DS.'views');
 
-		$view = $controller->getView($viewName, $format);
+		$view = $controller->getView($viewName, 'html');
 		if (!$controllerName) $controllerName = $viewName;
 		$controllerClassName = 'VirtueMartController'.ucfirst ($controllerName) ;
 		if (!class_exists($controllerClassName)) require(JPATH_VM_SITE.DS.'controllers'.DS.$controllerName.'.php');

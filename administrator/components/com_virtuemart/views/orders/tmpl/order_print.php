@@ -16,6 +16,7 @@
  */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+ echo 'Wrong call, shouldnt be used, deprecated layout'; return;
 ?>
 <head>
     <?php

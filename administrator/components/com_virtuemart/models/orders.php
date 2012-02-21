@@ -47,10 +47,12 @@ class VirtueMartModelOrders extends VmModel {
 		$this->addvalidOrderingFieldName(array('order_name','payment_method','virtuemart_order_id' ) );
 
 		//Delete the field so that and push it to the begin of the array so that it is used as default value
-		//$key = array_search('o.modified_on',$this->_validOrderingFieldName);
-		//unset($this->_validOrderingFieldName[$key]);
-		//array_unshift($this->_validOrderingFieldName,'o.modified_on');
+		$key = array_search('o.modified_on',$this->_validOrderingFieldName);
+		unset($this->_validOrderingFieldName[$key]);
+		array_unshift($this->_validOrderingFieldName,'modified_on');
 
+		$app = JFactory::getApplication();
+		$app->setUserState( 'com_virtuemart.orders.filter_order','DESC');
 	}
 
 	/**
@@ -1037,7 +1039,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		if($newOrderData!=0){	//We do not really need that
 			$vars['newOrderData'] = (array)$newOrderData;
 		}
-		$vars['order']=$order;
+		$vars['orderDetails']=$order;
 // 		$vars['shopperName'] =  $order['details']['BT']->title.' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name;
 
 
@@ -1050,13 +1052,13 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		if(!isset($vars['doVendor'])){
 			if(!isset($newOrderData['doVendor'])) $vars['doVendor'] = false; else $vars['doVendor'] = $newOrderData['doVendor'];
 		}
-/*		$virtuemart_vendor_id=1;
+		$virtuemart_vendor_id=1;
 		$vendorModel = VmModel::getModel('vendor');
 		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 		$vars['vendor'] = $vendor;
 		$vendorEmail = $vendorModel->getVendorEmail($virtuemart_vendor_id);
 		$vars['vendorEmail'] = $vendorEmail;
-*/
+
 		$path = VmConfig::get('forSale_path',0);
 		$orderstatusForInvoice = VmConfig::get('inv_os','C');
 		if($order['details']['BT']->order_status  == $orderstatusForInvoice and $path!==0 ){
@@ -1077,7 +1079,6 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		else {
 			$string = 'COM_VIRTUEMART_NOTIFY_CUSTOMER_ERR_SEND';
 		}
-// 		return shopFunctionsF::renderMail('orders', $order['details']['BT']['email'], $vars);
 
 		vmInfo( JText::_($string,false).' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name. ', '.$order['details']['BT']->email);
 
