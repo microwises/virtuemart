@@ -19,24 +19,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if($this->format == 'pdf'){
-	$widthTable = '100';
-	$widtTitle = '27';
-} else {
-	$widthTable = '100';
-	$widtTitle = '49';
-}
  if ( VmConfig::get('show_tax')) {
     $colspan=7;
  } else {
     $colspan=8;
  }
 ?>
-<table width="<?php echo $widthTable ?>%" cellspacing="0" cellpadding="0" border="0">
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
 	<tr align="left" class="sectiontableheader">
 		<td align="left" width="5%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></strong></td>
 		<td align="left" width="5%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></strong></td>
-		<td align="left" colspan="2" width="<?php echo $widtTitle ?>%" ><strong><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></strong></td>
+		<td align="left" colspan="2" width="40%" ><strong><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></strong></td>
 		<td align="center" width="10%"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_STATUS') ?></strong></td>
 		<td align="right" width="10%" ><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRICE') ?></strong></td>
 		<?php if ( VmConfig::get('show_tax')) { ?>

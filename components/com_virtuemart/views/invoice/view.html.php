@@ -31,6 +31,8 @@ define ('__VM_ORDER_USE_SLIDERS', 0);
  */
 class VirtuemartViewInvoice extends VmView {
 
+	var $format = 'html';
+	var $doVendor = false;
 	var $uselayout	= '';
 	var $orderDetails = 0;
 	var $invoiceNumber =0;
@@ -60,6 +62,8 @@ class VirtuemartViewInvoice extends VmView {
 			$print = true;
 		}
 		$this->assignRef('print', $print);
+
+		$this->format = JRequest::getWord('format','html');
 
 		if($layout == 'invoice'){
 			$document->setTitle( JText::_('COM_VIRTUEMART_INVOICE') );

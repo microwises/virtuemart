@@ -81,7 +81,7 @@ if (count($this->orderslist) > 0) {
 	$print_link = "<a href=\"javascript:void window.open('$print_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\"  >";
 	$print_link .= '<span class="hasTip print_32" title="' . JText::_('COM_VIRTUEMART_PRINT') . '">&nbsp;</span></a>';
 
-	$invoice_url = juri::root().'index.php?option=com_virtuemart&view=invoice&format=pdf&tmpl=component&virtuemart_order_id=' . $order->virtuemart_order_id . '&order_number=' .$order->order_number. '&order_pass=' .$order->order_pass;
+	$invoice_url = juri::root().'index.php?option=com_virtuemart&view=invoice&layout=invoice&format=pdf&tmpl=component&virtuemart_order_id=' . $order->virtuemart_order_id . '&order_number=' .$order->order_number. '&order_pass=' .$order->order_pass;
 	$invoice_link = "<a href=\"javascript:void window.open('$invoice_url', 'win2', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no');\"  >";
 	$invoice_link .= '<span class="hasTip invoice_32" title="' . JText::_('COM_VIRTUEMART_INVOICE') . '">&nbsp;</span></a>';
 

@@ -1024,23 +1024,6 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$orderModel=VmModel::getModel('orders');
 		$order = $orderModel->getOrder($virtuemart_order_id);
 
-// 		shopFunctionsF::sentOrderConfirmedEmail($order,$orderdata);
-		// 		vmdebug('sentOrderConfirmedEmail my order',$order);
-
-/*		foreach ($order['items'] as $k => $item) {
-			$order['items'][$k]=(array)$item;
-		}
-		foreach ($order['calc_rules'] as $k => $calc_rule) {
-			$order['calc_rules'][$k]=(array)$calc_rule;
-		}
-		$order['details']['BT'] =(array)$order['details']['BT'];
-		$order['details']['ST']=(array)((isset(  $order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);*/
-
-		//Is this really needed todo it that way? This breaks other stuff note by Max
-		/*	    $nb_history = count($order['history']);
-		 $order['history']['order_status_name']=ShopFunctions::getOrderStatusName($order['history'][$nb_history-1]->order_status_code);
-		$order['history']=(array)$order['history'][$nb_history-1];*/
-
 		$payment_name = $shipment_name='';
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 
@@ -1055,7 +1038,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$vars['newOrderData'] = (array)$newOrderData;
 		}
 		$vars['order']=$order;
-		$vars['shopperName'] =  $order['details']['BT']->title.' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name;
+// 		$vars['shopperName'] =  $order['details']['BT']->title.' '.$order['details']['BT']->first_name.' '.$order['details']['BT']->last_name;
 
 
 		//$vars['includeComments'] = JRequest::getVar('customer_notified', array());
@@ -1068,7 +1051,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			if(!isset($newOrderData['doVendor'])) $vars['doVendor'] = false; else $vars['doVendor'] = $newOrderData['doVendor'];
 		}
 
-		 
+
 		$path = VmConfig::get('forSale_path',0);
 		$orderstatusForInvoice = VmConfig::get('inv_os','C');
 		if($order['details']['BT']->order_status  == $orderstatusForInvoice and $path!==0 ){
