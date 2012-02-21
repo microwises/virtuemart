@@ -1070,8 +1070,8 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 
 		$path = VmConfig::get('forSale_path',0);
-
-		if($order['details']['BT']->order_status  == 'C' and $path!==0 ){
+		$orderstatusForInvoice = VmConfig('inv_os','C');
+		if($order['details']['BT']->order_status  == $orderstatusForInvoice and $path!==0 ){
 
 			if(!class_exists('VirtueMartControllerInvoice')) require_once( JPATH_VM_SITE.DS.'controllers'.DS.'invoice.php' );
 			$controller = new VirtueMartControllerInvoice( array(

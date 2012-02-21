@@ -112,7 +112,7 @@ class VirtuemartViewOrders extends JView {
 		//$_shipmentInfo = ShopFunctions::getShipmentRateDetails($orderbt->virtuemart_shipmentmethod_id);
 
 		/* Assign the data */
-		$this->assignRef('order', $order);
+		$this->assignRef('orderdetails', $order);
 		$this->assignRef('orderNumber', $orderNumber);
 		$this->assignRef('userfields', $userfields);
 		$this->assignRef('shipmentfields', $shipmentfields);

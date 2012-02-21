@@ -101,7 +101,7 @@ foreach ($this->userfields['fields'] as $_field) {
 			    <th class="title" width="130"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></th>
 			</tr>
 		    </thead>
-<?php foreach ($this->order['items'] as $item) { ?>
+<?php foreach ($this->orderdetails['items'] as $item) { ?>
     		    <tr valign="top">
     			<td><?php echo $item->product_quantity; ?></td>
     			<td><?php

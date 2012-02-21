@@ -36,7 +36,7 @@ class VirtueMartControllerInvoice extends JController
 		if ($format=='pdf') {
 			$viewName='Pdf';
 		}
-		else $viewName= ucfirst('Invoice');
+		else $viewName= 'Invoice';
 
 		$view = $this->getView($viewName, $format);
 
@@ -68,44 +68,6 @@ class VirtueMartControllerInvoice extends JController
 
 		$orderModel = VmModel::getModel('orders');
 
-/*		if($orderDetails==0){
-			$_currentUser = JFactory::getUser();
-			$cuid = $_currentUser->get('id');
-
-			if(empty($cuid)){
-				// If the user is not logged in, we will check the order number and order pass
-				if ($orderPass = JRequest::getString('order_pass',false)){
-					$orderNumber = JRequest::getString('order_number',false);
-					$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
-					if(empty($orderId)){
-						echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
-						// 						$app= JFactory::getApplication();
-						// 						$app -> redirect('index.php');
-						return 0;
-					}
-					$orderDetails = $orderModel->getOrder($orderId);
-				}
-			}
-			else {
-				// If the user is logged in, we will check if the order belongs to him
-				$virtuemart_order_id = JRequest::getInt('virtuemart_order_id',0) ;
-				if (!$virtuemart_order_id) {
-					$virtuemart_order_id = $orderModel->getOrderIdByOrderNumber(JRequest::getString('order_number'));
-				}
-				$orderDetails = $orderModel->getOrder($virtuemart_order_id);
-
-				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
-				if(!Permissions::getInstance()->check("admin")) {
-					if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
-						if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
-							echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
-							return 0;
-						}
-					}
-				}
-			}
-		}*/
-
 		$invoiceNumber = $orderModel->createInvoiceNumber($orderDetails['details']['BT']);
 
 		if(!$invoiceNumber or empty($invoiceNumber)){
@@ -135,35 +97,15 @@ class VirtueMartControllerInvoice extends JController
 		$view->addTemplatePath( JPATH_VM_SITE.DS.'views'.DS.'invoice'.DS.'tmpl' );
 
 		$view->invoiceNumber = $invoiceNumber;
-		$view->order = $orderDetails;
-		$view->fromPdf = true;
+		$view->orderDetails = $orderDetails;
+		$view->uselayout = 'pdf';
 
 		ob_start();
 		$view->display();
 		$html = ob_get_contents();
 		ob_end_clean();
 
-// 		vmdebug('my pdf invoice view ',$view);
-/* 		$vendorId = 1;
-		$vendorModel = VmModel::getModel('vendor');
-		$vendorModel->setId($vendorId);
-		$vendor = $vendorModel->getVendor();
-		// 		$this->assignRef('vendor', $vendor);
-		$vendorModel->addImages($vendor,$vendorId);
-		// 			vmdebug('$vendor',$vendor);
 
-		//TODO use the new function vendorData = $usermodel->getVendor($vendorId); instead
-		$userId = $vendorModel->getUserIdByVendorId(1);
-		$usermodel = VmModel::getModel('user');
-		$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
-		$userFields = $usermodel->getUserInfoInUserFields('invoice', 'BT', $virtuemart_userinfo_id);
-		$address=$userFields[1]['fields']['address_1']['value'];
-		if ($userFields[1]['fields']['address_2']['value']) {
-		    $address.="\n".$userFields[1]['fields']['address_2']['value'];
-		}
-		$address.="\n".$userFields[1]['fields']['zip']['value']." ".$userFields[1]['fields']['city']['value'];
-		$address.="\n".$userFields[1]['fields']['virtuemart_country_id']['value'];
-*/
 		// create new PDF document
 		$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 

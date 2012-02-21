@@ -79,7 +79,7 @@ $tt=$this;
 				</tr>
 			</thead>
 			<?php
-			foreach ($this->order['history'] as $this->orderbt_event ) {
+			foreach ($this->orderdetails['history'] as $this->orderbt_event ) {
 				echo "<tr>";
 				echo "<td>". vmJsApi::date($this->orderbt_event->created_on,'LC2',true) ."</td>\n";
 				if ($this->orderbt_event->customer_notified == 1) {
@@ -196,7 +196,7 @@ $tt=$this;
 					<th class="title" width="5%"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></th>
 				</tr>
 			</thead>
-		<?php foreach ($this->order['items'] as $item) { ?>
+		<?php foreach ($this->orderdetails['items'] as $item) { ?>
 			<!-- Display the order item -->
 			<tr valign="top" id="showItem_<?php echo $item->virtuemart_order_item_id; ?>" data-itemid="<?php echo $item->virtuemart_order_item_id; ?>">
 				<!--<td>
@@ -353,7 +353,7 @@ $tt=$this;
 
 
 	<?php
-		foreach($this->order['calc_rules'] as $rule){
+		foreach($this->orderdetails['calc_rules'] as $rule){
 			if ($rule->calc_kind== 'DBTaxRulesBill') { ?>
 			<tr >
 				<td colspan="5"  align="right"  ><?php echo $rule->calc_rule_name ?> </td>

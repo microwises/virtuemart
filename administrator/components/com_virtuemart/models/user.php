@@ -124,7 +124,7 @@ class VirtueMartModelUser extends VmModel {
 	 * @author Max Milbers
 	 * @param int $vendorId
 	 */
-	function getVendor($vendorId){
+	function getVendor($vendorId=1){
 		$vendorModel = VmModel::getModel('vendor');
 		$userId = VirtueMartModelVendor::getUserIdByVendorId($vendorId);
 		if($userId){

@@ -48,7 +48,7 @@ $this->setLayout('details'); ?>
     <tr>
 	<td   class="orders-key"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_INV_NUMBER') ?></td>
 	<td class="orders-key" align="left">
-	    <?php echo $this->invoice_number; ?>
+	    <?php echo $this->invoiceNumber; ?>
 	</td>
     </tr>
     <tr>

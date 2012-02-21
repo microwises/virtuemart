@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<h1><?php echo JText::_('COM_VIRTUEMART_INVOICE').' '.$this->invoice_number; ?></h1>
+<h1><?php echo JText::_('COM_VIRTUEMART_INVOICE').' '.$this->invoiceNumber; ?></h1>
 
 
 <table width="100%" cellspacing="0" cellpadding="0" border="0">

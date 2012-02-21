@@ -69,7 +69,7 @@ class VirtuemartViewOrders extends VmView {
 			// Get the data
 			$virtuemart_order_id = JRequest::getInt('virtuemart_order_id');
 			$order = $orderModel->getOrder($virtuemart_order_id);
-			vmdebug('$order',$order);
+
 			$_orderID = $order['details']['BT']->virtuemart_order_id;
 			$orderbt = $order['details']['BT'];
 			$orderst = (array_key_exists('ST', $order['details'])) ? $order['details']['ST'] : $orderbt;
@@ -119,7 +119,7 @@ class VirtuemartViewOrders extends VmView {
                        // $_shipmentInfo = ShopFunctions::getShipmentRateDetails($orderbt->virtuemart_shipmentmethod_id);
 
 			/* Assign the data */
-			$this->assignRef('order', $order);
+			$this->assignRef('orderdetails', $order);
 			$this->assignRef('orderID', $_orderID);
 			$this->assignRef('userfields', $userfields);
 			$this->assignRef('shipmentfields', $shipmentfields);
