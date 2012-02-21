@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
  echo JText::_('COM_VIRTUEMART_USER_FORM_BILLTO_LBL'). "\n";
 echo sprintf("%'-64.64s",'');
  echo "\n";
-  foreach ($this->billfields['fields'] as $field) {
+  foreach ($this->userfields['fields'] as $field) {
 		if(!empty($field['value'])){
 			echo $field['title'].': '.$this->escape($field['value'])."\n";
 		}
