@@ -150,7 +150,7 @@ class VirtuemartViewInvoice extends VmView {
 
 		//vmdebug('renderMailLayout invoice '.date('H:i:s'),$this->order);
 
-		if ($this->doVendor) {
+		if (isset($this->doVendor) and $this->doVendor)  {
 			$this->subject = JText::sprintf('COM_VIRTUEMART_VENDOR_NEW_ORDER_CONFIRMED', $this->shopperName, $currency->priceDisplay($orderDetails['details']['BT']->order_total), $orderDetails['details']['BT']->order_number);
 			$recipient = 'vendor';
 		} else {

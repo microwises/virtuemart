@@ -131,7 +131,7 @@ class VirtueMartControllerInvoice extends JController
 		ob_end_clean();
 
 		vmdebug('my pdf invoice view ',$view);
-/*		$vendorId = 1;
+ 		$vendorId = 1;
 		$vendorModel = VmModel::getModel('vendor');
 		$vendorModel->setId($vendorId);
 		$vendor = $vendorModel->getVendor();
@@ -149,7 +149,7 @@ class VirtueMartControllerInvoice extends JController
 		    $address.="\n".$userFields[1]['fields']['address_2']['value'];
 		}
 		$address.="\n".$userFields[1]['fields']['zip']['value']." ".$userFields[1]['fields']['city']['value'];
-		$address.="\n".$userFields[1]['fields']['virtuemart_country_id']['value'];*/
+		$address.="\n".$userFields[1]['fields']['virtuemart_country_id']['value'];
 
 		// create new PDF document
 		$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);

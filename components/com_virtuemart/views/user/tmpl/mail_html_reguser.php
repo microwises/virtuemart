@@ -59,7 +59,8 @@ $li = '<br />';
 			    </tr>
 			</table>
 
-			<table class="html-email" cellspacing="0" cellpadding="0" border="0" width="100%">  <tr  >
+			<table class="html-email" cellspacing="0" cellpadding="0" border="0" width="100%">
+			    <tr>
 				<th width="100%">
 				    <?php echo JText::_('COM_VIRTUEMART_SHOPPER_REGISTRATION_DATA') ?>
 				</th>
@@ -76,7 +77,7 @@ $li = '<br />';
 				    foreach ($this->userFields['fields'] as $userField) {
 					if (!empty($userField['value']) && $userField['type'] != 'delimiter' && $userField['type'] != 'BT' && $userField['type'] != 'hidden') {
 					    echo $userField['title'] . ': ' . $userField['value'] . $li;
-					    
+
 					}
 				    }
 				    ?>
