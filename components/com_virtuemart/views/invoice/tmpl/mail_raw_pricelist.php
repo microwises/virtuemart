@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 //$skuPrint = echo sprintf( "%64.64s",strtoupper (JText::_('COM_VIRTUEMART_SKU') ) ) ;
 
 // Head of table
-echo strip_tags(JText::sprintf('COM_VIRTUEMART_ORDER_PRINT_TOTAL', $this->currency->priceDisplay($this->orderDetails['details']['BT']['order_total']))) ."\n";
+echo strip_tags(JText::sprintf('COM_VIRTUEMART_ORDER_PRINT_TOTAL', $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_total))) ."\n";
 echo sprintf("%'-64.64s", '') . "\n";
 echo JText::_('COM_VIRTUEMART_ORDER_ITEM') . "\n";
 foreach ($this->orderDetails['items'] as $item) {
