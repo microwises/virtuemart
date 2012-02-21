@@ -31,12 +31,18 @@ define ('__VM_ORDER_USE_SLIDERS', 0);
  */
 class VirtuemartViewInvoice extends VmView {
 
+	var $fromPdf	= true;
+	var $order = 0;
+	var $invoiceNumber =0;
+
 	public function display($tpl = null)
 	{
 		$mainframe = JFactory::getApplication();
+
 		if  ($this->fromPdf){
 				$this->setLayout('pdf');
 		} else {
+
 		    if (VmConfig::get('order_mail_html')) {
 			   $this->setLayout('mail_html');
 			} else {
@@ -50,10 +56,60 @@ class VirtuemartViewInvoice extends VmView {
 
 		$orderDetails = $this->order;
 
+		$orderModel = VmModel::getModel('orders');
+
+		if($orderDetails==0){
+			$_currentUser = JFactory::getUser();
+			$cuid = $_currentUser->get('id');
+
+			if(empty($cuid)){
+				// If the user is not logged in, we will check the order number and order pass
+				if ($orderPass = JRequest::getString('order_pass',false)){
+					$orderNumber = JRequest::getString('order_number',false);
+					$orderId = $orderModel->getOrderIdByOrderPass($orderNumber,$orderPass);
+					if(empty($orderId)){
+						echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+						// 						$app= JFactory::getApplication();
+						// 						$app -> redirect('index.php');
+						return 0;
+					}
+					$orderDetails = $orderModel->getOrder($orderId);
+				}
+			}
+			else {
+				// If the user is logged in, we will check if the order belongs to him
+				$virtuemart_order_id = JRequest::getInt('virtuemart_order_id',0) ;
+				if (!$virtuemart_order_id) {
+					$virtuemart_order_id = $orderModel->getOrderIdByOrderNumber(JRequest::getString('order_number'));
+				}
+				$orderDetails = $orderModel->getOrder($virtuemart_order_id);
+
+				if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+				if(!Permissions::getInstance()->check("admin")) {
+					if(!empty($orderDetails['details']['BT']->virtuemart_user_id)){
+						if ($orderDetails['details']['BT']->virtuemart_user_id != $cuid) {
+							echo JText::_('COM_VIRTUEMART_RESTRICTED_ACCESS');
+							return 0;
+						}
+					}
+				}
+			}
+		}
+
 		if(empty($orderDetails['details'])){
 			echo JText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
 			return;
 		}
+
+		$invoiceNumber = $this->invoiceNumber;
+		if(empty($this->invoiceNumber)){
+			$this->invoiceNumber = $orderModel->createInvoiceNumber($orderDetails['details']['BT']);
+			if(!$this->invoiceNumber or empty($this->invoiceNumber)){
+				vmError('Cant create pdf, createInvoiceNumber failed');;
+				return 0;
+			}
+		}
+
 
 		$userFieldsModel = VmModel::getModel('userfields');
 		$_userFields = $userFieldsModel->getUserFields(
@@ -94,8 +150,7 @@ class VirtuemartViewInvoice extends VmView {
 
 // 			if($format=='pdf'){
 
-		$invoice_number = $orderModel->createInvoiceNumber($orderDetails['details']['BT']);
-		$this->assignRef('invoice_number', $invoice_number);
+
 // 			}
 
 		$this->assignRef('userfields', $userfields);
@@ -109,6 +164,7 @@ class VirtuemartViewInvoice extends VmView {
 		if($tmpl){
 			$print = true;
 		}
+		$this->assignRef('print', $print);
 
 		//Todo multix
 		$vendorId=1;
@@ -119,7 +175,7 @@ class VirtuemartViewInvoice extends VmView {
 
 		$this->vendorEmail = $vendorModel->getVendorEmail($vendor->virtuemart_vendor_id);
 		$this->assignRef('vendor', $vendor);
-		$this->assignRef('print', $print);
+
 
 		// Implement the Joomla panels. If we need a ShipTo tab, make it the active one.
 		// In tmpl/edit.php, this is the 4th tab (0-based, so set to 3 above)
@@ -150,7 +206,7 @@ class VirtuemartViewInvoice extends VmView {
 
 		//vmdebug('renderMailLayout invoice '.date('H:i:s'),$this->order);
 
-		if (isset($this->doVendor) and $this->doVendor)  {
+		if ($this->doVendor) {
 			$this->subject = JText::sprintf('COM_VIRTUEMART_VENDOR_NEW_ORDER_CONFIRMED', $this->shopperName, $currency->priceDisplay($orderDetails['details']['BT']->order_total), $orderDetails['details']['BT']->order_number);
 			$recipient = 'vendor';
 		} else {
@@ -159,14 +215,14 @@ class VirtuemartViewInvoice extends VmView {
 		}
 		$this->assignRef('recipient', $recipient);
 
-		$pdf = 'pdf';
-		$this->assignRef('format', $pdf);
+// 		$pdf = 'pdf';
+// 		$this->assignRef('format', $pdf);
 
 		if($this->fromPdf){
 			$document->setTitle( JText::_('COM_VIRTUEMART_INVOICE') );
 		}
 
-
+		$tpl = null;
 
 		parent::display($tpl);
 	}

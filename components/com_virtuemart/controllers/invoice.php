@@ -27,8 +27,21 @@ jimport('joomla.application.component.controller');
  *
  * @package		VirtueMart
  */
-class VirtueMartControllerInvoice extends JController
+class VirtueMartControllerInvoice extends VmController
 {
+
+	public function display() {
+
+		$format = JRequest::getWord('format','html');
+		if ($format=='pdf') {
+			$viewName='Pdf';
+		}
+		else $viewName= ucfirst('Invoice');
+
+		$view = $this->getView($viewName, $format);
+
+		$view->display();
+	}
 
 	function checkStoreInvoice($orderDetails = 0){
 
@@ -55,7 +68,7 @@ class VirtueMartControllerInvoice extends JController
 
 		$orderModel = VmModel::getModel('orders');
 
-		if($orderDetails==0){
+/*		if($orderDetails==0){
 			$_currentUser = JFactory::getUser();
 			$cuid = $_currentUser->get('id');
 
@@ -91,8 +104,8 @@ class VirtueMartControllerInvoice extends JController
 					}
 				}
 			}
-		}
-		// 			vmdebug('$orderDetails in my pdf controller ',$orderDetails['details']['BT']);
+		}*/
+
 		$invoiceNumber = $orderModel->createInvoiceNumber($orderDetails['details']['BT']);
 
 		if(!$invoiceNumber or empty($invoiceNumber)){
@@ -130,8 +143,8 @@ class VirtueMartControllerInvoice extends JController
 		$html = ob_get_contents();
 		ob_end_clean();
 
-		vmdebug('my pdf invoice view ',$view);
- 		$vendorId = 1;
+// 		vmdebug('my pdf invoice view ',$view);
+/* 		$vendorId = 1;
 		$vendorModel = VmModel::getModel('vendor');
 		$vendorModel->setId($vendorId);
 		$vendor = $vendorModel->getVendor();
@@ -150,7 +163,7 @@ class VirtueMartControllerInvoice extends JController
 		}
 		$address.="\n".$userFields[1]['fields']['zip']['value']." ".$userFields[1]['fields']['city']['value'];
 		$address.="\n".$userFields[1]['fields']['virtuemart_country_id']['value'];
-
+*/
 		// create new PDF document
 		$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -197,7 +210,7 @@ class VirtueMartControllerInvoice extends JController
 		//set image scale factor
 		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
-		//set some language-dependent strings
+		//TODO include the right file (in libraries/tcpdf/config/lang set some language-dependent strings
 		$l='';
 		$pdf->setLanguageArray($l);
 
@@ -225,7 +238,7 @@ class VirtueMartControllerInvoice extends JController
 		// This method has several options, check the source code documentation for more information.
 		$pdf->Output($path, 'F');
 		// 			vmdebug('Pdf object ',$pdf);
-		vmdebug('checkStoreInvoice start');
+// 		vmdebug('checkStoreInvoice start');
 		return $path;
 
 	}

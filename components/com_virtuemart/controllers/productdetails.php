@@ -38,24 +38,15 @@ class VirtueMartControllerProductdetails extends JController {
 
 	public function display() {
 
-//		$cart = JRequest::getVar('cart',false,'post');
-//		if($cart){
-//			require(JPATH_VM_SITE.DS.'controllers'.DS.'cart.php');
-//			$controller= new VirtueMartControllerCart();
-//			$controller->add();
-//		}else{
-			$format = JRequest::getWord('format','html');
-			if ($format=='pdf') {
-				$viewName='Pdf';
+		$format = JRequest::getWord('format','html');
+		if ($format=='pdf') {
+			$viewName='Pdf';
+		}
+		else $viewName='Productdetails';
 
-			}
-			else $viewName='Productdetails';
+		$view = $this->getView($viewName, $format);
 
-			$view = $this->getView($viewName, $format);
-
-			// Display it all
-			$view->display();
-//		}
+		$view->display();
 	}
 
 	/**
