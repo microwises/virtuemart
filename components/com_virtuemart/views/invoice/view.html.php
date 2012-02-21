@@ -192,7 +192,9 @@ class VirtuemartViewInvoice extends VmView {
 		$vendorModel->addImages($vendor);
 		$this->assignRef('vendor', $vendor);
 
+		vmdebug('vendor', $vendor);
 		$userId = $vendorModel->getUserIdByVendorId($virtuemart_vendor_id);
+
 		$usermodel = VmModel::getModel('user');
 		$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
 		$vendorFieldsArray = $usermodel->getUserInfoInUserFields($layout, 'BT', $virtuemart_userinfo_id, false);
@@ -210,6 +212,8 @@ class VirtuemartViewInvoice extends VmView {
 		}
 		$this->assignRef('vendorAddress', $vendorAddress);
 
+		$vendorEmail = $vendorModel->getVendorEmail($virtuemart_vendor_id);
+		$vars['vendorEmail'] = $vendorEmail;
 
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
 
