@@ -201,6 +201,10 @@ class shopFunctionsF {
 	 * @param bool $vendor true for notifying vendor of user action (e.g. registration)
 	 */
 	private function sendVmMail (&$view, $recipient, $vendor=false) {
+		$jlang =& JFactory::getLanguage();
+		$jlang->load('com_virtuemart', JPATH_SITE, 'en-GB', true);
+		$jlang->load('com_virtuemart', JPATH_SITE, $jlang->getDefault(), true);
+		$jlang->load('com_virtuemart', JPATH_SITE, null, true);
 
 		ob_start();
 		$view->renderMailLayout($vendor, $recipient);
