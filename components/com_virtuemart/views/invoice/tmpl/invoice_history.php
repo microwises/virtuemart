@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
 		<th align="left" ><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_COMMENT') ?></strong></th>
 	</tr>
 <?php
-	foreach($this->orderdetails['history'] as $_hist) {
+	foreach($this->orderDetails['history'] as $_hist) {
 		if (!$_hist->customer_notified) {
 			continue;
 		}

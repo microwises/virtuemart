@@ -22,9 +22,9 @@ defined('_JEXEC') or die('Restricted access');
 
 
 //	echo JText::_('COM_VIRTUEMART_CART_MAIL_VENDOR_TITLE').$this->vendor->vendor_name.'<br/>';
-	echo str_replace("<br />", "\n",  JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_CONTENT',$this->vendor->vendor_store_name,$this->shopperName,$this->currency->priceDisplay($this->orderdetails['details']['BT']['order_total']),$this->orderdetails['details']['BT']['order_number'] ));
+	echo str_replace("<br />", "\n",  JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_CONTENT',$this->vendor->vendor_store_name,$this->shopperName,$this->currency->priceDisplay($this->orderDetails['details']['BT']['order_total']),$this->orderDetails['details']['BT']['order_number'] ));
 
-if(!empty($this->orderdetails['details']['BT']->customer_note)) {
-	echo "\n" . JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_SHOPPER_QUESTION', $this->orderdetails['details']['BT']->customer_note);
+if(!empty($this->orderDetails['details']['BT']->customer_note)) {
+	echo "\n" . JText::sprintf('COM_VIRTUEMART_CART_MAIL_VENDOR_SHOPPER_QUESTION', $this->orderDetails['details']['BT']->customer_note);
 }
 echo "\n";

@@ -340,7 +340,7 @@ class VirtueMartModelUserfields extends VmModel {
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','user_is_vendor');
 		} else {
 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'name','username', 'password', 'password2'
-						, 'address_type', 'bank','email','user_is_vendor');
+						, 'address_type', 'bank','email','user_is_vendor','agreed');
 		}
 
 		//Here we get the fields

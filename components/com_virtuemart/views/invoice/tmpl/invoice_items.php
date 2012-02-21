@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 
 <?php
-	foreach($this->orderdetails['items'] as $item) {
+	foreach($this->orderDetails['items'] as $item) {
 		$_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_category_id=' . $item->virtuemart_category_id . '&virtuemart_product_id=' . $item->virtuemart_product_id);
 ?>
 		<tr valign="top">
@@ -91,14 +91,14 @@ defined('_JEXEC') or die('Restricted access');
 			<td colspan="6" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_PRICES_TOTAL'); ?></td>
 
                         <?php if ( VmConfig::get('show_tax')) { ?>
-			<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->orderdetails['details']['BT']->order_tax)."</span>" ?></td>
+			<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->orderDetails['details']['BT']->order_tax)."</span>" ?></td>
                         <?php } ?>
-			<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->orderdetails['details']['BT']->order_discountAmount)."</span>" ?></td>
-			<td align="right"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_salesPrice) ?></td>
+			<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->orderDetails['details']['BT']->order_discountAmount)."</span>" ?></td>
+			<td align="right"><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_salesPrice) ?></td>
 		  </tr>
 <?php
-if ($this->orderdetails['details']['BT']->coupon_discount <> 0.00) {
-    $coupon_code=$this->orderdetails['details']['BT']->coupon_code?' ('.$this->orderdetails['details']['BT']->coupon_code.')':'';
+if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
+    $coupon_code=$this->orderDetails['details']['BT']->coupon_code?' ('.$this->orderDetails['details']['BT']->coupon_code.')':'';
 	?>
 	<tr>
 		<td align="right" class="pricePad" colspan="5"><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT').$coupon_code ?></td>
@@ -107,14 +107,14 @@ if ($this->orderdetails['details']['BT']->coupon_discount <> 0.00) {
 			<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right">&nbsp;</td>
                                 <?php } ?>
-		<td align="right"><?php echo '- '.$this->currency->priceDisplay($this->orderdetails['details']['BT']->coupon_discount); ?></td>
+		<td align="right"><?php echo '- '.$this->currency->priceDisplay($this->orderDetails['details']['BT']->coupon_discount); ?></td>
 		<td align="right">&nbsp;</td>
 	</tr>
 <?php  } ?>
 
 
 	<?php
-		foreach($this->orderdetails['calc_rules'] as $rule){
+		foreach($this->orderDetails['calc_rules'] as $rule){
 			if ($rule->calc_kind== 'DBTaxRulesBill') { ?>
 			<tr >
 				<td colspan="6"  align="right" class="pricePad"><?php echo $rule->calc_rule_name ?> </td>
@@ -158,10 +158,10 @@ if ($this->orderdetails['details']['BT']->coupon_discount <> 0.00) {
 
 
 			<?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->orderdetails['details']['BT']->order_shipment_tax)."</span>" ?></td>
+				<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->orderDetails['details']['BT']->order_shipment_tax)."</span>" ?></td>
                                 <?php } ?>
 				<td align="right">&nbsp;</td>
-				<td align="right"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_shipment+ $this->orderdetails['details']['BT']->order_shipment_tax); ?></td>
+				<td align="right"><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_shipment+ $this->orderDetails['details']['BT']->order_shipment_tax); ?></td>
 
 	</tr>
 
@@ -169,10 +169,10 @@ if ($this->orderdetails['details']['BT']->coupon_discount <> 0.00) {
 		<td align="right" class="pricePad" colspan="6"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT') ?></td>
 
 			<?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->orderdetails['details']['BT']->order_payment_tax)."</span>" ?></td>
+				<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->orderDetails['details']['BT']->order_payment_tax)."</span>" ?></td>
                                 <?php } ?>
 				<td align="right">&nbsp;</td>
-				<td align="right"><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_payment+ $this->orderdetails['details']['BT']->order_payment_tax); ?></td>
+				<td align="right"><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_payment+ $this->orderDetails['details']['BT']->order_payment_tax); ?></td>
 
 
 	</tr>
@@ -181,10 +181,10 @@ if ($this->orderdetails['details']['BT']->coupon_discount <> 0.00) {
 		<td align="right" class="pricePad" colspan="6"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></strong></td>
 
 		 <?php if ( VmConfig::get('show_tax')) {  ?>
-		<td align="right"><span  class='priceColor2'><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_billTaxAmount); ?></span></td>
+		<td align="right"><span  class='priceColor2'><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_billTaxAmount); ?></span></td>
 		 <?php } ?>
-		<td align="right"><span  class='priceColor2'><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_billDiscountAmount); ?></span></td>
-		<td align="right"><strong><?php echo $this->currency->priceDisplay($this->orderdetails['details']['BT']->order_total); ?></strong></td>
+		<td align="right"><span  class='priceColor2'><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_billDiscountAmount); ?></span></td>
+		<td align="right"><strong><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_total); ?></strong></td>
 	</tr>
 
 </table>

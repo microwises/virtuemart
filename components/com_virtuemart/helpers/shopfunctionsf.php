@@ -179,7 +179,7 @@ class shopFunctionsF {
 		//Todo, do we need that? refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
 		$view->addTemplatePath(JPATH_VM_SITE.'/views/'.$viewName.'/tmpl');
 
-		vmdebug('renderMail my vars for the view',$vars);
+// 		vmdebug('renderMail my vars for the view',$vars);
 		foreach ($vars as $key => $val) {
 			$view->$key = $val;
 		}

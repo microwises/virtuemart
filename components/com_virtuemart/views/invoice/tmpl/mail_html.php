@@ -7,10 +7,10 @@
  *
  * With $this->cartData->paymentName or shipmentName, you get the name of the used paymentmethod/shippmentmethod
  *
- * In the array order you have details and items ($this->orderdetails['details']), the items gather the products, but that is done directly from the cart data
+ * In the array order you have details and items ($this->orderDetails['details']), the items gather the products, but that is done directly from the cart data
  *
- * $this->orderdetails['details'] contains the raw address data (use the formatted ones, like BTaddress). Interesting informatin here is,
- * order_number ($this->orderdetails['details']['BT']->order_number), order_pass, coupon_code, order_status, order_status_name,
+ * $this->orderDetails['details'] contains the raw address data (use the formatted ones, like BTaddress). Interesting informatin here is,
+ * order_number ($this->orderDetails['details']['BT']->order_number), order_pass, coupon_code, order_status, order_status_name,
  * user_currency_rate, created_on, customer_note, ip_address
  *
  * @package	VirtueMart

@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access');
     <td colspan="3">
 	<img src="<?php  echo JURI::root() . $this-> vendor->images[0]->file_url ?>">
 	<br/>
-	<strong><?php echo JText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_NAME', $this->orderdetails['details']['BT']->title.' '.$this->orderdetails['details']['BT']->first_name.' '.$this->orderdetails['details']['BT']->last_name); ?></strong><br/>
+	<strong><?php echo JText::sprintf('COM_VIRTUEMART_MAIL_SHOPPER_NAME', $this->orderDetails['details']['BT']->title.' '.$this->orderDetails['details']['BT']->first_name.' '.$this->orderDetails['details']['BT']->last_name); ?></strong><br/>
     </td>
  </tr>
 </table>

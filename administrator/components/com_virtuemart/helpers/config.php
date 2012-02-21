@@ -158,7 +158,9 @@ function vmTrace($notice,$force=false){
 		//$app = JFactory::getApplication();
 		//
 		ob_start();
+		echo '<pre>';
 		debug_print_backtrace();
+		echo '</pre>';
 		$body = ob_get_contents();
 		ob_end_clean();
 		$app = JFactory::getApplication();

@@ -113,7 +113,7 @@ class VirtuemartViewInvoice extends VmView {
 			echo JText::_('COM_VIRTUEMART_ORDER_NOTFOUND');
 			return;
 		}
-		$this->assignRef('orderdetails', $orderDetails);
+		$this->assignRef('orderDetails', $orderDetails);
 
 		if(empty($this->invoiceNumber)){
 			$this->invoiceNumber = $orderModel->createInvoiceNumber($orderDetails['details']['BT']);
@@ -122,6 +122,9 @@ class VirtuemartViewInvoice extends VmView {
 				return 0;
 			}
 		}
+
+		$shopperName =  $orderDetails['details']['BT']->title.' '.$orderDetails['details']['BT']->first_name.' '.$orderDetails['details']['BT']->last_name;
+		$this->assignRef('shopperName', $shopperName);
 
 		//Todo multix
 		$vendorId=1;
@@ -221,7 +224,7 @@ class VirtuemartViewInvoice extends VmView {
 		//shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 
 		//vmdebug('renderMailLayout invoice '.date('H:i:s'),$this->order);
-		if (JRequest::getWord('layout','mail') == 'mail') {
+		if (strpos($layout,'mail') !== false) {
 		    if ($this->doVendor) {
 			    $this->subject = JText::sprintf('COM_VIRTUEMART_VENDOR_NEW_ORDER_CONFIRMED', $this->shopperName, $currency->priceDisplay($orderDetails['details']['BT']->order_total), $orderDetails['details']['BT']->order_number);
 			    $recipient = 'vendor';
@@ -234,7 +237,13 @@ class VirtuemartViewInvoice extends VmView {
 
 		$tpl = null;
 
-		vmdebug('my view data',$this);
+// 		vmdebug('my view data',$this->getLayout(),$layout);
+// 		ob_start();
+// 		echo '<pre>';
+// 		echo debug_print_backtrace();
+// 		echo '</pre>';
+// 		$dumptrace = ob_get_contents();
+// 		ob_end_clean();
 // 		return false;
 		parent::display($tpl);
 	}
@@ -244,7 +253,7 @@ class VirtuemartViewInvoice extends VmView {
 
 		$this->doVendor=$doVendor;
 		$this->fromPdf=false;
-		$view->uselayout = 'mail';
+		$this->uselayout = 'mail';
 		$this->display();
 		// don't need to get the payment name, the Order is sent from the payment trigger
 /*		$tpl = (VmConfig::get('order_html_email',1)) ? 'mail_html' : 'mail_raw';
@@ -261,8 +270,8 @@ class VirtuemartViewInvoice extends VmView {
 		, array('delimiter_userinfo','user_is_vendor' ,'username','password', 'password2', 'agreed', 'address_type') // Skips
 		);
 
-		$orderbt = $this->orderdetails['details']['BT'];
-		$orderst = (array_key_exists('ST', $this->orderdetails['details'])) ? $this->orderdetails['details']['ST'] : $orderbt;
+		$orderbt = $this->orderDetails['details']['BT'];
+		$orderst = (array_key_exists('ST', $this->orderDetails['details'])) ? $this->orderDetails['details']['ST'] : $orderbt;
 		$billfields = $userFieldsModel->getUserFieldsFilled(
 		$userFields
 		,$orderbt
@@ -287,24 +296,24 @@ class VirtuemartViewInvoice extends VmView {
 
 		//From FE
 		if ($doVendor) {
-			$this->subject = JText::sprintf('COM_VIRTUEMART_VENDOR_NEW_ORDER_CONFIRMED', $this->shopperName, $currency->priceDisplay($this->orderdetails['details']['BT']['order_total']), $this->orderdetails['details']['BT']['order_number']);
+			$this->subject = JText::sprintf('COM_VIRTUEMART_VENDOR_NEW_ORDER_CONFIRMED', $this->shopperName, $currency->priceDisplay($this->orderDetails['details']['BT']['order_total']), $this->orderDetails['details']['BT']['order_number']);
 			$recipient = 'vendor';
 		} else {
-			$this->subject = JText::sprintf('COM_VIRTUEMART_SHOPPER_NEW_ORDER_CONFIRMED', $this->vendor->vendor_store_name, $currency->priceDisplay($this->orderdetails['details']['BT']['order_total']), $this->orderdetails['details']['BT']['order_number'], $this->orderdetails['details']['BT']['order_pass'] );
+			$this->subject = JText::sprintf('COM_VIRTUEMART_SHOPPER_NEW_ORDER_CONFIRMED', $this->vendor->vendor_store_name, $currency->priceDisplay($this->orderDetails['details']['BT']['order_total']), $this->orderDetails['details']['BT']['order_number'], $this->orderDetails['details']['BT']['order_pass'] );
 			$recipient = 'shopper';
 		}
 		$this->doVendor = true;
 		//From FE end
 
 		//From BE
-// 		$this->subject = JText::sprintf('COM_VIRTUEMART_SHOPPER_NEW_ORDER_CONFIRMED', $this->vendor->vendor_store_name, $currency->priceDisplay($this->orderdetails['details']['BT']['order_total']), $this->orderdetails['details']['BT']['order_number'], $this->orderdetails['details']['BT']['order_pass'] );
+// 		$this->subject = JText::sprintf('COM_VIRTUEMART_SHOPPER_NEW_ORDER_CONFIRMED', $this->vendor->vendor_store_name, $currency->priceDisplay($this->orderDetails['details']['BT']['order_total']), $this->orderDetails['details']['BT']['order_number'], $this->orderDetails['details']['BT']['order_pass'] );
 // 		$recipient = 'shopper';
 		//From BE end
 
 		$this->assignRef('recipient', $recipient);
 		$this->assignRef('currency', $currency);
-		$this->assignRef('shipment_name', $this->orderdetails['shipmentName']);
-		$this->assignRef('payment_name', $this->orderdetails['paymentName']);
+		$this->assignRef('shipment_name', $this->orderDetails['shipmentName']);
+		$this->assignRef('payment_name', $this->orderDetails['paymentName']);
 		$this->assignRef('billfields', $billfields);
 		$this->assignRef('shipmentfields', $shipmentfields);
 
@@ -317,7 +326,7 @@ class VirtuemartViewInvoice extends VmView {
 
 		vmdebug('renderMailLayout invoice '.date('H:i:s'),$this->order);
 
-		if($this->orderdetails['details']['BT']['order_status']  == 'C' and $path!==0){
+		if($this->orderDetails['details']['BT']['order_status']  == 'C' and $path!==0){
 
 			if(!class_exists('VirtueMartControllerInvoice')) require_once( JPATH_VM_SITE.DS.'controllers'.DS.'invoice.php' );
 			$controller = new VirtueMartControllerInvoice( array(
