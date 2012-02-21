@@ -1050,7 +1050,12 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		if(!isset($vars['doVendor'])){
 			if(!isset($newOrderData['doVendor'])) $vars['doVendor'] = false; else $vars['doVendor'] = $newOrderData['doVendor'];
 		}
-
+		$virtuemart_vendor_id=1;
+		$vendorModel = VmModel::getModel('vendor');
+		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
+		$vars['vendor'] = $vendor;
+		$vendorEmail = $vendorModel->getVendorEmail($virtuemart_vendor_id);
+		$vars['vendorEmail'] = $vendorEmail;
 
 		$path = VmConfig::get('forSale_path',0);
 		$orderstatusForInvoice = VmConfig::get('inv_os','C');

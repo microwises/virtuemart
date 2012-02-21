@@ -130,7 +130,7 @@ class VirtueMartControllerInvoice extends JController
 			if(!file_exists(JPATH_ROOT.$imagePath)){
 				vmError('Vendor image missing '.$imagePath);
 			} else {
-				$pdf->SetHeaderData($imagePath, 60, $view->vendor->vendor_store_name, $address);
+				$pdf->SetHeaderData($imagePath, 60, $view->vendor->vendor_store_name, $view->vendorAddress);
 			}
 		}
 

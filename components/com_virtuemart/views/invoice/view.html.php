@@ -195,8 +195,20 @@ class VirtuemartViewInvoice extends VmView {
 		$userId = $vendorModel->getUserIdByVendorId($virtuemart_vendor_id);
 		$usermodel = VmModel::getModel('user');
 		$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
-		$userFields = $usermodel->getUserInfoInUserFields($layout, 'BT', $virtuemart_userinfo_id);
-		$this->assignRef('vendorFields', $userFields);
+		$vendorFieldsArray = $usermodel->getUserInfoInUserFields($layout, 'BT', $virtuemart_userinfo_id, false);
+		$vendorFields = $vendorFieldsArray[$virtuemart_userinfo_id];
+		$vendorAddress='';
+		 foreach ($vendorFields['fields'] as $field) {
+		    if (!empty($field['value'])) {
+			     $vendorAddress.= $field['value'];
+			    if ($field['name'] != 'title' and $field['name'] != 'first_name' and $field['name'] != 'middle_name' and $field['name'] != 'zip') {
+			       $vendorAddress.= "<br />";
+			    } else {
+				$vendorAddress.=' ';
+			    }
+			}
+		}
+		$this->assignRef('vendorAddress', $vendorAddress);
 
 
 		if(!class_exists('ShopFunctions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'shopfunctions.php');
