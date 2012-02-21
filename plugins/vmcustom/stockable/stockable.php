@@ -373,7 +373,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * vendor order display BE
 	 */
 	function plgVmDisplayInOrderBE($item, $row,&$html) {
-		if ($item['productCustom']->custom_element != $this->_name) return '';
+		if (!empty($item->productCustom->custom_element) and $item->productCustom->custom_element != $this->_name) return '';
 		return $this->plgVmOnViewCart($item, $row,$html);
 	}
 
@@ -382,7 +382,7 @@ class plgVmCustomStockable extends vmCustomPlugin {
 	 * shopper order display FE
 	 */
 	function plgVmDisplayInOrderFE($item, $row,&$html) {
-		if ($item['productCustom']->custom_element != $this->_name) return '';
+		if (!empty($item->productCustom->custom_element) and $item->productCustom->custom_element != $this->_name) return '';
 		return $this->plgVmOnViewCart($item, $row,$html);
 	}
 

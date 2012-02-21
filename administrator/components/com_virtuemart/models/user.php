@@ -1070,7 +1070,7 @@ class VirtueMartModelUser extends VmModel {
 				$data->address_type = 'BT';
 
 			}
-			vmdebug(' user data with infoid  '.$uid,$data);
+
 		}
 		else {
 			//New Address is filled here with the data of the cart (we are in the userview)
