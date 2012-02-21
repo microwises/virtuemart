@@ -98,7 +98,7 @@ class VirtueMartControllerInvoice extends JController
 
 		$view->invoiceNumber = $invoiceNumber;
 		$view->orderDetails = $orderDetails;
-		$view->uselayout = 'pdf';
+		$view->uselayout = 'invoice';
 
 		ob_start();
 		$view->display();

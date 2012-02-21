@@ -61,7 +61,7 @@ class VirtuemartViewInvoice extends VmView {
 		}
 		$this->assignRef('print', $print);
 
-		if($layout == 'pdf'){
+		if($layout == 'invoice'){
 			$document->setTitle( JText::_('COM_VIRTUEMART_INVOICE') );
 		}
 
@@ -126,6 +126,7 @@ class VirtuemartViewInvoice extends VmView {
 		$this->assignRef('currency', $currency);
 
 		//Create BT address fields
+		$userFieldsModel = VmModel::getModel('userfields');
 		$_userFields = $userFieldsModel->getUserFields(
 				 'account'
 				, array('captcha' => true, 'delimiters' => true) // Ignore these types
@@ -162,8 +163,8 @@ class VirtuemartViewInvoice extends VmView {
 
 		$_itemStatusUpdateFields = array();
 		$_itemAttributesUpdateFields = array();
-		foreach($order['items'] as $_item) {
-			$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $orderStates, "item_id[".$_item->virtuemart_order_item_id."][order_status]", 'class="selectItemStatusCode"', 'order_status_code', 'order_status_name', $_item->order_status, 'order_item_status'.$_item->virtuemart_order_item_id,true);
+		foreach($orderDetails['items'] as $_item) {
+			$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $orderstatuses, "item_id[".$_item->virtuemart_order_item_id."][order_status]", 'class="selectItemStatusCode"', 'order_status_code', 'order_status_name', $_item->order_status, 'order_item_status'.$_item->virtuemart_order_item_id,true);
 
 		}
 
@@ -181,16 +182,16 @@ class VirtuemartViewInvoice extends VmView {
 		    $returnValues = $dispatcher->trigger('plgVmOnShowOrderFEPayment',array( $orderDetails['details']['BT']->virtuemart_order_id, $orderDetails['details']['BT']->virtuemart_paymentmethod_id,  &$orderDetails['paymentName']));
 		 }
 
-
-
-		$vendor = $model->getVendor($virtuemart_vendor_id);
-		$model->addImages($vendor);
+		$virtuemart_vendor_id=1;
+		$vendorModel = VmModel::getModel('vendor');
+		$vendor = $vendorModel->getVendor($virtuemart_vendor_id);
+		$vendorModel->addImages($vendor);
 		$this->assignRef('vendor', $vendor);
 
-		$userId = $model->getUserIdByVendorId($virtuemart_vendor_id);
+		$userId = $vendorModel->getUserIdByVendorId($virtuemart_vendor_id);
 		$usermodel = VmModel::getModel('user');
 		$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
-		$userFields = $usermodel->getUserInfoInUserFields($layoutName, 'BT', $virtuemart_userinfo_id);
+		$userFields = $usermodel->getUserInfoInUserFields($layout, 'BT', $virtuemart_userinfo_id);
 		$this->assignRef('vendorFields', $userFields);
 
 
@@ -200,16 +201,16 @@ class VirtuemartViewInvoice extends VmView {
 		//shopFunctionsF::setVmTemplate($this,0,0,$layoutName);
 
 		//vmdebug('renderMailLayout invoice '.date('H:i:s'),$this->order);
-
-		if ($this->doVendor) {
-			$this->subject = JText::sprintf('COM_VIRTUEMART_VENDOR_NEW_ORDER_CONFIRMED', $this->shopperName, $currency->priceDisplay($orderDetails['details']['BT']->order_total), $orderDetails['details']['BT']->order_number);
-			$recipient = 'vendor';
-		} else {
-			$this->subject = JText::sprintf('COM_VIRTUEMART_SHOPPER_NEW_ORDER_CONFIRMED', $vendor->vendor_store_name, $currency->priceDisplay($orderDetails['details']['BT']->order_total), $orderDetails['details']['BT']->order_number, $orderDetails['details']['BT']->order_pass );
-			$recipient = 'shopper';
+		if (JRequest::getWord('layout','mail') == 'mail') {
+		    if ($this->doVendor) {
+			    $this->subject = JText::sprintf('COM_VIRTUEMART_VENDOR_NEW_ORDER_CONFIRMED', $this->shopperName, $currency->priceDisplay($orderDetails['details']['BT']->order_total), $orderDetails['details']['BT']->order_number);
+			    $recipient = 'vendor';
+		    } else {
+			    $this->subject = JText::sprintf('COM_VIRTUEMART_SHOPPER_NEW_ORDER_CONFIRMED', $vendor->vendor_store_name, $currency->priceDisplay($orderDetails['details']['BT']->order_total), $orderDetails['details']['BT']->order_number, $orderDetails['details']['BT']->order_pass );
+			    $recipient = 'shopper';
+		    }
+		    $this->assignRef('recipient', $recipient);
 		}
-		$this->assignRef('recipient', $recipient);
-
 
 		$tpl = null;
 
