@@ -176,7 +176,7 @@ $root = $u->toString(array('scheme', 'host'));
 $i = 1 ? 2 : 1;
 ?>
     <tr   class="sectiontableentry<?php echo $i ?>">
-	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo $this->order['shipmentName']  ?></td>
+	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo $this->order['paymentName']  ?></td>
 
 
 <?php if (VmConfig::get('show_tax')) { ?>

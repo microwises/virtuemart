@@ -80,13 +80,13 @@ foreach ($this->order['calc_rules'] as $rule) {
 }
 
 
-echo strtoupper(JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING')) . ' (' . strip_tags(str_replace("<br />", "\n",$this->shipment_name)) . ' ) ' . "\n";
+echo strtoupper(JText::_('COM_VIRTUEMART_ORDER_PRINT_SHIPPING')) . ' (' . strip_tags(str_replace("<br />", "\n",$this->order['shipmentName'])) . ' ) ' . "\n";
 echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') . ' : ' . $this->currency->priceDisplay($this->order['details']['BT']['order_shipment']);
 if (VmConfig::get('show_tax')) {
     echo ' (' . JText::_('COM_VIRTUEMART_ORDER_PRINT_TAX') . ' : '. $this->currency->priceDisplay($this->order['details']['BT']['order_shipment_tax']) . ')';
 }
 echo "\n";
-echo strtoupper(JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT')) . ' (' . strip_tags(str_replace("<br />", "\n",$this->payment_name) ) . ' ) ' . "\n";
+echo strtoupper(JText::_('COM_VIRTUEMART_ORDER_PRINT_PAYMENT')) . ' (' . strip_tags(str_replace("<br />", "\n",$this->order['paymentName']) ) . ' ) ' . "\n";
 echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') . ':' . $this->currency->priceDisplay($this->order['details']['BT']['order_payment']);
 if (VmConfig::get('show_tax')) {
     echo ' (' . JText::_('COM_VIRTUEMART_ORDER_PRINT_TAX') . ' : ' . $this->currency->priceDisplay($this->order['details']['BT']['order_payment_tax']) . ')';
