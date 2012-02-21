@@ -75,14 +75,15 @@ function virtuemartBuildRoute(&$query) {
 				$limit = $query['limit'] ;
 				unset($query['limit']);
 			}
-			if ($start !== null &&  $limitstart!== null ) {$segments[] = $helper->lang('results') .',1-'.$start ;
-			} else if ( $start!==null ) {
+			if ($start !== null &&  $limitstart!== null ) {
+				//$segments[] = $helper->lang('results') .',1-'.$start ;
+			} else if ( $start>0 ) {
 				// using general limit if $limit is not set
 				if ($limit === null) $limit= vmrouterHelper::$limit ;
 				
 				//Pagination changed, maybe the +1 is wrong note by Max Milbers
 					$segments[] = $helper->lang('results') .','. ($start+1).'-'.($start+$limit);
-			} else if ($limit !== null ) $segments[] = $helper->lang('results') .',1-'.$limit ;//limit change
+			} else if ($limit !== null && $limit != vmrouterHelper::$limit ) $segments[] = $helper->lang('results') .',1-'.$limit ;//limit change
 
 			if ( isset($query['orderby']) ) {
 
@@ -136,12 +137,14 @@ function virtuemartBuildRoute(&$query) {
 					$categoryRoute = $helper->getCategoryRoute($query['virtuemart_category_id']);
 					if ($categoryRoute->route) $segments[] = $categoryRoute->route;
 					if ($categoryRoute->itemId) $query['Itemid'] = $categoryRoute->itemId;
+					else $query['Itemid'] = $jmenu['virtuemart'];
 				}
 					unset($query['virtuemart_category_id']);
 
 				if($virtuemart_product_id)
 					$segments[] = $helper->getProductName($virtuemart_product_id);
 			}
+
 			return $segments;
 		break;
 		case 'manufacturer';
