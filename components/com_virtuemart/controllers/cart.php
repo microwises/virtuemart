@@ -88,7 +88,7 @@ class VirtueMartControllerCart extends JController {
 //				return ;
 //			} else {
 	    $mainframe->enqueueMessage($msg, $type);
-	    $mainframe->redirect('index.php?option=com_virtuemart&view=cart');
+	    $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
 //			}
 	} else {
 	    $mainframe->enqueueMessage('Cart does not exist?', 'error');
@@ -121,7 +121,7 @@ class VirtueMartControllerCart extends JController {
 	    if ($cart->add($virtuemart_product_ids, $errorMsg )) {
 
 		$this->json->msg = '<a class="continue" href="' . $continue_link . '" >' . JText::_('COM_VIRTUEMART_CONTINUE_SHOPPING') . '</a>';
-		$this->json->msg .= '<a class="floatright" href="' . JRoute::_("index.php?option=com_virtuemart&view=cart") . '">' . JText::_('COM_VIRTUEMART_CART_SHOW') . '</a>';
+		$this->json->msg .= '<a class="floatright" href="' . JRoute::_("index.php?option=com_virtuemart&view=cart") . '">' . JText::_('COM_VIRTUEMART_CART_SHOW_MODAL') . '</a>';
 		if ($errorMsg) $this->json->msg .= '<div>'.$errorMsg.'</div>';
 		$this->json->stat = '1';
 	    } else {
@@ -206,7 +206,7 @@ class VirtueMartControllerCart extends JController {
 //				$cart->setDataValidation(); //Not needed already done in the getCart function
 		if ($cart->getInCheckOut()) {
 		    $mainframe = JFactory::getApplication();
-		    $mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
+		    $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout'));
 		}
 	    }
 	}
@@ -262,7 +262,7 @@ class VirtueMartControllerCart extends JController {
 
 		if ($cart->getInCheckOut()) {
 		    $mainframe = JFactory::getApplication();
-		    $mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout');
+		    $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout') );
 		}
 	    }
 	}
@@ -321,7 +321,7 @@ class VirtueMartControllerCart extends JController {
 
 	    if ($cart->getInCheckOut()) {
 		$mainframe = JFactory::getApplication();
-		$mainframe->redirect('index.php?option=com_virtuemart&view=cart&task=checkout', $msg);
+		$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout'), $msg);
 	    }
 	}
 // 	self::Cart();
@@ -361,7 +361,7 @@ class VirtueMartControllerCart extends JController {
 	else
 	    $mainframe->enqueueMessage(JText::_('COM_VIRTUEMART_PRODUCT_NOT_UPDATED_SUCCESSFULLY'), 'error');
 
-	$mainframe->redirect('index.php?option=com_virtuemart&view=cart');
+	$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'));
     }
 
     /**
@@ -400,13 +400,13 @@ class VirtueMartControllerCart extends JController {
 	    $view->display();
 	} else {
 	    $mainframe = JFactory::getApplication();
-	    $mainframe->redirect('index.php?option=com_virtuemart&view=cart', JText::_('COM_VIRTUEMART_CART_DATA_NOT_VALID'));
+	    $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_DATA_NOT_VALID'));
 	}
     }
 
     function cancel() {
 	$mainframe = JFactory::getApplication();
-	$mainframe->redirect('index.php?option=com_virtuemart&view=cart', 'Cancelled');
+	$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), 'Cancelled');
     }
 
 }
