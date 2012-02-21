@@ -37,7 +37,7 @@ function virtuemartBuildRoute(&$query) {
 	}
 
 		if ($helper->edit) return $segments;
-// print_r($query);
+
 	/* Full route , heavy work*/
 	// $lang = &$helper->lang ;
 	$view = '';
@@ -58,25 +58,32 @@ function virtuemartBuildRoute(&$query) {
 		 All ideas are wellcome to improve this
 		 because is the biggest and more used */
 		case 'category';
-			 $start = null;
-
+			$start = null;
+			$limitstart = null;
+			$limit = null;
 			 if ( isset($jmenu['category']) ) $query['Itemid'] = $jmenu['category'];
+			 // Joomla replace before route limitstart by start but without SEF this is start !
 			 if ( isset($query['limitstart'] ) ) {
-				$start = $query['limitstart'] ;
+				$limitstart = $query['limitstart'] ;
 				unset($query['limitstart']);
 			}
 			if ( isset($query['start'] ) ) {
 				$start = $query['start'] ;
 				unset($query['start']);
 			}
-			if ($start) {
-				$segments[] = $helper->lang('page') ;
-				$mainframe = Jfactory::getApplication(); ;
-				$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', VmConfig::get('list_limit', 20), 'int');
-
-				//Pagination changed, maybe the +1 is wrong note by Max Milbers
-					$segments[] = floor($start/$limit);
+			if ( isset($query['limit'] ) ) {
+				$limit = $query['limit'] ;
+				unset($query['limit']);
 			}
+			if ($start !== null &&  $limitstart!== null ) {$segments[] = $helper->lang('results') .',1-'.$start ;
+			} else if ( $start!==null ) {
+				// using general limit if $limit is not set
+				if ($limit === null) $limit= vmrouterHelper::$limit ;
+				
+				//Pagination changed, maybe the +1 is wrong note by Max Milbers
+					$segments[] = $helper->lang('results') .','. ($start+1).'-'.($start+$limit);
+			} else if ($limit !== null ) $segments[] = $helper->lang('results') .',1-'.$limit ;//limit change
+
 			if ( isset($query['orderby']) ) {
 
 				$segments[] = $helper->lang('by').','.$helper->lang( $query['orderby']) ;
@@ -255,21 +262,22 @@ function virtuemartParseRoute($segments) {
 	foreach  ($segments as &$value) {
 		$value = str_replace(':', '-', $value);
 	}
+	$splitted = explode(',',$segments[0],2);
 
-	if ( $helper->compareKey($segments[0] ,'page')){
+	if ( $helper->compareKey($splitted[0] ,'results')){
 		array_shift($segments);
-
-		$mainframe = Jfactory::getApplication();
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', VmConfig::get('list_limit', 20), 'int');
+		$results = explode('-',$splitted[1],2);
 		//Pagination has changed, removed the -1 note by Max Milbers NOTE: Works on j1.5, but NOT j1.7
-			$vars['limitstart'] = $vars['start'] = (array_shift($segments)*$limit);
-
+		// limistart is swapped by joomla to start ! See includes/route.php
+			if ($start = $results[0]-1) $vars['limitstart'] = $start;
+			else $vars['limitstart'] = 0 ;
+			$vars['limit'] = $results[1]-$results[0]+1;
+	
 	} else {
-		$vars['limitstart'] = $vars['start'] = 0 ;
-
+		$vars['limitstart'] = 0 ;
+		
 	}
-
-
+	if (empty($segments)) return $vars ;
 	$orderby = explode(',',$segments[0],2);
 	if (  $helper->compareKey($orderby[0] , 'by') ) {
 		$vars['orderby'] =$helper->getOrderingKey($orderby[1]) ;
@@ -491,9 +499,10 @@ class vmrouterHelper {
 	  * Use the Id's of categorie and product or not
 	  */
 	public $use_id = false ;
+
 	public $seo_translate = false ;
 	private $orderings = null ;
-
+	public static $limit = null ;
 	/*
 	  * $router_disabled type boolean
 	  * true  = don't Use the router
@@ -541,6 +550,11 @@ class vmrouterHelper {
 		} else $instanceKey = VMLANG ;
 		if (! array_key_exists ($instanceKey, self::$_instances)){
 			self::$_instances[$instanceKey] = new vmrouterHelper ($instanceKey,$query);
+
+			if (self::$limit===null){
+				$mainframe = Jfactory::getApplication(); ;
+				self::$limit= $mainframe->getUserStateFromRequest('global.list.limit', 'limit', VmConfig::get('list_limit', 20), 'int');
+			}
 		}
 		return self::$_instances[$instanceKey];
 	}
