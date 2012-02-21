@@ -45,32 +45,30 @@ $li = '<br />';
 		    <td>
 			<table width="100%" border="0" cellpadding="0" cellspacing="0" class="html-email">
 			    <tr>
-				<td >
+				<td>
 
-<?php echo JText::sprintf('COM_VIRTUEMART_WELCOME_VENDOR', $this->vendor->vendor_store_name); ?>
+				    <?php echo JText::sprintf('COM_VIRTUEMART_WELCOME_VENDOR', $this->vendor->vendor_store_name); ?>
 				    <br />
 				</td>
 			    </tr>
 			</table>
 
-			<table class="html-email" cellspacing="0" cellpadding="0" border="0" width="100%">  <tr >
+			<table class="html-email" cellspacing="0" cellpadding="0" border="0" width="100%">  <tr>
 				<th width="100%">
-<?php echo JText::_('COM_VIRTUEMART_VENDOR_REGISTRATION_DATA') ?>
+				    <?php echo JText::_('COM_VIRTUEMART_VENDOR_REGISTRATION_DATA') ?>
 				</th>
 			    </tr>
 			    <tr>
 				<td valign="top" width="100%">
-<?php
-echo JText::_('COM_VIRTUEMART_LOGINAME').' : '  . $this->user->username . $li;
-echo JText::_('COM_VIRTUEMART_DISPLAYED_NAME') .' : '    . $this->user->name . $li. $li;
+				    <?php
+				    echo JText::_('COM_VIRTUEMART_LOGINAME') . ' : ' . $this->user->username . $li;
+				    echo JText::_('COM_VIRTUEMART_DISPLAYED_NAME') . ' : ' . $this->user->name . $li . $li;
 
-echo JText::_('COM_VIRTUEMART_ENTERED_ADDRESS')   . $li;
+				    echo JText::_('COM_VIRTUEMART_ENTERED_ADDRESS') . $li;
 
-foreach ($this->userFields['fields'] as $userField) {
-    if (!empty($userField['value']) && $userField['type'] != 'delimiter'&& $userField['type'] != 'BT') {
-	echo $userField['title'] . ': ' .  $this->escape($userField['value']) . $li;
-	?>
-
+				    foreach ($this->userFields['fields'] as $userField) {
+					if (!empty($userField['value']) && $userField['type'] != 'delimiter' && $userField['type'] != 'BT') {
+					    echo $userField['title'] . ': ' . $this->escape($userField['value']) . $li;
 					}
 				    }
 				    ?>
@@ -83,12 +81,4 @@ foreach ($this->userFields['fields'] as $userField) {
 	</div>
     </body>
 </html>
-</head>
-
-
-
-
-
-
-
 
