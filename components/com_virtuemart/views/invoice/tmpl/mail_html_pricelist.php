@@ -53,9 +53,7 @@ $root = $u->toString(array('scheme', 'host'));
     	</td>
     	<td align="left" >
     	    <a href="<?php echo $_link; ?>"><?php echo $item->order_item_name; ?></a>
-    	</td>
 
-    	<td align="left" >
 		<?php
 		if (!empty($item->product_attribute)) {
 		    if (!class_exists('VirtueMartModelCustomfields'))
