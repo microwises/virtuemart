@@ -45,8 +45,8 @@ class VirtuemartViewCategory extends VmView {
 		// add javascript for price and cart
 		vmJsApi::jPrice();
 
-		$mainframe = JFactory::getApplication();
-		$pathway = $mainframe->getPathway();
+		$app = JFactory::getApplication();
+		$pathway = $app->getPathway();
 
 		/* Set the helper path */
 		$this->addHelperPath(JPATH_VM_ADMINISTRATOR.DS.'helpers');
@@ -68,8 +68,8 @@ class VirtuemartViewCategory extends VmView {
 
 		//No redirect here, category id = 0 means show ALL categories! note by Max Milbers
 /*		if(empty($category->virtuemart_vendor_id) && $search == null ) {
-	    	$mainframe -> enqueueMessage(JText::_('COM_VIRTUEMART_CATEGORY_NOT_FOUND'));
-	    	$mainframe -> redirect( 'index.php');
+	    	$app -> enqueueMessage(JText::_('COM_VIRTUEMART_CATEGORY_NOT_FOUND'));
+	    	$app -> redirect( 'index.php');
 	    }*/
 
 	    // Add the category name to the pathway
@@ -97,10 +97,26 @@ class VirtuemartViewCategory extends VmView {
 	    // Set the titles
 		if ($category->customtitle) {
         	 $title = strip_tags($category->customtitle);
-     		 } else {
+     	} elseif ($category->category_name) {
      		 $title = strip_tags($category->category_name);
      		 }
-
+		else {
+			$menus	= $app->getMenu();
+			$menu = $menus->getActive();
+			if ($menu) $title = $menu->title;
+			// $title = $this->params->get('page_title', '');
+			// Check for empty title and add site name if param is set
+			if (empty($title)) {
+				$title = $app->getCfg('sitename');
+			}
+			elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
+				$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			}
+			elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
+				$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			}
+		}
+		
 	  	if(JRequest::getInt('error')){
 			$title .=' '.JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
 		}
@@ -155,11 +171,11 @@ class VirtuemartViewCategory extends VmView {
 			$document->setMetaData('robots', $category->metarobot);
 		}
 
-		if ($mainframe->getCfg('MetaTitle') == '1') {
+		if ($app->getCfg('MetaTitle') == '1') {
 			$document->setMetaData('title',  $title);
 
 		}
-		if ($mainframe->getCfg('MetaAuthor') == '1') {
+		if ($app->getCfg('MetaAuthor') == '1') {
 			$document->setMetaData('author', $category->metaauthor);
 		}
 		if ($products) {
