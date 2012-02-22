@@ -937,6 +937,7 @@ class VirtueMartModelUserfields extends VmModel {
 		if (!$this->_data) {
 			$query = $this->_getListQuery();
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
+			$this->_total = $this->_getListCount($query);
 		}
 		return $this->_data;
 	}
