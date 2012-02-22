@@ -1057,7 +1057,6 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$vars['vendor'] = $vendor;
 		$vendorEmail = $vendorModel->getVendorEmail($virtuemart_vendor_id);
 		$vars['vendorEmail'] = $vendorEmail;
-		$vars['layout'] = 'mail';
 
 		$path = VmConfig::get('forSale_path',0);
 		$orderstatusForInvoice = VmConfig::get('inv_os','C');
