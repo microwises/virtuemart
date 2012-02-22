@@ -31,7 +31,7 @@ $root = $u->toString(array('scheme', 'host'));
     <tr align="left" class="sectiontableheader">
 	<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_SKU') ?></th>
 	<th align="left" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_QTY') ?></th>
-	<th align="left" colspan="2"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></th>
+	<th align="left" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_NAME_TITLE') ?></th>
 	<th align="right" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRICE') ?></th>
 	<?php if (VmConfig::get('show_tax')) { ?>
     	<th align="right" ><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_TAX') ?></th>
@@ -89,7 +89,7 @@ $root = $u->toString(array('scheme', 'host'));
     }
     ?>
 <tr class="sectiontableentry1">
-			<td colspan="5" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_PRICES_TOTAL'); ?></td>
+			<td colspan="4" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_PRICES_TOTAL'); ?></td>
 
                         <?php if ( VmConfig::get('show_tax')) { ?>
 			<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->orderDetails['details']['BT']->order_tax)."</span>" ?></td>
@@ -121,7 +121,7 @@ $root = $u->toString(array('scheme', 'host'));
 		foreach($this->orderDetails['calc_rules'] as $rule){
 			if ($rule->calc_kind == 'DBTaxRulesBill') { ?>
 			<tr class="sectiontableentry<?php $i ?>">
-				<td colspan="5" align="right"><?php echo $rule->calc_rule_name ?> </td>
+				<td colspan="4" align="right"><?php echo $rule->calc_rule_name ?> </td>
 
                                    <?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"> </td>
@@ -132,7 +132,7 @@ $root = $u->toString(array('scheme', 'host'));
 			<?php
 			} elseif ($rule->calc_kind == 'taxRulesBill') { ?>
 			<tr class="sectiontableentry<?php $i ?>">
-				<td colspan="5" align="right"><?php echo $rule->calc_rule_name ?> </td>
+				<td colspan="4" align="right"><?php echo $rule->calc_rule_name ?> </td>
 				<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"><?php echo $this->currency->priceDisplay($rule->calc_amount); ?> </td>
 				 <?php } ?>
@@ -142,7 +142,7 @@ $root = $u->toString(array('scheme', 'host'));
 			<?php
 			 } elseif ($rule->calc_kind == 'DATaxRulesBill') { ?>
 			<tr class="sectiontableentry<?php $i ?>">
-				<td colspan="5" align="right"><?php echo $rule->calc_rule_name ?> </td>
+				<td colspan="4" align="right"><?php echo $rule->calc_rule_name ?> </td>
 				<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"><?php echo   $this->currency->priceDisplay($rule->calc_amount); ?> </td>
 				 <?php } ?>
@@ -161,7 +161,7 @@ $root = $u->toString(array('scheme', 'host'));
 
 
     <tr  class="sectiontableentry<?php echo $i ?>">
-	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo $this->orderDetails['shipmentName'] ?></td>
+	<td align="right" style="padding-right: 10px;" colspan="4"><?php echo $this->orderDetails['shipmentName'] ?></td>
 
 <?php if (VmConfig::get('show_tax')) { ?>
     	<td align="right"><?php echo "<span class='priceColor2'>" . $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_shipment_tax) . "</span>" ?></td>
@@ -174,7 +174,7 @@ $root = $u->toString(array('scheme', 'host'));
 $i = 1 ? 2 : 1;
 ?>
     <tr   class="sectiontableentry<?php echo $i ?>">
-	<td align="right" style="padding-right: 10px;" colspan="5"><?php echo $this->orderDetails['paymentName']  ?></td>
+	<td align="right" style="padding-right: 10px;" colspan="4"><?php echo $this->orderDetails['paymentName']  ?></td>
 
 
 <?php if (VmConfig::get('show_tax')) { ?>
@@ -193,7 +193,7 @@ $i = 1 ? 2 : 1;
 
 
     <tr   class="sectiontableentry<?php echo $i ?>">
-	<td align="right" style="padding-right: 10px;" colspan="5"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></strong></td>
+	<td align="right" style="padding-right: 10px;" colspan="4"><strong><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_TOTAL') ?></strong></td>
 
 <?php if (VmConfig::get('show_tax')) { ?>
     	<td align="right"><span class='priceColor2'><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_billTaxAmount); ?></span></td>

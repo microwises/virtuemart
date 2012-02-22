@@ -99,9 +99,9 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	if (!$this->selectedThisElement($method->shipment_element)) {
 	    return false;
 	}
-
+	$values['virtuemart_order_id'] = $order['details']['BT']->virtuemart_order_id;
 	$values['order_number'] = $order['details']['BT']->order_number;
-	$values['shipment_id'] = $order['details']['BT']->virtuemart_shipmentmethod_id;
+	$values['virtuemart_shipmentmethod_id'] = $order['details']['BT']->virtuemart_shipmentmethod_id;
 	$values['shipment_name'] = $this->renderPluginName($method);
 	$values['order_weight'] = $this->getOrderWeight($cart, $method->weight_unit);
 	$values['shipment_weight_unit'] = $method->weight_unit;
