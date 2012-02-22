@@ -579,7 +579,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$default = current($group->options);
 					foreach ($group->options as &$productCustom) {
 						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)) ;
-						else  $price = $free ;
+						else  $price = ($productCustom->custom_price==='') ? '' : $free ;
 						$productCustom->text =  $productCustom->custom_value.' '.$price;
 
 					}
@@ -591,7 +591,7 @@ class VirtueMartModelCustomfields extends VmModel {
 
 					foreach ($group->options as $productCustom) {
 						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
-						else  $price = $free ;
+						else  $price = ($productCustom->custom_price==='') ? '' : $free ;
 						$productCustom->text =  $productCustom->custom_value.' '.$price;
 //// plugin
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
@@ -599,24 +599,26 @@ class VirtueMartModelCustomfields extends VmModel {
 						$dispatcher = JDispatcher::getInstance();
 						$fieldsToShow = $dispatcher->trigger('plgVmOnDisplayProductVariantFE',array($productCustom,&$row,&$group));
 
-						$group->display .= '<input type="hidden" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').': '.$price ;
+						$group->display .= '<input type="hidden" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /> ';
+						if ($price!=='') $group->display .=JText::_('COM_VIRTUEMART_CART_PRICE').': '.$price ;
 						$row++;
 					}
 					$row--;
 				} else if ($group->field_type == 'U'){
 					foreach ($group->options as $productCustom) {
 						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
-						else  $price = $free ;
+						else  $price = ($productCustom->custom_price==='') ? '' : $free ;
 						$productCustom->text =  $productCustom->custom_value.' '.$price;
 
-					$group->display .= '<input type="text" value="'.JText::_($productCustom->custom_value).'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']['.$productCustom->value.']" /> '.JText::_('COM_VIRTUEMART_CART_PRICE').': '.$price ;
+					$group->display .= '<input type="text" value="'.JText::_($productCustom->custom_value).'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']['.$productCustom->value.']" /> ';
+					if ($price!=='') $group->display .=JText::_('COM_VIRTUEMART_CART_PRICE').': '.$price ;
 					}
 				} else {
 					$group->display ='';
 					$checked = 'checked="checked"';
 					foreach ($group->options as $productCustom) {
 						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
-						else  $price = $free ;
+						else  $price = ($productCustom->custom_price==='') ? '' : $free ;
 						$group->display .= '<input id="'.$productCustom->value.'" '.$checked.' type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($productCustom->custom_value,$group->field_type,0,'',$row,1).' '.$price.'</label>' ;
 						$checked ='';
 					}
