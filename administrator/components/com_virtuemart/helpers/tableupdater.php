@@ -223,9 +223,15 @@ class GenericTableUpdater extends JModel{
 					unset($translatableFields[$key]);
 
 				} else if($table=='vendors'){
-					$fields['vendor_store_desc'] = 'varchar('.VmConfig::get('dbvdescsize',1800).') '.$linedefault;
-					$fields['vendor_terms_of_service'] = 'varchar('.VmConfig::get('dbtossize',18100).') '.$linedefault;
-					$fields['vendor_legal_info'] = 'varchar('.VmConfig::get('dblegalsize',1100).') '.$linedefault;
+					//This makes too much trouble with the vendor stuff, so we use simply text for it
+// 					$fields['vendor_store_desc'] = 'varchar('.VmConfig::get('dbvdescsize',1800).') '.$linedefault;
+// 					$fields['vendor_terms_of_service'] = 'varchar('.VmConfig::get('dbtossize',18100).') '.$linedefault;
+// 					$fields['vendor_legal_info'] = 'varchar('.VmConfig::get('dblegalsize',1100).') '.$linedefault;
+
+					$fields['vendor_store_desc'] = 'text '.$linedefault;
+					$fields['vendor_terms_of_service'] = 'text '.$linedefault;
+					$fields['vendor_legal_info'] = 'text '.$linedefault;
+
 
 					$key = array_search('vendor_store_desc', $translatableFields);
 					unset($translatableFields[$key]);

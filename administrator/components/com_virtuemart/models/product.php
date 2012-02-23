@@ -1519,12 +1519,31 @@ public function updateStockInDB($product, $amount, $signInStoc, $signOrderedStoc
 
 public function getUncategorizedChildren($selected){
 
-	$q = 'SELECT * FROM `#__virtuemart_products` as p
+
+
+		$q = 'SELECT * FROM `#__virtuemart_products` as p
 			LEFT JOIN `#__virtuemart_products_'.VMLANG.'` as pl
 			USING (`virtuemart_product_id`)
 			LEFT JOIN `#__virtuemart_product_categories` as pc
-			USING (`virtuemart_product_id`)
-			WHERE (`product_parent_id` = "'.$this->_id.'" AND ISNULL (pc.`virtuemart_category_id`) ) OR (`virtuemart_product_id` = "'.$this->_id.'" ) ';
+			USING (`virtuemart_product_id`) ';
+
+		//TODO check this, stupidly the ISNULL is not working with mysql5.0
+// 	$usemysql = (float) VmConfig::get('mysqlver',5.0);
+// 	if($usemysql>=5.1){
+// 		$q .= ' WHERE (`product_parent_id` = "'.$this->_id.'" AND ISNULL (pc.`virtuemart_category_id`) ) OR (`virtuemart_product_id` = "'.$this->_id.'" ) ';
+// 	} else {
+		$q .= ' WHERE (`product_parent_id` = "'.$this->_id.'"  OR `virtuemart_product_id` = "'.$this->_id.'" ) ';
+// 	}
+
+	$app = JFactory::getApplication();
+	if($app->isSite() && !VmConfig::get('use_as_catalog',0) && VmConfig::get('stockhandle','none')=='disableit' ){
+			$q .= ' AND p.`product_in_stock`>"0" ';
+	}
+
+	if($app->isSite()){
+		$q .= ' AND p.`published`="1"';
+	}
+
 	$this->_db->setQuery($q);
 	$res = $this->_db->loadAssocList() ;
 	$err = $this->_db->getErrorMsg();

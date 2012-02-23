@@ -132,16 +132,17 @@ class VirtuemartModelReport extends VmModel {
 		// select wich table to order sum ordered
 		$filterorders = JRequest::getvar('filter_order','intervals');
 		$orderdir = JRequest::getWord('filter_order_Dir','DESC');
+// 		vmdebug('intervals $orderBy'.$orderBy,$filterorders);
 		switch ($filterorders ) {
 
 			case 'o.virtuemart_order_id':
-				$orderBy = ' ORDER by count_order_id '.$orderdir;
+				$orderBy = ' ORDER BY count_order_id '.$orderdir;
 				$groupBy = 'GROUP BY intervals ';
 				break;
 			case 'i.product_quantity'   :
 				// GROUP BY product_quantity, intervals
 				// ORDER BY `product_quantity` ASC
-				$orderBy = ' ORDER by product_quantity '.$orderdir;
+				$orderBy = ' ORDER BY product_quantity '.$orderdir;
 				$groupBy = 'GROUP BY  product_quantity , intervals ';
 
 				//$selectFields['intervals'] = $this->intervals.' AS intervals, i.`created_on` ';
@@ -234,6 +235,7 @@ class VirtuemartModelReport extends VmModel {
 
 		// TODO $nbrReturnProducts ?
 
+		if(empty($orderBy)) $orderBy = 'ORDER BY DATE '.$orderdir;
 		return $this->exeSortSearchListQuery(1, $select, $joinedTables, $whereString, $groupBy, $orderBy );
 
 	}
