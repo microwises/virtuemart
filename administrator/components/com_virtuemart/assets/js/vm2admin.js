@@ -250,12 +250,13 @@
 		}
 		
 		this.click(function () {
-			if (this.hasClass('vmicon-show')) {
-				this.removeClass('vmicon-show').addClass('vmicon-hide');
+			$this= $(this);
+			if ($this.hasClass('vmicon-show')) {
+				$this.removeClass('vmicon-show').addClass('vmicon-hide');
 				$('.menu-wrapper').toggle('slide');
 				$.cookie('vmmenu', 'hide', options);
 			} else {
-				this.removeClass('vmicon-hide').addClass('vmicon-show');
+				$this.removeClass('vmicon-hide').addClass('vmicon-show');
 				$('.menu-wrapper').toggle('slide');
 				$.cookie('vmmenu', 'show', options);
 			}
