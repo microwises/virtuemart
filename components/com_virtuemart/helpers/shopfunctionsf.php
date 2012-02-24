@@ -403,6 +403,35 @@ class shopFunctionsF {
 		return $strings;
 
 	}
+	//function validateEUVat($args = array()) {
+	function validateEUVat($vat_number) {
+
+		// vmdebug('vat NUMBER',$vat_number);
+		if ( '' != $vat_number ) {
+			$vat_number 	= str_replace(array(' ', '.', '-', ',', ', '), '', $vat_number);
+			$countryCode 	= substr($vat_number, 0, 2);
+			$vatNumber 		= substr($vat_number, 2);
+	 
+			if ( strlen($countryCode) != 2 || is_numeric(substr($countryCode, 0, 1)) || is_numeric(substr($countryCode, 1, 2)) ) {
+				vmInfo('COM_VIRTUEMART_EUVATID_INVALID_COUNTRYCODE');
+				return NULL;//format error 'message' => 'Your VAT Number syntax is not correct. You should have something like this: BE805670816B01'
+			}
+			// $client = new SoapClient("http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl");
+			$client = new SoapClient("http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl");
+			$params = array('countryCode' => $countryCode, 'vatNumber' => $vatNumber);
+	 
+			$result = $client->checkVat($params);
+			if ( !$result->valid ) {
+				vmInfo('COM_VIRTUEMART_EUVATID_INVALID');
+				return NULL ;// 'message' => sprintf('Invalid VAT Number. Check the validity on the customer VAT Number via <a href="%s">Europa VAT Number validation webservice</a>', 'http://ec.europa.eu/taxation_customs/vies/lang.do?fromWhichPage=vieshome'));
+			} else {
+				vmInfo('COM_VIRTUEMART_EUVATID_VALID');
+				
+				return true;
+			}
+		}
+		return NULL;
+	}
 	function getComUserOption() {
 	 if ( JVM_VERSION===1 ) {
 		return 'com_user';

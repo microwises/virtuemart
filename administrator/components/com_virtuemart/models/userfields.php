@@ -96,6 +96,21 @@ class VirtueMartModelUserfields extends VmModel {
 			case 'select':
 				if (is_array($value)) $value = implode("|*|",$value);
 				break;
+			case 'euvatid':
+				vmdebug ($fieldType, $fieldName, $value ,$post);
+				if ($value = shopFunctionsF::validateEUVat($value)) {
+					$query= 'SELECT params FROM `#__virtuemart_userfields` where `type`="euvatid" AND name="'.$fieldName.'"' ;
+					$this->_db->setQuery( $query );
+					$params = $this->_db->loadResult();
+					$shoppergroup_id = explode("=", $params);
+					if (isset($shoppergroup_id[1])) {
+						$post['virtuemart_shoppergroup_id'] = (int)$shoppergroup_id[1];
+						$shoppergroupData = array('virtuemart_user_id'=>$post['virtuemart_user_id'],'virtuemart_shoppergroup_id'=>$post['virtuemart_shoppergroup_id']);
+						$user_shoppergroups_table = $this->getTable('vmuser_shoppergroups');
+						$shoppergroupData = $user_shoppergroups_table -> bindChecknStore($shoppergroupData);
+					}
+				}
+				break;
 			case 'age_verification':
 				$value = JRequest::getInt('birthday_selector_year')
 							.'-'.JRequest::getInt('birthday_selector_month')
