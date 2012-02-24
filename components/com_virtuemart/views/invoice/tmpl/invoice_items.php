@@ -86,7 +86,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php
 	}
 ?>
-<tr><td colspan="<?php echo $colspan ?>">&nbsp;</td></tr>
+<tr><td colspan="<?php echo $colspan ?>"></td></tr>
  <tr class="sectiontableentry1">
 			<td colspan="6" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_PRICES_TOTAL'); ?></td>
 
@@ -102,13 +102,13 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 	?>
 	<tr>
 		<td align="right" class="pricePad" colspan="5"><?php echo JText::_('COM_VIRTUEMART_COUPON_DISCOUNT').$coupon_code ?></td>
-			<td align="right">&nbsp;</td>
+			<td align="right"></td>
 
 			<?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right">&nbsp;</td>
+				<td align="right"> </td>
                                 <?php } ?>
 		<td align="right"><?php echo '- '.$this->currency->priceDisplay($this->orderDetails['details']['BT']->coupon_discount); ?></td>
-		<td align="right">&nbsp;</td>
+		<td align="right"></td>
 	</tr>
 <?php  } ?>
 
@@ -160,7 +160,7 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 			<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->orderDetails['details']['BT']->order_shipment_tax)."</span>" ?></td>
                                 <?php } ?>
-				<td align="right">&nbsp;</td>
+				<td align="right"></td>
 				<td align="right"><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_shipment+ $this->orderDetails['details']['BT']->order_shipment_tax); ?></td>
 
 	</tr>
@@ -171,7 +171,7 @@ if ($this->orderDetails['details']['BT']->coupon_discount <> 0.00) {
 			<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($this->orderDetails['details']['BT']->order_payment_tax)."</span>" ?></td>
                                 <?php } ?>
-				<td align="right">&nbsp;</td>
+				<td align="right"></td>
 				<td align="right"><?php echo $this->currency->priceDisplay($this->orderDetails['details']['BT']->order_payment+ $this->orderDetails['details']['BT']->order_payment_tax); ?></td>
 
 

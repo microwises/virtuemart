@@ -72,11 +72,11 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	function getTableSQLFields() {
 
 		$SQLfields = array(
-	    'id' => ' int(1) unsigned NOT NULL AUTO_INCREMENT ',
+	    'id' => ' INT(11) unsigned NOT NULL AUTO_INCREMENT ',
 	    'virtuemart_order_id' => ' int(1) UNSIGNED DEFAULT NULL',
 	    'order_number' => ' char(32) DEFAULT NULL',
 	    'virtuemart_paymentmethod_id' => ' mediumint(1) UNSIGNED DEFAULT NULL',
-	    'payment_name' => ' char(255) NOT NULL DEFAULT \'\' ',
+	    'payment_name' => 'text',
 	    'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\' ',
 	    'payment_currency' => 'char(3) ',
 	    'cost_per_transaction' => ' decimal(10,2) DEFAULT NULL ',
@@ -313,7 +313,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 			$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
 			$payment_name = $this->renderPluginName($method);
 			if ($virtuemart_order_id) {
-
+				$order['customer_notified']=0;
 				$order['order_status'] = $this->_getPaymentStatus($method, $paypal_data['payment_status']);
 				$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $order_number);
 				// send the email ONLY if payment has been accepted
@@ -446,7 +446,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		$order = array();
 		$order['order_status'] = $new_status;
-
+		$order['customer_notified'] =1;
 		$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $order_number);
 
 		$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);

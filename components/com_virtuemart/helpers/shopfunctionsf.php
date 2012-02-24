@@ -377,7 +377,8 @@ class shopFunctionsF {
 		foreach ( $load_template as $tab_content => $tab_title ) {
 			$html .= '<div id="tab-' . $i . '" class="tabs" title="' . JText::_ ( $tab_title ) . '">';
 			$html .= $this->loadTemplate ( $tab_content );
-			$html .= '<div class="clear"></div></div>';
+			$html .= '<div class="clear"></div>
+			    </div>';
 			$i ++;
 		}
 		$html .= '</div>';

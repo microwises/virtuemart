@@ -15,7 +15,8 @@
 * other free or open source software licenses.
 * @version $Id: details.php 5412 2012-02-09 19:27:55Z alatak $
 */
-
+//index.php?option=com_virtuemart&view=invoice&layout=invoice&format=pdf&tmpl=component&order_number=xx&order_pass=p_yy
+//
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 JHTML::stylesheet('vmpanels.css', JURI::root().'components/com_virtuemart/assets/css/');
@@ -30,7 +31,7 @@ if($this->print){
 	?>
 
 		<body onload="javascript:print();">
-		
+
 		<div class='spaceStyle'>
 		<?php
 		echo $this->loadTemplate('order');
@@ -50,9 +51,11 @@ if($this->print){
 	?>
 
 	<?php
+
 	echo $this->loadTemplate('order');
+
 	?>
-	</div>
+
 
 	<div class='spaceStyle'>
 	<?php
@@ -63,7 +66,11 @@ if($this->print){
 	$tabarray['history'] = 'COM_VIRTUEMART_ORDER_HISTORY';
 
 	shopFunctionsF::buildTabs ($tabarray);
-	echo '</div><br clear="all"/><br/>';
+	echo '</div>
+	    <br clear="all"/><br/>';
+
+
+
 }
 
 ?>

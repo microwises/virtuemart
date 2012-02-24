@@ -64,7 +64,7 @@ defined('_JEXEC') or die('Restricted access');
     </tr>
 
     <tr>
-	<td colspan="2"> &nbsp;</td>
+	<td colspan="2"></td>
     </tr>
     <tr>
 	<td valign="top"><strong>

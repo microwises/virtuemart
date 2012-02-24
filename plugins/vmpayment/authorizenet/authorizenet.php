@@ -106,7 +106,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	    'virtuemart_order_id' => ' int(1) UNSIGNED DEFAULT NULL',
 	    'order_number' => ' char(32) DEFAULT NULL',
 	    'virtuemart_paymentmethod_id' => ' mediumint(1) UNSIGNED DEFAULT NULL',
-	    'payment_name' => ' char(255) NOT NULL DEFAULT \'\' ',
+	    'payment_name' => 'text',
 	    'return_context' => ' char(255) NOT NULL DEFAULT \'\' ',
 	    'cost_per_transaction' => ' decimal(10, 2) DEFAULT NULL',
 	    'cost_percent_total' => ' char(10) DEFAULT NULL',

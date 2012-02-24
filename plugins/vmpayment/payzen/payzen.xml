@@ -7,127 +7,129 @@
     <authorUrl>http://www.lyra-network.com</authorUrl>
     <copyright>Copyright Lyra Network.</copyright>
     <license></license>
-    <version>1.1</version>
+    <version>1.2</version>
     <description>
     	<![CDATA[<a href="http://www.lyra-network.com" target="_blank">PayZen</a> is a multi bank payment provider. ]]>
     </description>
 
     <files>
-        <filename plugin="payzen">payzen.php</filename>
-        <folder>payzen</folder>  
+	<filename plugin="payzen">payzen.php</filename>
+	<folder>payzen</folder>
     </files>
-    
+
     <languages>
-        <language tag="en-GB">languageBE/en-GB.plg_vmpayment_payzen.ini</language>
-        <language tag="fr-FR">languageBE/fr-FR.plg_vmpayment_payzen.ini</language>
+	<language tag="en-GB">languageBE/en-GB.plg_vmpayment_payzen.ini</language>
+	<language tag="fr-FR">languageBE/fr-FR.plg_vmpayment_payzen.ini</language>
     </languages>
-    
+
     <media folder="images" destination="../images/stories/virtuemart/payment">
-		<filename>PayZen.png</filename>
-	</media>
-    
-   	<params addpath="/plugins/vmpayment/payzen/elements" />
-   	<params addpath="/plugins/vmpayment/payzen/payzen/elements" />
-    
+	<filename>PayZen.png</filename>
+    </media>
+
+    <params addpath="/plugins/vmpayment/payzen/elements" />
+    <params addpath="/plugins/vmpayment/payzen/payzen/elements" />
+
     <params addpath="/administrator/components/com_virtuemart/elements">
-    	<param type="vmjpluginwarning" />
-    	
-    	<param type="spacer" default="VMPAYMENT_PAYZEN_MODULE_INFORMATION" level="level1" />
-		
-		<param name="developed_by" type="payzenlabel" label="VMPAYMENT_PAYZEN_DEVELOPED_BY" default="&lt;a href=&quot;http://www.payzen.eu/&quot; target=&quot;_blank&quot;&gt;Payzen by Lyra network&lt;/a&gt;"/>
-		<param name="contact_email" type="payzenlabel" label="VMPAYMENT_PAYZEN_CONTACT_EMAIL" default="&lt;a href=&quot;mailto:support@payzen.eu&quot;&gt;support@payzen.eu&lt;/a&gt;"/>
-		<param name="contrib_version" type="payzenlabel" label="VMPAYMENT_PAYZEN_CONTRIB_VERSION" default="1.1"/>
-		<param name="gateway_version" type="payzenlabel" label="VMPAYMENT_PAYZEN_GATEWAY_VERSION" default="V2"/>
-		<param name="cms_version" type="payzenlabel" label="VMPAYMENT_PAYZEN_CMS_VERSION" default="VirtueMart 2.0"/>
-		<param name="documentation" type="payzenlabel" label="VMPAYMENT_PAYZEN_DOC" default="&lt;a href=&quot;http://media.payzen.eu/documentation_support/virtuemart_2.pdf&quot; target=&quot;_blank&quot;&gt;Documentation&lt;/a&gt;"/>/>
-		
-		<param type="spacer" default="VMPAYMENT_PAYZEN_PAYMENT_MODULE_SETTINGS" level="level1" />
-		<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_PAYZEN_LOGOS"
+	<param type="vmjpluginwarning" />
+
+	<param type="spacer" default="VMPAYMENT_PAYZEN_MODULE_INFORMATION" level="level1" />
+
+	<param name="developed_by" type="payzenlabel" label="VMPAYMENT_PAYZEN_DEVELOPED_BY" default="&lt;a href=&quot;http://www.lyra-network.com/&quot; target=&quot;_blank&quot;&gt;Lyra network&lt;/a&gt;"/>
+	<param name="contact_email" type="payzenlabel" label="VMPAYMENT_PAYZEN_CONTACT_EMAIL" default="&lt;a href=&quot;mailto:support@payzen.eu&quot;&gt;support@payzen.eu&lt;/a&gt;"/>
+	<param name="contrib_version" type="payzenlabel" label="VMPAYMENT_PAYZEN_CONTRIB_VERSION" default="1.2"/>
+	<param name="gateway_version" type="payzenlabel" label="VMPAYMENT_PAYZEN_GATEWAY_VERSION" default="V2"/>
+	<param name="cms_version" type="payzenlabel" label="VMPAYMENT_PAYZEN_CMS_VERSION" default="VirtueMart 2.0.2"/>
+	<param name="documentation" type="payzenlabel" label="VMPAYMENT_PAYZEN_DOC" default="&lt;a href=&quot;http://media.payzen.eu/documentation_support/virtuemart_2.pdf&quot; target=&quot;_blank&quot;&gt;Documentation&lt;/a&gt;"/>/>
+
+	<param type="spacer" default="VMPAYMENT_PAYZEN_PAYMENT_MODULE_SETTINGS" level="level1" />
+	<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_PAYZEN_LOGOS"
              	description="VMPAYMENT_PAYZEN_LOGOS_DESC"
              	directory="/images/stories/virtuemart/payment"
-             	default="PayZen.png" hide_default="1" hide_none="1"
+             	default="PayZen.jpg" hide_default="1" hide_none="1"
              	stripext="0" exclude="^_" />
-        <param name="payment_description" type="text" default="" label="VMPAYMENT_PAYZEN_DESCRIPTION" description="VMPAYMENT_PAYZEN_DESCRIPTION_DESC" size="100"/>
-        
-		<param type="spacer" default="VMPAYMENT_PAYZEN_PAYMENT_GATEWAY_ACCESS" level="level1" />
-		
-		<param name="site_id" type="text" size="10" default="56790135" label="VMPAYMENT_PAYZEN_SITE_ID" description="VMPAYMENT_PAYZEN_SITE_ID_DESC"/>
-		<param name="key_test" type="text" size="20" default="9827035662780440" label="VMPAYMENT_PAYZEN_TEST_KEY" description="VMPAYMENT_PAYZEN_TEST_KEY_DESC"/>
-		<param name="key_prod" type="text" size="20" default="" label="VMPAYMENT_PAYZEN_PROD_KEY" description="VMPAYMENT_PAYZEN_PROD_KEY_DESC"/>
-		<param name="ctx_mode" type="radio" default="TEST" label="VMPAYMENT_PAYZEN_CTX_MODE" description="VMPAYMENT_PAYZEN_CTX_MODE_DESC">
-		  <option value="TEST">VMPAYMENT_PAYZEN_TEST</option>
-		  <option value="PRODUCTION">VMPAYMENT_PAYZEN_PRODUCTION</option>
-		</param>
-		<param name="platform_url" type="text" size="50" default="https://secure.payzen.eu/vads-payment/" label="VMPAYMENT_PAYZEN_PLATFORM_URL" description="VMPAYMENT_PAYZEN_PLATFORM_URL_DESC"/>
-	
-		<param type="spacer" default="VMPAYMENT_PAYZEN_PAYMENT_PAGE" level="level1" />
-		
-		<param name="language" type="list" default="fr" label="VMPAYMENT_PAYZEN_LANGUAGE" description="VMPAYMENT_PAYZEN_LANGUAGE_DESC">
-		  <option value="fr">VMPAYMENT_PAYZEN_FRENCH</option>
-		  <option value="de">VMPAYMENT_PAYZEN_GERMAN</option>
-		  <option value="en">VMPAYMENT_PAYZEN_ENGLISH</option>
-		  <option value="es">VMPAYMENT_PAYZEN_SPANISH</option>
-		  <option value="zh">VMPAYMENT_PAYZEN_CHINESE</option>
-		  <option value="it">VMPAYMENT_PAYZEN_ITALIAN</option>
-		  <option value="ja">VMPAYMENT_PAYZEN_JAPANESE</option>
-		  <option value="pt">VMPAYMENT_PAYZEN_PORTUGUESE</option>
-		  <option value="nl">VMPAYMENT_PAYZEN_DUTCH</option>
-		</param>
-		<param name="available_languages" type="payzenmultilist" multiple="multiple" default="" label="VMPAYMENT_PAYZEN_AVAILABLES_LANGUAGES" size= "8" description="VMPAYMENT_PAYZEN_AVAILABLES_LANGUAGES_DESC">
-		  <option value="">VMPAYMENT_PAYZEN_ALL</option>
-		  <option value="fr">VMPAYMENT_PAYZEN_FRENCH</option>
-		  <option value="de">VMPAYMENT_PAYZEN_GERMAN</option>
-		  <option value="en">VMPAYMENT_PAYZEN_ENGLISH</option>
-		  <option value="es">VMPAYMENT_PAYZEN_SPANISH</option>
-		  <option value="zh">VMPAYMENT_PAYZEN_CHINESE</option>
-		  <option value="it">VMPAYMENT_PAYZEN_ITALIAN</option>
-		  <option value="ja">VMPAYMENT_PAYZEN_JAPANESE</option>
-		  <option value="pt">VMPAYMENT_PAYZEN_PORTUGUESE</option>
-		  <option value="nl">VMPAYMENT_PAYZEN_DUTCH</option>
-		</param>
-		<param name="capture_delay" type="text" size="10" default="" label="VMPAYMENT_PAYZEN_CAPTURE_DELAY" description="VMPAYMENT_PAYZEN_CAPTURE_DELAY_DESC"/>
-		<param name="validation_mode" type="list" default="" label="VMPAYMENT_PAYZEN_VALIDATION_MODE" description="VMPAYMENT_PAYZEN_VALIDATION_MODE_DESC">
-		  <option value="">VMPAYMENT_PAYZEN_BY_DEFAULT</option>
-		  <option value="0">VMPAYMENT_PAYZEN_AUTOMATIC</option>
-		  <option value="1">VMPAYMENT_PAYZEN_MANUAL</option>
-		</param>
-		<param name="payment_cards" type="payzenmultilist" multiple="multiple" default="" label="VMPAYMENT_PAYZEN_PAYMENT_CARDS" size= "10" description="VMPAYMENT_PAYZEN_PAYMENT_CARDS_DESC">
-		  <option value="">VMPAYMENT_PAYZEN_ALL</option>
-		  <option value="CB">Carte Bleue</option>
-		  <option value="MASTERCARD">MasterCard</option>
-		  <option value="VISA">Visa</option>
-		  <option value="AMEX">American Express</option>
-		</param>
-		
-		<param type="spacer" default="VMPAYMENT_PAYZEN_AMOUNT_RESTRICTIONS" level="level1" />
-	
-	 	<param name="min_amount" type="text" size="10" default="" label="VMPAYMENT_PAYZEN_AMOUNT_MIN" description="VMPAYMENT_PAYZEN_AMOUNT_MIN_DESC"/>
-	    <param name="max_amount" type="text" size="10" default="" label="VMPAYMENT_PAYZEN_AMOUNT_MAX" description="VMPAYMENT_PAYZEN_AMOUNT_MAX_DESC"/>
-		
-		<param type="spacer" default="VMPAYMENT_PAYZEN_RETURN_OPTIONS" level="level1" />
-		
-		<param name="redirect_enabled" type="radio" default="0" label="VMPAYMENT_PAYZEN_REDIRECT_ENABLED" description="VMPAYMENT_PAYZEN_REDIRECT_ENABLED_DESC">
-		  <option value="0">VMPAYMENT_PAYZEN_NO</option>
-		  <option value="1">VMPAYMENT_PAYZEN_YES</option>
-		</param>
-		<param name="redirect_success_timeout" type="text" size="10" default="5" label="VMPAYMENT_PAYZEN_REDIRECT_SUCCESS_TIMEOUT" description="VMPAYMENT_PAYZEN_REDIRECT_SUCCESS_TIMEOUT_DESC"/>
-		<param name="redirect_success_message" type="text" size="50" default="Votre paiement a bien été pris en compte, vous allez être redirigé dans quelques instants." label="VMPAYMENT_PAYZEN_REDIRECT_SUCCESS_MESSAGE" description="VMPAYMENT_PAYZEN_REDIRECT_SUCCESS_MESSAGE_DESC" />
-		<param name="redirect_error_timeout" type="text" size="10" default="5" label="VMPAYMENT_PAYZEN_REDIRECT_ERROR_TIMEOUT" description="VMPAYMENT_PAYZEN_REDIRECT_ERROR_TIMEOUT_DESC"/>
-		<param name="redirect_error_message" type="text" size="50" default="Une erreur est survenue, vous allez être redirigé dans quelques instants." label="VMPAYMENT_PAYZEN_REDIRECT_ERROR_MESSAGE" description="VMPAYMENT_PAYZEN_REDIRECT_ERROR_MESSAGE_DESC"/>
-		<param name="return_mode" type="list" default="GET" label="VMPAYMENT_PAYZEN_RETURN_MODE" description="VMPAYMENT_PAYZEN_RETURN_MODE_DESC">
-          <option value="GET">GET</option>
-          <option value="POST">POST</option>
-        </param>
-		<param name="url_success" type="payzenurl" size="50" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=paymentresponsereceived" label="VMPAYMENT_PAYZEN_URL_SUCCESS" description="VMPAYMENT_PAYZEN_URL_SUCCESS_DESC" editable="true"/>
-		<param name="url_return" type="payzenurl" size="50" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=paymentresponsereceived" label="VMPAYMENT_PAYZEN_URL_ERROR" description="VMPAYMENT_PAYZEN_URL_ERROR_DESC" editable="true"/>
-		<param name="url_cancel" type="payzenurl" size="50" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=paymentusercancel" label="VMPAYMENT_PAYZEN_URL_CANCEL" description="VMPAYMENT_PAYZEN_URL_CANCEL_DESC" editable="true"/>
-		<param name="silent_url" type="payzenurl" label="VMPAYMENT_PAYZEN_URL_CHECK" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginnotification&amp;tmpl=component" editable="false"/>
-		
-		<param name="order_success_status" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_PAYZEN_ORDER_SUCCESS_STATUS" description="VMPAYMENT_PAYZEN_ORDER_SUCCESS_STATUS_DESC" />
-   		<param name="order_failure_status" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_PAYZEN_ORDER_FAILURE_STATUS" description="VMPAYMENT_PAYZEN_ORDER_FAILURE_STATUS_DESC" />
-   		<param name="debug" type="radio" default="0" label="VMPAYMENT_PAYZEN_DEBUG" description="VMPAYMENT_PAYZEN_DEBUG_DESC" >
-		    <option value="0">VMPAYMENT_PAYZEN_NO</option>
-		    <option value="1">VMPAYMENT_PAYZEN_YES</option>
-		</param>
-	</params>
+	<param name="cost_per_transaction" type="text" label="VMPAYMENT_PAYZEN_COST_PER_TRANSACTION" description="VMPAYMENT_PAYZEN_COST_PER_TRANSACTION_DESC" />
+	<param name="cost_percent_total" type="text" label="VMPAYMENT_PAYZEN_COST_PERCENT_TOTAL" description="VMPAYMENT_PAYZEN_COST_PERCENT_TOTAL_DESC" />
+	<param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_PAYZEN_TAX" description="VMPAYMENT_PAYZEN_TAX_DESC" />
+
+	<param type="spacer" default="VMPAYMENT_PAYZEN_PAYMENT_GATEWAY_ACCESS" level="level1" />
+
+	<param name="site_id" type="text" size="10" default="56790135" label="VMPAYMENT_PAYZEN_SITE_ID" description="VMPAYMENT_PAYZEN_SITE_ID_DESC"/>
+	<param name="key_test" type="text" size="20" default="9827035662780440" label="VMPAYMENT_PAYZEN_TEST_KEY" description="VMPAYMENT_PAYZEN_TEST_KEY_DESC"/>
+	<param name="key_prod" type="text" size="20" default="" label="VMPAYMENT_PAYZEN_PROD_KEY" description="VMPAYMENT_PAYZEN_PROD_KEY_DESC"/>
+	<param name="ctx_mode" type="radio" default="TEST" label="VMPAYMENT_PAYZEN_CTX_MODE" description="VMPAYMENT_PAYZEN_CTX_MODE_DESC">
+	    <option value="TEST">VMPAYMENT_PAYZEN_TEST</option>
+	    <option value="PRODUCTION">VMPAYMENT_PAYZEN_PRODUCTION</option>
+	</param>
+	<param name="platform_url" type="text" size="50" default="https://secure.payzen.eu/vads-payment/" label="VMPAYMENT_PAYZEN_PLATFORM_URL" description="VMPAYMENT_PAYZEN_PLATFORM_URL_DESC"/>
+
+	<param type="spacer" default="VMPAYMENT_PAYZEN_PAYMENT_PAGE" level="level1" />
+
+	<param name="language" type="list" default="fr" label="VMPAYMENT_PAYZEN_LANGUAGE" description="VMPAYMENT_PAYZEN_LANGUAGE_DESC">
+	    <option value="fr">VMPAYMENT_PAYZEN_FRENCH</option>
+	    <option value="de">VMPAYMENT_PAYZEN_GERMAN</option>
+	    <option value="en">VMPAYMENT_PAYZEN_ENGLISH</option>
+	    <option value="es">VMPAYMENT_PAYZEN_SPANISH</option>
+	    <option value="zh">VMPAYMENT_PAYZEN_CHINESE</option>
+	    <option value="it">VMPAYMENT_PAYZEN_ITALIAN</option>
+	    <option value="ja">VMPAYMENT_PAYZEN_JAPANESE</option>
+	    <option value="pt">VMPAYMENT_PAYZEN_PORTUGUESE</option>
+	    <option value="nl">VMPAYMENT_PAYZEN_DUTCH</option>
+	</param>
+	<param name="available_languages" type="payzenmultilist" multiple="multiple" default="" label="VMPAYMENT_PAYZEN_AVAILABLES_LANGUAGES" size= "8" description="VMPAYMENT_PAYZEN_AVAILABLES_LANGUAGES_DESC">
+	    <option value="">VMPAYMENT_PAYZEN_ALL</option>
+	    <option value="fr">VMPAYMENT_PAYZEN_FRENCH</option>
+	    <option value="de">VMPAYMENT_PAYZEN_GERMAN</option>
+	    <option value="en">VMPAYMENT_PAYZEN_ENGLISH</option>
+	    <option value="es">VMPAYMENT_PAYZEN_SPANISH</option>
+	    <option value="zh">VMPAYMENT_PAYZEN_CHINESE</option>
+	    <option value="it">VMPAYMENT_PAYZEN_ITALIAN</option>
+	    <option value="ja">VMPAYMENT_PAYZEN_JAPANESE</option>
+	    <option value="pt">VMPAYMENT_PAYZEN_PORTUGUESE</option>
+	    <option value="nl">VMPAYMENT_PAYZEN_DUTCH</option>
+	</param>
+	<param name="capture_delay" type="text" size="10" default="" label="VMPAYMENT_PAYZEN_CAPTURE_DELAY" description="VMPAYMENT_PAYZEN_CAPTURE_DELAY_DESC"/>
+	<param name="validation_mode" type="list" default="" label="VMPAYMENT_PAYZEN_VALIDATION_MODE" description="VMPAYMENT_PAYZEN_VALIDATION_MODE_DESC">
+	    <option value="">VMPAYMENT_PAYZEN_BY_DEFAULT</option>
+	    <option value="0">VMPAYMENT_PAYZEN_AUTOMATIC</option>
+	    <option value="1">VMPAYMENT_PAYZEN_MANUAL</option>
+	</param>
+	<param name="payment_cards" type="payzenmultilist" multiple="multiple" default="" label="VMPAYMENT_PAYZEN_PAYMENT_CARDS" size= "10" description="VMPAYMENT_PAYZEN_PAYMENT_CARDS_DESC">
+	    <option value="">VMPAYMENT_PAYZEN_ALL</option>
+	    <option value="CB">Carte Bleue</option>
+	    <option value="MASTERCARD">MasterCard</option>
+	    <option value="VISA">Visa</option>
+	    <option value="AMEX">American Express</option>
+	</param>
+
+	<param type="spacer" default="VMPAYMENT_PAYZEN_AMOUNT_RESTRICTIONS" level="level1" />
+
+	<param name="min_amount" type="text" size="10" default="" label="VMPAYMENT_PAYZEN_AMOUNT_MIN" description="VMPAYMENT_PAYZEN_AMOUNT_MIN_DESC"/>
+	<param name="max_amount" type="text" size="10" default="" label="VMPAYMENT_PAYZEN_AMOUNT_MAX" description="VMPAYMENT_PAYZEN_AMOUNT_MAX_DESC"/>
+
+	<param type="spacer" default="VMPAYMENT_PAYZEN_RETURN_OPTIONS" level="level1" />
+
+	<param name="redirect_enabled" type="radio" default="0" label="VMPAYMENT_PAYZEN_REDIRECT_ENABLED" description="VMPAYMENT_PAYZEN_REDIRECT_ENABLED_DESC">
+	    <option value="0">VMPAYMENT_PAYZEN_NO</option>
+	    <option value="1">VMPAYMENT_PAYZEN_YES</option>
+	</param>
+	<param name="redirect_success_timeout" type="text" size="10" default="5" label="VMPAYMENT_PAYZEN_REDIRECT_SUCCESS_TIMEOUT" description="VMPAYMENT_PAYZEN_REDIRECT_SUCCESS_TIMEOUT_DESC"/>
+	<param name="redirect_success_message" type="text" size="50" default="Votre paiement a bien été pris en compte, vous allez être redirigé dans quelques instants." label="VMPAYMENT_PAYZEN_REDIRECT_SUCCESS_MESSAGE" description="VMPAYMENT_PAYZEN_REDIRECT_SUCCESS_MESSAGE_DESC" />
+	<param name="redirect_error_timeout" type="text" size="10" default="5" label="VMPAYMENT_PAYZEN_REDIRECT_ERROR_TIMEOUT" description="VMPAYMENT_PAYZEN_REDIRECT_ERROR_TIMEOUT_DESC"/>
+	<param name="redirect_error_message" type="text" size="50" default="Une erreur est survenue, vous allez être redirigé dans quelques instants." label="VMPAYMENT_PAYZEN_REDIRECT_ERROR_MESSAGE" description="VMPAYMENT_PAYZEN_REDIRECT_ERROR_MESSAGE_DESC"/>
+	<param name="return_mode" type="list" default="GET" label="VMPAYMENT_PAYZEN_RETURN_MODE" description="VMPAYMENT_PAYZEN_RETURN_MODE_DESC">
+	    <option value="GET">GET</option>
+	    <option value="POST">POST</option>
+	</param>
+	<param name="url_success" type="payzenurl" size="50" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginresponsereceived" label="VMPAYMENT_PAYZEN_URL_SUCCESS" description="VMPAYMENT_PAYZEN_URL_SUCCESS_DESC" editable="true"/>
+	<param name="url_return" type="payzenurl" size="50" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginresponsereceived" label="VMPAYMENT_PAYZEN_URL_ERROR" description="VMPAYMENT_PAYZEN_URL_ERROR_DESC" editable="true"/>
+	<param name="url_cancel" type="payzenurl" size="50" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginUserPaymentCancel" label="VMPAYMENT_PAYZEN_URL_CANCEL" description="VMPAYMENT_PAYZEN_URL_CANCEL_DESC" editable="true"/>
+	<param name="silent_url" type="payzenurl" label="VMPAYMENT_PAYZEN_URL_CHECK" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginnotification&amp;tmpl=component" editable="false"/>
+
+	<param name="order_success_status" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_PAYZEN_ORDER_SUCCESS_STATUS" description="VMPAYMENT_PAYZEN_ORDER_SUCCESS_STATUS_DESC" />
+	<param name="order_failure_status" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_PAYZEN_ORDER_FAILURE_STATUS" description="VMPAYMENT_PAYZEN_ORDER_FAILURE_STATUS_DESC" />
+	<param name="debug" type="radio" default="0" label="VMPAYMENT_PAYZEN_DEBUG" description="VMPAYMENT_PAYZEN_DEBUG_DESC" >
+	    <option value="0">VMPAYMENT_PAYZEN_NO</option>
+	    <option value="1">VMPAYMENT_PAYZEN_YES</option>
+	</param>
+    </params>
 </install>

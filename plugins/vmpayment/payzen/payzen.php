@@ -1,20 +1,21 @@
 <?php
+/*
 #####################################################################################################
 #
 #					Module pour la plateforme de paiement PayZen
-#						Version : 1.1 (révision 33267)
+#						Version : 1.2 (révision 33398)
 #									########################
 #					Développé pour VirtueMart
-#						Version : 2.0
+#						Version : 2.0.0
 #						Compatibilité plateforme : V2
 #									########################
 #					Développé par Lyra Network
 #						http://www.lyra-network.com/
-#						16/02/2012
+#						20/02/2012
 #						Contact : support@payzen.eu
 #
 #####################################################################################################
-
+*/
 defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 if (!class_exists('vmPSPlugin'))
@@ -34,42 +35,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		$this->tableFields = array_keys($this->getTableSQLFields());
 		$this->_tablepkey = 'id';//virtuemart_payzen_id';
 		$this->_tableId = 'id';//'virtuemart_payzen_id';
-		$varsToPush = array(
-			'developed_by' => array('', 'char'),
-		    'contact_email' => array('', 'char'),
-		    'contrib_version' => array('', 'char'),
-		    'gateway_version' => array('', 'char'),
-		    'contrib_version' => array('', 'char'),
-		    'debug' => array(0, 'int'),
-		    'cms_version' => array('', 'int'),
-		    'payment_logos' => array('', 'char'),
-		    'site_id' => array('', 'int'),
-		    'key_test' => array('', 'int'),
-		    'key_prod' => array('', 'int'),
-		    'site_id' => array('', 'int'),
-		    'ctx_mode' => array('TEST', 'char'),
-		    'platform_url' => array('', 'char'),
-		    'language' => array('', 'char'),
-		    'available_languages' => array('', 'char'),
-		    'capture_delay' => array('', 'int'),
-		    'validation_mode' => array('', 'int'),
-		    'payment_cards' => array('', 'char'),
-		    'min_amount' => array('', 'int'),
-		    'max_amount' => array('', 'int'),
-		    'redirect_enabled' => array('', 'int'),
-		    'redirect_success_timeout' => array('', 'char'),
-		    'redirect_success_message' => array('', 'char'),
-		    'redirect_error_timeout' => array('', 'char'),
-		    'redirect_error_message' => array('', 'char'),
-		    'return_mode' => array('', 'char'),
-		    'url_success' => array('', 'char'),
-		    'url_return' => array('', 'char'),
-		    'url_cancel' => array('', 'char'),
-		    'silent_url' => array('', 'char'),
-		    'order_success_status' => array('', 'char'),
-		    'order_failure_status' => array('', 'char'),
-		);
-
+		$varsToPush = $this->getVarsToPush();
 		$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
 
 		//self::$_this = $this;
@@ -81,11 +47,11 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 
 	function getTableSQLFields() {
 		$SQLfields = array(
-		    'id' => ' tinyint(1) unsigned NOT NULL AUTO_INCREMENT ',
+		    'id' => '  INT(11) unsigned NOT NULL AUTO_INCREMENT  ',
 		    'virtuemart_order_id' => ' int(1) UNSIGNED DEFAULT NULL',
 		    'order_number' => ' char(64) DEFAULT NULL',
 		    'virtuemart_paymentmethod_id' => ' mediumint(1) UNSIGNED DEFAULT NULL',
-		    'payment_name' => ' char(128) NOT NULL DEFAULT \'\' ',
+		    'payment_name' => 'text',
 		    'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\' ',
 		    'payment_currency' => 'char(3) ',
 		    'cost_per_transaction' => ' decimal(10,2) DEFAULT NULL ',
@@ -109,6 +75,16 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		return $SQLfields;
 	}
 
+	function getCosts(VirtueMartCart $cart, $method, $cart_prices) {
+		if (preg_match('/%$/', $method->cost_percent_total)) {
+			$cost_percent_total = substr($method->cost_percent_total, 0, -1);
+		} else {
+			$cost_percent_total = $method->cost_percent_total;
+		}
+
+		return ($method->cost_per_transaction + ($cart_prices['salesPrice'] * $cost_percent_total * 0.01));
+	}
+
 	/**
 	 * Reimplementation of vmPaymentPlugin::checkPaymentConditions()
 	 * @param array $cart_prices all cart prices
@@ -117,10 +93,9 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	 */
 	function checkConditions($cart, $method, $cart_prices) {
 
-		$amount = $cart_prices['discountAfterTax'];
-
+		$amount =  $cart_prices['salesPrice'];
 		$amount_cond = ($amount >= $method->min_amount && $amount <= $method->max_amount
-			|| ($amount >= $method->min_amount && $method->max_amount == ''));
+			|| ($amount >= $method->min_amount && empty($method->max_amount) ) );
 
 		return $amount_cond;
 	}
@@ -213,7 +188,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		$available_languages = !is_array($available_languages) ? $available_languages : (in_array("", $available_languages) ? "" : implode(";", $available_languages));
 		$api->set('available_languages', $available_languages);
 
-		$api->set('contrib', 'VirtueMart2.0_1.1');
+		$api->set('contrib', 'VirtueMart2.0.0_1.2');
 
 		// Set customer info
 		// $usr = & JFactory::getUser();
@@ -358,7 +333,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 
 			if ($method->site_id == '56790135') {
 				// Mode TEST DEFAULT VALUE: The plugin use default value.
-				vmWarn(JText::_('VMPAYMENT_PAYZEN_CHECK_URL_WARN_ALATAK'), '');
+				vmWarn(JText::_('VMPAYMENT_PAYZEN_CHECK_URL_WARN_VIRTUEMART'), '');
 			}
 			elseif ($method->ctx_mode == 'TEST') {
 				//Mode TEST warning : Check URL not correctly called.
@@ -376,7 +351,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	 * @param int $virtuemart_order_id virtuemart order primary key concerned by payment
 	 * @return
 	 */
-	function plgVmOnPaymentUserCancel(&$virtuemart_order_id) {
+	function plgVmOnUserPaymentCancel() {
 		if (!class_exists('VirtueMartModelOrders'))
 		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
@@ -477,8 +452,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 			die($resp->getOutputForGateway('auth_fail'));
 		}
 
-		$modelOrder = VmModel::getModel('orders');
-		$order = $modelOrder->getOrder($virtuemart_order_id);
+		$order = VirtueMartModelOrders::getOrder($virtuemart_order_id);
 		$order_status_code = $order['items'][0]->order_status;
 
 		// Order not processed yet
@@ -618,13 +592,16 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 			require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 		}
 		// save order data
-		$modelOrder = VmModel::getModel('orders');
+		$modelOrder = new VirtueMartModelOrders();
 		$order['order_status'] = $new_status;
 		$order['virtuemart_order_id'] = $virtuemart_order_id;
 		$order['customer_notified'] = 0;
 		$date = JFactory::getDate();
 		$order['comments'] = JText::sprintf('VMPAYMENT_PAYZEN_NOTIFICATION_RECEVEIVED', $date->toFormat('%Y-%m-%d %H:%M:%S'));
-		vmdebug('managePaymentResponse', $order);
+		vmdebug('Payzen - managePaymentResponse', $order);
+
+
+		// la fonction updateStatusForOneOrder fait l'envoie de l'email à partir de VM2.0.2
 		$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 
 		if (!class_exists('VirtueMartCart')) {
@@ -632,10 +609,6 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		}
 
 		if ($resp->isAcceptedPayment()) {
-			// Send order mail notification
-			$orderitems = $modelOrder->getOrder($virtuemart_order_id);
-			 shopFunctionsF::sentOrderConfirmedEmail($orderitems);
-
 			// Empty cart in session
 			$this->emptyCart($return_context);
 		}
@@ -762,7 +735,6 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	 * @param array $_formData Form data
 	 * @return mixed, True on success, false on failures (the rest of the save-process will be
 	 * skipped!), or null when this method is not actived.
-	 * @author Oscar van Eijk
 
 	 public function plgVmOnUpdateOrderPayment(  $_formData) {
 	 return null;
@@ -774,7 +746,6 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	 * @param array $_formData Form data
 	 * @return mixed, True on success, false on failures (the rest of the save-process will be
 	 * skipped!), or null when this method is not actived.
-	 * @author Oscar van Eijk
 
 	 public function plgVmOnUpdateOrderLine(  $_formData) {
 	 return null;
@@ -788,7 +759,6 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	 * @param integer $_orderId The order ID
 	 * @param integer $_lineId
 	 * @return mixed Null for method that aren't active, text (HTML) otherwise
-	 * @author Oscar van Eijk
 
 	 public function plgVmOnEditOrderLineBE(  $_orderId, $_lineId) {
 	 return null;
@@ -803,7 +773,6 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	 * @param integer $_orderId The order ID
 	 * @param integer $_lineId
 	 * @return mixed Null for method that aren't active, text (HTML) otherwise
-	 * @author Oscar van Eijk
 
 	 public function plgVmOnShowOrderLineFE(  $_orderId, $_lineId) {
 	 return null;
