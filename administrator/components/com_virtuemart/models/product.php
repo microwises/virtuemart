@@ -262,7 +262,7 @@ class VirtueMartModelProduct extends VmModel {
 
 			if(is_array($virtuemart_shoppergroup_ids)){
 				foreach ($virtuemart_shoppergroup_ids as $key => $virtuemart_shoppergroup_id){
-					$where[] .= '(s.`virtuemart_shoppergroup_id`= "' . (int) $virtuemart_shoppergroup_id . '" OR' . ' ISNULL(s.`virtuemart_shoppergroup_id`) )';
+					$where[] .= '(s.`virtuemart_shoppergroup_id`= "' . (int) $virtuemart_shoppergroup_id . '" OR' . ' (s.`virtuemart_shoppergroup_id`) IS NULL )';
 				}
 				$joinShopper = true;
 			}
@@ -1527,13 +1527,8 @@ public function getUncategorizedChildren($selected){
 			LEFT JOIN `#__virtuemart_product_categories` as pc
 			USING (`virtuemart_product_id`) ';
 
-		//TODO check this, stupidly the ISNULL is not working with mysql5.0
-// 	$usemysql = (float) VmConfig::get('mysqlver',5.0);
-// 	if($usemysql>=5.1){
-// 		$q .= ' WHERE (`product_parent_id` = "'.$this->_id.'" AND ISNULL (pc.`virtuemart_category_id`) ) OR (`virtuemart_product_id` = "'.$this->_id.'" ) ';
-// 	} else {
-		$q .= ' WHERE (`product_parent_id` = "'.$this->_id.'"  OR `virtuemart_product_id` = "'.$this->_id.'" ) ';
-// 	}
+		$q .= ' WHERE (`product_parent_id` = "'.$this->_id.'" AND (pc.`virtuemart_category_id`) IS NULL  ) OR (`virtuemart_product_id` = "'.$this->_id.'" ) ';
+
 
 	$app = JFactory::getApplication();
 	if($app->isSite() && !VmConfig::get('use_as_catalog',0) && VmConfig::get('stockhandle','none')=='disableit' ){
@@ -1551,6 +1546,7 @@ public function getUncategorizedChildren($selected){
 		vmError('getUncategorizedChildren sql error '.$err,'getUncategorizedChildren sql error');
 		return false;
 	} else {
+		vmdebug('getUncategorizedChildren '.$this->_db->getQuery());
 		return $res;
 	}
 

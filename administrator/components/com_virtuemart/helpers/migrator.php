@@ -491,7 +491,7 @@ class Migrator extends VmModel{
 								LEFT OUTER JOIN #__vm_auth_user_group AS `aug` ON `aug`.user_id = `p`.id
 								LEFT OUTER JOIN #__vm_auth_group AS `ag` ON `ag`.group_id = `aug`.group_id
 								LEFT OUTER JOIN #__virtuemart_vmusers AS `vmu` ON `vmu`.virtuemart_user_id = `p`.id
-								WHERE ISNULL (`vmu`.virtuemart_user_id)  LIMIT '.$startLimit.','.$maxItems ;
+								WHERE (`vmu`.virtuemart_user_id) IS NULL  LIMIT '.$startLimit.','.$maxItems ;
 
 			$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port shoppers');
 			$oldUsers = $res[0];
@@ -1206,7 +1206,7 @@ class Migrator extends VmModel{
 			$q = 'SELECT `o`.*, `op`.*, `o`.`order_number` as `vm1_order_number`, `o2`.`order_number` as `nr2` FROM `#__vm_orders` as `o`
 				LEFT OUTER JOIN `#__vm_order_payment` as `op` ON `op`.`order_id` = `o`.`order_id`
 				LEFT JOIN `#__virtuemart_orders` as `o2` ON `o2`.`order_number` = `o`.`order_number`
-				WHERE ISNULL (o2.order_number) LIMIT '.$startLimit.','.$maxItems;
+				WHERE (o2.order_number) IS NULL LIMIT '.$startLimit.','.$maxItems;
 
 			$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port Orders');
 			$oldOrders = $res[0];
