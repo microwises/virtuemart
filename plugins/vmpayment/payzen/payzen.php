@@ -51,7 +51,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 		    'virtuemart_order_id' => ' int(1) UNSIGNED DEFAULT NULL',
 		    'order_number' => ' char(64) DEFAULT NULL',
 		    'virtuemart_paymentmethod_id' => ' mediumint(1) UNSIGNED DEFAULT NULL',
-		    'payment_name' => 'text',
+		    'payment_name' => 'varchar(5000)',
 		    'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\' ',
 		    'payment_currency' => 'char(3) ',
 		    'cost_per_transaction' => ' decimal(10,2) DEFAULT NULL ',
