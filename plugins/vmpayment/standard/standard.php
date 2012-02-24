@@ -56,16 +56,16 @@ class plgVmPaymentStandard extends vmPSPlugin {
      */
     function getTableSQLFields() {
 	$SQLfields = array(
-	    'id' => 'INT(1) unsigned NOT NULL AUTO_INCREMENT',
-	    'virtuemart_order_id' => 'int(1) UNSIGNED DEFAULT NULL',
-	    'order_number' => 'char(32) DEFAULT NULL',
-	    'virtuemart_paymentmethod_id' => 'mediumint(1) UNSIGNED DEFAULT NULL',
-	    'payment_name' => 'varchar(5000)',
-	    'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
-	    'payment_currency' => 'char(3) ',
-	    'cost_per_transaction' => 'decimal(10,2) DEFAULT NULL',
-	    'cost_percent_total' => 'decimal(10,2) DEFAULT NULL',
-	    'tax_id' => 'smallint(1) DEFAULT NULL'
+	    'id' => 'INT(1) UNSIGNED NOT NULL AUTO_INCREMENT',
+	    'virtuemart_order_id' => 'INT(1) UNSIGNED DEFAULT NULL',
+	    'order_number' => 'CHAR(32) DEFAULT NULL',
+	    'virtuemart_paymentmethod_id' => 'MEDIUMINT(1) UNSIGNED DEFAULT NULL',
+	    'payment_name' => 'VARCHAR(5000)',
+	    'payment_order_total' => 'DECIMAL(15,5) NOT NULL DEFAULT \'0.00000\'',
+	    'payment_currency' => 'CHAR(3) ',
+	    'cost_per_transaction' => 'DECIMAL(10,2) DEFAULT NULL',
+	    'cost_percent_total' => 'DECIMAL(10,2) DEFAULT NULL',
+	    'tax_id' => 'SMALLINT(1) DEFAULT NULL'
 	);
 
 	return $SQLfields;

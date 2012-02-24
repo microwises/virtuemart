@@ -55,16 +55,16 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 
     function getTableSQLFields() {
 	$SQLfields = array(
-	    'id' => 'int(1) unsigned NOT NULL AUTO_INCREMENT',
-	    'virtuemart_order_id' => 'int(11) UNSIGNED DEFAULT NULL',
-	    'order_number' => 'char(32) DEFAULT NULL',
-	    'virtuemart_shipmentmethod_id' => 'mediumint(1) UNSIGNED DEFAULT NULL',
-	    'shipment_name' => 'varchar(5000)',
-	    'order_weight' => 'decimal(10,4) DEFAULT NULL',
-	    'shipment_weight_unit' => 'char(3) DEFAULT \'KG\' ',
-	    'shipment_cost' => 'decimal(10,2) DEFAULT NULL',
-	    'shipment_package_fee' => 'decimal(10,2) DEFAULT NULL',
-	    'tax_id' => 'smallint(1) DEFAULT NULL'
+	    'id' => 'INT(1) UNSIGNED NOT NULL AUTO_INCREMENT',
+	    'virtuemart_order_id' => 'INT(11) UNSIGNED DEFAULT NULL',
+	    'order_number' => 'CHAR(32) DEFAULT NULL',
+	    'virtuemart_shipmentmethod_id' => 'MEDIUMINT(1) UNSIGNED DEFAULT NULL',
+	    'shipment_name' => 'VARCHAR(5000)',
+	    'order_weight' => 'DECIMAL(10,4) DEFAULT NULL',
+	    'shipment_weight_unit' => 'CHAR(3) DEFAULT \'KG\' ',
+	    'shipment_cost' => 'DECIMAL(10,2) DEFAULT NULL',
+	    'shipment_package_fee' => 'DECIMAL(10,2) DEFAULT NULL',
+	    'tax_id' => 'SMALLINT(1) DEFAULT NULL'
 	);
 	return $SQLfields;
     }
