@@ -1546,7 +1546,7 @@ public function getUncategorizedChildren($selected){
 		vmError('getUncategorizedChildren sql error '.$err,'getUncategorizedChildren sql error');
 		return false;
 	} else {
-		vmdebug('getUncategorizedChildren '.$this->_db->getQuery());
+// 		vmdebug('getUncategorizedChildren '.$this->_db->getQuery());
 		return $res;
 	}
 

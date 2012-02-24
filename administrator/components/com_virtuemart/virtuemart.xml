@@ -9,9 +9,9 @@
 	<author>The VirtueMart Development Team</author>
 	<authorEmail>max|at|virtuemart.net</authorEmail>
 	<authorUrl>http://www.virtuemart.net</authorUrl>
-	<copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
+	<copyright>Copyright (C) 2004-2012 Virtuemart Team. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<version status="RC">2.0.2</version>
+	<version status="Final">2.0.2</version>
 
    <!-- Custom un/installer for 1.6 -->
    <scriptfile>install/script.virtuemart.php</scriptfile>
