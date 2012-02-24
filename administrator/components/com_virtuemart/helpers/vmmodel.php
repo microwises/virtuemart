@@ -424,7 +424,6 @@ class VmModel extends JModel {
 // 			vmdebug('exeSortSearchListQuery '.get_class($this).' with limit');
 		}
 
-// 		vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q ',$this->_db->getQuery() );
 
 		if($object == 2){
 			 $this->ids = $this->_db->loadResultArray();
@@ -433,6 +432,7 @@ class VmModel extends JModel {
 		} else {
 			 $this->ids = $this->_db->loadObjectList();
 		}
+// 		vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q ',$this->_db->getQuery() );
 
 		if($this->_withCount){
 

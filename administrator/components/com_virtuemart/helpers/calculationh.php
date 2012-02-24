@@ -1119,14 +1119,15 @@ class calculationHelper {
 			$modificatorSum = 0.0;
 			foreach ($variants as $variant => $selected) {
 				if (!empty($selected)) {
+					//TODO ask Patrick why there is a filter for product_id, when virtuemart_customfield_id is already unique
 					$query = 'SELECT  C.* , field.*
 						FROM `#__virtuemart_customs` AS C
 						LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-						WHERE `virtuemart_product_id` =' . $product->virtuemart_product_id;
-					$query .=' and is_cart_attribute = 1 and field.`virtuemart_customfield_id`=' . $selected;
+						WHERE field.`virtuemart_customfield_id`=' . $selected;
 					$this->_db->setQuery($query);
 					$productCustomsPrice = $this->_db->loadObject();
-					if ($productCustomsPrice->field_type =='E') {
+					vmdebug('calculateModificators',$productCustomsPrice);
+					if (!empty($productCustomsPrice) and $productCustomsPrice->field_type =='E') {
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 						JPluginHelper::importPlugin('vmcustom');
 						$dispatcher = JDispatcher::getInstance();

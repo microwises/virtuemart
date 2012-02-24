@@ -818,7 +818,8 @@ class VirtueMartModelCustomfields extends VmModel {
 
 	}
 
-	/*
+	/**
+	 * TODO This is html and view stuff and MUST NOT be in the model, notice by Max
 	 * render custom fields display cart module FE
 	 */
 	public function CustomsFieldCartModDisplay($priceKey,$product) {
@@ -833,19 +834,22 @@ class VirtueMartModelCustomfields extends VmModel {
 		foreach ($variantmods as $variant=>$selected){
 			if ($selected) {
 
-				$productCustom = self::getProductCustomFieldCart ($product_id,$selected );
- 				if ($productCustom->field_type == "E") {
+				$productCustom = self::getProductCustomFieldCart ($selected );
+				if(!empty($productCustom)){
+					if ($productCustom->field_type == "E") {
+					} elseif (($productCustom->field_type == "G")) {
+						$child = self::getChild($productCustom->custom_value);
+						$html .= '<br/ >'.$child->product_name;
+					} elseif (($productCustom->field_type == "M")) {
+						$html .= ' <span>'.$productCustom->custom_title.' : </span>'.self::displayCustomMedia($productCustom->custom_value);
+					}else {
 
-
-				} elseif (($productCustom->field_type == "G")) {
-					$child = self::getChild($productCustom->custom_value);
-					$html .= '<br/ >'.$child->product_name;
-				} elseif (($productCustom->field_type == "M")) {
-					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.self::displayCustomMedia($productCustom->custom_value);
+						$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
+					}
 				}else {
-
-					$html .= ' <span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
+					vmdebug('CustomsFieldCartModDisplay, $productCustom is empty ');
 				}
+
 			}
 			$row++;
 		}
@@ -860,7 +864,8 @@ class VirtueMartModelCustomfields extends VmModel {
 		return $html.'</div>';
 	}
 
-	/*
+	/**
+	 *  TODO This is html and view stuff and MUST NOT be in the model, notice by Max
 	 * render custom fields display cart FE
 	 */
 	public function CustomsFieldCartDisplay($priceKey,$product) {
@@ -875,19 +880,24 @@ class VirtueMartModelCustomfields extends VmModel {
 		$html = '<div class="vm-customfield-cart">';
 		foreach ($variantmods as $variant=>$selected){
 			if ($selected) {
-				$productCustom = self::getProductCustomFieldCart ($product_id,$selected );
-				$html .= ' <span class="product-field-type-'.$productCustom->field_type.'">';
- 				if ($productCustom->field_type == "E") {
+				$productCustom = self::getProductCustomFieldCart ($selected );
+				if(!empty($productCustom)){
+					$html .= ' <span class="product-field-type-'.$productCustom->field_type.'">';
+					if ($productCustom->field_type == "E") {
 
-				} elseif (($productCustom->field_type == "G")) {
-					$child = self::getChild($productCustom->custom_value);
-					$html .= $productCustom->custom_title.' : '.$child->product_name.'</span>';
-				} elseif (($productCustom->field_type == "M")) {
-					$html .= $productCustom->custom_title.' : '.self::displayCustomMedia($productCustom->custom_value).'</span>';
+					} elseif (($productCustom->field_type == "G")) {
+						$child = self::getChild($productCustom->custom_value);
+						$html .= $productCustom->custom_title.' '.$child->product_name.'</span>';
+					} elseif (($productCustom->field_type == "M")) {
+						$html .= $productCustom->custom_title.' '.self::displayCustomMedia($productCustom->custom_value).'</span>';
+					} else {
+
+						$html .= $productCustom->custom_title.' '.$productCustom->custom_value.'</span>';
+					}
 				} else {
-
-					$html .= $productCustom->custom_title.' : '.$productCustom->custom_value.'</span>';
+					vmdebug('CustomsFieldCartDisplay, $productCustom is empty ');
 				}
+
 			}
 			$row++;
 		}
@@ -916,7 +926,7 @@ class VirtueMartModelCustomfields extends VmModel {
     // 			vmdebug('CustomsFieldOrderDisplay',$item->param);
 			    foreach ($item->param as $virtuemart_customfield_id=>$param){
 				    if ($param) {
-					    if ($item->productCustom = self::getProductCustomFieldCart ($item->virtuemart_product_id,$virtuemart_customfield_id ) ) {
+					    if ($item->productCustom = self::getProductCustomFieldCart ($virtuemart_customfield_id ) ) {
 	    // vmdebug('$param',$param);
 						    if ($item->productCustom->field_type == "E") {
 
@@ -953,15 +963,21 @@ class VirtueMartModelCustomfields extends VmModel {
 		return '';
 	}
 
-	/*
+	/**
+	 * TODO ask Patrick why there is a filter for product_id, when virtuemart_customfield_id is already unique
 	 * custom fields for cart and cart module
 	 */
-	public function getProductCustomFieldCart($product_id,$selected) {
+	public function getProductCustomFieldCart($selected) {
 		$db =& JFactory::getDBO();
-		$query='SELECT C.`virtuemart_custom_id` , `custom_element` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_cart_attribute` , `is_hidden` , C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`,field.`custom_param`,field.`custom_price`
+		$query = 'SELECT C.`virtuemart_custom_id` , `custom_element` , `custom_parent_id` , `admin_only` , `custom_title` , `custom_tip` , C.`custom_value` AS value, `custom_field_desc` , `field_type` , `is_list` , `is_cart_attribute` , `is_hidden` , C.`published` , field.`virtuemart_customfield_id` , field.`custom_value`,field.`custom_param`,field.`custom_price`
 			FROM `#__virtuemart_customs` AS C
 			LEFT JOIN `#__virtuemart_product_customfields` AS field ON C.`virtuemart_custom_id` = field.`virtuemart_custom_id`
-			Where `virtuemart_product_id` ='.$product_id.' and `virtuemart_customfield_id` ='.(int)$selected;
+			WHERE `virtuemart_customfield_id` ="'.(int)$selected.'"';
+// 		if($product_parent_id!=0){
+// 			$query .= ' AND (`virtuemart_product_id` ="' . $product_id.'" XOR `virtuemart_product_id` ="' . $product_parent_id.'")';
+// 		} else {
+// 			$query .= ' AND (`virtuemart_product_id` ="' . $product_id.'"';
+// 		}
 		$db->setQuery($query);
 		return $db->loadObject();
 	}

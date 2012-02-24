@@ -611,26 +611,6 @@ class VirtueMartCart {
 		return true;
 	}
 
-	function confirmDone() {
-
-		$this->checkoutData();
-		if ($this->_dataValidated) {
-			$this->_confirmDone = true;
-			$this->confirmedOrder();
-		} else {
-			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
-		}
-	}
-
-	function checkout($redirect=true) {
-
-		$this->checkoutData($redirect);
-		if ($this->_dataValidated && $redirect) {
-			$mainframe = JFactory::getApplication();
-			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
-		}
-	}
 
 	/**
 	 * Validate the coupon code. If ok,. set it in the cart
@@ -673,16 +653,35 @@ class VirtueMartCart {
 		$this->setCartIntoSession();
 	}
 
+	function confirmDone() {
+
+		$this->checkoutData();
+		if ($this->_dataValidated) {
+			$this->_confirmDone = true;
+			$this->confirmedOrder();
+		} else {
+			$mainframe = JFactory::getApplication();
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DATA_NOT_VALID'));
+		}
+	}
+
+	function checkout($redirect=true) {
+
+		$this->checkoutData($redirect);
+		if ($this->_dataValidated && $redirect) {
+			$mainframe = JFactory::getApplication();
+			$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_CHECKOUT_DONE_CONFIRM_ORDER'));
+		}
+	}
+
 	private function redirecter($relUrl,$redirectMsg){
 
 		$this->_dataValidated = false;
 		$app = JFactory::getApplication();
-		if($this->_redirect){
+		if($this->_redirect ){
 			$this->setCartIntoSession();
-			vmdebug('Should redirect '.$redirectMsg);
 			$app->redirect(JRoute::_($relUrl,$this->useXHTML,$this->useSSL), $redirectMsg);
 		} else {
-			$this->_redirect = true;
 			$this->setCartIntoSession();
 			return false;
 		}
