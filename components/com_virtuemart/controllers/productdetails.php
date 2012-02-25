@@ -255,7 +255,7 @@ class VirtueMartControllerProductdetails extends JController {
 				JResponse::setHeader('Content-Disposition','attachment;filename="recalculate.json"', true);
 				JResponse::sendHeaders();
 		echo json_encode ($priceFormated);
-
+		jexit();
 	}
 
 	public function getJsonChild() {

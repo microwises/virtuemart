@@ -97,7 +97,10 @@ class VirtueMartModelCustomfields extends VmModel {
 			'M'=>'COM_VIRTUEMART_IMAGE',
 			'V'=>'COM_VIRTUEMART_CUSTOM_CART_VARIANT',
 			'A'=>'COM_VIRTUEMART_CHILD_GENERIC_VARIANT',
-			'E'=>'COM_VIRTUEMART_CUSTOM_EXTENSION'
+			'E'=>'COM_VIRTUEMART_CUSTOM_EXTENSION',
+			'X'=>'COM_VIRTUEMART_CUSTOM_EDITOR',
+			'Y'=>'COM_VIRTUEMART_CUSTOM_TEXTAREA',
+			
 			);
 
 
@@ -378,6 +381,28 @@ class VirtueMartModelCustomfields extends VmModel {
 				case 'I':
 					return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" /></td><td>'.$priceInput;
 				break;
+				case 'I':
+					return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" /></td><td>'.$priceInput;
+				break;
+				//'X'=>'COM_VIRTUEMART_CUSTOM_EDITOR',
+				case 'X':
+					return '<textarea class="mceInsertContentNew" name="field['.$row.'][custom_value]" id="field-'.$row.'-custom_value">'.$field->custom_value.'</textarea>
+						<script type="text/javascript">// Creates a new editor instance
+							tinymce.execCommand("mceAddControl",true,"field-'.$row.'-custom_value")
+						</script></td><td>'.$priceInput;
+					//return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" /></td><td>'.$priceInput;
+				break;
+				//'Y'=>'COM_VIRTUEMART_CUSTOM_TEXTAREA'
+				case 'Y':
+					return '<textarea id="field['.$row.'][custom_value]" class="inputbox" cols=80 rows=50 >'.$field->custom_value.'</textarea></td><td>'.$priceInput;
+					//return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" /></td><td>'.$priceInput;
+				break;
+				
+				case 'editorta':
+					jimport( 'joomla.html.editor' );
+					$editor = JFactory::getEditor();
+					$_return['fields'][$_fld->name]['formcode'] = $editor->display($_prefix.$_fld->name, $_return['fields'][$_fld->name]['value'], 300, 150, $_fld->cols, $_fld->rows);
+					break;
 				/* bool */
 				case 'B':
 					return JHTML::_( 'select.booleanlist', 'field['.$row.'][custom_value]' , 'class="inputbox"', $field->custom_value).'</td><td>'.$priceInput;
