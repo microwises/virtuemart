@@ -28,9 +28,9 @@ abstract class vmUserfieldPlugin extends vmPlugin {
 
 		parent::__construct($subject, $config);
 
-		$this->_tablename = '#__virtuemart_userfield_' . $this->_name;
-		$this->_createTable();
-		$this->_tableChecked = true;
+		// $this->_tablename = '#__virtuemart_userfield_' . $this->_name;
+		// $this->_createTable();
+		// $this->_tableChecked = true;
 	}
 
 }

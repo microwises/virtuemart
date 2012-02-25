@@ -752,6 +752,16 @@ class VirtueMartModelUserfields extends VmModel {
 								    . $_prefix.$_fld->name . '" id="' . $_prefix.$_fld->name . '_field" value="1" '
 								    . ($_return['fields'][$_fld->name]['value'] ? 'checked="checked"' : '') .'/>';
 							    break;
+							/*##mygruz20120223193710 { :*/
+						    case 'vmcaptcha':
+								JPluginHelper::importPlugin('vmuserfield');
+								$dispatcher = JDispatcher::getInstance();
+								//Todo to adjust to new pattern, using &
+								$html = '' ;
+								$dispatcher->trigger('plgOnVmCaptcha',array($_return['fields'][$_fld->name], &$html) );
+							    $_return['fields'][$_fld->name]['formcode'] = $html;
+							    break;
+							/*##mygruz20120223193710 } */
 						    case 'captcha':
 							    // FIXME Implement the new securityimages component
     //							if (file_exists($mosConfig_absolute_path.'/administrator/components/com_securityimages/client.php')) {

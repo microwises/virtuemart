@@ -790,6 +790,20 @@ class VirtueMartModelUser extends VmModel {
 				return false;
 			}
 		}
+		/*##mygruz20120224120340 {
+		It was:
+		It became:*/
+		JPluginHelper::importPlugin('vmuserfield');
+		$dispatcher = JDispatcher::getInstance();
+		//Todo to adjust to new pattern, using &
+		$valid = true ;
+		$dispatcher->trigger('plgVmOnUserVerify',array(&$valid,$new));
+		vmdebug ('valid',$valid);
+		if( $valid == false ) {
+			vmError('COM_VIRTUEMART_CAPTCHA_CODE_WRONG','COM_VIRTUEMART_CAPTCHA_CODE_WRONG');
+			return false;
+		}
+		/*##mygruz20120224120340 } */
 
 		// Save the JUser object
 		if (!$user->save()) {
