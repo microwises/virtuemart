@@ -166,6 +166,17 @@ class VirtueMartControllerUser extends JController
 		$msg = '';
 
 		$data = JRequest::get('post');
+		JPluginHelper::importPlugin('vmuserfield');
+		$dispatcher = JDispatcher::getInstance();
+		//Todo to adjust to new pattern, using &
+		$valid = true ;
+		if ($currentUser->id == 0) {$new = true;}
+		else $new=false;
+		$dispatcher->trigger('plgVmOnUserVerify',array(&$valid,$new));
+		if( $valid == false ) {
+			vmError('COM_VIRTUEMART_CAPTCHA_CODE_WRONG','COM_VIRTUEMART_CAPTCHA_CODE_WRONG');
+			return false;
+		}
 
 // 		vmdebug('$currentUser',$currentUser);
 		if($currentUser->id!=0 || $register){
