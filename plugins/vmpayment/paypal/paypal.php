@@ -286,7 +286,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 
 		// the payment itself should send the parameter needed.
 		$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
-		$order_number = JRequest::getVar('on', 0);
+		$order_number = JRequest::getString('on', 0);
 		$vendorId = 0;
 		if (!($method = $this->getVmPluginMethod($virtuemart_paymentmethod_id))) {
 			return null; // Another method was selected, do nothing
@@ -301,39 +301,11 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 		if (!class_exists('VirtueMartModelOrders'))
 		require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
-		$paypal_data = JRequest::get('post');
+		//$paypal_data = JRequest::get('post');
 		$payment_name = $this->renderPluginName($method);
 
-		if (!empty($paypal_data)) {
-			vmdebug('plgVmOnPaymentResponseReceived', $paypal_data);
-			$order_number = $paypal_data['invoice'];
-			$return_context = $paypal_data['custom'];
-			if (!class_exists('VirtueMartModelOrders'))
-			require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-			$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
-			$payment_name = $this->renderPluginName($method);
-			if ($virtuemart_order_id) {
-				$order['customer_notified']=0;
-				$order['order_status'] = $this->_getPaymentStatus($method, $paypal_data['payment_status']);
-				$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $order_number);
-				// send the email ONLY if payment has been accepted
-				$modelOrder = VmModel::getModel('orders');
-				$orderitems = $modelOrder->getOrder($virtuemart_order_id);
-				$nb_history = count($orderitems['history']);
-				if ($orderitems['history'][$nb_history - 1]->order_status_code != $order['order_status']) {
-					$this->_storePaypalInternalData($method, $paypal_data, $virtuemart_order_id);
-					$this->logInfo('plgVmOnPaymentResponseReceived, sentOrderConfirmedEmail ' . $order_number, 'message');
-					$order['virtuemart_order_id'] = $virtuemart_order_id;
-					$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_EMAIL_SENT');
-					$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
-				}
-			} else {
-				vmError('Paypal data received, but no order number');
-				return;
-			}
-		} else {
-			$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
-		}
+		$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
+
 		if (!($paymentTable = $this->_getPaypalInternalData($virtuemart_order_id, $order_number) )) {
 			// JError::raiseWarning(500, $db->getErrorMsg());
 			return '';
