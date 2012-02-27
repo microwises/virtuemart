@@ -762,7 +762,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
   `virtuemart_customfield_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'field id',
   `virtuemart_product_id` int(11) NOT NULL DEFAULT '0',
   `virtuemart_custom_id` int(11) NOT NULL DEFAULT '1' COMMENT 'custom group id',
-  `custom_value` char(255) COMMENT 'field value',
+  `custom_value` varchar(20000) COMMENT 'field value',
   `custom_price` char(255) COMMENT 'price',
   `custom_param` text COMMENT 'Param for Plugins',
   `published` tinyint(1) NOT NULL DEFAULT '1',

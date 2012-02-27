@@ -202,7 +202,7 @@ if ($stockhandle == 'risetime' and ($this->product->product_in_stock - $this->pr
 		<?php
 		// Manufacturer of the Product
 		if (VmConfig::get('show_manufacturers', 1) && !empty($this->product->virtuemart_manufacturer_id)) {
-		    $this->loadTemplate('manufacturer');
+		    echo $this->loadTemplate('manufacturer');
 		}
 		?>
 

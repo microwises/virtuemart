@@ -32,7 +32,7 @@ AdminUIHelper::startAdminArea();
 	$_set = false;
 	$_table = false;
 	$_hiddenFields = '';
-
+// 	vmdebug('shipToFields',$this->shipToFields);
 	if (count($this->shipToFields['functions']) > 0) {
 		echo '<script language="javascript">'."\n";
 		echo join("\n", $this->shipToFields['functions']);
@@ -92,7 +92,7 @@ AdminUIHelper::startAdminArea();
 	}
 	echo $_hiddenFields;
 ?>
-<input type="hidden" name="shipto_virtuemart_userinfo_id" value="<?php echo $this->shipToID; ?>" />
+<input type="hidden" name="shipto_virtuemart_userinfo_id" value="<?php echo $this->shipToId; ?>" />
 
 </fieldset>
 

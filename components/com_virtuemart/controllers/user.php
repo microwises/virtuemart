@@ -166,6 +166,9 @@ class VirtueMartControllerUser extends JController
 		$msg = '';
 
 		$data = JRequest::get('post');
+/*		//why is this in the controller and the model and not only in the model?
+ * Why is this written as plugin, but works only correct for captcha?
+ *
 		JPluginHelper::importPlugin('vmuserfield');
 		$dispatcher = JDispatcher::getInstance();
 		//Todo to adjust to new pattern, using &
@@ -174,11 +177,12 @@ class VirtueMartControllerUser extends JController
 		else $new=false;
 		$dispatcher->trigger('plgVmOnUserVerify',array(&$valid,$new));
 		if( $valid == false ) {
-			vmError('COM_VIRTUEMART_CAPTCHA_CODE_WRONG','COM_VIRTUEMART_CAPTCHA_CODE_WRONG');
+// 			vmError('COM_VIRTUEMART_CAPTCHA_CODE_WRONG','COM_VIRTUEMART_CAPTCHA_CODE_WRONG');
 			return false;
-		}
+		}*/
 
 // 		vmdebug('$currentUser',$currentUser);
+		$data['address_type'] = JRequest::getWord('addrtype','BT');
 		if($currentUser->id!=0 || $register){
 			$this->addModelPath( JPATH_VM_ADMINISTRATOR.DS.'models' );
 			$userModel = VmModel::getModel('user');
@@ -211,7 +215,6 @@ class VirtueMartControllerUser extends JController
 					$return = $mainframe->login($credentials);
 				}
 			}
-
 
 		}
 

@@ -560,7 +560,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_orderData->order_number ='';
 		JPluginHelper::importPlugin('vmshopper');
 		$dispatcher = JDispatcher::getInstance();
-		$plg_datas = $dispatcher->trigger('plgVmOnUserOrder',$_orderData);
+		$plg_datas = $dispatcher->trigger('plgVmOnUserOrder',array(&$_orderData));
 		foreach($plg_datas as $plg_data){
 			// 				$data = array_merge($plg_data,$data);
 		}

@@ -411,7 +411,7 @@ class shopFunctionsF {
 			$vat_number 	= str_replace(array(' ', '.', '-', ',', ', '), '', $vat_number);
 			$countryCode 	= substr($vat_number, 0, 2);
 			$vatNumber 		= substr($vat_number, 2);
-	 
+
 			if ( strlen($countryCode) != 2 || is_numeric(substr($countryCode, 0, 1)) || is_numeric(substr($countryCode, 1, 2)) ) {
 				vmInfo('COM_VIRTUEMART_EUVATID_INVALID_COUNTRYCODE');
 				return NULL;//format error 'message' => 'Your VAT Number syntax is not correct. You should have something like this: BE805670816B01'
@@ -419,24 +419,104 @@ class shopFunctionsF {
 			// $client = new SoapClient("http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl");
 			$client = new SoapClient("http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl");
 			$params = array('countryCode' => $countryCode, 'vatNumber' => $vatNumber);
-	 
+
 			$result = $client->checkVat($params);
 			if ( !$result->valid ) {
 				vmInfo('COM_VIRTUEMART_EUVATID_INVALID');
 				return NULL ;// 'message' => sprintf('Invalid VAT Number. Check the validity on the customer VAT Number via <a href="%s">Europa VAT Number validation webservice</a>', 'http://ec.europa.eu/taxation_customs/vies/lang.do?fromWhichPage=vieshome'));
 			} else {
 				vmInfo('COM_VIRTUEMART_EUVATID_VALID');
-				
+
 				return true;
 			}
 		}
 		return NULL;
 	}
+
 	function getComUserOption() {
 	 if ( JVM_VERSION===1 ) {
 		return 'com_user';
 	    } else {
 		return 'com_users';
 	    }
+	}
+
+	/**
+	* Writes a PDF icon
+	* @author RolandD, Christopher Roussel
+	* @param string $link
+	* @param boolean $use_icon
+	* @deprecated
+	*/
+	function PdfIcon( $link, $use_icon=true ) {
+		if (VmConfig::get('pdf_button_enable', 1) == '1' && !JRequest::getVar('pop')) {
+
+			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
+			//$link .= '&amp;pop=1';
+			if ( $use_icon ) {
+				$text = JHtml::_('image.site', 'pdf_button.png', $folder, null, null, JText::_('COM_VIRTUEMART_PDF'));
+			} else {
+				$text = JText::_('COM_VIRTUEMART_PDF') .'&nbsp;';
+			}
+			return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('COM_VIRTUEMART_PDF'));
+		}
+	}
+
+	/**
+	 * Writes an Email icon
+	 * @author RolandD, Christopher Roussel
+	 * @param string $link
+	 * @param boolean $use_icon
+	 * @deprecated
+	 */
+	function EmailIcon( $virtuemart_product_id, $use_icon=true ) {
+		if (VmConfig::get('show_emailfriend', 1) == '1' && !JRequest::getVar('pop') && $virtuemart_product_id > 0  ) {
+
+			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
+
+			//Todo this is old stuff and must be adjusted
+			$link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&task=recommend&virtuemart_product_id='.$this->product->virtuemart_product_id.'&virtuemart_category_id='.$this->product->virtuemart_category_id.'&tmpl=component&pop=1');
+			if ( $use_icon ) {
+				$text = JHtml::_('image.site', 'emailButton.png', $folder, null, null, JText::_('COM_VIRTUEMART_EMAIL'));
+			} else {
+				$text = '&nbsp;'. JText::_('COM_VIRTUEMART_EMAIL');
+			}
+			return '<a class="modal" rel="{handler: \'iframe\', size: {x: 700, y: 550}}" href="'.$link.'">'.$text.'</a>';
+		}
+	}
+
+	/**
+	 * @author RolandD, Christopher Roussel
+	 *
+	 * @deprecated
+	 */
+	function PrintIcon( $link='', $use_icon=true, $add_text='' ) {
+
+		if (VmConfig::get('show_printicon', 1) == '1') {
+
+			$folder = (VmConfig::isJ15()) ? '/images/M_images/' : '/media/system/images/';
+
+			// checks template image directory for image, if non found default are loaded
+			if ( $use_icon ) {
+				$filter = JFilterInput::getInstance();
+				$text = JHtml::_('image.site', 'printButton.png', $folder, null, null, JText::_('COM_VIRTUEMART_PRINT'));
+				$text .= $filter->clean($add_text);
+			} else {
+				$text = '|&nbsp;'. JText::_('COM_VIRTUEMART_PRINT'). '&nbsp;|';
+			}
+			$isPopup = JRequest::getVar( 'pop' );
+			if ( $isPopup ) {
+				// Print Preview button - used when viewing page
+				$html = '<span class="vmNoPrint">
+					<a href="javascript:void(0)" onclick="javascript:window.print(); return false;" title="'. JText::_('COM_VIRTUEMART_PRINT').'">
+					'. $text .'
+					</a></span>';
+				return $html;
+			} else {
+				// Print Button - used in pop-up window
+				return self::vmPopupLink($link, $text, 640, 480, '_blank', JText::_('COM_VIRTUEMART_PRINT'));
+			}
+		}
+
 	}
 }

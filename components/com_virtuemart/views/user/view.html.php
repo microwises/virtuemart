@@ -169,10 +169,6 @@ class VirtuemartViewUser extends VmView {
 	    $this->lUser();
 	    $this->shopper($userFields);
 
-
-	    // 			$userFieldsST  = $this->_model->getUserDataInFields($layoutName,'ST',$this->userDetails->JUser->id);
-	    // 			$this->lshipto($userFieldsST); //TEST !
-
 	    $this->payment();
 	    $this->lOrderlist();
 	    $this->lVendor();

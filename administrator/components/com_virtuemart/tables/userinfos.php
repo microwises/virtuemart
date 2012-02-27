@@ -73,7 +73,7 @@ class TableUserinfos extends VmTableData {
 		parent::loadFields();
 		$this->setPrimaryKey('virtuemart_userinfo_id');
 		$this->setObligatoryKeys('address_type');
-//		$this->setObligatoryKeys('address_type_name');
+		$this->setObligatoryKeys('virtuemart_user_id');
 
 		$this->setLoggable();
 

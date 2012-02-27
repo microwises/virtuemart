@@ -324,9 +324,10 @@ class VirtueMartModelUserfields extends VmModel {
 	 */
 	public function getUserFieldsFor($layoutName, $type,$userId = -1){
 
+		vmdebug('getUserFieldsFor '.$layoutName.' '. $type .' ' . $userId);
 		$register = false;
 
-		if(VmConfig::get('oncheckout_show_register',1)){
+		if(VmConfig::get('oncheckout_show_register',1) and $type=='BT'){
 			$user = JFactory::getUser();
 			if(!empty($user)){
 				if(empty($user->id)){
@@ -339,25 +340,40 @@ class VirtueMartModelUserfields extends VmModel {
 			$register = false;
 		}
 
+		$skips = array();
+		//Maybe there is another method to define the skips
+		$skips = array('delimiter_userinfo', 'delimiter_billto');
 
+		if(!$register or $type =='ST'){
+			$skips[] = 'name';
+			$skips[] = 'username';
+			$skips[] = 'password';
+			$skips[] = 'password2';
+			$skips[] = 'user_is_vendor';
+			$skips[] = 'agreed';
+		}
+
+// 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+// 		if(!Permissions::getInstance()->check('admin')){
+// 			$skips[] = 'user_is_vendor';
+// 		}
 
 		//Here we define the fields to skip
 // 		if($layoutName=='edit' || ){
-// 			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'password', 'password2'
+// 			$skips = array( 'username', 'password', 'password2'
 // 						, 'address_type', 'bank', 'email','user_is_vendor');
 // 		} else
-		if ($layoutName=='cart' && $register){
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','user_is_vendor');
+/*		if ($layoutName=='cart' && $register){
+			$skips = array( 'address_type', 'bank','user_is_vendor');
 
 		} else if ($layoutName=='cart' && !$register){
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'username', 'name', 'password', 'password2', 'address_type', 'bank','user_is_vendor');
+			$skips = array( 'name', 'username', 'password', 'password2', 'address_type', 'bank','user_is_vendor');
 		} else if ($layoutName=='edit' && $type='BT'){
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'address_type', 'bank','user_is_vendor');
+			$skips = array( 'address_type', 'bank','user_is_vendor');
 		} else {
-			$skips = array('delimiter_userinfo', 'delimiter_billto', 'name','username', 'password', 'password2'
-						, 'address_type', 'bank','email','user_is_vendor','agreed');
+			$skips = array('name','username', 'password', 'password2', 'address_type', 'bank','email','user_is_vendor','agreed');
 		}
-
+*/
 		//Here we get the fields
 		if ($type == 'BT') {
 			$userFields = $this->getUserFields(
@@ -515,43 +531,7 @@ class VirtueMartModelUserfields extends VmModel {
 		return $_fields;
 	}
 
-	/**
-	 * Format a userfield, e.g. translate or add JavaScript
-	 * Note by Max Milbers, This should be in the helper afaik
-	 * @access private
-	 * @param string $_f Field type
-	 * @param string $_v Input value
-	 * @author Oscar van Eijk
-	 * @return string Formatted value
-	 */
-	private function _userFieldFormat($_f, $_v)
-	{
-// 		vmdebug('What is happening here?',$_f, $_v);
-// 		switch ($_f) {
-// 			case 'agreed':
-// 			case 'title':
-// 				if (substr($_v, 0, 1) == '_') {
-// 					$_v = substr($_v, 1);
-// 				}
-				$_r = (JText::_($_v)?JText::_($_v):$_v);
-// 				if( $_f == 'title') {
-// 					break;
-// 				}
-				// TODO Handling Agreed field
-/*				$_r->title = '<script type="text/javascript">//<![CDATA[
-						document.write(\'<label for="agreed_field">'. str_replace("'","\\'",JText::_('COM_VIRTUEMART_I_AGREE_TO_TOS')) .'</label><a href="javascript:void window.open(\\\''. $mosConfig_live_site .'/index2.php?option=com_virtuemart&page=shop.tos&pop=1\\\', \\\'win2\\\', \\\'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no\\\');">\');
-						document.write(\' ('.JText::_('COM_VIRTUEMART_STORE_FORM_TOS') .')</a>\');
-					//]]></script>
-					<noscript>
-					<label for="agreed_field">'. JText::_('COM_VIRTUEMART_I_AGREE_TO_TOS') .'</label>
-					<a target="_blank" href="/index.php?option=com_virtuemart&amp;page=shop.tos" title="'. JText::_('COM_VIRTUEMART_I_AGREE_TO_TOS') .'">
-					 ('.JText::_('COM_VIRTUEMART_STORE_FORM_TOS').')
-					</a></noscript>';*/
-// 				break;
-// 		}
-// 		vmdebug('return _userFieldFormat',$_r);
-		return $_r;
-	}
+
 
 	/**
 	 * Return an array with userFields in several formats.
@@ -753,7 +733,7 @@ class VirtueMartModelUserfields extends VmModel {
 								    . ($_return['fields'][$_fld->name]['value'] ? 'checked="checked"' : '') .'/>';
 							    break;
 							/*##mygruz20120223193710 { :*/
-						    case 'vmcaptcha':
+						    case 'vmcaptcha': //why not just vmuserfieldsplugin ?
 								JPluginHelper::importPlugin('vmuserfield');
 								$dispatcher = JDispatcher::getInstance();
 								//Todo to adjust to new pattern, using &
