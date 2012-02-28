@@ -15,7 +15,10 @@ defined('_JEXEC') or die( 'Direct Access to '.basename(__FILE__).' is not allowe
 *
 * www.virtuemart.net
 */
-/* Setting */
+
+if (!class_exists( 'VmModel' )) require(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_virtuemart'.DS.'helpers'.DS.'vmmodel.php');
+
+// Setting
 $max_items = 		$params->get( 'max_items', 2 ); //maximum number of items to display
 $layout = $params->get('layout','default');
 $category_id = 		$params->get( 'virtuemart_category_id', null ); // Display products from this category only
@@ -34,7 +37,7 @@ $virtuemart_currency_id = $mainframe->getUserStateFromRequest( "virtuemart_curre
 
 $key = 'products'.$category_id.'.'.$max_items.'.'.$filter_category.'.'.$display_style.'.'.$products_per_row.'.'.$show_price.'.'.$show_addtocart.'.'.$Product_group.'.'.$virtuemart_currency_id;
 
-$cache	= &JFactory::getCache('mod_virtuemart_product', 'output');
+$cache	= JFactory::getCache('mod_virtuemart_product', 'output');
 if (!($output = $cache->get($key))) {
 	ob_start();
 	// Try to load the data from cache.

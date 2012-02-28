@@ -343,7 +343,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 		$skips = array();
 		//Maybe there is another method to define the skips
-		$skips = array('delimiter_userinfo', 'delimiter_billto');
+		$skips = array('delimiter_userinfo', 'delimiter_billto','address_type');
 
 		if(!$register or $type =='ST'){
 			$skips[] = 'name';

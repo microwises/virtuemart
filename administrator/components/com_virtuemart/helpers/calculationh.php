@@ -1126,7 +1126,7 @@ class calculationHelper {
 						WHERE field.`virtuemart_customfield_id`=' . $selected;
 					$this->_db->setQuery($query);
 					$productCustomsPrice = $this->_db->loadObject();
-					vmdebug('calculateModificators',$productCustomsPrice);
+// 					vmdebug('calculateModificators',$productCustomsPrice);
 					if (!empty($productCustomsPrice) and $productCustomsPrice->field_type =='E') {
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
 						JPluginHelper::importPlugin('vmcustom');

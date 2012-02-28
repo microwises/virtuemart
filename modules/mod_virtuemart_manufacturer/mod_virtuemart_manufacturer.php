@@ -21,7 +21,7 @@ require('helper.php');
 if (!class_exists( 'VirtueMartModelManufacturer' ))
    JLoader::import( 'manufacturer', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart' . DS . 'models' );
 
-/* Setting */
+
 $vendorId = JRequest::getInt('vendorid', 1);
 $model = VmModel::getModel('Manufacturer');
 

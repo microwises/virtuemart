@@ -987,15 +987,18 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 // 				$data = array_merge($plg_data,$data);
 			}
 
-			$q = 'SELECT COUNT(1) FROM `#__virtuemart_invoices` WHERE `virtuemart_vendor_id`= "'.$orderDetails['virtuemart_order_id'].'" '; // AND `order_status` = "'.$orderDetails->order_status.'" ';
-			$db->setQuery($q);
-
-			$count = $db->loadResult()+1;
-
 			if(empty($data['invoice_number'])) {
-				//$variable_fixed=sprintf("%05s",$num_rows);
-				$data['invoice_number'] = str_replace('-', '', substr(JFactory::getDate(),2,8)).substr(md5($orderDetails['order_number'].$orderDetails['order_status']),0,3).'0'.$count;
+				$q = 'SELECT COUNT(1) FROM `#__virtuemart_invoices` WHERE `virtuemart_vendor_id`= "'.$orderDetails['virtuemart_vendor_id'].'" '; // AND `order_status` = "'.$orderDetails->order_status.'" ';
+				$db->setQuery($q);
+
+				$count = $db->loadResult()+1;
+
+				if(empty($data['invoice_number'])) {
+					//$variable_fixed=sprintf("%05s",$num_rows);
+					$data['invoice_number'] = str_replace('-', '', substr(JFactory::getDate(),2,8)).substr(md5($orderDetails['order_number'].$orderDetails['order_status']),0,3).'0'.$count;
+				}
 			}
+
 
 			$table = $this->getTable('invoices');
 

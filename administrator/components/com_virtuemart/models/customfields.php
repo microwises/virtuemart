@@ -100,7 +100,7 @@ class VirtueMartModelCustomfields extends VmModel {
 			'E'=>'COM_VIRTUEMART_CUSTOM_EXTENSION',
 			'X'=>'COM_VIRTUEMART_CUSTOM_EDITOR',
 			'Y'=>'COM_VIRTUEMART_CUSTOM_TEXTAREA',
-			
+
 			);
 
 
@@ -397,7 +397,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					return '<textarea id="field['.$row.'][custom_value]" class="inputbox" cols=80 rows=50 >'.$field->custom_value.'</textarea></td><td>'.$priceInput;
 					//return '<input type="text" value="'.$field->custom_value.'" name="field['.$row.'][custom_value]" /></td><td>'.$priceInput;
 				break;
-				
+
 				case 'editorta':
 					jimport( 'joomla.html.editor' );
 					$editor = JFactory::getEditor();
@@ -625,7 +625,9 @@ class VirtueMartModelCustomfields extends VmModel {
 						$fieldsToShow = $dispatcher->trigger('plgVmOnDisplayProductVariantFE',array($productCustom,&$row,&$group));
 
 						$group->display .= '<input type="hidden" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /> ';
-						if ($price!=='') $group->display .=JText::_('COM_VIRTUEMART_CART_PRICE').': '.$price ;
+						if (!empty($currency->_priceConfig['variantModification'][0]) and $price!=='') {
+							$group->display .= '<div class="price-plugin">' . JText::_('COM_VIRTUEMART_CART_PRICE') . '<span class="price-plugin">' . $price . '</span></div>';
+						}
 						$row++;
 					}
 					$row--;
@@ -635,8 +637,10 @@ class VirtueMartModelCustomfields extends VmModel {
 						else  $price = ($productCustom->custom_price==='') ? '' : $free ;
 						$productCustom->text =  $productCustom->custom_value.' '.$price;
 
-					$group->display .= '<input type="text" value="'.JText::_($productCustom->custom_value).'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']['.$productCustom->value.']" /> ';
-					if ($price!=='') $group->display .=JText::_('COM_VIRTUEMART_CART_PRICE').': '.$price ;
+						$group->display .= '<input type="text" value="'.JText::_($productCustom->custom_value).'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']['.$productCustom->value.']" /> ';
+						if (!empty($currency->_priceConfig['variantModification'][0]) and $price!=='') {
+							$group->display .= '<div class="price-plugin">' . JText::_('COM_VIRTUEMART_CART_PRICE') . '<span class="price-plugin">' . $price . '</span></div>';
+						}
 					}
 				} else {
 					$group->display ='';
