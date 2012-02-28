@@ -22,8 +22,7 @@ if (!class_exists('VmHTML')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . D
 // Get the plugin library
 jimport('joomla.plugin.plugin');
 
-if (!class_exists('vmPlugin'))
-require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
+if (!class_exists('vmPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
 
 /**
  * @package	VirtueMart
@@ -32,7 +31,7 @@ require(JPATH_VM_PLUGINS . DS . 'vmplugin.php');
  * @author Patrick Kohl
  * @author Max Milbers
  */
-abstract class vmCustomPlugin extends VmPlugin {
+abstract class vmCustomPlugin extends vmPlugin {
 
 
     /**
