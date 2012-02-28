@@ -328,7 +328,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
      */
     function plgVmOnCheckoutCheckDataPayment(VirtueMartCart $cart) {
 
-	if (!$this->selectedThisByMethodId( $cart->virtuemart_paymentmethod_id)) {
+	if (!$this->selectedThisByMethodId($cart->virtuemart_paymentmethod_id)) {
 	    return null; // Another method was selected, do nothing
 	}
 	$this->_getAuthorizeNetIntoSession();
@@ -343,7 +343,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
      *
      */
     function plgVmOnStoreInstallPaymentPluginTable($jplugin_id) {
-	return parent::onStoreInstallPluginTable(  $jplugin_id);
+	return parent::onStoreInstallPluginTable($jplugin_id);
     }
 
     /**
@@ -357,14 +357,14 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
     function plgVmOnSelectCheckPayment(VirtueMartCart $cart) {
 
 
-	if (!$this->selectedThisByMethodId(  $cart->virtuemart_paymentmethod_id)) {
+	if (!$this->selectedThisByMethodId($cart->virtuemart_paymentmethod_id)) {
 	    return null; // Another method was selected, do nothing
 	}
 
 	//$cart->creditcard_id = JRequest::getVar('creditcard', '0');
 	$this->_cc_type = JRequest::getVar('cc_type_' . $cart->virtuemart_paymentmethod_id, '');
 	$this->_cc_name = JRequest::getVar('cc_name_' . $cart->virtuemart_paymentmethod_id, '');
-	$this->_cc_number = str_replace(" ","",JRequest::getVar('cc_number_' . $cart->virtuemart_paymentmethod_id, ''));
+	$this->_cc_number = str_replace(" ", "", JRequest::getVar('cc_number_' . $cart->virtuemart_paymentmethod_id, ''));
 	$this->_cc_cvv = JRequest::getVar('cc_cvv_' . $cart->virtuemart_paymentmethod_id, '');
 	$this->_cc_expire_month = JRequest::getVar('cc_expire_month_' . $cart->virtuemart_paymentmethod_id, '');
 	$this->_cc_expire_year = JRequest::getVar('cc_expire_year_' . $cart->virtuemart_paymentmethod_id, '');
@@ -398,7 +398,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 
 	return true;
     }
- /*
+
+    /*
      * @param $plugin plugin
      */
 
@@ -418,17 +419,18 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	    $description = '<span class="' . $this->_type . '_description">' . $plugin->$plugin_desc . '</span>';
 	}
 	$this->_getAuthorizeNetIntoSession();
-	$extrainfo=$this->getExtraPluginNameInfo();
+	$extrainfo = $this->getExtraPluginNameInfo();
 	$pluginName = $return . '<span class="' . $this->_type . '_name">' . $plugin->$plugin_name . '</span>' . $description;
-	$pluginName.=  $extrainfo ;
+	$pluginName.= $extrainfo;
 	return $pluginName;
     }
+
     /**
      * Display stored payment data for an order
      * @see components/com_virtuemart/helpers/vmPaymentPlugin::plgVmOnShowOrderPaymentBE()
      */
     function plgVmOnShowOrderBEPayment($virtuemart_order_id, $virtuemart_payment_id) {
-	if (!$this->selectedThisByMethodId( $virtuemart_payment_id)) {
+	if (!$this->selectedThisByMethodId($virtuemart_payment_id)) {
 	    return null; // Another method was selected, do nothing
 	}
 	$db = JFactory::getDBO();
@@ -525,17 +527,36 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	// evaluate the response
 	$html = $this->_handleResponse($response, $authnet_values, $order, $dbValues['payment_name']);
 	if ($this->error) {
-	    JRequest::setVar('html', $html);
+	    $new_status = $method->payment_declined_status;
+	    $this->handlePaymentCancel($order['details']['BT']->virtuemart_order_id, $html);
 	    return; // will not process the order
 	} else if ($this->approved) {
+	    $this->_clearAuthorizeNetSession();
 	    $new_status = $method->payment_approved_status;
+	    $action = 1;
 	} else if ($this->declined) {
+	    JRequest::setVar('html', $html);
 	    $new_status = $method->payment_declined_status;
+	    $this->handlePaymentCancel($order['details']['BT']->virtuemart_order_id, $html);
+	    return;
 	} else if ($this->held) {
+	    $this->_clearAuthorizeNetSession();
+	    $action = 1;
 	    $new_status = $method->payment_held_status;
 	}
-	$this->_clearAuthorizeNetSession();
-	return $this->processConfirmedOrderPaymentResponse(1, $cart, $order, $html,$dbValues['payment_name'], $new_status);
+
+	return $this->processConfirmedOrderPaymentResponse($action, $cart, $order, $html, $dbValues['payment_name'], $new_status);
+    }
+
+    function handlePaymentCancel($virtuemart_order_id, $html) {
+	if (!class_exists('VirtueMartModelOrders'))
+	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
+	$modelOrder = VmModel::getModel('orders');
+	$modelOrder->remove(array('virtuemart_order_id' => $virtuemart_order_id));
+	// error while processing the payment
+	$mainframe = JFactory::getApplication();
+	$mainframe->enqueueMessage($html);
+	$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=editpayment'), JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
     }
 
     function plgVmGetPaymentCurrency($virtuemart_paymentmethod_id, &$paymentCurrencyId) {
@@ -552,11 +573,9 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	$vendorId = 1; //VirtueMartModelVendor::getLoggedVendor();
 	$db = JFactory::getDBO();
 
-	$q = 'SELECT   `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `currency_code_3`= "USD"' ;
+	$q = 'SELECT   `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `currency_code_3`= "USD"';
 	$db->setQuery($q);
 	$paymentCurrencyId = $db->loadResult();
-
-
     }
 
     function _clearAuthorizeNetSession() {
@@ -830,7 +849,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	    $authorizeNetResponse['transaction_id'] = $response_array[6];
 	    $authorizeNetResponse['invoice_number'] = $response_array[7];
 	    $authorizeNetResponse['description'] = $response_array[8];
-	    if ( $this->approved ) {
+	    if ($this->approved) {
 		$authorizeNetResponse['amount'] = $response_array[9];
 		$authorizeNetResponse['method'] = $response_array[10];
 		$authorizeNetResponse['transaction_type'] = $response_array[11];
@@ -941,7 +960,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	$currencyModel = VmModel::getModel('Currency');
 	$currency = $currencyModel->getCurrency($order['details']['BT']->user_currency_id);
 
-	$html = '<table>' . "\n";
+	$html = '<table class="adminlist">' . "\n";
 	$html .= $this->getHtmlRow('AUTHORIZENET_PAYMENT_NAME', $payment_name);
 
 	$html .= $this->getHtmlRow('AUTHORIZENET_ORDER_NUMBER', $authorizeNetResponse['invoice_number']);
@@ -986,7 +1005,6 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
     function plgVmOnCheckAutomaticSelectedPayment(VirtueMartCart $cart, array $cart_prices = array()) {
 	return parent::onCheckAutomaticSelected($cart, $cart_prices);
     }
-
 
     /**
      * This method is fired when showing the order details in the frontend.
@@ -1068,9 +1086,11 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
     function plgVmDeclarePluginParamsPayment($name, $id, &$data) {
 	return $this->declarePluginParams('payment', $name, $id, $data);
     }
+
     function plgVmSetOnTablePluginParamsPayment($name, $id, &$table) {
 	return $this->setOnTablePluginParams($name, $id, $table);
     }
+
 }
 
 // No closing tag
