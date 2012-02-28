@@ -98,6 +98,7 @@ class VirtueMartModelUserfields extends VmModel {
 				break;
 			case 'euvatid':
 				vmdebug ($fieldType, $fieldName, $value ,$post);
+			    if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 				if ($value = shopFunctionsF::validateEUVat($value)) {
 					$query= 'SELECT params FROM `#__virtuemart_userfields` where `type`="euvatid" AND name="'.$fieldName.'"' ;
 					$this->_db->setQuery( $query );
