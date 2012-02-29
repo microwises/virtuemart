@@ -174,7 +174,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
     }
 
     protected function checkConditions($cart, $method, $cart_prices) {
-
+	$this->convert($method);
 
 	$orderWeight = $this->getOrderWeight($cart, $method->weight_unit);
 	$address = (($cart->ST == 0) ? $cart->BT : $cart->ST);
@@ -216,6 +216,17 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	return false;
     }
 
+    function convert($method) {
+	$method->weight_start = (float) $method->weight_start;
+	$method->weight_stop = (float) $method->weight_stop;
+	$method->orderamount_start = (float) $method->orderamount_start;
+	$method->orderamount_stop = (float) $method->orderamount_stop;
+	$method->zip_start = (int) $method->zip_start;
+	$method->zip_stop = (int) $method->zip_stop;
+	$method->nbproducts_start = (int) $method->nbproducts_start;
+	$method->nbproducts_stop = (int) $method->nbproducts_stop;
+    }
+
     private function _weightCond($orderWeight, $method) {
 	if ($orderWeight) {
 
@@ -226,10 +237,11 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	    $weight_cond = true;
 	return $weight_cond;
     }
+
     private function _nbproductsCond($cart, $method) {
 	$nbproducts = 0;
 	foreach ($cart->products as $product) {
-	    $nbproducts +=   $product->quantity;
+	    $nbproducts += $product->quantity;
 	}
 	if (!isset($method->nbproducts_start) AND !isset($method->nbproducts_stop)) {
 	    return true;
@@ -243,7 +255,8 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	}
 	return $nbproducts_cond;
     }
-     private function _orderamountCond($cart_prices, $method) {
+
+    private function _orderamountCond($cart_prices, $method) {
 	$orderamount = 0;
 
 	if (!isset($method->orderamount_start) AND !isset($method->orderamount_stop)) {
@@ -258,6 +271,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	}
 	return $orderamount_cond;
     }
+
     /**
      * Check the conditions on Zip code
      * @param int $zip : zip code
@@ -266,10 +280,11 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @return string if Zip condition is ok or not
      */
     private function _zipCond($zip, $method) {
+	$zip=(int)$zip;
 	if (!empty($zip)) {
-	    $zip_cond = (( $zip >= $method->zip_start AND $zip <= $method->zip_stop )
+	    $zip_cond = (( $zip >=   $method->zip_start AND $zip <=   $method->zip_stop )
 		    OR
-		    ($method->zip_start <= $zip AND ($method->zip_stop == 0) ));
+		    (  $method->zip_start <= $zip AND (  $method->zip_stop == 0) ));
 	} else {
 	    $zip_cond = true;
 	}
