@@ -920,7 +920,7 @@ class VirtueMartModelProduct extends VmModel {
 		asort($tableOrdering);
 		$i = 1 ; $ordered = 0 ;
 		foreach  ($tableOrdering as $key => $order) {
-			if ($order != $i) {
+// 			if ($order != $i) {
 				$this->_db->setQuery('UPDATE `#__virtuemart_product_categories`
 					SET `ordering` = '. $i.'
 					WHERE `id` = ' . (int)$key . ' ');
@@ -929,7 +929,7 @@ class VirtueMartModelProduct extends VmModel {
 					return false;
 				}
 				$ordered ++ ;
-			}
+// 			}
 			$i++ ;
 		}
 		if ($ordered) $msg = JText::sprintf('COM_VIRTUEMART_ITEMS_MOVED', $ordered);

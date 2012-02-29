@@ -35,15 +35,15 @@ class vmVersion {
 	/** @var string Development Status */
 	static $DEV_STATUS = 'Final';
 	/** @var string Codename */
-	static $CODENAME = 'grounded';
+	static $CODENAME = 'stecurity';
 	/** @var string Date */
-	static $RELDATE = 'February 24, 2012';
+	static $RELDATE = 'February 29, 2012';
 	/** @var string Time */
 	static $RELTIME = '21:30';
 	/** @var string Timezone */
 	static $RELTZ = 'GMT';
 	/** @var string Revision */
-	static $REVISION = 'Revision: 5552';
+	static $REVISION = 'Revision: 5575';
 	/** @var string Copyright Text */
 	static $COPYRIGHT = 'Copyright (C) 2005-2012 VirtueMart Development Team  - All rights reserved.';
 	/** @var string URL */

@@ -93,6 +93,7 @@ class VirtuemartViewUserfields extends VmView {
 			// Shopper groups for EU VAT Id
 			$shoppergroup_model = VmModel::getModel('shoppergroup');
 			$shoppergroup_list = $shoppergroup_model->getShopperGroups(true);
+			array_unshift($shoppergroup_list,'0');
 			$lists['shoppergroups'] = JHTML::_('select.genericlist', $shoppergroup_list, 'virtuemart_shoppergroup_id', '', 'virtuemart_shoppergroup_id', 'shopper_group_name', $model->_params->get('virtuemart_shoppergroup_id'));
 
 			// Minimum age select
