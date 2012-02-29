@@ -578,7 +578,7 @@ class Migrator extends VmModel{
 
 			$q = 'SELECT `ui`.* FROM #__vm_user_info as `ui`
 					LEFT OUTER JOIN #__virtuemart_userinfos as `vui` ON `vui`.`virtuemart_user_id` = `ui`.`user_id`
-					WHERE `ui`.`address_type` = "ST" AND  ISNULL (`vui`.`virtuemart_user_id`) LIMIT '.$startLimit.','.$maxItems;
+					WHERE `ui`.`address_type` = "ST" AND (`vui`.`virtuemart_user_id`) IS NULL LIMIT '.$startLimit.','.$maxItems;
 
 			$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port ST addresses');
 			$oldUsersAddresses = $res[0];

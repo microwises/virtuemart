@@ -310,7 +310,8 @@ function virtuemartParseRoute($segments) {
 		array_shift($segments);
 		$vars['virtuemart_manufacturer_id'] =  $helper->getManufacturerId($segments[0]);
 		array_shift($segments);
-		$vars['search'] = 'true';
+		// OSP 2012-02-29 removed search malforms SEF path and search is performed
+		// $vars['search'] = 'true';
 		if (empty($segments)) {
 			$vars['view'] = 'category';
 			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
@@ -953,7 +954,8 @@ class vmrouterHelper {
 					'product_sales'		=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_SALES'),
 					'product_unit'		=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_UNIT'),
 					'product_packaging'	=> JText::_('COM_VIRTUEMART_SEF_PRODUCT_PACKAGING'),
-					'p.intnotes'			=> JText::_('COM_VIRTUEMART_SEF_INTNOTES')
+					'p.intnotes'			=> JText::_('COM_VIRTUEMART_SEF_INTNOTES'),
+					'ordering' => JText::_('COM_VIRTUEMART_SEF_ORDERING')
 				);
 			}
 			if ($result = array_search($key,$this->orderings )) {

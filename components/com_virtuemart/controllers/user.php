@@ -175,6 +175,7 @@ class VirtueMartControllerUser extends JController
 		$valid = true ;
 		if ($currentUser->id == 0) {$new = true;}
 		else $new=false;
+		Why you do create the new not directly in teh plugin? Why it does not get directly the data?
 		$dispatcher->trigger('plgVmOnUserVerify',array(&$valid,$new));
 		if( $valid == false ) {
 // 			vmError('COM_VIRTUEMART_CAPTCHA_CODE_WRONG','COM_VIRTUEMART_CAPTCHA_CODE_WRONG');

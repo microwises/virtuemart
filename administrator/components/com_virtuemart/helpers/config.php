@@ -790,10 +790,11 @@ class vmJsApi{
 	 * @ Author KOHL Patrick
 	 */
 	function jQuery() {
+		if ( JFactory::getApplication()->get('jquery')) return false;
 		if ( !VmConfig::get('jquery',true ) && JFactory::getApplication()->isSite()) return false;
-		static $jquery;
+// 		static $jquery;
 		// If exist exit
-		if ($jquery) return;
+// 		if ($jquery) return;
 		$document = JFactory::getDocument();
 		if(VmConfig::get('google_jquery',true)){
 			$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js');
@@ -808,8 +809,8 @@ class vmJsApi{
 		//JHTML::script('jquery.min.js', '//ajax.googleapis.com/ajax/libs/jquery/1.6.1/', false);
 		/*$document = JFactory::getDocument();
 		$document->addScriptDeclaration('jQuery.noConflict();');*/
-
-		$jquery = true;
+		JFactory::getApplication()->set('jquery',true);
+// 		$jquery = true;
 		return true;
 	}
 	// Virtuemart product and price script

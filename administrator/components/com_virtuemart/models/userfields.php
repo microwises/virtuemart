@@ -734,25 +734,15 @@ class VirtueMartModelUserfields extends VmModel {
 								    . ($_return['fields'][$_fld->name]['value'] ? 'checked="checked"' : '') .'/>';
 							    break;
 							/*##mygruz20120223193710 { :*/
-						    case 'vmcaptcha': //why not just vmuserfieldsplugin ?
+						    case 'userfieldplugin': //why not just vmuserfieldsplugin ?
 								JPluginHelper::importPlugin('vmuserfield');
 								$dispatcher = JDispatcher::getInstance();
 								//Todo to adjust to new pattern, using &
 								$html = '' ;
-								$dispatcher->trigger('plgOnVmCaptcha',array($_return['fields'][$_fld->name], &$html) );
+								$dispatcher->trigger('plgVmOnUserFieldDisplay',array($_return['fields'][$_fld->name], &$html) );
 							    $_return['fields'][$_fld->name]['formcode'] = $html;
 							    break;
 							/*##mygruz20120223193710 } */
-						    case 'captcha':
-							    // FIXME Implement the new securityimages component
-    //							if (file_exists($mosConfig_absolute_path.'/administrator/components/com_securityimages/client.php')) {
-    //								include ($mosConfig_absolute_path.'/administrator/components/com_securityimages/client.php');
-    //								// Note that this package name must be used on the validation site too! If both are not equal, validation will fail
-    //								$packageName = 'securityVMRegistrationCheck';
-    //								echo insertSecurityImage($packageName);
-    //								echo getSecurityImageText($packageName);
-    //							}
-    //							break;
 						    case 'multicheckbox':
 						    case 'select':
 						    case 'multiselect':

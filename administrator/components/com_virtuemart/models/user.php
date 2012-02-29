@@ -622,7 +622,6 @@ class VirtueMartModelUser extends VmModel {
 
 		//Why here?
 		/*##mygruz20120224120340 {
-		 It was:
 		It became:*/
 		/*		JPluginHelper::importPlugin('vmuserfield');
 		 $dispatcher = JDispatcher::getInstance();
@@ -632,7 +631,7 @@ class VirtueMartModelUser extends VmModel {
 		vmdebug ('valid',$valid);
 		if( $valid == false ) {
 		//Wrong use of error messages, they must be fired by the plugin, NOT by the return value
-		// 			vmError('COM_VIRTUEMART_CAPTCHA_CODE_WRONG','COM_VIRTUEMART_CAPTCHA_CODE_WRONG');
+		// vmError('COM_VIRTUEMART_CAPTCHA_CODE_WRONG','COM_VIRTUEMART_CAPTCHA_CODE_WRONG');
 		return false;
 		}
 		/*##mygruz20120224120340 } */

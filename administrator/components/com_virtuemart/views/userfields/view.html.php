@@ -235,9 +235,8 @@ class VirtuemartViewUserfields extends VmView {
 			,array('type' => 'textarea'         , 'text' => JText::_('COM_VIRTUEMART_FIELDS_TEXTAREA'))
 			,array('type' => 'radio'            , 'text' => JText::_('COM_VIRTUEMART_FIELDS_RADIOBUTTON'))
 			,array('type' => 'webaddress'       , 'text' => JText::_('COM_VIRTUEMART_FIELDS_WEBADDRESS'))
-			/*##mygruz20120223191131 { Add recaptcha:*/
-			,array('type' => 'vmcaptcha'             , 'text' => JText::_('COM_VIRTUEMART_FIELDS_VMCAPTCHA'))
-			/*##mygruz20120223191131 } */
+			,array('type' => 'userfieldplugin', 'text' => JText::_('COM_VIRTUEMART_FIELDS_PLUGIN'))
+
 		);
 
 		if (file_exists(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_securityimages'.DS.'client.php')) {
