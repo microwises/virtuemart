@@ -403,22 +403,33 @@ class shopFunctionsF {
 		return $strings;
 
 	}
+	/* Algorithm to check if valid VAT number
+	 * The first seven digits of the VAT registration number are listed vertically.
+	* Each digit is multiplied by a number, starting with 8 and decreasing to 2.
+	* The sum of the multiplications is calculated.
+	* 97 is subtracted from the sum as many times as is necessary to arrive at a negative number.
+	* The negative number should be the same as the last 2 digits of the VAT registration number if it is valid.
+	 */
 	//function validateEUVat($args = array()) {
 	function validateEUVat($vat_number) {
 
 		// vmdebug('vat NUMBER',$vat_number);
-		if ( '' != $vat_number ) {
+		if ( !empty($vat_number ) ) {
 			$vat_number 	= str_replace(array(' ', '.', '-', ',', ', '), '', $vat_number);
 			$countryCode 	= substr($vat_number, 0, 2);
-			$vatNumber 		= substr($vat_number, 2);
+			$registrationNumber 		= substr($vat_number, 2);
 
 			if ( strlen($countryCode) != 2 || is_numeric(substr($countryCode, 0, 1)) || is_numeric(substr($countryCode, 1, 2)) ) {
 				vmInfo('COM_VIRTUEMART_EUVATID_INVALID_COUNTRYCODE');
 				return NULL;//format error 'message' => 'Your VAT Number syntax is not correct. You should have something like this: BE805670816B01'
 			}
+			if (!self::is_valid_EUVAT_number($registrationNumber, $countryCode)) {
+			    vmInfo('COM_VIRTUEMART_EUVATID_INVALID_FORMAT');
+			    return false;
+			}
 			// $client = new SoapClient("http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl");
 			$client = new SoapClient("http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl");
-			$params = array('countryCode' => $countryCode, 'vatNumber' => $vatNumber);
+			$params = array('countryCode' => $countryCode, 'vatNumber' => $registrationNumber);
 
 			$result = $client->checkVat($params);
 			if ( !$result->valid ) {
@@ -432,6 +443,106 @@ class shopFunctionsF {
 		}
 		return NULL;
 	}
+	/**
+	* based on http://codeigniter.com/wiki/European_Vat_Checker/
+	* Based on rules in http://ec.europa.eu/taxation_customs/vies/faqvies.do
+	* check if nif is valid
+	*
+	* @param string $vat
+	* @param string $country_iso
+	* @return boolean
+	*/
+
+    function is_valid_EUVAT_number($vat, $country_iso){
+
+        $country_iso = strtoupper($country_iso);
+        $regex = '';
+
+        switch ($country_iso)
+        {
+            case 'AT':
+                $regex = '/^U[0-9]{8}$/';
+                break;
+            case 'BE':
+                $regex = '/^0?[0-9]{*}$/';
+                break;
+            case 'CZ':
+                $regex = '/^[0-9]{8,10}$/';
+                break;
+            case 'DE':
+                $regex = '/^[0-9]{9}$/';
+                break;
+            case 'CY':
+                $regex = '/^[0-9]{8}[A-Z]$/';
+                break;
+            case 'DK':
+                $regex = '/^[0-9]{8}$/';
+                break;
+            case 'EE':
+                $regex = '/^[0-9]{9}$/';
+                break;
+            case 'GR':
+                $regex = '/^[0-9]{9}$/';
+                break;
+            case 'ES':
+                $regex = '/^[0-9A-Z][0-9]{7}[0-9A-Z]$/';
+                break;
+            case 'FI':
+                $regex = '/^[0-9]{8}$/';
+                break;
+            case 'FR':
+                $regex = '/^[0-9A-Z]{2}[0-9]{9}$/';
+                break;
+            case 'GB':
+                $regex = '/^([0-9]{9}|[0-9]{12})~(GD|HA)[0-9]{3}$/';
+                break;
+            case 'HU':
+                $regex = '/^[0-9]{8}$/';
+                break;
+            case 'IE':
+                $regex = '/^[0-9][A-Z0-9\\+\\*][0-9]{5}[A-Z]$/';
+                break;
+            case 'IT':
+                $regex = '/^[0-9]{11}$/';
+                break;
+            case 'LT':
+                $regex = '/^([0-9]{9}|[0-9]{12})$/';
+                break;
+            case 'LU':
+                $regex = '/^[0-9]{8}$/';
+                break;
+            case 'LV':
+                $regex = '/^[0-9]{11}$/';
+                break;
+            case 'MT':
+                $regex = '/^[0-9]{8}$/';
+                break;
+            case 'NL':
+                $regex = '/^[0-9]{9}B[0-9]{2}$/';
+                break;
+            case 'PL':
+                $regex = '/^[0-9]{10}$/';
+                break;
+            case 'PT':
+                $regex = '/^[0-9]{9}$/';
+                break;
+            case 'SE':
+                $regex = '/^[0-9]{12}$/';
+                break;
+            case 'SI':
+                $regex = '/^[0-9]{8}$/';
+                break;
+            case 'SK':
+                $regex = '/^[0-9]{10}$/';
+                break;
+            default:
+                return FALSE;
+                break;
+        }
+
+        $vat = str_replace($country_iso, '', $vat);
+        return (preg_match($regex,$vat));
+    }
 
 	function getComUserOption() {
 	 if ( JVM_VERSION===1 ) {
