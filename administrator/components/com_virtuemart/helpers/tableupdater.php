@@ -620,7 +620,7 @@ class GenericTableUpdater extends JModel{
 		$columns = $this->_db->loadResultArray(0);
 
 		//Attention user_infos is not in here, because it an contain customised fields.
-		if($tablename!='#__virtuemart_userinfos'){
+		if($tablename!='#__virtuemart_userinfos' and $tablename!='#__virtuemart_userfields' and $tablename!='#__virtuemart_userorders'){
 			foreach($columns as $fieldname){
 
 				if(!in_array($fieldname, $demandFieldNames)){
