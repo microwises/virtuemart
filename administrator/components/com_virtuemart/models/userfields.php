@@ -117,7 +117,7 @@ class VirtueMartModelUserfields extends VmModel {
 
 				//$config->set('URI.HostBlacklist', array('google.com'));// set eg .add google.com in black list
 
-				if(strpos($_fld->type,'plugin')!==false){
+				if(strpos($fieldType,'plugin')!==false){
 
 					JPluginHelper::importPlugin('vmuserfield');
 					$dispatcher = JDispatcher::getInstance();
