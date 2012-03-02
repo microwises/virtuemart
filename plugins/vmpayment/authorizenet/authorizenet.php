@@ -13,8 +13,8 @@
  */
 
 
-if (!defined('_JEXEC'))
-    die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
+defined('_JEXEC') or die('Restricted access');
+
 
 if (!class_exists('Creditcard')) {
     require_once(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'creditcard.php');

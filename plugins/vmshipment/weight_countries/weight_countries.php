@@ -1,7 +1,7 @@
 <?php
 
-if (!defined('_JEXEC'))
-    die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
+defined('_JEXEC') or die('Restricted access');
+
 
 /**
  * Shipment plugin for weight_countries shipments, like regular postal services

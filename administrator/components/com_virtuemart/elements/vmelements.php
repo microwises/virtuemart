@@ -1,4 +1,5 @@
 <?php
+defined('_JEXEC') or die();
 
 /**
  * Derivated from http://docs.joomla.org/Making_single_installation_packages_for_Joomla!_1.5,_1.6_and_1.7
@@ -25,7 +26,7 @@ if (JVM_VERSION === 2) {
 
         // This line is required to keep Joomla! 1.6/1.7 from complaining
         public function getInput() {
-            
+
         }
 
     }

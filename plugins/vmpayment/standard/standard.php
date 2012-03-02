@@ -1,7 +1,6 @@
 <?php
+defined('_JEXEC') or die('Restricted access');
 
-if (!defined('_VALID_MOS') && !defined('_JEXEC'))
-    die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
 
 /**
  * @version $Id: standard.php,v 1.4 2005/05/27 19:33:57 ei

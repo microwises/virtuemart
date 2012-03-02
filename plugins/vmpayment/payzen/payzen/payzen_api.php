@@ -14,6 +14,7 @@
 #						Contact : support@payzen.eu
 #
 #####################################################################################################
+defined('_JEXEC') or die('Restricted access');
 
 /**
  * @package VadsApi
@@ -79,7 +80,7 @@ class VadsApi {
 	 * @access private
 	 */
 	var $encoding;
-	
+
 	/**
 	 * The list of categories for payment with bank accord. To be sent with the products detail if you use this payment mean.
 	 * @static
@@ -98,11 +99,11 @@ class VadsApi {
 	function VadsApi($encoding="UTF-8") {
 		//TODO success n'est pas utilisé
 		$success = true;
-		
+
 		// Initialize encoding
 		$supported_encodings = array("UTF-8", "ASCII", "Windows-1252", "ISO-8859-15", "ISO-8859-1", "ISO-8859-6", "CP1256");
-		$this->encoding = in_array(strtoupper($encoding), $supported_encodings) ? strtoupper($encoding) : "UTF-8"; 
-		
+		$this->encoding = in_array(strtoupper($encoding), $supported_encodings) ? strtoupper($encoding) : "UTF-8";
+
 		/*
 		 * Définition des paramètres de la requête
 		 */
@@ -228,28 +229,28 @@ class VadsApi {
 						"#^[01]?$#", false, 1);
 		$this->_addRequestField('vads_version', 'Gateway version', "#^V2$#", true,
 						2);
-		
-		// Enable / disable 3D Secure 
+
+		// Enable / disable 3D Secure
 		$this->_addRequestField('vads_threeds_mpi', 'Enable / disable 3D Secure', '#^[0-2]$#', false);
-		
+
 		// Declaration of parameters for Oney payment
 		$this->_addRequestField('vads_cust_first_name', 'Customer first name', $an63, false, 63);
 		$this->_addRequestField('vads_cust_last_name', 'Customer last name', $an63, false, 63);
 		$this->_addRequestField('vads_cust_status', 'Customer status (private or company)', "#^PRIVATE|COMPANY$#", false, 7);
-		
+
 		$this->_addRequestField('vads_ship_to_first_name', 'Shipping first name', $an63, false, 63);
 		$this->_addRequestField('vads_ship_to_last_name', 'Shipping last name', $an63, false, 63);
 		$this->_addRequestField('vads_ship_to_status', 'Shipping status (private or company)', "#^PRIVATE|COMPANY$#", false, 7);
 		$this->_addRequestField('vads_ship_to_delivery_company_name', 'Name of the delivery company', $ans127, false, 127);
 		$this->_addRequestField('vads_ship_to_speed', 'Speed of the shipping method', "#^STANDARD|EXPRESS$#", false, 8);
-		$this->_addRequestField('vads_ship_to_type', 'Type of the shipping method', 
+		$this->_addRequestField('vads_ship_to_type', 'Type of the shipping method',
 						"#^RECLAIM_IN_SHOP|RELAY_POINT|RECLAIM_IN_STATION|PACKAGE_DELIVERY_COMPANY|ETICKET$#", false, 24);
-		
+
 		$this->_addRequestField('vads_insurance_amount', 'The amount of insurance', '#^' . $supzero . '$#', false, 12);
 		$this->_addRequestField('vads_tax_amount', 'The amount of tax', '#^' . $supzero . '$#', false, 12);
 		$this->_addRequestField('vads_shipping_amount', 'The amount of shipping', '#^' . $supzero . '$#', false, 12);
 		$this->_addRequestField('vads_nb_products', 'Number of products', '#^' . $supzero . '$#', false);
-		
+
 		// Set some default parameters
 		$success &= $this->set('vads_version', 'V2');
 		$success &= $this->set('vads_page_action', 'PAYMENT');
@@ -289,12 +290,12 @@ class VadsApi {
 			$length = 255, $value = null) {
 		$this->requestParameters[$name] = new VadsField($name, $label, $regex,
 				$required, $length);
-		
+
 		if($value !== null) {
 			return $this->set($name, $value);
 		} else {
 			return true;
-		}		
+		}
 	}
 
 	// **************************************
@@ -313,7 +314,7 @@ class VadsApi {
 	/**
 	 * Return the list of currencies recognized by the vads platform
 	 * @static
-	 * @return array[int]VadsCurrency 
+	 * @return array[int]VadsCurrency
 	 */
 	function getSupportedCurrencies() {
 		return array(
@@ -470,7 +471,7 @@ class VadsApi {
 		if($this->encoding !== "UTF-8") {
 			$value = iconv($this->encoding, "UTF-8", $value);
 		}
-		
+
 		// Search appropriate setter
 		if ($name == 'vads_key_test') {
 			return $this->setCertificate($value, 'TEST');
@@ -533,7 +534,7 @@ class VadsApi {
 		}
 		return true;
 	}
-	
+
 	/**
 	* Add product infos as request parameters.
 	* @param string $label
@@ -545,23 +546,23 @@ class VadsApi {
 	*/
 	function addProduct($label, $amount, $qty, $ref, $type) {
 		$index = $this->get("nb_products") ? $this->get("nb_products") : 0;
-		
+
 		$ok = true;
-		
-		// Add product infos as request parameters 
+
+		// Add product infos as request parameters
 		$ok &= $this->_addRequestField("vads_product_label" . $index, "Product label", '#^[^<>"+-]{0,255}$#', false, 255, $label);
 		$ok &= $this->_addRequestField("vads_product_amount" . $index, "Product amount", '#^[1-9]\d*$#', false, 12, $amount);
 		$ok &= $this->_addRequestField("vads_product_qty" . $index, "Product quantity", '#^[1-9]\d*$#', false, 255, $qty);
 		$ok &= $this->_addRequestField("vads_product_ref" . $index, "Product reference", '#^[A-Za-z0-9]{0,64}$#', false, 64, $ref);
-		$ok &= $this->_addRequestField("vads_product_type" . $index, "Product type", "#^".implode("|", $this->ACCORD_CATEGORIES)."$#", 
+		$ok &= $this->_addRequestField("vads_product_type" . $index, "Product type", "#^".implode("|", $this->ACCORD_CATEGORIES)."$#",
 			false, 30, $type);
-		
+
 		// Increment the number of products
 		$ok &= $this->set("nb_products", $index + 1);
-		
+
 		return $ok;
 	}
-	
+
 
 	/**
 	 * Return certificate according to current mode, false if mode was not set
@@ -637,7 +638,7 @@ class VadsApi {
 			}
 		}
 	}
-	
+
 	/**
 	 * Check all payment fields
 	 * @param array $errors will be filled with the name of invalid fields
@@ -737,14 +738,14 @@ class VadsApi {
 	 */
 	function getRequestFieldsHtml($inputAttributes = 'type="hidden"') {
 		$fields = $this->getRequestFields();
-		
+
 		$html = '';
 		$format = '<input name="%s" value="%s" ' . $inputAttributes . "/>\n";
 		foreach ($fields as $field) {
 			if ($field->isFilled()) {
 				// Convert special chars to HTML entities to avoid data troncation
 				$value = htmlspecialchars($field->getValue(), ENT_QUOTES, 'UTF-8');
-				
+
 				$html .= sprintf($format, $field->getName(), $value);
 			}
 		}
@@ -795,11 +796,11 @@ class VadsApi {
 		}
 		return $this->response;
 	}
-	
+
 	/**
 	 * PHP is not yet a sufficiently advanced technology to be indistinguishable from magic...
 	 * so don't use magic_quotes, they mess up with the gateway response analysis.
-	 * 
+	 *
 	 * @param array $potentiallyMagicallyQuotedData
 	 */
 	function uncharm($potentiallyMagicallyQuotedData) {

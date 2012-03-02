@@ -17,7 +17,7 @@
   #
   #####################################################################################################
  */
-defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not allowed.');
+defined('_JEXEC') or die('Restricted access');
 
 if (!class_exists('vmPSPlugin'))
     require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');

@@ -56,8 +56,9 @@ if (empty($this->product)) {
 
     <?php
     // Product Navigation
-    if (VmConfig::get('product_navigation', 1)) { ?>
-	 <div class="product-neighbours">
+    if (VmConfig::get('product_navigation', 1)) {
+	?>
+        <div class="product-neighbours">
 	    <?php
 	    if (!empty($this->product->neighbours ['previous'][0])) {
 		$prev_link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->neighbours ['previous'][0] ['virtuemart_product_id'] . '&virtuemart_category_id=' . $this->product->virtuemart_category_id);
@@ -74,9 +75,9 @@ if (empty($this->product)) {
     <?php } // Product Navigation END
     ?>
 
-    <?php // Product Title  ?>
+    <?php // Product Title   ?>
     <h1><?php echo $this->product->product_name ?></h1>
-    <?php // Product Title END  ?>
+    <?php // Product Title END   ?>
 
     <?php
     // Product Edit Link
@@ -84,9 +85,11 @@ if (empty($this->product)) {
     // Product Edit Link END
     ?>
 
-    <?php // PDF - Print - Email Icon
-    if (VmConfig::get('show_emailfriend') || VmConfig::get('show_printicon') || VmConfig::get('pdf_button_enable')) { ?>
-	 <div class="icons">
+    <?php
+    // PDF - Print - Email Icon
+    if (VmConfig::get('show_emailfriend') || VmConfig::get('show_printicon') || VmConfig::get('pdf_button_enable')) {
+	?>
+        <div class="icons">
 	    <?php
 	    //$link = (JVM_VERSION===1) ? 'index2.php' : 'index.php';
 	    $link = 'index.php?tmpl=component&option=com_virtuemart&view=productdetails&virtuemart_product_id=' . $this->product->virtuemart_product_id;
@@ -100,22 +103,25 @@ if (empty($this->product)) {
 	    ?>
     	<div class="clear"></div>
         </div>
-	<?php
+    <?php } // PDF - Print - Email Icon END
+    ?>
 
-	} // PDF - Print - Email Icon END  ?>
-
-    <?php // Product Short Description
-    if (!empty($this->product->product_s_desc)) { ?>
-        <div class="product-short-description">
-	    <?php /** @todo Test if content plugins modify the product description */
-	    echo nl2br($this->product->product_s_desc); ?>
-        </div>
     <?php
+    // Product Short Description
+    if (!empty($this->product->product_s_desc)) {
+	?>
+        <div class="product-short-description">
+	    <?php
+	    /** @todo Test if content plugins modify the product description */
+	    echo nl2br($this->product->product_s_desc);
+	    ?>
+        </div>
+	<?php
     } // Product Short Description END
 
 
     if (!empty($this->product->customfieldsSorted['ontop'])) {
-	$this->position='ontop';
+	$this->position = 'ontop';
 	echo $this->loadTemplate('customfields');
     } // Product Custom ontop end
     ?>
@@ -130,32 +136,45 @@ echo $this->loadTemplate('images');
 	<div class="width50 floatright">
 	    <div class="spacer-buy-area">
 
-		<?php // TO DO in Multi-Vendor not needed at the moment and just would lead to confusion
+		<?php
+		// TO DO in Multi-Vendor not needed at the moment and just would lead to confusion
 		/* $link = JRoute::_('index2.php?option=com_virtuemart&view=virtuemart&task=vendorinfo&virtuemart_vendor_id='.$this->product->virtuemart_vendor_id);
 		  $text = JText::_('COM_VIRTUEMART_VENDOR_FORM_INFO_LBL');
 		  echo '<span class="bold">'. JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_VENDOR_LBL'). '</span>'; ?><a class="modal" href="<?php echo $link ?>"><?php echo $text ?></a><br />
-		 */ ?>
+		 */
+		?>
 
 		<?php
 		if ($this->showRating) {
-		    $maxrating = VmConfig::get('vm_maximum_rating_scale',5);
+		    $maxrating = VmConfig::get('vm_maximum_rating_scale', 5);
 
-				if (empty($this->rating)) { ?>
-					<span class="vote"><?php echo JText::_('COM_VIRTUEMART_RATING').' '.JText::_('COM_VIRTUEMART_UNRATED') ?></span>
-				<?php } else {
-					$ratingwidth = ( $this->rating->rating * 100 ) / $maxrating;//I don't use round as percetntage with works perfect, as for me
-					?>
-					<span class="vote">
-						<?php echo JText::_('COM_VIRTUEMART_RATING').' '.round($this->rating->rating, 2) . '/'. $maxrating; ?><br/>
-						<span title=" <?php echo (JText::_("COM_VIRTUEMART_RATING_TITLE") . $this->rating->rating . '/' . $maxrating) ?>" class="vmicon ratingbox" style="display:inline-block;">
-							<span class="stars-orange" style="width:<?php echo $ratingwidth;?>%">
-							</span>
-						</span>
-					</span>
-					<?php
-				}
+		    if (empty($this->rating)) {
+			?>
+			<span class="vote"><?php echo JText::_('COM_VIRTUEMART_RATING') . ' ' . JText::_('COM_VIRTUEMART_UNRATED') ?></span>
+			    <?php
+			} else {
+			    $ratingwidth = ( $this->rating->rating * 100 ) / $maxrating; //I don't use round as percetntage with works perfect, as for me
+			    ?>
+			<span class="vote">
+	<?php echo JText::_('COM_VIRTUEMART_RATING') . ' ' . round($this->rating->rating, 2) . '/' . $maxrating; ?><br/>
+			    <span title=" <?php echo (JText::_("COM_VIRTUEMART_RATING_TITLE") . $this->rating->rating . '/' . $maxrating) ?>" class="vmicon ratingbox" style="display:inline-block;">
+				<span class="stars-orange" style="width:<?php echo $ratingwidth; ?>%">
+				</span>
+			    </span>
+			</span>
+			<?php
+		    }
 		}
-
+		if (is_array($this->productDisplayShipments)) {
+		    foreach ($this->productDisplayShipments as $productDisplayShipment) {
+			echo $productDisplayShipment . '<br />';
+		    }
+		}
+		if (is_array($this->productDisplayPayments)) {
+		    foreach ($this->productDisplayPayments as $productDisplayPayment) {
+			echo $productDisplayPayment . '<br />';
+		    }
+		}
 		// Product Price
 		if ($this->show_prices and (empty($this->product->images[0]) or $this->product->images[0]->file_is_downloadable == 0)) {
 		    echo $this->loadTemplate('showprices');
@@ -174,28 +193,29 @@ echo $this->loadTemplate('images');
 		// Availability Image
 		/* TO DO add width and height to the image */
 		if (!empty($this->product->product_availability)) {
-		   $stockhandle = VmConfig::get('stockhandle', 'none');
-if ($stockhandle == 'risetime' and ($this->product->product_in_stock - $this->product->product_ordered) < 1) {
-    ?>	<div class="availability">
-    <?php echo JHTML::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability', '7d.gif'), VmConfig::get('rised_availability', '7d.gif'), array('class' => 'availability')); ?>
-    </div>
-<?php } else {
-    ?>
-    <div class="availability">
-	<?php echo JHTML::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . $this->product->product_availability, $this->product->product_availability, array('class' => 'availability')); ?>
-    </div>
-<?php
-}
+		    $stockhandle = VmConfig::get('stockhandle', 'none');
+		    if ($stockhandle == 'risetime' and ($this->product->product_in_stock - $this->product->product_ordered) < 1) {
+			?>	<div class="availability">
+			    <?php echo JHTML::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . VmConfig::get('rised_availability', '7d.gif'), VmConfig::get('rised_availability', '7d.gif'), array('class' => 'availability')); ?>
+			</div>
+		    <?php } else {
+			?>
+			<div class="availability">
+			<?php echo JHTML::image(JURI::root() . VmConfig::get('assets_general_path') . 'images/availability/' . $this->product->product_availability, $this->product->product_availability, array('class' => 'availability')); ?>
+			</div>
+			<?php
+		    }
 		}
 		?>
 
-		<?php
-		// Ask a question about this product
-		if (VmConfig::get('ask_question', 1) == '1') { ?>
-		   <div class="ask-a-question">
-				<a class="ask-a-question" href="<?php echo $url ?>" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
-				<!--<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $url ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>-->
-				</div>
+<?php
+// Ask a question about this product
+if (VmConfig::get('ask_question', 1) == '1') {
+    ?>
+    		<div class="ask-a-question">
+    		    <a class="ask-a-question" href="<?php echo $url ?>" ><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>
+    		    <!--<a class="ask-a-question modal" rel="{handler: 'iframe', size: {x: 700, y: 550}}" href="<?php echo $url ?>"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_ENQUIRY_LBL') ?></a>-->
+    		</div>
 		<?php }
 		?>
 
@@ -211,24 +231,27 @@ if ($stockhandle == 'risetime' and ($this->product->product_in_stock - $this->pr
 	<div class="clear"></div>
     </div>
 
-	<?php // Product Description
-	if (!empty($this->product->product_desc)) { ?>
+	<?php
+	// Product Description
+	if (!empty($this->product->product_desc)) {
+	    ?>
         <div class="product-description">
 	<?php /** @todo Test if content plugins modify the product description */ ?>
     	<span class="title"><?php echo JText::_('COM_VIRTUEMART_PRODUCT_DESC_TITLE') ?></span>
 	<?php echo $this->product->product_desc; ?>
         </div>
-    <?php
+	<?php
     } // Product Description END
 
     if (!empty($this->product->customfieldsSorted['normal'])) {
-	$this->position='normal';
+	$this->position = 'normal';
 	echo $this->loadTemplate('customfields');
     } // Product custom_fields END
     // Product Packaging
     $product_packaging = '';
-    if ($this->product->packaging || $this->product->box) { ?>
-	  <div class="product-packaging">
+    if ($this->product->packaging || $this->product->box) {
+	?>
+        <div class="product-packaging">
 
 	    <?php
 	    if ($this->product->packaging) {
@@ -241,7 +264,7 @@ if ($stockhandle == 'risetime' and ($this->product->product_in_stock - $this->pr
 	    echo str_replace("{unit}", $this->product->product_unit ? $this->product->product_unit : JText::_('COM_VIRTUEMART_PRODUCT_FORM_UNIT_DEFAULT'), $product_packaging);
 	    ?>
         </div>
-   <?php } // Product Packaging END
+    <?php } // Product Packaging END
     ?>
 
     <?php
