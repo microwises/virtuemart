@@ -443,7 +443,7 @@ INSERT INTO `#__virtuemart_customs` ( `virtuemart_custom_id`, `custom_parent_id`
 
 
 
-INSERT INTO `j7uy8_virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`, `shared`, `published`) VALUES 
+INSERT INTO `#__virtuemart_shoppergroups` (`virtuemart_shoppergroup_id`, `virtuemart_vendor_id`, `shopper_group_name`, `shopper_group_desc`, `default`, `shared`, `published`) VALUES
 (2, 1, '-default-', 'This is the default shopper group.', 1, 1, 1),
 (1, 1, '-anonymous-', 'Shopper group for anonymous shoppers', 2, 1, 1);
 

@@ -72,7 +72,7 @@ INSERT IGNORE INTO `#__virtuemart_category_medias` (`id`,`virtuemart_category_id
 -- Dumping data for table `#__virtuemart_customs`
 --
 
-INSERT INTO `j7uy8_virtuemart_customs` (`virtuemart_custom_id`, `custom_parent_id`, `virtuemart_vendor_id`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`, `field_type`, `is_cart_attribute`, `layout_pos`, `custom_params`, `published`) VALUES 
+INSERT INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_parent_id`, `virtuemart_vendor_id`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`, `field_type`, `is_cart_attribute`, `layout_pos`, `custom_params`, `published`) VALUES
 (3, 1, 1, 'Integer', 'Make a choice', '100', 'number', 'I', 0, NULL, NULL, 1),
 (4, 1, 1, 'Yes or no ?', 'Boolean', '0', 'Only 2 choices', 'B', 0, NULL, NULL, 1),
 (7, 0, 1, 'Photo', 'Give a media ID as defaut', '1', 'Add a photo', 'M', 0, NULL, NULL, 1),
