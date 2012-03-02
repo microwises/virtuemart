@@ -109,6 +109,10 @@ class VirtuemartViewConfig extends VmView {
 		}
 		$this->assignRef('imagePath', $imagePath);
 
+		if(VmConfig::get('forSale_path',0)===0){
+// 			VmConfig::set('forSale_path',JPATH_ROOT.'/imagesimages/stories/virtuemart/forSale/');
+			VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JPATH_ROOT);
+		}
 		parent::display($tpl);
 	}
 

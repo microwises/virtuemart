@@ -82,8 +82,13 @@ class VmMediaHandler {
 		}
 		else if($type == 'forSale' || $type== 'file_is_forSale'){
 			//todo add this path to config
-			$relUrl = VmConfig::get('forSale_path');
-			$choosed = true;
+			if(VmConfig::get('forSale_path',0)===0){
+				VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET');
+			} else {
+				$relUrl = VmConfig::get('forSale_path');
+				$choosed = true;
+			}
+
 		}
 
 // 		$this->type = $type;
@@ -196,6 +201,7 @@ class VmMediaHandler {
 	 */
 	function setFileInfo($type=0){
 
+
 		$this->file_url_folder = '';
 		$this->file_path_folder = '';
 		$this->file_url_folder_thumb = '';
@@ -206,6 +212,10 @@ class VmMediaHandler {
 			$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
 			$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
 		} else {
+			if(VmConfig::get('forSale_path',0)===0){
+				VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET');
+				return false;
+			}
 			$this->file_path_folder = VmConfig::get('forSale_path');
 			$this->file_url_folder = $this->file_path_folder;//str_replace(DS,'/',$this->file_path_folder);
 			$this->file_url_folder_thumb = VmConfig::get('forSale_path_thumb');

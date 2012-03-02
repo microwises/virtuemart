@@ -72,15 +72,16 @@ INSERT IGNORE INTO `#__virtuemart_category_medias` (`id`,`virtuemart_category_id
 -- Dumping data for table `#__virtuemart_customs`
 --
 
-INSERT INTO `#__virtuemart_customs` (`virtuemart_custom_id`, `custom_parent_id`, `admin_only`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`, `field_type`, `is_list`, `is_hidden`, `is_cart_attribute`, `published`, `created_on`, `created_by`, `modified_on`, `modified_by`, `locked_on`, `locked_by`) VALUES
-(3, 1, 0, 'Integer', 'Make a choice', '100', 'number', 'I', 0, 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(4, 1, 0, 'Yes or no ?', 'Boolean', '0', 'Only 2 choices', 'B', 0, 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(7, 0, 0, 'Photo', 'Give a media ID as defaut', '1', 'Add a photo', 'M', 0, 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(9, 0, 0, 'Size', 'Change the size', '30', 'CM', 'V', 0, 0, 1, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(11, 0, 0, 'Group of fields', 'Add fields to this parent and they are added all at once', 'I''m a parent', 'Add many fields', 'P', 0, 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(12, 1, 0, 'I''m a string', 'Here you can add some text', 'Please enter a text', 'Comment', 'S', 0, 0, 0, 1, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0),
-(13, 0, 0, 'Color', '', 'Choose a color', 'Colors', 'S', 0, 0, 1, 1, '2011-05-26 04:06:08', 62, '2011-05-26 04:06:08', 62, '0000-00-00 00:00:00', 0),
-(14, 0, 0, 'add a showel', 'The best choice', '', 'Showels', 'M', 0, 0, 1, 1, '2011-05-26 04:11:35', 62, '2011-05-26 04:11:35', 62, '0000-00-00 00:00:00', 0);
+INSERT INTO `j7uy8_virtuemart_customs` (`virtuemart_custom_id`, `custom_parent_id`, `virtuemart_vendor_id`, `custom_title`, `custom_tip`, `custom_value`, `custom_field_desc`, `field_type`, `is_cart_attribute`, `layout_pos`, `custom_params`, `published`) VALUES 
+(3, 1, 1, 'Integer', 'Make a choice', '100', 'number', 'I', 0, NULL, NULL, 1),
+(4, 1, 1, 'Yes or no ?', 'Boolean', '0', 'Only 2 choices', 'B', 0, NULL, NULL, 1),
+(7, 0, 1, 'Photo', 'Give a media ID as defaut', '1', 'Add a photo', 'M', 0, NULL, NULL, 1),
+(9, 0, 1, 'Size', 'Change the size', '30', 'CM', 'V', 1, NULL, NULL, 1),
+(11, 0, 1, 'Group of fields', 'Add fields to this parent and they are added all at once', 'I\'m a parent', 'Add many fields', 'P', 0, NULL, NULL, 1),
+(12, 1, 1, 'I\'m a string', 'Here you can add some text', 'Please enter a text', 'Comment', 'S', 0, NULL, NULL, 1),
+(13, 0, 1, 'Color', '', 'Choose a color', 'Colors', 'S', 1, NULL, NULL, 1),
+(14, 0, 1, 'add a showel', 'The best choice', '', 'Showels', 'M', 1, NULL, NULL, 1),
+(15, 0, 1, 'Automatic Child Variant', '', '', '', 'A', 0, 'ontop', '0', 1);
 
 --
 -- Dumping data for table  `#__virtuemart_product_customfields`
@@ -105,7 +106,8 @@ INSERT INTO `#__virtuemart_product_customfields` (`virtuemart_product_id`,`virtu
 (8,9,'150','60',NULL,0,'2011-05-26 11:17:36',62,'2011-05-26 11:17:36',62,'0000-00-00 00:00:00',0,0),
 (8,9,'100','50',NULL,0,'2011-05-26 11:17:36',62,'2011-05-26 11:17:36',62,'0000-00-00 00:00:00',0,0),
 (8,9,'60','40',NULL,0,'2011-05-26 11:17:36',62,'2011-05-26 11:17:36',62,'0000-00-00 00:00:00',0,0),
-(8,9,'50','20',NULL,0,'2011-05-26 11:17:36',62,'2011-05-26 11:17:36',62,'0000-00-00 00:00:00',0,0);
+(8,9,'50','20',NULL,0,'2011-05-26 11:17:36',62,'2011-05-26 11:17:36',62,'0000-00-00 00:00:00',0,0),
+(1,15,'','',NULL,0,'2011-05-26 11:17:36',62,'2011-05-26 11:17:36',62,'0000-00-00 00:00:00',0,0);
 
 --
 -- Dumping data for table `#__virtuemart_manufacturers`
@@ -187,9 +189,9 @@ INSERT INTO `#__virtuemart_products_XLANG` (`virtuemart_product_id`, `product_na
 	(8, 'Circular Saw', 'Cut rings around wood.  This saw can handle the most delicate projects.', '\r\n<ul>  <li>Patented Sightline; Window provides maximum visibility for straight cuts  </li><li>Adjustable dust chute for cleaner work area  </li><li>Bail handle for controlled cutting in 90ÔøΩ to 45ÔøΩ applications  </li><li>1-1/2 to 2-1/2 lbs. lighter and 40% less noise than the average circular saw                     </li><li><b>Includes:</b>Carbide blade  </li></ul>  <br />  <b>Specifications</b><br />  10.0 AMPS   <br />   4,300 RPM   <br />   Capacity: 2-1/16" at 90ÔøΩ, 1-3/4" at 45ÔøΩ<br />\r\n', '', '', 'circular-saw'),
 	(9, 'Drill', 'Drill through anything.  This drill has the power you need for those demanding hole boring duties.', '\r\n<font color="#000000" size="3"><ul><li>High power motor and double gear reduction for increased durability and improved performance  </li><li>Mid-handle design and two finger trigger for increased balance and comfort  </li><li>Variable speed switch with lock-on button for continuous use  </li><li><b>Includes:</b> Chuck key &amp; holder  </li></ul>  <br />  <b>Specifications</b><br />  4.0 AMPS   <br />   0-1,350 RPM   <br />   Capacity: 3/8" Steel, 1" Wood   <br /><br />  </font>\r\n', '', '', 'drill'),
 	(10, 'Power Sander', 'Blast away that paint job from the past.  Use this power sander to really show them you mean business.', '\r\n<ul>  <li>Lever activated paper clamps for simple sandpaper changes  </li><li>Dust sealed rocker switch extends product life and keeps dust out of motor  </li><li>Flush sands on three sides to get into corners  </li><li>Front handle for extra control  </li><li>Dust extraction port for cleaner work environment   </li></ul>  <br />  <b>Specifications</b><br />  1.2 AMPS    <br />   10,000 OPM    <br />\r\n', '', '', 'power-sander'),
-	(11, 'Hand Shovel', '', '', '', '', 'hand-shovel-g01'),
-	(12, 'Hand Shovel', '', '', '', '', 'hand-shovel-g02'),
-	(13, 'Hand Shovel', '', '', '', '', 'hand-shovel-g03'),
+	(11, 'Hand Shovel cheap', '', '', '', '', 'hand-shovel-g01'),
+	(12, 'Hand Shovel enforced', '', '', '', '', 'hand-shovel-g02'),
+	(13, 'Hand Shovel heavy duty', '', '', '', '', 'hand-shovel-g03'),
 	(14, 'Metal Ladder', '', '', '', '', 'metal-ladder'),
 	(15, 'Wooden Ladder', '', '', '', '', 'wooden-ladder'),
 	(16, 'Plastic Ladder', '', '', '', '', 'plastic-ladder');

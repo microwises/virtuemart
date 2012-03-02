@@ -1041,7 +1041,7 @@ class calculationHelper {
 		 * Should be setable via config
 		 */
 		function roundDisplay($value) {
-			return round($value, 2);
+			return round($value, 4);
 		}
 
 		/**
