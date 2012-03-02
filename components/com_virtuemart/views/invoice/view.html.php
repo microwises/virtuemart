@@ -226,10 +226,10 @@ class VirtuemartViewInvoice extends VmView {
 		//vmdebug('renderMailLayout invoice '.date('H:i:s'),$this->order);
 		if (strpos($layout,'mail') !== false) {
 		    if ($this->doVendor) {
-			    $this->subject = JText::sprintf('COM_VIRTUEMART_VENDOR_NEW_ORDER_CONFIRMED', $this->shopperName, $currency->priceDisplay($orderDetails['details']['BT']->order_total), $orderDetails['details']['BT']->order_number);
+			    $this->subject = JText::sprintf('COM_VIRTUEMART_VENDOR_NEW_ORDER_CONFIRMED', $this->shopperName, strip_tags($currency->priceDisplay($orderDetails['details']['BT']->order_total)), $orderDetails['details']['BT']->order_number);
 			    $recipient = 'vendor';
 		    } else {
-			    $this->subject = JText::sprintf('COM_VIRTUEMART_SHOPPER_NEW_ORDER_CONFIRMED', $vendor->vendor_store_name, $currency->priceDisplay($orderDetails['details']['BT']->order_total), $orderDetails['details']['BT']->order_number, $orderDetails['details']['BT']->order_pass );
+			    $this->subject = JText::sprintf('COM_VIRTUEMART_SHOPPER_NEW_ORDER_CONFIRMED', $vendor->vendor_store_name, strip_tags($currency->priceDisplay($orderDetails['details']['BT']->order_total)), $orderDetails['details']['BT']->order_number, $orderDetails['details']['BT']->order_pass );
 			    $recipient = 'shopper';
 		    }
 		    $this->assignRef('recipient', $recipient);
