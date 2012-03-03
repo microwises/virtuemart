@@ -40,6 +40,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<td>
 				<input class="inputbox" type="text" name="vendor_name" id="vendor_name" size="50" value="<?php echo $this->vendor->vendor_name; ?>" />
 			</td>
+		</tr>		<tr>
+			<td class="key">
+				<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_PHONE'); ?>
+			</td>
+			<td>
+				<input class="inputbox" type="text" name="vendor_phone" id="vendor_phone" size="50" value="<?php echo $this->vendor->vendor_phone; ?>" />
+			</td>
 		</tr>
 		<tr>
 			<td class="key">
