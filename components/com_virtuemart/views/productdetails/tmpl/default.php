@@ -281,6 +281,10 @@ if (VmConfig::get('ask_question', 1) == '1') {
     if (VmConfig::get('showCategory', 1)) {
 	echo $this->loadTemplate('showcategory');
     }
+    if (!empty($this->product->customfieldsSorted['onbot'])) {
+    	$this->position='onbot';
+    	echo $this->loadTemplate('customfields');
+    } // Product Custom ontop end
     ?>
 
 <?php

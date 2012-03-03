@@ -147,7 +147,7 @@
 					echo $prow->salesPrice ;
 					?>
 				</td>
-				<td align="right" ><form action="index.php" method="post" class="inline">
+				<td align="right" ><form action="<?php JRoute::_('index.php'); ?>" method="post" class="inline">
 				<input type="hidden" name="option" value="com_virtuemart" />
 				<input type="text" title="<?php echo  JText::_('COM_VIRTUEMART_CART_UPDATE') ?>" class="inputbox" size="3" maxlength="4" name="quantity" value="<?php echo $prow->quantity ?>" />
 				<input type="hidden" name="view" value="cart" />

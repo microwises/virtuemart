@@ -207,7 +207,7 @@ class GenericTableUpdater extends JModel{
 			$lines = array();
 			$linedefault = "NOT NULL DEFAULT ''";
 
-			$fields[$tblKey] = 'int(1) UNSIGNED NOT NULL AUTO_INCREMENT';
+			$fields[$tblKey] = 'int(1) UNSIGNED NOT NULL';
 // 			vmdebug('createLanguageTables ',$translatableFields);
 			//set exceptions from normal shema here !
 			//Be aware that you can use this config settings, when declaring them in the virtuemart.cfg

@@ -779,30 +779,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_product_customfields` (
   KEY `idx_custom_value` (`custom_value`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='custom fields' AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
---
--- Table structure for table `#__virtuemart_product_downloads`
---
-
-CREATE TABLE IF NOT EXISTS `#__virtuemart_product_downloads` (
-  `virtuemart_product_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `virtuemart_user_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `virtuemart_order_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `end_date` datetime NOT NULL default '0000-00-00 00:00:00',
-  `download_max` int(1) UNSIGNED NOT NULL DEFAULT '0',
-  `download_id` char(32) NOT NULL DEFAULT '',
-  `file_name` char(255) NOT NULL DEFAULT '',
-  `published` tinyint(1) NOT NULL DEFAULT '1',
-  `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
-  `created_by` int(11) NOT NULL DEFAULT '0',
-  `modified_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) NOT NULL DEFAULT '0',
-  `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `locked_by` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`virtuemart_product_id`),
-  KEY `virtuemart_user_id` (`virtuemart_user_id`),
-  KEY `virtuemart_order_id` (`virtuemart_order_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 COMMENT='Active downloads for selling downloadable goods';
 
 
 -- --------------------------------------------------------
@@ -968,7 +944,6 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_shipmentmethods` (
   `locked_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `locked_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`virtuemart_shipmentmethod_id`),
-	KEY `idx_virtuemart_shipmentmethod_id` (`virtuemart_shipmentmethod_id`),
 	KEY `idx_shipment_jplugin_id` (`shipment_jplugin_id`),
 	KEY `idx_shipment_element` (shipment_element,`virtuemart_vendor_id`),
 	KEY `idx_shipment_method_ordering` (`ordering`)
