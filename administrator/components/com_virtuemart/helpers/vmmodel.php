@@ -36,6 +36,7 @@ class VmModel extends JModel {
 	var $_idName		= '';
 	var $_cidName		= 'cid';
 	var $_togglesName	= null;
+	var $_selectedOrderingDir = 'DESC';
 	private $_withCount = true;
 	var $_noLimit = false;
 
@@ -45,13 +46,16 @@ class VmModel extends JModel {
 		$this->_cidName = $cidName;
 
 		// Get the pagination request variables
-		$mainframe = JFactory::getApplication() ;
-		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest(JRequest::getWord('option').JRequest::getWord('view').'.limitstart', 'limitstart', 0, 'int');
+/*		$mainframe = JFactory::getApplication() ;
+// 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+		$namespace = JRequest::getWord('option').'.'.JRequest::getWord('view').'.limit';
+		$limit = $mainframe->getUserStateFromRequest($namespace, 'limit', $mainframe->getCfg('list_limit'), 'int');
+		$limitstart = $mainframe->getUserStateFromRequest($namespace.'start', 'limitstart', 0, 'int');
 
+		vmdebug('__construct $limit '.$limit.' $limitstart '.$limitstart);
 		// Set the state pagination variables
 		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);
+		$this->setState('limitstart', $limitstart);*/
 
 		// Get the task
 		$task = JRequest::getWord('task');
@@ -61,6 +65,7 @@ class VmModel extends JModel {
 			if(empty($idArray[0])) $idArray[0] = 0;
 			$this->setId((int)$idArray[0]);
 		}
+
 
 	}
 
@@ -96,27 +101,12 @@ class VmModel extends JModel {
 				}
 			}
 
-// 			vmdebug('created new instance of model '.$className);
-			return self::$_vmmodels[strtolower($className)] = new $className();
+			self::$_vmmodels[strtolower($className)] = new $className();
+			return self::$_vmmodels[strtolower($className)];
 		} else {
-// 			vmdebug('Use instance of model '.$className);
 			return self::$_vmmodels[strtolower($className)];
 		}
 
-	}
-
-	public function setMainTable($maintablename,$maintable=0){
-
-		$this->_maintablename = $maintablename;
-		if(empty($maintable)){
-			$this->_maintable = '#__virtuemart_'.$maintablename;
-		} else {
-			$this->_maintable = $maintable;
-		}
-		$defaultTable = $this->getTable($this->_maintablename);
-		$this->_idName = $defaultTable->getKeyName();
-
-		$this->setDefaultValidOrderingFields($defaultTable);
 	}
 
 	public function setIdName($idName){
@@ -149,6 +139,35 @@ class VmModel extends JModel {
 	}
 
 
+	public function setMainTable($maintablename,$maintable=0){
+
+		$this->_maintablename = $maintablename;
+		if(empty($maintable)){
+			$this->_maintable = '#__virtuemart_'.$maintablename;
+		} else {
+			$this->_maintable = $maintable;
+		}
+		$defaultTable = $this->getTable($this->_maintablename);
+		$this->_idName = $defaultTable->getKeyName();
+
+		$this->setDefaultValidOrderingFields($defaultTable);
+		$this->_selectedOrdering = $this->_validOrderingFieldName[0];
+
+	}
+
+	function getDefaultOrdering(){
+		return $this->_selectedOrdering;
+	}
+
+
+	function addvalidOrderingFieldName($add){
+		$this->_validOrderingFieldName = array_merge($this->_validOrderingFieldName,$add);
+	}
+
+	function removevalidOrderingFieldName($name){
+		unset($this->_validOrderingFieldName[$name]) ;
+	}
+
 	var $_tablePreFix = '';
 	/**
 	 *
@@ -164,13 +183,6 @@ class VmModel extends JModel {
 
 		$this->_tablePreFix = $defaultTable->_tablePreFix;
 		$dTableArray = get_object_vars($defaultTable);
-
-// 		if($defaultTable->_translatable){
-// 			foreach ($defaultTable->getTranslatableFields() as $v){
-// 				$this->_validOrderingFieldName[] = 'l.'.$v;
-// 				unset($dTableArray[$v]);
-// 			}
-// 		}
 
 		// Iterate over the object variables to build the query fields and values.
 		foreach ($dTableArray as $k => $v){
@@ -189,103 +201,48 @@ class VmModel extends JModel {
 
 	}
 
-	function addvalidOrderingFieldName($add){
-		$this->_validOrderingFieldName = array_merge($this->_validOrderingFieldName,$add);
+
+	function _getOrdering() {
+		if(empty($this->_selectedOrdering)) vmTrace('empty _getOrdering');
+		if(empty($this->_selectedOrderingDir)) vmTrace('empty _selectedOrderingDir');
+		return ' ORDER BY '.$this->_selectedOrdering.' '.$this->_selectedOrderingDir ;
 	}
 
-	function removevalidOrderingFieldName($name){
-		unset($this->_validOrderingFieldName[$name]) ;
+
+	var $_validOrderingFieldName = null;
+
+	function checkFilterOrder($toCheck){
+
+		if(!in_array($toCheck, $this->_validOrderingFieldName)){
+
+			vmdebug('checkValidOrderingField:'.get_class($this).' programmer choosed invalid ordering '.$toCheck.', use '.$this->_selectedOrdering);
+			$toCheck = $this->_selectedOrdering;
+			$app = JFactory::getApplication();
+			$view = JRequest::getWord('view');
+			$app->setUserState( 'com_virtuemart.'.$view.'.filter_order',$this->_selectedOrdering);
+		}
+		$this->_selectedOrdering = $toCheck;
+		return $toCheck;
 	}
 
 	var $_validFilterDir = array('ASC','DESC');
-	function getValidFilterDir($default = null){
+	function checkFilterDir($toCheck){
 
-		$view = JRequest::getWord('view');
-		$mainframe = JFactory::getApplication() ;
-		if($default!==null){
-// 			vmdebug('Default not null');
-			$filter_order_Dir = strtoupper($default);
-		} else {
-			$filter_order_Dir = strtoupper($mainframe->getUserStateFromRequest( 'com_virtuemart'.$view.'.filter_order_Dir', 'filter_order_Dir', $default, 'word' ));
-		}
-		if(!empty($filter_order_Dir)){
-			if(!in_array($filter_order_Dir, $this->_validFilterDir)){
-				$filter_order_Dir = '';
-				$mainframe->setUserState( 'com_virtuemart'.$view.'.filter_order_Dir',$filter_order_Dir);
-				vmdebug('checkValidOrderingField: programmer choosed invalid ordering direction, model _validDefaultOrderingFieldName used');
-			}
+		$filter_order_Dir = strtoupper($toCheck);
 
+		if(empty($filter_order_Dir) or !in_array($filter_order_Dir, $this->_validFilterDir)){
+			vmdebug('checkFilterDir: programmer choosed invalid ordering direction '.$filter_order_Dir,$this->_validFilterDir);
+// 			vmTrace('checkFilterDir');
+			$filter_order_Dir = $this->_selectedOrderingDir;
+			$view = JRequest::getWord('view');
+			$app = JFactory::getApplication();
+			$app->setUserState( 'com_virtuemart.'.$view.'.filter_order_Dir',$filter_order_Dir);
 		}
-		return $filter_order_Dir;
+// 		vmdebug('checkFilterDir '.$filter_order_Dir);
+
+		$this->_selectedOrderingDir = $filter_order_Dir;
+		return $this->_selectedOrderingDir;
 	}
-
-	// 	var $_validDefaultOrderingFieldName = 'ordering';
-	var $_validOrderingFieldName = null;
-
-	function getValidFilterOrdering($overwrite=null,$overWriteDefault=null){
-
-		$mainframe = JFactory::getApplication() ;
-		$view = JRequest::getWord('view');
-
-		$defaultValue = $this->_validOrderingFieldName[0];
-		if($overWriteDefault!==null){
-			$defaultValue = $overWriteDefault;
-// 			vmdebug('getValidFilterOrdering use $overWriteDefault '.$overWriteDefault);
-		}
-
-
-		if($overwrite!==null){
-			$filter_order = $overwrite;
-// 			vmdebug('getValidFilterOrdering use $overwrite '.$filter_order);
-		} else {
-// 			if($this->_noLimit){
-// 				$filter_order = $defaultValue;
-// 				vmdebug('getValidFilterOrdering use listmode and default value '.$filter_order);
-// 			} else {
-				$filter_order = strtolower($mainframe->getUserStateFromRequest( 'com_virtuemart'.$view.'.filter_order', 'filter_order',$defaultValue , 'cmd' ));
-// 				vmdebug('getValidFilterOrdering use getUserStateFromRequest '.$filter_order);
-// 			}
-		}
-
-		if(!empty($filter_order)){
-			$dotps = strrpos($filter_order, '.');
-/*			if($dotps===false && !empty($this->_tablePreFix) ){
-// 				vmdebug('No dot found '.$filter_order.' add table prefix '.$this->_tablePreFix.'  in class '.get_class($this));
-				$filter_order = $this->_tablePreFix . $filter_order;
-
-			}*/
-
-			if(!in_array($filter_order, $this->_validOrderingFieldName)){
-
-				vmdebug('checkValidOrderingField:'.get_class($this).' programmer choosed invalid ordering '.$filter_order.', use '.$defaultValue);
-				$filter_order = $defaultValue;
-
-				$mainframe->setUserState( 'com_virtuemart.'.$view.'.filter_order',$filter_order);
-
-			}
-		}
-
-
-		return $filter_order;
-	}
-
-	/**
-	 * Get the SQL Ordering statement
-	 *
-	 * @return string text to add to the SQL statement
-	 */
-	function _getOrdering($default=null,$order_dir = null) {
-
-		$return ='';
-		$filter_order     = $this->getValidFilterOrdering($default);
-		if(!empty($filter_order)){
-			$filter_order_Dir = $this->getValidFilterDir($order_dir);
-			$return = ' ORDER BY '.$filter_order.' '.$filter_order_Dir ;
-		}
-// 		vmdebug('_getOrdering return ',$return);
-		return $return;
-	}
-
 
 
 	/**
@@ -313,8 +270,33 @@ class VmModel extends JModel {
 			$this->_pagination = new VmPagination($total , $limits[0], $limits[1] , $perRow );
 
 		}
-		// 		vmdebug('my pagination',$this->_pagination);
+
 		return $this->_pagination;
+	}
+
+	public function setPaginationLimits(){
+
+		$mainframe = JFactory::getApplication();
+		$view = JRequest::getWord('view');
+
+		$limit = $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit',  VmConfig::get('list_limit',20), 'int');
+		$this->setState('limit', $limit);
+		if(JVM_VERSION === 2) {
+			$limitStart = $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.limitstart', 'limitstart',  0, 'int');
+		} else {
+			$limitStart = JRequest::getInt('limitstart',0);
+		}
+
+		//There is a strange error in the frontend giving back 9 instead of 10, or 24 instead of 25
+		//This functions assures that the steps of limitstart fit with the limit
+		if(!empty($limit)){
+			$limitStart = ceil((float)$limitStart/(float)$limit) * $limit;
+		}
+
+		$this->setState('limitstart', $limitStart);
+
+		// 		vmdebug('limitstart',$limitStart, $limit);
+		return array($limitStart,$limit);
 	}
 
 	/**
@@ -338,32 +320,6 @@ class VmModel extends JModel {
 		}
 
 		return $this->_total;
-	}
-
-
-	public function setPaginationLimits(){
-
-		$mainframe = JFactory::getApplication();
-		$view = JRequest::getWord('view');
-
-		$limit = $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit',  VmConfig::get('list_limit',10), 'int');
-		$this->setState('limit', $limit);
-		if(JVM_VERSION === 2) {
-			$limitStart = $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.limitstart', 'limitstart',  0, 'int');
-		} else {
-			$limitStart = JRequest::getInt('limitstart',0);
-		}
-
-		//There is a strange error in the frontend giving back 9 instead of 10, or 24 instead of 25
-		//This functions assures that the steps of limitstart fit with the limit
-		if(!empty($limit)){
-			$limitStart = ceil((float)$limitStart/(float)$limit) * $limit;
-		}
-
-		$this->setState('limitstart', $limitStart);
-
-// 		vmdebug('limitstart',$limitStart, $limit);
-		return array($limitStart,$limit);
 	}
 
 
@@ -423,7 +379,7 @@ class VmModel extends JModel {
 			$this->_db->setQuery($q,$limitStart,$limit);
 // 			vmdebug('exeSortSearchListQuery '.get_class($this).' with limit');
 		}
-
+// 		vmdebug('exeSortSearchListQuery '.$orderBy .$filter_order_Dir);
 
 		if($object == 2){
 			 $this->ids = $this->_db->loadResultArray();
@@ -431,6 +387,9 @@ class VmModel extends JModel {
 			 $this->ids = $this->_db->loadAssocList();
 		} else {
 			 $this->ids = $this->_db->loadObjectList();
+		}
+		if($err=$this->_db->getErrorMsg()){
+			vmError('exeSortSearchListQuery '.$err);
 		}
 // 		vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q ',$this->_db->getQuery() );
 

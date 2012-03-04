@@ -38,6 +38,14 @@ class CurrencyDisplay {
 
 	private function __construct ($vendorId = 0){
 
+		$this->_app = JFactory::getApplication();
+		if(empty($vendorId)) $vendorId = 1;
+
+		$this->_db = JFactory::getDBO();
+		$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`="'.(int)$vendorId.'"';
+		$this->_db->setQuery($q);
+		$this->_vendorCurrency = $this->_db->loadResult();
+
 		$converterFile  = VmConfig::get('currency_converter_module');
 
 		if (file_exists( JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.$converterFile )) {
@@ -47,18 +55,14 @@ class CurrencyDisplay {
 				$this->_currencyConverter = new $module_filename();
 			}
 		} else {
-			if(!class_exists('convertECB')) require(JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
-			$this->_currencyConverter = new convertECB();
+			if($this->_vendorCurrency===47){
+				if(!class_exists('convertECB')) require(JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
+				$this->_currencyConverter = new convertECB();
+			} else {
+				vmWarn('Cant use fallback method, using ECB. Your vendor currency is not euro.');
+			}
+
 		}
-
-		$this->_app = JFactory::getApplication();
-		if(empty($vendorId)) $vendorId = 1;
-
-		$this->_db = JFactory::getDBO();
-		$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`="'.(int)$vendorId.'"';
-		$this->_db->setQuery($q);
-		$this->_vendorCurrency = $this->_db->loadResult();
-		// 		$this->_currency_id = $this->_vendorCurrency = $this->_db->loadResult();
 
 		$this->setPriceArray();
 	}

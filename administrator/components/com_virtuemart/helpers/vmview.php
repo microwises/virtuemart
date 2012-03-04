@@ -60,7 +60,7 @@ class VmView extends JView{
 	* return Array() $list( filter_order and dir )
 	*/
 
-	function addStandardDefaultViewLists($model, $default_order = null, $default_dir = null,$name = 'search') {
+	function addStandardDefaultViewLists($model, $default_order = 0, $default_dir = 'DESC',$name = 'search') {
 
 		$pagination = $model->getPagination();
 
@@ -69,18 +69,33 @@ class VmView extends JView{
 		/* set list filters */
 		$option = JRequest::getCmd('option');
 		$view = JRequest::getCmd('view', JRequest::getCmd('controller'));
-		$mainframe = JFactory::getApplication();
 
-		$lists[$name] = $mainframe->getUserStateFromRequest($option . '.' . $view . '.'.$name, $name, '', 'string');
+		$app = JFactory::getApplication();
+		$lists[$name] = $app->getUserStateFromRequest($option . '.' . $view . '.'.$name, $name, '', 'string');
 
-		//$lists['filter_order'] = $model->getValidFilterOrdering($default_order); // break the list header column orderby choice
-		$lists['filter_order'] = $mainframe->getUserStateFromRequest( 'com_virtuemart'.$view.'filter_order', 'filter_order', $default_order, 'cmd' );
+		$lists['filter_order'] = $this->getValidFilterOrder($app,$model,$view,$default_order);
 
-		$lists['filter_order_Dir'] = $model->getValidFilterDir($default_dir);
+// 		if($default_dir===0){
+			$toTest = $app->getUserStateFromRequest( 'com_virtuemart.'.$view.'.filter_order_Dir', 'filter_order_Dir', $default_dir, 'cmd' );
+
+		$lists['filter_order_Dir'] = $model->checkFilterDir($toTest);
 
 		$this->assignRef('lists', $lists);
 
 	}
+
+	function getValidFilterOrder($app,$model,$view,$default_order){
+
+		if($default_order===0){
+			$default_order = $model->getDefaultOrdering();
+		}
+
+		$toTest = $app->getUserStateFromRequest( 'com_virtuemart.'.$view.'.filter_order', 'filter_order', $default_order, 'cmd' );
+
+// 		vmdebug('getValidFilterOrder '.$toTest.' '.$default_order, $model->_validOrderingFieldName);
+		return $model->checkFilterOrder($toTest);
+	}
+
 
 	/*
 	 * Add simple search to form

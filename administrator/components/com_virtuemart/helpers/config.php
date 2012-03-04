@@ -533,10 +533,14 @@ class VmConfig {
 			self::loadConfig();
 		}
 
-		if (!empty(self::$_jpConfig->_params)) {
-			self::$_jpConfig->_params[$key] = $value;
-			self::$_jpConfig->setSession();
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if(Permissions::getInstance()->check('admin')){
+			if (!empty(self::$_jpConfig->_params)) {
+				self::$_jpConfig->_params[$key] = $value;
+				self::$_jpConfig->setSession();
+			}
 		}
+
 	}
 
 	/**
@@ -544,7 +548,11 @@ class VmConfig {
 	 * @author Max Milbers
 	 */
 	function setParams($params){
-		self::$_jpConfig->_params = array_merge($this->_params,$params);
+		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
+		if(Permissions::getInstance()->check('admin')){
+			self::$_jpConfig->_params = array_merge($this->_params,$params);
+		}
+
 	}
 
 	/**

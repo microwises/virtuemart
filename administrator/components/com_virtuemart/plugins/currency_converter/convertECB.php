@@ -52,7 +52,7 @@ class convertECB {
 
 		// save cache conf
 
-		$conf =& JFactory::getConfig();
+		$conf = JFactory::getConfig();
 
 		// check if cache is enabled in configuration
 

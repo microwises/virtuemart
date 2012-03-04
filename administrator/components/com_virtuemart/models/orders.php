@@ -47,12 +47,12 @@ class VirtueMartModelOrders extends VmModel {
 		$this->addvalidOrderingFieldName(array('order_name','payment_method','virtuemart_order_id' ) );
 
 		//Delete the field so that and push it to the begin of the array so that it is used as default value
-		$key = array_search('o.modified_on',$this->_validOrderingFieldName);
-		unset($this->_validOrderingFieldName[$key]);
-		array_unshift($this->_validOrderingFieldName,'modified_on');
+// 		$key = array_search('o.modified_on',$this->_validOrderingFieldName);
+// 		unset($this->_validOrderingFieldName[$key]);
+// 		array_unshift($this->_validOrderingFieldName,'modified_on');
 
-		$app = JFactory::getApplication();
-		$app->setUserState( 'com_virtuemart.orders.filter_order','DESC');
+
+
 	}
 
 	/**
@@ -784,6 +784,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 // 							vmdebug('_createOrderLines E ',$productCustom,$variant,$selected);
 
 							$product_attribute[$selected] = $selected;
+// 							vmdebug('_createOrderLines',$product_attribute);
 // 							$product_attribute[$variant] = $selected;
 // 							JPluginHelper::importPlugin('vmcustom');
 // 							$dispatcher = JDispatcher::getInstance();
@@ -791,13 +792,15 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 // 							$varsToPushParam = $dispatcher->trigger('plgVmCreateOrderLinesCustom',array(&$html, $_prod,$productCustom, $row));
 // 							$product_attribute[$selected] = $html;
 
-/*						foreach($productCustom->custom_param as $k => $plg){
-// 							foreach($_prod->param as $k => $plg){
-								if ($k == $variant)
-									$product_attribute[$selected] = $plg ;
-									// $html .= $this->$plgFunction( $item,$productCustom, $row,$plg[$this->_name]);
-							}*/
-
+// 							foreach($productCustom->custom_param as $k => $plg){
+							if(!empty($_prod->param)){
+								foreach($_prod->param as $k => $plg){
+									if ($k == $variant){
+										$product_attribute[$selected] = $plg ;
+									}
+								}
+							}
+// 							vmdebug('_createOrderLines after foreach',$product_attribute);
 
 						} else {
 

@@ -33,8 +33,13 @@ defined('_JEXEC') or die('Restricted access');
 			    </span>
 			</td>
 			<td>
+			    <?php echo JHTML::_('Select.genericlist', $this->orderByFields->select, 'browse_orderby_field', 'size=1', 'value', 'text', $this->config->get('browse_orderby_field','product_name'),'product_name'); ?>
 
-			    <?php echo JHTML::_('Select.genericlist', $this->orderByFields->select, 'browse_orderby_field', 'size=1', 'value', 'text', $this->config->get('browse_orderby_field'),'virtuemart_product_id'); ?>
+			    <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_BROWSE_CAT_ORDERBY_DEFAULT_FIELD_LBL_TIP'); ?>" >
+			    <?php echo JText::_('COM_VIRTUEMART_BROWSE_CAT_ORDERBY_DEFAULT_FIELD_LBL') ?>
+			    </span>
+
+			    <?php echo JHTML::_('Select.genericlist', $this->orderByFields->select, 'browse_cat_orderby_field', 'size=1', 'value', 'text', $this->config->get('browse_cat_orderby_field','category_name'),'category_name'); ?>
 			</td>
 		    </tr>
 		    <tr>

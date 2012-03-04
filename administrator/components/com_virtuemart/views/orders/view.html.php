@@ -161,6 +161,8 @@ class VirtuemartViewOrders extends VmView {
 			$this->setLayout('orders');
 
 			$model = VmModel::getModel();
+			$this->addStandardDefaultViewLists($model,'created_on');
+
 			$orderslist = $model->getOrdersList();
 
 			$this->assignRef('orderstatuses', $orderStates);
@@ -193,8 +195,7 @@ class VirtuemartViewOrders extends VmView {
 			/* Assign the data */
 			$this->assignRef('orderslist', $orderslist);
 
-		/* Assign general statuses */
-			$this->addStandardDefaultViewLists($orderModel);
+
 
 		}
 		parent::display($tpl);

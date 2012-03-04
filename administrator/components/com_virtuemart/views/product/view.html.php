@@ -252,7 +252,8 @@ class VirtuemartViewProduct extends VmView {
 			$this->db = JFactory::getDBO();
 
 			$this->SetViewTitle($title, $msg );
-			/* Start model */
+
+			$this->addStandardDefaultViewLists($model,'p.created_on');
 
 			/* Get the list of products */
 			$productlist = $model->getProductListing(false,false,false,false,true);
@@ -290,7 +291,7 @@ class VirtuemartViewProduct extends VmView {
 				$product->categoriesList = shopfunctions::renderGuiList('virtuemart_category_id','#__virtuemart_product_categories','virtuemart_product_id',$product->virtuemart_product_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category');
 
 			}
-			$this->addStandardDefaultViewLists($model,'product_name');
+
 			/* add Search filter in lists*/
 			/* Search type */
 			$options = array( '' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'),

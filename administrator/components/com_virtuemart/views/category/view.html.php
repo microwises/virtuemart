@@ -89,15 +89,13 @@ class VirtuemartViewCategory extends VmView {
 			$this->SetViewTitle('CATEGORY_S');
 
 			$keyWord ='';
-			$categories = $model->getCategoryTree(0,0,false);
-
-			$this->assignRef('categories', $categories);
 
 			$this->assignRef('model',	$model);
-
-
 			$this->addStandardDefaultViewCommands();
-			$this->addStandardDefaultViewLists($model);
+			$this->addStandardDefaultViewLists($model,'category_name');
+
+			$categories = $model->getCategoryTree(0,0,false);
+			$this->assignRef('categories', $categories);
 
 		}
 

@@ -48,6 +48,7 @@ class VirtueMartModelShipmentmethod extends VmModel {
 	function __construct() {
 		parent::__construct();
 		$this->setMainTable('shipmentmethods');
+		$this->_selectedOrdering = 'ordering';
 	}
 
 	/**

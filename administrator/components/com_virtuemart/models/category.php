@@ -42,6 +42,7 @@ class VirtueMartModelCategory extends VmModel {
 		parent::__construct();
 		$this->setMainTable('categories');
 		$this->addvalidOrderingFieldName(array('category_name','category_description','c.ordering','cx.category_shared','c.published'));
+		$this->_selectedOrdering = VmConfig::get('browse_cat_orderby_field','category_name');
 	}
 
 
@@ -302,12 +303,13 @@ class VirtueMartModelCategory extends VmModel {
 		}
 
 		//Important, yes, this construction is most time not need and outdated, BUT NOT HERE ! dont remove it! note by Max Milbers
-		if ( JRequest::getCmd('view') == 'category') {
+// 		if ( JRequest::getCmd('view') == 'category') {
 			$ordering = $this->_getOrdering();
-		} else {
-			$ordering = $this->_getOrdering('category_name','ASC');
-		}
+// 		} else {
+// 			$ordering = $this->_getOrdering('category_name','ASC');
+// 		}
 
+// 			vmdebug('category '.$ordering);
 		$this->_category_tree = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,'',$ordering );
 
 		return $this->_category_tree;

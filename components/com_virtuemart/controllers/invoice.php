@@ -188,39 +188,54 @@ class VirtueMartControllerInvoice extends JController
 
 
 
-require_once(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php');
 
-// Extend the TCPDF class to create custom Header and Footer
-class MYPDF extends TCPDF {
+if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
+	vmError('Controller invoice: For the pdf invoice, you must install the tcpdf library at '.JPATH_VM_LIBRARIES.DS.'tcpdf');
+} else {
+	if(!class_exists('TCPDF'))	require_once(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php');
+	// Extend the TCPDF class to create custom Header and Footer
+	class MYPDF extends TCPDF {
 
-	//Page header
-	/*	public function Header() {
-	// Logo
-	$image_file = K_PATH_IMAGES.'logo_example.jpg';
-	$this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-	// Set font
-	$this->SetFont('helvetica', 'B', 20);
-	// Title
-	$this->Cell(0, 15, '<< TCPDF Example 003 >>', 0, false, 'C', 0, '', 0, false, 'M', 'M');
-	}*/
+		public function __construct() {
 
-	// Page footer
-	public function Footer() {
-		// Position at 15 mm from bottom
-		$this->SetY(-15);
+			parent::__construct();
+
+
+		}
+
+		//Page header
+		/*	public function Header() {
+		// Logo
+		$image_file = K_PATH_IMAGES.'logo_example.jpg';
+		$this->Image($image_file, 10, 10, 15, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
 		// Set font
-		$this->SetFont('helvetica', 'I', 8);
+		$this->SetFont('helvetica', 'B', 20);
+		// Title
+		$this->Cell(0, 15, '<< TCPDF Example 003 >>', 0, false, 'C', 0, '', 0, false, 'M', 'M');
+		}*/
 
-		$vendorModel = VmModel::getModel('vendor');
-		$vendor = & $vendorModel->getVendor();
-		// 			$this->assignRef('vendor', $vendor);
-		$vendorModel->addImages($vendor,1);
-		//vmdebug('$vendor',$vendor);
-		$html = $vendor->vendor_legal_info."<br /> Page ".$this->getAliasNumPage().'/'.$this->getAliasNbPages();
-		// Page number
-		$this->writeHTMLCell($w=0, $h=0, $x='', $y='', $html, $border=0, $ln=1, $fill=0, $reseth=true, $align='', $autopadding=true);
+		// Page footer
+		public function Footer() {
+			// Position at 15 mm from bottom
+			$this->SetY(-15);
+			// Set font
+			$this->SetFont('helvetica', 'I', 8);
 
-		// 		$this->writeHTML(0, 10, $vendor->vendor_legal_info."<br /> Page ".$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+			$vendorModel = VmModel::getModel('vendor');
+			$vendor = & $vendorModel->getVendor();
+			// 			$this->assignRef('vendor', $vendor);
+			$vendorModel->addImages($vendor,1);
+			//vmdebug('$vendor',$vendor);
+			$html = $vendor->vendor_legal_info."<br /> Page ".$this->getAliasNumPage().'/'.$this->getAliasNbPages();
+			// Page number
+			$this->writeHTMLCell($w=0, $h=0, $x='', $y='', $html, $border=0, $ln=1, $fill=0, $reseth=true, $align='', $autopadding=true);
+
+			// 		$this->writeHTML(0, 10, $vendor->vendor_legal_info."<br /> Page ".$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+		}
 	}
 }
+
+
+
+
 // No closing tag

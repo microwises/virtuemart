@@ -80,7 +80,7 @@ class VmMediaHandler {
 			$relUrl = VmConfig::get('media_manufacturer_path');
 			$choosed = true;
 		}
-		else if($type === '' || $type== 'file_is_forSale'){
+		else if($type == 'forSale' || $type== 'file_is_forSale'){
 			//todo add this path to config
 			if(VmConfig::get('forSale_path',0)===0){
 				VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET');
@@ -530,8 +530,7 @@ class VmMediaHandler {
 			if($lightbox){
 				$image = JHTML::image($file_url, $file_alt, $imageArgs);
 				if ($file_alt ) $file_alt = 'title="'.$file_alt.'"';
-				if ($this->file_is_forSale) return '<a '.$file_alt.' href="'. $this->file_url.'">'.$image.'</a>';
-				elseif ($this->file_url and pathinfo($this->file_url, PATHINFO_EXTENSION) ) $href = JURI::root() .$this->file_url ;
+				if ($this->file_url and pathinfo($this->file_url, PATHINFO_EXTENSION) ) $href = JURI::root() .$this->file_url ;
 				else $href = $file_url ;
 				$lightboxImage = '<a '.$file_alt.' '.$effect.' href="'.$href.'">'.$image.'</a>';
 				return $lightboxImage.$desc;

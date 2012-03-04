@@ -71,6 +71,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		//This is just done now for the moment for developing, the idea is of course todo this only when needed.
 		$this->updateRequests();
+
 	}
 
 
@@ -97,7 +98,7 @@ class VirtueMartModelProduct extends VmModel {
 		$this->search_type						= '';
 		$this->searchcustoms					= false;
 		$this->searchplugin						= 0;
-		$this->filter_order 					= 'p.virtuemart_product_id';
+		$this->filter_order 					= VmConfig::get('browse_orderby_field');;
 		$this->filter_order_Dir 				= 'DESC';
 
 	}
@@ -122,16 +123,18 @@ class VirtueMartModelProduct extends VmModel {
 		//Filter order and dir  This is unecessary complex and maybe even wrong, but atm it seems to work
 		if($app->isSite()){
 			$filter_order = JRequest::getString('orderby', VmConfig::get('browse_orderby_field','p.virtuemart_product_id'));
-			$filter_order     = $this->getValidFilterOrdering($filter_order);
+			$filter_order     = $this->checkFilterOrder($filter_order);
 
 			$filter_order_Dir 	= strtoupper(JRequest::getWord('order', 'ASC'));
 			$valid_search_fields = VmConfig::get('browse_search_fields');
 		} else {
-			$filter_order     = $this->getValidFilterOrdering();
+			$filter_order = strtolower($app->getUserStateFromRequest( 'com_virtuemart.'.$view.'.filter_order', 'filter_order',$this->_selectedOrdering , 'cmd' ));
+
+			$filter_order     = $this->checkFilterOrder($filter_order);
 			$filter_order_Dir = strtoupper($app->getUserStateFromRequest( $option.'.'.$view.'.filter_order_Dir', 'filter_order_Dir', '', 'word' ));
 			$valid_search_fields = array('product_name');
 		}
-		$filter_order_Dir = $this->getValidFilterDir($filter_order_Dir);
+		$filter_order_Dir = $this->checkFilterDir($filter_order_Dir);
 
 		$this->filter_order = $filter_order;
 		$this->filter_order_Dir = $filter_order_Dir;
@@ -567,10 +570,8 @@ class VirtueMartModelProduct extends VmModel {
 			/* Load the categories the product is in */
 			$product->categories = $this->getProductCategories($this->_id);
 
-			//There is someone who can explain me this?
-			//Note by Patrick  Used for ordering product in category
-			$product->virtuemart_category_id = JRequest::getInt('virtuemart_category_id', 0);
-			if  ($product->virtuemart_category_id >0) {
+			if ( !empty($product->categories) and is_array($product->categories) and !empty($product->categories[0]) ){
+				$product->virtuemart_category_id = $product->categories[0];
 				$q = 'SELECT `ordering`,`id` FROM `#__virtuemart_product_categories`
 					WHERE `virtuemart_product_id` = "'.$this->_id.'" and `virtuemart_category_id`= "'.$product->virtuemart_category_id.'" ';
 				$this->_db->setQuery($q);
@@ -611,7 +612,7 @@ class VirtueMartModelProduct extends VmModel {
 				// Add the product link  for canonical
 				$productCategory = empty($product->categories[0])? '':$product->categories[0];
 				$product->canonical = 'index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->_id.'&virtuemart_category_id='.$productCategory ;
-				$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->_id.'&virtuemart_category_id='.$product->virtuemart_category_id);
+				$product->link = JRoute::_('index.php?option=com_virtuemart&view=productdetails&virtuemart_product_id='.$this->_id.'&virtuemart_category_id='.$productCategory);
 
 				//only needed in FE productdetails, is now loaded in the view.html.php
 				//				/* Load the neighbours */
@@ -1527,7 +1528,8 @@ public function getUncategorizedChildren($selected){
 			LEFT JOIN `#__virtuemart_product_categories` as pc
 			USING (`virtuemart_product_id`) ';
 
-		$q .= ' WHERE (`product_parent_id` = "'.$this->_id.'" AND (pc.`virtuemart_category_id`) IS NULL  ) OR (`virtuemart_product_id` = "'.$this->_id.'" ) ';
+// 		$q .= ' WHERE (`product_parent_id` = "'.$this->_id.'" AND (pc.`virtuemart_category_id`) IS NULL  ) OR (`virtuemart_product_id` = "'.$this->_id.'" ) ';
+		$q .= ' WHERE `product_parent_id` = "'.$this->_id.'"  OR `virtuemart_product_id` = "'.$this->_id.'" ';
 
 
 	$app = JFactory::getApplication();
@@ -1539,11 +1541,13 @@ public function getUncategorizedChildren($selected){
 		$q .= ' AND p.`published`="1"';
 	}
 
+	$q .= ' ORDER BY ordering DESC';
 	$this->_db->setQuery($q);
 	$res = $this->_db->loadAssocList() ;
 	$err = $this->_db->getErrorMsg();
 	if(!empty($err)){
 		vmError('getUncategorizedChildren sql error '.$err,'getUncategorizedChildren sql error');
+		vmdebug('getUncategorizedChildren '.$err);
 		return false;
 	} else {
 // 		vmdebug('getUncategorizedChildren '.$this->_db->getQuery());

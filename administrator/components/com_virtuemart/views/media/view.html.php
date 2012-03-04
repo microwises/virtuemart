@@ -32,9 +32,6 @@ class VirtuemartViewMedia extends VmView {
 
 	function display($tpl = null) {
 
-		// Load the helper(s)
-
-
 		$this->loadHelper('html');
 		$this->loadHelper('permissions');
 		//@todo should be depended by loggedVendor
@@ -74,9 +71,6 @@ class VirtuemartViewMedia extends VmView {
         	$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
         	$cat_id = JRequest::getInt('virtuemart_category_id',0);
 
-			$files = $model->getFiles(false,false,$virtuemart_product_id,$cat_id);
-			$this->assignRef('files',	$files);
-
 			JToolBarHelper::customX('synchronizeMedia', 'new', 'new', JText::_('COM_VIRTUEMART_TOOLS_SYNC_MEDIA_FILES'),false);
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model,null,null,'searchMedia');
@@ -88,8 +82,10 @@ class VirtuemartViewMedia extends VmView {
 				);
 			$this->lists['search_type'] = VmHTML::selectList('search_type', JRequest::getVar('search_type'),$options,1,'','onchange="this.form.submit();"');
 
-
+			$files = $model->getFiles(false,false,$virtuemart_product_id,$cat_id);
+			$this->assignRef('files',	$files);
 		}
+
 		parent::display($tpl);
 	}
 
