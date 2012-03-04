@@ -253,7 +253,7 @@ class VirtuemartViewProduct extends VmView {
 
 			$this->SetViewTitle($title, $msg );
 
-			$this->addStandardDefaultViewLists($model,'p.created_on');
+			$this->addStandardDefaultViewLists($model,'created_on');
 
 			/* Get the list of products */
 			$productlist = $model->getProductListing(false,false,false,false,true);

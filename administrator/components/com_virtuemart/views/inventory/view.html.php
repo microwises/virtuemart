@@ -39,11 +39,12 @@ class VirtuemartViewInventory extends VmView {
 
 		$this->loadHelper('html');
 
+		// Get the data
+		$model = VmModel::getModel('product');
+
 		// Create filter
 		$this->addStandardDefaultViewLists($model);
 
-		// Get the data
-		$model = VmModel::getModel('product');
 		$inventorylist = $model->getProductListing(false,false);
 
 		$pagination = $model->getPagination();

@@ -233,7 +233,7 @@ class VmModel extends JModel {
 		$filter_order_Dir = strtoupper($toCheck);
 
 		if(empty($filter_order_Dir) or !in_array($filter_order_Dir, $this->_validFilterDir)){
-			vmdebug('checkFilterDir: programmer choosed invalid ordering direction '.$filter_order_Dir,$this->_validFilterDir);
+// 			vmdebug('checkFilterDir: programmer choosed invalid ordering direction '.$filter_order_Dir,$this->_validFilterDir);
 // 			vmTrace('checkFilterDir');
 			$filter_order_Dir = $this->_selectedOrderingDir;
 			$view = JRequest::getWord('view');

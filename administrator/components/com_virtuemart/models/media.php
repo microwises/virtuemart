@@ -39,6 +39,8 @@ class VirtueMartModelMedia extends VmModel {
 	function __construct() {
 		parent::__construct('virtuemart_media_id');
 		$this->setMainTable('medias');
+		$this->addvalidOrderingFieldName(array('ordering'));
+		$this->_selectedOrdering = 'ordering';
 
 	}
 
