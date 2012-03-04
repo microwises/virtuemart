@@ -45,7 +45,7 @@ class VirtuemartViewShopperGroup extends VmView {
 		if ($layoutName == 'edit') {
 			$shoppergroup = $model->getShopperGroup();
 			$this->SetViewTitle('SHOPPERGROUP',$shoppergroup->shopper_group_name);
-	
+
 
 			$vendors = ShopFunctions::renderVendorList($shoppergroup->virtuemart_vendor_id);
 			$this->assignRef('vendorList',	$vendors);
@@ -57,11 +57,9 @@ class VirtuemartViewShopperGroup extends VmView {
 
 		} else {
 			$this->SetViewTitle();
-	
-			JToolBarHelper::makeDefault();
-			$shoppergroups = $model->getShopperGroups(false, true);
 
-			$this->assignRef('shoppergroups',	$shoppergroups);
+			JToolBarHelper::makeDefault();
+
 
 			$this->loadHelper('permissions');
 			$this->assignRef('showVendors',Permissions::getInstance()->check('admin'));
@@ -69,6 +67,11 @@ class VirtuemartViewShopperGroup extends VmView {
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
 
+			$shoppergroups = $model->getShopperGroups(false, true);
+			$this->assignRef('shoppergroups',	$shoppergroups);
+
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
 
 		}
 		parent::display($tpl);

@@ -76,13 +76,13 @@ class VirtueMartModelUser extends VmModel {
 			//not anonymous, but no cid means already registered user edit own data
 			if(empty($cid)){
 				$this->setUserId($user->id);
-				// 				vmdebug('setId setCurrent $user',$user->get('id'));
+				// vmdebug('setId setCurrent $user',$user->get('id'));
 			} else {
 				if($cid != $user->id){
 					if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 					if(Permissions::getInstance()->check("admin")) {
 						$this->setUserId($cid);
-						vmdebug('Admin watches user, setId '.$cid);
+// 						vmdebug('Admin watches user, setId '.$cid);
 					} else {
 						JError::raiseWarning(1,'Hacking attempt');
 						$this->setUserId($user->id);

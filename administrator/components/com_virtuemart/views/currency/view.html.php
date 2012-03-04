@@ -67,11 +67,13 @@ class VirtuemartViewCurrency extends VmView {
 			$this->SetViewTitle();
 			$this->addStandardDefaultViewCommands();
 
+			$this->addStandardDefaultViewLists($model);
+
 			$currencies = $model->getCurrenciesList(JRequest::getWord('search', false));
 			$this->assignRef('currencies',	$currencies);
 
-			$this->addStandardDefaultViewLists($model);
-
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
 
 
 		}

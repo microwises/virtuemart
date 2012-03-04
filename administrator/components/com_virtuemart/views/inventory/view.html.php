@@ -39,21 +39,26 @@ class VirtuemartViewInventory extends VmView {
 
 		$this->loadHelper('html');
 
-		/* Get the data */
+		// Create filter
+		$this->addStandardDefaultViewLists($model);
+
+		// Get the data
 		$model = VmModel::getModel('product');
 		$inventorylist = $model->getProductListing(false,false);
 
-		/* Apply currency */
+		$pagination = $model->getPagination();
+		$this->assignRef('pagination', $pagination);
+
+		// Apply currency
 		$currencydisplay = CurrencyDisplay::getInstance();;
-                $weigth_unit = ShopFunctions::getWeightUnit();
+      $weigth_unit = ShopFunctions::getWeightUnit();
+
 		foreach ($inventorylist as $virtuemart_product_id => $product) {
 			$product->product_price_display = $currencydisplay->priceDisplay($product->product_price,'',false);
                         $product->weigth_unit_display= $weigth_unit[$product->product_weight_uom];
 		}
 		$this->assignRef('inventorylist', $inventorylist);
 
-		/* Create filter */
-		$this->addStandardDefaultViewLists($model);
 
 		$options = array();
 		$options[] = JHTML::_('select.option', '', JText::_('COM_VIRTUEMART_SELECT'));

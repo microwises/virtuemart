@@ -223,10 +223,13 @@ class VirtuemartViewUser extends VmView {
 
 			//This is intentionally, creating new user via BE is buggy and can be done by joomla
 			//JToolBarHelper::addNewX();
+			$this->addStandardDefaultViewLists($model,'ju.id');
+
 			$userList = $model->getUserList();
 			$this->assignRef('userList', $userList);
 
-			$this->addStandardDefaultViewLists($model,'ju.id');
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
 
 			$shoppergroupmodel = VmModel::getModel('shopperGroup');
 			$defaultShopperGroup = $shoppergroupmodel->getDefault()->shopper_group_name;

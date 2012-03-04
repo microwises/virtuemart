@@ -168,10 +168,14 @@ class VirtuemartViewUserfields extends VmView {
 			JToolBarHelper::divider();
 			JToolBarHelper::deleteList();
 
+			$this->addStandardDefaultViewLists($model);
+
 			$userfieldsList = $model->getUserfieldsList();
 			$this->assignRef('userfieldsList', $userfieldsList);
 
-			$this->addStandardDefaultViewLists($model);
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
+
 			// search filter
 			$search = $mainframe->getUserStateFromRequest( $option.'search', 'search', '', 'string');
 			$search = JString::strtolower( $search );

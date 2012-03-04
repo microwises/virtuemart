@@ -258,6 +258,10 @@ class VirtuemartViewProduct extends VmView {
 			/* Get the list of products */
 			$productlist = $model->getProductListing(false,false,false,false,true);
 
+			//The pagination must now always set AFTER the model load the listing
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
+
 			/* Get the category tree */
 			$categoryId = JRequest::getInt('virtuemart_category_id');
 			$category_tree = ShopFunctions::categoryListTree(array($categoryId));

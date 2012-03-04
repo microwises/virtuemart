@@ -33,17 +33,17 @@ class vmVersion {
 	/** @var int Release Number */
 	static $RELEASE = '2.0.2';
 	/** @var string Development Status */
-	static $DEV_STATUS = 'Final';
+	static $DEV_STATUS = 'RC';
 	/** @var string Codename */
 	static $CODENAME = 'stecurity';
 	/** @var string Date */
-	static $RELDATE = 'February 29, 2012';
+	static $RELDATE = 'March 4, 2012';
 	/** @var string Time */
-	static $RELTIME = '21:30';
+	static $RELTIME = '14:30';
 	/** @var string Timezone */
 	static $RELTZ = 'GMT';
 	/** @var string Revision */
-	static $REVISION = 'Revision: 5575';
+	static $REVISION = 'Revision: 5600';
 	/** @var string Copyright Text */
 	static $COPYRIGHT = 'Copyright (C) 2005-2012 VirtueMart Development Team  - All rights reserved.';
 	/** @var string URL */
@@ -52,7 +52,7 @@ class vmVersion {
 
 $shortversion = vmVersion::$PRODUCT . " " . vmVersion::$RELEASE . " " . vmVersion::$DEV_STATUS. " ";
 
-$myVersion = $shortversion . " [".vmVersion::$CODENAME ."] <br />" . vmVersion::$RELDATE . " "
+$myVersion = $shortversion .' '.vmVersion::$REVISION. " [".vmVersion::$CODENAME ."] <br />" . vmVersion::$RELDATE . " "
 	. vmVersion::$RELTIME . " " . vmVersion::$RELTZ;
 
 }

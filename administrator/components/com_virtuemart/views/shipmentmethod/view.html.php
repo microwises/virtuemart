@@ -73,12 +73,14 @@ class VirtuemartViewShipmentmethod extends VmView {
 
 		} else {
 
-			$shipments = $model->getShipments();
-			$this->assignRef('shipments', $shipments);
-
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
 
+			$shipments = $model->getShipments();
+			$this->assignRef('shipments', $shipments);
+
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
 
 		}
 

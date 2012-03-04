@@ -50,11 +50,9 @@ class VirtuemartViewReport extends VmView {
 
 		$this->SetViewTitle('REPORT');
 
-
-
-
 		$myCurrencyDisplay = CurrencyDisplay::getInstance();
 
+		$this->addStandardDefaultViewLists($model);
 		$revenueBasic = $model->getRevenue();
 // 		vmdebug('VirtuemartViewReport revenue',$revenueBasic);
 		if($revenueBasic){
@@ -92,12 +90,15 @@ class VirtuemartViewReport extends VmView {
 		// $productList = $model->getOrderItems();
 		// $this->assignRef('productList', $productList);
 
-		$this->addStandardDefaultViewLists($model);
+
 		$this->lists['select_date'] = $model->renderDateSelectList();
 		$this->lists['state_list'] = $model->renderOrderstatesList();
 		$this->lists['intervals'] = $model->renderIntervalsList();
 		$this->assignRef('from_period', $model->from_period);
 		$this->assignRef('until_period', $model->until_period);
+
+		$pagination = $model->getPagination();
+		$this->assignRef('pagination', $pagination);
 
 		parent::display($tpl);
 	}

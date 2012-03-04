@@ -63,15 +63,18 @@ class VirtuemartViewRatings extends VmView {
 		switch ($task) {
 			case 'listreviews':
 				/* Get the data */
+				$this->addStandardDefaultViewLists($model);
 				$virtuemart_product_id = JRequest::getInt('virtuemart_product_id',0);
 				$reviewslist = $model->getReviews($virtuemart_product_id);
 
-				$this->addStandardDefaultViewLists($model);
 				$lists = array();
 				$lists['filter_order'] = $mainframe->getUserStateFromRequest($option.'filter_order', 'filter_order', '', 'cmd');
 				$lists['filter_order_Dir'] = $mainframe->getUserStateFromRequest($option.'filter_order_Dir', 'filter_order_Dir', '', 'word');
 
 				$this->assignRef('reviewslist', $reviewslist);
+
+				$pagination = $model->getPagination();
+				$this->assignRef('pagination', $pagination);
 
 				break;
 
@@ -109,16 +112,15 @@ class VirtuemartViewRatings extends VmView {
 
 				break;
 			default:
-				/* Get the data */
-				$ratingslist = $model->getRatings();
-
-				/* Assign the data */
-//				$this->preprocess($ratingslist);
-				$this->assignRef('ratingslist', $ratingslist);
 
 				$this->addStandardDefaultViewCommands(false, true);
 				$this->addStandardDefaultViewLists($model);
 
+				$ratingslist = $model->getRatings();
+				$this->assignRef('ratingslist', $ratingslist);
+
+				$pagination = $model->getPagination();
+				$this->assignRef('pagination', $pagination);
 
 				break;
 		}

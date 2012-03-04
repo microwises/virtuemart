@@ -34,8 +34,6 @@ class VirtuemartViewManufacturercategories extends VmView {
 	function display($tpl = null) {
 
 		// Load the helper(s)
-
-
 		$this->loadHelper('html');
 
 		// get necessary model
@@ -43,8 +41,7 @@ class VirtuemartViewManufacturercategories extends VmView {
 
 		$this->SetViewTitle('MANUFACTURER_CATEGORY');
 
-
-                $layoutName = JRequest::getWord('layout', 'default');
+     	$layoutName = JRequest::getWord('layout', 'default');
 		if ($layoutName == 'edit') {
 
 			$manufacturerCategory = $model->getManufacturerCategory();
@@ -52,15 +49,16 @@ class VirtuemartViewManufacturercategories extends VmView {
 
 			$this->addStandardEditViewCommands($manufacturerCategory->virtuemart_manufacturercategories_id);
 
-
         }
         else {
+        	$this->addStandardDefaultViewCommands();
+        	$this->addStandardDefaultViewLists($model);
 
 			$manufacturerCategories = $model->getManufacturerCategories();
 			$this->assignRef('manufacturerCategories',	$manufacturerCategories);
 
-			$this->addStandardDefaultViewCommands();
-			$this->addStandardDefaultViewLists($model);
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
 
 		}
 		parent::display($tpl);

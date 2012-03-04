@@ -51,13 +51,14 @@ class VirtuemartViewUsergroups extends VmView {
 			$this->addStandardEditViewCommands();
 
 		} else {
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model);
 
 			$ugroups = $model->getUsergroups(false,true);
 			$this->assignRef('usergroups',	$ugroups);
 
-			$this->addStandardDefaultViewCommands();
-			$this->addStandardDefaultViewLists($model);
-
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
 
 		}
 

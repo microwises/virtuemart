@@ -64,7 +64,7 @@ class VirtuemartViewCustom extends VmView {
 			}
 			$pluginList = self::renderInstalledCustomPlugins($selected);
 			$this->assignRef('customPlugin',	$customPlugin);
-	
+
 			$this->assignRef('pluginList',$pluginList);
 			$this->assignRef('custom',	$custom);
 			$this->assignRef('customfields',	$customfields);
@@ -78,12 +78,14 @@ class VirtuemartViewCustom extends VmView {
 			JToolBarHelper::custom('toggle.is_hidden.1', 'publish','', JText::_('COM_VIRTUEMART_TOGGLE_HIDDEN'), true);
 			JToolBarHelper::custom('toggle.is_hidden.0', 'unpublish','', JText::_('COM_VIRTUEMART_TOGGLE_HIDDEN'), true);
 
-			$customs = $model->getCustoms(JRequest::getInt('custom_parent_id'),JRequest::getWord('keyword'));
-			$this->assignRef('customs',	$customs);
-
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
 
+			$customs = $model->getCustoms(JRequest::getInt('custom_parent_id'),JRequest::getWord('keyword'));
+			$this->assignRef('customs',	$customs);
+
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
 
 
 		}

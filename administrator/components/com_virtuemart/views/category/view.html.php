@@ -97,6 +97,9 @@ class VirtuemartViewCategory extends VmView {
 			$categories = $model->getCategoryTree(0,0,false);
 			$this->assignRef('categories', $categories);
 
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
+
 		}
 
 		parent::display($tpl);

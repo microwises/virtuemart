@@ -164,7 +164,10 @@ class VirtueMartModelCategory extends VmModel {
 // 		vmRam('What take the cats?');
 
 // 		vmdebug('getCategoryTree $limitStart',$limitStart,$limit);
-		$this->getPagination($this->_total,$limitStart,$limit);
+		$this->_limitStart = $limitStart;
+		$this->_limit = $limit;
+
+		$this->getPagination();
 
 		if(empty($limit)){
 			return $sortedCats;
@@ -194,71 +197,6 @@ class VirtueMartModelCategory extends VmModel {
 	}
 
 
-	/**
-	* Return an array containing category information
-	*
-	* @author
-	*
-	* @param boolean $onlyPublished Show only published categories?
-	* @param boolean $withParentId Keep in mind $parentId param?
-	* @param integer $parentId Show only its childs
-	* @param string $keyword the keyword to filter categories
-	* @return array Categories list
-	*
-	public function getCategoryTreeOld($parentId=0, $level = 0, $onlyPublished = true,$keyword = "") {
-
-		$level++;
-// 		$this->level; //intern machen
-		if( $level == 1 ){
-			$this->_noLimit = false;
-// 			$limits = $this->setPaginationLimits();
-// 			$limitStart = $limits[0];
-// 			$limit = $limits[1];
-		} else {
-			$this->_noLimit = true;
-		}
-
-		$cats = self::getCategories($onlyPublished, $parentId,false, $keyword);
-
-		if(!empty($cats)){
-			vmdebug('my level '.$level.' my cats',$cats);
-			foreach ($cats as $key => $category) {
-				$category->level = $level;
-				$childCats = self::getCategoryTree($category->virtuemart_category_id, $level, $onlyPublished, $keyword);
-				if(!empty($childCats)){
-					vmdebug(' my cats davor ',$cats);
-// 					$cats
-// 					$arrayToSplice = array_merge((array)$category,$childCats);
-// 					$arrayToSplice = $childCats;
-// 					$this->categoryList = array_splice($this->categoryList,$key,0,$arrayToSplice);
-					vmdebug('my cats danach',$this->categoryList);
-				} else{
-					$this->categoryList[] = $category;
-				}
-
-// 				$cats = array_merge($cats,$childCats);
-// 				foreach($childCats as $childCat){
-// 					$cats[] = $childCat;
-// 				}
-// 				array_push($cats,$childCats);
-			}
-		} else {
-
-		}
-/*		if( $level == 1 ){
-			$this->_noLimit = false;
-			$this->_total = count($cats);
-
-// 			$limits = $this->setPaginationLimits();
-// 			$limitStart = $limits[0];
-// 			$limit = $limits[1];
-// 			vmdebug('cats count',$this->_total);
-			$this->getPagination();
-		}*
-// 		vmdebug('my level '.$level.' my cats',$cats);
-		return $cats;
-	}
-/*/
 	public function getCategories($onlyPublished = true, $parentId = false, $childId = false, $keyword = "") {
 
 		$vendorId = 1;

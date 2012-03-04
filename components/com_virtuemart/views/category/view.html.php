@@ -116,7 +116,7 @@ class VirtuemartViewCategory extends VmView {
 				$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 			}
 		}
-		
+
 	  	if(JRequest::getInt('error')){
 			$title .=' '.JText::_('COM_VIRTUEMART_PRODUCT_NOT_FOUND');
 		}
@@ -149,7 +149,7 @@ class VirtuemartViewCategory extends VmView {
 		if (JRequest::getInt('virtuemart_manufacturer_id' ) and !empty($products[0])) $title .=' '.$products[0]->mf_name ;
 		$document->setTitle( $title );
 
-	    $pagination = $productModel->getPagination(0,0,0,$perRow);
+	    $pagination = $productModel->getPagination($perRow);
 	    $this->assignRef('vmPagination', $pagination);
 
 	    $orderByList = $productModel->getOrderByList($categoryId);

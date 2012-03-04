@@ -775,16 +775,20 @@ class Migrator extends VmModel{
 		$j = 0;
 		$ok = true ;
 		if(!empty($oldCategoriesX)){
+// 			vmdebug('$oldCategoriesX',$oldCategoriesX);
 			foreach($oldCategoriesX as $oldcategoryX){
 				$category = array();
-				if(array_key_exists($oldcategoryX['category_parent_id'],$alreadyKnownIds)){
-					$category['category_parent_id'] = $alreadyKnownIds[$oldcategoryX['category_parent_id']];
-				} else {
-					vmError('Port Categories Xref unknow : ID '.$oldcategoryX['category_parent_id']);
-					$ok = false ;
-					$j++;
-					continue ;
+				if(!empty($oldcategoryX['category_parent_id'])){
+					if(array_key_exists($oldcategoryX['category_parent_id'],$alreadyKnownIds)){
+						$category['category_parent_id'] = $alreadyKnownIds[$oldcategoryX['category_parent_id']];
+					} else {
+						vmError('Port Categories Xref unknow : ID '.$oldcategoryX['category_parent_id']);
+						$ok = false ;
+						$j++;
+						continue ;
+					}
 				}
+
 				if(array_key_exists($oldcategoryX['category_child_id'],$alreadyKnownIds)){
 					$category['category_child_id'] = $alreadyKnownIds[$oldcategoryX['category_child_id']];
 				} else {
@@ -793,7 +797,7 @@ class Migrator extends VmModel{
 					$j++;
 					continue ;
 				}
-				if (ok == true) {
+				if ($ok == true) {
 					$table = $this->getTable('category_categories');
 
 					$table->bindChecknStore($category);

@@ -195,6 +195,8 @@ class VirtuemartViewOrders extends VmView {
 			/* Assign the data */
 			$this->assignRef('orderslist', $orderslist);
 
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
 
 
 		}

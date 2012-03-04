@@ -78,11 +78,14 @@ class VirtuemartViewManufacturer extends VmView {
 
 			$categoryFilter = $categoryModel->getCategoryFilter();
 
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model,'mf_name');
+
 			$manufacturers = $model->getManufacturers();
 			$this->assignRef('manufacturers',	$manufacturers);
 
-			$this->addStandardDefaultViewCommands();
-			$this->addStandardDefaultViewLists($model,'mf_name');
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
 
 			$virtuemart_manufacturercategories_id	= $mainframe->getUserStateFromRequest( 'com_virtuemart.virtuemart_manufacturercategories_id', 'virtuemart_manufacturercategories_id', 0, 'int' );
 			$this->lists['virtuemart_manufacturercategories_id'] =  JHTML::_('select.genericlist',   $categoryFilter, 'virtuemart_manufacturercategories_id', 'class="inputbox" onchange="this.form.submit()"', 'value', 'text', $virtuemart_manufacturercategories_id );

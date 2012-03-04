@@ -76,11 +76,14 @@ class VirtuemartViewState extends VmView {
 
 		} else {
 
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model);
+
 			$states = $model->getStates($countryId);
 			$this->assignRef('states',	$states);
 
-			$this->addStandardDefaultViewCommands();
-			$this->addStandardDefaultViewLists($model);
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
 
 		}
 

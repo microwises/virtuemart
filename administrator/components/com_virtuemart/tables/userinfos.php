@@ -131,6 +131,7 @@ class TableUserinfos extends VmTableData {
 			return parent::check();
 		}
 
+		if(empty($this->address_type)) $this->address_type = 'BT';
 		/* Check if a record exists */
 		$q = "SELECT virtuemart_userinfo_id
 			FROM #__virtuemart_userinfos

@@ -27,10 +27,12 @@ class VmModel extends JModel {
 
 	var $_id 			= 0;
 	var $_data			= null;
-	var $_total			= null;
 	var $_query 		= null;
-	var $_pagination 	= 0;
 
+	var $_total			= null;
+	var $_pagination 	= 0;
+	var $_limit			= 0;
+	var $_limitStart	= 0;
 	var $_maintable 	= '';	// something like #__virtuemart_calcs
 	var $_maintablename = '';
 	var $_idName		= '';
@@ -250,27 +252,18 @@ class VmModel extends JModel {
 	 *
 	 * @author Max Milbers
 	 */
-	public function getPagination($total=0,$limitStart=0,$limit=0,$perRow = 5) {
+	public function getPagination($perRow = 5) {
 
+// 		if ($this->_pagination === 0 or $perRow!==5) {
 
-		if ($this->_pagination == null || $perRow!==5) {
-
-			if(empty($limit) ){
-				$limits = $this->setPaginationLimits();
-			} else {
-				$limits[0] = $limitStart;
-				$limits[1] = $limit;
+			if(empty($this->_limit) ){
+				$this->setPaginationLimits();
 			}
 
-			if(empty($total)){
-				$total = $this->_total;
-			}
-			// TODO, this give result when result = 0 >>> if(empty($total)) $total = $this->getTotal();
+			$this->_pagination = new VmPagination($this->_total , $this->_limitStart, $this->_limit , $perRow );
 
-			$this->_pagination = new VmPagination($total , $limits[0], $limits[1] , $perRow );
-
-		}
-
+// 		}
+// 		vmdebug('$this->pagination $total '.$this->_total,$this->_pagination);vmTrace('getPagination');
 		return $this->_pagination;
 	}
 
@@ -295,8 +288,10 @@ class VmModel extends JModel {
 
 		$this->setState('limitstart', $limitStart);
 
-		// 		vmdebug('limitstart',$limitStart, $limit);
-		return array($limitStart,$limit);
+		$this->_limitStart = $limitStart;
+		$this->_limit = $limit;
+
+		return array($this->_limitStart,$this->_limit);
 	}
 
 	/**
@@ -372,7 +367,7 @@ class VmModel extends JModel {
 			$q = 'SELECT '.$select.$joinedTables;
 		}
 
-		if($this->_noLimit || empty($limit)){
+		if($this->_noLimit or empty($limit)){
 // 			vmdebug('exeSortSearchListQuery '.get_class($this).' no limit');
 			$this->_db->setQuery($q);
 		} else {
@@ -413,7 +408,7 @@ class VmModel extends JModel {
 					$this->ids = $this->_db->loadObjectList();
 				}
 			}
-			$this->getPagination($count,$limitStart,$limit);
+// 			$this->getPagination(true);
 
 		} else {
 			$this->_withCount = true;

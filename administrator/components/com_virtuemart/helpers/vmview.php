@@ -62,9 +62,9 @@ class VmView extends JView{
 
 	function addStandardDefaultViewLists($model, $default_order = 0, $default_dir = 'DESC',$name = 'search') {
 
-		$pagination = $model->getPagination();
-
-		$this->assignRef('pagination', $pagination);
+		//This function must be used after the listing
+// 		$pagination = $model->getPagination();
+// 		$this->assignRef('pagination', $pagination);
 
 		/* set list filters */
 		$option = JRequest::getCmd('option');

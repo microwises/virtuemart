@@ -94,12 +94,14 @@ class VirtuemartViewPaymentMethod extends VmView {
 
 			$this->addStandardEditViewCommands( $payment->virtuemart_paymentmethod_id);
 		} else {
+			$this->addStandardDefaultViewCommands();
+			$this->addStandardDefaultViewLists($model);
 
 			$payments = $model->getPayments();
 			$this->assignRef('payments',	$payments);
 
-			$this->addStandardDefaultViewCommands();
-			$this->addStandardDefaultViewLists($model);
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
 
 		}
 

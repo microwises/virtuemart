@@ -420,7 +420,7 @@ class CurrencyDisplay {
 	 */
 	function ensureUsingCurrencyCode($curr){
 
-		if(is_numeric($curr)){
+		if(is_numeric($curr) and $curr!=0){
 			$this->_db = JFactory::getDBO();
 			$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.(int)$curr.'"';
 			$this->_db->setQuery($q);

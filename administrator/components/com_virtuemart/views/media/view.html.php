@@ -84,6 +84,10 @@ class VirtuemartViewMedia extends VmView {
 
 			$files = $model->getFiles(false,false,$virtuemart_product_id,$cat_id);
 			$this->assignRef('files',	$files);
+
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
+
 		}
 
 		parent::display($tpl);

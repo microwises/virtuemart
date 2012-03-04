@@ -70,6 +70,11 @@ defined('_JEXEC') or die();
 				<span class="liveupdate-data"><a href="<?php echo $this->updateInfo->downloadURL.$auth?>"><?php echo $this->escape($this->updateInfo->downloadURL)?></a></span>
 			</div>
 			<div class="liveupdate-row row1">
+			<?php require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_virtuemart'.DS.'version.php'); ?>
+				<span ><?php echo $myVersion ?></span>
+
+			</div>
+			<div class="liveupdate-row row1">
 				<span ><?php echo JText::_('LIVEUPDATE_REMEMBER_TO_UPDATE_AIO') ?></span>
 
 			</div>

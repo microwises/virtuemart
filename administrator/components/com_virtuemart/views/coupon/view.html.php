@@ -97,10 +97,14 @@ class VirtuemartViewCoupon extends VmView {
 			$this->addStandardEditViewCommands();
         } else {
 
-			$coupons = $model->getCoupons();
-			$this->assignRef('coupons',	$coupons);
 			$this->addStandardDefaultViewCommands();
 			$this->addStandardDefaultViewLists($model);
+
+			$coupons = $model->getCoupons();
+			$this->assignRef('coupons',	$coupons);
+
+			$pagination = $model->getPagination();
+			$this->assignRef('pagination', $pagination);
 
 		}
 
