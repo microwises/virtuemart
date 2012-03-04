@@ -494,6 +494,17 @@ class VirtueMartModelUser extends VmModel {
 		$user = JFactory::getUser($this->_id);
 		$gid = $user->get('gid'); // Save original gid
 
+		// Preformat and control user datas by plugin
+		JPluginHelper::importPlugin('vmuserfield');
+		 $dispatcher = JDispatcher::getInstance();
+
+		$valid = true ;
+		$dispatcher->trigger('plgVmOnBeforeUserfieldDataSave',array(&$valid,$this->_id,&$data,$user ));
+		// $valid must be false if plugin detect an error
+		if( $valid == false ) {
+			return false;
+		}
+
 		// Before I used this "if($cart && !$new)"
 		// This construction is necessary, because this function is used to register a new JUser, so we need all the JUser data in $data.
 		// On the other hand this function is also used just for updating JUser data, like the email for the BT address. In this case the
@@ -620,21 +631,7 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
-		//Why here?
-		/*##mygruz20120224120340 {
-		It became:*/
-		/*		JPluginHelper::importPlugin('vmuserfield');
-		 $dispatcher = JDispatcher::getInstance();
-		//Todo to adjust to new pattern, using &
-		$valid = true ;
-		$dispatcher->trigger('plgVmOnUserVerify',array(&$valid,$new));
-		vmdebug ('valid',$valid);
-		if( $valid == false ) {
-		//Wrong use of error messages, they must be fired by the plugin, NOT by the return value
-		// vmError('COM_VIRTUEMART_CAPTCHA_CODE_WRONG','COM_VIRTUEMART_CAPTCHA_CODE_WRONG');
-		return false;
-		}
-		/*##mygruz20120224120340 } */
+
 
 		// Save the JUser object
 		if (!$user->save()) {

@@ -668,7 +668,6 @@ class VirtueMartModelUserfields extends VmModel {
 							// 							vmdebug('emailaddress',$_fld);
 						case 'text':
 						case 'webaddress':
-/*						case 'euvatid':
 
 							$_return['fields'][$_fld->name]['formcode'] = '<input type="text" id="'
 							. $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name.'" size="' . $_fld->size
@@ -676,7 +675,7 @@ class VirtueMartModelUserfields extends VmModel {
 							. ($_fld->required ? ' class="required"' : '')
 							. ($_fld->maxlength ? ' maxlength="' . $_fld->maxlength . '"' : '')
 							. ($_fld->readonly ? ' readonly="readonly"' : '') . ' /> ';
-							break;*/
+							break;
 						case 'textarea':
 							$_return['fields'][$_fld->name]['formcode'] = '<textarea id="'
 							. $_prefix.$_fld->name . '_field" name="' . $_prefix.$_fld->name . '" cols="' . $_fld->cols
