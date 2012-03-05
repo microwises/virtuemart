@@ -44,15 +44,6 @@ class VirtueMartViewVirtueMart extends VmView {
 		$vendorModel->setId(1);
 		$vendor = $vendorModel->getVendor();
 		$this->assignRef('vendor',$vendor);
-	
-/* 	$db =& JFactory::getDBO();
- 
-	$q ="SELECT * FROM `#__virtuemart_manufacturers`as mf1 left join `#__fr_virtuemart_manufacturers` as mf2 on mf2.`virtuemart_manufacturer_id`=mf1.`virtuemart_manufacturer_id` 
-	where mf1.mf_name LIKE 'Manu%'
-";
-	$db->setQuery($q);
-	$row = $db->loadObjectList();
-	print_r($row); */
 
 		if(!VmConfig::get('shop_is_offline',0)){
 
@@ -64,9 +55,9 @@ class VirtueMartViewVirtueMart extends VmView {
 
 			$categoryChildren = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $categoryId );
 			// self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
-			
+
 			//$categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
-			
+
 			//$categoryChildren = $categoryModel->getChildCategoryList($vendorId, $categoryId);
 			$categoryModel->addImages($categoryChildren,1);
 

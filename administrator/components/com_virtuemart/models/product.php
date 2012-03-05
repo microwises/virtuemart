@@ -583,7 +583,15 @@ class VirtueMartModelProduct extends VmModel {
 				}
 
 			}
-			if (empty($product->virtuemart_category_id) && isset($product->categories[0])) $product->virtuemart_category_id = $product->categories[0];
+			if (empty($product->virtuemart_category_id)){
+
+				if( isset($product->categories[0])){
+					$product->virtuemart_category_id = $product->categories[0];
+				} else {
+					$product->virtuemart_category_id = 0;
+				}
+
+			}
 
 			if(!empty($product->categories[0])){
 				$catTable = $this->getTable('categories');
