@@ -358,7 +358,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	// IMPORTANT: The $inputOrder can contain extra data by plugins			//also strange $useTriggers is always activated?
 	function updateStatusForOneOrder($virtuemart_order_id,$inputOrder,$useTriggers=true){
 
-		vmdebug('updateStatusForOneOrder');
+		vmdebug('updateStatusForOneOrder', $inputOrder);
 		/* Update the order */
 		$data = $this->getTable('orders');
 		$data->load($virtuemart_order_id);
@@ -1024,7 +1024,10 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 */
 	private function notifyCustomer($virtuemart_order_id, $newOrderData = 0 ) {
 
-		vmdebug('notifyCustomer');
+		vmdebug('notifyCustomer', $newOrderData);
+		if (isset($newOrderData['customer_notified']) && $newOrderData['customer_notified']==0) {
+		    return true;;
+		}
 		if(!class_exists('shopFunctionsF')) require(JPATH_VM_SITE.DS.'helpers'.DS.'shopfunctionsf.php');
 
 		//Important, the data of the order update mails, payments and invoice should
