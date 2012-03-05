@@ -103,6 +103,21 @@ class TableOrders extends VmTable {
 		$this->setTableShortCut('o');
 	}
 
+	function check(){
+
+		if(empty($this->order_number)){
+			if(!class_exists('VirtueMartModelOrders')) require(JPATH_VM_ADMINISTRATOR.DS.'models'.DS.'orders.php');
+			$this->order_number = VirtueMartModelOrders::generateOrderNumber((string)time());
+		}
+
+		if(empty($this->order_number)){
+			$this->order_pass = 'p_'.substr( md5((string)time().$this->order_number ), 0, 5);
+		}
+
+		return parent::check();
+	}
+
+
 	/**
 	 * Overloaded delete() to delete records from order_userinfo and order payment as well,
 	 * and write a record to the order history (TODO Or should the hist table be cleaned as well?)

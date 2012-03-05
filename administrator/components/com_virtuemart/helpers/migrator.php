@@ -1236,7 +1236,8 @@ class Migrator extends VmModel{
 					$orderData->virtuemart_order_id = null;
 					$orderData->virtuemart_user_id = $order['user_id'];
 					$orderData->virtuemart_vendor_id = $order['vendor_id'];
-					$orderData->order_number = $order['vm1_order_number'];
+// 					$orderData->order_number = $order['vm1_order_number'];
+					$orderData->order_number = $order['order_id'];
 					$orderData->order_pass = 'p' . substr(md5((string)time() . $order['order_number']), 0, 5);
 					//Note as long we do not have an extra table only storing addresses, the virtuemart_userinfo_id is not needed.
 					//The virtuemart_userinfo_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.

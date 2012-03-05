@@ -15,8 +15,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 if(!version_compare(JVERSION,'1.6.0','ge')) {
-	$mainframe->registerEvent('onSearch', 'plgSearchVirtuemart');
-	$mainframe->registerEvent('onSearchAreas', 'plgSearchVirtuemartAreas');
+	$app = JFactory::getApplication();
+	$app->registerEvent('onSearch', 'plgSearchVirtuemart');
+	$app->registerEvent('onSearchAreas', 'plgSearchVirtuemartAreas');
 } else {
 	/**
 	 * @return array An array of search areas

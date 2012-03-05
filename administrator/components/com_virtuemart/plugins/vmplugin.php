@@ -253,7 +253,7 @@ abstract class vmPlugin extends JPlugin {
 		if($psType==$this->_psType){
 			$query = $this->getVmPluginCreateTableSQL();
 			if($query!==0){
-				vmdebug('onStoreInstallPluginTable '.$query);
+// 				vmdebug('onStoreInstallPluginTable '.$query);
 				$db = JFactory::getDBO();
 				$db->setQuery($query);
 				if (!$db->query()) {

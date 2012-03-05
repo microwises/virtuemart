@@ -696,8 +696,8 @@ class GenericTableUpdater extends JModel{
 						$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
 						$action = 'CHANGE';
 						$altered++;
-						vmdebug('compare '.$compare.' '.$tablename.' Alter field '.$fieldname.' oldcolumn <br />',$oldColumn,$alterCommand);
-						vmdebug('Alter field new column ',$fullColumns[$key]);
+						vmdebug($tablename.' Alter field '.$fieldname.' oldcolumn ',$oldColumn,$alterCommand);
+// 						vmdebug('Alter field new column ',$fullColumns[$key]);
 // 						vmdebug('Alter field new column '.$this->reCreateColumnByTableAttributes($fullColumns[$key])); //,$fullColumns[$key]);
 					}
 				}

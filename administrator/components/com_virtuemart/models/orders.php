@@ -943,7 +943,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 * @param integer $uid The user ID. Defaults to 0 for guests
 	 * @return string A unique ordernumber
 	 */
-	private function generateOrderNumber($uid = 0,$length=10, $virtuemart_vendor_id)
+	public function generateOrderNumber($uid = 0,$length=10, $virtuemart_vendor_id=1)
 	{
 
 		$db = JFactory::getDBO();
@@ -998,7 +998,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 				if(empty($data['invoice_number'])) {
 					//$variable_fixed=sprintf("%05s",$num_rows);
-					$data['invoice_number'] = str_replace('-', '', substr(JFactory::getDate(),2,8)).substr(md5($orderDetails['order_number'].$orderDetails['order_status']),0,3).'0'.$count;
+					$data['invoice_number'] = str_replace('-', '', substr(JFactory::getDate()->toMySQL(),2,8)).substr(md5($orderDetails['order_number'].$orderDetails['order_status']),0,3).'0'.$count;
 				}
 			}
 
