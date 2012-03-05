@@ -44,7 +44,7 @@ class GenericTableUpdater extends JModel{
 			// 			vmdebug('$jrmax_execution_time',$jrmax_execution_time);
 			if($max_execution_time!==$jrmax_execution_time) @ini_set( 'max_execution_time', $jrmax_execution_time );
 		}
-
+		@ini_set( 'max_execution_time', 300 );
 		$this->maxScriptTime = ini_get('max_execution_time')*0.90-1;	//Lets use 5% of the execution time as reserve to store the progress
 
 		$memory_limit = ini_get('memory_limit');
@@ -206,6 +206,8 @@ class GenericTableUpdater extends JModel{
 			$fields = array();
 			$lines = array();
 			$linedefault = "NOT NULL DEFAULT ''";
+			//Text has no default
+			$linedefaulttext = "NOT NULL";
 
 			$fields[$tblKey] = 'int(1) UNSIGNED NOT NULL';
 // 			vmdebug('createLanguageTables ',$translatableFields);
@@ -228,9 +230,9 @@ class GenericTableUpdater extends JModel{
 // 					$fields['vendor_terms_of_service'] = 'varchar('.VmConfig::get('dbtossize',18100).') '.$linedefault;
 // 					$fields['vendor_legal_info'] = 'varchar('.VmConfig::get('dblegalsize',1100).') '.$linedefault;
 
-					$fields['vendor_store_desc'] = 'text '.$linedefault;
-					$fields['vendor_terms_of_service'] = 'text '.$linedefault;
-					$fields['vendor_legal_info'] = 'text '.$linedefault;
+					$fields['vendor_store_desc'] = 'text '.$linedefaulttext;
+					$fields['vendor_terms_of_service'] = 'text '.$linedefaulttext;
+					$fields['vendor_legal_info'] = 'text '.$linedefaulttext;
 
 
 					$key = array_search('vendor_store_desc', $translatableFields);
@@ -243,7 +245,7 @@ class GenericTableUpdater extends JModel{
 					unset($translatableFields[$key]);
 				}
 			} else {
-				$fields['vendor_terms_of_service'] = 'text '.$linedefault;
+				$fields['vendor_terms_of_service'] = 'text '.$linedefaulttext;
 
 				$key = array_search('vendor_store_desc', $translatableFields);
 				unset($translatableFields[$key]);
@@ -264,7 +266,7 @@ class GenericTableUpdater extends JModel{
 					if(VmConfig::get('dblayoutstrict',true)){
 						$fields[$name] = 'varchar('.VmConfig::get('dbdescsize',20000).') '.$linedefault;
 					} else {
-						$fields[$name] = 'text '.$linedefault;
+						$fields[$name] = 'text '.$linedefaulttext;
 					}
 
 				} else {
@@ -377,7 +379,7 @@ class GenericTableUpdater extends JModel{
 		//TODO ignore admin menu table
 		foreach ($tables as $tablename => $table){
 
-// 			if($i>1) continue;
+// 			if($i>2) continue;
 
 			$tablename = str_replace('#__',$this->_prefix,$tablename);
 			$demandedTables[] = $tablename;
@@ -675,15 +677,28 @@ class GenericTableUpdater extends JModel{
 // 					vmdebug('$fieldname just auto '.$fieldname,$alterCommand,$oldColumn);
 				} else {
 
-					$compare = strcasecmp( $oldColumn, $alterCommand);
+// 					while (strpos($oldColumn,'  ')){
+// 						str_replace('  ', ' ', $oldColumn);
+// 					}
+					while (strpos($alterCommand,'  ')){
+						$alterCommand = str_replace('  ', ' ', trim($alterCommand));
+					}
+// 					str_replace('  ', ' ', $alterCommand);
+// 					$compare = strcasecmp( $oldColumn, $alterCommand);
+// 					$compare = strcasecmp( $oldColumn, $alterCommand);
 
-					if (!empty($compare)) {
+// 					if (!empty($compare)) {
+					$oldColumn = strtoupper($oldColumn);
+					$alterCommand = strtoupper(trim($alterCommand));
+
+					if ($oldColumn != $alterCommand ) {
 
 						$query = 'ALTER TABLE `'.$tablename.'` CHANGE COLUMN `'.$fieldname.'` `'.$fieldname.'` '.$alterCommand;
 						$action = 'CHANGE';
 						$altered++;
-						vmdebug($tablename.' Alter field '.$fieldname.' oldcolumn '.$oldColumn.'  $alterCommand '.$alterCommand);
-						// 					vmdebug('Alter field new column',$alterCommand); //,$fullColumns[$key]);
+						vmdebug('compare '.$compare.' '.$tablename.' Alter field '.$fieldname.' oldcolumn <br />',$oldColumn,$alterCommand);
+						vmdebug('Alter field new column ',$fullColumns[$key]);
+// 						vmdebug('Alter field new column '.$this->reCreateColumnByTableAttributes($fullColumns[$key])); //,$fullColumns[$key]);
 					}
 				}
 			}
@@ -694,10 +709,10 @@ class GenericTableUpdater extends JModel{
 // 				vmdebug('$fieldname '.$fieldname);
 			}
 			if (!empty($query)) {
-				$this->_db->setQuery($query);
-				if(!$this->_db->query()){
-					$this->_app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
-				}
+// 				$this->_db->setQuery($query);
+// 				if(!$this->_db->query()){
+// 					$this->_app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
+// 				}
 				$after = 'AFTER '.$fieldname;
 			}
 		}
@@ -710,7 +725,20 @@ class GenericTableUpdater extends JModel{
 
 	}
 
+
 	private function reCreateColumnByTableAttributes($fullColumn){
+
+		$oldColumn = $fullColumn->Type;
+
+		if(!empty($fullColumn->Null)){
+			$oldColumn .= $this->notnull($fullColumn->Null).$this->getdefault($fullColumn->Default);
+		}
+		$oldColumn .= $this->formatExtra($fullColumn->Extra).$this->formatComment($fullColumn->Comment);
+
+		return $oldColumn;
+	}
+
+	private function reCreateColumnByTableAttributesol($fullColumn){
 
 
 		$oldColumn = $fullColumn->Type;
@@ -742,6 +770,14 @@ class GenericTableUpdater extends JModel{
 		}
 	}
 
+	private function formatExtra($extra){
+		if (!empty($extra)) {
+			return ' '.strtoupper(trim($extra));
+		} else {
+			return '';
+		}
+	}
+
 	private function primarykey($string){
 
 		if ($string=='PRI') {
@@ -753,7 +789,7 @@ class GenericTableUpdater extends JModel{
 
 	private function getdefault($string){
 		if (isset($string)) {
-			return  " DEFAULT '".$string."'";
+			return  " DEFAULT '".trim($string)."'";
 		} else {
 			return '';
 		}

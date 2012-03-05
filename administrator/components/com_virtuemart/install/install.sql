@@ -1233,7 +1233,7 @@ CREATE TABLE IF NOT EXISTS `#__virtuemart_waitingusers` (
   `virtuemart_user_id` int(1) UNSIGNED NOT NULL DEFAULT '0',
   `notify_email` char(150) NOT NULL DEFAULT '',
   `notified` tinyint(1) NOT NULL DEFAULT '0',
-  `notify_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `notify_date` timestamp NOT NULL DEFAULT 'CURRENT_TIMESTAMP' ON UPDATE CURRENT_TIMESTAMP,
   `ordering` int(2) NOT NULL DEFAULT '0',
   `created_on` datetime NOT NULL default '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
