@@ -72,34 +72,34 @@ class plgVmPaymentPaypal extends vmPSPlugin {
     function getTableSQLFields() {
 
 	$SQLfields = array(
-	    'id' => 'INT(11) UNSIGNED NOT NULL AUTO_INCREMENT',
-	    'virtuemart_order_id' => 'INT(1) UNSIGNED DEFAULT NULL',
-	    'order_number' => ' CHAR(32) DEFAULT NULL',
-	    'virtuemart_paymentmethod_id' => 'MEDIUMINT(1) UNSIGNED DEFAULT NULL',
+	    'id' => 'int(11) UNSIGNED NOT NULL AUTO_INCREMENT',
+	    'virtuemart_order_id' => 'int(1) UNSIGNED',
+	    'order_number' => ' char(32)',
+	    'virtuemart_paymentmethod_id' => 'mediumint(1) UNSIGNED',
 	    'payment_name' => 'varchar(5000)',
-	    'payment_order_total' => 'DECIMAL(15,5) NOT NULL DEFAULT \'0.00000\' ',
-	    'payment_currency' => 'CHAR(3) ',
-	    'cost_per_transaction' => 'DECIMAL(10,2) DEFAULT NULL',
-	    'cost_percent_total' => 'DECIMAL(10,2) DEFAULT NULL',
-	    'tax_id' => ' SMALLINT(1) DEFAULT NULL',
-	    'paypal_custom' => ' VARCHAR(255)  ',
-	    'paypal_response_mc_gross' => 'DECIMAL(10,2) DEFAULT NULL',
-	    'paypal_response_mc_currency' => 'CHAR(10) DEFAULT NULL',
-	    'paypal_response_invoice' => 'CHAR(32) DEFAULT NULL',
-	    'paypal_response_protection_eligibility' => 'CHAR(128) DEFAULT NULL',
-	    'paypal_response_payer_id' => 'CHAR(13) DEFAULT NULL',
-	    'paypal_response_tax' => 'DECIMAL(10,2) DEFAULT NULL',
-	    'paypal_response_payment_date' => 'CHAR(28) DEFAULT NULL',
-	    'paypal_response_payment_status' => 'CHAR(50) DEFAULT NULL',
-	    'paypal_response_mc_fee' => 'DECIMAL(10,2) DEFAULT NULL ',
-	    'paypal_response_payer_email' => 'CHAR(128) DEFAULT NULL',
-	    'paypal_response_last_name' => 'CHAR(64) DEFAULT NULL',
-	    'paypal_response_first_name' => 'CHAR(64) DEFAULT NULL',
-	    'paypal_response_business' => 'CHAR(128) DEFAULT NULL',
-	    'paypal_response_receiver_email' => 'CHAR(128) DEFAULT NULL',
-	    'paypal_response_transaction_subject' => 'CHAR(128) DEFAULT NULL',
-	    'paypal_response_residence_country' => 'CHAR(2) DEFAULT NULL',
-	    'paypalresponse_raw' => 'VARCHAR(512) DEFAULT NULL'
+	    'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\' ',
+	    'payment_currency' => 'char(3) ',
+	    'cost_per_transaction' => 'decimal(10,2)',
+	    'cost_percent_total' => 'decimal(10,2)',
+	    'tax_id' => ' smallint(1)',
+	    'paypal_custom' => ' varchar(255)  ',
+	    'paypal_response_mc_gross' => 'decimal(10,2)',
+	    'paypal_response_mc_currency' => 'char(10)',
+	    'paypal_response_invoice' => 'char(32)',
+	    'paypal_response_protection_eligibility' => 'char(128)',
+	    'paypal_response_payer_id' => 'char(13)',
+	    'paypal_response_tax' => 'decimal(10,2)',
+	    'paypal_response_payment_date' => 'char(28)',
+	    'paypal_response_payment_status' => 'char(50)',
+	    'paypal_response_mc_fee' => 'decimal(10,2) ',
+	    'paypal_response_payer_email' => 'char(128)',
+	    'paypal_response_last_name' => 'char(64)',
+	    'paypal_response_first_name' => 'char(64)',
+	    'paypal_response_business' => 'char(128)',
+	    'paypal_response_receiver_email' => 'char(128)',
+	    'paypal_response_transaction_subject' => 'char(128)',
+	    'paypal_response_residence_country' => 'char(2)',
+	    'paypalresponse_raw' => 'varchar(512)'
 	);
 	return $SQLfields;
     }
@@ -324,20 +324,25 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
-	$order_number = JRequest::getVar('on');
+	$order_number = JRequest::getString('on','');
 	if (!$order_number)
 	    return false;
 	$db = JFactory::getDBO();
-	$query = 'SELECT ' . $this->_tablename . '.`virtuemart_order_id` FROM ' . $this->_tablename . " WHERE  `order_number`= '" . $order_number . "'";
-
+	$query = 'SELECT * FROM ' . $this->_tablename . " WHERE  `order_number`= '" . $order_number . "'";
+	VmInfo(Jtext::_('VMPAYMENT_PAYPAL_PAYMENT_CANCELLED'));
 	$db->setQuery($query);
-	$virtuemart_order_id = $db->loadResult();
+	if (! $result = $db->loadObject() ) {
+	     return null;
+	}
 
-	if (!$virtuemart_order_id) {
+	if (!$result->virtuemart_order_id) {
 	    return null;
 	}
-	$this->handlePaymentUserCancel($virtuemart_order_id);
-
+	$session = JFactory::getSession();
+	$return_context = $session->getId();
+	if (strcmp($result->paypal_custom, $return_context) === 0) {
+	    $this->handlePaymentUserCancel($result->virtuemart_order_id);
+	}
 	//JRequest::setVar('paymentResponse', $returnValue);
 	return true;
     }

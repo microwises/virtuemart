@@ -48,29 +48,29 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 
     function getTableSQLFields() {
 	$SQLfields = array(
-	    'id' => 'INT(11) UNSIGNED NOT NULL AUTO_INCREMENT',
-	    'virtuemart_order_id' => 'INT(1) UNSIGNED DEFAULT NULL',
+	    'id' => 'int(11) UNSIGNED NOT NULL AUTO_INCREMENT',
+	    'virtuemart_order_id' => 'int(1) UNSIGNED',
 	    'order_number' => 'char(64) DEFAULT NULL',
-	    'virtuemart_paymentmethod_id' => 'MEDIUMINT(1) UNSIGNED DEFAULT NULL',
-	    'payment_name' => 'VARCHAR(5000)',
-	    'payment_order_total' => 'DECIMAL(15,5) NOT NULL DEFAULT \'0.00000\'',
-	    'payment_currency' => 'CHAR(3) ',
-	    'cost_per_transaction' => 'DECIMAL(10,2) DEFAULT NULL',
-	    'cost_percent_total' => 'DECIMAL(10,2) DEFAULT NULL',
-	    'tax_id' => 'SMALLINT(1) DEFAULT NULL',
-	    'payzen_custom' => 'VARCHAR(255) NOT NULL DEFAULT \'\' ',
-	    'payzen_response_payment_amount' => 'CHAR(15) NOT NULL DEFAULT \'\'',
-	    'payzen_response_auth_number' => 'CHAR(10) DEFAULT NULL',
-	    'payzen_response_payment_currency' => 'CHAR(3) DEFAULT NULL',
-	    'payzen_response_auth_number' => 'CHAR(10) NOT NULL DEFAULT \'\'',
-	    'payzen_response_payment_mean' => 'CHAR(255) NOT NULL DEFAULT \'\'',
-	    'payzen_response_payment_date' => 'CHAR(20) NOT NULL DEFAULT \'\'',
-	    'payzen_response_payment_status' => 'CHAR(3) DEFAULT NULL',
-	    'payzen_response_payment_message' => 'CHAR(255) DEFAULT NULL',
-	    'payzen_response_card_number' => 'CHAR(50) DEFAULT NULL',
-	    'payzen_response_trans_id' => 'CHAR(6) DEFAULT NULL',
-	    'payzen_response_expiry_month' => 'CHAR(2) DEFAULT NULL',
-	    'payzen_response_expiry_year' => 'CHAR(4) DEFAULT NULL',
+	    'virtuemart_paymentmethod_id' => 'mediumint(1) UNSIGNED',
+	    'payment_name' => 'varchar(5000)',
+	    'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
+	    'payment_currency' => 'char(3)',
+	    'cost_per_transaction' => 'decimal(10,2)',
+	    'cost_percent_total' => 'decimal(10,2)',
+	    'tax_id' => 'smallint(1)',
+	    'payzen_custom' => 'varchar(255)',
+	    'payzen_response_payment_amount' => 'char(15)',
+	    'payzen_response_auth_number' => 'char(10)',
+	    'payzen_response_payment_currency' => 'char(3)',
+	    'payzen_response_auth_number' => 'char(10)',
+	    'payzen_response_payment_mean' => 'char(255)',
+	    'payzen_response_payment_date' => 'char(20)',
+	    'payzen_response_payment_status' => 'char(3)',
+	    'payzen_response_payment_message' => 'char(255)',
+	    'payzen_response_card_number' => 'char(50)',
+	    'payzen_response_trans_id' => 'char(6)',
+	    'payzen_response_expiry_month' => 'char(2)',
+	    'payzen_response_expiry_year' => 'char(4)',
 	);
 
 	return $SQLfields;
@@ -361,21 +361,26 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
-	$order_number = JRequest::getVar('on');
+	$order_number = JRequest::getString('on');
 	if (!$order_number) {
 	    return false;
 	}
 	$db = JFactory::getDBO();
-	$query = 'SELECT ' . $this->_tablename . '.`virtuemart_order_id` FROM ' . $this->_tablename . " WHERE  `order_number`= '" . $order_number . "'";
+	$query = 'SELECT * FROM ' . $this->_tablename . " WHERE  `order_number`= '" . $order_number . "'";
 
 	$db->setQuery($query);
-	$virtuemart_order_id = $db->loadResult();
+	if (! $result =  $db->loadObject() ) {
+	     return null;
+	}
 
-	if (!$virtuemart_order_id) {
+	if (!$result->virtuemart_order_id) {
 	    return null;
 	}
-	$this->handlePaymentUserCancel($virtuemart_order_id);
-
+	$session = JFactory::getSession();
+	$return_context = $session->getId();
+	if (strcmp($result->cybermut_custom, $return_context) === 0) {
+	    $this->handlePaymentUserCancel($virtuemart_order_id);
+	}
 	//JRequest::setVar('paymentResponse', $returnValue);
 	return true;
     }
