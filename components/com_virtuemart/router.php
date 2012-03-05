@@ -280,7 +280,11 @@ function virtuemartParseRoute($segments) {
 		$vars['limitstart'] = 0 ;
 		
 	}
-	if (empty($segments)) return $vars ;
+	if (empty($segments)) {
+			$vars['view'] = 'category';
+			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+			return $vars;
+		}
 	$orderby = explode(',',$segments[0],2);
 	if (  $helper->compareKey($orderby[0] , 'by') ) {
 		$vars['orderby'] =$helper->getOrderingKey($orderby[1]) ;
