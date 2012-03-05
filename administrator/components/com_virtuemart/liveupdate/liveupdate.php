@@ -85,11 +85,11 @@ class LiveUpdate
 		$defaultConfig = array(
 			'option'			=> JRequest::getCmd('option',''),
 			'view'				=> 'liveupdate',
-			'mediaurl'			=> JURI::base().'components/'.JRequest::getCmd('option','').'/liveupdate/assets/'
+			'mediaurl'			=> JURI::root().'administrator/components/com_virtuemart/liveupdate/assets/'
 		);
 		$c = array_merge($defaultConfig, $config);
 		
-		$url = 'index.php?option='.$c['option'].'&view='.$c['view'];
+		$url = 'index.php?option=com_virtuemart&view='.$c['view'];
 		$img = $c['mediaurl'];
 		
 		$updateInfo = self::getUpdateInformation();
