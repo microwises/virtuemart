@@ -238,6 +238,9 @@ class GenericTableUpdater extends JModel{
 
 					$key = array_search('vendor_terms_of_service', $translatableFields);
 					unset($translatableFields[$key]);
+
+					$key = array_search('vendor_legal_info', $translatableFields);
+					unset($translatableFields[$key]);
 				}
 			} else {
 				$fields['vendor_terms_of_service'] = 'text '.$linedefault;
