@@ -171,7 +171,8 @@ class VirtuemartViewInvoice extends VmView {
 		$_itemStatusUpdateFields = array();
 		$_itemAttributesUpdateFields = array();
 		foreach($orderDetails['items'] as $_item) {
-			$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $orderstatuses, "item_id[".$_item->virtuemart_order_item_id."][order_status]", 'class="selectItemStatusCode"', 'order_status_code', 'order_status_name', $_item->order_status, 'order_item_status'.$_item->virtuemart_order_item_id,true);
+// 			$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] = JHTML::_('select.genericlist', $orderstatuses, "item_id[".$_item->virtuemart_order_item_id."][order_status]", 'class="selectItemStatusCode"', 'order_status_code', 'order_status_name', $_item->order_status, 'order_item_status'.$_item->virtuemart_order_item_id,true);
+			$_itemStatusUpdateFields[$_item->virtuemart_order_item_id] =  $_item->order_status;
 
 		}
 

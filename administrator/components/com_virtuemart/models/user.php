@@ -167,8 +167,7 @@ class VirtueMartModelUser extends VmModel {
 			$shoppergroupmodel = VmModel::getModel('ShopperGroup');
 
 			$this->_defaultShopperGroup = $shoppergroupmodel->getDefault($this->_data->JUser->guest);
-			// 				vmdebug('$this->_defaultShopperGroup ',$this->_defaultShopperGroup);
-			// 			}
+
 			$this->_data->shopper_groups = $this->_defaultShopperGroup->virtuemart_shoppergroup_id ;
 
 		}
