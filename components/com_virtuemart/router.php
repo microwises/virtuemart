@@ -259,7 +259,9 @@ function virtuemartParseRoute($segments) {
 		}
 		return $vars;
 	}
-
+	if (empty($segments)) {
+		return $vars;
+	}
 	//$lang = &$helper->lang ;
 	// revert '-' (Joomla change - to :) //
 	foreach  ($segments as &$value) {
