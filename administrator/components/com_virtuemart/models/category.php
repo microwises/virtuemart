@@ -43,6 +43,7 @@ class VirtueMartModelCategory extends VmModel {
 		$this->setMainTable('categories');
 		$this->addvalidOrderingFieldName(array('category_name','category_description','c.ordering','cx.category_shared','c.published'));
 		$this->_selectedOrdering = VmConfig::get('browse_cat_orderby_field','category_name');
+		$this->_selectedOrderingDir = 'ASC';
 	}
 
 

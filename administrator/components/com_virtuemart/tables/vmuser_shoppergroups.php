@@ -49,6 +49,13 @@ if(!class_exists('VmTableXarray'))require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS
 		$this->setSecondaryKey('virtuemart_shoppergroup_id');
 	}
 
+
+	function check(){
+
+
+		return parent::check();
+	}
+
  	/**
 	 * Records in this table do not need to exist, so we might need to create a record even
 	 * if the primary key is set. Therefore we need to overload the store() function.

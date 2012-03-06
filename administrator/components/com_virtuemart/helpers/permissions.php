@@ -167,10 +167,19 @@ class Permissions extends JObject{
 
 			//We must prevent that Administrators or Managers are 'just' shoppers
 			//TODO rewrite it working correctly with jooomla ACL
+			if(JVM_VERSION === 2 ){
+				if($user->authorise('core.admin')){
+					$this->_perms  = 'admin';
+				}
+			} else {
+				if(strpos($user->usertype,'Administrator')!== false){
+					$this->_perms  = "admin";
+				}
+			}
 
 			if(empty($this->_perms)){
-				if(JVM_VERSION === 2 ){
 
+				if(JVM_VERSION === 2 ){
 					if($user->groups){
 						if($user->authorise('core.admin')){
 							$this->_perms  = 'admin';
@@ -196,7 +205,7 @@ class Permissions extends JObject{
 				}
 			}
 
-// 			vmdebug('$user->authorise perms '.$this->_perms);
+			vmdebug('$user->authorise perms '.$this->_perms);
 
 			//}
 			$this->_is_registered_customer = true;
@@ -232,7 +241,7 @@ class Permissions extends JObject{
 					}
 				}
 			}
-
+// 		vmdebug('return false for ',$perms,$this->_perms);
 		return false;
 	}
 

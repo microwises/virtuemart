@@ -158,8 +158,9 @@ class calculationHelper {
  										WHERE `usgr`.`virtuemart_user_id`="' . $user->id . '" AND `sg`.`virtuemart_vendor_id`="' . (int) $vendorId . '" ');
 				$this->_shopperGroupId = $this->_db->loadResultArray();  //todo load as array and test it
 				if (empty($this->_shopperGroupId)) {
+
 					$this->_db->setQuery('SELECT `virtuemart_shoppergroup_id` FROM #__virtuemart_shoppergroups
-								WHERE `default`="1" AND `virtuemart_vendor_id`="' . (int) $vendorId . '"');
+								WHERE `default`="'.($user->guest+1).'" AND `virtuemart_vendor_id`="' . (int) $vendorId . '"');
 					$this->_shopperGroupId = $this->_db->loadResultArray();
 				}
 			}

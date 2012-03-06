@@ -232,7 +232,7 @@ class VirtuemartViewUser extends VmView {
 			$this->assignRef('pagination', $pagination);
 
 			$shoppergroupmodel = VmModel::getModel('shopperGroup');
-			$defaultShopperGroup = $shoppergroupmodel->getDefault()->shopper_group_name;
+			$defaultShopperGroup = $shoppergroupmodel->getDefault(0)->shopper_group_name;
 			$this->assignRef('defaultShopperGroup', $defaultShopperGroup);
 		}
 

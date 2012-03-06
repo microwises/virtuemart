@@ -64,6 +64,7 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$this->addvalidOrderingFieldName((array)$browseOrderByFields);
 		$this->removevalidOrderingFieldName('virtuemart_product_id');
+
 		//unset($this->_validOrderingFieldName[0]);//virtuemart_product_id
 		array_unshift($this->_validOrderingFieldName,'p.virtuemart_product_id');
 		$this->_selectedOrdering = VmConfig::get('browse_orderby_field','category_name');

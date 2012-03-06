@@ -171,7 +171,8 @@ class CurrencyDisplay {
 
 		$user = JFactory::getUser();
 
-		if(!empty($user->id)){
+		//Not working for a user which is registered and should be in the standard group, but isnt (automap)
+/*		if(!empty($user->id)){
 
 			$q = 'SELECT `price_display`,`custom_price_display` FROM `#__virtuemart_vmusers` as `u`
 							LEFT OUTER JOIN `#__virtuemart_vmuser_shoppergroups` AS `vx` ON `u`.`virtuemart_user_id`  = `vx`.`virtuemart_user_id`
@@ -194,12 +195,35 @@ class CurrencyDisplay {
 			if(!empty($result[0])){
 				$result[0] = unserialize($result[0]);
 			}
+		}*/
+
+		$result = false;
+		if(!empty($user->id)){
+			$q = 'SELECT virtuemart_shoppergroup_id FROM `#__virtuemart_vmusers` as `u`
+									LEFT OUTER JOIN `#__virtuemart_vmuser_shoppergroups` AS `vx` ON `u`.`virtuemart_user_id`  = `vx`.`virtuemart_user_id`
+									LEFT OUTER JOIN `#__virtuemart_shoppergroups` AS `sg` ON `vx`.`virtuemart_shoppergroup_id` = `sg`.`virtuemart_shoppergroup_id`
+									WHERE `u`.`virtuemart_user_id` = "'.$user->id.'" ';
+			$this->_db->setQuery($q);
+			$result = $this->_db->loadResult();
 		}
 
-		$priceFields = array('basePrice','variantModification','basePriceVariant',
-									'basePriceWithTax','discountedPriceWithoutTax',
-									'salesPriceWithDiscount','salesPrice','priceWithoutTax',
-									'discountAmount','taxAmount');
+		if(!$result){
+			$q = 'SELECT `price_display`,`custom_price_display` FROM `#__virtuemart_shoppergroups` AS `sg`
+							WHERE `sg`.`default` = "'.($user->guest+1).'" ';
+
+			$this->_db->setQuery($q);
+			$result = $this->_db->loadRow();
+		} else {
+			$q = 'SELECT `price_display`,`custom_price_display` FROM `#__virtuemart_shoppergroups` AS `sg`
+										WHERE `sg`.`virtuemart_shoppergroup_id` = "'.$result.'" ';
+
+			$this->_db->setQuery($q);
+			$result = $this->_db->loadRow();
+		}
+
+		if(!empty($result[0])){
+			$result[0] = unserialize($result[0]);
+		}
 
 		$custom_price_display = 0;
 		if(!empty($result[1])){
@@ -213,7 +237,12 @@ class CurrencyDisplay {
 			$show_prices = VmConfig::get('show_prices', 1);
 		}
 
-		//->get('custom_price_display',VmConfig::get('custom_price_display', 0));
+
+
+		$priceFields = array('basePrice','variantModification','basePriceVariant',
+											'basePriceWithTax','discountedPriceWithoutTax',
+											'salesPriceWithDiscount','salesPrice','priceWithoutTax',
+											'discountAmount','taxAmount');
 
 		if($show_prices==1){
 			foreach($priceFields as $name){
