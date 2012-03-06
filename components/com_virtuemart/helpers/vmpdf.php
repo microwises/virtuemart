@@ -20,24 +20,35 @@ defined('_JEXEC') or die('');
  * http://virtuemart.net
  */
 
-class vmPdf {
+if (!class_exists( 'VmConfig' )) require(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_virtuemart'.DS.'helpers'.DS.'config.php');
+VmConfig::loadConfig();
 
-	function createVmPdf($view){
+/*class vmPdf {
+
+	function createVmPdf($view=0){
+
+//		if($view ===0){
+			$view = new stdClass;
+			$virtuemart_vendor_id=1;
+			$vendorModel = VmModel::getModel('vendor');
+			$view->vendor = $vendorModel->getVendor($virtuemart_vendor_id);
+			$vendorModel->addImages($view->vendor);
+// 		}
 
 		if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 			vmError('vmPdf: For the pdf, you must install the tcpdf library at '.JPATH_VM_LIBRARIES.DS.'tcpdf');
 			return 0;
 		}
 		// create new PDF document
-		$pdf = new myTcPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		$this->myTcPDF = new myTcPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 		// set document information
-		$pdf->SetCreator('Invoice by Virtuemart 2, used library tcpdf');
-		$pdf->SetAuthor($view->vendor->vendor_name);
+		$this->myTcPDF->SetCreator('Invoice by Virtuemart 2, used library tcpdf');
+		$this->myTcPDF->SetAuthor($view->vendor->vendor_name);
 
-		$pdf->SetTitle(JText::_('COM_VIRTUEMART_INVOICE_TITLE'));
-		$pdf->SetSubject(JText::sprintf('COM_VIRTUEMART_INVOICE_SUBJ',$view->vendor->vendor_store_name));
-		$pdf->SetKeywords('Invoice by Virtuemart 2');
+		$this->myTcPDF->SetTitle(JText::_('COM_VIRTUEMART_INVOICE_TITLE'));
+		$this->myTcPDF->SetSubject(JText::sprintf('COM_VIRTUEMART_INVOICE_SUBJ',$view->vendor->vendor_store_name));
+		$this->myTcPDF->SetKeywords('Invoice by Virtuemart 2');
 
 		//virtuemart.cloudaccess.net/index.php?option=com_virtuemart&view=invoice&layout=details&virtuemart_order_id=18&order_number=6e074d9b&order_pass=p_9cb9e2&task=checkStoreInvoice
 		if(empty($view->vendor->images[0])){
@@ -52,63 +63,63 @@ class vmPdf {
 			if(!file_exists(JPATH_ROOT.$imagePath)){
 				vmError('Vendor image missing '.$imagePath);
 			} else {
-				$pdf->SetHeaderData($imagePath, 60, $view->vendor->vendor_store_name, $view->vendorAddress);
+				$this->myTcPDF->SetHeaderData($imagePath, 60, $view->vendor->vendor_store_name, $view->vendorAddress);
 			}
 		}
 
 		// set header and footer fonts
-		$pdf->setHeaderFont(Array('helvetica', '', 8));
-		$pdf->setFooterFont(Array('helvetica', '', 10));
+		$this->myTcPDF->setHeaderFont(Array('helvetica', '', 8));
+		$this->myTcPDF->setFooterFont(Array('helvetica', '', 10));
 
 		// set default monospaced font
-		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+		$this->myTcPDF->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 		//set margins
-		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-		$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+		$this->myTcPDF->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$this->myTcPDF->SetHeaderMargin(PDF_MARGIN_HEADER);
+		$this->myTcPDF->SetFooterMargin(PDF_MARGIN_FOOTER);
 
 		//set auto page breaks
-		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+		$this->myTcPDF->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
 		//set image scale factor
-		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+		$this->myTcPDF->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 		//TODO include the right file (in libraries/tcpdf/config/lang set some language-dependent strings
 		$l='';
-		$pdf->setLanguageArray($l);
+		$this->myTcPDF->setLanguageArray($l);
 
 		// set default font subsetting mode
-		$pdf->setFontSubsetting(true);
+		$this->myTcPDF->setFontSubsetting(true);
 
 		// Set font
 		// dejavusans is a UTF-8 Unicode font, if you only need to
 		// print standard ASCII chars, you can use core fonts like
 		// helvetica or times to reduce file size.
-		$pdf->SetFont('helvetica', '', 8, '', true);
+		$this->myTcPDF->SetFont('helvetica', '', 8, '', true);
 
 		// Add a page
 		// This method has several options, check the source code documentation for more information.
-		$pdf->AddPage();
+		$this->myTcPDF->AddPage();
 
 		// Set some content to print
 		// $html =
 
 		// Print text using writeHTMLCell()
-		$pdf->writeHTMLCell($w=0, $h=0, $x='', $y='', $html, $border=0, $ln=1, $fill=0, $reseth=true, $align='', $autopadding=true);
+		$this->myTcPDF->writeHTMLCell($w=0, $h=0, $x='', $y='', $html, $border=0, $ln=1, $fill=0, $reseth=true, $align='', $autopadding=true);
 
 
 		// Close and output PDF document
 		// This method has several options, check the source code documentation for more information.
-		$pdf->Output($path, 'F');
+		$this->myTcPDF->Output($path, 'F');
 
-		// 			vmdebug('Pdf object ',$pdf);
+		// 			vmdebug('Pdf object ',$this->myTcPDF);
 		// 		vmdebug('checkStoreInvoice start');
 		return $path;
 
 	}
 }
-
+*/
 if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 	vmError('vmPdf: For the pdf, you must install the tcpdf library at '.JPATH_VM_LIBRARIES.DS.'tcpdf');
 } else {
@@ -117,7 +128,107 @@ if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
 	class myTcPDF extends TCPDF {
 
 		public function __construct() {
-			parent::__construct();
+			parent::__construct(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		}
+
+		function createVmPdf($view=0){
+
+			$path = 0;
+
+			if($view ===0){
+			$view = new stdClass();
+			jimport( 'joomla.database.table' );
+			JTable::addIncludePath(JPATH_VM_ADMINISTRATOR . DS . 'tables');
+
+			$virtuemart_vendor_id=1;
+
+			$vendorModel = VmModel::getModel('vendor');
+			$view->vendor = $vendorModel->getVendor($virtuemart_vendor_id);
+			$vendorModel->addImages($view->vendor);
+			}
+
+			if(!file_exists(JPATH_VM_LIBRARIES.DS.'tcpdf'.DS.'tcpdf.php')){
+				vmError('vmPdf: For the pdf, you must install the tcpdf library at '.JPATH_VM_LIBRARIES.DS.'tcpdf');
+				return 0;
+			}
+			// create new PDF document
+// 			$this->myTcPDF = new myTcPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+			// set document information
+			$this->SetCreator('Invoice by Virtuemart 2, used library tcpdf');
+			$this->SetAuthor($view->vendor->vendor_name);
+
+			$this->SetTitle(JText::_('COM_VIRTUEMART_INVOICE_TITLE'));
+			$this->SetSubject(JText::sprintf('COM_VIRTUEMART_INVOICE_SUBJ',$view->vendor->vendor_store_name));
+			$this->SetKeywords('Invoice by Virtuemart 2');
+
+			//virtuemart.cloudaccess.net/index.php?option=com_virtuemart&view=invoice&layout=details&virtuemart_order_id=18&order_number=6e074d9b&order_pass=p_9cb9e2&task=checkStoreInvoice
+			if(empty($view->vendor->images[0])){
+				vmError('Vendor image given path empty ');
+			} else if(empty($view->vendor->images[0]->file_url_folder) or empty($view->vendor->images[0]->file_name) or empty($view->vendor->images[0]->file_extension) ){
+				vmError('Vendor image given image is not complete '.$view->vendor->images[0]->file_url_folder.$view->vendor->images[0]->file_name.'.'.$view->vendor->images[0]->file_extension);
+				vmdebug('Vendor image given image is not complete, the given media',$view->vendor->images[0]);
+			} else if(!empty($view->vendor->images[0]->file_extension) and strtolower($view->vendor->images[0]->file_extension)=='png'){
+				vmError('Warning extension of the image is a png, tpcdf has problems with that in the header, choose a jpg or gif');
+			} else {
+				$imagePath = DS. str_replace('/',DS, $view->vendor->images[0]->file_url_folder.$view->vendor->images[0]->file_name.'.'.$view->vendor->images[0]->file_extension);
+				if(!file_exists(JPATH_ROOT.$imagePath)){
+					vmError('Vendor image missing '.$imagePath);
+				} else {
+					$this->SetHeaderData($imagePath, 60, $view->vendor->vendor_store_name, $view->vendorAddress);
+				}
+			}
+
+			// set header and footer fonts
+			$this->setHeaderFont(Array('helvetica', '', 8));
+			$this->setFooterFont(Array('helvetica', '', 10));
+
+			// set default monospaced font
+			$this->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+			//set margins
+			$this->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+			$this->SetHeaderMargin(PDF_MARGIN_HEADER);
+			$this->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+			//set auto page breaks
+			$this->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+			//set image scale factor
+			$this->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+			//TODO include the right file (in libraries/tcpdf/config/lang set some language-dependent strings
+			$l='';
+			$this->setLanguageArray($l);
+
+			// set default font subsetting mode
+			$this->setFontSubsetting(true);
+
+			// Set font
+			// dejavusans is a UTF-8 Unicode font, if you only need to
+			// print standard ASCII chars, you can use core fonts like
+			// helvetica or times to reduce file size.
+			$this->SetFont('helvetica', '', 8, '', true);
+
+			// Add a page
+			// This method has several options, check the source code documentation for more information.
+			$this->AddPage();
+
+			// Set some content to print
+			// $html =
+
+			// Print text using writeHTMLCell()
+			$this->writeHTMLCell($w=0, $h=0, $x='', $y='', $html, $border=0, $ln=1, $fill=0, $reseth=true, $align='', $autopadding=true);
+
+
+			// Close and output PDF document
+			// This method has several options, check the source code documentation for more information.
+			$this->Output($path, 'F');
+
+			// 			vmdebug('Pdf object ',$this->myTcPDF);
+			// 		vmdebug('checkStoreInvoice start');
+			return $path;
+
 		}
 
 		//Page header
