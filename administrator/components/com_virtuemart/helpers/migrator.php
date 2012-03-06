@@ -1210,7 +1210,7 @@ class Migrator extends VmModel{
 			$q = 'SELECT `o`.*, `op`.*, `o`.`order_number` as `vm1_order_number`, `o2`.`order_number` as `nr2` FROM `#__vm_orders` as `o`
 				LEFT OUTER JOIN `#__vm_order_payment` as `op` ON `op`.`order_id` = `o`.`order_id`
 				LEFT JOIN `#__virtuemart_orders` as `o2` ON `o2`.`order_number` = `o`.`order_number`
-				WHERE (o2.order_number) IS NULL LIMIT '.$startLimit.','.$maxItems;
+				WHERE (o2.order_number) IS NULL ORDER BY o.cdate LIMIT '.$startLimit.','.$maxItems;
 
 			$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port Orders');
 			$oldOrders = $res[0];
@@ -1236,8 +1236,15 @@ class Migrator extends VmModel{
 					$orderData->virtuemart_order_id = null;
 					$orderData->virtuemart_user_id = $order['user_id'];
 					$orderData->virtuemart_vendor_id = $order['vendor_id'];
-// 					$orderData->order_number = $order['vm1_order_number'];
-					$orderData->order_number = $order['order_id'];
+
+					if(JRequest::getInt('reWriteOrderNumber',0)==0){
+						if(JRequest::getInt('userOrderId',0)==1){
+							$orderData->order_number = $order['order_id'];
+						} else {
+							$orderData->order_number = $order['vm1_order_number'];
+						}
+					}
+
 					$orderData->order_pass = 'p' . substr(md5((string)time() . $order['order_number']), 0, 5);
 					//Note as long we do not have an extra table only storing addresses, the virtuemart_userinfo_id is not needed.
 					//The virtuemart_userinfo_id is just the id of a stored address and is only necessary in the user maintance view or for choosing addresses.

@@ -110,7 +110,7 @@ class TableOrders extends VmTable {
 			$this->order_number = VirtueMartModelOrders::generateOrderNumber((string)time());
 		}
 
-		if(empty($this->order_number)){
+		if(empty($this->order_pass)){
 			$this->order_pass = 'p_'.substr( md5((string)time().$this->order_number ), 0, 5);
 		}
 
