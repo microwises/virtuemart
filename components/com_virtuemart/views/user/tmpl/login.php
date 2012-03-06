@@ -104,9 +104,9 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
 
         <p class="width30 floatleft" id="com-form-login-password">
             <?php if ( JVM_VERSION===1 ) { ?>
-            <input type="password" id="passwd" name="passwd" class="inputbox" size="18" alt="password" />
+            <input type="password" id="passwd" name="passwd" class="inputbox" size="18" alt="<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>" value="<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>" onblur="if(this.value=='') this.value='<?php echo addslashes(JText::_('COM_VIRTUEMART_PASSWORD')); ?>';" onfocus="if(this.value=='<?php echo addslashes(JText::_('COM_VIRTUEMART_PASSWORD')); ?>') this.value='';" />
             <?php } else { ?>
-            <input id="modlgn-passwd" type="password" name="password" class="inputbox" size="18"  />
+            <input id="modlgn-passwd" type="password" name="password" class="inputbox" size="18" alt="<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>" value="<?php echo JText::_('COM_VIRTUEMART_PASSWORD'); ?>" onblur="if(this.value=='') this.value='<?php echo addslashes(JText::_('COM_VIRTUEMART_PASSWORD')); ?>';" onfocus="if(this.value=='<?php echo addslashes(JText::_('COM_VIRTUEMART_PASSWORD')); ?>') this.value='';" />
             <?php } ?>
 	</p>
 
@@ -120,14 +120,15 @@ $url = $uri->toString(array('path', 'query', 'fragment'));
         <div class="clr"></div>
 
         <div class="width30 floatleft">
+            <a   href="<?php echo JRoute::_('index.php?option='.$comUserOption.'&view=remind'); ?>">
+            <?php echo JText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_USERNAME'); ?></a>
+        </div>
+        <div class="width30 floatleft">
             <a   href="<?php echo JRoute::_('index.php?option='.$comUserOption.'&view=reset'); ?>">
             <?php echo JText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_PASSWORD'); ?></a>
         </div>
 
-        <div class="width30 floatleft">
-            <a   href="<?php echo JRoute::_('index.php?option='.$comUserOption.'&view=remind'); ?>">
-            <?php echo JText::_('COM_VIRTUEMART_ORDER_FORGOT_YOUR_USERNAME'); ?></a>
-        </div>
+
 
         <?php /*
           $usersConfig = &JComponentHelper::getParams( 'com_users' );
