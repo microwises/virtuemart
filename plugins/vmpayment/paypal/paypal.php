@@ -179,7 +179,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    "zip" => $address->zip,
 	    "city" => $address->city,
 	    "state" => isset($address->virtuemart_state_id) ? ShopFunctions::getStateByID($address->virtuemart_state_id) : '',
-	    "country" => ShopFunctions::getCountryByID($address->virtuemart_country_id, 'country_3_code'),
+	    "country" => ShopFunctions::getCountryByID($address->virtuemart_country_id, 'country_2_code'),
 	    "email" => $order['details']['BT']->email,
 	    "night_phone_b" => $address->phone_1,
 	    "return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id),
