@@ -605,11 +605,10 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	$modelOrder = new VirtueMartModelOrders();
 	$order['order_status'] = $new_status;
 	$order['virtuemart_order_id'] = $virtuemart_order_id;
-	$order['customer_notified'] = 0;
+	$order['customer_notified'] = 1;
 	$date = JFactory::getDate();
 	$order['comments'] = JText::sprintf('VMPAYMENT_PAYZEN_NOTIFICATION_RECEVEIVED', $date->toFormat('%Y-%m-%d %H:%M:%S'));
 	vmdebug('Payzen - managePaymentResponse', $order);
-
 
 	// la fonction updateStatusForOneOrder fait l'envoie de l'email à partir de VM2.0.2
 	$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);

@@ -283,6 +283,12 @@ class plgVmPaymentPaypal extends vmPSPlugin {
     }
 
     function plgVmOnPaymentResponseReceived(&$html) {
+	if (!class_exists('VirtueMartCart'))
+	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
+	if (!class_exists('shopFunctionsF'))
+	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
+	if (!class_exists('VirtueMartModelOrders'))
+	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
 	// the payment itself should send the parameter needed.
 	$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
@@ -294,12 +300,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	if (!$this->selectedThisElement($method->payment_element)) {
 	    return false;
 	}
-	if (!class_exists('VirtueMartCart'))
-	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
-	if (!class_exists('shopFunctionsF'))
-	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
-	if (!class_exists('VirtueMartModelOrders'))
-	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
 	//$paypal_data = JRequest::get('post');
 	$payment_name = $this->renderPluginName($method);
@@ -324,15 +324,15 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
-	$order_number = JRequest::getString('on','');
+	$order_number = JRequest::getString('on', '');
 	if (!$order_number)
 	    return false;
 	$db = JFactory::getDBO();
 	$query = 'SELECT * FROM ' . $this->_tablename . " WHERE  `order_number`= '" . $order_number . "'";
 	VmInfo(Jtext::_('VMPAYMENT_PAYPAL_PAYMENT_CANCELLED'));
 	$db->setQuery($query);
-	if (! $result = $db->loadObject() ) {
-	     return null;
+	if (!$result = $db->loadObject()) {
+	    return null;
 	}
 
 	if (!$result->virtuemart_order_id) {
@@ -520,7 +520,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	return $html;
     }
 
-    function _getPaypalInternalData($virtuemart_order_id, $order_number='') {
+    function _getPaypalInternalData($virtuemart_order_id, $order_number = '') {
 	$db = JFactory::getDBO();
 	$q = 'SELECT * FROM `' . $this->_tablename . '` WHERE ';
 	if ($order_number) {
