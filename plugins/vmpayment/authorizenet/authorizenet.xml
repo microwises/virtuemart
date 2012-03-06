@@ -47,16 +47,16 @@
 	    <option value="DinersClub">VMPAYMENT_AUTHORIZENET_DINERSCLUB</option>
 	    <option value="JCB">VMPAYMENT_AUTHORIZENET_JCB</option>
 	</param>
-	<param	name="logos" type="vmfiles" label="VMPAYMENT_AUTHORIZENET_LOGOS"
-             	description="VMPAYMENT_AUTHORIZENET_LOGOS_DESC"
-             	directory="/images/stories/virtuemart/payment"
-             	default="default" hide_default="1" hide_none="1"
-             	stripext="0"  exclude="^_" />
+	<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_AUTHORIZENET_LOGOS"
+			description="VMPAYMENT_AUTHORIZENET_LOGOS_DESC"
+			directory="/images/stories/virtuemart/payment"
+			default="default" hide_default="1" hide_none="1"
+			stripext="0"  exclude="^_" />
 	<param	name="cvv_images" type="vmfiles" label="VMPAYMENT_AUTHORIZENET_CVVIMAGES"
-             	description="VMPAYMENT_AUTHORIZENET_CVVIMAGES_DESC"
-             	directory="/images/stories/virtuemart/payment"
-             	default="default" hide_default="1" hide_none="1"
-             	stripext="0"  exclude="^_" />
+		description="VMPAYMENT_AUTHORIZENET_CVVIMAGES_DESC"
+		directory="/images/stories/virtuemart/payment"
+		default="default" hide_default="1" hide_none="1"
+		stripext="0"  exclude="^_" />
 	<param name="debug" type="radio" default="0" label="VMPAYMENT_AUTHORIZENET_DEBUG" description="VMPAYMENT_AUTHORIZENET_DEBUG_DESC" >
 	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
