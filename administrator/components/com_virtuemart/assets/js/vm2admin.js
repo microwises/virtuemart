@@ -140,11 +140,21 @@
 					jQuery("#vm_display_image").attr("src", datas.file_root+datas.file_url);
 					jQuery("#vm_display_image").attr("alt", datas.file_title);
 					jQuery("#file_title").html(datas.file_title);
-					jQuery(".adminform [name=file_title]").val(datas.file_title);
-					jQuery(".adminform [name=file_description]").val(datas.file_description);
-					jQuery(".adminform [name=file_meta]").val(datas.file_meta);
-					jQuery(".adminform [name=file_url]").val(datas.file_url);
-					jQuery(".adminform [name=file_url_thumb]").val(datas.file_url_thumb);
+					if (datas.published==1) jQuery("#adminForm [name=media_published]").attr('checked', true);
+					else jQuery("#adminForm [name=media_published]").attr('checked',false);
+					if (datas.file_is_downloadable==0) {
+						jQuery("#media_rolesfile_is_displayable").attr('checked', true);
+						//jQuery("#adminForm [name=media_roles]").filter("value='file_is_downloadable'").attr('checked', false);
+					}
+					else {
+						//jQuery("#adminForm [name=media_roles]").filter("value='file_is_displayable'").attr('checked', false);
+						jQuery("#media_rolesfile_is_downloadable").attr('checked', true);
+					}
+					jQuery("#adminForm [name=file_title]").val(datas.file_title);
+					jQuery("#adminForm [name=file_description]").val(datas.file_description);
+					jQuery("#adminForm [name=file_meta]").val(datas.file_meta);
+					jQuery("#adminForm [name=file_url]").val(datas.file_url);
+					jQuery("#adminForm [name=file_url_thumb]").val(datas.file_url_thumb);
 					jQuery("[name=active_media_id]").val(datas.virtuemart_media_id);
 					if (datas.file_url_thumb !== "undefined") {
 						jQuery("#vm_thumb_image").attr("src",datas.file_root+datas.file_url_thumb);
