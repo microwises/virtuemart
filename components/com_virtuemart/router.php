@@ -61,39 +61,9 @@ function virtuemartBuildRoute(&$query) {
 			$start = null;
 			$limitstart = null;
 			$limit = null;
-			 if ( isset($jmenu['category']) ) $query['Itemid'] = $jmenu['category'];
-			 // Joomla replace before route limitstart by start but without SEF this is start !
-			 if ( isset($query['limitstart'] ) ) {
-				$limitstart = $query['limitstart'] ;
-				unset($query['limitstart']);
-			}
-			if ( isset($query['start'] ) ) {
-				$start = $query['start'] ;
-				unset($query['start']);
-			}
-			if ( isset($query['limit'] ) ) {
-				$limit = $query['limit'] ;
-				unset($query['limit']);
-			}
-			if ($start !== null &&  $limitstart!== null ) {
-				//$segments[] = $helper->lang('results') .',1-'.$start ;
-			} else if ( $start>0 ) {
-				// using general limit if $limit is not set
-				if ($limit === null) $limit= vmrouterHelper::$limit ;
-				
-				//Pagination changed, maybe the +1 is wrong note by Max Milbers
-					$segments[] = $helper->lang('results') .','. ($start+1).'-'.($start+$limit);
-			} else if ($limit !== null && $limit != vmrouterHelper::$limit ) $segments[] = $helper->lang('results') .',1-'.$limit ;//limit change
 
-			if ( isset($query['orderby']) ) {
 
-				$segments[] = $helper->lang('by').','.$helper->lang( $query['orderby']) ;
-				unset($query['orderby']);
-			}
-			if ( isset($query['order']) ) {
-				if ($query['order'] =='DESC') $segments[] = $helper->lang('orderDesc') ;
-				unset($query['order']);
-			}
+
 			if ( isset($query['virtuemart_manufacturer_id'])  ) {
 				$segments[] = $helper->lang('manufacturer').'/'.$helper->getManufacturerName($query['virtuemart_manufacturer_id']) ;
 				unset($query['virtuemart_manufacturer_id']);
@@ -117,6 +87,42 @@ function virtuemartBuildRoute(&$query) {
 				}
 				unset($query['virtuemart_category_id']);
 			}
+			 if ( isset($jmenu['category']) ) $query['Itemid'] = $jmenu['category'];
+
+
+			if ( isset($query['order']) ) {
+				if ($query['order'] =='DESC') $segments[] = $helper->lang('orderDesc') ;
+				unset($query['order']);
+			}
+
+			if ( isset($query['orderby']) ) {
+				$segments[] = $helper->lang('by').','.$helper->lang( $query['orderby']) ;
+				unset($query['orderby']);
+			}
+
+			// Joomla replace before route limitstart by start but without SEF this is start !
+			 if ( isset($query['limitstart'] ) ) {
+				$limitstart = $query['limitstart'] ;
+				unset($query['limitstart']);
+			}
+			if ( isset($query['start'] ) ) {
+				$start = $query['start'] ;
+				unset($query['start']);
+			}
+			if ( isset($query['limit'] ) ) {
+				$limit = $query['limit'] ;
+				unset($query['limit']);
+			}
+			if ($start !== null &&  $limitstart!== null ) {
+				//$segments[] = $helper->lang('results') .',1-'.$start ;
+			} else if ( $start>0 ) {
+				// using general limit if $limit is not set
+				if ($limit === null) $limit= vmrouterHelper::$limit ;
+				
+				//Pagination changed, maybe the +1 is wrong note by Max Milbers
+					$segments[] = $helper->lang('results') .','. ($start+1).'-'.($start+$limit);
+			} else if ($limit !== null && $limit != vmrouterHelper::$limit ) $segments[] = $helper->lang('results') .',1-'.$limit ;//limit change
+			
 			return $segments;
 		break;
 		/* Shop product details view  */
@@ -267,10 +273,13 @@ function virtuemartParseRoute($segments) {
 	foreach  ($segments as &$value) {
 		$value = str_replace(':', '-', $value);
 	}
-	$splitted = explode(',',$segments[0],2);
+
+	// $splitted = explode(',',$segments[0],2);
+	$splitted = explode(',',end($segments),2);
 
 	if ( $helper->compareKey($splitted[0] ,'results')){
-		array_shift($segments);
+		// array_shift($segments);
+		array_pop($segments);
 		$results = explode('-',$splitted[1],2);
 		//Pagination has changed, removed the -1 note by Max Milbers NOTE: Works on j1.5, but NOT j1.7
 		// limistart is swapped by joomla to start ! See includes/route.php
@@ -280,23 +289,32 @@ function virtuemartParseRoute($segments) {
 	
 	} else {
 		$vars['limitstart'] = 0 ;
+		$vars['limit'] = vmrouterHelper::$limit;
 		
 	}
 	if (empty($segments)) {
 			$vars['view'] = 'category';
 			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
 			return $vars;
+	}
+
+	if (  $helper->compareKey(end($segments),'orderDesc') ){
+		$vars['order'] ='DESC' ;
+		array_pop($segments);
+		if (empty($segments)) {
+			$vars['view'] = 'category';
+			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
+			return $vars;
 		}
-	$orderby = explode(',',$segments[0],2);
+	}
+
+	// $orderby = explode(',',$segments[0],2);
+	$orderby = explode(',',end($segments),2);
 	if (  $helper->compareKey($orderby[0] , 'by') ) {
 		$vars['orderby'] =$helper->getOrderingKey($orderby[1]) ;
-		array_shift($segments);
-		if ( !empty($segments)) {
-			if (  $helper->compareKey($segments[0] ,'orderDesc') ){
-				$vars['order'] ='DESC' ;
-				array_shift($segments);
-			}
-		}
+		// array_shift($segments);
+		array_pop($segments);
+
 		if (empty($segments)) {
 			$vars['view'] = 'category';
 			$vars['virtuemart_category_id'] = $helper->activeMenu->virtuemart_category_id ;
