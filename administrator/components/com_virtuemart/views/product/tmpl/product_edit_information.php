@@ -243,8 +243,10 @@ $i=0;
 									if(isset($child->$attrib)){
 										$childAttrib = $child->$attrib;
 									} else {
-										$childAttrib = 'unset';
-										vmdebug('unset? $attrib '.$attrib);
+										vmdebug('unset? use Fallback product_name instead $attrib '.$attrib);
+										$attrib = 'product_name';
+										$childAttrib = $child->$attrib;
+
 									}
 // 									echo $attrib;
 									echo '<td><input type="text" class="inputbox" name="childs['.$child->virtuemart_product_id.']['.$attrib.']" size="10" value="'.$childAttrib.'" />'.'</td>';
