@@ -49,15 +49,15 @@ class VirtuemartViewProduct extends VmView {
 			case 'add':
 			case 'edit':
 
-
-
 				//this was in the controller for the edit tasks, I dont know if it is still needed,
 				$this->addTemplatePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'product'.DS.'tmpl');
 
 				$virtuemart_product_id = JRequest::getInt('virtuemart_product_id', array());
 				if(is_array($virtuemart_product_id) && count($virtuemart_product_id) > 0) $virtuemart_product_id = $virtuemart_product_id[0];
 				$product = $model->getProductSingle($virtuemart_product_id,false);
-				$product_child = $model->getProductChilds($virtuemart_product_id);
+// 				$product_child = $model->getProductChilds($virtuemart_product_id);
+
+				$this->assignRef('product_childs', $product_childs);
 				$product_parent= $model->getProductParent($product->product_parent_id);
 
 				// Get the category tree
@@ -74,6 +74,11 @@ class VirtuemartViewProduct extends VmView {
 				$calculator = calculationHelper::getInstance();
 				$product->prices = $calculator -> getProductPrices($product);
 
+				$product_childIds = $model->getProductChildIds($virtuemart_product_id);
+				$product_childs = array();
+				foreach($product_childIds as $id){
+					$product_childs[] = $model->getProductSingle($id,false);
+				}
 				$DBTax = ''; 	//JText::_('COM_VIRTUEMART_RULES_EFFECTING') ;
 				foreach($calculator->rules['DBTax'] as $rule){
 					$DBTax .= $rule['calc_name']. '<br />';
@@ -211,7 +216,7 @@ class VirtuemartViewProduct extends VmView {
 				$this->assignRef('manufacturers', $manufacturers);
 
 				$this->assignRef('related_products', $related_products);
-				$this->assignRef('product_child', $product_child);
+
 				$this->assignRef('product_parent', $product_parent);
 				/* Assign label values */
 				$this->assignRef('action', $action);

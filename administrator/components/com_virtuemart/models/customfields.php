@@ -344,7 +344,17 @@ class VirtueMartModelCustomfields extends VmModel {
 			switch ($field->field_type) {
 
 				case 'A':
-					return 'Automatic Childvariant creation (later you can choose here attributes to show, now product name) </td><td>';
+					$options = array();
+					$options[] = array( 'value' => 'product_name' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME'));
+					$options[] = array( 'value' => 'product_sku' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_FORM_SKU'));
+					$options[] = array( 'value' => 'slug' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_FORM_ALIAS'));
+					$options[] = array( 'value' => 'product_length' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_LENGTH'));
+					$options[] = array( 'value' => 'product_width' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_WIDTH'));
+					$options[] = array( 'value' => 'product_height' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_HEIGHT'));
+					$options[] = array( 'value' => 'product_weight' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_WEIGHT'));
+
+					return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]','','value','text',$field->custom_value).'</td><td>';
+// 					return 'Automatic Childvariant creation (later you can choose here attributes to show, now product name) </td><td>';
 					break;
 				// variants
 				case 'V':

@@ -1183,6 +1183,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			vmError($item->getError());
 			return false;
 		}
+		//TODO Why should the stock change, when the order is deleted? Paypal? Valerie?
 		$this->handleStockAfterStatusChangedPerProduct('C', $item->order_status,$item, $item->product_quantity);
 		if ($item->delete($orderLineId)) {
 			return true;

@@ -97,6 +97,7 @@ class VirtuemartControllerProduct extends VmController {
 		jExit();
 
 	}
+
 	/**
 	 * This task creates a child by a given product id
 	 *
@@ -126,6 +127,45 @@ class VirtuemartControllerProduct extends VmController {
 			}
 		}
 		$app->redirect($redirect, $msg, $msgtype);
+
+	}
+
+	/**
+	* This task creates a child by a given product id
+	*
+	* @author Max Milbers
+	*/
+	public function createVariant(){
+
+		$data = JRequest::get('get');
+		JRequest::setVar($data['token'], '1', 'post');
+		JRequest::checkToken() or jexit('Invalid Token, in ' . JRequest::getWord('task'));
+
+		$app = Jfactory::getApplication();
+
+		/* Load the view object */
+		$view = $this->getView('product', 'html');
+
+		$model = VmModel::getModel('product');
+
+		//$cids = JRequest::getVar('cid');
+		$cid = JRequest::getInt('virtuemart_product_id',0);
+
+		if(empty($cid)){
+			$msg = JText::_('COM_VIRTUEMART_PRODUCT_NO_CHILD_CREATED_SUCCESSFULLY');
+// 			$redirect = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$cid;
+		} else {
+			if ($id=$model->createChild($cid)){
+				$msg = JText::_('COM_VIRTUEMART_PRODUCT_CHILD_CREATED_SUCCESSFULLY');
+				$redirect = 'index.php?option=com_virtuemart&view=product&task=edit&virtuemart_product_id='.$cid;
+			} else {
+				$msg = JText::_('COM_VIRTUEMART_PRODUCT_NO_CHILD_CREATED_SUCCESSFULLY');
+				$msgtype = 'error';
+				$redirect = 'index.php?option=com_virtuemart&view=product';
+			}
+			vmdebug('$redirect '.$redirect);
+			$app->redirect($redirect, $msg, $msgtype);
+		}
 
 	}
 

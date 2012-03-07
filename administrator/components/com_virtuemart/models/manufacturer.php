@@ -45,6 +45,7 @@ class VirtueMartModelManufacturer extends VmModel {
 		$this->addvalidOrderingFieldName(array('m.virtuemart_manufacturer_id','mf_name','mf_desc','mf_category_name','mf_url'));
 		$this->removevalidOrderingFieldName('virtuemart_manufacturer_id');
 		$this->_selectedOrdering = 'mf_name';
+		$this->_selectedOrderingDir = 'ASC';
 	}
 
 

@@ -981,7 +981,7 @@ class VirtueMartModelProduct extends VmModel {
 			$data = JRequest::get('post');
 		}
 
-		// 		vmdebug('my data in product store ',$data);
+				vmdebug('my data in product store ',$data);
 
 		// Setup some place holders
 		$product_data = $this->getTable('products');
@@ -1032,6 +1032,12 @@ class VirtueMartModelProduct extends VmModel {
 			$data = $this->updateXrefAndChildTables($data, 'product_manufacturers');
 		}
 
+		if(!empty($data['childs'])){
+			foreach($data['childs'] as $productId => $child){
+				$child['virtuemart_product_id'] = $productId;
+				$this->store($child);
+			}
+		}
 		// Update waiting list
 		if(!empty($data['notify_users'])){
 			if ($data['product_in_stock'] > 0 && $data['notify_users'] == '1' ) {

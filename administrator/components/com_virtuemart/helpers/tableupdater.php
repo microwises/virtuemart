@@ -709,10 +709,10 @@ class GenericTableUpdater extends JModel{
 // 				vmdebug('$fieldname '.$fieldname);
 			}
 			if (!empty($query)) {
-// 				$this->_db->setQuery($query);
-// 				if(!$this->_db->query()){
-// 					$this->_app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
-// 				}
+				$this->_db->setQuery($query);
+				if(!$this->_db->query()){
+					$this->_app->enqueueMessage('alterTable '.$action.' '.$tablename.'.'.$fieldname.' :'.$this->_db->getErrorMsg() );
+				}
 				$after = 'AFTER '.$fieldname;
 			}
 		}
