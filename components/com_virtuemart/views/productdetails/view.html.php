@@ -268,18 +268,6 @@ class VirtueMartViewProductdetails extends VmView {
 		$showBasePrice = Permissions::getInstance()->check('admin'); //todo add config settings
 		$this->assignRef('showBasePrice', $showBasePrice);
 
-		$productDisplayShipments = array();
-		$productDisplayPayments = array();
-
-		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
-		JPluginHelper::importPlugin('vmshipment');
-		JPluginHelper::importPlugin('vmpayment');
-		$dispatcher = JDispatcher::getInstance();
-		$returnValues = $dispatcher->trigger('plgVmOnProductDisplayShipment', array( $product,  &$productDisplayShipments));
-		$returnValues = $dispatcher->trigger('plgVmOnProductDisplayPayment', array( $product,  &$productDisplayPayments));
-
-		$this->assignRef('productDisplayPayments', $productDisplayPayments);
-		$this->assignRef('productDisplayShipments', $productDisplayShipments);
 
 
 	    if(empty($category->category_template)){
