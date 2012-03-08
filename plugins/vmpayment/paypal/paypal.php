@@ -188,6 +188,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    "cancel_return" => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id),
 	    //"undefined_quantity" => "0",
 	    "ipn_test" => $method->debug,
+	    "rm"=> '2', // the buyer’s browser is redirected to the return URL by using the POST method, and all payment variables are included
 	    //"pal" => "NRUBJXESJTY24",
 	    "image_url" => JURI::root() . $vendor->images[0]->file_url,
 	    "no_shipping" => isset($method->no_shipping) ? $method->no_shipping : 0,
@@ -246,7 +247,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	}
 	$html.= '</form></div>';
 	$html.= ' <script type="text/javascript">';
-	$html.= ' document.vm_paypal_form.submit();';
+	//s$html.= ' document.vm_paypal_form.submit();';
 	$html.= ' </script></body></html>';
 
 	// 	2 = don't delete the cart, don't send email and don't redirect
@@ -289,7 +290,8 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    require(JPATH_VM_SITE . DS . 'helpers' . DS . 'shopfunctionsf.php');
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
-
+$paypal_data = JRequest::get('post');
+vmdebug('plgVmOnPaymentResponseReceived',$paypal_data);
 	// the payment itself should send the parameter needed.
 	$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
 	$order_number = JRequest::getString('on', 0);

@@ -31,22 +31,22 @@
 
     <params addpath="/administrator/components/com_virtuemart/elements">
 	<param type="vmjpluginwarning" />
-
+	<param type="spacer" default="VMPAYMENT_PAYZEN_MODULE_INFORMATION_TITLE" level="level1" />
 	<param type="spacer" default="VMPAYMENT_PAYZEN_MODULE_INFORMATION" level="level1" />
 
 	<param name="developed_by" type="payzenlabel" label="VMPAYMENT_PAYZEN_DEVELOPED_BY" default="&lt;a href=&quot;http://www.lyra-network.com/&quot; target=&quot;_blank&quot;&gt;Lyra network&lt;/a&gt;"/>
 	<param name="contact_email" type="payzenlabel" label="VMPAYMENT_PAYZEN_CONTACT_EMAIL" default="&lt;a href=&quot;mailto:support@payzen.eu&quot;&gt;support@payzen.eu&lt;/a&gt;"/>
 	<param name="contrib_version" type="payzenlabel" label="VMPAYMENT_PAYZEN_CONTRIB_VERSION" default="1.2"/>
 	<param name="gateway_version" type="payzenlabel" label="VMPAYMENT_PAYZEN_GATEWAY_VERSION" default="V2"/>
-	<param name="cms_version" type="payzenlabel" label="VMPAYMENT_PAYZEN_CMS_VERSION" default="VirtueMart 2.0.2"/>
+	<param name="cms_version" type="payzenlabel" label="VMPAYMENT_PAYZEN_CMS_VERSION" default="VirtueMart 2.0.3"/>
 	<param name="documentation" type="payzenlabel" label="VMPAYMENT_PAYZEN_DOC" default="&lt;a href=&quot;http://media.payzen.eu/documentation_support/virtuemart_2.pdf&quot; target=&quot;_blank&quot;&gt;Documentation&lt;/a&gt;"/>/>
 
 	<param type="spacer" default="VMPAYMENT_PAYZEN_PAYMENT_MODULE_SETTINGS" level="level1" />
 	<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_PAYZEN_LOGOS"
-             	description="VMPAYMENT_PAYZEN_LOGOS_DESC"
-             	directory="/images/stories/virtuemart/payment"
-             	default="PayZen.jpg" hide_default="1" hide_none="1"
-             	stripext="0" exclude="^_" />
+		description="VMPAYMENT_PAYZEN_LOGOS_DESC"
+		directory="/images/stories/virtuemart/payment"
+		default="payzen.jpg" hide_default="1" hide_none="1"
+		stripext="0" exclude="^_" />
 	<param name="cost_per_transaction" type="text" label="VMPAYMENT_PAYZEN_COST_PER_TRANSACTION" description="VMPAYMENT_PAYZEN_COST_PER_TRANSACTION_DESC" />
 	<param name="cost_percent_total" type="text" label="VMPAYMENT_PAYZEN_COST_PERCENT_TOTAL" description="VMPAYMENT_PAYZEN_COST_PERCENT_TOTAL_DESC" />
 	<param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_PAYZEN_TAX" description="VMPAYMENT_PAYZEN_TAX_DESC" />
