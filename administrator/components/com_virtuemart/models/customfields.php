@@ -353,7 +353,7 @@ class VirtueMartModelCustomfields extends VmModel {
 					$options[] = array( 'value' => 'product_height' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_HEIGHT'));
 					$options[] = array( 'value' => 'product_weight' ,'text' =>JText::_('COM_VIRTUEMART_PRODUCT_WEIGHT'));
 
-					return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]','','value','text',$field->custom_value).'</td><td>';
+					return JHTML::_('select.genericlist', $options,'field['.$row.'][custom_value]','','value','text',$field->custom_value).'</td><td>'.$priceInput;
 // 					return 'Automatic Childvariant creation (later you can choose here attributes to show, now product name) </td><td>';
 					break;
 				// variants

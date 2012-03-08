@@ -1431,65 +1431,6 @@ public function getStockIndicator($product) {
 }
 
 
-/**
- * Decrease the stock for a given product, calls _updateStock
- *
- * @author Oscar van Eijk
- * @param $_id integer Product ID
- * @param $_amount integer Amount sold
- * @access public
- */
-public function decreaseStock ($_id, $_amount)
-{
-	$this->_updateStock($_id, $_amount, '-');
-}
-
-/**
- * Increase the stock for a given product, calls _updateStock
- *
- * @author Oscar van Eijk
- * @param $_id integer Product ID
- * @param $_amount integer Amount sold
- * @access public
- */
-public function increaseStock ($_id, $_amount)
-{
-	$this->_updateStock($_id, $_amount, '+');
-}
-
-/**
- * Update the stock for a given product
- *
- * @author Oscar van Eijk
- * @author Max Milbers
- * @param $_id integer Product ID
- * @param $_amount integer Amount sold
- * @param $_sign char '+' for increase, '-' for decrease
- * @access private
- */
-private function _updateStock($_id, $_amount, $_sign){
-
-	//sanitize fields
-	$_id = (int) $_id;
-	$_amount = (float) $_amount;
-
-	$this->_db->setQuery('UPDATE `#__virtuemart_products` '
-	. 'SET `product_in_stock` = `product_in_stock` ' . $_sign . $_amount . ' '
-	. 'WHERE `virtuemart_product_id` = ' . $_id
-	);
-	$this->_db->query();
-
-	if ($_sign == '-') {
-		$this->_db->setQuery('SELECT `product_in_stock` < `low_stock_notification` '
-		. 'FROM `#__virtuemart_products` '
-		. 'WHERE `virtuemart_product_id` = ' . $_id
-		);
-		if ($this->_db->loadResult() == 1) {
-			// TODO Generate low stock warning
-		}
-	}
-}
-
 
 public function updateStockInDB($product, $amount, $signInStoc, $signOrderedStock){
 // 	vmdebug( 'stockupdate in DB', $product->virtuemart_product_id,$amount, $signInStoc, $signOrderedStock );
@@ -1536,8 +1477,6 @@ public function updateStockInDB($product, $amount, $signInStoc, $signOrderedStoc
 
 
 public function getUncategorizedChildren($selected){
-
-
 
 		$q = 'SELECT * FROM `#__virtuemart_products` as p
 			LEFT JOIN `#__virtuemart_products_'.VMLANG.'` as pl

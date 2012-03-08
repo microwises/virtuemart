@@ -47,18 +47,6 @@ class VmModel extends JModel {
 
 		$this->_cidName = $cidName;
 
-		// Get the pagination request variables
-/*		$mainframe = JFactory::getApplication() ;
-// 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$namespace = JRequest::getWord('option').'.'.JRequest::getWord('view').'.limit';
-		$limit = $mainframe->getUserStateFromRequest($namespace, 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest($namespace.'start', 'limitstart', 0, 'int');
-
-		vmdebug('__construct $limit '.$limit.' $limitstart '.$limitstart);
-		// Set the state pagination variables
-		$this->setState('limit', $limit);
-		$this->setState('limitstart', $limitstart);*/
-
 		// Get the task
 		$task = JRequest::getWord('task');
 		if($task!=='add'){
@@ -397,7 +385,7 @@ class VmModel extends JModel {
 				$count = 0;
 			}
 			$this->_total = $count;
-			if($limitStart>$count){
+			if($limitStart>=$count){
 				$limitStart = floor($count/$limit);
 				$this->_db->setQuery($q,$limitStart,$limit);
 				if($object == 2){

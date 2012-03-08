@@ -199,7 +199,7 @@ $i=0;
 				</td>
 			</tr>
 				<td width="79%"><?php
-                	if (count($this->product_childs)>0) {
+                	if (count($this->product_childs)>0 and !empty($this->product->customfields)) {
 
                 		foreach($this->product->customfields as $custom){
                 			// 								vmdebug('my custom',$custom);
