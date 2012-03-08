@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install version="1.5" type="plugin" group="vmpayment" method="upgrade">
+    <name>VM - Payment, Systempay</name>
+    <creationDate>November 2011</creationDate>
+    <author>Lyra Network</author>
+    <authorEmail>supportvad@lyra-network.com</authorEmail>
+    <authorUrl>http://www.lyra-network.com</authorUrl>
+    <copyright>Copyright Lyra Network.</copyright>
+    <license></license>
+    <version>1.2</version>
+    <description>
+    	<![CDATA[<a href="http://www.lyra-network.com" target="_blank">Systempay</a> is a multi bank payment provider. ]]>
+    </description>
+
+    <files>
+	<filename plugin="systempay">systempay.php</filename>
+	<folder>systempay</folder>
+    </files>
+
+    <languages>
+	<language tag="en-GB">languageBE/en-GB.plg_vmpayment_systempay.ini</language>
+	<language tag="fr-FR">languageBE/fr-FR.plg_vmpayment_systempay.ini</language>
+    </languages>
+
+    <media folder="images" destination="../images/stories/virtuemart/payment">
+	<filename>Systempay.jpg</filename>
+    </media>
+
+    <params addpath="/plugins/vmpayment/systempay/elements" />
+    <params addpath="/plugins/vmpayment/systempay/systempay/elements" />
+
+    <params addpath="/administrator/components/com_virtuemart/elements">
+	<param type="vmjpluginwarning" />
+
+	<param type="spacer" default="VMPAYMENT_SYSTEMPAY_MODULE_INFORMATION_TITLE" level="level1" />
+	<param type="spacer" default="VMPAYMENT_SYSTEMPAY_MODULE_INFORMATION" level="level1" />
+
+	<param name="developed_by" type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_DEVELOPED_BY" default="&lt;a href=&quot;http://www.lyra-network.com/&quot; target=&quot;_blank&quot;&gt;Lyra network&lt;/a&gt;"/>
+	<param name="contact_email" type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_CONTACT_EMAIL" default="&lt;a href=&quot;mailto:supportvad@lyra-network.com&quot;&gt;supportvad@lyra-network.com&lt;/a&gt;"/>
+	<param name="contrib_version" type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_CONTRIB_VERSION" default="1.2"/>
+	<param name="gateway_version" type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_GATEWAY_VERSION" default="V2"/>
+	<param name="documentation" type="systempaylabel" label="VMPAYMENT_SYSTEMPAY_DOC" default="&lt;a href=&quot;http://media.payzen.eu/documentation_support/virtuemart_2.pdf&quot; target=&quot;_blank&quot;&gt;Documentation&lt;/a&gt;"/>/>
+
+	<param type="spacer" default="" level="level1" />
+	<param type="spacer" default="VMPAYMENT_SYSTEMPAY_PAYMENT_MODULE_SETTINGS" level="level1" />
+	<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_SYSTEMPAY_LOGOS"
+			description="VMPAYMENT_SYSTEMPAY_LOGOS_DESC"
+			directory="/images/stories/virtuemart/payment"
+			default="systempay.jpg" hide_default="1" hide_none="1"
+			stripext="0" exclude="^_" />
+	<param name="cost_per_transaction" type="text" label="VMPAYMENT_SYSTEMPAY_COST_PER_TRANSACTION" description="VMPAYMENT_SYSTEMPAY_COST_PER_TRANSACTION_DESC" />
+	<param name="cost_percent_total" type="text" label="VMPAYMENT_SYSTEMPAY_COST_PERCENT_TOTAL" description="VMPAYMENT_SYSTEMPAY_COST_PERCENT_TOTAL_DESC" />
+	<param name="tax_id" type="vmtaxes" scope="com_virtuemart"  label="VMPAYMENT_SYSTEMPAY_TAX" description="VMPAYMENT_SYSTEMPAY_TAX_DESC" />
+
+	<param type="spacer" default="VMPAYMENT_SYSTEMPAY_PAYMENT_GATEWAY_ACCESS" level="level1" />
+
+	<param name="site_id" type="text" size="10" default="" label="VMPAYMENT_SYSTEMPAY_SITE_ID" description="VMPAYMENT_SYSTEMPAY_SITE_ID_DESC"/>
+	<param name="key_test" type="text" size="20" default="" label="VMPAYMENT_SYSTEMPAY_TEST_KEY" description="VMPAYMENT_SYSTEMPAY_TEST_KEY_DESC"/>
+	<param name="key_prod" type="text" size="20" default="" label="VMPAYMENT_SYSTEMPAY_PROD_KEY" description="VMPAYMENT_SYSTEMPAY_PROD_KEY_DESC"/>
+	<param name="ctx_mode" type="radio" default="TEST" label="VMPAYMENT_SYSTEMPAY_CTX_MODE" description="VMPAYMENT_SYSTEMPAY_CTX_MODE_DESC">
+	    <option value="TEST">VMPAYMENT_SYSTEMPAY_TEST</option>
+	    <option value="PRODUCTION">VMPAYMENT_SYSTEMPAY_PRODUCTION</option>
+	</param>
+	<param name="platform_url" type="text" size="50" default="https://paiement.systempay.fr/vads-payment/" label="VMPAYMENT_SYSTEMPAY_PLATFORM_URL" description="VMPAYMENT_SYSTEMPAY_PLATFORM_URL_DESC"/>
+
+	<param type="spacer" default="VMPAYMENT_SYSTEMPAY_PAYMENT_PAGE" level="level1" />
+
+	<param name="language" type="list" default="fr" label="VMPAYMENT_SYSTEMPAY_LANGUAGE" description="VMPAYMENT_SYSTEMPAY_LANGUAGE_DESC">
+	    <option value="fr">VMPAYMENT_SYSTEMPAY_FRENCH</option>
+	    <option value="de">VMPAYMENT_SYSTEMPAY_GERMAN</option>
+	    <option value="en">VMPAYMENT_SYSTEMPAY_ENGLISH</option>
+	    <option value="es">VMPAYMENT_SYSTEMPAY_SPANISH</option>
+	    <option value="zh">VMPAYMENT_SYSTEMPAY_CHINESE</option>
+	    <option value="it">VMPAYMENT_SYSTEMPAY_ITALIAN</option>
+	    <option value="ja">VMPAYMENT_SYSTEMPAY_JAPANESE</option>
+	    <option value="pt">VMPAYMENT_SYSTEMPAY_PORTUGUESE</option>
+	    <option value="nl">VMPAYMENT_SYSTEMPAY_DUTCH</option>
+	</param>
+	<param name="available_languages" type="systempaymultilist" multiple="multiple" default="" label="VMPAYMENT_SYSTEMPAY_AVAILABLES_LANGUAGES" size= "8" description="VMPAYMENT_SYSTEMPAY_AVAILABLES_LANGUAGES_DESC">
+	    <option value="">VMPAYMENT_SYSTEMPAY_ALL</option>
+	    <option value="fr">VMPAYMENT_SYSTEMPAY_FRENCH</option>
+	    <option value="de">VMPAYMENT_SYSTEMPAY_GERMAN</option>
+	    <option value="en">VMPAYMENT_SYSTEMPAY_ENGLISH</option>
+	    <option value="es">VMPAYMENT_SYSTEMPAY_SPANISH</option>
+	    <option value="zh">VMPAYMENT_SYSTEMPAY_CHINESE</option>
+	    <option value="it">VMPAYMENT_SYSTEMPAY_ITALIAN</option>
+	    <option value="ja">VMPAYMENT_SYSTEMPAY_JAPANESE</option>
+	    <option value="pt">VMPAYMENT_SYSTEMPAY_PORTUGUESE</option>
+	    <option value="nl">VMPAYMENT_SYSTEMPAY_DUTCH</option>
+	</param>
+	<param name="capture_delay" type="text" size="10" default="" label="VMPAYMENT_SYSTEMPAY_CAPTURE_DELAY" description="VMPAYMENT_SYSTEMPAY_CAPTURE_DELAY_DESC"/>
+	<param name="validation_mode" type="list" default="" label="VMPAYMENT_SYSTEMPAY_VALIDATION_MODE" description="VMPAYMENT_SYSTEMPAY_VALIDATION_MODE_DESC">
+	    <option value="">VMPAYMENT_SYSTEMPAY_BY_DEFAULT</option>
+	    <option value="0">VMPAYMENT_SYSTEMPAY_AUTOMATIC</option>
+	    <option value="1">VMPAYMENT_SYSTEMPAY_MANUAL</option>
+	</param>
+	<param name="payment_cards" type="systempaymultilist" multiple="multiple" default="" label="VMPAYMENT_SYSTEMPAY_PAYMENT_CARDS" size= "10" description="VMPAYMENT_SYSTEMPAY_PAYMENT_CARDS_DESC">
+	    <option value="">VMPAYMENT_SYSTEMPAY_ALL</option>
+	    <option value="CB">Carte Bleue</option>
+	    <option value="MASTERCARD">MasterCard</option>
+	    <option value="VISA">Visa</option>
+	    <option value="AMEX">American Express</option>
+	</param>
+
+	<param type="spacer" default="VMPAYMENT_SYSTEMPAY_AMOUNT_RESTRICTIONS" level="level1" />
+
+	<param name="min_amount" type="text" size="10" default="" label="VMPAYMENT_SYSTEMPAY_AMOUNT_MIN" description="VMPAYMENT_SYSTEMPAY_AMOUNT_MIN_DESC"/>
+	<param name="max_amount" type="text" size="10" default="" label="VMPAYMENT_SYSTEMPAY_AMOUNT_MAX" description="VMPAYMENT_SYSTEMPAY_AMOUNT_MAX_DESC"/>
+
+	<param type="spacer" default="VMPAYMENT_SYSTEMPAY_RETURN_OPTIONS" level="level1" />
+
+	<param name="redirect_enabled" type="radio" default="0" label="VMPAYMENT_SYSTEMPAY_REDIRECT_ENABLED" description="VMPAYMENT_SYSTEMPAY_REDIRECT_ENABLED_DESC">
+	    <option value="0">VMPAYMENT_SYSTEMPAY_NO</option>
+	    <option value="1">VMPAYMENT_SYSTEMPAY_YES</option>
+	</param>
+	<param name="redirect_success_timeout" type="text" size="10" default="5" label="VMPAYMENT_SYSTEMPAY_REDIRECT_SUCCESS_TIMEOUT" description="VMPAYMENT_SYSTEMPAY_REDIRECT_SUCCESS_TIMEOUT_DESC"/>
+	<param name="redirect_success_message" type="text" size="50" default="Votre paiement a bien été pris en compte, vous allez être redirigé dans quelques instants." label="VMPAYMENT_SYSTEMPAY_REDIRECT_SUCCESS_MESSAGE" description="VMPAYMENT_SYSTEMPAY_REDIRECT_SUCCESS_MESSAGE_DESC" />
+	<param name="redirect_error_timeout" type="text" size="10" default="5" label="VMPAYMENT_SYSTEMPAY_REDIRECT_ERROR_TIMEOUT" description="VMPAYMENT_SYSTEMPAY_REDIRECT_ERROR_TIMEOUT_DESC"/>
+	<param name="redirect_error_message" type="text" size="50" default="Une erreur est survenue, vous allez être redirigé dans quelques instants." label="VMPAYMENT_SYSTEMPAY_REDIRECT_ERROR_MESSAGE" description="VMPAYMENT_SYSTEMPAY_REDIRECT_ERROR_MESSAGE_DESC"/>
+	<param name="return_mode" type="list" default="GET" label="VMPAYMENT_SYSTEMPAY_RETURN_MODE" description="VMPAYMENT_SYSTEMPAY_RETURN_MODE_DESC">
+	    <option value="GET">GET</option>
+	    <option value="POST">POST</option>
+	</param>
+	<param name="url_success" type="systempayurl" size="50" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginresponsereceived" label="VMPAYMENT_SYSTEMPAY_URL_SUCCESS" description="VMPAYMENT_SYSTEMPAY_URL_SUCCESS_DESC" editable="true"/>
+	<param name="url_return" type="systempayurl" size="50" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginresponsereceived" label="VMPAYMENT_SYSTEMPAY_URL_ERROR" description="VMPAYMENT_SYSTEMPAY_URL_ERROR_DESC" editable="true"/>
+	<param name="url_cancel" type="systempayurl" size="50" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginUserPaymentCancel" label="VMPAYMENT_SYSTEMPAY_URL_CANCEL" description="VMPAYMENT_SYSTEMPAY_URL_CANCEL_DESC" editable="true"/>
+	<param name="silent_url" type="systempayurl" label="VMPAYMENT_SYSTEMPAY_URL_CHECK" default="index.php?option=com_virtuemart&amp;view=pluginresponse&amp;task=pluginnotification&amp;tmpl=component" editable="false"/>
+
+	<param name="order_success_status" type="vmorderstate" scope="com_virtuemart" default="C" label="VMPAYMENT_SYSTEMPAY_ORDER_SUCCESS_STATUS" description="VMPAYMENT_SYSTEMPAY_ORDER_SUCCESS_STATUS_DESC" />
+	<param name="order_failure_status" type="vmorderstate" scope="com_virtuemart" default="X" label="VMPAYMENT_SYSTEMPAY_ORDER_FAILURE_STATUS" description="VMPAYMENT_SYSTEMPAY_ORDER_FAILURE_STATUS_DESC" />
+	<param name="debug" type="radio" default="0" label="VMPAYMENT_SYSTEMPAY_DEBUG" description="VMPAYMENT_SYSTEMPAY_DEBUG_DESC" >
+	    <option value="0">VMPAYMENT_SYSTEMPAY_NO</option>
+	    <option value="1">VMPAYMENT_SYSTEMPAY_YES</option>
+	</param>
+
+    </params>
+</install>
