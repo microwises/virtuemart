@@ -43,6 +43,7 @@ AdminUIHelper::startAdminArea();
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?>
 			</th>
+			   <th><?php echo $this->sort('virtuemart_manufacturercategories_id', 'COM_VIRTUEMART_ID')  ?></th>
 		</tr>
 		</thead>
 		<?php
@@ -73,6 +74,9 @@ AdminUIHelper::startAdminArea();
 				<td align="center">
 					<?php echo $published; ?>
 				</td>
+				<td align="right">
+		    <?php echo $row->virtuemart_manufacturercategories_id; ?>
+		</td>
 			</tr>
 			<?php
 			$k = 1 - $k;

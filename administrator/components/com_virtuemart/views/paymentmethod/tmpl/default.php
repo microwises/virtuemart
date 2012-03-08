@@ -29,9 +29,7 @@ AdminUIHelper::startAdminArea();
 		<table class="adminlist" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
-			<th width="2">
-				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
-			</th>
+
 			<th width="2">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->payments); ?>);" />
 			</th>
@@ -63,6 +61,7 @@ AdminUIHelper::startAdminArea();
 				<?php echo JText::_('COM_VIRTUEMART_CALC_SHARED'); ?>
 			</th>
 			<?php } ?>
+			 <th><?php echo $this->sort('virtuemart_paymentmethod_id', 'COM_VIRTUEMART_ID')  ?></th>
 		</tr>
 		</thead>
 		<?php
@@ -76,9 +75,7 @@ AdminUIHelper::startAdminArea();
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=paymentmethod&task=edit&cid[]=' . $row->virtuemart_paymentmethod_id);
 			?>
 			<tr class="<?php echo "row".$k; ?>">
-				<td align="center">
-					<?php echo $row->virtuemart_paymentmethod_id; ?>
-				</td>
+
 				<td align="center" >
 					<?php echo $checked; ?>
 				</td>
@@ -111,6 +108,9 @@ AdminUIHelper::startAdminArea();
 					<?php echo $row->shared; ?>
 				</td>
 				<?php } ?>
+				<td align="center">
+					<?php echo $row->virtuemart_paymentmethod_id; ?>
+				</td>
 			</tr>
 			<?php
 			$k = 1 - $k;

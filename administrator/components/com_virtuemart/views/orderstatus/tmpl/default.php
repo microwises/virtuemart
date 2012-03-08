@@ -30,9 +30,7 @@ AdminUIHelper::startAdminArea();
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->orderStatusList); ?>);" />
 			</th>
-			<th width="10">
-				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
-			</th>
+
 			<th>
 			<?php echo $this->sort('order_status_name') ?>
 			</th>
@@ -49,7 +47,7 @@ AdminUIHelper::startAdminArea();
 			<th width="20">
 				<?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?>
 			</th>
-
+			<th><?php echo $this->sort('virtuemart_orderstate_id', 'COM_VIRTUEMART_ID')  ?></th>
 		</tr>
 		</thead>
 		<?php
@@ -75,9 +73,7 @@ AdminUIHelper::startAdminArea();
 				<td width="10">
 					<?php echo $checked; ?>
 				</td>
-				<td width="10">
-					<?php echo $row->virtuemart_orderstate_id; ?>
-				</td>
+
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo JText::_($row->order_status_name); ?></a>
 				</td>
@@ -93,6 +89,9 @@ AdminUIHelper::startAdminArea();
 					<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $row->ordering; ?>" style="text-align: center" />
 				</td>
 				<td align="center"><?php echo $published; ?></td>
+				<td width="10">
+					<?php echo $row->virtuemart_orderstate_id; ?>
+				</td>
 			</tr>
 			<?php
 // 			<td class="order">

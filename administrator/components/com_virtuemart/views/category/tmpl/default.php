@@ -28,9 +28,7 @@ AdminUIHelper::startAdminArea();
 		<table class="adminlist" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
-			<th width="20">
-				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
-			</th>
+
 			<th width="20">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->categories); ?>);" />
 			</th>
@@ -43,9 +41,7 @@ AdminUIHelper::startAdminArea();
 			<th align="left" width="11%">
 				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_S'); ?>
 			</th>
-			<th align="center" width="5%">
-				<?php echo $this->sort('c.published' , 'COM_VIRTUEMART_PUBLISHED') ?>
-			</th>
+
 			<!-- Commented out for future use
 			<th width="5%">
 				<?php echo $this->sort( 'cx.category_shared' , 'COM_VIRTUEMART_PRODUCT_LIST_SHARED') ?>
@@ -55,6 +51,11 @@ AdminUIHelper::startAdminArea();
 				<?php echo $this->sort( 'c.ordering' , 'COM_VIRTUEMART_ORDERING') ?>
 				<?php echo JHTML::_('grid.order', $this->categories, 'filesave.png', 'saveOrder' ); ?>
 			</th>
+			<th align="center" width="5%">
+				<?php echo $this->sort('c.published' , 'COM_VIRTUEMART_PUBLISHED') ?>
+			</th>
+			  <th><?php echo $this->sort('virtuemart_category_id', 'COM_VIRTUEMART_ID')  ?></th>
+
 		</tr>
 		</thead>
 		<tbody>
@@ -94,9 +95,7 @@ AdminUIHelper::startAdminArea();
 			}
 		?>
 			<tr class="<?php echo "row".$k;?>">
-				<td align="center">
-					<?php echo ($i+1);?>
-				</td>
+
 				<td><?php echo $checked;?></td>
 				<td align="left">
 					<span class="categoryLevel"><?php echo $categoryLevel;?></span>
@@ -109,9 +108,7 @@ AdminUIHelper::startAdminArea();
 					<?php echo  $this->model->countProducts($cat->virtuemart_category_id);//ShopFunctions::countProductsByCategory($row->virtuemart_category_id);?>
 					&nbsp;<a href="<?php echo $showProductsLink; ?>">[ <?php echo JText::_('COM_VIRTUEMART_SHOW');?> ]</a>
 				</td>
-				<td align="center">
-					<?php echo $published;?>
-				</td>
+
 <?php
 		/*
 		 * html comment do a bug in some server
@@ -128,6 +125,10 @@ AdminUIHelper::startAdminArea();
 					<span><?php echo $this->pagination->orderDownIcon( $i, $nrows, ($cat->category_parent_id == 0 || $cat->category_parent_id == @$this->categories[$this->rowList[$i + 1]]->category_parent_id), 'orderDown', JText::_('COM_VIRTUEMART_MOVE_DOWN')); ?></span>
 					<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $cat->ordering; ?>" style="text-align: center" />
 				</td>
+				<td align="center">
+					<?php echo $published;?>
+				</td>
+				<td><?php echo $cat->virtuemart_category_id; // echo $product->vendor_name; ?></td>
 			</tr>
 		<?php
 			$k = 1 - $k;

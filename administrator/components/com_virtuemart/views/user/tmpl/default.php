@@ -45,7 +45,7 @@ AdminUIHelper::startAdminArea();
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->userList); ?>);" />
 			</th>
-			<th width="10"><?php echo JText::_('COM_VIRTUEMART_#'); ?></th>
+
 			<th><?php echo $this->sort('ju.username', 'COM_VIRTUEMART_USERNAME')  ?></th>
 			<th><?php echo $this->sort('ju.name', 'COM_VIRTUEMART_USER_DISPLAYED_NAME')  ?></th>
 			<?php		if(Vmconfig::get('multix','none')!=='none'){ ?>
@@ -53,6 +53,7 @@ AdminUIHelper::startAdminArea();
 			<?php } ?>
 			<th><?php echo JText::_('COM_VIRTUEMART_USER_GROUP'); ?></th>
 			<th><?php echo $this->sort('shopper_group_name', 'COM_VIRTUEMART_SHOPPERGROUP')  ?></th>
+			  <th><?php echo  JText::_('COM_VIRTUEMART_ID') ?></th>
 		</tr>
 		</thead>
 		<?php
@@ -67,9 +68,7 @@ AdminUIHelper::startAdminArea();
 				<td>
 					<?php echo $checked; ?>
 				</td>
-				<td>
-					<?php echo $i; ?>
-				</td>
+
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo $row->username; ?></a>
 				</td>
@@ -92,6 +91,9 @@ AdminUIHelper::startAdminArea();
 					if(empty($row->shopper_group_name)) $row->shopper_group_name = $this->defaultShopperGroup;
 					echo $row->shopper_group_name;
 					?>
+				</td>
+				<td align="right">
+					<?php echo $row->id; ?>
 				</td>
 			</tr>
 			<?php

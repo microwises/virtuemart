@@ -48,6 +48,8 @@ AdminUIHelper::startAdminArea();
 					<?php echo JText::_('COM_VIRTUEMART_VENDOR'); ?>
 				</th>
 				<?php } ?>
+					  <th><?php echo $this->sort('virtuemart_shoppergroup_id', 'COM_VIRTUEMART_ID')  ?></th>
+
 		    </tr>
 	    </thead><?php
 
@@ -90,6 +92,9 @@ AdminUIHelper::startAdminArea();
             <?php echo $row->virtuemart_vendor_id; ?>
           	</td>
           	<?php } ?>
+		 <td align="left">
+            <?php echo $row->virtuemart_shoppergroup_id; ?>
+          	</td>
 
 	      </tr><?php
 		    $k = 1 - $k;

@@ -91,7 +91,7 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 		<th><?php echo $this->sort('mf_name', 'COM_VIRTUEMART_MANUFACTURER_S') ; ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_REVIEW_S'); ?></th>
 		<th width="40px" ><?php echo $this->sort('published') ; ?></th>
-	                <th><?php echo 'id' //echo JHTML::_('grid.sort', 'COM_VIRTUEMART_PRODUCT_LIST_VENDOR_NAME', 'vendor_name', $this->lists['filter_order_Dir'], $this->lists['filter_order'] ); ?></th>
+	                <th><?php echo $this->sort('virtuemart_product_id', 'COM_VIRTUEMART_ID')  ?></th>
 
         </tr>
 	</thead>

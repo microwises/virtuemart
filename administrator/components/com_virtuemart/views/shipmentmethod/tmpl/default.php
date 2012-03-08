@@ -47,6 +47,7 @@ AdminUIHelper::startAdminArea();
 				<?php echo JText::_('COM_VIRTUEMART_LIST_ORDER'); ?>
 			</th>
 			<th width="20"><?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?></th>
+			 <th><?php echo $this->sort('virtuemart_shipmentmethod_id', 'COM_VIRTUEMART_ID')  ?></th>
 		</tr>
 		</thead>
 		<?php
@@ -81,6 +82,9 @@ AdminUIHelper::startAdminArea();
 					<?php echo JText::_($row->ordering); ?>
 				</td>
 				<td><?php echo $published; ?></td>
+				<td align="center">
+					<?php echo $row->virtuemart_shipmentmethod_id; ?>
+				</td>
 			</tr>
 			<?php
 			$k = 1 - $k;

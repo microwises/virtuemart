@@ -64,6 +64,7 @@ $pagination = $this->pagination;
 		<?php echo JHTML::_('grid.order',  $customs ); ?>
 		</th>
 		<th><?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?></th>
+		  <th><?php echo $this->sort('virtuemart_custom_id', 'COM_VIRTUEMART_ID')  ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -80,7 +81,7 @@ $pagination = $this->pagination;
 			?>
 			<tr class="row<?php echo $k ; ?>">
 				<!-- Checkbox -->
-				<td><?php echo $checked; echo $custom->virtuemart_custom_id; ?></td>
+				<td><?php echo $checked; ?></td>
 				<?php
 				$link = "index.php?view=custom&keyword=".urlencode($keyword)."&custom_parent_id=".$custom->custom_parent_id."&option=".$option;
 				?>
@@ -112,6 +113,7 @@ $pagination = $this->pagination;
 					<input class="ordering" type="text" name="order[<?php echo $i?>]" id="order[<?php echo $i?>]" size="5" value="<?php echo $custom->ordering; ?>" style="text-align: center" />
 				</td>
 				<td><?php echo $published; ?></td>
+				<td><?php echo $custom->virtuemart_custom_id; ?></td>
 			</tr>
 		<?php
 			$k = 1 - $k;

@@ -48,9 +48,7 @@ AdminUIHelper::startAdminArea();
 			<th width="10">
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->userfieldsList); ?>);" />
 			</th>
-			<th width="10">
-				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
-			</th>
+
 			<th>
 			<?php  echo $this->sort('name','COM_VIRTUEMART_FIELDMANAGER_NAME')  ?>
 			</th>
@@ -79,6 +77,7 @@ AdminUIHelper::startAdminArea();
 			<?php echo $this->sort('ordering','COM_VIRTUEMART_FIELDMANAGER_REORDER') ?>
 			<?php echo JHTML::_('grid.order',  $this->userfieldsList ); ?>
 			</th>
+			 <th><?php echo $this->sort('virtuemart_userfield_id', 'COM_VIRTUEMART_ID')  ?></th>
 		</tr>
 		</thead>
 		<?php
@@ -106,9 +105,7 @@ AdminUIHelper::startAdminArea();
 				<td width="10">
 					<?php echo $checked; ?>
 				</td>
-				<td width="10">
-					<?php echo JText::_($row->virtuemart_userfield_id); ?>
-				</td>
+
 				<td align="left">
 					<a href="<?php echo $editlink; ?>"><?php echo JText::_($row->name); ?></a>
 				</td>
@@ -138,6 +135,9 @@ AdminUIHelper::startAdminArea();
 					<span><?php echo $this->pagination->orderDownIcon( $i, $n, true, 'orderdown', JText::_('COM_VIRTUEMART_MOVE_DOWN'), $ordering ); ?></span>
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 			</td>
+			<td width="10">
+					<?php echo JText::_($row->virtuemart_userfield_id); ?>
+				</td>
 			</tr>
 			<?php
 			$k = 1 - $k;

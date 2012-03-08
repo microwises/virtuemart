@@ -41,9 +41,7 @@ AdminUIHelper::startAdminArea();
 		<table class="adminlist" cellspacing="0" cellpadding="0">
 		<thead>
 		<tr>
-			<th>
-				<?php echo JText::_('COM_VIRTUEMART_#'); ?>
-			</th>
+
 			<th>
 				<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->calcs); ?>);" />
 			</th>
@@ -69,6 +67,7 @@ AdminUIHelper::startAdminArea();
 			<th><?php echo JText::_('COM_VIRTUEMART_COUNTRY_S'); ?></th>
 			<th><?php echo JText::_('COM_VIRTUEMART_STATE_IDS'); ?></th>
 			<th><?php echo JText::_('COM_VIRTUEMART_PUBLISHED'); ?></th>
+			  <th><?php echo $this->sort('virtuemart_calc_id', 'COM_VIRTUEMART_ID')  ?></th>
 		<?php /*	<th width="10">
 				<?php echo JText::_('COM_VIRTUEMART_CALC_SHARED'); ?>
 			</th> */ ?>
@@ -85,9 +84,7 @@ AdminUIHelper::startAdminArea();
 			$editlink = JROUTE::_('index.php?option=com_virtuemart&view=calc&task=edit&cid[]=' . $row->virtuemart_calc_id);
 			?>
 			<tr class="<?php echo "row".$k; ?>">
-				<td align="right">
-					<?php echo $row->virtuemart_calc_id; ?>
-				</td>
+
 				<td>
 					<?php echo $checked; ?>
 				</td>
@@ -166,6 +163,9 @@ AdminUIHelper::startAdminArea();
 				</td>
 				<td align="center">
 					<?php echo $published; ?>
+				</td>
+				<td align="right">
+					<?php echo $row->virtuemart_calc_id; ?>
 				</td>
 				<?php /*
 				<td align="center">

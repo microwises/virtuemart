@@ -52,6 +52,7 @@ $productfileslist = $this->files;
 		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILENAME'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_FILES_LIST_FILETYPE'); ?></th>
 		<th><?php echo JText::_('COM_VIRTUEMART_PUBLISH'); ?></th>
+	  <th><?php echo $this->sort('virtuemart_media_id', 'COM_VIRTUEMART_ID')  ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -67,7 +68,7 @@ $productfileslist = $this->files;
 			?>
 			<tr class="row<?php echo $k ; ?>">
 				<!-- Checkbox -->
-				<td><?php echo $checked; echo $productfile->virtuemart_media_id; ?></td>
+				<td><?php echo $checked;   ?></td>
 				<!-- Product name -->
 				<?php
 				$link = ""; //"index.php?view=media&limitstart=".$pagination->limitstart."&keyword=".urlencode($keyword)."&option=".$option;
@@ -100,6 +101,7 @@ $productfileslist = $this->files;
 				<td><span class="vmicon vmicon-16-ext_<?php echo $productfile->file_extension; ?>"></span><?php echo $productfile->file_extension; ?></td>
 				<!-- published -->
 				<td><?php echo $published; ?></td>
+				<td><?php   echo $productfile->virtuemart_media_id; ?></td>
 			</tr>
 		<?php
 			$k = 1 - $k;
