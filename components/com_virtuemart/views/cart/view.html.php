@@ -188,7 +188,6 @@ class VirtueMartViewCart extends VmView {
 		$shipments_shipment_rates=array();
 		if (!$this->checkShipmentMethodsConfigured()) {
 			$this->assignRef('shipments_shipment_rates',$shipments_shipment_rates);
-			$this->assignRef('found_shipment_method', $found_shipment_method);
 			return;
 		}
 		$selectedShipment = (empty($this->cart->virtuemart_shipmentmethod_id) ? 0 : $this->cart->virtuemart_shipmentmethod_id);
@@ -199,13 +198,7 @@ class VirtueMartViewCart extends VmView {
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmDisplayListFEShipment', array( $this->cart, $selectedShipment, &$shipments_shipment_rates));
 		// if no shipment rate defined
-		$found_shipment_method = false;
-		foreach ($returnValues as $returnValue) {
-			if($returnValue){
-				$found_shipment_method = true;
-				break;
-			}
-		}
+		$found_payment_method =count($paymentplugins_payments);
 		$shipment_not_found_text = JText::_('COM_VIRTUEMART_CART_NO_SHIPPING_METHOD_PUBLIC');
 		$this->assignRef('shipment_not_found_text', $shipment_not_found_text);
 		$this->assignRef('shipments_shipment_rates', $shipments_shipment_rates);
@@ -226,7 +219,6 @@ class VirtueMartViewCart extends VmView {
 		$payments_payment_rates=array();
 		if (!$this->checkPaymentMethodsConfigured()) {
 			$this->assignRef('paymentplugins_payments', $payments_payment_rates);
-			$this->assignRef('found_payment_method', $found_payment_method);
 		}
 
 		$selectedPayment = empty($this->cart->virtuemart_paymentmethod_id) ? 0 : $this->cart->virtuemart_paymentmethod_id;
@@ -237,13 +229,7 @@ class VirtueMartViewCart extends VmView {
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmDisplayListFEPayment', array($this->cart, $selectedPayment, &$paymentplugins_payments));
 		// if no payment defined
-		$found_payment_method = false;
-		foreach ($returnValues as $returnValue) {
-			if($returnValue){
-				$found_payment_method = true;
-				break;
-			}
-		}
+		$found_payment_method =count($paymentplugins_payments);
 
 		if (!$found_payment_method) {
 			$link=''; // todo
