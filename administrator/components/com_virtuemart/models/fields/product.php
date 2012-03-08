@@ -8,6 +8,7 @@ if (!class_exists('VmConfig'))
 require(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_virtuemart' . DS . 'helpers' . DS . 'config.php');
 if (!class_exists('ShopFunctions'))
 require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'shopfunctions.php');
+
 if (!class_exists('TableCategories'))
 require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'categories.php');
 
@@ -45,7 +46,8 @@ class JFormFieldProduct extends JFormField
 		return JHTML::_('select.genericlist',  $this->_getProducts(), $this->name, 'class="inputbox"   ', 'value', 'text', $this->value, $this->id);
 	}
 	private function _getProducts() {
-
+		if (!class_exists('VmModel'))
+		require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'vmmodel.php');
 		$productModel = VmModel::getModel('Product');
 		$productModel->_noLimit = true;
 		$products = $productModel->getProductListing(false, false, false, false, true,false);

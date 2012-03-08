@@ -199,7 +199,7 @@ class CurrencyDisplay {
 
 		$result = false;
 		if(!empty($user->id)){
-			$q = 'SELECT virtuemart_shoppergroup_id FROM `#__virtuemart_vmusers` as `u`
+			$q = 'SELECT `vx`.`virtuemart_shoppergroup_id` FROM `#__virtuemart_vmusers` as `u`
 									LEFT OUTER JOIN `#__virtuemart_vmuser_shoppergroups` AS `vx` ON `u`.`virtuemart_user_id`  = `vx`.`virtuemart_user_id`
 									LEFT OUTER JOIN `#__virtuemart_shoppergroups` AS `sg` ON `vx`.`virtuemart_shoppergroup_id` = `sg`.`virtuemart_shoppergroup_id`
 									WHERE `u`.`virtuemart_user_id` = "'.$user->id.'" ';
