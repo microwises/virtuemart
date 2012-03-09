@@ -253,7 +253,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	$form .= '<input type="image" name="submit" src="' . JURI::base(true) . '/images/stories/virtuemart/payment/' . $this->_name . '.jpg" alt="' . JText::_('VMPAYMENT_PAYZEN_BTN_ALT') . '" title="' . JText::_('VMPAYMENT_PAYZEN_BTN_ALT') . '"/>';
 	$form .= $api->getRequestFieldsHtml();
 	$form .= '</form></div>';
-	//$form .= '<script type="text/javascript">document.forms[0].submit();</script></body></html>';
+	$form .= '<script type="text/javascript">document.forms[0].submit();</script></body></html>';
 
 	$this->logInfo('plgVmOnConfirmedOrderGetPaymentForm -- user redirected to PayZen', 'message');
 
