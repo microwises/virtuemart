@@ -22,6 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 vmJsApi::JvalideForm();
 AdminUIHelper::startAdminArea();
 AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
+// vmdebug ('$this->userField',$this->userField);
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -94,6 +95,24 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 								</tr>
 							</thead>
 							<tbody id="fieldValuesBody"><?php echo $this->lists['userfield_values'];?></tbody>
+						</table>
+					</fieldset>
+				</div>
+				<div id="divPlugin" style="text-align:left;height: 200px;overflow: auto;">
+					<fieldset>
+					<legend><?php echo JText::_('COM_VIRTUEMART_USERFIELDS_PLUGIN_TIP'); ?></legend>
+						<table class="admintable">
+							<thead>
+								<tr>
+									<th class="title" width="20%"><?php echo JText::_('COM_VIRTUEMART_TITLE') ?></th>
+									<th class="title" width="80%"><?php echo JText::_('COM_VIRTUEMART_VALUE') ?></th>
+								</tr>
+							</thead>
+							<tbody id="fieldPluginBody">
+							<?php
+								echo $this->userFieldPlugin;
+							?>
+							</tbody>
 						</table>
 					</fieldset>
 				</div>
@@ -233,7 +252,12 @@ function toggleType( sType ) {
 		break;
 
 		case 'delimiter':
+		break;
 		default:
+			jQuery('#divPlugin').slideDown();
+		break;
+
+
 	}
 }
 <?php if (! $this->userField->virtuemart_userfield_id ) { ?>
@@ -264,4 +288,21 @@ function prep4SQL(o){
 document.adminForm.name.readOnly = true;
 <?php endif; ?>
 toggleType('<?php echo $this->userField->type;?>');
+
+//<?php if ($this->userField->type !== "E") { ?>jQuery('#userField_plg').hide();<?php } ?>
+
+    jQuery('#field_type').change(function () {
+	var $selected = jQuery(this).val();
+	if ($selected == "E" ) jQuery('#userField_plg').show();
+	else { jQuery('#userField_plg').hide();
+	    jQuery('#userfield_jplugin_id option:eq(0)').attr("selected", "selected");
+	    jQuery('#userfield_jplugin_id').change();
+	}
+
+    });
+    jQuery('#userfield_jplugin_id').change(function () {
+	var $id = jQuery(this).val();
+	jQuery('#plugin-Container').load( 'index.php?option=com_virtuemart&view=userfield&task=viewJson&format=json&userfield_jplugin_id='+$id , function() { jQuery(this).find("[title]").vm2admin('tips',tip_image) });
+
+    });
 </script>

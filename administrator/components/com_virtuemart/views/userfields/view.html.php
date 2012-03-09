@@ -55,6 +55,7 @@ class VirtuemartViewUserfields extends VmView {
 			$userField = $model->getUserfield();
                         $this->SetViewTitle('USERFIELD',$userField->name );
                                 $this->assignRef('viewName',$viewName);
+			$userFieldPlugin = '';
 			if ($userField->virtuemart_userfield_id < 1) { // Insert new userfield
 
 
@@ -74,7 +75,10 @@ class VirtuemartViewUserfields extends VmView {
 
 				$lists['type'] = $this->_getTypes($userField->type)
 					. '<input type="hidden" name="type" value="'.$userField->type.'" />';
+				if (strpos($userField->type, 'plugin') !==false) 
+					$userFieldPlugin = self::renderUserfieldPlugin(substr($userField->type, 6),$userField->params);
 			}
+			$this->assignRef('userFieldPlugin',	$userFieldPlugin);
 			JToolBarHelper::divider();
 			JToolBarHelper::save();
 			JToolBarHelper::apply();
@@ -285,7 +289,30 @@ class VirtuemartViewUserfields extends VmView {
 			}
 		}
 	}
+	function renderUserfieldPlugin($element, $params)
+	{
+		$db = JFactory::getDBO();
 
+			if (JVM_VERSION===1) {
+				$table = '#__plugins';
+				$jelement = 'element';
+			} else {
+				$table = '#__extensions';
+				$jelement = 'element';
+			}
+			$q = 'SELECT `params`,`element` FROM `' . $table . '` WHERE `' . $jelement . '` = "'.$element.'"';
+			$db ->setQuery($q);
+			$this->plugin = $db ->loadObject();
+			
+			$this->loadHelper('parameterparser');
+			$parameters = new vmParameters($params,  $this->plugin->element , 'plugin' ,'vmuserfield');
+			$lang = JFactory::getLanguage();
+			$filename = 'plg_vmcustom_' .  $this->plugin->element;
+			$lang->load($filename, JPATH_ADMINISTRATOR);
+			return $parameters->render();
+
+
+	}
 }
 
 //No Closing Tag

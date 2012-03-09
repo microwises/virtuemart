@@ -172,6 +172,14 @@ class TableUserfields extends VmTable {
 				$_fieldType = 'VARCHAR(255)';
 				break;
 		}
+		// TODO MAX BETTER , but work
+		if (strpos($this->type, 'plugin') !==false) {
+			$this->params = '';
+			foreach ( $_data['params'] as $key => $params )
+			{
+				$this->params .= $key.'='.$params."\n";
+			}
+		}
 		return $_fieldType;
 	}
 
