@@ -919,7 +919,7 @@ class VirtueMartModelUser extends VmModel {
 		// Format the data
 		foreach ($prepareUserFields as $_fld) {
 			if(empty($data[$_fld->name])) $data[$_fld->name] = '';
-			$data[$_fld->name] = $userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $data[$_fld->name],$data);
+			$data[$_fld->name] = $userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $data[$_fld->name],$data,$_fld->params);
 		}
 
 		return $data;
@@ -1009,7 +1009,7 @@ class VirtueMartModelUser extends VmModel {
 			}
 
 		}
-		// 		vmdebug('getUserInfoInUserFields',$data);
+
 		$userFields[$uid] = $userFieldsModel->getUserFieldsFilled(
 		$prepareUserFields
 		,$data
@@ -1041,7 +1041,7 @@ class VirtueMartModelUser extends VmModel {
 		// Format the data
 		foreach ($prepareUserFields as $_fld) {
 			if(empty($data[$_fld->name])) $data[$_fld->name] = '';
-			$data[$_fld->name] = $userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $data[$_fld->name],$data);
+			$data[$_fld->name] = $userFieldsModel->prepareFieldDataSave($_fld->type, $_fld->name, $data[$_fld->name],$data,$_fld->params);
 		}
 
 		$this->store($data);

@@ -254,6 +254,10 @@ function toggleType( sType ) {
 		case 'delimiter':
 		break;
 		default:
+			//pluginistraxx_euvatchecker
+<?php if(!$this->userField->virtuemart_userfield_id) : ?>
+			jQuery('#fieldPluginBody').load( 'index.php?option=com_virtuemart&view=userfields&task=viewJson&format=json&field='+sType , function() { jQuery(this).find("[title]").vm2admin('tips',tip_image) });
+<?php endif; ?>
 			jQuery('#divPlugin').slideDown();
 		break;
 
@@ -291,18 +295,4 @@ toggleType('<?php echo $this->userField->type;?>');
 
 //<?php if ($this->userField->type !== "E") { ?>jQuery('#userField_plg').hide();<?php } ?>
 
-    jQuery('#field_type').change(function () {
-	var $selected = jQuery(this).val();
-	if ($selected == "E" ) jQuery('#userField_plg').show();
-	else { jQuery('#userField_plg').hide();
-	    jQuery('#userfield_jplugin_id option:eq(0)').attr("selected", "selected");
-	    jQuery('#userfield_jplugin_id').change();
-	}
-
-    });
-    jQuery('#userfield_jplugin_id').change(function () {
-	var $id = jQuery(this).val();
-	jQuery('#plugin-Container').load( 'index.php?option=com_virtuemart&view=userfield&task=viewJson&format=json&userfield_jplugin_id='+$id , function() { jQuery(this).find("[title]").vm2admin('tips',tip_image) });
-
-    });
 </script>

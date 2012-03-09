@@ -54,7 +54,14 @@ class VirtuemartControllerUserfields extends VmController {
 
 		parent::display();
 	}
+	function viewJson() {
 
+		// Create the view object.
+		$view = $this->getView('userfields', 'json');
+
+		// Now display the view.
+		$view->display(null);
+	}
 
 }
 

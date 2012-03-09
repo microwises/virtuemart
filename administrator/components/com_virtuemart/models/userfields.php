@@ -73,7 +73,7 @@ class VirtueMartModelUserfields extends VmModel {
 	/**
 	 * Prepare a user field for database update
 	 */
-	public function prepareFieldDataSave($fieldType, $fieldName, $value, $post) {
+	public function prepareFieldDataSave($fieldType, $fieldName, $value, &$post,$params) {
 		//		$post = JRequest::get('post');
 
 		switch(strtolower($fieldType)) {
@@ -121,7 +121,8 @@ class VirtueMartModelUserfields extends VmModel {
 
 					JPluginHelper::importPlugin('vmuserfield');
 					$dispatcher = JDispatcher::getInstance();
-					$dispatcher->trigger('plgVmPrepareUserfieldDataSave',array($fieldType, $fieldName, $post, &$value) );
+					// vmdebug('params',$params);
+					$dispatcher->trigger('plgVmPrepareUserfieldDataSave',array($fieldType, $fieldName, &$post, &$value, $params) );
 					return $value;
 				}
 
@@ -143,11 +144,20 @@ class VirtueMartModelUserfields extends VmModel {
 	{
 		if (empty($this->_data)) {
 			$this->_data = $this->getTable('userfields');
+			
 			$this->_data->load((int)$this->_id);
 		}
+		if(strpos($this->_data->type,'plugin')!==false){
+  			JPluginHelper::importPlugin('vmuserfield');
+  			$dispatcher = JDispatcher::getInstance();
+			$plgName = substr($this->_data->type,6);
+			$type = 'vmuserfield';
 
+  			$retValue = $dispatcher->trigger('plgVmDeclarePluginParamsUserfield',array($type,$plgName,$this->_id,&$this->_data));
+			// vmdebug('pluginGet',$type,$plgName,$this->_id,$this->_data);
+		}
 		// Parse the parameters, if any
-		$this->_params->parseParam($this->_data->params);
+		else $this->_params->parseParam($this->_data->params);
 
 		return $this->_data;
 	}
@@ -209,7 +219,7 @@ class VirtueMartModelUserfields extends VmModel {
 				}
 			}
 		}
-
+		//vmdebug ('SAVED userfields', $data);
 		// Put the parameters, if any, in the correct format
 		if (array_key_exists($data['type'], $this->reqParam)) {
 			$this->_params->set($this->reqParam[$data['type']], $data[$this->reqParam[$data['type']]]);
@@ -218,6 +228,15 @@ class VirtueMartModelUserfields extends VmModel {
 
 		// Store the fieldvalues, if any, in a correct array
 		$fieldValues = $this->postData2FieldValues($data['vNames'], $data['vValues'], $data['virtuemart_userfield_id']);
+		
+		
+		if(strpos($data['type'],'plugin')!==false){
+
+			JPluginHelper::importPlugin('vmuserfield');
+			$dispatcher = JDispatcher::getInstance();
+			$plgName = substr($data['type'],6);
+			$dispatcher->trigger('plgVmOnBeforeUserfieldSave',array( $plgName , &$data, &$field ) );
+		}
 
 		if (!$field->bind($data)) {
 			// Bind data
@@ -578,7 +597,9 @@ class VirtueMartModelUserfields extends VmModel {
 		// 		vmdebug('my user data in getUserFieldsFilled',$_selection,$_userData);
 		$_userData=(array)($_userData);
 		if (is_array($_selection)) {
+	
 			foreach ($_selection as $_fld) {
+							
 				$_return['fields'][$_fld->name] = array(
 					     'name' => $_prefix . $_fld->name
 				,'value' => (($_userData == null || !array_key_exists($_fld->name, $_userData))
@@ -630,11 +651,11 @@ class VirtueMartModelUserfields extends VmModel {
 						// It's not a predefined field, so handle it by it's fieldtype
 					default:
 						if(strpos($_fld->type,'plugin')!==false){
-
+			
 						JPluginHelper::importPlugin('vmuserfield');
 						$dispatcher = JDispatcher::getInstance();
 						$dispatcher->trigger('plgVmOnUserfieldDisplay',array($_prefix, $_fld, &$_return) );
-						return $_return;
+						break;
 						}
 					switch( $_fld->type ) {
 						case 'hidden':
@@ -693,16 +714,16 @@ class VirtueMartModelUserfields extends VmModel {
 							. $_prefix.$_fld->name . '" id="' . $_prefix.$_fld->name . '_field" value="1" '
 							. ($_return['fields'][$_fld->name]['value'] ? 'checked="checked"' : '') .'/>';
 							break;
-							/*##mygruz20120223193710 { :*/
-						case 'userfieldplugin': //why not just vmuserfieldsplugin ?
-							JPluginHelper::importPlugin('vmuserfield');
-							$dispatcher = JDispatcher::getInstance();
-							//Todo to adjust to new pattern, using &
-							$html = '' ;
-							$dispatcher->trigger('plgVmOnUserFieldDisplay',array($_return['fields'][$_fld->name], &$html) );
-							$_return['fields'][$_fld->name]['formcode'] = $html;
-							break;
-							/*##mygruz20120223193710 } */
+							// /*##mygruz20120223193710 { :*/
+						// case 'userfieldplugin': //why not just vmuserfieldsplugin ?
+							// JPluginHelper::importPlugin('vmuserfield');
+							// $dispatcher = JDispatcher::getInstance();
+							// //Todo to adjust to new pattern, using &
+							// $html = '' ;
+							// $dispatcher->trigger('plgVmOnUserFieldDisplay',array($_return['fields'][$_fld->name], &$html) );
+							// $_return['fields'][$_fld->name]['formcode'] = $html;
+							// break;
+							// /*##mygruz20120223193710 } */
 						case 'multicheckbox':
 						case 'select':
 						case 'multiselect':

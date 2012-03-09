@@ -33,4 +33,19 @@ abstract class vmUserfieldPlugin extends vmPlugin {
 		// $this->_tableChecked = true;
 	}
 
+	// add params fields as object 
+	
+	function AddUserfieldParameter($params){
+
+		$plgParams = explode('|', $params);
+		foreach($plgParams as $item){
+			if (empty($item)) continue;
+			$param = explode('=',$item);
+			$this->$param[0] = json_decode($param[1]);
+			//unset($item[0]);
+		}
+
+	}	
+
+
 }
