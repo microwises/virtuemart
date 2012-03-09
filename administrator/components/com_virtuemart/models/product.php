@@ -141,7 +141,6 @@ class VirtueMartModelProduct extends VmModel {
 
 		$this->filter_order = $filter_order;
 		$this->filter_order_Dir = $filter_order_Dir;
-		$this->filter_order_Dir = $filter_order_Dir;
 		$this->valid_search_fields = $valid_search_fields;
 
 
@@ -303,7 +302,7 @@ class VirtueMartModelProduct extends VmModel {
 		switch ($this->filter_order) {
 			case 'product_special':
 				$where[] = ' p.`product_special`="1" ';// TODO Change  to  a  individual button
-				$orderBy = ' ';
+				$orderBy = 'ORDER BY RAND()';
 				break;
 			case 'category_name':
 				$orderBy = ' ORDER BY `category_name` ';
@@ -331,7 +330,6 @@ class VirtueMartModelProduct extends VmModel {
 				$orderBy = ' ORDER BY '.$this->_db->getEscaped($this->filter_order).' ';
 			} else {
 				$this->filter_order_Dir = '';
-				$orderBy='';
 			}
 			break;
 		}
@@ -343,7 +341,7 @@ class VirtueMartModelProduct extends VmModel {
 			switch ($group) {
 				case 'featured':
 					$where[] = 'p.`product_special`="1" ';
-					$orderBy = '';
+					$orderBy = 'ORDER BY RAND()';
 					break;
 				case 'latest':
 					$date = JFactory::getDate( time()-(60*60*24*7) ); //Set on a week, maybe make that configurable
@@ -1450,6 +1448,14 @@ public function updateStockInDB($product, $amount, $signInStoc, $signOrderedStoc
 
 		if($signInStoc!='='){
 			$update[] = '`product_in_stock` = `product_in_stock` ' . $signInStoc . $amount ;
+
+			if(strpos($signInStoc,'+')!==false){
+				$signInStoc = '-';
+			} else {
+				$signInStoc = '+';
+			}
+			$update[] = '`product_sales` = `product_sales` ' . $signInStoc . $amount ;
+
 		}
 		if($signOrderedStock!='='){
 			$update[] = '`product_ordered` = `product_ordered` ' . $signOrderedStock . $amount ;

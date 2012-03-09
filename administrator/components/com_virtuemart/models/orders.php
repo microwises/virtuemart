@@ -174,7 +174,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			WHERE  virtuemart_order_id=".$virtuemart_order_id;
 		$db->setQuery($q);
 		$order['calc_rules'] = $db->loadObjectList();
-		//vmdebug('getOrder my order',$order);
+		vmdebug('getOrder my order',$order);
 		return $order;
 	}
 
@@ -1009,10 +1009,10 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 			$table->bindChecknStore($data);
 
-			return $table->invoice_number;
+			return array($table->invoice_number,$table->created_on);
 
 		} else {
-			return $result['invoice_number'];
+			return array($result['invoice_number'],$result['created_on']);
 		}
 
 	}
@@ -1071,7 +1071,10 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		$path = VmConfig::get('forSale_path',0);
 		$orderstatusForInvoice = VmConfig::get('inv_os','C');
-		if($order['details']['BT']->order_status  == $orderstatusForInvoice and $path!==0 ){
+		$pdfInvoice = VmConfig::get('pdf_invoice', 1);
+
+		// florian : added if pdf invoice are enabled
+		if ( ($order['details']['BT']->order_status == $orderstatusForInvoice) && ($path !== 0) && ($pdfInvoice )  ){
 
 			if(!class_exists('VirtueMartControllerInvoice')) require_once( JPATH_VM_SITE.DS.'controllers'.DS.'invoice.php' );
 			$controller = new VirtueMartControllerInvoice( array(

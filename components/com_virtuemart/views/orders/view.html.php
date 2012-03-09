@@ -154,8 +154,9 @@ class VirtuemartViewOrders extends VmView {
 
 			if($format=='pdf'){
 
-				$invoiceNumber = $orderModel->createInvoiceNumber($orderDetails['details']['BT']);
-				$this->assignRef('invoiceNumber', $invoiceNumber);
+				$invoiceNumberDate = $orderModel->createInvoiceNumber($orderDetails['details']['BT']);
+				$this->assignRef('invoiceNumber', $invoiceNumberDate[0]);
+				$this->assignRef('invoiceDate', $invoiceNumberDate[1]);
 			}
 
 			$this->assignRef('userfields', $userfields);

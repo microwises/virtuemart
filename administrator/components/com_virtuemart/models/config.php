@@ -300,6 +300,29 @@ class VirtueMartModelConfig extends JModel {
 		$updater = new GenericTableUpdater();
 		$result = $updater->createLanguageTables();
 
+		$safePath = VmConfig::get('forSale_path',0);
+		$lastIndex= strrpos(JPATH_ROOT,DS);
+		$suggestedPath = substr(JPATH_ROOT,0,$lastIndex).DS.'vmfiles';
+		if(empty($safePath)){
+
+			VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
+		} else {
+			$exists = JFolder::exists($safePath);
+			if(!$exists){
+				VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_WRONG',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
+			} else {
+				$exists = JFolder::exists($safePath.'invoices');
+				if(!$exists){
+					$created = JFolder::create($safePath.'invoices');
+					if($created){
+						vmInfo('COM_VIRTUEMART_SAFE_PATH_INVOICE_CREATED');
+					} else {
+						VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_NO_INVOICE',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'));
+					}
+				}
+
+			}
+		}
 		return true;
 	}
 

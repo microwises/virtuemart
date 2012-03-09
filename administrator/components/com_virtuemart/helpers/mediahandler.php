@@ -73,7 +73,7 @@ class VmMediaHandler {
 		}
 		else if($type == 'vendor' || $type == 'vendors'){
 			$relUrl = VmConfig::get('media_vendor_path');
-		//	$relUrl = 'components/com_virtuemart/assets/images/vendors/';
+			//	$relUrl = 'components/com_virtuemart/assets/images/vendors/';
 			$choosed = true;
 		}
 		else if($type == 'manufacturer' || $type == 'manufacturers'){
@@ -82,17 +82,21 @@ class VmMediaHandler {
 		}
 		else if($type == 'forSale' || $type== 'file_is_forSale'){
 			//todo add this path to config
-			if(VmConfig::get('forSale_path',0)===0){
-				VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET');
-			} else {
-				$relUrl = VmConfig::get('forSale_path');
+			$safePath = VmConfig::get('forSale_path',0);
+			if(empty($safePath)){
+				$lastIndex= strrpos(JPATH_ROOT,DS);
+				$suggestedPath = substr(JPATH_ROOT,0,$lastIndex).DS.'vmfiles';
+				VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
+
+			}else {
+				$relUrl = $safePath;
 				$choosed = true;
 			}
 
 		}
 
-// 		$this->type = $type;
-// 		$this->setRole=false;
+		// 		$this->type = $type;
+		// 		$this->setRole=false;
 		if($choosed && empty($relUrl)){
 			$uri = JFactory::getURI();
 			$link = $uri->root() . 'administrator/index.php?option=com_virtuemart&view=config';
@@ -101,11 +105,11 @@ class VmMediaHandler {
 			//$relUrl = VmConfig::get('media_path');
 			$relUrl = 'images/stories/virtuemart/';
 			$this->setRole=true;
-// 		} else if(!$choosed and empty($relUrl) and $this->file_is_forSale==0){
+			// 		} else if(!$choosed and empty($relUrl) and $this->file_is_forSale==0){
 		} else if(!$choosed and empty($relUrl) ){
 
 			vmWarn('COM_VIRTUEMART_MEDIA_CHOOSE_TYPE',$this->file_title );
-// 			vmError('Ignore this message, when it appears while the media synchronisation process, else report to http://forum.virtuemart.net/index.php?board=127.0 : cant create media of unknown type, a programmers error, used type ',$type);
+			// 			vmError('Ignore this message, when it appears while the media synchronisation process, else report to http://forum.virtuemart.net/index.php?board=127.0 : cant create media of unknown type, a programmers error, used type ',$type);
 			//$relUrl = VmConfig::get('media_path');
 			$relUrl = 'images/stories/virtuemart/typeless/';
 			$this->setRole=true;
@@ -212,11 +216,14 @@ class VmMediaHandler {
 			$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
 			$this->file_path_folder = str_replace('/',DS,$this->file_url_folder);
 		} else {
-			if(VmConfig::get('forSale_path',0)===0){
-				VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET');
+			$safePath = VmConfig::get('forSale_path',0);
+			if(empty($safePath)){
+				$lastIndex= strrpos(JPATH_ROOT,DS);
+				$suggestedPath = substr(JPATH_ROOT,0,$lastIndex).DS.'vmfiles';
+				VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
 				return false;
 			}
-			$this->file_path_folder = VmConfig::get('forSale_path');
+			$this->file_path_folder = $safePath;
 			$this->file_url_folder = $this->file_path_folder;//str_replace(DS,'/',$this->file_path_folder);
 			$this->file_url_folder_thumb = VmConfig::get('forSale_path_thumb');
 		}
@@ -261,7 +268,7 @@ class VmMediaHandler {
 		if($this->file_is_downloadable) $this->media_role = 'file_is_downloadable';
 		if($this->file_is_forSale) $this->media_role = 'file_is_forSale';
 		if(empty($this->media_role)) $this->media_role = 'file_is_displayable';
-// 		vmdebug('$this->media_role',$this->media_role);
+		// 		vmdebug('$this->media_role',$this->media_role);
 
 		$this->determineFoldersToTest();
 
@@ -304,8 +311,8 @@ class VmMediaHandler {
 		//		if(!empty($file_mimetype)){
 		//			if(strpos($file_mimetype,'image')===FALSE){
 		//				$isImage = FALSE;
-			//			}else{
-			//				$isImage = TRUE;
+		//			}else{
+		//				$isImage = TRUE;
 			//			}
 			//		} else {
 			if($file_extension == 'jpg' || $file_extension == 'jpeg' || $file_extension == 'png' || $file_extension == 'gif'){
@@ -465,7 +472,7 @@ class VmMediaHandler {
 			if ((empty($this->file_url_thumb) || !file_exists($media_path)) && is_a($this,'VmImage')) {
 
 				$this->file_url_thumb = $this->createThumb();
-// 				vmdebug('displayMediaThumb',$this->file_url_thumb);
+				// 				vmdebug('displayMediaThumb',$this->file_url_thumb);
 				$media_path = JPATH_ROOT.DS.str_replace('/',DS,$this->file_url_thumb);
 				$file_url = $this->file_url_thumb;
 
@@ -526,7 +533,7 @@ class VmMediaHandler {
 
 			if ($withDesc) $desc='<span class="vm-img-desc">'.$withDesc.'</span>';
 			else $desc='';
-// 			vmdebug('displayIt $file_alt'.$file_alt,$imageArgs);
+			// 			vmdebug('displayIt $file_alt'.$file_alt,$imageArgs);
 			if($lightbox){
 				$image = JHTML::image($file_url, $file_alt, $imageArgs);
 				if ($file_alt ) $file_alt = 'title="'.$file_alt.'"';
@@ -628,7 +635,7 @@ class VmMediaHandler {
 		function processAction($data){
 
 			if(empty($data['media_action'])) return $data;
-// 			$data['published'] = 1;
+			// 			$data['published'] = 1;
 			if( $data['media_action'] == 'upload' ){
 
 				$this->virtuemart_media_id=0;
@@ -639,8 +646,8 @@ class VmMediaHandler {
 				$this->file_url = $this->file_url_folder.$this->file_name;
 			}
 			else if( $data['media_action'] == 'replace' ){
-// 				$oldFileUrl = $data['file_url'];
-// 				vmdebug('replace media',$this);
+				// 				$oldFileUrl = $data['file_url'];
+				// 				vmdebug('replace media',$this);
 				$oldFileUrl = $this->file_url;
 				$file_name = $this->uploadFile($this->file_url_folder,true);
 				$this->file_name = $file_name;
@@ -786,7 +793,7 @@ class VmMediaHandler {
 
 
 			if($this->setRole){
-// 				$this->addMediaAttributes('file_is_product_image','COM_VIRTUEMART_FORM_MEDIA_SET_PRODUCT');
+				// 				$this->addMediaAttributes('file_is_product_image','COM_VIRTUEMART_FORM_MEDIA_SET_PRODUCT');
 				$this->addMediaAttributes('product','COM_VIRTUEMART_FORM_MEDIA_SET_PRODUCT'); // => file_is_displayable  =>location
 				$this->addMediaAttributes('category','COM_VIRTUEMART_FORM_MEDIA_SET_CATEGORY');
 				$this->addMediaAttributes('manufacturer','COM_VIRTUEMART_FORM_MEDIA_SET_MANUFACTURER');
@@ -907,18 +914,18 @@ class VmMediaHandler {
 			$html='';
 			$html .= '<fieldset class="checkboxes">' ;
 			$html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGES').'</legend>';
-		        $html .=  '<span class="hasTip always-left" title="'.JText::_('COM_VIRTUEMART_SEARCH_TITLE_TIP').'">'.JText::_('COM_VIRTUEMART_SEARCH_TITLE') . ' ' . JText::_('COM_VIRTUEMART_IMAGES') . ' :</span>';
+			$html .=  '<span class="hasTip always-left" title="'.JText::_('COM_VIRTUEMART_SEARCH_TITLE_TIP').'">'.JText::_('COM_VIRTUEMART_SEARCH_TITLE') . ' ' . JText::_('COM_VIRTUEMART_IMAGES') . ' :</span>';
 			$html .=   '
 					<input type="text" name="searchMedia" id="searchMedia" data-start="0" value="' .JRequest::getString('searchMedia') . '" class="text_area always-left" />
 					<button class="reset-value fg-button">'.JText::_('COM_VIRTUEMART_RESET') .'</button>
 					<a class="js-pages js-previous fg-button ui-state-default fg-button-icon-left ui-corner-all" ><span class="ui-icon ui-icon-circle-minus" style="display:inline-block;"></span> 16 </a>
 					<a class="js-pages js-next fg-button ui-state-default fg-button-icon-right ui-corner-all"> 16 <span class="ui-icon ui-icon-circle-plus" style="display:inline-block;"></span></a>
 					<br class="clear"/>';
-					;
+			;
 			//$result = $this->getImagesList($type);
 			$html .= '<div id="ImagesContainer">';
 
-// 			$html .= ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_NAME','','searchMedia') ;
+			// 			$html .= ShopFunctions::displayDefaultViewSearch('COM_VIRTUEMART_NAME','','searchMedia') ;
 
 			// if(empty($fileIds)) {
 			// return  $html;
@@ -1054,8 +1061,8 @@ class VmMediaHandler {
 
 			$this->addHiddenByType();
 
-                        $html = '<fieldset class="checkboxes">' ;
-                        $html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGE_INFORMATION').'</legend>';
+			$html = '<fieldset class="checkboxes">' ;
+			$html .= '<legend>'.JText::_('COM_VIRTUEMART_IMAGE_INFORMATION').'</legend>';
 			$html .= '<div class="vm__img_autocrop">';
 			$imageArgs = 'id="vm_display_image" ';
 			$html .=  $this->displayMediaFull($imageArgs,false,'',false).'</div>';
@@ -1076,9 +1083,9 @@ class VmMediaHandler {
 			}
 
 			$html .= '<tr>';
-//  The following was removed bacause the check box (publish/unpublish) was not functioning...
-// 			$this->media_published = $this->published;
-$html .= '<td class="labelcell">
+			//  The following was removed bacause the check box (publish/unpublish) was not functioning...
+			// 			$this->media_published = $this->published;
+			$html .= '<td class="labelcell">
 		<label for="published">'. JText::_('COM_VIRTUEMART_FILES_FORM_FILE_PUBLISHED') .'</label>
 	</td>
 	<td>
@@ -1091,10 +1098,10 @@ $html .= '<td class="labelcell">
 
 			$html .= '</tr>';
 
-// 			$html .= '<tr>
-// 	<td class="labelcell">'. JText::_('COM_VIRTUEMART_FILES_FORM_CURRENT_FILE') .'</td>
-// 	<td>'.$this->file_name.'.'.$this->file_extension .'</td>
-// </tr>';
+			// 			$html .= '<tr>
+			// 	<td class="labelcell">'. JText::_('COM_VIRTUEMART_FILES_FORM_CURRENT_FILE') .'</td>
+			// 	<td>'.$this->file_name.'.'.$this->file_extension .'</td>
+			// </tr>';
 
 			if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 			if(!Permissions::getInstance()->check('admin') ) $readonly='readonly'; else $readonly ='';
@@ -1111,8 +1118,8 @@ $html .= '<td class="labelcell">
 					<td class="labelcell">'.JText::_('COM_VIRTUEMART_FILES_FORM_ROLE').'</td>
 					<td><fieldset class="checkboxes">'.JHTML::_('select.radiolist', $this->getOptions($this->_mRoles), 'media_roles'.$identify, '', 'value', 'text', $this->media_role).'</fieldset></td></tr>';
 
-// 			$html .= '<tr><td class="labelcell">'.VmHTML::checkbox('file_is_forSale', $this->file_is_forSale);
-// 			$html .= VmHTML::checkbox('file_is_downloadable', $this->file_is_downloadable);
+			// 			$html .= '<tr><td class="labelcell">'.VmHTML::checkbox('file_is_forSale', $this->file_is_forSale);
+			// 			$html .= VmHTML::checkbox('file_is_downloadable', $this->file_is_downloadable);
 
 			if(!empty($this->file_type)){
 
@@ -1129,18 +1136,18 @@ $html .= '<td class="labelcell">
 						<td><fieldset class="checkboxes">'.JHTML::_('select.radiolist', $this->getOptions($this->_mLocation), 'media_attributes'.$identify, '', 'value', 'text', $mediaattribtemp).'</fieldset></td></tr>';
 			}
 			$html .= '</table>';
-                        $html .='<br /></fieldset>';
+			$html .='<br /></fieldset>';
 			$this->addMediaActionByType();
 
 			$html .= '<fieldset class="checkboxes">' ;
-                        $html .= '<legend>'.JText::_('COM_VIRTUEMART_FILE_UPLOAD').'</legend>';
-                        $html .= JText::_('COM_VIRTUEMART_IMAGE_ACTION'). JHTML::_('select.radiolist', $this->getOptions($this->_actions), 'media_action'.$identify, '', 'value', 'text', 0).'<br /><br style="clear:both" />';
+			$html .= '<legend>'.JText::_('COM_VIRTUEMART_FILE_UPLOAD').'</legend>';
+			$html .= JText::_('COM_VIRTUEMART_IMAGE_ACTION'). JHTML::_('select.radiolist', $this->getOptions($this->_actions), 'media_action'.$identify, '', 'value', 'text', 0).'<br /><br style="clear:both" />';
 
 
 			$html .= JText::_('COM_VIRTUEMART_FILE_UPLOAD').' <input type="file" name="upload" id="upload" size="50" class="inputbox" /><br />';
 
 			$html .= '<br />'.$this->displaySupportedImageTypes();
-                        $html .='<br /></fieldset>';
+			$html .='<br /></fieldset>';
 			$html .= $this->displayFoldersWriteAble();
 
 			$html .= $this->displayHidden();
@@ -1191,4 +1198,4 @@ $html .= '<td class="labelcell">
 			return $html;
 		}
 
-	}
+}

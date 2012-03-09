@@ -70,7 +70,7 @@ defined('_JEXEC') or die('Restricted access');
 						echo '<span class="line-through">'.$this->currency->priceDisplay($item->product_basePriceWithTax) .'</span><br />' ;
 					}
 					?>
-				<?php echo $this->currency->priceDisplay($item->product_final_price); ?>
+				<?php echo $this->currency->priceDisplay($item->discountedPriceWithoutTax); ?>
 			</td>
 			<?php if ( VmConfig::get('show_tax')) { ?>
 				<td align="right" class="priceCol"><?php echo "<span  class='priceColor2'>".$this->currency->priceDisplay($item->product_tax)."</span>" ?></td>

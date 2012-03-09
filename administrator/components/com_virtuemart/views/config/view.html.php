@@ -109,9 +109,17 @@ class VirtuemartViewConfig extends VmView {
 		}
 		$this->assignRef('imagePath', $imagePath);
 
-		if(VmConfig::get('forSale_path',0)===0){
-// 			VmConfig::set('forSale_path',JPATH_ROOT.'/imagesimages/stories/virtuemart/forSale/');
-			VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JPATH_ROOT);
+		$safePath = VmConfig::get('forSale_path',0);
+		$lastIndex= strrpos(JPATH_ROOT,DS);
+		$suggestedPath = substr(JPATH_ROOT,0,$lastIndex).DS.'vmfiles';
+		if(empty($safePath)){
+
+			VmWarn('COM_VIRTUEMART_WARN_NO_SAFE_PATH_SET',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
+		} else {
+			$exists = JFolder::exists($safePath);
+			if(!$exists){
+				VmWarn('COM_VIRTUEMART_WARN_SAFE_PATH_WRONG',JText::_('COM_VIRTUEMART_ADMIN_CFG_MEDIA_FORSALE_PATH'),$suggestedPath);
+			}
 		}
 		parent::display($tpl);
 	}

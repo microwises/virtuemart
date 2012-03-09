@@ -68,7 +68,8 @@ class VirtueMartControllerInvoice extends JController
 
 		$orderModel = VmModel::getModel('orders');
 
-		$invoiceNumber = $orderModel->createInvoiceNumber($orderDetails['details']['BT']);
+		$invoiceNumberDate = $orderModel->createInvoiceNumber($orderDetails['details']['BT']);
+		$invoiceNumber = $invoiceNumberDate[0];
 
 		if(!$invoiceNumber or empty($invoiceNumber)){
 			vmError('Cant create pdf, createInvoiceNumber failed');;
@@ -96,7 +97,9 @@ class VirtueMartControllerInvoice extends JController
 
 		$view->addTemplatePath( JPATH_VM_SITE.DS.'views'.DS.'invoice'.DS.'tmpl' );
 
-		$view->invoiceNumber = $invoiceNumber;
+		$view->invoiceNumber = $invoiceNumberDate[0];
+		$this->invoiceDate = $invoiceNumberDate[1];
+
 		$view->orderDetails = $orderDetails;
 		$view->uselayout = 'invoice';
 
