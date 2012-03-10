@@ -56,16 +56,7 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 					</fieldset>
 				</div>
 
-				<div id="divShopperGroups">
-					<fieldset>
-					<legend><?php echo JText::_('COM_VIRTUEMART_FIELDS_EUVATID_ATTRIBUTES'); ?></legend>
-						<table class="admintable">
-							<?php echo VmHTML::row('raw','COM_VIRTUEMART_USERFIELDS_EUVATID_MOVESHOPPER', $this->lists['shoppergroups'] ); ?>
-						</table>
-					</fieldset>
-				</div>
-
-				<div id="divAgeVerification" style="text-align:left;height: 280px;overflow: auto;">
+				<div id="divAgeVerification" style="text-align:left;">
 					<fieldset>
 					<legend><?php echo JText::_('COM_VIRTUEMART_FIELDS_AGEVERIFICATION_ATTRIBUTES'); ?></legend>
 						<table class="admintable">
@@ -83,10 +74,9 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 					</fieldset>
 				</div>
 
-				<div id="divValues" style="text-align:left;height: 200px;overflow: auto;">
+				<div id="divValues" style="text-align:left;">
 					<fieldset>
 					<legend><?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ADDVALUES_TIP'); ?></legend>
-						<input type="button" class="button insertRow" value="<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ADDVALUE') ?>" />
 						<table align=left id="divFieldValues" cellpadding="4" cellspacing="1" border="0" width="100%" class="admintable">
 							<thead>
 								<tr>
@@ -96,24 +86,15 @@ AdminUIHelper::imitateTabs('start','COM_VIRTUEMART_USERFIELD_DETAILS');
 							</thead>
 							<tbody id="fieldValuesBody"><?php echo $this->lists['userfield_values'];?></tbody>
 						</table>
+						<input type="button" class="button insertRow" value="<?php echo JText::_('COM_VIRTUEMART_USERFIELDS_ADDVALUE') ?>" />
 					</fieldset>
 				</div>
-				<div id="divPlugin" style="text-align:left;height: 200px;overflow: auto;">
+				<div id="divPlugin" style="text-align:left;">
 					<fieldset>
 					<legend><?php echo JText::_('COM_VIRTUEMART_USERFIELDS_PLUGIN_TIP'); ?></legend>
-						<table class="admintable">
-							<thead>
-								<tr>
-									<th class="title" width="20%"><?php echo JText::_('COM_VIRTUEMART_TITLE') ?></th>
-									<th class="title" width="80%"><?php echo JText::_('COM_VIRTUEMART_VALUE') ?></th>
-								</tr>
-							</thead>
-							<tbody id="fieldPluginBody">
-							<?php
-								echo $this->userFieldPlugin;
-							?>
-							</tbody>
-						</table>
+					<div id="fieldPluginBody">
+						<?php echo $this->userFieldPlugin;	?>
+					</div>
 					</fieldset>
 				</div>
 			</td>
@@ -183,20 +164,16 @@ $existingFields = '"'.implode('","',$db->loadResultArray()).'"';
 
 ?>
 <script type="text/javascript">
-function getObject(obj) {
-	var strObj;
-	if (document.all) {
-		strObj = document.all.item(obj);
-	} else if (document.getElementById) {
-		strObj = document.getElementById(obj);
-	}
-	return strObj;
-}
+
 
 jQuery(".insertRow").click( function() {
 	nr = jQuery('#fieldValuesBody tr').length ;
-	row = '<tr><td><input type="text" name="vNames['+nr+']" value="Mr"></td><td><input type="text" name="vValues['+nr+']" value="Mr"></td></tr>';
+	row = '<tr><td><input type="text" name="vNames['+nr+']" value="Mr"></td><td><input type="text" name="vValues['+nr+']" value="Mr"> <input type="button" class="button deleteRow" value=" - " /></td></tr>';
 	jQuery('#fieldValuesBody').append( row );
+});
+jQuery("#fieldValuesBody").delegate("input.deleteRow", "click", function() {
+	nr = jQuery('#fieldValuesBody tr').length ;
+	if (nr>1) jQuery(this).closest('tr').remove();
 });
 
 jQuery(".readonly").click( function(e) {
@@ -207,7 +184,7 @@ jQuery('select#type').chosen().change(function() {
 	toggleType(selected)
 })
 function toggleType( sType ) {
-	jQuery('#toggler').children('div').slideUp();
+	jQuery('#toggler').children('div').filter(':visible').slideUp();
 	jQuery('input[name="vNames[0]"]').attr("mosReq", 0);
 	<?php if (!$this->userField->sys) : ?>
 	prep4SQL (document.adminForm.name);
@@ -258,7 +235,7 @@ function toggleType( sType ) {
 <?php if(!$this->userField->virtuemart_userfield_id) : ?>
 			jQuery('#fieldPluginBody').load( 'index.php?option=com_virtuemart&view=userfields&task=viewJson&format=json&field='+sType , function() { jQuery(this).find("[title]").vm2admin('tips',tip_image) });
 <?php endif; ?>
-			jQuery('#divPlugin').slideDown();
+			if (sType.substring(0,6) == plugin) jQuery('#divPlugin').slideDown();
 		break;
 
 
@@ -291,7 +268,8 @@ function prep4SQL(o){
 <?php if($this->userField->virtuemart_userfield_id > 0) : ?>
 document.adminForm.name.readOnly = true;
 <?php endif; ?>
-toggleType('<?php echo $this->userField->type;?>');
+	toggleType(jQuery('#type').find( 'option:selected').val()) ;
+//toggleType('<?php echo $this->userField->type;?>');
 
 //<?php if ($this->userField->type !== "E") { ?>jQuery('#userField_plg').hide();<?php } ?>
 

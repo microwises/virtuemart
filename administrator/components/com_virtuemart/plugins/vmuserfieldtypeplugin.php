@@ -33,7 +33,7 @@ abstract class vmUserfieldPlugin extends vmPlugin {
 		// $this->_tableChecked = true;
 	}
 
-	// add params fields as object 
+	// add params fields in object 
 	
 	function AddUserfieldParameter($params){
 
@@ -45,6 +45,15 @@ abstract class vmUserfieldPlugin extends vmPlugin {
 			//unset($item[0]);
 		}
 
+	}
+	// add params fields in object by name
+	
+	function AddUserfieldParameterByPlgName($plgName){
+		if(empty($this->_db)) $this->_db = JFactory::getDBO();
+		$q = 'SELECT `params` FROM `#__virtuemart_userfields` WHERE `name` = "' . $plgName.'"';
+		$this->_db->setQuery($q);
+		$params = $this->_db->loadResult();
+		$this->AddUserfieldParameter($params);
 	}	
 
 
