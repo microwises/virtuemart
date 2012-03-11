@@ -125,6 +125,7 @@
 
 		<?php
 		$i=1;
+		vmdebug('$this->cart->products',$this->cart->products);
 		foreach( $this->cart->products as $pkey =>$prow ) { ?>
 			<tr valign="top" class="sectiontableentry<?php echo $i ?>">
 				<td align="left" >

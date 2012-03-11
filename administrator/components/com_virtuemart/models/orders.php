@@ -46,13 +46,6 @@ class VirtueMartModelOrders extends VmModel {
 		$this->setMainTable('orders');
 		$this->addvalidOrderingFieldName(array('order_name','payment_method','virtuemart_order_id' ) );
 
-		//Delete the field so that and push it to the begin of the array so that it is used as default value
-// 		$key = array_search('o.modified_on',$this->_validOrderingFieldName);
-// 		unset($this->_validOrderingFieldName[$key]);
-// 		array_unshift($this->_validOrderingFieldName,'modified_on');
-
-
-
 	}
 
 	/**
@@ -156,7 +149,7 @@ class VirtueMartModelOrders extends VmModel {
 		$order['history'] = $db->loadObjectList();
 
 		// Get the order items
-$q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
+$q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
     order_item_sku, i.virtuemart_product_id, product_item_price,
     product_final_price, product_basePriceWithTax, product_subtotal_with_tax, product_subtotal_discount, product_tax, product_attribute, order_status,
     intnotes, virtuemart_category_id
@@ -165,7 +158,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
    ON p.virtuemart_product_id = i.virtuemart_product_id)
                         LEFT JOIN #__virtuemart_product_categories c
                         ON p.virtuemart_product_id = c.virtuemart_product_id
-   WHERE virtuemart_order_id=".$virtuemart_order_id." group by p.virtuemart_product_id";
+   WHERE `virtuemart_order_id`="'.$virtuemart_order_id.'" group by `virtuemart_order_id`';
 		$db->setQuery($q);
 		$order['items'] = $db->loadObjectList();
 // Get the order items
@@ -174,7 +167,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			WHERE  virtuemart_order_id=".$virtuemart_order_id;
 		$db->setQuery($q);
 		$order['calc_rules'] = $db->loadObjectList();
-		vmdebug('getOrder my order',$order);
+// 		vmdebug('getOrder my order',$order);
 		return $order;
 	}
 
@@ -185,7 +178,7 @@ $q = "SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 */
 	public function getOrdersList($uid = 0, $noLimit = false)
 	{
-		vmdebug('getOrdersList');
+// 		vmdebug('getOrdersList');
 		$this->_noLimit = $noLimit;
 		$selecct = " o.*, CONCAT_WS(' ',u.first_name,u.middle_name,u.last_name) AS order_name "
 		.',pm.payment_name AS payment_method ';

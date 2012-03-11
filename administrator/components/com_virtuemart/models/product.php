@@ -174,7 +174,7 @@ class VirtueMartModelProduct extends VmModel {
 
 		$app = &JFactory::getApplication() ;
 
-		$groupBy = '';
+		$groupBy = 'group by p.`virtuemart_product_id`';
 
 		//administrative variables to organize the joining of tables
 		$joinCategory 	= false ;
