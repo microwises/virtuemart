@@ -290,22 +290,3 @@
 
 // load defaut scripts 
 jQuery.noConflict();
- jQuery( function($) {
-
-	$('dl#system-message').hide().slideDown(400);
-	$('.virtuemart-admin-area .toggler').vm2admin('toggle');
-	$('#admin-ui-menu').vm2admin('accordeon');
-	if ( $("#admin-ui-tabs").length  ) {
-		$("#admin-ui-tabs").vm2admin("tabs",virtuemartcookie).find('select').chosen({enable_select_all: true}); 
-	}
-
-	$('#content-box [title]').vm2admin('tips',tip_image);
-	$('.modal').fancybox();
-	$('.reset-value').click( function(e){
-		e.preventDefault();
-		none = '';
-		jQuery(this).parent().find('.ui-autocomplete-input').val(none);
-		
-	});
-
-});
