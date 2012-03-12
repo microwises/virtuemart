@@ -91,9 +91,10 @@ abstract class vmPSPlugin extends vmPlugin {
 	 *
 	 */
 	protected function onStoreInstallPluginTable($jplugin_id) {
-		if ($this->selectedThisByJPluginId($jplugin_id)) {
+		if ($res=$this->selectedThisByJPluginId($jplugin_id)) {
 			parent::onStoreInstallPluginTable($this->_psType);
 		}
+		return $res;
 	}
 
 	/**
@@ -713,7 +714,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		$pluginmethod_id = $this->_idName;
 		$pluginName = $this->_psType . '_name';
 		if ($selectedPlugin == $plugin->$pluginmethod_id) {
-			$checked = 'checked';
+			$checked = 'checked="checked"';
 		} else {
 			$checked = '';
 		}
@@ -954,7 +955,7 @@ abstract class vmPSPlugin extends vmPlugin {
 
 					    $modelOrder = VmModel::getModel('orders');
 					    $order['order_status'] = $new_status;
-					    $order['customer_notified'] = 0;
+					    $order['customer_notified'] = 1;
 					    $order['comments'] = '';
 					    $modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order, true);
 
@@ -1068,7 +1069,7 @@ abstract class vmPSPlugin extends vmPlugin {
 		function handlePaymentUserCancel($virtuemart_order_id) {
 
 			if ($virtuemart_order_id) {
-				// send the email only if payment has been accepted
+				// set the order to cancel , to handle the stock correctly
 				if (!class_exists('VirtueMartModelOrders'))
 				require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
@@ -1080,6 +1081,7 @@ abstract class vmPSPlugin extends vmPlugin {
 				$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 				$modelOrder->remove(array('virtuemart_order_id' => $virtuemart_order_id));
 			}
+
 		}
 
 	}
