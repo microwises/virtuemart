@@ -42,6 +42,7 @@ class VirtueMartModelState extends VmModel {
 	function __construct() {
 		parent::__construct('virtuemart_state_id');
 		$this->setMainTable('states');
+		$this->_selectedOrderingDir = 'ASC';
 	}
 
     /**

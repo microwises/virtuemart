@@ -874,8 +874,8 @@ abstract class vmPSPlugin extends vmPlugin {
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'calculationh.php');
 			$calculator = calculationHelper::getInstance();
 			if (count($taxrules) > 0) {
-				$cart_prices['salesPrice' . $_psType] = $calculator->roundDisplay($calculator->executeCalculation($taxrules, $cart_prices[$this->_psType . 'Value']));
-				$cart_prices[$this->_psType . 'Tax'] = $calculator->roundDisplay($cart_prices['salesPrice' . $_psType]) - $cart_prices[$this->_psType . 'Value'];
+				$cart_prices['salesPrice' . $_psType] = $calculator->roundInternal($calculator->executeCalculation($taxrules, $cart_prices[$this->_psType . 'Value']));
+				$cart_prices[$this->_psType . 'Tax'] = $calculator->roundInternal($cart_prices['salesPrice' . $_psType]) - $cart_prices[$this->_psType . 'Value'];
 			} else {
 				$cart_prices['salesPrice' . $_psType] = $value;
 				$cart_prices[$this->_psType . 'Tax'] = 0;
@@ -919,7 +919,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			}
 
 			if (count($taxrules) > 0) {
-				$salesPrice = $calculator->roundDisplay($calculator->executeCalculation($taxrules, $value));
+				$salesPrice = $calculator->roundInternal($calculator->executeCalculation($taxrules, $value));
 			} else {
 				$salesPrice = $value;
 			}

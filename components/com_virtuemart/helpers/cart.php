@@ -998,10 +998,11 @@ class VirtueMartCart {
 		/* Get the products for the cart */
 		$prices = array();
 		$product_prices = $this->getCartPrices($checkAutomaticSelected);
+
 		if (empty($product_prices)) return;
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
-
+// 		vmdebug('prepareCartData CurrencyDisplay',$currency);
 		if(!empty($product_prices)){
 			foreach($product_prices as $k=>$price){
 
@@ -1023,7 +1024,8 @@ class VirtueMartCart {
 		$calculator = calculationHelper::getInstance();
 
 		$this->prices = $prices;
-		$this->pricesCurrency = $currency->getCurrencyDisplay();
+
+		$this->pricesCurrency = $currency->getCurrencyForDisplay();
 
 		if(!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS.DS.'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmpayment');

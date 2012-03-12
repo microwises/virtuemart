@@ -49,6 +49,7 @@ class calculationHelper {
 	public $vendorCurrency = 0;
 	private $exchangeRateVendor = 0;
 	private $exchangeRateShopper = 0;
+	private $_internalDigits = 5;
 	static $_instance;
 
 	//	public $basePrice;		//simular to costprice, basePrice is calculated in the shopcurrency
@@ -217,21 +218,6 @@ class calculationHelper {
 	 */
 	public function getProductPrices($productId, $catIds=0, $variant=0.0, $amount=0, $ignoreAmount=true, $currencydisplay=true) {
 
-/*		if (!VmConfig::get('show_prices', 0)) {
-		 return array();
-		}
-/*		if (VmConfig::get('price_access_level_published', 0)) {
-			$user = JFactory::getUser();
-			if(empty($user->id)){
-				return array();
-			}
-			//Todo check for virtuemart shoppergroups
-		}*/
-// 		vmdebug('getProductPrices '.$productId->virtuemart_product_id);
-// 		vmdebug('getProductPrices '.$productId);
-// 		if((int)$productId->virtuemart_product_id!=1){
-// 			echo ' <pre>'.debug_print_backtrace().'</pre></br>';
-// 		}
 
 		$costPrice = 0;
 
@@ -300,13 +286,13 @@ class calculationHelper {
 		$this->rules['DATax'] = $this->gatherEffectingRulesForProductPrice('DATax', $this->product_discount_id);
 
 		$prices['costPrice'] = $costPrice;
-		$basePriceShopCurrency = $this->roundDisplay($this->_currencyDisplay->convertCurrencyTo((int) $this->productCurrency, $costPrice));
+		$basePriceShopCurrency = $this->roundInternal($this->_currencyDisplay->convertCurrencyTo((int) $this->productCurrency, $costPrice));
 		//         vmdebug('my pure $basePriceShopCurrency',$basePriceShopCurrency);
 
 		//For Profit, margin, and so on
 		$this->rules['Marge'] = $this->gatherEffectingRulesForProductPrice('Marge', $this->product_marge_id);
 
-		$basePriceMargin = $this->roundDisplay($this->executeCalculation($this->rules['Marge'], $basePriceShopCurrency));
+		$basePriceMargin = $this->roundInternal($this->executeCalculation($this->rules['Marge'], $basePriceShopCurrency));
 		$basePriceShopCurrency = $prices['basePrice'] = !empty($basePriceMargin) ? $basePriceMargin : $basePriceShopCurrency;
 
 		//         vmdebug('my $basePriceShopCurrency after Marge',$basePriceShopCurrency);
@@ -325,18 +311,18 @@ class calculationHelper {
 		}
 
 
-		$prices['basePriceWithTax'] = $this->roundDisplay($this->executeCalculation($this->rules['Tax'], $prices['basePrice'], true));
-		$prices['discountedPriceWithoutTax'] = $this->roundDisplay($this->executeCalculation($this->rules['DBTax'], $prices['basePrice']));
+		$prices['basePriceWithTax'] = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $prices['basePrice'], true));
+		$prices['discountedPriceWithoutTax'] = $this->roundInternal($this->executeCalculation($this->rules['DBTax'], $prices['basePrice']));
 
 		$priceBeforeTax = !empty($prices['discountedPriceWithoutTax']) ? $prices['discountedPriceWithoutTax'] : $prices['basePrice'];
 		$prices['priceBeforeTax'] = $priceBeforeTax;
-		$prices['salesPrice'] = $this->roundDisplay($this->executeCalculation($this->rules['Tax'], $priceBeforeTax, true));
+		$prices['salesPrice'] = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $priceBeforeTax, true));
 
 		$salesPrice = !empty($prices['salesPrice']) ? $prices['salesPrice'] : $priceBeforeTax;
 		$prices['salesPriceTemp'] = $salesPrice;
-		$prices['taxAmount'] = $this->roundDisplay($salesPrice - $priceBeforeTax);
+		$prices['taxAmount'] = $this->roundInternal($salesPrice - $priceBeforeTax);
 
-		$prices['salesPriceWithDiscount'] = $this->roundDisplay($this->executeCalculation($this->rules['DATax'], $salesPrice));
+		$prices['salesPriceWithDiscount'] = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $salesPrice));
 
 		$prices['salesPrice'] = !empty($prices['salesPriceWithDiscount']) ? $prices['salesPriceWithDiscount'] : $salesPrice;
 
@@ -346,15 +332,15 @@ class calculationHelper {
 		}
 
 		//The whole discount Amount
-		//		$prices['discountAmount'] = $this->roundDisplay($prices['basePrice'] + $prices['taxAmount'] - $prices['salesPrice']);
+		//		$prices['discountAmount'] = $this->roundInternal($prices['basePrice'] + $prices['taxAmount'] - $prices['salesPrice']);
 		$basePriceWithTax = !empty($prices['basePriceWithTax']) ? $prices['basePriceWithTax'] : $prices['basePrice'];
 
 		//changed
-		//		$prices['discountAmount'] = $this->roundDisplay($basePriceWithTax - $salesPrice);
-		$prices['discountAmount'] = $this->roundDisplay($basePriceWithTax - $prices['salesPrice']);
+		//		$prices['discountAmount'] = $this->roundInternal($basePriceWithTax - $salesPrice);
+		$prices['discountAmount'] = $this->roundInternal($basePriceWithTax - $prices['salesPrice']);
 
 		//price Without Tax but with calculated discounts AFTER Tax. So it just shows how much the shopper saves, regardless which kind of tax
-		//		$prices['priceWithoutTax'] = $this->roundDisplay($salesPrice - ($salesPrice - $discountedPrice));
+		//		$prices['priceWithoutTax'] = $this->roundInternal($salesPrice - ($salesPrice - $discountedPrice));
 		$prices['priceWithoutTax'] = $salesPrice - $prices['taxAmount'];
 
 		$prices['variantModification'] = $variant;
@@ -507,18 +493,18 @@ class calculationHelper {
 
 		//		$cBRules = $this->gatherEffectingRulesForCoupon();
 
-		$this->_cartPrices['discountBeforeTaxBill'] = $this->roundDisplay($this->executeCalculation($DBTaxRules, $this->_cartPrices['salesPrice']));
+		$this->_cartPrices['discountBeforeTaxBill'] = $this->roundInternal($this->executeCalculation($DBTaxRules, $this->_cartPrices['salesPrice']));
 		$toTax = !empty($this->_cartPrices['discountBeforeTaxBill']) ? $this->_cartPrices['discountBeforeTaxBill'] : $this->_cartPrices['salesPrice'];
 
 		//We add the price of the Shipment before the tax. The tax per bill is meant for all services. In the other case people should use taxes per
 		//  product or method
 		$toTax = $toTax + $this->_cartPrices['salesPriceShipment'];
 
-		$this->_cartPrices['withTax'] = $discountWithTax = $this->roundDisplay($this->executeCalculation($taxRules, $toTax, true));
+		$this->_cartPrices['withTax'] = $discountWithTax = $this->roundInternal($this->executeCalculation($taxRules, $toTax, true));
 		$toDisc = !empty($this->_cartPrices['withTax']) ? $this->_cartPrices['withTax'] : $toTax;
 		$cartTax = !empty($toDisc) ? $toDisc - $toTax : 0;
 
-		$discountAfterTax = $this->roundDisplay($this->executeCalculation($DATaxRules, $toDisc));
+		$discountAfterTax = $this->roundInternal($this->executeCalculation($DATaxRules, $toDisc));
 		$this->_cartPrices['withTax'] = $this->_cartPrices['discountAfterTax'] = !empty($discountAfterTax) ? $discountAfterTax : $toDisc;
 		$cartdiscountAfterTax = !empty($discountAfterTax) ? $discountAfterTax- $toDisc : 0;
 
@@ -607,7 +593,7 @@ class calculationHelper {
 					$cIn = $price;
 				}
 				$cOut = $this->interpreteMathOp($rule['calc_value_mathop'], $rule['calc_value'], $cIn, $rule['calc_currency']);
-				$this->_cartPrices[$rule['virtuemart_calc_id'] . 'Diff'] = $this->roundDisplay($this->roundDisplay($cOut) - $cIn);
+				$this->_cartPrices[$rule['virtuemart_calc_id'] . 'Diff'] = $this->roundInternal($this->roundInternal($cOut) - $cIn);
 
 				//okey, this is a bit flawless logic, but should work
 				if ($relateToBaseAmount) {
@@ -931,7 +917,7 @@ class calculationHelper {
 				$price = $this->executeCalculation($taxRules, $price, true);
 			}
 
-			$price = $this->roundDisplay($price);
+			$price = $this->roundInternal($price);
 
 			return $price;
 		}
@@ -1025,7 +1011,8 @@ class calculationHelper {
 		 * Should be setable via config (just for the crazy case)
 		 */
 		function roundInternal($value) {
-			return round($value, 6);
+
+			return round($value, $this->_internalDigits);
 		}
 
 		/**
@@ -1034,10 +1021,11 @@ class calculationHelper {
 		 * and http://www.php.net/manual/en/language.types.float.php
 		 * So in case of € or $ it is rounded in cents
 		 * Should be setable via config
+		 * @deprecated
 		 */
-		function roundDisplay($value) {
+/*		function roundDisplay($value) {
 			return round($value, 4);
-		}
+		}*/
 
 		/**
 		 * Can test the tablefields Category, Country, State

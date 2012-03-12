@@ -97,6 +97,10 @@ class VirtueMartViewCart extends VmView {
 
 			$this->prepareContinueLink();
 			$this->lSelectCoupon();
+
+			$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
+			$this->assignRef('currencyDisplay',$currencyDisplay);
+
 			$totalInPaymentCurrency =$this->getTotalInPaymentCurrency();
 
 			if ($cart && !VmConfig::get('use_as_catalog', 0)) {
@@ -257,8 +261,8 @@ class VirtueMartViewCart extends VmView {
 
 		$totalInPaymentCurrency = $paymentCurrency->priceDisplay( $this->cart->pricesUnformatted['billTotal'],$this->cart->paymentCurrency) ;
 
-		$cd = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
-
+		$currencyDisplay = CurrencyDisplay::getInstance($this->cart->pricesCurrency);
+// 		$this->assignRef('currencyDisplay',$currencyDisplay);
 
 		return $totalInPaymentCurrency;
 	}

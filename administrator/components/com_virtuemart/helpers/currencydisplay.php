@@ -277,14 +277,14 @@ class CurrencyDisplay {
 	}
 
 	/**
-	 * getCurrencyDisplay: get The actual displayed Currency
+	 * getCurrencyForDisplay: get The actual displayed Currency
 	 * Use this only in a view, plugin or modul, never in a model
 	 *
 	 * @param integer $currencyId
 	 * return integer $currencyId: displayed Currency
 	 *
 	 */
-	public function getCurrencyDisplay( $currencyId=0 ){
+	public function getCurrencyForDisplay( $currencyId=0 ){
 
 		if(empty($currencyId)){
 			$currencyId = (int)$this->_app->getUserStateFromRequest( 'virtuemart_currency_id', 'virtuemart_currency_id',$this->_vendorCurrency );
@@ -304,7 +304,7 @@ class CurrencyDisplay {
 	 * @param integer $currencyId
 	 * return string formatted price
 	 */
-	public function priceDisplay($price=0, $currencyId=0,$inToShopCurrency = false,$nb = 2){
+	public function priceDisplay($price=0, $currencyId=0,$inToShopCurrency = false,$nb = -1){
 		// if($price ) Outcommented (Oscar) to allow 0 values to be formatted too (e.g. free shipment)
 		/*
 		 if(empty($currencyId)){
@@ -314,9 +314,35 @@ class CurrencyDisplay {
 		}
 		}
 		*/
-		$currencyId = $this->getCurrencyDisplay($currencyId);
+		$currencyId = $this->getCurrencyForDisplay($currencyId);
 		$price = $this->convertCurrencyTo($currencyId,$price,$inToShopCurrency);
 		return $this->getFormattedCurrency($price,$nb);
+	}
+
+	/**
+	* Format, Round and Display Value
+	* @author Max Milbers
+	* @param val number
+	*/
+	private function getFormattedCurrency( $nb, $nbDecimal=-1){
+
+		if($nbDecimal===-1) $nbDecimal = $this->_nbDecimal;
+		if($nb>=0){
+			$format = $this->_positivePos;
+			$sign = '+';
+		} else {
+			$format = $this->_negativePos;
+			$sign = '-';
+			$nb = abs($nb);
+		}
+
+		//$res = $this->formatNumber($nb, $nbDecimal, $this->_thousands, $this->_decimal);
+		$res = number_format((float)$nb,$nbDecimal,$this->_decimal,$this->_thousands);
+		$search = array('{sign}', '{number}', '{symbol}');
+		$replace = array($sign, $res, $this->_symbol);
+		$formattedRounded = str_replace ($search,$replace,$format);
+
+		return $formattedRounded;
 	}
 
 	/**
@@ -331,6 +357,7 @@ class CurrencyDisplay {
 	 */
 	public function createPriceDiv($name,$description,$product_price,$priceOnly=false,$switchSequel=false){
 
+// 		vmdebug('createPriceDiv '.$name,$product_price[$name]);
 		if(empty($product_price)) return '';
 
 		//This could be easily extended by product specific settings
@@ -356,9 +383,10 @@ class CurrencyDisplay {
 			} else {
 				return '<div class="Price'.$name.'" style="display : '.$vis.';" ><span class="Price'.$name.'" >'.$product_price[$name].'</span>'.$descr.'</div>';
 			}
-
-
+		} else {
+			vmWarn('no price config set');
 		}
+
 	}
 
 	/**
@@ -463,31 +491,7 @@ class CurrencyDisplay {
 		return $curr;
 	}
 
-	/**
-	 * Format, Round and Display Value
-	 * @author Max Milbers
-	 * @param val number
-	 */
-	private function getFormattedCurrency( $nb, $nbDecimal=-1){
 
-		if($nbDecimal===-1) $nbDecimal = $this->_nbDecimal;
-		if($nb>=0){
-			$format = $this->_positivePos;
-			$sign = '+';
-		} else {
-			$format = $this->_negativePos;
-			$sign = '-';
-			$nb = abs($nb);
-		}
-
-		//$res = $this->formatNumber($nb, $nbDecimal, $this->_thousands, $this->_decimal);
-		$res = number_format((float)$nb,$nbDecimal,$this->_decimal,$this->_thousands);
-		$search = array('{sign}', '{number}', '{symbol}');
-		$replace = array($sign, $res, $this->_symbol);
-		$formattedRounded = str_replace ($search,$replace,$format);
-
-		return $formattedRounded;
-	}
 
 	/**
 	 *

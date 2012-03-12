@@ -125,7 +125,7 @@
 
 		<?php
 		$i=1;
-		vmdebug('$this->cart->products',$this->cart->products);
+// 		vmdebug('$this->cart->products',$this->cart->products);
 		foreach( $this->cart->products as $pkey =>$prow ) { ?>
 			<tr valign="top" class="sectiontableentry<?php echo $i ?>">
 				<td align="left" >
@@ -142,10 +142,9 @@
 				<td align="left" ><?php  echo $prow->product_sku ?></td>
 				<td align="center" >
 				<?php
-					if (VmConfig::get('checkout_show_origprice',1) && !empty($this->cart->pricesUnformatted[$pkey]['basePriceWithTax']) && $prow->basePriceWithTax != $prow->salesPrice ) {
-						echo '<span class="line-through">'.$prow->basePriceWithTax .'</span><br />' ;
-					}
-					echo $prow->salesPrice ;
+// 					vmdebug('$this->cart->pricesUnformatted[$pkey]',$this->cart->pricesUnformatted[$pkey]['priceBeforeTax']);
+					echo $this->currencyDisplay->createPriceDiv('priceWithoutTax','', $this->cart->pricesUnformatted[$pkey],false);
+// 					echo $prow->salesPrice ;
 					?>
 				</td>
 				<td align="right" ><form action="<?php JRoute::_('index.php'); ?>" method="post" class="inline">
@@ -160,10 +159,15 @@
 				</td>
 
 				<?php if ( VmConfig::get('show_tax')) { ?>
-				<td align="right"><?php echo "<span  class='priceColor2'>".$prow->subtotal_tax_amount."</span>" ?></td>
+				<td align="right"><?php echo "<span  class='priceColor2'>".$this->currencyDisplay->createPriceDiv('taxAmount','', $this->cart->pricesUnformatted[$pkey],false)."</span>" ?></td>
                                 <?php } ?>
-				<td align="right"><?php echo "<span  class='priceColor2'>".$prow->subtotal_discount."</span>" ?></td>
-				<td colspan="1" align="right"><?php echo $prow->subtotal_with_tax ?></td>
+				<td align="right"><?php echo "<span  class='priceColor2'>".$this->currencyDisplay->createPriceDiv('discountAmount','', $this->cart->pricesUnformatted[$pkey],false)."</span>" ?></td>
+				<td colspan="1" align="right">
+				<?php
+				if (VmConfig::get('checkout_show_origprice',1) && !empty($this->cart->pricesUnformatted[$pkey]['basePriceWithTax']) && $prow->basePriceWithTax != $prow->salesPrice ) {
+					echo '<span class="line-through">'.$this->currencyDisplay->createPriceDiv('basePriceWithTax','', $this->cart->pricesUnformatted[$pkey],true) .'</span><br />' ;
+				}
+				echo $this->currencyDisplay->createPriceDiv('salesPrice','', $this->cart->pricesUnformatted[$pkey],false) ?></td>
 			</tr>
 		<?php
 			$i = 1 ? 2 : 1;
@@ -179,10 +183,10 @@
 			<td colspan="4" align="right"><?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_PRODUCT_PRICES_TOTAL'); ?></td>
 
                         <?php if ( VmConfig::get('show_tax')) { ?>
-			<td align="right"><?php echo "<span  class='priceColor2'>".$this->cart->prices['taxAmount']."</span>" ?></td>
+			<td align="right"><?php echo "<span  class='priceColor2'>".$this->currencyDisplay->createPriceDiv('taxAmount','', $this->cart->pricesUnformatted,false)."</span>" ?></td>
                         <?php } ?>
-			<td align="right"><?php echo "<span  class='priceColor2'>".$this->cart->prices['discountAmount']."</span>" ?></td>
-			<td align="right"><?php echo $this->cart->prices['salesPrice'] ?></td>
+			<td align="right"><?php echo "<span  class='priceColor2'>".$this->currencyDisplay->createPriceDiv('discountAmount','', $this->cart->pricesUnformatted,false)."</span>" ?></td>
+			<td align="right"><?php echo $this->currencyDisplay->createPriceDiv('salesPrice','', $this->cart->pricesUnformatted,false) ?></td>
 		  </tr>
 
 			<?php
