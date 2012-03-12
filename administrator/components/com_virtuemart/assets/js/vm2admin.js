@@ -296,7 +296,7 @@ jQuery.noConflict();
 	$('.virtuemart-admin-area .toggler').vm2admin('toggle');
 	$('#admin-ui-menu').vm2admin('accordeon');
 	if ( $("#admin-ui-tabs").length  ) {
-		$("#admin-ui-tabs").vm2admin("tabs",virtuemartcookie).find('select').chosen(); 
+		$("#admin-ui-tabs").vm2admin("tabs",virtuemartcookie).find('select').chosen({enable_select_all: true}); 
 	}
 
 	$('#content-box [title]').vm2admin('tips',tip_image);

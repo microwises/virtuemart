@@ -986,10 +986,10 @@ class vmJsApi{
 			$formatedDate = JHTML::_('date', $date, $dateFormat );
 		}
 		else $formatedDate = JText::_('COM_VIRTUEMART_NEVER');
-		$display= '<input id="'.$id.'_text" class="datepicker" type="date" name="'.$name.'_text" value="'.$formatedDate.'" />';
+		$display  = '<input class="datepicker-db" id="'.$id.'" type="hidden" name="'.$name.'" value="'.$date.'" />';
+		$display .= '<input id="'.$id.'_text" class="datepicker" type="date" name="'.$name.'_text" value="'.$formatedDate.'" />';
 		if ($resetBt) $display.='<span class="vmicon vmicon-16-logout icon-nofloat js-date-reset"></span>';
-		$display.= '<input class="datepicker-db" id="'.$id.'" type="hidden" name="'.$name.'" value="'.$date.'" />';
-
+		
 		// If exist exit
 		if ($jDate) return $display;
 		$front = JURI::root(true).'/components/com_virtuemart/assets/';
@@ -1002,13 +1002,12 @@ class vmJsApi{
 					changeYear: true,
 					'.$yearRange.'
 					dateFormat:"'.$jsDateFormat.'",
-					altField: $(this).siblings(".datepicker-db"),
+					altField: $(this).prev(),
 					altFormat: "yy-mm-dd"
 				});
 			});
 			$(".js-date-reset").click(function() {
-				$(this).prev("input").val("'.JText::_('COM_VIRTUEMART_NEVER').'");
-				$(this).next("input").val("0");
+				$(this).prev("input").val("'.JText::_('COM_VIRTUEMART_NEVER').'").prev("input").val("0");
 			});
 		});
 		');
