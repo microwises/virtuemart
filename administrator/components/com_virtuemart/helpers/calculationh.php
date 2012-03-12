@@ -908,17 +908,11 @@ class calculationHelper {
 			$dispatcher = JDispatcher::getInstance();
 			$returnValues = $dispatcher->trigger('plgVmonSelectedCalculatePricePayment',array( $cart, &$this->_cartPrices, &$this->_cartData['paymentName']  ));
 
-
 			/*
 			* Plugin return true if payment plugin is  valid
 			* false if not  valid anymore
 			* only one value is returned
 			*/
-			foreach ($returnValues as $returnValue) {
-				   if ($returnValue === false) {
-				       return;
-				   }
-			 }
 			$paymentValid=0;
 			foreach ($returnValues as $returnValue) {
 				    $paymentValid += $returnValue;
