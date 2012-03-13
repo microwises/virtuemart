@@ -216,7 +216,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	return false;
     }
 
-    function convert($method) {
+    function convert(&$method) {
 	$method->weight_start = (float) $method->weight_start;
 	$method->weight_stop = (float) $method->weight_stop;
 	$method->orderamount_start = (float) $method->orderamount_start;
