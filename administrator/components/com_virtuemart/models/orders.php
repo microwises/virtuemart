@@ -258,9 +258,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	{
 
 		// Update order item status
-		if(empty($virtuemart_order_item_id)){
-
-
+/*		if(empty($virtuemart_order_item_id)){
 				$q = 'SELECT virtuemart_order_item_id
 						FROM #__virtuemart_order_items
 						WHERE virtuemart_order_id="'.(int)$orderdata->virtuemart_order_id.'"';
@@ -272,27 +270,40 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			if(!is_array($virtuemart_order_item_id)) $virtuemart_order_item_ids = array($virtuemart_order_item_id);
 		}
 
-		foreach($virtuemart_order_item_ids as $id){
+		foreach($virtuemart_order_item_ids as $id){*/
 			$table = $this->getTable('order_items');
-			$table->load($id);
+			$table->load($virtuemart_order_item_id);
 			$oldOrderStatus = $table->order_status;
 
+			if(empty($oldOrderStatus)){
+				$oldOrderStatus = $orderdata->current_order_status;
+			}
+
+// 			$table->order_status = $orderdata->orderstatus;
+
+/*
 // 			JPluginHelper::importPlugin('vmcustom');
 // 			$_dispatcher = JDispatcher::getInstance();
 // 			$_returnValues = $_dispatcher->trigger('plgVmOnUpdateSingleItem',array($table,&$orderdata));
-
-
-			$table->bindChecknStore($orderdata,true);
-		/* Update the order item history */
+*/
+			$dataT = get_object_vars($table);
+			$orderdatacopy = $orderdata;
+			$data = array_merge($dataT,(array)$orderdatacopy);
+// 			$data['order_status'] = $orderdata->orderstatus;
+		vmdebug('updateSingleItem ',$dataT,$orderdata,$data);
+			$table->bindChecknStore($data);
+		// Update the order item history
 			//$this->_updateOrderItemHist($id, $order_status, $customer_notified, $comment);
 			$errors = $table->getErrors();
 			foreach($errors as $error){
 				vmError( get_class( $this ).'::store '.$error);
 			}
+// 			vmdebug('updateSingleItem '.$virtuemart_order_item_id.' old: '.$oldOrderStatus.' new: '.$orderdata->order_status);
+
 
 			$this->handleStockAfterStatusChangedPerProduct($orderdata->order_status, $oldOrderStatus, $table,$table->product_quantity);
 
-		}
+// 		}
 
 	}
 
@@ -398,7 +409,9 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$db->setQuery($q);
 			$order_items = $db->loadObjectList();
 			if ($order_items) {
+				vmdebug('updateStatusForOneOrder',$data);
 				foreach ($order_items as $order_item) {
+
 					//$this->updateSingleItem($order_item->virtuemart_order_item_id, $data->order_status, $order['comments'] , $virtuemart_order_id, $data->order_pass);
 					$this->updateSingleItem($order_item->virtuemart_order_item_id, $data);
 				}
@@ -798,7 +811,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 						} else {
 
-							$product_attribute[$selected] = ' <span>'.$productCustom->custom_title.' : </span>'.$productCustom->custom_value;
+							$product_attribute[$selected] = ' <span class="costumTitle">'.$productCustom->custom_title.'</span><span class="costumValue" >'.$productCustom->custom_value.'</span>';
 						}
 					}
 					$row++;

@@ -178,12 +178,7 @@ $i=0;
 							<div class="icon">
 								<a href="<?php echo $link ?>"> <span
 									class="vmicon48 vm_install_48"></span> <br />
-
-
-
-
             <?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_CHILD'); ?>
-
 		</a>
 							</div>
 						</td>
@@ -391,9 +386,6 @@ $i=0;
 // 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
 				</td>
 					</tr>
-
-
-
 
 
 <?php	/*	The problem here is that we can only override one discount (there is only one field for it)

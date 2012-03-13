@@ -193,7 +193,7 @@ class VirtuemartModelReport extends VmModel {
 
 			$vendorId = JRequest::getInt('virtuemart_vendor_id',0);
 			if($vendorId!='0'){
-				$where[] = 'o.virtuemart_vendor_id = "'.$vendorId.'" ';
+				$where[] = 'i.virtuemart_vendor_id = "'.$vendorId.'" ';
 			}
 		}
 		if(count($where)>0){
