@@ -436,7 +436,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	if (!($paymentTable = $this->getDataByOrderId($virtuemart_order_id))) {
 	    return null;
 	}
-	$html = '<table class="admintable">' . "\n";
+	$html = '<table class="adminlist">' . "\n";
 	$html .= $this->getHtmlHeaderBE();
 	$html .= $this->getHtmlRowBE('AUTHORIZENET_PAYMENT_NAME', $paymentTable->payment_name);
 	$html .= $this->getHtmlRowBE('AUTHORIZENET_COST_PER_TRANSACTION', $paymentTable->cost_per_transaction);
