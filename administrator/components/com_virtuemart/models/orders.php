@@ -158,7 +158,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
    ON p.virtuemart_product_id = i.virtuemart_product_id)
                         LEFT JOIN #__virtuemart_product_categories c
                         ON p.virtuemart_product_id = c.virtuemart_product_id
-   WHERE `virtuemart_order_id`="'.$virtuemart_order_id.'" group by `virtuemart_order_id`';
+   WHERE `virtuemart_order_id`="'.$virtuemart_order_id.'" '; //group by `virtuemart_order_id`'; Why ever we added this, it makes trouble, only one order item is shown then.
 		$db->setQuery($q);
 		$order['items'] = $db->loadObjectList();
 // Get the order items
@@ -351,6 +351,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	// IMPORTANT: The $inputOrder can contain extra data by plugins			//also strange $useTriggers is always activated?
 	function updateStatusForOneOrder($virtuemart_order_id,$inputOrder,$useTriggers=true){
 
+		vmdebug('updateStatusForOneOrder', $inputOrder);
 		/* Update the order */
 		$data = $this->getTable('orders');
 		$data->load($virtuemart_order_id);
@@ -754,6 +755,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 		$_orderItems = $this->getTable('order_items');
 		//		$_lineCount = 0;
 		foreach ($_cart->products as $priceKey=>$_prod) {
+
 			if (!is_int($priceKey)) {
 
 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
@@ -848,6 +850,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 				vmError($this->getError());
 				return false;
 			}
+// 			vmdebug('_createOrderLines',$_prod);
 			$this->handleStockAfterStatusChangedPerProduct( $_orderItems->order_status,'N',$_orderItems,$_orderItems->product_quantity);
 
 		}

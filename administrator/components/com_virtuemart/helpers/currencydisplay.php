@@ -360,31 +360,34 @@ class CurrencyDisplay {
 // 		vmdebug('createPriceDiv '.$name,$product_price[$name]);
 		if(empty($product_price)) return '';
 
+		//The fallback, when this price is not configured
+		if(empty($this->_priceConfig[$name])){
+			$name = "salesPrice";
+			$price = $product_price;
+		} else {
+			$price = $product_price[$name];
+		}
+
 		//This could be easily extended by product specific settings
-
 		if(!empty($this->_priceConfig[$name][0])){
-			if(!empty($product_price[$name])){
+			if(!empty($price)){
 				$vis = "block";
-				//if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
-
-				$product_price[$name] = $this->priceDisplay($product_price[$name],0,false,$this->_priceConfig[$name][1]);
-
+				$priceFormatted = $this->priceDisplay($price,0,false,$this->_priceConfig[$name][1]);
 			} else {
+				$priceFormatted = '';
 				$vis = "none";
 			}
 			if($priceOnly){
-				return $product_price[$name];
+				return $priceFormatted;
 			}
 			$descr = '';
 			if($this->_priceConfig[$name][2]) $descr = JText::_($description);
 // 			vmdebug('createPriceDiv $name '.$name.' '.$product_price[$name]);
 			if(!$switchSequel){
-				return '<div class="Price'.$name.'" style="display : '.$vis.';" >'.$descr.'<span class="Price'.$name.'" >'.$product_price[$name].'</span></div>';
+				return '<div class="Price'.$name.'" style="display : '.$vis.';" >'.$descr.'<span class="Price'.$name.'" >'.$priceFormatted.'</span></div>';
 			} else {
-				return '<div class="Price'.$name.'" style="display : '.$vis.';" ><span class="Price'.$name.'" >'.$product_price[$name].'</span>'.$descr.'</div>';
+				return '<div class="Price'.$name.'" style="display : '.$vis.';" ><span class="Price'.$name.'" >'.$priceFormatted.'</span>'.$descr.'</div>';
 			}
-		} else {
-			vmWarn('no price config set');
 		}
 
 	}

@@ -838,13 +838,13 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
-		$userfielddata = self::_prepareUserFields($data, 'BT');
+		if($data['address_type'] == 'BT'){
+			$userfielddata = self::_prepareUserFields($data, 'BT');
 
-		$data['address_type'] = 'BT';
-		if (!$userinfo->bindChecknStore($userfielddata)) {
-			vmError($userinfo->getError());
+			if (!$userinfo->bindChecknStore($userfielddata)) {
+				vmError($userinfo->getError());
+			}
 		}
-
 
 		// Check for fields with the the 'shipto_' prefix; that means a (new) shipto address.
 		if(isset($data['shipto_virtuemart_userinfo_id'])){
@@ -1210,7 +1210,7 @@ class VirtueMartModelUser extends VmModel {
 				$_q .= ' AND address_type="'.$_type.'"';
 			}
 		}
-		vmdebug('getUserAddressList query '.$_q);
+// 		vmdebug('getUserAddressList query '.$_q);
 		return ($this->_getList($_q));
 	}
 
