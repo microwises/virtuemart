@@ -116,10 +116,16 @@ class VirtuemartViewProduct extends JView {
 				} elseif ($field->field_type =='E') {
 					$this->json['table'] = 'customPlugins';
 					$display = $this->model->inputType($field,$product_id,$this->row);
-					 if ($field->is_cart_attribute) $cartIcone=  'default';
-					 else  $cartIcone= 'default-off';
-					 if (!empty ($field->custom_tip) ) $field->custom_tip = '<span> ('.$field->custom_tip.')</span>';
-					 else $field->custom_tip ='';
+					 if ($field->is_cart_attribute) {
+					     $cartIcone=  'default';
+					 } else {
+					     $cartIcone= 'default-off';
+					 }
+					 if (!empty ($field->custom_tip) ) {
+					     $field->custom_tip = '<span> ('.$field->custom_tip.')</span>';
+					 } else {
+					     $field->custom_tip ='';
+					     }
 					 $html[] = '
 					<fieldset class="removable">
 						<legend>'.$field->custom_title.'</legend>

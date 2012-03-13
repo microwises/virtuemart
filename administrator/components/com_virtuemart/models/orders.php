@@ -351,7 +351,6 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	// IMPORTANT: The $inputOrder can contain extra data by plugins			//also strange $useTriggers is always activated?
 	function updateStatusForOneOrder($virtuemart_order_id,$inputOrder,$useTriggers=true){
 
-		vmdebug('updateStatusForOneOrder', $inputOrder);
 		/* Update the order */
 		$data = $this->getTable('orders');
 		$data->load($virtuemart_order_id);

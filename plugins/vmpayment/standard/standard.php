@@ -1,4 +1,5 @@
 <?php
+
 defined('_JEXEC') or die('Restricted access');
 
 
@@ -57,7 +58,7 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	$SQLfields = array(
 	    'id' => 'int(1) UNSIGNED NOT NULL AUTO_INCREMENT',
 	    'virtuemart_order_id' => 'int(1) UNSIGNED',
-	    'order_number' => 'char(32)',
+	    'order_number' => ' char(64)',
 	    'virtuemart_paymentmethod_id' => 'mediumint(1) UNSIGNED',
 	    'payment_name' => 'varchar(5000)',
 	    'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
@@ -135,8 +136,16 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	//$html .= $this->getHtmlRow('STANDARD_AMOUNT', $totalInPaymentCurrency.' '.$currency_code_3);
 	$html .= '</table>' . "\n";
 
-	return $this->processConfirmedOrderPaymentResponse(true, $cart, $order, $html, $dbValues['payment_name'], 'P');
-// 		return true;  // empty cart, send order
+	$modelOrder = VmModel::getModel('orders');
+	$order['order_status'] = 'P';
+	$order['customer_notified'] = 1;
+	$order['comments'] = '';
+	$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order, true);
+
+	//We delete the old stuff
+	$cart->emptyCart();
+	JRequest::setVar('html', $html);
+	return true;
     }
 
     /**
@@ -148,15 +157,9 @@ class plgVmPaymentStandard extends vmPSPlugin {
 	    return null; // Another method was selected, do nothing
 	}
 
-	$db = JFactory::getDBO();
-	$q = 'SELECT * FROM `' . $this->_tablename . '` '
-		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
-	$db->setQuery($q);
-	if (!($paymentTable = $db->loadObject())) {
-	    vmWarn(500, $q . " " . $db->getErrorMsg());
-	    return '';
+	if (!($paymentTable = $this->getDataByOrderId($virtuemart_order_id) )) {
+	    return null;
 	}
-	//$this->getPaymentCurrency($paymentTable);
 
 	$html = '<table class="adminlist">' . "\n";
 	$html .=$this->getHtmlHeaderBE();

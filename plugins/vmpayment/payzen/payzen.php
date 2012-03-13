@@ -52,10 +52,13 @@ class plgVMPaymentPayzen extends vmPSPlugin {
     }
 
     function getTableSQLFields() {
+
+
+
 	$SQLfields = array(
 	    'id' => 'int(11) UNSIGNED NOT NULL AUTO_INCREMENT',
 	    'virtuemart_order_id' => 'int(1) UNSIGNED',
-	    'order_number' => 'char(64) DEFAULT NULL',
+	    'order_number' => ' char(64)',
 	    'virtuemart_paymentmethod_id' => 'mediumint(1) UNSIGNED',
 	    'payment_name' => 'varchar(5000)',
 	    'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
@@ -63,19 +66,19 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	    'cost_per_transaction' => 'decimal(10,2)',
 	    'cost_percent_total' => 'decimal(10,2)',
 	    'tax_id' => 'smallint(1)',
-	    $this->_name . '_custom' => 'varchar(255)',
-	    $this->_name . '_response_payment_amount' => 'char(15)',
-	    $this->_name . '_response_auth_number' => 'char(10)',
-	    $this->_name . '_response_payment_currency' => 'char(3)',
-	    $this->_name . '_response_auth_number' => 'char(10)',
-	    $this->_name . '_response_payment_mean' => 'char(255)',
-	    $this->_name . '_response_payment_date' => 'char(20)',
-	    $this->_name . '_response_payment_status' => 'char(3)',
-	    $this->_name . '_response_payment_message' => 'char(255)',
-	    $this->_name . '_response_card_number' => 'char(50)',
-	    $this->_name . '_response_trans_id' => 'char(6)',
-	    $this->_name . '_response_expiry_month' => 'char(2)',
-	    $this->_name . '_response_expiry_year' => 'char(4)',
+	    'payzen_custom' => 'varchar(255)',
+	    'payzen_response_payment_amount' => 'char(15)',
+	    'payzen_response_auth_number' => 'char(10)',
+	    'payzen_response_payment_currency' => 'char(3)',
+	    'payzen_response_auth_number' => 'char(10)',
+	    'payzen_response_payment_mean' => 'char(255)',
+	    'payzen_response_payment_date' => 'char(20)',
+	    'payzen_response_payment_status' => 'char(3)',
+	    'payzen_response_payment_message' => 'char(255)',
+	    'payzen_response_card_number' => 'char(50)',
+	    'payzen_response_trans_id' => 'char(6)',
+	    'payzen_response_expiry_month' => 'char(2)',
+	    'payzen_response_expiry_year' => 'char(4)',
 	);
 
 	return $SQLfields;
@@ -302,7 +305,6 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	if (!$resp->isAuthentified()) {
 	    $this->logInfo('plgVmOnPaymentResponseReceived -- suspect request sent to plgVmOnPaymentResponseReceived, IP : ' . $_SERVER['REMOTE_ADDR'], 'error');
 	    $html = $this->_getHtmlPaymentResponse('VMPAYMENT_PAYZEN_ERROR_MSG', false);
-	    JRequest::setVar('paymentResponseHtml', $html, 'post');
 	    return null;
 	}
 
@@ -315,6 +317,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 
 	// Order not found
 	if (!$virtuemart_order_id) {
+	    vmdebug('plgVmOnPaymentResponseReceived PAYZEN', $data, $resp->get('order_id'));
 	    $this->logInfo('plgVmOnPaymentResponseReceived -- payment check attempted on non existing order : ' . $resp->get('order_id'), 'error');
 	    $html = $this->_getHtmlPaymentResponse('VMPAYMENT_PAYZEN_ERROR_MSG', false);
 	    JRequest::setVar('paymentResponseHtml', $html, 'post');
@@ -334,7 +337,6 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	} else {
 	    $html = $this->_getHtmlPaymentResponse('VMPAYMENT_PAYZEN_FAILURE_MSG', false);
 	    JRequest::setVar('paymentResponseHtml', $html, 'post');
-
 	    $new_status = $method->order_failure_status;
 	}
 
@@ -367,20 +369,17 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	if (!$order_number) {
 	    return false;
 	}
-	$db = JFactory::getDBO();
-	$query = 'SELECT * FROM ' . $this->_tablename . " WHERE  `order_number`= '" . $order_number . "'";
-
-	$db->setQuery($query);
-	if (!$result = $db->loadObject()) {
+	if (!$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number)) {
+	    return null;
+	}
+	if (!( $this->getDataByOrderId($virtuemart_order_id) )) {
 	    return null;
 	}
 
-	if (!$result->virtuemart_order_id) {
-	    return null;
-	}
 	$session = JFactory::getSession();
 	$return_context = $session->getId();
-	if (strcmp($result->cybermut_custom, $return_context) === 0) {
+	$field = $this->name . '_custom';
+	if (strcmp($result->$field, $return_context) === 0) {
 	    $this->handlePaymentUserCancel($virtuemart_order_id);
 	}
 	//JRequest::setVar('paymentResponse', $returnValue);
@@ -509,14 +508,8 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	if (!$this->selectedThisByMethodId($payment_method_id)) {
 	    return null; // Another method was selected, do nothing
 	}
-	$db = JFactory::getDBO();
-	$q = 'SELECT * FROM `' . $this->_tablename . '` '
-		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
-	$db->setQuery($q);
-
-	if (!($paymentTable = $db->loadObject())) {
-	    JError::raiseWarning(500, $db->getErrorMsg());
-	    return '';
+	if (!($paymentTable = $this->getDataByOrderId($virtuemart_order_id))) {
+	    return null;
 	}
 
 	$html = '<table class="adminlist">' . "\n";
@@ -550,7 +543,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	    $html = '<table>' . "\n";
 	    $html .= '<thead><tr><td colspan="2" style="text-align: center;">' . JText::_($msg) . '</td></tr></thead>';
 	    $html .= $this->getHtmlRow('PAYZEN_ORDER_NUMBER', $order_id, 'style="width: 90px;" class="key"');
-	    $html .= $this->getHtmlRow( 'PAYZEN_AMOUNT', $amount, 'style="width: 90px;" class="key"');
+	    $html .= $this->getHtmlRow('PAYZEN_AMOUNT', $amount, 'style="width: 90px;" class="key"');
 	    $html .= '</table>' . "\n";
 
 	    return $html;

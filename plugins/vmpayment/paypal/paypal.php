@@ -74,15 +74,15 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	$SQLfields = array(
 	    'id' => 'int(11) UNSIGNED NOT NULL AUTO_INCREMENT',
 	    'virtuemart_order_id' => 'int(1) UNSIGNED',
-	    'order_number' => ' char(32)',
+	     'order_number' => ' char(64)',
 	    'virtuemart_paymentmethod_id' => 'mediumint(1) UNSIGNED',
 	    'payment_name' => 'varchar(5000)',
-	    'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\' ',
+	    'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
 	    'payment_currency' => 'char(3) ',
 	    'cost_per_transaction' => 'decimal(10,2)',
 	    'cost_percent_total' => 'decimal(10,2)',
 	    'tax_id' => ' smallint(1)',
-	    'paypal_custom' => ' varchar(255)  ',
+	    'paypal_custom' => ' varchar(255)',
 	    'paypal_response_mc_gross' => 'decimal(10,2)',
 	    'paypal_response_mc_currency' => 'char(10)',
 	    'paypal_response_invoice' => 'char(32)',
@@ -91,6 +91,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    'paypal_response_tax' => 'decimal(10,2)',
 	    'paypal_response_payment_date' => 'char(28)',
 	    'paypal_response_payment_status' => 'char(50)',
+	    'paypal_response_pending_reason' => 'char(50)',
 	    'paypal_response_mc_fee' => 'decimal(10,2) ',
 	    'paypal_response_payer_email' => 'char(128)',
 	    'paypal_response_last_name' => 'char(64)',
@@ -137,7 +138,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	$vendorModel->addImages($vendor, 1);
 	$this->getPaymentCurrency($method);
 	$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $method->payment_currency . '" ';
-	$db = &JFactory::getDBO();
+	$db = JFactory::getDBO();
 	$db->setQuery($q);
 	$currency_code_3 = $db->loadResult();
 
@@ -251,7 +252,11 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	$html.= ' </script></body></html>';
 
 	// 	2 = don't delete the cart, don't send email and don't redirect
-	return $this->processConfirmedOrderPaymentResponse(2, $cart, $order, $html, $dbValues['payment_name'], $new_status);
+	$cart->_confirmDone = false;
+	$cart->_dataValidated = false;
+	$cart->setCartIntoSession();
+	JRequest::setVar('html', $html);
+
 
 
 
@@ -291,7 +296,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 	$paypal_data = JRequest::get('post');
-	vmdebug('plgVmOnPaymentResponseReceived', $paypal_data);
+	vmdebug('PAYPAL plgVmOnPaymentResponseReceived', $paypal_data);
 	// the payment itself should send the parameter needed.
 	$virtuemart_paymentmethod_id = JRequest::getInt('pm', 0);
 	$order_number = JRequest::getString('on', 0);
@@ -300,18 +305,17 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    return null; // Another method was selected, do nothing
 	}
 	if (!$this->selectedThisElement($method->payment_element)) {
-	    return false;
+	    return null;
 	}
 
-	//$paypal_data = JRequest::get('post');
-	$payment_name = $this->renderPluginName($method);
-
-	$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number);
-
-	if (!($paymentTable = $this->_getPaypalInternalData($virtuemart_order_id, $order_number) )) {
+	if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($order_number) )) {
+	    return null;
+	}
+	if (!($paymentTable = $this->getDataByOrderId($virtuemart_order_id) )) {
 	    // JError::raiseWarning(500, $db->getErrorMsg());
 	    return '';
 	}
+	$payment_name = $this->renderPluginName($method);
 	$html = $this->_getPaymentResponseHtml($paymentTable, $payment_name);
 
 	//We delete the old stuff
@@ -327,22 +331,19 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 
 	$order_number = JRequest::getString('on', '');
-	if (!$order_number)
-	    return false;
-	$db = JFactory::getDBO();
-	$query = 'SELECT * FROM ' . $this->_tablename . " WHERE  `order_number`= '" . $order_number . "'";
-	VmInfo(Jtext::_('VMPAYMENT_PAYPAL_PAYMENT_CANCELLED'));
-	$db->setQuery($query);
-	if (!$result = $db->loadObject()) {
+	$virtuemart_paymentmethod_id = JRequest::getInt('pm', '');
+	if (empty($order_number) or empty($virtuemart_paymentmethod_id) or !$this->selectedThisByMethodId($virtuemart_paymentmethod_id)) {
 	    return null;
 	}
 
-	if (!$result->virtuemart_order_id) {
+	if (!($paymentTable = $this->getDataByOrderId($virtuemart_order_id))) {
 	    return null;
 	}
+
+	VmInfo(Jtext::_('VMPAYMENT_PAYPAL_PAYMENT_CANCELLED'));
 	$session = JFactory::getSession();
 	$return_context = $session->getId();
-	if (strcmp($result->paypal_custom, $return_context) === 0) {
+	if (strcmp($paymentTable->paypal_custom, $return_context) === 0) {
 	    $this->handlePaymentUserCancel($result->virtuemart_order_id);
 	}
 	return true;
@@ -365,14 +366,14 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    return;
 	}
 	$order_number = $paypal_data['invoice'];
-	$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($paypal_data['invoice']);
-	//$this->logInfo('plgVmOnPaymentNotification: virtuemart_order_id  found ' . $virtuemart_order_id, 'message');
-
-	if (!$virtuemart_order_id) {
+	if (!($virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($paypal_data['invoice']))) {
 	    return;
 	}
+
 	$vendorId = 0;
-	$payment = $this->getDataByOrderId($virtuemart_order_id);
+	if (!($payment = $this->getDataByOrderId($virtuemart_order_id))) {
+	    return;
+	}
 
 	$method = $this->getVmPluginMethod($payment->virtuemart_paymentmethod_id);
 	if (!$this->selectedThisElement($method->payment_element)) {
@@ -387,11 +388,16 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	$this->logInfo('paypal_data ' . implode('   ', $paypal_data), 'message');
 
 	$this->_storePaypalInternalData($method, $paypal_data, $virtuemart_order_id);
-
+	$modelOrder = VmModel::getModel('orders');
+	$order = array();
 	$error_msg = $this->_processIPN($paypal_data, $method, $virtuemart_order_id);
 	$this->logInfo('process IPN ' . $error_msg, 'message');
+
 	if (!(empty($error_msg) )) {
-	    $new_status = $method->status_canceled;
+	    $order['customer_notified'] = 0;
+	    $order['order_status'] = $method->status_canceled;
+	    $order['comments'] = 'process IPN ' . $error_msg;
+	    $modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
 	    $this->logInfo('process IPN ' . $error_msg . ' ' . $new_status, 'ERROR');
 	} else {
 	    $this->logInfo('process IPN OK', 'message');
@@ -416,20 +422,21 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    //return false;
 	}
 
-	$new_status = $this->_getPaymentStatus($method, $paypal_data['payment_status']);
-
-	$this->logInfo('plgVmOnPaymentNotification return new_status:' . $new_status, 'message');
-
-	$modelOrder = VmModel::getModel('orders');
-
-	$order = array();
-	$order['order_status'] = $new_status;
 	$order['customer_notified'] = 1;
-	$order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $order_number);
+
+	if (strcmp($paypal_data['payment_status'], 'Completed') == 0) {
+	    $order['order_status'] = $method->status_success;
+	    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $order_number);
+	} elseif (strcmp($paypal_data['payment_status'], 'Pending') == 0) {
+	    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PENDING', $order_number) . JText::_('VMPAYMENT_PAYPAL_PENDING_REASON_FE_' . strtoupper($paypal_data['pending_reason']));
+	    $order['order_status'] = $method->status_pending;
+	} else {
+	    $order['order_status'] = $method->status_canceled;
+	}
+
+	$this->logInfo('plgVmOnPaymentNotification return new_status:' . $order['order_status'], 'message');
 
 	$modelOrder->updateStatusForOneOrder($virtuemart_order_id, $order, true);
-
-	$this->logInfo('Notification, sentOrderConfirmedEmail ' . $order_number . ' ' . $new_status, 'message');
 
 	//// remove vmcart
 	$this->emptyCart($return_context);
@@ -473,18 +480,6 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	    return '';
 	}
 	return $pkey;
-    }
-
-    function _getPaymentStatus($method, $paypal_status) {
-	$new_status = '';
-	if (strcmp($paypal_status, 'Completed') == 0) {
-	    $new_status = $method->status_success;
-	} elseif (strcmp($paypal_status, 'Pending') == 0) {
-	    $new_status = $method->status_pending;
-	} else {
-	    $new_status = $method->status_canceled;
-	}
-	return $new_status;
     }
 
     /**

@@ -33,7 +33,38 @@ class plgVMPaymentSystempay extends plgVMPaymentPayzen {
 
     }
 
+function getTableSQLFields() {
 
+
+
+	$SQLfields = array(
+	    'id' => 'int(11) UNSIGNED NOT NULL AUTO_INCREMENT',
+	    'virtuemart_order_id' => 'int(1) UNSIGNED',
+	    'order_number' => ' char(64)',
+	    'virtuemart_paymentmethod_id' => 'mediumint(1) UNSIGNED',
+	    'payment_name' => 'varchar(5000)',
+	    'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
+	    'payment_currency' => 'char(3)',
+	    'cost_per_transaction' => 'decimal(10,2)',
+	    'cost_percent_total' => 'decimal(10,2)',
+	    'tax_id' => 'smallint(1)',
+	    'systempay_custom' => 'varchar(255)',
+	    'systempay_response_payment_amount' => 'char(15)',
+	    'systempay_response_auth_number' => 'char(10)',
+	    'systempay_response_payment_currency' => 'char(3)',
+	    'systempay_response_auth_number' => 'char(10)',
+	    'systempay_response_payment_mean' => 'char(255)',
+	    'systempay_response_payment_date' => 'char(20)',
+	    'systempay_response_payment_status' => 'char(3)',
+	    'systempay_response_payment_message' => 'char(255)',
+	    'systempay_response_card_number' => 'char(50)',
+	    'systempay_response_trans_id' => 'char(6)',
+	    'systempay_response_expiry_month' => 'char(2)',
+	    'systempay_response_expiry_year' => 'char(4)',
+	);
+
+	return $SQLfields;
+    }
     /**
      * Prepare data and redirect to Systempay payment platform
      * @param string $order_number

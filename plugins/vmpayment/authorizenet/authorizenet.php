@@ -104,11 +104,11 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	$SQLfields = array(
 	    'id' => 'int(1) UNSIGNED NOT NULL AUTO_INCREMENT',
 	    'virtuemart_order_id' => 'int(1) UNSIGNED',
-	    'order_number' => 'char(32)',
+	    'order_number' => ' char(64)',
 	    'virtuemart_paymentmethod_id' => 'mediumint(1) UNSIGNED',
 	    'payment_name' => 'varchar(5000)',
 	    'return_context' => 'char(255)',
-	    'cost_per_transaction' => 'decimal(10, 2)',
+	    'cost_per_transaction' => 'decimal(10,2)',
 	    'cost_percent_total' => 'char(10)',
 	    'tax_id' => 'smallint(1)',
 	    'authorizenet_response_authorization_code' => 'char(10)',
@@ -116,7 +116,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	    'authorizenet_response_authorization_code' => 'char(6)',
 	    'authorizenet_response_response_code' => 'char(128)',
 	    'authorizenet_response_response_subcode' => 'char(13)',
-	    'authorizenet_response_response_reason_code' => 'decimal(10, 2)',
+	    'authorizenet_response_response_reason_code' => 'decimal(10,2)',
 	    'authorizenet_response_response_reason_text' => 'text',
 	    'authorizenet_response_transaction_type' => 'char(50)',
 	    'authorizenet_response_account_number' => 'char(4)',
@@ -133,7 +133,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
      *
      * @author Valerie Cartan Isaksen
      */
-    function plgVmDisplayListFEPayment(VirtueMartCart $cart, $selected=0, &$htmlIn) {
+    function plgVmDisplayListFEPayment(VirtueMartCart $cart, $selected = 0, &$htmlIn) {
 	JHTML::_('behavior.tooltip');
 
 	if ($this->getPluginMethods($cart->vendorId) === 0) {
@@ -433,13 +433,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	if (!$this->selectedThisByMethodId($virtuemart_payment_id)) {
 	    return null; // Another method was selected, do nothing
 	}
-	$db = JFactory::getDBO();
-	$q = 'SELECT * FROM `' . $this->_tablename . '` '
-		. 'WHERE `virtuemart_order_id` = ' . $virtuemart_order_id;
-	$db->setQuery($q);
-	if (!($paymentTable = $db->loadObject())) {
-	    JError::raiseWarning(500, $db->getErrorMsg());
-	    return '';
+	if (!($paymentTable = $this->getDataByOrderId($virtuemart_order_id))) {
+	    return null;
 	}
 	$html = '<table class="admintable">' . "\n";
 	$html .= $this->getHtmlHeaderBE();
@@ -528,27 +523,32 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	$html = $this->_handleResponse($response, $authnet_values, $order, $dbValues['payment_name']);
 	if ($this->error) {
 	    $new_status = $method->payment_declined_status;
-	    $this->handlePaymentCancel($order['details']['BT']->virtuemart_order_id, $html);
+	    $this->_handlePaymentCancel($order['details']['BT']->virtuemart_order_id, $html);
 	    return; // will not process the order
 	} else if ($this->approved) {
 	    $this->_clearAuthorizeNetSession();
 	    $new_status = $method->payment_approved_status;
-	    $action = 1;
 	} else if ($this->declined) {
 	    JRequest::setVar('html', $html);
 	    $new_status = $method->payment_declined_status;
-	    $this->handlePaymentCancel($order['details']['BT']->virtuemart_order_id, $html);
+	    $this->_handlePaymentCancel($order['details']['BT']->virtuemart_order_id, $html);
 	    return;
 	} else if ($this->held) {
 	    $this->_clearAuthorizeNetSession();
-	    $action = 1;
 	    $new_status = $method->payment_held_status;
 	}
+	$modelOrder = VmModel::getModel('orders');
+	$order['order_status'] = $new_status;
+	$order['customer_notified'] = 1;
+	$order['comments'] = '';
+	$modelOrder->updateStatusForOneOrder($order['details']['BT']->virtuemart_order_id, $order, true);
 
-	return $this->processConfirmedOrderPaymentResponse($action, $cart, $order, $html, $dbValues['payment_name'], $new_status);
+	//We delete the old stuff
+	$cart->emptyCart();
+	JRequest::setVar('html', $html);
     }
 
-    function handlePaymentCancel($virtuemart_order_id, $html) {
+    function _handlePaymentCancel($virtuemart_order_id, $html) {
 	if (!class_exists('VirtueMartModelOrders'))
 	    require( JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orders.php' );
 	$modelOrder = VmModel::getModel('orders');
@@ -609,7 +609,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
      *
      * @author Valerie Isaksen
      */
-    function _renderCreditCardList($creditCards, $selected_cc_type, $paymentmethod_id, $multiple = false, $attrs='') {
+    function _renderCreditCardList($creditCards, $selected_cc_type, $paymentmethod_id, $multiple = false, $attrs = '') {
 
 	$idA = $id = 'cc_type_' . $paymentmethod_id;
 	//$options[] = JHTML::_('select.option', '', JText::_('VMPAYMENT_AUTHORIZENET_SELECT_CC_TYPE'), 'creditcard_type', $name);
@@ -631,7 +631,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
      * @author Valerie isaksen
      */
 
-    function _validate_creditcard_data($enqueueMessage=true) {
+    function _validate_creditcard_data($enqueueMessage = true) {
 
 	$html = '';
 	$this->_cc_valid = true;
@@ -816,7 +816,6 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 
 	if ($response) {
 	    // Split Array
-
 	    if ($encap_char) {
 		//$response_array = explode($encap_char . $delimiter . $encap_char, substr($response, 1, -1));
 		$response_array = explode($encap_char, $response);
@@ -917,7 +916,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		$this->sendEmailToVendorAndAdmins(JText::sprintf('VMPAYMENT_AUTHORIZENET_NO_ORDER_NUMBER', $authorizeNetResponse['invoice_number']), JText::sprintf('VMPAYMENT_AUTHORIZENET_ERROR_WHILE_PROCESSING_PAYMENT', $authorizeNetResponse['invoice_number']));
 		$html = Jtext::sprintf('VMPAYMENT_AUTHORIZENET_ERROR', $authorizeNetResponse['response_reason_text'], $authorizeNetResponse['response_code']) . "<br />";
 		$this->logInfo($html, 'PAYMENT DECLINED');
-		return $html; // the transaction has been submitted, we don't want to delete the order	    }
+		return $html;
 	    }
 	    if ($this->error or $this->declined) {
 		// Prepare data that should be stored in the database
@@ -925,11 +924,10 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 		$dbValues['authorizenet_response_response_subcode'] = $authorizeNetResponse['response_subcode'];
 		$dbValues['authorizenet_response_response_reason_code'] = $authorizeNetResponse['response_reason_code'];
 		$dbValues['authorizenet_response_response_reason_text'] = $authorizeNetResponse['response_reason_text'];
-
 		//$this->storePSPluginInternalData($dbValues, 'id', true);
 		$html = Jtext::sprintf('VMPAYMENT_AUTHORIZENET_ERROR', $authorizeNetResponse['response_reason_text'], $authorizeNetResponse['response_code']) . "<br />";
 		$this->logInfo($html, 'PAYMENT DECLINED');
-		return $html; // the transaction has been submitted, we don't want to delete the order
+		return $html;
 	    }
 	} else {
 	    $this->approved = false;
@@ -962,7 +960,6 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 
 	$html = '<table class="adminlist">' . "\n";
 	$html .= $this->getHtmlRow('AUTHORIZENET_PAYMENT_NAME', $payment_name);
-
 	$html .= $this->getHtmlRow('AUTHORIZENET_ORDER_NUMBER', $authorizeNetResponse['invoice_number']);
 	$html .= $this->getHtmlRow('AUTHORIZENET_AMOUNT', $authorizeNetResponse['amount'] . ' ' . $currency->currency_name);
 	//$html .= $this->getHtmlRow('AUTHORIZENET_RESPONSE_AUTHORIZATION_CODE', $authorizeNetResponse['authorization_code']);

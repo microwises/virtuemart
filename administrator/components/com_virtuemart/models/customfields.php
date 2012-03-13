@@ -613,8 +613,11 @@ class VirtueMartModelCustomfields extends VmModel {
 				if ($group->field_type == 'V'){
 					$default = current($group->options);
 					foreach ($group->options as &$productCustom) {
-						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)) ;
-						else  $price = ($productCustom->custom_price==='') ? '' : $free ;
+						if ((float)$productCustom->custom_price ) {
+						    $price = strip_tags($currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)) ) ;
+						} else  {
+						    $price = ($productCustom->custom_price==='') ? '' : $free ;
+						}
 						$productCustom->text =  $productCustom->custom_value.' '.$price;
 
 					}
@@ -625,8 +628,11 @@ class VirtueMartModelCustomfields extends VmModel {
 					$group->display ='';
 
 					foreach ($group->options as $productCustom) {
-						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
-						else  $price = ($productCustom->custom_price==='') ? '' : $free ;
+						if ((float)$productCustom->custom_price ) {
+						    $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price)) ;
+						    } else  {
+						 $price = ($productCustom->custom_price==='') ? '' : $free ;
+						    }
 						$productCustom->text =  $productCustom->custom_value.' '.$price;
 //// plugin
 						if(!class_exists('vmCustomPlugin')) require(JPATH_VM_PLUGINS.DS.'vmcustomplugin.php');
@@ -643,8 +649,11 @@ class VirtueMartModelCustomfields extends VmModel {
 					$row--;
 				} else if ($group->field_type == 'U'){
 					foreach ($group->options as $productCustom) {
-						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
-						else  $price = ($productCustom->custom_price==='') ? '' : $free ;
+						if ((float)$productCustom->custom_price ) {
+						    $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
+						} else  {
+						    $price = ($productCustom->custom_price==='') ? '' : $free ;
+						}
 						$productCustom->text =  $productCustom->custom_value.' '.$price;
 
 						$group->display .= '<input type="text" value="'.JText::_($productCustom->custom_value).'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']['.$productCustom->value.']" /> ';
@@ -656,8 +665,11 @@ class VirtueMartModelCustomfields extends VmModel {
 					$group->display ='';
 					$checked = 'checked="checked"';
 					foreach ($group->options as $productCustom) {
-						if ((float)$productCustom->custom_price ) $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
-						else  $price = ($productCustom->custom_price==='') ? '' : $free ;
+						if ((float)$productCustom->custom_price ) {
+						    $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
+						} else  {
+						    $price = ($productCustom->custom_price==='') ? '' : $free ;
+						}
 						$group->display .= '<input id="'.$productCustom->value.'" '.$checked.' type="radio" value="'.$productCustom->value.'" name="customPrice['.$row.']['.$group->virtuemart_custom_id.']" /><label for="'.$productCustom->value.'">'.$this->displayType($productCustom->custom_value,$group->field_type,0,'',$row,1).' '.$price.'</label>' ;
 						$checked ='';
 					}

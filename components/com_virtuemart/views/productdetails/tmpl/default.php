@@ -158,14 +158,23 @@ echo $this->loadTemplate('images');
 			<span class="vote">
 	<?php echo JText::_('COM_VIRTUEMART_RATING') . ' ' . round($this->rating->rating, 2) . '/' . $maxrating; ?><br/>
 			    <span title=" <?php echo (JText::_("COM_VIRTUEMART_RATING_TITLE") . $this->rating->rating . '/' . $maxrating) ?>" class="vmicon ratingbox" style="display:inline-block;">
-				<span class="stars-orange" style="width:<?php echo $ratingwidth; ?>%">
+				<span class="stars-orange" style="width:<?php echo $ratingwidth.'%'; ?>">
 				</span>
 			    </span>
 			</span>
 			<?php
 		    }
 		}
-		
+		if (is_array($this->productDisplayShipments)) {
+		    foreach ($this->productDisplayShipments as $productDisplayShipment) {
+			echo $productDisplayShipment . '<br />';
+		    }
+		}
+		if (is_array($this->productDisplayPayments)) {
+		    foreach ($this->productDisplayPayments as $productDisplayPayment) {
+			echo $productDisplayPayment . '<br />';
+		    }
+		}
 		// Product Price
 		if ($this->show_prices and (empty($this->product->images[0]) or $this->product->images[0]->file_is_downloadable == 0)) {
 		    echo $this->loadTemplate('showprices');
