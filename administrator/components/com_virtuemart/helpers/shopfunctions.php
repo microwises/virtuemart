@@ -742,7 +742,26 @@ $addLink = '<a href="'.JRoute::_('index.php?option=com_virtuemart&view=user&task
 		return $db->loadAssoc();
 
 	}
+/**
+	 * Return the currencyname or code of a given currencyID
+	 *
+	 * @author Valérie Isaksen
+	 * @access public
+	 * @param int $_id Currency ID
+	 * @param char $_fld Field to return: currency_name (default), currency_2_code or currency_3_code.
+	 * @return string Currency name or code
+	 */
+	public function getCurrencyByID ($id, $fld = 'currency_name'){
 
+		if (empty($id)) return '';
+
+		$id = (int) $id;
+		$db = JFactory::getDBO();
+
+		$q = 'SELECT ' . $db->getEscaped($fld) . ' AS fld FROM `#__virtuemart_currencies` WHERE virtuemart_currency_id = ' . (int)$id;
+		$db->setQuery($q);
+		return $db->loadResult();
+	}
 	/**
 	 * Print a select-list with enumerated categories
 	 *
