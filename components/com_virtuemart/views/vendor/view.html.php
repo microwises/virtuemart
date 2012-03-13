@@ -119,7 +119,7 @@ class VirtuemartViewVendor extends VmView {
 		$vendorModel = VmModel::getModel('vendor');
 		$this->vendor = $vendorModel->getVendor($virtuemart_vendor_id);
 
-		$this->subject = JText::_('COM_VIRTUEMART_VENDOR_CONTACT') .' '.$this->vendor->vendor_store_name;
+		$this->subject = JText::_('COM_VIRTUEMART_VENDOR_CONTACT') .' '.$this->user['name'];
 		$this->vendorEmail= $this->user['email'];
 		//$this->vendorName= $this->user['email'];
 		if (VmConfig::get('order_mail_html')) {

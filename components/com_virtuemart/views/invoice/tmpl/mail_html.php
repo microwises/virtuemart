@@ -33,11 +33,11 @@ defined('_JEXEC') or die('Restricted access');
 <html>
     <head>
 	<style type="text/css">
-            body, td, span, p, th { font-size: 11px; }
+            body, td, span, p, th {  }
 	    table.html-email {margin:10px auto;background:#fff;border:solid #dad8d8 1px;}
 	    .html-email tr{border-bottom : 1px solid #eee;}
 	    span.grey {color:#666;}
-	    span.date {color:#666;font-size: 10px;}
+	    span.date {color:#666; }
 	    a.default:link, a.default:hover, a.default:visited {color:#666;line-height:25px;background: #f2f2f2;margin: 10px ;padding: 3px 8px 1px 8px;border: solid #CAC9C9 1px;border-radius: 4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;text-shadow: 1px 1px 1px #f2f2f2;font-size: 12px;background-position: 0px 0px;display: inline-block;text-decoration: none;}
 	    a.default:hover {color:#888;background: #f8f8f8;}
 	    .cart-summary{ }
