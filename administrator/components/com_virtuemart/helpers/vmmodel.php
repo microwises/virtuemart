@@ -242,8 +242,6 @@ class VmModel extends JModel {
 	 */
 	public function getPagination($perRow = 5) {
 
-// 		if ($this->_pagination === 0 or $perRow!==5) {
-
 			if(empty($this->_limit) ){
 				$this->setPaginationLimits();
 			}
@@ -374,7 +372,7 @@ class VmModel extends JModel {
 		if($err=$this->_db->getErrorMsg()){
 			vmError('exeSortSearchListQuery '.$err);
 		}
-// 		vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q ',$this->_db->getQuery() );
+		vmdebug('my $limitStart '.$limitStart.'  $limit '.$limit.' q ',$this->_db->getQuery() );
 
 		if($this->_withCount){
 

@@ -30,11 +30,11 @@ if (empty($this->vendor)) {
 $link = JRoute::_ ( 'index.php?option=com_virtuemart',true,-1);
 
 echo '<br/><br/>';
-$link='<b>'.JHTML::_('link', $link, $this->vendor->vendor_name).'</b> ';
+//$link='<b>'.JHTML::_('link', JURI::root().$link, $this->vendor->vendor_name).'</b> ';
 
 //	echo JText::_('COM_VIRTUEMART_MAIL_VENDOR_TITLE').$this->vendor->vendor_name.'<br/>';
 /* GENERAL FOOTER FOR ALL MAILS */
-	echo JText::_('COM_VIRTUEMART_MAIL_FOOTER' ) . $link;
+	echo JText::_('COM_VIRTUEMART_MAIL_FOOTER' ) . '<a href="'.JURI::root().'index.php?option=com_virtuemart">'.$this->vendor->vendor_name.'</a>';
         echo '<br/>';
 	echo $this->vendor->vendor_name .'<br />'.$this->vendor->vendor_phone .' '.$this->vendor->vendor_store_name .'<br /> '.$this->vendor->vendor_store_desc.'<br />'.$this->vendor->vendor_legal_info;
 

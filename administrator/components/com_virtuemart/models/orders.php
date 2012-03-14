@@ -362,7 +362,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	// IMPORTANT: The $inputOrder can contain extra data by plugins			//also strange $useTriggers is always activated?
 	function updateStatusForOneOrder($virtuemart_order_id,$inputOrder,$useTriggers=true){
 
-		vmdebug('updateStatusForOneOrder', $inputOrder);
+// 		vmdebug('updateStatusForOneOrder', $inputOrder);
 		/* Update the order */
 		$data = $this->getTable('orders');
 		$data->load($virtuemart_order_id);
@@ -409,7 +409,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$db->setQuery($q);
 			$order_items = $db->loadObjectList();
 			if ($order_items) {
-				vmdebug('updateStatusForOneOrder',$data);
+// 				vmdebug('updateStatusForOneOrder',$data);
 				foreach ($order_items as $order_item) {
 
 					//$this->updateSingleItem($order_item->virtuemart_order_item_id, $data->order_status, $order['comments'] , $virtuemart_order_id, $data->order_pass);
@@ -1197,7 +1197,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			return false;
 		}
 		//TODO Why should the stock change, when the order is deleted? Paypal? Valerie?
-		$this->handleStockAfterStatusChangedPerProduct('C', $item->order_status,$item, $item->product_quantity);
+// 		$this->handleStockAfterStatusChangedPerProduct('C', $item->order_status,$item, $item->product_quantity);
 		if ($item->delete($orderLineId)) {
 			return true;
 		}

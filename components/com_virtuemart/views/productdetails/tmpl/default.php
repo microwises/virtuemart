@@ -79,6 +79,9 @@ if (empty($this->product)) {
     <h1><?php echo $this->product->product_name ?></h1>
     <?php // Product Title END   ?>
 
+    <?php // afterDisplayTitle Event
+    echo $this->product->event->afterDisplayTitle ?>
+    
     <?php
     // Product Edit Link
     echo $this->edit_link;
@@ -222,6 +225,9 @@ if (VmConfig::get('ask_question', 1) == '1') {
 	<div class="clear"></div>
     </div>
 
+	<?php // event onContentBeforeDisplay
+	echo $this->product->event->beforeDisplayContent; ?>
+	
 	<?php
 	// Product Description
 	if (!empty($this->product->product_desc)) {
@@ -286,6 +292,9 @@ if (VmConfig::get('ask_question', 1) == '1') {
     	echo $this->loadTemplate('customfields');
     } // Product Custom ontop end
     ?>
+
+<?php // onContentAfterDisplay event
+echo $this->product->event->afterDisplayContent; ?>
 
 <?php
 echo $this->loadTemplate('reviews');

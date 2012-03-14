@@ -179,7 +179,34 @@ class shopFunctionsF {
 		//Todo, do we need that? refering to http://forum.virtuemart.net/index.php?topic=96318.msg317277#msg317277
 		$view->addTemplatePath(JPATH_VM_SITE.'/views/'.$viewName.'/tmpl');
 
-// 		vmdebug('renderMail my vars for the view',$vars);
+		$vmtemplate = VmConfig::get('vmtemplate','default');
+		if($vmtemplate=='default'){
+			$app = JFactory::getApplication('site');
+			if(JVM_VERSION == 2){
+				$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
+			} else {
+				$q = 'SELECT `template` FROM `#__template_styles` WHERE `client_id`="0" AND `home`="1"';
+			}
+
+			$db = JFactory::getDbo();
+			$db->setQuery($q);
+			$template = $db->loadResult();
+		} else {
+			$template = $vmtemplate;
+		}
+
+		if($template){
+			$view->addTemplatePath(JPATH_ROOT.DS.'templates'.DS.$template.DS.'html'.DS.'com_virtuemart'.DS.$viewName);
+		} else {
+			if(isset($db)){
+				$err = $db->getErrorMsg() ;
+			} else {
+				$err = 'The selected vmtemplate is not existing';
+			}
+			if($err) vmError('renderMail get Template failed: '.$err);
+		}
+
+		vmdebug('renderMail my $view for the view',$view);
 		foreach ($vars as $key => $val) {
 			$view->$key = $val;
 		}
