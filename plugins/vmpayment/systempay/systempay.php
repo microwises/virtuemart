@@ -87,7 +87,7 @@ function getTableSQLFields() {
      * @return
      */
     function plgVmOnPaymentResponseReceived(&$html) {
-	return parent::plgVmOnPaymentResponseReceived(&$html);
+	return parent::plgVmOnPaymentResponseReceived($html);
     }
 
     /**
@@ -96,7 +96,7 @@ function getTableSQLFields() {
      * @return
      */
     function plgVmOnPaymentUserCancel(&$virtuemart_order_id) {
-	return parent::plgVmOnPaymentUserCancel(&$virtuemart_order_id);
+	return parent::plgVmOnPaymentUserCancel($virtuemart_order_id);
     }
 
     /**
