@@ -376,7 +376,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	return true;
     }
 
-    public function plgVmOnSelectedCalculatePricePayment(VirtueMartCart $cart, array &$cart_prices, $payment_name) {
+    public function plgVmOnSelectedCalculatePricePayment(VirtueMartCart $cart, array &$cart_prices, &$payment_name) {
 
 	if (!($method = $this->getVmPluginMethod($cart->virtuemart_paymentmethod_id))) {
 	    return null; // Another method was selected, do nothing
