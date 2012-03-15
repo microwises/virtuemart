@@ -238,16 +238,16 @@ class VirtueMartControllerCart extends JController {
 
 	/* Get the shipment ID from the cart */
 	$virtuemart_shipmentmethod_id = JRequest::getInt('virtuemart_shipmentmethod_id', '0');
-	if ($virtuemart_shipmentmethod_id) {
+	//vmdebug('setshipment',$virtuemart_shipmentmethod_id);
+	$cart = VirtueMartCart::getCart();
+	if ($cart) {
 	    //Now set the shipment ID into the cart
-	    $cart = VirtueMartCart::getCart();
-	    if ($cart) {
 		if (!class_exists('vmPSPlugin')) require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 		JPluginHelper::importPlugin('vmshipment');
 		$cart->setShipment($virtuemart_shipmentmethod_id);
 		//Add a hook here for other payment methods, checking the data of the choosed plugin
 		$_dispatcher = JDispatcher::getInstance();
-		$_retValues = $_dispatcher->trigger('plgVmOnSelectCheckShipment', array(   $cart));
+		$_retValues = $_dispatcher->trigger('plgVmOnSelectCheckShipment', array(   &$cart));
 		$dataValid = true;
 		foreach ($_retValues as $_retVal) {
 		    if ($_retVal === true ) {// Plugin completed succesfull; nothing else to do
@@ -264,7 +264,6 @@ class VirtueMartControllerCart extends JController {
 		    $mainframe = JFactory::getApplication();
 		    $mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart&task=checkout') );
 		}
-	    }
 	}
 // 	self::Cart();
 	parent::display();

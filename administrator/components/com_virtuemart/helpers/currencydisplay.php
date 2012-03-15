@@ -494,6 +494,28 @@ class CurrencyDisplay {
 		return $curr;
 	}
 
+	/**
+	 * Changes the currency_code into the right virtuemart_currency_id
+	 * For exampel 'currency_code_3' : EUR => 47
+	 *
+	 * @author Max Milbers
+	 * @author Kohl Patrick
+	 */
+	function getCurrencyIdByField($value=0,$fieldName ='currency_code_3'){
+
+		if(is_string($value) ){
+			$this->_db = JFactory::getDBO();
+			$q = 'SELECT `virtuemart_currency_id` FROM `#__virtuemart_currencies` WHERE `'.$fieldName.'`="'.$value.'"';
+			$this->_db->setQuery($q);
+			$currency_id = $this->_db->loadResult();
+			if(empty($currency_id)){
+				JError::raiseWarning(E_WARNING,'Attention, couldnt find currency_id in the table for '.$fieldName.' = '.$value);
+			}
+			return $currency_id;
+		}
+		return $value;
+	}
+
 
 
 	/**

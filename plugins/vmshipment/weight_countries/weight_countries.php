@@ -317,10 +317,12 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
      * @return null if the payment was not selected, true if the data is valid, error message if the data is not vlaid
      *
      */
-    public function plgVmOnSelectCheck($psType, VirtueMartCart $cart) {
-	return $this->OnSelectCheck($psType, $cart);
+    // public function plgVmOnSelectCheck($psType, VirtueMartCart $cart) {
+	// return $this->OnSelectCheck($psType, $cart);
+    // }
+    public function plgVmOnSelectCheckShipment(VirtueMartCart &$cart) {
+	return $this->OnSelectCheck($cart);
     }
-
     /**
      * plgVmDisplayListFE
      * This event is fired to display the pluginmethods in the cart (edit shipment/payment) for exampel

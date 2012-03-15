@@ -352,4 +352,14 @@ class VirtueMartModelVendor extends VmModel {
 		return '';
  	}
 
+ 	public function getVendorAdressBT($virtuemart_vendor_id){
+
+		$userId = self::getUserIdByVendorId($virtuemart_vendor_id);
+		$usermodel = VmModel::getModel('user');
+		
+		$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
+		$vendorAdressBt = $this->getTable('userinfos');
+		$vendorAdressBt->load($virtuemart_userinfo_id);
+		return $vendorAdressBt;
+	}
 }
