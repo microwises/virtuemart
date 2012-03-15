@@ -50,6 +50,7 @@ class calculationHelper {
 	private $exchangeRateVendor = 0;
 	private $exchangeRateShopper = 0;
 	private $_internalDigits = 5;
+	private $_revert = false;
 	static $_instance;
 
 	//	public $basePrice;		//simular to costprice, basePrice is calculated in the shopcurrency
@@ -327,9 +328,10 @@ class calculationHelper {
 		$prices['salesPrice'] = !empty($prices['salesPriceWithDiscount']) ? $prices['salesPriceWithDiscount'] : $salesPrice;
 
 		//Okey, this may not the best place, but atm we handle the override price as salesPrice
-		if ($this->override) {
-			$prices['salesPrice'] = $this->product_override_price;
-		}
+		//overwrite is now deprecated
+// 		if ($this->override) {
+// 			$prices['salesPrice'] = $this->product_override_price;
+// 		}
 
 		//The whole discount Amount
 		//		$prices['discountAmount'] = $this->roundInternal($prices['basePrice'] + $prices['taxAmount'] - $prices['salesPrice']);
@@ -528,6 +530,74 @@ class calculationHelper {
 		return $this->_cartPrices;
 	}
 
+	public function calculateCostprice($productId,$data){
+
+		$this->_revert = true;
+
+		vmSetStartTime('calculateCostprice');
+		$this->_db->setQuery('SELECT * FROM #__virtuemart_product_prices  WHERE `virtuemart_product_id`="' . $productId . '" ');
+		$row = $this->_db->loadAssoc();
+		if ($row) {
+			if (!empty($row['product_price'])) {
+// 				$costPrice = $row['product_price'];
+				$this->productCurrency = $row['product_currency'];
+// 				$this->override = $row['override'];
+// 				$this->product_override_price = $row['product_override_price'];
+				$this->product_tax_id = $row['product_tax_id'];
+				$this->product_discount_id = $row['product_discount_id'];
+			} else {
+				$app = Jfactory::getApplication();
+				$app->enqueueMessage('cost Price empty, if child, everything okey, this is just a dev note');
+				return false;
+			}
+		}
+		$this->_db->setQuery('SELECT `virtuemart_vendor_id` FROM #__virtuemart_products  WHERE `virtuemart_product_id`="' . $productId . '" ');
+		$single = $this->_db->loadResult();
+		$this->productVendorId = $single;
+		if (empty($this->productVendorId)) {
+			$this->productVendorId = 1;
+		}
+
+		$this->_db->setQuery('SELECT `virtuemart_category_id` FROM #__virtuemart_product_categories  WHERE `virtuemart_product_id`="' . $productId . '" ');
+		$this->_cats = $this->_db->loadResultArray();
+
+		vmTime('getProductPrices no object given query time','getProductCalcs');
+
+
+		if(VmConfig::get('multix','none')!='none' and empty($this->vendorCurrency )){
+			$this->_db->setQuery('SELECT `vendor_currency` FROM #__virtuemart_vendors  WHERE `virtuemart_vendor_id`="' . $this->productVendorId . '" ');
+			$single = $this->_db->loadResult();
+			$this->vendorCurrency = $single;
+		}
+
+		if (!empty($amount)) {
+			$this->_amount = $amount;
+		}
+
+		//$this->setCountryState($this->_cart);
+
+		$this->rules['Tax'] = $this->gatherEffectingRulesForProductPrice('Tax', $this->product_tax_id);
+		$this->rules['DBTax'] = $this->gatherEffectingRulesForProductPrice('DBTax', $this->product_discount_id);
+		$this->rules['DATax'] = $this->gatherEffectingRulesForProductPrice('DATax', $this->product_discount_id);
+
+		$salesPrice = $data['salesPrice'];
+		vmdebug('Desired salesPirce '.$salesPrice);
+		$withDiscount = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $salesPrice));
+		$withDiscount = !empty($withDiscount) ? $withDiscount : $salesPrice;
+		vmdebug('Desired $withDiscount '.$withDiscount);
+		$withTax = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $withDiscount));
+		$withTax = !empty($withTax) ? $withTax : $withDiscount;
+
+		$basePrice = $this->roundInternal($this->executeCalculation($this->rules['DBTax'], $withTax));
+		$basePrice = !empty($basePrice) ? $basePrice : $withTax;
+
+		$productCurrency = CurrencyDisplay::getInstance($this->productCurrency);
+		$costprice = $productCurrency->convertCurrencyTo((int) $this->vendorCurrency, $basePrice,false);
+		$productCurrency = CurrencyDisplay::getInstance();
+		$this->_revert = false;
+		return $costprice;
+	}
+
 	/**
 	 * Get coupon details and calculate the value
 	 * @author Oscar van Eijk
@@ -579,7 +649,7 @@ class calculationHelper {
 
 		if (empty($rules))return 0;
 
-		$rulesEffSorted = $this->record_sort($rules, 'ordering');
+		$rulesEffSorted = $this->record_sort($rules, 'ordering',$this->_revert);
 
 		$price = $baseprice;
 		$finalprice = $baseprice;
@@ -592,9 +662,10 @@ class calculationHelper {
 				} else {
 					$cIn = $price;
 				}
+				vmdebug('executeCalculation '.$baseprice);
 				$cOut = $this->interpreteMathOp($rule['calc_value_mathop'], $rule['calc_value'], $cIn, $rule['calc_currency']);
 				$this->_cartPrices[$rule['virtuemart_calc_id'] . 'Diff'] = $this->roundInternal($this->roundInternal($cOut) - $cIn);
-
+				vmdebug('executeCalculation '.$cOut);
 				//okey, this is a bit flawless logic, but should work
 				if ($relateToBaseAmount) {
 					$finalprice = $finalprice + $this->_cartPrices[$rule['virtuemart_calc_id'] . 'Diff'];
@@ -966,6 +1037,13 @@ class calculationHelper {
 
 			$coreMathOp = array('+','-','+%','-%');
 
+			if(!$this->_revert){
+				$plus = '+';
+				$minus = '-';
+			} else {
+				$plus = '-';
+				$minus = '+';
+			}
 			if(in_array($mathop,$coreMathOp)){
 				$sign = substr($mathop, 0, 1);
 
@@ -973,15 +1051,19 @@ class calculationHelper {
 				if (strlen($mathop) == 2) {
 					$cmd = substr($mathop, 1, 2);
 					if ($cmd == '%') {
-						$calculated = $price * $value / 100.0;
+						if(!$this->_revert){
+							$calculated = $price * $value / 100.0;
+						} else {
+							$calculated = $price /(1 +  (100.0 / $value));
+						}
 					}
 				} else if (strlen($mathop) == 1){
 					$calculated = $this->_currencyDisplay->convertCurrencyTo($currency, $value);
 				}
-
-				if($sign == '+'){
+				vmdebug('interpreteMathOp',$price,$calculated,$plus);
+				if($sign == $plus){
 					return $price + (float)$calculated;
-				} else if($sign == '-'){
+				} else if($sign == $minus){
 					return $price - (float)$calculated;
 				} else {
 					VmWarn('Unrecognised mathop '.$mathop.' in calculation rule found');

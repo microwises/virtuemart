@@ -286,12 +286,7 @@ $i=0;
 							name="product_price"
 							size="10"
 							value="<?php echo $this->product->prices['costPrice']; ?>" />
-
-
-
-
-
-					<?php    echo $this->currencies;    ?>
+							<?php echo $this->currencies; ?>
 				</td>
 					</tr>
 					<tr class="row1">
@@ -312,11 +307,7 @@ $i=0;
 							name="basePrice"
 							size="10"
 							value="<?php echo $this->product->prices['basePrice']; ?>" />
-
-
-
-
-					<?php echo $this->vendor_currency;   ?>
+						<?php echo $this->vendor_currency;   ?>
 				</td>
 					</tr>
 					<tr class="row1">
@@ -331,16 +322,18 @@ $i=0;
 						</td>
 						<td width="71%"><input
 							type="text"
-							readonly
-							class="inputbox readonly"
-							name="product_price_incl_tax"
+							name="salesPrice"
 							size="10"
 							value="<?php echo $this->product->prices['salesPrice']; ?>" />
+							<?php echo $this->vendor_currency;   ?>
+							<input type="checkbox" name="use_desired_price" value="1" />
+							<span
+							class="hasTip"
+							title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL_TIP'); ?>">
+							<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL'); ?>
+							</span>
 
 
-
-
-					<?php echo $this->vendor_currency;   ?>
 				</td>
 					</tr>
 				</table>
@@ -413,14 +406,14 @@ $i=0;
 				      </span>
                                         </div>
 				</td>
-				<td width="79%" >
-					<input type="text" size="10" name="product_override_price" value="<?php echo $this->product_override_price ?>"/>
+<?php /*				<td width="79%" >
+					<input type="text" size="10" name="desired_product_price" value="<?php echo $this->product_override_price ?>"/>
 					<?php
 
 					$checked = '';
-					if ($this->override) $checked = 'checked="checked"' ?>
-					<input type="checkbox" name="override" value="1" <?php echo $checked; ?> />
-				</td>
+// 					if ($this->override) $checked = 'checked="checked"' ?>
+					<input type="checkbox" name="use_desired_price" value="1" />
+				</td>*/ ?>
 			</tr>
 		</table>
 			</fieldset>

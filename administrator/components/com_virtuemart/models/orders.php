@@ -158,7 +158,10 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
    ON p.virtuemart_product_id = i.virtuemart_product_id)
                         LEFT JOIN #__virtuemart_product_categories c
                         ON p.virtuemart_product_id = c.virtuemart_product_id
-   WHERE `virtuemart_order_id`="'.$virtuemart_order_id.'" '; //group by `virtuemart_order_id`'; Why ever we added this, it makes trouble, only one order item is shown then.
+   WHERE `virtuemart_order_id`="'.$virtuemart_order_id.'" group by `virtuemart_order_item_id`';
+//group by `virtuemart_order_id`'; Why ever we added this, it makes trouble, only one order item is shown then.
+// without group by we get the product 3 times, when it is in 3 categories and similar, so we need a group by
+//lets try group by `virtuemart_order_item_id`
 		$db->setQuery($q);
 		$order['items'] = $db->loadObjectList();
 // Get the order items

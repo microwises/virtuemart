@@ -299,8 +299,8 @@ class VirtueMartCart {
 			$product -> virtuemart_product_id = $tmpProduct -> virtuemart_product_id;
 			$product -> virtuemart_shoppergroup_id = $tmpProduct -> virtuemart_shoppergroup_id;
 			$product -> product_price = $tmpProduct -> product_price;
-			$product -> override = $tmpProduct -> override;
-			$product -> product_override_price = $tmpProduct -> product_override_price;
+// 			$product -> override = $tmpProduct -> override;
+// 			$product -> product_override_price = $tmpProduct -> product_override_price;
 
 			$product -> product_tax_id = $tmpProduct -> product_tax_id;
 			$product -> product_discount_id = $tmpProduct -> product_discount_id;

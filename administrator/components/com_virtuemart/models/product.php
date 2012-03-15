@@ -979,7 +979,7 @@ class VirtueMartModelProduct extends VmModel {
 			$data = JRequest::get('post');
 		}
 
-				vmdebug('my data in product store ',$data);
+// 				vmdebug('my data in product store ',$data);
 
 		// Setup some place holders
 		$product_data = $this->getTable('products');
@@ -1023,8 +1023,6 @@ class VirtueMartModelProduct extends VmModel {
 		}
 		$data = $this->updateXrefAndChildTables($data,'product_shoppergroups');
 
-		$data = $this->updateXrefAndChildTables($data, 'product_prices');
-
 		// Update manufacturer link
 		if(!empty($data['virtuemart_manufacturer_id'])){
 			$data = $this->updateXrefAndChildTables($data, 'product_manufacturers');
@@ -1043,6 +1041,16 @@ class VirtueMartModelProduct extends VmModel {
 				$waitinglist->notifyList($data['virtuemart_product_id']);
 			}
 		}
+
+		vmdebug('use_desired_price '.$data['use_desired_price']);
+		if(isset($data['use_desired_price']) and $data['use_desired_price'] == "1"){
+
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			$calculator = calculationHelper::getInstance();
+			$data['product_price'] = $calculator->calculateCostprice($this->_id,$data);
+			vmdebug('product_price '.$data['product_price']);
+		}
+		$data = $this->updateXrefAndChildTables($data, 'product_prices');
 
 		// Process the images
 		$mediaModel = VmModel::getModel('Media');
