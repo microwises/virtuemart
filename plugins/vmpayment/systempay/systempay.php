@@ -20,7 +20,13 @@ defined('_JEXEC') or die('Direct Access to ' . basename(__FILE__) . ' is not all
 
 if (!class_exists('vmPSPlugin'))
     require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
-
+if (JVM_VERSION === 2) {
+    define('JPATH_VMPAYMENTPLUGIN_PAYZEN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'payzen');
+} else {
+    define('JPATH_VMPAYMENTPLUGIN_PAYZEN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');
+}
+if (!class_exists('plgVMPaymentPayzen'))
+    require(JPATH_VMPAYMENTPLUGIN_PAYZEN . DS . 'payzen.php');
 class plgVMPaymentSystempay extends plgVMPaymentPayzen {
 
     // instance of class
