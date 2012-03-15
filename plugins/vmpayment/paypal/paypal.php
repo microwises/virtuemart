@@ -74,7 +74,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	$SQLfields = array(
 	    'id' => 'int(11) UNSIGNED NOT NULL AUTO_INCREMENT',
 	    'virtuemart_order_id' => 'int(1) UNSIGNED',
-	     'order_number' => ' char(64)',
+	    'order_number' => ' char(64)',
 	    'virtuemart_paymentmethod_id' => 'mediumint(1) UNSIGNED',
 	    'payment_name' => 'varchar(5000)',
 	    'payment_order_total' => 'decimal(15,5) NOT NULL DEFAULT \'0.00000\'',
@@ -421,14 +421,18 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	if (empty($paypal_data['payment_status']) || ($paypal_data['payment_status'] != 'Completed' && $paypal_data['payment_status'] != 'Pending')) {
 	    //return false;
 	}
-
+	$lang = JFactory::getLanguage();
 	$order['customer_notified'] = 1;
 
 	if (strcmp($paypal_data['payment_status'], 'Completed') == 0) {
 	    $order['order_status'] = $method->status_success;
 	    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_CONFIRMED', $order_number);
 	} elseif (strcmp($paypal_data['payment_status'], 'Pending') == 0) {
-	    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PENDING', $order_number) . JText::_('VMPAYMENT_PAYPAL_PENDING_REASON_FE_' . strtoupper($paypal_data['pending_reason']));
+	    $key = 'VMPAYMENT_PAYPAL_PENDING_REASON_FE_' . strtoupper($paypal_data['pending_reason']);
+	    if (!$lang->hasKey($key)) {
+		$key = 'VMPAYMENT_PAYPAL_PENDING_REASON_FE_DEFAULT';
+	    }
+	    $order['comments'] = JText::sprintf('VMPAYMENT_PAYPAL_PAYMENT_STATUS_PENDING', $order_number) . JText::_($key);
 	    $order['order_status'] = $method->status_pending;
 	} else {
 	    $order['order_status'] = $method->status_canceled;

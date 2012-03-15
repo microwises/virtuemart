@@ -68,8 +68,8 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	parent::__construct($subject, $config);
 
 	$this->_loggable = true;
-	$this->_tablepkey = 'id'; //virtuemart_paypal_id';
-	$this->_tableId = 'id'; //'virtuemart_paypal_id';
+	$this->_tablepkey = 'id';
+	$this->_tableId = 'id';  
 	$this->tableFields = array_keys($this->getTableSQLFields());
 	$varsToPush = array(
 	    'login_id' => array('', 'int'),
