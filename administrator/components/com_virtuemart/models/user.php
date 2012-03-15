@@ -820,7 +820,7 @@ class VirtueMartModelUser extends VmModel {
 		// 			return false;
 		// 		}
 
-		$user =& JFactory::getUser();
+		$user =JFactory::getUser();
 
 		$userinfo   = $this->getTable('userinfos');
 

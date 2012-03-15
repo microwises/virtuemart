@@ -190,7 +190,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 		if(!class_exists('Permissions')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'permissions.php');
 		if(!Permissions::getInstance()->check('admin')){
-			$myuser		=& JFactory::getUser();
+			$myuser		=JFactory::getUser();
 			$whereString= 'WHERE u.virtuemart_user_id = ' . (int)$myuser->id.' AND o.virtuemart_vendor_id = "1" ';
 		} else {
 			if(empty($uid)){
@@ -600,7 +600,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 	private function getVendorCurrencyId($vendorId){
 		$q = 'SELECT `vendor_currency` FROM `#__virtuemart_vendors` WHERE `virtuemart_vendor_id`="'.$vendorId.'" ';
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$db->setQuery($q);
 		$vendorCurrency =  $db->loadResult();
 		return $vendorCurrency;
@@ -609,7 +609,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 
 	private function getCurrencyIsoCode($vmCode){
 		$q = 'SELECT `currency_numeric_code` FROM  `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="'.$vmCode.'" ';
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$db->setQuery($q);
 		return $db->loadResult();
 	}

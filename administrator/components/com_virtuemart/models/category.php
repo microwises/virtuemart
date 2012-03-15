@@ -573,7 +573,7 @@ class VirtueMartModelCategory extends VmModel {
 			vmError($error);
 		}
 		if ($this->_cleanCache === true) {
-			$cache = & JFactory::getCache();
+			$cache = JFactory::getCache();
 			$cache->clean('_virtuemart');
 			$this->_cleanCache === false;
 		}
@@ -753,7 +753,7 @@ class VirtueMartModelCategory extends VmModel {
 			$idsArr = array();
 		}
 
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$q  = "SELECT `category_child_id` AS `child`, `category_parent_id` AS `parent`
 			FROM  `#__virtuemart_category_categories` AS `xref`
 			WHERE `xref`.`category_child_id`= ".(int)$virtuemart_category_id;
@@ -779,7 +779,7 @@ class VirtueMartModelCategory extends VmModel {
 	function treeCat($id=0,$maxLevel =1000) {
 		static $level = 0;
 		static $num = -1 ;
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$q = 'SELECT `category_child_id`,`category_name` FROM `#__virtuemart_categories_'.VMLANG.'`
 		LEFT JOIN `#__virtuemart_category_categories` on `#__virtuemart_categories`.`virtuemart_category_id`=`#__virtuemart_category_categories`.`category_child_id`
 		WHERE `category_parent_id`='.(int)$id;

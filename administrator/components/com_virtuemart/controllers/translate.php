@@ -62,7 +62,7 @@ class VirtuemartControllerTranslate extends VmController {
 
 		$lang = JRequest::getvar('lg');
 		$langs = VmConfig::get('active_languages',array()) ;
-		$language=& JFactory::getLanguage();
+		$language=JFactory::getLanguage();
 
 		if (!in_array($lang, $langs) ) {
 			$json['msg'] = 'Invalid language ! '.$lang;
@@ -91,7 +91,7 @@ class VirtuemartControllerTranslate extends VmController {
 		$tableName = '#__virtuemart_'.$tables[$viewKey].'_'.$dblang;
 
 
-		$db =& JFactory::getDBO();
+		$db =JFactory::getDBO();
 
 		$q='select * FROM `'.$tableName.'` where `virtuemart_'.$viewKey.'_id` ='.$id;
 		$db->setQuery($q);

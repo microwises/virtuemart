@@ -43,7 +43,7 @@ class VirtuemartModelManufacturercategories extends VmModel {
 		parent::__construct('virtuemart_manufacturercategories_id');
 		$this->setMainTable('manufacturercategories');
 		$this->addvalidOrderingFieldName(array('mf_category_name'));
-		$config=&JFactory::getConfig();
+		$config=JFactory::getConfig();
 	}
 
     /**

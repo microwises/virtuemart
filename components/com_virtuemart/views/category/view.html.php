@@ -82,7 +82,7 @@ class VirtuemartViewCategory extends VmView {
 // 		static $counter2 = 0;
 		//if($category->children)	$categoryModel->addImages($category->children);
 		$categoryModel->addImages($category,1);
-		$cache = & JFactory::getCache('com_virtuemart','callback');
+		$cache = JFactory::getCache('com_virtuemart','callback');
 		$category->children = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $categoryId );
 		// self::$categoryTree = self::categoryListTreeLoop($selectedCategories, $cid, $level, $disabledFields);
 // 		vmTime('end loop categoryListTree '.$counter);
@@ -207,7 +207,7 @@ class VirtuemartViewCategory extends VmView {
 	public function getSearchCustom() {
 
 		$emptyOption  = array('virtuemart_custom_id' =>0, 'custom_title' => JText::_('COM_VIRTUEMART_LIST_EMPTY_OPTION'));
-		$this->_db =&JFactory::getDBO();
+		$this->_db =JFactory::getDBO();
 		$this->_db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE `field_type` ="P"');
 		$this->options = $this->_db->loadAssocList();
 

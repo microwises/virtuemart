@@ -36,7 +36,7 @@ $moduleclass_sfx = $params->get('moduleclass_sfx','');
 $layout = $params->get('layout','default');
 $active_category_id = JRequest::getInt('virtuemart_category_id', '0');
 $vendorId = '1';
-		$cache = & JFactory::getCache('com_virtuemart','callback');
+		$cache = JFactory::getCache('com_virtuemart','callback');
 		$categories = $cache->call( array( 'VirtueMartModelCategory', 'getChildCategoryList' ),$vendorId, $category_id );
 // $categories = $categoryModel->getChildCategoryList($vendorId, $category_id);
 // We dont use image here

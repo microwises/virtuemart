@@ -23,7 +23,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 
 // addon for joomla modal Box
 			if (isset($this->type)) {
-			$document = &JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->setTitle($this->product->product_name);
 			$document->setName($this->product->product_name);
 			$document->setDescription( $this->product->product_s_desc);

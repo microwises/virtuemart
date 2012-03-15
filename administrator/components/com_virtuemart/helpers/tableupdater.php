@@ -73,7 +73,7 @@ class GenericTableUpdater extends JModel{
 
 	private function portLanguageFields(){
 
-		$config = &JFactory::getConfig();
+		$config = JFactory::getConfig();
 		$lang = $config->getValue('language');
 
 		$ok = false;

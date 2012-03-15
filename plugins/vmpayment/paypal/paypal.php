@@ -123,7 +123,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	if (!class_exists('VirtueMartModelCurrency'))
 	    require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'currency.php');
 
-	//$usr = & JFactory::getUser();
+	//$usr = JFactory::getUser();
 	$new_status = '';
 
 	$usrBT = $order['details']['BT'];
@@ -503,7 +503,7 @@ class plgVmPaymentPaypal extends vmPSPlugin {
 	}
 	$this->getPaymentCurrency($paymentTable);
 	$q = 'SELECT `currency_code_3` FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id`="' . $paymentTable->payment_currency . '" ';
-	$db = &JFactory::getDBO();
+	$db = JFactory::getDBO();
 	$db->setQuery($q);
 	$currency_code_3 = $db->loadResult();
 	$html = '<table class="adminlist">' . "\n";

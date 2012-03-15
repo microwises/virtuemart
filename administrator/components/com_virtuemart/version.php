@@ -37,7 +37,7 @@ class vmVersion {
 	/** @var string Codename */
 	static $CODENAME = 'stecurity';
 	/** @var string Date */
-	static $RELDATE = 'March 13, 2012';
+	static $RELDATE = 'March 14, 2012';
 	/** @var string Time */
 	static $RELTIME = '15:30';
 	/** @var string Timezone */

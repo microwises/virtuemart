@@ -38,7 +38,7 @@ class VirtuemartViewProduct extends JView {
 
 		$this->type = JRequest::getWord('type', false);
 		$this->row = JRequest::getInt('row', false);
-		$this->db = & JFactory::getDBO();
+		$this->db = JFactory::getDBO();
 		$this->model = VmModel::getModel('Customfields') ;
 
 	}

@@ -206,7 +206,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 	$api->set('contrib', 'VirtueMart2.0.0_1.2');
 
 	// Set customer info
-	// $usr = & JFactory::getUser();
+	// $usr = JFactory::getUser();
 	$usrBT = $order['details']['BT'];
 	$usrST = ((isset($order['details']['ST'])) ? $order['details']['ST'] : $order['details']['BT']);
 
@@ -583,7 +583,7 @@ class plgVMPaymentPayzen extends vmPSPlugin {
 
     function emptyCart($session_id) {
 	if ($session_id != null) {
-	    $session = & JFactory::getSession();
+	    $session = JFactory::getSession();
 	    $session->close();
 
 	    // Recover session in wich the payment is done

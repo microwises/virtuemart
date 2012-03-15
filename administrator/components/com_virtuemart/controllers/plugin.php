@@ -57,7 +57,7 @@ class VirtuemartControllerPlugin extends JController
 		$dispatcher->trigger('plgVmOnSelfCallBE',array($type, $name, &$render));
 		if ($render ) {
 			// Get the document object.
-			$document =& JFactory::getDocument();
+			$document =JFactory::getDocument();
 			if (JRequest::getWord('cache', 'no')) {
 				JResponse::setHeader('Cache-Control','no-cache, must-revalidate');
 				JResponse::setHeader('Expires','Mon, 6 Jul 2000 10:00:00 GMT');

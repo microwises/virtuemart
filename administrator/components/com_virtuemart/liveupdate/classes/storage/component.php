@@ -53,7 +53,7 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 	{
 		$data = self::$registry->toString('INI');
 		
-		$db =& JFactory::getDBO();
+		$db =JFactory::getDBO();
 		
 		// An interesting discovery: if your component is manually updating its
 		// component parameters before Live Update is called, then calling Live

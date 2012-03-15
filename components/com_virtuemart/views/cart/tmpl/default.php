@@ -23,7 +23,7 @@ JHTML::script('facebox.js', 'components/com_virtuemart/assets/js/', false);
 JHTML::stylesheet('facebox.css', 'components/com_virtuemart/assets/css/', false);
 
 JHtml::_('behavior.formvalidation');
-$document = &JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->addScriptDeclaration("
 	jQuery(document).ready(function($) {
 		$('div#full-tos').hide();

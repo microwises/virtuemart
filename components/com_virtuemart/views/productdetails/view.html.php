@@ -114,21 +114,36 @@ class VirtueMartViewProductdetails extends VmView {
 	    return;
 	}
 
+	$product->event = new stdClass();
+	$product->event->afterDisplayTitle = '';
+	$product->event->beforeDisplayContent = '';
+	$product->event->afterDisplayContent = '';
 	if (VmConfig::get('enable_content_plugin', 0)) {
-	    // add content plugin //
-	    $dispatcher = & JDispatcher::getInstance();
-	    JPluginHelper::importPlugin('content');
-	    $product->text = $product->product_desc;
-	    $params = "";
+	   // add content plugin //
+	   $dispatcher = & JDispatcher::getInstance();
+	   JPluginHelper::importPlugin('content');
+	   $product->text = $product->product_desc;
+		jimport( 'joomla.html.parameter' );
+		$params = new JParameter();
 
-	    if (JVM_VERSION === 2) {
-		$results = $dispatcher->trigger('onContentPrepare', array('com_virtuemart.productdetails', & $product, & $params, 0));
-	    } else {
-		$results = $dispatcher->trigger('onPrepareContent', array(& $product, & $params, 0));
-	    }
+ 		if(JVM_VERSION === 2 ) {
+			$results = $dispatcher->trigger('onContentPrepare', array('com_virtuemart.productdetails', &$product, &$params, 0));
+			// More events for 3rd party content plugins
+			// This do not disturb actual plugins, because we don't modify $product->text
+			$res = $dispatcher->trigger('onContentAfterTitle', array('com_virtuemart.productdetails', &$product, &$params, 0));
+			$product->event->afterDisplayTitle = trim(implode("\n", $res));
 
-	    $product->product_desc = $product->text;
+			$res = $dispatcher->trigger('onContentBeforeDisplay', array('com_virtuemart.productdetails', &$product, &$params, 0));
+			$product->event->beforeDisplayContent = trim(implode("\n", $res));
+
+			$res = $dispatcher->trigger('onContentAfterDisplay', array('com_virtuemart.productdetails', &$product, &$params, 0));
+			$product->event->afterDisplayContent = trim(implode("\n", $res));
+		} else {
+			$results = $dispatcher->trigger('onPrepareContent', array(& $product, & $params, 0));
+		}
+		$product->product_desc = $product->text;
 	}
+
 	$product_model->addImages($product);
 	$this->assignRef('product', $product);
 	if (isset($product->min_order_level) && (int) $product->min_order_level > 0) {

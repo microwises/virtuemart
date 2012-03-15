@@ -235,7 +235,7 @@ abstract class vmCustomPlugin extends vmPlugin {
 	{
 		static $custom_element ;
 		if (isset($custom_element)) return $custom_element;
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$q = 'SELECT `custom_element` FROM `#__virtuemart_customs` WHERE `virtuemart_custom_id`='.(int)$custom_id;
 		$db->setQuery($q);
 		$custom_element = $db->loadResult();
@@ -250,7 +250,7 @@ abstract class vmCustomPlugin extends vmPlugin {
 	 */
 	public function getIdForCustomIdProduct($product_id,$custom_id)
 	{
-		$db = & JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$q = 'SELECT `id` FROM `#__virtuemart_product_custom_plg_'.$this->_name.'` WHERE `virtuemart_product_id`='.(int)$product_id.' and `virtuemart_custom_id`='.(int)$custom_id;
 		$db->setQuery($q);
 		return $db->loadResult();

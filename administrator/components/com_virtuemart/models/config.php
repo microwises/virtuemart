@@ -198,7 +198,7 @@ class VirtueMartModelConfig extends JModel {
     function getActiveLanguages($active_languages) {
 
 		$activeLangs = array() ;
-		$language =& JFactory::getLanguage();
+		$language =JFactory::getLanguage();
 		$jLangs = $language->getKnownLanguages(JPATH_BASE);
 
 		foreach ($jLangs as $jLang) {

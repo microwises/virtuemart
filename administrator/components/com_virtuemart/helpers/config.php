@@ -436,7 +436,7 @@ class VmConfig {
 			// try to find in session lang
 			// this work with joomfish j1.5 (application.data.lang)
 
-			$session  =& JFactory::getSession();
+			$session  =JFactory::getSession();
 			$registry =& $session->get('registry');
 			$siteLang = $registry->getValue('application.data.lang') ;
 			} else  {
@@ -447,7 +447,7 @@ class VmConfig {
 			}
 			if ( ! $siteLang ) {
 				// use user default
-				$lang =& JFactory::getLanguage();
+				$lang =JFactory::getLanguage();
 				$siteLang = $lang->getTag();
 			}
 			/*//What is the difference of this?
@@ -455,7 +455,7 @@ class VmConfig {
 			$siteLang = $params->get('site', 'en_gb');
 
 			//or this
-			$siteLang =& JFactory::getLanguage()->getTag();
+			$siteLang =JFactory::getLanguage()->getTag();
 			*/
 		}
 
@@ -799,7 +799,7 @@ class vmJsApi{
 	 */
 	function jQuery() {
 		if ( JFactory::getApplication()->get('jquery')) return false;
-		if ( !VmConfig::get('jquery',true ) && JFactory::getApplication()->isSite()) return false;
+		if ( !VmConfig::get('jquery',true ) and JFactory::getApplication()->isSite()) return false;
 // 		static $jquery;
 		// If exist exit
 // 		if ($jquery) return;
@@ -824,7 +824,7 @@ class vmJsApi{
 	// Virtuemart product and price script
 	function jPrice()
 	{
-		if ( !VmConfig::get('jprice',true )  && JFactory::getApplication()->isSite() ) return false;
+		if ( !VmConfig::get('jprice',true ) and JFactory::getApplication()->isSite() ) return false;
 		static $jPrice;
 		// If exist exit
 		if ($jPrice) return;
@@ -857,7 +857,7 @@ class vmJsApi{
 	// Virtuemart Site Js script
 	function jSite()
 	{
-		if ( !VmConfig::get('jsite',true )  && JFactory::getApplication()->isSite() ) return false;
+		if ( !VmConfig::get('jsite',true ) and JFactory::getApplication()->isSite() ) return false;
 		static $jSite;
 		// If exist exit
 		if ($jSite) return;
@@ -886,7 +886,7 @@ class vmJsApi{
 		static $jvalideForm;
 		// If exist exit
 		if ($jvalideForm) return;
-		$lg = &JFactory::getLanguage();
+		$lg = JFactory::getLanguage();
 		$lang = substr($lg->getTag(), 0, 2);
 		$existingLang = array("cz", "da", "de", "en", "es", "fr", "it", "ja", "nl", "pl", "pt", "ro", "ru", "tr");
 		if (!in_array($lang, $existingLang)) $lang ="en";
@@ -923,7 +923,7 @@ class vmJsApi{
 		ccErrors [5] =  '" . addslashes( JText::_('COM_VIRTUEMART_CREDIT_CARD_INVALID_EXPIRE_DATE')) . "';
 		";
 
-		$doc = & JFactory::getDocument();
+		$doc = JFactory::getDocument();
 		$doc->addScriptDeclaration($js);
 
 		$jCreditCard = true;
@@ -953,7 +953,7 @@ class vmJsApi{
 		static $cssSite;
 		if ($cssSite) return;
 		// Get the Page direction for right to left support
-		$document = & JFactory::getDocument ();
+		$document = JFactory::getDocument ();
 		$direction = $document->getDirection ();
 		$cssFile = 'vmsite-' . $direction . '.css';
 
@@ -989,7 +989,7 @@ class vmJsApi{
 		$display  = '<input class="datepicker-db" id="'.$id.'" type="hidden" name="'.$name.'" value="'.$date.'" />';
 		$display .= '<input id="'.$id.'_text" class="datepicker" type="date" name="'.$name.'_text" value="'.$formatedDate.'" />';
 		if ($resetBt) $display.='<span class="vmicon vmicon-16-logout icon-nofloat js-date-reset"></span>';
-		
+
 		// If exist exit
 		if ($jDate) return $display;
 		$front = JURI::root(true).'/components/com_virtuemart/assets/';
@@ -1014,7 +1014,7 @@ class vmJsApi{
 		//$document->addScript($front.'js/jquery.ui.core.min.js');
 		//$document->addScript($front.'js/jquery.ui.datepicker.min.js');
 		$document->addStyleSheet($front.'css/ui/jquery.ui.all.css');
-		$lg = &JFactory::getLanguage();
+		$lg = JFactory::getLanguage();
 		$lang = substr($lg->getTag(), 0, 2);
 		$existingLang = array("af","ar","ar-DZ","az","bg","bs","ca","cs","da","de","el","en-AU","en-GB","en-NZ","eo","es","et","eu","fa","fi","fo","fr","fr-CH","gl","he","hr","hu","hy","id","is","it","ja","ko","kz","lt","lv","ml","ms","nl","no","pl","pt","pt-BR","rm","ro","ru","sk","sl","sq","sr","sr-SR","sv","ta","th","tj","tr","uk","vi","zh-CN","zh-HK","zh-TW");
 		if (!in_array($lang, $existingLang)) $lang ="en-GB";

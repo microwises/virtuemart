@@ -800,7 +800,7 @@ class vmrouterHelper {
 
 		if ( $this->seo_translate ) {
 			/* use translator */
-			$lang =& JFactory::getLanguage();
+			$lang =JFactory::getLanguage();
 			$extension = 'com_virtuemart.sef';
 			$base_dir = JPATH_SITE;
 			$lang->load($extension, $base_dir);

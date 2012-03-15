@@ -158,7 +158,7 @@ defined ( '_JEXEC' ) or die ( 'Restricted access' );
 				
 				
 				";
-			$document = &JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addScriptDeclaration($reviewJavascript);
 
 			if($this->showRating) {

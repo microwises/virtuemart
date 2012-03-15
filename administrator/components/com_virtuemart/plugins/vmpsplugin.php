@@ -755,7 +755,7 @@ abstract class vmPSPlugin extends vmPlugin {
 	*/
 
 	protected function getHtmlRow($key, $value, $class='') {
-		$lang = & JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$key_text = '';
 		$complete_key = strtoupper($this->_type . '_' . $key);
 		// vmdebug('getHtmlRow',$key,$complete_key);
@@ -985,7 +985,7 @@ abstract class vmPSPlugin extends vmPlugin {
 			require(JPATH_VM_SITE . DS . 'helpers' . DS . 'cart.php');
 			$this->logInfo('Notification: emptyCart '.$session_id, 'message');
 			if ($session_id != null) {
-				$session = & JFactory::getSession();
+				$session = JFactory::getSession();
 				$session->close();
 
 				// Recover session in wich the payment is done

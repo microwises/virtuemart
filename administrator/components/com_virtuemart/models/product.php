@@ -119,7 +119,7 @@ class VirtueMartModelProduct extends VmModel {
 			$this->keyword = vmRequest::uword('filter_product', "0", ' ');
 		}
 
-		$app = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$option = 'com_virtuemart';
 		$view = 'product';
 
@@ -172,7 +172,7 @@ class VirtueMartModelProduct extends VmModel {
 	 */
 	function sortSearchListQuery($onlyPublished=true,$virtuemart_category_id = false, $group=false,$nbrReturnProducts=false){
 
-		$app = &JFactory::getApplication() ;
+		$app = JFactory::getApplication() ;
 
 		$groupBy = 'group by p.`virtuemart_product_id`';
 

@@ -49,7 +49,7 @@ if(!version_compare(JVERSION,'1.6.0','ge')) {
 		function onContentSearch($text, $phrase='', $ordering='', $areas=null) {
 			$db		= JFactory::getDbo();
 			$app	= JFactory::getApplication();
-			$user = & JFactory::getUser();
+			$user = JFactory::getUser();
 			$groups	= implode(',', $user->getAuthorisedViewLevels());
 			$tag = JFactory::getLanguage()->getTag();
 			$searchText = $text;
@@ -179,8 +179,8 @@ function &plgSearchVirtuemartAreas() {
  * @param string ordering option, newest|oldest|popular|alpha|category
  */
 function plgSearchVirtuemart($text, $phrase='', $ordering='', $areas=null) {
-	$db = & JFactory::getDBO();
-	$user = & JFactory::getUser();
+	$db = JFactory::getDBO();
+	$user = JFactory::getUser();
 
 	if (is_array($areas)) {
 		if (!array_intersect($areas, array_keys(plgSearchVirtuemartAreas()))) {

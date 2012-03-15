@@ -85,7 +85,7 @@ class VirtueMartControllerInvoice extends JController
 		// 			$app = JFactory::getApplication('site');
 
 		//We come from the be, so we need to load the FE langauge
-		$jlang =& JFactory::getLanguage();
+		$jlang =JFactory::getLanguage();
 		$jlang->load('com_virtuemart', JPATH_SITE, 'en-GB', true);
 		$jlang->load('com_virtuemart', JPATH_SITE, $jlang->getDefault(), true);
 		$jlang->load('com_virtuemart', JPATH_SITE, null, true);

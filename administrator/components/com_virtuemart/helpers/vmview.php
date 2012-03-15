@@ -158,7 +158,7 @@ class VmView extends JView{
 		$editView = JRequest::getWord('view',JRequest::getWord('controller','' ) );
 
 		$params = JComponentHelper::getParams('com_languages');
-		//$config =& JFactory::getConfig();$config->getValue('language');
+		//$config =JFactory::getConfig();$config->getValue('language');
 		$selectedLangue = $params->get('site', 'en-GB');
 
 		$lang = strtolower(strtr($selectedLangue,'-','_'));
@@ -279,7 +279,7 @@ class VmView extends JView{
 	function getToolbar() {
 
 		// add required stylesheets from admin template
-		$document    = & JFactory::getDocument();
+		$document    = JFactory::getDocument();
 		$document->addStyleSheet('administrator/templates/system/css/system.css');
 		//now we add the necessary stylesheets from the administrator template
 		//in this case i make reference to the bluestork default administrator template in joomla 1.6

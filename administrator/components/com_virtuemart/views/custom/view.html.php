@@ -111,7 +111,7 @@ class VirtuemartViewCustom extends VmView {
 		$db->setQuery($q);
 
 		$results = $db->loadAssocList($ext_id);
-        $lang =& JFactory::getLanguage();
+        $lang =JFactory::getLanguage();
 		foreach ($results as &$result) {
         $filename = 'plg_' .strtolower ( $result['name']).'.sys';
 

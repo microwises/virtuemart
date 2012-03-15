@@ -86,6 +86,17 @@ defined('_JEXEC') or die('Restricted access');
 						</td>
 					</tr>
 					<tr>
+						<td class="key"><span
+							class="hasTip"
+							title="<?php echo JText::_('COM_VIRTUEMART_RECCOMEND_UNATUH_EXPLAIN'); ?>">
+								<label for="ask_question"><?php echo JText::_('COM_VIRTUEMART_RECCOMEND_UNATUH') ?>
+							</label> </span>
+						</td>
+						<td>
+						<?php echo VmHTML::checkbox('recommend_unauth', $this->config->get('recommend_unauth')); ?>
+						</td>
+					</tr>
+					<tr>
 			<td class="key">
 				<span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_LIST_LIMIT_EXPLAIN'); ?>">
 				<label for="list_limit"><?php echo JText::_('COM_VIRTUEMART_LIST_LIMIT') ?></label>

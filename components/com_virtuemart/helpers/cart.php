@@ -981,6 +981,8 @@ class VirtueMartCart {
 		$this->customer_comment = '';
 		$this->couponCode = '';
 		$this->tosAccepted = null;
+		$this->virtuemart_shipmentmethod_id = 0; //OSP 2012-03-14
+		$this->virtuemart_paymentmethod_id = 0;
 
 		$this->setCartIntoSession();
 	}
@@ -995,14 +997,14 @@ class VirtueMartCart {
 	 */
 	public function prepareCartData($checkAutomaticSelected=true){
 
-		/* Get the products for the cart */
+		// Get the products for the cart
 		$prices = array();
 		$product_prices = $this->getCartPrices($checkAutomaticSelected);
 
 		if (empty($product_prices)) return;
 		if(!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
-// 		vmdebug('prepareCartData CurrencyDisplay',$currency);
+
 		if(!empty($product_prices)){
 			foreach($product_prices as $k=>$price){
 
@@ -1230,7 +1232,7 @@ class VirtueMartCart {
 			}
 			$product->salesPrice = empty($prices[$cart_item_id]['salesPrice'])? 0:$prices[$cart_item_id]['salesPrice'];
 			$product->basePriceWithTax = empty($prices[$cart_item_id]['salesPrice'])? 0:$prices[$cart_item_id]['basePriceWithTax'];
-			//			$product->basePriceWithTax = $prices[$cart_item_id]['basePriceWithTax'];
+//			$product->basePriceWithTax = $prices[$cart_item_id]['basePriceWithTax'];
 			$product->subtotal = $prices[$cart_item_id]['subtotal'];
 			$product->subtotal_tax_amount = $prices[$cart_item_id]['subtotal_tax_amount'];
 			$product->subtotal_discount = $prices[$cart_item_id]['subtotal_discount'];
@@ -1255,7 +1257,6 @@ class VirtueMartCart {
 			$preFix = '';
 		}
 
-// 		vmdebug('prepareAddressDataInCart',$data);
 		$addresstype = $type.'address';
 		$userFieldsBT = $userFieldsModel->getUserFieldsFor('cart',$type);
 		$this->$addresstype = $userFieldsModel->getUserFieldsFilled(

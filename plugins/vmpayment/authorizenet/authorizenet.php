@@ -658,7 +658,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 	    //$html.= "</ul>";
 	}
 	if (!$this->_cc_valid && $enqueueMessage) {
-	    $app = & JFactory::getApplication();
+	    $app = JFactory::getApplication();
 	    $app->enqueueMessage($html);
 	}
 

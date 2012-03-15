@@ -17,7 +17,7 @@ class LiveUpdateModel extends JModel
 	public function download()
 	{
 		// Get the path to Joomla!'s temporary directory
-		$jreg =& JFactory::getConfig();
+		$jreg =JFactory::getConfig();
 		$tmpdir = $jreg->getValue('config.tmp_path');
 		
 		jimport('joomla.filesystem.folder');

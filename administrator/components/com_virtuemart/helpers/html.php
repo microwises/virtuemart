@@ -76,7 +76,7 @@ class VmHTML{
 			foreach ($passedArgs as $k => $v) {
 			    $args[] = &$passedArgs[$k];
 			}
-		$lang =& JFactory::getLanguage();
+		$lang =JFactory::getLanguage();
 		$label = $lang->hasKey($label.'_TIP') ? '<span class="hasTip" title="'.JText::_($label.'_TIP').'">'.JText::_($label).'</span>' : JText::_($label) ;
 		$html = '
 		<tr>
@@ -91,7 +91,7 @@ class VmHTML{
 	}
 	/* simple value display */
 	function value( $value ){
-		$lang =& JFactory::getLanguage();
+		$lang =JFactory::getLanguage();
 		return $lang->hasKey($value) ? JText::_($value) : $value;
 	}
 
@@ -317,7 +317,7 @@ class VmHTML{
 	 * @param string $value
 	 */
 	public function editor($name,$value,$size='100%',$height='300',$hide = array('pagebreak', 'readmore')){
-		$editor =& JFactory::getEditor();
+		$editor =JFactory::getEditor();
 		return $editor->display($name, $value, $size, $height, null, null ,$hide )  ;
 	}
 

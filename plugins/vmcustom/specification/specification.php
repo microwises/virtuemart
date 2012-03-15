@@ -78,7 +78,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	*/
 	public function plgVmSelectSearchableCustom(&$selectList,&$searchCustomValues,$virtuemart_custom_id)
 	{
-		$db =&JFactory::getDBO();
+		$db =JFactory::getDBO();
 		$db->setQuery('SELECT `virtuemart_custom_id`, `custom_title` FROM `#__virtuemart_customs` WHERE `custom_element` ="'.$this->_name.'"');
 		if ($this->selectList = $db->loadAssocList() ) {
 			//vmdebug('$this->selectedPlugin',$this->selectedPlugin);
@@ -103,7 +103,7 @@ class plgVmCustomSpecification extends vmCustomPlugin {
 	public function plgVmAddToSearch(&$where,&$PluginJoinTables,$custom_id)
 	{
 		if ($keyword = vmRequest::uword('custom_specification_name1', null, ' ')) {
-			$db = & JFactory::getDBO();
+			$db = JFactory::getDBO();
 			if ($this->_name != $this->GetNameByCustomId($custom_id)) return;
 			$keyword = '"%' . $db->getEscaped( $keyword, true ) . '%"' ;
 			$where[] = $this->_name .'.`custom_specification_default1` LIKE '.$keyword;

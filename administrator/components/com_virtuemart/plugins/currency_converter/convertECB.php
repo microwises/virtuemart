@@ -43,7 +43,7 @@ class convertECB {
 	function convert( $amountA, $currA='', $currB='' ) {
 
 		// cache subfolder(group) 'convertECB', cache method: callback
-		$cache= & JFactory::getCache('convertECB','callback');
+		$cache= JFactory::getCache('convertECB','callback');
 
 		// save configured lifetime
 		@$lifetime=$cache->lifetime;

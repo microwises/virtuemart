@@ -165,11 +165,16 @@ class VirtueMartControllerProductdetails extends JController {
 	public function MailForm(){
 
 		if (JRequest::getCmd('task') == 'recommend' ) {
-			$user = JFactory::getUser();
-			//Todo, maybe allow ask a question also for anonymous users?
-			if (empty($user->id)) {
-				VmInfo(JText::_('YOU MUST LOGIN FIRST'));
-				return ;
+			
+			/*OSP 2012-03-14 ...Track #375; allowed by setting */
+			if (VmConfig::get('recommend_unauth', 0) == '0')
+			{
+				$user = JFactory::getUser();
+				if (empty($user->id)) 
+				{
+					VmInfo(JText::_('YOU MUST LOGIN FIRST'));
+					return ;
+				}
 			}
 			$view = $this->getView('recommend', 'html');
 		} else {
