@@ -581,19 +581,20 @@ class calculationHelper {
 		$this->rules['DATax'] = $this->gatherEffectingRulesForProductPrice('DATax', $this->product_discount_id);
 
 		$salesPrice = $data['salesPrice'];
-		vmdebug('Desired salesPirce '.$salesPrice);
+
 		$withDiscount = $this->roundInternal($this->executeCalculation($this->rules['DATax'], $salesPrice));
 		$withDiscount = !empty($withDiscount) ? $withDiscount : $salesPrice;
-		vmdebug('Desired $withDiscount '.$withDiscount);
+
 		$withTax = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $withDiscount));
 		$withTax = !empty($withTax) ? $withTax : $withDiscount;
 
 		$basePrice = $this->roundInternal($this->executeCalculation($this->rules['DBTax'], $withTax));
 		$basePrice = !empty($basePrice) ? $basePrice : $withTax;
 
-		$productCurrency = CurrencyDisplay::getInstance($this->productCurrency);
-		$costprice = $productCurrency->convertCurrencyTo((int) $this->vendorCurrency, $basePrice,false);
+		vmdebug('Desired $$basePrice '.$basePrice);
 		$productCurrency = CurrencyDisplay::getInstance();
+		$costprice = $productCurrency->convertCurrencyTo( $this->productCurrency, $basePrice,false);
+// 		$productCurrency = CurrencyDisplay::getInstance();
 		$this->_revert = false;
 		return $costprice;
 	}
@@ -662,10 +663,10 @@ class calculationHelper {
 				} else {
 					$cIn = $price;
 				}
-				vmdebug('executeCalculation '.$baseprice);
+// 				vmdebug('executeCalculation '.$baseprice);
 				$cOut = $this->interpreteMathOp($rule['calc_value_mathop'], $rule['calc_value'], $cIn, $rule['calc_currency']);
 				$this->_cartPrices[$rule['virtuemart_calc_id'] . 'Diff'] = $this->roundInternal($this->roundInternal($cOut) - $cIn);
-				vmdebug('executeCalculation '.$cOut);
+// 				vmdebug('executeCalculation '.$cOut);
 				//okey, this is a bit flawless logic, but should work
 				if ($relateToBaseAmount) {
 					$finalprice = $finalprice + $this->_cartPrices[$rule['virtuemart_calc_id'] . 'Diff'];
@@ -1060,7 +1061,7 @@ class calculationHelper {
 				} else if (strlen($mathop) == 1){
 					$calculated = $this->_currencyDisplay->convertCurrencyTo($currency, $value);
 				}
-				vmdebug('interpreteMathOp',$price,$calculated,$plus);
+// 				vmdebug('interpreteMathOp',$price,$calculated,$plus);
 				if($sign == $plus){
 					return $price + (float)$calculated;
 				} else if($sign == $minus){

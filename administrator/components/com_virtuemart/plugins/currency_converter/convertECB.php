@@ -40,7 +40,8 @@ class convertECB {
 	 * @param string $currB defaults to
 	 * @return mixed The converted amount when successful, false on failure
 	 */
-	function convert( $amountA, $currA='', $currB='' ) {
+// 	function convert( $amountA, $currA='', $currB='', $a2b = true ) {
+	function convert( $amountA, $currA='', $currB='', $a2rC = true, $relatedCurrency = 'EUR') {
 
 		// cache subfolder(group) 'convertECB', cache method: callback
 		$cache= JFactory::getCache('convertECB','callback');
@@ -74,7 +75,8 @@ class convertECB {
 			$valA = isset( $globalCurrencyConverter[$currA] ) ? $globalCurrencyConverter[$currA] : 1.0;
 			$valB = isset( $globalCurrencyConverter[$currB] ) ? $globalCurrencyConverter[$currB] : 1.0;
 
-			$val = (float)$amountA * (float)$valB / (float)$valA;
+			$val = (float)$amountA * $valB / (float)$valA;
+
 // 			$val = $amountA * $valB / $valA;
 // 			vmdebug('convert convert in: '.$amountA.'  out: '.$val);
 			return $val;

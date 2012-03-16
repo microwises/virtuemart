@@ -55,12 +55,9 @@ class CurrencyDisplay {
 				$this->_currencyConverter = new $module_filename();
 			}
 		} else {
-			if($this->_vendorCurrency===47){
-				if(!class_exists('convertECB')) require(JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
-				$this->_currencyConverter = new convertECB();
-			} else {
-				vmWarn('Cant use fallback method, using ECB. Your vendor currency is not euro.');
-			}
+
+			if(!class_exists('convertECB')) require(JPATH_VM_ADMINISTRATOR.DS.'plugins'.DS.'currency_converter'.DS.'convertECB.php');
+			$this->_currencyConverter = new convertECB();
 
 		}
 
@@ -90,9 +87,9 @@ class CurrencyDisplay {
 	 */
 	public function getInstance($currencyId=0,$vendorId=0){
 
-// 		vmdebug('hmmmmm getInstance given $currencyId '.$currencyId,self::$_instance->_currency_id);
-// 		if(empty(self::$_instance) || empty(self::$_instance->_currency_id) || ($currencyId!=self::$_instance->_currency_id && !empty($currencyId)) ){
-			if(empty(self::$_instance)  || (!empty($currencyId) and $currencyId!=self::$_instance->_currency_id) ){
+		// 		vmdebug('hmmmmm getInstance given $currencyId '.$currencyId,self::$_instance->_currency_id);
+		// 		if(empty(self::$_instance) || empty(self::$_instance->_currency_id) || ($currencyId!=self::$_instance->_currency_id && !empty($currencyId)) ){
+		if(empty(self::$_instance)  || (!empty($currencyId) and $currencyId!=self::$_instance->_currency_id) ){
 
 			self::$_instance = new CurrencyDisplay($vendorId);
 
@@ -172,29 +169,29 @@ class CurrencyDisplay {
 		$user = JFactory::getUser();
 
 		//Not working for a user which is registered and should be in the standard group, but isnt (automap)
-/*		if(!empty($user->id)){
+		/*		if(!empty($user->id)){
 
-			$q = 'SELECT `price_display`,`custom_price_display` FROM `#__virtuemart_vmusers` as `u`
-							LEFT OUTER JOIN `#__virtuemart_vmuser_shoppergroups` AS `vx` ON `u`.`virtuemart_user_id`  = `vx`.`virtuemart_user_id`
-							LEFT OUTER JOIN `#__virtuemart_shoppergroups` AS `sg` ON `vx`.`virtuemart_shoppergroup_id` = `sg`.`virtuemart_shoppergroup_id`
-							WHERE `u`.`virtuemart_user_id` = "'.$user->id.'" ';
+		$q = 'SELECT `price_display`,`custom_price_display` FROM `#__virtuemart_vmusers` as `u`
+		LEFT OUTER JOIN `#__virtuemart_vmuser_shoppergroups` AS `vx` ON `u`.`virtuemart_user_id`  = `vx`.`virtuemart_user_id`
+		LEFT OUTER JOIN `#__virtuemart_shoppergroups` AS `sg` ON `vx`.`virtuemart_shoppergroup_id` = `sg`.`virtuemart_shoppergroup_id`
+		WHERE `u`.`virtuemart_user_id` = "'.$user->id.'" ';
 
-			$this->_db->setQuery($q);
-			$result = $this->_db->loadRow();
-// 			vmdebug('setPriceArray',$result);
-			if(!empty($result[0])){
-				$result[0] = unserialize($result[0]);
-			}
+		$this->_db->setQuery($q);
+		$result = $this->_db->loadRow();
+		// 			vmdebug('setPriceArray',$result);
+		if(!empty($result[0])){
+		$result[0] = unserialize($result[0]);
+		}
 		} else {
-			$q = 'SELECT `price_display`,`custom_price_display` FROM `#__virtuemart_shoppergroups` AS `sg`
-					WHERE `sg`.`default` = "2" ';
+		$q = 'SELECT `price_display`,`custom_price_display` FROM `#__virtuemart_shoppergroups` AS `sg`
+		WHERE `sg`.`default` = "2" ';
 
-			$this->_db->setQuery($q);
-			$result = $this->_db->loadRow();
-// 			vmdebug('setPriceArray',$result);
-			if(!empty($result[0])){
-				$result[0] = unserialize($result[0]);
-			}
+		$this->_db->setQuery($q);
+		$result = $this->_db->loadRow();
+		// 			vmdebug('setPriceArray',$result);
+		if(!empty($result[0])){
+		$result[0] = unserialize($result[0]);
+		}
 		}*/
 
 		$result = false;
@@ -232,7 +229,7 @@ class CurrencyDisplay {
 
 		if($custom_price_display && !empty($result[0])){
 			$show_prices = $result[0]->get('show_prices',VmConfig::get('show_prices', 1));
-// 			vmdebug('$result[0]',$result[0],$show_prices);
+			// 			vmdebug('$result[0]',$result[0],$show_prices);
 		} else {
 			$show_prices = VmConfig::get('show_prices', 1);
 		}
@@ -251,17 +248,17 @@ class CurrencyDisplay {
 				$text = 0;
 
 				//Here we check special settings of the shoppergroup
-// 				$result = unserialize($result);
+				// 				$result = unserialize($result);
 				if($custom_price_display==1){
 					$show = (int)$result[0]->get($name);
 					$round = (int)$result[0]->get($name.'Rounding');
 					$text = $result[0]->get($name.'Text');
-// 					vmdebug('$custom_price_display');
+					// 					vmdebug('$custom_price_display');
 				} else {
 					$show = VmConfig::get($name,0);
 					$round = VmConfig::get($name.'Rounding',2);
 					$text = VmConfig::get($name.'Text',0);
-// 					vmdebug('$config_price_display');
+					// 					vmdebug('$config_price_display');
 				}
 
 
@@ -273,7 +270,7 @@ class CurrencyDisplay {
 			}
 		}
 
-// 		vmdebug('$this->_priceConfig',$this->_priceConfig);
+		// 		vmdebug('$this->_priceConfig',$this->_priceConfig);
 	}
 
 	/**
@@ -320,10 +317,10 @@ class CurrencyDisplay {
 	}
 
 	/**
-	* Format, Round and Display Value
-	* @author Max Milbers
-	* @param val number
-	*/
+	 * Format, Round and Display Value
+	 * @author Max Milbers
+	 * @param val number
+	 */
 	private function getFormattedCurrency( $nb, $nbDecimal=-1){
 
 		if($nbDecimal===-1) $nbDecimal = $this->_nbDecimal;
@@ -357,7 +354,7 @@ class CurrencyDisplay {
 	 */
 	public function createPriceDiv($name,$description,$product_price,$priceOnly=false,$switchSequel=false){
 
-// 		vmdebug('createPriceDiv '.$name,$product_price[$name]);
+		// 		vmdebug('createPriceDiv '.$name,$product_price[$name]);
 		if(empty($product_price)) return '';
 
 		//The fallback, when this price is not configured
@@ -382,7 +379,7 @@ class CurrencyDisplay {
 			}
 			$descr = '';
 			if($this->_priceConfig[$name][2]) $descr = JText::_($description);
-// 			vmdebug('createPriceDiv $name '.$name.' '.$product_price[$name]);
+			// 			vmdebug('createPriceDiv $name '.$name.' '.$product_price[$name]);
 			if(!$switchSequel){
 				return '<div class="Price'.$name.'" style="display : '.$vis.';" >'.$descr.'<span class="Price'.$name.'" >'.$priceFormatted.'</span></div>';
 			} else {
@@ -403,69 +400,69 @@ class CurrencyDisplay {
 
 
 		if(empty($currency)){
-// 			vmdebug('empty  $currency ',$price);
+			// 			vmdebug('empty  $currency ',$price);
 			return $price;
 		}
 
 		// If both currency codes match, do nothing
-		if( $currency == $this->_vendorCurrency ) {
-// 			vmdebug('  $currency == $this->_vendorCurrency ',$price);
+		if( $currency == $this->_vendorCurrency) {
+			// 			vmdebug('  $currency == $this->_vendorCurrency ',$price);
 			return $price;
 		}
 
-/*		if($shop){
+		/*		if($shop){
 			// TODO optimize this... the exchangeRate cant be cached, there are more than one currency possible
-			//			$exchangeRate = &$this->exchangeRateVendor;
-			$exchangeRate = 0;
+		//			$exchangeRate = &$this->exchangeRateVendor;
+		$exchangeRate = 0;
 		} else {
-			//caches the exchangeRate between shopper and vendor
-			$exchangeRate = &$this->exchangeRateShopper;
+		//caches the exchangeRate between shopper and vendor
+		$exchangeRate = &$this->exchangeRateShopper;
 		}
-*/
-		if(empty($exchangeRate)){
-			if(is_Object($currency)){
-				$exchangeRate = $currency->_vendorCurrency;
-				vmdebug('convertCurrencyTo OBJECT '.$exchangeRate);
-			}
-			else {
-				//				$this->_db = JFactory::getDBO();
-				$q = 'SELECT `currency_exchange_rate`
+		*/
+		//		if(empty($exchangeRate)){
+		if(is_Object($currency)){
+			$exchangeRate = $currency->_vendorCurrency;
+			vmdebug('convertCurrencyTo OBJECT '.$exchangeRate);
+		}
+		else {
+			//				$this->_db = JFactory::getDBO();
+			$q = 'SELECT `currency_exchange_rate`
 				FROM `#__virtuemart_currencies` WHERE `virtuemart_currency_id` ="'.(int)$currency.'" ';
-				$this->_db->setQuery($q);
-				$exch = $this->_db->loadResult();
-// 				vmdebug('begin convertCurrencyTo '.$exch);
-				if(!empty($exch) and $exch !== '0.00000'){
-					$exchangeRate = $exch;
-				} else {
-					$exchangeRate = FALSE;
-				}
+			$this->_db->setQuery($q);
+			$exch = $this->_db->loadResult();
+			// 				vmdebug('begin convertCurrencyTo '.$exch);
+			if(!empty($exch) and $exch !== '0.00000'){
+				$exchangeRate = $exch;
+			} else {
+				$exchangeRate = FALSE;
 			}
 		}
+		//	}
 		$this->exchangeRateShopper = $exchangeRate;
-// 		vmdebug('convertCurrencyTo my currency ',$exchangeRate,$currency);
+		// 		vmdebug('convertCurrencyTo my currency ',$exchangeRate,$currency);
 		if(!empty($exchangeRate) && $exchangeRate!=FALSE){
 			$price = $price * $exchangeRate;
-// 			vmdebug('!empty($exchangeRate) && $exchangeRate!=FALSE '.$price.' '.$exchangeRate);
+			// 			vmdebug('!empty($exchangeRate) && $exchangeRate!=FALSE '.$price.' '.$exchangeRate);
 		} else {
 			$currencyCode = self::ensureUsingCurrencyCode($currency);
 			$vendorCurrencyCode = self::ensureUsingCurrencyCode($this->_vendorCurrency);
 			$globalCurrencyConverter=JRequest::getVar('globalCurrencyConverter');
 			if($shop){
 				$price = $this ->_currencyConverter->convert( $price, $currencyCode, $vendorCurrencyCode);
-				if(!empty($globalCurrencyConverter[$currencyCode])){
-					$this->exchangeRateShopper = $globalCurrencyConverter[$vendorCurrencyCode]/$globalCurrencyConverter[$currencyCode];
-				} else {
-					$this->exchangeRateShopper = 1;
-				}
+				// 				if(!empty($globalCurrencyConverter[$currencyCode])){
+				// 					$this->exchangeRateShopper = $globalCurrencyConverter[$vendorCurrencyCode]/$globalCurrencyConverter[$currencyCode];
+				// 				} else {
+				// 					$this->exchangeRateShopper = 1;
+				// 				}
 			} else {
 				$price = $this ->_currencyConverter->convert( $price , $vendorCurrencyCode, $currencyCode);
-				if(!empty($globalCurrencyConverter[$vendorCurrencyCode])){
-					$this->exchangeRateShopper = $globalCurrencyConverter[$currencyCode]/$globalCurrencyConverter[$vendorCurrencyCode];
-				} else {
-					$this->exchangeRateShopper = 1;
-				}
+				// 				if(!empty($globalCurrencyConverter[$vendorCurrencyCode])){
+				// 					$this->exchangeRateShopper = $globalCurrencyConverter[$currencyCode]/$globalCurrencyConverter[$vendorCurrencyCode];
+				// 				} else {
+				// 					$this->exchangeRateShopper = 1;
+				// 				}
 			}
-// 			vmdebug('convertCurrencyTo my currency ',$this->exchangeRateShopper);
+			// 			vmdebug('convertCurrencyTo my currency ',$this->exchangeRateShopper);
 		}
 
 		return $price;

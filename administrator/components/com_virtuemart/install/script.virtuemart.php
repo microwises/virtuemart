@@ -237,8 +237,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					'COM_VIRTUEMART_STOCKABLE_PRODUCT_DESC', 'G', 0, 0, 0, 1 );");
 */
 
-
-
 			$this->deleteReCreatePrimaryKey('#__virtuemart_userinfos','virtuemart_userinfo_id');
 
 			if(!class_exists('GenericTableUpdater')) require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'tableupdater.php');
@@ -781,17 +779,10 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					alt="Cart" /> </a> <br /> <br />
 				<h2>
 
-
-
-
 				<?php echo JText::_('COM_VIRTUEMART_INSTALLATION_WELCOME') ?></h2>
 			</td>
 			<td>
 				<h2>
-
-
-
-
 				<?php
 				if($update){
 					echo JText::_('COM_VIRTUEMART_UPGRADE_SUCCESSFUL');
@@ -810,9 +801,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 				<div id="cpanel">
 
-
-
-
 				<?php
 				if(!$update){
 					?>
@@ -820,26 +808,9 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 						<a
 							href="<?php echo JROUTE::_('index.php?option=com_virtuemart&view=updatesmigration&task=installSampleData&token='.JUtility::getToken()) ?>">
 							<span class="vmicon48 vm_install_48"></span> <br />
-
-
-
-
-
-
-
-
-
 						<?php echo JText::_('COM_VIRTUEMART_INSTALL_SAMPLE_DATA'); ?>
 							</a>
 					</div>
-
-
-
-
-
-
-
-
 
 		<?php } ?>
 
@@ -849,14 +820,6 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 					<br /><?php echo JText::_('COM_VIRTUEMART_INSTALL_GO_SHOP') ?>
 				</a>
 				</div>
-
-
-
-
-
-
-
-
 			</td>
 		</tr>
 	</table>

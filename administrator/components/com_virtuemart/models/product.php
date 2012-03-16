@@ -1042,13 +1042,13 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-		vmdebug('use_desired_price '.$data['use_desired_price']);
+// 		vmdebug('use_desired_price '.$data['use_desired_price']);
 		if(isset($data['use_desired_price']) and $data['use_desired_price'] == "1"){
 
 			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 			$calculator = calculationHelper::getInstance();
 			$data['product_price'] = $calculator->calculateCostprice($this->_id,$data);
-			vmdebug('product_price '.$data['product_price']);
+// 			vmdebug('product_price '.$data['product_price']);
 		}
 		$data = $this->updateXrefAndChildTables($data, 'product_prices');
 
