@@ -317,7 +317,8 @@ class VmConfig {
 // 				vmTime('loadConfig Program Cache','loadConfig');
 
 				return self::$_jpConfig;
-			} else {
+			}
+/*			else {
 				$session = JFactory::getSession();
 				$vmConfig = $session->get('vmconfig','','vm');
 				if(!empty($vmConfig)){
@@ -347,7 +348,7 @@ class VmConfig {
 					}
 				}
 
-			}
+			} */
 		}
 
 		self::$_jpConfig = new VmConfig();
@@ -474,7 +475,7 @@ class VmConfig {
 
 
 	function setSession(){
-		$session = JFactory::getSession();
+/*		$session = JFactory::getSession();
 		$session->clear('vmconfig');
 		// 		$app = JFactory::getApplication();
 		// 		$app ->enqueueMessage('setSession session cache <pre>'.print_r(self::$_jpConfig->_params,1).'</pre>');
@@ -487,7 +488,7 @@ class VmConfig {
 		// $params['dateformat'] = base64_encode($params['dateformat']);
 
 		$params['sctime'] = microtime(true);
-		$session->set('vmconfig', serialize($params),'vm');
+		$session->set('vmconfig', serialize($params),'vm');*/
 		self::$loaded = true;
 	}
 

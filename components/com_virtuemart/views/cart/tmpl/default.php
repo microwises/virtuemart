@@ -34,8 +34,8 @@ $document->addScriptDeclaration("
 	});
 ");
 $document->addStyleDeclaration('#facebox .content {display: block !important; height: 480px !important; overflow: auto; width: 560px !important; }');
- vmdebug('cart prices',$this->cart->prices);
- vmdebug('cart pricesUnformatted',$this->cart->pricesUnformatted);
+//  vmdebug('cart prices',$this->cart->prices);
+//  vmdebug('car7t pricesUnformatted',$this->cart->pricesUnformatted);
 //  vmdebug('cart pricesUnformatted',$this->cart->cartData );
 ?>
 

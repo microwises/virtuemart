@@ -52,7 +52,7 @@ class VirtueMartCart {
 	var $cartData = null;
 	var $lists = null;
 	// 	var $user = null;
-	var $prices = null;
+// 	var $prices = null;
 	var $pricesUnformatted = null;
 	var $pricesCurrency = null;
 	var $paymentCurrency = null;
@@ -104,10 +104,10 @@ class VirtueMartCart {
 				self::$_cart->tosAccepted 							= $cartData->tosAccepted;
 				self::$_cart->customer_comment 					= base64_decode($cartData->customer_comment);
 				self::$_cart->couponCode 							= $cartData->couponCode;
-				self::$_cart->cartData 								= $cartData->cartData;
+// 				self::$_cart->cartData 								= $cartData->cartData;
 				self::$_cart->lists 									= $cartData->lists;
 				// 				self::$_cart->user 									= $cartData->user;
-				self::$_cart->prices 								= $cartData->prices;
+// 				self::$_cart->prices 								= $cartData->prices;
 				self::$_cart->pricesUnformatted					= $cartData->pricesUnformatted;
 				self::$_cart->pricesCurrency						= $cartData->pricesCurrency;
 				self::$_cart->paymentCurrency						= $cartData->paymentCurrency;
@@ -181,8 +181,25 @@ class VirtueMartCart {
 		$products = array();
 		if ($this->products) {
 			foreach($this->products as $key =>$product){
-				$product->prices = null;
 
+				//Important DO NOT UNSET product_price
+				//unset($product->product_price);
+
+				unset($product->prices);
+				unset($product->pricesUnformatted);
+				unset($product->mf_name);
+				unset($product->mf_desc);
+				unset($product->mf_url);
+
+				unset($product->salesPrice);
+				unset($product->basePriceWithTax);
+				unset($product->subtotal);
+				unset($product->subtotal_with_tax);
+				unset($product->subtotal_tax_amount);
+				unset($product->subtotal_discount);
+
+				unset($product->product_price_vdate);
+				unset($product->product_price_edate);
 			}
 		}
 		// 		$sessionCart->products = $products;
@@ -199,10 +216,10 @@ class VirtueMartCart {
 		$sessionCart->tosAccepted 							= $this->tosAccepted;
 		$sessionCart->customer_comment 					= base64_encode($this->customer_comment);
 		$sessionCart->couponCode 							= $this->couponCode;
-		$sessionCart->cartData 								= $this->cartData;
+// 		$sessionCart->cartData 								= $this->cartData;
 		$sessionCart->lists 									= $this->lists;
 		// 		$sessionCart->user 									= $this->user;
-		$sessionCart->prices 								= $this->prices;
+// 		$sessionCart->prices 								= $this->prices;
 		$sessionCart->pricesUnformatted					= $this->pricesUnformatted;
 		$sessionCart->pricesCurrency						= $this->pricesCurrency;
 		$sessionCart->paymentCurrency						= $this->paymentCurrency;
@@ -213,6 +230,20 @@ class VirtueMartCart {
 		$sessionCart->_confirmDone							= $this->_confirmDone;
 		$sessionCart->STsameAsBT							= $this->STsameAsBT;
 
+		if(!empty($sessionCart->pricesUnformatted)){
+			foreach($sessionCart->pricesUnformatted as &$prices){
+				if(is_array($prices)){
+					foreach($prices as &$price){
+						$price = (string)$price;
+					}
+				} else {
+					$prices = (string)$prices;
+				}
+			}
+		}
+
+// 		$pr = serialize($sessionCart->pricesUnformatted);
+		vmdebug('$sessionCart',$sessionCart);
 		$session->set('vmcart', serialize($sessionCart),'vm');
 
 	}
@@ -1025,7 +1056,7 @@ class VirtueMartCart {
 		if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
 		$calculator = calculationHelper::getInstance();
 
-		$this->prices = $prices;
+// 		$this->prices = $prices;
 
 		$this->pricesCurrency = $currency->getCurrencyForDisplay();
 
@@ -1036,7 +1067,7 @@ class VirtueMartCart {
 
 		$cartData = $calculator->getCartData();
 
-		$this->setCartIntoSession();
+// 		$this->setCartIntoSession();
 		return $cartData ;
 	}
 
@@ -1211,7 +1242,8 @@ class VirtueMartCart {
 		/* Get the products for the cart */
 		$this->cartData = $this->prepareCartData();
 
-		$this->prepareCartPrice( $this->prices ) ;
+// 		$this->prepareCartPrice( $this->prices ) ;
+		$this->prepareCartPrice( $this->pricesUnformatted ) ;
 
 		$this->prepareAddressDataInCart();
 		$this->prepareVendor();
@@ -1404,12 +1436,13 @@ class VirtueMartCart {
 
 
 			// product Price total for ajax cart
-			$this->data->products[$i]['prices'] = $this->prices[$priceKey]['subtotal_with_tax'];
+// 			$this->data->products[$i]['prices'] = $this->prices[$priceKey]['subtotal_with_tax'];
+			$this->data->products[$i]['prices'] = $this->pricesUnformatted[$priceKey]['subtotal_with_tax'];
 			// other possible option to use for display
-			$this->data->products[$i]['subtotal'] = $this->prices[$priceKey]['subtotal'];
-			$this->data->products[$i]['subtotal_tax_amount'] = $this->prices[$priceKey]['subtotal_tax_amount'];
-			$this->data->products[$i]['subtotal_discount'] = $this->prices[$priceKey]['subtotal_discount'];
-			$this->data->products[$i]['subtotal_with_tax'] = $this->prices[$priceKey]['subtotal_with_tax'];
+			$this->data->products[$i]['subtotal'] = $this->pricesUnformatted[$priceKey]['subtotal'];
+			$this->data->products[$i]['subtotal_tax_amount'] = $this->pricesUnformatted[$priceKey]['subtotal_tax_amount'];
+			$this->data->products[$i]['subtotal_discount'] = $this->pricesUnformatted[$priceKey]['subtotal_discount'];
+			$this->data->products[$i]['subtotal_with_tax'] = $this->pricesUnformatted[$priceKey]['subtotal_with_tax'];
 
 			// UPDATE CART / DELETE FROM CART
 			$this->data->products[$i]['quantity'] = $product->quantity;
@@ -1417,7 +1450,7 @@ class VirtueMartCart {
 
 			$i++;
 		}
-		$this->data->billTotal = $this->prices['billTotal'];
+		$this->data->billTotal = $this->pricesUnformatted['billTotal'];
 		$this->data->dataValidated = $this->_dataValidated ;
 		return $this->data ;
 	}

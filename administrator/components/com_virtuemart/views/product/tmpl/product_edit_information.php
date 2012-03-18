@@ -27,27 +27,18 @@ $i=0;
 		<td valign="top">
 			<fieldset>
 				<legend>
-
 				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_INFORMATION'); ?></legend>
 				<table class="adminform">
 					<tr class="row<?php echo $i?>">
 						<td width="21%"><div style="text-align: right; font-weight: bold;">
-
-
 						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PUBLISH') ?></div>
 						</td>
 						<td width="79%">
 							<fieldset class="radio">
-
-
 							<?php echo JHTMLSelect::booleanlist('published', null, $this->product->published); ?>
 							</fieldset>
 						</td>
 					</tr>
-
-
-
-
 				<?php $i = 1 - $i; ?>
 				<tr class="row<?php echo $i?>">
 					<td width="21%" >
@@ -95,109 +86,225 @@ $i=0;
 				</td>
 				</tr>
 				<?php $i = 1 - $i; ?>
-			<?php } ?>
+				<?php } ?>
 
 
-			<?php if(isset($this->lists['manufacturers'])){?>
-			<tr class="row<?php echo $i?>">
-				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER') ?></div>
-				</td>
-				<td width="79%">
-					<?php echo $this->lists['manufacturers'];?>
-				</td>
-			</tr>
-			<?php $i = 1 - $i; ?>
-			<?php }?>
-			<tr class="row<?php echo $i?>">
-				<td width="29%" valign="top">
-					<div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_CATEGORY_S') ?></div>
-				</td>
-				<td width="71%" >
-					<select class="inputbox" id="categories" name="categories[]" multiple="multiple" size="10">
-						<option value=""><?php echo JText::_('COM_VIRTUEMART_UNCATEGORIZED')  ?></option>
-						<?php echo $this->category_tree; ?>
-					</select>
-				</td>
-			</tr>
-<?php $i = 1 - $i; ?>
-			<tr class="row<?php echo $i?>">
-				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP') ?></div>
-				</td>
-				<td width="79%">
-					<?php echo $this->shoppergroupList; ?>
-				</td>
-			</tr>
-<?php $i = 1 - $i; ?>
-			<tr class="row<?php echo $i?>">
-				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_PAGE') ?></div>
-				</td>
-				<td width="79%">
-					<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'value', 'text', $this->product->layout); ?>
-				</td>
-			</tr>
-			<?php $i = 1 - $i; ?>
-			<tr class="row<?php echo $i?>">
-				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?></span>
+				<?php if(isset($this->lists['manufacturers'])){?>
+				<tr class="row<?php echo $i?>">
+					<td width="21%" ><div style="text-align:right;font-weight:bold;">
+						<?php echo JText::_('COM_VIRTUEMART_MANUFACTURER') ?></div>
+					</td>
+					<td width="79%">
+						<?php echo $this->lists['manufacturers'];?>
+					</td>
+				</tr>
+				<?php $i = 1 - $i; ?>
+				<?php }?>
+				<tr class="row<?php echo $i?>">
+					<td width="29%" valign="top">
+						<div style="text-align:right;font-weight:bold;">
+						<?php echo JText::_('COM_VIRTUEMART_CATEGORY_S') ?></div>
+					</td>
+					<td width="71%" >
+						<select class="inputbox" id="categories" name="categories[]" multiple="multiple" size="10">
+							<option value=""><?php echo JText::_('COM_VIRTUEMART_UNCATEGORIZED')  ?></option>
+							<?php echo $this->category_tree; ?>
+						</select>
+					</td>
+				</tr>
+				<?php $i = 1 - $i; ?>
+				<tr class="row<?php echo $i?>">
+					<td width="21%" ><div style="text-align:right;font-weight:bold;">
+						<?php echo JText::_('COM_VIRTUEMART_SHOPPER_FORM_GROUP') ?></div>
+					</td>
+					<td width="79%">
+						<?php echo $this->shoppergroupList; ?>
+					</td>
+				</tr>
+				<?php $i = 1 - $i; ?>
+				<tr class="row<?php echo $i?>">
+					<td width="21%" ><div style="text-align:right;font-weight:bold;">
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_DETAILS_PAGE') ?></div>
+					</td>
+					<td width="79%">
+						<?php echo JHTML::_('Select.genericlist', $this->productLayouts, 'layout', 'size=1', 'value', 'text', $this->product->layout); ?>
+					</td>
+				</tr>
+				<?php $i = 1 - $i; ?>
+				<tr class="row<?php echo $i?>">
+					<td width="21%" ><div style="text-align:right;font-weight:bold;">
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_SPECIAL') ?></span>
 
-				</td>
-				<td width="79%" >
+					</td>
+					<td width="79%" >
 
 					<?php echo VmHTML::checkbox('product_special', $this->product->product_special); ?>
-				</td>
-			</tr>
-		</table>
-			</fieldset>
+					</td>
+				</tr>
+			</table>
+		</fieldset>
+		</td>
 
+		<td valign="top">
+			<!-- Product pricing -->
 			<fieldset>
-				<legend>
-
-				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CHILD_PARENT'); ?></legend>
+				<legend><?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICES'); ?></legend>
 				<table class="adminform">
-					<tr class="row<?php echo $i?>">
-						<td width="29%"><div style="text-align: right; font-weight: bold;">
 
-
-						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PARENT') ?></div>
-						</td>
-						<td width="71%"> <?php
-						if ($this->product->product_parent_id) {
-							$parentRelation= VirtueMartModelCustomfields::getProductParentRelation($this->product->virtuemart_product_id);
-
-							$result = JText::_('COM_VIRTUEMART_EDIT').' ' . $this->product_parent->product_name;
-							echo ' | '.JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id.'&option=com_virtuemart'), $this->product_parent->product_name, array('title' => $result)).' | '.$parentRelation;
-						}
-						?>
-						</td>
-						<td>
-						<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=createVariant&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() ); ?>
-							<div class="icon">
-								<a href="<?php echo $link ?>"> <span
-									class="vmicon48 vm_install_48"></span> <br />
-            <?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_CHILD'); ?>
-		</a>
+					<tr class="row0">
+						<td width="29%">
+							<div style="text-align: right; font-weight: bold;">
+								<span
+									class="hasTip"
+									title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP'); ?>">
+									<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST') ?>
+								</span>
 							</div>
 						</td>
+						<td width="71%"><input
+							type="text"
+							class="inputbox"
+							name="product_price"
+							size="10"
+							value="<?php echo $this->product->prices['costPrice']; ?>" />
+							<?php echo $this->currencies; ?>
+						</td>
 					</tr>
+					<tr class="row1">
+						<td width="29%">
+							<div style="text-align: right; font-weight: bold;">
 
+								<span
+									class="hasTip"
+									title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE_TIP'); ?>">
+									<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE') ?>
+								</span>
+							</div>
+						</td>
+						<td width="71%"><input
+							type="text"
+							readonly
+							class="inputbox readonly"
+							name="basePrice"
+							size="10"
+							value="<?php echo $this->product->prices['basePrice']; ?>" />
+						<?php echo $this->vendor_currency;   ?>
+						</td>
+					</tr>
+					<tr class="row1">
+						<td width="29%">
+							<div style="text-align: right; font-weight: bold;">
+								<span
+									class="hasTip"
+									title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP'); ?>">
+									<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL') ?>
+								</span>
+							</div>
+						</td>
+						<td width="71%"><input
+							type="text"
+							name="salesPrice"
+							size="10"
+							value="<?php echo $this->product->prices['salesPrice']; ?>" />
 
+							<?php echo $this->vendor_currency;   ?>
+							<input type="checkbox" name="use_desired_price" value="1" />
+							<span
+							class="hasTip"
+							title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL_TIP'); ?>">
+							<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL'); ?>
+							</span>
+						</td>
+					</tr>
+				</table>
+			</fieldset> <!-- Product rules overrides -->
+			<fieldset>
+			<legend>
+			<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_RULES_OVERRIDES'); ?></legend>
+			<table class="adminform">
+				<tr class="row0">
+					<td width="29%"><div style="text-align: right; font-weight: bold;">
+						<?php echo JText::_('COM_VIRTUEMART_RATE_FORM_VAT_ID') ?></div>
+					</td>
+					<td width="71%">
+						<?php echo $this->lists['taxrates']; ?><br />
+						<?php echo $this->taxRules ?>
+					</td>
+				</tr>
+				<tr class="row1">
+					<td width="21%"><div style="text-align: right; font-weight: bold;">
+						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_TYPE') ?></div>
+					</td>
+					<td width="79%">
+						<?php echo $this->lists['discounts']; ?> <br />
 
+							<?php if(!empty($this->DBTaxRules)){
+								echo JText::_('COM_VIRTUEMART_RULES_EFFECTING').$this->DBTaxRules.'<br />';
+							}
+							if(!empty($this->DATaxRules)){
+								echo JText::_('COM_VIRTUEMART_RULES_EFFECTING').$this->DATaxRules;
+							}
+// 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
+					</td>
+				</tr>
+
+				<tr class="row0">
+					<td width="21%">
+						<div style="text-align: right; font-weight: bold;">
+							<span
+								class="hasTip"
+								title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE_TIP'); ?>">
+								<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE') ?>
+							</span>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</fieldset>
+		</td>
+	</tr>
+	<tr>
+	<td colspan="2" >
+	<fieldset>
+		<legend>
+		<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CHILD_PARENT'); ?></legend>
+		<table class="adminform">
+			<tr class="row<?php echo $i?>">
+				<td>
+				<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=createVariant&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() ); ?>
+					<div class="icon">
+						<a href="<?php echo $link ?>"> <span
+							class="vmicon48 vm_install_48"></span> <br />
+            			<?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_CHILD'); ?></a>
+					</div>
+				</td>
+				<td width="29%"><div style="text-align: left; font-weight: bold;">
+					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PARENT') ?>
+				</td>
+				<td width="71%"> <?php
+				if ($this->product->product_parent_id) {
+					$parentRelation= VirtueMartModelCustomfields::getProductParentRelation($this->product->virtuemart_product_id);
+
+					$result = JText::_('COM_VIRTUEMART_EDIT').' ' . $this->product_parent->product_name;
+					echo ' | '.JHTML::_('link', JRoute::_('index.php?view=product&task=edit&virtuemart_product_id='.$this->product->product_parent_id.'&option=com_virtuemart'), $this->product_parent->product_name, array('title' => $result)).' | '.$parentRelation;
+				}
+				?>
+				</td>
+
+			</tr>
 
 			<?php $i = 1 - $i; ?>
 			<tr class="row<?php echo $i?>">
-				<td width="21%" valign="top"><div style="text-align:right;font-weight:bold;">
+				<td width="21%" valign="top" colspan = "2" ><div style="text-align:right;font-weight:bold;">
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILD') ?></div>
 				</td>
 			</tr>
+			<tr class="row<?php echo $i?>">
 				<td width="79%"><?php
                 	if (count($this->product_childs)>0 and !empty($this->product->customfields)) {
 
                 		foreach($this->product->customfields as $custom){
-                			// 								vmdebug('my custom',$custom);
+                			// vmdebug('my custom',$custom);
                 			if($custom->field_type=='A'){
                 				$customs[] = $custom;
                 			}
@@ -256,169 +363,10 @@ $i=0;
                         ?>
 				</td>
 			</tr>
-
-
 		</table>
-			</fieldset>
-		</td>
-		<td valign="top">
-			<!-- Product pricing -->
-			<fieldset>
-				<legend>
-
-				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICES'); ?></legend>
-				<table class="adminform">
-
-					<tr class="row0">
-						<td width="29%">
-							<div style="text-align: right; font-weight: bold;">
-
-								<span
-									class="hasTip"
-									title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST_TIP'); ?>">
-									<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST') ?>
-								</span>
-							</div>
-						</td>
-						<td width="71%"><input
-							type="text"
-							class="inputbox"
-							name="product_price"
-							size="10"
-							value="<?php echo $this->product->prices['costPrice']; ?>" />
-							<?php echo $this->currencies; ?>
-				</td>
-					</tr>
-					<tr class="row1">
-						<td width="29%">
-							<div style="text-align: right; font-weight: bold;">
-
-								<span
-									class="hasTip"
-									title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE_TIP'); ?>">
-									<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_BASE') ?>
-								</span>
-							</div>
-						</td>
-						<td width="71%"><input
-							type="text"
-							readonly
-							class="inputbox readonly"
-							name="basePrice"
-							size="10"
-							value="<?php echo $this->product->prices['basePrice']; ?>" />
-						<?php echo $this->vendor_currency;   ?>
-				</td>
-					</tr>
-					<tr class="row1">
-						<td width="29%">
-							<div style="text-align: right; font-weight: bold;">
-								<span
-									class="hasTip"
-									title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL_TIP'); ?>">
-									<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_FINAL') ?>
-								</span>
-							</div>
-						</td>
-						<td width="71%"><input
-							type="text"
-							name="salesPrice"
-							size="10"
-							value="<?php echo $this->product->prices['salesPrice']; ?>" />
-							<?php echo $this->vendor_currency;   ?>
-							<input type="checkbox" name="use_desired_price" value="1" />
-							<span
-							class="hasTip"
-							title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL_TIP'); ?>">
-							<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CALCULATE_PRICE_FINAL'); ?>
-							</span>
-
-
-				</td>
-					</tr>
-				</table>
-			</fieldset> <!-- Product rules overrides -->
-			<fieldset>
-				<legend>
-
-				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_RULES_OVERRIDES'); ?></legend>
-				<table class="adminform">
-					<tr class="row0">
-						<td width="29%"><div style="text-align: right; font-weight: bold;">
-
-
-						<?php echo JText::_('COM_VIRTUEMART_RATE_FORM_VAT_ID') ?></div>
-						</td>
-						<td width="71%">
-						<?php echo $this->lists['taxrates']; ?><br />
-
-
-
-
-                                    <?php echo $this->taxRules ?>
-				</td>
-					</tr>
-					<tr class="row1">
-						<td width="21%"><div style="text-align: right; font-weight: bold;">
-
-
-						<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_TYPE') ?></div>
-						</td>
-						<td width="79%">
-						<?php echo $this->lists['discounts']; ?> <br />
-
-
-
-
-						<?php if(!empty($this->DBTaxRules)){
-							echo JText::_('COM_VIRTUEMART_RULES_EFFECTING').$this->DBTaxRules.'<br />';
-						}
-						if(!empty($this->DATaxRules)){
-							echo JText::_('COM_VIRTUEMART_RULES_EFFECTING').$this->DATaxRules;
-						}
-// 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
-				</td>
-					</tr>
-
-
-<?php	/*	The problem here is that we can only override one discount (there is only one field for it)
-			<tr class="row1">
-				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DBDISCOUNT_TYPE') ?>:</div>
-				</td>
-				<td width="79%">
-					<?php echo $this->lists['dbdiscounts']; echo $this->DBTaxRules;  ?>
-				</td>
-			</tr>
-			<tr class="row1">
-				<td width="21%" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DADISCOUNT_TYPE') ?>:</div>
-				</td>
-				<td width="79%">
-					<?php echo $this->lists['dadiscounts']; echo $this->DATaxRules ?>
-				</td>
-			</tr> */ ?>
-			<tr class="row0">
-				<td width="21%" >
-					<div style="text-align:right;font-weight:bold;">
-                                            <span class="hasTip" title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE_TIP'); ?>">
-					   <?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE') ?>
-				      </span>
-                                        </div>
-				</td>
-<?php /*				<td width="79%" >
-					<input type="text" size="10" name="desired_product_price" value="<?php echo $this->product_override_price ?>"/>
-					<?php
-
-					$checked = '';
-// 					if ($this->override) $checked = 'checked="checked"' ?>
-					<input type="checkbox" name="use_desired_price" value="1" />
-				</td>*/ ?>
-			</tr>
-		</table>
-			</fieldset>
-		</td>
+	</fieldset>
 	</tr>
+
 	<tr>
 		<td
 			width="100%"
@@ -426,7 +374,6 @@ $i=0;
 			colspan="2">
 			<fieldset>
 				<legend>
-
 				<?php echo JText::_('COM_VIRTUEMART_ORDER_PRINT_INTNOTES'); ?></legend>
 				<textarea
 					style="width: 100%;"
@@ -435,7 +382,6 @@ $i=0;
 					id="intnotes"
 					cols="35"
 					rows="6">
-
 					<?php echo $this->product->intnotes; ?></textarea>
 			</fieldset>
 		</td>

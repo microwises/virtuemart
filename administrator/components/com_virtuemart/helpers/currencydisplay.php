@@ -352,24 +352,31 @@ class CurrencyDisplay {
 	 * @param array the prices of the product
 	 * return a div for prices which is visible according to config and have all ids and class set
 	 */
-	public function createPriceDiv($name,$description,$product_price,$priceOnly=false,$switchSequel=false){
+	public function createPriceDiv($name,$description,$product_price,$priceOnly=false,$switchSequel=false,$quantity = 1.0){
 
 		// 		vmdebug('createPriceDiv '.$name,$product_price[$name]);
 		if(empty($product_price)) return '';
 
 		//The fallback, when this price is not configured
 		if(empty($this->_priceConfig[$name])){
+// 			echo 'Use override '.$name.'<br />';
 			$name = "salesPrice";
 			$price = $product_price;
 		} else {
-			$price = $product_price[$name];
+			$price = $product_price[$name] ;
+		}
+		if(!is_double($price)){
+// 			vmdebug('Price is not double? ',$price);
+			$price =  'Price is not double? '.$name.'<pre>'.print_r($price,1).'</pre>';
+		} else {
+			$price = $price * (float)$quantity;
 		}
 
 		//This could be easily extended by product specific settings
 		if(!empty($this->_priceConfig[$name][0])){
 			if(!empty($price)){
 				$vis = "block";
-				$priceFormatted = $this->priceDisplay($price,0,false,$this->_priceConfig[$name][1]);
+				$priceFormatted = $this->priceDisplay($price,0,false,$this->_priceConfig[$name][1] );
 			} else {
 				$priceFormatted = '';
 				$vis = "none";

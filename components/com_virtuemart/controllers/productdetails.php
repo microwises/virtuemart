@@ -165,12 +165,12 @@ class VirtueMartControllerProductdetails extends JController {
 	public function MailForm(){
 
 		if (JRequest::getCmd('task') == 'recommend' ) {
-			
+
 			/*OSP 2012-03-14 ...Track #375; allowed by setting */
 			if (VmConfig::get('recommend_unauth', 0) == '0')
 			{
 				$user = JFactory::getUser();
-				if (empty($user->id)) 
+				if (empty($user->id))
 				{
 					VmInfo(JText::_('YOU MUST LOGIN FIRST'));
 					return ;
@@ -243,11 +243,15 @@ class VirtueMartControllerProductdetails extends JController {
 		$product_model = VmModel::getModel('product');
 
 		$prices = $product_model->getPrice($virtuemart_product_id,$customPrices,$quantity);
+
 		$priceFormated = array();
 		if (!class_exists('CurrencyDisplay')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
 		foreach ( $prices as $name => $product_price  ){
-			$priceFormated[$name] = $currency->createPriceDiv($name,'',$prices,true);
+// 		echo 'Price is '.print_r($name,1).'<br />';
+			if($name != 'costPrice'){
+				$priceFormated[$name] = $currency->createPriceDiv($name,'',$prices,true);
+			}
 		}
 
 		// Get the document object.

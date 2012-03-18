@@ -527,6 +527,11 @@ class calculationHelper {
 			$this->couponHandler($cart->couponCode);
 		}
 
+// 		vmdebug('my cart prices before ',$this->_cartPrices);
+// 		foreach($this->_cartPrices as &$price){
+// 			$price = $this->roundInternal($price);
+// 		}
+// 		vmdebug('my cart prices after ',$this->_cartPrices);
 		return $this->_cartPrices;
 	}
 
@@ -575,7 +580,7 @@ class calculationHelper {
 		}
 
 		//$this->setCountryState($this->_cart);
-
+		$this->rules['Marge'] = $this->gatherEffectingRulesForProductPrice('Marge', $this->product_marge_id);
 		$this->rules['Tax'] = $this->gatherEffectingRulesForProductPrice('Tax', $this->product_tax_id);
 		$this->rules['DBTax'] = $this->gatherEffectingRulesForProductPrice('DBTax', $this->product_discount_id);
 		$this->rules['DATax'] = $this->gatherEffectingRulesForProductPrice('DATax', $this->product_discount_id);
@@ -588,8 +593,11 @@ class calculationHelper {
 		$withTax = $this->roundInternal($this->executeCalculation($this->rules['Tax'], $withDiscount));
 		$withTax = !empty($withTax) ? $withTax : $withDiscount;
 
-		$basePrice = $this->roundInternal($this->executeCalculation($this->rules['DBTax'], $withTax));
-		$basePrice = !empty($basePrice) ? $basePrice : $withTax;
+		$basePriceP = $this->roundInternal($this->executeCalculation($this->rules['DBTax'], $withTax));
+		$basePriceP = !empty($basePriceP) ? $basePriceP : $withTax;
+// 		$basePriceP = $basePrice;
+		$basePrice = $this->gatherEffectingRulesForProductPrice('Marge', $basePriceP);
+		$basePrice = !empty($basePrice) ? $basePrice : $basePriceP;
 
 		vmdebug('Desired $$basePrice '.$basePrice);
 		$productCurrency = CurrencyDisplay::getInstance();
