@@ -24,10 +24,7 @@ if ($display_style =="div") { ?>
 $product->virtuemart_category_id); ?>		<a href="<?php echo $url ?>"><?php echo $product->product_name ?></a>		<?php	echo '<div class="clear"></div>';
 
  if ($show_price) {
- // 		echo $currency->priceDisplay($product->prices['salesPrice']);
- if (!empty($product->prices['salesPrice'] ) ) echo $currency->createPriceDiv('salesPrice','',$product->prices,true);
- // 		if ($product->prices['salesPriceWithDiscount']>0) echo $currency->priceDisplay($product->prices['salesPriceWithDiscount']);
- if (!empty($product->prices['salesPriceWithDiscount']) ) echo $currency->createPriceDiv('salesPriceWithDiscount','',$product->prices,true);
+ 	if (!empty($product->prices['salesPrice'] ) ) echo $currency->createPriceDiv('salesPrice','',$product->prices,true);
  }
  if ($show_addtocart) echo mod_virtuemart_product::addtocart($product);
  ?>
@@ -62,7 +59,6 @@ $product->virtuemart_category_id); ?>		<a href="<?php echo $url ?>"><?php echo $
 
 		if ($show_price) {
 			echo $currency->createPriceDiv('salesPrice','',$product->prices,true);
-			if ($product->prices['salesPriceWithDiscount']>0) echo $currency->createPriceDiv('salesPriceWithDiscount','',$product->prices,true);
 		}
 		if ($show_addtocart) echo mod_virtuemart_product::addtocart($product);
 		?>

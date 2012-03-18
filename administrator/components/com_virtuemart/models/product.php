@@ -325,6 +325,9 @@ class VirtueMartModelProduct extends VmModel {
 				$orderBy = ' ORDER BY `product_price` ';
 				$joinPrice = true ;
 				break;
+			case 'created_on':
+				$orderBy = ' ORDER BY p.`created_on` ';
+				break;
 			default ;
 				if(!empty($this->filter_order)){
 					$orderBy = ' ORDER BY '.$this->_db->getEscaped($this->filter_order).' ';

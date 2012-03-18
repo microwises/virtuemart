@@ -113,7 +113,6 @@ defined('_JEXEC') or die('Restricted access');
 			echo ShopFunctions::writePriceConfigLine($this->config,'taxAmount','COM_VIRTUEMART_ADMIN_CFG_PRICE_TAX_AMOUNT');
 			echo ShopFunctions::writePriceConfigLine($this->config,'basePriceWithTax','COM_VIRTUEMART_ADMIN_CFG_PRICE_BASEPRICE_WTAX');
 			echo ShopFunctions::writePriceConfigLine($this->config,'salesPrice','COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE');
-			echo ShopFunctions::writePriceConfigLine($this->config,'salesPriceWithDiscount','COM_VIRTUEMART_ADMIN_CFG_PRICE_SALESPRICE_WD');
 			echo ShopFunctions::writePriceConfigLine($this->config,'discountAmount','COM_VIRTUEMART_ADMIN_CFG_PRICE_DISC_AMOUNT');
 			?>
 		</table>

@@ -320,10 +320,10 @@ class VirtueMartCart {
 			// trying to save some space in the session table
 			$product = new stdClass();
 			$product -> virtuemart_manufacturer_id = $tmpProduct -> virtuemart_manufacturer_id;
-			$product -> mf_name = $tmpProduct -> mf_name;
+// 			$product -> mf_name = $tmpProduct -> mf_name;
 			$product -> slug = $tmpProduct -> slug;
-			$product -> mf_desc = $tmpProduct -> mf_desc;
-			$product -> mf_url = $tmpProduct -> mf_url;
+// 			$product -> mf_desc = $tmpProduct -> mf_desc;
+// 			$product -> mf_url = $tmpProduct -> mf_url;
 			$product -> published = $tmpProduct -> published;
 
 			$product -> virtuemart_product_price_id = $tmpProduct -> virtuemart_product_price_id;
@@ -336,8 +336,8 @@ class VirtueMartCart {
 			$product -> product_tax_id = $tmpProduct -> product_tax_id;
 			$product -> product_discount_id = $tmpProduct -> product_discount_id;
 			$product -> product_currency = $tmpProduct -> product_currency;
-			$product -> product_price_vdate = $tmpProduct -> product_price_vdate;
-			$product -> product_price_edate = $tmpProduct -> product_price_edate;
+// 			$product -> product_price_vdate = $tmpProduct -> product_price_vdate;
+// 			$product -> product_price_edate = $tmpProduct -> product_price_edate;
 			$product -> virtuemart_vendor_id = $tmpProduct -> virtuemart_vendor_id;
 			$product -> product_parent_id = $tmpProduct -> product_parent_id;
 			$product -> product_sku = $tmpProduct -> product_sku;

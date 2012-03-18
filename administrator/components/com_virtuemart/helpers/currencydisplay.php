@@ -238,7 +238,7 @@ class CurrencyDisplay {
 
 		$priceFields = array('basePrice','variantModification','basePriceVariant',
 											'basePriceWithTax','discountedPriceWithoutTax',
-											'salesPriceWithDiscount','salesPrice','priceWithoutTax',
+											'salesPrice','priceWithoutTax',
 											'discountAmount','taxAmount');
 
 		if($show_prices==1){
@@ -360,8 +360,13 @@ class CurrencyDisplay {
 		//The fallback, when this price is not configured
 		if(empty($this->_priceConfig[$name])){
 // 			echo 'Use override '.$name.'<br />';
+			//This is a fallback because we remove the "salesPriceWithDiscount" ;
 			$name = "salesPrice";
-			$price = $product_price;
+			if(is_array($product_price)){
+				$price = $product_price[$name] ;
+			} else {
+				$price = $product_price;
+			}
 		} else {
 			$price = $product_price[$name] ;
 		}

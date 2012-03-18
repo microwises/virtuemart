@@ -92,7 +92,7 @@ class VirtueMartModelShopperGroup extends VmModel {
 
    	$myfields = array('basePrice','variantModification','basePriceVariant',
    										'basePriceWithTax','basePriceWithTax','discountedPriceWithoutTax',
-   										'salesPriceWithDiscount','salesPrice','priceWithoutTax',
+   										'salesPrice','priceWithoutTax',
    										'discountAmount','taxAmount');
 
    	$param ='show_prices='.$data['show_prices']."\n";

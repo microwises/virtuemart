@@ -227,6 +227,7 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 				$this->alterTable('#__session',$fields);
 			}
 
+			$this->portOverwritePrices();
 /*			$table = '#__virtuemart_customs';
 			$fieldname = 'field_type';
 			$fieldvalue = 'G';
@@ -247,10 +248,44 @@ if (!defined('_VM_SCRIPT_INCLUDED')) {
 
 			$this->checkAddDefaultShoppergroups();
 
+
+
 			if($loadVm) $this->displayFinished(true);
 
 			return true;
 		}
+
+		private function portOverwritePrices(){
+
+			$query = 'SHOW COLUMNS FROM `#__virtuemart_product_prices` ';
+			$this->_db->setQuery($query);
+			$columns = $this->_db->loadResultArray(0);
+
+			if(!in_array('override',$columns)){
+				$q = 'SELECT * FROM `#__virtuemart_product_prices` WHERE `override`="1" ';
+				$overwrites = $this->_db->loadAssocList();
+
+				if(!$overwrites){
+					$err = $this->_db->getErrorMsg();
+					vmError('portOverwritePrices ',$err);
+				} else {
+					$productModel = VmModel::getModel('products');
+					foreach($overwrites as $overwrite){
+
+// 						$product = $productModel->getProduct($overwrite['virtuemart_product_id']);
+						$overwrite['salesPrice'] = $overwrite['product_override_price'];
+						if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+						$calculator = calculationHelper::getInstance();
+						$data['product_price'] = $calculator->calculateCostprice($overwrite['virtuemart_product_id'],$overwrite);
+						// 			vmdebug('product_price '.$data['product_price']);
+					}
+					$data = $this->updateXrefAndChildTables($overwrite, 'product_prices');
+
+				}
+			}
+		}
+
+
 
 		/**
 		 * @author Max Milbers
