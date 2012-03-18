@@ -97,7 +97,7 @@ class VirtueMartModelCurrency extends VmModel {
 		// 		$this->_total = $this->_getListCount($this->_query) ;
 
 		// 		$object, $select, $joinedTables, $whereString = '', $groupBy = '', $orderBy = '', $filter_order_Dir = '', $nbrReturnProducts = false
-		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_currencies`',$whereString,'',$this->_getOrdering('currency_name'));
+		$this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_currencies`',$whereString,'',$this->_getOrdering());
 
 		return $this->_data;
 		// 		return $this->_data;

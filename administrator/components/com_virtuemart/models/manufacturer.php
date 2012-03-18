@@ -176,7 +176,7 @@ class VirtueMartModelManufacturer extends VmModel {
 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where).' ' ;
 
 
-		$ordering = $this->_getOrdering('mf_name');
+		$ordering = $this->_getOrdering();
 		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$whereString,$groupBy,$ordering );
 
 	}

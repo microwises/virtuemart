@@ -103,7 +103,7 @@ class VirtueMartModelCoupon extends VmModel {
 		$whereString = '';
 // 		if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_coupons`',$whereString,'',$this->_getOrdering('virtuemart_coupon_id'));
+		return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_coupons`',$whereString,'',$this->_getOrdering());
 
 	}
 }

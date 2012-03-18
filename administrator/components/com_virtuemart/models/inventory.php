@@ -65,7 +65,7 @@ class VirtueMartModelInventory extends VmModel {
 			ON `#__virtuemart_product_prices`.`virtuemart_shoppergroup_id` = `#__virtuemart_shoppergroups`.`virtuemart_shoppergroup_id`';
 
 
-		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$this->getInventoryFilter(),'',$this->_getOrdering('product_in_stock','asc'));
+		return $this->_data = $this->exeSortSearchListQuery(0,$select,$joinedTables,$this->getInventoryFilter(),'',$this->_getOrdering());
 
     }
 
@@ -91,7 +91,7 @@ class VirtueMartModelInventory extends VmModel {
      	}
      	$filters[] = '(`#__virtuemart_shoppergroups`.`default` = 1 OR `#__virtuemart_shoppergroups`.`default` is NULL)';
 
-     	return ' WHERE '.implode(' AND ', $filters).$this->_getOrdering('product_name');
+     	return ' WHERE '.implode(' AND ', $filters).$this->_getOrdering();
     }
 }
 // pure php no closing tag

@@ -70,7 +70,7 @@ class VirtueMartModelUsergroups extends VmModel {
     	$whereString = '';
     	if (count($where) > 0) $whereString = ' WHERE '.implode(' AND ', $where) ;
 
-    	return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_permgroups`',$whereString,'',$this->_getOrdering('group_name'));
+    	return $this->_data = $this->exeSortSearchListQuery(0,'*',' FROM `#__virtuemart_permgroups`',$whereString,'',$this->_getOrdering());
 
     }
 

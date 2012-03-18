@@ -326,11 +326,11 @@ class VirtueMartModelProduct extends VmModel {
 				$joinPrice = true ;
 				break;
 			default ;
-			if(!empty($this->filter_order)){
-				$orderBy = ' ORDER BY '.$this->_db->getEscaped($this->filter_order).' ';
-			} else {
-				$this->filter_order_Dir = '';
-			}
+				if(!empty($this->filter_order)){
+					$orderBy = ' ORDER BY '.$this->_db->getEscaped($this->filter_order).' ';
+				} else {
+					$this->filter_order_Dir = '';
+				}
 			break;
 		}
 
@@ -353,8 +353,8 @@ class VirtueMartModelProduct extends VmModel {
 					$orderBy = ' ORDER BY RAND() ';//LIMIT 0, '.(int)$nbrReturnProducts ; //TODO set limit LIMIT 0, '.(int)$nbrReturnProducts;
 					break;
 				case 'topten';
-				$orderBy = ' ORDER BY product_sales ';//LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
-				$this->filter_order_Dir = 'DESC';
+					$orderBy = ' ORDER BY product_sales ';//LIMIT 0, '.(int)$nbrReturnProducts;  //TODO set limitLIMIT 0, '.(int)$nbrReturnProducts;
+					$this->filter_order_Dir = 'DESC';
 			}
 			// 			$joinCategory 	= false ; //creates error
 			// 			$joinMf 		= false ;	//creates error
@@ -1028,6 +1028,17 @@ class VirtueMartModelProduct extends VmModel {
 			$data = $this->updateXrefAndChildTables($data, 'product_manufacturers');
 		}
 
+// 		vmdebug('use_desired_price '.$this->_id.' '.$data['use_desired_price']);
+		if(isset($data['use_desired_price']) and $data['use_desired_price'] == "1"){
+
+			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+			$calculator = calculationHelper::getInstance();
+			$data['product_price'] = $calculator->calculateCostprice($this->_id,$data);
+			unset($data['use_desired_price']);
+			// 			vmdebug('product_price '.$data['product_price']);
+		}
+		$data = $this->updateXrefAndChildTables($data, 'product_prices');
+
 		if(!empty($data['childs'])){
 			foreach($data['childs'] as $productId => $child){
 				$child['virtuemart_product_id'] = $productId;
@@ -1042,15 +1053,7 @@ class VirtueMartModelProduct extends VmModel {
 			}
 		}
 
-// 		vmdebug('use_desired_price '.$data['use_desired_price']);
-		if(isset($data['use_desired_price']) and $data['use_desired_price'] == "1"){
 
-			if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
-			$calculator = calculationHelper::getInstance();
-			$data['product_price'] = $calculator->calculateCostprice($this->_id,$data);
-// 			vmdebug('product_price '.$data['product_price']);
-		}
-		$data = $this->updateXrefAndChildTables($data, 'product_prices');
 
 		// Process the images
 		$mediaModel = VmModel::getModel('Media');

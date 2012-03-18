@@ -40,7 +40,7 @@ class VirtueMartModelMedia extends VmModel {
 		parent::__construct('virtuemart_media_id');
 		$this->setMainTable('medias');
 		$this->addvalidOrderingFieldName(array('ordering'));
-		$this->_selectedOrdering = 'ordering';
+		$this->_selectedOrdering = 'created_on';
 
 	}
 
@@ -160,12 +160,14 @@ class VirtueMartModelMedia extends VmModel {
 		$joinedTables = '';
 		$whereItems= array();
 		$groupBy ='';
+		$orderByTable = '';
 
 		if(!empty($virtuemart_product_id)){
 			$mainTable = '`#__virtuemart_product_medias`';
 			$selectFields[] = ' `#__virtuemart_medias`.`virtuemart_media_id` as virtuemart_media_id ';
 			$joinTables[] = ' LEFT JOIN `#__virtuemart_medias` ON `#__virtuemart_medias`.`virtuemart_media_id`=`#__virtuemart_product_medias`.`virtuemart_media_id` and `virtuemart_product_id` = "'.$virtuemart_product_id.'"';
 			$whereItems[] = '`virtuemart_product_id` = "'.$virtuemart_product_id.'"';
+			$orderByTable = '`#__virtuemart_product_medias`.';
 		}
 
 		else if(!empty($cat_id)){
@@ -173,6 +175,7 @@ class VirtueMartModelMedia extends VmModel {
 			$selectFields[] = ' `#__virtuemart_medias`.`virtuemart_media_id` as virtuemart_media_id';
 			$joinTables[] = ' LEFT JOIN `#__virtuemart_medias` ON `#__virtuemart_medias`.`virtuemart_media_id`=`#__virtuemart_category_medias`.`virtuemart_media_id` and `virtuemart_category_id` = "'.$cat_id.'"';
 			$whereItems[] = '`virtuemart_category_id` = "'.$cat_id.'"';
+			$orderByTable = '`#__virtuemart_category_medias`.';
 		}
 
 		else {
@@ -212,20 +215,8 @@ class VirtueMartModelMedia extends VmModel {
 			$whereString = ' ';
 		}
 
-		$orderField = '';
-		$orderBy = '';
-// 		if ( JRequest::getCmd('view') == 'media') {
-			$orderBy = $this->_getOrdering();
-// 		}
-//		$orderBy = $this->_getOrdering($orderField,'asc');
-//		$orderBy = $this->_getOrdering($orderField,'asc');
-//		if ( 'product_quantity'==JRequest::getWord('filter_order')) {
-//			$orderBy = '';
-//		}
 
-		if(!empty($orderField)){
-			$selectFields[] = $orderField;
-		}
+		$orderBy = $this->_getOrdering($orderByTable);#
 
 		if(count($selectFields)>0){
 
@@ -253,8 +244,6 @@ class VirtueMartModelMedia extends VmModel {
 
 		$this->_data = $this->createMediaByIds($this->_data);
 		return $this->_data;
-
-
 
 	}
 
@@ -369,6 +358,7 @@ class VirtueMartModelMedia extends VmModel {
 
 				if(empty($object->virtuemart_media_id)) $virtuemart_media_id = null; else $virtuemart_media_id = $object->virtuemart_media_id;
 				$object->images = $this->createMediaByIds($virtuemart_media_id,$type,$mime,$limit);
+// 				vmdebug('$object->images',$object->images);
 			}
 		}
 	}

@@ -49,7 +49,7 @@ class calculationHelper {
 	public $vendorCurrency = 0;
 	private $exchangeRateVendor = 0;
 	private $exchangeRateShopper = 0;
-	private $_internalDigits = 5;
+	private $_internalDigits = 6;
 	private $_revert = false;
 	static $_instance;
 
@@ -566,7 +566,7 @@ class calculationHelper {
 		$this->_db->setQuery('SELECT `virtuemart_category_id` FROM #__virtuemart_product_categories  WHERE `virtuemart_product_id`="' . $productId . '" ');
 		$this->_cats = $this->_db->loadResultArray();
 
-		vmTime('getProductPrices no object given query time','getProductCalcs');
+// 		vmTime('getProductPrices no object given query time','getProductCalcs');
 
 
 		if(VmConfig::get('multix','none')!='none' and empty($this->vendorCurrency )){

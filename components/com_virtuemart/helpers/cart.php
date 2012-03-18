@@ -243,7 +243,7 @@ class VirtueMartCart {
 		}
 
 // 		$pr = serialize($sessionCart->pricesUnformatted);
-		vmdebug('$sessionCart',$sessionCart);
+// 		vmdebug('$sessionCart',$sessionCart);
 		$session->set('vmcart', serialize($sessionCart),'vm');
 
 	}

@@ -27,7 +27,7 @@ $i=0;
 		<td valign="top">
 			<fieldset>
 				<legend>
-				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_INFORMATION'); ?></legend>
+				<?php echo JText::_('COM_VIRTUEMART_PRODUCT_INFORMATION'); echo ' id: '.$this->product->virtuemart_product_id ?></legend>
 				<table class="adminform">
 					<tr class="row<?php echo $i?>">
 						<td width="21%"><div style="text-align: right; font-weight: bold;">

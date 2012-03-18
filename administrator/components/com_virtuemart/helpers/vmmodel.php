@@ -192,10 +192,10 @@ class VmModel extends JModel {
 	}
 
 
-	function _getOrdering() {
+	function _getOrdering($preTable='') {
 		if(empty($this->_selectedOrdering)) vmTrace('empty _getOrdering');
 		if(empty($this->_selectedOrderingDir)) vmTrace('empty _selectedOrderingDir');
-		return ' ORDER BY '.$this->_selectedOrdering.' '.$this->_selectedOrderingDir ;
+		return ' ORDER BY '.$preTable.$this->_selectedOrdering.' '.$this->_selectedOrderingDir ;
 	}
 
 
@@ -503,7 +503,7 @@ class VmModel extends JModel {
 			$table->load( (int)$id );
 			if (!$table->toggle($field, $val)) {
 				//			if (!$table->store()) {
-				JError::raiseError(500, get_class( $this ).'::toggle '.$table->getError() );
+				vmError(get_class( $this ).'::toggle '.$table->getError() .' '.$id);
 				$ok = false;
 			}
 		}
@@ -587,9 +587,9 @@ class VmModel extends JModel {
 
 	public function addImages($obj,$limit=0){
 
-		if(empty($this->mediaModel))$this->mediaModel = VmModel::getModel('Media');
+		$mediaModel = VmModel::getModel('Media');
 
-		$this->mediaModel->attachImages($obj,$this->_maintablename,'image',$limit);
+		$mediaModel->attachImages($obj,$this->_maintablename,'image',$limit);
 
 	}
 
