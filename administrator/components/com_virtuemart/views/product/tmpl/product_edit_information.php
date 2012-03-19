@@ -247,18 +247,7 @@ $i=0;
 // 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
 					</td>
 				</tr>
-
-				<tr class="row0">
-					<td width="21%">
-						<div style="text-align: right; font-weight: bold;">
-							<span
-								class="hasTip"
-								title="<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE_TIP'); ?>">
-								<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNTED_PRICE') ?>
-							</span>
-						</div>
-					</td>
-				</tr>
+ 
 			</table>
 		</fieldset>
 		</td>
