@@ -1450,7 +1450,11 @@ class VirtueMartCart {
 
 			$i++;
 		}
-		$this->data->billTotal = $this->pricesUnformatted['billTotal'];
+		//OSP when prices removed needed to format billTotal for AJAX
+		if (!class_exists('CurrencyDisplay'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+		$currency = CurrencyDisplay::getInstance();
+		$this->data->billTotal = $currency->priceDisplay( $this->pricesUnformatted['billTotal'] );
 		$this->data->dataValidated = $this->_dataValidated ;
 		return $this->data ;
 	}
