@@ -81,6 +81,7 @@ class VirtueMartModelProduct extends VmModel {
 	var $keyword 							= "0";
 	var $product_parent_id 				= false;
 	var $virtuemart_manufacturer_id	= false;
+	var $virtuemart_category_id  = 0;
 	var $search_type						= '';
 	var $searchcustoms					= false;
 	var $searchplugin						= 0;
@@ -802,19 +803,45 @@ class VirtueMartModelProduct extends VmModel {
 			$front = false;
 		}
 
-		if ( $filterCategory=== true) {
-		    if ($category_id) {
-			$virtuemart_category_id = $category_id;
-		    } else {
-			$virtuemart_category_id = JRequest::getInt('virtuemart_category_id', false );
-		    }
-		} else {
-		    $virtuemart_category_id = false;
+		$this->setFilter();
+		if ( $filterCategory=== true) 
+		{
+			if ($category_id) 
+			{
+				$this->virtuemart_category_id = $category_id;
+			}
+		} 
+		else 
+		{
+			$this->virtuemart_category_id = false;
 		}
-		$ids = $this->sortSearchListQuery($onlyPublished, $virtuemart_category_id, $group, $nbrReturnProducts);
+		$ids = $this->sortSearchListQuery($onlyPublished, $this->virtuemart_category_id, $group, $nbrReturnProducts);
 
 		$products = $this->getProducts($ids, $front, $withCalc, $onlyPublished,$single);
 		return $products;
+	}
+
+	/**
+	 * overriden getFilter to persist filters
+	 *
+	 * @author OSP
+	 */	
+	public function setFilter()
+	{
+		$app = JFactory::getApplication();
+		if( !$app->isSite() )
+		{ //persisted filter only in admin
+			$view = JRequest::getWord('view');
+			$mainframe = JFactory::getApplication();
+			$this->virtuemart_category_id = $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.filter.virtuemart_category_id', 'virtuemart_category_id',  0, 'int');
+			$this->setState('virtuemart_category_id', $this->virtuemart_category_id );
+			$this->virtuemart_manufacturer_id =  $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.filter.virtuemart_manufacturer_id', 'virtuemart_manufacturer_id',  0, 'int');
+			$this->setState('virtuemart_manufacturer_id', $this->virtuemart_manufacturer_id);
+		}
+		else
+		{
+			$this->virtuemart_category_id = JRequest::getInt('virtuemart_category_id', false );
+		}
 	}
 
 	/**

@@ -44,6 +44,13 @@ class VirtuemartViewProduct extends VmView {
 
 		//$category_model = VmModel::getModel('category');
 		$model = VmModel::getModel();
+		
+		// OSP Load the manufacturers we use it almost everywhere
+		$mf_model = VmModel::getModel('manufacturer'); 
+// 				$config = VmConfig::loadConfig(); //why that
+		$manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
+		$this->assignRef('manufacturers',	$manufacturers);
+
 		// Handle any publish/unpublish
 		switch ($task) {
 			case 'add':
@@ -146,10 +153,6 @@ class VirtuemartViewProduct extends VmView {
 				$currency = $currency_model->getCurrency($vendor->vendor_currency);
 				$this->assignRef('vendor_currency', $currency->currency_symbol);
 
-				/* Load the manufacturers*/
-// 				$config = VmConfig::loadConfig();
-				$mf_model = VmModel::getModel('manufacturer');
-				$manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
 
 				if(count($manufacturers)>0 ){
 					$lists['manufacturers'] = JHTML::_('select.genericlist', $manufacturers, 'virtuemart_manufacturer_id', 'class="inputbox"', 'value', 'text', $product->virtuemart_manufacturer_id );
@@ -213,7 +216,7 @@ class VirtuemartViewProduct extends VmView {
 
 				$this->assignRef('product', $product);
 				$this->assignRef('currencies', $currencies);
-				$this->assignRef('manufacturers', $manufacturers);
+//no need moved to top $this->assignRef('manufacturers', $manufacturers);
 
 				$this->assignRef('related_products', $related_products);
 
@@ -268,7 +271,7 @@ class VirtuemartViewProduct extends VmView {
 			$this->assignRef('pagination', $pagination);
 
 			/* Get the category tree */
-			$categoryId = JRequest::getInt('virtuemart_category_id');
+			$categoryId = $model->virtuemart_category_id; //OSP switched to filter in model, was JRequest::getInt('virtuemart_category_id');
 			$category_tree = ShopFunctions::categoryListTree(array($categoryId));
 			$this->assignRef('category_tree', $category_tree);
 
@@ -324,6 +327,8 @@ class VirtuemartViewProduct extends VmView {
 
 
 			$this->assignRef('productlist', $productlist);
+			$this->assignRef('virtuemart_category_id', $categoryId);
+			$this->assignRef('model', $model);
 
 			break;
 		}
