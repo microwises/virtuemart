@@ -1411,6 +1411,11 @@ class VirtueMartCart {
 		$this->data->products = array();
 		$this->data->totalProduct = 0;
 		$i=0;
+		//OSP when prices removed needed to format billTotal for AJAX
+		if (!class_exists('CurrencyDisplay'))
+			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
+		$currency = CurrencyDisplay::getInstance();
+		
 		foreach ($this->products as $priceKey=>$product){
 
 			//$vars["zone_qty"] += $product["quantity"];
@@ -1437,7 +1442,9 @@ class VirtueMartCart {
 
 			// product Price total for ajax cart
 // 			$this->data->products[$i]['prices'] = $this->prices[$priceKey]['subtotal_with_tax'];
-			$this->data->products[$i]['prices'] = $this->pricesUnformatted[$priceKey]['subtotal_with_tax'];
+			$this->data->products[$i]['pricesUnformatted'] = $this->pricesUnformatted[$priceKey]['subtotal_with_tax'];
+			$this->data->products[$i]['prices'] = $currency->priceDisplay( $this->pricesUnformatted[$priceKey]['subtotal_with_tax'] );
+				
 			// other possible option to use for display
 			$this->data->products[$i]['subtotal'] = $this->pricesUnformatted[$priceKey]['subtotal'];
 			$this->data->products[$i]['subtotal_tax_amount'] = $this->pricesUnformatted[$priceKey]['subtotal_tax_amount'];
@@ -1450,10 +1457,6 @@ class VirtueMartCart {
 
 			$i++;
 		}
-		//OSP when prices removed needed to format billTotal for AJAX
-		if (!class_exists('CurrencyDisplay'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
-		$currency = CurrencyDisplay::getInstance();
 		$this->data->billTotal = $currency->priceDisplay( $this->pricesUnformatted['billTotal'] );
 		$this->data->dataValidated = $this->_dataValidated ;
 		return $this->data ;
