@@ -73,6 +73,7 @@ class VirtueMartModelCategory extends VmModel {
 		}
 
 		$this->setState('limitstart', $limitStart);
+		$this->setState('com_virtuemart.'.$view.$cateid.'.limitstart',$limitStart);
 
 		$this->_limitStart = $limitStart;
 		$this->_limit = $limit;

@@ -163,7 +163,7 @@ if (!empty($this->products)) {
 					<?php echo $this->orderByList['manufacturer']; ?>
 				</div>
 				<div class="width30 floatright display-number"><?php echo $this->vmPagination->getResultsCounter();?><br/><?php echo $this->vmPagination->getLimitBox(); ?></div>
-				<div id="top-pagination">
+				<div class="vm-pagination">
 					<?php echo $this->vmPagination->getPagesLinks(); ?>
 					<span style="float:right"><?php echo $this->vmPagination->getPagesCounter(); ?></span>
 				</div>
@@ -307,7 +307,7 @@ if ($iBrowseCol != 1) { ?>
 }
 ?>
 <!-- /div removed valerie -->
-	<div id="bottom-pagination"><?php echo $this->vmPagination->getPagesLinks(); ?><span style="float:right"><?php echo $this->vmPagination->getPagesCounter(); ?></span></div>
+	<div class="vm-pagination"><?php echo $this->vmPagination->getPagesLinks(); ?><span style="float:right"><?php echo $this->vmPagination->getPagesCounter(); ?></span></div>
 <!-- /div removed valerie -->
 <?php } elseif ($this->search !==null ) echo JText::_('COM_VIRTUEMART_NO_RESULT').($this->keyword? ' : ('. $this->keyword. ')' : '')
 ?>
