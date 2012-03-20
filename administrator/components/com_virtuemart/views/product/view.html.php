@@ -44,12 +44,6 @@ class VirtuemartViewProduct extends VmView {
 
 		//$category_model = VmModel::getModel('category');
 		$model = VmModel::getModel();
-		
-		// OSP Load the manufacturers we use it almost everywhere
-		$mf_model = VmModel::getModel('manufacturer'); 
-// 				$config = VmConfig::loadConfig(); //why that
-		$manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
-		$this->assignRef('manufacturers',	$manufacturers);
 
 		// Handle any publish/unpublish
 		switch ($task) {
@@ -66,6 +60,10 @@ class VirtuemartViewProduct extends VmView {
 
 				$this->assignRef('product_childs', $product_childs);
 				$product_parent= $model->getProductParent($product->product_parent_id);
+
+				$mf_model = VmModel::getModel('manufacturer');
+				$manufacturers = $mf_model->getManufacturerDropdown($product->virtuemart_manufacturer_id);
+				$this->assignRef('manufacturers',	$manufacturers);
 
 				// Get the category tree
 				if (isset($product->categories)) $category_tree = ShopFunctions::categoryListTree($product->categories);
@@ -168,8 +166,6 @@ class VirtuemartViewProduct extends VmView {
 				/* Load waiting list */
 				if ($product->virtuemart_product_id) {
 					//$waitinglist = $this->get('waitingusers', 'waitinglist');
-
-
 					$waitinglistmodel = VmModel::getModel('waitinglist');
 					$waitinglist = $waitinglistmodel->getWaitingusers($product->virtuemart_product_id);
 					$this->assignRef('waitinglist', $waitinglist);
@@ -243,8 +239,6 @@ class VirtuemartViewProduct extends VmView {
 				$this->SetViewTitle('PRODUCT',$text);
 
 				$this->addStandardEditViewCommands ($product->virtuemart_product_id);
-
-
 				break;
 
 			default:
@@ -303,6 +297,10 @@ class VirtuemartViewProduct extends VmView {
 				$product->categoriesList = shopfunctions::renderGuiList('virtuemart_category_id','#__virtuemart_product_categories','virtuemart_product_id',$product->virtuemart_product_id,'category_name','#__virtuemart_categories','virtuemart_category_id','category');
 
 			}
+
+			$mf_model = VmModel::getModel('manufacturer');
+			$manufacturers = $mf_model->getManufacturerDropdown();
+			$this->assignRef('manufacturers',	$manufacturers);
 
 			/* add Search filter in lists*/
 			/* Search type */
