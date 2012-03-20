@@ -106,7 +106,7 @@ class calculationHelper {
 			self::$_instance = new calculationHelper();
 		} else {
 			$jnow = JFactory::getDate();
-			$this->_now = $jnow->toMySQL();
+			self::$_instance->_now = $jnow->toMySQL();
 		}
 		return self::$_instance;
 	}

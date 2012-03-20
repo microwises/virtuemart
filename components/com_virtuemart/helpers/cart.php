@@ -88,34 +88,38 @@ class VirtueMartCart {
 			$cartSession = $session->get('vmcart', 0, 'vm');
 
 			if (!empty($cartSession)) {
-				$cartData = unserialize( $cartSession );
+				$sessionCart = unserialize( $cartSession );
 
 				self::$_cart = new VirtueMartCart;
 
-				self::$_cart->products = $cartData->products;
-				self::$_cart->vendorId	 							= $cartData->vendorId;
-				self::$_cart->lastVisitedCategoryId	 			= $cartData->lastVisitedCategoryId;
-				self::$_cart->virtuemart_shipmentmethod_id	= $cartData->virtuemart_shipmentmethod_id;
-				self::$_cart->virtuemart_paymentmethod_id 	= $cartData->virtuemart_paymentmethod_id;
-				self::$_cart->automaticSelectedShipment 		= $cartData->automaticSelectedShipment;
-				self::$_cart->automaticSelectedPayment 		= $cartData->automaticSelectedPayment;
-				self::$_cart->BT 										= $cartData->BT;
-				self::$_cart->ST 										= $cartData->ST;
-				self::$_cart->tosAccepted 							= $cartData->tosAccepted;
-				self::$_cart->customer_comment 					= base64_decode($cartData->customer_comment);
-				self::$_cart->couponCode 							= $cartData->couponCode;
-// 				self::$_cart->cartData 								= $cartData->cartData;
-				self::$_cart->lists 									= $cartData->lists;
-				// 				self::$_cart->user 									= $cartData->user;
-// 				self::$_cart->prices 								= $cartData->prices;
-				self::$_cart->pricesUnformatted					= $cartData->pricesUnformatted;
-				self::$_cart->pricesCurrency						= $cartData->pricesCurrency;
-				self::$_cart->paymentCurrency						= $cartData->paymentCurrency;
+				self::$_cart->products = $sessionCart->products;
+				self::$_cart->vendorId	 							= $sessionCart->vendorId;
+				self::$_cart->lastVisitedCategoryId	 			= $sessionCart->lastVisitedCategoryId;
+				self::$_cart->virtuemart_shipmentmethod_id	= $sessionCart->virtuemart_shipmentmethod_id;
+				self::$_cart->virtuemart_paymentmethod_id 	= $sessionCart->virtuemart_paymentmethod_id;
+				self::$_cart->automaticSelectedShipment 		= $sessionCart->automaticSelectedShipment;
+				self::$_cart->automaticSelectedPayment 		= $sessionCart->automaticSelectedPayment;
+				self::$_cart->BT 										= $sessionCart->BT;
+				self::$_cart->ST 										= $sessionCart->ST;
+				self::$_cart->tosAccepted 							= $sessionCart->tosAccepted;
+				self::$_cart->customer_comment 					= base64_decode($sessionCart->customer_comment);
+				self::$_cart->couponCode 							= $sessionCart->couponCode;
+				self::$_cart->cartData 								= $sessionCart->cartData;
 
-				self::$_cart->_inCheckOut 							= $cartData->_inCheckOut;
-				self::$_cart->_dataValidated						= $cartData->_dataValidated;
-				self::$_cart->_confirmDone							= $cartData->_confirmDone;
-				self::$_cart->STsameAsBT							= $cartData->STsameAsBT;
+// 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+// 				$calculator = calculationHelper::getInstance();
+// 				self::$_cart->cartData								= $calculator->getCartData();
+				self::$_cart->lists 									= $sessionCart->lists;
+				// 				self::$_cart->user 									= $sessionCart->user;
+// 				self::$_cart->prices 								= $sessionCart->prices;
+				self::$_cart->pricesUnformatted					= $sessionCart->pricesUnformatted;
+				self::$_cart->pricesCurrency						= $sessionCart->pricesCurrency;
+				self::$_cart->paymentCurrency						= $sessionCart->paymentCurrency;
+
+				self::$_cart->_inCheckOut 							= $sessionCart->_inCheckOut;
+				self::$_cart->_dataValidated						= $sessionCart->_dataValidated;
+				self::$_cart->_confirmDone							= $sessionCart->_confirmDone;
+				self::$_cart->STsameAsBT							= $sessionCart->STsameAsBT;
 
 			}
 
@@ -216,7 +220,7 @@ class VirtueMartCart {
 		$sessionCart->tosAccepted 							= $this->tosAccepted;
 		$sessionCart->customer_comment 					= base64_encode($this->customer_comment);
 		$sessionCart->couponCode 							= $this->couponCode;
-// 		$sessionCart->cartData 								= $this->cartData;
+		$sessionCart->cartData 								= $this->cartData;
 		$sessionCart->lists 									= $this->lists;
 		// 		$sessionCart->user 									= $this->user;
 // 		$sessionCart->prices 								= $this->prices;
@@ -1064,7 +1068,6 @@ class VirtueMartCart {
 		JPluginHelper::importPlugin('vmpayment');
 		$dispatcher = JDispatcher::getInstance();
 		$returnValues = $dispatcher->trigger('plgVmgetPaymentCurrency', array( $this->virtuemart_paymentmethod_id, &$this->paymentCurrency));
-
 		$cartData = $calculator->getCartData();
 
 // 		$this->setCartIntoSession();
@@ -1415,7 +1418,7 @@ class VirtueMartCart {
 		if (!class_exists('CurrencyDisplay'))
 			require(JPATH_VM_ADMINISTRATOR . DS . 'helpers' . DS . 'currencydisplay.php');
 		$currency = CurrencyDisplay::getInstance();
-		
+
 		foreach ($this->products as $priceKey=>$product){
 
 			//$vars["zone_qty"] += $product["quantity"];
@@ -1444,7 +1447,7 @@ class VirtueMartCart {
 // 			$this->data->products[$i]['prices'] = $this->prices[$priceKey]['subtotal_with_tax'];
 			$this->data->products[$i]['pricesUnformatted'] = $this->pricesUnformatted[$priceKey]['subtotal_with_tax'];
 			$this->data->products[$i]['prices'] = $currency->priceDisplay( $this->pricesUnformatted[$priceKey]['subtotal_with_tax'] );
-				
+
 			// other possible option to use for display
 			$this->data->products[$i]['subtotal'] = $this->pricesUnformatted[$priceKey]['subtotal'];
 			$this->data->products[$i]['subtotal_tax_amount'] = $this->pricesUnformatted[$priceKey]['subtotal_tax_amount'];

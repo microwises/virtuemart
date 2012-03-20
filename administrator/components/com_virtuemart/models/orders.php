@@ -293,7 +293,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 			$orderdatacopy = $orderdata;
 			$data = array_merge($dataT,(array)$orderdatacopy);
 // 			$data['order_status'] = $orderdata->orderstatus;
-		vmdebug('updateSingleItem ',$dataT,$orderdata,$data);
+// 		vmdebug('updateSingleItem ',$dataT,$orderdata,$data);
 			$table->bindChecknStore($data);
 		// Update the order item history
 			//$this->_updateOrderItemHist($id, $order_status, $customer_notified, $comment);
@@ -885,7 +885,14 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	{
 		$orderCalcRules = $this->getTable('order_calc_rules');
 		$calculation_kinds=array('DBTaxRulesBill', 'taxRulesBill', 'DATaxRulesBill');
+	//	vmdebug('_createOrderCalcRules',$_cart );
 		foreach($calculation_kinds as $calculation_kind) {
+// 			if(empty($_cart->cartData)){
+// 				vmError('Cart data was empty, why?');
+// 				if(!class_exists('calculationHelper')) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'calculationh.php');
+// 				$calculator = calculationHelper::getInstance();
+// 				$_cart->cartData = $calculator->getCartData();
+// 			}
 		    foreach($_cart->cartData[$calculation_kind] as $rule){
 			     $orderCalcRules->virtuemart_order_calc_rule_id= null;
 			     $orderCalcRules->calc_rule_name= $rule['calc_name'];
@@ -1037,7 +1044,7 @@ $q = 'SELECT virtuemart_order_item_id, product_quantity, order_item_name,
 	 */
 	private function notifyCustomer($virtuemart_order_id, $newOrderData = 0 ) {
 
-		vmdebug('notifyCustomer', $newOrderData);
+// 		vmdebug('notifyCustomer', $newOrderData);
 		if (isset($newOrderData['customer_notified']) && $newOrderData['customer_notified']==0) {
 		    return true;;
 		}

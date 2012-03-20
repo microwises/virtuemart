@@ -1010,7 +1010,9 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 // 				vmdebug('my data in product store ',$data);
-
+		if(isset($data['intnotes'])){
+			$data['intnotes'] = trim($data['intnotes']);
+		}
 		// Setup some place holders
 		$product_data = $this->getTable('products');
 

@@ -163,7 +163,7 @@ if (!empty($this->products)) {
 					<?php echo $this->orderByList['manufacturer']; ?>
 				</div>
 				<div class="width30 floatright display-number"><?php echo $this->vmPagination->getResultsCounter();?><br/><?php echo $this->vmPagination->getLimitBox(); ?></div>
-				<div id="bottom-pagination">
+				<div id="top-pagination">
 					<?php echo $this->vmPagination->getPagesLinks(); ?>
 					<span style="float:right"><?php echo $this->vmPagination->getPagesCounter(); ?></span>
 				</div>

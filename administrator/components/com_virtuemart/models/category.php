@@ -57,13 +57,14 @@ class VirtueMartModelCategory extends VmModel {
 		$view = JRequest::getWord('view');
 
 		$cateid = JRequest::getInt('virtuemart_category_id',0);
-		$limit = $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.'.limit', 'limit',  VmConfig::get('list_limit',20), 'int');
+		$limit = $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.$cateid.'.limit', 'limit',  VmConfig::get('list_limit',20), 'int');
 		$this->setState('limit', $limit);
-		if(JVM_VERSION === 2) {
-			$limitStart = $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.$cateid.'.limitstart', 'limitstart',  0, 'int');
-		} else {
-			$limitStart = JRequest::getInt('limitstart',0);
-		}
+// 		if(JVM_VERSION === 2) {
+			$limitStart = $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.$cateid.'.limitstart', 'limitstart',  JRequest::getInt('limitstart',0), 'int');
+// 		} else {
+// 			$limitStart = $mainframe->getUserStateFromRequest('com_virtuemart.'.$view.$cateid.'.limitstart', 'limitstart',  JRequest::getInt('limitstart',0), 'int');
+// 			$limitStart = JRequest::getInt('limitstart',0);
+// 		}
 
 		//There is a strange error in the frontend giving back 9 instead of 10, or 24 instead of 25
 		//This functions assures that the steps of limitstart fit with the limit
