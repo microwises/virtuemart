@@ -696,7 +696,7 @@ class VirtueMartModelUser extends VmModel {
 	 * @author Oscar van Eijk
 	 * return boolean
 	 */
-	public function saveUserData(&$data){
+	public function saveUserData(&$data,$trigger=true){
 
 		if(empty($this->_id)){
 			echo 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones';
@@ -741,13 +741,16 @@ class VirtueMartModelUser extends VmModel {
 		}
 
 
-		JPluginHelper::importPlugin('vmshopper');
-		$dispatcher = JDispatcher::getInstance();
-		//Todo to adjust to new pattern, using &
-		$plg_datas = $dispatcher->trigger('plgVmOnUserStore',$data);
-		foreach($plg_datas as $plg_data){
-			// 			$data = array_merge($plg_data,$data);
+		if($trigger){
+			JPluginHelper::importPlugin('vmshopper');
+			$dispatcher = JDispatcher::getInstance();
+			//Todo to adjust to new pattern, using &
+			$plg_datas = $dispatcher->trigger('plgVmOnUserStore',$data);
+			foreach($plg_datas as $plg_data){
+				// 			$data = array_merge($plg_data,$data);
+			}
 		}
+
 
 		$usertable -> bindChecknStore($data);
 		$errors = $usertable->getErrors();
@@ -762,7 +765,7 @@ class VirtueMartModelUser extends VmModel {
 			$this->_defaultShopperGroup = $shoppergroupmodel->getDefault(0);
 		}
 
-		if($data['virtuemart_shoppergroup_id']==$this->_defaultShopperGroup->virtuemart_shoppergroup_id){
+		if(empty($data['virtuemart_shoppergroup_id']) or $data['virtuemart_shoppergroup_id']==$this->_defaultShopperGroup->virtuemart_shoppergroup_id){
 			$data['virtuemart_shoppergroup_id'] = array();
 		}
 
@@ -779,10 +782,13 @@ class VirtueMartModelUser extends VmModel {
 			}
 		}
 
-		$plg_datas = $dispatcher->trigger('plgVmAfterUserStore',$data);
-		foreach($plg_datas as $plg_data){
-			$data = array_merge($plg_data);
+		if($trigger){
+			$plg_datas = $dispatcher->trigger('plgVmAfterUserStore',$data);
+			foreach($plg_datas as $plg_data){
+				$data = array_merge($plg_data);
+			}
 		}
+
 
 		return $noError;
 	}
@@ -836,7 +842,6 @@ class VirtueMartModelUser extends VmModel {
 
 				$userinfo->load($data['virtuemart_userinfo_id']);
 
-
 				if($userinfo->virtuemart_user_id!=$user->id){
 					vmError('Hacking attempt as admin?','Hacking attempt');
 					return false;
@@ -848,7 +853,7 @@ class VirtueMartModelUser extends VmModel {
 			$userfielddata = self::_prepareUserFields($data, 'BT');
 
 			if (!$userinfo->bindChecknStore($userfielddata)) {
-				vmError($userinfo->getError());
+				vmError('storeAddress '.$userinfo->getError());
 			}
 		}
 
