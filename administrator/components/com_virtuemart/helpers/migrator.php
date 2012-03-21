@@ -1345,6 +1345,7 @@ class Migrator extends VmModel{
 
 					foreach($oldItems as $item){
 						$item['virtuemart_order_id'] = $newId;
+						$item['virtuemart_user_id'] = $item['user_id'];
 						$item['virtuemart_country_id'] = ShopFunctions::getCountryIDByName($item['country']);
 						$item['virtuemart_state_id'] = ShopFunctions::getStateIDByName($item['state']);
 

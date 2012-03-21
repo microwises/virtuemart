@@ -203,7 +203,7 @@ class VirtueMartModelProduct extends VmModel {
 		if($useCore){
 // 		if ( $this->keyword !== "0" and $group ===false) {
 		if ( !empty($this->keyword) and $this->keyword !=='' and $group ===false) {
-			$groupBy = 'group by p.`virtuemart_product_id`';
+// 			$groupBy = 'group by p.`product_parent_id`';
 
 			//		$keyword = trim(preg_replace('/\s+/', '%', $keyword), '%');
 			$keyword = '"%' . $this->_db->getEscaped($this->keyword, true) . '%"';
@@ -284,6 +284,9 @@ class VirtueMartModelProduct extends VmModel {
 		if ($this->search_type != '') {
 			$search_order = $this->_db->getEscaped(JRequest::getWord('search_order') == 'bf' ? '<' : '>');
 			switch ($this->search_type) {
+				case 'parent':
+					$where[] = 'p.`product_parent_id` = "0"';
+					break;
 				case 'product':
 					$where[] = 'p.`modified_on` '.$search_order.' "'.$this->_db->getEscaped(JRequest::getVar('search_date')).'"';
 					break;
@@ -341,7 +344,7 @@ class VirtueMartModelProduct extends VmModel {
 		//Group case from the modules
 		if($group){
 
-			$groupBy = 'group by p.`virtuemart_product_id`';
+			$groupBy = 'group by p.`product_parent_id`';
 			switch ($group) {
 				case 'featured':
 					$where[] = 'p.`product_special`="1" ';
@@ -804,14 +807,14 @@ class VirtueMartModelProduct extends VmModel {
 		}
 
 		$this->setFilter();
-		if ( $filterCategory=== true) 
+		if ( $filterCategory=== true)
 		{
-			if ($category_id) 
+			if ($category_id)
 			{
 				$this->virtuemart_category_id = $category_id;
 			}
-		} 
-		else 
+		}
+		else
 		{
 			$this->virtuemart_category_id = false;
 		}
@@ -825,7 +828,7 @@ class VirtueMartModelProduct extends VmModel {
 	 * overriden getFilter to persist filters
 	 *
 	 * @author OSP
-	 */	
+	 */
 	public function setFilter()
 	{
 		$app = JFactory::getApplication();
