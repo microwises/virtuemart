@@ -168,7 +168,16 @@ echo $this->loadTemplate('images');
 			<?php
 		    }
 		}
-		
+		if (is_array($this->productDisplayShipments)) {
+		    foreach ($this->productDisplayShipments as $productDisplayShipment) {
+			echo $productDisplayShipment . '<br />';
+		    }
+		}
+		if (is_array($this->productDisplayPayments)) {
+		    foreach ($this->productDisplayPayments as $productDisplayPayment) {
+			echo $productDisplayPayment . '<br />';
+		    }
+		}
 		// Product Price
 		if ($this->show_prices and (empty($this->product->images[0]) or $this->product->images[0]->file_is_downloadable == 0)) {
 		    echo $this->loadTemplate('showprices');

@@ -171,7 +171,7 @@ $i=0;
 						</td>
 					</tr>
 					<tr class="row1">
-						<td width="29%">
+						<td >
 							<div style="text-align: right; font-weight: bold;">
 
 								<span
@@ -181,7 +181,7 @@ $i=0;
 								</span>
 							</div>
 						</td>
-						<td width="71%"><input
+						<td  ><input
 							type="text"
 							readonly
 							class="inputbox readonly"
@@ -192,7 +192,7 @@ $i=0;
 						</td>
 					</tr>
 					<tr class="row1">
-						<td width="29%">
+						<td  >
 							<div style="text-align: right; font-weight: bold;">
 								<span
 									class="hasTip"
@@ -201,7 +201,7 @@ $i=0;
 								</span>
 							</div>
 						</td>
-						<td width="71%"><input
+						<td ><input
 							type="text"
 							name="salesPrice"
 							size="10"
@@ -247,7 +247,7 @@ $i=0;
 // 						vmdebug('my rules',$this->DBTaxRules,$this->DATaxRules); echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_DISCOUNT_EFFECTING').$this->DBTaxRules;  ?>
 					</td>
 				</tr>
- 
+
 			</table>
 		</fieldset>
 		</td>
@@ -259,15 +259,15 @@ $i=0;
 		<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_CHILD_PARENT'); ?></legend>
 		<table class="adminform">
 			<tr class="row<?php echo $i?>">
-				<td>
+				<td width="50%">
 				<?php $link=JROUTE::_('index.php?option=com_virtuemart&view=product&task=createVariant&virtuemart_product_id='.$this->product->virtuemart_product_id.'&token='.JUtility::getToken() ); ?>
-					<div class="icon">
-						<a href="<?php echo $link ?>"> <span
-							class="vmicon48 vm_install_48"></span> <br />
-            			<?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_CHILD'); ?></a>
-					</div>
+					<button>
+						<a href="<?php echo $link ?>">
+            			<?php echo Jtext::_('COM_VIRTUEMART_PRODUCT_ADD_CHILD'); ?></a>
+					</button>
 				</td>
-				<td width="29%"><div style="text-align: left; font-weight: bold;">
+
+				<td width="29%"><div style="text-align:right; font-weight: bold;">
 					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_FORM_PARENT') ?>
 				</td>
 				<td width="71%"> <?php
@@ -283,13 +283,9 @@ $i=0;
 			</tr>
 
 			<?php $i = 1 - $i; ?>
-			<tr class="row<?php echo $i?>">
-				<td width="21%" valign="top" colspan = "2" ><div style="text-align:right;font-weight:bold;">
-					<?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILD') ?></div>
-				</td>
-			</tr>
-			<tr class="row<?php echo $i?>">
-				<td width="79%"><?php
+
+			<tr class="row<?php echo $i?>" >
+				<td width="79%" colspan = "3"><?php
                 	if (count($this->product_childs)>0 and !empty($this->product->customfields)) {
 
                 		foreach($this->product->customfields as $custom){
@@ -298,12 +294,13 @@ $i=0;
                 				$customs[] = $custom;
                 			}
                 		}
+
 //                 		vmdebug('ma $customs',$customs);
 						echo '<table>';
 
 						echo '<tr>';
-						echo '<th>'.JText::_('Edit').'</th>';
-						echo '<th>'.JText::_('COM_VIRTUEMART_PRODUCT_FORM_NAME').'</th>';
+						echo '<th>'.JText::_('COM_VIRTUEMART_PRODUCT_CHILD').'</th>';
+						echo '<th>'.JText::_('COM_VIRTUEMART_PRODUCT_CHILD_NAME').'</th>';
 						echo '<th>'.JText::_('COM_VIRTUEMART_PRODUCT_FORM_PRICE_COST').'</th>';
 						echo '<th>'.JText::_('COM_VIRTUEMART_PRODUCT_FORM_IN_STOCK').'</th>';
 						echo '<th>'.JText::_('COM_VIRTUEMART_PRODUCT_FORM_ORDERED_STOCK').'</th>';
@@ -323,9 +320,10 @@ $i=0;
 									$customs[] = $custom;
 								}
 							}*/
-							echo '<tr>';
+						     $i = 1 - $i;
+							echo '<tr class="row'.$i.'">';
 								echo '<td>'.JHTML::_('link', JRoute::_('index.php?view=product&task=edit&product_parent_id='.$this->product->virtuemart_product_id.'&virtuemart_product_id='.$child->virtuemart_product_id.'&option=com_virtuemart'), $child->slug, array('title' => JText::_('COM_VIRTUEMART_EDIT').' '.$child->product_name)).'</td>';
-								echo '<td><input type="text" class="inputbox" name="childs['.$child->virtuemart_product_id.'][product_name]" size="10" value="'.$child->product_name.'" /></td>';
+								echo '<td><input type="text" class="inputbox" name="childs['.$child->virtuemart_product_id.'][product_name]" size="32" value="'.$child->product_name.'" /></td>';
 								echo '<td><input type="text" class="inputbox" name="childs['.$child->virtuemart_product_id.'][product_price]" size="10" value="'.$child->product_price.'" /></td>';
 								echo '<td>'.$child->product_in_stock.'</td>';
 								echo '<td>'.$child->product_ordered.'</td>';

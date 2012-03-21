@@ -61,7 +61,7 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	    'virtuemart_shipmentmethod_id' => 'mediumint(1) UNSIGNED',
 	    'shipment_name' => 'varchar(5000)',
 	    'order_weight' => 'decimal(10,4)',
-	    'shipment_weight_unit' => 'char(3) DEFAULT \'KG\' ',
+	    'shipment_weight_unit' => 'char(3) DEFAULT \'KG\'',
 	    'shipment_cost' => 'decimal(10,2)',
 	    'shipment_package_fee' => 'decimal(10,2)',
 	    'tax_id' => 'smallint(1)'

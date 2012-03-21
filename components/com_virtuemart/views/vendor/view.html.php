@@ -2,11 +2,10 @@
 
 /**
  *
- * List/add/edit/remove Users
+ * List/add/edit/remove Vendors
  *
  * @package	VirtueMart
  * @subpackage User
- * @author Oscar van Eijk
  * @author Max Milbers
  * @link http://www.virtuemart.net
  * @copyright Copyright (c) 2004 - 2010 VirtueMart Team. All rights reserved.
@@ -31,8 +30,7 @@ define('__VM_USER_USE_SLIDERS', 0);
  * HTML View class for maintaining the list of users
  *
  * @package	VirtueMart
- * @subpackage User
- * @author Oscar van Eijk
+ * @subpackage Vendor
  * @author Max Milbers
  */
 class VirtuemartViewVendor extends VmView {
@@ -44,7 +42,6 @@ class VirtuemartViewVendor extends VmView {
 	 * We make a function for every tab and the display is getting the right tabs by an own function
 	 * putting that in an array and after that we call the preparedataforlayoutBlub
 	 *
-	 * @author Oscar van Eijk
 	 * @author Max Milbers
 	 */
 	function display($tpl = null) {
