@@ -701,7 +701,10 @@ class VirtueMartModelUser extends VmModel {
 		if(empty($this->_id)){
 			echo 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones';
 			vmError( 'This is a notice for developers, you used this function for an anonymous user, but it is only designed for already registered ones');
+			return false;
 		}
+
+		$noError = true;
 
 		if(empty($data['customer_number'])){
 			//if(!class_exists('vmUserPlugin')) require(JPATH_VM_SITE.DS.'helpers'.DS.'vmuserplugin.php');
@@ -751,6 +754,7 @@ class VirtueMartModelUser extends VmModel {
 		foreach($errors as $error){
 			$this->setError($error);
 			vmError('storing user adress data'.$error);
+			$noError = false;
 		}
 
 		$shoppergroupmodel = VmModel::getModel('ShopperGroup');
@@ -771,6 +775,7 @@ class VirtueMartModelUser extends VmModel {
 			foreach($errors as $error){
 				$this->setError($error);
 				vmError('Set shoppergroup '.$error);
+				$noError = false;
 			}
 		}
 
@@ -778,7 +783,8 @@ class VirtueMartModelUser extends VmModel {
 		foreach($plg_datas as $plg_data){
 			$data = array_merge($plg_data);
 		}
-		return $data;
+
+		return $noError;
 	}
 
 	public function storeVendorData($data){

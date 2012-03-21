@@ -47,7 +47,7 @@ class Migrator extends VmModel{
 			if($max_execution_time!=$jrmax_execution_time) @ini_set( 'max_execution_time', $jrmax_execution_time );
 		}
 
-		$this->maxScriptTime = ini_get('max_execution_time')*0.80-1;	//Lets use 5% of the execution time as reserve to store the progress
+		$this->maxScriptTime = ini_get('max_execution_time')*0.70-1;	//Lets use 30% of the execution time as reserve to store the progress
 
 		$jrmemory_limit= JRequest::getInt('memory_limit');
 		if(!empty($jrmemory_limit)){
@@ -57,7 +57,7 @@ class Migrator extends VmModel{
 			if($memory_limit<128)  @ini_set( 'memory_limit', '128M' );
 		}
 
-		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) - (11 * 1024 * 1024)  ;		//Lets use 11MB for joomla
+		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) - (14 * 1024 * 1024)  ;		//Lets use 11MB for joomla
 // 		vmdebug('$this->maxMemoryLimit',$this->maxMemoryLimit); //134217728
 		//$this->maxMemoryLimit = $this -> return_bytes('20M');
 
@@ -430,12 +430,14 @@ class Migrator extends VmModel{
 					break;
 				}
 
-				$oldtoNewShoppergroups[$oldgroup['shopper_group_id']] = $sGroups['virtuemart_shoppergroup_id'];
+// 				$oldtoNewShoppergroups[$oldgroup['shopper_group_id']] = $sGroups['virtuemart_shoppergroup_id'];
+				$alreadyKnownIds[$oldgroup['shopper_group_id']] = $sGroups['virtuemart_shoppergroup_id'];
 				unset($sGroups['virtuemart_shoppergroup_id']);
 				$i++;
-			} else {
-				$oldtoNewShoppergroups[$oldgroup['shopper_group_id']] = $alreadyKnownIds[$oldgroup['shopper_group_id']];
 			}
+// 			else {
+// 				$oldtoNewShoppergroups[$oldgroup['shopper_group_id']] = $alreadyKnownIds[$oldgroup['shopper_group_id']];
+// 			}
 
 			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 				break;
@@ -445,7 +447,7 @@ class Migrator extends VmModel{
 		$time = microtime(true) - $starttime;
 		$this->_app->enqueueMessage('Processed '.$i.' vm1 shoppergroups time: '.$time);
 
-		$this->storeMigrationProgress('shoppergroups',$oldtoNewShoppergroups);
+		$this->storeMigrationProgress('shoppergroups',$alreadyKnownIds);
 
 	}
 
@@ -509,22 +511,6 @@ class Migrator extends VmModel{
 					$user['virtuemart_shoppergroups_id'] = $oldToNewShoppergroups[$user['shopper_group_id']];
 				}
 
-				//Solution takes vm1 original values, but is not tested (does not set mainvendor)
-/*				//if(!empty($user['group_name'])){
-				//    $user['perms'] = $user['group_name'];
-				//
-				//} else {
-				$user['user_is_vendor'] = 0;
-				if($user['gid'] == 25){
-					$user['perms'] = 'admin';
-// 					$user['user_is_vendor'] = 1;
-				}elseif($user['gid'] == 24){
-					$user['perms'] = 'storeadmin';
-				}else {
-					$user['perms'] = 'shopper';
-				}
-				//}*/
-
 				$user['virtuemart_user_id'] = $user['id'];
 				//$userModel->setUserId($user['id']);
 				$userModel->setId($user['id']);		//Should work with setId, because only administrators are allowed todo the migration
@@ -546,15 +532,10 @@ class Migrator extends VmModel{
 				}
 
 				$i++;
-				/*	if($i>24){
+/*					if($i>1240){
 					$continue = false;
 					break;
 					}*/
-				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
-					$continue = false;
-					break;
-				}
-
 				$errors = $userModel->getErrors();
 				if(!empty($errors)){
 					foreach($errors as $error){
@@ -563,6 +544,11 @@ class Migrator extends VmModel{
 					$userModel->resetErrors();
 					$continue = false;
 					//break;
+				}
+
+				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
+					$continue = false;
+					break;
 				}
 			}
 		}
@@ -624,6 +610,7 @@ class Migrator extends VmModel{
 		vmInfo('Processed '.$i.' vm1 users ST adresses time: '.$time);
 		return $ok;
 	}
+
 	private function portVendor(){
 
 		if($this->_stop || (microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
@@ -678,7 +665,7 @@ class Migrator extends VmModel{
 		$oldCategories = $this->_db->loadAssocList();
 
 		$alreadyKnownIds = $this->getMigrationProgress('cats');
-		$oldtonewCats = array();
+// 		$oldtonewCats = array();
 
 		$category = array();
 		$i = 0;
@@ -741,9 +728,10 @@ class Migrator extends VmModel{
 				$alreadyKnownIds[$oldcategory['category_id']] = $category_id;
 				unset($category['virtuemart_category_id']);
 				$i++;
-			} else {
-				$oldtonewCats[$oldcategory['category_id']] = $alreadyKnownIds[$oldcategory['category_id']];
 			}
+// 			else {
+// 				$oldtonewCats[$oldcategory['category_id']] = $alreadyKnownIds[$oldcategory['category_id']];
+// 			}
 
 			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 				break;
@@ -770,7 +758,6 @@ class Migrator extends VmModel{
 		// $alreadyKnownIds = $this->getMigrationProgress('catsxref');
 
 		$new_id = 0;
-		$oldtonewCatsXref = array();
 		$i = 0;
 		$j = 0;
 		$ok = true ;
@@ -851,7 +838,7 @@ class Migrator extends VmModel{
 		if(!class_exists('TableManufacturercategories')) require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'manufacturercategories.php');
 
 		$alreadyKnownIds = $this->getMigrationProgress('mfcats');
-		$oldtonewMfCats = array();
+// 		$oldtonewMfCats = array();
 
 		$mfcategory = array();
 		$i=0;
@@ -876,11 +863,13 @@ class Migrator extends VmModel{
 					break;
 				}
 
-				$oldtonewMfCats[$oldmfcategory['mf_category_id']] = $mfcategory['virtuemart_manufacturercategories_id'];
+// 				$oldtonewMfCats[$oldmfcategory['mf_category_id']] = $mfcategory['virtuemart_manufacturercategories_id'];
+				$alreadyKnownIds[$oldmfcategory['mf_category_id']] = $mfcategory['virtuemart_manufacturercategories_id'];
 				$i++;
-			} else {
-				$oldtonewMfCats[$oldmfcategory['mf_category_id']] = $alreadyKnownIds[$oldmfcategory['mf_category_id']];
 			}
+/*			else {
+				$oldtonewMfCats[$oldmfcategory['mf_category_id']] = $alreadyKnownIds[$oldmfcategory['mf_category_id']];
+			}*/
 
 			unset($mfcategory['virtuemart_manufacturercategories_id']);
 
@@ -888,7 +877,7 @@ class Migrator extends VmModel{
 				break;
 			}
 		}
-		$this->storeMigrationProgress('mfcats',$oldtonewMfCats);
+		$this->storeMigrationProgress('mfcats',$alreadyKnownIds);
 
 		if($ok)
 		$msg = 'Looks everything worked correct, migrated ' .$i . ' manufacturer categories ';
@@ -914,7 +903,7 @@ class Migrator extends VmModel{
 		$oldManus = $this->_db->loadAssocList();
 
 // 		vmdebug('my old manus',$oldManus);
-		$oldtonewManus = array();
+// 		$oldtonewManus = array();
 		$oldtoNewMfcats = $this->getMigrationProgress('mfcats');
 		$alreadyKnownIds = $this->getMigrationProgress('manus');
 
@@ -944,19 +933,20 @@ class Migrator extends VmModel{
 					}
 					break;
 				}
-				$oldtonewManus[$oldmanu['manufacturer_id']] = $manu['virtuemart_manufacturer_id'];
+				$alreadyKnownIds[$oldmanu['manufacturer_id']] = $manu['virtuemart_manufacturer_id'];
 				//unset($manu['virtuemart_manufacturer_id']);
 				$i++;
-			} else {
-				$oldtonewManus[$oldmanu['manufacturer_id']] = $alreadyKnownIds[$oldmanu['manufacturer_id']];
 			}
+// 			else {
+// 				$oldtonewManus[$oldmanu['manufacturer_id']] = $alreadyKnownIds[$oldmanu['manufacturer_id']];
+// 			}
 
 			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 				break;
 			}
 		}
 
-		$this->storeMigrationProgress('manus',$oldtonewManus);
+		$this->storeMigrationProgress('manus',$alreadyKnownIds);
 
 		if($ok)
 		$msg = 'Looks everything worked correct, migrated ' .$i . ' manufacturers ';
@@ -983,6 +973,14 @@ class Migrator extends VmModel{
 		$startLimit = 0;
 		$i=0;
 		$continue = true;
+
+		$alreadyKnownIds = $this->getMigrationProgress('products');
+		$oldToNewCats = $this->getMigrationProgress('cats');
+// 		$user = JFactory::getUser();
+
+		//$oldtonewProducts = array();
+		$oldtonewManus = $this->getMigrationProgress('manus');
+
 		while($continue){
 
 			$q = 'SELECT * FROM `#__vm_product` AS `p`
@@ -996,7 +994,7 @@ class Migrator extends VmModel{
 				$continue = false;
 				return false;
 			} else {
-				$this->_app->enqueueMessage('Found '.count($oldProducts).' vm1 products to import' );
+				$this->_app->enqueueMessage('Found '.count($oldProducts).' vm1 products to import (there maybe more, but in this step)' );
 				$startLimit += $maxItems;
 				if(count($oldProducts)<$maxItems){
 					$continue = false;
@@ -1018,15 +1016,6 @@ class Migrator extends VmModel{
 			 custom_attribute child_options quantity_options child_option_ids
 			 shopper_group_id    product_list
 			 */
-
-
-			$alreadyKnownIds = $this->getMigrationProgress('products');
-			$oldToNewCats = $this->getMigrationProgress('cats');
-			$user = JFactory::getUser();
-
-			//$oldtonewProducts = array();
-			$oldtonewManus = $this->getMigrationProgress('manus');
-
 
 			//There are so many names the same, so we use the loaded array and manipulate it
 
@@ -1121,12 +1110,13 @@ class Migrator extends VmModel{
 
 					if(!empty($alreadyKnownIds[$product['product_parent_id']])){
 						$product['product_parent_id'] = $alreadyKnownIds[$product['product_parent_id']];
-						vmInfo('new parent id : '. $product['product_parent_id']);
+// 						vmInfo('new parent id : '. $product['product_parent_id']);
 					} else {
 						$product['product_parent_id'] = 0;
 					}
 
 					$product['virtuemart_product_id'] = $productModel->store($product);
+					$alreadyKnownIds[$product['product_id']] = $product['virtuemart_product_id'];
 
 					$errors = $productModel->getErrors();
 					if(!empty($errors)){
@@ -1140,11 +1130,12 @@ class Migrator extends VmModel{
 					}
 					$i++;
 
-					$alreadyKnownIds[$product['product_id']] = $product['virtuemart_product_id'];
 
-				} else {
-					//$oldtonewProducts[$product['product_id']] = $alreadyKnownIds[$product['product_id']];
+
 				}
+// 				 else {
+					//$oldtonewProducts[$product['product_id']] = $alreadyKnownIds[$product['product_id']];
+// 				}
 // 				unset($product['virtuemart_product_id']);
 				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 
@@ -1199,6 +1190,17 @@ class Migrator extends VmModel{
 			return;
 		}
 
+		if(!class_exists('VirtueMartModelOrderstatus'))
+		require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orderstatus.php');
+
+		$oldtonewOrders = array();
+
+		//Looks like there is a problem, when the data gets tooo big,
+		//solved now with query directly ignoring already ported orders.
+		$alreadyKnownIds = $this->getMigrationProgress('orders');
+		$newproductIds = $this->getMigrationProgress('products');
+		$orderCodeToId = $this->createOrderStatusAssoc();
+
 		//approximatly 100 products take a 1 MB
 		$maxItems = $this->_getMaxItems('Orders');
 
@@ -1216,17 +1218,6 @@ class Migrator extends VmModel{
 			$oldOrders = $res[0];
 			$startLimit = $res[1];
 			$continue = $res[2];
-
-			if(!class_exists('VirtueMartModelOrderstatus'))
-			require(JPATH_VM_ADMINISTRATOR . DS . 'models' . DS . 'orderstatus.php');
-
-			$oldtonewOrders = array();
-
-			//Looks like there is a problem, when the data gets tooo big,
-			//solved now with query directly ignoring already ported orders.
-			$alreadyKnownIds = $this->getMigrationProgress('orders');
-			$newproductIds = $this->getMigrationProgress('products');
-			$orderCodeToId = $this->createOrderStatusAssoc();
 
 			foreach($oldOrders as $order){
 
@@ -1290,7 +1281,7 @@ class Migrator extends VmModel{
 						break;
 					}
 					$i++;
-					$newId = $oldtonewOrders[$order['order_id']] = $orderTable->virtuemart_order_id;
+					$newId = $alreadyKnownIds[$order['order_id']] = $orderTable->virtuemart_order_id;
 
 					$q = 'SELECT * FROM `#__vm_order_item` WHERE `order_id` = "'.$order['order_id'].'" ';
 					$this->_db->setQuery($q);
@@ -1298,7 +1289,12 @@ class Migrator extends VmModel{
 					//$this->_app->enqueueMessage('Migration orderhistories: ' . $newId);
 					foreach($oldItems as $item){
 						$item['virtuemart_order_id'] = $newId;
-						$item['product_id'] = $newproductIds[$item['product_id']];
+						if(!empty($newproductIds[$item['product_id']])){
+							$item['product_id'] = $newproductIds[$item['product_id']];
+						} else {
+							vmWarn('Attention, order is pointing to deleted product (not found in the array of old products)');
+						}
+
 						//$item['order_status'] = $orderCodeToId[$item['order_status']];
 						$item['created_on'] = $this->_changeToStamp($item['cdate']);
 						$item['modified_on'] = $this->_changeToStamp($item['mdate']); //we could remove this to set modified_on today
@@ -1363,9 +1359,10 @@ class Migrator extends VmModel{
 					}
 
 					//$this->_app->enqueueMessage('Migration: '.$i.' order processed new id '.$newId);
-				} else {
-					$oldtonewOrders[$order['order_id']] = $alreadyKnownIds[$order['order_id']];
 				}
+// 				 else {
+// 					$oldtonewOrders[$order['order_id']] = $alreadyKnownIds[$order['order_id']];
+// 				}
 
 				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 					$continue = false;
@@ -1374,7 +1371,7 @@ class Migrator extends VmModel{
 				}
 			}
 		}
-		$this->storeMigrationProgress('orders',$oldtonewOrders);
+		$this->storeMigrationProgress('orders',$alreadyKnownIds);
 		vmInfo('Migration: '.$i.' orders processed ');
 	}
 
