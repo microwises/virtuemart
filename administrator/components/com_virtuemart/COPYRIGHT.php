@@ -26,7 +26,7 @@ Public License.  This version has been modified pursuant to the
 GNU General Public License as of September 15, 2005, and as distributed,
 it includes or is derivative of works licensed under the GNU General
 Public License or other free or open source software licenses, including
-works copyrighted by any or all of the following, from 2009 - 2011,
+works copyrighted by any or all of the following, from 2009 - 2012,
 Max Milbers, Patrick Kohl, Valérie Isaksen, Rick Glunt, Roland Dalmulder, Oscar van Eijk, Urs Brülhart, Devendra Kumar Shukla,
 Jörg Kiekebusch, Eugen Stranz, Christopher Roussel, John Acosta, George Kostopoulos, Zbigniew Mazur, John Wicks, Markus Öhler, Stephanie Schmidt,
 Vu Hoang Viet, Simon Hodgkiss, Fred Bidon, Mickaël Cabanas, Alexander Kludt, Konstantin Dzvonik

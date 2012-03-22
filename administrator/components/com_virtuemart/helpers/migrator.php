@@ -611,18 +611,6 @@ class Migrator extends VmModel{
 				if (!$userinfo->bindChecknStore($userfielddata)) {
 					vmError('Migration storeAddress ST '.$userinfo->getError());
 				}
-				// 				if(!$virtuemart_userinfo_id = $userModel->storeAddress($oldUsersAddi)){
-				// 					$userModel->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
-				// 				}
-
-				// 				$errors = $userModel->getErrors();
-				// 				if(!empty($errors)){
-				// 					foreach($errors as $error){
-				// 						$this->_app->enqueueMessage('Migration: ' . $error);
-				// 					}
-				// 					$userModel->resetErrors();
-				// 					break;
-				// 				}
 				$i++;
 				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 					$continue = false;
