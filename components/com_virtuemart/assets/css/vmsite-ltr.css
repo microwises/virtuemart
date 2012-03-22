@@ -177,6 +177,11 @@ label.invalid,span.red{color:red;}
 .vm-pagination ul li{display: inline;}
 .vm-pagination  .counter{text-align: right !important;}
 
+.vm-bottom div{text-align:center !important;}
+.vm-bottom ul{text-align:center !important;}
+.vm-bottom ul li{display: inline;}
+.vm-bottom  .counter{text-align: right !important;}
+
 td.orders-key{font-weight: bold; text-align: left; }
 
 /* Manufacturer View Default */

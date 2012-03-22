@@ -43,11 +43,11 @@ class Migrator extends VmModel{
 		$jrmax_execution_time= JRequest::getInt('max_execution_time');
 
 		if(!empty($jrmax_execution_time)){
-// 			vmdebug('$jrmax_execution_time',$jrmax_execution_time);
+			// 			vmdebug('$jrmax_execution_time',$jrmax_execution_time);
 			if($max_execution_time!=$jrmax_execution_time) @ini_set( 'max_execution_time', $jrmax_execution_time );
 		}
 
-		$this->maxScriptTime = ini_get('max_execution_time')*0.70-1;	//Lets use 30% of the execution time as reserve to store the progress
+		$this->maxScriptTime = ini_get('max_execution_time')*0.80-1;	//Lets use 30% of the execution time as reserve to store the progress
 
 		$jrmemory_limit= JRequest::getInt('memory_limit');
 		if(!empty($jrmemory_limit)){
@@ -58,7 +58,7 @@ class Migrator extends VmModel{
 		}
 
 		$this->maxMemoryLimit = $this->return_bytes(ini_get('memory_limit')) - (14 * 1024 * 1024)  ;		//Lets use 11MB for joomla
-// 		vmdebug('$this->maxMemoryLimit',$this->maxMemoryLimit); //134217728
+		// 		vmdebug('$this->maxMemoryLimit',$this->maxMemoryLimit); //134217728
 		//$this->maxMemoryLimit = $this -> return_bytes('20M');
 
 		// 		ini_set('memory_limit','35M');
@@ -102,27 +102,27 @@ class Migrator extends VmModel{
 		if(empty($result)){
 			$result = array();
 		} else {
-// 			vmdebug('getMigrationProgress '.$group,$result);
+			// 			vmdebug('getMigrationProgress '.$group,$result);
 			$uresult = unserialize(trim($result));
 			if(!$uresult){
 				vmdebug('getMigrationProgress unserialize failed '.$group,$result);
-// 				vmWarn('getMigrationProgress '.$group.' array is created new and therefore empty $q '.$q.' '.print_r($uresult,1).' <pre>'.print_r($result,1).'</pre>');
+				// 				vmWarn('getMigrationProgress '.$group.' array is created new and therefore empty $q '.$q.' '.print_r($uresult,1).' <pre>'.print_r($result,1).'</pre>');
 				$result = array();
 			} else {
 				$result = $uresult;
 			}
 		}
 
-// 		$test = 'a:740:{i:2954;i:18;i:2955;i:45;i:2956;i:143;i:2957;i:1710;i:2958;i:51;i:2959;i:154;i:2960;i:46;i:2961;i:30;i:2962;i:40;i:2963;i:41;i:2964;i:42;i:2965;i:43;i:2966;i:44;i:2967;i:31;i:2968;i:32;i:2969;i:33;i:2970;i:34;i:2971;i:35;i:2972;i:36;i:2973;i:37;i:2974;i:38;i:2975;i:39;i:2976;i:56;i:2977;i:61;i:2978;i:66;i:2979;i:86;i:2980;i:91;i:2981;i:96;i:2982;i:101;i:2983;i:106;i:2984;i:111;i:2985;i:116;i:2986;i:121;i:2987;i:131;i:2988;i:137;i:2989;i:142;i:2990;i:148;i:2991;i:153;i:2992;i:159;i:2993;i:164;i:2994;i:169;i:2995;i:174;i:2996;i:179;i:2997;i:184;i:2998;i:189;i:2999;i:193;i:3000;i:197;i:3001;i:201;i:3002;i:206;i:3003;i:210;i:3004;i:214;i:3005;i:218;i:3006;i:222;i:3007;i:226;i:3008;i:230;i:3009;i:234;i:3010;i:238;i:3011;i:242;i:3012;i:246;i:3013;i:250;i:3014;i:254;i:3015;i:258;i:3016;i:262;i:3017;i:266;i:3018;i:798;i:3019;i:270;i:3020;i:274;i:3021;i:803;i:3022;i:278;i:3023;i:282;i:3024;i:786;i:3025;i:286;i:3026;i:787;i:3027;i:290;i:3028;i:788;i:3029;i:294;i:3030;i:298;i:3031;i:302;i:3032;i:306;i:3033;i:781;i:3034;i:310;i:3035;i:314;i:3036;i:318;i:3037;i:322;i:3038;i:326;i:3039;i:330;i:3040;i:334;i:3041;i:338;i:3042;i:342;i:3043;i:346;i:3044;i:350;i:3045;i:354;i:3046;i:358;i:3047;i:362;i:3048;i:366;i:3049;i:370;i:3050;i:382;i:3051;i:602;i:3052;i:377;i:3053;i:522;i:3054;i:706;i:3055;i:710;i:3056;i:398;i:3057;i:702;i:3058;i:402;i:3059;i:770;i:3060;i:406;i:3061;i:766;i:3062;i:410;i:3063;i:762;i:3064;i:414;i:3065;i:418;i:3066;i:422;i:3067;i:775;i:3068;i:426;i:3069;i:430;i:3070;i:714;i:3071;i:434;i:3072;i:698;i:3073;i:438;i:3074;i:442;i:3075;i:722;i:3076;i:446;i:3077;i:450;i:3078;i:718;i:3079;i:454;i:3080;i:458;i:3081;i:462;i:3082;i:474;i:3083;i:466;i:3084;i:470;i:3085;i:478;i:3086;i:482;i:3087;i:486;i:3088;i:490;i:3089;i:494;i:3090;i:498;i:3091;i:502;i:3092;i:506;i:3093;i:510;i:3094;i:514;i:3095;i:518;i:3096;i:526;i:3097;i:531;i:3098;i:536;i:3099;i:541;i:3100;i:553;i:3101;i:548;i:3102;i:554;i:3103;i:559;i:3104;i:730;i:3105;i:563;i:3106;i:726;i:3107;i:567;i:3108;i:571;i:3109;i:575;i:3110;i:734;i:3111;i:579;i:3112;i:585;i:3113;i:590;i:3114;i:591;i:3115;i:597;i:3116;i:603;i:3117;i:608;i:3118;i:613;i:3119;i:618;i:3120;i:623;i:3121;i:628;i:3122;i:633;i:3123;i:638;i:3124;i:643;i:3125;i:648;i:3126;i:750;i:3127;i:653;i:3128;i:746;i:3129;i:658;i:3130;i:663;i:3131;i:742;i:3132;i:668;i:3133;i:673;i:3134;i:678;i:3135;i:793;i:3136;i:682;i:3137;i:738;i:3138;i:686;i:3139;i:690;i:3140;i:694;i:3141;i:808;i:3142;i:813;i:3143;i:818;i:3144;i:822;i:3145;i:826;i:3146;i:830;i:3147;i:834;i:3148;i:838;i:3149;i:842;i:3150;i:846;i:3151;i:850;i:3152;i:854;i:3153;i:858;i:3154;i:862;i:3155;i:866;i:3156;i:870;i:3157;i:1709;i:3158;i:1313;i:3159;i:1050;i:3160;i:981;i:3161;i:1030;i:3162;i:885;i:3163;i:876;i:3164;i:880;i:3165;i:889;i:3166;i:893;i:3167;i:899;i:3168;i:898;i:3169;i:904;i:3170;i:908;i:3171;i:912;i:3172;i:916;i:3173;i:920;i:3174;i:924;i:3175;i:925;i:3176;i:1024;i:3177;i:930;i:3178;i:935;i:3179;i:940;i:3180;i:945;i:3181;i:946;i:3182;i:951;i:3183;i:956;i:3184;i:961;i:3185;i:965;i:3186;i:1078;i:3187;i:969;i:3188;i:973;i:3189;i:977;i:3190;i:1090;i:3191;i:1698;i:3192;i:986;i:3193;i:991;i:3194;i:996;i:3195;i:1001;i:3196;i:1006;i:3197;i:1010;i:3198;i:1015;i:3199;i:1019;i:3200;i:1023;i:3201;i:1025;i:3202;i:1856;i:3203;i:1035;i:3204;i:1039;i:3205;i:1044;i:3206;i:1045;i:3207;i:1055;i:3208;i:1060;i:3209;i:1065;i:3210;i:1070;i:3211;i:1074;i:3212;i:1082;i:3213;i:1086;i:3214;i:3033;i:3215;i:1095;i:3216;i:1688;i:3217;i:1100;i:3218;i:1105;i:3219;i:1279;i:3220;i:1110;i:3221;i:1114;i:3222;i:1119;i:3223;i:1693;i:3224;i:1124;i:3225;i:1129;i:3226;i:1134;i:3227;i:1139;i:3228;i:1144;i:3229;i:1149;i:3230;i:1154;i:3231;i:1159;i:3232;i:1164;i:3233;i:1711;i:3234;i:1169;i:3235;i:1174;i:3236;i:1179;i:3237;i:1184;i:3238;i:1189;i:3239;i:1194;i:3240;i:1708;i:3241;i:1199;i:3242;i:1204;i:3243;i:1209;i:3244;i:1214;i:3245;i:1219;i:3246;i:1224;i:3247;i:1229;i:3248;i:1234;i:3249;i:1238;i:3250;i:1242;i:3251;i:1246;i:3252;i:1250;i:3253;i:1254;i:3254;i:1259;i:3255;i:1263;i:3256;i:1267;i:3257;i:1271;i:3258;i:1275;i:3259;i:1284;i:3260;i:1289;i:3261;i:1294;i:3262;i:1299;i:3263;i:1304;i:3264;i:1326;i:3265;i:1309;i:3266;i:1314;i:3267;i:1315;i:3268;i:1316;i:3269;i:1321;i:3270;i:1340;i:3271;i:1331;i:3272;i:1336;i:3273;i:1673;i:3274;i:1345;i:3275;i:1350;i:3276;i:1355;i:3277;i:1367;i:3278;i:1363;i:3279;i:1371;i:3280;i:1375;i:3281;i:1379;i:3282;i:1384;i:3283;i:1388;i:3284;i:1392;i:3285;i:1397;i:3286;i:1402;i:3287;i:1406;i:3288;i:1953;i:3289;i:1410;i:3290;i:1414;i:3291;i:1633;i:3292;i:1930;i:3293;i:1418;i:3294;i:1423;i:3295;i:1428;i:3296;i:1433;i:3297;i:1437;i:3298;i:1441;i:3299;i:1442;i:3300;i:1443;i:3301;i:1444;i:3302;i:1445;i:3303;i:1446;i:3304;i:1447;i:3305;i:1448;i:3306;i:1449;i:3307;i:1450;i:3308;i:1451;i:3309;i:1452;i:3310;i:1453;i:3311;i:1454;i:3312;i:1455;i:3313;i:1456;i:3314;i:1457;i:3315;i:1458;i:3316;i:1459;i:3317;i:1463;i:3318;i:1467;i:3319;i:1471;i:3320;i:1476;i:3321;i:1481;i:3322;i:1493;i:3323;i:1497;i:3324;i:1501;i:3325;i:1505;i:3326;i:1510;i:3327;i:1515;i:3328;i:1519;i:3329;i:1523;i:3330;i:1527;i:3331;i:1528;i:3332;i:1537;i:3333;i:1542;i:3334;i:1547;i:3335;i:1552;i:3336;i:1557;i:3337;i:1558;i:3338;i:1563;i:3339;i:1568;i:3340;i:1573;i:3341;i:1575;i:3342;i:1580;i:3343;i:1585;i:3344;i:1590;i:3345;i:1595;i:3346;i:1600;i:3347;i:1605;i:3348;i:1610;i:3349;i:1792;i:3350;i:1615;i:3351;i:1620;i:3352;i:1625;i:3353;i:1629;i:3354;i:1637;i:3355;i:1641;i:3356;i:1645;i:3357;i:1649;i:3358;i:1654;i:3359;i:1658;i:3360;i:1663;i:3361;i:1668;i:3362;i:1678;i:3363;i:1683;i:3364;i:1703;i:3365;i:1718;i:3366;i:1723;i:3367;i:1728;i:3368;i:1865;i:3369;i:1748;i:3370;i:1733;i:3371;i:1958;i:3372;i:1738;i:3373;i:1743;i:3374;i:1753;i:3375;i:1758;i:3376;i:1762;i:3377;i:1767;i:3378;i:1772;i:3379;i:1777;i:3380;i:1782;i:3381;i:1787;i:3382;i:1797;i:3383;i:1802;i:3384;i:1807;i:3385;i:1811;i:3386;i:1815;i:3387;i:1819;i:3388;i:1823;i:3389;i:1828;i:3390;i:1832;i:3391;i:1836;i:3392;i:1841;i:3393;i:1846;i:3394;i:1851;i:3395;i:1860;i:3396;i:1870;i:3397;i:1875;i:3398;i:1880;i:3399;i:1884;i:3400;i:1889;i:3401;i:1894;i:3402;i:1898;i:3403;i:1902;i:3404;i:1907;i:3405;i:1912;i:3406;i:1917;i:3407;i:1921;i:3408;i:1926;i:3409;i:2846;i:3410;i:1935;i:3411;i:1939;i:3412;i:1943;i:3413;i:1948;i:3414;i:1963;i:3415;i:2011;i:3416;i:1967;i:3417;i:1971;i:3418;i:1975;i:3419;i:1980;i:3420;i:1985;i:3421;i:1989;i:3422;i:1993;i:3423;i:1997;i:3424;i:2002;i:3425;i:2007;i:3426;i:2015;i:3427;i:2020;i:3428;i:2025;i:3429;i:2926;i:3430;i:2029;i:3431;i:2034;i:3432;i:2038;i:3433;i:2042;i:3434;i:2046;i:3435;i:2051;i:3436;i:2056;i:3437;i:2060;i:3438;i:2065;i:3439;i:2070;i:3440;i:2074;i:3441;i:2079;i:3442;i:2084;i:3443;i:2089;i:3444;i:2093;i:3445;i:2097;i:3446;i:2101;i:3447;i:2106;i:3448;i:2111;i:3449;i:2115;i:3450;i:2120;i:3451;i:2125;i:3452;i:2130;i:3453;i:2134;i:3454;i:2228;i:3455;i:2138;i:3456;i:2142;i:3457;i:2147;i:3458;i:2151;i:3459;i:2156;i:3460;i:2204;i:3461;i:2404;i:3462;i:2721;i:3463;i:2160;i:3464;i:2667;i:3465;i:2164;i:3466;i:2168;i:3467;i:2575;i:3468;i:2173;i:3469;i:2177;i:3470;i:2181;i:3471;i:2185;i:3472;i:2189;i:3473;i:2194;i:3474;i:2199;i:3475;i:2208;i:3476;i:2212;i:3477;i:2216;i:3478;i:2220;i:3479;i:2224;i:3480;i:2233;i:3481;i:2238;i:3482;i:2243;i:3483;i:2247;i:3484;i:2251;i:3485;i:2256;i:3486;i:2260;i:3487;i:2279;i:3488;i:2265;i:3489;i:2269;i:3490;i:2274;i:3491;i:2284;i:3492;i:3008;i:3493;i:2289;i:3494;i:2294;i:3495;i:2299;i:3496;i:2304;i:3497;i:2308;i:3498;i:2312;i:3499;i:2316;i:3500;i:2320;i:3501;i:2324;i:3502;i:2328;i:3503;i:2332;i:3504;i:2336;i:3505;i:2340;i:3506;i:2345;i:3507;i:2349;i:3508;i:2353;i:3509;i:2357;i:3510;i:2358;i:3511;i:2362;i:3512;i:2368;i:3513;i:2372;i:3514;i:2831;i:3515;i:2376;i:3516;i:2380;i:3517;i:2384;i:3518;i:2389;i:3519;i:2394;i:3520;i:2399;i:3521;i:2409;i:3522;i:2413;i:3523;i:2417;i:3524;i:2422;i:3525;i:2426;i:3526;i:2431;i:3527;i:2436;i:3528;i:2437;i:3529;i:2438;i:3530;i:2439;i:3531;i:2440;i:3532;i:2441;i:3533;i:2442;i:3534;i:2443;i:3535;i:2444;i:3536;i:2445;i:3537;i:2447;i:3538;i:2462;i:3539;i:2483;i:3540;i:2477;i:3541;i:2484;i:3542;i:2485;i:3543;i:2486;i:3544;i:2487;i:3545;i:2491;i:3546;i:2509;i:3547;i:2522;i:3548;i:2517;i:3549;i:2506;i:3550;i:2507;i:3551;i:2508;i:3552;i:2510;i:3553;i:2511;i:3554;i:2512;i:3555;i:2513;i:3556;i:2514;i:3557;i:2515;i:3558;i:2516;i:3559;i:2523;i:3560;i:2536;i:3561;i:2540;i:3562;i:2544;i:3563;i:2548;i:3564;i:2561;i:3565;i:2571;i:3566;i:2567;i:3567;i:2588;i:3568;i:2593;i:3569;i:2598;i:3570;i:2611;i:3571;i:2616;i:3572;i:2658;i:3573;i:2629;i:3574;i:2630;i:3575;i:2631;i:3576;i:2644;i:3577;i:2632;i:3578;i:2636;i:3579;i:2654;i:3580;i:2648;i:3581;i:2662;i:3582;i:2666;i:3583;i:2789;i:3584;i:2672;i:3585;i:2676;i:3586;i:2680;i:3587;i:2685;i:3588;i:2686;i:3589;i:2687;i:3590;i:2688;i:3591;i:2689;i:3592;i:2690;i:3593;i:2691;i:3594;i:2692;i:3595;i:2693;i:3596;i:2771;i:3597;i:2772;i:3598;i:2703;i:3599;i:2716;i:3600;i:2725;i:3601;i:2729;i:3602;i:2733;i:3603;i:2738;i:3604;i:2742;i:3605;i:2747;i:3606;i:2751;i:3607;i:2756;i:3608;i:2760;i:3609;i:2761;i:3610;i:2766;i:3611;i:2775;i:3612;i:2776;i:3613;i:2777;i:3614;i:2778;i:3615;i:2770;i:3616;i:2773;i:3617;i:2774;i:3618;i:2779;i:3619;i:2794;i:3620;i:2799;i:3621;i:2800;i:3622;i:2804;i:3623;i:2805;i:3624;i:2809;i:3625;i:2810;i:3626;i:2814;i:3627;i:2818;i:3628;i:2823;i:3629;i:2827;i:3630;i:2836;i:3631;i:2841;i:3632;i:2856;i:3633;i:2857;i:3634;i:2858;i:3635;i:2859;i:3636;i:2860;i:3637;i:2864;i:3638;i:2868;i:3639;i:2873;i:3640;i:2877;i:3641;i:2883;i:3642;i:2882;i:3643;i:2884;i:3644;i:2889;i:3645;i:2894;i:3646;i:2898;i:3647;i:2902;i:3648;i:2907;i:3649;i:2912;i:3650;i:2916;i:3651;i:2922;i:3652;i:2931;i:3653;i:2945;i:3654;i:2949;i:3655;i:2944;i:3656;i:2950;i:3657;i:2951;i:3658;i:2952;i:3659;i:2953;i:3660;i:2954;i:3661;i:2955;i:3662;i:2961;i:3663;i:2965;i:3664;i:2970;i:3665;i:2975;i:3666;i:2980;i:3667;i:2985;i:3668;i:2999;i:3669;i:2990;i:3670;i:2991;i:3671;i:2995;i:3672;i:3003;i:3673;i:3007;i:3674;i:3013;i:3675;i:3018;i:3676;i:3023;i:3677;i:3028;i:3678;i:3037;i:3679;i:3041;i:3680;i:3046;i:3681;i:3050;i:3682;i:3054;i:3683;i:3059;i:3684;i:3064;i:3685;i:3067;i:3686;i:3070;i:3687;i:3075;i:3688;i:3078;i:3689;i:3081;i:3690;i:3084;i:3691;i:3088;i:3692;i:3092;i:3693;i:3096;i:3694;}';
-// 		$utest = unserialize(trim($test));
-// 		vmdebug('$utest',$utest);
+		// 		$test = 'a:740:{i:2954;i:18;i:2955;i:45;i:2956;i:143;i:2957;i:1710;i:2958;i:51;i:2959;i:154;i:2960;i:46;i:2961;i:30;i:2962;i:40;i:2963;i:41;i:2964;i:42;i:2965;i:43;i:2966;i:44;i:2967;i:31;i:2968;i:32;i:2969;i:33;i:2970;i:34;i:2971;i:35;i:2972;i:36;i:2973;i:37;i:2974;i:38;i:2975;i:39;i:2976;i:56;i:2977;i:61;i:2978;i:66;i:2979;i:86;i:2980;i:91;i:2981;i:96;i:2982;i:101;i:2983;i:106;i:2984;i:111;i:2985;i:116;i:2986;i:121;i:2987;i:131;i:2988;i:137;i:2989;i:142;i:2990;i:148;i:2991;i:153;i:2992;i:159;i:2993;i:164;i:2994;i:169;i:2995;i:174;i:2996;i:179;i:2997;i:184;i:2998;i:189;i:2999;i:193;i:3000;i:197;i:3001;i:201;i:3002;i:206;i:3003;i:210;i:3004;i:214;i:3005;i:218;i:3006;i:222;i:3007;i:226;i:3008;i:230;i:3009;i:234;i:3010;i:238;i:3011;i:242;i:3012;i:246;i:3013;i:250;i:3014;i:254;i:3015;i:258;i:3016;i:262;i:3017;i:266;i:3018;i:798;i:3019;i:270;i:3020;i:274;i:3021;i:803;i:3022;i:278;i:3023;i:282;i:3024;i:786;i:3025;i:286;i:3026;i:787;i:3027;i:290;i:3028;i:788;i:3029;i:294;i:3030;i:298;i:3031;i:302;i:3032;i:306;i:3033;i:781;i:3034;i:310;i:3035;i:314;i:3036;i:318;i:3037;i:322;i:3038;i:326;i:3039;i:330;i:3040;i:334;i:3041;i:338;i:3042;i:342;i:3043;i:346;i:3044;i:350;i:3045;i:354;i:3046;i:358;i:3047;i:362;i:3048;i:366;i:3049;i:370;i:3050;i:382;i:3051;i:602;i:3052;i:377;i:3053;i:522;i:3054;i:706;i:3055;i:710;i:3056;i:398;i:3057;i:702;i:3058;i:402;i:3059;i:770;i:3060;i:406;i:3061;i:766;i:3062;i:410;i:3063;i:762;i:3064;i:414;i:3065;i:418;i:3066;i:422;i:3067;i:775;i:3068;i:426;i:3069;i:430;i:3070;i:714;i:3071;i:434;i:3072;i:698;i:3073;i:438;i:3074;i:442;i:3075;i:722;i:3076;i:446;i:3077;i:450;i:3078;i:718;i:3079;i:454;i:3080;i:458;i:3081;i:462;i:3082;i:474;i:3083;i:466;i:3084;i:470;i:3085;i:478;i:3086;i:482;i:3087;i:486;i:3088;i:490;i:3089;i:494;i:3090;i:498;i:3091;i:502;i:3092;i:506;i:3093;i:510;i:3094;i:514;i:3095;i:518;i:3096;i:526;i:3097;i:531;i:3098;i:536;i:3099;i:541;i:3100;i:553;i:3101;i:548;i:3102;i:554;i:3103;i:559;i:3104;i:730;i:3105;i:563;i:3106;i:726;i:3107;i:567;i:3108;i:571;i:3109;i:575;i:3110;i:734;i:3111;i:579;i:3112;i:585;i:3113;i:590;i:3114;i:591;i:3115;i:597;i:3116;i:603;i:3117;i:608;i:3118;i:613;i:3119;i:618;i:3120;i:623;i:3121;i:628;i:3122;i:633;i:3123;i:638;i:3124;i:643;i:3125;i:648;i:3126;i:750;i:3127;i:653;i:3128;i:746;i:3129;i:658;i:3130;i:663;i:3131;i:742;i:3132;i:668;i:3133;i:673;i:3134;i:678;i:3135;i:793;i:3136;i:682;i:3137;i:738;i:3138;i:686;i:3139;i:690;i:3140;i:694;i:3141;i:808;i:3142;i:813;i:3143;i:818;i:3144;i:822;i:3145;i:826;i:3146;i:830;i:3147;i:834;i:3148;i:838;i:3149;i:842;i:3150;i:846;i:3151;i:850;i:3152;i:854;i:3153;i:858;i:3154;i:862;i:3155;i:866;i:3156;i:870;i:3157;i:1709;i:3158;i:1313;i:3159;i:1050;i:3160;i:981;i:3161;i:1030;i:3162;i:885;i:3163;i:876;i:3164;i:880;i:3165;i:889;i:3166;i:893;i:3167;i:899;i:3168;i:898;i:3169;i:904;i:3170;i:908;i:3171;i:912;i:3172;i:916;i:3173;i:920;i:3174;i:924;i:3175;i:925;i:3176;i:1024;i:3177;i:930;i:3178;i:935;i:3179;i:940;i:3180;i:945;i:3181;i:946;i:3182;i:951;i:3183;i:956;i:3184;i:961;i:3185;i:965;i:3186;i:1078;i:3187;i:969;i:3188;i:973;i:3189;i:977;i:3190;i:1090;i:3191;i:1698;i:3192;i:986;i:3193;i:991;i:3194;i:996;i:3195;i:1001;i:3196;i:1006;i:3197;i:1010;i:3198;i:1015;i:3199;i:1019;i:3200;i:1023;i:3201;i:1025;i:3202;i:1856;i:3203;i:1035;i:3204;i:1039;i:3205;i:1044;i:3206;i:1045;i:3207;i:1055;i:3208;i:1060;i:3209;i:1065;i:3210;i:1070;i:3211;i:1074;i:3212;i:1082;i:3213;i:1086;i:3214;i:3033;i:3215;i:1095;i:3216;i:1688;i:3217;i:1100;i:3218;i:1105;i:3219;i:1279;i:3220;i:1110;i:3221;i:1114;i:3222;i:1119;i:3223;i:1693;i:3224;i:1124;i:3225;i:1129;i:3226;i:1134;i:3227;i:1139;i:3228;i:1144;i:3229;i:1149;i:3230;i:1154;i:3231;i:1159;i:3232;i:1164;i:3233;i:1711;i:3234;i:1169;i:3235;i:1174;i:3236;i:1179;i:3237;i:1184;i:3238;i:1189;i:3239;i:1194;i:3240;i:1708;i:3241;i:1199;i:3242;i:1204;i:3243;i:1209;i:3244;i:1214;i:3245;i:1219;i:3246;i:1224;i:3247;i:1229;i:3248;i:1234;i:3249;i:1238;i:3250;i:1242;i:3251;i:1246;i:3252;i:1250;i:3253;i:1254;i:3254;i:1259;i:3255;i:1263;i:3256;i:1267;i:3257;i:1271;i:3258;i:1275;i:3259;i:1284;i:3260;i:1289;i:3261;i:1294;i:3262;i:1299;i:3263;i:1304;i:3264;i:1326;i:3265;i:1309;i:3266;i:1314;i:3267;i:1315;i:3268;i:1316;i:3269;i:1321;i:3270;i:1340;i:3271;i:1331;i:3272;i:1336;i:3273;i:1673;i:3274;i:1345;i:3275;i:1350;i:3276;i:1355;i:3277;i:1367;i:3278;i:1363;i:3279;i:1371;i:3280;i:1375;i:3281;i:1379;i:3282;i:1384;i:3283;i:1388;i:3284;i:1392;i:3285;i:1397;i:3286;i:1402;i:3287;i:1406;i:3288;i:1953;i:3289;i:1410;i:3290;i:1414;i:3291;i:1633;i:3292;i:1930;i:3293;i:1418;i:3294;i:1423;i:3295;i:1428;i:3296;i:1433;i:3297;i:1437;i:3298;i:1441;i:3299;i:1442;i:3300;i:1443;i:3301;i:1444;i:3302;i:1445;i:3303;i:1446;i:3304;i:1447;i:3305;i:1448;i:3306;i:1449;i:3307;i:1450;i:3308;i:1451;i:3309;i:1452;i:3310;i:1453;i:3311;i:1454;i:3312;i:1455;i:3313;i:1456;i:3314;i:1457;i:3315;i:1458;i:3316;i:1459;i:3317;i:1463;i:3318;i:1467;i:3319;i:1471;i:3320;i:1476;i:3321;i:1481;i:3322;i:1493;i:3323;i:1497;i:3324;i:1501;i:3325;i:1505;i:3326;i:1510;i:3327;i:1515;i:3328;i:1519;i:3329;i:1523;i:3330;i:1527;i:3331;i:1528;i:3332;i:1537;i:3333;i:1542;i:3334;i:1547;i:3335;i:1552;i:3336;i:1557;i:3337;i:1558;i:3338;i:1563;i:3339;i:1568;i:3340;i:1573;i:3341;i:1575;i:3342;i:1580;i:3343;i:1585;i:3344;i:1590;i:3345;i:1595;i:3346;i:1600;i:3347;i:1605;i:3348;i:1610;i:3349;i:1792;i:3350;i:1615;i:3351;i:1620;i:3352;i:1625;i:3353;i:1629;i:3354;i:1637;i:3355;i:1641;i:3356;i:1645;i:3357;i:1649;i:3358;i:1654;i:3359;i:1658;i:3360;i:1663;i:3361;i:1668;i:3362;i:1678;i:3363;i:1683;i:3364;i:1703;i:3365;i:1718;i:3366;i:1723;i:3367;i:1728;i:3368;i:1865;i:3369;i:1748;i:3370;i:1733;i:3371;i:1958;i:3372;i:1738;i:3373;i:1743;i:3374;i:1753;i:3375;i:1758;i:3376;i:1762;i:3377;i:1767;i:3378;i:1772;i:3379;i:1777;i:3380;i:1782;i:3381;i:1787;i:3382;i:1797;i:3383;i:1802;i:3384;i:1807;i:3385;i:1811;i:3386;i:1815;i:3387;i:1819;i:3388;i:1823;i:3389;i:1828;i:3390;i:1832;i:3391;i:1836;i:3392;i:1841;i:3393;i:1846;i:3394;i:1851;i:3395;i:1860;i:3396;i:1870;i:3397;i:1875;i:3398;i:1880;i:3399;i:1884;i:3400;i:1889;i:3401;i:1894;i:3402;i:1898;i:3403;i:1902;i:3404;i:1907;i:3405;i:1912;i:3406;i:1917;i:3407;i:1921;i:3408;i:1926;i:3409;i:2846;i:3410;i:1935;i:3411;i:1939;i:3412;i:1943;i:3413;i:1948;i:3414;i:1963;i:3415;i:2011;i:3416;i:1967;i:3417;i:1971;i:3418;i:1975;i:3419;i:1980;i:3420;i:1985;i:3421;i:1989;i:3422;i:1993;i:3423;i:1997;i:3424;i:2002;i:3425;i:2007;i:3426;i:2015;i:3427;i:2020;i:3428;i:2025;i:3429;i:2926;i:3430;i:2029;i:3431;i:2034;i:3432;i:2038;i:3433;i:2042;i:3434;i:2046;i:3435;i:2051;i:3436;i:2056;i:3437;i:2060;i:3438;i:2065;i:3439;i:2070;i:3440;i:2074;i:3441;i:2079;i:3442;i:2084;i:3443;i:2089;i:3444;i:2093;i:3445;i:2097;i:3446;i:2101;i:3447;i:2106;i:3448;i:2111;i:3449;i:2115;i:3450;i:2120;i:3451;i:2125;i:3452;i:2130;i:3453;i:2134;i:3454;i:2228;i:3455;i:2138;i:3456;i:2142;i:3457;i:2147;i:3458;i:2151;i:3459;i:2156;i:3460;i:2204;i:3461;i:2404;i:3462;i:2721;i:3463;i:2160;i:3464;i:2667;i:3465;i:2164;i:3466;i:2168;i:3467;i:2575;i:3468;i:2173;i:3469;i:2177;i:3470;i:2181;i:3471;i:2185;i:3472;i:2189;i:3473;i:2194;i:3474;i:2199;i:3475;i:2208;i:3476;i:2212;i:3477;i:2216;i:3478;i:2220;i:3479;i:2224;i:3480;i:2233;i:3481;i:2238;i:3482;i:2243;i:3483;i:2247;i:3484;i:2251;i:3485;i:2256;i:3486;i:2260;i:3487;i:2279;i:3488;i:2265;i:3489;i:2269;i:3490;i:2274;i:3491;i:2284;i:3492;i:3008;i:3493;i:2289;i:3494;i:2294;i:3495;i:2299;i:3496;i:2304;i:3497;i:2308;i:3498;i:2312;i:3499;i:2316;i:3500;i:2320;i:3501;i:2324;i:3502;i:2328;i:3503;i:2332;i:3504;i:2336;i:3505;i:2340;i:3506;i:2345;i:3507;i:2349;i:3508;i:2353;i:3509;i:2357;i:3510;i:2358;i:3511;i:2362;i:3512;i:2368;i:3513;i:2372;i:3514;i:2831;i:3515;i:2376;i:3516;i:2380;i:3517;i:2384;i:3518;i:2389;i:3519;i:2394;i:3520;i:2399;i:3521;i:2409;i:3522;i:2413;i:3523;i:2417;i:3524;i:2422;i:3525;i:2426;i:3526;i:2431;i:3527;i:2436;i:3528;i:2437;i:3529;i:2438;i:3530;i:2439;i:3531;i:2440;i:3532;i:2441;i:3533;i:2442;i:3534;i:2443;i:3535;i:2444;i:3536;i:2445;i:3537;i:2447;i:3538;i:2462;i:3539;i:2483;i:3540;i:2477;i:3541;i:2484;i:3542;i:2485;i:3543;i:2486;i:3544;i:2487;i:3545;i:2491;i:3546;i:2509;i:3547;i:2522;i:3548;i:2517;i:3549;i:2506;i:3550;i:2507;i:3551;i:2508;i:3552;i:2510;i:3553;i:2511;i:3554;i:2512;i:3555;i:2513;i:3556;i:2514;i:3557;i:2515;i:3558;i:2516;i:3559;i:2523;i:3560;i:2536;i:3561;i:2540;i:3562;i:2544;i:3563;i:2548;i:3564;i:2561;i:3565;i:2571;i:3566;i:2567;i:3567;i:2588;i:3568;i:2593;i:3569;i:2598;i:3570;i:2611;i:3571;i:2616;i:3572;i:2658;i:3573;i:2629;i:3574;i:2630;i:3575;i:2631;i:3576;i:2644;i:3577;i:2632;i:3578;i:2636;i:3579;i:2654;i:3580;i:2648;i:3581;i:2662;i:3582;i:2666;i:3583;i:2789;i:3584;i:2672;i:3585;i:2676;i:3586;i:2680;i:3587;i:2685;i:3588;i:2686;i:3589;i:2687;i:3590;i:2688;i:3591;i:2689;i:3592;i:2690;i:3593;i:2691;i:3594;i:2692;i:3595;i:2693;i:3596;i:2771;i:3597;i:2772;i:3598;i:2703;i:3599;i:2716;i:3600;i:2725;i:3601;i:2729;i:3602;i:2733;i:3603;i:2738;i:3604;i:2742;i:3605;i:2747;i:3606;i:2751;i:3607;i:2756;i:3608;i:2760;i:3609;i:2761;i:3610;i:2766;i:3611;i:2775;i:3612;i:2776;i:3613;i:2777;i:3614;i:2778;i:3615;i:2770;i:3616;i:2773;i:3617;i:2774;i:3618;i:2779;i:3619;i:2794;i:3620;i:2799;i:3621;i:2800;i:3622;i:2804;i:3623;i:2805;i:3624;i:2809;i:3625;i:2810;i:3626;i:2814;i:3627;i:2818;i:3628;i:2823;i:3629;i:2827;i:3630;i:2836;i:3631;i:2841;i:3632;i:2856;i:3633;i:2857;i:3634;i:2858;i:3635;i:2859;i:3636;i:2860;i:3637;i:2864;i:3638;i:2868;i:3639;i:2873;i:3640;i:2877;i:3641;i:2883;i:3642;i:2882;i:3643;i:2884;i:3644;i:2889;i:3645;i:2894;i:3646;i:2898;i:3647;i:2902;i:3648;i:2907;i:3649;i:2912;i:3650;i:2916;i:3651;i:2922;i:3652;i:2931;i:3653;i:2945;i:3654;i:2949;i:3655;i:2944;i:3656;i:2950;i:3657;i:2951;i:3658;i:2952;i:3659;i:2953;i:3660;i:2954;i:3661;i:2955;i:3662;i:2961;i:3663;i:2965;i:3664;i:2970;i:3665;i:2975;i:3666;i:2980;i:3667;i:2985;i:3668;i:2999;i:3669;i:2990;i:3670;i:2991;i:3671;i:2995;i:3672;i:3003;i:3673;i:3007;i:3674;i:3013;i:3675;i:3018;i:3676;i:3023;i:3677;i:3028;i:3678;i:3037;i:3679;i:3041;i:3680;i:3046;i:3681;i:3050;i:3682;i:3054;i:3683;i:3059;i:3684;i:3064;i:3685;i:3067;i:3686;i:3070;i:3687;i:3075;i:3688;i:3078;i:3689;i:3081;i:3690;i:3084;i:3691;i:3088;i:3692;i:3092;i:3693;i:3096;i:3694;}';
+		// 		$utest = unserialize(trim($test));
+		// 		vmdebug('$utest',$utest);
 		return $result;
 
 	}
 
 	function storeMigrationProgress($group,$array){
 
-// 		vmdebug('storeMigrationProgress',$array);
+		// 		vmdebug('storeMigrationProgress',$array);
 		//$q = 'UPDATE `#__virtuemart_migration_oldtonew_ids` SET `'.$group.'`="'.implode(',',$array).'" WHERE `id` = "1"';
 		$q = 'UPDATE `#__virtuemart_migration_oldtonew_ids` SET `'.$group.'`="'.serialize($array).'" WHERE `id` = "1"';
 
@@ -153,7 +153,7 @@ class Migrator extends VmModel{
 
 	function migrateUsers(){
 
-// 		$result = $this->portShoppergroups();
+		// 		$result = $this->portShoppergroups();
 		$result = $this->portUsers();
 
 		$time = microtime(true) - $this->starttime;
@@ -164,11 +164,11 @@ class Migrator extends VmModel{
 
 	function migrateProducts(){
 
-// 		$result = $this->portMedia();
+		// 		$result = $this->portMedia();
 
-// 		$result = $this->portCategories();
-// 		$result = $this->portManufacturerCategories();
-// 		$result = $this->portManufacturers();
+		// 		$result = $this->portCategories();
+		// 		$result = $this->portManufacturerCategories();
+		// 		$result = $this->portManufacturers();
 		$result = $this->portProducts();
 
 		$time = microtime(true) - $this->starttime;
@@ -179,10 +179,10 @@ class Migrator extends VmModel{
 
 	function migrateOrders(){
 
-// 		$result = $this->portMedia();
-// 		$result = $this->portCategories();
-// 		$result = $this->portManufacturerCategories();
-// 		$result = $this->portManufacturers();
+		// 		$result = $this->portMedia();
+		// 		$result = $this->portCategories();
+		// 		$result = $this->portManufacturerCategories();
+		// 		$result = $this->portManufacturers();
 		$result = $this->portProducts();
 
 		// 		$result = $this->portOrderStatus();
@@ -239,20 +239,20 @@ class Migrator extends VmModel{
 
 				//The idea is here to test if the media with missing data is used somewhere and to display it
 				//When it not used, the entry should be deleted then.
-/*				$q = 'SELECT * FROM `#__virtuemart_category_medias` as cm,
-											`#__virtuemart_product_medias` as pm,
-											`#__virtuemart_manufacturer_medias` as mm,
-											`#__virtuemart_vendor_medias` as vm
-						WHERE cm.`virtuemart_media_id` = "'.$media->virtuemart_media_id.'"
-						OR pm.`virtuemart_media_id` = "'.$media->virtuemart_media_id.'"
-						OR mm.`virtuemart_media_id` = "'.$media->virtuemart_media_id.'"
-						OR vm.`virtuemart_media_id` = "'.$media->virtuemart_media_id.'" ';
+				/*				$q = 'SELECT * FROM `#__virtuemart_category_medias` as cm,
+				`#__virtuemart_product_medias` as pm,
+				`#__virtuemart_manufacturer_medias` as mm,
+				`#__virtuemart_vendor_medias` as vm
+				WHERE cm.`virtuemart_media_id` = "'.$media->virtuemart_media_id.'"
+				OR pm.`virtuemart_media_id` = "'.$media->virtuemart_media_id.'"
+				OR mm.`virtuemart_media_id` = "'.$media->virtuemart_media_id.'"
+				OR vm.`virtuemart_media_id` = "'.$media->virtuemart_media_id.'" ';
 
 				$this->_db->setQuery($q);
 				$res = $this->_db->loadResultArray();
 				vmdebug('so',$res);
 				if(count($res)>0){
-					vmInfo('File for '.$media->file_url.' is missing, but used ');
+				vmInfo('File for '.$media->file_url.' is missing, but used ');
 				}
 				*/
 			}
@@ -312,7 +312,7 @@ class Migrator extends VmModel{
 				$knownNames[] = $media->file_url;
 			}
 		}
-// 		vmdebug('my known paths of type'.$type,$knownNames);
+		// 		vmdebug('my known paths of type'.$type,$knownNames);
 		$filesInDir = array();
 		$foldersInDir = array();
 
@@ -333,7 +333,7 @@ class Migrator extends VmModel{
 							$filetype = filetype($dir . DS . $file);
 							$relUrlName = '';
 							$relUrlName = $relUrl.$file;
-// 						vmdebug('my relative url ',$relUrlName);
+							// 						vmdebug('my relative url ',$relUrlName);
 
 							//We port all type of media, regardless the extension
 							if($filetype == 'file'){
@@ -343,7 +343,7 @@ class Migrator extends VmModel{
 							}else {
 								if($filetype == 'dir' && $file != 'resized'){
 									$subfoldersInDir[] = $dir.$file.DS;
-// 									vmdebug('my sub folder ',$dir.$file);
+									// 									vmdebug('my sub folder ',$dir.$file);
 								}
 							}
 						}
@@ -357,7 +357,7 @@ class Migrator extends VmModel{
 			}
 		}
 		//echo '<pre>'.print_r($filesInDir,1).'</pre>';
-//		die;
+		//		die;
 		$i = 0;
 		foreach($filesInDir as $file){
 
@@ -438,14 +438,14 @@ class Migrator extends VmModel{
 					break;
 				}
 
-// 				$oldtoNewShoppergroups[$oldgroup['shopper_group_id']] = $sGroups['virtuemart_shoppergroup_id'];
+				// 				$oldtoNewShoppergroups[$oldgroup['shopper_group_id']] = $sGroups['virtuemart_shoppergroup_id'];
 				$alreadyKnownIds[$oldgroup['shopper_group_id']] = $sGroups['virtuemart_shoppergroup_id'];
 				unset($sGroups['virtuemart_shoppergroup_id']);
 				$i++;
 			}
-// 			else {
-// 				$oldtoNewShoppergroups[$oldgroup['shopper_group_id']] = $alreadyKnownIds[$oldgroup['shopper_group_id']];
-// 			}
+			// 			else {
+			// 				$oldtoNewShoppergroups[$oldgroup['shopper_group_id']] = $alreadyKnownIds[$oldgroup['shopper_group_id']];
+			// 			}
 
 			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 				break;
@@ -492,6 +492,8 @@ class Migrator extends VmModel{
 		// 		$maxItems = 10;
 		$i=0;
 		$startLimit = 0;
+		$goForST = true;
+
 		while($continue){
 
 			//Lets load all users from the joomla hmm or vm? VM1 users does NOT exist
@@ -526,21 +528,21 @@ class Migrator extends VmModel{
 				//Save the VM user stuff
 				if(!$saveUserData=$userModel->saveUserData($user,false)){
 					vmdebug('Error migration saveUserData ');
-// 					vmError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA'));
+					// 					vmError(JText::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USER_DATA'));
 				}
 
 
 				$userfielddata = $userModel->_prepareUserFields($user, 'BT');
 
-				$userinfo   = $this->getTable('userinfos');
+				$userinfo = $this->getTable('userinfos');
 				if (!$userinfo->bindChecknStore($userfielddata)) {
 					vmError('Migration storeAddress BT '.$userinfo->getError());
 				}
 
-// 				$userinfo   = $this->getTable('userinfos');
-// 				if (!$userinfo->bindChecknStore($user)) {
-// 					vmError('Migrator portUsers '.$userinfo->getError());
-// 				}
+				// 				$userinfo   = $this->getTable('userinfos');
+				// 				if (!$userinfo->bindChecknStore($user)) {
+				// 					vmError('Migrator portUsers '.$userinfo->getError());
+				// 				}
 
 				if(!empty($user['user_is_vendor']) && $user['user_is_vendor'] === 1){
 					if (!$userModel->storeVendorData($user)){
@@ -549,10 +551,10 @@ class Migrator extends VmModel{
 				}
 
 				$i++;
-/*					if($i>1240){
-					$continue = false;
-					break;
-					}*/
+				/*					if($i>1240){
+				 $continue = false;
+				break;
+				}*/
 				$errors = $userModel->getErrors();
 				if(!empty($errors)){
 					foreach($errors as $error){
@@ -564,24 +566,25 @@ class Migrator extends VmModel{
 				}
 
 				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
-					$continue = false;
+					$goForST = false;
 					break;
 				}
 			}
 		}
+
 		$time = microtime(true) - $starttime;
 		vmInfo('Processed '.$i.' vm1 users time: '.$time);
 
 		//adresses
 		$starttime = microtime(true);
-// 		$continue = true;
+		$continue = $goForST;
 		$startLimit = 0;
 		$i = 0;
 		while($continue){
 
 			$q = 'SELECT `ui`.* FROM #__vm_user_info as `ui`
-					LEFT OUTER JOIN #__virtuemart_userinfos as `vui` ON `vui`.`virtuemart_user_id` = `ui`.`user_id`
-					WHERE `ui`.`address_type` = "ST" AND (`vui`.`virtuemart_user_id`) IS NULL LIMIT '.$startLimit.','.$maxItems;
+			LEFT OUTER JOIN #__virtuemart_userinfos as `vui` ON `vui`.`virtuemart_user_id` = `ui`.`user_id`
+			WHERE `ui`.`address_type` = "ST" AND (`vui`.`virtuemart_user_id`) IS NULL LIMIT '.$startLimit.','.$maxItems;
 
 			$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port ST addresses');
 			$oldUsersAddresses = $res[0];
@@ -604,21 +607,22 @@ class Migrator extends VmModel{
 
 				$userfielddata = $userModel->_prepareUserFields($oldUsersAddi, 'ST');
 
+				$userinfo = $this->getTable('userinfos');
 				if (!$userinfo->bindChecknStore($userfielddata)) {
 					vmError('Migration storeAddress ST '.$userinfo->getError());
 				}
-// 				if(!$virtuemart_userinfo_id = $userModel->storeAddress($oldUsersAddi)){
-// 					$userModel->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
-// 				}
+				// 				if(!$virtuemart_userinfo_id = $userModel->storeAddress($oldUsersAddi)){
+				// 					$userModel->setError(Jtext::_('COM_VIRTUEMART_NOT_ABLE_TO_SAVE_USERINFO_DATA'));
+				// 				}
 
-// 				$errors = $userModel->getErrors();
-// 				if(!empty($errors)){
-// 					foreach($errors as $error){
-// 						$this->_app->enqueueMessage('Migration: ' . $error);
-// 					}
-// 					$userModel->resetErrors();
-// 					break;
-// 				}
+				// 				$errors = $userModel->getErrors();
+				// 				if(!empty($errors)){
+				// 					foreach($errors as $error){
+				// 						$this->_app->enqueueMessage('Migration: ' . $error);
+				// 					}
+				// 					$userModel->resetErrors();
+				// 					break;
+				// 				}
 				$i++;
 				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 					$continue = false;
@@ -671,7 +675,7 @@ class Migrator extends VmModel{
 		$catModel = VmModel::getModel('Category');
 
 		$default_category_browse = JRequest::getString('migration_default_category_browse','');
-// 		vmdebug('migration_default_category_browse '.$default_category_browse);
+		// 		vmdebug('migration_default_category_browse '.$default_category_browse);
 
 		$default_category_fly = JRequest::getString('migration_default_category_fly','');
 
@@ -687,7 +691,7 @@ class Migrator extends VmModel{
 		$oldCategories = $this->_db->loadAssocList();
 
 		$alreadyKnownIds = $this->getMigrationProgress('cats');
-// 		$oldtonewCats = array();
+		// 		$oldtonewCats = array();
 
 		$category = array();
 		$i = 0;
@@ -705,17 +709,17 @@ class Migrator extends VmModel{
 				$category['created_on'] = $oldcategory['cdate'];
 				$category['modified_on'] = $oldcategory['mdate'];
 
-// 				if($default_category_browse!=$oldcategory['category_browsepage']){
-// 					$browsepage = $oldcategory['category_browsepage'];
-// 					if (strcmp($browsepage, 'managed') ==0 ) {
-// 						$browsepage="browse_".$oldcategory['products_per_row'];
-// 					}
-// 					$category['category_layout'] = $browsepage;
-// 				}
+				/*				if($default_category_browse!=$oldcategory['category_browsepage']){
+				 $browsepage = $oldcategory['category_browsepage'];
+				if (strcmp($browsepage, 'managed') ==0 ) {
+				$browsepage="browse_".$oldcategory['products_per_row'];
+				}
+				$category['category_layout'] = $browsepage;
+				}
 
-// 				if($portFlypages && $default_category_fly!=$oldcategory['category_flypage']){
-// 					$category['category_product_layout'] = $oldcategory['category_flypage'];
-// 				}
+				if($portFlypages && $default_category_fly!=$oldcategory['category_flypage']){
+				$category['category_product_layout'] = $oldcategory['category_flypage'];
+				}*/
 
 				//idea was to do it by the layout, but we store this information additionally for enhanced pagination
 				$category['products_per_row'] = $oldcategory['products_per_row'];
@@ -735,32 +739,20 @@ class Migrator extends VmModel{
 					}
 					break;
 				}
-// 				$table = $this->getTable('categories');
 
-// 				$category = $table->bindChecknStore($category);
-// 				$errors = $table->getErrors();
-// 				if(!empty($errors)){
-// 					foreach($errors as $error){
-// 						vmError($error);
-// 						$ok = false;
-// 					}
-// 					break;
-// 				}
 
 				$alreadyKnownIds[$oldcategory['category_id']] = $category_id;
 				unset($category['virtuemart_category_id']);
 				$i++;
 			}
-// 			else {
-// 				$oldtonewCats[$oldcategory['category_id']] = $alreadyKnownIds[$oldcategory['category_id']];
-// 			}
 
 			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 				break;
 			}
 
 		}
-// here all categories NEW/OLD are Know
+
+		// here all categories NEW/OLD are Know
 		$this->storeMigrationProgress('cats',$alreadyKnownIds);
 		if($ok)
 		$msg = 'Looks everything worked correct, migrated ' . $i . ' categories ';
@@ -784,7 +776,7 @@ class Migrator extends VmModel{
 		$j = 0;
 		$ok = true ;
 		if(!empty($oldCategoriesX)){
-// 			vmdebug('$oldCategoriesX',$oldCategoriesX);
+			// 			vmdebug('$oldCategoriesX',$oldCategoriesX);
 			foreach($oldCategoriesX as $oldcategoryX){
 				$category = array();
 				if(!empty($oldcategoryX['category_parent_id'])){
@@ -840,7 +832,7 @@ class Migrator extends VmModel{
 			$this->_app->enqueueMessage($msg);
 
 			return $ok;
-		}else {
+		} else {
 			$this->_app->enqueueMessage('No categories to import');
 			return $ok;
 		}
@@ -860,7 +852,7 @@ class Migrator extends VmModel{
 		if(!class_exists('TableManufacturercategories')) require(JPATH_VM_ADMINISTRATOR . DS . 'tables' . DS . 'manufacturercategories.php');
 
 		$alreadyKnownIds = $this->getMigrationProgress('mfcats');
-// 		$oldtonewMfCats = array();
+		// 		$oldtonewMfCats = array();
 
 		$mfcategory = array();
 		$i=0;
@@ -885,12 +877,12 @@ class Migrator extends VmModel{
 					break;
 				}
 
-// 				$oldtonewMfCats[$oldmfcategory['mf_category_id']] = $mfcategory['virtuemart_manufacturercategories_id'];
+				// 				$oldtonewMfCats[$oldmfcategory['mf_category_id']] = $mfcategory['virtuemart_manufacturercategories_id'];
 				$alreadyKnownIds[$oldmfcategory['mf_category_id']] = $mfcategory['virtuemart_manufacturercategories_id'];
 				$i++;
 			}
-/*			else {
-				$oldtonewMfCats[$oldmfcategory['mf_category_id']] = $alreadyKnownIds[$oldmfcategory['mf_category_id']];
+			/*			else {
+			 $oldtonewMfCats[$oldmfcategory['mf_category_id']] = $alreadyKnownIds[$oldmfcategory['mf_category_id']];
 			}*/
 
 			unset($mfcategory['virtuemart_manufacturercategories_id']);
@@ -924,8 +916,8 @@ class Migrator extends VmModel{
 		$this->_db->setQuery($q);
 		$oldManus = $this->_db->loadAssocList();
 
-// 		vmdebug('my old manus',$oldManus);
-// 		$oldtonewManus = array();
+		// 		vmdebug('my old manus',$oldManus);
+		// 		$oldtonewManus = array();
 		$oldtoNewMfcats = $this->getMigrationProgress('mfcats');
 		$alreadyKnownIds = $this->getMigrationProgress('manus');
 
@@ -959,9 +951,9 @@ class Migrator extends VmModel{
 				//unset($manu['virtuemart_manufacturer_id']);
 				$i++;
 			}
-// 			else {
-// 				$oldtonewManus[$oldmanu['manufacturer_id']] = $alreadyKnownIds[$oldmanu['manufacturer_id']];
-// 			}
+			// 			else {
+			// 				$oldtonewManus[$oldmanu['manufacturer_id']] = $alreadyKnownIds[$oldmanu['manufacturer_id']];
+			// 			}
 
 			if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 				break;
@@ -990,70 +982,66 @@ class Migrator extends VmModel{
 
 		//approximatly 100 products take a 1 MB
 		$maxItems = $this->_getMaxItems('Products');
-
+// 		$maxItems = 100;
 		$startLimit = 0;
 		$i=0;
 		$continue = true;
 
 		$alreadyKnownIds = $this->getMigrationProgress('products');
 		$oldToNewCats = $this->getMigrationProgress('cats');
-// 		$user = JFactory::getUser();
+		// 		$user = JFactory::getUser();
 
 		//$oldtonewProducts = array();
 		$oldtonewManus = $this->getMigrationProgress('manus');
 
-		vmdebug('$alreadyKnownIds',$alreadyKnownIds);
+		$productModel = VmModel::getModel('product');
+
+		// 		vmdebug('$alreadyKnownIds',$alreadyKnownIds);
 		while($continue){
 
-			$q = 'SELECT * FROM `#__vm_product` AS `p`
-					LEFT JOIN `#__vm_product_price` ON `#__vm_product_price`.`product_id` = `p`.`product_id`
-					LEFT JOIN `#__vm_product_mf_xref` ON `#__vm_product_mf_xref`.`product_id` = `p`.`product_id`
-					ORDER BY p.product_parent_id ASC LIMIT '.$startLimit.','.$maxItems;
-/*			$this->_db->setQuery($q);
-			$oldProducts = $this->_db->loadAssocList();
-			if(empty($oldProducts)){
-				$this->_app->enqueueMessage('_productPorter ' . $this->_db->getErrorMsg());
-				$continue = false;
-				return false;
-			} else {
-				$this->_app->enqueueMessage('Found '.count($oldProducts).' vm1 products to import (there maybe more, but in this step)' );
-				$startLimit += $maxItems;
-				if(count($oldProducts)<$maxItems){
-					$continue = false;
-				}
-			}*/
+			$q = 'SELECT *,`p`.product_id as product_id FROM `#__vm_product` AS `p`
+			LEFT JOIN `#__vm_product_price` ON `#__vm_product_price`.`product_id` = `p`.`product_id`
+			LEFT JOIN `#__vm_product_mf_xref` ON `#__vm_product_mf_xref`.`product_id` = `p`.`product_id`
+			WHERE (`p`.product_id) IS NOT NULL
+			GROUP BY `p`.product_id ORDER BY `p`.product_parent_id LIMIT '.$startLimit.','.$maxItems;
+
 			$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port Products');
 			$oldProducts = $res[0];
 
 			$startLimit = $res[1];
 			$continue = $res[2];
 
-			//vmdebug('in product migrate $oldProducts ',$oldProducts);
+// 			vmdebug('in product migrate $oldProducts ',$oldProducts);
 
-			$productModel = VmModel::getModel('product');
-
-// 			vmdebug('$oldProducts '.count($oldProducts));
+			$exit = false;
+			foreach($oldProducts as $product){
+				if(empty($product['product_id'])){
+					vmdebug('$product["product_id"] is EMPTY?',$product,$q);
+					$exit = true;
+				}
+			}
+			if($exit){
+				vmdebug('portProducts $q',$q);
+// 				return false;
+			}
+			// 			vmdebug('$oldProducts '.count($oldProducts));
 			/* Not in VM1
-			 slug low_stock_notification intnotes metadesc metakey metarobot metaauthor layout published
+			slug low_stock_notification intnotes metadesc metakey metarobot metaauthor layout published
 
-			 created_on created_by modified_on modified_by
-			 product_override_price override link
+			created_on created_by modified_on modified_by
+			product_override_price override link
 
-			 Not in VM2
-			 product_thumb_image product_full_image attribute
-			 custom_attribute child_options quantity_options child_option_ids
-			 shopper_group_id    product_list
-			 */
+			Not in VM2
+			product_thumb_image product_full_image attribute
+			custom_attribute child_options quantity_options child_option_ids
+			shopper_group_id    product_list
+			*/
 
 			//There are so many names the same, so we use the loaded array and manipulate it
-
+// 					$oldProducts = array();
 			foreach($oldProducts as $product){
 
-				if(empty($product['product_id'])){
-					vmdebug('$product["product_id"] is EMPTY?',$product);
-					continue;
-				}
-				if(!array_key_exists($product['product_id'],$alreadyKnownIds)){
+				if(!empty($product['product_id']) and !array_key_exists($product['product_id'],$alreadyKnownIds)){
 
 					$product['virtuemart_vendor_id'] = $product['vendor_id'];
 
@@ -1072,7 +1060,7 @@ class Migrator extends VmModel{
 						foreach($productCats as $cat){
 							//product has category_id and categories?
 							if(!empty($oldToNewCats[$cat])){
-// 								$product['virtuemart_category_id'] = $oldToNewCats[$cat];
+								// 								$product['virtuemart_category_id'] = $oldToNewCats[$cat];
 								//This should be an array, or is it not in vm1? not cleared, may need extra foreach
 								$productcategories[] = $oldToNewCats[$cat];
 							} else {
@@ -1081,26 +1069,26 @@ class Migrator extends VmModel{
 						}
 					}
 					// if(!empty($alreadyKnownIds[$product['product_id']])){
-						// $product_parent_id = $alreadyKnownIds[$product['product_id']];
+					// $product_parent_id = $alreadyKnownIds[$product['product_id']];
 					// }
 					// Converting Attributes from parent product to customfields Cart variant
 					// $q = 'SELECT * FROM `#__vm_product_attribute` WHERE `#__vm_product_attribute`.`product_id` ="'.$product['product_id'].'" ';
 					// $this->_db->setQuery($q);
 					// if(!empty($productAttributes = $this->_db->loadAssocList()) {
 
-						// foreach($productAttributes as $attrib){
-							// //custom select or create it
-							// $q = 'SELECT `virtuemart_custom_id` FROM `#__virtuemart_customs` as c WHERE c.field_type ="V" and c.`custom_title` ="'.$attrib['attribute_name'].'" ';
-							// $this->_db->setQuery($q);
-							// if (!$virtuemart_custom_id = $this->_db->loadResult()) {
-								// $customModel = VmModel::getModel('Custom');
-								// $attrib['custom_title'] = $attrib['attribute_name'];
-								// $attrib['custom_value'] = $attrib['attribute_value'];
-								// $attrib['is_cart_attribute'] = '1';
+					// foreach($productAttributes as $attrib){
+					// //custom select or create it
+					// $q = 'SELECT `virtuemart_custom_id` FROM `#__virtuemart_customs` as c WHERE c.field_type ="V" and c.`custom_title` ="'.$attrib['attribute_name'].'" ';
+					// $this->_db->setQuery($q);
+					// if (!$virtuemart_custom_id = $this->_db->loadResult()) {
+					// $customModel = VmModel::getModel('Custom');
+					// $attrib['custom_title'] = $attrib['attribute_name'];
+					// $attrib['custom_value'] = $attrib['attribute_value'];
+					// $attrib['is_cart_attribute'] = '1';
 
-								// $customModel->store($attrib);
-							// }
-						// }
+					// $customModel->store($attrib);
+					// }
+					// }
 					// }
 
 					// Attributes End
@@ -1127,6 +1115,10 @@ class Migrator extends VmModel{
 
 					$product['product_currency'] = $this->_ensureUsingCurrencyId($product['product_currency']);
 
+					if(!empty($product['product_s_desc'])){
+						$product['product_s_desc'] = stripslashes($product['product_s_desc']);
+					}
+
 					if(empty($product['product_name'] )){
 						$product['product_name'] =  $product['product_sku'].':'.$product['product_id'].':'.$product['product_s_desc'];
 					}
@@ -1139,7 +1131,7 @@ class Migrator extends VmModel{
 
 					if(!empty($alreadyKnownIds[$product['product_parent_id']])){
 						$product['product_parent_id'] = $alreadyKnownIds[$product['product_parent_id']];
-// 						vmInfo('new parent id : '. $product['product_parent_id']);
+						// 						vmInfo('new parent id : '. $product['product_parent_id']);
 					} else {
 						$product['product_parent_id'] = 0;
 					}
@@ -1152,7 +1144,6 @@ class Migrator extends VmModel{
 						vmdebug('$product["virtuemart_product_id"] or $product["product_id"] is EMPTY?',$product);
 					}
 
-
 					$errors = $productModel->getErrors();
 					if(!empty($errors)){
 						foreach($errors as $error){
@@ -1164,12 +1155,8 @@ class Migrator extends VmModel{
 						break;
 					}
 					$i++;
-
 				}
-// 				 else {
-					//$oldtonewProducts[$product['product_id']] = $alreadyKnownIds[$product['product_id']];
-// 				}
-// 				unset($product['virtuemart_product_id']);
+
 				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 					vmdebug('Product import breaked, you may rise the execution time, this is not an error, just a hint');
 					$continue = false;
@@ -1177,11 +1164,10 @@ class Migrator extends VmModel{
 				}
 
 			}
+
+			$this->storeMigrationProgress('products',$alreadyKnownIds);
+			vmInfo('Migration: '.$i.' products processed ');
 		}
-
-		$this->storeMigrationProgress('products',$alreadyKnownIds);
-		vmInfo('Migration: '.$i.' products processed ');
-
 		return $ok;
 	}
 
@@ -1212,7 +1198,7 @@ class Migrator extends VmModel{
 				return $virtuemart_media_id;
 			} else {
 
-// 				vmdebug('No media found for '.$type.' '.$filename);
+				// 				vmdebug('No media found for '.$type.' '.$filename);
 			}
 		}
 	}
@@ -1240,12 +1226,16 @@ class Migrator extends VmModel{
 		$startLimit = 0;
 		$i = 0;
 		$continue=true;
+
+		$reWriteOrderNumber = JRequest::getInt('reWriteOrderNumber',0);
+		$userOrderId = JRequest::getInt('userOrderId',0);
+
 		while($continue){
 
-			$q = 'SELECT `o`.*, `op`.*, `o`.`order_number` as `vm1_order_number`, `o2`.`order_number` as `nr2` FROM `#__vm_orders` as `o`
+			$q = 'SELECT `o`.*, `op`.*, `o`.`order_number` as `vm1_order_number`, `o2`.`order_number` as `nr2`,`o`.order_id FROM `#__vm_orders` as `o`
 				LEFT OUTER JOIN `#__vm_order_payment` as `op` ON `op`.`order_id` = `o`.`order_id`
 				LEFT JOIN `#__virtuemart_orders` as `o2` ON `o2`.`order_number` = `o`.`order_number`
-				WHERE (o2.order_number) IS NULL ORDER BY o.cdate LIMIT '.$startLimit.','.$maxItems;
+				WHERE (o2.order_number) IS NULL ORDER BY o.order_id LIMIT '.$startLimit.','.$maxItems;
 
 			$res = self::loadCountListContinue($q,$startLimit,$maxItems,'port Orders');
 			$oldOrders = $res[0];
@@ -1261,8 +1251,8 @@ class Migrator extends VmModel{
 					$orderData->virtuemart_user_id = $order['user_id'];
 					$orderData->virtuemart_vendor_id = $order['vendor_id'];
 
-					if(JRequest::getInt('reWriteOrderNumber',0)==0){
-						if(JRequest::getInt('userOrderId',0)==1){
+					if($reWriteOrderNumber==0){
+						if($userOrderId==1){
 							$orderData->order_number = $order['order_id'];
 						} else {
 							$orderData->order_number = $order['vm1_order_number'];
@@ -1391,11 +1381,13 @@ class Migrator extends VmModel{
 						}
 					}
 
+
 					//$this->_app->enqueueMessage('Migration: '.$i.' order processed new id '.$newId);
 				}
-// 				 else {
-// 					$oldtonewOrders[$order['order_id']] = $alreadyKnownIds[$order['order_id']];
-// 				}
+				$this->storeMigrationProgress('orders',$alreadyKnownIds);
+				// 				 else {
+				// 					$oldtonewOrders[$order['order_id']] = $alreadyKnownIds[$order['order_id']];
+				// 				}
 
 				if((microtime(true)-$this->starttime) >= ($this->maxScriptTime)){
 					$continue = false;
@@ -1631,14 +1623,14 @@ class Migrator extends VmModel{
 
 		$dimensionUnitMigrate=array (
                   'mm' => 'MM'
-                  , 'cm' => 'CM'
-                  , 'm' => 'M'
-                  , 'yd' => 'YD'
-                  , 'foot' => 'FT'
-                  , 'ft' => 'FT'
-                  , 'inch' => 'IN'
-                  );
-                  return $dimensionUnitMigrate;
+		, 'cm' => 'CM'
+		, 'm' => 'M'
+		, 'yd' => 'YD'
+		, 'foot' => 'FT'
+		, 'ft' => 'FT'
+		, 'inch' => 'IN'
+		);
+		return $dimensionUnitMigrate;
 	}
 	/**
 	 *
@@ -1649,14 +1641,14 @@ class Migrator extends VmModel{
 	function getWeightUnitMigrateValues() {
 		$weightUnitMigrate=array (
                   'kg' => 'KG'
-                  , 'kilos' => 'KG'
-                  , 'gr' => 'GR'
-                  , 'pound' => 'LB'
-                  , 'livre' => 'LB'
-                  , 'once' => 'OZ'
-                  , 'ounce' => 'OZ'
-                  );
-                  return $weightUnitMigrate;
+		, 'kilos' => 'KG'
+		, 'gr' => 'GR'
+		, 'pound' => 'LB'
+		, 'livre' => 'LB'
+		, 'once' => 'OZ'
+		, 'ounce' => 'OZ'
+		);
+		return $weightUnitMigrate;
 	}
 
 	/**
@@ -1802,17 +1794,17 @@ class Migrator extends VmModel{
 	}
 
 	private function _attributesToJson($attributes){
-			if ( !trim($attributes) ) return '';
-			$attributesArray = explode(";", $attributes);
-			foreach ($attributesArray as $valueKey) {
-				// do the array
-				$tmp = explode(":", $valueKey);
-				if ( count($tmp) == 2 ) {
-					if ($pos = strpos($tmp[1], '[')) $tmp[1] = substr($tmp[1], 0, $pos) ; // remove price
-					$newAttributes['attributs'][$tmp[0]] = $tmp[1];
-				}
+		if ( !trim($attributes) ) return '';
+		$attributesArray = explode(";", $attributes);
+		foreach ($attributesArray as $valueKey) {
+			// do the array
+			$tmp = explode(":", $valueKey);
+			if ( count($tmp) == 2 ) {
+				if ($pos = strpos($tmp[1], '[')) $tmp[1] = substr($tmp[1], 0, $pos) ; // remove price
+				$newAttributes['attributs'][$tmp[0]] = $tmp[1];
 			}
-			return json_encode($newAttributes,JSON_FORCE_OBJECT);
+		}
+		return json_encode($newAttributes,JSON_FORCE_OBJECT);
 	}
 }
 
