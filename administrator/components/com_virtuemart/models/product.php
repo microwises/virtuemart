@@ -344,7 +344,7 @@ class VirtueMartModelProduct extends VmModel {
 		//Group case from the modules
 		if($group){
 
-			$groupBy = 'group by p.`product_parent_id`';
+			$groupBy = 'group by p.`virtuemart_product_id`';
 			switch ($group) {
 				case 'featured':
 					$where[] = 'p.`product_special`="1" ';
