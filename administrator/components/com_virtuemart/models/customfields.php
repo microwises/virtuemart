@@ -661,6 +661,17 @@ class VirtueMartModelCustomfields extends VmModel {
 							$group->display .= '<div class="price-plugin">' . JText::_('COM_VIRTUEMART_CART_PRICE') . '<span class="price-plugin">' . $price . '</span></div>';
 						}
 					}
+				} else if ($group->field_type == 'A'){
+					$group->display ='';
+					foreach ($group->options as $productCustom) {
+						if ((float)$productCustom->custom_price ) {
+						    $price = $currency->priceDisplay($calculator->calculateCustomPriceWithTax($productCustom->custom_price));
+						} else  {
+						    $price = ($productCustom->custom_price==='') ? '' : $free ;
+						}
+						$group->display .= $this->displayType($productCustom->custom_value,$group->field_type,0,'',$row,1) ;
+						$checked ='';
+					}
 				} else {
 					$group->display ='';
 					$checked = 'checked="checked"';

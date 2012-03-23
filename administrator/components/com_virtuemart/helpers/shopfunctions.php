@@ -447,6 +447,49 @@ class ShopFunctions {
 		}
 		return $value;
 	}
+	
+	/**
+	 * Convert Metric Unit
+	 *
+	 * @author Florian Voutzinos
+	 */
+	function convertDimensionUnit($value, $from, $to) {
+
+		$value = (float)str_replace(',', '.', $value);
+		$meter = 1 ;
+		
+		// transform $value in meters
+		switch ($from) {
+			case 'CM': $meter = 0.01*$value;
+			break;
+			case 'MM': $meter = 0.001*$value;
+			break;
+			case 'YD': $meter = 1.0936*$value;
+			break;
+			case 'FT': $meter = 3.28083*$value;
+			break;
+			case 'IN': $meter = 39.37*$value;
+			break;
+		}
+		switch ($to) {
+			case 'CM' :
+				$value = round($meter*0.01, 2);
+				break;
+			case 'MM' :
+				$value = round($meter*0.001, 2);
+				break;
+			case 'YD' :
+				$value = round($meter*0.9144 , 2);
+				break;
+			case 'FT' :
+				$value = round($meter*0.3048, 2);
+				break;
+			case 'IN' :
+				$value = round($meter*0.0254, 2);
+				break;
+		}
+		return $value;
+	}
 
 	/**
 	 * Renders the list for the Lenght, Width, Height Unit

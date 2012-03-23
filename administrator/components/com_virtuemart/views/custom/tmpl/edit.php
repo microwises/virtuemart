@@ -40,10 +40,11 @@ AdminUIHelper::startAdminArea();
 		<td>
 		    <fieldset>
 			<?php echo $this->pluginList ?>
+    			<div id="plugin-Container">
 			<?php
 			if (!empty($this->customPlugin)) {
 			    ?>
-    			<div  id="plugin-Container">
+
 
 				<?php
 				$parameters = new vmParameters($this->customPlugin, $this->customPlugin->custom_element, 'plugin', 'vmcustom');
@@ -62,25 +63,29 @@ AdminUIHelper::startAdminArea();
     <?php } ?>
 </form>
 <script type="text/javascript">
-    function submitbutton(pressbutton) {
+function submitbutton(pressbutton) {
 	if (pressbutton=='cancel') submitform(pressbutton);
 	if (jQuery('#adminForm').validationEngine('validate')== true) submitform(pressbutton);
 	else return false ;
-    }
-<?php if ($this->custom->field_type !== "E") { ?>jQuery('#custom_plg').hide();<?php } ?>
-    jQuery('#field_type').change(function () {
-	var $selected = jQuery(this).val();
-	if ($selected == "E" ) jQuery('#custom_plg').show();
-	else { jQuery('#custom_plg').hide();
-	    jQuery('#custom_jplugin_id option:eq(0)').attr("selected", "selected");
-	    jQuery('#custom_jplugin_id').change();
+}
+jQuery(function($) {
+
+<?php if ($this->custom->field_type !== "E") { ?>$('#custom_plg').hide();<?php } ?>
+    $('#field_type').change(function () {
+	var $selected = $(this).val();
+	if ($selected == "E" ) $('#custom_plg').show();
+	else { $('#custom_plg').hide();
+	    $('#custom_jplugin_id option:eq(0)').attr("selected", "selected");
+	    $('#custom_jplugin_id').change();
 	}
 
     });
-    jQuery('#custom_jplugin_id').change(function () {
-	var $id = jQuery(this).val();
-	jQuery('#plugin-Container').load( 'index.php?option=com_virtuemart&view=custom&task=viewJson&format=json&custom_jplugin_id='+$id , function() { jQuery(this).find("[title]").vm2admin('tips',tip_image) });
+    $('#custom_jplugin_id').change(function () {
+	var $id = $(this).val();
+	$('#plugin-Container').load( 'index.php?option=com_virtuemart&view=custom&task=viewJson&format=json&custom_jplugin_id='+$id , function() { 
+	$(this).find("[title]").vm2admin('tips',tip_image) });
 
     });
+});
 </script>
 <?php AdminUIHelper::endAdminArea(); ?>
