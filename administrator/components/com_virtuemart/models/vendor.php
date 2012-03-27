@@ -177,8 +177,9 @@ class VirtueMartModelVendor extends VmModel {
 	}
 
 	//set vendormodel id to the lastinserted one
-	$dbv = $table->getDBO();
-	if(empty($this->_id)) $this->_id = $dbv->insertid();
+// 	$dbv = $table->getDBO();
+// 	if(empty($this->_id)) $this->_id = $dbv->insertid();
+	if(empty($this->_id)) $this->_id = $table->virtuemart_vendor_id;
 
 	if($this->_id!=$oldVendorId){
 
@@ -205,7 +206,7 @@ class VirtueMartModelVendor extends VmModel {
 	// Process the images
 	$mediaModel = VmModel::getModel('Media');
 	$mediaModel->storeMedia($data,'vendor');
-    $errors = $mediaModel->getErrors();
+   $errors = $mediaModel->getErrors();
 	foreach($errors as $error){
 		vmError($error);
 	}
@@ -356,7 +357,7 @@ class VirtueMartModelVendor extends VmModel {
 
 		$userId = self::getUserIdByVendorId($virtuemart_vendor_id);
 		$usermodel = VmModel::getModel('user');
-		
+
 		$virtuemart_userinfo_id = $usermodel->getBTuserinfo_id($userId);
 		$vendorAdressBt = $this->getTable('userinfos');
 		$vendorAdressBt->load($virtuemart_userinfo_id);

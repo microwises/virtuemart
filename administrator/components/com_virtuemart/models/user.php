@@ -807,7 +807,7 @@ class VirtueMartModelUser extends VmModel {
 			$vendorModel->setId($data['virtuemart_vendor_id']);
 
 			if (!$vendorModel->store($data)) {
-				vmError($vendorModel->getError());
+				vmError('storeVendorData '.$vendorModel->getError());
 				vmdebug('Error storing vendor',$vendorModel);
 				return false;
 			}
