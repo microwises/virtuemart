@@ -22,6 +22,7 @@
 	<param type="spacer" default="VMPAYMENT_AUTHORIZENET_MUST_SSL" level="level1" />
 	<param type="spacer" default=" " level="level1" />
 	<param type="spacer" default="VMPAYMENT_AUTHORIZENET_PARAMS" level="level1" />
+	<param name="hostname" type="text" size="50" default="https://secure.authorize.net/gateway/transact.dll" label="VMPAYMENT_AUTHORIZENET_HOSTNAME" description="VMPAYMENT_AUTHORIZENET_HOSTNAME_DESC"/>
 	<param name="login_id" type="text" size="50" default="" label="VMPAYMENT_AUTHORIZENET_LOGIN_ID" description="VMPAYMENT_AUTHORIZENET_LOGIN_ID_DESC"/>
 	<param name="transaction_key" type="text" ize="50" default="" label="VMPAYMENT_AUTHORIZENET_TRANSACTION_KEY" description="VMPAYMENT_AUTHORIZENET_TRANSACTION_KEY_DESC"   />
 	<param name="secure_post" type="radio" default="0" label="VMPAYMENT_AUTHORIZENET_SECURE_POST" description="VMPAYMENT_AUTHORIZENET_SECURE_POST_DESC">
@@ -34,6 +35,8 @@
 	    <option value="0">COM_VIRTUEMART_NO</option>
 	    <option value="1">COM_VIRTUEMART_YES</option>
 	</param>
+	<param name="sandbox_hostname" type="text" size="50" default="https://test.authorize.net/gateway/transact.dll" label="VMPAYMENT_AUTHORIZENET_SANDBOX_HOSTNAME" description="VMPAYMENT_AUTHORIZENET_SANDBOX_HOSTNAME_DESC"/>
+
 	<param name="sandbox_login_id" type="text" size="50" default="" label="VMPAYMENT_AUTHORIZENET_SANDBOX_LOGIN_ID" description="VMPAYMENT_AUTHORIZENET_SANDBOX_LOGIN_ID_DESC"/>
 	<param name="sandbox_transaction_key" type="text" size="50" default="" label="VMPAYMENT_AUTHORIZENET_SANDBOX_TRANSACTION_KEY" description="VMPAYMENT_AUTHORIZENET_SANDBOX_TRANSACTION_KEY_DESC"  />
 
@@ -48,10 +51,10 @@
 	    <option value="JCB">VMPAYMENT_AUTHORIZENET_JCB</option>
 	</param>
 	<param	name="payment_logos" type="vmfiles" label="VMPAYMENT_AUTHORIZENET_LOGOS"
-			description="VMPAYMENT_AUTHORIZENET_LOGOS_DESC"
-			directory="/images/stories/virtuemart/payment"
-			default="default" hide_default="1" hide_none="1"
-			stripext="0"  exclude="^_" />
+		description="VMPAYMENT_AUTHORIZENET_LOGOS_DESC"
+		directory="/images/stories/virtuemart/payment"
+		default="default" hide_default="1" hide_none="1"
+		stripext="0"  exclude="^_" />
 	<param	name="cvv_images" type="vmfiles" label="VMPAYMENT_AUTHORIZENET_CVVIMAGES"
 		description="VMPAYMENT_AUTHORIZENET_CVVIMAGES_DESC"
 		directory="/images/stories/virtuemart/payment"

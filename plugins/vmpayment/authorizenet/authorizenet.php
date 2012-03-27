@@ -1,18 +1,23 @@
 <?php
 
-/*
- * @version $Id:
- * @package VirtueMart
- * @subpackage Plugins - payment
+/**
+ * @version $Id: standard.php,v 1.4 2005/05/27 19:33:57 ei
+ *
+ * a special type of 'cash on delivey':
  * @author Valérie Isaksen
- * @copyright Copyright (C) 2011 alatak.net  - All rights reserved.
- * @license license.txt Proprietary License. This code belongs to alatak.net
- * You are not allowed to distribute or sell this code.
- * You are not allowed to modify this code.
- * http://www.alatak.net
+ * @version $Id: authorize.php 5122 2011-12-18 22:24:49Z alatak $
+ * @package VirtueMart
+ * @subpackage payment
+ * @copyright Copyright (C) 2004-2008 soeren - All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
+ * VirtueMart is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See /administrator/components/com_virtuemart/COPYRIGHT.php for copyright notices and details.
+ *
+ * http://virtuemart.net
  */
-
-
 defined('_JEXEC') or die('Restricted access');
 
 
@@ -69,7 +74,7 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
 
 	$this->_loggable = true;
 	$this->_tablepkey = 'id';
-	$this->_tableId = 'id';  
+	$this->_tableId = 'id';
 	$this->tableFields = array_keys($this->getTableSQLFields());
 	$varsToPush = array(
 	    'login_id' => array('', 'int'),
@@ -680,8 +685,19 @@ class plgVmpaymentAuthorizenet extends vmPSPlugin {
      * @access protected
      */
     function _getPostUrl($method) {
-
-	return $method->sandbox ? 'https://test.authorize.net/gateway/transact.dll' : 'https://secure.authorize.net/gateway/transact.dll';
+	if ($method->sandbox) {
+	    if (isset($method->sandbox_hostname)) {
+		return $method->sandbox_hostname;
+	    } else {
+		return 'https://test.authorize.net/gateway/transact.dll';
+	    }
+	} else {
+	    if (isset($method->hostname)) {
+		return $method->hostname;
+	    } else {
+		return 'https://secure.authorize.net/gateway/transact.dll';
+	    }
+	}
     }
 
     function _recurringPayment($method) {
