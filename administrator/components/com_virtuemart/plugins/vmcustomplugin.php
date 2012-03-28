@@ -91,9 +91,37 @@ abstract class vmCustomPlugin extends vmPlugin {
     	//$field->custom_param = $custom_param;
     	foreach($custom_param as $k => $v){
     		if(!empty($v)){
-				//echo ' $k:'.$k.' $v:'.$v;
+				
     			$field->$k = $v;
     		}
+    	}
+	}
+	/*
+	 * helper to get plugin parameters as object
+	 * All params are added to $this->params plugin
+	 */
+	public function getCustomParams(&$field) {
+
+    	VmTable::bindParameterable($field,'custom_params',$this->_varsToPushParam);
+
+    	if (empty($field->custom_element)) return 0 ;
+    	foreach($this->_varsToPushParam as $k => $v){
+    		if(!isset($this->params->$k)){
+    			$this->params->$k = $field->$k;
+    		} 
+		// vmdebug('fields org '.$this->_name,$this->params);
+    	}
+		$this->virtuemart_custom_id = $field->virtuemart_custom_id ;
+    	if (!empty($field->custom_param) && is_string($field->custom_param)) $this->params = json_decode($field->custom_param);
+    	else return ;
+
+    	//$field->custom_param = $custom_param;
+/* vmdebug('$this->_varsToPushParam '.$this->_name,$this->_varsToPushParam ); */
+    	foreach($this->_varsToPushParam as $k => $v){
+    		if(!isset($this->params->$k)){
+    			$this->params->$k = $field->$k;
+    		} 
+
     	}
 
 	}
@@ -110,6 +138,24 @@ abstract class vmCustomPlugin extends vmPlugin {
 				if (!is_string($v) ) continue ;// Only get real Table variable
 				if (isset($field->$k) && $v===0) continue ;
 				$field->$k = $v;
+			}
+		}
+
+	}
+	/*
+	 * helper to get plugin table as object
+	 * All params are added to $this->params plugin
+	 */
+	protected function getPluginCustomData(&$field,$product_id){
+
+		$id = $this->getIdForCustomIdProduct( $product_id,$field->virtuemart_custom_id) ;
+
+	 	$datas = $this->getPluginInternalData($id);
+		if($datas){
+			foreach($this->_varsToPushParam as $k => $v){
+				//if (!is_string($datas->$k) ) continue ;// Only get real Table variable
+				if (isset($this->params->$k) && $datas->$k==0) continue ;
+				$this->params->$k = $datas->$k;
 			}
 		}
 

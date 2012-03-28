@@ -75,7 +75,7 @@ if ($product_parent_id=JRequest::getInt('product_parent_id', false))   $col_prod
 		<th><input type="checkbox" name="toggle" value="" onclick="checkAll('<?php echo count($this->productlist); ?>')" /></th>
 		<th><?php echo $this->sort('product_name',$col_product_name) ?> </th>
 		<?php if (!$product_parent_id ) { ?>
-                <th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_CHILDREN_OF'); ?></th>
+                <th><?php echo $this->sort('product_parent_id','COM_VIRTUEMART_PRODUCT_CHILDREN_OF'); ?></th>
                 <?php } ?>
                 <th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_PARENT_LIST_CHILDREN'); ?></th>
                 <th><?php echo JText::_('COM_VIRTUEMART_PRODUCT_MEDIA'); ?></th>

@@ -419,5 +419,34 @@ abstract class vmPlugin extends JPlugin {
 		vmdebug('removePluginInternalData $id '.$id.' and $primaryKey '.$primaryKey);
 		return $this->_vmpItable->delete($id);
 	}
+	/**
+	 * Get the path to a layout for a type
+	 *
+	 * @param   string  $type  The name of the type
+	 * @param   string  $layout  The name of the type layout. If alternative
+	 *                           layout, in the form template:filename.
+	 * @param   unknow  $params  The params you want to use in the layout
+	 *                           can be an object/array/string... to reuse in the template
+	 * @return  string  The path to the type layout
+	 * original from libraries\joomla\application\module\helper.php
+	 * @since   11.1
+	 */
+	protected function renderByLayout( $layout = 'default',$params=null)
+	{
 
+		$template = JFactory::getApplication()->getTemplate();
+
+		// Build the template and base path for the layout
+		$path = JPATH_THEMES.'/'.$template.'/html/plugins/vm'.$this->_psType.'/'.$this->_name.'/'.$layout.'.php';
+		
+
+		// If the template has a layout override use it 
+		if (!file_exists($path)) {
+			$path = JPATH_BASE.'/plugins/vm'.$this->_psType.'/'.$this->_name.'/tmpl/'.$layout.'.php';
+		}
+		// Use TMPL file as normal PHP/HTML
+			ob_start();
+			require($path); 
+			return ob_get_clean();
+	}
 }

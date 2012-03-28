@@ -29,6 +29,7 @@ AdminUIHelper::startAdminArea();
 		<tr>
 		    <td align="left" width="100%">
 <?php echo $this->displayDefaultViewSearch('COM_VIRTUEMART_ORDER_PRINT_NAME'); ?>
+<?php echo JText::_('COM_VIRTUEMART_ORDERSTATUS').':'. $this->lists['state_list']; ?>
 		    </td>
 		</tr>
 	    </table>

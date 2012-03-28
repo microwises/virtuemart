@@ -51,7 +51,7 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 
 
 	// get product param for this plugin on edit
-	function plgVmOnProductEdit($field, $product, &$row,&$retValue) {
+	function plgVmOnProductEdit($field, $product_id, &$row,&$retValue) {
 		if ($field->custom_element != $this->_name) return '';
 		// $html .='<input type="text" value="'.$field->custom_size.'" size="10" name="custom_param['.$row.'][custom_size]">';
 		$this->parseCustomParams($field);
@@ -77,32 +77,13 @@ class plgVmCustomTextinput extends vmCustomPlugin {
 	function plgVmOnDisplayProductVariantFE($field,&$idx,&$group) {
 		// default return if it's not this plugin
 		 if ($field->custom_element != $this->_name) return '';
-		$this->parseCustomParams($field);
-		$class='';
-		//if ($field->custom_price_by_letter) $class='vmcustom-textinput';
-		$html=': <input class="'.$class.'" type="text" value="" size="'.$field->custom_size.'" name="customPlugin['.$field->virtuemart_custom_id.']['.$this->_name.'][comment]"><br />';
-		static $textinputjs;
-		$group->display .= $html;
-		// preventing 2 x load javascript
-		if ($textinputjs) return true;
-		$textinputjs = true ;
-		//javascript to update price
-		$document = JFactory::getDocument();
-		$document->addScriptDeclaration('
-	jQuery(document).ready( function($) {
-		$(".vmcustom-textinput").keyup(function() {
-				formProduct = $(".productdetails-view").find(".product");
-				virtuemart_product_id = formProduct.find(\'input[name="virtuemart_product_id[]"]\').val();
-			$.setproducttype(formProduct,virtuemart_product_id);
-			});
-		$(".selfcall").click(function() {
-			$.getJSON("index.php?option=com_virtuemart&view=plugin&format=json",
-			function(data) {
-				console.log(data);
-			});
-		});
-	});
-		');
+		$this->getCustomParams($field);
+			// ob_start();
+			// require($this->getLayoutPath('default')); 
+			// $html = ob_get_clean();
+		
+		$group->display .= $this->renderByLayout('default',array($field,&$idx,&$group ) );
+
 
 		return true;
 //         return $html;

@@ -24,6 +24,22 @@ AdminUIHelper::startAdminArea();
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
+<div id="header">
+<div id="filterbox">
+	<table class="">
+		<tr>
+			<td align="left">
+			<?php echo $this->displayDefaultViewSearch() ?>
+			</td>
+
+		</tr>
+	</table>
+	</div>
+	<div id="resultscounter"><?php echo $this->pagination->getResultsCounter(); ?></div>
+
+</div>
+
+
 	<div id="editcell">
 		<table class="adminlist" cellspacing="0" cellpadding="0">
 		<thead>
