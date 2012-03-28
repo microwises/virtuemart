@@ -434,10 +434,8 @@ abstract class vmPlugin extends JPlugin {
 	$layout = $this->_getLayoutPath($this->_name, 'vm' . $this->_psType, $layout);
 	ob_start();
 	require ( $layout );
-	$html = ob_get_contents();
-	ob_end_clean();
+	return ob_get_clean();
 
-	return $html;
     }
 
     /**
