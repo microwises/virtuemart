@@ -225,19 +225,15 @@ class plgVmShipmentWeight_countries extends vmPSPlugin {
 	$method->zip_stop = (int) $method->zip_stop;
 	$method->nbproducts_start = (int) $method->nbproducts_start;
 	$method->nbproducts_stop = (int) $method->nbproducts_stop;
+	$method->free_shipment = (float) $method->free_shipment;
     }
 
     private function _weightCond($orderWeight, $method) {
 
-$a=$orderWeight >= $method->weight_start AND $orderWeight <= $method->weight_stop;
-$b=$method->weight_start <= $orderWeight AND $method->weight_stop == '' ;
-$c=  $method->weight_stop === '' ;
-$d=empty($method->weight_stop );
-$e=$method->weight_stop ;
 	    $weight_cond = ( ($orderWeight >= $method->weight_start AND $orderWeight <= $method->weight_stop  )
 		    OR
 		    ($method->weight_start <= $orderWeight AND $method->weight_stop === ''   ) );
-	 
+
 	return $weight_cond;
     }
 
