@@ -338,8 +338,6 @@ class VirtueMartModelMedia extends VmModel {
 		// workarround for media published and product published two fields in one form.
 		if (isset($data['media_published'])){
 			$data['published'] = $data['media_published'];
-		} else {
-			$data['published'] = 0;
 		}
 
 		$table->bindChecknStore($data);

@@ -218,9 +218,16 @@ class TableMedias extends VmTable {
 		     } else {
 			     if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 
-			     $lastIndexOfSlash= strrpos($this->file_url,'/');
-			     $name = substr($this->file_url,$lastIndexOfSlash+1);
-			     $file_extension = strtolower(JFile::getExt($name));
+			     if(!$this->file_is_forSale){
+			     		$lastIndexOfSlash= strrpos($this->file_url,'/');
+			     		$name = substr($this->file_url,$lastIndexOfSlash+1);
+			     		$file_extension = strtolower(JFile::getExt($name));
+			     } else {
+			     	$lastIndexOfSlash= strrpos($this->file_url,DS);
+			     	$name = substr($this->file_url,$lastIndexOfSlash+1);
+			     	$file_extension = strtolower(JFile::getExt($name));
+			     }
+
 			     if( empty($name) ){
 				     vmError(JText::_('COM_VIRTUEMART_NO_MEDIA'));
 			     }
@@ -260,6 +267,9 @@ class TableMedias extends VmTable {
 			     }
 		        elseif($file_extension === 'gz'){
 			     	$this->file_mimetype = 'application/x-gzip';
+			     }
+			     elseif($file_extension === 'exe'){
+			     	$this->file_mimetype = 'application/octet-stream';
 			     }
 			     else{
 				     vmError(JText::sprintf('COM_VIRTUEMART_MEDIA_SHOULD_HAVE_MIMETYPE',$name));

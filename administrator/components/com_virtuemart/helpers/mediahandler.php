@@ -91,6 +91,7 @@ class VmMediaHandler {
 			}else {
 				$relUrl = $safePath;
 				$choosed = true;
+				$this->file_is_forSale==1;
 			}
 
 		}
@@ -114,7 +115,7 @@ class VmMediaHandler {
 			$relUrl = 'images/stories/virtuemart/typeless/';
 			$this->setRole=true;
 
-		} else if( $this->file_is_forSale==1){
+		} else if(!$choosed and $this->file_is_forSale==1){
 			$relUrl = '';
 			$this->setRole=false;
 		}
@@ -141,6 +142,7 @@ class VmMediaHandler {
 		if(!class_exists('JFile')) require(JPATH_VM_LIBRARIES.DS.'joomla'.DS.'filesystem'.DS.'file.php');
 		//			$extension = $this->file_extension = strtolower(JFile::getExt($table->file_url));
 		$extension = strtolower(JFile::getExt($table->file_url));
+
 		$isImage = self::isImage($extension);
 		//		} else {
 		//			$isImage = true;
@@ -166,8 +168,9 @@ class VmMediaHandler {
 		} else {
 			$media->file_type = $type;
 		}
-		$media->setFileInfo($type);
 
+		$media->setFileInfo($type);
+		vmdebug('createMedia',$type,$media);
 		return $media;
 	}
 
@@ -191,7 +194,7 @@ class VmMediaHandler {
 		foreach($attribsImage as $k=>$v){
 			$data[$k] = $v;
 		}
-
+		vmdebug();
 		return $data;
 	}
 
@@ -210,7 +213,7 @@ class VmMediaHandler {
 		$this->file_path_folder = '';
 		$this->file_url_folder_thumb = '';
 
-		if($this->file_is_forSale==0){
+		if($this->file_is_forSale==0 and $type!='forSale'){
 
 			$this->file_url_folder = $this->getMediaUrlByView($type);
 			$this->file_url_folder_thumb = $this->file_url_folder.'resized/';
@@ -692,7 +695,7 @@ class VmMediaHandler {
 
 			$this->file_is_product_image = 0;
 			$this->file_is_downloadable = 0;
-			$this->file_is_forSale = 0;
+// 			$this->file_is_forSale = 0;
 
 			if(empty($data['media_roles'])) return $data;
 

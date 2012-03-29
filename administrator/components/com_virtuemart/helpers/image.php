@@ -103,6 +103,7 @@ class VmImage extends VmMediaHandler {
 	public function createThumb() {
 
 		$synchronise = JRequest::getString('synchronise',false);
+
 		if(!VmConfig::get('img_resize_enable') || $synchronise) return;
 		//now lets create the thumbnail, saving is done in this function
 		$width = VmConfig::get('img_width', 90);
@@ -118,6 +119,8 @@ class VmImage extends VmMediaHandler {
 		$bgblue = 255;
 
 		$root = '';
+		$this->file_name_thumb = $this->createThumbName();
+
 		if($this->file_is_forSale==0){
 
 			$rel_path = str_replace('/',DS,$this->file_url_folder);
@@ -127,7 +130,6 @@ class VmImage extends VmMediaHandler {
 			$fullSizeFilenamePath = $this->file_url_folder.$this->file_name.'.'.$this->file_extension;
 		}
 
-		$this->file_name_thumb = $this->createThumbName();
 		$file_path_thumb = str_replace('/',DS,$this->file_url_folder_thumb);
 		$resizedFilenamePath = JPATH_ROOT.DS.$file_path_thumb.$this->file_name_thumb.'.'.$this->file_extension;
 

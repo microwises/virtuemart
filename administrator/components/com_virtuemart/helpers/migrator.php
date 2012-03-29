@@ -74,7 +74,6 @@ class Migrator extends VmModel{
 			$this->_app->enqueueMessage('Found prior migration process, resume migration maxScriptTime '.$this->maxScriptTime.' maxMemoryLimit '.$this->maxMemoryLimit/(1024*1024));
 		}
 
-		JRequest::setVar('synchronise',true);
 	}
 
 	private function return_bytes($val) {
@@ -218,7 +217,7 @@ class Migrator extends VmModel{
 	public function portMedia(){
 
 		$ok = true;
-
+		JRequest::setVar('synchronise',true);
 		//Prevents search field from interfering with syncronization
 		JRequest::setVar('searchMedia', '');
 
@@ -233,9 +232,14 @@ class Migrator extends VmModel{
 		//check for entries without file
 		foreach($this->storedMedias as $media){
 
-			$media_path = JPATH_ROOT.DS.str_replace('/',DS,$media->file_url);
+			if($media->file_is_forSale!=1){
+				$media_path = JPATH_ROOT.DS.str_replace('/',DS,$media->file_url);
+			} else {
+				$media_path = $media->file_url;
+			}
+
 			if(!file_exists($media_path)){
-				vmInfo('File for '.$media->file_url.' is missing');
+				vmInfo('File for '.$media_path.' is missing');
 
 				//The idea is here to test if the media with missing data is used somewhere and to display it
 				//When it not used, the entry should be deleted then.
@@ -297,6 +301,13 @@ class Migrator extends VmModel{
 		$countTotal += $count;
 		$this->_app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_UPDATE_PORT_MEDIA_RESULT', $count, $type, $url));
 
+		$url = VmConfig::get('forSale_path');
+		$type = 'forSale';
+		$count = $this->_portMediaByType($url, $type);
+		$countTotal += $count;
+		$this->_app->enqueueMessage(JText::sprintf('COM_VIRTUEMART_UPDATE_PORT_MEDIA_RESULT', $count, $type, $url));
+
+
 		return $msg = JText::sprintf('COM_VIRTUEMART_UPDATE_PORT_MEDIA_RESULT_FINISH', $countTotal);
 	}
 
@@ -316,14 +327,26 @@ class Migrator extends VmModel{
 		$filesInDir = array();
 		$foldersInDir = array();
 
-		$path = str_replace('/', DS, $url);
+		if($type!='forSale'){
+
+			$path = str_replace('/', DS, $url);
+			$foldersInDir = array(JPATH_ROOT . DS . $path);
+		} else {
+			$foldersInDir = array($url);
+		}
+
 		//$dir = JPATH_ROOT.DS.$path;
-		$foldersInDir = array(JPATH_ROOT . DS . $path);
+
 		while(!empty($foldersInDir)){
 			foreach($foldersInDir as $dir){
 				$subfoldersInDir = null;
 				$subfoldersInDir = array();
-				$relUrl = str_replace(DS, '/', substr($dir, strlen(JPATH_ROOT . DS)));
+				if($type!='forSale'){
+					$relUrl = str_replace(DS, '/', substr($dir, strlen(JPATH_ROOT . DS)));
+				} else {
+					vmdebug('$dir',$dir);
+					$relUrl = $dir;
+				}
 				if($handle = opendir($dir)){
 					while(false !== ($file = readdir($handle))){
 
@@ -341,7 +364,7 @@ class Migrator extends VmModel{
 									$filesInDir[] = array('filename' => $file, 'url' => $relUrl);
 								}
 							}else {
-								if($filetype == 'dir' && $file != 'resized'){
+								if($filetype == 'dir' && $file != 'resized' && $file != 'invoices'){
 									$subfoldersInDir[] = $dir.$file.DS;
 									// 									vmdebug('my sub folder ',$dir.$file);
 								}
@@ -369,8 +392,10 @@ class Migrator extends VmModel{
 		    'file_url' => $file['url'] . $file['filename'],
 	    	 'media_published' => 1
 			);
-			if($type == 'product')
-			$data['file_is_product_image'] = 1;
+
+			if($type == 'product') $data['file_is_product_image'] = 1;
+			if($type == 'forSale') $data['file_is_forSale'] = 1;
+
 			$this->mediaModel->setId(0);
 			$success = $this->mediaModel->store($data, $type);
 			$errors = $this->mediaModel->getErrors();
