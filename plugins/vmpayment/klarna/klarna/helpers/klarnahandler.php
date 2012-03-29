@@ -5,7 +5,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  *
  * a special type of Klarna
- * @author Valérie Isaksen
+ * @author Val√©rie Isaksen
  * @version $Id:
  * @package VirtueMart
  * @subpackage payment
@@ -337,11 +337,11 @@ class KlarnaHandler {
 	return $billing;
     }
 
-    public function addTransaction($method, $cart, &$order, &$estoreOrderNo) {
+    public function addTransaction($method, $cart, &$order, &$estoreOrderNo, $tablename) {
 	$session = JFactory::getSession();
 	$sessionKlarna = $session->get('Klarna', 0, 'vm');
 	$sessionKlarnaData = unserialize($sessionKlarna);
-	 
+
 	// No klarna data set, redirect back.
 	if (!isset($sessionKlarnaData))
 	    throw new Exception("No klarna Session data set");
@@ -451,7 +451,7 @@ class KlarnaHandler {
 	$klarna = new Klarna_virtuemart();
 	$mode = (($method->klarna_mode == 'klarna_live') ? Klarna::LIVE : Klarna::BETA);
 	$ssl = ($mode == Klarna::LIVE);
-	$klarna->config($country['eid'], $country['secret'], $country['country_code'], null, $country['currency_code'], $mode, $method->klarna_pc_type, KlarnaHandler::getPCUri(), $ssl);
+	$klarna->config($country['eid'], $country['secret'], $country['country_code'], null, $country['currency_code'], $mode, $method->klarna_pc_type, $method->klarna_pc_uri, $ssl);
 
 	// If ILT Questions have been asked and filled in,
 	// add them to setIncomeInfo
@@ -573,12 +573,12 @@ class KlarnaHandler {
      * for swedish customers
      * @return array
      */
-    public function getAddresses($pno) {
+    public function getAddresses( $pno, $method) {
 	// Only available for sweden.
 	$settings = self::countryData($method, 'swe');
 	$addresses = array();
 	$klarna = new Klarna_virtuemart();
-	$klarna->config($settings['eid'], $settings['secret'], KlarnaCountry::SE, KlarnaLanguage::SV, KlarnaCurrency::SEK, KLARNA_MODE, KLARNA_PC_TYPE, KlarnaHandler::getPCUri(), KLARNA_MODE);
+	$klarna->config($settings['eid'], $settings['secret'], KlarnaCountry::SE, KlarnaLanguage::SV, KlarnaCurrency::SEK, KLARNA_MODE,$method->klarna_pc_type, $method->klarna_pc_uri, KLARNA_MODE);
 	$addresses = $klarna->getAddresses($pno, null, KlarnaFlags::GA_GIVEN);
 	unset($klarna);
 	return $addresses;
@@ -587,7 +587,7 @@ class KlarnaHandler {
     /**
      * Checks if we need to ask ILT questions.
      */
-    public function checkILT(&$d, $pno, $gender, $addr) {
+    public function checkILT(&$d, $pno, $gender, $addr, $method) {
 	$amount = $d['order_subtotal_withtax'];
 	$settings = self::countryData($method, $_SESSION['auth']['country']);
 	$ilt = array();
@@ -595,7 +595,7 @@ class KlarnaHandler {
 	    $gender = null;
 	}
 	$klarna = new Klarna_virtuemart();
-	$klarna->config($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], 99, KLARNA_PC_TYPE, KlarnaHandler::getPCUri(), KLARNA_MODE);
+	$klarna->config($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], 99, $method->klarna_pc_type, $method->klarna_pc_uri, KLARNA_MODE);
 	$klarna->setValidator();
 
 	$klarna->setAddress(KlarnaFlags::IS_SHIPPING, $addr);
@@ -640,20 +640,19 @@ class KlarnaHandler {
 	$db->query($q);
     }
 
-    public function fetchPClasses() {
+    public function fetchPClasses($method) {
 	$message = '';
 	$success = '';
-	foreach (explode(',', KLARNA_SELECTED_COUNTRIES) as $country) {
-	    $country = self::convertCountryCode($country);
+	foreach ($method->klarna_countries as $country) {
+	    // country is CODE 3==> converting to 2 letter country
+	    $country = self::convertCountryCode($method, $country);
 	    $lang = self::getLanguageForCountry($method, $country);
-	    $flag = "<img src='" . KLARNA_IMG_PATH . "images/flags/" .
-		    $lang . ".png' />";
+	    $flag = "<img src='" . JPATH_VMKLARNAPLUGIN . "assets".DS."images".DS."general".DS."flags" .DS. $lang . ".png' />";
 	    try {
 		$settings = self::getCountryData($method, $country);
 
 		$klarna = new Klarna_virtuemart();
-		$klarna->config($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], ((KLARNA_MODE == 1) ?
-				Klarna::LIVE : Klarna::BETA), KLARNA_PC_TYPE, KlarnaHandler::getPCUri(), true);
+		$klarna->config($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], ((KLARNA_MODE == 1) ?Klarna::LIVE : Klarna::BETA), $method->klarna_pc_type, $method->klarna_pc_uri, true);
 
 		$klarna->fetchPClasses($country);
 		$success .= '<span style="padding: 5px;">' . $flag . " " .
@@ -666,14 +665,12 @@ class KlarnaHandler {
 	    }
 	}
 	if (strlen($message) > 2) {
-	    global $vmLogger;
-	    $vmLogger->err($message);
+	    vmInfo($message);
 	}
 	if (strlen($success) > 2) {
-	    global $vmLogger;
 	    $notice = '<br><span style="font-size: 15px;">' .
 		    'PClasses fetched for : ' . $success . '</span>';
-	    $vmLogger->notice($notice);
+	    vmInfo($notice);
 	}
     }
 
@@ -799,7 +796,7 @@ class KlarnaHandler {
 	$settings = self::countryData($method, $_SESSION['auth']['country']);
 	$klarna = new Klarna_virtuemart();
 	$klarna->config($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], ((KLARNA_MODE == 1) ?
-			Klarna::LIVE : Klarna::BETA), KLARNA_PC_TYPE, KlarnaHandler::getPCUri(), true);
+			Klarna::LIVE : Klarna::BETA), $method->klarna_pc_type, $method->klarna_pc_uri, true);
 	// Update Ordernumber
 	$klarna->updateOrderno($invNo, $estoreOrderNo);
 	unset($klarna);
@@ -876,10 +873,11 @@ class KlarnaHandler {
     /**
      * Sets PCUri
      * @TODO JOOMLA OR JSON
+     * @deprecated
      */
-    public function getPCUri($method, $tablename) {
-
-	if ($method->klarna_pc_type == "mysql") {
+    public function getPCUri( ) {
+// TO TEST
+	//if ($method->klarna_pc_type == "mysql") {
 	    $config = JFactory::getConfig();
 	    $tablePrefix = $config->getValue('config.dbprefix');
 	    $prefix = '#__';
@@ -889,11 +887,11 @@ class KlarnaHandler {
 		'passwd' => $config->getValue('config.password'),
 		'dsn' => $config->getValue('config.host'),
 		'db' => $config->getValue('config.db'),
-		'table' => $tablename
+		'table' => 'rc3_virtuemart_payment_plg_klarna_pclasses'
 	    );
-	} else {
-	    $pcURI = $method->klarna_pc_uri;
-	}
+	//} else {
+	//    $pcURI = $method->klarna_pc_uri;
+	//}
 	return $pcURI;
     }
 
@@ -1060,13 +1058,13 @@ class KlarnaHandler {
 	return $status;
     }
 
-    public function checkOrderStatus($order_id, $order_long) {
+    public function checkOrderStatus($order_id, $order_long, $method, $tabl) {
 	global $vendor_country;
 	$settings = self::countryData($method, $vendor_country);
 	try {
 	    $klarna = new Klarna_virtuemart();
 	    $klarna->config($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], ((KLARNA_MODE == 1) ?
-			    Klarna::LIVE : Klarna::BETA), KLARNA_PC_TYPE, KlarnaHandler::getPCUri(), true);
+			    Klarna::LIVE : Klarna::BETA), $method->klarna_pc_type, $method->klarna_pc_uri, true);
 	    $os = $klarna->checkOrderStatus($order_id, 1);
 	} catch (Exception $e) {
 	    $msg = $e->getMessage() . ' #' . $e->getCode() . ' </br>';
@@ -1112,15 +1110,15 @@ class KlarnaHandler {
     /**
      * Return pclasses stored in database.
      */
-    public function getPClasses($type = null, $country = '', $method, $countrysettings, $PCtablename) {
+    public function getPClasses($type = null, $country = '', $method, $countrysettings ) {
 
 	//$settings = self::countryData($method, $country);
 	$settings = $countrysettings;
 	try {
 	    $klarna = new Klarna_virtuemart();
 	    $klarna->config($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], (($method->klarna_mode == 'klarna_live') ?
-			    Klarna::LIVE : Klarna::BETA), $method->klarna_pc_type, KlarnaHandler::getPCUri($method, $PCtablename), true);
-	    return $klarna->getPClasses($type, $PCtablename);
+			    Klarna::LIVE : Klarna::BETA), $method->klarna_pc_type, $method->klarna_pc_uri, true);
+	    return $klarna->getPClasses($type );
 	} catch (Exception $e) {
 
 	}
