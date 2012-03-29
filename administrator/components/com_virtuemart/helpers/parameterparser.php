@@ -228,7 +228,11 @@ class vmParameters extends JParameter {
 
 		return $element->render($node, $value, $control_name);
 	}
-
+	function getParamByName($name){
+		
+		return $this->$name;
+		
+	}
 	/**
 	 * vmRender copied from Joomla 1.5
 	 *

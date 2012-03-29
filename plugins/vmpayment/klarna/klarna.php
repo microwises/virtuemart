@@ -538,7 +538,6 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 	//refresh captcha code
 	// fetches PClasses
-	$path = dirname(__FILE__);
 	$call = jrequest::getWord('call');
 	require (JPATH_VMKLARNAPLUGIN.'/klarna/selfCall.php');
 	$SelfCall= new KlarnaSelfCall ;

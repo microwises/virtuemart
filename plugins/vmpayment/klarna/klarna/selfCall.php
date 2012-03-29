@@ -29,8 +29,18 @@ class KlarnaSelfCall {
 	 * 
 	 */
 	function getPclasses() {
-		// todo create table
+		$handler = new KlarnaHandler ;
 		// call klarna server for pClasses
+		$methodid = jrequest::getInt('methodid');
+		if (!class_exists( 'VmModel' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'vmmodel.php');
+		$model = VmModel::getModel('paymentmethod');
+		$payment = $model->getPayment();
+		if (!class_exists( 'vmParameters' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'parameterparser.php');
+		$parameters = new vmParameters($payment,  $payment->payment_element , 'plugin' ,'vmpayment');
+		$data = $parameters->getParamByName('data');
+		// echo "<pre>";print_r($data);
+		print_r ($handler->fetchPClasses($data) );
+		// echo result with tmpl ?
 	}
 }
 

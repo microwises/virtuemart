@@ -99,7 +99,9 @@ class JElementKlarnaPclasses extends JElement {
 		echo $e;
 	    }
 	}
-	$pclassesLink = JURI::root().'administrator/index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarna&call=getPclasses';
+	$cid = jrequest::getvar('cid');
+	
+	$pclassesLink = JURI::root().'administrator/index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarna&call=getPclasses&cid='.(int)$cid;
 
 	if ($total == 0) {
 
