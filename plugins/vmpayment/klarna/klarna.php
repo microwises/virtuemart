@@ -538,6 +538,11 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 
 	//refresh captcha code
 	// fetches PClasses
+	$path = dirname(__FILE__);
+	$call = jrequest::getWord('call');
+	require (JPATH_VMKLARNAPLUGIN.'/klarna/selfCall.php');
+	$SelfCall= new KlarnaSelfCall ;
+	$SelfCall->$call ();
 	jexit();
     }
 
@@ -998,6 +1003,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	return $vendor_currency->currency_code_3;
     }
 
+	
 }
 
 // No closing tag

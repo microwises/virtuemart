@@ -43,7 +43,8 @@ class JElementKlarnaPclasses extends JElement {
     var $_name = 'KlarnaPclasses';
 
     function fetchElement($name, $value, &$node, $control_name) {
-return;
+//return;
+//TODO SELFCALL AJAX
 	// Base name of the HTML control.
 	$ctrl = $control_name . '[' . $name . ']';
 
@@ -98,15 +99,17 @@ return;
 		echo $e;
 	    }
 	}
+	$pclassesLink = JURI::root().'administrator/index.php?option=com_virtuemart&view=plugin&type=vmpayment&name=klarna&call=getPclasses';
+
 	if ($total == 0) {
 
-	    $html .='<span class="no_pclasses">No pclasses in database. <a href="' . $_SERVER['REQUEST_URI'] . '&get_pclasses=true' . '>Fetch PClasses</a></span>';
+	    $html .='<span class="no_pclasses">No pclasses in database. <a href="' . $pclassesLink . '>Fetch PClasses</a></span>';
 	}
 
 	$html .= '</div>
                   </fieldset>
         <span class="update_pclasses">
-            <a class="button_klarna" href="' . $_SERVER['REQUEST_URI'] . '&get_pclasses=true">Update PClasses</a>
+            <a class="button_klarna" href="' . $pclassesLink . '">Update PClasses</a>
         </span>
         <div class="clear"></div>';
 	return $html;
