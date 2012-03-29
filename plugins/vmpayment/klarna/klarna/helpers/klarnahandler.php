@@ -88,7 +88,7 @@ class KlarnaHandler {
 	    $cData = $countryData[$country];
 	    $eid = 'klarna_' . $lower_country . '_merchantid';
 	    $secret = 'klarna_' . $lower_country . '_sharedsecret';
-	    $invoice_fee = 'klarna_' . $lower_country . '_invoice_fee';
+	    $invoice_fee = 'klarna_' . $lower_country . '_invoicefee';
 	    $cData['eid'] = $method->$eid;
 	    $cData['secret'] = $method->$secret;
 	    $cData['invoice_fee'] = (double) $method->$invoice_fee;
@@ -652,7 +652,7 @@ class KlarnaHandler {
 		$settings = self::getCountryData($method, $country);
 
 		$klarna = new Klarna_virtuemart();
-		$klarna->config($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], ((KLARNA_MODE == 1) ?Klarna::LIVE : Klarna::BETA), $method->klarna_pc_type, $method->klarna_pc_uri, true);
+		$klarna->config($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], (($method->klarna_mode == 'klarna_live') ?Klarna::LIVE : Klarna::BETA), $method->klarna_pc_type, $method->klarna_pc_uri, true);
 
 		$klarna->fetchPClasses($country);
 		$success .= '<span style="padding: 5px;">' . $flag . " " .
