@@ -645,9 +645,9 @@ class KlarnaHandler {
 	$success = '';
 	foreach ($method->klarna_countries as $country) {
 	    // country is CODE 3==> converting to 2 letter country
-	    $country = self::convertCountryCode($method, $country);
+	    //$country = self::convertCountryCode($method, $country);
 	    $lang = self::getLanguageForCountry($method, $country);
-	    $flag = "<img src='" . JPATH_VMKLARNAPLUGIN . "assets".DS."images".DS."general".DS."flags" .DS. $lang . ".png' />";
+	    $flag = "<img src='" . JPATH_VMKLARNAPLUGIN . "/klarna/assets/images/general/flags/". $lang . ".png' />";
 	    try {
 		$settings = self::getCountryData($method, $country);
 
@@ -665,12 +665,12 @@ class KlarnaHandler {
 	    }
 	}
 	if (strlen($message) > 2) {
-	    vmInfo($message);
+	    echo $message;
 	}
 	if (strlen($success) > 2) {
 	    $notice = '<br><span style="font-size: 15px;">' .
 		    'PClasses fetched for : ' . $success . '</span>';
-	    vmInfo($notice);
+	    echo $notice;
 	}
     }
 
