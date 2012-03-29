@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<install version="1.5" type="plugin" group="vmpayment" method="upgrade">
+    <name>VM - Payment, Klarna</name>
+    <creationDate>Mars 2012</creationDate>
+    <author>The VirtueMart Development Team</author>
+    <authorUrl>http://www.virtuemart.net</authorUrl>
+    <copyright>Copyright (C) 2004-2011 Virtuemart Team. All rights reserved.</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <version>2.0.1</version>
+    <description>VMPAYMENT_KLARNA_PLUGIN_DESC</description>
+    <languages>
+	<language tag="en-GB">en-GB.plg_vmpayment_klarna.ini</language>
+    </languages>
+    <files>
+	<filename plugin="klarna">klarna.php</filename>
+	<folder>klarna</folder>
+    </files>
+
+    <params addpath="/plugins/vmpayment/klarna/elements" />
+    <params addpath="/plugins/vmpayment/klarna/klarna/elements" />
+
+    <params addpath="/administrator/components/com_virtuemart/elements">
+	<param type="vmjpluginwarning" />
+	<param type="spacer" default="VMPAYMENT_KLARNA_PAYMENT_TITLE" level="level1" />
+	<param name="module version" type="klarnamoduleversion"  />
+	<param type="spacer" default="VMPAYMENT_KLARNA_SERVER_SETTINGS" level="level1" />
+	<param name="klarna_mode" type="radio"   label="VMPAYMENT_KLARNA_MODE" description="VMPAYMENT_KLARNA_MODE_DESC" >
+	    <option value="klarna_live">VMPAYMENT_KLARNA_MODE_LIVE</option>
+	    <option value="klarna_beta">VMPAYMENT_KLARNA_MODE_BETA</option>
+	</param>
+	<param name="klarna_modules" type="klarnamultilist" multiple="multiple"  label="VMPAYMENT_KLARNA_MODULE" description="VMPAYMENT_KLARNA_MODULE_DESC" >
+	    <option value="klarna_invoice">VMPAYMENT_KLARNA_MODULE_INVOICE</option>
+	    <option value="klarna_partpay">VMPAYMENT_KLARNA_MODULE_PARTPAYMENT</option>
+	    <option value="klarna_speccamp">VMPAYMENT_KLARNA_MODULE_SPECCAMP</option>
+	</param>
+	<param name="klarna_countries" type="klarnacountries"   label="VMPAYMENT_KLARNA_COUNTRIES" description="VMPAYMENT_KLARNA_COUNTRIES_DESC" />
+	<param type="spacer" default="VMPAYMENT_KLARNA_SETTINGS_SWEDEN" level="level1" />
+	<param name="klarna_swe_merchantid" type="text"   label="VMPAYMENT_KLARNA_MERCHANT_ID" description="VMPAYMENT_KLARNA_MERCHANT_ID" />
+	<param name="klarna_swe_sharedsecret" type="text"   label="VMPAYMENT_KLARNA_SHARED_SECRET" description="VMPAYMENT_KLARNA_SHARED_SECRET" />
+	<param name="klarna_swe_invoicefee" type="text"   label="VMPAYMENT_KLARNA_INVOICE_FEE" description="VMPAYMENT_KLARNA_INVOICE_FEE" />
+
+	<param type="spacer" default="VMPAYMENT_KLARNA_SETTINGS_NORWAY" level="level1" />
+	<param name="klarna_nor_merchantid" type="text"   label="VMPAYMENT_KLARNA_MERCHANT_ID" description="VMPAYMENT_KLARNA_MERCHANT_ID" />
+	<param name="klarna_nor_sharedsecret" type="text"   label="VMPAYMENT_KLARNA_SHARED_SECRET" description="VMPAYMENT_KLARNA_SHARED_SECRET" />
+	<param name="klarna_nor_invoicefee" type="text"   label="VMPAYMENT_KLARNA_INVOICE_FEE" description="VMPAYMENT_KLARNA_INVOICE_FEE" />
+
+	<param type="spacer" default="VMPAYMENT_KLARNA_SETTINGS_DENMARK" level="level1" />
+	<param name="klarna_dnk_merchantid" type="text"   label="VMPAYMENT_KLARNA_MERCHANT_ID" description="VMPAYMENT_KLARNA_MERCHANT_ID" />
+	<param name="klarna_dnk_sharedsecret" type="text"   label="VMPAYMENT_KLARNA_SHARED_SECRET" description="VMPAYMENT_KLARNA_SHARED_SECRET" />
+	<param name="klarna_dnk_invoicefee" type="text"   label="VMPAYMENT_KLARNA_INVOICE_FEE" description="VMPAYMENT_KLARNA_INVOICE_FEE" />
+
+	<param type="spacer" default="VMPAYMENT_KLARNA_SETTINGS_FINLAND" level="level1" />
+	<param name="klarna_fin_merchantid" type="text"   label="VMPAYMENT_KLARNA_MERCHANT_ID" description="VMPAYMENT_KLARNA_MERCHANT_ID" />
+	<param name="klarna_fin_sharedsecret" type="text"   label="VMPAYMENT_KLARNA_SHARED_SECRET" description="VMPAYMENT_KLARNA_SHARED_SECRET" />
+	<param name="klarna_fin_invoicefee" type="text"   label="VMPAYMENT_KLARNA_INVOICE_FEE" description="VMPAYMENT_KLARNA_INVOICE_FEE" />
+
+	<param type="spacer" default="VMPAYMENT_KLARNA_SETTINGS_GERMANY" level="level1" />
+	<param name="klarna_deu_merchantid" type="text"   label="VMPAYMENT_KLARNA_MERCHANT_ID" description="VMPAYMENT_KLARNA_MERCHANT_ID" />
+	<param name="klarna_deu_sharedsecret" type="text"   label="VMPAYMENT_KLARNA_SHARED_SECRET" description="VMPAYMENT_KLARNA_SHARED_SECRET" />
+	<param name="klarna_deu_invoicefee" type="text"   label="VMPAYMENT_KLARNA_INVOICE_FEE" description="VMPAYMENT_KLARNA_INVOICE_FEE" />
+
+	<param type="spacer" default="VMPAYMENT_KLARNA_SETTINGS_NETHERLANDS" level="level1" />
+	<param name="klarna_nld_merchantid" type="text"   label="VMPAYMENT_KLARNA_MERCHANT_ID" description="VMPAYMENT_KLARNA_MERCHANT_ID" />
+	<param name="klarna_nld_sharedsecret" type="text"   label="VMPAYMENT_KLARNA_SHARED_SECRET" description="VMPAYMENT_KLARNA_SHARED_SECRET" />
+	<param name="klarna_nld_invoicefee" type="text"   label="VMPAYMENT_KLARNA_INVOICE_FEE" description="VMPAYMENT_KLARNA_INVOICE_FEE" />
+
+	<param name="klarna_pclasses" type="klarnapclasses"   default="" label="VMPAYMENT_KLARNA_PCLASSES" description="VMPAYMENT_KLARNA_PCLASSES_DESC" />
+
+	<param name="klarna_pc_type" type="text"   default="mysql" label="VMPAYMENT_KLARNA_PC_TYPE" description="VMPAYMENT_KLARNA_PC_TYPE" />
+	<param name="klarna_pc_uri" type="text"   default="none" label="VMPAYMENT_KLARNA_PC_URI" description="VMPAYMENT_KLARNA_PC_URI" />
+	<param name="debug" type="radio" default="0" label="VMPAYMENT_KLARNA_DEBUG" description="VMPAYMENT_KLARNA_DEBUG_DESC" >
+	    <option value="0">COM_VIRTUEMART_NO</option>
+	    <option value="1">COM_VIRTUEMART_YES</option>
+	</param>
+    </params>
+
+
+</install>

@@ -429,6 +429,7 @@ abstract class vmPlugin extends JPlugin {
      * @return  string  The path to the type layout
      * original from libraries\joomla\application\module\helper.php
      * @since   11.1
+     * @author Patrick Kohl, Valérie Isaksen
      */
     protected function renderByLayout($layout = 'default', $params = null) {
 	$layout = $this->_getLayoutPath($this->_name, 'vm' . $this->_psType, $layout);
@@ -439,7 +440,8 @@ abstract class vmPlugin extends JPlugin {
     }
 
     /**
-     *
+     *  Note: We have 2 subfolders for versions > J15 for 3rd parties developers, to avoid 2 installers
+     *  @author Patrick Kohl, Valérie Isaksen
      */
     function _getLayoutPath($pluginName, $group, $layout = 'default') {
 	$app = JFactory::getApplication();

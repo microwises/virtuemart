@@ -1,0 +1,345 @@
+/**************************************************/
+/*                          Check Latest Version  */
+/**************************************************/
+div.klarna_update_box {
+    background-color: #BADDF0;
+    border: 1px solid #389FD3;
+    font-family: Arial,Verdana;
+    font-size: 11px;
+    height: 100px;
+    margin: 10px;
+}
+
+span.klarna_update_logo {
+    float: right;
+    margin-right: 10px;
+    margin-top: 30px;
+    position: relative;
+}
+
+span.klarna_update_icon {
+    float: left;
+    position: relative;
+    margin: 8px 10px 8px 10px;
+}
+
+div.klarna_update_info {
+    float: left;
+    position: relative;
+}
+
+span.klarna_version_number {
+    font-size: 16px;
+    font-weight: bold;
+    float: right;
+    font-style: none;
+}
+
+span.klarna_update_version_text {
+    float: left;
+    font-size: 14px;
+    font-style: italic;
+    position: relative;
+    width: 150px;
+}
+
+div.klarna_version_box {
+    float: right;
+    margin: 30px;
+    position: relative;
+}
+
+span.klarna_update_header {
+    float: left;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 30px 15px 0;
+    position: relative;
+}
+
+span.klarna_update_text {
+    float:left;
+    position:relative;
+    font-size: 14px;
+    margin-left: 40px;
+}
+/**************************************************/
+/*                              Country Settings  */
+/**************************************************/
+fieldset.hide {
+    display: none;
+}
+
+fieldset.klarna_country_settings {
+}
+
+fieldset.klarna_country_settings span.klarna_field  {
+    padding-left: 30px;
+    width: 100px;
+    float:left;
+}
+
+span.klarna_settings_title {
+    position: relative;
+}
+
+img.klarna_settings_flag {
+    padding-right: 5px;
+}
+
+div#klarna_settings_boxes {
+    max-width: 980px;
+}
+
+/**************************************************/
+/*                                      PClasses  */
+/**************************************************/
+#klarna_pclasses {
+    width: 626px !important;
+    min-height: 0px !important;
+}
+span.update_pclasses {
+    float: left;
+    padding: 15px 0 0 10px;
+    position: relative;
+}
+div#pclasses  {
+    display: none;
+}
+
+legend#pclass_field {
+    cursor: pointer;
+}
+
+.button_klarna {
+    background-color: #EEEEEE;
+    border-color: #CCCCCC #333333 #333333 #CCCCCC;
+    border-style: solid;
+    border-width: 1px;
+    font: bold 11px Arial;
+    padding: 2px 6px;
+}
+
+span.no_pclasses {
+    text-align: center;
+    font-size: 16px;
+}
+span.no_pclasses a{
+    font-weight: bold;
+}
+span.no_pclasses a:hover{
+    text-decoration: none;
+    font-style: italic;
+}
+td.pclass_number {
+    text-align: right;
+}
+td.pclass_flag {
+    text-align: center;
+}
+thead.klarna_pclasses_header {
+    font-weight: bold;
+}
+table.klarna_pclasses {
+    padding: 5px;
+    width: 100%;
+}
+td.pclass_description {
+    width: 200px;
+}
+td.pclass_id {
+    padding-right: 3px;
+}
+
+/**************************************************/
+/*                              Misc Klarna CSS   */
+/**************************************************/
+li.klarna_module_box {
+    padding-bottom: 5px;
+    padding-left: 30px;
+}
+
+li.klarna_module_box input {
+    float: left;
+    right: 50px;
+}
+
+label.klarna_module_label {
+    padding-left: 20px;
+    width: 100px;
+}
+
+div#live_or_beta {
+    padding: 8px 20px 20px;
+}
+
+span.klarna_orderstatus_box {
+    float:right;
+    padding-right: 15px;
+}
+
+div.order_status {
+    padding: 5px;
+    width: 400px;
+}
+
+div#testmode {
+    padding-left: 20px;
+    padding-right: 20px
+}
+
+span.klarna_mode_span {
+    float:left;
+}
+
+div.klarna_mode_radio_group {
+    float:right;
+    position: relative;
+    top: 10px;
+}
+.klarna_mode_label {
+    cursor: pointer;
+}
+span.klarna_mode_input {
+    float: right;
+    text-align: right;
+    width: 60px;
+}
+
+input.campaign_text {
+    float: right;
+    position: relative;
+    left: 20px;
+}
+
+span.klarna_spec_text {
+    font-weight: bold;
+    font-size: 12px;
+    color: #0B55C4;
+    padding: 20px;
+    float: left;
+}
+
+span.klarna_text {
+    font-weight: bold;
+    font-size: 12px;
+    color: #0B55C4;
+    padding-right: 20px;
+}
+
+fieldset.klarna {
+    border: 3px ridge #7FD6F7;
+    margin: 5px;
+    width: 300px;
+    float: left;
+    min-height: 65px;
+}
+
+span#klarna_header {
+    font-weight: bold;
+    font-size: 16px;
+    color: #0B55C4;
+}
+fieldset#order_status {
+    width: 626px !important;
+    text-align: center;
+}
+
+/**************************************************/
+/*                          Activated Countries   */
+/**************************************************/
+span.inactive:hover {
+    background:#ffffff; /*BG color is a must for IE6*/
+    text-decoration:none;
+}
+
+img.inactive {
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    background-color: #000;
+}
+
+span.inactive {
+    color: #ccc !important;
+}
+
+span span.enabled {
+    display: none;
+    float: left;
+    margin-left: -50px;
+    padding: 2px 3px;
+    position: relative;
+    top: -40px;
+    width: 150px;
+    z-index: 2;
+}
+
+span span.disabled {
+    display: none;
+    float: left;
+    margin-left: -50px;
+    padding: 2px 3px;
+    position: relative;
+    top: -40px;
+    width: 150px;
+    z-index: 2;
+}
+
+span.klarna_country {
+    padding-left: 5px;
+}
+
+fieldset#klarna_countries {
+    border: 3px ridge #7FD6F7;
+    float: left;
+    margin: 5px;
+    min-height: 1px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    width: 626px;
+    text-align: center;
+    display: inline;
+    position: relative;
+}
+
+fieldset#klarna_countries span.klarna_flag {
+    cursor: pointer;
+    padding-left: 20px;
+    color: #0B55C4;
+    font-style: italic;
+    font-weight: bold;
+}
+
+span.inactive:hover span.disabled {
+    display:inline;
+    position:absolute;
+    background:#ffffff;
+    border:3px ridge #0B55C4;
+    color:#0B55C4;
+    opacity: 1.0;
+    filter: alpha(opacity=100);
+}
+
+span.active:hover span.enabled {
+    display:inline;
+    position:absolute;
+    background:#ffffff;
+    border:3px ridge #0B55C4;
+    color:#0B55C4;
+    opacity: 1.0;
+    filter: alpha(opacity=100);
+}
+
+/**************************************************/
+/*                              General Settings  */
+/**************************************************/
+
+.hidden {
+    display: none;
+}
+
+div.clear {
+        clear:both;
+        width: 100%;
+        height: 1px;
+}
