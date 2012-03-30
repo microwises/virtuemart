@@ -546,19 +546,26 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$payment = $model->getPayment();
 	if (!class_exists( 'vmParameters' )) require(JPATH_VM_ADMINISTRATOR.DS.'helpers'.DS.'parameterparser.php');
 	$parameters = new vmParameters($payment,  $payment->payment_element , 'plugin' ,'vmpayment');
-	$data = $parameters->getParamByName('data');
-	//print_r($data);
+	$method = $parameters->getParamByName('data');
+	//print_r($method);
 	$country = jrequest::getword('country');
 	$country = KlarnaHandler::convertToThreeLetterCode( $country);
-	$eid = KlarnaHandler::getEid($data, $country);
-
+	// $eid = KlarnaHandler::getEid($method, $country);
 	if (!class_exists( 'klarna_virtuemart' )) require (JPATH_VMKLARNAPLUGIN.'/klarna/helpers/klarna_virtuemart.php');
 	//KlarnaAjax($api  , $eid, $path, $webroot)  ;
-	$klarnaVM= new  klarna_virtuemart ;
-	$SelfCall= new KlarnaAjax($klarnaVM,$eid, JPATH_VMKLARNAPLUGIN,Juri::base()) ;
+	// $klarnaVM= new  klarna_virtuemart ;
+	
+	$settings = KlarnaHandler::getCountryData($method, $country);
+
+  $klarna = new Klarna_virtuemart();
+  $klarna->config($settings['eid'], $settings['secret'], $settings['country'], $settings['language'], $settings['currency'], (($method->klarna_mode == 'klarna_live') ?Klarna::LIVE : Klarna::BETA), $method->klarna_pc_type, $method->klarna_pc_uri, true);
+	
+	
+	
+	$SelfCall= new KlarnaAjax($klarna,(int)$settings['eid'], JPATH_VMKLARNAPLUGIN,Juri::base()) ;
 	$action = jrequest::getWord('action');
 
-	$SelfCall->$action ();
+	echo $SelfCall->$action ();
 	//echo 'klarna reponse'.$action;
 	jexit();
     }
