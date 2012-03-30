@@ -834,7 +834,7 @@ function changeLanguage (replaceBox, params, newIso, country, type)
             data['values[' + attr + ']'] = inputValue;
         }
     }
-	virtuemart_paymentmethod_id = jQuery(replaceBox).parents('table').find('.klarmaPaiement').val();
+	virtuemart_paymentmethod_id = jQuery(replaceBox).parents('table').find('.klarnaPayment').val();
 	data['cid'] = virtuemart_paymentmethod_id;
     saveDates(replaceBox);
     jQuery.ajax({
