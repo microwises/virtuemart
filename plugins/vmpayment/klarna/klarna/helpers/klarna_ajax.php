@@ -82,13 +82,10 @@ class KlarnaAjax {
             if ($sType == 'spec') {
                 $types = array(KlarnaPClass::SPECIAL);
             } else {
-                $types = array(KlarnaPClass::CAMPAIGN,
-                    KlarnaPClass::ACCOUNT,
-                    KlarnaPClass::FIXED);
+                $types = array(KlarnaPClass::CAMPAIGN,  KlarnaPClass::ACCOUNT, KlarnaPClass::FIXED);
             }
 
-            $oApi = new KlarnaAPI ($sCountry, $sNewISO, $sType, $iSum, $iFlag,
-                $this->api, $types, $this->path);
+            $oApi = new KlarnaAPI ($sCountry, $sNewISO, $sType, $iSum, $iFlag, $this->api, $types, $this->path);
 
             $oApi->addSetupValue ('web_root', $this->webroot);
             $oApi->setPaths ();

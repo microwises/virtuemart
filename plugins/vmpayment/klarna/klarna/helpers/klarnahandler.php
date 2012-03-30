@@ -654,14 +654,14 @@ class KlarnaHandler {
 	}
 	//Redirect to previous page.
 
-	if (isset($_SESSION['klarna_payment_id'])) {
-	    $pid = $_SESSION['klarna_payment_id'];
-	    unset($_SESSION['klarna_payment_id']);
+	if (isset($_SESSION['klarna_paymentmethod'])) {
+	    $pid = $_SESSION['klarna_paymentmethod'];
+	    unset($_SESSION['klarna_paymentmethod']);
 	}
 	$_SESSION['klarna_error'] = addslashes($message);
-	$mainframe = JFactory::getApplication();
-	$mainframe->enqueueMessage($html);
-	$mainframe->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
+	$app = JFactory::getApplication();
+	$app->enqueueMessage($html);
+	$app->redirect(JRoute::_('index.php?option=com_virtuemart&view=cart'), JText::_('COM_VIRTUEMART_CART_ORDERDONE_DATA_NOT_VALID'));
     }
 
     /**
@@ -739,7 +739,7 @@ class KlarnaHandler {
      * @return <type>
      */
     public function getCustomerCountry($ship_to_info_id) {
-	global $db;
+	 
 	$db->query("SELECT country from #__{vm}_user_info WHERE  user_info_id=
                     '" . $db->getEscaped($ship_to_info_id) . '\'');
 	$db->next_record();
@@ -763,34 +763,7 @@ class KlarnaHandler {
 	unset($klarna);
     }
 
-    /**
-     * Displays the given payment option.
-     */
-    public function displayPayment(&$klarna_pm, &$pid, &$pm) {
 
-	$html = ' <fieldset>
-        <table cellspacing="0" cellpadding="2" border="0" width="100%">
-            <tbody>
-                <tr>
-                    <td colspan="2">
-                        <input id="' . $klarna_pm['id'] . '"
-                                    type="radio" name="virtuemart_paymentmethod_id"
-                                    value="' . $pid . '" />
-                        <label for="' . $klarna_pm['id'] . '">
-                                 ' . $klarna_pm['module'] . ' </label>
-                        </ br>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        ' . $klarna_pm['fields']['0']['field'] . '
-                    <td>
-                </tr>
-            </tbody>
-        </table>
-     </fieldset>';
-	return $html;
-    }
 
     /**
      * gets Eid and Secret for activated countries.

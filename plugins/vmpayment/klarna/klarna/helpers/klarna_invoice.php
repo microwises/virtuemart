@@ -284,7 +284,7 @@ class klarna_invoice  {
 	$session = JFactory::getSession();
 	$sessionKlarna = $session->get('Klarna', 0, 'vm');
 
-	if (isset($sessionKlarna)) {
+	if (!empty($sessionKlarna)) {
 	    $sessionKlarnaData = unserialize($sessionKlarna);
 	    $klarnaData = $sessionKlarnaData->KLARNA_DATA;
 	    $this->setPreviouslyFilledIn($klarnaData);
