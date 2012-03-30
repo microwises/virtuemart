@@ -122,9 +122,9 @@ class klarna_productPrice {
 
 	$kCheckout = new KlarnaAPI($country, $lang, 'part', $price, $page, $this->klarna, $types, $this->path);
 	$kCheckout->addSetupValue('web_root', VMKLARNAPLUGINWEBROOT);
-	$kCheckout->addSetupValue('path_img', VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/');
-	$kCheckout->addSetupValue('path_js', VMKLARNAPLUGINWEBROOT . '/klarna/assets/js/');
-	$kCheckout->addSetupValue('path_css', VMKLARNAPLUGINWEBROOT . '/klarna/assets/css/');
+	$kCheckout->addSetupValue('path_img', VMKLARNAPLUGINWEBROOT . 'assets/images/');
+	$kCheckout->addSetupValue('path_js', VMKLARNAPLUGINWEBROOT . 'assets/js/');
+	$kCheckout->addSetupValue('path_css', VMKLARNAPLUGINWEBROOT . 'assets/css/');
 	if ($country == KlarnaCountry::DE) {
 	    $kCheckout->addSetupValue('asterisk', '*');
 	}

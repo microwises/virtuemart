@@ -23,10 +23,10 @@ if (!class_exists('vmPSPlugin'))
     require(JPATH_VM_PLUGINS . DS . 'vmpsplugin.php');
 if (JVM_VERSION === 2) {
     define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment' . DS . 'klarna');
-    define('VMKLARNAPLUGINWEBROOT', 'plugins' . DS . 'vmpayment' . DS . 'klarna');
+    define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/klarna/klarna/');
 } else {
     define('JPATH_VMKLARNAPLUGIN', JPATH_ROOT . DS . 'plugins' . DS . 'vmpayment');
-    define('VMKLARNAPLUGINWEBROOT', 'plugins' . DS . 'vmpayment');
+    define('VMKLARNAPLUGINWEBROOT', 'plugins/vmpayment/klarna/');
 }
 if (!class_exists('Klarna'))
     require (JPATH_VMKLARNAPLUGIN . DS . 'klarna' . DS . 'api' . DS . 'klarna.php');
@@ -69,7 +69,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$this->_tableId = 'id';
 	$varsToPush = $this->getVarsToPush();
 	$this->setConfigParameterable($this->_configTableFieldName, $varsToPush);
-	$this->klarna_image_path = JURI::root() . VMKLARNAPLUGINWEBROOT . DS . 'klarna' . DS . 'assets' . DS . 'images';
+	$this->klarna_image_path = JURI::root() . VMKLARNAPLUGINWEBROOT . 'assets/images';
 // Get vendor currency ???
 	$this->_vendor_currency = $this->_getVendorCurrency();
 
@@ -177,7 +177,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 		return false;
 	    }
 	}
-	JHTML::script('klarna_general.js', VMKLARNAPLUGINWEBROOT . '/klarna/assets/js/', false);
+	JHTML::script('klarna_general.js', VMKLARNAPLUGINWEBROOT . 'assets/js/', false);
 	$html = array();
 	$method_name = $this->_psType . '_name';
 	foreach ($this->methods as $method) {
@@ -199,7 +199,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
 	$plugin_name = $this->_psType . '_name';
 	$plugin_desc = $this->_psType . '_desc';
 	$description = '';
-
+	//vmdebug('$this->methods',$method);
 	if (!empty($plugin->$plugin_desc)) {
 	    $description = '<span class = "' . $this->_type . '_description">' . $method->$plugin_desc . '</span>';
 	}
@@ -913,7 +913,7 @@ class plgVmPaymentKlarna extends vmPSPlugin {
     }
 
     function displayLogos($method) {
-	$logo = '<img src="' . JURI::base() . VMKLARNAPLUGINWEBROOT . '/klarna/assets/images/logo/';
+	$logo = '<img src="' . JURI::base() . VMKLARNAPLUGINWEBROOT . 'assets/images/logo/';
 	$session = JFactory::getSession();
 	$sessionKlarna = $session->get('Klarna', 0, 'vm');
 	$sessionKlarnaData = unserialize($sessionKlarna);
